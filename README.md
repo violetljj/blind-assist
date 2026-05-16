@@ -2,6 +2,17 @@
 
 原生 Android Kotlin 助盲避障原型：CameraX 实时取流，TFLite 本地运行 YOLO11n，规则层判断危险区域，并通过语音和震动提醒。
 
+## Version
+
+- Current project version: `v0.2.0`
+- Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
+- Version impact is judged by Codex/Agent based on each change's scope and risk.
+- Every project update should keep this README aligned with the current state, usage, version, and important changes.
+
+## Recent Updates
+
+- 2026-05-17: Added project collaboration rules for README synchronization and version bump judgment. This is treated as a small documentation/process update, raising the project version from `v0.1.0` to `v0.2.0`.
+
 ## Environment
 
 当前仓库是 Android Studio/Gradle 项目。构建前需要安装：
