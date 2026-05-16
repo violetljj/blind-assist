@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
+import android.util.Size
 import android.view.Gravity
 import android.view.View
 import android.widget.CompoundButton
@@ -44,6 +46,7 @@ class MainActivity : ComponentActivity() {
     private var frameCount = 0
     private var fpsWindowStartMs = System.currentTimeMillis()
     private var currentFps = 0f
+    private var lastPerfLogAtMs = 0L
 
     private val requestCameraPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -178,6 +181,7 @@ class MainActivity : ComponentActivity() {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
             val analysis = ImageAnalysis.Builder()
+                .setTargetResolution(Size(ANALYSIS_WIDTH, ANALYSIS_HEIGHT))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                 .build()
@@ -216,13 +220,17 @@ class MainActivity : ComponentActivity() {
             val frameSize = FrameSize(bitmap.width, bitmap.height)
             val risk = riskAnalyzer.analyze(detections, frameSize)
             val fps = updateFps()
+            logPerformanceIfNeeded(detections.size, frameSize, fps)
             runOnUiThread {
                 overlayView.update(detections, frameSize, risk)
                 statusText.text = statusFor(
                     level = risk.level,
                     message = risk.message,
                     count = detections.size,
+                    totalMs = detector.lastTotalDetectMs,
+                    preprocessMs = detector.lastPreprocessMs,
                     inferenceMs = detector.lastInferenceMs,
+                    postprocessMs = detector.lastPostprocessMs,
                     fps = fps,
                     modelStatus = detector.statusMessage
                 )
@@ -250,7 +258,10 @@ class MainActivity : ComponentActivity() {
         level: RiskLevel,
         message: String,
         count: Int,
+        totalMs: Long,
+        preprocessMs: Long,
         inferenceMs: Long,
+        postprocessMs: Long,
         fps: Float,
         modelStatus: String
     ): String {
@@ -260,7 +271,26 @@ class MainActivity : ComponentActivity() {
             RiskLevel.LOW -> "低风险"
             RiskLevel.NONE -> "安全"
         }
-        return "$prefix · $message · $count 个目标 · ${inferenceMs}ms · %.1f FPS · $modelStatus".format(fps)
+        return (
+            "$prefix · $message · $count 个目标 · total ${totalMs}ms " +
+                "(pre ${preprocessMs} / infer ${inferenceMs} / post ${postprocessMs}) · " +
+                "%.1f FPS · $modelStatus"
+            ).format(fps)
+    }
+
+    private fun logPerformanceIfNeeded(count: Int, frameSize: FrameSize, fps: Float) {
+        val now = System.currentTimeMillis()
+        if (now - lastPerfLogAtMs < PERF_LOG_INTERVAL_MS) return
+        lastPerfLogAtMs = now
+        Log.i(
+            PERF_TAG,
+            "frame=${frameSize.width}x${frameSize.height}, count=$count, " +
+                "total=${detector.lastTotalDetectMs}ms, " +
+                "pre=${detector.lastPreprocessMs}ms, " +
+                "infer=${detector.lastInferenceMs}ms, " +
+                "post=${detector.lastPostprocessMs}ms, " +
+                "fps=${"%.1f".format(fps)}, status=${detector.statusMessage}"
+        )
     }
 
     private fun hasCameraPermission(): Boolean {
@@ -268,5 +298,12 @@ class MainActivity : ComponentActivity() {
             this,
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    companion object {
+        private const val ANALYSIS_WIDTH = 640
+        private const val ANALYSIS_HEIGHT = 480
+        private const val PERF_LOG_INTERVAL_MS = 1000L
+        private const val PERF_TAG = "BlindAssistPerf"
     }
 }

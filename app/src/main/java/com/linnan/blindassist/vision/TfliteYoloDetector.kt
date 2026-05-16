@@ -34,11 +34,20 @@ class TfliteYoloDetector(
     val isReady: Boolean get() = interpreter != null
     val statusMessage: String
         get() = loadError?.message ?: runtimeWarning ?: if (isReady) "模型已加载" else "模型未加载"
+    var lastPreprocessMs: Long = 0L
+        private set
     var lastInferenceMs: Long = 0L
+        private set
+    var lastPostprocessMs: Long = 0L
+        private set
+    var lastTotalDetectMs: Long = 0L
         private set
 
     private var gpuDelegate: GpuDelegate? = null
     private var interpreter: Interpreter? = null
+    private val preprocessor = ImagePreprocessor(inputSize)
+    private var outputBuffer: ByteBuffer? = null
+    private var outputFloats: FloatArray = FloatArray(0)
     private var loadError: Throwable? = null
     @Volatile
     private var runtimeWarning: String? = null
@@ -77,26 +86,32 @@ class TfliteYoloDetector(
 
     fun detect(bitmap: Bitmap): List<Detection> {
         val localInterpreter = interpreter ?: return emptyList()
-        val input = ImagePreprocessor.prepare(bitmap, inputSize)
+        val totalStart = System.nanoTime()
+        val preprocessStart = totalStart
+        val input = preprocessor.prepare(bitmap)
+        lastPreprocessMs = elapsedMs(preprocessStart)
+
         val outputTensor = localInterpreter.getOutputTensor(0)
-        val outputBuffer = ByteBuffer
-            .allocateDirect(outputTensor.numBytes())
-            .order(ByteOrder.nativeOrder())
+        val localOutputBuffer = reusableOutputBuffer(outputTensor.numBytes())
 
         val start = System.nanoTime()
-        localInterpreter.run(input.buffer, outputBuffer)
-        lastInferenceMs = (System.nanoTime() - start) / 1_000_000L
-        outputBuffer.rewind()
+        localInterpreter.run(input.buffer, localOutputBuffer)
+        lastInferenceMs = elapsedMs(start)
+        localOutputBuffer.rewind()
 
-        val floats = FloatArray(outputTensor.numElements())
-        outputBuffer.asFloatBuffer().get(floats)
+        val floats = reusableOutputFloats(outputTensor.numElements())
+        localOutputBuffer.asFloatBuffer().get(floats)
 
-        return parseOutput(
+        val postprocessStart = System.nanoTime()
+        val detections = parseOutput(
             raw = floats,
             shape = outputTensor.shape(),
             dataType = outputTensor.dataType(),
             letterbox = input.letterbox
         )
+        lastPostprocessMs = elapsedMs(postprocessStart)
+        lastTotalDetectMs = elapsedMs(totalStart)
+        return detections
     }
 
     fun close() {
@@ -116,6 +131,27 @@ class TfliteYoloDetector(
         } catch (error: Throwable) {
             Log.w(TAG, "GPU delegate unavailable, falling back to CPU.", error)
         }
+    }
+
+    private fun reusableOutputBuffer(numBytes: Int): ByteBuffer {
+        val current = outputBuffer
+        if (current == null || current.capacity() != numBytes) {
+            outputBuffer = ByteBuffer
+                .allocateDirect(numBytes)
+                .order(ByteOrder.nativeOrder())
+        }
+        return outputBuffer!!.also { it.rewind() }
+    }
+
+    private fun reusableOutputFloats(numElements: Int): FloatArray {
+        if (outputFloats.size != numElements) {
+            outputFloats = FloatArray(numElements)
+        }
+        return outputFloats
+    }
+
+    private fun elapsedMs(startNanos: Long): Long {
+        return (System.nanoTime() - startNanos) / 1_000_000L
     }
 
     private fun validateInputTensor(interpreter: Interpreter) {
