@@ -4,14 +4,15 @@
 
 ## Version
 
-- Current project version: `v0.2.0`
+- Current project version: `v0.1.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
-- Every project update should keep this README aligned with the current state, usage, version, and important changes.
+- Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
+- Trivial wording, typo, formatting, or lightweight collaboration-rule clarifications do not count as version updates.
 
 ## Recent Updates
 
-- 2026-05-17: Added project collaboration rules for README synchronization and version bump judgment. This is treated as a small documentation/process update, raising the project version from `v0.1.0` to `v0.2.0`.
+- 2026-05-17: Added project collaboration rules for README synchronization and version bump judgment. Later clarified that trivial wording or lightweight process text does not trigger a version bump, so the project remains at `v0.1.0`.
 
 ## Environment
 
