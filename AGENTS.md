@@ -92,3 +92,12 @@ output shape=[1, 84, 2100] dtype=float32
 - 不要回滚自己不理解或不是自己产生的改动。
 - 修改后尽量运行相关测试或构建；如果无法运行，必须在开发日志和最终说明中写清原因。
 - 每次任务结束前，检查 `DEVELOPMENT_LOG.md` 是否已经补充本次记录。
+
+## 已知沙箱权限问题与处理方式
+
+本仓库在 Codex 沙箱环境中反复遇到过一些不是代码本身导致的失败。后续代理遇到同类现象时，应先保留原始错误，再按权限规则提权重跑，不要把这些问题误判为项目代码、Gradle 配置或 GitHub 服务异常。
+
+- Gradle wrapper 下载或构建验证：普通沙箱运行 `.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon` 可能失败，典型错误为 `java.net.SocketException: Permission denied: getsockopt`。这通常是 wrapper 下载或网络访问被沙箱限制；应记录失败命令和错误，然后用 `require_escalated` 提权重跑同一命令。
+- Git 推送：普通沙箱推送可能因凭据或 SSH 权限失败。历史上 HTTPS 推送曾在 GitHub 返回 `HTTP/2 401` 后卡在 `git credential-manager get`；当前 SSH 远端也可能出现 `Identity file ... not accessible: Permission denied` 或 `ssh: connect to host github.com port 22: Permission denied`。应先确认远端和分支，必要时用 trace 定位失败点，再用 `require_escalated` 提权执行 `git push`。
+- 手机安装：优先使用仓库内的 `.\.android-sdk\platform-tools\adb.exe`。安装前运行 `adb devices` 确认设备为 `device` 状态；安装命令为 `.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk`。如果 ADB 启动 daemon 或访问设备被权限限制，应记录错误后按权限规则提权重试。
+- 所有提权重跑都必须在最终说明和 `DEVELOPMENT_LOG.md` 中写明：首次失败命令、原始错误、提权后的命令和结果。
