@@ -1,20 +1,25 @@
 package com.linnan.blindassist.risk
 
-class RiskStabilizer(
-    private val mediumConfirmFrames: Int = MEDIUM_CONFIRM_FRAMES,
-    private val holdAlertMs: Long = HOLD_ALERT_MS
-) {
+import com.linnan.blindassist.alert.AlertPolicy
+import com.linnan.blindassist.alert.AlertProfile
+
+class RiskStabilizer {
     private var pendingKey: RiskKey? = null
     private var pendingFrames: Int = 0
     private var confirmed: RiskResult? = null
     private var confirmedAtMs: Long = 0L
 
-    fun update(raw: RiskResult, nowMs: Long = System.currentTimeMillis()): RiskResult {
+    fun update(
+        raw: RiskResult,
+        profile: AlertProfile = AlertProfile.STANDARD,
+        nowMs: Long = System.currentTimeMillis()
+    ): RiskResult {
+        val policy = AlertPolicy.forProfile(profile)
         return when (raw.level) {
-            RiskLevel.HIGH -> confirm(raw, nowMs)
-            RiskLevel.MEDIUM -> updateMedium(raw, nowMs)
+            RiskLevel.HIGH -> confirm(raw, policy, nowMs)
+            RiskLevel.MEDIUM -> updateMedium(raw, policy, nowMs)
             RiskLevel.LOW,
-            RiskLevel.NONE -> fallback(raw, nowMs)
+            RiskLevel.NONE -> fallback(raw, policy, nowMs)
         }
     }
 
@@ -25,40 +30,40 @@ class RiskStabilizer(
         confirmedAtMs = 0L
     }
 
-    private fun updateMedium(raw: RiskResult, nowMs: Long): RiskResult {
+    private fun updateMedium(raw: RiskResult, policy: AlertPolicy, nowMs: Long): RiskResult {
         val key = RiskKey.from(raw)
         val previousKey = pendingKey
         pendingFrames = when {
             previousKey == key -> pendingFrames + 1
             previousKey != null && previousKey.direction == key.direction &&
-                key.proximity.ordinal > previousKey.proximity.ordinal -> mediumConfirmFrames
+                key.proximity.ordinal > previousKey.proximity.ordinal -> policy.mediumConfirmFrames
             else -> 1
         }
         pendingKey = key
 
-        if (pendingFrames >= mediumConfirmFrames) {
-            return confirm(raw, nowMs)
+        if (pendingFrames >= policy.mediumConfirmFrames) {
+            return confirm(raw, policy, nowMs)
         }
-        return heldOr(raw.copy(level = RiskLevel.NONE, direction = RiskDirection.NONE, message = "未发现风险"), nowMs)
+        return heldOr(raw.copy(level = RiskLevel.NONE, direction = RiskDirection.NONE, message = "未发现风险"), policy, nowMs)
     }
 
-    private fun confirm(raw: RiskResult, nowMs: Long): RiskResult {
+    private fun confirm(raw: RiskResult, policy: AlertPolicy, nowMs: Long): RiskResult {
         pendingKey = RiskKey.from(raw)
-        pendingFrames = if (raw.level == RiskLevel.HIGH) mediumConfirmFrames else pendingFrames
+        pendingFrames = if (raw.level == RiskLevel.HIGH) policy.mediumConfirmFrames else pendingFrames
         confirmed = raw
         confirmedAtMs = nowMs
         return raw
     }
 
-    private fun fallback(raw: RiskResult, nowMs: Long): RiskResult {
+    private fun fallback(raw: RiskResult, policy: AlertPolicy, nowMs: Long): RiskResult {
         pendingKey = null
         pendingFrames = 0
-        return heldOr(raw, nowMs)
+        return heldOr(raw, policy, nowMs)
     }
 
-    private fun heldOr(raw: RiskResult, nowMs: Long): RiskResult {
+    private fun heldOr(raw: RiskResult, policy: AlertPolicy, nowMs: Long): RiskResult {
         val current = confirmed
-        if (current != null && nowMs - confirmedAtMs <= holdAlertMs) {
+        if (current != null && nowMs - confirmedAtMs <= policy.holdAlertMs) {
             return current
         }
         confirmed = null
@@ -76,7 +81,7 @@ class RiskStabilizer(
     }
 
     companion object {
-        const val MEDIUM_CONFIRM_FRAMES = 2
-        const val HOLD_ALERT_MS = 600L
+        const val STANDARD_MEDIUM_CONFIRM_FRAMES = 2
+        const val STANDARD_HOLD_ALERT_MS = 600L
     }
 }

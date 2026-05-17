@@ -20,10 +20,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
+import androidx.camera.core.resolutionselector.AspectRatioStrategy
+import androidx.camera.core.resolutionselector.ResolutionSelector
+import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.feedback.FeedbackController
+import com.linnan.blindassist.feedback.FeedbackDecision
+import com.linnan.blindassist.feedback.FeedbackReason
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.risk.ProximityBand
@@ -46,6 +52,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var riskTitleText: TextView
     private lateinit var riskDetailText: TextView
     private lateinit var targetText: TextView
+    private lateinit var profileToggle: TextView
     private lateinit var careToggle: TextView
     private lateinit var debugToggleText: TextView
     private lateinit var debugText: TextView
@@ -64,7 +71,9 @@ class MainActivity : ComponentActivity() {
     private var lastPerfLogAtMs = 0L
     private var debugVisible = false
     private var careModeEnabled = false
+    private var alertProfile = AlertProfile.STANDARD
     private var lastRenderedTitle = ""
+    private var lastAccessibilityKey = ""
     private var latestSnapshot: UiSnapshot? = null
 
     private val requestCameraPermission = registerForActivityResult(
@@ -89,6 +98,7 @@ class MainActivity : ComponentActivity() {
         feedbackController.speechEnabled = savedPreferences.speechEnabled
         feedbackController.vibrationEnabled = savedPreferences.vibrationEnabled
         careModeEnabled = savedPreferences.careModeEnabled
+        alertProfile = savedPreferences.alertProfile
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         setContentView(buildContentView())
@@ -225,8 +235,10 @@ class MainActivity : ComponentActivity() {
             userPreferences.setVibrationEnabled(checked)
             updateToggleDescription("震动提醒", button, checked)
         }
+        profileToggle = makeProfileToggle()
         careToggle = makeToggle("关怀", careModeEnabled) { button, checked ->
             careModeEnabled = checked
+            lastAccessibilityKey = ""
             userPreferences.setCareModeEnabled(checked)
             updateToggleDescription("关怀模式", button, checked)
             applyCareModeUi()
@@ -243,6 +255,7 @@ class MainActivity : ComponentActivity() {
         updateToggleDescription("语音提醒", speechToggle, feedbackController.speechEnabled)
         updateToggleDescription("震动提醒", vibrationToggle, feedbackController.vibrationEnabled)
         updateToggleDescription("关怀模式", careToggle, careModeEnabled)
+        updateProfileToggle()
 
         debugToggleText = TextView(this).apply {
             setTextColor(Color.rgb(214, 224, 235))
@@ -266,7 +279,8 @@ class MainActivity : ComponentActivity() {
         controlPanel.addView(riskTitleText)
         controlPanel.addView(riskDetailText)
         controlPanel.addView(targetText)
-        controlPanel.addView(buildControlRow(detectToggle, speechToggle, vibrationToggle, careToggle))
+        controlPanel.addView(buildControlRow(detectToggle, speechToggle, vibrationToggle))
+        controlPanel.addView(buildControlRow(profileToggle, careToggle))
         controlPanel.addView(debugToggleText)
         controlPanel.addView(debugText)
         applyCareModeUi()
@@ -333,6 +347,29 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun makeProfileToggle(): TextView {
+        return TextView(this).apply {
+            textSize = 14f
+            typeface = Typeface.DEFAULT_BOLD
+            gravity = Gravity.CENTER
+            includeFontPadding = false
+            minimumHeight = dp(48)
+            setPadding(dp(8), 0, dp(8), 0)
+            setOnClickListener {
+                alertProfile = alertProfile.next()
+                userPreferences.setAlertProfile(alertProfile)
+                updateProfileToggle()
+                renderUi(
+                    latestSnapshot ?: if (detectionEnabled) {
+                        UiSnapshot.waiting(detector.statusMessage)
+                    } else {
+                        UiSnapshot.paused()
+                    }
+                )
+            }
+        }
+    }
+
     private fun toggleParams(isLast: Boolean): LinearLayout.LayoutParams {
         return LinearLayout.LayoutParams(0, dp(48), 1f).apply {
             if (!isLast) rightMargin = dp(8)
@@ -358,8 +395,17 @@ class MainActivity : ComponentActivity() {
             val preview = Preview.Builder().build().also {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
+            val resolutionSelector = ResolutionSelector.Builder()
+                .setAspectRatioStrategy(AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY)
+                .setResolutionStrategy(
+                    ResolutionStrategy(
+                        Size(ANALYSIS_WIDTH, ANALYSIS_HEIGHT),
+                        ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER
+                    )
+                )
+                .build()
             val analysis = ImageAnalysis.Builder()
-                .setTargetResolution(Size(ANALYSIS_WIDTH, ANALYSIS_HEIGHT))
+                .setResolutionSelector(resolutionSelector)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                 .build()
@@ -397,13 +443,26 @@ class MainActivity : ComponentActivity() {
             val detections = detector.detect(bitmap)
             val frameSize = FrameSize(bitmap.width, bitmap.height)
             val rawRisk = riskAnalyzer.analyze(detections, frameSize)
-            val stableRisk = riskStabilizer.update(rawRisk)
+            val stableRisk = riskStabilizer.update(rawRisk, alertProfile)
             val fps = updateFps()
-            logPerformanceIfNeeded(detections.size, frameSize, fps)
             runOnUiThread {
+                val feedbackDecision = feedbackController.notify(stableRisk, alertProfile)
+                val displayDecision = feedbackDecision.withDisplayReason(
+                    reasonFor(rawRisk, stableRisk, feedbackDecision)
+                )
                 overlayView.update(detections, frameSize, stableRisk)
-                renderUi(UiSnapshot.fromRisk(stableRisk, detections.size, detector, fps))
-                feedbackController.notify(stableRisk)
+                renderUi(
+                    UiSnapshot.fromRisk(
+                        rawRisk = rawRisk,
+                        stableRisk = stableRisk,
+                        count = detections.size,
+                        detector = detector,
+                        fps = fps,
+                        profile = alertProfile,
+                        feedbackDecision = displayDecision
+                    )
+                )
+                logPerformanceIfNeeded(detections.size, frameSize, fps, rawRisk, stableRisk, displayDecision)
             }
         } finally {
             isProcessing.set(false)
@@ -433,7 +492,15 @@ class MainActivity : ComponentActivity() {
         riskTitleText.setTextColor(snapshot.titleColor)
         riskDetailText.text = detail
         targetText.text = targetLine
-        riskTitleText.contentDescription = if (careModeEnabled) snapshot.careAccessibilitySummary else snapshot.accessibilitySummary
+        val accessibilityKey = snapshot.accessibilityKey
+        if (lastAccessibilityKey != accessibilityKey) {
+            riskTitleText.contentDescription = if (careModeEnabled) {
+                snapshot.careAccessibilitySummary
+            } else {
+                snapshot.accessibilitySummary
+            }
+            lastAccessibilityKey = accessibilityKey
+        }
         riskDetailText.contentDescription = detail
         targetText.contentDescription = targetLine
         statusBadgeText.text = snapshot.statusBadge
@@ -479,6 +546,14 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    private fun updateProfileToggle() {
+        val next = alertProfile.next()
+        profileToggle.text = "模式 ${alertProfile.displayName}"
+        profileToggle.contentDescription = "提醒模式，当前${alertProfile.displayName}，点击切换为${next.displayName}"
+        profileToggle.setTextColor(Color.rgb(5, 31, 25))
+        profileToggle.background = roundedBackground(Color.rgb(152, 218, 255), dp(14).toFloat())
+    }
+
     private fun applyCareModeUi() {
         controlPanel.background = panelBackground(careModeEnabled)
         overlayView.setCareMode(careModeEnabled)
@@ -512,7 +587,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun logPerformanceIfNeeded(count: Int, frameSize: FrameSize, fps: Float) {
+    private fun logPerformanceIfNeeded(
+        count: Int,
+        frameSize: FrameSize,
+        fps: Float,
+        rawRisk: com.linnan.blindassist.risk.RiskResult,
+        stableRisk: com.linnan.blindassist.risk.RiskResult,
+        feedbackDecision: FeedbackDecision
+    ) {
         val now = System.currentTimeMillis()
         if (now - lastPerfLogAtMs < PERF_LOG_INTERVAL_MS) return
         lastPerfLogAtMs = now
@@ -523,8 +605,28 @@ class MainActivity : ComponentActivity() {
                 "pre=${detector.lastPreprocessMs}ms, " +
                 "infer=${detector.lastInferenceMs}ms, " +
                 "post=${detector.lastPostprocessMs}ms, " +
-                "fps=${"%.1f".format(fps)}, status=${detector.statusMessage}"
+                "fps=${"%.1f".format(fps)}, profile=${alertProfile.storageValue}, " +
+                "rawRisk=${riskSummary(rawRisk)}, stableRisk=${riskSummary(stableRisk)}, " +
+                "feedbackReason=${feedbackDecision.reason.displayText}, status=${detector.statusMessage}"
         )
+    }
+
+    private fun riskSummary(risk: com.linnan.blindassist.risk.RiskResult): String {
+        return "${risk.level}/${risk.direction}/${risk.proximity}"
+    }
+
+    private fun reasonFor(
+        rawRisk: com.linnan.blindassist.risk.RiskResult,
+        stableRisk: com.linnan.blindassist.risk.RiskResult,
+        feedbackDecision: FeedbackDecision?
+    ): FeedbackReason {
+        if (rawRisk.level == RiskLevel.MEDIUM && stableRisk.level == RiskLevel.NONE) {
+            return FeedbackReason.UNSTABLE_RISK
+        }
+        if (rawRisk.proximity == ProximityBand.FAR || rawRisk.proximity == ProximityBand.MID) {
+            return FeedbackReason.DISTANCE_TOO_FAR
+        }
+        return feedbackDecision?.reason ?: FeedbackReason.NO_FEEDBACK_RISK
     }
 
     private fun hasCameraPermission(): Boolean {
@@ -551,7 +653,8 @@ class MainActivity : ComponentActivity() {
         val badgeColor: Int,
         val badgeTextColor: Int,
         val careAccessibilitySummary: String,
-        val accessibilitySummary: String
+        val accessibilitySummary: String,
+        val accessibilityKey: String
     ) {
         companion object {
             fun initial(modelStatus: String): UiSnapshot {
@@ -568,7 +671,8 @@ class MainActivity : ComponentActivity() {
                     badgeColor = Color.rgb(206, 221, 235),
                     badgeTextColor = Color.rgb(10, 22, 32),
                     careAccessibilitySummary = "正在准备，相机和识别模型正在启动",
-                    accessibilitySummary = "初始化中，正在准备相机和本地检测模型"
+                    accessibilitySummary = "初始化中，正在准备相机和本地检测模型",
+                    accessibilityKey = "initial"
                 )
             }
 
@@ -586,7 +690,8 @@ class MainActivity : ComponentActivity() {
                     badgeColor = Color.rgb(160, 255, 215),
                     badgeTextColor = Color.rgb(6, 24, 18),
                     careAccessibilitySummary = "正在观察，请自然前进，系统会在前方有风险时提醒",
-                    accessibilitySummary = "检测已开启，等待实时画面和稳定风险结果"
+                    accessibilitySummary = "检测已开启，等待实时画面和稳定风险结果",
+                    accessibilityKey = "waiting"
                 )
             }
 
@@ -604,7 +709,8 @@ class MainActivity : ComponentActivity() {
                     badgeColor = Color.rgb(198, 210, 222),
                     badgeTextColor = Color.rgb(12, 22, 30),
                     careAccessibilitySummary = "检测已暂停，当前不会识别目标，也不会发出提醒",
-                    accessibilitySummary = "检测已暂停，目标框和风险提醒已清空"
+                    accessibilitySummary = "检测已暂停，目标框和风险提醒已清空",
+                    accessibilityKey = "paused"
                 )
             }
 
@@ -622,16 +728,21 @@ class MainActivity : ComponentActivity() {
                     badgeColor = Color.rgb(255, 210, 125),
                     badgeTextColor = Color.rgb(44, 25, 0),
                     careAccessibilitySummary = "需要相机权限，请允许相机权限，系统才能观察前方",
-                    accessibilitySummary = "需要相机权限，请授予相机权限后再使用实时避障提醒"
+                    accessibilitySummary = "需要相机权限，请授予相机权限后再使用实时避障提醒",
+                    accessibilityKey = "permission"
                 )
             }
 
             fun fromRisk(
-                risk: com.linnan.blindassist.risk.RiskResult,
+                rawRisk: com.linnan.blindassist.risk.RiskResult,
+                stableRisk: com.linnan.blindassist.risk.RiskResult,
                 count: Int,
                 detector: TfliteYoloDetector,
-                fps: Float
+                fps: Float,
+                profile: AlertProfile,
+                feedbackDecision: FeedbackDecision
             ): UiSnapshot {
+                val risk = stableRisk
                 val levelText = levelText(risk.level)
                 val proximityText = proximityText(risk.proximity)
                 val directionText = directionText(risk.direction)
@@ -654,7 +765,9 @@ class MainActivity : ComponentActivity() {
                 val debug = "FPS：${"%.1f".format(fps)}\n" +
                     "耗时：total ${detector.lastTotalDetectMs}ms / pre ${detector.lastPreprocessMs}ms / " +
                     "infer ${detector.lastInferenceMs}ms / post ${detector.lastPostprocessMs}ms\n" +
-                    "模型：${detector.statusMessage}"
+                    "模型：${detector.statusMessage}\n" +
+                    "最近风险判定：原始 ${riskSummaryText(rawRisk)} / 稳定 ${riskSummaryText(stableRisk)}\n" +
+                    "提醒模式：${profile.displayName} / 反馈：${feedbackDecision.reason.displayText}"
                 return UiSnapshot(
                     title = title,
                     detail = detail,
@@ -668,8 +781,13 @@ class MainActivity : ComponentActivity() {
                     badgeColor = badgeColor(risk.level, risk.proximity),
                     badgeTextColor = badgeTextColor(risk.level, risk.proximity),
                     careAccessibilitySummary = "$careTitle，$careDetail，$careTargetLine",
-                    accessibilitySummary = "$title，$detail，$targetLine"
+                    accessibilitySummary = "$title，$detail，$targetLine",
+                    accessibilityKey = "${risk.level}-${risk.direction}-${risk.proximity}"
                 )
+            }
+
+            private fun riskSummaryText(risk: com.linnan.blindassist.risk.RiskResult): String {
+                return "${levelText(risk.level)} ${directionText(risk.direction)} ${proximityText(risk.proximity)}"
             }
 
             private fun levelText(level: RiskLevel): String {

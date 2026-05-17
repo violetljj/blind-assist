@@ -4,6 +4,118 @@
 
 ## 2026-05-17
 
+### 综合体验 v2.0.0 大更新
+
+- 时间：2026-05-18 00:02:14 +08:00
+- 执行者：violjjet
+- 类型：功能 / 无障碍 / 测试 / 构建 / 文档
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/alert/AlertProfile.kt`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt`
+  - `app/src/main/java/com/linnan/blindassist/preferences/UserPreferences.kt`
+  - `app/src/main/java/com/linnan/blindassist/risk/RiskStabilizer.kt`
+  - `app/src/test/java/com/linnan/blindassist/alert/AlertPolicyTest.kt`
+  - `app/src/test/java/com/linnan/blindassist/feedback/FeedbackControllerTest.kt`
+  - `app/src/test/java/com/linnan/blindassist/preferences/UserPreferencesTest.kt`
+  - `app/src/test/java/com/linnan/blindassist/risk/RiskStabilizerTest.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 新增 `AlertProfile` 和 `AlertPolicy`，提供 `QUIET`、`STANDARD`、`SENSITIVE` 三档提醒模式。
+  - 将提醒模式写入用户偏好，默认 `STANDARD`，下次启动恢复用户上次选择；检测开关仍保持会话态，不做持久化。
+  - 将底部控制区改为两行按钮，新增“模式 安静/标准/敏感”按钮，点击后按安静、标准、敏感循环切换；按钮不低于 48dp，并提供“当前模式、下一步切换目标”的动作型 `contentDescription`。
+  - 将 `RiskStabilizer` 改为按提醒模式应用策略：安静模式中风险 3 帧确认、450ms 保持；标准模式保持原有 2 帧确认、600ms 保持；敏感模式中风险 1 帧确认、800ms 保持；高风险和迫近风险仍立即确认。
+  - 将 `FeedbackController.planFor()` 改为按提醒模式返回 NEAR/CRITICAL 冷却和震动时长，并新增 `FeedbackDecision` / `FeedbackReason`，用于记录是否触发反馈以及未触发原因。
+  - 调试区新增最近风险判定信息，展示原始风险、稳定风险、当前提醒模式和反馈原因；Logcat 性能摘要同步增加 `profile`、`rawRisk`、`stableRisk` 和 `feedbackReason`。
+  - 主风险标题的读屏摘要改为仅在风险等级、方向或距离等级变化时更新，降低逐帧重复刷屏风险。
+  - 将 CameraX 分析分辨率配置从 deprecated `setTargetResolution(Size)` 替换为 `ResolutionSelector` + 4:3 分辨率策略，继续以接近 640x480 的分析输入为目标。
+  - 将应用版本从 `v1.5.0` 提升到 `v2.0.0`，`versionCode` 从 `7` 提升到 `8`，并在 README 同步记录提醒模式、调试复盘和 CameraX API 更新。
+- 修改原因：
+  - 用户要求执行“综合体验 v2.0.0 大更新”计划，在没有外部硬件的前提下提升手机端真机试用和展示价值。
+- 验证方式：
+  - 已运行 `git status --short`，确认存在既有未跟踪文件 `多模态智能助盲系统1.4.pptx`，本次未处理该 PPT。
+  - 已读取并按需使用 `android-accessibility`、`android-testing` 和 `android-architecture` skills：保持 48dp 控制目标和动作型状态描述，优先补纯逻辑单元测试，不引入 Hilt、多模块或 Compose 迁移。
+  - 已基于本仓库已知沙箱限制直接提权运行完整验证：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 第一次完整验证失败：`38 tests completed, 1 failed`，失败用例为 `UserPreferencesTest.detectionStateIsNotPersistedAsAUserPreference`，原因是测试期望包含 `alert_profile`，但测试场景未实际保存提醒模式；已修正测试场景。
+  - 第二次完整验证通过，命令退出码为 0；随后补充关怀模式切换时重置主标题读屏摘要节流键，确保状态不变时也能刷新关怀版无障碍文案。
+  - 已再次提权运行同一完整验证命令，命令退出码为 0；测试结果合计 38 个用例通过，失败 0、错误 0。
+  - APK 已生成：`app/build/outputs/apk/debug/app-debug.apk`，大小约 32.3 MB，时间为 2026-05-18 00:04:05 +08:00。
+- 版本判断：
+  - 本次属于大更新，原因是新增用户可见提醒模式、改变提醒稳定和反馈策略、增强无障碍语义、补充调试复盘并更新 CameraX 分析 API。
+  - 按大更新规则，项目版本从 `v1.5.0` 提升到 `v2.0.0`。
+- 后续事项：
+  - 建议后续在真机上分别试用安静、标准、敏感三档，观察语音频率、震动强度和中风险确认速度是否符合步行场景。
+  - 如后续继续打磨，可增加真机安装验证、模式按钮视觉细节微调，或把调试复盘信息拆成更清晰的开发者面板。
+
+### 非外设依赖大更新方向调整
+
+- 时间：2026-05-17 23:31:34 +08:00
+- 执行者：violjjet
+- 类型：分析 / 规划
+- 修改范围：
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/risk/`
+  - `app/src/main/java/com/linnan/blindassist/feedback/`
+  - `app/src/main/java/com/linnan/blindassist/ui/`
+  - `app/src/test/java/com/linnan/blindassist/`
+- 修改内容：
+  - 根据用户说明“暂时没有外部硬件”，将上一条多输入源/外设互通方向调整为暂缓，不作为下一步优先大更新。
+  - 重新评估当前手机端可直接落地的大更新方向，建议优先做“可靠提醒与无障碍体验大更新”：围绕提醒策略档位、误报/漏报抑制、读屏语义、触控可达性、状态播报节流、调试复盘信息和测试覆盖做系统升级。
+  - 判断该方向不依赖外部硬件，同时能直接提升现有 APK 的真机可用性，适合作为 `v2.0.0` 级别的大更新候选。
+- 修改原因：
+  - 用户明确表示当前没有外部硬件，希望暂缓外设相关更新并寻找其他大更新方向。
+- 验证方式：
+  - 已运行 `git status --short`，确认当前存在本次 `DEVELOPMENT_LOG.md` 规划记录修改和既有未跟踪文件 `多模态智能助盲系统1.4.pptx`，本次未处理该 PPT。
+  - 已运行 `rg` 检查 README、开发日志、风险分析、风险稳定、反馈控制、UI 状态和测试覆盖相关内容。
+  - 已读取 `android-accessibility` skill，参考内容描述、48dp 触控目标、颜色对比、焦点语义和状态描述检查项。
+  - 已读取 `android-testing` skill，参考后续测试分层，优先补充快速纯逻辑单元测试。
+  - 本次未运行 Gradle 构建；原因是仅做规划分析和开发日志记录，没有修改 Android 源码、构建脚本、模型资产或 README 行为描述。
+- 版本判断：
+  - 本次属于规划方向调整和开发日志记录，不改变功能行为、构建方式、模型资产、测试结论或已实现技术决策，不更新 README，不调整应用版本号。
+  - 当前应用版本保持 `v1.5.0`。
+- 后续事项：
+  - 若正式实施“可靠提醒与无障碍体验大更新”，建议按大更新处理，目标版本从 `v1.5.0` 提升到 `v2.0.0`。
+  - 外部硬件、多输入源和网络摄像头方向保留为后续硬件条件具备后的架构更新。
+
+### 下一步大更新规划分析
+
+- 时间：2026-05-17 23:29:44 +08:00
+- 执行者：violjjet
+- 类型：分析 / 规划 / 架构
+- 修改范围：
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/vision/`
+  - `app/src/main/java/com/linnan/blindassist/risk/`
+  - `app/src/main/java/com/linnan/blindassist/feedback/`
+  - `app/src/test/java/com/linnan/blindassist/`
+- 修改内容：
+  - 复查当前 README、版本配置和开发日志，确认当前项目版本为 `v1.5.0`，最近已完成实时界面升级、关怀模式、overlay 对齐、距离化风险提醒、风险稳定化和用户偏好持久化。
+  - 复查当前主链路，确认 `MainActivity.kt` 仍同时承担相机启动、帧分析、UI 状态、偏好开关和反馈调度；检测链路以 `Bitmap` 作为入口，具备向多输入源或独立识别管线抽象的基础。
+  - 形成下一步大更新建议：优先做“多输入源 + 识别管线解耦 + 设备侧体验验证”更新，把 CameraX 内置摄像头和未来外部网络摄像头统一到同一帧输入接口，并补充相应风险/反馈/偏好测试。
+  - 评估备选方向：无障碍专项、YUV 性能优化、模型资产升级、外部摄像头端到端接入；判断当前最适合作为大更新的是输入源和识别管线解耦，因为它能为后续外设互通、性能优化和架构可测试性打基础。
+- 修改原因：
+  - 用户要求规划下一步“大更新”，需要基于当前已实现状态给出可落地的版本级路线，而不是继续做小修小补。
+- 验证方式：
+  - 已运行 `git status --short`，确认当前仅存在既有未跟踪文件 `多模态智能助盲系统1.4.pptx`，本次未处理该 PPT。
+  - 已运行 `rg` 检查 README、开发日志、版本配置、`MainActivity.kt`、`vision`、`risk`、`feedback` 和现有测试覆盖。
+  - 已读取 `android-architecture` skill，参考分层、纯 Kotlin 业务逻辑和输入源抽象原则。
+  - 已读取 `android-accessibility` skill，确认后续涉及交互体验时仍需保持 48dp 触控目标、状态描述和读屏语义。
+  - 已读取 `android-testing` skill，参考后续测试应以纯逻辑单元测试为主，必要时补充集成或界面验证。
+  - 本次未运行 Gradle 构建；原因是仅做规划分析和开发日志记录，没有修改 Android 源码、构建脚本、模型资产或 README 行为描述。
+- 版本判断：
+  - 本次属于规划分析和开发日志记录，不改变功能行为、构建方式、模型资产、测试结论或已实现技术决策，不更新 README，不调整应用版本号。
+  - 当前应用版本保持 `v1.5.0`。
+- 后续事项：
+  - 建议下一步正式实施时按大更新处理，目标版本从 `v1.5.0` 提升到 `v2.0.0`，核心交付是帧输入源抽象、识别管线解耦、真机可验证的输入源切换基础和完整构建验证。
+  - 若用户更想先冲刺可见体验，也可把无障碍专项作为 `v2.0.0` 大更新，但外部摄像头/多模态硬件路线会继续滞后。
+
 ### 偏好持久化小更新
 
 - 时间：2026-05-17 21:31:39 +08:00

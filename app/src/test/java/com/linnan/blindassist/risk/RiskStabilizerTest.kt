@@ -1,5 +1,6 @@
 package com.linnan.blindassist.risk
 
+import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
@@ -36,6 +37,31 @@ class RiskStabilizerTest {
         assertEquals(RiskLevel.MEDIUM, second.level)
         assertEquals(RiskDirection.LEFT, second.direction)
         assertEquals(ProximityBand.NEAR, second.proximity)
+    }
+
+    @Test
+    fun quietProfileRequiresThreeMediumFrames() {
+        val stabilizer = RiskStabilizer()
+        val medium = risk(RiskLevel.MEDIUM, RiskDirection.LEFT, ProximityBand.NEAR, "左前方近处 有车辆")
+
+        val first = stabilizer.update(medium, profile = AlertProfile.QUIET, nowMs = 100L)
+        val second = stabilizer.update(medium, profile = AlertProfile.QUIET, nowMs = 130L)
+        val third = stabilizer.update(medium, profile = AlertProfile.QUIET, nowMs = 160L)
+
+        assertEquals(RiskLevel.NONE, first.level)
+        assertEquals(RiskLevel.NONE, second.level)
+        assertEquals(RiskLevel.MEDIUM, third.level)
+    }
+
+    @Test
+    fun sensitiveProfileConfirmsMediumOnFirstFrame() {
+        val stabilizer = RiskStabilizer()
+        val medium = risk(RiskLevel.MEDIUM, RiskDirection.LEFT, ProximityBand.NEAR, "左前方近处 有车辆")
+
+        val stable = stabilizer.update(medium, profile = AlertProfile.SENSITIVE, nowMs = 100L)
+
+        assertEquals(RiskLevel.MEDIUM, stable.level)
+        assertEquals(RiskDirection.LEFT, stable.direction)
     }
 
     @Test
@@ -119,6 +145,28 @@ class RiskStabilizerTest {
         assertEquals(ProximityBand.NEAR, held.proximity)
         assertEquals(RiskLevel.NONE, cleared.level)
         assertEquals(RiskDirection.NONE, cleared.direction)
+    }
+
+    @Test
+    fun quietProfileClearsHeldAlertSoonerThanStandard() {
+        val stabilizer = RiskStabilizer()
+        val high = risk(RiskLevel.HIGH, RiskDirection.CENTER, ProximityBand.CRITICAL, "前方迫近 有人")
+
+        stabilizer.update(high, profile = AlertProfile.QUIET, nowMs = 100L)
+        val cleared = stabilizer.update(noRisk(), profile = AlertProfile.QUIET, nowMs = 551L)
+
+        assertEquals(RiskLevel.NONE, cleared.level)
+    }
+
+    @Test
+    fun sensitiveProfileHoldsAlertLongerThanStandard() {
+        val stabilizer = RiskStabilizer()
+        val high = risk(RiskLevel.HIGH, RiskDirection.CENTER, ProximityBand.CRITICAL, "前方迫近 有人")
+
+        stabilizer.update(high, profile = AlertProfile.SENSITIVE, nowMs = 100L)
+        val held = stabilizer.update(noRisk(), profile = AlertProfile.SENSITIVE, nowMs = 850L)
+
+        assertEquals(RiskLevel.HIGH, held.level)
     }
 
     private fun noRisk(): RiskResult {

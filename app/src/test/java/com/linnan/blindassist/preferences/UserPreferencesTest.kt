@@ -1,5 +1,6 @@
 package com.linnan.blindassist.preferences
 
+import com.linnan.blindassist.alert.AlertProfile
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -15,6 +16,7 @@ class UserPreferencesTest {
         assertTrue(state.speechEnabled)
         assertTrue(state.vibrationEnabled)
         assertFalse(state.careModeEnabled)
+        assertEquals(AlertProfile.STANDARD, state.alertProfile)
     }
 
     @Test
@@ -48,6 +50,24 @@ class UserPreferencesTest {
     }
 
     @Test
+    fun savedAlertProfilePreferenceIsLoadedAgain() {
+        val store = MapPreferenceStore()
+        val preferences = UserPreferences(store)
+
+        preferences.setAlertProfile(AlertProfile.SENSITIVE)
+
+        assertEquals(AlertProfile.SENSITIVE, UserPreferences(store).load().alertProfile)
+    }
+
+    @Test
+    fun unknownAlertProfileFallsBackToStandard() {
+        val store = MapPreferenceStore()
+        store.putString(UserPreferences.KEY_ALERT_PROFILE, "future-mode")
+
+        assertEquals(AlertProfile.STANDARD, UserPreferences(store).load().alertProfile)
+    }
+
+    @Test
     fun detectionStateIsNotPersistedAsAUserPreference() {
         val store = MapPreferenceStore()
         val preferences = UserPreferences(store)
@@ -55,12 +75,14 @@ class UserPreferencesTest {
         preferences.setSpeechEnabled(false)
         preferences.setVibrationEnabled(false)
         preferences.setCareModeEnabled(true)
+        preferences.setAlertProfile(AlertProfile.QUIET)
 
         assertEquals(
             setOf(
                 UserPreferences.KEY_SPEECH_ENABLED,
                 UserPreferences.KEY_VIBRATION_ENABLED,
-                UserPreferences.KEY_CARE_MODE_ENABLED
+                UserPreferences.KEY_CARE_MODE_ENABLED,
+                UserPreferences.KEY_ALERT_PROFILE
             ),
             store.keys()
         )
@@ -68,6 +90,7 @@ class UserPreferencesTest {
 
     private class MapPreferenceStore : PreferenceStore {
         private val values = mutableMapOf<String, Boolean>()
+        private val stringValues = mutableMapOf<String, String>()
 
         override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
             return values[key] ?: defaultValue
@@ -77,6 +100,14 @@ class UserPreferencesTest {
             values[key] = value
         }
 
-        fun keys(): Set<String> = values.keys
+        override fun getString(key: String, defaultValue: String): String {
+            return stringValues[key] ?: defaultValue
+        }
+
+        override fun putString(key: String, value: String) {
+            stringValues[key] = value
+        }
+
+        fun keys(): Set<String> = values.keys + stringValues.keys
     }
 }

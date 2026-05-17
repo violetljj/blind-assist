@@ -6,6 +6,8 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.speech.tts.TextToSpeech
+import com.linnan.blindassist.alert.AlertPolicy
+import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
@@ -38,12 +40,23 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
     }
 
     fun notify(risk: RiskResult) {
-        val plan = planFor(risk) ?: return
+        notify(risk, AlertProfile.STANDARD)
+    }
+
+    fun notify(risk: RiskResult, profile: AlertProfile): FeedbackDecision {
+        val plan = planFor(risk, profile)
+            ?: return FeedbackDecision(null, triggered = false, reason = FeedbackReason.NO_FEEDBACK_RISK)
 
         val now = System.currentTimeMillis()
         val alertKey = AlertKey(risk.direction, risk.proximity)
         val last = lastAlertAt[alertKey] ?: 0L
-        if (now - last < plan.cooldownMs) return
+        if (now - last < plan.cooldownMs) {
+            return FeedbackDecision(plan, triggered = false, reason = FeedbackReason.COOLDOWN)
+        }
+
+        if (!speechEnabled && !vibrationEnabled) {
+            return FeedbackDecision(plan, triggered = false, reason = FeedbackReason.SPEECH_DISABLED)
+        }
         lastAlertAt[alertKey] = now
 
         if (speechEnabled && ttsReady) {
@@ -52,6 +65,7 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
         if (vibrationEnabled) {
             vibrate(plan)
         }
+        return FeedbackDecision(plan, triggered = true, reason = FeedbackReason.TRIGGERED)
     }
 
     fun shutdown() {
@@ -77,19 +91,20 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
     )
 
     companion object {
-        const val NEAR_ALERT_COOLDOWN_MS = 1500L
-        const val CRITICAL_ALERT_COOLDOWN_MS = 850L
-        const val NEAR_VIBRATION_MS = 160L
-        const val CRITICAL_VIBRATION_MS = 420L
+        const val STANDARD_NEAR_ALERT_COOLDOWN_MS = 1500L
+        const val STANDARD_CRITICAL_ALERT_COOLDOWN_MS = 850L
+        const val STANDARD_NEAR_VIBRATION_MS = 160L
+        const val STANDARD_CRITICAL_VIBRATION_MS = 420L
 
-        internal fun planFor(risk: RiskResult): FeedbackPlan? {
+        internal fun planFor(risk: RiskResult, profile: AlertProfile = AlertProfile.STANDARD): FeedbackPlan? {
+            val policy = AlertPolicy.forProfile(profile)
             return when {
                 risk.proximity == ProximityBand.CRITICAL && risk.level == RiskLevel.HIGH -> {
-                    FeedbackPlan(CRITICAL_ALERT_COOLDOWN_MS, CRITICAL_VIBRATION_MS, VibrationEffect.DEFAULT_AMPLITUDE)
+                    FeedbackPlan(policy.criticalCooldownMs, policy.criticalVibrationMs, VibrationEffect.DEFAULT_AMPLITUDE)
                 }
                 risk.proximity == ProximityBand.NEAR &&
                     (risk.level == RiskLevel.HIGH || risk.level == RiskLevel.MEDIUM) -> {
-                    FeedbackPlan(NEAR_ALERT_COOLDOWN_MS, NEAR_VIBRATION_MS, VibrationEffect.DEFAULT_AMPLITUDE)
+                    FeedbackPlan(policy.nearCooldownMs, policy.nearVibrationMs, VibrationEffect.DEFAULT_AMPLITUDE)
                 }
                 else -> null
             }
@@ -102,3 +117,23 @@ data class FeedbackPlan(
     val vibrationMs: Long,
     val amplitude: Int
 )
+
+data class FeedbackDecision(
+    val plan: FeedbackPlan?,
+    val triggered: Boolean,
+    val reason: FeedbackReason
+) {
+    fun withDisplayReason(displayReason: FeedbackReason): FeedbackDecision {
+        return if (triggered) this else copy(reason = displayReason)
+    }
+}
+
+enum class FeedbackReason(val displayText: String) {
+    TRIGGERED("已触发反馈"),
+    DISTANCE_TOO_FAR("距离较远"),
+    UNSTABLE_RISK("风险未稳定"),
+    COOLDOWN("冷却中"),
+    SPEECH_DISABLED("语音关闭"),
+    VIBRATION_DISABLED("震动关闭"),
+    NO_FEEDBACK_RISK("无可反馈风险")
+}
