@@ -25,6 +25,7 @@ import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.RiskAnalyzer
 import com.linnan.blindassist.risk.RiskLevel
+import com.linnan.blindassist.risk.RiskStabilizer
 import com.linnan.blindassist.ui.DetectionOverlayView
 import com.linnan.blindassist.vision.TfliteYoloDetector
 import com.linnan.blindassist.vision.toArgbBitmap
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var statusText: TextView
     private lateinit var detector: TfliteYoloDetector
     private lateinit var riskAnalyzer: RiskAnalyzer
+    private lateinit var riskStabilizer: RiskStabilizer
     private lateinit var feedbackController: FeedbackController
     private lateinit var cameraExecutor: ExecutorService
 
@@ -63,6 +65,7 @@ class MainActivity : ComponentActivity() {
 
         detector = TfliteYoloDetector(this)
         riskAnalyzer = RiskAnalyzer()
+        riskStabilizer = RiskStabilizer()
         feedbackController = FeedbackController(this)
         cameraExecutor = Executors.newSingleThreadExecutor()
 
@@ -130,6 +133,7 @@ class MainActivity : ComponentActivity() {
         val detectSwitch = makeSwitch("检测", true) { _, checked ->
             detectionEnabled = checked
             if (!checked) {
+                riskStabilizer.reset()
                 overlayView.update(emptyList(), null, null)
                 statusText.text = "检测已暂停"
             }
@@ -160,6 +164,7 @@ class MainActivity : ComponentActivity() {
             textSize = 15f
             setTextColor(0xFFFFFFFF.toInt())
             isChecked = checked
+            minimumHeight = dp(48)
             setPadding(18, 8, 18, 8)
             setOnCheckedChangeListener(listener)
         }
@@ -218,14 +223,15 @@ class MainActivity : ComponentActivity() {
         try {
             val detections = detector.detect(bitmap)
             val frameSize = FrameSize(bitmap.width, bitmap.height)
-            val risk = riskAnalyzer.analyze(detections, frameSize)
+            val rawRisk = riskAnalyzer.analyze(detections, frameSize)
+            val stableRisk = riskStabilizer.update(rawRisk)
             val fps = updateFps()
             logPerformanceIfNeeded(detections.size, frameSize, fps)
             runOnUiThread {
-                overlayView.update(detections, frameSize, risk)
+                overlayView.update(detections, frameSize, stableRisk)
                 statusText.text = statusFor(
-                    level = risk.level,
-                    message = risk.message,
+                    level = stableRisk.level,
+                    message = stableRisk.message,
                     count = detections.size,
                     totalMs = detector.lastTotalDetectMs,
                     preprocessMs = detector.lastPreprocessMs,
@@ -234,7 +240,7 @@ class MainActivity : ComponentActivity() {
                     fps = fps,
                     modelStatus = detector.statusMessage
                 )
-                feedbackController.notify(risk)
+                feedbackController.notify(stableRisk)
             }
         } finally {
             isProcessing.set(false)
@@ -298,6 +304,10 @@ class MainActivity : ComponentActivity() {
             this,
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun dp(value: Int): Int {
+        return (value * resources.displayMetrics.density).toInt()
     }
 
     companion object {

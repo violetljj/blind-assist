@@ -4,7 +4,7 @@
 
 ## Version
 
-- Current project version: `v0.1.0`
+- Current project version: `v0.2.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,7 +12,17 @@
 
 ## Recent Updates
 
-- 2026-05-17: Added project collaboration rules for README synchronization and version bump judgment. Later clarified that trivial wording or lightweight process text does not trigger a version bump, so the project remains at `v0.1.0`.
+- 2026-05-17: Added risk reminder stabilization after the rule-based analyzer. HIGH risks are confirmed immediately, MEDIUM risks require two matching frames, and confirmed alerts are briefly held across short missed detections. The app version is now `v0.2.0`.
+- 2026-05-17: Added project collaboration rules for README synchronization and version bump judgment. Later clarified that trivial wording or lightweight process text does not trigger a version bump, so the project remained at `v0.1.0`.
+
+## Risk Reminder Behavior
+
+The app is an assistive prototype, not a safety device that can replace human judgment. Detection results are smoothed before speech and vibration feedback:
+
+- HIGH risk reminders are emitted without frame-delay.
+- MEDIUM risk reminders require two consecutive matching direction/message frames.
+- A confirmed medium/high reminder is held for up to 600ms if the next frame briefly loses the risk, reducing flicker from transient missed detections.
+- Speech and vibration still use the existing 1500ms cooldown.
 
 ## Environment
 

@@ -4,6 +4,64 @@
 
 ## 2026-05-17
 
+### 项目执行人命名规则更新
+
+- 时间：2026-05-17 15:43:22 +08:00
+- 执行者：violjjet
+- 类型：文档 / 协作规范
+- 修改范围：
+  - `AGENTS.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 在 `AGENTS.md` 的开发日志要求中新增规则：项目执行人命名统一为 `violjjet`。
+  - 明确后续写入 `DEVELOPMENT_LOG.md` 的“执行者”字段时，应使用 `violjjet`。
+- 修改原因：
+  - 用户要求将项目执行人命名写入 `AGENTS.md`，统一后续开发日志中的执行者名称。
+- 验证方式：
+  - 已运行 `git status --short`，确认当前存在上一轮功能更新的未提交改动和一个既有未跟踪 PPT 文件；本次未回滚或处理这些既有改动。
+  - 本次仅修改协作规范和开发日志，未涉及 Android 代码、构建脚本、模型资产或运行逻辑，因此未运行 Gradle 构建和单元测试。
+- 版本判断：
+  - 本次属于协作规则的轻量说明补充，不改变项目功能、使用方式、构建方式、模型资产、测试结论或重要技术决策，不计为版本更新。
+  - 未修改 README 和应用版本号。
+- 后续事项：
+  - 后续任务写入开发日志时，“执行者”字段应使用 `violjjet`。
+
+### 风险提醒稳定化更新
+
+- 时间：2026-05-17 15:38:21 +08:00
+- 执行者：Codex
+- 类型：功能 / 测试 / 文档 / 构建
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/risk/RiskStabilizer.kt`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/test/java/com/linnan/blindassist/risk/RiskStabilizerTest.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 重新检测并读取了新安装的 app 开发相关 skills：`android-architecture`、`android-testing`、`kotlin-specialist`、`kotlin-concurrency-expert`、`android-accessibility`。
+  - 新增纯 Kotlin `RiskStabilizer`，位于 `risk` 模块，不引入 Android framework 依赖、协程、Hilt 或多模块改造。
+  - 将稳定器接入 `MainActivity`：`RiskAnalyzer.analyze()` 输出原始风险，`RiskStabilizer.update()` 输出稳定风险，overlay、状态栏、语音和震动反馈均使用稳定后的风险结果。
+  - HIGH 风险单帧立即确认；MEDIUM 风险需要同方向、同消息连续 2 帧确认；已确认的中高风险在短暂 LOW/NONE 帧中最多保持 600ms。
+  - 检测开关关闭时会清空 overlay 并重置稳定器状态。
+  - 按 accessibility skill 检查底部开关，并补充 48dp 最小触达高度。
+  - 新增 `RiskStabilizerTest`，覆盖高风险立即确认、中风险两帧确认、单帧中风险消失不触发、方向切换重置、短暂无风险保持后清空。
+  - 将项目版本从 `v0.1.0` 提升到 `v0.2.0`，`versionCode` 从 `1` 提升到 `2`，并在 README 记录提醒稳定化行为和谨慎安全表述。
+- 修改原因：
+  - 上一轮性能优化后，后续事项中仍保留风险阈值和提醒策略未调整的问题；本次通过轻量稳定层降低帧间检测抖动对语音/震动提醒的影响。
+  - 本次更新直接改善助盲避障提醒体验，同时保持现有 CameraX、TFLite、YOLO 解析、NMS 和模型资产不变，风险边界可通过 JVM 单元测试覆盖。
+- 验证方式：
+  - 初次运行 `$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon` 时，沙箱内 Gradle wrapper 下载失败，错误为 `java.net.SocketException: Permission denied: getsockopt`。
+  - 已按权限要求提权重跑同一命令；第一次提权验证编译和 APK 构建通过，但 `RiskStabilizerTest` 有 2 个用例失败，原因是中风险未确认回退时误清空了 pending 状态。
+  - 已修复稳定器 pending/hold 分离逻辑后再次提权运行同一命令，结果为 `BUILD SUCCESSFUL in 23s`。
+  - 最终单元测试结果：共 12 个测试通过，失败和错误均为 0；`app/build/outputs/apk/debug/app-debug.apk` 已生成。
+- 版本判断：
+  - 本次属于小更新，原因是新增局部体验功能和测试，未改变产品形态、核心架构、模型资产或构建方式。
+  - 按规则项目版本从 `v0.1.0` 提升到 `v0.2.0`。
+- 后续事项：
+  - 需要真机观察稳定层是否降低语音/震动抖动，以及 600ms 保持时长和 2 帧中风险确认是否适合实际步行场景。
+  - 如真机仍频繁误报，可继续评估按目标类别、距离估计或风险等级变化设置更细的确认阈值。
+
 ### Codex skills 优先检查规则补充
 
 - 时间：2026-05-17 15:03:55 +08:00
