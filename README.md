@@ -4,7 +4,7 @@
 
 ## Version
 
-- Current project version: `v2.0.0`
+- Current project version: `v2.5.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,6 +12,7 @@
 
 ## Recent Updates
 
+- 2026-05-18: Implemented the v2.5.0 field-testable walking-assist upgrade. Risk analysis, stabilization, feedback-display reason calculation, and in-memory session tracing now live in a pure Kotlin assist-session layer. The existing debug panel now shows a recent-session summary, near and critical speech prompts are shorter action-oriented guidance, and the app version is now `v2.5.0`.
 - 2026-05-17: Added the v2.0.0 phone-only experience upgrade. The app now has persistent alert profiles (`Quiet`, `Standard`, `Sensitive`) that tune medium-risk confirmation, alert hold time, speech/vibration cooldowns, and vibration duration. The debug panel now explains the latest raw risk, stabilized risk, alert profile, and feedback reason, while the controls include clearer accessibility descriptions. CameraX analysis resolution selection was also updated away from the deprecated target-resolution API. The app version is now `v2.0.0`.
 - 2026-05-17: Added lightweight user preference persistence for speech reminders, vibration reminders, and Care Mode. Detection still starts enabled on each launch so the app does not reopen in a silent paused-recognition state. The app version is now `v1.5.0`.
 - 2026-05-17: Polished the camera screen based on phone screenshot feedback. The preview now fills the display instead of leaving a large top letterbox, overlay mapping matches the filled preview crop, and the bottom controls use compact high-contrast mode buttons instead of bulky platform switches. The app version is now `v1.4.0`.
@@ -32,7 +33,7 @@ The main camera screen keeps the full-screen preview as the primary surface and 
 - Detection, speech, vibration, alert profile, and Care Mode use compact high-contrast mode buttons and can be toggled independently. Speech, vibration, alert profile, and Care Mode restore the user's last choice on the next launch, while detection starts enabled every time. Disabling detection clears the overlay and stops risk feedback while keeping the camera preview visible.
 - Alert profile cycles between Quiet, Standard, and Sensitive. Quiet reduces reminder frequency and vibration length, Standard keeps the original balanced behavior, and Sensitive confirms medium risks sooner with shorter reminder cooldowns.
 - Care Mode enlarges the main instruction, simplifies the supporting copy, increases panel contrast, hides debug details, and adds a center guide line to support lower-vision or high-stress use.
-- Debug information is collapsed by default. Expanding it shows FPS, total/preprocess/inference/postprocess timing, model status, the latest raw and stabilized risk, the active alert profile, and the feedback reason.
+- Debug information is collapsed by default. Expanding it shows FPS, total/preprocess/inference/postprocess timing, model status, the latest raw and stabilized risk, the active alert profile, the feedback reason, and a recent-session summary for the last 30 processed frames.
 - Overlay boxes use stronger highlighting for the current risk source and quieter styling for other detected objects.
 
 ## Risk Reminder Behavior
@@ -42,8 +43,8 @@ The app is an assistive prototype, not a safety device that can replace human ju
 - The app does not estimate real-world distance in meters. It only derives relative proximity bands from detection box position and size.
 - FAR detections are retained visually but do not trigger speech or vibration.
 - MID detections are shown as low-risk visual/status feedback.
-- NEAR detections can trigger regular speech and vibration when the risk level is medium or high.
-- CRITICAL detections trigger a shorter cooldown and stronger vibration pattern.
+- NEAR detections can trigger regular speech and vibration when the risk level is medium or high. Speech prompts are short guidance phrases such as “前方近处，减速” or “左前方近处，注意避让”.
+- CRITICAL detections trigger a shorter cooldown and stronger vibration pattern. Center critical prompts use the short guidance phrase “前方很近，放慢”.
 - HIGH risk reminders are emitted without frame-delay.
 - MEDIUM risk reminders require two consecutive matching direction/message frames.
 - A confirmed medium/high reminder is held for up to 600ms if the next frame briefly loses the risk, reducing flicker from transient missed detections.

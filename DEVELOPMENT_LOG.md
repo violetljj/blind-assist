@@ -2,6 +2,74 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-05-18
+
+### 现场可测助行体验 v2.5.0
+
+- 时间：2026-05-18 00:45:00 +08:00
+- 执行者：violjjet
+- 类型：功能 / 重构 / 测试 / 文档 / 构建
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/session/`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt`
+  - `app/src/test/java/com/linnan/blindassist/session/`
+  - `app/src/test/java/com/linnan/blindassist/risk/RiskAnalyzerTest.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `NEXT_MAJOR_UPDATE_PLAN.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户确认的完整 `v2.5.0` 方案实施现场可测助行体验升级，不更换 YOLO11n 模型，不引入 Hilt、多模块、定位、联网、文件导出或新增 Android 权限。
+  - 新增纯 Kotlin `session` 层：`AssistEngine` 负责串联风险分析、稳定化、反馈展示原因和会话追踪；`DetectorMetrics`、`AssistFrameEvaluation`、`AssistFrameResult` 承载帧级评估数据；`SessionTrace` 用 30 帧内存环形缓冲生成会话摘要。
+  - 调整 `MainActivity`，把风险分析、稳定化、反馈展示原因和会话统计从 Activity 中移出；Activity 保留相机、检测调用、UI 线程渲染和真实语音/震动触发。
+  - 在现有调试面板追加会话摘要，展示最近帧数、高/中/低/无风险统计、最近反馈原因、平均 FPS 和平均推理耗时；Care Mode 下仍隐藏调试详情。
+  - 轻量优化 NEAR/CRITICAL 提醒文案：中心迫近为“前方很近，放慢”，中心近处为“前方近处，减速”，左/右近处为“左/右前方近处，注意避让”。
+  - 新增 `AssistEngineTest` 和 `SessionTraceTest`，覆盖高风险确认、首帧中风险未稳定、距离过远原因、30 帧缓冲截断、摘要统计和显示文本。
+  - 将应用版本从 `v2.0.0` 提升到 `v2.5.0`，`versionCode` 从 `8` 提升到 `9`，并同步 README 和下一次大更新计划文档。
+- 修改原因：
+  - 当前 `MainActivity` 同时承担 UI、相机、推理、风险和反馈调度，继续叠加现场测试能力会让业务逻辑难以验证。
+  - 本轮通过纯 Kotlin 会话层提升可测试性和可复盘性，同时保持手机端原型的现有架构边界和安全表述。
+- 验证方式：
+  - 已基于本仓库已知沙箱限制直接提权运行完整验证：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 验证结果：`BUILD SUCCESSFUL in 41s`，共 41 个 actionable tasks，其中 17 个 executed、24 个 up-to-date。
+  - 单元测试结果：共 44 个测试通过，失败 0、错误 0。
+  - APK 已生成：`app/build/outputs/apk/debug/app-debug.apk`，大小约 32.3 MB，时间为 2026-05-18 00:46:06 +08:00。
+- 版本判断：
+  - 本次属于大更新，原因是新增助行会话层、会话追踪、调试复盘和用户可感知的近距/迫近提醒文案，并补充对应 JVM 测试。
+  - 按大更新规则，项目版本从 `v2.0.0` 提升到 `v2.5.0`。
+- 后续事项：
+  - 后续可在真机上连续运行 5 分钟，记录发热、卡顿、提醒频率和三档提醒差异。
+
+### 下一次大更新准备
+
+- 时间：2026-05-18 00:15:39 +08:00
+- 执行者：violjjet
+- 类型：分析 / 文档 / 规划
+- 修改范围：
+  - `NEXT_MAJOR_UPDATE_PLAN.md`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按项目要求先检查当前任务可用 skills，并读取 `android-architecture` 工作流，用其纯 Kotlin 业务层和职责分离原则约束下一轮方案。
+  - 检查当前工作区状态，确认仅存在一个既有未跟踪 PPT 文件，本次未处理该文件。
+  - 阅读 README、近期开发日志和核心代码索引，确认当前项目版本为 `v2.0.0`，现有能力包括 CameraX + YOLO11n + 风险稳定 + 提醒档位 + 偏好持久化 + Care Mode。
+  - 新增 `NEXT_MAJOR_UPDATE_PLAN.md`，将下一次大更新建议定位为 `v2.5.0` 现场可测助行体验升级。
+  - 在 README 的 Recent Updates 中同步下一次大更新计划入口，便于后续开发者从项目首页理解下一阶段方向。
+- 修改原因：
+  - 用户要求“准备下一次大更新”，需要先把范围、目标、验收标准和不建议纳入的内容固定下来，避免后续直接进入过大的模型、定位或架构改造。
+  - 当前 `MainActivity` 已同时承担 UI、相机、推理、风险和反馈调度，下一轮适合先提取轻量助行会话层和现场测试能力，而不是立刻引入大型框架或替换模型。
+- 验证方式：
+  - 已运行 `git status --short`，结果显示仅有既有未跟踪 `多模态智能助盲系统1.4.pptx` 和本次文档改动。
+  - 已读取 `README.md`、`DEVELOPMENT_LOG.md`、`MainActivity.kt`、`RiskAnalyzer.kt`、`FeedbackController.kt` 以及代码文件索引，完成准备分析。
+  - 本次仅新增和更新规划文档，未修改 Android 代码、构建脚本、模型资产或运行逻辑，因此未运行 Gradle 构建和单元测试。
+- 版本判断：
+  - 本次属于下一次大更新准备和文档规划，不改变应用功能、使用方式、构建方式、模型资产或运行逻辑，因此不实际提升当前项目版本。
+  - 建议下一次实施型大更新目标版本为 `v2.5.0`，原因是计划涉及助行会话层、现场测试能力和提醒策略体验升级，但不改变产品形态到质变级别。
+- 后续事项：
+  - 下一轮实施建议从提取 `AssistEngine` 纯 Kotlin 编排层开始，再增加 `SessionTrace` 内存记录和对应单元测试。
+  - 实施完成后需要按仓库已知沙箱规则提权运行完整 Gradle 验证命令，并同步 README、开发日志和版本号。
+
 ## 2026-05-17
 
 ### 综合体验 v2.0.0 大更新

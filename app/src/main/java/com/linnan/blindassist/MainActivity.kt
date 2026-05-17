@@ -29,14 +29,13 @@ import androidx.core.content.ContextCompat
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.feedback.FeedbackDecision
-import com.linnan.blindassist.feedback.FeedbackReason
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.preferences.UserPreferences
+import com.linnan.blindassist.session.AssistEngine
+import com.linnan.blindassist.session.DetectorMetrics
 import com.linnan.blindassist.risk.ProximityBand
-import com.linnan.blindassist.risk.RiskAnalyzer
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
-import com.linnan.blindassist.risk.RiskStabilizer
 import com.linnan.blindassist.ui.DetectionOverlayView
 import com.linnan.blindassist.vision.TfliteYoloDetector
 import com.linnan.blindassist.vision.toArgbBitmap
@@ -57,8 +56,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var debugToggleText: TextView
     private lateinit var debugText: TextView
     private lateinit var detector: TfliteYoloDetector
-    private lateinit var riskAnalyzer: RiskAnalyzer
-    private lateinit var riskStabilizer: RiskStabilizer
+    private lateinit var assistEngine: AssistEngine
     private lateinit var feedbackController: FeedbackController
     private lateinit var userPreferences: UserPreferences
     private lateinit var cameraExecutor: ExecutorService
@@ -90,8 +88,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         detector = TfliteYoloDetector(this)
-        riskAnalyzer = RiskAnalyzer()
-        riskStabilizer = RiskStabilizer()
+        assistEngine = AssistEngine()
         feedbackController = FeedbackController(this)
         userPreferences = UserPreferences(this)
         val savedPreferences = userPreferences.load()
@@ -218,7 +215,7 @@ class MainActivity : ComponentActivity() {
         val detectToggle = makeToggle("检测", true) { _, checked ->
             detectionEnabled = checked
             if (!checked) {
-                riskStabilizer.reset()
+                assistEngine.reset()
                 overlayView.update(emptyList(), null, null)
                 renderUi(UiSnapshot.paused())
             } else {
@@ -442,27 +439,37 @@ class MainActivity : ComponentActivity() {
         try {
             val detections = detector.detect(bitmap)
             val frameSize = FrameSize(bitmap.width, bitmap.height)
-            val rawRisk = riskAnalyzer.analyze(detections, frameSize)
-            val stableRisk = riskStabilizer.update(rawRisk, alertProfile)
             val fps = updateFps()
-            runOnUiThread {
-                val feedbackDecision = feedbackController.notify(stableRisk, alertProfile)
-                val displayDecision = feedbackDecision.withDisplayReason(
-                    reasonFor(rawRisk, stableRisk, feedbackDecision)
+            val evaluation = assistEngine.evaluate(
+                detections = detections,
+                frameSize = frameSize,
+                profile = alertProfile,
+                metrics = DetectorMetrics(
+                    totalMs = detector.lastTotalDetectMs,
+                    preprocessMs = detector.lastPreprocessMs,
+                    inferenceMs = detector.lastInferenceMs,
+                    postprocessMs = detector.lastPostprocessMs,
+                    fps = fps,
+                    modelStatus = detector.statusMessage
                 )
-                overlayView.update(detections, frameSize, stableRisk)
+            )
+            runOnUiThread {
+                val feedbackDecision = feedbackController.notify(evaluation.stableRisk, alertProfile)
+                val frameResult = assistEngine.completeFeedback(evaluation, feedbackDecision)
+                overlayView.update(detections, frameSize, frameResult.evaluation.stableRisk)
                 renderUi(
                     UiSnapshot.fromRisk(
-                        rawRisk = rawRisk,
-                        stableRisk = stableRisk,
+                        rawRisk = frameResult.evaluation.rawRisk,
+                        stableRisk = frameResult.evaluation.stableRisk,
                         count = detections.size,
                         detector = detector,
                         fps = fps,
                         profile = alertProfile,
-                        feedbackDecision = displayDecision
+                        feedbackDecision = frameResult.feedbackDecision,
+                        sessionSummary = frameResult.sessionSummary.displayText()
                     )
                 )
-                logPerformanceIfNeeded(detections.size, frameSize, fps, rawRisk, stableRisk, displayDecision)
+                logPerformanceIfNeeded(frameResult)
             }
         } finally {
             isProcessing.set(false)
@@ -587,46 +594,27 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun logPerformanceIfNeeded(
-        count: Int,
-        frameSize: FrameSize,
-        fps: Float,
-        rawRisk: com.linnan.blindassist.risk.RiskResult,
-        stableRisk: com.linnan.blindassist.risk.RiskResult,
-        feedbackDecision: FeedbackDecision
-    ) {
+    private fun logPerformanceIfNeeded(frameResult: com.linnan.blindassist.session.AssistFrameResult) {
         val now = System.currentTimeMillis()
         if (now - lastPerfLogAtMs < PERF_LOG_INTERVAL_MS) return
         lastPerfLogAtMs = now
+        val evaluation = frameResult.evaluation
+        val metrics = evaluation.metrics
         Log.i(
             PERF_TAG,
-            "frame=${frameSize.width}x${frameSize.height}, count=$count, " +
-                "total=${detector.lastTotalDetectMs}ms, " +
-                "pre=${detector.lastPreprocessMs}ms, " +
-                "infer=${detector.lastInferenceMs}ms, " +
-                "post=${detector.lastPostprocessMs}ms, " +
-                "fps=${"%.1f".format(fps)}, profile=${alertProfile.storageValue}, " +
-                "rawRisk=${riskSummary(rawRisk)}, stableRisk=${riskSummary(stableRisk)}, " +
-                "feedbackReason=${feedbackDecision.reason.displayText}, status=${detector.statusMessage}"
+            "frame=${evaluation.frameSize.width}x${evaluation.frameSize.height}, " +
+                "count=${evaluation.detectionCount}, " +
+                "total=${metrics.totalMs}ms, pre=${metrics.preprocessMs}ms, " +
+                "infer=${metrics.inferenceMs}ms, post=${metrics.postprocessMs}ms, " +
+                "fps=${"%.1f".format(metrics.fps)}, profile=${evaluation.profile.storageValue}, " +
+                "rawRisk=${riskSummary(evaluation.rawRisk)}, stableRisk=${riskSummary(evaluation.stableRisk)}, " +
+                "feedbackReason=${frameResult.feedbackDecision.reason.displayText}, " +
+                "session=${frameResult.sessionSummary.displayText()}, status=${metrics.modelStatus}"
         )
     }
 
     private fun riskSummary(risk: com.linnan.blindassist.risk.RiskResult): String {
         return "${risk.level}/${risk.direction}/${risk.proximity}"
-    }
-
-    private fun reasonFor(
-        rawRisk: com.linnan.blindassist.risk.RiskResult,
-        stableRisk: com.linnan.blindassist.risk.RiskResult,
-        feedbackDecision: FeedbackDecision?
-    ): FeedbackReason {
-        if (rawRisk.level == RiskLevel.MEDIUM && stableRisk.level == RiskLevel.NONE) {
-            return FeedbackReason.UNSTABLE_RISK
-        }
-        if (rawRisk.proximity == ProximityBand.FAR || rawRisk.proximity == ProximityBand.MID) {
-            return FeedbackReason.DISTANCE_TOO_FAR
-        }
-        return feedbackDecision?.reason ?: FeedbackReason.NO_FEEDBACK_RISK
     }
 
     private fun hasCameraPermission(): Boolean {
@@ -740,7 +728,8 @@ class MainActivity : ComponentActivity() {
                 detector: TfliteYoloDetector,
                 fps: Float,
                 profile: AlertProfile,
-                feedbackDecision: FeedbackDecision
+                feedbackDecision: FeedbackDecision,
+                sessionSummary: String
             ): UiSnapshot {
                 val risk = stableRisk
                 val levelText = levelText(risk.level)
@@ -767,7 +756,8 @@ class MainActivity : ComponentActivity() {
                     "infer ${detector.lastInferenceMs}ms / post ${detector.lastPostprocessMs}ms\n" +
                     "模型：${detector.statusMessage}\n" +
                     "最近风险判定：原始 ${riskSummaryText(rawRisk)} / 稳定 ${riskSummaryText(stableRisk)}\n" +
-                    "提醒模式：${profile.displayName} / 反馈：${feedbackDecision.reason.displayText}"
+                    "提醒模式：${profile.displayName} / 反馈：${feedbackDecision.reason.displayText}\n" +
+                    sessionSummary
                 return UiSnapshot(
                     title = title,
                     detail = detail,

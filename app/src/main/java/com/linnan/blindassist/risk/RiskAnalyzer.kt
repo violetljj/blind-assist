@@ -124,6 +124,18 @@ class RiskAnalyzer {
     ): String {
         if (level == RiskLevel.NONE) return "未发现风险"
 
+        if (proximity == ProximityBand.CRITICAL && direction == RiskDirection.CENTER) {
+            return "前方很近，放慢"
+        }
+        if (proximity == ProximityBand.NEAR) {
+            return when (direction) {
+                RiskDirection.CENTER -> "前方近处，减速"
+                RiskDirection.LEFT -> "左前方近处，注意避让"
+                RiskDirection.RIGHT -> "右前方近处，注意避让"
+                RiskDirection.NONE -> "注意前方"
+            }
+        }
+
         val objectName = when (label) {
             "person" -> "人"
             "car", "bus", "truck", "motorcycle", "bicycle" -> "车辆"

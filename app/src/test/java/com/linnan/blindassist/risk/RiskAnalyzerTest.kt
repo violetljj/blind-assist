@@ -21,7 +21,7 @@ class RiskAnalyzerTest {
         assertEquals(RiskLevel.HIGH, result.level)
         assertEquals(RiskDirection.CENTER, result.direction)
         assertEquals(ProximityBand.CRITICAL, result.proximity)
-        assertEquals("前方迫近 有人", result.message)
+        assertEquals("前方很近，放慢", result.message)
         assertTrue(result.urgencyScore > 0f)
     }
 
@@ -35,7 +35,7 @@ class RiskAnalyzerTest {
         assertEquals(RiskLevel.MEDIUM, result.level)
         assertEquals(RiskDirection.LEFT, result.direction)
         assertEquals(ProximityBand.NEAR, result.proximity)
-        assertEquals("左前方近处 有车辆", result.message)
+        assertEquals("左前方近处，注意避让", result.message)
     }
 
     @Test
@@ -48,6 +48,20 @@ class RiskAnalyzerTest {
         assertEquals(RiskLevel.HIGH, result.level)
         assertEquals(RiskDirection.CENTER, result.direction)
         assertEquals(ProximityBand.NEAR, result.proximity)
+        assertEquals("前方近处，减速", result.message)
+    }
+
+    @Test
+    fun rightNearTargetUsesGuidanceMessage() {
+        val result = analyzer.analyze(
+            listOf(detection("chair", BoundingBox(740f, 330f, 980f, 720f))),
+            frame
+        )
+
+        assertEquals(RiskLevel.MEDIUM, result.level)
+        assertEquals(RiskDirection.RIGHT, result.direction)
+        assertEquals(ProximityBand.NEAR, result.proximity)
+        assertEquals("右前方近处，注意避让", result.message)
     }
 
     @Test
