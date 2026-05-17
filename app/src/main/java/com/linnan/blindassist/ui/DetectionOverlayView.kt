@@ -3,6 +3,7 @@ package com.linnan.blindassist.ui
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
@@ -43,12 +44,13 @@ class DetectionOverlayView @JvmOverloads constructor(
         style = Paint.Style.FILL
     }
     private val zonePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.argb(72, 255, 214, 10)
+        color = Color.argb(52, 255, 224, 102)
         style = Paint.Style.STROKE
-        strokeWidth = 3f
+        strokeWidth = 2f
+        pathEffect = DashPathEffect(floatArrayOf(18f, 14f), 0f)
     }
     private val zoneFillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.argb(28, 255, 214, 10)
+        color = Color.argb(14, 255, 224, 102)
         style = Paint.Style.FILL
     }
     private val guidePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -56,11 +58,17 @@ class DetectionOverlayView @JvmOverloads constructor(
         style = Paint.Style.STROKE
         strokeWidth = 2f
     }
+    private val zoneLabelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.argb(150, 255, 244, 198)
+        textSize = 24f
+        style = Paint.Style.FILL
+    }
 
     fun setCareMode(enabled: Boolean) {
         careMode = enabled
         textPaint.textSize = if (enabled) 34f else 30f
-        zonePaint.strokeWidth = if (enabled) 5f else 3f
+        zonePaint.strokeWidth = if (enabled) 4f else 2f
+        zoneLabelPaint.textSize = if (enabled) 28f else 24f
         invalidate()
     }
 
@@ -97,13 +105,15 @@ class DetectionOverlayView @JvmOverloads constructor(
             }
 
             boxPaint.color = color
-            boxPaint.strokeWidth = if (isRiskSource) 6f else 3f
+            boxPaint.strokeWidth = if (isRiskSource) 6f else 2f
             canvas.drawRect(rect, boxPaint)
 
             val label = fitLabel("${detection.label} ${(detection.confidence * 100).toInt()}%")
             val labelWidth = min(textPaint.measureText(label) + 20f, width - 16f)
             val labelLeft = rect.left.coerceIn(8f, max(8f, width - labelWidth - 8f))
             val labelTop = (rect.top - 38f).coerceAtLeast(0f)
+            labelBgPaint.alpha = if (isRiskSource) 210 else 120
+            textPaint.alpha = if (isRiskSource) 255 else 190
             canvas.drawRoundRect(
                 RectF(labelLeft, labelTop, labelLeft + labelWidth, labelTop + 38f),
                 8f,
@@ -111,6 +121,8 @@ class DetectionOverlayView @JvmOverloads constructor(
                 labelBgPaint
             )
             canvas.drawText(label, labelLeft + 10f, labelTop + 28f, textPaint)
+            labelBgPaint.alpha = 255
+            textPaint.alpha = 255
         }
     }
 
@@ -125,6 +137,9 @@ class DetectionOverlayView @JvmOverloads constructor(
         }
         canvas.drawRoundRect(zone, 16f, 16f, zoneFillPaint)
         canvas.drawRoundRect(zone, 16f, 16f, zonePaint)
+        val label = "观察参考区"
+        val labelWidth = zoneLabelPaint.measureText(label)
+        canvas.drawText(label, zone.centerX() - labelWidth / 2f, top - 10f, zoneLabelPaint)
     }
 
     private fun fitLabel(label: String): String {
@@ -144,7 +159,7 @@ class DetectionOverlayView @JvmOverloads constructor(
             risk?.level == RiskLevel.HIGH && isRiskSource -> Color.rgb(255, 59, 48)
             risk?.level == RiskLevel.MEDIUM && isRiskSource -> Color.rgb(255, 149, 0)
             risk?.proximity == ProximityBand.MID && isRiskSource -> Color.rgb(255, 214, 10)
-            else -> Color.rgb(52, 199, 89)
+            else -> Color.argb(160, 52, 199, 89)
         }
     }
 

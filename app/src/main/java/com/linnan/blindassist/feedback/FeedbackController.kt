@@ -130,6 +130,7 @@ data class FeedbackDecision(
 
 enum class FeedbackReason(val displayText: String) {
     TRIGGERED("已触发反馈"),
+    HELD_ALERT("提醒保持"),
     DISTANCE_TOO_FAR("距离较远"),
     UNSTABLE_RISK("风险未稳定"),
     COOLDOWN("冷却中"),

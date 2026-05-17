@@ -91,6 +91,43 @@ class AssistEngineTest {
         assertEquals(FeedbackReason.DISTANCE_TOO_FAR, farResult.feedbackDecision.reason)
     }
 
+    @Test
+    fun currentFrameWithoutDetectionsCanReportHeldStableRisk() {
+        val engine = AssistEngine()
+        engine.evaluate(
+            detections = listOf(detection("car", BoundingBox(20f, 330f, 260f, 720f))),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1000L
+        )
+        val confirmed = engine.evaluate(
+            detections = listOf(detection("car", BoundingBox(20f, 330f, 260f, 720f))),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1100L
+        )
+        assertEquals(RiskLevel.MEDIUM, confirmed.stableRisk.level)
+
+        val held = engine.evaluate(
+            detections = emptyList(),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1200L
+        )
+        val result = engine.completeFeedback(
+            held,
+            FeedbackDecision(plan = null, triggered = false, reason = FeedbackReason.NO_FEEDBACK_RISK)
+        )
+
+        assertEquals(0, result.evaluation.detectionCount)
+        assertEquals(RiskLevel.NONE, result.evaluation.rawRisk.level)
+        assertEquals(RiskLevel.MEDIUM, result.evaluation.stableRisk.level)
+        assertEquals(FeedbackReason.HELD_ALERT, result.feedbackDecision.reason)
+    }
+
     private fun detection(
         label: String,
         box: BoundingBox,
@@ -116,4 +153,3 @@ class AssistEngineTest {
         )
     }
 }
-

@@ -31,6 +31,7 @@ import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.feedback.FeedbackDecision
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.preferences.UserPreferences
+import com.linnan.blindassist.session.AssistDisplayFormatter
 import com.linnan.blindassist.session.AssistEngine
 import com.linnan.blindassist.session.DetectorMetrics
 import com.linnan.blindassist.risk.ProximityBand
@@ -540,7 +541,8 @@ class MainActivity : ComponentActivity() {
 
     private fun updateToggleDescription(label: String, button: TextView, enabled: Boolean) {
         val state = if (enabled) "已开启" else "已关闭"
-        button.contentDescription = "$label，$state"
+        val action = if (enabled) "点击关闭" else "点击开启"
+        button.contentDescription = "$label，当前$state，$action"
     }
 
     private fun updateToggleAppearance(button: TextView, label: String, enabled: Boolean) {
@@ -733,29 +735,25 @@ class MainActivity : ComponentActivity() {
             ): UiSnapshot {
                 val risk = stableRisk
                 val levelText = levelText(risk.level)
-                val proximityText = proximityText(risk.proximity)
                 val directionText = directionText(risk.direction)
-                val targetText = risk.sourceDetection?.label ?: "无主要目标"
                 val title = when (risk.level) {
                     RiskLevel.HIGH -> "$levelText：$directionText"
                     RiskLevel.MEDIUM -> "$levelText：$directionText"
                     RiskLevel.LOW -> "$levelText"
                     RiskLevel.NONE -> "安全观察中"
                 }
-                val detail = "$proximityText · ${risk.message}"
-                val targetLine = "目标：$targetText · 共 $count 个 · 紧急度 ${"%.2f".format(risk.urgencyScore)}"
+                val detail = AssistDisplayFormatter.detailFor(risk)
+                val targetLine = AssistDisplayFormatter.targetLine(rawRisk, risk, count)
                 val careTitle = careTitle(risk.level, risk.direction, risk.proximity)
-                val careDetail = careDetail(risk.level, risk.direction, risk.proximity, risk.message)
-                val careTargetLine = if (risk.level == RiskLevel.NONE) {
-                    "没有发现需要立即提醒的障碍"
-                } else {
-                    "主要目标：$targetText"
-                }
+                val careDetail = AssistDisplayFormatter.careDetailFor(risk)
+                val careTargetLine = AssistDisplayFormatter.careTargetLine(rawRisk, risk, count)
+                val targetAccessibility = AssistDisplayFormatter.accessibilityTargetSummary(rawRisk, risk, count)
                 val debug = "FPS：${"%.1f".format(fps)}\n" +
                     "耗时：total ${detector.lastTotalDetectMs}ms / pre ${detector.lastPreprocessMs}ms / " +
                     "infer ${detector.lastInferenceMs}ms / post ${detector.lastPostprocessMs}ms\n" +
                     "模型：${detector.statusMessage}\n" +
                     "最近风险判定：原始 ${riskSummaryText(rawRisk)} / 稳定 ${riskSummaryText(stableRisk)}\n" +
+                    AssistDisplayFormatter.urgencyLine(rawRisk, stableRisk) + "\n" +
                     "提醒模式：${profile.displayName} / 反馈：${feedbackDecision.reason.displayText}\n" +
                     sessionSummary
                 return UiSnapshot(
@@ -770,9 +768,9 @@ class MainActivity : ComponentActivity() {
                     statusBadge = statusBadge(risk.level, risk.proximity),
                     badgeColor = badgeColor(risk.level, risk.proximity),
                     badgeTextColor = badgeTextColor(risk.level, risk.proximity),
-                    careAccessibilitySummary = "$careTitle，$careDetail，$careTargetLine",
-                    accessibilitySummary = "$title，$detail，$targetLine",
-                    accessibilityKey = "${risk.level}-${risk.direction}-${risk.proximity}"
+                    careAccessibilitySummary = "$careTitle，$careDetail，$targetAccessibility",
+                    accessibilitySummary = "$title，$detail，$targetAccessibility",
+                    accessibilityKey = "${risk.level}-${risk.direction}-${risk.proximity}-${rawRisk.level}-$count"
                 )
             }
 

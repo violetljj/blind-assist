@@ -4,6 +4,75 @@
 
 ## 2026-05-18
 
+### 显示可信度小更新 v2.6.0
+
+- 时间：2026-05-18 01:28:20 +08:00
+- 执行者：violjjet
+- 类型：功能 / 修复 / 测试 / 文档 / 构建 / 真机验证
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/session/AssistDisplayFormatter.kt`
+  - `app/src/main/java/com/linnan/blindassist/session/AssistEngine.kt`
+  - `app/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/DetectionOverlayView.kt`
+  - `app/src/test/java/com/linnan/blindassist/session/AssistDisplayFormatterTest.kt`
+  - `app/src/test/java/com/linnan/blindassist/session/AssistEngineTest.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `app/build/outputs/apk/debug/app-debug.apk`
+- 修改内容：
+  - 新增纯 Kotlin `AssistDisplayFormatter`，统一生成目标行、关怀模式目标行、行动化风险详情、关怀模式详情和调试紧急度文本。
+  - 将默认界面的目标行从“目标 + 总数 + 紧急度数值”改为区分当前帧目标数和主要提醒来源；当稳定风险短暂保持但当前帧目标数为 0 时，显示“提醒保持：上一帧 ... · 当前帧 0 个”，避免“person · 共 0 个”的矛盾表达。
+  - 将紧急度数值移入调试信息，并继续显示原始风险、稳定风险、提醒模式、反馈原因和会话摘要。
+  - 增加 `FeedbackReason.HELD_ALERT`，让调试区能解释“当前帧未检测到目标但稳定提醒短暂保持”的状态。
+  - 将高/中/低/无风险详情文案调整为更行动化的提示，Care Mode 使用更短、更明确的提示。
+  - 将中央 overlay 区域改为虚线低透明“观察参考区”，并降低非风险目标框和标签的视觉权重，避免参考区被误解成真实检测框。
+  - 更新开关按钮无障碍描述，加入当前状态和下一步点击动作；风险主标题读屏节流键加入当前帧目标数和原始风险状态。
+  - 将应用版本从 `v2.5.0` 提升到 `v2.6.0`，`versionCode` 从 `9` 提升到 `10`，并同步 README。
+- 修改原因：
+  - 用户根据真机截图指出当前界面需要升级；截图中“中风险：右前”同时显示“目标：person · 共 0 个”会降低对提醒链路的信任。
+  - 本次按“稳妥小更新”范围处理显示可信度、提示表达、overlay 语义和无障碍描述，不改变模型、CameraX 输入链路或核心提醒策略。
+- 验证方式：
+  - 已基于本仓库已知沙箱限制直接提权运行完整验证：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 验证结果：`BUILD SUCCESSFUL in 33s`，共 41 个 actionable tasks，其中 14 个 executed、27 个 up-to-date。
+  - 单元测试结果：共 50 个测试通过，失败 0、错误 0；新增 `AssistDisplayFormatterTest` 覆盖当前目标、提醒保持、无主要目标和行动化文案，新增 `AssistEngineTest` 覆盖当前帧 0 个目标时的稳定提醒保持原因。
+  - APK 已生成：`app/build/outputs/apk/debug/app-debug.apk`，大小 32,263,443 bytes，时间为 2026-05-18 01:27:26 +08:00。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，设备 `R5CX10M8Y8X` 状态为 `device`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=10 minSdk=26 targetSdk=35` 和 `versionName=2.6.0`。
+- 版本判断：
+  - 本次属于小更新，原因是改进用户可见显示、文案、overlay 语义、无障碍描述和测试覆盖，但不改变模型资产、核心检测链路、CameraX 架构或提醒策略。
+  - 按小更新规则，项目版本从 `v2.5.0` 提升到 `v2.6.0`。
+- 后续事项：
+  - 建议在手机上复现类似截图场景，观察短时保持状态是否清楚、中心参考区是否不再像真实检测框、按钮读屏描述是否符合使用预期。
+
+### v2.5.0 真机安装验证
+
+- 时间：2026-05-18 01:10:15 +08:00
+- 执行者：violjjet
+- 类型：测试 / 验证 / 文档
+- 修改范围：
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `app/build/outputs/apk/debug/app-debug.apk`
+- 修改内容：
+  - 使用仓库内 `.\.android-sdk\platform-tools\adb.exe` 检查手机连接状态。
+  - 将已构建的 `v2.5.0` debug APK 安装到连接手机。
+  - 从手机端读取安装后的包信息，确认版本为 `versionName=2.5.0`、`versionCode=9`。
+  - 在 README 的 v2.5.0 更新记录中补充本次真机安装验证结果。
+- 修改原因：
+  - 用户要求“下载到我手机上”，需要把当前 debug APK 安装到真实设备，并记录安装验证结果。
+- 验证方式：
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，设备 `R5CX10M8Y8X` 状态为 `device`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=9 minSdk=26 targetSdk=35` 和 `versionName=2.5.0`。
+- 版本判断：
+  - 本次仅是真机安装和验证记录，不改变功能、构建配置、模型资产或版本号。
+  - 项目版本保持 `v2.5.0`。
+- 后续事项：
+  - 可在手机上打开应用，授予相机权限后进行 5 分钟连续运行观察，记录发热、卡顿、提醒频率和三档提醒差异。
+
 ### 现场可测助行体验 v2.5.0
 
 - 时间：2026-05-18 00:45:00 +08:00

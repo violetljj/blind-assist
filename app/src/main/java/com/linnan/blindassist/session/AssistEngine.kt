@@ -64,6 +64,9 @@ class AssistEngine(
         if (rawRisk.level == RiskLevel.MEDIUM && stableRisk.level == RiskLevel.NONE) {
             return FeedbackReason.UNSTABLE_RISK
         }
+        if (rawRisk.level == RiskLevel.NONE && stableRisk.level != RiskLevel.NONE) {
+            return FeedbackReason.HELD_ALERT
+        }
         if (rawRisk.proximity == ProximityBand.FAR || rawRisk.proximity == ProximityBand.MID) {
             return FeedbackReason.DISTANCE_TOO_FAR
         }
@@ -95,4 +98,3 @@ data class AssistFrameResult(
     val feedbackDecision: FeedbackDecision,
     val sessionSummary: SessionSummary
 )
-
