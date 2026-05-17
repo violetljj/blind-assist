@@ -27,12 +27,14 @@ class RiskStabilizer(
 
     private fun updateMedium(raw: RiskResult, nowMs: Long): RiskResult {
         val key = RiskKey.from(raw)
-        if (pendingKey == key) {
-            pendingFrames += 1
-        } else {
-            pendingKey = key
-            pendingFrames = 1
+        val previousKey = pendingKey
+        pendingFrames = when {
+            previousKey == key -> pendingFrames + 1
+            previousKey != null && previousKey.direction == key.direction &&
+                key.proximity.ordinal > previousKey.proximity.ordinal -> mediumConfirmFrames
+            else -> 1
         }
+        pendingKey = key
 
         if (pendingFrames >= mediumConfirmFrames) {
             return confirm(raw, nowMs)
@@ -65,10 +67,11 @@ class RiskStabilizer(
 
     private data class RiskKey(
         val direction: RiskDirection,
-        val message: String
+        val message: String,
+        val proximity: ProximityBand
     ) {
         companion object {
-            fun from(risk: RiskResult): RiskKey = RiskKey(risk.direction, risk.message)
+            fun from(risk: RiskResult): RiskKey = RiskKey(risk.direction, risk.message, risk.proximity)
         }
     }
 

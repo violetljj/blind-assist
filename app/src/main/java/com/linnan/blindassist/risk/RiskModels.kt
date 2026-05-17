@@ -16,9 +16,18 @@ enum class RiskDirection {
     RIGHT
 }
 
+enum class ProximityBand {
+    FAR,
+    MID,
+    NEAR,
+    CRITICAL
+}
+
 data class RiskResult(
     val level: RiskLevel,
     val direction: RiskDirection,
     val message: String,
-    val sourceDetection: Detection? = null
+    val sourceDetection: Detection? = null,
+    val proximity: ProximityBand = ProximityBand.FAR,
+    val urgencyScore: Float = 0f
 )

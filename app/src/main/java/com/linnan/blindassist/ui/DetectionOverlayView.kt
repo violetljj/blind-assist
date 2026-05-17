@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
+import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import kotlin.math.min
@@ -90,8 +91,10 @@ class DetectionOverlayView @JvmOverloads constructor(
 
     private fun colorFor(isRiskSource: Boolean): Int {
         return when {
+            risk?.proximity == ProximityBand.CRITICAL && isRiskSource -> Color.rgb(255, 45, 85)
             risk?.level == RiskLevel.HIGH && isRiskSource -> Color.rgb(255, 59, 48)
             risk?.level == RiskLevel.MEDIUM && isRiskSource -> Color.rgb(255, 149, 0)
+            risk?.proximity == ProximityBand.MID && isRiskSource -> Color.rgb(255, 214, 10)
             else -> Color.rgb(52, 199, 89)
         }
     }

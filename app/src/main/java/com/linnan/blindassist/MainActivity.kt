@@ -23,7 +23,9 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.model.FrameSize
+import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskAnalyzer
+import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskStabilizer
 import com.linnan.blindassist.ui.DetectionOverlayView
@@ -231,7 +233,11 @@ class MainActivity : ComponentActivity() {
                 overlayView.update(detections, frameSize, stableRisk)
                 statusText.text = statusFor(
                     level = stableRisk.level,
+                    direction = stableRisk.direction,
+                    proximity = stableRisk.proximity,
+                    urgencyScore = stableRisk.urgencyScore,
                     message = stableRisk.message,
+                    targetLabel = stableRisk.sourceDetection?.label,
                     count = detections.size,
                     totalMs = detector.lastTotalDetectMs,
                     preprocessMs = detector.lastPreprocessMs,
@@ -262,7 +268,11 @@ class MainActivity : ComponentActivity() {
 
     private fun statusFor(
         level: RiskLevel,
+        direction: RiskDirection,
+        proximity: ProximityBand,
+        urgencyScore: Float,
         message: String,
+        targetLabel: String?,
         count: Int,
         totalMs: Long,
         preprocessMs: Long,
@@ -277,8 +287,22 @@ class MainActivity : ComponentActivity() {
             RiskLevel.LOW -> "低风险"
             RiskLevel.NONE -> "安全"
         }
+        val directionText = when (direction) {
+            RiskDirection.LEFT -> "左前"
+            RiskDirection.CENTER -> "正前"
+            RiskDirection.RIGHT -> "右前"
+            RiskDirection.NONE -> "无方向"
+        }
+        val proximityText = when (proximity) {
+            ProximityBand.CRITICAL -> "迫近"
+            ProximityBand.NEAR -> "近处"
+            ProximityBand.MID -> "中距"
+            ProximityBand.FAR -> "远处"
+        }
+        val targetText = targetLabel ?: "无目标"
         return (
-            "$prefix · $message · $count 个目标 · total ${totalMs}ms " +
+            "$prefix · $proximityText · $directionText · $targetText · $message · " +
+                "score ${"%.2f".format(urgencyScore)} · $count 个目标 · total ${totalMs}ms " +
                 "(pre ${preprocessMs} / infer ${inferenceMs} / post ${postprocessMs}) · " +
                 "%.1f FPS · $modelStatus"
             ).format(fps)

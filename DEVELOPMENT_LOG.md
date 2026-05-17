@@ -4,6 +4,46 @@
 
 ## 2026-05-17
 
+### 距离化风险提醒大更新
+
+- 时间：2026-05-17 16:07:01 +08:00
+- 执行者：violjjet
+- 类型：功能 / 重构 / 测试 / 文档 / 构建
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/risk/RiskModels.kt`
+  - `app/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt`
+  - `app/src/main/java/com/linnan/blindassist/risk/RiskStabilizer.kt`
+  - `app/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/DetectionOverlayView.kt`
+  - `app/src/test/java/com/linnan/blindassist/risk/RiskAnalyzerTest.kt`
+  - `app/src/test/java/com/linnan/blindassist/risk/RiskStabilizerTest.kt`
+  - `app/src/test/java/com/linnan/blindassist/feedback/FeedbackControllerTest.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 新增 `ProximityBand`，包含 `FAR`、`MID`、`NEAR`、`CRITICAL`，并在 `RiskResult` 中记录相对距离等级和 `urgencyScore`。
+  - 升级 `RiskAnalyzer`，综合检测框底部位置、面积比例、中心偏置、类别权重和置信度计算紧急分数，按相对距离输出分层风险。
+  - 明确不估算真实米数，仅使用远处、中距、近处、迫近等相对等级，避免单目视觉误导。
+  - 调整 `RiskStabilizer`，稳定键纳入相对距离等级；距离升级时可更快确认，短暂丢帧仍保留已确认提醒。
+  - 将 `FeedbackController` 的反馈计划抽为可测试逻辑：`CRITICAL` 使用 850ms 冷却和 420ms 震动，`NEAR` 使用 1500ms 冷却和 160ms 震动，`MID/FAR` 不触发语音或震动。
+  - 状态栏新增距离等级、方向、目标标签和紧急分数；检测框颜色按迫近、近处、中距风险源区分。
+  - 将应用版本从 `v0.2.0` 提升到 `v0.7.0`，`versionCode` 从 `2` 提升到 `3`。
+- 修改原因：
+  - 当前应用已经具备本地检测、风险规则、性能埋点和提醒稳定化能力；下一步核心体验瓶颈是只知道“有风险”，但不能表达相对接近程度。
+  - 本次大更新让提醒从“方向 + 风险等级”升级为“方向 + 距离等级 + 紧急程度 + 分层反馈”，更符合助盲避障原型的使用语义。
+- 验证方式：
+  - 首次在沙箱内运行 `$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest --no-daemon` 失败，错误为 `java.net.SocketException: Permission denied: getsockopt`，原因是 Gradle wrapper 网络访问受限。
+  - 已按权限要求提权重跑单元测试；第一次测试失败 1 个用例，原因是测试误把 `MID` 视觉低风险期望为 `NONE`，与本次规划不一致。
+  - 已修正测试后重新运行同一单元测试命令，结果为 `BUILD SUCCESSFUL in 19s`，共 22 个测试通过。
+- 版本判断：
+  - 本次属于大更新，原因是核心提醒体验和风险结果模型发生明显升级，但未更换模型资产、未引入新架构、未改变构建方式。
+  - 按大更新规则，项目版本从 `v0.2.0` 提升到 `v0.7.0`。
+- 后续事项：
+  - 仍需真机观察 `NEAR` 与 `CRITICAL` 阈值是否适合室内步行场景，重点关注误报、漏报、语音频率和震动强度。
+  - 如真机提醒过于频繁，可继续按类别或方向微调冷却、确认帧数和阈值。
+
 ### 项目执行人命名规则更新
 
 - 时间：2026-05-17 15:43:22 +08:00

@@ -6,6 +6,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.speech.tts.TextToSpeech
+import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
@@ -16,7 +17,7 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
     var vibrationEnabled: Boolean = true
 
     private val appContext = context.applicationContext
-    private val lastAlertAt = mutableMapOf<RiskDirection, Long>()
+    private val lastAlertAt = mutableMapOf<AlertKey, Long>()
     private var ttsReady = false
     private val tts = TextToSpeech(appContext, this)
 
@@ -37,18 +38,19 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
     }
 
     fun notify(risk: RiskResult) {
-        if (risk.level != RiskLevel.HIGH && risk.level != RiskLevel.MEDIUM) return
+        val plan = planFor(risk) ?: return
 
         val now = System.currentTimeMillis()
-        val last = lastAlertAt[risk.direction] ?: 0L
-        if (now - last < ALERT_COOLDOWN_MS) return
-        lastAlertAt[risk.direction] = now
+        val alertKey = AlertKey(risk.direction, risk.proximity)
+        val last = lastAlertAt[alertKey] ?: 0L
+        if (now - last < plan.cooldownMs) return
+        lastAlertAt[alertKey] = now
 
         if (speechEnabled && ttsReady) {
             tts.speak(risk.message, TextToSpeech.QUEUE_FLUSH, null, "risk-${now}")
         }
         if (vibrationEnabled) {
-            vibrate(risk.level)
+            vibrate(plan)
         }
     }
 
@@ -57,20 +59,46 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
         tts.shutdown()
     }
 
-    private fun vibrate(level: RiskLevel) {
+    private fun vibrate(plan: FeedbackPlan) {
         val vib = vibrator ?: return
         if (!vib.hasVibrator()) return
 
-        val duration = if (level == RiskLevel.HIGH) 360L else 140L
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vib.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE))
+            vib.vibrate(VibrationEffect.createOneShot(plan.vibrationMs, plan.amplitude))
         } else {
             @Suppress("DEPRECATION")
-            vib.vibrate(duration)
+            vib.vibrate(plan.vibrationMs)
         }
     }
 
+    private data class AlertKey(
+        val direction: RiskDirection,
+        val proximity: ProximityBand
+    )
+
     companion object {
-        const val ALERT_COOLDOWN_MS = 1500L
+        const val NEAR_ALERT_COOLDOWN_MS = 1500L
+        const val CRITICAL_ALERT_COOLDOWN_MS = 850L
+        const val NEAR_VIBRATION_MS = 160L
+        const val CRITICAL_VIBRATION_MS = 420L
+
+        internal fun planFor(risk: RiskResult): FeedbackPlan? {
+            return when {
+                risk.proximity == ProximityBand.CRITICAL && risk.level == RiskLevel.HIGH -> {
+                    FeedbackPlan(CRITICAL_ALERT_COOLDOWN_MS, CRITICAL_VIBRATION_MS, VibrationEffect.DEFAULT_AMPLITUDE)
+                }
+                risk.proximity == ProximityBand.NEAR &&
+                    (risk.level == RiskLevel.HIGH || risk.level == RiskLevel.MEDIUM) -> {
+                    FeedbackPlan(NEAR_ALERT_COOLDOWN_MS, NEAR_VIBRATION_MS, VibrationEffect.DEFAULT_AMPLITUDE)
+                }
+                else -> null
+            }
+        }
     }
 }
+
+data class FeedbackPlan(
+    val cooldownMs: Long,
+    val vibrationMs: Long,
+    val amplitude: Int
+)
