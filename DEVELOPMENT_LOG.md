@@ -4,6 +4,30 @@
 
 ## 2026-05-17
 
+### 前端关怀模式提交推送与真机安装
+
+- 时间：2026-05-17 18:22:33 +08:00
+- 执行者：violjjet
+- 类型：发布 / 验证 / 安装
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 将“前端与关怀模式大幅升级”相关改动提交到本地 Git，并推送到 GitHub `origin/master`。
+  - 使用仓库内 debug APK 覆盖安装到已连接 Android 手机。
+- 修改原因：
+  - 用户要求提交推送，并下载到手机，需要记录实际提交、推送和安装结果，保持项目开发日志完整。
+- 验证方式：
+  - 已运行 `git status --short`，确认提交前仅 stage 了本次 UI 升级相关 5 个文件，未跟踪文件 `多模态智能助盲系统1.4.pptx` 未纳入提交。
+  - 已提交：`e29b99a Upgrade assistive camera UI`。
+  - 已根据仓库已知 SSH/凭据沙箱限制直接提权运行 `git push origin master`，结果成功：`1082ab3..e29b99a  master -> master`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备 `R5CX10M8Y8X` 状态为 `device`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk`，结果为 `Success`。
+- 版本判断：
+  - 本次属于提交、推送和真机安装记录，不改变应用功能、构建方式、模型资产或重要技术决策，不新增版本号。
+  - 应用版本保持上一条功能更新确定的 `v1.3.0`。
+- 后续事项：
+  - 建议在真机上打开应用，观察关怀模式、底部面板遮挡比例、风险状态动效和语音/震动开关是否符合实际使用预期。
+
 ### 前端与关怀模式大幅升级
 
 - 时间：2026-05-17 18:16:58 +08:00
