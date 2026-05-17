@@ -1,6 +1,7 @@
 package com.linnan.blindassist
 
 import android.Manifest
+import android.content.res.ColorStateList
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -11,6 +12,7 @@ import android.util.Log
 import android.util.Size
 import android.view.Gravity
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.CompoundButton
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -41,9 +43,12 @@ import java.util.concurrent.atomic.AtomicBoolean
 class MainActivity : ComponentActivity() {
     private lateinit var previewView: PreviewView
     private lateinit var overlayView: DetectionOverlayView
+    private lateinit var controlPanel: LinearLayout
+    private lateinit var statusBadgeText: TextView
     private lateinit var riskTitleText: TextView
     private lateinit var riskDetailText: TextView
     private lateinit var targetText: TextView
+    private lateinit var careSwitch: Switch
     private lateinit var debugToggleText: TextView
     private lateinit var debugText: TextView
     private lateinit var detector: TfliteYoloDetector
@@ -59,6 +64,9 @@ class MainActivity : ComponentActivity() {
     private var currentFps = 0f
     private var lastPerfLogAtMs = 0L
     private var debugVisible = false
+    private var careModeEnabled = false
+    private var lastRenderedTitle = ""
+    private var latestSnapshot: UiSnapshot? = null
 
     private val requestCameraPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -97,7 +105,9 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun buildContentView(): View {
-        val root = FrameLayout(this)
+        val root = FrameLayout(this).apply {
+            setBackgroundColor(Color.BLACK)
+        }
 
         previewView = PreviewView(this).apply {
             scaleType = PreviewView.ScaleType.FIT_CENTER
@@ -123,35 +133,72 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun buildControlPanel(): View {
-        val panel = LinearLayout(this).apply {
+        controlPanel = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(18), dp(16), dp(18), dp(18))
-            background = roundedBackground(Color.argb(232, 12, 17, 22), dp(18).toFloat())
+            setPadding(dp(18), dp(14), dp(18), dp(16))
+            background = panelBackground(false)
+            elevation = dp(12).toFloat()
+            alpha = 0f
+            translationY = dp(18).toFloat()
+            animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(260L)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
         }
+
+        val accentBar = View(this).apply {
+            background = roundedBackground(Color.rgb(99, 230, 166), dp(2).toFloat())
+        }
+        controlPanel.addView(
+            accentBar,
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(4)).apply {
+                bottomMargin = dp(12)
+            }
+        )
+
+        controlPanel.addView(buildHeaderRow())
+
+        statusBadgeText = TextView(this).apply {
+            text = "系统准备"
+            textSize = 13f
+            typeface = Typeface.DEFAULT_BOLD
+            setTextColor(Color.rgb(6, 24, 18))
+            gravity = Gravity.CENTER
+            includeFontPadding = false
+            setPadding(dp(12), dp(7), dp(12), dp(7))
+            background = roundedBackground(Color.rgb(160, 255, 215), dp(14).toFloat())
+            contentDescription = "当前状态：系统准备"
+        }
+        controlPanel.addView(
+            statusBadgeText,
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                topMargin = dp(2)
+                bottomMargin = dp(10)
+            }
+        )
 
         riskTitleText = TextView(this).apply {
             setTextColor(Color.WHITE)
-            textSize = 28f
+            textSize = 30f
             typeface = Typeface.DEFAULT_BOLD
             includeFontPadding = false
             gravity = Gravity.CENTER_VERTICAL
             text = "初始化中"
+            letterSpacing = 0f
         }
         riskDetailText = TextView(this).apply {
             setTextColor(Color.rgb(230, 235, 241))
-            textSize = 17f
+            textSize = 18f
             includeFontPadding = true
+            setLineSpacing(0f, 1.08f)
         }
         targetText = TextView(this).apply {
             setTextColor(Color.rgb(183, 195, 207))
-            textSize = 14f
+            textSize = 15f
             includeFontPadding = true
-        }
-
-        val switches = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(0, dp(10), 0, dp(4))
+            setLineSpacing(0f, 1.06f)
         }
 
         val detectSwitch = makeSwitch("检测", true) { _, checked ->
@@ -172,14 +219,23 @@ class MainActivity : ComponentActivity() {
             feedbackController.vibrationEnabled = checked
             updateSwitchDescription("震动提醒", button, checked)
         }
+        careSwitch = makeSwitch("关怀", false) { button, checked ->
+            careModeEnabled = checked
+            updateSwitchDescription("关怀模式", button, checked)
+            applyCareModeUi()
+            renderUi(
+                latestSnapshot ?: if (detectionEnabled) {
+                    UiSnapshot.waiting(detector.statusMessage)
+                } else {
+                    UiSnapshot.paused()
+                }
+            )
+        }
 
         updateSwitchDescription("目标检测", detectSwitch, true)
         updateSwitchDescription("语音提醒", speechSwitch, true)
         updateSwitchDescription("震动提醒", vibrationSwitch, true)
-
-        switches.addView(detectSwitch, switchParams())
-        switches.addView(speechSwitch, switchParams())
-        switches.addView(vibrationSwitch, switchParams())
+        updateSwitchDescription("关怀模式", careSwitch, false)
 
         debugToggleText = TextView(this).apply {
             setTextColor(Color.rgb(214, 224, 235))
@@ -200,13 +256,60 @@ class MainActivity : ComponentActivity() {
             setLineSpacing(0f, 1.08f)
         }
 
-        panel.addView(riskTitleText)
-        panel.addView(riskDetailText)
-        panel.addView(targetText)
-        panel.addView(switches)
-        panel.addView(debugToggleText)
-        panel.addView(debugText)
-        return panel
+        controlPanel.addView(riskTitleText)
+        controlPanel.addView(riskDetailText)
+        controlPanel.addView(targetText)
+        controlPanel.addView(buildControlRows(detectSwitch, speechSwitch, vibrationSwitch, careSwitch))
+        controlPanel.addView(debugToggleText)
+        controlPanel.addView(debugText)
+        return controlPanel
+    }
+
+    private fun buildHeaderRow(): View {
+        val header = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        val brand = TextView(this).apply {
+            text = "BlindAssist"
+            textSize = 14f
+            typeface = Typeface.DEFAULT_BOLD
+            setTextColor(Color.rgb(235, 242, 248))
+            includeFontPadding = false
+            contentDescription = "BlindAssist 实时避障"
+        }
+        val caption = TextView(this).apply {
+            text = "实时避障工作台"
+            textSize = 13f
+            setTextColor(Color.rgb(158, 173, 188))
+            gravity = Gravity.RIGHT
+            includeFontPadding = false
+        }
+        header.addView(brand, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+        header.addView(caption, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+        return header
+    }
+
+    private fun buildControlRows(vararg switches: Switch): View {
+        val container = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(0, dp(12), 0, dp(4))
+        }
+        val firstRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        val secondRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        firstRow.addView(switches[0], switchParams())
+        firstRow.addView(switches[1], switchParams())
+        secondRow.addView(switches[2], switchParams())
+        secondRow.addView(switches[3], switchParams())
+        container.addView(firstRow)
+        container.addView(secondRow)
+        return container
     }
 
     private fun makeSwitch(
@@ -219,8 +322,9 @@ class MainActivity : ComponentActivity() {
             textSize = 15f
             setTextColor(Color.WHITE)
             isChecked = checked
-            minimumHeight = dp(48)
-            setPadding(dp(4), dp(8), dp(4), dp(8))
+            minimumHeight = dp(52)
+            setPadding(dp(6), dp(8), dp(6), dp(8))
+            buttonTintList = switchTint()
             setOnCheckedChangeListener { button, enabled ->
                 updateSwitchDescription(label, button, enabled)
                 listener.onCheckedChanged(button, enabled)
@@ -317,15 +421,38 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun renderUi(snapshot: UiSnapshot) {
-        riskTitleText.text = snapshot.title
+        latestSnapshot = snapshot
+        val title = if (careModeEnabled) snapshot.careTitle else snapshot.title
+        val detail = if (careModeEnabled) snapshot.careDetail else snapshot.detail
+        val targetLine = if (careModeEnabled) snapshot.careTargetLine else snapshot.targetLine
+        animateTitleIfNeeded(title)
+        riskTitleText.text = title
         riskTitleText.setTextColor(snapshot.titleColor)
-        riskDetailText.text = snapshot.detail
-        targetText.text = snapshot.targetLine
-        riskTitleText.contentDescription = snapshot.accessibilitySummary
-        riskDetailText.contentDescription = snapshot.detail
-        targetText.contentDescription = snapshot.targetLine
+        riskDetailText.text = detail
+        targetText.text = targetLine
+        riskTitleText.contentDescription = if (careModeEnabled) snapshot.careAccessibilitySummary else snapshot.accessibilitySummary
+        riskDetailText.contentDescription = detail
+        targetText.contentDescription = targetLine
+        statusBadgeText.text = snapshot.statusBadge
+        statusBadgeText.setTextColor(snapshot.badgeTextColor)
+        statusBadgeText.background = roundedBackground(snapshot.badgeColor, dp(14).toFloat())
+        statusBadgeText.contentDescription = "当前状态：${snapshot.statusBadge}"
         debugText.text = snapshot.debugText
         updateDebugVisibility()
+    }
+
+    private fun animateTitleIfNeeded(title: String) {
+        if (lastRenderedTitle == title) return
+        lastRenderedTitle = title
+        riskTitleText.animate().cancel()
+        riskTitleText.alpha = 0.7f
+        riskTitleText.translationY = dp(4).toFloat()
+        riskTitleText.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .setDuration(180L)
+            .setInterpolator(DecelerateInterpolator())
+            .start()
     }
 
     private fun updateDebugVisibility() {
@@ -339,11 +466,46 @@ class MainActivity : ComponentActivity() {
         button.contentDescription = "$label，$state"
     }
 
+    private fun applyCareModeUi() {
+        controlPanel.background = panelBackground(careModeEnabled)
+        overlayView.setCareMode(careModeEnabled)
+        val titleSize = if (careModeEnabled) 34f else 30f
+        val detailSize = if (careModeEnabled) 20f else 18f
+        val targetSize = if (careModeEnabled) 17f else 15f
+        riskTitleText.textSize = titleSize
+        riskDetailText.textSize = detailSize
+        targetText.textSize = targetSize
+        debugToggleText.visibility = if (careModeEnabled) View.GONE else View.VISIBLE
+        debugVisible = if (careModeEnabled) false else debugVisible
+        updateDebugVisibility()
+    }
+
+    private fun panelBackground(careMode: Boolean): GradientDrawable {
+        val colors = if (careMode) {
+            intArrayOf(Color.argb(246, 5, 8, 10), Color.argb(246, 16, 23, 28))
+        } else {
+            intArrayOf(Color.argb(236, 11, 16, 21), Color.argb(232, 20, 28, 36))
+        }
+        return GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors).apply {
+            cornerRadius = dp(22).toFloat()
+            setStroke(dp(1), if (careMode) Color.rgb(255, 224, 102) else Color.argb(130, 105, 128, 148))
+        }
+    }
+
     private fun roundedBackground(color: Int, radius: Float): GradientDrawable {
         return GradientDrawable().apply {
             setColor(color)
             cornerRadius = radius
         }
+    }
+
+    private fun switchTint(): ColorStateList {
+        val states = arrayOf(
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_checked)
+        )
+        val colors = intArrayOf(Color.rgb(99, 230, 166), Color.rgb(137, 151, 163))
+        return ColorStateList(states, colors)
     }
 
     private fun logPerformanceIfNeeded(count: Int, frameSize: FrameSize, fps: Float) {
@@ -376,8 +538,15 @@ class MainActivity : ComponentActivity() {
         val title: String,
         val detail: String,
         val targetLine: String,
+        val careTitle: String,
+        val careDetail: String,
+        val careTargetLine: String,
         val debugText: String,
         val titleColor: Int,
+        val statusBadge: String,
+        val badgeColor: Int,
+        val badgeTextColor: Int,
+        val careAccessibilitySummary: String,
         val accessibilitySummary: String
     ) {
         companion object {
@@ -386,8 +555,15 @@ class MainActivity : ComponentActivity() {
                     title = "初始化中",
                     detail = "正在准备相机和本地检测模型",
                     targetLine = "模型状态：$modelStatus",
+                    careTitle = "正在准备",
+                    careDetail = "相机和识别模型正在启动，请稍等",
+                    careTargetLine = "准备完成后会自动开始观察前方",
                     debugText = "模型状态：$modelStatus",
                     titleColor = Color.WHITE,
+                    statusBadge = "准备中",
+                    badgeColor = Color.rgb(206, 221, 235),
+                    badgeTextColor = Color.rgb(10, 22, 32),
+                    careAccessibilitySummary = "正在准备，相机和识别模型正在启动",
                     accessibilitySummary = "初始化中，正在准备相机和本地检测模型"
                 )
             }
@@ -397,8 +573,15 @@ class MainActivity : ComponentActivity() {
                     title = "检测已开启",
                     detail = "等待实时画面和稳定风险结果",
                     targetLine = "模型状态：$modelStatus",
+                    careTitle = "正在观察",
+                    careDetail = "请自然前进，系统会在前方有风险时提醒",
+                    careTargetLine = "建议同时保留语音和震动提醒",
                     debugText = "模型状态：$modelStatus",
                     titleColor = Color.WHITE,
+                    statusBadge = "观察中",
+                    badgeColor = Color.rgb(160, 255, 215),
+                    badgeTextColor = Color.rgb(6, 24, 18),
+                    careAccessibilitySummary = "正在观察，请自然前进，系统会在前方有风险时提醒",
                     accessibilitySummary = "检测已开启，等待实时画面和稳定风险结果"
                 )
             }
@@ -408,8 +591,15 @@ class MainActivity : ComponentActivity() {
                     title = "检测已暂停",
                     detail = "画面保留预览，目标框和风险提醒已清空",
                     targetLine = "可随时重新开启检测",
+                    careTitle = "已暂停",
+                    careDetail = "当前不会识别目标，也不会发出提醒",
+                    careTargetLine = "打开检测后恢复观察",
                     debugText = "检测关闭：不运行目标检测，不触发语音或震动提醒",
                     titleColor = Color.rgb(214, 224, 235),
+                    statusBadge = "已暂停",
+                    badgeColor = Color.rgb(198, 210, 222),
+                    badgeTextColor = Color.rgb(12, 22, 30),
+                    careAccessibilitySummary = "检测已暂停，当前不会识别目标，也不会发出提醒",
                     accessibilitySummary = "检测已暂停，目标框和风险提醒已清空"
                 )
             }
@@ -419,8 +609,15 @@ class MainActivity : ComponentActivity() {
                     title = "需要相机权限",
                     detail = "请授予相机权限后再使用实时避障提醒",
                     targetLine = "当前无法启动 CameraX 预览和检测",
+                    careTitle = "需要权限",
+                    careDetail = "请允许相机权限，系统才能观察前方",
+                    careTargetLine = "授权后会自动启动实时预览",
                     debugText = "权限状态：CAMERA denied",
                     titleColor = Color.rgb(255, 149, 0),
+                    statusBadge = "需处理",
+                    badgeColor = Color.rgb(255, 210, 125),
+                    badgeTextColor = Color.rgb(44, 25, 0),
+                    careAccessibilitySummary = "需要相机权限，请允许相机权限，系统才能观察前方",
                     accessibilitySummary = "需要相机权限，请授予相机权限后再使用实时避障提醒"
                 )
             }
@@ -443,6 +640,13 @@ class MainActivity : ComponentActivity() {
                 }
                 val detail = "$proximityText · ${risk.message}"
                 val targetLine = "目标：$targetText · 共 $count 个 · 紧急度 ${"%.2f".format(risk.urgencyScore)}"
+                val careTitle = careTitle(risk.level, risk.direction, risk.proximity)
+                val careDetail = careDetail(risk.level, risk.direction, risk.proximity, risk.message)
+                val careTargetLine = if (risk.level == RiskLevel.NONE) {
+                    "没有发现需要立即提醒的障碍"
+                } else {
+                    "主要目标：$targetText"
+                }
                 val debug = "FPS：${"%.1f".format(fps)}\n" +
                     "耗时：total ${detector.lastTotalDetectMs}ms / pre ${detector.lastPreprocessMs}ms / " +
                     "infer ${detector.lastInferenceMs}ms / post ${detector.lastPostprocessMs}ms\n" +
@@ -451,8 +655,15 @@ class MainActivity : ComponentActivity() {
                     title = title,
                     detail = detail,
                     targetLine = targetLine,
+                    careTitle = careTitle,
+                    careDetail = careDetail,
+                    careTargetLine = careTargetLine,
                     debugText = debug,
                     titleColor = colorForLevel(risk.level, risk.proximity),
+                    statusBadge = statusBadge(risk.level, risk.proximity),
+                    badgeColor = badgeColor(risk.level, risk.proximity),
+                    badgeTextColor = badgeTextColor(risk.level, risk.proximity),
+                    careAccessibilitySummary = "$careTitle，$careDetail，$careTargetLine",
                     accessibilitySummary = "$title，$detail，$targetLine"
                 )
             }
@@ -481,6 +692,63 @@ class MainActivity : ComponentActivity() {
                     ProximityBand.NEAR -> "近处"
                     ProximityBand.MID -> "中距"
                     ProximityBand.FAR -> "远处"
+                }
+            }
+
+            private fun careTitle(
+                level: RiskLevel,
+                direction: RiskDirection,
+                proximity: ProximityBand
+            ): String {
+                return when {
+                    proximity == ProximityBand.CRITICAL -> "立刻注意：${directionText(direction)}"
+                    level == RiskLevel.HIGH -> "前方有风险：${directionText(direction)}"
+                    level == RiskLevel.MEDIUM -> "请留意：${directionText(direction)}"
+                    level == RiskLevel.LOW -> "保持观察"
+                    else -> "前方平稳"
+                }
+            }
+
+            private fun careDetail(
+                level: RiskLevel,
+                direction: RiskDirection,
+                proximity: ProximityBand,
+                message: String
+            ): String {
+                return when {
+                    proximity == ProximityBand.CRITICAL -> "障碍可能已经很近，请放慢并确认环境"
+                    level == RiskLevel.HIGH -> "建议减速，先确认${directionText(direction)}方向"
+                    level == RiskLevel.MEDIUM -> "前方有目标，请继续谨慎观察"
+                    level == RiskLevel.LOW -> "发现远处或中距目标，暂不触发强提醒"
+                    else -> message
+                }
+            }
+
+            private fun statusBadge(level: RiskLevel, proximity: ProximityBand): String {
+                return when {
+                    proximity == ProximityBand.CRITICAL -> "迫近提醒"
+                    level == RiskLevel.HIGH -> "高风险"
+                    level == RiskLevel.MEDIUM -> "需留意"
+                    level == RiskLevel.LOW -> "观察"
+                    else -> "平稳"
+                }
+            }
+
+            private fun badgeColor(level: RiskLevel, proximity: ProximityBand): Int {
+                return when {
+                    proximity == ProximityBand.CRITICAL -> Color.rgb(255, 99, 119)
+                    level == RiskLevel.HIGH -> Color.rgb(255, 132, 105)
+                    level == RiskLevel.MEDIUM -> Color.rgb(255, 205, 112)
+                    level == RiskLevel.LOW -> Color.rgb(239, 226, 133)
+                    else -> Color.rgb(160, 255, 215)
+                }
+            }
+
+            private fun badgeTextColor(level: RiskLevel, proximity: ProximityBand): Int {
+                return if (proximity == ProximityBand.CRITICAL || level == RiskLevel.HIGH) {
+                    Color.WHITE
+                } else {
+                    Color.rgb(15, 24, 18)
                 }
             }
 

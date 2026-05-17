@@ -22,6 +22,7 @@ class DetectionOverlayView @JvmOverloads constructor(
     private var detections: List<Detection> = emptyList()
     private var frameSize: FrameSize? = null
     private var risk: RiskResult? = null
+    private var careMode = false
 
     private val boxPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
@@ -49,6 +50,18 @@ class DetectionOverlayView @JvmOverloads constructor(
     private val zoneFillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.argb(28, 255, 214, 10)
         style = Paint.Style.FILL
+    }
+    private val guidePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.argb(80, 255, 255, 255)
+        style = Paint.Style.STROKE
+        strokeWidth = 2f
+    }
+
+    fun setCareMode(enabled: Boolean) {
+        careMode = enabled
+        textPaint.textSize = if (enabled) 34f else 30f
+        zonePaint.strokeWidth = if (enabled) 5f else 3f
+        invalidate()
     }
 
     fun update(
@@ -107,6 +120,9 @@ class DetectionOverlayView @JvmOverloads constructor(
         val top = height * 0.35f
         val bottom = height * 0.98f
         val zone = RectF(left, top, right, bottom)
+        if (careMode) {
+            canvas.drawLine(width * 0.5f, height * 0.28f, width * 0.5f, height * 0.98f, guidePaint)
+        }
         canvas.drawRoundRect(zone, 16f, 16f, zoneFillPaint)
         canvas.drawRoundRect(zone, 16f, 16f, zonePaint)
     }

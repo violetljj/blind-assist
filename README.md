@@ -4,7 +4,7 @@
 
 ## Version
 
-- Current project version: `v0.8.0`
+- Current project version: `v1.3.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,6 +12,7 @@
 
 ## Recent Updates
 
+- 2026-05-17: Redesigned the real-time camera interface as a calmer assistive workspace. The screen now includes a brand/status header, risk badge, two-row control area, smoother status transitions, and a Care Mode that enlarges key guidance, increases contrast, hides developer debug details, and adds a center guide in the overlay. The app version is now `v1.3.0`.
 - 2026-05-17: Upgraded the real-time front-end interaction layer. The camera screen now separates the main risk status, control switches, and collapsible debug details, improves accessibility text for detection/speech/vibration switches, and makes the overlay risk source easier to distinguish. The app version is now `v0.8.0`.
 - 2026-05-17: Added proximity-aware risk reminders. Risk analysis now reports relative proximity bands (`FAR`, `MID`, `NEAR`, `CRITICAL`) and an urgency score, allowing the app to distinguish visual-only mid/far detections from near and critical alerts. The app version is now `v0.7.0`.
 - 2026-05-17: Added risk reminder stabilization after the rule-based analyzer. HIGH risks are confirmed immediately, MEDIUM risks require two matching frames, and confirmed alerts are briefly held across short missed detections. The app version is now `v0.2.0`.
@@ -21,8 +22,11 @@
 
 The main camera screen keeps the full-screen preview as the primary surface and uses a compact bottom panel for interaction:
 
+- The panel follows a camera/navigation-app style hierarchy: product identity, current state badge, large risk instruction, supporting detail, then controls.
+- Status changes use a short restrained transition so risk updates feel responsive without distracting from the camera preview.
 - The main risk area shows the current risk level, relative proximity band, direction, primary target, target count, and urgency score.
-- Detection, speech, and vibration can be toggled independently. Disabling detection clears the overlay and stops risk feedback while keeping the camera preview visible.
+- Detection, speech, vibration, and Care Mode can be toggled independently. Disabling detection clears the overlay and stops risk feedback while keeping the camera preview visible.
+- Care Mode enlarges the main instruction, simplifies the supporting copy, increases panel contrast, hides debug details, and adds a center guide line to support lower-vision or high-stress use.
 - Debug information is collapsed by default. Expanding it shows FPS, total/preprocess/inference/postprocess timing, and model status.
 - Overlay boxes use stronger highlighting for the current risk source and quieter styling for other detected objects.
 

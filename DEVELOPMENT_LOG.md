@@ -4,6 +4,41 @@
 
 ## 2026-05-17
 
+### 前端与关怀模式大幅升级
+
+- 时间：2026-05-17 18:16:58 +08:00
+- 执行者：violjjet
+- 类型：功能 / 交互 / 无障碍 / 文档 / 构建
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/DetectionOverlayView.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 保留原生 Android View 架构，参考相机、导航和实时工具类 App 的思路，把底部区域升级为“品牌/场景说明 + 状态徽标 + 主风险指令 + 辅助说明 + 两行控制区”的实时工作台。
+  - 新增 `关怀` 开关：开启后主指令、说明和目标行字号增大，面板对比度提高，开发调试入口隐藏，并在 overlay 中显示中心引导线。
+  - 将检测、语音、震动、关怀四个开关拆成两行布局，减轻横向拥挤，保留 52dp 最小触达高度和 TalkBack 状态描述。
+  - 新增状态徽标，按平稳、观察、需留意、高风险、迫近提醒等状态动态调整颜色和读屏说明。
+  - 为主标题变化加入 180ms 的轻量进入动效，为面板初次出现加入 260ms 的上滑淡入动效，让界面反馈更流畅但不干扰摄像头预览。
+  - 优化关怀模式下的文案：使用更直接的行动建议，例如“立刻注意：正前”“建议减速，先确认左前方向”，避免把原型表述成可替代人工判断的安全设备。
+  - 将应用版本从 `v0.8.0` 提升到 `v1.3.0`，`versionCode` 从 `4` 提升到 `5`，并在 README 同步记录界面行为。
+- 修改原因：
+  - 用户要求大幅优化前端和交互界面，目标是精美、流畅、易用，并加入关怀模式；当前界面虽然已有基础分层，但仍偏调试工具，缺少面向助盲使用场景的情绪稳定感、清晰行动指令和弱视/紧张场景下的可读性。
+  - 本次更新把优秀 App 常见的清晰层级、少而明确的状态、克制动效、单手可触达控制和高对比辅助模式落到当前原生 Android 实现中，同时不改 CameraX、TFLite、风险算法、语音和震动反馈策略。
+- 验证方式：
+  - 已运行 `git status --short`，确认存在既有未跟踪文件 `多模态智能助盲系统1.4.pptx`，本次未处理该文件。
+  - 根据仓库已知沙箱限制，已直接提权运行完整 Gradle 验证：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 验证结果：`BUILD SUCCESSFUL in 38s`，共 41 个 actionable tasks，其中 14 个 executed、27 个 up-to-date。
+  - 编译期间仅保留既有 CameraX `ImageAnalysis.Builder.setTargetResolution(Size)` deprecated warning，本次未调整分析分辨率策略。
+  - APK 已生成：`app/build/outputs/apk/debug/app-debug.apk`，大小约 32.2 MB。
+- 版本判断：
+  - 本次属于大更新，原因是实时前端形态、交互层级、关怀模式和可访问性体验发生明显升级，但未改变核心检测能力、模型资产、风险算法、反馈策略或整体架构。
+  - 按大更新规则，项目版本从 `v0.8.0` 提升到 `v1.3.0`。
+- 后续事项：
+  - 建议真机观察关怀模式下底部面板在不同屏幕尺寸、横竖屏和强光/弱光摄像头画面上的遮挡比例与可读性。
+  - 后续如继续打磨，可考虑增加用户偏好持久化，让关怀模式、语音和震动开关在下次启动时保持上次选择。
+
 ### 直接提权执行已知失败命令规范收紧
 
 - 时间：2026-05-17 17:03:40 +08:00
