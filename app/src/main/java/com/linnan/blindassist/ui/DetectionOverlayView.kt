@@ -80,7 +80,7 @@ class DetectionOverlayView @JvmOverloads constructor(
         drawDangerZone(canvas)
 
         val sourceSize = frameSize ?: return
-        val transform = fitCenterTransform(sourceSize)
+        val transform = fillCenterTransform(sourceSize)
         val riskDetection = risk?.sourceDetection
 
         detections.forEach { detection ->
@@ -148,8 +148,8 @@ class DetectionOverlayView @JvmOverloads constructor(
         }
     }
 
-    private fun fitCenterTransform(sourceSize: FrameSize): ViewTransform {
-        val scale = min(
+    private fun fillCenterTransform(sourceSize: FrameSize): ViewTransform {
+        val scale = max(
             width.toFloat() / sourceSize.width.toFloat(),
             height.toFloat() / sourceSize.height.toFloat()
         )

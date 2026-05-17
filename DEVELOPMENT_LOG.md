@@ -4,6 +4,39 @@
 
 ## 2026-05-17
 
+### 真机截图反馈后的界面收敛
+
+- 时间：2026-05-17 18:35:42 +08:00
+- 执行者：violjjet
+- 类型：交互 / 无障碍 / 文档 / 构建
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/DetectionOverlayView.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 根据用户提供的真机截图，发现当前竖屏预览因为 `PreviewView.ScaleType.FIT_CENTER` 保留完整 4:3 画面，导致顶部出现大面积黑边。
+  - 将相机预览改为 `PreviewView.ScaleType.FILL_CENTER`，让摄像头画面铺满屏幕，提升相机类 App 的沉浸感。
+  - 将 `DetectionOverlayView` 的坐标映射从 fit-center 同步改为 fill-center，确保检测框、风险区和关怀模式中心引导线与裁切后的预览保持一致。
+  - 将底部控制区从系统 `Switch` 改为自绘高对比文字模式按钮，保持 48dp 触达高度，同时降低面板高度和系统设置页观感。
+  - 收紧底部面板内边距、标题字号和控制区间距，让相机画面露出更多，降低对真实环境的遮挡。
+  - 将应用版本从 `v1.3.0` 提升到 `v1.4.0`，`versionCode` 从 `5` 提升到 `6`，并在 README 同步记录界面行为。
+- 修改原因：
+  - 真机截图显示当前界面虽然层级清楚，但顶部黑边削弱了实时相机体验，底部系统开关占用空间偏大，整体仍显得厚重。
+  - 本次按“更沉浸、更轻、更像实时辅助工具”的方向修正，不改变 CameraX 分析分辨率、TFLite 模型、风险算法、语音或震动反馈策略。
+- 验证方式：
+  - 已运行完整 Gradle 验证：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 验证结果：`BUILD SUCCESSFUL in 22s`，共 41 个 actionable tasks，其中 7 个 executed、34 个 up-to-date。
+  - APK 已生成：`app/build/outputs/apk/debug/app-debug.apk`，大小约 32.3 MB。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备 `R5CX10M8Y8X` 状态为 `device`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk` 覆盖安装新版 APK，结果为 `Success`。
+- 版本判断：
+  - 本次属于小更新，原因是针对真机截图反馈优化前端呈现、overlay 坐标映射和控制区交互，但未改变核心检测能力、模型资产、风险算法、反馈策略或架构。
+  - 按小更新规则，项目版本从 `v1.3.0` 提升到 `v1.4.0`。
+- 后续事项：
+  - 建议重新安装到真机后观察全屏裁切是否符合实际使用预期；如需要保留更多画面边缘信息，可后续增加“完整预览/沉浸预览”切换。
+
 ### 前端关怀模式提交推送与真机安装
 
 - 时间：2026-05-17 18:22:33 +08:00

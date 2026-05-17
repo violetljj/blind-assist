@@ -1,7 +1,6 @@
 package com.linnan.blindassist
 
 import android.Manifest
-import android.content.res.ColorStateList
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -13,10 +12,8 @@ import android.util.Size
 import android.view.Gravity
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import android.widget.CompoundButton
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,7 +45,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var riskTitleText: TextView
     private lateinit var riskDetailText: TextView
     private lateinit var targetText: TextView
-    private lateinit var careSwitch: Switch
+    private lateinit var careToggle: TextView
     private lateinit var debugToggleText: TextView
     private lateinit var debugText: TextView
     private lateinit var detector: TfliteYoloDetector
@@ -110,7 +107,7 @@ class MainActivity : ComponentActivity() {
         }
 
         previewView = PreviewView(this).apply {
-            scaleType = PreviewView.ScaleType.FIT_CENTER
+            scaleType = PreviewView.ScaleType.FILL_CENTER
         }
         overlayView = DetectionOverlayView(this)
 
@@ -135,7 +132,7 @@ class MainActivity : ComponentActivity() {
     private fun buildControlPanel(): View {
         controlPanel = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(18), dp(14), dp(18), dp(16))
+            setPadding(dp(16), dp(12), dp(16), dp(14))
             background = panelBackground(false)
             elevation = dp(12).toFloat()
             alpha = 0f
@@ -153,8 +150,8 @@ class MainActivity : ComponentActivity() {
         }
         controlPanel.addView(
             accentBar,
-            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(4)).apply {
-                bottomMargin = dp(12)
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(3)).apply {
+                bottomMargin = dp(9)
             }
         )
 
@@ -175,13 +172,13 @@ class MainActivity : ComponentActivity() {
             statusBadgeText,
             LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 topMargin = dp(2)
-                bottomMargin = dp(10)
+                bottomMargin = dp(8)
             }
         )
 
         riskTitleText = TextView(this).apply {
             setTextColor(Color.WHITE)
-            textSize = 30f
+            textSize = 27f
             typeface = Typeface.DEFAULT_BOLD
             includeFontPadding = false
             gravity = Gravity.CENTER_VERTICAL
@@ -190,18 +187,18 @@ class MainActivity : ComponentActivity() {
         }
         riskDetailText = TextView(this).apply {
             setTextColor(Color.rgb(230, 235, 241))
-            textSize = 18f
+            textSize = 16f
             includeFontPadding = true
             setLineSpacing(0f, 1.08f)
         }
         targetText = TextView(this).apply {
             setTextColor(Color.rgb(183, 195, 207))
-            textSize = 15f
+            textSize = 14f
             includeFontPadding = true
             setLineSpacing(0f, 1.06f)
         }
 
-        val detectSwitch = makeSwitch("检测", true) { _, checked ->
+        val detectToggle = makeToggle("检测", true) { _, checked ->
             detectionEnabled = checked
             if (!checked) {
                 riskStabilizer.reset()
@@ -211,17 +208,17 @@ class MainActivity : ComponentActivity() {
                 renderUi(UiSnapshot.waiting(detector.statusMessage))
             }
         }
-        val speechSwitch = makeSwitch("语音", true) { button, checked ->
+        val speechToggle = makeToggle("语音", true) { button, checked ->
             feedbackController.speechEnabled = checked
-            updateSwitchDescription("语音提醒", button, checked)
+            updateToggleDescription("语音提醒", button, checked)
         }
-        val vibrationSwitch = makeSwitch("震动", true) { button, checked ->
+        val vibrationToggle = makeToggle("震动", true) { button, checked ->
             feedbackController.vibrationEnabled = checked
-            updateSwitchDescription("震动提醒", button, checked)
+            updateToggleDescription("震动提醒", button, checked)
         }
-        careSwitch = makeSwitch("关怀", false) { button, checked ->
+        careToggle = makeToggle("关怀", false) { button, checked ->
             careModeEnabled = checked
-            updateSwitchDescription("关怀模式", button, checked)
+            updateToggleDescription("关怀模式", button, checked)
             applyCareModeUi()
             renderUi(
                 latestSnapshot ?: if (detectionEnabled) {
@@ -232,10 +229,10 @@ class MainActivity : ComponentActivity() {
             )
         }
 
-        updateSwitchDescription("目标检测", detectSwitch, true)
-        updateSwitchDescription("语音提醒", speechSwitch, true)
-        updateSwitchDescription("震动提醒", vibrationSwitch, true)
-        updateSwitchDescription("关怀模式", careSwitch, false)
+        updateToggleDescription("目标检测", detectToggle, true)
+        updateToggleDescription("语音提醒", speechToggle, true)
+        updateToggleDescription("震动提醒", vibrationToggle, true)
+        updateToggleDescription("关怀模式", careToggle, false)
 
         debugToggleText = TextView(this).apply {
             setTextColor(Color.rgb(214, 224, 235))
@@ -259,7 +256,7 @@ class MainActivity : ComponentActivity() {
         controlPanel.addView(riskTitleText)
         controlPanel.addView(riskDetailText)
         controlPanel.addView(targetText)
-        controlPanel.addView(buildControlRows(detectSwitch, speechSwitch, vibrationSwitch, careSwitch))
+        controlPanel.addView(buildControlRow(detectToggle, speechToggle, vibrationToggle, careToggle))
         controlPanel.addView(debugToggleText)
         controlPanel.addView(debugText)
         return controlPanel
@@ -290,50 +287,45 @@ class MainActivity : ComponentActivity() {
         return header
     }
 
-    private fun buildControlRows(vararg switches: Switch): View {
-        val container = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(0, dp(12), 0, dp(4))
-        }
-        val firstRow = LinearLayout(this).apply {
+    private fun buildControlRow(vararg toggles: TextView): View {
+        return LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
-        }
-        val secondRow = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-        }
-        firstRow.addView(switches[0], switchParams())
-        firstRow.addView(switches[1], switchParams())
-        secondRow.addView(switches[2], switchParams())
-        secondRow.addView(switches[3], switchParams())
-        container.addView(firstRow)
-        container.addView(secondRow)
-        return container
-    }
-
-    private fun makeSwitch(
-        label: String,
-        checked: Boolean,
-        listener: CompoundButton.OnCheckedChangeListener
-    ): Switch {
-        return Switch(this).apply {
-            text = label
-            textSize = 15f
-            setTextColor(Color.WHITE)
-            isChecked = checked
-            minimumHeight = dp(52)
-            setPadding(dp(6), dp(8), dp(6), dp(8))
-            buttonTintList = switchTint()
-            setOnCheckedChangeListener { button, enabled ->
-                updateSwitchDescription(label, button, enabled)
-                listener.onCheckedChanged(button, enabled)
+            setPadding(0, dp(10), 0, dp(2))
+            toggles.forEachIndexed { index, toggle ->
+                addView(toggle, toggleParams(index == toggles.lastIndex))
             }
         }
     }
 
-    private fun switchParams(): LinearLayout.LayoutParams {
-        return LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+    private fun makeToggle(
+        label: String,
+        checked: Boolean,
+        listener: (TextView, Boolean) -> Unit
+    ): TextView {
+        return TextView(this).apply {
+            tag = checked
+            textSize = 14f
+            typeface = Typeface.DEFAULT_BOLD
+            gravity = Gravity.CENTER
+            includeFontPadding = false
+            minimumHeight = dp(48)
+            setPadding(dp(8), 0, dp(8), 0)
+            updateToggleAppearance(this, label, checked)
+            setOnClickListener {
+                val enabled = !(tag as Boolean)
+                tag = enabled
+                updateToggleAppearance(this, label, enabled)
+                updateToggleDescription(label, this, enabled)
+                listener(this, enabled)
+            }
+        }
+    }
+
+    private fun toggleParams(isLast: Boolean): LinearLayout.LayoutParams {
+        return LinearLayout.LayoutParams(0, dp(48), 1f).apply {
+            if (!isLast) rightMargin = dp(8)
+        }
     }
 
     private fun bottomPanelParams(): FrameLayout.LayoutParams {
@@ -461,17 +453,27 @@ class MainActivity : ComponentActivity() {
         debugToggleText.contentDescription = if (debugVisible) "收起调试信息" else "展开调试信息"
     }
 
-    private fun updateSwitchDescription(label: String, button: CompoundButton, enabled: Boolean) {
+    private fun updateToggleDescription(label: String, button: TextView, enabled: Boolean) {
         val state = if (enabled) "已开启" else "已关闭"
         button.contentDescription = "$label，$state"
+    }
+
+    private fun updateToggleAppearance(button: TextView, label: String, enabled: Boolean) {
+        val state = if (enabled) "开" else "关"
+        button.text = "$label $state"
+        button.setTextColor(if (enabled) Color.rgb(5, 31, 25) else Color.rgb(226, 232, 238))
+        button.background = roundedBackground(
+            if (enabled) Color.rgb(128, 244, 198) else Color.argb(118, 52, 64, 74),
+            dp(14).toFloat()
+        )
     }
 
     private fun applyCareModeUi() {
         controlPanel.background = panelBackground(careModeEnabled)
         overlayView.setCareMode(careModeEnabled)
-        val titleSize = if (careModeEnabled) 34f else 30f
-        val detailSize = if (careModeEnabled) 20f else 18f
-        val targetSize = if (careModeEnabled) 17f else 15f
+        val titleSize = if (careModeEnabled) 31f else 27f
+        val detailSize = if (careModeEnabled) 18f else 16f
+        val targetSize = if (careModeEnabled) 15f else 14f
         riskTitleText.textSize = titleSize
         riskDetailText.textSize = detailSize
         targetText.textSize = targetSize
@@ -497,15 +499,6 @@ class MainActivity : ComponentActivity() {
             setColor(color)
             cornerRadius = radius
         }
-    }
-
-    private fun switchTint(): ColorStateList {
-        val states = arrayOf(
-            intArrayOf(android.R.attr.state_checked),
-            intArrayOf(-android.R.attr.state_checked)
-        )
-        val colors = intArrayOf(Color.rgb(99, 230, 166), Color.rgb(137, 151, 163))
-        return ColorStateList(states, colors)
     }
 
     private fun logPerformanceIfNeeded(count: Int, frameSize: FrameSize, fps: Float) {
