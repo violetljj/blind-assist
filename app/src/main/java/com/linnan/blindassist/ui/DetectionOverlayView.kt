@@ -12,6 +12,7 @@ import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
+import kotlin.math.max
 import kotlin.math.min
 
 class DetectionOverlayView @JvmOverloads constructor(
@@ -24,11 +25,16 @@ class DetectionOverlayView @JvmOverloads constructor(
 
     private val boxPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = 4f
+        strokeWidth = 3f
+    }
+    private val riskHaloPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 10f
+        alpha = 92
     }
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
-        textSize = 32f
+        textSize = 30f
         style = Paint.Style.FILL
     }
     private val labelBgPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -36,9 +42,13 @@ class DetectionOverlayView @JvmOverloads constructor(
         style = Paint.Style.FILL
     }
     private val zonePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.argb(90, 255, 214, 10)
+        color = Color.argb(72, 255, 214, 10)
         style = Paint.Style.STROKE
         strokeWidth = 3f
+    }
+    private val zoneFillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.argb(28, 255, 214, 10)
+        style = Paint.Style.FILL
     }
 
     fun update(
@@ -65,19 +75,29 @@ class DetectionOverlayView @JvmOverloads constructor(
             rect.right = transform.mapX(detection.boundingBox.right)
             rect.bottom = transform.mapY(detection.boundingBox.bottom)
 
-            boxPaint.color = colorFor(detection == riskDetection)
+            val isRiskSource = detection == riskDetection
+            val color = colorFor(isRiskSource)
+            if (isRiskSource) {
+                riskHaloPaint.color = color
+                val haloRect = RectF(rect).apply { inset(-6f, -6f) }
+                canvas.drawRoundRect(haloRect, 12f, 12f, riskHaloPaint)
+            }
+
+            boxPaint.color = color
+            boxPaint.strokeWidth = if (isRiskSource) 6f else 3f
             canvas.drawRect(rect, boxPaint)
 
-            val label = "${detection.label} ${(detection.confidence * 100).toInt()}%"
-            val labelWidth = textPaint.measureText(label) + 20f
+            val label = fitLabel("${detection.label} ${(detection.confidence * 100).toInt()}%")
+            val labelWidth = min(textPaint.measureText(label) + 20f, width - 16f)
+            val labelLeft = rect.left.coerceIn(8f, max(8f, width - labelWidth - 8f))
             val labelTop = (rect.top - 38f).coerceAtLeast(0f)
             canvas.drawRoundRect(
-                RectF(rect.left, labelTop, rect.left + labelWidth, labelTop + 38f),
+                RectF(labelLeft, labelTop, labelLeft + labelWidth, labelTop + 38f),
                 8f,
                 8f,
                 labelBgPaint
             )
-            canvas.drawText(label, rect.left + 10f, labelTop + 28f, textPaint)
+            canvas.drawText(label, labelLeft + 10f, labelTop + 28f, textPaint)
         }
     }
 
@@ -86,7 +106,20 @@ class DetectionOverlayView @JvmOverloads constructor(
         val right = width * 0.65f
         val top = height * 0.35f
         val bottom = height * 0.98f
-        canvas.drawRect(left, top, right, bottom, zonePaint)
+        val zone = RectF(left, top, right, bottom)
+        canvas.drawRoundRect(zone, 16f, 16f, zoneFillPaint)
+        canvas.drawRoundRect(zone, 16f, 16f, zonePaint)
+    }
+
+    private fun fitLabel(label: String): String {
+        val maxTextWidth = width - 36f
+        if (maxTextWidth <= 0f || textPaint.measureText(label) <= maxTextWidth) {
+            return label
+        }
+        val suffix = "..."
+        val suffixWidth = textPaint.measureText(suffix)
+        val count = textPaint.breakText(label, true, maxTextWidth - suffixWidth, null)
+        return label.take(count.coerceAtLeast(0)) + suffix
     }
 
     private fun colorFor(isRiskSource: Boolean): Int {

@@ -4,6 +4,40 @@
 
 ## 2026-05-17
 
+### 前端与交互实用升级
+
+- 时间：2026-05-17 16:49:41 +08:00
+- 执行者：violjjet
+- 类型：功能 / 交互 / 无障碍 / 文档 / 构建
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/DetectionOverlayView.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 保留原生 Android View 架构，未引入 Jetpack Compose 或新 UI 框架。
+  - 将实时检测界面底部区域从单行长状态文本升级为主风险状态、控制开关和默认折叠的调试信息三层结构。
+  - 主状态区突出显示风险等级、相对距离、方向、目标、目标数和紧急度；FPS、total/pre/infer/post 耗时与模型状态移入可折叠调试区。
+  - 检测、语音、震动开关保留不低于 48dp 的触控高度，并补充用于 TalkBack 的 `contentDescription` 状态说明。
+  - 检测关闭时清空 overlay、重置风险稳定器，并显示暂停状态；重新开启后进入等待画面和稳定风险结果状态。
+  - 优化检测覆盖层：风险源目标增加高亮 halo 和更粗边框，普通检测框更克制；危险区域改为轻量填充加描边；标签横向贴边时自动收进屏幕内。
+  - 将应用版本从 `v0.7.0` 提升到 `v0.8.0`，`versionCode` 从 `3` 提升到 `4`，并在 README 记录界面行为。
+- 修改原因：
+  - 原界面把风险、目标数量、性能耗时、FPS 和模型状态压在一行长文本中，行走场景下难以快速读取，也不利于区分用户信息与开发调试信息。
+  - 本次按“实用升级 + 调试信息可折叠”目标优化可读性、交互层级和无障碍语义，同时保持 CameraX、TFLite、风险规则、语音和震动反馈策略不变。
+- 验证方式：
+  - 首次在沙箱内运行 `$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon` 失败，错误为 `java.net.SocketException: Permission denied: getsockopt`，原因是 Gradle wrapper 下载网络访问受限。
+  - 已按权限要求提权重跑同一命令，结果为 `BUILD SUCCESSFUL in 34s`；随后补充 overlay 标签截断逻辑后再次验证，沙箱内仍因同一网络权限错误失败，提权重跑后结果为 `BUILD SUCCESSFUL in 26s`。
+  - 构建输出 `app/build/outputs/apk/debug/app-debug.apk` 已生成，大小约 32.2 MB。
+  - 编译期间仅保留既有 CameraX `setTargetResolution` deprecated warning，本次未改分析分辨率策略。
+- 版本判断：
+  - 本次属于小更新，原因是明显改善前端信息层级、交互和无障碍语义，但未改变产品核心检测能力、模型资产、风险算法、反馈策略或构建方式。
+  - 按小更新规则，项目版本从 `v0.7.0` 提升到 `v0.8.0`。
+- 后续事项：
+  - 建议真机观察底部面板在不同屏幕尺寸上的遮挡比例，以及风险标题颜色在室外/暗光摄像头画面上的可读性。
+  - 如后续需要进一步压缩界面占用，可考虑把调试入口改为更小的图标按钮，或按手势展开高级信息。
+
 ### 距离化风险提醒大更新
 
 - 时间：2026-05-17 16:07:01 +08:00

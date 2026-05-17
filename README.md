@@ -4,7 +4,7 @@
 
 ## Version
 
-- Current project version: `v0.7.0`
+- Current project version: `v0.8.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,9 +12,19 @@
 
 ## Recent Updates
 
+- 2026-05-17: Upgraded the real-time front-end interaction layer. The camera screen now separates the main risk status, control switches, and collapsible debug details, improves accessibility text for detection/speech/vibration switches, and makes the overlay risk source easier to distinguish. The app version is now `v0.8.0`.
 - 2026-05-17: Added proximity-aware risk reminders. Risk analysis now reports relative proximity bands (`FAR`, `MID`, `NEAR`, `CRITICAL`) and an urgency score, allowing the app to distinguish visual-only mid/far detections from near and critical alerts. The app version is now `v0.7.0`.
 - 2026-05-17: Added risk reminder stabilization after the rule-based analyzer. HIGH risks are confirmed immediately, MEDIUM risks require two matching frames, and confirmed alerts are briefly held across short missed detections. The app version is now `v0.2.0`.
 - 2026-05-17: Added project collaboration rules for README synchronization and version bump judgment. Later clarified that trivial wording or lightweight process text does not trigger a version bump, so the project remained at `v0.1.0`.
+
+## Interface Behavior
+
+The main camera screen keeps the full-screen preview as the primary surface and uses a compact bottom panel for interaction:
+
+- The main risk area shows the current risk level, relative proximity band, direction, primary target, target count, and urgency score.
+- Detection, speech, and vibration can be toggled independently. Disabling detection clears the overlay and stops risk feedback while keeping the camera preview visible.
+- Debug information is collapsed by default. Expanding it shows FPS, total/preprocess/inference/postprocess timing, and model status.
+- Overlay boxes use stronger highlighting for the current risk source and quieter styling for other detected objects.
 
 ## Risk Reminder Behavior
 
