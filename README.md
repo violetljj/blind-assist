@@ -4,7 +4,7 @@
 
 ## Version
 
-- Current project version: `v1.4.0`
+- Current project version: `v1.5.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,6 +12,7 @@
 
 ## Recent Updates
 
+- 2026-05-17: Added lightweight user preference persistence for speech reminders, vibration reminders, and Care Mode. Detection still starts enabled on each launch so the app does not reopen in a silent paused-recognition state. The app version is now `v1.5.0`.
 - 2026-05-17: Polished the camera screen based on phone screenshot feedback. The preview now fills the display instead of leaving a large top letterbox, overlay mapping matches the filled preview crop, and the bottom controls use compact high-contrast mode buttons instead of bulky platform switches. The app version is now `v1.4.0`.
 - 2026-05-17: Redesigned the real-time camera interface as a calmer assistive workspace. The screen now includes a brand/status header, risk badge, two-row control area, smoother status transitions, and a Care Mode that enlarges key guidance, increases contrast, hides developer debug details, and adds a center guide in the overlay. The app version is now `v1.3.0`.
 - 2026-05-17: Upgraded the real-time front-end interaction layer. The camera screen now separates the main risk status, control switches, and collapsible debug details, improves accessibility text for detection/speech/vibration switches, and makes the overlay risk source easier to distinguish. The app version is now `v0.8.0`.
@@ -27,7 +28,7 @@ The main camera screen keeps the full-screen preview as the primary surface and 
 - Status changes use a short restrained transition so risk updates feel responsive without distracting from the camera preview.
 - The camera preview fills the screen in portrait use. Detection overlay coordinates follow the same filled-preview crop so boxes and guide areas stay aligned.
 - The main risk area shows the current risk level, relative proximity band, direction, primary target, target count, and urgency score.
-- Detection, speech, vibration, and Care Mode use compact high-contrast mode buttons and can be toggled independently. Disabling detection clears the overlay and stops risk feedback while keeping the camera preview visible.
+- Detection, speech, vibration, and Care Mode use compact high-contrast mode buttons and can be toggled independently. Speech, vibration, and Care Mode restore the user's last choice on the next launch, while detection starts enabled every time. Disabling detection clears the overlay and stops risk feedback while keeping the camera preview visible.
 - Care Mode enlarges the main instruction, simplifies the supporting copy, increases panel contrast, hides debug details, and adds a center guide line to support lower-vision or high-stress use.
 - Debug information is collapsed by default. Expanding it shows FPS, total/preprocess/inference/postprocess timing, and model status.
 - Overlay boxes use stronger highlighting for the current risk source and quieter styling for other detected objects.

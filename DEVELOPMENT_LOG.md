@@ -4,6 +4,38 @@
 
 ## 2026-05-17
 
+### 偏好持久化小更新
+
+- 时间：2026-05-17 21:31:39 +08:00
+- 执行者：violjjet
+- 类型：功能 / 测试 / 文档 / 构建
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/preferences/UserPreferences.kt`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/test/java/com/linnan/blindassist/preferences/UserPreferencesTest.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 新增轻量 `UserPreferences`，通过 `SharedPreferences` 持久化语音提醒、震动提醒和关怀模式。
+  - 将 `MainActivity` 启动时的语音、震动和关怀模式初始状态改为读取用户偏好，并在用户点击对应开关时立即保存。
+  - 保持检测开关为会话态：每次启动默认开启，不写入持久化偏好，避免 App 下次打开时无意处于暂停识别状态。
+  - 新增 `UserPreferencesTest`，用内存 `PreferenceStore` 覆盖默认值、保存后重载和检测开关不持久化。
+  - 将应用版本从 `v1.4.0` 提升到 `v1.5.0`，`versionCode` 从 `6` 提升到 `7`，并在 README 同步记录行为变化。
+- 修改原因：
+  - 用户要求实现“偏好持久化”，让语音提醒、震动提醒和关怀模式在本机下次启动时恢复上次选择，同时保留检测默认开启的安全默认。
+- 验证方式：
+  - 已运行 `git status --short`，确认存在既有未跟踪文件 `多模态智能助盲系统1.4.pptx`，本次未处理该 PPT。
+  - 已基于本仓库已知沙箱限制直接提权运行完整验证：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 验证结果：`BUILD SUCCESSFUL in 43s`，`41 actionable tasks: 17 executed, 24 up-to-date`。
+  - 编译期间仅保留既有 CameraX `ImageAnalysis.Builder.setTargetResolution(Size)` deprecated warning，本次未调整分析分辨率策略。
+  - APK 已生成：`app/build/outputs/apk/debug/app-debug.apk`，大小约 32.2 MB。
+- 版本判断：
+  - 本次属于小更新，原因是新增局部体验功能和测试，影响启动时开关状态恢复，但不改变风险算法、模型资产、CameraX 输入链路、语音文案或震动策略。
+  - 按小更新规则，项目版本从 `v1.4.0` 提升到 `v1.5.0`。
+- 后续事项：
+  - 建议在真机上切换语音、震动和关怀模式，重启 App 后确认三个辅助偏好恢复且检测仍默认开启。
+
 ### 下一步更新方向分析
 
 - 时间：2026-05-17 21:21:31 +08:00

@@ -25,6 +25,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.model.FrameSize
+import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskAnalyzer
 import com.linnan.blindassist.risk.RiskDirection
@@ -52,6 +53,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var riskAnalyzer: RiskAnalyzer
     private lateinit var riskStabilizer: RiskStabilizer
     private lateinit var feedbackController: FeedbackController
+    private lateinit var userPreferences: UserPreferences
     private lateinit var cameraExecutor: ExecutorService
 
     private val isProcessing = AtomicBoolean(false)
@@ -82,6 +84,11 @@ class MainActivity : ComponentActivity() {
         riskAnalyzer = RiskAnalyzer()
         riskStabilizer = RiskStabilizer()
         feedbackController = FeedbackController(this)
+        userPreferences = UserPreferences(this)
+        val savedPreferences = userPreferences.load()
+        feedbackController.speechEnabled = savedPreferences.speechEnabled
+        feedbackController.vibrationEnabled = savedPreferences.vibrationEnabled
+        careModeEnabled = savedPreferences.careModeEnabled
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         setContentView(buildContentView())
@@ -133,7 +140,7 @@ class MainActivity : ComponentActivity() {
         controlPanel = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(16), dp(12), dp(16), dp(14))
-            background = panelBackground(false)
+            background = panelBackground(careModeEnabled)
             elevation = dp(12).toFloat()
             alpha = 0f
             translationY = dp(18).toFloat()
@@ -208,16 +215,19 @@ class MainActivity : ComponentActivity() {
                 renderUi(UiSnapshot.waiting(detector.statusMessage))
             }
         }
-        val speechToggle = makeToggle("语音", true) { button, checked ->
+        val speechToggle = makeToggle("语音", feedbackController.speechEnabled) { button, checked ->
             feedbackController.speechEnabled = checked
+            userPreferences.setSpeechEnabled(checked)
             updateToggleDescription("语音提醒", button, checked)
         }
-        val vibrationToggle = makeToggle("震动", true) { button, checked ->
+        val vibrationToggle = makeToggle("震动", feedbackController.vibrationEnabled) { button, checked ->
             feedbackController.vibrationEnabled = checked
+            userPreferences.setVibrationEnabled(checked)
             updateToggleDescription("震动提醒", button, checked)
         }
-        careToggle = makeToggle("关怀", false) { button, checked ->
+        careToggle = makeToggle("关怀", careModeEnabled) { button, checked ->
             careModeEnabled = checked
+            userPreferences.setCareModeEnabled(checked)
             updateToggleDescription("关怀模式", button, checked)
             applyCareModeUi()
             renderUi(
@@ -230,9 +240,9 @@ class MainActivity : ComponentActivity() {
         }
 
         updateToggleDescription("目标检测", detectToggle, true)
-        updateToggleDescription("语音提醒", speechToggle, true)
-        updateToggleDescription("震动提醒", vibrationToggle, true)
-        updateToggleDescription("关怀模式", careToggle, false)
+        updateToggleDescription("语音提醒", speechToggle, feedbackController.speechEnabled)
+        updateToggleDescription("震动提醒", vibrationToggle, feedbackController.vibrationEnabled)
+        updateToggleDescription("关怀模式", careToggle, careModeEnabled)
 
         debugToggleText = TextView(this).apply {
             setTextColor(Color.rgb(214, 224, 235))
@@ -259,6 +269,7 @@ class MainActivity : ComponentActivity() {
         controlPanel.addView(buildControlRow(detectToggle, speechToggle, vibrationToggle, careToggle))
         controlPanel.addView(debugToggleText)
         controlPanel.addView(debugText)
+        applyCareModeUi()
         return controlPanel
     }
 
