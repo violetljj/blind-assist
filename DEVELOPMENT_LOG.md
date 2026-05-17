@@ -4,6 +4,64 @@
 
 ## 2026-05-17
 
+### 下一步更新方向分析
+
+- 时间：2026-05-17 21:21:31 +08:00
+- 执行者：violjjet
+- 类型：分析 / 规划
+- 修改范围：
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/risk/`
+  - `app/src/main/java/com/linnan/blindassist/feedback/`
+  - `app/src/main/java/com/linnan/blindassist/ui/`
+  - `app/src/test/java/com/linnan/blindassist/`
+- 修改内容：
+  - 分析当前 README 与开发日志，确认项目当前版本为 `v1.4.0`，近期更新重点集中在实时界面、关怀模式、overlay 映射、距离化风险提醒和风险稳定化。
+  - 检查当前代码入口和测试覆盖，确认 `MainActivity.kt` 已包含关怀模式、检测/语音/震动开关、CameraX `ImageAnalysis` 链路；现有单元测试覆盖 `vision`、`risk` 和 `feedback` 的部分纯逻辑。
+  - 形成下一步可选更新方向：偏真机体验的偏好持久化、偏安全可靠性的风险策略微调、偏性能的 CameraX 分析 API 更新与 YUV 直采样、偏产品形态的外部摄像头输入源抽象、偏可访问性的 TalkBack/触控/对比度专项检查。
+- 修改原因：
+  - 用户要求提供关于下一步项目更新的 idea，需要基于当前项目状态给出可落地的优先级建议。
+- 验证方式：
+  - 已运行 `git status --short`，确认当前存在 `DEVELOPMENT_LOG.md` 修改和既有未跟踪文件 `多模态智能助盲系统1.4.pptx`，本次不处理该 PPT。
+  - 已运行 `rg` 检查 README、开发日志、`MainActivity.kt`、风险/反馈/UI 相关代码和现有测试文件。
+  - 已读取 `android-accessibility` skill，重点参考内容描述、48dp 触控目标、颜色对比、焦点语义和状态描述检查项。
+  - 本次未运行 Gradle 构建；原因是仅做规划分析和日志记录，没有修改 Android 源码、构建脚本或模型资产。
+- 版本判断：
+  - 本次属于分析和开发日志记录，不改变功能行为、构建方式、模型资产、测试结论或已实现技术决策，不更新 README，不调整应用版本号。
+  - 当前应用版本保持 `v1.4.0`。
+- 后续事项：
+  - 如下一步优先做小而稳的体验更新，建议先实现关怀模式、语音和震动开关的用户偏好持久化。
+  - 如下一步优先做技术含量更高的更新，建议先抽象帧输入源，为外部摄像头或网络视频流接入打基础。
+
+### 外部网络摄像头互通可行性分析
+
+- 时间：2026-05-17 20:56:45 +08:00
+- 执行者：violjjet
+- 类型：分析 / 架构
+- 修改范围：
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/vision/`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 分析当前 CameraX 输入链路：`ImageAnalysis` 将手机摄像头帧转换为 `Bitmap`，再交给 `analyzeFrame(bitmap)`、`TfliteYoloDetector.detect(bitmap)`、`RiskAnalyzer`、`FeedbackController` 处理。
+  - 判断未来可通过抽象“帧输入源”支持外部摄像头，例如手机开热点后由 STM32/ESP32/外部相机连接手机并推送 MJPEG、JPEG 帧、RTSP 或 WebSocket 图像流。
+  - 建议后续把手机内置 CameraX 和外部网络相机统一成同一个帧输入接口，输出 `Bitmap` 或更底层的 RGB 帧，再复用现有 TFLite 检测、风险规则、叠框和语音/震动反馈。
+- 修改原因：
+  - 用户询问项目未来是否可以与类似 STM32 的外部摄像头互通，例如手机开热点、外部摄像头连接手机并传输图像到手机。
+- 验证方式：
+  - 已运行 `git status --short`，确认存在既有未跟踪文件 `多模态智能助盲系统1.4.pptx`，本次未处理该文件。
+  - 已读取 `android-architecture` skill，按分层和输入源抽象思路评估。
+  - 已检查 `MainActivity.kt` 的 `startCamera()` 与 `analyzeFrame(bitmap)`：当前检测主链路已经以 `Bitmap` 作为入口，具备改造成多输入源的基础。
+  - 本次未运行 Gradle 构建；原因是仅做架构可行性分析和开发日志记录，没有修改 Android 源码或构建配置。
+- 版本判断：
+  - 本次属于架构可行性分析和日志记录，没有改变功能行为、构建方式、模型资产、测试结论或已实现技术决策，不更新 README，不调整版本号。
+  - 当前应用版本保持 `v1.4.0`。
+- 后续事项：
+  - 若进入实现阶段，优先设计 `FrameSource` 抽象，并增加网络相机输入、连接状态、断流重连、延迟监控和输入源切换。
+  - 外部硬件建议优先评估 ESP32-CAM、OpenMV、树莓派 Zero/CM 系列或带 Wi-Fi 的 STM32 方案；纯 STM32 直推视频需要重点评估编码能力、内存和带宽。
+
 ### v1.4.0 界面收敛提交推送
 
 - 时间：2026-05-17 20:53:37 +08:00
