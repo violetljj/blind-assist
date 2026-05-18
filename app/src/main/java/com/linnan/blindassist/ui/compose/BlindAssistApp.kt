@@ -128,7 +128,32 @@ data class CameraGuidanceUiState(
     val careAccessibilitySummary: String,
     val accessibilitySummary: String,
     val accessibilityKey: String
-)
+) {
+    companion object {
+        fun initial(modelStatus: String): CameraGuidanceUiState {
+            return CameraGuidanceUiState(
+                title = "初始化中",
+                detail = "正在准备本地检测模型",
+                targetLine = "模型状态：$modelStatus",
+                careTitle = "正在准备",
+                careDetail = "识别模型正在启动，请稍等",
+                careTargetLine = "进入手机摄像头后会开始观察前方",
+                debugText = "模型状态：$modelStatus",
+                titleColor = 0xFFFFFFFF.toInt(),
+                statusBadge = "准备中",
+                badgeColor = rgb(206, 221, 235),
+                badgeTextColor = rgb(10, 22, 32),
+                careAccessibilitySummary = "正在准备，识别模型正在启动",
+                accessibilitySummary = "初始化中，正在准备本地检测模型",
+                accessibilityKey = "initial"
+            )
+        }
+
+        private fun rgb(red: Int, green: Int, blue: Int): Int {
+            return (0xFF shl 24) or (red shl 16) or (green shl 8) or blue
+        }
+    }
+}
 
 data class FieldTestSummaryUiState(
     val title: String,

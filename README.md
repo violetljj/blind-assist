@@ -4,7 +4,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Version
 
-- Current project version: `v3.4.0`
+- Current project version: `v3.5.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,6 +12,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Recent Updates
 
+- 2026-05-18: Implemented the v3.5.0 lightweight ViewModel/StateFlow state split. Compose-observed app shell state, settings preference state, dialog flags, camera active state, model status, guidance state, and field-test summary now flow through `BlindAssistViewModel` as read-only `StateFlow`, collected in Compose with `collectAsStateWithLifecycle()`. `MainActivity` still owns CameraX, permissions, TFLite detector, overlay view, feedback controller, and lifecycle cleanup, so the architecture is cleaner without introducing Hilt, DataStore, Room, networking, location, new permissions, or modules. The app version is now `v3.5.0` / `versionCode=15`, the debug APK was archived at `releases/apk/BlindAssist-v3.5.0-debug-20260518-193819.apk`, installed on device `SM_S9280`, and verified as `versionName=3.5.0`.
 - 2026-05-18: Implemented the v3.4.0 field-test summary and accessibility polish update. The app now keeps an in-memory field-test summary for the current or last camera session, including runtime, latest 30-frame risk counts, speech/vibration trigger counts, average FPS, average inference time, and the active alert profile. The summary appears in Settings and in the camera debug area without adding storage, network, location, or file permissions. Settings switches, compact camera controls, alert-profile selection, and summary headings now expose clearer TalkBack state semantics while preserving 48dp touch targets. The app version is now `v3.4.0` / `versionCode=14`, and the debug APK was archived at `releases/apk/BlindAssist-v3.4.0-debug-20260518-192333.apk`, installed on device `SM_S9280`, and verified as `versionName=3.4.0`.
 - 2026-05-18: Implemented the v3.3.0 onboarding and camera-permission explanation update. First-time users now see a three-page Compose onboarding flow covering phone-camera local recognition, speech/vibration assistive reminders, and the prototype safety boundary. The Settings page includes a `查看新手引导` entry for replaying the guide. Tapping `使用手机摄像头` without camera permission now shows an in-app explanation before the Android system permission sheet, and denied permission leaves the user in the main shell with a short explanation instead of entering the camera subpage. The app version is now `v3.3.0` / `versionCode=13`, and the debug APK was archived at `releases/apk/BlindAssist-v3.3.0-debug-20260518-154943.apk`. Phone installation was not completed in this run because ADB reported `no devices/emulators found`.
 - 2026-05-18: Implemented the v3.2.0 camera-back and profile cleanup update. The immersive camera subpage now handles Android system back gestures with the same close-camera path as the top return button, so swiping back returns to the main app shell instead of exiting to the launcher. The Profile page no longer shows the project showcase/explanation card and keeps only user, device, version, and assist-preference status. The app version is now `v3.2.0` / `versionCode=12`, and the debug APK was archived at `releases/apk/BlindAssist-v3.2.0-debug-20260518-152635.apk`, installed on device `R5CX10M8Y8X`, and verified as `versionName=3.2.0`.
@@ -35,6 +36,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 The app now opens into a polished Compose app shell before starting any camera work:
 
+- Compose-visible app state is now driven by a lightweight `BlindAssistViewModel` and read-only `StateFlow`. The Activity remains the boundary for Android lifecycle, permissions, CameraX, detector, feedback, and overlay objects.
 - Cold launch uses the Android SplashScreen API, followed by a short BlindAssist brand screen with restrained scan/pulse motion. The launch screen can be skipped by tapping it.
 - First-time users then see a three-page onboarding flow for local phone-camera recognition, speech/vibration reminders, and the prototype safety boundary. Completing or skipping the guide saves the onboarding state locally.
 - The main shell uses Material 3 bottom navigation with three top-level destinations: Features, Profile, and Settings.
@@ -139,7 +141,7 @@ app/build/outputs/apk/debug/app-debug.apk
 releases/apk/
 ```
 
-当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0、v2.6.0、v3.1.0、v3.2.0、v3.3.0 和 v3.4.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；v3.4.0 的当前归档为 `releases/apk/BlindAssist-v3.4.0-debug-20260518-192333.apk`。
+当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0、v2.6.0、v3.1.0、v3.2.0、v3.3.0、v3.4.0 和 v3.5.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；v3.5.0 的当前归档为 `releases/apk/BlindAssist-v3.5.0-debug-20260518-193819.apk`。
 
 ## Install to Phone
 

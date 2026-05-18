@@ -4,6 +4,55 @@
 
 ## 2026-05-18
 
+### v3.5.0 ViewModel 与 StateFlow 轻量状态拆分
+
+- 时间：2026-05-18 19:38:19 +08:00
+- 执行者：violjjet
+- 类型：架构 / 重构 / UI 状态 / 设置 / 测试 / 文档 / 构建 / 版本归档 / 真机
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/BlindAssistViewModel.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `app/src/test/java/com/linnan/blindassist/ui/BlindAssistViewModelTest.kt`
+  - `README.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+  - `app/build/outputs/apk/debug/app-debug.apk`
+  - `releases/apk/BlindAssist-v3.5.0-debug-20260518-193819.apk`
+- 修改内容：
+  - 新增 `BlindAssistViewModel` 和 `BlindAssistAppUiState`，把 Compose 可观察的壳层状态、设置偏好状态、弹窗状态、相机激活状态、模型状态、引导状态和现场测试摘要集中到一个轻量 ViewModel 中。
+  - ViewModel 使用私有 `MutableStateFlow` 和公开只读 `StateFlow` 暴露状态，并通过 `.update {}` 更新；设置项继续写入既有 `UserPreferences` / SharedPreferences，不迁移到 DataStore。
+  - `MainActivity` 改为通过 `by viewModels { BlindAssistViewModel.Factory(userPreferences) }` 获取 ViewModel，并在 `setContent` 中使用 `collectAsStateWithLifecycle()` 订阅状态。
+  - `MainActivity` 仍负责 Android 生命周期、相机权限、CameraX 绑定、TFLite detector、overlay view、`AssistEngine`、`FeedbackController`、线程池和资源释放，避免 ViewModel 持有 `Context`、`PreviewView`、`DetectionOverlayView`、detector 或反馈控制器。
+  - 删除 Activity 中多数 Compose `mutableStateOf` 状态字段，保留必要的非 Compose 运行态字段，例如检测开关、关怀模式、提醒档位、FPS 计数、CameraX 状态和正在处理帧标记。
+  - 为 `CameraGuidanceUiState` 增加纯 Kotlin 的 `initial()` 默认状态构造，供 ViewModel 初始化和 Activity 渲染复用；该构造避免在 JVM 单元测试中调用未 mock 的 `android.graphics.Color.rgb()`。
+  - 新增 `BlindAssistViewModelTest`，覆盖默认状态、已保存偏好初始化、设置变更写入与 StateFlow 更新、onboarding 完成/重看、弹窗状态、相机/现场摘要状态更新以及检测开关不持久化。
+  - 将应用版本从 `v3.4.0` 提升到 `v3.5.0`，`versionCode` 从 `14` 提升到 `15`。
+  - 同步 `README.md` 的当前版本、近期更新、界面行为说明和 APK 归档说明；将 `idea.md` 中“ViewModel 与 StateFlow 状态拆分”标记为“部分完成”，记录已完成范围和后续剩余范围。
+- 修改原因：
+  - 用户要求实施此前规划的 ViewModel/StateFlow 轻量首阶段，目标是让 App 壳层状态、设置项和相机会话展示状态不再全部散落在 `MainActivity` 中。
+  - 当前 App 已有 Compose 壳层、首次引导、设置页、相机子页、现场测试摘要和多个弹窗，继续用 Activity 内部 Compose state 会让后续维护成本上升。
+  - 本次选择轻量拆分，是为了提升工程成熟度和可测试性，同时尊重项目约束：不引入 Hilt、多模块、Room、DataStore、联网、定位或新权限，也不改动 CameraX/TFLite/风险规则核心链路。
+- 验证方式：
+  - 已按本仓库已知沙箱限制直接提权运行完整验证命令：`.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 第一次完整验证编译通过但 `:app:testDebugUnitTest` 失败，结果为 `61 tests completed, 7 failed`；失败原因集中在新增 ViewModel 测试触发 `java.lang.RuntimeException: Method rgb in android.graphics.Color not mocked`。
+  - 已将 `CameraGuidanceUiState.initial()` 中的默认颜色改为纯 Kotlin ARGB 整数计算后重跑同一验证命令，结果 `BUILD SUCCESSFUL in 35s`。
+  - 最终 Gradle 验证包含 `:app:testDebugUnitTest` 和 `:app:assembleDebug`，当前共有 43 个 actionable tasks，其中 9 个执行、34 个 up-to-date。
+  - 构建过程中仅出现既有 Material Icons deprecation warning：`Icons.Rounded.VolumeUp` 和 `Icons.Rounded.ArrowBack` 建议改用 AutoMirrored 版本；本次不影响编译、测试或 APK 生成。
+  - debug APK 已生成在 `app/build/outputs/apk/debug/app-debug.apk`。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v3.5.0-debug-20260518-193819.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，文件大小 `46,998,141 bytes`，文件时间 `2026-05-18 19:38:08 +08:00`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices -l`，检测到在线设备 `192.168.5.15:38527 device product:e3qzcx model:SM_S9280 device:e3q transport_id:3`，同时存在 mDNS 连接 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device product:e3qzcx model:SM_S9280 device:e3q transport_id:2`。
+  - 已指定直连 serial 安装，避免多设备连接导致安装歧义：`.\.android-sdk\platform-tools\adb.exe -s 192.168.5.15:38527 install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe -s 192.168.5.15:38527 shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=15 minSdk=26 targetSdk=35` 和 `versionName=3.5.0`。
+- 版本判断：
+  - 本次属于小更新，原因是状态管理方式和测试覆盖有明显改进，但不改变模型资产、CameraX/TFLite 检测链路、风险规则核心算法、权限边界、用户主要操作路径或模块结构。
+  - 项目版本提升为 `v3.5.0` / `versionCode=15`。
+- 后续事项：
+  - 后续如果继续推进 ViewModel 化，可考虑把权限事件、相机启动状态和检测会话命令进一步建模，但需要谨慎避免 ViewModel 持有 Android 视图对象或重量级 detector。
+  - 如果未来设置项继续增加，可在用户确认后评估是否从 SharedPreferences 迁移到 DataStore；当前版本按计划继续使用既有 `UserPreferences`。
+  - 可在后续低风险清理中把 Material Icons 的 `VolumeUp` 和 `ArrowBack` 替换为 AutoMirrored 版本，消除 deprecation warning。
+
 ### v3.4.0 现场测试摘要与无障碍细节升级
 
 - 时间：2026-05-18 19:24:08 +08:00

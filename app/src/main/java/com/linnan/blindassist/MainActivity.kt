@@ -10,6 +10,7 @@ import android.util.Size
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -19,10 +20,9 @@ import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.feedback.FeedbackDecision
@@ -35,8 +35,8 @@ import com.linnan.blindassist.session.AssistDisplayFormatter
 import com.linnan.blindassist.session.AssistEngine
 import com.linnan.blindassist.session.DetectorMetrics
 import com.linnan.blindassist.session.SessionSummary
+import com.linnan.blindassist.ui.BlindAssistViewModel
 import com.linnan.blindassist.ui.DetectionOverlayView
-import com.linnan.blindassist.ui.compose.AssistControlsUiState
 import com.linnan.blindassist.ui.compose.BlindAssistApp
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
@@ -49,6 +49,10 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : ComponentActivity() {
+    private val appViewModel: BlindAssistViewModel by viewModels {
+        BlindAssistViewModel.Factory(userPreferences)
+    }
+
     private lateinit var previewView: PreviewView
     private lateinit var overlayView: DetectionOverlayView
     private lateinit var detector: TfliteYoloDetector
@@ -67,28 +71,9 @@ class MainActivity : ComponentActivity() {
     private var fpsWindowStartMs = System.currentTimeMillis()
     private var currentFps = 0f
     private var lastPerfLogAtMs = 0L
-    private var debugVisible = false
     private var careModeEnabled = false
     private var alertProfile = AlertProfile.STANDARD
 
-    private var controlsState by mutableStateOf(
-        AssistControlsUiState(
-            detectionEnabled = true,
-            speechEnabled = true,
-            vibrationEnabled = true,
-            careModeEnabled = false,
-            debugVisible = false,
-            alertProfile = AlertProfile.STANDARD
-        )
-    )
-    private var guidanceState by mutableStateOf(Guidance.initial("模型未初始化"))
-    private var fieldTestSummaryState by mutableStateOf(FieldTestSummaryUiState.empty(AlertProfile.STANDARD.displayName))
-    private var cameraActive by mutableStateOf(false)
-    private var modelStatus by mutableStateOf("模型未初始化")
-    private var showGlassesDialog by mutableStateOf(false)
-    private var showOnboarding by mutableStateOf(false)
-    private var showCameraPermissionDialog by mutableStateOf(false)
-    private var showPermissionDeniedDialog by mutableStateOf(false)
     private var pendingCameraOpen = false
 
     private val requestCameraPermission = registerForActivityResult(
@@ -99,9 +84,7 @@ class MainActivity : ComponentActivity() {
             activateCameraExperience()
         } else if (!granted) {
             pendingCameraOpen = false
-            cameraActive = false
-            showPermissionDeniedDialog = true
-            renderUi(Guidance.permissionDenied())
+            appViewModel.onCameraPermissionDenied(Guidance.permissionDenied())
         }
     }
 
@@ -115,32 +98,30 @@ class MainActivity : ComponentActivity() {
         userPreferences = UserPreferences(this)
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        val savedPreferences = userPreferences.load()
-        feedbackController.speechEnabled = savedPreferences.speechEnabled
-        feedbackController.vibrationEnabled = savedPreferences.vibrationEnabled
-        careModeEnabled = savedPreferences.careModeEnabled
-        alertProfile = savedPreferences.alertProfile
-        fieldTestSummaryState = FieldTestSummaryUiState.empty(alertProfile.displayName)
-        showOnboarding = !savedPreferences.onboardingCompleted
-        modelStatus = detector.statusMessage
+        val initialControls = appViewModel.uiState.value.controls
+        feedbackController.speechEnabled = initialControls.speechEnabled
+        feedbackController.vibrationEnabled = initialControls.vibrationEnabled
+        careModeEnabled = initialControls.careModeEnabled
+        alertProfile = initialControls.alertProfile
         renderUi(Guidance.initial(detector.statusMessage))
-        syncControlsState()
 
         setContent {
+            val uiState by appViewModel.uiState.collectAsStateWithLifecycle()
+
             BlindAssistTheme {
                 BlindAssistApp(
-                    controls = controlsState,
-                    cameraGuidance = guidanceState,
-                    fieldTestSummary = fieldTestSummaryState,
-                    modelStatus = modelStatus,
+                    controls = uiState.controls,
+                    cameraGuidance = uiState.cameraGuidance,
+                    fieldTestSummary = uiState.fieldTestSummary,
+                    modelStatus = uiState.modelStatus,
                     appVersion = BuildConfig.VERSION_NAME,
-                    cameraActive = cameraActive,
-                    showOnboarding = showOnboarding,
+                    cameraActive = uiState.cameraActive,
+                    showOnboarding = uiState.showOnboarding,
                     onOpenCamera = ::openCameraExperience,
                     onCloseCamera = ::closeCameraExperience,
                     onCompleteOnboarding = ::completeOnboarding,
-                    onShowOnboarding = { showOnboarding = true },
-                    onGlassesPlaceholder = { showGlassesDialog = true },
+                    onShowOnboarding = appViewModel::onShowOnboarding,
+                    onGlassesPlaceholder = appViewModel::onShowGlassesDialog,
                     onDetectionChange = ::setDetectionEnabled,
                     onSpeechChange = ::setSpeechEnabled,
                     onVibrationChange = ::setVibrationEnabled,
@@ -149,18 +130,18 @@ class MainActivity : ComponentActivity() {
                     onProfileChange = ::setAlertProfile,
                     onCameraViewsReady = ::onCameraViewsReady
                 )
-                if (showGlassesDialog) {
-                    GlassesPlaceholderDialog(onDismiss = { showGlassesDialog = false })
+                if (uiState.showGlassesDialog) {
+                    GlassesPlaceholderDialog(onDismiss = appViewModel::onDismissGlassesDialog)
                 }
-                if (showCameraPermissionDialog) {
+                if (uiState.showCameraPermissionDialog) {
                     com.linnan.blindassist.ui.compose.CameraPermissionExplanationDialog(
                         onContinue = ::requestCameraPermissionAfterExplanation,
-                        onDismiss = { showCameraPermissionDialog = false }
+                        onDismiss = appViewModel::onDismissCameraPermissionDialog
                     )
                 }
-                if (showPermissionDeniedDialog) {
+                if (uiState.showPermissionDeniedDialog) {
                     com.linnan.blindassist.ui.compose.CameraPermissionDeniedDialog(
-                        onDismiss = { showPermissionDeniedDialog = false }
+                        onDismiss = appViewModel::onDismissPermissionDeniedDialog
                     )
                 }
             }
@@ -179,37 +160,39 @@ class MainActivity : ComponentActivity() {
         if (hasCameraPermission()) {
             activateCameraExperience()
         } else {
-            showCameraPermissionDialog = true
+            appViewModel.onShowCameraPermissionDialog()
         }
     }
 
     private fun requestCameraPermissionAfterExplanation() {
-        showCameraPermissionDialog = false
+        appViewModel.onDismissCameraPermissionDialog()
         pendingCameraOpen = true
         requestCameraPermission.launch(Manifest.permission.CAMERA)
     }
 
     private fun activateCameraExperience() {
-        cameraActive = true
         assistEngine.startSession()
-        fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = true, profile = alertProfile)
-        renderUi(Guidance.waiting(detector.statusMessage))
+        appViewModel.activateCamera(
+            fieldTestSummary = assistEngine.sessionSummary().toFieldTestUi(active = true, profile = alertProfile),
+            guidance = Guidance.waiting(detector.statusMessage),
+            modelStatus = detector.statusMessage
+        )
         startCameraIfReady()
     }
 
     private fun closeCameraExperience() {
-        cameraActive = false
         pendingCameraOpen = false
-        showCameraPermissionDialog = false
         stopCamera()
-        fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = false, profile = alertProfile)
+        appViewModel.closeCamera(
+            fieldTestSummary = assistEngine.sessionSummary().toFieldTestUi(active = false, profile = alertProfile),
+            guidance = Guidance.initial(detector.statusMessage),
+            modelStatus = detector.statusMessage
+        )
         assistEngine.reset()
-        renderUi(Guidance.initial(detector.statusMessage))
     }
 
     private fun completeOnboarding() {
-        userPreferences.setOnboardingCompleted(true)
-        showOnboarding = false
+        appViewModel.onCompleteOnboarding()
     }
 
     private fun onCameraViewsReady(preview: PreviewView, overlay: DetectionOverlayView) {
@@ -218,13 +201,13 @@ class MainActivity : ComponentActivity() {
         overlayView.setCareMode(careModeEnabled)
         cameraStarted = false
         cameraStarting = false
-        if (cameraActive) {
+        if (appViewModel.uiState.value.cameraActive) {
             startCameraIfReady()
         }
     }
 
     private fun startCameraIfReady() {
-        if (!cameraActive || !::previewView.isInitialized) return
+        if (!appViewModel.uiState.value.cameraActive || !::previewView.isInitialized) return
         if (!hasCameraPermission()) {
             renderUi(Guidance.permissionDenied())
             return
@@ -293,7 +276,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun analyzeFrame(bitmap: Bitmap) {
-        if (!cameraActive || !detectionEnabled || !detector.isReady) {
+        if (!appViewModel.uiState.value.cameraActive || !detectionEnabled || !detector.isReady) {
             bitmap.recycle()
             return
         }
@@ -334,7 +317,7 @@ class MainActivity : ComponentActivity() {
                         feedbackDecision = frameResult.feedbackDecision
                     )
                 )
-                fieldTestSummaryState = frameResult.sessionSummary.toFieldTestUi(active = true, profile = alertProfile)
+                appViewModel.updateFieldTestSummary(frameResult.sessionSummary.toFieldTestUi(active = true, profile = alertProfile))
                 logPerformanceIfNeeded(frameResult)
             }
         } finally {
@@ -345,9 +328,9 @@ class MainActivity : ComponentActivity() {
 
     private fun setDetectionEnabled(enabled: Boolean) {
         detectionEnabled = enabled
-        syncControlsState()
+        appViewModel.onDetectionChange(enabled)
         if (!enabled) {
-            fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = false, profile = alertProfile)
+            appViewModel.updateFieldTestSummary(assistEngine.sessionSummary().toFieldTestUi(active = false, profile = alertProfile))
             assistEngine.reset()
             if (::overlayView.isInitialized) {
                 overlayView.update(emptyList(), null, null)
@@ -355,7 +338,7 @@ class MainActivity : ComponentActivity() {
             renderUi(Guidance.paused())
         } else {
             assistEngine.startSession()
-            fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = true, profile = alertProfile)
+            appViewModel.updateFieldTestSummary(assistEngine.sessionSummary().toFieldTestUi(active = true, profile = alertProfile))
             renderUi(Guidance.waiting(detector.statusMessage))
             startCameraIfReady()
         }
@@ -363,51 +346,40 @@ class MainActivity : ComponentActivity() {
 
     private fun setSpeechEnabled(enabled: Boolean) {
         feedbackController.speechEnabled = enabled
-        userPreferences.setSpeechEnabled(enabled)
-        syncControlsState()
+        appViewModel.onSpeechChange(enabled)
     }
 
     private fun setVibrationEnabled(enabled: Boolean) {
         feedbackController.vibrationEnabled = enabled
-        userPreferences.setVibrationEnabled(enabled)
-        syncControlsState()
+        appViewModel.onVibrationChange(enabled)
     }
 
     private fun setCareModeEnabled(enabled: Boolean) {
         careModeEnabled = enabled
-        userPreferences.setCareModeEnabled(enabled)
         if (::overlayView.isInitialized) {
             overlayView.setCareMode(enabled)
         }
-        syncControlsState()
+        appViewModel.onCareModeChange(enabled)
     }
 
     private fun setDebugVisible(visible: Boolean) {
-        debugVisible = visible
-        syncControlsState()
+        appViewModel.onDebugVisibleChange(visible)
     }
 
     private fun setAlertProfile(profile: AlertProfile) {
         alertProfile = profile
-        userPreferences.setAlertProfile(profile)
-        syncControlsState()
-        fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = cameraActive, profile = alertProfile)
-    }
-
-    private fun syncControlsState() {
-        controlsState = AssistControlsUiState(
-            detectionEnabled = detectionEnabled,
-            speechEnabled = feedbackController.speechEnabled,
-            vibrationEnabled = feedbackController.vibrationEnabled,
-            careModeEnabled = careModeEnabled,
-            debugVisible = debugVisible,
-            alertProfile = alertProfile
+        appViewModel.onProfileChange(profile)
+        appViewModel.updateFieldTestSummary(
+            assistEngine.sessionSummary().toFieldTestUi(
+                active = appViewModel.uiState.value.cameraActive,
+                profile = alertProfile
+            )
         )
     }
 
     private fun renderUi(snapshot: CameraGuidanceUiState) {
-        guidanceState = snapshot
-        modelStatus = if (::detector.isInitialized) detector.statusMessage else modelStatus
+        val status = if (::detector.isInitialized) detector.statusMessage else appViewModel.uiState.value.modelStatus
+        appViewModel.renderCameraGuidance(snapshot, status)
     }
 
     private fun updateFps(): Float {
@@ -469,22 +441,7 @@ class MainActivity : ComponentActivity() {
 
     private object Guidance {
         fun initial(modelStatus: String): CameraGuidanceUiState {
-            return CameraGuidanceUiState(
-                title = "初始化中",
-                detail = "正在准备本地检测模型",
-                targetLine = "模型状态：$modelStatus",
-                careTitle = "正在准备",
-                careDetail = "识别模型正在启动，请稍等",
-                careTargetLine = "进入手机摄像头后会开始观察前方",
-                debugText = "模型状态：$modelStatus",
-                titleColor = Color.WHITE,
-                statusBadge = "准备中",
-                badgeColor = Color.rgb(206, 221, 235),
-                badgeTextColor = Color.rgb(10, 22, 32),
-                careAccessibilitySummary = "正在准备，识别模型正在启动",
-                accessibilitySummary = "初始化中，正在准备本地检测模型",
-                accessibilityKey = "initial"
-            )
+            return CameraGuidanceUiState.initial(modelStatus)
         }
 
         fun waiting(modelStatus: String): CameraGuidanceUiState {
