@@ -4,6 +4,32 @@
 
 ## 2026-05-18
 
+### v3.5.0 GitHub 推送与手机安装复核
+
+- 时间：2026-05-18 19:43:05 +08:00
+- 执行者：violjjet
+- 类型：提交 / 推送 / 安装 / 真机 / 验证
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 将 `v3.5.0 ViewModel 与 StateFlow 轻量状态拆分` 的代码、测试、文档和 APK 归档提交到本地 Git。
+  - 按本仓库已知沙箱限制直接提权推送 `master` 到 GitHub SSH 远端。
+  - 按用户要求重新把当前 debug APK 安装到在线手机，并核对手机包版本。
+- 修改原因：
+  - 用户要求“推送，下载”，需要完成远端保存和真机安装复核，保证当前版本既在 GitHub 留痕，也已落到手机上可演示。
+- 验证方式：
+  - 已显式 staging 本次 v3.5.0 相关文件和 APK 归档，未 staging 无关未跟踪文件 `多模态智能助盲系统1.4.pptx`。
+  - 已提交：`35f3207 feat: add viewmodel state flow split`。
+  - 已按本仓库已知沙箱限制直接提权运行 `git push origin master`，输出 `aac8e34..35f3207  master -> master`，远端推送成功。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices -l`，检测到在线设备 `192.168.5.15:38527 device product:e3qzcx model:SM_S9280 device:e3q transport_id:3`，同时存在 mDNS 连接 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device product:e3qzcx model:SM_S9280 device:e3q transport_id:2`。
+  - 已指定直连 serial 安装：`.\.android-sdk\platform-tools\adb.exe -s 192.168.5.15:38527 install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行版本核对命令：`.\.android-sdk\platform-tools\adb.exe -s 192.168.5.15:38527 shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=15 minSdk=26 targetSdk=35` 和 `versionName=3.5.0`。
+- 版本判断：
+  - 本次仅记录推送和手机安装复核，不改变代码功能、构建方式、模型资产、权限边界或版本号。
+  - 项目版本保持 `v3.5.0` / `versionCode=15`。
+- 后续事项：
+  - 手机端已安装当前版本，可直接打开 App 检查 ViewModel/StateFlow 拆分后的启动页、设置页、引导页和相机页状态是否保持原有体验。
+
 ### v3.5.0 ViewModel 与 StateFlow 轻量状态拆分
 
 - 时间：2026-05-18 19:38:19 +08:00
