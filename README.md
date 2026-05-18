@@ -4,7 +4,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Version
 
-- Current project version: `v3.6.0`
+- Current project version: `v4.1.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,6 +12,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Recent Updates
 
+- 2026-05-18: Implemented the v4.1.0 showcase delivery update. The Features page now includes a project showcase center for classroom and thesis-demo scenarios, covering local recognition, speech/vibration reminders, field-test summaries, and the prototype safety boundary. The showcase center reuses the existing phone-camera permission flow for “开始演示” and the existing onboarding replay for “查看引导”, without adding networking, location, Bluetooth, storage permissions, model changes, Hilt, multi-module architecture, Room, or DataStore. New `CHANGELOG.md` and `DEMO_GUIDE.md` materials document the real version route, APK archive, demo script, no-device fallback, privacy boundary, and safety wording. Compose instrumentation coverage now includes top-level navigation and showcase actions; after reconnecting/unlocking the device, `connectedDebugAndroidTest` completed 4 tests on `SM-S9280 - 16` and passed. The app version is now `v4.1.0` / `versionCode=17`; the debug APK was archived at `releases/apk/BlindAssist-v4.1.0-debug-20260518-231542.apk`, installed on device `SM-S9280`, and verified as `versionName=4.1.0`.
 - 2026-05-18: Fixed the connected-device Compose instrumentation test failure that UTP reported as `Process crashed`. Direct `am instrument` showed the real failure was `No compose hierarchies found`, caused by the Compose test class not being run with `AndroidJUnit4` plus unstable merged semantics around selector chips. The test class now uses `@RunWith(AndroidJUnit4::class)`, AndroidX runner/rules are explicit test dependencies, and feedback selector cards no longer merge child chip semantics. `connectedDebugAndroidTest` now passes on `SM-S9280 - 16`; the current v3.6.0 debug APK was re-archived at `releases/apk/BlindAssist-v3.6.0-debug-20260518-214947.apk` and installed successfully.
 - 2026-05-18: Implemented the v3.6.0 daily-use feedback polish update. Settings now include persistent speech style (`简短` / `标准` / `详细`) and vibration strength (`轻柔` / `标准` / `强`) controls, while alert profiles remain Quiet/Standard/Sensitive. Feedback now generates speech text through templates, scales vibration duration/amplitude by strength, and lengthens repeated non-critical near-risk cooldowns without suppressing critical high-risk alerts. The overlay now applies lightweight display-only box smoothing, near-distance thresholds are slightly more conservative, and tests cover the new preferences, feedback plans, fatigue control, risk matrix, overlay smoothing, ViewModel state, and Compose settings/camera controls. The app version is now `v3.6.0` / `versionCode=16`; the debug APK was archived, installed on device `SM_S9280`, and verified as `versionName=3.6.0`.
 - 2026-05-18: Implemented the v3.5.0 lightweight ViewModel/StateFlow state split. Compose-observed app shell state, settings preference state, dialog flags, camera active state, model status, guidance state, and field-test summary now flow through `BlindAssistViewModel` as read-only `StateFlow`, collected in Compose with `collectAsStateWithLifecycle()`. `MainActivity` still owns CameraX, permissions, TFLite detector, overlay view, feedback controller, and lifecycle cleanup, so the architecture is cleaner without introducing Hilt, DataStore, Room, networking, location, new permissions, or modules. The app version is now `v3.5.0` / `versionCode=15`, the debug APK was archived at `releases/apk/BlindAssist-v3.5.0-debug-20260518-193819.apk`, installed on device `SM_S9280`, and verified as `versionName=3.5.0`.
@@ -32,6 +33,8 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Project Materials
 
+- [真实版本更新记录](CHANGELOG.md)：按真实版本整理功能变化、验证证据和 APK 归档路径，方便课堂展示、答辩材料和版本对比。
+- [演示指南](DEMO_GUIDE.md)：面向老师/答辩的演示脚本，包含环境准备、手机安装、现场演示顺序、无设备 fallback、隐私与安全边界说明。
 - [回顾式阶段进度说明](PROJECT_PROGRESS_REVIEW.md)：面向课程汇报、阶段检查和毕设展示的整理稿，按 3 月至 5 月 1 日前的“调研、方案、原型、测试、迭代”脉络说明项目工作量。该文档是回顾式材料，不替代真实开发日志。
 
 ## Interface Behavior
@@ -42,7 +45,7 @@ The app now opens into a polished Compose app shell before starting any camera w
 - Cold launch uses the Android SplashScreen API, followed by a short BlindAssist brand screen with restrained scan/pulse motion. The launch screen can be skipped by tapping it.
 - First-time users then see a three-page onboarding flow for local phone-camera recognition, speech/vibration reminders, and the prototype safety boundary. Completing or skipping the guide saves the onboarding state locally.
 - The main shell uses Material 3 bottom navigation with three top-level destinations: Features, Profile, and Settings.
-- The Features page is the default entry. It presents `使用手机摄像头` as the active local detection path and `连接眼镜设备` as a future-device placeholder. The glasses card only shows an explanatory dialog; it does not scan Bluetooth, request Bluetooth permissions, connect to a network, or imply that hardware support is already finished.
+- The Features page is the default entry. It presents `使用手机摄像头` as the active local detection path and `连接眼镜设备` as a future-device placeholder. It also includes a project showcase center for classroom/demo use, summarizing local recognition, speech/vibration reminders, field-test summaries, and the prototype safety boundary, with actions to start the existing camera demo path or replay onboarding. The glasses card only shows an explanatory dialog; it does not scan Bluetooth, request Bluetooth permissions, connect to a network, or imply that hardware support is already finished.
 - The Profile page is a compact local status page for user/device state, current alert profile, version information, and assist preferences. It does not include login, cloud sync, showcase explanation cards, or account data.
 - The Settings page controls speech reminders, vibration reminders, speech style, vibration strength, Care Mode, debug details, alert profile, and includes a `查看新手引导` entry. It also shows the current or last in-memory field-test summary so a demo session can review runtime, risk counts, reminders, FPS, inference time, and active alert profile without writing files.
 - Tapping `使用手机摄像头` opens an immersive camera subpage only after camera permission is available. If permission is missing, the app first shows an in-app explanation that camera frames stay local, are not uploaded, and are not saved as video; only then can the user continue to the Android system permission sheet.
@@ -144,7 +147,7 @@ app/build/outputs/apk/debug/app-debug.apk
 releases/apk/
 ```
 
-当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0、v2.6.0、v3.1.0、v3.2.0、v3.3.0、v3.4.0、v3.5.0 和 v3.6.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；v3.6.0 的当前归档为 `releases/apk/BlindAssist-v3.6.0-debug-20260518-214947.apk`。
+当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0、v2.6.0、v3.1.0、v3.2.0、v3.3.0、v3.4.0、v3.5.0、v3.6.0 和 v4.1.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；当前 v4.1.0 归档为 `releases/apk/BlindAssist-v4.1.0-debug-20260518-231542.apk`。
 
 ## Install to Phone
 

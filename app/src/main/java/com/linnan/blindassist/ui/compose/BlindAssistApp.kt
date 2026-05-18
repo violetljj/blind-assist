@@ -89,6 +89,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -545,7 +546,8 @@ private fun MainShell(
                     modelStatus = modelStatus,
                     appVersion = appVersion,
                     onOpenCamera = onOpenCamera,
-                    onGlassesPlaceholder = onGlassesPlaceholder
+                    onGlassesPlaceholder = onGlassesPlaceholder,
+                    onShowOnboarding = onShowOnboarding
                 )
                 BottomTab.Profile -> ProfileScreen(
                     controls = controls,
@@ -574,6 +576,7 @@ fun FeatureScreen(
     appVersion: String,
     onOpenCamera: () -> Unit,
     onGlassesPlaceholder: () -> Unit,
+    onShowOnboarding: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ScreenColumn(modifier = modifier) {
@@ -610,6 +613,12 @@ fun FeatureScreen(
         )
         Spacer(Modifier.height(18.dp))
 
+        ProjectShowcaseCenter(
+            onStartCameraDemo = onOpenCamera,
+            onShowOnboarding = onShowOnboarding
+        )
+        Spacer(Modifier.height(18.dp))
+
         InfoStrip(
             icon = Icons.Rounded.Shield,
             title = "安全边界",
@@ -622,6 +631,116 @@ fun FeatureScreen(
             rightTitle = "版本",
             rightBody = "v$appVersion"
         )
+    }
+}
+
+@Composable
+fun ProjectShowcaseCenter(
+    onStartCameraDemo: () -> Unit,
+    onShowOnboarding: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("project_showcase_center"),
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
+    ) {
+        Column(Modifier.padding(18.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(BaAmber.copy(alpha = 0.16f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Rounded.Info, contentDescription = null, tint = BaAmber)
+                }
+                Spacer(Modifier.width(12.dp))
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        text = "项目展示中心",
+                        color = BaText,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.semantics { heading() }
+                    )
+                    Text(
+                        text = "面向课程汇报和毕设答辩的演示入口",
+                        color = BaTextMuted,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+            Spacer(Modifier.height(14.dp))
+            ShowcasePoint("本地识别", "CameraX 取流，YOLO11n TFLite 在手机端运行。")
+            ShowcasePoint("语音/震动提醒", "近处和迫近风险通过短句语音与触觉反馈提示。")
+            ShowcasePoint("现场测试摘要", "设置页和相机调试区可查看运行、风险、提醒与性能统计。")
+            ShowcasePoint("原型安全边界", "提醒只作为辅助参考，不替代人工判断或专业辅助设备。")
+            Spacer(Modifier.height(14.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                Button(
+                    onClick = onStartCameraDemo,
+                    modifier = Modifier
+                        .weight(1f)
+                        .heightIn(min = 52.dp)
+                        .testTag("showcase_start_camera_demo")
+                        .semantics {
+                            contentDescription = "开始手机摄像头演示，进入现有相机权限说明和本地识别流程"
+                        },
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = BaMint, contentColor = BaInk),
+                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp)
+                ) {
+                    Icon(Icons.Rounded.CameraAlt, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(6.dp))
+                    Text("开始演示", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+                Button(
+                    onClick = onShowOnboarding,
+                    modifier = Modifier
+                        .weight(1f)
+                        .heightIn(min = 52.dp)
+                        .testTag("showcase_show_onboarding")
+                        .semantics {
+                            contentDescription = "查看新手引导，回放本地识别、提醒方式和安全边界说明"
+                        },
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = BaPanelSoft, contentColor = BaText),
+                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp)
+                ) {
+                    Icon(Icons.Rounded.Info, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(6.dp))
+                    Text("查看引导", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ShowcasePoint(title: String, body: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 5.dp)
+            .semantics(mergeDescendants = true) {},
+        verticalAlignment = Alignment.Top
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(top = 6.dp)
+                .size(8.dp)
+                .clip(CircleShape)
+                .background(BaMint)
+        )
+        Spacer(Modifier.width(10.dp))
+        Column(Modifier.weight(1f)) {
+            Text(title, color = BaText, fontWeight = FontWeight.Bold)
+            Text(body, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+        }
     }
 }
 
@@ -1536,9 +1655,10 @@ private fun FeaturePreview() {
     BlindAssistTheme {
         FeatureScreen(
             modelStatus = "YOLO11n ready",
-            appVersion = "3.4.0",
+            appVersion = "4.1.0",
             onOpenCamera = {},
-            onGlassesPlaceholder = {}
+            onGlassesPlaceholder = {},
+            onShowOnboarding = {}
         )
     }
 }

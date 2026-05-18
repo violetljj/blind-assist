@@ -4,6 +4,121 @@
 
 ## 2026-05-18
 
+### v4.1.0 Compose 连接设备仪器测试重跑通过
+
+- 时间：2026-05-18 23:25:00 +08:00
+- 执行者：violjjet
+- 类型：测试 / 验证 / 文档
+- 修改范围：
+  - `CHANGELOG.md`
+  - `README.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户要求重新连接设备并执行 Compose 仪器测试。
+  - 将此前因手机锁屏/Bouncer 与 Samsung MARs 后台限制导致的“未作为通过证据”状态更新为最新真实结果：设备解除锁屏状态后，`connectedDebugAndroidTest` 已通过。
+  - 同步更新 README、CHANGELOG 和 idea 中关于 v4.1.0 Compose 仪器测试状态的描述。
+- 修改原因：
+  - 上一轮 v4.1.0 交付时测试 APK 可以构建，但连接设备执行阶段被手机系统状态拦截；用户要求重新连接设备执行，需要用最新设备状态重新验证。
+- 验证方式：
+  - 已读取并使用 `android-testing` skill。
+  - 已运行 `git status --short`，确认工作区仍为 v4.1.0 相关改动、交付文档、APK 归档文件，以及无关未跟踪 PPTX；本轮未处理无关 PPTX。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备在线：`192.168.5.15:38527 device` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell dumpsys window | Select-String -Pattern 'mCurrentFocus|mShowingLockscreen|mDreamingLockscreen|mAwake|mScreenOn'`，输出显示 `mCurrentFocus` 为 Samsung Launcher，`mAwake=true`、`mScreenOnFully=true`、`mDreamingLockscreen=false`，说明设备不再处于上一轮的锁屏/Bouncer 阻塞状态。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp logcat -c` 清理旧日志，避免混淆本轮结果。
+  - 已按本仓库已知 Gradle/设备测试沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; $env:ANDROID_SERIAL='adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --stacktrace`。
+  - Gradle 输出 `Starting 4 tests on SM-S9280 - 16`、`Finished 4 tests on SM-S9280 - 16`、`BUILD SUCCESSFUL in 38s`，67 个 task 中 1 个执行、66 个 up-to-date。
+- 版本判断：
+  - 本次只更新验证状态和文档记录，不改变功能、模型、权限、架构或版本号；项目版本仍为 `v4.1.0` / `versionCode=17`。
+- 后续事项：
+  - 后续如再次运行 connected test，应先确认设备保持解锁且不被系统后台限制强制停止。
+
+### v4.1.0 展示交付加强
+
+- 时间：2026-05-18 23:15:42 +08:00
+- 执行者：violjjet
+- 类型：功能 / UI / 文档 / 测试 / 构建 / 版本归档 / 真机
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `CHANGELOG.md`
+  - `DEMO_GUIDE.md`
+  - `README.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v4.1.0-debug-20260518-231542.apk`
+- 修改内容：
+  - 将应用版本从 `v3.6.0` / `versionCode=16` 升级到 `v4.1.0` / `versionCode=17`。
+  - 在 Features 页面新增“项目展示中心”，用于课堂和毕设展示场景，集中呈现本地识别、语音/震动提醒、现场测试摘要和原型安全边界四个要点。
+  - 展示中心的“开始演示”复用现有手机摄像头入口与权限说明路径，“查看引导”复用现有 onboarding 回放能力；本轮没有新增联网、定位、蓝牙、文件存储权限，没有更换 YOLO/TFLite 模型，也没有引入 Hilt、多模块、Room、DataStore 或外部硬件连接实现。
+  - 新增 `CHANGELOG.md`，按真实版本整理 v0.1.0 到 v4.1.0 的功能演进、验证状态和 APK 归档路径，方便课堂展示和版本对比。
+  - 新增 `DEMO_GUIDE.md`，整理面向老师/答辩的演示脚本，包括环境准备、手机安装、现场演示顺序、无设备 fallback、隐私说明和安全边界表述。
+  - 更新 `README.md`，同步当前版本、项目材料入口、v4.1.0 近期更新、展示中心行为和版本 APK 归档路径。
+  - 更新 `idea.md`，将“发布与展示材料整理”标记为已完成，并补充 v4.1.0 完成范围、剩余可扩展范围和验证证据。
+  - 扩展 `BlindAssistComposeTest.kt`，覆盖底部导航、展示中心入口、相机演示路径、新手引导路径和设置页反馈控件。
+- 修改原因：
+  - 用户要求执行 v4.1.0 展示交付加强计划，本轮目标不是新增检测能力，而是让项目更像可展示、可验收、可答辩的完整作品。
+  - 课程设计和毕设展示需要 App 内可讲解入口、版本路线、演示脚本、APK 留存和真实验证记录，避免只依赖口头说明或零散开发日志。
+- 验证方式：
+  - 已按仓库规则先检查适用 skills，并读取使用 `android-jetpack-compose`、`android-testing`、`android-accessibility` 的工作流。
+  - 修改前已运行 `git status --short`，确认工作区存在 v4.1.0 既有改动和无关未跟踪 PPTX；本轮保留无关 PPTX 不处理，未回滚不属于本任务的改动。
+  - 已运行 `git diff --check`，退出码为 `0`；PowerShell 提示若干文本文件后续可能按 Git 设置把 LF 替换为 CRLF，但没有 whitespace error。
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，结果通过。
+  - 修复 Compose 测试宿主后，已按本仓库已知 Gradle 沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon`，结果通过，说明 JVM 单测、debug APK 和 androidTest APK 均可构建。
+  - debug APK 生成于 `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,184,730 bytes`，文件时间 `2026-05-18 23:13:02 +08:00`。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v4.1.0-debug-20260518-231542.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,184,730 bytes`，文件时间 `2026-05-18 23:13:02 +08:00`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备在线：`192.168.5.15:38527 device` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已安装当前 debug APK：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=17 minSdk=26 targetSdk=35` 和 `versionName=4.1.0`。
+  - 已尝试运行连接设备 Compose 仪器测试。Gradle `connectedDebugAndroidTest` 一次长时间未完成，后续又遇到 Windows/UTP 输出目录文件锁：`Cannot access output property 'resultsDir' of task ':app:connectedDebugAndroidTest'`、`另一个程序已锁定文件的一部分，进程无法访问。`
+  - 已绕过 Gradle 直接运行 `am instrument`，测试进程仍被设备系统停止，输出 `INSTRUMENTATION_RESULT: shortMsg=Process crashed`。对应 logcat 证据显示设备处于锁屏/Bouncer 状态并被 Samsung MARs 强制停止：`mCurrentFocus=Window{... Bouncer}`、`mDreamingLockscreen=true`、`Force stopping com.linnan.blindassist appid=10565 user=0: MARs #2`、`Killing ... due to MARs #2`。因此本轮 Compose 仪器测试代码已完成编译验证，但连接设备执行结果不作为通过证据，原因记录为设备锁屏/系统后台限制环境问题。
+- 版本判断：
+  - 本轮从 `v3.6.0` 升级到 `v4.1.0` 属于大更新。理由是新增了用户可见的 App 内展示中心，同时补齐面向课程/毕设展示的版本路线、演示脚本、README 入口、APK 归档和更完整的 Compose 测试覆盖，明显提升交付完整度，但没有改变核心模型或检测架构。
+- 后续事项：
+  - 若需要把 `connectedDebugAndroidTest` 作为 v4.1.0 通过证据，应在手机解锁、关闭锁屏 Bouncer 并允许 BlindAssist/测试包后台运行后重跑，或改用干净的 USB 真机/模拟器执行。
+  - 后续正式答辩材料可继续补充截图、讲解词或 PPT 成稿，但应保持与真实版本日志、APK 归档和验证结果一致。
+
+### v4.1.0 展示交付改动代码检查
+
+- 时间：2026-05-18 23:14:38 +08:00
+- 执行者：violjjet
+- 类型：分析 / 测试 / 构建 / 文档一致性检查
+- 修改范围：
+  - `README.md`
+  - `CHANGELOG.md`
+  - `DEMO_GUIDE.md`
+  - `idea.md`
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `app/src/debug/AndroidManifest.xml`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按代码审查方式检查当前未提交的 v4.1.0 展示交付改动，重点查看 Compose 展示中心、Compose 仪器测试、版本号、README、CHANGELOG、DEMO_GUIDE、idea 记录和 APK 归档状态。
+  - 未修改业务代码；本次只补充本条开发日志，记录分析结论、验证命令和遗留问题。
+  - 确认工作区已有未提交改动：`README.md`、`app/build.gradle.kts`、`BlindAssistComposeTest.kt`、`app/src/debug/AndroidManifest.xml`、`BlindAssistApp.kt`、`idea.md`，以及未跟踪的 `CHANGELOG.md`、`DEMO_GUIDE.md` 和一个 PPTX 文件；未回滚或清理这些既有改动。
+- 修改原因：
+  - 用户要求“检查一下代码有没有什么问题”，需要基于当前真实工作区状态做代码与验证检查。
+  - v4.1.0 改动涉及用户可见 UI、版本号、仪器测试和展示材料，既要检查是否能构建，也要检查文档、开发日志和 APK 归档是否与真实状态一致。
+- 验证方式：
+  - 已读取并使用 `kotlin-specialist` 与 `android-testing` skill；已读取 `AGENTS.md`，并先运行 `git status --short` 确认当前未提交改动。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，输出两条可用设备连接：`192.168.5.15:38527 device` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已按本仓库已知沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，输出 `BUILD SUCCESSFUL in 21s`，43 个 Gradle task 中 8 个执行、35 个 up-to-date。
+  - 已按本仓库已知沙箱限制直接提权运行：`$env:ANDROID_SERIAL='adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon`，输出 `Starting 4 tests on SM-S9280 - 16` 后失败。
+  - `connectedDebugAndroidTest` 失败详情：`settingsScreenChangesFeedbackDetailControls`、`mainShellBottomNavigationSwitchesTopLevelPages`、`showcaseCenterExposesDemoAndOnboardingActions`、`showcaseStartDemoUsesExistingCameraEntryPath` 四个测试均失败，核心错误均为 `java.lang.IllegalStateException: No compose hierarchies found in the app`。
+  - 已检查 `releases/apk`，未找到 v4.1.0 APK 归档文件；当前 `README.md` 又写有 v4.1.0 debug APK 已补存和安装结果记录，因此文档状态与真实文件状态不一致。
+- 分析结论：
+  - JVM 单元测试和 debug APK 构建通过，说明当前 v4.1.0 代码没有编译层面的硬错误。
+  - Compose 仪器测试仍未正确挂载 Compose hierarchy，新增测试覆盖目前不能作为通过证据；需要继续修复测试宿主或 ComposeTestRule 启动方式。
+  - `README.md`、`CHANGELOG.md`、`idea.md` 对 v4.1.0 完成状态、验证状态和 APK 归档状态的表述不完全一致；在真正完成仪器测试、APK 归档和安装前，不宜把 README 写成已全部完成。
+- 版本判断：
+  - 本次为分析和验证记录，不改变功能、模型、权限、架构或版本号。
+  - 当前代码中的版本号仍为 `v4.1.0` / `versionCode=17`，但本次检查本身不构成新的版本更新，也未归档新的版本 APK。
+- 后续事项：
+  - 优先修复 `BlindAssistComposeTest.kt` 的 Compose hierarchy 挂载问题，可考虑回到 `createAndroidComposeRule<ComposeTestActivity>()` 并在 Activity 启动后设置内容，或采用稳定的测试宿主模式验证 `setContent` 时序。
+  - 修复后重新运行 `:app:connectedDebugAndroidTest`，再同步更新 `README.md`、`CHANGELOG.md`、`idea.md` 和 v4.1.0 APK 归档记录。
+
 ### v3.6.0 Compose 仪器测试 Process crashed 修复
 
 - 时间：2026-05-18 21:52:10 +08:00

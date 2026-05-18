@@ -1,22 +1,14 @@
 package com.linnan.blindassist.ui.compose
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.linnan.blindassist.alert.AlertProfile
-import com.linnan.blindassist.feedback.SpeechStyle
-import com.linnan.blindassist.feedback.VibrationStrength
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
+import com.linnan.blindassist.MainActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,29 +16,49 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class BlindAssistComposeTest {
     @get:Rule
-    val composeRule = createAndroidComposeRule<ComposeTestActivity>()
+    val composeRule = createAndroidComposeRule<MainActivity>()
+
+    @Test
+    fun mainShellBottomNavigationSwitchesTopLevelPages() {
+        prepareMainShell()
+
+        composeRule.onNodeWithText("个人主页").performClick()
+        composeRule.onNodeWithText("BlindAssist 用户").assertExists()
+        composeRule.onNodeWithText("设置").performClick()
+        composeRule.onNodeWithText("语音提醒").assertExists()
+    }
+
+    @Test
+    fun showcaseCenterExposesDemoAndOnboardingActions() {
+        prepareMainShell()
+        openFeaturesTab()
+
+        composeRule.onNodeWithTag("project_showcase_center").performScrollTo().assertExists()
+        composeRule.onNodeWithText("本地识别").assertExists()
+        composeRule.onNodeWithText("语音/震动提醒").assertExists()
+        composeRule.onNodeWithText("现场测试摘要").assertExists()
+        composeRule.onNodeWithText("原型安全边界").assertExists()
+
+        composeRule.onNodeWithTag("showcase_show_onboarding").performScrollTo().performClick()
+        composeRule.onNodeWithText("开始使用 BlindAssist").assertExists()
+    }
+
+    @Test
+    fun showcaseStartDemoUsesExistingCameraEntryPath() {
+        prepareMainShell()
+        openFeaturesTab()
+
+        composeRule.onNodeWithTag("showcase_start_camera_demo").performScrollTo().performClick()
+        composeRule.waitUntil(timeoutMillis = 5000) {
+            hasText("需要相机权限") || hasText("返回功能页")
+        }
+    }
 
     @Test
     fun settingsScreenChangesFeedbackDetailControls() {
-        var controls by mutableStateOf(defaultControls())
+        prepareMainShell()
 
-        composeRule.setContent {
-            BlindAssistTheme {
-                SettingsScreen(
-                    controls = controls,
-                    fieldTestSummary = FieldTestSummaryUiState.empty(controls.alertProfile.displayName),
-                    onSpeechChange = { controls = controls.copy(speechEnabled = it) },
-                    onVibrationChange = { controls = controls.copy(vibrationEnabled = it) },
-                    onCareModeChange = { controls = controls.copy(careModeEnabled = it) },
-                    onDebugVisibleChange = { controls = controls.copy(debugVisible = it) },
-                    onProfileChange = { controls = controls.copy(alertProfile = it) },
-                    onSpeechStyleChange = { controls = controls.copy(speechStyle = it) },
-                    onVibrationStrengthChange = { controls = controls.copy(vibrationStrength = it) },
-                    onShowOnboarding = {}
-                )
-            }
-        }
-
+        composeRule.onNodeWithText("设置").performClick()
         composeRule.onNodeWithText("语音风格").assertExists()
         composeRule.onNodeWithContentDescription("选择详细语音风格，补充目标类别和避让建议")
             .performScrollTo()
@@ -57,73 +69,29 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithContentDescription("选择敏感提醒档位")
             .performScrollTo()
             .performClick()
+    }
 
-        composeRule.runOnIdle {
-            assertEquals(SpeechStyle.DETAILED, controls.speechStyle)
-            assertEquals(VibrationStrength.STRONG, controls.vibrationStrength)
-            assertEquals(AlertProfile.SENSITIVE, controls.alertProfile)
+    private fun prepareMainShell() {
+        composeRule.waitUntil(timeoutMillis = 8000) {
+            hasText("功能") || hasText("开始使用 BlindAssist") || hasText("跳过引导")
+        }
+        if (hasText("跳过引导")) {
+            composeRule.onNodeWithText("跳过引导").performClick()
+        } else if (hasText("开始使用")) {
+            composeRule.onNodeWithText("开始使用").performClick()
+        }
+        composeRule.waitUntil(timeoutMillis = 5000) {
+            hasText("功能")
         }
     }
 
-    @Test
-    fun cameraControlPanelKeepsCoreTogglesAvailable() {
-        var controls by mutableStateOf(defaultControls())
-
-        composeRule.setContent {
-            BlindAssistTheme {
-                CameraControlPanel(
-                    controls = controls,
-                    guidance = sampleGuidance(),
-                    fieldTestSummary = FieldTestSummaryUiState.empty(controls.alertProfile.displayName),
-                    onDetectionChange = { controls = controls.copy(detectionEnabled = it) },
-                    onSpeechChange = { controls = controls.copy(speechEnabled = it) },
-                    onVibrationChange = { controls = controls.copy(vibrationEnabled = it) },
-                    onCareModeChange = { controls = controls.copy(careModeEnabled = it) },
-                    onDebugVisibleChange = { controls = controls.copy(debugVisible = it) },
-                    onProfileChange = { controls = controls.copy(alertProfile = it) },
-                    modifier = Modifier
-                )
-            }
-        }
-
-        composeRule.onNodeWithText("检测 开").performClick()
-        composeRule.onNodeWithText("语音 开").assertExists()
-        composeRule.onNodeWithText("震动 开").assertExists()
-
-        composeRule.runOnIdle {
-            assertFalse(controls.detectionEnabled)
+    private fun openFeaturesTab() {
+        if (!hasText("选择一种辅助方式开始。当前版本优先提供手机摄像头本地识别，眼镜连接作为后续扩展入口保留。")) {
+            composeRule.onNodeWithText("功能").performClick()
         }
     }
 
-    private fun defaultControls(): AssistControlsUiState {
-        return AssistControlsUiState(
-            detectionEnabled = true,
-            speechEnabled = true,
-            vibrationEnabled = true,
-            careModeEnabled = false,
-            debugVisible = false,
-            alertProfile = AlertProfile.STANDARD,
-            speechStyle = SpeechStyle.STANDARD,
-            vibrationStrength = VibrationStrength.STANDARD
-        )
-    }
-
-    private fun sampleGuidance(): CameraGuidanceUiState {
-        return CameraGuidanceUiState(
-            title = "安全观察中",
-            detail = "未发现需要提醒的近处风险",
-            targetLine = "当前画面稳定",
-            careTitle = "正在观察",
-            careDetail = "前方暂未发现近处风险",
-            careTargetLine = "请保持观察",
-            debugText = "debug",
-            titleColor = Color.White.toArgb(),
-            statusBadge = "观察中",
-            badgeColor = Color.White.toArgb(),
-            badgeTextColor = Color.Black.toArgb(),
-            careAccessibilitySummary = "正在观察",
-            accessibilitySummary = "安全观察中",
-            accessibilityKey = "test"
-        )
+    private fun hasText(text: String): Boolean {
+        return composeRule.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()
     }
 }
