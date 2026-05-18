@@ -67,8 +67,9 @@
   - UI 通过 `collectAsStateWithLifecycle()` 订阅状态。
 - 风险：当前项目体量不大，先不急于引入 Hilt、多模块或复杂仓库层；避免为了架构而架构。
 - 已完成范围：`v3.5.0` 已落地轻量首阶段。Compose 可观察的壳层状态、设置偏好状态、弹窗状态、相机激活状态、模型状态、引导状态和现场测试摘要已集中到 `BlindAssistViewModel`，通过只读 `StateFlow` 暴露，并由 Compose 使用 `collectAsStateWithLifecycle()` 订阅。
-- 剩余范围：更深层的相机启动流程、权限事件建模、检测会话编排和未来可能的 repository/use case 分层仍保留为后续方向。本阶段刻意不引入 Hilt、多模块、DataStore、Room、新权限、联网或定位。
-- 实现版本：`v3.5.0` / `versionCode=15`。
+- 已完成范围补充：`v4.8.0` 在不引入 Hilt、多模块、DataStore、Room、新权限、联网或定位的前提下，继续拆出 `CameraXFrameSource`、`ObjectDetector`、`AssistSessionCoordinator`、`FpsTracker`、`CameraGuidanceMapper` 和 `FieldTestSummaryMapper`，让 `MainActivity` 从总控类变成更薄的生命周期和权限入口。
+- 剩余范围：更深层的权限事件状态机、未来设备来源切换和 repository/use case 分层仍保留为后续方向。
+- 实现版本：`v3.5.0` / `versionCode=15`；补充升级版本 `v4.8.0` / `versionCode=20`。
 - 完成时间：2026-05-18 19:38:19 +08:00。
 - 验证证据：已运行完整 Gradle 验证并通过；debug APK 已归档到 `releases/apk/BlindAssist-v3.5.0-debug-20260518-193819.apk`，并通过 ADB over Wi-Fi 安装到 `SM_S9280`，包信息核对为 `versionCode=15`、`versionName=3.5.0`。
 

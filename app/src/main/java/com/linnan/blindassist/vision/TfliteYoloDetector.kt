@@ -7,6 +7,7 @@ import android.util.Log
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
+import com.linnan.blindassist.session.DetectorMetrics
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.gpu.CompatibilityList
@@ -26,13 +27,13 @@ class TfliteYoloDetector(
     private val inputSize: Int = INPUT_SIZE,
     private val confidenceThreshold: Float = CONFIDENCE_THRESHOLD,
     private val iouThreshold: Float = IOU_THRESHOLD
-) {
+) : ObjectDetector {
     val labels: List<String> = context.assets.open(labelsAssetName)
         .bufferedReader()
         .useLines { lines -> lines.map { it.trim() }.filter { it.isNotEmpty() }.toList() }
 
-    val isReady: Boolean get() = interpreter != null
-    val statusMessage: String
+    override val isReady: Boolean get() = interpreter != null
+    override val statusMessage: String
         get() = loadError?.message ?: runtimeWarning ?: if (isReady) "模型已加载" else "模型未加载"
     var lastPreprocessMs: Long = 0L
         private set
@@ -84,8 +85,13 @@ class TfliteYoloDetector(
         }
     }
 
-    fun detect(bitmap: Bitmap): List<Detection> {
-        val localInterpreter = interpreter ?: return emptyList()
+    override fun detect(bitmap: Bitmap): DetectorFrameResult {
+        val frameSize = FrameSize(bitmap.width, bitmap.height)
+        val localInterpreter = interpreter ?: return DetectorFrameResult(
+            detections = emptyList(),
+            frameSize = frameSize,
+            metrics = currentMetrics()
+        )
         val totalStart = System.nanoTime()
         val preprocessStart = totalStart
         val input = preprocessor.prepare(bitmap)
@@ -111,14 +117,29 @@ class TfliteYoloDetector(
         )
         lastPostprocessMs = elapsedMs(postprocessStart)
         lastTotalDetectMs = elapsedMs(totalStart)
-        return detections
+        return DetectorFrameResult(
+            detections = detections,
+            frameSize = frameSize,
+            metrics = currentMetrics()
+        )
     }
 
-    fun close() {
+    override fun close() {
         interpreter?.close()
         interpreter = null
         gpuDelegate?.close()
         gpuDelegate = null
+    }
+
+    private fun currentMetrics(): DetectorMetrics {
+        return DetectorMetrics(
+            totalMs = lastTotalDetectMs,
+            preprocessMs = lastPreprocessMs,
+            inferenceMs = lastInferenceMs,
+            postprocessMs = lastPostprocessMs,
+            fps = 0f,
+            modelStatus = statusMessage
+        )
     }
 
     private fun maybeAttachGpuDelegate(options: Interpreter.Options) {

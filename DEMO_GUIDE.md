@@ -27,8 +27,8 @@
 预期当前演示版本为：
 
 ```text
-versionCode=19
-versionName=4.3.0
+versionCode=20
+versionName=4.8.0
 ```
 
 ## 3. 推荐演示顺序

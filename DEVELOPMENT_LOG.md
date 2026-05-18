@@ -4,6 +4,59 @@
 
 ## 2026-05-19
 
+### v4.8.0 单模块质量升级
+
+- 时间：2026-05-19 00:53:21 +08:00
+- 执行者：violjjet
+- 类型：重构 / 架构 / 健壮性 / 测试 / 构建 / 版本归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/camera/`
+  - `app/src/main/java/com/linnan/blindassist/feedback/`
+  - `app/src/main/java/com/linnan/blindassist/session/`
+  - `app/src/main/java/com/linnan/blindassist/ui/`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/`
+  - `app/src/main/java/com/linnan/blindassist/vision/`
+  - `app/src/test/java/com/linnan/blindassist/session/`
+  - `app/src/test/java/com/linnan/blindassist/ui/`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `DEMO_GUIDE.md`
+  - `NEXT_MAJOR_UPDATE_PLAN.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v4.8.0-debug-20260519-005155.apk`
+- 修改内容：
+  - 按用户确认的“单模块大重构 + 一个大版本”方案实施 v4.8.0 质量升级，保留 v4.3.0 已完成的 Features 页展示中心移除结果。
+  - 新增 `ObjectDetector` 和 `DetectorFrameResult`，让检测器一次返回检测列表、帧尺寸和性能指标，Activity 不再读取 `last*Ms` 字段拼装帧结果。
+  - 新增 `FrameSource` 和 `CameraXFrameSource`，把 CameraX provider、preview、analysis、目标分辨率、backpressure 和 `ImageProxy` 关闭逻辑从 `MainActivity` 中拆出。
+  - 新增 `FeedbackGateway`、`AssistSessionCoordinator` 和 `FpsTracker`，把每帧风险评估、反馈决策、会话摘要和 FPS 统计集中到可单元测试的运行编排层。
+  - 新增 `CameraGuidanceMapper` 和 `FieldTestSummaryMapper`，把相机指导文案、风险解释、调试文本、现场测试摘要和可访问性摘要从 Activity 中拆出。
+  - `MainActivity` 从约 755 行缩减到约 351 行，主要保留生命周期、权限入口、Compose 绑定、相机视图 ready 回调、用户设置转发和性能日志。
+  - Compose 侧新增 `UiStateModels.kt` 和 `BlindAssistDialogs.kt`，把 UI state 数据类和弹窗组件从大文件中拆出，降低后续继续按屏幕拆分的阻力。
+  - 新增 JVM 测试覆盖 `AssistSessionCoordinator`、`FpsTracker`、`CameraGuidanceMapper` 和 `FieldTestSummaryMapper`，验证高风险、未稳定中风险、held alert、冷却、反馈关闭、场景透传、FPS 统计、权限提示和摘要文本。
+  - 将应用版本从 `v4.3.0` / `versionCode=19` 提升到 `v4.8.0` / `versionCode=20`，并同步 README、CHANGELOG、演示指南、下一步计划和 idea 记录。
+- 修改原因：
+  - 用户要求极大改善项目的可维护性、健壮性和可拓展性；此前静态分析指出最大痛点是 `MainActivity` 同时承担 CameraX、检测调度、反馈编排和 UI 文案映射职责。
+  - 单模块内拆分可以显著提升代码边界和测试性，同时不引入 Hilt、多模块、新权限、联网、蓝牙、定位、Room 或 DataStore，符合当前课程设计/毕设原型的风险控制。
+  - `FrameSource` 和 `ObjectDetector` 抽象也为后续手机摄像头、外部相机、眼镜设备或 debug-only 素材回放进入同一检测管线留下扩展口。
+- 验证方式：
+  - 已读取并使用 `android-architecture` 和 `android-testing` skills；本次坚持单模块、轻量依赖和 JVM 单测优先。
+  - 已运行 `git status --short`，确认开始时只有一个无关未跟踪 PPTX 文件，本次未纳入处理。
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 第一轮验证结果：命令退出码 `0`，`BUILD SUCCESSFUL in 44s`。
+  - 版本和文档同步后第二轮运行同一 Gradle 验证命令，命令退出码 `0`，说明 v4.8.0 单元测试和 debug APK 构建通过。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v4.8.0-debug-20260519-005155.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,031,020 bytes`，复制时间约 `2026-05-19 00:51 +08:00`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，最初显示 `192.168.5.15:38527 device` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已尝试运行 connected instrumentation：使用 mDNS serial 时 Gradle 报 `Connected device with serial 'adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp' not found!`；改用 `192.168.5.15:38527` 后 Gradle 报 `Device is OFFLINE`。
+  - 再次运行 `adb devices` 后仅剩 `192.168.5.15:38527 offline`，因此本轮未完成 `connectedDebugAndroidTest` 和手机安装核对。
+- 版本判断：
+  - 本次属于大更新，从 `v4.3.0` 提升到 `v4.8.0`。理由是它显著调整内部架构边界、提升测试性和可扩展性，但不改变产品形态、检测模型、核心风险语义或权限范围。
+- 后续事项：
+  - 若设备重新在线，可继续安装 `app/build/outputs/apk/debug/app-debug.apk` 或归档 APK，并核对 `versionCode=20`、`versionName=4.8.0`。
+  - 后续若继续增强拓展性，可在现有 `FrameSource` 基础上实现 debug-only 素材回放或眼镜设备模拟输入，而无需改动 `AssistSessionCoordinator` 和风险规则层。
+
 ### v4.3.0 移除项目展示中心
 
 - 时间：2026-05-19 00:31:09 +08:00

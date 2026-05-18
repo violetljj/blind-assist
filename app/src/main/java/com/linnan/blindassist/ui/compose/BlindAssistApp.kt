@@ -56,7 +56,6 @@ import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.Vibration
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VolumeUp
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -107,86 +106,6 @@ import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.ui.DetectionOverlayView
 import kotlinx.coroutines.delay
-
-data class AssistControlsUiState(
-    val detectionEnabled: Boolean,
-    val speechEnabled: Boolean,
-    val vibrationEnabled: Boolean,
-    val careModeEnabled: Boolean,
-    val debugVisible: Boolean,
-    val alertProfile: AlertProfile,
-    val assistScenario: AssistScenario,
-    val speechStyle: SpeechStyle,
-    val vibrationStrength: VibrationStrength
-)
-
-data class CameraGuidanceUiState(
-    val title: String,
-    val detail: String,
-    val targetLine: String,
-    val careTitle: String,
-    val careDetail: String,
-    val careTargetLine: String,
-    val debugText: String,
-    val scenarioName: String,
-    val explanationHeadline: String,
-    val explanationDetail: String,
-    val careExplanation: String,
-    val titleColor: Int,
-    val statusBadge: String,
-    val badgeColor: Int,
-    val badgeTextColor: Int,
-    val careAccessibilitySummary: String,
-    val accessibilitySummary: String,
-    val accessibilityKey: String
-) {
-    companion object {
-        fun initial(modelStatus: String, scenarioName: String = AssistScenario.GENERAL.displayName): CameraGuidanceUiState {
-            return CameraGuidanceUiState(
-                title = "初始化中",
-                detail = "正在准备本地检测模型",
-                targetLine = "模型状态：$modelStatus",
-                careTitle = "正在准备",
-                careDetail = "识别模型正在启动，请稍等",
-                careTargetLine = "进入手机摄像头后会开始观察前方",
-                debugText = "模型状态：$modelStatus",
-                scenarioName = scenarioName,
-                explanationHeadline = "暂无风险解释",
-                explanationDetail = "进入相机会话后会显示最近一次提醒或暂不提醒的原因。",
-                careExplanation = "进入相机会话后会说明提醒原因",
-                titleColor = 0xFFFFFFFF.toInt(),
-                statusBadge = "准备中",
-                badgeColor = rgb(206, 221, 235),
-                badgeTextColor = rgb(10, 22, 32),
-                careAccessibilitySummary = "正在准备，识别模型正在启动",
-                accessibilitySummary = "初始化中，正在准备本地检测模型",
-                accessibilityKey = "initial"
-            )
-        }
-
-        private fun rgb(red: Int, green: Int, blue: Int): Int {
-            return (0xFF shl 24) or (red shl 16) or (green shl 8) or blue
-        }
-    }
-}
-
-data class FieldTestSummaryUiState(
-    val title: String,
-    val detailText: String,
-    val statusText: String,
-    val accessibilityText: String
-) {
-    companion object {
-        fun empty(profileName: String, scenarioName: String): FieldTestSummaryUiState {
-            return FieldTestSummaryUiState(
-                title = "现场测试摘要",
-                detailText = "运行时长：尚未开始\n最近0帧：风险0次，迫近0次，高/中/低/无 0/0/0/0\n提醒触发：语音0次，震动0次\n平均性能：FPS 0.0，推理 0ms\n当前档位：$profileName\n当前场景：$scenarioName\n最近解释：暂无风险解释",
-                statusText = "等待相机会话",
-                accessibilityText = "现场测试摘要，尚未开始，相机会话运行后会显示运行时长、风险次数、提醒次数、平均性能、当前档位、当前场景和最近解释。"
-            )
-        }
-    }
-}
 
 @Composable
 fun BlindAssistTheme(content: @Composable () -> Unit) {
@@ -1507,69 +1426,6 @@ private fun CompactAction(
     }
 }
 
-@Composable
-fun GlassesPlaceholderDialog(
-    onDismiss: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text("知道了")
-            }
-        },
-        icon = { Icon(Icons.Rounded.Bluetooth, contentDescription = null, tint = BaSky) },
-        title = { Text("眼镜设备连接") },
-        text = {
-            Text("该入口为未来蓝牙眼镜或外接视觉设备预留。当前版本不会扫描蓝牙、不会联网，也不会申请额外权限。")
-        }
-    )
-}
-
-@Composable
-fun CameraPermissionExplanationDialog(
-    onContinue: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            Button(onClick = onContinue, modifier = Modifier.heightIn(min = 48.dp)) {
-                Text("继续并授权")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = 48.dp)) {
-                Text("暂不打开")
-            }
-        },
-        icon = { Icon(Icons.Rounded.CameraAlt, contentDescription = null, tint = BaMint) },
-        title = { Text("需要相机权限") },
-        text = {
-            Text("相机仅用于手机端实时识别。BlindAssist 不上传画面、不联网、不保存视频；语音和震动提醒只作为辅助参考，不能替代盲杖、导盲犬或人工判断。")
-        }
-    )
-}
-
-@Composable
-fun CameraPermissionDeniedDialog(
-    onDismiss: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = 48.dp)) {
-                Text("知道了")
-            }
-        },
-        icon = { Icon(Icons.Rounded.Shield, contentDescription = null, tint = BaAmber) },
-        title = { Text("相机权限未开启") },
-        text = {
-            Text("未获得相机权限时，手机摄像头辅助无法启动。你仍可留在主界面查看设置，稍后再次点击“使用手机摄像头”重新授权。")
-        }
-    )
-}
-
 private enum class BottomTab(val label: String, val icon: ImageVector) {
     Features("功能", Icons.Rounded.Home),
     Profile("个人主页", Icons.Rounded.Person),
@@ -1613,9 +1469,9 @@ private fun enabledText(enabled: Boolean): String = if (enabled) "已开启" els
 private val BaNight = Color(0xFF061115)
 private val BaPanel = Color(0xFF111D23)
 private val BaPanelSoft = Color(0xFF1C2D34)
-private val BaMint = Color(0xFF71F6C5)
-private val BaSky = Color(0xFF8AC7FF)
-private val BaAmber = Color(0xFFFFD66B)
+internal val BaMint = Color(0xFF71F6C5)
+internal val BaSky = Color(0xFF8AC7FF)
+internal val BaAmber = Color(0xFFFFD66B)
 private val BaDanger = Color(0xFFFF6B7E)
 private val BaText = Color(0xFFEAF3F4)
 private val BaTextMuted = Color(0xFFAFC0C6)
@@ -1643,7 +1499,7 @@ private fun FeaturePreview() {
     BlindAssistTheme {
         FeatureScreen(
             modelStatus = "YOLO11n ready",
-            appVersion = "4.3.0",
+            appVersion = "4.8.0",
             onOpenCamera = {},
             onGlassesPlaceholder = {}
         )

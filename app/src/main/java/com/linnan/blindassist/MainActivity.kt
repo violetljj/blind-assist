@@ -3,21 +3,12 @@ package com.linnan.blindassist
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.util.Size
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
-import androidx.camera.core.resolutionselector.AspectRatioStrategy
-import androidx.camera.core.resolutionselector.ResolutionSelector
-import androidx.camera.core.resolutionselector.ResolutionStrategy
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.runtime.getValue
 import androidx.core.content.ContextCompat
@@ -25,31 +16,27 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
+import com.linnan.blindassist.camera.CameraXFrameSource
+import com.linnan.blindassist.camera.FrameSource
 import com.linnan.blindassist.feedback.FeedbackController
-import com.linnan.blindassist.feedback.FeedbackDecision
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
-import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.preferences.UserPreferences
-import com.linnan.blindassist.risk.ProximityBand
-import com.linnan.blindassist.risk.RiskDirection
-import com.linnan.blindassist.risk.RiskLevel
-import com.linnan.blindassist.session.AssistDisplayFormatter
-import com.linnan.blindassist.session.AssistEngine
-import com.linnan.blindassist.session.DetectorMetrics
-import com.linnan.blindassist.session.RiskExplanation
-import com.linnan.blindassist.session.SessionSummary
+import com.linnan.blindassist.risk.RiskResult
+import com.linnan.blindassist.session.AssistFrameResult
+import com.linnan.blindassist.session.AssistSessionCoordinator
 import com.linnan.blindassist.ui.BlindAssistViewModel
+import com.linnan.blindassist.ui.CameraGuidanceMapper
 import com.linnan.blindassist.ui.DetectionOverlayView
+import com.linnan.blindassist.ui.FieldTestSummaryMapper
 import com.linnan.blindassist.ui.compose.BlindAssistApp
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
-import com.linnan.blindassist.ui.compose.FieldTestSummaryUiState
+import com.linnan.blindassist.ui.compose.CameraPermissionDeniedDialog
+import com.linnan.blindassist.ui.compose.CameraPermissionExplanationDialog
 import com.linnan.blindassist.ui.compose.GlassesPlaceholderDialog
+import com.linnan.blindassist.vision.ObjectDetector
 import com.linnan.blindassist.vision.TfliteYoloDetector
-import com.linnan.blindassist.vision.toArgbBitmap
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : ComponentActivity() {
@@ -59,27 +46,19 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var previewView: PreviewView
     private lateinit var overlayView: DetectionOverlayView
-    private lateinit var detector: TfliteYoloDetector
-    private lateinit var assistEngine: AssistEngine
+    private lateinit var detector: ObjectDetector
+    private lateinit var frameSource: FrameSource
     private lateinit var feedbackController: FeedbackController
+    private lateinit var coordinator: AssistSessionCoordinator
     private lateinit var userPreferences: UserPreferences
-    private lateinit var cameraExecutor: ExecutorService
 
-    private var cameraProvider: ProcessCameraProvider? = null
-    private var cameraStarting = false
-    private var cameraStarted = false
     private val isProcessing = AtomicBoolean(false)
-
-    private var detectionEnabled = true
-    private var frameCount = 0
-    private var fpsWindowStartMs = System.currentTimeMillis()
-    private var currentFps = 0f
     private var lastPerfLogAtMs = 0L
+    private var pendingCameraOpen = false
+    private var detectionEnabled = true
     private var careModeEnabled = false
     private var alertProfile = AlertProfile.STANDARD
     private var assistScenario = AssistScenario.GENERAL
-
-    private var pendingCameraOpen = false
 
     private val requestCameraPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -89,7 +68,7 @@ class MainActivity : ComponentActivity() {
             activateCameraExperience()
         } else if (!granted) {
             pendingCameraOpen = false
-            appViewModel.onCameraPermissionDenied(Guidance.permissionDenied())
+            appViewModel.onCameraPermissionDenied(CameraGuidanceMapper.permissionDenied())
         }
     }
 
@@ -97,11 +76,11 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        detector = TfliteYoloDetector(this)
-        assistEngine = AssistEngine()
-        feedbackController = FeedbackController(this)
         userPreferences = UserPreferences(this)
-        cameraExecutor = Executors.newSingleThreadExecutor()
+        detector = TfliteYoloDetector(this)
+        feedbackController = FeedbackController(this)
+        coordinator = AssistSessionCoordinator(feedbackGateway = feedbackController)
+        frameSource = CameraXFrameSource(this, this)
 
         val initialControls = appViewModel.uiState.value.controls
         feedbackController.speechEnabled = initialControls.speechEnabled
@@ -111,11 +90,10 @@ class MainActivity : ComponentActivity() {
         careModeEnabled = initialControls.careModeEnabled
         alertProfile = initialControls.alertProfile
         assistScenario = initialControls.assistScenario
-        renderUi(Guidance.initial(detector.statusMessage, assistScenario))
+        renderUi(CameraGuidanceMapper.initial(detector.statusMessage, assistScenario))
 
         setContent {
             val uiState by appViewModel.uiState.collectAsStateWithLifecycle()
-
             BlindAssistTheme {
                 BlindAssistApp(
                     controls = uiState.controls,
@@ -127,14 +105,14 @@ class MainActivity : ComponentActivity() {
                     showOnboarding = uiState.showOnboarding,
                     onOpenCamera = ::openCameraExperience,
                     onCloseCamera = ::closeCameraExperience,
-                    onCompleteOnboarding = ::completeOnboarding,
+                    onCompleteOnboarding = appViewModel::onCompleteOnboarding,
                     onShowOnboarding = appViewModel::onShowOnboarding,
                     onGlassesPlaceholder = appViewModel::onShowGlassesDialog,
                     onDetectionChange = ::setDetectionEnabled,
                     onSpeechChange = ::setSpeechEnabled,
                     onVibrationChange = ::setVibrationEnabled,
                     onCareModeChange = ::setCareModeEnabled,
-                    onDebugVisibleChange = ::setDebugVisible,
+                    onDebugVisibleChange = appViewModel::onDebugVisibleChange,
                     onProfileChange = ::setAlertProfile,
                     onScenarioChange = ::setAssistScenario,
                     onSpeechStyleChange = ::setSpeechStyle,
@@ -145,15 +123,13 @@ class MainActivity : ComponentActivity() {
                     GlassesPlaceholderDialog(onDismiss = appViewModel::onDismissGlassesDialog)
                 }
                 if (uiState.showCameraPermissionDialog) {
-                    com.linnan.blindassist.ui.compose.CameraPermissionExplanationDialog(
+                    CameraPermissionExplanationDialog(
                         onContinue = ::requestCameraPermissionAfterExplanation,
                         onDismiss = appViewModel::onDismissCameraPermissionDialog
                     )
                 }
                 if (uiState.showPermissionDeniedDialog) {
-                    com.linnan.blindassist.ui.compose.CameraPermissionDeniedDialog(
-                        onDismiss = appViewModel::onDismissPermissionDeniedDialog
-                    )
+                    CameraPermissionDeniedDialog(onDismiss = appViewModel::onDismissPermissionDeniedDialog)
                 }
             }
         }
@@ -162,7 +138,7 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         stopCamera()
-        cameraExecutor.shutdown()
+        frameSource.shutdown()
         detector.close()
         feedbackController.shutdown()
     }
@@ -182,14 +158,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun activateCameraExperience() {
-        assistEngine.startSession()
+        coordinator.startSession()
         appViewModel.activateCamera(
-            fieldTestSummary = assistEngine.sessionSummary().toFieldTestUi(
-                active = true,
-                profile = alertProfile,
-                scenario = assistScenario
-            ),
-            guidance = Guidance.waiting(detector.statusMessage, assistScenario),
+            fieldTestSummary = currentFieldTestSummary(active = true),
+            guidance = CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario),
             modelStatus = detector.statusMessage
         )
         startCameraIfReady()
@@ -199,27 +171,17 @@ class MainActivity : ComponentActivity() {
         pendingCameraOpen = false
         stopCamera()
         appViewModel.closeCamera(
-            fieldTestSummary = assistEngine.sessionSummary().toFieldTestUi(
-                active = false,
-                profile = alertProfile,
-                scenario = assistScenario
-            ),
-            guidance = Guidance.initial(detector.statusMessage, assistScenario),
+            fieldTestSummary = currentFieldTestSummary(active = false),
+            guidance = CameraGuidanceMapper.initial(detector.statusMessage, assistScenario),
             modelStatus = detector.statusMessage
         )
-        assistEngine.reset()
-    }
-
-    private fun completeOnboarding() {
-        appViewModel.onCompleteOnboarding()
+        coordinator.reset()
     }
 
     private fun onCameraViewsReady(preview: PreviewView, overlay: DetectionOverlayView) {
         previewView = preview
         overlayView = overlay
         overlayView.setCareMode(careModeEnabled)
-        cameraStarted = false
-        cameraStarting = false
         if (appViewModel.uiState.value.cameraActive) {
             startCameraIfReady()
         }
@@ -228,73 +190,29 @@ class MainActivity : ComponentActivity() {
     private fun startCameraIfReady() {
         if (!appViewModel.uiState.value.cameraActive || !::previewView.isInitialized) return
         if (!hasCameraPermission()) {
-            renderUi(Guidance.permissionDenied())
+            renderUi(CameraGuidanceMapper.permissionDenied())
             return
         }
-        if (cameraStarted || cameraStarting) return
-
-        cameraStarting = true
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        cameraProviderFuture.addListener({
-            try {
-                val provider = cameraProviderFuture.get()
-                cameraProvider = provider
-                val preview = Preview.Builder().build().also {
-                    it.setSurfaceProvider(previewView.surfaceProvider)
-                }
-                val resolutionSelector = ResolutionSelector.Builder()
-                    .setAspectRatioStrategy(AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY)
-                    .setResolutionStrategy(
-                        ResolutionStrategy(
-                            Size(ANALYSIS_WIDTH, ANALYSIS_HEIGHT),
-                            ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER
-                        )
-                    )
-                    .build()
-                val analysis = ImageAnalysis.Builder()
-                    .setResolutionSelector(resolutionSelector)
-                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                    .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
-                    .build()
-                    .also { analyzer ->
-                        analyzer.setAnalyzer(cameraExecutor) { imageProxy ->
-                            try {
-                                analyzeFrame(imageProxy.toArgbBitmap())
-                            } finally {
-                                imageProxy.close()
-                            }
-                        }
-                    }
-
-                provider.unbindAll()
-                provider.bindToLifecycle(
-                    this,
-                    CameraSelector.DEFAULT_BACK_CAMERA,
-                    preview,
-                    analysis
-                )
-                cameraStarted = true
-                renderUi(Guidance.waiting(detector.statusMessage, assistScenario))
-            } catch (error: Exception) {
+        frameSource.start(
+            previewView = previewView,
+            onFrame = ::processFrameBitmap,
+            onStarted = { renderUi(CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario)) },
+            onError = { error ->
                 Log.e(PERF_TAG, "Camera start failed", error)
-                renderUi(Guidance.cameraError(error.message ?: "未知错误"))
-            } finally {
-                cameraStarting = false
+                renderUi(CameraGuidanceMapper.cameraError(error.message ?: "未知错误"))
             }
-        }, ContextCompat.getMainExecutor(this))
+        )
     }
 
     private fun stopCamera() {
-        cameraProvider?.unbindAll()
-        cameraStarted = false
-        cameraStarting = false
+        frameSource.stop()
         isProcessing.set(false)
         if (::overlayView.isInitialized) {
             overlayView.update(emptyList(), null, null)
         }
     }
 
-    private fun analyzeFrame(bitmap: Bitmap) {
+    private fun processFrameBitmap(bitmap: Bitmap) {
         if (!appViewModel.uiState.value.cameraActive || !detectionEnabled || !detector.isReady) {
             bitmap.recycle()
             return
@@ -305,48 +223,22 @@ class MainActivity : ComponentActivity() {
         }
 
         try {
-            val detections = detector.detect(bitmap)
-            val frameSize = FrameSize(bitmap.width, bitmap.height)
-            val fps = updateFps()
-            val evaluation = assistEngine.evaluate(
-                detections = detections,
-                frameSize = frameSize,
-                profile = alertProfile,
-                scenario = assistScenario,
-                metrics = DetectorMetrics(
-                    totalMs = detector.lastTotalDetectMs,
-                    preprocessMs = detector.lastPreprocessMs,
-                    inferenceMs = detector.lastInferenceMs,
-                    postprocessMs = detector.lastPostprocessMs,
-                    fps = fps,
-                    modelStatus = detector.statusMessage
-                )
-            )
+            val detectorFrame = detector.detect(bitmap)
+            val frameResult = coordinator.processFrame(detectorFrame, alertProfile, assistScenario)
             runOnUiThread {
-                val feedbackDecision = feedbackController.notify(evaluation.stableRisk, alertProfile, assistScenario)
-                val frameResult = assistEngine.completeFeedback(evaluation, feedbackDecision)
-                overlayView.update(detections, frameSize, frameResult.evaluation.stableRisk)
-                renderUi(
-                    Guidance.fromRisk(
-                        rawRisk = frameResult.evaluation.rawRisk,
-                        stableRisk = frameResult.evaluation.stableRisk,
-                        count = detections.size,
-                        detector = detector,
-                        fps = fps,
-                        profile = alertProfile,
-                        scenario = assistScenario,
-                        feedbackDecision = frameResult.feedbackDecision,
-                        explanation = frameResult.explanation
-                    )
+                overlayView.update(
+                    detectorFrame.detections,
+                    detectorFrame.frameSize,
+                    frameResult.evaluation.stableRisk
                 )
-                appViewModel.updateFieldTestSummary(
-                    frameResult.sessionSummary.toFieldTestUi(
-                        active = true,
-                        profile = alertProfile,
-                        scenario = assistScenario
-                    )
-                )
+                renderUi(CameraGuidanceMapper.fromFrameResult(frameResult))
+                appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true))
                 logPerformanceIfNeeded(frameResult)
+            }
+        } catch (error: Throwable) {
+            Log.e(PERF_TAG, "Frame processing failed", error)
+            runOnUiThread {
+                renderUi(CameraGuidanceMapper.cameraError("检测异常：${error.message ?: "未知错误"}"))
             }
         } finally {
             isProcessing.set(false)
@@ -357,30 +249,18 @@ class MainActivity : ComponentActivity() {
     private fun setDetectionEnabled(enabled: Boolean) {
         detectionEnabled = enabled
         appViewModel.onDetectionChange(enabled)
-        if (!enabled) {
-            appViewModel.updateFieldTestSummary(
-                assistEngine.sessionSummary().toFieldTestUi(
-                    active = false,
-                    profile = alertProfile,
-                    scenario = assistScenario
-                )
-            )
-            assistEngine.reset()
+        if (enabled) {
+            coordinator.startSession()
+            appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true))
+            renderUi(CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario))
+            startCameraIfReady()
+        } else {
+            appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = false))
+            coordinator.reset()
             if (::overlayView.isInitialized) {
                 overlayView.update(emptyList(), null, null)
             }
-            renderUi(Guidance.paused())
-        } else {
-            assistEngine.startSession()
-            appViewModel.updateFieldTestSummary(
-                assistEngine.sessionSummary().toFieldTestUi(
-                    active = true,
-                    profile = alertProfile,
-                    scenario = assistScenario
-                )
-            )
-            renderUi(Guidance.waiting(detector.statusMessage, assistScenario))
-            startCameraIfReady()
+            renderUi(CameraGuidanceMapper.paused())
         }
     }
 
@@ -412,53 +292,27 @@ class MainActivity : ComponentActivity() {
         appViewModel.onCareModeChange(enabled)
     }
 
-    private fun setDebugVisible(visible: Boolean) {
-        appViewModel.onDebugVisibleChange(visible)
-    }
-
     private fun setAlertProfile(profile: AlertProfile) {
         alertProfile = profile
         appViewModel.onProfileChange(profile)
-        appViewModel.updateFieldTestSummary(
-            assistEngine.sessionSummary().toFieldTestUi(
-                active = appViewModel.uiState.value.cameraActive,
-                profile = alertProfile,
-                scenario = assistScenario
-            )
-        )
+        appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
     }
 
     private fun setAssistScenario(scenario: AssistScenario) {
         assistScenario = scenario
         appViewModel.onScenarioChange(scenario)
-        appViewModel.updateFieldTestSummary(
-            assistEngine.sessionSummary().toFieldTestUi(
-                active = appViewModel.uiState.value.cameraActive,
-                profile = alertProfile,
-                scenario = assistScenario
-            )
-        )
+        appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
         renderUi(appViewModel.uiState.value.cameraGuidance.copy(scenarioName = scenario.displayName))
     }
 
+    private fun currentFieldTestSummary(active: Boolean) =
+        FieldTestSummaryMapper.fromSummary(coordinator.sessionSummary(), active, alertProfile, assistScenario)
+
     private fun renderUi(snapshot: CameraGuidanceUiState) {
-        val status = if (::detector.isInitialized) detector.statusMessage else appViewModel.uiState.value.modelStatus
-        appViewModel.renderCameraGuidance(snapshot, status)
+        appViewModel.renderCameraGuidance(snapshot, detector.statusMessage)
     }
 
-    private fun updateFps(): Float {
-        frameCount += 1
-        val now = System.currentTimeMillis()
-        val elapsed = now - fpsWindowStartMs
-        if (elapsed >= 1000L) {
-            currentFps = frameCount * 1000f / elapsed.toFloat()
-            frameCount = 0
-            fpsWindowStartMs = now
-        }
-        return currentFps
-    }
-
-    private fun logPerformanceIfNeeded(frameResult: com.linnan.blindassist.session.AssistFrameResult) {
+    private fun logPerformanceIfNeeded(frameResult: AssistFrameResult) {
         val now = System.currentTimeMillis()
         if (now - lastPerfLogAtMs < PERF_LOG_INTERVAL_MS) return
         lastPerfLogAtMs = now
@@ -479,27 +333,8 @@ class MainActivity : ComponentActivity() {
         )
     }
 
-    private fun riskSummary(risk: com.linnan.blindassist.risk.RiskResult): String {
+    private fun riskSummary(risk: RiskResult): String {
         return "${risk.level}/${risk.direction}/${risk.proximity}"
-    }
-
-    private fun SessionSummary.toFieldTestUi(
-        active: Boolean,
-        profile: AlertProfile,
-        scenario: AssistScenario
-    ): FieldTestSummaryUiState {
-        val status = when {
-            active && frameCount > 0 -> "本次相机会话进行中"
-            active -> "本次相机会话已开始，等待检测帧"
-            hasStarted || frameCount > 0 -> "上一场相机会话摘要"
-            else -> "等待相机会话"
-        }
-        return FieldTestSummaryUiState(
-            title = "现场测试摘要",
-            detailText = fieldTestText(profile.displayName, scenario.displayName),
-            statusText = status,
-            accessibilityText = "现场测试摘要，$status，运行时长${durationText()}，最近${frameCount}帧风险${riskyFrameCount}次，语音提醒${speechTriggerCount}次，震动提醒${vibrationTriggerCount}次，平均FPS ${"%.1f".format(averageFps)}，平均推理${averageInferenceMs}毫秒，当前档位${profile.displayName}，当前场景${scenario.displayName}，最近解释${latestExplanation}。"
-        )
     }
 
     private fun hasCameraPermission(): Boolean {
@@ -509,246 +344,7 @@ class MainActivity : ComponentActivity() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private object Guidance {
-        fun initial(modelStatus: String, scenario: AssistScenario): CameraGuidanceUiState {
-            return CameraGuidanceUiState.initial(modelStatus, scenario.displayName)
-        }
-
-        fun waiting(modelStatus: String, scenario: AssistScenario): CameraGuidanceUiState {
-            return CameraGuidanceUiState(
-                title = "检测已开启",
-                detail = "等待实时画面和稳定风险结果",
-                targetLine = "模型状态：$modelStatus",
-                careTitle = "正在观察",
-                careDetail = "请自然前进，系统会在前方有风险时提醒",
-                careTargetLine = "建议同时保留语音和震动提醒",
-                debugText = "模型状态：$modelStatus",
-                scenarioName = scenario.displayName,
-                explanationHeadline = "继续观察：等待稳定风险",
-                explanationDetail = "${scenario.displayName}场景已启用，系统会按场景调整提醒确认、冷却和震动计划。",
-                careExplanation = "正在按${scenario.displayName}场景观察",
-                titleColor = Color.WHITE,
-                statusBadge = "观察中",
-                badgeColor = Color.rgb(160, 255, 215),
-                badgeTextColor = Color.rgb(6, 24, 18),
-                careAccessibilitySummary = "正在观察，请自然前进，系统会在前方有风险时提醒",
-                accessibilitySummary = "检测已开启，等待实时画面和稳定风险结果",
-                accessibilityKey = "waiting"
-            )
-        }
-
-        fun paused(): CameraGuidanceUiState {
-            return CameraGuidanceUiState(
-                title = "检测已暂停",
-                detail = "画面保留预览，目标框和风险提醒已清空",
-                targetLine = "可随时重新开启检测",
-                careTitle = "已暂停",
-                careDetail = "当前不会识别目标，也不会发出提醒",
-                careTargetLine = "打开检测后恢复观察",
-                debugText = "检测关闭：不运行目标检测，不触发语音或震动提醒",
-                scenarioName = AssistScenario.GENERAL.displayName,
-                explanationHeadline = "检测已暂停",
-                explanationDetail = "当前不会生成风险解释。",
-                careExplanation = "检测已暂停",
-                titleColor = Color.rgb(214, 224, 235),
-                statusBadge = "已暂停",
-                badgeColor = Color.rgb(198, 210, 222),
-                badgeTextColor = Color.rgb(12, 22, 30),
-                careAccessibilitySummary = "检测已暂停，当前不会识别目标，也不会发出提醒",
-                accessibilitySummary = "检测已暂停，目标框和风险提醒已清空",
-                accessibilityKey = "paused"
-            )
-        }
-
-        fun permissionDenied(): CameraGuidanceUiState {
-            return CameraGuidanceUiState(
-                title = "需要相机权限",
-                detail = "请授予相机权限后再使用实时避障提醒",
-                targetLine = "当前无法启动 CameraX 预览和检测",
-                careTitle = "需要权限",
-                careDetail = "请允许相机权限，系统才能观察前方",
-                careTargetLine = "授权后会自动启动实时预览",
-                debugText = "权限状态：CAMERA denied",
-                scenarioName = AssistScenario.GENERAL.displayName,
-                explanationHeadline = "需要相机权限",
-                explanationDetail = "未取得相机权限前无法进行本地识别或风险解释。",
-                careExplanation = "需要相机权限",
-                titleColor = Color.rgb(255, 149, 0),
-                statusBadge = "需处理",
-                badgeColor = Color.rgb(255, 210, 125),
-                badgeTextColor = Color.rgb(44, 25, 0),
-                careAccessibilitySummary = "需要相机权限，请允许相机权限，系统才能观察前方",
-                accessibilitySummary = "需要相机权限，请授予相机权限后再使用实时避障提醒",
-                accessibilityKey = "permission"
-            )
-        }
-
-        fun cameraError(message: String): CameraGuidanceUiState {
-            return CameraGuidanceUiState(
-                title = "相机启动失败",
-                detail = "CameraX 暂时无法打开后置摄像头",
-                targetLine = message,
-                careTitle = "相机未启动",
-                careDetail = "当前无法观察前方，请返回后重新进入手机摄像头",
-                careTargetLine = message,
-                debugText = "CameraX error：$message",
-                scenarioName = AssistScenario.GENERAL.displayName,
-                explanationHeadline = "相机启动失败",
-                explanationDetail = "相机未启动，无法生成实时风险解释。",
-                careExplanation = "相机未启动",
-                titleColor = Color.rgb(255, 149, 0),
-                statusBadge = "异常",
-                badgeColor = Color.rgb(255, 210, 125),
-                badgeTextColor = Color.rgb(44, 25, 0),
-                careAccessibilitySummary = "相机启动失败，当前无法观察前方",
-                accessibilitySummary = "相机启动失败，CameraX 暂时无法打开后置摄像头",
-                accessibilityKey = "camera-error-$message"
-            )
-        }
-
-        fun fromRisk(
-            rawRisk: com.linnan.blindassist.risk.RiskResult,
-            stableRisk: com.linnan.blindassist.risk.RiskResult,
-            count: Int,
-            detector: TfliteYoloDetector,
-            fps: Float,
-            profile: AlertProfile,
-            scenario: AssistScenario,
-            feedbackDecision: FeedbackDecision,
-            explanation: RiskExplanation
-        ): CameraGuidanceUiState {
-            val risk = stableRisk
-            val levelText = levelText(risk.level)
-            val directionText = directionText(risk.direction)
-            val title = when (risk.level) {
-                RiskLevel.HIGH -> "$levelText：$directionText"
-                RiskLevel.MEDIUM -> "$levelText：$directionText"
-                RiskLevel.LOW -> levelText
-                RiskLevel.NONE -> "安全观察中"
-            }
-            val detail = AssistDisplayFormatter.detailFor(risk)
-            val targetLine = AssistDisplayFormatter.targetLine(rawRisk, risk, count)
-            val careTitle = careTitle(risk.level, risk.direction, risk.proximity)
-            val careDetail = AssistDisplayFormatter.careDetailFor(risk)
-            val careTargetLine = AssistDisplayFormatter.careTargetLine(rawRisk, risk, count)
-            val targetAccessibility = AssistDisplayFormatter.accessibilityTargetSummary(rawRisk, risk, count)
-            val debug = "FPS：${"%.1f".format(fps)}\n" +
-                "耗时：total ${detector.lastTotalDetectMs}ms / pre ${detector.lastPreprocessMs}ms / " +
-                "infer ${detector.lastInferenceMs}ms / post ${detector.lastPostprocessMs}ms\n" +
-                "模型：${detector.statusMessage}\n" +
-                "最近风险判定：原始 ${riskSummaryText(rawRisk)} / 稳定 ${riskSummaryText(stableRisk)}\n" +
-                AssistDisplayFormatter.urgencyLine(rawRisk, stableRisk) + "\n" +
-                "提醒模式：${profile.displayName} / 场景：${scenario.displayName} / 反馈：${feedbackDecision.reason.displayText}\n" +
-                "解释：${explanation.headline}，${explanation.detail}"
-            return CameraGuidanceUiState(
-                title = title,
-                detail = detail,
-                targetLine = targetLine,
-                careTitle = careTitle,
-                careDetail = careDetail,
-                careTargetLine = careTargetLine,
-                debugText = debug,
-                scenarioName = scenario.displayName,
-                explanationHeadline = explanation.headline,
-                explanationDetail = explanation.detail,
-                careExplanation = explanation.headline,
-                titleColor = colorForLevel(risk.level, risk.proximity),
-                statusBadge = statusBadge(risk.level, risk.proximity),
-                badgeColor = badgeColor(risk.level, risk.proximity),
-                badgeTextColor = badgeTextColor(risk.level, risk.proximity),
-                careAccessibilitySummary = "$careTitle，$careDetail，$targetAccessibility，${explanation.accessibilityText}",
-                accessibilitySummary = "$title，$detail，$targetAccessibility，${explanation.accessibilityText}",
-                accessibilityKey = "${risk.level}-${risk.direction}-${risk.proximity}-${rawRisk.level}-${scenario.name}-$count"
-            )
-        }
-
-        private fun riskSummaryText(risk: com.linnan.blindassist.risk.RiskResult): String {
-            return "${levelText(risk.level)} ${directionText(risk.direction)} ${proximityText(risk.proximity)}"
-        }
-
-        private fun levelText(level: RiskLevel): String {
-            return when (level) {
-                RiskLevel.HIGH -> "高风险"
-                RiskLevel.MEDIUM -> "中风险"
-                RiskLevel.LOW -> "低风险"
-                RiskLevel.NONE -> "安全"
-            }
-        }
-
-        private fun directionText(direction: RiskDirection): String {
-            return when (direction) {
-                RiskDirection.LEFT -> "左前"
-                RiskDirection.CENTER -> "正前"
-                RiskDirection.RIGHT -> "右前"
-                RiskDirection.NONE -> "无方向"
-            }
-        }
-
-        private fun proximityText(proximity: ProximityBand): String {
-            return when (proximity) {
-                ProximityBand.CRITICAL -> "迫近"
-                ProximityBand.NEAR -> "近处"
-                ProximityBand.MID -> "中距"
-                ProximityBand.FAR -> "远处"
-            }
-        }
-
-        private fun careTitle(
-            level: RiskLevel,
-            direction: RiskDirection,
-            proximity: ProximityBand
-        ): String {
-            return when {
-                proximity == ProximityBand.CRITICAL -> "立刻注意：${directionText(direction)}"
-                level == RiskLevel.HIGH -> "前方有风险：${directionText(direction)}"
-                level == RiskLevel.MEDIUM -> "请留意：${directionText(direction)}"
-                level == RiskLevel.LOW -> "保持观察"
-                else -> "前方平稳"
-            }
-        }
-
-        private fun statusBadge(level: RiskLevel, proximity: ProximityBand): String {
-            return when {
-                proximity == ProximityBand.CRITICAL -> "迫近提醒"
-                level == RiskLevel.HIGH -> "高风险"
-                level == RiskLevel.MEDIUM -> "需留意"
-                level == RiskLevel.LOW -> "观察"
-                else -> "平稳"
-            }
-        }
-
-        private fun badgeColor(level: RiskLevel, proximity: ProximityBand): Int {
-            return when {
-                proximity == ProximityBand.CRITICAL -> Color.rgb(255, 99, 119)
-                level == RiskLevel.HIGH -> Color.rgb(255, 132, 105)
-                level == RiskLevel.MEDIUM -> Color.rgb(255, 205, 112)
-                level == RiskLevel.LOW -> Color.rgb(239, 226, 133)
-                else -> Color.rgb(160, 255, 215)
-            }
-        }
-
-        private fun badgeTextColor(level: RiskLevel, proximity: ProximityBand): Int {
-            return if (proximity == ProximityBand.CRITICAL || level == RiskLevel.HIGH) {
-                Color.WHITE
-            } else {
-                Color.rgb(15, 24, 18)
-            }
-        }
-
-        private fun colorForLevel(level: RiskLevel, proximity: ProximityBand): Int {
-            return when {
-                proximity == ProximityBand.CRITICAL -> Color.rgb(255, 99, 119)
-                level == RiskLevel.HIGH -> Color.rgb(255, 112, 97)
-                level == RiskLevel.MEDIUM -> Color.rgb(255, 183, 77)
-                level == RiskLevel.LOW -> Color.rgb(255, 224, 102)
-                else -> Color.rgb(99, 230, 166)
-            }
-        }
-    }
-
     companion object {
-        private const val ANALYSIS_WIDTH = 640
-        private const val ANALYSIS_HEIGHT = 480
         private const val PERF_LOG_INTERVAL_MS = 1000L
         private const val PERF_TAG = "BlindAssistPerf"
     }

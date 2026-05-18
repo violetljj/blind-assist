@@ -2,6 +2,20 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v4.8.0 - 单模块质量升级
+
+- 状态：已完成，`versionCode=20`，`versionName=4.8.0`。
+- 主要变化：
+  - 保持单模块、原生 Android/Kotlin、CameraX、TFLite、Compose 和 SharedPreferences，不引入 Hilt、多模块、新权限、联网、蓝牙、定位、Room 或 DataStore。
+  - 新增 `ObjectDetector`、`DetectorFrameResult`、`FrameSource`、`CameraXFrameSource`、`AssistSessionCoordinator`、`FpsTracker`、`CameraGuidanceMapper` 和 `FieldTestSummaryMapper`，把检测输出、相机取流、会话编排、FPS 统计和 UI 状态映射从 `MainActivity` 中拆出。
+  - `MainActivity` 缩减为生命周期、权限、Compose 绑定和用户设置转发入口；v4.3.0 移除 App 内展示中心的主界面形态继续保留。
+  - 新增 JVM 测试覆盖会话编排、FPS 统计、风险指导 UI 映射和现场测试摘要映射。
+- 验证：
+  - `:app:testDebugUnitTest` 和 `:app:assembleDebug` 构建验证通过。
+  - `connectedDebugAndroidTest` 已尝试两次：mDNS serial 未被 Gradle 识别，普通 Wi-Fi serial 随后变为 `offline`，因此本轮未获得仪器测试通过结果。
+- APK：
+  - `releases/apk/BlindAssist-v4.8.0-debug-20260519-005155.apk`
+
 ## v4.3.0 - 移除项目展示中心
 
 - 状态：已完成，`versionCode=19`，`versionName=4.3.0`。

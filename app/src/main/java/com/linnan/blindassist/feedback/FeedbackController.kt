@@ -15,7 +15,7 @@ import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import java.util.Locale
 
-class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
+class FeedbackController(context: Context) : TextToSpeech.OnInitListener, FeedbackGateway {
     var speechEnabled: Boolean = true
     var vibrationEnabled: Boolean = true
     var speechStyle: SpeechStyle = SpeechStyle.STANDARD
@@ -51,7 +51,7 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
         return notify(risk, profile, AssistScenario.GENERAL)
     }
 
-    fun notify(risk: RiskResult, profile: AlertProfile, scenario: AssistScenario): FeedbackDecision {
+    override fun notify(risk: RiskResult, profile: AlertProfile, scenario: AssistScenario): FeedbackDecision {
         val plan = planFor(risk, profile, vibrationStrength, scenario)
             ?: return FeedbackDecision(null, triggered = false, reason = FeedbackReason.NO_FEEDBACK_RISK)
 
