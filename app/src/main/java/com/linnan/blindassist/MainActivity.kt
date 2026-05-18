@@ -34,11 +34,13 @@ import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.session.AssistDisplayFormatter
 import com.linnan.blindassist.session.AssistEngine
 import com.linnan.blindassist.session.DetectorMetrics
+import com.linnan.blindassist.session.SessionSummary
 import com.linnan.blindassist.ui.DetectionOverlayView
 import com.linnan.blindassist.ui.compose.AssistControlsUiState
 import com.linnan.blindassist.ui.compose.BlindAssistApp
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
+import com.linnan.blindassist.ui.compose.FieldTestSummaryUiState
 import com.linnan.blindassist.ui.compose.GlassesPlaceholderDialog
 import com.linnan.blindassist.vision.TfliteYoloDetector
 import com.linnan.blindassist.vision.toArgbBitmap
@@ -80,6 +82,7 @@ class MainActivity : ComponentActivity() {
         )
     )
     private var guidanceState by mutableStateOf(Guidance.initial("模型未初始化"))
+    private var fieldTestSummaryState by mutableStateOf(FieldTestSummaryUiState.empty(AlertProfile.STANDARD.displayName))
     private var cameraActive by mutableStateOf(false)
     private var modelStatus by mutableStateOf("模型未初始化")
     private var showGlassesDialog by mutableStateOf(false)
@@ -117,6 +120,7 @@ class MainActivity : ComponentActivity() {
         feedbackController.vibrationEnabled = savedPreferences.vibrationEnabled
         careModeEnabled = savedPreferences.careModeEnabled
         alertProfile = savedPreferences.alertProfile
+        fieldTestSummaryState = FieldTestSummaryUiState.empty(alertProfile.displayName)
         showOnboarding = !savedPreferences.onboardingCompleted
         modelStatus = detector.statusMessage
         renderUi(Guidance.initial(detector.statusMessage))
@@ -127,6 +131,7 @@ class MainActivity : ComponentActivity() {
                 BlindAssistApp(
                     controls = controlsState,
                     cameraGuidance = guidanceState,
+                    fieldTestSummary = fieldTestSummaryState,
                     modelStatus = modelStatus,
                     appVersion = BuildConfig.VERSION_NAME,
                     cameraActive = cameraActive,
@@ -186,6 +191,8 @@ class MainActivity : ComponentActivity() {
 
     private fun activateCameraExperience() {
         cameraActive = true
+        assistEngine.startSession()
+        fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = true, profile = alertProfile)
         renderUi(Guidance.waiting(detector.statusMessage))
         startCameraIfReady()
     }
@@ -195,6 +202,7 @@ class MainActivity : ComponentActivity() {
         pendingCameraOpen = false
         showCameraPermissionDialog = false
         stopCamera()
+        fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = false, profile = alertProfile)
         assistEngine.reset()
         renderUi(Guidance.initial(detector.statusMessage))
     }
@@ -323,10 +331,10 @@ class MainActivity : ComponentActivity() {
                         detector = detector,
                         fps = fps,
                         profile = alertProfile,
-                        feedbackDecision = frameResult.feedbackDecision,
-                        sessionSummary = frameResult.sessionSummary.displayText()
+                        feedbackDecision = frameResult.feedbackDecision
                     )
                 )
+                fieldTestSummaryState = frameResult.sessionSummary.toFieldTestUi(active = true, profile = alertProfile)
                 logPerformanceIfNeeded(frameResult)
             }
         } finally {
@@ -339,12 +347,15 @@ class MainActivity : ComponentActivity() {
         detectionEnabled = enabled
         syncControlsState()
         if (!enabled) {
+            fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = false, profile = alertProfile)
             assistEngine.reset()
             if (::overlayView.isInitialized) {
                 overlayView.update(emptyList(), null, null)
             }
             renderUi(Guidance.paused())
         } else {
+            assistEngine.startSession()
+            fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = true, profile = alertProfile)
             renderUi(Guidance.waiting(detector.statusMessage))
             startCameraIfReady()
         }
@@ -380,6 +391,7 @@ class MainActivity : ComponentActivity() {
         alertProfile = profile
         userPreferences.setAlertProfile(profile)
         syncControlsState()
+        fieldTestSummaryState = assistEngine.sessionSummary().toFieldTestUi(active = cameraActive, profile = alertProfile)
     }
 
     private fun syncControlsState() {
@@ -431,6 +443,21 @@ class MainActivity : ComponentActivity() {
 
     private fun riskSummary(risk: com.linnan.blindassist.risk.RiskResult): String {
         return "${risk.level}/${risk.direction}/${risk.proximity}"
+    }
+
+    private fun SessionSummary.toFieldTestUi(active: Boolean, profile: AlertProfile): FieldTestSummaryUiState {
+        val status = when {
+            active && frameCount > 0 -> "本次相机会话进行中"
+            active -> "本次相机会话已开始，等待检测帧"
+            hasStarted || frameCount > 0 -> "上一场相机会话摘要"
+            else -> "等待相机会话"
+        }
+        return FieldTestSummaryUiState(
+            title = "现场测试摘要",
+            detailText = fieldTestText(profile.displayName),
+            statusText = status,
+            accessibilityText = "现场测试摘要，$status，运行时长${durationText()}，最近${frameCount}帧风险${riskyFrameCount}次，语音提醒${speechTriggerCount}次，震动提醒${vibrationTriggerCount}次，平均FPS ${"%.1f".format(averageFps)}，平均推理${averageInferenceMs}毫秒，当前档位${profile.displayName}。"
+        )
     }
 
     private fun hasCameraPermission(): Boolean {
@@ -544,7 +571,6 @@ class MainActivity : ComponentActivity() {
             fps: Float,
             profile: AlertProfile,
             feedbackDecision: FeedbackDecision,
-            sessionSummary: String
         ): CameraGuidanceUiState {
             val risk = stableRisk
             val levelText = levelText(risk.level)
@@ -567,8 +593,7 @@ class MainActivity : ComponentActivity() {
                 "模型：${detector.statusMessage}\n" +
                 "最近风险判定：原始 ${riskSummaryText(rawRisk)} / 稳定 ${riskSummaryText(stableRisk)}\n" +
                 AssistDisplayFormatter.urgencyLine(rawRisk, stableRisk) + "\n" +
-                "提醒模式：${profile.displayName} / 反馈：${feedbackDecision.reason.displayText}\n" +
-                sessionSummary
+                "提醒模式：${profile.displayName} / 反馈：${feedbackDecision.reason.displayText}"
             return CameraGuidanceUiState(
                 title = title,
                 detail = detail,

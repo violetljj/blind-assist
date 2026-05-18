@@ -90,6 +90,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
@@ -129,6 +130,24 @@ data class CameraGuidanceUiState(
     val accessibilityKey: String
 )
 
+data class FieldTestSummaryUiState(
+    val title: String,
+    val detailText: String,
+    val statusText: String,
+    val accessibilityText: String
+) {
+    companion object {
+        fun empty(profileName: String): FieldTestSummaryUiState {
+            return FieldTestSummaryUiState(
+                title = "现场测试摘要",
+                detailText = "运行时长：尚未开始\n最近0帧：风险0次，迫近0次，高/中/低/无 0/0/0/0\n提醒触发：语音0次，震动0次\n平均性能：FPS 0.0，推理 0ms\n当前档位：$profileName",
+                statusText = "等待相机会话",
+                accessibilityText = "现场测试摘要，尚未开始，相机会话运行后会显示运行时长、风险次数、提醒次数、平均性能和当前档位。"
+            )
+        }
+    }
+}
+
 @Composable
 fun BlindAssistTheme(content: @Composable () -> Unit) {
     val colors = androidx.compose.material3.darkColorScheme(
@@ -155,6 +174,7 @@ fun BlindAssistTheme(content: @Composable () -> Unit) {
 fun BlindAssistApp(
     controls: AssistControlsUiState,
     cameraGuidance: CameraGuidanceUiState,
+    fieldTestSummary: FieldTestSummaryUiState,
     modelStatus: String,
     appVersion: String,
     cameraActive: Boolean,
@@ -191,6 +211,7 @@ fun BlindAssistApp(
                 isCameraActive -> CameraExperienceScreen(
                     controls = controls,
                     guidance = cameraGuidance,
+                    fieldTestSummary = fieldTestSummary,
                     onBack = onCloseCamera,
                     onDetectionChange = onDetectionChange,
                     onSpeechChange = onSpeechChange,
@@ -204,6 +225,7 @@ fun BlindAssistApp(
                 showOnboarding -> OnboardingScreen(onFinished = onCompleteOnboarding)
                 else -> MainShell(
                     controls = controls,
+                    fieldTestSummary = fieldTestSummary,
                     modelStatus = modelStatus,
                     appVersion = appVersion,
                     onOpenCamera = onOpenCamera,
@@ -441,6 +463,7 @@ fun OnboardingScreen(
 @Composable
 private fun MainShell(
     controls: AssistControlsUiState,
+    fieldTestSummary: FieldTestSummaryUiState,
     modelStatus: String,
     appVersion: String,
     onOpenCamera: () -> Unit,
@@ -495,6 +518,7 @@ private fun MainShell(
                 )
                 BottomTab.Settings -> SettingsScreen(
                     controls = controls,
+                    fieldTestSummary = fieldTestSummary,
                     onSpeechChange = onSpeechChange,
                     onVibrationChange = onVibrationChange,
                     onCareModeChange = onCareModeChange,
@@ -626,6 +650,7 @@ fun ProfileScreen(
 @Composable
 fun SettingsScreen(
     controls: AssistControlsUiState,
+    fieldTestSummary: FieldTestSummaryUiState,
     onSpeechChange: (Boolean) -> Unit,
     onVibrationChange: (Boolean) -> Unit,
     onCareModeChange: (Boolean) -> Unit,
@@ -683,6 +708,8 @@ fun SettingsScreen(
             onProfileChange = onProfileChange
         )
         Spacer(Modifier.height(16.dp))
+        FieldTestSummaryCard(fieldTestSummary)
+        Spacer(Modifier.height(16.dp))
         SettingsActionRow(
             icon = Icons.Rounded.Info,
             title = "查看新手引导",
@@ -702,6 +729,7 @@ fun SettingsScreen(
 fun CameraExperienceScreen(
     controls: AssistControlsUiState,
     guidance: CameraGuidanceUiState,
+    fieldTestSummary: FieldTestSummaryUiState,
     onBack: () -> Unit,
     onDetectionChange: (Boolean) -> Unit,
     onSpeechChange: (Boolean) -> Unit,
@@ -728,6 +756,7 @@ fun CameraExperienceScreen(
         CameraControlPanel(
             controls = controls,
             guidance = guidance,
+            fieldTestSummary = fieldTestSummary,
             onDetectionChange = onDetectionChange,
             onSpeechChange = onSpeechChange,
             onVibrationChange = onVibrationChange,
@@ -776,6 +805,7 @@ fun CameraPreviewHost(
 fun CameraControlPanel(
     controls: AssistControlsUiState,
     guidance: CameraGuidanceUiState,
+    fieldTestSummary: FieldTestSummaryUiState,
     onDetectionChange: (Boolean) -> Unit,
     onSpeechChange: (Boolean) -> Unit,
     onVibrationChange: (Boolean) -> Unit,
@@ -826,7 +856,8 @@ fun CameraControlPanel(
                     text = "模式 ${controls.alertProfile.displayName}",
                     icon = Icons.Rounded.Tune,
                     onClick = { onProfileChange(controls.alertProfile.next()) },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    accessibilityText = "提醒档位，当前${controls.alertProfile.displayName}，点击切换到${controls.alertProfile.next().displayName}"
                 )
                 CompactToggle("关怀", controls.careModeEnabled, Icons.Rounded.Favorite, onCareModeChange, Modifier.weight(1f))
             }
@@ -845,12 +876,15 @@ fun CameraControlPanel(
                         Text(if (controls.debugVisible) "收起调试信息" else "展开调试信息")
                     }
                     AnimatedVisibility(visible = controls.debugVisible) {
-                        Text(
-                            text = guidance.debugText,
-                            color = BaTextMuted,
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
+                        Column(Modifier.padding(top = 4.dp)) {
+                            Text(
+                                text = guidance.debugText,
+                                color = BaTextMuted,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            Spacer(Modifier.height(10.dp))
+                            FieldTestSummaryBlock(fieldTestSummary)
+                        }
                     }
                 }
             }
@@ -999,6 +1033,56 @@ private fun InfoStrip(
 }
 
 @Composable
+private fun FieldTestSummaryCard(summary: FieldTestSummaryUiState) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) {
+                contentDescription = summary.accessibilityText
+            },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
+    ) {
+        FieldTestSummaryBlock(
+            summary = summary,
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
+@Composable
+private fun FieldTestSummaryBlock(
+    summary: FieldTestSummaryUiState,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.semantics(mergeDescendants = true) {
+            contentDescription = summary.accessibilityText
+        }
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Rounded.BugReport, contentDescription = null, tint = BaMint, modifier = Modifier.size(22.dp))
+            Spacer(Modifier.width(10.dp))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    text = summary.title,
+                    color = BaText,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.semantics { heading() }
+                )
+                Text(summary.statusText, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            }
+        }
+        Spacer(Modifier.height(10.dp))
+        Text(
+            text = summary.detailText,
+            color = BaTextMuted,
+            style = MaterialTheme.typography.bodySmall
+        )
+    }
+}
+
+@Composable
 private fun StatusGrid(
     leftTitle: String,
     leftBody: String,
@@ -1045,8 +1129,14 @@ private fun SettingSwitchRow(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 72.dp)
+            .clickable(
+                role = Role.Switch,
+                onClickLabel = if (checked) "关闭$title" else "开启$title",
+                onClick = { onCheckedChange(!checked) }
+            )
             .semantics(mergeDescendants = true) {
                 stateDescription = if (checked) "已开启" else "已关闭"
+                contentDescription = "$title，$body，当前${if (checked) "已开启" else "已关闭"}"
             }
             .padding(vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -1060,7 +1150,10 @@ private fun SettingSwitchRow(
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            modifier = Modifier.semantics { role = Role.Switch }
+            modifier = Modifier.semantics {
+                role = Role.Switch
+                stateDescription = if (checked) "已开启" else "已关闭"
+            }
         )
     }
 }
@@ -1103,12 +1196,16 @@ private fun ProfileSelector(
     onProfileChange: (AlertProfile) -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) {
+                contentDescription = "提醒档位，当前${selected.displayName}。安静减少打扰，敏感更早确认中风险。"
+            },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = BaPanel)
     ) {
         Column(Modifier.padding(16.dp)) {
-            Text("提醒档位", color = BaText, fontWeight = FontWeight.Bold)
+            Text("提醒档位", color = BaText, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
             Text("安静减少打扰，敏感更早确认中风险。", color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
             Spacer(Modifier.height(10.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1116,7 +1213,12 @@ private fun ProfileSelector(
                     FilterChip(
                         selected = selected == profile,
                         onClick = { onProfileChange(profile) },
-                        label = { Text(profile.displayName) }
+                        label = { Text(profile.displayName) },
+                        modifier = Modifier.heightIn(min = 48.dp).semantics {
+                            role = Role.Button
+                            stateDescription = if (selected == profile) "当前档位" else "未选择"
+                            contentDescription = "选择${profile.displayName}提醒档位"
+                        }
                     )
                 }
             }
@@ -1137,7 +1239,8 @@ private fun CompactToggle(
         icon = icon,
         selected = checked,
         onClick = { onCheckedChange(!checked) },
-        modifier = modifier
+        modifier = modifier,
+        accessibilityText = "$text，当前${if (checked) "已开启" else "已关闭"}，点击${if (checked) "关闭" else "开启"}"
     )
 }
 
@@ -1147,13 +1250,20 @@ private fun CompactAction(
     icon: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    selected: Boolean = true
+    selected: Boolean = true,
+    accessibilityText: String = text
 ) {
     val background = if (selected) BaMint else BaPanelSoft
     val foreground = if (selected) BaInk else BaText
     Button(
         onClick = onClick,
-        modifier = modifier.heightIn(min = 48.dp).widthIn(min = 64.dp),
+        modifier = modifier
+            .heightIn(min = 48.dp)
+            .widthIn(min = 64.dp)
+            .semantics {
+                contentDescription = accessibilityText
+                stateDescription = if (selected) "已启用" else "未启用"
+            },
         shape = RoundedCornerShape(14.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = background,
@@ -1303,7 +1413,7 @@ private fun FeaturePreview() {
     BlindAssistTheme {
         FeatureScreen(
             modelStatus = "YOLO11n ready",
-            appVersion = "3.3.0",
+            appVersion = "3.4.0",
             onOpenCamera = {},
             onGlassesPlaceholder = {}
         )
@@ -1316,6 +1426,7 @@ private fun SettingsPreview() {
     BlindAssistTheme {
         SettingsScreen(
             controls = previewControls(),
+            fieldTestSummary = previewFieldTestSummary(),
             onSpeechChange = {},
             onVibrationChange = {},
             onCareModeChange = {},
@@ -1334,6 +1445,7 @@ private fun CameraPanelPreview() {
             CameraControlPanel(
                 controls = previewControls(),
                 guidance = previewGuidance(),
+                fieldTestSummary = previewFieldTestSummary(),
                 onDetectionChange = {},
                 onSpeechChange = {},
                 onVibrationChange = {},
@@ -1354,6 +1466,15 @@ private fun previewControls(): AssistControlsUiState {
         careModeEnabled = false,
         debugVisible = true,
         alertProfile = AlertProfile.STANDARD
+    )
+}
+
+private fun previewFieldTestSummary(): FieldTestSummaryUiState {
+    return FieldTestSummaryUiState(
+        title = "现场测试摘要",
+        statusText = "本次相机会话进行中",
+        detailText = "运行时长：1分12秒\n最近30帧：风险8次，迫近2次，高/中/低/无 2/4/2/22\n提醒触发：语音3次，震动4次\n平均性能：FPS 18.4，推理 28ms\n当前档位：标准",
+        accessibilityText = "现场测试摘要，本次相机会话进行中，运行时长1分12秒，最近30帧风险8次，语音提醒3次，震动提醒4次，平均FPS 18.4，平均推理28毫秒，当前档位标准。"
     )
 }
 

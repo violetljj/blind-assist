@@ -60,6 +60,18 @@ class FeedbackControllerTest {
         assertNull(FeedbackController.planFor(risk(RiskLevel.NONE, ProximityBand.FAR)))
     }
 
+    @Test
+    fun feedbackDecisionDefaultsKeepExistingTestConstructionCompatible() {
+        val decision = FeedbackDecision(
+            plan = FeedbackController.planFor(risk(RiskLevel.HIGH, ProximityBand.NEAR)),
+            triggered = true,
+            reason = FeedbackReason.TRIGGERED
+        )
+
+        assertEquals(false, decision.speechTriggered)
+        assertEquals(false, decision.vibrationTriggered)
+    }
+
     private fun risk(level: RiskLevel, proximity: ProximityBand): RiskResult {
         return RiskResult(
             level = level,

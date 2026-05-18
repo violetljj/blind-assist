@@ -32,7 +32,8 @@ class AssistEngine(
             frameSize = frameSize,
             profile = profile,
             metrics = metrics,
-            preliminaryReason = displayReasonFor(rawRisk, stableRisk, null)
+            preliminaryReason = displayReasonFor(rawRisk, stableRisk, null),
+            evaluatedAtMs = nowMs
         )
     }
 
@@ -54,6 +55,15 @@ class AssistEngine(
     fun reset() {
         riskStabilizer.reset()
         trace.clear()
+    }
+
+    fun startSession(nowMs: Long = System.currentTimeMillis()) {
+        riskStabilizer.reset()
+        trace.start(nowMs)
+    }
+
+    fun sessionSummary(): SessionSummary {
+        return trace.summary()
     }
 
     private fun displayReasonFor(
@@ -90,7 +100,8 @@ data class AssistFrameEvaluation(
     val frameSize: FrameSize,
     val profile: AlertProfile,
     val metrics: DetectorMetrics,
-    val preliminaryReason: FeedbackReason
+    val preliminaryReason: FeedbackReason,
+    val evaluatedAtMs: Long
 )
 
 data class AssistFrameResult(

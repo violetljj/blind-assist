@@ -4,6 +4,55 @@
 
 ## 2026-05-18
 
+### v3.4.0 现场测试摘要与无障碍细节升级
+
+- 时间：2026-05-18 19:24:08 +08:00
+- 执行者：violjjet
+- 类型：功能 / UI / 无障碍 / 测试 / 文档 / 构建 / 版本归档 / 真机
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt`
+  - `app/src/main/java/com/linnan/blindassist/session/AssistEngine.kt`
+  - `app/src/main/java/com/linnan/blindassist/session/SessionTrace.kt`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `app/src/test/java/com/linnan/blindassist/feedback/FeedbackControllerTest.kt`
+  - `app/src/test/java/com/linnan/blindassist/session/AssistEngineTest.kt`
+  - `app/src/test/java/com/linnan/blindassist/session/SessionTraceTest.kt`
+  - `README.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+  - `app/build/outputs/apk/debug/app-debug.apk`
+  - `releases/apk/BlindAssist-v3.4.0-debug-20260518-192333.apk`
+- 修改内容：
+  - 扩展 `SessionTrace` 的内存态统计：保留最近 30 帧风险窗口，同时记录会话开始时间、运行时长、风险帧数、迫近帧数、语音提醒触发次数、震动提醒触发次数、平均 FPS、平均推理耗时和最近反馈原因。
+  - 扩展 `AssistEngine`：新增 `startSession()` 和 `sessionSummary()`，在开始新相机会话或重新开启检测时重置风险稳定器与会话统计，保持统计链路仍为纯 Kotlin、可单元测试。
+  - 扩展 `FeedbackDecision`：新增带默认值的 `speechTriggered`、`vibrationTriggered` 字段，保持既有测试和构造调用兼容；`FeedbackController.notify()` 在实际尝试 TTS 或震动提醒时写入对应标记。
+  - 在 `MainActivity` 中维护 `FieldTestSummaryUiState`：进入相机或重新开启检测时开始新内存会话，处理帧后刷新当前摘要，关闭相机或暂停检测前保留上一场摘要给设置页展示。
+  - 在 Compose UI 中新增“现场测试摘要”展示：设置页显示当前或上一场摘要；相机页调试展开区复用同一摘要内容，避免写文件或申请存储权限。
+  - 升级无障碍语义：设置页开关整行可切换并报告自然开关状态，提醒档位卡片和 FilterChip 报告当前档位，相机页紧凑按钮报告当前状态和下一步动作，现场摘要标题加入 heading 语义，交互控件保持 48dp 以上触控目标。
+  - 将应用版本从 `v3.3.0` 提升到 `v3.4.0`，`versionCode` 从 `13` 提升到 `14`。
+  - 同步 `README.md` 的当前版本、近期更新、设置页/调试信息说明和 APK 归档说明；将 `idea.md` 中“现场测试记录与演示摘要”和“无障碍细节升级”标记为已完成。
+- 修改原因：
+  - 用户要求落地此前记录的两个近期方向：让毕设现场展示能看到更可复盘的运行证据，同时让助盲主题 App 自身体现更自然的 TalkBack 状态语义。
+  - 现场摘要采用内存态而不是文件持久化，既满足课堂演示对运行证据的需求，也避免引入存储权限、隐私说明和数据清理复杂度。
+  - 无障碍升级优先修正读屏顺序、状态含义和触控目标，不只是堆叠 `contentDescription`，更符合助盲辅助应用的产品定位。
+- 验证方式：
+  - 已按本仓库已知沙箱限制直接提权运行完整验证命令：`.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，结果 `BUILD SUCCESSFUL in 53s`。
+  - Gradle 验证包含 `:app:testDebugUnitTest` 和 `:app:assembleDebug`，当前共有 43 个 actionable tasks，其中 16 个执行、27 个 up-to-date。
+  - 构建过程中仅出现 Material Icons deprecation warning：`Icons.Rounded.VolumeUp` 和 `Icons.Rounded.ArrowBack` 建议改用 AutoMirrored 版本；本次不影响编译、测试或 APK 生成。
+  - debug APK 已生成在 `app/build/outputs/apk/debug/app-debug.apk`，文件大小 `46,981,753 bytes`，文件时间 `2026-05-18 19:23:16 +08:00`。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v3.4.0-debug-20260518-192333.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，文件大小 `46,981,753 bytes`，文件时间 `2026-05-18 19:23:16 +08:00`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices -l`，检测到在线设备 `192.168.5.15:38527 device product:e3qzcx model:SM_S9280 device:e3q transport_id:3`，同时存在 mDNS 连接 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device product:e3qzcx model:SM_S9280 device:e3q transport_id:2`。
+  - 已指定直连 serial 安装，避免多设备连接导致安装歧义：`.\.android-sdk\platform-tools\adb.exe -s 192.168.5.15:38527 install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe -s 192.168.5.15:38527 shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=14 minSdk=26 targetSdk=35` 和 `versionName=3.4.0`。
+- 版本判断：
+  - 本次属于小更新，原因是新增现场测试摘要、无障碍语义细节和测试覆盖，明显改善展示证据与界面可访问性，但不改变 CameraX/TFLite 检测链路、模型资产、风险规则核心算法、架构形态或权限边界。
+  - 项目版本提升为 `v3.4.0` / `versionCode=14`。
+- 后续事项：
+  - 建议在手机上手动开启 TalkBack 或 Android 无障碍检查，重点确认设置页开关、提醒档位、相机页紧凑按钮和现场测试摘要的朗读顺序是否符合真实使用习惯。
+  - 若后续需要更正式的测试报告，可在保持用户确认的前提下再设计导出能力；当前版本刻意不写文件，避免新增存储权限和隐私风险。
+
 ### v3.3.0 无线调试安装到手机成功
 
 - 时间：2026-05-18 16:06:37 +08:00

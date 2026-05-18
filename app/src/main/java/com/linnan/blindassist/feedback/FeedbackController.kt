@@ -59,13 +59,23 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
         }
         lastAlertAt[alertKey] = now
 
+        var speechTriggered = false
+        var vibrationTriggered = false
         if (speechEnabled && ttsReady) {
             tts.speak(risk.message, TextToSpeech.QUEUE_FLUSH, null, "risk-${now}")
+            speechTriggered = true
         }
         if (vibrationEnabled) {
             vibrate(plan)
+            vibrationTriggered = true
         }
-        return FeedbackDecision(plan, triggered = true, reason = FeedbackReason.TRIGGERED)
+        return FeedbackDecision(
+            plan = plan,
+            triggered = true,
+            reason = FeedbackReason.TRIGGERED,
+            speechTriggered = speechTriggered,
+            vibrationTriggered = vibrationTriggered
+        )
     }
 
     fun shutdown() {
@@ -121,7 +131,9 @@ data class FeedbackPlan(
 data class FeedbackDecision(
     val plan: FeedbackPlan?,
     val triggered: Boolean,
-    val reason: FeedbackReason
+    val reason: FeedbackReason,
+    val speechTriggered: Boolean = false,
+    val vibrationTriggered: Boolean = false
 ) {
     fun withDisplayReason(displayReason: FeedbackReason): FeedbackDecision {
         return if (triggered) this else copy(reason = displayReason)
