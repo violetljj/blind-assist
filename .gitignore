@@ -12,6 +12,9 @@ build/
 local.properties
 captures/
 *.apk
+!releases/
+!releases/apk/
+!releases/apk/*.apk
 *.aab
 yolo11n.pt
 yolo11n.onnx

@@ -23,6 +23,10 @@
 - 2026-05-17: Added risk reminder stabilization after the rule-based analyzer. HIGH risks are confirmed immediately, MEDIUM risks require two matching frames, and confirmed alerts are briefly held across short missed detections. The app version is now `v0.2.0`.
 - 2026-05-17: Added project collaboration rules for README synchronization and version bump judgment. Later clarified that trivial wording or lightweight process text does not trigger a version bump, so the project remained at `v0.1.0`.
 
+## Project Materials
+
+- [回顾式阶段进度说明](PROJECT_PROGRESS_REVIEW.md)：面向课程汇报、阶段检查和毕设展示的整理稿，按 3 月至 5 月 1 日前的“调研、方案、原型、测试、迭代”脉络说明项目工作量。该文档是回顾式材料，不替代真实开发日志。
+
 ## Interface Behavior
 
 The main camera screen keeps the full-screen preview as the primary surface and uses a compact bottom panel for interaction:
@@ -110,6 +114,16 @@ APK 输出位置：
 ```text
 app/build/outputs/apk/debug/app-debug.apk
 ```
+
+## Versioned APK Archive
+
+用于展示和对比的版本 APK 保存在：
+
+```text
+releases/apk/
+```
+
+当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0 和 v2.6.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；它不是当时原始构建产物的文件时间复刻。
 
 ## Install to Phone
 

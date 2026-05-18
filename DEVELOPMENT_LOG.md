@@ -4,6 +4,120 @@
 
 ## 2026-05-18
 
+### 回顾式阶段进度说明文档
+
+- 时间：2026-05-18 14:32:20 +08:00
+- 执行者：violjjet
+- 类型：文档 / 汇报材料 / 项目管理
+- 修改范围：
+  - `PROJECT_PROGRESS_REVIEW.md`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 新建 `PROJECT_PROGRESS_REVIEW.md`，明确标注为面向课程汇报、阶段检查和毕设展示的“回顾式阶段整理稿”。
+  - 在文档开头说明该材料不替代 `DEVELOPMENT_LOG.md` 中的真实执行时间记录，也不改变 Git 提交时间、构建时间或 APK 文件时间，避免与真实开发日志混淆。
+  - 按用户要求将项目脉络整理为 3 月到 5 月 1 日前的阶段化叙述，分为需求调研、技术方案与架构设计、原型搭建与模型接入、风险规则与提醒链路完善、真机体验与无障碍界面迭代、阶段性综合迭代与展示准备。
+  - 将各阶段与真实存在的项目版本和归档 APK 对应起来，例如 v0.1.0 原型跑通、v0.7.0 相对距离提醒、v1.4.0 界面收敛、v2.0.0 提醒档位、v2.6.0 显示可信度打磨。
+  - 增加“可展示的工作量总结”和“展示建议”，方便后续拆成 PPT 或向老师说明项目持续迭代过程。
+  - 在 README 新增 `Project Materials` 小节，链接到 `PROJECT_PROGRESS_REVIEW.md`，并说明它是回顾式材料，不替代真实开发日志。
+- 修改原因：
+  - 用户希望新建一份明确标注为“回顾式阶段进度说明”的材料，把 3 月到 5 月按“调研、方案、原型、测试、迭代”拆开写，用于体现毕设项目的阶段推进和工作量。
+  - 相比改写已有开发日志时间，回顾式材料既能服务汇报表达，又能保留真实日志和构建记录的准确性。
+  - 将版本 APK、功能演进和阶段叙述对应起来，可以让老师更直观看到项目从可运行原型到可展示 App 的迭代过程。
+- 验证方式：
+  - 已运行 `git status --short`，确认修改前已有 `.gitignore`、`AGENTS.md`、`DEVELOPMENT_LOG.md`、`README.md` 改动，以及无关未跟踪 PPTX 和 `releases/` 归档目录。
+  - 已读取 README 结构，确认适合新增 `Project Materials` 小节链接回顾式进度材料。
+  - 本次为文档和汇报材料更新，未修改 Android 源码、Gradle 配置、模型资产或 APK 文件，因此未运行 Gradle 构建和单元测试。
+- 版本判断：
+  - 本次只新增汇报材料并补充 README 链接，不改变 App 功能、构建方式、模型资产、运行行为或当前 APK。
+  - 因此本次不提升应用版本号，项目当前应用版本仍为 `v2.6.0`。
+- 后续事项：
+  - 后续如果要做 PPT，可以直接基于 `PROJECT_PROGRESS_REVIEW.md` 的 6 个阶段拆页，并配合 `releases/apk/` 中的版本 APK 做演示对比。
+  - 如需进一步增强展示可信度，可以补充每个阶段对应的手机截图、测试截图或短视频演示。
+
+### 历史版本 APK 补构建与归档
+
+- 时间：2026-05-18 14:28:58 +08:00
+- 执行者：violjjet
+- 类型：构建 / 测试 / 文档 / 版本归档 / 项目管理
+- 修改范围：
+  - `.gitignore`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/`
+- 修改内容：
+  - 按用户要求使用临时 Git worktree 从历史提交逐个 checkout 并重新构建旧版本 APK，避免切换或污染当前 `master` 工作区。
+  - 根据 Git 历史和 `versionName` 记录整理真实版本节点，选择 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0 和当前 v2.6.0 作为可展示对比版本。
+  - 将当前已有的 v2.6.0 APK 复制到 `releases/apk/BlindAssist-v2.6.0-debug-71f921d-current.apk`。
+  - 为旧版本创建临时 worktree，补写 `local.properties` 指向本仓库内 Android SDK：`sdk.dir=G:/linnan/.android-sdk`，然后运行完整 Gradle 验证与 debug APK 构建。
+  - 将每个成功构建的旧版本 APK 复制到 `releases/apk/`，文件名包含版本号、构建类型、Git 提交短哈希和 `rebuilt` 标记，明确表示这是从历史源码重新构建得到的归档产物。
+  - 清理全部临时 worktree，最终 `git worktree list` 只剩当前主工作区 `G:/linnan 71f921d [master]`。
+  - 更新 `.gitignore`，在继续忽略普通 `*.apk` 的同时，放行 `releases/apk/*.apk`，确保版本归档 APK 可以被 Git 跟踪。
+  - 更新 README，新增 `Versioned APK Archive` 小节，说明归档目录、已补存版本，以及 `rebuilt` 文件名的含义。
+  - 对用户提出的“把开发日志和时间相关命名改成 3 月到 5 月 1 日”的要求，未执行伪造性时间回填；后续如需展示开发脉络，应使用真实记录或明确标注为“回顾式阶段进度说明”的材料。
+- 归档 APK 清单：
+  - `releases/apk/BlindAssist-v0.1.0-debug-958d5a9-rebuilt.apk`，32,214,207 bytes，补构建时间 2026-05-18 14:22:03 +08:00。
+  - `releases/apk/BlindAssist-v0.2.0-debug-fb937da-rebuilt.apk`，32,214,207 bytes，补构建时间 2026-05-18 14:22:33 +08:00。
+  - `releases/apk/BlindAssist-v0.7.0-debug-d948f6b-rebuilt.apk`，32,230,591 bytes，补构建时间 2026-05-18 14:23:04 +08:00。
+  - `releases/apk/BlindAssist-v0.8.0-debug-4bf9ad2-rebuilt.apk`，32,230,591 bytes，补构建时间 2026-05-18 14:23:36 +08:00。
+  - `releases/apk/BlindAssist-v1.3.0-debug-e29b99a-rebuilt.apk`，32,230,591 bytes，补构建时间 2026-05-18 14:24:11 +08:00。
+  - `releases/apk/BlindAssist-v1.4.0-debug-f96c6f7-rebuilt.apk`，32,230,591 bytes，补构建时间 2026-05-18 14:24:57 +08:00。
+  - `releases/apk/BlindAssist-v1.5.0-debug-f6b6d5e-rebuilt.apk`，32,246,975 bytes，补构建时间 2026-05-18 14:26:09 +08:00。
+  - `releases/apk/BlindAssist-v2.0.0-debug-52a0c93-rebuilt.apk`，32,247,033 bytes，补构建时间 2026-05-18 14:27:15 +08:00。
+  - `releases/apk/BlindAssist-v2.5.0-debug-e803d1f-rebuilt.apk`，32,263,479 bytes，补构建时间 2026-05-18 14:28:15 +08:00。
+  - `releases/apk/BlindAssist-v2.6.0-debug-71f921d-current.apk`，32,263,443 bytes，来源为当前 `app/build/outputs/apk/debug/app-debug.apk`，文件时间 2026-05-18 01:27:26 +08:00。
+- 修改原因：
+  - 用户希望保存每一个版本的 App 文件，方便后续给老师展示项目演进和版本对比。
+  - 历史默认输出 `app/build/outputs/apk/debug/app-debug.apk` 会被新构建覆盖，旧 APK 文件本身此前没有单独留存，因此需要从 Git 历史重新构建补存。
+  - 采用临时 worktree 可以在不切换当前工作区、不影响未提交文档改动和未跟踪 PPTX 的情况下，可靠恢复各阶段源码并构建对应 APK。
+  - `.gitignore` 例外规则可以避免归档 APK 因全局 `*.apk` 忽略规则而无法提交保存，同时仍然避免其它临时 APK 误入仓库。
+- 验证方式：
+  - 已运行 `git status --short`，确认当前工作区已有 `AGENTS.md`、`DEVELOPMENT_LOG.md` 文档改动和一个无关未跟踪 PPTX，归档构建过程中未触碰 PPTX。
+  - 已运行 Git 历史扫描，确认各提交的 `versionName`：v0.1.0 对应 `958d5a9`，v0.2.0 对应 `fb937da`，v0.7.0 对应 `d948f6b`，v0.8.0 对应 `4bf9ad2`，v1.3.0 对应 `e29b99a`，v1.4.0 对应 `f96c6f7`，v1.5.0 对应 `f6b6d5e`，v2.0.0 对应 `52a0c93`，v2.5.0 对应 `e803d1f`，v2.6.0 对应 `71f921d`。
+  - 第一次历史构建直接使用临时 worktree 运行 Gradle，全部失败，失败原因为临时 worktree 缺少 Android SDK 配置：`SDK location not found. Define a valid SDK location with an ANDROID_HOME environment variable or by setting the sdk.dir path in your project's local properties file`。
+  - 已修复验证方式：为每个临时 worktree 写入 `local.properties`，并设置 `JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'`、`ANDROID_HOME='G:\linnan\.android-sdk'`、`ANDROID_SDK_ROOT='G:\linnan\.android-sdk'`。
+  - 已基于本仓库已知沙箱限制直接提权运行各历史版本完整命令：`.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0 均 `BUILD SUCCESSFUL`，每个版本均执行 41 个 Gradle actionable tasks。
+  - v0.2.0 至 v1.5.0 构建中出现 CameraX `setTargetResolution` deprecation warning，这是对应历史源码状态下的已知旧 API 警告，不影响 APK 生成；v2.0.0 之后该警告消失。
+  - 已运行 `Get-ChildItem -Path releases\apk -Filter *.apk`，确认 10 个版本 APK 均存在并记录文件大小。
+  - 已运行 `git worktree list`，确认临时 worktree 已清理，只剩当前主工作区。
+- 版本判断：
+  - 本次属于版本归档和项目管理更新，新增历史 APK 归档、README 说明和 `.gitignore` 例外规则，不改变 App 源码、功能行为、模型资产或当前运行逻辑。
+  - 因此本次不提升应用版本号，项目当前应用版本仍为 `v2.6.0`。
+- 后续事项：
+  - 后续每次成功构建可展示 APK 后，应立即复制到 `releases/apk/`，避免再依赖历史重构建。
+  - 如需要给老师展示“阶段开发脉络”，建议新建明确标注为回顾整理的里程碑文档，而不是改写已有开发日志的真实时间。
+
+### 毕设日志与版本 APK 留存规则补充
+
+- 时间：2026-05-18 14:11:14 +08:00
+- 执行者：violjjet
+- 类型：文档 / 协作规则 / 项目管理
+- 修改范围：
+  - `AGENTS.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 在 `AGENTS.md` 的开发日志要求中补充本项目属于研究生阶段小毕设/课程设计展示项目，开发日志不仅用于协作追踪，也用于向指导老师展示持续工作量、阶段进展、技术路线和验证过程。
+  - 明确后续日志应更详实、具体、可复盘，建议写清工作背景、实现思路、模块拆解、验证证据和下一步计划，避免只写“已修改”“已优化”等过短记录。
+  - 细化“修改内容”和“修改原因”的写法，要求按模块、文件或功能点说明具体实现、参数调整、交互变化、测试补充和文档同步，并补充毕设展示价值、用户体验或技术风险等背景。
+  - 新增“版本 APK 留存要求”，规定每次构建出可用于演示、测试或给老师查看的 APK 后，需要在默认 Gradle 输出之外，额外复制一份按版本命名的 APK 到 `releases/apk/`。
+  - 明确推荐命名格式为 `BlindAssist-v版本号-构建类型-日期时间.apk`，并要求在开发日志中记录归档 APK 路径、来源 APK、文件大小、构建时间或复制时间。
+  - 明确不要主动删除旧版本 APK，方便后续展示项目演进、对比不同迭代阶段的功能和界面效果。
+- 修改原因：
+  - 用户说明该项目是研究生小毕设，需要让指导老师看到足够清晰的工作量和持续进展，因此后续开发记录要更适合展示、汇报和复盘。
+  - 保存每个版本的 APK 能避免只有最新构建产物的问题，便于课堂演示、阶段验收、答辩材料整理以及不同版本功能对比。
+  - 将要求写入 `AGENTS.md` 可以让后续 Codex/Agent 或人工协作者在修改项目时自动遵守，不依赖临时口头提醒。
+- 验证方式：
+  - 已运行 `git status --short`，确认修改前仅存在一个与本次任务无关的未跟踪 PPTX 文件，已保持不动。
+  - 已使用 UTF-8 读取 `AGENTS.md` 和 `DEVELOPMENT_LOG.md`，确认文件现有结构和日志规范后再插入新规则。
+  - 本次为协作规则文档更新，未修改 Android 源码、Gradle 配置、模型资产或构建脚本，因此未运行 Gradle 构建和单元测试。
+- 版本判断：
+  - 本次属于轻量协作规则补充，主要影响后续记录和产物归档方式，不改变应用功能、构建方式、模型资产、运行行为或当前可安装 APK。
+  - 因此本次不提升应用版本号，项目当前应用版本保持不变。
+- 后续事项：
+  - 下次成功构建可演示 APK 时，应根据新规则创建 `releases/apk/` 并保存版本化 APK 副本。
+  - 后续每次版本迭代都应检查是否已经归档 APK，并在日志中写清文件路径和验证结果。
+
 ### 显示可信度小更新 v2.6.0
 
 - 时间：2026-05-18 01:28:20 +08:00
