@@ -17,9 +17,12 @@ import java.util.Locale
 class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
     var speechEnabled: Boolean = true
     var vibrationEnabled: Boolean = true
+    var speechStyle: SpeechStyle = SpeechStyle.STANDARD
+    var vibrationStrength: VibrationStrength = VibrationStrength.STANDARD
 
     private val appContext = context.applicationContext
     private val lastAlertAt = mutableMapOf<AlertKey, Long>()
+    private val fatigueController = FeedbackFatigueController()
     private var ttsReady = false
     private val tts = TextToSpeech(appContext, this)
 
@@ -44,13 +47,14 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
     }
 
     fun notify(risk: RiskResult, profile: AlertProfile): FeedbackDecision {
-        val plan = planFor(risk, profile)
+        val plan = planFor(risk, profile, vibrationStrength)
             ?: return FeedbackDecision(null, triggered = false, reason = FeedbackReason.NO_FEEDBACK_RISK)
 
         val now = System.currentTimeMillis()
         val alertKey = AlertKey(risk.direction, risk.proximity)
         val last = lastAlertAt[alertKey] ?: 0L
-        if (now - last < plan.cooldownMs) {
+        val effectiveCooldownMs = fatigueController.effectiveCooldownMs(risk, plan.cooldownMs, now)
+        if (now - last < effectiveCooldownMs) {
             return FeedbackDecision(plan, triggered = false, reason = FeedbackReason.COOLDOWN)
         }
 
@@ -62,7 +66,7 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
         var speechTriggered = false
         var vibrationTriggered = false
         if (speechEnabled && ttsReady) {
-            tts.speak(risk.message, TextToSpeech.QUEUE_FLUSH, null, "risk-${now}")
+            tts.speak(speechStyle.messageFor(risk), TextToSpeech.QUEUE_FLUSH, null, "risk-${now}")
             speechTriggered = true
         }
         if (vibrationEnabled) {
@@ -75,10 +79,13 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
             reason = FeedbackReason.TRIGGERED,
             speechTriggered = speechTriggered,
             vibrationTriggered = vibrationTriggered
-        )
+        ).also {
+            fatigueController.recordTriggered(risk, now)
+        }
     }
 
     fun shutdown() {
+        fatigueController.reset()
         tts.stop()
         tts.shutdown()
     }
@@ -106,9 +113,13 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
         const val STANDARD_NEAR_VIBRATION_MS = 160L
         const val STANDARD_CRITICAL_VIBRATION_MS = 420L
 
-        internal fun planFor(risk: RiskResult, profile: AlertProfile = AlertProfile.STANDARD): FeedbackPlan? {
+        internal fun planFor(
+            risk: RiskResult,
+            profile: AlertProfile = AlertProfile.STANDARD,
+            vibrationStrength: VibrationStrength = VibrationStrength.STANDARD
+        ): FeedbackPlan? {
             val policy = AlertPolicy.forProfile(profile)
-            return when {
+            val basePlan = when {
                 risk.proximity == ProximityBand.CRITICAL && risk.level == RiskLevel.HIGH -> {
                     FeedbackPlan(policy.criticalCooldownMs, policy.criticalVibrationMs, VibrationEffect.DEFAULT_AMPLITUDE)
                 }
@@ -118,6 +129,14 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
                 }
                 else -> null
             }
+            return basePlan?.copy(
+                vibrationMs = vibrationStrength.scaleDuration(basePlan.vibrationMs),
+                amplitude = if (vibrationStrength == VibrationStrength.STANDARD) {
+                    basePlan.amplitude
+                } else {
+                    vibrationStrength.amplitude
+                }
+            )
         }
     }
 }

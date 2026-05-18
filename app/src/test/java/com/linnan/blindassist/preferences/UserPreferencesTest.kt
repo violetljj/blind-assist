@@ -1,6 +1,8 @@
 package com.linnan.blindassist.preferences
 
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.feedback.SpeechStyle
+import com.linnan.blindassist.feedback.VibrationStrength
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -17,6 +19,8 @@ class UserPreferencesTest {
         assertTrue(state.vibrationEnabled)
         assertFalse(state.careModeEnabled)
         assertEquals(AlertProfile.STANDARD, state.alertProfile)
+        assertEquals(SpeechStyle.STANDARD, state.speechStyle)
+        assertEquals(VibrationStrength.STANDARD, state.vibrationStrength)
         assertFalse(state.onboardingCompleted)
     }
 
@@ -61,6 +65,26 @@ class UserPreferencesTest {
     }
 
     @Test
+    fun savedSpeechStylePreferenceIsLoadedAgain() {
+        val store = MapPreferenceStore()
+        val preferences = UserPreferences(store)
+
+        preferences.setSpeechStyle(SpeechStyle.DETAILED)
+
+        assertEquals(SpeechStyle.DETAILED, UserPreferences(store).load().speechStyle)
+    }
+
+    @Test
+    fun savedVibrationStrengthPreferenceIsLoadedAgain() {
+        val store = MapPreferenceStore()
+        val preferences = UserPreferences(store)
+
+        preferences.setVibrationStrength(VibrationStrength.STRONG)
+
+        assertEquals(VibrationStrength.STRONG, UserPreferences(store).load().vibrationStrength)
+    }
+
+    @Test
     fun savedOnboardingCompletedPreferenceIsLoadedAgain() {
         val store = MapPreferenceStore()
         val preferences = UserPreferences(store)
@@ -79,6 +103,18 @@ class UserPreferencesTest {
     }
 
     @Test
+    fun unknownFeedbackPreferencesFallBackToStandard() {
+        val store = MapPreferenceStore()
+        store.putString(UserPreferences.KEY_SPEECH_STYLE, "future-style")
+        store.putString(UserPreferences.KEY_VIBRATION_STRENGTH, "future-strength")
+
+        val state = UserPreferences(store).load()
+
+        assertEquals(SpeechStyle.STANDARD, state.speechStyle)
+        assertEquals(VibrationStrength.STANDARD, state.vibrationStrength)
+    }
+
+    @Test
     fun detectionStateIsNotPersistedAsAUserPreference() {
         val store = MapPreferenceStore()
         val preferences = UserPreferences(store)
@@ -87,6 +123,8 @@ class UserPreferencesTest {
         preferences.setVibrationEnabled(false)
         preferences.setCareModeEnabled(true)
         preferences.setAlertProfile(AlertProfile.QUIET)
+        preferences.setSpeechStyle(SpeechStyle.BRIEF)
+        preferences.setVibrationStrength(VibrationStrength.SOFT)
         preferences.setOnboardingCompleted(true)
 
         assertEquals(
@@ -95,6 +133,8 @@ class UserPreferencesTest {
                 UserPreferences.KEY_VIBRATION_ENABLED,
                 UserPreferences.KEY_CARE_MODE_ENABLED,
                 UserPreferences.KEY_ALERT_PROFILE,
+                UserPreferences.KEY_SPEECH_STYLE,
+                UserPreferences.KEY_VIBRATION_STRENGTH,
                 UserPreferences.KEY_ONBOARDING_COMPLETED
             ),
             store.keys()

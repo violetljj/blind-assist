@@ -3,12 +3,16 @@ package com.linnan.blindassist.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.feedback.SpeechStyle
+import com.linnan.blindassist.feedback.VibrationStrength
 
 data class UserPreferenceState(
     val speechEnabled: Boolean = true,
     val vibrationEnabled: Boolean = true,
     val careModeEnabled: Boolean = false,
     val alertProfile: AlertProfile = AlertProfile.STANDARD,
+    val speechStyle: SpeechStyle = SpeechStyle.STANDARD,
+    val vibrationStrength: VibrationStrength = VibrationStrength.STANDARD,
     val onboardingCompleted: Boolean = false
 )
 
@@ -25,6 +29,10 @@ class UserPreferences(private val store: PreferenceStore) {
             vibrationEnabled = store.getBoolean(KEY_VIBRATION_ENABLED, true),
             careModeEnabled = store.getBoolean(KEY_CARE_MODE_ENABLED, false),
             alertProfile = AlertProfile.fromStorageValue(store.getString(KEY_ALERT_PROFILE, AlertProfile.STANDARD.storageValue)),
+            speechStyle = SpeechStyle.fromStorageValue(store.getString(KEY_SPEECH_STYLE, SpeechStyle.STANDARD.storageValue)),
+            vibrationStrength = VibrationStrength.fromStorageValue(
+                store.getString(KEY_VIBRATION_STRENGTH, VibrationStrength.STANDARD.storageValue)
+            ),
             onboardingCompleted = store.getBoolean(KEY_ONBOARDING_COMPLETED, false)
         )
     }
@@ -45,6 +53,14 @@ class UserPreferences(private val store: PreferenceStore) {
         store.putString(KEY_ALERT_PROFILE, profile.storageValue)
     }
 
+    fun setSpeechStyle(style: SpeechStyle) {
+        store.putString(KEY_SPEECH_STYLE, style.storageValue)
+    }
+
+    fun setVibrationStrength(strength: VibrationStrength) {
+        store.putString(KEY_VIBRATION_STRENGTH, strength.storageValue)
+    }
+
     fun setOnboardingCompleted(completed: Boolean) {
         store.putBoolean(KEY_ONBOARDING_COMPLETED, completed)
     }
@@ -55,6 +71,8 @@ class UserPreferences(private val store: PreferenceStore) {
         internal const val KEY_VIBRATION_ENABLED = "vibration_enabled"
         internal const val KEY_CARE_MODE_ENABLED = "care_mode_enabled"
         internal const val KEY_ALERT_PROFILE = "alert_profile"
+        internal const val KEY_SPEECH_STYLE = "speech_style"
+        internal const val KEY_VIBRATION_STRENGTH = "vibration_strength"
         internal const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
     }
 }

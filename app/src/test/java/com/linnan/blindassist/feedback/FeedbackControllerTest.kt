@@ -7,6 +7,7 @@ import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class FeedbackControllerTest {
@@ -52,6 +53,49 @@ class FeedbackControllerTest {
         assertEquals(220L, near?.vibrationMs)
         assertEquals(650L, critical?.cooldownMs)
         assertEquals(520L, critical?.vibrationMs)
+    }
+
+    @Test
+    fun speechStylesUseBriefStandardAndDetailedMessages() {
+        val risk = risk(RiskLevel.HIGH, ProximityBand.NEAR)
+
+        assertEquals("正前方近处", SpeechStyle.BRIEF.messageFor(risk))
+        assertEquals("测试提醒", SpeechStyle.STANDARD.messageFor(risk))
+        assertEquals("正前方近处有障碍物，请注意避让", SpeechStyle.DETAILED.messageFor(risk))
+    }
+
+    @Test
+    fun vibrationStrengthScalesDurationAndAmplitude() {
+        val soft = FeedbackController.planFor(
+            risk(RiskLevel.MEDIUM, ProximityBand.NEAR),
+            AlertProfile.STANDARD,
+            VibrationStrength.SOFT
+        )
+        val strong = FeedbackController.planFor(
+            risk(RiskLevel.HIGH, ProximityBand.CRITICAL),
+            AlertProfile.STANDARD,
+            VibrationStrength.STRONG
+        )
+
+        assertEquals(120L, soft?.vibrationMs)
+        assertEquals(96, soft?.amplitude)
+        assertEquals(525L, strong?.vibrationMs)
+        assertEquals(255, strong?.amplitude)
+    }
+
+    @Test
+    fun fatigueLengthensRepeatedNonCriticalCooldownButNotCriticalRisk() {
+        val fatigue = FeedbackFatigueController()
+        val near = risk(RiskLevel.MEDIUM, ProximityBand.NEAR)
+        val critical = risk(RiskLevel.HIGH, ProximityBand.CRITICAL)
+
+        fatigue.recordTriggered(near, nowMs = 1000L)
+        fatigue.recordTriggered(near, nowMs = 2400L)
+        val tiredCooldown = fatigue.effectiveCooldownMs(near, baseCooldownMs = 1500L, nowMs = 3600L)
+        val criticalCooldown = fatigue.effectiveCooldownMs(critical, baseCooldownMs = 850L, nowMs = 3600L)
+
+        assertTrue(tiredCooldown > 1500L)
+        assertEquals(850L, criticalCooldown)
     }
 
     @Test

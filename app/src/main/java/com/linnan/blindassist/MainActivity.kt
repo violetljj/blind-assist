@@ -26,6 +26,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.feedback.FeedbackDecision
+import com.linnan.blindassist.feedback.SpeechStyle
+import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.risk.ProximityBand
@@ -101,6 +103,8 @@ class MainActivity : ComponentActivity() {
         val initialControls = appViewModel.uiState.value.controls
         feedbackController.speechEnabled = initialControls.speechEnabled
         feedbackController.vibrationEnabled = initialControls.vibrationEnabled
+        feedbackController.speechStyle = initialControls.speechStyle
+        feedbackController.vibrationStrength = initialControls.vibrationStrength
         careModeEnabled = initialControls.careModeEnabled
         alertProfile = initialControls.alertProfile
         renderUi(Guidance.initial(detector.statusMessage))
@@ -128,6 +132,8 @@ class MainActivity : ComponentActivity() {
                     onCareModeChange = ::setCareModeEnabled,
                     onDebugVisibleChange = ::setDebugVisible,
                     onProfileChange = ::setAlertProfile,
+                    onSpeechStyleChange = ::setSpeechStyle,
+                    onVibrationStrengthChange = ::setVibrationStrength,
                     onCameraViewsReady = ::onCameraViewsReady
                 )
                 if (uiState.showGlassesDialog) {
@@ -352,6 +358,16 @@ class MainActivity : ComponentActivity() {
     private fun setVibrationEnabled(enabled: Boolean) {
         feedbackController.vibrationEnabled = enabled
         appViewModel.onVibrationChange(enabled)
+    }
+
+    private fun setSpeechStyle(style: SpeechStyle) {
+        feedbackController.speechStyle = style
+        appViewModel.onSpeechStyleChange(style)
+    }
+
+    private fun setVibrationStrength(strength: VibrationStrength) {
+        feedbackController.vibrationStrength = strength
+        appViewModel.onVibrationStrengthChange(strength)
     }
 
     private fun setCareModeEnabled(enabled: Boolean) {

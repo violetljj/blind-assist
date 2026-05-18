@@ -40,6 +40,21 @@ class RiskStabilizerTest {
     }
 
     @Test
+    fun standardProfileConfirmsNearMediumAfterTwoFramesForEachDirection() {
+        listOf(RiskDirection.LEFT, RiskDirection.CENTER, RiskDirection.RIGHT).forEach { direction ->
+            val stabilizer = RiskStabilizer()
+            val medium = risk(RiskLevel.MEDIUM, direction, ProximityBand.NEAR, "近处风险")
+
+            val first = stabilizer.update(medium, nowMs = 100L)
+            val second = stabilizer.update(medium, nowMs = 130L)
+
+            assertEquals(RiskLevel.NONE, first.level)
+            assertEquals(RiskLevel.MEDIUM, second.level)
+            assertEquals(direction, second.direction)
+        }
+    }
+
+    @Test
     fun quietProfileRequiresThreeMediumFrames() {
         val stabilizer = RiskStabilizer()
         val medium = risk(RiskLevel.MEDIUM, RiskDirection.LEFT, ProximityBand.NEAR, "左前方近处 有车辆")

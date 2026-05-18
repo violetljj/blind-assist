@@ -101,6 +101,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.feedback.SpeechStyle
+import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.ui.DetectionOverlayView
 import kotlinx.coroutines.delay
 
@@ -110,7 +112,9 @@ data class AssistControlsUiState(
     val vibrationEnabled: Boolean,
     val careModeEnabled: Boolean,
     val debugVisible: Boolean,
-    val alertProfile: AlertProfile
+    val alertProfile: AlertProfile,
+    val speechStyle: SpeechStyle,
+    val vibrationStrength: VibrationStrength
 )
 
 data class CameraGuidanceUiState(
@@ -215,6 +219,8 @@ fun BlindAssistApp(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onSpeechStyleChange: (SpeechStyle) -> Unit,
+    onVibrationStrengthChange: (VibrationStrength) -> Unit,
     onCameraViewsReady: (PreviewView, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -260,6 +266,8 @@ fun BlindAssistApp(
                     onCareModeChange = onCareModeChange,
                     onDebugVisibleChange = onDebugVisibleChange,
                     onProfileChange = onProfileChange,
+                    onSpeechStyleChange = onSpeechStyleChange,
+                    onVibrationStrengthChange = onVibrationStrengthChange,
                     onShowOnboarding = onShowOnboarding
                 )
             }
@@ -498,6 +506,8 @@ private fun MainShell(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onSpeechStyleChange: (SpeechStyle) -> Unit,
+    onVibrationStrengthChange: (VibrationStrength) -> Unit,
     onShowOnboarding: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -549,6 +559,8 @@ private fun MainShell(
                     onCareModeChange = onCareModeChange,
                     onDebugVisibleChange = onDebugVisibleChange,
                     onProfileChange = onProfileChange,
+                    onSpeechStyleChange = onSpeechStyleChange,
+                    onVibrationStrengthChange = onVibrationStrengthChange,
                     onShowOnboarding = onShowOnboarding
                 )
             }
@@ -667,7 +679,7 @@ fun ProfileScreen(
         InfoStrip(
             icon = Icons.Rounded.Favorite,
             title = "辅助偏好",
-            body = "语音${enabledText(controls.speechEnabled)}，震动${enabledText(controls.vibrationEnabled)}，关怀模式${enabledText(controls.careModeEnabled)}。"
+            body = "语音${enabledText(controls.speechEnabled)}（${controls.speechStyle.displayName}），震动${enabledText(controls.vibrationEnabled)}（${controls.vibrationStrength.displayName}），关怀模式${enabledText(controls.careModeEnabled)}。"
         )
     }
 }
@@ -681,6 +693,8 @@ fun SettingsScreen(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onSpeechStyleChange: (SpeechStyle) -> Unit,
+    onVibrationStrengthChange: (VibrationStrength) -> Unit,
     onShowOnboarding: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -731,6 +745,16 @@ fun SettingsScreen(
         ProfileSelector(
             selected = controls.alertProfile,
             onProfileChange = onProfileChange
+        )
+        Spacer(Modifier.height(16.dp))
+        SpeechStyleSelector(
+            selected = controls.speechStyle,
+            onSpeechStyleChange = onSpeechStyleChange
+        )
+        Spacer(Modifier.height(16.dp))
+        VibrationStrengthSelector(
+            selected = controls.vibrationStrength,
+            onVibrationStrengthChange = onVibrationStrengthChange
         )
         Spacer(Modifier.height(16.dp))
         FieldTestSummaryCard(fieldTestSummary)
@@ -1223,7 +1247,7 @@ private fun ProfileSelector(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .semantics(mergeDescendants = true) {
+            .semantics {
                 contentDescription = "提醒档位，当前${selected.displayName}。安静减少打扰，敏感更早确认中风险。"
             },
         shape = RoundedCornerShape(16.dp),
@@ -1243,6 +1267,80 @@ private fun ProfileSelector(
                             role = Role.Button
                             stateDescription = if (selected == profile) "当前档位" else "未选择"
                             contentDescription = "选择${profile.displayName}提醒档位"
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SpeechStyleSelector(
+    selected: SpeechStyle,
+    onSpeechStyleChange: (SpeechStyle) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics {
+                contentDescription = "语音风格，当前${selected.displayName}。${selected.description}"
+            },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text("语音风格", color = BaText, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+            Text("简短减少打扰，详细会补充目标类别。", color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Spacer(Modifier.height(10.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                SpeechStyle.values().forEach { style ->
+                    FilterChip(
+                        selected = selected == style,
+                        onClick = { onSpeechStyleChange(style) },
+                        label = { Text(style.displayName, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        modifier = Modifier.heightIn(min = 48.dp).weight(1f).semantics {
+                            role = Role.Button
+                            stateDescription = if (selected == style) "当前风格" else "未选择"
+                            contentDescription = "选择${style.displayName}语音风格，${style.description}"
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun VibrationStrengthSelector(
+    selected: VibrationStrength,
+    onVibrationStrengthChange: (VibrationStrength) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics {
+                contentDescription = "震动强度，当前${selected.displayName}。${selected.description}"
+            },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text("震动强度", color = BaText, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+            Text("按触觉敏感度选择轻柔、标准或更强提醒。", color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Spacer(Modifier.height(10.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                VibrationStrength.values().forEach { strength ->
+                    FilterChip(
+                        selected = selected == strength,
+                        onClick = { onVibrationStrengthChange(strength) },
+                        label = { Text(strength.displayName, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        modifier = Modifier.heightIn(min = 48.dp).weight(1f).semantics {
+                            role = Role.Button
+                            stateDescription = if (selected == strength) "当前强度" else "未选择"
+                            contentDescription = "选择${strength.displayName}震动强度，${strength.description}"
                         }
                     )
                 }
@@ -1457,6 +1555,8 @@ private fun SettingsPreview() {
             onCareModeChange = {},
             onDebugVisibleChange = {},
             onProfileChange = {},
+            onSpeechStyleChange = {},
+            onVibrationStrengthChange = {},
             onShowOnboarding = {}
         )
     }
@@ -1490,7 +1590,9 @@ private fun previewControls(): AssistControlsUiState {
         vibrationEnabled = true,
         careModeEnabled = false,
         debugVisible = true,
-        alertProfile = AlertProfile.STANDARD
+        alertProfile = AlertProfile.STANDARD,
+        speechStyle = SpeechStyle.STANDARD,
+        vibrationStrength = VibrationStrength.STANDARD
     )
 }
 

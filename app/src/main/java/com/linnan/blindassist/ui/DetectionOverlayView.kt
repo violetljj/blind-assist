@@ -21,9 +21,11 @@ class DetectionOverlayView @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : View(context, attrs) {
     private var detections: List<Detection> = emptyList()
+    private var smoothedDetections: List<SmoothedDetection> = emptyList()
     private var frameSize: FrameSize? = null
     private var risk: RiskResult? = null
     private var careMode = false
+    private val boxSmoother = OverlayBoxSmoother()
 
     private val boxPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
@@ -78,8 +80,12 @@ class DetectionOverlayView @JvmOverloads constructor(
         risk: RiskResult?
     ) {
         this.detections = detections
+        this.smoothedDetections = boxSmoother.smooth(detections)
         this.frameSize = frameSize
         this.risk = risk
+        if (detections.isEmpty()) {
+            boxSmoother.reset()
+        }
         invalidate()
     }
 
@@ -91,12 +97,13 @@ class DetectionOverlayView @JvmOverloads constructor(
         val transform = fillCenterTransform(sourceSize)
         val riskDetection = risk?.sourceDetection
 
-        detections.forEach { detection ->
+        smoothedDetections.forEach { smoothed ->
+            val detection = smoothed.display
             val rect = transform.map(detection.boundingBox.left, detection.boundingBox.top)
             rect.right = transform.mapX(detection.boundingBox.right)
             rect.bottom = transform.mapY(detection.boundingBox.bottom)
 
-            val isRiskSource = detection == riskDetection
+            val isRiskSource = smoothed.raw == riskDetection
             val color = colorFor(isRiskSource)
             if (isRiskSource) {
                 riskHaloPaint.color = color

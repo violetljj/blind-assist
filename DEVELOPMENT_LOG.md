@@ -4,6 +4,103 @@
 
 ## 2026-05-18
 
+### v3.6.0 Compose 仪器测试 Process crashed 修复
+
+- 时间：2026-05-18 21:52:10 +08:00
+- 执行者：violjjet
+- 类型：测试 / 修复 / UI 无障碍 / 构建 / 版本归档 / 真机
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `README.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v3.6.0-debug-20260518-214947.apk`
+- 修改内容：
+  - 为 Compose 仪器测试类补充 `@RunWith(AndroidJUnit4::class)`，让 `createAndroidComposeRule<ComposeTestActivity>()` 按 AndroidJUnit4 规则正确启动 Activity 并挂载 Compose hierarchy。
+  - 在 `app/build.gradle.kts` 中显式加入 `androidx.test:runner:1.6.2` 和 `androidx.test:rules:1.6.1`，避免仪器测试 runner/rules 依赖完全依靠传递依赖。
+  - 调整设置页中“提醒档位”“语音风格”“震动强度”三个选择卡片的 semantics，不再对包含多个可点击 `FilterChip` 的父卡片使用 `mergeDescendants = true`，避免 TalkBack 和 Compose UI 测试都难以稳定访问内部 chip。
+  - 将仪器测试中的点击定位从短文本“详细 / 强 / 敏感”改为具体 `contentDescription`，减少中文短文本重名和滚动可见性带来的不稳定。
+  - 更新 README 和 `idea.md`，把此前记录的 `connectedDebugAndroidTest` 遗留问题改为已解决，并记录新的 v3.6.0 APK 归档路径。
+- 修改原因：
+  - 用户要求解决真机运行 `connectedDebugAndroidTest` 时设备端 instrumentation 报 `Process crashed` 的问题。
+  - 通过直接运行 `adb shell am instrument` 绕过 UTP 后，真实错误暴露为 `java.lang.IllegalStateException: No compose hierarchies found in the app`，而不是业务代码崩溃；UTP 之前把该测试宿主问题包装成了 `Process crashed`。
+  - 父级语义合并还会隐藏内部可点击 chip，对无障碍和 UI 自动化都不理想，因此本次同时修正测试稳定性和设置页控件可访问性。
+- 验证方式：
+  - 已读取并使用 `android-testing` skill；修改前已运行 `git status --short`，确认工作区已有 v3.6.0 相关未提交改动和无关未跟踪 PPTX，未处理无关 PPTX。
+  - 普通沙箱运行 Gradle 仪器测试因本仓库已知限制失败：`java.net.SocketException: Permission denied: getsockopt`；随后按仓库规则提权运行相关 Gradle 命令。
+  - 已确认设备在线：`.\.android-sdk\platform-tools\adb.exe devices`，设备包含 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`，机型核对为 `SM-S9280`，系统版本 `16`，`always_finish_activities` 为 `0`。
+  - 修复前直接运行 `.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell am instrument -w -r -e class com.linnan.blindassist.ui.compose.BlindAssistComposeTest#settingsScreenChangesFeedbackDetailControls com.linnan.blindassist.test/androidx.test.runner.AndroidJUnitRunner`，输出真实失败：`No compose hierarchies found in the app`。
+  - 修复后重新构建并安装测试 APK，直接运行同一 `am instrument` 命令，输出 `OK (1 test)`。
+  - 已按本仓库已知沙箱限制直接提权运行：`$env:ANDROID_SERIAL='adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --stacktrace`，输出 `Starting 2 tests on SM-S9280 - 16`、`Finished 2 tests on SM-S9280 - 16`、`BUILD SUCCESSFUL in 32s`。
+  - 已按本仓库已知沙箱限制直接提权运行完整验证：`.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，输出 `BUILD SUCCESSFUL in 16s`。
+  - debug APK 已生成在 `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,155,812 bytes`，文件时间 `2026-05-18 21:41:18 +08:00`。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v3.6.0-debug-20260518-214947.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,155,812 bytes`，文件时间 `2026-05-18 21:41:18 +08:00`。
+  - 已重新安装当前 debug APK：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行版本核对：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=16 minSdk=26 targetSdk=35` 和 `versionName=3.6.0`。
+- 版本判断：
+  - 本次为 v3.6.0 的测试稳定性和无障碍语义修复，不新增用户可见功能、不改变模型、风险规则、权限或核心架构。
+  - 项目版本保持 `v3.6.0` / `versionCode=16`，不额外提升版本号。
+- 后续事项：
+  - 后续扩展 Compose UI 测试时，优先使用明确的 contentDescription 或 testTag 定位控件，并避免把包含多个可点击子控件的父容器做语义合并。
+  - 继续使用 mDNS 或 USB serial 运行 UTP；避免使用带冒号的 Wi-Fi serial 作为 Gradle connected test 设备名，以免再次触发 Windows 路径问题。
+
+### v3.6.0 日常使用体验增强
+
+- 时间：2026-05-18 21:29:31 +08:00
+- 执行者：violjjet
+- 类型：功能 / UI / 无障碍 / 测试 / 构建 / 版本归档 / 真机
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/feedback/`
+  - `app/src/main/java/com/linnan/blindassist/preferences/UserPreferences.kt`
+  - `app/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `app/src/debug/`
+  - `app/src/test/java/com/linnan/blindassist/`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `README.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v3.6.0-debug-20260518-212825.apk`
+- 修改内容：
+  - 新增 `SpeechStyle`，提供 `BRIEF` / `STANDARD` / `DETAILED` 三档语音风格，并把语音播报从直接朗读 `risk.message` 改为通过模板生成；标准风格保持原有短句提醒，简短风格减少打扰，详细风格补充目标类别和避让建议。
+  - 新增 `VibrationStrength`，提供 `SOFT` / `STANDARD` / `STRONG` 三档震动强度，按强度缩放震动时长和 amplitude；标准强度保持既有计划值。
+  - 新增 `FeedbackFatigueController`，对连续多次非迫近近距提醒增加有效冷却时间，减少日常使用中的提醒疲劳；迫近高风险仍走紧急冷却，不受疲劳控制压制。
+  - 扩展 `UserPreferences`、`BlindAssistViewModel` 和 `AssistControlsUiState`，持久化语音风格和震动强度，未知存储值回退标准值；`MainActivity` 只负责把 ViewModel 状态同步到 `FeedbackController`。
+  - 设置页新增“语音风格”和“震动强度”控制组，继续保留提醒档位、语音开关、震动开关、关怀模式、调试信息和新手引导入口；新增控件保持 48dp 触控目标和 TalkBack 状态语义。
+  - 新增 `OverlayBoxSmoother`，对检测框绘制做轻量平滑；该平滑只影响 overlay 显示，不改变检测结果、风险分析或语音/震动触发。
+  - 将近距阈值略调保守：`NEAR_BOTTOM_RATIO` 从 `0.60f` 调为 `0.62f`，`NEAR_AREA_RATIO` 从 `0.12f` 调为 `0.14f`；`CRITICAL` 阈值保持不变，减少边界近距误报。
+  - 新增最小 Compose 仪器测试文件和 debug-only `ComposeTestActivity` 宿主，覆盖设置页反馈细项和相机控制面板基础控件；该宿主仅存在于 debug source set。
+  - 扩展 JVM 单元测试：覆盖反馈文案、震动强度缩放、疲劳控制、偏好持久化与未知值回退、ViewModel 状态更新、风险方向/距离矩阵、稳定器连续确认和 overlay 框平滑。
+  - 将应用版本从 `v3.5.0` 提升到 `v3.6.0`，`versionCode` 从 `15` 提升到 `16`，并同步 README。
+  - 将 `idea.md` 中“Compose UI 测试补强”和“提醒语音风格与多语言”标记为“部分完成”，记录已完成范围、剩余范围和验证证据。
+- 修改原因：
+  - 用户确认优先做日常使用体验，而不是演示/答辩包装，因此本次聚焦提醒打扰度、语音长短、触觉强弱、检测显示稳定性和设置页可理解性。
+  - 助盲避障提醒如果过频、过长或触觉过强，会在真实使用中造成疲劳和干扰；新增细粒度设置能让用户按场景和感受选择更合适的反馈方式。
+  - 检测框轻量平滑和更保守的近距阈值能改善视觉稳定性和减少边界误报，同时保持模型资产、CameraX/TFLite 链路和核心架构不变。
+  - 本次继续遵守项目约束：不换模型、不引入 Hilt/多模块、不加入定位/联网/蓝牙扫描/存储权限。
+- 验证方式：
+  - 已按项目规则读取并使用相关 skills：`android-accessibility`、`compose-ui`、`android-testing`、`android-viewmodel`。
+  - 已按本仓库已知沙箱限制直接提权运行完整验证命令：`.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 第一次完整验证在新增实现和测试后返回码为 0；最终在仪器测试调整后再次运行同一完整验证，输出 `BUILD SUCCESSFUL in 18s`，执行任务包含 `:app:testDebugUnitTest` 和 `:app:assembleDebug`。
+  - 已新增 Compose 仪器测试并多次尝试运行：`$env:ANDROID_SERIAL='192.168.5.15:38527'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon` 首次因 Wi-Fi serial 中的冒号触发 UTP `FileNotFoundException: Invalid file path`，未实际执行测试。
+  - 已改用 mDNS serial 继续运行：`$env:ANDROID_SERIAL='adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon`；仪器测试 APK 可编译、安装并启动 debug-only `ComposeTestActivity`，但设备端报告 `Test run failed to complete. Instrumentation run failed due to Process crashed`，报告文件未提供业务异常栈，logcat 主要为 Samsung/Google 系统服务噪声。本次记录为设备 instrumentation 环境遗留问题，不阻断 JVM 测试和 APK 构建交付。
+  - debug APK 已生成在 `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,155,714 bytes`，文件时间 `2026-05-18 21:26:32 +08:00`。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v3.6.0-debug-20260518-212825.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,155,714 bytes`，文件时间 `2026-05-18 21:26:32 +08:00`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，检测到在线设备 `192.168.5.15:38527 device` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已指定直连 serial 安装：`.\.android-sdk\platform-tools\adb.exe -s 192.168.5.15:38527 install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行版本核对命令：`.\.android-sdk\platform-tools\adb.exe -s 192.168.5.15:38527 shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=16 minSdk=26 targetSdk=35` 和 `versionName=3.6.0`。
+- 版本判断：
+  - 本次属于小更新偏中等：新增用户可见设置、反馈模板、触觉强度、疲劳控制、显示平滑和测试覆盖，但不改变模型资产、核心检测链路、权限边界、模块结构或产品形态。
+  - 项目版本提升为 `v3.6.0` / `versionCode=16`。
+- 后续事项：
+  - 后续可继续调查 connected Compose 仪器测试在该 Samsung 设备上的 `Process crashed` 问题；当前可优先依赖 JVM 单测和 debug APK 构建结果。
+  - 如果用户反馈新阈值过于保守，可基于实测截图或现场视频再微调 `NEAR_BOTTOM_RATIO` 和 `NEAR_AREA_RATIO`。
+
 ### v3.5.0 GitHub 推送与手机安装复核
 
 - 时间：2026-05-18 19:43:05 +08:00

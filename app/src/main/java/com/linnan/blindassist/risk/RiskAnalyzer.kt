@@ -180,8 +180,8 @@ class RiskAnalyzer {
         const val RIGHT_BOUNDARY = 0.65f
         const val MID_BOTTOM_RATIO = 0.45f
         const val MID_AREA_RATIO = 0.06f
-        const val NEAR_BOTTOM_RATIO = 0.60f
-        const val NEAR_AREA_RATIO = 0.12f
+        const val NEAR_BOTTOM_RATIO = 0.62f
+        const val NEAR_AREA_RATIO = 0.14f
         const val CRITICAL_BOTTOM_RATIO = 0.72f
         const val CRITICAL_AREA_RATIO = 0.20f
     }

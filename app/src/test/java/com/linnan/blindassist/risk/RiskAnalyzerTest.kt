@@ -52,6 +52,18 @@ class RiskAnalyzerTest {
     }
 
     @Test
+    fun nearThresholdIsConservativeForBorderlineCenterTarget() {
+        val result = analyzer.analyze(
+            listOf(detection("person", BoundingBox(400f, 120f, 600f, 610f))),
+            frame
+        )
+
+        assertEquals(RiskLevel.LOW, result.level)
+        assertEquals(RiskDirection.CENTER, result.direction)
+        assertEquals(ProximityBand.MID, result.proximity)
+    }
+
+    @Test
     fun rightNearTargetUsesGuidanceMessage() {
         val result = analyzer.analyze(
             listOf(detection("chair", BoundingBox(740f, 330f, 980f, 720f))),
@@ -75,6 +87,17 @@ class RiskAnalyzerTest {
         assertEquals(RiskDirection.CENTER, result.direction)
         assertEquals(ProximityBand.MID, result.proximity)
         assertEquals("前方中距 有障碍", result.message)
+    }
+
+    @Test
+    fun directionBoundariesClassifyLeftCenterAndRight() {
+        val left = analyzer.analyze(listOf(detection("chair", BoundingBox(40f, 330f, 260f, 720f))), frame)
+        val center = analyzer.analyze(listOf(detection("chair", BoundingBox(420f, 330f, 580f, 650f))), frame)
+        val right = analyzer.analyze(listOf(detection("chair", BoundingBox(740f, 330f, 960f, 720f))), frame)
+
+        assertEquals(RiskDirection.LEFT, left.direction)
+        assertEquals(RiskDirection.CENTER, center.direction)
+        assertEquals(RiskDirection.RIGHT, right.direction)
     }
 
     @Test

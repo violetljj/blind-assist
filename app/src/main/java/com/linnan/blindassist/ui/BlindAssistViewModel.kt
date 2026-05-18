@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.feedback.SpeechStyle
+import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.AssistControlsUiState
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
@@ -39,7 +41,9 @@ class BlindAssistViewModel(
                 vibrationEnabled = initialPreferences.vibrationEnabled,
                 careModeEnabled = initialPreferences.careModeEnabled,
                 debugVisible = false,
-                alertProfile = initialPreferences.alertProfile
+                alertProfile = initialPreferences.alertProfile,
+                speechStyle = initialPreferences.speechStyle,
+                vibrationStrength = initialPreferences.vibrationStrength
             ),
             cameraGuidance = CameraGuidanceUiState.initial(initialModelStatus),
             fieldTestSummary = FieldTestSummaryUiState.empty(initialPreferences.alertProfile.displayName),
@@ -133,6 +137,20 @@ class BlindAssistViewModel(
         userPreferences.setAlertProfile(profile)
         _uiState.update {
             it.copy(controls = it.controls.copy(alertProfile = profile))
+        }
+    }
+
+    fun onSpeechStyleChange(style: SpeechStyle) {
+        userPreferences.setSpeechStyle(style)
+        _uiState.update {
+            it.copy(controls = it.controls.copy(speechStyle = style))
+        }
+    }
+
+    fun onVibrationStrengthChange(strength: VibrationStrength) {
+        userPreferences.setVibrationStrength(strength)
+        _uiState.update {
+            it.copy(controls = it.controls.copy(vibrationStrength = strength))
         }
     }
 

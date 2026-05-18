@@ -1,6 +1,8 @@
 package com.linnan.blindassist.ui
 
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.feedback.SpeechStyle
+import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.preferences.PreferenceStore
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
@@ -23,6 +25,8 @@ class BlindAssistViewModelTest {
         assertFalse(state.controls.careModeEnabled)
         assertFalse(state.controls.debugVisible)
         assertEquals(AlertProfile.STANDARD, state.controls.alertProfile)
+        assertEquals(SpeechStyle.STANDARD, state.controls.speechStyle)
+        assertEquals(VibrationStrength.STANDARD, state.controls.vibrationStrength)
         assertTrue(state.showOnboarding)
         assertFalse(state.cameraActive)
         assertEquals("模型未初始化", state.modelStatus)
@@ -37,6 +41,8 @@ class BlindAssistViewModelTest {
         preferences.setVibrationEnabled(false)
         preferences.setCareModeEnabled(true)
         preferences.setAlertProfile(AlertProfile.SENSITIVE)
+        preferences.setSpeechStyle(SpeechStyle.DETAILED)
+        preferences.setVibrationStrength(VibrationStrength.STRONG)
         preferences.setOnboardingCompleted(true)
 
         val state = BlindAssistViewModel(preferences).uiState.value
@@ -45,6 +51,8 @@ class BlindAssistViewModelTest {
         assertFalse(state.controls.vibrationEnabled)
         assertTrue(state.controls.careModeEnabled)
         assertEquals(AlertProfile.SENSITIVE, state.controls.alertProfile)
+        assertEquals(SpeechStyle.DETAILED, state.controls.speechStyle)
+        assertEquals(VibrationStrength.STRONG, state.controls.vibrationStrength)
         assertFalse(state.showOnboarding)
         assertTrue(state.fieldTestSummary.detailText.contains("当前档位：敏感"))
     }
@@ -58,6 +66,8 @@ class BlindAssistViewModelTest {
         viewModel.onVibrationChange(false)
         viewModel.onCareModeChange(true)
         viewModel.onProfileChange(AlertProfile.QUIET)
+        viewModel.onSpeechStyleChange(SpeechStyle.BRIEF)
+        viewModel.onVibrationStrengthChange(VibrationStrength.SOFT)
         viewModel.onDebugVisibleChange(true)
 
         val state = viewModel.uiState.value
@@ -66,12 +76,16 @@ class BlindAssistViewModelTest {
         assertTrue(state.controls.careModeEnabled)
         assertTrue(state.controls.debugVisible)
         assertEquals(AlertProfile.QUIET, state.controls.alertProfile)
+        assertEquals(SpeechStyle.BRIEF, state.controls.speechStyle)
+        assertEquals(VibrationStrength.SOFT, state.controls.vibrationStrength)
 
         val reloaded = UserPreferences(store).load()
         assertFalse(reloaded.speechEnabled)
         assertFalse(reloaded.vibrationEnabled)
         assertTrue(reloaded.careModeEnabled)
         assertEquals(AlertProfile.QUIET, reloaded.alertProfile)
+        assertEquals(SpeechStyle.BRIEF, reloaded.speechStyle)
+        assertEquals(VibrationStrength.SOFT, reloaded.vibrationStrength)
     }
 
     @Test
