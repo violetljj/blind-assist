@@ -2,6 +2,21 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v4.3.0 - 移除项目展示中心
+
+- 状态：已完成，`versionCode=19`，`versionName=4.3.0`。
+- 主要变化：
+  - 暂时移除 Features 页里的 App 内“项目展示中心”，减少当前主界面的展示包装。
+  - Features 页保留 `使用手机摄像头`、`连接眼镜设备` 占位、安全边界和模型/版本状态。
+  - 新手引导回放继续保留在 Settings 页，课堂/答辩材料继续保留在 `README.md`、`CHANGELOG.md`、`DEMO_GUIDE.md` 和 APK 归档中。
+  - 本轮不修改 CameraX/TFLite 检测链路、场景化提醒策略、权限、联网、蓝牙、存储或架构形态。
+- 验证：
+  - `:app:testDebugUnitTest`、`:app:assembleDebug` 和 `:app:assembleDebugAndroidTest` 构建验证通过。
+  - debug APK 已安装到 `SM-S9280`，包信息核对为 `versionCode=19`、`versionName=4.3.0`。
+  - Compose 仪器测试删除展示中心专项覆盖，保留底部导航、手机摄像头入口、设置反馈控件和相机页场景/风险解释区域覆盖。
+- APK：
+  - `releases/apk/BlindAssist-v4.3.0-debug-20260519-003109.apk`
+
 ## v4.2.0 - 场景化提醒与风险解释
 
 - 状态：已完成，`versionCode=18`，`versionName=4.2.0`。

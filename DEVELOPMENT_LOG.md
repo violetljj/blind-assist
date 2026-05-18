@@ -4,6 +4,79 @@
 
 ## 2026-05-19
 
+### v4.3.0 移除项目展示中心
+
+- 时间：2026-05-19 00:31:09 +08:00
+- 执行者：violjjet
+- 类型：功能 / UI / 测试 / 文档 / 构建 / 版本归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `DEMO_GUIDE.md`
+  - `idea.md`
+  - `NEXT_MAJOR_UPDATE_PLAN.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v4.3.0-debug-20260519-003109.apk`
+- 修改内容：
+  - 按用户要求暂时移除 App 内“项目展示中心”，让 Features 页回到更直接的日常使用入口。
+  - 从 `FeatureScreen` 删除 `ProjectShowcaseCenter` 和 `ShowcasePoint` 组件，Features 页现在只保留手机摄像头入口、眼镜设备占位、安全边界和模型/版本状态。
+  - 移除展示中心相关 test tag 和 Compose 仪器测试，改为继续覆盖 `使用手机摄像头` 主入口是否进入相机权限说明或相机页。
+  - 保留 Settings 页的 `查看新手引导` 能力，避免把 onboarding 回放路径一并误删。
+  - 将版本从 `v4.2.0` / `versionCode=18` 提升到 `v4.3.0` / `versionCode=19`。
+  - 同步更新 README、CHANGELOG、DEMO_GUIDE、idea 和旧计划状态说明，明确展示中心只是从 App 内暂时移除，仓库文档和 APK 归档仍作为课程/答辩材料保留。
+- 修改原因：
+  - 用户反馈“项目展示中心这个模块，暂时没什么用”，当前主流程更需要直接进入手机摄像头助行原型，而不是在 App 内放展示包装。
+  - 移除展示中心可以降低 Features 页信息密度，让当前可用能力更突出，同时保留文档材料供课堂展示和答辩复盘使用。
+  - 本轮只处理 UI 与测试/文档同步，不更换模型、不改 CameraX/TFLite 检测链路、不新增联网、定位、蓝牙、存储权限或大型架构框架。
+- 验证方式：
+  - 修改前已运行 `git status --short`，确认只有无关未跟踪文件 `多模态智能助盲系统1.4.pptx`，本轮未触碰该文件。
+  - 已读取并参考 `compose-ui`、`android-testing` 和 `android-accessibility` 技能，按 Compose 状态、测试和无障碍触控语义约束做收敛修改。
+  - 已运行 `rg -n "ProjectShowcaseCenter|ShowcasePoint|showcase_|project_showcase_center|onShowOnboarding =|versionCode|versionName" app\src app\build.gradle.kts`，确认展示中心组件和测试标签已从代码路径移除；剩余 `onShowOnboarding` 只用于设置页新手引导回放。
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行 `$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，命令返回码为 `0`，JVM 单元测试和 debug APK 构建通过。
+  - 已按同样沙箱限制直接提权运行 `$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:assembleDebugAndroidTest --no-daemon`，输出 `BUILD SUCCESSFUL in 22s`，确认修改后的 Compose 仪器测试 APK 可编译。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v4.3.0-debug-20260519-003109.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,030,961 bytes`，复制时间约 `2026-05-19 00:31 +08:00`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备在线：`192.168.5.15:38527 device` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已运行安装命令：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对命令：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=19 minSdk=26 targetSdk=35` 和 `versionName=4.3.0`。
+- 版本判断：
+  - 本次属于小更新，从 `v4.2.0` 提升到 `v4.3.0`。理由是它移除了一个用户可见的 Features 页模块并调整了测试和演示文档，但没有改变核心检测、提醒策略、模型资产、权限或架构。
+- 后续事项：
+  - 如后续答辩确实需要 App 内展示入口，可重新设计更轻量、不抢主流程的材料入口；当前优先保留文档和 APK 归档作为展示材料。
+  - 本轮未运行 `connectedDebugAndroidTest`；如需要真机 UI 复核，需确保设备在线且解锁后再执行。
+
+### 项目可维护性、健壮性和可拓展性静态评估
+
+- 时间：2026-05-19 00:30:29 +08:00
+- 执行者：violjjet
+- 类型：分析 / 架构 / 质量评估 / 文档
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户问题，从可维护性、健壮性和可拓展性三个维度对当前 BlindAssist 项目做静态代码评估。
+  - 读取并参考 `android-architecture` skill 的分层、Domain 纯 Kotlin、ViewModel 状态流和模块边界建议。
+  - 检查核心文件与目录：`MainActivity.kt`、`AssistEngine.kt`、`BlindAssistViewModel.kt`、`RiskAnalyzer.kt`、`RiskStabilizer.kt`、`FeedbackController.kt`、`TfliteYoloDetector.kt`、`alert/`、`session/`、`vision/`、`README.md` 和测试目录。
+  - 评估结论：项目已经从单 Activity 原型逐步拆出风险、反馈、偏好、会话摘要、ViewModel 和模型检测层，当前适合课程设计/毕业设计展示与继续迭代；主要短板是 `MainActivity` 仍承担 CameraX、权限、检测调度、UI 文案映射和反馈协调等集成职责，未来若继续扩展外部相机、眼镜设备、更多场景策略或自动场景识别，需要先抽出 FrameSource/CameraController 与更清晰的应用服务边界。
+  - 发现一个当前工作区状态问题：`app/build.gradle.kts` 已显示 `versionName="4.3.0"` / `versionCode=19`，但 `README.md` 仍写当前项目版本 `v4.2.0`，说明当前未提交改动可能处于半完成状态，后续交付前需要同步文档、版本说明和 APK 归档。
+- 修改原因：
+  - 用户询问项目的可维护性、健壮性和可拓展性，需要给出基于当前仓库真实代码结构的判断，而不是泛泛评价。
+  - 本项目要求即使只做分析也要记录分析结论和验证命令，方便后续答辩材料、协作复盘和技术路线说明。
+- 验证方式：
+  - 已运行 `git status --short`，确认当前存在未提交改动：`app/build.gradle.kts`、`app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`、`app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`，以及一个未跟踪 PPTX 文件；本次未回滚或覆盖这些既有改动。
+  - 已运行 `rg --files app/src/main/java app/src/test app/src/androidTest scripts`，确认当前主要源码、测试和脚本布局。
+  - 已运行多次 `Get-Content -Encoding UTF8` 阅读核心 Kotlin 文件和 README，避免中文内容乱码。
+  - 已运行 `rg -n "@Test|class .*Test"` 检查测试覆盖面，确认风险、反馈、偏好、会话、ViewModel、前处理、覆盖框平滑和 Compose UI 已有测试入口。
+  - 本次是静态分析和开发日志记录，未修改 Android 运行逻辑、构建脚本、模型资产或 README，因此未运行 Gradle 构建、单元测试、真机安装或 APK 归档。
+- 版本判断：
+  - 本次不改变应用功能、运行行为、模型资产、权限、构建方式或用户使用方式，属于分析记录与开发日志补充，不作为应用版本更新。
+  - 未修改 `README.md` 和应用版本号。
+- 后续事项：
+  - 若下一步要提升可维护性，优先拆分 `MainActivity` 中的 CameraX 启停、权限状态、帧分析调度和 UI 文案映射。
+  - 若下一步要提升可拓展性，建议先设计 `FrameSource` 抽象，让手机 CameraX、网络相机、眼镜设备或测试帧都能进入同一 `Bitmap`/检测管线。
+  - 若下一步要提升健壮性，建议补充模型缺失、相机启动失败、TTS 初始化失败、设备锁屏 instrumentation 和长时间运行的验证记录。
+
 ### v4.2.0 GitHub 推送与手机安装复核
 
 - 时间：2026-05-19 00:18:30 +08:00

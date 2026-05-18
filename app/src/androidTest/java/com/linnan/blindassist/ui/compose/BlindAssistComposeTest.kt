@@ -29,26 +29,11 @@ class BlindAssistComposeTest {
     }
 
     @Test
-    fun showcaseCenterExposesDemoAndOnboardingActions() {
+    fun phoneCameraEntryUsesExistingCameraPath() {
         prepareMainShell()
         openFeaturesTab()
 
-        composeRule.onNodeWithTag("project_showcase_center").performScrollTo().assertExists()
-        composeRule.onNodeWithText("本地识别").assertExists()
-        composeRule.onNodeWithText("语音/震动提醒").assertExists()
-        composeRule.onNodeWithText("现场测试摘要").assertExists()
-        composeRule.onNodeWithText("原型安全边界").assertExists()
-
-        composeRule.onNodeWithTag("showcase_show_onboarding").performScrollTo().performClick()
-        composeRule.onNodeWithText("开始使用 BlindAssist").assertExists()
-    }
-
-    @Test
-    fun showcaseStartDemoUsesExistingCameraEntryPath() {
-        prepareMainShell()
-        openFeaturesTab()
-
-        composeRule.onNodeWithTag("showcase_start_camera_demo").performScrollTo().performClick()
+        composeRule.onNodeWithText("使用手机摄像头").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 5000) {
             hasText("需要相机权限") || hasText("返回功能页")
         }
