@@ -4,6 +4,33 @@
 
 ## 2026-05-19
 
+### v4.8.0 手机安装与 GitHub 推送复核
+
+- 时间：2026-05-19 00:57:46 +08:00
+- 执行者：violjjet
+- 类型：发布 / 真机安装 / Git / 验证
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户“下载，推送”要求，将 v4.8.0 debug APK 安装到已连接手机，并将 v4.8.0 单模块质量升级提交推送到 GitHub。
+  - 提交范围包含 v4.8.0 架构重构、测试、文档、开发日志和 APK 归档；无关未跟踪 PPTX 未纳入提交。
+- 修改原因：
+  - 用户要求把当前版本下载安装到手机，并同步推送到远端仓库。
+  - 本项目要求安装、推送和验证结果写入开发日志，方便后续展示和复盘。
+- 验证方式：
+  - 已读取并使用 GitHub `yeet` 发布技能与 `android-cli` 设备安装技能。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备在线：`adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已运行安装命令：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对命令：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=20 minSdk=26 targetSdk=35` 和 `versionName=4.8.0`。
+  - 已提交 v4.8.0 主体更新：`6119e7f refactor: improve single-module architecture`。
+  - 普通沙箱中 `git ls-remote --heads origin master` 因本仓库已知 SSH 权限限制失败，错误包含 `Identity file C:/Users/junjie/.ssh/id_ed25519_github_codex not accessible: Permission denied` 和 `ssh: connect to host github.com port 22: Permission denied`。
+  - 已按本仓库已知 Git 推送沙箱限制直接提权运行 `git push origin master`，输出 `864fee3..6119e7f  master -> master`，说明 v4.8.0 主体更新已推送到 GitHub。
+- 版本判断：
+  - 本次只记录手机安装和远端推送复核，不改变功能、架构、模型、权限、构建方式或应用版本。
+  - 项目版本保持 `v4.8.0` / `versionCode=20`。
+- 后续事项：
+  - 需要将本条开发日志再提交并推送，确保远端也保留本次安装和推送证据。
+
 ### v4.8.0 单模块质量升级
 
 - 时间：2026-05-19 00:53:21 +08:00
