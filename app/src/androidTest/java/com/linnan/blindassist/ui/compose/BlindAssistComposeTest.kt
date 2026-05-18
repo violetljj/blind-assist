@@ -69,6 +69,26 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithContentDescription("选择敏感提醒档位")
             .performScrollTo()
             .performClick()
+        composeRule.onNodeWithTag("scenario_selector").performScrollTo().assertExists()
+        composeRule.onNodeWithContentDescription("选择走廊通行使用场景，更早关注正前方持续风险")
+            .performScrollTo()
+            .performClick()
+    }
+
+    @Test
+    fun cameraPanelShowsScenarioAndRiskExplanationWhenCameraPathOpens() {
+        prepareMainShell()
+        openFeaturesTab()
+
+        composeRule.onNodeWithText("使用手机摄像头").performClick()
+        composeRule.waitUntil(timeoutMillis = 5000) {
+            hasText("需要相机权限") || hasText("返回功能页")
+        }
+
+        if (hasText("返回功能页")) {
+            composeRule.onNodeWithTag("camera_scenario_label").assertExists()
+            composeRule.onNodeWithTag("risk_explanation_headline").assertExists()
+        }
     }
 
     private fun prepareMainShell() {

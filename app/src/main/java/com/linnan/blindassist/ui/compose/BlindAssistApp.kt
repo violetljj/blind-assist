@@ -102,6 +102,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.ui.DetectionOverlayView
@@ -114,6 +115,7 @@ data class AssistControlsUiState(
     val careModeEnabled: Boolean,
     val debugVisible: Boolean,
     val alertProfile: AlertProfile,
+    val assistScenario: AssistScenario,
     val speechStyle: SpeechStyle,
     val vibrationStrength: VibrationStrength
 )
@@ -126,6 +128,10 @@ data class CameraGuidanceUiState(
     val careDetail: String,
     val careTargetLine: String,
     val debugText: String,
+    val scenarioName: String,
+    val explanationHeadline: String,
+    val explanationDetail: String,
+    val careExplanation: String,
     val titleColor: Int,
     val statusBadge: String,
     val badgeColor: Int,
@@ -135,7 +141,7 @@ data class CameraGuidanceUiState(
     val accessibilityKey: String
 ) {
     companion object {
-        fun initial(modelStatus: String): CameraGuidanceUiState {
+        fun initial(modelStatus: String, scenarioName: String = AssistScenario.GENERAL.displayName): CameraGuidanceUiState {
             return CameraGuidanceUiState(
                 title = "初始化中",
                 detail = "正在准备本地检测模型",
@@ -144,6 +150,10 @@ data class CameraGuidanceUiState(
                 careDetail = "识别模型正在启动，请稍等",
                 careTargetLine = "进入手机摄像头后会开始观察前方",
                 debugText = "模型状态：$modelStatus",
+                scenarioName = scenarioName,
+                explanationHeadline = "暂无风险解释",
+                explanationDetail = "进入相机会话后会显示最近一次提醒或暂不提醒的原因。",
+                careExplanation = "进入相机会话后会说明提醒原因",
                 titleColor = 0xFFFFFFFF.toInt(),
                 statusBadge = "准备中",
                 badgeColor = rgb(206, 221, 235),
@@ -167,12 +177,12 @@ data class FieldTestSummaryUiState(
     val accessibilityText: String
 ) {
     companion object {
-        fun empty(profileName: String): FieldTestSummaryUiState {
+        fun empty(profileName: String, scenarioName: String): FieldTestSummaryUiState {
             return FieldTestSummaryUiState(
                 title = "现场测试摘要",
-                detailText = "运行时长：尚未开始\n最近0帧：风险0次，迫近0次，高/中/低/无 0/0/0/0\n提醒触发：语音0次，震动0次\n平均性能：FPS 0.0，推理 0ms\n当前档位：$profileName",
+                detailText = "运行时长：尚未开始\n最近0帧：风险0次，迫近0次，高/中/低/无 0/0/0/0\n提醒触发：语音0次，震动0次\n平均性能：FPS 0.0，推理 0ms\n当前档位：$profileName\n当前场景：$scenarioName\n最近解释：暂无风险解释",
                 statusText = "等待相机会话",
-                accessibilityText = "现场测试摘要，尚未开始，相机会话运行后会显示运行时长、风险次数、提醒次数、平均性能和当前档位。"
+                accessibilityText = "现场测试摘要，尚未开始，相机会话运行后会显示运行时长、风险次数、提醒次数、平均性能、当前档位、当前场景和最近解释。"
             )
         }
     }
@@ -220,6 +230,7 @@ fun BlindAssistApp(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onScenarioChange: (AssistScenario) -> Unit,
     onSpeechStyleChange: (SpeechStyle) -> Unit,
     onVibrationStrengthChange: (VibrationStrength) -> Unit,
     onCameraViewsReady: (PreviewView, DetectionOverlayView) -> Unit,
@@ -251,6 +262,7 @@ fun BlindAssistApp(
                     onCareModeChange = onCareModeChange,
                     onDebugVisibleChange = onDebugVisibleChange,
                     onProfileChange = onProfileChange,
+                    onScenarioChange = onScenarioChange,
                     onCameraViewsReady = onCameraViewsReady
                 )
                 splashVisible -> BrandSplashScreen(onFinished = { splashVisible = false })
@@ -267,6 +279,7 @@ fun BlindAssistApp(
                     onCareModeChange = onCareModeChange,
                     onDebugVisibleChange = onDebugVisibleChange,
                     onProfileChange = onProfileChange,
+                    onScenarioChange = onScenarioChange,
                     onSpeechStyleChange = onSpeechStyleChange,
                     onVibrationStrengthChange = onVibrationStrengthChange,
                     onShowOnboarding = onShowOnboarding
@@ -507,6 +520,7 @@ private fun MainShell(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onScenarioChange: (AssistScenario) -> Unit,
     onSpeechStyleChange: (SpeechStyle) -> Unit,
     onVibrationStrengthChange: (VibrationStrength) -> Unit,
     onShowOnboarding: () -> Unit,
@@ -561,6 +575,7 @@ private fun MainShell(
                     onCareModeChange = onCareModeChange,
                     onDebugVisibleChange = onDebugVisibleChange,
                     onProfileChange = onProfileChange,
+                    onScenarioChange = onScenarioChange,
                     onSpeechStyleChange = onSpeechStyleChange,
                     onVibrationStrengthChange = onVibrationStrengthChange,
                     onShowOnboarding = onShowOnboarding
@@ -791,8 +806,15 @@ fun ProfileScreen(
         StatusGrid(
             leftTitle = "提醒档位",
             leftBody = controls.alertProfile.displayName,
-            rightTitle = "当前版本",
-            rightBody = "v$appVersion"
+            rightTitle = "使用场景",
+            rightBody = controls.assistScenario.displayName
+        )
+        Spacer(Modifier.height(12.dp))
+        StatusGrid(
+            leftTitle = "当前版本",
+            leftBody = "v$appVersion",
+            rightTitle = "提醒解释",
+            rightBody = "已开启"
         )
         Spacer(Modifier.height(12.dp))
         InfoStrip(
@@ -812,6 +834,7 @@ fun SettingsScreen(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onScenarioChange: (AssistScenario) -> Unit,
     onSpeechStyleChange: (SpeechStyle) -> Unit,
     onVibrationStrengthChange: (VibrationStrength) -> Unit,
     onShowOnboarding: () -> Unit,
@@ -866,6 +889,11 @@ fun SettingsScreen(
             onProfileChange = onProfileChange
         )
         Spacer(Modifier.height(16.dp))
+        ScenarioSelector(
+            selected = controls.assistScenario,
+            onScenarioChange = onScenarioChange
+        )
+        Spacer(Modifier.height(16.dp))
         SpeechStyleSelector(
             selected = controls.speechStyle,
             onSpeechStyleChange = onSpeechStyleChange
@@ -905,6 +933,7 @@ fun CameraExperienceScreen(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onScenarioChange: (AssistScenario) -> Unit,
     onCameraViewsReady: (PreviewView, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -931,6 +960,7 @@ fun CameraExperienceScreen(
             onCareModeChange = onCareModeChange,
             onDebugVisibleChange = onDebugVisibleChange,
             onProfileChange = onProfileChange,
+            onScenarioChange = onScenarioChange,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(12.dp)
@@ -980,6 +1010,7 @@ fun CameraControlPanel(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onScenarioChange: (AssistScenario) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val title = if (controls.careModeEnabled) guidance.careTitle else guidance.title
@@ -1012,6 +1043,28 @@ fun CameraControlPanel(
             Spacer(Modifier.height(6.dp))
             Text(text = detail, color = BaText, style = MaterialTheme.typography.bodyMedium)
             Text(text = target, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = "场景：${controls.assistScenario.displayName}",
+                color = BaMint,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.testTag("camera_scenario_label")
+            )
+            Text(
+                text = if (controls.careModeEnabled) guidance.careExplanation else guidance.explanationHeadline,
+                color = BaText,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.testTag("risk_explanation_headline")
+            )
+            if (!controls.careModeEnabled) {
+                Text(
+                    text = guidance.explanationDetail,
+                    color = BaTextMuted,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
             Spacer(Modifier.height(12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 CompactToggle("检测", controls.detectionEnabled, Icons.Rounded.Visibility, onDetectionChange, Modifier.weight(1f))
@@ -1029,6 +1082,14 @@ fun CameraControlPanel(
                 )
                 CompactToggle("关怀", controls.careModeEnabled, Icons.Rounded.Favorite, onCareModeChange, Modifier.weight(1f))
             }
+            Spacer(Modifier.height(8.dp))
+            CompactAction(
+                text = "场景 ${controls.assistScenario.displayName}",
+                icon = Icons.Rounded.Shield,
+                onClick = { onScenarioChange(controls.assistScenario.next()) },
+                modifier = Modifier.fillMaxWidth(),
+                accessibilityText = "使用场景，当前${controls.assistScenario.displayName}，点击切换到${controls.assistScenario.next().displayName}"
+            )
             AnimatedVisibility(
                 visible = !controls.careModeEnabled,
                 enter = fadeIn() + slideInVertically { it / 3 },
@@ -1396,6 +1457,51 @@ private fun ProfileSelector(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+private fun ScenarioSelector(
+    selected: AssistScenario,
+    onScenarioChange: (AssistScenario) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("scenario_selector")
+            .semantics {
+                contentDescription = "使用场景，当前${selected.displayName}。${selected.description}"
+            },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text("使用场景", color = BaText, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+            Text("手动选择行走环境，调整提醒确认、冷却和震动计划。", color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Spacer(Modifier.height(10.dp))
+            AssistScenario.values().forEach { scenario ->
+                FilterChip(
+                    selected = selected == scenario,
+                    onClick = { onScenarioChange(scenario) },
+                    label = {
+                        Text(
+                            "${scenario.displayName} · ${scenario.description}",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 48.dp)
+                        .semantics {
+                            role = Role.Button
+                            stateDescription = if (selected == scenario) "当前场景" else "未选择"
+                            contentDescription = "选择${scenario.displayName}使用场景，${scenario.description}"
+                        }
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 private fun SpeechStyleSelector(
     selected: SpeechStyle,
     onSpeechStyleChange: (SpeechStyle) -> Unit
@@ -1675,6 +1781,7 @@ private fun SettingsPreview() {
             onCareModeChange = {},
             onDebugVisibleChange = {},
             onProfileChange = {},
+            onScenarioChange = {},
             onSpeechStyleChange = {},
             onVibrationStrengthChange = {},
             onShowOnboarding = {}
@@ -1697,6 +1804,7 @@ private fun CameraPanelPreview() {
                 onCareModeChange = {},
                 onDebugVisibleChange = {},
                 onProfileChange = {},
+                onScenarioChange = {},
                 modifier = Modifier.padding(12.dp)
             )
         }
@@ -1711,6 +1819,7 @@ private fun previewControls(): AssistControlsUiState {
         careModeEnabled = false,
         debugVisible = true,
         alertProfile = AlertProfile.STANDARD,
+        assistScenario = AssistScenario.CORRIDOR,
         speechStyle = SpeechStyle.STANDARD,
         vibrationStrength = VibrationStrength.STANDARD
     )
@@ -1720,8 +1829,8 @@ private fun previewFieldTestSummary(): FieldTestSummaryUiState {
     return FieldTestSummaryUiState(
         title = "现场测试摘要",
         statusText = "本次相机会话进行中",
-        detailText = "运行时长：1分12秒\n最近30帧：风险8次，迫近2次，高/中/低/无 2/4/2/22\n提醒触发：语音3次，震动4次\n平均性能：FPS 18.4，推理 28ms\n当前档位：标准",
-        accessibilityText = "现场测试摘要，本次相机会话进行中，运行时长1分12秒，最近30帧风险8次，语音提醒3次，震动提醒4次，平均FPS 18.4，平均推理28毫秒，当前档位标准。"
+        detailText = "运行时长：1分12秒\n最近30帧：风险8次，迫近2次，高/中/低/无 2/4/2/22\n提醒触发：语音3次，震动4次\n平均性能：FPS 18.4，推理 28ms\n当前档位：标准\n当前场景：走廊通行\n最近解释：暂不重复：提醒冷却中",
+        accessibilityText = "现场测试摘要，本次相机会话进行中，运行时长1分12秒，最近30帧风险8次，语音提醒3次，震动提醒4次，平均FPS 18.4，平均推理28毫秒，当前档位标准，当前场景走廊通行。"
     )
 }
 
@@ -1734,6 +1843,10 @@ private fun previewGuidance(): CameraGuidanceUiState {
         careDetail = "请自然前进，系统会在前方有风险时提醒",
         careTargetLine = "建议同时保留语音和震动提醒",
         debugText = "FPS：18.0\n模型：YOLO11n ready\n最近风险判定：安全",
+        scenarioName = "走廊通行",
+        explanationHeadline = "继续观察：暂无可反馈风险",
+        explanationDetail = "检测到目标，但未达到近处或迫近提醒条件。",
+        careExplanation = "继续观察，暂无可反馈风险",
         titleColor = android.graphics.Color.rgb(99, 230, 166),
         statusBadge = "平稳",
         badgeColor = android.graphics.Color.rgb(160, 255, 215),

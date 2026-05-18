@@ -2,7 +2,104 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-05-19
+
+### v4.2.0 场景化提醒与风险解释
+
+- 时间：2026-05-19 00:04:14 +08:00
+- 执行者：violjjet
+- 类型：功能 / UI / 无障碍 / 测试 / 构建 / 版本归档 / 真机
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/alert/`
+  - `app/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt`
+  - `app/src/main/java/com/linnan/blindassist/preferences/UserPreferences.kt`
+  - `app/src/main/java/com/linnan/blindassist/risk/RiskStabilizer.kt`
+  - `app/src/main/java/com/linnan/blindassist/session/`
+  - `app/src/main/java/com/linnan/blindassist/ui/BlindAssistViewModel.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/test/java/com/linnan/blindassist/`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `idea.md`
+  - `NEXT_MAJOR_UPDATE_PLAN.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v4.2.0-debug-20260519-000200.apk`
+- 修改内容：
+  - 新增 `AssistScenario` 手动使用场景：通用、室内慢行、走廊通行、密集区域、户外慢行，并提供存储值、显示名、说明和循环切换。
+  - 扩展 `AlertPolicy.forProfile(profile, scenario)`，保留 `forProfile(profile)` 对通用场景的兼容行为；通用场景完全保持 v4.1.0 策略，其余场景只调整中风险确认帧数、提醒保持时间、近距冷却和震动时长。
+  - 将场景参数接入 `RiskStabilizer.update()`、`AssistEngine.evaluate()` 和 `FeedbackController.notify()`，让稳定层、反馈计划和解释文案使用同一场景策略。
+  - 扩展 `UserPreferences` 和 `BlindAssistViewModel`，持久化 `assistScenario`，未知值回退通用场景；检测开关仍保持 session-only，不写入偏好。
+  - 新增 `RiskExplanation`，由 `AssistEngine` 根据原始风险、稳定风险、反馈原因、场景和检测数量生成解释，覆盖已触发、风险未稳定、距离较远、冷却中、提醒保持、反馈关闭和暂无可反馈风险。
+  - 扩展 `SessionTrace` / `SessionSummary`，记录最近解释标题，并在现场测试摘要中展示当前场景和最近解释。
+  - 设置页新增“使用场景”选择组，相机控制面板显示当前场景和风险解释；Care Mode 下只显示简短解释，不暴露 FPS、耗时等调试细节。
+  - 相机页紧凑控制增加场景切换按钮，便于真机试用时快速切换手动场景。
+  - 将版本从 `v4.1.0` / `versionCode=17` 提升到 `v4.2.0` / `versionCode=18`。
+  - 更新 README、CHANGELOG、idea，并把过期的 `NEXT_MAJOR_UPDATE_PLAN.md` 改为历史计划状态说明，避免后续误读旧 v2.5.0 计划。
+- 修改原因：
+  - 用户要求实施已确认的“场景化提醒模式 + 风险解释层”计划，不再继续做演示包装，而是提升真实助行体验。
+  - 单一 Quiet/Standard/Sensitive 档位无法表达室内、走廊、密集区域和户外慢行的使用差异；手动场景预设能在不增加权限、不做自动识别的前提下细化提醒策略。
+  - 风险解释能让用户和答辩检查者理解为什么触发或不触发提醒，增强规则层透明度，同时继续保持“原型辅助”而非安全承诺的边界。
+- 验证方式：
+  - 已读取并使用 `compose-ui`、`android-accessibility`、`android-testing`、`android-viewmodel` 等相关 skills。
+  - 修改前已运行 `git status --short`，确认存在一条既有 `DEVELOPMENT_LOG.md` 修改、一份既有未跟踪 v4.1.0 APK 和无关未跟踪 PPTX；本轮保留这些既有文件，不回滚、不删除。
+  - 第一次按本仓库已知 Gradle 沙箱限制直接提权运行 `$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon` 时，Kotlin 编译失败，原因是中文字符串中 `$scenarioName策略` 被解析成错误变量名；已改为 `${scenarioName}策略`。
+  - 第二次完整验证中 81 个 JVM 测试完成 1 个失败，失败用例为 `AssistEngineTest.scenarioIsCarriedIntoEvaluationAndExplanation`，原因是测试期望解释详情包含场景名，但实现只写了“当前场景”；已把解释详情改为包含具体场景名。
+  - 最终按本仓库已知 Gradle 沙箱限制直接提权运行同一完整验证命令，结果通过；`testDebugUnitTest` 和 `assembleDebug` 均完成，debug APK 输出到 `app/build/outputs/apk/debug/app-debug.apk`。
+  - debug APK 来源：`app/build/outputs/apk/debug/app-debug.apk`，大小 `47,030,961 bytes`，文件时间 `2026-05-19 00:04:14 +08:00`。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v4.2.0-debug-20260519-000200.apk`，大小 `47,030,961 bytes`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备在线：`192.168.5.15:38527 device` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已尝试直接提权运行 `$env:ANDROID_SERIAL='adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --stacktrace`，命令在 184 秒后超时；测试日志显示 `No compose hierarchies found in the app`。
+  - 已检查设备窗口状态，输出包含 `mCurrentFocus=Window{... NotificationShade}`、`mAwake=false`、`mScreenOnFully=false`、`mDreamingLockscreen=true`；ADB 唤醒后仍显示 `mCurrentFocus=Window{... Bouncer}`、`mAwake=true`、`mDreamingLockscreen=true`，说明连接设备处于锁屏/Bouncer 状态，本轮 Compose 仪器测试不作为通过证据。
+  - 已停止残留 Gradle daemon，并通过 `am force-stop` 清理设备端测试/应用进程。
+  - 已安装当前 debug APK：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=18 minSdk=26 targetSdk=35` 和 `versionName=4.2.0`。
+- 版本判断：
+  - 本次属于小更新。理由是新增用户可见的使用场景设置、风险解释、摘要展示和测试覆盖，直接影响提醒体验和可理解性；但没有更换模型、改变 CameraX/TFLite 核心链路、增加权限、联网/定位/蓝牙、Hilt、多模块、Room 或 DataStore。
+  - 项目版本从 `v4.1.0` / `versionCode=17` 提升到 `v4.2.0` / `versionCode=18`。
+- 后续事项：
+  - 若需要把 `connectedDebugAndroidTest` 作为 v4.2.0 通过证据，需要先手动解锁 `SM-S9280`，确认不在 Bouncer/锁屏状态后重跑。
+  - 后续可继续做眼镜设备模拟中心、离线测试素材回放、相机/权限状态更深拆分或多语言提醒准备。
+
 ## 2026-05-18
+
+### v4.1.0 最新 APK 重建归档并安装到手机
+
+- 时间：2026-05-18 23:38:16 +08:00
+- 执行者：violjjet
+- 类型：构建 / 版本归档 / 真机安装 / 验证
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/build/outputs/apk/debug/app-debug.apk`
+  - `releases/apk/BlindAssist-v4.1.0-debug-20260518-233751.apk`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户要求将当前最新 BlindAssist debug APK 安装到已连接手机。
+  - 当前应用版本为 `versionName=4.1.0`、`versionCode=17`，未修改业务代码、模型资产、权限、构建配置或 README。
+  - 在安装前重新运行完整 Gradle 验证和 debug APK 构建，确认当前源码对应 APK 可用。
+  - 按版本 APK 留存要求，将 `app/build/outputs/apk/debug/app-debug.apk` 复制归档为 `releases/apk/BlindAssist-v4.1.0-debug-20260518-233751.apk`。
+  - 使用 USB/TLS ADB 目标 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp` 安装 APK；另一个在线目标 `192.168.5.15:38527` 与其均识别为同一台 `SM-S9280`。
+- 修改原因：
+  - 用户希望把最新 APK 下载/安装到手机上，需要以当前仓库状态重新确认构建产物，并避免因多个 ADB 目标导致安装到错误设备或命令报错。
+  - 归档本次 APK 便于后续课堂展示、答辩汇报和版本对比。
+- 验证方式：
+  - 已读取并使用 `android-cli` skill。
+  - 已运行 `git status --short`，确认存在无关未跟踪 PPTX 文件，本轮未处理该文件。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备在线：`192.168.5.15:38527 device` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已分别运行 `getprop ro.product.model`，两个 ADB 目标均返回 `SM-S9280`。
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - Gradle 验证结果：`BUILD SUCCESSFUL in 17s`，43 个 task 均为 up-to-date，`testDebugUnitTest` 和 `assembleDebug` 通过。
+  - debug APK 来源：`app/build/outputs/apk/debug/app-debug.apk`，大小 `47,184,730 bytes`，文件时间 `2026-05-18 23:13:02 +08:00`。
+  - 归档 APK：`releases/apk/BlindAssist-v4.1.0-debug-20260518-233751.apk`，大小 `47,184,730 bytes`，来源为当前 debug APK。
+  - 已运行安装命令：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=17 minSdk=26 targetSdk=35` 和 `versionName=4.1.0`。
+- 版本判断：
+  - 本次没有修改功能、模型、架构、权限、使用方式或构建方式，只是对当前 `v4.1.0` 产物进行重建验证、归档和手机安装，因此不计为版本更新。
+  - 项目版本保持 `v4.1.0` / `versionCode=17`，未同步修改 README。
+- 后续事项：
+  - 手机上已安装最新 `v4.1.0` debug 版本；如需现场演示，可直接在 `SM-S9280` 上打开 BlindAssist。
 
 ### v4.1.0 Compose 连接设备仪器测试重跑通过
 

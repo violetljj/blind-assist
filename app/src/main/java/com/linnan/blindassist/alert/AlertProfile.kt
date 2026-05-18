@@ -34,7 +34,11 @@ data class AlertPolicy(
 ) {
     companion object {
         fun forProfile(profile: AlertProfile): AlertPolicy {
-            return when (profile) {
+            return forProfile(profile, AssistScenario.GENERAL)
+        }
+
+        fun forProfile(profile: AlertProfile, scenario: AssistScenario): AlertPolicy {
+            val base = when (profile) {
                 AlertProfile.QUIET -> AlertPolicy(
                     profile = profile,
                     mediumConfirmFrames = 3,
@@ -61,6 +65,32 @@ data class AlertPolicy(
                     nearVibrationMs = 220L,
                     criticalCooldownMs = 650L,
                     criticalVibrationMs = 520L
+                )
+            }
+            return when (scenario) {
+                AssistScenario.GENERAL -> base
+                AssistScenario.INDOOR -> base.copy(
+                    holdAlertMs = base.holdAlertMs + 100L,
+                    nearCooldownMs = base.nearCooldownMs + 200L
+                )
+                AssistScenario.CORRIDOR -> base.copy(
+                    mediumConfirmFrames = (base.mediumConfirmFrames - 1).coerceAtLeast(1),
+                    holdAlertMs = base.holdAlertMs + 150L,
+                    nearCooldownMs = (base.nearCooldownMs - 150L).coerceAtLeast(400L),
+                    nearVibrationMs = base.nearVibrationMs + 20L,
+                    criticalVibrationMs = base.criticalVibrationMs + 40L
+                )
+                AssistScenario.CROWDED -> base.copy(
+                    mediumConfirmFrames = base.mediumConfirmFrames + 1,
+                    holdAlertMs = base.holdAlertMs + 100L,
+                    nearCooldownMs = base.nearCooldownMs + 700L,
+                    nearVibrationMs = (base.nearVibrationMs - 20L).coerceAtLeast(80L)
+                )
+                AssistScenario.OUTDOOR_SLOW -> base.copy(
+                    holdAlertMs = base.holdAlertMs + 200L,
+                    nearCooldownMs = (base.nearCooldownMs - 200L).coerceAtLeast(400L),
+                    nearVibrationMs = base.nearVibrationMs + 40L,
+                    criticalVibrationMs = base.criticalVibrationMs + 80L
                 )
             }
         }

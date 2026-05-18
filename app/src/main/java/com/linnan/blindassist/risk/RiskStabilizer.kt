@@ -2,6 +2,7 @@ package com.linnan.blindassist.risk
 
 import com.linnan.blindassist.alert.AlertPolicy
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
 
 class RiskStabilizer {
     private var pendingKey: RiskKey? = null
@@ -12,9 +13,10 @@ class RiskStabilizer {
     fun update(
         raw: RiskResult,
         profile: AlertProfile = AlertProfile.STANDARD,
+        scenario: AssistScenario = AssistScenario.GENERAL,
         nowMs: Long = System.currentTimeMillis()
     ): RiskResult {
-        val policy = AlertPolicy.forProfile(profile)
+        val policy = AlertPolicy.forProfile(profile, scenario)
         return when (raw.level) {
             RiskLevel.HIGH -> confirm(raw, policy, nowMs)
             RiskLevel.MEDIUM -> updateMedium(raw, policy, nowMs)

@@ -19,7 +19,8 @@ class SessionTrace(private val capacity: Int = DEFAULT_CAPACITY) {
 
     fun record(
         evaluation: AssistFrameEvaluation,
-        feedbackDecision: FeedbackDecision
+        feedbackDecision: FeedbackDecision,
+        explanation: RiskExplanation
     ): SessionSummary {
         if (startedAtMs == null) {
             startedAtMs = evaluation.evaluatedAtMs
@@ -35,6 +36,7 @@ class SessionTrace(private val capacity: Int = DEFAULT_CAPACITY) {
                 fps = evaluation.metrics.fps,
                 inferenceMs = evaluation.metrics.inferenceMs,
                 feedbackReason = feedbackDecision.reason,
+                explanationHeadline = explanation.headline,
                 speechTriggered = feedbackDecision.speechTriggered,
                 vibrationTriggered = feedbackDecision.vibrationTriggered
             )
@@ -103,7 +105,8 @@ class SessionTrace(private val capacity: Int = DEFAULT_CAPACITY) {
             hasStarted = started != null,
             averageFps = fpsTotal / count.toFloat(),
             averageInferenceMs = inferenceTotal / count,
-            latestFeedbackReason = frames.last().feedbackReason
+            latestFeedbackReason = frames.last().feedbackReason,
+            latestExplanation = frames.last().explanationHeadline
         )
     }
 
@@ -113,6 +116,7 @@ class SessionTrace(private val capacity: Int = DEFAULT_CAPACITY) {
         val fps: Float,
         val inferenceMs: Long,
         val feedbackReason: FeedbackReason,
+        val explanationHeadline: String,
         val speechTriggered: Boolean,
         val vibrationTriggered: Boolean
     )
@@ -136,7 +140,8 @@ data class SessionSummary(
     val hasStarted: Boolean,
     val averageFps: Float,
     val averageInferenceMs: Long,
-    val latestFeedbackReason: FeedbackReason
+    val latestFeedbackReason: FeedbackReason,
+    val latestExplanation: String
 ) {
     val feedbackTriggerCount: Int
         get() = speechTriggerCount + vibrationTriggerCount
@@ -149,12 +154,14 @@ data class SessionSummary(
             "平均推理 ${averageInferenceMs}ms"
     }
 
-    fun fieldTestText(profileName: String): String {
+    fun fieldTestText(profileName: String, scenarioName: String): String {
         return "运行时长：${durationText()}\n" +
             "最近${frameCount}帧：风险${riskyFrameCount}次，迫近${criticalCount}次，高/中/低/无 $highCount/$mediumCount/$lowCount/$noneCount\n" +
             "提醒触发：语音${speechTriggerCount}次，震动${vibrationTriggerCount}次\n" +
             "平均性能：FPS ${String.format(Locale.US, "%.1f", averageFps)}，推理 ${averageInferenceMs}ms\n" +
-            "当前档位：$profileName"
+            "当前档位：$profileName\n" +
+            "当前场景：$scenarioName\n" +
+            "最近解释：$latestExplanation"
     }
 
     fun durationText(): String {
@@ -185,7 +192,8 @@ data class SessionSummary(
                 hasStarted = startedAtMs != null,
                 averageFps = 0f,
                 averageInferenceMs = 0L,
-                latestFeedbackReason = FeedbackReason.NO_FEEDBACK_RISK
+                latestFeedbackReason = FeedbackReason.NO_FEEDBACK_RISK,
+                latestExplanation = "暂无风险解释"
             )
         }
     }

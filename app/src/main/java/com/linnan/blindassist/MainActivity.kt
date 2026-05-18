@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.feedback.FeedbackDecision
 import com.linnan.blindassist.feedback.SpeechStyle
@@ -36,6 +37,7 @@ import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.session.AssistDisplayFormatter
 import com.linnan.blindassist.session.AssistEngine
 import com.linnan.blindassist.session.DetectorMetrics
+import com.linnan.blindassist.session.RiskExplanation
 import com.linnan.blindassist.session.SessionSummary
 import com.linnan.blindassist.ui.BlindAssistViewModel
 import com.linnan.blindassist.ui.DetectionOverlayView
@@ -75,6 +77,7 @@ class MainActivity : ComponentActivity() {
     private var lastPerfLogAtMs = 0L
     private var careModeEnabled = false
     private var alertProfile = AlertProfile.STANDARD
+    private var assistScenario = AssistScenario.GENERAL
 
     private var pendingCameraOpen = false
 
@@ -107,7 +110,8 @@ class MainActivity : ComponentActivity() {
         feedbackController.vibrationStrength = initialControls.vibrationStrength
         careModeEnabled = initialControls.careModeEnabled
         alertProfile = initialControls.alertProfile
-        renderUi(Guidance.initial(detector.statusMessage))
+        assistScenario = initialControls.assistScenario
+        renderUi(Guidance.initial(detector.statusMessage, assistScenario))
 
         setContent {
             val uiState by appViewModel.uiState.collectAsStateWithLifecycle()
@@ -132,6 +136,7 @@ class MainActivity : ComponentActivity() {
                     onCareModeChange = ::setCareModeEnabled,
                     onDebugVisibleChange = ::setDebugVisible,
                     onProfileChange = ::setAlertProfile,
+                    onScenarioChange = ::setAssistScenario,
                     onSpeechStyleChange = ::setSpeechStyle,
                     onVibrationStrengthChange = ::setVibrationStrength,
                     onCameraViewsReady = ::onCameraViewsReady
@@ -179,8 +184,12 @@ class MainActivity : ComponentActivity() {
     private fun activateCameraExperience() {
         assistEngine.startSession()
         appViewModel.activateCamera(
-            fieldTestSummary = assistEngine.sessionSummary().toFieldTestUi(active = true, profile = alertProfile),
-            guidance = Guidance.waiting(detector.statusMessage),
+            fieldTestSummary = assistEngine.sessionSummary().toFieldTestUi(
+                active = true,
+                profile = alertProfile,
+                scenario = assistScenario
+            ),
+            guidance = Guidance.waiting(detector.statusMessage, assistScenario),
             modelStatus = detector.statusMessage
         )
         startCameraIfReady()
@@ -190,8 +199,12 @@ class MainActivity : ComponentActivity() {
         pendingCameraOpen = false
         stopCamera()
         appViewModel.closeCamera(
-            fieldTestSummary = assistEngine.sessionSummary().toFieldTestUi(active = false, profile = alertProfile),
-            guidance = Guidance.initial(detector.statusMessage),
+            fieldTestSummary = assistEngine.sessionSummary().toFieldTestUi(
+                active = false,
+                profile = alertProfile,
+                scenario = assistScenario
+            ),
+            guidance = Guidance.initial(detector.statusMessage, assistScenario),
             modelStatus = detector.statusMessage
         )
         assistEngine.reset()
@@ -261,7 +274,7 @@ class MainActivity : ComponentActivity() {
                     analysis
                 )
                 cameraStarted = true
-                renderUi(Guidance.waiting(detector.statusMessage))
+                renderUi(Guidance.waiting(detector.statusMessage, assistScenario))
             } catch (error: Exception) {
                 Log.e(PERF_TAG, "Camera start failed", error)
                 renderUi(Guidance.cameraError(error.message ?: "未知错误"))
@@ -299,6 +312,7 @@ class MainActivity : ComponentActivity() {
                 detections = detections,
                 frameSize = frameSize,
                 profile = alertProfile,
+                scenario = assistScenario,
                 metrics = DetectorMetrics(
                     totalMs = detector.lastTotalDetectMs,
                     preprocessMs = detector.lastPreprocessMs,
@@ -309,7 +323,7 @@ class MainActivity : ComponentActivity() {
                 )
             )
             runOnUiThread {
-                val feedbackDecision = feedbackController.notify(evaluation.stableRisk, alertProfile)
+                val feedbackDecision = feedbackController.notify(evaluation.stableRisk, alertProfile, assistScenario)
                 val frameResult = assistEngine.completeFeedback(evaluation, feedbackDecision)
                 overlayView.update(detections, frameSize, frameResult.evaluation.stableRisk)
                 renderUi(
@@ -320,10 +334,18 @@ class MainActivity : ComponentActivity() {
                         detector = detector,
                         fps = fps,
                         profile = alertProfile,
-                        feedbackDecision = frameResult.feedbackDecision
+                        scenario = assistScenario,
+                        feedbackDecision = frameResult.feedbackDecision,
+                        explanation = frameResult.explanation
                     )
                 )
-                appViewModel.updateFieldTestSummary(frameResult.sessionSummary.toFieldTestUi(active = true, profile = alertProfile))
+                appViewModel.updateFieldTestSummary(
+                    frameResult.sessionSummary.toFieldTestUi(
+                        active = true,
+                        profile = alertProfile,
+                        scenario = assistScenario
+                    )
+                )
                 logPerformanceIfNeeded(frameResult)
             }
         } finally {
@@ -336,7 +358,13 @@ class MainActivity : ComponentActivity() {
         detectionEnabled = enabled
         appViewModel.onDetectionChange(enabled)
         if (!enabled) {
-            appViewModel.updateFieldTestSummary(assistEngine.sessionSummary().toFieldTestUi(active = false, profile = alertProfile))
+            appViewModel.updateFieldTestSummary(
+                assistEngine.sessionSummary().toFieldTestUi(
+                    active = false,
+                    profile = alertProfile,
+                    scenario = assistScenario
+                )
+            )
             assistEngine.reset()
             if (::overlayView.isInitialized) {
                 overlayView.update(emptyList(), null, null)
@@ -344,8 +372,14 @@ class MainActivity : ComponentActivity() {
             renderUi(Guidance.paused())
         } else {
             assistEngine.startSession()
-            appViewModel.updateFieldTestSummary(assistEngine.sessionSummary().toFieldTestUi(active = true, profile = alertProfile))
-            renderUi(Guidance.waiting(detector.statusMessage))
+            appViewModel.updateFieldTestSummary(
+                assistEngine.sessionSummary().toFieldTestUi(
+                    active = true,
+                    profile = alertProfile,
+                    scenario = assistScenario
+                )
+            )
+            renderUi(Guidance.waiting(detector.statusMessage, assistScenario))
             startCameraIfReady()
         }
     }
@@ -388,9 +422,23 @@ class MainActivity : ComponentActivity() {
         appViewModel.updateFieldTestSummary(
             assistEngine.sessionSummary().toFieldTestUi(
                 active = appViewModel.uiState.value.cameraActive,
-                profile = alertProfile
+                profile = alertProfile,
+                scenario = assistScenario
             )
         )
+    }
+
+    private fun setAssistScenario(scenario: AssistScenario) {
+        assistScenario = scenario
+        appViewModel.onScenarioChange(scenario)
+        appViewModel.updateFieldTestSummary(
+            assistEngine.sessionSummary().toFieldTestUi(
+                active = appViewModel.uiState.value.cameraActive,
+                profile = alertProfile,
+                scenario = assistScenario
+            )
+        )
+        renderUi(appViewModel.uiState.value.cameraGuidance.copy(scenarioName = scenario.displayName))
     }
 
     private fun renderUi(snapshot: CameraGuidanceUiState) {
@@ -423,8 +471,10 @@ class MainActivity : ComponentActivity() {
                 "total=${metrics.totalMs}ms, pre=${metrics.preprocessMs}ms, " +
                 "infer=${metrics.inferenceMs}ms, post=${metrics.postprocessMs}ms, " +
                 "fps=${"%.1f".format(metrics.fps)}, profile=${evaluation.profile.storageValue}, " +
+                "scenario=${evaluation.scenario.storageValue}, " +
                 "rawRisk=${riskSummary(evaluation.rawRisk)}, stableRisk=${riskSummary(evaluation.stableRisk)}, " +
                 "feedbackReason=${frameResult.feedbackDecision.reason.displayText}, " +
+                "explanation=${frameResult.explanation.headline}, " +
                 "session=${frameResult.sessionSummary.displayText()}, status=${metrics.modelStatus}"
         )
     }
@@ -433,7 +483,11 @@ class MainActivity : ComponentActivity() {
         return "${risk.level}/${risk.direction}/${risk.proximity}"
     }
 
-    private fun SessionSummary.toFieldTestUi(active: Boolean, profile: AlertProfile): FieldTestSummaryUiState {
+    private fun SessionSummary.toFieldTestUi(
+        active: Boolean,
+        profile: AlertProfile,
+        scenario: AssistScenario
+    ): FieldTestSummaryUiState {
         val status = when {
             active && frameCount > 0 -> "本次相机会话进行中"
             active -> "本次相机会话已开始，等待检测帧"
@@ -442,9 +496,9 @@ class MainActivity : ComponentActivity() {
         }
         return FieldTestSummaryUiState(
             title = "现场测试摘要",
-            detailText = fieldTestText(profile.displayName),
+            detailText = fieldTestText(profile.displayName, scenario.displayName),
             statusText = status,
-            accessibilityText = "现场测试摘要，$status，运行时长${durationText()}，最近${frameCount}帧风险${riskyFrameCount}次，语音提醒${speechTriggerCount}次，震动提醒${vibrationTriggerCount}次，平均FPS ${"%.1f".format(averageFps)}，平均推理${averageInferenceMs}毫秒，当前档位${profile.displayName}。"
+            accessibilityText = "现场测试摘要，$status，运行时长${durationText()}，最近${frameCount}帧风险${riskyFrameCount}次，语音提醒${speechTriggerCount}次，震动提醒${vibrationTriggerCount}次，平均FPS ${"%.1f".format(averageFps)}，平均推理${averageInferenceMs}毫秒，当前档位${profile.displayName}，当前场景${scenario.displayName}，最近解释${latestExplanation}。"
         )
     }
 
@@ -456,11 +510,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private object Guidance {
-        fun initial(modelStatus: String): CameraGuidanceUiState {
-            return CameraGuidanceUiState.initial(modelStatus)
+        fun initial(modelStatus: String, scenario: AssistScenario): CameraGuidanceUiState {
+            return CameraGuidanceUiState.initial(modelStatus, scenario.displayName)
         }
 
-        fun waiting(modelStatus: String): CameraGuidanceUiState {
+        fun waiting(modelStatus: String, scenario: AssistScenario): CameraGuidanceUiState {
             return CameraGuidanceUiState(
                 title = "检测已开启",
                 detail = "等待实时画面和稳定风险结果",
@@ -469,6 +523,10 @@ class MainActivity : ComponentActivity() {
                 careDetail = "请自然前进，系统会在前方有风险时提醒",
                 careTargetLine = "建议同时保留语音和震动提醒",
                 debugText = "模型状态：$modelStatus",
+                scenarioName = scenario.displayName,
+                explanationHeadline = "继续观察：等待稳定风险",
+                explanationDetail = "${scenario.displayName}场景已启用，系统会按场景调整提醒确认、冷却和震动计划。",
+                careExplanation = "正在按${scenario.displayName}场景观察",
                 titleColor = Color.WHITE,
                 statusBadge = "观察中",
                 badgeColor = Color.rgb(160, 255, 215),
@@ -488,6 +546,10 @@ class MainActivity : ComponentActivity() {
                 careDetail = "当前不会识别目标，也不会发出提醒",
                 careTargetLine = "打开检测后恢复观察",
                 debugText = "检测关闭：不运行目标检测，不触发语音或震动提醒",
+                scenarioName = AssistScenario.GENERAL.displayName,
+                explanationHeadline = "检测已暂停",
+                explanationDetail = "当前不会生成风险解释。",
+                careExplanation = "检测已暂停",
                 titleColor = Color.rgb(214, 224, 235),
                 statusBadge = "已暂停",
                 badgeColor = Color.rgb(198, 210, 222),
@@ -507,6 +569,10 @@ class MainActivity : ComponentActivity() {
                 careDetail = "请允许相机权限，系统才能观察前方",
                 careTargetLine = "授权后会自动启动实时预览",
                 debugText = "权限状态：CAMERA denied",
+                scenarioName = AssistScenario.GENERAL.displayName,
+                explanationHeadline = "需要相机权限",
+                explanationDetail = "未取得相机权限前无法进行本地识别或风险解释。",
+                careExplanation = "需要相机权限",
                 titleColor = Color.rgb(255, 149, 0),
                 statusBadge = "需处理",
                 badgeColor = Color.rgb(255, 210, 125),
@@ -526,6 +592,10 @@ class MainActivity : ComponentActivity() {
                 careDetail = "当前无法观察前方，请返回后重新进入手机摄像头",
                 careTargetLine = message,
                 debugText = "CameraX error：$message",
+                scenarioName = AssistScenario.GENERAL.displayName,
+                explanationHeadline = "相机启动失败",
+                explanationDetail = "相机未启动，无法生成实时风险解释。",
+                careExplanation = "相机未启动",
                 titleColor = Color.rgb(255, 149, 0),
                 statusBadge = "异常",
                 badgeColor = Color.rgb(255, 210, 125),
@@ -543,7 +613,9 @@ class MainActivity : ComponentActivity() {
             detector: TfliteYoloDetector,
             fps: Float,
             profile: AlertProfile,
+            scenario: AssistScenario,
             feedbackDecision: FeedbackDecision,
+            explanation: RiskExplanation
         ): CameraGuidanceUiState {
             val risk = stableRisk
             val levelText = levelText(risk.level)
@@ -566,7 +638,8 @@ class MainActivity : ComponentActivity() {
                 "模型：${detector.statusMessage}\n" +
                 "最近风险判定：原始 ${riskSummaryText(rawRisk)} / 稳定 ${riskSummaryText(stableRisk)}\n" +
                 AssistDisplayFormatter.urgencyLine(rawRisk, stableRisk) + "\n" +
-                "提醒模式：${profile.displayName} / 反馈：${feedbackDecision.reason.displayText}"
+                "提醒模式：${profile.displayName} / 场景：${scenario.displayName} / 反馈：${feedbackDecision.reason.displayText}\n" +
+                "解释：${explanation.headline}，${explanation.detail}"
             return CameraGuidanceUiState(
                 title = title,
                 detail = detail,
@@ -575,13 +648,17 @@ class MainActivity : ComponentActivity() {
                 careDetail = careDetail,
                 careTargetLine = careTargetLine,
                 debugText = debug,
+                scenarioName = scenario.displayName,
+                explanationHeadline = explanation.headline,
+                explanationDetail = explanation.detail,
+                careExplanation = explanation.headline,
                 titleColor = colorForLevel(risk.level, risk.proximity),
                 statusBadge = statusBadge(risk.level, risk.proximity),
                 badgeColor = badgeColor(risk.level, risk.proximity),
                 badgeTextColor = badgeTextColor(risk.level, risk.proximity),
-                careAccessibilitySummary = "$careTitle，$careDetail，$targetAccessibility",
-                accessibilitySummary = "$title，$detail，$targetAccessibility",
-                accessibilityKey = "${risk.level}-${risk.direction}-${risk.proximity}-${rawRisk.level}-$count"
+                careAccessibilitySummary = "$careTitle，$careDetail，$targetAccessibility，${explanation.accessibilityText}",
+                accessibilitySummary = "$title，$detail，$targetAccessibility，${explanation.accessibilityText}",
+                accessibilityKey = "${risk.level}-${risk.direction}-${risk.proximity}-${rawRisk.level}-${scenario.name}-$count"
             )
         }
 

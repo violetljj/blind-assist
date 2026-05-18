@@ -1,6 +1,7 @@
 package com.linnan.blindassist.feedback
 
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
@@ -102,6 +103,35 @@ class FeedbackControllerTest {
     fun midAndFarRisksDoNotUseSpeechOrVibrationPlan() {
         assertNull(FeedbackController.planFor(risk(RiskLevel.LOW, ProximityBand.MID)))
         assertNull(FeedbackController.planFor(risk(RiskLevel.NONE, ProximityBand.FAR)))
+    }
+
+    @Test
+    fun scenarioAdjustsCooldownAndVibrationPlanWhileGeneralKeepsExistingBehavior() {
+        val general = FeedbackController.planFor(
+            risk(RiskLevel.MEDIUM, ProximityBand.NEAR),
+            AlertProfile.STANDARD,
+            VibrationStrength.STANDARD,
+            AssistScenario.GENERAL
+        )
+        val corridor = FeedbackController.planFor(
+            risk(RiskLevel.MEDIUM, ProximityBand.NEAR),
+            AlertProfile.STANDARD,
+            VibrationStrength.STANDARD,
+            AssistScenario.CORRIDOR
+        )
+        val crowded = FeedbackController.planFor(
+            risk(RiskLevel.MEDIUM, ProximityBand.NEAR),
+            AlertProfile.STANDARD,
+            VibrationStrength.STANDARD,
+            AssistScenario.CROWDED
+        )
+
+        assertEquals(FeedbackController.STANDARD_NEAR_ALERT_COOLDOWN_MS, general?.cooldownMs)
+        assertEquals(FeedbackController.STANDARD_NEAR_VIBRATION_MS, general?.vibrationMs)
+        assertEquals(1350L, corridor?.cooldownMs)
+        assertEquals(180L, corridor?.vibrationMs)
+        assertEquals(2200L, crowded?.cooldownMs)
+        assertEquals(140L, crowded?.vibrationMs)
     }
 
     @Test

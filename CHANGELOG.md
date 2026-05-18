@@ -2,6 +2,22 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v4.2.0 - 场景化提醒与风险解释
+
+- 状态：已完成，`versionCode=18`，`versionName=4.2.0`。
+- 主要变化：
+  - 新增手动 `使用场景` 偏好：通用、室内慢行、走廊通行、密集区域、户外慢行。
+  - 通用场景保持 v4.1.0 提醒行为；其他场景只调整规则层的中风险确认、提醒保持、近距冷却和震动时长。
+  - 相机控制面板显示当前场景和最近风险解释，说明已触发、未稳定、距离较远、冷却中、提醒保持或暂无可反馈风险等原因。
+  - 现场测试摘要追加当前场景和最近解释；Care Mode 下保留简短解释，不暴露性能调试细节。
+  - 本轮不新增自动场景识别、联网、定位、蓝牙、存储权限、模型变更或大型架构框架。
+- 验证：
+  - `:app:testDebugUnitTest` 和 `:app:assembleDebug` 构建验证通过。
+  - debug APK 已安装到 `SM-S9280`，包信息核对为 `versionCode=18`、`versionName=4.2.0`。
+  - Compose 仪器测试增加使用场景选择和相机页解释区域覆盖；本轮 `connectedDebugAndroidTest` 已尝试执行，但设备处于锁屏/Bouncer 状态，报告 `No compose hierarchies found in the app`，未作为通过证据。
+- APK：
+  - `releases/apk/BlindAssist-v4.2.0-debug-20260519-000200.apk`
+
 ## v4.1.0 - 展示交付加强
 
 - 状态：已完成，`versionCode=17`，`versionName=4.1.0`。

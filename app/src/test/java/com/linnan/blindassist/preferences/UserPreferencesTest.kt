@@ -1,6 +1,7 @@
 package com.linnan.blindassist.preferences
 
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import org.junit.Assert.assertEquals
@@ -19,6 +20,7 @@ class UserPreferencesTest {
         assertTrue(state.vibrationEnabled)
         assertFalse(state.careModeEnabled)
         assertEquals(AlertProfile.STANDARD, state.alertProfile)
+        assertEquals(AssistScenario.GENERAL, state.assistScenario)
         assertEquals(SpeechStyle.STANDARD, state.speechStyle)
         assertEquals(VibrationStrength.STANDARD, state.vibrationStrength)
         assertFalse(state.onboardingCompleted)
@@ -65,6 +67,16 @@ class UserPreferencesTest {
     }
 
     @Test
+    fun savedAssistScenarioPreferenceIsLoadedAgain() {
+        val store = MapPreferenceStore()
+        val preferences = UserPreferences(store)
+
+        preferences.setAssistScenario(AssistScenario.CORRIDOR)
+
+        assertEquals(AssistScenario.CORRIDOR, UserPreferences(store).load().assistScenario)
+    }
+
+    @Test
     fun savedSpeechStylePreferenceIsLoadedAgain() {
         val store = MapPreferenceStore()
         val preferences = UserPreferences(store)
@@ -105,11 +117,13 @@ class UserPreferencesTest {
     @Test
     fun unknownFeedbackPreferencesFallBackToStandard() {
         val store = MapPreferenceStore()
+        store.putString(UserPreferences.KEY_ASSIST_SCENARIO, "future-scenario")
         store.putString(UserPreferences.KEY_SPEECH_STYLE, "future-style")
         store.putString(UserPreferences.KEY_VIBRATION_STRENGTH, "future-strength")
 
         val state = UserPreferences(store).load()
 
+        assertEquals(AssistScenario.GENERAL, state.assistScenario)
         assertEquals(SpeechStyle.STANDARD, state.speechStyle)
         assertEquals(VibrationStrength.STANDARD, state.vibrationStrength)
     }
@@ -123,6 +137,7 @@ class UserPreferencesTest {
         preferences.setVibrationEnabled(false)
         preferences.setCareModeEnabled(true)
         preferences.setAlertProfile(AlertProfile.QUIET)
+        preferences.setAssistScenario(AssistScenario.CROWDED)
         preferences.setSpeechStyle(SpeechStyle.BRIEF)
         preferences.setVibrationStrength(VibrationStrength.SOFT)
         preferences.setOnboardingCompleted(true)
@@ -133,6 +148,7 @@ class UserPreferencesTest {
                 UserPreferences.KEY_VIBRATION_ENABLED,
                 UserPreferences.KEY_CARE_MODE_ENABLED,
                 UserPreferences.KEY_ALERT_PROFILE,
+                UserPreferences.KEY_ASSIST_SCENARIO,
                 UserPreferences.KEY_SPEECH_STYLE,
                 UserPreferences.KEY_VIBRATION_STRENGTH,
                 UserPreferences.KEY_ONBOARDING_COMPLETED

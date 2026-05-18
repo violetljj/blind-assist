@@ -8,6 +8,7 @@ import android.os.VibratorManager
 import android.speech.tts.TextToSpeech
 import com.linnan.blindassist.alert.AlertPolicy
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
@@ -47,7 +48,11 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
     }
 
     fun notify(risk: RiskResult, profile: AlertProfile): FeedbackDecision {
-        val plan = planFor(risk, profile, vibrationStrength)
+        return notify(risk, profile, AssistScenario.GENERAL)
+    }
+
+    fun notify(risk: RiskResult, profile: AlertProfile, scenario: AssistScenario): FeedbackDecision {
+        val plan = planFor(risk, profile, vibrationStrength, scenario)
             ?: return FeedbackDecision(null, triggered = false, reason = FeedbackReason.NO_FEEDBACK_RISK)
 
         val now = System.currentTimeMillis()
@@ -116,9 +121,10 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener {
         internal fun planFor(
             risk: RiskResult,
             profile: AlertProfile = AlertProfile.STANDARD,
-            vibrationStrength: VibrationStrength = VibrationStrength.STANDARD
+            vibrationStrength: VibrationStrength = VibrationStrength.STANDARD,
+            scenario: AssistScenario = AssistScenario.GENERAL
         ): FeedbackPlan? {
-            val policy = AlertPolicy.forProfile(profile)
+            val policy = AlertPolicy.forProfile(profile, scenario)
             val basePlan = when {
                 risk.proximity == ProximityBand.CRITICAL && risk.level == RiskLevel.HIGH -> {
                     FeedbackPlan(policy.criticalCooldownMs, policy.criticalVibrationMs, VibrationEffect.DEFAULT_AMPLITUDE)

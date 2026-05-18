@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.preferences.UserPreferences
@@ -42,11 +43,15 @@ class BlindAssistViewModel(
                 careModeEnabled = initialPreferences.careModeEnabled,
                 debugVisible = false,
                 alertProfile = initialPreferences.alertProfile,
+                assistScenario = initialPreferences.assistScenario,
                 speechStyle = initialPreferences.speechStyle,
                 vibrationStrength = initialPreferences.vibrationStrength
             ),
-            cameraGuidance = CameraGuidanceUiState.initial(initialModelStatus),
-            fieldTestSummary = FieldTestSummaryUiState.empty(initialPreferences.alertProfile.displayName),
+            cameraGuidance = CameraGuidanceUiState.initial(initialModelStatus, initialPreferences.assistScenario.displayName),
+            fieldTestSummary = FieldTestSummaryUiState.empty(
+                initialPreferences.alertProfile.displayName,
+                initialPreferences.assistScenario.displayName
+            ),
             modelStatus = initialModelStatus,
             cameraActive = false,
             showOnboarding = !initialPreferences.onboardingCompleted,
@@ -137,6 +142,13 @@ class BlindAssistViewModel(
         userPreferences.setAlertProfile(profile)
         _uiState.update {
             it.copy(controls = it.controls.copy(alertProfile = profile))
+        }
+    }
+
+    fun onScenarioChange(scenario: AssistScenario) {
+        userPreferences.setAssistScenario(scenario)
+        _uiState.update {
+            it.copy(controls = it.controls.copy(assistScenario = scenario))
         }
     }
 

@@ -46,4 +46,61 @@ class AlertPolicyTest {
         assertEquals(AlertProfile.SENSITIVE, AlertProfile.STANDARD.next())
         assertEquals(AlertProfile.QUIET, AlertProfile.SENSITIVE.next())
     }
+
+    @Test
+    fun generalScenarioKeepsExistingPolicy() {
+        val original = AlertPolicy.forProfile(AlertProfile.STANDARD)
+        val general = AlertPolicy.forProfile(AlertProfile.STANDARD, AssistScenario.GENERAL)
+
+        assertEquals(original, general)
+    }
+
+    @Test
+    fun indoorScenarioSoftensHoldAndNearCooldown() {
+        val policy = AlertPolicy.forProfile(AlertProfile.STANDARD, AssistScenario.INDOOR)
+
+        assertEquals(2, policy.mediumConfirmFrames)
+        assertEquals(700L, policy.holdAlertMs)
+        assertEquals(1700L, policy.nearCooldownMs)
+        assertEquals(160L, policy.nearVibrationMs)
+    }
+
+    @Test
+    fun corridorScenarioConfirmsEarlierAndStrengthensVibration() {
+        val policy = AlertPolicy.forProfile(AlertProfile.STANDARD, AssistScenario.CORRIDOR)
+
+        assertEquals(1, policy.mediumConfirmFrames)
+        assertEquals(750L, policy.holdAlertMs)
+        assertEquals(1350L, policy.nearCooldownMs)
+        assertEquals(180L, policy.nearVibrationMs)
+        assertEquals(460L, policy.criticalVibrationMs)
+    }
+
+    @Test
+    fun crowdedScenarioReducesReminderFatigue() {
+        val policy = AlertPolicy.forProfile(AlertProfile.STANDARD, AssistScenario.CROWDED)
+
+        assertEquals(3, policy.mediumConfirmFrames)
+        assertEquals(700L, policy.holdAlertMs)
+        assertEquals(2200L, policy.nearCooldownMs)
+        assertEquals(140L, policy.nearVibrationMs)
+    }
+
+    @Test
+    fun outdoorSlowScenarioUsesClearerVibrationAndShorterCooldown() {
+        val policy = AlertPolicy.forProfile(AlertProfile.STANDARD, AssistScenario.OUTDOOR_SLOW)
+
+        assertEquals(2, policy.mediumConfirmFrames)
+        assertEquals(800L, policy.holdAlertMs)
+        assertEquals(1300L, policy.nearCooldownMs)
+        assertEquals(200L, policy.nearVibrationMs)
+        assertEquals(500L, policy.criticalVibrationMs)
+    }
+
+    @Test
+    fun scenarioStorageFallbackAndCycleAreStable() {
+        assertEquals(AssistScenario.GENERAL, AssistScenario.fromStorageValue("unknown"))
+        assertEquals(AssistScenario.INDOOR, AssistScenario.GENERAL.next())
+        assertEquals(AssistScenario.GENERAL, AssistScenario.OUTDOOR_SLOW.next())
+    }
 }

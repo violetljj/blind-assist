@@ -1,6 +1,7 @@
 package com.linnan.blindassist.session
 
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.FeedbackDecision
 import com.linnan.blindassist.feedback.FeedbackReason
 import com.linnan.blindassist.model.FrameSize
@@ -19,7 +20,8 @@ class SessionTraceTest {
         repeat(35) { index ->
             trace.record(
                 evaluation(level = RiskLevel.HIGH, fps = index.toFloat(), inferenceMs = index.toLong(), nowMs = index * 1000L),
-                FeedbackDecision(plan = null, triggered = true, reason = FeedbackReason.TRIGGERED)
+                FeedbackDecision(plan = null, triggered = true, reason = FeedbackReason.TRIGGERED),
+                explanation("已触发反馈")
             )
         }
 
@@ -45,11 +47,13 @@ class SessionTraceTest {
                 reason = FeedbackReason.TRIGGERED,
                 speechTriggered = true,
                 vibrationTriggered = true
-            )
+            ),
+            explanation("已触发反馈")
         )
         trace.record(
             evaluation(level = RiskLevel.MEDIUM, fps = 12f, inferenceMs = 22L, nowMs = 3000L),
-            FeedbackDecision(plan = null, triggered = false, reason = FeedbackReason.UNSTABLE_RISK)
+            FeedbackDecision(plan = null, triggered = false, reason = FeedbackReason.UNSTABLE_RISK),
+            explanation("暂不提醒：风险未稳定")
         )
         trace.record(
             evaluation(level = RiskLevel.LOW, fps = 14f, inferenceMs = 24L, nowMs = 4000L),
@@ -58,11 +62,13 @@ class SessionTraceTest {
                 triggered = false,
                 reason = FeedbackReason.DISTANCE_TOO_FAR,
                 vibrationTriggered = true
-            )
+            ),
+            explanation("暂不提醒：目标距离较远")
         )
         trace.record(
             evaluation(level = RiskLevel.NONE, fps = 16f, inferenceMs = 26L, nowMs = 5000L),
-            FeedbackDecision(plan = null, triggered = false, reason = FeedbackReason.COOLDOWN)
+            FeedbackDecision(plan = null, triggered = false, reason = FeedbackReason.COOLDOWN),
+            explanation("暂不重复：提醒冷却中")
         )
 
         val summary = trace.summary()
@@ -81,10 +87,11 @@ class SessionTraceTest {
         assertEquals(3, summary.feedbackTriggerCount)
         assertEquals(4000L, summary.durationMs)
         assertEquals(FeedbackReason.COOLDOWN, summary.latestFeedbackReason)
+        assertEquals("暂不重复：提醒冷却中", summary.latestExplanation)
         assertEquals("会话：4秒 · 最近4帧 高/中/低/无 1/1/1/1 · 反馈 冷却中 · 语音/震动 1/2 · 平均FPS 13.0 · 平均推理 23ms", summary.displayText())
         assertEquals(
-            "运行时长：4秒\n最近4帧：风险3次，迫近1次，高/中/低/无 1/1/1/1\n提醒触发：语音1次，震动2次\n平均性能：FPS 13.0，推理 23ms\n当前档位：标准",
-            summary.fieldTestText("标准")
+            "运行时长：4秒\n最近4帧：风险3次，迫近1次，高/中/低/无 1/1/1/1\n提醒触发：语音1次，震动2次\n平均性能：FPS 13.0，推理 23ms\n当前档位：标准\n当前场景：通用\n最近解释：暂不重复：提醒冷却中",
+            summary.fieldTestText("标准", "通用")
         )
     }
 
@@ -94,7 +101,8 @@ class SessionTraceTest {
         trace.start(1000L)
         trace.record(
             evaluation(level = RiskLevel.HIGH, fps = 10f, inferenceMs = 20L, nowMs = 2000L),
-            FeedbackDecision(plan = null, triggered = true, reason = FeedbackReason.TRIGGERED, speechTriggered = true)
+            FeedbackDecision(plan = null, triggered = true, reason = FeedbackReason.TRIGGERED, speechTriggered = true),
+            explanation("已触发反馈")
         )
 
         trace.clear()
@@ -124,6 +132,7 @@ class SessionTraceTest {
             detectionCount = 1,
             frameSize = FrameSize(1000, 1000),
             profile = AlertProfile.STANDARD,
+            scenario = AssistScenario.GENERAL,
             metrics = DetectorMetrics(
                 totalMs = inferenceMs + 10L,
                 preprocessMs = 4L,
@@ -135,5 +144,9 @@ class SessionTraceTest {
             preliminaryReason = FeedbackReason.NO_FEEDBACK_RISK,
             evaluatedAtMs = nowMs
         )
+    }
+
+    private fun explanation(headline: String): RiskExplanation {
+        return RiskExplanation(headline, "测试解释", "测试解释")
     }
 }

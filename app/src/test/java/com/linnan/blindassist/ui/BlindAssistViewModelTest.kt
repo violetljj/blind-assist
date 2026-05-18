@@ -1,6 +1,7 @@
 package com.linnan.blindassist.ui
 
 import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.preferences.PreferenceStore
@@ -25,6 +26,7 @@ class BlindAssistViewModelTest {
         assertFalse(state.controls.careModeEnabled)
         assertFalse(state.controls.debugVisible)
         assertEquals(AlertProfile.STANDARD, state.controls.alertProfile)
+        assertEquals(AssistScenario.GENERAL, state.controls.assistScenario)
         assertEquals(SpeechStyle.STANDARD, state.controls.speechStyle)
         assertEquals(VibrationStrength.STANDARD, state.controls.vibrationStrength)
         assertTrue(state.showOnboarding)
@@ -41,6 +43,7 @@ class BlindAssistViewModelTest {
         preferences.setVibrationEnabled(false)
         preferences.setCareModeEnabled(true)
         preferences.setAlertProfile(AlertProfile.SENSITIVE)
+        preferences.setAssistScenario(AssistScenario.CORRIDOR)
         preferences.setSpeechStyle(SpeechStyle.DETAILED)
         preferences.setVibrationStrength(VibrationStrength.STRONG)
         preferences.setOnboardingCompleted(true)
@@ -51,10 +54,12 @@ class BlindAssistViewModelTest {
         assertFalse(state.controls.vibrationEnabled)
         assertTrue(state.controls.careModeEnabled)
         assertEquals(AlertProfile.SENSITIVE, state.controls.alertProfile)
+        assertEquals(AssistScenario.CORRIDOR, state.controls.assistScenario)
         assertEquals(SpeechStyle.DETAILED, state.controls.speechStyle)
         assertEquals(VibrationStrength.STRONG, state.controls.vibrationStrength)
         assertFalse(state.showOnboarding)
         assertTrue(state.fieldTestSummary.detailText.contains("当前档位：敏感"))
+        assertTrue(state.fieldTestSummary.detailText.contains("当前场景：走廊通行"))
     }
 
     @Test
@@ -66,6 +71,7 @@ class BlindAssistViewModelTest {
         viewModel.onVibrationChange(false)
         viewModel.onCareModeChange(true)
         viewModel.onProfileChange(AlertProfile.QUIET)
+        viewModel.onScenarioChange(AssistScenario.OUTDOOR_SLOW)
         viewModel.onSpeechStyleChange(SpeechStyle.BRIEF)
         viewModel.onVibrationStrengthChange(VibrationStrength.SOFT)
         viewModel.onDebugVisibleChange(true)
@@ -76,6 +82,7 @@ class BlindAssistViewModelTest {
         assertTrue(state.controls.careModeEnabled)
         assertTrue(state.controls.debugVisible)
         assertEquals(AlertProfile.QUIET, state.controls.alertProfile)
+        assertEquals(AssistScenario.OUTDOOR_SLOW, state.controls.assistScenario)
         assertEquals(SpeechStyle.BRIEF, state.controls.speechStyle)
         assertEquals(VibrationStrength.SOFT, state.controls.vibrationStrength)
 
@@ -84,6 +91,7 @@ class BlindAssistViewModelTest {
         assertFalse(reloaded.vibrationEnabled)
         assertTrue(reloaded.careModeEnabled)
         assertEquals(AlertProfile.QUIET, reloaded.alertProfile)
+        assertEquals(AssistScenario.OUTDOOR_SLOW, reloaded.assistScenario)
         assertEquals(SpeechStyle.BRIEF, reloaded.speechStyle)
         assertEquals(VibrationStrength.SOFT, reloaded.vibrationStrength)
     }
@@ -129,7 +137,7 @@ class BlindAssistViewModelTest {
     @Test
     fun cameraAndFieldSummaryStateCanBeUpdatedFromActivityBoundary() {
         val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
-        val summary = FieldTestSummaryUiState.empty(AlertProfile.SENSITIVE.displayName)
+        val summary = FieldTestSummaryUiState.empty(AlertProfile.SENSITIVE.displayName, AssistScenario.CORRIDOR.displayName)
         val guidance = CameraGuidanceUiState.initial("ready")
 
         viewModel.activateCamera(summary, guidance, modelStatus = "ready")
