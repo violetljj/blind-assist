@@ -4,6 +4,36 @@
 
 ## 2026-05-19
 
+### v4.2.0 GitHub 推送与手机安装复核
+
+- 时间：2026-05-19 00:18:30 +08:00
+- 执行者：violjjet
+- 类型：Git / 发布 / 真机安装 / 验证
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户要求将 v4.2.0 场景化提醒与风险解释更新提交并推送到 GitHub。
+  - 提交范围包含 v4.2.0 代码、测试、文档、开发日志、`AssistScenario` 新文件、v4.2.0 APK 归档，以及上一轮开发日志引用的 v4.1.0 重新归档 APK；无关未跟踪 PPTX 未纳入提交。
+  - 重新将当前 `app/build/outputs/apk/debug/app-debug.apk` 安装到已连接手机，并核对包版本。
+- 修改原因：
+  - 用户要求“推送，下载”，需要把本地完成的 v4.2.0 更新同步到远端仓库，并确保手机端安装的是当前最新构建。
+  - 本项目要求推送、安装、验证结果写入开发日志，便于后续展示和复盘。
+- 验证方式：
+  - 已读取并使用 GitHub `yeet` 发布技能与 `android-cli` 设备安装技能。
+  - 已运行 `git status --short`，确认无关未跟踪 PPTX 文件仍未纳入提交。
+  - 已运行 `git ls-remote --heads origin master`，远端 `master` 可达，推送前远端提交为 `cc156fce1d9d4bd2e310bc522de4f4d89500f8a1`。
+  - 已提交 v4.2.0 主体更新：`009a653 feat: add scenario-aware assist explanations`。
+  - 已按本仓库已知 Git 推送沙箱限制直接提权运行 `git push origin master`，输出 `cc156fc..009a653  master -> master`，说明 v4.2.0 主体更新已推送到 GitHub。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备在线：`192.168.5.15:38527 device` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device`。
+  - 已核对 APK 文件：`app/build/outputs/apk/debug/app-debug.apk` 与 `releases/apk/BlindAssist-v4.2.0-debug-20260519-000200.apk` 大小均为 `47,030,961 bytes`。
+  - 已运行安装命令：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对命令：`.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=18 minSdk=26 targetSdk=35` 和 `versionName=4.2.0`。
+- 版本判断：
+  - 本次仅记录推送与手机安装复核，不改变功能、模型、架构、权限、构建方式或应用版本。
+  - 项目版本保持 `v4.2.0` / `versionCode=18`。
+- 后续事项：
+  - 需要将本条开发日志再提交并推送，确保远端也保留本次发布和手机安装证据。
+
 ### v4.2.0 场景化提醒与风险解释
 
 - 时间：2026-05-19 00:04:14 +08:00
