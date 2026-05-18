@@ -83,14 +83,21 @@ class MainActivity : ComponentActivity() {
     private var cameraActive by mutableStateOf(false)
     private var modelStatus by mutableStateOf("模型未初始化")
     private var showGlassesDialog by mutableStateOf(false)
+    private var showOnboarding by mutableStateOf(false)
+    private var showCameraPermissionDialog by mutableStateOf(false)
+    private var showPermissionDeniedDialog by mutableStateOf(false)
+    private var pendingCameraOpen = false
 
     private val requestCameraPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
-        if (granted && cameraActive) {
-            renderUi(Guidance.waiting(detector.statusMessage))
-            startCameraIfReady()
+        if (granted && pendingCameraOpen) {
+            pendingCameraOpen = false
+            activateCameraExperience()
         } else if (!granted) {
+            pendingCameraOpen = false
+            cameraActive = false
+            showPermissionDeniedDialog = true
             renderUi(Guidance.permissionDenied())
         }
     }
@@ -110,6 +117,7 @@ class MainActivity : ComponentActivity() {
         feedbackController.vibrationEnabled = savedPreferences.vibrationEnabled
         careModeEnabled = savedPreferences.careModeEnabled
         alertProfile = savedPreferences.alertProfile
+        showOnboarding = !savedPreferences.onboardingCompleted
         modelStatus = detector.statusMessage
         renderUi(Guidance.initial(detector.statusMessage))
         syncControlsState()
@@ -122,8 +130,11 @@ class MainActivity : ComponentActivity() {
                     modelStatus = modelStatus,
                     appVersion = BuildConfig.VERSION_NAME,
                     cameraActive = cameraActive,
+                    showOnboarding = showOnboarding,
                     onOpenCamera = ::openCameraExperience,
                     onCloseCamera = ::closeCameraExperience,
+                    onCompleteOnboarding = ::completeOnboarding,
+                    onShowOnboarding = { showOnboarding = true },
                     onGlassesPlaceholder = { showGlassesDialog = true },
                     onDetectionChange = ::setDetectionEnabled,
                     onSpeechChange = ::setSpeechEnabled,
@@ -135,6 +146,17 @@ class MainActivity : ComponentActivity() {
                 )
                 if (showGlassesDialog) {
                     GlassesPlaceholderDialog(onDismiss = { showGlassesDialog = false })
+                }
+                if (showCameraPermissionDialog) {
+                    com.linnan.blindassist.ui.compose.CameraPermissionExplanationDialog(
+                        onContinue = ::requestCameraPermissionAfterExplanation,
+                        onDismiss = { showCameraPermissionDialog = false }
+                    )
+                }
+                if (showPermissionDeniedDialog) {
+                    com.linnan.blindassist.ui.compose.CameraPermissionDeniedDialog(
+                        onDismiss = { showPermissionDeniedDialog = false }
+                    )
                 }
             }
         }
@@ -149,21 +171,37 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openCameraExperience() {
-        cameraActive = true
         if (hasCameraPermission()) {
-            renderUi(Guidance.waiting(detector.statusMessage))
-            startCameraIfReady()
+            activateCameraExperience()
         } else {
-            renderUi(Guidance.permissionDenied())
-            requestCameraPermission.launch(Manifest.permission.CAMERA)
+            showCameraPermissionDialog = true
         }
+    }
+
+    private fun requestCameraPermissionAfterExplanation() {
+        showCameraPermissionDialog = false
+        pendingCameraOpen = true
+        requestCameraPermission.launch(Manifest.permission.CAMERA)
+    }
+
+    private fun activateCameraExperience() {
+        cameraActive = true
+        renderUi(Guidance.waiting(detector.statusMessage))
+        startCameraIfReady()
     }
 
     private fun closeCameraExperience() {
         cameraActive = false
+        pendingCameraOpen = false
+        showCameraPermissionDialog = false
         stopCamera()
         assistEngine.reset()
         renderUi(Guidance.initial(detector.statusMessage))
+    }
+
+    private fun completeOnboarding() {
+        userPreferences.setOnboardingCompleted(true)
+        showOnboarding = false
     }
 
     private fun onCameraViewsReady(preview: PreviewView, overlay: DetectionOverlayView) {

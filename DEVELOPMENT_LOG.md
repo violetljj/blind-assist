@@ -4,6 +4,226 @@
 
 ## 2026-05-18
 
+### v3.3.0 无线调试安装到手机成功
+
+- 时间：2026-05-18 16:06:37 +08:00
+- 执行者：violjjet
+- 类型：验证 / 安装 / 真机
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+  - `app/build/outputs/apk/debug/app-debug.apk`
+  - `releases/apk/BlindAssist-v3.3.0-debug-20260518-154943.apk`
+- 修改内容：
+  - 用户开启手机无线调试后，通过 ADB over Wi-Fi 完成 `v3.3.0` debug APK 安装。
+  - 先通过 `adb mdns services` 发现无线调试服务 `adb-R5CX10M8Y8X-nkVxqz`，连接地址为 `192.168.5.15:38527`。
+  - 使用用户提供的无线调试配对端口 `40187` 和配对码完成 `adb pair`。
+  - 连接无线调试服务后，使用可用 mDNS 设备名安装 APK，避开同一地址下的 `offline` 记录。
+  - 安装后已核对包版本并启动 App。
+- 修改原因：
+  - USB 调试路径中 Windows 能识别 Samsung 手机和 ADB Interface，但 `adb devices` 始终为空，无法通过 USB 安装。
+  - 用户随后开启无线调试并提供配对端口和配对码，因此改用无线 ADB 完成安装验证。
+- 验证方式：
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe mdns services`，发现服务：`adb-R5CX10M8Y8X-nkVxqz	_adb-tls-connect._tcp	192.168.5.15:38527`。
+  - 初次直接连接 `.\.android-sdk\platform-tools\adb.exe connect 192.168.5.15:38527` 失败，原因是无线调试尚未配对。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe pair 192.168.5.15:40187 061087`，输出 `Successfully paired to 192.168.5.15:40187 [guid=adb-R5CX10M8Y8X-nkVxqz]`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe connect 192.168.5.15:38527`，输出 `connected to 192.168.5.15:38527`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices -l`，确认可用设备为 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp device product:e3qzcx model:SM_S9280 device:e3q`，同时存在一个离线直连记录 `192.168.5.15:38527 offline`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=13 minSdk=26 targetSdk=35` 和 `versionName=3.3.0`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe -s adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp shell am start -W -n com.linnan.blindassist/.MainActivity`，输出 `Status: ok`、`LaunchState: COLD`、`TotalTime: 658`、`WaitTime: 660`。
+- 版本判断：
+  - 本次仅完成 v3.3.0 真机安装和验证，不改变代码、功能、构建方式、模型资产或版本号。
+  - 项目版本保持 `v3.3.0`。
+- 后续事项：
+  - 需要在手机上手动确认首次引导、设置页重新查看引导、相机权限说明弹窗和授权后进入相机页的实际交互效果。
+  - 如果后续继续使用无线调试，优先通过 `adb mdns services` 找到当前 `_adb-tls-connect` 端口；无线调试端口可能会变化。
+
+### v3.3.0 ADB 设备授权问题诊断
+
+- 时间：2026-05-18 15:56:36 +08:00
+- 执行者：violjjet
+- 类型：验证 / 安装 / 诊断
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 用户说明手机已通过 USB 连接电脑并打开 USB 调试，但手机没有弹出“允许 USB 调试”授权弹窗。
+  - 本次继续诊断为什么 `v3.3.0` APK 仍无法安装到手机。
+- 修改原因：
+  - 上一轮 `adb devices` 普通和提权均为空，无法执行安装。用户确认手机侧已连接和开启 USB 调试后，需要判断是手机未授权、ADB server 问题、Windows 驱动问题还是 USB 模式问题。
+- 验证方式：
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices -l`，输出仍只有 `List of devices attached`，没有设备序列号，也没有 `unauthorized` 状态。
+  - 沙箱内运行 `Get-PnpDevice -PresentOnly ...` 查询 Windows 设备时失败，错误为 `Get-PnpDevice : 拒绝访问`。
+  - 已提权运行 Windows 设备查询，Windows 能识别到手机相关设备：`SAMSUNG Mobile USB Composite Device`、`ADB Interface`、`珺杰 的 S24 Ultra`，其中手机序列号路径包含 `R5CX10M8Y8X`。
+  - 已提权运行 `.\.android-sdk\platform-tools\adb.exe kill-server` 和 `start-server` 重启 ADB server，随后 `adb devices -l` 仍为空。
+  - 已检查 ADB 进程和端口，当前只有仓库内 `G:\linnan\.android-sdk\platform-tools\adb.exe` 监听 `127.0.0.1:5037`，没有发现多个 ADB 抢占端口。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe version`，版本为 `Android Debug Bridge version 1.0.41`、`Version 37.0.0-14910828`。
+  - 已提权运行 `$env:ADB_TRACE='usb'; .\.android-sdk\platform-tools\adb.exe devices -l`，设备列表仍为空。
+- 结论：
+  - Windows 已识别到 Samsung 手机、MTP 和 ADB Interface，但当前 ADB server 仍无法列出设备。
+  - 当前不是 APK 文件缺失，也不是 Gradle 构建问题；阻塞点是手机没有进入 ADB 可授权/可连接状态。
+- 后续事项：
+  - 建议用户在手机开发者选项中执行“撤销 USB 调试授权”，关闭再打开 USB 调试，重新插拔 USB，并在 USB 连接模式中选择“文件传输 / Android Auto”或同等 MTP 模式。
+  - 重新触发授权弹窗并点击允许后，再运行 `adb devices -l`；设备状态为 `device` 后继续安装 `app/build/outputs/apk/debug/app-debug.apk`。
+
+### v3.3.0 手机安装重试未发现设备
+
+- 时间：2026-05-18 15:55:05 +08:00
+- 执行者：violjjet
+- 类型：验证 / 安装
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+  - `app/build/outputs/apk/debug/app-debug.apk`
+  - `releases/apk/BlindAssist-v3.3.0-debug-20260518-154943.apk`
+- 修改内容：
+  - 用户要求将当前版本下载到手机，本次优先尝试安装已构建和归档的 `v3.3.0` debug APK。
+  - 已确认默认输出 APK 和归档 APK 都存在，文件大小均为 `46,981,753 bytes`，文件时间为 `2026-05-18 15:49:30 +08:00`。
+  - 未执行 APK 安装，因为 ADB 当前未发现任何可用设备或模拟器。
+- 修改原因：
+  - `v3.3.0` 上一轮已完成构建和 APK 归档，但因 ADB 未发现设备未能安装；用户随后要求下载到手机，需要重新检查设备连接状态。
+- 验证方式：
+  - 已运行 `git status --short`，确认当前工作区包含 v3.3.0 代码与文档改动，以及既有无关未跟踪 PPTX；本次未触碰该 PPTX。
+  - 已运行普通权限命令：`.\.android-sdk\platform-tools\adb.exe devices`，输出仅为 `List of devices attached`，没有设备序列号。
+  - 已基于仓库已知 ADB/USB 上下文问题提权重试同一命令，输出仍仅为 `List of devices attached`，没有设备序列号。
+  - 因设备列表为空，未继续运行 `adb install -r app\build\outputs\apk\debug\app-debug.apk`，避免重复得到 `no devices/emulators found`。
+- 版本判断：
+  - 本次仅为安装验证重试和日志记录，不改变应用功能、代码、构建方式、模型资产或版本号。
+  - 项目版本仍保持 `v3.3.0`。
+- 后续事项：
+  - 需要重新连接 Android 手机、确认 USB 调试已开启，并在手机弹窗中允许当前电脑的调试授权。
+  - 设备出现在 `adb devices` 且状态为 `device` 后，继续执行 `.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk`，再用 `dumpsys package` 核对 `versionCode=13` 和 `versionName=3.3.0`。
+
+### v3.3.0 新手引导与权限说明
+
+- 时间：2026-05-18 15:50:32 +08:00
+- 执行者：violjjet
+- 类型：功能 / UI / 无障碍 / 文档 / 构建 / 测试 / 版本归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/preferences/UserPreferences.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `app/src/test/java/com/linnan/blindassist/preferences/UserPreferencesTest.kt`
+  - `README.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v3.3.0-debug-20260518-154943.apk`
+- 修改内容：
+  - 按计划实现 `idea.md` 中的“首次使用引导与权限说明”想法，并将对应条目标注为 `【已完成】`。
+  - 新增 3 页 Compose 新手引导，展示手机摄像头本地识别、语音/震动辅助提醒、原型安全边界。引导在首次启动品牌页之后、主界面之前显示，完成或跳过后保存本地状态。
+  - 在设置页新增 `查看新手引导` 入口，方便用户后续重新查看引导，不需要清空应用数据。
+  - 在 `UserPreferences` 中新增 `onboardingCompleted` 持久化状态，使用现有 SharedPreferences 封装，不引入新存储层、账号、联网或文件权限。
+  - 将相机入口权限流程从“点击后直接触发系统权限弹窗”调整为：若已有权限则直接进入相机页；若没有权限，先显示 App 内相机权限说明，再由用户选择是否继续触发 Android 系统权限弹窗。
+  - App 内权限说明明确：相机仅用于手机端实时识别，不上传画面、不联网、不保存视频；语音和震动提醒只作为辅助参考，不能替代盲杖、导盲犬或人工判断。
+  - 用户拒绝相机权限后，应用保持在主界面并显示简短说明，不进入沉浸式相机页或黑屏预览态。
+  - 新增 `CameraPermissionExplanationDialog`、`CameraPermissionDeniedDialog`、`OnboardingScreen`、设置页动作行和对应 Compose Preview。
+  - 更新 `UserPreferencesTest`，覆盖默认未完成引导、保存后重新读取、持久化 key 集合包含 `KEY_ONBOARDING_COMPLETED`。
+  - 将项目版本从 `v3.2.0` 提升到 `v3.3.0`，`versionCode` 从 `12` 提升到 `13`。
+  - 同步 README 当前版本、近期更新、界面行为和 APK 归档说明。
+- 修改原因：
+  - 当前 v3.2.0 已具备 Compose 主壳和沉浸式相机页，但首次使用流程仍缺少成熟 App 常见的产品解释和权限前置说明。
+  - 相机权限属于敏感权限，先解释用途、隐私边界和安全边界，再触发系统授权，更符合真实 App 体验，也避免“一上来就是工程 Demo”的感觉。
+  - 助盲避障原型需要持续强调安全边界，避免用户或评审误解为可替代盲杖、导盲犬或人工判断的安全设备。
+- 验证方式：
+  - 已按项目规则读取并使用相关 skills：`android-jetpack-compose`、`android-accessibility`、`android-viewmodel`。本次没有引入 ViewModel，仅参考状态管理边界，保持实现轻量。
+  - 已运行 `git status --short`，确认修改前存在上一轮文档规则改动和既有无关未跟踪 PPTX：`多模态智能助盲系统1.4.pptx`，本次未触碰该 PPTX。
+  - 基于本仓库已知 Gradle 沙箱限制，直接提权运行完整验证命令：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - Gradle 验证结果：`BUILD SUCCESSFUL in 49s`，`43 actionable tasks: 16 executed, 27 up-to-date`。构建过程中仅出现既有 Material Icons AutoMirrored 相关 deprecation warnings，不影响本次功能。
+  - debug APK 已生成在 `app/build/outputs/apk/debug/app-debug.apk`，文件大小 `46,981,753 bytes`，文件时间 `2026-05-18 15:49:30 +08:00`。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v3.3.0-debug-20260518-154943.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，文件大小 `46,981,753 bytes`，文件时间 `2026-05-18 15:49:30 +08:00`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，普通和提权环境均未列出可用设备。
+  - 已提权尝试安装：`.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk`，结果为 `adb.exe: no devices/emulators found`。
+  - 本次未完成真机安装和 `dumpsys package` 版本核验，原因是当前 ADB 未发现任何连接设备或模拟器。
+- 版本判断：
+  - 本次属于小更新，原因是新增首次引导、权限前置说明、偏好持久化和对应测试，明显改善真实 App 使用闭环，但不改变 CameraX/TFLite 检测链路、风险规则、模型资产、构建方式或核心架构。
+  - 按 AGENTS.md 版本策略，将项目从 `v3.2.0` 提升到 `v3.3.0`。
+- 后续事项：
+  - 连接手机并确认 USB 调试授权后，重新运行 `.\.android-sdk\platform-tools\adb.exe devices`、`.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk` 和 `dumpsys package` 版本核验。
+  - 真机上还需手动验证首次启动显示引导、完成后不再自动显示、设置页可重新打开引导，以及首次点击手机摄像头时先出现 App 内权限说明再出现系统权限弹窗。
+
+### idea.md 已完成标注规则补充
+
+- 时间：2026-05-18 15:42:14 +08:00
+- 执行者：violjjet
+- 类型：文档 / 协作规范
+- 修改范围：
+  - `idea.md`
+  - `AGENTS.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 在 `idea.md` 的记录原则中补充已实施想法的标注方式：已经完成的想法不要删除，应将标题改成 `### 【已完成】原想法标题`，并补充实现版本、完成时间、验证证据或被放弃原因。
+  - 同时补充部分完成状态：如果一个大想法只实现了一部分，应先标注为 `### 【部分完成】原想法标题`，并写清已完成范围和剩余部分。
+  - 在 `AGENTS.md` 的 `idea.md` 协作规则中同步补充：实现想法后要在 `idea.md` 中明显标注 `【已完成】` 或 `【部分完成】`。
+- 修改原因：
+  - 用户要求后续如果 `idea.md` 里的某些想法实现了，就把这个想法明显批注成已完成样式。
+  - 明确标注格式可以让后续协作者快速区分待实施、部分完成和已经完成的路线想法，避免重复规划或误删历史想法。
+- 验证方式：
+  - 已运行 `git status --short`，确认当前工作区已有上一轮文档修改和既有无关未跟踪 PPTX，本次未触碰该 PPTX。
+  - 已读取 `idea.md` 和 `AGENTS.md` 的现有规则，并只追加标注规范。
+  - 本次仅修改 Markdown 文档，未修改 Android 代码、Gradle 配置、资源、模型资产或测试文件，因此未运行 Gradle 构建。
+- 版本判断：
+  - 本次属于轻量文档与协作规则补充，不改变应用功能、使用方式、构建方式、模型资产或测试结论。
+  - 按 AGENTS.md 版本策略，不提升版本号，项目仍保持 `v3.2.0`。
+- 后续事项：
+  - 后续实现 `idea.md` 中任一想法时，应在实现同一任务中同步更新对应条目的完成状态和验证证据。
+
+### idea.md 想法池创建与协作规则补充
+
+- 时间：2026-05-18 15:39:24 +08:00
+- 执行者：violjjet
+- 类型：文档 / 规划 / 协作规范
+- 修改范围：
+  - `idea.md`
+  - `AGENTS.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 新增仓库根目录 `idea.md`，用于集中记录 BlindAssist 后续可能性、创造性想法和成熟化方向。
+  - 将上一轮关于成熟 App 发展的建议整理进 `idea.md`，按“近期可实施方向”“中期成熟化方向”“长期创造性可能”分组。
+  - 近期方向包括首次使用引导与权限说明、现场测试记录与演示摘要、无障碍细节升级。
+  - 中期方向包括 ViewModel 与 StateFlow 状态拆分、Compose UI 测试补强、发布与展示材料整理。
+  - 长期创造性方向包括眼镜设备连接原型、场景化提醒模式、离线测试素材回放、提醒语音风格与多语言。
+  - 在 `AGENTS.md` 的协作注意事项中补充规则：后续出现有可能性、创造性、产品路线价值但不一定立即实施的想法时，应记录到 `idea.md`；真正实施时再同步 README、开发日志、版本号、测试结果和 APK 归档。
+- 修改原因：
+  - 用户要求新建 `idea.md` 写入这些想法，并明确未来有可能性或创造性的想法都写入这个文件。
+  - 单独设置想法池可以把“灵感与路线可能性”和“真实开发日志”分开，避免 `DEVELOPMENT_LOG.md` 被未实施想法稀释，同时保留后续迭代素材。
+- 验证方式：
+  - 已运行 `git status --short`，确认修改前存在上一轮分析产生的 `DEVELOPMENT_LOG.md` 修改，以及一个既有无关未跟踪 PPTX：`多模态智能助盲系统1.4.pptx`，本次未触碰该 PPTX。
+  - 已读取 `AGENTS.md` 当前协作规则并在“协作注意事项”下追加 `idea.md` 记录规则。
+  - 本次仅新增和修改 Markdown 文档，未修改 Android 代码、Gradle 配置、资源、模型资产或测试文件，因此未运行 Gradle 构建。
+- 版本判断：
+  - 本次属于文档与协作规则补充，不改变应用功能、使用方式、构建方式、模型资产或测试结论。
+  - 按 AGENTS.md 版本策略，不提升版本号，项目仍保持 `v3.2.0`。
+- 后续事项：
+  - 后续讨论到产品路线、演示创意、硬件扩展、测试展示方式或暂不实施的功能设想时，应追加到 `idea.md`。
+
+### 成熟 App 后续迭代方向分析
+
+- 时间：2026-05-18 15:36:10 +08:00
+- 执行者：violjjet
+- 类型：分析 / 规划 / 文档
+- 修改范围：
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - 本地 Codex skills：`android-architecture`、`android-testing`、`android-accessibility`、`android-viewmodel`
+- 修改内容：
+  - 基于当前 README 中记录的 `v3.2.0` 状态，梳理 BlindAssist 从课程展示型原型继续向成熟 App 演进的下一步更新方向。
+  - 当前项目已经具备 Compose 主壳、功能页、个人主页、设置页、沉浸式手机摄像头检测、风险稳定、提醒档位、开发日志、README 同步和版本 APK 归档。
+  - 下一阶段建议优先围绕真实使用闭环推进：引导与权限说明、现场测试记录、提醒策略可解释性、无障碍细节、状态架构拆分、测试体系补强和版本发布材料整理。
+  - 本次只做路线分析和日志记录，不改 Android 代码、不改模型资产、不调整构建配置、不更新 README 当前功能描述、不提升版本号。
+- 修改原因：
+  - 用户提出“想进一步往成熟 app 发展，下一步需要做哪些更新”，需要结合当前仓库实际状态给出可执行的迭代路线，而不是泛泛列出移动端常见功能。
+  - 项目已从早期直接相机页原型升级到 `v3.2.0` 应用壳层形态，下一步应避免盲目堆功能，优先补齐真实 App 常见的用户引导、稳定性、可测试性、可解释性和发布交付材料。
+- 验证方式：
+  - 已运行 `git status --short`，确认修改前仅存在既有未跟踪文件 `多模态智能助盲系统1.4.pptx`，本次未触碰该文件。
+  - 已读取 `README.md` 当前状态，确认当前项目版本为 `v3.2.0`，最近更新包括 v3.1.0 Compose 应用壳层和 v3.2.0 相机返回手势与个人主页精简。
+  - 已读取 `DEVELOPMENT_LOG.md` 最新记录，确认最新已归档和真机验证的 APK 为 `releases/apk/BlindAssist-v3.2.0-debug-20260518-152635.apk`。
+  - 已读取并参考 `android-architecture`、`android-testing`、`android-accessibility`、`android-viewmodel` skills，用于规划架构、测试、无障碍和状态管理方向。
+  - 本次未运行 Gradle 构建，原因是没有修改 Android 代码、Gradle 配置、资源、模型资产或测试文件。
+- 版本判断：
+  - 本次属于分析与规划记录，不改变项目功能、使用方式、构建方式、模型资产、测试结论或重要技术决策。
+  - 按 AGENTS.md 版本策略，不提升版本号，项目仍保持 `v3.2.0`。
+- 后续事项：
+  - 如果进入实施，建议先选择一个中等规模版本：例如“v3.3.0 真实使用引导与测试记录”或“v3.7.0 架构拆分与测试体系增强”，并同步 README、开发日志、构建验证和版本 APK 归档。
+
 ### v3.2.0 相机返回手势与个人主页精简
 
 - 时间：2026-05-18 15:27:00 +08:00

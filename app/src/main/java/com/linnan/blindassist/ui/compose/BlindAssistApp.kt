@@ -158,8 +158,11 @@ fun BlindAssistApp(
     modelStatus: String,
     appVersion: String,
     cameraActive: Boolean,
+    showOnboarding: Boolean,
     onOpenCamera: () -> Unit,
     onCloseCamera: () -> Unit,
+    onCompleteOnboarding: () -> Unit,
+    onShowOnboarding: () -> Unit,
     onGlassesPlaceholder: () -> Unit,
     onDetectionChange: (Boolean) -> Unit,
     onSpeechChange: (Boolean) -> Unit,
@@ -198,6 +201,7 @@ fun BlindAssistApp(
                     onCameraViewsReady = onCameraViewsReady
                 )
                 splashVisible -> BrandSplashScreen(onFinished = { splashVisible = false })
+                showOnboarding -> OnboardingScreen(onFinished = onCompleteOnboarding)
                 else -> MainShell(
                     controls = controls,
                     modelStatus = modelStatus,
@@ -208,7 +212,8 @@ fun BlindAssistApp(
                     onVibrationChange = onVibrationChange,
                     onCareModeChange = onCareModeChange,
                     onDebugVisibleChange = onDebugVisibleChange,
-                    onProfileChange = onProfileChange
+                    onProfileChange = onProfileChange,
+                    onShowOnboarding = onShowOnboarding
                 )
             }
         }
@@ -313,6 +318,127 @@ fun BrandSplashScreen(
 }
 
 @Composable
+fun OnboardingScreen(
+    onFinished: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var pageIndex by rememberSaveable { mutableStateOf(0) }
+    val pages = onboardingPages()
+    val page = pages[pageIndex]
+    val isLastPage = pageIndex == pages.lastIndex
+
+    ScreenColumn(modifier = modifier) {
+        Spacer(Modifier.height(8.dp))
+        Text(
+            text = "开始使用 BlindAssist",
+            style = MaterialTheme.typography.headlineMedium,
+            color = BaText,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.semantics { heading() }
+        )
+        Text(
+            text = "先了解三件事，再进入本地视觉辅助体验。",
+            style = MaterialTheme.typography.bodyMedium,
+            color = BaTextMuted
+        )
+        Spacer(Modifier.height(28.dp))
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 340.dp),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = BaPanel)
+        ) {
+            Column(
+                modifier = Modifier.padding(22.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(68.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(page.accent.copy(alpha = 0.16f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = page.icon,
+                        contentDescription = null,
+                        tint = page.accent,
+                        modifier = Modifier.size(34.dp)
+                    )
+                }
+                Spacer(Modifier.height(22.dp))
+                Text(
+                    text = page.title,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = BaText,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.semantics { heading() }
+                )
+                Spacer(Modifier.height(10.dp))
+                Text(
+                    text = page.body,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = BaText,
+                    lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
+                )
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = page.detail,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = BaTextMuted
+                )
+            }
+        }
+
+        Spacer(Modifier.height(20.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            pages.forEachIndexed { index, _ ->
+                Box(
+                    modifier = Modifier
+                        .height(8.dp)
+                        .weight(1f)
+                        .clip(RoundedCornerShape(50))
+                        .background(if (index == pageIndex) BaMint else BaPanelSoft)
+                )
+            }
+        }
+        Spacer(Modifier.height(20.dp))
+        Button(
+            onClick = {
+                if (isLastPage) {
+                    onFinished()
+                } else {
+                    pageIndex += 1
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 52.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = BaMint, contentColor = BaInk)
+        ) {
+            Text(if (isLastPage) "开始使用" else "下一步")
+        }
+        if (!isLastPage) {
+            TextButton(
+                onClick = onFinished,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 48.dp)
+            ) {
+                Text("跳过引导")
+            }
+        }
+    }
+}
+
+@Composable
 private fun MainShell(
     controls: AssistControlsUiState,
     modelStatus: String,
@@ -324,6 +450,7 @@ private fun MainShell(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onShowOnboarding: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedTab by rememberSaveable { mutableStateOf(BottomTab.Features.name) }
@@ -372,7 +499,8 @@ private fun MainShell(
                     onVibrationChange = onVibrationChange,
                     onCareModeChange = onCareModeChange,
                     onDebugVisibleChange = onDebugVisibleChange,
-                    onProfileChange = onProfileChange
+                    onProfileChange = onProfileChange,
+                    onShowOnboarding = onShowOnboarding
                 )
             }
         }
@@ -503,6 +631,7 @@ fun SettingsScreen(
     onCareModeChange: (Boolean) -> Unit,
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
+    onShowOnboarding: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ScreenColumn(modifier = modifier) {
@@ -552,6 +681,13 @@ fun SettingsScreen(
         ProfileSelector(
             selected = controls.alertProfile,
             onProfileChange = onProfileChange
+        )
+        Spacer(Modifier.height(16.dp))
+        SettingsActionRow(
+            icon = Icons.Rounded.Info,
+            title = "查看新手引导",
+            body = "重新查看摄像头、本地提醒和安全边界说明",
+            onClick = onShowOnboarding
         )
         Spacer(Modifier.height(16.dp))
         InfoStrip(
@@ -929,6 +1065,37 @@ private fun SettingSwitchRow(
     }
 }
 
+@Composable
+private fun SettingsActionRow(
+    icon: ImageVector,
+    title: String,
+    body: String,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 76.dp)
+            .clickable(role = Role.Button, onClick = onClick)
+            .semantics(mergeDescendants = true) {},
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(icon, contentDescription = null, tint = BaMint)
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, color = BaText, fontWeight = FontWeight.Bold)
+                Text(body, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            }
+            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaTextMuted)
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ProfileSelector(
@@ -1019,11 +1186,87 @@ fun GlassesPlaceholderDialog(
     )
 }
 
+@Composable
+fun CameraPermissionExplanationDialog(
+    onContinue: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            Button(onClick = onContinue, modifier = Modifier.heightIn(min = 48.dp)) {
+                Text("继续并授权")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = 48.dp)) {
+                Text("暂不打开")
+            }
+        },
+        icon = { Icon(Icons.Rounded.CameraAlt, contentDescription = null, tint = BaMint) },
+        title = { Text("需要相机权限") },
+        text = {
+            Text("相机仅用于手机端实时识别。BlindAssist 不上传画面、不联网、不保存视频；语音和震动提醒只作为辅助参考，不能替代盲杖、导盲犬或人工判断。")
+        }
+    )
+}
+
+@Composable
+fun CameraPermissionDeniedDialog(
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = 48.dp)) {
+                Text("知道了")
+            }
+        },
+        icon = { Icon(Icons.Rounded.Shield, contentDescription = null, tint = BaAmber) },
+        title = { Text("相机权限未开启") },
+        text = {
+            Text("未获得相机权限时，手机摄像头辅助无法启动。你仍可留在主界面查看设置，稍后再次点击“使用手机摄像头”重新授权。")
+        }
+    )
+}
+
 private enum class BottomTab(val label: String, val icon: ImageVector) {
     Features("功能", Icons.Rounded.Home),
     Profile("个人主页", Icons.Rounded.Person),
     Settings("设置", Icons.Rounded.Settings)
 }
+
+private data class OnboardingPage(
+    val title: String,
+    val body: String,
+    val detail: String,
+    val icon: ImageVector,
+    val accent: Color
+)
+
+private fun onboardingPages(): List<OnboardingPage> = listOf(
+    OnboardingPage(
+        title = "使用手机摄像头进行本地识别",
+        body = "打开手机摄像头后，App 会在本机运行 YOLO11n 模型，识别画面中的常见目标和相对方向。",
+        detail = "画面不上传、不联网、不保存视频，当前版本优先支持手机摄像头。",
+        icon = Icons.Rounded.CameraAlt,
+        accent = BaMint
+    ),
+    OnboardingPage(
+        title = "通过语音和震动给出辅助提醒",
+        body = "当规则层判断近处或迫近风险时，系统会用短句语音和震动帮助你注意前方变化。",
+        detail = "你可以在设置页调整语音、震动、关怀模式和提醒档位。",
+        icon = Icons.Rounded.Vibration,
+        accent = BaSky
+    ),
+    OnboardingPage(
+        title = "不能替代盲杖、导盲犬或人工判断",
+        body = "BlindAssist 是助盲避障原型，提醒可能受光照、遮挡、设备性能和模型识别结果影响。",
+        detail = "行走时请继续保留人工判断和专业辅助方式，把 App 提醒作为额外参考。",
+        icon = Icons.Rounded.Shield,
+        accent = BaAmber
+    )
+)
 
 private fun enabledText(enabled: Boolean): String = if (enabled) "已开启" else "已关闭"
 
@@ -1048,11 +1291,19 @@ private fun SplashPreview() {
 
 @Preview(showBackground = true, backgroundColor = 0xFF061115)
 @Composable
+private fun OnboardingPreview() {
+    BlindAssistTheme {
+        OnboardingScreen(onFinished = {})
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF061115)
+@Composable
 private fun FeaturePreview() {
     BlindAssistTheme {
         FeatureScreen(
             modelStatus = "YOLO11n ready",
-            appVersion = "3.1.0",
+            appVersion = "3.3.0",
             onOpenCamera = {},
             onGlassesPlaceholder = {}
         )
@@ -1069,7 +1320,8 @@ private fun SettingsPreview() {
             onVibrationChange = {},
             onCareModeChange = {},
             onDebugVisibleChange = {},
-            onProfileChange = {}
+            onProfileChange = {},
+            onShowOnboarding = {}
         )
     }
 }

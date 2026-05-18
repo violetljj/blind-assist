@@ -17,6 +17,7 @@ class UserPreferencesTest {
         assertTrue(state.vibrationEnabled)
         assertFalse(state.careModeEnabled)
         assertEquals(AlertProfile.STANDARD, state.alertProfile)
+        assertFalse(state.onboardingCompleted)
     }
 
     @Test
@@ -60,6 +61,16 @@ class UserPreferencesTest {
     }
 
     @Test
+    fun savedOnboardingCompletedPreferenceIsLoadedAgain() {
+        val store = MapPreferenceStore()
+        val preferences = UserPreferences(store)
+
+        preferences.setOnboardingCompleted(true)
+
+        assertTrue(UserPreferences(store).load().onboardingCompleted)
+    }
+
+    @Test
     fun unknownAlertProfileFallsBackToStandard() {
         val store = MapPreferenceStore()
         store.putString(UserPreferences.KEY_ALERT_PROFILE, "future-mode")
@@ -76,13 +87,15 @@ class UserPreferencesTest {
         preferences.setVibrationEnabled(false)
         preferences.setCareModeEnabled(true)
         preferences.setAlertProfile(AlertProfile.QUIET)
+        preferences.setOnboardingCompleted(true)
 
         assertEquals(
             setOf(
                 UserPreferences.KEY_SPEECH_ENABLED,
                 UserPreferences.KEY_VIBRATION_ENABLED,
                 UserPreferences.KEY_CARE_MODE_ENABLED,
-                UserPreferences.KEY_ALERT_PROFILE
+                UserPreferences.KEY_ALERT_PROFILE,
+                UserPreferences.KEY_ONBOARDING_COMPLETED
             ),
             store.keys()
         )

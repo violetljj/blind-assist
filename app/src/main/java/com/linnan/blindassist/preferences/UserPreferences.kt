@@ -8,7 +8,8 @@ data class UserPreferenceState(
     val speechEnabled: Boolean = true,
     val vibrationEnabled: Boolean = true,
     val careModeEnabled: Boolean = false,
-    val alertProfile: AlertProfile = AlertProfile.STANDARD
+    val alertProfile: AlertProfile = AlertProfile.STANDARD,
+    val onboardingCompleted: Boolean = false
 )
 
 class UserPreferences(private val store: PreferenceStore) {
@@ -23,7 +24,8 @@ class UserPreferences(private val store: PreferenceStore) {
             speechEnabled = store.getBoolean(KEY_SPEECH_ENABLED, true),
             vibrationEnabled = store.getBoolean(KEY_VIBRATION_ENABLED, true),
             careModeEnabled = store.getBoolean(KEY_CARE_MODE_ENABLED, false),
-            alertProfile = AlertProfile.fromStorageValue(store.getString(KEY_ALERT_PROFILE, AlertProfile.STANDARD.storageValue))
+            alertProfile = AlertProfile.fromStorageValue(store.getString(KEY_ALERT_PROFILE, AlertProfile.STANDARD.storageValue)),
+            onboardingCompleted = store.getBoolean(KEY_ONBOARDING_COMPLETED, false)
         )
     }
 
@@ -43,12 +45,17 @@ class UserPreferences(private val store: PreferenceStore) {
         store.putString(KEY_ALERT_PROFILE, profile.storageValue)
     }
 
+    fun setOnboardingCompleted(completed: Boolean) {
+        store.putBoolean(KEY_ONBOARDING_COMPLETED, completed)
+    }
+
     companion object {
         private const val PREFS_NAME = "blindassist_user_preferences"
         internal const val KEY_SPEECH_ENABLED = "speech_enabled"
         internal const val KEY_VIBRATION_ENABLED = "vibration_enabled"
         internal const val KEY_CARE_MODE_ENABLED = "care_mode_enabled"
         internal const val KEY_ALERT_PROFILE = "alert_profile"
+        internal const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
     }
 }
 

@@ -4,7 +4,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Version
 
-- Current project version: `v3.2.0`
+- Current project version: `v3.3.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,6 +12,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Recent Updates
 
+- 2026-05-18: Implemented the v3.3.0 onboarding and camera-permission explanation update. First-time users now see a three-page Compose onboarding flow covering phone-camera local recognition, speech/vibration assistive reminders, and the prototype safety boundary. The Settings page includes a `查看新手引导` entry for replaying the guide. Tapping `使用手机摄像头` without camera permission now shows an in-app explanation before the Android system permission sheet, and denied permission leaves the user in the main shell with a short explanation instead of entering the camera subpage. The app version is now `v3.3.0` / `versionCode=13`, and the debug APK was archived at `releases/apk/BlindAssist-v3.3.0-debug-20260518-154943.apk`. Phone installation was not completed in this run because ADB reported `no devices/emulators found`.
 - 2026-05-18: Implemented the v3.2.0 camera-back and profile cleanup update. The immersive camera subpage now handles Android system back gestures with the same close-camera path as the top return button, so swiping back returns to the main app shell instead of exiting to the launcher. The Profile page no longer shows the project showcase/explanation card and keeps only user, device, version, and assist-preference status. The app version is now `v3.2.0` / `versionCode=12`, and the debug APK was archived at `releases/apk/BlindAssist-v3.2.0-debug-20260518-152635.apk`, installed on device `R5CX10M8Y8X`, and verified as `versionName=3.2.0`.
 - 2026-05-18: Implemented the v3.1.0 app-shell UI renewal. The app now starts with the Android SplashScreen API and a short Compose brand launch screen, then opens a Material 3 main shell with bottom navigation for Features, Profile, and Settings. The Features page now offers a phone-camera entry and a placeholder for future glasses connection, while the real-time CameraX/TFLite assist flow moved into an immersive camera subpage that starts only after the user taps the phone-camera action. Compose is enabled with a compileSdk 35-compatible BOM, the original CameraX `PreviewView`, detection overlay, assist engine, alert profiles, speech, and vibration logic are retained, and the app version is now `v3.1.0` / `versionCode=11`. The debug APK was archived at `releases/apk/BlindAssist-v3.1.0-debug-20260518-151146.apk`, installed on device `R5CX10M8Y8X`, and verified as `versionName=3.1.0`.
 - 2026-05-18: Implemented the v2.6.0 display-trust polish update. The main panel now separates current-frame detections from short held reminders, hides numeric urgency from the default user-facing target line, moves urgency into debug details, uses more action-oriented risk copy, softens the center overlay into an observation reference area, and improves toggle accessibility descriptions. The debug APK was installed successfully on device `R5CX10M8Y8X` and verified as `versionName=2.6.0`, `versionCode=10`.
@@ -34,11 +35,13 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 The app now opens into a polished Compose app shell before starting any camera work:
 
 - Cold launch uses the Android SplashScreen API, followed by a short BlindAssist brand screen with restrained scan/pulse motion. The launch screen can be skipped by tapping it.
+- First-time users then see a three-page onboarding flow for local phone-camera recognition, speech/vibration reminders, and the prototype safety boundary. Completing or skipping the guide saves the onboarding state locally.
 - The main shell uses Material 3 bottom navigation with three top-level destinations: Features, Profile, and Settings.
 - The Features page is the default entry. It presents `使用手机摄像头` as the active local detection path and `连接眼镜设备` as a future-device placeholder. The glasses card only shows an explanatory dialog; it does not scan Bluetooth, request Bluetooth permissions, connect to a network, or imply that hardware support is already finished.
 - The Profile page is a compact local status page for user/device state, current alert profile, version information, and assist preferences. It does not include login, cloud sync, showcase explanation cards, or account data.
-- The Settings page controls speech reminders, vibration reminders, Care Mode, debug details, and alert profile. These settings continue to use local preference persistence where the previous version already supported it.
-- Tapping `使用手机摄像头` opens an immersive camera subpage and requests camera permission at that point, instead of starting CameraX immediately on app launch.
+- The Settings page controls speech reminders, vibration reminders, Care Mode, debug details, alert profile, and includes a `查看新手引导` entry. These settings continue to use local preference persistence where the previous version already supported it.
+- Tapping `使用手机摄像头` opens an immersive camera subpage only after camera permission is available. If permission is missing, the app first shows an in-app explanation that camera frames stay local, are not uploaded, and are not saved as video; only then can the user continue to the Android system permission sheet.
+- If camera permission is denied, the app stays in the main shell and explains that the phone-camera assist path cannot start without permission.
 - The camera subpage hides the bottom navigation, shows a full-screen `PreviewView` with the existing detection overlay, and provides a top return button plus a compact bottom control panel. Tapping the return button or using the Android system back gesture returns to the main app shell, unbinds CameraX, and clears the overlay.
 
 The real-time camera page keeps the full-screen preview as the primary surface and uses a compact bottom panel for interaction:
@@ -135,7 +138,7 @@ app/build/outputs/apk/debug/app-debug.apk
 releases/apk/
 ```
 
-当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0、v2.6.0、v3.1.0 和 v3.2.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；v3.2.0 的当前归档为 `releases/apk/BlindAssist-v3.2.0-debug-20260518-152635.apk`。
+当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0、v2.6.0、v3.1.0、v3.2.0 和 v3.3.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；v3.3.0 的当前归档为 `releases/apk/BlindAssist-v3.3.0-debug-20260518-154943.apk`。
 
 ## Install to Phone
 
