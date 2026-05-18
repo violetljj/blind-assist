@@ -4,6 +4,58 @@
 
 ## 2026-05-18
 
+### v3.1.0 Compose 应用壳层与界面革新
+
+- 时间：2026-05-18 15:14:30 +08:00
+- 执行者：violjjet
+- 类型：功能 / UI / 架构迁移 / 构建 / 测试 / 版本归档 / 真机验证
+- 修改范围：
+  - `build.gradle.kts`
+  - `app/build.gradle.kts`
+  - `app/src/main/AndroidManifest.xml`
+  - `app/src/main/res/values/styles.xml`
+  - `app/src/main/res/values/colors.xml`
+  - `app/src/main/res/drawable/ic_blindassist_splash.xml`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v3.1.0-debug-20260518-151146.apk`
+- 修改内容：
+  - 按用户批准的 v3.1.0 计划，将应用从“启动后直接进入相机功能页”的原生 View 结构升级为 Compose + Material 3 应用壳层。
+  - 在根 Gradle 配置加入 `org.jetbrains.kotlin.plugin.compose`，在 app 模块启用 `buildFeatures.compose = true` 和 `buildConfig = true`，并加入 `activity-compose`、Compose BOM、Material 3、Compose animation/foundation/ui/tooling、material icons、Navigation Compose 和 `core-splashscreen`。
+  - Compose BOM 选择 `2024.10.00`，原因是本仓库当前固定 `compileSdk=35` / `targetSdk=35`。该版本组合已在本机完整编译、单元测试和打包通过，避免使用可能要求更高 compileSdk 的 2026 最新 BOM 破坏当前 Android SDK 35 构建环境。
+  - 新增 `AppTheme.Starting` 启动主题、启动页颜色资源和 `ic_blindassist_splash.xml` 矢量图标，使用 Android SplashScreen API 作为冷启动入口。
+  - 重写 `MainActivity` 为 Compose 宿主和 CameraX 生命周期协调器：启动时只初始化检测模型、偏好、反馈控制器和 Compose 状态；点击“使用手机摄像头”后才进入沉浸式相机页并请求相机权限。
+  - 保留并复用原有 `TfliteYoloDetector`、`AssistEngine`、`FeedbackController`、`DetectionOverlayView`、提醒档位、语音提醒、震动提醒、关怀模式和风险稳定逻辑，未替换模型资产，也未改变风险规则核心算法。
+  - 新增 `ui/compose/BlindAssistApp.kt`，包含科技助盲风格的 Compose 主题、品牌启动页、底部导航主壳、功能页、个人主页、设置页、眼镜连接占位弹窗、沉浸式相机页、相机控制面板和多组 Compose Preview。
+  - 功能页新增两个入口：`使用手机摄像头` 为当前可用主功能；`连接眼镜设备` 为未来蓝牙/外设能力占位，仅展示说明弹窗，不扫描蓝牙、不申请蓝牙权限、不联网。
+  - 主界面底部导航分为“功能”“个人主页”“设置”。个人主页展示本地用户/设备/版本/提醒档位状态；设置页承接语音、震动、关怀模式、调试信息和提醒档位设置。
+  - 相机页隐藏底部导航，保留全屏 `PreviewView` 和原有检测覆盖层；顶部提供返回功能页按钮；底部浮层提供检测、语音、震动、提醒档位、关怀模式和调试信息控制。退出相机页时会 unbind CameraX 并清空 overlay。
+  - 将版本从 `v2.6.0` 提升到 `v3.1.0`，`versionCode` 从 `10` 提升到 `11`，并同步 README 的版本、近期更新、界面行为和 APK 归档说明。
+- 修改原因：
+  - 用户希望大幅革新 App 界面，不再停留在“打开就是相机功能”的工程原型形态，而是学习成熟移动 App 的信息架构：启动页、主界面、功能入口、个人主页、设置和底部导航。
+  - Compose + Material 3 更适合快速搭建多页面、状态驱动、动效清晰的现代 Android UI，同时保留 `PreviewView` 可以降低 CameraX 预览和 TFLite 推理链路的迁移风险。
+  - 将相机能力放入功能入口之后启动，能更接近真实 App 体验，也避免用户只是打开 App 就立刻占用摄像头。
+  - 眼镜连接以占位方式提前呈现产品路线，但明确不实现真实蓝牙连接，避免引入权限、硬件协议和安全责任范围之外的功能。
+- 验证方式：
+  - 已按仓库规则重新读取并使用相关 skills：`android-jetpack-compose`、`compose-ui`、`compose-navigation`、`android-accessibility`、`migrate-xml-views-to-jetpack-compose`。
+  - 已运行 `git status --short`，修改前仅存在无关未跟踪 PPTX：`多模态智能助盲系统1.4.pptx`；本次未触碰该文件。
+  - 第一次普通沙箱编译验证 `.\gradlew.bat :app:compileDebugKotlin --no-daemon` 失败，原因为本仓库已知 Gradle wrapper 网络沙箱限制：`java.net.SocketException: Permission denied: getsockopt`。
+  - 已基于 AGENTS.md 的已知沙箱限制直接提权运行 `.\gradlew.bat :app:compileDebugKotlin --no-daemon`，第一次编译发现并修复 `BuildConfig` 未生成和 Compose `ColumnScope` 类型问题；修复后再次提权运行同一命令，结果成功。
+  - 已基于 AGENTS.md 的已知沙箱限制直接提权运行完整验证命令：`.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，结果成功，debug APK 已生成在 `app/build/outputs/apk/debug/app-debug.apk`。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v3.1.0-debug-20260518-151146.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，文件大小 46,948,985 bytes，复制后文件时间 2026-05-18 15:11:33 +08:00。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备 `R5CX10M8Y8X` 处于 `device` 状态。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Success`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=11 minSdk=26 targetSdk=35` 和 `versionName=3.1.0`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe shell am start -W -n com.linnan.blindassist/.MainActivity`，输出 `Status: ok`、`LaunchState: COLD`、`TotalTime: 791`、`WaitTime: 793`，确认新 Activity 可被系统冷启动拉起。
+- 版本判断：
+  - 本次引入 Compose/Material 3 应用壳层、SplashScreen、底部导航、功能入口、个人主页、设置页和沉浸式相机子页面，属于明显体验升级和 UI 架构迁移。
+  - 按 AGENTS.md 版本策略属于“大更新”，因此从 `v2.6.0` 提升到 `v3.1.0`，`versionCode` 提升到 `11`。
+- 后续事项：
+  - 后续可以基于真机截图继续微调首页视觉密度、按钮文案和相机页浮层高度。
+  - 如需要展示更完整的成熟 App 体验，可以继续添加首次使用引导、离线能力说明页和眼镜连接流程的纯 UI 原型，但不应在没有硬件协议前实现真实连接。
+
 ### 回顾式阶段进度说明文档
 
 - 时间：2026-05-18 14:32:20 +08:00

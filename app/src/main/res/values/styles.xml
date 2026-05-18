@@ -5,5 +5,13 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:statusBarColor">#101418</item>
         <item name="android:navigationBarColor">#101418</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Starting" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenBackground">@color/blindassist_splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_blindassist_splash</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/blindassist_splash_icon_background</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
 </resources>
