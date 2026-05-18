@@ -4,6 +4,44 @@
 
 ## 2026-05-18
 
+### v3.2.0 相机返回手势与个人主页精简
+
+- 时间：2026-05-18 15:27:00 +08:00
+- 执行者：violjjet
+- 类型：修复 / UI / 文档 / 构建 / 测试 / 版本归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v3.2.0-debug-20260518-152635.apk`
+- 修改内容：
+  - 在 Compose 应用入口为相机全屏子页增加 `BackHandler(enabled = cameraActive)`，当用户使用 Android 系统返回键或侧滑返回手势时，统一调用现有 `onCloseCamera()`。
+  - 返回逻辑复用顶部返回按钮已有路径：退出相机态、停止 CameraX、重置辅助会话并清空 overlay，避免 Activity 直接结束导致用户回到桌面。
+  - 删除个人主页中的“展示说明”信息模块，保留用户身份、本地设备状态、提醒档位、当前版本和辅助偏好模块，让个人主页更像真实 App 的状态页。
+  - 将应用版本从 `v3.1.0` 提升到 `v3.2.0`，`versionCode` 从 `11` 提升到 `12`。
+  - 同步 README 的当前版本、近期更新、界面行为说明和 APK 归档说明。
+- 修改原因：
+  - 用户反馈相机页面侧滑返回时不是返回上一个界面，而是直接返回桌面；根因是相机页由 `cameraActive` 状态切换显示，并没有拦截系统返回事件，系统默认结束当前 Activity。
+  - 相机页属于主应用壳层中的沉浸式子页面，用户预期的返回目标应是主界面而不是桌面，因此需要让系统返回手势和页面内返回按钮行为一致。
+  - 个人主页中的“展示说明”偏课程展示说明，不适合保留在更接近成品 App 的用户页面中，按用户要求移除以降低说明感。
+- 验证方式：
+  - 已读取并使用本次适用的 `compose-navigation` 与 `android-jetpack-compose` skills；其中 `android-jetpack-compose` 实际本地路径为 `C:\Users\junjie\.codex\skills\jetpack-compose\SKILL.md`。
+  - 已运行 `git status --short`，修改前仅存在一个无关未跟踪 PPTX：`多模态智能助盲系统1.4.pptx`，本次未触碰该文件。
+  - 基于本仓库已知 Gradle 沙箱限制，直接提权运行完整验证命令：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，命令退出码为 `0`。
+  - debug APK 已生成在 `app/build/outputs/apk/debug/app-debug.apk`，文件大小 `46,948,985 bytes`，文件时间 `2026-05-18 15:26:22 +08:00`。
+  - 已复制归档 APK：`releases/apk/BlindAssist-v3.2.0-debug-20260518-152635.apk`，来源为 `app/build/outputs/apk/debug/app-debug.apk`，文件大小 `46,948,985 bytes`，复制后文件时间 `2026-05-18 15:26:22 +08:00`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，确认设备 `R5CX10M8Y8X` 处于 `device` 状态。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Success`，v3.2.0 debug APK 已安装到手机。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=12 minSdk=26 targetSdk=35` 和 `versionName=3.2.0`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe shell am start -W -n com.linnan.blindassist/.MainActivity`，输出 `Status: ok`、`LaunchState: COLD`、`TotalTime: 604`、`WaitTime: 605`，确认安装后的 Activity 可正常启动。
+- 版本判断：
+  - 本次属于小更新，原因是修复了相机页系统返回手势的实际交互行为，并按用户要求精简个人主页展示内容；未改变 CameraX/TFLite 检测链路、风险规则、模型资产、构建方式或核心架构。
+  - 按 AGENTS.md 版本策略，将项目从 `v3.1.0` 提升到 `v3.2.0`。
+- 后续事项：
+  - 如需更强确认，可在真机上安装 v3.2.0 后从功能页进入相机页，分别测试顶部返回按钮和系统侧滑返回，确认都回到主界面且不会退到桌面。
+  - 后续若继续打磨个人主页，可考虑补充真实可配置的用户偏好或本地设备信息，而不是展示说明型文案。
+
 ### v3.1.0 Compose 应用壳层与界面革新
 
 - 时间：2026-05-18 15:14:30 +08:00

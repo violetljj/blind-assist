@@ -2,6 +2,7 @@ package com.linnan.blindassist.ui.compose
 
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.activity.compose.BackHandler
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -170,6 +171,10 @@ fun BlindAssistApp(
     modifier: Modifier = Modifier
 ) {
     var splashVisible by rememberSaveable { mutableStateOf(true) }
+
+    BackHandler(enabled = cameraActive) {
+        onCloseCamera()
+    }
 
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -480,12 +485,6 @@ fun ProfileScreen(
             leftBody = controls.alertProfile.displayName,
             rightTitle = "当前版本",
             rightBody = "v$appVersion"
-        )
-        Spacer(Modifier.height(18.dp))
-        InfoStrip(
-            icon = Icons.Rounded.Info,
-            title = "展示说明",
-            body = "此页用于课程设计展示个人与设备状态，当前不包含登录、联网同步或云端数据。"
         )
         Spacer(Modifier.height(12.dp))
         InfoStrip(
