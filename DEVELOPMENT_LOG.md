@@ -4,6 +4,32 @@
 
 ## 2026-05-19
 
+### v5.8.0 手机再安装与 GitHub 推送
+
+- 时间：2026-05-19 16:57:35 +08:00
+- 执行者：violjjet
+- 类型：真机安装 / Git / 发布 / 验证
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户“下载，推送”要求，将已归档的 v5.8.0 debug APK 再次安装到手机，并把 v5.8.0 日常使用向导与一键模式更新提交、推送到 GitHub。
+  - 本次提交范围为 v5.8.0 代码、测试、文档和 APK 归档；既有未跟踪 PPTX 未纳入 stage 或 commit。
+- 修改原因：
+  - 用户要求把当前版本下载安装到手机并推送远端，形成可运行、可展示、远端可追踪的最新版本。
+- 验证方式：
+  - 已确认当前分支为 `master`，远端为 `git@github.com:violetljj/blind-assist.git`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，发现同一台 wireless ADB 设备出现两个 serial；已断开重复的 `adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp`，安装时指定保留的 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp`。
+  - 已运行安装命令：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" install -r releases\apk\BlindAssist-v5.8.0-debug-20260519-120747.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" shell dumpsys package com.linnan.blindassist | Select-String -Pattern "versionCode|versionName"`，输出 `versionCode=22 minSdk=26 targetSdk=35` 和 `versionName=5.8.0`。
+  - 已运行冷启动命令：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" shell am start -W -n com.linnan.blindassist/.MainActivity`，输出 `Status: ok`、`LaunchState: COLD`、`Activity: com.linnan.blindassist/.MainActivity`、`TotalTime: 2569`、`WaitTime: 2571`。
+  - 已创建提交：`b1e71b8 feat: add daily usage modes`。
+  - 已按本仓库已知 Git SSH 沙箱限制直接提权运行 `git push origin master`，输出 `f0c7e82..b1e71b8  master -> master`。
+- 版本判断：
+  - 本次只执行 v5.8.0 的手机再安装、提交和 GitHub 推送，不改变应用功能、模型、权限、构建配置、版本号或 APK 内容。
+  - 项目版本保持 `v5.8.0` / `versionCode=22`。
+- 后续事项：
+  - 本条日志需要再单独提交并推送，确保远端仓库也记录本次手机安装和 GitHub 推送证据。
+
 ### v5.8.0 日常使用向导与一键模式
 
 - 时间：2026-05-19 12:06:16 +08:00
