@@ -2,6 +2,23 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v5.8.0 - 日常使用向导与一键模式
+
+- 状态：已完成，`versionCode=22`，`versionName=5.8.0`。
+- 主要变化：
+  - Features 页新增日常使用向导，提供 通用日常、室内慢行、走廊通行、密集区域、户外慢行 五个日常预设。
+  - 预设只映射到现有本地偏好：使用场景、提醒档位、语音风格、震动强度和 Care Mode；不新增单独模式持久化 key，手动调整后的组合显示为 自定义 / Custom。
+  - 相机页显示当前日常模式，并将原来的提醒档位循环按钮改为 调安静 / 调敏感 两个明确快捷操作；两者保留当前场景，只调整提醒强度组合。
+  - 新增中英文文案、TalkBack action-oriented content description、48dp+ 触控目标和 Compose 测试覆盖。
+  - 本轮不修改 YOLO 模型、CameraX/TFLite 链路、风险阈值、权限、联网、蓝牙、存储、Hilt、多模块、Room 或 DataStore。
+- 验证：
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行 `:app:testDebugUnitTest :app:assembleDebug --no-daemon`，命令退出码为 0。
+  - JVM 单元测试结果：105 tests，0 failures，0 errors，0 skipped。
+  - debug APK 已安装到 `SM-S9280`，包信息核对为 `versionCode=22`、`versionName=5.8.0`，冷启动命令返回 `Status: ok`、`LaunchState: COLD`、`TotalTime: 679`。
+  - `connectedDebugAndroidTest` 未执行：设备在线且重复 wireless ADB serial 已断开，但窗口状态仍为 `mDreamingLockscreen=true`、焦点在 `NotificationShade`，不适合运行 Compose 仪器测试。
+- APK：
+  - `releases/apk/BlindAssist-v5.8.0-debug-20260519-120747.apk`
+
 ## v5.3.0 - TalkBack、大字体与中英文切换
 
 - 状态：已完成，`versionCode=21`，`versionName=5.3.0`。

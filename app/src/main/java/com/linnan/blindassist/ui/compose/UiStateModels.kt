@@ -5,6 +5,7 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.preferences.DailyUsageMode
 
 data class AssistControlsUiState(
     val detectionEnabled: Boolean,
@@ -16,7 +17,8 @@ data class AssistControlsUiState(
     val assistScenario: AssistScenario,
     val speechStyle: SpeechStyle,
     val vibrationStrength: VibrationStrength,
-    val appLanguage: AppLanguage
+    val appLanguage: AppLanguage,
+    val dailyUsageMode: DailyUsageMode
 )
 
 data class CameraGuidanceUiState(

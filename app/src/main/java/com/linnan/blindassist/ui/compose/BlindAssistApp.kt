@@ -106,6 +106,7 @@ import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.localization.LocalizedText
+import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.ui.DetectionOverlayView
 import kotlinx.coroutines.delay
 
@@ -154,6 +155,9 @@ fun BlindAssistApp(
     onScenarioChange: (AssistScenario) -> Unit,
     onSpeechStyleChange: (SpeechStyle) -> Unit,
     onVibrationStrengthChange: (VibrationStrength) -> Unit,
+    onDailyUsageModeChange: (DailyUsageMode) -> Unit,
+    onQuietShortcut: () -> Unit,
+    onSensitiveShortcut: () -> Unit,
     onLanguageChange: (AppLanguage) -> Unit,
     onCameraViewsReady: (PreviewView, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
@@ -185,6 +189,8 @@ fun BlindAssistApp(
                     onDebugVisibleChange = onDebugVisibleChange,
                     onProfileChange = onProfileChange,
                     onScenarioChange = onScenarioChange,
+                    onQuietShortcut = onQuietShortcut,
+                    onSensitiveShortcut = onSensitiveShortcut,
                     onCameraViewsReady = onCameraViewsReady
                 )
                 splashVisible -> BrandSplashScreen(onFinished = { splashVisible = false })
@@ -204,6 +210,7 @@ fun BlindAssistApp(
                     onScenarioChange = onScenarioChange,
                     onSpeechStyleChange = onSpeechStyleChange,
                     onVibrationStrengthChange = onVibrationStrengthChange,
+                    onDailyUsageModeChange = onDailyUsageModeChange,
                     onLanguageChange = onLanguageChange,
                     onShowOnboarding = onShowOnboarding
                 )
@@ -446,6 +453,7 @@ private fun MainShell(
     onScenarioChange: (AssistScenario) -> Unit,
     onSpeechStyleChange: (SpeechStyle) -> Unit,
     onVibrationStrengthChange: (VibrationStrength) -> Unit,
+    onDailyUsageModeChange: (DailyUsageMode) -> Unit,
     onLanguageChange: (AppLanguage) -> Unit,
     onShowOnboarding: () -> Unit,
     modifier: Modifier = Modifier
@@ -481,10 +489,12 @@ private fun MainShell(
         ) {
             when (BottomTab.valueOf(selectedTab)) {
                 BottomTab.Features -> FeatureScreen(
+                    controls = controls,
                     modelStatus = modelStatus,
                     appVersion = appVersion,
                     onOpenCamera = onOpenCamera,
-                    onGlassesPlaceholder = onGlassesPlaceholder
+                    onGlassesPlaceholder = onGlassesPlaceholder,
+                    onDailyUsageModeChange = onDailyUsageModeChange
                 )
                 BottomTab.Profile -> ProfileScreen(
                     controls = controls,
@@ -511,40 +521,62 @@ private fun MainShell(
 
 @Composable
 fun FeatureScreen(
+    controls: AssistControlsUiState,
     modelStatus: String,
     appVersion: String,
     onOpenCamera: () -> Unit,
     onGlassesPlaceholder: () -> Unit,
+    onDailyUsageModeChange: (DailyUsageMode) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val language = controls.appLanguage
     ScreenColumn(modifier = modifier) {
         Text(
-            text = "功能",
+            text = if (language == AppLanguage.EN) "Features" else "功能",
             style = MaterialTheme.typography.headlineMedium,
             color = BaText,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.semantics { heading() }
         )
         Text(
-            text = "选择一种辅助方式开始。当前版本优先提供手机摄像头本地识别，眼镜连接作为后续扩展入口保留。",
+            text = if (language == AppLanguage.EN) {
+                "Choose a daily assist mode, then start the phone camera. The glasses path remains a future extension."
+            } else {
+                "先选择一种日常辅助模式，再打开手机摄像头。眼镜连接作为后续扩展入口保留。"
+            },
             style = MaterialTheme.typography.bodyMedium,
             color = BaTextMuted
         )
         Spacer(Modifier.height(18.dp))
 
+        DailyUsageModeSelector(
+            selected = controls.dailyUsageMode,
+            language = language,
+            onModeChange = onDailyUsageModeChange
+        )
+        Spacer(Modifier.height(18.dp))
+
         ActionFeatureCard(
-            title = "使用手机摄像头",
-            subtitle = "打开实时画面、目标框、语音与震动提醒",
-            badge = "可用",
+            title = if (language == AppLanguage.EN) "Use phone camera" else "使用手机摄像头",
+            subtitle = if (language == AppLanguage.EN) {
+                "Start live recognition with ${controls.dailyUsageMode.displayName(language)} mode"
+            } else {
+                "按${controls.dailyUsageMode.displayName(language)}模式打开实时识别"
+            },
+            badge = if (language == AppLanguage.EN) "Ready" else "可用",
             icon = Icons.Rounded.CameraAlt,
             accent = BaMint,
             onClick = onOpenCamera
         )
         Spacer(Modifier.height(12.dp))
         ActionFeatureCard(
-            title = "连接眼镜设备",
-            subtitle = "预留给蓝牙眼镜和外接视觉设备，不会申请蓝牙权限",
-            badge = "占位",
+            title = if (language == AppLanguage.EN) "Connect glasses device" else "连接眼镜设备",
+            subtitle = if (language == AppLanguage.EN) {
+                "Reserved for future external vision devices; no Bluetooth permission is requested"
+            } else {
+                "预留给蓝牙眼镜和外接视觉设备，不会申请蓝牙权限"
+            },
+            badge = if (language == AppLanguage.EN) "Future" else "占位",
             icon = Icons.Rounded.Bluetooth,
             accent = BaSky,
             onClick = onGlassesPlaceholder
@@ -553,14 +585,18 @@ fun FeatureScreen(
 
         InfoStrip(
             icon = Icons.Rounded.Shield,
-            title = "安全边界",
-            body = "BlindAssist 是本地助盲避障原型，提醒结果只作为辅助参考，不能替代人工判断或专业安全设备。"
+            title = if (language == AppLanguage.EN) "Usage boundary" else "安全边界",
+            body = if (language == AppLanguage.EN) {
+                "BlindAssist is a local assistive prototype. Reminders are only references and cannot replace human judgment or professional safety devices."
+            } else {
+                "BlindAssist 是本地助盲避障原型，提醒结果只作为辅助参考，不能替代人工判断或专业安全设备。"
+            }
         )
         Spacer(Modifier.height(12.dp))
         StatusGrid(
-            leftTitle = "模型",
+            leftTitle = if (language == AppLanguage.EN) "Model" else "模型",
             leftBody = modelStatus,
-            rightTitle = "版本",
+            rightTitle = if (language == AppLanguage.EN) "Version" else "版本",
             rightBody = "v$appVersion"
         )
     }
@@ -770,6 +806,8 @@ fun CameraExperienceScreen(
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
     onScenarioChange: (AssistScenario) -> Unit,
+    onQuietShortcut: () -> Unit,
+    onSensitiveShortcut: () -> Unit,
     onCameraViewsReady: (PreviewView, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -797,6 +835,8 @@ fun CameraExperienceScreen(
             onDebugVisibleChange = onDebugVisibleChange,
             onProfileChange = onProfileChange,
             onScenarioChange = onScenarioChange,
+            onQuietShortcut = onQuietShortcut,
+            onSensitiveShortcut = onSensitiveShortcut,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(12.dp)
@@ -847,6 +887,8 @@ fun CameraControlPanel(
     onDebugVisibleChange: (Boolean) -> Unit,
     onProfileChange: (AlertProfile) -> Unit,
     onScenarioChange: (AssistScenario) -> Unit,
+    onQuietShortcut: () -> Unit,
+    onSensitiveShortcut: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val language = controls.appLanguage
@@ -889,6 +931,13 @@ fun CameraControlPanel(
                 modifier = Modifier.testTag("camera_scenario_label")
             )
             Text(
+                text = if (language == AppLanguage.EN) "Daily mode: ${controls.dailyUsageMode.displayName(language)}" else "日常模式：${controls.dailyUsageMode.displayName(language)}",
+                color = BaSky,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.testTag("camera_daily_mode_label")
+            )
+            Text(
                 text = if (controls.careModeEnabled) guidance.careExplanation else guidance.explanationHeadline,
                 color = BaText,
                 style = MaterialTheme.typography.bodySmall,
@@ -911,18 +960,30 @@ fun CameraControlPanel(
             Spacer(Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 CompactAction(
-                    text = if (language == AppLanguage.EN) "Profile ${controls.alertProfile.displayName(language)}" else "模式 ${controls.alertProfile.displayName(language)}",
+                    text = if (language == AppLanguage.EN) "Quiet" else "调安静",
                     icon = Icons.Rounded.Tune,
-                    onClick = { onProfileChange(controls.alertProfile.next()) },
+                    onClick = onQuietShortcut,
                     modifier = Modifier.weight(1f),
                     accessibilityText = if (language == AppLanguage.EN) {
-                        "Reminder profile, current ${controls.alertProfile.displayName(language)}, tap to switch to ${controls.alertProfile.next().displayName(language)}"
+                        "Apply quiet reminder shortcut, keep current scenario, use Quiet profile, Brief speech, and Soft vibration"
                     } else {
-                        "提醒档位，当前${controls.alertProfile.displayName(language)}，点击切换到${controls.alertProfile.next().displayName(language)}"
+                        "应用安静提醒快捷设置，保留当前场景，使用安静档位、简短语音和轻柔震动"
                     }
                 )
-                CompactToggle(if (language == AppLanguage.EN) "Care" else "关怀", controls.careModeEnabled, Icons.Rounded.Favorite, onCareModeChange, Modifier.weight(1f), language)
+                CompactAction(
+                    text = if (language == AppLanguage.EN) "Sensitive" else "调敏感",
+                    icon = Icons.Rounded.Tune,
+                    onClick = onSensitiveShortcut,
+                    modifier = Modifier.weight(1f),
+                    accessibilityText = if (language == AppLanguage.EN) {
+                        "Apply sensitive reminder shortcut, keep current scenario, use Sensitive profile, Standard speech, and Strong vibration"
+                    } else {
+                        "应用敏感提醒快捷设置，保留当前场景，使用敏感档位、标准语音和强震动"
+                    }
+                )
             }
+            Spacer(Modifier.height(8.dp))
+            CompactToggle(if (language == AppLanguage.EN) "Care" else "关怀", controls.careModeEnabled, Icons.Rounded.Favorite, onCareModeChange, Modifier.fillMaxWidth(), language)
             Spacer(Modifier.height(8.dp))
             CompactAction(
                 text = if (language == AppLanguage.EN) "Scenario ${controls.assistScenario.displayName(language)}" else "场景 ${controls.assistScenario.displayName(language)}",
@@ -1078,6 +1139,90 @@ private fun ActionFeatureCard(
                 Text(text = subtitle, color = BaTextMuted, style = MaterialTheme.typography.bodyMedium)
             }
             Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaTextMuted)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DailyUsageModeSelector(
+    selected: DailyUsageMode,
+    language: AppLanguage,
+    onModeChange: (DailyUsageMode) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("daily_usage_mode_selector")
+            .semantics {
+                contentDescription = if (language == AppLanguage.EN) {
+                    "Daily usage guide, current ${selected.displayName(language)}. Choose a mode to apply scenario, reminder profile, speech style, vibration strength, and Care Mode."
+                } else {
+                    "日常使用向导，当前${selected.displayName(language)}。选择模式会应用场景、提醒档位、语音风格、震动强度和关怀模式。"
+                }
+            },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text(
+                text = if (language == AppLanguage.EN) "Daily usage guide" else "日常使用向导",
+                color = BaText,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.semantics { heading() }
+            )
+            Text(
+                text = if (language == AppLanguage.EN) {
+                    "Pick the walking task once; BlindAssist applies a matching reminder bundle."
+                } else {
+                    "先选今天的行走任务，系统会套用对应提醒组合。"
+                },
+                color = BaTextMuted,
+                style = MaterialTheme.typography.bodySmall
+            )
+            Spacer(Modifier.height(10.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                DailyUsageMode.selectableModes.forEach { mode ->
+                    FilterChip(
+                        selected = selected == mode,
+                        onClick = { onModeChange(mode) },
+                        label = {
+                            Column {
+                                Text(mode.displayName(language), fontWeight = FontWeight.SemiBold)
+                                Text(
+                                    mode.description(language),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = BaTextMuted,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 56.dp)
+                            .semantics {
+                                role = Role.Button
+                                stateDescription = if (selected == mode) {
+                                    if (language == AppLanguage.EN) "Current daily mode" else "当前日常模式"
+                                } else {
+                                    if (language == AppLanguage.EN) "Not selected" else "未选择"
+                                }
+                                contentDescription = mode.accessibilitySummary(language)
+                            }
+                    )
+                }
+            }
+            if (selected == DailyUsageMode.CUSTOM) {
+                Spacer(Modifier.height(10.dp))
+                Text(
+                    text = if (language == AppLanguage.EN) "Current preferences are custom because one or more settings were adjusted manually." else "当前为自定义组合，因为部分设置已被手动调整。",
+                    color = BaAmber,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.testTag("daily_usage_custom_notice")
+                )
+            }
         }
     }
 }
@@ -1677,10 +1822,12 @@ private fun OnboardingPreview() {
 private fun FeaturePreview() {
     BlindAssistTheme {
         FeatureScreen(
+            controls = previewControls(),
             modelStatus = "YOLO11n ready",
-            appVersion = "4.8.0",
+            appVersion = "5.8.0",
             onOpenCamera = {},
-            onGlassesPlaceholder = {}
+            onGlassesPlaceholder = {},
+            onDailyUsageModeChange = {}
         )
     }
 }
@@ -1722,6 +1869,8 @@ private fun CameraPanelPreview() {
                 onDebugVisibleChange = {},
                 onProfileChange = {},
                 onScenarioChange = {},
+                onQuietShortcut = {},
+                onSensitiveShortcut = {},
                 modifier = Modifier.padding(12.dp)
             )
         }
@@ -1739,7 +1888,14 @@ private fun previewControls(): AssistControlsUiState {
         assistScenario = AssistScenario.CORRIDOR,
         speechStyle = SpeechStyle.STANDARD,
         vibrationStrength = VibrationStrength.STANDARD,
-        appLanguage = AppLanguage.ZH
+        appLanguage = AppLanguage.ZH,
+        dailyUsageMode = DailyUsageMode.fromPreferences(
+            scenario = AssistScenario.CORRIDOR,
+            profile = AlertProfile.STANDARD,
+            speechStyle = SpeechStyle.STANDARD,
+            vibrationStrength = VibrationStrength.STANDARD,
+            careModeEnabled = false
+        )
     )
 }
 

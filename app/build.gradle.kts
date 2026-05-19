@@ -12,8 +12,8 @@ android {
         applicationId = "com.linnan.blindassist"
         minSdk = 26
         targetSdk = 35
-        versionCode = 21
-        versionName = "5.3.0"
+        versionCode = 22
+        versionName = "5.8.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

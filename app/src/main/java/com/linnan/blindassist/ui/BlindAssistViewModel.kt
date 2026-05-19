@@ -8,6 +8,7 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.AssistControlsUiState
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
@@ -47,7 +48,14 @@ class BlindAssistViewModel(
                 assistScenario = initialPreferences.assistScenario,
                 speechStyle = initialPreferences.speechStyle,
                 vibrationStrength = initialPreferences.vibrationStrength,
-                appLanguage = initialPreferences.appLanguage
+                appLanguage = initialPreferences.appLanguage,
+                dailyUsageMode = DailyUsageMode.fromPreferences(
+                    scenario = initialPreferences.assistScenario,
+                    profile = initialPreferences.alertProfile,
+                    speechStyle = initialPreferences.speechStyle,
+                    vibrationStrength = initialPreferences.vibrationStrength,
+                    careModeEnabled = initialPreferences.careModeEnabled
+                )
             ),
             cameraGuidance = CameraGuidanceUiState.initial(
                 initialModelStatus,
@@ -135,7 +143,7 @@ class BlindAssistViewModel(
     fun onCareModeChange(enabled: Boolean) {
         userPreferences.setCareModeEnabled(enabled)
         _uiState.update {
-            it.copy(controls = it.controls.copy(careModeEnabled = enabled))
+            it.copy(controls = it.controls.copy(careModeEnabled = enabled).withDerivedDailyUsageMode())
         }
     }
 
@@ -148,28 +156,28 @@ class BlindAssistViewModel(
     fun onProfileChange(profile: AlertProfile) {
         userPreferences.setAlertProfile(profile)
         _uiState.update {
-            it.copy(controls = it.controls.copy(alertProfile = profile))
+            it.copy(controls = it.controls.copy(alertProfile = profile).withDerivedDailyUsageMode())
         }
     }
 
     fun onScenarioChange(scenario: AssistScenario) {
         userPreferences.setAssistScenario(scenario)
         _uiState.update {
-            it.copy(controls = it.controls.copy(assistScenario = scenario))
+            it.copy(controls = it.controls.copy(assistScenario = scenario).withDerivedDailyUsageMode())
         }
     }
 
     fun onSpeechStyleChange(style: SpeechStyle) {
         userPreferences.setSpeechStyle(style)
         _uiState.update {
-            it.copy(controls = it.controls.copy(speechStyle = style))
+            it.copy(controls = it.controls.copy(speechStyle = style).withDerivedDailyUsageMode())
         }
     }
 
     fun onVibrationStrengthChange(strength: VibrationStrength) {
         userPreferences.setVibrationStrength(strength)
         _uiState.update {
-            it.copy(controls = it.controls.copy(vibrationStrength = strength))
+            it.copy(controls = it.controls.copy(vibrationStrength = strength).withDerivedDailyUsageMode())
         }
     }
 
@@ -177,6 +185,46 @@ class BlindAssistViewModel(
         userPreferences.setAppLanguage(language)
         _uiState.update {
             it.copy(controls = it.controls.copy(appLanguage = language))
+        }
+    }
+
+    fun onDailyUsageModeChange(mode: DailyUsageMode) {
+        val config = mode.config ?: return
+        userPreferences.setAssistScenario(config.scenario)
+        userPreferences.setAlertProfile(config.profile)
+        userPreferences.setSpeechStyle(config.speechStyle)
+        userPreferences.setVibrationStrength(config.vibrationStrength)
+        userPreferences.setCareModeEnabled(config.careModeEnabled)
+        _uiState.update {
+            it.copy(
+                controls = it.controls.copy(
+                    assistScenario = config.scenario,
+                    alertProfile = config.profile,
+                    speechStyle = config.speechStyle,
+                    vibrationStrength = config.vibrationStrength,
+                    careModeEnabled = config.careModeEnabled,
+                    dailyUsageMode = mode
+                )
+            )
+        }
+    }
+
+    fun onReminderShortcutChange(
+        profile: AlertProfile,
+        speechStyle: SpeechStyle,
+        vibrationStrength: VibrationStrength
+    ) {
+        userPreferences.setAlertProfile(profile)
+        userPreferences.setSpeechStyle(speechStyle)
+        userPreferences.setVibrationStrength(vibrationStrength)
+        _uiState.update {
+            it.copy(
+                controls = it.controls.copy(
+                    alertProfile = profile,
+                    speechStyle = speechStyle,
+                    vibrationStrength = vibrationStrength
+                ).withDerivedDailyUsageMode()
+            )
         }
     }
 
@@ -224,4 +272,16 @@ class BlindAssistViewModel(
     companion object {
         private const val DEFAULT_MODEL_STATUS = "模型未初始化"
     }
+}
+
+private fun AssistControlsUiState.withDerivedDailyUsageMode(): AssistControlsUiState {
+    return copy(
+        dailyUsageMode = DailyUsageMode.fromPreferences(
+            scenario = assistScenario,
+            profile = alertProfile,
+            speechStyle = speechStyle,
+            vibrationStrength = vibrationStrength,
+            careModeEnabled = careModeEnabled
+        )
+    )
 }

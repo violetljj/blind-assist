@@ -22,6 +22,7 @@ import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.session.AssistFrameResult
@@ -121,6 +122,9 @@ class MainActivity : ComponentActivity() {
                     onScenarioChange = ::setAssistScenario,
                     onSpeechStyleChange = ::setSpeechStyle,
                     onVibrationStrengthChange = ::setVibrationStrength,
+                    onDailyUsageModeChange = ::setDailyUsageMode,
+                    onQuietShortcut = ::setQuietShortcut,
+                    onSensitiveShortcut = ::setSensitiveShortcut,
                     onLanguageChange = ::setAppLanguage,
                     onCameraViewsReady = ::onCameraViewsReady
                 )
@@ -321,6 +325,49 @@ class MainActivity : ComponentActivity() {
         appViewModel.onScenarioChange(scenario)
         appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
         renderUi(appViewModel.uiState.value.cameraGuidance.copy(scenarioName = scenario.displayName(appLanguage)))
+    }
+
+    private fun setDailyUsageMode(mode: DailyUsageMode) {
+        val config = mode.config ?: return
+        assistScenario = config.scenario
+        alertProfile = config.profile
+        careModeEnabled = config.careModeEnabled
+        feedbackController.speechStyle = config.speechStyle
+        feedbackController.vibrationStrength = config.vibrationStrength
+        if (::overlayView.isInitialized) {
+            overlayView.setCareMode(config.careModeEnabled)
+        }
+        appViewModel.onDailyUsageModeChange(mode)
+        appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
+        renderUi(appViewModel.uiState.value.cameraGuidance.copy(scenarioName = config.scenario.displayName(appLanguage)))
+    }
+
+    private fun setQuietShortcut() {
+        setReminderShortcut(
+            profile = AlertProfile.QUIET,
+            speechStyle = SpeechStyle.BRIEF,
+            vibrationStrength = VibrationStrength.SOFT
+        )
+    }
+
+    private fun setSensitiveShortcut() {
+        setReminderShortcut(
+            profile = AlertProfile.SENSITIVE,
+            speechStyle = SpeechStyle.STANDARD,
+            vibrationStrength = VibrationStrength.STRONG
+        )
+    }
+
+    private fun setReminderShortcut(
+        profile: AlertProfile,
+        speechStyle: SpeechStyle,
+        vibrationStrength: VibrationStrength
+    ) {
+        alertProfile = profile
+        feedbackController.speechStyle = speechStyle
+        feedbackController.vibrationStrength = vibrationStrength
+        appViewModel.onReminderShortcutChange(profile, speechStyle, vibrationStrength)
+        appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
     }
 
     private fun currentFieldTestSummary(active: Boolean) =

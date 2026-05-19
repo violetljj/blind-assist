@@ -5,6 +5,7 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.FeedbackReason
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
@@ -75,6 +76,50 @@ object LocalizedText {
             VibrationStrength.SOFT -> if (language == AppLanguage.EN) "Lower vibration duration and intensity" else "降低震动时长和强度"
             VibrationStrength.STANDARD -> if (language == AppLanguage.EN) "Use the default tactile feedback" else "使用默认触觉反馈"
             VibrationStrength.STRONG -> if (language == AppLanguage.EN) "Strengthen near and critical reminders" else "增强近处和迫近提醒"
+        }
+    }
+
+    fun dailyUsageModeName(mode: DailyUsageMode, language: AppLanguage): String {
+        return when (mode) {
+            DailyUsageMode.GENERAL_DAILY -> if (language == AppLanguage.EN) "Daily" else "通用日常"
+            DailyUsageMode.INDOOR_SLOW -> if (language == AppLanguage.EN) "Indoor slow walk" else "室内慢行"
+            DailyUsageMode.CORRIDOR -> if (language == AppLanguage.EN) "Corridor" else "走廊通行"
+            DailyUsageMode.CROWDED -> if (language == AppLanguage.EN) "Crowded area" else "密集区域"
+            DailyUsageMode.OUTDOOR_SLOW -> if (language == AppLanguage.EN) "Outdoor slow walk" else "户外慢行"
+            DailyUsageMode.CUSTOM -> if (language == AppLanguage.EN) "Custom" else "自定义"
+        }
+    }
+
+    fun dailyUsageModeDescription(mode: DailyUsageMode, language: AppLanguage): String {
+        return when (mode) {
+            DailyUsageMode.GENERAL_DAILY -> if (language == AppLanguage.EN) "Balanced reminders for everyday walking" else "日常行走的平衡提醒"
+            DailyUsageMode.INDOOR_SLOW -> if (language == AppLanguage.EN) "Quieter prompts for slow indoor movement" else "适合室内慢行的低打扰提醒"
+            DailyUsageMode.CORRIDOR -> if (language == AppLanguage.EN) "Earlier attention to sustained front risks" else "更早关注正前方持续风险"
+            DailyUsageMode.CROWDED -> if (language == AppLanguage.EN) "Lower reminder fatigue in dense spaces" else "降低密集环境中的提醒疲劳"
+            DailyUsageMode.OUTDOOR_SLOW -> if (language == AppLanguage.EN) "Clearer tactile prompts for outdoor slow walking" else "户外慢行时强化清晰触觉提醒"
+            DailyUsageMode.CUSTOM -> if (language == AppLanguage.EN) "Manual preference combination" else "手动调整后的偏好组合"
+        }
+    }
+
+    fun dailyUsageModeAccessibility(mode: DailyUsageMode, language: AppLanguage): String {
+        val config = mode.config
+        if (config == null) {
+            return if (language == AppLanguage.EN) {
+                "Custom daily mode, current preferences were manually adjusted"
+            } else {
+                "自定义日常模式，当前偏好已手动调整"
+            }
+        }
+        return if (language == AppLanguage.EN) {
+            "Choose ${dailyUsageModeName(mode, language)} daily mode, ${dailyUsageModeDescription(mode, language)}. " +
+                "Profile ${alertProfileName(config.profile, language)}, scenario ${assistScenarioName(config.scenario, language)}, " +
+                "speech ${speechStyleName(config.speechStyle, language)}, vibration ${vibrationStrengthName(config.vibrationStrength, language)}, " +
+                "Care Mode ${enabled(config.careModeEnabled, language)}."
+        } else {
+            "选择${dailyUsageModeName(mode, language)}日常模式，${dailyUsageModeDescription(mode, language)}。" +
+                "提醒档位${alertProfileName(config.profile, language)}，场景${assistScenarioName(config.scenario, language)}，" +
+                "语音${speechStyleName(config.speechStyle, language)}，震动${vibrationStrengthName(config.vibrationStrength, language)}，" +
+                "关怀模式${enabled(config.careModeEnabled, language)}。"
         }
     }
 

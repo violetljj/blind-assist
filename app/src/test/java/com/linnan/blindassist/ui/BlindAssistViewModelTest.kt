@@ -5,6 +5,7 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.preferences.PreferenceStore
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
@@ -31,6 +32,7 @@ class BlindAssistViewModelTest {
         assertEquals(SpeechStyle.STANDARD, state.controls.speechStyle)
         assertEquals(VibrationStrength.STANDARD, state.controls.vibrationStrength)
         assertEquals(AppLanguage.ZH, state.controls.appLanguage)
+        assertEquals(DailyUsageMode.GENERAL_DAILY, state.controls.dailyUsageMode)
         assertTrue(state.showOnboarding)
         assertFalse(state.cameraActive)
         assertEquals("模型未初始化", state.modelStatus)
@@ -61,6 +63,7 @@ class BlindAssistViewModelTest {
         assertEquals(SpeechStyle.DETAILED, state.controls.speechStyle)
         assertEquals(VibrationStrength.STRONG, state.controls.vibrationStrength)
         assertEquals(AppLanguage.EN, state.controls.appLanguage)
+        assertEquals(DailyUsageMode.CUSTOM, state.controls.dailyUsageMode)
         assertFalse(state.showOnboarding)
         assertTrue(state.fieldTestSummary.detailText.contains("Current profile: Sensitive"))
         assertTrue(state.fieldTestSummary.detailText.contains("Current scenario: Corridor"))
@@ -91,6 +94,7 @@ class BlindAssistViewModelTest {
         assertEquals(SpeechStyle.BRIEF, state.controls.speechStyle)
         assertEquals(VibrationStrength.SOFT, state.controls.vibrationStrength)
         assertEquals(AppLanguage.EN, state.controls.appLanguage)
+        assertEquals(DailyUsageMode.CUSTOM, state.controls.dailyUsageMode)
 
         val reloaded = UserPreferences(store).load()
         assertFalse(reloaded.speechEnabled)
@@ -101,6 +105,65 @@ class BlindAssistViewModelTest {
         assertEquals(SpeechStyle.BRIEF, reloaded.speechStyle)
         assertEquals(VibrationStrength.SOFT, reloaded.vibrationStrength)
         assertEquals(AppLanguage.EN, reloaded.appLanguage)
+    }
+
+    @Test
+    fun dailyUsageModeChangeUpdatesStateFlowAndPersistedPreferenceBundle() {
+        val store = MapPreferenceStore()
+        val viewModel = BlindAssistViewModel(UserPreferences(store))
+
+        viewModel.onDailyUsageModeChange(DailyUsageMode.CORRIDOR)
+
+        val state = viewModel.uiState.value.controls
+        assertTrue(state.careModeEnabled)
+        assertEquals(AlertProfile.SENSITIVE, state.alertProfile)
+        assertEquals(AssistScenario.CORRIDOR, state.assistScenario)
+        assertEquals(SpeechStyle.STANDARD, state.speechStyle)
+        assertEquals(VibrationStrength.STANDARD, state.vibrationStrength)
+        assertEquals(DailyUsageMode.CORRIDOR, state.dailyUsageMode)
+
+        val reloaded = UserPreferences(store).load()
+        assertTrue(reloaded.careModeEnabled)
+        assertEquals(AlertProfile.SENSITIVE, reloaded.alertProfile)
+        assertEquals(AssistScenario.CORRIDOR, reloaded.assistScenario)
+        assertEquals(SpeechStyle.STANDARD, reloaded.speechStyle)
+        assertEquals(VibrationStrength.STANDARD, reloaded.vibrationStrength)
+    }
+
+    @Test
+    fun manuallyChangingOnePreferenceAfterDailyModeMarksStateAsCustom() {
+        val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
+
+        viewModel.onDailyUsageModeChange(DailyUsageMode.CORRIDOR)
+        viewModel.onProfileChange(AlertProfile.QUIET)
+
+        assertEquals(DailyUsageMode.CUSTOM, viewModel.uiState.value.controls.dailyUsageMode)
+    }
+
+    @Test
+    fun reminderShortcutKeepsScenarioButChangesIntensityBundle() {
+        val store = MapPreferenceStore()
+        val viewModel = BlindAssistViewModel(UserPreferences(store))
+
+        viewModel.onDailyUsageModeChange(DailyUsageMode.OUTDOOR_SLOW)
+        viewModel.onReminderShortcutChange(
+            profile = AlertProfile.QUIET,
+            speechStyle = SpeechStyle.BRIEF,
+            vibrationStrength = VibrationStrength.SOFT
+        )
+
+        val state = viewModel.uiState.value.controls
+        assertEquals(AssistScenario.OUTDOOR_SLOW, state.assistScenario)
+        assertEquals(AlertProfile.QUIET, state.alertProfile)
+        assertEquals(SpeechStyle.BRIEF, state.speechStyle)
+        assertEquals(VibrationStrength.SOFT, state.vibrationStrength)
+        assertEquals(DailyUsageMode.CUSTOM, state.dailyUsageMode)
+
+        val reloaded = UserPreferences(store).load()
+        assertEquals(AssistScenario.OUTDOOR_SLOW, reloaded.assistScenario)
+        assertEquals(AlertProfile.QUIET, reloaded.alertProfile)
+        assertEquals(SpeechStyle.BRIEF, reloaded.speechStyle)
+        assertEquals(VibrationStrength.SOFT, reloaded.vibrationStrength)
     }
 
     @Test

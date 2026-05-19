@@ -4,6 +4,89 @@
 
 ## 2026-05-19
 
+### v5.8.0 日常使用向导与一键模式
+
+- 时间：2026-05-19 12:06:16 +08:00
+- 执行者：violjjet
+- 类型：功能 / 体验 / 无障碍 / 测试 / 构建 / 文档 / 版本归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/preferences/DailyUsageMode.kt`
+  - `app/src/main/java/com/linnan/blindassist/localization/LocalizedText.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/BlindAssistViewModel.kt`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/`
+  - `app/src/test/java/com/linnan/blindassist/preferences/DailyUsageModeTest.kt`
+  - `app/src/test/java/com/linnan/blindassist/ui/BlindAssistViewModelTest.kt`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v5.8.0-debug-20260519-120747.apk`
+- 修改内容：
+  - 按用户确认的“日常使用向导与一键模式”计划实现 v5.8.0 大更新，目标是降低新用户和日常使用者理解多个提醒设置的成本。
+  - 新增 `DailyUsageMode` 和 `DailyUsageConfig`，提供 通用日常、室内慢行、走廊通行、密集区域、户外慢行 五个日常预设。预设只映射到既有使用场景、提醒档位、语音风格、震动强度和 Care Mode，不新增单独持久化 key。
+  - 通过当前偏好组合反推当前模式；如果用户手动调整后的组合不匹配任何预设，UI 显示为 自定义 / Custom。
+  - 扩展 `BlindAssistViewModel`，新增 `onDailyUsageModeChange()` 一次性更新并持久化偏好组合，新增 `onReminderShortcutChange()` 支持相机页快捷调节。
+  - 扩展 `MainActivity`，在应用日常模式和快捷调节时同步本地 `alertProfile`、`assistScenario`、`FeedbackController` 语音/震动设置、overlay Care Mode、现场测试摘要和相机指导 UI。
+  - Features 页新增日常使用向导区域，位于说明文字和手机摄像头入口之间；手机摄像头入口会显示当前日常模式。
+  - 相机页新增当前日常模式显示，并把旧的提醒档位循环按钮改为 调安静 / 调敏感 两个明确快捷操作；二者保留当前场景，只调整提醒强度组合。
+  - 新增/补充中英文显示文案、TalkBack action-oriented content description、48dp+ 触控目标和 Compose 测试覆盖。
+  - 将应用版本从 `v5.3.0` / `versionCode=21` 提升到 `v5.8.0` / `versionCode=22`。
+- 修改原因：
+  - v5.3.0 已经具备较完整的偏好、语言、TalkBack 和场景化提醒能力，但设置项较多，用户需要理解提醒档位、场景、语音、震动和关怀模式之间的关系。
+  - 本次把这些分散选择组合成日常任务导向的入口，让用户先选“今天怎么走”，再进入相机页，显著降低决策成本。
+  - 实现复用现有本地偏好和规则层，不改变模型、权限或架构边界，符合项目保持单模块原生 Android/Kotlin 的约束。
+- 验证方式：
+  - 已读取并遵循适用 skill：`compose-ui` 要求的状态下沉、stateless Composable、modifier 传递和可测试性；`android-accessibility` 要求的 action-oriented content description、48dp+ 触控目标、状态语义和 heading。
+  - 已运行 `git status --short`，确认本轮实现前已有上一轮未提交的 `idea.md` / `DEVELOPMENT_LOG.md` 规划记录和一个既有未跟踪 PPTX；本次未处理或回滚无关 PPTX。
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，命令退出码为 0。
+  - 已汇总 JVM 测试 XML：105 tests，0 failures，0 errors，0 skipped。
+  - 已生成 debug APK：`app/build/outputs/apk/debug/app-debug.apk`，大小 47,068,480 bytes。
+  - 已归档 APK：从 `app/build/outputs/apk/debug/app-debug.apk` 复制到 `releases/apk/BlindAssist-v5.8.0-debug-20260519-120747.apk`，大小 47,068,480 bytes。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，初始显示同一台 wireless ADB 设备存在两个 serial；已断开重复的 `adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp`，保留 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp`。
+  - 已运行安装命令：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" install -r releases\apk\BlindAssist-v5.8.0-debug-20260519-120747.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" shell dumpsys package com.linnan.blindassist | Select-String -Pattern "versionCode|versionName"`，输出 `versionCode=22 minSdk=26 targetSdk=35` 和 `versionName=5.8.0`。
+  - 已运行冷启动命令：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" shell am start -W -n com.linnan.blindassist/.MainActivity`，输出 `Status: ok`、`LaunchState: COLD`、`TotalTime: 679`、`WaitTime: 680`。
+  - 未运行 `connectedDebugAndroidTest`：设备虽然在线，但窗口状态显示 `mDreamingLockscreen=true` 且焦点为 `NotificationShade`，此状态不适合运行 Compose 仪器测试，避免复现锁屏导致的无 Compose hierarchy 失败。
+- 版本判断：
+  - 本次属于大更新，原因是新增主入口级日常使用向导、持久化一键模式组合和相机页快捷体验，显著改变用户进入和调节辅助提醒的方式。
+  - 按 AGENTS.md 版本规则，从 `v5.3.0` 提升到 `v5.8.0`，`versionCode` 从 `21` 提升到 `22`。
+- 后续事项：
+  - 手机解锁后可补跑 `connectedDebugAndroidTest`，验证新增 Compose 仪器测试在设备端通过。
+  - 真机手测时重点观察大字体下日常模式卡片是否仍然舒展，以及 TalkBack 是否能自然朗读“选择某个日常模式会应用哪些设置”。
+
+### 下一步体验升级方向分析
+
+- 时间：2026-05-19 11:53:31 +08:00
+- 执行者：violjjet
+- 类型：分析 / 产品规划 / 文档
+- 修改范围：
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户“思考下一步更新，最好能大幅提高使用体验”的要求，重新梳理当前 v5.3.0 状态、已完成体验能力和 `idea.md` 中仍未落地的方向。
+  - 已按项目规则读取适用 skill：`android-accessibility` 用于确认 TalkBack、48dp 触控目标、语义和状态描述的体验检查维度；`compose-ui` 用于确认下一步 Compose 改动应保持状态下沉、稳定 modifier、主题资源和可测试性。
+  - 结合 README、`idea.md`、现有 Compose 入口、`BlindAssistViewModel`、`CameraGuidanceMapper`、`AssistSessionCoordinator` 与当前测试覆盖，判断下一步最值得优先做“日常使用向导与一键模式”。
+  - 已在 `idea.md` 的近期可实施方向中新增“推荐优先：日常使用向导与一键模式”，记录价值、落地范围、风险边界和测试建议。
+- 修改原因：
+  - v5.3.0 已经完成语言、TalkBack、大字体、提醒文案、场景预设、现场摘要和主架构整理；继续堆叠细碎设置对真实用户的边际收益变小。
+  - 更大的体验提升来自降低新手和日常使用者的决策成本：把分散的场景、档位、语音、震动和关怀模式组合成任务导向的一键预设，并在相机前后提供轻量引导。
+  - 该方向能复用现有 `AssistScenario`、`AlertProfile`、`SpeechStyle`、`VibrationStrength`、`UserPreferences` 和现场测试摘要，不需要更换 YOLO 模型、不新增网络/定位/蓝牙/存储权限，也不需要 Hilt、多模块、Room 或 DataStore。
+- 验证方式：
+  - 已运行 `git status --short`，确认当前只有一个既有未跟踪 PPTX 文件；本次未处理或回滚该文件。
+  - 已读取 `README.md` 当前版本和近期更新，确认项目当前版本为 `v5.3.0` / `versionCode=21`，最近已完成 TalkBack、大字体和中英文切换。
+  - 已读取 `idea.md`，确认“离线测试素材回放”“眼镜设备模拟中心”“现场测试脚本与评分表”等方向存在，但若以“显著提高日常使用体验”为目标，优先级低于日常使用向导。
+  - 已检索 `app/src/main/java` 与测试目录，确认现有 UI/状态边界支持在单模块内添加模式预设与会话后建议，并可通过 JVM 与 Compose 仪器测试覆盖。
+  - 本次未运行 Gradle 构建，因为没有修改 Android 运行代码、构建脚本、模型资产或测试代码。
+- 版本判断：
+  - 本次属于分析和想法记录，不改变应用功能、使用方式、构建方式、模型资产、权限、APK 或测试结论。
+  - 不计为版本更新；项目版本保持 `v5.3.0` / `versionCode=21`，未修改 README 和 Gradle 版本号。
+- 后续事项：
+  - 如用户确认实施，建议按大更新处理，目标可定为 `v5.8.0`：新增一键使用模式、相机页快捷调节、会话后本地建议、README/CHANGELOG 同步、完整 JVM/Compose 验证和新版 APK 归档。
+  - 另一个可选但偏展示的方向是“离线测试素材回放最小版”；它更适合答辩稳定演示，不如一键模式直接改善日常使用。
+
 ### v5.3.0 GitHub 推送与手机再安装
 
 - 时间：2026-05-19 11:48:49 +08:00
