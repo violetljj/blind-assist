@@ -4,6 +4,32 @@
 
 ## 2026-05-19
 
+### v5.3.0 GitHub 推送与手机再安装
+
+- 时间：2026-05-19 11:48:49 +08:00
+- 执行者：violjjet
+- 类型：Git / 发布 / 真机安装 / 验证
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户“推送，并下载到手机上”要求，将 v5.3.0 TalkBack、大字体与中英文切换更新提交并推送到 GitHub，同时再次把 v5.3.0 debug APK 安装到已连接手机。
+  - 本次提交范围包含 v5.3.0 代码、测试、文档、开发日志和 APK 归档；无关未跟踪 PPTX 未纳入 stage 或 commit。
+- 修改原因：
+  - 用户要求将当前版本同步到远端仓库，并下载安装到手机，形成可展示、可运行的最新版本。
+- 验证方式：
+  - 已检查当前分支和远端：分支为 `master`，远端为 `git@github.com:violetljj/blind-assist.git`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，设备在线；虽然初始列表出现重复 wireless ADB serial，本次安装明确使用 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp`。
+  - 已运行安装命令：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" install -r releases\apk\BlindAssist-v5.3.0-debug-20260519-113731.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=21 minSdk=26 targetSdk=35` 和 `versionName=5.3.0`。
+  - 已运行冷启动验证：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" shell am start -W -n com.linnan.blindassist/.MainActivity`，输出 `Status: ok`、`LaunchState: COLD`、`Activity: com.linnan.blindassist/.MainActivity`、`TotalTime: 663`、`WaitTime: 665`。
+  - 已创建提交：`864169a feat: add accessible bilingual controls`。
+  - 已按本仓库已知 Git SSH 沙箱限制直接提权运行 `git push origin master`，输出 `020a1f9..864169a  master -> master`。
+- 版本判断：
+  - 本次只执行已完成 v5.3.0 的 GitHub 推送与手机再安装，不改变应用功能、模型、权限、构建配置、版本号或 APK 内容。
+  - 项目版本保持 `v5.3.0` / `versionCode=21`。
+- 后续事项：
+  - 本条日志需要再单独提交并推送，确保远端仓库也记录本次推送和手机安装证据。
+
 ### v5.3.0 手机安装与设备端 Compose 测试通过
 
 - 时间：2026-05-19 11:44:34 +08:00
