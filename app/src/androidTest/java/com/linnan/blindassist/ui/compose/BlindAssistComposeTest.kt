@@ -1,6 +1,8 @@
 package com.linnan.blindassist.ui.compose
 
+import android.Manifest
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -8,15 +10,32 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import com.linnan.blindassist.MainActivity
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.RuleChain
+import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class BlindAssistComposeTest {
+    private val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA)
+    private val composeRule = createAndroidComposeRule<MainActivity>()
+
     @get:Rule
-    val composeRule = createAndroidComposeRule<MainActivity>()
+    val ruleChain: TestRule = RuleChain.outerRule(permissionRule).around(composeRule)
+
+    @After
+    fun closeCameraIfOpen() {
+        if (hasTextOrContentDescription("返回功能页")) {
+            composeRule.onNodeWithContentDescription("返回功能页").performClick()
+            composeRule.waitUntil(timeoutMillis = 5000) {
+                hasText("功能")
+            }
+        }
+    }
 
     @Test
     fun mainShellBottomNavigationSwitchesTopLevelPages() {
@@ -36,7 +55,7 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithTag("daily_usage_mode_selector").assertExists()
         composeRule.onNodeWithText("使用手机摄像头").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 5000) {
-            hasText("需要相机权限") || hasText("返回功能页")
+            hasTextOrContentDescription("返回功能页")
         }
     }
 
@@ -116,18 +135,20 @@ class BlindAssistComposeTest {
         prepareMainShell()
         openFeaturesTab()
 
-        composeRule.onNodeWithText("使用手机摄像头").performClick()
+        composeRule.onNodeWithText("通用日常").performScrollTo().performClick()
+        composeRule.onNodeWithText("使用手机摄像头").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 5000) {
-            hasText("需要相机权限") || hasText("返回功能页")
+            hasTextOrContentDescription("返回功能页")
         }
 
-        if (hasText("返回功能页")) {
-            composeRule.onNodeWithTag("camera_scenario_label").assertExists()
-            composeRule.onNodeWithTag("camera_daily_mode_label").assertExists()
-            composeRule.onNodeWithTag("risk_explanation_headline").assertExists()
-            composeRule.onNodeWithContentDescription("应用安静提醒快捷设置，保留当前场景，使用安静档位、简短语音和轻柔震动").assertExists()
-            composeRule.onNodeWithContentDescription("应用敏感提醒快捷设置，保留当前场景，使用敏感档位、标准语音和强震动").assertExists()
-        }
+        composeRule.onNodeWithTag("camera_scenario_label").assertExists()
+        composeRule.onNodeWithTag("camera_daily_mode_label").assertExists()
+        composeRule.onNodeWithTag("risk_explanation_headline").assertExists()
+        composeRule.onNodeWithContentDescription("应用安静提醒快捷设置，保留当前场景，使用安静档位、简短语音和轻柔震动").assertExists()
+        composeRule.onNodeWithContentDescription("应用敏感提醒快捷设置，保留当前场景，使用敏感档位、标准语音和强震动").assertExists()
+        composeRule.onNodeWithTag("camera_debug_toggle").assertExists()
+        composeRule.onNodeWithTag("camera_debug_toggle").performClick()
+        composeRule.onNodeWithText("FPS", substring = true).assertExists()
     }
 
     private fun prepareMainShell() {
@@ -165,5 +186,13 @@ class BlindAssistComposeTest {
 
     private fun hasText(text: String): Boolean {
         return composeRule.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()
+    }
+
+    private fun hasContentDescription(text: String): Boolean {
+        return composeRule.onAllNodesWithContentDescription(text).fetchSemanticsNodes().isNotEmpty()
+    }
+
+    private fun hasTextOrContentDescription(text: String): Boolean {
+        return hasText(text) || hasContentDescription(text)
     }
 }

@@ -2,6 +2,22 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v5.9.0 - 测试稳定性与相机调试控件修复
+
+- 状态：已完成，`versionCode=23`，`versionName=5.9.0`。
+- 主要变化：
+  - 修复 v5.8.0 真机完整测试中发现的相机页 `展开调试信息` ADB 点击不稳定问题：调试开关改用与其他相机控制一致的 `CompactAction` 按钮，位置上移到 Care Mode 和场景切换之前，并暴露明确的 `展开相机调试信息` / `收起相机调试信息` content description。
+  - 修复设备端 Compose 测试在相机路径上的等待条件：测试现在显式授予相机权限，识别文本和 content description，打开相机前重置为 通用日常，避免 Care Mode 隐藏 Debug 控件，并在相机路径用例结束后关闭相机页。
+  - 本轮不修改 YOLO 模型、CameraX/TFLite 推理链路、风险阈值、权限、联网、蓝牙、存储、Hilt、多模块、Room 或 DataStore。
+- 验证：
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行 `:app:testDebugUnitTest :app:assembleDebug --no-daemon`，构建成功。
+  - JVM 单元测试结果：105 tests，0 failures，0 errors，0 skipped。
+  - 已按本仓库已知 Gradle/设备测试沙箱限制直接提权运行 `:app:connectedDebugAndroidTest --no-daemon`，在 `SM-S9280 - 16` 上完成 6 个 Compose 仪器测试，0 failures，0 errors，0 skipped。
+  - 已安装 v5.9.0 debug APK 到 `SM-S9280`，包信息核对为 `versionCode=23`、`versionName=5.9.0`，冷启动返回 `Status: ok`、`LaunchState: COLD`、`TotalTime: 676`。
+  - 已用 ADB/UIAutomator 复测相机页 Debug 开关：点击 `展开相机调试信息` 后 UI 变为 `收起相机调试信息`，确认修复 v5.8.0 中的可点击性问题。
+- APK：
+  - `releases/apk/BlindAssist-v5.9.0-debug-20260519-174352.apk`
+
 ## v5.8.0 - 日常使用向导与一键模式
 
 - 状态：已完成，`versionCode=22`，`versionName=5.8.0`。

@@ -4,6 +4,101 @@
 
 ## 2026-05-19
 
+### v5.9.0 测试问题修复与复测
+
+- 时间：2026-05-19 17:45:28 +08:00
+- 执行者：violjjet
+- 类型：修复 / 测试 / UI / 无障碍 / 文档 / 版本归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `TEST_REPORT_2026-05-19.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v5.9.0-debug-20260519-174352.apk`
+  - `test-artifacts/2026-05-19-v5.8.0-device-test/`
+- 修改内容：
+  - 修复 v5.8.0 真机完整测试发现的两个问题：`connectedDebugAndroidTest` 相机路径失败，以及相机页 `展开调试信息` ADB 点击不稳定。
+  - 相机页 Debug 开关从底部 `TextButton` 改为与检测、语音、震动、调安静、调敏感等控件一致的 `CompactAction` 按钮，位置移动到 Care Mode 和场景切换之前，避免贴近底部系统手势区域。
+  - 为相机页 Debug 按钮保留 `camera_debug_toggle` Compose test tag，并为可点击按钮节点暴露 `展开相机调试信息` / `收起相机调试信息` content description，使 UIAutomator 和辅助技术可以直接定位到可点击节点。
+  - 设备端 Compose 测试新增 `GrantPermissionRule`，在启动 `MainActivity` 前授予相机权限，避免测试被系统权限弹窗或权限状态影响。
+  - Compose 测试新增文本/content description 双通道等待逻辑，修复此前用 `hasText("返回功能页")` 等待图标 contentDescription 导致的误判超时。
+  - 相机路径测试在打开相机前点击 `通用日常`，避免上一用例留下 Care Mode 导致 Debug 控件被隐藏；并在每个用例结束后如相机页仍打开则点击 `返回功能页` 收尾，减少 CameraX 状态串扰。
+  - 将版本从 `v5.8.0` / `versionCode=22` 提升到 `v5.9.0` / `versionCode=23`，并同步 README、CHANGELOG 和测试报告。
+- 修改原因：
+  - 用户要求“修改优化所有测试中碰到的问题”，需要把测试中发现的真实失败点修掉，而不是只记录风险。
+  - `connectedDebugAndroidTest` 失败的主要根因是测试等待条件只检查 Text，但相机页返回入口是 contentDescription；同时相机路径测试没有稳定控制权限和收尾。
+  - Debug 按钮虽然文字可见，但父级可点击节点缺少稳定语义，ADB/UIAutomator 容易命中文本节点而不是按钮节点；统一为 `CompactAction` 后，触控区域和语义与其他相机控件保持一致。
+- 验证方式：
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，最终结果为 `BUILD SUCCESSFUL`。
+  - JVM 测试汇总：105 tests，0 failures，0 errors，0 skipped。
+  - 已按本仓库已知 Gradle/设备测试沙箱限制直接提权运行：`$env:ANDROID_SERIAL='adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon`。
+  - Connected Compose 测试结果：`app/build/outputs/androidTest-results/connected/debug/TEST-SM-S9280 - 16-_app-.xml` 显示 6 tests，0 failures，0 errors，0 skipped，`SM-S9280 - 16` 上 6 个用例全部通过。
+  - 已归档最终 debug APK：`releases/apk/BlindAssist-v5.9.0-debug-20260519-174352.apk`，大小 47,068,480 bytes。
+  - 已安装最终 v5.9.0 APK 到 `SM-S9280`：`install -r releases\apk\BlindAssist-v5.9.0-debug-20260519-174352.apk` 输出 `Performing Streamed Install` 和 `Success`。
+  - 已清数据并授予相机权限后冷启动：`Status: ok`、`LaunchState: COLD`、`TotalTime: 676`、`WaitTime: 679`。
+  - 已核对包版本：`versionCode=23 minSdk=26 targetSdk=35`，`versionName=5.9.0`。
+  - 已用 ADB/UIAutomator 复测 Debug 按钮：点击前节点为 `desc=展开相机调试信息` bounds `[98,2462][1342,2630]`，点击后节点变为 `desc=收起相机调试信息` bounds `[98,1380][1342,1548]`，说明 Debug 详情已成功展开。
+- 版本判断：
+  - 本次属于小更新，原因是修复测试暴露的 UI 可点击性和设备端测试稳定性问题，影响测试结论和相机页调试可达性，但不改变模型、识别链路、风险规则或核心产品形态。
+  - 项目版本从 `v5.8.0` / `versionCode=22` 提升到 `v5.9.0` / `versionCode=23`。
+- 后续事项：
+  - v5.8.0 完整测试中记录的两个遗留问题已在 v5.9.0 复测通过。
+  - 本轮未做新的 90 秒性能采样，因为未改 CameraX/TFLite 推理链路；如后续继续调整相机页布局或性能逻辑，再重新采样。
+
+### v5.8.0 真机完整测试与性能采样
+
+- 时间：2026-05-19 17:24:00 +08:00
+- 执行者：violjjet
+- 类型：测试 / 分析 / 构建 / 真机验证 / 性能 / 文档
+- 修改范围：
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `TEST_REPORT_2026-05-19.md`
+  - `releases/apk/BlindAssist-v5.8.0-debug-20260519-170622.apk`
+  - `test-artifacts/2026-05-19-v5.8.0-device-test/`
+- 修改内容：
+  - 按用户要求对当前 v5.8.0 在 Samsung `SM-S9280` 上执行完整真机验证，覆盖构建、安装、清数据首启、功能、UI、权限、相机页、性能、稳定性和设备端 Compose 测试。
+  - 新增 `TEST_REPORT_2026-05-19.md`，系统记录测试环境、命令、结果矩阵、性能统计、证据路径、失败项和后续建议。
+  - 生成测试证据目录 `test-artifacts/2026-05-19-v5.8.0-device-test/`，包含 UIAutomator XML、真机截图、`BlindAssistPerf` 90 秒日志、`gfxinfo`、`meminfo`、window focus、connected test failure logcat 和 UI 自动化摘要。
+  - 将本次测试用 debug APK 从 `app/build/outputs/apk/debug/app-debug.apk` 复制归档为 `releases/apk/BlindAssist-v5.8.0-debug-20260519-170622.apk`，大小 47,068,480 bytes。
+  - 更新 README 的 Recent Updates、Project Materials 和 APK 归档说明，使 README 反映最新真机测试结论和遗留风险。
+- 修改原因：
+  - 用户明确要求“调用手机端，完整详细地测试这个 app，包括性能、功能、界面 UI 等等”，需要形成可复盘的真机测试证据，而不是只给口头结论。
+  - 本项目用于课程设计/毕设展示，详细测试报告和开发日志可以展示功能成熟度、性能基线、真实失败点和后续优化方向。
+  - v5.8.0 上一条 README 记录说明 `connectedDebugAndroidTest` 当时未运行，本次补做设备端测试并记录真实结果。
+- 验证方式：
+  - 已读取并遵循适用 skill：`android-cli` 用于设备、安装、UI dump 和截图思路；`testing-setup` 用于测试策略梳理；`android-emulator-skill` 用于 ADB、UIAutomator、logcat、gfxinfo、meminfo 等设备自动化流程。
+  - 已运行 `git status --short`，初始仅发现既有未跟踪 PPTX；本轮未处理或回滚该文件。
+  - 已运行模型检查：`.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`，输出 input `images` shape `[1, 320, 320, 3]` `float32`，output `Identity` shape `[1, 84, 2100]` `float32`。
+  - 已确认设备：`.\.android-sdk\platform-tools\adb.exe devices -l` 显示同一台 `SM_S9280` 有两个 wireless serial；本轮固定使用 `adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp`，并确认窗口未锁屏 `mDreamingLockscreen=false`。
+  - 已按仓库已知 Gradle 沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - Gradle 验证结果：`BUILD SUCCESSFUL in 31s`，JVM 测试汇总为 105 tests，0 failures，0 errors，0 skipped。
+  - 已运行 `pm clear com.linnan.blindassist`，输出 `Success`；已运行 `install -r app\build\outputs\apk\debug\app-debug.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对，输出 `versionCode=22 minSdk=26 targetSdk=35` 和 `versionName=5.8.0`。
+  - 已运行冷启动命令：`am start -W -n com.linnan.blindassist/.MainActivity`，输出 `Status: ok`、`LaunchState: COLD`、`TotalTime: 692`、`WaitTime: 693`。
+  - 已通过 UIAutomator XML 和截图验证：首次引导三页、Features/Profile/Settings 底部导航、日常使用向导、设置页滚动项、中英文切换、眼镜占位弹窗、相机权限说明、Android 运行时权限、相机页、调安静/调敏感快捷操作、相机页返回。
+  - 已按仓库已知 Gradle 沙箱限制直接提权运行设备端测试：`$env:ANDROID_SERIAL='adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon`。
+  - `connectedDebugAndroidTest` 结果为失败：报告 XML 显示 5 tests，2 failures，0 errors，0 skipped；`cameraPanelShowsScenarioAndRiskExplanationWhenCameraPathOpens` 在 `BlindAssistComposeTest.kt:120` 报 `ComposeTimeoutException: Condition still not satisfied after 5000 ms`，`phoneCameraEntryUsesExistingCameraPath` 的 failure 节点为空，system-err 为 `Instrumentation run failed due to Process crashed`。
+  - 设备端测试失败后，设备回到 Launcher，测试流程卸载了 `com.linnan.blindassist`；已重新安装同一个 debug APK 后继续性能采样。
+  - 已进入相机页后清空 logcat，并连续采样约 90 秒；`BlindAssistPerf` 共 88 条样本，平均 total `55.40ms`，P95 total `72ms`，平均 preprocess `16.38ms`，平均 inference `37.76ms`，P95 inference `54ms`，平均 FPS `14.97`，FPS 范围 `14.3-15.8`。
+  - 90 秒采样期间当前画面检测目标数为 0，profile 为 `standard`，scenario 为 `general`，raw/stable risk 均为 `NONE/NONE/FAR`，feedbackReason 为 `距离较远`，模型状态为 `模型已加载`。
+  - 已采集 `gfxinfo`：Total frames rendered `1920`，Janky frames `20 (1.04%)`，50/90/95/99 percentile 为 `9ms / 11ms / 12ms / 16ms`，Number Missed Vsync `10`。
+  - 已采集 `meminfo`：TOTAL PSS `269,790 KB`，TOTAL RSS `397,904 KB`，Java Heap `24,508 KB`，Native Heap `61,372 KB`，Graphics `81,948 KB`。
+  - 已检查 90 秒采样后的 logcat：`FATAL EXCEPTION`、`ANR in`、`Application Not Responding`、`AndroidRuntime`、`am_crash` 关键词匹配数为 0；窗口焦点仍为 `com.linnan.blindassist/.MainActivity`。
+- 发现问题：
+  - 相机页底部 `展开调试信息` 节点存在，clickable parent bounds 为 `[98,2854][551,3022]`，但在当前设备上多次 ADB tap 未触发展开；疑似按钮位置贴近底部系统区域或命中不稳定，需要后续复查 UI 布局和可触达性。
+  - `connectedDebugAndroidTest` 当前不能作为通过信号，至少两个相机相关 Compose 用例需要单独定位；本轮只记录失败，不修改测试或业务代码。
+- 版本判断：
+  - 本次是测试、报告、APK 再归档和 README/开发日志同步，不改变应用功能、模型资产、权限、风险策略、构建配置或版本号。
+  - 项目版本保持 `v5.8.0` / `versionCode=22`，不做版本提升。
+- 后续事项：
+  - 优先定位 `connectedDebugAndroidTest` 的相机权限/相机页等待失败和 instrumentation `Process crashed`。
+  - 优先检查相机页底部 Debug 展开按钮在大屏竖屏和系统手势区域附近的可点击性。
+  - 若要评价真实识别效果，需要人工配合摆放人、椅子、桌角、走廊正前方、侧向经过等安全场景；本轮 ADB 自动化不宣称完成模型精度或真实避障有效性评估。
+
 ### v5.8.0 手机再安装与 GitHub 推送
 
 - 时间：2026-05-19 16:57:35 +08:00

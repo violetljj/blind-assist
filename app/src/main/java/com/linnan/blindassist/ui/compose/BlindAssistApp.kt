@@ -983,37 +983,30 @@ fun CameraControlPanel(
                 )
             }
             Spacer(Modifier.height(8.dp))
-            CompactToggle(if (language == AppLanguage.EN) "Care" else "关怀", controls.careModeEnabled, Icons.Rounded.Favorite, onCareModeChange, Modifier.fillMaxWidth(), language)
-            Spacer(Modifier.height(8.dp))
-            CompactAction(
-                text = if (language == AppLanguage.EN) "Scenario ${controls.assistScenario.displayName(language)}" else "场景 ${controls.assistScenario.displayName(language)}",
-                icon = Icons.Rounded.Shield,
-                onClick = { onScenarioChange(controls.assistScenario.next()) },
-                modifier = Modifier.fillMaxWidth(),
-                accessibilityText = if (language == AppLanguage.EN) {
-                    "Usage scenario, current ${controls.assistScenario.displayName(language)}, tap to switch to ${controls.assistScenario.next().displayName(language)}"
-                } else {
-                    "使用场景，当前${controls.assistScenario.displayName(language)}，点击切换到${controls.assistScenario.next().displayName(language)}"
-                }
-            )
             AnimatedVisibility(
                 visible = !controls.careModeEnabled,
                 enter = fadeIn() + slideInVertically { it / 3 },
                 exit = fadeOut()
             ) {
                 Column {
-                    TextButton(
-                        onClick = { onDebugVisibleChange(!controls.debugVisible) },
-                        modifier = Modifier.heightIn(min = 48.dp)
-                    ) {
-                        Icon(Icons.Rounded.BugReport, contentDescription = null, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(6.dp))
-                        Text(if (controls.debugVisible) {
+                    CompactAction(
+                        text = if (controls.debugVisible) {
                             if (language == AppLanguage.EN) "Hide debug details" else "收起调试信息"
                         } else {
                             if (language == AppLanguage.EN) "Show debug details" else "展开调试信息"
-                        })
-                    }
+                        },
+                        icon = Icons.Rounded.BugReport,
+                        onClick = { onDebugVisibleChange(!controls.debugVisible) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("camera_debug_toggle"),
+                        selected = controls.debugVisible,
+                        accessibilityText = if (controls.debugVisible) {
+                            if (language == AppLanguage.EN) "Hide camera debug details" else "收起相机调试信息"
+                        } else {
+                            if (language == AppLanguage.EN) "Show camera debug details" else "展开相机调试信息"
+                        }
+                    )
                     AnimatedVisibility(visible = controls.debugVisible) {
                         Column(Modifier.padding(top = 4.dp)) {
                             Text(
@@ -1027,6 +1020,20 @@ fun CameraControlPanel(
                     }
                 }
             }
+            Spacer(Modifier.height(8.dp))
+            CompactToggle(if (language == AppLanguage.EN) "Care" else "关怀", controls.careModeEnabled, Icons.Rounded.Favorite, onCareModeChange, Modifier.fillMaxWidth(), language)
+            Spacer(Modifier.height(8.dp))
+            CompactAction(
+                text = if (language == AppLanguage.EN) "Scenario ${controls.assistScenario.displayName(language)}" else "场景 ${controls.assistScenario.displayName(language)}",
+                icon = Icons.Rounded.Shield,
+                onClick = { onScenarioChange(controls.assistScenario.next()) },
+                modifier = Modifier.fillMaxWidth(),
+                accessibilityText = if (language == AppLanguage.EN) {
+                    "Usage scenario, current ${controls.assistScenario.displayName(language)}, tap to switch to ${controls.assistScenario.next().displayName(language)}"
+                } else {
+                    "使用场景，当前${controls.assistScenario.displayName(language)}，点击切换到${controls.assistScenario.next().displayName(language)}"
+                }
+            )
         }
     }
 }
