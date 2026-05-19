@@ -61,6 +61,28 @@ class BlindAssistComposeTest {
     }
 
     @Test
+    fun settingsScreenCanSwitchCoreTextToEnglish() {
+        prepareMainShell()
+
+        composeRule.onNodeWithText("设置").performClick()
+        composeRule.onNodeWithTag("language_selector").performScrollTo().assertExists()
+        composeRule.onNodeWithText("English").performScrollTo().performClick()
+        composeRule.onNodeWithText("Speech reminders").assertExists()
+        composeRule.onNodeWithContentDescription("Choose Detailed speech style, Adds object type and avoidance guidance")
+            .performScrollTo()
+            .assertExists()
+        composeRule.onNodeWithContentDescription("Choose Strong vibration strength, Strengthen near and critical reminders")
+            .performScrollTo()
+            .assertExists()
+        composeRule.onNodeWithContentDescription("Choose Sensitive reminder profile")
+            .performScrollTo()
+            .assertExists()
+        composeRule.onNodeWithContentDescription("Choose Corridor usage scenario, Notice sustained front risks earlier")
+            .performScrollTo()
+            .assertExists()
+    }
+
+    @Test
     fun cameraPanelShowsScenarioAndRiskExplanationWhenCameraPathOpens() {
         prepareMainShell()
         openFeaturesTab()

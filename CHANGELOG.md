@@ -2,6 +2,23 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v5.3.0 - TalkBack、大字体与中英文切换
+
+- 状态：已完成，`versionCode=21`，`versionName=5.3.0`。
+- 主要变化：
+  - 新增持久化 `AppLanguage` 偏好，设置页提供 `中文` / `English` App 内语言切换，默认仍为中文。
+  - 核心体验文案支持中英文：语音提醒模板、提醒档位、使用场景、语音风格、震动强度、相机状态、风险解释、现场测试摘要和 TalkBack 语义。
+  - `FeedbackController` 根据 App 内语言切换 TTS locale，中文使用 `Locale.CHINA`，英文使用 `Locale.US`。
+  - 设置页选择器改为更适合大字体的 48dp+ 全宽控件，并补强 state description、action-oriented content description 和 heading 语义。
+  - 本轮不修改 YOLO 模型、风险阈值、场景策略、权限、联网、蓝牙、存储、Hilt、多模块、Room 或 DataStore。
+- 验证：
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行 `:app:testDebugUnitTest :app:assembleDebug --no-daemon`，构建和 JVM 单元测试通过。
+  - 首次 `connectedDebugAndroidTest` 在 `SM-S9280` wireless ADB 设备在线时尝试执行，但由于重复 mDNS serial / UTP 状态卡住，在约 184 秒后超时。
+  - 随后断开重复的 `(2)` wireless ADB serial，只保留 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp`，安装 v5.3.0 APK 到 `SM-S9280`，包信息核对为 `versionCode=21`、`versionName=5.3.0`，应用冷启动成功。
+  - 设置 `ANDROID_SERIAL` 后重跑 `:app:connectedDebugAndroidTest --no-daemon`，在 `SM-S9280 - 16` 上完成 5 个 Compose 仪器测试，0 skipped，0 failed，`BUILD SUCCESSFUL in 45s`。
+- APK：
+  - `releases/apk/BlindAssist-v5.3.0-debug-20260519-113731.apk`
+
 ## v4.8.0 - 单模块质量升级
 
 - 状态：已完成，`versionCode=20`，`versionName=4.8.0`。

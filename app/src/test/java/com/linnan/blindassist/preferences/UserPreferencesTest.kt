@@ -4,6 +4,7 @@ import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.localization.AppLanguage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -23,6 +24,7 @@ class UserPreferencesTest {
         assertEquals(AssistScenario.GENERAL, state.assistScenario)
         assertEquals(SpeechStyle.STANDARD, state.speechStyle)
         assertEquals(VibrationStrength.STANDARD, state.vibrationStrength)
+        assertEquals(AppLanguage.ZH, state.appLanguage)
         assertFalse(state.onboardingCompleted)
     }
 
@@ -97,6 +99,16 @@ class UserPreferencesTest {
     }
 
     @Test
+    fun savedAppLanguagePreferenceIsLoadedAgain() {
+        val store = MapPreferenceStore()
+        val preferences = UserPreferences(store)
+
+        preferences.setAppLanguage(AppLanguage.EN)
+
+        assertEquals(AppLanguage.EN, UserPreferences(store).load().appLanguage)
+    }
+
+    @Test
     fun savedOnboardingCompletedPreferenceIsLoadedAgain() {
         val store = MapPreferenceStore()
         val preferences = UserPreferences(store)
@@ -120,12 +132,14 @@ class UserPreferencesTest {
         store.putString(UserPreferences.KEY_ASSIST_SCENARIO, "future-scenario")
         store.putString(UserPreferences.KEY_SPEECH_STYLE, "future-style")
         store.putString(UserPreferences.KEY_VIBRATION_STRENGTH, "future-strength")
+        store.putString(UserPreferences.KEY_APP_LANGUAGE, "future-language")
 
         val state = UserPreferences(store).load()
 
         assertEquals(AssistScenario.GENERAL, state.assistScenario)
         assertEquals(SpeechStyle.STANDARD, state.speechStyle)
         assertEquals(VibrationStrength.STANDARD, state.vibrationStrength)
+        assertEquals(AppLanguage.ZH, state.appLanguage)
     }
 
     @Test
@@ -140,6 +154,7 @@ class UserPreferencesTest {
         preferences.setAssistScenario(AssistScenario.CROWDED)
         preferences.setSpeechStyle(SpeechStyle.BRIEF)
         preferences.setVibrationStrength(VibrationStrength.SOFT)
+        preferences.setAppLanguage(AppLanguage.EN)
         preferences.setOnboardingCompleted(true)
 
         assertEquals(
@@ -151,6 +166,7 @@ class UserPreferencesTest {
                 UserPreferences.KEY_ASSIST_SCENARIO,
                 UserPreferences.KEY_SPEECH_STYLE,
                 UserPreferences.KEY_VIBRATION_STRENGTH,
+                UserPreferences.KEY_APP_LANGUAGE,
                 UserPreferences.KEY_ONBOARDING_COMPLETED
             ),
             store.keys()

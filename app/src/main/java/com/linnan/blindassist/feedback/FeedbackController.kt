@@ -9,6 +9,8 @@ import android.speech.tts.TextToSpeech
 import com.linnan.blindassist.alert.AlertPolicy
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
+import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.localization.LocalizedText
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
@@ -20,6 +22,11 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener, Feedba
     var vibrationEnabled: Boolean = true
     var speechStyle: SpeechStyle = SpeechStyle.STANDARD
     var vibrationStrength: VibrationStrength = VibrationStrength.STANDARD
+    var appLanguage: AppLanguage = AppLanguage.ZH
+        set(value) {
+            field = value
+            applyTtsLanguage()
+        }
 
     private val appContext = context.applicationContext
     private val lastAlertAt = mutableMapOf<AlertKey, Long>()
@@ -38,7 +45,7 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener, Feedba
     override fun onInit(status: Int) {
         ttsReady = status == TextToSpeech.SUCCESS
         if (ttsReady) {
-            tts.language = Locale.CHINA
+            applyTtsLanguage()
             tts.setSpeechRate(1.08f)
         }
     }
@@ -71,7 +78,7 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener, Feedba
         var speechTriggered = false
         var vibrationTriggered = false
         if (speechEnabled && ttsReady) {
-            tts.speak(speechStyle.messageFor(risk), TextToSpeech.QUEUE_FLUSH, null, "risk-${now}")
+            tts.speak(speechStyle.messageFor(risk, appLanguage), TextToSpeech.QUEUE_FLUSH, null, "risk-${now}")
             speechTriggered = true
         }
         if (vibrationEnabled) {
@@ -105,6 +112,11 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener, Feedba
             @Suppress("DEPRECATION")
             vib.vibrate(plan.vibrationMs)
         }
+    }
+
+    private fun applyTtsLanguage() {
+        if (!ttsReady) return
+        tts.language = if (appLanguage == AppLanguage.EN) Locale.US else Locale.CHINA
     }
 
     private data class AlertKey(
@@ -173,5 +185,9 @@ enum class FeedbackReason(val displayText: String) {
     COOLDOWN("冷却中"),
     SPEECH_DISABLED("语音关闭"),
     VIBRATION_DISABLED("震动关闭"),
-    NO_FEEDBACK_RISK("无可反馈风险")
+    NO_FEEDBACK_RISK("无可反馈风险");
+
+    fun displayText(language: AppLanguage): String {
+        return LocalizedText.feedbackReason(this, language)
+    }
 }

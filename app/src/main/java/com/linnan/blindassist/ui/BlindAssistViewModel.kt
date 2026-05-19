@@ -7,6 +7,7 @@ import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.AssistControlsUiState
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
@@ -45,12 +46,18 @@ class BlindAssistViewModel(
                 alertProfile = initialPreferences.alertProfile,
                 assistScenario = initialPreferences.assistScenario,
                 speechStyle = initialPreferences.speechStyle,
-                vibrationStrength = initialPreferences.vibrationStrength
+                vibrationStrength = initialPreferences.vibrationStrength,
+                appLanguage = initialPreferences.appLanguage
             ),
-            cameraGuidance = CameraGuidanceUiState.initial(initialModelStatus, initialPreferences.assistScenario.displayName),
+            cameraGuidance = CameraGuidanceUiState.initial(
+                initialModelStatus,
+                initialPreferences.assistScenario.displayName(initialPreferences.appLanguage),
+                initialPreferences.appLanguage
+            ),
             fieldTestSummary = FieldTestSummaryUiState.empty(
-                initialPreferences.alertProfile.displayName,
-                initialPreferences.assistScenario.displayName
+                initialPreferences.alertProfile.displayName(initialPreferences.appLanguage),
+                initialPreferences.assistScenario.displayName(initialPreferences.appLanguage),
+                initialPreferences.appLanguage
             ),
             modelStatus = initialModelStatus,
             cameraActive = false,
@@ -163,6 +170,13 @@ class BlindAssistViewModel(
         userPreferences.setVibrationStrength(strength)
         _uiState.update {
             it.copy(controls = it.controls.copy(vibrationStrength = strength))
+        }
+    }
+
+    fun onLanguageChange(language: AppLanguage) {
+        userPreferences.setAppLanguage(language)
+        _uiState.update {
+            it.copy(controls = it.controls.copy(appLanguage = language))
         }
     }
 

@@ -3,6 +3,8 @@ package com.linnan.blindassist.ui
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.FeedbackDecision
+import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.localization.LocalizedText
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
@@ -13,103 +15,108 @@ import com.linnan.blindassist.session.RiskExplanation
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
 
 object CameraGuidanceMapper {
-    fun initial(modelStatus: String, scenario: AssistScenario): CameraGuidanceUiState {
-        return CameraGuidanceUiState.initial(modelStatus, scenario.displayName)
+    fun initial(modelStatus: String, scenario: AssistScenario, language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
+        return CameraGuidanceUiState.initial(modelStatus, scenario.displayName(language), language)
     }
 
-    fun waiting(modelStatus: String, scenario: AssistScenario): CameraGuidanceUiState {
+    fun waiting(modelStatus: String, scenario: AssistScenario, language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
+        val scenarioName = scenario.displayName(language)
+        val english = language == AppLanguage.EN
         return CameraGuidanceUiState(
-            title = "检测已开启",
-            detail = "等待实时画面和稳定风险结果",
-            targetLine = "模型状态：$modelStatus",
-            careTitle = "正在观察",
-            careDetail = "请自然前进，系统会在前方有风险时提醒",
-            careTargetLine = "建议同时保留语音和震动提醒",
-            debugText = "模型状态：$modelStatus",
-            scenarioName = scenario.displayName,
-            explanationHeadline = "继续观察：等待稳定风险",
-            explanationDetail = "${scenario.displayName}场景已启用，系统会按场景调整提醒确认、冷却和震动计划。",
-            careExplanation = "正在按${scenario.displayName}场景观察",
+            title = if (english) "Detection on" else "检测已开启",
+            detail = if (english) "Waiting for live frames and stable risk results" else "等待实时画面和稳定风险结果",
+            targetLine = if (english) "Model status: $modelStatus" else "模型状态：$modelStatus",
+            careTitle = if (english) "Observing" else "正在观察",
+            careDetail = if (english) "Walk naturally. The system will remind you when risk appears ahead." else "请自然前进，系统会在前方有风险时提醒",
+            careTargetLine = if (english) "Keep both speech and vibration reminders on if possible" else "建议同时保留语音和震动提醒",
+            debugText = if (english) "Model status: $modelStatus" else "模型状态：$modelStatus",
+            scenarioName = scenarioName,
+            explanationHeadline = if (english) "Keep observing: waiting for stable risk" else "继续观察：等待稳定风险",
+            explanationDetail = if (english) "$scenarioName scenario is active. Reminder confirmation, cooldown, and vibration plan follow this scenario." else "${scenarioName}场景已启用，系统会按场景调整提醒确认、冷却和震动计划。",
+            careExplanation = if (english) "Observing with $scenarioName scenario" else "正在按${scenarioName}场景观察",
             titleColor = WHITE,
-            statusBadge = "观察中",
+            statusBadge = if (english) "Observing" else "观察中",
             badgeColor = rgb(160, 255, 215),
             badgeTextColor = rgb(6, 24, 18),
-            careAccessibilitySummary = "正在观察，请自然前进，系统会在前方有风险时提醒",
-            accessibilitySummary = "检测已开启，等待实时画面和稳定风险结果",
+            careAccessibilitySummary = if (english) "Observing. Walk naturally; the system will remind you when risk appears ahead." else "正在观察，请自然前进，系统会在前方有风险时提醒",
+            accessibilitySummary = if (english) "Detection on, waiting for live frames and stable risk results" else "检测已开启，等待实时画面和稳定风险结果",
             accessibilityKey = "waiting"
         )
     }
 
-    fun paused(): CameraGuidanceUiState {
+    fun paused(language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
+        val english = language == AppLanguage.EN
         return CameraGuidanceUiState(
-            title = "检测已暂停",
-            detail = "画面保留预览，目标框和风险提醒已清空",
-            targetLine = "可随时重新开启检测",
-            careTitle = "已暂停",
-            careDetail = "当前不会识别目标，也不会发出提醒",
-            careTargetLine = "打开检测后恢复观察",
-            debugText = "检测关闭：不运行目标检测，不触发语音或震动提醒",
-            scenarioName = AssistScenario.GENERAL.displayName,
-            explanationHeadline = "检测已暂停",
-            explanationDetail = "当前不会生成风险解释。",
-            careExplanation = "检测已暂停",
+            title = if (english) "Detection paused" else "检测已暂停",
+            detail = if (english) "Preview remains; boxes and risk reminders are cleared" else "画面保留预览，目标框和风险提醒已清空",
+            targetLine = if (english) "Detection can be turned on again anytime" else "可随时重新开启检测",
+            careTitle = if (english) "Paused" else "已暂停",
+            careDetail = if (english) "Objects are not detected and reminders are off" else "当前不会识别目标，也不会发出提醒",
+            careTargetLine = if (english) "Turn detection on to resume observing" else "打开检测后恢复观察",
+            debugText = if (english) "Detection off: no object detection, no speech or vibration reminders" else "检测关闭：不运行目标检测，不触发语音或震动提醒",
+            scenarioName = AssistScenario.GENERAL.displayName(language),
+            explanationHeadline = if (english) "Detection paused" else "检测已暂停",
+            explanationDetail = if (english) "No risk explanation is generated while paused." else "当前不会生成风险解释。",
+            careExplanation = if (english) "Detection paused" else "检测已暂停",
             titleColor = rgb(214, 224, 235),
-            statusBadge = "已暂停",
+            statusBadge = if (english) "Paused" else "已暂停",
             badgeColor = rgb(198, 210, 222),
             badgeTextColor = rgb(12, 22, 30),
-            careAccessibilitySummary = "检测已暂停，当前不会识别目标，也不会发出提醒",
-            accessibilitySummary = "检测已暂停，目标框和风险提醒已清空",
+            careAccessibilitySummary = if (english) "Detection paused. Objects are not detected and reminders are off." else "检测已暂停，当前不会识别目标，也不会发出提醒",
+            accessibilitySummary = if (english) "Detection paused, boxes and risk reminders are cleared" else "检测已暂停，目标框和风险提醒已清空",
             accessibilityKey = "paused"
         )
     }
 
-    fun permissionDenied(): CameraGuidanceUiState {
+    fun permissionDenied(language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
+        val english = language == AppLanguage.EN
         return CameraGuidanceUiState(
-            title = "需要相机权限",
-            detail = "请授予相机权限后再使用实时避障提醒",
-            targetLine = "当前无法启动 CameraX 预览和检测",
-            careTitle = "需要权限",
-            careDetail = "请允许相机权限，系统才能观察前方",
-            careTargetLine = "授权后会自动启动实时预览",
-            debugText = "权限状态：CAMERA denied",
-            scenarioName = AssistScenario.GENERAL.displayName,
-            explanationHeadline = "需要相机权限",
-            explanationDetail = "未取得相机权限前无法进行本地识别或风险解释。",
-            careExplanation = "需要相机权限",
+            title = if (english) "Camera permission needed" else "需要相机权限",
+            detail = if (english) "Allow camera permission before using real-time obstacle reminders" else "请授予相机权限后再使用实时避障提醒",
+            targetLine = if (english) "CameraX preview and detection cannot start now" else "当前无法启动 CameraX 预览和检测",
+            careTitle = if (english) "Permission needed" else "需要权限",
+            careDetail = if (english) "Allow camera permission so the system can observe ahead" else "请允许相机权限，系统才能观察前方",
+            careTargetLine = if (english) "Live preview starts after permission is granted" else "授权后会自动启动实时预览",
+            debugText = "CAMERA denied",
+            scenarioName = AssistScenario.GENERAL.displayName(language),
+            explanationHeadline = if (english) "Camera permission needed" else "需要相机权限",
+            explanationDetail = if (english) "Local recognition and risk explanations need camera permission." else "未取得相机权限前无法进行本地识别或风险解释。",
+            careExplanation = if (english) "Camera permission needed" else "需要相机权限",
             titleColor = rgb(255, 149, 0),
-            statusBadge = "需处理",
+            statusBadge = if (english) "Action" else "需处理",
             badgeColor = rgb(255, 210, 125),
             badgeTextColor = rgb(44, 25, 0),
-            careAccessibilitySummary = "需要相机权限，请允许相机权限，系统才能观察前方",
-            accessibilitySummary = "需要相机权限，请授予相机权限后再使用实时避障提醒",
+            careAccessibilitySummary = if (english) "Camera permission needed. Allow permission so the system can observe ahead." else "需要相机权限，请允许相机权限，系统才能观察前方",
+            accessibilitySummary = if (english) "Camera permission needed before real-time obstacle reminders can start" else "需要相机权限，请授予相机权限后再使用实时避障提醒",
             accessibilityKey = "permission"
         )
     }
 
-    fun cameraError(message: String): CameraGuidanceUiState {
+    fun cameraError(message: String, language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
+        val english = language == AppLanguage.EN
         return CameraGuidanceUiState(
-            title = "相机启动失败",
-            detail = "CameraX 暂时无法打开后置摄像头",
+            title = if (english) "Camera failed to start" else "相机启动失败",
+            detail = if (english) "CameraX cannot open the rear camera right now" else "CameraX 暂时无法打开后置摄像头",
             targetLine = message,
-            careTitle = "相机未启动",
-            careDetail = "当前无法观察前方，请返回后重新进入手机摄像头",
+            careTitle = if (english) "Camera not started" else "相机未启动",
+            careDetail = if (english) "Cannot observe ahead now. Go back and reopen the phone camera." else "当前无法观察前方，请返回后重新进入手机摄像头",
             careTargetLine = message,
             debugText = "CameraX error：$message",
-            scenarioName = AssistScenario.GENERAL.displayName,
-            explanationHeadline = "相机启动失败",
-            explanationDetail = "相机未启动，无法生成实时风险解释。",
-            careExplanation = "相机未启动",
+            scenarioName = AssistScenario.GENERAL.displayName(language),
+            explanationHeadline = if (english) "Camera failed to start" else "相机启动失败",
+            explanationDetail = if (english) "The camera is not running, so real-time risk explanations cannot be generated." else "相机未启动，无法生成实时风险解释。",
+            careExplanation = if (english) "Camera not started" else "相机未启动",
             titleColor = rgb(255, 149, 0),
-            statusBadge = "异常",
+            statusBadge = if (english) "Error" else "异常",
             badgeColor = rgb(255, 210, 125),
             badgeTextColor = rgb(44, 25, 0),
-            careAccessibilitySummary = "相机启动失败，当前无法观察前方",
-            accessibilitySummary = "相机启动失败，CameraX 暂时无法打开后置摄像头",
+            careAccessibilitySummary = if (english) "Camera failed to start. Cannot observe ahead now." else "相机启动失败，当前无法观察前方",
+            accessibilitySummary = if (english) "Camera failed to start. CameraX cannot open the rear camera right now." else "相机启动失败，CameraX 暂时无法打开后置摄像头",
             accessibilityKey = "camera-error-$message"
         )
     }
 
-    fun fromFrameResult(frameResult: AssistFrameResult): CameraGuidanceUiState {
+    fun fromFrameResult(frameResult: AssistFrameResult, language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
         val evaluation = frameResult.evaluation
         return fromRisk(
             rawRisk = evaluation.rawRisk,
@@ -122,7 +129,8 @@ object CameraGuidanceMapper {
             metricsText = "total ${evaluation.metrics.totalMs}ms / pre ${evaluation.metrics.preprocessMs}ms / " +
                 "infer ${evaluation.metrics.inferenceMs}ms / post ${evaluation.metrics.postprocessMs}ms",
             fps = evaluation.metrics.fps,
-            modelStatus = evaluation.metrics.modelStatus
+            modelStatus = evaluation.metrics.modelStatus,
+            language = language
         )
     }
 
@@ -136,30 +144,42 @@ object CameraGuidanceMapper {
         explanation: RiskExplanation,
         metricsText: String,
         fps: Float,
-        modelStatus: String
+        modelStatus: String,
+        language: AppLanguage
     ): CameraGuidanceUiState {
         val risk = stableRisk
-        val levelText = levelText(risk.level)
-        val directionText = directionText(risk.direction)
+        val levelText = levelText(risk.level, language)
+        val directionText = directionText(risk.direction, language)
         val title = when (risk.level) {
             RiskLevel.HIGH -> "$levelText：$directionText"
             RiskLevel.MEDIUM -> "$levelText：$directionText"
             RiskLevel.LOW -> levelText
-            RiskLevel.NONE -> "安全观察中"
+            RiskLevel.NONE -> if (language == AppLanguage.EN) "Safe observing" else "安全观察中"
         }
-        val detail = AssistDisplayFormatter.detailFor(risk)
-        val targetLine = AssistDisplayFormatter.targetLine(rawRisk, risk, count)
-        val careTitle = careTitle(risk.level, risk.direction, risk.proximity)
-        val careDetail = AssistDisplayFormatter.careDetailFor(risk)
-        val careTargetLine = AssistDisplayFormatter.careTargetLine(rawRisk, risk, count)
-        val targetAccessibility = AssistDisplayFormatter.accessibilityTargetSummary(rawRisk, risk, count)
-        val debug = "FPS：${"%.1f".format(fps)}\n" +
-            "耗时：$metricsText\n" +
-            "模型：$modelStatus\n" +
-            "最近风险判定：原始 ${riskSummaryText(rawRisk)} / 稳定 ${riskSummaryText(stableRisk)}\n" +
-            AssistDisplayFormatter.urgencyLine(rawRisk, stableRisk) + "\n" +
-            "提醒模式：${profile.displayName} / 场景：${scenario.displayName} / 反馈：${feedbackDecision.reason.displayText}\n" +
-            "解释：${explanation.headline}，${explanation.detail}"
+        val localizedExplanation = localizedExplanation(explanation, feedbackDecision, stableRisk, rawRisk, count, scenario, language)
+        val detail = AssistDisplayFormatter.detailFor(risk, language)
+        val targetLine = AssistDisplayFormatter.targetLine(rawRisk, risk, count, language)
+        val careTitle = careTitle(risk.level, risk.direction, risk.proximity, language)
+        val careDetail = AssistDisplayFormatter.careDetailFor(risk, language)
+        val careTargetLine = AssistDisplayFormatter.careTargetLine(rawRisk, risk, count, language)
+        val targetAccessibility = AssistDisplayFormatter.accessibilityTargetSummary(rawRisk, risk, count, language)
+        val debug = if (language == AppLanguage.EN) {
+            "FPS: ${"%.1f".format(fps)}\n" +
+                "Timing: $metricsText\n" +
+                "Model: $modelStatus\n" +
+                "Recent risk: raw ${riskSummaryText(rawRisk, language)} / stable ${riskSummaryText(stableRisk, language)}\n" +
+                AssistDisplayFormatter.urgencyLine(rawRisk, stableRisk, language) + "\n" +
+                "Profile: ${profile.displayName(language)} / Scenario: ${scenario.displayName(language)} / Feedback: ${feedbackDecision.reason.displayText(language)}\n" +
+                "Explanation: ${localizedExplanation.headline}, ${localizedExplanation.detail}"
+        } else {
+            "FPS：${"%.1f".format(fps)}\n" +
+                "耗时：$metricsText\n" +
+                "模型：$modelStatus\n" +
+                "最近风险判定：原始 ${riskSummaryText(rawRisk, language)} / 稳定 ${riskSummaryText(stableRisk, language)}\n" +
+                AssistDisplayFormatter.urgencyLine(rawRisk, stableRisk, language) + "\n" +
+                "提醒模式：${profile.displayName(language)} / 场景：${scenario.displayName(language)} / 反馈：${feedbackDecision.reason.displayText(language)}\n" +
+                "解释：${localizedExplanation.headline}，${localizedExplanation.detail}"
+        }
         return CameraGuidanceUiState(
             title = title,
             detail = detail,
@@ -168,68 +188,131 @@ object CameraGuidanceMapper {
             careDetail = careDetail,
             careTargetLine = careTargetLine,
             debugText = debug,
-            scenarioName = scenario.displayName,
-            explanationHeadline = explanation.headline,
-            explanationDetail = explanation.detail,
-            careExplanation = explanation.headline,
+            scenarioName = scenario.displayName(language),
+            explanationHeadline = localizedExplanation.headline,
+            explanationDetail = localizedExplanation.detail,
+            careExplanation = localizedExplanation.headline,
             titleColor = colorForLevel(risk.level, risk.proximity),
-            statusBadge = statusBadge(risk.level, risk.proximity),
+            statusBadge = statusBadge(risk.level, risk.proximity, language),
             badgeColor = badgeColor(risk.level, risk.proximity),
             badgeTextColor = badgeTextColor(risk.level, risk.proximity),
-            careAccessibilitySummary = "$careTitle，$careDetail，$targetAccessibility，${explanation.accessibilityText}",
-            accessibilitySummary = "$title，$detail，$targetAccessibility，${explanation.accessibilityText}",
+            careAccessibilitySummary = if (language == AppLanguage.EN) "$careTitle, $careDetail, $targetAccessibility, ${localizedExplanation.accessibilityText}" else "$careTitle，$careDetail，$targetAccessibility，${localizedExplanation.accessibilityText}",
+            accessibilitySummary = if (language == AppLanguage.EN) "$title, $detail, $targetAccessibility, ${localizedExplanation.accessibilityText}" else "$title，$detail，$targetAccessibility，${localizedExplanation.accessibilityText}",
             accessibilityKey = "${risk.level}-${risk.direction}-${risk.proximity}-${rawRisk.level}-${scenario.name}-$count"
         )
     }
 
-    private fun riskSummaryText(risk: RiskResult): String {
-        return "${levelText(risk.level)} ${directionText(risk.direction)} ${proximityText(risk.proximity)}"
+    private fun riskSummaryText(risk: RiskResult, language: AppLanguage): String {
+        return "${levelText(risk.level, language)} ${directionText(risk.direction, language)} ${proximityText(risk.proximity, language)}"
     }
 
-    private fun levelText(level: RiskLevel): String {
-        return when (level) {
-            RiskLevel.HIGH -> "高风险"
-            RiskLevel.MEDIUM -> "中风险"
-            RiskLevel.LOW -> "低风险"
-            RiskLevel.NONE -> "安全"
+    private fun levelText(level: RiskLevel, language: AppLanguage): String {
+        return LocalizedText.level(level, language)
+    }
+
+    private fun directionText(direction: RiskDirection, language: AppLanguage): String {
+        return if (direction == RiskDirection.NONE && language == AppLanguage.ZH) "无方向" else LocalizedText.direction(direction, language, short = true)
+    }
+
+    private fun proximityText(proximity: ProximityBand, language: AppLanguage): String {
+        return LocalizedText.proximity(proximity, language)
+    }
+
+    private fun careTitle(level: RiskLevel, direction: RiskDirection, proximity: ProximityBand, language: AppLanguage): String {
+        val directionText = directionText(direction, language)
+        return if (language == AppLanguage.EN) {
+            when {
+                proximity == ProximityBand.CRITICAL -> "Immediate attention: $directionText"
+                level == RiskLevel.HIGH -> "Risk ahead: $directionText"
+                level == RiskLevel.MEDIUM -> "Please watch: $directionText"
+                level == RiskLevel.LOW -> "Keep observing"
+                else -> "Ahead is stable"
+            }
+        } else {
+            when {
+                proximity == ProximityBand.CRITICAL -> "立刻注意：$directionText"
+                level == RiskLevel.HIGH -> "前方有风险：$directionText"
+                level == RiskLevel.MEDIUM -> "请留意：$directionText"
+                level == RiskLevel.LOW -> "保持观察"
+                else -> "前方平稳"
+            }
         }
     }
 
-    private fun directionText(direction: RiskDirection): String {
-        return when (direction) {
-            RiskDirection.LEFT -> "左前"
-            RiskDirection.CENTER -> "正前"
-            RiskDirection.RIGHT -> "右前"
-            RiskDirection.NONE -> "无方向"
+    private fun localizedExplanation(
+        explanation: RiskExplanation,
+        feedbackDecision: FeedbackDecision,
+        stableRisk: RiskResult,
+        rawRisk: RiskResult,
+        count: Int,
+        scenario: AssistScenario,
+        language: AppLanguage
+    ): RiskExplanation {
+        if (language == AppLanguage.ZH) return explanation
+        val scenarioName = scenario.displayName(language)
+        val stableText = riskSummaryText(stableRisk, language)
+        val rawText = riskSummaryText(rawRisk, language)
+        return when (feedbackDecision.reason) {
+            com.linnan.blindassist.feedback.FeedbackReason.TRIGGERED -> RiskExplanation(
+                headline = "Reminder triggered with $scenarioName strategy",
+                detail = "Stable risk is $stableText. $scenarioName uses its own cooldown and vibration plan.",
+                accessibilityText = "Reminder triggered. Stable risk is $stableText. Current scenario is $scenarioName."
+            )
+            com.linnan.blindassist.feedback.FeedbackReason.UNSTABLE_RISK -> RiskExplanation(
+                headline = "No reminder: risk is not stable",
+                detail = "$scenarioName requires confirmation for medium risk. Current raw risk is $rawText.",
+                accessibilityText = "No reminder because risk is not stable. Current scenario is $scenarioName."
+            )
+            com.linnan.blindassist.feedback.FeedbackReason.DISTANCE_TOO_FAR -> RiskExplanation(
+                headline = "No reminder: object is farther away",
+                detail = "$count objects were detected, but stable risk is $stableText.",
+                accessibilityText = "No reminder because the object is farther away. Current scenario is $scenarioName."
+            )
+            com.linnan.blindassist.feedback.FeedbackReason.COOLDOWN -> RiskExplanation(
+                headline = "No repeat: reminder is cooling down",
+                detail = "$scenarioName is limiting repeated reminders to reduce interruption.",
+                accessibilityText = "No repeat reminder because cooldown is active. Current scenario is $scenarioName."
+            )
+            com.linnan.blindassist.feedback.FeedbackReason.HELD_ALERT -> RiskExplanation(
+                headline = "Holding the previous reminder briefly",
+                detail = "The current frame did not confirm the object again, but the stabilizer is briefly keeping $stableText.",
+                accessibilityText = "Previous reminder is briefly held. Current scenario is $scenarioName."
+            )
+            com.linnan.blindassist.feedback.FeedbackReason.SPEECH_DISABLED,
+            com.linnan.blindassist.feedback.FeedbackReason.VIBRATION_DISABLED -> RiskExplanation(
+                headline = "Risk exists, but feedback is off",
+                detail = "Stable risk is $stableText. Check whether speech or vibration reminders are enabled.",
+                accessibilityText = "Risk exists, but feedback switches are off. Current scenario is $scenarioName."
+            )
+            com.linnan.blindassist.feedback.FeedbackReason.NO_FEEDBACK_RISK -> RiskExplanation(
+                headline = "Keep observing: no feedback risk",
+                detail = if (count > 0) {
+                    "$count objects were detected, but near or critical reminder conditions are not met."
+                } else {
+                    "No main object is locked in the current frame."
+                },
+                accessibilityText = "Keep observing. No feedback risk. Current scenario is $scenarioName."
+            )
         }
     }
 
-    private fun proximityText(proximity: ProximityBand): String {
-        return when (proximity) {
-            ProximityBand.CRITICAL -> "迫近"
-            ProximityBand.NEAR -> "近处"
-            ProximityBand.MID -> "中距"
-            ProximityBand.FAR -> "远处"
-        }
-    }
-
-    private fun careTitle(level: RiskLevel, direction: RiskDirection, proximity: ProximityBand): String {
-        return when {
-            proximity == ProximityBand.CRITICAL -> "立刻注意：${directionText(direction)}"
-            level == RiskLevel.HIGH -> "前方有风险：${directionText(direction)}"
-            level == RiskLevel.MEDIUM -> "请留意：${directionText(direction)}"
-            level == RiskLevel.LOW -> "保持观察"
-            else -> "前方平稳"
-        }
-    }
-
-    private fun statusBadge(level: RiskLevel, proximity: ProximityBand): String {
-        return when {
-            proximity == ProximityBand.CRITICAL -> "迫近提醒"
-            level == RiskLevel.HIGH -> "高风险"
-            level == RiskLevel.MEDIUM -> "需留意"
-            level == RiskLevel.LOW -> "观察"
-            else -> "平稳"
+    private fun statusBadge(level: RiskLevel, proximity: ProximityBand, language: AppLanguage): String {
+        return if (language == AppLanguage.EN) {
+            when {
+                proximity == ProximityBand.CRITICAL -> "Critical"
+                level == RiskLevel.HIGH -> "High risk"
+                level == RiskLevel.MEDIUM -> "Watch"
+                level == RiskLevel.LOW -> "Observe"
+                else -> "Stable"
+            }
+        } else {
+            when {
+                proximity == ProximityBand.CRITICAL -> "迫近提醒"
+                level == RiskLevel.HIGH -> "高风险"
+                level == RiskLevel.MEDIUM -> "需留意"
+                level == RiskLevel.LOW -> "观察"
+                else -> "平稳"
+            }
         }
     }
 

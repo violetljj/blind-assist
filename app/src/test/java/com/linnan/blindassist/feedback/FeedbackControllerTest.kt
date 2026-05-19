@@ -2,6 +2,7 @@ package com.linnan.blindassist.feedback
 
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
+import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
@@ -63,6 +64,16 @@ class FeedbackControllerTest {
         assertEquals("正前方近处", SpeechStyle.BRIEF.messageFor(risk))
         assertEquals("测试提醒", SpeechStyle.STANDARD.messageFor(risk))
         assertEquals("正前方近处有障碍物，请注意避让", SpeechStyle.DETAILED.messageFor(risk))
+    }
+
+    @Test
+    fun speechStylesUseEnglishMessagesWhenLanguageIsEnglish() {
+        val risk = risk(RiskLevel.HIGH, ProximityBand.NEAR)
+
+        assertEquals("front center near", SpeechStyle.BRIEF.messageFor(risk, AppLanguage.EN))
+        assertEquals("front center near risk, avoid carefully", SpeechStyle.STANDARD.messageFor(risk, AppLanguage.EN))
+        assertEquals("obstacle near front center, avoid carefully", SpeechStyle.DETAILED.messageFor(risk, AppLanguage.EN))
+        assertEquals("No risk detected", SpeechStyle.STANDARD.messageFor(risk(RiskLevel.NONE, ProximityBand.FAR), AppLanguage.EN))
     }
 
     @Test

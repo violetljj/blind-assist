@@ -1,5 +1,8 @@
 package com.linnan.blindassist.alert
 
+import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.localization.LocalizedText
+
 enum class AlertProfile(
     val storageValue: String,
     val displayName: String
@@ -14,6 +17,10 @@ enum class AlertProfile(
             STANDARD -> SENSITIVE
             SENSITIVE -> QUIET
         }
+    }
+
+    fun displayName(language: AppLanguage): String {
+        return LocalizedText.alertProfileName(this, language)
     }
 
     companion object {

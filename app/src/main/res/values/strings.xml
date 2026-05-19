@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BlindAssist</string>
+    <string name="language_chinese">中文</string>
+    <string name="language_english">English</string>
+    <string name="settings_language_title">界面语言</string>
+    <string name="settings_language_body">选择核心提醒和设置界面的中文或英文。</string>
+    <string name="settings_speech_title">语音提醒</string>
+    <string name="settings_vibration_title">震动提醒</string>
+    <string name="settings_care_mode_title">关怀模式</string>
+    <string name="settings_debug_title">调试信息</string>
+    <string name="field_test_summary_title">现场测试摘要</string>
 </resources>

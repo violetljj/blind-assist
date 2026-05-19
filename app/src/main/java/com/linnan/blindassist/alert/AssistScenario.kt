@@ -1,5 +1,8 @@
 package com.linnan.blindassist.alert
 
+import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.localization.LocalizedText
+
 enum class AssistScenario(
     val storageValue: String,
     val displayName: String,
@@ -14,6 +17,14 @@ enum class AssistScenario(
     fun next(): AssistScenario {
         val all = values()
         return all[(ordinal + 1) % all.size]
+    }
+
+    fun displayName(language: AppLanguage): String {
+        return LocalizedText.assistScenarioName(this, language)
+    }
+
+    fun description(language: AppLanguage): String {
+        return LocalizedText.assistScenarioDescription(this, language)
     }
 
     companion object {

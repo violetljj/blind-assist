@@ -2,6 +2,8 @@ package com.linnan.blindassist.session
 
 import com.linnan.blindassist.feedback.FeedbackDecision
 import com.linnan.blindassist.feedback.FeedbackReason
+import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.localization.LocalizedText
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskLevel
 import java.util.Locale
@@ -146,34 +148,44 @@ data class SessionSummary(
     val feedbackTriggerCount: Int
         get() = speechTriggerCount + vibrationTriggerCount
 
-    fun displayText(): String {
-        return "会话：${durationText()} · 最近${frameCount}帧 高/中/低/无 $highCount/$mediumCount/$lowCount/$noneCount · " +
-            "反馈 ${latestFeedbackReason.displayText} · " +
-            "语音/震动 $speechTriggerCount/$vibrationTriggerCount · " +
-            "平均FPS ${String.format(Locale.US, "%.1f", averageFps)} · " +
-            "平均推理 ${averageInferenceMs}ms"
-    }
-
-    fun fieldTestText(profileName: String, scenarioName: String): String {
-        return "运行时长：${durationText()}\n" +
-            "最近${frameCount}帧：风险${riskyFrameCount}次，迫近${criticalCount}次，高/中/低/无 $highCount/$mediumCount/$lowCount/$noneCount\n" +
-            "提醒触发：语音${speechTriggerCount}次，震动${vibrationTriggerCount}次\n" +
-            "平均性能：FPS ${String.format(Locale.US, "%.1f", averageFps)}，推理 ${averageInferenceMs}ms\n" +
-            "当前档位：$profileName\n" +
-            "当前场景：$scenarioName\n" +
-            "最近解释：$latestExplanation"
-    }
-
-    fun durationText(): String {
-        if (!hasStarted) return "尚未开始"
-        val totalSeconds = durationMs / 1000L
-        val minutes = totalSeconds / 60L
-        val seconds = totalSeconds % 60L
-        return if (minutes > 0L) {
-            "${minutes}分${seconds}秒"
+    fun displayText(language: AppLanguage = AppLanguage.ZH): String {
+        return if (language == AppLanguage.EN) {
+            "Session: ${durationText(language)} · Last $frameCount frames high/medium/low/none $highCount/$mediumCount/$lowCount/$noneCount · " +
+                "Feedback ${latestFeedbackReason.displayText(language)} · " +
+                "Speech/vibration $speechTriggerCount/$vibrationTriggerCount · " +
+                "Avg FPS ${String.format(Locale.US, "%.1f", averageFps)} · " +
+                "Avg inference ${averageInferenceMs}ms"
         } else {
-            "${seconds}秒"
+            "会话：${durationText()} · 最近${frameCount}帧 高/中/低/无 $highCount/$mediumCount/$lowCount/$noneCount · " +
+                "反馈 ${latestFeedbackReason.displayText} · " +
+                "语音/震动 $speechTriggerCount/$vibrationTriggerCount · " +
+                "平均FPS ${String.format(Locale.US, "%.1f", averageFps)} · " +
+                "平均推理 ${averageInferenceMs}ms"
         }
+    }
+
+    fun fieldTestText(profileName: String, scenarioName: String, language: AppLanguage = AppLanguage.ZH): String {
+        return if (language == AppLanguage.EN) {
+            "Runtime: ${durationText(language)}\n" +
+                "Last $frameCount frames: $riskyFrameCount risky, $criticalCount critical, high/medium/low/none $highCount/$mediumCount/$lowCount/$noneCount\n" +
+                "Reminders: speech $speechTriggerCount, vibration $vibrationTriggerCount\n" +
+                "Average performance: FPS ${String.format(Locale.US, "%.1f", averageFps)}, inference ${averageInferenceMs}ms\n" +
+                "Current profile: $profileName\n" +
+                "Current scenario: $scenarioName\n" +
+                "Latest explanation: ${latestFeedbackReason.displayText(language)}"
+        } else {
+            "运行时长：${durationText()}\n" +
+                "最近${frameCount}帧：风险${riskyFrameCount}次，迫近${criticalCount}次，高/中/低/无 $highCount/$mediumCount/$lowCount/$noneCount\n" +
+                "提醒触发：语音${speechTriggerCount}次，震动${vibrationTriggerCount}次\n" +
+                "平均性能：FPS ${String.format(Locale.US, "%.1f", averageFps)}，推理 ${averageInferenceMs}ms\n" +
+                "当前档位：$profileName\n" +
+                "当前场景：$scenarioName\n" +
+                "最近解释：$latestExplanation"
+        }
+    }
+
+    fun durationText(language: AppLanguage = AppLanguage.ZH): String {
+        return LocalizedText.durationText(hasStarted, durationMs, language)
     }
 
     companion object {

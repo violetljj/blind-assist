@@ -21,6 +21,7 @@ import com.linnan.blindassist.camera.FrameSource
 import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.session.AssistFrameResult
@@ -59,6 +60,7 @@ class MainActivity : ComponentActivity() {
     private var careModeEnabled = false
     private var alertProfile = AlertProfile.STANDARD
     private var assistScenario = AssistScenario.GENERAL
+    private var appLanguage = AppLanguage.ZH
 
     private val requestCameraPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -68,7 +70,7 @@ class MainActivity : ComponentActivity() {
             activateCameraExperience()
         } else if (!granted) {
             pendingCameraOpen = false
-            appViewModel.onCameraPermissionDenied(CameraGuidanceMapper.permissionDenied())
+            appViewModel.onCameraPermissionDenied(CameraGuidanceMapper.permissionDenied(appLanguage))
         }
     }
 
@@ -87,10 +89,12 @@ class MainActivity : ComponentActivity() {
         feedbackController.vibrationEnabled = initialControls.vibrationEnabled
         feedbackController.speechStyle = initialControls.speechStyle
         feedbackController.vibrationStrength = initialControls.vibrationStrength
+        feedbackController.appLanguage = initialControls.appLanguage
         careModeEnabled = initialControls.careModeEnabled
         alertProfile = initialControls.alertProfile
         assistScenario = initialControls.assistScenario
-        renderUi(CameraGuidanceMapper.initial(detector.statusMessage, assistScenario))
+        appLanguage = initialControls.appLanguage
+        renderUi(CameraGuidanceMapper.initial(detector.statusMessage, assistScenario, appLanguage))
 
         setContent {
             val uiState by appViewModel.uiState.collectAsStateWithLifecycle()
@@ -117,6 +121,7 @@ class MainActivity : ComponentActivity() {
                     onScenarioChange = ::setAssistScenario,
                     onSpeechStyleChange = ::setSpeechStyle,
                     onVibrationStrengthChange = ::setVibrationStrength,
+                    onLanguageChange = ::setAppLanguage,
                     onCameraViewsReady = ::onCameraViewsReady
                 )
                 if (uiState.showGlassesDialog) {
@@ -161,7 +166,7 @@ class MainActivity : ComponentActivity() {
         coordinator.startSession()
         appViewModel.activateCamera(
             fieldTestSummary = currentFieldTestSummary(active = true),
-            guidance = CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario),
+            guidance = CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario, appLanguage),
             modelStatus = detector.statusMessage
         )
         startCameraIfReady()
@@ -172,7 +177,7 @@ class MainActivity : ComponentActivity() {
         stopCamera()
         appViewModel.closeCamera(
             fieldTestSummary = currentFieldTestSummary(active = false),
-            guidance = CameraGuidanceMapper.initial(detector.statusMessage, assistScenario),
+            guidance = CameraGuidanceMapper.initial(detector.statusMessage, assistScenario, appLanguage),
             modelStatus = detector.statusMessage
         )
         coordinator.reset()
@@ -190,16 +195,16 @@ class MainActivity : ComponentActivity() {
     private fun startCameraIfReady() {
         if (!appViewModel.uiState.value.cameraActive || !::previewView.isInitialized) return
         if (!hasCameraPermission()) {
-            renderUi(CameraGuidanceMapper.permissionDenied())
+            renderUi(CameraGuidanceMapper.permissionDenied(appLanguage))
             return
         }
         frameSource.start(
             previewView = previewView,
             onFrame = ::processFrameBitmap,
-            onStarted = { renderUi(CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario)) },
+            onStarted = { renderUi(CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario, appLanguage)) },
             onError = { error ->
                 Log.e(PERF_TAG, "Camera start failed", error)
-                renderUi(CameraGuidanceMapper.cameraError(error.message ?: "未知错误"))
+                renderUi(CameraGuidanceMapper.cameraError(error.message ?: "未知错误", appLanguage))
             }
         )
     }
@@ -231,14 +236,14 @@ class MainActivity : ComponentActivity() {
                     detectorFrame.frameSize,
                     frameResult.evaluation.stableRisk
                 )
-                renderUi(CameraGuidanceMapper.fromFrameResult(frameResult))
+                renderUi(CameraGuidanceMapper.fromFrameResult(frameResult, appLanguage))
                 appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true))
                 logPerformanceIfNeeded(frameResult)
             }
         } catch (error: Throwable) {
             Log.e(PERF_TAG, "Frame processing failed", error)
             runOnUiThread {
-                renderUi(CameraGuidanceMapper.cameraError("检测异常：${error.message ?: "未知错误"}"))
+                renderUi(CameraGuidanceMapper.cameraError("检测异常：${error.message ?: "未知错误"}", appLanguage))
             }
         } finally {
             isProcessing.set(false)
@@ -252,7 +257,7 @@ class MainActivity : ComponentActivity() {
         if (enabled) {
             coordinator.startSession()
             appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true))
-            renderUi(CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario))
+            renderUi(CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario, appLanguage))
             startCameraIfReady()
         } else {
             appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = false))
@@ -260,7 +265,7 @@ class MainActivity : ComponentActivity() {
             if (::overlayView.isInitialized) {
                 overlayView.update(emptyList(), null, null)
             }
-            renderUi(CameraGuidanceMapper.paused())
+            renderUi(CameraGuidanceMapper.paused(appLanguage))
         }
     }
 
@@ -284,6 +289,19 @@ class MainActivity : ComponentActivity() {
         appViewModel.onVibrationStrengthChange(strength)
     }
 
+    private fun setAppLanguage(language: AppLanguage) {
+        appLanguage = language
+        feedbackController.appLanguage = language
+        appViewModel.onLanguageChange(language)
+        appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
+        val guidance = if (appViewModel.uiState.value.cameraActive) {
+            CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario, appLanguage)
+        } else {
+            CameraGuidanceMapper.initial(detector.statusMessage, assistScenario, appLanguage)
+        }
+        renderUi(guidance)
+    }
+
     private fun setCareModeEnabled(enabled: Boolean) {
         careModeEnabled = enabled
         if (::overlayView.isInitialized) {
@@ -302,11 +320,11 @@ class MainActivity : ComponentActivity() {
         assistScenario = scenario
         appViewModel.onScenarioChange(scenario)
         appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
-        renderUi(appViewModel.uiState.value.cameraGuidance.copy(scenarioName = scenario.displayName))
+        renderUi(appViewModel.uiState.value.cameraGuidance.copy(scenarioName = scenario.displayName(appLanguage)))
     }
 
     private fun currentFieldTestSummary(active: Boolean) =
-        FieldTestSummaryMapper.fromSummary(coordinator.sessionSummary(), active, alertProfile, assistScenario)
+        FieldTestSummaryMapper.fromSummary(coordinator.sessionSummary(), active, alertProfile, assistScenario, appLanguage)
 
     private fun renderUi(snapshot: CameraGuidanceUiState) {
         appViewModel.renderCameraGuidance(snapshot, detector.statusMessage)
@@ -327,9 +345,9 @@ class MainActivity : ComponentActivity() {
                 "fps=${"%.1f".format(metrics.fps)}, profile=${evaluation.profile.storageValue}, " +
                 "scenario=${evaluation.scenario.storageValue}, " +
                 "rawRisk=${riskSummary(evaluation.rawRisk)}, stableRisk=${riskSummary(evaluation.stableRisk)}, " +
-                "feedbackReason=${frameResult.feedbackDecision.reason.displayText}, " +
+                "feedbackReason=${frameResult.feedbackDecision.reason.displayText(appLanguage)}, " +
                 "explanation=${frameResult.explanation.headline}, " +
-                "session=${frameResult.sessionSummary.displayText()}, status=${metrics.modelStatus}"
+                "session=${frameResult.sessionSummary.displayText(appLanguage)}, status=${metrics.modelStatus}"
         )
     }
 

@@ -6,6 +6,7 @@ import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.localization.AppLanguage
 
 data class UserPreferenceState(
     val speechEnabled: Boolean = true,
@@ -15,6 +16,7 @@ data class UserPreferenceState(
     val assistScenario: AssistScenario = AssistScenario.GENERAL,
     val speechStyle: SpeechStyle = SpeechStyle.STANDARD,
     val vibrationStrength: VibrationStrength = VibrationStrength.STANDARD,
+    val appLanguage: AppLanguage = AppLanguage.ZH,
     val onboardingCompleted: Boolean = false
 )
 
@@ -36,6 +38,7 @@ class UserPreferences(private val store: PreferenceStore) {
             vibrationStrength = VibrationStrength.fromStorageValue(
                 store.getString(KEY_VIBRATION_STRENGTH, VibrationStrength.STANDARD.storageValue)
             ),
+            appLanguage = AppLanguage.fromStorageValue(store.getString(KEY_APP_LANGUAGE, AppLanguage.ZH.storageValue)),
             onboardingCompleted = store.getBoolean(KEY_ONBOARDING_COMPLETED, false)
         )
     }
@@ -68,6 +71,10 @@ class UserPreferences(private val store: PreferenceStore) {
         store.putString(KEY_VIBRATION_STRENGTH, strength.storageValue)
     }
 
+    fun setAppLanguage(language: AppLanguage) {
+        store.putString(KEY_APP_LANGUAGE, language.storageValue)
+    }
+
     fun setOnboardingCompleted(completed: Boolean) {
         store.putBoolean(KEY_ONBOARDING_COMPLETED, completed)
     }
@@ -81,6 +88,7 @@ class UserPreferences(private val store: PreferenceStore) {
         internal const val KEY_ASSIST_SCENARIO = "assist_scenario"
         internal const val KEY_SPEECH_STYLE = "speech_style"
         internal const val KEY_VIBRATION_STRENGTH = "vibration_strength"
+        internal const val KEY_APP_LANGUAGE = "app_language"
         internal const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
     }
 }

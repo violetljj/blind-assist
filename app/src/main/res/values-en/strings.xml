@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BlindAssist</string>
+    <string name="language_chinese">Chinese</string>
+    <string name="language_english">English</string>
+    <string name="settings_language_title">Interface language</string>
+    <string name="settings_language_body">Choose Chinese or English for core reminders and settings.</string>
+    <string name="settings_speech_title">Speech reminders</string>
+    <string name="settings_vibration_title">Vibration reminders</string>
+    <string name="settings_care_mode_title">Care Mode</string>
+    <string name="settings_debug_title">Debug details</string>
+    <string name="field_test_summary_title">Field test summary</string>
+</resources>

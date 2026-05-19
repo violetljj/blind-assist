@@ -1,5 +1,8 @@
 package com.linnan.blindassist.feedback
 
+import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.localization.LocalizedText
+
 enum class VibrationStrength(
     val storageValue: String,
     val displayName: String,
@@ -13,6 +16,14 @@ enum class VibrationStrength(
 
     fun scaleDuration(durationMs: Long): Long {
         return (durationMs * durationMultiplier).toLong().coerceAtLeast(60L)
+    }
+
+    fun displayName(language: AppLanguage): String {
+        return LocalizedText.vibrationStrengthName(this, language)
+    }
+
+    fun description(language: AppLanguage): String {
+        return LocalizedText.vibrationStrengthDescription(this, language)
     }
 
     companion object {

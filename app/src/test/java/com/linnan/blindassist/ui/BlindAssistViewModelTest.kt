@@ -4,6 +4,7 @@ import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.preferences.PreferenceStore
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
@@ -29,6 +30,7 @@ class BlindAssistViewModelTest {
         assertEquals(AssistScenario.GENERAL, state.controls.assistScenario)
         assertEquals(SpeechStyle.STANDARD, state.controls.speechStyle)
         assertEquals(VibrationStrength.STANDARD, state.controls.vibrationStrength)
+        assertEquals(AppLanguage.ZH, state.controls.appLanguage)
         assertTrue(state.showOnboarding)
         assertFalse(state.cameraActive)
         assertEquals("模型未初始化", state.modelStatus)
@@ -46,6 +48,7 @@ class BlindAssistViewModelTest {
         preferences.setAssistScenario(AssistScenario.CORRIDOR)
         preferences.setSpeechStyle(SpeechStyle.DETAILED)
         preferences.setVibrationStrength(VibrationStrength.STRONG)
+        preferences.setAppLanguage(AppLanguage.EN)
         preferences.setOnboardingCompleted(true)
 
         val state = BlindAssistViewModel(preferences).uiState.value
@@ -57,9 +60,10 @@ class BlindAssistViewModelTest {
         assertEquals(AssistScenario.CORRIDOR, state.controls.assistScenario)
         assertEquals(SpeechStyle.DETAILED, state.controls.speechStyle)
         assertEquals(VibrationStrength.STRONG, state.controls.vibrationStrength)
+        assertEquals(AppLanguage.EN, state.controls.appLanguage)
         assertFalse(state.showOnboarding)
-        assertTrue(state.fieldTestSummary.detailText.contains("当前档位：敏感"))
-        assertTrue(state.fieldTestSummary.detailText.contains("当前场景：走廊通行"))
+        assertTrue(state.fieldTestSummary.detailText.contains("Current profile: Sensitive"))
+        assertTrue(state.fieldTestSummary.detailText.contains("Current scenario: Corridor"))
     }
 
     @Test
@@ -74,6 +78,7 @@ class BlindAssistViewModelTest {
         viewModel.onScenarioChange(AssistScenario.OUTDOOR_SLOW)
         viewModel.onSpeechStyleChange(SpeechStyle.BRIEF)
         viewModel.onVibrationStrengthChange(VibrationStrength.SOFT)
+        viewModel.onLanguageChange(AppLanguage.EN)
         viewModel.onDebugVisibleChange(true)
 
         val state = viewModel.uiState.value
@@ -85,6 +90,7 @@ class BlindAssistViewModelTest {
         assertEquals(AssistScenario.OUTDOOR_SLOW, state.controls.assistScenario)
         assertEquals(SpeechStyle.BRIEF, state.controls.speechStyle)
         assertEquals(VibrationStrength.SOFT, state.controls.vibrationStrength)
+        assertEquals(AppLanguage.EN, state.controls.appLanguage)
 
         val reloaded = UserPreferences(store).load()
         assertFalse(reloaded.speechEnabled)
@@ -94,6 +100,7 @@ class BlindAssistViewModelTest {
         assertEquals(AssistScenario.OUTDOOR_SLOW, reloaded.assistScenario)
         assertEquals(SpeechStyle.BRIEF, reloaded.speechStyle)
         assertEquals(VibrationStrength.SOFT, reloaded.vibrationStrength)
+        assertEquals(AppLanguage.EN, reloaded.appLanguage)
     }
 
     @Test

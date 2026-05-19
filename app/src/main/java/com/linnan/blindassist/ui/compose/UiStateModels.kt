@@ -4,6 +4,7 @@ import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.localization.AppLanguage
 
 data class AssistControlsUiState(
     val detectionEnabled: Boolean,
@@ -14,7 +15,8 @@ data class AssistControlsUiState(
     val alertProfile: AlertProfile,
     val assistScenario: AssistScenario,
     val speechStyle: SpeechStyle,
-    val vibrationStrength: VibrationStrength
+    val vibrationStrength: VibrationStrength,
+    val appLanguage: AppLanguage
 )
 
 data class CameraGuidanceUiState(
@@ -38,25 +40,30 @@ data class CameraGuidanceUiState(
     val accessibilityKey: String
 ) {
     companion object {
-        fun initial(modelStatus: String, scenarioName: String = AssistScenario.GENERAL.displayName): CameraGuidanceUiState {
+        fun initial(
+            modelStatus: String,
+            scenarioName: String = AssistScenario.GENERAL.displayName,
+            language: AppLanguage = AppLanguage.ZH
+        ): CameraGuidanceUiState {
+            val english = language == AppLanguage.EN
             return CameraGuidanceUiState(
-                title = "初始化中",
-                detail = "正在准备本地检测模型",
-                targetLine = "模型状态：$modelStatus",
-                careTitle = "正在准备",
-                careDetail = "识别模型正在启动，请稍等",
-                careTargetLine = "进入手机摄像头后会开始观察前方",
-                debugText = "模型状态：$modelStatus",
+                title = if (english) "Initializing" else "初始化中",
+                detail = if (english) "Preparing the local detection model" else "正在准备本地检测模型",
+                targetLine = if (english) "Model status: $modelStatus" else "模型状态：$modelStatus",
+                careTitle = if (english) "Preparing" else "正在准备",
+                careDetail = if (english) "Detection model is starting, please wait" else "识别模型正在启动，请稍等",
+                careTargetLine = if (english) "The phone camera will observe ahead after entry" else "进入手机摄像头后会开始观察前方",
+                debugText = if (english) "Model status: $modelStatus" else "模型状态：$modelStatus",
                 scenarioName = scenarioName,
-                explanationHeadline = "暂无风险解释",
-                explanationDetail = "进入相机会话后会显示最近一次提醒或暂不提醒的原因。",
-                careExplanation = "进入相机会话后会说明提醒原因",
+                explanationHeadline = if (english) "No risk explanation yet" else "暂无风险解释",
+                explanationDetail = if (english) "After a camera session starts, the latest reminder reason will appear here." else "进入相机会话后会显示最近一次提醒或暂不提醒的原因。",
+                careExplanation = if (english) "The reminder reason will appear after the camera starts" else "进入相机会话后会说明提醒原因",
                 titleColor = -1,
-                statusBadge = "准备中",
+                statusBadge = if (english) "Preparing" else "准备中",
                 badgeColor = rgb(206, 221, 235),
                 badgeTextColor = rgb(10, 22, 32),
-                careAccessibilitySummary = "正在准备，识别模型正在启动",
-                accessibilitySummary = "初始化中，正在准备本地检测模型",
+                careAccessibilitySummary = if (english) "Preparing, the detection model is starting" else "正在准备，识别模型正在启动",
+                accessibilitySummary = if (english) "Initializing, preparing the local detection model" else "初始化中，正在准备本地检测模型",
                 accessibilityKey = "initial"
             )
         }
@@ -74,12 +81,21 @@ data class FieldTestSummaryUiState(
     val accessibilityText: String
 ) {
     companion object {
-        fun empty(profileName: String, scenarioName: String): FieldTestSummaryUiState {
+        fun empty(profileName: String, scenarioName: String, language: AppLanguage = AppLanguage.ZH): FieldTestSummaryUiState {
+            val english = language == AppLanguage.EN
             return FieldTestSummaryUiState(
-                title = "现场测试摘要",
-                detailText = "运行时长：尚未开始\n最近0帧：风险0次，迫近0次，高/中/低/无 0/0/0/0\n提醒触发：语音0次，震动0次\n平均性能：FPS 0.0，推理 0ms\n当前档位：$profileName\n当前场景：$scenarioName\n最近解释：暂无风险解释",
-                statusText = "等待相机会话",
-                accessibilityText = "现场测试摘要，尚未开始，相机会话运行后会显示运行时长、风险次数、提醒次数、平均性能、当前档位、当前场景和最近解释。"
+                title = if (english) "Field test summary" else "现场测试摘要",
+                detailText = if (english) {
+                    "Runtime: not started\nLast 0 frames: 0 risky, 0 critical, high/medium/low/none 0/0/0/0\nReminders: speech 0, vibration 0\nAverage performance: FPS 0.0, inference 0ms\nCurrent profile: $profileName\nCurrent scenario: $scenarioName\nLatest explanation: none yet"
+                } else {
+                    "运行时长：尚未开始\n最近0帧：风险0次，迫近0次，高/中/低/无 0/0/0/0\n提醒触发：语音0次，震动0次\n平均性能：FPS 0.0，推理 0ms\n当前档位：$profileName\n当前场景：$scenarioName\n最近解释：暂无风险解释"
+                },
+                statusText = if (english) "Waiting for camera session" else "等待相机会话",
+                accessibilityText = if (english) {
+                    "Field test summary, not started. After a camera session runs, runtime, risk counts, reminder counts, average performance, current profile, current scenario, and the latest explanation will appear."
+                } else {
+                    "现场测试摘要，尚未开始，相机会话运行后会显示运行时长、风险次数、提醒次数、平均性能、当前档位、当前场景和最近解释。"
+                }
             )
         }
     }

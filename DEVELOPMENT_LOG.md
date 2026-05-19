@@ -4,6 +4,119 @@
 
 ## 2026-05-19
 
+### v5.3.0 手机安装与设备端 Compose 测试通过
+
+- 时间：2026-05-19 11:44:34 +08:00
+- 执行者：violjjet
+- 类型：真机安装 / 测试 / 验证 / 文档
+- 修改范围：
+  - `README.md`
+  - `CHANGELOG.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按用户“手机端测试”要求，对 v5.3.0 debug APK 执行真机安装、包版本核对、冷启动验证和设备端 Compose 仪器测试。
+  - 先断开重复的 wireless ADB `(2)` serial，只保留 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp`，避免 Gradle/UTP 同时看到同一台设备的两个 mDNS serial 后再次卡住。
+  - 将 README、CHANGELOG 和 idea 中 v5.3.0 的设备端验证结论更新为：首次 connected test 曾超时，但单一 serial 重跑已经通过。
+- 修改原因：
+  - 上一轮 v5.3.0 交付时 `connectedDebugAndroidTest` 因重复 wireless ADB serial / UTP 超时未获得通过结果；用户随后要求进行手机端测试，需要补齐真实设备侧验证证据。
+- 验证方式：
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，初始状态显示两个同源 wireless ADB serial 均为 `device`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe disconnect "adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp"`，输出 `disconnected adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" get-state`，输出 `device`。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" shell getprop ro.product.model`，输出 `SM-S9280`。
+  - 已运行窗口状态检查，确认设备不在锁屏：`mDreamingLockscreen=false`，当前焦点先为系统桌面，安装启动后为 `com.linnan.blindassist/.MainActivity`。
+  - 已运行安装命令：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" install -r releases\apk\BlindAssist-v5.3.0-debug-20260519-113731.apk`，输出 `Performing Streamed Install` 和 `Success`。
+  - 已运行包信息核对：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'`，输出 `versionCode=21 minSdk=26 targetSdk=35` 和 `versionName=5.3.0`。
+  - 已运行冷启动验证：`.\.android-sdk\platform-tools\adb.exe -s "adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp" shell am start -W -n com.linnan.blindassist/.MainActivity`，输出 `Status: ok`、`LaunchState: COLD`、`TotalTime: 706`、`WaitTime: 708`。
+  - 已设置单一设备 serial 并直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; $env:ANDROID_SERIAL='adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon`。
+  - 设备端 Compose 仪器测试结果：`Starting 5 tests on SM-S9280 - 16`，`Finished 5 tests on SM-S9280 - 16`，`BUILD SUCCESSFUL in 45s`，5 个测试全部完成，0 skipped，0 failed。
+- 版本判断：
+  - 本次只补充 v5.3.0 真机安装和设备端测试证据，不改变应用功能、模型、权限、构建配置、版本号或 APK 内容。
+  - 项目版本保持 `v5.3.0` / `versionCode=21`。
+- 后续事项：
+  - 后续若再次跑设备端测试，应优先确认 `adb devices` 只保留一个 online serial；如果重复 mDNS serial 出现，先断开重复项再运行 Gradle UTP。
+  - 本轮仍未做人工 TalkBack 手测；如果后续需要答辩级无障碍证明，可在手机系统设置中开启 TalkBack 和大字体后补一条手测记录。
+
+### v5.3.0 TalkBack、大字体与中英文切换
+
+- 时间：2026-05-19 11:37:40 +08:00
+- 执行者：violjjet
+- 类型：功能 / 无障碍 / 本地化 / 测试 / 构建 / 版本归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/localization/`
+  - `app/src/main/java/com/linnan/blindassist/preferences/UserPreferences.kt`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/feedback/`
+  - `app/src/main/java/com/linnan/blindassist/session/`
+  - `app/src/main/java/com/linnan/blindassist/ui/`
+  - `app/src/main/java/com/linnan/blindassist/ui/compose/`
+  - `app/src/main/res/values/strings.xml`
+  - `app/src/main/res/values-en/strings.xml`
+  - `app/src/test/java/com/linnan/blindassist/`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v5.3.0-debug-20260519-113731.apk`
+- 修改内容：
+  - 按用户确认的 v5.3.0 计划新增 App 内 `中文` / `English` 语言切换，默认保持中文；语言偏好通过 `AppLanguage` 保存到 `UserPreferences`，并接入 `BlindAssistViewModel` 与 Compose 控制状态。
+  - 新增轻量 `localization` 层，集中提供提醒档位、使用场景、语音风格、震动强度、风险等级、方向、距离、反馈原因和时长等核心中英文文案。
+  - `FeedbackController` 根据 App 内语言切换 TTS locale：中文使用 `Locale.CHINA`，英文使用 `Locale.US`；`SpeechStyle` 支持中英文简短、标准和详细提醒短句。
+  - `CameraGuidanceMapper`、`FieldTestSummaryMapper`、`AssistDisplayFormatter` 和 `SessionTrace` 支持按语言生成相机状态、风险解释、现场测试摘要和调试/无障碍摘要。
+  - 设置页新增“界面语言”选择器；提醒档位、使用场景、语音风格和震动强度选择器改为 48dp+ 全宽控件，减少大字体下横向 chip 挤压；补强 stateDescription、contentDescription 和 heading 语义。
+  - 更新 Compose 仪器测试，覆盖设置页切换 English 后的核心英文文案与关键 contentDescription。
+  - 将版本提升到 `v5.3.0` / `versionCode=21`，并补充 README、CHANGELOG、idea 记录和 APK 归档。
+- 修改原因：
+  - 用户选择实施“TalkBack 与大字体回归检查”和“多语言与提醒文案资源化”计划，希望提升助盲主题项目的无障碍专业性和中英文展示能力。
+  - 该能力会影响用户可见设置、语音提醒、风险解释、现场摘要和测试结论，因此需要按大更新同步版本、文档、测试和 APK 归档。
+- 验证方式：
+  - 已使用 `android-accessibility` 技能检查本轮关注点：contentDescription、48dp 触控目标、状态语义、heading 和读屏顺序。
+  - 已使用 `android-testing` 技能思路补充 JVM 与 Compose 仪器测试覆盖。
+  - 已按本仓库已知 Gradle 沙箱限制直接提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`。
+  - 验证结果：命令退出码为 `0`，`BUILD SUCCESSFUL in 1m 5s`；JVM 单元测试和 debug APK 构建通过。构建期间仅出现 Material 图标 AutoMirrored 相关弃用 warning，不影响本次交付。
+  - 已运行 `.\.android-sdk\platform-tools\adb.exe devices`，设备列表显示 `SM-S9280` 的两个 wireless ADB serial 均为 `device` 状态：`adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp` 和 `adb-R5CX10M8Y8X-nkVxqz._adb-tls-connect._tcp`。
+  - 已按计划尝试提权运行：`$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon`。
+  - 设备端仪器测试结果：命令在约 184 秒后超时，未输出通过或失败摘要；随后检查 `app/build/outputs/androidTest-results` 时发现 UTP report lock 文件仍被占用，说明本轮不能把 `connectedDebugAndroidTest` 作为通过证据。为避免误杀用户可能正在使用的 Android Studio/Java 进程，本次未强行终止所有 Java 进程。
+  - 已归档 debug APK：来源 `app/build/outputs/apk/debug/app-debug.apk`，目标 `releases/apk/BlindAssist-v5.3.0-debug-20260519-113731.apk`，大小 `47052096` 字节，复制时间 `2026-05-19 11:33:07 +08:00`。
+- 版本判断：
+  - 本次新增 App 内中英文语言偏好、核心提醒/设置/风险解释本地化、TTS locale 切换和无障碍/大字体控制改造，影响用户可见体验、测试和展示材料。
+  - 按项目规则属于大更新，版本从 `v4.8.0` 提升到 `v5.3.0`，`versionCode` 从 `20` 提升到 `21`。
+- 后续事项：
+  - 后续可在真机上手动开启 TalkBack 和大字体完成真实无障碍验收，并把手测结果补入开发日志。
+  - 展示性静态长文案、完整 onboarding、Features/Profile 全量文案仍可继续迁移；本轮优先保证核心 assistive flow 可用。
+  - 若需要声明设备端 Compose 仪器测试通过，应先清理/等待残留 Gradle UTP 进程并使用单一在线 ADB serial 重跑。
+
+### 下一步候选方向补充
+
+- 时间：2026-05-19 11:02:08 +08:00
+- 执行者：violjjet
+- 类型：规划 / 文档 / 分析
+- 修改范围：
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 根据当前 `v4.8.0` 单模块质量升级后的项目状态，补充一组新的近期候选方向。
+  - 新增“离线测试素材回放最小版”，强调复用现有检测器、会话协调、风险解释和现场摘要，不新增网络、存储权限或模型。
+  - 新增“眼镜设备模拟中心”，建议在没有真实硬件协议前先做本地模拟状态，不贸然引入蓝牙权限。
+  - 新增“TalkBack 与大字体现场检查清单”，把无障碍语义、触控目标、大字体显示和 Compose 测试作为助盲主题的专业化补强方向。
+  - 新增“多语言与提醒文案资源化准备”，建议分阶段迁移提醒短句、风险解释、设置文案和 TalkBack 文案。
+  - 新增“现场测试脚本与评分表”，用于后续课堂展示、答辩和真实测试记录，但明确不能把未执行测试写成已完成结论。
+- 修改原因：
+  - 用户要求“给点 idea”，需要结合当前仓库真实状态给出可实施、可展示、风险可控的后续方向。
+  - 项目协作规则要求对可能有产品路线价值、但不一定立即实施的想法记录到 `idea.md`，并在开发日志中记录分析背景。
+- 验证方式：
+  - 已检查 `git status --short`，确认当前只有既有未跟踪 PPTX 文件，不属于本次规划记录。
+  - 已查看 `idea.md` 现有条目、`NEXT_MAJOR_UPDATE_PLAN.md` 当前说明、`README.md` 当前版本记录和 `app/src/main/java/com/linnan/blindassist/` 模块结构，确认新增想法与现有 `v4.8.0` 状态不冲突。
+  - 本次未修改代码、构建配置、模型资产或 APK，因此未运行 Gradle 构建，也未生成新的 APK 归档。
+- 版本判断：
+  - 本次属于规划与文档记录，不改变应用功能、模型、权限、构建方式、版本号或用户可见运行行为。
+  - 项目版本保持 `v4.8.0` / `versionCode=20`，不触发版本更新，也不需要同步 README 当前版本说明。
+- 后续事项：
+  - 若用户选择其中一个方向进入实现，应按影响范围重新制定版本判断；例如离线素材回放或眼镜模拟中心通常可作为 `v4.9.0` 小更新或 `v5.3.0` 一类更大展示更新，具体取决于实际改动范围。
+
 ### v4.8.0 手机安装与 GitHub 推送复核
 
 - 时间：2026-05-19 00:57:46 +08:00
