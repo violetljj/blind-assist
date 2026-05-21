@@ -4,6 +4,34 @@
 
 ## 2026-05-22
 
+### GitHub SSH key 配置复核
+
+- 时间：2026-05-22 02:05:00 +08:00
+- 执行者：violjjet
+- 类型：Git / 环境配置 / 验证
+- 修改范围：
+  - `.git/config`（本地配置）
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 用户在当前机器生成新的 ED25519 SSH key：`C:\Users\26442\.ssh\id_ed25519`，并将公钥添加到 GitHub；用户侧 `ssh -T git@github.com` 已返回 `Hi violetljj! You've successfully authenticated`。
+  - 在仓库中验证 `origin` 仍为 SSH 地址：`git@github.com:violetljj/blind-assist.git`。
+  - 普通沙箱访问 GitHub SSH 仍会因网络权限失败；按仓库已知权限规则提权运行 `ssh -T git@github.com`，验证 GitHub 认证成功。
+  - 提权运行 `git ls-remote --heads origin master`，确认可以读取远端 `master`，但 Git 仍提示旧电脑 key 路径 `C:/Users/junjie/.ssh/id_ed25519_github_codex` 不存在。
+  - 为当前仓库设置本地 `core.sshCommand`：`ssh -i C:/Users/26442/.ssh/id_ed25519 -o IdentitiesOnly=yes`，强制 Git 使用当前机器的新 key。
+  - 再次提权运行 `git ls-remote --heads origin master`，成功返回远端 `master` 为 `c1b6198ffedfc489be5df248d1b7a38609422ed6`，且不再出现旧 key 路径警告。
+- 修改原因：
+  - 上一次推送时 SSH 失败，原因是 Git/SSH 仍尝试使用旧电脑 `C:\Users\junjie` 下的 key；用户已在当前电脑完成新 key 配置，需要让本仓库后续 `git push origin master` 能直接使用新 key。
+- 验证方式：
+  - `git remote -v`：确认 `origin` fetch/push 均为 `git@github.com:violetljj/blind-assist.git`。
+  - `ssh -T git@github.com`（提权）：GitHub 返回认证成功信息。
+  - `git config --show-origin --get core.sshCommand`：返回 `file:.git/config ssh -i C:/Users/26442/.ssh/id_ed25519 -o IdentitiesOnly=yes`。
+  - `git ls-remote --heads origin master`（提权）：返回 `c1b6198ffedfc489be5df248d1b7a38609422ed6 refs/heads/master`。
+- 版本判断：
+  - 本次仅修复当前仓库的本地 Git SSH 配置和记录验证结论，不涉及 Android 代码、模型资产、构建配置、测试逻辑、APK 或应用版本。
+  - 项目版本保持 `v5.9.0` / `versionCode=23`，不新增 APK 归档。
+- 后续事项：
+  - 后续可直接使用 `git push origin master` 通过 SSH 推送；如在其他仓库也遇到旧 key 警告，可为对应仓库设置相同的 `core.sshCommand` 或清理用户级 SSH config 中的旧 IdentityFile。
+
 ### 本机开发工具链修复
 
 - 时间：2026-05-22 01:36:26 +08:00
