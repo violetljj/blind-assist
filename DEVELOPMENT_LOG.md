@@ -2,6 +2,47 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-05-22
+
+### 新电脑交接包与 Codex skills 快照
+- 时间：2026-05-22 00:22:00 +08:00
+- 执行者：violjjet
+- 类型：文档 / Git 交接 / 开发环境 / skills 归档 / 验证
+- 修改范围：
+  - `docs/NEW_COMPUTER_HANDOFF.md`
+  - `scripts/restore_codex_skills.ps1`
+  - `codex/skills-snapshot/codex-skills-20260522.zip`
+  - `codex/skills-snapshot/MANIFEST.md`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 为新电脑继续开发 BlindAssist 增加交接说明，覆盖 Git 克隆、Android Studio/JDK/SDK 准备、`local.properties` 配置、Gradle 验证、模型形状检查、手机安装和继续协作规则。
+  - 将旧电脑本地 `C:\Users\junjie\.codex\skills` 打包为 `codex/skills-snapshot/codex-skills-20260522.zip`，用于在新电脑恢复 Codex skills。
+  - 新增 `scripts/restore_codex_skills.ps1`，默认把快照恢复到 `%USERPROFILE%\.codex\skills`；如果目标目录已存在，会先复制备份到同级 `skills-backup-时间戳`，再解压恢复。
+  - 新增 skills 快照 manifest，记录来源目录、压缩包路径、文件大小、SHA256、条目数量和恢复注意事项，方便在新电脑校验快照是否完整。
+  - 在 README 的 Recent Updates 和 Project Materials 中加入新电脑交接包与 skills 快照入口，避免接手者只看到 Android 功能说明而不知道如何恢复本机 Codex 环境。
+- 修改原因：
+  - 用户准备换新电脑继续开发，需要把本机现有 skills 和接手项目所需说明上传到 Git，让新环境能尽量复现当前 Codex 辅助开发能力和 BlindAssist 构建流程。
+  - 直接把 1 万多个 skill 文件散落提交会让仓库 diff 和后续维护很吵，因此本次采用“压缩快照 + manifest + 恢复脚本 + 交接文档”的方式，既保留完整内容，又让项目树更清晰。
+  - 交接说明把项目约定、构建命令、模型检查和手机安装路径集中写清，降低新电脑接手时因为 SDK 路径、Codex skills、ADB 或版本归档规则缺失造成的重复排查成本。
+- 验证方式：
+  - 已运行 `git status --short`，确认任务开始前存在 3 个无关未跟踪项：`releases/apk/BlindAssist-v5.9.0-debug-20260519-173827.apk`、`test-artifacts/` 和 `多模态智能助盲系统1.4.pptx`；本次未把这些既有文件纳入交接提交。
+  - 已统计源 skills 目录：`C:\Users\junjie\.codex\skills` 共 `13,031` 个文件，大小约 `20.47 MB`。
+  - 首次使用 `Compress-Archive` 生成 zip 时 120 秒超时，检查后发现压缩包只有 `850` 个条目、未完整包含 skills，因此删除半成品并改用系统 `tar` 重新打包。
+  - 已用 `tar -a -cf codex\skills-snapshot\codex-skills-20260522.zip -C C:\Users\junjie\.codex skills` 生成完整快照。
+  - 已用 `tar -tf codex\skills-snapshot\codex-skills-20260522.zip | Measure-Object` 验证压缩包共有 `13,446` 个条目，包含顶层 `skills/`、`.system/`、`.name-cn-backup-20260516/`、`ppt-master/`、`baoyu-imagine/` 等目录。
+  - 已计算 SHA256：`A64F7287A463BDB12BFB16D57F1538D77D3D71B95DBC088EC2F0BC6A4ABB4F1C`；压缩包大小为 `14,005,316 bytes`。
+  - 已运行恢复脚本到仓库内临时目录 `codex\restore-test\.codex`：`powershell -NoProfile -ExecutionPolicy Bypass -File scripts\restore_codex_skills.ps1 -CodexHome <临时目录> -NoBackup`，输出 `Restore complete`，并验证恢复后共有 `13,031` 个 skill 文件、`72` 个顶层 skill 目录；验证后已删除临时目录。
+  - 已按文件名扫描潜在私密文件，未发现实际 `cookies.json`、`.env`、私钥、数据库等本地凭据文件；命中项主要是脚本源码、`.env.example` 和说明文本中的 cookie/API key 字样。
+  - 本次未运行 Gradle 构建，因为未修改 Android App 源码、Gradle 配置、模型资产、测试代码或 APK 内容；验证重点是文档、快照完整性和 Git 交接材料。
+- 版本判断：
+  - 本次属于项目交接与开发环境材料更新，会影响新电脑接手方式和 README 项目材料入口，但不改变 Android App 功能、模型、CameraX/TFLite 链路、风险规则、测试结论、APK 二进制、`versionName` 或 `versionCode`。
+  - 因此本次不提升 App 版本，项目仍保持 `v5.9.0` / `versionCode=23`，也不新增 APK 归档。
+- 后续事项：
+  - 新电脑恢复后应先运行 `scripts/restore_codex_skills.ps1`，重启 Codex，再按 `docs/NEW_COMPUTER_HANDOFF.md` 配置 Android SDK 并执行 Gradle 验证。
+  - 如果新电脑 Codex 自带更新版本的 `.system` skills，可只从压缩包手动恢复用户安装的 skills 目录，避免覆盖新版系统技能。
+  - 如果仓库未来公开发布，应重新评估是否保留完整 skills 快照；当前快照按项目维护交接材料处理。
+
 ## 2026-05-19
 
 ### v5.9.0 测试问题修复与复测
