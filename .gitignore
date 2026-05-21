@@ -5,6 +5,8 @@
 .venv-export/
 .venv-export312/
 .python311/
+.jdk/
+.cache/
 python311-local/
 .idea/
 *.iml

@@ -1,8 +1,15 @@
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 from pathlib import Path
+
+
+def configure_local_caches(project_root: Path) -> None:
+    matplotlib_cache = project_root / ".cache" / "matplotlib"
+    os.environ.setdefault("MPLCONFIGDIR", str(matplotlib_cache))
+    matplotlib_cache.mkdir(parents=True, exist_ok=True)
 
 
 def newest_tflite(root: Path) -> Path:
@@ -22,9 +29,11 @@ def main() -> None:
     parser.add_argument("--output", default="app/src/main/assets/yolo11n_fp16_320.tflite")
     args = parser.parse_args()
 
+    project_root = Path(__file__).resolve().parents[1]
+    configure_local_caches(project_root)
+
     from ultralytics import YOLO
 
-    project_root = Path(__file__).resolve().parents[1]
     output_path = (project_root / args.output).resolve()
     output_path.parent.mkdir(parents=True, exist_ok=True)
 

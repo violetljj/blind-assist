@@ -4,6 +4,46 @@
 
 ## 2026-05-22
 
+### 本机开发工具链修复
+
+- 时间：2026-05-22 01:36:26 +08:00
+- 执行者：violjjet
+- 类型：配置 / 环境修复 / 脚本 / 文档 / 构建 / 测试
+- 修改范围：
+  - `.gitignore`
+  - `scripts/inspect_tflite.py`
+  - `scripts/export_yolo11n_tflite.py`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `.python311/`（本地忽略目录）
+  - `.venv-export312/`（本地忽略目录）
+  - `.jdk/`（本地忽略目录）
+  - `releases/apk/BlindAssist-v5.9.0-debug-20260522-013331.apk`
+- 修改内容：
+  - 恢复本机 Python `3.11.9`、`.venv-export312`、Amazon Corretto JDK `17.0.19` 和 Gradle wrapper 本地缓存。
+  - 更新 `.gitignore`，新增 `.jdk/` 和 `.cache/`。
+  - 更新模型脚本，在导入 TensorFlow/Ultralytics 前设置仓库内 `.cache/matplotlib` 作为 `MPLCONFIGDIR`。
+  - 更新 `README.md`，记录本机工具链恢复命令、模型检查结果和最新 APK 归档路径。
+  - 新增 APK 归档 `releases/apk/BlindAssist-v5.9.0-debug-20260522-013331.apk`，大小 `47,068,480` bytes。
+- 修改原因：
+  - 用户要求修复本机开发关键工具缺口。继续开发 BlindAssist 需要 JDK 17、Gradle wrapper、Android SDK/ADB、Python 模型脚本环境和 APK 构建归档链路可用。
+- 验证方式：
+  - `.\.python311\python.exe --version` 输出 `Python 3.11.9`。
+  - `.\.venv-export312\Scripts\python.exe --version` 输出 `Python 3.11.9`。
+  - `.\.venv-export312\Scripts\python.exe -m pip check` 输出 `No broken requirements found.`。
+  - `.\.venv-export312\Scripts\python.exe -c "import tensorflow as tf; print(tf.__version__)"` 输出 `2.19.0`。
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py` 成功输出输入 `images shape=[1, 320, 320, 3] dtype=float32` 和输出 `Identity shape=[1, 84, 2100] dtype=float32`。
+  - `.\.jdk\jdk17.0.19_10\bin\java.exe -version` 输出 Amazon Corretto OpenJDK `17.0.19`。
+  - `.\.jdk\jdk17.0.19_10\bin\javac.exe -version` 输出 `javac 17.0.19`。
+  - 设置本地 `JAVA_HOME`、`PATH` 和 `GRADLE_USER_HOME` 后，`.\gradlew.bat -v` 成功输出 Gradle `8.10.2`。
+  - 按仓库已知沙箱限制直接提权运行 `.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，结果为 `BUILD SUCCESSFUL in 2m 50s`，共 `43 actionable tasks: 43 executed`。
+- 版本判断：
+  - 本次修复的是本机开发工具链、模型脚本运行环境、README 环境说明和本地缓存处理，没有修改 Android 应用功能、CameraX/TFLite 运行链路、风险规则、UI 行为、模型资产、`versionName` 或 `versionCode`。
+  - 因此不计为应用版本更新，项目版本保持 `v5.9.0` / `versionCode=23`。由于本次重新构建出可演示 APK，已按项目要求新增同版本带时间戳 APK 归档。
+- 后续事项：
+  - 后续在新 PowerShell/Codex 会话中运行 Gradle 前，建议先设置 README 中记录的 `JAVA_HOME`、`PATH` 和 `GRADLE_USER_HOME`。
+  - 当前没有连接真机，因此本次未执行 ADB 安装或 connected Android tests；真机调试前需要先运行 `.\.android-sdk\platform-tools\adb.exe devices` 确认设备状态为 `device`。
+
 ### 遗留未推送文件补充提交
 - 时间：2026-05-22 00:40:00 +08:00
 - 执行者：violjjet

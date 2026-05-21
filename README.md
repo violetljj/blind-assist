@@ -12,6 +12,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Recent Updates
 
+- 2026-05-22: Fixed the current machine development toolchain. Git is available at `D:\Git\cmd\git.exe`; JDK 17 is restored under `.jdk\jdk17.0.19_10` with Amazon Corretto `17.0.19` and includes both `java.exe` and `javac.exe`; Python is restored under `.python311`, and `.venv-export312` was rebuilt with Python `3.11.9` plus `requirements-export.txt`. `scripts\inspect_tflite.py` now uses a repository-local Matplotlib cache and successfully reports model input `[1, 320, 320, 3] float32` and output `[1, 84, 2100] float32`. The full Gradle verification command passed with `BUILD SUCCESSFUL`, and the debug APK was archived at `releases/apk/BlindAssist-v5.9.0-debug-20260522-013331.apk` with size `47,068,480` bytes. This update restores local development and build readiness only; Android app code, model assets, `versionName`, and `versionCode` remain unchanged.
 - 2026-05-22: Added a new-computer handoff package for continuing BlindAssist development on another Windows machine. The package includes `docs/NEW_COMPUTER_HANDOFF.md`, `scripts/restore_codex_skills.ps1`, a verified Codex skills archive at `codex/skills-snapshot/codex-skills-20260522.zip`, and `codex/skills-snapshot/MANIFEST.md` with SHA256 and entry-count evidence. This update changes repository handoff/setup materials only; it does not change the Android app code, model asset, CameraX/TFLite pipeline, tests, APK binary, `versionName`, or `versionCode`.
 - 2026-05-19: Implemented the v5.9.0 test-hardening and camera debug-control fix. The camera page debug toggle now uses the same stable `CompactAction` button pattern as the other camera controls, sits above Care Mode/scenario controls, exposes explicit `展开相机调试信息` / `收起相机调试信息` content descriptions, and keeps the `camera_debug_toggle` Compose test tag. The connected Compose tests now grant camera permission before launching `MainActivity`, detect the camera page through either text or content descriptions, reset the camera-panel test to 通用日常 so Debug is visible, and always close the camera page after camera-path tests. This resolves the two issues found in the v5.8.0 phone test: `connectedDebugAndroidTest` now passes 6 tests with 0 failures on `SM-S9280 - 16`, and ADB UIAutomator can tap the debug control and observe it change to `收起相机调试信息`. Full JVM tests still pass with 105 tests and 0 failures; the debug APK was archived at `releases/apk/BlindAssist-v5.9.0-debug-20260519-174352.apk`, installed on `SM-S9280`, cold-started successfully, and verified as `versionCode=23` / `versionName=5.9.0`. This update does not change the YOLO model, CameraX/TFLite pipeline, risk thresholds, permissions, networking, Bluetooth, storage, Hilt, multi-module structure, Room or DataStore.
 - 2026-05-19: Completed a detailed v5.8.0 real-phone validation pass on Samsung `SM-S9280` with app data cleared, fixed wireless ADB serial selection, model shape inspection, full JVM test/build validation, APK reinstall, UIAutomator navigation, camera-permission flow, camera-page checks, and a 90-second CameraX/TFLite performance sample. The model still reports input `[1, 320, 320, 3] float32` and output `[1, 84, 2100] float32`; the full Gradle JVM/debug build command passed with 105 tests, 0 failures, and the APK was archived at `releases/apk/BlindAssist-v5.8.0-debug-20260519-170622.apk`. Manual ADB UI checks passed for onboarding, Features/Profile/Settings navigation, language switching, glasses placeholder, permission explanation, camera entry, quiet/sensitive shortcuts, and camera return. The 90-second camera sample produced 88 `BlindAssistPerf` entries with average total processing `55.40ms`, average inference `37.76ms`, average FPS `14.97`, `gfxinfo` jank `20/1920 frames (1.04%)`, TOTAL PSS `269,790 KB`, and no crash/ANR keyword matches. Two issues remain documented in `TEST_REPORT_2026-05-19.md`: `connectedDebugAndroidTest` failed with 2 failures and an instrumentation `Process crashed` message, and the camera page `展开调试信息` button node was visible but did not respond to repeated ADB taps near the bottom of the screen. This was a testing/documentation pass only, so the project version remains `v5.8.0` / `versionCode=22`.
@@ -113,6 +114,19 @@ java -version
 adb version
 ```
 
+### Current Machine Toolchain
+
+2026-05-22 follow-up fix: the current Windows machine has a repository-local toolchain for validation:
+
+```powershell
+$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path
+$env:PATH="$env:JAVA_HOME\bin;D:\Git\cmd;D:\linnan\linnan\.android-sdk\platform-tools;$env:PATH"
+$env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path
+.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon
+```
+
+This has been verified with `BUILD SUCCESSFUL`, and model inspection now runs through `.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`.
+
 ## Model Asset
 
 第一版默认从 assets 加载真实 YOLO11n TFLite 模型：
@@ -162,7 +176,7 @@ app/build/outputs/apk/debug/app-debug.apk
 releases/apk/
 ```
 
-当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0、v2.6.0、v3.1.0、v3.2.0、v3.3.0、v3.4.0、v3.5.0、v3.6.0、v4.1.0、v4.2.0、v4.3.0、v4.8.0、v5.3.0、v5.8.0 和 v5.9.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；当前 v5.9.0 最近一次测试归档为 `releases/apk/BlindAssist-v5.9.0-debug-20260519-174352.apk`。
+当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0、v2.6.0、v3.1.0、v3.2.0、v3.3.0、v3.4.0、v3.5.0、v3.6.0、v4.1.0、v4.2.0、v4.3.0、v4.8.0、v5.3.0、v5.8.0 和 v5.9.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；当前 v5.9.0 最近一次测试归档为 `releases/apk/BlindAssist-v5.9.0-debug-20260522-013331.apk`。
 
 ## Install to Phone
 
