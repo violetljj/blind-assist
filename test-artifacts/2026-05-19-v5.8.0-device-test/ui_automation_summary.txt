@@ -1,0 +1,15 @@
+﻿UI automation summary - 2026-05-19 v5.8.0 device test
+Device: SM-S9280, serial adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp
+PASS: pm clear completed before first full UI pass.
+PASS: APK installed and package version verified as versionCode=22/versionName=5.8.0.
+PASS: cold start returned Status ok, LaunchState COLD, TotalTime 692ms.
+PASS: onboarding pages verified with local camera, speech/vibration, and prototype safety-boundary text.
+PASS: main Features page, Profile page, Settings page, lower Settings controls, and Chinese/English language switching verified by UIAutomator dumps.
+PASS: daily usage guide corridor preset tapped; camera later reflected custom mode after reminder shortcut changes.
+PASS: glasses placeholder dialog opened and dismissed; no Bluetooth permission path observed.
+PASS: camera permission explanation displayed; Android runtime permission allowed; camera page opened.
+PASS: camera page exposed return, detection/speech/vibration toggles, quiet/sensitive shortcuts, scenario label, daily mode label, and risk explanation.
+PASS: quiet and sensitive shortcuts tapped successfully.
+PASS: return from camera page to Features page worked.
+ISSUE: camera page debug button node exists as 展开调试信息, but repeated ADB taps on its clickable parent near the bottom of the screen did not toggle debug details; record as UI automation/manual follow-up risk.
+ISSUE: connectedDebugAndroidTest failed: 5 executed, 2 failed, instrumentation ended with Process crashed; see androidTest XML and connected_test_failure_logcat.txt.

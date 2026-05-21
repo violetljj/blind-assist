@@ -1,0 +1,1151 @@
+﻿  05-19 17:17:20.688  1781  1901 I SurfaceFlinger: id=32901 Removed Task=297#32901 (167)
+> 05-19 17:17:20.688  1781  1901 I SurfaceFlinger: id=32886 Removed ActivityRecord{8684763 u0 com.linnan.blindassist/.MainActivity t297}#32886 (167)
+  --------- beginning of system
+  05-19 17:17:20.688 21071 23991 D ChangeTransitionController: onTransitionFinished: TransitionRecord{9683d84 id=1595 type=CLOSE flags=0x0 c=[
+> 05-19 17:17:20.688 21071 23991 D ChangeTransitionController:    ChangeInfo{4aaf275 container=ActivityRecord{8684763 u0 com.linnan.blindassist/.MainActivity t-1 f}} flags=0x0}
+> 05-19 17:17:20.688 21071 23991 D ChangeTransitionController:    ChangeInfo{e27120a container=Task{5497b78 #297 type=standard A=10572:com.linnan.blindassist} flags=0x0}
+  05-19 17:17:20.688 21071 23991 D ChangeTransitionController:    ChangeInfo{bddea7b container=Display{#0 state=ON size=1440x3120 ROTATION_0} flags=0x0}
+  05-19 17:17:20.688 21071 23991 D ChangeTransitionController:    ChangeInfo{1108098 container=DefaultTaskDisplayArea_d0@123057757 flags=0x0}
+  05-19 17:17:20.688 21071 23991 D ChangeTransitionController:    ChangeInfo{8c540f1 container=WallpaperWindowToken{82449f6 showWhenLocked=false}_<system> flags=0x0}
+  05-19 17:17:20.694  1781  1781 I SurfaceFlinger: destroyed Task=297#32901 form LifecycleManager
+> 05-19 17:17:20.694  1781  1781 I SurfaceFlinger: destroyed ActivityRecord{8684763 u0 com.linnan.blindassist/.MainActivity t297}#32886 form LifecycleManager
+> 05-19 17:17:20.694  1781  1781 I SurfaceFlinger: destroyed e3dadd5 ActivityRecordInputSink com.linnan.blindassist/.MainActivity#32890 form LifecycleManager
+  05-19 17:17:20.694 22008 22008 D SystemUIService: SYSUI_RAM_OPTIMIZATION onTrimMemory=20
+  05-19 17:17:20.694  1781  1781 I SurfaceFlinger: [LayerHierarchy{RequestedLayerState{Task=1#11440 parentId=11397} 2 children}] reparent to LayerHierarchy{RequestedLayerState{DefaultTaskDisplayArea_d0#11397 parentId=11396} 8 children}
+  05-19 17:17:20.694  1781  1781 I SurfaceFlinger: [LayerHierarchy{RequestedLayerState{WallpaperWindowToken{82449f6 showWhenLocked=false}#11468 parentId=11395 z=1} 1 children}] reparent to LayerHierarchy{RequestedLayerState{Leaf:1:1#11395 parentId=11394} 2 children}
+  05-19 17:17:20.694  1781  1781 I SurfaceFlinger: id=32901 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Task=297#32901 !handle z=5})
+> 05-19 17:17:20.694  1781  1781 I SurfaceFlinger: id=32886 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{ActivityRecord{8684763 u0 com.linnan.blindassist/.MainActivity t297}#32886 !handle})
+  05-19 17:17:20.694 22008 22008 D CentralSurfaces: SYSUI_RAM_OPTIMIZATION onTrimMemory=20
+> 05-19 17:17:20.694  1781  1781 I SurfaceFlinger: id=32890 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{e3dadd5 ActivityRecordInputSink com.linnan.blindassist/.MainActivity#32890 !handle z=-2147483648})
+  05-19 17:17:20.694 22008 22195 D HWUI    : CacheManager::trimMemory(20)
+  05-19 17:17:20.694  1781  1781 I Layer   : id=32901 Destroyed Task=297#32901
+> 05-19 17:17:20.694  1781  1781 I Layer   : id=32886 Destroyed ActivityRecord{8684763 u0 com.linnan.blindassist/.MainActivity t297}#32886
+> 05-19 17:17:20.694  1781  1781 I Layer   : id=32890 Destroyed e3dadd5 ActivityRecordInputSink com.linnan.blindassist/.MainActivity#32890
+  05-19 17:17:20.694  1781  1781 I SurfaceFlinger: id=32905 Removed Transition Root: Task=1#32905 (164)
+  05-19 17:17:20.695 21071 21107 I DisplayDeviceRepository: Display device changed render timings: "内置屏幕", renderFrameRate=120.00001, presentationDeadlineNanos=9333333, appVsyncOffsetNanos=8333333, frameRateOverrides=[]
+  05-19 17:17:20.696 21071 21108 D SurfaceComposerClient: setCornerRadius ## f57e7e0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity#11503 cornerRadius=0.000000
+  05-19 17:17:20.751 21071 21444 D SemInputDevice:TSP: SetPropertyTask: CMD,set_grip_data,1,60,10,32,936 [05-19 17:17:20.751]
+> 05-19 17:17:20.757 25731 25731 W Routine@Core[4.9.04.13]: LaunchAppConditionChangeNotifier: isPackageIncludedInConditions: package = com.linnan.blindassist isGamePackage = SemGameManager.isGamePackage(packageName)
+> 05-19 17:17:20.757 21071 21960 D SGM:GameManager: identifyGamePackage. com.linnan.blindassist, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.IGameManagerService$Stub.onTransact(IGameManagerService.java:247)
+  05-19 17:17:20.762  1702  1721 I sysinput:aidl: onReportInformation:91, 1, cmd@set_grip_data,1,60,10,32,9
+  05-19 17:17:20.762 21071 21444 D SysinputHAL_AIDL: setProperty(TSP(1)): CMD, set_grip_data,1,60,10,32,936 ret=0
+  05-19 17:17:20.762  1702  1721 I sysinput:Touch1: operator():237, OK
+  05-19 17:17:20.800 21071 21960 D SGM:GameManager: identifyGamePackage. com.sec.android.app.launcher, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.IGameManagerService$Stub.onTransact(IGameManagerService.java:247)
+> 05-19 17:17:20.822 25731 25731 W Routine@Core[4.9.04.13]: LaunchAppConditionChangeNotifier: isPackageIncludedInConditions: package = com.linnan.blindassist isGamePackage = SemGameManager.isGamePackage(packageName)
+> 05-19 17:17:20.822 21071 21960 D SGM:GameManager: identifyGamePackage. com.linnan.blindassist, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.IGameManagerService$Stub.onTransact(IGameManagerService.java:247)
+  05-19 17:17:20.828 21071  7491 W CameraService_proxy: Unknown extension type: -1
+> 05-19 17:17:20.939 25731 25731 W Routine@Core[4.9.04.13]: LaunchAppConditionChangeNotifier: isPackageIncludedInConditions: package = com.linnan.blindassist.test isGamePackage = SemGameManager.isGamePackage(packageName)
+> 05-19 17:17:20.939 21071 21960 D SGM:GameManager: identifyGamePackage. com.linnan.blindassist.test, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.IGameManagerService$Stub.onTransact(IGameManagerService.java:247)
+  05-19 17:17:20.946 20714  7483 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 222657784
+  05-19 17:17:20.971 22008 22008 W View    : requestLayout() improperly called by com.android.systemui.qs.SecQSGradationDrawableView{75864be V.E...... ......ID 0,0-1440,413 #7f0a0a16 app:id/qs_gradation_view} during layout: running second layout pass
+  05-19 17:17:20.971 22008 22008 W View    : requestLayout() improperly called by android.widget.FrameLayout{848f91f V.E...... ......I. 0,0-1440,3120 #2} during layout: running second layout pass
+  05-19 17:17:21.271  1750  1760 E HeatmapThread: !@ CAM New BSOH: 95
+> 05-19 17:17:21.358 25731 25731 W Routine@Core[4.9.04.13]: LaunchAppConditionChangeNotifier: isPackageIncludedInConditions: package = com.linnan.blindassist isGamePackage = SemGameManager.isGamePackage(packageName)
+> 05-19 17:17:21.358 21071 21960 D SGM:GameManager: identifyGamePackage. com.linnan.blindassist, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.IGameManagerService$Stub.onTransact(IGameManagerService.java:247)
+  05-19 17:17:21.366 25731 25731 W Routine@Core[4.9.04.13]: LaunchAppConditionChangeNotifier: isPackageIncludedInConditions: package = com.sec.android.app.launcher isGamePackage = SemGameManager.isGamePackage(packageName)
+  05-19 17:17:21.366 21071 21960 D SGM:GameManager: identifyGamePackage. com.sec.android.app.launcher, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.IGameManagerService$Stub.onTransact(IGameManagerService.java:247)
+  05-19 17:17:21.431 21071  7491 W CameraService_proxy: Unknown extension type: -1
+  05-19 17:17:25.725 22940 23037 I NSLocationManager_FLP: getGPSUsingApps, No change
+> 05-19 17:17:25.729 21071 22942 D FreecessController: Try to make pkg idle: <com.linnan.blindassist.test, 10573>.
+> 05-19 17:17:25.730 21071 22942 W ActivityManager: Idling uid u0a573 from package com.linnan.blindassist.test user 0
+> 05-19 17:17:25.734 21071 22942 D FreecessController: FZ : com.linnan.blindassist.test(10573) [7106] reason: Bg [cached:O
+> 05-19 17:17:25.734 21071 22942 D FreecessHandler: freeze com.linnan.blindassist.test(10573) result : 0
+  05-19 17:17:25.735 21071 22942 W LocationManagerService: onFreezeStateChanged, uid[10573]=true
+  05-19 17:17:25.735 21071 22942 I PowerManagerService: [PWL] SetWakeLockEnableDisable uid = 10573 , disable= true
+  05-19 17:17:25.735 21071 22942 I PowerManagerService: [PWL] can not change uid =  10573
+  05-19 17:17:30.985 21071 24259 I PackageManager: START DELETE PACKAGE: observer{235934846}
+> 05-19 17:17:30.985 21071 24259 I PackageManager: pkg{com.linnan.blindassist}, user{0}, caller{2000} flags{2}
+  05-19 17:17:30.993 21071 21211 D ApplicationPolicy: getApplicationUninstallationEnabled
+  05-19 17:17:30.993 21071 21211 D ApplicationPolicy: getAppSignaturesAllBlackLists() :  userID :   0  != AdminUserID  150
+  05-19 17:17:30.993 21071 21211 D ApplicationPolicy: getApplicationUninstallationEnabled :  enabled true
+  05-19 17:17:30.993 21071 21211 D ApplicationPolicy: getApplicationUninstallationEnabled :  enabled true
+> 05-19 17:17:30.994 21071 21123 I ActivityManager: Force stopping com.linnan.blindassist appid=10572 user=-1: deletePackageX
+> 05-19 17:17:30.994 21071 21211 I AppsFilter: interaction: PackageSetting{64f6021 com.android.microdroid.empty_payload/10456} -> PackageSetting{5591366 com.linnan.blindassist/10572} BLOCKED
+> 05-19 17:17:30.995 21071 21211 I AppsFilter: interaction: PackageSetting{64f6021 com.android.microdroid.empty_payload/10456} -> PackageSetting{5591366 com.linnan.blindassist/10572} BLOCKED
+> 05-19 17:17:30.996 21071 21211 I AppsFilter: interaction: PackageSetting{64f6021 com.android.microdroid.empty_payload/10456} -> PackageSetting{5591366 com.linnan.blindassist/10572} BLOCKED
+  05-19 17:17:31.001 21071 21123 W ProcessStats: Tracking association SourceState{5729281 system/1000 BFgs #571316} whose proc state 4 is better than process ProcessState{76b4640 com.samsung.android.wallpaper.live/10132 pkg=com.samsung.android.wallpaper.live} proc state 5 (45 skipped)
+  05-19 17:17:31.022  1253 13562 I keystore2: system/security/keystore2/src/maintenance.rs:658 - clearNamespace(r#APP, nspace=10572)
+  05-19 17:17:31.025  1253 13562 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: open db: flags=33554438, /data/misc/keystore/vpnprofilestore.sqlite
+  05-19 17:17:31.110 21071 21456 D BackgroundInstallControlService: Package event received: 2
+> 05-19 17:17:31.110 21071 21456 D BackgroundInstallControlService: handlePackageRemove: removing com.linnan.blindassist from 0
+  05-19 17:17:31.111 21071 23761 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+  05-19 17:17:31.112 21071 23761 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+  05-19 17:17:31.115  1255  1255 D keymint_swd: keymint_swd keymint [WRN] (swd_run_cb:267) swd_add_rng_entropy() returns 0
+  05-19 17:17:31.115  1255  1255 D android.hardware.security.keymint-service: addRngEntropy: ret 0
+> 05-19 17:17:31.117 21071 21211 D AASA_PackageManager_RESTRICTED: Uninstall : userId = 0, info.uid = 10572, packageName = com.linnan.blindassist
+  05-19 17:17:31.123 21071 21211 I APKFromUnknownSource: /data/system/.aasa/AASApolicy/ASKS_UNKNOWN_SA_REPORTED_NEW.xml does not exist.
+  05-19 17:17:31.123 21071 21211 D PersonaManagerService: getSeparationConfigfromCache is called
+  05-19 17:17:31.123 21071 21211 I PackageManager: result of delete: 1{235934846}
+> 05-19 17:17:31.124 21071 21211 I ActivityManager: Force stopping com.linnan.blindassist appid=10572 user=95: pkg removed
+> 05-19 17:17:31.127 21071 21211 I ActivityManager: Force stopping com.linnan.blindassist appid=10572 user=0: pkg removed
+  05-19 17:17:31.141  1253 13562 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: open db: flags=33554438, /data/misc/keystore/vpnprofilestore.sqlite
+  05-19 17:17:31.142 21071 21211 I ActivityManager: broadcastAllowList remove BroadcastFilter{7cfc9da 10062/u0 ReceiverList{a476785 24041 com.samsung.android.deviceidservice/10062/u0 remote:bc794fc}}
+> 05-19 17:17:31.150 21612 21612 D CarrierSvcBindHelper: onPackageRemoved: com.linnan.blindassist
+> 05-19 17:17:31.150 21612 21876 I SatelliteAppTracker: onPackageRemoved : com.linnan.blindassist
+  05-19 17:17:31.151 21071 21455 D ShortcutService: received package broadcast intent: Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:31.151 21071 21455 D ShortcutService: removing package: com.linnan.blindassist userId=95
+  05-19 17:17:31.151  1253 13562 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: close db /data/misc/keystore/vpnprofilestore.sqlite.
+> 05-19 17:17:31.151 21612 21876 I SatelliteAppTracker: onPackageRemoved : com.linnan.blindassist
+  05-19 17:17:31.152 21071 21391 E AppOps  : attributionTag VCN not declared in manifest of android
+  05-19 17:17:31.152 21071 21276 I SmartManagerService: msg : 50
+  05-19 17:17:31.152 21071 21391 E AppOps  : attributionTag VCN not declared in manifest of android
+> 05-19 17:17:31.152 21071 21409 D AS.AudioService: com.linnan.blindassist(9510572) is removed
+  05-19 17:17:31.153 22008 22108 D ShellDesktopMode: [u0] DesktopRepository: Removes freeform task: taskId=297
+  05-19 17:17:31.153 22008 22108 W ShellDesktopMode: [u0] DesktopRepository: No display id found for task: taskId=297
+  05-19 17:17:31.153 22469  7554 I HoneySpace.RecentTasks: onRecentTasksChanged
+  05-19 17:17:31.155  6775  6791 I PaymentProvider: onPkgChanged action = android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:31.155  6775  6791 I PaymentProvider: onPkgChanged pkgName= com.linnan.blindassist, uid = 9510572
+  05-19 17:17:31.156 21071 21071 I DomainFilter: onReceive() - Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:31.156 21071 21071 I DomainFilter: packageRemoved() - packageName: com.linnan.blindassist uid: 95
+  05-19 17:17:31.156 21071 21071 I Firewall: onReceive() - Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+  05-19 17:17:31.157 21071 21312 V InputMethodManagerService: Checking com.sohu.inputmethod.sogou.samsung/.SogouIME
+> 05-19 17:17:31.157 21071 21323 V StorageManagerService: Package com.linnan.blindassist does not have legacy storage
+> 05-19 17:17:31.157 21071 21323 V StorageManagerService: Package com.linnan.blindassist does not have legacy storage
+> 05-19 17:17:31.157 21071 21224 D OverlayManager: onPackageRemoved pkgName=com.linnan.blindassist userId=95
+> 05-19 17:17:31.157 21071 21224 I OverlayManager: updateOverlaysForTarget() called with: targetPackage = [com.linnan.blindassist], userId = [95], flags = [0]
+> 05-19 17:17:31.157 21071 21224 D OverlayManager: onPackageRemoved pkgName=com.linnan.blindassist userId=0
+> 05-19 17:17:31.157 21071 21224 I OverlayManager: updateOverlaysForTarget() called with: targetPackage = [com.linnan.blindassist], userId = [0], flags = [0]
+  05-19 17:17:31.158 21071 21312 V InputMethodManagerService: Found an input method InputMethodInfo{com.sohu.inputmethod.sogou.samsung/.SogouIME, settings: com.sohu.inputmethod.sogou.SogouIMESettingsLauncher, languageSettings: null}
+  05-19 17:17:31.158 21071 21312 V InputMethodManagerService: Checking com.samsung.android.bixby.agent/.rtcvideo.volcengine.InputUiAutomationService
+  05-19 17:17:31.159 22338 22338 I RegisteredComponentCache: generateComponentsList: New Components => 
+  05-19 17:17:31.161 23836 23836 W FASProvider: delete cnt : 1
+> 05-19 17:17:31.161 21071 21247 D UsageStatsService: onPackageRemoved com.linnan.blindassist
+  05-19 17:17:31.161 22008 22008 D ControlsListingControllerImpl: ServiceConfig reloaded, count: 1
+> 05-19 17:17:31.161 22008 22008 D Navbar.Store: handleEvent(0) OnPackageRemoved(packageName=com.linnan.blindassist) [Module] NavBarStoreImpl
+  05-19 17:17:31.161 22008 22008 D Navbar.Store: --[Band]REMOTE_VIEW_PACK_PACKAGE_REMOVED
+  05-19 17:17:31.161 22008 22008 D KeyguardUpdateMonitor: received broadcast android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:31.161 22008 22008 D KeyguardShortcutManager: onReceive : Intent.EXTRA_REPLACING false, com.linnan.blindassist
+  05-19 17:17:31.161 22008 22008 D SPluginManagerImpl: onReceive: android.intent.action.PACKAGE_REMOVED, size:{com.android.systemui.lockstar.PluginLockStarManager@5636964=SPluginInstanceManager@86659179 (action=com.samsung.systemui.action.PLUGIN_LOCK_STAR), com.android.systemui.pluginlock.PluginLockMediatorImpl@8443034=SPluginInstanceManager@88541128 (action=com.samsung.systemui.action.PLUGIN_LOCK), com.samsung.android.systemui.multistar.MultiStarManager$2@85868bd=SPluginInstanceManager@5075041 (action=com.samsung.systemui.action.PLUGIN_MULTISTAR), com.android.systemui.volume.VolumeStarInteractor$start$1@9642735=SPluginInstanceManager@87857030 (action=com.samsung.systemui.volume.PLUGIN), com.android.systemui.navigationbar.plugin.PluginBarInteractionManager$pluginListener$1@b25b8cf=SPluginInstanceManager@144410695 (action=com.samsung.systemui.navigationbar.PLUGIN), com.android.systemui.slimindicator.SlimIndicatorPluginMediator@b46cf80=SPluginInstanceManager@195614836 (action=com.samsung.systemui.action.SPLUGIN_SLIMINDICATOR), com.android.systemui.noticenter.NotiCenterPlugin$NotiCenterPluginListener@d4a65b9=SPluginInstanceManager@110080413 (action=com.samsung.systemui.action.PLUGIN_NOTICENTER)}
+  05-19 17:17:31.161 22008 22008 D TileServices: mUninstallReceiver onReceive = Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:31.161 22008 22008 D SecSTQuickControlRequestReceiver: onReceiveForPackage action = android.intent.action.PACKAGE_REMOVED, pkgName = com.linnan.blindassist
+> 05-19 17:17:31.161 22008 22008 I GoodLockLifecycle: onPackageRemoved: com.linnan.blindassist
+  05-19 17:17:31.161 21071 28783 W SignedPackage: Cannot get ApplicationInfo for package: com.samsung.android.app.contacts
+  05-19 17:17:31.161 22008 22008 I LStar:PluginLockStarImpl@857026@243857026: onPackageRemoved : (4004) , isReplacing: false
+> 05-19 17:17:31.161 22008 22008 D FaceWidgetMusicViewModel: onPackageRemoved() pkg = com.linnan.blindassist, r = false
+  05-19 17:17:31.162 22008 22008 D FaceWidgetMusicViewModel: resetDataAndClear()
+> 05-19 17:17:31.162 22008 30868 I LStar:UpdatePackageChanged@20730061: onPackageRemoved com.linnan.blindassist
+  05-19 17:17:31.162 21071 28783 W SignedPackage: Cannot get ApplicationInfo for package: com.android.settings.intelligence
+  05-19 17:17:31.162  1253  6767 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: open db: flags=33554438, /data/misc/keystore/vpnprofilestore.sqlite
+  05-19 17:17:31.163  1253  6767 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: close db /data/misc/keystore/vpnprofilestore.sqlite.
+  05-19 17:17:31.163 21612 21612 D CarrierSvcBindHelper: No carrier app for: 1
+> 05-19 17:17:31.163 21071 21409 D SGM:GameManager: identifyGamePackage. com.linnan.blindassist, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.SemGameManager.isGamePackage(SemGameManager.java:106)
+> 05-19 17:17:31.164 21071 21409 D SGM:SemGameManager: isGamePackage(), pkgName=com.linnan.blindassist, ret=false
+  05-19 17:17:31.164  1253 13562 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: close db /data/misc/keystore/vpnprofilestore.sqlite.
+  05-19 17:17:31.164 22338 22338 D NfcService: got 5 packages holding permission android.permission.NFC_TRANSACTION_EVENT
+  05-19 17:17:31.164 23836 23836 W FASProvider: delete cnt : 1
+  05-19 17:17:31.165 21071 28783 W SignedPackage: Cannot get ApplicationInfo for package: com.android.shell
+> 05-19 17:17:31.165 21612 21612 D CarrierSvcBindHelper: onPackageRemoved: com.linnan.blindassist
+  05-19 17:17:31.165 22008 25428 I LStar:LockItemRemoteDao@157328023: getIdList
+  05-19 17:17:31.165 21612 21612 D CarrierSvcBindHelper: No carrier app for: 0
+  05-19 17:17:31.165 21612 21612 D CarrierSvcBindHelper: No carrier app for: 1
+  05-19 17:17:31.166 21071 23761 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+> 05-19 17:17:31.167 22008 22008 I SharedAppWidgetFacade:  onPackageRemoved com.linnan.blindassist
+> 05-19 17:17:31.167 22008 22008 I SharedWidgetListManager:  provider removed com.linnan.blindassist , size = 65 ,  65
+  05-19 17:17:31.167 22008 22008 E AbsSettings: refreshInner: refreshedSettingsDBItem key enabled_complication_widgets_id_list val = 
+  05-19 17:17:31.168 21071 28783 W SignedPackage: Cannot get ApplicationInfo for package: com.samsung.android.dialer
+  05-19 17:17:31.168 22338 22338 D NfcService: got 2 packages holding permission android.permission.NFC_PREFERRED_PAYMENT_INFO
+> 05-19 17:17:31.168 21612 21612 I VvmPkgInstalledRcvr: packageName: com.linnan.blindassist, systemDialer: com.samsung.android.dialer
+  05-19 17:17:31.168 21071 28783 W SignedPackage: Cannot get ApplicationInfo for package: com.android.systemui
+  05-19 17:17:31.168 21071 24013 I Telecom : SamsungTelecomServiceImpl : getCallCapablePhoneAccounts - includeDisabledAccounts : false / callingPackage : com.android.phone / callingUser : UserHandle{0} / hasCrossUserAccess : true
+  05-19 17:17:31.169 21071 28783 W SignedPackage: Cannot get ApplicationInfo for package: com.android.devicelockcontroller
+  05-19 17:17:31.170 21071 21604 D HealthConnectTrackerManagerImpl: Step tracking flag disabled. Aborting initialization.
+> 05-19 17:17:31.176 21071 21247 D UsageStatsService: onPackageRemoved com.linnan.blindassist
+  05-19 17:17:31.176 21612 21612 I VvmPkgInstalledRcvr: capablePhoneAccounts : [ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 2, UserHandle{0}]
+  05-19 17:17:31.176 21612 21612 I VvmPkgInstalledRcvr: capablePhoneAccounts.size : 1
+  05-19 17:17:31.177 21071 23988 I Telecom : SamsungTelecomServiceImpl : getCallCapablePhoneAccounts - includeDisabledAccounts : false / callingPackage : com.android.phone / callingUser : UserHandle{0} / hasCrossUserAccess : true
+  05-19 17:17:31.194 21612 21612 I VvmPkgInstalledRcvr: getCarrierVvmPackages : arrayPackages: null
+> 05-19 17:17:31.194 21612 21612 W VvmPkgInstalledRcvr: carrierVvmPkgAdded: carrier vvm packages doesn't contain com.linnan.blindassist
+  05-19 17:17:31.196 21071 22902 D ActivityManager: unpendingScheduleServiceRestart: u=10343, drop=false
+  05-19 17:17:31.196 21612 29067 E SmsApplication: Package not found: com.android.bluetooth
+  05-19 17:17:31.196 21071 21604 D HealthConnectTrackerManagerImpl: Step tracking flag disabled. Aborting initialization.
+> 05-19 17:17:31.198 10835 10845 I CameraManagerGlobal: Camera 0 facing CAMERA_FACING_BACK state now CAMERA_STATE_OPENING for client com.linnan.blindassist API Level 2 User Id 0Device Id 0
+  05-19 17:17:31.198 10835 10845 I CameraManagerGlobal: postSingleUpdate device: camera id 0 status STATUS_NOT_AVAILABLE
+> 05-19 17:17:31.199 10835 10845 I CameraManagerGlobal: Camera 0 facing CAMERA_FACING_BACK state now CAMERA_STATE_OPEN for client com.linnan.blindassist API Level 2 User Id 0Device Id 0
+> 05-19 17:17:31.199 10835 10845 I CameraManagerGlobal: Camera 0 facing CAMERA_FACING_BACK state now CAMERA_STATE_ACTIVE for client com.linnan.blindassist API Level 2 User Id 0Device Id 0
+> 05-19 17:17:31.199 10835 10845 I CameraManagerGlobal: Camera 0 facing CAMERA_FACING_BACK state now CAMERA_STATE_IDLE for client com.linnan.blindassist API Level 2 User Id 0Device Id 0
+  05-19 17:17:31.199 10835 10845 I CameraManagerGlobal: postSingleUpdate device: camera id 0 status STATUS_PRESENT
+> 05-19 17:17:31.199 10835 10845 I CameraManagerGlobal: Camera 0 facing CAMERA_FACING_BACK state now CAMERA_STATE_CLOSED for client com.linnan.blindassist API Level 2 User Id 0Device Id 0
+  05-19 17:17:31.199 21071 21123 D FreecessController: UFZ : com.tencent.mm(10343) [9324, 8150, 25135, 10835] reason: broadcast-android.net.wifi.RSSI_CHANGED
+  05-19 17:17:31.199 21071 22942 W LocationManagerService: onFreezeStateChanged, uid[10343]=false
+  05-19 17:17:31.199 21071 22942 D MARsPolicyManager: restrictJobsByUid: u=10343, restrict=false
+  05-19 17:17:31.202  1253  6767 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: open db: flags=33554438, /data/misc/keystore/vpnprofilestore.sqlite
+> 05-19 17:17:31.202 21071 21409 D AS.AudioService: com.linnan.blindassist(10572) is removed
+  05-19 17:17:31.202  1253  6767 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: close db /data/misc/keystore/vpnprofilestore.sqlite.
+  05-19 17:17:31.202  1253 13562 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: close db /data/misc/keystore/vpnprofilestore.sqlite.
+> 05-19 17:17:31.203 21071 21409 D SGM:GameManager: identifyGamePackage. com.linnan.blindassist, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.SemGameManager.isGamePackage(SemGameManager.java:106)
+> 05-19 17:17:31.203 21071 21409 D SGM:SemGameManager: isGamePackage(), pkgName=com.linnan.blindassist, ret=false
+  05-19 17:17:31.203 22338 22338 D RegisteredServicesCache: invalidateOther : 95
+  05-19 17:17:31.203 21071 21455 D ShortcutService: received package broadcast intent: Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:31.203 21071 21455 D ShortcutService: removing package: com.linnan.blindassist userId=0
+> 05-19 17:17:31.204 21071 21365 W WifiService: Couldn't get PackageInfo for package:com.linnan.blindassist
+> 05-19 17:17:31.204 21071 21365 D WifiService: Remove settings for package:com.linnan.blindassist
+> 05-19 17:17:31.204 21071 21365 D WifiConfigManager: Remove all networks for app ApplicationInfo{73c1d55 com.linnan.blindassist}
+  05-19 17:17:31.208 21071 21312 D InputMethodManagerService: isImeSwitcherDisabledPackage : false
+  05-19 17:17:31.208 21071 21312 D InputMethodManagerService: shouldShowImeSwitcherLocked : checking vis : 3
+> 05-19 17:17:31.210 11574 11574 I DWBPkgEventReceiver: Received : android.intent.action.PACKAGE_REMOVED, Package : com.linnan.blindassist
+  05-19 17:17:31.210 22302 22302 I MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_REMOVED
+  05-19 17:17:31.210 22302 22302 I MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_REMOVED
+  05-19 17:17:31.210 22302 22302 I MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:31.210 22940 23038 I PackageInfoManager_FLP: action : ACTION_PACKAGE_REMOVED, packageName = com.linnan.blindassist
+  05-19 17:17:31.210 11574 11574 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:2069 android.content.ContextWrapper.startService:872 com.samsung.android.forest.receiver.PkgEventReceiver.b:21 com.samsung.android.forest.receiver.PkgEventReceiver.onReceive:155 android.app.LoadedApk$ReceiverDispatcher$Args.lambda$getRunnable$0:2033 
+> 05-19 17:17:31.210 23623 23623 W MediaProvider: WorkProfileOwnerApps cache miss for package com.linnan.blindassist
+  05-19 17:17:31.210 23623 23623 D PickerSyncLockManager: Trying to acquire lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@ec738e7[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+  05-19 17:17:31.211 23623 23623 D CloseableReentrantLock: Successfully acquired lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@ec738e7[Locked by thread main]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+  05-19 17:17:31.211 23623 23623 D CloseableReentrantLock: Successfully released lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@ec738e7[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+  05-19 17:17:31.211 25901 25901 I [AirCmd]_AirCommandApplication: onReceive : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:31.211 25901 25901 I [AirCmd]_ShortcutListController: onReceive : android.intent.action.PACKAGE_REMOVED pkg = com.linnan.blindassist
+  05-19 17:17:31.212 21071 21276 I SmartManagerService: msg : 50
+  05-19 17:17:31.212 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: onReceive : android.intent.action.PACKAGE_REMOVED, userId = 0 
+  05-19 17:17:31.212  6775  6791 I PaymentProvider: bundle call : onPkgChanged
+  05-19 17:17:31.212  6775  6791 I PaymentProvider: onPkgChanged action = android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:31.212  6775  6791 I PaymentProvider: onPkgChanged pkgName= com.linnan.blindassist, uid = 10572
+> 05-19 17:17:31.212 25154 25712 I CardModelManager: updatePackageChanges com.linnan.blindassist
+> 05-19 17:17:31.212 25154 25712 I CardModelManager: updatePackageChanges com.linnan.blindassist
+  05-19 17:17:31.213 22338 22338 I RegisteredServicesCache: invalidateOther: current user: 0, is managed profile : false
+  05-19 17:17:31.213 22338 22338 I RegisteredServicesCache: invalidateOther: New Services => 
+  05-19 17:17:31.213 22338 22338 I RegisteredServicesCache: invalidateOther: Removed Services => 
+  05-19 17:17:31.214 21071 21960 I ActivityManager: Changes in 10471 19 to 5, 0 to 144
+> 05-19 17:17:31.215 29298 29298 I D_FMM:[FmmService          ]: package removed : com.linnan.blindassist
+> 05-19 17:17:31.217 21071 21365 I PasspointManager: No app ops listener found for com.linnan.blindassist
+> 05-19 17:17:31.223 12510 12545 W t       : Package "com.linnan.blindassist" not found for user UserHandle{0}
+> 05-19 17:17:31.223 12510 12545 W t       : Package "com.linnan.blindassist" not found for user UserHandle{0}
+  05-19 17:17:31.226 21071 21153 D FASDataManager: getFASDataFromDB fasEntityList size : 192
+> 05-19 17:17:31.227 12510 12542 W t       : Package "com.linnan.blindassist" not found for user UserHandle{0}
+> 05-19 17:17:31.227 12510 12545 W t       : Package "com.linnan.blindassist" not found for user UserHandle{0}
+  05-19 17:17:31.227 21071 21153 D MARsPolicyManager: deletePkgInfoInMARs size = 192
+  05-19 17:17:31.232 21071 23652 W ParceledListSlice: Element #6 is 41920 bytes.
+  05-19 17:17:31.232 21071 23652 W ParceledListSlice: Element #9 is 22528 bytes.
+  05-19 17:17:31.279 21071 21122 I SGM:GameManager: PkgUpdateReceiver, onReceive(), action=android.intent.action.PACKAGE_REMOVED, userId=95
+> 05-19 17:17:31.279 21071 21122 I SGM:GameManager: PkgUpdateReceiver, onPackageRemoved(). pkgName=com.linnan.blindassist, userId=95
+> 05-19 17:17:31.279 21071 21122 W SGM:Util: isPkgInstalled(), com.linnan.blindassist does not exist. 
+  05-19 17:17:31.279 21071 21099 W ParceledListSlice: Element #24 is 17104 bytes.
+  05-19 17:17:31.280 22338 22338 E ApduServiceInfo: Not adding <aid-group> with empty or invalid AIDs
+  05-19 17:17:31.281 22338 22338 E RegisteredServicesCache: getInstalledServices: Skipping application component ComponentInfo{com.autonavi.minimap/com.alibaba.ariver.commonability.device.jsapi.nfc.service.TinyAppHostApduService}: it must request the permission android.permission.NFC
+  05-19 17:17:31.283 22338 22338 D RegisteredServicesCache: invalidateOther : 0
+> 05-19 17:17:31.283 21071 21122 D SGM:Util: isPkgInstalled(). pkgName=com.linnan.blindassist, userId=95, installed=false
+> 05-19 17:17:31.283 21071 21122 D SGM:GosNotifyThread: sendPackageMessage(), changeType=1, pkgName=com.linnan.blindassist, userHandleId=95
+  05-19 17:17:31.283 21071 21122 D SGM:GosNotifyThread: sendPackageMessage(), Sending is blocked because it is not an uninstall event monitored app
+  05-19 17:17:31.283 22338 22338 I RegisteredServicesCache: invalidateOther: current user: 0, is managed profile : false
+  05-19 17:17:31.283 22338 22338 I RegisteredServicesCache: invalidateOther: New Services => 
+  05-19 17:17:31.290 21071 21122 D MetaDataCollector: onReceive: begin action=android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:31.290 21071 21122 D MetaDataCollector: onReceive: done pkgName=com.linnan.blindassist
+  05-19 17:17:31.292 22356 22418 I SecureElement-Terminal-SIM2: isNfcEventAllowed: No access rules for checking.
+  05-19 17:17:31.297 21071 21099 I PackageManager: START DELETE PACKAGE: observer{98395533}
+> 05-19 17:17:31.297 21071 21099 I PackageManager: pkg{com.linnan.blindassist.test}, user{0}, caller{2000} flags{2}
+  05-19 17:17:31.308 16762 16769 I .gms.persistent: Background concurrent mark compact GC freed 4329KB AllocSpace bytes, 4(148KB) LOS objects, 66% free, 15MB/47MB, paused 268us,1.577ms total 166.590ms
+  05-19 17:17:31.330 22338 22373 D libnfc_nci: ART-GC black_dense_end:0x2114000 mid_gen_end:0x211c000 post_compact_end:0x22be000 black_allocations_begin:0x3ab5000 young:1 performed_compaction:1
+  05-19 17:17:31.331 22338 22373 W libnfc_nci: Reducing the number of considered missed Gc histogram windows from 492 to 100
+  05-19 17:17:31.377 21071 21122 I SGM:GameManager: PkgUpdateReceiver, onReceive(), action=android.intent.action.PACKAGE_REMOVED, userId=0
+> 05-19 17:17:31.377 21071 21122 I SGM:GameManager: PkgUpdateReceiver, onPackageRemoved(). pkgName=com.linnan.blindassist, userId=0
+> 05-19 17:17:31.377 21071 21122 W SGM:Util: isPkgInstalled(), com.linnan.blindassist does not exist. 
+> 05-19 17:17:31.377 21071 21122 D SGM:Util: isPkgInstalled(). pkgName=com.linnan.blindassist, userId=0, installed=false
+> 05-19 17:17:31.377 21071 21122 D SGM:GosNotifyThread: sendPackageMessage(), changeType=1, pkgName=com.linnan.blindassist, userHandleId=0
+  05-19 17:17:31.377 21071 21122 D SGM:GosNotifyThread: sendPackageMessage(), Sending is blocked because it is not an uninstall event monitored app
+  05-19 17:17:31.378 21071 21167 D PowerManagerService: displayReady: false groupId=0
+  05-19 17:17:31.378 21071 21167 D DisplayPowerController[0]: animateScreenStateChange: target=ON, mIsEnabled=true
+  05-19 17:17:31.387 20714 20728 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 406546151
+> 05-19 17:17:31.387  1781  4738 I SurfaceFlinger: id=32755 Removed Surface(name=2e6c5b7 com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0x7bacab - animation-leash of starting_reveal#32755 (163)
+  05-19 17:17:31.388 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406574667  [20718 / 7797]    HINT :      list : [TID_LOW_LATENCY / 1] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.388 21071 21890 D HintManagerService: SystemUI make new AppHintSession but force pause
+  05-19 17:17:31.389 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406574667  [20718 / 7797]    HINT :      list : [TID_LOW_LATENCY / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.390  1781  1781 I SurfaceFlinger: destroyed ActivityRecord{181816768 u0 com.samsung.android.permissioncontroller/.permission.ui.GrantPermissionsActivity t288}#32573 form LifecycleManager
+> 05-19 17:17:31.390  1781  1781 I SurfaceFlinger: destroyed Surface(name=2e6c5b7 com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0x7bacab - animation-leash of starting_reveal#32755 form LifecycleManager
+  05-19 17:17:31.390  1781  1781 I SurfaceFlinger: id=32182 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Task=285#32182 !handle z=5})
+  05-19 17:17:31.390  1781  1781 I SurfaceFlinger: id=32307 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Task=288#32307 !handle z=5})
+  05-19 17:17:31.390  1781  1781 I SurfaceFlinger: id=32583 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{b6fcaf9 ActivityRecordInputSink com.samsung.android.permissioncontroller/.permission.ui.GrantPermissionsActivity#32583 !handle z=-2147483648})
+  05-19 17:17:31.390  1781  1781 I SurfaceFlinger: id=32573 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{ActivityRecord{181816768 u0 com.samsung.android.permissioncontroller/.permission.ui.GrantPermissionsActivity t288}#32573 !handle z=1})
+> 05-19 17:17:31.390  1781  1781 I SurfaceFlinger: id=32755 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Surface(name=2e6c5b7 com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0x7bacab - animation-leash of starting_reveal#32755 !handle})
+  05-19 17:17:31.391  1781  1781 I Layer   : id=32182 Destroyed Task=285#32182
+  05-19 17:17:31.391  1781  1781 I Layer   : id=32307 Destroyed Task=288#32307
+  05-19 17:17:31.391  1781  1781 I Layer   : id=32583 Destroyed b6fcaf9 ActivityRecordInputSink com.samsung.android.permissioncontroller/.permission.ui.GrantPermissionsActivity#32583
+  05-19 17:17:31.391  1781  1781 I Layer   : id=32573 Destroyed ActivityRecord{181816768 u0 com.samsung.android.permissioncontroller/.permission.ui.GrantPermissionsActivity t288}#32573
+> 05-19 17:17:31.391  1781  1781 I Layer   : id=32755 Destroyed Surface(name=2e6c5b7 com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0x7bacab - animation-leash of starting_reveal#32755
+> 05-19 17:17:31.391  1781  4738 I SurfaceFlinger: id=32771 Removed Surface(name=9424007 com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0xe8e5d63 - animation-leash of starting_reveal#32771 (158)
+  05-19 17:17:31.391 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406574667  [20718 / 7797]    HINT :      list : [TID_LOW_LATENCY / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.391 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406603184  [20718 / 7798]    HINT :      list : [UCLAMP_MIN_BOOST / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.392 20714 20728 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 406574667
+  05-19 17:17:31.395 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406631702  [20718 / 7799]    HINT :      list : [TID_LOW_LATENCY / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+> 05-19 17:17:31.396  1781  2542 I SurfaceFlinger: id=32794 Removed Surface(name=87431c com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xa9d158e - animation-leash of starting_reveal#32794 (158)
+  05-19 17:17:31.398  1781  2542 I VSyncReactor: Current= 120, Period= 120, Distance= 120
+> 05-19 17:17:31.398  1781  1781 I SurfaceFlinger: destroyed Surface(name=87431c com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xa9d158e - animation-leash of starting_reveal#32794 form LifecycleManager
+> 05-19 17:17:31.398  1781  1781 I SurfaceFlinger: destroyed Surface(name=9424007 com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0xe8e5d63 - animation-leash of starting_reveal#32771 form LifecycleManager
+> 05-19 17:17:31.398  1781  1781 I SurfaceFlinger: id=32794 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Surface(name=87431c com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xa9d158e - animation-leash of starting_reveal#32794 !handle})
+> 05-19 17:17:31.398  1781  1781 I SurfaceFlinger: id=32771 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Surface(name=9424007 com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0xe8e5d63 - animation-leash of starting_reveal#32771 !handle})
+> 05-19 17:17:31.398  1781  1781 I Layer   : id=32794 Destroyed Surface(name=87431c com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xa9d158e - animation-leash of starting_reveal#32794
+> 05-19 17:17:31.398  1781  1781 I Layer   : id=32771 Destroyed Surface(name=9424007 com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0xe8e5d63 - animation-leash of starting_reveal#32771
+  05-19 17:17:31.399 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406631702  [20718 / 7799]    HINT :      list : [TID_LOW_LATENCY / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.399 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406660221  [20718 / 7800]    HINT :      list : [UCLAMP_MIN_BOOST / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.400 20714 20728 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 406631702
+  05-19 17:17:31.402 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406717262  [20718 / 7802]    HINT :      list : [UCLAMP_MIN_BOOST / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+> 05-19 17:17:31.402  1781  2542 I SurfaceFlinger: id=32807 Removed Surface(name=9d78edc com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0x796ef56 - animation-leash of starting_reveal#32807 (156)
+  05-19 17:17:31.402 20714 20728 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 406688741
+  05-19 17:17:31.403 20714 20728 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 406717262
+  05-19 17:17:31.403 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406745784  [20718 / 7803]    HINT :      list : [TID_LOW_LATENCY / 1] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.405 20714 20728 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 406774307
+> 05-19 17:17:31.405  1781  2542 I SurfaceFlinger: id=32832 Removed Surface(name=bfc5fb8 com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xade3204 - animation-leash of starting_reveal#32832 (156)
+  05-19 17:17:31.406 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406802831  [20718 / 7805]    HINT :      list : [TID_LOW_LATENCY / 1] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+> 05-19 17:17:31.406  1781  1781 I SurfaceFlinger: destroyed Surface(name=bfc5fb8 com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xade3204 - animation-leash of starting_reveal#32832 form LifecycleManager
+> 05-19 17:17:31.406  1781  1781 I SurfaceFlinger: destroyed Surface(name=9d78edc com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0x796ef56 - animation-leash of starting_reveal#32807 form LifecycleManager
+  05-19 17:17:31.406 21071 21890 D HintManagerService: SystemUI make new AppHintSession but force pause
+> 05-19 17:17:31.406  1781  1781 I SurfaceFlinger: id=32832 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Surface(name=bfc5fb8 com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xade3204 - animation-leash of starting_reveal#32832 !handle})
+> 05-19 17:17:31.406  1781  1781 I SurfaceFlinger: id=32807 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Surface(name=9d78edc com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0x796ef56 - animation-leash of starting_reveal#32807 !handle})
+> 05-19 17:17:31.406  1781  1781 I Layer   : id=32832 Destroyed Surface(name=bfc5fb8 com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xade3204 - animation-leash of starting_reveal#32832
+> 05-19 17:17:31.406  1781  1781 I Layer   : id=32807 Destroyed Surface(name=9d78edc com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0x796ef56 - animation-leash of starting_reveal#32807
+  05-19 17:17:31.407 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406802831  [20718 / 7805]    HINT :      list : [TID_LOW_LATENCY / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+> 05-19 17:17:31.408  1781  2542 I SurfaceFlinger: id=32847 Removed Surface(name=59503f9 com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0xce11710 - animation-leash of starting_reveal#32847 (154)
+  05-19 17:17:31.408 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406802831  [20718 / 7805]    HINT :      list : [TID_LOW_LATENCY / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.408 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 406831356  [20718 / 7806]    HINT :      list : [UCLAMP_MIN_BOOST / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.409 20714 20728 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 406802831
+  05-19 17:17:31.414 20714 20728 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 407002527
+> 05-19 17:17:31.414  1781  2542 I SurfaceFlinger: id=32882 Removed Surface(name=5cd160f com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xc1626a3 - animation-leash of starting_reveal#32882 (154)
+> 05-19 17:17:31.414  1781  1781 I SurfaceFlinger: destroyed Surface(name=5cd160f com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xc1626a3 - animation-leash of starting_reveal#32882 form LifecycleManager
+> 05-19 17:17:31.414  1781  1781 I SurfaceFlinger: destroyed Surface(name=59503f9 com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0xce11710 - animation-leash of starting_reveal#32847 form LifecycleManager
+> 05-19 17:17:31.415  1781  1781 I SurfaceFlinger: id=32882 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Surface(name=5cd160f com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xc1626a3 - animation-leash of starting_reveal#32882 !handle})
+> 05-19 17:17:31.415  1781  1781 I SurfaceFlinger: id=32847 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Surface(name=59503f9 com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0xce11710 - animation-leash of starting_reveal#32847 !handle})
+> 05-19 17:17:31.415  1781  1781 I Layer   : id=32882 Destroyed Surface(name=5cd160f com.linnan.blindassist.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity)/@0xc1626a3 - animation-leash of starting_reveal#32882
+  05-19 17:17:31.415 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 407031059  [20718 / 7813]    HINT :      list : [TID_LOW_LATENCY / 1] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+> 05-19 17:17:31.415  1781  1781 I Layer   : id=32847 Destroyed Surface(name=59503f9 com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0xce11710 - animation-leash of starting_reveal#32847
+  05-19 17:17:31.416 21071 21101 D HintManagerService: SystemUI make new AppHintSession but force pause
+  05-19 17:17:31.416 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 407031059  [20718 / 7813]    HINT :      list : [TID_LOW_LATENCY / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.417 20714 20728 I HYPER-HAL: [RequestManager.cpp]acquire(): Acquired ID : 407031059  [20718 / 7813]    HINT :      list : [TID_LOW_LATENCY / 0] [TID / 22192] [TID / 22194] [TID / 22153] [TID / 22195] 
+  05-19 17:17:31.417 20714 20728 I HYPER-HAL: [RequestManager.cpp]releaseLocked(): Released ID : 407059592
+> 05-19 17:17:31.417  1781  2542 I SurfaceFlinger: id=32897 Removed Surface(name=2abf0ad com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0x74454d5 - animation-leash of starting_reveal#32897 (152)
+  05-19 17:17:31.418 22008 22023 W System  : A resource failed to call release. 
+  05-19 17:17:31.419 22008 22023 W System  : A resource failed to call release. 
+  05-19 17:17:31.419 22008 22023 W System  : A resource failed to call release. 
+  05-19 17:17:31.422 22008 22023 W System  : A resource failed to call release. 
+> 05-19 17:17:31.423  1781  1781 I SurfaceFlinger: destroyed Surface(name=2abf0ad com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0x74454d5 - animation-leash of starting_reveal#32897 form LifecycleManager
+> 05-19 17:17:31.423  1781  1781 I SurfaceFlinger: id=32897 onLayerDestroyed from LayerHierarchyBuilder(RequestedLayerState{Surface(name=2abf0ad com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0x74454d5 - animation-leash of starting_reveal#32897 !handle})
+> 05-19 17:17:31.423  1781  1781 I Layer   : id=32897 Destroyed Surface(name=2abf0ad com.linnan.blindassist/com.linnan.blindassist.MainActivity)/@0x74454d5 - animation-leash of starting_reveal#32897
+  05-19 17:17:31.423 22008 22023 W System  : A resource failed to call release. 
+  05-19 17:17:31.423 22008 22023 W System  : A resource failed to call release. 
+  05-19 17:17:31.423 22008 22023 W System  : A resource failed to call release. 
+  05-19 17:17:31.444  6775  7643 I Dc.IafdDbManagerCN: onPackageChanged android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:31.447 11574 11574 I DWBPkgEventService: startId : 1, Received : com.samsung.android.forest.PACKAGE_REMOVED, Package : com.linnan.blindassist
+  05-19 17:17:31.447 11574 13895 I DWBLocalPkgRepositoryIm: clearCache
+  05-19 17:17:31.447 11574 13895 I DWBCacheFlow: clear : lock before
+  05-19 17:17:31.447 11574 13895 I DWBCacheFlow: clear : lock start
+  05-19 17:17:31.451 21071 21123 I ActivityManager: Changes in 10129 19 to 11, 0 to 128
+> 05-19 17:17:31.454 21071 21253 I RollbackManager: broadcast=ACTION_PACKAGE_FULLY_REMOVED pkg=com.linnan.blindassist
+  05-19 17:17:31.455 22008 25428 D LStar:LockItemRemoteDao@157328023: call Get, ids, null || result=true, [Ljava.lang.String;@cc9a2d1
+  05-19 17:17:31.457 21071 21071 W LoadedApk: Slow system_server main thread handled for android.intent.action.PACKAGE_REMOVED took 299 ms, Receiver = com.android.server.security.KeyChainSystemService$1@e5dc086
+  05-19 17:17:31.458 21071 21071 W Looper  : Slow dispatch took 298ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@5f29add m=0
+  05-19 17:17:31.473 21071 21211 D ApplicationPolicy: getApplicationUninstallationEnabled :  enabled true
+> 05-19 17:17:31.473 21071 21211 I AppsFilter: interaction: PackageSetting{64f6021 com.android.microdroid.empty_payload/10456} -> PackageSetting{ba4d5d9 com.linnan.blindassist.test/10573} BLOCKED
+> 05-19 17:17:31.474 21071 21211 I AppsFilter: interaction: PackageSetting{64f6021 com.android.microdroid.empty_payload/10456} -> PackageSetting{ba4d5d9 com.linnan.blindassist.test/10573} BLOCKED
+> 05-19 17:17:31.474 21071 21211 I AppsFilter: interaction: PackageSetting{64f6021 com.android.microdroid.empty_payload/10456} -> PackageSetting{ba4d5d9 com.linnan.blindassist.test/10573} BLOCKED
+> 05-19 17:17:31.474  6775  7634 I Dc.ManageAppDataUtils: onPkgChanged pkgName: com.linnan.blindassist, uid: 9510572
+  05-19 17:17:31.474 22356 22418 I SecureElementService: SEReader getReaders()
+  05-19 17:17:31.474 22356 22418 D SecureElementService: getReaders() for com.samsung.android.nfc
+  05-19 17:17:31.479 24580 24635 I Z-SamsungAccount: [AccountManagerProvider] isChildAccount
+  05-19 17:17:31.479 21071 21071 D ConditionProviders.SCP: onScheduleEnabled : false
+> 05-19 17:17:31.479 21071 21071 I ConditionProviders: Disallowing condition provider com.linnan.blindassist (userSet: true)
+  05-19 17:17:31.480 21071 21071 D ConditionProviders: populateComponentsToBind userComponents userId=0 componentName=ComponentInfo{com.google.android.gms/com.google.android.location.settings.DrivingConditionProvider}
+  05-19 17:17:31.480 21071 21071 D ConditionProviders: populateComponentsToBind snoozed userId=0 componentName=ComponentInfo{com.google.android.gms/com.google.android.location.settings.DrivingConditionProvider}
+  05-19 17:17:31.480 21071 21071 I DomainFilter: onReceive() - Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:31.480 21071 21071 I DomainFilter: packageRemoved() - packageName: com.linnan.blindassist uid: 0
+  05-19 17:17:31.480 21071 21312 V InputMethodManagerService: Checking com.sohu.inputmethod.sogou.samsung/.SogouIME
+  05-19 17:17:31.480 21071 21507 D SemWifiTransportLayerMonitor.TcpMonitorHandler: MSG_SAVE_PACKAGE_INFO
+  05-19 17:17:31.480 21071 21507 D SemWifiTransportLayerFileManager: saveWifiPackageInfoToFile
+  05-19 17:17:31.482 21071 21071 D AppJumpBlockTool: mAppJumpBlockReceiver get intent=Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:31.482 21071 21071 I AppJumpBlockTool: resetAlwaysAllowList:[com.linnan.blindassist] for userId:0
+> 05-19 17:17:31.482 21071 21071 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = com.samsung.android.core_app_jump_block_com.linnan.blindassist
+  05-19 17:17:31.482 21071 21312 V InputMethodManagerService: Found an input method InputMethodInfo{com.samsung.android.honeyboard/.service.HoneyBoardService, settings: com.samsung.android.honeyboard.settings.common.HoneyBoardSettingsActivity, languageSettings: null}
+  05-19 17:17:31.482 21071 21312 V InputMethodManagerService: Checking com.samsung.android.honeyboard/com.samsung.android.writingtoolkit.service.FakeHoneyBoardService
+  05-19 17:17:31.482 21071 21312 V InputMethodManagerService: Found an input method InputMethodInfo{com.samsung.android.honeyboard/com.samsung.android.writingtoolkit.service.FakeHoneyBoardService, settings: null, languageSettings: null}
+  05-19 17:17:31.484 21071 21312 V InputMethodManagerService: Found an input method InputMethodInfo{com.tencent.wetype/.plugin.hld.WxHldService, settings: com.tencent.wetype.plugin.hld.reactnative.activity.ImeMainSettingActivity, languageSettings: null}
+> 05-19 17:17:31.484 21071 21071 I Telecom : CarModeTracker: Package com.linnan.blindassist is not tracked.: SSH.oR@nPE
+  05-19 17:17:31.484 21071 21071 I Telecom : InCallController: updateCarModeForConnections: car mode apps: : SSH.oR@nPE
+  05-19 17:17:31.484 21071 21312 V InputMethodManagerService: --- re-buildInputMethodList reset = false 
+  05-19 17:17:31.484 21071 21312 V InputMethodManagerService:  ------ caller=com.android.server.inputmethod.InputMethodManagerService$MyPackageMonitor.onFinishPackageChanges:399 com.android.internal.content.PackageMonitor.doHandlePackageEvent:596 com.android.internal.content.PackageMonitor.lambda$postHandlePackageEvent$0:435 com.android.internal.content.PackageMonitor.$r8$lambda$bSKEInwdT6Kd7GAyzMZPsXTTqeQ:0 com.android.internal.content.PackageMonitor$$ExternalSyntheticLambda0.run:0 android.os.Handler.handleCallback:995 android.os.Handler.dispatchMessage:103 android.os.Looper.loopOnce:273 android.os.Looper.loop:363 android.os.HandlerThread.run:85 
+  05-19 17:17:31.486 21071 21124 I ActivityManager: ProcessObserver broadcast disabled
+> 05-19 17:17:31.486 21071 21123 I ActivityManager: Force stopping com.linnan.blindassist.test appid=10573 user=-1: deletePackageX
+> 05-19 17:17:31.487 21071 21400 D LocationManagerService: package com.linnan.blindassist reset
+  05-19 17:17:31.488 21071 21071 D EnterpriseLicenseService: isPackageInstalled()
+> 05-19 17:17:31.489 21071 21613 I Pageboost: remove app @ runtime : com.linnan.blindassist
+  05-19 17:17:31.489 23404 23452 V OsAgent : broadcastSystemEvent - 7
+> 05-19 17:17:31.490 21071 21123 I ActivityManager: Killing 7106:com.linnan.blindassist.test/u0a573 (adj 900): stop com.linnan.blindassist.test due to deletePackageX
+> 05-19 17:17:31.490 21071 21071 D EnterpriseLicenseService: isPackageInstalled() - com.linnan.blindassist not found in user 0
+> 05-19 17:17:31.490 21071 21071 D EnterpriseLicenseService: isPackageInstalled() - com.linnan.blindassist not found in user 95
+> 05-19 17:17:31.490 21071 21071 D EnterpriseLicenseService: isPackageInstalled() - com.linnan.blindassist not found in user 150
+  05-19 17:17:31.490 21071 21071 D AppSearchAppsIndexerManagerS: userid in package receiver: 9510572
+  05-19 17:17:31.490 21071 22902 D ActivityManager: unpendingScheduleServiceRestart: u=10573, drop=true
+  05-19 17:17:31.491 21071 26357 W libc    : Access denied finding property "ro.bootimage.build.fingerprint"
+  05-19 17:17:31.498  1253  1285 I keystore2: system/security/keystore2/src/maintenance.rs:658 - clearNamespace(r#APP, nspace=10573)
+> 05-19 17:17:31.498 21071 22900 D FreecessController: UFZ : com.linnan.blindassist.test(10573) [7106] reason: Signal
+  05-19 17:17:31.498 21071 22942 W LocationManagerService: onFreezeStateChanged, uid[10573]=false
+  05-19 17:17:31.498 21071 22942 D MARsPolicyManager: restrictJobsByUid: u=10573, restrict=false
+> 05-19 17:17:31.499 21071 21123 D ActivityManager: proc ProcessRecord{3734235 7106:com.linnan.blindassist.test/u0a573} already removed. so we skip next process.
+  05-19 17:17:31.501 21071 21312 D InputMethodManagerService: isImeSwitcherDisabledPackage : false
+  05-19 17:17:31.501 21071 21312 D InputMethodManagerService: shouldShowImeSwitcherLocked : checking vis : 3
+  05-19 17:17:31.504  1253  1285 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: open db: flags=33554438, /data/misc/keystore/vpnprofilestore.sqlite
+  05-19 17:17:31.606 21071 21071 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = zen_mode_config_etag
+> 05-19 17:17:31.607  6775  7643 I Dc.ManageAppDataUtils: onPkgChanged pkgName: com.linnan.blindassist, uid: 10572
+  05-19 17:17:31.607 21071 21071 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = zen_mode
+  05-19 17:17:31.608 21071 21071 D ConditionProviders.SCP: onScheduleEnabled : false
+> 05-19 17:17:31.608 21071 21071 I ConditionProviders: Disallowing condition provider com.linnan.blindassist (userSet: true)
+  05-19 17:17:31.610 21071 21071 D ConditionProviders: populateComponentsToBind userComponents userId=0 componentName=ComponentInfo{com.google.android.gms/com.google.android.location.settings.DrivingConditionProvider}
+  05-19 17:17:31.610 21071 21071 D ConditionProviders: populateComponentsToBind snoozed userId=0 componentName=ComponentInfo{com.google.android.gms/com.google.android.location.settings.DrivingConditionProvider}
+  05-19 17:17:31.611 21071 21456 D BackgroundInstallControlService: Package event received: 0
+  05-19 17:17:31.614 21071 21456 D BackgroundInstallControlService: Package event received: 2
+> 05-19 17:17:31.614 21071 21456 D BackgroundInstallControlService: handlePackageRemove: removing com.linnan.blindassist.test from 0
+  05-19 17:17:31.616 21071 22267 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1000, code = CAMERA, mode = foreground, callingUid = 1000, oldMode = foreground
+> 05-19 17:17:31.619 21071 21211 D AASA_PackageManager_RESTRICTED: Uninstall : userId = 0, info.uid = 10573, packageName = com.linnan.blindassist.test
+  05-19 17:17:31.620 24580 24635 I Z-SamsungAccount: [TPMU]  SIMState     :SIM_STATE_READY
+  05-19 17:17:31.620 24580 24635 I Z-SamsungAccount: [CountryCodeUtil] isChinaCountryCode : true
+  05-19 17:17:31.620 21071 21211 I APKFromUnknownSource: /data/system/.aasa/AASApolicy/ASKS_UNKNOWN_SA_REPORTED_NEW.xml does not exist.
+  05-19 17:17:31.659 11146  7710 I Blockstore: (REDACTED) [DataStoreImpl] Removing Blockstore data for packages %s
+> 05-19 17:17:31.659 21071 21223 V ActivityManager: Got obituary of 7106:com.linnan.blindassist.test
+  05-19 17:17:31.660 21071 21071 W Looper  : Slow dispatch took 161ms main app=system_server main=true group=FOREGROUND h=com.android.server.notification.NotificationManagerService$WorkerHandler c=null m=8
+  05-19 17:17:31.660 21071 21071 D ApplicationPolicy: No requested permission found.
+  05-19 17:17:31.660 21071 21071 D ApplicationPolicy: No requested permission found.
+  05-19 17:17:31.665  7679  7679 D nativeloader: Load libstats_jni.so using APEX ns com_android_os_statsd for caller /apex/com.android.os.statsd/javalib/framework-statsd.jar: ok
+> 05-19 17:17:31.665 11146  7684 W RWIPackageIntentOps: Registries cleared for package: com.linnan.blindassist
+> 05-19 17:17:31.666 21071 21211 I ActivityManager: Force stopping com.linnan.blindassist.test appid=10573 user=0: pkg removed
+  05-19 17:17:31.669 21071 21278 D ActivityManager: Received BROADCAST intent 0x1a5d493 Key{broadcastIntent pkg=com.samsung.android.onetouch intent=act=com.samsung.android.onetouch.action.ACTION_PKG_REMOVE xflg=0x4 cmp=com.samsung.android.onetouch/.receiver.OtchGeneralReceiver flags=0x2000000 u=0} requestCode=0 sent=0 from uid 1000
+  05-19 17:17:31.669 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: Send intent com.samsung.android.onetouch.action.ACTION_PKG_REMOVE, userId: 0 by broadcast 
+> 05-19 17:17:31.669 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: Package com.linnan.blindassist is removed on User 95 
+> 05-19 17:17:31.669 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: Package com.linnan.blindassist is removed on User 0 
+  05-19 17:17:31.672 23404 23452 V OsAgent : broadcastSystemEvent - 7
+  05-19 17:17:31.679  7679  7679 D nativeloader: Configuring clns-shared-9 for other apk /system/framework/imsmanager.jar. target_sdk_version=36, uses_libraries=ALL, library_path=/system/priv-app/Telecom/lib/arm64:/system/priv-app/Telecom/Telecom.apk!/lib/arm64-v8a:/system/lib64:/system_ext/lib64, permitted_path=/data:/mnt/expand:/data/user_de/95/com.android.server.telecom:/system/priv-app/Telecom:/system/lib64:/system_ext/lib64
+  05-19 17:17:31.680  7679  7679 D nativeloader: Extending system_exposed_libraries: libhumantracking.arcsoft.so:libface_recognition.arcsoft.so:libpic_best.arcsoft.so:libPortraitDistortionCorrection.arcsoft.so:libPortraitDistortionCorrectionCali.arcsoft.so:libface_landmark.arcsoft.so:libFacialStickerEngine.arcsoft.so:libfrtracking_engine.arcsoft.so:libFaceRecognition.arcsoft.so:libveengine.arcsoft.so:lib_pet_detection.arcsoft.so:libae_bracket_hdr.arcsoft.so:libdigital_tele_scope.arcsoft.so:libdigital_tele_scope_rawsr.arcsoft.so:libsf_tetra_enhance.arcsoft.so:libmf_bayer_enhance.arcsoft.so:libhybrid_high_dynamic_range.arcsoft.so:libimage_enhancement.arcsoft.so:libmacroclearshot_raw.arcsoft.so:libFacialAttributeDetection.arcsoft.so:libobjectcapture_jni.arcsoft.so:libobjectcapture.arcsoft.so:libmultisourceseparator.audio.samsung.so:libaudiomirroring_jni.audiomirroring.samsung.so:libBeauty_v4.camera.samsung.so:libexifa.camera.samsung.so:libjpega.camera.samsung.so:libOpenCv.camera.samsung.so:libaifrcInterface.camera.samsung.so:libBestPhoto.camera.samsung.so:lib
+> 05-19 17:17:31.685 11146  7709 W SQLiteLog: (28) double-quoted string literal: "com.linnan.blindassist"
+  05-19 17:17:31.685  7711  7711 I msung.klmsagent: Using CollectorTypeCMC GC.
+  05-19 17:17:31.686 21071 23761 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+  05-19 17:17:31.686 21071 23761 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+  05-19 17:17:31.689 21071 21124 W ActivityManager: Slow operation: 56ms so far, now at startProcess: done updating battery stats
+> 05-19 17:17:31.689 21071 21224 D OverlayManager: onPackageRemoved pkgName=com.linnan.blindassist.test userId=0
+> 05-19 17:17:31.689 21071 21224 I OverlayManager: updateOverlaysForTarget() called with: targetPackage = [com.linnan.blindassist.test], userId = [0], flags = [0]
+  05-19 17:17:31.689 21071 21124 W ActivityManager: Slow operation: 57ms so far, now at startProcess: building log message
+  05-19 17:17:31.689 21071 21124 I ActivityManager: Start proc 7711:com.samsung.klmsagent/u0a80 for content provider {com.samsung.klmsagent/com.samsung.klmsagent.common.LicenseAgentProvider}
+  05-19 17:17:31.689 21071 21124 W ActivityManager: Slow operation: 57ms so far, now at startProcess: starting to update pids map
+  05-19 17:17:31.689 21071 21124 W ActivityManager: Slow operation: 57ms so far, now at startProcess: done updating pids map
+> 05-19 17:17:31.690 21071 21247 D UsageStatsService: onPackageRemoved com.linnan.blindassist.test
+  05-19 17:17:31.691 21071 21312 V InputMethodManagerService: Checking com.sohu.inputmethod.sogou.samsung/.SogouIME
+  05-19 17:17:31.693 11574 11574 I DWBDwWidgetService: onDestroy
+> 05-19 17:17:31.693 21071 21323 V StorageManagerService: Package com.linnan.blindassist.test does not have legacy storage
+> 05-19 17:17:31.693 10666  7691 I ProximityAuth: [RecentAppsMediator] Package removed: (user=UserHandle{95}) com.linnan.blindassist
+  05-19 17:17:31.696  1626 22640 D vendor.qti.bluetooth@1.1-wake_lock: Release wakelock is released 
+  05-19 17:17:31.698  7679  7679 V GraphicsEnvironment: Currently set values for:
+  05-19 17:17:31.698  7679  7679 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+  05-19 17:17:31.873 20688  7264 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+> 05-19 17:17:31.873 11146  1598 I Icing   : doRemovePackageData com.linnan.blindassist
+  05-19 17:17:31.873 20688 14835 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+  05-19 17:17:31.874 20688  7264 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+  05-19 17:17:31.874 20688 25004 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+  05-19 17:17:31.887 21071 21456 D BackgroundInstallControlService: Package event received: 0
+> 05-19 17:17:31.889 16762  7707 I ProximityAuth: [RecentAppsMediator] Package removed: (user=UserHandle{0}) com.linnan.blindassist
+  05-19 17:17:31.889 21071 21315 D AccessibilityManagerService: componentId : null userState.getTargetAssignedToAccessibilityButton() : null
+  05-19 17:17:31.889 21071 21315 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+  05-19 17:17:31.890 21071 21315 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = accessibility_enabled
+  05-19 17:17:31.899 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+> 05-19 17:17:31.899 21071 18600 D IntervalStats: Unable to parse usage stats packages: [532, 534, 567, 584, 605, 606, 608, 623, 625, 647, 852, 870, 967, 974, 980, 996, 1011, 1034, 1036, 1038, 1045, 1046, 1047, 1048, 1050, 1052, 1054, 1058, 1059, 1060, 1064, 1069, 1070, 1076, 1078, 1079, 1080, 1084, 1087, 1089, 1090, 1096, 1183, 1184, 1185, 1186, 1187, 1188, 1189, 1190, 1191, 1192, 1193, 1194, 1195, 1196, 1197, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1206, 1207, 1208, 1232, 1239, 1268, 1274, 1299, 1301, 1311, 1313, 1314, 1316, 1321, 1330, 1333, 1335, 1337, 1339, 1346, 1353, 1355, 1356, 1367, 1370, 1372, 1374, 1379, 1431, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1452, 1455]
+  05-19 17:17:31.900 23836 24640 I SDHMS:k : onTaskStackChanged
+  05-19 17:17:31.900 22469  6595 I HoneySpace.RecentTasks: onRecentTasksChanged
+> 05-19 17:17:31.902 21071 23611 I Telecom : SamsungTelecomServiceImpl : clearAccounts - packageName : com.linnan.blindassist / callingPid : 7679 / processName : sts / callingUser : UserHandle{95}
+  05-19 17:17:31.903 21071 21211 I ActivityManager: broadcastAllowList remove BroadcastFilter{54b7dc9 10242/u0 ReceiverList{3f8c9d0 25463 com.qti.qcc/10242/u0 remote:6313593}}
+  05-19 17:17:31.904 25901 25984 I [AirCmd]_ActivitySwitchDetector: onTaskStackChanged : componentName - ComponentInfo{com.sec.android.app.launcher/com.sec.android.app.launcher.Launcher}
+> 05-19 17:17:31.905 21071 18600 D IntervalStats: Unable to parse usage stats packages: [28, 31, 33, 34, 35, 36, 38, 40, 42, 44, 46, 48, 50, 51, 52, 54, 56, 58, 59, 60, 61, 64, 66, 67, 69, 70, 72, 73, 74, 76, 78, 79, 80, 81]
+  05-19 17:17:31.906 22338 22338 D NfcService: handleMessage: MSG_PREFERRED_PAYMENT_CHANGED
+  05-19 17:17:31.906 22356 22418 I SecureElementService: SEReader getReaders()
+  05-19 17:17:31.906 22356 22418 D SecureElementService: getReaders() for com.samsung.android.nfc
+> 05-19 17:17:31.907 21071 18600 D IntervalStats: Unable to parse usage stats packages: [8, 16, 26, 40, 44, 80, 96, 98, 113, 129, 138, 155, 202, 204, 229, 230, 246, 275, 281, 287, 292, 306, 319, 334, 336, 343, 350, 368, 386, 404, 405, 411, 425, 428, 430, 432, 433, 435, 437, 439, 441, 443, 445, 446, 447, 449, 450, 451, 452, 454, 456]
+  05-19 17:17:31.908 22356 22418 I SecureElement-Terminal-SIM2: isNfcEventAllowed: No access rules for checking.
+  05-19 17:17:31.910 16762  7707 I Fitness : (REDACTED) FitCleanupIntentOperation received Intent %s
+  05-19 17:17:31.910 21071 18600 W BpBinder: Large outgoing transaction of 364692 bytes, interface descriptor , code 1 was sent
+> 05-19 17:17:31.910 16699  7750 W RWIPackageIntentOps: Registries cleared for package: com.linnan.blindassist
+  05-19 17:17:31.913 10666  7683 I Fitness : (REDACTED) FitCleanupIntentOperation received Intent %s
+  05-19 17:17:31.914  7742  7742 I VirtualizationService: virtualizationservice::maintenance: Failed to find a Secretkeeper instance; skipping secret management
+> 05-19 17:17:31.915 16699  7754 W SQLiteLog: (28) double-quoted string literal: "com.linnan.blindassist"
+  05-19 17:17:31.916  7742  7742 I AidlLazyServiceRegistrar: Registering service android.system.virtualizationservice
+  05-19 17:17:31.917  7742  7742 I VirtualizationService: virtualizationservice: Registered Binder service android.system.virtualizationservice.
+  05-19 17:17:31.918  7742  7742 I AidlLazyServiceRegistrar: Registering service android.system.virtualizationmaintenance
+  05-19 17:17:31.922 21071 21071 D EnterpriseLicenseService: isPackageInstalled()
+> 05-19 17:17:31.922 21071 21071 D EnterpriseLicenseService: isPackageInstalled() - com.linnan.blindassist not found in user 0
+> 05-19 17:17:31.922 21071 21071 D EnterpriseLicenseService: isPackageInstalled() - com.linnan.blindassist not found in user 95
+> 05-19 17:17:31.922 21071 21071 D EnterpriseLicenseService: isPackageInstalled() - com.linnan.blindassist not found in user 150
+> 05-19 17:17:31.922 21071 21253 I RollbackManager: broadcast=ACTION_PACKAGE_FULLY_REMOVED pkg=com.linnan.blindassist
+  05-19 17:17:31.922 21071  7770 D EnterpriseLicenseService: callLicenseAgent() - packageRemovedInternal
+  05-19 17:17:31.923 21071 21312 D InputMethodManagerService: isImeSwitcherDisabledPackage : false
+  05-19 17:17:31.923 21071 21312 D InputMethodManagerService: shouldShowImeSwitcherLocked : checking vis : 3
+  05-19 17:17:31.924 21071 21071 D SleepModePolicyController: action is >> android.intent.action.PACKAGE_FULLY_REMOVED
+> 05-19 17:17:31.925 21071 21365 W WifiService: Couldn't get PackageInfo for package:com.linnan.blindassist
+> 05-19 17:17:31.925 21071 21365 D WifiService: Remove settings for package:com.linnan.blindassist
+> 05-19 17:17:31.925 21071 21365 D WifiConfigManager: Remove all networks for app ApplicationInfo{5a82d19 com.linnan.blindassist}
+> 05-19 17:17:31.925 21071  7772 I Telecom : SamsungTelecomServiceImpl : clearAccounts - packageName : com.linnan.blindassist / callingPid : 21071 / processName : sts / callingUser : UserHandle{0}
+> 05-19 17:17:31.925 21071 21365 I PasspointManager: No app ops listener found for com.linnan.blindassist
+  05-19 17:17:31.926 21071 23755 W libc    : Access denied finding property "ro.bootimage.build.fingerprint"
+  05-19 17:17:31.926  7742  7760 I VirtualizationService: virtualizationservice::aidl: ignoring packageRemoved(user_id=95, app_id=10572)
+> 05-19 17:17:31.927 21071 21122 I CredentialManager: updateProvidersWhenPackageRemoved)pkg=com.linnan.blindassist (95)
+  05-19 17:17:31.927 21071 21122 W CredentialManager: settings key is null
+  05-19 17:17:31.927 21071 21122 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = credential_service
+> 05-19 17:17:31.928 21071 21122 D SEP_UNION_SemDeviceInfoManagerService: onPackageRemoved() :com.linnan.blindassist 
+  05-19 17:17:31.928 21071 21123 I ActivityManager: Changes in 10064 19 to 11, 0 to 128
+  05-19 17:17:31.934 23836 23836 E SQLiteLog: (1) no such table: 9510572 in "DELETE FROM [9510572]"
+  05-19 17:17:31.934 23836 23836 E SQLiteConnection: DB version: 31
+  05-19 17:17:31.936 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: Send intent com.sec.android.diagmonagent.intent.PACKAGE_FULLY_REMOVED, userId: 0 by broadcast 
+> 05-19 17:17:31.937 21071 21122 I SettingsProvider: onPackageRemoved (userId 95) PackageName = com.linnan.blindassist
+  05-19 17:17:31.937 21071  7687 W Binder  : Outgoing transactions from this process must be FLAG_ONEWAY
+  05-19 17:17:31.937 21071  7687 W Binder  : java.lang.Throwable
+  05-19 17:17:31.937 21071  7687 W Binder  : 	at android.os.BinderProxy.transact(BinderProxy.java:566)
+  05-19 17:17:31.937 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+> 05-19 17:17:31.937 21071 21122 I SpenThemeManager: package removed = com.linnan.blindassist
+  05-19 17:17:31.937 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+> 05-19 17:17:31.937 16699 28929 I Icing   : doRemovePackageData com.linnan.blindassist
+> 05-19 17:17:31.937 21071 21122 I CredentialManager: updateProvidersWhenPackageRemoved)pkg=com.linnan.blindassist (0)
+  05-19 17:17:31.938 22356 22418 I SecureElementService: SEReader getReaders()
+  05-19 17:17:31.939 22356 22418 D SecureElementService: getReaders() for com.samsung.android.nfc
+  05-19 17:17:31.940 11146 11146 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.feedback.internal.IFeedbackService dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+  05-19 17:17:31.946 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+> 05-19 17:17:31.946 21071 21122 D SEP_UNION_SemDeviceInfoManagerService: onPackageRemoved() :com.linnan.blindassist 
+  05-19 17:17:31.946 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+  05-19 17:17:31.946 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+> 05-19 17:17:31.946 21071 21122 I SettingsProvider: onPackageRemoved (userId 0) PackageName = com.linnan.blindassist
+  05-19 17:17:31.946 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+  05-19 17:17:31.946 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+  05-19 17:17:31.946 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+  05-19 17:17:31.947 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+> 05-19 17:17:31.947 21071 18600 D IntervalStats: Unable to parse usage stats packages: [532, 534, 567, 584, 605, 606, 608, 623, 625, 647, 852, 870, 967, 974, 980, 996, 1011, 1034, 1036, 1038, 1045, 1046, 1047, 1048, 1050, 1052, 1054, 1058, 1059, 1060, 1064, 1069, 1070, 1076, 1078, 1079, 1080, 1084, 1087, 1089, 1090, 1096, 1183, 1184, 1185, 1186, 1187, 1188, 1189, 1190, 1191, 1192, 1193, 1194, 1195, 1196, 1197, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1206, 1207, 1208, 1232, 1239, 1268, 1274, 1299, 1301, 1311, 1313, 1314, 1316, 1321, 1330, 1333, 1335, 1337, 1339, 1346, 1353, 1355, 1356, 1367, 1370, 1372, 1374, 1379, 1431, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1452, 1455]
+  05-19 17:17:31.948 21071 21456 D BackgroundInstallControlService: Package event received: 0
+  05-19 17:17:31.948  7711  7711 I ENTM:EventListenerService: onCreate
+  05-19 17:17:31.948 21071 21122 D EnterpriseDeviceManagerService: Package has changed for user 0
+  05-19 17:17:31.948 21071 21122 D MetaDataCollector: onReceive: begin action=android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:31.948 21071 21122 D MetaDataCollector: onReceive: done pkgName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: Calling onPackageRemoved: com.linnan.blindassist, EXTRA_REPLACING: false
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{95}, packageName=com.linnan.blindassist
+  05-19 17:17:31.949  7711  7775 I ENTM:EventListenerService: handle message 8
+  05-19 17:17:31.949  7711  7775 I ENTM:Systemprocess: handlePackageRemoved().START
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{95}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{95}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{95}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherApps: onPackageRemoved 95,com.linnan.blindassist
+> 05-19 17:17:31.949 22469 22469 I TaskEdge.PackageOperationTrackerImpl: onPackageRemoved com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{95}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{95}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: Calling onPackageRemoved: com.linnan.blindassist, EXTRA_REPLACING: false
+> 05-19 17:17:31.949  7711  7775 I ENTM:Systemprocess: handlePackageRemoved().pkgName: com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherApps: onPackageRemoved 0,com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.949 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist
+> 05-19 17:17:31.950 24133 27050 I SAMSUNGWALLET: [Hint_SimpleHintProcessMonitor] package removed : com.linnan.blindassist , execute : false
+  05-19 17:17:31.950 21071 23755 W AppSearchAppsUtil: getDynamicAppFunctionSchemasForPackages: Failed to get schema property for package: com.sec.android.gallery3d
+  05-19 17:17:31.950 21071 23755 W AppSearchAppsUtil: android.content.pm.PackageManager$NameNotFoundException
+  05-19 17:17:31.950 21071 23755 W AppSearchAppsUtil: 	at android.app.ApplicationPackageManager.getPropertyAsUser(ApplicationPackageManager.java:4464)
+  05-19 17:17:31.950 21071 23755 W AppSearchAppsUtil: 	at java.lang.Thread.run(Thread.java:1119)
+> 05-19 17:17:31.950 24133 27050 I SAMSUNGWALLET: [Hint_SimpleHintProcessMonitor] package removed : com.linnan.blindassist , execute : true
+  05-19 17:17:31.950 21071 23755 W AppSearchAppsUtil: getDynamicAppFunctionSchemasForPackages: Failed to get schema property for package: com.samsung.android.app.notes
+  05-19 17:17:31.950 21071 23755 W AppSearchAppsUtil: android.content.pm.PackageManager$NameNotFoundException
+  05-19 17:17:31.950 21071 23755 W AppSearchAppsUtil: 	at android.app.ApplicationPackageManager.getPropertyAsUser(ApplicationPackageManager.java:4464)
+  05-19 17:17:31.950 21071 21455 D ShortcutService: received package broadcast intent: Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:31.950 21071 21455 D ShortcutService: removing package: com.linnan.blindassist.test userId=0
+> 05-19 17:17:31.951 21071 21409 D AS.AudioService: com.linnan.blindassist.test(10573) is removed
+  05-19 17:17:31.951 21071 23755 W AppSearchAppsUtil: getDynamicAppFunctionSchemasForPackages: Failed to get schema property for package: com.sec.android.app.clockpackage
+  05-19 17:17:31.951 21071 23755 W AppSearchAppsUtil: android.content.pm.PackageManager$NameNotFoundException
+  05-19 17:17:31.951 21071 23755 W AppSearchAppsUtil: 	at android.app.ApplicationPackageManager.getPropertyAsUser(ApplicationPackageManager.java:4464)
+  05-19 17:17:31.951 21071 21456 D BackgroundInstallControlService: Package event received: 0
+> 05-19 17:17:31.952 22008 23968 D LauncherApps: onPackageRemoved 95,com.linnan.blindassist
+  05-19 17:17:31.952  1253  1285 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: open db: flags=33554438, /data/misc/keystore/vpnprofilestore.sqlite
+  05-19 17:17:31.952 22356 22418 I SecureElementService: SEReader getReaders()
+  05-19 17:17:31.952 22356 22418 D SecureElementService: getReaders() for com.samsung.android.nfc
+> 05-19 17:17:31.952 22008 23968 D LauncherApps: onPackageRemoved 0,com.linnan.blindassist
+  05-19 17:17:31.952 22356 22418 D SecureElementService: fail to call createContextAsUser for userId:95
+  05-19 17:17:31.952 22356 22418 D SecureElementService: fail to call createContextAsUser for userId:95
+  05-19 17:17:31.952 22356 22418 D SecureElementService: fail to call createContextAsUser for userId:95
+  05-19 17:17:31.952  1253  6767 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: open db: flags=33554438, /data/misc/keystore/vpnprofilestore.sqlite
+> 05-19 17:17:31.952 22469 22469 I HoneySpace.PackageOperationTracker: onPackageRemoved - com.linnan.blindassist UserHandle{95}
+> 05-19 17:17:31.953 22469 22469 I HoneySpace.PackageChangedCallbackImpl: onPackageRemoved: com.linnan.blindassist / UserHandle{95}
+> 05-19 17:17:31.953 22469 22469 I TaskEdge.PackageOperationTrackerImpl: onPackageRemoved com.linnan.blindassist
+  05-19 17:17:31.953  1253  6767 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: close db /data/misc/keystore/vpnprofilestore.sqlite.
+  05-19 17:17:31.953  1253  1285 E keystore2: system/security/keystore2/src/keystore2_main.rs:74 - !@ [SQLITE3] 30: close db /data/misc/keystore/vpnprofilestore.sqlite.
+> 05-19 17:17:31.953 22469 22469 I HoneySpace.PackageOperationTracker: onPackageRemoved - com.linnan.blindassist UserHandle{0}
+> 05-19 17:17:31.953 22469 22469 I HoneySpace.PackageChangedCallbackImpl: onPackageRemoved: com.linnan.blindassist / UserHandle{0}
+  05-19 17:17:31.954 21071 21456 D BackgroundInstallControlService: Package event received: 0
+> 05-19 17:17:31.954 22469  6595 I HoneySpace.IconCache: remove icon cache & DB : com.linnan.blindassist UserHandle{95}
+> 05-19 17:17:31.954 22469  6595 I HoneySpace.IconCache: removeSpecificIconDb: com.linnan.blindassist UserHandle{95}
+> 05-19 17:17:31.955  7711  7775 I ENTM:Systemprocess: checkELMActivationForPackageRemoved().START - com.linnan.blindassist
+  05-19 17:17:31.956  7711  7755 I ENTM:LicenseAgentProvider: packageRemovedInternal
+  05-19 17:17:31.956  7711  7755 I ENTM:EventsManager: sendEvent com.samsung.android.knox.klmsagent.intent.action.PACKAGE_REMOVED
+  05-19 17:17:31.956 22469 22469 I HoneySpace.HoneySpaceManagerContainer: packageUpdateEvent - com.honeyspace.sdk.source.entity.PackageOperation$Removed@b5aaf72
+> 05-19 17:17:31.957 22469 22469 I HoneySpace.HoneySpaceManagerContainer: refreshHoneyPlugin, packageName: com.linnan.blindassist
+> 05-19 17:17:31.957 22469  7554 I HoneySpace.HoneySpacePackageSourceImpl: Package removed : com.linnan.blindassist
+  05-19 17:17:31.957 22469 31237 I HoneySpace.HistoryViewModel@110545101@HomeOnly: handlePackageEvent
+  05-19 17:17:31.957 22469 31237 I HoneySpace.HistoryViewModel@110545101@HomeOnly: skip for alone
+> 05-19 17:17:31.957 22469  6595 I HoneySpace.IconCache: remove icon cache & DB : com.linnan.blindassist UserHandle{0}
+> 05-19 17:17:31.957 22469  6595 I HoneySpace.IconCache: removeSpecificIconDb: com.linnan.blindassist UserHandle{0}
+> 05-19 17:17:31.957 22469  7238 I SearchableManager: com.linnan.blindassist is not legacy engine type
+> 05-19 17:17:31.957 22469  7238 I SearchableManager: invalidate: com.linnan.blindassist
+> 05-19 17:17:31.958 21071 18600 D IntervalStats: Unable to parse usage stats packages: [28, 31, 33, 34, 35, 36, 38, 40, 42, 44, 46, 48, 50, 51, 52, 54, 56, 58, 59, 60, 61, 64, 66, 67, 69, 70, 72, 73, 74, 76, 78, 79, 80, 81]
+> 05-19 17:17:31.958 22469  6597 I HoneySpace.HoneySpacePackageSourceImpl: Package removed : com.linnan.blindassist
+  05-19 17:17:31.959 22469  6597 I HoneySpace.HistoryViewModel@110545101@HomeOnly: handlePackageEvent
+> 05-19 17:17:31.959 21071 18600 D IntervalStats: Unable to parse usage stats packages: [8, 16, 26, 40, 44, 80, 96, 98, 113, 129, 138, 155, 202, 204, 229, 230, 246, 275, 281, 287, 292, 306, 319, 334, 336, 343, 350, 368, 386, 404, 405, 411, 425, 428, 430, 432, 433, 435, 437, 439, 441, 443, 445, 446, 447, 449, 450, 451, 452, 454, 456]
+  05-19 17:17:31.959 22469  6597 I HoneySpace.HistoryViewModel@110545101@HomeOnly: skip for alone
+  05-19 17:17:31.959 21071 21071 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = zen_mode_config_etag
+> 05-19 17:17:31.959 22469  7549 I SearchableManager: com.linnan.blindassist is not legacy engine type
+> 05-19 17:17:31.959 22469  7549 I SearchableManager: invalidate: com.linnan.blindassist
+  05-19 17:17:31.959 21071 21071 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = zen_mode
+  05-19 17:17:31.959 21071 21071 D ConditionProviders.SCP: onScheduleEnabled : false
+> 05-19 17:17:31.959 21071 21071 I ConditionProviders: Disallowing condition provider com.linnan.blindassist.test (userSet: true)
+  05-19 17:17:31.959 22469 22469 I HoneySpace.WorkspaceViewModel: Package removed : ,
+  05-19 17:17:31.959 21071 21071 D ConditionProviders: populateComponentsToBind userComponents userId=0 componentName=ComponentInfo{com.google.android.gms/com.google.android.location.settings.DrivingConditionProvider}
+  05-19 17:17:31.959 21071 21071 D ConditionProviders: populateComponentsToBind snoozed userId=0 componentName=ComponentInfo{com.google.android.gms/com.google.android.location.settings.DrivingConditionProvider}
+> 05-19 17:17:31.959 21071 21409 D SGM:GameManager: identifyGamePackage. com.linnan.blindassist.test, mCurrentUserId: 0, callingMethodInfo: com.samsung.android.game.SemGameManager.isGamePackage(SemGameManager.java:106)
+> 05-19 17:17:31.959 21071 21409 D SGM:SemGameManager: isGamePackage(), pkgName=com.linnan.blindassist.test, ret=false
+  05-19 17:17:31.960  7711  7775 I ENTM:MDMBridge: getAllLicenseInfo()
+  05-19 17:17:31.961  7711  7775 I ENTM:Systemprocess: checkELMActivationForPackageRemoved().END
+> 05-19 17:17:31.961  7711  7775 I ENTM:Systemprocess: checkKLMActivationForPackageRemoved().START - com.linnan.blindassist
+  05-19 17:17:31.961 16699 16699 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.feedback.internal.IFeedbackService dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+  05-19 17:17:31.961 16699 16699 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.feedback.internal.IFeedbackService dat=chimera-action:/... xflg=0x4 cmp=com.google.android.gms/.chimera.GmsBoundBrokerService }
+  05-19 17:17:31.962  7711  7775 I ENTM:LicenseEngine: LicenseEngine( context ).
+  05-19 17:17:31.962  7711  7775 I ENTM:KLMDeactivationModule: processDeactivationRequest().START
+> 05-19 17:17:31.962  7711  7775 I ENTM:DataBaseUtils: isSameTrackerIdInDeviceDB().START: com.linnan.blindassist
+  05-19 17:17:31.962 23836 24072 I SDHMS:x : Event handlePackageRemovedLocked will starts.
+  05-19 17:17:31.963 21071 18600 W BpBinder: Large outgoing transaction of 364692 bytes, interface descriptor , code 1 was sent
+  05-19 17:17:31.963 23836 23836 W FASProvider: delete cnt : 1
+  05-19 17:17:31.966 23836 23836 W System.err: android.database.sqlite.SQLiteException: no such table: 10573 (code 1 SQLITE_ERROR[1]): , while compiling: DELETE FROM [10573]
+> 05-19 17:17:31.966 22469 22469 I HoneySpace.DataCache: deleteItem : id=189702, title=BlindAssist, type=APP, containerType=ITEM_GROUP, containerId=9, x=0, y=5, rank=-1, spanX=-1, spanY=-1, scale=1.0, component=com.linnan.blindassist/.MainActivity, profileId=95, intent=null, restored=0, hidden=UNHIDDEN, appWidgetId=-1, options=0, refPackageName=null (workspace) package removed
+  05-19 17:17:31.966 23836 23836 W System.err: 	at android.database.sqlite.SQLiteConnection.nativePrepareStatement(Native Method)
+  05-19 17:17:31.966 23836 23836 W System.err: 	at android.database.sqlite.SQLiteConnection.-$$Nest$smnativePrepareStatement(Unknown Source:0)
+  05-19 17:17:31.966 23836 23836 W System.err: 	at android.database.sqlite.SQLiteConnection$PreparedStatementCache.createStatement(SQLiteConnection.java:2056)
+  05-19 17:17:31.966 21071 21456 D BackgroundInstallControlService: Package event received: 0
+> 05-19 17:17:31.967 22469 24427 I HoneySpace.DataCache: delete item : (workspace) package removed - APP / 189702 / 9 / BlindAssist / com.linnan.blindassist/.MainActivity / -1 / 95
+  05-19 17:17:31.967 22469 22469 I HoneySpace.WorkspaceViewModel: Package removed : ,
+  05-19 17:17:31.967 22469 22469 I HoneySpace.WorkspaceFastRecyclerViewAdapter: onItemRangeRemoved id = 189701, screen = 9
+  05-19 17:17:31.967 22469 22469 I HoneySpace.IconView: createScaleAndAlphaAnim start - view=com.honeyspace.ui.common.iconview.IconViewImpl{8b602f VFED..CL. ........ 999,1576-1332,1970 #7f0a02ed app:id/icon} - BlindAssist, visibility:0, alpha:1.0, badge:0, icon:203x203, iconAlpha:255, iconState:NONE, iconSize:231, forceHideBadge:false, isTransparent:false, x=3, y=4
+  05-19 17:17:31.967 22469 22469 I HoneySpace.IconView: createScaleAndAlphaAnim start - view=com.honeyspace.ui.common.iconview.IconViewImpl{c2fd621 VFED..CL. ........ 0,1970-333,2364 #7f0a02ed app:id/icon} - BlindAssist, visibility:0, alpha:1.0, badge:0, icon:203x203, iconAlpha:255, iconState:NONE, iconSize:231, forceHideBadge:false, isTransparent:false, x=0, y=5
+> 05-19 17:17:31.967 22469 22469 I HoneySpace.DataCache: deleteItem : id=189701, title=BlindAssist, type=APP, containerType=ITEM_GROUP, containerId=9, x=3, y=4, rank=-1, spanX=-1, spanY=-1, scale=1.0, component=com.linnan.blindassist/.MainActivity, profileId=0, intent=null, restored=0, hidden=UNHIDDEN, appWidgetId=-1, options=0, refPackageName=null (workspace) package removed
+  05-19 17:17:31.967 21071 21153 D FASDataManager: getFASDataFromDB fasEntityList size : 191
+  05-19 17:17:31.968 22469 22469 I HoneySpace.HotseatViewModel@113023455@HomeOnly: Package removed : 
+  05-19 17:17:31.968 22469 22469 I HoneySpace.HotseatViewModel@113023455@HomeOnly: Package removed : 
+  05-19 17:17:31.970 22469 22469 I HoneySpace.HoneySpaceManagerContainer: packageUpdateEvent - com.honeyspace.sdk.source.entity.PackageOperation$Removed@719a4e9
+> 05-19 17:17:31.970 22469 22469 I HoneySpace.HoneySpaceManagerContainer: refreshHoneyPlugin, packageName: com.linnan.blindassist
+  05-19 17:17:31.970  7711  7775 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+  05-19 17:17:31.970 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+  05-19 17:17:31.970 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+  05-19 17:17:31.971 16699  2391 I Icing   : IndexChimeraService.getServiceInterface callingPackage=com.google.android.gms componentName=null serviceId=30
+> 05-19 17:17:31.971 22469 24427 I HoneySpace.DataCache: delete item : (workspace) package removed - APP / 189701 / 9 / BlindAssist / com.linnan.blindassist/.MainActivity / -1 / 0
+  05-19 17:17:31.971 23836 24072 I SDHMS:x : Event handlePackageRemovedLocked finished.
+  05-19 17:17:31.972 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+  05-19 17:17:31.972 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+  05-19 17:17:31.973 21071 21153 D MARsPolicyManager: updateMARsTargetPackages mMARsTargetPackages.size-192
+> 05-19 17:17:31.973 21071 18600 D IntervalStats: Unable to parse usage stats packages: [532, 534, 567, 584, 605, 606, 608, 623, 625, 647, 852, 870, 967, 974, 980, 996, 1011, 1034, 1036, 1038, 1045, 1046, 1047, 1048, 1050, 1052, 1054, 1058, 1059, 1060, 1064, 1069, 1070, 1076, 1078, 1079, 1080, 1084, 1087, 1089, 1090, 1096, 1183, 1184, 1185, 1186, 1187, 1188, 1189, 1190, 1191, 1192, 1193, 1194, 1195, 1196, 1197, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1206, 1207, 1208, 1232, 1239, 1268, 1274, 1299, 1301, 1311, 1313, 1314, 1316, 1321, 1330, 1333, 1335, 1337, 1339, 1346, 1353, 1355, 1356, 1367, 1370, 1372, 1374, 1379, 1431, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1452, 1455]
+  05-19 17:17:31.975  7742  7760 I VirtualizationService: virtualizationservice::aidl: ignoring packageRemoved(user_id=0, app_id=10572)
+  05-19 17:17:31.975 21071 21122 I SemExecuteManagerService: onSomePackagesChanged
+> 05-19 17:17:31.975 21071 21122 I SpenThemeManager: package removed = com.linnan.blindassist.test
+> 05-19 17:17:31.975 21071 21122 I CredentialManager: updateProvidersWhenPackageRemoved)pkg=com.linnan.blindassist.test (0)
+  05-19 17:17:31.976 21071 21122 W CredentialManager: settings key is null
+  05-19 17:17:31.976 21071 21122 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = credential_service
+  05-19 17:17:31.976 16699 28929 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+> 05-19 17:17:31.976 21071 21122 D SEP_UNION_SemDeviceInfoManagerService: onPackageRemoved() :com.linnan.blindassist.test 
+> 05-19 17:17:31.976 21071 21122 I SettingsProvider: onPackageRemoved (userId 0) PackageName = com.linnan.blindassist.test
+  05-19 17:17:31.978 11146  1598 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+> 05-19 17:17:31.978 21612 21612 D CarrierSvcBindHelper: onPackageRemoved: com.linnan.blindassist.test
+  05-19 17:17:31.978 21612 21612 D CarrierSvcBindHelper: No carrier app for: 0
+  05-19 17:17:31.978 21612 21612 D CarrierSvcBindHelper: No carrier app for: 1
+  05-19 17:17:31.979 21612 21612 I VvmPkgInstalledRcvr: onReceive(): android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:31.979 21612 21876 I SatelliteAppTracker: onPackageRemoved : com.linnan.blindassist.test
+> 05-19 17:17:31.979 21612 21612 I VvmPkgInstalledRcvr: packageName: com.linnan.blindassist.test, systemDialer: com.samsung.android.dialer
+  05-19 17:17:31.980 21071 23988 I Telecom : SamsungTelecomServiceImpl : getCallCapablePhoneAccounts - includeDisabledAccounts : false / callingPackage : com.android.phone / callingUser : UserHandle{0} / hasCrossUserAccess : true
+  05-19 17:17:31.980 11146  2605 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+  05-19 17:17:31.981 21071 21122 D EnterpriseDeviceManagerService: Package has changed for user 0
+  05-19 17:17:31.982 21612 21612 I VvmPkgInstalledRcvr: capablePhoneAccounts.size : 1
+> 05-19 17:17:31.983 21071 18600 D IntervalStats: Unable to parse usage stats packages: [28, 31, 33, 34, 35, 36, 38, 40, 42, 44, 46, 48, 50, 51, 52, 54, 56, 58, 59, 60, 61, 64, 66, 67, 69, 70, 72, 73, 74, 76, 78, 79, 80, 81]
+  05-19 17:17:31.982  1781  2262 I CompositionEngine: [setDisplaySize] size=(573, 53)
+> 05-19 17:17:31.983 21071 18600 D IntervalStats: Unable to parse usage stats packages: [8, 16, 26, 40, 44, 80, 96, 98, 113, 129, 138, 155, 202, 204, 229, 230, 246, 275, 281, 287, 292, 306, 319, 334, 336, 343, 350, 368, 386, 404, 405, 411, 425, 428, 430, 432, 433, 435, 437, 439, 441, 443, 445, 446, 447, 449, 450, 451, 452, 454, 456]
+  05-19 17:17:31.984 21071 23652 I Telecom : SamsungTelecomServiceImpl : getCallCapablePhoneAccounts - includeDisabledAccounts : false / callingPackage : com.android.phone / callingUser : UserHandle{0} / hasCrossUserAccess : true
+  05-19 17:17:31.984 21612 21612 I VvmPkgInstalledRcvr: phoneAccountHandle : ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 2, UserHandle{0}
+  05-19 17:17:31.984 21612 21612 I VvmPkgInstalledRcvr: pinnedTelephonyManager : android.telephony.TelephonyManager@8b5cf13
+  05-19 17:17:31.989 21612 21612 I VvmPkgInstalledRcvr: getCarrierVvmPackages : arrayPackages: null
+> 05-19 17:17:31.989 21612 21612 W VvmPkgInstalledRcvr: carrierVvmPkgAdded: carrier vvm packages doesn't contain com.linnan.blindassist.test
+  05-19 17:17:31.990 21612 21612 I Telephony: SamsungTuiRelayReceiver: registerWhoWhoPackageRemovedEvents
+  05-19 17:17:31.990 21612 21612 I Telephony: SamsungTuiRelayReceiver: registerCallBGProviderPackageRemovedEvents
+  05-19 17:17:31.990 21612 21612 I Telephony: SamsungTuiRelayReceiver: sendRelayIntentForCallBG
+  05-19 17:17:31.998 20688 21417 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+> 05-19 17:17:31.998 22469 22469 E HoneySpace.PackageUtils: com.linnan.blindassist is not installed 
+  05-19 17:17:31.999 20688 21418 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+  05-19 17:17:31.999 20688 21417 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+  05-19 17:17:31.999 20688 21418 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+  05-19 17:17:32.003 21071 21071 I DomainFilter: onReceive() - Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:32.003 21071 21071 I DomainFilter: packageRemoved() - packageName: com.linnan.blindassist.test uid: 0
+  05-19 17:17:32.003 21071 21507 D SemWifiTransportLayerMonitor.TcpMonitorHandler: MSG_SAVE_PACKAGE_INFO
+  05-19 17:17:32.003 21071 21507 D SemWifiTransportLayerFileManager: saveWifiPackageInfoToFile
+  05-19 17:17:32.003 21071 21507 D SemWifiTransportLayerFileManager: writeWifiPackageInfoList
+  05-19 17:17:32.004 21071 21071 D AppJumpBlockTool: mAppJumpBlockReceiver get intent=Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:32.004 21071 21071 I AppJumpBlockTool: resetAlwaysAllowList:[com.linnan.blindassist.test] for userId:0
+> 05-19 17:17:32.004 21071 21071 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = com.samsung.android.core_app_jump_block_com.linnan.blindassist.test
+> 05-19 17:17:32.004 22008 22008 D Navbar.Store: handleEvent(0) OnPackageRemoved(packageName=com.linnan.blindassist.test) [Module] NavBarStoreImpl
+  05-19 17:17:32.004 22008 22008 D Navbar.Store: --[Band]REMOTE_VIEW_PACK_PACKAGE_REMOVED
+  05-19 17:17:32.004 22008 22008 D KeyguardUpdateMonitor: received broadcast android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.004 22008 22008 D KeyguardShortcutManager: onReceive : Intent.EXTRA_REPLACING false, com.linnan.blindassist.test
+  05-19 17:17:32.004 22008 22008 D SPluginManagerImpl: onReceive: android.intent.action.PACKAGE_REMOVED, size:{com.android.systemui.lockstar.PluginLockStarManager@5636964=SPluginInstanceManager@86659179 (action=com.samsung.systemui.action.PLUGIN_LOCK_STAR), com.android.systemui.pluginlock.PluginLockMediatorImpl@8443034=SPluginInstanceManager@88541128 (action=com.samsung.systemui.action.PLUGIN_LOCK), com.samsung.android.systemui.multistar.MultiStarManager$2@85868bd=SPluginInstanceManager@5075041 (action=com.samsung.systemui.action.PLUGIN_MULTISTAR), com.android.systemui.volume.VolumeStarInteractor$start$1@9642735=SPluginInstanceManager@87857030 (action=com.samsung.systemui.volume.PLUGIN), com.android.systemui.navigationbar.plugin.PluginBarInteractionManager$pluginListener$1@b25b8cf=SPluginInstanceManager@144410695 (action=com.samsung.systemui.navigationbar.PLUGIN), com.android.systemui.slimindicator.SlimIndicatorPluginMediator@b46cf80=SPluginInstanceManager@195614836 (action=com.samsung.systemui.action.SPLUGIN_SLIMINDICATOR), com.android.systemui.noticenter.NotiCenterPlugin$NotiCenterPluginListener@d4a65b9=SPluginInstanceManager@110080413 (action=com.samsung.systemui.action.PLUGIN_NOTICENTER)}
+  05-19 17:17:32.004 22008 22008 D TileServices: mUninstallReceiver onReceive = Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+> 05-19 17:17:32.004 21071 21071 I Telecom : CarModeTracker: Package com.linnan.blindassist.test is not tracked.: SSH.oR@nPg
+> 05-19 17:17:32.004 22008 22008 I GoodLockLifecycle: onPackageRemoved: com.linnan.blindassist.test
+  05-19 17:17:32.004 21071 21071 I Telecom : InCallController: updateCarModeForConnections: car mode apps: : SSH.oR@nPg
+  05-19 17:17:32.004 21071 21071 I Telecom : InCallController: update carmode current:UserHandle{0} parent:null: SSH.oR@nPg
+  05-19 17:17:32.004 20688 25004 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+  05-19 17:17:32.004 22008 22008 I LStar:PluginLockStarImpl@857026@243857026: onPackageRemoved : (4004) , isReplacing: false
+> 05-19 17:17:32.004 22008 22008 D FaceWidgetMusicViewModel: onPackageRemoved() pkg = com.linnan.blindassist.test, r = false
+  05-19 17:17:32.004 22008 22008 D FaceWidgetMusicViewModel: resetDataAndClear()
+> 05-19 17:17:32.004 21071 21613 I Pageboost: remove app @ runtime : com.linnan.blindassist.test
+  05-19 17:17:32.005 21071 21123 I ActivityManager: Changes in 10137 19 to 11, 0 to 128
+  05-19 17:17:32.005 22008 22161 D SecSTQuickControlRequestReceiver: onReceive intent = Intent { act=android.intent.action.PACKAGE_REMOVED dat=package: flg=0x4000010 (has extras) }
+  05-19 17:17:32.005 20688 21418 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+> 05-19 17:17:32.005 21071 21400 D LocationManagerService: package com.linnan.blindassist.test reset
+  05-19 17:17:32.005 21071 21604 D HealthConnectTrackerManagerImpl: Step tracking flag disabled. Aborting initialization.
+  05-19 17:17:32.005 20688 25004 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+  05-19 17:17:32.005 21071 21071 D EnterpriseLicenseService: isPackageInstalled()
+> 05-19 17:17:32.005 21071 21071 D EnterpriseLicenseService: isPackageInstalled() - com.linnan.blindassist.test not found in user 0
+> 05-19 17:17:32.005 21071 21071 D EnterpriseLicenseService: isPackageInstalled() - com.linnan.blindassist.test not found in user 95
+> 05-19 17:17:32.005 21071 21071 D EnterpriseLicenseService: isPackageInstalled() - com.linnan.blindassist.test not found in user 150
+  05-19 17:17:32.005 21071 21071 D AppSearchAppsIndexerManagerS: userid in package receiver: 10573
+  05-19 17:17:32.005 21071 21071 D ApplicationPolicy: No requested permission found.
+  05-19 17:17:32.006 21071 21071 D ApplicationPolicy: No requested permission found.
+  05-19 17:17:32.006 21071  7785 D EnterpriseLicenseService: callLicenseAgent() - packageRemovedInternal
+> 05-19 17:17:32.006 22008 30868 I LStar:UpdatePackageChanged@20730061: onPackageRemoved com.linnan.blindassist.test
+  05-19 17:17:32.006 20688 25004 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+> 05-19 17:17:32.006 21071 21253 I RollbackManager: broadcast=ACTION_PACKAGE_FULLY_REMOVED pkg=com.linnan.blindassist.test
+  05-19 17:17:32.006 20688 21418 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+> 05-19 17:17:32.007 22008 22008 I SharedAppWidgetFacade:  onPackageRemoved com.linnan.blindassist.test
+> 05-19 17:17:32.007 22008 22008 I SharedWidgetListManager:  provider removed com.linnan.blindassist.test , size = 65 ,  65
+  05-19 17:17:32.007 22008 22008 E AbsSettings: refreshInner: refreshedSettingsDBItem key enabled_complication_widgets_id_list val = 
+  05-19 17:17:32.008 20430 20430 I TaskEdge.Provider: onReceive com.samsung.android.app.taskedge.action.MODIFY_PACKAGE
+  05-19 17:17:32.009  6775  6791 I PaymentProvider: bundle call : onPkgChanged
+  05-19 17:17:32.009  6775  6791 I PaymentProvider: onPkgChanged action = android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.009  6775  6791 I PaymentProvider: onPkgChanged pkgName= com.linnan.blindassist.test, uid = 10573
+  05-19 17:17:32.009  7711  7736 I ENTM:LicenseAgentProvider: packageRemovedInternal
+  05-19 17:17:32.009  7711  7736 I ENTM:EventsManager: sendEvent com.samsung.android.knox.klmsagent.intent.action.PACKAGE_REMOVED
+  05-19 17:17:32.009 21071 21278 D ActivityManager: Received BROADCAST intent 0xb15eda4 Key{broadcastIntent pkg=com.samsung.android.sm_cn intent=act=com.samsung.android.sm.ACTION_PKG_REMOVE xflg=0x4 cmp=com.samsung.android.sm_cn/com.samsung.android.sm.eventdelegation.EventDelegationReceiver flags=0x2000000 u=0} requestCode=0 sent=0 from uid 1000
+  05-19 17:17:32.012 20430 20430 I TaskEdge.CocktailBarManagerHelper: updatePanel
+> 05-19 17:17:32.012 21071 21365 W WifiService: Couldn't get PackageInfo for package:com.linnan.blindassist.test
+> 05-19 17:17:32.012 21071 21365 D WifiService: Remove settings for package:com.linnan.blindassist.test
+> 05-19 17:17:32.012 21071 21365 D WifiConfigManager: Remove all networks for app ApplicationInfo{1c89d0b com.linnan.blindassist.test}
+> 05-19 17:17:32.012 21071 21365 I PasspointManager: No app ops listener found for com.linnan.blindassist.test
+  05-19 17:17:32.013 21071 21278 D ActivityManager: Received BROADCAST intent 0x796570d Key{broadcastIntent pkg=com.android.systemui intent=act=com.samsung.android.app.edgelighting.PACKAGE_REMOVED xflg=0x4 cmp=com.android.systemui/.edgelighting.EdgeLightingReceiver$1 flags=0x2000000 u=0} requestCode=0 sent=0 from uid 1000
+  05-19 17:17:32.013 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: Send intent com.samsung.android.app.edgelighting.PACKAGE_REMOVED, userId: 0 by broadcast 
+  05-19 17:17:32.013 20688 25004 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+> 05-19 17:17:32.013 21071 21365 W WifiService: Couldn't get PackageInfo for package:com.linnan.blindassist.test
+> 05-19 17:17:32.013 21071 21365 D WifiService: Remove settings for package:com.linnan.blindassist.test
+> 05-19 17:17:32.013 21071 21365 D WifiConfigManager: Remove all networks for app ApplicationInfo{4931e01 com.linnan.blindassist.test}
+> 05-19 17:17:32.013 21071 21365 I PasspointManager: No app ops listener found for com.linnan.blindassist.test
+  05-19 17:17:32.013 21071 24013 I CocktailPolicyManager: findMatchedPolicy: find policy = 1
+> 05-19 17:17:32.013 23793 24070 E DMASA[C]: [LOGWING][k]Failed to get App version : com.linnan.blindassist
+  05-19 17:17:32.013 22469 22469 I HoneySpace.EdgePanel.CocktailHostRepositoryImpl: onUpdateCocktail ComponentInfo{com.samsung.android.app.taskedge/com.samsung.android.app.taskedge.edgepanel.TaskEdgePanelProvider} false
+  05-19 17:17:32.013 22469 22469 I HoneySpace.EdgePanel.EdgePanelContainerViewModel: cocktailHostRepository.edgePanelOperation V8.n@457b22b
+  05-19 17:17:32.014 22469 22469 I HoneySpace.EdgePanel.EdgePanelContainerViewModel: updateCocktail is received 2
+  05-19 17:17:32.015 20688 21418 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+> 05-19 17:17:32.015 22008 22008 D SecSTQuickControlRequestReceiver: onReceiveForPackage action = android.intent.action.PACKAGE_REMOVED, pkgName = com.linnan.blindassist.test
+  05-19 17:17:32.016 20430 20430 I TaskEdge.Provider: onReceive com.samsung.android.app.taskedge.action.MODIFY_PACKAGE
+  05-19 17:17:32.016 20688 21418 I AF::TrackHandle: opChanged OP_PLAY_AUDIO callback received for 
+  05-19 17:17:32.016 20430 20430 I TaskEdge.Provider: updateTaskEdgeItem: 
+  05-19 17:17:32.024 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: Send intent com.samsung.android.onetouch.action.ACTION_PKG_REMOVE, userId: 0 by broadcast 
+> 05-19 17:17:32.024 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: Package com.linnan.blindassist.test is removed on User 0 
+  05-19 17:17:32.025 23074 23074 I Finsky  : [2] xdy.g(1): xdy - Received: android.intent.action.PACKAGE_REMOVED, [1EyckpGKEbOFfBbvkN_ftvy5YEZyj1eszKiriuZZdPg]
+  05-19 17:17:32.025 16699 28929 I Icing   : Indexing done com.google.android.gms-apps
+  05-19 17:17:32.025 21071 21071 D SleepModePolicyController: action is >> android.intent.action.PACKAGE_FULLY_REMOVED
+> 05-19 17:17:32.026 23074 23074 I Finsky  : [2] xer.x(84): Package no longer installed: com.linnan.blindassist
+> 05-19 17:17:32.026 21071  7788 I Telecom : SamsungTelecomServiceImpl : clearAccounts - packageName : com.linnan.blindassist.test / callingPid : 21071 / processName : sts / callingUser : UserHandle{0}
+> 05-19 17:17:32.026 23074  6627 I Finsky  : [373] job.a(180): Asset module storage cleared for package com.linnan.blindassist.
+  05-19 17:17:32.027 21071 21123 I ActivityManager: Changes in 9510263 19 to 11, 0 to 128
+  05-19 17:17:32.027 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: onReceive : android.intent.action.PACKAGE_FULLY_REMOVED, userId = 0 
+  05-19 17:17:32.027 21071 21364 D UrspService: uid(10573) removed
+  05-19 17:17:32.032 11146  2605 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+> 05-19 17:17:32.032 23074 23074 I Finsky  : [2] xer.x(84): Package no longer installed: com.linnan.blindassist
+> 05-19 17:17:32.032 23074 23074 I Finsky  : [2] kfx.f(9): AIM: AppInfoCacheUpdater -> invalidating apps: [com.linnan.blindassist]
+  05-19 17:17:32.033 23074 23074 I Finsky  : [2] kgn.g(21): AIM: AppInfoManager-Perf > getApps > called for 1 apps
+  05-19 17:17:32.033 21071 23652 D WifiDisplayAdapter: isFitToActiveDisplayLocked : false
+  05-19 17:17:32.033  8357  8357 W ContextImpl: Failed to ensure /data/user_de/0/com.samsung.android.permissioncontroller/files: mkdir failed: ENOENT (No such file or directory)
+  05-19 17:17:32.033 23074 23074 I Finsky  : [2] acpb.f(9): Clearing split related stale data.
+> 05-19 17:17:32.034 23074 23126 I Finsky  : [279] khs.a(55): AIM: AppInfoManager-Perf > OnDeviceAppInfo > cacheHitCount=0, cacheMissCount=1. Missed  in cache (limit 10) : [com.linnan.blindassist]
+  05-19 17:17:32.034 21071 21643 D WifiDisplayAdapter: isFitToActiveDisplayLocked : false
+  05-19 17:17:32.034 21071 23988 D WifiDisplayAdapter: isFitToActiveDisplayLocked : false
+  05-19 17:17:32.034 21071 21643 D WifiDisplayAdapter: isFitToActiveDisplayLocked : false
+  05-19 17:17:32.035 21071 23611 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+> 05-19 17:17:32.036 21071 23611 D IntervalStats: Unable to parse usage stats packages: [532, 534, 567, 584, 605, 606, 608, 623, 625, 647, 852, 870, 967, 974, 980, 996, 1011, 1034, 1036, 1038, 1045, 1046, 1047, 1048, 1050, 1052, 1054, 1058, 1059, 1060, 1064, 1069, 1070, 1076, 1078, 1079, 1080, 1084, 1087, 1089, 1090, 1096, 1183, 1184, 1185, 1186, 1187, 1188, 1189, 1190, 1191, 1192, 1193, 1194, 1195, 1196, 1197, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1206, 1207, 1208, 1232, 1239, 1268, 1274, 1299, 1301, 1311, 1313, 1314, 1316, 1321, 1330, 1333, 1335, 1337, 1339, 1346, 1353, 1355, 1356, 1367, 1370, 1372, 1374, 1379, 1431, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1452, 1455]
+  05-19 17:17:32.036 21071 21278 D ActivityManager: Received BROADCAST intent 0xde57c04 Key{broadcastIntent pkg=com.sec.android.diagmonagent intent=act=com.sec.android.diagmonagent.intent.PACKAGE_FULLY_REMOVED xflg=0x4 pkg=com.sec.android.diagmonagent cmp=com.sec.android.diagmonagent/.sa.datalogging.monitor.AppInstallationMonitor$AppInstallationBroadcastReceiver flags=0x2000000 u=0} requestCode=0 sent=0 from uid 1000
+  05-19 17:17:32.036 21071 21278 D SEP_UNION_SemDeviceInfoManagerService: Send intent com.sec.android.diagmonagent.intent.PACKAGE_FULLY_REMOVED, userId: 0 by broadcast 
+  05-19 17:17:32.037 22469 22469 I TaskEdge.Panel: updatePanel
+  05-19 17:17:32.039 22469 22469 I TaskEdge.TaskEdgeDBHelper: getCount 7
+> 05-19 17:17:32.039  6775  7786 I Dc.ManageAppDataUtils: onPkgChanged pkgName: com.linnan.blindassist.test, uid: 10573
+  05-19 17:17:32.039 21071 22842 D WifiDisplayAdapter: isFitToActiveDisplayLocked : false
+  05-19 17:17:32.040 21071 23611 D WifiDisplayAdapter: isFitToActiveDisplayLocked : false
+  05-19 17:17:32.041 21071 22842 D WifiDisplayAdapter: isFitToActiveDisplayLocked : false
+  05-19 17:17:32.050  7711  7775 I ENTM:Systemprocess: handlePackageRemoved().START
+> 05-19 17:17:32.050  7711  7775 I ENTM:Systemprocess: handlePackageRemoved().pkgName: com.linnan.blindassist
+> 05-19 17:17:32.050  7711  7775 I ENTM:Systemprocess: checkELMActivationForPackageRemoved().START - com.linnan.blindassist
+  05-19 17:17:32.050  7711  7775 I ENTM:MDMBridge: getAllLicenseInfo()
+  05-19 17:17:32.050 18755 18755 I Finsky:background: [2] uru.onTrimMemory(13): Memory trim requested to level 40
+  05-19 17:17:32.050 21071 23611 I ActivityManager: Changes in 10221 11 to 3, 128 to 184
+  05-19 17:17:32.051 23404 23452 V OsAgent : broadcastSystemEvent - 7
+> 05-19 17:17:32.052 23793 24070 E DMASA[C]: [LOGWING][k]Failed to get App version : com.linnan.blindassist.test
+  05-19 17:17:32.054 14523 14523 I Dc.ExternalEventReceiver: action com.samsung.android.sm.ACTION_PKG_REMOVE
+  05-19 17:17:32.055  7711  7775 I ENTM:Systemprocess: checkELMActivationForPackageRemoved().END
+> 05-19 17:17:32.055  7711  7775 I ENTM:Systemprocess: checkKLMActivationForPackageRemoved().START - com.linnan.blindassist
+  05-19 17:17:32.055  7711  7775 I ENTM:LicenseEngine: processKLMSMessage().START
+  05-19 17:17:32.055  7711  7775 I ENTM:KLMDeactivationModule: processDeactivationRequest().START
+> 05-19 17:17:32.055  7711  7775 I ENTM:DataBaseUtils: isSameTrackerIdInDeviceDB().START: com.linnan.blindassist
+  05-19 17:17:32.057  7711  7775 I ENTM:DataBaseUtils: isSameTrackerIdInDeviceDB().END
+  05-19 17:17:32.057 22469  3726 I TaskEdge.Panel: updateSelectedItem: Item size : 7
+  05-19 17:17:32.058  7711  7775 I ENTM:MDMBridge: getAllLicenseInfo()
+  05-19 17:17:32.061  7711  7775 I ENTM:Systemprocess: handlePackageRemoved().START
+> 05-19 17:17:32.061  7711  7775 I ENTM:Systemprocess: handlePackageRemoved().pkgName: com.linnan.blindassist.test
+> 05-19 17:17:32.061  7711  7775 I ENTM:Systemprocess: checkELMActivationForPackageRemoved().START - com.linnan.blindassist.test
+  05-19 17:17:32.061  7711  7775 I ENTM:MDMBridge: getAllLicenseInfo()
+> 05-19 17:17:32.062 16762  7747 I ProximityAuth: [RecentAppsMediator] Package removed: (user=UserHandle{0}) com.linnan.blindassist.test
+  05-19 17:17:32.062  7711  7775 I ENTM:Systemprocess: checkELMActivationForPackageRemoved().END
+> 05-19 17:17:32.062  7711  7775 I ENTM:Systemprocess: checkKLMActivationForPackageRemoved().START - com.linnan.blindassist.test
+  05-19 17:17:32.062 22469  3726 I TaskEdge.ExecutableItem: Package: com.samsung.android.app.contacts mComponentName: ComponentInfo{com.samsung.android.app.contacts/com.samsung.android.contacts.contactslist.PeopleActivity}
+  05-19 17:17:32.064  7711  7775 I ENTM:LicenseEngine: processKLMSMessage().START
+  05-19 17:17:32.064  7711  7775 I ENTM:KLMDeactivationModule: processDeactivationRequest().START
+> 05-19 17:17:32.064  7711  7775 I ENTM:DataBaseUtils: isSameTrackerIdInDeviceDB().START: com.linnan.blindassist.test
+  05-19 17:17:32.065 20687 20687 D Zygote  : Forked child process 7792
+  05-19 17:17:32.066 21071 21124 I ActivityManager: Start proc 7792:com.samsung.android.applock/1000 for broadcast {com.samsung.android.applock/com.samsung.android.applock.settings.PackageActionReceiver}
+  05-19 17:17:32.066 21071 21124 I ActivityManager: ProcessObserver broadcast disabled
+  05-19 17:17:32.066 16699  7751 I Blockstore: (REDACTED) [DataStoreImpl] Removing Blockstore data for packages %s
+> 05-19 17:17:32.066 16699  7751 W RWIPackageIntentOps: Registries cleared for package: com.linnan.blindassist.test
+  05-19 17:17:32.067 23074 23074 I Finsky  : [2] xdy.g(1): xdy - Received: android.intent.action.PACKAGE_FULLY_REMOVED, [1EyckpGKEbOFfBbvkN_ftvy5YEZyj1eszKiriuZZdPg]
+> 05-19 17:17:32.067 23074 23074 I Finsky  : [2] xer.x(84): Package no longer installed: com.linnan.blindassist
+  05-19 17:17:32.067 23074 23074 I Finsky  : [2] xdy.g(1): xdy - Deduping intent android.intent.action.PACKAGE_FULLY_REMOVED
+  05-19 17:17:32.067 23074  6626 I Finsky  : [372] oss.run(113): Frosting DB delete succeeded: false
+  05-19 17:17:32.068  7711  7775 I ENTM:DataBaseUtils: isSameTrackerIdInDeviceDB().END
+  05-19 17:17:32.068 14523 14523 I Dc.ExternalEventReceiver: action com.samsung.android.sm.ACTION_PKG_REMOVE
+> 05-19 17:17:32.069 23074 23074 W Finsky  : [2] acta.b(133): STU: Failed to get storage stats for package 'com.linnan.blindassist' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+  05-19 17:17:32.070 23074 23074 I Finsky  : [2] xdy.g(1): xdy - Received: android.intent.action.PACKAGE_REMOVED, [x73IJYsSubZ3vjlBHwOW4zNT8yoDgi_V0bZBsVBF2nQ]
+  05-19 17:17:32.070 23074 23140 I Finsky  : [287] jkb.accept(156): AIM: AppInfoManager-Perf > getApps > data collection finished
+  05-19 17:17:32.070 23074 23140 I Finsky  : [287] jdv.run(40): AIM: AppInfoManager-Perf > maybeDestroyAppInfoManager is called. actives = 0
+> 05-19 17:17:32.070 23074 23074 I Finsky  : [2] xer.x(84): Package no longer installed: com.linnan.blindassist.test
+  05-19 17:17:32.070  7711  7775 I ENTM:MDMBridge: getAllLicenseInfo()
+  05-19 17:17:32.071 23074 23074 I Finsky  : [2] ajta.c(44): Do not start WearSupportService due to Wear service optimization
+> 05-19 17:17:32.071 23074 23074 I Finsky  : [2] xer.x(84): Package no longer installed: com.linnan.blindassist.test
+> 05-19 17:17:32.071 23074 23074 I Finsky  : [2] kfx.f(9): AIM: AppInfoCacheUpdater -> invalidating apps: [com.linnan.blindassist.test]
+> 05-19 17:17:32.071 23074  6627 I Finsky  : [373] job.a(180): Asset module storage cleared for package com.linnan.blindassist.test.
+  05-19 17:17:32.071 23074 23074 I Finsky  : [2] kgn.g(21): AIM: AppInfoManager-Perf > getApps > called for 1 apps
+  05-19 17:17:32.072 23074 23074 I Finsky  : [2] acpb.f(9): Clearing split related stale data.
+  05-19 17:17:32.072 16762  7707 I Fitness : (REDACTED) FitCleanupIntentOperation received Intent %s
+> 05-19 17:17:32.072 23074 23126 I Finsky  : [279] khs.a(55): AIM: AppInfoManager-Perf > OnDeviceAppInfo > cacheHitCount=0, cacheMissCount=1. Missed  in cache (limit 10) : [com.linnan.blindassist.test]
+  05-19 17:17:32.074  7711  7775 I ENTM:KLMDeactivationModule: processDeactivationRequest().END
+  05-19 17:17:32.074  7711  7775 I ENTM:LicenseEngine: processKLMSMessage().END
+  05-19 17:17:32.074  7711  7775 I ENTM:Systemprocess: checkKLMActivationForPackageRemoved().END
+  05-19 17:17:32.074  7711  7775 I ENTM:Systemprocess: handlePackageRemoved().END
+> 05-19 17:17:32.074 16699  3372 I Icing   : doRemovePackageData com.linnan.blindassist.test
+  05-19 17:17:32.074 23074  6631 I Finsky  : [376] qww.accept(67): IQ: handled package removed
+  05-19 17:17:32.074 23074 23074 I Finsky  : [2] xdy.g(1): xdy - Received: android.intent.action.PACKAGE_FULLY_REMOVED, [x73IJYsSubZ3vjlBHwOW4zNT8yoDgi_V0bZBsVBF2nQ]
+> 05-19 17:17:32.075 23074 23074 I Finsky  : [2] xer.x(84): Package no longer installed: com.linnan.blindassist.test
+  05-19 17:17:32.075 23074 23134 I Finsky  : [284] kfp.apply(1127): AIM: Got app ownership map. App counts: . Unique apps: 0
+  05-19 17:17:32.075 23074 23134 I Finsky  : [284] khs.a(55): AIM: AppInfoManager-Perf > OnDeviceAppInfo > cacheHitCount=1, cacheMissCount=0. Missed  in cache (limit 10) : []
+  05-19 17:17:32.075 23074 23134 I Finsky  : [284] kfp.apply(1127): AIM: Got app ownership map. App counts: . Unique apps: 0
+  05-19 17:17:32.076 23074 23074 I Finsky  : [2] xdy.g(1): xdy - Deduping intent android.intent.action.PACKAGE_FULLY_REMOVED
+> 05-19 17:17:32.076 23074 23074 W Finsky  : [2] acta.b(133): STU: Failed to get storage stats for package 'com.linnan.blindassist.test' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+  05-19 17:17:32.077 22469  3726 I TaskEdge.ExecutableItem: mSmallIcon pkgName: com.samsung.android.app.contacts  mSmallIcon: android.graphics.drawable.AdaptiveIconDrawable@4e59b48
+  05-19 17:17:32.077 22469  3726 I AppIconSolution: getThemeIconWithBG called with public API, pkg = null, mode = 1
+  05-19 17:17:32.077 22469  3726 I AppIconSolution: return adaptive icon for null, isNight = false
+  05-19 17:17:32.083  1781  2262 I CompositionEngine: [setDisplaySize] size=(573, 53)
+> 05-19 17:17:32.086 16699  7752 W SQLiteLog: (28) double-quoted string literal: "com.linnan.blindassist.test"
+  05-19 17:17:32.087 22469  3726 I AppIconSolution: return adaptive icon for com.samsung.android.messaging, isNight = false
+  05-19 17:17:32.096 22469  3726 I TaskEdge.ExecutableItem: mSmallIcon pkgName: com.samsung.android.messaging  mSmallIcon: android.graphics.drawable.AdaptiveIconDrawable@67f8f42
+  05-19 17:17:32.096 22469  3726 I AppIconSolution: getThemeIconWithBG called with public API, pkg = null, mode = 1
+  05-19 17:17:32.169 21071 21122 I SGM:GameManager: PkgUpdateReceiver, onReceive(), action=android.intent.action.PACKAGE_REMOVED, userId=0
+> 05-19 17:17:32.169 21071 21122 I SGM:GameManager: PkgUpdateReceiver, onPackageRemoved(). pkgName=com.linnan.blindassist.test, userId=0
+> 05-19 17:17:32.169 21071 21122 W SGM:Util: isPkgInstalled(), com.linnan.blindassist.test does not exist. 
+> 05-19 17:17:32.170 21071 21122 D SGM:Util: isPkgInstalled(). pkgName=com.linnan.blindassist.test, userId=0, installed=false
+> 05-19 17:17:32.170 21071 21122 D SGM:GosNotifyThread: sendPackageMessage(), changeType=1, pkgName=com.linnan.blindassist.test, userHandleId=0
+  05-19 17:17:32.170 21071 21122 D SGM:GosNotifyThread: sendPackageMessage(), Sending is blocked because it is not an uninstall event monitored app
+  05-19 17:17:32.176 22469  3726 E AppIconSolution: Couldn't get theme package resources, package is null
+  05-19 17:17:32.176 22469  3726 I AppIconSolution: load= live icon for com.sec.android.app.clockpackage, from overlay = false
+  05-19 17:17:32.276 21071 24259 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+> 05-19 17:17:32.277 21071 24259 D IntervalStats: Unable to parse usage stats packages: [532, 534, 567, 584, 605, 606, 608, 623, 625, 647, 852, 870, 967, 974, 980, 996, 1011, 1034, 1036, 1038, 1045, 1046, 1047, 1048, 1050, 1052, 1054, 1058, 1059, 1060, 1064, 1069, 1070, 1076, 1078, 1079, 1080, 1084, 1087, 1089, 1090, 1096, 1183, 1184, 1185, 1186, 1187, 1188, 1189, 1190, 1191, 1192, 1193, 1194, 1195, 1196, 1197, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1206, 1207, 1208, 1232, 1239, 1268, 1274, 1299, 1301, 1311, 1313, 1314, 1316, 1321, 1330, 1333, 1335, 1337, 1339, 1346, 1353, 1355, 1356, 1367, 1370, 1372, 1374, 1379, 1431, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1452, 1455]
+  05-19 17:17:32.277 22338 22338 E ApduServiceInfo: Not adding <aid-group> with empty or invalid AIDs
+  05-19 17:17:32.277 22338 22338 E RegisteredServicesCache: getInstalledServices: Skipping application component ComponentInfo{com.autonavi.minimap/com.alibaba.ariver.commonability.device.jsapi.nfc.service.TinyAppHostApduService}: it must request the permission android.permission.NFC
+  05-19 17:17:32.277 22338 22338 E RegisteredServicesCache: getInstalledServices: Skipping application component ComponentInfo{com.autonavi.minimap/com.alipay.mobile.aompdevice.nfc.service.TinyAppHostApduService}: it must request the permission android.permission.NFC
+  05-19 17:17:32.286 21071 18600 V Configuration: Updating configuration, locales updated from [] to [zh_CN_#Hans]
+> 05-19 17:17:32.287 21071 18600 D IntervalStats: Unable to parse usage stats packages: [532, 534, 567, 584, 605, 606, 608, 623, 625, 647, 852, 870, 967, 974, 980, 996, 1011, 1034, 1036, 1038, 1045, 1046, 1047, 1048, 1050, 1052, 1054, 1058, 1059, 1060, 1064, 1069, 1070, 1076, 1078, 1079, 1080, 1084, 1087, 1089, 1090, 1096, 1183, 1184, 1185, 1186, 1187, 1188, 1189, 1190, 1191, 1192, 1193, 1194, 1195, 1196, 1197, 1199, 1200, 1201, 1202, 1203, 1204, 1205, 1206, 1207, 1208, 1232, 1239, 1268, 1274, 1299, 1301, 1311, 1313, 1314, 1316, 1321, 1330, 1333, 1335, 1337, 1339, 1346, 1353, 1355, 1356, 1367, 1370, 1372, 1374, 1379, 1431, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1452, 1455]
+  05-19 17:17:32.287 26967 17511 I Dc.AppStartProvider: delete uri = content://com.samsung.android.sm.appstart/appstart_history, caller : com.samsung.android.sm_cn
+  05-19 17:17:32.288 21071 21643 W JobInfo : Job 'com.google.android.providers.media.module/com.android.providers.media.MediaService#-300' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+  05-19 17:17:32.290 21071 23652 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = send_mms_block_list
+  05-19 17:17:32.290 21071 23652 D KNOX_MDM_SettingsProvider: ret = 1
+> 05-19 17:17:32.291 11574 11574 I DWBPkgEventReceiver: Received : android.intent.action.PACKAGE_FULLY_REMOVED, Package : com.linnan.blindassist
+  05-19 17:17:32.291 11574 11574 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:2069 android.content.ContextWrapper.startService:872 android.content.ContextWrapper.startService:872 com.samsung.android.forest.receiver.PkgEventReceiver.b:21 com.samsung.android.forest.receiver.PkgEventReceiver.onReceive:87 
+  05-19 17:17:32.291 23619  6635 I NowBrief$AiSuggestionPackageReceiver: pool-6-thread-1259] onReceiveAsync
+  05-19 17:17:32.292 22356 22418 I SecureElementService: SEReader getReaders()
+  05-19 17:17:32.292 22356 22418 D SecureElementService: getReaders() for com.samsung.android.nfc
+> 05-19 17:17:32.292 21071 18600 D IntervalStats: Unable to parse usage stats packages: [28, 31, 33, 34, 35, 36, 38, 40, 42, 44, 46, 48, 50, 51, 52, 54, 56, 58, 59, 60, 61, 64, 66, 67, 69, 70, 72, 73, 74, 76, 78, 79, 80, 81]
+  05-19 17:17:32.293 22356 22418 I SecureElement-Terminal-SIM2: isNfcEventAllowed: No access rules for checking.
+> 05-19 17:17:32.293 21071 18600 D IntervalStats: Unable to parse usage stats packages: [8, 16, 26, 40, 44, 80, 96, 98, 113, 129, 138, 155, 202, 204, 229, 230, 246, 275, 281, 287, 292, 306, 319, 334, 336, 343, 350, 368, 386, 404, 405, 411, 425, 428, 430, 432, 433, 435, 437, 439, 441, 443, 445, 446, 447, 449, 450, 451, 452, 454, 456]
+  05-19 17:17:32.294 23619  6634 I NowBrief$AiSuggestionPackageReceiver: pool-6-thread-1258] onReceiveAsync
+> 05-19 17:17:32.294 11574 11574 I DWBPkgEventService: startId : 1, Received : com.samsung.android.forest.PACKAGE_REMOVED, Package : com.linnan.blindassist
+  05-19 17:17:32.295 11574 11612 I DWBLocalPkgRepositoryIm: clearCache
+  05-19 17:17:32.295 11574 11612 I DWBCacheFlow: clear : lock before
+  05-19 17:17:32.295 11574 11612 I DWBCacheFlow: clear : lock start
+  05-19 17:17:32.298 11574 11611 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:2069 android.content.ContextWrapper.startService:872 S5.d.n:8 J7.k.invokeSuspend:161 Fa.a.resumeWith:8 
+> 05-19 17:17:32.299 11574 11574 I DWBPkgEventReceiver: Received : android.intent.action.PACKAGE_REMOVED, Package : com.linnan.blindassist.test
+  05-19 17:17:32.299  9918  9918 I RkpdBroadcast: Caught package_removed intent, waking up.
+  05-19 17:17:32.299 11574 11574 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:2069 android.content.ContextWrapper.startService:872 com.samsung.android.forest.receiver.PkgEventReceiver.b:21 com.samsung.android.forest.receiver.PkgEventReceiver.onReceive:155 android.app.LoadedApk$ReceiverDispatcher$Args.lambda$getRunnable$0:2033 
+  05-19 17:17:32.300 21071 21122 D MetaDataCollector: onReceive: begin action=android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.300 21071 21122 D MetaDataCollector: onReceive: done pkgName=com.linnan.blindassist.test
+> 05-19 17:17:32.300 23623 23623 W MediaProvider: WorkProfileOwnerApps cache miss for package com.linnan.blindassist.test
+  05-19 17:17:32.300 23623 23623 D PickerSyncLockManager: Trying to acquire lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@ec738e7[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+> 05-19 17:17:32.300 21071 21122 D LauncherAppsService: Calling onPackageRemoved: com.linnan.blindassist.test, EXTRA_REPLACING: false
+  05-19 17:17:32.300 23623 23623 D CloseableReentrantLock: Successfully acquired lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@ec738e7[Locked by thread main]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+  05-19 17:17:32.300 23623 23623 D CloseableReentrantLock: Successfully released lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@ec738e7[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+> 05-19 17:17:32.300 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist.test
+> 05-19 17:17:32.300 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist.test
+> 05-19 17:17:32.301 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist.test
+> 05-19 17:17:32.301 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist.test
+> 05-19 17:17:32.301 21071 21122 D LauncherApps: onPackageRemoved 0,com.linnan.blindassist.test
+  05-19 17:17:32.301 21071 24429 W JobInfo : Job 'com.google.android.providers.media.module/com.android.providers.media.MediaService#-300' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+  05-19 17:17:32.301 21071 21456 D BackgroundInstallControlService: Package event received: 0
+> 05-19 17:17:32.301 22469 22469 I TaskEdge.PackageOperationTrackerImpl: onPackageRemoved com.linnan.blindassist.test
+  05-19 17:17:32.301 21071 21456 D BackgroundInstallControlService: Package event received: 0
+  05-19 17:17:32.301 21071 21456 D BackgroundInstallControlService: Package event received: 0
+> 05-19 17:17:32.301 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist.test
+> 05-19 17:17:32.301 24133 27050 I SAMSUNGWALLET: [Hint_SimpleHintProcessMonitor] package removed : com.linnan.blindassist.test , execute : true
+> 05-19 17:17:32.301 21071 21122 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{0}, packageName=com.linnan.blindassist.test
+  05-19 17:17:32.301 23623 25417 I MediaProvider: Begin Intent { act=android.intent.action.PACKAGE_FULLY_REMOVED dat=package: flg=0x5000010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService (has extras) }
+  05-19 17:17:32.302 21071 21106 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = enabled_notification_listeners
+  05-19 17:17:32.302 21071 21106 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = enabled_notification_listeners
+> 05-19 17:17:32.302 22008 22334 D LauncherApps: onPackageRemoved 0,com.linnan.blindassist.test
+  05-19 17:17:32.302 21071 21106 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = enabled_notification_listeners
+  05-19 17:17:32.302 11574 11611 I DWBPkgEventService: startId : 1, elapsed time : 7ms
+> 05-19 17:17:32.303 22469 22469 I HoneySpace.PackageOperationTracker: onPackageRemoved - com.linnan.blindassist.test UserHandle{0}
+  05-19 17:17:32.303  7742  7760 I VirtualizationService: virtualizationservice::aidl: ignoring packageRemoved(user_id=0, app_id=10573)
+> 05-19 17:17:32.303 11574 11574 I DWBPkgEventReceiver: Received : android.intent.action.PACKAGE_FULLY_REMOVED, Package : com.linnan.blindassist.test
+  05-19 17:17:32.303 11574 11574 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:2069 android.content.ContextWrapper.startService:872 android.content.ContextWrapper.startService:872 com.samsung.android.forest.receiver.PkgEventReceiver.b:21 com.samsung.android.forest.receiver.PkgEventReceiver.onReceive:87 
+  05-19 17:17:32.303  9918  7811 I RkpdBroadcast: Deleted associated keys for uid: 10572
+  05-19 17:17:32.303  9918  9918 I RkpdBroadcast: Caught package_removed intent, waking up.
+> 05-19 17:17:32.303 22469 22469 I HoneySpace.PackageChangedCallbackImpl: onPackageRemoved: com.linnan.blindassist.test / UserHandle{0}
+> 05-19 17:17:32.304 22469 31237 I HoneySpace.IconCache: remove icon cache & DB : com.linnan.blindassist.test UserHandle{0}
+> 05-19 17:17:32.304 22469 31237 I HoneySpace.IconCache: removeSpecificIconDb: com.linnan.blindassist.test UserHandle{0}
+  05-19 17:17:32.304 21071 21456 D BackgroundInstallControlService: Package event received: 0
+> 05-19 17:17:32.304 22469  7555 I HoneySpace.HoneySpacePackageSourceImpl: Package removed : com.linnan.blindassist.test
+  05-19 17:17:32.304 22469  7555 I HoneySpace.HistoryViewModel@110545101@HomeOnly: handlePackageEvent
+  05-19 17:17:32.304 22469  7555 I HoneySpace.HistoryViewModel@110545101@HomeOnly: skip for alone
+> 05-19 17:17:32.304 22469  7238 I SearchableManager: com.linnan.blindassist.test is not legacy engine type
+> 05-19 17:17:32.304 22469  7238 I SearchableManager: invalidate: com.linnan.blindassist.test
+  05-19 17:17:32.304 21071 21456 D BackgroundInstallControlService: Package event received: 0
+  05-19 17:17:32.305  9918  7813 I RkpdBroadcast: Deleted associated keys for uid: 10573
+  05-19 17:17:32.305 21071 21456 D BackgroundInstallControlService: Package event received: 0
+  05-19 17:17:32.305 22469 22469 I HoneySpace.HoneySpaceManagerContainer: packageUpdateEvent - com.honeyspace.sdk.source.entity.PackageOperation$Removed@d7f0b9f
+> 05-19 17:17:32.305 22469 22469 I HoneySpace.HoneySpaceManagerContainer: refreshHoneyPlugin, packageName: com.linnan.blindassist.test
+  05-19 17:17:32.305 20430 20430 I TaskEdge.CocktailBarManagerHelper: updatePanel
+  05-19 17:17:32.306 22469 22469 I HoneySpace.HotseatViewModel@113023455@HomeOnly: Package removed : 
+  05-19 17:17:32.306 22469 22469 I HoneySpace.AppsEdgePanel.ViewModel: packageRemoved : 
+  05-19 17:17:32.306 11574 11574 I DWBDwWidgetService: com.samsung.android.forest.widget.UPDATE_DW_WIDGET_ALL 1
+> 05-19 17:17:32.306 11574 11574 I DWBPkgEventService: startId : 2, Received : com.samsung.android.forest.PACKAGE_REMOVED, Package : com.linnan.blindassist.test
+> 05-19 17:17:32.306 11574 11574 I DWBPkgEventService: startId : 3, Received : com.samsung.android.forest.PACKAGE_REMOVED, Package : com.linnan.blindassist.test
+  05-19 17:17:32.306 11574 13895 I DWBLocalPkgRepositoryIm: clearCache
+  05-19 17:17:32.306 11574 13895 I DWBCacheFlow: clear : lock before
+  05-19 17:17:32.306 11574 13895 I DWBCacheFlow: clear : lock start
+  05-19 17:17:32.316 24580 24635 I Z-SamsungAccount: [CountryCodeUtil] isChinaCountryCode : true
+> 05-19 17:17:32.316  9238  9238 E SPPClientServiceS: [PackageRemoveReceiver] [handlePkgRemovedEvent] PackageName : com.linnan.blindassist
+  05-19 17:17:32.317 24580 24635 I Z-SamsungAccount: [TPMU] getMccFromUsim
+  05-19 17:17:32.317 24580 24635 I Z-SamsungAccount: [MccManager] saveMccToPreference Start
+  05-19 17:17:32.317 24580 24635 I Z-SamsungAccount: [MccManager] saveMccToPreference, mcc is same with previous mcc
+  05-19 17:17:32.323 21071 21099 D WifiDisplayAdapter: isFitToActiveDisplayLocked : false
+> 05-19 17:17:32.323  9238  9238 E SPPClientServiceS: [PackageRemoveReceiver] [handlePkgRemovedEvent] PackageName : com.linnan.blindassist.test
+  05-19 17:17:32.323 22469 22469 I TaskEdge.Panel: performColumnChange
+  05-19 17:17:32.323 22469  3726 I TaskEdge.Panel: updateSelectedItem: 
+  05-19 17:17:32.323 22469  3726 I SEP_UNION_SemUnionManager: getUnionService(execute) 
+  05-19 17:17:32.334  8405  8405 I FILP/PackageIntentReceiver: action 1: com.samsung.android.provider.filterprovider.INTENT_PACKAGE_REMOVED
+> 05-19 17:17:32.334  8405  8405 I FILP/PackageIntentReceiver: pkgName : com.linnan.blindassist
+  05-19 17:17:32.334  8405  8405 I FILP/PackageIntentReceiver: action 2: com.samsung.android.provider.filterprovider.INTENT_PACKAGE_REMOVED
+  05-19 17:17:32.334  8405  8405 I FILP/PackageIntentReceiver: action 3: com.samsung.android.provider.filterprovider.INTENT_PACKAGE_REMOVED
+  05-19 17:17:32.334  8405  8405 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:2069 android.content.ContextWrapper.startService:872 android.content.ContextWrapper.startService:872 com.samsung.android.provider.filterprovider.PackageIntentReceiver.onReceive:501 android.app.ActivityThread.handleReceiver:5663 
+  05-19 17:17:32.349  8405  8405 I FILP/PackageIntentReceiver: action 1: com.samsung.android.provider.filterprovider.INTENT_PACKAGE_REMOVED
+> 05-19 17:17:32.349  8405  8405 I FILP/PackageIntentReceiver: pkgName : com.linnan.blindassist.test
+  05-19 17:17:32.349  8405  8405 I FILP/PackageIntentReceiver: action 2: com.samsung.android.provider.filterprovider.INTENT_PACKAGE_REMOVED
+  05-19 17:17:32.349  8405  8405 I FILP/PackageIntentReceiver: action 3: com.samsung.android.provider.filterprovider.INTENT_PACKAGE_REMOVED
+  05-19 17:17:32.349  8405  8405 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:2069 android.content.ContextWrapper.startService:872 android.content.ContextWrapper.startService:872 com.samsung.android.provider.filterprovider.PackageIntentReceiver.onReceive:501 android.app.ActivityThread.handleReceiver:5663 
+  05-19 17:17:32.366  8405  7820 I FILP/FilterProvider: query: E
+> 05-19 17:17:32.367  8405  7820 I FILP/FilterInstaller: removeFromFS : com.linnan.blindassist, cursor size : 0
+  05-19 17:17:32.367 24580 24635 I Z-SamsungAccount: [SignatureInfoDbHelper] searchOnUser(fromDb) - [10/lev4y][android.forest.][64/3291d] => matched
+  05-19 17:17:32.367 24580 24635 I Z-SamsungAccount: [AccountManagerProvider] This is the access of the allowed application
+  05-19 17:17:32.367 24580 24635 I Z-SamsungAccount: [AccountManagerUtil] isSamsungAccountSignedIn : true
+  05-19 17:17:32.406 24580 30521 I Z-SamsungAccount: [ChildAccountSupportedListManager] getSupportedListFromLocal from cache
+> 05-19 17:17:32.406  8405  7820 I FILP/FilterInstaller: Delete all filter DB result : com.linnan.blindassist, 0
+> 05-19 17:17:32.406  8405  7820 I FILP/FilterInstaller: Delete filter DB result : com.linnan.blindassist, 0
+> 05-19 17:17:32.406  8405  7820 I FILP/FilterInstaller: Delete my filter DB result : com.linnan.blindassist, 0
+  05-19 17:17:32.406 22940 23038 I RequestManager_FLP: onOpChanged, op=0 / packageName=com.sec.android.app.sbrowser
+  05-19 17:17:32.408 24580 30521 I Z-SamsungAccount: [TPMU]  SIMState     :SIM_STATE_READY
+> 05-19 17:17:32.408 26547 26547 I Notification4Watch7_AM: NotificationPackageReceiver.onReceive-action: android.intent.action.PACKAGE_REMOVED, userId: 95, packageName: com.linnan.blindassist
+> 05-19 17:17:32.409  8405  7820 I FILP/FilterInstaller: uninstallFilters mPackageName: com.linnan.blindassist
+  05-19 17:17:32.409 24580 30521 I Z-SamsungAccount: [CountryCodeUtil] isChinaCountryCode : true
+  05-19 17:17:32.409 20689 20802 I CameraService: onUidStateChanged: uid=10205, procState is changed. (11 -> 19)
+  05-19 17:17:32.410 22469  3726 E AppIconSolution: Couldn't get theme package resources, package is null
+  05-19 17:17:32.415 20669 20669 I Attic_AomManager: onReceive() : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.415 20669 20669 W Attic_AomManager: onReceive() packageName : com.linnan.blindassist
+  05-19 17:17:32.415 20669 20669 I Attic_UhmFwUtil: getUhmPackageName() : com.samsung.accessory.budsunitemgr
+  05-19 17:17:32.415 20669 20669 I Attic_Util: isEmulator() : false
+  05-19 17:17:32.415 20669 20669 I Attic_PackageManagerReceiver: onReceive:android.intent.action.PACKAGE_REMOVEDmyuid = 0
+  05-19 17:17:32.415 20669 20669 I Attic_AomManager: onReceive() : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.415 20669 20669 W Attic_AomManager: onReceive() packageName : com.linnan.blindassist.test
+  05-19 17:17:32.415 20669 20669 I Attic_UhmFwUtil: getUhmPackageName() : com.samsung.accessory.budsunitemgr
+  05-19 17:17:32.415 20669 20669 I Attic_Util: isEmulator() : false
+  05-19 17:17:32.415 22469 22469 I SEP_UNION_SemUnionManager: getUnionService(execute) 
+  05-19 17:17:32.417 26547 26547 I [ESIM]_NumbersyncUtil: getNumbersyncRegister() - value : null
+> 05-19 17:17:32.417  8682  8682 I SCS@AiSearch user 0: (PackageBroadcastReceiver) packageName: com.linnan.blindassist
+> 05-19 17:17:32.417  8682  8682 I SCS@AiSearch user 0: (PackageBroadcastReceiver) Packages changed: com.linnan.blindassist
+  05-19 17:17:32.417  8682  8682 I SCS@AiSearch user 0: (AppsDataObserver) scheduling worker CMD_UPDATE_LIST
+  05-19 17:17:32.418 21071 21167 D PowerManagerService: displayReady: false groupId=0
+  05-19 17:17:32.418  8682  8682 I SCS@AiSearch user 0: (PackageBroadcastReceiver) onReceive android.intent.action.PACKAGE_REMOVED
+  05-19 17:17:32.418 21071 21167 D DisplayPowerController[0]: animateScreenStateChange: target=ON, mIsEnabled=true
+> 05-19 17:17:32.418  8682  8682 I SCS@AiSearch user 0: (PackageBroadcastReceiver) packageName: com.linnan.blindassist
+> 05-19 17:17:32.418  8682  8682 I SCS@AiSearch user 0: (PackageBroadcastReceiver) Packages changed: com.linnan.blindassist
+  05-19 17:17:32.418  8682  8682 I SCS@AiSearch user 0: (AppsDataObserver) scheduling worker CMD_UPDATE_LIST
+> 05-19 17:17:32.418 17522 17522 I AiPrivacy::AppEventReceiver: com.linnan.blindassist Uninstalled !!!
+  05-19 17:17:32.418  8682  8682 I SCS@AiSearch user 0: (PackageBroadcastReceiver) onReceive android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.418  8682  8682 I SCS@AiSearch user 0: (PackageBroadcastReceiver) packageName: com.linnan.blindassist.test
+> 05-19 17:17:32.418  8682  8682 I SCS@AiSearch user 0: (PackageBroadcastReceiver) Packages changed: com.linnan.blindassist.test
+  05-19 17:17:32.418  8682  8682 I SCS@AiSearch user 0: (AppsDataObserver) scheduling worker CMD_UPDATE_LIST
+  05-19 17:17:32.418 21071 21167 D PowerManagerService: displayReady: true groupId=0
+  05-19 17:17:32.418 21071 21123 I ActivityManager: Changes in 10528 19 to 11, 0 to 128
+> 05-19 17:17:32.418 17522 17522 I AiPrivacy::AppEventReceiver: com.linnan.blindassist.test Uninstalled !!!
+  05-19 17:17:32.419  8405  7820 I FILP/FilterProvider: query: E
+> 05-19 17:17:32.419  8405  7820 I FILP/FilterInstaller: removeFromFS : com.linnan.blindassist.test, cursor size : 0
+  05-19 17:17:32.420  8486  8486 I OTCH$OtchGeneralReceiver: action com.samsung.android.onetouch.action.ACTION_PKG_REMOVE, extras: Bundle { (android.intent.extra.REMOVED_FOR_ALL_USERS=true), (android.intent.extra.DONT_KILL_APP=false), (android.intent.extra.UID=10572), (android.intent.extra.SYSTEM_UPDATE_UNINSTALL=false), (android.intent.extra.USER_INITIATED=true), (android.intent.extra.DATA_REMOVED=true), (action_origin=android.intent.action.PACKAGE_REMOVED), (android.intent.extra.user_handle=0), (notify_for_descendants=false),  }
+  05-19 17:17:32.420 20715 20715 I Zenith_PackageManagerReceiver: onReceive:android.intent.action.PACKAGE_REMOVEDmyuid = 95
+  05-19 17:17:32.421  8405  7820 I FILP/FilterInstaller: removeMyFilterSampleFromFS: test
+  05-19 17:17:32.424 19349 19459 D StreamDBQueue: Promised revision #9931420 to queue a new op
+> 05-19 17:17:32.424 19349 19459 D BaseStreamManager: Promised side-channel cancel-all @ r#9931420 for com.linnan.blindassist (@9931419)
+  05-19 17:17:32.424 21071 24429 I ActivityManager: Changes in 10528 11 to 19, 128 to 0
+  05-19 17:17:32.425  8405  7820 I FILP/FilterProvider: query: E
+  05-19 17:17:32.425  8405  7820 I FILP/FilterInstaller: removeFromFS : All files deleted
+  05-19 17:17:32.428 25901 25901 I [AirCmd]_AirCommandApplication: onReceive : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.428 25901 25901 I [AirCmd]_ShortcutListController: onReceive : android.intent.action.PACKAGE_REMOVED pkg = com.linnan.blindassist.test
+> 05-19 17:17:32.429 22940 23038 I PackageInfoManager_FLP: action : ACTION_PACKAGE_REMOVED, packageName = com.linnan.blindassist.test
+> 05-19 17:17:32.429 25154 25711 I CardModelManager: updatePackageChanges com.linnan.blindassist.test
+> 05-19 17:17:32.429 25154 25711 I CardModelManager: updatePackageChanges com.linnan.blindassist.test
+  05-19 17:17:32.430 22469 22469 I HoneySpace.IconView: createScaleAndAlphaAnim end - view=com.honeyspace.ui.common.iconview.IconViewImpl{c2fd621 VFED..CL. ........ 0,1970-333,2364 #7f0a02ed app:id/icon} - BlindAssist, visibility:0, alpha:0.0, badge:0, icon:203x203, iconAlpha:255, iconState:NONE, iconSize:231, forceHideBadge:false, isTransparent:false, x=0, y=5
+> 05-19 17:17:32.430 29298 29298 I D_FMM:[FmmService          ]: package removed : com.linnan.blindassist.test
+  05-19 17:17:32.431 22469 22469 I HoneySpace.WorkspaceCellLayout: removeView [2] (0,5) view=com.honeyspace.ui.common.iconview.IconViewImpl{c2fd621 VFED..CL. ........ 0,1970-333,2364 #7f0a02ed app:id/icon} - BlindAssist, visibility:0, alpha:0.0, badge:0, icon:203x203, iconAlpha:255, iconState:NONE, iconSize:231, forceHideBadge:false, isTransparent:false, x=0, y=5
+  05-19 17:17:32.431  8486  8486 W OTCH$OneTouchApplication: onTrimMemory : 40
+> 05-19 17:17:32.432  8405  7820 I FILP/FilterInstaller: Delete all filter DB result : com.linnan.blindassist.test, 0
+> 05-19 17:17:32.432  8405  7820 I FILP/FilterInstaller: Delete filter DB result : com.linnan.blindassist.test, 0
+> 05-19 17:17:32.432  8405  7820 I FILP/FilterInstaller: Delete my filter DB result : com.linnan.blindassist.test, 0
+  05-19 17:17:32.433 22469 22469 I HoneySpace.IconView: createScaleAndAlphaAnim end - view=com.honeyspace.ui.common.iconview.IconViewImpl{8b602f VFED..CL. ........ 999,1576-1332,1970 #7f0a02ed app:id/icon} - BlindAssist, visibility:0, alpha:0.0, badge:0, icon:203x203, iconAlpha:255, iconState:NONE, iconSize:231, forceHideBadge:false, isTransparent:false, x=3, y=4
+  05-19 17:17:32.433 22469 22469 I HoneySpace.WorkspaceCellLayout: removeView [2] (3,4) view=com.honeyspace.ui.common.iconview.IconViewImpl{8b602f VFED..CL. ........ 999,1576-1332,1970 #7f0a02ed app:id/icon} - BlindAssist, visibility:0, alpha:0.0, badge:0, icon:203x203, iconAlpha:255, iconState:NONE, iconSize:231, forceHideBadge:false, isTransparent:false, x=3, y=4
+  05-19 17:17:32.433 22469 22469 I HoneySpace.IconView: createScaleAndAlphaAnim end - view=com.honeyspace.ui.common.iconview.IconViewImpl{c2fd621 VFED..CL. ......ID 0,1970-333,2364 #7f0a02ed app:id/icon} - BlindAssist, visibility:0, alpha:0.0, badge:0, icon:203x203, iconAlpha:255, iconState:NONE, iconSize:231, forceHideBadge:false, isTransparent:false, x=0, y=5
+  05-19 17:17:32.433 21071 21101 I ActivityManager: Changes in 10129 11 to 19, 128 to 0
+> 05-19 17:17:32.434  8405  7820 I FILP/FilterInstaller: uninstallFilters mPackageName: com.linnan.blindassist.test
+  05-19 17:17:32.436  6519 15896 W JobInfo : Requested important-while-foreground flag for job4703 is ignored and takes no effect
+  05-19 17:17:32.439 22302 22302 I MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_REMOVED
+  05-19 17:17:32.439 22302 22302 I MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_REMOVED
+  05-19 17:17:32.454 20715 20715 I Zenith_SoundCraftManager: onReceive() : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.454 20715 20715 I Zenith_SoundCraftManager: onReceive() packageName : com.linnan.blindassist
+  05-19 17:17:32.454 20715 20715 I Zenith_SoundCraftManager: handlePackageRemoved()
+> 05-19 17:17:32.454 20715 20715 I Routine@AutomationService[1.1.6]: AutomationServiceImpl@SDK: findRoutineIdsByMonitoredPackage: com.linnan.blindassist, type:SOUND_CRAFT_FOR_BUDS
+  05-19 17:17:32.457 21071 21456 D BackgroundInstallControlService: Package event received: 0
+> 05-19 17:17:32.457 25731 10269 I Routine@Core[4.9.04.13]: RoutineCoreServiceProvider: query: uri=[core_service, monitor, com.linnan.blindassist]
+> 05-19 17:17:32.457 25731 10269 I Routine@Core[4.9.04.13]: RoutineCoreServiceProvider: queryRoutineByMonitoredPackage: uri=content://com.samsung.android.app.routines.routineinfoprovider/core_service/monitor/com.linnan.blindassist?type=system_sound_craft_for_buds
+  05-19 17:17:32.457  7821  7821 I GalaxyLabsAgent: [2] GeneralBroadcastReceiver.onReceive:  onReceive action is android.intent.action.PACKAGE_FULLY_REMOVED
+  05-19 17:17:32.458 19349 19436 D StreamDBQueue: Promised revision #9931421 to queue a new op
+> 05-19 17:17:32.458 19349 19436 D BaseStreamManager: Promised side-channel cancel-all @ r#9931421 for com.linnan.blindassist.test (@9931420)
+  05-19 17:17:32.458 25731 10269 I Routine@Core[4.9.04.13]: RoutineCoreServiceProvider: queryRoutineByMonitoredPackage - routineUuids=[]
+  05-19 17:17:32.459 20715 20715 E Zenith_SoundCraft.RoutineModel: getRoutineIdByPackageName() : can't get routine id, java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+  05-19 17:17:32.459 20715 20715 I Zenith_SoundCraftManager: Not found routineId for this package
+  05-19 17:17:32.460 20715 20715 I Zenith_AomManager: onReceive() : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.460 20715 20715 W Zenith_AomManager: onReceive() packageName : com.linnan.blindassist
+  05-19 17:17:32.460 20715 20715 I Zenith_UhmFwUtil: getUhmPackageName() : com.samsung.accessory.budsunitemgr
+  05-19 17:17:32.460 20715 20715 I Zenith_Application: null 125 true
+  05-19 17:17:32.460 20715 20715 I Zenith_Util: isEmulator() : false
+  05-19 17:17:32.460 20715 20715 I Zenith_SoundCraftManager: onReceive() : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.460 20715 20715 I Zenith_SoundCraftManager: onReceive() packageName : com.linnan.blindassist.test
+  05-19 17:17:32.460 20715 20715 I Zenith_SoundCraftManager: handlePackageRemoved()
+> 05-19 17:17:32.460 20715 20715 I Routine@AutomationService[1.1.6]: AutomationServiceImpl@SDK: findRoutineIdsByMonitoredPackage: com.linnan.blindassist.test, type:SOUND_CRAFT_FOR_BUDS
+> 05-19 17:17:32.460 25731 10269 I Routine@Core[4.9.04.13]: RoutineCoreServiceProvider: query: uri=[core_service, monitor, com.linnan.blindassist.test]
+> 05-19 17:17:32.460 25731 10269 I Routine@Core[4.9.04.13]: RoutineCoreServiceProvider: queryRoutineByMonitoredPackage: uri=content://com.samsung.android.app.routines.routineinfoprovider/core_service/monitor/com.linnan.blindassist.test?type=system_sound_craft_for_buds
+  05-19 17:17:32.461 25731 10269 I Routine@Core[4.9.04.13]: RoutineCoreServiceProvider: queryRoutineByMonitoredPackage - routineUuids=[]
+  05-19 17:17:32.461 21071 21271 I RoleService: Granting default roles...
+  05-19 17:17:32.461  7821  7821 I GalaxyLabsAgent: [2] GeneralBroadcastReceiver.onReceive:  onReceive action is android.intent.action.PACKAGE_FULLY_REMOVED
+  05-19 17:17:32.474 20715 20715 I Zenith_AomManager: onReceive() : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.474 20715 20715 W Zenith_AomManager: onReceive() packageName : com.linnan.blindassist.test
+  05-19 17:17:32.474 20715 20715 I Zenith_UhmFwUtil: getUhmPackageName() : com.samsung.accessory.budsunitemgr
+  05-19 17:17:32.475 20715 20715 I Zenith_Application: null 125 true
+  05-19 17:17:32.475 20715 20715 I Zenith_Util: isEmulator() : false
+  05-19 17:17:32.511 17522  8667 I AiPrivacy::AiAppEventWorker: result : Success {mOutputData=Data {}}, REMOVED
+> 05-19 17:17:32.513 26547 26547 I Notification4Watch7_AM: PhoneAppsRepository.removeApp-[option:ONLY_TARGET_USER_ID|com.linnan.blindassist|95]
+  05-19 17:17:32.513  6519 15895 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=1bc2ac69-bffe-4b0d-a362-f0cd4131c5a9, tags={ com.samsung.android.kmxservice.ai.event.AiAppEventWorker } ]
+  05-19 17:17:32.513 26547 26547 I Notification4Watch7_AM: NotificationAppsDatabase::2cd35156.save->>> Enter <<<
+  05-19 17:17:32.514 26547 26547 I Notification4Watch7_AM: WatchAppsUtils.setWatchAppsMap-Update appsMap!
+  05-19 17:17:32.529 26547 26547 I Notification4Watch7_AM: WatchAppsUtils.setWatchAppsMap-Update [net.ffclient.app => false]
+> 05-19 17:17:32.529 26547 26547 I Notification4Watch7_AM: WatchAppsUtils.setWatchAppsMap-Update [com.linnan.blindassist => false]
+> 05-19 17:17:32.529 26547 26547 I Notification4Watch7_AM: WatchAppsUtils.setWatchAppsMap-Update [com.linnan.blindassist.test => false]
+  05-19 17:17:32.531  1184  1191 D io_stats: !@ cpu boost: status(ON), curr_traffic_level(1), curr_set_freq(2265600), curr_set_lpm(0)
+  05-19 17:17:32.532 26547 26547 I Notification4Watch7_AM: JsonUtils.sendJsonByDataItem-path : /wcs_extension/sysui/notification/switch/app_settings / jsonString : [{"channels":[{"isAllowed":true,"realPackageName":"com.samsung.android.dialer","virtualName":"missed_call"},{"isAllowed":true,"realPackageName":"com.samsung.android.dialer","virtualName":"Incoming_call"}
+  05-19 17:17:32.532 26547 26547 I Notification4Watch7_AM: ,{"isAllowed":true,"realPackageName":"com.samsung.android.clientconnection","virtualName":"voice_mail"}],"isAllowed":true,"packageName":"call","realPackageName":"com.samsung.android.dialer","users":[{"isAllowed":true,"isWatchApp":false,"userId":0}]}
+  05-19 17:17:32.532 26547 26547 I Notification4Watch7_AM: ,{"isAllowed":false,"packageName":"com.farplace.qingzhuo","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.tencent.watchwechat","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":true,"userId":0}]}
+> 05-19 17:17:32.532 26547 26547 I Notification4Watch7_AM: ,{"isAllowed":false,"packageName":"net.ffclient.app","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.linnan.blindassist","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]}
+> 05-19 17:17:32.532 26547 26547 I Notification4Watch7_AM: ,{"isAllowed":false,"packageName":"com.linnan.blindassist.test","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]}
+  05-19 17:17:32.532 26547 26547 I Notification4Watch7_AM: ]
+  05-19 17:17:32.532 26547 26547 I Notification4Watch7_AM: j / nodeId : 2cd35156
+  05-19 17:17:32.532 26547 26547 I WatchSettings_Watch7*: SettingsCompanion > put() : ##:##:##:##:6F:85, GW, /wcs_extension/sysui/notification/switch/app_settings, [{"channels":[{"isAllowed":true,"realPackageName":"com.samsung.android.dialer","virtualName":"missed_call"},{"isAllowed":true,"realPackageName":"com.samsung.android.dialer","virtualName":"Incoming_call"},{"isAllowed":true,"realPackageName":"com.samsung.android.clientconnection","virtualName":"voice_mail"}],"isAllowed":true,"packageName":"call","realPackageName":"com.samsung.android.dialer","users":[{"isAllowed":true,"isWatchApp":false,"userId":0}]},{"isAllowed":true,"packageName":"com.google.android.cellbroadcastreceiver","realPackageName":"","users":[{"isAllowed":true,"isWatchApp":false,"userId":0}]},{"isAllowed":true,"packageName":"com.android.vending","realPackageName":"","users":[{"isAllowed":true,"isWatchApp":false,"userId":0},{"isAllowed":true,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.samsung.android.app.contacts","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":true,"packageName":"com.samsung.android.messaging","realPackageName":"","users":[{"isAllowed":true,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.samsung.knox.securefolder","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.sec.android.app.camera","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.sec.android.app.sbrowser","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.sec.android.gallery3d","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.android.chrome","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.coolapk.market","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.github.metacubex.clash.meta","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.google.android.apps.docs","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.google.android.apps.maps","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.google.android.apps.photos","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.google.android.gm","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.google.android.music","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.google.android.youtube","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.microsoft.emmx","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.samsung.android.app.galaxyraw","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.samsung.android.app.tips","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":true,"packageName":"com.samsung.android.calendar","realPackageName":"","users":[{"isAllowed":true,"isWatchApp":false,"userId":0},{"isAllowed":true,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.sams
+  05-19 17:17:32.534 26547 26547 I Connection4Watch7: PackageReceiver.onReceive- : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.534 26547 26547 I WatchSettings_Watch7*: SettingsCompanion > packageBroadcastReceiver.onReceive() : ACTION_PACKAGE_REMOVED : appName=com.linnan.blindassist, isUpdating=false
+  05-19 17:17:32.534 26547  6700 I Connection4Watch7: PackageEventHandler.onPackageEvent-action: 3
+  05-19 17:17:32.534 26547 26547 I GoogleRequirementUtils: isChinaPhoneByGoogleLogic()  salesCode : CHC
+> 05-19 17:17:32.534 26547 26547 I Notification4Watch7_AM: NotificationPackageReceiver.onReceive-action: android.intent.action.PACKAGE_REMOVED, userId: 0, packageName: com.linnan.blindassist
+  05-19 17:17:32.535 26547 26547 I PrefUtils: getPreferenceWithFilename prefFileName = ##:##:##:##:6F:85_numbesrync_config, key = numbersync_register value=null
+  05-19 17:17:32.535 26547 26547 I [ESIM]_NumbersyncUtil: getNumbersyncRegister() - value : null
+  05-19 17:17:32.541 22302 22614 I bt_btm_pm: system/stack/acl/btm_pm.cc:272 BTM_SetPowerMode: Setting power mode for peer:xx:xx:xx:xx:6f:85 current_mode:immediate:sniff[2] new_mode:forced:active[0]
+  05-19 17:17:32.549  1626 22952 I vendor.qti.bluetooth@1.1-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+> 05-19 17:17:32.570 26547 26547 I Notification4Watch7_AM: PhoneAppsRepository.removeApp-[option:REMOVE_ALL|com.linnan.blindassist|0]
+  05-19 17:17:32.571 26547 26547 I SharedCommonUtils: getCSC()
+  05-19 17:17:32.571 26547 26547 I SharedCommonUtils: isCSCExistFile()
+  05-19 17:17:32.571 26547 26547 I SharedCommonUtils: CSC doesn't exist.
+  05-19 17:17:32.578 26547 26547 I Notification4Watch7_AM: WatchAppsUtils.setWatchAppsMap-Update [com.mcdonalds.gma.cn => false]
+> 05-19 17:17:32.578 23623 25417 D MediaProvider: Deleted 0 Android/media items belonging to com.linnan.blindassist on /data/user/0/com.google.android.providers.media.module/databases/external.db
+  05-19 17:17:32.578  7839  7839 I SamsungAnalytics605079: Tracker start:6.05.079
+  05-19 17:17:32.578 26547 26547 I Notification4Watch7_AM: WatchAppsUtils.setWatchAppsMap-Update [com.microsoft.copilot => false]
+  05-19 17:17:32.578  7839  7839 I GG-DiagMonLog: [2] UtilityappApplication.onCreate: setUp : com.android.samsung.utilityapp
+  05-19 17:17:32.588 26547 26547 I Notification4Watch7_AM: WatchAppsUtils.setWatchAppsMap-Update [net.ffclient.app => false]
+> 05-19 17:17:32.588 26547 26547 I Notification4Watch7_AM: WatchAppsUtils.setWatchAppsMap-Update [com.linnan.blindassist.test => false]
+  05-19 17:17:32.588  7839  7839 I GalaxyLabs: [2] g.onServiceConnected: getOAID onServiceConnected
+  05-19 17:17:32.590 26547 26547 I Notification4Watch7_AM: JsonUtils.sendJsonByDataItem-path : /wcs_extension/sysui/notification/switch/app_settings / jsonString : [{"channels":[{"isAllowed":true,"realPackageName":"com.samsung.android.dialer","virtualName":"missed_call"},{"isAllowed":true,"realPackageName":"com.samsung.android.dialer","virtualName":"Incoming_call"}
+  05-19 17:17:32.590 26547 26547 I Notification4Watch7_AM: ,{"isAllowed":true,"realPackageName":"com.samsung.android.clientconnection","virtualName":"voice_mail"}],"isAllowed":true,"packageName":"call","realPackageName":"com.samsung.android.dialer","users":[{"isAllowed":true,"isWatchApp":false,"userId":0}]}
+  05-19 17:17:32.590 26547 26547 I Notification4Watch7_AM: ,{"isAllowed":false,"packageName":"com.farplace.qingzhuo","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.tencent.watchwechat","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":true,"userId":0}]}
+> 05-19 17:17:32.590 26547 26547 I Notification4Watch7_AM: ,{"isAllowed":false,"packageName":"net.ffclient.app","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.linnan.blindassist.test","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]}
+  05-19 17:17:32.590 26547 26547 I Notification4Watch7_AM: ]
+  05-19 17:17:32.590 26547 26547 I Notification4Watch7_AM: j / nodeId : 2cd35156
+  05-19 17:17:32.590 26547 26547 I WatchSettings_Watch7*: SettingsCompanion > put() : ##:##:##:##:6F:85, GW, /wcs_extension/sysui/notification/switch/app_settings, [{"channels":[{"isAllowed":true,"realPackageName":"com.samsung.android.dialer","virtualName":"missed_call"},{"isAllowed":true,"realPackageName":"com.samsung.android.dialer","virtualName":"Incoming_call"},{"isAllowed":true,"realPackageName":"com.samsung.android.clientconnection","virtualName":"voice_mail"}],"isAllowed":true,"packageName":"call","realPackageName":"com.samsung.android.dialer","users":[{"isAllowed":true,"isWatchApp":false,"userId":0}]},{"isAllowed":true,"packageName":"com.google.android.cellbroadcastreceiver","realPackageName":"","users":[{"isAllowed":true,"isWatchApp":false,"userId":0}]},{"isAllowed":true,"packageName":"com.android.vending","realPackageName":"","users":[{"isAllowed":true,"isWatchApp":false,"userId":0},{"isAllowed":true,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.samsung.android.app.contacts","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":true,"packageName":"com.samsung.android.messaging","realPackageName":"","users":[{"isAllowed":true,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.samsung.knox.securefolder","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.sec.android.app.camera","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.sec.android.app.sbrowser","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.sec.android.gallery3d","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.android.chrome","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.coolapk.market","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.github.metacubex.clash.meta","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.google.android.apps.docs","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.google.android.apps.maps","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.google.android.apps.photos","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.google.android.gm","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.google.android.music","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0},{"isAllowed":false,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.google.android.youtube","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.microsoft.emmx","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.samsung.android.app.galaxyraw","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":false,"packageName":"com.samsung.android.app.tips","realPackageName":"","users":[{"isAllowed":false,"isWatchApp":false,"userId":0}]},{"isAllowed":true,"packageName":"com.samsung.android.calendar","realPackageName":"","users":[{"isAllowed":true,"isWatchApp":false,"userId":0},{"isAllowed":true,"isWatchApp":false,"userId":150}]},{"isAllowed":false,"packageName":"com.sams
+  05-19 17:17:32.592 26547 26547 I ClockAddRemReceiver: onReceive action = android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.592 23623 25417 I FuseDaemon: Successfully deleted rows in leveldb for owner_id:  and ownerPackageIdentifier: com.linnan.blindassist::0
+  05-19 17:17:32.592 26547 26547 I Connection4Watch7: PackageReceiver.onReceive- : android.intent.action.PACKAGE_REMOVED
+> 05-19 17:17:32.592 26547 26547 I WatchSettings_Watch7*: SettingsCompanion > packageBroadcastReceiver.onReceive() : ACTION_PACKAGE_REMOVED : appName=com.linnan.blindassist.test, isUpdating=false
+  05-19 17:17:32.593 26547 26547 I GoogleRequirementUtils: isChinaPhoneByGoogleLogic()  salesCode : CHC
+> 05-19 17:17:32.593 26547 26547 I Notification4Watch7_AM: NotificationPackageReceiver.onReceive-action: android.intent.action.PACKAGE_REMOVED, userId: 0, packageName: com.linnan.blindassist.test
+> 05-19 17:17:32.593 23623 25417 D MediaGrants: Removed 0 media_grants for 0 user for [com.linnan.blindassist]. Reason: Package orphaned
+  05-19 17:17:32.593 26547 26547 I PrefUtils: getPreferenceWithFilename prefFileName = ##:##:##:##:6F:85_numbesrync_config, key = numbersync_register value=null
+  05-19 17:17:32.593 26547 26547 I [ESIM]_NumbersyncUtil: getNumbersyncRegister() - value : null
+  05-19 17:17:32.593 23623 25417 I MediaProvider: End Intent { act=android.intent.action.PACKAGE_FULLY_REMOVED dat=package: flg=0x5000010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService (has extras) }
+  05-19 17:17:32.608 21071 21124 I ActivityManager: ProcessObserver broadcast disabled
+> 05-19 17:17:32.608 23623 25417 D MediaProvider: Deleted 0 Android/media items belonging to com.linnan.blindassist.test on /data/user/0/com.google.android.providers.media.module/databases/external.db
+  05-19 17:17:32.609  7839  7839 I GG.SystemBroadcastReceiver: [2] SystemBroadcastReceiver.onReceive: action = android.intent.action.PACKAGE_FULLY_REMOVED
+> 05-19 17:17:32.609  7839  7839 I GG.SystemBroadcastReceiver: [2] SystemBroadcastReceiver.onReceive:  clearAppSettings : com.linnan.blindassist
+> 05-19 17:17:32.613  7839  7839 I GalaxyLabs: [2] SystemBroadcastReceiver.onReceive:  disableShortcut packageName = com.linnan.blindassist
+  05-19 17:17:32.616  7839  7839 I GG.SystemBroadcastReceiver: [2] SystemBroadcastReceiver.onReceive: action = android.intent.action.PACKAGE_FULLY_REMOVED
+> 05-19 17:17:32.616  7839  7839 I GG.SystemBroadcastReceiver: [2] SystemBroadcastReceiver.onReceive:  clearAppSettings : com.linnan.blindassist.test
+> 05-19 17:17:32.616  7839  7839 I GalaxyLabs: [2] SystemBroadcastReceiver.onReceive:  disableShortcut packageName = com.linnan.blindassist.test
+  05-19 17:17:32.618 21071 21167 D PowerManagerService: displayReady: false groupId=0
+  05-19 17:17:32.618 21071 21167 D DisplayPowerController[0]: animateScreenStateChange: target=ON, mIsEnabled=true
+  05-19 17:17:32.618 21071 21167 D PowerManagerService: displayReady: true groupId=0
+  05-19 17:17:32.618 21071 21643 I ActivityManager: Changes in 10443 11 to 19, 128 to 0
+> 05-19 17:17:32.621 23623 25417 I FuseDaemon: Successfully deleted rows in leveldb for owner_id:  and ownerPackageIdentifier: com.linnan.blindassist.test::0
+> 05-19 17:17:32.621 23623 25417 D MediaGrants: Removed 0 media_grants for 0 user for [com.linnan.blindassist.test]. Reason: Package orphaned
+  05-19 17:17:32.622 23623 25417 I MediaProvider: End Intent { act=android.intent.action.PACKAGE_FULLY_REMOVED dat=package: flg=0x5000010 cmp=com.google.android.providers.media.module/com.android.providers.media.MediaService (has extras) }
+> 05-19 17:17:32.625 26547 26547 I Notification4Watch7_AM: PhoneAppsRepository.removeApp-[option:REMOVE_ALL|com.linnan.blindassist.test|0]
+  05-19 17:17:32.625 26547 26547 I SharedCommonUtils: getCSC()
+  05-19 17:17:32.625 26547 26547 I SharedCommonUtils: isCSCExistFile()
+  05-19 17:17:32.625 26547 26547 I SharedCommonUtils: CSC doesn't exist.
+  05-19 17:17:32.705 22469 31237 I SearchEngineAppSuggestion: packageUpdateEvent: com.honeyspace.sdk.source.entity.PackageOperation$Removed@d7f0b9f
+> 05-19 17:17:32.705 22469 31237 I SearchEngineAppSuggestion: package removed: com.linnan.blindassist.test
+  05-19 17:17:32.705 22469 31237 I SearchEngine: isComponentInApps() packageName : com.jingdong.app.mall / className : com.jingdong.app.mall.MainFrameActivity / userId : 0 / enable true / enabledSetting 0
+  05-19 17:17:32.705 22469 31237 I SearchEngine: isComponentInApps() packageName : com.taobao.taobao / className : com.taobao.tao.welcome.Welcome / userId : 0 / enable true / enabledSetting 0
+  05-19 17:17:32.706 22469 31237 I SearchEngine: isComponentInApps() packageName : com.sec.android.app.myfiles / className : com.sec.android.app.myfiles.ui.ForMyFilesAppIconInHomeScreenActivity / userId : 0 / enable true / enabledSetting 0
+  05-19 17:17:37.414 21071 21386 D InetDiagMessage: Destroyed live tcp sockets for uids={20205} in 3ms
+> 05-19 17:17:37.499 21071 22942 D FreecessHandler: freeze com.linnan.blindassist.test(10573) result : 34
+> 05-19 17:17:37.499 21071 22942 D FreecessHandler: stop trying to freeze com.linnan.blindassist.test
+  05-19 17:17:37.584  1184  1184 D io_stats: !@   8,0 r 51671935 1211113684 w 20607287 496236584 d 2804478 563479304 f 940516 2551271 iot 11580728 0 th 0 0 0 pt 0 inp 0 0 332718.184
+  05-19 17:17:37.591 21071 21167 D PowerManagerService: displayReady: false groupId=0
+  05-19 17:17:37.591 21071 21167 D DisplayPowerController[0]: animateScreenStateChange: target=ON, mIsEnabled=true
