@@ -9,8 +9,8 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
-import com.linnan.blindassist.camera.CameraXFrameSource
 import com.linnan.blindassist.camera.FrameSource
+import com.linnan.blindassist.camera.FrameSourceFactory
 import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
@@ -23,44 +23,31 @@ import com.linnan.blindassist.ui.BlindAssistViewModel
 import com.linnan.blindassist.ui.CameraGuidanceMapper
 import com.linnan.blindassist.ui.DetectionOverlayView
 import com.linnan.blindassist.ui.FieldTestSummaryMapper
+import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
 import com.linnan.blindassist.vision.ObjectDetector
-import com.linnan.blindassist.vision.TfliteYoloDetector
 import java.util.concurrent.atomic.AtomicBoolean
 
 class AssistRuntimeController(
     private val activity: ComponentActivity,
     private val appViewModel: BlindAssistViewModel,
-    private val detector: ObjectDetector = TfliteYoloDetector(activity),
-    private val feedbackController: FeedbackController = FeedbackController(activity),
-    private val coordinator: AssistSessionCoordinator = AssistSessionCoordinator(
-        feedbackGateway = feedbackController
-    ),
-    private val frameSource: FrameSource = CameraXFrameSource(activity, activity)
+    private val detector: ObjectDetector,
+    private val feedbackController: FeedbackController,
+    private val coordinator: AssistSessionCoordinator,
+    frameSourceFactory: FrameSourceFactory,
+    private val configApplier: RuntimeConfigApplier,
+    private val stateMachine: AssistRuntimeStateMachine = AssistRuntimeStateMachine()
 ) {
     private lateinit var previewView: PreviewView
     private lateinit var overlayView: DetectionOverlayView
 
+    private val frameSource: FrameSource = frameSourceFactory.create(activity, activity)
     private val isProcessing = AtomicBoolean(false)
     private var lastPerfLogAtMs = 0L
-    private var pendingCameraOpen = false
-    private var detectionEnabled = true
-    private var careModeEnabled = false
-    private var alertProfile = AlertProfile.STANDARD
-    private var assistScenario = AssistScenario.GENERAL
-    private var appLanguage = AppLanguage.ZH
+    private var config = appViewModel.runtimeConfig()
 
     fun initialize() {
-        val initialControls = appViewModel.uiState.value.controls
-        feedbackController.speechEnabled = initialControls.speechEnabled
-        feedbackController.vibrationEnabled = initialControls.vibrationEnabled
-        feedbackController.speechStyle = initialControls.speechStyle
-        feedbackController.vibrationStrength = initialControls.vibrationStrength
-        feedbackController.appLanguage = initialControls.appLanguage
-        careModeEnabled = initialControls.careModeEnabled
-        alertProfile = initialControls.alertProfile
-        assistScenario = initialControls.assistScenario
-        appLanguage = initialControls.appLanguage
-        renderUi(CameraGuidanceMapper.initial(detector.statusMessage, assistScenario, appLanguage))
+        syncConfigFromViewModel()
+        renderUi(CameraGuidanceMapper.initial(detector.statusMessage, config.assistScenario, config.appLanguage))
     }
 
     fun shutdown() {
@@ -71,134 +58,94 @@ class AssistRuntimeController(
     }
 
     fun openCameraExperience() {
-        if (hasCameraPermission()) {
-            activateCameraExperience()
-        } else {
-            appViewModel.onShowCameraPermissionDialog()
-        }
+        handleTransition(
+            stateMachine.onEvent(
+                AssistRuntimeEvent.OpenCamera(
+                    hasCameraPermission = hasCameraPermission(),
+                    modelReady = detector.isReady
+                )
+            )
+        )
     }
 
     fun requestCameraPermissionAfterExplanation(launchPermissionRequest: () -> Unit) {
-        appViewModel.onDismissCameraPermissionDialog()
-        pendingCameraOpen = true
-        launchPermissionRequest()
+        handleTransition(
+            transition = stateMachine.onEvent(AssistRuntimeEvent.PermissionExplanationAccepted),
+            launchPermissionRequest = launchPermissionRequest
+        )
     }
 
     fun onCameraPermissionResult(granted: Boolean) {
-        if (granted && pendingCameraOpen) {
-            pendingCameraOpen = false
-            activateCameraExperience()
-        } else if (!granted) {
-            pendingCameraOpen = false
-            appViewModel.onCameraPermissionDenied(CameraGuidanceMapper.permissionDenied(appLanguage))
-        }
+        handleTransition(
+            stateMachine.onEvent(
+                AssistRuntimeEvent.PermissionResult(
+                    granted = granted,
+                    modelReady = detector.isReady
+                )
+            )
+        )
     }
 
     fun closeCameraExperience() {
-        pendingCameraOpen = false
-        stopCamera()
-        appViewModel.closeCamera(
-            fieldTestSummary = currentFieldTestSummary(active = false),
-            guidance = CameraGuidanceMapper.initial(detector.statusMessage, assistScenario, appLanguage),
-            modelStatus = detector.statusMessage
-        )
-        coordinator.reset()
+        handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CloseCamera))
     }
 
     fun onCameraViewsReady(preview: PreviewView, overlay: DetectionOverlayView) {
         previewView = preview
         overlayView = overlay
-        overlayView.setCareMode(careModeEnabled)
-        if (appViewModel.uiState.value.cameraActive) {
-            startCameraIfReady()
-        }
+        syncConfigFromViewModel()
+        handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CameraViewsReady))
     }
 
     fun setDetectionEnabled(enabled: Boolean) {
-        detectionEnabled = enabled
         appViewModel.onDetectionChange(enabled)
-        if (enabled) {
-            coordinator.startSession()
-            appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true))
-            renderUi(CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario, appLanguage))
-            startCameraIfReady()
-        } else {
-            appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = false))
-            coordinator.reset()
-            if (::overlayView.isInitialized) {
-                overlayView.update(emptyList(), null, null)
-            }
-            renderUi(CameraGuidanceMapper.paused(appLanguage))
-        }
+        syncConfigFromViewModel()
+        handleTransition(stateMachine.onEvent(AssistRuntimeEvent.DetectionChanged(enabled)))
     }
 
     fun setSpeechEnabled(enabled: Boolean) {
-        feedbackController.speechEnabled = enabled
         appViewModel.onSpeechChange(enabled)
+        onConfigChanged(updateGuidance = false)
     }
 
     fun setVibrationEnabled(enabled: Boolean) {
-        feedbackController.vibrationEnabled = enabled
         appViewModel.onVibrationChange(enabled)
+        onConfigChanged(updateGuidance = false)
     }
 
     fun setSpeechStyle(style: SpeechStyle) {
-        feedbackController.speechStyle = style
         appViewModel.onSpeechStyleChange(style)
+        onConfigChanged(updateGuidance = false)
     }
 
     fun setVibrationStrength(strength: VibrationStrength) {
-        feedbackController.vibrationStrength = strength
         appViewModel.onVibrationStrengthChange(strength)
+        onConfigChanged(updateGuidance = false)
     }
 
     fun setAppLanguage(language: AppLanguage) {
-        appLanguage = language
-        feedbackController.appLanguage = language
         appViewModel.onLanguageChange(language)
-        appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
-        val guidance = if (appViewModel.uiState.value.cameraActive) {
-            CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario, appLanguage)
-        } else {
-            CameraGuidanceMapper.initial(detector.statusMessage, assistScenario, appLanguage)
-        }
-        renderUi(guidance)
+        onConfigChanged(updateGuidance = true)
     }
 
     fun setCareModeEnabled(enabled: Boolean) {
-        careModeEnabled = enabled
-        if (::overlayView.isInitialized) {
-            overlayView.setCareMode(enabled)
-        }
         appViewModel.onCareModeChange(enabled)
+        onConfigChanged(updateGuidance = false)
     }
 
     fun setAlertProfile(profile: AlertProfile) {
-        alertProfile = profile
         appViewModel.onProfileChange(profile)
-        appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
+        onConfigChanged(updateGuidance = false)
     }
 
     fun setAssistScenario(scenario: AssistScenario) {
-        assistScenario = scenario
         appViewModel.onScenarioChange(scenario)
-        appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
-        renderUi(appViewModel.uiState.value.cameraGuidance.copy(scenarioName = scenario.displayName(appLanguage)))
+        onConfigChanged(updateGuidance = true)
     }
 
     fun setDailyUsageMode(mode: DailyUsageMode) {
-        val config = mode.config ?: return
-        assistScenario = config.scenario
-        alertProfile = config.profile
-        careModeEnabled = config.careModeEnabled
-        feedbackController.speechStyle = config.speechStyle
-        feedbackController.vibrationStrength = config.vibrationStrength
-        if (::overlayView.isInitialized) {
-            overlayView.setCareMode(config.careModeEnabled)
-        }
         appViewModel.onDailyUsageModeChange(mode)
-        appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
-        renderUi(appViewModel.uiState.value.cameraGuidance.copy(scenarioName = config.scenario.displayName(appLanguage)))
+        onConfigChanged(updateGuidance = true)
     }
 
     fun setQuietShortcut() {
@@ -217,29 +164,99 @@ class AssistRuntimeController(
         )
     }
 
-    private fun activateCameraExperience() {
-        coordinator.startSession()
+    private fun setReminderShortcut(
+        profile: AlertProfile,
+        speechStyle: SpeechStyle,
+        vibrationStrength: VibrationStrength
+    ) {
+        appViewModel.onReminderShortcutChange(profile, speechStyle, vibrationStrength)
+        onConfigChanged(updateGuidance = false)
+    }
+
+    private fun handleTransition(
+        transition: AssistRuntimeTransition,
+        launchPermissionRequest: (() -> Unit)? = null
+    ) {
+        transition.effects.forEach { effect ->
+            when (effect) {
+                AssistRuntimeEffect.ShowPermissionExplanation -> appViewModel.onShowCameraPermissionDialog()
+                AssistRuntimeEffect.DismissPermissionExplanation -> appViewModel.onDismissCameraPermissionDialog()
+                AssistRuntimeEffect.LaunchPermissionRequest -> launchPermissionRequest?.invoke()
+                AssistRuntimeEffect.StartSession -> {
+                    coordinator.startSession()
+                    appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true))
+                }
+                AssistRuntimeEffect.ActivateCamera -> activateCameraUi()
+                AssistRuntimeEffect.StartCameraIfReady -> startCameraIfReady()
+                AssistRuntimeEffect.StopCamera -> stopCamera()
+                AssistRuntimeEffect.ClearOverlay -> clearOverlay()
+                AssistRuntimeEffect.CloseCamera -> closeCameraUi()
+                AssistRuntimeEffect.ResetSession -> coordinator.reset()
+                AssistRuntimeEffect.ShowPermissionDenied -> appViewModel.onCameraPermissionDenied(permissionDeniedGuidance())
+                AssistRuntimeEffect.ApplyConfig -> syncConfigFromViewModel()
+                is AssistRuntimeEffect.Render -> renderTarget(effect.target, effect.message)
+            }
+        }
+    }
+
+    private fun activateCameraUi() {
+        val guidance = if (detector.isReady) {
+            startingGuidance()
+        } else {
+            modelUnavailableGuidance()
+        }
         appViewModel.activateCamera(
             fieldTestSummary = currentFieldTestSummary(active = true),
-            guidance = CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario, appLanguage),
+            guidance = guidance,
             modelStatus = detector.statusMessage
         )
-        startCameraIfReady()
+    }
+
+    private fun closeCameraUi() {
+        appViewModel.closeCamera(
+            fieldTestSummary = currentFieldTestSummary(active = false),
+            guidance = CameraGuidanceMapper.initial(detector.statusMessage, config.assistScenario, config.appLanguage),
+            modelStatus = detector.statusMessage
+        )
+    }
+
+    private fun renderTarget(target: AssistRuntimeRenderTarget, message: String?) {
+        val guidance = when (target) {
+            AssistRuntimeRenderTarget.Starting -> startingGuidance()
+            AssistRuntimeRenderTarget.Waiting -> {
+                if (detector.isReady) {
+                    CameraGuidanceMapper.waiting(detector.statusMessage, config.assistScenario, config.appLanguage)
+                } else {
+                    modelUnavailableGuidance()
+                }
+            }
+            AssistRuntimeRenderTarget.Paused -> CameraGuidanceMapper.paused(config.appLanguage)
+                .copy(scenarioName = config.assistScenario.displayName(config.appLanguage))
+            AssistRuntimeRenderTarget.PermissionDenied -> permissionDeniedGuidance()
+            AssistRuntimeRenderTarget.ModelUnavailable -> modelUnavailableGuidance()
+            AssistRuntimeRenderTarget.CameraError -> CameraGuidanceMapper.cameraError(message ?: "未知错误", config.appLanguage)
+        }
+        renderUi(guidance)
     }
 
     private fun startCameraIfReady() {
         if (!appViewModel.uiState.value.cameraActive || !::previewView.isInitialized) return
         if (!hasCameraPermission()) {
-            renderUi(CameraGuidanceMapper.permissionDenied(appLanguage))
+            renderUi(permissionDeniedGuidance())
             return
         }
         frameSource.start(
             previewView = previewView,
             onFrame = ::processFrameBitmap,
-            onStarted = { renderUi(CameraGuidanceMapper.waiting(detector.statusMessage, assistScenario, appLanguage)) },
+            onStarted = {
+                handleTransition(
+                    stateMachine.onEvent(AssistRuntimeEvent.CameraStarted(detector.isReady))
+                )
+            },
             onError = { error ->
+                val message = error.message ?: "未知错误"
                 Log.e(PERF_TAG, "Camera start failed", error)
-                renderUi(CameraGuidanceMapper.cameraError(error.message ?: "未知错误", appLanguage))
+                handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CameraStartFailed(message)))
             }
         )
     }
@@ -247,13 +264,21 @@ class AssistRuntimeController(
     private fun stopCamera() {
         frameSource.stop()
         isProcessing.set(false)
+    }
+
+    private fun clearOverlay() {
         if (::overlayView.isInitialized) {
             overlayView.update(emptyList(), null, null)
         }
     }
 
     private fun processFrameBitmap(bitmap: Bitmap) {
-        if (!appViewModel.uiState.value.cameraActive || !detectionEnabled || !detector.isReady) {
+        if (!appViewModel.uiState.value.cameraActive || !config.detectionEnabled) {
+            bitmap.recycle()
+            return
+        }
+        if (!detector.isReady) {
+            activity.runOnUiThread { renderUi(modelUnavailableGuidance()) }
             bitmap.recycle()
             return
         }
@@ -264,21 +289,23 @@ class AssistRuntimeController(
 
         try {
             val detectorFrame = detector.detect(bitmap)
-            val frameResult = coordinator.processFrame(detectorFrame, alertProfile, assistScenario)
+            val frameResult = coordinator.processFrame(detectorFrame, config.alertProfile, config.assistScenario)
             activity.runOnUiThread {
-                overlayView.update(
-                    detectorFrame.detections,
-                    detectorFrame.frameSize,
-                    frameResult.evaluation.stableRisk
-                )
-                renderUi(CameraGuidanceMapper.fromFrameResult(frameResult, appLanguage))
+                if (::overlayView.isInitialized) {
+                    overlayView.update(
+                        detectorFrame.detections,
+                        detectorFrame.frameSize,
+                        frameResult.evaluation.stableRisk
+                    )
+                }
+                renderUi(CameraGuidanceMapper.fromFrameResult(frameResult, config.appLanguage))
                 appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true))
                 logPerformanceIfNeeded(frameResult)
             }
         } catch (error: Throwable) {
             Log.e(PERF_TAG, "Frame processing failed", error)
             activity.runOnUiThread {
-                renderUi(CameraGuidanceMapper.cameraError("检测异常：${error.message ?: "未知错误"}", appLanguage))
+                renderUi(CameraGuidanceMapper.cameraError("检测异常：${error.message ?: "未知错误"}", config.appLanguage))
             }
         } finally {
             isProcessing.set(false)
@@ -286,22 +313,70 @@ class AssistRuntimeController(
         }
     }
 
-    private fun setReminderShortcut(
-        profile: AlertProfile,
-        speechStyle: SpeechStyle,
-        vibrationStrength: VibrationStrength
-    ) {
-        alertProfile = profile
-        feedbackController.speechStyle = speechStyle
-        feedbackController.vibrationStrength = vibrationStrength
-        appViewModel.onReminderShortcutChange(profile, speechStyle, vibrationStrength)
+    private fun onConfigChanged(updateGuidance: Boolean) {
+        syncConfigFromViewModel()
         appViewModel.updateFieldTestSummary(currentFieldTestSummary(appViewModel.uiState.value.cameraActive))
+        if (updateGuidance) {
+            renderGuidanceForCurrentState()
+        }
+    }
+
+    private fun renderGuidanceForCurrentState() {
+        val guidance = when (stateMachine.currentState) {
+            AssistRuntimeState.Idle -> CameraGuidanceMapper.initial(
+                detector.statusMessage,
+                config.assistScenario,
+                config.appLanguage
+            )
+            AssistRuntimeState.Starting -> startingGuidance()
+            AssistRuntimeState.Running -> CameraGuidanceMapper.waiting(
+                detector.statusMessage,
+                config.assistScenario,
+                config.appLanguage
+            )
+            AssistRuntimeState.DetectionPaused -> CameraGuidanceMapper.paused(config.appLanguage)
+                .copy(scenarioName = config.assistScenario.displayName(config.appLanguage))
+            AssistRuntimeState.PermissionDenied -> permissionDeniedGuidance()
+            is AssistRuntimeState.Error -> {
+                if (detector.isReady) {
+                    CameraGuidanceMapper.cameraError((stateMachine.currentState as AssistRuntimeState.Error).message, config.appLanguage)
+                } else {
+                    modelUnavailableGuidance()
+                }
+            }
+            AssistRuntimeState.PermissionExplaining,
+            AssistRuntimeState.PermissionRequesting -> permissionDeniedGuidance()
+        }
+        renderUi(guidance)
+    }
+
+    private fun syncConfigFromViewModel() {
+        config = appViewModel.runtimeConfig()
+        configApplier.apply(config, if (::overlayView.isInitialized) overlayView else null)
     }
 
     private fun currentFieldTestSummary(active: Boolean) =
-        FieldTestSummaryMapper.fromSummary(coordinator.sessionSummary(), active, alertProfile, assistScenario, appLanguage)
+        FieldTestSummaryMapper.fromSummary(
+            coordinator.sessionSummary(),
+            active,
+            config.alertProfile,
+            config.assistScenario,
+            config.appLanguage
+        )
 
-    private fun renderUi(snapshot: com.linnan.blindassist.ui.compose.CameraGuidanceUiState) {
+    private fun startingGuidance(): CameraGuidanceUiState {
+        return CameraGuidanceMapper.starting(detector.statusMessage, config.assistScenario, config.appLanguage)
+    }
+
+    private fun modelUnavailableGuidance(): CameraGuidanceUiState {
+        return CameraGuidanceMapper.modelUnavailable(detector.statusMessage, config.assistScenario, config.appLanguage)
+    }
+
+    private fun permissionDeniedGuidance(): CameraGuidanceUiState {
+        return CameraGuidanceMapper.permissionDenied(config.appLanguage)
+    }
+
+    private fun renderUi(snapshot: CameraGuidanceUiState) {
         appViewModel.renderCameraGuidance(snapshot, detector.statusMessage)
     }
 
@@ -320,9 +395,9 @@ class AssistRuntimeController(
                 "fps=${"%.1f".format(metrics.fps)}, profile=${evaluation.profile.storageValue}, " +
                 "scenario=${evaluation.scenario.storageValue}, " +
                 "rawRisk=${riskSummary(evaluation.rawRisk)}, stableRisk=${riskSummary(evaluation.stableRisk)}, " +
-                "feedbackReason=${frameResult.feedbackDecision.reason.displayText(appLanguage)}, " +
+                "feedbackReason=${frameResult.feedbackDecision.reason.displayText(config.appLanguage)}, " +
                 "explanation=${frameResult.explanation.headline}, " +
-                "session=${frameResult.sessionSummary.displayText(appLanguage)}, status=${metrics.modelStatus}"
+                "session=${frameResult.sessionSummary.displayText(config.appLanguage)}, status=${metrics.modelStatus}"
         )
     }
 

@@ -1,8 +1,7 @@
 package com.linnan.blindassist.ui
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
+import com.linnan.blindassist.runtime.AssistRuntimeConfig
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
@@ -13,10 +12,12 @@ import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.AssistControlsUiState
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
 import com.linnan.blindassist.ui.compose.FieldTestSummaryUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
 
 data class BlindAssistAppUiState(
     val controls: AssistControlsUiState,
@@ -30,9 +31,9 @@ data class BlindAssistAppUiState(
     val showPermissionDeniedDialog: Boolean
 )
 
-class BlindAssistViewModel(
-    private val userPreferences: UserPreferences,
-    initialModelStatus: String = DEFAULT_MODEL_STATUS
+@HiltViewModel
+class BlindAssistViewModel @Inject constructor(
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
     private val initialPreferences = userPreferences.load()
 
@@ -58,7 +59,7 @@ class BlindAssistViewModel(
                 )
             ),
             cameraGuidance = CameraGuidanceUiState.initial(
-                initialModelStatus,
+                DEFAULT_MODEL_STATUS,
                 initialPreferences.assistScenario.displayName(initialPreferences.appLanguage),
                 initialPreferences.appLanguage
             ),
@@ -67,7 +68,7 @@ class BlindAssistViewModel(
                 initialPreferences.assistScenario.displayName(initialPreferences.appLanguage),
                 initialPreferences.appLanguage
             ),
-            modelStatus = initialModelStatus,
+            modelStatus = DEFAULT_MODEL_STATUS,
             cameraActive = false,
             showOnboarding = !initialPreferences.onboardingCompleted,
             showGlassesDialog = false,
@@ -76,6 +77,10 @@ class BlindAssistViewModel(
         )
     )
     val uiState: StateFlow<BlindAssistAppUiState> = _uiState.asStateFlow()
+
+    fun runtimeConfig(): AssistRuntimeConfig {
+        return AssistRuntimeConfig.fromControls(uiState.value.controls)
+    }
 
     fun renderCameraGuidance(guidance: CameraGuidanceUiState, modelStatus: String = uiState.value.modelStatus) {
         _uiState.update {
@@ -255,18 +260,6 @@ class BlindAssistViewModel(
 
     fun onDismissPermissionDeniedDialog() {
         _uiState.update { it.copy(showPermissionDeniedDialog = false) }
-    }
-
-    class Factory(
-        private val userPreferences: UserPreferences
-    ) : ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-            if (modelClass.isAssignableFrom(BlindAssistViewModel::class.java)) {
-                return BlindAssistViewModel(userPreferences) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-        }
     }
 
     companion object {

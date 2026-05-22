@@ -9,21 +9,30 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.linnan.blindassist.preferences.UserPreferences
+import com.linnan.blindassist.camera.FrameSourceFactory
+import com.linnan.blindassist.feedback.FeedbackController
+import com.linnan.blindassist.runtime.RuntimeConfigApplier
 import com.linnan.blindassist.runtime.AssistRuntimeController
+import com.linnan.blindassist.session.AssistSessionCoordinator
 import com.linnan.blindassist.ui.BlindAssistViewModel
 import com.linnan.blindassist.ui.compose.BlindAssistApp
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
 import com.linnan.blindassist.ui.compose.CameraPermissionDeniedDialog
 import com.linnan.blindassist.ui.compose.CameraPermissionExplanationDialog
 import com.linnan.blindassist.ui.compose.GlassesPlaceholderDialog
+import com.linnan.blindassist.vision.ObjectDetector
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val appViewModel: BlindAssistViewModel by viewModels {
-        BlindAssistViewModel.Factory(userPreferences)
-    }
+    private val appViewModel: BlindAssistViewModel by viewModels()
 
-    private lateinit var userPreferences: UserPreferences
+    @Inject lateinit var detector: ObjectDetector
+    @Inject lateinit var feedbackController: FeedbackController
+    @Inject lateinit var coordinator: AssistSessionCoordinator
+    @Inject lateinit var frameSourceFactory: FrameSourceFactory
+    @Inject lateinit var runtimeConfigApplier: RuntimeConfigApplier
     private lateinit var runtimeController: AssistRuntimeController
 
     private val requestCameraPermission = registerForActivityResult(
@@ -36,8 +45,15 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        userPreferences = UserPreferences(this)
-        runtimeController = AssistRuntimeController(this, appViewModel).also { it.initialize() }
+        runtimeController = AssistRuntimeController(
+            activity = this,
+            appViewModel = appViewModel,
+            detector = detector,
+            feedbackController = feedbackController,
+            coordinator = coordinator,
+            frameSourceFactory = frameSourceFactory,
+            configApplier = runtimeConfigApplier
+        ).also { it.initialize() }
 
         setContent {
             val uiState by appViewModel.uiState.collectAsStateWithLifecycle()

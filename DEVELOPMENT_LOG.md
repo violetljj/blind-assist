@@ -4,6 +4,77 @@
 
 ## 2026-05-22
 
+### v6.4.0 Runtime 状态机与 Hilt 依赖拆分
+
+- 时间：2026-05-22 19:46:40 +08:00
+- 执行者：Codex
+- 类型：架构重构 / Hilt / Runtime 状态机 / 测试 / 文档
+- 修改范围：
+  - `build.gradle.kts`
+  - `app/build.gradle.kts`
+  - `app/src/main/AndroidManifest.xml`
+  - `app/src/main/java/com/linnan/blindassist/BlindAssistApplication.kt`
+  - `app/src/main/java/com/linnan/blindassist/di/`
+  - `app/src/main/java/com/linnan/blindassist/camera/FrameSourceFactory.kt`
+  - `app/src/main/java/com/linnan/blindassist/runtime/`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/BlindAssistViewModel.kt`
+  - `app/src/main/java/com/linnan/blindassist/ui/CameraGuidanceMapper.kt`
+  - `app/src/test/java/com/linnan/blindassist/runtime/`
+  - `app/src/test/java/com/linnan/blindassist/ui/BlindAssistViewModelTest.kt`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `README.md`
+  - `CHANGELOG.md`
+- 修改内容：
+  - 接入 Hilt，并新增 `BlindAssistApplication`、`AppModule` 和 `RuntimeActivityModule`，由 Hilt 提供 `UserPreferences`、`FeedbackController`、`ObjectDetector`、`AssistSessionCoordinator` 和 `FrameSourceFactory`。
+  - 将 `MainActivity` 改为 `@AndroidEntryPoint`，移除手写 `ViewModelProvider.Factory` 和手动创建 `UserPreferences`；将 `BlindAssistViewModel` 改为 `@HiltViewModel`。
+  - 新增纯 Kotlin `AssistRuntimeStateMachine`，用 event/effect 管理权限说明、权限请求、相机启动、运行、检测暂停、权限拒绝、启动失败和关闭相机路径。
+  - 新增 `AssistRuntimeConfig` 和 `RuntimeConfigApplier`，将反馈、Care Mode、场景、档位、语音风格、震动强度、语言和日常模式收敛成单一配置快照。
+  - 重构 `AssistRuntimeController` 为状态机 effect executor，保留 Android 边界、CameraX 启停、frame 处理、UI guidance 渲染、现场摘要更新和性能日志。
+  - 新增相机启动中、模型不可用、检测暂停等 guidance 文案，并扩展 JVM/Compose 测试覆盖。
+- 兼容性说明：
+  - 原计划使用 Hilt `2.59.2`，但实际 Gradle 验证显示该版本 Hilt Android Gradle plugin 要求 AGP 9+，当前项目为 AGP `8.7.3`。
+  - 为避免把本次任务扩大为 AGP 9 迁移，实际采用 AGP 8.7 可用的 Hilt `2.55`，仍使用 kapt，保持单模块和 SharedPreferences。
+- 验证方式：
+  - 首次新增 Hilt 依赖时，普通沙箱 Gradle 无法解析新插件；按权限规则提权下载依赖后继续。
+  - `.\gradlew.bat :app:testDebugUnitTest --no-daemon`：`BUILD SUCCESSFUL`。
+  - `.\gradlew.bat :app:lintDebug :app:assembleDebug --no-daemon`：`BUILD SUCCESSFUL`。
+  - lint 报告保持 `0 errors, 15 warnings`，仍为锁竖屏、缺应用图标、绘制分配、minSdk 冗余判断和未使用资源等既有警告。
+  - 生成 debug APK：`app/build/outputs/apk/debug/app-debug.apk`，大小 `47,205,607` bytes。
+- 版本判断：
+  - 本次引入 Hilt、runtime 状态机和配置边界，属于架构级更新并带少量相机状态反馈增强。
+  - 项目版本从 `v5.9.0` / `versionCode=23` 提升为 `v6.4.0` / `versionCode=24`。
+- 后续事项：
+  - 若有真机在线，可继续运行 `:app:connectedDebugAndroidTest --no-daemon` 并安装 v6.4.0 debug APK 复测相机页状态反馈。
+  - 后续如要使用 Hilt `2.59.2`，需要单独规划 AGP 9 升级，不应混入本次 runtime 拆分。
+
+### GitHub CLI 安装与登录确认
+
+- 时间：2026-05-22 19:45:00 +08:00
+- 执行者：violjjet
+- 类型：环境配置 / GitHub / 认证 / 文档
+- 修改范围：
+  - `AGENTS.md`
+  - `DEVELOPMENT_LOG.md`
+  - `E:\linnan\tools\gh\bin\gh.exe`（本机工具）
+- 修改内容：
+  - 已安装 GitHub CLI `gh`，当前可执行文件路径为 `E:\linnan\tools\gh\bin\gh.exe`。
+  - 已通过 `gh auth login --hostname github.com --git-protocol ssh --web` 完成 GitHub 设备网页登录流程。
+  - GitHub CLI 认证完成，登录账号为 `violetljj`。
+  - GitHub CLI 已配置 `github.com` 默认 Git 协议为 `ssh`。
+  - 已将该状态写入 `AGENTS.md`，方便后续 agent 知道本机可以使用 `gh` 执行 GitHub 相关操作。
+- 修改原因：
+  - 用户要求把“GitHub CLI 已登录成功”写入开发日志和 `AGENTS.md`，作为后续创建 PR、检查认证状态、使用 GitHub CLI 的协作依据。
+- 验证方式：
+  - 运行 `E:\linnan\tools\gh\bin\gh.exe --version`，确认版本为 `gh version 2.92.0 (2026-04-28)`。
+  - 运行 `E:\linnan\tools\gh\bin\gh.exe auth login --hostname github.com --git-protocol ssh --web`，流程返回 `Authentication complete`、`Configured git protocol` 和 `Logged in as violetljj`。
+- 版本判断：
+  - 本次仅记录本机 GitHub CLI 工具安装与认证状态，不修改 Android App 代码、模型、构建产物、用户可见功能、`versionName` 或 `versionCode`。
+  - 项目版本保持 `v5.9.0` / `versionCode=23`，不新增 APK 归档。
+- 后续事项：
+  - 后续如需创建 PR，可优先使用 `E:\linnan\tools\gh\bin\gh.exe pr create`。
+  - 如果新终端已加载用户 PATH，也可以直接运行 `gh`；若当前 Codex 会话暂未刷新 PATH，则继续使用完整路径。
+
 ### D盘旧工作区清理与E盘工作点确认
 
 - 时间：2026-05-22 18:24:55 +08:00

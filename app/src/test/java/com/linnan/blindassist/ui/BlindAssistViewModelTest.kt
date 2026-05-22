@@ -233,6 +233,24 @@ class BlindAssistViewModelTest {
         assertFalse(store.keys().contains("detection_enabled"))
     }
 
+    @Test
+    fun runtimeConfigReflectsCurrentControls() {
+        val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
+
+        viewModel.onDailyUsageModeChange(DailyUsageMode.CORRIDOR)
+        viewModel.onSpeechChange(false)
+        viewModel.onLanguageChange(AppLanguage.EN)
+
+        val config = viewModel.runtimeConfig()
+        assertTrue(config.detectionEnabled)
+        assertFalse(config.speechEnabled)
+        assertTrue(config.careModeEnabled)
+        assertEquals(AlertProfile.SENSITIVE, config.alertProfile)
+        assertEquals(AssistScenario.CORRIDOR, config.assistScenario)
+        assertEquals(AppLanguage.EN, config.appLanguage)
+        assertEquals(DailyUsageMode.CORRIDOR, config.dailyUsageMode)
+    }
+
     private class MapPreferenceStore : PreferenceStore {
         private val values = mutableMapOf<String, Boolean>()
         private val stringValues = mutableMapOf<String, String>()

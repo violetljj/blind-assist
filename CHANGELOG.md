@@ -2,6 +2,22 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v6.4.0 - Runtime 状态机与 Hilt 依赖拆分
+
+- 状态：已完成，`versionCode=24`，`versionName=6.4.0`。
+- 主要变化：
+  - 接入 Hilt：新增 `@HiltAndroidApp` Application，`MainActivity` 改为 `@AndroidEntryPoint`，`BlindAssistViewModel` 改为 `@HiltViewModel`，由 Hilt 提供偏好、反馈、检测器、会话编排和相机源工厂依赖。
+  - 新增纯 Kotlin `AssistRuntimeStateMachine`，集中管理 Idle、权限说明、权限请求、启动中、运行中、检测暂停、权限拒绝和错误状态；`AssistRuntimeController` 退为 effect executor。
+  - 新增 `AssistRuntimeConfig` 和 `RuntimeConfigApplier`，把反馈开关、Care Mode、提醒档位、场景、语音风格、震动强度、语言和日常模式收敛成单一 runtime 配置快照。
+  - 相机页补强状态反馈：相机启动中、模型不可用、检测已暂停、权限拒绝和启动失败都有明确 guidance；主视觉结构、模型、风险阈值、权限集合、SharedPreferences key、Room/DataStore、联网、蓝牙、存储和单模块结构保持不变。
+  - Hilt 使用 `2.55` 而不是原计划的 `2.59.2`，因为 `2.59.2` Gradle 插件要求 AGP 9+，当前项目仍保持 AGP `8.7.3` 以避免扩大迁移范围。
+- 验证：
+  - 已运行 `.\gradlew.bat :app:testDebugUnitTest --no-daemon`，JVM 单元测试通过。
+  - 已运行 `.\gradlew.bat :app:lintDebug :app:assembleDebug --no-daemon`，构建成功，lint 结果为 `0 errors, 15 warnings`。
+  - 新增 JVM 测试覆盖 runtime 状态机的权限、视图晚到、检测暂停/恢复、启动失败、关闭相机和模型不可用路径，以及 runtime 配置的日常模式、快捷模式、自定义回退和语言/反馈开关同步。
+- APK：
+  - `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,205,607` bytes。
+
 ## v5.9.0 - 测试稳定性与相机调试控件修复
 
 - 状态：已完成，`versionCode=23`，`versionName=5.9.0`。

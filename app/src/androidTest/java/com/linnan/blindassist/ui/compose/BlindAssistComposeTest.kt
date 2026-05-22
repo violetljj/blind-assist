@@ -140,6 +140,9 @@ class BlindAssistComposeTest {
         composeRule.waitUntil(timeoutMillis = 5000) {
             hasTextOrContentDescription("返回功能页")
         }
+        composeRule.waitUntil(timeoutMillis = 5000) {
+            hasAnyText("相机启动中", "检测已开启", "安全观察中", "模型不可用")
+        }
 
         composeRule.onNodeWithTag("camera_scenario_label").assertExists()
         composeRule.onNodeWithTag("camera_daily_mode_label").assertExists()
@@ -149,6 +152,9 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithTag("camera_debug_toggle").assertExists()
         composeRule.onNodeWithTag("camera_debug_toggle").performClick()
         composeRule.onNodeWithText("FPS", substring = true).assertExists()
+        composeRule.onNodeWithContentDescription("检测，当前已启用，点击关闭").performClick()
+        composeRule.onNodeWithText("检测已暂停").assertExists()
+        composeRule.onNodeWithContentDescription("检测，当前未启用，点击开启").performClick()
     }
 
     private fun prepareMainShell() {
@@ -194,5 +200,9 @@ class BlindAssistComposeTest {
 
     private fun hasTextOrContentDescription(text: String): Boolean {
         return hasText(text) || hasContentDescription(text)
+    }
+
+    private fun hasAnyText(vararg texts: String): Boolean {
+        return texts.any(::hasText)
     }
 }

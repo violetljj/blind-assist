@@ -44,6 +44,56 @@ object CameraGuidanceMapper {
         )
     }
 
+    fun starting(modelStatus: String, scenario: AssistScenario, language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
+        val scenarioName = scenario.displayName(language)
+        val english = language == AppLanguage.EN
+        return CameraGuidanceUiState(
+            title = if (english) "Camera starting" else "相机启动中",
+            detail = if (english) "Preparing live preview and local detection" else "正在准备实时预览和本地识别",
+            targetLine = if (english) "Model status: $modelStatus" else "模型状态：$modelStatus",
+            careTitle = if (english) "Starting camera" else "正在启动相机",
+            careDetail = if (english) "Please wait while the preview opens" else "请稍等，正在打开预览画面",
+            careTargetLine = if (english) "Reminders start after frames arrive" else "画面到达后会开始提醒",
+            debugText = if (english) "Runtime state: starting\nModel status: $modelStatus" else "运行状态：相机启动中\n模型状态：$modelStatus",
+            scenarioName = scenarioName,
+            explanationHeadline = if (english) "Camera is starting" else "相机正在启动",
+            explanationDetail = if (english) "$scenarioName scenario is ready; waiting for CameraX to report live frames." else "${scenarioName}场景已准备，正在等待 CameraX 返回实时画面。",
+            careExplanation = if (english) "Camera is starting" else "相机正在启动",
+            titleColor = WHITE,
+            statusBadge = if (english) "Starting" else "启动中",
+            badgeColor = rgb(206, 221, 235),
+            badgeTextColor = rgb(10, 22, 32),
+            careAccessibilitySummary = if (english) "Camera is starting. Please wait while preview opens." else "相机正在启动，请稍等，正在打开预览画面",
+            accessibilitySummary = if (english) "Camera starting, preparing live preview and local detection" else "相机启动中，正在准备实时预览和本地识别",
+            accessibilityKey = "camera-starting"
+        )
+    }
+
+    fun modelUnavailable(modelStatus: String, scenario: AssistScenario, language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
+        val scenarioName = scenario.displayName(language)
+        val english = language == AppLanguage.EN
+        return CameraGuidanceUiState(
+            title = if (english) "Model unavailable" else "模型不可用",
+            detail = if (english) "The camera preview can open, but local detection is not ready" else "相机预览可以打开，但本地识别尚未就绪",
+            targetLine = if (english) "Model status: $modelStatus" else "模型状态：$modelStatus",
+            careTitle = if (english) "Detection not ready" else "识别未就绪",
+            careDetail = if (english) "Do not rely on reminders until the model is loaded" else "模型加载前不要依赖提醒",
+            careTargetLine = if (english) "Go back and check the model asset if this persists" else "若持续出现，请返回检查模型文件",
+            debugText = if (english) "Runtime state: model unavailable\nModel status: $modelStatus" else "运行状态：模型不可用\n模型状态：$modelStatus",
+            scenarioName = scenarioName,
+            explanationHeadline = if (english) "Model unavailable" else "模型不可用",
+            explanationDetail = if (english) "$scenarioName scenario is selected, but detection cannot run until the model is ready." else "当前选择${scenarioName}场景，但模型就绪前无法执行识别。",
+            careExplanation = if (english) "Model unavailable" else "模型不可用",
+            titleColor = rgb(255, 149, 0),
+            statusBadge = if (english) "Model" else "模型",
+            badgeColor = rgb(255, 210, 125),
+            badgeTextColor = rgb(44, 25, 0),
+            careAccessibilitySummary = if (english) "Model unavailable. Do not rely on reminders until the model is loaded." else "模型不可用，模型加载前不要依赖提醒",
+            accessibilitySummary = if (english) "Model unavailable, local detection is not ready" else "模型不可用，本地识别尚未就绪",
+            accessibilityKey = "model-unavailable-$modelStatus"
+        )
+    }
+
     fun paused(language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
         val english = language == AppLanguage.EN
         return CameraGuidanceUiState(
