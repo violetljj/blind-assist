@@ -134,3 +134,13 @@ output shape=[1, 84, 2100] dtype=float32
 - Git 推送：普通沙箱推送已多次因凭据或 SSH 权限失败。历史上 HTTPS 推送曾在 GitHub 返回 `HTTP/2 401` 后卡在 `git credential-manager get`；当前 SSH 远端也会出现 `Identity file ... not accessible: Permission denied` 或 `ssh: connect to host github.com port 22: Permission denied`。执行 `git push` 前仍要确认远端和分支，但推送本身应直接使用 `require_escalated`。
 - 手机安装：优先使用仓库内的 `.\.android-sdk\platform-tools\adb.exe`。安装前可先运行 `adb devices` 确认设备为 `device` 状态；安装命令为 `.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk`。如果后续也稳定出现权限限制，再按同样规则改为直接提权安装。
 - 对直接提权执行的已知命令，最终说明和 `DEVELOPMENT_LOG.md` 中应写明：这是基于本仓库已知沙箱限制直接提权、实际执行的命令和结果；不必再记录一次人为复现的普通沙箱失败。
+
+## GitHub CLI 状态
+
+- 本机已安装 GitHub CLI：`E:\linnan\tools\gh\bin\gh.exe`。
+- 已通过 `gh auth login --hostname github.com --git-protocol ssh --web` 登录 GitHub。
+- 当前 GitHub CLI 登录账号：`violetljj`。
+- GitHub CLI 已将 `github.com` 的 Git 协议配置为 `ssh`。
+- 如果当前终端或 Codex 会话尚未刷新用户 PATH，请使用完整路径 `E:\linnan\tools\gh\bin\gh.exe`；新开的 PowerShell 通常可以直接使用 `gh`。
+- 后续需要查看认证状态时，运行 `E:\linnan\tools\gh\bin\gh.exe auth status`。
+- 后续需要创建 Pull Request 时，可在目标分支推送后运行 `E:\linnan\tools\gh\bin\gh.exe pr create`。
