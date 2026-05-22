@@ -101,10 +101,18 @@ class RiskAnalyzer {
             isCentered && (bottomRatio >= CRITICAL_BOTTOM_RATIO || areaRatio >= CRITICAL_AREA_RATIO) -> {
                 ProximityBand.CRITICAL
             }
-            bottomRatio >= NEAR_BOTTOM_RATIO || areaRatio >= NEAR_AREA_RATIO -> ProximityBand.NEAR
+            bottomRatio >= nearBottomRatioFor(direction) || areaRatio >= nearAreaRatioFor(direction) -> ProximityBand.NEAR
             bottomRatio >= MID_BOTTOM_RATIO || areaRatio >= MID_AREA_RATIO -> ProximityBand.MID
             else -> ProximityBand.FAR
         }
+    }
+
+    private fun nearBottomRatioFor(direction: RiskDirection): Float {
+        return if (direction == RiskDirection.CENTER) CENTER_NEAR_BOTTOM_RATIO else NEAR_BOTTOM_RATIO
+    }
+
+    private fun nearAreaRatioFor(direction: RiskDirection): Float {
+        return if (direction == RiskDirection.CENTER) CENTER_NEAR_AREA_RATIO else NEAR_AREA_RATIO
     }
 
     private fun levelFor(proximity: ProximityBand, direction: RiskDirection): RiskLevel {
@@ -180,6 +188,8 @@ class RiskAnalyzer {
         const val RIGHT_BOUNDARY = 0.65f
         const val MID_BOTTOM_RATIO = 0.45f
         const val MID_AREA_RATIO = 0.06f
+        const val CENTER_NEAR_BOTTOM_RATIO = 0.60f
+        const val CENTER_NEAR_AREA_RATIO = 0.12f
         const val NEAR_BOTTOM_RATIO = 0.62f
         const val NEAR_AREA_RATIO = 0.14f
         const val CRITICAL_BOTTOM_RATIO = 0.72f

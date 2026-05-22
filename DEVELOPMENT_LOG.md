@@ -2,6 +2,47 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-05-23
+
+### v7.0.0 正前方近处风险阈值小步优化
+
+- 时间：2026-05-23 00:06:49 +08:00
+- 执行者：violjjet
+- 类型：算法规则 / 测试 / 文档 / 版本 / APK 归档
+- 修改范围：
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt`
+  - `core/assist/src/test/java/com/linnan/blindassist/risk/RiskAnalyzerTest.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v7.0.0-debug-20260523-000649.apk`
+- 修改内容：
+  - 在 `RiskAnalyzer` 中新增正前方专用 NEAR 阈值：`CENTER_NEAR_BOTTOM_RATIO = 0.60f`、`CENTER_NEAR_AREA_RATIO = 0.12f`。
+  - 正前方目标现在只要检测框底部比例达到 `0.60` 或面积比例达到 `0.12`，即可进入 `NEAR`，并按既有等级映射成为 `HIGH` 风险。
+  - 左/右侧目标继续使用原有 `NEAR_BOTTOM_RATIO = 0.62f` 和 `NEAR_AREA_RATIO = 0.14f`，避免侧边目标过早进入中风险提醒。
+  - 保持 CRITICAL、MID/FAR、低置信度过滤、无关类别过滤、最高紧急度排序、CameraX/TFLite、反馈策略、UI 流程、权限、模型资产和隐私边界不变。
+  - 更新 `RiskAnalyzerTest`：新增正前方 bottom 边界、正前方 area 边界、左/右侧同等边界仍保持 MID/LOW 的用例。
+  - 将应用版本从 `v6.9.0` / `versionCode=25` 提升为 `v7.0.0` / `versionCode=26`，并在 README 中记录本次小更新。
+- 修改原因：
+  - 用户选择“算法效果优先 / 少漏报 / 行走避障 / 小步稳定 / 本地构建测试”作为本轮优化目标。
+  - 原有 NEAR 阈值对正前方边界目标较保守，可能在行走避障演示中延迟将正前方接近目标提升为提醒级风险。
+  - 本轮只在规则层对正前方目标提高敏感度，并通过稳定层和侧向阈值保留原有误报控制思路。
+- 验证方式：
+  - `.\gradlew.bat :core:assist:test --no-daemon --console=plain`：`BUILD SUCCESSFUL`。
+  - `$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path; $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path; .\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --console=plain`：命令退出码为 `0`，完整本地回归和 debug APK 构建通过。
+  - 本地测试 XML 汇总：`121` tests，`0` failures，`0` errors。
+  - Lint 结果：`0 errors, 12 warnings`；警告仍为既有竖屏锁定、缺少应用图标和未使用资源，本轮未新增需要处理的算法相关 lint 问题。
+  - 模型检查：`.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py` 输出输入 `images [1, 320, 320, 3] float32`，输出 `Identity [1, 84, 2100] float32`。
+  - 生成 debug APK：`app/build/outputs/apk/debug/app-debug.apk`，大小 `47,205,851` bytes。
+  - 已归档 APK：`releases/apk/BlindAssist-v7.0.0-debug-20260523-000649.apk`，大小 `47,205,851` bytes。
+  - Gradle 构建期间 Kotlin daemon 在当前沙箱中仍出现 `C:\Users\26442\AppData\Local\kotlin\daemon\...tmp` 的 `AccessDeniedException`，Gradle 自动 fallback 到无 daemon 编译并成功完成；这属于本机沙箱权限噪声，不是代码失败。
+- 版本判断：
+  - 本次改变风险规则和测试矩阵，会影响正前方边界目标的风险等级判定，但不改变模型、UI、权限或整体架构，属于小更新。
+  - 按项目版本规则，版本从 `v6.9.0` / `versionCode=25` 提升为 `v7.0.0` / `versionCode=26`。
+- 后续事项：
+  - 本轮仅用本地构建测试验证规则边界，没有做真机场景矩阵；后续若要支撑论文/答辩中的“效果提升”表述，仍建议补充人、椅子、车辆、侧向经过、昏暗光照等真实场景截图和提醒记录。
+  - 后续可继续观察正前方阈值提高后是否增加静态背景误报，再决定是否结合目标类别或连续帧趋势做更细粒度的规则优化。
+
 ## 2026-05-22
 
 ### v6.9.0 完整多模块架构迁移

@@ -52,15 +52,48 @@ class RiskAnalyzerTest {
     }
 
     @Test
-    fun nearThresholdIsConservativeForBorderlineCenterTarget() {
+    fun centerBottomBoundaryTargetIsNearHighRisk() {
         val result = analyzer.analyze(
-            listOf(detection("person", BoundingBox(400f, 120f, 600f, 610f))),
+            listOf(detection("person", BoundingBox(400f, 120f, 600f, 600f))),
             frame
         )
 
-        assertEquals(RiskLevel.LOW, result.level)
+        assertEquals(RiskLevel.HIGH, result.level)
         assertEquals(RiskDirection.CENTER, result.direction)
-        assertEquals(ProximityBand.MID, result.proximity)
+        assertEquals(ProximityBand.NEAR, result.proximity)
+        assertEquals("前方近处，减速", result.message)
+    }
+
+    @Test
+    fun centerAreaBoundaryTargetIsNearHighRisk() {
+        val result = analyzer.analyze(
+            listOf(detection("person", BoundingBox(350f, 150f, 650f, 550f))),
+            frame
+        )
+
+        assertEquals(RiskLevel.HIGH, result.level)
+        assertEquals(RiskDirection.CENTER, result.direction)
+        assertEquals(ProximityBand.NEAR, result.proximity)
+        assertEquals("前方近处，减速", result.message)
+    }
+
+    @Test
+    fun sideTargetsKeepOriginalNearThresholdsAtCenterBoundarySize() {
+        val left = analyzer.analyze(
+            listOf(detection("person", BoundingBox(100f, 150f, 400f, 550f))),
+            frame
+        )
+        val right = analyzer.analyze(
+            listOf(detection("person", BoundingBox(600f, 150f, 900f, 550f))),
+            frame
+        )
+
+        assertEquals(RiskLevel.LOW, left.level)
+        assertEquals(RiskDirection.LEFT, left.direction)
+        assertEquals(ProximityBand.MID, left.proximity)
+        assertEquals(RiskLevel.LOW, right.level)
+        assertEquals(RiskDirection.RIGHT, right.direction)
+        assertEquals(ProximityBand.MID, right.proximity)
     }
 
     @Test
