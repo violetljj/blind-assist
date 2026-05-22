@@ -4,6 +4,76 @@
 
 ## 2026-05-22
 
+### D盘旧工作区清理与E盘工作点确认
+
+- 时间：2026-05-22 18:24:55 +08:00
+- 执行者：violjjet
+- 类型：环境迁移 / 清理 / 文档
+- 修改范围：
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `D:\linnan\linnan\`（旧工作区，删除）
+  - `E:\linnan\linnan\`（后续工作目录）
+- 修改内容：
+  - 在前一轮已完成 `D:\linnan\linnan` 到 `E:\linnan\linnan` 的完整迁移、路径修正、模型检查、Gradle 构建验证和 APK 归档后，按用户确认删除 D 盘旧位置项目。
+  - 删除前再次在 `E:\linnan\linnan` 检查仓库状态和关键文件，确认 `README.md`、`DEVELOPMENT_LOG.md`、`local.properties`、`app\build\outputs\apk\debug\app-debug.apk` 均存在。
+  - 将项目后续工作点明确为 `E:\linnan\linnan`，后续 PowerShell、Android Studio 或 Codex 会话应从该目录打开项目。
+  - 同步更新 `README.md`，说明 D 盘副本属于迁移后的旧本地工作区，E 盘副本已经通过验证并作为新的项目位置。
+- 修改原因：
+  - 用户明确表示“现在可以删除原本位置的项目”，希望释放 D 盘旧目录并避免后续继续误用旧路径。
+  - 用户还希望 Codex 当前工作文件夹改为迁移后的 E 盘目录；本次已在操作层面把后续命令切到 `E:\linnan\linnan`，并记录需要在 Codex 应用中重新打开或切换工作区到该路径。
+- 验证方式：
+  - 在 `E:\linnan\linnan` 运行 `git status --short`，确认迁移后的仓库可识别，状态包含本次文档变更、新归档 APK 和迁移前已有未跟踪本地产物。
+  - 检查 `E:\linnan\linnan\README.md`、`E:\linnan\linnan\DEVELOPMENT_LOG.md`、`E:\linnan\linnan\local.properties` 和 `E:\linnan\linnan\app\build\outputs\apk\debug\app-debug.apk` 均存在，其中 debug APK 大小为 `47,068,480` bytes。
+  - 删除属于破坏性文件操作，按权限规则提权执行；实际执行 `Remove-Item -LiteralPath D:\linnan\linnan -Recurse -Force` 后，旧目录内容已清空，但根目录因为当前进程仍占用而返回 `The process cannot access the file 'D:\linnan\linnan' because it is being used by another process.`，`Test-Path` 仍为 `True`。随后检查 `D:\linnan\linnan` 内部无剩余条目。
+- 版本判断：
+  - 本次仅清理迁移后的旧本地工作区并确认新工作目录，不修改 Android 应用功能、构建逻辑、模型资产、UI、`versionName` 或 `versionCode`。
+  - 项目版本保持 `v5.9.0` / `versionCode=23`，不新增版本号；本次也不需要额外生成 APK。
+- 后续事项：
+  - 后续开发、验证、安装和提交应以 `E:\linnan\linnan` 为工作目录。
+  - Codex Desktop 的应用级工作区若仍显示 D 盘路径，需要在应用界面重新打开 `E:\linnan\linnan`，因为单次 shell 的 `Set-Location` 不会永久改变 Codex 会话绑定的根目录。
+
+### E盘完整迁移与依赖验证
+
+- 时间：2026-05-22 18:20:17 +08:00
+- 执行者：violjjet
+- 类型：环境迁移 / 配置 / 构建 / 测试 / APK归档 / 文档
+- 修改范围：
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `E:\linnan\linnan\local.properties`
+  - `E:\linnan\linnan\.venv-export312\pyvenv.cfg`
+  - `E:\linnan\linnan\.venv-export312\Scripts\activate`
+  - `E:\linnan\linnan\.venv-export312\Scripts\activate.bat`
+  - `E:\linnan\linnan\.venv-export312\Scripts\Activate.ps1`
+  - `E:\linnan\linnan\releases\apk\BlindAssist-v5.9.0-debug-20260522-182011.apk`
+- 修改内容：
+  - 按用户“把项目全部迁移到 E 盘，包括所有依赖”的要求，将 `D:\linnan\linnan` 完整复制到 `E:\linnan\linnan`。
+  - 复制范围包含 `.git`、Android 工程源码、模型文件、`app/build` 输出、`releases` APK 归档、测试产物、PPT/文档材料，以及仓库内本地依赖目录：`.android-sdk`、`.jdk`、`.python311`、`.venv-export312`、`.venv-export`、`.gradle-local`、`.gradle`、`.cache`、`.downloads`。
+  - 复制命令使用 `robocopy D:\linnan\linnan E:\linnan\linnan /E /COPY:DAT /DCOPY:DAT /R:2 /W:2 /XJ /MT:8`，未使用 `/MIR`，避免迁移时删除目标盘既有内容。
+  - 修正 E 盘副本的 `local.properties`，将 Android SDK 路径从 `D\:/linnan/linnan/.android-sdk` 改为 `E\:/linnan/linnan/.android-sdk`。
+  - 修正 E 盘副本的 `.venv-export312` Python 3.11 虚拟环境元数据和激活脚本，将 `D:\linnan\linnan\.python311`、`D:\linnan\linnan\.venv-export312` 改为 E 盘对应路径。
+  - 在 E 盘副本中重新构建 debug APK，并按项目 APK 留存要求归档为 `E:\linnan\linnan\releases\apk\BlindAssist-v5.9.0-debug-20260522-182011.apk`，文件大小 `47,068,480` bytes。
+  - 同步更新 `README.md` 的 Recent Updates，记录 E 盘迁移范围、路径修正、验证命令、构建结果和 APK 归档路径。
+- 修改原因：
+  - 用户希望后续开发、构建、模型检查和演示材料都从 E 盘继续使用，不再依赖 D 盘当前工作目录。
+  - BlindAssist 当前已经将 Android SDK、JDK、Python、Gradle 缓存和模型导出环境尽量放在仓库内；完整迁移可以降低换盘、课堂演示或后续 Codex 会话时缺依赖的风险。
+  - `local.properties` 和 Python 虚拟环境配置中存在绝对路径，如果只复制文件而不修正路径，E 盘副本仍可能回到 D 盘查找 SDK/Python，影响迁移可信度。
+- 验证方式：
+  - 迁移前运行 `git status --short`，发现两个既有未跟踪项：`test-artifacts.local-before-rebase-20260522-014530/` 和 `多模态智能助盲系统1.4.local-before-rebase-20260522-014553.pptx`；本次没有回滚或删除这些用户/历史产物。
+  - 迁移前检查本地目录体量，主要依赖包括 `.venv-export312` 约 `2864.69 MB`、`.venv-export` 约 `2822.36 MB`、`.gradle-local` 约 `1752.28 MB`、`releases` 约 `1115.23 MB`、`.android-sdk` 约 `697.58 MB`、`.git` 约 `388.19 MB`、`.jdk` 约 `302.71 MB`。
+  - 基于写入 E 盘需要越过当前工作区沙箱限制，提权执行 `robocopy`；命令完成并返回成功码 `1`，表示目标目录创建了新文件。
+  - 在 `E:\linnan\linnan` 中运行 `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`，成功输出模型路径 `E:\linnan\linnan\app\src\main\assets\yolo11n_fp16_320.tflite`，输入 `images shape=[1, 320, 320, 3] dtype=float32`，输出 `Identity shape=[1, 84, 2100] dtype=float32`。
+  - 按仓库已知沙箱限制直接提权，在 `E:\linnan\linnan` 中设置 `JAVA_HOME=E:\linnan\linnan\.jdk\jdk17.0.19_10`、`GRADLE_USER_HOME=E:\linnan\linnan\.gradle-local` 后运行 `.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`，结果为 `BUILD SUCCESSFUL in 41s`，共 `43 actionable tasks: 43 executed`。
+  - 构建过程中仅出现既有警告：部分 TensorFlow Lite 原生库无法 strip、Compose 中 `Icons.Rounded.VolumeUp` / `Icons.Rounded.ArrowBack` 已弃用；这些警告不影响本次迁移验证结果。
+- 版本判断：
+  - 本次属于本地环境迁移和路径配置修正，不修改 Android 应用功能、CameraX/TFLite 运行链路、风险规则、UI 行为、模型资产、`versionName` 或 `versionCode`。
+  - 因此项目版本保持 `v5.9.0` / `versionCode=23`，不做版本号递增；但由于重新构建出了可演示 debug APK，已按项目要求新增同版本带时间戳 APK 归档。
+- 后续事项：
+  - 后续若要完全改从 E 盘工作，应在新的 PowerShell/Codex 会话中把工作目录切到 `E:\linnan\linnan`。
+  - E 盘副本中的 `.venv-export312` 已按当前验证链路修正并验证可用；旧的 `.venv-export` 是历史环境，元数据仍指向旧外部 Python 路径，当前模型检查和构建不依赖它。如后续确认不再使用，可单独重建或清理，但本次按“完整迁移”要求保留未删除。
+  - D 盘原仓库仍保留，可作为迁移前备份；确认 E 盘持续可用后，如需释放空间再由用户明确要求清理。
+
 ### GitHub SSH key 配置复核
 
 - 时间：2026-05-22 02:05:00 +08:00
