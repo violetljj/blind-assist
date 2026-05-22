@@ -45,6 +45,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 ## Project Materials
 
 - [New computer handoff](docs/NEW_COMPUTER_HANDOFF.md): Windows setup, Git clone, Android build validation, phone-install notes, and Codex skills restore instructions for continuing this project on a new computer.
+- [APK archive policy](docs/APK_ARCHIVE.md): Git keeps only milestone APKs whose cumulative `versionName` delta is `>= 0.5`; the complete 29-APK local archive lives at `E:\linnan\blind-assist-apk-archive\apks` with SHA256 evidence in `APK_ARCHIVE_MANIFEST.csv`.
 - [Codex skills snapshot manifest](codex/skills-snapshot/MANIFEST.md): SHA256, size, entry-count evidence, and restore guidance for `codex/skills-snapshot/codex-skills-20260522.zip`.
 - [真实版本更新记录](CHANGELOG.md)：按真实版本整理功能变化、验证证据和 APK 归档路径，方便课堂展示、答辩材料和版本对比。
 - [演示指南](DEMO_GUIDE.md)：面向老师/答辩的演示脚本，包含环境准备、手机安装、现场演示顺序、无设备 fallback、隐私与安全边界说明。
@@ -124,7 +125,7 @@ adb version
 $env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path
 $env:PATH="$env:JAVA_HOME\bin;D:\Git\cmd;D:\linnan\linnan\.android-sdk\platform-tools;$env:PATH"
 $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path
-.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon
+.\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon
 ```
 
 This has been verified with `BUILD SUCCESSFUL`, and model inspection now runs through `.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`.
@@ -161,7 +162,7 @@ output shape=[1, 84, 2100] dtype=float32
 在 Android Studio 打开项目并同步依赖；或安装 Gradle 后运行：
 
 ```powershell
-.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon
+.\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon
 ```
 
 APK 输出位置：
@@ -172,13 +173,27 @@ app/build/outputs/apk/debug/app-debug.apk
 
 ## Versioned APK Archive
 
-用于展示和对比的版本 APK 保存在：
+Milestone APKs for demos and version comparison live in:
 
 ```text
 releases/apk/
 ```
 
-当前已补存 v0.1.0、v0.2.0、v0.7.0、v0.8.0、v1.3.0、v1.4.0、v1.5.0、v2.0.0、v2.5.0、v2.6.0、v3.1.0、v3.2.0、v3.3.0、v3.4.0、v3.5.0、v3.6.0、v4.1.0、v4.2.0、v4.3.0、v4.8.0、v5.3.0、v5.8.0 和 v5.9.0 的 debug APK。带 `rebuilt` 的文件表示从对应 Git 历史提交重新构建得到，适合用于演示版本演进；当前 v5.9.0 最近一次测试归档为 `releases/apk/BlindAssist-v5.9.0-debug-20260522-013331.apk`。
+Git keeps only APKs whose cumulative `versionName` delta from the last committed APK is `>= 0.5`. Smaller update builds must be copied to the complete local archive instead of being committed.
+
+The complete local archive for all 29 historical APKs is:
+
+```text
+E:\linnan\blind-assist-apk-archive\apks
+```
+
+Its SHA256 manifest is:
+
+```text
+E:\linnan\blind-assist-apk-archive\APK_ARCHIVE_MANIFEST.csv
+```
+
+See [APK archive policy](docs/APK_ARCHIVE.md) for the current Git milestone list and verification command.
 
 ## Install to Phone
 

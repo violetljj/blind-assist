@@ -7,6 +7,7 @@
 .python311/
 .jdk/
 .cache/
+.kotlin/
 python311-local/
 .idea/
 *.iml
@@ -14,6 +15,7 @@ build/
 local.properties
 captures/
 *.apk
+# Keep only milestone APKs in Git. See docs/APK_ARCHIVE.md.
 !releases/
 !releases/apk/
 !releases/apk/*.apk
