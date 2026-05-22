@@ -2,6 +2,23 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v6.9.0 - 完整多模块架构迁移
+
+- 状态：已完成，`versionCode=25`，`versionName=6.9.0`。
+- 主要变化：
+  - 将项目从单 `:app` 模块拆分为 `:app`、`:feature:assist`、`:core:assist`、`:core:vision`、`:core:device` 和 `:core:ui`。
+  - `:core:assist` 保持纯 Kotlin，承载模型、提醒档位、风险规则、会话编排、定位文案、日常模式和反馈规划契约。
+  - `:core:vision` 承载 TFLite YOLO 检测器和图像预处理；`:core:device` 承载 CameraX、ImageProxy 转换、SharedPreferences 偏好和 Android TTS/震动反馈；`:core:ui` 承载 Compose 页面、UI 状态、guidance/summary mapper 和 overlay。
+  - `:feature:assist` 承载 Hilt ViewModel、runtime 状态机/controller/config applier 和运行期依赖模块；`:app` 保留启动入口、manifest、资源、模型 assets 和 APK 配置。
+  - 本轮为零用户可见行为迁移：UI 流程、权限、YOLO 模型路径、CameraX/TFLite 链路、风险阈值、SharedPreferences key、隐私边界、Room/DataStore、联网、蓝牙和存储行为均保持不变。
+- 验证：
+  - `.\gradlew.bat :core:assist:test --no-daemon`：通过。
+  - `.\gradlew.bat :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest --no-daemon`：通过。
+  - `.\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon`：通过，生成 debug APK。
+  - 首次新增 Android library plugin marker 和 AndroidX transitive dependency 时，普通沙箱因网络权限受限失败；随后按仓库已知沙箱限制提权解析依赖后继续验证。
+- APK：
+  - `releases/apk/BlindAssist-v6.9.0-debug-20260522-204908.apk`，大小 `47,205,843` bytes。
+
 ## v6.4.0 - Runtime 状态机与 Hilt 依赖拆分
 
 - 状态：已完成，`versionCode=24`，`versionName=6.4.0`。

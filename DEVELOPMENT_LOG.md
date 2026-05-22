@@ -4,6 +4,53 @@
 
 ## 2026-05-22
 
+### v6.9.0 完整多模块架构迁移
+
+- 时间：2026-05-22 20:49:08 +08:00
+- 执行者：violjjet
+- 类型：架构重构 / Gradle 多模块 / Hilt / 测试 / 文档 / APK 归档
+- 修改范围：
+  - `settings.gradle.kts`
+  - `build.gradle.kts`
+  - `app/build.gradle.kts`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `core/assist/`
+  - `core/vision/`
+  - `core/device/`
+  - `core/ui/`
+  - `feature/assist/`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `DEVELOPMENT_LOG.md`
+  - `releases/apk/BlindAssist-v6.9.0-debug-20260522-204908.apk`
+- 修改内容：
+  - 将原单模块 `:app` 拆分为 `:app`、`:feature:assist`、`:core:assist`、`:core:vision`、`:core:device` 和 `:core:ui`。
+  - `:core:assist` 保持纯 Kotlin，承载模型、提醒档位、风险规则、会话编排、定位文案、日常模式、反馈数据模型和反馈规划契约。
+  - `:core:vision` 承载 `ObjectDetector`、`TfliteYoloDetector` 和 `ImagePreprocessor`；`DetectorFrameResult` 保持原 package 名并作为纯输出契约放在核心层，避免核心会话逻辑依赖 Android 视觉模块。
+  - `:core:device` 承载 CameraX frame source、ImageProxy 转 bitmap、SharedPreferences-backed `UserPreferences` 和 Android TTS/震动 `FeedbackController`。
+  - `:core:ui` 承载 Compose screens、UI state models、camera guidance mapper、field-test summary mapper、overlay view 和 display-only smoothing。
+  - `:feature:assist` 承载 `BlindAssistViewModel`、runtime state machine/controller/config applier、Hilt modules，并新增 `AssistRuntimeControllerFactory` 让 `MainActivity` 只注入 feature 层工厂。
+  - `:app` 现在保留 `BlindAssistApplication`、`MainActivity`、manifest、resources、TFLite assets 和 APK 配置；版本提升到 `versionName=6.9.0` / `versionCode=25`。
+  - 本轮为零用户可见行为迁移，不修改 UI 流程、权限集合、YOLO 模型资产路径、CameraX/TFLite 推理链路、风险阈值、SharedPreferences key、隐私边界、Room/DataStore、联网、蓝牙或存储行为。
+- 修改原因：
+  - 原项目已按包拆分职责，但仍只有 `:app` 一个 Gradle 模块；随着 UI、runtime、CameraX、TFLite、偏好、反馈和测试继续增长，单模块开始接近维护上限。
+  - 本轮通过多模块边界把纯业务逻辑、视觉推理、设备能力、UI 和 runtime orchestration 分开，为后续眼镜设备、真实场景验证或数据能力预留扩展空间。
+- 验证方式：
+  - 首次新增 `com.android.library` plugin marker 时，普通沙箱无法解析插件；按权限规则提权解析后继续。
+  - 首次运行 Android library 模块测试时，普通沙箱无法解析 CameraX/Core 的 AndroidX transitive dependencies，错误包含 `Permission denied: getsockopt`；按权限规则提权解析后继续。
+  - `.\gradlew.bat :core:assist:test --no-daemon`：`BUILD SUCCESSFUL`。
+  - `.\gradlew.bat :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest --no-daemon`：`BUILD SUCCESSFUL`。
+  - `.\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon`：`BUILD SUCCESSFUL`。
+  - 构建期间 Kotlin daemon 在当前沙箱中多次因 `C:\Users\26442\AppData\Local\kotlin\daemon\...tmp` 权限出现 `AccessDeniedException`，Gradle 自动 fallback 到无 daemon 编译并成功完成；这属于本机沙箱权限噪声，不是代码编译失败。
+  - 生成 debug APK：`app/build/outputs/apk/debug/app-debug.apk`，大小 `47,205,843` bytes。
+  - 已归档 APK：`releases/apk/BlindAssist-v6.9.0-debug-20260522-204908.apk`，大小 `47,205,843` bytes。
+- 版本判断：
+  - 本次不改变用户可见功能，但将项目从单模块迁移到完整多模块结构，属于架构级大更新。
+  - 项目版本从 `v6.4.0` / `versionCode=24` 提升为 `v6.9.0` / `versionCode=25`。
+- 后续事项：
+  - 若有真机在线，建议继续运行 `:app:connectedDebugAndroidTest --no-daemon` 并安装 v6.9.0 debug APK，补充多模块迁移后的真机相机路径回归证据。
+  - 后续如继续扩展眼镜设备或真实数据记录，可在现有 `:feature:assist` 与 core 模块之上新增 feature/data 模块，不再扩大 `:app`。
+
 ### v6.4.0 Runtime 状态机与 Hilt 依赖拆分
 
 - 时间：2026-05-22 19:46:40 +08:00

@@ -4,7 +4,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Version
 
-- Current project version: `v6.4.0`
+- Current project version: `v6.9.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,6 +12,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Recent Updates
 
+- 2026-05-22: Implemented the v6.9.0 complete multi-module architecture migration. The project is no longer a single `:app` module: `:core:assist` now holds pure Kotlin assist models, alert/risk/session/localization and feedback planning contracts; `:core:vision` owns the TFLite detector and image preprocessor; `:core:device` owns CameraX frame source, ImageProxy conversion, SharedPreferences-backed user preferences, and Android speech/vibration feedback; `:core:ui` owns Compose screens, UI state models, camera guidance mappers, field-test summary mapping and overlay drawing; `:feature:assist` owns the Hilt-backed ViewModel, runtime state machine/controller/config applier and runtime dependency modules; `:app` is now the launcher shell with `BlindAssistApplication`, `MainActivity`, manifest, resources, model assets and APK configuration. This is a zero-user-visible-behavior migration: UI flow, permissions, YOLO model asset path, CameraX/TFLite pipeline, risk thresholds, SharedPreferences keys, local-only privacy boundary, Room/DataStore usage, networking, Bluetooth and storage behavior remain unchanged. The app version is now `v6.9.0` / `versionCode=25`; `:core:assist:test`, the core/feature debug unit-test suite, and `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` passed. The debug APK was archived at `releases/apk/BlindAssist-v6.9.0-debug-20260522-204908.apk` with size `47,205,843` bytes.
 - 2026-05-22: Implemented the v6.4.0 runtime state-machine and Hilt dependency split. The app now uses Hilt for `UserPreferences`, `FeedbackController`, `ObjectDetector`, `AssistSessionCoordinator`, and `FrameSourceFactory` provisioning, with `MainActivity` as an `@AndroidEntryPoint` and `BlindAssistViewModel` as an `@HiltViewModel`. The former centralized runtime controller is now driven by a pure Kotlin `AssistRuntimeStateMachine`, while `AssistRuntimeConfig` and `RuntimeConfigApplier` keep feedback, overlay Care Mode, profile, scenario, speech style, vibration strength, language, and detection-session state synchronized from a single runtime snapshot. The camera experience now exposes clearer startup, model-unavailable, detection-paused, permission-denied, and camera-error guidance without changing the main visual design, permissions, YOLO model, risk thresholds, SharedPreferences keys, Room/DataStore usage, networking, Bluetooth, storage, or module structure. Hilt was implemented with `com.google.dagger:hilt-android:2.55` because the originally planned `2.59.2` plugin requires AGP 9+, while this project remains on AGP `8.7.3`. The app version is now `v6.4.0` / `versionCode=24`; `:app:testDebugUnitTest`, `:app:lintDebug`, and `:app:assembleDebug` passed, producing `app/build/outputs/apk/debug/app-debug.apk` with size `47,205,607` bytes.
 - 2026-05-22: After confirming the E-drive migration, the project handoff point is now `E:\linnan\linnan`. The D-drive copy at `D:\linnan\linnan` was approved for removal as the old local workspace after the E-drive copy had already passed model inspection and full Gradle debug validation; its contents were removed, while the empty root directory may remain until the active Codex/Windows process releases its handle. Future development should open or run commands from `E:\linnan\linnan`; this is a workspace-location cleanup only and does not change Android app code, model assets, `versionName`, or `versionCode`.
 - 2026-05-22: Migrated the full local project workspace from `D:\linnan\linnan` to `E:\linnan\linnan`, including `.git`, repository-local Android SDK, JDK 17, Python 3.11, `.venv-export312`, Gradle caches, model files, test artifacts, documents, and APK archives. The E-drive copy was adjusted so `local.properties` points to `E:\linnan\linnan\.android-sdk` and `.venv-export312` points to `E:\linnan\linnan\.python311`. Validation was run from the E-drive copy: `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py` reported input `[1, 320, 320, 3] float32` and output `[1, 84, 2100] float32`; the full Gradle command passed with `BUILD SUCCESSFUL in 41s`. The newly built E-drive debug APK was archived at `E:\linnan\linnan\releases\apk\BlindAssist-v5.9.0-debug-20260522-182011.apk` with size `47,068,480` bytes. This is an environment migration only; Android app code, model assets, `versionName`, and `versionCode` remain unchanged.
@@ -53,11 +54,19 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 - [回顾式阶段进度说明](PROJECT_PROGRESS_REVIEW.md)：面向课程汇报、阶段检查和毕设展示的整理稿，按 3 月至 5 月 1 日前的“调研、方案、原型、测试、迭代”脉络说明项目工作量。该文档是回顾式材料，不替代真实开发日志。
 - [v5.8.0 真机完整测试与 v5.9.0 修复复测报告](TEST_REPORT_2026-05-19.md)：记录 2026-05-19 在 `SM-S9280` 上执行的清数据真机功能、UI、性能、稳定性和 instrumentation 测试结果，以及 v5.9.0 对遗留问题的修复复测。
 
+## Architecture
+
+BlindAssist is now a Gradle multi-module Android project. `:app` is intentionally thin and depends on `:feature:assist`, while the feature module coordinates `:core:assist`, `:core:vision`, `:core:device`, and `:core:ui`.
+
+- `:core:assist` is pure Kotlin and has no Android framework dependency.
+- `:core:vision`, `:core:device`, and `:core:ui` isolate TFLite, CameraX/TTS/preferences, and Compose/overlay responsibilities.
+- `:feature:assist` contains the Hilt ViewModel/runtime orchestration boundary so future hardware or data features can be added without growing `:app`.
+
 ## Interface Behavior
 
 The app now opens into a polished Compose app shell before starting any camera work:
 
-- Compose-visible app state is now driven by a lightweight `BlindAssistViewModel` and read-only `StateFlow`. The Activity remains the boundary for Android lifecycle, permissions, CameraX, detector, feedback, and overlay objects.
+- Compose-visible app state is now driven by a Hilt-backed `BlindAssistViewModel` and read-only `StateFlow`. `MainActivity` remains the launcher, permission-request and Compose binding entry point, while `:feature:assist` coordinates CameraX, detector, feedback, runtime state and overlay updates.
 - Cold launch uses the Android SplashScreen API, followed by a short BlindAssist brand screen with restrained scan/pulse motion. The launch screen can be skipped by tapping it.
 - First-time users then see a three-page onboarding flow for local phone-camera recognition, speech/vibration reminders, and the prototype safety boundary. Completing or skipping the guide saves the onboarding state locally.
 - The main shell uses Material 3 bottom navigation with three top-level destinations: Features, Profile, and Settings.
@@ -164,6 +173,13 @@ output shape=[1, 84, 2100] dtype=float32
 
 ```powershell
 .\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon
+```
+
+The v6.9.0 migration also supports focused module validation:
+
+```powershell
+.\gradlew.bat :core:assist:test --no-daemon
+.\gradlew.bat :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest --no-daemon
 ```
 
 APK 输出位置：
