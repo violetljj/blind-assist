@@ -4,6 +4,69 @@
 
 ## 2026-05-24
 
+### v7.1.0 反馈触达与 CameraX 可靠性更新
+- 时间：2026-05-24 16:29:36 +08:00
+- 执行者：violjjet
+- 类型：修复 / 可靠性 / 测试 / 构建 / 文档 / 版本 / APK 归档
+- 修改范围：
+  - `.github/workflows/android.yml`
+  - `app/build.gradle.kts`
+  - `core/assist/src/main/java/com/linnan/blindassist/feedback/FeedbackModels.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/localization/LocalizedText.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/session/AssistEngine.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/util/FatalThrowables.kt`
+  - `core/device/src/main/AndroidManifest.xml`
+  - `core/device/src/main/java/com/linnan/blindassist/camera/CameraAnalyzerSafety.kt`
+  - `core/device/src/main/java/com/linnan/blindassist/camera/CameraXFrameSource.kt`
+  - `core/device/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt`
+  - `core/device/src/main/java/com/linnan/blindassist/feedback/FeedbackFatigueController.kt`
+  - `core/vision/src/main/java/com/linnan/blindassist/vision/FatalThrowables.kt`
+  - `core/vision/src/main/java/com/linnan/blindassist/vision/TfliteYoloDetector.kt`
+  - `core/vision/src/main/java/com/linnan/blindassist/vision/YoloOutputDecoder.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeConfigSnapshot.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeController.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeStateMachine.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/RuntimeConfigApplier.kt`
+  - 相关 JVM 测试文件、`README.md`、`CHANGELOG.md`、`docs/APK_ARCHIVE.md`
+  - `releases/apk/BlindAssist-v7.1.0-debug-20260524-162936.apk`
+- 修改内容：
+  - 按中大型任务协作要求创建并调用 3 个子代理：Volta 负责反馈真实触达和 `core:device` lint，Sartre 负责 CameraX/runtime/fatal 边界，Jason 负责只读审查与验证建议；主线程整合子代理结果、修复阻断项、更新版本与文档并执行完整验证。
+  - 将反馈链路改为真实触达语义：`FeedbackController` 通过 `SpeechOutput` / `HapticOutput` 返回值判断 TTS 或震动是否被系统 API 接受，只有至少一个通道成功时才返回 `TRIGGERED`、记录 cooldown 和 fatigue；TTS 未 ready、speak 失败或震动不可用时返回 `FEEDBACK_UNAVAILABLE`，不会提前进入冷却。
+  - 新增 `FeedbackRuntimeSettings` 不可变配置快照，`RuntimeConfigApplier` 一次性应用反馈开关、语言、语音风格和震动强度，减少 UI 线程和分析线程之间逐字段读写的不一致风险。
+  - 新增 `core/device/src/main/AndroidManifest.xml` 声明 `android.permission.VIBRATE`，并使用 minSdk 26+ 的 `VibrationEffect.createOneShot(...)` 震动路径，修复 library 模块 lint 对 VIBRATE 权限静态证明的失败。
+  - 新增 `CameraAnalyzerSafety`，确保 analyzer 帧转换或回调异常时仍关闭 frame；非 fatal 异常通过主线程 `onError` 上报，fatal JVM 错误继续抛出；`CameraXFrameSource` 每次 session 只上报一次持续性 analyzer 错误，避免刷屏。
+  - 将 runtime 相机错误统一为 `CameraSourceFailed`，启动、analyzer 和 frame processing 的可恢复异常会进入错误态并触发 `StopCamera`、`ClearOverlay` 和 `ResetSession`。
+  - 新增 `AssistRuntimeConfigSnapshot`，`AssistRuntimeController.processFrameBitmap()` 开始时读取单帧配置快照，并在 detector、coordinator、UI render、field summary 和 performance log 中使用同一份配置。
+  - 收窄异常边界：frame processing 只捕获 `Exception`；TTS、震动、CameraX 和 TFLite 可恢复 catch 会先重抛 `VirtualMachineError`、`ThreadDeath`、`LinkageError`。
+  - 将 YOLO 输出解析拆为 `YoloOutputDecoder`，新增 golden 单测覆盖 confidence threshold、label mapping、letterbox 源坐标回映射和同类 NMS。
+  - 更新 CI 和 README 验证矩阵为显式多模块单测和显式多模块 lint，避免只跑 `:app:lintDebug` 漏掉 library 模块问题。
+  - 将应用版本从 `v7.0.0` / `versionCode=26` 提升为 `v7.1.0` / `versionCode=27`。
+  - 更新 `docs/APK_ARCHIVE.md`，补齐 v6.9.0、v7.0.0 和 v7.1.0 Git milestone APK；同步完整本地 APK archive 到 32 个 APK，并重建 `E:\linnan\blind-assist-apk-archive\APK_ARCHIVE_MANIFEST.csv`。
+- 修改原因：
+  - 上一次项目体检发现反馈可能“逻辑触发但物理输出未被系统接受”、CameraX analyzer 异常不上报、runtime 配置跨线程读写不明确、`core:device:lintDebug` 被 app-only lint 漏检、模型解析缺少 golden 回归等硬风险。
+  - 对助盲避障原型而言，提醒是否真实进入系统输出通道比 UI 显示“已提醒”更关键；CameraX 异常也应从运行态收口，避免相机继续在异常状态下分析。
+  - 多模块迁移后，常用验证矩阵必须覆盖 library lint，否则 CI/本地验证会遗漏模块边界权限契约。
+- 验证方式：
+  - 基于仓库已知 Gradle 沙箱限制直接提权运行 `$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path; $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :core:assist:test :core:device:testDebugUnitTest :core:vision:testDebugUnitTest :feature:assist:testDebugUnitTest --no-daemon --offline --console=plain`：首次发现并修复反馈开关关闭分支和 YOLO golden fixture shape 后通过。
+  - 强制重跑 `$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path; $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"; .\gradlew.bat :core:ui:compileDebugKotlin :app:compileDebugKotlin --rerun-tasks --no-daemon --offline --console=plain`：通过；用于刷新新增 `:core:ui` app 依赖后的 Kotlin 增量 classpath 快照。
+  - 完整显式多模块单测：`.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --offline --console=plain`：通过。
+  - 测试 XML 汇总：31 个测试结果文件，199 tests，0 failures，0 errors，0 skipped。
+  - 显式多模块 lint：`.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --offline --console=plain`：`BUILD SUCCESSFUL`；`core:device:lintDebug` 的 VIBRATE 权限错误已消除。
+  - APK 构建：`.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --offline --console=plain`：通过，生成 debug APK 和 androidTest APK。
+  - 模型检查：`.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：输入 `images [1, 320, 320, 3] float32`，输出 `Identity [1, 84, 2100] float32`。
+  - 设备检查：`.\.android-sdk\platform-tools\adb.exe devices`：当前无在线设备，因此本轮未运行 `connectedDebugAndroidTest`。
+  - `git diff --check`：通过，仅提示 Windows 工作树 LF/CRLF 转换 warning，无空白错误。
+- APK 归档：
+  - 仓库 APK：`releases/apk/BlindAssist-v7.1.0-debug-20260524-162936.apk`，来源 `app/build/outputs/apk/debug/app-debug.apk`，大小 `47,205,843` bytes，SHA256 `5ADA5DC82A71AABDA3438C76CA7E7AA9341C15FDD11308C2861E9695AD75F323`。
+  - 完整本地 archive：已复制到 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v7.1.0-debug-20260524-162936.apk`；首次普通复制遇到 Windows 访问拒绝，随后按权限规则提权复制成功。
+  - 同步补入完整本地 archive 的 v6.9.0 / v7.0.0 APK，并重建 `E:\linnan\blind-assist-apk-archive\APK_ARCHIVE_MANIFEST.csv`，当前 archive 共 32 个 APK。
+- 版本判断：
+  - 本次修复影响反馈语义、相机错误收口、线程安全边界、验证矩阵和 APK 归档，属于行为可见但范围受控的小可靠性更新。
+  - 版本提升为 `v7.1.0` / `versionCode=27`，并新增 v7.1.0 debug APK 归档。
+- 后续事项：
+  - 有真机在线且解锁后，补跑 `.\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --console=plain`，并进行真实障碍物场景采样，验证 v7.1.0 的相机错误收口和反馈触达语义在设备端表现稳定。
+  - 后续可继续把真实障碍物场景样本和 detector 端到端 golden case 纳入更系统的模型回归集。
+
 ### v7.0.0 项目全面评估与验证体检
 - 时间：2026-05-24 15:34:12 +08:00
 - 执行者：violjjet

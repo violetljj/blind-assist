@@ -97,6 +97,20 @@ class AssistRuntimeConfigTest {
         assertEquals(DailyUsageMode.INDOOR_SLOW, config.dailyUsageMode)
     }
 
+    @Test
+    fun snapshotReadsLatestAtomicConfig() {
+        val snapshot = AssistRuntimeConfigSnapshot(baseConfig())
+        val updated = baseConfig()
+            .withDetectionEnabled(false)
+            .withAppLanguage(AppLanguage.EN)
+
+        snapshot.update(updated)
+
+        assertEquals(updated, snapshot.get())
+        assertFalse(snapshot.get().detectionEnabled)
+        assertEquals(AppLanguage.EN, snapshot.get().appLanguage)
+    }
+
     private fun baseConfig(): AssistRuntimeConfig {
         return AssistRuntimeConfig(
             detectionEnabled = true,

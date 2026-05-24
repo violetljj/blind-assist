@@ -14,8 +14,8 @@ android {
         applicationId = "com.linnan.blindassist"
         minSdk = 26
         targetSdk = 35
-        versionCode = 26
-        versionName = "7.0.0"
+        versionCode = 27
+        versionName = "7.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,6 +49,7 @@ dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.10.00")
 
     implementation(project(":feature:assist"))
+    implementation(project(":core:ui"))
 
     implementation(composeBom)
     androidTestImplementation(composeBom)

@@ -334,6 +334,11 @@ object CameraGuidanceMapper {
                 detail = "Stable risk is $stableText. Check whether speech or vibration reminders are enabled.",
                 accessibilityText = "Risk exists, but feedback switches are off. Current scenario is $scenarioName."
             )
+            com.linnan.blindassist.feedback.FeedbackReason.FEEDBACK_UNAVAILABLE -> RiskExplanation(
+                headline = "Risk exists, but feedback is unavailable",
+                detail = "Stable risk is $stableText. The device did not accept speech or vibration feedback.",
+                accessibilityText = "Risk exists, but speech or vibration feedback is unavailable. Current scenario is $scenarioName."
+            )
             com.linnan.blindassist.feedback.FeedbackReason.NO_FEEDBACK_RISK -> RiskExplanation(
                 headline = "Keep observing: no feedback risk",
                 detail = if (count > 0) {

@@ -190,6 +190,27 @@ class AssistEngineTest {
         assertTrue(result.explanation.detail.contains("走廊通行"))
     }
 
+    @Test
+    fun unavailableFeedbackReasonExplainsDeviceFeedbackFailure() {
+        val engine = AssistEngine()
+        val evaluation = engine.evaluate(
+            detections = listOf(detection("person", BoundingBox(390f, 140f, 610f, 780f))),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1000L
+        )
+
+        val result = engine.completeFeedback(
+            evaluation,
+            FeedbackDecision(plan = null, triggered = false, reason = FeedbackReason.FEEDBACK_UNAVAILABLE)
+        )
+
+        assertEquals(FeedbackReason.FEEDBACK_UNAVAILABLE, result.feedbackDecision.reason)
+        assertEquals("风险存在，但反馈暂不可用", result.explanation.headline)
+        assertTrue(result.explanation.detail.contains("未能确认语音或震动提醒"))
+    }
+
     private fun detection(
         label: String,
         box: BoundingBox,

@@ -132,6 +132,7 @@ object LocalizedText {
             FeedbackReason.COOLDOWN -> if (language == AppLanguage.EN) "Cooling down" else "冷却中"
             FeedbackReason.SPEECH_DISABLED -> if (language == AppLanguage.EN) "Speech off" else "语音关闭"
             FeedbackReason.VIBRATION_DISABLED -> if (language == AppLanguage.EN) "Vibration off" else "震动关闭"
+            FeedbackReason.FEEDBACK_UNAVAILABLE -> if (language == AppLanguage.EN) "Feedback unavailable" else "反馈不可用"
             FeedbackReason.NO_FEEDBACK_RISK -> if (language == AppLanguage.EN) "No feedback risk" else "无可反馈风险"
         }
     }

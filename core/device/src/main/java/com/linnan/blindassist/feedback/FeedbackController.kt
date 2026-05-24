@@ -1,54 +1,75 @@
 package com.linnan.blindassist.feedback
 
+import android.Manifest
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.speech.tts.TextToSpeech
+import androidx.annotation.RequiresPermission
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskResult
+import com.linnan.blindassist.util.FatalThrowables
 import java.util.Locale
 
-class FeedbackController(context: Context) : TextToSpeech.OnInitListener, FeedbackGateway {
-    var speechEnabled: Boolean = true
-    var vibrationEnabled: Boolean = true
-    var speechStyle: SpeechStyle = SpeechStyle.STANDARD
-    var vibrationStrength: VibrationStrength = VibrationStrength.STANDARD
-    var appLanguage: AppLanguage = AppLanguage.ZH
-        set(value) {
-            field = value
-            applyTtsLanguage()
-        }
+data class FeedbackRuntimeSettings(
+    val speechEnabled: Boolean = true,
+    val vibrationEnabled: Boolean = true,
+    val speechStyle: SpeechStyle = SpeechStyle.STANDARD,
+    val vibrationStrength: VibrationStrength = VibrationStrength.STANDARD,
+    val appLanguage: AppLanguage = AppLanguage.ZH
+)
 
-    private val appContext = context.applicationContext
+fun interface FeedbackClock {
+    fun nowMs(): Long
+}
+
+interface SpeechOutput {
+    val ready: Boolean
+    fun setLanguage(language: AppLanguage)
+    fun speak(message: String, utteranceId: String): Boolean
+    fun shutdown()
+}
+
+fun interface HapticOutput {
+    fun vibrate(plan: FeedbackPlan): Boolean
+}
+
+class FeedbackController constructor(
+    private val speechOutput: SpeechOutput,
+    private val hapticOutput: HapticOutput,
+    private val clock: FeedbackClock,
+    initialSettings: FeedbackRuntimeSettings
+) : FeedbackGateway {
+    @Volatile
+    private var settings = initialSettings
+
     private val lastAlertAt = mutableMapOf<AlertKey, Long>()
     private val fatigueController = FeedbackFatigueController()
-    private var ttsReady = false
-    private val tts = TextToSpeech(appContext, this)
 
-    private val vibrator: Vibrator? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val manager = appContext.getSystemService(VibratorManager::class.java)
-        manager?.defaultVibrator
-    } else {
-        @Suppress("DEPRECATION")
-        appContext.getSystemService(Vibrator::class.java)
+    constructor(context: Context) : this(
+        speechOutput = AndroidSpeechOutput(context.applicationContext),
+        hapticOutput = AndroidHapticOutput(context.applicationContext),
+        clock = FeedbackClock { System.currentTimeMillis() },
+        initialSettings = FeedbackRuntimeSettings()
+    )
+
+    init {
+        speechOutput.setLanguage(initialSettings.appLanguage)
     }
 
-    override fun onInit(status: Int) {
-        ttsReady = status == TextToSpeech.SUCCESS
-        if (ttsReady) {
-            applyTtsLanguage()
-            tts.setSpeechRate(1.08f)
-        }
+    fun applySettings(newSettings: FeedbackRuntimeSettings) {
+        settings = newSettings
+        speechOutput.setLanguage(newSettings.appLanguage)
     }
 
-    fun notify(risk: RiskResult) {
-        notify(risk, AlertProfile.STANDARD)
+    fun notify(risk: RiskResult): FeedbackDecision {
+        return notify(risk, AlertProfile.STANDARD)
     }
 
     fun notify(risk: RiskResult, profile: AlertProfile): FeedbackDecision {
@@ -56,64 +77,54 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener, Feedba
     }
 
     override fun notify(risk: RiskResult, profile: AlertProfile, scenario: AssistScenario): FeedbackDecision {
-        val plan = planFor(risk, profile, vibrationStrength, scenario)
+        val snapshot = settings
+        val plan = planFor(risk, profile, snapshot.vibrationStrength, scenario)
             ?: return FeedbackDecision(null, triggered = false, reason = FeedbackReason.NO_FEEDBACK_RISK)
 
-        val now = System.currentTimeMillis()
+        val now = clock.nowMs()
         val alertKey = AlertKey(risk.direction, risk.proximity)
-        val last = lastAlertAt[alertKey] ?: 0L
+        val last = lastAlertAt[alertKey]
         val effectiveCooldownMs = fatigueController.effectiveCooldownMs(risk, plan.cooldownMs, now)
-        if (now - last < effectiveCooldownMs) {
+        if (last != null && now - last < effectiveCooldownMs) {
             return FeedbackDecision(plan, triggered = false, reason = FeedbackReason.COOLDOWN)
         }
 
-        if (!speechEnabled && !vibrationEnabled) {
-            return FeedbackDecision(plan, triggered = false, reason = FeedbackReason.SPEECH_DISABLED)
+        val speechTriggered = if (snapshot.speechEnabled && speechOutput.ready) {
+            speechOutput.speak(
+                message = snapshot.speechStyle.messageFor(risk, snapshot.appLanguage),
+                utteranceId = "risk-$now"
+            )
+        } else {
+            false
         }
-        lastAlertAt[alertKey] = now
+        val vibrationTriggered = if (snapshot.vibrationEnabled) {
+            hapticOutput.vibrate(plan)
+        } else {
+            false
+        }
 
-        var speechTriggered = false
-        var vibrationTriggered = false
-        if (speechEnabled && ttsReady) {
-            tts.speak(speechStyle.messageFor(risk, appLanguage), TextToSpeech.QUEUE_FLUSH, null, "risk-${now}")
-            speechTriggered = true
+        if (!speechTriggered && !vibrationTriggered) {
+            return FeedbackDecision(
+                plan = plan,
+                triggered = false,
+                reason = FeedbackReason.FEEDBACK_UNAVAILABLE
+            )
         }
-        if (vibrationEnabled) {
-            vibrate(plan)
-            vibrationTriggered = true
-        }
+
+        lastAlertAt[alertKey] = now
+        fatigueController.recordTriggered(risk, now)
         return FeedbackDecision(
             plan = plan,
             triggered = true,
             reason = FeedbackReason.TRIGGERED,
             speechTriggered = speechTriggered,
             vibrationTriggered = vibrationTriggered
-        ).also {
-            fatigueController.recordTriggered(risk, now)
-        }
+        )
     }
 
     fun shutdown() {
         fatigueController.reset()
-        tts.stop()
-        tts.shutdown()
-    }
-
-    private fun vibrate(plan: FeedbackPlan) {
-        val vib = vibrator ?: return
-        if (!vib.hasVibrator()) return
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vib.vibrate(VibrationEffect.createOneShot(plan.vibrationMs, plan.amplitude))
-        } else {
-            @Suppress("DEPRECATION")
-            vib.vibrate(plan.vibrationMs)
-        }
-    }
-
-    private fun applyTtsLanguage() {
-        if (!ttsReady) return
-        tts.language = if (appLanguage == AppLanguage.EN) Locale.US else Locale.CHINA
+        speechOutput.shutdown()
     }
 
     private data class AlertKey(
@@ -134,6 +145,76 @@ class FeedbackController(context: Context) : TextToSpeech.OnInitListener, Feedba
             scenario: AssistScenario = AssistScenario.GENERAL
         ): FeedbackPlan? {
             return FeedbackPlanner.planFor(risk, profile, vibrationStrength, scenario)
+        }
+    }
+}
+
+private class AndroidSpeechOutput(context: Context) : SpeechOutput, TextToSpeech.OnInitListener {
+    private val appContext = context.applicationContext
+    private val tts = TextToSpeech(appContext, this)
+
+    @Volatile
+    override var ready: Boolean = false
+        private set
+
+    @Volatile
+    private var language: AppLanguage = AppLanguage.ZH
+
+    override fun onInit(status: Int) {
+        ready = status == TextToSpeech.SUCCESS
+        if (ready) {
+            applyLanguage()
+            tts.setSpeechRate(1.08f)
+        }
+    }
+
+    override fun setLanguage(language: AppLanguage) {
+        this.language = language
+        if (ready) {
+            applyLanguage()
+        }
+    }
+
+    override fun speak(message: String, utteranceId: String): Boolean {
+        if (!ready) return false
+        return try {
+            tts.speak(message, TextToSpeech.QUEUE_FLUSH, null, utteranceId) == TextToSpeech.SUCCESS
+        } catch (error: Throwable) {
+            FatalThrowables.rethrowIfFatal(error)
+            false
+        }
+    }
+
+    override fun shutdown() {
+        tts.stop()
+        tts.shutdown()
+    }
+
+    private fun applyLanguage() {
+        tts.language = if (language == AppLanguage.EN) Locale.US else Locale.CHINA
+    }
+}
+
+private class AndroidHapticOutput(context: Context) : HapticOutput {
+    private val appContext = context.applicationContext
+    private val vibrator: Vibrator? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val manager = appContext.getSystemService(VibratorManager::class.java)
+        manager?.defaultVibrator
+    } else {
+        @Suppress("DEPRECATION")
+        appContext.getSystemService(Vibrator::class.java)
+    }
+
+    @RequiresPermission(Manifest.permission.VIBRATE)
+    override fun vibrate(plan: FeedbackPlan): Boolean {
+        val vib = vibrator ?: return false
+        if (!vib.hasVibrator()) return false
+        return try {
+            vib.vibrate(VibrationEffect.createOneShot(plan.vibrationMs, plan.amplitude))
+            true
+        } catch (error: Throwable) {
+            FatalThrowables.rethrowIfFatal(error)
+            false
         }
     }
 }

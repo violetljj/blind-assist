@@ -127,6 +127,11 @@ class AssistEngine(
                 detail = "稳定风险为${riskText(stableRisk)}，请确认语音或震动提醒是否开启。",
                 accessibilityText = "风险存在，但反馈开关关闭，当前场景为$scenarioName。"
             )
+            FeedbackReason.FEEDBACK_UNAVAILABLE -> RiskExplanation(
+                headline = "风险存在，但反馈暂不可用",
+                detail = "稳定风险为${riskText(stableRisk)}，系统未能确认语音或震动提醒已被设备接受。",
+                accessibilityText = "风险存在，但语音或震动反馈暂不可用，当前场景为$scenarioName。"
+            )
             FeedbackReason.NO_FEEDBACK_RISK -> RiskExplanation(
                 headline = "继续观察：暂无可反馈风险",
                 detail = if (evaluation.detectionCount > 0) {

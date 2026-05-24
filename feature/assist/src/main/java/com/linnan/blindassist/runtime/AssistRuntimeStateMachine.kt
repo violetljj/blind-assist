@@ -51,8 +51,11 @@ class AssistRuntimeStateMachine(
                     AssistRuntimeEffect.Render(AssistRuntimeRenderTarget.ModelUnavailable)
                 }
             }
-            is AssistRuntimeEvent.CameraStartFailed -> {
+            is AssistRuntimeEvent.CameraSourceFailed -> {
                 currentState = AssistRuntimeState.Error(event.message)
+                effects += AssistRuntimeEffect.StopCamera
+                effects += AssistRuntimeEffect.ClearOverlay
+                effects += AssistRuntimeEffect.ResetSession
                 effects += AssistRuntimeEffect.Render(AssistRuntimeRenderTarget.CameraError, event.message)
             }
             AssistRuntimeEvent.CloseCamera -> {
@@ -115,7 +118,7 @@ sealed interface AssistRuntimeEvent {
     data class PermissionResult(val granted: Boolean, val modelReady: Boolean) : AssistRuntimeEvent
     data object CameraViewsReady : AssistRuntimeEvent
     data class CameraStarted(val modelReady: Boolean) : AssistRuntimeEvent
-    data class CameraStartFailed(val message: String) : AssistRuntimeEvent
+    data class CameraSourceFailed(val message: String) : AssistRuntimeEvent
     data object CloseCamera : AssistRuntimeEvent
     data class DetectionChanged(val enabled: Boolean) : AssistRuntimeEvent
 }

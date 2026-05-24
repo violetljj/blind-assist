@@ -60,6 +60,7 @@ class TfliteYoloDetector(
             validateOutputTensor(loadedInterpreter)
             interpreter = loadedInterpreter
         } catch (error: Throwable) {
+            FatalThrowables.rethrowIfFatal(error)
             Log.w(TAG, "Failed to load TFLite model: $modelAssetName", error)
             loadError = IllegalStateException(
                 "缺少模型文件：assets/$modelAssetName。请先导出 YOLO11n TFLite FP16 模型。",
@@ -77,6 +78,7 @@ class TfliteYoloDetector(
         return try {
             Interpreter(model, gpuOptions)
         } catch (gpuError: Throwable) {
+            FatalThrowables.rethrowIfFatal(gpuError)
             Log.w(TAG, "GPU interpreter failed, falling back to CPU.", gpuError)
             gpuDelegate?.close()
             gpuDelegate = null
@@ -150,6 +152,7 @@ class TfliteYoloDetector(
                 options.addDelegate(gpuDelegate)
             }
         } catch (error: Throwable) {
+            FatalThrowables.rethrowIfFatal(error)
             Log.w(TAG, "GPU delegate unavailable, falling back to CPU.", error)
         }
     }
@@ -208,73 +211,17 @@ class TfliteYoloDetector(
         dataType: DataType,
         letterbox: LetterboxInfo
     ): List<Detection> {
-        if (dataType != DataType.FLOAT32) {
-            runtimeWarning = "模型输出类型不支持：$dataType"
-            return emptyList()
-        }
-        if (shape.size != 3) {
-            runtimeWarning = "模型输出形状不支持：${shape.contentToString()}"
-            return emptyList()
-        }
-
-        val dim1 = shape[1]
-        val dim2 = shape[2]
-        val channelsFirst = dim1 <= dim2 && dim1 >= 5
-        val channels = if (channelsFirst) dim1 else dim2
-        val predictions = if (channelsFirst) dim2 else dim1
-        val classCount = min(labels.size, channels - BOX_CHANNELS)
-        if (classCount <= 0) {
-            runtimeWarning = "模型输出类别数异常：${shape.contentToString()}"
-            return emptyList()
-        }
-        runtimeWarning = null
-
-        fun value(prediction: Int, channel: Int): Float {
-            return if (channelsFirst) {
-                raw[channel * predictions + prediction]
-            } else {
-                raw[prediction * channels + channel]
-            }
-        }
-
-        val frameSize = FrameSize(letterbox.sourceWidth, letterbox.sourceHeight)
-        val detections = mutableListOf<Detection>()
-        for (prediction in 0 until predictions) {
-            var bestClass = -1
-            var bestScore = 0f
-            for (classId in 0 until classCount) {
-                val score = value(prediction, BOX_CHANNELS + classId)
-                if (score > bestScore) {
-                    bestScore = score
-                    bestClass = classId
-                }
-            }
-            if (bestClass < 0 || bestScore < confidenceThreshold) continue
-
-            val cx = normalizeCoordinate(value(prediction, 0), letterbox.inputSize)
-            val cy = normalizeCoordinate(value(prediction, 1), letterbox.inputSize)
-            val width = normalizeCoordinate(value(prediction, 2), letterbox.inputSize)
-            val height = normalizeCoordinate(value(prediction, 3), letterbox.inputSize)
-
-            val modelBox = BoundingBox(
-                left = cx - width / 2f,
-                top = cy - height / 2f,
-                right = cx + width / 2f,
-                bottom = cy + height / 2f
-            )
-
-            val sourceBox = mapToSource(modelBox, letterbox).clamped(frameSize)
-            if (sourceBox.width <= 1f || sourceBox.height <= 1f) continue
-
-            detections += Detection(
-                classId = bestClass,
-                label = labels.getOrElse(bestClass) { "class_$bestClass" },
-                confidence = bestScore,
-                boundingBox = sourceBox,
-                frameSize = frameSize
-            )
-        }
-        return nms(detections)
+        val result = YoloOutputDecoder.parse(
+            raw = raw,
+            shape = shape,
+            dataType = dataType,
+            letterbox = letterbox,
+            labels = labels,
+            confidenceThreshold = confidenceThreshold,
+            iouThreshold = iouThreshold
+        )
+        runtimeWarning = result.warning
+        return result.detections
     }
 
     private fun normalizeCoordinate(value: Float, inputSize: Int): Float {

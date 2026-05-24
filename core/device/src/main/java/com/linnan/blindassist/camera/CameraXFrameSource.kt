@@ -12,9 +12,12 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.linnan.blindassist.util.FatalThrowables
 import com.linnan.blindassist.vision.toArgbBitmap
+import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 
 class CameraXFrameSource(
     context: Context,
@@ -22,9 +25,11 @@ class CameraXFrameSource(
     private val analysisExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 ) : FrameSource {
     private val appContext = context.applicationContext
+    private val mainExecutor: Executor = ContextCompat.getMainExecutor(appContext)
     private var cameraProvider: ProcessCameraProvider? = null
     private var starting = false
     private var started = false
+    private val analyzerFailureReported = AtomicBoolean(false)
 
     override fun start(
         previewView: PreviewView,
@@ -35,6 +40,7 @@ class CameraXFrameSource(
         if (started || starting) return
 
         starting = true
+        analyzerFailureReported.set(false)
         val providerFuture = ProcessCameraProvider.getInstance(appContext)
         providerFuture.addListener({
             try {
@@ -50,10 +56,11 @@ class CameraXFrameSource(
                     .build()
                     .also { analyzer ->
                         analyzer.setAnalyzer(analysisExecutor) { imageProxy ->
-                            try {
+                            CameraAnalyzerSafety.analyzeFrame(
+                                closeFrame = { imageProxy.close() },
+                                reportError = { error -> reportAnalyzerError(error, onError) }
+                            ) {
                                 onFrame(imageProxy.toArgbBitmap())
-                            } finally {
-                                imageProxy.close()
                             }
                         }
                     }
@@ -67,18 +74,20 @@ class CameraXFrameSource(
                 )
                 started = true
                 onStarted()
-            } catch (error: Exception) {
+            } catch (error: Throwable) {
+                FatalThrowables.rethrowIfFatal(error)
                 onError(error)
             } finally {
                 starting = false
             }
-        }, ContextCompat.getMainExecutor(appContext))
+        }, mainExecutor)
     }
 
     override fun stop() {
         cameraProvider?.unbindAll()
         started = false
         starting = false
+        analyzerFailureReported.set(false)
     }
 
     override fun shutdown() {
@@ -96,6 +105,14 @@ class CameraXFrameSource(
                 )
             )
             .build()
+    }
+
+    private fun reportAnalyzerError(error: Throwable, onError: (Throwable) -> Unit) {
+        if (analyzerFailureReported.compareAndSet(false, true)) {
+            mainExecutor.execute {
+                onError(error)
+            }
+        }
     }
 
     companion object {

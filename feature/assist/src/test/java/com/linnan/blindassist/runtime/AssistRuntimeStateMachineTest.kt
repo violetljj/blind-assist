@@ -75,11 +75,25 @@ class AssistRuntimeStateMachineTest {
     }
 
     @Test
-    fun cameraStartFailureMovesToErrorState() {
+    fun cameraSourceFailureMovesToErrorState() {
         val transition = AssistRuntimeStateMachine(initialState = AssistRuntimeState.Starting)
-            .onEvent(AssistRuntimeEvent.CameraStartFailed("camera busy"))
+            .onEvent(AssistRuntimeEvent.CameraSourceFailed("camera busy"))
 
         assertEquals(AssistRuntimeState.Error("camera busy"), transition.state)
+        assertTrue(transition.hasRenderTarget(AssistRuntimeRenderTarget.CameraError))
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.StopCamera))
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.ClearOverlay))
+    }
+
+    @Test
+    fun cameraSourceFailureStopsSourceAndClearsSession() {
+        val transition = AssistRuntimeStateMachine(initialState = AssistRuntimeState.Running, cameraViewsReady = true)
+            .onEvent(AssistRuntimeEvent.CameraSourceFailed("analyzer failed"))
+
+        assertEquals(AssistRuntimeState.Error("analyzer failed"), transition.state)
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.StopCamera))
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.ClearOverlay))
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.ResetSession))
         assertTrue(transition.hasRenderTarget(AssistRuntimeRenderTarget.CameraError))
     }
 

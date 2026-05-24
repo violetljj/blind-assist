@@ -2,6 +2,22 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v7.1.0 - 反馈触达与 CameraX 可靠性更新
+
+- 状态：已完成，`versionCode=27`，`versionName=7.1.0`。
+- 主要变化：
+  - 反馈链路改为真实触达语义：只有 TTS 或震动输出被系统 API 接受后才返回 `TRIGGERED`，否则返回 `FEEDBACK_UNAVAILABLE` 且不写入冷却/疲劳记录。
+  - `core:device` 新增 library manifest 声明 `VIBRATE`，震动实现固定使用 minSdk 26+ 的 `VibrationEffect` 路径，修复多模块 lint 对权限契约的漏检/误报。
+  - CameraX analyzer 和 frame processing 异常统一走 `CameraSourceFailed`，进入错误态后停止相机、清空 overlay 并重置会话；runtime 配置改为 atomic 快照，单帧处理使用同一份配置。
+  - TTS、震动、CameraX 和 TFLite 可恢复路径会重新抛出 `VirtualMachineError`、`ThreadDeath` 和 `LinkageError` 等 fatal 错误，避免把严重运行时问题吞掉。
+  - TFLite YOLO 输出解析拆出可测 helper，并新增 golden JVM 测试覆盖 confidence threshold、label mapping、letterbox 坐标回映射和 same-class NMS。
+  - README、CI lint 矩阵和 APK 归档材料同步到多模块验证方式。
+- 验证：
+  - `.\gradlew.bat :core:assist:test :core:device:testDebugUnitTest :core:vision:testDebugUnitTest :feature:assist:testDebugUnitTest --no-daemon --offline --console=plain`：通过。
+  - 完整显式多模块单测、显式多模块 lint、debug/androidTest APK 构建和模型检查均通过；设备端 `connectedDebugAndroidTest` 未运行，因为 `adb devices` 当前无在线设备。
+- APK：
+  - `releases/apk/BlindAssist-v7.1.0-debug-20260524-162936.apk`，大小 `47,205,843` bytes，SHA256 `5ADA5DC82A71AABDA3438C76CA7E7AA9341C15FDD11308C2861E9695AD75F323`。
+
 ## v6.9.0 - 完整多模块架构迁移
 
 - 状态：已完成，`versionCode=25`，`versionName=6.9.0`。

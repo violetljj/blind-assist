@@ -29,6 +29,7 @@ enum class FeedbackReason(val displayText: String) {
     COOLDOWN("冷却中"),
     SPEECH_DISABLED("语音关闭"),
     VIBRATION_DISABLED("震动关闭"),
+    FEEDBACK_UNAVAILABLE("反馈不可用"),
     NO_FEEDBACK_RISK("无可反馈风险");
 
     fun displayText(language: AppLanguage): String {

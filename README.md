@@ -4,7 +4,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Version
 
-- Current project version: `v7.0.0`
+- Current project version: `v7.1.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,6 +12,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Recent Updates
 
+- 2026-05-24: Implemented the v7.1.0 reliability update. Feedback decisions now report `TRIGGERED` only after Android speech or vibration output accepts at least one enabled channel; enabled-but-unavailable output reports `FEEDBACK_UNAVAILABLE` without starting cooldown or fatigue. `core:device` now declares `VIBRATE` at the library manifest boundary, CameraX analyzer/frame failures route through `CameraSourceFailed` so the camera source stops and overlay/session state is cleared, runtime config is read through an atomic per-frame snapshot, and fatal JVM errors are rethrown instead of being swallowed. The TFLite YOLO output parser now has golden JVM coverage for thresholding, label mapping, source-coordinate remap and same-class NMS. The app version is now `v7.1.0` / `versionCode=27`; explicit multi-module unit tests, multi-module lint, debug/androidTest APK build, and model inspection passed. The debug APK was archived at `releases/apk/BlindAssist-v7.1.0-debug-20260524-162936.apk` with size `47,205,843` bytes.
 - 2026-05-23: Implemented the v7.0.0 small risk-rule sensitivity update for walking-assist use. Center-front targets now use slightly more sensitive NEAR thresholds (`bottomRatio >= 0.60` or `areaRatio >= 0.12`) while left/right side targets keep the previous NEAR thresholds (`bottomRatio >= 0.62` or `areaRatio >= 0.14`), preserving existing CRITICAL, MID/FAR, confidence filtering, unrelated-class filtering, urgency ranking, CameraX/TFLite, feedback, UI, permission, networking, Bluetooth, storage, Room/DataStore and model behavior. `RiskAnalyzerTest` now covers center bottom-boundary, center area-boundary and side-boundary cases. The app version is now `v7.0.0` / `versionCode=26`; local unit tests, lint/debug build validation and model inspection passed. The debug APK was archived at `releases/apk/BlindAssist-v7.0.0-debug-20260523-000649.apk` with size `47,205,851` bytes.
 - 2026-05-22: Implemented the v6.9.0 complete multi-module architecture migration. The project is no longer a single `:app` module: `:core:assist` now holds pure Kotlin assist models, alert/risk/session/localization and feedback planning contracts; `:core:vision` owns the TFLite detector and image preprocessor; `:core:device` owns CameraX frame source, ImageProxy conversion, SharedPreferences-backed user preferences, and Android speech/vibration feedback; `:core:ui` owns Compose screens, UI state models, camera guidance mappers, field-test summary mapping and overlay drawing; `:feature:assist` owns the Hilt-backed ViewModel, runtime state machine/controller/config applier and runtime dependency modules; `:app` is now the launcher shell with `BlindAssistApplication`, `MainActivity`, manifest, resources, model assets and APK configuration. This is a zero-user-visible-behavior migration: UI flow, permissions, YOLO model asset path, CameraX/TFLite pipeline, risk thresholds, SharedPreferences keys, local-only privacy boundary, Room/DataStore usage, networking, Bluetooth and storage behavior remain unchanged. The app version is now `v6.9.0` / `versionCode=25`; `:core:assist:test`, the core/feature debug unit-test suite, and `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` passed. The debug APK was archived at `releases/apk/BlindAssist-v6.9.0-debug-20260522-204908.apk` with size `47,205,843` bytes.
 - 2026-05-22: Implemented the v6.4.0 runtime state-machine and Hilt dependency split. The app now uses Hilt for `UserPreferences`, `FeedbackController`, `ObjectDetector`, `AssistSessionCoordinator`, and `FrameSourceFactory` provisioning, with `MainActivity` as an `@AndroidEntryPoint` and `BlindAssistViewModel` as an `@HiltViewModel`. The former centralized runtime controller is now driven by a pure Kotlin `AssistRuntimeStateMachine`, while `AssistRuntimeConfig` and `RuntimeConfigApplier` keep feedback, overlay Care Mode, profile, scenario, speech style, vibration strength, language, and detection-session state synchronized from a single runtime snapshot. The camera experience now exposes clearer startup, model-unavailable, detection-paused, permission-denied, and camera-error guidance without changing the main visual design, permissions, YOLO model, risk thresholds, SharedPreferences keys, Room/DataStore usage, networking, Bluetooth, storage, or module structure. Hilt was implemented with `com.google.dagger:hilt-android:2.55` because the originally planned `2.59.2` plugin requires AGP 9+, while this project remains on AGP `8.7.3`. The app version is now `v6.4.0` / `versionCode=24`; `:app:testDebugUnitTest`, `:app:lintDebug`, and `:app:assembleDebug` passed, producing `app/build/outputs/apk/debug/app-debug.apk` with size `47,205,607` bytes.
@@ -48,7 +49,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 ## Project Materials
 
 - [New computer handoff](docs/NEW_COMPUTER_HANDOFF.md): Windows setup, Git clone, Android build validation, phone-install notes, and Codex skills restore instructions for continuing this project on a new computer.
-- [APK archive policy](docs/APK_ARCHIVE.md): Git keeps only milestone APKs whose cumulative `versionName` delta is `>= 0.5`; the complete 29-APK local archive lives at `E:\linnan\blind-assist-apk-archive\apks` with SHA256 evidence in `APK_ARCHIVE_MANIFEST.csv`.
+- [APK archive policy](docs/APK_ARCHIVE.md): Git keeps only milestone APKs whose cumulative `versionName` delta is `>= 0.5`; the complete 32-APK local archive lives at `E:\linnan\blind-assist-apk-archive\apks` with SHA256 evidence in `APK_ARCHIVE_MANIFEST.csv`.
 - [Codex skills snapshot manifest](codex/skills-snapshot/MANIFEST.md): SHA256, size, entry-count evidence, and restore guidance for `codex/skills-snapshot/codex-skills-20260522.zip`.
 - [真实版本更新记录](CHANGELOG.md)：按真实版本整理功能变化、验证证据和 APK 归档路径，方便课堂展示、答辩材料和版本对比。
 - [演示指南](DEMO_GUIDE.md)：面向老师/答辩的演示脚本，包含环境准备、手机安装、现场演示顺序、无设备 fallback、隐私与安全边界说明。
@@ -134,9 +135,11 @@ adb version
 
 ```powershell
 $env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path
-$env:PATH="$env:JAVA_HOME\bin;D:\Git\cmd;D:\linnan\linnan\.android-sdk\platform-tools;$env:PATH"
+$env:PATH="$env:JAVA_HOME\bin;D:\Git\cmd;$((Resolve-Path '.\.android-sdk\platform-tools').Path);$env:PATH"
 $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path
-.\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon
+.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon
+.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon
+.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon
 ```
 
 This has been verified with `BUILD SUCCESSFUL`, and model inspection now runs through `.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`.
@@ -176,11 +179,13 @@ output shape=[1, 84, 2100] dtype=float32
 .\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon
 ```
 
-The v6.9.0 migration also supports focused module validation:
+The v7.1.0 validation matrix uses explicit module checks so library lint is not missed:
 
 ```powershell
-.\gradlew.bat :core:assist:test --no-daemon
-.\gradlew.bat :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest --no-daemon
+.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py
+.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain
+.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain
+.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain
 ```
 
 APK 输出位置：
@@ -199,7 +204,7 @@ releases/apk/
 
 Git keeps only APKs whose cumulative `versionName` delta from the last committed APK is `>= 0.5`. Smaller update builds must be copied to the complete local archive instead of being committed.
 
-The complete local archive for all 29 historical APKs is:
+The complete local archive for all 32 historical APKs is:
 
 ```text
 E:\linnan\blind-assist-apk-archive\apks

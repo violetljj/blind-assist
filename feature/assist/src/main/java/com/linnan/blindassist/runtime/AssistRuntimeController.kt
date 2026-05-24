@@ -43,7 +43,8 @@ class AssistRuntimeController(
     private val frameSource: FrameSource = frameSourceFactory.create(activity, activity)
     private val isProcessing = AtomicBoolean(false)
     private var lastPerfLogAtMs = 0L
-    private var config = appViewModel.runtimeConfig()
+    private val configSnapshot = AssistRuntimeConfigSnapshot(appViewModel.runtimeConfig())
+    private val config: AssistRuntimeConfig get() = configSnapshot.get()
 
     fun initialize() {
         syncConfigFromViewModel()
@@ -253,12 +254,16 @@ class AssistRuntimeController(
                     stateMachine.onEvent(AssistRuntimeEvent.CameraStarted(detector.isReady))
                 )
             },
-            onError = { error ->
-                val message = error.message ?: "未知错误"
-                Log.e(PERF_TAG, "Camera start failed", error)
-                handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CameraStartFailed(message)))
-            }
+            onError = ::handleCameraSourceError
         )
+    }
+
+    private fun handleCameraSourceError(error: Throwable) {
+        val message = error.message ?: "Unknown camera error"
+        Log.e(PERF_TAG, "Camera source failed", error)
+        activity.runOnUiThread {
+            handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CameraSourceFailed(message)))
+        }
     }
 
     private fun stopCamera() {
@@ -273,7 +278,8 @@ class AssistRuntimeController(
     }
 
     private fun processFrameBitmap(bitmap: Bitmap) {
-        if (!appViewModel.uiState.value.cameraActive || !config.detectionEnabled) {
+        val runtimeConfig = configSnapshot.get()
+        if (!appViewModel.uiState.value.cameraActive || !runtimeConfig.detectionEnabled) {
             bitmap.recycle()
             return
         }
@@ -289,7 +295,11 @@ class AssistRuntimeController(
 
         try {
             val detectorFrame = detector.detect(bitmap)
-            val frameResult = coordinator.processFrame(detectorFrame, config.alertProfile, config.assistScenario)
+            val frameResult = coordinator.processFrame(
+                detectorFrame,
+                runtimeConfig.alertProfile,
+                runtimeConfig.assistScenario
+            )
             activity.runOnUiThread {
                 if (::overlayView.isInitialized) {
                     overlayView.update(
@@ -298,14 +308,18 @@ class AssistRuntimeController(
                         frameResult.evaluation.stableRisk
                     )
                 }
-                renderUi(CameraGuidanceMapper.fromFrameResult(frameResult, config.appLanguage))
-                appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true))
-                logPerformanceIfNeeded(frameResult)
+                renderUi(CameraGuidanceMapper.fromFrameResult(frameResult, runtimeConfig.appLanguage))
+                appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true, runtimeConfig))
+                logPerformanceIfNeeded(frameResult, runtimeConfig)
             }
-        } catch (error: Throwable) {
+        } catch (error: Exception) {
             Log.e(PERF_TAG, "Frame processing failed", error)
             activity.runOnUiThread {
-                renderUi(CameraGuidanceMapper.cameraError("检测异常：${error.message ?: "未知错误"}", config.appLanguage))
+                handleTransition(
+                    stateMachine.onEvent(
+                        AssistRuntimeEvent.CameraSourceFailed("检测异常：${error.message ?: "未知错误"}")
+                    )
+                )
             }
         } finally {
             isProcessing.set(false)
@@ -351,17 +365,19 @@ class AssistRuntimeController(
     }
 
     private fun syncConfigFromViewModel() {
-        config = appViewModel.runtimeConfig()
-        configApplier.apply(config, if (::overlayView.isInitialized) overlayView else null)
+        val latestConfig = configSnapshot.update(appViewModel.runtimeConfig())
+        configApplier.apply(latestConfig, if (::overlayView.isInitialized) overlayView else null)
     }
 
-    private fun currentFieldTestSummary(active: Boolean) =
+    private fun currentFieldTestSummary(active: Boolean) = currentFieldTestSummary(active, config)
+
+    private fun currentFieldTestSummary(active: Boolean, runtimeConfig: AssistRuntimeConfig) =
         FieldTestSummaryMapper.fromSummary(
             coordinator.sessionSummary(),
             active,
-            config.alertProfile,
-            config.assistScenario,
-            config.appLanguage
+            runtimeConfig.alertProfile,
+            runtimeConfig.assistScenario,
+            runtimeConfig.appLanguage
         )
 
     private fun startingGuidance(): CameraGuidanceUiState {
@@ -380,7 +396,7 @@ class AssistRuntimeController(
         appViewModel.renderCameraGuidance(snapshot, detector.statusMessage)
     }
 
-    private fun logPerformanceIfNeeded(frameResult: AssistFrameResult) {
+    private fun logPerformanceIfNeeded(frameResult: AssistFrameResult, runtimeConfig: AssistRuntimeConfig) {
         val now = System.currentTimeMillis()
         if (now - lastPerfLogAtMs < PERF_LOG_INTERVAL_MS) return
         lastPerfLogAtMs = now
@@ -395,9 +411,9 @@ class AssistRuntimeController(
                 "fps=${"%.1f".format(metrics.fps)}, profile=${evaluation.profile.storageValue}, " +
                 "scenario=${evaluation.scenario.storageValue}, " +
                 "rawRisk=${riskSummary(evaluation.rawRisk)}, stableRisk=${riskSummary(evaluation.stableRisk)}, " +
-                "feedbackReason=${frameResult.feedbackDecision.reason.displayText(config.appLanguage)}, " +
+                "feedbackReason=${frameResult.feedbackDecision.reason.displayText(runtimeConfig.appLanguage)}, " +
                 "explanation=${frameResult.explanation.headline}, " +
-                "session=${frameResult.sessionSummary.displayText(config.appLanguage)}, status=${metrics.modelStatus}"
+                "session=${frameResult.sessionSummary.displayText(runtimeConfig.appLanguage)}, status=${metrics.modelStatus}"
         )
     }
 

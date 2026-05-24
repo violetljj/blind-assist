@@ -91,4 +91,27 @@ class CameraGuidanceMapperTest {
         assertTrue(guidance.debugText.contains("Profile: Standard"))
         assertTrue(guidance.accessibilitySummary.contains("Reminder triggered"))
     }
+
+    @Test
+    fun frameResultCanUseEnglishUnavailableFeedbackExplanation() {
+        val engine = AssistEngine()
+        val evaluation = engine.evaluate(
+            detections = listOf(Detection(0, "person", 0.9f, BoundingBox(390f, 140f, 610f, 780f), frame)),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            scenario = AssistScenario.CORRIDOR,
+            metrics = DetectorMetrics(35L, 5L, 22L, 8L, 12.5f, "ready"),
+            nowMs = 1000L
+        )
+        val result = engine.completeFeedback(
+            evaluation,
+            FeedbackDecision(null, triggered = false, reason = FeedbackReason.FEEDBACK_UNAVAILABLE)
+        )
+
+        val guidance = CameraGuidanceMapper.fromFrameResult(result, AppLanguage.EN)
+
+        assertEquals("Risk exists, but feedback is unavailable", guidance.explanationHeadline)
+        assertTrue(guidance.debugText.contains("Feedback unavailable"))
+        assertTrue(guidance.accessibilitySummary.contains("feedback is unavailable"))
+    }
 }

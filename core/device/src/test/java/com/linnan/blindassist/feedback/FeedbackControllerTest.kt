@@ -8,6 +8,7 @@ import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -157,6 +158,86 @@ class FeedbackControllerTest {
         assertEquals(false, decision.vibrationTriggered)
     }
 
+    @Test
+    fun notifyReportsUnavailableWhenNoOutputChannelAcceptsFeedback() {
+        var nowMs = 10_000L
+        val speech = FakeSpeechOutput(ready = false, speakResult = true)
+        val haptic = FakeHapticOutput(vibrateResult = false)
+        val controller = feedbackController(speech, haptic) { nowMs }
+
+        val unavailable = controller.notify(risk(RiskLevel.HIGH, ProximityBand.CRITICAL))
+
+        assertFalse(unavailable.triggered)
+        assertEquals(FeedbackReason.FEEDBACK_UNAVAILABLE, unavailable.reason)
+        assertFalse(unavailable.speechTriggered)
+        assertFalse(unavailable.vibrationTriggered)
+        assertEquals(0, speech.speakCalls)
+        assertEquals(1, haptic.vibrateCalls)
+
+        speech.ready = true
+        nowMs += 100L
+        val delivered = controller.notify(risk(RiskLevel.HIGH, ProximityBand.CRITICAL))
+
+        assertTrue(delivered.triggered)
+        assertEquals(FeedbackReason.TRIGGERED, delivered.reason)
+        assertTrue(delivered.speechTriggered)
+        assertFalse(delivered.vibrationTriggered)
+    }
+
+    @Test
+    fun notifyTreatsSuccessfulVibrationAsRealFeedbackWhenSpeechIsDisabled() {
+        val speech = FakeSpeechOutput(ready = true, speakResult = true)
+        val haptic = FakeHapticOutput(vibrateResult = true)
+        val controller = feedbackController(speech, haptic)
+        controller.applySettings(FeedbackRuntimeSettings(speechEnabled = false))
+
+        val decision = controller.notify(risk(RiskLevel.HIGH, ProximityBand.CRITICAL))
+
+        assertTrue(decision.triggered)
+        assertEquals(FeedbackReason.TRIGGERED, decision.reason)
+        assertFalse(decision.speechTriggered)
+        assertTrue(decision.vibrationTriggered)
+        assertEquals(0, speech.speakCalls)
+        assertEquals(1, haptic.vibrateCalls)
+    }
+
+    @Test
+    fun notifyDoesNotCallOutputsWhenBothFeedbackSwitchesAreDisabled() {
+        val speech = FakeSpeechOutput(ready = true, speakResult = true)
+        val haptic = FakeHapticOutput(vibrateResult = true)
+        val controller = feedbackController(speech, haptic)
+        controller.applySettings(
+            FeedbackRuntimeSettings(
+                speechEnabled = false,
+                vibrationEnabled = false
+            )
+        )
+
+        val decision = controller.notify(risk(RiskLevel.HIGH, ProximityBand.CRITICAL))
+
+        assertFalse(decision.triggered)
+        assertEquals(FeedbackReason.FEEDBACK_UNAVAILABLE, decision.reason)
+        assertEquals(0, speech.speakCalls)
+        assertEquals(0, haptic.vibrateCalls)
+    }
+
+    @Test
+    fun notifyReportsUnavailableWhenSpeechSpeakFailsAndHapticIsOff() {
+        val speech = FakeSpeechOutput(ready = true, speakResult = false)
+        val haptic = FakeHapticOutput(vibrateResult = false)
+        val controller = feedbackController(speech, haptic)
+        controller.applySettings(FeedbackRuntimeSettings(vibrationEnabled = false))
+
+        val decision = controller.notify(risk(RiskLevel.HIGH, ProximityBand.CRITICAL))
+
+        assertFalse(decision.triggered)
+        assertEquals(FeedbackReason.FEEDBACK_UNAVAILABLE, decision.reason)
+        assertFalse(decision.speechTriggered)
+        assertFalse(decision.vibrationTriggered)
+        assertEquals(1, speech.speakCalls)
+        assertEquals(0, haptic.vibrateCalls)
+    }
+
     private fun risk(level: RiskLevel, proximity: ProximityBand): RiskResult {
         return RiskResult(
             level = level,
@@ -165,5 +246,51 @@ class FeedbackControllerTest {
             proximity = proximity,
             urgencyScore = proximity.ordinal.toFloat()
         )
+    }
+
+    private fun feedbackController(
+        speech: FakeSpeechOutput,
+        haptic: FakeHapticOutput,
+        nowMs: () -> Long = { 10_000L }
+    ): FeedbackController {
+        return FeedbackController(
+            speechOutput = speech,
+            hapticOutput = haptic,
+            clock = FeedbackClock { nowMs() },
+            initialSettings = FeedbackRuntimeSettings()
+        )
+    }
+
+    private class FakeSpeechOutput(
+        override var ready: Boolean,
+        private val speakResult: Boolean
+    ) : SpeechOutput {
+        var speakCalls: Int = 0
+            private set
+        var language: AppLanguage = AppLanguage.ZH
+            private set
+
+        override fun setLanguage(language: AppLanguage) {
+            this.language = language
+        }
+
+        override fun speak(message: String, utteranceId: String): Boolean {
+            speakCalls += 1
+            return speakResult
+        }
+
+        override fun shutdown() = Unit
+    }
+
+    private class FakeHapticOutput(
+        private val vibrateResult: Boolean
+    ) : HapticOutput {
+        var vibrateCalls: Int = 0
+            private set
+
+        override fun vibrate(plan: FeedbackPlan): Boolean {
+            vibrateCalls += 1
+            return vibrateResult
+        }
     }
 }

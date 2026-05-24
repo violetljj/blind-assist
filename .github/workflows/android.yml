@@ -25,10 +25,10 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run JVM tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest
 
       - name: Run Android lint
-        run: ./gradlew lintDebug
+        run: ./gradlew :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug
 
       - name: Assemble debug APK
         run: ./gradlew assembleDebug

@@ -4,7 +4,7 @@ import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 
-internal class FeedbackFatigueController {
+class FeedbackFatigueController {
     private var lastNonCriticalAtMs: Long = 0L
     private var consecutiveNonCriticalTriggers: Int = 0
 
