@@ -38,9 +38,15 @@
 
 ## 版本 APK 留存要求
 
-每次构建出可用于演示、测试或提交给老师查看的 APK 后，除了保留 Gradle 默认输出 `app/build/outputs/apk/debug/app-debug.apk`，还必须复制一份按版本命名的 APK 到仓库内的版本归档目录，方便后续课堂展示、答辩汇报和不同版本效果对比。
+每次构建出可用于演示、测试或提交给老师查看的 APK 后，除了保留 Gradle 默认输出 `app/build/outputs/apk/debug/app-debug.apk`，还必须复制一份按版本命名的 APK 到完整本地归档目录，方便后续课堂展示、答辩汇报和不同版本效果对比。
 
-推荐归档目录：
+完整本地归档目录：
+
+```text
+E:\linnan\blind-assist-apk-archive\apks
+```
+
+Git 里程碑归档目录：
 
 ```text
 releases/apk/
@@ -60,9 +66,11 @@ releases/apk/BlindAssist-v2.6.0-debug-20260518-012726.apk
 
 归档要求：
 
-- 每次版本号变化后，必须保存对应版本 APK。
-- 重要功能阶段、真机验证阶段或需要给老师展示的阶段，即使版本号不变，也应保存一份带日期时间的 APK。
-- `DEVELOPMENT_LOG.md` 中必须记录归档 APK 的路径、来源 APK、文件大小、构建时间或复制时间。
+- 每次版本号变化后，必须先保存对应版本 APK 到完整本地归档目录。
+- 重要功能阶段、真机验证阶段或需要给老师展示的阶段，即使版本号不变，也应先保存一份带日期时间的 APK 到完整本地归档目录。
+- 只有累计 `versionName` 差值达到 `>= 0.5`、或用户明确要求提交里程碑 APK 时，才把 APK 同步到 `releases/apk/` 并提交到 Git。
+- 小版本、临时演示、普通测试 APK 默认只保存在完整本地归档目录，不提交到 Git。
+- `DEVELOPMENT_LOG.md` 中必须记录归档 APK 的路径、来源 APK、文件大小、构建时间或复制时间；如果同步到 `releases/apk/`，还必须记录原因。
 - 如果因为构建失败、没有生成 APK、磁盘空间或其他原因无法归档，必须在 `DEVELOPMENT_LOG.md` 和最终说明中写清楚原因。
 - 不要删除旧版本 APK，除非用户明确要求清理；旧版本用于展示项目演进和对比效果。
 

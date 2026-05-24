@@ -12,6 +12,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Recent Updates
 
+- 2026-05-24: Implemented the first steady engineering-hygiene optimization without changing app behavior, model assets, SharedPreferences keys, `versionName`, or `versionCode`. Gradle plugin, SDK/JVM, library, Compose BOM, Hilt, CameraX, TFLite and test dependency versions now live in `gradle/libs.versions.toml`; module build files use catalog aliases. CI now runs a repository hygiene scan before validation and checks that generated files do not modify tracked files. APK policy is clarified as complete local archival under `E:\linnan\blind-assist-apk-archive\apks`, with Git limited to documented milestone APKs. This is a build and collaboration hygiene update, so the app remains `v7.1.0` / `versionCode=27`.
 - 2026-05-24: Implemented the v7.1.0 reliability update. Feedback decisions now report `TRIGGERED` only after Android speech or vibration output accepts at least one enabled channel; enabled-but-unavailable output reports `FEEDBACK_UNAVAILABLE` without starting cooldown or fatigue. `core:device` now declares `VIBRATE` at the library manifest boundary, CameraX analyzer/frame failures route through `CameraSourceFailed` so the camera source stops and overlay/session state is cleared, runtime config is read through an atomic per-frame snapshot, and fatal JVM errors are rethrown instead of being swallowed. The TFLite YOLO output parser now has golden JVM coverage for thresholding, label mapping, source-coordinate remap and same-class NMS. The app version is now `v7.1.0` / `versionCode=27`; explicit multi-module unit tests, multi-module lint, debug/androidTest APK build, and model inspection passed. The debug APK was archived at `releases/apk/BlindAssist-v7.1.0-debug-20260524-162936.apk` with size `47,205,843` bytes.
 - 2026-05-23: Implemented the v7.0.0 small risk-rule sensitivity update for walking-assist use. Center-front targets now use slightly more sensitive NEAR thresholds (`bottomRatio >= 0.60` or `areaRatio >= 0.12`) while left/right side targets keep the previous NEAR thresholds (`bottomRatio >= 0.62` or `areaRatio >= 0.14`), preserving existing CRITICAL, MID/FAR, confidence filtering, unrelated-class filtering, urgency ranking, CameraX/TFLite, feedback, UI, permission, networking, Bluetooth, storage, Room/DataStore and model behavior. `RiskAnalyzerTest` now covers center bottom-boundary, center area-boundary and side-boundary cases. The app version is now `v7.0.0` / `versionCode=26`; local unit tests, lint/debug build validation and model inspection passed. The debug APK was archived at `releases/apk/BlindAssist-v7.0.0-debug-20260523-000649.apk` with size `47,205,851` bytes.
 - 2026-05-22: Implemented the v6.9.0 complete multi-module architecture migration. The project is no longer a single `:app` module: `:core:assist` now holds pure Kotlin assist models, alert/risk/session/localization and feedback planning contracts; `:core:vision` owns the TFLite detector and image preprocessor; `:core:device` owns CameraX frame source, ImageProxy conversion, SharedPreferences-backed user preferences, and Android speech/vibration feedback; `:core:ui` owns Compose screens, UI state models, camera guidance mappers, field-test summary mapping and overlay drawing; `:feature:assist` owns the Hilt-backed ViewModel, runtime state machine/controller/config applier and runtime dependency modules; `:app` is now the launcher shell with `BlindAssistApplication`, `MainActivity`, manifest, resources, model assets and APK configuration. This is a zero-user-visible-behavior migration: UI flow, permissions, YOLO model asset path, CameraX/TFLite pipeline, risk thresholds, SharedPreferences keys, local-only privacy boundary, Room/DataStore usage, networking, Bluetooth and storage behavior remain unchanged. The app version is now `v6.9.0` / `versionCode=25`; `:core:assist:test`, the core/feature debug unit-test suite, and `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` passed. The debug APK was archived at `releases/apk/BlindAssist-v6.9.0-debug-20260522-204908.apk` with size `47,205,843` bytes.
@@ -202,7 +203,7 @@ Milestone APKs for demos and version comparison live in:
 releases/apk/
 ```
 
-Git keeps only APKs whose cumulative `versionName` delta from the last committed APK is `>= 0.5`. Smaller update builds must be copied to the complete local archive instead of being committed.
+Git keeps only APKs whose cumulative `versionName` delta from the last committed APK is `>= 0.5`, or APKs that the user explicitly marks as Git milestones. Smaller update builds must be copied to the complete local archive instead of being committed.
 
 The complete local archive for all 32 historical APKs is:
 
@@ -217,6 +218,8 @@ E:\linnan\blind-assist-apk-archive\APK_ARCHIVE_MANIFEST.csv
 ```
 
 See [APK archive policy](docs/APK_ARCHIVE.md) for the current Git milestone list and verification command.
+
+CI runs `scripts/check_repo_hygiene.ps1` to block newly added local caches, ordinary test artifacts, and non-whitelisted large binary outputs from entering Git.
 
 ## Install to Phone
 

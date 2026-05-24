@@ -4,6 +4,64 @@
 
 ## 2026-05-24
 
+### v7.1.0 工程卫生与稳妥瘦身优化
+- 时间：2026-05-24 17:21:00 +08:00
+- 执行者：violjjet
+- 类型：构建 / 架构优化 / 文档 / CI / 测试验证
+- 修改范围：
+  - `gradle/libs.versions.toml`
+  - `build.gradle.kts`
+  - `app/build.gradle.kts`
+  - `core/assist/build.gradle.kts`
+  - `core/device/build.gradle.kts`
+  - `core/ui/build.gradle.kts`
+  - `core/vision/build.gradle.kts`
+  - `feature/assist/build.gradle.kts`
+  - `.github/workflows/android.yml`
+  - `.gitignore`
+  - `scripts/check_repo_hygiene.ps1`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/SettingsScreen.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/SettingsRows.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/SettingsSelectors.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeController.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeGuidanceFactory.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimePerformanceLogger.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/FieldTestSummaryProvider.kt`
+  - `AGENTS.md`
+  - `README.md`
+  - `docs/APK_ARCHIVE.md`
+  - `docs/NEW_COMPUTER_HANDOFF.md`
+- 修改内容：
+  - 按中大型任务协作要求创建并调用 2 个子代理：Socrates 负责只读核对 Gradle catalog、CI 仓库卫生和文档冲突点；Planck 负责只读核对 Settings/runtime 拆分边界和测试契约。主线程整合建议后完成实现与验证。
+  - 新增 `gradle/libs.versions.toml`，集中 AGP、Kotlin、Hilt、Compose BOM、SDK/JVM 版本、CameraX、Lifecycle、Navigation、TFLite、JUnit 和 AndroidX test 依赖版本；根与各模块 Gradle 文件改用 `libs.*` / `libs.plugins.*` catalog alias。
+  - 新增 `scripts/check_repo_hygiene.ps1`，CI 在测试前扫描本次变更，阻止新增本地缓存、普通测试产物、非白名单 APK 和大二进制沉积；CI 构建后检查 tracked 或未被忽略的 untracked 文件没有被生成任务改动。
+  - 更新 `.gitignore`，让新增 `test-artifacts*`、普通 zip/pptx/npy 和非里程碑包默认留在本地，不进入 Git。
+  - 统一 APK 归档规则：完整 APK 先进入 `E:\linnan\blind-assist-apk-archive\apks`，Git 只保留文档化的 milestone APK 或用户明确要求提交的 APK。
+  - 将 `SettingsScreen.kt` 的开关行、操作行和 selector 拆到 `SettingsRows.kt` / `SettingsSelectors.kt`，保留原 `SettingsScreen(...)` public 签名、`language_selector` / `scenario_selector` testTag 和现有中英文 contentDescription。
+  - 从 `AssistRuntimeController` 中抽出 `AssistRuntimeGuidanceFactory`、`FieldTestSummaryProvider` 和 `AssistRuntimePerformanceLogger`，保留 controller 对 `MainActivity` 的 public 方法、状态机 effect 顺序、frame processing recycle/并发/UI 线程行为。
+- 修改原因：
+  - 前置体检确认项目不是屎山，但存在 Gradle 版本散落、仓库大产物沉积、文档规则冲突以及局部胖文件继续膨胀的风险。
+  - 本轮选择“稳妥治理”路线：优先改善可复现性、协作边界和局部可读性，不改变 App 行为、模型资产、SharedPreferences key、版本号或用户流程。
+- 验证方式：
+  - 首次普通沙箱运行 `.\gradlew.bat :core:ui:compileDebugKotlin :feature:assist:compileDebugKotlin --no-daemon --console=plain` 因 Gradle wrapper 下载触发 `java.net.SocketException: Permission denied: getsockopt`，随后按仓库已知沙箱限制提权验证。
+  - 使用系统默认 Java 运行 Gradle 时遇到 `java.lang.IllegalArgumentException: 26.0.1`，确认原因是当前 shell 的 Java 26 不被该 Kotlin/Gradle 组合解析；改用仓库本地 JDK 17：`$env:JAVA_HOME='E:\linnan\linnan\.jdk\jdk17.0.19_10'; $env:PATH="$env:JAVA_HOME\bin;$env:PATH"`。
+  - 编译验证：`.\gradlew.bat :core:ui:compileDebugKotlin :feature:assist:compileDebugKotlin --no-daemon --console=plain`：通过。
+  - 仓库卫生脚本：`powershell -ExecutionPolicy Bypass -File .\scripts\check_repo_hygiene.ps1`：通过，检查 22 个变更路径；本地直接执行 `.ps1` 曾被 PowerShell ExecutionPolicy 拦截，因此 CI 使用 `pwsh -ExecutionPolicy Bypass -File`。后续按 review 建议补强 `test-artifacts-*` 匹配和 CI 构建后 untracked 检查，并再次通过脚本验证。
+  - 完整显式多模块单测：`.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain`：通过。
+  - 显式多模块 lint：`.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain`：通过。
+  - APK 构建：`.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain`：返回成功，生成 `app/build/outputs/apk/debug/app-debug.apk`（47,222,239 bytes）和 `app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`（980,854 bytes）；输出中出现一次 Kotlin daemon 启动重试提示，但产物存在且命令成功。
+  - 模型检查：`.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：输入 `images [1, 320, 320, 3] float32`，输出 `Identity [1, 84, 2100] float32`。
+  - `git diff --check`：通过，仅提示 Windows 工作树 LF/CRLF 转换 warning，无空白错误。
+- APK 归档：
+  - 本轮 APK 仅用于构建验证，不作为新的演示/提交 milestone；未复制到 `releases/apk/`，也未新增本地完整归档 APK。
+- 版本判断：
+  - 本轮为工程卫生、构建治理、CI 门禁和内部文件瘦身，不改变用户可见功能、模型、风险阈值、权限、存储 key 或版本语义。
+  - 项目版本保持 `v7.1.0` / `versionCode=27`。
+- 后续事项：
+  - 第二轮可在当前 catalog 基础上引入 `build-logic/convention`，继续收敛重复的 Android/Kotlin/Hilt/Compose 配置。
+  - 后续如需要真正降低 Git 仓库历史体积，应单独规划 Git history/LFS/GitHub Releases 迁移，不在普通功能分支中直接重写历史。
+  - 有真机在线且解锁后，可补跑 `.\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --console=plain` 验证 Settings selector 语义在设备端仍稳定。
+
 ### v7.1.0 反馈触达与 CameraX 可靠性更新
 - 时间：2026-05-24 16:29:36 +08:00
 - 执行者：violjjet

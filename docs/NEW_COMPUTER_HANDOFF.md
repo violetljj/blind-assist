@@ -111,5 +111,7 @@ new SDK's `platform-tools` directory.
   validation result in `DEVELOPMENT_LOG.md`.
 - Update `README.md` when project state, usage, build flow, test conclusions,
   model assets, or important decisions change.
-- Preserve versioned APKs under `releases/apk/` when a build is meant for demo,
-  testing, or teacher review.
+- Preserve every demo, testing, or teacher-review APK in the complete local
+  archive at `E:\linnan\blind-assist-apk-archive\apks` first.
+- Commit an APK under `releases/apk/` only when it is a documented Git
+  milestone or the user explicitly asks for that APK to be committed.

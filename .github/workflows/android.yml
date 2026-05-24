@@ -13,6 +13,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check repository hygiene
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: pwsh -ExecutionPolicy Bypass -File ./scripts/check_repo_hygiene.ps1
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -32,3 +39,13 @@ jobs:
 
       - name: Assemble debug APK
         run: ./gradlew assembleDebug
+
+      - name: Ensure generated files are ignored
+        shell: pwsh
+        run: |
+          $status = git status --short
+          if ($status) {
+            Write-Host "Tracked or unignored files changed during CI:"
+            Write-Host $status
+            exit 1
+          }

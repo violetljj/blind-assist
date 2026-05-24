@@ -14,12 +14,16 @@ python311-local/
 build/
 local.properties
 captures/
+test-artifacts*/
 *.apk
 # Keep only milestone APKs in Git. See docs/APK_ARCHIVE.md.
 !releases/
 !releases/apk/
 !releases/apk/*.apk
 *.aab
+*.zip
+*.pptx
+*.npy
 yolo11n.pt
 yolo11n.onnx
 yolo11n_saved_model/

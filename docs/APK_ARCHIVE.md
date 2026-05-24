@@ -2,7 +2,7 @@
 
 BlindAssist keeps APK access in two layers:
 
-- GitHub milestone APKs: `releases/apk/` keeps only versions whose cumulative `versionName` delta from the last committed APK is `>= 0.5`.
+- GitHub milestone APKs: `releases/apk/` keeps only versions whose cumulative `versionName` delta from the last committed APK is `>= 0.5`, or APKs explicitly marked by the user as Git milestones.
 - Complete local archive: every generated historical APK is kept under `E:\linnan\blind-assist-apk-archive\apks`.
 
 The complete local archive was created on 2026-05-22 and contains 32 APK files. Its manifest is:
@@ -37,4 +37,6 @@ Get-FileHash -Algorithm SHA256 -LiteralPath "E:\linnan\blind-assist-apk-archive\
 
 ## Future Rule
 
-When creating a new APK, archive it locally first. Commit it to `releases/apk/` only when the current `versionName` is at least `0.5` higher than the newest APK already committed in this directory. Smaller update APKs stay in the local archive and should be documented in the README or changelog only when relevant.
+When creating a new APK, archive it locally first. Commit it to `releases/apk/` only when the current `versionName` is at least `0.5` higher than the newest APK already committed in this directory, or when the user explicitly asks for a Git milestone APK. Smaller update APKs stay in the local archive and should be documented in the README or changelog only when relevant.
+
+New test screenshots, raw device logs, temporary APKs, zip snapshots, PPT exports, ONNX/PT/NPY model conversion artifacts, and machine-local caches should stay outside Git by default. CI enforces this future-facing rule through `scripts/check_repo_hygiene.ps1`; existing historical artifacts are not removed or rewritten by this policy.

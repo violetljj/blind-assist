@@ -16,13 +16,10 @@ import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.preferences.DailyUsageMode
-import com.linnan.blindassist.risk.RiskResult
-import com.linnan.blindassist.session.AssistFrameResult
 import com.linnan.blindassist.session.AssistSessionCoordinator
 import com.linnan.blindassist.ui.BlindAssistViewModel
 import com.linnan.blindassist.ui.CameraGuidanceMapper
 import com.linnan.blindassist.ui.DetectionOverlayView
-import com.linnan.blindassist.ui.FieldTestSummaryMapper
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
 import com.linnan.blindassist.vision.ObjectDetector
 import java.util.concurrent.atomic.AtomicBoolean
@@ -42,13 +39,15 @@ class AssistRuntimeController(
 
     private val frameSource: FrameSource = frameSourceFactory.create(activity, activity)
     private val isProcessing = AtomicBoolean(false)
-    private var lastPerfLogAtMs = 0L
     private val configSnapshot = AssistRuntimeConfigSnapshot(appViewModel.runtimeConfig())
     private val config: AssistRuntimeConfig get() = configSnapshot.get()
+    private val guidanceFactory = AssistRuntimeGuidanceFactory(detector) { config }
+    private val fieldTestSummaryProvider = FieldTestSummaryProvider(coordinator)
+    private val performanceLogger = AssistRuntimePerformanceLogger()
 
     fun initialize() {
         syncConfigFromViewModel()
-        renderUi(CameraGuidanceMapper.initial(detector.statusMessage, config.assistScenario, config.appLanguage))
+        renderUi(guidanceFactory.initial())
     }
 
     fun shutdown() {
@@ -193,7 +192,7 @@ class AssistRuntimeController(
                 AssistRuntimeEffect.ClearOverlay -> clearOverlay()
                 AssistRuntimeEffect.CloseCamera -> closeCameraUi()
                 AssistRuntimeEffect.ResetSession -> coordinator.reset()
-                AssistRuntimeEffect.ShowPermissionDenied -> appViewModel.onCameraPermissionDenied(permissionDeniedGuidance())
+                AssistRuntimeEffect.ShowPermissionDenied -> appViewModel.onCameraPermissionDenied(guidanceFactory.permissionDenied())
                 AssistRuntimeEffect.ApplyConfig -> syncConfigFromViewModel()
                 is AssistRuntimeEffect.Render -> renderTarget(effect.target, effect.message)
             }
@@ -202,9 +201,9 @@ class AssistRuntimeController(
 
     private fun activateCameraUi() {
         val guidance = if (detector.isReady) {
-            startingGuidance()
+            guidanceFactory.starting()
         } else {
-            modelUnavailableGuidance()
+            guidanceFactory.modelUnavailable()
         }
         appViewModel.activateCamera(
             fieldTestSummary = currentFieldTestSummary(active = true),
@@ -216,34 +215,19 @@ class AssistRuntimeController(
     private fun closeCameraUi() {
         appViewModel.closeCamera(
             fieldTestSummary = currentFieldTestSummary(active = false),
-            guidance = CameraGuidanceMapper.initial(detector.statusMessage, config.assistScenario, config.appLanguage),
+            guidance = guidanceFactory.initial(),
             modelStatus = detector.statusMessage
         )
     }
 
     private fun renderTarget(target: AssistRuntimeRenderTarget, message: String?) {
-        val guidance = when (target) {
-            AssistRuntimeRenderTarget.Starting -> startingGuidance()
-            AssistRuntimeRenderTarget.Waiting -> {
-                if (detector.isReady) {
-                    CameraGuidanceMapper.waiting(detector.statusMessage, config.assistScenario, config.appLanguage)
-                } else {
-                    modelUnavailableGuidance()
-                }
-            }
-            AssistRuntimeRenderTarget.Paused -> CameraGuidanceMapper.paused(config.appLanguage)
-                .copy(scenarioName = config.assistScenario.displayName(config.appLanguage))
-            AssistRuntimeRenderTarget.PermissionDenied -> permissionDeniedGuidance()
-            AssistRuntimeRenderTarget.ModelUnavailable -> modelUnavailableGuidance()
-            AssistRuntimeRenderTarget.CameraError -> CameraGuidanceMapper.cameraError(message ?: "未知错误", config.appLanguage)
-        }
-        renderUi(guidance)
+        renderUi(guidanceFactory.forTarget(target, message))
     }
 
     private fun startCameraIfReady() {
         if (!appViewModel.uiState.value.cameraActive || !::previewView.isInitialized) return
         if (!hasCameraPermission()) {
-            renderUi(permissionDeniedGuidance())
+            renderUi(guidanceFactory.permissionDenied())
             return
         }
         frameSource.start(
@@ -284,7 +268,7 @@ class AssistRuntimeController(
             return
         }
         if (!detector.isReady) {
-            activity.runOnUiThread { renderUi(modelUnavailableGuidance()) }
+            activity.runOnUiThread { renderUi(guidanceFactory.modelUnavailable()) }
             bitmap.recycle()
             return
         }
@@ -310,7 +294,7 @@ class AssistRuntimeController(
                 }
                 renderUi(CameraGuidanceMapper.fromFrameResult(frameResult, runtimeConfig.appLanguage))
                 appViewModel.updateFieldTestSummary(currentFieldTestSummary(active = true, runtimeConfig))
-                logPerformanceIfNeeded(frameResult, runtimeConfig)
+                performanceLogger.logIfNeeded(frameResult, runtimeConfig)
             }
         } catch (error: Exception) {
             Log.e(PERF_TAG, "Frame processing failed", error)
@@ -336,32 +320,7 @@ class AssistRuntimeController(
     }
 
     private fun renderGuidanceForCurrentState() {
-        val guidance = when (stateMachine.currentState) {
-            AssistRuntimeState.Idle -> CameraGuidanceMapper.initial(
-                detector.statusMessage,
-                config.assistScenario,
-                config.appLanguage
-            )
-            AssistRuntimeState.Starting -> startingGuidance()
-            AssistRuntimeState.Running -> CameraGuidanceMapper.waiting(
-                detector.statusMessage,
-                config.assistScenario,
-                config.appLanguage
-            )
-            AssistRuntimeState.DetectionPaused -> CameraGuidanceMapper.paused(config.appLanguage)
-                .copy(scenarioName = config.assistScenario.displayName(config.appLanguage))
-            AssistRuntimeState.PermissionDenied -> permissionDeniedGuidance()
-            is AssistRuntimeState.Error -> {
-                if (detector.isReady) {
-                    CameraGuidanceMapper.cameraError((stateMachine.currentState as AssistRuntimeState.Error).message, config.appLanguage)
-                } else {
-                    modelUnavailableGuidance()
-                }
-            }
-            AssistRuntimeState.PermissionExplaining,
-            AssistRuntimeState.PermissionRequesting -> permissionDeniedGuidance()
-        }
-        renderUi(guidance)
+        renderUi(guidanceFactory.forState(stateMachine.currentState))
     }
 
     private fun syncConfigFromViewModel() {
@@ -372,53 +331,10 @@ class AssistRuntimeController(
     private fun currentFieldTestSummary(active: Boolean) = currentFieldTestSummary(active, config)
 
     private fun currentFieldTestSummary(active: Boolean, runtimeConfig: AssistRuntimeConfig) =
-        FieldTestSummaryMapper.fromSummary(
-            coordinator.sessionSummary(),
-            active,
-            runtimeConfig.alertProfile,
-            runtimeConfig.assistScenario,
-            runtimeConfig.appLanguage
-        )
-
-    private fun startingGuidance(): CameraGuidanceUiState {
-        return CameraGuidanceMapper.starting(detector.statusMessage, config.assistScenario, config.appLanguage)
-    }
-
-    private fun modelUnavailableGuidance(): CameraGuidanceUiState {
-        return CameraGuidanceMapper.modelUnavailable(detector.statusMessage, config.assistScenario, config.appLanguage)
-    }
-
-    private fun permissionDeniedGuidance(): CameraGuidanceUiState {
-        return CameraGuidanceMapper.permissionDenied(config.appLanguage)
-    }
+        fieldTestSummaryProvider.current(active, runtimeConfig)
 
     private fun renderUi(snapshot: CameraGuidanceUiState) {
         appViewModel.renderCameraGuidance(snapshot, detector.statusMessage)
-    }
-
-    private fun logPerformanceIfNeeded(frameResult: AssistFrameResult, runtimeConfig: AssistRuntimeConfig) {
-        val now = System.currentTimeMillis()
-        if (now - lastPerfLogAtMs < PERF_LOG_INTERVAL_MS) return
-        lastPerfLogAtMs = now
-        val evaluation = frameResult.evaluation
-        val metrics = evaluation.metrics
-        Log.i(
-            PERF_TAG,
-            "frame=${evaluation.frameSize.width}x${evaluation.frameSize.height}, " +
-                "count=${evaluation.detectionCount}, " +
-                "total=${metrics.totalMs}ms, pre=${metrics.preprocessMs}ms, " +
-                "infer=${metrics.inferenceMs}ms, post=${metrics.postprocessMs}ms, " +
-                "fps=${"%.1f".format(metrics.fps)}, profile=${evaluation.profile.storageValue}, " +
-                "scenario=${evaluation.scenario.storageValue}, " +
-                "rawRisk=${riskSummary(evaluation.rawRisk)}, stableRisk=${riskSummary(evaluation.stableRisk)}, " +
-                "feedbackReason=${frameResult.feedbackDecision.reason.displayText(runtimeConfig.appLanguage)}, " +
-                "explanation=${frameResult.explanation.headline}, " +
-                "session=${frameResult.sessionSummary.displayText(runtimeConfig.appLanguage)}, status=${metrics.modelStatus}"
-        )
-    }
-
-    private fun riskSummary(risk: RiskResult): String {
-        return "${risk.level}/${risk.direction}/${risk.proximity}"
     }
 
     private fun hasCameraPermission(): Boolean {
@@ -429,7 +345,6 @@ class AssistRuntimeController(
     }
 
     private companion object {
-        const val PERF_LOG_INTERVAL_MS = 1000L
-        const val PERF_TAG = "BlindAssistPerf"
+        const val PERF_TAG = AssistRuntimePerformanceLogger.PERF_TAG
     }
 }
