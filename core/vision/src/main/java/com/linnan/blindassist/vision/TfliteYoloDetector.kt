@@ -89,6 +89,29 @@ class TfliteYoloDetector(
 
     override fun detect(bitmap: Bitmap): DetectorFrameResult {
         val frameSize = FrameSize(bitmap.width, bitmap.height)
+        return detectFrame(
+            frameSize = frameSize,
+            prepareInput = { preprocessor.prepare(bitmap) }
+        )
+    }
+
+    override fun detect(frame: VisionFrame): DetectorFrameResult {
+        val frameSize = FrameSize(frame.displayWidth(), frame.displayHeight())
+        return detectFrame(
+            frameSize = frameSize,
+            prepareInput = {
+                require(frame is RgbaVisionFrame) {
+                    "Only RGBA camera frames are supported by the realtime detector"
+                }
+                preprocessor.prepare(frame)
+            }
+        )
+    }
+
+    private fun detectFrame(
+        frameSize: FrameSize,
+        prepareInput: () -> ModelInput
+    ): DetectorFrameResult {
         val localInterpreter = interpreter ?: return DetectorFrameResult(
             detections = emptyList(),
             frameSize = frameSize,
@@ -96,7 +119,7 @@ class TfliteYoloDetector(
         )
         val totalStart = System.nanoTime()
         val preprocessStart = totalStart
-        val input = preprocessor.prepare(bitmap)
+        val input = prepareInput()
         lastPreprocessMs = elapsedMs(preprocessStart)
 
         val outputTensor = localInterpreter.getOutputTensor(0)
@@ -176,6 +199,19 @@ class TfliteYoloDetector(
 
     private fun elapsedMs(startNanos: Long): Long {
         return (System.nanoTime() - startNanos) / 1_000_000L
+    }
+
+    private fun VisionFrame.displayWidth(): Int {
+        return if (rotationDegrees.normalizedRotation() % 180 == 0) width else height
+    }
+
+    private fun VisionFrame.displayHeight(): Int {
+        return if (rotationDegrees.normalizedRotation() % 180 == 0) height else width
+    }
+
+    private fun Int.normalizedRotation(): Int {
+        val normalized = this % 360
+        return if (normalized < 0) normalized + 360 else normalized
     }
 
     private fun validateInputTensor(interpreter: Interpreter) {

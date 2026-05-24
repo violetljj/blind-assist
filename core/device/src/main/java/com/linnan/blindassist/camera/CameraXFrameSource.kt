@@ -13,7 +13,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.linnan.blindassist.util.FatalThrowables
-import com.linnan.blindassist.vision.toArgbBitmap
+import com.linnan.blindassist.vision.VisionFrame
 import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -33,7 +33,7 @@ class CameraXFrameSource(
 
     override fun start(
         previewView: PreviewView,
-        onFrame: (android.graphics.Bitmap) -> Unit,
+        onFrame: (VisionFrame) -> Unit,
         onStarted: () -> Unit,
         onError: (Throwable) -> Unit
     ) {
@@ -56,11 +56,13 @@ class CameraXFrameSource(
                     .build()
                     .also { analyzer ->
                         analyzer.setAnalyzer(analysisExecutor) { imageProxy ->
-                            CameraAnalyzerSafety.analyzeFrame(
-                                closeFrame = { imageProxy.close() },
-                                reportError = { error -> reportAnalyzerError(error, onError) }
-                            ) {
-                                onFrame(imageProxy.toArgbBitmap())
+                            val frame = ImageProxyVisionFrame(imageProxy)
+                            try {
+                                onFrame(frame)
+                            } catch (error: Throwable) {
+                                FatalThrowables.rethrowIfFatal(error)
+                                frame.close()
+                                reportAnalyzerError(error, onError)
                             }
                         }
                     }

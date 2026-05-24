@@ -4,7 +4,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Version
 
-- Current project version: `v7.1.0`
+- Current project version: `v7.6.0`
 - Version policy: small updates add `v0.1`, major updates add `v0.5`, and milestone-level changes add `v1.0`.
 - Version impact is judged by Codex/Agent based on each change's scope and risk.
 - Updates that affect project state, usage, behavior, build flow, model assets, tests, or important technical decisions should keep this README aligned with the current state.
@@ -12,6 +12,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 
 ## Recent Updates
 
+- 2026-05-25: Implemented the v7.6.0 runtime-pipeline and release-hygiene update. `AssistRuntimeController` is now a thin entrypoint backed by smaller runtime collaborators for effect execution, camera lifecycle adaptation, frame processing, rendering, settings/config sync, and frame-pipeline statistics. The CameraX realtime path now passes closeable `VisionFrame` / `RgbaVisionFrame` objects instead of allocating a `Bitmap` and rotated `Bitmap` for every analyzer frame; `ImagePreprocessor` can write RGBA buffers directly into the model input buffer and records dropped-frame rate plus P50/P95 inference timing in `BlindAssistPerf` and debug metrics. Release policy now distinguishes local debug demo APK archival from local-only signed release builds with `keystore.properties`, R8 shrink/resource shrink enabled for release, and scripts for device regression, APK archival, and APK verification. Historical tracked `test-artifacts/` were copied to `E:\linnan\blind-assist-apk-archive\test-artifacts\test-artifacts-20260525-001501` and removed from forward Git tracking. The app version is now `v7.6.0` / `versionCode=28`; the debug milestone APK is `releases/apk/BlindAssist-v7.6.0-debug-20260525-004833.apk`.
 - 2026-05-24: Added the next v7.1.0 engineering-quality regression pass focused on model/risk replay and runtime reliability instead of defense, classroom or demo packaging work. `:core:assist` now has pure JVM scene replay fixtures for centered near critical targets, side-target confirmation, far targets, empty frames, dropped-frame hold/clear/recovery, and feedback-unavailable decisions across detection -> risk analysis -> stabilization -> feedback decision -> explanation/field-summary mapping. `:feature:assist` now has runtime fault-injection coverage for model-unavailable startup, detector/camera-source failures, pre-running source failure cleanup, feedback-unavailable output after runtime config disables feedback channels, close-after-error cleanup, and detection toggles while in error. `AGENTS.md` also records that future planning should not prioritize defense/classroom/demo/evidence-packaging work until the user asks. This update adds no permissions, networking, Bluetooth, location, storage, model changes, CameraX/TFLite user-path changes, or in-app offline replay entry; the app remains `v7.1.0` / `versionCode=27`.
 - 2026-05-24: Implemented the first steady engineering-hygiene optimization without changing app behavior, model assets, SharedPreferences keys, `versionName`, or `versionCode`. Gradle plugin, SDK/JVM, library, Compose BOM, Hilt, CameraX, TFLite and test dependency versions now live in `gradle/libs.versions.toml`; module build files use catalog aliases. CI now runs a repository hygiene scan before validation and checks that generated files do not modify tracked files. APK policy is clarified as complete local archival under `E:\linnan\blind-assist-apk-archive\apks`, with Git limited to documented milestone APKs. This is a build and collaboration hygiene update, so the app remains `v7.1.0` / `versionCode=27`.
 - 2026-05-24: Implemented the v7.1.0 reliability update. Feedback decisions now report `TRIGGERED` only after Android speech or vibration output accepts at least one enabled channel; enabled-but-unavailable output reports `FEEDBACK_UNAVAILABLE` without starting cooldown or fatigue. `core:device` now declares `VIBRATE` at the library manifest boundary, CameraX analyzer/frame failures route through `CameraSourceFailed` so the camera source stops and overlay/session state is cleared, runtime config is read through an atomic per-frame snapshot, and fatal JVM errors are rethrown instead of being swallowed. The TFLite YOLO output parser now has golden JVM coverage for thresholding, label mapping, source-coordinate remap and same-class NMS. The app version is now `v7.1.0` / `versionCode=27`; explicit multi-module unit tests, multi-module lint, debug/androidTest APK build, and model inspection passed. The debug APK was archived at `releases/apk/BlindAssist-v7.1.0-debug-20260524-162936.apk` with size `47,205,843` bytes.
@@ -51,7 +52,7 @@ Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供�
 ## Project Materials
 
 - [New computer handoff](docs/NEW_COMPUTER_HANDOFF.md): Windows setup, Git clone, Android build validation, phone-install notes, and Codex skills restore instructions for continuing this project on a new computer.
-- [APK archive policy](docs/APK_ARCHIVE.md): Git keeps only milestone APKs whose cumulative `versionName` delta is `>= 0.5`; the complete 32-APK local archive lives at `E:\linnan\blind-assist-apk-archive\apks` with SHA256 evidence in `APK_ARCHIVE_MANIFEST.csv`.
+- [APK archive policy](docs/APK_ARCHIVE.md): Git keeps only milestone APKs whose cumulative `versionName` delta is `>= 0.5`; the complete local archive lives at `E:\linnan\blind-assist-apk-archive\apks` with SHA256 evidence in `APK_ARCHIVE_MANIFEST.csv`.
 - [Codex skills snapshot manifest](codex/skills-snapshot/MANIFEST.md): SHA256, size, entry-count evidence, and restore guidance for `codex/skills-snapshot/codex-skills-20260522.zip`.
 - [真实版本更新记录](CHANGELOG.md)：按真实版本整理功能变化、验证证据和 APK 归档路径，方便课堂展示、答辩材料和版本对比。
 - [演示指南](DEMO_GUIDE.md)：面向老师/答辩的演示脚本，包含环境准备、手机安装、现场演示顺序、无设备 fallback、隐私与安全边界说明。
@@ -181,7 +182,7 @@ output shape=[1, 84, 2100] dtype=float32
 .\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon
 ```
 
-The v7.1.0 validation matrix uses explicit module checks so library lint is not missed:
+The current validation matrix uses explicit module checks so library lint is not missed:
 
 ```powershell
 .\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py

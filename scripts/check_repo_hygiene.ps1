@@ -30,6 +30,47 @@ function Get-ChangedPaths {
     return @($modified) + @($cached) + @($untracked)
 }
 
+function Resolve-BaseCommit {
+    if ($AllTracked -or -not $BaseRef -or $BaseRef -match "^0+$") {
+        return $null
+    }
+    $resolved = git rev-parse --verify "$BaseRef^{commit}" 2>$null
+    if ($LASTEXITCODE -eq 0 -and $resolved) {
+        return $resolved.Trim()
+    }
+    return $null
+}
+
+function Test-DeletedOnly([string]$Path) {
+    if ($script:ResolvedBaseRef) {
+        $deletedFromBase = git diff --name-only --diff-filter=D "$script:ResolvedBaseRef...HEAD" -- $Path |
+            ForEach-Object { Normalize-PathForGit $_ }
+        if (-not ($deletedFromBase -contains $Path)) {
+            return $false
+        }
+
+        $changedFromBase = git diff --name-only --diff-filter=ACMRTUXB "$script:ResolvedBaseRef...HEAD" -- $Path |
+            ForEach-Object { Normalize-PathForGit $_ }
+        return -not ($changedFromBase -contains $Path)
+    }
+
+    $deleted = @(
+        git diff --name-only --diff-filter=D -- $Path
+        git diff --name-only --cached --diff-filter=D -- $Path
+    ) | ForEach-Object { Normalize-PathForGit $_ }
+    if (-not ($deleted -contains $Path)) {
+        return $false
+    }
+
+    $notDeleted = @(
+        git diff --name-only --diff-filter=ACMRTUXB -- $Path
+        git diff --name-only --cached --diff-filter=ACMRTUXB -- $Path
+        git ls-files --others --exclude-standard -- $Path
+    ) | ForEach-Object { Normalize-PathForGit $_ }
+    return -not ($notDeleted -contains $Path)
+}
+
+$script:ResolvedBaseRef = Resolve-BaseCommit
 $paths = @(Get-ChangedPaths | Where-Object { $_ } | Sort-Object -Unique)
 $docsArchiveChanged = $paths -contains "docs/APK_ARCHIVE.md"
 $failures = New-Object System.Collections.Generic.List[string]
@@ -41,6 +82,9 @@ foreach ($path in $paths) {
     }
 
     if ($path -match "^test-artifacts([./-]|$)") {
+        if (Test-DeletedOnly $path) {
+            continue
+        }
         $failures.Add("New test artifacts must stay in local evidence storage, not Git: $path")
         continue
     }
@@ -54,6 +98,11 @@ foreach ($path in $paths) {
 
     if ($path -match "\\.apk$") {
         $failures.Add("APK files are only allowed under releases/apk with archive documentation: $path")
+        continue
+    }
+
+    if ($path -match "(^|/)keystore\\.properties$" -or $path -match "\\.(jks|keystore)$") {
+        $failures.Add("Signing secrets and keystore files must stay local: $path")
         continue
     }
 

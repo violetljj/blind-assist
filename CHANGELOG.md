@@ -2,6 +2,24 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v7.6.0 - Runtime pipeline and release hygiene update
+- Status: completed, `versionCode=28`, `versionName=7.6.0`.
+- Main changes:
+  - `AssistRuntimeController` is now a thin entrypoint; frame processing, runtime effect execution, camera lifecycle adaptation, rendering, settings/config sync, and frame-pipeline statistics are split into smaller collaborators.
+  - The realtime CameraX path now passes closeable `VisionFrame` / `RgbaVisionFrame` objects and avoids per-frame `Bitmap` plus rotated-`Bitmap` allocation in the analyzer path.
+  - `ImagePreprocessor` can write RGBA frame buffers directly to the model input buffer while applying rotation during sampling; the previous Bitmap path remains available for compatibility.
+  - Runtime performance logs and debug metrics now include dropped-frame rate plus P50/P95 inference timing.
+  - Added device-regression, APK-archive, and APK-verification scripts; release builds now enable R8/resource shrink and require local untracked signing config.
+  - Historical tracked `test-artifacts/` evidence was copied to local archive and removed from forward Git tracking.
+- Validation:
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`: passed, input `[1, 320, 320, 3] float32`, output `[1, 84, 2100] float32`.
+  - Full module unit-test matrix passed.
+  - Full module lint matrix passed.
+  - `:app:assembleDebug :app:assembleDebugAndroidTest` passed.
+  - `:app:assembleRelease` without `keystore.properties` failed with the expected explicit local-signing message.
+- APK:
+  - `releases/apk/BlindAssist-v7.6.0-debug-20260525-004833.apk`, size `47,222,231` bytes, SHA256 `2DE5CE894D0C46A8D099000B6E2624DA4B102E61A0E31BE8F501252D102520DC`.
+
 ## v7.1.0 - 反馈触达与 CameraX 可靠性更新
 
 - 状态：已完成，`versionCode=27`，`versionName=7.1.0`。

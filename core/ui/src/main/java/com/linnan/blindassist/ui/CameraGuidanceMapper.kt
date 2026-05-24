@@ -177,7 +177,9 @@ object CameraGuidanceMapper {
             feedbackDecision = frameResult.feedbackDecision,
             explanation = frameResult.explanation,
             metricsText = "total ${evaluation.metrics.totalMs}ms / pre ${evaluation.metrics.preprocessMs}ms / " +
-                "infer ${evaluation.metrics.inferenceMs}ms / post ${evaluation.metrics.postprocessMs}ms",
+                "infer ${evaluation.metrics.inferenceMs}ms / post ${evaluation.metrics.postprocessMs}ms / " +
+                "drop ${"%.1f".format(evaluation.metrics.droppedFrameRate * 100f)}% / " +
+                "p50 ${evaluation.metrics.inferenceP50Ms}ms / p95 ${evaluation.metrics.inferenceP95Ms}ms",
             fps = evaluation.metrics.fps,
             modelStatus = evaluation.metrics.modelStatus,
             language = language

@@ -21,6 +21,8 @@ internal class AssistRuntimePerformanceLogger(
                 "count=${evaluation.detectionCount}, " +
                 "total=${metrics.totalMs}ms, pre=${metrics.preprocessMs}ms, " +
                 "infer=${metrics.inferenceMs}ms, post=${metrics.postprocessMs}ms, " +
+                "dropRate=${"%.1f".format(metrics.droppedFrameRate * 100f)}%, " +
+                "p50=${metrics.inferenceP50Ms}ms, p95=${metrics.inferenceP95Ms}ms, " +
                 "fps=${"%.1f".format(metrics.fps)}, profile=${evaluation.profile.storageValue}, " +
                 "scenario=${evaluation.scenario.storageValue}, " +
                 "rawRisk=${riskSummary(evaluation.rawRisk)}, stableRisk=${riskSummary(evaluation.stableRisk)}, " +

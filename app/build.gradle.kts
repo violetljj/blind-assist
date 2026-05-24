@@ -1,9 +1,33 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
+}
+
+val releaseSigningPropertiesFile = rootProject.file("keystore.properties")
+val releaseSigningProperties = Properties().apply {
+    if (releaseSigningPropertiesFile.exists()) {
+        releaseSigningPropertiesFile.inputStream().use(::load)
+    }
+}
+val hasReleaseSigningProperties = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
+    .all { key -> releaseSigningProperties.getProperty(key).isNullOrBlank().not() }
+
+gradle.taskGraph.whenReady {
+    val releasePackageTaskRequested = allTasks.any { task ->
+        task.path in setOf(":app:assembleRelease", ":app:bundleRelease") ||
+            task.path.contains("packageRelease", ignoreCase = true)
+    }
+    if (releasePackageTaskRequested && !hasReleaseSigningProperties) {
+        throw GradleException(
+            "Release signing requires local keystore.properties. " +
+                "Copy keystore.properties.example, fill storeFile/storePassword/keyAlias/keyPassword, and keep it untracked."
+        )
+    }
 }
 
 android {
@@ -14,15 +38,30 @@ android {
         applicationId = "com.linnan.blindassist"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 27
-        versionName = "7.1.0"
+        versionCode = 28
+        versionName = "7.6.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (hasReleaseSigningProperties) {
+            create("release") {
+                storeFile = rootProject.file(releaseSigningProperties.getProperty("storeFile"))
+                storePassword = releaseSigningProperties.getProperty("storePassword")
+                keyAlias = releaseSigningProperties.getProperty("keyAlias")
+                keyPassword = releaseSigningProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            if (hasReleaseSigningProperties) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

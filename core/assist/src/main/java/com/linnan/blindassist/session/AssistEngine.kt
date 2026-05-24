@@ -182,8 +182,30 @@ data class DetectorMetrics(
     val inferenceMs: Long,
     val postprocessMs: Long,
     val fps: Float,
-    val modelStatus: String
-)
+    val modelStatus: String,
+    val droppedFrameRate: Float = 0f,
+    val inferenceP50Ms: Long = 0L,
+    val inferenceP95Ms: Long = 0L
+) {
+    constructor(
+        totalMs: Long,
+        preprocessMs: Long,
+        inferenceMs: Long,
+        postprocessMs: Long,
+        fps: Float,
+        modelStatus: String
+    ) : this(
+        totalMs = totalMs,
+        preprocessMs = preprocessMs,
+        inferenceMs = inferenceMs,
+        postprocessMs = postprocessMs,
+        fps = fps,
+        modelStatus = modelStatus,
+        droppedFrameRate = 0f,
+        inferenceP50Ms = 0L,
+        inferenceP95Ms = 0L
+    )
+}
 
 data class AssistFrameEvaluation(
     val rawRisk: RiskResult,

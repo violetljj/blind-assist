@@ -1,3 +1,0 @@
-﻿TAP v5_9_skip_onboarding 跳过引导 720,2040 bounds=[625,2005][816,2076]
-TAP v5_9_open_camera 使用手机摄像头 720,2096 bounds=[371,2054][1070,2138]
-DEBUG_BEFORE bounds=[620,2504][905,2575]

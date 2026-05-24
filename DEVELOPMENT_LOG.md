@@ -2,6 +2,64 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-05-25
+
+### v7.6.0 Runtime 管线拆分、帧输入优化与发布卫生更新
+- 时间：2026-05-25 00:30:22 +08:00
+- 执行者：violjjet
+- 类型：架构重构 / 性能优化 / 测试 / 发布策略 / 仓库卫生
+- 修改范围：
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/`
+  - `core/assist/src/main/java/com/linnan/blindassist/session/AssistEngine.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/vision/VisionFrame.kt`
+  - `core/device/src/main/java/com/linnan/blindassist/camera/`
+  - `core/vision/src/main/java/com/linnan/blindassist/vision/`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/CameraGuidanceMapper.kt`
+  - `app/build.gradle.kts`
+  - `scripts/`
+  - `.gitignore`
+  - `docs/APK_ARCHIVE.md`
+  - `docs/DEVICE_REGRESSION.md`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `DEVELOPMENT_LOG.md`
+  - `test-artifacts/` Git index removal
+- 修改内容：
+  - 按中大型任务协作要求调用 1 个 worker 子代理处理脚本、release 文档和归档卫生；主线程负责 runtime/frame API 改造、测试、构建与整合验证。
+  - 将 `AssistRuntimeController` 收缩为薄入口，新增 `AssistRuntimeEffectExecutor`、`AssistCameraLifecycleAdapter`、`AssistFrameProcessor`、`AssistRuntimeRenderer`、`AssistRuntimeSettingsController` 和 `FramePipelineStats`。
+  - 新增 `VisionFrame` / `RgbaVisionFrame` 契约，`CameraXFrameSource` 实时路径改为包装 `ImageProxy`，不再在 analyzer 中每帧创建 `Bitmap` 或旋转副本。
+  - `ObjectDetector` 增加 `detect(VisionFrame)` 主入口，`TfliteYoloDetector` 与 `ImagePreprocessor` 支持直接从 RGBA buffer 写入模型输入，并在采样阶段处理旋转；Bitmap path 保留作兼容入口。
+  - `DetectorMetrics` 增加 dropped-frame rate、P50/P95 inference 字段，并保留 6 参数构造器避免既有 Kotlin/JVM 测试二进制调用出现 `NoSuchMethodError`。
+  - `BlindAssistPerf` 与 camera debug metrics 补充 dropped-frame rate、P50/P95 inference。
+  - 新增 `scripts/run_device_regression.ps1`、`scripts/archive_apk.ps1`、`scripts/verify_release_apk.ps1` 和 `keystore.properties.example`。
+  - release build 开启 `isMinifyEnabled=true`、`isShrinkResources=true`，正式签名读取本地未跟踪 `keystore.properties`；缺失时 `assembleRelease` 给出明确失败信息。
+  - 历史 `test-artifacts/` 已复制到 `E:\linnan\blind-assist-apk-archive\test-artifacts\test-artifacts-20260525-001501`，共 145 个文件、103,677,703 bytes；随后用 `git rm -r --cached test-artifacts` 从前向 Git 跟踪移除，不重写历史。
+  - 版本提升到 `v7.6.0` / `versionCode=28`，并生成里程碑 debug APK。
+- 修改原因：
+  - 继续降低 runtime 总控类复杂度，让状态机 effect、相机生命周期、帧处理、UI 渲染和设置同步都能独立测试和演进。
+  - 当前 CameraX 输入链路的 `ImageProxy -> Bitmap -> rotated Bitmap -> preprocessor` 每帧分配过重；直接 RGBA buffer 预处理能减少实时路径分配，并为后续性能基线提供更可信指标。
+  - 真机回归、release 签名/shrink 和历史证据存放需要形成清晰策略，避免 debug demo APK、正式 release APK、临时测试证据和本地密钥混在一起。
+- 验证方式：
+  - 首次局部 Gradle 测试在普通沙箱中因 Kotlin daemon 写入 `C:\Users\26442\AppData\Local\kotlin\daemon\...tmp` 被拒并超时；随后按仓库已知限制提权运行。
+  - `.\gradlew.bat :core:vision:testDebugUnitTest :feature:assist:testDebugUnitTest --no-daemon --console=plain`：通过。期间修正了 JVM 测试中 `ImagePreprocessor` 构造时提前创建 Android `Bitmap` 的问题，并避免本地 JVM 测试触发 Android `Log` mock 异常。
+  - `.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 2m 21s`。
+  - `.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 3m 19s`。
+  - `.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 1m 13s`。
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，模型输入 `images [1, 320, 320, 3] float32`，输出 `Identity [1, 84, 2100] float32`。
+  - `.\gradlew.bat :app:assembleRelease --no-daemon --console=plain`：在无本地 `keystore.properties` 时按预期失败，错误信息为 `Release signing requires local keystore.properties...`。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\archive_apk.ps1 -Milestone`：生成本地 archive 和 Git milestone APK。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\verify_release_apk.ps1 -ApkPath releases\apk\BlindAssist-v7.6.0-debug-20260525-004833.apk -ExpectedVersionCode 28 -ExpectedVersionName 7.6.0`：通过，确认包名、版本、SHA256 和签名证书摘要可读取。
+- APK 归档：
+  - 本地完整归档：`E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v7.6.0-debug-20260525-004833.apk`
+  - Git milestone：`releases/apk/BlindAssist-v7.6.0-debug-20260525-004833.apk`
+  - 大小：`47,222,231` bytes
+  - SHA256：`2DE5CE894D0C46A8D099000B6E2624DA4B102E61A0E31BE8F501252D102520DC`
+- 版本判断：
+  - 本次涉及 runtime 架构拆分、实时帧输入链路、性能指标、真机回归脚本、release shrink/signing 策略和仓库体积清理，符合“大更新”规则，版本从 `v7.1.0` 提升到 `v7.6.0`，`versionCode` 从 `27` 提升到 `28`。
+- 后续事项：
+  - 当前未运行真实设备 90 秒回归脚本，因为本轮重点是脚本与本地构建验证；有在线且解锁的单一设备后可运行 `scripts/run_device_regression.ps1 -DurationSeconds 90`。
+  - 正式 release APK 需要本机提供未跟踪 `keystore.properties` 和 keystore 文件后再运行 `:app:assembleRelease`。
+
 ## 2026-05-24
 
 ### v7.1.0 场景回归与运行时故障注入优化
