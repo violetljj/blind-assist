@@ -4,6 +4,42 @@
 
 ## 2026-05-24
 
+### v7.1.0 场景回归与运行时故障注入优化
+- 时间：2026-05-24 21:38:39 +08:00
+- 执行者：violjjet
+- 类型：测试 / 可靠性 / 工程质量 / 文档
+- 修改范围：
+  - `AGENTS.md`
+  - `README.md`
+  - `core/assist/src/test/java/com/linnan/blindassist/session/SceneReplayRegressionTest.kt`
+  - `feature/assist/src/test/java/com/linnan/blindassist/runtime/AssistRuntimeFaultInjectionTest.kt`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 按中大型任务协作要求调用 2 个只读子代理：Rawls 调查 `:core:assist` 场景回归入口、fixture 边界和当前空帧/掉帧解释语义；Noether 调查 `:feature:assist` 运行时故障注入边界、状态机覆盖和 controller 层 testability 风险。主线程整合结论后完成实现与验证。
+  - 在 `AGENTS.md` 的协作注意事项中新增约定：用户主动提出前，后续计划和实现暂不以答辩、课堂展示、演示话术、证据包装或展示材料润色为优先驱动；普通工程文档、测试记录和开发日志仍按仓库规则执行。
+  - 新增纯 JVM 场景回放回归测试 `SceneReplayRegressionTest`，用小型 Kotlin detection fixture 覆盖检测结果 -> 风险分析 -> 稳定器 -> 反馈决策 -> 风险解释/现场摘要映射，不提交图片、视频或大日志素材。
+  - 场景回归样本覆盖正前方近距离高风险目标、侧向中风险目标二帧确认、远处目标只展示不提醒、无目标空帧、连续丢帧后的保持/清除/恢复、反馈不可用不计入触发次数。
+  - 新增 `AssistRuntimeFaultInjectionTest`，覆盖模型不可用、检测异常折算为 camera source failure、相机源启动前失败清理、反馈通道不可用、运行时错误后关闭相机清理、错误态下检测开关不重启相机源。
+  - 同步更新 `README.md` 的 Recent Updates，说明本轮是工程质量/测试优化，不新增 App 内离线回放入口，不改变用户可见流程。
+- 修改原因：
+  - 下一版优化方向聚焦“模型/风险回归 + 运行时可靠性补强”，优先把核心风险链路和运行时故障链路固定成可重复、轻量、纯 JVM 的测试资产。
+  - 本轮不以答辩、课堂展示、演示话术或证据包装为驱动，避免把工程优化误扩展为展示材料工作。
+- 验证方式：
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，模型为 `app\src\main\assets\yolo11n_fp16_320.tflite`，输入 `images [1, 320, 320, 3] float32`，输出 `Identity [1, 84, 2100] float32`。
+  - `.\gradlew.bat :core:assist:test --tests "*Replay*" --no-daemon --console=plain`：初次发现空帧和掉帧保持场景断言与现有 `AssistEngine` 展示语义不一致；修正为保护当前 `DISTANCE_TOO_FAR` / `HELD_ALERT` 解释映射后通过。沙箱内 Kotlin daemon 会因 `C:\Users\26442\AppData\Local\kotlin\daemon\...tmp` 访问限制报 `AccessDeniedException`，Gradle 自动 fallback 到无 daemon 编译，最终 `BUILD SUCCESSFUL`。
+  - `.\gradlew.bat :feature:assist:testDebugUnitTest --tests "*Fault*" --no-daemon --console=plain`：通过；独立审查指出 runtime fault 测试缺少“反馈不可用”覆盖后，补充 `feedbackUnavailableAfterRuntimeConfigDisablesOutputsDoesNotTriggerFeedback` 并重跑通过。
+  - `.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain`：补充反馈不可用 fault 用例后重跑通过，`BUILD SUCCESSFUL in 32s`。
+  - `.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 1m 6s`。
+  - `.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 2m 1s`。
+- APK 归档：
+  - 本轮 APK 仅作为构建验证产物，不作为新版本、里程碑、展示或测试证据包留存；未新增 `releases/apk/` 或完整本地 APK 归档条目。
+- 版本判断：
+  - 本轮仅新增测试覆盖、协作范围约定和 README/日志记录，不改变用户可见功能、权限、网络/蓝牙/定位/存储能力、YOLO 模型、CameraX/TFLite 用户路径、风险阈值或 App 内入口。
+  - 项目版本保持 `v7.1.0` / `versionCode=27`。
+- 后续事项：
+  - 若后续要把 detector 真实输出端到端纳入 replay，可继续补小型数值 golden fixture；不要在本轮引入大图片、大日志或 App 内离线回放入口。
+  - Noether 提到 controller 层权限撤销、UI 线程调度和 Android `Bitmap` 处理还需要更细的可测试边界；这类改造应单独规划，避免顺手改变 release 路径。
+
 ### v7.1.0 工程卫生与稳妥瘦身优化
 - 时间：2026-05-24 17:21:00 +08:00
 - 执行者：violjjet
