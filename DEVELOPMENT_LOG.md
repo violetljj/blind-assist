@@ -2,6 +2,57 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-05-24
+
+### v7.0.0 项目全面评估与验证体检
+- 时间：2026-05-24 15:34:12 +08:00
+- 执行者：violjjet
+- 类型：分析 / 架构评估 / 测试验证 / 风险审查
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 分析范围：
+  - `settings.gradle.kts`
+  - `build.gradle.kts`
+  - `app/build.gradle.kts`
+  - `core/*/build.gradle.kts`
+  - `feature/assist/build.gradle.kts`
+  - `app/src/main/AndroidManifest.xml`
+  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeController.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/ui/BlindAssistViewModel.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/di/RuntimeActivityModule.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt`
+  - `core/vision/src/main/java/com/linnan/blindassist/vision/TfliteYoloDetector.kt`
+  - `core/device/src/main/java/com/linnan/blindassist/camera/CameraXFrameSource.kt`
+  - `core/device/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `TEST_REPORT_2026-05-19.md`
+  - `docs/APK_ARCHIVE.md`
+- 分析内容：
+  - 按中大型任务协作要求，调用两个子代理分别执行架构/代码质量审查和测试/验证审查；主线程同步检查模块依赖、关键运行链路、测试产物、lint 报告、模型资产和本地构建结果。
+  - 确认项目当前为 Android Kotlin 多模块结构：`:app` 作为入口，`:feature:assist` 承载 Hilt ViewModel 与 runtime orchestration，`:core:assist` 保持纯 Kotlin 风险/反馈/会话逻辑，`:core:vision` 承载 TFLite detector，`:core:device` 承载 CameraX、TTS、震动和偏好实现，`:core:ui` 承载 Compose UI 与 overlay。
+  - 确认当前主要优点包括：模块边界总体清楚、核心规则层可单测、StateFlow 状态暴露方式合理、CameraX/TFLite/风险稳定/反馈规划链路可读、版本和 APK 归档材料较完整。
+  - 记录主要风险：`FeedbackController` 可能在 TTS 未 ready 或设备无 vibrator 时仍返回 `TRIGGERED` 并写入冷却；`CameraXFrameSource` analyzer 对 `toArgbBitmap()` 或 `onFrame()` 异常未通过 `onError` 上报；runtime 配置和反馈开关在 UI 线程与分析线程间共享但缺少明确同步；若干代码路径捕获 `Throwable` 过宽；release 构建当前关闭 R8；`:app:lintDebug` 仍有 12 个 warning，且 `:core:device:lintDebug` 存在 `VIBRATE` 权限静态检查错误。
+  - 当前没有在线 ADB 设备，因此未运行 `connectedDebugAndroidTest`；评估结论以本地 JVM/lint/debug 构建、模型检查和既有真机测试报告为依据。
+- 验证方式：
+  - `git status --short`：发现既有未跟踪本地备份目录 `test-artifacts.local-before-rebase-20260522-014530/` 和一个未跟踪 PPTX，本次未处理。
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：模型检查通过，输入 `images [1, 320, 320, 3] float32`，输出 `Identity [1, 84, 2100] float32`。
+  - 基于仓库已知沙箱限制直接提权运行 `$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path; $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path; .\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --console=plain`：`BUILD SUCCESSFUL in 59s`。
+  - 测试 XML 汇总：18 个测试结果文件，121 tests，0 failures，0 errors，0 skipped。
+  - lint 报告：0 errors，12 warnings，主要为 `LockedOrientationActivity`、`DiscouragedApi`、`MissingApplicationIcon` 和若干 unused string resources。
+  - `$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path; $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path; .\gradlew.bat :core:device:lintDebug --no-daemon --offline --console=plain`：失败，`FeedbackController.kt:107` 和 `FeedbackController.kt:110` 报 `MissingPermission`，提示 `Vibrator.vibrate` 需要 `android.permission.VIBRATE`；同一报告还有 `ObsoleteSdkInt` warning。
+  - `.\.android-sdk\platform-tools\adb.exe devices`：当前无在线设备，仅启动本地 adb daemon。
+- 版本判断：
+  - 本次为项目评估与日志记录，不修改 Android 代码、模型资产、构建配置、用户可见功能、README、`versionName` 或 `versionCode`。
+  - 项目版本保持 `v7.0.0` / `versionCode=26`，不新增 APK 归档。
+- 后续事项：
+  - 优先修复反馈真实触达语义，确保只有实际发出语音或震动时才记录触发和冷却。
+  - 修复或注解 `core:device` 的 `VIBRATE` lint 契约，把常用验证命令扩展到多模块 lint，避免只跑 `:app:lintDebug` 漏检。
+  - 为 CameraX analyzer 的帧转换和回调异常补充 `onError` 上报或恢复策略。
+  - 将 runtime/feedback 配置改为不可变快照、`AtomicReference` 或其他明确线程安全边界。
+  - 收窄 `Throwable` 捕获范围，避免吞掉严重 VM/Linkage/OOM 类错误。
+  - 补充真机 `connectedDebugAndroidTest` 和真实障碍物场景回归，验证 v7.0.0 风险阈值调整后的提示效果。
+
 ## 2026-05-23
 
 ### v7.0.0 正前方近处风险阈值小步优化
