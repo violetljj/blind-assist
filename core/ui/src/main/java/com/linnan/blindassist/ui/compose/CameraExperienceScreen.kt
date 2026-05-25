@@ -213,17 +213,28 @@ fun CameraControlPanel(
     val title = if (controls.careModeEnabled) guidance.careTitle else guidance.title
     val detail = if (controls.careModeEnabled) guidance.careDetail else guidance.detail
     val target = if (controls.careModeEnabled) guidance.careTargetLine else guidance.targetLine
+    val titleStyle = if (controls.careModeEnabled) {
+        MaterialTheme.typography.headlineLarge
+    } else {
+        MaterialTheme.typography.headlineMedium
+    }
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel.copy(alpha = 0.94f)),
+        shape = RoundedCornerShape(if (controls.careModeEnabled) 26.dp else 22.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (controls.careModeEnabled) {
+                BaNight.copy(alpha = 0.97f)
+            } else {
+                BaPanel.copy(alpha = 0.94f)
+            }
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        Column(Modifier.padding(16.dp)) {
+        Column(Modifier.padding(if (controls.careModeEnabled) 20.dp else 16.dp)) {
             Text(
                 text = title,
-                style = if (controls.careModeEnabled) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.headlineSmall,
+                style = titleStyle,
                 color = Color(guidance.titleColor),
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
@@ -237,28 +248,25 @@ fun CameraControlPanel(
                     }
                 }
             )
-            Spacer(Modifier.height(6.dp))
-            Text(text = detail, color = BaText, style = MaterialTheme.typography.bodyMedium)
-            Text(text = target, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Spacer(Modifier.height(if (controls.careModeEnabled) 8.dp else 6.dp))
+            Text(
+                text = detail,
+                color = BaText,
+                style = if (controls.careModeEnabled) MaterialTheme.typography.titleMedium else MaterialTheme.typography.bodyMedium,
+                fontWeight = if (controls.careModeEnabled) FontWeight.SemiBold else FontWeight.Normal
+            )
+            Text(
+                text = target,
+                color = if (controls.careModeEnabled) BaText else BaTextMuted,
+                style = if (controls.careModeEnabled) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall
+            )
             Spacer(Modifier.height(8.dp))
-            Text(
-                text = if (language == AppLanguage.EN) "Scenario: ${controls.assistScenario.displayName(language)}" else "场景：${controls.assistScenario.displayName(language)}",
-                color = BaMint,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.testTag("camera_scenario_label")
-            )
-            Text(
-                text = if (language == AppLanguage.EN) "Daily mode: ${controls.dailyUsageMode.displayName(language)}" else "日常模式：${controls.dailyUsageMode.displayName(language)}",
-                color = BaSky,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.testTag("camera_daily_mode_label")
-            )
+            CameraModeStatusRow(controls = controls, language = language)
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = if (controls.careModeEnabled) guidance.careExplanation else guidance.explanationHeadline,
                 color = BaText,
-                style = MaterialTheme.typography.bodySmall,
+                style = if (controls.careModeEnabled) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.testTag("risk_explanation_headline")
             )
@@ -269,36 +277,11 @@ fun CameraControlPanel(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(if (controls.careModeEnabled) 16.dp else 12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 CompactToggle(if (language == AppLanguage.EN) "Detection" else "检测", controls.detectionEnabled, Icons.Rounded.Visibility, onDetectionChange, Modifier.weight(1f), language)
                 CompactToggle(if (language == AppLanguage.EN) "Speech" else "语音", controls.speechEnabled, Icons.Rounded.VolumeUp, onSpeechChange, Modifier.weight(1f), language)
                 CompactToggle(if (language == AppLanguage.EN) "Vibration" else "震动", controls.vibrationEnabled, Icons.Rounded.Vibration, onVibrationChange, Modifier.weight(1f), language)
-            }
-            Spacer(Modifier.height(8.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                CompactAction(
-                    text = if (language == AppLanguage.EN) "Quiet" else "调安静",
-                    icon = Icons.Rounded.Tune,
-                    onClick = onQuietShortcut,
-                    modifier = Modifier.weight(1f),
-                    accessibilityText = if (language == AppLanguage.EN) {
-                        "Apply quiet reminder shortcut, keep current scenario, use Quiet profile, Brief speech, and Soft vibration"
-                    } else {
-                        "应用安静提醒快捷设置，保留当前场景，使用安静档位、简短语音和轻柔震动"
-                    }
-                )
-                CompactAction(
-                    text = if (language == AppLanguage.EN) "Sensitive" else "调敏感",
-                    icon = Icons.Rounded.Tune,
-                    onClick = onSensitiveShortcut,
-                    modifier = Modifier.weight(1f),
-                    accessibilityText = if (language == AppLanguage.EN) {
-                        "Apply sensitive reminder shortcut, keep current scenario, use Sensitive profile, Standard speech, and Strong vibration"
-                    } else {
-                        "应用敏感提醒快捷设置，保留当前场景，使用敏感档位、标准语音和强震动"
-                    }
-                )
             }
             Spacer(Modifier.height(8.dp))
             AnimatedVisibility(
@@ -307,6 +290,50 @@ fun CameraControlPanel(
                 exit = fadeOut()
             ) {
                 Column {
+                    Text(
+                        text = if (language == AppLanguage.EN) "More adjustments" else "更多调整",
+                        color = BaTextMuted,
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        CompactAction(
+                            text = if (language == AppLanguage.EN) "Quiet" else "调安静",
+                            icon = Icons.Rounded.Tune,
+                            onClick = onQuietShortcut,
+                            modifier = Modifier.weight(1f),
+                            accessibilityText = if (language == AppLanguage.EN) {
+                                "Apply quiet reminder shortcut, keep current scenario, use Quiet profile, Brief speech, and Soft vibration"
+                            } else {
+                                "应用安静提醒快捷设置，保留当前场景，使用安静档位、简短语音和轻柔震动"
+                            }
+                        )
+                        CompactAction(
+                            text = if (language == AppLanguage.EN) "Sensitive" else "调敏感",
+                            icon = Icons.Rounded.Tune,
+                            onClick = onSensitiveShortcut,
+                            modifier = Modifier.weight(1f),
+                            accessibilityText = if (language == AppLanguage.EN) {
+                                "Apply sensitive reminder shortcut, keep current scenario, use Sensitive profile, Standard speech, and Strong vibration"
+                            } else {
+                                "应用敏感提醒快捷设置，保留当前场景，使用敏感档位、标准语音和强震动"
+                            }
+                        )
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    CompactAction(
+                        text = if (language == AppLanguage.EN) "Scenario ${controls.assistScenario.displayName(language)}" else "场景 ${controls.assistScenario.displayName(language)}",
+                        icon = Icons.Rounded.Shield,
+                        onClick = { onScenarioChange(controls.assistScenario.next()) },
+                        modifier = Modifier.fillMaxWidth(),
+                        accessibilityText = if (language == AppLanguage.EN) {
+                            "Usage scenario, current ${controls.assistScenario.displayName(language)}, tap to switch to ${controls.assistScenario.next().displayName(language)}"
+                        } else {
+                            "使用场景，当前${controls.assistScenario.displayName(language)}，点击切换到${controls.assistScenario.next().displayName(language)}"
+                        }
+                    )
+                    Spacer(Modifier.height(8.dp))
                     CompactAction(
                         text = if (controls.debugVisible) {
                             if (language == AppLanguage.EN) "Hide debug details" else "收起调试信息"
@@ -340,19 +367,38 @@ fun CameraControlPanel(
             }
             Spacer(Modifier.height(8.dp))
             CompactToggle(if (language == AppLanguage.EN) "Care" else "关怀", controls.careModeEnabled, Icons.Rounded.Favorite, onCareModeChange, Modifier.fillMaxWidth(), language)
-            Spacer(Modifier.height(8.dp))
-            CompactAction(
-                text = if (language == AppLanguage.EN) "Scenario ${controls.assistScenario.displayName(language)}" else "场景 ${controls.assistScenario.displayName(language)}",
-                icon = Icons.Rounded.Shield,
-                onClick = { onScenarioChange(controls.assistScenario.next()) },
-                modifier = Modifier.fillMaxWidth(),
-                accessibilityText = if (language == AppLanguage.EN) {
-                    "Usage scenario, current ${controls.assistScenario.displayName(language)}, tap to switch to ${controls.assistScenario.next().displayName(language)}"
-                } else {
-                    "使用场景，当前${controls.assistScenario.displayName(language)}，点击切换到${controls.assistScenario.next().displayName(language)}"
-                }
-            )
         }
+    }
+}
+
+@Composable
+private fun CameraModeStatusRow(
+    controls: AssistControlsUiState,
+    language: AppLanguage
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = if (language == AppLanguage.EN) "Scenario: ${controls.assistScenario.displayName(language)}" else "场景：${controls.assistScenario.displayName(language)}",
+            color = BaMint,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .weight(1f)
+                .testTag("camera_scenario_label")
+        )
+        Text(
+            text = if (language == AppLanguage.EN) "Mode: ${controls.dailyUsageMode.displayName(language)}" else "模式：${controls.dailyUsageMode.displayName(language)}",
+            color = BaSky,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .weight(1f)
+                .testTag("camera_daily_mode_label")
+        )
     }
 }
 

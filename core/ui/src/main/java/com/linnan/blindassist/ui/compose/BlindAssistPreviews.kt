@@ -133,7 +133,7 @@ private fun FeaturePreview() {
         FeatureScreen(
             controls = previewControls(),
             modelStatus = "YOLO11n ready",
-            appVersion = "5.8.0",
+            appVersion = "8.1.0",
             onOpenCamera = {},
             onGlassesPlaceholder = {},
             onDailyUsageModeChange = {}

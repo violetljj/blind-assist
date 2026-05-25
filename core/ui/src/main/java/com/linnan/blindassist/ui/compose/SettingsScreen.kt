@@ -60,12 +60,23 @@ fun SettingsScreen(
         )
         Spacer(Modifier.height(18.dp))
 
+        SettingsSectionHeader(if (language == AppLanguage.EN) "Interface and assistance" else "界面与辅助")
         LanguageSelector(
             selected = controls.appLanguage,
             onLanguageChange = onLanguageChange
         )
         Spacer(Modifier.height(16.dp))
+        SettingSwitchRow(
+            icon = Icons.Rounded.Favorite,
+            title = if (language == AppLanguage.EN) "Care Mode" else "关怀模式",
+            body = if (language == AppLanguage.EN) "Use a larger, quieter camera panel with less debug noise" else "使用更大、更安静的相机面板并减少调试干扰",
+            checked = controls.careModeEnabled,
+            language = language,
+            onCheckedChange = onCareModeChange
+        )
+        Spacer(Modifier.height(16.dp))
 
+        SettingsSectionHeader(if (language == AppLanguage.EN) "Reminder feedback" else "提醒方式")
         SettingSwitchRow(
             icon = Icons.Rounded.VolumeUp,
             title = if (language == AppLanguage.EN) "Speech reminders" else "语音提醒",
@@ -82,23 +93,21 @@ fun SettingsScreen(
             language = language,
             onCheckedChange = onVibrationChange
         )
-        SettingSwitchRow(
-            icon = Icons.Rounded.Favorite,
-            title = if (language == AppLanguage.EN) "Care Mode" else "关怀模式",
-            body = if (language == AppLanguage.EN) "Enlarge main guidance and reduce debug noise" else "放大主要指导语并减少调试干扰",
-            checked = controls.careModeEnabled,
+        Spacer(Modifier.height(12.dp))
+        SpeechStyleSelector(
+            selected = controls.speechStyle,
             language = language,
-            onCheckedChange = onCareModeChange
-        )
-        SettingSwitchRow(
-            icon = Icons.Rounded.BugReport,
-            title = if (language == AppLanguage.EN) "Debug details" else "调试信息",
-            body = if (language == AppLanguage.EN) "Show FPS, timing, and risk summary on the camera page" else "在相机页显示 FPS、耗时和风险判定摘要",
-            checked = controls.debugVisible,
-            language = language,
-            onCheckedChange = onDebugVisibleChange
+            onSpeechStyleChange = onSpeechStyleChange
         )
         Spacer(Modifier.height(16.dp))
+        VibrationStrengthSelector(
+            selected = controls.vibrationStrength,
+            language = language,
+            onVibrationStrengthChange = onVibrationStrengthChange
+        )
+        Spacer(Modifier.height(16.dp))
+
+        SettingsSectionHeader(if (language == AppLanguage.EN) "Walking scenario" else "行走场景")
         ProfileSelector(
             selected = controls.alertProfile,
             language = language,
@@ -111,16 +120,15 @@ fun SettingsScreen(
             onScenarioChange = onScenarioChange
         )
         Spacer(Modifier.height(16.dp))
-        SpeechStyleSelector(
-            selected = controls.speechStyle,
+
+        SettingsSectionHeader(if (language == AppLanguage.EN) "Debug and records" else "调试与记录")
+        SettingSwitchRow(
+            icon = Icons.Rounded.BugReport,
+            title = if (language == AppLanguage.EN) "Debug details" else "调试信息",
+            body = if (language == AppLanguage.EN) "Show FPS, timing, and risk summary on the camera page" else "在相机页显示 FPS、耗时和风险判定摘要",
+            checked = controls.debugVisible,
             language = language,
-            onSpeechStyleChange = onSpeechStyleChange
-        )
-        Spacer(Modifier.height(16.dp))
-        VibrationStrengthSelector(
-            selected = controls.vibrationStrength,
-            language = language,
-            onVibrationStrengthChange = onVibrationStrengthChange
+            onCheckedChange = onDebugVisibleChange
         )
         Spacer(Modifier.height(16.dp))
         FieldTestSummaryCard(fieldTestSummary)
@@ -142,4 +150,16 @@ fun SettingsScreen(
             }
         )
     }
+}
+
+@Composable
+private fun SettingsSectionHeader(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleMedium,
+        color = BaMint,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.semantics { heading() }
+    )
+    Spacer(Modifier.height(8.dp))
 }

@@ -4,6 +4,49 @@
 
 ## 2026-05-25
 
+### v8.1.0 真实使用体验 UI 升级
+- 时间：2026-05-25 22:27:46 +08:00
+- 执行者：violjjet
+- 类型：功能 / UI / 无障碍 / 构建 / 真机验证 / APK 归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/FeatureScreen.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/CameraExperienceScreen.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/SettingsScreen.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistPreviews.kt`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `releases/apk/BlindAssist-v8.1.0-debug-20260525-222724.apk`
+  - `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.1.0-debug-20260525-222724.apk`
+  - `E:\linnan\blind-assist-apk-archive\APK_ARCHIVE_MANIFEST.csv`
+- 修改内容：
+  - 将版本升级为 `versionName=8.1.0` / `versionCode=29`，作为真实使用体验 UI 里程碑版本。
+  - 功能页从“设置项在前”的结构调整为日常辅助启动台：先展示当前行走任务、场景、提醒档位和 Care Mode 状态，再突出 `使用手机摄像头` 主入口；日常使用向导和眼镜占位入口保留，但视觉层级降低。
+  - 相机页底部控制面板按真实助行优先级重排：主要风险状态、行动建议、场景/模式、检测/语音/震动核心开关在前；调安静、调敏感、场景切换和调试信息归入非 Care Mode 下的更多调整区域。
+  - 强化 Care Mode：相机面板使用更大的主标题、更高对比背景和更舒展间距，Care Mode 下隐藏快捷调节和调试入口，只保留检测、语音、震动、关怀模式等必要控制。
+  - 设置页按“界面与辅助、提醒方式、行走场景、调试与记录”分组，降低长滚动列表的认知负担；保留 `language_selector`、`scenario_selector`、`camera_scenario_label`、`camera_daily_mode_label`、`risk_explanation_headline`、`camera_debug_toggle` 等测试契约。
+  - 保留现有 `UserPreferenceState`、`UserPreferences` key、`AssistRuntimeConfig` 字段和 CameraX/TFLite/风险/反馈链路，不新增显示模式偏好、联网、蓝牙、定位或存储行为。
+  - 通过只读子代理 Nash 检查 UI 测试契约和无障碍风险；主线程据此确认 testTag、content description、48dp 触控目标和 heading 语义未被移除。
+- 修改原因：
+  - 用户要求实施 v8.1.0 真实使用体验 UI 升级计划。当前能力已经具备日常模式、场景、提醒档位、语音、震动、Care Mode 和真机回归脚本，下一步体验收益主要来自降低实际助行时的视觉和认知干扰。
+  - 相机页是用户真实行走时最重要的界面，应优先呈现风险状态和核心开关，而不是把调试、快捷配置和场景切换放在同等层级。
+  - Care Mode 作为既有偏好，适合承载“低干扰、高可读”的相机体验；复用它能避免新增偏好迁移和运行时配置风险。
+- 验证方式：
+  - `.\gradlew.bat :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain`：通过。过程中 Kotlin daemon 因 `C:\Users\26442\AppData\Local\kotlin\daemon\...tmp` 访问限制报 `AccessDeniedException`，Gradle 自动 fallback 到无 daemon 编译，最终 `BUILD SUCCESSFUL`。
+  - `.\gradlew.bat :app:lintDebug :core:ui:lintDebug :feature:assist:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 1m 7s`；同样出现 Kotlin daemon fallback 权限噪声，但不影响结果。
+  - `.\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --console=plain`：首次失败于安装阶段，原因是设备端已有同包名但签名不同的安装包，Android 返回 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`；随后只读查询包状态显示 `Unable to find package: com.linnan.blindassist`，重跑同一命令通过。
+  - 最终 `:app:connectedDebugAndroidTest`：`SM-S9280 - 16` 上 6 个 Compose 仪器测试全部通过，`BUILD SUCCESSFUL in 1m`。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -SampleSeconds 90`：通过，证据目录 `E:\linnan\linnan\test-artifacts.local-device-regression-20260525-222502`，summary `status=passed`。
+  - 设备回归冷启动：`Activity: com.linnan.blindassist/.MainActivity`，`LaunchState: COLD`，`TotalTime: 761` ms，`WaitTime: 762` ms。
+  - 设备端包信息：`versionCode=29`，`versionName=8.1.0`，`lastUpdateTime=2026-05-25 22:25:04`。
+  - 设备回归采集 5 轮 `gfxinfo`、`meminfo`、`uiautomator dump` 和截图；脚本当前仍停留主界面采样，未宣称完成模型精度或真实避障有效性评估。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\archive_apk.ps1 -Milestone`：普通沙箱首次复制到完整本地 APK archive 遇到 `Access denied`；随后按仓库已知权限限制提权重跑成功。归档路径 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.1.0-debug-20260525-222724.apk`，Git 里程碑路径 `releases/apk/BlindAssist-v8.1.0-debug-20260525-222724.apk`，大小 `47,238,663` bytes，SHA256 `A48769A7A9F5233526DDD936AF40A6DB9321DBFD163E648D098D1F16576F94D8`。
+- 版本判断：
+  - 本次属于较大体验升级，直接改变首页启动路径、相机页层级、Care Mode 使用体验、设置页信息组织和展示材料，同时保留运行时业务链路和偏好模型不变。因此按项目规则从 `v7.6.0` 增加 `v0.5` 到 `v8.1.0`，并将 APK 作为 Git 里程碑归档。
+- 后续事项：
+  - 若后续需要答辩级无障碍证据，可在手机系统中开启 TalkBack 和大字号后做人工手测记录；本轮已覆盖 Compose 自动化和设备回归，但未宣称完成真实盲人用户验收。
+  - 若后续要验证真实避障效果，需要单独设计安全场景矩阵，采集人、椅子、走廊正前方、侧向经过、弱光等样本；本轮 UI 升级不改变模型精度或风险规则。
+
 ### 项目文档普通说明中文化
 - 时间：2026-05-25 21:26:14 +08:00
 - 执行者：violjjet

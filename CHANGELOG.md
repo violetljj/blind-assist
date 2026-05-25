@@ -2,6 +2,24 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v8.1.0 - 真实使用体验 UI 升级
+
+- 状态：已完成，`versionCode=29`，`versionName=8.1.0`。
+- 主要变化：
+  - 功能页改为日常辅助启动台，先展示当前行走任务、场景、提醒档位和 Care Mode 状态，再突出 `使用手机摄像头` 主入口。
+  - 日常使用向导继续保留五个既有预设，不新增偏好 key、不改变场景/档位/语音/震动映射。
+  - 相机页底部面板重排为主要风险状态、行动建议、场景/模式、检测/语音/震动核心开关优先；快捷调安静、调敏感、场景切换和调试信息降级到更多调整区域。
+  - Care Mode 成为低干扰相机体验：放大主要指导语、提高面板对比度、隐藏快捷调节和调试入口，只保留必要控制。
+  - 设置页按“界面与辅助、提醒方式、行走场景、调试与记录”分组，保留既有中英文 TalkBack 文案和 Compose testTag 契约。
+  - 本轮不修改 CameraX/TFLite/风险规则/反馈策略，不新增联网、蓝牙、定位、存储或新的显示模式偏好。
+- 验证：
+  - `.\gradlew.bat :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain`：通过。
+  - `.\gradlew.bat :app:lintDebug :core:ui:lintDebug :feature:assist:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain`：通过。
+  - `.\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --console=plain`：首次因设备端旧签名包安装冲突失败，确认包状态清理后重跑通过，`SM-S9280 - 16` 上 6 个 Compose 仪器测试通过。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -SampleSeconds 90`：通过，证据目录 `test-artifacts.local-device-regression-20260525-222502`，冷启动 `TotalTime: 761` / `WaitTime: 762`，设备端包信息 `versionName=8.1.0` / `versionCode=29`。
+- APK：
+  - `releases/apk/BlindAssist-v8.1.0-debug-20260525-222724.apk`，大小 `47,238,663` bytes，SHA256 `A48769A7A9F5233526DDD936AF40A6DB9321DBFD163E648D098D1F16576F94D8`。
+
 ## v7.6.0 - 运行时管线与发布卫生更新
 - 状态：已完成，`versionCode=28`，`versionName=7.6.0`。
 - 主要变化：
