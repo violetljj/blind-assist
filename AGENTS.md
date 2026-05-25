@@ -4,16 +4,17 @@
 
 ## 项目概况
 
-- 项目类型：原生 Android Kotlin App。
+- 项目类型：原生 Android Kotlin 多模块 App。
 - 应用名称：BlindAssist。
-- 主要功能：使用 CameraX 获取实时摄像头画面，通过 TFLite YOLO11n 模型做本地目标检测，并用规则层生成助盲避障提醒。
-- 核心模块：
-  - `app/src/main/java/com/linnan/blindassist/MainActivity.kt`：应用入口、相机流、UI 控制、推理调度。
-  - `app/src/main/java/com/linnan/blindassist/vision/`：图像预处理、TFLite YOLO 检测。
-  - `app/src/main/java/com/linnan/blindassist/risk/`：风险规则、方向和风险等级判断。
-  - `app/src/main/java/com/linnan/blindassist/feedback/`：语音和震动提醒。
-  - `app/src/main/java/com/linnan/blindassist/ui/`：检测框覆盖层。
-  - `scripts/`：YOLO/TFLite 模型导出与检查脚本。
+- 主要功能：使用 CameraX 获取实时摄像头画面，通过 TFLite YOLO11n 模型在本地完成目标检测，再由规则层生成助盲避障提醒，并通过语音、震动和 Compose 界面反馈给用户。
+- 当前模块边界：
+  - `:app`：启动壳层、`BlindAssistApplication`、`MainActivity`、Manifest、资源、模型资产和 APK 配置。
+  - `:feature:assist`：Hilt ViewModel、运行时状态机、CameraX/TFLite 协调、配置同步、渲染和性能日志边界。
+  - `:core:assist`：纯 Kotlin 助盲领域模型、风险分析、提醒策略、会话统计、本地化和偏好映射。
+  - `:core:vision`：TFLite YOLO 检测器、图像预处理、YOLO 输出解析和视觉帧处理。
+  - `:core:device`：CameraX 帧源、Android 语音/震动反馈、SharedPreferences 用户偏好和设备侧适配。
+  - `:core:ui`：Compose/UI 状态模型、检测框覆盖层、相机引导和现场测试摘要映射。
+  - `scripts/`：模型导出/检查、APK 归档、仓库卫生检查、真机回归和技能恢复脚本。
 
 ## 开发日志要求
 
@@ -90,12 +91,15 @@ releases/apk/BlindAssist-v2.6.0-debug-20260518-012726.apk
 
 ## 构建与验证
 
-常用验证命令：
+优先使用当前仓库的本地 JDK 17、Android SDK 和 Gradle 缓存，避免系统 Java 版本漂移导致误判：
 
 ```powershell
-$env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'
-$env:PATH="$env:JAVA_HOME\bin;$env:PATH"
-.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon
+$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path
+$env:PATH="$env:JAVA_HOME\bin;$((Resolve-Path '.\.android-sdk\platform-tools').Path);$env:PATH"
+$env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path
+.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain
+.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain
+.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain
 ```
 
 APK 输出位置：
@@ -116,6 +120,14 @@ app/build/outputs/apk/debug/app-debug.apk
 input shape=[1, 320, 320, 3] dtype=float32
 output shape=[1, 84, 2100] dtype=float32
 ```
+
+有真机在线时，可用仓库脚本做边界清晰的设备回归：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -SampleSeconds 90
+```
+
+该脚本输出到 `test-artifacts.local-device-regression-*`，属于本机验证证据，默认不提交到 Git。
 
 ## 修改原则
 

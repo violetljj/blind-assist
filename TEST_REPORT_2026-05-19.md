@@ -1,5 +1,7 @@
 # BlindAssist v5.8.0 真机完整测试与 v5.9.0 修复复测报告
 
+> 状态说明：这是 2026-05-19 的历史真机测试报告，用于保留当时的失败、修复和复测证据。报告中记录的 v5.8.0 遗留问题已在 v5.9.0 修复复测；当前工程版本和最新真机验证状态请以 `README.md`、`CHANGELOG.md` 和 `DEVELOPMENT_LOG.md` 为准。
+
 ## v5.9.0 修复复测补充
 
 - 修复时间：2026-05-19 17:45 +08:00
@@ -120,10 +122,10 @@ $env:ANDROID_SERIAL='adb-R5CX10M8Y8X-nkVxqz (2)._adb-tls-connect._tcp'
 
 渲染和内存：
 
-- `gfxinfo`: Total frames rendered `1920`
-- Janky frames: `20 (1.04%)`
-- 50/90/95/99 percentile: `9ms / 11ms / 12ms / 16ms`
-- Number Missed Vsync: `10`
+- `gfxinfo`：总渲染帧数 `1920`
+- 卡顿帧：`20 (1.04%)`
+- 50/90/95/99 分位耗时：`9ms / 11ms / 12ms / 16ms`
+- 丢失 Vsync 次数：`10`
 - `meminfo`: TOTAL PSS `269,790 KB`，TOTAL RSS `397,904 KB`
 - Java Heap `24,508 KB`，Native Heap `61,372 KB`，Graphics `81,948 KB`
 - 窗口焦点保持在 `com.linnan.blindassist/.MainActivity`

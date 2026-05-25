@@ -1,4 +1,4 @@
-# BlindAssist Ideas
+# BlindAssist 想法池
 
 本文件用于收集 BlindAssist 后续可能性、创造性想法和产品成熟化方向。它不是开发日志，也不代表所有想法都会立即实施；真正落地时仍需同步更新 `README.md`、`DEVELOPMENT_LOG.md`、版本号、测试结果和 APK 归档。
 

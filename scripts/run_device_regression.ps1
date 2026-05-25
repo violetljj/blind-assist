@@ -37,6 +37,27 @@ function Resolve-Adb([string]$RequestedPath) {
     throw "ADB not found. Pass -AdbPath or install platform-tools."
 }
 
+function Invoke-NativeAdb {
+    param(
+        [string]$Adb,
+        [string[]]$Arguments
+    )
+
+    $previousPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $text = & $Adb @Arguments 2>&1
+        $code = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousPreference
+    }
+
+    return [ordered]@{
+        Text = $text
+        Code = $code
+    }
+}
+
 function Invoke-Adb {
     param(
         [string]$Adb,
@@ -44,8 +65,9 @@ function Invoke-Adb {
         [string]$OutFile
     )
 
-    $text = & $Adb @Arguments 2>&1
-    $code = $LASTEXITCODE
+    $result = Invoke-NativeAdb $Adb $Arguments
+    $text = $result.Text
+    $code = $result.Code
     if ($OutFile) {
         $text | Out-File -FilePath $OutFile -Encoding utf8
     } else {
@@ -58,8 +80,9 @@ function Invoke-Adb {
 }
 
 function Get-SingleDevice([string]$Adb) {
-    $lines = & $Adb devices 2>&1
-    if ($LASTEXITCODE -ne 0) {
+    $result = Invoke-NativeAdb $Adb @("devices")
+    $lines = $result.Text
+    if ($result.Code -ne 0) {
         throw "adb devices failed: $($lines -join ' ')"
     }
 

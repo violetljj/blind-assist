@@ -1,64 +1,59 @@
-# New Computer Handoff
+# 新电脑交接说明
 
-This note is for continuing BlindAssist development on a new Windows computer.
-Read `AGENTS.md` first, then use this checklist to restore the project, Codex
-skills, and the Android build environment.
+本文用于在新的 Windows 电脑上继续开发 BlindAssist。开始前先阅读 `AGENTS.md`，再按下面清单恢复项目、Codex skills 和 Android 构建环境。
 
-## 1. Clone the repository
+## 1. 克隆仓库
 
 ```powershell
 git clone git@github.com:violetljj/blind-assist.git
 cd blind-assist
 ```
 
-If SSH is not ready yet, add a GitHub SSH key on the new computer before
-cloning, or temporarily use the HTTPS remote and switch back to SSH later.
+如果新电脑还没有配置好 SSH，先添加 GitHub SSH key；也可以临时使用 HTTPS 远端克隆，后续再切回 SSH。
 
-## 2. Restore Codex skills
+## 2. 恢复 Codex skills
 
-The repository includes a skills snapshot at:
+仓库内包含 skills 快照：
 
 ```text
 codex/skills-snapshot/codex-skills-20260522.zip
 ```
 
-From the repository root, run:
+在仓库根目录运行：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\restore_codex_skills.ps1
 ```
 
-The restore script extracts the archive into:
+恢复脚本会把压缩包解压到：
 
 ```text
 %USERPROFILE%\.codex\skills
 ```
 
-If that folder already exists, the script creates a timestamped backup before
-restoring the snapshot. Restart Codex after restoring skills so the new session
-can discover them.
+如果该目录已经存在，脚本会先创建带时间戳的备份，再恢复快照。恢复后重启 Codex，让新会话重新发现 skills。
 
-## 3. Install Android development tools
+## 3. 安装 Android 开发工具
 
-Install these on the new computer:
+新电脑需要安装：
 
-- Android Studio with bundled JDK 17.
-- Android SDK Platform 35.
-- Android SDK Build Tools.
-- Android Platform Tools for `adb`.
-- Git for Windows.
+- Android Studio 及其自带 JDK 17。
+- Android SDK Platform 35。
+- Android SDK Build Tools。
+- Android Platform Tools，用于 `adb`。
+- Git for Windows。
 
-Then create `local.properties` in the repository root:
+然后在仓库根目录创建 `local.properties`：
 
 ```properties
 sdk.dir=C\:\\Users\\<your-user>\\AppData\\Local\\Android\\Sdk
 ```
 
-Adjust the path to the actual SDK directory on the new computer.
+请把路径改成新电脑实际的 Android SDK 目录。
 
-## 4. Verify the project
+## 4. 验证项目
 
-Use the repository validation command:
+运行仓库验证命令：
 
 ```powershell
 $env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'
@@ -66,52 +61,44 @@ $env:PATH="$env:JAVA_HOME\bin;$env:PATH"
 .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon
 ```
 
-The debug APK should be generated at:
+debug APK 应生成在：
 
 ```text
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-To check the bundled model asset:
+检查随包模型资产：
 
 ```powershell
 .\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py
 ```
 
-Expected model shapes:
+期望模型形状：
 
 ```text
 input shape=[1, 320, 320, 3] dtype=float32
 output shape=[1, 84, 2100] dtype=float32
 ```
 
-If the Python export environment is not restored yet, Android build validation
-can still run as long as the tracked TFLite asset is present.
+如果 Python 导出环境尚未恢复，只要已跟踪的 TFLite 资产存在，Android 构建验证仍可先运行。
 
-## 5. Optional phone install
+## 5. 可选手机安装
 
-Connect a phone with USB or wireless debugging, then run:
+连接已开启 USB 调试或无线调试的手机后运行：
 
 ```powershell
 .\.android-sdk\platform-tools\adb.exe devices
 .\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
 ```
 
-On a fresh computer, the SDK path may be the system Android SDK path instead of
-the repository-local `.android-sdk` folder. In that case use `adb.exe` from the
-new SDK's `platform-tools` directory.
+在新电脑上，SDK 路径可能是系统 Android SDK，而不是仓库本地 `.android-sdk`。这种情况下请使用新 SDK 的 `platform-tools` 目录中的 `adb.exe`。
 
-## 6. Development rules to keep
+## 6. 需要保留的开发规则
 
-- Keep using `violjjet` as the executor name in `DEVELOPMENT_LOG.md`.
-- Run `git status --short` before editing.
-- Do not commit local SDKs, Gradle caches, virtual environments, downloads, or
-  generated machine-specific files.
-- Record every implementation, configuration change, analysis-only pass, and
-  validation result in `DEVELOPMENT_LOG.md`.
-- Update `README.md` when project state, usage, build flow, test conclusions,
-  model assets, or important decisions change.
-- Preserve every demo, testing, or teacher-review APK in the complete local
-  archive at `E:\linnan\blind-assist-apk-archive\apks` first.
-- Commit an APK under `releases/apk/` only when it is a documented Git
-  milestone or the user explicitly asks for that APK to be committed.
+- `DEVELOPMENT_LOG.md` 中的执行者名称继续使用 `violjjet`。
+- 修改前先运行 `git status --short`。
+- 不要提交本地 SDK、Gradle 缓存、虚拟环境、下载目录或机器特定生成文件。
+- 每次实现、配置变更、分析-only 检查和验证结果都要记录到 `DEVELOPMENT_LOG.md`。
+- 项目状态、使用方式、构建流程、测试结论、模型资产或重要决策变化时，同步更新 `README.md`。
+- 演示、测试或老师查看用 APK，应先保存到完整本地归档目录 `E:\linnan\blind-assist-apk-archive\apks`。
+- 只有当 APK 是已记录的 Git 里程碑，或用户明确要求提交该 APK 时，才把它提交到 `releases/apk/`。

@@ -152,9 +152,11 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithTag("camera_debug_toggle").assertExists()
         composeRule.onNodeWithTag("camera_debug_toggle").performClick()
         composeRule.onNodeWithText("FPS", substring = true).assertExists()
-        composeRule.onNodeWithContentDescription("检测，当前已启用，点击关闭").performClick()
-        composeRule.onNodeWithText("检测已暂停").assertExists()
-        composeRule.onNodeWithContentDescription("检测，当前未启用，点击开启").performClick()
+        composeRule.onNodeWithContentDescription("检测，当前已开启，点击关闭").performClick()
+        composeRule.waitUntil(timeoutMillis = 5000) {
+            hasText("检测已暂停")
+        }
+        composeRule.onNodeWithContentDescription("检测，当前已关闭，点击开启").performClick()
     }
 
     private fun prepareMainShell() {

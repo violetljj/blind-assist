@@ -4,6 +4,124 @@
 
 ## 2026-05-25
 
+### 项目文档普通说明中文化
+- 时间：2026-05-25 21:26:14 +08:00
+- 执行者：violjjet
+- 类型：文档 / 表述优化 / 中文化
+- 修改范围：
+  - `README.md`
+  - `docs/DEVICE_REGRESSION.md`
+  - `docs/APK_ARCHIVE.md`
+  - `DEMO_GUIDE.md`
+  - `TEST_REPORT_2026-05-19.md`
+  - `docs/NEW_COMPUTER_HANDOFF.md`
+  - `app/src/main/assets/README.md`
+  - `CHANGELOG.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 将 `README.md` 的标题、版本说明、近期状态、项目材料、架构、界面行为、风险提醒、环境、模型资产、构建、APK 归档和手机安装等普通说明改为中文主叙述。
+  - 保留 `Compose`、`CameraX`、`TFLite`、`Hilt`、Gradle task、文件路径、脚本参数、包名、测试名、枚举值和固定命令输出等必要英文/技术标识。
+  - 将 `README.md` 过长的英文历史更新列表收敛为中文近期状态摘要，并把完整历史细节继续交给 `CHANGELOG.md` 和 `DEVELOPMENT_LOG.md`。
+  - 将 `docs/DEVICE_REGRESSION.md` 和 `docs/APK_ARCHIVE.md` 改为中文说明，保留参数名、路径、表格字段和 SHA256 等必要技术内容。
+  - 将 `DEMO_GUIDE.md` 标题改为中文，并把 `TEST_REPORT_2026-05-19.md` 中一处普通英文指标说明改为中文。
+  - 将 `docs/NEW_COMPUTER_HANDOFF.md`、`app/src/main/assets/README.md`、`CHANGELOG.md` 顶部 `v7.6.0` 条目和 `idea.md` 标题中的普通英文说明改为中文。
+- 修改原因：
+  - 用户要求除必要英文外，把普通文字说明改成中文表述；本仓库面向课程展示、毕设说明和本地协作时，中文主叙述更符合当前使用习惯。
+  - README 作为项目入口，英文长段落会降低阅读效率；中文化后更容易快速理解当前版本、构建方式、真机验证和安全边界。
+- 验证方式：
+  - 使用 `rg` 扫描目标文档中明显的英文标题和普通英文说明，保留命令、路径、测试名、工具输出和代码标识。
+  - 本次仅修改 Markdown 文档，未运行 Gradle 或真机测试；原因是没有改动 Kotlin、Gradle、脚本行为、模型资产或 APK 产物。
+- 版本判断：
+  - 本次只调整文档语言和表述，不改变应用功能、构建产物、模型、权限、运行时代码或用户可见行为，因此不调整 `versionName` / `versionCode`。
+
+### 项目文档内容与表述优化
+- 时间：2026-05-25 21:14:32 +08:00
+- 执行者：violjjet
+- 类型：文档 / 协作规范 / 状态校准
+- 修改范围：
+  - `README.md`
+  - `AGENTS.md`
+  - `docs/DEVICE_REGRESSION.md`
+  - `docs/APK_ARCHIVE.md`
+  - `DEMO_GUIDE.md`
+  - `PROJECT_PROGRESS_REVIEW.md`
+  - `NEXT_MAJOR_UPDATE_PLAN.md`
+  - `TEST_REPORT_2026-05-19.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 压缩 `README.md` Recent Updates 中 `v7.6.0` 真机验证和运行时管线更新的长段落，让 README 更偏向当前状态入口，而不是完整执行流水账。
+  - 在 `README.md` Project Materials 中补充 `docs/DEVICE_REGRESSION.md` 入口，并把构建说明调整为优先使用仓库本地 JDK 17 与 `.gradle-local`。
+  - 更新 `AGENTS.md` 项目概况，把早期单模块目录说明改为当前 `:app`、`:feature:assist`、`:core:assist`、`:core:vision`、`:core:device`、`:core:ui` 多模块边界。
+  - 更新 `AGENTS.md` 构建与验证命令，保留多模块 test/lint/build 验证矩阵，并补充真机回归脚本入口。
+  - 优化 `docs/DEVICE_REGRESSION.md` 的用途说明、常用参数和签名不一致安装失败处理提示。
+  - 优化 `docs/APK_ARCHIVE.md` 的表达，强调完整本地归档与 Git 里程碑 APK 的职责边界。
+  - 将 `DEMO_GUIDE.md` 的演示版本从旧 `v4.8.0` 更新为当前 `v7.6.0` / `versionCode=28`，并补充日常预设、设备回归文档和当前演示注意事项。
+  - 在 `PROJECT_PROGRESS_REVIEW.md` 顶部和展示建议中明确该文档是 2026 年 5 月 1 日前的阶段回顾，当前工程状态应以 README、CHANGELOG 和开发日志为准。
+  - 将 `NEXT_MAJOR_UPDATE_PLAN.md` 明确为历史计划状态说明，补充后续版本已经完成的 Hilt、多模块、真机回归和发布卫生演进，避免误当成当前路线图。
+  - 在 `TEST_REPORT_2026-05-19.md` 顶部补充历史报告状态说明，保留原始测试证据但提示 v5.8.0 遗留问题已在 v5.9.0 复测修复。
+- 修改原因：
+  - 用户要求优化项目中相关文档的内容和表述，需要优先解决会误导后续协作者或展示读者的版本滞后、职责混杂和过长段落问题。
+  - `AGENTS.md` 的项目概况仍停留在早期单模块结构，和当前多模块工程不一致；这会影响后续代理和人工协作者理解代码边界。
+  - README 的最新更新段落已经承载过多日志细节，压缩后更适合作为项目入口，同时保留 `DEVELOPMENT_LOG.md` 的完整证据职责。
+- 验证方式：
+  - 已使用 `git status --short` 确认修改范围，工作区原本已有 `README.md`、`DEVELOPMENT_LOG.md`、`BlindAssistComposeTest.kt`、`scripts/run_device_regression.ps1` 未提交改动，本次在文档上做增量修改，没有回滚既有代码或脚本改动。
+  - 已按 UTF-8 读取 `README.md`、`AGENTS.md`、`docs/DEVICE_REGRESSION.md`、`docs/APK_ARCHIVE.md`、`DEMO_GUIDE.md`、`PROJECT_PROGRESS_REVIEW.md`、`NEXT_MAJOR_UPDATE_PLAN.md` 和 `TEST_REPORT_2026-05-19.md`，对照当前多模块结构、真机验证状态和 APK 归档规则进行表述校准。
+  - 本次仅修改 Markdown 文档，未运行 Gradle 或真机测试；原因是没有改动 Kotlin、Gradle、脚本行为、模型资产或 APK 产物。
+- 版本判断：
+  - 本次是文档内容、措辞和状态说明优化，不改变应用功能、构建产物、模型、权限、运行时代码或用户可见行为，因此不调整 `versionName` / `versionCode`。
+- 后续事项：
+  - 如果后续要把课堂/答辩材料进一步统一，可继续整理 `PROJECT_PROGRESS_REVIEW.md` 的 5 月后补充章节，或单独创建当前版本展示稿；普通工程协作仍以 README、CHANGELOG、DEVELOPMENT_LOG 和 AGENTS 为主。
+
+### v7.6.0 真机安装验证与回归脚本修正
+- 时间：2026-05-25 01:15:16 +08:00
+- 执行者：violjjet
+- 类型：真机验证 / 测试修正 / 脚本修正 / 构建 / APK 归档
+- 修改范围：
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `scripts/run_device_regression.ps1`
+  - `README.md`
+  - `app/build/outputs/apk/debug/app-debug.apk`
+  - `E:\linnan\blind-assist-apk-archive\apks`
+  - `E:\linnan\blind-assist-apk-archive\APK_ARCHIVE_MANIFEST.csv`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 在连接的 Samsung `SM-S9280` 设备上尝试验证当前 `v7.6.0` debug APK。
+  - ADB 设备 `R5CX10M8Y8X` 首次连接时显示 `unauthorized` / `authorizing`，用户在手机端允许 USB 调试后变为 `device`。
+  - 使用仓库本地 JDK 17 与 `.gradle-local` 重跑 `:app:testDebugUnitTest :app:assembleDebug`，当前 debug APK 可构建。
+  - 使用 `scripts/archive_apk.ps1` 将本次验证用 debug APK 归档到完整本地 APK archive；普通沙箱复制遇到 Windows `Access denied`，随后按仓库已知权限规则提权重跑成功。
+  - 执行 `adb install -r app\build\outputs\apk\debug\app-debug.apk` 时被 Android 系统拒绝，原因是设备上已有 `com.linnan.blindassist`，现有安装包签名与本次 debug APK 签名不一致。
+  - 经用户确认后卸载旧签名 `v5.9.0` 包，重新安装当前 `v7.6.0` debug APK，并确认手机端包版本为 `versionName=7.6.0` / `versionCode=28`。
+  - 修正 `BlindAssistComposeTest` 中相机检测开关的断言：测试文案从旧的“当前已启用/未启用”对齐为当前 UI 的“当前已开启/已关闭”，并把“检测已暂停”从唯一节点断言改为状态存在断言，避免同一状态文本在标题和解释中重复出现时误判。
+  - 修正 `scripts/run_device_regression.ps1` 的 ADB 调用包装，避免 ADB daemon 启动时写到 stderr 的提示被 PowerShell `ErrorActionPreference=Stop` 误判为脚本异常。
+  - 将本轮真机验证结论同步到 `README.md` Recent Updates。
+- 修改原因：
+  - 用户要求在本人设备上验证当前构建状态，需要确认模型、构建产物、设备连接、APK 安装路径和阻塞原因，而不是只停留在本地构建结论。
+  - 首次真机 instrumentation 暴露的是测试断言与现有中文无障碍文案不一致，而不是应用崩溃；修正测试可保留对真实相机入口和控制语义的覆盖。
+  - 新增的设备回归脚本应能处理 ADB server 冷启动提示，否则在干净 ADB 状态下无法稳定执行。
+- 验证方式：
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，模型输入 `images [1, 320, 320, 3] float32`，输出 `Identity [1, 84, 2100] float32`。
+  - `$env:JAVA_HOME='E:\linnan\linnan\.jdk\jdk17.0.19_10'; $env:GRADLE_USER_HOME='E:\linnan\linnan\.gradle-local'; .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon`：提权执行通过，`BUILD SUCCESSFUL in 19s`；`testDebugUnitTest` 当前为 `NO-SOURCE`，`assembleDebug` 生成 APK。
+  - `.\.android-sdk\platform-tools\adb.exe devices -l`：授权后显示 `R5CX10M8Y8X device product:e3qzcx model:SM_S9280 device:e3q`。
+  - `adb shell getprop`：设备型号 `SM-S9280`，Android `16`，SDK `36`。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\archive_apk.ps1`：本地归档成功，路径 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v7.6.0-debug-20260525-011516.apk`，大小 `47,222,231` bytes，SHA256 `2DE5CE894D0C46A8D099000B6E2624DA4B102E61A0E31BE8F501252D102520DC`，并追加到 `APK_ARCHIVE_MANIFEST.csv`。
+  - `adb install -r app\build\outputs\apk\debug\app-debug.apk`：失败，输出 `INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.linnan.blindassist signatures do not match newer version`。
+  - `adb shell dumpsys package com.linnan.blindassist`：设备上现有包为 `versionName=5.9.0`、`versionCode=23`，`lastUpdateTime=2026-05-19 17:44:07`。
+  - `adb uninstall com.linnan.blindassist`：用户确认后执行成功，输出 `Success`。
+  - `adb install -r app\build\outputs\apk\debug\app-debug.apk`：卸载旧包后安装成功，输出 `Performing Streamed Install` 和 `Success`。
+  - `adb shell monkey -p com.linnan.blindassist -c android.intent.category.LAUNCHER 1`：启动事件注入成功。
+  - `adb shell dumpsys package com.linnan.blindassist`：最终手机端包为 `versionName=7.6.0`、`versionCode=28`，`lastUpdateTime=2026-05-25 01:22:50`。
+  - 初次运行 `:app:connectedDebugAndroidTest`：6 个 Compose 真机测试中 5 个通过、1 个失败；失败原因为测试查找旧 content description `检测，当前已启用，点击关闭`。
+  - 第二次运行 `:app:connectedDebugAndroidTest`：旧 content description 问题修复后，测试因 `检测已暂停` 匹配到 2 个节点失败；这是测试唯一性假设过强。
+  - 最终运行 `$env:JAVA_HOME='E:\linnan\linnan\.jdk\jdk17.0.19_10'; $env:GRADLE_USER_HOME='E:\linnan\linnan\.gradle-local'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 56s`，`SM-S9280 - 16` 上 6 个 Compose 测试、0 failures、0 errors、0 skipped。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -SampleSeconds 90`：脚本修正后通过，summary 为 `status=passed`，证据目录为 `E:\linnan\linnan\test-artifacts.local-device-regression-20260525-012352`。
+  - 设备回归脚本冷启动结果：`Activity: com.linnan.blindassist/.MainActivity`，`LaunchState: COLD`，`TotalTime: 763` ms，`WaitTime: 765` ms。
+  - 设备回归脚本采集 5 轮 `gfxinfo`、`meminfo`、`uiautomator dump` 和截图；主界面未自动进入相机页，因此 `BlindAssistPerf-*.log` 为空，这符合脚本当前覆盖范围。
+- 版本判断：
+  - 本次修正真机测试断言和设备回归脚本，并完成 `v7.6.0` 当前 APK 的真机验证；没有修改应用运行时代码、模型资产、构建配置或用户可见行为，因此不调整 `versionName` / `versionCode`。
+- 后续事项：
+  - 当前设备回归脚本只覆盖安装、清数据、冷启动、包信息、主界面截图/UI dump/gfx/mem 采样；如果需要采集 CameraX/TFLite 的 `BlindAssistPerf`，下一步应扩展脚本自动进入手机摄像头路径并采样相机运行状态。
+
 ### v7.6.0 Runtime 管线拆分、帧输入优化与发布卫生更新
 - 时间：2026-05-25 00:30:22 +08:00
 - 执行者：violjjet
