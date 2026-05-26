@@ -12,6 +12,8 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 
 ## 近期状态
 
+- 2026-05-27：完成实时检测器横向评测框架。新增项目内 detector lab，本地下载 COCO8 smoke dataset 和 `yolo26n`、`yolo12n`、`yolov10n` 候选权重到 `.downloads/detector-lab/`，导出 320 FP16 TFLite 并用 `ai-edge-litert` 完成多模型 shape/dtype 检查和 CPU smoke benchmark。当前默认 App 模型仍为 `YOLO11n FP16 320 TFLite`，不改变 `ObjectDetector` 运行路径、风险规则、用户界面或 APK 行为；本轮不调整版本号。详细流程见 `docs/DETECTOR_BENCHMARK.md`，本地证据目录为 `test-artifacts.local-detector-benchmark-20260527-010222`。
+
 - 2026-05-26：完成 `v8.2.0` 相机可靠性与无障碍修复。相机关闭后会清空旧 `PreviewView` 就绪状态，重新打开必须等待新的预览 View，避免绑定已移除预览导致黑屏；TFLite 检测与关闭使用同一生命周期锁，并在 analyzer executor 关闭时做有界等待，降低销毁竞态风险。相机页普通动作不再被 TalkBack 读成“已启用/未启用”，debug 展开态和核心开关保留本地化 state description；底部面板在大字体和 debug 展开时限制高度并支持滚动。`scripts/inspect_tflite.py` 已升级为模型 shape/dtype 断言脚本，CI 增加模型检查与 `:app:assembleDebugAndroidTest`。当前版本为 `v8.2.0` / `versionCode=30`；模型检查、多模块单测、多模块 lint、debug/androidTest APK 构建、7 个 Compose `connectedDebugAndroidTest` 真机测试和 `scripts/run_device_regression.ps1 -SampleSeconds 90` 均通过，设备证据目录为 `test-artifacts.local-device-regression-20260526-231417`。本轮属于 `+0.1` 小版本，APK 已归档到完整本地目录 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.2.0-debug-20260526-215736.apk`，不提交 Git 里程碑 APK。
 
 - 2026-05-25：完成 `v8.1.0` 真实使用体验 UI 升级。功能页调整为任务启动台，优先展示当前行走任务、主摄像头入口和日常模式选择；相机页重排底部面板，把风险状态、行动建议和检测/语音/震动核心开关放在前面，并让 Care Mode 成为更大字号、更低干扰的相机体验；设置页按界面与辅助、提醒方式、行走场景、调试与记录分组。当前版本为 `v8.1.0` / `versionCode=29`，已通过 UI 相关单测、lint、debug/androidTest APK 构建、6 个 Compose 真机测试和 `scripts/run_device_regression.ps1 -SampleSeconds 90` 真机回归；设备证据目录为 `test-artifacts.local-device-regression-20260525-222502`，Git 里程碑 APK 为 `releases/apk/BlindAssist-v8.1.0-debug-20260525-222724.apk`。
@@ -27,6 +29,7 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 - [新电脑交接说明](docs/NEW_COMPUTER_HANDOFF.md)：Windows 环境准备、Git 克隆、Android 构建验证、手机安装和 Codex skills 恢复说明。
 - [真机回归说明](docs/DEVICE_REGRESSION.md)：安装、冷启动、包状态、UI dump、截图、`gfxinfo`、`meminfo` 和可选 connected Compose 测试的真机证据采集流程。
 - [APK 归档策略](docs/APK_ARCHIVE.md)：Git 只保留累计 `versionName` 差值 `>= 0.5` 的里程碑 APK，完整本地归档位于 `E:\linnan\blind-assist-apk-archive\apks`，SHA256 证据写入 `APK_ARCHIVE_MANIFEST.csv`。
+- [实时检测器横向评测说明](docs/DETECTOR_BENCHMARK.md)：说明候选检测器下载、导出、多模型检查、COCO8 smoke benchmark 和真实助行图片集边界。
 - [Codex skills 快照清单](codex/skills-snapshot/MANIFEST.md)：`codex/skills-snapshot/codex-skills-20260522.zip` 的 SHA256、大小、条目数和恢复提示。
 - [真实版本更新记录](CHANGELOG.md)：按真实版本整理功能变化、验证证据和 APK 归档路径，方便课堂展示、答辩材料和版本对比。
 - [演示指南](DEMO_GUIDE.md)：面向老师/答辩的演示脚本，包含环境准备、手机安装、现场演示顺序、无设备 fallback、隐私与安全边界说明。

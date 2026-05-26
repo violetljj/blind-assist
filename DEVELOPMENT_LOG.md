@@ -4,6 +4,46 @@
 
 ## 2026-05-27
 
+### 实时检测器横向评测框架
+- 时间：2026-05-27 01:07:29 +08:00
+- 执行者：violjjet
+- 类型：工具 / 模型评测 / 文档 / 测试
+- 修改范围：
+  - `scripts/detector_lab.py`
+  - `scripts/benchmark_tflite_detectors.py`
+  - `scripts/inspect_tflite.py`
+  - `docs/DETECTOR_BENCHMARK.md`
+  - `README.md`
+  - `idea.md`
+  - `.downloads/detector-lab/`（本地忽略目录，不提交 Git）
+  - `test-artifacts.local-detector-benchmark-20260527-010222`（本地忽略目录，不提交 Git）
+- 修改内容：
+  - 新增 detector lab 准备脚本，默认在项目目录 `.downloads/detector-lab/` 内下载 COCO8 小型 smoke dataset，以及 `yolo26n.pt`、`yolo12n.pt`、`yolov10n.pt` 三个 nano 级候选检测器权重。
+  - detector lab 支持把候选权重导出为 320 输入尺寸的 FP16 TFLite，导出产物放入 `.downloads/detector-lab/exports/`，并生成 `.downloads/detector-lab/detector_lab_manifest.json` 记录候选、数据集、文件大小和导出耗时。
+  - 扩展 `scripts/inspect_tflite.py`：保留默认模型严格断言 `[1,320,320,3] float32 -> [1,84,2100] float32`，同时新增 `--allow-any-shape` 和 `--json-output`，用于候选模型 shape/dtype/输出布局检查。
+  - 新增 `scripts/benchmark_tflite_detectors.py`：默认评测当前 App 默认 TFLite 与 `.downloads/detector-lab/exports/` 下候选 TFLite，输出初始化耗时、P50/P95、模型大小、输入输出 shape、粗略候选输出摘要和本地 JSON/Markdown 证据。
+  - 新增 `docs/DETECTOR_BENCHMARK.md`，记录目录边界、下载/导出/检查/benchmark 命令、COCO8 局限、当前本机 smoke test 表格和后续真实助行图片集要求。
+  - README 新增本轮横向评测框架状态，`idea.md` 将“三阶段算法升级建议”中的阶段一标为“部分完成”，说明已完成评测框架但尚未完成真实场景替换决策。
+  - 本轮没有修改 `ObjectDetector` 默认运行路径、App 资产默认模型、风险规则、UI、权限或 APK 行为。
+- 修改原因：
+  - 用户要求实施“实时检测器横向升级”计划，并补充允许下载少量评测图片集、模型建议下载到本项目文件夹中。
+  - 当前项目已有稳定 YOLO11n TFLite 主链路，直接替换模型风险较高；先建立可复跑的本地横向评测框架，可以把“能否导出、能否运行、输出布局是否兼容、粗略耗时如何”和“是否适合真实助行提醒”分开验证。
+  - COCO8 体积小、下载快、适合作为 smoke dataset，但不能代表 BlindAssist 真实行走场景，因此文档中明确不把它作为误报/漏报结论依据。
+- 验证方式：
+  - `.\.venv-export312\Scripts\python.exe -m py_compile scripts\inspect_tflite.py scripts\detector_lab.py scripts\benchmark_tflite_detectors.py`：通过。
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，默认模型仍为输入 `[1, 320, 320, 3] float32`、输出 `[1, 84, 2100] float32`，`primary_output_layout=yolo_raw_channels_first`，`assertions=passed`。
+  - `.\.venv-export312\Scripts\python.exe scripts\detector_lab.py prepare --export`：通过；下载 COCO8 共 8 张图片 / 8 个 label；下载 `yolo26n.pt`、`yolo12n.pt`、`yolov10n.pt`；导出 `yolo26n_fp16_320.tflite`、`yolo12n_fp16_320.tflite`、`yolov10n_fp16_320.tflite`。
+  - 候选导出结果：`yolo26n_fp16_320.tflite` 大小 `4,961,932` bytes，导出约 `35.504s`；`yolo12n_fp16_320.tflite` 大小 `5,417,469` bytes，导出约 `22.29s`；`yolov10n_fp16_320.tflite` 大小 `4,720,124` bytes，导出约 `9.86s`。
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py --allow-any-shape --json-output test-artifacts.local-detector-benchmark-inspect\inspect.json ...`：通过；三个候选 TFLite 均为输入 `[1, 320, 320, 3] float32`、输出 `[1, 84, 2100] float32`，布局为 `yolo_raw_channels_first`。
+  - `.\.venv-export312\Scripts\python.exe scripts\benchmark_tflite_detectors.py --warmup 2 --runs 5`：通过，结果写入 `test-artifacts.local-detector-benchmark-20260527-010222`；本机 `ai-edge-litert` CPU smoke test 中，默认 `yolo11n` P50/P95 为 `30.255/31.422ms`，`yolo12n` 为 `36.089/36.671ms`，`yolo26n` 为 `26.477/26.786ms`，`yolov10n` 为 `36.061/36.293ms`。
+  - 基于本仓库已知 Gradle 沙箱限制直接提权运行：`.\gradlew.bat :core:vision:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 20s`。
+  - 基于本仓库已知 Gradle 沙箱限制直接提权运行：`.\gradlew.bat :app:lintDebug :core:vision:lintDebug :feature:assist:lintDebug --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 1m 25s`。
+- 版本判断：
+  - 本轮属于评测工具和文档建设，不替换默认模型、不改变 App 用户可见行为、不改变 APK、风险规则、权限或运行时路径，因此不调整 `versionName=8.2.0` / `versionCode=30`，也不归档新的 APK。
+- 后续事项：
+  - 如果后续要把 `yolo26n` 或其他候选纳入默认 App，需要先补 BlindAssist 真实助行图片集、真机端性能采样、误报/漏报对照、`YoloOutputDecoder` 兼容回归和 90 秒真机回归。
+  - 当前 COCO8 只用于 smoke test；不能据此宣称候选模型已优于默认 YOLO11n，也不能作为助盲安全效果依据。
+
 ### 核心感知算法上位替代路线记录
 - 时间：2026-05-27 00:38:00 +08:00
 - 执行者：violjjet
