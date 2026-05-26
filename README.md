@@ -11,6 +11,7 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 - 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
 
 ## 近期状态
+- 2026-05-27：完成 `yolo11n` 与 `yolo26n` 同设备 A/B 质量评测。新增 COCO100 标注导出 `coco100_annotations.json`、`DetectorAbDeviceBenchmarkTest` 和 `scripts/run_detector_ab_device_benchmark.ps1`，在同一台 Samsung `SM-S9280` / Android 16、同一批 100 张 COCO val2017 固定样本、同一套 BlindAssist 预处理/解析/风险规则下比较检测质量、误报漏报、风险目标与稳定性。结果：`yolo11n` AP50/precision/recall/F1 为 `0.285/0.859/0.299/0.444`，`yolo26n` 为 `0.279/0.872/0.294/0.440`；`yolo26n` total P50/P95 为 `49/51ms`，快于 `yolo11n` 的 `54/56ms`，但 AP50 与召回略低，未满足默认模型替换门槛。本轮结论为不替换默认模型，证据目录为 `test-artifacts.local-detector-ab-device-benchmark-20260527-022312`，默认模型 90 秒真机回归通过，证据目录为 `test-artifacts.local-device-regression-20260527-022510`。本轮只增强评测工具与证据，不调整 `versionName=8.2.0` / `versionCode=30`。
 
 - 2026-05-27：完成 `yolo26n` 专项真机验证，但不替换默认模型。新增 COCO val2017 固定抽样脚本，已在 `.downloads/detector-lab/datasets/coco100/` 准备 100 张图片和 manifest；新增 yolo26n instrumentation benchmark，候选模型只进入 androidTest APK 资产，正式 debug APK 仍只包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。在 Samsung `SM-S9280` / Android 16 上，`yolo26n_fp16_320.tflite` 纯 TFLite CPU 4 线程 invoke P50/P95 为 `36.996/42.060ms`，BlindAssist 应用链路 inference P50/P95 为 `37/39ms`，total P50/P95 为 `49/51ms`，100 张图片无失败；证据目录为 `test-artifacts.local-yolo26n-device-benchmark-20260527-015039`。随后默认模型路径执行 `scripts/run_device_regression.ps1 -SampleSeconds 90` 通过，证据目录为 `test-artifacts.local-device-regression-20260527-015153`。本轮是实验验证工具与测试证据补充，不改变用户可见行为，不调整 `versionName=8.2.0` / `versionCode=30`。
 

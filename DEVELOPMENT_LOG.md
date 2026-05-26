@@ -4,6 +4,51 @@
 
 ## 2026-05-27
 
+### yolo11n / yolo26n 同设备 A/B 质量评测
+- 时间：2026-05-27 02:31:00 +08:00
+- 执行者：violjjet
+- 类型：模型评测 / 真机测试 / 工具 / 文档
+- 修改范围：
+  - `scripts/prepare_coco100.py`
+  - `scripts/run_detector_ab_device_benchmark.ps1`
+  - `scripts/run_yolo26n_device_benchmark.ps1`
+  - `app/build.gradle.kts`
+  - `app/src/androidTest/java/com/linnan/blindassist/benchmark/DetectorAbDeviceBenchmarkTest.kt`
+  - `docs/DETECTOR_BENCHMARK.md`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `.downloads/detector-lab/datasets/coco100/coco100_annotations.json`（本地忽略目录，不提交 Git）
+  - `test-artifacts.local-detector-ab-device-benchmark-20260527-022312`（本地忽略目录，不提交 Git）
+  - `test-artifacts.local-device-regression-20260527-022510`（本地忽略目录，不提交 Git）
+- 修改内容：
+  - 扩展 `scripts/prepare_coco100.py`，在原有 `coco100_manifest.json` 之外生成 `coco100_annotations.json`，包含每张 COCO100 图片的 `bbox_xywh`、`bbox_xyxy`、类别 id、类别名称、图片尺寸和匹配策略说明，供端侧 instrumentation 计算 TP/FP/FN。
+  - 新增 `DetectorAbDeviceBenchmarkTest`，在 androidTest APK 中同时加载 `yolo11n_fp16_320.tflite` 与 `yolo26n_fp16_320.tflite`，对同一批图片执行纯 TFLite invoke benchmark、BlindAssist detector 应用链路 benchmark、检测质量匹配、误报漏报导出、风险质量对照和重复运行稳定性统计。
+  - 调整 `app/build.gradle.kts` 的 androidTest 资产同步：测试 APK 同时包含 yolo11n、yolo26n、COCO100 图片、manifest、annotations 和 labels；正式 debug APK 仍只包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`，不会把 yolo26n 放入正式资产。
+  - 新增 `scripts/run_detector_ab_device_benchmark.ps1`，串联两模型 shape 检查、COCO100 标注准备、debug/androidTest APK 构建、正式 APK 资产隔离检查、指定 instrumentation 真机测试、logcat 采集、设备端 artifact 拉取和默认模型 90 秒真机回归。
+  - 将旧 `scripts/run_yolo26n_device_benchmark.ps1` 改为兼容入口，转调新的同设备 A/B 脚本，保留历史命令可用性。
+  - 设备端 artifact 现在包含 `benchmark.json`、`benchmark.md`、`per-image.csv`、`false-positives.json`、`false-negatives.json` 和 `risk-mismatches.json`，用于复盘整体指标、逐图表现、误报、漏报和风险目标偏差。
+  - `docs/DETECTOR_BENCHMARK.md` 与 README 补充 A/B 命令、指标口径、证据目录和“不建议替换默认模型”的结论。
+- 修改原因：
+  - 用户要求对 `yolo11n` 和 `yolo26n` 做同设备、同脚本、同指标的 A/B 对比，重点看检测质量、误报漏报、风险目标稳定性，而不是只看速度。
+  - 之前只有 yolo26n 单模型真机专项验证，只能说明候选模型能运行、速度可接受、应用链路兼容；不能回答“是否比默认 yolo11n 更适合助行风险提醒”。
+- 验证方式：
+  - `.\.venv-export312\Scripts\python.exe scripts\prepare_coco100.py --sample-count 100`：通过，生成 `coco100_manifest.json` 与 `coco100_annotations.json`，图片数 100。
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，默认 yolo11n 输入 `[1, 320, 320, 3] float32`，输出 `[1, 84, 2100] float32`。
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py --allow-any-shape .downloads\detector-lab\exports\yolo26n_fp16_320.tflite`：通过，yolo26n 输入 `[1, 320, 320, 3] float32`，输出 `[1, 84, 2100] float32`。
+  - `.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :app:testDebugUnitTest :app:assembleDebugAndroidTest --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 40s`；Kotlin daemon 在用户目录临时文件上出现 `AccessDeniedException`，Gradle 自动 fallback 到无 daemon 编译并成功完成。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1`：通过，设备 `R5CX10M8Y8X`，A/B 证据目录 `test-artifacts.local-detector-ab-device-benchmark-20260527-022312`，设备端结果目录 `device-detector-ab-benchmark/20260527-022419`。
+  - `benchmark.json` 已用 `ConvertFrom-Json` 验证可解析；第一次运行发现旧模型状态字符串存在历史编码损坏，已改为稳定 ASCII `ready` 后重新跑完整真机 A/B。
+  - 正式 debug APK 资产检查通过：包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`，不包含 `assets/yolo26n_fp16_320.tflite`。
+  - 默认模型回归：同脚本随后运行 `scripts/run_device_regression.ps1 -SampleSeconds 90`，结果通过，证据目录 `test-artifacts.local-device-regression-20260527-022510`。
+- 评测结果：
+  - `yolo11n`：AP50 `0.285`，precision `0.859`，recall `0.299`，F1 `0.444`，FP/image `0.41`，FN/image `5.84`，Risk FN `15`，Risk FP `1`，risk flip rate `0.0`，total P50/P95 `54/56ms`。
+  - `yolo26n`：AP50 `0.279`，precision `0.872`，recall `0.294`，F1 `0.440`，FP/image `0.36`，FN/image `5.88`，Risk FN `12`，Risk FP `1`，risk flip rate `0.0`，total P50/P95 `49/51ms`。
+  - 结论：`yolo26n` 在当前设备上更快，误报略少，风险漏报略少；但 AP50 与整体召回略低于 `yolo11n`，未满足“检测质量与风险稳定性不退化”的默认模型替换门槛。因此本轮明确不替换默认模型，只保留为候选。
+- 版本判断：
+  - 本轮属于评测工具、androidTest 专项验证和文档证据增强；不改变 App 默认模型、正式 APK 行为、风险规则、UI、权限或用户可见功能，因此不调整 `versionName=8.2.0` / `versionCode=30`，也不归档新的里程碑 APK。
+- 后续事项：
+  - 若要再次评估替换默认模型，需要补充真实助行图片或连续帧数据集，并按同一脚本格式继续比较误报漏报、中心前方风险召回、风险等级稳定性、发热和长时间真机运行表现。
+
 ### yolo26n 专项真机验证
 - 时间：2026-05-27 01:45:00 +08:00
 - 执行者：violjjet

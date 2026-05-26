@@ -59,17 +59,22 @@ def load_instances(zip_path: Path) -> dict[str, Any]:
             return json.load(handle)
 
 
-def select_images(instances: dict[str, Any], sample_count: int, seed: int) -> list[dict[str, Any]]:
-    categories = {int(item["id"]): item["name"] for item in instances["categories"]}
-    image_by_id = {int(item["id"]): item for item in instances["images"]}
-    annotations_by_image: dict[int, list[dict[str, Any]]] = {}
+def annotations_by_image(instances: dict[str, Any]) -> dict[int, list[dict[str, Any]]]:
+    result: dict[int, list[dict[str, Any]]] = {}
     for annotation in instances["annotations"]:
         if annotation.get("iscrowd") == 1:
             continue
         image_id = int(annotation["image_id"])
-        annotations_by_image.setdefault(image_id, []).append(annotation)
+        result.setdefault(image_id, []).append(annotation)
+    return result
 
-    candidates = [image_id for image_id in image_by_id if image_id in annotations_by_image]
+
+def select_images(instances: dict[str, Any], sample_count: int, seed: int) -> list[dict[str, Any]]:
+    categories = {int(item["id"]): item["name"] for item in instances["categories"]}
+    image_by_id = {int(item["id"]): item for item in instances["images"]}
+    grouped_annotations = annotations_by_image(instances)
+
+    candidates = [image_id for image_id in image_by_id if image_id in grouped_annotations]
     rng = random.Random(seed)
     rng.shuffle(candidates)
     selected_ids = candidates[:sample_count]
@@ -77,7 +82,7 @@ def select_images(instances: dict[str, Any], sample_count: int, seed: int) -> li
     selected = []
     for image_id in selected_ids:
         image = image_by_id[image_id]
-        annotations = annotations_by_image[image_id]
+        annotations = grouped_annotations[image_id]
         category_names = sorted({categories[int(item["category_id"])] for item in annotations})
         selected.append(
             {
@@ -90,6 +95,55 @@ def select_images(instances: dict[str, Any], sample_count: int, seed: int) -> li
             }
         )
     return selected
+
+
+def coco100_annotations(instances: dict[str, Any], selected: list[dict[str, Any]]) -> dict[str, Any]:
+    categories = {int(item["id"]): item["name"] for item in instances["categories"]}
+    grouped_annotations = annotations_by_image(instances)
+    selected_ids = {int(image["id"]) for image in selected}
+
+    images = []
+    for image in selected:
+        image_id = int(image["id"])
+        annotations = []
+        for annotation in grouped_annotations.get(image_id, []):
+            category_id = int(annotation["category_id"])
+            x, y, width, height = [float(part) for part in annotation["bbox"]]
+            annotations.append(
+                {
+                    "id": int(annotation["id"]),
+                    "category_id": category_id,
+                    "category_name": categories[category_id],
+                    "bbox_xywh": [x, y, width, height],
+                    "bbox_xyxy": [x, y, x + width, y + height],
+                    "area": float(annotation.get("area", width * height)),
+                }
+            )
+
+        images.append(
+            {
+                "id": image_id,
+                "file_name": image["file_name"],
+                "relative_path": f"images/{image['file_name']}",
+                "width": int(image["width"]),
+                "height": int(image["height"]),
+                "annotations": annotations,
+            }
+        )
+
+    return {
+        "created_at_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
+        "name": "coco100-val2017-fixed-sample-annotations",
+        "source": "COCO val2017 instances",
+        "sample_count": len(images),
+        "selected_image_ids": sorted(selected_ids),
+        "matching_policy": {
+            "category": "same COCO category name",
+            "iou_threshold": 0.5,
+            "crowd_annotations": "excluded",
+        },
+        "images": images,
+    }
 
 
 def write_json(path: Path, payload: Any) -> None:
@@ -146,11 +200,13 @@ def main() -> None:
         "images": manifest_images,
     }
     write_json(output_root / "coco100_manifest.json", manifest)
+    write_json(output_root / "coco100_annotations.json", coco100_annotations(instances, selected))
     (output_root / "images.txt").write_text(
         "".join(f"{item['relative_path']}\n" for item in manifest_images),
         encoding="utf-8",
     )
     print(f"manifest={output_root / 'coco100_manifest.json'}")
+    print(f"annotations={output_root / 'coco100_annotations.json'}")
     print(f"image_count={len(manifest_images)}")
 
 

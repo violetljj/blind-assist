@@ -1,5 +1,46 @@
 # 实时检测器横向评测说明
 
+## YOLO11n vs YOLO26n 同设备 A/B 质量评测
+
+2026-05-27 新增同设备 A/B 评测链路，用同一台 Android 设备、同一批 COCO100 图片、同一套 BlindAssist 预处理、YOLO raw 输出解析、NMS、风险分析规则和指标口径，对默认 `yolo11n` 与候选 `yolo26n` 做检测质量与风险质量对比。该流程仍不替换 App 默认模型；`yolo26n` 只进入 androidTest APK 资产，正式 debug APK 仍只包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。
+
+COCO100 准备脚本现在除 `coco100_manifest.json` 外，还会生成端侧评测用的标注文件：
+```text
+.downloads/detector-lab/datasets/coco100/coco100_annotations.json
+```
+
+推荐命令：
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1
+```
+
+默认参数为 `-ImageLimit 100 -PureWarmup 10 -PureRuns 100 -AppRunsPerImage 3 -MatchIouThreshold 0.5`。脚本会执行两模型 shape 检查、COCO100 标注检查、debug/androidTest APK 构建、正式 APK 资产隔离检查、`DetectorAbDeviceBenchmarkTest` 真机 instrumentation、设备端 artifact 拉取，并在完成后执行默认模型 90 秒真机回归。
+
+本轮设备为 Samsung `SM-S9280` / Android 16，证据目录：
+```text
+test-artifacts.local-detector-ab-device-benchmark-20260527-022312
+test-artifacts.local-detector-ab-device-benchmark-20260527-022312/device-detector-ab-benchmark/20260527-022419/
+test-artifacts.local-device-regression-20260527-022510
+```
+
+设备端输出包含：
+```text
+benchmark.json
+benchmark.md
+per-image.csv
+false-positives.json
+false-negatives.json
+risk-mismatches.json
+```
+
+核心结果如下：
+| Model | AP50 | Precision | Recall | F1 | FP/img | FN/img | Risk FN | Risk FP | Risk flips | Total P50 ms | Total P95 ms |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `yolo11n` | 0.285 | 0.859 | 0.299 | 0.444 | 0.41 | 5.84 | 15 | 1 | 0.0 | 54.0 | 56.0 |
+| `yolo26n` | 0.279 | 0.872 | 0.294 | 0.440 | 0.36 | 5.88 | 12 | 1 | 0.0 | 49.0 | 51.0 |
+
+结论：本轮不建议替换默认模型。`yolo26n` 在当前设备上应用链路总耗时更低，误报数和风险漏报数也略好，但 AP50 与整体召回略低于 `yolo11n`，未满足“检测质量与风险稳定性不退化”的替换门槛。它可以继续保留为候选模型，后续若要进入默认模型替换评估，需要补充真实助行图片/连续帧、误报漏报人工复核、发热与长时间真机稳定性证据。
+
 本说明记录 BlindAssist 阶段一“实时检测器横向升级”的本地评测流程。当前 App 默认检测器仍是 `app/src/main/assets/yolo11n_fp16_320.tflite`，本流程只用于候选模型导出、检查和性能 smoke test，不会替换默认模型，也不会改变运行时 `ObjectDetector` 路径。
 
 ## 本地目录

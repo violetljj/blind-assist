@@ -21,12 +21,14 @@ val yolo26nBenchmarkAssetsDir = layout.buildDirectory.dir("generated/yolo26nBenc
 val prepareYolo26nBenchmarkAssets = tasks.register<Sync>("prepareYolo26nBenchmarkAssets") {
     from(project.file("src/main/assets")) {
         include("coco_labels.txt")
+        include("yolo11n_fp16_320.tflite")
     }
     from(rootProject.file(".downloads/detector-lab/exports")) {
         include("yolo26n_fp16_320.tflite")
     }
     from(rootProject.file(".downloads/detector-lab/datasets/coco100")) {
         include("coco100_manifest.json")
+        include("coco100_annotations.json")
         include("images/**")
     }
     into(yolo26nBenchmarkAssetsDir)
@@ -139,5 +141,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.foundation)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.tflite)
+    androidTestImplementation(project(":core:assist"))
     androidTestImplementation(project(":core:vision"))
 }
