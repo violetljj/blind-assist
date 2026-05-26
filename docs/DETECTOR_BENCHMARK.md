@@ -75,3 +75,40 @@ COCO8 覆盖面太小，后续建议自采或整理一组 BlindAssist 专用图�
 - 每张图片记录场景、预期主要风险方向、预期相对距离层级和是否应触发提醒。
 
 在没有这组真实场景集前，横向评测只能判断“能否导出、能否运行、输出布局是否兼容、粗略耗时如何”，不能判断哪个模型更适合最终助行提醒。
+
+## yolo26n 真机专项验证
+
+本节记录 2026-05-27 对 `yolo26n_fp16_320.tflite` 的专项验证。默认 App 模型仍为 `app/src/main/assets/yolo11n_fp16_320.tflite`；`yolo26n` 只通过 androidTest assets 进入测试 APK，不进入正式 debug APK。
+
+准备 COCO val2017 固定抽样：
+
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\prepare_coco100.py --sample-count 100
+```
+
+脚本会下载官方 `annotations_trainval2017.zip`，按固定 seed `260527` 从 val2017 中抽样 100 张有实例标注的图片，写入：
+
+```text
+.downloads/detector-lab/datasets/coco100/images/
+.downloads/detector-lab/datasets/coco100/coco100_manifest.json
+```
+
+专项真机验证命令：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_yolo26n_device_benchmark.ps1
+```
+
+该脚本会执行 yolo26n shape 检查、构建 debug/androidTest APK、确认正式 APK 不含 yolo26n、运行专项 instrumentation benchmark、拉取设备端 JSON/Markdown 结果，并在拉取后执行默认模型 90 秒真机回归。
+
+本轮 Samsung `SM-S9280` / Android 16 结果如下，证据目录为 `test-artifacts.local-yolo26n-device-benchmark-20260527-015039`：
+
+| 路径 | Runs | P50 ms | P95 ms | Min ms | Max ms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Pure TFLite invoke, CPU 4 threads | 100 | 36.996 | 42.060 | 36.649 | 47.831 |
+| BlindAssist detector inference | 100 | 37.000 | 39.000 | 36.000 | 46.000 |
+| BlindAssist detector total | 100 | 49.000 | 51.000 | 47.000 | 89.000 |
+
+应用链路额外统计：preprocess P50/P95 为 `9/11ms`，postprocess P50/P95 为 `1/1ms`，检测数量 P50/P95 为 `2/7`，100 张 COCO 图片无失败。正式 debug APK 资产检查结果仅包含 `assets/yolo11n_fp16_320.tflite` 和 `assets/coco_labels.txt`；随后默认模型路径 `scripts/run_device_regression.ps1 -SampleSeconds 90` 通过，证据目录为 `test-artifacts.local-device-regression-20260527-015153`，冷启动 `TotalTime=736ms` / `WaitTime=738ms`。
+
+这些结果只能说明 `yolo26n` 候选在当前设备、当前 320 FP16 导出和 COCO100 抽样下具备端侧运行与应用链路兼容性；它仍不是默认模型，也不能作为助行安全效果优于 YOLO11n 的结论。

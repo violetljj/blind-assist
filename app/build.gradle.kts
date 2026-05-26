@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.Sync
 import java.util.Properties
 
 plugins {
@@ -16,6 +17,20 @@ val releaseSigningProperties = Properties().apply {
 }
 val hasReleaseSigningProperties = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
     .all { key -> releaseSigningProperties.getProperty(key).isNullOrBlank().not() }
+val yolo26nBenchmarkAssetsDir = layout.buildDirectory.dir("generated/yolo26nBenchmarkAssets")
+val prepareYolo26nBenchmarkAssets = tasks.register<Sync>("prepareYolo26nBenchmarkAssets") {
+    from(project.file("src/main/assets")) {
+        include("coco_labels.txt")
+    }
+    from(rootProject.file(".downloads/detector-lab/exports")) {
+        include("yolo26n_fp16_320.tflite")
+    }
+    from(rootProject.file(".downloads/detector-lab/datasets/coco100")) {
+        include("coco100_manifest.json")
+        include("images/**")
+    }
+    into(yolo26nBenchmarkAssetsDir)
+}
 
 gradle.taskGraph.whenReady {
     val releasePackageTaskRequested = allTasks.any { task ->
@@ -82,6 +97,20 @@ android {
         compose = true
         buildConfig = true
     }
+
+    androidResources {
+        noCompress += "tflite"
+    }
+
+    sourceSets {
+        getByName("androidTest") {
+            assets.srcDir(yolo26nBenchmarkAssetsDir)
+        }
+    }
+}
+
+tasks.matching { it.name == "mergeDebugAndroidTestAssets" }.configureEach {
+    dependsOn(prepareYolo26nBenchmarkAssets)
 }
 
 dependencies {
@@ -109,4 +138,6 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.compose.foundation)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.tflite)
+    androidTestImplementation(project(":core:vision"))
 }

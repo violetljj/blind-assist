@@ -4,6 +4,45 @@
 
 ## 2026-05-27
 
+### yolo26n 专项真机验证
+- 时间：2026-05-27 01:45:00 +08:00
+- 执行者：violjjet
+- 类型：模型评测 / 真机测试 / 工具 / 文档
+- 修改范围：
+  - `scripts/prepare_coco100.py`
+  - `scripts/run_yolo26n_device_benchmark.ps1`
+  - `app/src/androidTest/java/com/linnan/blindassist/benchmark/Yolo26nDeviceBenchmarkTest.kt`
+  - `app/build.gradle.kts`
+  - `docs/DETECTOR_BENCHMARK.md`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `.downloads/detector-lab/datasets/coco100/`（本地忽略目录，不提交 Git）
+  - `test-artifacts.local-yolo26n-device-benchmark-20260527-015039`（本地忽略目录，不提交 Git）
+  - `test-artifacts.local-device-regression-20260527-015153`（本地忽略目录，不提交 Git）
+- 修改内容：
+  - 新增 COCO100 准备脚本，下载 COCO 官方 `annotations_trainval2017.zip`，按固定 seed `260527` 从 val2017 中抽样 100 张有实例标注的图片，保存图片、来源 URL、类别、SHA256、尺寸和标注数量到 `.downloads/detector-lab/datasets/coco100/coco100_manifest.json`。
+  - 新增 yolo26n 真机专项 instrumentation benchmark：纯 TFLite 路径直接用 `Interpreter.invoke` 测候选模型端侧推理耗时；应用链路路径通过 `TfliteYoloDetector(context, modelAssetName = "yolo26n_fp16_320.tflite")` 跑同一批 COCO100 图片，记录 preprocess、inference、postprocess、total 和检测数量。
+  - `app/build.gradle.kts` 仅为 androidTest 增加测试资产目录和测试依赖；`yolo26n` 与 COCO100 只进入 androidTest APK，正式 debug APK 不包含 yolo26n。同步配置 `noCompress += "tflite"`，确保测试 APK 中的 TFLite 可通过 `openFd` 映射读取。
+  - 新增 `scripts/run_yolo26n_device_benchmark.ps1`，串联 yolo26n shape 检查、COCO100 检查、debug/androidTest APK 构建、正式 APK 资产隔离检查、专项 connected instrumentation、设备端 benchmark 结果拉取、logcat 采集和默认模型 90 秒真机回归。
+  - README 和 `docs/DETECTOR_BENCHMARK.md` 补充本轮专项验证命令、证据目录、关键性能结果和“候选模型不等于默认替换”的边界说明。
+- 修改原因：
+  - 用户要求做 `yolo26n` 专项验证，并明确“不替换默认模型”，需要把候选模型先作为实验对象跑真机端 benchmark，再用约 100 张图片做应用链路验证。
+  - 现有 detector lab 只能覆盖本机 smoke benchmark 和 COCO8 小样本；本轮补齐端侧真机证据和更接近应用链路的 COCO100 验证，避免仅凭 Windows CPU benchmark 判断模型是否适合替换默认 YOLO11n。
+- 验证方式：
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py --allow-any-shape .downloads\detector-lab\exports\yolo26n_fp16_320.tflite`：通过；输入 `[1, 320, 320, 3] float32`，输出 `[1, 84, 2100] float32`，布局 `yolo_raw_channels_first`。
+  - `.\.venv-export312\Scripts\python.exe scripts\prepare_coco100.py --sample-count 100`：通过；生成 `sample_count=100` 的 `coco100_manifest.json`，图片目录实际 100 张。
+  - `.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain`：通过；构建过程中 Kotlin daemon 因用户目录临时文件权限退回无 daemon 编译，但最终 `BUILD SUCCESSFUL in 45s`。
+  - `.\.android-sdk\build-tools\35.0.0\aapt.exe list app\build\outputs\apk\debug\app-debug.apk | Select-String -Pattern 'yolo|coco_labels'`：正式 debug APK 仅包含 `assets/yolo11n_fp16_320.tflite` 和 `assets/coco_labels.txt`，未包含 `yolo26n_fp16_320.tflite`。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_yolo26n_device_benchmark.ps1`：通过；专项证据目录为 `test-artifacts.local-yolo26n-device-benchmark-20260527-015039`。`connectedDebugAndroidTest` 运行 `Yolo26nDeviceBenchmarkTest`，1 个测试通过，`BUILD SUCCESSFUL in 51s`。
+  - yolo26n 真机 benchmark 结果（Samsung `SM-S9280` / Android 16）：纯 TFLite CPU 4 线程 invoke P50/P95 为 `36.996/42.060ms`；BlindAssist detector inference P50/P95 为 `37/39ms`；应用链路 total P50/P95 为 `49/51ms`；100 张图片无失败；检测数量 P50/P95 为 `2/7`。
+  - 默认模型回归：同一脚本随后运行 `scripts/run_device_regression.ps1 -SampleSeconds 90`，结果通过；证据目录 `test-artifacts.local-device-regression-20260527-015153`，冷启动 `TotalTime=736ms` / `WaitTime=738ms`。
+  - `.\.venv-export312\Scripts\python.exe -m py_compile scripts\prepare_coco100.py scripts\benchmark_tflite_detectors.py scripts\detector_lab.py scripts\inspect_tflite.py`：通过。
+  - `.\gradlew.bat :app:testDebugUnitTest :app:lintDebug --no-daemon --console=plain`：通过；`:app:testDebugUnitTest` 当前无 app 单元测试源，`:app:lintDebug` `BUILD SUCCESSFUL in 37s`。
+- 版本判断：
+  - 本轮属于实验验证工具、测试 APK 专用 benchmark 和文档/日志补充；不替换默认模型、不改变正式 APK 的用户可见行为、不改变风险规则、权限、UI 或运行时默认路径，因此不调整 `versionName=8.2.0` / `versionCode=30`，也不归档新的里程碑 APK。
+- 后续事项：
+  - `yolo26n` 已证明可在当前真机和 COCO100 抽样下运行并完成应用链路验证，但仍不能据此声明助行安全效果优于 YOLO11n。若要进入默认模型替换评估，下一步需要补真实助行场景图片集、误报/漏报对照、功耗/发热观察和更长时间真机稳定性测试。
+
 ### 实时检测器横向评测框架
 - 时间：2026-05-27 01:07:29 +08:00
 - 执行者：violjjet
