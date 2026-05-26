@@ -17,6 +17,7 @@ import com.linnan.blindassist.vision.VisionFrame
 import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
 class CameraXFrameSource(
@@ -95,6 +96,14 @@ class CameraXFrameSource(
     override fun shutdown() {
         stop()
         analysisExecutor.shutdown()
+        try {
+            if (!analysisExecutor.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                analysisExecutor.shutdownNow()
+            }
+        } catch (error: InterruptedException) {
+            analysisExecutor.shutdownNow()
+            Thread.currentThread().interrupt()
+        }
     }
 
     private fun resolutionSelector(): ResolutionSelector {

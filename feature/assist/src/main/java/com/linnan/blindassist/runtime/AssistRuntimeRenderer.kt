@@ -21,6 +21,10 @@ internal class AssistRuntimeRenderer(
         overlayView = overlay
     }
 
+    fun detachOverlay() {
+        overlayView = null
+    }
+
     fun currentOverlay(): DetectionOverlayView? = overlayView
 
     fun renderInitial() {

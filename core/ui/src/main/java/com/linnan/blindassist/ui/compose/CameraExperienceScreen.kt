@@ -20,6 +20,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +31,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -219,19 +221,31 @@ fun CameraControlPanel(
         MaterialTheme.typography.headlineMedium
     }
 
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(if (controls.careModeEnabled) 26.dp else 22.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (controls.careModeEnabled) {
-                BaNight.copy(alpha = 0.97f)
-            } else {
-                BaPanel.copy(alpha = 0.94f)
-            }
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    BoxWithConstraints(
+        modifier = modifier
+            .fillMaxWidth()
+            .navigationBarsPadding()
     ) {
-        Column(Modifier.padding(if (controls.careModeEnabled) 20.dp else 16.dp)) {
+        val panelMaxHeight = maxHeight * 0.75f
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = panelMaxHeight),
+            shape = RoundedCornerShape(if (controls.careModeEnabled) 26.dp else 22.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = if (controls.careModeEnabled) {
+                    BaNight.copy(alpha = 0.97f)
+                } else {
+                    BaPanel.copy(alpha = 0.94f)
+                }
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        ) {
+            Column(
+                Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(if (controls.careModeEnabled) 20.dp else 16.dp)
+            ) {
             Text(
                 text = title,
                 style = titleStyle,
@@ -302,7 +316,9 @@ fun CameraControlPanel(
                             text = if (language == AppLanguage.EN) "Quiet" else "调安静",
                             icon = Icons.Rounded.Tune,
                             onClick = onQuietShortcut,
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("camera_quiet_shortcut"),
                             accessibilityText = if (language == AppLanguage.EN) {
                                 "Apply quiet reminder shortcut, keep current scenario, use Quiet profile, Brief speech, and Soft vibration"
                             } else {
@@ -313,7 +329,9 @@ fun CameraControlPanel(
                             text = if (language == AppLanguage.EN) "Sensitive" else "调敏感",
                             icon = Icons.Rounded.Tune,
                             onClick = onSensitiveShortcut,
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("camera_sensitive_shortcut"),
                             accessibilityText = if (language == AppLanguage.EN) {
                                 "Apply sensitive reminder shortcut, keep current scenario, use Sensitive profile, Standard speech, and Strong vibration"
                             } else {
@@ -326,7 +344,9 @@ fun CameraControlPanel(
                         text = if (language == AppLanguage.EN) "Scenario ${controls.assistScenario.displayName(language)}" else "场景 ${controls.assistScenario.displayName(language)}",
                         icon = Icons.Rounded.Shield,
                         onClick = { onScenarioChange(controls.assistScenario.next()) },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("camera_scenario_toggle"),
                         accessibilityText = if (language == AppLanguage.EN) {
                             "Usage scenario, current ${controls.assistScenario.displayName(language)}, tap to switch to ${controls.assistScenario.next().displayName(language)}"
                         } else {
@@ -350,6 +370,11 @@ fun CameraControlPanel(
                             if (language == AppLanguage.EN) "Hide camera debug details" else "收起相机调试信息"
                         } else {
                             if (language == AppLanguage.EN) "Show camera debug details" else "展开相机调试信息"
+                        },
+                        stateDescriptionText = if (language == AppLanguage.EN) {
+                            if (controls.debugVisible) "Expanded" else "Collapsed"
+                        } else {
+                            if (controls.debugVisible) "已展开" else "已收起"
                         }
                     )
                     AnimatedVisibility(visible = controls.debugVisible) {
@@ -367,6 +392,7 @@ fun CameraControlPanel(
             }
             Spacer(Modifier.height(8.dp))
             CompactToggle(if (language == AppLanguage.EN) "Care" else "关怀", controls.careModeEnabled, Icons.Rounded.Favorite, onCareModeChange, Modifier.fillMaxWidth(), language)
+            }
         }
     }
 }

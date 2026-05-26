@@ -41,8 +41,14 @@ internal class AssistCameraLifecycleAdapter(
         frameSource.stop()
     }
 
+    fun clearViews() {
+        previewView = null
+        renderer.detachOverlay()
+    }
+
     fun shutdown() {
         frameSource.shutdown()
+        clearViews()
     }
 
     private fun handleCameraSourceError(error: Throwable) {

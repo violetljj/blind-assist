@@ -59,6 +59,7 @@ class AssistRuntimeStateMachine(
                 effects += AssistRuntimeEffect.Render(AssistRuntimeRenderTarget.CameraError, event.message)
             }
             AssistRuntimeEvent.CloseCamera -> {
+                cameraViewsReady = false
                 currentState = AssistRuntimeState.Idle
                 effects += AssistRuntimeEffect.StopCamera
                 effects += AssistRuntimeEffect.ClearOverlay

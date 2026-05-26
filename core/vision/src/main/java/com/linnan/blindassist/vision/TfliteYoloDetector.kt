@@ -28,9 +28,7 @@ class TfliteYoloDetector(
     private val confidenceThreshold: Float = CONFIDENCE_THRESHOLD,
     private val iouThreshold: Float = IOU_THRESHOLD
 ) : ObjectDetector {
-    val labels: List<String> = context.assets.open(labelsAssetName)
-        .bufferedReader()
-        .useLines { lines -> lines.map { it.trim() }.filter { it.isNotEmpty() }.toList() }
+    val labels: List<String>
 
     override val isReady: Boolean get() = interpreter != null
     override val statusMessage: String
@@ -52,21 +50,30 @@ class TfliteYoloDetector(
     private var loadError: Throwable? = null
     @Volatile
     private var runtimeWarning: String? = null
+    private val lifecycleLock = Any()
 
     init {
+        var loadedLabels = emptyList<String>()
+        var loadedInterpreter: Interpreter? = null
         try {
-            val loadedInterpreter = createInterpreter(context)
-            validateInputTensor(loadedInterpreter)
-            validateOutputTensor(loadedInterpreter)
-            interpreter = loadedInterpreter
+            loadedLabels = loadLabels(context, labelsAssetName)
+            val candidateInterpreter = createInterpreter(context)
+            loadedInterpreter = candidateInterpreter
+            validateInputTensor(candidateInterpreter)
+            validateOutputTensor(candidateInterpreter)
+            interpreter = candidateInterpreter
+            loadedInterpreter = null
         } catch (error: Throwable) {
             FatalThrowables.rethrowIfFatal(error)
+            closeInterpreter(loadedInterpreter)
+            closeGpuDelegate()
             Log.w(TAG, "Failed to load TFLite model: $modelAssetName", error)
             loadError = IllegalStateException(
-                "缺少模型文件：assets/$modelAssetName。请先导出 YOLO11n TFLite FP16 模型。",
+                "模型初始化失败：请确认 assets/$modelAssetName 和 assets/$labelsAssetName 存在，且输入/输出张量符合 YOLO11n TFLite FP16 约定。",
                 error
             )
         }
+        labels = loadedLabels
     }
 
     private fun createInterpreter(context: Context): Interpreter {
@@ -80,8 +87,7 @@ class TfliteYoloDetector(
         } catch (gpuError: Throwable) {
             FatalThrowables.rethrowIfFatal(gpuError)
             Log.w(TAG, "GPU interpreter failed, falling back to CPU.", gpuError)
-            gpuDelegate?.close()
-            gpuDelegate = null
+            closeGpuDelegate()
             runtimeWarning = "GPU 不可用，已回退 CPU"
             Interpreter(model, Interpreter.Options().apply { setNumThreads(4) })
         }
@@ -112,48 +118,51 @@ class TfliteYoloDetector(
         frameSize: FrameSize,
         prepareInput: () -> ModelInput
     ): DetectorFrameResult {
-        val localInterpreter = interpreter ?: return DetectorFrameResult(
-            detections = emptyList(),
-            frameSize = frameSize,
-            metrics = currentMetrics()
-        )
-        val totalStart = System.nanoTime()
-        val preprocessStart = totalStart
-        val input = prepareInput()
-        lastPreprocessMs = elapsedMs(preprocessStart)
+        synchronized(lifecycleLock) {
+            val localInterpreter = interpreter ?: return DetectorFrameResult(
+                detections = emptyList(),
+                frameSize = frameSize,
+                metrics = currentMetrics()
+            )
+            val totalStart = System.nanoTime()
+            val preprocessStart = totalStart
+            val input = prepareInput()
+            lastPreprocessMs = elapsedMs(preprocessStart)
 
-        val outputTensor = localInterpreter.getOutputTensor(0)
-        val localOutputBuffer = reusableOutputBuffer(outputTensor.numBytes())
+            val outputTensor = localInterpreter.getOutputTensor(0)
+            val localOutputBuffer = reusableOutputBuffer(outputTensor.numBytes())
 
-        val start = System.nanoTime()
-        localInterpreter.run(input.buffer, localOutputBuffer)
-        lastInferenceMs = elapsedMs(start)
-        localOutputBuffer.rewind()
+            val start = System.nanoTime()
+            localInterpreter.run(input.buffer, localOutputBuffer)
+            lastInferenceMs = elapsedMs(start)
+            localOutputBuffer.rewind()
 
-        val floats = reusableOutputFloats(outputTensor.numElements())
-        localOutputBuffer.asFloatBuffer().get(floats)
+            val floats = reusableOutputFloats(outputTensor.numElements())
+            localOutputBuffer.asFloatBuffer().get(floats)
 
-        val postprocessStart = System.nanoTime()
-        val detections = parseOutput(
-            raw = floats,
-            shape = outputTensor.shape(),
-            dataType = outputTensor.dataType(),
-            letterbox = input.letterbox
-        )
-        lastPostprocessMs = elapsedMs(postprocessStart)
-        lastTotalDetectMs = elapsedMs(totalStart)
-        return DetectorFrameResult(
-            detections = detections,
-            frameSize = frameSize,
-            metrics = currentMetrics()
-        )
+            val postprocessStart = System.nanoTime()
+            val detections = parseOutput(
+                raw = floats,
+                shape = outputTensor.shape(),
+                dataType = outputTensor.dataType(),
+                letterbox = input.letterbox
+            )
+            lastPostprocessMs = elapsedMs(postprocessStart)
+            lastTotalDetectMs = elapsedMs(totalStart)
+            return DetectorFrameResult(
+                detections = detections,
+                frameSize = frameSize,
+                metrics = currentMetrics()
+            )
+        }
     }
 
     override fun close() {
-        interpreter?.close()
-        interpreter = null
-        gpuDelegate?.close()
-        gpuDelegate = null
+        synchronized(lifecycleLock) {
+            closeInterpreter(interpreter)
+            interpreter = null
+            closeGpuDelegate()
+        }
     }
 
     private fun currentMetrics(): DetectorMetrics {
@@ -177,6 +186,32 @@ class TfliteYoloDetector(
         } catch (error: Throwable) {
             FatalThrowables.rethrowIfFatal(error)
             Log.w(TAG, "GPU delegate unavailable, falling back to CPU.", error)
+        }
+    }
+
+    private fun loadLabels(context: Context, labelsAssetName: String): List<String> {
+        return context.assets.open(labelsAssetName)
+            .bufferedReader()
+            .useLines { lines -> lines.map { it.trim() }.filter { it.isNotEmpty() }.toList() }
+    }
+
+    private fun closeInterpreter(interpreterToClose: Interpreter?) {
+        try {
+            interpreterToClose?.close()
+        } catch (error: Throwable) {
+            FatalThrowables.rethrowIfFatal(error)
+            Log.w(TAG, "Failed to close TFLite interpreter cleanly.", error)
+        }
+    }
+
+    private fun closeGpuDelegate() {
+        try {
+            gpuDelegate?.close()
+        } catch (error: Throwable) {
+            FatalThrowables.rethrowIfFatal(error)
+            Log.w(TAG, "Failed to close TFLite GPU delegate cleanly.", error)
+        } finally {
+            gpuDelegate = null
         }
     }
 

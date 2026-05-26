@@ -2,6 +2,72 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-05-26
+
+### v8.2.0 相机可靠性、无障碍语义与验证守卫修复
+- 时间：2026-05-26 21:58:05 +08:00
+- 执行者：violjjet
+- 类型：修复 / 无障碍 / 测试 / CI / 文档 / APK 归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `.github/workflows/android.yml`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `core/device/src/main/java/com/linnan/blindassist/camera/CameraXFrameSource.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/CameraExperienceScreen.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/SharedUiComponents.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistPreviews.kt`
+  - `core/vision/src/main/java/com/linnan/blindassist/vision/TfliteYoloDetector.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistCameraLifecycleAdapter.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeEffectExecutor.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeRenderer.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeStateMachine.kt`
+  - `feature/assist/src/test/java/com/linnan/blindassist/runtime/AssistRuntimeStateMachineTest.kt`
+  - `scripts/inspect_tflite.py`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `DEVELOPMENT_LOG.md`
+  - `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.2.0-debug-20260526-215736.apk`
+  - `E:\linnan\blind-assist-apk-archive\APK_ARCHIVE_MANIFEST.csv`
+- 修改内容：
+  - 将版本提升到 `versionName=8.2.0` / `versionCode=30`，作为小版本可靠性修复。
+  - `AssistRuntimeStateMachine` 在 `CloseCamera` 时清空 `cameraViewsReady`，并新增回归测试覆盖关闭后重新打开必须等待新的 `CameraViewsReady`，避免复用旧 `PreviewView`。
+  - `AssistCameraLifecycleAdapter` 增加 `clearViews()`，仅在关闭相机 UI effect 和 `shutdown()` 清空旧 `PreviewView`；`AssistRuntimeRenderer` 增加 `detachOverlay()`，避免旧 overlay 跨相机会话残留。
+  - `CameraXFrameSource.shutdown()` 在 `stop()` 后关闭 analyzer executor，并用 500ms 有界 `awaitTermination` 等待在途 analyzer 任务；超时或中断时调用 `shutdownNow()`。
+  - `TfliteYoloDetector` 把 labels 加载纳入初始化 try/catch，初始化失败时关闭已创建的 interpreter/delegate；`detectFrame()` 与 `close()` 使用同一把生命周期锁，避免 interpreter/delegate close 与推理交叉。
+  - `CompactAction` 增加可空 `stateDescriptionText`，默认不设置；`CompactToggle` 传入本地化开关状态，debug toggle 使用“已展开/已收起”或 `Expanded/Collapsed`；Quiet、Sensitive、Scenario 普通动作不再暴露“已启用/未启用”状态。
+  - `CameraControlPanel` 增加 `navigationBarsPadding()`、最大高度约束和内部滚动；新增 `camera_quiet_shortcut`、`camera_sensitive_shortcut`、`camera_scenario_toggle` 测试 tag，保留既有 `camera_debug_toggle` 等契约。
+  - `BlindAssistComposeTest` 增加相机普通动作无 state description、debug toggle state description、大字体 1.9x 且 debug 展开时关键控件可滚动显示的覆盖；为该 androidTest 补充 Compose foundation 测试依赖。
+  - `scripts/inspect_tflite.py` 从打印脚本升级为断言脚本，默认检查模型文件存在、输入 `[1,320,320,3] float32`、输出 `[1,84,2100] float32`，优先使用 `ai-edge-litert`，失败时 fallback 到 TensorFlow。
+  - GitHub Actions 增加 Python 3.12、`ai-edge-litert` 安装、模型资产检查，并把 build 步骤扩展为 `assembleDebug :app:assembleDebugAndroidTest`；不在 hosted CI 强跑无设备的 `connectedDebugAndroidTest`。
+  - README 与 CHANGELOG 同步到 v8.2.0 当前状态，记录本轮本地验证、真机验证结果和 APK 归档路径。
+- 修改原因：
+  - 审查发现相机关闭后 `cameraViewsReady` 与 `AssistCameraLifecycleAdapter.previewView` 都会跨会话保留，重新打开时可能在新 `AndroidView` 创建前就启动 CameraX，导致绑定旧预览 View、黑屏或预览不更新。
+  - `AssistRuntimeController.shutdown()` 原先在 analyzer executor 未 drain 的情况下继续关闭 TFLite detector，存在 `detector.detect(frame)` 与 interpreter/delegate close 交叉的 native 风险。
+  - `CompactAction` 把普通动作和开关都读成“已启用/未启用”，会误导 TalkBack 用户，并在英文界面混入中文状态；相机底部面板在大字体、debug 展开和现场摘要较长时存在裁切/不可达风险。
+  - CI 之前没有覆盖 androidTest APK 构建和模型资产 shape/dtype 断言，`inspect_tflite.py` 只打印不失败，不足以守住真实入口。
+- 验证方式：
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，输出 `backend=ai-edge-litert`，输入 `images [1, 320, 320, 3] float32`，输出 `Identity [1, 84, 2100] float32`，`assertions=passed`。
+  - `$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path; $env:PATH="$env:JAVA_HOME\bin;$((Resolve-Path '.\.android-sdk\platform-tools').Path);$env:PATH"; $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path; .\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 40s`。
+  - 同样环境运行 `.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain`：最终通过，`BUILD SUCCESSFUL in 59s`。
+  - 同样环境运行 `.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain`：首次失败于 `:app:compileDebugAndroidTestKotlin`，原因是新增大字体测试直接引用 Compose foundation/layout，而 app androidTest 之前未声明 foundation 测试依赖；补充 `androidTestImplementation(libs.androidx.compose.foundation)` 后重跑通过，`BUILD SUCCESSFUL in 29s`。
+  - `.\.android-sdk\platform-tools\adb.exe devices`：设备 `R5CX10M8Y8X` 在线。
+  - 首次 `$env:ANDROID_SERIAL='R5CX10M8Y8X'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --console=plain` 未执行到测试体，安装阶段失败，Android 返回 `INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.linnan.blindassist signatures do not match newer version`。
+  - 用户随后要求继续真机测试；`adb uninstall com.linnan.blindassist` 返回 `DELETE_FAILED_INTERNAL_ERROR`，`pm uninstall --user 0/95` 均显示未安装，`pm uninstall --user 150` 因 Samsung Secure Folder 用户权限被拒绝。重新运行 connected 测试时设备已允许安装并执行测试体。
+  - `:app:connectedDebugAndroidTest` 第一次跑到测试体后 7 个测试中 1 个失败，原因是新增大字体组件测试在 `createAndroidComposeRule<MainActivity>` 已有 content 的情况下调用 `setContent`；拆分为独立 `createComposeRule()` 组件测试后重跑。
+  - `:app:connectedDebugAndroidTest` 第二次失败于大字体组件测试中 `FPS` 文本匹配到 2 个节点；将断言收窄为 `onAllNodesWithText(...).onFirst()` 后重跑。
+  - 最终 `$env:ANDROID_SERIAL='R5CX10M8Y8X'; .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon --console=plain`：通过，`SM-S9280 - 16` 上 7 个 Compose 仪器测试全部通过，`BUILD SUCCESSFUL in 52s`。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -SampleSeconds 90`：通过，证据目录 `E:\linnan\linnan\test-artifacts.local-device-regression-20260526-231417`。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\archive_apk.ps1`：普通沙箱复制到 `E:\linnan\blind-assist-apk-archive\apks` 被 Windows 拒绝访问；按仓库已知权限限制提权重跑成功。
+- APK 归档：
+  - 本地完整归档：`E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.2.0-debug-20260526-215736.apk`
+  - 大小：`47,238,655` bytes
+  - SHA256：`068F2515954F8D96D3BBE92B9D788725ED54872FBB1E54CDCE1DFEA9FC877027`
+  - Git 里程碑 APK：未生成；原因是本次为 `+0.1` 小版本，未达到 `versionName` 差值 `>= 0.5` 的里程碑归档条件，用户也未要求提交 APK 到 Git。
+- 版本判断：
+  - 本轮修复相机生命周期竞态、TFLite 关闭竞态、TalkBack 语义和验证守卫，属于影响可靠性与可访问性的局部小版本修复；不改变模型资产、风险规则、权限集合或产品主流程，因此按规则从 `v8.1.0` 增加 `v0.1` 到 `v8.2.0`。
+- 后续事项：
+  - 远端 GitHub Actions 需要在 push 后确认 `ai-edge-litert` 安装、模型检查和 `:app:assembleDebugAndroidTest` 在 hosted runner 上通过。
+
 ## 2026-05-25
 
 ### v8.1.0 真实使用体验 UI 升级

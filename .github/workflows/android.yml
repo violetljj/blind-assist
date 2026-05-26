@@ -37,8 +37,19 @@ jobs:
       - name: Run Android lint
         run: ./gradlew :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug
 
+      - name: Set up Python for model checks
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install TFLite inspection runtime
+        run: python -m pip install --upgrade pip ai-edge-litert
+
+      - name: Check TFLite model assets
+        run: python scripts/inspect_tflite.py
+
       - name: Assemble debug APK
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug :app:assembleDebugAndroidTest
 
       - name: Ensure generated files are ignored
         shell: pwsh

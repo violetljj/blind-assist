@@ -120,6 +120,23 @@ class AssistRuntimeStateMachineTest {
         assertTrue(transition.effects.contains(AssistRuntimeEffect.ResetSession))
     }
 
+    @Test
+    fun reopeningAfterCloseWaitsForFreshCameraViews() {
+        val machine = AssistRuntimeStateMachine(initialState = AssistRuntimeState.Running, cameraViewsReady = true)
+        machine.onEvent(AssistRuntimeEvent.CloseCamera)
+
+        val reopened = machine.onEvent(
+            AssistRuntimeEvent.OpenCamera(hasCameraPermission = true, modelReady = true)
+        )
+
+        assertEquals(AssistRuntimeState.Starting, reopened.state)
+        assertTrue(!reopened.effects.contains(AssistRuntimeEffect.StartCameraIfReady))
+
+        val freshViews = machine.onEvent(AssistRuntimeEvent.CameraViewsReady)
+
+        assertTrue(freshViews.effects.contains(AssistRuntimeEffect.StartCameraIfReady))
+    }
+
     private fun AssistRuntimeTransition.hasRenderTarget(target: AssistRuntimeRenderTarget): Boolean {
         return effects.any { effect ->
             effect is AssistRuntimeEffect.Render && effect.target == target

@@ -2,6 +2,27 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v8.2.0 - 相机可靠性与无障碍修复
+
+- 状态：已完成本地与真机验证，`versionCode=30`，`versionName=8.2.0`。
+- 主要变化：
+  - 相机关闭时清空运行时的 view-ready 状态和旧 `PreviewView` / overlay 引用，重新打开必须等待新的 `AndroidView` 创建后再绑定 CameraX，避免旧预览 surface 导致黑屏或预览不更新。
+  - `CameraXFrameSource.shutdown()` 对 analyzer executor 做有界等待；`TfliteYoloDetector.detectFrame()` 与 `close()` 使用同一把生命周期锁，避免推理与 interpreter/delegate close 交叉。
+  - TFLite 初始化把 labels 加载纳入同一失败路径，模型校验失败时会关闭已创建的 interpreter/delegate。
+  - 相机页 `CompactAction` 不再给普通动作统一声明“已启用/未启用”；真正的 toggle 和 debug 展开态保留本地化 `stateDescription`。
+  - 相机底部面板增加导航栏避让、最大高度和内部滚动，大字体与 debug 展开时仍可访问关键控件。
+  - `scripts/inspect_tflite.py` 从只打印升级为断言模型存在、输入 `[1,320,320,3] float32`、输出 `[1,84,2100] float32`，CI 增加模型检查和 `:app:assembleDebugAndroidTest`。
+- 验证：
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，使用 `ai-edge-litert` 后端，输入 `[1, 320, 320, 3] float32`，输出 `[1, 84, 2100] float32`，`assertions=passed`。
+  - `:core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest`：通过。
+  - `:app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug`：通过。
+  - `:app:assembleDebug :app:assembleDebugAndroidTest`：首次因新增大字体 androidTest 缺少 Compose foundation 测试依赖失败；补充 `androidTestImplementation(libs.androidx.compose.foundation)` 后通过。
+  - `:app:connectedDebugAndroidTest`：在 Samsung `SM-S9280 - 16` / serial `R5CX10M8Y8X` 上通过，7 个 Compose 仪器测试 0 failures。期间新增大字体组件测试先后暴露 `MainActivity` 已设置 content 与 `FPS` 文本匹配不唯一两个测试写法问题，修正后重跑通过。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -SampleSeconds 90`：通过，证据目录 `test-artifacts.local-device-regression-20260526-231417`。
+- APK：
+  - 完整本地归档 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.2.0-debug-20260526-215736.apk`，大小 `47,238,655` bytes，SHA256 `068F2515954F8D96D3BBE92B9D788725ED54872FBB1E54CDCE1DFEA9FC877027`。
+  - 本次为 `+0.1` 小版本，未提交 Git 里程碑 APK。
+
 ## v8.1.0 - 真实使用体验 UI 升级
 
 - 状态：已完成，`versionCode=29`，`versionName=8.1.0`。

@@ -89,6 +89,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -238,7 +239,8 @@ internal fun CompactToggle(
             "$text, currently $stateLong, tap to ${if (checked) "turn off" else "turn on"}"
         } else {
             "$text，当前$stateLong，点击${if (checked) "关闭" else "开启"}"
-        }
+        },
+        stateDescriptionText = stateLong
     )
 }
 
@@ -249,7 +251,8 @@ internal fun CompactAction(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     selected: Boolean = true,
-    accessibilityText: String = text
+    accessibilityText: String = text,
+    stateDescriptionText: String? = null
 ) {
     val background = if (selected) BaMint else BaPanelSoft
     val foreground = if (selected) BaInk else BaText
@@ -260,7 +263,10 @@ internal fun CompactAction(
             .widthIn(min = 64.dp)
             .semantics {
                 contentDescription = accessibilityText
-                stateDescription = if (selected) "已启用" else "未启用"
+            }
+            .clearAndSetSemantics {
+                contentDescription = accessibilityText
+                stateDescriptionText?.let { stateDescription = it }
             },
         shape = RoundedCornerShape(14.dp),
         colors = ButtonDefaults.buttonColors(

@@ -4,13 +4,15 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 
 ## 版本
 
-- 当前项目版本：`v8.1.0`
+- 当前项目版本：`v8.2.0`
 - 版本规则：小更新增加 `v0.1`，较大更新增加 `v0.5`，阶段性质变增加 `v1.0`。
 - 版本影响由 Codex/Agent 根据每次变更的范围和风险判断。
 - 会影响项目状态、使用方式、功能行为、构建流程、模型资产、测试结论或重要技术决策的更新，应同步保持 README 与当前状态一致。
 - 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
 
 ## 近期状态
+
+- 2026-05-26：完成 `v8.2.0` 相机可靠性与无障碍修复。相机关闭后会清空旧 `PreviewView` 就绪状态，重新打开必须等待新的预览 View，避免绑定已移除预览导致黑屏；TFLite 检测与关闭使用同一生命周期锁，并在 analyzer executor 关闭时做有界等待，降低销毁竞态风险。相机页普通动作不再被 TalkBack 读成“已启用/未启用”，debug 展开态和核心开关保留本地化 state description；底部面板在大字体和 debug 展开时限制高度并支持滚动。`scripts/inspect_tflite.py` 已升级为模型 shape/dtype 断言脚本，CI 增加模型检查与 `:app:assembleDebugAndroidTest`。当前版本为 `v8.2.0` / `versionCode=30`；模型检查、多模块单测、多模块 lint、debug/androidTest APK 构建、7 个 Compose `connectedDebugAndroidTest` 真机测试和 `scripts/run_device_regression.ps1 -SampleSeconds 90` 均通过，设备证据目录为 `test-artifacts.local-device-regression-20260526-231417`。本轮属于 `+0.1` 小版本，APK 已归档到完整本地目录 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.2.0-debug-20260526-215736.apk`，不提交 Git 里程碑 APK。
 
 - 2026-05-25：完成 `v8.1.0` 真实使用体验 UI 升级。功能页调整为任务启动台，优先展示当前行走任务、主摄像头入口和日常模式选择；相机页重排底部面板，把风险状态、行动建议和检测/语音/震动核心开关放在前面，并让 Care Mode 成为更大字号、更低干扰的相机体验；设置页按界面与辅助、提醒方式、行走场景、调试与记录分组。当前版本为 `v8.1.0` / `versionCode=29`，已通过 UI 相关单测、lint、debug/androidTest APK 构建、6 个 Compose 真机测试和 `scripts/run_device_regression.ps1 -SampleSeconds 90` 真机回归；设备证据目录为 `test-artifacts.local-device-regression-20260525-222502`，Git 里程碑 APK 为 `releases/apk/BlindAssist-v8.1.0-debug-20260525-222724.apk`。
 - 2026-05-25：已在 Samsung `SM-S9280` / Android 16 上完成当前 `v7.6.0` 真机验证。旧 `v5.9.0` 安装包因 debug 签名不同，已在确认后卸载再安装当前 APK。模型检查、`:app:testDebugUnitTest :app:assembleDebug`、6 个 Compose `connectedDebugAndroidTest` 用例和 `scripts/run_device_regression.ps1 -SampleSeconds 90` 均通过。设备端包信息为 `versionName=7.6.0` / `versionCode=28`，本地证据目录为 `test-artifacts.local-device-regression-20260525-012352`。
@@ -130,7 +132,7 @@ app/src/main/assets/yolo11n_fp16_320.tflite
 app/src/main/assets/coco_labels.txt
 ```
 
-模型文件较大，默认不提交到 Git。推荐用本仓库脚本导出，导出参数固定为 `imgsz=320`、`half=True`、`nms=False`，这样 Android 端可以解析 raw YOLO 输出并自行执行 NMS。已验证的本机导出路径是 Python 3.12 + TensorFlow 2.19：
+当前仓库已包含 Android 运行和 CI 模型检查所需的受控模型资产。若需要重新生成或校验资产，推荐用本仓库脚本导出，导出参数固定为 `imgsz=320`、`half=True`、`nms=False`，这样 Android 端可以解析 raw YOLO 输出并自行执行 NMS。已验证的本机导出路径是 Python 3.12 + TensorFlow 2.19：
 
 ```powershell
 .\.venv-export\Scripts\python.exe -m pip install uv
@@ -144,6 +146,7 @@ app/src/main/assets/coco_labels.txt
 期望输出：
 
 ```text
+assertions=passed
 input shape=[1, 320, 320, 3] dtype=float32
 output shape=[1, 84, 2100] dtype=float32
 ```

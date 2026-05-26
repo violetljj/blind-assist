@@ -34,7 +34,10 @@ internal class AssistRuntimeEffectExecutor(
                     frameProcessor.reset()
                 }
                 AssistRuntimeEffect.ClearOverlay -> renderer.clearOverlay()
-                AssistRuntimeEffect.CloseCamera -> renderer.closeCamera(configSnapshot.get())
+                AssistRuntimeEffect.CloseCamera -> {
+                    renderer.closeCamera(configSnapshot.get())
+                    cameraLifecycleAdapter.clearViews()
+                }
                 AssistRuntimeEffect.ResetSession -> {
                     coordinator.reset()
                     frameProcessor.reset()
