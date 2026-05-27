@@ -52,10 +52,10 @@ Get-FileHash -Algorithm SHA256 -LiteralPath "E:\linnan\blind-assist-apk-archive\
 E:\linnan\blind-assist-apk-archive\test-artifacts\test-artifacts-20260525-001501
 ```
 
-该归档包含 145 个文件，总计 103,677,703 bytes。仓库后续不再跟踪新的 `test-artifacts/` 内容；未来设备回归证据应保留在 `test-artifacts.local-*`，或在用户明确要求时作为 release 附件处理。
+该归档包含 145 个文件，总计 103,677,703 bytes。仓库后续不再跟踪新的 `test-artifacts/` 内容；未来设备回归证据应保留在 `test-artifacts.local/` 的分组目录中，或在用户明确要求时作为 release 附件处理。
 
 ## 后续规则
 
 创建新 APK 时，先本地归档。只有当前 `versionName` 比 `releases/apk/` 中最新已提交 APK 至少高 `0.5`，或用户明确要求提交 Git 里程碑 APK 时，才把 APK 提交到 `releases/apk/`。更小更新产生的 APK 留在完整本地归档。
 
-新的测试截图、原始设备日志、临时 APK、zip 快照、PPT 导出、ONNX/PT/NPY 模型转换中间产物和机器本地缓存默认不进入 Git。`scripts/run_device_regression.ps1` 生成的设备回归证据写入 `test-artifacts.local-device-regression-*` 目录，只用于后续本地对比。CI 通过 `scripts/check_repo_hygiene.ps1` 执行这条面向未来的规则；既有历史产物不会因该策略被重写或删除。
+新的测试截图、原始设备日志、临时 APK、zip 快照、PPT 导出、ONNX/PT/NPY 模型转换中间产物和机器本地缓存默认不进入 Git。`scripts/run_device_regression.ps1` 生成的设备回归证据写入 `test-artifacts.local/device-regression/<timestamp>/` 目录，只用于后续本地对比。CI 通过 `scripts/check_repo_hygiene.ps1` 执行这条面向未来的规则；既有历史产物不会因该策略被重写或删除。

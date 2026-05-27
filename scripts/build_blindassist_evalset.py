@@ -415,7 +415,7 @@ This local evaluation set contains {sample_count} real public-dataset images sel
 - Dataset page: https://cocodataset.org/dataset/detection-2017.htm
 - Image base URL: {IMAGE_BASE_URL}
 - Annotation URL: {ANNOTATIONS_URL}
-- Redistribution policy in this workspace: original images are local-only evaluation artifacts under `test-artifacts.local-*` and must not be committed to Git.
+- Redistribution policy in this workspace: original images are local-only evaluation artifacts under `test-artifacts.local/datasets/` and must not be committed to Git.
 - BlindAssist risk fields are project-specific annotations generated for review and algorithm evaluation; standard COCO exports intentionally exclude those fields.
 
 Planned but not included in this first generated artifact: Open Images, LOCO, GND, LAVN. They remain good sources for a future manually curated expansion after license/source review and download setup.
@@ -464,7 +464,7 @@ def validate_manifest(rows: list[dict[str, Any]], dataset_root: Path) -> dict[st
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a local BlindAssist real-walking evaluation set from public COCO images.")
-    parser.add_argument("--output-root", default=None, help="Dataset output root. Defaults to test-artifacts.local-blindassist-evalset-<timestamp>.")
+    parser.add_argument("--output-root", default=None, help="Dataset output root. Defaults to test-artifacts.local/datasets/blindassist-evalset-<timestamp>.")
     parser.add_argument("--cache-root", default=DEFAULT_CACHE_ROOT, help="COCO cache root with annotations/images.")
     parser.add_argument("--sample-count", type=int, default=DEFAULT_SAMPLE_COUNT)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
@@ -475,7 +475,7 @@ def main() -> int:
     cache_root = resolve_path(project_root, args.cache_root)
     dataset_root = resolve_path(
         project_root,
-        args.output_root or f"test-artifacts.local-blindassist-evalset-{now_stamp()}",
+        args.output_root or Path("test-artifacts.local") / "datasets" / f"blindassist-evalset-{now_stamp()}",
     )
     annotations_zip = cache_root / "annotations_trainval2017.zip"
     download(ANNOTATIONS_URL, annotations_zip, args.retries)

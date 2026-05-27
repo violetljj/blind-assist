@@ -108,7 +108,7 @@ $adb = Resolve-Adb $AdbPath
 $device = Get-SingleDevice $adb
 
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-$artifactRoot = Join-Path $repoRoot "test-artifacts.local-device-regression-$timestamp"
+$artifactRoot = Join-Path (Join-Path $repoRoot "test-artifacts.local\device-regression") $timestamp
 New-Item -ItemType Directory -Force -Path $artifactRoot | Out-Null
 
 $summary = [ordered]@{

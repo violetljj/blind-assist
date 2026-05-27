@@ -316,7 +316,7 @@ def main() -> None:
         output_dir = resolve_path(project_root, args.output_dir)
     else:
         stamp = time.strftime("%Y%m%d-%H%M%S")
-        output_dir = project_root / f"test-artifacts.local-detector-benchmark-{stamp}"
+        output_dir = project_root / "test-artifacts.local" / "detector-benchmark" / stamp
     output_dir.mkdir(parents=True, exist_ok=True)
     write_json(output_dir / "benchmark.json", payload)
     (output_dir / "benchmark.md").write_text(markdown_report(payload), encoding="utf-8")

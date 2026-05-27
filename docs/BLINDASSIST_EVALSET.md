@@ -30,7 +30,7 @@
 缺少的 COCO val2017 图片会按需从 `http://images.cocodataset.org/val2017/` 下载。输出目录形如：
 
 ```text
-test-artifacts.local-blindassist-evalset-YYYYMMDD-HHMMSS/
+test-artifacts.local/datasets/blindassist-evalset-YYYYMMDD-HHMMSS/
 ```
 
 该目录被 `.gitignore` 中的 `test-artifacts*/` 忽略，原图仅用于本机内部评测，不提交 Git。
@@ -38,7 +38,7 @@ test-artifacts.local-blindassist-evalset-YYYYMMDD-HHMMSS/
 ## 输出结构
 
 ```text
-test-artifacts.local-blindassist-evalset-*/
+test-artifacts.local/datasets/blindassist-evalset-*/
   dataset_spec.json
   generation_records.jsonl
   manifest.jsonl
@@ -91,6 +91,12 @@ test-artifacts.local-blindassist-evalset-*/
 
 ## 来源与限制
 
-第一版生成脚本使用 COCO 2017 validation 图片和实例标注。Open Images、LOCO、GND 和 LAVN 仍适合作为后续扩展来源，但需要独立确认下载方式、许可证和标注格式后再合入。
+第一版生成脚本使用 COCO 2017 validation 图片和实例标注。当前首版本地目录为：
+
+```text
+test-artifacts.local/datasets/blindassist-evalset-20260527-impl/
+```
+
+Open Images、LOCO、GND 和 LAVN 仍适合作为后续扩展来源，但需要独立确认下载方式、许可证和标注格式后再合入。
 
 原图只保存在本地忽略目录，不随仓库分发。若未来要公开评测集，只应公开脚本、图片来源 id、派生标注和复现说明，并重新核对每个数据源的许可要求。

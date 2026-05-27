@@ -74,7 +74,7 @@ function Get-SingleDevice([string]$Adb) {
 
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-$artifactRoot = Join-Path $repoRoot "test-artifacts.local-detector-ab-device-benchmark-$timestamp"
+$artifactRoot = Join-Path (Join-Path $repoRoot "test-artifacts.local\detector-ab-device-benchmark") $timestamp
 New-Item -ItemType Directory -Force -Path $artifactRoot | Out-Null
 
 $python = Resolve-RepoPath ".venv-export312\Scripts\python.exe"

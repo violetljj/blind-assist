@@ -18,9 +18,9 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchm
 
 本轮设备为 Samsung `SM-S9280` / Android 16，证据目录：
 ```text
-test-artifacts.local-detector-ab-device-benchmark-20260527-022312
-test-artifacts.local-detector-ab-device-benchmark-20260527-022312/device-detector-ab-benchmark/20260527-022419/
-test-artifacts.local-device-regression-20260527-022510
+test-artifacts.local/detector-ab-device-benchmark/20260527-022312
+test-artifacts.local/detector-ab-device-benchmark/20260527-022312/device-detector-ab-benchmark/20260527-022419/
+test-artifacts.local/device-regression/20260527-022510
 ```
 
 设备端输出包含：
@@ -51,7 +51,7 @@ risk-mismatches.json
 .downloads/detector-lab/models/      # 候选 .pt 权重
 .downloads/detector-lab/exports/     # 候选 TFLite 导出
 .downloads/detector-lab/datasets/    # 小型评测图片集
-test-artifacts.local-detector-benchmark-*  # benchmark 结果
+test-artifacts.local/detector-benchmark/<timestamp>/  # benchmark 结果
 ```
 
 `.downloads/` 和 `test-artifacts*/` 已由 `.gitignore` 忽略，适合保存本机可复盘证据。
@@ -94,7 +94,7 @@ test-artifacts.local-detector-benchmark-*  # benchmark 结果
 .\.venv-export312\Scripts\python.exe scripts\benchmark_tflite_detectors.py --warmup 2 --runs 5
 ```
 
-当前本机 smoke test 结果如下，证据目录为 `test-artifacts.local-detector-benchmark-20260527-010222`：
+当前本机 smoke test 结果如下，证据目录为 `test-artifacts.local/detector-benchmark/20260527-010222`：
 
 | 模型 | 后端 | 输入 | 输出 | 大小 | P50 | P95 |
 | --- | --- | --- | --- | ---: | ---: | ---: |
@@ -142,7 +142,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_yolo26n_device_benchmark.
 
 该脚本会执行 yolo26n shape 检查、构建 debug/androidTest APK、确认正式 APK 不含 yolo26n、运行专项 instrumentation benchmark、拉取设备端 JSON/Markdown 结果，并在拉取后执行默认模型 90 秒真机回归。
 
-本轮 Samsung `SM-S9280` / Android 16 结果如下，证据目录为 `test-artifacts.local-yolo26n-device-benchmark-20260527-015039`：
+本轮 Samsung `SM-S9280` / Android 16 结果如下，证据目录为 `test-artifacts.local/yolo26n-device-benchmark/20260527-015039`：
 
 | 路径 | Runs | P50 ms | P95 ms | Min ms | Max ms |
 | --- | ---: | ---: | ---: | ---: | ---: |
@@ -150,6 +150,6 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_yolo26n_device_benchmark.
 | BlindAssist detector inference | 100 | 37.000 | 39.000 | 36.000 | 46.000 |
 | BlindAssist detector total | 100 | 49.000 | 51.000 | 47.000 | 89.000 |
 
-应用链路额外统计：preprocess P50/P95 为 `9/11ms`，postprocess P50/P95 为 `1/1ms`，检测数量 P50/P95 为 `2/7`，100 张 COCO 图片无失败。正式 debug APK 资产检查结果仅包含 `assets/yolo11n_fp16_320.tflite` 和 `assets/coco_labels.txt`；随后默认模型路径 `scripts/run_device_regression.ps1 -SampleSeconds 90` 通过，证据目录为 `test-artifacts.local-device-regression-20260527-015153`，冷启动 `TotalTime=736ms` / `WaitTime=738ms`。
+应用链路额外统计：preprocess P50/P95 为 `9/11ms`，postprocess P50/P95 为 `1/1ms`，检测数量 P50/P95 为 `2/7`，100 张 COCO 图片无失败。正式 debug APK 资产检查结果仅包含 `assets/yolo11n_fp16_320.tflite` 和 `assets/coco_labels.txt`；随后默认模型路径 `scripts/run_device_regression.ps1 -SampleSeconds 90` 通过，证据目录为 `test-artifacts.local/device-regression/20260527-015153`，冷启动 `TotalTime=736ms` / `WaitTime=738ms`。
 
 这些结果只能说明 `yolo26n` 候选在当前设备、当前 320 FP16 导出和 COCO100 抽样下具备端侧运行与应用链路兼容性；它仍不是默认模型，也不能作为助行安全效果优于 YOLO11n 的结论。

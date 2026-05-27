@@ -4,6 +4,42 @@
 
 ## 2026-05-27
 
+### 整理本地产物目录和数据集路径
+- 时间：2026-05-27 17:30:00 +08:00
+- 执行者：violjjet
+- 类型：目录整理 / 文档 / 工具
+- 修改范围：
+  - `test-artifacts.local/`（本地忽略目录，不提交 Git）
+  - `scripts/build_blindassist_evalset.py`
+  - `scripts/benchmark_tflite_detectors.py`
+  - `scripts/run_device_regression.ps1`
+  - `scripts/run_detector_ab_device_benchmark.ps1`
+  - `docs/LOCAL_ARTIFACTS.md`
+  - `docs/BLINDASSIST_EVALSET.md`
+  - `docs/DETECTOR_BENCHMARK.md`
+  - `docs/DEVICE_REGRESSION.md`
+  - `docs/APK_ARCHIVE.md`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 将根目录下分散的 `test-artifacts.local-*` 和历史 `test-artifacts/` 目录移动到统一的 `test-artifacts.local/` 下，并按功能分为 `datasets/`、`device-regression/`、`detector-benchmark/`、`detector-ab-device-benchmark/`、`yolo26n-device-benchmark/` 和 `legacy/`。
+  - 将 BlindAssist 真实助行评测集移动到 `test-artifacts.local/datasets/blindassist-evalset-20260527-impl/`，保留 `manifest.jsonl`、YOLO/COCO 导出、QA 预览和 boxed 图。
+  - 调整评测集、检测器 benchmark、真机回归和 A/B 真机评测脚本的默认输出位置，后续新产物默认进入 `test-artifacts.local/` 分组目录，不再直接堆在项目根目录。
+  - 新增 `docs/LOCAL_ARTIFACTS.md`，集中说明各类本地产物目录的路径、功能、生成命令和维护规则。
+  - 更新 README、评测集文档、detector benchmark 文档、设备回归文档和 APK 归档策略中的新路径说明。
+- 修改原因：
+  - 项目根目录已有多批真机回归、检测器 benchmark、A/B 评测、yolo26n 专项和数据集目录，影响日常浏览与后续维护。
+  - 数据集原图和评测产物需要与普通设备回归证据分开，便于下一轮算法优化时快速定位数据集、标注和 QA 入口。
+- 验证方式：
+  - 已用 PowerShell 逐项校验源路径在仓库根目录内、目标路径在 `test-artifacts.local/` 内，再执行 `Move-Item`，未移动源码或 Git 跟踪文件。
+  - 已确认根目录现在只剩一个 `test-artifacts.local` 汇总入口；分组目录包括 `datasets`、`device-regression`、`detector-benchmark`、`detector-ab-device-benchmark`、`yolo26n-device-benchmark` 和 `legacy`。
+  - 已确认关键文件仍存在：`test-artifacts.local/datasets/blindassist-evalset-20260527-impl/qa/preview.html`、`test-artifacts.local/device-regression/20260527-022510/summary.json`、`test-artifacts.local/detector-ab-device-benchmark/20260527-022312/summary.json`。
+- 版本判断：
+  - 本轮只整理本地忽略产物目录、更新默认输出路径和文档说明，不改变 App 功能、模型、风险规则、权限或 APK 行为，因此不调整 `versionName=8.2.0` / `versionCode=30`，不构建或归档 APK。
+- 后续事项：
+  - 后续新增本地证据时，优先写入 `test-artifacts.local/` 对应分组；如果新增新的产物类型，应先补 `docs/LOCAL_ARTIFACTS.md` 再固定脚本默认输出位置。
+
+
 ### BlindAssist 专用真实助行评测集首版
 - 时间：2026-05-27 17:03:00 +08:00
 - 执行者：violjjet
