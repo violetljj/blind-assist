@@ -11,6 +11,8 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 - 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
 
 ## 近期状态
+- 2026-05-27：完成 BlindAssist 专用真实助行评测集首版。新增 `scripts/build_blindassist_evalset.py` 和 `docs/BLINDASSIST_EVALSET.md`，从 COCO 2017 validation 真实图片和实例标注中筛选 150 张本地评测样本，额外记录 `expected_risk_direction`、`expected_distance_band`、`expected_should_alert`、`expected_risk_level` 和 `assist_scenario`，用于下一轮检测器与风险规则优化。输出目录为 `test-artifacts.local-blindassist-evalset-20260527-impl`，包含 `manifest.jsonl`、YOLO labels、标准 COCO `instances_test.json`、`qa/preview.html` 和 150 张 boxed QA 图；原图仅本地保留，不提交 Git。本轮不改变 App 行为，不调整 `versionName=8.2.0` / `versionCode=30`。
+
 - 2026-05-27：完成 `yolo11n` 与 `yolo26n` 同设备 A/B 质量评测。新增 COCO100 标注导出 `coco100_annotations.json`、`DetectorAbDeviceBenchmarkTest` 和 `scripts/run_detector_ab_device_benchmark.ps1`，在同一台 Samsung `SM-S9280` / Android 16、同一批 100 张 COCO val2017 固定样本、同一套 BlindAssist 预处理/解析/风险规则下比较检测质量、误报漏报、风险目标与稳定性。结果：`yolo11n` AP50/precision/recall/F1 为 `0.285/0.859/0.299/0.444`，`yolo26n` 为 `0.279/0.872/0.294/0.440`；`yolo26n` total P50/P95 为 `49/51ms`，快于 `yolo11n` 的 `54/56ms`，但 AP50 与召回略低，未满足默认模型替换门槛。本轮结论为不替换默认模型，证据目录为 `test-artifacts.local-detector-ab-device-benchmark-20260527-022312`，默认模型 90 秒真机回归通过，证据目录为 `test-artifacts.local-device-regression-20260527-022510`。本轮只增强评测工具与证据，不调整 `versionName=8.2.0` / `versionCode=30`。
 
 - 2026-05-27：完成 `yolo26n` 专项真机验证，但不替换默认模型。新增 COCO val2017 固定抽样脚本，已在 `.downloads/detector-lab/datasets/coco100/` 准备 100 张图片和 manifest；新增 yolo26n instrumentation benchmark，候选模型只进入 androidTest APK 资产，正式 debug APK 仍只包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。在 Samsung `SM-S9280` / Android 16 上，`yolo26n_fp16_320.tflite` 纯 TFLite CPU 4 线程 invoke P50/P95 为 `36.996/42.060ms`，BlindAssist 应用链路 inference P50/P95 为 `37/39ms`，total P50/P95 为 `49/51ms`，100 张图片无失败；证据目录为 `test-artifacts.local-yolo26n-device-benchmark-20260527-015039`。随后默认模型路径执行 `scripts/run_device_regression.ps1 -SampleSeconds 90` 通过，证据目录为 `test-artifacts.local-device-regression-20260527-015153`。本轮是实验验证工具与测试证据补充，不改变用户可见行为，不调整 `versionName=8.2.0` / `versionCode=30`。
@@ -33,6 +35,7 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 - [真机回归说明](docs/DEVICE_REGRESSION.md)：安装、冷启动、包状态、UI dump、截图、`gfxinfo`、`meminfo` 和可选 connected Compose 测试的真机证据采集流程。
 - [APK 归档策略](docs/APK_ARCHIVE.md)：Git 只保留累计 `versionName` 差值 `>= 0.5` 的里程碑 APK，完整本地归档位于 `E:\linnan\blind-assist-apk-archive\apks`，SHA256 证据写入 `APK_ARCHIVE_MANIFEST.csv`。
 - [实时检测器横向评测说明](docs/DETECTOR_BENCHMARK.md)：说明候选检测器下载、导出、多模型检查、COCO8 smoke benchmark 和真实助行图片集边界。
+- [BlindAssist 专用真实助行评测集](docs/BLINDASSIST_EVALSET.md)：说明 150 张本地真实图片评测集的生成、风险字段、YOLO/COCO 导出、QA 预览和原图仅本地保留限制。
 - [Codex skills 快照清单](codex/skills-snapshot/MANIFEST.md)：`codex/skills-snapshot/codex-skills-20260522.zip` 的 SHA256、大小、条目数和恢复提示。
 - [真实版本更新记录](CHANGELOG.md)：按真实版本整理功能变化、验证证据和 APK 归档路径，方便课堂展示、答辩材料和版本对比。
 - [演示指南](DEMO_GUIDE.md)：面向老师/答辩的演示脚本，包含环境准备、手机安装、现场演示顺序、无设备 fallback、隐私与安全边界说明。

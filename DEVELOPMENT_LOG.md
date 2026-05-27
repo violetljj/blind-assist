@@ -4,6 +4,46 @@
 
 ## 2026-05-27
 
+### BlindAssist 专用真实助行评测集首版
+- 时间：2026-05-27 17:03:00 +08:00
+- 执行者：violjjet
+- 类型：数据集 / 评测工具 / 文档
+- 修改范围：
+  - `scripts/build_blindassist_evalset.py`
+  - `docs/BLINDASSIST_EVALSET.md`
+  - `README.md`
+  - `DEVELOPMENT_LOG.md`
+  - `test-artifacts.local-blindassist-evalset-20260527-impl`（本地忽略目录，不提交 Git）
+  - `.downloads/detector-lab/datasets/coco100/images/`（本地公开数据缓存，不提交 Git）
+- 修改内容：
+  - 新增 `scripts/build_blindassist_evalset.py`，从 COCO 2017 validation 图片和实例标注中筛选 150 张真实公开图片，按 BlindAssist 助行评测需要生成本地评测集。
+  - 评测集输出沿用数据集工作台结构：`dataset_spec.json`、`manifest.jsonl`、`images/test/`、`labels_yolo/test/`、`annotations/`、`qa/` 和 `source_licenses.md`。
+  - 每条 `manifest.jsonl` 记录除 COCO 框外，新增 `expected_risk_direction`、`expected_distance_band`、`expected_should_alert`、`expected_risk_level`、`assist_scenario`、`primary_object_id`、`risk_rationale`、`review_status` 和 `source` 元数据。
+  - 场景配额已按计划生成：`front_near_primary=45`、`side_passing_target=25`、`far_large_object=20`、`near_small_obstacle=25`、`low_light_or_occlusion=20`、`corridor_or_outdoor_slow=15`。
+  - 新增 `docs/BLINDASSIST_EVALSET.md`，说明生成命令、输出结构、风险字段语义、质量检查流程、人工复核入口和原图仅本地保留的限制。
+  - README 近期状态和项目材料入口补充本次评测集生成流程、证据目录和版本不变说明。
+- 修改原因：
+  - 下一轮检测器和风险规则优化不能再只依赖 COCO100 通用检测指标，需要一组更贴近 BlindAssist 助行任务的固定评测图片。
+  - 当前风险层关心的是“方向、相对距离、是否提醒”，因此评测集必须在普通检测框之外增加可直接对照 `RiskAnalyzer` 和提醒策略的项目专用字段。
+- 验证方式：
+  - `.\.venv-export312\Scripts\python.exe -m py_compile scripts\build_blindassist_evalset.py`：通过。
+  - `.\.venv-export312\Scripts\python.exe scripts\build_blindassist_evalset.py --output-root test-artifacts.local-blindassist-evalset-20260527-impl`：首次 120 秒超时，已写入 74 张；延长超时后原地重跑成功，最终 `sample_count=150`。
+  - `.\.venv-export312\Scripts\python.exe C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\validate_yolo.py --dataset test-artifacts.local-blindassist-evalset-20260527-impl`：通过，检查 `150` 个 YOLO label 文件。
+  - `.\.venv-export312\Scripts\python.exe C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\coco_from_manifest.py --dataset test-artifacts.local-blindassist-evalset-20260527-impl --splits test`：通过，生成 `annotations/instances_test.json`，包含 `150` 张图片和 `1144` 个标准 COCO annotations。
+  - `.\.venv-export312\Scripts\python.exe C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\make_preview.py --dataset test-artifacts.local-blindassist-evalset-20260527-impl --limit 150`：通过，生成 `qa/preview.html`、`qa/report.json` 和 `150` 张 boxed QA 图。
+  - `qa/blindassist_manifest_validation.json`：`ok=true`，图片数 `150`，唯一 hash `150`，无 bbox 或枚举字段错误。
+- 评测集统计：
+  - 风险方向：`CENTER=93`、`LEFT=29`、`RIGHT=28`。
+  - 距离层级：`CRITICAL=49`、`NEAR=45`、`MID=31`、`FAR=25`。
+  - 是否应提醒：`true=99`、`false=51`。
+  - 风险等级：`HIGH=60`、`MEDIUM=39`、`LOW=26`、`NONE=25`。
+  - 使用场景：`GENERAL=96`、`INDOOR=20`、`CROWDED=19`、`OUTDOOR_SLOW=12`、`CORRIDOR=3`。
+- 版本判断：
+  - 本轮只新增离线评测集生成工具、评测文档和本地忽略数据集，不改变 App 默认模型、风险规则、UI、权限、构建产物或用户可见行为，因此不调整 `versionName=8.2.0` / `versionCode=30`，不构建或归档 APK。
+- 后续事项：
+  - 当前 150 张样本的 `review_status` 为 `accepted_auto_prelabel_needs_human_visual_review`，表示格式和导出校验已通过，但风险语义仍建议打开 `qa/preview.html` 和 `qa/manual_review_checklist.csv` 做逐张人工复核。
+  - 后续可把 Open Images、LOCO、GND 或 LAVN 作为第二批扩展来源，特别补强真实走廊、门框、低光和短连续帧。
+
 ### yolo11n / yolo26n 同设备 A/B 质量评测
 - 时间：2026-05-27 02:31:00 +08:00
 - 执行者：violjjet
