@@ -6,11 +6,14 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.linnan.blindassist.alert.AssistScenario
+import com.linnan.blindassist.feedback.FeedbackPlanner
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskAnalyzer
+import com.linnan.blindassist.risk.RiskAnalyzerConfig
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
@@ -44,10 +47,12 @@ class DetectorAbDeviceBenchmarkTest {
     private val testContext = instrumentation.context
     private val targetContext = instrumentation.targetContext
     private val arguments = InstrumentationRegistry.getArguments()
-    private val riskAnalyzer = RiskAnalyzer()
 
     @Test
     fun compareYolo11nAndYolo26nOnSameDeviceImagesAndMetrics() {
+        val datasetKind = arguments.getString(ARG_DATASET_KIND) ?: DATASET_KIND_COCO100
+        val riskConfigName = arguments.getString(ARG_RISK_CONFIG) ?: RISK_CONFIG_CURRENT
+        val riskAnalyzer = RiskAnalyzer(riskAnalyzerConfigFor(riskConfigName))
         val imageLimit = arguments.getString(ARG_IMAGE_LIMIT)?.toIntOrNull() ?: DEFAULT_IMAGE_LIMIT
         val pureWarmup = arguments.getString(ARG_PURE_WARMUP)?.toIntOrNull() ?: DEFAULT_PURE_WARMUP
         val pureRuns = arguments.getString(ARG_PURE_RUNS)?.toIntOrNull() ?: DEFAULT_PURE_RUNS
@@ -60,16 +65,16 @@ class DetectorAbDeviceBenchmarkTest {
             assertTrue("${spec.assetName} test asset is missing", assetExists(spec.assetName))
         }
         assertTrue("coco labels test asset is missing", assetExists(TfliteYoloDetector.LABELS_ASSET))
-        assertTrue("COCO100 annotation asset is missing", assetExists(COCO_ANNOTATIONS_ASSET))
 
         val labels = loadLabels()
-        val images = loadBenchmarkImages(labels).take(imageLimit)
-        assertTrue("Expected at least one annotated COCO100 image asset", images.isNotEmpty())
+        val dataset = loadBenchmarkDataset(datasetKind, labels)
+        val images = dataset.images.take(imageLimit)
+        assertTrue("Expected at least one annotated ${dataset.name} image asset", images.isNotEmpty())
 
         val artifactDir = createArtifactDir(targetContext)
         val modelResults = MODEL_SPECS.map { spec ->
             val pure = runPureInterpreterBenchmark(spec, images, pureWarmup, pureRuns)
-            val app = runAppDetectorBenchmark(spec, images, appRunsPerImage, matchIouThreshold)
+            val app = runAppDetectorBenchmark(spec, images, appRunsPerImage, matchIouThreshold, riskAnalyzer)
             assertFalse("${spec.id} App detector produced failures", app.failures.isNotEmpty())
             ModelBenchmarkResult(spec, pure, app)
         }
@@ -77,6 +82,9 @@ class DetectorAbDeviceBenchmarkTest {
         val payload = JSONObject()
             .put("created_at_utc", utcNow())
             .put("device_under_test", "instrumentation-connected-device")
+            .put("dataset_kind", datasetKind)
+            .put("dataset_name", dataset.name)
+            .put("risk_config", riskConfigName)
             .put("default_model_asset", TfliteYoloDetector.MODEL_ASSET)
             .put("image_count", images.size)
             .put("image_limit", imageLimit)
@@ -91,6 +99,7 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("yolo26n", ".downloads/detector-lab/exports/yolo26n_fp16_320.tflite")
                 .put("images", ".downloads/detector-lab/datasets/coco100/images")
                 .put("annotations", ".downloads/detector-lab/datasets/coco100/coco100_annotations.json")
+                .put("blindassist_evalset", "test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
                 .put("labels", "app/src/main/assets/coco_labels.txt"))
 
         File(artifactDir, "benchmark.json").writeText(payload.toString(2), Charsets.UTF_8)
@@ -180,7 +189,8 @@ class DetectorAbDeviceBenchmarkTest {
         spec: ModelSpec,
         images: List<BenchmarkImage>,
         runsPerImage: Int,
-        matchIouThreshold: Float
+        matchIouThreshold: Float,
+        riskAnalyzer: RiskAnalyzer
     ): AppBenchmarkResult {
         val detector = TfliteYoloDetector(
             context = testContext,
@@ -226,14 +236,21 @@ class DetectorAbDeviceBenchmarkTest {
                 }
 
                 val firstRun = runs.firstOrNull() ?: FrameRun(emptyList(), noneRisk(), 0.0, 0.0, 0.0, 0.0)
-                val gtRisk = riskAnalyzer.analyze(image.groundTruthDetections(), image.frameSize)
+                val gtRisk = expectedRiskResult(image, riskAnalyzer)
                 val evaluation = evaluateDetections(
                     image = image,
                     detections = firstRun.detections,
                     matchIouThreshold = matchIouThreshold
                 )
                 val stability = StabilitySummary.from(runs)
-                perImage += PerImageModelResult(image, evaluation, gtRisk, firstRun.risk, stability)
+                perImage += PerImageModelResult(
+                    image = image,
+                    evaluation = evaluation,
+                    groundTruthRisk = gtRisk,
+                    modelRisk = firstRun.risk,
+                    actualAlert = alertFor(firstRun.risk, image.expectedRisk?.scenario ?: AssistScenario.GENERAL),
+                    stability = stability
+                )
                 firstRunDetectionsByImage[image.fileName] = firstRun.detections
             }
         } finally {
@@ -242,6 +259,7 @@ class DetectorAbDeviceBenchmarkTest {
 
         val quality = aggregateQuality(images, perImage, firstRunDetectionsByImage, matchIouThreshold)
         val riskQuality = aggregateRiskQuality(perImage)
+        val blindAssistMetrics = aggregateBlindAssistMetrics(perImage, matchIouThreshold)
         return AppBenchmarkResult(
             runs = images.size * runsPerImage,
             runsPerImage = runsPerImage,
@@ -252,6 +270,7 @@ class DetectorAbDeviceBenchmarkTest {
             totalStats = Stats.from(total),
             quality = quality,
             riskQuality = riskQuality,
+            blindAssistMetrics = blindAssistMetrics,
             stability = StabilityAggregate.from(perImage.map { it.stability }),
             perImage = perImage,
             falsePositives = perImage.flatMap { it.evaluation.falsePositives }.map { it.toJson(spec.id) },
@@ -261,7 +280,22 @@ class DetectorAbDeviceBenchmarkTest {
         )
     }
 
-    private fun loadBenchmarkImages(labels: List<String>): List<BenchmarkImage> {
+    private fun loadBenchmarkDataset(kind: String, labels: List<String>): BenchmarkDataset {
+        return when (kind) {
+            DATASET_KIND_COCO100 -> {
+                assertTrue("COCO100 annotation asset is missing", assetExists(COCO_ANNOTATIONS_ASSET))
+                BenchmarkDataset("COCO100 val2017 fixed sample", loadCocoBenchmarkImages(labels))
+            }
+            DATASET_KIND_BLINDASSIST_EVALSET -> {
+                assertTrue("BlindAssist evalset manifest asset is missing", assetExists(BLINDASSIST_EVALSET_MANIFEST_ASSET))
+                assertTrue("BlindAssist evalset spec asset is missing", assetExists(BLINDASSIST_EVALSET_SPEC_ASSET))
+                BenchmarkDataset("BlindAssist EvalSet", loadBlindAssistEvalSetImages(labels))
+            }
+            else -> error("Unsupported datasetKind: $kind")
+        }
+    }
+
+    private fun loadCocoBenchmarkImages(labels: List<String>): List<BenchmarkImage> {
         val root = JSONObject(readAssetText(COCO_ANNOTATIONS_ASSET))
         val images = root.getJSONArray("images")
         return (0 until images.length()).map { index ->
@@ -278,7 +312,7 @@ class DetectorAbDeviceBenchmarkTest {
                 } else {
                     val xyxy = annotation.getJSONArray("bbox_xyxy")
                     GroundTruthBox(
-                        id = annotation.getInt("id"),
+                        id = annotation.getInt("id").toString(),
                         classId = classId,
                         label = label,
                         box = BoundingBox(
@@ -294,10 +328,63 @@ class DetectorAbDeviceBenchmarkTest {
                 fileName = fileName,
                 relativePath = imageJson.getString("relative_path"),
                 frameSize = frameSize,
-                groundTruth = groundTruth
+                groundTruth = groundTruth,
+                expectedRisk = null
             )
         }.filter { assetExists(it.relativePath) }
             .sortedBy { it.fileName }
+    }
+
+    private fun loadBlindAssistEvalSetImages(labels: List<String>): List<BenchmarkImage> {
+        return readAssetText(BLINDASSIST_EVALSET_MANIFEST_ASSET)
+            .lineSequence()
+            .filter { it.isNotBlank() }
+            .map { line ->
+                val row = JSONObject(line)
+                val frameSize = FrameSize(row.getInt("width"), row.getInt("height"))
+                val objects = row.getJSONArray("objects")
+                val groundTruth = (0 until objects.length()).mapNotNull { objectIndex ->
+                    val obj = objects.getJSONObject(objectIndex)
+                    val label = obj.getString("class")
+                    val classId = labels.indexOf(label)
+                    if (classId < 0) {
+                        null
+                    } else {
+                        val xyxy = obj.getJSONArray("bbox_xyxy")
+                        GroundTruthBox(
+                            id = obj.getString("id"),
+                            classId = classId,
+                            label = label,
+                            box = BoundingBox(
+                                left = xyxy.getDouble(0).toFloat(),
+                                top = xyxy.getDouble(1).toFloat(),
+                                right = xyxy.getDouble(2).toFloat(),
+                                bottom = xyxy.getDouble(3).toFloat()
+                            ).clamped(frameSize)
+                        )
+                    }
+                }
+                val imagePath = row.getString("image_path")
+                val attributes = row.optJSONObject("attributes")
+                BenchmarkImage(
+                    fileName = imagePath.substringAfterLast('/'),
+                    relativePath = "$BLINDASSIST_EVALSET_ASSET_PREFIX/$imagePath",
+                    frameSize = frameSize,
+                    groundTruth = groundTruth,
+                    expectedRisk = BlindAssistExpectedRisk(
+                        direction = RiskDirection.valueOf(row.getString("expected_risk_direction")),
+                        distanceBand = ProximityBand.valueOf(row.getString("expected_distance_band")),
+                        shouldAlert = row.getBoolean("expected_should_alert"),
+                        riskLevel = RiskLevel.valueOf(row.getString("expected_risk_level")),
+                        scenario = AssistScenario.valueOf(row.optString("assist_scenario", AssistScenario.GENERAL.name)),
+                        primaryObjectId = row.optString("primary_object_id", ""),
+                        sceneBucket = attributes?.optString("scene_bucket", "") ?: ""
+                    )
+                )
+            }
+            .filter { assetExists(it.relativePath) }
+            .sortedBy { it.fileName }
+            .toList()
     }
 
     private fun evaluateDetections(
@@ -418,6 +505,72 @@ class DetectorAbDeviceBenchmarkTest {
         )
     }
 
+    private fun aggregateBlindAssistMetrics(
+        perImage: List<PerImageModelResult>,
+        matchIouThreshold: Float
+    ): BlindAssistMetrics {
+        val labeled = perImage.filter { it.image.expectedRisk != null }
+        val expectedAlerts = labeled.filter { requireNotNull(it.image.expectedRisk).shouldAlert }
+        val expectedNonAlerts = labeled.filter { !requireNotNull(it.image.expectedRisk).shouldAlert }
+        val expectedCenterAlerts = expectedAlerts.filter { requireNotNull(it.image.expectedRisk).direction == RiskDirection.CENTER }
+        val primaryRows = labeled.filter { !requireNotNull(it.image.expectedRisk).primaryObjectId.isNullOrBlank() }
+        return BlindAssistMetrics(
+            centerRiskRecall = ratio(
+                expectedCenterAlerts.count {
+                    it.actualAlert && it.modelRisk.direction == RiskDirection.CENTER
+                },
+                expectedCenterAlerts.size
+            ),
+            alertRecall = ratio(expectedAlerts.count { it.actualAlert }, expectedAlerts.size),
+            alertFalsePositiveRate = ratio(expectedNonAlerts.count { it.actualAlert }, expectedNonAlerts.size),
+            distanceBandAccuracy = ratio(
+                labeled.count { item ->
+                    item.modelRisk.proximity == requireNotNull(item.image.expectedRisk).distanceBand
+                },
+                labeled.size
+            ),
+            riskLevelAccuracy = ratio(
+                labeled.count { item ->
+                    item.modelRisk.level == requireNotNull(item.image.expectedRisk).riskLevel
+                },
+                labeled.size
+            ),
+            primaryObjectHitRate = ratio(
+                primaryRows.count { primaryObjectHit(it, matchIouThreshold) },
+                primaryRows.size
+            ),
+            criticalMissCount = expectedAlerts.count { item ->
+                val expected = requireNotNull(item.image.expectedRisk)
+                expected.distanceBand == ProximityBand.CRITICAL &&
+                    (!item.actualAlert || item.modelRisk.proximity.ordinal < ProximityBand.CRITICAL.ordinal)
+            },
+            labeledImageCount = labeled.size
+        )
+    }
+
+    private fun primaryObjectHit(item: PerImageModelResult, matchIouThreshold: Float): Boolean {
+        val expected = item.image.expectedRisk ?: return false
+        val expectedBox = item.image.groundTruth.firstOrNull { it.id == expected.primaryObjectId } ?: return false
+        val actual = item.modelRisk.sourceDetection ?: return false
+        return actual.label == expectedBox.label && iou(actual.boundingBox, expectedBox.box) >= matchIouThreshold
+    }
+
+    private fun expectedRiskResult(image: BenchmarkImage, riskAnalyzer: RiskAnalyzer): RiskResult {
+        val expected = image.expectedRisk ?: return riskAnalyzer.analyze(image.groundTruthDetections(), image.frameSize)
+        return RiskResult(
+            level = expected.riskLevel,
+            direction = expected.direction,
+            message = "expected",
+            sourceDetection = image.primaryGroundTruthDetection(),
+            proximity = expected.distanceBand,
+            urgencyScore = if (expected.shouldAlert) 1f else 0f
+        )
+    }
+
+    private fun alertFor(risk: RiskResult, scenario: AssistScenario): Boolean {
+        return FeedbackPlanner.planFor(risk, scenario = scenario) != null
+    }
+
     private fun ap50(
         images: List<BenchmarkImage>,
         detectionsByImage: Map<String, List<Detection>>,
@@ -475,30 +628,46 @@ class DetectorAbDeviceBenchmarkTest {
         }
         val baselineQuality = baseline.app.quality
         val candidateQuality = candidate.app.quality
-        val candidateNotWorse =
+        val hasBlindAssistLabels = baseline.app.blindAssistMetrics.labeledImageCount > 0
+        val candidateNotWorse = if (hasBlindAssistLabels) {
+            val baselineAssist = baseline.app.blindAssistMetrics
+            val candidateAssist = candidate.app.blindAssistMetrics
+            candidateQuality.ap50 >= baselineQuality.ap50 &&
+                candidateQuality.recall >= baselineQuality.recall &&
+                candidateQuality.precision >= baselineQuality.precision &&
+                candidateAssist.alertRecall >= baselineAssist.alertRecall &&
+                candidateAssist.centerRiskRecall >= baselineAssist.centerRiskRecall &&
+                candidateAssist.criticalMissCount <= baselineAssist.criticalMissCount &&
+                candidateAssist.alertFalsePositiveRate <= baselineAssist.alertFalsePositiveRate + 0.02 &&
+                candidateAssist.distanceBandAccuracy >= baselineAssist.distanceBandAccuracy - 0.02 &&
+                candidateAssist.riskLevelAccuracy >= baselineAssist.riskLevelAccuracy - 0.02 &&
+                candidateAssist.primaryObjectHitRate >= baselineAssist.primaryObjectHitRate - 0.02
+        } else {
             candidateQuality.recall >= baselineQuality.recall &&
                 candidateQuality.precision >= baselineQuality.precision &&
                 candidate.app.riskQuality.riskFn <= baseline.app.riskQuality.riskFn &&
                 candidate.app.stability.riskLevelFlipRate <= baseline.app.stability.riskLevelFlipRate
+        }
         return if (candidateNotWorse) {
             JSONObject()
                 .put("decision", "candidate_ok_for_next_stage")
                 .put("replace_default_model_now", false)
-                .put("reason", "yolo26n is not worse on recall, precision, risk FN, and risk stability in this COCO100 A/B run; keep it as a candidate until real walking images confirm the result.")
+                .put("reason", "yolo26n is not worse on the active dataset gate; keep it as a candidate until broader real walking validation confirms the result.")
         } else {
             JSONObject()
                 .put("decision", "do_not_replace_default_model")
                 .put("replace_default_model_now", false)
-                .put("reason", "yolo26n did not meet the no-regression gate for detection quality or risk stability in this COCO100 A/B run.")
+                .put("reason", "yolo26n did not meet the no-regression gate for detection quality or BlindAssist risk metrics in this run.")
         }
     }
 
     private fun perImageCsv(modelResults: List<ModelBenchmarkResult>): String {
         val lines = mutableListOf(
-            "image,model,gt_count,detection_count,tp,fp,fn,precision,recall,f1,gt_risk_level,model_risk_level,gt_direction,model_direction,gt_proximity,model_proximity,risk_key_variants,risk_level_flip,box_jitter"
+            "image,model,gt_count,detection_count,tp,fp,fn,precision,recall,f1,expected_should_alert,actual_alert,expected_risk_level,model_risk_level,expected_direction,model_direction,expected_distance_band,model_proximity,primary_object_id,scene_bucket,risk_key_variants,risk_level_flip,box_jitter"
         )
         modelResults.forEach { model ->
             model.app.perImage.forEach { item ->
+                val expected = item.image.expectedRisk
                 lines += listOf(
                     item.image.fileName,
                     model.spec.id,
@@ -510,12 +679,16 @@ class DetectorAbDeviceBenchmarkTest {
                     item.evaluation.precision,
                     item.evaluation.recall,
                     item.evaluation.f1,
-                    item.groundTruthRisk.level,
+                    expected?.shouldAlert ?: "",
+                    item.actualAlert,
+                    expected?.riskLevel ?: item.groundTruthRisk.level,
                     item.modelRisk.level,
-                    item.groundTruthRisk.direction,
+                    expected?.direction ?: item.groundTruthRisk.direction,
                     item.modelRisk.direction,
-                    item.groundTruthRisk.proximity,
+                    expected?.distanceBand ?: item.groundTruthRisk.proximity,
                     item.modelRisk.proximity,
+                    expected?.primaryObjectId ?: "",
+                    expected?.sceneBucket ?: "",
                     item.stability.riskKeyVariants,
                     item.stability.riskLevelFlip,
                     item.stability.sourceBoxJitter
@@ -531,7 +704,9 @@ class DetectorAbDeviceBenchmarkTest {
         return buildString {
             appendLine("# Detector A/B Device Benchmark")
             appendLine()
-            appendLine("- Dataset: `COCO100 val2017 fixed sample`")
+            appendLine("- Dataset: `${payload.getString("dataset_name")}`")
+            appendLine("- Dataset kind: `${payload.getString("dataset_kind")}`")
+            appendLine("- Risk config: `${payload.getString("risk_config")}`")
             appendLine("- Image count: `${payload.getInt("image_count")}`")
             appendLine("- App runs per image: `${payload.getInt("app_runs_per_image")}`")
             appendLine("- Match IoU threshold: `${payload.getDouble("match_iou_threshold")}`")
@@ -539,29 +714,31 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine("- Recommendation: `${recommendation.getString("decision")}`")
             appendLine("- Replace default model now: `${recommendation.getBoolean("replace_default_model_now")}`")
             appendLine()
-            appendLine("| Model | AP50 | Precision | Recall | F1 | FP/img | FN/img | Risk FN | Risk FP | Risk flips | Total P50 ms | Total P95 ms |")
-            appendLine("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
+            appendLine("| Model | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | Critical miss | Total P50 ms | Total P95 ms |")
+            appendLine("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
             for (index in 0 until models.length()) {
                 val model = models.getJSONObject(index)
                 val app = model.getJSONObject("app_detector")
                 val quality = app.getJSONObject("quality")
-                val risk = app.getJSONObject("risk_quality")
-                val stability = app.getJSONObject("stability")
+                val assist = app.getJSONObject("blindassist_metrics")
                 val total = app.getJSONObject("total_ms")
                 appendLine(
                     "| `${model.getString("id")}` | ${quality.getDouble("ap50")} | ${quality.getDouble("precision")} | " +
                         "${quality.getDouble("recall")} | ${quality.getDouble("f1")} | ${quality.getDouble("fp_per_image")} | " +
-                        "${quality.getDouble("fn_per_image")} | ${risk.getInt("risk_fn")} | ${risk.getInt("risk_fp")} | " +
-                        "${stability.getDouble("risk_level_flip_rate")} | ${total.getDouble("p50")} | ${total.getDouble("p95")} |"
+                        "${quality.getDouble("fn_per_image")} | ${assist.getDouble("centerRiskRecall")} | " +
+                        "${assist.getDouble("alertRecall")} | ${assist.getDouble("alertFalsePositiveRate")} | " +
+                        "${assist.getDouble("distanceBandAccuracy")} | ${assist.getDouble("riskLevelAccuracy")} | " +
+                        "${assist.getDouble("primaryObjectHitRate")} | ${assist.getInt("criticalMissCount")} | " +
+                        "${total.getDouble("p50")} | ${total.getDouble("p95")} |"
                 )
             }
             appendLine()
             appendLine("Decision note: ${recommendation.getString("reason")}")
             appendLine()
             appendLine("Notes:")
-            appendLine("- This A/B run compares both models on the same connected device and the same COCO100 image assets.")
+            appendLine("- This A/B run compares both models on the same connected device and the same image assets.")
             appendLine("- Detection matching uses same-class IoU at the configured threshold.")
-            appendLine("- COCO100 is useful for repeatable detector quality checks, but real walking-assist images are still required before replacing the default model.")
+            appendLine("- BlindAssist risk labels are project-specific eval labels and are not a standalone safety guarantee.")
         }
     }
 
@@ -666,31 +843,65 @@ class DetectorAbDeviceBenchmarkTest {
         val source: String
     )
 
+    private data class BenchmarkDataset(
+        val name: String,
+        val images: List<BenchmarkImage>
+    )
+
     private data class BenchmarkImage(
         val fileName: String,
         val relativePath: String,
         val frameSize: FrameSize,
-        val groundTruth: List<GroundTruthBox>
+        val groundTruth: List<GroundTruthBox>,
+        val expectedRisk: BlindAssistExpectedRisk?
     ) {
         fun groundTruthDetections(): List<Detection> {
-            return groundTruth.map { gt ->
-                Detection(
-                    classId = gt.classId,
-                    label = gt.label,
-                    confidence = 1f,
-                    boundingBox = gt.box,
-                    frameSize = frameSize
-                )
-            }
+            return groundTruth.map { it.toDetection(frameSize) }
+        }
+
+        fun primaryGroundTruthDetection(): Detection? {
+            val primaryId = expectedRisk?.primaryObjectId ?: return null
+            return groundTruth.firstOrNull { it.id == primaryId }?.toDetection(frameSize)
         }
     }
 
     private data class GroundTruthBox(
-        val id: Int,
+        val id: String,
         val classId: Int,
         val label: String,
         val box: BoundingBox
-    )
+    ) {
+        fun toDetection(frameSize: FrameSize): Detection {
+            return Detection(
+                classId = classId,
+                label = label,
+                confidence = 1f,
+                boundingBox = box,
+                frameSize = frameSize
+            )
+        }
+    }
+
+    private data class BlindAssistExpectedRisk(
+        val direction: RiskDirection,
+        val distanceBand: ProximityBand,
+        val shouldAlert: Boolean,
+        val riskLevel: RiskLevel,
+        val scenario: AssistScenario,
+        val primaryObjectId: String,
+        val sceneBucket: String
+    ) {
+        fun toJson(): JSONObject {
+            return JSONObject()
+                .put("expected_risk_direction", direction.name)
+                .put("expected_distance_band", distanceBand.name)
+                .put("expected_should_alert", shouldAlert)
+                .put("expected_risk_level", riskLevel.name)
+                .put("assist_scenario", scenario.name)
+                .put("primary_object_id", primaryObjectId)
+                .put("scene_bucket", sceneBucket)
+        }
+    }
 
     private data class FrameRun(
         val detections: List<Detection>,
@@ -747,6 +958,7 @@ class DetectorAbDeviceBenchmarkTest {
         val totalStats: Stats,
         val quality: QualitySummary,
         val riskQuality: RiskQualitySummary,
+        val blindAssistMetrics: BlindAssistMetrics,
         val stability: StabilityAggregate,
         val perImage: List<PerImageModelResult>,
         val falsePositives: List<JSONObject>,
@@ -765,6 +977,7 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("total_ms", totalStats.toJson())
                 .put("quality", quality.toJson())
                 .put("risk_quality", riskQuality.toJson())
+                .put("blindassist_metrics", blindAssistMetrics.toJson())
                 .put("stability", stability.toJson())
                 .put("per_image", JSONArray(perImage.map { it.toJson() }))
                 .put("failures", JSONArray(failures))
@@ -776,6 +989,7 @@ class DetectorAbDeviceBenchmarkTest {
         val evaluation: DetectionEvaluation,
         val groundTruthRisk: RiskResult,
         val modelRisk: RiskResult,
+        val actualAlert: Boolean,
         val stability: StabilitySummary
     ) {
         fun toJson(): JSONObject {
@@ -786,6 +1000,8 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("quality", evaluation.toJson())
                 .put("ground_truth_risk", riskToJson(groundTruthRisk))
                 .put("model_risk", riskToJson(modelRisk))
+                .put("expected_blindassist", image.expectedRisk?.toJson() ?: JSONObject.NULL)
+                .put("actual_alert", actualAlert)
                 .put("stability", stability.toJson())
         }
 
@@ -801,8 +1017,10 @@ class DetectorAbDeviceBenchmarkTest {
             return JSONObject()
                 .put("model", modelId)
                 .put("image", image.fileName)
+                .put("expected_blindassist", image.expectedRisk?.toJson() ?: JSONObject.NULL)
                 .put("ground_truth_risk", riskToJson(groundTruthRisk))
                 .put("model_risk", riskToJson(modelRisk))
+                .put("actual_alert", actualAlert)
         }
     }
 
@@ -947,6 +1165,29 @@ class DetectorAbDeviceBenchmarkTest {
         }
     }
 
+    private data class BlindAssistMetrics(
+        val centerRiskRecall: Double,
+        val alertRecall: Double,
+        val alertFalsePositiveRate: Double,
+        val distanceBandAccuracy: Double,
+        val riskLevelAccuracy: Double,
+        val primaryObjectHitRate: Double,
+        val criticalMissCount: Int,
+        val labeledImageCount: Int
+    ) {
+        fun toJson(): JSONObject {
+            return JSONObject()
+                .put("centerRiskRecall", centerRiskRecall)
+                .put("alertRecall", alertRecall)
+                .put("alertFalsePositiveRate", alertFalsePositiveRate)
+                .put("distanceBandAccuracy", distanceBandAccuracy)
+                .put("riskLevelAccuracy", riskLevelAccuracy)
+                .put("primaryObjectHitRate", primaryObjectHitRate)
+                .put("criticalMissCount", criticalMissCount)
+                .put("labeledImageCount", labeledImageCount)
+        }
+    }
+
     private data class StabilitySummary(
         val detectionCountMin: Int,
         val detectionCountMax: Int,
@@ -1079,6 +1320,18 @@ class DetectorAbDeviceBenchmarkTest {
         private const val YOLO11N_ASSET = "yolo11n_fp16_320.tflite"
         private const val YOLO26N_ASSET = "yolo26n_fp16_320.tflite"
         private const val COCO_ANNOTATIONS_ASSET = "coco100_annotations.json"
+        private const val BLINDASSIST_EVALSET_ASSET_PREFIX = "blindassist_evalset"
+        private const val BLINDASSIST_EVALSET_MANIFEST_ASSET = "$BLINDASSIST_EVALSET_ASSET_PREFIX/manifest.jsonl"
+        private const val BLINDASSIST_EVALSET_SPEC_ASSET = "$BLINDASSIST_EVALSET_ASSET_PREFIX/dataset_spec.json"
+        private const val DATASET_KIND_COCO100 = "Coco100"
+        private const val DATASET_KIND_BLINDASSIST_EVALSET = "BlindAssistEvalSet"
+        private const val RISK_CONFIG_CURRENT = "current"
+        private const val RISK_CONFIG_CENTER_NEAR_SENSITIVE = "center_near_sensitive"
+        private const val RISK_CONFIG_CENTER_NEAR_STRICT = "center_near_strict"
+        private const val RISK_CONFIG_CRITICAL_SENSITIVE = "critical_sensitive"
+        private const val RISK_CONFIG_SIDE_NEAR_SENSITIVE = "side_near_sensitive"
+        private const val ARG_DATASET_KIND = "datasetKind"
+        private const val ARG_RISK_CONFIG = "riskConfig"
         private const val ARG_IMAGE_LIMIT = "imageLimit"
         private const val ARG_PURE_WARMUP = "pureWarmup"
         private const val ARG_PURE_RUNS = "pureRuns"
@@ -1138,5 +1391,20 @@ class DetectorAbDeviceBenchmarkTest {
         }
 
         private fun round3(value: Float): Double = round3(value.toDouble())
+
+        private fun ratio(numerator: Int, denominator: Int): Double {
+            return if (denominator <= 0) 0.0 else round3(numerator.toDouble() / denominator.toDouble())
+        }
+
+        private fun riskAnalyzerConfigFor(name: String): RiskAnalyzerConfig {
+            return when (name) {
+                RISK_CONFIG_CURRENT -> RiskAnalyzerConfig.Default
+                RISK_CONFIG_CENTER_NEAR_SENSITIVE -> RiskAnalyzerConfig.CenterNearSensitive
+                RISK_CONFIG_CENTER_NEAR_STRICT -> RiskAnalyzerConfig.CenterNearStrict
+                RISK_CONFIG_CRITICAL_SENSITIVE -> RiskAnalyzerConfig.CriticalSensitive
+                RISK_CONFIG_SIDE_NEAR_SENSITIVE -> RiskAnalyzerConfig.SideNearSensitive
+                else -> error("Unsupported riskConfig: $name")
+            }
+        }
     }
 }

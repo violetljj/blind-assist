@@ -18,6 +18,9 @@ val releaseSigningProperties = Properties().apply {
 val hasReleaseSigningProperties = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
     .all { key -> releaseSigningProperties.getProperty(key).isNullOrBlank().not() }
 val yolo26nBenchmarkAssetsDir = layout.buildDirectory.dir("generated/yolo26nBenchmarkAssets")
+val blindAssistEvalSetDir = providers
+    .gradleProperty("blindAssistEvalSetDir")
+    .orElse("test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
 val prepareYolo26nBenchmarkAssets = tasks.register<Sync>("prepareYolo26nBenchmarkAssets") {
     from(project.file("src/main/assets")) {
         include("coco_labels.txt")
@@ -30,6 +33,12 @@ val prepareYolo26nBenchmarkAssets = tasks.register<Sync>("prepareYolo26nBenchmar
         include("coco100_manifest.json")
         include("coco100_annotations.json")
         include("images/**")
+    }
+    from(blindAssistEvalSetDir.map { rootProject.file(it) }) {
+        include("dataset_spec.json")
+        include("manifest.jsonl")
+        include("images/test/**")
+        into("blindassist_evalset")
     }
     into(yolo26nBenchmarkAssetsDir)
 }

@@ -54,7 +54,7 @@ class RiskAnalyzerTest {
     @Test
     fun centerBottomBoundaryTargetIsNearHighRisk() {
         val result = analyzer.analyze(
-            listOf(detection("person", BoundingBox(400f, 120f, 600f, 600f))),
+            listOf(detection("person", BoundingBox(400f, 120f, 600f, 580f))),
             frame
         )
 
@@ -67,7 +67,7 @@ class RiskAnalyzerTest {
     @Test
     fun centerAreaBoundaryTargetIsNearHighRisk() {
         val result = analyzer.analyze(
-            listOf(detection("person", BoundingBox(350f, 150f, 650f, 550f))),
+            listOf(detection("person", BoundingBox(362.5f, 150f, 637.5f, 550f))),
             frame
         )
 

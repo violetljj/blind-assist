@@ -16,6 +16,33 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchm
 
 默认参数为 `-ImageLimit 100 -PureWarmup 10 -PureRuns 100 -AppRunsPerImage 3 -MatchIouThreshold 0.5`。脚本会执行两模型 shape 检查、COCO100 标注检查、debug/androidTest APK 构建、正式 APK 资产隔离检查、`DetectorAbDeviceBenchmarkTest` 真机 instrumentation、设备端 artifact 拉取，并在完成后执行默认模型 90 秒真机回归。
 
+如需使用 BlindAssist 专用评测集，指定 `BlindAssistEvalSet` 和评测集目录：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1 -DatasetKind BlindAssistEvalSet -DatasetRoot test-artifacts.local\datasets\blindassist-evalset-20260527-impl
+```
+
+该模式从 `manifest.jsonl` 读取真实助行风险预期字段，同时保留 AP50、precision、recall 等检测指标。设备端 `benchmark.json` 和 `benchmark.md` 会额外输出 `centerRiskRecall`、`alertRecall`、`alertFalsePositiveRate`、`distanceBandAccuracy`、`riskLevelAccuracy`、`primaryObjectHitRate` 和 `criticalMissCount`。候选模型替换建议会同时参考检测质量和这些 BlindAssist 指标，而不是只看速度或 COCO 派生风险误差。
+
+如需在已有 baseline 后做小步阈值扫参，可增加 `-RiskSweep`。扫参只通过 instrumentation 参数选择 benchmark 专用 `RiskAnalyzerConfig`，默认 App 行为不会因为扫参自动改变；只有在指标明确改善且误提醒没有明显增加时，才应另行把阈值提升为默认配置。
+
+2026-05-27 已用 BlindAssist EvalSet 跑通 100 图同设备 A/B baseline，并在 baseline 后做小步阈值扫参。当前默认阈值采用 `center_near_sensitive` 的结果，将中心近距阈值从 `0.60/0.12` 小步调整为 `0.58/0.11`；该调整让默认 `yolo11n` 的 `alertRecall` 从 `0.822` 提升到 `0.836`，`alertFalsePositiveRate` 保持 `0.037`，`criticalMissCount` 保持 `9`。阈值调整后证据目录：
+
+```text
+test-artifacts.local/detector-ab-device-benchmark/20260527-175312
+test-artifacts.local/detector-ab-device-benchmark/20260527-175312/device-detector-ab-benchmark/20260527-175403/
+test-artifacts.local/device-regression/20260527-175552
+```
+
+核心结果如下：
+
+| Model | AP50 | Precision | Recall | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | Critical miss | Total P50/P95 ms |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `yolo11n` | 0.289 | 0.826 | 0.300 | 0.667 | 0.836 | 0.037 | 0.730 | 0.660 | 0.570 | 9 | 60/63 |
+| `yolo26n` | 0.286 | 0.844 | 0.297 | 0.646 | 0.836 | 0.074 | 0.730 | 0.670 | 0.600 | 10 | 57/62 |
+
+结论：`yolo26n` 仍不建议替换默认模型。它速度略快、precision 和 primary hit 略好，但 AP50/recall 略低，center risk recall 更低，alert false positive rate 是默认模型的约两倍，critical miss 也多 1 个。当前更稳妥的选择是保留 `yolo11n`，只采用上述 `RiskAnalyzer` 中心近距阈值小步调整。
+
 本轮设备为 Samsung `SM-S9280` / Android 16，证据目录：
 ```text
 test-artifacts.local/detector-ab-device-benchmark/20260527-022312

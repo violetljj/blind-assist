@@ -1,9 +1,15 @@
 param(
+    [ValidateSet("Coco100", "BlindAssistEvalSet")]
+    [string]$DatasetKind = "Coco100",
+    [string]$DatasetRoot,
     [int]$ImageLimit = 100,
     [int]$PureWarmup = 10,
     [int]$PureRuns = 100,
     [int]$AppRunsPerImage = 3,
     [double]$MatchIouThreshold = 0.5,
+    [ValidateSet("current", "center_near_sensitive", "center_near_strict", "critical_sensitive", "side_near_sensitive")]
+    [string]$RiskConfig = "current",
+    [switch]$RiskSweep,
     [int]$DefaultRegressionSeconds = 90,
     [switch]$SkipDefaultRegression,
     [string]$AdbPath
@@ -82,6 +88,9 @@ $yolo11n = Resolve-RepoPath "app\src\main\assets\yolo11n_fp16_320.tflite"
 $yolo26n = Resolve-RepoPath ".downloads\detector-lab\exports\yolo26n_fp16_320.tflite"
 $manifest = Resolve-RepoPath ".downloads\detector-lab\datasets\coco100\coco100_manifest.json"
 $annotations = Resolve-RepoPath ".downloads\detector-lab\datasets\coco100\coco100_annotations.json"
+$defaultBlindAssistEvalSet = "test-artifacts.local\datasets\blindassist-evalset-20260527-impl"
+$requestedBlindAssistEvalSet = if ($DatasetRoot) { $DatasetRoot } else { $defaultBlindAssistEvalSet }
+$blindAssistEvalSet = Resolve-RepoPath $requestedBlindAssistEvalSet
 $apk = Resolve-RepoPath "app\build\outputs\apk\debug\app-debug.apk"
 $aapt = Resolve-RepoPath ".android-sdk\build-tools\35.0.0\aapt.exe"
 $adb = Resolve-Adb $AdbPath
@@ -95,6 +104,14 @@ if (-not (Test-Path -LiteralPath $yolo11n)) {
 }
 if (-not (Test-Path -LiteralPath $yolo26n)) {
     throw "yolo26n TFLite candidate not found: $yolo26n"
+}
+if ($DatasetKind -eq "BlindAssistEvalSet") {
+    if (-not (Test-Path -LiteralPath (Join-Path $blindAssistEvalSet "manifest.jsonl"))) {
+        throw "BlindAssist evalset manifest not found: $(Join-Path $blindAssistEvalSet 'manifest.jsonl')"
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $blindAssistEvalSet "images\test"))) {
+        throw "BlindAssist evalset images/test directory not found: $(Join-Path $blindAssistEvalSet 'images\test')"
+    }
 }
 
 Push-Location $repoRoot
@@ -115,6 +132,7 @@ try {
     Invoke-Native ".\gradlew.bat" @(
         ":app:assembleDebug",
         ":app:assembleDebugAndroidTest",
+        "-PblindAssistEvalSetDir=$blindAssistEvalSet",
         "--no-daemon",
         "--console=plain"
     ) (Join-Path $artifactRoot "gradle-assemble.txt") | Out-Null
@@ -131,18 +149,28 @@ try {
         throw "yolo26n unexpectedly entered the main debug APK assets."
     }
 
-    Invoke-Native ".\gradlew.bat" @(
-        ":app:connectedDebugAndroidTest",
-        "-Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.benchmark.DetectorAbDeviceBenchmarkTest",
-        "-Pandroid.testInstrumentationRunnerArguments.imageLimit=$ImageLimit",
-        "-Pandroid.testInstrumentationRunnerArguments.pureWarmup=$PureWarmup",
-        "-Pandroid.testInstrumentationRunnerArguments.pureRuns=$PureRuns",
-        "-Pandroid.testInstrumentationRunnerArguments.appRunsPerImage=$AppRunsPerImage",
-        "-Pandroid.testInstrumentationRunnerArguments.matchIouThreshold=$MatchIouThreshold",
-        "-Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true",
-        "--no-daemon",
-        "--console=plain"
-    ) (Join-Path $artifactRoot "connected-detector-ab-benchmark.txt") | Out-Null
+    $riskConfigs = if ($RiskSweep) {
+        @("current", "center_near_sensitive", "center_near_strict", "critical_sensitive", "side_near_sensitive")
+    } else {
+        @($RiskConfig)
+    }
+    foreach ($currentRiskConfig in $riskConfigs) {
+        Invoke-Native ".\gradlew.bat" @(
+            ":app:connectedDebugAndroidTest",
+            "-PblindAssistEvalSetDir=$blindAssistEvalSet",
+            "-Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.benchmark.DetectorAbDeviceBenchmarkTest",
+            "-Pandroid.testInstrumentationRunnerArguments.datasetKind=$DatasetKind",
+            "-Pandroid.testInstrumentationRunnerArguments.riskConfig=$currentRiskConfig",
+            "-Pandroid.testInstrumentationRunnerArguments.imageLimit=$ImageLimit",
+            "-Pandroid.testInstrumentationRunnerArguments.pureWarmup=$PureWarmup",
+            "-Pandroid.testInstrumentationRunnerArguments.pureRuns=$PureRuns",
+            "-Pandroid.testInstrumentationRunnerArguments.appRunsPerImage=$AppRunsPerImage",
+            "-Pandroid.testInstrumentationRunnerArguments.matchIouThreshold=$MatchIouThreshold",
+            "-Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true",
+            "--no-daemon",
+            "--console=plain"
+        ) (Join-Path $artifactRoot "connected-detector-ab-benchmark-$currentRiskConfig.txt") | Out-Null
+    }
 
     Invoke-Native $adb @("-s", $device, "logcat", "-d", "-s", "DetectorAbBenchmark", "BlindAssistPerf") (Join-Path $artifactRoot "logcat-detector-ab.txt") | Out-Null
     $deviceArtifactRoot = "/sdcard/Android/data/com.linnan.blindassist/files/detector-ab-benchmark"
@@ -163,10 +191,13 @@ try {
         artifactRoot = $artifactRoot
         yolo11n = $yolo11n
         yolo26n = $yolo26n
+        datasetKind = $DatasetKind
+        blindAssistEvalSet = $blindAssistEvalSet
         coco100Manifest = $manifest
         coco100Annotations = $annotations
         matchIouThreshold = $MatchIouThreshold
         appRunsPerImage = $AppRunsPerImage
+        riskConfigs = $riskConfigs
         defaultRegression = -not [bool]$SkipDefaultRegression
     }
     $summary | ConvertTo-Json -Depth 5 | Out-File -FilePath (Join-Path $artifactRoot "summary.json") -Encoding utf8

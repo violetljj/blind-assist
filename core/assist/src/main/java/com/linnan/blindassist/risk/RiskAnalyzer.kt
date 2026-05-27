@@ -6,7 +6,31 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-class RiskAnalyzer {
+data class RiskAnalyzerConfig(
+    val confidenceThreshold: Float = RiskAnalyzer.CONFIDENCE_THRESHOLD,
+    val leftBoundary: Float = RiskAnalyzer.LEFT_BOUNDARY,
+    val rightBoundary: Float = RiskAnalyzer.RIGHT_BOUNDARY,
+    val midBottomRatio: Float = RiskAnalyzer.MID_BOTTOM_RATIO,
+    val midAreaRatio: Float = RiskAnalyzer.MID_AREA_RATIO,
+    val centerNearBottomRatio: Float = RiskAnalyzer.CENTER_NEAR_BOTTOM_RATIO,
+    val centerNearAreaRatio: Float = RiskAnalyzer.CENTER_NEAR_AREA_RATIO,
+    val nearBottomRatio: Float = RiskAnalyzer.NEAR_BOTTOM_RATIO,
+    val nearAreaRatio: Float = RiskAnalyzer.NEAR_AREA_RATIO,
+    val criticalBottomRatio: Float = RiskAnalyzer.CRITICAL_BOTTOM_RATIO,
+    val criticalAreaRatio: Float = RiskAnalyzer.CRITICAL_AREA_RATIO
+) {
+    companion object {
+        val Default = RiskAnalyzerConfig()
+        val CenterNearSensitive = Default.copy(centerNearBottomRatio = 0.58f, centerNearAreaRatio = 0.11f)
+        val CenterNearStrict = Default.copy(centerNearBottomRatio = 0.62f, centerNearAreaRatio = 0.13f)
+        val CriticalSensitive = Default.copy(criticalBottomRatio = 0.70f, criticalAreaRatio = 0.18f)
+        val SideNearSensitive = Default.copy(nearBottomRatio = 0.60f, nearAreaRatio = 0.13f)
+    }
+}
+
+class RiskAnalyzer(
+    private val config: RiskAnalyzerConfig = RiskAnalyzerConfig.Default
+) {
     private val alertLabels = setOf(
         "person",
         "bicycle",
@@ -24,7 +48,7 @@ class RiskAnalyzer {
     fun analyze(detections: List<Detection>, frameSize: FrameSize): RiskResult {
         val candidates = detections
             .filter { it.label in alertLabels }
-            .filter { it.confidence >= CONFIDENCE_THRESHOLD }
+            .filter { it.confidence >= config.confidenceThreshold }
             .map { candidateFor(it, frameSize) }
             .sortedWith(
                 compareByDescending<RiskCandidate> { it.urgencyScore }
@@ -85,8 +109,8 @@ class RiskAnalyzer {
     private fun directionFor(detection: Detection, frameSize: FrameSize): RiskDirection {
         val x = detection.boundingBox.centerX / frameSize.width.toFloat()
         return when {
-            x < LEFT_BOUNDARY -> RiskDirection.LEFT
-            x > RIGHT_BOUNDARY -> RiskDirection.RIGHT
+            x < config.leftBoundary -> RiskDirection.LEFT
+            x > config.rightBoundary -> RiskDirection.RIGHT
             else -> RiskDirection.CENTER
         }
     }
@@ -98,21 +122,21 @@ class RiskAnalyzer {
     ): ProximityBand {
         val isCentered = direction == RiskDirection.CENTER
         return when {
-            isCentered && (bottomRatio >= CRITICAL_BOTTOM_RATIO || areaRatio >= CRITICAL_AREA_RATIO) -> {
+            isCentered && (bottomRatio >= config.criticalBottomRatio || areaRatio >= config.criticalAreaRatio) -> {
                 ProximityBand.CRITICAL
             }
             bottomRatio >= nearBottomRatioFor(direction) || areaRatio >= nearAreaRatioFor(direction) -> ProximityBand.NEAR
-            bottomRatio >= MID_BOTTOM_RATIO || areaRatio >= MID_AREA_RATIO -> ProximityBand.MID
+            bottomRatio >= config.midBottomRatio || areaRatio >= config.midAreaRatio -> ProximityBand.MID
             else -> ProximityBand.FAR
         }
     }
 
     private fun nearBottomRatioFor(direction: RiskDirection): Float {
-        return if (direction == RiskDirection.CENTER) CENTER_NEAR_BOTTOM_RATIO else NEAR_BOTTOM_RATIO
+        return if (direction == RiskDirection.CENTER) config.centerNearBottomRatio else config.nearBottomRatio
     }
 
     private fun nearAreaRatioFor(direction: RiskDirection): Float {
-        return if (direction == RiskDirection.CENTER) CENTER_NEAR_AREA_RATIO else NEAR_AREA_RATIO
+        return if (direction == RiskDirection.CENTER) config.centerNearAreaRatio else config.nearAreaRatio
     }
 
     private fun levelFor(proximity: ProximityBand, direction: RiskDirection): RiskLevel {
@@ -188,8 +212,8 @@ class RiskAnalyzer {
         const val RIGHT_BOUNDARY = 0.65f
         const val MID_BOTTOM_RATIO = 0.45f
         const val MID_AREA_RATIO = 0.06f
-        const val CENTER_NEAR_BOTTOM_RATIO = 0.60f
-        const val CENTER_NEAR_AREA_RATIO = 0.12f
+        const val CENTER_NEAR_BOTTOM_RATIO = 0.58f
+        const val CENTER_NEAR_AREA_RATIO = 0.11f
         const val NEAR_BOTTOM_RATIO = 0.62f
         const val NEAR_AREA_RATIO = 0.14f
         const val CRITICAL_BOTTOM_RATIO = 0.72f
