@@ -18,8 +18,16 @@ data class RiskAnalyzerConfig(
     val nearAreaRatio: Float = RiskAnalyzer.NEAR_AREA_RATIO,
     val criticalBottomRatio: Float = RiskAnalyzer.CRITICAL_BOTTOM_RATIO,
     val criticalAreaRatio: Float = RiskAnalyzer.CRITICAL_AREA_RATIO,
-    val distanceEvidenceMinConfidence: Float = RiskAnalyzer.DISTANCE_EVIDENCE_MIN_CONFIDENCE
+    val distanceEvidenceMinConfidence: Float = RiskAnalyzer.DISTANCE_EVIDENCE_MIN_CONFIDENCE,
+    val distanceEvidenceMaxPromotionSteps: Int = Int.MAX_VALUE,
+    val rejectLargeDistanceEvidencePromotion: Boolean = false
 ) {
+    init {
+        require(distanceEvidenceMaxPromotionSteps >= 0) {
+            "distanceEvidenceMaxPromotionSteps must be non-negative"
+        }
+    }
+
     companion object {
         val Default = RiskAnalyzerConfig()
         val CenterNearSensitive = Default.copy(centerNearBottomRatio = 0.58f, centerNearAreaRatio = 0.11f)
@@ -170,10 +178,21 @@ class RiskAnalyzer(
             return geometryProximity
         }
 
+        val promotionSteps = depthBand.ordinal - geometryProximity.ordinal
+        if (config.rejectLargeDistanceEvidencePromotion &&
+            promotionSteps > config.distanceEvidenceMaxPromotionSteps
+        ) {
+            return geometryProximity
+        }
+        val cappedDepthBand = geometryProximity.moreUrgentBy(
+            min(promotionSteps, config.distanceEvidenceMaxPromotionSteps)
+        )
+
         return when {
-            distanceEvidence.confidence >= 0.75f -> depthBand
-            depthBand.ordinal - geometryProximity.ordinal >= 2 -> geometryProximity.nextMoreUrgent()
-            else -> depthBand
+            distanceEvidence.confidence >= 0.75f -> cappedDepthBand
+            config.distanceEvidenceMaxPromotionSteps != Int.MAX_VALUE -> cappedDepthBand
+            promotionSteps >= 2 -> geometryProximity.nextMoreUrgent()
+            else -> cappedDepthBand
         }
     }
 
@@ -184,6 +203,14 @@ class RiskAnalyzer(
             ProximityBand.NEAR -> ProximityBand.CRITICAL
             ProximityBand.CRITICAL -> ProximityBand.CRITICAL
         }
+    }
+
+    private fun ProximityBand.moreUrgentBy(steps: Int): ProximityBand {
+        var current = this
+        repeat(steps.coerceAtLeast(0)) {
+            current = current.nextMoreUrgent()
+        }
+        return current
     }
 
     private fun nearBottomRatioFor(direction: RiskDirection): Float {

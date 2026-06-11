@@ -194,6 +194,63 @@ class RiskAnalyzerTest {
     }
 
     @Test
+    fun conservativeDepthFusionCapsFarToCriticalPromotion() {
+        val conservativeAnalyzer = RiskAnalyzer(
+            RiskAnalyzerConfig.Default.copy(distanceEvidenceMaxPromotionSteps = 1)
+        )
+        val evidence = DistanceEvidence(
+            band = ProximityBand.CRITICAL,
+            confidence = 0.9f,
+            source = DistanceEvidenceSource.MONOCULAR_DEPTH,
+            relativeDepthScore = 0.95f
+        )
+
+        val result = conservativeAnalyzer.analyze(
+            listOf(
+                detection(
+                    label = "person",
+                    box = BoundingBox(450f, 120f, 520f, 280f),
+                    distanceEvidence = evidence
+                )
+            ),
+            frame
+        )
+
+        assertEquals(ProximityBand.MID, result.proximity)
+        assertEquals(RiskLevel.LOW, result.level)
+        assertEquals(evidence, result.distanceEvidence)
+    }
+
+    @Test
+    fun conservativeDepthFusionCanRejectLargeConflicts() {
+        val conservativeAnalyzer = RiskAnalyzer(
+            RiskAnalyzerConfig.Default.copy(
+                distanceEvidenceMaxPromotionSteps = 1,
+                rejectLargeDistanceEvidencePromotion = true
+            )
+        )
+
+        val result = conservativeAnalyzer.analyze(
+            listOf(
+                detection(
+                    label = "person",
+                    box = BoundingBox(450f, 120f, 520f, 280f),
+                    distanceEvidence = DistanceEvidence(
+                        band = ProximityBand.CRITICAL,
+                        confidence = 0.9f,
+                        source = DistanceEvidenceSource.MONOCULAR_DEPTH,
+                        relativeDepthScore = 0.95f
+                    )
+                )
+            ),
+            frame
+        )
+
+        assertEquals(RiskLevel.NONE, result.level)
+        assertEquals(ProximityBand.FAR, result.proximity)
+    }
+
+    @Test
     fun highestUrgencyTargetWinsOverHigherConfidenceFarTarget() {
         val farHighConfidence = detection(
             label = "person",

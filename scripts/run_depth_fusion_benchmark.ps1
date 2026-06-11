@@ -2,6 +2,18 @@ param(
     [string]$DatasetRoot = "test-artifacts.local\datasets\blindassist-evalset-20260527-impl",
     [string]$DepthModelPath = ".downloads\depth-lab\exports\depth_anything_v2_small_fp32.tflite",
     [string]$DepthModelAsset = "",
+    [ValidateSet("DepthFusion", "DepthFusionSweep")]
+    [string]$ComparisonMode = "DepthFusion",
+    [string]$DepthCloserIsLarger = "true",
+    [double]$DepthSamplePercentile = 0.50,
+    [double]$DepthInnerCropRatio = 1.0,
+    [string]$DepthLowerHalfOnly = "true",
+    [int]$DepthMinSamples = 4,
+    [double]$DepthMinLocalRange = 0.0,
+    [double]$DepthMinConfidence = 0.55,
+    [double]$DepthCriticalThreshold = 0.78,
+    [double]$DepthNearThreshold = 0.58,
+    [double]$DepthMidThreshold = 0.35,
     [int]$ImageLimit = 100,
     [int]$PureWarmup = 10,
     [int]$PureRuns = 100,
@@ -77,6 +89,17 @@ function Get-SingleDevice([string]$Adb) {
     return $devices[0]
 }
 
+function Convert-ToBoolString([string]$Value) {
+    $normalized = $Value.Trim().ToLowerInvariant()
+    if ($normalized -in @("true", "1", "yes", "y")) {
+        return "true"
+    }
+    if ($normalized -in @("false", "0", "no", "n")) {
+        return "false"
+    }
+    throw "Expected boolean value, got: $Value"
+}
+
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $artifactRoot = Join-Path (Join-Path $repoRoot "test-artifacts.local\depth-fusion-benchmark") $timestamp
@@ -95,6 +118,8 @@ if ([string]::IsNullOrWhiteSpace($DepthModelAsset)) {
     $DepthModelAsset = "depth/$([System.IO.Path]::GetFileName($depthModel))"
 }
 $depthModelAssetName = [System.IO.Path]::GetFileName($DepthModelAsset)
+$depthCloserIsLargerValue = Convert-ToBoolString $DepthCloserIsLarger
+$depthLowerHalfOnlyValue = Convert-ToBoolString $DepthLowerHalfOnly
 
 if (-not (Test-Path -LiteralPath $python)) {
     throw "Python runtime not found: $python"
@@ -117,6 +142,10 @@ try {
     $env:JAVA_HOME = (Resolve-Path ".\.jdk\jdk17.0.19_10").Path
     $env:PATH = "$env:JAVA_HOME\bin;$((Resolve-Path '.\.android-sdk\platform-tools').Path);$env:PATH"
     $env:GRADLE_USER_HOME = (Resolve-Path ".\.gradle-local").Path
+    New-Item -ItemType Directory -Force -Path ".\.android-home", ".\.kotlin-home" | Out-Null
+    $env:ANDROID_USER_HOME = (Resolve-Path ".\.android-home").Path
+    $env:KOTLIN_HOME = (Resolve-Path ".\.kotlin-home").Path
+    $env:GRADLE_OPTS = "-Dkotlin.compiler.execution.strategy=in-process"
 
     Invoke-Native $python @("scripts\inspect_tflite.py") (Join-Path $artifactRoot "inspect-yolo11n.txt") | Out-Null
     Invoke-Native $python @("scripts\inspect_depth_model.py", $DepthModelPath, "--json-output", (Join-Path $artifactRoot "inspect-depth-model.json")) (Join-Path $artifactRoot "inspect-depth-model.txt") | Out-Null
@@ -157,8 +186,18 @@ try {
         "-PdepthBenchmarkModelAssetName=$depthModelAssetName",
         "-Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.benchmark.DetectorAbDeviceBenchmarkTest",
         "-Pandroid.testInstrumentationRunnerArguments.datasetKind=BlindAssistEvalSet",
-        "-Pandroid.testInstrumentationRunnerArguments.comparisonMode=DepthFusion",
+        "-Pandroid.testInstrumentationRunnerArguments.comparisonMode=$ComparisonMode",
         "-Pandroid.testInstrumentationRunnerArguments.depthModelAsset=$DepthModelAsset",
+        "-Pandroid.testInstrumentationRunnerArguments.depthCloserIsLarger=$depthCloserIsLargerValue",
+        "-Pandroid.testInstrumentationRunnerArguments.depthSamplePercentile=$DepthSamplePercentile",
+        "-Pandroid.testInstrumentationRunnerArguments.depthInnerCropRatio=$DepthInnerCropRatio",
+        "-Pandroid.testInstrumentationRunnerArguments.depthLowerHalfOnly=$depthLowerHalfOnlyValue",
+        "-Pandroid.testInstrumentationRunnerArguments.depthMinSamples=$DepthMinSamples",
+        "-Pandroid.testInstrumentationRunnerArguments.depthMinLocalRange=$DepthMinLocalRange",
+        "-Pandroid.testInstrumentationRunnerArguments.depthMinConfidence=$DepthMinConfidence",
+        "-Pandroid.testInstrumentationRunnerArguments.depthCriticalThreshold=$DepthCriticalThreshold",
+        "-Pandroid.testInstrumentationRunnerArguments.depthNearThreshold=$DepthNearThreshold",
+        "-Pandroid.testInstrumentationRunnerArguments.depthMidThreshold=$DepthMidThreshold",
         "-Pandroid.testInstrumentationRunnerArguments.riskConfig=$RiskConfig",
         "-Pandroid.testInstrumentationRunnerArguments.imageLimit=$ImageLimit",
         "-Pandroid.testInstrumentationRunnerArguments.pureWarmup=$PureWarmup",
@@ -190,6 +229,19 @@ try {
         yolo11n = $yolo11n
         depthModel = $depthModel
         depthModelAsset = $DepthModelAsset
+        comparisonMode = $ComparisonMode
+        depthCloserIsLarger = $depthCloserIsLargerValue
+        depthSampling = [ordered]@{
+            samplePercentile = $DepthSamplePercentile
+            innerCropRatio = $DepthInnerCropRatio
+            lowerHalfOnly = $depthLowerHalfOnlyValue
+            minSamples = $DepthMinSamples
+            minLocalRange = $DepthMinLocalRange
+            minConfidence = $DepthMinConfidence
+            criticalThreshold = $DepthCriticalThreshold
+            nearThreshold = $DepthNearThreshold
+            midThreshold = $DepthMidThreshold
+        }
         datasetKind = "BlindAssistEvalSet"
         blindAssistEvalSet = $blindAssistEvalSet
         matchIouThreshold = $MatchIouThreshold

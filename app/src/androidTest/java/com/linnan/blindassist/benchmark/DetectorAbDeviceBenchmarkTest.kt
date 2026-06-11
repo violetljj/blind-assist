@@ -17,6 +17,7 @@ import com.linnan.blindassist.risk.RiskAnalyzerConfig
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
+import com.linnan.blindassist.vision.DepthEvidenceSamplingConfig
 import com.linnan.blindassist.vision.ImagePreprocessor
 import com.linnan.blindassist.vision.TfliteYoloDetector
 import com.linnan.blindassist.vision.TfliteMonocularDepthEstimator
@@ -55,7 +56,9 @@ class DetectorAbDeviceBenchmarkTest {
         val riskConfigName = arguments.getString(ARG_RISK_CONFIG) ?: RISK_CONFIG_CURRENT
         val comparisonMode = arguments.getString(ARG_COMPARISON_MODE) ?: COMPARISON_MODE_DETECTOR_AB
         val depthModelAsset = arguments.getString(ARG_DEPTH_MODEL_ASSET) ?: TfliteMonocularDepthEstimator.MODEL_ASSET
-        val riskAnalyzer = RiskAnalyzer(riskAnalyzerConfigFor(riskConfigName))
+        val baseRiskAnalyzerConfig = riskAnalyzerConfigFor(riskConfigName)
+        val depthCloserIsLarger = arguments.getString(ARG_DEPTH_CLOSER_IS_LARGER)?.toBooleanStrictOrNull() ?: true
+        val singleDepthSamplingConfig = depthSamplingConfigFromArguments()
         val imageLimit = arguments.getString(ARG_IMAGE_LIMIT)?.toIntOrNull() ?: DEFAULT_IMAGE_LIMIT
         val pureWarmup = arguments.getString(ARG_PURE_WARMUP)?.toIntOrNull() ?: DEFAULT_PURE_WARMUP
         val pureRuns = arguments.getString(ARG_PURE_RUNS)?.toIntOrNull() ?: DEFAULT_PURE_RUNS
@@ -64,7 +67,13 @@ class DetectorAbDeviceBenchmarkTest {
             ?: DEFAULT_MATCH_IOU_THRESHOLD
 
         assertEquals(YOLO11N_ASSET, TfliteYoloDetector.MODEL_ASSET)
-        val modelSpecs = modelSpecsFor(comparisonMode, depthModelAsset)
+        val modelSpecs = modelSpecsFor(
+            comparisonMode = comparisonMode,
+            depthModelAsset = depthModelAsset,
+            depthCloserIsLarger = depthCloserIsLarger,
+            baseRiskAnalyzerConfig = baseRiskAnalyzerConfig,
+            singleDepthSamplingConfig = singleDepthSamplingConfig
+        )
         modelSpecs.forEach { spec ->
             assertTrue("${spec.assetName} test asset is missing", assetExists(spec.assetName))
             if (spec.depthFusion) {
@@ -79,9 +88,12 @@ class DetectorAbDeviceBenchmarkTest {
         assertTrue("Expected at least one annotated ${dataset.name} image asset", images.isNotEmpty())
 
         val artifactDir = createArtifactDir(targetContext)
+        val pureCache = mutableMapOf<String, PureBenchmarkResult>()
         val modelResults = modelSpecs.map { spec ->
-            val pure = runPureInterpreterBenchmark(spec, images, pureWarmup, pureRuns)
-            val app = runAppDetectorBenchmark(spec, images, appRunsPerImage, matchIouThreshold, riskAnalyzer)
+            val pure = pureCache.getOrPut(spec.assetName) {
+                runPureInterpreterBenchmark(spec, images, pureWarmup, pureRuns)
+            }
+            val app = runAppDetectorBenchmark(spec, images, appRunsPerImage, matchIouThreshold)
             assertFalse("${spec.id} App detector produced failures", app.failures.isNotEmpty())
             ModelBenchmarkResult(spec, pure, app)
         }
@@ -94,6 +106,8 @@ class DetectorAbDeviceBenchmarkTest {
             .put("comparison_mode", comparisonMode)
             .put("risk_config", riskConfigName)
             .put("depth_model_asset", depthModelAsset)
+            .put("depth_closer_is_larger", depthCloserIsLarger)
+            .put("depth_sampling_config", singleDepthSamplingConfig.toJson())
             .put("default_model_asset", TfliteYoloDetector.MODEL_ASSET)
             .put("image_count", images.size)
             .put("image_limit", imageLimit)
@@ -115,6 +129,11 @@ class DetectorAbDeviceBenchmarkTest {
         File(artifactDir, "benchmark.json").writeText(payload.toString(2), Charsets.UTF_8)
         File(artifactDir, "benchmark.md").writeText(markdownReport(payload), Charsets.UTF_8)
         File(artifactDir, "per-image.csv").writeText(perImageCsv(modelResults), Charsets.UTF_8)
+        if (comparisonMode == COMPARISON_MODE_DEPTH_FUSION_SWEEP) {
+            File(artifactDir, "sweep-summary.json").writeText(sweepSummaryJson(modelResults).toString(2), Charsets.UTF_8)
+            File(artifactDir, "sweep-summary.csv").writeText(sweepSummaryCsv(modelResults), Charsets.UTF_8)
+            File(artifactDir, "sweep-summary.md").writeText(sweepSummaryMarkdown(modelResults), Charsets.UTF_8)
+        }
         File(artifactDir, "false-positives.json").writeText(
             JSONArray(modelResults.flatMap { it.app.falsePositives }).toString(2),
             Charsets.UTF_8
@@ -199,9 +218,9 @@ class DetectorAbDeviceBenchmarkTest {
         spec: ModelSpec,
         images: List<BenchmarkImage>,
         runsPerImage: Int,
-        matchIouThreshold: Float,
-        riskAnalyzer: RiskAnalyzer
+        matchIouThreshold: Float
     ): AppBenchmarkResult {
+        val riskAnalyzer = RiskAnalyzer(spec.riskAnalyzerConfig)
         val detector = TfliteYoloDetector(
             context = testContext,
             modelAssetName = spec.assetName,
@@ -211,7 +230,8 @@ class DetectorAbDeviceBenchmarkTest {
         val depthEstimator = if (spec.depthFusion) {
             TfliteMonocularDepthEstimator(
                 context = testContext,
-                modelAssetName = spec.depthModelAssetName
+                modelAssetName = spec.depthModelAssetName,
+                closerIsLarger = spec.depthCloserIsLarger
             ).also { estimator ->
                 assertTrue("${spec.id} depth estimator failed to initialize: ${estimator.statusMessage}", estimator.isReady)
             }
@@ -243,7 +263,8 @@ class DetectorAbDeviceBenchmarkTest {
                                     detection.copy(
                                         distanceEvidence = depthResult.depthMap.sampleEvidence(
                                             detection.boundingBox,
-                                            frameSize
+                                            frameSize,
+                                            spec.depthSamplingConfig
                                         )
                                     )
                                 }
@@ -661,45 +682,60 @@ class DetectorAbDeviceBenchmarkTest {
     private fun recommendation(modelResults: List<ModelBenchmarkResult>): JSONObject {
         val baseline = modelResults.firstOrNull { it.spec.id == "baseline_geometry" }
             ?: modelResults.firstOrNull { it.spec.id == "yolo11n" }
-        val candidate = modelResults.firstOrNull { it.spec.id == "candidate_depth_fusion" }
-            ?: modelResults.firstOrNull { it.spec.id == "yolo26n" }
-        if (baseline == null || candidate == null) {
+        val candidates = modelResults.filter { it !== baseline && (it.spec.depthFusion || it.spec.id == "yolo26n") }
+        if (baseline == null || candidates.isEmpty()) {
             return JSONObject()
                 .put("decision", "not_enough_data")
-                .put("reason", "Baseline or candidate result is missing.")
+                .put("reason", "Baseline or candidate results are missing.")
         }
         val baselineQuality = baseline.app.quality
-        val candidateQuality = candidate.app.quality
         val hasBlindAssistLabels = baseline.app.blindAssistMetrics.labeledImageCount > 0
-        val candidateNotWorse = if (hasBlindAssistLabels) {
+        val passingCandidates = candidates.filter { candidate ->
+            val candidateQuality = candidate.app.quality
             val baselineAssist = baseline.app.blindAssistMetrics
             val candidateAssist = candidate.app.blindAssistMetrics
-            candidateQuality.ap50 >= baselineQuality.ap50 &&
+            if (hasBlindAssistLabels) {
+                candidateQuality.ap50 >= baselineQuality.ap50 &&
+                    candidateQuality.recall >= baselineQuality.recall &&
+                    candidateQuality.precision >= baselineQuality.precision &&
+                    candidateAssist.alertRecall >= baselineAssist.alertRecall &&
+                    candidateAssist.centerRiskRecall >= baselineAssist.centerRiskRecall &&
+                    candidateAssist.criticalMissCount <= baselineAssist.criticalMissCount &&
+                    candidateAssist.alertFalsePositiveRate <= baselineAssist.alertFalsePositiveRate + 0.02 &&
+                    candidateAssist.distanceBandAccuracy >= baselineAssist.distanceBandAccuracy &&
+                    candidateAssist.riskLevelAccuracy >= baselineAssist.riskLevelAccuracy - 0.02 &&
+                    candidateAssist.primaryObjectHitRate >= baselineAssist.primaryObjectHitRate - 0.02
+            } else {
                 candidateQuality.recall >= baselineQuality.recall &&
-                candidateQuality.precision >= baselineQuality.precision &&
-                candidateAssist.alertRecall >= baselineAssist.alertRecall &&
-                candidateAssist.centerRiskRecall >= baselineAssist.centerRiskRecall &&
-                candidateAssist.criticalMissCount <= baselineAssist.criticalMissCount &&
-                candidateAssist.alertFalsePositiveRate <= baselineAssist.alertFalsePositiveRate + 0.02 &&
-                candidateAssist.distanceBandAccuracy >= baselineAssist.distanceBandAccuracy - 0.02 &&
-                candidateAssist.riskLevelAccuracy >= baselineAssist.riskLevelAccuracy - 0.02 &&
-                candidateAssist.primaryObjectHitRate >= baselineAssist.primaryObjectHitRate - 0.02
-        } else {
-            candidateQuality.recall >= baselineQuality.recall &&
-                candidateQuality.precision >= baselineQuality.precision &&
-                candidate.app.riskQuality.riskFn <= baseline.app.riskQuality.riskFn &&
-                candidate.app.stability.riskLevelFlipRate <= baseline.app.stability.riskLevelFlipRate
+                    candidateQuality.precision >= baselineQuality.precision &&
+                    candidate.app.riskQuality.riskFn <= baseline.app.riskQuality.riskFn &&
+                    candidate.app.stability.riskLevelFlipRate <= baseline.app.stability.riskLevelFlipRate
+            }
         }
-        return if (candidateNotWorse) {
+        val bestPassing = passingCandidates.minWithOrNull(
+            compareBy<ModelBenchmarkResult> { it.app.blindAssistMetrics.alertFalsePositiveRate }
+                .thenBy { it.app.blindAssistMetrics.criticalMissCount }
+                .thenByDescending { it.app.blindAssistMetrics.distanceBandAccuracy }
+                .thenBy { it.app.totalStats.p50Ms }
+        )
+        val bestObserved = candidates.minWithOrNull(
+            compareBy<ModelBenchmarkResult> { it.app.blindAssistMetrics.alertFalsePositiveRate }
+                .thenBy { it.app.blindAssistMetrics.criticalMissCount }
+                .thenByDescending { it.app.blindAssistMetrics.distanceBandAccuracy }
+                .thenBy { it.app.totalStats.p50Ms }
+        )
+        return if (bestPassing != null) {
             JSONObject()
-                .put("decision", if (candidate.spec.depthFusion) "depth_fusion_candidate_ok_for_next_stage" else "candidate_ok_for_next_stage")
+                .put("decision", if (bestPassing.spec.depthFusion) "depth_fusion_candidate_ok_for_next_stage" else "candidate_ok_for_next_stage")
                 .put("replace_default_model_now", false)
-                .put("reason", "${candidate.spec.id} is not worse on the active dataset gate; keep it as a candidate until broader real walking validation confirms the result.")
+                .put("best_candidate", bestPassing.spec.id)
+                .put("reason", "${bestPassing.spec.id} passed the active no-regression gate; keep it as a candidate until broader real walking validation confirms the result.")
         } else {
             JSONObject()
-                .put("decision", if (candidate.spec.depthFusion) "do_not_promote_depth_fusion" else "do_not_replace_default_model")
+                .put("decision", if (candidates.any { it.spec.depthFusion }) "do_not_promote_depth_fusion" else "do_not_replace_default_model")
                 .put("replace_default_model_now", false)
-                .put("reason", "${candidate.spec.id} did not meet the no-regression gate for detection quality or BlindAssist risk metrics in this run.")
+                .put("best_observed_candidate", bestObserved?.spec?.id ?: JSONObject.NULL)
+                .put("reason", "No candidate met the no-regression gate for detection quality and BlindAssist risk metrics in this run.")
         }
     }
 
@@ -792,6 +828,105 @@ class DetectorAbDeviceBenchmarkTest {
         }
     }
 
+    private fun sweepSummaryJson(modelResults: List<ModelBenchmarkResult>): JSONArray {
+        return JSONArray(sweepRows(modelResults).map { row ->
+            JSONObject()
+                .put("id", row.result.spec.id)
+                .put("depth_closer_is_larger", row.result.spec.depthCloserIsLarger)
+                .put("depth_sampling_config", row.result.spec.depthSamplingConfig.toJson())
+                .put("passed_gate", row.passedGate)
+                .put("alert_false_positive_rate_delta", round3(row.alertFalsePositiveRateDelta))
+                .put("critical_miss_delta", row.criticalMissDelta)
+                .put("distance_band_accuracy_delta", round3(row.distanceBandAccuracyDelta))
+                .put("center_risk_recall_delta", round3(row.centerRiskRecallDelta))
+                .put("alert_recall_delta", round3(row.alertRecallDelta))
+                .put("depth_p50_ms", row.result.app.depthStats.p50Ms)
+                .put("total_p50_ms", row.result.app.totalStats.p50Ms)
+                .put("total_p95_ms", row.result.app.totalStats.p95Ms)
+        })
+    }
+
+    private fun sweepSummaryCsv(modelResults: List<ModelBenchmarkResult>): String {
+        val lines = mutableListOf(
+            "id,passed_gate,closer_is_larger,sample_percentile,inner_crop_ratio,min_confidence,critical_threshold,near_threshold,mid_threshold,alert_fp_delta,critical_miss_delta,distance_acc_delta,center_risk_recall_delta,alert_recall_delta,depth_p50_ms,total_p50_ms,total_p95_ms"
+        )
+        sweepRows(modelResults).forEach { row ->
+            val config = row.result.spec.depthSamplingConfig
+            lines += listOf(
+                row.result.spec.id,
+                row.passedGate,
+                row.result.spec.depthCloserIsLarger,
+                config.samplePercentile,
+                config.innerCropRatio,
+                config.minConfidence,
+                config.criticalThreshold,
+                config.nearThreshold,
+                config.midThreshold,
+                round3(row.alertFalsePositiveRateDelta),
+                row.criticalMissDelta,
+                round3(row.distanceBandAccuracyDelta),
+                round3(row.centerRiskRecallDelta),
+                round3(row.alertRecallDelta),
+                row.result.app.depthStats.p50Ms,
+                row.result.app.totalStats.p50Ms,
+                row.result.app.totalStats.p95Ms
+            ).joinToString(",") { csvValue(it) }
+        }
+        return lines.joinToString(separator = "\n", postfix = "\n")
+    }
+
+    private fun sweepSummaryMarkdown(modelResults: List<ModelBenchmarkResult>): String {
+        return buildString {
+            appendLine("# Depth Fusion Sweep Summary")
+            appendLine()
+            appendLine("| Candidate | Pass | FP delta | Critical miss delta | Distance acc delta | Center recall delta | Alert recall delta | Depth P50 ms | Total P50/P95 ms |")
+            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
+            sweepRows(modelResults).forEach { row ->
+                appendLine(
+                    "| `${row.result.spec.id}` | `${row.passedGate}` | ${round3(row.alertFalsePositiveRateDelta)} | " +
+                        "${row.criticalMissDelta} | ${round3(row.distanceBandAccuracyDelta)} | " +
+                        "${round3(row.centerRiskRecallDelta)} | ${round3(row.alertRecallDelta)} | " +
+                        "${row.result.app.depthStats.p50Ms} | ${row.result.app.totalStats.p50Ms}/${row.result.app.totalStats.p95Ms} |"
+                )
+            }
+        }
+    }
+
+    private fun sweepRows(modelResults: List<ModelBenchmarkResult>): List<SweepRow> {
+        val baseline = modelResults.firstOrNull { it.spec.id == "baseline_geometry" } ?: return emptyList()
+        val baselineAssist = baseline.app.blindAssistMetrics
+        return modelResults
+            .filter { it.spec.depthFusion }
+            .map { result ->
+                val assist = result.app.blindAssistMetrics
+                val alertFalsePositiveRateDelta = assist.alertFalsePositiveRate - baselineAssist.alertFalsePositiveRate
+                val criticalMissDelta = assist.criticalMissCount - baselineAssist.criticalMissCount
+                val distanceBandAccuracyDelta = assist.distanceBandAccuracy - baselineAssist.distanceBandAccuracy
+                val centerRiskRecallDelta = assist.centerRiskRecall - baselineAssist.centerRiskRecall
+                val alertRecallDelta = assist.alertRecall - baselineAssist.alertRecall
+                SweepRow(
+                    result = result,
+                    passedGate = alertFalsePositiveRateDelta <= 0.02 &&
+                        criticalMissDelta <= 0 &&
+                        distanceBandAccuracyDelta >= 0.0 &&
+                        centerRiskRecallDelta >= 0.0 &&
+                        alertRecallDelta >= 0.0,
+                    alertFalsePositiveRateDelta = alertFalsePositiveRateDelta,
+                    criticalMissDelta = criticalMissDelta,
+                    distanceBandAccuracyDelta = distanceBandAccuracyDelta,
+                    centerRiskRecallDelta = centerRiskRecallDelta,
+                    alertRecallDelta = alertRecallDelta
+                )
+            }
+            .sortedWith(
+                compareByDescending<SweepRow> { if (it.passedGate) 1 else 0 }
+                    .thenBy { it.alertFalsePositiveRateDelta }
+                    .thenBy { it.criticalMissDelta }
+                    .thenByDescending { it.distanceBandAccuracyDelta }
+                    .thenBy { it.result.app.totalStats.p50Ms }
+            )
+    }
+
     private fun loadMappedAsset(assetName: String): MappedByteBuffer {
         val descriptor = testContext.assets.openFd(assetName)
         FileInputStream(descriptor.fileDescriptor).use { stream ->
@@ -879,6 +1014,33 @@ class DetectorAbDeviceBenchmarkTest {
         }
     }
 
+    private fun DepthEvidenceSamplingConfig.toJson(): JSONObject {
+        return JSONObject()
+            .put("sample_percentile", round3(samplePercentile))
+            .put("inner_crop_ratio", round3(innerCropRatio))
+            .put("lower_half_only", lowerHalfOnly)
+            .put("min_samples", minSamples)
+            .put("min_local_range", round3(minLocalRange))
+            .put("min_confidence", round3(minConfidence))
+            .put("critical_threshold", round3(criticalThreshold))
+            .put("near_threshold", round3(nearThreshold))
+            .put("mid_threshold", round3(midThreshold))
+    }
+
+    private fun depthSamplingConfigFromArguments(): DepthEvidenceSamplingConfig {
+        return DepthEvidenceSamplingConfig(
+            samplePercentile = arguments.getString(ARG_DEPTH_SAMPLE_PERCENTILE)?.toFloatOrNull() ?: 0.50f,
+            innerCropRatio = arguments.getString(ARG_DEPTH_INNER_CROP_RATIO)?.toFloatOrNull() ?: 1.0f,
+            lowerHalfOnly = arguments.getString(ARG_DEPTH_LOWER_HALF_ONLY)?.toBooleanStrictOrNull() ?: true,
+            minSamples = arguments.getString(ARG_DEPTH_MIN_SAMPLES)?.toIntOrNull() ?: 4,
+            minLocalRange = arguments.getString(ARG_DEPTH_MIN_LOCAL_RANGE)?.toFloatOrNull() ?: 0f,
+            minConfidence = arguments.getString(ARG_DEPTH_MIN_CONFIDENCE)?.toFloatOrNull() ?: 0.55f,
+            criticalThreshold = arguments.getString(ARG_DEPTH_CRITICAL_THRESHOLD)?.toFloatOrNull() ?: 0.78f,
+            nearThreshold = arguments.getString(ARG_DEPTH_NEAR_THRESHOLD)?.toFloatOrNull() ?: 0.58f,
+            midThreshold = arguments.getString(ARG_DEPTH_MID_THRESHOLD)?.toFloatOrNull() ?: 0.35f
+        )
+    }
+
     private fun Bitmap.use(block: (Bitmap) -> Unit) {
         try {
             block(this)
@@ -892,7 +1054,10 @@ class DetectorAbDeviceBenchmarkTest {
         val assetName: String,
         val source: String,
         val depthFusion: Boolean = false,
-        val depthModelAssetName: String = ""
+        val depthModelAssetName: String = "",
+        val depthCloserIsLarger: Boolean = true,
+        val depthSamplingConfig: DepthEvidenceSamplingConfig = DepthEvidenceSamplingConfig(),
+        val riskAnalyzerConfig: RiskAnalyzerConfig = RiskAnalyzerConfig.Default
     )
 
     private data class BenchmarkDataset(
@@ -979,6 +1144,20 @@ class DetectorAbDeviceBenchmarkTest {
                 .put(
                     "depth_model_asset",
                     if (spec.depthModelAssetName.isBlank()) JSONObject.NULL else spec.depthModelAssetName
+                )
+                .put("depth_closer_is_larger", spec.depthCloserIsLarger)
+                .put(
+                    "depth_sampling_config",
+                    JSONObject()
+                        .put("sample_percentile", spec.depthSamplingConfig.samplePercentile.toDouble())
+                        .put("inner_crop_ratio", spec.depthSamplingConfig.innerCropRatio.toDouble())
+                        .put("lower_half_only", spec.depthSamplingConfig.lowerHalfOnly)
+                        .put("min_samples", spec.depthSamplingConfig.minSamples)
+                        .put("min_local_range", spec.depthSamplingConfig.minLocalRange.toDouble())
+                        .put("min_confidence", spec.depthSamplingConfig.minConfidence.toDouble())
+                        .put("critical_threshold", spec.depthSamplingConfig.criticalThreshold.toDouble())
+                        .put("near_threshold", spec.depthSamplingConfig.nearThreshold.toDouble())
+                        .put("mid_threshold", spec.depthSamplingConfig.midThreshold.toDouble())
                 )
                 .put("pure_interpreter", pure.toJson())
                 .put("app_detector", app.toJson())
@@ -1375,6 +1554,16 @@ class DetectorAbDeviceBenchmarkTest {
         val detection: Detection
     )
 
+    private data class SweepRow(
+        val result: ModelBenchmarkResult,
+        val passedGate: Boolean,
+        val alertFalsePositiveRateDelta: Double,
+        val criticalMissDelta: Int,
+        val distanceBandAccuracyDelta: Double,
+        val centerRiskRecallDelta: Double,
+        val alertRecallDelta: Double
+    )
+
     companion object {
         private const val TAG = "DetectorAbBenchmark"
         private const val YOLO11N_ASSET = "yolo11n_fp16_320.tflite"
@@ -1387,6 +1576,7 @@ class DetectorAbDeviceBenchmarkTest {
         private const val DATASET_KIND_BLINDASSIST_EVALSET = "BlindAssistEvalSet"
         private const val COMPARISON_MODE_DETECTOR_AB = "DetectorAb"
         private const val COMPARISON_MODE_DEPTH_FUSION = "DepthFusion"
+        private const val COMPARISON_MODE_DEPTH_FUSION_SWEEP = "DepthFusionSweep"
         private const val RISK_CONFIG_CURRENT = "current"
         private const val RISK_CONFIG_CENTER_NEAR_SENSITIVE = "center_near_sensitive"
         private const val RISK_CONFIG_CENTER_NEAR_STRICT = "center_near_strict"
@@ -1396,6 +1586,16 @@ class DetectorAbDeviceBenchmarkTest {
         private const val ARG_RISK_CONFIG = "riskConfig"
         private const val ARG_COMPARISON_MODE = "comparisonMode"
         private const val ARG_DEPTH_MODEL_ASSET = "depthModelAsset"
+        private const val ARG_DEPTH_CLOSER_IS_LARGER = "depthCloserIsLarger"
+        private const val ARG_DEPTH_SAMPLE_PERCENTILE = "depthSamplePercentile"
+        private const val ARG_DEPTH_INNER_CROP_RATIO = "depthInnerCropRatio"
+        private const val ARG_DEPTH_LOWER_HALF_ONLY = "depthLowerHalfOnly"
+        private const val ARG_DEPTH_MIN_SAMPLES = "depthMinSamples"
+        private const val ARG_DEPTH_MIN_LOCAL_RANGE = "depthMinLocalRange"
+        private const val ARG_DEPTH_MIN_CONFIDENCE = "depthMinConfidence"
+        private const val ARG_DEPTH_CRITICAL_THRESHOLD = "depthCriticalThreshold"
+        private const val ARG_DEPTH_NEAR_THRESHOLD = "depthNearThreshold"
+        private const val ARG_DEPTH_MID_THRESHOLD = "depthMidThreshold"
         private const val ARG_IMAGE_LIMIT = "imageLimit"
         private const val ARG_PURE_WARMUP = "pureWarmup"
         private const val ARG_PURE_RUNS = "pureRuns"
@@ -1406,24 +1606,134 @@ class DetectorAbDeviceBenchmarkTest {
         private const val DEFAULT_PURE_RUNS = 100
         private const val DEFAULT_APP_RUNS_PER_IMAGE = 3
         private const val DEFAULT_MATCH_IOU_THRESHOLD = 0.5f
-        private fun modelSpecsFor(comparisonMode: String, depthModelAsset: String): List<ModelSpec> {
+        private fun modelSpecsFor(
+            comparisonMode: String,
+            depthModelAsset: String,
+            depthCloserIsLarger: Boolean,
+            baseRiskAnalyzerConfig: RiskAnalyzerConfig,
+            singleDepthSamplingConfig: DepthEvidenceSamplingConfig
+        ): List<ModelSpec> {
+            val conservativeDepthRiskConfig = baseRiskAnalyzerConfig.copy(distanceEvidenceMaxPromotionSteps = 1)
             return when (comparisonMode) {
                 COMPARISON_MODE_DETECTOR_AB -> listOf(
-                    ModelSpec("yolo11n", YOLO11N_ASSET, "app/src/main/assets/yolo11n_fp16_320.tflite"),
-                    ModelSpec("yolo26n", YOLO26N_ASSET, ".downloads/detector-lab/exports/yolo26n_fp16_320.tflite")
+                    ModelSpec(
+                        "yolo11n",
+                        YOLO11N_ASSET,
+                        "app/src/main/assets/yolo11n_fp16_320.tflite",
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    ),
+                    ModelSpec(
+                        "yolo26n",
+                        YOLO26N_ASSET,
+                        ".downloads/detector-lab/exports/yolo26n_fp16_320.tflite",
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    )
                 )
                 COMPARISON_MODE_DEPTH_FUSION -> listOf(
-                    ModelSpec("baseline_geometry", YOLO11N_ASSET, "app/src/main/assets/yolo11n_fp16_320.tflite"),
+                    ModelSpec(
+                        "baseline_geometry",
+                        YOLO11N_ASSET,
+                        "app/src/main/assets/yolo11n_fp16_320.tflite",
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    ),
                     ModelSpec(
                         id = "candidate_depth_fusion",
                         assetName = YOLO11N_ASSET,
                         source = "app/src/main/assets/yolo11n_fp16_320.tflite + androidTest/assets/$depthModelAsset",
                         depthFusion = true,
-                        depthModelAssetName = depthModelAsset
+                        depthModelAssetName = depthModelAsset,
+                        depthCloserIsLarger = depthCloserIsLarger,
+                        depthSamplingConfig = singleDepthSamplingConfig,
+                        riskAnalyzerConfig = conservativeDepthRiskConfig
                     )
                 )
+                COMPARISON_MODE_DEPTH_FUSION_SWEEP -> {
+                    val baseline = ModelSpec(
+                        "baseline_geometry",
+                        YOLO11N_ASSET,
+                        "app/src/main/assets/yolo11n_fp16_320.tflite",
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    )
+                    listOf(baseline) + depthFusionSweepSpecs(depthModelAsset, conservativeDepthRiskConfig)
+                }
                 else -> error("Unsupported comparisonMode: $comparisonMode")
             }
+        }
+
+        private fun depthFusionSweepSpecs(
+            depthModelAsset: String,
+            riskAnalyzerConfig: RiskAnalyzerConfig
+        ): List<ModelSpec> {
+            val thresholdSets = listOf(
+                ThresholdSet("strict", 0.86f, 0.68f, 0.45f),
+                ThresholdSet("balanced", 0.80f, 0.62f, 0.40f),
+                ThresholdSet("current", 0.78f, 0.58f, 0.35f)
+            )
+            val specs = mutableListOf<ModelSpec>()
+            specs += depthFusionSpec(
+                id = "fastdepth_orig_p50_conf055_c100_t78_58_35",
+                depthModelAsset = depthModelAsset,
+                closerIsLarger = true,
+                config = DepthEvidenceSamplingConfig(),
+                riskAnalyzerConfig = riskAnalyzerConfig
+            )
+            for (samplePercentile in listOf(0.50f, 0.25f, 0.10f)) {
+                for (innerCropRatio in listOf(0.50f, 0.60f)) {
+                    for (minConfidence in listOf(0.65f, 0.75f)) {
+                        for (threshold in thresholdSets) {
+                            val config = DepthEvidenceSamplingConfig(
+                                samplePercentile = samplePercentile,
+                                innerCropRatio = innerCropRatio,
+                                lowerHalfOnly = false,
+                                minSamples = 4,
+                                minLocalRange = 0.05f,
+                                minConfidence = minConfidence,
+                                criticalThreshold = threshold.critical,
+                                nearThreshold = threshold.near,
+                                midThreshold = threshold.mid
+                            )
+                            specs += depthFusionSpec(
+                                id = "fastdepth_inv_p${percentCode(samplePercentile)}_conf${percentCode(minConfidence)}_c${percentCode(innerCropRatio)}_t${percentCode(threshold.critical)}_${percentCode(threshold.near)}_${percentCode(threshold.mid)}",
+                                depthModelAsset = depthModelAsset,
+                                closerIsLarger = false,
+                                config = config,
+                                riskAnalyzerConfig = riskAnalyzerConfig
+                            )
+                        }
+                    }
+                }
+            }
+            return specs
+        }
+
+        private fun depthFusionSpec(
+            id: String,
+            depthModelAsset: String,
+            closerIsLarger: Boolean,
+            config: DepthEvidenceSamplingConfig,
+            riskAnalyzerConfig: RiskAnalyzerConfig
+        ): ModelSpec {
+            return ModelSpec(
+                id = id,
+                assetName = YOLO11N_ASSET,
+                source = "app/src/main/assets/yolo11n_fp16_320.tflite + androidTest/assets/$depthModelAsset",
+                depthFusion = true,
+                depthModelAssetName = depthModelAsset,
+                depthCloserIsLarger = closerIsLarger,
+                depthSamplingConfig = config,
+                riskAnalyzerConfig = riskAnalyzerConfig
+            )
+        }
+
+        private data class ThresholdSet(
+            val name: String,
+            val critical: Float,
+            val near: Float,
+            val mid: Float
+        )
+
+        private fun percentCode(value: Float): String {
+            return (value * 100f).roundToInt().toString().padStart(2, '0')
         }
         private val RISK_LABELS = setOf(
             "person",
