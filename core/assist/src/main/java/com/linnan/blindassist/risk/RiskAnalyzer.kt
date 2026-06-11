@@ -17,7 +17,8 @@ data class RiskAnalyzerConfig(
     val nearBottomRatio: Float = RiskAnalyzer.NEAR_BOTTOM_RATIO,
     val nearAreaRatio: Float = RiskAnalyzer.NEAR_AREA_RATIO,
     val criticalBottomRatio: Float = RiskAnalyzer.CRITICAL_BOTTOM_RATIO,
-    val criticalAreaRatio: Float = RiskAnalyzer.CRITICAL_AREA_RATIO
+    val criticalAreaRatio: Float = RiskAnalyzer.CRITICAL_AREA_RATIO,
+    val distanceEvidenceMinConfidence: Float = RiskAnalyzer.DISTANCE_EVIDENCE_MIN_CONFIDENCE
 ) {
     companion object {
         val Default = RiskAnalyzerConfig()
@@ -65,7 +66,8 @@ class RiskAnalyzer(
             message = message,
             sourceDetection = best.detection,
             proximity = best.proximity,
-            urgencyScore = best.urgencyScore
+            urgencyScore = best.urgencyScore,
+            distanceEvidence = best.distanceEvidence
         )
     }
 
@@ -76,16 +78,24 @@ class RiskAnalyzer(
         val centerBias = 1f - abs(
             detection.boundingBox.centerX / frameSize.width.toFloat() - 0.5f
         ) * 2f
-        val proximity = proximityFor(bottomRatio, areaRatio, direction)
+        val geometryProximity = proximityFor(bottomRatio, areaRatio, direction)
+        val distanceEvidence = activeDistanceEvidence(detection.distanceEvidence)
+        val proximity = fusedProximityFor(
+            geometryProximity = geometryProximity,
+            distanceEvidence = distanceEvidence,
+            direction = direction,
+            centerBias = centerBias
+        )
         val level = levelFor(proximity, direction)
         val urgencyScore = urgencyScore(
             detection = detection,
             bottomRatio = bottomRatio,
             areaRatio = areaRatio,
             centerBias = centerBias,
-            proximity = proximity
+            proximity = proximity,
+            distanceEvidence = distanceEvidence
         )
-        return RiskCandidate(detection, direction, proximity, level, urgencyScore)
+        return RiskCandidate(detection, direction, proximity, level, urgencyScore, distanceEvidence)
     }
 
     private fun urgencyScore(
@@ -93,7 +103,8 @@ class RiskAnalyzer(
         bottomRatio: Float,
         areaRatio: Float,
         centerBias: Float,
-        proximity: ProximityBand
+        proximity: ProximityBand,
+        distanceEvidence: DistanceEvidence?
     ): Float {
         val proximityWeight = when (proximity) {
             ProximityBand.CRITICAL -> 4f
@@ -102,8 +113,13 @@ class RiskAnalyzer(
             ProximityBand.FAR -> 1f
         }
         val classWeight = classWeightFor(detection.label)
+        val depthWeight = if (distanceEvidence?.source == DistanceEvidenceSource.MONOCULAR_DEPTH) {
+            distanceEvidence.confidence * distanceEvidence.relativeDepthScore * 0.6f
+        } else {
+            0f
+        }
         val base = bottomRatio * 1.6f + areaRatio * 5f + centerBias.coerceIn(0f, 1f) * 0.7f
-        return (base + proximityWeight + detection.confidence * 0.4f) * classWeight
+        return (base + proximityWeight + depthWeight + detection.confidence * 0.4f) * classWeight
     }
 
     private fun directionFor(detection: Detection, frameSize: FrameSize): RiskDirection {
@@ -128,6 +144,45 @@ class RiskAnalyzer(
             bottomRatio >= nearBottomRatioFor(direction) || areaRatio >= nearAreaRatioFor(direction) -> ProximityBand.NEAR
             bottomRatio >= config.midBottomRatio || areaRatio >= config.midAreaRatio -> ProximityBand.MID
             else -> ProximityBand.FAR
+        }
+    }
+
+    private fun activeDistanceEvidence(evidence: DistanceEvidence?): DistanceEvidence? {
+        return evidence?.takeIf {
+            it.source != DistanceEvidenceSource.GEOMETRY &&
+                it.confidence >= config.distanceEvidenceMinConfidence
+        }
+    }
+
+    private fun fusedProximityFor(
+        geometryProximity: ProximityBand,
+        distanceEvidence: DistanceEvidence?,
+        direction: RiskDirection,
+        centerBias: Float
+    ): ProximityBand {
+        val depthBand = distanceEvidence?.band ?: return geometryProximity
+        if (depthBand.ordinal <= geometryProximity.ordinal) {
+            return geometryProximity
+        }
+
+        val isActionableLane = direction == RiskDirection.CENTER || centerBias >= 0.35f
+        if (!isActionableLane) {
+            return geometryProximity
+        }
+
+        return when {
+            distanceEvidence.confidence >= 0.75f -> depthBand
+            depthBand.ordinal - geometryProximity.ordinal >= 2 -> geometryProximity.nextMoreUrgent()
+            else -> depthBand
+        }
+    }
+
+    private fun ProximityBand.nextMoreUrgent(): ProximityBand {
+        return when (this) {
+            ProximityBand.FAR -> ProximityBand.MID
+            ProximityBand.MID -> ProximityBand.NEAR
+            ProximityBand.NEAR -> ProximityBand.CRITICAL
+            ProximityBand.CRITICAL -> ProximityBand.CRITICAL
         }
     }
 
@@ -203,7 +258,8 @@ class RiskAnalyzer(
         val direction: RiskDirection,
         val proximity: ProximityBand,
         val level: RiskLevel,
-        val urgencyScore: Float
+        val urgencyScore: Float,
+        val distanceEvidence: DistanceEvidence?
     )
 
     companion object {
@@ -218,5 +274,6 @@ class RiskAnalyzer(
         const val NEAR_AREA_RATIO = 0.14f
         const val CRITICAL_BOTTOM_RATIO = 0.72f
         const val CRITICAL_AREA_RATIO = 0.20f
+        const val DISTANCE_EVIDENCE_MIN_CONFIDENCE = 0.55f
     }
 }

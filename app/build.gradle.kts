@@ -18,9 +18,16 @@ val releaseSigningProperties = Properties().apply {
 val hasReleaseSigningProperties = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
     .all { key -> releaseSigningProperties.getProperty(key).isNullOrBlank().not() }
 val yolo26nBenchmarkAssetsDir = layout.buildDirectory.dir("generated/yolo26nBenchmarkAssets")
+val depthBenchmarkAssetsDir = layout.buildDirectory.dir("generated/depthBenchmarkAssets")
 val blindAssistEvalSetDir = providers
     .gradleProperty("blindAssistEvalSetDir")
     .orElse("test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
+val depthBenchmarkModelPath = providers
+    .gradleProperty("depthBenchmarkModelPath")
+    .orElse(".downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite")
+val depthBenchmarkModelAssetName = providers
+    .gradleProperty("depthBenchmarkModelAssetName")
+    .orElse("depth_anything_v2_small_fp32.tflite")
 val prepareYolo26nBenchmarkAssets = tasks.register<Sync>("prepareYolo26nBenchmarkAssets") {
     from(project.file("src/main/assets")) {
         include("coco_labels.txt")
@@ -41,6 +48,13 @@ val prepareYolo26nBenchmarkAssets = tasks.register<Sync>("prepareYolo26nBenchmar
         into("blindassist_evalset")
     }
     into(yolo26nBenchmarkAssetsDir)
+}
+val prepareDepthBenchmarkAssets = tasks.register<Sync>("prepareDepthBenchmarkAssets") {
+    from(depthBenchmarkModelPath.map { rootProject.file(it) }) {
+        rename { depthBenchmarkModelAssetName.get() }
+        into("depth")
+    }
+    into(depthBenchmarkAssetsDir)
 }
 
 gradle.taskGraph.whenReady {
@@ -116,12 +130,14 @@ android {
     sourceSets {
         getByName("androidTest") {
             assets.srcDir(yolo26nBenchmarkAssetsDir)
+            assets.srcDir(depthBenchmarkAssetsDir)
         }
     }
 }
 
 tasks.matching { it.name == "mergeDebugAndroidTestAssets" }.configureEach {
     dependsOn(prepareYolo26nBenchmarkAssets)
+    dependsOn(prepareDepthBenchmarkAssets)
 }
 
 dependencies {

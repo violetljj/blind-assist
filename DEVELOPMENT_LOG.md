@@ -4,6 +4,138 @@
 
 ## 2026-06-11
 
+### MiDaS TFLite DepthFusion 真机 A/B
+- 时间：2026-06-12 00:31:00 +08:00
+- 执行者：Codex
+- 类型：真机 benchmark / DepthFusion A/B / 结果判定
+- 修改范围：
+  - `app/src/androidTest/java/com/linnan/blindassist/benchmark/DetectorAbDeviceBenchmarkTest.kt`
+  - `test-artifacts.local/depth-fusion-benchmark/20260612-002427`（本地忽略目录，不提交 Git）
+  - `DEVELOPMENT_LOG.md`
+- 执行命令：
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_depth_fusion_benchmark.ps1 -DepthModelPath .downloads\depth-lab\candidate-mobile-models\IPDLA\MobileDepthEstimation-main\app\src\main\assets\depth_model.tflite -DepthModelAsset depth/depth_model.tflite -SkipDefaultRegression`
+- 验证方式：
+  - 设备：`R5CX10M8Y8X`，`SM-S9280 - 16`。
+  - `DetectorAbDeviceBenchmarkTest` 单测真机运行通过，`BUILD SUCCESSFUL in 2m 29s`。
+  - 结果 artifact：`test-artifacts.local/depth-fusion-benchmark/20260612-002427`；设备端 benchmark 目录：`device-depth-fusion-benchmark/20260612-002521/`。
+  - 主 debug APK 资产检查通过，仍只包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`，没有深度模型。
+  - androidTest APK 资产包含 `assets/depth/depth_model.tflite`。
+  - 跑后修正 `DetectorAbDeviceBenchmarkTest` 的 JSON 元数据来源字段，避免自定义 `depthModelAsset` 时仍显示旧默认 Depth Anything 路径；随后 `:app:assembleDebugAndroidTest` 通过。
+- A/B 结果：
+  - `baseline_geometry`：`distanceBandAccuracy=0.73`，`centerRiskRecall=0.667`，`alertRecall=0.836`，`alertFalsePositiveRate=0.037`，`criticalMissCount=9`，`total P50/P95=54/56ms`。
+  - `candidate_depth_fusion`：`distanceBandAccuracy=0.69`，`centerRiskRecall=0.667`，`alertRecall=0.836`，`alertFalsePositiveRate=0.185`，`criticalMissCount=7`，`depth P50=222ms`，`total P50/P95=276/292ms`。
+  - 检测质量未变：两组均为 `AP50=0.289`、`precision=0.826`、`recall=0.3`。
+- 当前判断：
+  - 该 MiDaS TFLite 候选不通过候选提升门槛，benchmark recommendation 为 `do_not_promote_depth_fusion`，`replace_default_model_now=false`。
+  - 虽然 `criticalMissCount` 从 `9` 降到 `7`，但 `alertFalsePositiveRate` 从 `0.037` 明显升到 `0.185`，`distanceBandAccuracy` 与 `riskLevelAccuracy` 均下降，且总延迟 P50 从 `54ms` 增加到 `276ms`。
+  - 默认 App 继续保持 `yolo11n + current RiskAnalyzer`，该深度模型只保留为本机实验候选，不进入正式 runtime。
+
+### 现成移动端 MiDaS TFLite 候选验证
+- 时间：2026-06-12 00:05:00 +08:00
+- 执行者：Codex
+- 类型：模型筛选 / TFLite 合同检查 / AndroidTest 资产隔离
+- 修改范围：
+  - `.downloads/depth-lab/candidate-mobile-models/`（本地忽略目录，不提交 Git）
+  - `app/build.gradle.kts`
+  - `scripts/run_depth_fusion_benchmark.ps1`
+  - `scripts/smoke_depth_model.py`
+  - `docs/DETECTOR_BENCHMARK.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 搜索并下载 `IPDLA/MobileDepthEstimation` 仓库 zip 到 `.downloads/depth-lab/candidate-mobile-models/`，该仓库描述为 `Mobile(Android) Depth Estimation Model_tflite`。
+  - 检查仓库后发现其包含 `app/src/main/assets/depth_model.tflite`，Kotlin 代码 `MiDASModel.kt` 标注为 MiDaS TFLite，输入 `(256,256,3)`，输出 `(256,256,1)`。
+  - `app/build.gradle.kts` 将 depth benchmark androidTest 资产改为可通过 `-PdepthBenchmarkModelPath` 和 `-PdepthBenchmarkModelAssetName` 指定任意候选 TFLite，不再固定只复制 `depth_anything_v2_small_fp32.tflite`。
+  - `scripts/run_depth_fusion_benchmark.ps1` 支持从 `-DepthModelPath` 自动推导 `depth/<filename>`，并把候选模型路径/asset 名传给 Gradle，避免把 MiDaS 模型伪装成 Depth Anything 文件名。
+  - `scripts/smoke_depth_model.py` 兼容 BlindAssist EvalSet manifest 的 `image_path` 字段。
+- 验证方式：
+  - `scripts/inspect_depth_model.py .downloads\depth-lab\candidate-mobile-models\IPDLA\MobileDepthEstimation-main\app\src\main\assets\depth_model.tflite --json-output test-artifacts.local\depth-fusion\inspect-ipdla-midas-depth-model.json`：通过，输入 `[1,256,256,3] float32`，输出 `[1,256,256,1] float32`，模型大小 `66,338,288` bytes。
+  - `scripts/smoke_depth_model.py --model .downloads\depth-lab\candidate-mobile-models\IPDLA\MobileDepthEstimation-main\app\src\main\assets\depth_model.tflite --dataset-root test-artifacts.local\datasets\blindassist-evalset-20260527-impl --image-limit 20 --json-output test-artifacts.local\depth-fusion\smoke-ipdla-midas-depth-model.json`：通过，20 张图输出均为有限值且非全零。
+  - `.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest ... -PdepthBenchmarkModelPath=.downloads/depth-lab/candidate-mobile-models/IPDLA/MobileDepthEstimation-main/app/src/main/assets/depth_model.tflite -PdepthBenchmarkModelAssetName=depth_model.tflite --no-daemon --console=plain`：通过；首次普通沙箱仍遇到 `.gradle-local\.tmp` 删除权限问题，提权后因未引用反斜杠路径导致 Gradle property 被误拆，改用带引号和正斜杠的参数后成功。
+  - `aapt list app\build\outputs\apk\debug\app-debug.apk`：正式 debug APK 仅包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`，未包含深度模型。
+  - `aapt list app\build\outputs\apk\androidTest\debug\app-debug-androidTest.apk`：androidTest APK 包含 `assets/depth/depth_model.tflite`。
+- 当前判断：
+  - 该 MiDaS TFLite 技术上可作为 DepthFusion 候选模型跑通 TFLite 合同和离线 smoke。
+  - 该仓库无 README、无 LICENSE、无 release、0 stars、1 commit，授权与来源可信度不足；只建议作为本机技术链路验证候选，不建议作为默认模型、发布资产或论文主线模型。
+- 后续事项：
+  - 若要真机 A/B，可运行：`powershell -ExecutionPolicy Bypass -File .\scripts\run_depth_fusion_benchmark.ps1 -DepthModelPath .downloads\depth-lab\candidate-mobile-models\IPDLA\MobileDepthEstimation-main\app\src\main\assets\depth_model.tflite -DepthModelAsset depth/depth_model.tflite -SkipDefaultRegression`。
+  - 继续寻找 license/source 更清晰的 MiDaS/FastDepth/MobileDepth TFLite 发布源，优先替换该弱来源候选。
+
+### Depth Anything V2 Small 下载与离线 smoke
+- 时间：2026-06-11 21:10:00 +08:00
+- 执行者：Codex
+- 类型：模型准备 / 离线验证 / 转换排障
+- 修改范围：
+  - `.downloads/depth-lab/`（本地忽略目录，不提交 Git）
+  - `scripts/export_depth_anything_v2_tflite.py`
+  - `scripts/smoke_depth_anything_v2_pytorch.py`
+  - `docs/DETECTOR_BENCHMARK.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 从官方 Depth Anything V2 仓库下载源码 zip 到 `.downloads/depth-lab/src/Depth-Anything-V2-main`。
+  - 下载官方 `Depth Anything V2 Small` 权重到 `.downloads/depth-lab/checkpoints/depth_anything_v2_vits.pth`，本地大小 `99,218,434` bytes。
+  - 新增 `scripts/export_depth_anything_v2_tflite.py`，尝试将官方 Small checkpoint 包装为 NHWC float32 输入、导出 ONNX，再经 `onnx2tf` 生成候选 TFLite。
+  - 新增 `scripts/smoke_depth_anything_v2_pytorch.py`，用于在 TFLite 转换未完成前验证官方 checkpoint 本体是否能在 BlindAssist EvalSet 上产生有效相对深度图，并检查标注 bbox 区域可采样性。
+- 验证方式：
+  - `Invoke-WebRequest` 下载官方源码 zip 和 HuggingFace Small 权重：通过；普通下载源码 zip 曾出现接收连接错误，按联网下载需要提权后通过。
+  - `git clone --depth=1 https://github.com/DepthAnything/Depth-Anything-V2 ...`：失败，Windows 下嵌套 `.git/config.lock` 写入被拒绝；已改用官方 archive zip，不保留本轮失败 clone 作为依赖。
+  - `.\.venv-export312\Scripts\python.exe -c "... compile(...)"` 检查新脚本语法：通过；未使用 `py_compile`，因为当前环境对 `scripts/__pycache__` 写入会拒绝。
+  - `.\.venv-export312\Scripts\python.exe scripts\export_depth_anything_v2_tflite.py`：ONNX 中间产物生成成功，路径为 `.downloads/depth-lab/exports/work/depth_anything_v2_vits_252_nhwc.onnx`，输入 `[1,252,252,3]`、输出 `[1,252,252,1]`、节点数 `611`；TFLite 转换失败在 `onnx2tf` 的 `wa/model/Reshape` 节点，追加 `-prf` 参数文件后仍失败。因此 `.downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite` 尚未生成。
+  - `.\.venv-export312\Scripts\python.exe scripts\smoke_depth_anything_v2_pytorch.py --output test-artifacts.local\depth-fusion\20260611-depth-anything-v2-small-pytorch-smoke.json --image-limit 20 --input-size 252`：通过；首次普通沙箱运行已完成计算但写 `test-artifacts.local/depth-fusion` 被拒绝，提权重跑后 artifact 落盘。
+- 实测结果：
+  - 官方 Small checkpoint 在 BlindAssist EvalSet 前 `20` 张图上输出均为有限值且非全零。
+  - 本机 CPU PyTorch 252 输入推理 `elapsed_ms_mean=88.059`、`elapsed_ms_p95=111.098`。
+  - 20 张图均可采样 bbox 区域；第 3 张有 `1` 个 bbox 区域无效，其余对象 bbox 均有有效深度统计。
+- 当前判断：
+  - 模型权重本体可用，但 TFLite 合同第一关尚未通过；DepthFusion 真机 A/B 仍不能启动。
+  - 默认 App 路线不变，正式 debug APK 仍不应包含候选深度模型。
+- 后续事项：
+  - 继续排查 `onnx2tf` 的 ViT/Reshape 转换，或改用可信的现成 ONNX/TFLite 导出来源后重新跑 `scripts/inspect_depth_model.py` 和 `scripts/smoke_depth_model.py`。
+  - 只有生成并通过 NHWC float32 TFLite 合同检查后，才运行 `scripts/run_depth_fusion_benchmark.ps1` 做同设备 DepthFusion A/B。
+
+### 深度/距离感知候选增强实验脚手架
+- 时间：2026-06-11 20:20:00 +08:00
+- 执行者：violjjet
+- 类型：算法实验 / 模型评测工具 / AndroidTest / 文档
+- 修改范围：
+  - `core/assist/src/main/java/com/linnan/blindassist/model/Detection.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/DistanceEvidence.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/RiskModels.kt`
+  - `core/vision/src/main/java/com/linnan/blindassist/vision/DepthEstimator.kt`
+  - `core/vision/src/main/java/com/linnan/blindassist/vision/TfliteMonocularDepthEstimator.kt`
+  - `app/build.gradle.kts`
+  - `app/src/androidTest/java/com/linnan/blindassist/benchmark/DetectorAbDeviceBenchmarkTest.kt`
+  - `scripts/inspect_depth_model.py`
+  - `scripts/smoke_depth_model.py`
+  - `scripts/run_depth_fusion_benchmark.ps1`
+  - `docs/DETECTOR_BENCHMARK.md`
+  - `README.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 新增 `DistanceEvidence` / `DepthBandEvidence`，以 `ProximityBand`、`confidence`、`source` 和 `relativeDepthScore` 表示相对距离证据，不估算真实米数。
+  - `Detection` 增加可选 `distanceEvidence`，`RiskResult` 增加可选 `distanceEvidence`，旧构造调用保持默认兼容。
+  - `RiskAnalyzer` 在没有距离证据时继续使用检测框底部位置和面积比例；在存在高置信单目深度证据时，对中心或可行动方向目标融合更近的 proximity，并在结果中保留证据来源。
+  - `core:vision` 新增 `DepthEstimator`、`RelativeDepthMap`、`DepthEstimatorMetrics` 和 `TfliteMonocularDepthEstimator`，用于候选 TFLite 单目深度模型输出归一化近度图，并从检测框下半区采样为 `DistanceEvidence`。
+  - `app/build.gradle.kts` 新增 androidTest-only 深度模型资产同步，默认从 `.downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite` 复制到测试 APK 的 `depth/` 目录；正式 debug APK 不包含该候选模型。
+  - `DetectorAbDeviceBenchmarkTest` 新增 `comparisonMode=DepthFusion`，在同一测试类中比较 `baseline_geometry` 与 `candidate_depth_fusion`；输出 JSON、Markdown 和 CSV 时增加 `depth_ms` 与 `distance_evidence_*` 字段。
+  - 新增 `scripts/inspect_depth_model.py` 做深度模型输入/输出 shape 与 dtype 合同检查；新增 `scripts/smoke_depth_model.py` 对 BlindAssist EvalSet 前 20 张图做离线深度输出 smoke；新增 `scripts/run_depth_fusion_benchmark.ps1` 串联模型检查、smoke、debug/androidTest APK 构建、正式 APK 资产隔离检查、DepthFusion instrumentation、设备端 artifact 拉取和可选默认模型 90 秒回归。
+  - `docs/DETECTOR_BENCHMARK.md`、`README.md` 和 `idea.md` 记录该路线仍是候选实验，不替换默认 `yolo11n`，也不改变用户可见 App 行为。
+- 修改原因：
+  - 用户要求探索深度/距离感知模型作为候选增强路线，重点解决当前相对距离主要依赖检测框几何估计的短板。
+  - 当前模型替换规则仍要求 baseline-first、同设备、同 evalset、同指标比较；因此本轮先落地可复盘的实验脚手架，而不是直接修改默认 runtime。
+- 验证方式：
+  - 已补充 `RiskAnalyzerTest` 覆盖单目深度证据可提升中心远距几何目标、低置信深度证据回退几何规则。
+  - `.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :app:assembleDebugAndroidTest --no-daemon --console=plain`：首次普通沙箱运行因 `.gradle-local\.tmp` 删除权限失败；按仓库已知限制提权重跑后发现 `Detection` 构造器新增字段导致旧 5 参数 JVM 签名缺失，已补 secondary constructor；最终提权重跑通过。
+  - `.\.venv-export312\Scripts\python.exe -m py_compile scripts\inspect_depth_model.py scripts\smoke_depth_model.py`：首次普通沙箱运行因 `scripts/__pycache__` 写入权限失败；提权重跑通过，随后删除本轮生成的 `__pycache__`。
+  - `git diff --check`：通过，仅有 Git 关于 LF/CRLF 的工作区提示，无 whitespace error。
+  - 当前本机不存在 `.downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite`，因此未运行深度模型合同、20 图 smoke 和真机 DepthFusion A/B；准备候选模型并连接设备后再执行 `powershell -ExecutionPolicy Bypass -File .\scripts\run_depth_fusion_benchmark.ps1`。
+- 版本判断：
+  - 本轮仅新增候选实验接口、benchmark 模式、脚本和文档；不替换默认模型、不调整默认风险阈值、不改变正式 App runtime、权限、UI 或 APK 用户可见行为，因此不提升 `versionName=8.3.0` / `versionCode=31`，不归档新 APK。
+- 后续事项：
+  - 准备或导出 Depth Anything V2 Small TFLite 后，先运行深度模型合同检查与 20 图 smoke，再做同设备 DepthFusion A/B。
+  - 若 `candidate_depth_fusion` 满足 distance/alert/critical miss 门槛，再进入真实连续帧、发热、长时间真机稳定性和人工误报漏报复核。
+
 ### v8.3.0 生命周期串行化、隐私备份与英文无障碍一致性
 - 时间：2026-06-11 17:36:47 +08:00
 - 执行者：Codex

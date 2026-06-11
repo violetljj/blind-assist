@@ -238,6 +238,7 @@
 ### 核心感知算法上位替代路线
 
 - 想法：把当前“CameraX 实时帧 -> TFLite YOLO11n 目标检测 -> 检测框位置/面积/中心偏置规则 -> 风险稳定与反馈”的核心链路，逐步升级为“目标检测 + 深度/可通行区域/低频场景理解”的多层感知框架。目标不是简单换一个更大的 YOLO，而是让 App 从“识别到什么物体”进一步走向“前方是否可通行、哪些目标正在靠近、是否需要提醒”。
+- 当前状态：2026-06-11 已完成“YOLO11n + 单目深度TFLite + 风险融合”的候选实验脚手架。新增 `DistanceEvidence`、`DepthEstimator`、`TfliteMonocularDepthEstimator` 和 `comparisonMode=DepthFusion` benchmark，可在 BlindAssist EvalSet 上比较纯几何距离规则与深度融合规则；该路线仍不进入默认 App runtime，不替换 `yolo11n`，也不估算真实米数。同日已下载官方 Depth Anything V2 Small 权重并通过前 20 张 EvalSet 的 PyTorch smoke；TFLite 导出仍阻塞在 `onnx2tf` 的 ViT `Reshape` 转换，尚未进入真机 A/B。
 - 价值：当前风险层主要依赖检测框底部位置、面积比例和中心偏置推断相对距离，容易受物体真实尺寸、相机角度、遮挡和类别覆盖限制影响。引入深度估计、可通行区域分割或低频语义理解后，可以让助行提醒更接近真实风险判断，并为论文/答辩说明提供更强的算法演进路线。
 - 可落地内容：
   - 短期可评估 `YOLOv10n`、`YOLO12n`、轻量 RT-DETR 等实时检测器，作为 `ObjectDetector` 的替代实现；重点比较 Android 端 TFLite/LiteRT 延迟、稳定性、输出解析复杂度和漏报率，而不是只看公开数据集 mAP。

@@ -1,5 +1,63 @@
 # 实时检测器横向评测说明
 
+## 单目深度融合候选路线
+
+2026-06-11 新增 `YOLO11n + 单目深度TFLite + 风险融合` 的候选评测脚手架。该路线只用于 androidTest 和本地实验，不替换 App 默认模型；正式 debug APK 仍只应包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。
+
+候选深度模型默认放在：
+```text
+.downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite
+```
+
+本机 2026-06-11 已下载官方 `Depth Anything V2 Small` PyTorch 权重到：
+```text
+.downloads/depth-lab/checkpoints/depth_anything_v2_vits.pth
+```
+
+候选导出入口：
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\export_depth_anything_v2_tflite.py
+```
+
+当前状态：官方 Small checkpoint 已在 BlindAssist EvalSet 前 20 张图完成 PyTorch smoke，输出非 NaN、非全零，bbox 区域可采样，证据在 `test-artifacts.local/depth-fusion/20260611-depth-anything-v2-small-pytorch-smoke.json`。但 `onnx2tf` 转 TFLite 仍阻塞在 ONNX `wa/model/Reshape` 节点，因此尚未生成 `depth_anything_v2_small_fp32.tflite`，也尚未进入 TFLite 合同检查和真机 DepthFusion A/B。
+
+2026-06-12 补充一个可运行的现成移动端候选：`IPDLA/MobileDepthEstimation` 仓库内的 MiDaS `depth_model.tflite`。它能通过本仓库深度模型合同检查：输入 `[1,256,256,3] float32`，输出 `[1,256,256,1] float32`，模型大小 `66,338,288` bytes；20 图 smoke 也通过，证据在：
+```text
+test-artifacts.local/depth-fusion/inspect-ipdla-midas-depth-model.json
+test-artifacts.local/depth-fusion/smoke-ipdla-midas-depth-model.json
+```
+
+注意：该仓库没有 README / LICENSE / release，可信度和授权状态弱，只适合作为“技术链路打通候选”，不建议作为默认论文主线模型或发布资产。可用如下方式把它注入 androidTest-only benchmark 资产：
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_depth_fusion_benchmark.ps1 -DepthModelPath .downloads\depth-lab\candidate-mobile-models\IPDLA\MobileDepthEstimation-main\app\src\main\assets\depth_model.tflite -DepthModelAsset depth/depth_model.tflite -SkipDefaultRegression
+```
+
+2026-06-12 已在 `R5CX10M8Y8X` 真机完成上述 MiDaS TFLite DepthFusion A/B，证据目录为：
+```text
+test-artifacts.local/depth-fusion-benchmark/20260612-002427
+```
+
+结论：`do_not_promote_depth_fusion`。`candidate_depth_fusion` 的 `criticalMissCount` 从 `9` 降到 `7`，但 `alertFalsePositiveRate` 从 `0.037` 升到 `0.185`，`distanceBandAccuracy` 从 `0.73` 降到 `0.69`，`total P50/P95` 从 `54/56ms` 升到 `276/292ms`。因此该候选只证明链路可跑，不应替换默认 `yolo11n + current RiskAnalyzer`。
+
+模型合同检查：
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\inspect_depth_model.py
+```
+
+离线 smoke 会读取 BlindAssist EvalSet 前 20 张图，确认输出深度图不是 NaN 或全零：
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\smoke_depth_model.py --model .downloads\depth-lab\exports\depth_anything_v2_small_fp32.tflite --dataset-root test-artifacts.local\datasets\blindassist-evalset-20260527-impl --image-limit 20
+```
+
+真机同设备评测入口：
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_depth_fusion_benchmark.ps1
+```
+
+该脚本会依次执行默认 YOLO11n 检查、深度模型 shape/dtype 检查、20 图 smoke、debug/androidTest APK 构建、正式 APK 资产隔离检查、`comparisonMode=DepthFusion` instrumentation、设备端 artifact 拉取，以及可选默认模型 90 秒真机回归。设备端 `benchmark.json` / `benchmark.md` 会比较 `baseline_geometry` 与 `candidate_depth_fusion`，重点看 `distanceBandAccuracy`、`centerRiskRecall`、`alertRecall`、`alertFalsePositiveRate`、`criticalMissCount` 和新增的 `depth_ms`。
+
+候选通过门槛：`distanceBandAccuracy` 提升或持平，`criticalMissCount` 不增加，`alertFalsePositiveRate` 不高于 baseline + `0.02`，`centerRiskRecall` 和 `alertRecall` 不下降。即使通过，也只进入下一阶段真实连续帧和长时间真机稳定性验证，不自动替换默认 App 路径。
+
 ## YOLO11n vs YOLO26n 同设备 A/B 质量评测
 
 2026-05-27 新增同设备 A/B 评测链路，用同一台 Android 设备、同一批 COCO100 图片、同一套 BlindAssist 预处理、YOLO raw 输出解析、NMS、风险分析规则和指标口径，对默认 `yolo11n` 与候选 `yolo26n` 做检测质量与风险质量对比。该流程仍不替换 App 默认模型；`yolo26n` 只进入 androidTest APK 资产，正式 debug APK 仍只包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。

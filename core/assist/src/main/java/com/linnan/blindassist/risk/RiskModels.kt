@@ -29,5 +29,6 @@ data class RiskResult(
     val message: String,
     val sourceDetection: Detection? = null,
     val proximity: ProximityBand = ProximityBand.FAR,
-    val urgencyScore: Float = 0f
+    val urgencyScore: Float = 0f,
+    val distanceEvidence: DistanceEvidence? = null
 )

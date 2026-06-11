@@ -146,6 +146,54 @@ class RiskAnalyzerTest {
     }
 
     @Test
+    fun monocularDepthEvidenceCanPromoteCenteredFarGeometryToNearRisk() {
+        val evidence = DistanceEvidence(
+            band = ProximityBand.NEAR,
+            confidence = 0.82f,
+            source = DistanceEvidenceSource.MONOCULAR_DEPTH,
+            relativeDepthScore = 0.7f
+        )
+        val result = analyzer.analyze(
+            listOf(
+                detection(
+                    label = "person",
+                    box = BoundingBox(450f, 120f, 520f, 280f),
+                    distanceEvidence = evidence
+                )
+            ),
+            frame
+        )
+
+        assertEquals(RiskLevel.HIGH, result.level)
+        assertEquals(RiskDirection.CENTER, result.direction)
+        assertEquals(ProximityBand.NEAR, result.proximity)
+        assertEquals(evidence, result.distanceEvidence)
+    }
+
+    @Test
+    fun lowConfidenceDepthEvidenceFallsBackToGeometry() {
+        val result = analyzer.analyze(
+            listOf(
+                detection(
+                    label = "person",
+                    box = BoundingBox(450f, 120f, 520f, 280f),
+                    distanceEvidence = DistanceEvidence(
+                        band = ProximityBand.CRITICAL,
+                        confidence = 0.3f,
+                        source = DistanceEvidenceSource.MONOCULAR_DEPTH,
+                        relativeDepthScore = 0.95f
+                    )
+                )
+            ),
+            frame
+        )
+
+        assertEquals(RiskLevel.NONE, result.level)
+        assertEquals(ProximityBand.FAR, result.proximity)
+        assertEquals(null, result.distanceEvidence)
+    }
+
+    @Test
     fun highestUrgencyTargetWinsOverHigherConfidenceFarTarget() {
         val farHighConfidence = detection(
             label = "person",
@@ -189,14 +237,16 @@ class RiskAnalyzerTest {
     private fun detection(
         label: String,
         box: BoundingBox,
-        confidence: Float = 0.9f
+        confidence: Float = 0.9f,
+        distanceEvidence: DistanceEvidence? = null
     ): Detection {
         return Detection(
             classId = 0,
             label = label,
             confidence = confidence,
             boundingBox = box,
-            frameSize = frame
+            frameSize = frame,
+            distanceEvidence = distanceEvidence
         )
     }
 }

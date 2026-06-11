@@ -19,6 +19,7 @@ import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.vision.ImagePreprocessor
 import com.linnan.blindassist.vision.TfliteYoloDetector
+import com.linnan.blindassist.vision.TfliteMonocularDepthEstimator
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
@@ -52,6 +53,8 @@ class DetectorAbDeviceBenchmarkTest {
     fun compareYolo11nAndYolo26nOnSameDeviceImagesAndMetrics() {
         val datasetKind = arguments.getString(ARG_DATASET_KIND) ?: DATASET_KIND_COCO100
         val riskConfigName = arguments.getString(ARG_RISK_CONFIG) ?: RISK_CONFIG_CURRENT
+        val comparisonMode = arguments.getString(ARG_COMPARISON_MODE) ?: COMPARISON_MODE_DETECTOR_AB
+        val depthModelAsset = arguments.getString(ARG_DEPTH_MODEL_ASSET) ?: TfliteMonocularDepthEstimator.MODEL_ASSET
         val riskAnalyzer = RiskAnalyzer(riskAnalyzerConfigFor(riskConfigName))
         val imageLimit = arguments.getString(ARG_IMAGE_LIMIT)?.toIntOrNull() ?: DEFAULT_IMAGE_LIMIT
         val pureWarmup = arguments.getString(ARG_PURE_WARMUP)?.toIntOrNull() ?: DEFAULT_PURE_WARMUP
@@ -61,8 +64,12 @@ class DetectorAbDeviceBenchmarkTest {
             ?: DEFAULT_MATCH_IOU_THRESHOLD
 
         assertEquals(YOLO11N_ASSET, TfliteYoloDetector.MODEL_ASSET)
-        MODEL_SPECS.forEach { spec ->
+        val modelSpecs = modelSpecsFor(comparisonMode, depthModelAsset)
+        modelSpecs.forEach { spec ->
             assertTrue("${spec.assetName} test asset is missing", assetExists(spec.assetName))
+            if (spec.depthFusion) {
+                assertTrue("${spec.depthModelAssetName} depth test asset is missing", assetExists(spec.depthModelAssetName))
+            }
         }
         assertTrue("coco labels test asset is missing", assetExists(TfliteYoloDetector.LABELS_ASSET))
 
@@ -72,7 +79,7 @@ class DetectorAbDeviceBenchmarkTest {
         assertTrue("Expected at least one annotated ${dataset.name} image asset", images.isNotEmpty())
 
         val artifactDir = createArtifactDir(targetContext)
-        val modelResults = MODEL_SPECS.map { spec ->
+        val modelResults = modelSpecs.map { spec ->
             val pure = runPureInterpreterBenchmark(spec, images, pureWarmup, pureRuns)
             val app = runAppDetectorBenchmark(spec, images, appRunsPerImage, matchIouThreshold, riskAnalyzer)
             assertFalse("${spec.id} App detector produced failures", app.failures.isNotEmpty())
@@ -84,7 +91,9 @@ class DetectorAbDeviceBenchmarkTest {
             .put("device_under_test", "instrumentation-connected-device")
             .put("dataset_kind", datasetKind)
             .put("dataset_name", dataset.name)
+            .put("comparison_mode", comparisonMode)
             .put("risk_config", riskConfigName)
+            .put("depth_model_asset", depthModelAsset)
             .put("default_model_asset", TfliteYoloDetector.MODEL_ASSET)
             .put("image_count", images.size)
             .put("image_limit", imageLimit)
@@ -97,6 +106,7 @@ class DetectorAbDeviceBenchmarkTest {
             .put("asset_sources", JSONObject()
                 .put("yolo11n", "app/src/main/assets/yolo11n_fp16_320.tflite")
                 .put("yolo26n", ".downloads/detector-lab/exports/yolo26n_fp16_320.tflite")
+                .put("depth_model", depthModelAsset)
                 .put("images", ".downloads/detector-lab/datasets/coco100/images")
                 .put("annotations", ".downloads/detector-lab/datasets/coco100/coco100_annotations.json")
                 .put("blindassist_evalset", "test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
@@ -198,11 +208,22 @@ class DetectorAbDeviceBenchmarkTest {
             labelsAssetName = TfliteYoloDetector.LABELS_ASSET
         )
         assertTrue("${spec.id} detector failed to initialize: ${detector.statusMessage}", detector.isReady)
+        val depthEstimator = if (spec.depthFusion) {
+            TfliteMonocularDepthEstimator(
+                context = testContext,
+                modelAssetName = spec.depthModelAssetName
+            ).also { estimator ->
+                assertTrue("${spec.id} depth estimator failed to initialize: ${estimator.statusMessage}", estimator.isReady)
+            }
+        } else {
+            null
+        }
         val readyModelStatus = "ready"
 
         val preprocess = mutableListOf<Double>()
         val inference = mutableListOf<Double>()
         val postprocess = mutableListOf<Double>()
+        val depth = mutableListOf<Double>()
         val total = mutableListOf<Double>()
         val failures = mutableListOf<String>()
         val perImage = mutableListOf<PerImageModelResult>()
@@ -215,19 +236,36 @@ class DetectorAbDeviceBenchmarkTest {
                     try {
                         decodeBitmap(image.relativePath).use { bitmap ->
                             val frameSize = FrameSize(bitmap.width, bitmap.height)
+                            val depthResult = depthEstimator?.estimate(bitmap)
                             val result = detector.detect(bitmap)
-                            val risk = riskAnalyzer.analyze(result.detections, frameSize)
+                            val detections = if (depthResult != null) {
+                                result.detections.map { detection ->
+                                    detection.copy(
+                                        distanceEvidence = depthResult.depthMap.sampleEvidence(
+                                            detection.boundingBox,
+                                            frameSize
+                                        )
+                                    )
+                                }
+                            } else {
+                                result.detections
+                            }
+                            val risk = riskAnalyzer.analyze(detections, frameSize)
                             preprocess += detector.lastPreprocessMs.toDouble()
                             inference += detector.lastInferenceMs.toDouble()
                             postprocess += detector.lastPostprocessMs.toDouble()
-                            total += detector.lastTotalDetectMs.toDouble()
+                            val depthMs = depthResult?.metrics?.totalMs?.toDouble() ?: 0.0
+                            val totalMs = detector.lastTotalDetectMs.toDouble() + depthMs
+                            depth += depthMs
+                            total += totalMs
                             runs += FrameRun(
-                                detections = result.detections,
+                                detections = detections,
                                 risk = risk,
                                 preprocessMs = detector.lastPreprocessMs.toDouble(),
                                 inferenceMs = detector.lastInferenceMs.toDouble(),
                                 postprocessMs = detector.lastPostprocessMs.toDouble(),
-                                totalMs = detector.lastTotalDetectMs.toDouble()
+                                depthMs = depthMs,
+                                totalMs = totalMs
                             )
                         }
                     } catch (error: Throwable) {
@@ -235,7 +273,7 @@ class DetectorAbDeviceBenchmarkTest {
                     }
                 }
 
-                val firstRun = runs.firstOrNull() ?: FrameRun(emptyList(), noneRisk(), 0.0, 0.0, 0.0, 0.0)
+                val firstRun = runs.firstOrNull() ?: FrameRun(emptyList(), noneRisk(), 0.0, 0.0, 0.0, 0.0, 0.0)
                 val gtRisk = expectedRiskResult(image, riskAnalyzer)
                 val evaluation = evaluateDetections(
                     image = image,
@@ -254,6 +292,7 @@ class DetectorAbDeviceBenchmarkTest {
                 firstRunDetectionsByImage[image.fileName] = firstRun.detections
             }
         } finally {
+            depthEstimator?.close()
             detector.close()
         }
 
@@ -267,6 +306,7 @@ class DetectorAbDeviceBenchmarkTest {
             preprocessStats = Stats.from(preprocess),
             inferenceStats = Stats.from(inference),
             postprocessStats = Stats.from(postprocess),
+            depthStats = Stats.from(depth),
             totalStats = Stats.from(total),
             quality = quality,
             riskQuality = riskQuality,
@@ -619,8 +659,10 @@ class DetectorAbDeviceBenchmarkTest {
     }
 
     private fun recommendation(modelResults: List<ModelBenchmarkResult>): JSONObject {
-        val baseline = modelResults.firstOrNull { it.spec.id == "yolo11n" }
-        val candidate = modelResults.firstOrNull { it.spec.id == "yolo26n" }
+        val baseline = modelResults.firstOrNull { it.spec.id == "baseline_geometry" }
+            ?: modelResults.firstOrNull { it.spec.id == "yolo11n" }
+        val candidate = modelResults.firstOrNull { it.spec.id == "candidate_depth_fusion" }
+            ?: modelResults.firstOrNull { it.spec.id == "yolo26n" }
         if (baseline == null || candidate == null) {
             return JSONObject()
                 .put("decision", "not_enough_data")
@@ -650,24 +692,25 @@ class DetectorAbDeviceBenchmarkTest {
         }
         return if (candidateNotWorse) {
             JSONObject()
-                .put("decision", "candidate_ok_for_next_stage")
+                .put("decision", if (candidate.spec.depthFusion) "depth_fusion_candidate_ok_for_next_stage" else "candidate_ok_for_next_stage")
                 .put("replace_default_model_now", false)
-                .put("reason", "yolo26n is not worse on the active dataset gate; keep it as a candidate until broader real walking validation confirms the result.")
+                .put("reason", "${candidate.spec.id} is not worse on the active dataset gate; keep it as a candidate until broader real walking validation confirms the result.")
         } else {
             JSONObject()
-                .put("decision", "do_not_replace_default_model")
+                .put("decision", if (candidate.spec.depthFusion) "do_not_promote_depth_fusion" else "do_not_replace_default_model")
                 .put("replace_default_model_now", false)
-                .put("reason", "yolo26n did not meet the no-regression gate for detection quality or BlindAssist risk metrics in this run.")
+                .put("reason", "${candidate.spec.id} did not meet the no-regression gate for detection quality or BlindAssist risk metrics in this run.")
         }
     }
 
     private fun perImageCsv(modelResults: List<ModelBenchmarkResult>): String {
         val lines = mutableListOf(
-            "image,model,gt_count,detection_count,tp,fp,fn,precision,recall,f1,expected_should_alert,actual_alert,expected_risk_level,model_risk_level,expected_direction,model_direction,expected_distance_band,model_proximity,primary_object_id,scene_bucket,risk_key_variants,risk_level_flip,box_jitter"
+            "image,model,gt_count,detection_count,tp,fp,fn,precision,recall,f1,expected_should_alert,actual_alert,expected_risk_level,model_risk_level,expected_direction,model_direction,expected_distance_band,model_proximity,distance_evidence_source,distance_evidence_band,distance_evidence_confidence,relative_depth_score,primary_object_id,scene_bucket,risk_key_variants,risk_level_flip,box_jitter"
         )
         modelResults.forEach { model ->
             model.app.perImage.forEach { item ->
                 val expected = item.image.expectedRisk
+                val evidence = item.modelRisk.distanceEvidence
                 lines += listOf(
                     item.image.fileName,
                     model.spec.id,
@@ -687,6 +730,10 @@ class DetectorAbDeviceBenchmarkTest {
                     item.modelRisk.direction,
                     expected?.distanceBand ?: item.groundTruthRisk.proximity,
                     item.modelRisk.proximity,
+                    evidence?.source ?: "",
+                    evidence?.band ?: "",
+                    evidence?.confidence?.let { round3(it) } ?: "",
+                    evidence?.relativeDepthScore?.let { round3(it) } ?: "",
                     expected?.primaryObjectId ?: "",
                     expected?.sceneBucket ?: "",
                     item.stability.riskKeyVariants,
@@ -706,7 +753,9 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine()
             appendLine("- Dataset: `${payload.getString("dataset_name")}`")
             appendLine("- Dataset kind: `${payload.getString("dataset_kind")}`")
+            appendLine("- Comparison mode: `${payload.getString("comparison_mode")}`")
             appendLine("- Risk config: `${payload.getString("risk_config")}`")
+            appendLine("- Depth model asset: `${payload.getString("depth_model_asset")}`")
             appendLine("- Image count: `${payload.getInt("image_count")}`")
             appendLine("- App runs per image: `${payload.getInt("app_runs_per_image")}`")
             appendLine("- Match IoU threshold: `${payload.getDouble("match_iou_threshold")}`")
@@ -714,22 +763,23 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine("- Recommendation: `${recommendation.getString("decision")}`")
             appendLine("- Replace default model now: `${recommendation.getBoolean("replace_default_model_now")}`")
             appendLine()
-            appendLine("| Model | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | Critical miss | Total P50 ms | Total P95 ms |")
-            appendLine("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
+            appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | Critical miss | Depth P50 ms | Total P50 ms | Total P95 ms |")
+            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
             for (index in 0 until models.length()) {
                 val model = models.getJSONObject(index)
                 val app = model.getJSONObject("app_detector")
                 val quality = app.getJSONObject("quality")
                 val assist = app.getJSONObject("blindassist_metrics")
+                val depth = app.getJSONObject("depth_ms")
                 val total = app.getJSONObject("total_ms")
                 appendLine(
-                    "| `${model.getString("id")}` | ${quality.getDouble("ap50")} | ${quality.getDouble("precision")} | " +
+                    "| `${model.getString("id")}` | `${model.getBoolean("depth_fusion")}` | ${quality.getDouble("ap50")} | ${quality.getDouble("precision")} | " +
                         "${quality.getDouble("recall")} | ${quality.getDouble("f1")} | ${quality.getDouble("fp_per_image")} | " +
                         "${quality.getDouble("fn_per_image")} | ${assist.getDouble("centerRiskRecall")} | " +
                         "${assist.getDouble("alertRecall")} | ${assist.getDouble("alertFalsePositiveRate")} | " +
                         "${assist.getDouble("distanceBandAccuracy")} | ${assist.getDouble("riskLevelAccuracy")} | " +
                         "${assist.getDouble("primaryObjectHitRate")} | ${assist.getInt("criticalMissCount")} | " +
-                        "${total.getDouble("p50")} | ${total.getDouble("p95")} |"
+                        "${depth.getDouble("p50")} | ${total.getDouble("p50")} | ${total.getDouble("p95")} |"
                 )
             }
             appendLine()
@@ -840,7 +890,9 @@ class DetectorAbDeviceBenchmarkTest {
     private data class ModelSpec(
         val id: String,
         val assetName: String,
-        val source: String
+        val source: String,
+        val depthFusion: Boolean = false,
+        val depthModelAssetName: String = ""
     )
 
     private data class BenchmarkDataset(
@@ -909,6 +961,7 @@ class DetectorAbDeviceBenchmarkTest {
         val preprocessMs: Double,
         val inferenceMs: Double,
         val postprocessMs: Double,
+        val depthMs: Double,
         val totalMs: Double
     )
 
@@ -922,6 +975,11 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("id", spec.id)
                 .put("asset", spec.assetName)
                 .put("source", spec.source)
+                .put("depth_fusion", spec.depthFusion)
+                .put(
+                    "depth_model_asset",
+                    if (spec.depthModelAssetName.isBlank()) JSONObject.NULL else spec.depthModelAssetName
+                )
                 .put("pure_interpreter", pure.toJson())
                 .put("app_detector", app.toJson())
         }
@@ -955,6 +1013,7 @@ class DetectorAbDeviceBenchmarkTest {
         val preprocessStats: Stats,
         val inferenceStats: Stats,
         val postprocessStats: Stats,
+        val depthStats: Stats,
         val totalStats: Stats,
         val quality: QualitySummary,
         val riskQuality: RiskQualitySummary,
@@ -974,6 +1033,7 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("preprocess_ms", preprocessStats.toJson())
                 .put("inference_ms", inferenceStats.toJson())
                 .put("postprocess_ms", postprocessStats.toJson())
+                .put("depth_ms", depthStats.toJson())
                 .put("total_ms", totalStats.toJson())
                 .put("quality", quality.toJson())
                 .put("risk_quality", riskQuality.toJson())
@@ -1325,6 +1385,8 @@ class DetectorAbDeviceBenchmarkTest {
         private const val BLINDASSIST_EVALSET_SPEC_ASSET = "$BLINDASSIST_EVALSET_ASSET_PREFIX/dataset_spec.json"
         private const val DATASET_KIND_COCO100 = "Coco100"
         private const val DATASET_KIND_BLINDASSIST_EVALSET = "BlindAssistEvalSet"
+        private const val COMPARISON_MODE_DETECTOR_AB = "DetectorAb"
+        private const val COMPARISON_MODE_DEPTH_FUSION = "DepthFusion"
         private const val RISK_CONFIG_CURRENT = "current"
         private const val RISK_CONFIG_CENTER_NEAR_SENSITIVE = "center_near_sensitive"
         private const val RISK_CONFIG_CENTER_NEAR_STRICT = "center_near_strict"
@@ -1332,6 +1394,8 @@ class DetectorAbDeviceBenchmarkTest {
         private const val RISK_CONFIG_SIDE_NEAR_SENSITIVE = "side_near_sensitive"
         private const val ARG_DATASET_KIND = "datasetKind"
         private const val ARG_RISK_CONFIG = "riskConfig"
+        private const val ARG_COMPARISON_MODE = "comparisonMode"
+        private const val ARG_DEPTH_MODEL_ASSET = "depthModelAsset"
         private const val ARG_IMAGE_LIMIT = "imageLimit"
         private const val ARG_PURE_WARMUP = "pureWarmup"
         private const val ARG_PURE_RUNS = "pureRuns"
@@ -1342,10 +1406,25 @@ class DetectorAbDeviceBenchmarkTest {
         private const val DEFAULT_PURE_RUNS = 100
         private const val DEFAULT_APP_RUNS_PER_IMAGE = 3
         private const val DEFAULT_MATCH_IOU_THRESHOLD = 0.5f
-        private val MODEL_SPECS = listOf(
-            ModelSpec("yolo11n", YOLO11N_ASSET, "app/src/main/assets/yolo11n_fp16_320.tflite"),
-            ModelSpec("yolo26n", YOLO26N_ASSET, ".downloads/detector-lab/exports/yolo26n_fp16_320.tflite")
-        )
+        private fun modelSpecsFor(comparisonMode: String, depthModelAsset: String): List<ModelSpec> {
+            return when (comparisonMode) {
+                COMPARISON_MODE_DETECTOR_AB -> listOf(
+                    ModelSpec("yolo11n", YOLO11N_ASSET, "app/src/main/assets/yolo11n_fp16_320.tflite"),
+                    ModelSpec("yolo26n", YOLO26N_ASSET, ".downloads/detector-lab/exports/yolo26n_fp16_320.tflite")
+                )
+                COMPARISON_MODE_DEPTH_FUSION -> listOf(
+                    ModelSpec("baseline_geometry", YOLO11N_ASSET, "app/src/main/assets/yolo11n_fp16_320.tflite"),
+                    ModelSpec(
+                        id = "candidate_depth_fusion",
+                        assetName = YOLO11N_ASSET,
+                        source = "app/src/main/assets/yolo11n_fp16_320.tflite + androidTest/assets/$depthModelAsset",
+                        depthFusion = true,
+                        depthModelAssetName = depthModelAsset
+                    )
+                )
+                else -> error("Unsupported comparisonMode: $comparisonMode")
+            }
+        }
         private val RISK_LABELS = setOf(
             "person",
             "bicycle",
@@ -1366,6 +1445,7 @@ class DetectorAbDeviceBenchmarkTest {
         }
 
         private fun riskToJson(risk: RiskResult): JSONObject {
+            val evidence = risk.distanceEvidence
             return JSONObject()
                 .put("level", risk.level.name)
                 .put("direction", risk.direction.name)
@@ -1373,6 +1453,18 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("source_label", risk.sourceDetection?.label ?: JSONObject.NULL)
                 .put("source_confidence", risk.sourceDetection?.confidence?.let { round3(it) } ?: JSONObject.NULL)
                 .put("urgency_score", round3(risk.urgencyScore))
+                .put(
+                    "distance_evidence",
+                    if (evidence == null) {
+                        JSONObject.NULL
+                    } else {
+                        JSONObject()
+                            .put("band", evidence.band.name)
+                            .put("confidence", round3(evidence.confidence))
+                            .put("source", evidence.source.name)
+                            .put("relative_depth_score", round3(evidence.relativeDepthScore))
+                    }
+                )
         }
 
         private fun boxToJson(box: BoundingBox): JSONArray {
