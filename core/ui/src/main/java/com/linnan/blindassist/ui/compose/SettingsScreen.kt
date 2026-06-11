@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -72,6 +73,7 @@ fun SettingsScreen(
             body = if (language == AppLanguage.EN) "Use a larger, quieter camera panel with less debug noise" else "使用更大、更安静的相机面板并减少调试干扰",
             checked = controls.careModeEnabled,
             language = language,
+            modifier = Modifier.testTag("settings_care_mode_toggle"),
             onCheckedChange = onCareModeChange
         )
         Spacer(Modifier.height(16.dp))
@@ -128,6 +130,7 @@ fun SettingsScreen(
             body = if (language == AppLanguage.EN) "Show FPS, timing, and risk summary on the camera page" else "在相机页显示 FPS、耗时和风险判定摘要",
             checked = controls.debugVisible,
             language = language,
+            modifier = Modifier.testTag("settings_debug_toggle"),
             onCheckedChange = onDebugVisibleChange
         )
         Spacer(Modifier.height(16.dp))

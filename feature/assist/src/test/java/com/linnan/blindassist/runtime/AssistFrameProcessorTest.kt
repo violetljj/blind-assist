@@ -77,6 +77,28 @@ class AssistFrameProcessorTest {
     }
 
     @Test
+    fun stoppedLifecycleDropsFrameBeforeDetectorRuns() {
+        val detector = FakeDetector()
+        val frame = FakeVisionFrame()
+        val stats = FramePipelineStats()
+        val lifecycleGate = AssistRuntimeLifecycleGate()
+        lifecycleGate.startSession()
+        lifecycleGate.stopSession()
+        val processor = processor(
+            detector = detector,
+            stats = stats,
+            lifecycleGate = lifecycleGate,
+            startLifecycleGate = false
+        )
+
+        processor.process(frame)
+
+        assertEquals(0, detector.detectCalls)
+        assertEquals(1, frame.closeCalls)
+        assertEquals(1L, stats.snapshot().droppedInactive)
+    }
+
+    @Test
     fun busyFrameIsDroppedAndClosedOnce() {
         val started = CountDownLatch(1)
         val release = CountDownLatch(1)
@@ -137,10 +159,15 @@ class AssistFrameProcessorTest {
     private fun processor(
         detector: FakeDetector = FakeDetector(),
         stats: FramePipelineStats = FramePipelineStats(),
+        lifecycleGate: AssistRuntimeLifecycleGate = AssistRuntimeLifecycleGate(),
+        startLifecycleGate: Boolean = true,
         active: Boolean = true,
         config: AssistRuntimeConfig = runtimeConfig(),
         onCameraFailure: (String) -> Unit = {}
     ): AssistFrameProcessor {
+        if (startLifecycleGate) {
+            lifecycleGate.startSession()
+        }
         val coordinator = AssistSessionCoordinator(feedbackGateway = FakeFeedbackGateway())
         val appViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore()))
         val configSnapshot = AssistRuntimeConfigSnapshot(config)
@@ -158,6 +185,7 @@ class AssistFrameProcessorTest {
             configSnapshot = configSnapshot,
             renderer = renderer,
             stats = stats,
+            lifecycleGate = lifecycleGate,
             isCameraActive = { active },
             runOnUiThread = { it() },
             onCameraFailure = onCameraFailure

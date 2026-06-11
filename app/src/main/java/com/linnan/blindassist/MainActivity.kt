@@ -71,10 +71,14 @@ class MainActivity : ComponentActivity() {
                     onCameraViewsReady = runtimeController::onCameraViewsReady
                 )
                 if (uiState.showGlassesDialog) {
-                    GlassesPlaceholderDialog(onDismiss = appViewModel::onDismissGlassesDialog)
+                    GlassesPlaceholderDialog(
+                        language = uiState.controls.appLanguage,
+                        onDismiss = appViewModel::onDismissGlassesDialog
+                    )
                 }
                 if (uiState.showCameraPermissionDialog) {
                     CameraPermissionExplanationDialog(
+                        language = uiState.controls.appLanguage,
                         onContinue = {
                             runtimeController.requestCameraPermissionAfterExplanation {
                                 requestCameraPermission.launch(Manifest.permission.CAMERA)
@@ -84,7 +88,10 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 if (uiState.showPermissionDeniedDialog) {
-                    CameraPermissionDeniedDialog(onDismiss = appViewModel::onDismissPermissionDeniedDialog)
+                    CameraPermissionDeniedDialog(
+                        language = uiState.controls.appLanguage,
+                        onDismiss = appViewModel::onDismissPermissionDeniedDialog
+                    )
                 }
             }
         }

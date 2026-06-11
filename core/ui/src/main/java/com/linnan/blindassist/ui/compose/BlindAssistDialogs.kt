@@ -13,66 +13,91 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.linnan.blindassist.localization.AppLanguage
 
 @Composable
 fun GlassesPlaceholderDialog(
+    language: AppLanguage = AppLanguage.ZH,
     onDismiss: () -> Unit
 ) {
+    val english = language == AppLanguage.EN
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("知道了")
+                Text(if (english) "Got it" else "知道了")
             }
         },
         icon = { Icon(Icons.Rounded.Bluetooth, contentDescription = null, tint = BaSky) },
-        title = { Text("眼镜设备连接") },
+        title = { Text(if (english) "Glasses device connection" else "眼镜设备连接") },
         text = {
-            Text("该入口为未来蓝牙眼镜或外接视觉设备预留。当前版本不会扫描蓝牙、不会联网，也不会申请额外权限。")
+            Text(
+                if (english) {
+                    "This entry is reserved for future glasses or external vision devices. This version does not scan Bluetooth, does not go online, and does not request extra permissions."
+                } else {
+                    "该入口为未来蓝牙眼镜或外接视觉设备预留。当前版本不会扫描蓝牙、不会联网，也不会申请额外权限。"
+                }
+            )
         }
     )
 }
 
 @Composable
 fun CameraPermissionExplanationDialog(
+    language: AppLanguage = AppLanguage.ZH,
     onContinue: () -> Unit,
     onDismiss: () -> Unit
 ) {
+    val english = language == AppLanguage.EN
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             Button(onClick = onContinue, modifier = Modifier.heightIn(min = 48.dp)) {
-                Text("继续并授权")
+                Text(if (english) "Continue and allow" else "继续并授权")
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = 48.dp)) {
-                Text("暂不打开")
+                Text(if (english) "Not now" else "暂不打开")
             }
         },
         icon = { Icon(Icons.Rounded.CameraAlt, contentDescription = null, tint = BaMint) },
-        title = { Text("需要相机权限") },
+        title = { Text(if (english) "Camera permission needed" else "需要相机权限") },
         text = {
-            Text("相机仅用于手机端实时识别。BlindAssist 不上传画面、不联网、不保存视频；语音和震动提醒只作为辅助参考，不能替代盲杖、导盲犬或人工判断。")
+            Text(
+                if (english) {
+                    "The camera is only used for live on-device recognition. BlindAssist does not upload images, does not connect to the network, and does not save video. Speech and vibration reminders are assistive references only and cannot replace a cane, guide dog, or human judgment."
+                } else {
+                    "相机仅用于手机端实时识别。BlindAssist 不上传画面、不联网、不保存视频；语音和震动提醒只作为辅助参考，不能替代盲杖、导盲犬或人工判断。"
+                }
+            )
         }
     )
 }
 
 @Composable
 fun CameraPermissionDeniedDialog(
+    language: AppLanguage = AppLanguage.ZH,
     onDismiss: () -> Unit
 ) {
+    val english = language == AppLanguage.EN
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onDismiss, modifier = Modifier.heightIn(min = 48.dp)) {
-                Text("知道了")
+                Text(if (english) "Got it" else "知道了")
             }
         },
         icon = { Icon(Icons.Rounded.Shield, contentDescription = null, tint = BaAmber) },
-        title = { Text("相机权限未开启") },
+        title = { Text(if (english) "Camera permission is off" else "相机权限未开启") },
         text = {
-            Text("未获得相机权限时，手机摄像头辅助无法启动。你仍可留在主界面查看设置，稍后再次点击“使用手机摄像头”重新授权。")
+            Text(
+                if (english) {
+                    "Phone camera assistance cannot start without camera permission. You can stay on the main screen, review settings, and tap Use phone camera again later to allow permission."
+                } else {
+                    "未获得相机权限时，手机摄像头辅助无法启动。你仍可留在主界面查看设置，稍后再次点击“使用手机摄像头”重新授权。"
+                }
+            )
         }
     )
 }

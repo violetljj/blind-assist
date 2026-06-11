@@ -12,6 +12,8 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 class FeedbackControllerTest {
     @Test
@@ -238,6 +240,58 @@ class FeedbackControllerTest {
         assertEquals(0, haptic.vibrateCalls)
     }
 
+    @Test
+    fun shutdownRejectsFutureNotificationsWithoutTouchingOutputs() {
+        val speech = FakeSpeechOutput(ready = true, speakResult = true)
+        val haptic = FakeHapticOutput(vibrateResult = true)
+        val controller = feedbackController(speech, haptic)
+
+        controller.shutdown()
+        val decision = controller.notify(risk(RiskLevel.HIGH, ProximityBand.CRITICAL))
+
+        assertFalse(decision.triggered)
+        assertEquals(FeedbackReason.FEEDBACK_UNAVAILABLE, decision.reason)
+        assertEquals(0, speech.speakCalls)
+        assertEquals(0, haptic.vibrateCalls)
+        assertEquals(1, speech.shutdownCalls)
+    }
+
+    @Test
+    fun shutdownWaitsForInFlightNotifyBeforeClosingSpeechOutput() {
+        val speakStarted = CountDownLatch(1)
+        val releaseSpeak = CountDownLatch(1)
+        val shutdownReturned = CountDownLatch(1)
+        val speech = FakeSpeechOutput(
+            ready = true,
+            speakResult = true,
+            onSpeak = {
+                speakStarted.countDown()
+                releaseSpeak.await(2, TimeUnit.SECONDS)
+            }
+        )
+        val haptic = FakeHapticOutput(vibrateResult = false)
+        val controller = feedbackController(speech, haptic)
+
+        val notifyThread = Thread {
+            controller.notify(risk(RiskLevel.HIGH, ProximityBand.CRITICAL))
+        }
+        notifyThread.start()
+        assertTrue(speakStarted.await(1, TimeUnit.SECONDS))
+
+        val shutdownThread = Thread {
+            controller.shutdown()
+            shutdownReturned.countDown()
+        }
+        shutdownThread.start()
+        assertFalse(shutdownReturned.await(150, TimeUnit.MILLISECONDS))
+
+        releaseSpeak.countDown()
+        assertTrue(shutdownReturned.await(1, TimeUnit.SECONDS))
+        notifyThread.join(1_000L)
+        shutdownThread.join(1_000L)
+        assertEquals(1, speech.shutdownCalls)
+    }
+
     private fun risk(level: RiskLevel, proximity: ProximityBand): RiskResult {
         return RiskResult(
             level = level,
@@ -263,9 +317,12 @@ class FeedbackControllerTest {
 
     private class FakeSpeechOutput(
         override var ready: Boolean,
-        private val speakResult: Boolean
+        private val speakResult: Boolean,
+        private val onSpeak: () -> Unit = {}
     ) : SpeechOutput {
         var speakCalls: Int = 0
+            private set
+        var shutdownCalls: Int = 0
             private set
         var language: AppLanguage = AppLanguage.ZH
             private set
@@ -276,10 +333,13 @@ class FeedbackControllerTest {
 
         override fun speak(message: String, utteranceId: String): Boolean {
             speakCalls += 1
+            onSpeak()
             return speakResult
         }
 
-        override fun shutdown() = Unit
+        override fun shutdown() {
+            shutdownCalls += 1
+        }
     }
 
     private class FakeHapticOutput(

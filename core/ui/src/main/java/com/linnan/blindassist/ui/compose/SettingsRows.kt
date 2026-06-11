@@ -38,6 +38,7 @@ internal fun SettingSwitchRow(
     body: String,
     checked: Boolean,
     language: AppLanguage = AppLanguage.ZH,
+    modifier: Modifier = Modifier,
     onCheckedChange: (Boolean) -> Unit
 ) {
     val stateText = LocalizedText.enabled(checked, language)
@@ -47,7 +48,7 @@ internal fun SettingSwitchRow(
         if (checked) "关闭$title" else "开启$title"
     }
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 72.dp)
             .clickable(

@@ -4,13 +4,15 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 
 ## 版本
 
-- 当前项目版本：`v8.2.0`
+- 当前项目版本：`v8.3.0`
 - 版本规则：小更新增加 `v0.1`，较大更新增加 `v0.5`，阶段性质变增加 `v1.0`。
 - 版本影响由 Codex/Agent 根据每次变更的范围和风险判断。
 - 会影响项目状态、使用方式、功能行为、构建流程、模型资产、测试结论或重要技术决策的更新，应同步保持 README 与当前状态一致。
 - 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
 
 ## 近期状态
+
+- 2026-06-11：完成 `v8.3.0` 生命周期串行化、隐私备份与英文无障碍一致性更新。`AssistRuntimeLifecycleGate` 统一管理相机/帧处理/反馈链路的接收、停止和在途帧 drain，`CameraXFrameSource` 增加 session generation，`FeedbackController` 串行化 `notify`、设置应用和 shutdown；系统 Auto Backup / Device Transfer 只允许迁移 `blindassist_user_preferences` 低敏偏好，不备份帧、日志、缓存或测试证据；英文界面下相机返回、底部导航、个人页状态和权限/占位弹窗语义保持英文一致。当前版本为 `v8.3.0` / `versionCode=31`，不替换模型、不调整风险阈值、不新增联网、定位、蓝牙或存储权限。模型检查、JVM 单测、lint、debug/androidTest APK 构建、Compose 真机用例和 90 秒真机回归均已通过；完整 `connectedDebugAndroidTest` 仍被历史 Detector A/B benchmark 的 signal 9 中断，需单独收敛。debug APK 已归档到 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.3.0-debug-20260611-174127.apk`。
 - 2026-05-27：完成 BlindAssist 专用真实助行评测集首版。新增 `scripts/build_blindassist_evalset.py` 和 `docs/BLINDASSIST_EVALSET.md`，从 COCO 2017 validation 真实图片和实例标注中筛选 150 张本地评测样本，额外记录 `expected_risk_direction`、`expected_distance_band`、`expected_should_alert`、`expected_risk_level` 和 `assist_scenario`，用于下一轮检测器与风险规则优化。输出目录为 `test-artifacts.local/datasets/blindassist-evalset-20260527-impl`，包含 `manifest.jsonl`、YOLO labels、标准 COCO `instances_test.json`、`qa/preview.html` 和 150 张 boxed QA 图；原图仅本地保留，不提交 Git。本轮不改变 App 行为，不调整 `versionName=8.2.0` / `versionCode=30`。
 
 - 2026-05-27：完成 `yolo11n` 与 `yolo26n` 同设备 A/B 质量评测。新增 COCO100 标注导出 `coco100_annotations.json`、`DetectorAbDeviceBenchmarkTest` 和 `scripts/run_detector_ab_device_benchmark.ps1`，在同一台 Samsung `SM-S9280` / Android 16、同一批 100 张 COCO val2017 固定样本、同一套 BlindAssist 预处理/解析/风险规则下比较检测质量、误报漏报、风险目标与稳定性。结果：`yolo11n` AP50/precision/recall/F1 为 `0.285/0.859/0.299/0.444`，`yolo26n` 为 `0.279/0.872/0.294/0.440`；`yolo26n` total P50/P95 为 `49/51ms`，快于 `yolo11n` 的 `54/56ms`，但 AP50 与召回略低，未满足默认模型替换门槛。本轮结论为不替换默认模型，证据目录为 `test-artifacts.local/detector-ab-device-benchmark/20260527-022312`，默认模型 90 秒真机回归通过，证据目录为 `test-artifacts.local/device-regression/20260527-022510`。本轮只增强评测工具与证据，不调整 `versionName=8.2.0` / `versionCode=30`。

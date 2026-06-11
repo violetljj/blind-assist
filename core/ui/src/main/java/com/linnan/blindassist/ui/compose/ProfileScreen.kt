@@ -135,14 +135,18 @@ fun ProfileScreen(
             Spacer(Modifier.width(14.dp))
             Column {
                 Text(
-                    text = "BlindAssist 用户",
+                    text = if (language == AppLanguage.EN) "BlindAssist user" else "BlindAssist 用户",
                     style = MaterialTheme.typography.titleLarge,
                     color = BaText,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.semantics { heading() }
                 )
                 Text(
-                    text = "本地原型模式 · 未接入账号系统",
+                    text = if (language == AppLanguage.EN) {
+                        "Local prototype mode - no account system"
+                    } else {
+                        "本地原型模式 · 未接入账号系统"
+                    },
                     style = MaterialTheme.typography.bodyMedium,
                     color = BaTextMuted
                 )
@@ -150,10 +154,10 @@ fun ProfileScreen(
         }
         Spacer(Modifier.height(20.dp))
         StatusGrid(
-            leftTitle = "设备",
-            leftBody = "手机摄像头可用",
-            rightTitle = "眼镜",
-            rightBody = "等待未来扩展"
+            leftTitle = if (language == AppLanguage.EN) "Device" else "设备",
+            leftBody = if (language == AppLanguage.EN) "Phone camera available" else "手机摄像头可用",
+            rightTitle = if (language == AppLanguage.EN) "Glasses" else "眼镜",
+            rightBody = if (language == AppLanguage.EN) "Reserved for future extension" else "等待未来扩展"
         )
         Spacer(Modifier.height(12.dp))
         StatusGrid(
@@ -164,10 +168,10 @@ fun ProfileScreen(
         )
         Spacer(Modifier.height(12.dp))
         StatusGrid(
-            leftTitle = "当前版本",
+            leftTitle = if (language == AppLanguage.EN) "Current version" else "当前版本",
             leftBody = "v$appVersion",
-            rightTitle = "提醒解释",
-            rightBody = "已开启"
+            rightTitle = if (language == AppLanguage.EN) "Reminder explanations" else "提醒解释",
+            rightBody = if (language == AppLanguage.EN) "On" else "已开启"
         )
         Spacer(Modifier.height(12.dp))
         InfoStrip(

@@ -9,6 +9,7 @@ internal class AssistRuntimeEffectExecutor(
     private val renderer: AssistRuntimeRenderer,
     private val cameraLifecycleAdapter: AssistCameraLifecycleAdapter,
     private val frameProcessor: AssistFrameProcessor,
+    private val lifecycleGate: AssistRuntimeLifecycleGate,
     private val configSnapshot: AssistRuntimeConfigSnapshot,
     private val syncConfigFromViewModel: () -> Unit,
     private val startCameraIfReady: () -> Unit
@@ -23,6 +24,7 @@ internal class AssistRuntimeEffectExecutor(
                 AssistRuntimeEffect.DismissPermissionExplanation -> appViewModel.onDismissCameraPermissionDialog()
                 AssistRuntimeEffect.LaunchPermissionRequest -> launchPermissionRequest?.invoke()
                 AssistRuntimeEffect.StartSession -> {
+                    lifecycleGate.startSession()
                     coordinator.startSession()
                     frameProcessor.reset()
                     renderer.updateFieldTestSummary(active = true, configSnapshot.get())
@@ -31,6 +33,7 @@ internal class AssistRuntimeEffectExecutor(
                 AssistRuntimeEffect.StartCameraIfReady -> startCameraIfReady()
                 AssistRuntimeEffect.StopCamera -> {
                     cameraLifecycleAdapter.stop()
+                    lifecycleGate.stopSession()
                     frameProcessor.reset()
                 }
                 AssistRuntimeEffect.ClearOverlay -> renderer.clearOverlay()
@@ -39,6 +42,7 @@ internal class AssistRuntimeEffectExecutor(
                     cameraLifecycleAdapter.clearViews()
                 }
                 AssistRuntimeEffect.ResetSession -> {
+                    lifecycleGate.stopSession()
                     coordinator.reset()
                     frameProcessor.reset()
                 }

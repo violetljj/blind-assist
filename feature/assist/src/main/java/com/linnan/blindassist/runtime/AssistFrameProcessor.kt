@@ -12,6 +12,7 @@ internal class AssistFrameProcessor(
     private val configSnapshot: AssistRuntimeConfigSnapshot,
     private val renderer: AssistRuntimeRenderer,
     private val stats: FramePipelineStats,
+    private val lifecycleGate: AssistRuntimeLifecycleGate,
     private val isCameraActive: () -> Boolean,
     private val runOnUiThread: (() -> Unit) -> Unit,
     private val onCameraFailure: (String) -> Unit
@@ -20,21 +21,30 @@ internal class AssistFrameProcessor(
 
     fun process(frame: VisionFrame) {
         stats.onReceived()
+        val lease = lifecycleGate.tryEnterFrame()
+        if (lease == null) {
+            stats.onDroppedInactive()
+            frame.close()
+            return
+        }
         val runtimeConfig = configSnapshot.get()
         if (!isCameraActive() || !runtimeConfig.detectionEnabled) {
             stats.onDroppedInactive()
             frame.close()
+            lease.close()
             return
         }
         if (!detector.isReady) {
             stats.onDroppedDetectorUnavailable()
             runOnUiThread { renderer.renderModelUnavailable() }
             frame.close()
+            lease.close()
             return
         }
         if (!isProcessing.compareAndSet(false, true)) {
             stats.onDroppedBusy()
             frame.close()
+            lease.close()
             return
         }
 
@@ -64,6 +74,7 @@ internal class AssistFrameProcessor(
         } finally {
             isProcessing.set(false)
             frame.close()
+            lease.close()
         }
     }
 

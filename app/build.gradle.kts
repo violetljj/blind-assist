@@ -64,8 +64,8 @@ android {
         applicationId = "com.linnan.blindassist"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 30
-        versionName = "8.2.0"
+        versionCode = 31
+        versionName = "8.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

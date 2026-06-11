@@ -2,6 +2,27 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v8.3.0 - 生命周期串行化、隐私备份与英文无障碍一致性
+
+- 状态：已完成本地单测、lint、构建、Compose 真机用例和 90 秒真机回归验证，`versionCode=31`，`versionName=8.3.0`。
+- 主要变化：
+  - `feature:assist` 新增 `AssistRuntimeLifecycleGate`，统一串行化相机会话、帧处理和反馈关闭边界；停止/关闭时先拒收新帧，再等待在途帧完成，最后 reset processor、关闭 detector 和 shutdown feedback。
+  - `AssistFrameProcessor` 在处理前登记在途帧，stop/shutdown 后的新帧会立即关闭且不进入 detector；`AssistRuntimeEffectExecutor` 在 Start/Stop/Reset/Close 路径中按固定顺序进入 gate。
+  - `CameraXFrameSource` 增加 session generation 与 lifecycle lock，late provider callback 在 stop/close/shutdown 后不会重新 bind 或触发过期 `onStarted`；`shutdown()` 继续保持幂等与 analyzer executor 有界等待。
+  - `FeedbackController` 用生命周期锁串行 `applySettings`、`notify` 和 `shutdown`，shutdown 后不再触达 speech/haptic output。
+  - Manifest 保留 `allowBackup=true`，新增 `dataExtractionRules` 与 `fullBackupContent`，系统备份/设备迁移只 include `sharedpref/blindassist_user_preferences.xml`，不备份帧、日志、缓存、测试证据或其他本地文件。
+  - 英文模式下补齐相机返回 `Back to features`、底部导航、Profile 状态、权限/拒绝/眼镜占位弹窗，以及 Compose 测试定位的中英文兼容。
+- 验证：
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，默认 yolo11n 输入 `[1, 320, 320, 3] float32`，输出 `[1, 84, 2100] float32`，`assertions=passed`。
+  - `:core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest`：通过。
+  - `:app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug`：通过。
+  - `:app:assembleDebug :app:assembleDebugAndroidTest`：通过；期间修正 androidTest 中 `assertDoesNotExist` API 兼容、设置页测试标签和 Android 16 debug app 兼容性弹窗处理。
+  - `:app:connectedDebugAndroidTest` 完整矩阵未作为通过证据：设备端历史 `DetectorAbDeviceBenchmarkTest` 在约 40 秒后进程被 signal 9 kill，UTP 报 `Process crashed`。随后按类过滤运行本轮相关 Compose instrumentation：`BlindAssistComposeTest` 与 `CameraControlPanelStandaloneTest` 共 11 个用例通过。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -SampleSeconds 90`：通过，证据目录 `test-artifacts.local/device-regression/20260611-173421`。
+- APK：
+  - 完整本地归档 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.3.0-debug-20260611-174127.apk`，大小 `47,490,277` bytes，SHA256 `26217859834CE2907288BA38939E50AEDEFFCE9A59735D53C6ACA641C414BE25`。
+  - 本轮不默认提交 `releases/apk/` 里程碑 APK。
+
 ## v8.2.0 - 相机可靠性与无障碍修复
 
 - 状态：已完成本地与真机验证，`versionCode=30`，`versionName=8.2.0`。

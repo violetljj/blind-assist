@@ -32,6 +32,7 @@ class AssistRuntimeController(
     private val frameSource: FrameSource = frameSourceFactory.create(activity, activity)
     private val configSnapshot = AssistRuntimeConfigSnapshot(appViewModel.runtimeConfig())
     private val config: AssistRuntimeConfig get() = configSnapshot.get()
+    private val lifecycleGate = AssistRuntimeLifecycleGate()
     private val guidanceFactory = AssistRuntimeGuidanceFactory(detector) { config }
     private val fieldTestSummaryProvider = FieldTestSummaryProvider(coordinator)
     private val framePipelineStats = FramePipelineStats()
@@ -47,6 +48,7 @@ class AssistRuntimeController(
         configSnapshot = configSnapshot,
         renderer = renderer,
         stats = framePipelineStats,
+        lifecycleGate = lifecycleGate,
         isCameraActive = { appViewModel.uiState.value.cameraActive },
         runOnUiThread = { block -> activity.runOnUiThread(Runnable(block)) },
         onCameraFailure = ::handleCameraFailure
@@ -75,6 +77,7 @@ class AssistRuntimeController(
         renderer = renderer,
         cameraLifecycleAdapter = cameraLifecycleAdapter,
         frameProcessor = frameProcessor,
+        lifecycleGate = lifecycleGate,
         configSnapshot = configSnapshot,
         syncConfigFromViewModel = { settingsController.syncConfigFromViewModel() },
         startCameraIfReady = ::startCameraIfReady
@@ -87,6 +90,7 @@ class AssistRuntimeController(
 
     fun shutdown() {
         cameraLifecycleAdapter.stop()
+        lifecycleGate.shutdown()
         cameraLifecycleAdapter.shutdown()
         detector.close()
         feedbackController.shutdown()

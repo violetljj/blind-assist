@@ -27,9 +27,12 @@ class CameraXFrameSource(
 ) : FrameSource {
     private val appContext = context.applicationContext
     private val mainExecutor: Executor = ContextCompat.getMainExecutor(appContext)
+    private val lifecycleLock = Any()
     private var cameraProvider: ProcessCameraProvider? = null
     private var starting = false
     private var started = false
+    private var shutdownRequested = false
+    private var sessionGeneration = 0L
     private val analyzerFailureReported = AtomicBoolean(false)
 
     override fun start(
@@ -38,15 +41,19 @@ class CameraXFrameSource(
         onStarted: () -> Unit,
         onError: (Throwable) -> Unit
     ) {
-        if (started || starting) return
+        val generation = synchronized(lifecycleLock) {
+            if (shutdownRequested || started || starting) return
+            starting = true
+            sessionGeneration += 1L
+            sessionGeneration
+        }
 
-        starting = true
         analyzerFailureReported.set(false)
         val providerFuture = ProcessCameraProvider.getInstance(appContext)
         providerFuture.addListener({
             try {
                 val provider = providerFuture.get()
-                cameraProvider = provider
+                if (!isCurrentSession(generation)) return@addListener
                 val preview = Preview.Builder().build().also {
                     it.setSurfaceProvider(previewView.surfaceProvider)
                 }
@@ -68,41 +75,74 @@ class CameraXFrameSource(
                         }
                     }
 
+                if (!isCurrentSession(generation)) return@addListener
+                synchronized(lifecycleLock) {
+                    cameraProvider = provider
+                }
                 provider.unbindAll()
+                if (!isCurrentSession(generation)) return@addListener
                 provider.bindToLifecycle(
                     lifecycleOwner,
                     CameraSelector.DEFAULT_BACK_CAMERA,
                     preview,
                     analysis
                 )
-                started = true
-                onStarted()
+                if (isCurrentSession(generation)) {
+                    synchronized(lifecycleLock) {
+                        started = true
+                    }
+                    onStarted()
+                } else {
+                    provider.unbindAll()
+                }
             } catch (error: Throwable) {
                 FatalThrowables.rethrowIfFatal(error)
-                onError(error)
+                if (isCurrentSession(generation)) {
+                    onError(error)
+                }
             } finally {
-                starting = false
+                synchronized(lifecycleLock) {
+                    if (sessionGeneration == generation) {
+                        starting = false
+                    }
+                }
             }
         }, mainExecutor)
     }
 
     override fun stop() {
-        cameraProvider?.unbindAll()
-        started = false
-        starting = false
+        val provider = synchronized(lifecycleLock) {
+            sessionGeneration += 1L
+            starting = false
+            started = false
+            cameraProvider.also {
+                cameraProvider = null
+            }
+        }
+        provider?.unbindAll()
         analyzerFailureReported.set(false)
     }
 
     override fun shutdown() {
-        stop()
-        analysisExecutor.shutdown()
-        try {
-            if (!analysisExecutor.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                analysisExecutor.shutdownNow()
+        val shouldShutdown = synchronized(lifecycleLock) {
+            if (shutdownRequested) {
+                false
+            } else {
+                shutdownRequested = true
+                true
             }
-        } catch (error: InterruptedException) {
-            analysisExecutor.shutdownNow()
-            Thread.currentThread().interrupt()
+        }
+        stop()
+        if (shouldShutdown) {
+            analysisExecutor.shutdown()
+            try {
+                if (!analysisExecutor.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                    analysisExecutor.shutdownNow()
+                }
+            } catch (error: InterruptedException) {
+                analysisExecutor.shutdownNow()
+                Thread.currentThread().interrupt()
+            }
         }
     }
 
@@ -123,6 +163,12 @@ class CameraXFrameSource(
             mainExecutor.execute {
                 onError(error)
             }
+        }
+    }
+
+    private fun isCurrentSession(generation: Long): Boolean {
+        return synchronized(lifecycleLock) {
+            !shutdownRequested && sessionGeneration == generation
         }
     }
 

@@ -2,6 +2,64 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-06-11
+
+### v8.3.0 生命周期串行化、隐私备份与英文无障碍一致性
+- 时间：2026-06-11 17:36:47 +08:00
+- 执行者：Codex
+- 类型：可靠性 / 隐私 / 无障碍 / 测试 / 构建 / 真机回归 / APK 归档
+- 修改范围：
+  - `app/build.gradle.kts`
+  - `app/src/main/AndroidManifest.xml`
+  - `app/src/main/res/xml/backup_rules.xml`
+  - `app/src/main/res/xml/data_extraction_rules.xml`
+  - `app/src/androidTest/java/com/linnan/blindassist/ui/compose/BlindAssistComposeTest.kt`
+  - `core/device/src/main/java/com/linnan/blindassist/camera/CameraXFrameSource.kt`
+  - `core/device/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt`
+  - `core/device/src/test/java/com/linnan/blindassist/feedback/FeedbackControllerTest.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistApp.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/BlindAssistDialogs.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/CameraExperienceScreen.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/ProfileScreen.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/SettingsRows.kt`
+  - `core/ui/src/main/java/com/linnan/blindassist/ui/compose/SettingsScreen.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistFrameProcessor.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeController.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeEffectExecutor.kt`
+  - `feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeLifecycleGate.kt`
+  - `feature/assist/src/test/java/com/linnan/blindassist/runtime/AssistFrameProcessorTest.kt`
+  - `feature/assist/src/test/java/com/linnan/blindassist/runtime/AssistRuntimeLifecycleGateTest.kt`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `DEVELOPMENT_LOG.md`
+  - `test-artifacts.local/device-regression/20260611-173421`（本地忽略目录，不提交 Git）
+  - `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.3.0-debug-20260611-174127.apk`（完整本地归档，不提交 Git）
+- 修改内容：
+  - 将版本升级为 `versionName=8.3.0` / `versionCode=31`，作为可靠性与无障碍小版本更新。
+  - 新增 `AssistRuntimeLifecycleGate`，集中管理 `acceptingFrames`、停止/关闭状态和在途帧计数；stop/shutdown 会先拒收新帧，再等待在途帧 drain。
+  - `AssistFrameProcessor` 在 detector/coordinator/feedback 路径前登记帧 lease，生命周期停止后的新帧立即关闭且不进入 detector；`AssistRuntimeController` 和 `AssistRuntimeEffectExecutor` 按 Start/Stop/Reset/Close 顺序接入 gate。
+  - `CameraXFrameSource` 增加 session generation 与生命周期锁，避免 late provider callback 在 stop/close 后重新 bind 或触发过期 `onStarted`。
+  - `FeedbackController` 串行化 `applySettings`、`notify` 和 `shutdown`，shutdown 后不再调用 speech/haptic output。
+  - Manifest 增加 `android:dataExtractionRules` 和 `android:fullBackupContent`；新增备份 XML，仅允许 `blindassist_user_preferences.xml` 进入系统备份/设备迁移。
+  - 英文模式下补齐相机返回、底部导航、Profile 状态、权限说明、拒绝说明和眼镜占位弹窗文案；测试 helper 兼容中英文返回按钮和 Android 16 debug app 兼容性弹窗。
+- 修改原因：
+  - 相机 stop/shutdown、在途帧、TFLite close 和 TTS shutdown 需要统一生命周期顺序，避免旧帧在关闭后继续写 overlay 或触发反馈。
+  - 系统备份应只迁移低敏偏好，明确不备份画面、视频、缓存、日志和测试证据。
+  - App 内语言切到 English 时，TalkBack 文案、状态描述和测试定位应保持一致，不能残留中文语义。
+- 验证方式：
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，`assertions=passed`。
+  - `.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain`：通过。
+  - `.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain`：通过。
+  - `.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain`：通过。
+  - `.\gradlew.bat ":app:connectedDebugAndroidTest" "-Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.ui.compose.BlindAssistComposeTest,com.linnan.blindassist.ui.compose.CameraControlPanelStandaloneTest" --no-daemon --console=plain`：通过，Samsung `SM-S9280 - 16` 上 11 个 Compose instrumentation 用例全部通过。
+  - 完整 `:app:connectedDebugAndroidTest` 未通过：设备端历史 `DetectorAbDeviceBenchmarkTest` 在约 40 秒后进程被 signal 9 kill，UTP 报 `Process crashed`；本次未把该完整矩阵作为通过证据，后续需要单独收敛 benchmark 稳定性或从默认 connected 集合中隔离。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -SampleSeconds 90`：通过，证据目录 `E:\linnan\linnan\test-artifacts.local\device-regression\20260611-173421`。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\archive_apk.ps1`：通过，最终归档到 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.3.0-debug-20260611-174127.apk`，大小 `47,490,277` bytes，SHA256 `26217859834CE2907288BA38939E50AEDEFFCE9A59735D53C6ACA641C414BE25`，`milestonePath=null`。
+- 版本判断：
+  - 本轮改变生命周期可靠性、系统备份策略和英文无障碍体验，但不替换模型、不调整风险阈值、不新增联网/定位/蓝牙/存储权限；按小版本可靠性更新从 `v8.2.0` 升级到 `v8.3.0`。
+- 后续事项：
+  - 单独排查 `DetectorAbDeviceBenchmarkTest` 在默认 connectedDebugAndroidTest 中被 signal 9 kill 的问题，考虑降低默认 benchmark 负载或将 detector A/B benchmark 从常规 connected 集合中隔离。
+
 ## 2026-05-27
 
 ### 整理本地产物目录和数据集路径

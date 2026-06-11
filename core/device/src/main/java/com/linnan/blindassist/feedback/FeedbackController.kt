@@ -49,6 +49,8 @@ class FeedbackController constructor(
     @Volatile
     private var settings = initialSettings
 
+    private val lifecycleLock = Any()
+    private var shutdown = false
     private val lastAlertAt = mutableMapOf<AlertKey, Long>()
     private val fatigueController = FeedbackFatigueController()
 
@@ -64,8 +66,11 @@ class FeedbackController constructor(
     }
 
     fun applySettings(newSettings: FeedbackRuntimeSettings) {
-        settings = newSettings
-        speechOutput.setLanguage(newSettings.appLanguage)
+        synchronized(lifecycleLock) {
+            if (shutdown) return
+            settings = newSettings
+            speechOutput.setLanguage(newSettings.appLanguage)
+        }
     }
 
     fun notify(risk: RiskResult): FeedbackDecision {
@@ -77,6 +82,15 @@ class FeedbackController constructor(
     }
 
     override fun notify(risk: RiskResult, profile: AlertProfile, scenario: AssistScenario): FeedbackDecision {
+        synchronized(lifecycleLock) {
+            return notifyLocked(risk, profile, scenario)
+        }
+    }
+
+    private fun notifyLocked(risk: RiskResult, profile: AlertProfile, scenario: AssistScenario): FeedbackDecision {
+        if (shutdown) {
+            return FeedbackDecision(null, triggered = false, reason = FeedbackReason.FEEDBACK_UNAVAILABLE)
+        }
         val snapshot = settings
         val plan = planFor(risk, profile, snapshot.vibrationStrength, scenario)
             ?: return FeedbackDecision(null, triggered = false, reason = FeedbackReason.NO_FEEDBACK_RISK)
@@ -123,8 +137,12 @@ class FeedbackController constructor(
     }
 
     fun shutdown() {
-        fatigueController.reset()
-        speechOutput.shutdown()
+        synchronized(lifecycleLock) {
+            if (shutdown) return
+            shutdown = true
+            fatigueController.reset()
+            speechOutput.shutdown()
+        }
     }
 
     private data class AlertKey(

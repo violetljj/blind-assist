@@ -221,6 +221,7 @@ private fun MainShell(
 ) {
     var selectedTab by rememberSaveable { mutableStateOf(BottomTab.Features.name) }
     val tabs = BottomTab.entries
+    val language = controls.appLanguage
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -234,10 +235,10 @@ private fun MainShell(
                         icon = {
                             Icon(
                                 imageVector = tab.icon,
-                                contentDescription = tab.label
+                                contentDescription = tab.label(language)
                             )
                         },
-                        label = { Text(tab.label, maxLines = 1) }
+                        label = { Text(tab.label(language), maxLines = 1) }
                     )
                 }
             }
@@ -281,8 +282,16 @@ private fun MainShell(
 }
 
 
-private enum class BottomTab(val label: String, val icon: ImageVector) {
-    Features("功能", Icons.Rounded.Home),
-    Profile("个人主页", Icons.Rounded.Person),
-    Settings("设置", Icons.Rounded.Settings)
+private enum class BottomTab(
+    private val zhLabel: String,
+    private val enLabel: String,
+    val icon: ImageVector
+) {
+    Features("功能", "Features", Icons.Rounded.Home),
+    Profile("个人主页", "Profile", Icons.Rounded.Person),
+    Settings("设置", "Settings", Icons.Rounded.Settings);
+
+    fun label(language: AppLanguage): String {
+        return if (language == AppLanguage.EN) enLabel else zhLabel
+    }
 }
