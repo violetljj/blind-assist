@@ -138,6 +138,7 @@ fun CameraExperienceScreen(
         )
         CameraTopBar(
             statusBadge = guidance.statusBadge,
+            language = controls.appLanguage,
             onBack = onBack,
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -220,6 +221,7 @@ fun CameraControlPanel(
     } else {
         MaterialTheme.typography.headlineMedium
     }
+    var debugExpanded by rememberSaveable { mutableStateOf(false) }
 
     BoxWithConstraints(
         modifier = modifier
@@ -299,7 +301,7 @@ fun CameraControlPanel(
             }
             Spacer(Modifier.height(8.dp))
             AnimatedVisibility(
-                visible = !controls.careModeEnabled,
+                visible = false,
                 enter = fadeIn() + slideInVertically { it / 3 },
                 exit = fadeOut()
             ) {
@@ -390,6 +392,43 @@ fun CameraControlPanel(
                     }
                 }
             }
+            if (controls.debugVisible) {
+                Spacer(Modifier.height(8.dp))
+                CompactAction(
+                    text = if (debugExpanded) {
+                        if (language == AppLanguage.EN) "Hide debug details" else "收起调试信息"
+                    } else {
+                        if (language == AppLanguage.EN) "Show debug details" else "展开调试信息"
+                    },
+                    icon = Icons.Rounded.BugReport,
+                    onClick = { debugExpanded = !debugExpanded },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("camera_debug_toggle"),
+                    selected = debugExpanded,
+                    accessibilityText = if (debugExpanded) {
+                        if (language == AppLanguage.EN) "Hide camera debug details" else "收起相机调试信息"
+                    } else {
+                        if (language == AppLanguage.EN) "Show camera debug details" else "展开相机调试信息"
+                    },
+                    stateDescriptionText = if (language == AppLanguage.EN) {
+                        if (debugExpanded) "Expanded" else "Collapsed"
+                    } else {
+                        if (debugExpanded) "已展开" else "已收起"
+                    }
+                )
+                AnimatedVisibility(visible = debugExpanded) {
+                    Column(Modifier.padding(top = 4.dp)) {
+                        Text(
+                            text = guidance.debugText,
+                            color = BaTextMuted,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Spacer(Modifier.height(10.dp))
+                        FieldTestSummaryBlock(fieldTestSummary)
+                    }
+                }
+            }
             Spacer(Modifier.height(8.dp))
             CompactToggle(if (language == AppLanguage.EN) "Care" else "关怀", controls.careModeEnabled, Icons.Rounded.Favorite, onCareModeChange, Modifier.fillMaxWidth(), language)
             }
@@ -431,6 +470,7 @@ private fun CameraModeStatusRow(
 @Composable
 private fun CameraTopBar(
     statusBadge: String,
+    language: AppLanguage,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -447,7 +487,11 @@ private fun CameraTopBar(
                 .clip(CircleShape)
                 .background(BaPanel.copy(alpha = 0.78f))
         ) {
-            Icon(Icons.Rounded.ArrowBack, contentDescription = "返回功能页", tint = BaText)
+            Icon(
+                Icons.Rounded.ArrowBack,
+                contentDescription = if (language == AppLanguage.EN) "Back to features" else "返回功能页",
+                tint = BaText
+            )
         }
         Spacer(Modifier.weight(1f))
         Text(

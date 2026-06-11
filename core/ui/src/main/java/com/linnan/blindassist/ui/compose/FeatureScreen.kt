@@ -122,6 +122,7 @@ fun FeatureScreen(
     modifier: Modifier = Modifier
 ) {
     val language = controls.appLanguage
+    var modesExpanded by rememberSaveable { mutableStateOf(false) }
     ScreenColumn(modifier = modifier) {
         Text(
             text = if (language == AppLanguage.EN) "Start assist" else "开始辅助",
@@ -165,9 +166,11 @@ fun FeatureScreen(
         )
         Spacer(Modifier.height(16.dp))
 
-        DailyUsageModeSelector(
+        CollapsibleDailyUsageModeSelector(
             selected = controls.dailyUsageMode,
             language = language,
+            expanded = modesExpanded,
+            onExpandedChange = { modesExpanded = it },
             onModeChange = onDailyUsageModeChange
         )
         Spacer(Modifier.height(12.dp))
@@ -259,6 +262,136 @@ private fun CurrentModeSummary(
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CollapsibleDailyUsageModeSelector(
+    selected: DailyUsageMode,
+    language: AppLanguage,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    onModeChange: (DailyUsageMode) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("daily_usage_mode_selector")
+            .semantics {
+                contentDescription = if (language == AppLanguage.EN) {
+                    "Daily mode selector, current ${selected.displayName(language)}"
+                } else {
+                    "日常模式选择，当前${selected.displayName(language)}"
+                }
+            },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(role = Role.Button) { onExpandedChange(!expanded) }
+                    .semantics {
+                        contentDescription = if (language == AppLanguage.EN) {
+                            if (expanded) "Collapse daily mode choices" else "Change daily mode"
+                        } else {
+                            if (expanded) "收起日常模式选择" else "更换日常模式"
+                        }
+                        stateDescription = if (expanded) {
+                            if (language == AppLanguage.EN) "Expanded" else "已展开"
+                        } else {
+                            if (language == AppLanguage.EN) "Collapsed" else "已收起"
+                        }
+                    },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        text = if (language == AppLanguage.EN) "Change daily mode" else "更换日常模式",
+                        color = BaText,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.semantics { heading() }
+                    )
+                    Text(
+                        text = if (language == AppLanguage.EN) {
+                            "Current: ${selected.displayName(language)}"
+                        } else {
+                            "当前：${selected.displayName(language)}"
+                        },
+                        color = BaTextMuted,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaTextMuted)
+            }
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn() + slideInVertically { it / 3 },
+                exit = fadeOut()
+            ) {
+                Column {
+                    Spacer(Modifier.height(10.dp))
+                    Text(
+                        text = if (language == AppLanguage.EN) {
+                            "Pick the walking task once; BlindAssist applies a matching reminder bundle."
+                        } else {
+                            "先选今天的行走任务，系统会套用对应提醒组合。"
+                        },
+                        color = BaTextMuted,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        DailyUsageMode.selectableModes.forEach { mode ->
+                            FilterChip(
+                                selected = selected == mode,
+                                onClick = { onModeChange(mode) },
+                                label = {
+                                    Column {
+                                        Text(mode.displayName(language), fontWeight = FontWeight.SemiBold)
+                                        Text(
+                                            mode.description(language),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = BaTextMuted,
+                                            maxLines = 2,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .heightIn(min = 56.dp)
+                                    .semantics {
+                                        role = Role.Button
+                                        stateDescription = if (selected == mode) {
+                                            if (language == AppLanguage.EN) "Current daily mode" else "当前日常模式"
+                                        } else {
+                                            if (language == AppLanguage.EN) "Not selected" else "未选择"
+                                        }
+                                        contentDescription = mode.accessibilitySummary(language)
+                                    }
+                            )
+                        }
+                    }
+                    if (selected == DailyUsageMode.CUSTOM) {
+                        Spacer(Modifier.height(10.dp))
+                        Text(
+                            text = if (language == AppLanguage.EN) {
+                                "Current preferences are custom because one or more settings were adjusted manually."
+                            } else {
+                                "当前为自定义组合，因为部分设置已被手动调整。"
+                            },
+                            color = BaAmber,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.testTag("daily_usage_custom_notice")
+                        )
+                    }
+                }
+            }
         }
     }
 }

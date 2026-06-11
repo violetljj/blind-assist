@@ -102,6 +102,8 @@ $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path
 .\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain
 ```
 
+如果本地 Gradle 缓存或临时目录卡住验证流程，例如 `.gradle-local\.tmp` 删除失败、wrapper zip 解压异常、或临时 `GRADLE_USER_HOME` 下生成的缓存不可用，且确认没有正在运行的 Gradle/Android Studio 进程依赖这些缓存，可以清理对应的本地 Gradle 缓存目录后重试。清理前应确认目标路径位于当前仓库或明确的本地缓存目录内，避免误删用户数据；此类缓存目录不应提交到 Git。
+
 APK 输出位置：
 
 ```text
