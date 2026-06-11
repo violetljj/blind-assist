@@ -39,7 +39,6 @@
 - 后续事项：
   - 后续新增本地证据时，优先写入 `test-artifacts.local/` 对应分组；如果新增新的产物类型，应先补 `docs/LOCAL_ARTIFACTS.md` 再固定脚本默认输出位置。
 
-
 ### BlindAssist 专用真实助行评测集首版
 - 时间：2026-05-27 17:03:00 +08:00
 - 执行者：violjjet
@@ -79,6 +78,26 @@
 - 后续事项：
   - 当前 150 张样本的 `review_status` 为 `accepted_auto_prelabel_needs_human_visual_review`，表示格式和导出校验已通过，但风险语义仍建议打开 `qa/preview.html` 和 `qa/manual_review_checklist.csv` 做逐张人工复核。
   - 后续可把 Open Images、LOCO、GND 或 LAVN 作为第二批扩展来源，特别补强真实走廊、门框、低光和短连续帧。
+
+### 补充默认推送分支约定
+- 时间：2026-05-27 02:39:00 +08:00
+- 执行者：violjjet
+- 类型：协作规范 / Git
+- 修改范围：
+  - `AGENTS.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 在 `AGENTS.md` 的协作注意事项中补充默认推送分支约定：后续默认将正式推送目标理解为 `master` 分支。
+  - 明确如果当前工作在功能分支或临时分支，推送前应先确认是否需要合并或切换到 `master`，并确认不会夹带无关本地改动。
+- 修改原因：
+  - 用户要求后续默认推送到 `master` 分支，避免只推送到功能分支后在仓库首页看不到最新变更。
+- 验证方式：
+  - 已检查当前 Git 分支跟踪关系：`codex/stabilize-project-structure` 仍跟踪 `origin/codex/stabilize-project-structure`，`master` 仍跟踪 `origin/master`。
+  - 本次只更新协作规范和开发日志，未执行构建。
+- 版本判断：
+  - 本次不调整应用版本号，原因是仅更新协作规范，不影响应用功能、构建产物、模型资产或用户行为。
+- 后续事项：
+  - 后续需要正式发布或让 GitHub 仓库首页显示最新内容时，优先检查并更新 `master`，必要时先从功能分支合并。
 
 ### yolo11n / yolo26n 同设备 A/B 质量评测
 - 时间：2026-05-27 02:31:00 +08:00
