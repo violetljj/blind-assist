@@ -4,13 +4,14 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 
 ## 版本
 
-- 当前项目版本：`v8.8.0`
+- 当前项目版本：`v8.9.0`
 - 版本规则：小更新增加 `v0.1`，较大更新增加 `v0.5`，阶段性质变增加 `v1.0`。
 - 版本影响由 Codex/Agent 根据每次变更的范围和风险判断。
 - 会影响项目状态、使用方式、功能行为、构建流程、模型资产、测试结论或重要技术决策的更新，应同步保持 README 与当前状态一致。
 - 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
 
 ## 近期状态
+- 2026-06-12：完成 `v8.9.0` 几何、深度、运动的保守融合候选层。新增 `ConservativeRiskFusionPolicy` / `ConservativeRiskFusionConfig`，把 `RiskAnalyzer` 的深度证据提升和 `TemporalRiskTracker` 的逼近趋势提升统一到同一个保守策略：深度默认最多提升 1 档并拒绝大跨度冲突，运动趋势只在 `APPROACHING` 时最多提升 1 档，侧向目标不升到高风险。`RiskScoreBreakdown.fusionSummary` 和 `DetectorAbDeviceBenchmarkTest` 的 JSON/CSV/Markdown 会记录 `GEOMETRY_ONLY`、`DEPTH_PROMOTED`、`DEPTH_REJECTED_*`、`MOTION_PROMOTED` 等原因，便于复盘风险来源。默认 App 仍只使用 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`，不打包或启用深度候选模型；深度模型继续只属于 androidTest/benchmark 路线。当前版本为 `v8.9.0` / `versionCode=33`。
 - 2026-06-12：完成 `v8.8.0` 综合风险函数与连续帧逼近风险升级。默认 App 仍使用 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`，不替换模型资产；`RiskAnalyzer` 将置信度、类别权重、方向、框底部位置、面积、中心通道和可选距离证据输出为可解释 `RiskScoreBreakdown`，`AssistEngine` 在稳定器之前接入纯 Kotlin `TemporalRiskTracker`，用最近 5 帧、约 900ms 的同目标轨迹判断 `APPROACHING/STABLE/RECEDING`。`DetectorAbDeviceBenchmarkTest` 兼容可选序列字段 `sequence_id`、`frame_index`、`expected_approach_state`、`expected_approach_alert` 和 `expected_time_to_alert_frames`，并在 `benchmark.json` / `benchmark.md` 输出 approach recall、false positive、direction accuracy、critical miss、mean time-to-alert 和 labeled sequence count。当前版本为 `v8.8.0` / `versionCode=32`。
 - 2026-06-11：新增深度/距离感知候选增强实验脚手架，但不改变默认 App 行为。`core:assist` 新增可选 `DistanceEvidence` / `DepthBandEvidence`，`RiskAnalyzer` 在检测框几何距离之外可读取单目深度证据并输出 evidence source；`core:vision` 新增 `DepthEstimator` 和 `TfliteMonocularDepthEstimator`，仅用于候选实验。`DetectorAbDeviceBenchmarkTest` 支持 `comparisonMode=DepthFusion`，可在 BlindAssist EvalSet 上比较 `baseline_geometry` 与 `candidate_depth_fusion` 的 `distanceBandAccuracy`、`centerRiskRecall`、`alertRecall`、`alertFalsePositiveRate` 和 `criticalMissCount`；新增 `scripts/inspect_depth_model.py`、`scripts/smoke_depth_model.py` 和 `scripts/run_depth_fusion_benchmark.ps1`。候选深度模型默认从 `.downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite` 进入 androidTest assets，正式 debug APK 仍只包含默认 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`。本轮属于实验工具与评测路线补充，不提升 `versionName=8.3.0` / `versionCode=31`，不归档新 APK。
 

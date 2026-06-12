@@ -350,6 +350,9 @@ class DetectorAbDeviceBenchmarkTest {
             riskQuality = riskQuality,
             blindAssistMetrics = blindAssistMetrics,
             stability = StabilityAggregate.from(perImage.map { it.stability }),
+            fusionSummaryCounts = perImage
+                .groupingBy { it.modelRisk.scoreBreakdown.fusionSummary }
+                .eachCount(),
             perImage = perImage,
             falsePositives = perImage.flatMap { it.evaluation.falsePositives }.map { it.toJson(spec.id) },
             falseNegatives = perImage.flatMap { it.evaluation.falseNegatives }.map { it.toJson(spec.id) },
@@ -815,7 +818,7 @@ class DetectorAbDeviceBenchmarkTest {
 
     private fun perImageCsv(modelResults: List<ModelBenchmarkResult>): String {
         val lines = mutableListOf(
-            "image,model,gt_count,detection_count,tp,fp,fn,precision,recall,f1,expected_should_alert,actual_alert,expected_risk_level,model_risk_level,expected_direction,model_direction,expected_distance_band,model_proximity,approach_trend,expected_approach_state,expected_approach_alert,sequence_id,frame_index,distance_evidence_source,distance_evidence_band,distance_evidence_confidence,relative_depth_score,primary_object_id,scene_bucket,risk_key_variants,risk_level_flip,box_jitter"
+            "image,model,gt_count,detection_count,tp,fp,fn,precision,recall,f1,expected_should_alert,actual_alert,expected_risk_level,model_risk_level,expected_direction,model_direction,expected_distance_band,model_proximity,approach_trend,fusion_summary,expected_approach_state,expected_approach_alert,sequence_id,frame_index,distance_evidence_source,distance_evidence_band,distance_evidence_confidence,relative_depth_score,primary_object_id,scene_bucket,risk_key_variants,risk_level_flip,box_jitter"
         )
         modelResults.forEach { model ->
             model.app.perImage.forEach { item ->
@@ -841,6 +844,7 @@ class DetectorAbDeviceBenchmarkTest {
                     expected?.distanceBand ?: item.groundTruthRisk.proximity,
                     item.modelRisk.proximity,
                     item.modelRisk.approachTrend,
+                    item.modelRisk.scoreBreakdown.fusionSummary,
                     expected?.expectedApproachState ?: "",
                     expected?.expectedApproachAlert ?: "",
                     expected?.sequenceId ?: "",
@@ -878,8 +882,8 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine("- Recommendation: `${recommendation.getString("decision")}`")
             appendLine("- Replace default model now: `${recommendation.getBoolean("replace_default_model_now")}`")
             appendLine()
-            appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | Critical miss | Approach recall | Approach FP | Approach dir acc | Approach critical miss | Mean alert frames | Approach sequences | Depth P50 ms | Total P50 ms | Total P95 ms |")
-            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
+            appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | Critical miss | Approach recall | Approach FP | Approach dir acc | Approach critical miss | Mean alert frames | Approach sequences | Fusion summary counts | Depth P50 ms | Total P50 ms | Total P95 ms |")
+            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |")
             for (index in 0 until models.length()) {
                 val model = models.getJSONObject(index)
                 val app = model.getJSONObject("app_detector")
@@ -887,6 +891,7 @@ class DetectorAbDeviceBenchmarkTest {
                 val assist = app.getJSONObject("blindassist_metrics")
                 val depth = app.getJSONObject("depth_ms")
                 val total = app.getJSONObject("total_ms")
+                val fusionCounts = app.getJSONObject("fusion_summary_counts")
                 appendLine(
                     "| `${model.getString("id")}` | `${model.getBoolean("depth_fusion")}` | ${quality.getDouble("ap50")} | ${quality.getDouble("precision")} | " +
                         "${quality.getDouble("recall")} | ${quality.getDouble("f1")} | ${quality.getDouble("fp_per_image")} | " +
@@ -897,7 +902,7 @@ class DetectorAbDeviceBenchmarkTest {
                         "${assist.getDouble("approachRiskRecall")} | ${assist.getDouble("approachFalsePositiveRate")} | " +
                         "${assist.getDouble("approachDirectionAccuracy")} | ${assist.getInt("approachCriticalMissCount")} | " +
                         "${assist.getDouble("meanTimeToAlertFrames")} | ${assist.getInt("approachLabeledSequenceCount")} | " +
-                        "${depth.getDouble("p50")} | ${total.getDouble("p50")} | ${total.getDouble("p95")} |"
+                        "`${fusionCounts.toCompactString()}` | ${depth.getDouble("p50")} | ${total.getDouble("p50")} | ${total.getDouble("p95")} |"
                 )
             }
             appendLine()
@@ -908,6 +913,11 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine("- Detection matching uses same-class IoU at the configured threshold.")
             appendLine("- BlindAssist risk labels are project-specific eval labels and are not a standalone safety guarantee.")
         }
+    }
+
+    private fun JSONObject.toCompactString(): String {
+        val keys = keys().asSequence().toList().sorted()
+        return keys.joinToString(separator = ";") { key -> "$key=${getInt(key)}" }
     }
 
     private fun sweepSummaryJson(modelResults: List<ModelBenchmarkResult>): JSONArray {
@@ -1320,6 +1330,7 @@ class DetectorAbDeviceBenchmarkTest {
         val riskQuality: RiskQualitySummary,
         val blindAssistMetrics: BlindAssistMetrics,
         val stability: StabilityAggregate,
+        val fusionSummaryCounts: Map<String, Int>,
         val perImage: List<PerImageModelResult>,
         val falsePositives: List<JSONObject>,
         val falseNegatives: List<JSONObject>,
@@ -1340,6 +1351,7 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("risk_quality", riskQuality.toJson())
                 .put("blindassist_metrics", blindAssistMetrics.toJson())
                 .put("stability", stability.toJson())
+                .put("fusion_summary_counts", JSONObject(fusionSummaryCounts))
                 .put("per_image", JSONArray(perImage.map { it.toJson() }))
                 .put("failures", JSONArray(failures))
         }
@@ -1900,6 +1912,7 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("urgency_score", round3(risk.urgencyScore))
                 .put("risk_score", round3(risk.riskScore))
                 .put("approach_trend", risk.approachTrend.name)
+                .put("fusion_summary", risk.scoreBreakdown.fusionSummary)
                 .put(
                     "score_breakdown",
                     JSONObject()
@@ -1913,6 +1926,7 @@ class DetectorAbDeviceBenchmarkTest {
                         .put("distance_evidence", round3(risk.scoreBreakdown.distanceEvidence))
                         .put("approach_trend", round3(risk.scoreBreakdown.approachTrend))
                         .put("total", round3(risk.scoreBreakdown.total))
+                        .put("fusion_summary", risk.scoreBreakdown.fusionSummary)
                 )
                 .put(
                     "distance_evidence",

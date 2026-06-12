@@ -151,7 +151,7 @@ class RiskAnalyzerTest {
     }
 
     @Test
-    fun monocularDepthEvidenceCanPromoteCenteredFarGeometryToNearRisk() {
+    fun monocularDepthEvidenceConservativelyPromotesCenteredMidGeometryOneStep() {
         val evidence = DistanceEvidence(
             band = ProximityBand.NEAR,
             confidence = 0.82f,
@@ -162,7 +162,7 @@ class RiskAnalyzerTest {
             listOf(
                 detection(
                     label = "person",
-                    box = BoundingBox(450f, 120f, 520f, 280f),
+                    box = BoundingBox(450f, 240f, 560f, 500f),
                     distanceEvidence = evidence
                 )
             ),
@@ -173,6 +173,7 @@ class RiskAnalyzerTest {
         assertEquals(RiskDirection.CENTER, result.direction)
         assertEquals(ProximityBand.NEAR, result.proximity)
         assertEquals(evidence, result.distanceEvidence)
+        assertEquals(RiskFusionReason.DEPTH_PROMOTED.name, result.scoreBreakdown.fusionSummary)
     }
 
     @Test
@@ -196,12 +197,74 @@ class RiskAnalyzerTest {
         assertEquals(RiskLevel.NONE, result.level)
         assertEquals(ProximityBand.FAR, result.proximity)
         assertEquals(null, result.distanceEvidence)
+        assertEquals(
+            RiskFusionReason.DEPTH_REJECTED_LOW_CONFIDENCE.name,
+            result.scoreBreakdown.fusionSummary
+        )
     }
 
     @Test
-    fun conservativeDepthFusionCapsFarToCriticalPromotion() {
+    fun depthEvidenceThatLooksFartherDoesNotDowngradeGeometryRisk() {
+        val evidence = DistanceEvidence(
+            band = ProximityBand.FAR,
+            confidence = 0.9f,
+            source = DistanceEvidenceSource.MONOCULAR_DEPTH,
+            relativeDepthScore = 0.1f
+        )
+
+        val result = analyzer.analyze(
+            listOf(
+                detection(
+                    label = "person",
+                    box = BoundingBox(400f, 120f, 600f, 580f),
+                    distanceEvidence = evidence
+                )
+            ),
+            frame
+        )
+
+        assertEquals(ProximityBand.NEAR, result.proximity)
+        assertEquals(RiskLevel.HIGH, result.level)
+        assertEquals(evidence, result.distanceEvidence)
+        assertEquals(
+            RiskFusionReason.DEPTH_REJECTED_NOT_CLOSER.name,
+            result.scoreBreakdown.fusionSummary
+        )
+    }
+
+    @Test
+    fun sideDepthEvidenceCanOnlyPromoteToMediumRisk() {
+        val evidence = DistanceEvidence(
+            band = ProximityBand.NEAR,
+            confidence = 0.9f,
+            source = DistanceEvidenceSource.MONOCULAR_DEPTH,
+            relativeDepthScore = 0.8f
+        )
+
+        val result = analyzer.analyze(
+            listOf(
+                detection(
+                    label = "person",
+                    box = BoundingBox(100f, 150f, 400f, 550f),
+                    distanceEvidence = evidence
+                )
+            ),
+            frame
+        )
+
+        assertEquals(RiskDirection.LEFT, result.direction)
+        assertEquals(ProximityBand.NEAR, result.proximity)
+        assertEquals(RiskLevel.MEDIUM, result.level)
+        assertEquals(RiskFusionReason.DEPTH_PROMOTED.name, result.scoreBreakdown.fusionSummary)
+    }
+
+    @Test
+    fun configurableDepthFusionCanCapFarToCriticalPromotion() {
         val conservativeAnalyzer = RiskAnalyzer(
-            RiskAnalyzerConfig.Default.copy(distanceEvidenceMaxPromotionSteps = 1)
+            RiskAnalyzerConfig.Default.copy(
+                distanceEvidenceMaxPromotionSteps = 1,
+                rejectLargeDistanceEvidencePromotion = false
+            )
         )
         val evidence = DistanceEvidence(
             band = ProximityBand.CRITICAL,
@@ -227,15 +290,8 @@ class RiskAnalyzerTest {
     }
 
     @Test
-    fun conservativeDepthFusionCanRejectLargeConflicts() {
-        val conservativeAnalyzer = RiskAnalyzer(
-            RiskAnalyzerConfig.Default.copy(
-                distanceEvidenceMaxPromotionSteps = 1,
-                rejectLargeDistanceEvidencePromotion = true
-            )
-        )
-
-        val result = conservativeAnalyzer.analyze(
+    fun defaultConservativeDepthFusionRejectsLargeConflicts() {
+        val result = analyzer.analyze(
             listOf(
                 detection(
                     label = "person",
@@ -253,6 +309,10 @@ class RiskAnalyzerTest {
 
         assertEquals(RiskLevel.NONE, result.level)
         assertEquals(ProximityBand.FAR, result.proximity)
+        assertEquals(
+            RiskFusionReason.DEPTH_REJECTED_LARGE_PROMOTION.name,
+            result.scoreBreakdown.fusionSummary
+        )
     }
 
     @Test

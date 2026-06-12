@@ -24,6 +24,7 @@ class TemporalRiskTrackerTest {
         assertEquals(ProximityBand.FAR, result.proximity)
         assertTrue(result.riskScore > result.scoreBreakdown.total - 0.001f)
         assertTrue(result.scoreBreakdown.approachTrend > 0f)
+        assertEquals(RiskFusionReason.MOTION_PROMOTED.name, result.scoreBreakdown.fusionSummary)
     }
 
     @Test
@@ -63,6 +64,7 @@ class TemporalRiskTrackerTest {
         assertEquals(ApproachTrend.RECEDING, result.approachTrend)
         assertEquals(RiskLevel.NONE, result.level)
         assertEquals(0f, result.scoreBreakdown.approachTrend, 0.001f)
+        assertEquals(RiskFusionReason.GEOMETRY_ONLY.name, result.scoreBreakdown.fusionSummary)
     }
 
     @Test
@@ -96,6 +98,10 @@ class TemporalRiskTrackerTest {
 
         assertEquals(ApproachTrend.APPROACHING, result.approachTrend)
         assertTrue(result.scoreBreakdown.approachTrend > 0f)
+        assertEquals(
+            "${RiskFusionReason.DEPTH_REJECTED_LARGE_PROMOTION.name}+${RiskFusionReason.MOTION_PROMOTED.name}",
+            result.scoreBreakdown.fusionSummary
+        )
     }
 
     @Test

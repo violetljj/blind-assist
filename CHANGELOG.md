@@ -2,6 +2,18 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v8.9.0 - 几何、深度、运动的保守融合候选层
+- 状态：已完成核心 JVM 单测与 androidTest benchmark 编译验证，`versionCode=33`，`versionName=8.9.0`。
+- 主要变化：
+  - 新增纯 Kotlin `ConservativeRiskFusionPolicy` / `ConservativeRiskFusionConfig`，把深度证据提升和连续帧运动提升收敛为同一个保守策略层。
+  - 深度证据默认最多提升 1 档，并拒绝 FAR 到 NEAR/CRITICAL 等大跨度冲突；低置信、非深度来源、不可行动通道和非更近证据都会回退几何基线。
+  - 运动趋势只在 `APPROACHING` 时最多提升 1 档，`STABLE`、`RECEDING` 和 `UNKNOWN` 不提升；侧向目标仍不能升为高风险。
+  - `RiskScoreBreakdown.fusionSummary` 记录 `GEOMETRY_ONLY`、`DEPTH_PROMOTED`、`DEPTH_REJECTED_*`、`MOTION_PROMOTED` 等稳定原因，`DetectorAbDeviceBenchmarkTest` 在 JSON、per-image CSV 和 Markdown 总表中同步输出融合原因。
+  - 默认 App 仍只包含 `yolo11n_fp16_320.tflite` 和 `coco_labels.txt`，不打包或启用深度候选模型；深度模型继续只进入 androidTest/benchmark 路线。
+- 验证：
+  - `:core:assist:test`：通过；普通沙箱首次因 Kotlin daemon / build 目录权限失败，按仓库已知限制提权重跑后通过。
+  - `:app:compileDebugAndroidTestKotlin`：通过，确认 benchmark 输出改动可编译。
+  - 本轮未运行完整 100 图真机 DepthFusion A/B；候选是否推广仍需同设备完整验证，默认结论不变。
 ## v8.8.0 - 综合风险函数与连续帧逼近风险
 - 状态：已完成本地单测、lint、构建、同设备 BlindAssist EvalSet benchmark、90 秒真机回归和里程碑 APK 归档，`versionCode=32`，`versionName=8.8.0`。
 - 主要变化：

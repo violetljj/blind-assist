@@ -27,6 +27,9 @@ class TemporalRiskTracker(
     private val config: TemporalRiskTrackerConfig = TemporalRiskTrackerConfig()
 ) {
     private val observations = ArrayDeque<TargetObservation>()
+    private val fusionPolicy = ConservativeRiskFusionPolicy(
+        ConservativeRiskFusionConfig(motionMaxPromotionSteps = 1)
+    )
 
     fun update(raw: RiskResult, nowMs: Long): RiskResult {
         val detection = raw.sourceDetection ?: run {
@@ -90,41 +93,19 @@ class TemporalRiskTracker(
         if (trend != ApproachTrend.APPROACHING) {
             return raw.copy(approachTrend = trend)
         }
-        val boost = config.approachScoreBoost
-        val boostedScore = raw.riskScore + boost
-        val boostedBreakdown = raw.scoreBreakdown.copy(
-            approachTrend = raw.scoreBreakdown.approachTrend + boost,
-            total = boostedScore
+        val motionFusion = fusionPolicy.fuseMotion(
+            raw = raw,
+            trend = trend,
+            scoreBoost = config.approachScoreBoost
         )
-        val boostedLevel = boostedLevelFor(raw)
         return raw.copy(
-            level = boostedLevel,
-            message = trendMessageFor(raw, boostedLevel),
-            urgencyScore = boostedScore,
-            riskScore = boostedScore,
-            scoreBreakdown = boostedBreakdown,
+            level = motionFusion.level,
+            message = trendMessageFor(raw, motionFusion.level),
+            urgencyScore = motionFusion.score,
+            riskScore = motionFusion.score,
+            scoreBreakdown = motionFusion.scoreBreakdown,
             approachTrend = trend
         )
-    }
-
-    private fun boostedLevelFor(raw: RiskResult): RiskLevel {
-        if (raw.direction == RiskDirection.CENTER && raw.proximity == ProximityBand.NEAR) {
-            return RiskLevel.HIGH
-        }
-        val promoted = promoteOne(raw.level)
-        if (raw.direction != RiskDirection.CENTER && promoted == RiskLevel.HIGH) {
-            return RiskLevel.MEDIUM
-        }
-        return promoted
-    }
-
-    private fun promoteOne(level: RiskLevel): RiskLevel {
-        return when (level) {
-            RiskLevel.NONE -> RiskLevel.LOW
-            RiskLevel.LOW -> RiskLevel.MEDIUM
-            RiskLevel.MEDIUM -> RiskLevel.HIGH
-            RiskLevel.HIGH -> RiskLevel.HIGH
-        }
     }
 
     private fun trendMessageFor(raw: RiskResult, boostedLevel: RiskLevel): String {

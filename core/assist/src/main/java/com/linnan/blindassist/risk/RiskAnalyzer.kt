@@ -4,7 +4,6 @@ import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
 import kotlin.math.abs
 import kotlin.math.max
-import kotlin.math.min
 
 data class RiskAnalyzerConfig(
     val confidenceThreshold: Float = RiskAnalyzer.CONFIDENCE_THRESHOLD,
@@ -19,8 +18,8 @@ data class RiskAnalyzerConfig(
     val criticalBottomRatio: Float = RiskAnalyzer.CRITICAL_BOTTOM_RATIO,
     val criticalAreaRatio: Float = RiskAnalyzer.CRITICAL_AREA_RATIO,
     val distanceEvidenceMinConfidence: Float = RiskAnalyzer.DISTANCE_EVIDENCE_MIN_CONFIDENCE,
-    val distanceEvidenceMaxPromotionSteps: Int = Int.MAX_VALUE,
-    val rejectLargeDistanceEvidencePromotion: Boolean = false,
+    val distanceEvidenceMaxPromotionSteps: Int = ConservativeRiskFusionPolicy.DEFAULT_DEPTH_MAX_PROMOTION_STEPS,
+    val rejectLargeDistanceEvidencePromotion: Boolean = ConservativeRiskFusionPolicy.DEFAULT_REJECT_LARGE_DEPTH_PROMOTION,
     val lowRiskScoreThreshold: Float = RiskAnalyzer.LOW_RISK_SCORE_THRESHOLD,
     val mediumRiskScoreThreshold: Float = RiskAnalyzer.MEDIUM_RISK_SCORE_THRESHOLD,
     val highRiskScoreThreshold: Float = RiskAnalyzer.HIGH_RISK_SCORE_THRESHOLD
@@ -49,6 +48,13 @@ data class RiskAnalyzerConfig(
 class RiskAnalyzer(
     private val config: RiskAnalyzerConfig = RiskAnalyzerConfig.Default
 ) {
+    private val fusionPolicy = ConservativeRiskFusionPolicy(
+        ConservativeRiskFusionConfig(
+            depthMaxPromotionSteps = config.distanceEvidenceMaxPromotionSteps,
+            rejectLargeDepthPromotion = config.rejectLargeDistanceEvidencePromotion
+        )
+    )
+
     private val alertLabels = setOf(
         "person",
         "bicycle",
@@ -98,12 +104,12 @@ class RiskAnalyzer(
             detection.boundingBox.centerX / frameSize.width.toFloat() - 0.5f
         ) * 2f
         val geometryProximity = proximityFor(bottomRatio, areaRatio, direction)
-        val distanceEvidence = activeDistanceEvidence(detection.distanceEvidence)
-        val proximity = fusedProximityFor(
+        val depthFusion = fusionPolicy.fuseDepth(
             geometryProximity = geometryProximity,
-            distanceEvidence = distanceEvidence,
+            distanceEvidence = detection.distanceEvidence,
             direction = direction,
-            centerBias = centerBias
+            centerBias = centerBias,
+            minConfidence = config.distanceEvidenceMinConfidence
         )
         val scoreBreakdown = scoreBreakdown(
             detection = detection,
@@ -111,17 +117,18 @@ class RiskAnalyzer(
             areaRatio = areaRatio,
             centerBias = centerBias,
             direction = direction,
-            proximity = proximity,
-            distanceEvidence = distanceEvidence
+            proximity = depthFusion.proximity,
+            distanceEvidence = depthFusion.evidence,
+            fusionReason = depthFusion.reason
         )
-        val level = levelFor(scoreBreakdown.total, proximity, direction)
+        val level = levelFor(scoreBreakdown.total, depthFusion.proximity, direction)
         return RiskCandidate(
             detection = detection,
             direction = direction,
-            proximity = proximity,
+            proximity = depthFusion.proximity,
             level = level,
             urgencyScore = scoreBreakdown.total,
-            distanceEvidence = distanceEvidence,
+            distanceEvidence = depthFusion.evidence,
             scoreBreakdown = scoreBreakdown
         )
     }
@@ -133,7 +140,8 @@ class RiskAnalyzer(
         centerBias: Float,
         direction: RiskDirection,
         proximity: ProximityBand,
-        distanceEvidence: DistanceEvidence?
+        distanceEvidence: DistanceEvidence?,
+        fusionReason: RiskFusionReason
     ): RiskScoreBreakdown {
         val proximityWeight = when (proximity) {
             ProximityBand.CRITICAL -> 4f
@@ -175,7 +183,8 @@ class RiskAnalyzer(
             area = areaScore,
             centerLane = centerLaneScore,
             distanceEvidence = depthWeight,
-            total = total
+            total = total,
+            fusionSummary = fusionReason.name
         )
     }
 
@@ -202,64 +211,6 @@ class RiskAnalyzer(
             bottomRatio >= config.midBottomRatio || areaRatio >= config.midAreaRatio -> ProximityBand.MID
             else -> ProximityBand.FAR
         }
-    }
-
-    private fun activeDistanceEvidence(evidence: DistanceEvidence?): DistanceEvidence? {
-        return evidence?.takeIf {
-            it.source != DistanceEvidenceSource.GEOMETRY &&
-                it.confidence >= config.distanceEvidenceMinConfidence
-        }
-    }
-
-    private fun fusedProximityFor(
-        geometryProximity: ProximityBand,
-        distanceEvidence: DistanceEvidence?,
-        direction: RiskDirection,
-        centerBias: Float
-    ): ProximityBand {
-        val depthBand = distanceEvidence?.band ?: return geometryProximity
-        if (depthBand.ordinal <= geometryProximity.ordinal) {
-            return geometryProximity
-        }
-
-        val isActionableLane = direction == RiskDirection.CENTER || centerBias >= 0.35f
-        if (!isActionableLane) {
-            return geometryProximity
-        }
-
-        val promotionSteps = depthBand.ordinal - geometryProximity.ordinal
-        if (config.rejectLargeDistanceEvidencePromotion &&
-            promotionSteps > config.distanceEvidenceMaxPromotionSteps
-        ) {
-            return geometryProximity
-        }
-        val cappedDepthBand = geometryProximity.moreUrgentBy(
-            min(promotionSteps, config.distanceEvidenceMaxPromotionSteps)
-        )
-
-        return when {
-            distanceEvidence.confidence >= 0.75f -> cappedDepthBand
-            config.distanceEvidenceMaxPromotionSteps != Int.MAX_VALUE -> cappedDepthBand
-            promotionSteps >= 2 -> geometryProximity.nextMoreUrgent()
-            else -> cappedDepthBand
-        }
-    }
-
-    private fun ProximityBand.nextMoreUrgent(): ProximityBand {
-        return when (this) {
-            ProximityBand.FAR -> ProximityBand.MID
-            ProximityBand.MID -> ProximityBand.NEAR
-            ProximityBand.NEAR -> ProximityBand.CRITICAL
-            ProximityBand.CRITICAL -> ProximityBand.CRITICAL
-        }
-    }
-
-    private fun ProximityBand.moreUrgentBy(steps: Int): ProximityBand {
-        var current = this
-        repeat(steps.coerceAtLeast(0)) {
-            current = current.nextMoreUrgent()
-        }
-        return current
     }
 
     private fun nearBottomRatioFor(direction: RiskDirection): Float {

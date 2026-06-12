@@ -4,6 +4,44 @@
 
 ## 2026-06-12
 
+### v8.9.0 几何、深度、运动的保守融合候选层
+- 时间：2026-06-12 23:20:00 +08:00
+- 执行者：violjjet
+- 类型：风险策略重构 / 保守融合候选层 / benchmark 可解释性 / 文档 / 版本升级
+- 修改范围：
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/ConservativeRiskFusionPolicy.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/RiskModels.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/TemporalRiskTracker.kt`
+  - `core/assist/src/test/java/com/linnan/blindassist/risk/RiskAnalyzerTest.kt`
+  - `core/assist/src/test/java/com/linnan/blindassist/risk/TemporalRiskTrackerTest.kt`
+  - `app/src/androidTest/java/com/linnan/blindassist/benchmark/DetectorAbDeviceBenchmarkTest.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `docs/DETECTOR_BENCHMARK.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 新增纯 Kotlin `ConservativeRiskFusionPolicy` 和 `ConservativeRiskFusionConfig`，把原先分散在 `RiskAnalyzer` 与 `TemporalRiskTracker` 的深度/运动提升规则收敛为统一保守策略。
+  - `RiskAnalyzer` 仍以检测框几何为基线，再把 `DistanceEvidence` 交给保守策略判断；默认深度证据最多提升 1 档，且拒绝 FAR 到 NEAR/CRITICAL 等大跨度冲突，低置信、非深度来源、不可行动通道或不更近证据均保留几何结果。
+  - `TemporalRiskTracker` 继续只负责同目标连续帧趋势判断；`APPROACHING` 的升档由 `ConservativeRiskFusionPolicy` 执行，最多提升 1 档，侧向目标不升为高风险，`STABLE`、`RECEDING` 和 `UNKNOWN` 不提升。
+  - `RiskScoreBreakdown` 新增兼容默认字段 `fusionSummary`，稳定记录 `GEOMETRY_ONLY`、`DEPTH_PROMOTED`、`DEPTH_REJECTED_*`、`MOTION_PROMOTED` 等原因。
+  - `DetectorAbDeviceBenchmarkTest` 在 `benchmark.json`、per-image CSV 和 Markdown 总表中输出融合原因与按模型聚合的 fusion summary counts，便于复盘候选风险来自几何、深度还是运动趋势。
+  - 版本升级为 `versionName=8.9.0` / `versionCode=33`；README 与 CHANGELOG 同步说明这是保守候选融合层，不是深度模型默认上线。
+- 修改原因：
+  - 用户明确选择“几何 + 深度 + 运动的保守融合运行时候选层”，需要把已有综合风险函数、深度证据和连续帧运动趋势收敛为可命名、可测试、可解释的策略层。
+  - 前序 MiDaS/FastDepth 结果说明深度链路可跑但误报、距离准确率或延迟仍可能退化，因此本轮默认采取有限提升和冲突拒绝，避免深度证据绕过几何基线与稳定器直接触发提醒。
+  - fusion summary 能让后续 BlindAssist EvalSet 和同设备 A/B 更清楚地区分误报/漏报来源，为论文、答辩和候选推广决策提供可复盘证据。
+- 验证方式：
+  - 普通沙箱运行 `:core:assist:test` 首次失败，原因是本仓库已知的 Kotlin daemon / build 目录权限问题：`Could not connect to Kotlin compile daemon`，以及 `Could not delete ... build\classes\kotlin\main\com`。
+  - 提权运行 `$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path; $env:PATH="$env:JAVA_HOME\bin;$((Resolve-Path '.\.android-sdk\platform-tools').Path);$env:PATH"; $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path; .\gradlew.bat :core:assist:test --no-daemon --console=plain`：第一次暴露 2 个测试期望不匹配，修正为默认拒绝大跨度深度提升后复跑通过，`BUILD SUCCESSFUL in 15s`，84 tests。
+  - 提权运行同一环境下的 `.\gradlew.bat :app:compileDebugAndroidTestKotlin --no-daemon --console=plain`：通过，`BUILD SUCCESSFUL in 46s`，确认 `DetectorAbDeviceBenchmarkTest` 的 JSON/CSV/Markdown 输出改动可编译。
+  - 本轮未运行完整 100 图真机 DepthFusion A/B、未运行 APK 构建和资产隔离检查；原因是本轮没有新增或打包深度模型，且默认主 APK 资产路径未改。若后续要判断候选是否推广，仍需运行 `scripts/run_depth_fusion_benchmark.ps1` 做同设备完整验证。
+- 当前判断：
+  - 本轮属于小版本核心风险策略收敛和可解释性增强，因此升级到 `v8.9.0` / `versionCode=33`。
+  - 默认 App 仍保持 `yolo11n_fp16_320.tflite` + `coco_labels.txt`，不打包或启用深度候选模型；深度模型继续只属于 androidTest/benchmark 路线。
+  - 未触碰 `.android-home/`、`scripts/__pycache__/`、`work/` 等既有未跟踪本地产物。
+
 ### v8.8.0 综合风险函数与连续帧逼近风险
 - 时间：2026-06-12 14:03:33 +08:00
 - 执行者：Codex

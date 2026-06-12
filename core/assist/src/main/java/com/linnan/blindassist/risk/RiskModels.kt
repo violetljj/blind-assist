@@ -40,7 +40,8 @@ data class RiskScoreBreakdown(
     val centerLane: Float = 0f,
     val distanceEvidence: Float = 0f,
     val approachTrend: Float = 0f,
-    val total: Float = 0f
+    val total: Float = 0f,
+    val fusionSummary: String = RiskFusionReason.GEOMETRY_ONLY.name
 )
 
 data class RiskResult(
