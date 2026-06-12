@@ -23,6 +23,11 @@ class RiskAnalyzerTest {
         assertEquals(ProximityBand.CRITICAL, result.proximity)
         assertEquals("前方很近，放慢", result.message)
         assertTrue(result.urgencyScore > 0f)
+        assertEquals(result.urgencyScore, result.riskScore, 0.001f)
+        assertEquals(result.riskScore, result.scoreBreakdown.total, 0.001f)
+        assertTrue(result.scoreBreakdown.bottomPosition > 0f)
+        assertTrue(result.scoreBreakdown.area > 0f)
+        assertTrue(result.scoreBreakdown.centerLane > 0f)
     }
 
     @Test

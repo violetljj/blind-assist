@@ -7,6 +7,7 @@ import com.linnan.blindassist.feedback.FeedbackReason
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
+import com.linnan.blindassist.risk.ApproachTrend
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
@@ -209,6 +210,70 @@ class AssistEngineTest {
         assertEquals(FeedbackReason.FEEDBACK_UNAVAILABLE, result.feedbackDecision.reason)
         assertEquals("风险存在，但反馈暂不可用", result.explanation.headline)
         assertTrue(result.explanation.detail.contains("未能确认语音或震动提醒"))
+    }
+
+    @Test
+    fun resetClearsTemporalApproachHistory() {
+        val engine = AssistEngine()
+
+        engine.evaluate(
+            detections = listOf(detection("person", BoundingBox(450f, 120f, 520f, 280f))),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1000L
+        )
+        engine.evaluate(
+            detections = listOf(detection("person", BoundingBox(445f, 130f, 525f, 310f))),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1100L
+        )
+        engine.reset()
+
+        val evaluation = engine.evaluate(
+            detections = listOf(detection("person", BoundingBox(440f, 140f, 530f, 340f))),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1200L
+        )
+
+        assertEquals(ApproachTrend.UNKNOWN, evaluation.rawRisk.approachTrend)
+        assertEquals(RiskLevel.NONE, evaluation.rawRisk.level)
+    }
+
+    @Test
+    fun startSessionClearsTemporalApproachHistory() {
+        val engine = AssistEngine()
+
+        engine.evaluate(
+            detections = listOf(detection("person", BoundingBox(450f, 120f, 520f, 280f))),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1000L
+        )
+        engine.evaluate(
+            detections = listOf(detection("person", BoundingBox(445f, 130f, 525f, 310f))),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1100L
+        )
+        engine.startSession(1150L)
+
+        val evaluation = engine.evaluate(
+            detections = listOf(detection("person", BoundingBox(440f, 140f, 530f, 340f))),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = metrics(),
+            nowMs = 1200L
+        )
+
+        assertEquals(ApproachTrend.UNKNOWN, evaluation.rawRisk.approachTrend)
+        assertEquals(RiskLevel.NONE, evaluation.rawRisk.level)
     }
 
     private fun detection(

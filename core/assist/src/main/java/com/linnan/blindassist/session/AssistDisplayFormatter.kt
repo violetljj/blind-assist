@@ -95,7 +95,7 @@ object AssistDisplayFormatter {
 
     fun urgencyLine(rawRisk: RiskResult, stableRisk: RiskResult, language: AppLanguage = AppLanguage.ZH): String {
         return if (language == AppLanguage.EN) {
-            "Urgency: raw ${formatScore(rawRisk.urgencyScore)} / stable ${formatScore(stableRisk.urgencyScore)}"
+            "Risk score: raw ${formatScore(rawRisk.riskScore)} / stable ${formatScore(stableRisk.riskScore)}"
         } else {
             "紧急度：原始 ${formatScore(rawRisk.urgencyScore)} / 稳定 ${formatScore(stableRisk.urgencyScore)}"
         }

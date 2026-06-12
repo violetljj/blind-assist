@@ -11,12 +11,14 @@ import com.linnan.blindassist.feedback.FeedbackPlanner
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
+import com.linnan.blindassist.risk.ApproachTrend
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskAnalyzer
 import com.linnan.blindassist.risk.RiskAnalyzerConfig
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
+import com.linnan.blindassist.risk.TemporalRiskTracker
 import com.linnan.blindassist.vision.DepthEvidenceSamplingConfig
 import com.linnan.blindassist.vision.ImagePreprocessor
 import com.linnan.blindassist.vision.TfliteYoloDetector
@@ -248,9 +250,11 @@ class DetectorAbDeviceBenchmarkTest {
         val failures = mutableListOf<String>()
         val perImage = mutableListOf<PerImageModelResult>()
         val firstRunDetectionsByImage = linkedMapOf<String, List<Detection>>()
+        val temporalRiskTracker = TemporalRiskTracker()
+        var activeSequenceId: String? = null
 
         try {
-            images.forEach { image ->
+            images.sortedForTemporalEvaluation().forEach { image ->
                 val runs = mutableListOf<FrameRun>()
                 repeat(runsPerImage) {
                     try {
@@ -295,6 +299,19 @@ class DetectorAbDeviceBenchmarkTest {
                 }
 
                 val firstRun = runs.firstOrNull() ?: FrameRun(emptyList(), noneRisk(), 0.0, 0.0, 0.0, 0.0, 0.0)
+                val sequenceId = image.expectedRisk?.sequenceId
+                val frameIndex = image.expectedRisk?.frameIndex
+                val modelRisk = if (sequenceId != null && frameIndex != null) {
+                    if (activeSequenceId != sequenceId) {
+                        temporalRiskTracker.reset()
+                        activeSequenceId = sequenceId
+                    }
+                    temporalRiskTracker.update(firstRun.risk, frameIndex.toLong() * TEMPORAL_FRAME_STEP_MS)
+                } else {
+                    temporalRiskTracker.reset()
+                    activeSequenceId = null
+                    firstRun.risk
+                }
                 val gtRisk = expectedRiskResult(image, riskAnalyzer)
                 val evaluation = evaluateDetections(
                     image = image,
@@ -306,8 +323,8 @@ class DetectorAbDeviceBenchmarkTest {
                     image = image,
                     evaluation = evaluation,
                     groundTruthRisk = gtRisk,
-                    modelRisk = firstRun.risk,
-                    actualAlert = alertFor(firstRun.risk, image.expectedRisk?.scenario ?: AssistScenario.GENERAL),
+                    modelRisk = modelRisk,
+                    actualAlert = alertFor(modelRisk, image.expectedRisk?.scenario ?: AssistScenario.GENERAL),
                     stability = stability
                 )
                 firstRunDetectionsByImage[image.fileName] = firstRun.detections
@@ -439,7 +456,12 @@ class DetectorAbDeviceBenchmarkTest {
                         riskLevel = RiskLevel.valueOf(row.getString("expected_risk_level")),
                         scenario = AssistScenario.valueOf(row.optString("assist_scenario", AssistScenario.GENERAL.name)),
                         primaryObjectId = row.optString("primary_object_id", ""),
-                        sceneBucket = attributes?.optString("scene_bucket", "") ?: ""
+                        sceneBucket = attributes?.optString("scene_bucket", "") ?: "",
+                        sequenceId = row.optString("sequence_id", "").takeIf { it.isNotBlank() },
+                        frameIndex = row.optionalInt("frame_index"),
+                        expectedApproachState = row.optionalApproachTrend("expected_approach_state"),
+                        expectedApproachAlert = row.optionalBoolean("expected_approach_alert"),
+                        expectedTimeToAlertFrames = row.optionalInt("expected_time_to_alert_frames")
                     )
                 )
             }
@@ -575,6 +597,17 @@ class DetectorAbDeviceBenchmarkTest {
         val expectedNonAlerts = labeled.filter { !requireNotNull(it.image.expectedRisk).shouldAlert }
         val expectedCenterAlerts = expectedAlerts.filter { requireNotNull(it.image.expectedRisk).direction == RiskDirection.CENTER }
         val primaryRows = labeled.filter { !requireNotNull(it.image.expectedRisk).primaryObjectId.isNullOrBlank() }
+        val approachRows = labeled.filter { requireNotNull(it.image.expectedRisk).hasApproachLabel }
+        val expectedApproaching = approachRows.filter {
+            requireNotNull(it.image.expectedRisk).expectedApproachState == ApproachTrend.APPROACHING
+        }
+        val expectedApproachAlerts = approachRows.filter {
+            requireNotNull(it.image.expectedRisk).expectedApproachAlert == true
+        }
+        val expectedNonApproachAlerts = approachRows.filter {
+            requireNotNull(it.image.expectedRisk).expectedApproachAlert == false
+        }
+        val actualApproachingRows = approachRows.filter { it.modelRisk.approachTrend == ApproachTrend.APPROACHING }
         return BlindAssistMetrics(
             centerRiskRecall = ratio(
                 expectedCenterAlerts.count {
@@ -605,8 +638,49 @@ class DetectorAbDeviceBenchmarkTest {
                 expected.distanceBand == ProximityBand.CRITICAL &&
                     (!item.actualAlert || item.modelRisk.proximity.ordinal < ProximityBand.CRITICAL.ordinal)
             },
+            approachRiskRecall = ratio(
+                expectedApproaching.count { it.modelRisk.approachTrend == ApproachTrend.APPROACHING },
+                expectedApproaching.size
+            ),
+            approachFalsePositiveRate = ratio(
+                expectedNonApproachAlerts.count { it.modelRisk.approachTrend == ApproachTrend.APPROACHING },
+                expectedNonApproachAlerts.size
+            ),
+            approachDirectionAccuracy = ratio(
+                actualApproachingRows.count { item ->
+                    item.modelRisk.direction == requireNotNull(item.image.expectedRisk).direction
+                },
+                actualApproachingRows.size
+            ),
+            approachCriticalMissCount = expectedApproachAlerts.count { item ->
+                item.modelRisk.approachTrend != ApproachTrend.APPROACHING || !item.actualAlert
+            },
+            meanTimeToAlertFrames = meanTimeToAlertFrames(approachRows),
+            approachLabeledSequenceCount = approachRows.mapNotNull { it.image.expectedRisk?.sequenceId }.toSet().size,
             labeledImageCount = labeled.size
         )
+    }
+
+    private fun meanTimeToAlertFrames(approachRows: List<PerImageModelResult>): Double {
+        val deltas = approachRows
+            .groupBy { it.image.expectedRisk?.sequenceId }
+            .filterKeys { it != null }
+            .values
+            .mapNotNull { sequenceRows ->
+                val sortedRows = sequenceRows.sortedBy { it.image.expectedRisk?.frameIndex ?: Int.MAX_VALUE }
+                val firstExpectedAlert = sortedRows.firstOrNull {
+                    it.image.expectedRisk?.expectedApproachAlert == true
+                } ?: return@mapNotNull null
+                val startFrame = firstExpectedAlert.image.expectedRisk?.frameIndex ?: return@mapNotNull null
+                val actualAlertFrame = sortedRows.firstOrNull { item ->
+                    val index = item.image.expectedRisk?.frameIndex ?: return@firstOrNull false
+                    index >= startFrame &&
+                        item.modelRisk.approachTrend == ApproachTrend.APPROACHING &&
+                        item.actualAlert
+                }?.image?.expectedRisk?.frameIndex ?: return@mapNotNull null
+                (actualAlertFrame - startFrame).coerceAtLeast(0).toDouble()
+            }
+        return if (deltas.isEmpty()) 0.0 else round3(deltas.average())
     }
 
     private fun primaryObjectHit(item: PerImageModelResult, matchIouThreshold: Float): Boolean {
@@ -741,7 +815,7 @@ class DetectorAbDeviceBenchmarkTest {
 
     private fun perImageCsv(modelResults: List<ModelBenchmarkResult>): String {
         val lines = mutableListOf(
-            "image,model,gt_count,detection_count,tp,fp,fn,precision,recall,f1,expected_should_alert,actual_alert,expected_risk_level,model_risk_level,expected_direction,model_direction,expected_distance_band,model_proximity,distance_evidence_source,distance_evidence_band,distance_evidence_confidence,relative_depth_score,primary_object_id,scene_bucket,risk_key_variants,risk_level_flip,box_jitter"
+            "image,model,gt_count,detection_count,tp,fp,fn,precision,recall,f1,expected_should_alert,actual_alert,expected_risk_level,model_risk_level,expected_direction,model_direction,expected_distance_band,model_proximity,approach_trend,expected_approach_state,expected_approach_alert,sequence_id,frame_index,distance_evidence_source,distance_evidence_band,distance_evidence_confidence,relative_depth_score,primary_object_id,scene_bucket,risk_key_variants,risk_level_flip,box_jitter"
         )
         modelResults.forEach { model ->
             model.app.perImage.forEach { item ->
@@ -766,6 +840,11 @@ class DetectorAbDeviceBenchmarkTest {
                     item.modelRisk.direction,
                     expected?.distanceBand ?: item.groundTruthRisk.proximity,
                     item.modelRisk.proximity,
+                    item.modelRisk.approachTrend,
+                    expected?.expectedApproachState ?: "",
+                    expected?.expectedApproachAlert ?: "",
+                    expected?.sequenceId ?: "",
+                    expected?.frameIndex ?: "",
                     evidence?.source ?: "",
                     evidence?.band ?: "",
                     evidence?.confidence?.let { round3(it) } ?: "",
@@ -799,8 +878,8 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine("- Recommendation: `${recommendation.getString("decision")}`")
             appendLine("- Replace default model now: `${recommendation.getBoolean("replace_default_model_now")}`")
             appendLine()
-            appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | Critical miss | Depth P50 ms | Total P50 ms | Total P95 ms |")
-            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
+            appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | Critical miss | Approach recall | Approach FP | Approach dir acc | Approach critical miss | Mean alert frames | Approach sequences | Depth P50 ms | Total P50 ms | Total P95 ms |")
+            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
             for (index in 0 until models.length()) {
                 val model = models.getJSONObject(index)
                 val app = model.getJSONObject("app_detector")
@@ -815,6 +894,9 @@ class DetectorAbDeviceBenchmarkTest {
                         "${assist.getDouble("alertRecall")} | ${assist.getDouble("alertFalsePositiveRate")} | " +
                         "${assist.getDouble("distanceBandAccuracy")} | ${assist.getDouble("riskLevelAccuracy")} | " +
                         "${assist.getDouble("primaryObjectHitRate")} | ${assist.getInt("criticalMissCount")} | " +
+                        "${assist.getDouble("approachRiskRecall")} | ${assist.getDouble("approachFalsePositiveRate")} | " +
+                        "${assist.getDouble("approachDirectionAccuracy")} | ${assist.getInt("approachCriticalMissCount")} | " +
+                        "${assist.getDouble("meanTimeToAlertFrames")} | ${assist.getInt("approachLabeledSequenceCount")} | " +
                         "${depth.getDouble("p50")} | ${total.getDouble("p50")} | ${total.getDouble("p95")} |"
                 )
             }
@@ -1049,6 +1131,19 @@ class DetectorAbDeviceBenchmarkTest {
         }
     }
 
+    private fun JSONObject.optionalBoolean(name: String): Boolean? {
+        return if (has(name) && !isNull(name)) getBoolean(name) else null
+    }
+
+    private fun JSONObject.optionalInt(name: String): Int? {
+        return if (has(name) && !isNull(name)) getInt(name) else null
+    }
+
+    private fun JSONObject.optionalApproachTrend(name: String): ApproachTrend? {
+        val value = optString(name, "").takeIf { it.isNotBlank() } ?: return null
+        return runCatching { ApproachTrend.valueOf(value) }.getOrNull()
+    }
+
     private data class ModelSpec(
         val id: String,
         val assetName: String,
@@ -1064,6 +1159,14 @@ class DetectorAbDeviceBenchmarkTest {
         val name: String,
         val images: List<BenchmarkImage>
     )
+
+    private fun List<BenchmarkImage>.sortedForTemporalEvaluation(): List<BenchmarkImage> {
+        return sortedWith(
+            compareBy<BenchmarkImage> { it.expectedRisk?.sequenceId ?: "\uFFFF" }
+                .thenBy { it.expectedRisk?.frameIndex ?: Int.MAX_VALUE }
+                .thenBy { it.fileName }
+        )
+    }
 
     private data class BenchmarkImage(
         val fileName: String,
@@ -1106,8 +1209,22 @@ class DetectorAbDeviceBenchmarkTest {
         val riskLevel: RiskLevel,
         val scenario: AssistScenario,
         val primaryObjectId: String,
-        val sceneBucket: String
+        val sceneBucket: String,
+        val sequenceId: String? = null,
+        val frameIndex: Int? = null,
+        val expectedApproachState: ApproachTrend? = null,
+        val expectedApproachAlert: Boolean? = null,
+        val expectedTimeToAlertFrames: Int? = null
     ) {
+        val hasApproachLabel: Boolean
+            get() = sequenceId != null &&
+                frameIndex != null &&
+                (
+                    expectedApproachState != null ||
+                        expectedApproachAlert != null ||
+                        expectedTimeToAlertFrames != null
+                    )
+
         fun toJson(): JSONObject {
             return JSONObject()
                 .put("expected_risk_direction", direction.name)
@@ -1117,6 +1234,11 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("assist_scenario", scenario.name)
                 .put("primary_object_id", primaryObjectId)
                 .put("scene_bucket", sceneBucket)
+                .put("sequence_id", sequenceId ?: JSONObject.NULL)
+                .put("frame_index", frameIndex ?: JSONObject.NULL)
+                .put("expected_approach_state", expectedApproachState?.name ?: JSONObject.NULL)
+                .put("expected_approach_alert", expectedApproachAlert ?: JSONObject.NULL)
+                .put("expected_time_to_alert_frames", expectedTimeToAlertFrames ?: JSONObject.NULL)
         }
     }
 
@@ -1412,6 +1534,12 @@ class DetectorAbDeviceBenchmarkTest {
         val riskLevelAccuracy: Double,
         val primaryObjectHitRate: Double,
         val criticalMissCount: Int,
+        val approachRiskRecall: Double,
+        val approachFalsePositiveRate: Double,
+        val approachDirectionAccuracy: Double,
+        val approachCriticalMissCount: Int,
+        val meanTimeToAlertFrames: Double,
+        val approachLabeledSequenceCount: Int,
         val labeledImageCount: Int
     ) {
         fun toJson(): JSONObject {
@@ -1423,6 +1551,12 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("riskLevelAccuracy", riskLevelAccuracy)
                 .put("primaryObjectHitRate", primaryObjectHitRate)
                 .put("criticalMissCount", criticalMissCount)
+                .put("approachRiskRecall", approachRiskRecall)
+                .put("approachFalsePositiveRate", approachFalsePositiveRate)
+                .put("approachDirectionAccuracy", approachDirectionAccuracy)
+                .put("approachCriticalMissCount", approachCriticalMissCount)
+                .put("meanTimeToAlertFrames", meanTimeToAlertFrames)
+                .put("approachLabeledSequenceCount", approachLabeledSequenceCount)
                 .put("labeledImageCount", labeledImageCount)
         }
     }
@@ -1582,6 +1716,7 @@ class DetectorAbDeviceBenchmarkTest {
         private const val RISK_CONFIG_CENTER_NEAR_STRICT = "center_near_strict"
         private const val RISK_CONFIG_CRITICAL_SENSITIVE = "critical_sensitive"
         private const val RISK_CONFIG_SIDE_NEAR_SENSITIVE = "side_near_sensitive"
+        private const val TEMPORAL_FRAME_STEP_MS = 100L
         private const val ARG_DATASET_KIND = "datasetKind"
         private const val ARG_RISK_CONFIG = "riskConfig"
         private const val ARG_COMPARISON_MODE = "comparisonMode"
@@ -1763,6 +1898,22 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("source_label", risk.sourceDetection?.label ?: JSONObject.NULL)
                 .put("source_confidence", risk.sourceDetection?.confidence?.let { round3(it) } ?: JSONObject.NULL)
                 .put("urgency_score", round3(risk.urgencyScore))
+                .put("risk_score", round3(risk.riskScore))
+                .put("approach_trend", risk.approachTrend.name)
+                .put(
+                    "score_breakdown",
+                    JSONObject()
+                        .put("confidence", round3(risk.scoreBreakdown.confidence))
+                        .put("class_weight", round3(risk.scoreBreakdown.classWeight))
+                        .put("direction_weight", round3(risk.scoreBreakdown.directionWeight))
+                        .put("proximity_weight", round3(risk.scoreBreakdown.proximityWeight))
+                        .put("bottom_position", round3(risk.scoreBreakdown.bottomPosition))
+                        .put("area", round3(risk.scoreBreakdown.area))
+                        .put("center_lane", round3(risk.scoreBreakdown.centerLane))
+                        .put("distance_evidence", round3(risk.scoreBreakdown.distanceEvidence))
+                        .put("approach_trend", round3(risk.scoreBreakdown.approachTrend))
+                        .put("total", round3(risk.scoreBreakdown.total))
+                )
                 .put(
                     "distance_evidence",
                     if (evidence == null) {

@@ -2,6 +2,55 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-06-12
+
+### v8.8.0 综合风险函数与连续帧逼近风险
+- 时间：2026-06-12 14:03:33 +08:00
+- 执行者：Codex
+- 类型：默认运行时风险行为 / 连续帧趋势 / BlindAssist 评测指标 / 文档 / 版本升级
+- 修改范围：
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/RiskModels.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/risk/TemporalRiskTracker.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/session/AssistEngine.kt`
+  - `core/assist/src/main/java/com/linnan/blindassist/session/AssistDisplayFormatter.kt`
+  - `core/assist/src/test/java/com/linnan/blindassist/risk/RiskAnalyzerTest.kt`
+  - `core/assist/src/test/java/com/linnan/blindassist/risk/TemporalRiskTrackerTest.kt`
+  - `core/assist/src/test/java/com/linnan/blindassist/session/AssistEngineTest.kt`
+  - `app/src/androidTest/java/com/linnan/blindassist/benchmark/DetectorAbDeviceBenchmarkTest.kt`
+  - `app/build.gradle.kts`
+  - `README.md`
+  - `CHANGELOG.md`
+  - `docs/BLINDASSIST_EVALSET.md`
+  - `docs/DETECTOR_BENCHMARK.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 保持默认模型链路为 `yolo11n_fp16_320.tflite` + 现有 `RiskAnalyzer`，不替换模型资产。
+  - `RiskResult` 新增兼容默认值字段 `riskScore`、`scoreBreakdown` 和 `approachTrend`；原有 `RiskLevel`、`RiskDirection`、`ProximityBand`、`urgencyScore` 继续保留。
+  - `RiskAnalyzer` 将置信度、类别权重、方向、框底部位置、面积、中心通道和可选距离证据汇总为可解释 `RiskScoreBreakdown`，再由综合分数和几何/距离保护规则确定风险等级。
+  - 新增纯 Kotlin `TemporalRiskTracker`，在 `AssistEngine` 的 `RiskAnalyzer` 后、`RiskStabilizer` 前运行，使用最近 5 帧、最长约 900ms 的同目标轨迹判断 `APPROACHING`、`STABLE`、`RECEDING`；`reset()` 和 `startSession()` 会清空趋势状态。
+  - 逼近趋势默认基于框底部位置增加、面积增长和可选距离证据；趋势加成保持克制，最多提升一级，侧向目标不提升为高风险。
+  - `DetectorAbDeviceBenchmarkTest` 兼容可选字段 `sequence_id`、`frame_index`、`expected_approach_state`、`expected_approach_alert`、`expected_time_to_alert_frames`，并在 JSON、Markdown 和 per-image CSV 中输出逼近趋势与新增指标。
+  - 版本升级为 `versionName=8.8.0` / `versionCode=32`，README、CHANGELOG 和 benchmark 文档同步说明本轮默认运行时风险行为变化。
+- 验证方式：
+  - `.\gradlew.bat :core:assist:test --no-daemon --console=plain`：通过；首次普通沙箱运行因 Gradle/Kotlin 本地写入权限失败，按仓库既有方式设置本地 JDK 与 `.gradle-local` 后提权复跑通过。
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，默认 yolo11n 输入 `[1, 320, 320, 3] float32`，输出 `[1, 84, 2100] float32`，`assertions=passed`。
+  - `.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain`：通过；期间发现并修复 `AssistEngine` 构造签名与 `RiskResult` 旧构造签名的二进制兼容问题。
+  - `.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain`：通过。
+  - `.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain`：通过。
+  - `git diff --check`：通过，仅有 Git 的 LF/CRLF 工作区提示，无 whitespace error。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1 -DatasetKind BlindAssistEvalSet -DatasetRoot test-artifacts.local\datasets\blindassist-evalset-20260527-impl`：通过，设备 `R5CX10M8Y8X`，证据目录 `test-artifacts.local\detector-ab-device-benchmark\20260612-135829`；首次运行因设备旧包签名不一致 `INSTALL_FAILED_UPDATE_INCOMPATIBLE` 失败，卸载 `com.linnan.blindassist` 与 `com.linnan.blindassist.test` 后复跑通过。
+  - benchmark 结果：`yolo11n` 保持默认且 recommendation 为 `do_not_replace_default_model`；`benchmark.md` / `benchmark.json` 已输出 `approachRiskRecall`、`approachFalsePositiveRate`、`approachDirectionAccuracy`、`approachCriticalMissCount`、`meanTimeToAlertFrames` 和 `approachLabeledSequenceCount`。当前旧 evalset 无序列标注，新增 approach 指标均为 `0`。
+  - 默认 90 秒真机回归通过，证据目录 `test-artifacts.local\device-regression\20260612-140055`，`summary.status=passed`，冷启动 `TotalTime=836` / `WaitTime=840`。
+- APK：
+  - 归档脚本 `powershell -ExecutionPolicy Bypass -File .\scripts\archive_apk.ps1 -Milestone` 通过。
+  - 本地归档 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.8.0-debug-20260612-140333.apk`，大小 `47,288,840` bytes，SHA256 `017CF063FFD651270335DDD3033E5018C64A86A8BD78351D2F4B9C1B16D23364`。
+  - 里程碑同步 `releases/apk/BlindAssist-v8.8.0-debug-20260612-140333.apk`。
+- 当前判断：
+  - 本轮属于默认运行时风险行为升级，因此按大功能更新升至 `v8.8.0`。
+  - 新增趋势与评测字段保持向后兼容；旧 `manifest.jsonl` 无序列字段时仍可按单帧指标运行，新增逼近指标保持 0。
+  - 本轮不提交 `.android-home/`、`scripts/__pycache__/`、`work/`、`test-artifacts.local/` 等本机产物。
+
 ## 2026-06-11
 
 ### MiDaS TFLite DepthFusion 真机 A/B

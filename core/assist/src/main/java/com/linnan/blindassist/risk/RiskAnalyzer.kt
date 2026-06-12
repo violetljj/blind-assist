@@ -20,11 +20,20 @@ data class RiskAnalyzerConfig(
     val criticalAreaRatio: Float = RiskAnalyzer.CRITICAL_AREA_RATIO,
     val distanceEvidenceMinConfidence: Float = RiskAnalyzer.DISTANCE_EVIDENCE_MIN_CONFIDENCE,
     val distanceEvidenceMaxPromotionSteps: Int = Int.MAX_VALUE,
-    val rejectLargeDistanceEvidencePromotion: Boolean = false
+    val rejectLargeDistanceEvidencePromotion: Boolean = false,
+    val lowRiskScoreThreshold: Float = RiskAnalyzer.LOW_RISK_SCORE_THRESHOLD,
+    val mediumRiskScoreThreshold: Float = RiskAnalyzer.MEDIUM_RISK_SCORE_THRESHOLD,
+    val highRiskScoreThreshold: Float = RiskAnalyzer.HIGH_RISK_SCORE_THRESHOLD
 ) {
     init {
         require(distanceEvidenceMaxPromotionSteps >= 0) {
             "distanceEvidenceMaxPromotionSteps must be non-negative"
+        }
+        require(lowRiskScoreThreshold <= mediumRiskScoreThreshold) {
+            "lowRiskScoreThreshold must not exceed mediumRiskScoreThreshold"
+        }
+        require(mediumRiskScoreThreshold <= highRiskScoreThreshold) {
+            "mediumRiskScoreThreshold must not exceed highRiskScoreThreshold"
         }
     }
 
@@ -75,7 +84,9 @@ class RiskAnalyzer(
             sourceDetection = best.detection,
             proximity = best.proximity,
             urgencyScore = best.urgencyScore,
-            distanceEvidence = best.distanceEvidence
+            distanceEvidence = best.distanceEvidence,
+            riskScore = best.urgencyScore,
+            scoreBreakdown = best.scoreBreakdown
         )
     }
 
@@ -94,26 +105,36 @@ class RiskAnalyzer(
             direction = direction,
             centerBias = centerBias
         )
-        val level = levelFor(proximity, direction)
-        val urgencyScore = urgencyScore(
+        val scoreBreakdown = scoreBreakdown(
             detection = detection,
             bottomRatio = bottomRatio,
             areaRatio = areaRatio,
             centerBias = centerBias,
+            direction = direction,
             proximity = proximity,
             distanceEvidence = distanceEvidence
         )
-        return RiskCandidate(detection, direction, proximity, level, urgencyScore, distanceEvidence)
+        val level = levelFor(scoreBreakdown.total, proximity, direction)
+        return RiskCandidate(
+            detection = detection,
+            direction = direction,
+            proximity = proximity,
+            level = level,
+            urgencyScore = scoreBreakdown.total,
+            distanceEvidence = distanceEvidence,
+            scoreBreakdown = scoreBreakdown
+        )
     }
 
-    private fun urgencyScore(
+    private fun scoreBreakdown(
         detection: Detection,
         bottomRatio: Float,
         areaRatio: Float,
         centerBias: Float,
+        direction: RiskDirection,
         proximity: ProximityBand,
         distanceEvidence: DistanceEvidence?
-    ): Float {
+    ): RiskScoreBreakdown {
         val proximityWeight = when (proximity) {
             ProximityBand.CRITICAL -> 4f
             ProximityBand.NEAR -> 3f
@@ -121,13 +142,41 @@ class RiskAnalyzer(
             ProximityBand.FAR -> 1f
         }
         val classWeight = classWeightFor(detection.label)
+        val confidenceScore = detection.confidence * 0.4f
+        val directionWeight = when (direction) {
+            RiskDirection.CENTER -> 0.35f
+            RiskDirection.LEFT,
+            RiskDirection.RIGHT -> 0.12f
+            RiskDirection.NONE -> 0f
+        }
         val depthWeight = if (distanceEvidence?.source == DistanceEvidenceSource.MONOCULAR_DEPTH) {
             distanceEvidence.confidence * distanceEvidence.relativeDepthScore * 0.6f
         } else {
             0f
         }
-        val base = bottomRatio * 1.6f + areaRatio * 5f + centerBias.coerceIn(0f, 1f) * 0.7f
-        return (base + proximityWeight + depthWeight + detection.confidence * 0.4f) * classWeight
+        val bottomScore = bottomRatio * 1.6f
+        val areaScore = areaRatio * 5f
+        val centerLaneScore = centerBias.coerceIn(0f, 1f) * 0.7f
+        val total = (
+            bottomScore +
+                areaScore +
+                centerLaneScore +
+                directionWeight +
+                proximityWeight +
+                depthWeight +
+                confidenceScore
+            ) * classWeight
+        return RiskScoreBreakdown(
+            confidence = confidenceScore,
+            classWeight = classWeight,
+            directionWeight = directionWeight,
+            proximityWeight = proximityWeight,
+            bottomPosition = bottomScore,
+            area = areaScore,
+            centerLane = centerLaneScore,
+            distanceEvidence = depthWeight,
+            total = total
+        )
     }
 
     private fun directionFor(detection: Detection, frameSize: FrameSize): RiskDirection {
@@ -221,13 +270,26 @@ class RiskAnalyzer(
         return if (direction == RiskDirection.CENTER) config.centerNearAreaRatio else config.nearAreaRatio
     }
 
-    private fun levelFor(proximity: ProximityBand, direction: RiskDirection): RiskLevel {
-        return when (proximity) {
+    private fun levelFor(score: Float, proximity: ProximityBand, direction: RiskDirection): RiskLevel {
+        val scoreLevel = when {
+            score >= config.highRiskScoreThreshold -> RiskLevel.HIGH
+            score >= config.mediumRiskScoreThreshold -> RiskLevel.MEDIUM
+            score >= config.lowRiskScoreThreshold -> RiskLevel.LOW
+            else -> RiskLevel.NONE
+        }
+        val protectedScoreLevel = when {
+            proximity == ProximityBand.FAR -> RiskLevel.NONE
+            proximity == ProximityBand.MID -> RiskLevel.LOW
+            direction != RiskDirection.CENTER && scoreLevel == RiskLevel.HIGH -> RiskLevel.MEDIUM
+            else -> scoreLevel
+        }
+        val proximityLevel = when (proximity) {
             ProximityBand.CRITICAL -> RiskLevel.HIGH
             ProximityBand.NEAR -> if (direction == RiskDirection.CENTER) RiskLevel.HIGH else RiskLevel.MEDIUM
             ProximityBand.MID -> RiskLevel.LOW
             ProximityBand.FAR -> RiskLevel.NONE
         }
+        return maxOf(protectedScoreLevel, proximityLevel)
     }
 
     private fun messageFor(
@@ -286,7 +348,8 @@ class RiskAnalyzer(
         val proximity: ProximityBand,
         val level: RiskLevel,
         val urgencyScore: Float,
-        val distanceEvidence: DistanceEvidence?
+        val distanceEvidence: DistanceEvidence?,
+        val scoreBreakdown: RiskScoreBreakdown
     )
 
     companion object {
@@ -302,5 +365,8 @@ class RiskAnalyzer(
         const val CRITICAL_BOTTOM_RATIO = 0.72f
         const val CRITICAL_AREA_RATIO = 0.20f
         const val DISTANCE_EVIDENCE_MIN_CONFIDENCE = 0.55f
+        const val LOW_RISK_SCORE_THRESHOLD = 3.0f
+        const val MEDIUM_RISK_SCORE_THRESHOLD = 4.7f
+        const val HIGH_RISK_SCORE_THRESHOLD = 5.5f
     }
 }

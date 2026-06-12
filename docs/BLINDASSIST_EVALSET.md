@@ -11,6 +11,12 @@
   - `expected_should_alert`: `true | false`
   - `expected_risk_level`: `NONE | LOW | MEDIUM | HIGH`
   - `assist_scenario`: `GENERAL | INDOOR | CORRIDOR | CROWDED | OUTDOOR_SLOW`
+- 后续连续帧/逼近风险评测可选字段：
+  - `sequence_id`: 同一短序列的稳定 ID。
+  - `frame_index`: 序列内帧序号，`0` 是合法值。
+  - `expected_approach_state`: `UNKNOWN | STABLE | APPROACHING | RECEDING`
+  - `expected_approach_alert`: `true | false`
+  - `expected_time_to_alert_frames`: 从期望逼近开始到应提醒的帧数。
 - 场景覆盖正前方近距离目标、侧向经过目标、远处大物体、近处小障碍、弱光或遮挡、走廊或户外慢行。
 
 ## 生成方式

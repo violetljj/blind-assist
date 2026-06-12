@@ -2,6 +2,24 @@
 
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
+## v8.8.0 - 综合风险函数与连续帧逼近风险
+- 状态：已完成本地单测、lint、构建、同设备 BlindAssist EvalSet benchmark、90 秒真机回归和里程碑 APK 归档，`versionCode=32`，`versionName=8.8.0`。
+- 主要变化：
+  - `RiskAnalyzer` 从单帧硬阈值升级为可解释综合风险函数，输出 `riskScore` 与 `RiskScoreBreakdown`，保留 `RiskLevel`、`RiskDirection`、`ProximityBand` 和兼容用 `urgencyScore`。
+  - 新增纯 Kotlin `TemporalRiskTracker`，在 `AssistEngine` 中位于 `RiskAnalyzer` 与 `RiskStabilizer` 之间，使用最近 5 帧、约 900ms 的同目标轨迹判断 `APPROACHING/STABLE/RECEDING`。
+  - 逼近趋势默认使用框底部位置、面积增长、中心连续性和可选距离证据，不新增或替换模型资产；侧向目标最多保持中风险，避免把横向经过误升为高风险。
+  - `DetectorAbDeviceBenchmarkTest` 兼容可选序列字段，并新增 `approachRiskRecall`、`approachFalsePositiveRate`、`approachDirectionAccuracy`、`approachCriticalMissCount`、`meanTimeToAlertFrames` 和 `approachLabeledSequenceCount`。
+- 验证：
+  - `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`：通过，默认 yolo11n 输入 `[1, 320, 320, 3] float32`，输出 `[1, 84, 2100] float32`，`assertions=passed`。
+  - `:core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest`：通过。
+  - `:app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug`：通过。
+  - `:app:assembleDebug :app:assembleDebugAndroidTest`：通过。
+  - `powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1 -DatasetKind BlindAssistEvalSet -DatasetRoot test-artifacts.local\datasets\blindassist-evalset-20260527-impl`：通过，设备 `R5CX10M8Y8X`，证据目录 `test-artifacts.local/detector-ab-device-benchmark/20260612-135829`；当前旧 evalset 无序列字段，新增 approach 指标按预期为 `0`。
+  - 默认 90 秒真机回归通过，证据目录 `test-artifacts.local/device-regression/20260612-140055`，冷启动 `TotalTime=836` / `WaitTime=840`。
+- APK：
+  - 本地归档 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.8.0-debug-20260612-140333.apk`，大小 `47,288,840` bytes，SHA256 `017CF063FFD651270335DDD3033E5018C64A86A8BD78351D2F4B9C1B16D23364`。
+  - 里程碑同步 `releases/apk/BlindAssist-v8.8.0-debug-20260612-140333.apk`。
+
 ## v8.3.0 - 生命周期串行化、隐私备份与英文无障碍一致性
 
 - 状态：已完成本地单测、lint、构建、Compose 真机用例和 90 秒真机回归验证，`versionCode=31`，`versionName=8.3.0`。

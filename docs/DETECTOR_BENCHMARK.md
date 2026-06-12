@@ -80,7 +80,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchm
 powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1 -DatasetKind BlindAssistEvalSet -DatasetRoot test-artifacts.local\datasets\blindassist-evalset-20260527-impl
 ```
 
-该模式从 `manifest.jsonl` 读取真实助行风险预期字段，同时保留 AP50、precision、recall 等检测指标。设备端 `benchmark.json` 和 `benchmark.md` 会额外输出 `centerRiskRecall`、`alertRecall`、`alertFalsePositiveRate`、`distanceBandAccuracy`、`riskLevelAccuracy`、`primaryObjectHitRate` 和 `criticalMissCount`。候选模型替换建议会同时参考检测质量和这些 BlindAssist 指标，而不是只看速度或 COCO 派生风险误差。
+该模式从 `manifest.jsonl` 读取真实助行风险预期字段，同时保留 AP50、precision、recall 等检测指标。设备端 `benchmark.json` 和 `benchmark.md` 会额外输出 `centerRiskRecall`、`alertRecall`、`alertFalsePositiveRate`、`distanceBandAccuracy`、`riskLevelAccuracy`、`primaryObjectHitRate` 和 `criticalMissCount`。若 `manifest.jsonl` 提供可选连续帧字段 `sequence_id`、`frame_index`、`expected_approach_state`、`expected_approach_alert`、`expected_time_to_alert_frames`，还会输出 `approachRiskRecall`、`approachFalsePositiveRate`、`approachDirectionAccuracy`、`approachCriticalMissCount`、`meanTimeToAlertFrames` 和 `approachLabeledSequenceCount`；旧评测集缺少这些字段时新增指标保持 `0`。候选模型替换建议会同时参考检测质量和这些 BlindAssist 指标，而不是只看速度或 COCO 派生风险误差。
 
 如需在已有 baseline 后做小步阈值扫参，可增加 `-RiskSweep`。扫参只通过 instrumentation 参数选择 benchmark 专用 `RiskAnalyzerConfig`，默认 App 行为不会因为扫参自动改变；只有在指标明确改善且误提醒没有明显增加时，才应另行把阈值提升为默认配置。
 

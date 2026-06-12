@@ -11,12 +11,15 @@ import com.linnan.blindassist.risk.RiskAnalyzer
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.risk.RiskStabilizer
+import com.linnan.blindassist.risk.TemporalRiskTracker
 
 class AssistEngine(
     private val riskAnalyzer: RiskAnalyzer = RiskAnalyzer(),
     private val riskStabilizer: RiskStabilizer = RiskStabilizer(),
     private val trace: SessionTrace = SessionTrace()
 ) {
+    private val temporalRiskTracker = TemporalRiskTracker()
+
     fun evaluate(
         detections: List<Detection>,
         frameSize: FrameSize,
@@ -25,7 +28,10 @@ class AssistEngine(
         metrics: DetectorMetrics,
         nowMs: Long = System.currentTimeMillis()
     ): AssistFrameEvaluation {
-        val rawRisk = riskAnalyzer.analyze(detections, frameSize)
+        val rawRisk = temporalRiskTracker.update(
+            riskAnalyzer.analyze(detections, frameSize),
+            nowMs
+        )
         val stableRisk = riskStabilizer.update(rawRisk, profile, scenario, nowMs)
         return AssistFrameEvaluation(
             rawRisk = rawRisk,
@@ -58,11 +64,13 @@ class AssistEngine(
     }
 
     fun reset() {
+        temporalRiskTracker.reset()
         riskStabilizer.reset()
         trace.clear()
     }
 
     fun startSession(nowMs: Long = System.currentTimeMillis()) {
+        temporalRiskTracker.reset()
         riskStabilizer.reset()
         trace.start(nowMs)
     }
