@@ -150,6 +150,12 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -Sa
 - 每次任务结束前，检查 `DEVELOPMENT_LOG.md` 是否已经补充本次记录。
 - 后续出现有可能性、创造性、产品路线价值但不一定立即实施的想法时，应记录到仓库根目录 `idea.md`，并在真正实施时再同步更新 README、开发日志、版本号、测试结果和 APK 归档。若 `idea.md` 中某个想法已经实现，应把对应标题明显标注为 `【已完成】`；若只实现了一部分，应标注为 `【部分完成】` 并写清剩余范围。
 
+## 文本编码
+
+- 本仓库的 Markdown、Kotlin、Gradle 和脚本文件默认按 UTF-8 读取，除非文件本身明确声明了其他编码。
+- 在 Windows PowerShell 中读取中文项目文件时，不要依赖 `Get-Content` 的默认解码；读取 `AGENTS.md`、`README.md`、`DEVELOPMENT_LOG.md`、`idea.md` 等中文文本文件时，应使用 `Get-Content -Raw -Encoding UTF8 <path>`。
+- 如果终端输出出现类似 `鏈枃` 的乱码，应先用显式 UTF-8 解码重新读取，再判断文件内容是否真的损坏，避免误修复正常文件。
+
 ## 已知沙箱权限问题与处理方式
 
 本仓库在 Codex 沙箱环境中反复遇到过一些不是代码本身导致的失败。对已经确认会稳定复现的命令，后续代理应直接按权限规则提权执行，不需要先在普通沙箱中重复制造一次失败；但仍应说明提权原因，并在结果中记录命令和输出。遇到新的、未确认的失败类型时，才需要先保留原始错误再判断是否提权重跑。
