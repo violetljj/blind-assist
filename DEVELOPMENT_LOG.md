@@ -3535,3 +3535,36 @@
   - 已检查 `git status --short`，确认当前只有一个既有未跟踪 PPT 文件，不属于本次修改。
 - 后续事项：
   - 后续任何代码、配置、模型、文档或测试变更，都应先阅读 `AGENTS.md`，并在任务结束前更新本文件。
+
+### BlindAssist 项目综合评估与报告留存
+
+- 时间：2026-07-10 03:35:32 +08:00
+- 执行者：violjjet
+- 类型：分析 / 架构审查 / 测试 / 工程化 / 无障碍 / 文档
+- 修改范围：
+  - `docs/PROJECT_AUDIT_2026-07-10.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 对当前 BlindAssist 工作树进行只读综合评估，覆盖多模块架构、CameraX/TFLite 运行链路、风险与反馈语义、session 生命周期、测试、Gradle、CI、仓库卫生、产品完成度、隐私权限、无障碍和文档一致性。
+  - 将完整评估结论、验证数据、证据位置、架构深化候选和分阶段修复顺序保存到 `docs/PROJECT_AUDIT_2026-07-10.md`，避免评估只留在聊天或临时 HTML 中。
+  - 项目总体判断为：作为毕设/课程技术原型完成度较高，但尚不能作为可依赖的助盲安全产品；最高优先级问题是“未检测到”被表达为“安全观察中”，以及旧帧可能越过关闭动作进入新 session。
+  - 记录仓库卫生脚本正则失效、完整 Gradle 合并任务图存在隐式依赖、仪器功能测试与 benchmark 未隔离、设备回归断言不足、文档版本漂移和局部无障碍缺口。
+- 修改原因：
+  - 用户要求将本次项目评估写入开发文档或保存报告，需要形成可在 Git 中审阅和后续追踪的耐久产物。
+  - 项目协作规范要求即使只做分析，也应记录评估结论、验证证据和后续事项。
+- 验证方式：
+  - 运行 `.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`，模型检查通过：输入 `[1, 320, 320, 3] float32`，输出 `[1, 84, 2100] float32`。
+  - 使用仓库本地 JDK/SDK/Gradle 缓存并加 `--rerun-tasks` 强制重跑核心 JVM 测试，共 189 tests，0 failures，0 errors，0 skipped。
+  - 单独运行 `:app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug`，Lint 矩阵通过。
+  - 单独运行 `:app:assembleDebug :app:assembleDebugAndroidTest`，Debug APK 与 AndroidTest APK 构建通过，大小分别为 47,288,840 bytes 和 76,238,831 bytes。
+  - 将 JVM 测试、Lint、Debug APK 和 AndroidTest APK 合并到一次 Gradle 调用时失败；Gradle 报告 `prepareYolo26nBenchmarkAssets`、`prepareDepthBenchmarkAssets` 与 `generateDebugAndroidTestLintModel` 之间存在未声明的隐式依赖，已按真实问题写入报告。
+  - 运行仓库卫生脚本时表面输出通过，但代码审查和正则实测确认多个 `\\.` 表达式无法匹配普通扩展名路径，因此没有把该结果视为可靠门禁。
+  - 运行 `adb devices` 未发现连接设备，本次未执行真机回归或 connected instrumentation；报告已明确这一验证边界。
+  - 生成后检查报告文件存在、Markdown 标题结构完整，并核对其中引用的仓库文件路径。
+- 版本判断：
+  - 本次仅新增评估报告并追加开发日志，不修改应用功能、Gradle 配置、Manifest、资源、权限、模型资产或 APK 行为，因此不调整版本号，不归档新 APK。
+  - 项目版本保持 `v8.9.0` / `versionCode=33`。
+- 后续事项：
+  - 第一优先级修复安全措辞和运行时 session 生命周期，再修复卫生脚本、Gradle 任务依赖和测试隔离。
+  - 后续应同步 README/DEMO_GUIDE 与真实 UI，并补充无障碍修复和真实连续场景验证。
+  - 实施核心运行时修复后，需要重新执行完整 JVM、Lint、AndroidTest 编译、真机回归和 APK 归档流程。
