@@ -1,5 +1,7 @@
 package com.linnan.blindassist.runtime
 
+import com.linnan.blindassist.model.AssistInputSource
+
 class AssistRuntimeStateMachine(
     initialState: AssistRuntimeState = AssistRuntimeState.Idle,
     private var cameraViewsReady: Boolean = false
@@ -11,7 +13,7 @@ class AssistRuntimeStateMachine(
         val effects = mutableListOf<AssistRuntimeEffect>()
         when (event) {
             is AssistRuntimeEvent.OpenCamera -> {
-                if (event.hasCameraPermission) {
+                if (event.inputSource != AssistInputSource.PHONE_CAMERA || event.hasCameraPermission) {
                     currentState = AssistRuntimeState.Starting
                     effects += startCameraSessionEffects(event.modelReady)
                 } else {
@@ -23,6 +25,17 @@ class AssistRuntimeStateMachine(
                 currentState = AssistRuntimeState.PermissionRequesting
                 effects += AssistRuntimeEffect.DismissPermissionExplanation
                 effects += AssistRuntimeEffect.LaunchPermissionRequest
+            }
+            AssistRuntimeEvent.PermissionFlowDismissed -> {
+                if (
+                    currentState == AssistRuntimeState.PermissionExplaining ||
+                    currentState == AssistRuntimeState.PermissionRequesting ||
+                    currentState == AssistRuntimeState.PermissionDenied
+                ) {
+                    currentState = AssistRuntimeState.Idle
+                    effects += AssistRuntimeEffect.DismissPermissionExplanation
+                    effects += AssistRuntimeEffect.DismissPermissionDenied
+                }
             }
             is AssistRuntimeEvent.PermissionResult -> {
                 if (event.granted) {
@@ -114,8 +127,13 @@ sealed interface AssistRuntimeState {
 }
 
 sealed interface AssistRuntimeEvent {
-    data class OpenCamera(val hasCameraPermission: Boolean, val modelReady: Boolean) : AssistRuntimeEvent
+    data class OpenCamera(
+        val hasCameraPermission: Boolean,
+        val modelReady: Boolean,
+        val inputSource: AssistInputSource = AssistInputSource.PHONE_CAMERA
+    ) : AssistRuntimeEvent
     data object PermissionExplanationAccepted : AssistRuntimeEvent
+    data object PermissionFlowDismissed : AssistRuntimeEvent
     data class PermissionResult(val granted: Boolean, val modelReady: Boolean) : AssistRuntimeEvent
     data object CameraViewsReady : AssistRuntimeEvent
     data class CameraStarted(val modelReady: Boolean) : AssistRuntimeEvent
@@ -141,6 +159,7 @@ sealed interface AssistRuntimeEffect {
     data object StopSession : AssistRuntimeEffect
     data object ClearOverlay : AssistRuntimeEffect
     data object ShowPermissionDenied : AssistRuntimeEffect
+    data object DismissPermissionDenied : AssistRuntimeEffect
     data object ApplyConfig : AssistRuntimeEffect
     data class Render(val target: AssistRuntimeRenderTarget, val message: String? = null) : AssistRuntimeEffect
 }

@@ -4,13 +4,14 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 
 ## 版本
 
-- 当前项目版本：`v9.4.0` / `versionCode=34`
+- 当前项目版本：`v9.9.0` / `versionCode=35`
 - 版本规则：小更新增加 `v0.1`，较大更新增加 `v0.5`，阶段性质变增加 `v1.0`。
 - 版本影响由 Codex/Agent 根据每次变更的范围和风险判断。
 - 会影响项目状态、使用方式、功能行为、构建流程、模型资产、测试结论或重要技术决策的更新，应同步保持 README 与当前状态一致。
 - 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
 
 ## 近期状态
+- 2026-07-10：完成 `v9.9.0` 16KB page-size 兼容、debug 离线回放和眼镜设备模拟中心。运行时依赖迁移到 LiteRT `1.4.2`，APK/AAB 的 16 个 native library 均满足 `PT_LOAD p_align >= 16384`，APK 与 AAB 均为 `PAGE_ALIGNMENT_16K`。LiteRT GPU 在 BlindAssist EvalSet 上稳定增加 1 个提醒误报，因此按发布预案临时使用 CPU 兼容模式：100 图关键漏报保持 `9`、提醒误报率保持 `0.037`，total P95 `61→55ms`。debug 可选择四种 COCO 素材，以 2 FPS 进入真实 detector→risk→feedback→overlay→session 链路；release 不包含 replay 资产或入口。眼镜中心在 debug/release 均明确标注“模拟”，不扫描蓝牙、不联网、不连接真实眼镜。完整 JVM/Lint/构建矩阵、Compose 真机测试、最终 90 秒 CameraX 回归和模型合同均通过；Samsung `SM-S9280` 为 4KB 页设备，真实 16KB 环境安装/运行验证继续待补。
 - 2026-07-10：完成 `v9.4.0` 安全语义、session 生命周期和测试架构修复，并在 Samsung `SM-S9280` / Android 16 上完成真机闭环。`RiskResult` 新增支持目标证据状态，`NONE` 只表示未达提醒等级；session token 对 detector、统计、反馈、UI 和错误提交做代际校验，新 session 重置反馈冷却与疲劳。11 个 Compose 功能测试全部通过。BlindAssist EvalSet 100 图 A/B 继续保留 YOLO11n：YOLO26n 虽将 total P50 从 `53ms` 降到 `48ms`，但中心风险召回 `0.688→0.667`、关键漏报 `9→10`、提醒误报率 `0.037→0.074`。MiDaS Depth-fusion 同样不晋级：关键漏报 `9→7`，但提醒误报率 `0.037→0.148`、total P50 `54→277ms`。修复 benchmark Lifecycle 依赖冲突和测试脚本签名漂移后，两条 benchmark 均完整通过执行链；强化后的 90 秒回归会自动进入相机并断言前台、模型就绪和无 Crash/ANR，本次持续产生性能帧约 85 秒，稳定约 13–15 FPS。Android 16 仍报告部分 native library 未满足 16KB page-size 对齐，属于后续发布兼容项。
 - 2026-06-12：完成 `v8.9.0` 几何、深度、运动的保守融合候选层。新增 `ConservativeRiskFusionPolicy` / `ConservativeRiskFusionConfig`，把 `RiskAnalyzer` 的深度证据提升和 `TemporalRiskTracker` 的逼近趋势提升统一到同一个保守策略：深度默认最多提升 1 档并拒绝大跨度冲突，运动趋势只在 `APPROACHING` 时最多提升 1 档，侧向目标不升到高风险。`RiskScoreBreakdown.fusionSummary` 和 `DetectorAbDeviceBenchmarkTest` 的 JSON/CSV/Markdown 会记录 `GEOMETRY_ONLY`、`DEPTH_PROMOTED`、`DEPTH_REJECTED_*`、`MOTION_PROMOTED` 等原因，便于复盘风险来源。默认 App 仍只使用 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`，不打包或启用深度候选模型；深度模型继续只属于 androidTest/benchmark 路线。当前版本为 `v8.9.0` / `versionCode=33`。
 - 2026-06-12：完成 `v8.8.0` 综合风险函数与连续帧逼近风险升级。默认 App 仍使用 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`，不替换模型资产；`RiskAnalyzer` 将置信度、类别权重、方向、框底部位置、面积、中心通道和可选距离证据输出为可解释 `RiskScoreBreakdown`，`AssistEngine` 在稳定器之前接入纯 Kotlin `TemporalRiskTracker`，用最近 5 帧、约 900ms 的同目标轨迹判断 `APPROACHING/STABLE/RECEDING`。`DetectorAbDeviceBenchmarkTest` 兼容可选序列字段 `sequence_id`、`frame_index`、`expected_approach_state`、`expected_approach_alert` 和 `expected_time_to_alert_frames`，并在 `benchmark.json` / `benchmark.md` 输出 approach recall、false positive、direction accuracy、critical miss、mean time-to-alert 和 labeled sequence count。当前版本为 `v8.8.0` / `versionCode=32`。
@@ -68,7 +69,7 @@ BlindAssist 当前是 Gradle 多模块 Android 项目。`:app` 保持较薄，�
 - 冷启动使用 Android SplashScreen API，随后展示短暂的 BlindAssist 品牌页；点击品牌页可跳过。
 - 首次使用会展示三页引导，说明本地手机摄像头识别、语音/震动提醒和原型安全边界；完成或跳过后会在本地保存引导状态。
 - 主界面使用 Material 3 底部导航，包含“功能”“个人主页”“设置”三个顶层入口。
-- “功能”页是日常辅助启动台，先展示当前行走任务、场景、提醒档位和 Care Mode 状态，再提供高优先级 `使用手机摄像头` 主入口。日常使用向导仍提供 通用日常、室内慢行、走廊通行、密集区域、户外慢行 五个一键预设。`连接眼镜设备` 保留为次级未来设备占位入口；该占位不扫描蓝牙、不申请蓝牙权限、不联网，也不表示硬件连接已经完成。
+- “功能”页是日常辅助启动台，先展示当前行走任务、场景、提醒档位和 Care Mode 状态，再提供高优先级 `使用手机摄像头` 主入口。日常使用向导仍提供 通用日常、室内慢行、走廊通行、密集区域、户外慢行 五个一键预设。`眼镜设备模拟中心` 是正式版可见的交互演示，可模拟连接、82%/15% 电量、断连和重置；所有界面明确标注“模拟”，不扫描蓝牙、不联网、不申请额外权限，也不表示真实硬件已连接。debug 版连接后还可选择四种离线素材并进入现有识别链路，release 不展示该回放入口且不打包素材。
 - “个人主页”展示本地原型状态、当前提醒档位、版本信息和辅助偏好，不包含登录、云同步、账号数据或展示型说明卡片。
 - “设置”页按“界面与辅助、提醒方式、行走场景、调试与记录”分组，控制界面语言、Care Mode、语音提醒、震动提醒、语音风格、震动强度、提醒档位、手动使用场景和调试详情，并提供 `查看新手引导` 入口。用户手动调整后若不再匹配一键预设，主界面会显示为 自定义 / Custom。
 - 点击 `使用手机摄像头` 后，只有在相机权限可用时才进入沉浸式相机页。如果权限未授予，应用会先说明相机帧只在本地实时处理、不上传、不保存视频，然后再引导用户打开 Android 系统权限弹窗。

@@ -1,5 +1,6 @@
 package com.linnan.blindassist.runtime
 
+import com.linnan.blindassist.model.AssistInputSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -16,6 +17,22 @@ class AssistRuntimeStateMachineTest {
     }
 
     @Test
+    fun openReplayWithoutCameraPermissionStartsSessionDirectly() {
+        val transition = AssistRuntimeStateMachine().onEvent(
+            AssistRuntimeEvent.OpenCamera(
+                hasCameraPermission = false,
+                modelReady = true,
+                inputSource = AssistInputSource.OFFLINE_REPLAY
+            )
+        )
+
+        assertEquals(AssistRuntimeState.Starting, transition.state)
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.StartSession))
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.ActivateCamera))
+        assertTrue(!transition.effects.contains(AssistRuntimeEffect.ShowPermissionExplanation))
+    }
+
+    @Test
     fun permissionAcceptedLaunchesSystemRequest() {
         val machine = AssistRuntimeStateMachine()
         machine.onEvent(AssistRuntimeEvent.OpenCamera(hasCameraPermission = false, modelReady = true))
@@ -25,6 +42,35 @@ class AssistRuntimeStateMachineTest {
         assertEquals(AssistRuntimeState.PermissionRequesting, transition.state)
         assertTrue(transition.effects.contains(AssistRuntimeEffect.DismissPermissionExplanation))
         assertTrue(transition.effects.contains(AssistRuntimeEffect.LaunchPermissionRequest))
+    }
+
+    @Test
+    fun dismissingPermissionExplanationReturnsToIdleAndAllowsReplay() {
+        val machine = AssistRuntimeStateMachine()
+        machine.onEvent(AssistRuntimeEvent.OpenCamera(hasCameraPermission = false, modelReady = true))
+
+        val dismissed = machine.onEvent(AssistRuntimeEvent.PermissionFlowDismissed)
+        val replay = machine.onEvent(
+            AssistRuntimeEvent.OpenCamera(
+                hasCameraPermission = false,
+                modelReady = true,
+                inputSource = AssistInputSource.OFFLINE_REPLAY
+            )
+        )
+
+        assertEquals(AssistRuntimeState.Idle, dismissed.state)
+        assertTrue(dismissed.effects.contains(AssistRuntimeEffect.DismissPermissionExplanation))
+        assertEquals(AssistRuntimeState.Starting, replay.state)
+    }
+
+    @Test
+    fun dismissingPermissionDeniedReturnsToIdle() {
+        val machine = AssistRuntimeStateMachine(initialState = AssistRuntimeState.PermissionDenied)
+
+        val transition = machine.onEvent(AssistRuntimeEvent.PermissionFlowDismissed)
+
+        assertEquals(AssistRuntimeState.Idle, transition.state)
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.DismissPermissionDenied))
     }
 
     @Test

@@ -5,7 +5,7 @@ import com.linnan.blindassist.vision.VisionFrame
 
 interface FrameSource {
     fun start(
-        previewView: PreviewView,
+        previewView: PreviewView?,
         onFrame: (VisionFrame) -> Unit,
         onStarted: () -> Unit,
         onError: (Throwable) -> Unit

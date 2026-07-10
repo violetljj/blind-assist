@@ -5,11 +5,14 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.model.AssistInputSource
+import com.linnan.blindassist.model.ReplayScenario
 import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.preferences.PreferenceStore
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
 import com.linnan.blindassist.ui.compose.FieldTestSummaryUiState
+import com.linnan.blindassist.ui.compose.GlassesConnectionState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -183,14 +186,14 @@ class BlindAssistViewModelTest {
     }
 
     @Test
-    fun dialogStateOnlyChangesDialogFlags() {
+    fun glassesCenterVisibilityAndPermissionDialogsAreIndependent() {
         val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
 
-        viewModel.onShowGlassesDialog()
-        assertTrue(viewModel.uiState.value.showGlassesDialog)
+        viewModel.onShowGlassesCenter()
+        assertTrue(viewModel.uiState.value.showGlassesCenter)
         assertFalse(viewModel.uiState.value.cameraActive)
-        viewModel.onDismissGlassesDialog()
-        assertFalse(viewModel.uiState.value.showGlassesDialog)
+        viewModel.onDismissGlassesCenter()
+        assertFalse(viewModel.uiState.value.showGlassesCenter)
 
         viewModel.onShowCameraPermissionDialog()
         assertTrue(viewModel.uiState.value.showCameraPermissionDialog)
@@ -202,6 +205,72 @@ class BlindAssistViewModelTest {
         assertTrue(viewModel.uiState.value.showPermissionDeniedDialog)
         viewModel.onDismissPermissionDeniedDialog()
         assertFalse(viewModel.uiState.value.showPermissionDeniedDialog)
+    }
+
+    @Test
+    fun glassesSimulationConnectsTo82PercentAndSupportsLowBattery() {
+        val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
+
+        viewModel.onSimulateGlassesConnection()
+        assertEquals(GlassesConnectionState.CONNECTING, viewModel.uiState.value.glassesSimulator.connectionState)
+        assertEquals(null, viewModel.uiState.value.glassesSimulator.batteryPercent)
+
+        viewModel.onSimulatedGlassesConnectionCompleted()
+        assertEquals(GlassesConnectionState.CONNECTED, viewModel.uiState.value.glassesSimulator.connectionState)
+        assertEquals(82, viewModel.uiState.value.glassesSimulator.batteryPercent)
+
+        viewModel.onSimulateGlassesLowBattery()
+        assertEquals(15, viewModel.uiState.value.glassesSimulator.batteryPercent)
+    }
+
+    @Test
+    fun staleConnectionCompletionCannotOverrideReset() {
+        val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
+
+        viewModel.onSimulateGlassesConnection()
+        viewModel.onResetGlassesSimulation()
+        viewModel.onSimulatedGlassesConnectionCompleted()
+
+        assertEquals(GlassesConnectionState.DISCONNECTED, viewModel.uiState.value.glassesSimulator.connectionState)
+        assertEquals(null, viewModel.uiState.value.glassesSimulator.batteryPercent)
+    }
+
+    @Test
+    fun simulatedDisconnectFallsBackToPhoneAndResetClearsTransientState() {
+        val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
+        viewModel.onDebugReplayAvailabilityChanged(true)
+        viewModel.onSimulateGlassesConnection()
+        viewModel.onSimulatedGlassesConnectionCompleted()
+        viewModel.onReplayScenarioSelected(ReplayScenario.MEDIUM_RIGHT)
+        assertEquals(AssistInputSource.OFFLINE_REPLAY, viewModel.uiState.value.glassesSimulator.selectedInput)
+
+        viewModel.onSimulateGlassesDisconnect()
+        assertEquals(GlassesConnectionState.CONNECTION_LOST, viewModel.uiState.value.glassesSimulator.connectionState)
+        assertEquals(AssistInputSource.PHONE_CAMERA, viewModel.uiState.value.glassesSimulator.selectedInput)
+        assertEquals(null, viewModel.uiState.value.glassesSimulator.batteryPercent)
+
+        viewModel.onResetGlassesSimulation()
+        assertEquals(GlassesConnectionState.DISCONNECTED, viewModel.uiState.value.glassesSimulator.connectionState)
+    }
+
+    @Test
+    fun replaySelectionRequiresDebugCapabilityAndConnectedSimulation() {
+        val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
+
+        viewModel.onReplayScenarioSelected(ReplayScenario.LOW_CENTER)
+        assertEquals(AssistInputSource.PHONE_CAMERA, viewModel.uiState.value.glassesSimulator.selectedInput)
+
+        viewModel.onDebugReplayAvailabilityChanged(true)
+        viewModel.onSimulateGlassesConnection()
+        viewModel.onSimulatedGlassesConnectionCompleted()
+        viewModel.onReplayScenarioSelected(ReplayScenario.LOW_CENTER)
+
+        assertEquals(AssistInputSource.OFFLINE_REPLAY, viewModel.uiState.value.glassesSimulator.selectedInput)
+        assertEquals(ReplayScenario.LOW_CENTER, viewModel.uiState.value.glassesSimulator.selectedReplayScenario)
+
+        viewModel.onShowGlassesCenter()
+        viewModel.onStartOfflineReplay()
+        assertFalse(viewModel.uiState.value.showGlassesCenter)
     }
 
     @Test

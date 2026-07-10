@@ -13,7 +13,7 @@ coreKtx = "1.15.0"
 coreSplashscreen = "1.0.1"
 lifecycle = "2.8.7"
 navigation = "2.8.5"
-tflite = "2.16.1"
+litert = "1.4.2"
 javaxInject = "1"
 junit4 = "4.13.2"
 androidxTestRunner = "1.6.2"
@@ -51,9 +51,9 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
-tflite = { group = "org.tensorflow", name = "tensorflow-lite", version.ref = "tflite" }
-tflite-gpu = { group = "org.tensorflow", name = "tensorflow-lite-gpu", version.ref = "tflite" }
-tflite-gpu-api = { group = "org.tensorflow", name = "tensorflow-lite-gpu-api", version.ref = "tflite" }
+tflite = { group = "com.google.ai.edge.litert", name = "litert", version.ref = "litert" }
+tflite-gpu = { group = "com.google.ai.edge.litert", name = "litert-gpu", version.ref = "litert" }
+tflite-gpu-api = { group = "com.google.ai.edge.litert", name = "litert-gpu-api", version.ref = "litert" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -41,6 +41,8 @@ import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.MainActivity
+import com.linnan.blindassist.model.AssistInputSource
+import com.linnan.blindassist.model.ReplayScenario
 import com.linnan.blindassist.preferences.DailyUsageMode
 import org.junit.After
 import org.junit.Before
@@ -457,6 +459,8 @@ class CameraControlPanelStandaloneTest {
                     controls = cameraPanelControls(debugVisible = true),
                     guidance = cameraPanelGuidance(),
                     fieldTestSummary = cameraPanelSummary(),
+                    inputSource = AssistInputSource.PHONE_CAMERA,
+                    replayScenario = null,
                     onBack = {},
                     onDetectionChange = {},
                     onSpeechChange = {},
@@ -498,17 +502,63 @@ class CameraControlPanelStandaloneTest {
     }
 
     @Test
-    fun glassesPlaceholderDialogUsesEnglishAccessibilityCopy() {
+    fun glassesSimulatorReleaseStateUsesExplicitSimulationCopyAndHidesReplay() {
         composeRule.setContent {
             BlindAssistTheme {
-                GlassesPlaceholderDialog(
+                GlassesSimulatorScreen(
+                    state = GlassesSimulatorUiState(
+                        connectionState = GlassesConnectionState.DISCONNECTED,
+                        debugReplayAvailable = false
+                    ),
                     language = AppLanguage.EN,
-                    onDismiss = {}
+                    onBack = {},
+                    onConnect = {},
+                    onConnectionCompleted = {},
+                    onLowBattery = {},
+                    onDisconnect = {},
+                    onReset = {},
+                    onReplayScenarioSelected = {},
+                    onStartReplay = {}
                 )
             }
         }
-        composeRule.onNodeWithText("Glasses device connection").assertExists()
-        composeRule.onNodeWithText("does not scan Bluetooth", substring = true).assertExists()
+        composeRule.onNodeWithText("Simulated glasses center").assertExists()
+        composeRule.onNodeWithText("no Bluetooth scan", substring = true).assertExists()
+        composeRule.onNodeWithTag("simulate_glasses_connect").assertExists()
+        composeRule.onAllNodesWithTag("start_offline_replay").assertCountEquals(0)
+    }
+
+    @Test
+    fun glassesSimulatorDebugConnectedStateExposesReplayAndCallbacks() {
+        var selected: ReplayScenario? = null
+        var started: ReplayScenario? = null
+        composeRule.setContent {
+            BlindAssistTheme {
+                GlassesSimulatorScreen(
+                    state = GlassesSimulatorUiState(
+                        connectionState = GlassesConnectionState.CONNECTED,
+                        batteryPercent = 82,
+                        selectedInput = AssistInputSource.OFFLINE_REPLAY,
+                        selectedReplayScenario = ReplayScenario.HIGH_CENTER,
+                        debugReplayAvailable = true
+                    ),
+                    language = AppLanguage.EN,
+                    onBack = {},
+                    onConnect = {},
+                    onConnectionCompleted = {},
+                    onLowBattery = {},
+                    onDisconnect = {},
+                    onReset = {},
+                    onReplayScenarioSelected = { selected = it },
+                    onStartReplay = { started = it }
+                )
+            }
+        }
+
+        composeRule.onNodeWithTag("replay_scenario_medium_right").performScrollTo().performClick()
+        assert(selected == ReplayScenario.MEDIUM_RIGHT)
+        composeRule.onNodeWithTag("start_offline_replay").performScrollTo().performClick()
+        assert(started == ReplayScenario.HIGH_CENTER)
     }
 
     private fun cameraPanelControls(debugVisible: Boolean): AssistControlsUiState {

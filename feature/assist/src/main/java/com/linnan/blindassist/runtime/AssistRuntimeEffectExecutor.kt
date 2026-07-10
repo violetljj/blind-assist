@@ -47,6 +47,7 @@ internal class AssistRuntimeEffectExecutor(
                     }
                 }
                 AssistRuntimeEffect.ShowPermissionDenied -> renderer.showPermissionDenied()
+                AssistRuntimeEffect.DismissPermissionDenied -> appViewModel.onDismissPermissionDeniedDialog()
                 AssistRuntimeEffect.ApplyConfig -> syncConfigFromViewModel()
                 is AssistRuntimeEffect.Render -> renderer.renderTarget(effect.target, effect.message)
             }

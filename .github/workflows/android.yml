@@ -35,7 +35,39 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run tests, lint, and assemble APKs
-        run: ./gradlew :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug
+        run: ./gradlew :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest :app:bundleDebug :app:mergeReleaseAssets :device-benchmark:assembleDebug
+
+      - name: Reject legacy TensorFlow Lite runtime dependencies
+        shell: pwsh
+        run: |
+          $appDependencies = (& ./gradlew :app:dependencies --configuration debugRuntimeClasspath) -join "`n"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not inspect the app runtime dependency tree."
+          }
+          $benchmarkDependencies = (& ./gradlew :device-benchmark:dependencies --configuration debugRuntimeClasspath) -join "`n"
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not inspect the benchmark runtime dependency tree."
+          }
+          $dependencyTrees = "$appDependencies`n$benchmarkDependencies"
+          if ($dependencyTrees -match 'org\.tensorflow:tensorflow-lite') {
+            throw "Legacy org.tensorflow:tensorflow-lite dependency detected."
+          }
+
+      - name: Verify APK 16KB page-size compatibility
+        shell: pwsh
+        run: |
+          pwsh -ExecutionPolicy Bypass -File ./scripts/verify_apk_16kb.ps1 -ArtifactPath ./app/build/outputs/apk/debug/app-debug.apk -AndroidSdkRoot $env:ANDROID_SDK_ROOT
+          $bundletool = Join-Path $env:RUNNER_TEMP 'bundletool-all-1.17.1.jar'
+          Invoke-WebRequest -Uri 'https://github.com/google/bundletool/releases/download/1.17.1/bundletool-all-1.17.1.jar' -OutFile $bundletool
+          pwsh -ExecutionPolicy Bypass -File ./scripts/verify_apk_16kb.ps1 -ArtifactPath ./app/build/outputs/bundle/debug/app-debug.aab -BundletoolPath $bundletool
+
+      - name: Verify replay assets stay out of release
+        shell: pwsh
+        run: |
+          $releaseAssets = './app/build/intermediates/assets/release/mergeReleaseAssets'
+          if (Test-Path (Join-Path $releaseAssets 'replay')) {
+            throw 'Debug-only replay assets leaked into the release asset set.'
+          }
 
       - name: Set up Python for model checks
         uses: actions/setup-python@v5

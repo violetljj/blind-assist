@@ -1,7 +1,9 @@
 package com.linnan.blindassist.ui.compose
 
+import android.graphics.BitmapFactory
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.activity.compose.BackHandler
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.AnimatedContent
@@ -108,6 +110,8 @@ import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.localization.LocalizedText
+import com.linnan.blindassist.model.AssistInputSource
+import com.linnan.blindassist.model.ReplayScenario
 import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.ui.DetectionOverlayView
 import kotlinx.coroutines.delay
@@ -118,6 +122,8 @@ fun CameraExperienceScreen(
     controls: AssistControlsUiState,
     guidance: CameraGuidanceUiState,
     fieldTestSummary: FieldTestSummaryUiState,
+    inputSource: AssistInputSource,
+    replayScenario: ReplayScenario?,
     onBack: () -> Unit,
     onDetectionChange: (Boolean) -> Unit,
     onSpeechChange: (Boolean) -> Unit,
@@ -128,11 +134,13 @@ fun CameraExperienceScreen(
     onScenarioChange: (AssistScenario) -> Unit,
     onQuietShortcut: () -> Unit,
     onSensitiveShortcut: () -> Unit,
-    onCameraViewsReady: (PreviewView, DetectionOverlayView) -> Unit,
+    onCameraViewsReady: (PreviewView?, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.fillMaxSize().background(Color.Black)) {
         CameraPreviewHost(
+            inputSource = inputSource,
+            replayScenario = replayScenario,
             onCameraViewsReady = onCameraViewsReady,
             modifier = Modifier.fillMaxSize()
         )
@@ -145,6 +153,21 @@ fun CameraExperienceScreen(
                 .statusBarsPadding()
                 .padding(12.dp)
         )
+        if (inputSource == AssistInputSource.OFFLINE_REPLAY) {
+            Text(
+                text = if (controls.appLanguage == AppLanguage.EN) {
+                    "Offline test asset · debug replay"
+                } else {
+                    "离线测试素材 · 调试回放"
+                },
+                color = BaAmber,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .statusBarsPadding()
+                    .padding(top = 72.dp)
+            )
+        }
         CameraControlPanel(
             controls = controls,
             guidance = guidance,
@@ -167,7 +190,9 @@ fun CameraExperienceScreen(
 
 @Composable
 fun CameraPreviewHost(
-    onCameraViewsReady: (PreviewView, DetectionOverlayView) -> Unit,
+    inputSource: AssistInputSource,
+    replayScenario: ReplayScenario?,
+    onCameraViewsReady: (PreviewView?, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -175,12 +200,41 @@ fun CameraPreviewHost(
         modifier = modifier,
         factory = {
             val frame = FrameLayout(context)
-            val preview = PreviewView(context).apply {
-                scaleType = PreviewView.ScaleType.FILL_CENTER
-                layoutParams = FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
+            val preview = if (inputSource == AssistInputSource.PHONE_CAMERA) {
+                PreviewView(context).apply {
+                    scaleType = PreviewView.ScaleType.FILL_CENTER
+                    layoutParams = FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                }
+            } else {
+                null
+            }
+            val replayImage = if (inputSource == AssistInputSource.OFFLINE_REPLAY) {
+                val scenario = requireNotNull(replayScenario) {
+                    "ReplayScenario is required for offline replay preview"
+                }
+                ImageView(context).apply {
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                    layoutParams = FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                    val bitmap = try {
+                        context.assets.open(scenario.assetPath).use(BitmapFactory::decodeStream)
+                    } catch (_: Exception) {
+                        null
+                    }
+                    if (bitmap != null) {
+                        setImageBitmap(bitmap)
+                    } else {
+                        setBackgroundColor(android.graphics.Color.DKGRAY)
+                        contentDescription = "Offline replay preview unavailable"
+                    }
+                }
+            } else {
+                null
             }
             val overlay = DetectionOverlayView(context).apply {
                 layoutParams = FrameLayout.LayoutParams(
@@ -188,7 +242,8 @@ fun CameraPreviewHost(
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
             }
-            frame.addView(preview)
+            preview?.let(frame::addView)
+            replayImage?.let(frame::addView)
             frame.addView(overlay)
             onCameraViewsReady(preview, overlay)
             frame

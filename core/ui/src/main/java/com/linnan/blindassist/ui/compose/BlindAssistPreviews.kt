@@ -135,7 +135,7 @@ private fun FeaturePreview() {
             modelStatus = "YOLO11n ready",
             appVersion = "8.2.0",
             onOpenCamera = {},
-            onGlassesPlaceholder = {},
+            onShowGlassesCenter = {},
             onDailyUsageModeChange = {}
         )
     }

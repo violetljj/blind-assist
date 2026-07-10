@@ -78,6 +78,10 @@ class TfliteYoloDetector(
 
     private fun createInterpreter(context: Context): Interpreter {
         val model = loadMappedAsset(context, modelAssetName)
+        if (!GPU_DELEGATE_ENABLED) {
+            runtimeWarning = "LiteRT CPU 兼容模式"
+            return Interpreter(model, Interpreter.Options().apply { setNumThreads(4) })
+        }
         val gpuOptions = Interpreter.Options().apply {
             setNumThreads(4)
             maybeAttachGpuDelegate(this)
@@ -349,6 +353,7 @@ class TfliteYoloDetector(
     }
 
     companion object {
+        private const val GPU_DELEGATE_ENABLED = false
         const val MODEL_ASSET = "yolo11n_fp16_320.tflite"
         const val LABELS_ASSET = "coco_labels.txt"
         const val INPUT_SIZE = 320

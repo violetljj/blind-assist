@@ -106,6 +106,8 @@ import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.localization.LocalizedText
+import com.linnan.blindassist.model.AssistInputSource
+import com.linnan.blindassist.model.ReplayScenario
 import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.ui.DetectionOverlayView
 import kotlinx.coroutines.delay
@@ -119,12 +121,24 @@ fun BlindAssistApp(
     modelStatus: String,
     appVersion: String,
     cameraActive: Boolean,
+    activeInputSource: AssistInputSource,
+    activeReplayScenario: ReplayScenario?,
     showOnboarding: Boolean,
+    showGlassesCenter: Boolean,
+    glassesSimulator: GlassesSimulatorUiState,
     onOpenCamera: () -> Unit,
     onCloseCamera: () -> Unit,
     onCompleteOnboarding: () -> Unit,
     onShowOnboarding: () -> Unit,
-    onGlassesPlaceholder: () -> Unit,
+    onShowGlassesCenter: () -> Unit,
+    onDismissGlassesCenter: () -> Unit,
+    onSimulateGlassesConnection: () -> Unit,
+    onSimulatedGlassesConnectionCompleted: () -> Unit,
+    onSimulateGlassesLowBattery: () -> Unit,
+    onSimulateGlassesDisconnect: () -> Unit,
+    onResetGlassesSimulation: () -> Unit,
+    onReplayScenarioSelected: (ReplayScenario) -> Unit,
+    onStartOfflineReplay: (ReplayScenario) -> Unit,
     onDetectionChange: (Boolean) -> Unit,
     onSpeechChange: (Boolean) -> Unit,
     onVibrationChange: (Boolean) -> Unit,
@@ -138,7 +152,7 @@ fun BlindAssistApp(
     onQuietShortcut: () -> Unit,
     onSensitiveShortcut: () -> Unit,
     onLanguageChange: (AppLanguage) -> Unit,
-    onCameraViewsReady: (PreviewView, DetectionOverlayView) -> Unit,
+    onCameraViewsReady: (PreviewView?, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var splashVisible by rememberSaveable { mutableStateOf(true) }
@@ -160,6 +174,8 @@ fun BlindAssistApp(
                     controls = controls,
                     guidance = cameraGuidance,
                     fieldTestSummary = fieldTestSummary,
+                    inputSource = activeInputSource,
+                    replayScenario = activeReplayScenario,
                     onBack = onCloseCamera,
                     onDetectionChange = onDetectionChange,
                     onSpeechChange = onSpeechChange,
@@ -174,13 +190,25 @@ fun BlindAssistApp(
                 )
                 splashVisible -> BrandSplashScreen(onFinished = { splashVisible = false })
                 showOnboarding -> OnboardingScreen(onFinished = onCompleteOnboarding)
+                showGlassesCenter -> GlassesSimulatorScreen(
+                    state = glassesSimulator,
+                    language = controls.appLanguage,
+                    onBack = onDismissGlassesCenter,
+                    onConnect = onSimulateGlassesConnection,
+                    onConnectionCompleted = onSimulatedGlassesConnectionCompleted,
+                    onLowBattery = onSimulateGlassesLowBattery,
+                    onDisconnect = onSimulateGlassesDisconnect,
+                    onReset = onResetGlassesSimulation,
+                    onReplayScenarioSelected = onReplayScenarioSelected,
+                    onStartReplay = onStartOfflineReplay
+                )
                 else -> MainShell(
                     controls = controls,
                     fieldTestSummary = fieldTestSummary,
                     modelStatus = modelStatus,
                     appVersion = appVersion,
                     onOpenCamera = onOpenCamera,
-                    onGlassesPlaceholder = onGlassesPlaceholder,
+                    onShowGlassesCenter = onShowGlassesCenter,
                     onSpeechChange = onSpeechChange,
                     onVibrationChange = onVibrationChange,
                     onCareModeChange = onCareModeChange,
@@ -205,7 +233,7 @@ private fun MainShell(
     modelStatus: String,
     appVersion: String,
     onOpenCamera: () -> Unit,
-    onGlassesPlaceholder: () -> Unit,
+    onShowGlassesCenter: () -> Unit,
     onSpeechChange: (Boolean) -> Unit,
     onVibrationChange: (Boolean) -> Unit,
     onCareModeChange: (Boolean) -> Unit,
@@ -255,7 +283,7 @@ private fun MainShell(
                     modelStatus = modelStatus,
                     appVersion = appVersion,
                     onOpenCamera = onOpenCamera,
-                    onGlassesPlaceholder = onGlassesPlaceholder,
+                    onShowGlassesCenter = onShowGlassesCenter,
                     onDailyUsageModeChange = onDailyUsageModeChange
                 )
                 BottomTab.Profile -> ProfileScreen(

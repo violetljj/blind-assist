@@ -13,6 +13,8 @@ import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.model.AssistInputSource
+import com.linnan.blindassist.model.ReplayScenario
 import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.session.AssistSessionCoordinator
 import com.linnan.blindassist.ui.BlindAssistViewModel
@@ -25,11 +27,17 @@ class AssistRuntimeController(
     private val detector: ObjectDetector,
     private val feedbackController: FeedbackController,
     private val coordinator: AssistSessionCoordinator,
-    frameSourceFactory: FrameSourceFactory,
+    private val frameSourceFactory: FrameSourceFactory,
     private val configApplier: RuntimeConfigApplier,
     private val stateMachine: AssistRuntimeStateMachine = AssistRuntimeStateMachine()
 ) {
-    private val frameSource: FrameSource = frameSourceFactory.create(activity, activity)
+    private var currentInputSource: AssistInputSource = AssistInputSource.PHONE_CAMERA
+    private var currentReplayScenario: ReplayScenario? = null
+    private val initialFrameSource: FrameSource = frameSourceFactory.create(
+        source = currentInputSource,
+        context = activity,
+        lifecycleOwner = activity
+    )
     private val configSnapshot = AssistRuntimeConfigSnapshot(appViewModel.runtimeConfig())
     private val config: AssistRuntimeConfig get() = configSnapshot.get()
     private val lifecycleGate = AssistRuntimeLifecycleGate()
@@ -54,9 +62,10 @@ class AssistRuntimeController(
         onCameraFailure = ::handleCameraFailure
     )
     private val cameraLifecycleAdapter = AssistCameraLifecycleAdapter(
-        frameSource = frameSource,
+        initialFrameSource = initialFrameSource,
         renderer = renderer,
         isCameraActive = { appViewModel.uiState.value.cameraActive },
+        requiresCameraPermission = { currentInputSource == AssistInputSource.PHONE_CAMERA },
         hasCameraPermission = ::hasCameraPermission,
         onCameraStarted = {
             handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CameraStarted(detector.isReady)))
@@ -106,11 +115,36 @@ class AssistRuntimeController(
     }
 
     fun openCameraExperience() {
+        openExperience(AssistInputSource.PHONE_CAMERA, null)
+    }
+
+    fun openOfflineReplay(scenario: ReplayScenario) {
+        openExperience(AssistInputSource.OFFLINE_REPLAY, scenario)
+    }
+
+    private fun openExperience(inputSource: AssistInputSource, replayScenario: ReplayScenario?) {
+        if (stateMachine.currentState != AssistRuntimeState.Idle) return
+        if (inputSource == AssistInputSource.OFFLINE_REPLAY) {
+            requireNotNull(replayScenario) { "ReplayScenario is required for offline replay" }
+        }
+        if (inputSource != currentInputSource || replayScenario != currentReplayScenario) {
+            val replacement = frameSourceFactory.create(
+                source = inputSource,
+                context = activity,
+                lifecycleOwner = activity,
+                replayScenario = replayScenario
+            )
+            cameraLifecycleAdapter.replaceFrameSource(replacement)
+            currentInputSource = inputSource
+            currentReplayScenario = replayScenario
+        }
+        appViewModel.onAssistInputSourceActivated(inputSource, replayScenario)
         handleTransition(
             stateMachine.onEvent(
                 AssistRuntimeEvent.OpenCamera(
                     hasCameraPermission = hasCameraPermission(),
-                    modelReady = detector.isReady
+                    modelReady = detector.isReady,
+                    inputSource = inputSource
                 )
             )
         )
@@ -121,6 +155,10 @@ class AssistRuntimeController(
             transition = stateMachine.onEvent(AssistRuntimeEvent.PermissionExplanationAccepted),
             launchPermissionRequest = launchPermissionRequest
         )
+    }
+
+    fun dismissCameraPermissionFlow() {
+        handleTransition(stateMachine.onEvent(AssistRuntimeEvent.PermissionFlowDismissed))
     }
 
     fun onCameraPermissionResult(granted: Boolean) {
@@ -138,7 +176,7 @@ class AssistRuntimeController(
         handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CloseCamera))
     }
 
-    fun onCameraViewsReady(preview: PreviewView, overlay: DetectionOverlayView) {
+    fun onCameraViewsReady(preview: PreviewView?, overlay: DetectionOverlayView) {
         cameraLifecycleAdapter.onCameraViewsReady(preview, overlay)
         settingsController.syncConfigFromViewModel()
         handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CameraViewsReady))

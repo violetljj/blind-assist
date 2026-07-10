@@ -7,11 +7,15 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.model.AssistInputSource
+import com.linnan.blindassist.model.ReplayScenario
 import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.AssistControlsUiState
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
 import com.linnan.blindassist.ui.compose.FieldTestSummaryUiState
+import com.linnan.blindassist.ui.compose.GlassesConnectionState
+import com.linnan.blindassist.ui.compose.GlassesSimulatorUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,8 +29,11 @@ data class BlindAssistAppUiState(
     val fieldTestSummary: FieldTestSummaryUiState,
     val modelStatus: String,
     val cameraActive: Boolean,
+    val activeInputSource: AssistInputSource,
+    val activeReplayScenario: ReplayScenario?,
     val showOnboarding: Boolean,
-    val showGlassesDialog: Boolean,
+    val showGlassesCenter: Boolean,
+    val glassesSimulator: GlassesSimulatorUiState,
     val showCameraPermissionDialog: Boolean,
     val showPermissionDeniedDialog: Boolean
 )
@@ -70,8 +77,11 @@ class BlindAssistViewModel @Inject constructor(
             ),
             modelStatus = DEFAULT_MODEL_STATUS,
             cameraActive = false,
+            activeInputSource = AssistInputSource.PHONE_CAMERA,
+            activeReplayScenario = null,
             showOnboarding = !initialPreferences.onboardingCompleted,
-            showGlassesDialog = false,
+            showGlassesCenter = false,
+            glassesSimulator = GlassesSimulatorUiState(),
             showCameraPermissionDialog = false,
             showPermissionDeniedDialog = false
         )
@@ -95,6 +105,15 @@ class BlindAssistViewModel @Inject constructor(
                 fieldTestSummary = fieldTestSummary,
                 cameraGuidance = guidance,
                 modelStatus = modelStatus
+            )
+        }
+    }
+
+    fun onAssistInputSourceActivated(source: AssistInputSource, replayScenario: ReplayScenario?) {
+        _uiState.update {
+            it.copy(
+                activeInputSource = source,
+                activeReplayScenario = if (source == AssistInputSource.OFFLINE_REPLAY) replayScenario else null
             )
         }
     }
@@ -242,12 +261,119 @@ class BlindAssistViewModel @Inject constructor(
         _uiState.update { it.copy(showOnboarding = true) }
     }
 
-    fun onShowGlassesDialog() {
-        _uiState.update { it.copy(showGlassesDialog = true) }
+    fun onShowGlassesCenter() {
+        _uiState.update { it.copy(showGlassesCenter = true) }
     }
 
-    fun onDismissGlassesDialog() {
-        _uiState.update { it.copy(showGlassesDialog = false) }
+    fun onDismissGlassesCenter() {
+        _uiState.update { it.copy(showGlassesCenter = false) }
+    }
+
+    fun onDebugReplayAvailabilityChanged(available: Boolean) {
+        _uiState.update { state ->
+            val simulator = state.glassesSimulator
+            state.copy(
+                glassesSimulator = simulator.copy(
+                    debugReplayAvailable = available,
+                    selectedInput = if (available) simulator.selectedInput else AssistInputSource.PHONE_CAMERA
+                )
+            )
+        }
+    }
+
+    fun onSimulateGlassesConnection() {
+        _uiState.update { state ->
+            state.copy(
+                glassesSimulator = state.glassesSimulator.copy(
+                    connectionState = GlassesConnectionState.CONNECTING,
+                    batteryPercent = null,
+                    selectedInput = AssistInputSource.PHONE_CAMERA
+                )
+            )
+        }
+    }
+
+    fun onSimulatedGlassesConnectionCompleted() {
+        _uiState.update { state ->
+            if (state.glassesSimulator.connectionState != GlassesConnectionState.CONNECTING) {
+                state
+            } else {
+                state.copy(
+                    glassesSimulator = state.glassesSimulator.copy(
+                        connectionState = GlassesConnectionState.CONNECTED,
+                        batteryPercent = 82
+                    )
+                )
+            }
+        }
+    }
+
+    fun onSimulateGlassesLowBattery() {
+        _uiState.update { state ->
+            if (state.glassesSimulator.connectionState != GlassesConnectionState.CONNECTED) {
+                state
+            } else {
+                state.copy(glassesSimulator = state.glassesSimulator.copy(batteryPercent = 15))
+            }
+        }
+    }
+
+    fun onSimulateGlassesDisconnect() {
+        _uiState.update { state ->
+            state.copy(
+                glassesSimulator = state.glassesSimulator.copy(
+                    connectionState = GlassesConnectionState.CONNECTION_LOST,
+                    batteryPercent = null,
+                    selectedInput = AssistInputSource.PHONE_CAMERA
+                )
+            )
+        }
+    }
+
+    fun onResetGlassesSimulation() {
+        _uiState.update { state ->
+            state.copy(
+                glassesSimulator = state.glassesSimulator.copy(
+                    connectionState = GlassesConnectionState.DISCONNECTED,
+                    batteryPercent = null,
+                    selectedInput = AssistInputSource.PHONE_CAMERA
+                )
+            )
+        }
+    }
+
+    fun onReplayScenarioSelected(scenario: ReplayScenario) {
+        _uiState.update { state ->
+            val simulator = state.glassesSimulator
+            if (!simulator.debugReplayAvailable || simulator.connectionState != GlassesConnectionState.CONNECTED) {
+                state
+            } else {
+                state.copy(
+                    glassesSimulator = simulator.copy(
+                        selectedInput = AssistInputSource.OFFLINE_REPLAY,
+                        selectedReplayScenario = scenario
+                    )
+                )
+            }
+        }
+    }
+
+    fun onStartOfflineReplay() {
+        _uiState.update { state ->
+            if (
+                state.glassesSimulator.debugReplayAvailable &&
+                state.glassesSimulator.connectionState == GlassesConnectionState.CONNECTED
+            ) {
+                state.copy(
+                    showGlassesCenter = false,
+                    glassesSimulator = state.glassesSimulator.copy(
+                        selectedInput = AssistInputSource.OFFLINE_REPLAY
+                    )
+                )
+            } else {
+                state
+            }
+        }
     }
 
     fun onShowCameraPermissionDialog() {

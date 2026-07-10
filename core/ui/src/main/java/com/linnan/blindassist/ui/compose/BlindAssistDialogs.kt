@@ -2,7 +2,6 @@ package com.linnan.blindassist.ui.compose
 
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Bluetooth
 import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material.icons.rounded.Shield
 import androidx.compose.material3.AlertDialog
@@ -14,33 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.linnan.blindassist.localization.AppLanguage
-
-@Composable
-fun GlassesPlaceholderDialog(
-    language: AppLanguage = AppLanguage.ZH,
-    onDismiss: () -> Unit
-) {
-    val english = language == AppLanguage.EN
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text(if (english) "Got it" else "知道了")
-            }
-        },
-        icon = { Icon(Icons.Rounded.Bluetooth, contentDescription = null, tint = BaSky) },
-        title = { Text(if (english) "Glasses device connection" else "眼镜设备连接") },
-        text = {
-            Text(
-                if (english) {
-                    "This entry is reserved for future glasses or external vision devices. This version does not scan Bluetooth, does not go online, and does not request extra permissions."
-                } else {
-                    "该入口为未来蓝牙眼镜或外接视觉设备预留。当前版本不会扫描蓝牙、不会联网，也不会申请额外权限。"
-                }
-            )
-        }
-    )
-}
 
 @Composable
 fun CameraPermissionExplanationDialog(

@@ -5,7 +5,24 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.model.AssistInputSource
+import com.linnan.blindassist.model.ReplayScenario
 import com.linnan.blindassist.preferences.DailyUsageMode
+
+enum class GlassesConnectionState {
+    DISCONNECTED,
+    CONNECTING,
+    CONNECTED,
+    CONNECTION_LOST
+}
+
+data class GlassesSimulatorUiState(
+    val connectionState: GlassesConnectionState = GlassesConnectionState.DISCONNECTED,
+    val batteryPercent: Int? = null,
+    val selectedInput: AssistInputSource = AssistInputSource.PHONE_CAMERA,
+    val selectedReplayScenario: ReplayScenario = ReplayScenario.HIGH_CENTER,
+    val debugReplayAvailable: Boolean = false
+)
 
 data class AssistControlsUiState(
     val detectionEnabled: Boolean,

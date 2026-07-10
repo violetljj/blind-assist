@@ -23,7 +23,7 @@ function Get-LatestBuildTools([string]$SdkRoot) {
         throw "Android build-tools not found under $buildTools"
     }
     return Get-ChildItem -LiteralPath $buildTools -Directory |
-        Sort-Object Name -Descending |
+        Sort-Object { try { [version]$_.Name } catch { [version]"0.0" } } -Descending |
         Select-Object -First 1
 }
 
@@ -83,6 +83,14 @@ if ($LASTEXITCODE -ne 0) {
 }
 Assert-Contains $signature "Signer #1 certificate SHA-256 digest:" "Missing signing certificate SHA-256 digest."
 
+$alignmentOutput = (& (Join-Path $PSScriptRoot "verify_apk_16kb.ps1") `
+    -ArtifactPath $resolvedApk `
+    -AndroidSdkRoot $AndroidSdkRoot) -join "`n"
+if ($LASTEXITCODE -ne 0) {
+    throw "16KB APK verification failed."
+}
+$alignmentEvidence = $alignmentOutput | ConvertFrom-Json
+
 $releaseEvidence = [ordered]@{
     manifestMergerReleaseReport = Test-Path -LiteralPath (Join-Path $repoRoot "app\build\outputs\logs\manifest-merger-release-report.txt")
     releaseApkDirectory = Test-Path -LiteralPath (Join-Path $repoRoot "app\build\outputs\apk\release")
@@ -126,6 +134,7 @@ $result = [ordered]@{
     versionCode = $actualVersionCode
     versionName = $actualVersionName
     signingCertificate = ($signature -split "`n" | Where-Object { $_ -match "Signer #1 certificate .*digest:" })
+    alignment16Kb = $alignmentEvidence
     releaseEvidence = $releaseEvidence
 }
 

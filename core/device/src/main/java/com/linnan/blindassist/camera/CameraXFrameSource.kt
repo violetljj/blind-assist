@@ -36,11 +36,15 @@ class CameraXFrameSource(
     private val analyzerFailureReported = AtomicBoolean(false)
 
     override fun start(
-        previewView: PreviewView,
+        previewView: PreviewView?,
         onFrame: (VisionFrame) -> Unit,
         onStarted: () -> Unit,
         onError: (Throwable) -> Unit
     ) {
+        if (previewView == null) {
+            onError(IllegalArgumentException("CameraXFrameSource requires a non-null PreviewView"))
+            return
+        }
         val generation = synchronized(lifecycleLock) {
             if (shutdownRequested || started || starting) return
             starting = true

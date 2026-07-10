@@ -117,7 +117,7 @@ fun FeatureScreen(
     modelStatus: String,
     appVersion: String,
     onOpenCamera: () -> Unit,
-    onGlassesPlaceholder: () -> Unit,
+    onShowGlassesCenter: () -> Unit,
     onDailyUsageModeChange: (DailyUsageMode) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -175,20 +175,20 @@ fun FeatureScreen(
         )
         Spacer(Modifier.height(12.dp))
         ActionFeatureCard(
-            title = if (language == AppLanguage.EN) "Connect glasses device" else "连接眼镜设备",
+            title = if (language == AppLanguage.EN) "Simulated glasses center" else "眼镜设备模拟中心",
             subtitle = if (language == AppLanguage.EN) {
-                "Reserved for future external vision devices; no Bluetooth permission is requested"
+                "Explore simulated connection, battery, input, and feedback states"
             } else {
-                "预留给蓝牙眼镜和外接视觉设备，不会申请蓝牙权限"
+                "体验模拟连接、电量、视频来源与反馈链路状态"
             },
-            badge = if (language == AppLanguage.EN) "Future" else "占位",
+            badge = if (language == AppLanguage.EN) "Simulation" else "模拟",
             icon = Icons.Rounded.Bluetooth,
             accent = BaSky,
-            onClick = onGlassesPlaceholder,
+            onClick = onShowGlassesCenter,
             accessibilityText = if (language == AppLanguage.EN) {
-                "Connect glasses device, reserved future extension, no Bluetooth permission is requested"
+                "Open simulated glasses center; simulation only, no real glasses connection"
             } else {
-                "连接眼镜设备，未来扩展占位，不会申请蓝牙权限"
+                "打开眼镜设备模拟中心，仅为模拟，不连接真实眼镜"
             }
         )
         Spacer(Modifier.height(18.dp))

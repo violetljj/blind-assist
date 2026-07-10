@@ -1,5 +1,16 @@
 # BlindAssist 更新记录
 
+## v9.9.0 - 16KB 兼容、离线回放与眼镜模拟中心
+
+- 状态：本地与 4KB Android 16 真机验证完成；`versionCode=35`，`versionName=9.9.0`。
+- 16KB：三项旧 `org.tensorflow:*:2.16.1` 依赖迁移为 LiteRT `1.4.2` core/GPU/GPU API；新增 APK/AAB ELF `PT_LOAD`、`zipalign -P 16` 和 bundletool 门禁，最终 APK/AAB 的 16 个 native library 均为 16KB 对齐，AAB 为 `PAGE_ALIGNMENT_16K`。
+- 运行策略：LiteRT GPU 在同设备 BlindAssist EvalSet 复跑中将提醒误报率从 `0.037` 提高到 `0.074`，因此按预案临时切换 CPU 兼容模式并保留 GPU delegate 代码与依赖。CPU 模式 100 图结果与历史基线对齐：AP50 `0.289`、关键漏报 `9`、提醒误报率 `0.037`，total P50/P95 `53/55ms`，P95 未退化。
+- Replay：新增 `AssistInputSource`、`ReplayScenario`、可空 preview 的 `FrameSource` 契约和 2 FPS `ReplayFrameSource`；stop/shutdown、generation 隔离、错误单次上报和帧独立关闭均有 JVM 测试。四张 CC BY 2.0 COCO 素材只位于 debug assets，进入真实 detector→risk→feedback→overlay→session summary 链路，不伪造检测结果，不要求 CAMERA/存储/网络权限。
+- 模拟中心：用全屏眼镜设备模拟中心替换占位弹窗，支持 800ms 模拟连接、82%/15% 电量、模拟断连和重置；debug 连接态可启动离线回放，release 仅展示连接、电量、来源和反馈链路模拟。中英文标题、状态、按钮和 TalkBack 说明均明确“模拟”，不新增 BLE、USB、INTERNET、定位或存储权限。
+- 验证：完整 JVM、Lint、debug APK、AndroidTest APK、debug AAB、release assets 和 device-benchmark APK 构建矩阵通过；12 个 Compose 真机测试通过；模型合同、仓库卫生、release replay 排除、最终 APK/AAB 16KB 门禁和 90 秒 CameraX 回归通过。最终真机约 15 FPS，推理 P95 约 33ms。
+- 边界：Samsung `SM-S9280` / Android 16 为 4KB 页设备，本轮尚未在真实 16KB Android 15/16 环境执行安装与连续推理；实际场景采集、算法调参和真实眼镜接入继续延期。签名 release 构建仍需要本机缺失的发布 keystore。
+- APK：本地归档 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v9.9.0-debug-20260710-233951.apk`；Git 里程碑 `releases/apk/BlindAssist-v9.9.0-debug-20260710-233951.apk`；大小 `55,879,856` bytes，SHA256 `53065A54A43ABF6256994CDC9E6C89F2F5680BE5BEA1FC9BDF88CAF26AA77BDD`。
+
 ## v9.4.0 - 安全语义、Session 生命周期与测试架构修复
 
 - 状态：本地与真机验证完成；`versionCode=34`，`versionName=9.4.0`。

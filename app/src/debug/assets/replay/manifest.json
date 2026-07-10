@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "purpose": "BlindAssist debug-only offline replay; expectations apply only to v9.9.0 YOLO11n and current risk rules.",
+  "license": {
+    "name": "Creative Commons Attribution 2.0",
+    "url": "https://creativecommons.org/licenses/by/2.0/"
+  },
+  "scenarios": [
+    {
+      "id": "HIGH_CENTER",
+      "asset": "replay/000000001000.jpg",
+      "coco_image_id": 1000,
+      "source_url": "http://images.cocodataset.org/val2017/000000001000.jpg",
+      "flickr_url": "http://farm5.staticflickr.com/4115/4906536419_6113bd7de4_z.jpg",
+      "sha256": "24bb77a31928404e45a0454b06f6a0bd54a8db103590c9d7917288a1e0269f05"
+    },
+    {
+      "id": "MEDIUM_RIGHT",
+      "asset": "replay/000000019402.jpg",
+      "coco_image_id": 19402,
+      "source_url": "http://images.cocodataset.org/val2017/000000019402.jpg",
+      "flickr_url": "http://farm5.staticflickr.com/4135/5435897535_a9b3e0a053_z.jpg",
+      "sha256": "b08173e02dc865e7f13fecbcbed574b70271c07fef6023236d0dea8d6bf77619"
+    },
+    {
+      "id": "LOW_CENTER",
+      "asset": "replay/000000574520.jpg",
+      "coco_image_id": 574520,
+      "source_url": "http://images.cocodataset.org/val2017/000000574520.jpg",
+      "flickr_url": "http://farm7.staticflickr.com/6219/6276393723_bf8a0d64a3_z.jpg",
+      "sha256": "4b4a90e16ea438f390bf42ab4982ec902304d9b2bc54eb6d058940f6c853e391"
+    },
+    {
+      "id": "NONE",
+      "asset": "replay/000000015272.jpg",
+      "coco_image_id": 15272,
+      "source_url": "http://images.cocodataset.org/val2017/000000015272.jpg",
+      "flickr_url": "http://farm9.staticflickr.com/8386/8584364941_15ab4eb0e4_z.jpg",
+      "sha256": "d4a09d9517fea54811b7fabb1274117a107c4cb8fdccfbcae4ced6dd82034ce5"
+    }
+  ]
+}

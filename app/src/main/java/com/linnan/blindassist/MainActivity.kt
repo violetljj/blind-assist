@@ -16,7 +16,6 @@ import com.linnan.blindassist.ui.compose.BlindAssistApp
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
 import com.linnan.blindassist.ui.compose.CameraPermissionDeniedDialog
 import com.linnan.blindassist.ui.compose.CameraPermissionExplanationDialog
-import com.linnan.blindassist.ui.compose.GlassesPlaceholderDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,6 +37,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         runtimeController = runtimeControllerFactory.create(this, appViewModel).also { it.initialize() }
+        appViewModel.onDebugReplayAvailabilityChanged(BuildConfig.DEBUG)
 
         setContent {
             val uiState by appViewModel.uiState.collectAsStateWithLifecycle()
@@ -49,12 +49,27 @@ class MainActivity : ComponentActivity() {
                     modelStatus = uiState.modelStatus,
                     appVersion = BuildConfig.VERSION_NAME,
                     cameraActive = uiState.cameraActive,
+                    activeInputSource = uiState.activeInputSource,
+                    activeReplayScenario = uiState.activeReplayScenario,
                     showOnboarding = uiState.showOnboarding,
+                    showGlassesCenter = uiState.showGlassesCenter,
+                    glassesSimulator = uiState.glassesSimulator,
                     onOpenCamera = runtimeController::openCameraExperience,
                     onCloseCamera = runtimeController::closeCameraExperience,
                     onCompleteOnboarding = appViewModel::onCompleteOnboarding,
                     onShowOnboarding = appViewModel::onShowOnboarding,
-                    onGlassesPlaceholder = appViewModel::onShowGlassesDialog,
+                    onShowGlassesCenter = appViewModel::onShowGlassesCenter,
+                    onDismissGlassesCenter = appViewModel::onDismissGlassesCenter,
+                    onSimulateGlassesConnection = appViewModel::onSimulateGlassesConnection,
+                    onSimulatedGlassesConnectionCompleted = appViewModel::onSimulatedGlassesConnectionCompleted,
+                    onSimulateGlassesLowBattery = appViewModel::onSimulateGlassesLowBattery,
+                    onSimulateGlassesDisconnect = appViewModel::onSimulateGlassesDisconnect,
+                    onResetGlassesSimulation = appViewModel::onResetGlassesSimulation,
+                    onReplayScenarioSelected = appViewModel::onReplayScenarioSelected,
+                    onStartOfflineReplay = { scenario ->
+                        appViewModel.onStartOfflineReplay()
+                        runtimeController.openOfflineReplay(scenario)
+                    },
                     onDetectionChange = runtimeController::setDetectionEnabled,
                     onSpeechChange = runtimeController::setSpeechEnabled,
                     onVibrationChange = runtimeController::setVibrationEnabled,
@@ -70,12 +85,6 @@ class MainActivity : ComponentActivity() {
                     onLanguageChange = runtimeController::setAppLanguage,
                     onCameraViewsReady = runtimeController::onCameraViewsReady
                 )
-                if (uiState.showGlassesDialog) {
-                    GlassesPlaceholderDialog(
-                        language = uiState.controls.appLanguage,
-                        onDismiss = appViewModel::onDismissGlassesDialog
-                    )
-                }
                 if (uiState.showCameraPermissionDialog) {
                     CameraPermissionExplanationDialog(
                         language = uiState.controls.appLanguage,
@@ -84,13 +93,13 @@ class MainActivity : ComponentActivity() {
                                 requestCameraPermission.launch(Manifest.permission.CAMERA)
                             }
                         },
-                        onDismiss = appViewModel::onDismissCameraPermissionDialog
+                        onDismiss = runtimeController::dismissCameraPermissionFlow
                     )
                 }
                 if (uiState.showPermissionDeniedDialog) {
                     CameraPermissionDeniedDialog(
                         language = uiState.controls.appLanguage,
-                        onDismiss = appViewModel::onDismissPermissionDeniedDialog
+                        onDismiss = runtimeController::dismissCameraPermissionFlow
                     )
                 }
             }
