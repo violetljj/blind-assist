@@ -458,9 +458,9 @@ class DetectorAbDeviceBenchmarkTest {
                         shouldAlert = row.getBoolean("expected_should_alert"),
                         riskLevel = RiskLevel.valueOf(row.getString("expected_risk_level")),
                         scenario = AssistScenario.valueOf(row.optString("assist_scenario", AssistScenario.GENERAL.name)),
-                        primaryObjectId = row.optString("primary_object_id", ""),
-                        sceneBucket = attributes?.optString("scene_bucket", "") ?: "",
-                        sequenceId = row.optString("sequence_id", "").takeIf { it.isNotBlank() },
+                        primaryObjectId = row.optionalString("primary_object_id"),
+                        sceneBucket = attributes?.optionalString("scene_bucket").orEmpty(),
+                        sequenceId = row.optionalString("sequence_id"),
                         frameIndex = row.optionalInt("frame_index"),
                         expectedApproachState = row.optionalApproachTrend("expected_approach_state"),
                         expectedApproachAlert = row.optionalBoolean("expected_approach_alert"),
@@ -1149,8 +1149,12 @@ class DetectorAbDeviceBenchmarkTest {
         return if (has(name) && !isNull(name)) getInt(name) else null
     }
 
+    private fun JSONObject.optionalString(name: String): String? {
+        return if (has(name) && !isNull(name)) getString(name).takeIf { it.isNotBlank() } else null
+    }
+
     private fun JSONObject.optionalApproachTrend(name: String): ApproachTrend? {
-        val value = optString(name, "").takeIf { it.isNotBlank() } ?: return null
+        val value = optionalString(name) ?: return null
         return runCatching { ApproachTrend.valueOf(value) }.getOrNull()
     }
 
@@ -1218,7 +1222,7 @@ class DetectorAbDeviceBenchmarkTest {
         val shouldAlert: Boolean,
         val riskLevel: RiskLevel,
         val scenario: AssistScenario,
-        val primaryObjectId: String,
+        val primaryObjectId: String?,
         val sceneBucket: String,
         val sequenceId: String? = null,
         val frameIndex: Int? = null,
@@ -1242,7 +1246,7 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("expected_should_alert", shouldAlert)
                 .put("expected_risk_level", riskLevel.name)
                 .put("assist_scenario", scenario.name)
-                .put("primary_object_id", primaryObjectId)
+                .put("primary_object_id", primaryObjectId ?: JSONObject.NULL)
                 .put("scene_bucket", sceneBucket)
                 .put("sequence_id", sequenceId ?: JSONObject.NULL)
                 .put("frame_index", frameIndex ?: JSONObject.NULL)

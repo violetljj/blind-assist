@@ -3771,3 +3771,68 @@
   - 当前三星设备为 4KB page-size，本轮完成的是 16KB 静态发布门禁，尚未在真实 16KB Android 15/16 环境验证安装、冷启动和连续推理。
   - `keystore.properties` 指向的本地 release keystore 不存在，因此没有生成签名 release APK/AAB；debug 里程碑按既有归档规则交付。
   - 实际场景采集、算法调参、模型替换和真实眼镜 BLE/USB/视频/反馈接入继续延期；模拟中心不得表述为真实硬件能力。
+
+## 2026-07-11
+
+### SANPO-Real 连续真实场景证据首批接入
+
+- 时间：2026-07-11 00:39 +08:00
+- 执行者：Codex
+- 类型：公开数据调研 / 连续序列导入 / 人工复核门禁 / 文档；不改变生产 App、模型、权限或版本号
+- 修改范围：
+  - `scripts/build_sanpo_sequence_evalset.py`
+  - `scripts/finalize_sanpo_sequence_evalset.py`
+  - `scripts/test_build_sanpo_sequence_evalset.py`
+  - `docs/SANPO_SEQUENCE_EVALSET.md`
+  - `docs/BLINDASSIST_EVALSET.md`
+  - `README.md`
+  - `idea.md`
+  - `DEVELOPMENT_LOG.md`
+- 资源核验：
+  - 原计划优先检查 PEDESTRIAN；Zenodo 官方 API 对 `10.5281/zenodo.10907945` 返回未注册，GitHub `CYENS/PEDESTRIAN` 也不存在，无法核验许可证、文件清单和哈希，因此没有接入或下载。
+  - 改用 SANPO-Real 官方公开存储桶。数据集页面与官方仓库确认数据许可证为 CC BY 4.0，可按 session 选择性下载；代码仓库许可证与数据许可证分开记录。
+- 实现内容：
+  - 导入脚本从 GCS API 枚举指定 session 的 RGB 与 segmentation 对齐帧，读取 session FPS、相机参数、场景属性、labelmap 和逐帧人工/机器标注类型。
+  - 15 FPS 源序列以最近帧方式重采样为 10 FPS，目标 `frame_index` 从 0 连续编号，另外保留源帧号与源/目标时间戳，匹配现有 benchmark 的 100ms 时间步。
+  - 解析 SANPO RGB 分割掩码：红通道为类别 ID，后两通道为实例 ID；保留全部 `source_regions`，只对 `pedestrian -> person` 和 `traffic light -> traffic light` 做无歧义 COCO 映射，拒绝把通用 `vehicle/animal/traffic sign/obstacle` 伪造为具体 COCO 类。
+  - 下载结果只生成 `manifest.draft.jsonl`。所有 BlindAssist 风险、提醒和逼近字段保持 null，状态为 `pending_review`；`finalize_sanpo_sequence_evalset.py` 只有在每行 CSV 明确 `accepted_manual_review` 且全部枚举、布尔值、图片与连续 frame index 合法时才生成 canonical `manifest.jsonl`。
+  - 每行保留官方 URL、GCS object name、RGB/掩码官方 MD5、派生 SHA256、许可证、再分发策略和隐私复核提示；下载后强制比对官方 MD5，并校验 RGB、掩码和 session description 尺寸一致；原始帧、掩码和 QA 全部位于 Git 忽略目录。
+- 首批本地候选集：
+  - 路径：`test-artifacts.local/datasets/blindassist-sanpo-pilot-20260711`。
+  - session：`-5OCPnbrwJdu3jH70ieU7pUiFsOJQoeG`，`camera_chest/left`，城市道路交叉口、晴天、高可见度、步行、中等障碍和较高车辆流量。
+  - 30 帧，覆盖 3 秒，2208×1242；源帧 15 FPS，目标 10 FPS。RGB `110,536,034` bytes，掩码 `698,298` bytes，30 个唯一 SHA256。
+  - 官方 SANPO split 为 `train`；8 帧为 `HUMAN_ANNOTATED`、22 帧为 `MACHINE_ANNOTATED`。只有 2 个同时具备人工分割和无歧义 COCO 映射的帧进入 detection GT `objects`；其余映射只保留为 `source_mapped_objects` 候选。
+  - 分割区域帧计数包括 vehicle 80、tree 60、obstacle 47、curb 29、pedestrian 11；这些是来源候选区域，不是 BlindAssist 风险真值。
+- 验证：
+  - `.venv-export312\Scripts\python.exe scripts\test_build_sanpo_sequence_evalset.py`：11 tests passed，覆盖 15→10 FPS 无重复采样、拒绝上采样、SANPO 类别保留/精确映射、未复核风险字段拒绝、finalize 正负路径、非 COCO primary 隔离、阻断 issue tag、GCS MD5 损坏、finalize 二次 SHA256 校验和机器标注 detection GT 拒绝。
+  - 首批下载脚本完成，`qa/manifest_validation.json`：`ok=true`、`image_count=30`、`unique_hashes=30`、`pending_review_count=30`、`benchmark_ready=false`。
+  - CLI 负向验证通过：`--target-fps 5` 在网络访问前被拒绝，`--lens right` 被 argparse 拒绝；当前导入只允许与 benchmark 100ms 时间步一致的 10 FPS 左目序列。
+  - 抽查首、中、末三张 boxed QA 图，连续画面、障碍/车辆/行人候选框和尺度变化可见；强光、阴影、脚手架、路桩、车辆与远处行人提供了比静态 COCO 更接近步行场景的复核素材。
+- 后续：
+  - 先完成 30 帧人工风险与 approach 复核，运行 finalize 并验证现有 benchmark；随后再选择 5–9 个不同环境 SANPO session 和本地受控自采场景。
+  - canonical manifest 生成前不得描述为 benchmark 已通过；本轮不升级 `versionName=9.9.0` / `versionCode=35`，不生成或归档 APK。
+
+### SANPO 首批序列 AI 多轮复核与正式清单
+
+- 时间：2026-07-11 01:17 +08:00
+- 执行者：Codex；复核身份明确记录为 `ai_assistant`，不冒充人工复核。
+- 复核方式：两路逐帧独立视觉复核分别覆盖 0–14、15–29 帧，第三路复核全序列时序一致性，主流程再检查全部 30 张 boxed 图并裁决分歧。
+- 共识标签：主风险区域 30/30 为 `sanpo_20_2`；距离均为 `MID`、风险均为 `LOW`、不触发即时或 approach 告警。方向为 CENTER 22 帧、LEFT 8 帧；时序为 UNKNOWN 1 帧、STABLE 4 帧、APPROACHING 25 帧。
+- 分歧处理：时序复核曾建议把末段设为立即告警；综合障碍仍处中距离、画面保留绕行空间以及两路逐帧复核意见，最终保留不告警。强光、方向边界帧下调置信度，最终逐帧范围为 0.66–0.87。
+- detection GT：第 24 帧 1 个人框、第 28 帧 2 个人框通过 AI 视觉复核；其他机器分割映射仍不进入 detection GT。
+- 门禁增强：finalize 新增 `accepted_ai_review` 路径，但必须显式传入 `--allow-ai-review`，并要求 `reviewer_type=ai_assistant`、reviewer ID、置信度至少 0.65、至少两次独立复核；provenance 写入每行 manifest。人工路径保持兼容。
+- 产物：`test-artifacts.local/datasets/blindassist-sanpo-pilot-20260711/manifest.jsonl`，30 行，SHA256 `879eea31021e68de1648f0d8818b0f8f30fea51d3fad9bf56cc4834cf32023e8`；finalize report `ok=true`、errors 为空。
+- 验证：`scripts/test_build_sanpo_sequence_evalset.py` 13 tests passed；逐行语义断言、复核 provenance、方向分段、approach 分段、提醒字段和 detection GT 复核状态全部通过。
+- 边界：这次完成的是工程数据复核与 benchmark 输入晋级，不是人工/目标用户安全验证，也尚未执行固定真机连续序列 benchmark。
+
+### SANPO 真机 A/B benchmark 与解析器修正
+
+- 时间：2026-07-11 01:36–01:46 +08:00
+- 设备：Samsung `SM-S9280` / Android 16，序列 30 帧，`current` 风险配置，每图 3 次 App 链路运行。
+- 首轮结果：A/B instrumentation `BUILD SUCCESSFUL`，随后默认 YOLO11n 90 秒 CameraX 回归 `status=passed`，证据目录为 `test-artifacts.local/detector-ab-device-benchmark/20260711-013632` 和 `test-artifacts.local/device-regression/20260711-013904`。
+- 复核发现：benchmark 使用 `JSONObject.optString()` 读取 manifest 的 `primary_object_id: null` 时得到字符串 `"null"`，把无主 COCO 目标的样本错误纳入 `primaryObjectHitRate` 分母。修正为 null-aware `optionalString()`，同时用于 `sequence_id`、`scene_bucket` 和 approach 枚举解析；`BlindAssistExpectedRisk.primaryObjectId` 改为 nullable，JSON 输出保持真正的 null。
+- 修正后重跑：证据目录 `test-artifacts.local/detector-ab-device-benchmark/20260711-014344`，instrumentation 与汇总均 `status=passed`；30 帧的 `primary_object_id` 已验证全部为 JSON null，不再是字符串。
+- YOLO11n：AP50/precision/recall 均 0，FP/img `0.233`、FN/img `0.1`、错误提醒率 `0.033`、approach recall `0`；第 0 帧把远处内容误认成 person 并产生 RIGHT/NEAR/MEDIUM 提醒。total P50/P95 `60/68ms`。
+- YOLO26n：AP50/precision/recall 均 0，FP/img `0.433`、FN/img `0.1`、错误提醒率 `0.033`、approach recall `0`；第 25 帧误认成 truck 并产生 RIGHT/NEAR/MEDIUM 提醒。total P50/P95 `47/48ms`。
+- 两款模型都漏掉第 24 帧 1 个、第 28 帧 2 个 person GT；25 帧标注为 `APPROACHING` 的通用障碍均未被时序跟踪。YOLO26n 虽快，但误检更多且检测/风险质量无改善，推荐保持 `do_not_replace_default_model`。
+- 决策：默认 App 继续使用 YOLO11n；下一算法实验优先考虑可通行区域、语义分割或深度几何候选，不继续只比较 COCO detector。该结论是单序列工程证据，不是安全保证。

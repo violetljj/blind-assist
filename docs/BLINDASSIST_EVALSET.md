@@ -103,6 +103,8 @@ test-artifacts.local/datasets/blindassist-evalset-*/
 test-artifacts.local/datasets/blindassist-evalset-20260527-impl/
 ```
 
-Open Images、LOCO、GND 和 LAVN 仍适合作为后续扩展来源，但需要独立确认下载方式、许可证和标注格式后再合入。
+连续场景扩展已于 2026-07-11 启动，首批使用官方 SANPO-Real CC BY 4.0 数据，流程见 [SANPO 连续场景试验集](SANPO_SEQUENCE_EVALSET.md)。该工作流将 15 FPS 原始序列重采样到现有 benchmark 对齐的 10 FPS，保留全部 SANPO 分割区域，但人工复核前不生成 canonical `manifest.jsonl`。
+
+Open Images、VIP-Mobility360、GND 和 LAVN 仍适合作为后续扩展来源，但需要独立确认下载体积、相机视角、许可证和标注格式后再合入。PEDESTRIAN 论文给出的 Zenodo DOI 与 GitHub 仓库在 2026-07-11 均不存在，暂不接入，也不把论文开放状态推断成数据集许可证。
 
 原图只保存在本地忽略目录，不随仓库分发。若未来要公开评测集，只应公开脚本、图片来源 id、派生标注和复现说明，并重新核对每个数据源的许可要求。
