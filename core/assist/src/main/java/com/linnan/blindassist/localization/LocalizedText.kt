@@ -142,7 +142,7 @@ object LocalizedText {
             RiskLevel.HIGH -> if (language == AppLanguage.EN) "High risk" else "高风险"
             RiskLevel.MEDIUM -> if (language == AppLanguage.EN) "Medium risk" else "中风险"
             RiskLevel.LOW -> if (language == AppLanguage.EN) "Low risk" else "低风险"
-            RiskLevel.NONE -> if (language == AppLanguage.EN) "Safe" else "安全"
+            RiskLevel.NONE -> if (language == AppLanguage.EN) "Monitoring" else "持续检测"
         }
     }
 

@@ -1,6 +1,7 @@
 .gradle/
 .gradle-local/
 .android-sdk/
+.android-home/
 .downloads/
 .venv-export/
 .venv-export312/
@@ -8,6 +9,9 @@
 .jdk/
 .cache/
 .kotlin/
+.kotlin-home/
+**/__pycache__/
+work/
 python311-local/
 .idea/
 *.iml

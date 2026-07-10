@@ -147,7 +147,8 @@ class RiskAnalyzerTest {
 
         assertEquals(RiskLevel.NONE, result.level)
         assertEquals(ProximityBand.FAR, result.proximity)
-        assertEquals("未发现风险", result.message)
+        assertEquals(RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE, result.evidenceState)
+        assertEquals("检测到模型支持的目标，当前未达到提醒条件。", result.message)
     }
 
     @Test
@@ -196,6 +197,7 @@ class RiskAnalyzerTest {
 
         assertEquals(RiskLevel.NONE, result.level)
         assertEquals(ProximityBand.FAR, result.proximity)
+        assertEquals(RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE, result.evidenceState)
         assertEquals(null, result.distanceEvidence)
         assertEquals(
             RiskFusionReason.DEPTH_REJECTED_LOW_CONFIDENCE.name,
@@ -309,6 +311,7 @@ class RiskAnalyzerTest {
 
         assertEquals(RiskLevel.NONE, result.level)
         assertEquals(ProximityBand.FAR, result.proximity)
+        assertEquals(RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE, result.evidenceState)
         assertEquals(
             RiskFusionReason.DEPTH_REJECTED_LARGE_PROMOTION.name,
             result.scoreBreakdown.fusionSummary
@@ -344,6 +347,7 @@ class RiskAnalyzerTest {
 
         assertEquals(RiskLevel.NONE, result.level)
         assertEquals(ProximityBand.FAR, result.proximity)
+        assertEquals(RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE, result.evidenceState)
     }
 
     @Test
@@ -354,6 +358,16 @@ class RiskAnalyzerTest {
         )
 
         assertEquals(RiskLevel.NONE, result.level)
+        assertEquals(RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE, result.evidenceState)
+    }
+
+    @Test
+    fun emptyFrameHasNoSupportedTargetEvidence() {
+        val result = analyzer.analyze(emptyList(), frame)
+
+        assertEquals(RiskLevel.NONE, result.level)
+        assertEquals(RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE, result.evidenceState)
+        assertEquals("当前未检测到达到提醒条件的支持目标，请继续确认周围环境。", result.message)
     }
 
     private fun detection(

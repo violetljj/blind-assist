@@ -149,6 +149,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -Sa
 - 修改后尽量运行相关测试或构建；如果无法运行，必须在开发日志和最终说明中写清原因。
 - 每次任务结束前，检查 `DEVELOPMENT_LOG.md` 是否已经补充本次记录。
 - 后续出现有可能性、创造性、产品路线价值但不一定立即实施的想法时，应记录到仓库根目录 `idea.md`，并在真正实施时再同步更新 README、开发日志、版本号、测试结果和 APK 归档。若 `idea.md` 中某个想法已经实现，应把对应标题明显标注为 `【已完成】`；若只实现了一部分，应标注为 `【部分完成】` 并写清剩余范围。
+- ESP32 / 旧眼镜工程相关任务的可信源码路径是 `E:\linnan\glassses`，参考资料路径是 `E:\linnan\esp32参考资料`；不要再依赖此前截断的 `glassses-main.zip`、失败克隆残留目录或临时恢复目录。当前 Android App 中 `连接眼镜设备` 仍是占位入口，不扫描蓝牙、不联网、不申请额外权限，也不代表已经接入真实 ESP32/眼镜硬件。分析旧链路时优先读取 `E:\linnan\glassses\services\audio_service.py`、`E:\linnan\glassses\services\camera_service.py`、`E:\linnan\glassses\services\microphone_service.py`、`E:\linnan\glassses\stm32code\esp32_firmware_mic.ino` 和 `E:\linnan\glassses\stm32code\speaker.cpp`；真正迁移到 Android 前，应先设计 `GlassesConnectionRepository`、`GlassesControlChannel`、`GlassesFrameSource` 等边界和无外设降级路径，再决定是否复用 TCP PCM / MJPEG 实验协议。
 
 ## 文本编码
 

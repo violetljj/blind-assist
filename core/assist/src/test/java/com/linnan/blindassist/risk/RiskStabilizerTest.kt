@@ -185,7 +185,7 @@ class RiskStabilizerTest {
     }
 
     private fun noRisk(): RiskResult {
-        return RiskResult(RiskLevel.NONE, RiskDirection.NONE, "未发现风险")
+        return RiskResult(RiskLevel.NONE, RiskDirection.NONE, "持续检测中")
     }
 
     private fun risk(

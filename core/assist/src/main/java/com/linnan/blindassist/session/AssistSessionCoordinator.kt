@@ -11,6 +11,7 @@ class AssistSessionCoordinator(
     private val fpsTracker: FpsTracker = FpsTracker()
 ) {
     fun startSession(nowMs: Long = System.currentTimeMillis()) {
+        feedbackGateway.resetSession()
         fpsTracker.reset()
         assistEngine.startSession(nowMs)
     }

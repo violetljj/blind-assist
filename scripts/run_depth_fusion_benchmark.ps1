@@ -153,7 +153,7 @@ try {
 
     Invoke-Native ".\gradlew.bat" @(
         ":app:assembleDebug",
-        ":app:assembleDebugAndroidTest",
+        ":device-benchmark:assembleDebug",
         "-PblindAssistEvalSetDir=$blindAssistEvalSet",
         "-PdepthBenchmarkModelPath=$depthModel",
         "-PdepthBenchmarkModelAssetName=$depthModelAssetName",
@@ -180,7 +180,7 @@ try {
     }
 
     Invoke-Native ".\gradlew.bat" @(
-        ":app:connectedDebugAndroidTest",
+        ":device-benchmark:connectedDebugAndroidTest",
         "-PblindAssistEvalSetDir=$blindAssistEvalSet",
         "-PdepthBenchmarkModelPath=$depthModel",
         "-PdepthBenchmarkModelAssetName=$depthModelAssetName",

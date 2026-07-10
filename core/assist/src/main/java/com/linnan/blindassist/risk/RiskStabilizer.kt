@@ -46,7 +46,15 @@ class RiskStabilizer {
         if (pendingFrames >= policy.mediumConfirmFrames) {
             return confirm(raw, policy, nowMs)
         }
-        return heldOr(raw.copy(level = RiskLevel.NONE, direction = RiskDirection.NONE, message = "未发现风险"), policy, nowMs)
+        return heldOr(
+            raw.copy(
+                level = RiskLevel.NONE,
+                direction = RiskDirection.NONE,
+                message = "检测到模型支持的目标，当前未达到提醒条件。"
+            ),
+            policy,
+            nowMs
+        )
     }
 
     private fun confirm(raw: RiskResult, policy: AlertPolicy, nowMs: Long): RiskResult {

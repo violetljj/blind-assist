@@ -90,10 +90,19 @@ class AssistRuntimeController(
 
     fun shutdown() {
         cameraLifecycleAdapter.stop()
-        lifecycleGate.shutdown()
-        cameraLifecycleAdapter.shutdown()
-        detector.close()
-        feedbackController.shutdown()
+        lifecycleGate.shutdown(
+            resetState = {
+                coordinator.reset()
+                frameProcessor.resetSessionStats()
+            },
+            onIdle = {
+                activity.runOnUiThread {
+                    cameraLifecycleAdapter.shutdown()
+                    detector.close()
+                    feedbackController.shutdown()
+                }
+            }
+        )
     }
 
     fun openCameraExperience() {

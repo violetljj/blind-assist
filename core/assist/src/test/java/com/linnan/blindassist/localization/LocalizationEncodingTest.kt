@@ -85,7 +85,7 @@ class LocalizationEncodingTest {
             add(LocalizedText.enabled(false, AppLanguage.ZH))
             add(LocalizedText.durationText(hasStarted = false, durationMs = 0L, language = AppLanguage.ZH))
             add(LocalizedText.durationText(hasStarted = true, durationMs = 65_000L, language = AppLanguage.ZH))
-            add(SpeechStyle.STANDARD.messageFor(RiskResult(RiskLevel.NONE, RiskDirection.NONE, "未发现风险"), AppLanguage.ZH))
+            add(SpeechStyle.STANDARD.messageFor(RiskResult(RiskLevel.NONE, RiskDirection.NONE, "持续检测中"), AppLanguage.ZH))
         }
 
         catalog.forEach { text ->

@@ -82,8 +82,8 @@ class AssistFrameProcessorTest {
         val frame = FakeVisionFrame()
         val stats = FramePipelineStats()
         val lifecycleGate = AssistRuntimeLifecycleGate()
-        lifecycleGate.startSession()
-        lifecycleGate.stopSession()
+        lifecycleGate.startSession {}
+        lifecycleGate.stopSession {}
         val processor = processor(
             detector = detector,
             stats = stats,
@@ -95,7 +95,7 @@ class AssistFrameProcessorTest {
 
         assertEquals(0, detector.detectCalls)
         assertEquals(1, frame.closeCalls)
-        assertEquals(1L, stats.snapshot().droppedInactive)
+        assertEquals(0L, stats.snapshot().droppedInactive)
     }
 
     @Test
@@ -156,6 +156,59 @@ class AssistFrameProcessorTest {
         assertEquals(33L, snapshot.inferenceP95Ms)
     }
 
+    @Test
+    fun staleDetectorResultCannotReachNewSessionFeedbackOrStats() {
+        val started = CountDownLatch(1)
+        val release = CountDownLatch(1)
+        val detector = FakeDetector(onDetect = {
+            started.countDown()
+            release.await(2, TimeUnit.SECONDS)
+        })
+        val gate = AssistRuntimeLifecycleGate()
+        val stats = FramePipelineStats()
+        val gateway = FakeFeedbackGateway()
+        val frame = FakeVisionFrame()
+        val processor = processor(
+            detector = detector,
+            stats = stats,
+            lifecycleGate = gate,
+            feedbackGateway = gateway
+        )
+
+        val worker = Thread { processor.process(frame) }
+        worker.start()
+        assertTrue(started.await(1, TimeUnit.SECONDS))
+        gate.stopSession { processor.resetSessionStats() }
+        gate.startSession { processor.resetSessionStats() }
+        release.countDown()
+        worker.join(2_000L)
+
+        assertEquals(0, gateway.notifyCalls)
+        assertEquals(0L, stats.snapshot().processed)
+        assertEquals(1, frame.closeCalls)
+    }
+
+    @Test
+    fun queuedUiRenderIsIgnoredAfterSessionChanges() {
+        val queued = mutableListOf<() -> Unit>()
+        val appViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore()))
+        val initialState = appViewModel.uiState.value
+        val gate = AssistRuntimeLifecycleGate()
+        val processor = processor(
+            lifecycleGate = gate,
+            appViewModel = appViewModel,
+            runOnUiThread = { queued += it }
+        )
+
+        processor.process(FakeVisionFrame())
+        assertEquals(1, queued.size)
+        gate.stopSession { processor.resetSessionStats() }
+        gate.startSession { processor.resetSessionStats() }
+        queued.single().invoke()
+
+        assertEquals(initialState, appViewModel.uiState.value)
+    }
+
     private fun processor(
         detector: FakeDetector = FakeDetector(),
         stats: FramePipelineStats = FramePipelineStats(),
@@ -163,13 +216,15 @@ class AssistFrameProcessorTest {
         startLifecycleGate: Boolean = true,
         active: Boolean = true,
         config: AssistRuntimeConfig = runtimeConfig(),
-        onCameraFailure: (String) -> Unit = {}
+        onCameraFailure: (String) -> Unit = {},
+        feedbackGateway: FakeFeedbackGateway = FakeFeedbackGateway(),
+        appViewModel: BlindAssistViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore())),
+        runOnUiThread: ((() -> Unit) -> Unit) = { it() }
     ): AssistFrameProcessor {
+        val coordinator = AssistSessionCoordinator(feedbackGateway = feedbackGateway)
         if (startLifecycleGate) {
-            lifecycleGate.startSession()
+            lifecycleGate.startSession { coordinator.startSession() }
         }
-        val coordinator = AssistSessionCoordinator(feedbackGateway = FakeFeedbackGateway())
-        val appViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore()))
         val configSnapshot = AssistRuntimeConfigSnapshot(config)
         val guidanceFactory = AssistRuntimeGuidanceFactory(detector) { configSnapshot.get() }
         val renderer = AssistRuntimeRenderer(
@@ -187,7 +242,7 @@ class AssistFrameProcessorTest {
             stats = stats,
             lifecycleGate = lifecycleGate,
             isCameraActive = { active },
-            runOnUiThread = { it() },
+            runOnUiThread = runOnUiThread,
             onCameraFailure = onCameraFailure
         )
     }
@@ -243,11 +298,21 @@ class AssistFrameProcessorTest {
     }
 
     private class FakeFeedbackGateway : FeedbackGateway {
+        var resetCalls = 0
+            private set
+        var notifyCalls = 0
+            private set
+
+        override fun resetSession() {
+            resetCalls += 1
+        }
+
         override fun notify(
             risk: com.linnan.blindassist.risk.RiskResult,
             profile: AlertProfile,
             scenario: AssistScenario
         ): FeedbackDecision {
+            notifyCalls += 1
             return FeedbackDecision(null, triggered = false, reason = FeedbackReason.NO_FEEDBACK_RISK)
         }
     }

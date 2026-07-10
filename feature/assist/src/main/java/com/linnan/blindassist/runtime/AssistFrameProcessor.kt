@@ -20,13 +20,13 @@ internal class AssistFrameProcessor(
     private val isProcessing = AtomicBoolean(false)
 
     fun process(frame: VisionFrame) {
-        stats.onReceived()
         val lease = lifecycleGate.tryEnterFrame()
         if (lease == null) {
-            stats.onDroppedInactive()
             frame.close()
             return
         }
+        stats.onReceived()
+        val token = lease.token
         val runtimeConfig = configSnapshot.get()
         if (!isCameraActive() || !runtimeConfig.detectionEnabled) {
             stats.onDroppedInactive()
@@ -36,7 +36,11 @@ internal class AssistFrameProcessor(
         }
         if (!detector.isReady) {
             stats.onDroppedDetectorUnavailable()
-            runOnUiThread { renderer.renderModelUnavailable() }
+            runOnUiThread {
+                if (lifecycleGate.isCurrent(token)) {
+                    renderer.renderModelUnavailable()
+                }
+            }
             frame.close()
             lease.close()
             return
@@ -50,26 +54,41 @@ internal class AssistFrameProcessor(
 
         try {
             val detectorFrame = detector.detect(frame)
-            val snapshot = stats.onProcessed(detectorFrame.metrics.inferenceMs)
-            val detectorFrameWithPipelineStats = detectorFrame.copy(
-                metrics = detectorFrame.metrics.copy(
-                    droppedFrameRate = snapshot.droppedFrameRate,
-                    inferenceP50Ms = snapshot.inferenceP50Ms,
-                    inferenceP95Ms = snapshot.inferenceP95Ms
+            val committedFrame = lifecycleGate.commitIfCurrent(lease) {
+                val snapshot = stats.onProcessed(detectorFrame.metrics.inferenceMs)
+                val detectorFrameWithPipelineStats = detectorFrame.copy(
+                    metrics = detectorFrame.metrics.copy(
+                        droppedFrameRate = snapshot.droppedFrameRate,
+                        inferenceP50Ms = snapshot.inferenceP50Ms,
+                        inferenceP95Ms = snapshot.inferenceP95Ms
+                    )
                 )
-            )
-            val frameResult = coordinator.processFrame(
-                detectorFrameWithPipelineStats,
-                runtimeConfig.alertProfile,
-                runtimeConfig.assistScenario
-            )
-            runOnUiThread {
-                renderer.renderFrame(detectorFrameWithPipelineStats, frameResult, runtimeConfig)
+                val frameResult = coordinator.processFrame(
+                    detectorFrameWithPipelineStats,
+                    runtimeConfig.alertProfile,
+                    runtimeConfig.assistScenario
+                )
+                CommittedFrame(detectorFrameWithPipelineStats, frameResult)
+            }
+            if (committedFrame != null) {
+                runOnUiThread {
+                    if (lifecycleGate.isCurrent(token)) {
+                        renderer.renderFrame(
+                            committedFrame.detectorFrame,
+                            committedFrame.frameResult,
+                            runtimeConfig
+                        )
+                    }
+                }
             }
         } catch (error: Exception) {
             logError("Frame processing failed", error)
-            runOnUiThread {
-                onCameraFailure("Detection failed: ${error.message ?: "unknown error"}")
+            if (lifecycleGate.isCurrent(token)) {
+                runOnUiThread {
+                    if (lifecycleGate.isCurrent(token)) {
+                        onCameraFailure("Detection failed: ${error.message ?: "unknown error"}")
+                    }
+                }
             }
         } finally {
             isProcessing.set(false)
@@ -78,10 +97,14 @@ internal class AssistFrameProcessor(
         }
     }
 
-    fun reset() {
-        isProcessing.set(false)
+    fun resetSessionStats() {
         stats.reset()
     }
+
+    private data class CommittedFrame(
+        val detectorFrame: com.linnan.blindassist.vision.DetectorFrameResult,
+        val frameResult: com.linnan.blindassist.session.AssistFrameResult
+    )
 
     private companion object {
         const val PERF_TAG = AssistRuntimePerformanceLogger.PERF_TAG

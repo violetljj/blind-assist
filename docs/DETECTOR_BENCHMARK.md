@@ -1,8 +1,20 @@
 # 实时检测器横向评测说明
 
+## v9.4.0 测试模块入口
+
+设备 benchmark 已从 `:app` 的功能 AndroidTest 中分离到独立 `:device-benchmark` test-only 模块。功能测试和 benchmark 必须使用不同入口：
+
+```powershell
+.\gradlew.bat :app:connectedDebugAndroidTest
+.\gradlew.bat :device-benchmark:assembleDebug
+.\gradlew.bat :device-benchmark:connectedDebugAndroidTest
+```
+
+`DetectorAbDeviceBenchmarkTest` 的 FQCN、instrumentation runner 参数、正式 App APK 路径和设备端 `/sdcard/Android/data/com.linnan.blindassist/files/...` 结果路径保持兼容。旧 `run_yolo26n_device_benchmark.ps1` 继续转发到 Detector A/B 流程。构建 benchmark APK 只证明测试代码和现有资产可以打包，不代表真机 benchmark 已通过。
+
 ## 单目深度融合候选路线
 
-2026-06-11 新增 `YOLO11n + 单目深度TFLite + 风险融合` 的候选评测脚手架。该路线只用于 androidTest 和本地实验，不替换 App 默认模型；正式 debug APK 仍只应包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。
+2026-06-11 新增 `YOLO11n + 单目深度TFLite + 风险融合` 的候选评测脚手架。该路线现只用于 `:device-benchmark` 和本地实验，不替换 App 默认模型；正式 debug APK 仍只应包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。
 
 候选深度模型默认放在：
 ```text
@@ -60,7 +72,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_depth_fusion_benchmark.ps
 
 ## YOLO11n vs YOLO26n 同设备 A/B 质量评测
 
-2026-05-27 新增同设备 A/B 评测链路，用同一台 Android 设备、同一批 COCO100 图片、同一套 BlindAssist 预处理、YOLO raw 输出解析、NMS、风险分析规则和指标口径，对默认 `yolo11n` 与候选 `yolo26n` 做检测质量与风险质量对比。该流程仍不替换 App 默认模型；`yolo26n` 只进入 androidTest APK 资产，正式 debug APK 仍只包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。
+2026-05-27 新增同设备 A/B 评测链路，用同一台 Android 设备、同一批 COCO100 图片、同一套 BlindAssist 预处理、YOLO raw 输出解析、NMS、风险分析规则和指标口径，对默认 `yolo11n` 与候选 `yolo26n` 做检测质量与风险质量对比。该流程仍不替换 App 默认模型；`yolo26n` 只进入 `:device-benchmark` APK 资产，正式 debug APK 仍只包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。
 
 COCO100 准备脚本现在除 `coco100_manifest.json` 外，还会生成端侧评测用的标注文件：
 ```text

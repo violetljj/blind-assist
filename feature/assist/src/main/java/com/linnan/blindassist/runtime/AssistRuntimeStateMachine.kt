@@ -55,7 +55,7 @@ class AssistRuntimeStateMachine(
                 currentState = AssistRuntimeState.Error(event.message)
                 effects += AssistRuntimeEffect.StopCamera
                 effects += AssistRuntimeEffect.ClearOverlay
-                effects += AssistRuntimeEffect.ResetSession
+                effects += AssistRuntimeEffect.StopSession
                 effects += AssistRuntimeEffect.Render(AssistRuntimeRenderTarget.CameraError, event.message)
             }
             AssistRuntimeEvent.CloseCamera -> {
@@ -64,7 +64,7 @@ class AssistRuntimeStateMachine(
                 effects += AssistRuntimeEffect.StopCamera
                 effects += AssistRuntimeEffect.ClearOverlay
                 effects += AssistRuntimeEffect.CloseCamera
-                effects += AssistRuntimeEffect.ResetSession
+                effects += AssistRuntimeEffect.StopSession
             }
             is AssistRuntimeEvent.DetectionChanged -> {
                 if (event.enabled) {
@@ -79,7 +79,7 @@ class AssistRuntimeStateMachine(
                 } else if (currentState == AssistRuntimeState.Running || currentState == AssistRuntimeState.Starting) {
                     currentState = AssistRuntimeState.DetectionPaused
                     effects += AssistRuntimeEffect.ClearOverlay
-                    effects += AssistRuntimeEffect.ResetSession
+                    effects += AssistRuntimeEffect.StopSession
                     effects += AssistRuntimeEffect.Render(AssistRuntimeRenderTarget.Paused)
                 }
             }
@@ -138,7 +138,7 @@ sealed interface AssistRuntimeEffect {
     data object StartCameraIfReady : AssistRuntimeEffect
     data object StopCamera : AssistRuntimeEffect
     data object StartSession : AssistRuntimeEffect
-    data object ResetSession : AssistRuntimeEffect
+    data object StopSession : AssistRuntimeEffect
     data object ClearOverlay : AssistRuntimeEffect
     data object ShowPermissionDenied : AssistRuntimeEffect
     data object ApplyConfig : AssistRuntimeEffect

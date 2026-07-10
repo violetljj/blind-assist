@@ -79,7 +79,7 @@ class SceneReplayRegressionTest {
     }
 
     @Test
-    fun replayEmptyFrameStaysVisualOnlyWithDistanceReason() {
+    fun replayEmptyFrameStaysVisualOnlyWithoutSupportedEvidence() {
         val result = coordinator().processFrame(
             detectorFrame = replayFrame(),
             profile = AlertProfile.STANDARD,
@@ -90,7 +90,7 @@ class SceneReplayRegressionTest {
         assertEquals(0, result.evaluation.detectionCount)
         assertEquals(RiskLevel.NONE, result.evaluation.rawRisk.level)
         assertEquals(RiskLevel.NONE, result.evaluation.stableRisk.level)
-        assertEquals(FeedbackReason.DISTANCE_TOO_FAR, result.feedbackDecision.reason)
+        assertEquals(FeedbackReason.NO_FEEDBACK_RISK, result.feedbackDecision.reason)
         assertEquals(1, result.sessionSummary.noneCount)
     }
 
@@ -129,7 +129,7 @@ class SceneReplayRegressionTest {
         assertEquals(RiskLevel.HIGH, held.evaluation.stableRisk.level)
         assertEquals(FeedbackReason.HELD_ALERT, held.feedbackDecision.reason)
         assertEquals(RiskLevel.NONE, cleared.evaluation.stableRisk.level)
-        assertEquals(FeedbackReason.DISTANCE_TOO_FAR, cleared.feedbackDecision.reason)
+        assertEquals(FeedbackReason.NO_FEEDBACK_RISK, cleared.feedbackDecision.reason)
         assertEquals(RiskLevel.HIGH, recovered.evaluation.stableRisk.level)
         assertEquals(FeedbackReason.TRIGGERED, recovered.feedbackDecision.reason)
     }
@@ -212,6 +212,8 @@ class SceneReplayRegressionTest {
     private class ReplayFeedbackGateway(
         private val decisionFor: (RiskResult, AlertProfile, AssistScenario) -> FeedbackDecision
     ) : FeedbackGateway {
+        override fun resetSession() = Unit
+
         override fun notify(
             risk: RiskResult,
             profile: AlertProfile,

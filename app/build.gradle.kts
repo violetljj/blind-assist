@@ -1,4 +1,3 @@
-import org.gradle.api.tasks.Sync
 import java.util.Properties
 
 plugins {
@@ -17,46 +16,6 @@ val releaseSigningProperties = Properties().apply {
 }
 val hasReleaseSigningProperties = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
     .all { key -> releaseSigningProperties.getProperty(key).isNullOrBlank().not() }
-val yolo26nBenchmarkAssetsDir = layout.buildDirectory.dir("generated/yolo26nBenchmarkAssets")
-val depthBenchmarkAssetsDir = layout.buildDirectory.dir("generated/depthBenchmarkAssets")
-val blindAssistEvalSetDir = providers
-    .gradleProperty("blindAssistEvalSetDir")
-    .orElse("test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
-val depthBenchmarkModelPath = providers
-    .gradleProperty("depthBenchmarkModelPath")
-    .orElse(".downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite")
-val depthBenchmarkModelAssetName = providers
-    .gradleProperty("depthBenchmarkModelAssetName")
-    .orElse("depth_anything_v2_small_fp32.tflite")
-val prepareYolo26nBenchmarkAssets = tasks.register<Sync>("prepareYolo26nBenchmarkAssets") {
-    from(project.file("src/main/assets")) {
-        include("coco_labels.txt")
-        include("yolo11n_fp16_320.tflite")
-    }
-    from(rootProject.file(".downloads/detector-lab/exports")) {
-        include("yolo26n_fp16_320.tflite")
-    }
-    from(rootProject.file(".downloads/detector-lab/datasets/coco100")) {
-        include("coco100_manifest.json")
-        include("coco100_annotations.json")
-        include("images/**")
-    }
-    from(blindAssistEvalSetDir.map { rootProject.file(it) }) {
-        include("dataset_spec.json")
-        include("manifest.jsonl")
-        include("images/test/**")
-        into("blindassist_evalset")
-    }
-    into(yolo26nBenchmarkAssetsDir)
-}
-val prepareDepthBenchmarkAssets = tasks.register<Sync>("prepareDepthBenchmarkAssets") {
-    from(depthBenchmarkModelPath.map { rootProject.file(it) }) {
-        rename { depthBenchmarkModelAssetName.get() }
-        into("depth")
-    }
-    into(depthBenchmarkAssetsDir)
-}
-
 gradle.taskGraph.whenReady {
     val releasePackageTaskRequested = allTasks.any { task ->
         task.path in setOf(":app:assembleRelease", ":app:bundleRelease") ||
@@ -78,8 +37,8 @@ android {
         applicationId = "com.linnan.blindassist"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 33
-        versionName = "8.9.0"
+        versionCode = 34
+        versionName = "9.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -127,17 +86,6 @@ android {
         noCompress += "tflite"
     }
 
-    sourceSets {
-        getByName("androidTest") {
-            assets.srcDir(yolo26nBenchmarkAssetsDir)
-            assets.srcDir(depthBenchmarkAssetsDir)
-        }
-    }
-}
-
-tasks.matching { it.name == "mergeDebugAndroidTestAssets" }.configureEach {
-    dependsOn(prepareYolo26nBenchmarkAssets)
-    dependsOn(prepareDepthBenchmarkAssets)
 }
 
 dependencies {
@@ -165,7 +113,4 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.compose.foundation)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.tflite)
-    androidTestImplementation(project(":core:assist"))
-    androidTestImplementation(project(":core:vision"))
 }

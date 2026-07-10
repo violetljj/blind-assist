@@ -112,6 +112,16 @@ class AssistSessionCoordinatorTest {
         assertTrue(result.explanation.headline.contains("走廊通行"))
     }
 
+    @Test
+    fun startSessionResetsFeedbackState() {
+        val gateway = FakeFeedbackGateway(FeedbackDecision(null, false, FeedbackReason.NO_FEEDBACK_RISK))
+        val coordinator = AssistSessionCoordinator(feedbackGateway = gateway, fpsTracker = fixedFpsTracker())
+
+        coordinator.startSession(nowMs = 1000L)
+
+        assertEquals(1, gateway.resetCalls)
+    }
+
     private fun fixedFpsTracker(): FpsTracker {
         return FpsTracker(clock = { 1000L }).also { it.onFrame() }
     }
@@ -131,6 +141,12 @@ class AssistSessionCoordinatorTest {
     private class FakeFeedbackGateway(private val decision: FeedbackDecision) : FeedbackGateway {
         var lastRisk: RiskResult? = null
         var lastScenario: AssistScenario? = null
+        var resetCalls = 0
+            private set
+
+        override fun resetSession() {
+            resetCalls += 1
+        }
 
         override fun notify(
             risk: RiskResult,

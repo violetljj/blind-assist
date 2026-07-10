@@ -1,85 +1,95 @@
 package com.linnan.blindassist.runtime
 
-import java.util.concurrent.TimeUnit
+internal data class SessionToken(val generation: Long)
 
-internal class AssistRuntimeLifecycleGate(
-    private val idleWaitMs: Long = DEFAULT_IDLE_WAIT_MS
-) {
-    private val lock = Object()
+internal class AssistRuntimeLifecycleGate {
+    private val lock = Any()
+    private var generation = 0L
     private var acceptingFrames = false
     private var closed = false
     private var inFlightFrames = 0
+    private var idleAction: (() -> Unit)? = null
 
-    fun startSession() {
-        synchronized(lock) {
-            if (!closed) {
-                acceptingFrames = true
-            }
+    fun startSession(resetState: () -> Unit): SessionToken {
+        return synchronized(lock) {
+            check(!closed) { "Cannot start a closed runtime lifecycle" }
+            acceptingFrames = false
+            generation += 1L
+            resetState()
+            acceptingFrames = true
+            SessionToken(generation)
         }
     }
 
-    fun stopSession(): Boolean {
-        stopAcceptingFrames()
-        return awaitIdle()
+    fun stopSession(resetState: () -> Unit) {
+        synchronized(lock) {
+            acceptingFrames = false
+            generation += 1L
+            resetState()
+        }
     }
 
-    fun shutdown(): Boolean {
+    fun shutdown(resetState: () -> Unit, onIdle: () -> Unit) {
+        var runImmediately: (() -> Unit)? = null
         synchronized(lock) {
+            if (closed) return
             closed = true
             acceptingFrames = false
+            generation += 1L
+            resetState()
+            if (inFlightFrames == 0) {
+                runImmediately = onIdle
+            } else {
+                idleAction = onIdle
+            }
         }
-        return awaitIdle()
+        runImmediately?.invoke()
     }
 
     fun tryEnterFrame(): FrameLease? {
-        synchronized(lock) {
+        return synchronized(lock) {
             if (!acceptingFrames || closed) return null
             inFlightFrames += 1
-            return FrameLease(this)
+            FrameLease(this, SessionToken(generation))
         }
+    }
+
+    fun <T> commitIfCurrent(lease: FrameLease, block: () -> T): T? {
+        return synchronized(lock) {
+            if (!isCurrentLocked(lease.token)) return null
+            block()
+        }
+    }
+
+    fun isCurrent(token: SessionToken): Boolean {
+        return synchronized(lock) { isCurrentLocked(token) }
     }
 
     fun isAcceptingFrames(): Boolean {
         return synchronized(lock) { acceptingFrames && !closed }
     }
 
-    private fun stopAcceptingFrames() {
-        synchronized(lock) {
-            acceptingFrames = false
-        }
-    }
-
-    private fun awaitIdle(): Boolean {
-        val deadlineNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(idleWaitMs)
-        synchronized(lock) {
-            while (inFlightFrames > 0) {
-                val remainingNanos = deadlineNanos - System.nanoTime()
-                if (remainingNanos <= 0L) return false
-                val waitMs = TimeUnit.NANOSECONDS.toMillis(remainingNanos).coerceAtLeast(1L)
-                try {
-                    lock.wait(waitMs)
-                } catch (error: InterruptedException) {
-                    Thread.currentThread().interrupt()
-                    return false
-                }
-            }
-            return true
-        }
+    private fun isCurrentLocked(token: SessionToken): Boolean {
+        return !closed && acceptingFrames && generation == token.generation
     }
 
     private fun leaveFrame() {
+        var action: (() -> Unit)? = null
         synchronized(lock) {
             if (inFlightFrames > 0) {
                 inFlightFrames -= 1
             }
             if (inFlightFrames == 0) {
-                lock.notifyAll()
+                action = idleAction
+                idleAction = null
             }
         }
+        action?.invoke()
     }
 
     class FrameLease internal constructor(
-        private val gate: AssistRuntimeLifecycleGate
+        private val gate: AssistRuntimeLifecycleGate,
+        val token: SessionToken
     ) : AutoCloseable {
         private var closed = false
 
@@ -89,9 +99,5 @@ internal class AssistRuntimeLifecycleGate(
                 gate.leaveFrame()
             }
         }
-    }
-
-    private companion object {
-        const val DEFAULT_IDLE_WAIT_MS = 1_000L
     }
 }

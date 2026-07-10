@@ -187,7 +187,7 @@ class BlindAssistComposeTest {
             hasTextOrContentDescription("返回功能页")
         }
         composeRule.waitUntil(timeoutMillis = 5000) {
-            hasAnyText("相机启动中", "检测已开启", "安全观察中", "模型不可用")
+            hasAnyText("相机启动中", "检测已开启", "持续检测中", "模型不可用")
         }
 
         composeRule.onNodeWithTag("camera_scenario_label").assertExists()

@@ -114,4 +114,53 @@ class CameraGuidanceMapperTest {
         assertTrue(guidance.debugText.contains("Feedback unavailable"))
         assertTrue(guidance.accessibilitySummary.contains("feedback is unavailable"))
     }
+
+    @Test
+    fun noneStateUsesNonAssuringBilingualCopyWithoutSupportedEvidence() {
+        val engine = AssistEngine()
+        val evaluation = engine.evaluate(
+            detections = emptyList(),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = DetectorMetrics(10L, 2L, 5L, 3L, 10f, "ready"),
+            nowMs = 1000L
+        )
+        val result = engine.completeFeedback(
+            evaluation,
+            FeedbackDecision(null, false, FeedbackReason.NO_FEEDBACK_RISK)
+        )
+
+        val zh = CameraGuidanceMapper.fromFrameResult(result)
+        val en = CameraGuidanceMapper.fromFrameResult(result, AppLanguage.EN)
+
+        assertEquals("持续检测中", zh.title)
+        assertEquals("当前未检测到达到提醒条件的支持目标，请继续确认周围环境。", zh.detail)
+        assertEquals("Monitoring", en.title)
+        assertEquals(
+            "No supported target currently meets the reminder threshold. Keep checking your surroundings.",
+            en.detail
+        )
+    }
+
+    @Test
+    fun noneStateExplainsSupportedTargetBelowThreshold() {
+        val engine = AssistEngine()
+        val evaluation = engine.evaluate(
+            detections = listOf(Detection(0, "person", 0.9f, BoundingBox(450f, 120f, 520f, 280f), frame)),
+            frameSize = frame,
+            profile = AlertProfile.STANDARD,
+            metrics = DetectorMetrics(10L, 2L, 5L, 3L, 10f, "ready"),
+            nowMs = 1000L
+        )
+        val result = engine.completeFeedback(
+            evaluation,
+            FeedbackDecision(null, false, FeedbackReason.NO_FEEDBACK_RISK)
+        )
+
+        assertEquals("检测到模型支持的目标，当前未达到提醒条件。", CameraGuidanceMapper.fromFrameResult(result).detail)
+        assertEquals(
+            "A supported target is detected, but it does not currently meet the reminder threshold.",
+            CameraGuidanceMapper.fromFrameResult(result, AppLanguage.EN).detail
+        )
+    }
 }

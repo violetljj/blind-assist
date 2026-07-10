@@ -9,6 +9,11 @@ enum class RiskLevel {
     HIGH
 }
 
+enum class RiskEvidenceState {
+    NO_SUPPORTED_TARGET_EVIDENCE,
+    SUPPORTED_TARGET_EVIDENCE
+}
+
 enum class RiskDirection {
     NONE,
     LEFT,
@@ -54,7 +59,12 @@ data class RiskResult(
     val distanceEvidence: DistanceEvidence? = null,
     val riskScore: Float = urgencyScore,
     val scoreBreakdown: RiskScoreBreakdown = RiskScoreBreakdown(total = riskScore),
-    val approachTrend: ApproachTrend = ApproachTrend.UNKNOWN
+    val approachTrend: ApproachTrend = ApproachTrend.UNKNOWN,
+    val evidenceState: RiskEvidenceState = if (sourceDetection != null || level != RiskLevel.NONE) {
+        RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE
+    } else {
+        RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE
+    }
 ) {
     constructor(
         level: RiskLevel,
@@ -73,6 +83,11 @@ data class RiskResult(
         distanceEvidence = null,
         riskScore = urgencyScore,
         scoreBreakdown = RiskScoreBreakdown(total = urgencyScore),
-        approachTrend = ApproachTrend.UNKNOWN
+        approachTrend = ApproachTrend.UNKNOWN,
+        evidenceState = if (sourceDetection != null || level != RiskLevel.NONE) {
+            RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE
+        } else {
+            RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE
+        }
     )
 }

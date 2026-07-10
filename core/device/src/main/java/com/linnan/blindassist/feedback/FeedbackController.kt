@@ -73,6 +73,14 @@ class FeedbackController constructor(
         }
     }
 
+    override fun resetSession() {
+        synchronized(lifecycleLock) {
+            if (shutdown) return
+            lastAlertAt.clear()
+            fatigueController.reset()
+        }
+    }
+
     fun notify(risk: RiskResult): FeedbackDecision {
         return notify(risk, AlertProfile.STANDARD)
     }
@@ -140,6 +148,7 @@ class FeedbackController constructor(
         synchronized(lifecycleLock) {
             if (shutdown) return
             shutdown = true
+            lastAlertAt.clear()
             fatigueController.reset()
             speechOutput.shutdown()
         }

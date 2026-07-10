@@ -63,7 +63,7 @@ class AssistRuntimeStateMachineTest {
 
         assertEquals(AssistRuntimeState.DetectionPaused, paused.state)
         assertTrue(paused.effects.contains(AssistRuntimeEffect.ClearOverlay))
-        assertTrue(paused.effects.contains(AssistRuntimeEffect.ResetSession))
+        assertTrue(paused.effects.contains(AssistRuntimeEffect.StopSession))
         assertTrue(paused.hasRenderTarget(AssistRuntimeRenderTarget.Paused))
 
         val resumed = machine.onEvent(AssistRuntimeEvent.DetectionChanged(true))
@@ -93,7 +93,7 @@ class AssistRuntimeStateMachineTest {
         assertEquals(AssistRuntimeState.Error("analyzer failed"), transition.state)
         assertTrue(transition.effects.contains(AssistRuntimeEffect.StopCamera))
         assertTrue(transition.effects.contains(AssistRuntimeEffect.ClearOverlay))
-        assertTrue(transition.effects.contains(AssistRuntimeEffect.ResetSession))
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.StopSession))
         assertTrue(transition.hasRenderTarget(AssistRuntimeRenderTarget.CameraError))
     }
 
@@ -117,7 +117,7 @@ class AssistRuntimeStateMachineTest {
         assertTrue(transition.effects.contains(AssistRuntimeEffect.StopCamera))
         assertTrue(transition.effects.contains(AssistRuntimeEffect.ClearOverlay))
         assertTrue(transition.effects.contains(AssistRuntimeEffect.CloseCamera))
-        assertTrue(transition.effects.contains(AssistRuntimeEffect.ResetSession))
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.StopSession))
     }
 
     @Test

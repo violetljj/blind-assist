@@ -4,6 +4,7 @@ import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.localization.LocalizedText
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
+import com.linnan.blindassist.risk.RiskEvidenceState
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 
@@ -23,7 +24,7 @@ object AssistDisplayFormatter {
             }
         }
         if (detectionCount <= 0) {
-            return if (language == AppLanguage.EN) "No main object locked" else "当前未锁定主要目标"
+            return evidenceDetail(stableRisk, language)
         }
         return if (sourceName != null && stableRisk.level != RiskLevel.NONE) {
             if (language == AppLanguage.EN) "$detectionCount objects, main object $sourceName" else "当前目标 $detectionCount 个 · 主要目标 $sourceName"
@@ -43,7 +44,7 @@ object AssistDisplayFormatter {
             return if (language == AppLanguage.EN) "Reminder is briefly held; no object relocked in this frame" else "提醒短暂保持，当前帧未重新锁定目标"
         }
         if (stableRisk.level == RiskLevel.NONE) {
-            return if (language == AppLanguage.EN) "No obstacle needs an immediate reminder" else "没有发现需要立即提醒的障碍"
+            return evidenceDetail(stableRisk, language)
         }
         return sourceName?.let {
             if (language == AppLanguage.EN) "Main object: $it" else "主要目标：$it"
@@ -59,7 +60,7 @@ object AssistDisplayFormatter {
                 risk.level == RiskLevel.HIGH -> "$proximityText. Slow down and check $directionText first."
                 risk.level == RiskLevel.MEDIUM -> "$proximityText. Watch $directionText and pass carefully."
                 risk.level == RiskLevel.LOW -> "$proximityText. Object found, no strong reminder yet."
-                else -> "Still observing. No obstacle needs an immediate reminder."
+                else -> evidenceDetail(risk, language)
             }
         } else {
             when {
@@ -67,7 +68,7 @@ object AssistDisplayFormatter {
                 risk.level == RiskLevel.HIGH -> "$proximityText · 请减速，先确认 $directionText 方向"
                 risk.level == RiskLevel.MEDIUM -> "$proximityText · 留意 $directionText 方向，谨慎通过"
                 risk.level == RiskLevel.LOW -> "$proximityText · 发现目标，暂不触发强提醒"
-                else -> "持续观察中，未发现需要立即提醒的障碍"
+                else -> evidenceDetail(risk, language)
             }
         }
     }
@@ -135,5 +136,20 @@ object AssistDisplayFormatter {
 
     private fun formatScore(score: Float): String {
         return "%.2f".format(score)
+    }
+
+    private fun evidenceDetail(risk: RiskResult, language: AppLanguage): String {
+        return when (risk.evidenceState) {
+            RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE -> if (language == AppLanguage.EN) {
+                "No supported target currently meets the reminder threshold. Keep checking your surroundings."
+            } else {
+                "当前未检测到达到提醒条件的支持目标，请继续确认周围环境。"
+            }
+            RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE -> if (language == AppLanguage.EN) {
+                "A supported target is detected, but it does not currently meet the reminder threshold."
+            } else {
+                "检测到模型支持的目标，当前未达到提醒条件。"
+            }
+        }
     }
 }

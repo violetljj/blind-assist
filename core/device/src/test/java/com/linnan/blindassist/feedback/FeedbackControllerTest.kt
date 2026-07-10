@@ -76,7 +76,7 @@ class FeedbackControllerTest {
         assertEquals("front center near", SpeechStyle.BRIEF.messageFor(risk, AppLanguage.EN))
         assertEquals("front center near risk, avoid carefully", SpeechStyle.STANDARD.messageFor(risk, AppLanguage.EN))
         assertEquals("obstacle near front center, avoid carefully", SpeechStyle.DETAILED.messageFor(risk, AppLanguage.EN))
-        assertEquals("No risk detected", SpeechStyle.STANDARD.messageFor(risk(RiskLevel.NONE, ProximityBand.FAR), AppLanguage.EN))
+        assertEquals("Monitoring continues", SpeechStyle.STANDARD.messageFor(risk(RiskLevel.NONE, ProximityBand.FAR), AppLanguage.EN))
     }
 
     @Test
@@ -184,6 +184,24 @@ class FeedbackControllerTest {
         assertEquals(FeedbackReason.TRIGGERED, delivered.reason)
         assertTrue(delivered.speechTriggered)
         assertFalse(delivered.vibrationTriggered)
+    }
+
+    @Test
+    fun resetSessionClearsCooldownForFirstReminderInNewSession() {
+        var nowMs = 10_000L
+        val controller = feedbackController(
+            FakeSpeechOutput(ready = true, speakResult = true),
+            FakeHapticOutput(vibrateResult = true)
+        ) { nowMs }
+        val alert = risk(RiskLevel.HIGH, ProximityBand.CRITICAL)
+
+        assertEquals(FeedbackReason.TRIGGERED, controller.notify(alert).reason)
+        nowMs += 100L
+        assertEquals(FeedbackReason.COOLDOWN, controller.notify(alert).reason)
+
+        controller.resetSession()
+
+        assertEquals(FeedbackReason.TRIGGERED, controller.notify(alert).reason)
     }
 
     @Test

@@ -80,7 +80,12 @@ class RiskAnalyzer(
             )
 
         val best = candidates.firstOrNull()
-            ?: return RiskResult(RiskLevel.NONE, RiskDirection.NONE, "未发现风险")
+            ?: return RiskResult(
+                level = RiskLevel.NONE,
+                direction = RiskDirection.NONE,
+                message = "当前未检测到达到提醒条件的支持目标，请继续确认周围环境。",
+                evidenceState = RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE
+            )
 
         val message = messageFor(best.level, best.direction, best.proximity, best.detection.label)
         return RiskResult(
@@ -92,7 +97,8 @@ class RiskAnalyzer(
             urgencyScore = best.urgencyScore,
             distanceEvidence = best.distanceEvidence,
             riskScore = best.urgencyScore,
-            scoreBreakdown = best.scoreBreakdown
+            scoreBreakdown = best.scoreBreakdown,
+            evidenceState = RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE
         )
     }
 
@@ -249,7 +255,7 @@ class RiskAnalyzer(
         proximity: ProximityBand,
         label: String
     ): String {
-        if (level == RiskLevel.NONE) return "未发现风险"
+        if (level == RiskLevel.NONE) return "检测到模型支持的目标，当前未达到提醒条件。"
 
         if (proximity == ProximityBand.CRITICAL && direction == RiskDirection.CENTER) {
             return "前方很近，放慢"

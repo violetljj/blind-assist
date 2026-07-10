@@ -65,40 +65,39 @@ class CameraXFrameSource(
                     .also { analyzer ->
                         analyzer.setAnalyzer(analysisExecutor) { imageProxy ->
                             val frame = ImageProxyVisionFrame(imageProxy)
+                            if (!isCurrentSession(generation)) {
+                                frame.close()
+                                return@setAnalyzer
+                            }
                             try {
                                 onFrame(frame)
                             } catch (error: Throwable) {
                                 FatalThrowables.rethrowIfFatal(error)
                                 frame.close()
-                                reportAnalyzerError(error, onError)
+                                reportAnalyzerError(generation, error, onError)
                             }
                         }
                     }
 
-                if (!isCurrentSession(generation)) return@addListener
                 synchronized(lifecycleLock) {
+                    if (!isCurrentSessionLocked(generation)) return@addListener
                     cameraProvider = provider
-                }
-                provider.unbindAll()
-                if (!isCurrentSession(generation)) return@addListener
-                provider.bindToLifecycle(
-                    lifecycleOwner,
-                    CameraSelector.DEFAULT_BACK_CAMERA,
-                    preview,
-                    analysis
-                )
-                if (isCurrentSession(generation)) {
-                    synchronized(lifecycleLock) {
-                        started = true
-                    }
-                    onStarted()
-                } else {
                     provider.unbindAll()
+                    provider.bindToLifecycle(
+                        lifecycleOwner,
+                        CameraSelector.DEFAULT_BACK_CAMERA,
+                        preview,
+                        analysis
+                    )
+                    started = true
+                    onStarted()
                 }
             } catch (error: Throwable) {
                 FatalThrowables.rethrowIfFatal(error)
-                if (isCurrentSession(generation)) {
-                    onError(error)
+                synchronized(lifecycleLock) {
+                    if (isCurrentSessionLocked(generation)) {
+                        onError(error)
+                    }
                 }
             } finally {
                 synchronized(lifecycleLock) {
@@ -158,18 +157,26 @@ class CameraXFrameSource(
             .build()
     }
 
-    private fun reportAnalyzerError(error: Throwable, onError: (Throwable) -> Unit) {
-        if (analyzerFailureReported.compareAndSet(false, true)) {
+    private fun reportAnalyzerError(generation: Long, error: Throwable, onError: (Throwable) -> Unit) {
+        if (isCurrentSession(generation) && analyzerFailureReported.compareAndSet(false, true)) {
             mainExecutor.execute {
-                onError(error)
+                synchronized(lifecycleLock) {
+                    if (isCurrentSessionLocked(generation)) {
+                        onError(error)
+                    }
+                }
             }
         }
     }
 
     private fun isCurrentSession(generation: Long): Boolean {
         return synchronized(lifecycleLock) {
-            !shutdownRequested && sessionGeneration == generation
+            isCurrentSessionLocked(generation)
         }
+    }
+
+    private fun isCurrentSessionLocked(generation: Long): Boolean {
+        return !shutdownRequested && sessionGeneration == generation
     }
 
     companion object {

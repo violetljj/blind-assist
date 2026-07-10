@@ -24,27 +24,27 @@ internal class AssistRuntimeEffectExecutor(
                 AssistRuntimeEffect.DismissPermissionExplanation -> appViewModel.onDismissCameraPermissionDialog()
                 AssistRuntimeEffect.LaunchPermissionRequest -> launchPermissionRequest?.invoke()
                 AssistRuntimeEffect.StartSession -> {
-                    lifecycleGate.startSession()
-                    coordinator.startSession()
-                    frameProcessor.reset()
+                    lifecycleGate.startSession {
+                        coordinator.startSession()
+                        frameProcessor.resetSessionStats()
+                    }
                     renderer.updateFieldTestSummary(active = true, configSnapshot.get())
                 }
                 AssistRuntimeEffect.ActivateCamera -> renderer.activateCamera(configSnapshot.get())
                 AssistRuntimeEffect.StartCameraIfReady -> startCameraIfReady()
                 AssistRuntimeEffect.StopCamera -> {
                     cameraLifecycleAdapter.stop()
-                    lifecycleGate.stopSession()
-                    frameProcessor.reset()
                 }
                 AssistRuntimeEffect.ClearOverlay -> renderer.clearOverlay()
                 AssistRuntimeEffect.CloseCamera -> {
                     renderer.closeCamera(configSnapshot.get())
                     cameraLifecycleAdapter.clearViews()
                 }
-                AssistRuntimeEffect.ResetSession -> {
-                    lifecycleGate.stopSession()
-                    coordinator.reset()
-                    frameProcessor.reset()
+                AssistRuntimeEffect.StopSession -> {
+                    lifecycleGate.stopSession {
+                        coordinator.reset()
+                        frameProcessor.resetSessionStats()
+                    }
                 }
                 AssistRuntimeEffect.ShowPermissionDenied -> renderer.showPermissionDenied()
                 AssistRuntimeEffect.ApplyConfig -> syncConfigFromViewModel()

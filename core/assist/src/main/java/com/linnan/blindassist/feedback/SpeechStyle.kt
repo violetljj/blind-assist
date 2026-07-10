@@ -17,7 +17,7 @@ enum class SpeechStyle(
     DETAILED("detailed", "详细", "补充目标类别和避让建议");
 
     fun messageFor(risk: RiskResult, language: AppLanguage = AppLanguage.ZH): String {
-        if (risk.level == RiskLevel.NONE) return if (language == AppLanguage.EN) "No risk detected" else "未发现风险"
+        if (risk.level == RiskLevel.NONE) return if (language == AppLanguage.EN) "Monitoring continues" else "持续检测中"
         return when (this) {
             BRIEF -> briefMessage(risk, language)
             STANDARD -> if (language == AppLanguage.EN) standardMessage(risk, language) else risk.message

@@ -219,10 +219,10 @@ private fun previewFieldTestSummary(): FieldTestSummaryUiState {
 
 private fun previewGuidance(): CameraGuidanceUiState {
     return CameraGuidanceUiState(
-        title = "安全观察中",
+        title = "持续检测中",
         detail = "等待实时画面和稳定风险结果",
         targetLine = "模型状态：YOLO11n ready",
-        careTitle = "前方平稳",
+        careTitle = "持续检测中",
         careDetail = "请自然前进，系统会在前方有风险时提醒",
         careTargetLine = "建议同时保留语音和震动提醒",
         debugText = "FPS：18.0\n模型：YOLO11n ready\n最近风险判定：安全",
@@ -234,8 +234,8 @@ private fun previewGuidance(): CameraGuidanceUiState {
         statusBadge = "平稳",
         badgeColor = android.graphics.Color.rgb(160, 255, 215),
         badgeTextColor = android.graphics.Color.rgb(6, 24, 18),
-        careAccessibilitySummary = "前方平稳",
-        accessibilitySummary = "安全观察中",
+        careAccessibilitySummary = "持续检测中，请继续确认周围环境",
+        accessibilitySummary = "持续检测中，请继续确认周围环境",
         accessibilityKey = "preview"
     )
 }

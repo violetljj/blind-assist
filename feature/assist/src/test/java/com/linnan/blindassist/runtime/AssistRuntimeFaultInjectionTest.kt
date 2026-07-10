@@ -40,7 +40,7 @@ class AssistRuntimeFaultInjectionTest {
         assertEquals(AssistRuntimeState.Error("detect failed"), transition.state)
         assertTrue(transition.effects.contains(AssistRuntimeEffect.StopCamera))
         assertTrue(transition.effects.contains(AssistRuntimeEffect.ClearOverlay))
-        assertTrue(transition.effects.contains(AssistRuntimeEffect.ResetSession))
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.StopSession))
         assertTrue(transition.hasRenderTarget(AssistRuntimeRenderTarget.CameraError))
     }
 
@@ -52,7 +52,7 @@ class AssistRuntimeFaultInjectionTest {
         assertEquals(AssistRuntimeState.Error("camera open failed"), transition.state)
         assertTrue(transition.effects.contains(AssistRuntimeEffect.StopCamera))
         assertTrue(transition.effects.contains(AssistRuntimeEffect.ClearOverlay))
-        assertTrue(transition.effects.contains(AssistRuntimeEffect.ResetSession))
+        assertTrue(transition.effects.contains(AssistRuntimeEffect.StopSession))
         assertTrue(transition.hasRenderTarget(AssistRuntimeRenderTarget.CameraError))
     }
 
@@ -67,7 +67,7 @@ class AssistRuntimeFaultInjectionTest {
         assertTrue(close.effects.contains(AssistRuntimeEffect.StopCamera))
         assertTrue(close.effects.contains(AssistRuntimeEffect.ClearOverlay))
         assertTrue(close.effects.contains(AssistRuntimeEffect.CloseCamera))
-        assertTrue(close.effects.contains(AssistRuntimeEffect.ResetSession))
+        assertTrue(close.effects.contains(AssistRuntimeEffect.StopSession))
     }
 
     @Test

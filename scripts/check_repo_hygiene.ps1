@@ -3,10 +3,10 @@ param(
     [switch]$AllTracked
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = 'Stop'
 
 function Normalize-PathForGit([string]$Path) {
-    return $Path.Replace("\", "/").Trim()
+    return $Path.Replace('\', '/').Trim()
 }
 
 function Get-ChangedPaths {
@@ -14,7 +14,7 @@ function Get-ChangedPaths {
         return git ls-files | ForEach-Object { Normalize-PathForGit $_ }
     }
 
-    if ($BaseRef -and $BaseRef -notmatch "^0+$") {
+    if ($BaseRef -and $BaseRef -notmatch '^0+$') {
         $resolved = git rev-parse --verify "$BaseRef^{commit}" 2>$null
         if ($LASTEXITCODE -eq 0 -and $resolved) {
             $paths = git diff --name-only "$BaseRef...HEAD" | ForEach-Object { Normalize-PathForGit $_ }
@@ -31,7 +31,7 @@ function Get-ChangedPaths {
 }
 
 function Resolve-BaseCommit {
-    if ($AllTracked -or -not $BaseRef -or $BaseRef -match "^0+$") {
+    if ($AllTracked -or -not $BaseRef -or $BaseRef -match '^0+$') {
         return $null
     }
     $resolved = git rev-parse --verify "$BaseRef^{commit}" 2>$null
@@ -72,16 +72,17 @@ function Test-DeletedOnly([string]$Path) {
 
 $script:ResolvedBaseRef = Resolve-BaseCommit
 $paths = @(Get-ChangedPaths | Where-Object { $_ } | Sort-Object -Unique)
-$docsArchiveChanged = $paths -contains "docs/APK_ARCHIVE.md"
+$docsArchiveChanged = $paths -contains 'docs/APK_ARCHIVE.md'
 $failures = New-Object System.Collections.Generic.List[string]
 
 foreach ($path in $paths) {
-    if ($path -match "^(\\.gradle/|\\.gradle-local/|\\.android-sdk/|\\.jdk/|\\.python311/|\\.venv-|\\.cache/|\\.kotlin/|app/build/|.*/build/)") {
+    if ($path -match '^(\.gradle/|\.gradle-local/|\.android-sdk/|\.android-home/|\.jdk/|\.python311/|\.venv-|\.cache/|\.kotlin/|\.kotlin-home/|work/|app/build/|.*/build/)' -or
+        $path -match '(^|/)__pycache__/') {
         $failures.Add("Local build/cache path must not be committed: $path")
         continue
     }
 
-    if ($path -match "^test-artifacts([./-]|$)") {
+    if ($path -match '^test-artifacts([./-]|$)') {
         if (Test-DeletedOnly $path) {
             continue
         }
@@ -89,31 +90,31 @@ foreach ($path in $paths) {
         continue
     }
 
-    if ($path -match "^releases/apk/.*\\.apk$") {
+    if ($path -match '^releases/apk/.*\.apk$') {
         if (-not $docsArchiveChanged) {
             $failures.Add("New milestone APKs require docs/APK_ARCHIVE.md to be updated: $path")
         }
         continue
     }
 
-    if ($path -match "\\.apk$") {
+    if ($path -match '\.apk$') {
         $failures.Add("APK files are only allowed under releases/apk with archive documentation: $path")
         continue
     }
 
-    if ($path -match "(^|/)keystore\\.properties$" -or $path -match "\\.(jks|keystore)$") {
+    if ($path -match '(^|/)keystore\.properties$' -or $path -match '\.(jks|keystore)$') {
         $failures.Add("Signing secrets and keystore files must stay local: $path")
         continue
     }
 
-    if ($path -match "\\.(aab|zip|pptx|npy|pt|onnx)$") {
+    if ($path -match '\.(aab|zip|pptx|npy|pt|onnx)$') {
         $failures.Add("Large generated/binary artifact must not be added to Git by default: $path")
         continue
     }
 }
 
 if ($failures.Count -gt 0) {
-    Write-Host "Repository hygiene check failed:"
+    Write-Host 'Repository hygiene check failed:'
     foreach ($failure in $failures) {
         Write-Host " - $failure"
     }

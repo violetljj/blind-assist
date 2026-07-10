@@ -87,7 +87,13 @@ internal class AssistRuntimeRenderer(
             frameResult.evaluation.stableRisk
         )
         renderUi(CameraGuidanceMapper.fromFrameResult(frameResult, runtimeConfig.appLanguage))
-        updateFieldTestSummary(active = true, runtimeConfig)
+        appViewModel.updateFieldTestSummary(
+            fieldTestSummaryProvider.fromSummary(
+                summary = frameResult.sessionSummary,
+                active = true,
+                runtimeConfig = runtimeConfig
+            )
+        )
         performanceLogger.logIfNeeded(frameResult, runtimeConfig)
     }
 

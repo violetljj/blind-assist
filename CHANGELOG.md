@@ -1,5 +1,16 @@
 # BlindAssist 更新记录
 
+## v9.4.0 - 安全语义、Session 生命周期与测试架构修复
+
+- 状态：本地与真机验证完成；`versionCode=34`，`versionName=9.4.0`。
+- 风险语义：新增 `RiskEvidenceState`，区分没有支持目标证据与支持目标未达阈值；`RiskLevel.NONE` 不再被解释为安全，中英文运行时、无障碍和预览统一改为 `持续检测中 / Monitoring` 及非承诺说明。
+- 生命周期：引入单调 `SessionToken` 和 `commitIfCurrent()`，旧 detector 结果不能写入新 session 的 coordinator、反馈、统计、UI 或错误状态；停止先失效 token，shutdown 等最后 lease 结束后再关闭 CameraX executor、detector 和 feedback；新 session 重置 cooldown/fatigue。
+- 工程门禁：修复卫生扩展名正则，新增 `.android-home/`、`.kotlin-home/`、`**/__pycache__/`、`work/` 规则与无 Pester 的 13 场景 smoke；CI 在一次 Gradle invocation 中覆盖 JVM、Lint、App、功能测试 APK 和 benchmark APK。
+- 测试隔离：新增 `:device-benchmark` test-only 模块并迁移 `DetectorAbDeviceBenchmarkTest` 及资产任务；删除被 A/B 流程覆盖的旧 `Yolo26nDeviceBenchmarkTest`；`:app` AndroidTest 仅保留 11 个 Compose 功能测试。
+- 验证：完整 JVM 测试通过；卫生 smoke 与真实工作树检查通过；一次组合 Gradle 构建 319 tasks 成功；模型合同和 APK metadata/signature 检查通过。Samsung `SM-S9280` / Android 16 上 Compose 功能测试 `11/11` 通过。BlindAssist EvalSet 100 图 Detector A/B 完整运行，YOLO26n 因中心风险召回下降、关键漏报增加和误报率翻倍而不替换 YOLO11n；MiDaS Depth-fusion 因误报与延迟显著退化而不晋级。强化后的 90 秒回归自动越过兼容提示和 onboarding、进入 CameraX，断言前台、模型就绪与无 Crash/ANR，持续产生性能帧约 85 秒。
+- 后续兼容项：Android 16 系统仍提示 TFLite、image processing、TFLite GPU 和 AndroidX graphics native library 未全部满足 16KB page-size 对齐；不影响本轮 debug 真机验证，但应在后续依赖升级或发布准备中处理。
+- APK：本地归档 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v9.4.0-debug-20260710-084153.apk`；Git 里程碑 `releases/apk/BlindAssist-v9.4.0-debug-20260710-084153.apk`；大小 `47,297,084` bytes，SHA256 `E4DB467B77F9628F04E4E2CF00AC8737C5FABE95ED60AC6EF6A8ED1518E067BC`。
+
 本文件按真实版本记录 BlindAssist 的功能演进、验证证据和可展示 APK 归档。它用于课程汇报、答辩材料整理和版本对比，不替代 `DEVELOPMENT_LOG.md` 的逐次工作记录。
 
 ## v8.9.0 - 几何、深度、运动的保守融合候选层

@@ -4,13 +4,14 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 
 ## 版本
 
-- 当前项目版本：`v8.9.0`
+- 当前项目版本：`v9.4.0` / `versionCode=34`
 - 版本规则：小更新增加 `v0.1`，较大更新增加 `v0.5`，阶段性质变增加 `v1.0`。
 - 版本影响由 Codex/Agent 根据每次变更的范围和风险判断。
 - 会影响项目状态、使用方式、功能行为、构建流程、模型资产、测试结论或重要技术决策的更新，应同步保持 README 与当前状态一致。
 - 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
 
 ## 近期状态
+- 2026-07-10：完成 `v9.4.0` 安全语义、session 生命周期和测试架构修复，并在 Samsung `SM-S9280` / Android 16 上完成真机闭环。`RiskResult` 新增支持目标证据状态，`NONE` 只表示未达提醒等级；session token 对 detector、统计、反馈、UI 和错误提交做代际校验，新 session 重置反馈冷却与疲劳。11 个 Compose 功能测试全部通过。BlindAssist EvalSet 100 图 A/B 继续保留 YOLO11n：YOLO26n 虽将 total P50 从 `53ms` 降到 `48ms`，但中心风险召回 `0.688→0.667`、关键漏报 `9→10`、提醒误报率 `0.037→0.074`。MiDaS Depth-fusion 同样不晋级：关键漏报 `9→7`，但提醒误报率 `0.037→0.148`、total P50 `54→277ms`。修复 benchmark Lifecycle 依赖冲突和测试脚本签名漂移后，两条 benchmark 均完整通过执行链；强化后的 90 秒回归会自动进入相机并断言前台、模型就绪和无 Crash/ANR，本次持续产生性能帧约 85 秒，稳定约 13–15 FPS。Android 16 仍报告部分 native library 未满足 16KB page-size 对齐，属于后续发布兼容项。
 - 2026-06-12：完成 `v8.9.0` 几何、深度、运动的保守融合候选层。新增 `ConservativeRiskFusionPolicy` / `ConservativeRiskFusionConfig`，把 `RiskAnalyzer` 的深度证据提升和 `TemporalRiskTracker` 的逼近趋势提升统一到同一个保守策略：深度默认最多提升 1 档并拒绝大跨度冲突，运动趋势只在 `APPROACHING` 时最多提升 1 档，侧向目标不升到高风险。`RiskScoreBreakdown.fusionSummary` 和 `DetectorAbDeviceBenchmarkTest` 的 JSON/CSV/Markdown 会记录 `GEOMETRY_ONLY`、`DEPTH_PROMOTED`、`DEPTH_REJECTED_*`、`MOTION_PROMOTED` 等原因，便于复盘风险来源。默认 App 仍只使用 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`，不打包或启用深度候选模型；深度模型继续只属于 androidTest/benchmark 路线。当前版本为 `v8.9.0` / `versionCode=33`。
 - 2026-06-12：完成 `v8.8.0` 综合风险函数与连续帧逼近风险升级。默认 App 仍使用 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`，不替换模型资产；`RiskAnalyzer` 将置信度、类别权重、方向、框底部位置、面积、中心通道和可选距离证据输出为可解释 `RiskScoreBreakdown`，`AssistEngine` 在稳定器之前接入纯 Kotlin `TemporalRiskTracker`，用最近 5 帧、约 900ms 的同目标轨迹判断 `APPROACHING/STABLE/RECEDING`。`DetectorAbDeviceBenchmarkTest` 兼容可选序列字段 `sequence_id`、`frame_index`、`expected_approach_state`、`expected_approach_alert` 和 `expected_time_to_alert_frames`，并在 `benchmark.json` / `benchmark.md` 输出 approach recall、false positive、direction accuracy、critical miss、mean time-to-alert 和 labeled sequence count。当前版本为 `v8.8.0` / `versionCode=32`。
 - 2026-06-11：新增深度/距离感知候选增强实验脚手架，但不改变默认 App 行为。`core:assist` 新增可选 `DistanceEvidence` / `DepthBandEvidence`，`RiskAnalyzer` 在检测框几何距离之外可读取单目深度证据并输出 evidence source；`core:vision` 新增 `DepthEstimator` 和 `TfliteMonocularDepthEstimator`，仅用于候选实验。`DetectorAbDeviceBenchmarkTest` 支持 `comparisonMode=DepthFusion`，可在 BlindAssist EvalSet 上比较 `baseline_geometry` 与 `candidate_depth_fusion` 的 `distanceBandAccuracy`、`centerRiskRecall`、`alertRecall`、`alertFalsePositiveRate` 和 `criticalMissCount`；新增 `scripts/inspect_depth_model.py`、`scripts/smoke_depth_model.py` 和 `scripts/run_depth_fusion_benchmark.ps1`。候选深度模型默认从 `.downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite` 进入 androidTest assets，正式 debug APK 仍只包含默认 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`。本轮属于实验工具与评测路线补充，不提升 `versionName=8.3.0` / `versionCode=31`，不归档新 APK。
@@ -57,6 +58,7 @@ BlindAssist 当前是 Gradle 多模块 Android 项目。`:app` 保持较薄，�
 - `:core:device`：CameraX 帧源、Android 语音/震动反馈、SharedPreferences 用户偏好和设备侧适配。
 - `:core:ui`：Compose/UI 状态模型、检测框覆盖层、相机引导和现场测试摘要映射。
 - `:feature:assist`：Hilt ViewModel、运行时状态机、CameraX/TFLite 协调、配置同步、渲染和性能日志边界。
+- `:device-benchmark`：`com.android.test` test-only 模块，独立打包 Detector A/B、深度融合候选模型和本地评测数据，不进入功能 AndroidTest APK。
 
 ## 界面行为
 
@@ -133,7 +135,7 @@ $env:PATH="$env:JAVA_HOME\bin;D:\Git\cmd;$((Resolve-Path '.\.android-sdk\platfor
 $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path
 .\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon
 .\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon
-.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon
+.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug --no-daemon
 ```
 
 上述命令已验证可得到 `BUILD SUCCESSFUL`；模型检查使用 `.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`。
@@ -182,13 +184,17 @@ $env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path
 .\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py
 .\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain
 .\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain
-.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon --console=plain
+.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug --no-daemon --console=plain
 ```
+
+设备测试入口必须显式指定模块，避免多模块歧义：功能测试使用 `:app:connectedDebugAndroidTest`，设备 benchmark 使用 `:device-benchmark:connectedDebugAndroidTest`。
 
 APK 输出位置：
 
 ```text
 app/build/outputs/apk/debug/app-debug.apk
+app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk
 ```
 
 ## 版本 APK 归档

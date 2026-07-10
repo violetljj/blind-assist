@@ -3536,6 +3536,125 @@
 - 后续事项：
   - 后续任何代码、配置、模型、文档或测试变更，都应先阅读 `AGENTS.md`，并在任务结束前更新本文件。
 
+### 记录完整双向音视频眼镜终端路线想法
+
+- 时间：2026-06-13 17:19:50 +08:00
+- 执行者：violjjet
+- 类型：文档 / 产品路线分析
+- 修改范围：
+  - `idea.md`
+- 修改内容：
+  - 在想法池末尾新增“完整双向音视频眼镜终端路线”条目。
+  - 将最终形态记录为“手机 App 作为本地 AI 中枢，眼镜作为低延迟音视频终端”。
+  - 记录推荐演进顺序：先做 USB-C 有线完整样机，再做 Wi-Fi Direct / 眼镜热点 / 局域网无线音视频链路，最后优化可佩戴工程。
+  - 记录 Android 架构落点，包括 `GlassesFrameSource`、`GlassesConnectionRepository`、`GlassesDeviceState`、`GlassesControlChannel` 和眼镜反馈适配器等候选边界。
+  - 明确旧 ESP32/STM32 模块更适合保留为低功耗控制协处理器或实验外设，不建议作为最终完整音视频主控。
+- 修改原因：
+  - 用户希望把“完整双向音视频眼镜终端”的更优方案写入 `idea.md`，作为后续硬件路线、App 架构和答辩/论文方向储备。
+  - 该内容属于中长期产品和系统架构想法，不代表当前 App 已支持真实眼镜音视频连接。
+- 验证方式：
+  - 已用 UTF-8 方式抽查 `idea.md`，确认文件中文内容可读。
+  - 本轮仅追加文档想法，未修改 Kotlin/Gradle/资源/Manifest，未运行构建或单元测试。
+- 后续事项：
+  - 真正接入硬件前，需要先确定 USB-C 有线样机或无线样机方案，再同步更新 `README.md`、权限说明、设备回归脚本、真机延迟指标和 APK 归档记录。
+  - 接入真实硬件后必须继续保留无外设降级路径，避免助盲主链路依赖单一外设。
+
+### 检查原本写入 ESP32 的代码
+- 时间：2026-06-13 19:20:00 +08:00
+- 执行者：violjjet
+- 类型：分析 / 资料核查
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 检查 `E:\linnan\esp32参考资料`，确认已上传 `Seeed Studio XIAO ESP32S3 Sense 的摄像头使用.docx` 和 `stm32.md`。
+  - 检查 `E:\linnan\glassses-main.zip`，发现该压缩包已截断，`tar` 报告 `Truncated input file`，只能恢复 `README.md`、`AGENT_GUIDE.md`、`CHANGELOG.md`、`.env.example` 以及部分 `__pycache__` 字节码。
+  - 从恢复出的旧 A.VISION README 和 `audio_service.cpython-310.pyc` 字符串/结构信息确认，原本“写入 ESP32”的链路是 PC/Python 端 `AudioService._send_to_esp32(wav_path)` 通过 TCP 连接 `ESP32_IP:TTS_TCP_PORT`，默认端口 `23456`，发送 `PCM1` 协议音频数据给 ESP32 扬声器任务；ESP32 端通过 I2S1 驱动 MAX98357A 扬声器。
+  - 同时确认旧系统还有 ESP32 摄像头 `HTTP MJPEG Port 81` 和麦克风 `TCP Raw PCM Port 23457` 链路；这些是旧 Python+ESP32 工程设计，不是当前 Android App 已实现功能。
+  - 检查当前 Android 工程，确认 `连接眼镜设备` 仍是占位入口，README、代码和测试均说明不扫描蓝牙、不联网、不申请额外权限；当前运行输入源仍由 `FrameSourceFactory` 创建 `CameraXFrameSource`，没有真实 ESP32 写入/连接实现。
+- 验证方式：
+  - 运行 `Get-ChildItem` 检查 `E:\linnan\esp32参考资料` 文件列表。
+  - 运行 `tar -tf E:\linnan\glassses-main.zip`，确认压缩包可读到前部条目但在 ESP32 docx 处截断。
+  - 运行 `tar -xf` 恢复旧工程 README 和部分 pyc 文件。
+  - 运行 `rg` 搜索 `PCM1`、`23456`、`23457`、`ESP32_IP`、`TTS_TCP_PORT`、`连接眼镜设备`、`FrameSourceFactory`、`CameraXFrameSource` 等关键词。
+- 版本判断：
+  - 本次仅做分析和日志记录，不修改功能代码、不改变 README、版本号、权限、网络能力、蓝牙能力、模型资产或 APK，因此不进行版本升级，也不归档 APK。
+- 后续事项：
+  - 如果需要做代码级迁移，建议重新上传完整未截断的 `glassses-main` 源码包，尤其是 `services/audio_service.py`、`stm32code/esp32_firmware_mic.ino`、`speaker.cpp`、`speaker.h`。
+  - 真正接入 Android 前，应先明确是复用 TCP PCM 实验链路，还是改为更适合 Android 的 `GlassesConnectionRepository` / `GlassesControlChannel` / `GlassesFrameSource` 边界。
+
+### 正确导入旧 glassses 工程包
+- 时间：2026-06-13 19:28:00 +08:00
+- 执行者：violjjet
+- 类型：资料导入 / 旧工程核查
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+  - `E:\linnan\glassses`
+- 修改内容：
+  - 根据用户提供的 GitHub 仓库 `https://github.com/violetljj/glassses.git`，将旧工程正确克隆到 `E:\linnan\glassses`。
+  - 克隆结果位于 `main` 分支，当前提交为 `f560c81 添加所有文件：包括 .env, yolov8n.pt 模型权重和缓存文件`，远端为 `origin https://github.com/violetljj/glassses.git`。
+  - 确认旧工程关键源码已存在：`services/audio_service.py`、`services/camera_service.py`、`services/microphone_service.py`、`stm32code/esp32_firmware_mic.ino`、`stm32code/speaker.cpp`、`stm32code/speaker.h`。
+  - 确认旧 ESP32 写入链路源码可直接读取：`services/audio_service.py` 使用 `PCM1` header，通过 `socket.create_connection((config.ESP32_IP, config.TTS_TCP_PORT), timeout=2.0)` 向 ESP32 默认 `23456` 端口发送音频；ESP32 固件侧在 `stm32code` 中实现 TTS TCP server 和 MAX98357A/I2S 播放。
+  - 清理了首次普通沙箱克隆失败产生的半成品目录和后续残留的 `.git/index.lock`。
+- 验证方式：
+  - 普通 `git clone` 首次失败于 `.git/config` 写入权限；按沙箱权限要求清理半成品后提权运行 `git clone https://github.com/violetljj/glassses.git E:\linnan\glassses`，克隆成功。
+  - 运行 `git -C E:\linnan\glassses remote -v`，确认远端地址正确。
+  - 运行 `git -C E:\linnan\glassses log -1 --oneline --decorate`，确认最新提交为 `f560c81`。
+  - 运行 `Test-Path` 确认 `audio_service.py`、`esp32_firmware_mic.ino`、`speaker.cpp`、`speaker.h` 均存在。
+  - 运行 `rg` 搜索 `PCM1`、`TTS_TCP_PORT`、`ESP32_IP`、`23456`、`23457`、`I2S_NUM_1`、`MAX98357`，确认协议和固件实现已落地。
+- 版本判断：
+  - 本次仅导入旧工程资料并记录日志，不修改当前 Android App 功能代码、README、版本号、权限、模型资产或 APK，因此不进行版本升级，也不归档 APK。
+- 后续事项：
+  - 后续分析旧 ESP32 音频/摄像头/麦克风链路时，优先读取 `E:\linnan\glassses` 下的源码，而不是此前截断的 `glassses-main.zip`。
+  - 如果要把旧链路迁移进 Android App，应先设计 Android 侧连接边界和降级路径，再决定是否复用 TCP PCM/MJPEG 实验协议。
+
+### 清理失败旧工程目录和空目录
+- 时间：2026-06-13 19:35:00 +08:00
+- 执行者：violjjet
+- 类型：清理 / 资料整理
+- 修改范围：
+  - `DEVELOPMENT_LOG.md`
+  - `E:\linnan\glassses-main-src`
+  - `E:\linnan\_review_glassses`
+  - `E:\linnan\_review_glassses_src`
+  - `E:\linnan\work\glassses_zip_recover`
+  - `E:\linnan\work`
+- 修改内容：
+  - 按用户要求清理此前拉取失败留下的旧工程残壳目录：`glassses-main-src`、`_review_glassses`、`_review_glassses_src`。
+  - 清理此前从截断 `glassses-main.zip` 临时恢复资料留下的 `work\glassses_zip_recover`。
+  - 确认 `E:\linnan\work` 已为空后删除该空目录。
+  - 保留正确导入的旧工程 `E:\linnan\glassses` 和用户上传的 `E:\linnan\esp32参考资料`。
+- 验证方式：
+  - 删除前运行 `Get-ChildItem` 统计目标目录内容，确认目标均为失败旧工程残留或临时恢复目录。
+  - 普通删除因 Windows 权限限制失败，随后按用户清理请求对明确目标提权删除。
+  - 删除后运行 `Test-Path` 确认 `glassses-main-src`、`_review_glassses`、`_review_glassses_src`、`work\glassses_zip_recover` 和空的 `E:\linnan\work` 均不存在。
+  - 运行 `Test-Path` 确认 `E:\linnan\glassses` 与 `E:\linnan\esp32参考资料` 仍存在。
+- 版本判断：
+  - 本次仅清理失败导入残留和空目录，不修改 Android App 功能代码、README、版本号、权限、模型资产或 APK，因此不进行版本升级，也不归档 APK。
+- 后续事项：
+  - 后续旧 ESP32 工程分析统一使用 `E:\linnan\glassses`，不再依赖此前截断 zip 或失败克隆目录。
+
+### 记录 ESP32 旧工程协作注意事项
+- 时间：2026-06-13 19:40:00 +08:00
+- 执行者：violjjet
+- 类型：文档 / 协作规范
+- 修改范围：
+  - `AGENTS.md`
+  - `DEVELOPMENT_LOG.md`
+- 修改内容：
+  - 在 `AGENTS.md` 的“协作注意事项”中补充 ESP32 / 旧眼镜工程相关长期注意事项。
+  - 明确旧工程可信源码路径为 `E:\linnan\glassses`，参考资料路径为 `E:\linnan\esp32参考资料`。
+  - 明确不要再依赖此前截断的 `glassses-main.zip`、失败克隆残留目录或临时恢复目录。
+  - 明确当前 Android App 的 `连接眼镜设备` 仍是占位入口，不扫描蓝牙、不联网、不申请额外权限，也不代表已经接入真实 ESP32/眼镜硬件。
+  - 明确后续分析旧链路时优先读取 `audio_service.py`、`camera_service.py`、`microphone_service.py`、`esp32_firmware_mic.ino`、`speaker.cpp` 等源码；迁移到 Android 前应先设计连接、控制、帧输入边界和无外设降级路径。
+- 验证方式：
+  - 已读取 `AGENTS.md` 中“协作注意事项”位置并用补丁追加注意事项。
+  - 已用 `rg` 检索 ESP32 / glassses / 眼镜相关现有记录，确认本次记录与 `idea.md`、README 和近期开发日志口径一致。
+  - 本次仅修改文档，不运行构建或单元测试。
+- 版本判断：
+  - 本次仅记录协作注意事项，不修改 Android App 功能代码、README、版本号、权限、模型资产或 APK，因此不进行版本升级，也不归档 APK。
+- 后续事项：
+  - 后续涉及 ESP32 或旧眼镜工程时，应先读取本注意事项，避免误用损坏资料或误导为已实现硬件连接。
+
 ### BlindAssist 项目综合评估与报告留存
 
 - 时间：2026-07-10 03:35:32 +08:00
@@ -3568,3 +3687,55 @@
   - 第一优先级修复安全措辞和运行时 session 生命周期，再修复卫生脚本、Gradle 任务依赖和测试隔离。
   - 后续应同步 README/DEMO_GUIDE 与真实 UI，并补充无障碍修复和真实连续场景验证。
   - 实施核心运行时修复后，需要重新执行完整 JVM、Lint、AndroidTest 编译、真机回归和 APK 归档流程。
+
+## 2026-07-10
+
+### v9.4.0 安全语义、Session 生命周期与测试架构修复
+
+- 修改文件：
+  - 风险与反馈：`core/assist`、`core/device`、`core/ui` 对应实现和 JVM 测试。
+  - 运行时：`feature/assist` 的 lifecycle gate、frame processor、state machine、renderer、controller 及测试；`core/device` 的 CameraX source-generation 校验。
+  - 测试架构：新增 `device-benchmark/`，迁移 Detector A/B benchmark，删除旧 `Yolo26nDeviceBenchmarkTest`，收窄 `app/src/androidTest`。
+  - 工程与文档：Gradle/CI、卫生脚本与 smoke、`.gitignore`、README、CHANGELOG、DEMO_GUIDE、benchmark/APK/审计文档。
+- 修改内容：
+  - 新增 `RiskEvidenceState`。`RiskLevel.NONE` 只表示未达到提醒等级；空帧、不支持类别和低置信度为没有支持目标证据，远处支持目标为已有证据但未达阈值。中英文运行时、无障碍、预览和测试移除“安全观察中、无风险、Safe、No risk detected、Ahead is stable”等承诺性表达。
+  - `AssistRuntimeLifecycleGate` 改为单调 `SessionToken` 和 `commitIfCurrent()`。detector 保持锁外阻塞执行，但统计、coordinator、反馈、UI render 和错误提交必须通过 token；停止先失效旧 token，shutdown 等最后 lease 完成后再关闭 CameraX executor、detector 与 feedback。
+  - 独立审查发现 CameraX provider callback 在 generation 检查与 `cameraProvider/started/onStarted` 提交之间仍可被 stop/start 插入；最终将 generation 校验、provider 绑定、started 写入和回调收敛到同一 `lifecycleLock` 临界区，并对错误回调做同样的原子代际校验。
+  - `ResetSession` 收敛为 `StopSession`；`StopCamera` 只停止 CameraX。`AssistFrameProcessor.resetSessionStats()` 不再篡改 `isProcessing`；renderer 使用当前 `AssistFrameResult.sessionSummary`。
+  - `FeedbackGateway.resetSession()` 改为必实现接口；新 session 清空 feedback cooldown 与 fatigue，新增首条提醒不受旧 session 冷却影响的测试。
+  - 修复仓库卫生扩展名正则，增加 `.android-home/`、`.kotlin-home/`、`**/__pycache__/` 和 `work/` 规则；新增无 Pester 的临时 Git 仓库 smoke，覆盖 13 个允许/拒绝场景。
+  - 新增 `:device-benchmark` `com.android.test` 模块，目标 `:app` debug；资产准备任务显式依赖 merge consumer。功能 AndroidTest 只保留 11 个 Compose 测试，不再携带 TFLite benchmark 依赖和大资产。
+  - 版本升级为 `versionName=9.4.0` / `versionCode=34`。
+- 验证方式：
+  - 使用仓库 JDK 17 完整运行 31 个 JVM test suite，共 `198 tests`，`0 failures / 0 errors / 0 skipped`。
+  - `scripts/test_repo_hygiene.ps1` 的 13 个 smoke 场景全部通过；对当前真实变更运行 `scripts/check_repo_hygiene.ps1` 通过。
+  - 一次 Gradle invocation 同时执行全部 JVM、App/library Lint、`:app:assembleDebug`、`:app:assembleDebugAndroidTest` 和 `:device-benchmark:assembleDebug`，`319 actionable tasks`，`BUILD SUCCESSFUL`。AGP 8.7.3 的 `com.android.test` 实际不提供 `lintDebug` 或 lint-model task，因此 benchmark 模块以编译和资产任务图作为本地覆盖，不虚构 lint 结果。
+  - 功能 AndroidTest APK 为 `1,010,446` bytes，不含 yolo26、深度模型、COCO100 或 BlindAssist EvalSet；最终 device-benchmark APK 为 `75,594,654` bytes，包含本机存在的 yolo11/yolo26、COCO100 和 BlindAssist EvalSet。本机默认 Depth Anything TFLite 不存在，因此本轮 benchmark APK 不包含该深度模型。
+  - `scripts/inspect_tflite.py` 通过：默认 yolo11 输入 `[1,320,320,3] float32`，输出 `[1,84,2100] float32`。
+  - 独立审查修复后重跑 `:core:device:testDebugUnitTest :core:device:lintDebug :app:assembleDebug :device-benchmark:assembleDebug`，通过。
+  - 最终 `scripts/verify_release_apk.ps1` 通过：包名 `com.linnan.blindassist`，`versionName=9.4.0`，`versionCode=34`，debug APK 大小 `47,297,084` bytes，SHA256 `E4DB467B77F9628F04E4E2CF00AC8737C5FABE95ED60AC6EF6A8ED1518E067BC`。
+- APK 归档：
+  - 最终完整本地归档：`E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v9.4.0-debug-20260710-084153.apk`，并更新本地 `APK_ARCHIVE_MANIFEST.csv`。独立审查前的本地中间构建继续作为构建历史保留，但不作为最终交付。
+  - 最终 Git 里程碑：`releases/apk/BlindAssist-v9.4.0-debug-20260710-084153.apk`；相对最新 Git 里程碑 v8.8.0 的版本差值为 0.6，符合归档规则。
+- 验证边界：
+  - 当前无设备，本轮没有运行 `:app:connectedDebugAndroidTest` 的 11 个 Compose 功能测试、`:device-benchmark:connectedDebugAndroidTest` 的 Detector A/B 或 Depth-fusion，也没有执行 90 秒真机回归。
+  - 当前结论是“本地验证完成、真机验证待执行”；benchmark APK 构建成功不描述为 benchmark 通过。
+- 保留内容：
+  - 未回滚或清理本轮开始前已有的 `AGENTS.md`、`DEVELOPMENT_LOG.md`、`idea.md` 修改及本地实验目录；本轮未提交、未推送。
+
+### v9.4.0 真机闭环、Benchmark 修复与可信回归
+
+- 设备：Samsung `SM-S9280`，Android 16 / API 36，序列号 `R5CX10M8Y8X`。
+- 修改内容：
+  - `:device-benchmark` 显式对齐 `androidx.lifecycle:lifecycle-common` 到项目 `2.8.7`，修复测试 APK 中 Lifecycle `2.3.1` 覆盖目标 App 类后触发的 `Lifecycle.Event.Companion` `NoSuchFieldError`。
+  - `run_detector_ab_device_benchmark.ps1` 与 Depth 脚本统一使用仓库 `.android-home`，避免两条测试链使用不同 debug keystore 导致 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`。
+  - `run_device_regression.ps1` 从被动采集升级为可信相机回归：语义关闭 Android 16 兼容提示、跳过 onboarding、预授权 CAMERA、进入手机摄像头，并断言 `检测中`、前台 resumed Activity、模型就绪性能帧和无 Crash/ANR；脚本保存为 UTF-8 BOM，确保 Windows PowerShell 正确解析中文 UI 文本。
+- 真机验证：
+  - `:app:connectedDebugAndroidTest`：`11/11` tests passed，`0 failed / 0 skipped`。
+  - Detector A/B：BlindAssist EvalSet 100 图完整运行。YOLO11n / YOLO26n total P50 为 `53/48ms`，centerRiskRecall 为 `0.688/0.667`，alertFalsePositiveRate 为 `0.037/0.074`，criticalMissCount 为 `9/10`；结论为保留 YOLO11n。证据：`test-artifacts.local/detector-ab-device-benchmark/20260710-165143`。
+  - MiDaS Depth-fusion：baseline / candidate total P50 为 `54/277ms`，centerRiskRecall 为 `0.688/0.667`，alertFalsePositiveRate 为 `0.037/0.148`，distanceBandAccuracy 为 `0.73/0.70`，criticalMissCount 为 `9/7`；漏报改善不足以抵消误报、准确率与延迟退化，候选不晋级。证据：`test-artifacts.local/depth-fusion-benchmark/20260710-170003`。
+  - 最终增强版 90 秒回归通过，证据：`test-artifacts.local/device-regression/20260710-172506`。脚本在采样前后分别断言相机 UI、前台 resumed Activity 和性能帧增长；最终记录到 `101` 条性能帧，session 达 `1分44秒`，末帧约 `13.2 FPS`、推理 P50/P95 `42/46ms`，PSS 约 `264–284MB`，最终累计 jank `1.37%`，无目标进程 Java/native crash、ANR 或异常死亡，最终 UI 仍为 `检测中`。
+- 发现但未在本轮解决：
+  - Android 16 调试兼容提示指出 `libtensorflowlite_jni.so`、`libimage_processing_util_jni.so`、`libtensorflowlite_gpu_jni.so` 和 `libandroidx.graphics.path.so` 未全部满足 16KB page-size 对齐。当前 debug 运行与测试通过，但后续依赖升级或发布准备必须处理。
+- 版本判断：
+  - 本轮修复测试基础设施并完成既有 v9.4.0 真机验证，不改变生产运行逻辑、模型资产、权限集合或用户可见功能，因此保持 `versionName=9.4.0` / `versionCode=34`，不新增 APK 归档。

@@ -8,6 +8,7 @@ import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskAnalyzer
+import com.linnan.blindassist.risk.RiskEvidenceState
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.risk.RiskStabilizer
@@ -90,6 +91,9 @@ class AssistEngine(
         if (rawRisk.level == RiskLevel.NONE && stableRisk.level != RiskLevel.NONE) {
             return FeedbackReason.HELD_ALERT
         }
+        if (rawRisk.evidenceState == RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE) {
+            return FeedbackReason.NO_FEEDBACK_RISK
+        }
         if (rawRisk.proximity == ProximityBand.FAR || rawRisk.proximity == ProximityBand.MID) {
             return FeedbackReason.DISTANCE_TOO_FAR
         }
@@ -141,13 +145,13 @@ class AssistEngine(
                 accessibilityText = "风险存在，但语音或震动反馈暂不可用，当前场景为$scenarioName。"
             )
             FeedbackReason.NO_FEEDBACK_RISK -> RiskExplanation(
-                headline = "继续观察：暂无可反馈风险",
-                detail = if (evaluation.detectionCount > 0) {
-                    "检测到${evaluation.detectionCount}个目标，但未达到近处或迫近提醒条件。"
+                headline = "持续检测中",
+                detail = if (stableRisk.evidenceState == RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE) {
+                    "检测到模型支持的目标，当前未达到提醒条件。"
                 } else {
-                    "当前帧未锁定主要目标。"
+                    "当前未检测到达到提醒条件的支持目标，请继续确认周围环境。"
                 },
-                accessibilityText = "继续观察，暂无可反馈风险，当前场景为$scenarioName。"
+                accessibilityText = "持续检测中，请继续确认周围环境，当前场景为$scenarioName。"
             )
         }
     }
@@ -161,7 +165,7 @@ class AssistEngine(
             RiskLevel.HIGH -> "高风险"
             RiskLevel.MEDIUM -> "中风险"
             RiskLevel.LOW -> "低风险"
-            RiskLevel.NONE -> "无风险"
+            RiskLevel.NONE -> "未达提醒等级"
         }
     }
 

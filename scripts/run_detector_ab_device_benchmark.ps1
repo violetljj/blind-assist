@@ -119,6 +119,10 @@ try {
     $env:JAVA_HOME = (Resolve-Path ".\.jdk\jdk17.0.19_10").Path
     $env:PATH = "$env:JAVA_HOME\bin;$((Resolve-Path '.\.android-sdk\platform-tools').Path);$env:PATH"
     $env:GRADLE_USER_HOME = (Resolve-Path ".\.gradle-local").Path
+    New-Item -ItemType Directory -Force -Path ".\.android-home", ".\.kotlin-home" | Out-Null
+    $env:ANDROID_USER_HOME = (Resolve-Path ".\.android-home").Path
+    $env:KOTLIN_HOME = (Resolve-Path ".\.kotlin-home").Path
+    $env:GRADLE_OPTS = "-Dkotlin.compiler.execution.strategy=in-process"
 
     Invoke-Native $python @("scripts\inspect_tflite.py") (Join-Path $artifactRoot "inspect-yolo11n.txt") | Out-Null
     Invoke-Native $python @("scripts\inspect_tflite.py", "--allow-any-shape", ".downloads\detector-lab\exports\yolo26n_fp16_320.tflite") (Join-Path $artifactRoot "inspect-yolo26n.txt") | Out-Null
@@ -131,7 +135,7 @@ try {
 
     Invoke-Native ".\gradlew.bat" @(
         ":app:assembleDebug",
-        ":app:assembleDebugAndroidTest",
+        ":device-benchmark:assembleDebug",
         "-PblindAssistEvalSetDir=$blindAssistEvalSet",
         "--no-daemon",
         "--console=plain"
@@ -156,7 +160,7 @@ try {
     }
     foreach ($currentRiskConfig in $riskConfigs) {
         Invoke-Native ".\gradlew.bat" @(
-            ":app:connectedDebugAndroidTest",
+            ":device-benchmark:connectedDebugAndroidTest",
             "-PblindAssistEvalSetDir=$blindAssistEvalSet",
             "-Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.benchmark.DetectorAbDeviceBenchmarkTest",
             "-Pandroid.testInstrumentationRunnerArguments.datasetKind=$DatasetKind",

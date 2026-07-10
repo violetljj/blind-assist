@@ -16,6 +16,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "BlindAssist"
 include(":app")
+include(":device-benchmark")
 include(":core:assist")
 include(":core:vision")
 include(":core:device")

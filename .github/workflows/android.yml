@@ -21,6 +21,9 @@ jobs:
           BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: pwsh -ExecutionPolicy Bypass -File ./scripts/check_repo_hygiene.ps1
 
+      - name: Smoke-test repository hygiene rules
+        run: pwsh -ExecutionPolicy Bypass -File ./scripts/test_repo_hygiene.ps1
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -31,11 +34,8 @@ jobs:
       - name: Grant Gradle execute permission
         run: chmod +x ./gradlew
 
-      - name: Run JVM tests
-        run: ./gradlew :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest
-
-      - name: Run Android lint
-        run: ./gradlew :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug
+      - name: Run tests, lint, and assemble APKs
+        run: ./gradlew :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug
 
       - name: Set up Python for model checks
         uses: actions/setup-python@v5
@@ -47,9 +47,6 @@ jobs:
 
       - name: Check TFLite model assets
         run: python scripts/inspect_tflite.py
-
-      - name: Assemble debug APK
-        run: ./gradlew assembleDebug :app:assembleDebugAndroidTest
 
       - name: Ensure generated files are ignored
         shell: pwsh

@@ -7,6 +7,7 @@ import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.localization.LocalizedText
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskDirection
+import com.linnan.blindassist.risk.RiskEvidenceState
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.session.AssistDisplayFormatter
@@ -206,7 +207,7 @@ object CameraGuidanceMapper {
             RiskLevel.HIGH -> "$levelText：$directionText"
             RiskLevel.MEDIUM -> "$levelText：$directionText"
             RiskLevel.LOW -> levelText
-            RiskLevel.NONE -> if (language == AppLanguage.EN) "Safe observing" else "安全观察中"
+            RiskLevel.NONE -> if (language == AppLanguage.EN) "Monitoring" else "持续检测中"
         }
         val localizedExplanation = localizedExplanation(explanation, feedbackDecision, stableRisk, rawRisk, count, scenario, language)
         val detail = AssistDisplayFormatter.detailFor(risk, language)
@@ -250,7 +251,7 @@ object CameraGuidanceMapper {
             badgeTextColor = badgeTextColor(risk.level, risk.proximity),
             careAccessibilitySummary = if (language == AppLanguage.EN) "$careTitle, $careDetail, $targetAccessibility, ${localizedExplanation.accessibilityText}" else "$careTitle，$careDetail，$targetAccessibility，${localizedExplanation.accessibilityText}",
             accessibilitySummary = if (language == AppLanguage.EN) "$title, $detail, $targetAccessibility, ${localizedExplanation.accessibilityText}" else "$title，$detail，$targetAccessibility，${localizedExplanation.accessibilityText}",
-            accessibilityKey = "${risk.level}-${risk.direction}-${risk.proximity}-${rawRisk.level}-${scenario.name}-$count"
+            accessibilityKey = "${risk.level}-${risk.evidenceState}-${risk.direction}-${risk.proximity}-${rawRisk.level}-${scenario.name}-$count"
         )
     }
 
@@ -278,7 +279,7 @@ object CameraGuidanceMapper {
                 level == RiskLevel.HIGH -> "Risk ahead: $directionText"
                 level == RiskLevel.MEDIUM -> "Please watch: $directionText"
                 level == RiskLevel.LOW -> "Keep observing"
-                else -> "Ahead is stable"
+                else -> "Monitoring"
             }
         } else {
             when {
@@ -286,7 +287,7 @@ object CameraGuidanceMapper {
                 level == RiskLevel.HIGH -> "前方有风险：$directionText"
                 level == RiskLevel.MEDIUM -> "请留意：$directionText"
                 level == RiskLevel.LOW -> "保持观察"
-                else -> "前方平稳"
+                else -> "持续检测中"
             }
         }
     }
@@ -342,13 +343,13 @@ object CameraGuidanceMapper {
                 accessibilityText = "Risk exists, but speech or vibration feedback is unavailable. Current scenario is $scenarioName."
             )
             com.linnan.blindassist.feedback.FeedbackReason.NO_FEEDBACK_RISK -> RiskExplanation(
-                headline = "Keep observing: no feedback risk",
-                detail = if (count > 0) {
-                    "$count objects were detected, but near or critical reminder conditions are not met."
+                headline = "Monitoring",
+                detail = if (stableRisk.evidenceState == RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE) {
+                    "A supported target is detected, but it does not currently meet the reminder threshold."
                 } else {
-                    "No main object is locked in the current frame."
+                    "No supported target currently meets the reminder threshold. Keep checking your surroundings."
                 },
-                accessibilityText = "Keep observing. No feedback risk. Current scenario is $scenarioName."
+                accessibilityText = "Monitoring continues. Keep checking your surroundings. Current scenario is $scenarioName."
             )
         }
     }
@@ -360,7 +361,7 @@ object CameraGuidanceMapper {
                 level == RiskLevel.HIGH -> "High risk"
                 level == RiskLevel.MEDIUM -> "Watch"
                 level == RiskLevel.LOW -> "Observe"
-                else -> "Stable"
+                else -> "Monitoring"
             }
         } else {
             when {
@@ -368,7 +369,7 @@ object CameraGuidanceMapper {
                 level == RiskLevel.HIGH -> "高风险"
                 level == RiskLevel.MEDIUM -> "需留意"
                 level == RiskLevel.LOW -> "观察"
-                else -> "平稳"
+                else -> "检测中"
             }
         }
     }

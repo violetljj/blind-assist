@@ -2,6 +2,8 @@
 
 > 本报告是基于 2026-07-10 当前工作树进行的代码、架构、测试、工程化、产品完成度与无障碍只读审查。它是阶段性工程判断，不是医疗器械、安全产品认证或真实道路可用性证明。
 
+> 修复状态（v9.4.0）：本报告列出的前三项优先问题已实施修复，包括非安全承诺措辞与证据状态、token 化 session 提交边界、卫生 smoke/Gradle 资产依赖以及功能测试与 `:device-benchmark` 隔离。本地 JVM、Lint、组合 APK 构建、模型与 APK 元数据检查已通过；Samsung `SM-S9280` / Android 16 上 Compose 11/11、Detector A/B、Depth-fusion 和强化后的 90 秒相机回归也已完成。候选 YOLO26n 与 MiDaS Depth-fusion 均未通过助盲风险晋级门槛。下文保留原评估时基线和问题描述，便于追溯。
+
 ## 一、结论摘要
 
 BlindAssist 已经是一个真实可运行、工程完成度较高的 Android 助盲原型，不是只包含界面或演示素材的空壳。CameraX 实时取流、TFLite YOLO11n 推理、风险规则、连续帧稳定、界面反馈、TTS、震动、偏好保存、测试和 APK 构建链路均有真实实现。
@@ -18,7 +20,7 @@ BlindAssist 已经是一个真实可运行、工程完成度较高的 Android �
 2. 相机帧、风险结果、反馈和 UI 的 session 生命周期需要进一步收拢，防止关闭或快速重开时出现跨代状态污染。
 3. 需要真实连续场景、真实障碍物和目标用户参与的安全验证，不能只依赖静态 COCO 图像和自动化采集结果。
 
-## 二、评估范围与当前基线
+## 二、原评估范围与当时基线
 
 - 实际 Git 仓库：`E:\linnan\linnan`。
 - 当前分支：`codex/stabilize-project-structure`，相对远端超前 1 个提交。
@@ -38,7 +40,7 @@ BlindAssist 已经是一个真实可运行、工程完成度较高的 Android �
 - 仓库卫生、模型资产、供应链与本地生成物。
 - 产品真实能力、占位入口、隐私权限、无障碍与文档一致性。
 
-## 三、本次实际验证结果
+## 三、原评估时实际验证结果
 
 | 验证项目 | 本次结果 | 说明 |
 | --- | --- | --- |
@@ -307,6 +309,16 @@ README 和演示指南描述相机页存在“调安静、调敏感、场景切�
 4. 在受控安全场地进行目标用户验证。
 
 ## 八、版本与交付判断
+
+### v9.4.0 修复后更新
+
+- 当前版本已升级为 `versionName=9.4.0` / `versionCode=34`。
+- 原评估的安全措辞、session 生命周期、卫生/Gradle 依赖和测试隔离问题已标记为本地修复完成。
+- 真机项目已在 Samsung `SM-S9280` / Android 16 上执行：Compose 11/11 通过；Detector A/B 与 Depth-fusion 均完整产生 100 图证据，两个候选都不晋级；强化后的 90 秒回归进入真实 CameraX 推理并通过前台、模型就绪和无 Crash/ANR 断言。
+- 真机验证同时暴露两项工程问题并已修复：benchmark 测试 APK 的 Lifecycle 2.3.1/2.8.7 类冲突，以及 Detector/Depth 脚本使用不同 debug keystore。Android 16 的 16KB native library 对齐警告仍保留为后续兼容项。
+- v9.4.0 已生成完整本地归档和 Git 里程碑 APK，详见 `docs/APK_ARCHIVE.md`。
+
+### 原评估时判断
 
 本次工作属于分析、验证与报告留存，没有修改 Kotlin、Gradle、Manifest、资源、模型资产或应用行为，因此：
 
