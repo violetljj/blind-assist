@@ -1,5 +1,13 @@
 # BlindAssist 更新记录
 
+## v10.4.0 - SANPO Traversability v2 Oracle 第一阶段
+
+- 状态：当前 30 帧否定集门槛通过；`versionCode=36`，`versionName=10.4.0`。
+- `curb` 不再作为普通障碍框；无深度的单帧分割证据限制为 `RiskLevel.LOW / ProximityBand.MID`。
+- 完整连通域增加中心重叠、底部位置和中心优先选择；mask 降至 256×256，同帧复用 mask 并复用 corridor/visited/queue 缓冲。
+- SM-S9280 A/B：错误提醒率 `3.3%`、SANPO 主区域命中 `86.7%`、total P95 `65.919ms`，YOLO 指标无退化，默认模型回归通过。
+- 公开正负连续序列扩展完成前保持不训练、不替换默认模型。
+
 ## v9.9.0 - 16KB 兼容、离线回放与眼镜模拟中心
 
 - 状态：本地与 4KB Android 16 真机验证完成；`versionCode=35`，`versionName=9.9.0`。

@@ -4,13 +4,14 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 
 ## 版本
 
-- 当前项目版本：`v9.9.0` / `versionCode=35`
+- 当前项目版本：`v10.4.0` / `versionCode=36`
 - 版本规则：小更新增加 `v0.1`，较大更新增加 `v0.5`，阶段性质变增加 `v1.0`。
 - 版本影响由 Codex/Agent 根据每次变更的范围和风险判断。
 - 会影响项目状态、使用方式、功能行为、构建流程、模型资产、测试结论或重要技术决策的更新，应同步保持 README 与当前状态一致。
 - 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
 
 ## 近期状态
+- 2026-07-11：完成 `v10.4.0` SANPO Traversability v2 Oracle 第一阶段。路沿改为边界证据；通用障碍增加完整连通域中心重叠、底部位置和中心优先门槛；无深度单帧分割证据最高为 `LOW/MID`。mask 改为 256×256并复用工作缓冲。30 帧真机 A/B：错误提醒率 `3.3%`、主区域命中 `86.7%`、total P95 `65.919ms`，YOLO 指标无退化。公开正负序列完成前不训练或替换模型。
 - 2026-07-11：完成首批 SANPO 30 帧序列的 Samsung `SM-S9280` 真机 Detector A/B benchmark 与 90 秒默认模型回归。修复 benchmark 将 JSON `null` 误读为字符串 `"null"`、污染 `primaryObjectHitRate` 分母的问题后重跑通过。YOLO11n/YOLO26n 对 25 帧通用障碍 `APPROACHING` 的召回均为 0，各产生 1 次错误提醒；两者均漏掉第 24/28 帧共 3 个人工 person GT，AP50/Recall 均为 0。YOLO26n 虽更快（total P50/P95 `47/48ms`，YOLO11n 为 `60/68ms`），但 FP/img 更高（`0.433` 对 `0.233`），未通过无回退门槛，默认模型继续保留 YOLO11n。结论是下一阶段需要验证通用障碍/可通行区域感知，而不是只更换 COCO 检测器；本结果仍不是安全认证。
 - 2026-07-11：完成“真实场景证据升级”首批 SANPO-Real 连续序列接入与 AI 多轮复核，不改变生产 App、模型或版本号。官方 CC BY 4.0 session 按 15→10 FPS 重采样，保留 RGB、分割区域、来源 URL、MD5/SHA256、许可证和隐私说明；仅 `pedestrian -> person`、`traffic light -> traffic light` 做无歧义 COCO 预映射，`curb/stairs/obstacle/vehicle` 等不伪装成 COCO 类。首批本地集为 30 帧、3 秒、2208×1242 胸口左目城市步行序列，30/30 唯一哈希；三路独立 AI 复核后以 `reviewer_type=ai_assistant`、逐帧置信度和显式 `--allow-ai-review` 门禁生成 canonical `manifest.jsonl`。该结果可用于工程 benchmark，但不是人工/目标用户安全验证。PEDESTRIAN 论文所列 Zenodo DOI 与 GitHub 当前均不存在，许可证和哈希不可验证，因此未接入。流程见 `docs/SANPO_SEQUENCE_EVALSET.md`。
 - 2026-07-10：完成 `v9.9.0` 16KB page-size 兼容、debug 离线回放和眼镜设备模拟中心。运行时依赖迁移到 LiteRT `1.4.2`，APK/AAB 的 16 个 native library 均满足 `PT_LOAD p_align >= 16384`，APK 与 AAB 均为 `PAGE_ALIGNMENT_16K`。LiteRT GPU 在 BlindAssist EvalSet 上稳定增加 1 个提醒误报，因此按发布预案临时使用 CPU 兼容模式：100 图关键漏报保持 `9`、提醒误报率保持 `0.037`，total P95 `61→55ms`。debug 可选择四种 COCO 素材，以 2 FPS 进入真实 detector→risk→feedback→overlay→session 链路；release 不包含 replay 资产或入口。眼镜中心在 debug/release 均明确标注“模拟”，不扫描蓝牙、不联网、不连接真实眼镜。完整 JVM/Lint/构建矩阵、Compose 真机测试、最终 90 秒 CameraX 回归和模型合同均通过；Samsung `SM-S9280` 为 4KB 页设备，真实 16KB 环境安装/运行验证继续待补。

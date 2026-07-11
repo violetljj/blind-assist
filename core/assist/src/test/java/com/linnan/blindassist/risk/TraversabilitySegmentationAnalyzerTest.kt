@@ -8,7 +8,7 @@ import org.junit.Test
 
 class TraversabilitySegmentationAnalyzerTest {
     @Test
-    fun extractsCurbAndPoleInsideWalkingCorridor() {
+    fun keepsCurbAsBoundaryEvidenceAndExtractsPole() {
         val width = 20
         val height = 20
         val ids = IntArray(width * height) { 3 }
@@ -19,10 +19,20 @@ class TraversabilitySegmentationAnalyzerTest {
             TraversabilityAnalyzerConfig(minimumRegionPixels = 4, minimumRegionAreaRatio = 0f)
         ).analyze(DenseSemanticMask(width, height, ids), FrameSize(200, 200))
 
-        assertEquals(setOf("curb", "pole"), result.riskDetections.map { it.label }.toSet())
+        assertEquals(setOf("pole"), result.riskDetections.map { it.label }.toSet())
         assertTrue(result.riskDetections.all { it.source == DetectionSource.SEGMENTATION })
         assertTrue(result.safeCoverage > 0.5f)
         assertTrue(result.obstacleCoverage > 0f)
+    }
+
+    @Test
+    fun reusesWorkingBuffersForSameMaskSize() {
+        val ids = IntArray(20 * 20) { 3 }
+        val analyzer = TraversabilitySegmentationAnalyzer()
+        analyzer.analyze(DenseSemanticMask(20, 20, ids), FrameSize(200, 200))
+        val allocations = analyzer.allocations
+        analyzer.analyze(DenseSemanticMask(20, 20, ids), FrameSize(200, 200))
+        assertEquals(allocations, analyzer.allocations)
     }
 
     @Test

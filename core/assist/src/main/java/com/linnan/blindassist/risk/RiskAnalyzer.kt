@@ -1,6 +1,7 @@
 package com.linnan.blindassist.risk
 
 import com.linnan.blindassist.model.Detection
+import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.model.FrameSize
 import kotlin.math.abs
 import kotlin.math.max
@@ -137,11 +138,15 @@ class RiskAnalyzer(
             distanceEvidence = depthFusion.evidence,
             fusionReason = depthFusion.reason
         )
-        val level = levelFor(scoreBreakdown.total, depthFusion.proximity, direction)
+        val segmentationOnly = detection.source == DetectionSource.SEGMENTATION &&
+            detection.distanceEvidence == null
+        val finalProximity = if (segmentationOnly) minOf(depthFusion.proximity, ProximityBand.MID) else depthFusion.proximity
+        val computedLevel = levelFor(scoreBreakdown.total, finalProximity, direction)
+        val level = if (segmentationOnly) minOf(computedLevel, RiskLevel.LOW) else computedLevel
         return RiskCandidate(
             detection = detection,
             direction = direction,
-            proximity = depthFusion.proximity,
+            proximity = finalProximity,
             level = level,
             urgencyScore = scoreBreakdown.total,
             distanceEvidence = depthFusion.evidence,

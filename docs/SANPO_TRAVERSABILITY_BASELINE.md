@@ -75,6 +75,18 @@ oracle 区域只进入风险分析，不进入 YOLO 的 AP/precision/recall 统�
 
 结论：`do_not_replace_default_model`。当前序列 30 帧均标注为不应提醒；候选在第 1–26 帧持续选择右侧 `curb` 并升到 `MEDIUM/NEAR`，造成主要误报。最后 3 帧选择中心 `generic obstacle`，但保持 `LOW` 且未提醒。下一轮应把路沿改为“边界证据”而不是独立障碍框：没有中心走廊侵入、近场深度突变或连续逼近证据时，不得从 LOW 升到提醒级；分割证据的单帧晋级也应限制为最多一级。完整真机报告位于 `test-artifacts.local/detector-ab-device-benchmark/20260711-153543/`。
 
+## Traversability v2 第一阶段结果
+
+2026-07-11 在 Samsung SM-S9280、同一 30 帧、每帧 3 次条件下复测。路沿不再作为普通障碍 Detection；通用障碍使用完整连通域中心重叠、底部位置与中心优先排序；mask 从 512×512 降到 256×256并复用工作缓冲和同帧解码结果。
+
+| 指标 | v1 Oracle | v2 Oracle |
+| --- | ---: | ---: |
+| 错误提醒率 | 90.0% | 3.3% |
+| SANPO 主风险命中 | 10.0% | 86.7% |
+| 总延迟 P95 | 96.678 ms | 65.919 ms |
+
+YOLO 指标无退化，benchmark 判定 `traversability_rules_ok_for_model_stage`。该结论只代表当前否定集通过；公开正负连续序列完成前仍不训练、不替换模型。证据目录：`test-artifacts.local/detector-ab-device-benchmark/20260711-163629/`。
+
 ## 下一阶段模型契约
 
 建议训练 `MobileNetV3 + LR-ASPP` 或轻量 DeepLab 解码头，512×512、INT8，输出至少四个风险头：

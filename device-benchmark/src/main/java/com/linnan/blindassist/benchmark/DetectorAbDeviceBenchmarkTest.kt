@@ -267,6 +267,11 @@ class DetectorAbDeviceBenchmarkTest {
         try {
             images.sortedForTemporalEvaluation().forEach { image ->
                 val runs = mutableListOf<FrameRun>()
+                val cachedSemanticMask = if (spec.traversabilityOracle) {
+                    decodeSemanticMask(requireNotNull(image.sourceMaskPath))
+                } else {
+                    null
+                }
                 repeat(runsPerImage) {
                     try {
                         decodeBitmap(image.relativePath).use { bitmap ->
@@ -288,8 +293,7 @@ class DetectorAbDeviceBenchmarkTest {
                             }
                             val oracleStart = System.nanoTime()
                             val oracleDetections = if (spec.traversabilityOracle) {
-                                val maskPath = requireNotNull(image.sourceMaskPath)
-                                traversabilityAnalyzer.analyze(decodeSemanticMask(maskPath), frameSize).riskDetections
+                                traversabilityAnalyzer.analyze(requireNotNull(cachedSemanticMask), frameSize).riskDetections
                             } else {
                                 emptyList()
                             }
@@ -1851,7 +1855,7 @@ class DetectorAbDeviceBenchmarkTest {
         private const val RISK_CONFIG_CRITICAL_SENSITIVE = "critical_sensitive"
         private const val RISK_CONFIG_SIDE_NEAR_SENSITIVE = "side_near_sensitive"
         private const val TEMPORAL_FRAME_STEP_MS = 100L
-        private const val TRAVERSABILITY_MASK_SIZE = 512
+        private const val TRAVERSABILITY_MASK_SIZE = 256
         private const val ARG_DATASET_KIND = "datasetKind"
         private const val ARG_RISK_CONFIG = "riskConfig"
         private const val ARG_COMPARISON_MODE = "comparisonMode"

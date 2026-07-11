@@ -5,6 +5,7 @@ import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.model.FrameSize
 import kotlin.math.max
+import kotlin.math.abs
 
 enum class TraversabilityClass {
     SAFE_TO_WALK,
@@ -58,7 +59,12 @@ data class TraversabilityAnalyzerConfig(
     val corridorTopHalfWidthRatio: Float = 0.16f,
     val corridorBottomHalfWidthRatio: Float = 0.42f,
     val minimumRegionPixels: Int = 12,
-    val minimumRegionAreaRatio: Float = 0.0008f
+    val minimumRegionAreaRatio: Float = 0.0008f,
+    val minimumCenterOverlapRatio: Float = 0.10f,
+    val curbMinimumCenterOverlapRatio: Float = 0.35f,
+    val minimumBottomRatio: Float = 0.42f,
+    val curbMinimumBottomRatio: Float = 0.62f,
+    val analysisSize: Int = 256
 ) {
     init {
         require(corridorTopRatio in 0f..<1f)
@@ -66,6 +72,7 @@ data class TraversabilityAnalyzerConfig(
         require(corridorBottomHalfWidthRatio in 0f..0.5f)
         require(minimumRegionPixels > 0)
         require(minimumRegionAreaRatio >= 0f)
+        require(analysisSize in 32..512)
     }
 }
 
@@ -91,8 +98,16 @@ data class TraversabilityAnalysis(
 class TraversabilitySegmentationAnalyzer(
     private val config: TraversabilityAnalyzerConfig = TraversabilityAnalyzerConfig()
 ) {
+    private var corridorBuffer = BooleanArray(0)
+    private var visitedBuffer = BooleanArray(0)
+    private var queueBuffer = IntArray(0)
+    private var bufferAllocationCount = 0
+
+    val allocations: Int get() = bufferAllocationCount
+
     fun analyze(mask: DenseSemanticMask, frameSize: FrameSize): TraversabilityAnalysis {
-        val corridor = BooleanArray(mask.classIds.size)
+        ensureBuffers(mask.classIds.size)
+        val corridor = corridorBuffer.also { it.fill(false) }
         var safe = 0
         var notSafe = 0
         var obstacle = 0
@@ -131,17 +146,18 @@ class TraversabilitySegmentationAnalyzer(
         corridor: BooleanArray,
         frameSize: FrameSize
     ): List<Detection> {
-        val visited = BooleanArray(mask.classIds.size)
-        val queue = IntArray(mask.classIds.size)
+        val visited = visitedBuffer.also { it.fill(false) }
+        val queue = queueBuffer
         val detections = mutableListOf<Detection>()
         for (start in mask.classIds.indices) {
             val classId = mask.classIds[start]
-            if (visited[start] || !corridor[start] || !BlindAssistSanpoTaxonomy.isNavigationHazard(classId)) continue
+            if (visited[start] || !BlindAssistSanpoTaxonomy.isNavigationHazard(classId)) continue
             visited[start] = true
             var head = 0
             var tail = 0
             queue[tail++] = start
             var pixels = 0
+            var corridorPixels = 0
             var minX = mask.width
             var minY = mask.height
             var maxX = 0
@@ -151,18 +167,25 @@ class TraversabilitySegmentationAnalyzer(
                 val x = index % mask.width
                 val y = index / mask.width
                 pixels += 1
+                if (corridor[index]) corridorPixels += 1
                 minX = minOf(minX, x)
                 minY = minOf(minY, y)
                 maxX = maxOf(maxX, x)
                 maxY = maxOf(maxY, y)
-                enqueue(index - 1, x > 0, classId, mask, corridor, visited, queue, tail).also { tail = it }
-                enqueue(index + 1, x + 1 < mask.width, classId, mask, corridor, visited, queue, tail).also { tail = it }
-                enqueue(index - mask.width, y > 0, classId, mask, corridor, visited, queue, tail).also { tail = it }
-                enqueue(index + mask.width, y + 1 < mask.height, classId, mask, corridor, visited, queue, tail).also { tail = it }
+                enqueue(index - 1, x > 0, classId, mask, visited, queue, tail).also { tail = it }
+                enqueue(index + 1, x + 1 < mask.width, classId, mask, visited, queue, tail).also { tail = it }
+                enqueue(index - mask.width, y > 0, classId, mask, visited, queue, tail).also { tail = it }
+                enqueue(index + mask.width, y + 1 < mask.height, classId, mask, visited, queue, tail).also { tail = it }
             }
             val areaRatio = pixels.toFloat() / mask.classIds.size
+            val centerOverlapRatio = corridorPixels.toFloat() / max(1, pixels)
+            val bottomRatio = (maxY + 1).toFloat() / mask.height
             val label = BlindAssistSanpoTaxonomy.riskLabelFor(classId)
-            if (pixels >= config.minimumRegionPixels && areaRatio >= config.minimumRegionAreaRatio && label != null) {
+            val minimumOverlap = if (classId == 2) config.curbMinimumCenterOverlapRatio else config.minimumCenterOverlapRatio
+            val minimumBottom = if (classId == 2) config.curbMinimumBottomRatio else config.minimumBottomRatio
+            // curb is boundary evidence in v2; without depth/temporal corroboration it never becomes a Detection.
+            val passesGate = classId != 2 && centerOverlapRatio >= minimumOverlap && bottomRatio >= minimumBottom
+            if (passesGate && pixels >= config.minimumRegionPixels && areaRatio >= config.minimumRegionAreaRatio && label != null) {
                 val scaleX = frameSize.width.toFloat() / mask.width
                 val scaleY = frameSize.height.toFloat() / mask.height
                 detections += Detection(
@@ -180,7 +203,13 @@ class TraversabilitySegmentationAnalyzer(
                 )
             }
         }
-        return detections
+        // Forward only the strongest center-path segmentation candidate. This prevents broad
+        // peripheral regions from outranking a smaller obstacle in the walking line.
+        return detections.sortedWith(
+            compareBy<Detection> { abs(it.boundingBox.centerX / it.frameSize.width - 0.5f) }
+                .thenByDescending { it.boundingBox.bottom / it.frameSize.height }
+                .thenBy { it.areaRatio }
+        ).take(1)
     }
 
     private fun enqueue(
@@ -188,18 +217,25 @@ class TraversabilitySegmentationAnalyzer(
         valid: Boolean,
         classId: Int,
         mask: DenseSemanticMask,
-        corridor: BooleanArray,
         visited: BooleanArray,
         queue: IntArray,
         tail: Int
     ): Int {
-        if (!valid || visited[index] || !corridor[index] || mask.classIds[index] != classId) return tail
+        if (!valid || visited[index] || mask.classIds[index] != classId) return tail
         visited[index] = true
         queue[tail] = index
         return tail + 1
     }
 
     private fun ratio(value: Int, total: Int): Float = if (total == 0) 0f else value.toFloat() / total
+
+    private fun ensureBuffers(size: Int) {
+        if (corridorBuffer.size == size) return
+        corridorBuffer = BooleanArray(size)
+        visitedBuffer = BooleanArray(size)
+        queueBuffer = IntArray(size)
+        bufferAllocationCount += 1
+    }
 
     companion object {
         private const val SANPO_CLASS_ID_OFFSET = 10_000

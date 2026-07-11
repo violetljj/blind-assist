@@ -3864,3 +3864,23 @@
   - 用户明确确认 `git@github.com:violetljj/blind-assist.git` 为其控制的可信远端，并授权后续常规推送不再重复询问外发可信性；授权边界已写入 `AGENTS.md`。
 - 版本判断：
   - 当前实现仅存在于 benchmark/oracle 实验通道，真机门禁明确否决，未进入生产运行链路、未替换模型、未改变用户可见功能，因此保持 `versionName=9.9.0` / `versionCode=35`，不新增 APK 归档。
+
+### SANPO Traversability v2 Oracle 第一阶段
+- 时间：2026-07-11 16:50:00 +08:00
+- 执行者：violjjet
+- 类型：重构、性能、测试、真机验证、文档、版本
+- 修改范围：`TraversabilitySegmentation.kt`、`RiskAnalyzer.kt`、`DetectorAbDeviceBenchmarkTest.kt`、离线 oracle 脚本、单元测试、README/CHANGELOG/idea/基线文档和版本配置。
+- 修改内容与原因：
+  - 将 curb 从普通障碍输出中移除，保留为后续深度/连续逼近佐证的边界证据，修复首版 26 帧持续路沿误报。
+  - 连通域改为在完整类别区域生长，再计算中心走廊重叠与底部位置；通用障碍只转发中心路径最强候选，防止边缘大区域压过中心风险。
+  - `DetectionSource.SEGMENTATION` 且无深度证据时，RiskAnalyzer 防御性限制为 `RiskLevel.LOW / ProximityBand.MID`，单帧不能直接提醒。
+  - benchmark mask 改为 256×256、同一图片三次运行只解码一次；分析器复用 corridor、visited、queue 缓冲。
+- 验证：
+  - `:core:assist:test` 两次通过；`:device-benchmark:compileDebugKotlin` 通过。
+  - 离线 30 帧 v2 oracle：主区域候选覆盖 `27/30=90%`。
+  - 首次真机复测：错误提醒率 `3.3%`、主区域命中 `60%`、P95 `57.287ms`，据此修正最终候选优先级。
+  - 最终 Samsung SM-S9280 A/B：错误提醒率 `3.3%`、主区域命中 `86.7%`、total P95 `65.919ms`，YOLO AP50/precision/recall 无退化；判定 `traversability_rules_ok_for_model_stage`。证据：`test-artifacts.local/detector-ab-device-benchmark/20260711-163629`。
+  - 同轮默认模型 90 秒回归通过。证据：`test-artifacts.local/device-regression/20260711-163908`。
+- 后续事项：仅完成当前否定集。仍需从许可明确公开数据补齐平行路沿、正前方台阶/横向路沿、路桩/低矮障碍/盲道占用连续序列；危险召回通过前不得训练模型。
+- 版本判断：核心风险规则、性能与验证能力形成阶段升级，按较大更新从 v9.9.0 升至 v10.4.0（versionCode 36）；默认 YOLO 模型资产不变。
+- 构建与归档：`:core:assist:test :app:lintDebug :app:assembleDebug` 通过；APK 已从 `app/build/outputs/apk/debug/app-debug.apk` 归档到 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v10.4.0-debug-20260711-164742.apk`，大小 `55,844,975` bytes，SHA256 `7456034404F83CA8600FD39DEF09AB7741B219973B6B5CC774C6CBD4250455F8`。本次不提交 Git 里程碑 APK。

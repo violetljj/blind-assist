@@ -28,7 +28,7 @@ LABELS = {
     24: "pole",
     26: "bike rack",
 }
-MASK_SIZE = 512
+MASK_SIZE = 256
 
 
 def parse_args() -> argparse.Namespace:
@@ -64,17 +64,31 @@ def extract_components(class_ids: np.ndarray, corridor: np.ndarray) -> list[dict
     height, width = class_ids.shape
     components = []
     for class_id in sorted(NAVIGATION_HAZARD_IDS):
-        selected = ((class_ids == class_id) & corridor).astype(np.uint8)
-        count, _, stats, _ = cv2.connectedComponentsWithStats(selected, connectivity=4)
+        selected = (class_ids == class_id).astype(np.uint8)
+        count, labels, stats, _ = cv2.connectedComponentsWithStats(selected, connectivity=4)
         for component_id in range(1, count):
             left, top, component_width, component_height, pixels = stats[component_id]
             if pixels < 12 or pixels / class_ids.size < 0.0008:
                 continue
+            component_mask = labels == component_id
+            corridor_overlap = float((component_mask & corridor).sum() / max(1, pixels))
+            bottom_ratio = float((top + component_height) / height)
+            minimum_overlap = 0.35 if class_id == 2 else 0.10
+            minimum_bottom = 0.62 if class_id == 2 else 0.42
+            # v2 treats curb as boundary evidence. It is retained for diagnostics but
+            # cannot become a frame-level obstacle without depth or temporal support.
+            accepted = class_id != 2 and corridor_overlap >= minimum_overlap and bottom_ratio >= minimum_bottom
             components.append(
                 {
                     "class_id": class_id,
                     "label": LABELS[class_id],
                     "pixel_count": int(pixels),
+                    "corridor_overlap_ratio": round(corridor_overlap, 4),
+                    "bottom_ratio": round(bottom_ratio, 4),
+                    "accepted": accepted,
+                    "gate_reason": "accepted" if accepted else (
+                        "curb_requires_corroboration" if class_id == 2 else "geometry_gate_rejected"
+                    ),
                     "bbox_xyxy": [
                         int(left),
                         int(top),
@@ -127,7 +141,8 @@ def benchmark(args: argparse.Namespace) -> dict:
         obstacle = np.isin(corridor_ids, tuple(OBSTACLE_IDS))
         not_safe = ~(safe | obstacle)
         total = max(1, corridor_ids.size)
-        candidates = extract_components(class_ids, corridor)
+        all_candidates = extract_components(class_ids, corridor)
+        candidates = [candidate for candidate in all_candidates if candidate["accepted"]]
         if candidates:
             frames_with_hazard += 1
         class_counts.update(component["label"] for component in candidates)
