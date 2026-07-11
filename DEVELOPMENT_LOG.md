@@ -3836,3 +3836,31 @@
 - YOLO26n：AP50/precision/recall 均 0，FP/img `0.433`、FN/img `0.1`、错误提醒率 `0.033`、approach recall `0`；第 25 帧误认成 truck 并产生 RIGHT/NEAR/MEDIUM 提醒。total P50/P95 `47/48ms`。
 - 两款模型都漏掉第 24 帧 1 个、第 28 帧 2 个 person GT；25 帧标注为 `APPROACHING` 的通用障碍均未被时序跟踪。YOLO26n 虽快，但误检更多且检测/风险质量无改善，推荐保持 `do_not_replace_default_model`。
 - 决策：默认 App 继续使用 YOLO11n；下一算法实验优先考虑可通行区域、语义分割或深度几何候选，不继续只比较 COCO detector。该结论是单序列工程证据，不是安全保证。
+
+### SANPO 可通行区域 oracle 基线、真机否决与远端授权
+
+- 时间：2026-07-11 16:08 +08:00
+- 执行者：violjjet
+- 类型：算法候选 / benchmark / 真机验证 / 文档 / 协作规则
+- 修改范围：
+  - `core/assist/.../Detection.kt`
+  - `core/assist/.../RiskAnalyzer.kt`
+  - `core/assist/.../TraversabilitySegmentation.kt`
+  - `core/assist/.../TraversabilitySegmentationAnalyzerTest.kt`
+  - `device-benchmark/build.gradle.kts`
+  - `device-benchmark/.../DetectorAbDeviceBenchmarkTest.kt`
+  - `scripts/benchmark_sanpo_traversability.py`
+  - `scripts/run_detector_ab_device_benchmark.ps1`
+  - `docs/SANPO_TRAVERSABILITY_BASELINE.md`
+  - `AGENTS.md`
+- 实现与验证：
+  - 新增 SANPO 三类通行区域、梯形走廊、四连通域和路沿/台阶/不可通行面/通用障碍/杆状物风险提取；使用 `DetectionSource.SEGMENTATION` 隔离分割证据，避免污染 COCO 检测指标。
+  - 离线 30 帧 512×512 oracle：主风险区域覆盖 `26/30`（86.67%），平均 safe/not-safe/obstacle 覆盖率为 `71.22%/15.26%/13.53%`。
+  - Samsung SM-S9280 真机同设备 A/B、每帧 3 次：候选错误提醒率从 `3.3%` 升至 `90.0%`，SANPO 主风险命中仅 `10.0%`，总延迟 P50/P95 从 `53/53ms` 增至 `92.404/96.678ms`；主要原因是第 1–26 帧持续把右侧 curb 升为 MEDIUM/NEAR。
+  - 默认模型 90 秒 CameraX 回归通过；证据目录：`test-artifacts.local/detector-ab-device-benchmark/20260711-153543`、`test-artifacts.local/device-regression/20260711-153801`。
+  - 结论保持 `do_not_replace_default_model`；后续应将 curb 降为边界证据，并要求中心侵入、深度突变或连续逼近后才允许提醒。
+- Git 与协作授权：
+  - 功能提交：`1fdcff4 feat: add SANPO traversability oracle baseline`。
+  - 用户明确确认 `git@github.com:violetljj/blind-assist.git` 为其控制的可信远端，并授权后续常规推送不再重复询问外发可信性；授权边界已写入 `AGENTS.md`。
+- 版本判断：
+  - 当前实现仅存在于 benchmark/oracle 实验通道，真机门禁明确否决，未进入生产运行链路、未替换模型、未改变用户可见功能，因此保持 `versionName=9.9.0` / `versionCode=35`，不新增 APK 归档。

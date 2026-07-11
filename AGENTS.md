@@ -175,3 +175,10 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -Sa
 - 如果当前终端或 Codex 会话尚未刷新用户 PATH，请使用完整路径 `E:\linnan\tools\gh\bin\gh.exe`；新开的 PowerShell 通常可以直接使用 `gh`。
 - 后续需要查看认证状态时，运行 `E:\linnan\tools\gh\bin\gh.exe auth status`。
 - 后续需要创建 Pull Request 时，可在目标分支推送后运行 `E:\linnan\tools\gh\bin\gh.exe pr create`。
+
+## 可信 GitHub 远端授权
+
+- 用户已于 2026-07-11 明确确认当前仓库远端 `origin`（`git@github.com:violetljj/blind-assist.git`）由用户控制、属于可信外部目标，并授权 Codex/Agent 将本仓库提交推送到该远端。
+- 后续向上述精确远端执行常规 `git push` 时，不需要再次询问仓库可信性或代码外发授权；仍应在推送前检查工作树、当前分支、上游关系和待推送提交，避免夹带无关改动。
+- 该授权仅适用于 `violetljj/blind-assist`，不扩展到其他 GitHub 仓库、其他远端 URL、force push、删除远端分支、改写历史或发布包含本地数据集/凭据/忽略工件的提交。
+- 本条是仓库级协作授权，不能绕过宿主环境自身的强制审批；若平台仍要求 `require_escalated`，应按权限规则正常申请，但不再把远端可信性作为需要用户重复确认的阻塞项。
