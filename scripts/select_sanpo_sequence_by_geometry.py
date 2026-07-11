@@ -90,14 +90,14 @@ def components_for_mask(rgb: np.ndarray) -> tuple[dict[int, list[dict[str, Any]]
     boundaries = np.r_[0, np.flatnonzero(np.diff(sorted_keys)) + 1, len(sorted_keys)]
     corridor_flat = corridor.reshape(-1)
     for start, end in zip(boundaries[:-1], boundaries[1:], strict=True):
-            key = int(sorted_keys[start])
-            class_id, instance_id = divmod(key, 65536)
-            positions = sorted_positions[start:end]
-            ys, xs = divmod(positions, width)
-            pixel_count = int(positions.size)
-            corridor_pixels_for_component = int(corridor_flat[positions].sum())
-            x1, y1, x2, y2 = int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1
-            result.setdefault(class_id, []).append({
+        key = int(sorted_keys[start])
+        class_id, instance_id = divmod(key, 65536)
+        positions = sorted_positions[start:end]
+        ys, xs = divmod(positions, width)
+        pixel_count = int(positions.size)
+        corridor_pixels_for_component = int(corridor_flat[positions].sum())
+        x1, y1, x2, y2 = int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1
+        result.setdefault(class_id, []).append({
             "instance_id": int(instance_id),
             "bbox_xyxy": [x1, y1, x2, y2],
             "pixel_count": int(pixel_count),
@@ -152,16 +152,12 @@ def frame_evidence(row: dict[str, Any], root: Path, profile: str) -> dict[str, A
     }
 
 
-def evaluate(rows: list[dict[str, Any]], root: Path, profile: str) -> dict[str, Any]:
-    if len(rows) != 50:
-        raise ValueError(f"selection requires exactly 50 frames, got {len(rows)}")
-    ordered = sorted(rows, key=lambda row: int(row["frame_index"]))
-    if [int(row["frame_index"]) for row in ordered] != list(range(50)):
+def summarize_frame_evidence(frames: list[dict[str, Any]], profile: str, sequence_id: str) -> dict[str, Any]:
+    """Apply the same 50-frame gate to source-mask evidence from any reader."""
+    if len(frames) != 50:
+        raise ValueError(f"selection requires exactly 50 frames, got {len(frames)}")
+    if [int(item["frame_index"]) for item in frames] != list(range(50)):
         raise ValueError("selection requires contiguous frame_index 0..49")
-    sequence_ids = {str(row["sequence_id"]) for row in ordered}
-    if len(sequence_ids) != 1:
-        raise ValueError("selection requires exactly one sequence_id")
-    frames = [frame_evidence(row, root, profile) for row in ordered]
     path_ok = [item["path_geometry"]["walkable_corridor_ratio"] >= 0.18 for item in frames]
     if profile == "center_obstacle":
         target_present = [item["target_center_intrusion"] for item in frames]
@@ -186,10 +182,6 @@ def evaluate(rows: list[dict[str, Any]], root: Path, profile: str) -> dict[str, 
     else:  # step_curb: route boundary/ramp evidence, never a free-standing alert label.
         target_present = [any(item["bottom_ratio"] >= 0.45 for item in frame["targets"]) for frame in frames]
         reasons = []
-        # A ramp/curb transition can legitimately pass the near field in under
-        # one second at 10 FPS.  It still needs temporal support, but the
-        # center-obstacle persistence threshold would incorrectly discard this
-        # no-alert boundary case.
         if sum(target_present) < 5:
             reasons.append("step_or_curb_frames_below_5")
         if longest_run(target_present) < 3:
@@ -199,8 +191,8 @@ def evaluate(rows: list[dict[str, Any]], root: Path, profile: str) -> dict[str, 
     best = [item["best_target"] for item in frames if item["best_target"]]
     return {
         "format": FORMAT,
-        "draft_manifest_sha256": None,  # filled by main after the path is known
-        "sequence_id": next(iter(sequence_ids)),
+        "draft_manifest_sha256": None,
+        "sequence_id": sequence_id,
         "frame_count": 50,
         "profile": profile,
         "decision": "accept_for_model_review" if not reasons else "reject",
@@ -219,6 +211,19 @@ def evaluate(rows: list[dict[str, Any]], root: Path, profile: str) -> dict[str, 
             "step_curb": "curb/stairs must persist for >=5 frames with one >=3-frame run and usable path geometry >=40 frames; the shorter transition allowance is only for boundary/ramp no-alert cases, not obstacles",
         },
     }
+
+
+def evaluate(rows: list[dict[str, Any]], root: Path, profile: str) -> dict[str, Any]:
+    if len(rows) != 50:
+        raise ValueError(f"selection requires exactly 50 frames, got {len(rows)}")
+    ordered = sorted(rows, key=lambda row: int(row["frame_index"]))
+    if [int(row["frame_index"]) for row in ordered] != list(range(50)):
+        raise ValueError("selection requires contiguous frame_index 0..49")
+    sequence_ids = {str(row["sequence_id"]) for row in ordered}
+    if len(sequence_ids) != 1:
+        raise ValueError("selection requires exactly one sequence_id")
+    frames = [frame_evidence(row, root, profile) for row in ordered]
+    return summarize_frame_evidence(frames, profile, next(iter(sequence_ids)))
 
 
 def main() -> int:

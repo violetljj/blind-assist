@@ -41,6 +41,22 @@ class SanpoSequenceGeometryTest(unittest.TestCase):
         components, path = geometry.components_for_mask(image)
         self.assertTrue(any(item["corridor_target_ratio"] >= 0.12 for item in components[20]))
 
+    def test_lateral_sequence_rejects_a_center_target(self) -> None:
+        clean_frame = {
+            "path_geometry": {"walkable_corridor_ratio": 1.0},
+            "target_clean_lateral": True,
+            "target_center_intrusion": False,
+            "any_center_hazard": False,
+            "best_target": {"corridor_blocking_ratio": 0.0},
+        }
+        frames = [{**clean_frame, "frame_index": index} for index in range(50)]
+        accepted = geometry.summarize_frame_evidence(frames, "lateral_pedestrian_or_ebike", "clean")
+        self.assertEqual("accept_for_model_review", accepted["decision"])
+        contaminated = [dict(item) for item in frames]
+        contaminated[25]["target_center_intrusion"] = True
+        rejected = geometry.summarize_frame_evidence(contaminated, "lateral_pedestrian_or_ebike", "contaminated")
+        self.assertIn("center_target_contaminates_lateral_negative", rejected["rejection_reasons"])
+
 
 if __name__ == "__main__":
     unittest.main()
