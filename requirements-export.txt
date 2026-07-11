@@ -1,5 +1,6 @@
 ultralytics>=8.3.0
 tensorflow>=2.15,<=2.19.0
+# TensorFlow is also used by scripts/train_export_sanpo_segmentation.py for MobileNetV3 + LR-ASPP full-INT8 export.
 tf_keras<=2.19.0
 onnx>=1.12.0,<2.0.0
 onnxslim>=0.1.71

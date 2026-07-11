@@ -19,6 +19,9 @@ RESET_FIELDS = {
     "expected_approach_state": None,
     "expected_approach_alert": None,
     "expected_time_to_alert_frames": None,
+    "expected_event_phase": None,
+    "scene_bucket": None,
+    "risk_event_id": None,
     "review_status": "pending_manual_risk_review",
     "status": "pending_review",
 }
@@ -39,6 +42,10 @@ def main() -> int:
     rows = [json.loads(line) for line in source_manifest.read_text(encoding="utf-8").splitlines() if line.strip()]
     for row in rows:
         row.update(RESET_FIELDS)
+        attributes = row.get("attributes")
+        if isinstance(attributes, dict):
+            attributes.pop("scene_bucket", None)
+            attributes.pop("risk_event_id", None)
         row.pop("review_provenance", None)
         row.pop("review_notes", None)
         row["objects_review_status"] = "pending" if row.get("objects") else "not_applicable"

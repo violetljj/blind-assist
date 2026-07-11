@@ -1,7 +1,7 @@
 param(
     [ValidateSet("Coco100", "BlindAssistEvalSet")]
     [string]$DatasetKind = "Coco100",
-    [ValidateSet("DetectorAb", "DepthFusion", "DepthFusionSweep", "SanpoTraversabilityOracle")]
+    [ValidateSet("DetectorAb", "DepthFusion", "DepthFusionSweep", "SanpoTraversabilityOracle", "SegmentationCandidate")]
     [string]$ComparisonMode = "DetectorAb",
     [string]$DatasetRoot,
     [int]$ImageLimit = 100,
@@ -14,6 +14,8 @@ param(
     [switch]$RiskSweep,
     [int]$DefaultRegressionSeconds = 90,
     [switch]$SkipDefaultRegression,
+    [string]$SegmentationModelPath = ".downloads\traversability-lab\exports\mobilenetv3_lraspp_int8_256.tflite",
+    [string]$SegmentationModelAssetName = "mobilenetv3_lraspp_int8_256.tflite",
     [string]$AdbPath
 )
 
@@ -93,6 +95,7 @@ $annotations = Resolve-RepoPath ".downloads\detector-lab\datasets\coco100\coco10
 $defaultBlindAssistEvalSet = "test-artifacts.local\datasets\blindassist-evalset-20260527-impl"
 $requestedBlindAssistEvalSet = if ($DatasetRoot) { $DatasetRoot } else { $defaultBlindAssistEvalSet }
 $blindAssistEvalSet = Resolve-RepoPath $requestedBlindAssistEvalSet
+$segmentationModel = Resolve-RepoPath $SegmentationModelPath
 $apk = Resolve-RepoPath "app\build\outputs\apk\debug\app-debug.apk"
 $aapt = Resolve-RepoPath ".android-sdk\build-tools\35.0.0\aapt.exe"
 $adb = Resolve-Adb $AdbPath
@@ -106,6 +109,9 @@ if (-not (Test-Path -LiteralPath $yolo11n)) {
 }
 if ($ComparisonMode -eq "DetectorAb" -and -not (Test-Path -LiteralPath $yolo26n)) {
     throw "yolo26n TFLite candidate not found: $yolo26n"
+}
+if ($ComparisonMode -eq "SegmentationCandidate" -and -not (Test-Path -LiteralPath $segmentationModel)) {
+    throw "Benchmark-only segmentation INT8 model not found: $segmentationModel"
 }
 if ($DatasetKind -eq "BlindAssistEvalSet") {
     if (-not (Test-Path -LiteralPath (Join-Path $blindAssistEvalSet "manifest.jsonl"))) {
@@ -143,6 +149,8 @@ try {
         ":app:assembleDebug",
         ":device-benchmark:assembleDebug",
         "-PblindAssistEvalSetDir=$blindAssistEvalSet",
+        "-PsegmentationBenchmarkModelPath=$segmentationModel",
+        "-PsegmentationBenchmarkModelAssetName=$SegmentationModelAssetName",
         "--no-daemon",
         "--console=plain"
     ) (Join-Path $artifactRoot "gradle-assemble.txt") | Out-Null
@@ -158,6 +166,9 @@ try {
     if ($mainAssets -contains "assets/yolo26n_fp16_320.tflite") {
         throw "yolo26n unexpectedly entered the main debug APK assets."
     }
+    if ($mainAssets -contains "assets/$SegmentationModelAssetName") {
+        throw "Benchmark-only segmentation model unexpectedly entered the main debug APK assets."
+    }
 
     $riskConfigs = if ($RiskSweep) {
         @("current", "center_near_sensitive", "center_near_strict", "critical_sensitive", "side_near_sensitive")
@@ -168,9 +179,12 @@ try {
         Invoke-Native ".\gradlew.bat" @(
             ":device-benchmark:connectedDebugAndroidTest",
             "-PblindAssistEvalSetDir=$blindAssistEvalSet",
+            "-PsegmentationBenchmarkModelPath=$segmentationModel",
+            "-PsegmentationBenchmarkModelAssetName=$SegmentationModelAssetName",
             "-Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.benchmark.DetectorAbDeviceBenchmarkTest",
             "-Pandroid.testInstrumentationRunnerArguments.datasetKind=$DatasetKind",
             "-Pandroid.testInstrumentationRunnerArguments.comparisonMode=$ComparisonMode",
+            "-Pandroid.testInstrumentationRunnerArguments.segmentationModelAsset=$SegmentationModelAssetName",
             "-Pandroid.testInstrumentationRunnerArguments.riskConfig=$currentRiskConfig",
             "-Pandroid.testInstrumentationRunnerArguments.imageLimit=$ImageLimit",
             "-Pandroid.testInstrumentationRunnerArguments.pureWarmup=$PureWarmup",
@@ -202,6 +216,7 @@ try {
         artifactRoot = $artifactRoot
         yolo11n = $yolo11n
         yolo26n = $yolo26n
+        segmentationModel = if ($ComparisonMode -eq "SegmentationCandidate") { $segmentationModel } else { $null }
         datasetKind = $DatasetKind
         comparisonMode = $ComparisonMode
         blindAssistEvalSet = $blindAssistEvalSet

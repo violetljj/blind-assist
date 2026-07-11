@@ -10,7 +10,9 @@ import numpy as np
 from PIL import Image
 
 import build_sanpo_sequence_evalset as sanpo
+import create_sanpo_v2_review_decisions as v2_review
 import finalize_sanpo_sequence_evalset as finalize
+import clone_sanpo_event_phase_evalset as event_clone
 
 
 class SanpoSequenceEvalsetTest(unittest.TestCase):
@@ -113,6 +115,50 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
         self.assertEqual("accepted", actual["status"])
         self.assertEqual("sanpo_20_1", actual["source_primary_region_id"])
         self.assertEqual(3, actual["expected_time_to_alert_frames"])
+
+    def test_finalize_preserves_scene_and_event_labels_for_benchmark_loader(self) -> None:
+        row = {
+            "id": "sample",
+            "objects": [],
+            "source_regions": [{"id": "sanpo_20_1", "class": "obstacle"}],
+            "attributes": {"existing_annotation": "preserved"},
+        }
+        review = {
+            "review_status": "accepted_manual_review",
+            "source_primary_region_id": "sanpo_20_1",
+            "expected_risk_direction": "CENTER",
+            "expected_distance_band": "NEAR",
+            "expected_should_alert": "true",
+            "expected_risk_level": "HIGH",
+            "expected_approach_state": "APPROACHING",
+            "expected_approach_alert": "true",
+            "expected_time_to_alert_frames": "0",
+            "scene_bucket": "center_obstacle",
+            "risk_event_id": "obstacle_event_0",
+        }
+        actual = finalize.finalize_row(row, review)
+        self.assertEqual("center_obstacle", actual["scene_bucket"])
+        self.assertEqual("obstacle_event_0", actual["risk_event_id"])
+        self.assertEqual("center_obstacle", actual["attributes"]["scene_bucket"])
+        self.assertEqual("obstacle_event_0", actual["attributes"]["risk_event_id"])
+        self.assertEqual("preserved", actual["attributes"]["existing_annotation"])
+
+    def test_v2_profiles_assign_parallel_curb_and_stable_event_id(self) -> None:
+        rows = v2_review.build("parallel_curb_negative", 3)
+        self.assertEqual({"parallel_curb"}, {row["scene_bucket"] for row in rows})
+        self.assertEqual({"parallel_curb_event_0"}, {row["risk_event_id"] for row in rows})
+        self.assertFalse(any(row["expected_should_alert"] for row in rows))
+
+    def test_event_clone_recovers_all_three_reviewed_scene_buckets(self) -> None:
+        self.assertEqual("parallel_curb", event_clone.scene_bucket_for_sequence([
+            {"expected_should_alert": False, "source_primary_region_id": None},
+        ]))
+        self.assertEqual("front_stairs", event_clone.scene_bucket_for_sequence([
+            {"expected_should_alert": True, "source_primary_region_id": "sanpo_15_1"},
+        ]))
+        self.assertEqual("center_obstacle", event_clone.scene_bucket_for_sequence([
+            {"expected_should_alert": True, "source_primary_region_id": "sanpo_20_7"},
+        ]))
 
     def test_finalize_ai_review_requires_explicit_opt_in(self) -> None:
         row = {"id": "sample", "objects": [], "source_regions": [{"id": "sanpo_20_1"}]}

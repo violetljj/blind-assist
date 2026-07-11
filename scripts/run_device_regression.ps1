@@ -184,6 +184,102 @@ function Wait-ForUiText {
     throw "Timed out waiting for UI text: $($Texts -join ' | ')"
 }
 
+function Test-UiTextPresent {
+    param(
+        [xml]$Hierarchy,
+        [string[]]$Texts
+    )
+
+    return $null -ne (Find-UiNodeByText $Hierarchy $Texts)
+}
+
+function Test-CameraReadySemantics {
+    param([xml]$Hierarchy)
+
+    $nodes = @($Hierarchy.SelectNodes("//node"))
+    $texts = ($nodes | ForEach-Object {
+        "$($_.GetAttribute('text')) $($_.GetAttribute('content-desc'))"
+    }) -join "`n"
+    if ($texts -match "模型不可用|Model unavailable") {
+        throw "Camera UI reported that the model is unavailable"
+    }
+
+    $hasBackNavigation = Test-UiTextPresent $Hierarchy @("返回功能页", "Back to features")
+    $hasDetectionEnabled = $texts -match "检测.*(已开启|开启)|Detection.*(on|enabled)"
+    $hasStableGuidance = $texts -match (
+        "持续检测中|检测已开启|保持观察|前方.*(风险|近处|迫近)|请留意|Monitoring|Detection on|Keep observing|Risk ahead|Slow down"
+    )
+    return $hasBackNavigation -and $hasDetectionEnabled -and $hasStableGuidance
+}
+
+function Resolve-LaunchPrompts {
+    param(
+        [string]$Adb,
+        [string]$Device
+    )
+
+    if (Invoke-UiTapByText -Adb $Adb -Device $Device -Texts @("不再显示", "Don't show again", "Do not show again") -Optional) {
+        Start-Sleep -Milliseconds 500
+        return $true
+    }
+    if (Invoke-UiTapByText -Adb $Adb -Device $Device -Texts @("确定", "OK") -Optional) {
+        Start-Sleep -Milliseconds 500
+        return $true
+    }
+    if (Invoke-UiTapByText -Adb $Adb -Device $Device -Texts @("跳过引导", "Skip guide", "Skip onboarding") -Optional) {
+        Start-Sleep -Milliseconds 500
+        return $true
+    }
+    return $false
+}
+
+function Wait-ForStableCameraState {
+    param(
+        [string]$Adb,
+        [string]$Device,
+        [int]$TimeoutSeconds = 25
+    )
+
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    do {
+        Resolve-LaunchPrompts -Adb $Adb -Device $Device | Out-Null
+        $hierarchy = Get-UiHierarchy $Adb $Device
+        if (Test-CameraReadySemantics $hierarchy) {
+            return $hierarchy
+        }
+        Start-Sleep -Seconds 1
+    } while ((Get-Date) -lt $deadline)
+
+    throw "Timed out waiting for stable camera semantics (camera page, detection enabled, and live guidance)"
+}
+
+function Assert-ModelFramesAdvance {
+    param(
+        [string]$Adb,
+        [string]$Device,
+        [int]$TimeoutSeconds = 12
+    )
+
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    do {
+        $first = Invoke-NativeAdb $Adb @("-s", $Device, "logcat", "-d", "-s", "BlindAssistPerf")
+        $firstText = $first.Text -join "`n"
+        $firstReady = $firstText -match "status=(模型已加载|model loaded)"
+        $firstCount = @($first.Text | Where-Object { $_ -match "BlindAssistPerf:" }).Count
+        if ($firstReady) {
+            Start-Sleep -Seconds 2
+            $second = Invoke-NativeAdb $Adb @("-s", $Device, "logcat", "-d", "-s", "BlindAssistPerf")
+            $secondCount = @($second.Text | Where-Object { $_ -match "BlindAssistPerf:" }).Count
+            if ($secondCount -gt $firstCount) {
+                return @($first, $second)
+            }
+        }
+        Start-Sleep -Seconds 1
+    } while ((Get-Date) -lt $deadline)
+
+    throw "No continuously advancing model-loaded BlindAssistPerf frames were observed after camera preparation"
+}
+
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 $resolvedApk = Resolve-RepoPath $ApkPath
 if (-not (Test-Path -LiteralPath $resolvedApk)) {
@@ -234,18 +330,13 @@ try {
     Invoke-Adb $adb @("-s", $device, "shell", "am", "start", "-W", "-n", $component) (Join-Path $artifactRoot "cold-start.txt") | Out-Null
 
     Start-Sleep -Seconds 2
-    if (Invoke-UiTapByText -Adb $adb -Device $device -Texts @("不再显示", "Don't show again", "Do not show again") -Optional) {
-        Start-Sleep -Seconds 1
-    } elseif (Invoke-UiTapByText -Adb $adb -Device $device -Texts @("确定", "OK") -Optional) {
-        Start-Sleep -Seconds 1
-    }
-    if (Invoke-UiTapByText -Adb $adb -Device $device -Texts @("跳过引导", "Skip guide", "Skip onboarding") -Optional) {
-        Start-Sleep -Seconds 2
-    }
+    while (Resolve-LaunchPrompts -Adb $adb -Device $device) { }
     Invoke-UiTapByText -Adb $adb -Device $device -Texts @("使用手机摄像头", "Use phone camera") | Out-Null
-    $cameraHierarchy = Wait-ForUiText -Adb $adb -Device $device -Texts @("检测中", "Detecting") -TimeoutSeconds 20
+    $cameraHierarchy = Wait-ForStableCameraState -Adb $adb -Device $device
     $cameraHierarchy.OuterXml | Out-File -FilePath (Join-Path $artifactRoot "camera-ready-ui.xml") -Encoding utf8
-    Start-Sleep -Seconds 5
+    $modelFrameSamples = Assert-ModelFramesAdvance -Adb $adb -Device $device
+    $modelFrameSamples[0].Text | Out-File -FilePath (Join-Path $artifactRoot "BlindAssistPerf-ready-first.log") -Encoding utf8
+    $modelFrameSamples[1].Text | Out-File -FilePath (Join-Path $artifactRoot "BlindAssistPerf-ready-second.log") -Encoding utf8
 
     $foreground = Invoke-NativeAdb $adb @("-s", $device, "shell", "dumpsys", "activity", "activities")
     $foreground.Text | Out-File -FilePath (Join-Path $artifactRoot "foreground-activity.txt") -Encoding utf8
@@ -280,7 +371,7 @@ try {
         Start-Sleep -Seconds 15
     }
 
-    $finalHierarchy = Wait-ForUiText -Adb $adb -Device $device -Texts @("检测中", "Detecting") -TimeoutSeconds 5
+    $finalHierarchy = Wait-ForStableCameraState -Adb $adb -Device $device -TimeoutSeconds 8
     $finalHierarchy.OuterXml | Out-File -FilePath (Join-Path $artifactRoot "camera-final-ui.xml") -Encoding utf8
 
     $finalForeground = Invoke-NativeAdb $adb @("-s", $device, "shell", "dumpsys", "activity", "activities")

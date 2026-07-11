@@ -7,6 +7,7 @@ plugins {
 
 val detectorBenchmarkAssetsDir = layout.buildDirectory.dir("generated/detectorBenchmarkAssets")
 val depthBenchmarkAssetsDir = layout.buildDirectory.dir("generated/depthBenchmarkAssets")
+val segmentationBenchmarkAssetsDir = layout.buildDirectory.dir("generated/segmentationBenchmarkAssets")
 val blindAssistEvalSetDir = providers
     .gradleProperty("blindAssistEvalSetDir")
     .orElse("test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
@@ -16,6 +17,12 @@ val depthBenchmarkModelPath = providers
 val depthBenchmarkModelAssetName = providers
     .gradleProperty("depthBenchmarkModelAssetName")
     .orElse("depth_anything_v2_small_fp32.tflite")
+val segmentationBenchmarkModelPath = providers
+    .gradleProperty("segmentationBenchmarkModelPath")
+    .orElse(".downloads/traversability-lab/exports/mobilenetv3_lraspp_int8_256.tflite")
+val segmentationBenchmarkModelAssetName = providers
+    .gradleProperty("segmentationBenchmarkModelAssetName")
+    .orElse("mobilenetv3_lraspp_int8_256.tflite")
 
 val prepareDetectorBenchmarkAssets = tasks.register<Sync>("prepareDetectorBenchmarkAssets") {
     from(rootProject.file("app/src/main/assets")) {
@@ -48,6 +55,14 @@ val prepareDepthBenchmarkAssets = tasks.register<Sync>("prepareDepthBenchmarkAss
     into(depthBenchmarkAssetsDir)
 }
 
+val prepareSegmentationBenchmarkAssets = tasks.register<Sync>("prepareSegmentationBenchmarkAssets") {
+    from(segmentationBenchmarkModelPath.map { rootProject.file(it) }) {
+        rename { segmentationBenchmarkModelAssetName.get() }
+        into("segmentation")
+    }
+    into(segmentationBenchmarkAssetsDir)
+}
+
 android {
     namespace = "com.linnan.blindassist.benchmark"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -77,6 +92,7 @@ android {
         getByName("main") {
             assets.srcDir(detectorBenchmarkAssetsDir)
             assets.srcDir(depthBenchmarkAssetsDir)
+            assets.srcDir(segmentationBenchmarkAssetsDir)
         }
     }
 }
@@ -86,6 +102,7 @@ tasks.matching {
 }.configureEach {
     dependsOn(prepareDetectorBenchmarkAssets)
     dependsOn(prepareDepthBenchmarkAssets)
+    dependsOn(prepareSegmentationBenchmarkAssets)
 }
 
 dependencies {

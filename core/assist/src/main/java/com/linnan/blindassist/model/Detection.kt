@@ -9,7 +9,13 @@ data class Detection(
     val boundingBox: BoundingBox,
     val frameSize: FrameSize,
     val distanceEvidence: DistanceEvidence? = null,
-    val source: DetectionSource = DetectionSource.OBJECT_DETECTOR
+    val source: DetectionSource = DetectionSource.OBJECT_DETECTOR,
+    /**
+     * Whether this region can be promoted by temporal stability or motion evidence.
+     * Boundary-like segmentation regions remain visible for diagnostics, but must not
+     * become actionable solely because their mask shape persists or moves.
+     */
+    val temporalPromotionEligible: Boolean = true
 ) {
     constructor(
         classId: Int,
@@ -17,7 +23,7 @@ data class Detection(
         confidence: Float,
         boundingBox: BoundingBox,
         frameSize: FrameSize
-    ) : this(classId, label, confidence, boundingBox, frameSize, null, DetectionSource.OBJECT_DETECTOR)
+    ) : this(classId, label, confidence, boundingBox, frameSize, null, DetectionSource.OBJECT_DETECTOR, true)
 
     val areaRatio: Float get() = boundingBox.areaRatio(frameSize)
     val centerX: Float get() = boundingBox.centerX

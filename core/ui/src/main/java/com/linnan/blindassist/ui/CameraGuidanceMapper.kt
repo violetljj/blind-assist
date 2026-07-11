@@ -326,6 +326,11 @@ object CameraGuidanceMapper {
                 detail = "$scenarioName is limiting repeated reminders to reduce interruption.",
                 accessibilityText = "No repeat reminder because cooldown is active. Current scenario is $scenarioName."
             )
+            com.linnan.blindassist.feedback.FeedbackReason.EVENT_ALREADY_ALERTED -> RiskExplanation(
+                headline = "No repeat: same risk was already alerted",
+                detail = "This centre-path risk has already received feedback. It will be evaluated again after passing, receding, or clearing.",
+                accessibilityText = "The same risk was already alerted. Waiting for it to pass or clear before evaluating another reminder."
+            )
             com.linnan.blindassist.feedback.FeedbackReason.HELD_ALERT -> RiskExplanation(
                 headline = "Holding the previous reminder briefly",
                 detail = "The current frame did not confirm the object again, but the stabilizer is briefly keeping $stableText.",

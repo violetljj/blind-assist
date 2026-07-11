@@ -110,6 +110,12 @@ class TemporalRiskTracker(
                 approachTrend = trend
             )
         }
+        if (raw.sourceDetection?.temporalPromotionEligible == false) {
+            return raw.copy(approachTrend = trend)
+        }
+        if (!isMotionPromotionEligible(raw)) {
+            return raw.copy(approachTrend = trend)
+        }
         val motionFusion = fusionPolicy.fuseMotion(
             raw = raw,
             trend = trend,
@@ -142,9 +148,24 @@ class TemporalRiskTracker(
     private fun isStableSegmentationEligible(raw: RiskResult): Boolean {
         val detection = raw.sourceDetection ?: return false
         if (detection.source != DetectionSource.SEGMENTATION) return false
+        if (!detection.temporalPromotionEligible) return false
         if (detection.label == "stairs") return true
         if (detection.label !in STABLE_SEGMENTATION_OBSTACLE_LABELS) return false
         return detection.boundingBox.bottom / detection.frameSize.height >= config.minStableSegmentationBottomRatio
+    }
+
+    /**
+     * Generic semantic fragments may cross the central corridor while still describing a
+     * parallel boundary. Require the same near-field footing as stable-segmentation promotion
+     * before motion can make them actionable; stairs keep their existing path.
+     */
+    private fun isMotionPromotionEligible(raw: RiskResult): Boolean {
+        val detection = raw.sourceDetection ?: return true
+        if (detection.source != DetectionSource.SEGMENTATION ||
+            detection.label !in MOTION_GATED_SEGMENTATION_LABELS
+        ) return true
+        return detection.boundingBox.bottom / detection.frameSize.height >=
+            config.minStableSegmentationBottomRatio
     }
 
     private data class TargetObservation(
@@ -213,6 +234,17 @@ class TemporalRiskTracker(
         const val DEFAULT_MIN_STABLE_SEGMENTATION_FRAMES = 2
         const val DEFAULT_MIN_STABLE_SEGMENTATION_BOTTOM_RATIO = 0.65f
         const val SEGMENTATION_MAX_CENTER_DELTA = 0.25f
-        private val STABLE_SEGMENTATION_OBSTACLE_LABELS = setOf("generic obstacle", "pole", "inaccessible surface")
+        private val STABLE_SEGMENTATION_OBSTACLE_LABELS = setOf(
+            "generic obstacle",
+            "pole",
+            "inaccessible surface",
+            "segmentation obstacle",
+            "boundary step curb"
+        )
+        private val MOTION_GATED_SEGMENTATION_LABELS = setOf(
+            "generic obstacle",
+            "segmentation obstacle",
+            "boundary step curb"
+        )
     }
 }

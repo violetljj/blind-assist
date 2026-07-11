@@ -27,6 +27,7 @@ enum class FeedbackReason(val displayText: String) {
     DISTANCE_TOO_FAR("距离较远"),
     UNSTABLE_RISK("风险未稳定"),
     COOLDOWN("冷却中"),
+    EVENT_ALREADY_ALERTED("同一风险已提醒"),
     SPEECH_DISABLED("语音关闭"),
     VIBRATION_DISABLED("震动关闭"),
     FEEDBACK_UNAVAILABLE("反馈不可用"),

@@ -6,7 +6,7 @@
 .\scripts\run_device_regression.ps1 -ApkPath .\app\build\outputs\apk\debug\app-debug.apk
 ```
 
-脚本要求当前只有一台在线 ADB 设备。它会安装 APK、清空 `com.linnan.blindassist` 数据、冷启动 `.MainActivity`，采集包版本信息，并在默认 90 秒内采样 `BlindAssistPerf`、`gfxinfo`、`meminfo`、UI XML 和截图。需要在同一台设备上运行 connected Compose 测试时，可追加 `-RunConnectedAndroidTest`。
+脚本要求当前只有一台在线 ADB 设备。它会安装 APK、清空 `com.linnan.blindassist` 数据、冷启动 `.MainActivity`，处理 Android 兼容提示与 onboarding，并确认已进入相机页、检测已开启、UI 已给出稳定相机语义且两次 `BlindAssistPerf` 的 model-loaded 帧持续增长。随后在默认 90 秒内采样 `BlindAssistPerf`、`gfxinfo`、`meminfo`、UI XML 和截图；模型不可用、未进入相机页或性能帧停止增长都会失败。需要在同一台设备上运行 connected Compose 测试时，可追加 `-RunConnectedAndroidTest`。
 
 常用参数：
 

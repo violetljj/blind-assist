@@ -16,6 +16,7 @@ DIRECTIONS = {"NONE", "LEFT", "CENTER", "RIGHT"}
 DISTANCES = {"FAR", "MID", "NEAR", "CRITICAL"}
 RISK_LEVELS = {"NONE", "LOW", "MEDIUM", "HIGH"}
 APPROACH_STATES = {"UNKNOWN", "STABLE", "APPROACHING", "RECEDING"}
+EVENT_PHASES = {"APPROACHING", "ALERTED", "PASSED"}
 ACCEPTED_REVIEW_STATUSES = {"accepted_manual_review", "accepted_ai_review"}
 
 
@@ -86,6 +87,9 @@ def finalize_row(row: dict[str, Any], review: dict[str, str], allow_ai_review: b
     distance = review.get("expected_distance_band", "").strip()
     risk_level = review.get("expected_risk_level", "").strip()
     approach = review.get("expected_approach_state", "").strip()
+    event_phase = review.get("expected_event_phase", "").strip()
+    scene_bucket = review.get("scene_bucket", "").strip()
+    risk_event_id = review.get("risk_event_id", "").strip() or None
     if direction not in DIRECTIONS:
         raise ValueError(f"invalid expected_risk_direction: {direction}")
     if distance not in DISTANCES:
@@ -94,6 +98,8 @@ def finalize_row(row: dict[str, Any], review: dict[str, str], allow_ai_review: b
         raise ValueError(f"invalid expected_risk_level: {risk_level}")
     if approach not in APPROACH_STATES:
         raise ValueError(f"invalid expected_approach_state: {approach}")
+    if event_phase and event_phase not in EVENT_PHASES:
+        raise ValueError(f"invalid expected_event_phase: {event_phase}")
 
     primary_object_id = review.get("primary_object_id", "").strip() or None
     object_ids = {item.get("id") for item in row.get("objects", [])}
@@ -105,6 +111,11 @@ def finalize_row(row: dict[str, Any], review: dict[str, str], allow_ai_review: b
         raise ValueError(f"source_primary_region_id does not reference source_regions: {source_primary_region_id}")
 
     finalized = dict(row)
+    attributes = dict(finalized.get("attributes") or {})
+    if scene_bucket:
+        attributes["scene_bucket"] = scene_bucket
+    if risk_event_id:
+        attributes["risk_event_id"] = risk_event_id
     finalized.update({
         "primary_object_id": primary_object_id,
         "source_primary_region_id": source_primary_region_id,
@@ -114,6 +125,10 @@ def finalize_row(row: dict[str, Any], review: dict[str, str], allow_ai_review: b
         "expected_risk_level": risk_level,
         "expected_approach_state": approach,
         "expected_approach_alert": parse_bool(review.get("expected_approach_alert", ""), "expected_approach_alert"),
+        "expected_event_phase": event_phase or None,
+        "scene_bucket": scene_bucket or None,
+        "risk_event_id": risk_event_id,
+        "attributes": attributes,
         "expected_time_to_alert_frames": parse_optional_int(
             review.get("expected_time_to_alert_frames", ""),
             "expected_time_to_alert_frames",

@@ -14,20 +14,36 @@ enum class TraversabilityClass {
 }
 
 /**
+ * Keeps the connected-component/risk corridor logic independent from the
+ * originating segmentation dataset.  The production-facing code only sees
+ * [DetectionSource.SEGMENTATION]; SANPO ids and learned-model ids remain
+ * benchmark implementation details.
+ */
+interface TraversabilityTaxonomy {
+    fun traversabilityFor(classId: Int): TraversabilityClass
+    fun isNavigationHazard(classId: Int): Boolean
+    fun riskLabelFor(classId: Int): String?
+
+    /** A boundary may be emitted only when it enters the central walking corridor. */
+    fun permitsBoundaryDetection(classId: Int): Boolean = false
+    fun isBoundaryEvidence(classId: Int): Boolean = false
+}
+
+/**
  * BlindAssist navigation mapping for SANPO semantic ids.
  *
  * This intentionally differs from SANPO's paper accessibility collapse for stairs:
  * SANPO maps stairs to safe-to-walk, while BlindAssist keeps stairs as an explicit
  * mobility hazard so a step transition cannot disappear inside the free-space mask.
  */
-object BlindAssistSanpoTaxonomy {
+object BlindAssistSanpoTaxonomy : TraversabilityTaxonomy {
     private val safeToWalkIds = setOf(3, 5, 6, 17, 30)
     private val navigationHazardIds = setOf(2, 4, 9, 10, 11, 15, 18, 20, 24, 26)
     private val obstacleIds = setOf(
         4, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 25, 26, 28, 29
     )
 
-    fun traversabilityFor(classId: Int): TraversabilityClass {
+    override fun traversabilityFor(classId: Int): TraversabilityClass {
         return when {
             classId in safeToWalkIds -> TraversabilityClass.SAFE_TO_WALK
             classId in obstacleIds -> TraversabilityClass.OBSTACLE
@@ -35,9 +51,11 @@ object BlindAssistSanpoTaxonomy {
         }
     }
 
-    fun isNavigationHazard(classId: Int): Boolean = classId in navigationHazardIds
+    override fun isNavigationHazard(classId: Int): Boolean = classId in navigationHazardIds
 
-    fun riskLabelFor(classId: Int): String? {
+    override fun isBoundaryEvidence(classId: Int): Boolean = classId == 2
+
+    override fun riskLabelFor(classId: Int): String? {
         return when (classId) {
             2 -> "curb"
             4 -> "road barrier"
@@ -54,6 +72,33 @@ object BlindAssistSanpoTaxonomy {
     }
 }
 
+/** Four-class contract used by the benchmark-only MobileNetV3 LR-ASPP model. */
+object BlindAssistLearnedTraversabilityTaxonomy : TraversabilityTaxonomy {
+    const val WALKABLE = 0
+    const val BOUNDARY_STEP_CURB = 1
+    const val OBSTACLE = 2
+    const val UNKNOWN_NONWALKABLE = 3
+
+    override fun traversabilityFor(classId: Int): TraversabilityClass = when (classId) {
+        WALKABLE -> TraversabilityClass.SAFE_TO_WALK
+        OBSTACLE -> TraversabilityClass.OBSTACLE
+        BOUNDARY_STEP_CURB, UNKNOWN_NONWALKABLE -> TraversabilityClass.NOT_SAFE_TO_WALK
+        else -> TraversabilityClass.NOT_SAFE_TO_WALK
+    }
+
+    override fun isNavigationHazard(classId: Int): Boolean =
+        classId == BOUNDARY_STEP_CURB || classId == OBSTACLE
+
+    override fun riskLabelFor(classId: Int): String? = when (classId) {
+        BOUNDARY_STEP_CURB -> "boundary step curb"
+        OBSTACLE -> "segmentation obstacle"
+        else -> null
+    }
+
+    override fun permitsBoundaryDetection(classId: Int): Boolean = classId == BOUNDARY_STEP_CURB
+    override fun isBoundaryEvidence(classId: Int): Boolean = classId == BOUNDARY_STEP_CURB
+}
+
 data class TraversabilityAnalyzerConfig(
     val corridorTopRatio: Float = 0.42f,
     val corridorTopHalfWidthRatio: Float = 0.16f,
@@ -64,6 +109,9 @@ data class TraversabilityAnalyzerConfig(
     val curbMinimumCenterOverlapRatio: Float = 0.35f,
     val minimumBottomRatio: Float = 0.42f,
     val curbMinimumBottomRatio: Float = 0.62f,
+    val boundaryMaximumCenterOverlapRatio: Float = 0.34f,
+    val boundaryMinimumAspectRatio: Float = 3.0f,
+    val boundaryEdgeAttachmentRatio: Float = 0.18f,
     val analysisSize: Int = 256
 ) {
     init {
@@ -96,7 +144,8 @@ data class TraversabilityAnalysis(
 )
 
 class TraversabilitySegmentationAnalyzer(
-    private val config: TraversabilityAnalyzerConfig = TraversabilityAnalyzerConfig()
+    private val config: TraversabilityAnalyzerConfig = TraversabilityAnalyzerConfig(),
+    private val taxonomy: TraversabilityTaxonomy = BlindAssistSanpoTaxonomy
 ) {
     private var corridorBuffer = BooleanArray(0)
     private var visitedBuffer = BooleanArray(0)
@@ -123,7 +172,7 @@ class TraversabilitySegmentationAnalyzer(
                 val index = y * mask.width + x
                 corridor[index] = true
                 corridorCount += 1
-                when (BlindAssistSanpoTaxonomy.traversabilityFor(mask.classIds[index])) {
+                when (taxonomy.traversabilityFor(mask.classIds[index])) {
                     TraversabilityClass.SAFE_TO_WALK -> safe += 1
                     TraversabilityClass.NOT_SAFE_TO_WALK -> notSafe += 1
                     TraversabilityClass.OBSTACLE -> obstacle += 1
@@ -151,7 +200,7 @@ class TraversabilitySegmentationAnalyzer(
         val detections = mutableListOf<Detection>()
         for (start in mask.classIds.indices) {
             val classId = mask.classIds[start]
-            if (visited[start] || !BlindAssistSanpoTaxonomy.isNavigationHazard(classId)) continue
+            if (visited[start] || !taxonomy.isNavigationHazard(classId)) continue
             visited[start] = true
             var head = 0
             var tail = 0
@@ -180,11 +229,21 @@ class TraversabilitySegmentationAnalyzer(
             val areaRatio = pixels.toFloat() / mask.classIds.size
             val centerOverlapRatio = corridorPixels.toFloat() / max(1, pixels)
             val bottomRatio = (maxY + 1).toFloat() / mask.height
-            val label = BlindAssistSanpoTaxonomy.riskLabelFor(classId)
-            val minimumOverlap = if (classId == 2) config.curbMinimumCenterOverlapRatio else config.minimumCenterOverlapRatio
-            val minimumBottom = if (classId == 2) config.curbMinimumBottomRatio else config.minimumBottomRatio
-            // curb is boundary evidence in v2; without depth/temporal corroboration it never becomes a Detection.
-            val passesGate = classId != 2 && centerOverlapRatio >= minimumOverlap && bottomRatio >= minimumBottom
+            val label = taxonomy.riskLabelFor(classId)
+            val isBoundaryEvidence = taxonomy.isBoundaryEvidence(classId)
+            val minimumOverlap = if (isBoundaryEvidence) config.curbMinimumCenterOverlapRatio else config.minimumCenterOverlapRatio
+            val minimumBottom = if (isBoundaryEvidence) config.curbMinimumBottomRatio else config.minimumBottomRatio
+            val isBoundaryLikeGenericObstacle = (label == "generic obstacle" || isBoundaryEvidence) &&
+                (maxX - minX + 1).toFloat() / max(1, maxY - minY + 1) >= config.boundaryMinimumAspectRatio &&
+                centerOverlapRatio <= config.boundaryMaximumCenterOverlapRatio &&
+                (
+                    minX <= mask.width * config.boundaryEdgeAttachmentRatio ||
+                    maxX + 1 >= mask.width * (1f - config.boundaryEdgeAttachmentRatio))
+            // SANPO curb stays diagnostic-only. The learned boundary class can enter the
+            // risk path only after it intrudes into the central corridor; temporal logic
+            // still decides whether it becomes actionable.
+            val passesGate = centerOverlapRatio >= minimumOverlap && bottomRatio >= minimumBottom &&
+                (!isBoundaryEvidence || (taxonomy.permitsBoundaryDetection(classId) && !isBoundaryLikeGenericObstacle))
             if (passesGate && pixels >= config.minimumRegionPixels && areaRatio >= config.minimumRegionAreaRatio && label != null) {
                 val scaleX = frameSize.width.toFloat() / mask.width
                 val scaleY = frameSize.height.toFloat() / mask.height
@@ -199,7 +258,8 @@ class TraversabilitySegmentationAnalyzer(
                         bottom = (maxY + 1) * scaleY
                     ),
                     frameSize = frameSize,
-                    source = DetectionSource.SEGMENTATION
+                    source = DetectionSource.SEGMENTATION,
+                    temporalPromotionEligible = !isBoundaryLikeGenericObstacle
                 )
             }
         }

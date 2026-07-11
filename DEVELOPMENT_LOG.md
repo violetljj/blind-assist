@@ -2,6 +2,18 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-07-11
+
+### v10.9.0 SANPO 风险事件闭环与边界形态否决
+- 时间：2026-07-11 20:15:00 +08:00
+- 执行者：violjjet
+- 类型：核心风险策略 / 时序反馈闭环 / 分割候选否决 / benchmark schema / 测试 / 版本升级
+- 修改范围：`RiskEventTracker`、`AssistSessionCoordinator`、`AssistEngine`、`TraversabilitySegmentationAnalyzer`、反馈本地化/相机解释、`DetectorAbDeviceBenchmarkTest`、SANPO finalize/review/事件阶段克隆脚本、JVM 测试、README、CHANGELOG 与 app 版本。
+- 修改内容：新增纯 Kotlin 风险事件状态机，以分割来源、标签和中心走廊位置匹配同一事件；首次语音/震动实际触发后进入 `ALERTED` 并抑制重复反馈，连续 3 帧远离/缺失或离开中心走廊后清除。新反馈原因 `EVENT_ALREADY_ALERTED` 与 cooldown 分开呈现。分割 `generic obstacle` 对贴边长条区域执行边界否决，保留台阶和紧凑中心障碍。benchmark 改为按序列复用事件 tracker，并输出 event ID/state、反馈原因、已通过窗口及平行路沿统计；标注 finalize 支持 `expected_event_phase`，事件阶段 clone 工具从既有已复核的 approach/alert 标签生成新的不可变 90 帧 manifest。
+- 修改原因：90 帧扩展集的 25.9% 错误提醒主要来自登阶后同一事件重复播报和平行路沿泛化；本轮先闭环风险规则与评测口径，不替换 YOLO11n，也不训练模型。
+- 验证方式：提权运行 `:core:assist:test :device-benchmark:compileDebugKotlin --no-daemon --console=plain`，通过（105 个核心 JVM 测试，benchmark Kotlin 编译成功）；`:app:lintDebug :app:assembleDebug :device-benchmark:assembleDebug --no-daemon --console=plain` 通过。SM-S9280 上以事件阶段 clone 执行 90 帧 SANPO Oracle A/B：候选 P95 `57.581ms`、已通过窗口错误提醒 `0`、平行路沿报告错误提醒 `0`，但 alert FP `5.6%`、逐帧 alert recall `5.6%`，未达到门槛。90 秒 CameraX 回归安装与冷启动成功（`TotalTime=1081ms`），但等待 `检测中 | Detecting` 文本超时失败。
+- 当前判断：版本从 `v10.4.0` / `36` 升至 `v10.9.0` / `37`，属于核心风险反馈行为的 `+0.5` 更新。事件闭环已证明能消除已通过台阶重复播报，但当前 benchmark 的逐帧 alert recall 口径应改为按事件计算；另外需消除 1 次 YOLO `person` 与 2 次 `generic obstacle` motion promotion 的负例提醒，再复跑设备回归。APK 已构建但未归档，因为固定集与 CameraX 回归均未通过；维持 `do_not_replace_default_model`，不得启动 MobileNetV3 + LR-ASPP INT8 训练。
+
 ## 2026-06-12
 
 ### v8.9.0 几何、深度、运动的保守融合候选层

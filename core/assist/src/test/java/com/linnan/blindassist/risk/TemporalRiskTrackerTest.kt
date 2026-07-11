@@ -151,6 +151,51 @@ class TemporalRiskTrackerTest {
         assertEquals(RiskLevel.LOW, result.level)
     }
 
+    @Test
+    fun boundaryLikeSegmentationStaysDiagnosticWithoutStabilityOrMotionPromotion() {
+        val tracker = TemporalRiskTracker()
+        val first = tracker.update(
+            segmentationRaw(BoundingBox(300f, 320f, 700f, 520f), label = "generic obstacle", temporalPromotionEligible = false),
+            nowMs = 100L
+        )
+        val second = tracker.update(
+            segmentationRaw(BoundingBox(300f, 320f, 700f, 520f), label = "generic obstacle", temporalPromotionEligible = false),
+            nowMs = 200L
+        )
+        val approaching = tracker.update(
+            segmentationRaw(BoundingBox(280f, 340f, 720f, 580f), label = "generic obstacle", temporalPromotionEligible = false),
+            nowMs = 300L
+        )
+
+        assertEquals(RiskLevel.LOW, first.level)
+        assertEquals(RiskLevel.LOW, second.level)
+        assertEquals(RiskFusionReason.GEOMETRY_ONLY.name, second.scoreBreakdown.fusionSummary)
+        assertEquals(ApproachTrend.APPROACHING, approaching.approachTrend)
+        assertEquals(RiskLevel.LOW, approaching.level)
+        assertEquals(RiskFusionReason.GEOMETRY_ONLY.name, approaching.scoreBreakdown.fusionSummary)
+    }
+
+    @Test
+    fun genericObstacleNeedsNearFieldFootingBeforeMotionPromotion() {
+        val tracker = TemporalRiskTracker()
+        tracker.update(
+            segmentationRaw(BoundingBox(380f, 280f, 620f, 510f), label = "generic obstacle"),
+            nowMs = 100L
+        )
+        tracker.update(
+            segmentationRaw(BoundingBox(370f, 300f, 630f, 540f), label = "generic obstacle"),
+            nowMs = 200L
+        )
+        val shallow = tracker.update(
+            segmentationRaw(BoundingBox(360f, 320f, 640f, 590f), label = "generic obstacle"),
+            nowMs = 300L
+        )
+
+        assertEquals(ApproachTrend.APPROACHING, shallow.approachTrend)
+        assertEquals(RiskLevel.LOW, shallow.level)
+        assertEquals(RiskFusionReason.GEOMETRY_ONLY.name, shallow.scoreBreakdown.fusionSummary)
+    }
+
     private fun raw(label: String, box: BoundingBox): RiskResult {
         return analyzer.analyze(listOf(detection(label, box)), frame)
     }
@@ -192,9 +237,18 @@ class TemporalRiskTrackerTest {
         )
     }
 
-    private fun segmentationRaw(box: BoundingBox, label: String = "stairs"): RiskResult {
+    private fun segmentationRaw(
+        box: BoundingBox,
+        label: String = "stairs",
+        temporalPromotionEligible: Boolean = true
+    ): RiskResult {
         return analyzer.analyze(
-            listOf(detection(label = label, box = box).copy(source = DetectionSource.SEGMENTATION)),
+            listOf(
+                detection(label = label, box = box).copy(
+                    source = DetectionSource.SEGMENTATION,
+                    temporalPromotionEligible = temporalPromotionEligible
+                )
+            ),
             frame
         )
     }

@@ -1,5 +1,12 @@
 # BlindAssist 更新记录
 
+## v10.9.0 - SANPO 风险事件闭环
+
+- 新增纯 Kotlin `RiskEventTracker`：仅跟踪 SANPO 中心走廊分割候选，首次实际反馈后阻断同一事件重复播报；通过/远离或连续 3 帧消失后清除。YOLO 默认检测与模型资产不变。
+- `generic obstacle` 增加贴边长条边界形态否决，避免平行路沿泛化；紧凑中心障碍和 `stairs` 保留既有候选路径。
+- benchmark 与连续序列标注新增事件阶段、事件 ID/状态、反馈抑制原因、已通过窗口与平行路沿错误提醒统计；`clone_sanpo_event_phase_evalset.py` 为现有已复核集生成不可变事件阶段克隆。固定 90 帧同设备复测仍是训练前硬门禁，尚未在本条记录中宣称通过。
+- SM-S9280 90 帧复测证据：`test-artifacts.local/detector-ab-device-benchmark/20260711-205209/`。候选总 P95 `57.581ms`、已通过窗口错误提醒 `0`、报告中的平行路沿错误提醒 `0`，但 alert FP `5.6%`、逐帧 alert recall `5.6%`，推荐仍为 `do_not_replace_default_model`。随后 90 秒 CameraX 回归在 `检测中 | Detecting` 文本等待阶段超时，证据位于 `test-artifacts.local/device-regression/20260711-205421/`。
+
 ## Unreleased - SANPO v2 公开连续序列扩展验证
 
 - 新增公开 SANPO session 发现、review profile、不可变 sequence clone 与多序列合并工具；原始 RGB/mask 继续只保留在 `test-artifacts.local`。

@@ -12,6 +12,26 @@
 
 `DetectorAbDeviceBenchmarkTest` 的 FQCN、instrumentation runner 参数、正式 App APK 路径和设备端 `/sdcard/Android/data/com.linnan.blindassist/files/...` 结果路径保持兼容。旧 `run_yolo26n_device_benchmark.ps1` 继续转发到 Detector A/B 流程。构建 benchmark APK 只证明测试代码和现有资产可以打包，不代表真机 benchmark 已通过。
 
+## 四类分割候选（benchmark-only）
+
+`SegmentationCandidate` 同机比较 `baseline_yolo_geometry`、固定 SANPO oracle 参考和
+`candidate_mobilenetv3_lraspp_int8`。分割模型仅复制到 `:device-benchmark`；主 APK 仍只能
+包含默认 YOLO 资产。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\run_detector_ab_device_benchmark.ps1 `
+  -DatasetKind BlindAssistEvalSet `
+  -DatasetRoot test-artifacts.local\datasets\sanpo-v3-regression-90f `
+  -ComparisonMode SegmentationCandidate `
+  -SegmentationModelPath device-benchmark\benchmark-assets.local\segmentation\mobilenetv3_lraspp_int8_256.tflite `
+  -ImageLimit 90
+```
+
+只有事件提醒召回不低于 YOLO、关键事件漏报不增加、平行路沿为零提醒、误提醒不超过 YOLO +2
+个百分点、总 P95 ≤70ms 且较 YOLO 增量 ≤15ms，报告才会写入
+`candidate_ok_for_shadow_review`。该结果仍保持 `replace_default_model_now=false`；全量开发集和
+锁定盲测集都通过后才可另行讨论 shadow mode。
+
 ## 单目深度融合候选路线
 
 2026-06-11 新增 `YOLO11n + 单目深度TFLite + 风险融合` 的候选评测脚手架。该路线现只用于 `:device-benchmark` 和本地实验，不替换 App 默认模型；正式 debug APK 仍只应包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。
@@ -92,7 +112,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchm
 powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1 -DatasetKind BlindAssistEvalSet -DatasetRoot test-artifacts.local\datasets\blindassist-evalset-20260527-impl
 ```
 
-该模式从 `manifest.jsonl` 读取真实助行风险预期字段，同时保留 AP50、precision、recall 等检测指标。设备端 `benchmark.json` 和 `benchmark.md` 会额外输出 `centerRiskRecall`、`alertRecall`、`alertFalsePositiveRate`、`distanceBandAccuracy`、`riskLevelAccuracy`、`primaryObjectHitRate`、`criticalMissCount` 和 `fusion_summary_counts`。若 `manifest.jsonl` 提供可选连续帧字段 `sequence_id`、`frame_index`、`expected_approach_state`、`expected_approach_alert`、`expected_time_to_alert_frames`，还会输出 `approachRiskRecall`、`approachFalsePositiveRate`、`approachDirectionAccuracy`、`approachCriticalMissCount`、`meanTimeToAlertFrames` 和 `approachLabeledSequenceCount`；旧评测集缺少这些字段时新增指标保持 `0`。候选模型替换建议会同时参考检测质量、融合原因和这些 BlindAssist 指标，而不是只看速度或 COCO 派生风险误差。
+该模式从 `manifest.jsonl` 读取真实助行风险预期字段，同时保留 AP50、precision、recall 等检测指标。设备端 `benchmark.json` 和 `benchmark.md` 会额外输出 `centerRiskRecall`、`alertRecall`、`eventAlertRecall`、`criticalEventMissCount`、`alertFalsePositiveRate`、`passedWindowFalseAlertCount`、`parallelCurbFalseAlertCount`、距离/风险准确率及融合原因计数。`eventAlertRecall` 以 `attributes.risk_event_id`（缺失时回退 `sequence_id`）分组：同一事件的全部 `expected_should_alert=true` 帧构成窗口，任一实际提醒即命中；`centerRiskRecall`、`alertRecall` 与 `criticalMissCount` 保留为逐帧诊断，不再作为候选晋级门槛。`attributes.scene_bucket=parallel_curb` 会在所有输入来源上报告平行路沿提醒数与标注帧数。候选晋级仍同时约束检测质量、事件级关键漏报、误提醒率及其他 BlindAssist 指标。
 
 如需在已有 baseline 后做小步阈值扫参，可增加 `-RiskSweep`。扫参只通过 instrumentation 参数选择 benchmark 专用 `RiskAnalyzerConfig`，默认 App 行为不会因为扫参自动改变；只有在指标明确改善且误提醒没有明显增加时，才应另行把阈值提升为默认配置。
 

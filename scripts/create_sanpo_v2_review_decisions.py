@@ -21,6 +21,8 @@ def decision(
     approach: str,
     approach_alert: bool,
     source_region: str | None,
+    scene_bucket: str,
+    risk_event_id: str,
     note: str,
 ) -> dict:
     return {
@@ -33,7 +35,10 @@ def decision(
         "expected_risk_level": level,
         "expected_approach_state": approach,
         "expected_approach_alert": approach_alert,
+        "expected_event_phase": "PASSED" if approach == "RECEDING" and not should_alert else "APPROACHING",
         "expected_time_to_alert_frames": 0 if should_alert else None,
+        "scene_bucket": scene_bucket,
+        "risk_event_id": risk_event_id,
         "review_status": "accepted_ai_review",
         "objects_review_status": "not_applicable",
         "reviewer_type": "ai_assistant",
@@ -52,6 +57,7 @@ def build(profile: str, count: int) -> list[dict]:
                 index,
                 direction="CENTER", distance="MID", should_alert=False, level="LOW",
                 approach="STABLE", approach_alert=False, source_region=None,
+                scene_bucket="parallel_curb", risk_event_id="parallel_curb_event_0",
                 note="Reviewed public sequence: side boundaries remain parallel to the clear center walking corridor; no alert expected.",
             )
             for index in range(count)
@@ -64,6 +70,7 @@ def build(profile: str, count: int) -> list[dict]:
                 should_alert=index < 16, level="HIGH" if index < 16 else "LOW",
                 approach="APPROACHING" if index < 16 else "RECEDING",
                 approach_alert=index < 16, source_region="sanpo_15_1" if index < 16 else None,
+                scene_bucket="front_stairs", risk_event_id="front_stairs_event_0",
                 note=(
                     "Reviewed public sequence: steps occupy the forward walking path; warning expected."
                     if index < 16 else "Reviewed public sequence: camera has ascended the steps; no further warning expected."
@@ -82,6 +89,7 @@ def build(profile: str, count: int) -> list[dict]:
                 approach="APPROACHING" if index < 12 else ("RECEDING" if active else "STABLE"),
                 approach_alert=active,
                 source_region="sanpo_20_7" if active else None,
+                scene_bucket="center_obstacle", risk_event_id="center_obstacle_event_0",
                 note=(
                     "Reviewed public sequence: large waste bin occupies the forward sidewalk; warning expected."
                     if active else "Reviewed public sequence: primary bin has been passed; no alert expected."

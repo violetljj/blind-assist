@@ -12,6 +12,7 @@ import com.linnan.blindassist.risk.RiskEvidenceState
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.risk.RiskStabilizer
+import com.linnan.blindassist.risk.RiskEventSnapshot
 import com.linnan.blindassist.risk.TemporalRiskTracker
 
 class AssistEngine(
@@ -51,9 +52,13 @@ class AssistEngine(
         evaluation: AssistFrameEvaluation,
         feedbackDecision: FeedbackDecision
     ): AssistFrameResult {
-        val displayDecision = feedbackDecision.withDisplayReason(
-            displayReasonFor(evaluation.rawRisk, evaluation.stableRisk, feedbackDecision)
-        )
+        val displayDecision = if (feedbackDecision.reason == FeedbackReason.EVENT_ALREADY_ALERTED) {
+            feedbackDecision
+        } else {
+            feedbackDecision.withDisplayReason(
+                displayReasonFor(evaluation.rawRisk, evaluation.stableRisk, feedbackDecision)
+            )
+        }
         val explanation = explain(evaluation, displayDecision)
         val summary = trace.record(evaluation, displayDecision, explanation)
         return AssistFrameResult(
@@ -127,6 +132,11 @@ class AssistEngine(
                 headline = "暂不重复：提醒冷却中",
                 detail = "${scenarioName}场景正在控制重复提醒频率，避免连续播报造成干扰。",
                 accessibilityText = "暂不重复提醒，提醒冷却中，当前场景为$scenarioName。"
+            )
+            FeedbackReason.EVENT_ALREADY_ALERTED -> RiskExplanation(
+                headline = "暂不重复：同一风险已提醒",
+                detail = "该中心路径风险已完成一次反馈，等待通过、远离或清除后才会再次提醒。",
+                accessibilityText = "同一风险已提醒，等待通过或清除后再判断是否需要提醒。"
             )
             FeedbackReason.HELD_ALERT -> RiskExplanation(
                 headline = "短暂保持上一条提醒",
@@ -228,7 +238,8 @@ data class AssistFrameEvaluation(
     val scenario: AssistScenario,
     val metrics: DetectorMetrics,
     val preliminaryReason: FeedbackReason,
-    val evaluatedAtMs: Long
+    val evaluatedAtMs: Long,
+    val riskEvent: RiskEventSnapshot = RiskEventSnapshot.none()
 )
 
 data class AssistFrameResult(

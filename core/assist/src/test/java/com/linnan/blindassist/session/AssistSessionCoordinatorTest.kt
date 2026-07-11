@@ -8,6 +8,7 @@ import com.linnan.blindassist.feedback.FeedbackReason
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
+import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.vision.DetectorFrameResult
@@ -122,6 +123,59 @@ class AssistSessionCoordinatorTest {
         assertEquals(1, gateway.resetCalls)
     }
 
+    @Test
+    fun alertedSegmentationEventDoesNotCallGatewayAgain() {
+        val gateway = FakeFeedbackGateway(FeedbackDecision(null, true, FeedbackReason.TRIGGERED))
+        val coordinator = AssistSessionCoordinator(feedbackGateway = gateway, fpsTracker = fixedFpsTracker())
+        val segmentation = detectorFrame(listOf(detection("stairs", BoundingBox(390f, 500f, 610f, 980f), DetectionSource.SEGMENTATION)))
+
+        coordinator.processFrame(segmentation, AlertProfile.STANDARD, AssistScenario.GENERAL, nowMs = 1000L)
+        val repeated = coordinator.processFrame(segmentation, AlertProfile.STANDARD, AssistScenario.GENERAL, nowMs = 1100L)
+
+        assertEquals(1, gateway.notifyCalls)
+        assertEquals(FeedbackReason.EVENT_ALREADY_ALERTED, repeated.feedbackDecision.reason)
+    }
+
+    @Test
+    fun lowConfidenceSidePersonNeedsTwoMatchingFramesBeforeFeedback() {
+        val gateway = FakeFeedbackGateway(FeedbackDecision(null, true, FeedbackReason.TRIGGERED))
+        val coordinator = AssistSessionCoordinator(feedbackGateway = gateway, fpsTracker = fixedFpsTracker())
+        val first = detectorFrame(listOf(detection("person", BoundingBox(20f, 200f, 280f, 780f), confidence = 0.49f)))
+        val second = detectorFrame(listOf(detection("person", BoundingBox(30f, 210f, 290f, 790f), confidence = 0.49f)))
+
+        val pending = coordinator.processFrame(first, AlertProfile.SENSITIVE, AssistScenario.GENERAL, nowMs = 1000L)
+        assertEquals(FeedbackReason.UNSTABLE_RISK, pending.feedbackDecision.reason)
+        assertEquals(0, gateway.notifyCalls)
+
+        val confirmed = coordinator.processFrame(second, AlertProfile.SENSITIVE, AssistScenario.GENERAL, nowMs = 1100L)
+        assertEquals(FeedbackReason.TRIGGERED, confirmed.feedbackDecision.reason)
+        assertEquals(1, gateway.notifyCalls)
+    }
+
+    @Test
+    fun centerAndHighConfidenceSidePersonKeepImmediateFeedbackPath() {
+        val centerGateway = FakeFeedbackGateway(FeedbackDecision(null, true, FeedbackReason.TRIGGERED))
+        val centerCoordinator = AssistSessionCoordinator(feedbackGateway = centerGateway, fpsTracker = fixedFpsTracker())
+        centerCoordinator.processFrame(
+            detectorFrame(listOf(detection("person", BoundingBox(390f, 140f, 610f, 780f), confidence = 0.49f))),
+            AlertProfile.STANDARD,
+            AssistScenario.GENERAL,
+            nowMs = 1000L
+        )
+
+        val sideGateway = FakeFeedbackGateway(FeedbackDecision(null, true, FeedbackReason.TRIGGERED))
+        val sideCoordinator = AssistSessionCoordinator(feedbackGateway = sideGateway, fpsTracker = fixedFpsTracker())
+        sideCoordinator.processFrame(
+            detectorFrame(listOf(detection("person", BoundingBox(20f, 200f, 280f, 780f), confidence = 0.50f))),
+            AlertProfile.SENSITIVE,
+            AssistScenario.GENERAL,
+            nowMs = 1000L
+        )
+
+        assertEquals(1, centerGateway.notifyCalls)
+        assertEquals(1, sideGateway.notifyCalls)
+    }
+
     private fun fixedFpsTracker(): FpsTracker {
         return FpsTracker(clock = { 1000L }).also { it.onFrame() }
     }
@@ -130,8 +184,13 @@ class AssistSessionCoordinatorTest {
         return DetectorFrameResult(detections, frame, metrics())
     }
 
-    private fun detection(label: String, box: BoundingBox): Detection {
-        return Detection(0, label, 0.9f, box, frame)
+    private fun detection(
+        label: String,
+        box: BoundingBox,
+        source: DetectionSource = DetectionSource.OBJECT_DETECTOR,
+        confidence: Float = 0.9f
+    ): Detection {
+        return Detection(0, label, confidence, box, frame, source = source)
     }
 
     private fun metrics(): DetectorMetrics {
@@ -143,6 +202,8 @@ class AssistSessionCoordinatorTest {
         var lastScenario: AssistScenario? = null
         var resetCalls = 0
             private set
+        var notifyCalls = 0
+            private set
 
         override fun resetSession() {
             resetCalls += 1
@@ -153,6 +214,7 @@ class AssistSessionCoordinatorTest {
             profile: AlertProfile,
             scenario: AssistScenario
         ): FeedbackDecision {
+            notifyCalls += 1
             lastRisk = risk
             lastScenario = scenario
             return decision
