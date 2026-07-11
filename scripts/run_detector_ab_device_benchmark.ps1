@@ -1,6 +1,8 @@
 param(
     [ValidateSet("Coco100", "BlindAssistEvalSet")]
     [string]$DatasetKind = "Coco100",
+    [ValidateSet("DetectorAb", "DepthFusion", "DepthFusionSweep", "SanpoTraversabilityOracle")]
+    [string]$ComparisonMode = "DetectorAb",
     [string]$DatasetRoot,
     [int]$ImageLimit = 100,
     [int]$PureWarmup = 10,
@@ -102,7 +104,7 @@ if (-not (Test-Path -LiteralPath $python)) {
 if (-not (Test-Path -LiteralPath $yolo11n)) {
     throw "yolo11n TFLite asset not found: $yolo11n"
 }
-if (-not (Test-Path -LiteralPath $yolo26n)) {
+if ($ComparisonMode -eq "DetectorAb" -and -not (Test-Path -LiteralPath $yolo26n)) {
     throw "yolo26n TFLite candidate not found: $yolo26n"
 }
 if ($DatasetKind -eq "BlindAssistEvalSet") {
@@ -125,12 +127,16 @@ try {
     $env:GRADLE_OPTS = "-Dkotlin.compiler.execution.strategy=in-process"
 
     Invoke-Native $python @("scripts\inspect_tflite.py") (Join-Path $artifactRoot "inspect-yolo11n.txt") | Out-Null
-    Invoke-Native $python @("scripts\inspect_tflite.py", "--allow-any-shape", ".downloads\detector-lab\exports\yolo26n_fp16_320.tflite") (Join-Path $artifactRoot "inspect-yolo26n.txt") | Out-Null
-    if (-not (Test-Path -LiteralPath $manifest) -or -not (Test-Path -LiteralPath $annotations)) {
-        Invoke-Native $python @("scripts\prepare_coco100.py", "--sample-count", "$ImageLimit") (Join-Path $artifactRoot "prepare-coco100.txt") | Out-Null
-    } else {
-        "manifest_exists=$manifest`nannotations_exists=$annotations" |
-            Tee-Object -FilePath (Join-Path $artifactRoot "prepare-coco100.txt") | Out-Null
+    if ($ComparisonMode -eq "DetectorAb") {
+        Invoke-Native $python @("scripts\inspect_tflite.py", "--allow-any-shape", ".downloads\detector-lab\exports\yolo26n_fp16_320.tflite") (Join-Path $artifactRoot "inspect-yolo26n.txt") | Out-Null
+    }
+    if ($DatasetKind -eq "Coco100") {
+        if (-not (Test-Path -LiteralPath $manifest) -or -not (Test-Path -LiteralPath $annotations)) {
+            Invoke-Native $python @("scripts\prepare_coco100.py", "--sample-count", "$ImageLimit") (Join-Path $artifactRoot "prepare-coco100.txt") | Out-Null
+        } else {
+            "manifest_exists=$manifest`nannotations_exists=$annotations" |
+                Tee-Object -FilePath (Join-Path $artifactRoot "prepare-coco100.txt") | Out-Null
+        }
     }
 
     Invoke-Native ".\gradlew.bat" @(
@@ -164,6 +170,7 @@ try {
             "-PblindAssistEvalSetDir=$blindAssistEvalSet",
             "-Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.benchmark.DetectorAbDeviceBenchmarkTest",
             "-Pandroid.testInstrumentationRunnerArguments.datasetKind=$DatasetKind",
+            "-Pandroid.testInstrumentationRunnerArguments.comparisonMode=$ComparisonMode",
             "-Pandroid.testInstrumentationRunnerArguments.riskConfig=$currentRiskConfig",
             "-Pandroid.testInstrumentationRunnerArguments.imageLimit=$ImageLimit",
             "-Pandroid.testInstrumentationRunnerArguments.pureWarmup=$PureWarmup",
@@ -196,6 +203,7 @@ try {
         yolo11n = $yolo11n
         yolo26n = $yolo26n
         datasetKind = $DatasetKind
+        comparisonMode = $ComparisonMode
         blindAssistEvalSet = $blindAssistEvalSet
         coco100Manifest = $manifest
         coco100Annotations = $annotations

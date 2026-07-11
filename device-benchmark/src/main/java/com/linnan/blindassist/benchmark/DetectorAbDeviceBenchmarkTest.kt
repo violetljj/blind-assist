@@ -10,6 +10,7 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.FeedbackPlanner
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
+import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.ApproachTrend
 import com.linnan.blindassist.risk.ProximityBand
@@ -19,6 +20,9 @@ import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.risk.TemporalRiskTracker
+import com.linnan.blindassist.risk.BlindAssistSanpoTaxonomy
+import com.linnan.blindassist.risk.DenseSemanticMask
+import com.linnan.blindassist.risk.TraversabilitySegmentationAnalyzer
 import com.linnan.blindassist.vision.DepthEvidenceSamplingConfig
 import com.linnan.blindassist.vision.ImagePreprocessor
 import com.linnan.blindassist.vision.TfliteYoloDetector
@@ -88,6 +92,12 @@ class DetectorAbDeviceBenchmarkTest {
         val dataset = loadBenchmarkDataset(datasetKind, labels)
         val images = dataset.images.take(imageLimit)
         assertTrue("Expected at least one annotated ${dataset.name} image asset", images.isNotEmpty())
+        if (modelSpecs.any { it.traversabilityOracle }) {
+            images.forEach { image ->
+                val maskPath = image.sourceMaskPath
+                assertTrue("SANPO source mask is missing for ${image.fileName}", maskPath != null && assetExists(maskPath))
+            }
+        }
 
         val artifactDir = createArtifactDir(targetContext)
         val pureCache = mutableMapOf<String, PureBenchmarkResult>()
@@ -251,6 +261,7 @@ class DetectorAbDeviceBenchmarkTest {
         val perImage = mutableListOf<PerImageModelResult>()
         val firstRunDetectionsByImage = linkedMapOf<String, List<Detection>>()
         val temporalRiskTracker = TemporalRiskTracker()
+        val traversabilityAnalyzer = TraversabilitySegmentationAnalyzer()
         var activeSequenceId: String? = null
 
         try {
@@ -275,12 +286,25 @@ class DetectorAbDeviceBenchmarkTest {
                             } else {
                                 result.detections
                             }
-                            val risk = riskAnalyzer.analyze(detections, frameSize)
+                            val oracleStart = System.nanoTime()
+                            val oracleDetections = if (spec.traversabilityOracle) {
+                                val maskPath = requireNotNull(image.sourceMaskPath)
+                                traversabilityAnalyzer.analyze(decodeSemanticMask(maskPath), frameSize).riskDetections
+                            } else {
+                                emptyList()
+                            }
+                            val oracleMs = if (spec.traversabilityOracle) elapsedMs(oracleStart) else 0.0
+                            val riskInputs = if (spec.traversabilityOracle) {
+                                detections + oracleDetections
+                            } else {
+                                detections
+                            }
+                            val risk = riskAnalyzer.analyze(riskInputs, frameSize)
                             preprocess += detector.lastPreprocessMs.toDouble()
                             inference += detector.lastInferenceMs.toDouble()
                             postprocess += detector.lastPostprocessMs.toDouble()
                             val depthMs = depthResult?.metrics?.totalMs?.toDouble() ?: 0.0
-                            val totalMs = detector.lastTotalDetectMs.toDouble() + depthMs
+                            val totalMs = detector.lastTotalDetectMs.toDouble() + depthMs + oracleMs
                             depth += depthMs
                             total += totalMs
                             runs += FrameRun(
@@ -447,11 +471,33 @@ class DetectorAbDeviceBenchmarkTest {
                 }
                 val imagePath = row.getString("image_path")
                 val attributes = row.optJSONObject("attributes")
+                val sourceRegions = row.optJSONArray("source_regions")?.let { regions ->
+                    (0 until regions.length()).mapNotNull { regionIndex ->
+                        val region = regions.getJSONObject(regionIndex)
+                        val classId = region.optInt("sanpo_class_id", -1)
+                        val label = BlindAssistSanpoTaxonomy.riskLabelFor(classId) ?: return@mapNotNull null
+                        val xyxy = region.getJSONArray("bbox_xyxy")
+                        SourceRegion(
+                            id = region.getString("id"),
+                            classId = classId,
+                            label = label,
+                            box = BoundingBox(
+                                left = xyxy.getDouble(0).toFloat(),
+                                top = xyxy.getDouble(1).toFloat(),
+                                right = xyxy.getDouble(2).toFloat(),
+                                bottom = xyxy.getDouble(3).toFloat()
+                            ).clamped(frameSize)
+                        )
+                    }
+                }.orEmpty()
                 BenchmarkImage(
                     fileName = imagePath.substringAfterLast('/'),
                     relativePath = "$BLINDASSIST_EVALSET_ASSET_PREFIX/$imagePath",
                     frameSize = frameSize,
                     groundTruth = groundTruth,
+                    sourceRegions = sourceRegions,
+                    sourcePrimaryRegionId = row.optionalString("source_primary_region_id"),
+                    sourceMaskPath = "$BLINDASSIST_EVALSET_ASSET_PREFIX/source_masks/test/${imagePath.substringAfterLast('/')}",
                     expectedRisk = BlindAssistExpectedRisk(
                         direction = RiskDirection.valueOf(row.getString("expected_risk_direction")),
                         distanceBand = ProximityBand.valueOf(row.getString("expected_distance_band")),
@@ -600,6 +646,7 @@ class DetectorAbDeviceBenchmarkTest {
         val expectedNonAlerts = labeled.filter { !requireNotNull(it.image.expectedRisk).shouldAlert }
         val expectedCenterAlerts = expectedAlerts.filter { requireNotNull(it.image.expectedRisk).direction == RiskDirection.CENTER }
         val primaryRows = labeled.filter { !requireNotNull(it.image.expectedRisk).primaryObjectId.isNullOrBlank() }
+        val sourcePrimaryRows = labeled.filter { !it.image.sourcePrimaryRegionId.isNullOrBlank() }
         val approachRows = labeled.filter { requireNotNull(it.image.expectedRisk).hasApproachLabel }
         val expectedApproaching = approachRows.filter {
             requireNotNull(it.image.expectedRisk).expectedApproachState == ApproachTrend.APPROACHING
@@ -635,6 +682,10 @@ class DetectorAbDeviceBenchmarkTest {
             primaryObjectHitRate = ratio(
                 primaryRows.count { primaryObjectHit(it, matchIouThreshold) },
                 primaryRows.size
+            ),
+            sourcePrimaryRegionHitRate = ratio(
+                sourcePrimaryRows.count { sourcePrimaryRegionHit(it, matchIouThreshold) },
+                sourcePrimaryRows.size
             ),
             criticalMissCount = expectedAlerts.count { item ->
                 val expected = requireNotNull(item.image.expectedRisk)
@@ -691,6 +742,15 @@ class DetectorAbDeviceBenchmarkTest {
         val expectedBox = item.image.groundTruth.firstOrNull { it.id == expected.primaryObjectId } ?: return false
         val actual = item.modelRisk.sourceDetection ?: return false
         return actual.label == expectedBox.label && iou(actual.boundingBox, expectedBox.box) >= matchIouThreshold
+    }
+
+    private fun sourcePrimaryRegionHit(item: PerImageModelResult, matchIouThreshold: Float): Boolean {
+        val expectedId = item.image.sourcePrimaryRegionId ?: return false
+        val expectedRegion = item.image.sourceRegions.firstOrNull { it.id == expectedId } ?: return false
+        val actual = item.modelRisk.sourceDetection ?: return false
+        return actual.source == DetectionSource.SEGMENTATION &&
+            actual.label == expectedRegion.label &&
+            intersectionOverActual(actual.boundingBox, expectedRegion.box) >= matchIouThreshold
     }
 
     private fun expectedRiskResult(image: BenchmarkImage, riskAnalyzer: RiskAnalyzer): RiskResult {
@@ -758,8 +818,11 @@ class DetectorAbDeviceBenchmarkTest {
 
     private fun recommendation(modelResults: List<ModelBenchmarkResult>): JSONObject {
         val baseline = modelResults.firstOrNull { it.spec.id == "baseline_geometry" }
+            ?: modelResults.firstOrNull { it.spec.id == "baseline_yolo_geometry" }
             ?: modelResults.firstOrNull { it.spec.id == "yolo11n" }
-        val candidates = modelResults.filter { it !== baseline && (it.spec.depthFusion || it.spec.id == "yolo26n") }
+        val candidates = modelResults.filter {
+            it !== baseline && (it.spec.depthFusion || it.spec.traversabilityOracle || it.spec.id == "yolo26n")
+        }
         if (baseline == null || candidates.isEmpty()) {
             return JSONObject()
                 .put("decision", "not_enough_data")
@@ -781,7 +844,8 @@ class DetectorAbDeviceBenchmarkTest {
                     candidateAssist.alertFalsePositiveRate <= baselineAssist.alertFalsePositiveRate + 0.02 &&
                     candidateAssist.distanceBandAccuracy >= baselineAssist.distanceBandAccuracy &&
                     candidateAssist.riskLevelAccuracy >= baselineAssist.riskLevelAccuracy - 0.02 &&
-                    candidateAssist.primaryObjectHitRate >= baselineAssist.primaryObjectHitRate - 0.02
+                    candidateAssist.primaryObjectHitRate >= baselineAssist.primaryObjectHitRate - 0.02 &&
+                    (!candidate.spec.traversabilityOracle || candidateAssist.sourcePrimaryRegionHitRate >= 0.80)
             } else {
                 candidateQuality.recall >= baselineQuality.recall &&
                     candidateQuality.precision >= baselineQuality.precision &&
@@ -803,7 +867,14 @@ class DetectorAbDeviceBenchmarkTest {
         )
         return if (bestPassing != null) {
             JSONObject()
-                .put("decision", if (bestPassing.spec.depthFusion) "depth_fusion_candidate_ok_for_next_stage" else "candidate_ok_for_next_stage")
+                .put(
+                    "decision",
+                    when {
+                        bestPassing.spec.depthFusion -> "depth_fusion_candidate_ok_for_next_stage"
+                        bestPassing.spec.traversabilityOracle -> "traversability_rules_ok_for_model_stage"
+                        else -> "candidate_ok_for_next_stage"
+                    }
+                )
                 .put("replace_default_model_now", false)
                 .put("best_candidate", bestPassing.spec.id)
                 .put("reason", "${bestPassing.spec.id} passed the active no-regression gate; keep it as a candidate until broader real walking validation confirms the result.")
@@ -882,8 +953,8 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine("- Recommendation: `${recommendation.getString("decision")}`")
             appendLine("- Replace default model now: `${recommendation.getBoolean("replace_default_model_now")}`")
             appendLine()
-            appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | Critical miss | Approach recall | Approach FP | Approach dir acc | Approach critical miss | Mean alert frames | Approach sequences | Fusion summary counts | Depth P50 ms | Total P50 ms | Total P95 ms |")
-            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |")
+            appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall | Alert recall | Alert FP rate | Distance acc | Risk level acc | Primary hit | SANPO primary hit | Critical miss | Approach recall | Approach FP | Approach dir acc | Approach critical miss | Mean alert frames | Approach sequences | Fusion summary counts | Depth P50 ms | Total P50 ms | Total P95 ms |")
+            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: |")
             for (index in 0 until models.length()) {
                 val model = models.getJSONObject(index)
                 val app = model.getJSONObject("app_detector")
@@ -898,7 +969,7 @@ class DetectorAbDeviceBenchmarkTest {
                         "${quality.getDouble("fn_per_image")} | ${assist.getDouble("centerRiskRecall")} | " +
                         "${assist.getDouble("alertRecall")} | ${assist.getDouble("alertFalsePositiveRate")} | " +
                         "${assist.getDouble("distanceBandAccuracy")} | ${assist.getDouble("riskLevelAccuracy")} | " +
-                        "${assist.getDouble("primaryObjectHitRate")} | ${assist.getInt("criticalMissCount")} | " +
+                        "${assist.getDouble("primaryObjectHitRate")} | ${assist.getDouble("sourcePrimaryRegionHitRate")} | ${assist.getInt("criticalMissCount")} | " +
                         "${assist.getDouble("approachRiskRecall")} | ${assist.getDouble("approachFalsePositiveRate")} | " +
                         "${assist.getDouble("approachDirectionAccuracy")} | ${assist.getInt("approachCriticalMissCount")} | " +
                         "${assist.getDouble("meanTimeToAlertFrames")} | ${assist.getInt("approachLabeledSequenceCount")} | " +
@@ -1081,6 +1152,37 @@ class DetectorAbDeviceBenchmarkTest {
         return if (union <= 0f) 0f else intersection / union
     }
 
+    private fun intersectionOverActual(actual: BoundingBox, expected: BoundingBox): Float {
+        val left = max(actual.left, expected.left)
+        val top = max(actual.top, expected.top)
+        val right = min(actual.right, expected.right)
+        val bottom = min(actual.bottom, expected.bottom)
+        val intersection = max(0f, right - left) * max(0f, bottom - top)
+        val actualArea = actual.width * actual.height
+        return if (actualArea <= 0f) 0f else intersection / actualArea
+    }
+
+    private fun decodeSemanticMask(assetName: String): DenseSemanticMask {
+        val original = decodeBitmap(assetName)
+        val bitmap = if (original.width == TRAVERSABILITY_MASK_SIZE && original.height == TRAVERSABILITY_MASK_SIZE) {
+            original
+        } else {
+            Bitmap.createScaledBitmap(original, TRAVERSABILITY_MASK_SIZE, TRAVERSABILITY_MASK_SIZE, false)
+        }
+        try {
+            val pixels = IntArray(bitmap.width * bitmap.height)
+            bitmap.getPixels(pixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+            return DenseSemanticMask(
+                width = bitmap.width,
+                height = bitmap.height,
+                classIds = IntArray(pixels.size) { index -> (pixels[index] shr 16) and 0xFF }
+            )
+        } finally {
+            bitmap.recycle()
+            if (bitmap !== original) original.recycle()
+        }
+    }
+
     private fun elapsedMs(startNanos: Long): Double {
         return (System.nanoTime() - startNanos) / 1_000_000.0
     }
@@ -1166,6 +1268,7 @@ class DetectorAbDeviceBenchmarkTest {
         val depthModelAssetName: String = "",
         val depthCloserIsLarger: Boolean = true,
         val depthSamplingConfig: DepthEvidenceSamplingConfig = DepthEvidenceSamplingConfig(),
+        val traversabilityOracle: Boolean = false,
         val riskAnalyzerConfig: RiskAnalyzerConfig = RiskAnalyzerConfig.Default
     )
 
@@ -1187,6 +1290,9 @@ class DetectorAbDeviceBenchmarkTest {
         val relativePath: String,
         val frameSize: FrameSize,
         val groundTruth: List<GroundTruthBox>,
+        val sourceRegions: List<SourceRegion> = emptyList(),
+        val sourcePrimaryRegionId: String? = null,
+        val sourceMaskPath: String? = null,
         val expectedRisk: BlindAssistExpectedRisk?
     ) {
         fun groundTruthDetections(): List<Detection> {
@@ -1197,6 +1303,14 @@ class DetectorAbDeviceBenchmarkTest {
             val primaryId = expectedRisk?.primaryObjectId ?: return null
             return groundTruth.firstOrNull { it.id == primaryId }?.toDetection(frameSize)
         }
+    }
+
+    private data class SourceRegion(
+        val id: String,
+        val classId: Int,
+        val label: String,
+        val box: BoundingBox
+    ) {
     }
 
     private data class GroundTruthBox(
@@ -1282,6 +1396,7 @@ class DetectorAbDeviceBenchmarkTest {
                     if (spec.depthModelAssetName.isBlank()) JSONObject.NULL else spec.depthModelAssetName
                 )
                 .put("depth_closer_is_larger", spec.depthCloserIsLarger)
+                .put("traversability_oracle", spec.traversabilityOracle)
                 .put(
                     "depth_sampling_config",
                     JSONObject()
@@ -1549,6 +1664,7 @@ class DetectorAbDeviceBenchmarkTest {
         val distanceBandAccuracy: Double,
         val riskLevelAccuracy: Double,
         val primaryObjectHitRate: Double,
+        val sourcePrimaryRegionHitRate: Double,
         val criticalMissCount: Int,
         val approachRiskRecall: Double,
         val approachFalsePositiveRate: Double,
@@ -1566,6 +1682,7 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("distanceBandAccuracy", distanceBandAccuracy)
                 .put("riskLevelAccuracy", riskLevelAccuracy)
                 .put("primaryObjectHitRate", primaryObjectHitRate)
+                .put("sourcePrimaryRegionHitRate", sourcePrimaryRegionHitRate)
                 .put("criticalMissCount", criticalMissCount)
                 .put("approachRiskRecall", approachRiskRecall)
                 .put("approachFalsePositiveRate", approachFalsePositiveRate)
@@ -1727,12 +1844,14 @@ class DetectorAbDeviceBenchmarkTest {
         private const val COMPARISON_MODE_DETECTOR_AB = "DetectorAb"
         private const val COMPARISON_MODE_DEPTH_FUSION = "DepthFusion"
         private const val COMPARISON_MODE_DEPTH_FUSION_SWEEP = "DepthFusionSweep"
+        private const val COMPARISON_MODE_SANPO_TRAVERSABILITY_ORACLE = "SanpoTraversabilityOracle"
         private const val RISK_CONFIG_CURRENT = "current"
         private const val RISK_CONFIG_CENTER_NEAR_SENSITIVE = "center_near_sensitive"
         private const val RISK_CONFIG_CENTER_NEAR_STRICT = "center_near_strict"
         private const val RISK_CONFIG_CRITICAL_SENSITIVE = "critical_sensitive"
         private const val RISK_CONFIG_SIDE_NEAR_SENSITIVE = "side_near_sensitive"
         private const val TEMPORAL_FRAME_STEP_MS = 100L
+        private const val TRAVERSABILITY_MASK_SIZE = 512
         private const val ARG_DATASET_KIND = "datasetKind"
         private const val ARG_RISK_CONFIG = "riskConfig"
         private const val ARG_COMPARISON_MODE = "comparisonMode"
@@ -1807,6 +1926,21 @@ class DetectorAbDeviceBenchmarkTest {
                     )
                     listOf(baseline) + depthFusionSweepSpecs(depthModelAsset, conservativeDepthRiskConfig)
                 }
+                COMPARISON_MODE_SANPO_TRAVERSABILITY_ORACLE -> listOf(
+                    ModelSpec(
+                        id = "baseline_yolo_geometry",
+                        assetName = YOLO11N_ASSET,
+                        source = "app/src/main/assets/yolo11n_fp16_320.tflite",
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    ),
+                    ModelSpec(
+                        id = "candidate_sanpo_traversability_oracle",
+                        assetName = YOLO11N_ASSET,
+                        source = "YOLO11n + SANPO source_regions oracle (benchmark only)",
+                        traversabilityOracle = true,
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    )
+                )
                 else -> error("Unsupported comparisonMode: $comparisonMode")
             }
         }

@@ -66,7 +66,17 @@ class RiskAnalyzer(
         "stop sign",
         "bench",
         "chair",
-        "potted plant"
+        "potted plant",
+        "curb",
+        "stairs",
+        "inaccessible surface",
+        "generic obstacle",
+        "pole",
+        "road barrier",
+        "hand rail",
+        "opening door",
+        "opening gate",
+        "bike rack"
     )
 
     fun analyze(detections: List<Detection>, frameSize: FrameSize): RiskResult {
@@ -273,6 +283,11 @@ class RiskAnalyzer(
             "person" -> "人"
             "car", "bus", "truck", "motorcycle", "bicycle" -> "车辆"
             "bench", "chair", "potted plant" -> "障碍"
+            "curb" -> "路沿"
+            "stairs" -> "台阶"
+            "pole" -> "杆状障碍"
+            "inaccessible surface" -> "不可通行区域"
+            "road barrier", "hand rail", "opening door", "opening gate", "bike rack", "generic obstacle" -> "障碍"
             else -> "障碍"
         }
         val proximityText = when (proximity) {
@@ -295,6 +310,8 @@ class RiskAnalyzer(
             "person" -> 1.12f
             "car", "bus", "truck", "motorcycle", "bicycle" -> 1.08f
             "traffic light", "stop sign" -> 0.92f
+            "curb", "stairs", "inaccessible surface" -> 1.16f
+            "generic obstacle", "pole", "road barrier", "opening door", "opening gate", "bike rack" -> 1.10f
             else -> 1f
         }
     }

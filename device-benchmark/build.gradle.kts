@@ -34,6 +34,7 @@ val prepareDetectorBenchmarkAssets = tasks.register<Sync>("prepareDetectorBenchm
         include("dataset_spec.json")
         include("manifest.jsonl")
         include("images/test/**")
+        include("source_masks/test/**")
         into("blindassist_evalset")
     }
     into(detectorBenchmarkAssetsDir)
