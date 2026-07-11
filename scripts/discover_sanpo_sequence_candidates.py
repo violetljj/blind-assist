@@ -30,9 +30,12 @@ from build_sanpo_sequence_evalset import (  # noqa: E402
 
 LABELS = {
     "curb": 2,
+    "pedestrian": 12,
+    "rider": 13,
     "stairs": 15,
     "inaccessible_surface": 18,
     "generic_obstacle": 20,
+    "vehicle": 21,
     "pole": 24,
 }
 

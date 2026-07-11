@@ -34,6 +34,21 @@
 
 同一个 `session_id` 不得跨 `train`、`dev`、`blind`。同一连续序列也不得混 split 或场景桶。
 
+## 模型复核（替代人工初筛）
+
+每个 SANPO 连续序列草稿先运行 `review_sanpo_sequence_with_model.py`，它会在草稿的 `qa/` 目录生成带 SHA256 的三帧证据请求（首、中、末帧）。大模型必须返回其型号/版本、场景桶、走廊事件判断、`alert` 或 `no_alert`、置信度、全部证据帧及局限性；脚本会校验这些字段并写入不可篡改引用的结果记录。
+
+```powershell
+python scripts\review_sanpo_sequence_with_model.py `
+  --draft-root test-artifacts.local\datasets\<draft>
+
+python scripts\review_sanpo_sequence_with_model.py `
+  --draft-root test-artifacts.local\datasets\<draft> `
+  --response test-artifacts.local\datasets\<draft>\qa\model_review_response.json
+```
+
+模型复核的 `accept_for_dense_annotation` 只允许进入**四类像素级掩码标注队列**；它不会直接产生掩码、事件标签或 v3 训练/盲测数据。`reject` 与 `needs_recapture` 一律保持草稿状态。尤其是平行路沿和侧向目标可以是有效的 `no_alert` 负例，不能因为不在走廊内而被迫改写为障碍正例。任何 v3 训练或 benchmark 晋级仍必须通过下列 420 帧、哈希、会话隔离与盲测锁门禁。
+
 ## 420 帧覆盖与盲测锁
 
 已复核的源 manifest 必须先以明确 split 写出，然后只生成两个可消费视图：

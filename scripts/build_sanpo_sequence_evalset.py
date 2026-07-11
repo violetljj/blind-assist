@@ -463,7 +463,7 @@ def main() -> int:
             "expected_approach_alert": None,
             "expected_time_to_alert_frames": None,
             "primary_object_id": None,
-            "review_status": "pending_manual_risk_review",
+            "review_status": "pending_model_review",
             "status": "pending_review",
             "source": {
                 "dataset": "SANPO-Real v0",
@@ -509,10 +509,11 @@ def main() -> int:
             "expected_approach_state": "",
             "expected_approach_alert": "",
             "expected_time_to_alert_frames": "",
-            "review_status": "pending_manual_risk_review",
+            "review_status": "pending_model_review",
             "objects_review_status": "pending" if objects else "not_applicable",
-            "reviewer_type": "",
+            "reviewer_type": "model",
             "reviewer_id": "",
+            "reviewer_model_version": "",
             "review_confidence": "",
             "independent_review_count": "",
             "issue_tags": "",
@@ -573,7 +574,7 @@ def main() -> int:
         f"""# SANPO source and license\n\n- Dataset: SANPO-Real v0\n- Dataset page: {DATASET_PAGE}\n- Repository: {DATASET_REPO}\n- License: [{LICENSE_NAME}]({LICENSE_URL})\n- Session: `{args.session_id}` / `{args.camera}` / `{args.lens}` / official split `{official_split}`\n- Local policy: original frames and masks are local-only evaluation artifacts and must not be committed to Git.\n- Attribution: {SANPO_CITATION}. Dataset page: {DATASET_PAGE}\n- Changes made by BlindAssist: selected one official session; used `{args.camera}/{args.lens}`; resampled {source_fps:g} FPS to {args.target_fps:g} FPS; converted SANPO masks to review regions; mapped only exact `pedestrian -> person` and `traffic light -> traffic light`; added project-specific draft risk fields and QA overlays.\n- Privacy: SANPO reports face and license-plate blurring; BlindAssist review must still reject or re-blur residual personally identifiable information.\n""",
         encoding="utf-8",
     )
-    with (dataset_root / "qa" / "manual_review_checklist.csv").open("w", newline="", encoding="utf-8") as handle:
+    with (dataset_root / "qa" / "model_review_checklist.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(review_rows[0].keys()))
         writer.writeheader()
         writer.writerows(review_rows)

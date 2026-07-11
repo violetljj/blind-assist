@@ -3913,3 +3913,14 @@
 - 结论与后续：扩展集未通过 Oracle v2 门槛，维持 `do_not_replace_default_model`；不开始 MobileNetV3 + LR-ASPP 训练。下一轮优先区分“已通过的台阶”与“仍在前方的台阶”，并对平行边界中的 generic obstacle 建立更严格的实例几何/深度否决。
 - 版本判断：本轮仅增强实验 oracle、benchmark 和本地公开数据评测，默认生产模型与发布 APK 不变；保持 `v10.4.0` / `versionCode=36`，不新增 APK 归档。
 - 构建与归档：`:core:assist:test :app:lintDebug :app:assembleDebug` 通过。为保留本轮公开序列验证对应的可测试 APK，已归档 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v10.4.0-debug-20260711-192336.apk`，大小 `55,844,975` bytes，SHA256 `5670746F36B57DC556B1A8010E009604509F30BF0B1158E5C89D4E08F51C5774`；不提交 Git 里程碑 APK。
+
+### SANPO v3 模型复核契约与连续素材筛选
+
+- 时间：2026-07-12 +08:00
+- 类型：数据治理、模型复核、候选采集、测试、文档
+- 修改范围：`build_sanpo_sequence_evalset.py`、`discover_sanpo_sequence_candidates.py`、`review_sanpo_sequence_with_model.py`、`test_sanpo_v3_dataset_controls.py`、`docs/SANPO_V3_REGRESSION_DATASET.md`。
+- 实现：将草稿初筛改为可追溯的大模型复核。每条序列生成首/中/末三帧证据及 SHA256；模型结果强制记录型号/版本、场景桶、走廊事件、`alert/no_alert`、置信度、证据帧和局限。模型复核只能决定是否进入四类像素级掩码标注队列，不能直接生成掩码、训练样本或 benchmark 晋级。平行路沿与侧向目标允许作为 `no_alert` 负例，避免被规则误改写为障碍正例。
+- 首轮结果：道路横穿/入口台阶草稿被模型判为 `reject`（台阶未进入行进走廊）；侧向行人/犬只草稿判为 `needs_recapture`（同时存在中心构筑物，不能作为干净负例）。两条均为 `not_promoted`，没有进入 v3 训练或盲测集。
+- 连续素材：候选扫描补充 `pedestrian`、`rider`、`vehicle` 语义类；中心障碍候选 `SRHpBZXk_0pKjk6SK23VOhoLZGZfnKFF` 已启动 50 帧公开 SANPO 下载与哈希校验，完成后必须再次经模型复核，未完成前不计入 420 帧覆盖。
+- 验证：`C:\Users\26442\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\test_sanpo_v3_dataset_controls.py` 通过，4 tests passed；包含模型复核可接受高置信 `no_alert` 负例和证据帧缺失拒绝测试。首次沙箱运行因系统临时目录写入限制失败，受控权限重跑通过。
+- 版本判断：仅修改 benchmark 数据治理与候选发现流程；生产 YOLO 路径、APK 和模型资产未变，不升级版本、不归档 APK。

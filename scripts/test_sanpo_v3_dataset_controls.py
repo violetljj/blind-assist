@@ -26,6 +26,7 @@ def module(name: str):
 freeze = module("freeze_sanpo_v3_regression")
 validator = module("validate_sanpo_v3_dataset")
 views = module("prepare_sanpo_v3_dataset_views")
+model_review = module("review_sanpo_sequence_with_model")
 
 
 def digest(path: Path) -> str:
@@ -38,6 +39,25 @@ def write_jsonl(path: Path, rows: list[dict]) -> None:
 
 
 class SanpoV3DatasetControlsTest(unittest.TestCase):
+    def test_model_review_allows_a_high_confidence_no_alert_negative(self) -> None:
+        request = {
+            "evidence_frames": [{"frame_index": 0}, {"frame_index": 25}, {"frame_index": 49}],
+        }
+        response = {
+            "reviewer": {"type": "model", "model": "test-model", "version_or_date": "2026-07-12"},
+            "decision": "accept_for_dense_annotation",
+            "primary_scene_bucket": "parallel_boundary",
+            "corridor_event_present": False,
+            "expected_alert_outcome": "no_alert",
+            "confidence": 0.9,
+            "evidence_frame_indexes": [0, 25, 49],
+            "rationale": "Parallel curb remains outside the walking corridor.",
+            "limitations": "Sample fixture only.",
+        }
+        self.assertEqual([], model_review.validate_response(request, response))
+        response["evidence_frame_indexes"] = [0, 25]
+        self.assertTrue(model_review.validate_response(request, response))
+
     def make_v3_rows(self, root: Path) -> list[dict]:
         buckets = list(validator.SCENE_BUCKETS)
         sequences = [("train", bucket, 50) for bucket in buckets[:3]]
