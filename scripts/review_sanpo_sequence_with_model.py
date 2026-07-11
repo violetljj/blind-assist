@@ -27,6 +27,7 @@ ALLOWED_BUCKETS = {
 ALLOWED_DECISIONS = {"accept_for_dense_annotation", "reject", "needs_recapture"}
 ALLOWED_ALERT_OUTCOMES = {"alert", "no_alert"}
 PROMPT_VERSION = "sanpo-sequence-model-review-v1"
+SELECTION_FORMAT = "blindassist_sanpo_sequence_geometry_selection_v1"
 
 
 def sha256(path: Path) -> str:
@@ -51,6 +52,20 @@ def request_for(draft_root: Path, rows: list[dict[str, Any]]) -> dict[str, Any]:
     if len(sequence_ids) != 1:
         raise ValueError("a draft root must contain exactly one sequence")
     indexes = sorted(int(row["frame_index"]) for row in rows)
+    if len(rows) != 50 or indexes != list(range(50)):
+        raise ValueError("model review only accepts a contiguous 50-frame draft")
+    selection_path = draft_root / "qa" / "selection_evidence.json"
+    if not selection_path.is_file():
+        raise ValueError("model review requires qa/selection_evidence.json from the geometry selector")
+    selection = json.loads(selection_path.read_text(encoding="utf-8"))
+    if selection.get("format") != SELECTION_FORMAT:
+        raise ValueError("selection evidence format is unsupported")
+    if selection.get("draft_manifest_sha256") != sha256(draft_root / "manifest.draft.jsonl"):
+        raise ValueError("selection evidence is not bound to this draft manifest")
+    if selection.get("sequence_id") != sequence_ids[0] or selection.get("frame_count") != 50:
+        raise ValueError("selection evidence sequence/frame count mismatch")
+    if selection.get("decision") != "accept_for_model_review":
+        raise ValueError("geometry selector did not admit this draft to model review")
     evidence_indexes = sorted({indexes[0], indexes[len(indexes) // 2], indexes[-1]})
     evidence = []
     for index in evidence_indexes:
@@ -66,11 +81,16 @@ def request_for(draft_root: Path, rows: list[dict[str, Any]]) -> dict[str, Any]:
         "prompt_version": PROMPT_VERSION,
         "draft_manifest": "manifest.draft.jsonl",
         "draft_manifest_sha256": sha256(draft_root / "manifest.draft.jsonl"),
+        "selection_evidence": "qa/selection_evidence.json",
+        "selection_evidence_sha256": sha256(selection_path),
+        "selection_profile": selection.get("profile"),
+        "selection_summary": selection.get("summary"),
         "sequence_id": sequence_ids[0],
         "frame_count": len(rows),
         "evidence_frames": evidence,
         "instructions": [
             "Review only the supplied local images and overlays. Do not infer unseen frames.",
+            "The attached selection evidence is a mask-derived audit over all 50 frames. Check whether its profile and geometry conclusion are consistent with the visual evidence; reject if they are not.",
             "Classify the primary scene bucket, whether a relevant event enters the walking corridor, and the expected alert outcome.",
             "A curb or stairs outside the corridor is boundary evidence, not a free-standing obstacle alert.",
             "Use reject or needs_recapture when evidence is ambiguous. Do not invent pixel masks.",
@@ -86,6 +106,7 @@ def request_for(draft_root: Path, rows: list[dict[str, Any]]) -> dict[str, Any]:
             "evidence_frame_indexes": "array matching supplied evidence frames",
             "rationale": "string",
             "limitations": "string",
+            "selection_evidence_agrees": "boolean",
         },
         "promotion_rule": "This response only selects a draft for dense annotation; it does not make v3 data benchmark-ready.",
     }
@@ -119,6 +140,8 @@ def validate_response(request: dict[str, Any], response: dict[str, Any]) -> list
     if response.get("decision") == "accept_for_dense_annotation":
         if float(confidence or 0) < 0.85:
             errors.append("accepted model review requires confidence >= 0.85")
+        if response.get("selection_evidence_agrees") is not True:
+            errors.append("accepted model review must explicitly agree with selection evidence")
     return errors
 
 
@@ -144,6 +167,7 @@ def main() -> int:
         "format": "blindassist_sanpo_model_review_result_v1",
         "request_sha256": sha256(request_output),
         "draft_manifest_sha256": request["draft_manifest_sha256"],
+        "selection_evidence_sha256": request["selection_evidence_sha256"],
         "response": response,
         "ok": not errors,
         "errors": errors,

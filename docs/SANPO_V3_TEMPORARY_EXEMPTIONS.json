@@ -1,0 +1,16 @@
+{
+  "format": "blindassist_sanpo_v3_temporary_exemptions_v1",
+  "policy": "An exemption documents deferred collection only. It never changes validate_sanpo_v3_dataset.py coverage requirements and never permits training or threshold selection.",
+  "exemptions": [
+    {
+      "scene_bucket": "low_light",
+      "status": "deferred_not_waived",
+      "reason": "No currently reviewed public 50-frame sequence meets the low-light privacy, source, and geometry requirements.",
+      "owner": "BlindAssist data owner (assignment pending)",
+      "expires_on": "2026-08-12",
+      "required_local_capture": true,
+      "substitution_forbidden": true,
+      "training_or_benchmark_override": false
+    }
+  ]
+}

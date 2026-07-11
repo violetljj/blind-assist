@@ -36,9 +36,15 @@
 
 ## 模型复核（替代人工初筛）
 
-每个 SANPO 连续序列草稿先运行 `review_sanpo_sequence_with_model.py`，它会在草稿的 `qa/` 目录生成带 SHA256 的三帧证据请求（首、中、末帧）。大模型必须返回其型号/版本、场景桶、走廊事件判断、`alert` 或 `no_alert`、置信度、全部证据帧及局限性；脚本会校验这些字段并写入不可篡改引用的结果记录。
+每个 SANPO 连续序列草稿先运行 `select_sanpo_sequence_by_geometry.py`，再运行 `review_sanpo_sequence_with_model.py`。前者只接收恰好 50 帧、`frame_index=0..49` 的草稿，并在 `qa/selection_evidence.json` 固化逐帧的近场走廊侵入、目标持续帧数、连续段长度、可通行路径几何和拒绝原因；后者将其 SHA256 绑定到首/中/末三帧证据请求。这样“有 source 标签”本身不再构成候选理由。
+
+`center_obstacle` 必须在保守中心走廊中持续侵入（至少 20 帧且有至少 8 帧连续段），并有至少 40 帧可用走廊几何；`lateral_pedestrian_or_ebike` 必须有持续侧向 pedestrian/rider，但整条序列不得出现另一中心障碍污染。`step_curb` 的坡道过渡允许至少 5 帧、连续 3 帧（不是普通障碍的降门槛），仍须有至少 40 帧路径几何并经模型确认为 `no_alert`。几何门禁只是可复核初筛：大模型必须记录型号/版本、场景桶、走廊事件、`alert` 或 `no_alert`、置信度、全部证据帧、局限性以及其是否同意几何报告；脚本会校验这些字段并写入不可篡改引用的结果记录。
 
 ```powershell
+python scripts\select_sanpo_sequence_by_geometry.py `
+  --draft-root test-artifacts.local\datasets\<draft> `
+  --profile step_curb
+
 python scripts\review_sanpo_sequence_with_model.py `
   --draft-root test-artifacts.local\datasets\<draft>
 
@@ -47,7 +53,7 @@ python scripts\review_sanpo_sequence_with_model.py `
   --response test-artifacts.local\datasets\<draft>\qa\model_review_response.json
 ```
 
-模型复核的 `accept_for_dense_annotation` 只允许进入**四类像素级掩码标注队列**；它不会直接产生掩码、事件标签或 v3 训练/盲测数据。`reject` 与 `needs_recapture` 一律保持草稿状态。尤其是平行路沿和侧向目标可以是有效的 `no_alert` 负例，不能因为不在走廊内而被迫改写为障碍正例。任何 v3 训练或 benchmark 晋级仍必须通过下列 420 帧、哈希、会话隔离与盲测锁门禁。
+模型复核的 `accept_for_dense_annotation` 只允许进入**四类像素级掩码标注队列**；它不会直接产生掩码、事件标签或 v3 训练/盲测数据。`reject` 与 `needs_recapture` 一律保持草稿状态。尤其是平行路沿和侧向目标可以是有效的 `no_alert` 负例，不能因为不在走廊内而被迫改写为障碍正例。`low_light` 如暂时没有达标素材，必须在 `qa/temporary_exemptions.json` 中登记原因、负责人、到期日和 `required_local_capture=true`；这是 `deferred_not_waived`，不会放松下列 420 帧覆盖、哈希、会话隔离与盲测锁门禁。
 
 ## 420 帧覆盖与盲测锁
 

@@ -53,6 +53,7 @@ class SanpoV3DatasetControlsTest(unittest.TestCase):
             "evidence_frame_indexes": [0, 25, 49],
             "rationale": "Parallel curb remains outside the walking corridor.",
             "limitations": "Sample fixture only.",
+            "selection_evidence_agrees": True,
         }
         self.assertEqual([], model_review.validate_response(request, response))
         response["evidence_frame_indexes"] = [0, 25]
