@@ -1,5 +1,11 @@
 # BlindAssist 更新记录
 
+## Unreleased - SANPO v2 公开连续序列扩展验证
+
+- 新增公开 SANPO session 发现、review profile、不可变 sequence clone 与多序列合并工具；原始 RGB/mask 继续只保留在 `test-artifacts.local`。
+- 新增连续稳定分割候选的单级晋升和反馈路径：仅适用于中心 `stairs` 或近场通用障碍，要求 `STABILITY_PROMOTED` 或 `MOTION_PROMOTED`，路沿仍不走普通障碍提醒路径。
+- 最终 90 帧/3 序列真机结果：危险提醒召回 `88.9%`、主区域命中 `93.9%`、total P95 `58.405ms`，但错误提醒率 `25.9%`，未通过 `≤5.3%` 门槛；维持 `do_not_replace_default_model`、不训练模型。
+
 ## v10.4.0 - SANPO Traversability v2 Oracle 第一阶段
 
 - 状态：当前 30 帧否定集门槛通过；`versionCode=36`，`versionName=10.4.0`。

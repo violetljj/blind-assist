@@ -25,7 +25,8 @@ enum class RiskFusionReason {
     DEPTH_REJECTED_NOT_CLOSER,
     DEPTH_REJECTED_LANE,
     DEPTH_REJECTED_LARGE_PROMOTION,
-    MOTION_PROMOTED
+    MOTION_PROMOTED,
+    STABILITY_PROMOTED
 }
 
 data class DepthFusionResult(
@@ -138,6 +139,30 @@ class ConservativeRiskFusionPolicy(
             score = boostedScore,
             scoreBreakdown = boostedBreakdown,
             reason = RiskFusionReason.MOTION_PROMOTED
+        )
+    }
+
+    /**
+     * A segmentation region is only promoted after temporal confirmation. This intentionally
+     * cannot make a single-frame mask actionable and is limited to one LOW -> MEDIUM step.
+     */
+    fun fuseStableSegmentation(raw: RiskResult, confirmed: Boolean): MotionFusionResult {
+        if (!confirmed || raw.level != RiskLevel.LOW || raw.direction != RiskDirection.CENTER ||
+            raw.proximity != ProximityBand.MID
+        ) {
+            return MotionFusionResult(raw.level, raw.riskScore, raw.scoreBreakdown, null)
+        }
+        val scoreBoost = 0.7f
+        val boostedScore = raw.riskScore + scoreBoost
+        return MotionFusionResult(
+            level = RiskLevel.MEDIUM,
+            score = boostedScore,
+            scoreBreakdown = raw.scoreBreakdown.copy(
+                approachTrend = raw.scoreBreakdown.approachTrend + scoreBoost,
+                total = boostedScore,
+                fusionSummary = appendFusionReason(raw.scoreBreakdown.fusionSummary, RiskFusionReason.STABILITY_PROMOTED)
+            ),
+            reason = RiskFusionReason.STABILITY_PROMOTED
         )
     }
 

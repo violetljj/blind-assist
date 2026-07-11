@@ -2,6 +2,15 @@
 
 本流程从官方 SANPO-Real 公开存储桶选择少量真实步行序列，生成 BlindAssist 连续场景候选集。它用于补足静态 COCO 图片无法覆盖的连续运动、可通行区域、低矮障碍和场景变化证据。
 
+## v2 公开序列扩展工具
+
+- `scripts/discover_sanpo_sequence_candidates.py`：只扫描 SANPO-Real 官方 session 的稀疏 mask，输出许可、official split、类别命中和推荐起始帧；发现阶段不下载 RGB。
+- `scripts/create_sanpo_v2_review_decisions.py`：仅为已经视觉复核的平行边界、正前方台阶、中心通道障碍生成 provenance-marked review 决策。
+- `scripts/clone_sanpo_sequence_evalset.py`：canonical manifest 不可改写；若需要修正 review 时序，复制为新 draft 后重新 review/finalize。
+- `scripts/merge_sanpo_sequence_evalsets.py`：只合并已 finalize 的 SANPO sequence，校验 ID/hash 唯一并复制本地忽略的图片/mask。
+
+公开序列扩展不能把普通通道占用写成“盲道占用”。若来源没有明确连续、许可和语义证据，应保留为缺口而不是推断标签。
+
 ## 安全边界
 
 - 导入结果默认是 `pending_review`，不是可直接运行 benchmark 的人工真值。

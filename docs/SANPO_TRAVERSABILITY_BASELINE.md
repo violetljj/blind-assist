@@ -87,6 +87,20 @@ oracle 区域只进入风险分析，不进入 YOLO 的 AP/precision/recall 统�
 
 YOLO 指标无退化，benchmark 判定 `traversability_rules_ok_for_model_stage`。该结论只代表当前否定集通过；公开正负连续序列完成前仍不训练、不替换模型。证据目录：`test-artifacts.local/detector-ab-device-benchmark/20260711-163629/`。
 
+## 公开正负连续序列扩展验证
+
+本轮仅接入 SANPO-Real 官方公开会话，原始 RGB/mask 留在 `test-artifacts.local`。三条 10 FPS、各 30 帧序列均经过来源哈希、official split、review CSV 与 finalize 门禁：
+
+- 平行路沿负例：原 SANPO pilot 的已复核连续边界场景；
+- 正例：官方 test split、session metadata 标记 `ELEVATION_CHANGE_STAIRS` 的正前方连续台阶；
+- 正例：官方 test split 高障碍街景，近距离垃圾桶占据人行通道。
+
+为验证“单帧不提醒、连续证据可晋级”，分割候选只在中心路径满足两帧稳定或连续逼近后由 `LOW/MID` 升至 `MEDIUM/MID`；反馈层仅接收包含 `STABILITY_PROMOTED` 或 `MOTION_PROMOTED` 的中心分割证据。非台阶通用障碍另要求底部位置 `>=65%`，防止远距区域被稳定性误升。
+
+最终 SM-S9280 90 帧 benchmark（证据：`test-artifacts.local/detector-ab-device-benchmark/20260711-191206/`）：候选危险提醒召回 `88.9%`、中心风险召回 `83.3%`、主区域命中 `93.9%`、total P95 `58.405ms`；YOLO AP50/precision/recall 与几何基线一致。但错误提醒率 `25.9%`，高于 `5.3%`，原因是登阶后的 receding 段仍有重复提醒，以及平行路沿负例中部分区域被标成 generic obstacle。因此本扩展集未通过 Oracle v2 晋级，保持 `do_not_replace_default_model`；不得训练或接入 MobileNetV3 + LR-ASPP。
+
+盲道占用是已记录但未伪造的缺口：本轮未找到同时满足“连续、许可明确、可小规模下载、明确盲道被占用”的公开序列。后续可在获得许可明确的小分片后接入 VIP-Mobility360 或其他来源，但必须使用独立 importer 与同样 review/finalize 门禁。
+
 ## 下一阶段模型契约
 
 建议训练 `MobileNetV3 + LR-ASPP` 或轻量 DeepLab 解码头，512×512、INT8，输出至少四个风险头：

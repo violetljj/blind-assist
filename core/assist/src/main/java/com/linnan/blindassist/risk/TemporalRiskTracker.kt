@@ -1,6 +1,7 @@
 package com.linnan.blindassist.risk
 
 import com.linnan.blindassist.model.BoundingBox
+import com.linnan.blindassist.model.DetectionSource
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -14,12 +15,18 @@ data class TemporalRiskTrackerConfig(
     val minBottomDeltaForApproach: Float = TemporalRiskTracker.DEFAULT_MIN_BOTTOM_DELTA_FOR_APPROACH,
     val minAreaGrowthForApproach: Float = TemporalRiskTracker.DEFAULT_MIN_AREA_GROWTH_FOR_APPROACH,
     val minDepthScoreDeltaForApproach: Float = TemporalRiskTracker.DEFAULT_MIN_DEPTH_SCORE_DELTA_FOR_APPROACH,
-    val approachScoreBoost: Float = TemporalRiskTracker.DEFAULT_APPROACH_SCORE_BOOST
+    val approachScoreBoost: Float = TemporalRiskTracker.DEFAULT_APPROACH_SCORE_BOOST,
+    val minStableSegmentationFrames: Int = TemporalRiskTracker.DEFAULT_MIN_STABLE_SEGMENTATION_FRAMES,
+    val minStableSegmentationBottomRatio: Float = TemporalRiskTracker.DEFAULT_MIN_STABLE_SEGMENTATION_BOTTOM_RATIO
 ) {
     init {
         require(maxFrames >= minApproachFrames) { "maxFrames must be >= minApproachFrames" }
         require(maxWindowMs > 0L) { "maxWindowMs must be positive" }
         require(minApproachFrames >= 2) { "minApproachFrames must be at least 2" }
+        require(minStableSegmentationFrames >= 2) { "minStableSegmentationFrames must be at least 2" }
+        require(minStableSegmentationBottomRatio in 0f..1f) {
+            "minStableSegmentationBottomRatio must be in [0, 1]"
+        }
     }
 }
 
@@ -50,7 +57,7 @@ class TemporalRiskTracker(
         }
 
         val trend = trendFor(observations.toList())
-        return applyTrend(raw, trend)
+        return applyTrend(raw, trend, observations.size)
     }
 
     fun reset() {
@@ -89,9 +96,19 @@ class TemporalRiskTracker(
         }
     }
 
-    private fun applyTrend(raw: RiskResult, trend: ApproachTrend): RiskResult {
+    private fun applyTrend(raw: RiskResult, trend: ApproachTrend, stableFrameCount: Int): RiskResult {
         if (trend != ApproachTrend.APPROACHING) {
-            return raw.copy(approachTrend = trend)
+            val stableSegmentation = isStableSegmentationEligible(raw) &&
+                trend != ApproachTrend.RECEDING && stableFrameCount >= config.minStableSegmentationFrames
+            val stabilityFusion = fusionPolicy.fuseStableSegmentation(raw, stableSegmentation)
+            return raw.copy(
+                level = stabilityFusion.level,
+                message = if (stabilityFusion.level >= RiskLevel.MEDIUM) "前方障碍稳定存在，减速观察" else raw.message,
+                urgencyScore = stabilityFusion.score,
+                riskScore = stabilityFusion.score,
+                scoreBreakdown = stabilityFusion.scoreBreakdown,
+                approachTrend = trend
+            )
         }
         val motionFusion = fusionPolicy.fuseMotion(
             raw = raw,
@@ -122,6 +139,14 @@ class TemporalRiskTracker(
         }
     }
 
+    private fun isStableSegmentationEligible(raw: RiskResult): Boolean {
+        val detection = raw.sourceDetection ?: return false
+        if (detection.source != DetectionSource.SEGMENTATION) return false
+        if (detection.label == "stairs") return true
+        if (detection.label !in STABLE_SEGMENTATION_OBSTACLE_LABELS) return false
+        return detection.boundingBox.bottom / detection.frameSize.height >= config.minStableSegmentationBottomRatio
+    }
+
     private data class TargetObservation(
         val label: String,
         val direction: RiskDirection,
@@ -129,13 +154,20 @@ class TemporalRiskTracker(
         val bottomRatio: Float,
         val areaRatio: Float,
         val centerXRatio: Float,
+        val source: DetectionSource,
         val distanceEvidence: DistanceEvidence?,
         val observedAtMs: Long
     ) {
         fun matches(other: TargetObservation, config: TemporalRiskTrackerConfig): Boolean {
-            if (label != other.label || direction != other.direction) {
+            if (label != other.label) {
                 return false
             }
+            if (source == DetectionSource.SEGMENTATION && other.source == DetectionSource.SEGMENTATION) {
+                // Segmentation component bounds can deform substantially while the same broad
+                // stairway or fixed obstacle remains in the center walking path.
+                return abs(centerXRatio - other.centerXRatio) <= SEGMENTATION_MAX_CENTER_DELTA
+            }
+            if (direction != other.direction) return false
             return iou(box, other.box) >= config.minIouForSameTarget ||
                 abs(centerXRatio - other.centerXRatio) <= config.maxCenterDeltaForSameTarget
         }
@@ -150,6 +182,7 @@ class TemporalRiskTracker(
                     bottomRatio = box.bottom / frameSize.height.toFloat(),
                     areaRatio = raw.sourceDetection.areaRatio,
                     centerXRatio = box.centerX / frameSize.width.toFloat(),
+                    source = raw.sourceDetection.source,
                     distanceEvidence = raw.distanceEvidence,
                     observedAtMs = observedAtMs
                 )
@@ -177,5 +210,9 @@ class TemporalRiskTracker(
         const val DEFAULT_MIN_AREA_GROWTH_FOR_APPROACH = 0.20f
         const val DEFAULT_MIN_DEPTH_SCORE_DELTA_FOR_APPROACH = 0.12f
         const val DEFAULT_APPROACH_SCORE_BOOST = 1.1f
+        const val DEFAULT_MIN_STABLE_SEGMENTATION_FRAMES = 2
+        const val DEFAULT_MIN_STABLE_SEGMENTATION_BOTTOM_RATIO = 0.65f
+        const val SEGMENTATION_MAX_CENTER_DELTA = 0.25f
+        private val STABLE_SEGMENTATION_OBSTACLE_LABELS = setOf("generic obstacle", "pole", "inaccessible surface")
     }
 }

@@ -3884,3 +3884,20 @@
 - 后续事项：仅完成当前否定集。仍需从许可明确公开数据补齐平行路沿、正前方台阶/横向路沿、路桩/低矮障碍/盲道占用连续序列；危险召回通过前不得训练模型。
 - 版本判断：核心风险规则、性能与验证能力形成阶段升级，按较大更新从 v9.9.0 升至 v10.4.0（versionCode 36）；默认 YOLO 模型资产不变。
 - 构建与归档：`:core:assist:test :app:lintDebug :app:assembleDebug` 通过；APK 已从 `app/build/outputs/apk/debug/app-debug.apk` 归档到 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v10.4.0-debug-20260711-164742.apk`，大小 `55,844,975` bytes，SHA256 `7456034404F83CA8600FD39DEF09AB7741B219973B6B5CC774C6CBD4250455F8`。本次不提交 Git 里程碑 APK。
+
+### SANPO Traversability v2 公开连续序列扩展与真机否决
+- 时间：2026-07-11 19:20:00 +08:00
+- 执行者：violjjet
+- 类型：数据集、规则、测试、真机验证、文档
+- 修改范围：公开 SANPO 候选发现、review profile、sequence clone/merge 工具；`TemporalRiskTracker`、`FeedbackPlanner` 与对应 JVM 测试；README、CHANGELOG、idea、基线文档。
+- 数据与审查：
+  - 扫描 SANPO-Real official test session 的稀疏 segmentation mask，筛选并下载三类 10 FPS 连续序列；来源为 CC BY 4.0，RGB/mask/QA 仅保存在忽略的 `test-artifacts.local`。
+  - 台阶来源为 metadata 明确标记 `ELEVATION_CHANGE_STAIRS` 的 session `i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3`；中心垃圾桶通道障碍来源为 high-obstacle test session `GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT`；平行边界负例复用已复核的 SANPO public pilot。三条均经 AI 双重复核、review CSV 和 finalize gate。
+  - 未发现同时满足连续、可小规模下载、许可明确且显式“盲道占用”的公开序列；该缺口明确保留，不把普通通道占用伪称为盲道占用。
+- 规则与验证：
+  - 新增稳定分割候选的单级 `LOW -> MEDIUM` 晋级，要求两帧稳定或连续逼近；普通通用障碍还要满足近场底部 `>=65%`。路沿不进入该路径。
+  - 反馈只接受带 `STABILITY_PROMOTED` 或 `MOTION_PROMOTED` 的中心分割候选，单帧不提醒。
+  - 多轮 SM-S9280 真机 benchmark 逐步发现并修正：稳定证据未进入反馈、候选轨迹因 mask 形变重置、远距 generic obstacle 被误升。最终 90 帧/3 序列结果：危险提醒召回 `88.9%`、中心风险召回 `83.3%`、主区域命中 `93.9%`、total P95 `58.405ms`，但错误提醒率 `25.9%`，高于 `5.3%` 门槛。证据目录：`test-artifacts.local/detector-ab-device-benchmark/20260711-191206`；默认模型回归：`test-artifacts.local/device-regression/20260711-191513`。
+- 结论与后续：扩展集未通过 Oracle v2 门槛，维持 `do_not_replace_default_model`；不开始 MobileNetV3 + LR-ASPP 训练。下一轮优先区分“已通过的台阶”与“仍在前方的台阶”，并对平行边界中的 generic obstacle 建立更严格的实例几何/深度否决。
+- 版本判断：本轮仅增强实验 oracle、benchmark 和本地公开数据评测，默认生产模型与发布 APK 不变；保持 `v10.4.0` / `versionCode=36`，不新增 APK 归档。
+- 构建与归档：`:core:assist:test :app:lintDebug :app:assembleDebug` 通过。为保留本轮公开序列验证对应的可测试 APK，已归档 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v10.4.0-debug-20260711-192336.apk`，大小 `55,844,975` bytes，SHA256 `5670746F36B57DC556B1A8010E009604509F30BF0B1158E5C89D4E08F51C5774`；不提交 Git 里程碑 APK。

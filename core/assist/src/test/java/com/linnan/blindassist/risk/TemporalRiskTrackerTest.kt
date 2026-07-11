@@ -3,6 +3,7 @@ package com.linnan.blindassist.risk
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
+import com.linnan.blindassist.model.DetectionSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -117,6 +118,39 @@ class TemporalRiskTrackerTest {
         assertEquals(RiskLevel.NONE, result.level)
     }
 
+    @Test
+    fun stableCenterSegmentationPromotesOnlyAfterTwoFrames() {
+        val tracker = TemporalRiskTracker()
+        val box = BoundingBox(400f, 400f, 600f, 520f)
+        val first = tracker.update(segmentationRaw(box), nowMs = 100L)
+        val second = tracker.update(segmentationRaw(box), nowMs = 200L)
+
+        assertEquals(RiskLevel.LOW, first.level)
+        assertEquals(RiskLevel.MEDIUM, second.level)
+        assertEquals(ApproachTrend.UNKNOWN, first.approachTrend)
+        assertEquals(RiskFusionReason.STABILITY_PROMOTED.name, second.scoreBreakdown.fusionSummary)
+    }
+
+    @Test
+    fun segmentationTrackToleratesReasonableBoundingBoxDeformation() {
+        val tracker = TemporalRiskTracker()
+        tracker.update(segmentationRaw(BoundingBox(180f, 300f, 760f, 520f)), nowMs = 100L)
+        val result = tracker.update(segmentationRaw(BoundingBox(280f, 340f, 820f, 620f)), nowMs = 200L)
+
+        assertEquals(RiskLevel.MEDIUM, result.level)
+        assertEquals(RiskFusionReason.STABILITY_PROMOTED.name, result.scoreBreakdown.fusionSummary)
+    }
+
+    @Test
+    fun stableFarGenericSegmentationDoesNotPromote() {
+        val tracker = TemporalRiskTracker()
+        val box = BoundingBox(400f, 200f, 600f, 520f)
+        tracker.update(segmentationRaw(box, label = "generic obstacle"), nowMs = 100L)
+        val result = tracker.update(segmentationRaw(box, label = "generic obstacle"), nowMs = 200L)
+
+        assertEquals(RiskLevel.LOW, result.level)
+    }
+
     private fun raw(label: String, box: BoundingBox): RiskResult {
         return analyzer.analyze(listOf(detection(label, box)), frame)
     }
@@ -155,6 +189,13 @@ class TemporalRiskTrackerTest {
             boundingBox = box,
             frameSize = frame,
             distanceEvidence = distanceEvidence
+        )
+    }
+
+    private fun segmentationRaw(box: BoundingBox, label: String = "stairs"): RiskResult {
+        return analyzer.analyze(
+            listOf(detection(label = label, box = box).copy(source = DetectionSource.SEGMENTATION)),
+            frame
         )
     }
 }

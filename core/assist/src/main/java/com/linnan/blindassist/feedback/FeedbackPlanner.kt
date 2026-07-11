@@ -3,7 +3,9 @@ package com.linnan.blindassist.feedback
 import com.linnan.blindassist.alert.AlertPolicy
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
+import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.risk.ProximityBand
+import com.linnan.blindassist.risk.RiskFusionReason
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 
@@ -27,6 +29,15 @@ object FeedbackPlanner {
             }
             risk.proximity == ProximityBand.NEAR &&
                 (risk.level == RiskLevel.HIGH || risk.level == RiskLevel.MEDIUM) -> {
+                FeedbackPlan(policy.nearCooldownMs, policy.nearVibrationMs, DEFAULT_AMPLITUDE)
+            }
+            risk.sourceDetection?.source == DetectionSource.SEGMENTATION &&
+                risk.level == RiskLevel.MEDIUM &&
+                risk.proximity == ProximityBand.MID &&
+                (RiskFusionReason.STABILITY_PROMOTED.name in risk.scoreBreakdown.fusionSummary ||
+                    RiskFusionReason.MOTION_PROMOTED.name in risk.scoreBreakdown.fusionSummary) -> {
+                // A center-path segmentation region reaches this branch only after the
+                // temporal tracker has confirmed it in multiple frames.
                 FeedbackPlan(policy.nearCooldownMs, policy.nearVibrationMs, DEFAULT_AMPLITUDE)
             }
             else -> null
