@@ -115,50 +115,14 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun BlindAssistApp(
-    controls: AssistControlsUiState,
-    cameraGuidance: CameraGuidanceUiState,
-    fieldTestSummary: FieldTestSummaryUiState,
-    modelStatus: String,
-    appVersion: String,
-    cameraActive: Boolean,
-    activeInputSource: AssistInputSource,
-    activeReplayScenario: ReplayScenario?,
-    showOnboarding: Boolean,
-    showGlassesCenter: Boolean,
-    glassesSimulator: GlassesSimulatorUiState,
-    onOpenCamera: () -> Unit,
-    onCloseCamera: () -> Unit,
-    onCompleteOnboarding: () -> Unit,
-    onShowOnboarding: () -> Unit,
-    onShowGlassesCenter: () -> Unit,
-    onDismissGlassesCenter: () -> Unit,
-    onSimulateGlassesConnection: () -> Unit,
-    onSimulatedGlassesConnectionCompleted: () -> Unit,
-    onSimulateGlassesLowBattery: () -> Unit,
-    onSimulateGlassesDisconnect: () -> Unit,
-    onResetGlassesSimulation: () -> Unit,
-    onReplayScenarioSelected: (ReplayScenario) -> Unit,
-    onStartOfflineReplay: (ReplayScenario) -> Unit,
-    onDetectionChange: (Boolean) -> Unit,
-    onSpeechChange: (Boolean) -> Unit,
-    onVibrationChange: (Boolean) -> Unit,
-    onCareModeChange: (Boolean) -> Unit,
-    onDebugVisibleChange: (Boolean) -> Unit,
-    onProfileChange: (AlertProfile) -> Unit,
-    onScenarioChange: (AssistScenario) -> Unit,
-    onSpeechStyleChange: (SpeechStyle) -> Unit,
-    onVibrationStrengthChange: (VibrationStrength) -> Unit,
-    onDailyUsageModeChange: (DailyUsageMode) -> Unit,
-    onQuietShortcut: () -> Unit,
-    onSensitiveShortcut: () -> Unit,
-    onLanguageChange: (AppLanguage) -> Unit,
-    onCameraViewsReady: (PreviewView?, DetectionOverlayView) -> Unit,
+    state: BlindAssistAppState,
+    actions: BlindAssistAppActions,
     modifier: Modifier = Modifier
 ) {
     var splashVisible by rememberSaveable { mutableStateOf(true) }
 
-    BackHandler(enabled = cameraActive) {
-        onCloseCamera()
+    BackHandler(enabled = state.cameraActive) {
+        actions.runtime.onCloseCamera()
     }
 
     Surface(
@@ -166,60 +130,60 @@ fun BlindAssistApp(
         color = BaNight
     ) {
         AnimatedContent(
-            targetState = cameraActive,
+            targetState = state.cameraActive,
             label = "camera-shell"
         ) { isCameraActive ->
             when {
                 isCameraActive -> CameraExperienceScreen(
-                    controls = controls,
-                    guidance = cameraGuidance,
-                    fieldTestSummary = fieldTestSummary,
-                    inputSource = activeInputSource,
-                    replayScenario = activeReplayScenario,
-                    onBack = onCloseCamera,
-                    onDetectionChange = onDetectionChange,
-                    onSpeechChange = onSpeechChange,
-                    onVibrationChange = onVibrationChange,
-                    onCareModeChange = onCareModeChange,
-                    onDebugVisibleChange = onDebugVisibleChange,
-                    onProfileChange = onProfileChange,
-                    onScenarioChange = onScenarioChange,
-                    onQuietShortcut = onQuietShortcut,
-                    onSensitiveShortcut = onSensitiveShortcut,
-                    onCameraViewsReady = onCameraViewsReady
+                    controls = state.controls,
+                    guidance = state.cameraGuidance,
+                    fieldTestSummary = state.fieldTestSummary,
+                    inputSource = state.activeInputSource,
+                    replayScenario = state.activeReplayScenario,
+                    onBack = actions.runtime.onCloseCamera,
+                    onDetectionChange = actions.runtime.onDetectionChange,
+                    onSpeechChange = actions.runtime.onSpeechChange,
+                    onVibrationChange = actions.runtime.onVibrationChange,
+                    onCareModeChange = actions.runtime.onCareModeChange,
+                    onDebugVisibleChange = actions.runtime.onDebugVisibleChange,
+                    onProfileChange = actions.runtime.onProfileChange,
+                    onScenarioChange = actions.runtime.onScenarioChange,
+                    onQuietShortcut = actions.runtime.onQuietShortcut,
+                    onSensitiveShortcut = actions.runtime.onSensitiveShortcut,
+                    onCameraViewsReady = actions.runtime.onCameraViewsReady
                 )
                 splashVisible -> BrandSplashScreen(onFinished = { splashVisible = false })
-                showOnboarding -> OnboardingScreen(onFinished = onCompleteOnboarding)
-                showGlassesCenter -> GlassesSimulatorScreen(
-                    state = glassesSimulator,
-                    language = controls.appLanguage,
-                    onBack = onDismissGlassesCenter,
-                    onConnect = onSimulateGlassesConnection,
-                    onConnectionCompleted = onSimulatedGlassesConnectionCompleted,
-                    onLowBattery = onSimulateGlassesLowBattery,
-                    onDisconnect = onSimulateGlassesDisconnect,
-                    onReset = onResetGlassesSimulation,
-                    onReplayScenarioSelected = onReplayScenarioSelected,
-                    onStartReplay = onStartOfflineReplay
+                state.showOnboarding -> OnboardingScreen(onFinished = actions.navigation.onCompleteOnboarding)
+                state.showGlassesCenter -> GlassesSimulatorScreen(
+                    state = state.glassesSimulator,
+                    language = state.controls.appLanguage,
+                    onBack = actions.navigation.onDismissGlassesCenter,
+                    onConnect = actions.glasses.onSimulateConnection,
+                    onConnectionCompleted = actions.glasses.onConnectionCompleted,
+                    onLowBattery = actions.glasses.onSimulateLowBattery,
+                    onDisconnect = actions.glasses.onSimulateDisconnect,
+                    onReset = actions.glasses.onReset,
+                    onReplayScenarioSelected = actions.glasses.onReplayScenarioSelected,
+                    onStartReplay = actions.runtime.onStartOfflineReplay
                 )
                 else -> MainShell(
-                    controls = controls,
-                    fieldTestSummary = fieldTestSummary,
-                    modelStatus = modelStatus,
-                    appVersion = appVersion,
-                    onOpenCamera = onOpenCamera,
-                    onShowGlassesCenter = onShowGlassesCenter,
-                    onSpeechChange = onSpeechChange,
-                    onVibrationChange = onVibrationChange,
-                    onCareModeChange = onCareModeChange,
-                    onDebugVisibleChange = onDebugVisibleChange,
-                    onProfileChange = onProfileChange,
-                    onScenarioChange = onScenarioChange,
-                    onSpeechStyleChange = onSpeechStyleChange,
-                    onVibrationStrengthChange = onVibrationStrengthChange,
-                    onDailyUsageModeChange = onDailyUsageModeChange,
-                    onLanguageChange = onLanguageChange,
-                    onShowOnboarding = onShowOnboarding
+                    controls = state.controls,
+                    fieldTestSummary = state.fieldTestSummary,
+                    modelStatus = state.modelStatus,
+                    appVersion = state.appVersion,
+                    onOpenCamera = actions.runtime.onOpenCamera,
+                    onShowGlassesCenter = actions.navigation.onShowGlassesCenter,
+                    onSpeechChange = actions.runtime.onSpeechChange,
+                    onVibrationChange = actions.runtime.onVibrationChange,
+                    onCareModeChange = actions.runtime.onCareModeChange,
+                    onDebugVisibleChange = actions.runtime.onDebugVisibleChange,
+                    onProfileChange = actions.runtime.onProfileChange,
+                    onScenarioChange = actions.runtime.onScenarioChange,
+                    onSpeechStyleChange = actions.runtime.onSpeechStyleChange,
+                    onVibrationStrengthChange = actions.runtime.onVibrationStrengthChange,
+                    onDailyUsageModeChange = actions.runtime.onDailyUsageModeChange,
+                    onLanguageChange = actions.runtime.onLanguageChange,
+                    onShowOnboarding = actions.navigation.onShowOnboarding
                 )
             }
         }

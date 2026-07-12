@@ -3969,3 +3969,13 @@
   - 检查全局、工作区和项目 AGENTS 的层级职责与相对 Markdown 链接；项目 AGENTS 指向的四份专项文档均存在。
   - `git diff --check` 通过；未运行 Gradle，因为本轮仅修改协作与流程文档，不影响 Android 源码、模型或构建配置。
 - 版本判断：协作与文档流程优化，不改变用户可见功能、模型、权限或构建产物；保持现有版本，不归档 APK。
+
+### Runtime session and root UI contract consolidation
+
+- Time: 2026-07-13 +08:00
+- Executor: violjjet
+- Type: architecture refactor / runtime / UI
+- Scope: `feature/assist/runtime/AssistRuntimeSession.kt`, `AssistRuntimeController.kt`, `AssistRuntimeControllerFactory.kt`, `core/ui/compose/BlindAssistAppContract.kt`, `BlindAssistApp.kt`, and `app/MainActivity.kt`.
+- Implementation: introduced the `AssistSession` seam and routed camera, permission, replay, and runtime configuration through `AssistRuntimeIntent`; state machine, lifecycle gate, camera, detector, risk, and feedback implementations remain unchanged. `BlindAssistApp` now receives a state object and runtime/navigation/glasses action groups, reducing startup-shell coupling to product details.
+- Verification: with local JDK 17 at `E:\codex-tools\tools\jdk17.0.19_10`, `:core:assist:test :feature:assist:testDebugUnitTest --rerun-tasks --no-daemon --console=plain` passed; `:core:ui:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --console=plain` passed. The first attempt was blocked by system JDK 26.0.1 and a stale core:assist ABI cache; switching to JDK 17 and forcing recompilation resolved both.
+- Version decision: no user-visible behavior, model, permission, or risk-rule change; version unchanged and no APK archived.

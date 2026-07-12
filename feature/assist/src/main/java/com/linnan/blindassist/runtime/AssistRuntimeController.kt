@@ -21,7 +21,7 @@ import com.linnan.blindassist.ui.BlindAssistViewModel
 import com.linnan.blindassist.ui.DetectionOverlayView
 import com.linnan.blindassist.vision.ObjectDetector
 
-class AssistRuntimeController(
+internal class AssistRuntimeSession(
     private val activity: ComponentActivity,
     private val appViewModel: BlindAssistViewModel,
     private val detector: ObjectDetector,
@@ -30,7 +30,7 @@ class AssistRuntimeController(
     private val frameSourceFactory: FrameSourceFactory,
     private val configApplier: RuntimeConfigApplier,
     private val stateMachine: AssistRuntimeStateMachine = AssistRuntimeStateMachine()
-) {
+) : AssistSession {
     private var currentInputSource: AssistInputSource = AssistInputSource.PHONE_CAMERA
     private var currentReplayScenario: ReplayScenario? = null
     private val initialFrameSource: FrameSource = frameSourceFactory.create(
@@ -92,12 +92,12 @@ class AssistRuntimeController(
         startCameraIfReady = ::startCameraIfReady
     )
 
-    fun initialize() {
+    override fun initialize() {
         settingsController.syncConfigFromViewModel()
         renderer.renderInitial()
     }
 
-    fun shutdown() {
+    override fun shutdown() {
         cameraLifecycleAdapter.stop()
         lifecycleGate.shutdown(
             resetState = {
@@ -114,11 +114,35 @@ class AssistRuntimeController(
         )
     }
 
-    fun openCameraExperience() {
+    override fun dispatch(intent: AssistRuntimeIntent) {
+        when (intent) {
+            AssistRuntimeIntent.OpenPhoneCamera -> openCameraExperience()
+            is AssistRuntimeIntent.OpenOfflineReplay -> openOfflineReplay(intent.scenario)
+            AssistRuntimeIntent.CloseCamera -> closeCameraExperience()
+            is AssistRuntimeIntent.PermissionExplanationAccepted -> requestCameraPermissionAfterExplanation(intent.launchPermissionRequest)
+            AssistRuntimeIntent.DismissPermissionFlow -> dismissCameraPermissionFlow()
+            is AssistRuntimeIntent.CameraPermissionResult -> onCameraPermissionResult(intent.granted)
+            is AssistRuntimeIntent.CameraViewsReady -> onCameraViewsReady(intent.preview, intent.overlay)
+            is AssistRuntimeIntent.DetectionEnabled -> setDetectionEnabled(intent.enabled)
+            is AssistRuntimeIntent.SpeechEnabled -> setSpeechEnabled(intent.enabled)
+            is AssistRuntimeIntent.VibrationEnabled -> setVibrationEnabled(intent.enabled)
+            is AssistRuntimeIntent.SpeechStyleChanged -> setSpeechStyle(intent.style)
+            is AssistRuntimeIntent.VibrationStrengthChanged -> setVibrationStrength(intent.strength)
+            is AssistRuntimeIntent.AppLanguageChanged -> setAppLanguage(intent.language)
+            is AssistRuntimeIntent.CareModeEnabled -> setCareModeEnabled(intent.enabled)
+            is AssistRuntimeIntent.AlertProfileChanged -> setAlertProfile(intent.profile)
+            is AssistRuntimeIntent.AssistScenarioChanged -> setAssistScenario(intent.scenario)
+            is AssistRuntimeIntent.DailyUsageModeChanged -> setDailyUsageMode(intent.mode)
+            AssistRuntimeIntent.QuietShortcutSelected -> setQuietShortcut()
+            AssistRuntimeIntent.SensitiveShortcutSelected -> setSensitiveShortcut()
+        }
+    }
+
+    private fun openCameraExperience() {
         openExperience(AssistInputSource.PHONE_CAMERA, null)
     }
 
-    fun openOfflineReplay(scenario: ReplayScenario) {
+    private fun openOfflineReplay(scenario: ReplayScenario) {
         openExperience(AssistInputSource.OFFLINE_REPLAY, scenario)
     }
 
@@ -150,18 +174,18 @@ class AssistRuntimeController(
         )
     }
 
-    fun requestCameraPermissionAfterExplanation(launchPermissionRequest: () -> Unit) {
+    private fun requestCameraPermissionAfterExplanation(launchPermissionRequest: () -> Unit) {
         handleTransition(
             transition = stateMachine.onEvent(AssistRuntimeEvent.PermissionExplanationAccepted),
             launchPermissionRequest = launchPermissionRequest
         )
     }
 
-    fun dismissCameraPermissionFlow() {
+    private fun dismissCameraPermissionFlow() {
         handleTransition(stateMachine.onEvent(AssistRuntimeEvent.PermissionFlowDismissed))
     }
 
-    fun onCameraPermissionResult(granted: Boolean) {
+    private fun onCameraPermissionResult(granted: Boolean) {
         handleTransition(
             stateMachine.onEvent(
                 AssistRuntimeEvent.PermissionResult(
@@ -172,58 +196,58 @@ class AssistRuntimeController(
         )
     }
 
-    fun closeCameraExperience() {
+    private fun closeCameraExperience() {
         handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CloseCamera))
     }
 
-    fun onCameraViewsReady(preview: PreviewView?, overlay: DetectionOverlayView) {
+    private fun onCameraViewsReady(preview: PreviewView?, overlay: DetectionOverlayView) {
         cameraLifecycleAdapter.onCameraViewsReady(preview, overlay)
         settingsController.syncConfigFromViewModel()
         handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CameraViewsReady))
     }
 
-    fun setDetectionEnabled(enabled: Boolean) {
+    private fun setDetectionEnabled(enabled: Boolean) {
         settingsController.setDetectionEnabled(enabled)
         handleTransition(stateMachine.onEvent(AssistRuntimeEvent.DetectionChanged(enabled)))
     }
 
-    fun setSpeechEnabled(enabled: Boolean) {
+    private fun setSpeechEnabled(enabled: Boolean) {
         settingsController.setSpeechEnabled(enabled)
     }
 
-    fun setVibrationEnabled(enabled: Boolean) {
+    private fun setVibrationEnabled(enabled: Boolean) {
         settingsController.setVibrationEnabled(enabled)
     }
 
-    fun setSpeechStyle(style: SpeechStyle) {
+    private fun setSpeechStyle(style: SpeechStyle) {
         settingsController.setSpeechStyle(style)
     }
 
-    fun setVibrationStrength(strength: VibrationStrength) {
+    private fun setVibrationStrength(strength: VibrationStrength) {
         settingsController.setVibrationStrength(strength)
     }
 
-    fun setAppLanguage(language: AppLanguage) {
+    private fun setAppLanguage(language: AppLanguage) {
         settingsController.setAppLanguage(language)
     }
 
-    fun setCareModeEnabled(enabled: Boolean) {
+    private fun setCareModeEnabled(enabled: Boolean) {
         settingsController.setCareModeEnabled(enabled)
     }
 
-    fun setAlertProfile(profile: AlertProfile) {
+    private fun setAlertProfile(profile: AlertProfile) {
         settingsController.setAlertProfile(profile)
     }
 
-    fun setAssistScenario(scenario: AssistScenario) {
+    private fun setAssistScenario(scenario: AssistScenario) {
         settingsController.setAssistScenario(scenario)
     }
 
-    fun setDailyUsageMode(mode: DailyUsageMode) {
+    private fun setDailyUsageMode(mode: DailyUsageMode) {
         settingsController.setDailyUsageMode(mode)
     }
 
-    fun setQuietShortcut() {
+    private fun setQuietShortcut() {
         settingsController.setReminderShortcut(
             profile = AlertProfile.QUIET,
             speechStyle = SpeechStyle.BRIEF,
@@ -231,7 +255,7 @@ class AssistRuntimeController(
         )
     }
 
-    fun setSensitiveShortcut() {
+    private fun setSensitiveShortcut() {
         settingsController.setReminderShortcut(
             profile = AlertProfile.SENSITIVE,
             speechStyle = SpeechStyle.STANDARD,

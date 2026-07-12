@@ -1,0 +1,69 @@
+package com.linnan.blindassist.ui.compose
+
+import androidx.camera.view.PreviewView
+import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.alert.AssistScenario
+import com.linnan.blindassist.feedback.SpeechStyle
+import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.model.AssistInputSource
+import com.linnan.blindassist.model.ReplayScenario
+import com.linnan.blindassist.preferences.DailyUsageMode
+import com.linnan.blindassist.ui.DetectionOverlayView
+
+/** Stable UI interface for the full BlindAssist screen tree. */
+data class BlindAssistAppState(
+    val controls: AssistControlsUiState,
+    val cameraGuidance: CameraGuidanceUiState,
+    val fieldTestSummary: FieldTestSummaryUiState,
+    val modelStatus: String,
+    val appVersion: String,
+    val cameraActive: Boolean,
+    val activeInputSource: AssistInputSource,
+    val activeReplayScenario: ReplayScenario?,
+    val showOnboarding: Boolean,
+    val showGlassesCenter: Boolean,
+    val glassesSimulator: GlassesSimulatorUiState
+)
+
+data class BlindAssistAppActions(
+    val runtime: AssistRuntimeUiActions,
+    val navigation: AssistNavigationActions,
+    val glasses: GlassesSimulatorActions
+)
+
+data class AssistRuntimeUiActions(
+    val onOpenCamera: () -> Unit,
+    val onCloseCamera: () -> Unit,
+    val onStartOfflineReplay: (ReplayScenario) -> Unit,
+    val onDetectionChange: (Boolean) -> Unit,
+    val onSpeechChange: (Boolean) -> Unit,
+    val onVibrationChange: (Boolean) -> Unit,
+    val onCareModeChange: (Boolean) -> Unit,
+    val onDebugVisibleChange: (Boolean) -> Unit,
+    val onProfileChange: (AlertProfile) -> Unit,
+    val onScenarioChange: (AssistScenario) -> Unit,
+    val onSpeechStyleChange: (SpeechStyle) -> Unit,
+    val onVibrationStrengthChange: (VibrationStrength) -> Unit,
+    val onDailyUsageModeChange: (DailyUsageMode) -> Unit,
+    val onQuietShortcut: () -> Unit,
+    val onSensitiveShortcut: () -> Unit,
+    val onLanguageChange: (AppLanguage) -> Unit,
+    val onCameraViewsReady: (PreviewView?, DetectionOverlayView) -> Unit
+)
+
+data class AssistNavigationActions(
+    val onCompleteOnboarding: () -> Unit,
+    val onShowOnboarding: () -> Unit,
+    val onShowGlassesCenter: () -> Unit,
+    val onDismissGlassesCenter: () -> Unit
+)
+
+data class GlassesSimulatorActions(
+    val onSimulateConnection: () -> Unit,
+    val onConnectionCompleted: () -> Unit,
+    val onSimulateLowBattery: () -> Unit,
+    val onSimulateDisconnect: () -> Unit,
+    val onReset: () -> Unit,
+    val onReplayScenarioSelected: (ReplayScenario) -> Unit
+)

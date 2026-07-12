@@ -15,8 +15,8 @@ class AssistRuntimeControllerFactory @Inject constructor(
     private val frameSourceFactory: FrameSourceFactory,
     private val configApplier: RuntimeConfigApplier
 ) {
-    fun create(activity: ComponentActivity, appViewModel: BlindAssistViewModel): AssistRuntimeController {
-        return AssistRuntimeController(
+    fun create(activity: ComponentActivity, appViewModel: BlindAssistViewModel): AssistSession {
+        return AssistRuntimeSession(
             activity = activity,
             appViewModel = appViewModel,
             detector = detector,
