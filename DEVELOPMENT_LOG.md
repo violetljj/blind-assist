@@ -3953,3 +3953,19 @@
 - 连续素材：候选扫描补充 `pedestrian`、`rider`、`vehicle` 语义类；中心障碍候选 `SRHpBZXk_0pKjk6SK23VOhoLZGZfnKFF` 已启动 50 帧公开 SANPO 下载与哈希校验，完成后必须再次经模型复核，未完成前不计入 420 帧覆盖。
 - 验证：`C:\Users\26442\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe scripts\test_sanpo_v3_dataset_controls.py` 通过，4 tests passed；包含模型复核可接受高置信 `no_alert` 负例和证据帧缺失拒绝测试。首次沙箱运行因系统临时目录写入限制失败，受控权限重跑通过。
 - 版本判断：仅修改 benchmark 数据治理与候选发现流程；生产 YOLO 路径、APK 和模型资产未变，不升级版本、不归档 APK。
+
+### AGENTS 分层收敛与发布流程减负
+
+- 时间：2026-07-13 +08:00
+- 执行者：violjjet
+- 类型：协作规则、文档、发布流程
+- 修改范围：`AGENTS.md`、`docs/RELEASE_AND_VERIFICATION.md`、`docs/GLASSES_HARDWARE_ROUTE.md`、`docs/APK_ARCHIVE.md`、`docs/NEW_COMPUTER_HANDOFF.md`。
+- 修改内容与原因：
+  - 将项目 AGENTS 从长篇环境状态与逐任务强制流程收敛为项目边界、变更卫生、风险分级验证、产物/硬件/推送安全四类规则；避免只读任务也写日志、普通改动也跑发布级构建、普通 debug 包也自动归档。
+  - 新增发布与验证工作流，明确文档、模块、风险链路和交付候选的最低验证级别；交付 APK 校验提供带必填 `-ApkPath` 的最小命令，并说明可选版本断言。
+  - 新增眼镜硬件接入路线，把旧源码路径、占位功能边界和迁移前接口设计从 AGENTS 迁出，防止日常 Android 工作携带无关上下文。
+  - 将 APK 归档调整为演示、老师查看、交付候选、里程碑或用户明确要求时才执行；既有历史归档保持不删除。
+- 验证：
+  - 检查全局、工作区和项目 AGENTS 的层级职责与相对 Markdown 链接；项目 AGENTS 指向的四份专项文档均存在。
+  - `git diff --check` 通过；未运行 Gradle，因为本轮仅修改协作与流程文档，不影响 Android 源码、模型或构建配置。
+- 版本判断：协作与文档流程优化，不改变用户可见功能、模型、权限或构建产物；保持现有版本，不归档 APK。

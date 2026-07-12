@@ -1,9 +1,9 @@
 # APK 归档策略
 
-BlindAssist 使用两层 APK 归档，既方便课堂/演示交付，也避免把每一次本地构建都变成仓库历史：
+BlindAssist 使用两层 APK 归档，服务于已明确的演示、老师查看、交付候选或里程碑；普通 debug 构建不自动归档：
 
 - GitHub 里程碑 APK：`releases/apk/` 只保留累计 `versionName` 差值达到 `>= 0.5` 的版本，或用户明确标记为 Git 里程碑的 APK。
-- 完整本地归档：所有生成过的历史 APK 都保留在 `E:\linnan\blind-assist-apk-archive\apks`。
+- 完整本地归档：已确认需要留存的交付 APK 保存在 `E:\linnan\blind-assist-apk-archive\apks`。
 
 完整本地归档创建于 2026-05-22，包含历史 APK 集合以及后续本地 debug 归档。归档清单位于：
 
@@ -17,13 +17,13 @@ E:\linnan\blind-assist-apk-archive\APK_ARCHIVE_MANIFEST.csv
 Get-FileHash -Algorithm SHA256 -LiteralPath "E:\linnan\blind-assist-apk-archive\apks\<apk-name>"
 ```
 
-发布交付、老师查看或演示前，先把新 APK 归档到本地：
+发布交付、老师查看、演示、里程碑或用户明确要求时，先把新 APK 归档到本地：
 
 ```powershell
 .\scripts\archive_apk.ps1
 ```
 
-只有当该 APK 符合下方里程碑规则，或用户明确批准同步到 `releases/apk/` 时，才使用 `-Milestone`。普通 debug 构建应保留在完整本地归档中；只有证据确实有价值时，才同步写入 `README.md`、`CHANGELOG.md` 或 `DEVELOPMENT_LOG.md`。
+只有当该 APK 符合下方里程碑规则，或用户明确批准同步到 `releases/apk/` 时，才使用 `-Milestone`。普通 debug 构建不需要归档；只有证据确实有价值时，才同步写入 `README.md`、`CHANGELOG.md` 或 `DEVELOPMENT_LOG.md`。
 
 ## GitHub 里程碑 APK
 
@@ -58,6 +58,6 @@ E:\linnan\blind-assist-apk-archive\test-artifacts\test-artifacts-20260525-001501
 
 ## 后续规则
 
-创建新 APK 时，先本地归档。只有当前 `versionName` 比 `releases/apk/` 中最新已提交 APK 至少高 `0.5`，或用户明确要求提交 Git 里程碑 APK 时，才把 APK 提交到 `releases/apk/`。更小更新产生的 APK 留在完整本地归档。
+对需要留存的交付 APK，先完成本地归档。只有它是已记录的交付里程碑、当前 `versionName` 比 `releases/apk/` 中最新已提交 APK 至少高 `0.5`，或用户明确要求提交 Git 里程碑 APK 时，才把 APK 提交到 `releases/apk/`。版本差值只是筛选条件，不能替代交付理由；普通 debug 构建无需进入完整本地归档。
 
 新的测试截图、原始设备日志、临时 APK、zip 快照、PPT 导出、ONNX/PT/NPY 模型转换中间产物和机器本地缓存默认不进入 Git。`scripts/run_device_regression.ps1` 生成的设备回归证据写入 `test-artifacts.local/device-regression/<timestamp>/` 目录，只用于后续本地对比。CI 通过 `scripts/check_repo_hygiene.ps1` 执行这条面向未来的规则；既有历史产物不会因该策略被重写或删除。

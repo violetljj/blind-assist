@@ -98,7 +98,7 @@ output shape=[1, 84, 2100] dtype=float32
 - `DEVELOPMENT_LOG.md` 中的执行者名称继续使用 `violjjet`。
 - 修改前先运行 `git status --short`。
 - 不要提交本地 SDK、Gradle 缓存、虚拟环境、下载目录或机器特定生成文件。
-- 每次实现、配置变更、分析-only 检查和验证结果都要记录到 `DEVELOPMENT_LOG.md`。
-- 项目状态、使用方式、构建流程、测试结论、模型资产或重要决策变化时，同步更新 `README.md`。
-- 演示、测试或老师查看用 APK，应先保存到完整本地归档目录 `E:\linnan\blind-assist-apk-archive\apks`。
+- 代码、配置、模型、测试或已采纳技术决策变更时记录到 `DEVELOPMENT_LOG.md`；纯只读排查和对话无需写日志。
+- 仅在用户可见状态、用法或前置条件变化时更新 `README.md`；发布事实写入 `CHANGELOG.md`，详细验证按 [发布与验证工作流](RELEASE_AND_VERIFICATION.md) 记录。
+- 演示、老师查看、交付候选、里程碑或用户明确要求的 APK，应先保存到完整本地归档目录 `E:\linnan\blind-assist-apk-archive\apks`；普通 debug 构建无需归档。
 - 只有当 APK 是已记录的 Git 里程碑，或用户明确要求提交该 APK 时，才把它提交到 `releases/apk/`。
