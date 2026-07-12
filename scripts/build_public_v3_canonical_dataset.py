@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+"""Assemble a SHA-bound public-source v3 dataset through allow-listed adapters.
+
+The builder never accepts an already-canonical manifest.  It consumes a recipe
+whose sequences point at downloaded source packages, remaps native pixel masks,
+creates provenance/attestation, and publishes only after the total gate is green.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import shutil
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+from PIL import Image
+
+import prepare_sanpo_v3_dataset_views as views
+import sanpo_training_gate as gate
+import validate_sanpo_v3_dataset as validator
+
+
+SANPO_MAP = {
+    0: 3, 1: 0, 2: 1, 3: 0, 4: 2, 5: 0, 6: 0, 7: 3,
+    8: 2, 9: 2, 10: 2, 11: 2, 12: 2, 13: 2, 14: 2, 15: 1,
+    16: 2, 17: 0, 18: 2, 19: 2, 20: 2, 21: 2, 22: 2, 23: 2,
+    24: 2, 25: 2, 26: 2, 27: 3, 28: 2, 29: 3, 30: 3,
+}
+ADAPTER_MAPS = {"sanpo_v0": SANPO_MAP}
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def sha256_json(payload: Any) -> str:
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def load_json(path: Path) -> Any:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_jsonl(path: Path) -> list[dict[str, Any]]:
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def safe_source_path(root: Path, value: str) -> Path:
+    path = (root / value).resolve()
+    try:
+        path.relative_to(root.resolve())
+    except ValueError as error:
+        raise ValueError(f"source path escapes package root: {value}") from error
+    if not path.is_file():
+        raise FileNotFoundError(path)
+    return path
+
+
+def remap_mask(source: Path, output: Path, adapter_id: str) -> tuple[str, str]:
+    mapping = ADAPTER_MAPS.get(adapter_id)
+    if mapping is None:
+        raise ValueError(f"adapter {adapter_id!r} has no full-mask mapper")
+    with Image.open(source) as image:
+        array = np.asarray(image.convert("RGB"), dtype=np.uint8)
+    native = array[..., 0]
+    unknown = sorted(set(int(value) for value in np.unique(native)) - set(mapping))
+    if unknown:
+        raise ValueError(f"native mask has unmapped class IDs: {unknown}")
+    target = np.full(native.shape, 255, dtype=np.uint8)
+    for native_id, target_id in mapping.items():
+        target[native == native_id] = target_id
+    if np.any(target == 255):
+        raise ValueError("mask mapping left unlabeled pixels")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    Image.fromarray(target, mode="L").save(output)
+    return sha256_file(source), sha256_file(output)
+
+
+def evidence_copy(source: Path, staging: Path, source_id: str, kind: str) -> tuple[str, str]:
+    destination = staging / "source_evidence" / source_id / f"{kind}{source.suffix}"
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, destination)
+    return destination.relative_to(staging).as_posix(), sha256_file(destination)
+
+
+def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[str, Any]:
+    recipe = load_json(recipe_path.resolve())
+    output = output_root.resolve()
+    staging = output.with_name(output.name + ".building")
+    if output.exists() or staging.exists():
+        raise ValueError("refusing to overwrite canonical output or stale staging root")
+    staging.mkdir(parents=True)
+    report: dict[str, Any] = {"schema": "blindassist_public_v3_assembly_v1", "ok": False, "errors": []}
+    try:
+        receipts = recipe.get("sources")
+        sequences = recipe.get("sequences")
+        if not isinstance(receipts, list) or not isinstance(sequences, list):
+            raise ValueError("recipe requires sources and sequences lists")
+        receipt_by_id = {str(item["source_id"]): item for item in receipts}
+        attested_sources: list[dict[str, Any]] = []
+        for source_id, receipt in receipt_by_id.items():
+            adapter_id = str(receipt.get("adapter_id", ""))
+            if adapter_id not in gate.ALLOWED_SOURCE_ADAPTERS:
+                raise ValueError(f"{source_id}: adapter is not allow-listed")
+            package_root = Path(receipt["package_root"]).resolve()
+            bound: dict[str, str] = {}
+            for kind in ("license_evidence", "privacy_evidence", "inventory"):
+                bound[f"{kind}_path"], bound[f"{kind}_sha256"] = evidence_copy(
+                    safe_source_path(package_root, str(receipt[f"{kind}_path"])), staging, source_id, kind
+                )
+            attested_sources.append({key: receipt[key] for key in (
+                "source_id", "adapter_id", "dataset", "dataset_version", "license", "license_url", "privacy_review_status"
+            )} | bound)
+        rows: list[dict[str, Any]] = []
+        seen_sessions: set[str] = set()
+        for sequence in sequences:
+            source_id = str(sequence["source_id"])
+            receipt = receipt_by_id[source_id]
+            adapter_id = str(receipt["adapter_id"])
+            package_root = Path(receipt["package_root"]).resolve()
+            source_rows = load_jsonl(safe_source_path(package_root, str(sequence["manifest_path"])))
+            native_session = str(sequence["native_session_id"])
+            selected = [item for item in source_rows if str(item.get("source", {}).get("session_id") or item.get("session_id")) == native_session]
+            selected.sort(key=lambda item: int(item.get("frame_index", -1)))
+            expected_count = 60 if sequence["split"] == "blind" else 50
+            if len(selected) != expected_count or [int(item.get("frame_index", -1)) for item in selected] != list(range(expected_count)):
+                raise ValueError(f"{source_id}:{native_session}: requires contiguous {expected_count}-frame source sequence")
+            global_session = f"{source_id}:{native_session}"
+            if global_session in seen_sessions:
+                raise ValueError(f"duplicate native session in recipe: {global_session}")
+            seen_sessions.add(global_session)
+            sequence_id = f"{global_session}:{sequence['scene_bucket']}"
+            mapping_sha = sha256_json(ADAPTER_MAPS[adapter_id])
+            for index, source_row in enumerate(selected):
+                sample_id = f"{source_id}_{native_session}_{index:06d}".replace("/", "_")
+                image_source = safe_source_path(package_root, str(source_row["image_path"]))
+                mask_value = source_row.get("source_mask_path") or f"source_masks/test/{source_row['id']}.png"
+                mask_source = safe_source_path(package_root, str(mask_value))
+                image_rel = Path("images") / str(sequence["split"]) / f"{sample_id}{image_source.suffix.lower()}"
+                mask_rel = Path("semantic_masks") / str(sequence["split"]) / f"{sample_id}.png"
+                image_dest, mask_dest = staging / image_rel, staging / mask_rel
+                image_dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(image_source, image_dest)
+                source_mask_sha, mapped_mask_sha = remap_mask(mask_source, mask_dest, adapter_id)
+                source = {
+                    "source_id": source_id,
+                    "session_id": global_session,
+                    "dataset": receipt["dataset"], "license": receipt["license"],
+                    "license_url": receipt["license_url"], "privacy_review_status": receipt["privacy_review_status"],
+                }
+                rows.append({
+                    "id": sample_id, "split": sequence["split"], "session_id": global_session,
+                    "sequence_id": sequence_id, "frame_index": index, "scene_bucket": sequence["scene_bucket"],
+                    "benchmark_kind": "semantic_segmentation_only", "image_path": image_rel.as_posix(),
+                    "semantic_mask_path": mask_rel.as_posix(), "image_sha256": sha256_file(image_dest),
+                    "semantic_mask_sha256": mapped_mask_sha, "label_authority": "source_ground_truth",
+                    "label_provenance": {"annotation_kind": "pixel_panoptic_taxonomy_map", "source_mask_sha256": source_mask_sha,
+                        "mapped_mask_sha256": mapped_mask_sha, "mapping_sha256": mapping_sha},
+                    "source": source,
+                })
+        manifest = staging / "reviewed-source-manifest.jsonl"
+        manifest.write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows), encoding="utf-8")
+        (staging / "source_attestation.json").write_text(json.dumps({
+            "schema": gate.ATTESTATION_SCHEMA, "recipe_sha256": sha256_file(recipe_path.resolve()), "sources": attested_sources,
+        }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        views.prepare_views(manifest, staging)
+        gate_report = gate.run_gate(staging, staging / "qa" / "training_gate_report.json")
+        if gate_report["overall_status"] != "green":
+            raise ValueError("total gate is red: " + "; ".join(gate_report["errors"][:8]))
+        os.replace(staging, output)
+        report.update({"ok": True, "dataset_root": str(output), "row_count": len(rows), "gate_report_sha256": gate_report["report_sha256"]})
+    except Exception as error:
+        report["errors"].append(f"{type(error).__name__}: {error}")
+        report["staging_root"] = str(staging)
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    report["report_sha256"] = sha256_file(report_path)
+    report_path.with_suffix(report_path.suffix + ".sha256").write_text(f"{report['report_sha256']}  {report_path.name}\n", encoding="ascii")
+    return report
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--recipe", type=Path, required=True)
+    parser.add_argument("--dataset-root", type=Path, required=True)
+    parser.add_argument("--report", type=Path, required=True)
+    args = parser.parse_args()
+    report = assemble(args.recipe, args.dataset_root, args.report)
+    print(json.dumps({"ok": report["ok"], "report_sha256": report["report_sha256"], "errors": report["errors"]}, ensure_ascii=False))
+    return 0 if report["ok"] else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

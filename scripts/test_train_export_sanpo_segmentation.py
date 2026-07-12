@@ -29,6 +29,7 @@ class SegmentationCandidateToolTest(unittest.TestCase):
             "id": sample_id,
             "segmentation_split": split,
             "source_session_id": session,
+            "label_authority": "source_ground_truth",
             "image_path": str(image.relative_to(root)).replace("\\", "/"),
             "semantic_mask_paths": masks,
             "scene_bucket": "parallel_curb",

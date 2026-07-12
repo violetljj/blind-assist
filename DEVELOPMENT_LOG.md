@@ -2,6 +2,17 @@
 
 本文件记录 BlindAssist 项目的每次分析、更新、修改、验证和遗留事项。后续所有协作者和自动化代理在完成任务前，都必须把本次工作详细写入此文件。
 
+## 2026-07-13
+
+### 公开来源 canonical 构建与标签权威分层
+- 时间：2026-07-13 00:00:00 +08:00
+- 执行者：violjjet
+- 类型：训练数据治理 / 公开来源接入 / 标签防污染 / 自动化测试
+- 修改范围：`scripts/build_public_v3_canonical_dataset.py`、`scripts/sanpo_training_gate.py`、`scripts/validate_sanpo_v3_dataset.py`、训练入口及相关测试、README、CHANGELOG。
+- 修改内容：新增只从 allow-list adapter 构建 canonical v3 的 source builder；每个公开来源必须提供 dataset/version/license/privacy/inventory，证据文件复制后以 SHA256 绑定到 `source_attestation.json`。SANPO 原生 0..30 类通过完整映射生成四类 mask，未知类别、路径越界、非连续 session、重复 session、未实现 adapter 或红色总门禁都拒绝发布。标签权威新增 `source_ground_truth`、`procedural_ground_truth` 和 `teacher_consensus_pseudo_label`：dev/blind 强制 source GT；train 的双 teacher 共识必须恰好两套不同 model/weights，绑定各自输出和最终 mask，并满足 IoU `>=0.90`、时序一致性 `>=0.85`。纯语义样本不要求事件标签，同时禁止夹带事件字段。
+- 验证方式：`.venv-export312\\Scripts\\python.exe -m py_compile ...` 通过；`test_build_public_v3_canonical_dataset.py` 2 tests passed；`test_sanpo_v3_dataset_controls.py` 7 tests passed，覆盖 420 帧六场景 fixture 全绿、blind/session 隔离、来源证据篡改、标签权威 split lock、双 teacher 阈值及纯语义事件标签走私拒绝。系统 Python 缺 Pillow，按项目既有 `.venv-export312` 环境完成验证。
+- 当前判断：本轮只改变本地 benchmark 数据治理和训练工具，不改变 Android 运行时、默认 YOLO11n、风险阈值或模型资产，版本保持 `v10.9.0` / `versionCode=37`，无需构建 APK。GuideTWSI/BDD100K 的官方数据下载仍受授权或登录约束，真实 420 帧 canonical 集尚未形成；总门禁保持 red，MobileNetV3 + LR-ASPP 不启动。
+
 ## 2026-07-11
 
 ### SANPO v3 训练前总门禁加固

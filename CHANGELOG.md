@@ -9,6 +9,8 @@
 
 ## Unreleased - SANPO v2 公开连续序列扩展验证
 
+- 公开数据 canonical builder 只接收 allow-list source adapter 和 SHA256 绑定的许可证、隐私、inventory 证据，直接传普通 manifest 不能进入 canonical 根；未知原生类别和未实现 mapper 一律拒绝。
+- 新增标签权威分层：dev/blind 只允许 `source_ground_truth`；train 额外允许可验证的程序化标签和恰好两名独立 teacher 的共识伪标签，并绑定模型权重、逐 teacher 输出、共识 mask 哈希及 IoU/时序阈值。纯语义样本不得携带风险事件标签。
 - 训练门禁：新增 SHA256-attested SANPO v3 总门禁。MobileNetV3 + LR-ASPP 训练入口只接受 canonical dataset root，先验证 300+120、四类掩码、hash、来源/隐私、train/dev/blind session 隔离和两个 `benchmark_only` blind session；报告非 green 时在 TensorFlow 导入前拒绝启动。该变更只影响本地 benchmark 训练工具，不改变默认 YOLO11n 或 app 版本。
 - 新增公开 SANPO session 发现、review profile、不可变 sequence clone 与多序列合并工具；原始 RGB/mask 继续只保留在 `test-artifacts.local`。
 - 新增连续稳定分割候选的单级晋升和反馈路径：仅适用于中心 `stairs` 或近场通用障碍，要求 `STABILITY_PROMOTED` 或 `MOTION_PROMOTED`，路沿仍不走普通障碍提醒路径。

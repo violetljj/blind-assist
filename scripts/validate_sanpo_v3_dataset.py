@@ -31,6 +31,13 @@ SCENE_BUCKETS = (
     "tactile_paving_occupied",
 )
 EVENT_PHASES = {"APPROACHING", "ALERTED", "PASSED"}
+LABEL_AUTHORITIES = {
+    "source_ground_truth",
+    "procedural_ground_truth",
+    "teacher_consensus_pseudo_label",
+}
+PSEUDO_LABEL_MIN_IOU = 0.90
+PSEUDO_LABEL_MIN_TEMPORAL_CONSISTENCY = 0.85
 
 
 def sha256_file(path: Path) -> str:
@@ -58,6 +65,62 @@ def row_session_id(row: dict[str, Any]) -> str:
     return str(row.get("session_id") or row.get("source", {}).get("session_id") or "").strip()
 
 
+def validate_label_authority(row: dict[str, Any], sample_id: str, split: str) -> list[str]:
+    """Validate label provenance without allowing pseudo labels into dev/blind."""
+    errors: list[str] = []
+    authority = str(row.get("label_authority", "")).strip()
+    provenance = row.get("label_provenance") if isinstance(row.get("label_provenance"), dict) else {}
+    if authority not in LABEL_AUTHORITIES:
+        return [f"{sample_id}: label_authority must be one of {sorted(LABEL_AUTHORITIES)}"]
+    if split in {"dev", "blind"} and authority != "source_ground_truth":
+        errors.append(f"{sample_id}: {split} accepts source_ground_truth only")
+    if authority == "source_ground_truth":
+        for field in ("source_mask_sha256", "mapped_mask_sha256", "mapping_sha256", "annotation_kind"):
+            if not str(provenance.get(field, "")).strip():
+                errors.append(f"{sample_id}: source_ground_truth missing label_provenance.{field}")
+        for field in ("source_mask_sha256", "mapped_mask_sha256", "mapping_sha256"):
+            if len(str(provenance.get(field, ""))) != 64:
+                errors.append(f"{sample_id}: label_provenance.{field} must be SHA256")
+        if provenance.get("mapped_mask_sha256") != row.get("semantic_mask_sha256"):
+            errors.append(f"{sample_id}: mapped source-ground-truth mask is not bound to semantic mask")
+    elif authority == "procedural_ground_truth":
+        for field in ("generator_id", "generator_code_sha256", "generator_config_sha256"):
+            value = str(provenance.get(field, "")).strip()
+            invalid = len(value) != 64 if field.endswith("sha256") else not value
+            if invalid:
+                errors.append(f"{sample_id}: procedural_ground_truth missing valid label_provenance.{field}")
+    else:
+        teachers = provenance.get("teachers")
+        if not isinstance(teachers, list) or len(teachers) != 2:
+            errors.append(f"{sample_id}: teacher consensus requires exactly two teachers")
+        else:
+            identities: set[tuple[str, str]] = set()
+            for index, teacher in enumerate(teachers):
+                if not isinstance(teacher, dict):
+                    errors.append(f"{sample_id}: teacher {index} must be an object")
+                    continue
+                model_id = str(teacher.get("model_id", "")).strip()
+                weights_sha = str(teacher.get("weights_sha256", "")).strip()
+                output_sha = str(teacher.get("output_sha256", "")).strip()
+                if not model_id or len(weights_sha) != 64 or len(output_sha) != 64:
+                    errors.append(f"{sample_id}: teacher {index} requires model_id and SHA256-bound weights/output")
+                identities.add((model_id, weights_sha))
+            if len(identities) != 2:
+                errors.append(f"{sample_id}: teacher consensus requires two independent model identities")
+        try:
+            agreement_iou = float(provenance.get("agreement_iou", 0.0))
+            temporal_consistency = float(provenance.get("temporal_consistency", 0.0))
+        except (TypeError, ValueError):
+            agreement_iou = temporal_consistency = -1.0
+        if agreement_iou < PSEUDO_LABEL_MIN_IOU:
+            errors.append(f"{sample_id}: teacher consensus IoU is below {PSEUDO_LABEL_MIN_IOU}")
+        if temporal_consistency < PSEUDO_LABEL_MIN_TEMPORAL_CONSISTENCY:
+            errors.append(f"{sample_id}: temporal consistency is below {PSEUDO_LABEL_MIN_TEMPORAL_CONSISTENCY}")
+        if provenance.get("consensus_mask_sha256") != row.get("semantic_mask_sha256"):
+            errors.append(f"{sample_id}: consensus mask SHA256 is not bound to semantic mask")
+    return errors
+
+
 def validate_rows(rows: list[dict[str, Any]], root: Path, expected_split: set[str]) -> tuple[list[str], dict[str, Any]]:
     errors: list[str] = []
     sequence_rows: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -74,6 +137,7 @@ def validate_rows(rows: list[dict[str, Any]], root: Path, expected_split: set[st
         split = required_string(row, "split", sample_id, errors)
         if split not in expected_split or split not in SPLITS:
             errors.append(f"{sample_id}: split {split!r} is not allowed in this manifest")
+        errors.extend(validate_label_authority(row, sample_id, split))
         session_id = row_session_id(row)
         if not session_id:
             errors.append(f"{sample_id}: missing session_id (direct or source.session_id)")
@@ -84,12 +148,16 @@ def validate_rows(rows: list[dict[str, Any]], root: Path, expected_split: set[st
         bucket = required_string(row, "scene_bucket", sample_id, errors)
         if bucket not in SCENE_BUCKETS:
             errors.append(f"{sample_id}: unsupported scene_bucket {bucket!r}")
-        if not required_string(row, "risk_event_id", sample_id, errors):
-            pass
-        if row.get("expected_event_phase") not in EVENT_PHASES:
-            errors.append(f"{sample_id}: expected_event_phase must be one of {sorted(EVENT_PHASES)}")
-        if not isinstance(row.get("expected_should_alert"), bool):
-            errors.append(f"{sample_id}: expected_should_alert must be boolean")
+        event_fields = ("risk_event_id", "expected_event_phase", "expected_should_alert")
+        if row.get("benchmark_kind") == "semantic_segmentation_only":
+            if any(row.get(field) not in (None, "") for field in event_fields):
+                errors.append(f"{sample_id}: semantic_segmentation_only must not carry risk-event labels")
+        else:
+            required_string(row, "risk_event_id", sample_id, errors)
+            if row.get("expected_event_phase") not in EVENT_PHASES:
+                errors.append(f"{sample_id}: expected_event_phase must be one of {sorted(EVENT_PHASES)}")
+            if not isinstance(row.get("expected_should_alert"), bool):
+                errors.append(f"{sample_id}: expected_should_alert must be boolean")
         source = row.get("source") if isinstance(row.get("source"), dict) else {}
         for field in ("dataset", "license", "license_url", "privacy_review_status"):
             if not str(source.get(field, "")).strip():

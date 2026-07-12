@@ -18,26 +18,22 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows), encoding="utf-8")
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source-manifest", type=Path, required=True, help="Reviewed source metadata; do not pass this path to training.")
-    parser.add_argument("--dataset-root", type=Path, required=True)
-    args = parser.parse_args()
-    source = args.source_manifest.resolve()
-    root = args.dataset_root.resolve()
+def prepare_views(source: Path, root: Path) -> tuple[int, int]:
+    source = source.resolve()
+    root = root.resolve()
     training_path = root / "training_manifest.jsonl"
     blind_path = root / "blind_holdout" / "manifest.jsonl"
     if training_path.exists() or blind_path.exists():
-        raise SystemExit("refusing to overwrite existing v3 manifest views")
+        raise ValueError("refusing to overwrite existing v3 manifest views")
     rows = load_jsonl(source)
     training = [row for row in rows if row.get("split") in {"train", "dev"}]
     blind = [row for row in rows if row.get("split") == "blind"]
     unexpected = [row.get("id") for row in rows if row.get("split") not in {"train", "dev", "blind"}]
     if unexpected or not training or not blind:
-        raise SystemExit("source manifest must contain non-empty train/dev and blind rows only")
+        raise ValueError("source manifest must contain non-empty train/dev and blind rows only")
     blind_sessions = sorted({str(row.get("session_id") or row.get("source", {}).get("session_id") or "").strip() for row in blind})
     if len(blind_sessions) != 2 or not all(blind_sessions):
-        raise SystemExit("v3 requires exactly two non-empty blind source sessions before creating views")
+        raise ValueError("v3 requires exactly two non-empty blind source sessions before creating views")
     write_jsonl(training_path, training)
     write_jsonl(blind_path, blind)
     policy = {
@@ -54,7 +50,19 @@ def main() -> int:
         "threshold_selection_contract": "Threshold selection receives train/dev only and must never inspect blind_holdout paths, labels, or sessions.",
     }
     (root / "access_policy.json").write_text(json.dumps(policy, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"v3_views_ok=true training_rows={len(training)} blind_rows={len(blind)} root={root}")
+    return len(training), len(blind)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source-manifest", type=Path, required=True, help="Reviewed source metadata; do not pass this path to training.")
+    parser.add_argument("--dataset-root", type=Path, required=True)
+    args = parser.parse_args()
+    try:
+        training_count, blind_count = prepare_views(args.source_manifest, args.dataset_root)
+    except ValueError as error:
+        raise SystemExit(str(error)) from error
+    print(f"v3_views_ok=true training_rows={training_count} blind_rows={blind_count} root={args.dataset_root.resolve()}")
     return 0
 
 

@@ -45,6 +45,7 @@ class Record:
     masks: dict[str, Path]
     semantic_mask_path: Path | None
     scene_bucket: str | None
+    label_authority: str
 
 
 def project_root() -> Path:
@@ -136,6 +137,11 @@ def load_records(manifest: Path) -> list[Record]:
             )
         if split not in ALLOWED_SPLITS:
             raise ValueError(f"{sample_id}: split must be one of {sorted(ALLOWED_SPLITS)}, got {split!r}")
+        label_authority = str(row.get("label_authority", "")).strip()
+        if label_authority not in training_gate.validator.LABEL_AUTHORITIES:
+            raise ValueError(f"{sample_id}: missing or unsupported label_authority")
+        if split == "dev" and label_authority != "source_ground_truth":
+            raise ValueError(f"{sample_id}: dev accepts source_ground_truth only")
         session_id = session_for(row)
         earlier = sessions.setdefault(session_id, split)
         if earlier != split:
@@ -156,6 +162,7 @@ def load_records(manifest: Path) -> list[Record]:
                 masks=masks,
                 semantic_mask_path=semantic_mask_path,
                 scene_bucket=row.get("scene_bucket") if isinstance(row.get("scene_bucket"), str) else None,
+                label_authority=label_authority,
             )
         )
     if not records:

@@ -27,6 +27,13 @@ ALLOWED_PRIVACY_STATUSES = {
     "public_dataset_no_personal_data",
     "automated_privacy_clear",
 }
+ATTESTATION_SCHEMA = "blindassist_v3_source_attestation_v1"
+ALLOWED_SOURCE_ADAPTERS = {
+    "sanpo_v0",
+    "bdd100k_v1",
+    "guidetwsi_v1",
+    "teacher_consensus_v1",
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -81,6 +88,63 @@ def asset_hashes(root: Path, rows: list[dict[str, Any]]) -> tuple[dict[str, str]
     return dict(sorted(hashes.items())), errors
 
 
+def verify_bound_file(root: Path, item: dict[str, Any], prefix: str, errors: list[str]) -> None:
+    relative = str(item.get(f"{prefix}_path", "")).strip()
+    expected = str(item.get(f"{prefix}_sha256", "")).strip()
+    if not relative or len(expected) != 64:
+        errors.append(f"source attestation missing {prefix}_path/{prefix}_sha256")
+        return
+    path = (root / relative).resolve()
+    try:
+        path.relative_to(root)
+    except ValueError:
+        errors.append(f"source attestation {prefix} escapes dataset root")
+        return
+    if not path.is_file() or sha256_file(path) != expected:
+        errors.append(f"source attestation {prefix} file is missing or SHA256 differs")
+
+
+def source_attestation_errors(root: Path, rows: list[dict[str, Any]], payload: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if payload.get("schema") != ATTESTATION_SCHEMA:
+        errors.append(f"source_attestation.json schema must be {ATTESTATION_SCHEMA}")
+    sources = payload.get("sources")
+    if not isinstance(sources, list) or not sources:
+        return errors + ["source_attestation.json requires a non-empty sources list"]
+    by_id: dict[str, dict[str, Any]] = {}
+    for item in sources:
+        if not isinstance(item, dict):
+            errors.append("source attestation entries must be objects")
+            continue
+        source_id = str(item.get("source_id", "")).strip()
+        adapter_id = str(item.get("adapter_id", "")).strip()
+        if not source_id or source_id in by_id:
+            errors.append(f"duplicate or missing source attestation id: {source_id!r}")
+            continue
+        by_id[source_id] = item
+        if adapter_id not in ALLOWED_SOURCE_ADAPTERS:
+            errors.append(f"{source_id}: adapter_id {adapter_id!r} is not allow-listed")
+        for field in ("dataset", "dataset_version", "license", "license_url", "privacy_review_status"):
+            if not str(item.get(field, "")).strip():
+                errors.append(f"{source_id}: missing attestation {field}")
+        if item.get("privacy_review_status") not in ALLOWED_PRIVACY_STATUSES:
+            errors.append(f"{source_id}: attestation privacy status is not allowed")
+        for prefix in ("license_evidence", "privacy_evidence", "inventory"):
+            verify_bound_file(root, item, prefix, errors)
+    for row in rows:
+        sample_id = str(row.get("id", "<unknown>"))
+        source = row.get("source") if isinstance(row.get("source"), dict) else {}
+        source_id = str(source.get("source_id", "")).strip()
+        receipt = by_id.get(source_id)
+        if receipt is None:
+            errors.append(f"{sample_id}: source.source_id is missing from source attestation")
+            continue
+        for field in ("dataset", "license", "license_url", "privacy_review_status"):
+            if source.get(field) != receipt.get(field):
+                errors.append(f"{sample_id}: source.{field} differs from attested receipt")
+    return errors
+
+
 def policy_errors(policy: dict[str, Any], train_rows: list[dict[str, Any]], blind_rows: list[dict[str, Any]]) -> list[str]:
     errors: list[str] = []
     if policy.get("format") != "blindassist_sanpo_v3_access_policy_v2":
@@ -113,9 +177,10 @@ def build_report(dataset_root: Path) -> dict[str, Any]:
     train_path = root / CANONICAL_TRAINING_MANIFEST
     blind_path = root / CANONICAL_BLIND_MANIFEST
     policy_path = root / "access_policy.json"
+    attestation_path = root / "source_attestation.json"
     errors: list[str] = []
     checks: list[dict[str, Any]] = []
-    required = [train_path, blind_path, policy_path]
+    required = [train_path, blind_path, policy_path, attestation_path]
     missing = [str(path.relative_to(root)) for path in required if not path.is_file()]
     if missing:
         errors.extend(f"missing required gate input: {item}" for item in missing)
@@ -130,9 +195,10 @@ def build_report(dataset_root: Path) -> dict[str, Any]:
         train_rows = validator.load_jsonl(train_path)
         blind_rows = validator.load_jsonl(blind_path)
         policy = json.loads(policy_path.read_text(encoding="utf-8"))
+        attestation = json.loads(attestation_path.read_text(encoding="utf-8"))
     except (OSError, ValueError, json.JSONDecodeError) as error:
         errors.append(f"failed to load canonical gate inputs: {error}")
-        train_rows, blind_rows, policy = [], [], {}
+        train_rows, blind_rows, policy, attestation = [], [], {}, {}
     checks.append(check("canonical_inputs", not errors, "canonical manifests and access policy loaded" if not errors else errors[-1]))
     if not errors:
         row_errors, train_summary = validator.validate_rows(train_rows, root, {"train", "dev"})
@@ -141,13 +207,16 @@ def build_report(dataset_root: Path) -> dict[str, Any]:
         isolation_errors = validator.validate_access_lock(root, train_rows, blind_rows)
         policy_lock_errors = policy_errors(policy, train_rows, blind_rows)
         provenance_errors = privacy_and_source_errors(train_rows + blind_rows)
+        attestation_errors = source_attestation_errors(root, train_rows + blind_rows, attestation)
         hashes, hash_errors = asset_hashes(root, train_rows + blind_rows)
-        errors.extend(row_errors + blind_errors + coverage_errors + isolation_errors + policy_lock_errors + provenance_errors + hash_errors)
+        errors.extend(row_errors + blind_errors + coverage_errors + isolation_errors + policy_lock_errors + provenance_errors + attestation_errors + hash_errors)
         checks.extend([
             check("300_train_dev_plus_120_blind", not coverage_errors, "requires six 50-frame train/dev sequences and two 60-frame blind sequences"),
             check("four_class_semantic_masks", not (row_errors + blind_errors) and not coverage_errors, "all masks are dimension-matched 0..3 IDs and all four classes occur in train/dev"),
             check("asset_sha256", not hash_errors, f"{len(hashes)} image/mask hashes match manifest declarations"),
             check("source_and_privacy", not provenance_errors, "source license fields and allowed privacy status are present"),
+            check("source_attestation", not attestation_errors, "source receipts, evidence and inventories are SHA256-bound"),
+            check("label_authority", not (row_errors + blind_errors), "train authority is explicit; dev/blind are source-ground-truth only"),
             check("session_isolation", not isolation_errors and not policy_lock_errors, "train/dev and exactly two benchmark_only blind sessions are disjoint"),
         ])
     else:
