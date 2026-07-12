@@ -4,6 +4,15 @@
 
 ## 2026-07-13
 
+### SANPO 官方连续像素掩码新增获取
+- 时间：2026-07-13 01:30:00 +08:00
+- 执行者：violjjet
+- 类型：公开数据获取 / 来源完整性 / 连续像素掩码
+- 修改范围：忽略目录 `test-artifacts.local/datasets/sanpo-v3-source-*-20260713`、README、CHANGELOG。
+- 修改内容：从 SANPO 官方公开 GCS 获取三个不同 train session：`k7SM64BWbyyZThK-T5fr-8lJQcvGQ8Av` 从源帧 392 开始、`rjYpw8awPfgy-JURa4FppspZoYloY-CH` 从 137 开始、`_UTPXBuzIizvDtKewwJIiK77VZU-h_cg` 从 202 开始；均按官方 15 FPS 到项目 10 FPS 规则生成连续 50 帧 RGB + panoptic mask。第三条首次在第 45 帧遇到 TLS EOF，利用下载器已有的本地文件复用和官方 MD5 复核能力断点补齐。
+- 验证方式：三条 source package 均为 50 张 RGB、50 张 mask、50 行 `manifest.draft.jsonl`，图片及 mask 各自均有 50 个唯一 SHA256；`qa/manifest_validation.json` 的 `ok=true`。三份验证报告 SHA256 分别为 `a97574541b0fec97bea19a09b6931faaecea5c931b2059179af68fd074b7dc98`、`435d59d10eec80f3e1fa702e3bb10d35dfc3271bbd29ec99b6a78a17ea4c231e`、`c6924edbb94f8094e2313b1d3be9307d09141f70db4b84dcee0939456e262af1`。
+- 当前判断：新增 150 帧显著补充可通行面、边界/台阶和通用障碍来源，但 SANPO taxonomy 不含项目所需的两类盲道语义，且低照场景仍未闭合；这些数据只作为 SHA 可审计 source package，不能降低六场景门禁或触发训练。本轮不改变 App 版本、运行时和模型资产。
+
 ### 公开来源 canonical 构建与标签权威分层
 - 时间：2026-07-13 00:00:00 +08:00
 - 执行者：violjjet
