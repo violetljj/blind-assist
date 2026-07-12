@@ -25,6 +25,7 @@ import numpy as np
 from PIL import Image
 
 import sanpo_training_gate as training_gate
+import sanpo_segmentation_model
 
 
 CLASS_NAMES = ("walkable", "boundary_step_curb", "obstacle", "unknown_nonwalkable")
@@ -140,8 +141,15 @@ def load_records(manifest: Path) -> list[Record]:
         label_authority = str(row.get("label_authority", "")).strip()
         if label_authority not in training_gate.validator.LABEL_AUTHORITIES:
             raise ValueError(f"{sample_id}: missing or unsupported label_authority")
-        if split == "dev" and label_authority != "source_ground_truth":
-            raise ValueError(f"{sample_id}: dev accepts source_ground_truth only")
+        if split == "dev":
+            if label_authority == "teacher_consensus_pseudo_label":
+                raise ValueError(f"{sample_id}: dev forbids teacher/pseudo labels")
+            if label_authority == "procedural_ground_truth":
+                authority_errors = training_gate.validator.validate_label_authority(
+                    row, sample_id, split, manifest.parent,
+                )
+                if authority_errors:
+                    raise ValueError(f"{sample_id}: invalid procedural dev label: {'; '.join(authority_errors)}")
         session_id = session_for(row)
         earlier = sessions.setdefault(session_id, split)
         if earlier != split:
@@ -251,43 +259,8 @@ def make_dataset(tf: Any, records: Sequence[Record], input_size: int, batch_size
 
 
 def build_mobilenetv3_lraspp(tf: Any, input_size: int, num_classes: int = len(CLASS_NAMES)) -> Any:
-    """MobileNetV3Small encoder with a Lite R-ASPP-style context decoder."""
-    inputs = tf.keras.Input(shape=(input_size, input_size, 3), dtype=tf.float32, name="rgb")
-    normalized = tf.keras.layers.Rescaling(1.0 / 255.0, name="rgb_0_255_to_unit")(inputs)
-    backbone = tf.keras.applications.MobileNetV3Small(
-        input_tensor=normalized,
-        include_top=False,
-        weights=None,
-        alpha=0.75,
-        minimalistic=False,
-    )
-    candidates: dict[int, Any] = {}
-    for layer in backbone.layers:
-        shape = layer.output.shape
-        if len(shape) == 4 and shape[1] is not None and shape[1] == shape[2]:
-            candidates[int(shape[1])] = layer.output
-    high_size = max(size for size in candidates if size <= input_size // 16)
-    low_size = max(size for size in candidates if size <= input_size // 8)
-    high = candidates[high_size]
-    low = candidates[low_size]
-    context = tf.keras.layers.GlobalAveragePooling2D(keepdims=True, name="lraspp_context_pool")(high)
-    context = tf.keras.layers.Conv2D(96, 1, use_bias=False, name="lraspp_context_project")(context)
-    context = tf.keras.layers.BatchNormalization(name="lraspp_context_bn")(context)
-    context = tf.keras.layers.ReLU(max_value=6.0, name="lraspp_context_relu")(context)
-    context = tf.keras.layers.UpSampling2D(size=(high_size, high_size), interpolation="nearest", name="lraspp_context_up")(context)
-    high = tf.keras.layers.Conv2D(96, 1, use_bias=False, name="lraspp_high_project")(high)
-    high = tf.keras.layers.BatchNormalization(name="lraspp_high_bn")(high)
-    high = tf.keras.layers.ReLU(max_value=6.0, name="lraspp_high_relu")(high)
-    high = tf.keras.layers.Multiply(name="lraspp_context_gate")([high, context])
-    high = tf.keras.layers.UpSampling2D(size=(low_size // high_size, low_size // high_size), interpolation="nearest", name="lraspp_high_up")(high)
-    low = tf.keras.layers.Conv2D(32, 1, use_bias=False, name="lraspp_low_project")(low)
-    low = tf.keras.layers.BatchNormalization(name="lraspp_low_bn")(low)
-    low = tf.keras.layers.ReLU(max_value=6.0, name="lraspp_low_relu")(low)
-    fused = tf.keras.layers.Concatenate(name="lraspp_fuse")([high, low])
-    logits = tf.keras.layers.Conv2D(num_classes, 1, name="semantic_logits")(fused)
-    scale = input_size // low_size
-    logits = tf.keras.layers.UpSampling2D(size=(scale, scale), interpolation="bilinear", name="semantic_logits_256")(logits)
-    return tf.keras.Model(inputs=inputs, outputs=logits, name="mobilenetv3_lraspp_4class")
+    """Compatibility wrapper around the backend-neutral authoritative graph."""
+    return sanpo_segmentation_model.build_mobilenetv3_lraspp(tf.keras, input_size, num_classes)
 
 
 def confusion_and_metrics(predictions: Iterable[np.ndarray], targets: Iterable[np.ndarray]) -> dict[str, Any]:
@@ -385,15 +358,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     manifest = dataset_root / training_gate.CANONICAL_TRAINING_MANIFEST
     output = resolve(root, args.output)
     report_dir = resolve(root, args.report_dir)
-    gate_report_path = report_dir / "training_gate_report.json"
+    gate_report_path = resolve(dataset_root, args.training_gate_report).resolve()
     if output.resolve().is_relative_to((root / "app" / "src" / "main" / "assets").resolve()):
         raise ValueError("Refusing production app assets: this candidate is benchmark-only")
-    gate_report = training_gate.run_gate(dataset_root, gate_report_path)
-    if gate_report["overall_status"] != "green" or not gate_report["training_authorized"]:
-        raise ValueError(
-            "Training gate is red; MobileNetV3 + LR-ASPP must not start. "
-            f"Read {gate_report_path} and its SHA256 sidecar."
-        )
+    gate_report = training_gate.consume_training_authorization(dataset_root, gate_report_path)
     records = load_records(manifest)
     train_records = records_by_split(records, "train")
     dev_records = records_by_split(records, "dev")
@@ -403,14 +371,22 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 
     set_determinism(tf, args.seed)
     model = build_mobilenetv3_lraspp(tf, args.input_size)
+    if args.import_weights:
+        weights_path = resolve(root, args.import_weights).resolve()
+        if not weights_path.is_file():
+            raise FileNotFoundError(f"Imported Keras weights not found: {weights_path}")
+        model.load_weights(weights_path)
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=args.learning_rate),
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         metrics=[tf.keras.metrics.SparseCategoricalAccuracy(name="pixel_accuracy")],
     )
-    train_data = make_dataset(tf, train_records, args.input_size, args.batch_size, shuffle=True, seed=args.seed)
-    dev_data = make_dataset(tf, dev_records, args.input_size, args.batch_size, shuffle=False, seed=args.seed)
-    history = model.fit(train_data, validation_data=dev_data, epochs=args.epochs, verbose=2)
+    if args.export_only:
+        history_payload: dict[str, list[Any]] = {}
+    else:
+        train_data = make_dataset(tf, train_records, args.input_size, args.batch_size, shuffle=True, seed=args.seed)
+        dev_data = make_dataset(tf, dev_records, args.input_size, args.batch_size, shuffle=False, seed=args.seed)
+        history_payload = model.fit(train_data, validation_data=dev_data, epochs=args.epochs, verbose=2).history
     dev_metrics = evaluate_model(model, dev_records, args.input_size, args.batch_size)
     export_full_int8(tf, model, train_records, output, args.input_size, args.representative_samples)
     tflite_contract = validate_int8_tflite(tf, output, args.input_size)
@@ -431,7 +407,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "session_counts": {"train": len({item.session_id for item in train_records}), "dev": len({item.session_id for item in dev_records})},
         "scene_coverage": scene_coverage(records),
         "class_pixel_counts": class_pixel_counts(records),
-        "training": {"epochs": args.epochs, "batch_size": args.batch_size, "learning_rate": args.learning_rate, "seed": args.seed, "history": history.history},
+        "training": {"epochs": 0 if args.export_only else args.epochs, "batch_size": args.batch_size, "learning_rate": args.learning_rate, "seed": args.seed, "history": history_payload, "import_weights": args.import_weights, "export_only": args.export_only},
         "dev_mask_metrics": dev_metrics,
         "tflite_contract": tflite_contract,
         "output": str(output),
@@ -445,6 +421,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Train/export a benchmark-only full-INT8 four-class MobileNetV3 + LR-ASPP candidate.")
     parser.add_argument("--dataset-root", required=True, help="Canonical v3 dataset root; the entrypoint accepts no arbitrary manifest.")
+    parser.add_argument("--training-gate-report", default="qa/training_gate_report.json")
     parser.add_argument("--output", default=DEFAULT_OUTPUT, help="Benchmark-only TFLite output; production app assets are rejected.")
     parser.add_argument("--report-dir", default=DEFAULT_REPORT)
     parser.add_argument("--input-size", type=int, default=INPUT_SIZE, choices=[INPUT_SIZE])
@@ -453,9 +430,13 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--learning-rate", type=float, default=1e-3)
     parser.add_argument("--representative-samples", type=int, default=100)
     parser.add_argument("--seed", type=int, default=20260711)
+    parser.add_argument("--import-weights", help="Backend-neutral Keras .weights.h5 produced by the torch trainer.")
+    parser.add_argument("--export-only", action="store_true", help="Skip fitting; requires --import-weights, then evaluate and export full INT8.")
     args = parser.parse_args(argv)
     if args.epochs <= 0 or args.batch_size <= 0 or args.learning_rate <= 0 or args.representative_samples <= 0:
         parser.error("epochs, batch-size, learning-rate and representative-samples must be positive")
+    if args.export_only and not args.import_weights:
+        parser.error("--export-only requires --import-weights")
     return args
 
 

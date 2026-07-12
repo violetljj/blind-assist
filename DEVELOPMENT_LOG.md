@@ -4,6 +4,24 @@
 
 ## 2026-07-13
 
+### GPU 利用率与 blind 训练隔离修正
+- 时间：2026-07-13 03:55:00 +08:00
+- 执行者：violjjet
+- 复核更正：此前 canonical green 和 GPU/TFLite 指标降级为 audit-only；source receipt inventory 逐资产绑定与程序化原始 Guide 图像/polygon 证据未闭合前，正式训练保持关闭。
+- 模型修正：LR-ASPP 高层分支原先误接 1/16 浅层，MobileNetV3 后半段未进入计算图；现连接 8×8 最深特征，参数量由 197,212 恢复为 670,588。GPU 入口增加可选 JIT、fit images/s、峰值显存遥测，并复用预载 dev 数组完成评估。
+- 性能验证：独立合成吞吐工具完全不读取数据集；RTX 5060 mixed-float16 的 batch 32/64/96/128 吞吐约 191/358/430/481 images/s，峰值显存约 1.46/2.88/4.32/5.74 GB。默认 batch 设为 64，在吞吐与显存余量间取稳健值。
+- 隔离修正：独立门禁仍负责读取 blind 并生成 SHA256 报告；GPU/TF 训练入口只验证预生成报告、固定 training manifest 与 train/dev 资产哈希。移除 blind 目录后消费授权测试通过；v3 controls 9 tests、training/export 10 tests、Python compile 通过。版本保持 `v10.9.0` / `versionCode=37`，不改变 App 或生产模型资产。
+
+### SANPO v3 canonical 全绿、Windows GPU 训练与否决
+- 时间：2026-07-13 03:40:00 +08:00
+- 执行者：violjjet
+- 类型：公开数据治理 / 程序化 GT / GPU 训练 / 全 INT8 导出 / 自动化测试
+- 修改范围：公开 source recipe、远程 ZIP Range 下载器、程序化盲道占用生成器、canonical builder、label authority/总门禁、backend-neutral 模型定义、Keras Torch GPU 训练与 TensorFlow 导出入口及测试、README、CHANGELOG。
+- 修改内容：GuideTWSI Kaggle version 1 的 44,652,643,836 字节 ZIP64 通过 Range 读取中央目录并选择性提取；实际公开包缺少文档所述原始 depth、PNG mask、天气和 session 元数据，因此只保留离散 RGB+YOLO polygon 来源事实。盲道 GT 与不同 SANPO 连续障碍 GT 通过固定 seed/矩阵生成 tactile occupied/low-light 程序化序列；代码、配置、两份已 attested source mask、矩阵和输出全部 SHA256 绑定。dev/blind 允许严格 procedural GT 但继续拒绝 pseudo。六个 50 帧 train/dev 场景和两个不同 60 帧 blind session 构建为 canonical v3，总门禁全绿；assembly report SHA256 `e43619fbfb73226fc408baa4d04ae1cc3be9effe629cb0a451d8bf8adb0bd8d0`。
+- GPU 路线：Windows TensorFlow 2.19 是 CPU-only，改为隔离环境 PyTorch `2.11.0+cu130` + Keras `3.15.0` 在 RTX 5060 Laptop GPU 上训练，同一 backend-neutral Keras 图由 TensorFlow CPU 加载权重并导出 TFLite。修复 MobileNetV3 重复预处理，增加 ImageNet backbone、逆平方根频率权重、预载数据、batch 32、mixed precision 和 dev-loss early stopping。吞吐从约 26–52 秒/epoch 降至约 2 秒/epoch。
+- 最终结果：最佳权重 dev mIoU `0.3175`、pixel accuracy `0.5577`；walkable/obstacle/unknown IoU 约 `0.309/0.522/0.439`，boundary/curb IoU 约 `0.00038`。全 INT8 输入/输出为 `[1,256,256,3]` / `[1,256,256,4]`，TFLite 327,056 字节，SHA256 `88f0184d2671230c1f1f43192758689d286b530d7490e1d1ca0671f83b50b50c`；candidate report SHA256 `1ed9e10a95cd5ecbac51f6219e35bc32e19b26e7151b06d3c6c1b790b0060348`。结论 `do_not_replace_default_model`，不复制 App assets、不改变生产模型。
+- 验证方式：builder 4 tests、procedural generator 1 test、v3 controls 8 tests、training/export 10 tests 全部通过；Python compile 和 `git diff --check` 通过。版本保持 `v10.9.0` / `versionCode=37`，本轮仅改变 benchmark 数据/训练工具与候选工件，无需构建 APK。
+
 ### SANPO 官方连续像素掩码新增获取
 - 时间：2026-07-13 01:30:00 +08:00
 - 执行者：violjjet

@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 import shutil
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -91,6 +92,68 @@ def evidence_copy(source: Path, staging: Path, source_id: str, kind: str) -> tup
     return destination.relative_to(staging).as_posix(), sha256_file(destination)
 
 
+def copy_sha_bound_file(
+    package_root: Path, staging: Path, source_value: str, expected_sha: str, destination: Path,
+) -> tuple[str, str]:
+    """Copy one package-local file after verifying its declared SHA256."""
+    source = safe_source_path(package_root, source_value)
+    actual = sha256_file(source)
+    if len(expected_sha) != 64 or actual != expected_sha:
+        raise ValueError(f"source SHA256 mismatch: {source_value}")
+    output = staging / destination
+    output.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, output)
+    return destination.as_posix(), actual
+
+
+def copy_procedural_assets(
+    package_root: Path, staging: Path, source_row: dict[str, Any], sample_id: str, split: str,
+) -> tuple[str, str, dict[str, Any], str, str]:
+    """Import and path-rebind a fully reviewed procedural sample."""
+    if source_row.get("label_authority") != "procedural_ground_truth":
+        raise ValueError(f"{sample_id}: procedural adapter requires procedural_ground_truth")
+    provenance = deepcopy(source_row.get("label_provenance"))
+    if not isinstance(provenance, dict):
+        raise ValueError(f"{sample_id}: procedural adapter requires label_provenance")
+
+    image_source = safe_source_path(package_root, str(source_row["image_path"]))
+    image_rel = Path("images") / split / f"{sample_id}{image_source.suffix.lower()}"
+    image_path, image_sha = copy_sha_bound_file(
+        package_root, staging, str(source_row["image_path"]), str(source_row.get("image_sha256", "")), image_rel,
+    )
+    mask_rel = Path("semantic_masks") / split / f"{sample_id}.png"
+    mask_path, mask_sha = copy_sha_bound_file(
+        package_root, staging, str(source_row["semantic_mask_path"]),
+        str(source_row.get("semantic_mask_sha256", "")), mask_rel,
+    )
+
+    for key, sha_key, filename in (
+        ("generator_code_path", "generator_code_sha256", "generator.py"),
+        ("generator_config_path", "generator_config_sha256", "config.json"),
+    ):
+        rebound, _ = copy_sha_bound_file(
+            package_root, staging, str(provenance.get(key, "")), str(provenance.get(sha_key, "")),
+            Path("procedural_evidence") / sample_id / filename,
+        )
+        provenance[key] = rebound
+
+    inputs = provenance.get("source_masks")
+    if not isinstance(inputs, list) or len(inputs) != 2:
+        raise ValueError(f"{sample_id}: procedural adapter requires exactly two source masks")
+    for index, item in enumerate(inputs):
+        if not isinstance(item, dict):
+            raise ValueError(f"{sample_id}: procedural source mask {index} is not an object")
+        suffix = safe_source_path(package_root, str(item.get("path", ""))).suffix or ".png"
+        rebound, _ = copy_sha_bound_file(
+            package_root, staging, str(item.get("path", "")), str(item.get("sha256", "")),
+            Path("procedural_evidence") / sample_id / "source_masks" / f"{index}_{item.get('role', 'source')}{suffix}",
+        )
+        item["path"] = rebound
+    if provenance.get("output_mask_sha256") != mask_sha:
+        raise ValueError(f"{sample_id}: procedural output mask SHA256 mismatch")
+    return image_path, mask_path, provenance, image_sha, mask_sha
+
+
 def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[str, Any]:
     recipe = load_json(recipe_path.resolve())
     output = output_root.resolve()
@@ -125,7 +188,7 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
             source_id = str(sequence["source_id"])
             receipt = receipt_by_id[source_id]
             adapter_id = str(receipt["adapter_id"])
-            package_root = Path(receipt["package_root"]).resolve()
+            package_root = Path(sequence.get("package_root", receipt["package_root"])).resolve()
             source_rows = load_jsonl(safe_source_path(package_root, str(sequence["manifest_path"])))
             native_session = str(sequence["native_session_id"])
             selected = [item for item in source_rows if str(item.get("source", {}).get("session_id") or item.get("session_id")) == native_session]
@@ -138,18 +201,27 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
                 raise ValueError(f"duplicate native session in recipe: {global_session}")
             seen_sessions.add(global_session)
             sequence_id = f"{global_session}:{sequence['scene_bucket']}"
-            mapping_sha = sha256_json(ADAPTER_MAPS[adapter_id])
+            mapping_sha = sha256_json(ADAPTER_MAPS[adapter_id]) if adapter_id in ADAPTER_MAPS else ""
             for index, source_row in enumerate(selected):
                 sample_id = f"{source_id}_{native_session}_{index:06d}".replace("/", "_")
-                image_source = safe_source_path(package_root, str(source_row["image_path"]))
-                mask_value = source_row.get("source_mask_path") or f"source_masks/test/{source_row['id']}.png"
-                mask_source = safe_source_path(package_root, str(mask_value))
-                image_rel = Path("images") / str(sequence["split"]) / f"{sample_id}{image_source.suffix.lower()}"
-                mask_rel = Path("semantic_masks") / str(sequence["split"]) / f"{sample_id}.png"
-                image_dest, mask_dest = staging / image_rel, staging / mask_rel
-                image_dest.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(image_source, image_dest)
-                source_mask_sha, mapped_mask_sha = remap_mask(mask_source, mask_dest, adapter_id)
+                if adapter_id == "procedural_tactile_v1":
+                    image_value, mask_value, label_provenance, image_sha, mapped_mask_sha = copy_procedural_assets(
+                        package_root, staging, source_row, sample_id, str(sequence["split"]),
+                    )
+                else:
+                    image_source = safe_source_path(package_root, str(source_row["image_path"]))
+                    source_mask_value = source_row.get("source_mask_path") or f"source_masks/test/{source_row['id']}.png"
+                    mask_source = safe_source_path(package_root, str(source_mask_value))
+                    image_rel = Path("images") / str(sequence["split"]) / f"{sample_id}{image_source.suffix.lower()}"
+                    mask_rel = Path("semantic_masks") / str(sequence["split"]) / f"{sample_id}.png"
+                    image_dest, mask_dest = staging / image_rel, staging / mask_rel
+                    image_dest.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(image_source, image_dest)
+                    source_mask_sha, mapped_mask_sha = remap_mask(mask_source, mask_dest, adapter_id)
+                    image_value, mask_value, image_sha = image_rel.as_posix(), mask_rel.as_posix(), sha256_file(image_dest)
+                    label_provenance = {"annotation_kind": "pixel_panoptic_taxonomy_map",
+                        "source_mask_sha256": source_mask_sha, "mapped_mask_sha256": mapped_mask_sha,
+                        "mapping_sha256": mapping_sha}
                 source = {
                     "source_id": source_id,
                     "session_id": global_session,
@@ -159,11 +231,11 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
                 rows.append({
                     "id": sample_id, "split": sequence["split"], "session_id": global_session,
                     "sequence_id": sequence_id, "frame_index": index, "scene_bucket": sequence["scene_bucket"],
-                    "benchmark_kind": "semantic_segmentation_only", "image_path": image_rel.as_posix(),
-                    "semantic_mask_path": mask_rel.as_posix(), "image_sha256": sha256_file(image_dest),
-                    "semantic_mask_sha256": mapped_mask_sha, "label_authority": "source_ground_truth",
-                    "label_provenance": {"annotation_kind": "pixel_panoptic_taxonomy_map", "source_mask_sha256": source_mask_sha,
-                        "mapped_mask_sha256": mapped_mask_sha, "mapping_sha256": mapping_sha},
+                    "benchmark_kind": "semantic_segmentation_only", "image_path": image_value,
+                    "semantic_mask_path": mask_value, "image_sha256": image_sha,
+                    "semantic_mask_sha256": mapped_mask_sha,
+                    "label_authority": "procedural_ground_truth" if adapter_id == "procedural_tactile_v1" else "source_ground_truth",
+                    "label_provenance": label_provenance,
                     "source": source,
                 })
         manifest = staging / "reviewed-source-manifest.jsonl"

@@ -57,6 +57,53 @@ class SegmentationCandidateToolTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "session leakage"):
                 candidate.load_records(self.write_manifest(root, [train, dev]))
 
+    def test_dev_accepts_only_fully_bound_procedural_labels_and_rejects_pseudo(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            train = self.write_record(root, "train", "train", "session_train")
+            dev = self.write_record(root, "dev", "dev", "session_dev", 2)
+            semantic = root / "masks" / "dev_semantic.png"
+            Image.fromarray(np.full((8, 8), 2, dtype=np.uint8), mode="L").save(semantic)
+            dev.pop("semantic_mask_paths")
+            dev["semantic_mask_path"] = semantic.relative_to(root).as_posix()
+            dev["semantic_mask_sha256"] = candidate.training_gate.sha256_file(semantic)
+            evidence = root / "procedural_evidence"
+            evidence.mkdir()
+            tactile = evidence / "tactile.png"
+            obstacle = evidence / "obstacle.png"
+            code = evidence / "generator.py"
+            config = evidence / "config.json"
+            Image.new("L", (8, 8), 1).save(tactile)
+            Image.new("L", (8, 8), 2).save(obstacle)
+            code.write_text("# tactile_occupied_compositor_v1\n", encoding="utf-8")
+            config.write_text('{"version":1}\n', encoding="utf-8")
+            matrix = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+            dev["label_authority"] = "procedural_ground_truth"
+            dev["label_provenance"] = {
+                "schema": candidate.training_gate.validator.PROCEDURAL_PROVENANCE_SCHEMA,
+                "generator_id": "tactile_occupied_compositor_v1",
+                "generator_code_path": code.relative_to(root).as_posix(),
+                "generator_code_sha256": candidate.training_gate.sha256_file(code),
+                "generator_config_path": config.relative_to(root).as_posix(),
+                "generator_config_sha256": candidate.training_gate.sha256_file(config),
+                "seed": 913,
+                "transform_matrix": matrix,
+                "transform_sha256": candidate.training_gate.validator._canonical_json_sha256(matrix),
+                "source_masks": [
+                    {"role": "tactile_ground_truth", "source_id": "guidetwsi_fixture", "path": tactile.relative_to(root).as_posix(), "sha256": candidate.training_gate.sha256_file(tactile)},
+                    {"role": "obstacle_ground_truth", "source_id": "sanpo_fixture", "path": obstacle.relative_to(root).as_posix(), "sha256": candidate.training_gate.sha256_file(obstacle)},
+                ],
+                "output_mask_sha256": dev["semantic_mask_sha256"],
+            }
+            records = candidate.load_records(self.write_manifest(root, [train, dev]))
+            self.assertEqual("procedural_ground_truth", records[1].label_authority)
+            dev["label_provenance"]["generator_config_sha256"] = "0" * 64
+            with self.assertRaisesRegex(ValueError, "invalid procedural dev label"):
+                candidate.load_records(self.write_manifest(root, [train, dev]))
+            dev["label_authority"] = "teacher_consensus_pseudo_label"
+            with self.assertRaisesRegex(ValueError, "forbids teacher/pseudo"):
+                candidate.load_records(self.write_manifest(root, [train, dev]))
+
     def test_mask_contract_requires_full_non_overlapping_four_class_partition(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -98,6 +145,13 @@ class SegmentationCandidateToolTest(unittest.TestCase):
             args = candidate.parse_args(["--dataset-root", str(root), "--output", "app/src/main/assets/not_allowed.tflite"])
             with self.assertRaisesRegex(ValueError, "production app assets"):
                 candidate.run(args)
+
+    def test_export_only_requires_imported_weights(self) -> None:
+        with self.assertRaises(SystemExit):
+            candidate.parse_args(["--dataset-root", "fixture", "--export-only"])
+
+    def test_authoritative_model_definition_is_delegated(self) -> None:
+        self.assertIsNotNone(candidate.sanpo_segmentation_model.build_mobilenetv3_lraspp)
 
     def test_tensorflow_builds_and_exports_full_int8_contract(self) -> None:
         try:

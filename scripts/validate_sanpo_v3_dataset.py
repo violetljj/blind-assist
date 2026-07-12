@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
@@ -38,6 +39,8 @@ LABEL_AUTHORITIES = {
 }
 PSEUDO_LABEL_MIN_IOU = 0.90
 PSEUDO_LABEL_MIN_TEMPORAL_CONSISTENCY = 0.85
+PROCEDURAL_PROVENANCE_SCHEMA = "blindassist_procedural_ground_truth_v1"
+PROCEDURAL_GENERATORS = {"tactile_occupied_compositor_v1"}
 
 
 def sha256_file(path: Path) -> str:
@@ -65,15 +68,43 @@ def row_session_id(row: dict[str, Any]) -> str:
     return str(row.get("session_id") or row.get("source", {}).get("session_id") or "").strip()
 
 
-def validate_label_authority(row: dict[str, Any], sample_id: str, split: str) -> list[str]:
+def _canonical_json_sha256(value: Any) -> str:
+    payload = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _validate_bound_provenance_file(
+    root: Path, provenance: dict[str, Any], path_field: str, sha_field: str,
+    sample_id: str, errors: list[str],
+) -> None:
+    relative = str(provenance.get(path_field, "")).strip()
+    expected_sha = str(provenance.get(sha_field, "")).strip()
+    if not relative or len(expected_sha) != 64:
+        errors.append(f"{sample_id}: procedural_ground_truth requires {path_field} and SHA256-bound {sha_field}")
+        return
+    path = (root / relative).resolve()
+    try:
+        path.relative_to(root)
+    except ValueError:
+        errors.append(f"{sample_id}: procedural provenance path escapes dataset root: {relative}")
+        return
+    if not path.is_file():
+        errors.append(f"{sample_id}: missing procedural provenance file: {relative}")
+    elif sha256_file(path) != expected_sha:
+        errors.append(f"{sample_id}: procedural provenance SHA256 mismatch: {relative}")
+
+
+def validate_label_authority(
+    row: dict[str, Any], sample_id: str, split: str, root: Path | None = None,
+) -> list[str]:
     """Validate label provenance without allowing pseudo labels into dev/blind."""
     errors: list[str] = []
     authority = str(row.get("label_authority", "")).strip()
     provenance = row.get("label_provenance") if isinstance(row.get("label_provenance"), dict) else {}
     if authority not in LABEL_AUTHORITIES:
         return [f"{sample_id}: label_authority must be one of {sorted(LABEL_AUTHORITIES)}"]
-    if split in {"dev", "blind"} and authority != "source_ground_truth":
-        errors.append(f"{sample_id}: {split} accepts source_ground_truth only")
+    if split in {"dev", "blind"} and authority == "teacher_consensus_pseudo_label":
+        errors.append(f"{sample_id}: {split} forbids teacher/pseudo labels")
     if authority == "source_ground_truth":
         for field in ("source_mask_sha256", "mapped_mask_sha256", "mapping_sha256", "annotation_kind"):
             if not str(provenance.get(field, "")).strip():
@@ -84,11 +115,54 @@ def validate_label_authority(row: dict[str, Any], sample_id: str, split: str) ->
         if provenance.get("mapped_mask_sha256") != row.get("semantic_mask_sha256"):
             errors.append(f"{sample_id}: mapped source-ground-truth mask is not bound to semantic mask")
     elif authority == "procedural_ground_truth":
-        for field in ("generator_id", "generator_code_sha256", "generator_config_sha256"):
-            value = str(provenance.get(field, "")).strip()
-            invalid = len(value) != 64 if field.endswith("sha256") else not value
-            if invalid:
-                errors.append(f"{sample_id}: procedural_ground_truth missing valid label_provenance.{field}")
+        if provenance.get("schema") != PROCEDURAL_PROVENANCE_SCHEMA:
+            errors.append(f"{sample_id}: procedural_ground_truth requires schema {PROCEDURAL_PROVENANCE_SCHEMA}")
+        if provenance.get("generator_id") not in PROCEDURAL_GENERATORS:
+            errors.append(f"{sample_id}: procedural generator is not allow-listed")
+        if not isinstance(provenance.get("seed"), int) or isinstance(provenance.get("seed"), bool):
+            errors.append(f"{sample_id}: procedural_ground_truth seed must be an integer")
+        matrix = provenance.get("transform_matrix")
+        valid_matrix = (
+            isinstance(matrix, list) and len(matrix) == 3
+            and all(isinstance(row_values, list) and len(row_values) == 3 for row_values in matrix)
+            and all(isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+                    for row_values in matrix for value in row_values)
+        )
+        if not valid_matrix:
+            errors.append(f"{sample_id}: procedural_ground_truth requires a finite 3x3 transform_matrix")
+        elif provenance.get("transform_sha256") != _canonical_json_sha256(matrix):
+            errors.append(f"{sample_id}: transform_matrix SHA256 mismatch")
+        inputs = provenance.get("source_masks")
+        if not isinstance(inputs, list) or len(inputs) != 2:
+            errors.append(f"{sample_id}: procedural_ground_truth requires exactly two source GT masks")
+        else:
+            roles = {str(item.get("role", "")) for item in inputs if isinstance(item, dict)}
+            if roles != {"tactile_ground_truth", "obstacle_ground_truth"}:
+                errors.append(f"{sample_id}: procedural source masks require tactile and obstacle GT roles")
+            source_ids = {str(item.get("source_id", "")).strip() for item in inputs if isinstance(item, dict)}
+            if len(source_ids) != 2 or "" in source_ids:
+                errors.append(f"{sample_id}: procedural source GT masks require two distinct attested source_ids")
+            identities = {(str(item.get("path", "")), str(item.get("sha256", "")))
+                          for item in inputs if isinstance(item, dict)}
+            if len(identities) != 2:
+                errors.append(f"{sample_id}: procedural source GT masks must be distinct")
+            if root is not None:
+                for index, item in enumerate(inputs):
+                    if not isinstance(item, dict):
+                        errors.append(f"{sample_id}: procedural source mask {index} must be an object")
+                        continue
+                    _validate_bound_provenance_file(
+                        root, item, "path", "sha256", sample_id, errors,
+                    )
+        if provenance.get("output_mask_sha256") != row.get("semantic_mask_sha256"):
+            errors.append(f"{sample_id}: procedural output mask is not bound to semantic mask")
+        if root is not None:
+            _validate_bound_provenance_file(
+                root, provenance, "generator_code_path", "generator_code_sha256", sample_id, errors,
+            )
+            _validate_bound_provenance_file(
+                root, provenance, "generator_config_path", "generator_config_sha256", sample_id, errors,
+            )
     else:
         teachers = provenance.get("teachers")
         if not isinstance(teachers, list) or len(teachers) != 2:
@@ -137,7 +211,7 @@ def validate_rows(rows: list[dict[str, Any]], root: Path, expected_split: set[st
         split = required_string(row, "split", sample_id, errors)
         if split not in expected_split or split not in SPLITS:
             errors.append(f"{sample_id}: split {split!r} is not allowed in this manifest")
-        errors.extend(validate_label_authority(row, sample_id, split))
+        errors.extend(validate_label_authority(row, sample_id, split, root))
         session_id = row_session_id(row)
         if not session_id:
             errors.append(f"{sample_id}: missing session_id (direct or source.session_id)")

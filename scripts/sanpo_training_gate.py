@@ -32,6 +32,7 @@ ALLOWED_SOURCE_ADAPTERS = {
     "sanpo_v0",
     "bdd100k_v1",
     "guidetwsi_v1",
+    "procedural_tactile_v1",
     "teacher_consensus_v1",
 }
 
@@ -142,6 +143,15 @@ def source_attestation_errors(root: Path, rows: list[dict[str, Any]], payload: d
         for field in ("dataset", "license", "license_url", "privacy_review_status"):
             if source.get(field) != receipt.get(field):
                 errors.append(f"{sample_id}: source.{field} differs from attested receipt")
+        if row.get("label_authority") == "procedural_ground_truth":
+            provenance = row.get("label_provenance") if isinstance(row.get("label_provenance"), dict) else {}
+            inputs = provenance.get("source_masks") if isinstance(provenance.get("source_masks"), list) else []
+            for item in inputs:
+                input_source_id = str(item.get("source_id", "")).strip() if isinstance(item, dict) else ""
+                if input_source_id not in by_id:
+                    errors.append(
+                        f"{sample_id}: procedural input source_id {input_source_id!r} is missing from source attestation"
+                    )
     return errors
 
 
@@ -208,7 +218,10 @@ def build_report(dataset_root: Path) -> dict[str, Any]:
         policy_lock_errors = policy_errors(policy, train_rows, blind_rows)
         provenance_errors = privacy_and_source_errors(train_rows + blind_rows)
         attestation_errors = source_attestation_errors(root, train_rows + blind_rows, attestation)
-        hashes, hash_errors = asset_hashes(root, train_rows + blind_rows)
+        training_hashes, training_hash_errors = asset_hashes(root, train_rows)
+        blind_hashes, blind_hash_errors = asset_hashes(root, blind_rows)
+        hashes = dict(sorted({**training_hashes, **blind_hashes}.items()))
+        hash_errors = training_hash_errors + blind_hash_errors
         errors.extend(row_errors + blind_errors + coverage_errors + isolation_errors + policy_lock_errors + provenance_errors + attestation_errors + hash_errors)
         checks.extend([
             check("300_train_dev_plus_120_blind", not coverage_errors, "requires six 50-frame train/dev sequences and two 60-frame blind sequences"),
@@ -216,13 +229,14 @@ def build_report(dataset_root: Path) -> dict[str, Any]:
             check("asset_sha256", not hash_errors, f"{len(hashes)} image/mask hashes match manifest declarations"),
             check("source_and_privacy", not provenance_errors, "source license fields and allowed privacy status are present"),
             check("source_attestation", not attestation_errors, "source receipts, evidence and inventories are SHA256-bound"),
-            check("label_authority", not (row_errors + blind_errors), "train authority is explicit; dev/blind are source-ground-truth only"),
+            check("label_authority", not (row_errors + blind_errors), "authority is explicit; dev/blind allow only source GT or fully SHA256-bound procedural GT and always reject pseudo labels"),
             check("session_isolation", not isolation_errors and not policy_lock_errors, "train/dev and exactly two benchmark_only blind sessions are disjoint"),
         ])
     else:
         train_summary = {"row_count": 0, "sequence_count": 0}
         blind_summary = {"row_count": 0, "sequence_count": 0}
         hashes = {}
+        training_hashes = {}
     input_hashes = {path.relative_to(root).as_posix(): sha256_file(path) for path in required if path.is_file()}
     return {
         "schema": REPORT_SCHEMA,
@@ -241,6 +255,7 @@ def build_report(dataset_root: Path) -> dict[str, Any]:
         "blind": blind_summary,
         "input_sha256": input_hashes,
         "asset_sha256": hashes,
+        "training_asset_sha256": training_hashes,
         "checks": checks,
         "errors": errors,
     }
@@ -262,6 +277,55 @@ def run_gate(dataset_root: Path, report_path: Path) -> dict[str, Any]:
     _, digest = write_report(report, report_path)
     report["report_sha256"] = digest
     return report
+
+
+def consume_training_authorization(dataset_root: Path, report_path: Path) -> dict[str, Any]:
+    """Verify a precomputed authorization without reading any blind asset."""
+    root = dataset_root.resolve()
+    report_path = report_path.resolve()
+    sidecar_path = report_path.with_suffix(report_path.suffix + ".sha256")
+    if not report_path.is_file() or not sidecar_path.is_file():
+        raise ValueError("precomputed training-gate report and SHA256 sidecar are required")
+    digest = sha256_file(report_path)
+    sidecar_digest = sidecar_path.read_text(encoding="ascii").strip().split()[0]
+    if digest != sidecar_digest:
+        raise ValueError("training-gate report SHA256 sidecar mismatch")
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    if report.get("schema") != REPORT_SCHEMA:
+        raise ValueError("training-gate report schema mismatch")
+    if Path(str(report.get("dataset_root", ""))).resolve() != root:
+        raise ValueError("training-gate report is bound to a different dataset root")
+    if (
+        report.get("overall_status") != "green"
+        or report.get("training_authorized") is not True
+        or report.get("benchmark_only") is not True
+        or report.get("errors")
+        or any(item.get("status") != "green" for item in report.get("checks", []))
+    ):
+        raise ValueError("training-gate report does not authorize benchmark-only training")
+    if report.get("canonical_training_manifest") != CANONICAL_TRAINING_MANIFEST:
+        raise ValueError("training-gate report does not pin the canonical training manifest")
+    manifest = root / CANONICAL_TRAINING_MANIFEST
+    expected_manifest = report.get("input_sha256", {}).get(CANONICAL_TRAINING_MANIFEST)
+    if not manifest.is_file() or sha256_file(manifest) != expected_manifest:
+        raise ValueError("canonical training manifest differs from the authorized SHA256")
+    training_assets = report.get("training_asset_sha256")
+    if not isinstance(training_assets, dict) or not training_assets:
+        raise ValueError("training-gate report lacks bound train/dev assets")
+    for relative, expected in training_assets.items():
+        parts = Path(relative).parts
+        if not parts or parts[0] == "blind_holdout":
+            raise ValueError("training authorization contains a blind asset")
+        path = (root / relative).resolve()
+        try:
+            path.relative_to(root)
+        except ValueError as error:
+            raise ValueError("authorized training asset escapes dataset root") from error
+        if not path.is_file() or sha256_file(path) != expected:
+            raise ValueError(f"authorized training asset changed: {relative}")
+    verified = dict(report)
+    verified["report_sha256"] = digest
+    return verified
 
 
 def main() -> int:

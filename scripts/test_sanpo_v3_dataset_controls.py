@@ -207,9 +207,50 @@ class SanpoV3DatasetControlsTest(unittest.TestCase):
                 "consensus_mask_sha256": train["semantic_mask_sha256"],
             }
             self.assertEqual([], validator.validate_label_authority(train, train["id"], "train"))
-            self.assertTrue(any("source_ground_truth only" in item for item in validator.validate_label_authority(train, train["id"], "dev")))
+            self.assertTrue(any("forbids teacher/pseudo" in item for item in validator.validate_label_authority(train, train["id"], "dev")))
             train["label_provenance"]["agreement_iou"] = 0.50
             self.assertTrue(any("consensus IoU" in item for item in validator.validate_label_authority(train, train["id"], "train")))
+
+    def test_dev_and_blind_accept_only_fully_bound_procedural_ground_truth(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            rows = self.make_v3_rows(root)
+            sample = next(row for row in rows if row["split"] == "blind")
+            evidence = root / "procedural_evidence"
+            evidence.mkdir()
+            tactile = evidence / "tactile.png"
+            obstacle = evidence / "obstacle.png"
+            code = evidence / "generator.py"
+            config = evidence / "config.json"
+            Image.new("L", (5, 5), 1).save(tactile)
+            Image.new("L", (5, 5), 2).save(obstacle)
+            code.write_text("# tactile_occupied_compositor_v1\n", encoding="utf-8")
+            config.write_text('{"version":1}\n', encoding="utf-8")
+            matrix = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+            sample["label_authority"] = "procedural_ground_truth"
+            sample["label_provenance"] = {
+                "schema": validator.PROCEDURAL_PROVENANCE_SCHEMA,
+                "generator_id": "tactile_occupied_compositor_v1",
+                "generator_code_path": code.relative_to(root).as_posix(),
+                "generator_code_sha256": digest(code),
+                "generator_config_path": config.relative_to(root).as_posix(),
+                "generator_config_sha256": digest(config),
+                "seed": 7113,
+                "transform_matrix": matrix,
+                "transform_sha256": validator._canonical_json_sha256(matrix),
+                "source_masks": [
+                    {"role": "tactile_ground_truth", "source_id": "guidetwsi_fixture", "path": tactile.relative_to(root).as_posix(), "sha256": digest(tactile)},
+                    {"role": "obstacle_ground_truth", "source_id": "sanpo_fixture", "path": obstacle.relative_to(root).as_posix(), "sha256": digest(obstacle)},
+                ],
+                "output_mask_sha256": sample["semantic_mask_sha256"],
+            }
+            self.assertEqual([], validator.validate_label_authority(sample, sample["id"], "blind", root))
+            sample["label_provenance"]["source_masks"][0]["sha256"] = "0" * 64
+            errors = validator.validate_label_authority(sample, sample["id"], "blind", root)
+            self.assertTrue(any("provenance SHA256 mismatch" in item for item in errors))
+            sample["label_authority"] = "teacher_consensus_pseudo_label"
+            errors = validator.validate_label_authority(sample, sample["id"], "blind", root)
+            self.assertTrue(any("forbids teacher/pseudo" in item for item in errors))
 
     def test_semantic_only_rows_omit_and_cannot_smuggle_event_labels(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -247,6 +288,30 @@ class SanpoV3DatasetControlsTest(unittest.TestCase):
             report = gate.build_report(root)
             self.assertEqual("red", report["overall_status"])
             self.assertTrue(any("inventory" in item and "SHA256" in item for item in report["errors"]))
+
+    def test_training_authorization_does_not_need_blind_manifest_or_labels(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            rows = self.make_v3_rows(root)
+            self.write_source_attestation(root)
+            source = root / "reviewed.jsonl"
+            write_jsonl(source, rows)
+            original_argv = sys.argv
+            try:
+                sys.argv = ["prepare", "--source-manifest", str(source), "--dataset-root", str(root)]
+                self.assertEqual(0, views.main())
+            finally:
+                sys.argv = original_argv
+            report_path = root / "qa" / "training_gate_report.json"
+            report = gate.run_gate(root, report_path)
+            self.assertEqual("green", report["overall_status"], report["errors"])
+            (root / "blind_holdout").rename(root / "blind_holdout.inaccessible")
+            verified = gate.consume_training_authorization(root, report_path)
+            self.assertEqual(report["report_sha256"], verified["report_sha256"])
+            manifest = root / gate.CANONICAL_TRAINING_MANIFEST
+            manifest.write_text(manifest.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "manifest differs"):
+                gate.consume_training_authorization(root, report_path)
 
     def test_90_frame_regression_lock_detects_tampering(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

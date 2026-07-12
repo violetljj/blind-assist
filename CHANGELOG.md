@@ -9,6 +9,11 @@
 
 ## Unreleased - SANPO v2 公开连续序列扩展验证
 
+- 更正：此前 canonical green 与 GPU/TFLite 指标经最终安全复核降级为 audit-only；source inventory 和程序化原始证据闭合前不启动正式训练。训练入口已改为仅消费预生成门禁报告与 train/dev 哈希，不再读取 blind。
+- 修复 LR-ASPP 误选浅层特征导致 MobileNetV3 后半段被裁掉的问题；模型参数量从 197,212 恢复到 670,588。新增不读取数据集的 GPU 吞吐工具；RTX 5060 上 batch 64 约 358 images/s、峰值约 2.88 GB，并设为训练默认值。
+
+- SANPO v3 公开/程序化 source recipe 已构建 300 train/dev + 120 benchmark-only blind canonical 集并通过 SHA256 总门禁；程序化 dev/blind 只允许两份已 attested 来源 GT 的确定性组合，teacher/pseudo 仍禁止。
+- 新增远程 ZIP64 Range 选择性下载、盲道占用确定性合成、backend-neutral Keras 模型定义和 Windows 原生 PyTorch CUDA 训练入口。RTX 5060 最佳全 INT8 候选 dev mIoU `0.3175`，但 boundary/curb IoU 约 `0.00038`，因此保持 `do_not_replace_default_model`，不进入 App assets。
 - 新增三条 SANPO 官方 train session 的连续 50 帧 source package，共 150 对 RGB/panoptic mask；官方对象 MD5、逐文件 SHA256、唯一性与 manifest validation 均通过。素材仅保存在忽略的 `test-artifacts.local`，六场景未齐前不晋级 canonical。
 - 公开数据 canonical builder 只接收 allow-list source adapter 和 SHA256 绑定的许可证、隐私、inventory 证据，直接传普通 manifest 不能进入 canonical 根；未知原生类别和未实现 mapper 一律拒绝。
 - 新增标签权威分层：dev/blind 只允许 `source_ground_truth`；train 额外允许可验证的程序化标签和恰好两名独立 teacher 的共识伪标签，并绑定模型权重、逐 teacher 输出、共识 mask 哈希及 IoU/时序阈值。纯语义样本不得携带风险事件标签。
