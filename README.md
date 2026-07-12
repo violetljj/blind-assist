@@ -11,6 +11,7 @@ BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Ma
 - 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
 
 ## 近期状态
+- 2026-07-12：训练前总门禁已改为唯一、不可绕过的入口。`train_export_sanpo_segmentation.py` 不再接收任意 manifest；它只接收 canonical v3 dataset root，并在导入 TensorFlow 前生成 SHA256 sidecar 门禁报告。必须同时满足 300 train/dev + 120 blind、四类语义掩码、逐文件哈希、来源/隐私状态及 session 隔离；两个 blind session 被 policy 锁为 `benchmark_only`，训练和阈值选择均禁止读其目录或标签。本机当前没有完整 v3 集，最新报告为 red，因此训练仍关闭。
 - 2026-07-11：完成 `v10.9.0` SANPO 风险事件闭环。纯 Kotlin `RiskEventTracker` 以中心走廊分割目标维护 `APPROACHING → ALERTED → PASSED_OR_RECEDING → CLEARED` 生命周期；实际语音/震动成功后才消耗一次事件提醒，连续 3 帧远离/消失才清除。通过台阶后的重复提醒和报告中的平行路沿提醒均为 `0`。SM-S9280 90 帧复测仍不晋级：候选 alert FP `5.6%`（3 次，门槛 `≤5.3%`）、逐帧 alert recall `5.6%`；后者反映一次事件只提醒一次后的口径不匹配，后续应改为事件级召回。另有 90 秒 CameraX 回归因等待“检测中”文本超时失败。默认 YOLO11n、`do_not_replace_default_model` 和训练关闭状态保持不变。
 - 2026-07-11：完成 SANPO Traversability v2 公开连续序列扩展与真机复测。新增 SANPO 官方 CC BY 4.0 三条 10 FPS/90 帧本地序列：平行路沿负例、正前方台阶、中心垃圾桶通道障碍；所有样本保留来源哈希、official split 与 AI 双重复核 provenance。扩展集上候选主区域命中 `93.9%`、危险提醒召回 `88.9%`、total P95 `58.405ms`，但错误提醒率 `25.9%`，未满足 `≤5.3%` 门槛；原因是通过台阶后的重复提醒及平行路沿序列中的通用障碍误判。结论维持 `do_not_replace_default_model`，训练仍关闭。
 - 2026-07-11：完成 `v10.4.0` SANPO Traversability v2 Oracle 第一阶段。路沿改为边界证据；通用障碍增加完整连通域中心重叠、底部位置和中心优先门槛；无深度单帧分割证据最高为 `LOW/MID`。mask 改为 256×256并复用工作缓冲。30 帧真机 A/B：错误提醒率 `3.3%`、主区域命中 `86.7%`、total P95 `65.919ms`，YOLO 指标无退化。公开正负序列完成前不训练或替换模型。

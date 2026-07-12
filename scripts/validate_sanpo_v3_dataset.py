@@ -205,6 +205,9 @@ def validate_v3_coverage(train: dict[str, Any], blind: dict[str, Any]) -> list[s
         errors.append("v3 requires six train/dev continuous sequences of exactly 50 frames")
     if len(blind_sequences) != 2 or any(item["frame_count"] != 60 for item in blind_sequences):
         errors.append("v3 requires two blind continuous sequences of exactly 60 frames")
+    blind_sessions = {str(item["session_id"]) for item in blind_sequences}
+    if len(blind_sessions) != 2 or "" in blind_sessions:
+        errors.append("v3 requires the two blind sequences to use two distinct non-empty source sessions")
     seen_buckets = {str(item["scene_bucket"]) for item in train_sequences}
     missing_buckets = sorted(set(SCENE_BUCKETS) - seen_buckets)
     if missing_buckets:

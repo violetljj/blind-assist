@@ -94,10 +94,7 @@ class SegmentationCandidateToolTest(unittest.TestCase):
     def test_production_asset_output_is_rejected_before_tensorflow_import(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-            train = self.write_record(root, "train", "train", "session_train")
-            dev = self.write_record(root, "dev", "dev", "session_dev")
-            manifest = self.write_manifest(root, [train, dev])
-            args = candidate.parse_args(["--manifest", str(manifest), "--output", "app/src/main/assets/not_allowed.tflite"])
+            args = candidate.parse_args(["--dataset-root", str(root), "--output", "app/src/main/assets/not_allowed.tflite"])
             with self.assertRaisesRegex(ValueError, "production app assets"):
                 candidate.run(args)
 

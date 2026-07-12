@@ -35,15 +35,23 @@ def main() -> int:
     unexpected = [row.get("id") for row in rows if row.get("split") not in {"train", "dev", "blind"}]
     if unexpected or not training or not blind:
         raise SystemExit("source manifest must contain non-empty train/dev and blind rows only")
+    blind_sessions = sorted({str(row.get("session_id") or row.get("source", {}).get("session_id") or "").strip() for row in blind})
+    if len(blind_sessions) != 2 or not all(blind_sessions):
+        raise SystemExit("v3 requires exactly two non-empty blind source sessions before creating views")
     write_jsonl(training_path, training)
     write_jsonl(blind_path, blind)
     policy = {
-        "format": "blindassist_sanpo_v3_access_policy_v1",
+        "format": "blindassist_sanpo_v3_access_policy_v2",
         "training_manifest": "training_manifest.jsonl",
         "blind_manifest": "blind_holdout/manifest.jsonl",
         "blind_label_access": "benchmark_only",
         "forbidden_training_paths": ["blind_holdout"],
-        "trainer_contract": "Training must receive --manifest training_manifest.jsonl and must not crawl dataset-root.",
+        "forbidden_threshold_selection_paths": ["blind_holdout"],
+        "benchmark_only_sessions": blind_sessions,
+        "forbidden_training_sessions": blind_sessions,
+        "forbidden_threshold_selection_sessions": blind_sessions,
+        "trainer_contract": "Training accepts only --dataset-root, runs the SHA256 total gate, and opens only training_manifest.jsonl.",
+        "threshold_selection_contract": "Threshold selection receives train/dev only and must never inspect blind_holdout paths, labels, or sessions.",
     }
     (root / "access_policy.json").write_text(json.dumps(policy, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"v3_views_ok=true training_rows={len(training)} blind_rows={len(blind)} root={root}")

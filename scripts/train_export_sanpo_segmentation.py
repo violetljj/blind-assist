@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Train and export the benchmark-only BlindAssist 4-class segmentation candidate.
+"""Train/export the benchmark-only candidate only after the total v3 gate is green.
 
-The input manifest is deliberately explicit: this tool never walks a dataset root.
-It accepts only reviewed ``train`` / ``dev`` records and rejects blind/holdout rows
-before opening an image or a mask.  This makes the held-out manifest and labels
-inaccessible to the training and threshold-selection process by construction.
+There is intentionally no ``--manifest`` option.  This entrypoint accepts a
+dataset root only, runs the hash-attested total gate itself, and then opens only
+that root's canonical ``training_manifest.jsonl``.  It never receives a blind
+directory or manifest, so an ordinary JSONL cannot bypass the gate.
 """
 
 from __future__ import annotations
@@ -23,6 +23,8 @@ from typing import Any, Iterable, Iterator, Sequence
 
 import numpy as np
 from PIL import Image
+
+import sanpo_training_gate as training_gate
 
 
 CLASS_NAMES = ("walkable", "boundary_step_curb", "obstacle", "unknown_nonwalkable")
@@ -372,11 +374,19 @@ def set_determinism(tf: Any, seed: int) -> None:
 
 def run(args: argparse.Namespace) -> dict[str, Any]:
     root = project_root()
-    manifest = resolve(root, args.manifest)
+    dataset_root = resolve(root, args.dataset_root).resolve()
+    manifest = dataset_root / training_gate.CANONICAL_TRAINING_MANIFEST
     output = resolve(root, args.output)
     report_dir = resolve(root, args.report_dir)
+    gate_report_path = report_dir / "training_gate_report.json"
     if output.resolve().is_relative_to((root / "app" / "src" / "main" / "assets").resolve()):
         raise ValueError("Refusing production app assets: this candidate is benchmark-only")
+    gate_report = training_gate.run_gate(dataset_root, gate_report_path)
+    if gate_report["overall_status"] != "green" or not gate_report["training_authorized"]:
+        raise ValueError(
+            "Training gate is red; MobileNetV3 + LR-ASPP must not start. "
+            f"Read {gate_report_path} and its SHA256 sidecar."
+        )
     records = load_records(manifest)
     train_records = records_by_split(records, "train")
     dev_records = records_by_split(records, "dev")
@@ -407,7 +417,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "output_contract": "NHWC 256x256x4 int8 logits ordered as classes; argmax yields semantic class ID",
         "manifest": str(manifest),
         "manifest_sha256": sha256_file(manifest),
-        "blind_holdout_access": "not_accessed: train_export requires an explicit train/dev-only manifest and rejects blind/holdout rows",
+        "training_gate_report": str(gate_report_path),
+        "training_gate_report_sha256": gate_report["report_sha256"],
+        "blind_holdout_access": "not_accessed_by_trainer: preflight is the only component permitted to inspect the benchmark-only holdout",
         "record_counts": {"train": len(train_records), "dev": len(dev_records)},
         "session_counts": {"train": len({item.session_id for item in train_records}), "dev": len({item.session_id for item in dev_records})},
         "scene_coverage": scene_coverage(records),
@@ -425,7 +437,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Train/export a benchmark-only full-INT8 four-class MobileNetV3 + LR-ASPP candidate.")
-    parser.add_argument("--manifest", required=True, help="Explicit JSONL containing only train/dev rows; blind labels must be in a separate manifest.")
+    parser.add_argument("--dataset-root", required=True, help="Canonical v3 dataset root; the entrypoint accepts no arbitrary manifest.")
     parser.add_argument("--output", default=DEFAULT_OUTPUT, help="Benchmark-only TFLite output; production app assets are rejected.")
     parser.add_argument("--report-dir", default=DEFAULT_REPORT)
     parser.add_argument("--input-size", type=int, default=INPUT_SIZE, choices=[INPUT_SIZE])

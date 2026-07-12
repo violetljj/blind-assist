@@ -4,6 +4,15 @@
 
 ## 2026-07-11
 
+### SANPO v3 训练前总门禁加固
+- 时间：2026-07-12 23:45:00 +08:00
+- 执行者：violjjet
+- 类型：训练数据治理 / benchmark 隔离 / 自动化门禁 / 测试
+- 修改范围：`scripts/sanpo_training_gate.py`、`scripts/train_export_sanpo_segmentation.py`、`scripts/validate_sanpo_v3_dataset.py`、`scripts/prepare_sanpo_v3_dataset_views.py`、训练脚本测试、README、CHANGELOG。
+- 修改内容：将训练入口从任意 `--manifest` 收紧为唯一 `--dataset-root`，每次训练在 TensorFlow 导入前自动运行总门禁并写入 JSON + `.sha256` sidecar。门禁机器校验固定的 300 train/dev + 120 blind、六条 50 帧训练/dev 序列、两条各 60 帧且不同 session 的 blind 序列、四类 0..3 掩码、图片/掩码 SHA256、来源许可证与允许的隐私状态；policy 同时把恰好两条 blind session 锁为 `benchmark_only`，并显式禁止训练和阈值选择访问其路径或 session。报告不是 green 一律拒绝输出 MobileNetV3 + LR-ASPP 候选。
+- 验证方式：临时 420 帧 fixture 的总门禁报告为 green，840 个图片/掩码哈希均匹配且 report sidecar SHA256 已生成；当前本机 dense annotation queue 缺 canonical training/blind manifests 与 policy，实际报告为 red，训练按预期不启动。
+- 当前判断：这是本地 benchmark 训练治理加固，不改变 Android 运行时、默认 YOLO11n、风险阈值或 app 版本，故保持 `v10.9.0` / `versionCode=37`，不构建或归档 APK。后续必须先补齐受许可、自动门禁可验证的完整 v3 数据集，不能用人工覆盖或普通 manifest 绕过。
+
 ### v10.9.0 SANPO 风险事件闭环与边界形态否决
 - 时间：2026-07-11 20:15:00 +08:00
 - 执行者：violjjet
