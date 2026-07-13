@@ -4,6 +4,45 @@
 
 ## 2026-07-13
 
+### SANPO 全链路升级、真实 session 扩容与 384 候选否决
+- 时间：2026-07-13 06:20:00 +08:00
+- 执行者：violjjet
+- 数据升级：新增 `sanpo_v4_real_session_recipe_20260713.json` 与对应 receipts，使用 14 条互斥 SANPO 官方 session 构建 real-only canonical：8 train / 400 帧、4 session-held-out dev / 200 帧、2 official-test benchmark-only blind / 120 帧。center obstacle、lateral dynamic、parallel boundary、step/curb 四个场景桶均满足 train 至少 2 个 session、dev 至少 1 个 session；逐帧 RGB/raw mask 共 1,440 个哈希闭合。最终训练门 10/10 green，报告 SHA256 `4c68e43494012f0499d8f9f01a5160a80276682fcd2e78a6ac5ca4cf98a1d5e1`，assembly report SHA256 `f7f7b11e4ca0f733dd4c5ccfb9f01ccf30548014c406edd72f308bb1fd6967b5`。同 split 语义 mask 重复被降为观测项，RGB 重复、session 泄漏和 raw asset 跨 split 复用继续硬拒绝。
+- 晋级治理：新增 `sanpo_candidate_quality_gate.py`，把离线训练质量、full-INT8 量化保真和真机连续事件拆成三个独立门；报告按 session/scene 输出四类 IoU、boundary precision/recall/IoU 与 unknown abstain/coverage。跨后端报告升级为 v2，绑定 input size、backbone alpha、decoder channels 的 canonical JSON SHA256；导出与质量入口配置错配时 fail closed。
+- 训练消融：在 RTX 5060 上按同一 600-step、两阶段协议比较 alpha 0.75/1.0、256/384/512、decoder 96/160、默认与更均衡 guided crop。256 alpha 0.75 为 mIoU `0.2445` / boundary `0.0428`，256 alpha 1.0 提升至 `0.3162` / `0.1823`；384 alpha 1.0、decoder 96 的 seed `20260711` 达到 mIoU `0.4344`、boundary `0.4506`、pixel accuracy `0.6163`，优于 512 的 `0.4176` / `0.4449`，decoder 160 与过度均衡采样均未改善。
+- 稳定性否决：相同 384 配置的另外两个预注册 seed `20260712/20260713` 仅达到 mIoU `0.1804/0.2498`、boundary IoU `0.1734/0.1548`。三 seed 结果显示最佳点主要来自 seed 高方差，不能只挑 `20260711` 宣布训练闭环。
+- 最佳候选离线门：Torch→TensorFlow 精确等价为 green（max abs `1.7375e-05`、argmax agreement `1.0`）；但 offline quality 仍为 red：global mIoU `0.4344 < 0.45`、macro-session mIoU `0.3283 < 0.40`、worst-scene mIoU `0.2680 < 0.30`。boundary precision/recall/IoU `0.5569/0.7024/0.4506` 及 unknown precision/recall `0.6044/0.6193` 已过门。
+- 最终决策：来源与程序化原始证据问题已由 real-only canonical 和新门禁闭合，训练工具与评价合同完成全面升级；模型能力相比旧 evidence-v4 的 mIoU `0.1711`、boundary `0.0000144` 有明显跃升，但泛化与 seed 稳定性仍不合格。按门禁停止在导出前，不生成新的 INT8、不运行真机设备事件门、不复制到 App assets；版本保持 `v10.9.0` / `versionCode=37`。
+
+### SANPO step-budgeted 多 seed 训练协议 v2
+- 时间：2026-07-13 05:10:00 +08:00
+- 执行者：violjjet
+- 修改范围：`train_sanpo_segmentation_keras_torch.py`、backend-neutral 模型超参、定向单测和训练协议文档；不修改数据 recipe、`idea.md`、App 运行时或模型资产，不运行正式长训练。
+- 优化协议：默认 batch 由吞吐导向的 64 降为 12；训练预算改为每 seed 最多 1200 optimizer step、至少 300 step 后才允许早停，每 50 step 固定 dev 评估。checkpoint/早停改看 dev mIoU 与 boundary/curb IoU 的调和评分，任一指标坍塌为 0 都不能被另一指标掩盖。
+- 不平衡治理：sampler 先均匀抽 source session，再在 session 内抽帧；70% 尝试 boundary/obstacle guided crop，并保留完整帧混合。损失改为有上限的逆平方根 class-weighted CE + class-weighted soft Dice + focal，类别权重封顶 4.0，避免极稀 boundary 权重诱发全图误报。
+- 稳定性与消融：默认三个预注册 seed，报告每 seed checkpoint 轨迹、混淆矩阵、均值/标准差/最差值并保留最佳 dev checkpoint；共享模型显式绑定 `backbone_alpha`（仅 0.75/1.0）和 `decoder_channels`（默认 96），可在同一协议下做容量消融。
+- 二阶段追加：真实三 seed 的 boundary 最佳点集中在 50–100 step、后续明显坍塌；默认先冻结 MobileNetV3 训练 head 100 step并恢复该阶段最佳 checkpoint，再解冻 backbone 用 `5e-5` cosine decay 微调，默认保持 pretrained BatchNorm 冻结。每阶段单独记录 trainability、学习率、最佳指标与 checkpoint，同时保留全局最佳，未降低任何质量门槛。
+- 分辨率探针：trainer 与共享模型合同允许 256/384/512，并在报告绑定 input size；预载池改存 uint8 以控制 384/512 内存。建议先以 batch 6 的 384 或 batch 4 的 512 做单 seed probe，再决定是否执行三 seed。
+- 证据边界：trainer 仍只消费 green 授权及 train/dev canonical manifest，固定记录 `blind_holdout_access=not_accessed_by_trainer`；三 seed dev 结果仍须经过跨后端、INT8、blind 和同机事件门。当前只实现协议与测试，正式三 seed 重训未执行，结论保持 `do_not_replace_default_model`。
+
+### SANPO 原始证据闭环、独立 canonical 与 GPU 重跑否决
+- 时间：2026-07-13 04:42:00 +08:00
+- 执行者：violjjet
+- 证据修复：程序化序列现强制保存并 SHA256 绑定 Guide RGB/YOLO polygon 与 SANPO RGB/raw panoptic mask；Guide 资产还必须逐项命中已锁定 Kaggle ZIP 的 member path、size、CRC32、ETag、generation 和 archive MD5。canonical 同时保存 assembly recipe、逐样本 raw asset inventory 和原生 SANPO raw mask；门禁要求 inventory 与 manifest 双向闭合，并禁止底层 raw asset 跨 train/dev/blind split 复用。
+- 授权修复：builder 只在 `.building` 做预检，发布到最终目录后重新生成并消费最终授权，修复旧报告仍绑定临时根的问题。新根 `test-artifacts.local/datasets/sanpo-v3-canonical-evidence-v4-20260713` 为 300 train/dev + 120 benchmark-only blind；独立重跑 `overall_status=green`，最终报告 SHA256 `32968a7afa081f122cee463e6578feba6efea65172f81a9a0d4341dbf7af23d4`。
+- 真实门禁反馈：首次 v4 构建发现 procedural dev 与 blind 复用同一 SANPO 原始帧，正确拒绝；改用不同 source session 后才全绿。四个程序化 split 使用互不重复的 Guide RGB/polygon，旧 canonical 继续保持 audit-only。
+- GPU 重跑：使用修正后的 670,588 参数 MobileNetV3 + LR-ASPP、RTX 5060、batch 64、mixed float16、seed `20260711`、`no-jit`。早停于 8 epoch，fit 约 25.80 秒、约 62.02 images/s、峰值显存约 2.10 GiB；权重 SHA256 `64ad481182c5173f53d7be9ab99285ebd9511621d5292e1bf618d2d542056d49`。dev mIoU `0.1711`，boundary/curb IoU `0.0000144`，质量仍不合格。
+- 跨后端修复：首轮固定输入检查为 `max_abs=0.0875044`、`argmax agreement=0.990448`。逐层诊断确认 223 个权重完全一致，漂移来自 Torch GPU worker 默认 CuDNN TF32；等价门现固化 `NVIDIA_TF32_OVERRIDE=0`、最高 float32 matmul 精度及 CUDA/CuDNN TF32 禁用，并把执行契约绑定进报告。原阈值不变，正式复跑为 `max_abs=0.0000634193`、`argmax agreement=1.0`，报告 SHA256 `11646481868c209aa768f67c7a6ca6238c67f5efbd6fd867a40583a45372e3db`。模型仍因 dev 质量差而不导出、不晋级。
+- 验证：来源/builder/gate/training/export/backend-equivalence 共 35 项 Python 测试通过；新 canonical 最终根门禁和授权消费通过；新门禁对旧 canonical 的独立 audit 报告为 red。版本仍为 `v10.9.0` / `versionCode=37`，不改变 Android 运行时或默认 YOLO11n。
+
+### SANPO Keras Torch / TensorFlow 数值等价门
+- 时间：2026-07-13 04:15:00 +08:00
+- 执行者：violjjet
+- 修改范围：新增 `scripts/sanpo_backend_equivalence.py` 与定向测试；`train_export_sanpo_segmentation.py` 的 imported-weights 导出路径改为强制消费预生成等价报告；同步 GPU 隔离文档。不修改 App、生产模型资产或 `idea.md`，不启动正式训练。
+- 固定协议：仅生成 4 张固定 seed `20260713` 的 256×256 RGB 合成输入，不读取任何数据集 manifest 或 blind；Torch 与 TensorFlow 在独立解释器中加载同一权重和共享模型定义，记录 `max_abs`、`mean_abs`、逐像素 `argmax agreement`、输入/权重/模型/报告 SHA256。正式重训前预注册阈值为 `max_abs <= 1e-4`、`argmax agreement >= 0.9998`。
+- 拒绝规则：报告缺失、sidecar 不匹配、阈值被修改、权重或模型定义不一致、固定输入契约不一致或任一数值指标失败，TensorFlow export-only 入口均在导入 TensorFlow及写出 TFLite 前失败。等价绿灯只允许 benchmark-only 导出，不代表设备门或生产晋级通过。
+- 验证：新等价门单测通过；随机未训练权重跨后端集成 smoke 为 `max_abs=7.15e-7`、`argmax agreement=0.999851`。合并来源证据门后相关 35 项测试全绿；正式权重首轮暴露 TF32 漂移，固化精确执行契约后在原阈值下全绿。是否导出仍由模型质量与后续量化保真门决定。
+
 ### GPU 利用率与 blind 训练隔离修正
 - 时间：2026-07-13 03:55:00 +08:00
 - 执行者：violjjet
@@ -3997,3 +4036,32 @@
 - Implementation: introduced the `AssistSession` seam and routed camera, permission, replay, and runtime configuration through `AssistRuntimeIntent`; state machine, lifecycle gate, camera, detector, risk, and feedback implementations remain unchanged. `BlindAssistApp` now receives a state object and runtime/navigation/glasses action groups, reducing startup-shell coupling to product details.
 - Verification: with local JDK 17 at `E:\codex-tools\tools\jdk17.0.19_10`, `:core:assist:test :feature:assist:testDebugUnitTest --rerun-tasks --no-daemon --console=plain` passed; `:core:ui:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --console=plain` passed. The first attempt was blocked by system JDK 26.0.1 and a stale core:assist ABI cache; switching to JDK 17 and forcing recompilation resolved both.
 - Version decision: no user-visible behavior, model, permission, or risk-rule change; version unchanged and no APK archived.
+
+### SANPO 候选离线质量、INT8 保真与设备事件门拆分
+
+- 时间：2026-07-13 +08:00
+- 执行者：violjjet
+- 类型：模型评价、门禁、测试、文档
+- 修改范围：`scripts/sanpo_candidate_quality_gate.py`、`scripts/test_sanpo_candidate_quality_gate.py`、`docs/SANPO_CANDIDATE_PROMOTION_GATES.md`。
+- 修改内容与原因：
+  - 新增逐 session、逐 scene 的四类 precision/recall/IoU，以及 session 宏平均、最差 session/scene mIoU，防止长序列或大类别掩盖跨场景失败。
+  - 将 boundary precision/recall/IoU 和 unknown abstain rate、known coverage、unknown precision/recall/IoU、covered accuracy 提升为显式诊断与硬门。
+  - 新增 Keras→full-INT8 语义保真门，同时约束 argmax agreement、逐类预测 IoU、逐类真值 IoU 最大退化和平均 mIoU 退化；避免仅凭总体一致率漏掉稀有类别量化坍塌。
+  - 离线训练质量、INT8 保真、同机连续序列设备事件三门完全拆分。无 TFLite 时可先做离线质量审计；无与模型 SHA256 绑定的设备报告时，设备门保持 `not_evaluated`，不得晋级。最终报告始终固定 `production_model_replacement_authorized=false`。
+  - `backbone_alpha`（仅 0.75/1.0）与 `decoder_channels` 已贯通跨后端 worker、TensorFlow 导出和候选质量门。等价报告 schema v2 保存完整模型配置及 canonical JSON SHA256；consumer 按调用方预期配置 fail-closed，拒绝 alpha/decoder 错配、字段缺失和配置哈希篡改，防止同名权重被错误图加载。
+  - 输入尺寸同样贯通并只允许 256/384/512，用于 SANPO 官方 512 路线的受控消融。固定合成输入 shape/hash、共享模型图、INT8 输入输出合同和质量报告均绑定同一尺寸；consumer 拒绝分辨率错配，既有跨后端与质量阈值保持不变。
+- 验证：`.venv-export312` 下候选质量门 8 项、跨后端等价门 11 项、训练/INT8 导出 12 项单元测试及 Python `py_compile` 通过；导出测试包含真实 TensorFlow→full-INT8 TFLite smoke 和 256 模型被 512 合同拒绝的负向检查，配置/分辨率错配与配置哈希篡改均有测试。尝试复核 evidence-v4 旧权重时，因当前共享模型定义 SHA256 已变化而被既有跨后端 consumer 正确拒绝；未绕过绑定，需等待新模型重新训练并生成新的等价报告后实跑。
+- 剩余风险：默认阈值是本轮预注册的首版安全门，后续只能基于独立 blind/真机证据版本化调整，不能用待晋级候选反向调阈值。本轮未导出 TFLite、未运行真机事件 benchmark、未替换生产模型。
+- 版本判断：仅增加 benchmark 评价与晋级保护，不改变 App 用户可见功能、模型资产或运行时；版本不变，不归档 APK。
+
+### SANPO v4 真实 session 扩展与 official-split 闭环
+
+- 时间：2026-07-13 +08:00
+- 执行者：violjjet
+- 类型：公开数据扩展、来源治理、训练门禁、测试
+- 修改范围：`configs/sanpo_v4_real_session_recipe_20260713.json`、`configs/sanpo_v4_real_source_receipts_20260713.json`、`scripts/build_public_v3_canonical_dataset.py`、`scripts/validate_sanpo_v3_dataset.py`、`scripts/sanpo_training_gate.py` 及对应测试。
+- 数据与拆分：从 SANPO-Real v0 官方 GCS 新增 7 个 official-train 50 帧 session，并下载 2 个此前未进入 train/dev 的 official-test 60 帧 session；所有下载均保留对象 generation/MD5/CRC/source manifest。最终 recipe 使用 8 train + 4 session-held-out dev（两者都只来自 official train）和 2 benchmark-only blind（只来自 official test），共 720 帧。四个有可程序化语义证据的关键场景桶均达到 `train>=2`、`dev>=1`、总 session `>=3`；未把缺少可信筛选证据的普通 SANPO 片段伪称为低照或盲道占用。
+- 门禁升级：固定 `6×50 + 2×60` 改为 recipe-bound expanded coverage policy，强制最小 train/dev session 数、逐场景独立 session 数、目标 split 到 SANPO official split 的映射，以及 exactly two 真实 blind session。builder 逐序列校验 `expected_frame_count` 和 `official_split`，继续保持 raw asset SHA inventory、session 隔离和跨 split 原资产否决。
+- 质量观察：SANPO 机器标注可在不同 RGB 帧间复用同一 raw mask，且四类投影也可能相同；重复样本继续由 RGB SHA 拒绝，raw mask 跨 split 继续硬拒绝，同 split 重复 mask 改为报告型指标。最终 train/dev raw 与 semantic duplicate row 均为 `1/600=0.1667%`，blind 为 `0/120`。
+- 构建结果：`test-artifacts.local/datasets/sanpo-v4-real-canonical-r3-20260713` 成功发布；600 train/dev + 120 real blind，12+2 独立 session，1440 个图像/掩码哈希匹配。最终 10 项检查全绿，training gate SHA256 `4c68e43494012f0499d8f9f01a5160a80276682fcd2e78a6ac5ca4cf98a1d5e1`；build report SHA256 `f7f7b11e4ca0f733dd4c5ccfb9f01ccf30548014c406edd72f308bb1fd6967b5`。
+- 验证：builder/数据治理单元测试、Python `py_compile` 和最终 canonical 发布前/发布后门禁通过。生产 App、训练脚本和模型资产未修改；本轮不改变版本、不归档 APK。

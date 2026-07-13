@@ -25,6 +25,7 @@ import numpy as np
 from PIL import Image
 
 import sanpo_training_gate as training_gate
+import sanpo_backend_equivalence
 import sanpo_segmentation_model
 
 
@@ -258,9 +259,22 @@ def make_dataset(tf: Any, records: Sequence[Record], input_size: int, batch_size
     return dataset.batch(batch_size).prefetch(tf.data.AUTOTUNE)
 
 
-def build_mobilenetv3_lraspp(tf: Any, input_size: int, num_classes: int = len(CLASS_NAMES)) -> Any:
+def build_mobilenetv3_lraspp(
+    tf: Any,
+    input_size: int,
+    num_classes: int = len(CLASS_NAMES),
+    *,
+    backbone_alpha: float = sanpo_backend_equivalence.DEFAULT_BACKBONE_ALPHA,
+    decoder_channels: int = sanpo_backend_equivalence.DEFAULT_DECODER_CHANNELS,
+) -> Any:
     """Compatibility wrapper around the backend-neutral authoritative graph."""
-    return sanpo_segmentation_model.build_mobilenetv3_lraspp(tf.keras, input_size, num_classes)
+    return sanpo_segmentation_model.build_mobilenetv3_lraspp(
+        tf.keras,
+        input_size,
+        num_classes,
+        backbone_alpha=backbone_alpha,
+        decoder_channels=decoder_channels,
+    )
 
 
 def confusion_and_metrics(predictions: Iterable[np.ndarray], targets: Iterable[np.ndarray]) -> dict[str, Any]:
@@ -362,6 +376,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if output.resolve().is_relative_to((root / "app" / "src" / "main" / "assets").resolve()):
         raise ValueError("Refusing production app assets: this candidate is benchmark-only")
     gate_report = training_gate.consume_training_authorization(dataset_root, gate_report_path)
+    equivalence_report = None
+    if args.import_weights:
+        weights_path = resolve(root, args.import_weights).resolve()
+        equivalence_report = sanpo_backend_equivalence.consume_equivalence_authorization(
+            weights_path, resolve(root, args.backend_equivalence_report).resolve(),
+            backbone_alpha=args.backbone_alpha,
+            decoder_channels=args.decoder_channels,
+            input_size=args.input_size,
+        )
     records = load_records(manifest)
     train_records = records_by_split(records, "train")
     dev_records = records_by_split(records, "dev")
@@ -370,7 +393,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     import tensorflow as tf
 
     set_determinism(tf, args.seed)
-    model = build_mobilenetv3_lraspp(tf, args.input_size)
+    model = build_mobilenetv3_lraspp(
+        tf,
+        args.input_size,
+        backbone_alpha=args.backbone_alpha,
+        decoder_channels=args.decoder_channels,
+    )
     if args.import_weights:
         weights_path = resolve(root, args.import_weights).resolve()
         if not weights_path.is_file():
@@ -392,7 +420,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     tflite_contract = validate_int8_tflite(tf, output, args.input_size)
     report = {
         "schema_version": 1,
-        "candidate": "MobileNetV3Small(alpha=0.75)+LR-ASPP",
+        "candidate": f"MobileNetV3Small(alpha={args.backbone_alpha:g})+LR-ASPP",
+        "model_config": sanpo_backend_equivalence.model_config(
+            args.backbone_alpha, args.decoder_channels, args.input_size,
+        ),
+        "model_config_sha256": sanpo_backend_equivalence.model_config_sha256(
+            sanpo_backend_equivalence.model_config(
+                args.backbone_alpha, args.decoder_channels, args.input_size,
+            )
+        ),
         "benchmark_only": True,
         "promotion": "do_not_replace_default_model",
         "classes": list(CLASS_NAMES),
@@ -402,6 +438,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "manifest_sha256": sha256_file(manifest),
         "training_gate_report": str(gate_report_path),
         "training_gate_report_sha256": gate_report["report_sha256"],
+        "backend_equivalence": None if equivalence_report is None else {
+            "report": str(resolve(root, args.backend_equivalence_report).resolve()),
+            "report_sha256": equivalence_report["report_sha256"],
+            "max_abs": equivalence_report["metrics"]["max_abs"],
+            "argmax_agreement": equivalence_report["metrics"]["argmax_agreement"],
+            "thresholds": equivalence_report["thresholds"],
+            "model_config": equivalence_report["model_config"],
+            "model_config_sha256": equivalence_report["model_config_sha256"],
+        },
         "blind_holdout_access": "not_accessed_by_trainer: preflight is the only component permitted to inspect the benchmark-only holdout",
         "record_counts": {"train": len(train_records), "dev": len(dev_records)},
         "session_counts": {"train": len({item.session_id for item in train_records}), "dev": len({item.session_id for item in dev_records})},
@@ -424,19 +469,40 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--training-gate-report", default="qa/training_gate_report.json")
     parser.add_argument("--output", default=DEFAULT_OUTPUT, help="Benchmark-only TFLite output; production app assets are rejected.")
     parser.add_argument("--report-dir", default=DEFAULT_REPORT)
-    parser.add_argument("--input-size", type=int, default=INPUT_SIZE, choices=[INPUT_SIZE])
+    parser.add_argument(
+        "--input-size", type=int, default=INPUT_SIZE,
+        choices=sanpo_backend_equivalence.ALLOWED_INPUT_SIZES,
+    )
+    parser.add_argument(
+        "--backbone-alpha", type=float,
+        choices=sanpo_backend_equivalence.ALLOWED_BACKBONE_ALPHAS,
+        default=sanpo_backend_equivalence.DEFAULT_BACKBONE_ALPHA,
+    )
+    parser.add_argument(
+        "--decoder-channels", type=int,
+        default=sanpo_backend_equivalence.DEFAULT_DECODER_CHANNELS,
+    )
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--learning-rate", type=float, default=1e-3)
     parser.add_argument("--representative-samples", type=int, default=100)
     parser.add_argument("--seed", type=int, default=20260711)
     parser.add_argument("--import-weights", help="Backend-neutral Keras .weights.h5 produced by the torch trainer.")
+    parser.add_argument("--backend-equivalence-report", help="Green cross-backend report bound to --import-weights; required before export-only.")
     parser.add_argument("--export-only", action="store_true", help="Skip fitting; requires --import-weights, then evaluate and export full INT8.")
     args = parser.parse_args(argv)
-    if args.epochs <= 0 or args.batch_size <= 0 or args.learning_rate <= 0 or args.representative_samples <= 0:
-        parser.error("epochs, batch-size, learning-rate and representative-samples must be positive")
+    if (
+        args.epochs <= 0
+        or args.batch_size <= 0
+        or args.learning_rate <= 0
+        or args.representative_samples <= 0
+        or args.decoder_channels <= 0
+    ):
+        parser.error("epochs, batch-size, learning-rate, representative-samples and decoder-channels must be positive")
     if args.export_only and not args.import_weights:
         parser.error("--export-only requires --import-weights")
+    if args.import_weights and not args.backend_equivalence_report:
+        parser.error("--import-weights requires --backend-equivalence-report")
     return args
 
 

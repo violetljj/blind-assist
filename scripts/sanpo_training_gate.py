@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import zlib
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -28,6 +29,9 @@ ALLOWED_PRIVACY_STATUSES = {
     "automated_privacy_clear",
 }
 ATTESTATION_SCHEMA = "blindassist_v3_source_attestation_v1"
+ASSET_INVENTORY_SCHEMA = "blindassist_source_asset_inventory_v1"
+ASSEMBLY_RECIPE = "assembly_recipe.json"
+ASSET_INVENTORY = "source_asset_inventory.json"
 ALLOWED_SOURCE_ADAPTERS = {
     "sanpo_v0",
     "bdd100k_v1",
@@ -43,6 +47,14 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def crc32_file(path: Path) -> str:
+    checksum = 0
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            checksum = zlib.crc32(chunk, checksum)
+    return f"{checksum & 0xffffffff:08x}"
 
 
 def check(name: str, passed: bool, detail: str) -> dict[str, Any]:
@@ -109,6 +121,8 @@ def source_attestation_errors(root: Path, rows: list[dict[str, Any]], payload: d
     errors: list[str] = []
     if payload.get("schema") != ATTESTATION_SCHEMA:
         errors.append(f"source_attestation.json schema must be {ATTESTATION_SCHEMA}")
+    for prefix in ("recipe", "asset_inventory"):
+        verify_bound_file(root, payload, prefix, errors)
     sources = payload.get("sources")
     if not isinstance(sources, list) or not sources:
         return errors + ["source_attestation.json requires a non-empty sources list"]
@@ -155,6 +169,168 @@ def source_attestation_errors(root: Path, rows: list[dict[str, Any]], payload: d
     return errors
 
 
+def source_asset_inventory_errors(
+    root: Path, rows: list[dict[str, Any]], payload: dict[str, Any], attestation: dict[str, Any],
+) -> list[str]:
+    """Require a one-to-one, SHA-bound raw-evidence inventory for every sample."""
+    errors: list[str] = []
+    if payload.get("schema") != ASSET_INVENTORY_SCHEMA:
+        errors.append(f"source asset inventory schema must be {ASSET_INVENTORY_SCHEMA}")
+    assets = payload.get("assets")
+    if not isinstance(assets, list):
+        return errors + ["source asset inventory requires an assets list"]
+    source_ids = {
+        str(item.get("source_id", "")).strip()
+        for item in attestation.get("sources", []) if isinstance(item, dict)
+    }
+    remote_inventories: dict[str, dict[str, Any]] = {}
+    for receipt in attestation.get("sources", []):
+        if not isinstance(receipt, dict):
+            continue
+        source_id = str(receipt.get("source_id", "")).strip()
+        relative = str(receipt.get("inventory_path", "")).strip()
+        path = (root / relative).resolve()
+        try:
+            path.relative_to(root)
+        except ValueError:
+            continue
+        if path.is_file():
+            try:
+                remote_inventories[source_id] = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                pass
+    row_by_id = {str(row.get("id", "")): row for row in rows}
+    by_id: dict[str, dict[str, Any]] = {}
+    for item in assets:
+        if not isinstance(item, dict):
+            errors.append("source asset inventory entries must be objects")
+            continue
+        entry_id = str(item.get("entry_id", "")).strip()
+        if not entry_id or entry_id in by_id:
+            errors.append(f"duplicate or missing source asset inventory id: {entry_id!r}")
+            continue
+        by_id[entry_id] = item
+        sample_id = str(item.get("sample_id", "")).strip()
+        row = row_by_id.get(sample_id)
+        if row is None:
+            errors.append(f"{entry_id}: inventory references unknown sample {sample_id!r}")
+            continue
+        if str(item.get("source_id", "")).strip() not in source_ids:
+            errors.append(f"{entry_id}: inventory source_id is not attested")
+        if item.get("session_id") != row.get("session_id") or item.get("frame_index") != row.get("frame_index"):
+            errors.append(f"{entry_id}: inventory session/frame differs from sample")
+        relative = str(item.get("path", "")).strip()
+        expected = str(item.get("sha256", "")).strip()
+        path = (root / relative).resolve()
+        try:
+            path.relative_to(root)
+        except ValueError:
+            errors.append(f"{entry_id}: raw evidence path escapes dataset root")
+            continue
+        if len(expected) != 64 or not path.is_file() or sha256_file(path) != expected:
+            errors.append(f"{entry_id}: raw evidence file is missing or SHA256 differs")
+            continue
+        role = str(item.get("role", ""))
+        if role in {"guide_rgb", "guide_polygon"}:
+            receipt = item.get("remote_receipt") if isinstance(item.get("remote_receipt"), dict) else {}
+            inventory = remote_inventories.get(str(item.get("source_id", "")), {})
+            members = inventory.get("members") if isinstance(inventory.get("members"), list) else []
+            member_path = str(receipt.get("origin_member_path", ""))
+            member = next(
+                (candidate for candidate in members if isinstance(candidate, dict) and candidate.get("path") == member_path),
+                None,
+            )
+            if member is None:
+                errors.append(f"{entry_id}: Guide origin member is absent from attested remote inventory")
+                continue
+            if int(receipt.get("size", -1)) != path.stat().st_size or int(member.get("size", -2)) != path.stat().st_size:
+                errors.append(f"{entry_id}: Guide origin member size differs from raw asset")
+            actual_crc = crc32_file(path)
+            if str(receipt.get("crc32", "")).lower() != actual_crc or str(member.get("crc32", "")).lower() != actual_crc:
+                errors.append(f"{entry_id}: Guide origin member CRC32 differs from raw asset")
+            archive = receipt.get("archive") if isinstance(receipt.get("archive"), dict) else {}
+            source = inventory.get("source") if isinstance(inventory.get("source"), dict) else {}
+            for field in ("etag", "generation", "md5_base64"):
+                if not str(archive.get(field, "")).strip() or archive.get(field) != source.get(field):
+                    errors.append(f"{entry_id}: Guide archive {field} differs from attested remote inventory")
+
+    referenced: list[str] = []
+    for row in rows:
+        sample_id = str(row.get("id", "<unknown>"))
+        ids = row.get("source_asset_ids")
+        if not isinstance(ids, list) or not ids or any(not isinstance(value, str) for value in ids):
+            errors.append(f"{sample_id}: source_asset_ids must be a non-empty string list")
+            continue
+        if len(ids) != len(set(ids)):
+            errors.append(f"{sample_id}: source_asset_ids contains duplicates")
+        referenced.extend(ids)
+        selected = [by_id[value] for value in ids if value in by_id]
+        if len(selected) != len(ids):
+            errors.append(f"{sample_id}: source_asset_ids references missing inventory entries")
+            continue
+        if any(str(item.get("sample_id", "")) != sample_id for item in selected):
+            errors.append(f"{sample_id}: source asset belongs to another sample")
+        authority = row.get("label_authority")
+        required_roles = (
+            {"guide_rgb", "guide_polygon", "sanpo_rgb", "sanpo_raw_mask"}
+            if authority == "procedural_ground_truth" else {"sanpo_rgb", "sanpo_raw_mask"}
+        )
+        actual_roles = {str(item.get("role", "")) for item in selected}
+        if actual_roles != required_roles:
+            errors.append(f"{sample_id}: raw evidence roles must be {sorted(required_roles)}")
+        provenance = row.get("label_provenance") if isinstance(row.get("label_provenance"), dict) else {}
+        declared_assets = provenance.get("source_assets")
+        if not isinstance(declared_assets, list):
+            errors.append(f"{sample_id}: label provenance lacks raw source_assets")
+            continue
+        declared = {
+            (str(item.get("role", "")), str(item.get("source_id", "")), str(item.get("path", "")), str(item.get("sha256", "")))
+            for item in declared_assets if isinstance(item, dict)
+        }
+        inventoried = {
+            (str(item.get("role", "")), str(item.get("source_id", "")), str(item.get("path", "")), str(item.get("sha256", "")))
+            for item in selected
+        }
+        if declared != inventoried:
+            errors.append(f"{sample_id}: provenance raw assets differ from source inventory")
+        declared_by_role = {
+            str(item.get("role", "")): item for item in declared_assets if isinstance(item, dict)
+        }
+        inventoried_by_role = {str(item.get("role", "")): item for item in selected}
+        for role in {"guide_rgb", "guide_polygon"} & actual_roles:
+            if declared_by_role[role].get("remote_receipt") != inventoried_by_role[role].get("remote_receipt"):
+                errors.append(f"{sample_id}: {role} remote receipt differs from source inventory")
+        if authority == "source_ground_truth":
+            by_role = {str(item.get("role", "")): item for item in selected}
+            raw_image = by_role.get("sanpo_rgb", {})
+            raw_mask = by_role.get("sanpo_raw_mask", {})
+            if raw_image.get("path") != row.get("image_path") or raw_image.get("sha256") != row.get("image_sha256"):
+                errors.append(f"{sample_id}: source-ground-truth RGB is not the canonical input image")
+            if raw_mask.get("sha256") != provenance.get("source_mask_sha256"):
+                errors.append(f"{sample_id}: source-ground-truth raw mask is not bound to label provenance")
+    if len(referenced) != len(set(referenced)):
+        errors.append("source asset inventory entries must be referenced by exactly one sample")
+    if set(referenced) != set(by_id):
+        errors.append("source asset inventory has missing or unreferenced entries")
+    splits_by_asset: dict[tuple[str, str, str], set[str]] = {}
+    for item in assets:
+        if not isinstance(item, dict):
+            continue
+        row = row_by_id.get(str(item.get("sample_id", "")))
+        if row is None:
+            continue
+        identity = (
+            str(item.get("source_id", "")), str(item.get("role", "")), str(item.get("sha256", "")),
+        )
+        splits_by_asset.setdefault(identity, set()).add(str(row.get("split", "")))
+    for (source_id, role, digest), splits in splits_by_asset.items():
+        if len(splits) > 1:
+            errors.append(
+                f"raw source asset crosses splits: {source_id}/{role}/{digest} appears in {sorted(splits)}"
+            )
+    return errors
+
+
 def policy_errors(policy: dict[str, Any], train_rows: list[dict[str, Any]], blind_rows: list[dict[str, Any]]) -> list[str]:
     errors: list[str] = []
     if policy.get("format") != "blindassist_sanpo_v3_access_policy_v2":
@@ -188,9 +364,11 @@ def build_report(dataset_root: Path) -> dict[str, Any]:
     blind_path = root / CANONICAL_BLIND_MANIFEST
     policy_path = root / "access_policy.json"
     attestation_path = root / "source_attestation.json"
+    recipe_path = root / ASSEMBLY_RECIPE
+    inventory_path = root / ASSET_INVENTORY
     errors: list[str] = []
     checks: list[dict[str, Any]] = []
-    required = [train_path, blind_path, policy_path, attestation_path]
+    required = [train_path, blind_path, policy_path, attestation_path, recipe_path, inventory_path]
     missing = [str(path.relative_to(root)) for path in required if not path.is_file()]
     if missing:
         errors.extend(f"missing required gate input: {item}" for item in missing)
@@ -206,29 +384,52 @@ def build_report(dataset_root: Path) -> dict[str, Any]:
         blind_rows = validator.load_jsonl(blind_path)
         policy = json.loads(policy_path.read_text(encoding="utf-8"))
         attestation = json.loads(attestation_path.read_text(encoding="utf-8"))
+        recipe = json.loads(recipe_path.read_text(encoding="utf-8"))
+        inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
     except (OSError, ValueError, json.JSONDecodeError) as error:
         errors.append(f"failed to load canonical gate inputs: {error}")
-        train_rows, blind_rows, policy, attestation = [], [], {}, {}
+        train_rows, blind_rows, policy, attestation, recipe, inventory = [], [], {}, {}, {}, {}
     checks.append(check("canonical_inputs", not errors, "canonical manifests and access policy loaded" if not errors else errors[-1]))
     if not errors:
         row_errors, train_summary = validator.validate_rows(train_rows, root, {"train", "dev"})
         blind_errors, blind_summary = validator.validate_rows(blind_rows, root, {"blind"})
-        coverage_errors = validator.validate_v3_coverage(train_summary, blind_summary)
+        coverage_policy = recipe.get("coverage_policy") if isinstance(recipe, dict) else None
+        if not isinstance(coverage_policy, dict):
+            coverage_policy = None
+        coverage_errors = validator.validate_v3_coverage(
+            train_summary, blind_summary, coverage_policy,
+        )
         isolation_errors = validator.validate_access_lock(root, train_rows, blind_rows)
         policy_lock_errors = policy_errors(policy, train_rows, blind_rows)
         provenance_errors = privacy_and_source_errors(train_rows + blind_rows)
         attestation_errors = source_attestation_errors(root, train_rows + blind_rows, attestation)
+        inventory_errors = source_asset_inventory_errors(root, train_rows + blind_rows, inventory, attestation)
         training_hashes, training_hash_errors = asset_hashes(root, train_rows)
         blind_hashes, blind_hash_errors = asset_hashes(root, blind_rows)
         hashes = dict(sorted({**training_hashes, **blind_hashes}.items()))
         hash_errors = training_hash_errors + blind_hash_errors
-        errors.extend(row_errors + blind_errors + coverage_errors + isolation_errors + policy_lock_errors + provenance_errors + attestation_errors + hash_errors)
+        errors.extend(row_errors + blind_errors + coverage_errors + isolation_errors + policy_lock_errors + provenance_errors + attestation_errors + inventory_errors + hash_errors)
         checks.extend([
-            check("300_train_dev_plus_120_blind", not coverage_errors, "requires six 50-frame train/dev sequences and two 60-frame blind sequences"),
+            check(
+                "expanded_session_scene_coverage" if coverage_policy else "300_train_dev_plus_120_blind",
+                not coverage_errors,
+                (
+                    "recipe-bound minimum train/dev sessions, per-scene session coverage, official split separation, and two real blind sessions"
+                    if coverage_policy
+                    else "requires six 50-frame train/dev sequences and two 60-frame blind sequences"
+                ),
+            ),
+            check(
+                "duplicate_mask_observation",
+                True,
+                "train/dev=" + json.dumps(train_summary.get("duplicate_mask_observation", {}), sort_keys=True)
+                + "; blind=" + json.dumps(blind_summary.get("duplicate_mask_observation", {}), sort_keys=True),
+            ),
             check("four_class_semantic_masks", not (row_errors + blind_errors) and not coverage_errors, "all masks are dimension-matched 0..3 IDs and all four classes occur in train/dev"),
             check("asset_sha256", not hash_errors, f"{len(hashes)} image/mask hashes match manifest declarations"),
             check("source_and_privacy", not provenance_errors, "source license fields and allowed privacy status are present"),
             check("source_attestation", not attestation_errors, "source receipts, evidence and inventories are SHA256-bound"),
+            check("raw_asset_closure", not inventory_errors, "recipe and every raw source asset are inventoried, copied and SHA256-bound"),
             check("label_authority", not (row_errors + blind_errors), "authority is explicit; dev/blind allow only source GT or fully SHA256-bound procedural GT and always reject pseudo labels"),
             check("session_isolation", not isolation_errors and not policy_lock_errors, "train/dev and exactly two benchmark_only blind sessions are disjoint"),
         ])

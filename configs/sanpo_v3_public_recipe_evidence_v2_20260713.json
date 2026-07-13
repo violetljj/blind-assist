@@ -1,0 +1,53 @@
+{
+  "sources": [
+    {
+      "source_id": "sanpo_real_v0",
+      "adapter_id": "sanpo_v0",
+      "package_root": ".",
+      "dataset": "SANPO-Real",
+      "dataset_version": "v0",
+      "license": "Creative Commons Attribution 4.0 International",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "privacy_review_status": "automated_privacy_clear",
+      "license_evidence_path": "test-artifacts.local/datasets/sanpo-v3-source-k7-20260713/source_licenses.md",
+      "privacy_evidence_path": "test-artifacts.local/datasets/sanpo-v3-source-k7-20260713/dataset_spec.json",
+      "inventory_path": "configs/sanpo_v3_sanpo_source_receipts_20260713.json"
+    },
+    {
+      "source_id": "guidetwsi_sdome_15k",
+      "adapter_id": "guidetwsi_v1",
+      "package_root": ".",
+      "dataset": "GuideTWSI SDome-15K",
+      "dataset_version": "Kaggle version 1",
+      "license": "CC0: Public Domain",
+      "license_url": "https://www.kaggle.com/datasets/guidedogrobot/guidetwsi",
+      "privacy_review_status": "public_dataset_no_personal_data",
+      "license_evidence_path": "test-artifacts.local/guidetwsi-kaggle-metadata.json",
+      "privacy_evidence_path": ".downloads/GuideTWSI/docs/SYNTHETIC_PIPELINE.md",
+      "inventory_path": "test-artifacts.local/guidetwsi-sdome-remote-inventory.json"
+    },
+    {
+      "source_id": "guidetwsi_sanpo_procedural_v1",
+      "adapter_id": "procedural_tactile_v1",
+      "package_root": ".",
+      "dataset": "GuideTWSI SDome-15K + SANPO-Real v0",
+      "dataset_version": "blindassist deterministic compositor v1",
+      "license": "CC BY 4.0 (SANPO) and CC0 (GuideTWSI)",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "privacy_review_status": "automated_privacy_clear",
+      "license_evidence_path": "test-artifacts.local/guidetwsi-kaggle-metadata.json",
+      "privacy_evidence_path": "test-artifacts.local/datasets/sanpo-v3-source-k7-20260713/source_licenses.md",
+      "inventory_path": "test-artifacts.local/guidetwsi-sdome-remote-inventory.json"
+    }
+  ],
+  "sequences": [
+    {"source_id":"sanpo_real_v0","package_root":"test-artifacts.local/datasets/blindassist-sanpo-dev-boundary-lateral-draft-r2-20260711","manifest_path":"manifest.draft.jsonl","native_session_id":"d3CKbaNbOPz-ZjLPUd6qD6wSNC3OKQxL","split":"train","scene_bucket":"parallel_boundary"},
+    {"source_id":"sanpo_real_v0","package_root":"test-artifacts.local/datasets/blindassist-sanpo-dev-center-obstacle-draft-20260712","manifest_path":"manifest.draft.jsonl","native_session_id":"SRHpBZXk_0pKjk6SK23VOhoLZGZfnKFF","split":"train","scene_bucket":"step_curb"},
+    {"source_id":"sanpo_real_v0","package_root":"test-artifacts.local/datasets/blindassist-sanpo-dev-center-obstacle-geometry-draft-r2-20260712","manifest_path":"manifest.draft.jsonl","native_session_id":"GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT","split":"train","scene_bucket":"center_obstacle"},
+    {"source_id":"sanpo_real_v0","package_root":"test-artifacts.local/datasets/blindassist-sanpo-dev-lateral-clean-geometry-draft-r3-20260712","manifest_path":"manifest.draft.jsonl","native_session_id":"ddEl0JtxAC3nnXI00uzGQH9cqwAK_uOu","split":"dev","scene_bucket":"lateral_pedestrian_or_ebike"},
+    {"source_id":"guidetwsi_sanpo_procedural_v1","package_root":"test-artifacts.local/datasets/procedural-tactile-train-02-20260713","manifest_path":"reviewed-source-manifest.jsonl","native_session_id":"procedural_tactile_train_02","split":"train","scene_bucket":"tactile_paving_occupied"},
+    {"source_id":"guidetwsi_sanpo_procedural_v1","package_root":"test-artifacts.local/datasets/procedural-lowlight-dev-04-20260713","manifest_path":"reviewed-source-manifest.jsonl","native_session_id":"procedural_lowlight_dev_04","split":"dev","scene_bucket":"low_light"},
+    {"source_id":"guidetwsi_sanpo_procedural_v1","package_root":"test-artifacts.local/datasets/procedural-tactile-blind-06-20260713","manifest_path":"reviewed-source-manifest.jsonl","native_session_id":"procedural_tactile_blind_06","split":"blind","scene_bucket":"tactile_paving_occupied"},
+    {"source_id":"guidetwsi_sanpo_procedural_v1","package_root":"test-artifacts.local/datasets/procedural-tactile-blind-04-20260713","manifest_path":"reviewed-source-manifest.jsonl","native_session_id":"procedural_tactile_blind_04","split":"blind","scene_bucket":"tactile_paving_occupied"}
+  ]
+}

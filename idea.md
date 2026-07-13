@@ -4,7 +4,22 @@
 
 - `v10.4.0` 已通过当前 30 帧否定集：错误提醒率 `3.3%`、主区域命中 `86.7%`、total P95 `65.919ms`。
 - 已补充许可明确的公开平行路沿、正前方台阶、中心通道障碍连续序列；扩展集危险提醒召回 `88.9%`，但错误提醒率 `25.9%` 未达门槛。
-- 待完成：抑制通过台阶后的重复提醒、消除平行边界的 generic obstacle 误判，并补齐可许可的盲道占用/路桩近场公开序列；通过全部门槛前不训练 MobileNetV3 + LR-ASPP。
+- 2026-07-13 已完成 14 条官方 session、720 帧 real-only canonical、step-budgeted 三 seed 训练和三段晋级门。最佳 384 候选把 mIoU/boundary IoU 提高到 `0.4344/0.4506`，但其余 seed 明显回落，离线门仍有三项 red，因此没有进入 INT8 和设备事件门。
+- 待完成：把优化目标从“最好 seed”改成“跨 session 宏平均 + 最差场景 + 最差 seed”；优先补强 step/curb 中的 unknown 与 obstacle 互混、无 boundary 场景的 boundary 幻觉，并在离线门全绿后才进入 INT8 和同设备事件复测。
+
+### 2026-07-13：文献驱动的研究指导（记录）
+
+- 依据：已阅读本地论文缓存 `.downloads/papers/2026-07-assistive-navigation/` 中的 SANPO、RGB-D 助盲系统、手机障碍检测、MobileNetV3、FastDepth、Lite-Mono 与 BiSeNet V2。它们的共同结论不是立即替换模型，而是把 BlindAssist 定义为“连续可通行走廊的风险事件系统”：分割/检测输出只提供证据，连续帧确认风险，事件生命周期控制提醒次数。
+- 当前优先级：先关闭风险事件误提醒门，而不是训练分割模型。现有 `RiskEventTracker` 已有 `APPROACHING -> ALERTED -> PASSED_OR_RECEDING -> CLEARED` 状态；下一步应区分“真正通过风险”和“短暂 mask 丢失”，为已提醒事件加入冷却与再入场条件。必须新增并报告 `alerts_per_event`、`duplicate_alert_events`、`post_pass_alert_frames`、`false_alert_duration_ms`；通过台阶后的重复提醒必须为零。
+- 走廊语义：将“最大分割连通域”升级为“中心近场走廊是否被切断”的证据。建议输出 `walkablePathContinuity`、`corridorBlockedWidthRatio`、`boundaryCrossesCorridor`、`nearFieldOccupancy`。`boundary_step_curb` 默认仅是边界证据；只有横断中心走廊，且同时满足近场、持续或相对接近等至少两类证据时才允许提醒。平行路沿不得单独升到提醒等级。
+- 时序证据：`TemporalRiskTracker` 不能仅因框面积、底边或相对深度的任一变化就认定逼近。下一候选应要求两类一致证据或单一证据持续多帧，并加入低成本的全局相机运动/帧质量 veto，抑制头动、俯仰和视差造成的假逼近。深度仅可作确认或拒绝证据，不得独立提升风险。
+- 模型顺序：事件闭环与走廊规则通过后，才以 SANPO-Synthetic 预训练、SANPO-Real 微调训练全 INT8 `MobileNetV3 + Lite R-ASPP` 四类分割候选（`walkable`、`boundary_step_curb`、`obstacle`、`unknown_nonwalkable`）。`BiSeNetV2` 仅在 MobileNetV3 持续漏掉台阶/路沿边界时作为同数据、同契约的对照；FastDepth 与 Lite-Mono 保持离线相对深度消融，不进入实时提醒主链。
+- 候选晋级门：在冻结的连续序列与独立盲测 session 上，危险事件提醒召回不得低于当前 `88.9%`，错误提醒率须不高于几何基线 `5.3%`，关键漏报不得增加，`post_pass_alert_frames=0`，并预先登记端到端 P95 延迟预算（当前建议不高于 `70ms`）。不得用 mIoU、GPU FPS 或单帧深度误差单独宣布模型可上线。
+- 证据状态矩阵：后续报告不得再用单一 `training_authorized=true` 代表整条路线可发布。至少分开报告 `raw-source closure`、底层原始资产跨 split 隔离、训练规模/域覆盖、Torch↔TensorFlow 浮点等价、TensorFlow↔全 INT8 TFLite 量化保真、blind 风险事件门和同设备延迟/误提醒门；只有全部绿色才允许进入 App A/B。
+- 数据边界：当前 `300 train/dev + 120 blind` 的 420 帧应定位为回归/门禁集，不宣称足以训练通用分割器。下一轮训练集需按独立 source session、有效独立帧数和场景域覆盖扩充；blind 不能只含程序化盲道序列，还要覆盖真实台阶/路沿、中心障碍、平行边界和动态侧向目标。
+- 不确定性：把 `unknown_nonwalkable` 从被动兜底类升级为可校准的 `unknown/abstain` 证据，报告走廊未知占用率、拒判率和 selective risk；未知区域不得被强行改写成普通 obstacle，只有持续切断中心近场走廊时才产生克制的“路径不确定”事件。
+- 人因验证：模型与事件门闭合后，再在受控条件下记录碰撞/触碰、完成时间、路线偏离、人工干预、每事件提醒数和主观提醒负担。遵循“安全直行时安静、风险事件一次提醒、详细语义按需获取”，避免用提醒数量增加冒充安全提升。
+- 产品边界：学习 Lin 等助盲系统的“无风险少说话、输出可行动方向”原则，但不采用不可解释的端到端动作模仿替代当前风险证据链；所有路线继续明确为辅助提醒原型，不替代盲杖、导盲犬、人工判断或专业辅助设备。
 
 本文件用于收集 BlindAssist 后续可能性、创造性想法和产品成熟化方向。它不是开发日志，也不代表所有想法都会立即实施；真正落地时仍需同步更新 `README.md`、`DEVELOPMENT_LOG.md`、版本号、测试结果和 APK 归档。
 

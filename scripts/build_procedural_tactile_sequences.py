@@ -9,6 +9,7 @@ import json
 import math
 import random
 import shutil
+import zlib
 from pathlib import Path
 
 import numpy as np
@@ -71,6 +72,48 @@ def relative(path: Path, root: Path) -> str:
     return path.resolve().relative_to(root.resolve()).as_posix()
 
 
+def copy_raw_evidence(source: Path, output: Path, role: str) -> tuple[str, str]:
+    """Copy an immutable generator input into the package and bind its SHA256."""
+    digest = sha256_file(source)
+    suffix = source.suffix.lower() or ".bin"
+    destination = output / "procedural_evidence" / "raw_sources" / f"{role}_{digest}{suffix}"
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if not destination.exists():
+        shutil.copy2(source, destination)
+    elif sha256_file(destination) != digest:
+        raise ValueError(f"raw evidence collision: {destination}")
+    return relative(destination, output), digest
+
+
+def crc32_file(path: Path) -> str:
+    checksum = 0
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            checksum = zlib.crc32(chunk, checksum)
+    return f"{checksum & 0xffffffff:08x}"
+
+
+def guide_remote_receipt(path: Path, inventory_path: Path, explicit_member: str | None) -> dict:
+    inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+    size, crc32 = path.stat().st_size, crc32_file(path)
+    members = inventory.get("members") if isinstance(inventory.get("members"), list) else []
+    matches = [
+        item for item in members if isinstance(item, dict)
+        and int(item.get("size", -1)) == size and str(item.get("crc32", "")).lower() == crc32
+        and (explicit_member is None or str(item.get("path", "")) == explicit_member)
+    ]
+    if len(matches) != 1:
+        raise ValueError(f"Guide raw asset must match exactly one remote inventory member: {path}")
+    source = inventory.get("source") if isinstance(inventory.get("source"), dict) else {}
+    archive = {key: source.get(key) for key in ("etag", "generation", "md5_base64")}
+    if any(not str(value or "").strip() for value in archive.values()):
+        raise ValueError("Guide remote inventory lacks archive etag/generation/md5_base64")
+    return {
+        "origin_member_path": str(matches[0]["path"]), "size": size, "crc32": crc32,
+        "archive": archive,
+    }
+
+
 def build(args: argparse.Namespace) -> list[dict]:
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -97,6 +140,15 @@ def build(args: argparse.Namespace) -> list[dict]:
     evidence.mkdir(parents=True, exist_ok=True)
     tactile.save(tactile_copy)
     shutil.copy2(Path(__file__).resolve(), code_copy)
+    guide_image_evidence = copy_raw_evidence(guide_image, output, "guide_rgb")
+    guide_label_evidence = copy_raw_evidence(guide_label, output, "guide_polygon")
+    guide_inventory = Path(args.guide_inventory).resolve()
+    guide_image_receipt = guide_remote_receipt(
+        guide_image, guide_inventory, getattr(args, "guide_image_member", None),
+    )
+    guide_label_receipt = guide_remote_receipt(
+        guide_label, guide_inventory, getattr(args, "guide_label_member", None),
+    )
     rng = random.Random(args.seed)
     tactile_left, tactile_top, tactile_right, tactile_bottom = tactile_bbox
     tactile_points = np.argwhere(np.asarray(tactile) > 0)
@@ -121,6 +173,8 @@ def build(args: argparse.Namespace) -> list[dict]:
     sequence_id = f"procedural_{args.session_id}"
     for index, source_row in enumerate(candidates):
         source_image_path, source_mask_path = source_paths(source_row, sanpo_root)
+        sanpo_image_evidence = copy_raw_evidence(source_image_path, output, "sanpo_rgb")
+        sanpo_mask_evidence = copy_raw_evidence(source_mask_path, output, "sanpo_raw_mask")
         with Image.open(source_image_path) as opened:
             source_rgb = opened.convert("RGB")
         with Image.open(source_mask_path) as opened:
@@ -184,6 +238,12 @@ def build(args: argparse.Namespace) -> list[dict]:
                 {"role": "tactile_ground_truth", "source_id": "guidetwsi_sdome_15k", "path": relative(tactile_copy, output), "sha256": tactile_sha},
                 {"role": "obstacle_ground_truth", "source_id": "sanpo_real_v0", "path": relative(obstacle_copy, output), "sha256": obstacle_sha},
             ],
+            "source_assets": [
+                {"role": "guide_rgb", "source_id": "guidetwsi_sdome_15k", "path": guide_image_evidence[0], "sha256": guide_image_evidence[1], "remote_receipt": guide_image_receipt},
+                {"role": "guide_polygon", "source_id": "guidetwsi_sdome_15k", "path": guide_label_evidence[0], "sha256": guide_label_evidence[1], "remote_receipt": guide_label_receipt},
+                {"role": "sanpo_rgb", "source_id": "sanpo_real_v0", "path": sanpo_image_evidence[0], "sha256": sanpo_image_evidence[1]},
+                {"role": "sanpo_raw_mask", "source_id": "sanpo_real_v0", "path": sanpo_mask_evidence[0], "sha256": sanpo_mask_evidence[1]},
+            ],
             "output_mask_sha256": mask_sha,
         }
         manifest_rows.append({
@@ -210,6 +270,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--guide-image", type=Path, required=True)
     parser.add_argument("--guide-label", type=Path, required=True)
+    parser.add_argument("--guide-inventory", type=Path, required=True)
+    parser.add_argument("--guide-image-member")
+    parser.add_argument("--guide-label-member")
     parser.add_argument("--sanpo-manifest", type=Path, required=True)
     parser.add_argument("--sanpo-root", type=Path, required=True)
     parser.add_argument("--split", choices=("train", "dev", "blind"), required=True)

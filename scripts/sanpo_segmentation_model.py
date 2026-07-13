@@ -7,16 +7,28 @@ from typing import Any
 
 
 def build_mobilenetv3_lraspp(
-    keras: Any, input_size: int, num_classes: int = 4, backbone_weights: str | None = None,
+    keras: Any,
+    input_size: int,
+    num_classes: int = 4,
+    backbone_weights: str | None = None,
+    *,
+    backbone_alpha: float = 0.75,
+    decoder_channels: int = 96,
 ) -> Any:
     """Build the single authoritative MobileNetV3Small + Lite R-ASPP graph."""
+    if input_size not in {256, 384, 512}:
+        raise ValueError("input_size must be one of: 256, 384, 512")
+    if backbone_alpha not in {0.75, 1.0}:
+        raise ValueError("backbone_alpha must be one of: 0.75, 1.0")
+    if decoder_channels <= 0:
+        raise ValueError("decoder_channels must be positive")
     inputs = keras.Input(shape=(input_size, input_size, 3), dtype="float32", name="rgb")
     normalized = keras.layers.Rescaling(1.0 / 127.5, offset=-1.0, name="rgb_0_255_to_mobilenet")(inputs)
     backbone = keras.applications.MobileNetV3Small(
         input_tensor=normalized,
         include_top=False,
         weights=backbone_weights,
-        alpha=0.75,
+        alpha=backbone_alpha,
         minimalistic=False,
         include_preprocessing=False,
     )
@@ -35,11 +47,11 @@ def build_mobilenetv3_lraspp(
     high = candidates[high_size]
     low = candidates[low_size]
     context = keras.layers.GlobalAveragePooling2D(keepdims=True, name="lraspp_context_pool")(high)
-    context = keras.layers.Conv2D(96, 1, use_bias=False, name="lraspp_context_project")(context)
+    context = keras.layers.Conv2D(decoder_channels, 1, use_bias=False, name="lraspp_context_project")(context)
     context = keras.layers.BatchNormalization(name="lraspp_context_bn")(context)
     context = keras.layers.ReLU(max_value=6.0, name="lraspp_context_relu")(context)
     context = keras.layers.UpSampling2D(size=(high_size, high_size), interpolation="nearest", name="lraspp_context_up")(context)
-    high = keras.layers.Conv2D(96, 1, use_bias=False, name="lraspp_high_project")(high)
+    high = keras.layers.Conv2D(decoder_channels, 1, use_bias=False, name="lraspp_high_project")(high)
     high = keras.layers.BatchNormalization(name="lraspp_high_bn")(high)
     high = keras.layers.ReLU(max_value=6.0, name="lraspp_high_relu")(high)
     high = keras.layers.Multiply(name="lraspp_context_gate")([high, context])

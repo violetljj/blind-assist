@@ -93,6 +93,12 @@ class SegmentationCandidateToolTest(unittest.TestCase):
                     {"role": "tactile_ground_truth", "source_id": "guidetwsi_fixture", "path": tactile.relative_to(root).as_posix(), "sha256": candidate.training_gate.sha256_file(tactile)},
                     {"role": "obstacle_ground_truth", "source_id": "sanpo_fixture", "path": obstacle.relative_to(root).as_posix(), "sha256": candidate.training_gate.sha256_file(obstacle)},
                 ],
+                "source_assets": [
+                    {"role": "guide_rgb", "source_id": "guidetwsi_fixture", "path": tactile.relative_to(root).as_posix(), "sha256": candidate.training_gate.sha256_file(tactile)},
+                    {"role": "guide_polygon", "source_id": "guidetwsi_fixture", "path": config.relative_to(root).as_posix(), "sha256": candidate.training_gate.sha256_file(config)},
+                    {"role": "sanpo_rgb", "source_id": "sanpo_fixture", "path": dev["image_path"], "sha256": candidate.training_gate.sha256_file(root / dev["image_path"])},
+                    {"role": "sanpo_raw_mask", "source_id": "sanpo_fixture", "path": obstacle.relative_to(root).as_posix(), "sha256": candidate.training_gate.sha256_file(obstacle)},
+                ],
                 "output_mask_sha256": dev["semantic_mask_sha256"],
             }
             records = candidate.load_records(self.write_manifest(root, [train, dev]))
@@ -150,8 +156,40 @@ class SegmentationCandidateToolTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             candidate.parse_args(["--dataset-root", "fixture", "--export-only"])
 
+    def test_imported_weights_require_backend_equivalence_report(self) -> None:
+        with self.assertRaises(SystemExit):
+            candidate.parse_args([
+                "--dataset-root", "fixture", "--import-weights", "candidate.weights.h5", "--export-only",
+            ])
+
     def test_authoritative_model_definition_is_delegated(self) -> None:
         self.assertIsNotNone(candidate.sanpo_segmentation_model.build_mobilenetv3_lraspp)
+
+    def test_model_config_cli_is_explicit_and_validated(self) -> None:
+        args = candidate.parse_args([
+            "--dataset-root", "fixture",
+            "--backbone-alpha", "1.0",
+            "--decoder-channels", "128",
+            "--input-size", "512",
+        ])
+        self.assertEqual(1.0, args.backbone_alpha)
+        self.assertEqual(128, args.decoder_channels)
+        self.assertEqual(512, args.input_size)
+        with self.assertRaises(SystemExit):
+            candidate.parse_args([
+                "--dataset-root", "fixture",
+                "--backbone-alpha", "0.5",
+            ])
+        with self.assertRaises(SystemExit):
+            candidate.parse_args([
+                "--dataset-root", "fixture",
+                "--decoder-channels", "0",
+            ])
+        with self.assertRaises(SystemExit):
+            candidate.parse_args([
+                "--dataset-root", "fixture",
+                "--input-size", "320",
+            ])
 
     def test_tensorflow_builds_and_exports_full_int8_contract(self) -> None:
         try:
@@ -170,6 +208,8 @@ class SegmentationCandidateToolTest(unittest.TestCase):
             contract = candidate.validate_int8_tflite(tf, output)
             self.assertEqual("int8", contract["input"]["dtype"])
             self.assertEqual("int8", contract["output"]["dtype"])
+            with self.assertRaisesRegex(AssertionError, "shape mismatch"):
+                candidate.validate_int8_tflite(tf, output, input_size=512)
 
 
 if __name__ == "__main__":

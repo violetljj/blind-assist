@@ -9,6 +9,10 @@
 
 ## Unreleased - SANPO v2 公开连续序列扩展验证
 
+- 新增 real-only canonical v4：14 条互斥 SANPO 官方 session 组成 400 train + 200 session-held-out dev + 120 official-test blind，共 720 帧；四场景桶覆盖、官方 split、raw inventory、逐资产哈希与 blind policy 的 10 项总门全绿。新增 offline quality、INT8 fidelity、device event 三段独立晋级门，并把 input size / backbone alpha / decoder channels 的 canonical 配置哈希贯穿跨后端、导出和质量报告。
+- 完成 step-budgeted、session-balanced、rare-class guided crop、CE+Dice+Focal、两阶段冻结/微调和三 seed 审计。最佳 384×384/alpha 1.0/decoder 96 单 seed 为 mIoU `0.4344`、boundary IoU `0.4506`，但其余两个 seed 为 `0.1804/0.1734` 与 `0.2498/0.1548`（mIoU/boundary IoU），稳定性不足。最佳候选离线门仍有三项 red，故停止在导出前，不生成 INT8、不运行设备事件门、不替换默认模型。
+- SANPO v3 来源门禁升级为逐资产闭环：保存并绑定 Guide RGB/polygon、SANPO RGB/raw mask、assembly recipe 与逐样本 inventory；Guide receipt 对照远程 ZIP member/CRC/对象元数据，底层 raw asset 跨 train/dev/blind 复用会直接拒绝。修复发布后授权报告仍绑定 `.building` 的问题，新 evidence-v4 最终根门禁全绿。
+- 使用修正后的 MobileNetV3 + LR-ASPP、RTX 5060、batch 64 重训；候选 dev mIoU `0.1711`、boundary/curb IoU `0.0000144`。新增 Torch↔TensorFlow 数值等价门；首轮暴露 CuDNN TF32 漂移，固化 TF32-off 精确执行契约后在原阈值下达到 `100%` argmax agreement（max abs `0.0000634`）。候选仍因质量门失败保持 `do_not_replace_default_model`，不导出 TFLite。
 - 更正：此前 canonical green 与 GPU/TFLite 指标经最终安全复核降级为 audit-only；source inventory 和程序化原始证据闭合前不启动正式训练。训练入口已改为仅消费预生成门禁报告与 train/dev 哈希，不再读取 blind。
 - 修复 LR-ASPP 误选浅层特征导致 MobileNetV3 后半段被裁掉的问题；模型参数量从 197,212 恢复到 670,588。新增不读取数据集的 GPU 吞吐工具；RTX 5060 上 batch 64 约 358 images/s、峰值约 2.88 GB，并设为训练默认值。
 

@@ -32,6 +32,9 @@ SANPO_MAP = {
     24: 2, 25: 2, 26: 2, 27: 3, 28: 2, 29: 3, 30: 3,
 }
 ADAPTER_MAPS = {"sanpo_v0": SANPO_MAP}
+ASSET_INVENTORY_SCHEMA = "blindassist_source_asset_inventory_v1"
+ASSEMBLY_RECIPE = "assembly_recipe.json"
+ASSET_INVENTORY = "source_asset_inventory.json"
 
 
 def sha256_file(path: Path) -> str:
@@ -52,6 +55,41 @@ def load_json(path: Path) -> Any:
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def select_source_sequence(
+    source_rows: list[dict[str, Any]], native_session: str, expected_count: int,
+    expected_official_split: str | None,
+) -> list[dict[str, Any]]:
+    """Select one contiguous, official-split-bound source session.
+
+    Frame count belongs to the recipe instead of being inferred from the target
+    split.  This keeps the canonical builder reusable as train/dev session
+    coverage grows while retaining the fixed 60-frame blind contract.
+    """
+    if expected_count <= 0:
+        raise ValueError("expected_frame_count must be positive")
+    selected = [
+        item for item in source_rows
+        if str(item.get("source", {}).get("session_id") or item.get("session_id")) == native_session
+    ]
+    selected.sort(key=lambda item: int(item.get("frame_index", -1)))
+    indexes = [int(item.get("frame_index", -1)) for item in selected]
+    if len(selected) != expected_count or indexes != list(range(expected_count)):
+        raise ValueError(
+            f"{native_session}: requires contiguous {expected_count}-frame source sequence"
+        )
+    if expected_official_split:
+        actual = {
+            str(item.get("source", {}).get("official_split", "")).strip()
+            for item in selected
+        }
+        if actual != {expected_official_split}:
+            raise ValueError(
+                f"{native_session}: official split {sorted(actual)!r} differs from recipe "
+                f"{expected_official_split!r}"
+            )
+    return selected
 
 
 def safe_source_path(root: Path, value: str) -> Path:
@@ -106,9 +144,27 @@ def copy_sha_bound_file(
     return destination.as_posix(), actual
 
 
+def copy_content_addressed(
+    package_root: Path, staging: Path, source_value: str, expected_sha: str, source_id: str, role: str,
+) -> tuple[str, str]:
+    source = safe_source_path(package_root, source_value)
+    actual = sha256_file(source)
+    if len(expected_sha) != 64 or actual != expected_sha:
+        raise ValueError(f"source SHA256 mismatch: {source_value}")
+    suffix = source.suffix.lower() or ".bin"
+    relative = Path("raw_evidence") / source_id / f"{role}_{actual}{suffix}"
+    output = staging / relative
+    output.parent.mkdir(parents=True, exist_ok=True)
+    if not output.exists():
+        shutil.copy2(source, output)
+    elif sha256_file(output) != actual:
+        raise ValueError(f"raw evidence collision: {relative.as_posix()}")
+    return relative.as_posix(), actual
+
+
 def copy_procedural_assets(
     package_root: Path, staging: Path, source_row: dict[str, Any], sample_id: str, split: str,
-) -> tuple[str, str, dict[str, Any], str, str]:
+) -> tuple[str, str, dict[str, Any], str, str, list[dict[str, str]]]:
     """Import and path-rebind a fully reviewed procedural sample."""
     if source_row.get("label_authority") != "procedural_ground_truth":
         raise ValueError(f"{sample_id}: procedural adapter requires procedural_ground_truth")
@@ -149,9 +205,31 @@ def copy_procedural_assets(
             Path("procedural_evidence") / sample_id / "source_masks" / f"{index}_{item.get('role', 'source')}{suffix}",
         )
         item["path"] = rebound
+    raw_assets = provenance.get("source_assets")
+    required_roles = {"guide_rgb", "guide_polygon", "sanpo_rgb", "sanpo_raw_mask"}
+    if not isinstance(raw_assets, list) or {
+        str(item.get("role", "")) for item in raw_assets if isinstance(item, dict)
+    } != required_roles:
+        raise ValueError(f"{sample_id}: procedural adapter requires all four raw source assets")
+    rebound_assets: list[dict[str, str]] = []
+    for item in raw_assets:
+        if not isinstance(item, dict):
+            raise ValueError(f"{sample_id}: procedural raw source asset is not an object")
+        role = str(item.get("role", ""))
+        source_id = str(item.get("source_id", ""))
+        rebound, digest = copy_content_addressed(
+            package_root, staging, str(item.get("path", "")), str(item.get("sha256", "")), source_id, role,
+        )
+        item["path"] = rebound
+        rebound_item: dict[str, Any] = {
+            "role": role, "source_id": source_id, "path": rebound, "sha256": digest,
+        }
+        if isinstance(item.get("remote_receipt"), dict):
+            rebound_item["remote_receipt"] = deepcopy(item["remote_receipt"])
+        rebound_assets.append(rebound_item)
     if provenance.get("output_mask_sha256") != mask_sha:
         raise ValueError(f"{sample_id}: procedural output mask SHA256 mismatch")
-    return image_path, mask_path, provenance, image_sha, mask_sha
+    return image_path, mask_path, provenance, image_sha, mask_sha, rebound_assets
 
 
 def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[str, Any]:
@@ -168,6 +246,8 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
         if not isinstance(receipts, list) or not isinstance(sequences, list):
             raise ValueError("recipe requires sources and sequences lists")
         receipt_by_id = {str(item["source_id"]): item for item in receipts}
+        recipe_destination = staging / ASSEMBLY_RECIPE
+        shutil.copy2(recipe_path.resolve(), recipe_destination)
         attested_sources: list[dict[str, Any]] = []
         for source_id, receipt in receipt_by_id.items():
             adapter_id = str(receipt.get("adapter_id", ""))
@@ -183,6 +263,7 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
                 "source_id", "adapter_id", "dataset", "dataset_version", "license", "license_url", "privacy_review_status"
             )} | bound)
         rows: list[dict[str, Any]] = []
+        inventory_assets: list[dict[str, Any]] = []
         seen_sessions: set[str] = set()
         for sequence in sequences:
             source_id = str(sequence["source_id"])
@@ -191,11 +272,13 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
             package_root = Path(sequence.get("package_root", receipt["package_root"])).resolve()
             source_rows = load_jsonl(safe_source_path(package_root, str(sequence["manifest_path"])))
             native_session = str(sequence["native_session_id"])
-            selected = [item for item in source_rows if str(item.get("source", {}).get("session_id") or item.get("session_id")) == native_session]
-            selected.sort(key=lambda item: int(item.get("frame_index", -1)))
-            expected_count = 60 if sequence["split"] == "blind" else 50
-            if len(selected) != expected_count or [int(item.get("frame_index", -1)) for item in selected] != list(range(expected_count)):
-                raise ValueError(f"{source_id}:{native_session}: requires contiguous {expected_count}-frame source sequence")
+            expected_count = int(sequence.get(
+                "expected_frame_count", 60 if sequence["split"] == "blind" else 50,
+            ))
+            expected_official_split = str(sequence.get("official_split", "")).strip() or None
+            selected = select_source_sequence(
+                source_rows, native_session, expected_count, expected_official_split,
+            )
             global_session = f"{source_id}:{native_session}"
             if global_session in seen_sessions:
                 raise ValueError(f"duplicate native session in recipe: {global_session}")
@@ -205,7 +288,7 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
             for index, source_row in enumerate(selected):
                 sample_id = f"{source_id}_{native_session}_{index:06d}".replace("/", "_")
                 if adapter_id == "procedural_tactile_v1":
-                    image_value, mask_value, label_provenance, image_sha, mapped_mask_sha = copy_procedural_assets(
+                    image_value, mask_value, label_provenance, image_sha, mapped_mask_sha, raw_assets = copy_procedural_assets(
                         package_root, staging, source_row, sample_id, str(sequence["split"]),
                     )
                 else:
@@ -219,15 +302,37 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
                     shutil.copy2(image_source, image_dest)
                     source_mask_sha, mapped_mask_sha = remap_mask(mask_source, mask_dest, adapter_id)
                     image_value, mask_value, image_sha = image_rel.as_posix(), mask_rel.as_posix(), sha256_file(image_dest)
+                    raw_mask_value, _ = copy_content_addressed(
+                        package_root, staging, str(source_mask_value), source_mask_sha, source_id, "sanpo_raw_mask",
+                    )
+                    raw_assets = [
+                        {"role": "sanpo_rgb", "source_id": source_id, "path": image_value, "sha256": image_sha},
+                        {"role": "sanpo_raw_mask", "source_id": source_id, "path": raw_mask_value, "sha256": source_mask_sha},
+                    ]
                     label_provenance = {"annotation_kind": "pixel_panoptic_taxonomy_map",
                         "source_mask_sha256": source_mask_sha, "mapped_mask_sha256": mapped_mask_sha,
-                        "mapping_sha256": mapping_sha}
+                        "mapping_sha256": mapping_sha,
+                        "source_assets": deepcopy(raw_assets)}
+                source_asset_ids: list[str] = []
+                for asset_index, asset in enumerate(raw_assets):
+                    entry_id = f"{sample_id}:{asset['role']}:{asset_index}"
+                    source_asset_ids.append(entry_id)
+                    inventory_item: dict[str, Any] = {
+                        "entry_id": entry_id, "sample_id": sample_id, "source_id": asset["source_id"],
+                        "session_id": global_session, "frame_index": index, "role": asset["role"],
+                        "path": asset["path"], "sha256": asset["sha256"],
+                    }
+                    if isinstance(asset.get("remote_receipt"), dict):
+                        inventory_item["remote_receipt"] = deepcopy(asset["remote_receipt"])
+                    inventory_assets.append(inventory_item)
                 source = {
                     "source_id": source_id,
                     "session_id": global_session,
                     "dataset": receipt["dataset"], "license": receipt["license"],
                     "license_url": receipt["license_url"], "privacy_review_status": receipt["privacy_review_status"],
                 }
+                if expected_official_split:
+                    source["official_split"] = expected_official_split
                 rows.append({
                     "id": sample_id, "split": sequence["split"], "session_id": global_session,
                     "sequence_id": sequence_id, "frame_index": index, "scene_bucket": sequence["scene_bucket"],
@@ -236,18 +341,30 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
                     "semantic_mask_sha256": mapped_mask_sha,
                     "label_authority": "procedural_ground_truth" if adapter_id == "procedural_tactile_v1" else "source_ground_truth",
                     "label_provenance": label_provenance,
+                    "source_asset_ids": source_asset_ids,
                     "source": source,
                 })
         manifest = staging / "reviewed-source-manifest.jsonl"
         manifest.write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows), encoding="utf-8")
+        inventory_path = staging / ASSET_INVENTORY
+        inventory_path.write_text(json.dumps({
+            "schema": ASSET_INVENTORY_SCHEMA, "assets": inventory_assets,
+        }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (staging / "source_attestation.json").write_text(json.dumps({
-            "schema": gate.ATTESTATION_SCHEMA, "recipe_sha256": sha256_file(recipe_path.resolve()), "sources": attested_sources,
+            "schema": gate.ATTESTATION_SCHEMA,
+            "recipe_path": ASSEMBLY_RECIPE, "recipe_sha256": sha256_file(recipe_destination),
+            "asset_inventory_path": ASSET_INVENTORY, "asset_inventory_sha256": sha256_file(inventory_path),
+            "sources": attested_sources,
         }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         views.prepare_views(manifest, staging)
-        gate_report = gate.run_gate(staging, staging / "qa" / "training_gate_report.json")
-        if gate_report["overall_status"] != "green":
-            raise ValueError("total gate is red: " + "; ".join(gate_report["errors"][:8]))
+        prepublish_report = gate.run_gate(staging, staging / "qa" / "prepublish_gate_report.json")
+        if prepublish_report["overall_status"] != "green":
+            raise ValueError("total gate is red: " + "; ".join(prepublish_report["errors"][:8]))
         os.replace(staging, output)
+        gate_report = gate.run_gate(output, output / "qa" / "training_gate_report.json")
+        if gate_report["overall_status"] != "green":
+            raise ValueError("final-root gate is red: " + "; ".join(gate_report["errors"][:8]))
+        gate.consume_training_authorization(output, output / "qa" / "training_gate_report.json")
         report.update({"ok": True, "dataset_root": str(output), "row_count": len(rows), "gate_report_sha256": gate_report["report_sha256"]})
     except Exception as error:
         report["errors"].append(f"{type(error).__name__}: {error}")

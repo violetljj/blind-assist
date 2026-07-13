@@ -41,6 +41,7 @@ PSEUDO_LABEL_MIN_IOU = 0.90
 PSEUDO_LABEL_MIN_TEMPORAL_CONSISTENCY = 0.85
 PROCEDURAL_PROVENANCE_SCHEMA = "blindassist_procedural_ground_truth_v1"
 PROCEDURAL_GENERATORS = {"tactile_occupied_compositor_v1"}
+EXPANDED_COVERAGE_FORMAT = "blindassist_sanpo_v4_coverage_policy_v1"
 
 
 def sha256_file(path: Path) -> str:
@@ -154,6 +155,24 @@ def validate_label_authority(
                     _validate_bound_provenance_file(
                         root, item, "path", "sha256", sample_id, errors,
                     )
+        raw_assets = provenance.get("source_assets")
+        required_raw_roles = {"guide_rgb", "guide_polygon", "sanpo_rgb", "sanpo_raw_mask"}
+        if not isinstance(raw_assets, list) or len(raw_assets) != len(required_raw_roles):
+            errors.append(f"{sample_id}: procedural_ground_truth requires four raw source assets")
+        else:
+            roles = {str(item.get("role", "")) for item in raw_assets if isinstance(item, dict)}
+            if roles != required_raw_roles:
+                errors.append(f"{sample_id}: procedural raw source roles must be {sorted(required_raw_roles)}")
+            for index, item in enumerate(raw_assets):
+                if not isinstance(item, dict):
+                    errors.append(f"{sample_id}: procedural raw source asset {index} must be an object")
+                    continue
+                if not str(item.get("source_id", "")).strip():
+                    errors.append(f"{sample_id}: procedural raw source asset {index} requires source_id")
+                if root is not None:
+                    _validate_bound_provenance_file(
+                        root, item, "path", "sha256", sample_id, errors,
+                    )
         if provenance.get("output_mask_sha256") != row.get("semantic_mask_sha256"):
             errors.append(f"{sample_id}: procedural output mask is not bound to semantic mask")
         if root is not None:
@@ -201,8 +220,9 @@ def validate_rows(rows: list[dict[str, Any]], root: Path, expected_split: set[st
     session_splits: dict[str, set[str]] = defaultdict(set)
     seen_ids: set[str] = set()
     seen_images: dict[str, str] = {}
-    seen_masks: dict[str, str] = {}
     class_pixels: Counter[str] = Counter()
+    semantic_mask_hash_counts: Counter[str] = Counter()
+    raw_mask_hash_counts: Counter[str] = Counter()
     for row in rows:
         sample_id = required_string(row, "id", "<row>", errors)
         if sample_id in seen_ids:
@@ -258,9 +278,15 @@ def validate_rows(rows: list[dict[str, Any]], root: Path, expected_split: set[st
         if image_sha in seen_images:
             errors.append(f"{sample_id}: duplicate image with {seen_images[image_sha]}")
         seen_images[image_sha] = sample_id
-        if mask_sha in seen_masks:
-            errors.append(f"{sample_id}: duplicate semantic mask with {seen_masks[mask_sha]}")
-        seen_masks[mask_sha] = sample_id
+        # SANPO machine annotations can legitimately reuse one mask across
+        # distinct RGB frames in a continuous session.  Duplicate samples are
+        # therefore identified by RGB SHA, while raw-mask SHA is enforced by
+        # the source inventory and forbidden from crossing target splits.
+        semantic_mask_hash_counts[mask_sha] += 1
+        provenance = row.get("label_provenance") if isinstance(row.get("label_provenance"), dict) else {}
+        raw_mask_sha = str(provenance.get("source_mask_sha256", "")).strip()
+        if raw_mask_sha:
+            raw_mask_hash_counts[raw_mask_sha] += 1
         with Image.open(image) as rgb, Image.open(mask) as semantic:
             if rgb.size != semantic.size:
                 errors.append(f"{sample_id}: image/semantic mask dimensions differ")
@@ -293,13 +319,29 @@ def validate_rows(rows: list[dict[str, Any]], root: Path, expected_split: set[st
             "split": first.get("split"),
             "scene_bucket": first.get("scene_bucket"),
             "session_id": next(iter(sessions), ""),
+            "official_split": str(
+                (first.get("source") if isinstance(first.get("source"), dict) else {}).get(
+                    "official_split", ""
+                )
+            ).strip(),
             "frame_count": len(items),
         })
+    duplicate_semantic_rows = sum(count - 1 for count in semantic_mask_hash_counts.values() if count > 1)
+    duplicate_raw_rows = sum(count - 1 for count in raw_mask_hash_counts.values() if count > 1)
     return errors, {
         "row_count": len(rows),
         "sequence_count": len(sequence_rows),
         "sequences": sequence_summary,
         "class_presence_frame_count": dict(class_pixels),
+        "duplicate_mask_observation": {
+            "semantic_duplicate_hash_count": sum(count > 1 for count in semantic_mask_hash_counts.values()),
+            "semantic_duplicate_row_count": duplicate_semantic_rows,
+            "semantic_duplicate_row_ratio": round(duplicate_semantic_rows / max(1, len(rows)), 6),
+            "raw_duplicate_hash_count": sum(count > 1 for count in raw_mask_hash_counts.values()),
+            "raw_duplicate_row_count": duplicate_raw_rows,
+            "raw_duplicate_row_ratio": round(duplicate_raw_rows / max(1, len(rows)), 6),
+            "policy": "observation_only_with_rgb_duplicate_rejection_and_raw_cross_split_rejection",
+        },
     }
 
 
@@ -337,7 +379,95 @@ def validate_access_lock(root: Path, train_rows: list[dict[str, Any]], blind_row
     return errors
 
 
-def validate_v3_coverage(train: dict[str, Any], blind: dict[str, Any]) -> list[str]:
+def validate_expanded_coverage(
+    train: dict[str, Any], blind: dict[str, Any], policy: dict[str, Any],
+) -> list[str]:
+    """Validate session-scaled coverage without weakening the blind lock."""
+    errors: list[str] = []
+    if policy.get("format") != EXPANDED_COVERAGE_FORMAT:
+        return [f"coverage policy format must be {EXPANDED_COVERAGE_FORMAT}"]
+    train_sequences = train["sequences"]
+    blind_sequences = blind["sequences"]
+    sequence_frame_count = int(policy.get("sequence_frame_count", 0))
+    blind_frame_count = int(policy.get("blind_sequence_frame_count", 0))
+    blind_sequence_count = int(policy.get("blind_sequence_count", 0))
+    if sequence_frame_count <= 0 or any(
+        int(item["frame_count"]) != sequence_frame_count for item in train_sequences
+    ):
+        errors.append(
+            f"expanded coverage requires every train/dev sequence to contain exactly {sequence_frame_count} frames"
+        )
+    if len(blind_sequences) != blind_sequence_count or any(
+        int(item["frame_count"]) != blind_frame_count for item in blind_sequences
+    ):
+        errors.append(
+            f"expanded coverage requires exactly {blind_sequence_count} blind sequences of {blind_frame_count} frames"
+        )
+    sessions_by_split = {
+        split: {str(item["session_id"]) for item in train_sequences if item["split"] == split}
+        for split in ("train", "dev")
+    }
+    for split, field in (("train", "min_train_sessions"), ("dev", "min_dev_sessions")):
+        minimum = int(policy.get(field, 0))
+        if len(sessions_by_split[split]) < minimum:
+            errors.append(
+                f"expanded coverage requires at least {minimum} distinct {split} sessions, "
+                f"got {len(sessions_by_split[split])}"
+            )
+    blind_sessions = {str(item["session_id"]) for item in blind_sequences}
+    if len(blind_sessions) != blind_sequence_count or "" in blind_sessions:
+        errors.append("expanded coverage requires distinct non-empty blind source sessions")
+
+    required_scenes = policy.get("required_scene_sessions")
+    if not isinstance(required_scenes, dict) or not required_scenes:
+        errors.append("expanded coverage requires required_scene_sessions")
+    else:
+        for bucket, requirements in required_scenes.items():
+            if bucket not in SCENE_BUCKETS or not isinstance(requirements, dict):
+                errors.append(f"expanded coverage has unsupported scene requirement {bucket!r}")
+                continue
+            matching = [item for item in train_sequences if item["scene_bucket"] == bucket]
+            for split in ("train", "dev"):
+                minimum = int(requirements.get(split, 0))
+                actual = len({str(item["session_id"]) for item in matching if item["split"] == split})
+                if actual < minimum:
+                    errors.append(
+                        f"scene {bucket} requires at least {minimum} distinct {split} sessions, got {actual}"
+                    )
+            total_minimum = int(requirements.get("total", 0))
+            actual_total = len({str(item["session_id"]) for item in matching})
+            if actual_total < total_minimum:
+                errors.append(
+                    f"scene {bucket} requires at least {total_minimum} distinct total sessions, got {actual_total}"
+                )
+
+    official_split_policy = policy.get("official_split_by_target_split")
+    if not isinstance(official_split_policy, dict):
+        errors.append("expanded coverage requires official_split_by_target_split")
+    else:
+        for item in train_sequences + blind_sequences:
+            target_split = str(item["split"])
+            expected = str(official_split_policy.get(target_split, "")).strip()
+            if not expected or item.get("official_split") != expected:
+                errors.append(
+                    f"{item['sequence_id']}: official split {item.get('official_split')!r} "
+                    f"does not satisfy target split {target_split!r} -> {expected!r}"
+                )
+    missing_classes = [
+        name for name in SEMANTIC_CLASSES if not train["class_presence_frame_count"].get(name)
+    ]
+    if missing_classes:
+        errors.append(
+            "expanded train/dev masks do not contain all four semantic classes: " + ", ".join(missing_classes)
+        )
+    return errors
+
+
+def validate_v3_coverage(
+    train: dict[str, Any], blind: dict[str, Any], coverage_policy: dict[str, Any] | None = None,
+) -> list[str]:
+    if coverage_policy is not None:
+        return validate_expanded_coverage(train, blind, coverage_policy)
     errors: list[str] = []
     train_sequences = train["sequences"]
     blind_sequences = blind["sequences"]
@@ -379,7 +509,13 @@ def main() -> int:
     errors.extend(blind_errors)
     errors.extend(validate_access_lock(root, train_rows, blind_rows))
     if args.require_v3_coverage:
-        errors.extend(validate_v3_coverage(train_summary, blind_summary))
+        coverage_policy = None
+        recipe_path = root / "assembly_recipe.json"
+        if recipe_path.is_file():
+            recipe = json.loads(recipe_path.read_text(encoding="utf-8"))
+            if isinstance(recipe.get("coverage_policy"), dict):
+                coverage_policy = recipe["coverage_policy"]
+        errors.extend(validate_v3_coverage(train_summary, blind_summary, coverage_policy))
     report = {
         "ok": not errors,
         "dataset_root": str(root),

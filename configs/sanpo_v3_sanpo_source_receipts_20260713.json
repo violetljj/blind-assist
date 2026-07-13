@@ -1,0 +1,13 @@
+{
+  "schema": "blindassist_sanpo_source_receipt_bundle_v1",
+  "manifests": [
+    {"session_id":"d3CKbaNbOPz-ZjLPUd6qD6wSNC3OKQxL","path":"test-artifacts.local/datasets/blindassist-sanpo-dev-boundary-lateral-draft-r2-20260711/manifest.draft.jsonl","sha256":"eebe6c1014a075b54dd1d1a0b4eeb9a768cebb15549c1c007e3cb834d55d3568"},
+    {"session_id":"SRHpBZXk_0pKjk6SK23VOhoLZGZfnKFF","path":"test-artifacts.local/datasets/blindassist-sanpo-dev-center-obstacle-draft-20260712/manifest.draft.jsonl","sha256":"e3411103996decbf7a892dd2f836c94a801b92fe8a0e07aeec2f2e1061efe419"},
+    {"session_id":"GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT","path":"test-artifacts.local/datasets/blindassist-sanpo-dev-center-obstacle-geometry-draft-r2-20260712/manifest.draft.jsonl","sha256":"70f2e26ce32ea09d24e16a7d477676f6cbb2b8ad0a7d16e44e8c4b91b7f66b2e"},
+    {"session_id":"ddEl0JtxAC3nnXI00uzGQH9cqwAK_uOu","path":"test-artifacts.local/datasets/blindassist-sanpo-dev-lateral-clean-geometry-draft-r3-20260712/manifest.draft.jsonl","sha256":"37bd89c5cb43c9ba7e5d926dd13a7006527ad0a5d77f7174f2de46a9b3ffa96b"},
+    {"session_id":"procedural_tactile_train_02","path":"test-artifacts.local/datasets/sanpo-v3-source-k7-20260713/manifest.draft.jsonl","sha256":"c2e8c4f5ccd1d740721123b0687284231e1e7cdc9d0727a00624bba408ff4f83"},
+    {"session_id":"procedural_lowlight_dev_04","path":"test-artifacts.local/datasets/blindassist-sanpo-dev-lateral-clean-geometry-draft-r3-20260712/manifest.draft.jsonl","sha256":"37bd89c5cb43c9ba7e5d926dd13a7006527ad0a5d77f7174f2de46a9b3ffa96b"},
+    {"session_id":"procedural_tactile_blind_06","path":"test-artifacts.local/datasets/sanpo-v3-source-rjy60-20260713/manifest.draft.jsonl","sha256":"e6fe61192a52a886ba4c66023f6114002584d1780ebfb9ecf763a412fdc32e60"},
+    {"session_id":"procedural_tactile_blind_04","path":"test-artifacts.local/datasets/sanpo-v3-source-utp60-20260713/manifest.draft.jsonl","sha256":"f585f52880822b1af4d038da4b8f58211791bd508f5405c7cc474ca43535ae7a"}
+  ]
+}
