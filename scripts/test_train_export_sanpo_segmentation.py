@@ -171,10 +171,14 @@ class SegmentationCandidateToolTest(unittest.TestCase):
             "--backbone-alpha", "1.0",
             "--decoder-channels", "128",
             "--input-size", "512",
+            "--detail-output-stride", "4",
+            "--semantic-output-stride", "16",
         ])
         self.assertEqual(1.0, args.backbone_alpha)
         self.assertEqual(128, args.decoder_channels)
         self.assertEqual(512, args.input_size)
+        self.assertEqual(4, args.detail_output_stride)
+        self.assertEqual(16, args.semantic_output_stride)
         with self.assertRaises(SystemExit):
             candidate.parse_args([
                 "--dataset-root", "fixture",

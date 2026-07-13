@@ -1,6 +1,6 @@
 # 新电脑交接说明
 
-本文用于在新的 Windows 电脑上继续开发 BlindAssist。开始前先阅读 `AGENTS.md`，再按下面清单恢复项目、Codex skills 和 Android 构建环境。
+本文用于在新的 Windows 电脑上继续开发 BlindAssist。开始前先阅读 `AGENTS.md` 和 [文档索引](README.md)，再按下面清单恢复项目、Codex skills 和 Android 构建环境。
 
 ## 1. 克隆仓库
 
@@ -67,10 +67,10 @@ debug APK 应生成在：
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-检查随包模型资产：
+检查随包模型资产。Python 工具建议安装到 `E:\codex-tools`；当前机器在迁移期仍保留 `.venv-export312` 兼容入口：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py
+python scripts\inspect_tflite.py
 ```
 
 期望模型形状：
@@ -80,15 +80,15 @@ input shape=[1, 320, 320, 3] dtype=float32
 output shape=[1, 84, 2100] dtype=float32
 ```
 
-如果 Python 导出环境尚未恢复，只要已跟踪的 TFLite 资产存在，Android 构建验证仍可先运行。
+如果 Python 导出环境尚未恢复，只要已跟踪的 TFLite 资产存在，Android 构建验证仍可先运行。下载、数据集、训练和 benchmark 输出统一放在 `artifacts.local/`。
 
 ## 5. 可选手机安装
 
 连接已开启 USB 调试或无线调试的手机后运行：
 
 ```powershell
-.\.android-sdk\platform-tools\adb.exe devices
-.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
+E:\codex-tools\tools\android-sdk\platform-tools\adb.exe devices
+E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
 ```
 
 在新电脑上，SDK 路径可能是系统 Android SDK，而不是仓库本地 `.android-sdk`。这种情况下请使用新 SDK 的 `platform-tools` 目录中的 `adb.exe`。
@@ -97,7 +97,7 @@ output shape=[1, 84, 2100] dtype=float32
 
 - `DEVELOPMENT_LOG.md` 中的执行者名称继续使用 `violjjet`。
 - 修改前先运行 `git status --short`。
-- 不要提交本地 SDK、Gradle 缓存、虚拟环境、下载目录或机器特定生成文件。
+- 通用工具安装到 `E:\codex-tools`；项目下载、数据集和实验证据进入 `artifacts.local/`。不要提交 SDK、Gradle 缓存、虚拟环境或机器特定生成文件。
 - 代码、配置、模型、测试或已采纳技术决策变更时记录到 `DEVELOPMENT_LOG.md`；纯只读排查和对话无需写日志。
 - 仅在用户可见状态、用法或前置条件变化时更新 `README.md`；发布事实写入 `CHANGELOG.md`，详细验证按 [发布与验证工作流](RELEASE_AND_VERIFICATION.md) 记录。
 - 演示、老师查看、交付候选、里程碑或用户明确要求的 APK，应先保存到完整本地归档目录 `E:\linnan\blind-assist-apk-archive\apks`；普通 debug 构建无需归档。

@@ -22,6 +22,9 @@ keystore.properties
 *.keystore
 captures/
 test-artifacts*/
+artifacts.local/
+.release-worktrees/
+tmp/
 *.apk
 # Keep only milestone APKs in Git. See docs/APK_ARCHIVE.md.
 !releases/

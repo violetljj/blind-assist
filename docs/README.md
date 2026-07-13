@@ -1,0 +1,57 @@
+# BlindAssist 文档索引
+
+本页是项目文档的稳定入口。`current` 表示当前操作或协议真源，`snapshot` 表示日期化结论，`archive` 表示历史材料。
+
+## 开始使用与交付
+
+| 文档 | 状态 | 用途 |
+| --- | --- | --- |
+| [NEW_COMPUTER_HANDOFF.md](NEW_COMPUTER_HANDOFF.md) | current | 新电脑与开发环境交接 |
+| [RELEASE_AND_VERIFICATION.md](RELEASE_AND_VERIFICATION.md) | current | 发布和验证总流程 |
+| [APK_ARCHIVE.md](APK_ARCHIVE.md) | current | APK 归档与 Git 里程碑策略 |
+| [LOCAL_ARTIFACTS.md](LOCAL_ARTIFACTS.md) | current | `artifacts.local/` 本地产物契约 |
+| [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md) | current | 真机功能回归 |
+
+## 产品、硬件与评测基线
+
+| 文档 | 状态 | 用途 |
+| --- | --- | --- |
+| [GLASSES_HARDWARE_ROUTE.md](GLASSES_HARDWARE_ROUTE.md) | current | 眼镜硬件路线 |
+| [BLINDASSIST_EVALSET.md](BLINDASSIST_EVALSET.md) | current | 助行图像评测集 |
+| [DETECTOR_BENCHMARK.md](DETECTOR_BENCHMARK.md) | current | 检测器 benchmark 契约 |
+| [PROJECT_AUDIT_2026-07-10.md](PROJECT_AUDIT_2026-07-10.md) | snapshot | 2026-07-10 项目综合审计 |
+
+## SANPO 当前协议与门禁
+
+以下文件是 SANPO 路线的当前真源：
+
+- [SANPO_TRAINING_PROTOCOL.md](SANPO_TRAINING_PROTOCOL.md)
+- [SANPO_CANDIDATE_PROMOTION_GATES.md](SANPO_CANDIDATE_PROMOTION_GATES.md)
+- [SANPO_SEQUENCE_EVALSET.md](SANPO_SEQUENCE_EVALSET.md)
+- [SANPO_SEGMENTATION_CANDIDATE.md](SANPO_SEGMENTATION_CANDIDATE.md)
+- [SANPO_TRAVERSABILITY_BASELINE.md](SANPO_TRAVERSABILITY_BASELINE.md)
+- [SANPO_V3_REGRESSION_DATASET.md](SANPO_V3_REGRESSION_DATASET.md)
+- [SANPO_V3_TEMPORARY_EXEMPTIONS.json](SANPO_V3_TEMPORARY_EXEMPTIONS.json)
+- [SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md](SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md)
+
+## SANPO 日期化快照
+
+- [SANPO_GPU_UTILIZATION_2026-07-13.md](SANPO_GPU_UTILIZATION_2026-07-13.md)
+- [SANPO_P0_SEED_FACTOR_AUDIT_2026-07-13.md](SANPO_P0_SEED_FACTOR_AUDIT_2026-07-13.md)
+- [SANPO_P1_LRASPP_ALIGNMENT_2026-07-13.md](SANPO_P1_LRASPP_ALIGNMENT_2026-07-13.md)
+- [SANPO_P2_DETERMINISTIC_QUOTA_AUDIT_2026-07-13.md](SANPO_P2_DETERMINISTIC_QUOTA_AUDIT_2026-07-13.md)
+- [SANPO_DETERMINISTIC_LINEAR_PROBE_2026-07-13.md](SANPO_DETERMINISTIC_LINEAR_PROBE_2026-07-13.md)
+- [SANPO_P3_SPLIT_RECONSTRUCTION_2026-07-13.md](SANPO_P3_SPLIT_RECONSTRUCTION_2026-07-13.md)
+- `SANPO_NEXT_LEAP_REPORT_SOURCE_2026-07-13.sql`：报告数据源，不是当前协议。
+
+## 研究档案
+
+`research/frontier-upgrade-2026-07/` 按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层。该目录用于研究追溯；生产行为仍以当前协议、代码和门禁为准。
+
+## 维护规则
+
+- 当前行为变化：更新对应 `current` 文档。
+- 发布事实：写入根目录 `CHANGELOG.md`。
+- 详细执行和验证：写入根目录 `DEVELOPMENT_LOG.md`。
+- 一次性研究或审计：使用带日期文件，并明确标记为 snapshot。
+- 新增文档时同步更新本索引，避免只依赖文件名发现内容。

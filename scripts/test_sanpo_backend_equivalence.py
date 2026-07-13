@@ -145,6 +145,14 @@ class SanpoBackendEquivalenceTest(unittest.TestCase):
                     report,
                     input_size=512,
                 )
+            with self.assertRaisesRegex(ValueError, "requested export config"):
+                gate.consume_equivalence_authorization(
+                    weights, report, detail_output_stride=4,
+                )
+            with self.assertRaisesRegex(ValueError, "requested export config"):
+                gate.consume_equivalence_authorization(
+                    weights, report, semantic_output_stride=16,
+                )
 
     def test_consumer_rejects_model_config_hash_tampering(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -162,6 +170,10 @@ class SanpoBackendEquivalenceTest(unittest.TestCase):
         self.assertEqual("1.0", command[command.index("--backbone-alpha") + 1])
         self.assertEqual("128", command[command.index("--decoder-channels") + 1])
         self.assertEqual("256", command[command.index("--input-size") + 1])
+        self.assertEqual("8", command[command.index("--detail-output-stride") + 1])
+        self.assertEqual("32", command[command.index("--semantic-output-stride") + 1])
+        config = gate.model_config(1.0, 128)
+        self.assertEqual(gate.sanpo_segmentation_model.ARCHITECTURE_REVISION, config["architecture_revision"])
 
     def test_worker_command_carries_nondefault_input_size(self) -> None:
         command = gate.worker_command(

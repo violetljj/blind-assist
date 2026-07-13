@@ -15,6 +15,15 @@
 - Update `README.md` only when user-visible capabilities, usage, prerequisites, current project status, or important public decisions change. Put release history in `CHANGELOG.md` and detailed evidence in the relevant `docs/` page.
 - Add an item to `idea.md` only when the user asks to retain it or the team explicitly defers a non-trivial proposal. Mark implemented items `【已完成】` and partial items `【部分完成】`.
 
+## Workspace layout and knowledge navigation
+
+- The only BlindAssist repository root is `E:\linnan\linnan` (this is distinct from the Android application module `app/`). `E:\linnan` is a workspace container; do not run Git, Gradle, project tests, or source edits from same-named outer directories.
+- Canonical local tools live in `E:\codex-tools\projects\blindassist\toolchain` and `E:\codex-tools\projects\blindassist\state`. Repository `.jdk`, `.android-sdk`, `.gradle-local`, `.android-home`, and `.kotlin-home` may be compatibility junctions; do not replace them with copied toolchains or commit their contents.
+- Canonical local outputs live in ignored `artifacts.local/`: `downloads/` for fetched inputs, `evidence/` for datasets and benchmark/real-device evidence, `models/` for local model sources/exports, `work/` for reproducible work, and `tmp/` for short-lived files. New scripts and documents must use these canonical paths.
+- `test-artifacts.local`、`.downloads`、`work` and `tmp` are transition junctions only. Preserve them while older callers remain, but migrate callers to `artifacts.local/` in focused, verified batches; never create a second output root.
+- Keep `README.md` to product positioning, current status, build entry points, and navigation. Add/maintain current operational docs in `docs/README.md`, scripts in `scripts/README.md`, release facts in `CHANGELOG.md`, engineering history in `DEVELOPMENT_LOG.md`, and dated research/audit conclusions as snapshots rather than current truth.
+- When adding a top-level `docs/` file or a runnable `scripts/` entry, update its corresponding index in the same change. Before considering a layout/documentation change complete, run `git diff --check`, `scripts/check_repo_hygiene.ps1`, the model static check when toolchain paths changed, and verify that top-level docs are indexed.
+
 ## Verification and release discipline
 
 - Match verification to risk: documentation-only changes normally need no Gradle run; a module change needs relevant tests or lint; changes to runtime, vision, risk, feedback, permissions, or assets need focused tests plus an Android build; a delivery candidate needs the release checklist and final-APK verification.

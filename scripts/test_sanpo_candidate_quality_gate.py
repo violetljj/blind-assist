@@ -34,10 +34,14 @@ class CandidateQualityGateTest(unittest.TestCase):
             "--backbone-alpha", "1.0",
             "--decoder-channels", "128",
             "--input-size", "512",
+            "--detail-output-stride", "4",
+            "--semantic-output-stride", "16",
         ])
         self.assertEqual(1.0, args.backbone_alpha)
         self.assertEqual(128, args.decoder_channels)
         self.assertEqual(512, args.input_size)
+        self.assertEqual(4, args.detail_output_stride)
+        self.assertEqual(16, args.semantic_output_stride)
 
     def test_stratifies_by_session_and_scene_and_macro_averages_sessions(self) -> None:
         records = [record("a", "short", "curb"), record("b", "long", "night"), record("c", "long", "night")]

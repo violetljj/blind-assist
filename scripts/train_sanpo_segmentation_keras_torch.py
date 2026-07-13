@@ -9,6 +9,7 @@ budget so batch-size or dataset-size changes remain comparable.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import random
 import shutil
@@ -54,6 +55,26 @@ def parse_seed_list(value: str) -> tuple[int, ...]:
     return tuple(seeds)
 
 
+def parse_seed_pairs(value: str) -> tuple[tuple[int, int], ...]:
+    """Parse model:sampler seed pairs used by the P0 variance audit."""
+    pairs: list[tuple[int, int]] = []
+    for item in value.split(","):
+        stripped = item.strip()
+        if not stripped:
+            continue
+        parts = stripped.split(":")
+        if len(parts) != 2:
+            raise ValueError("seed pairs must use model_seed:sampler_seed")
+        pair = (int(parts[0]), int(parts[1]))
+        if min(pair) < 0:
+            raise ValueError("seed pairs must be non-negative integers")
+        if pair not in pairs:
+            pairs.append(pair)
+    if not pairs:
+        raise ValueError("at least one seed pair is required")
+    return tuple(pairs)
+
+
 def class_loss_weights(pixel_counts: dict[str, int], maximum: float = 4.0) -> np.ndarray:
     counts = np.asarray([pixel_counts[name] for name in shared.CLASS_NAMES], dtype=np.float64)
     frequencies = counts / max(1.0, counts.sum())
@@ -90,6 +111,10 @@ def aggregate_seed_metrics(seed_runs: Sequence[dict[str, Any]]) -> dict[str, Any
             for run in seed_runs
         ],
         "pixel_accuracy": [float(run["dev_mask_metrics"]["pixel_accuracy"]) for run in seed_runs],
+        "unknown_iou": [
+            float(run["dev_mask_metrics"]["per_class"]["unknown_nonwalkable"]["iou"])
+            for run in seed_runs
+        ],
     }
     summary: dict[str, Any] = {"seed_count": len(seed_runs)}
     for name, values in fields.items():
@@ -104,6 +129,53 @@ def aggregate_seed_metrics(seed_runs: Sequence[dict[str, Any]]) -> dict[str, Any
     return summary
 
 
+def factor_variation_summary(seed_runs: Sequence[dict[str, Any]]) -> dict[str, Any]:
+    """Summarize one-factor-at-a-time P0 seed variation without claiming causality."""
+    metric_getters = {
+        "selection_score": lambda run: float(run["selection_score"]),
+        "mean_iou": lambda run: float(run["dev_mask_metrics"]["mean_iou"]),
+        "boundary_iou": lambda run: float(
+            run["dev_mask_metrics"]["per_class"]["boundary_step_curb"]["iou"]
+        ),
+        "unknown_iou": lambda run: float(
+            run["dev_mask_metrics"]["per_class"]["unknown_nonwalkable"]["iou"]
+        ),
+    }
+
+    def grouped(fixed_field: str, varying_field: str) -> list[dict[str, Any]]:
+        buckets: dict[int, list[dict[str, Any]]] = {}
+        for run in seed_runs:
+            buckets.setdefault(int(run[fixed_field]), []).append(run)
+        result: list[dict[str, Any]] = []
+        for fixed_seed, runs in sorted(buckets.items()):
+            varying_seeds = {int(run[varying_field]) for run in runs}
+            if len(varying_seeds) < 2:
+                continue
+            metrics: dict[str, Any] = {}
+            for name, getter in metric_getters.items():
+                values = np.asarray([getter(run) for run in runs], dtype=np.float64)
+                metrics[name] = {
+                    "mean": float(values.mean()),
+                    "std": float(values.std(ddof=0)),
+                    "range": float(values.max() - values.min()),
+                    "minimum": float(values.min()),
+                    "maximum": float(values.max()),
+                }
+            result.append({
+                fixed_field: fixed_seed,
+                f"{varying_field}s": sorted(varying_seeds),
+                "run_count": len(runs),
+                "metrics": metrics,
+            })
+        return result
+
+    return {
+        "model_initialization_effect_with_sampler_fixed": grouped("sampler_seed", "model_seed"),
+        "sampler_effect_with_model_initialization_fixed": grouped("model_seed", "sampler_seed"),
+        "interpretation_boundary": "descriptive_one_factor_ranges_not_causal_significance",
+    }
+
+
 def seeded_weight_path(base: Path, seed: int) -> Path:
     suffix = ".weights.h5"
     if not base.name.endswith(suffix):
@@ -116,6 +188,27 @@ def stage_weight_path(base: Path, seed: int, stage: str) -> Path:
     seeded = seeded_weight_path(base, seed)
     safe_stage = stage.replace("_", "-")
     return seeded.with_name(f"{seeded.name[:-len(suffix)]}.stage-{safe_stage}{suffix}")
+
+
+def seed_pair_weight_path(base: Path, model_seed: int, sampler_seed: int) -> Path:
+    if model_seed == sampler_seed:
+        return seeded_weight_path(base, model_seed)
+    suffix = ".weights.h5"
+    if not base.name.endswith(suffix):
+        raise ValueError("Keras weight output must end with .weights.h5")
+    stem = base.name[:-len(suffix)]
+    return base.with_name(
+        f"{stem}.model-seed-{model_seed}.sampler-seed-{sampler_seed}{suffix}"
+    )
+
+
+def seed_pair_stage_weight_path(
+    base: Path, model_seed: int, sampler_seed: int, stage: str,
+) -> Path:
+    suffix = ".weights.h5"
+    paired = seed_pair_weight_path(base, model_seed, sampler_seed)
+    safe_stage = stage.replace("_", "-")
+    return paired.with_name(f"{paired.name[:-len(suffix)]}.stage-{safe_stage}{suffix}")
 
 
 def cosine_decay_value(initial: float, final_ratio: float, step: int, decay_steps: int) -> float:
@@ -277,6 +370,231 @@ class SessionBalancedCropSampler:
         }
 
 
+QUOTA_NAMES = ("boundary", "obstacle", "hard_negative", "unknown_full_frame")
+
+
+class DeterministicQuotaSampler(SessionBalancedCropSampler):
+    """Cycle four sampling intents exactly, independent of optimization batch size."""
+
+    def __init__(
+        self,
+        images: np.ndarray,
+        masks: np.ndarray,
+        records: Sequence[shared.Record],
+        *,
+        batch_size: int,
+        seed: int,
+        crop_min_fraction: float,
+        crop_max_fraction: float,
+        horizontal_flip_probability: float,
+        unknown_rich_quantile: float = 0.75,
+        source_mask_stats: Sequence[dict[str, Any]] | None = None,
+    ) -> None:
+        if not 0.0 <= unknown_rich_quantile < 1.0:
+            raise ValueError("unknown_rich_quantile must be in [0, 1)")
+        super().__init__(
+            images,
+            masks,
+            records,
+            batch_size=batch_size,
+            seed=seed,
+            guided_crop_fraction=0.0,
+            crop_min_fraction=crop_min_fraction,
+            crop_max_fraction=crop_max_fraction,
+            horizontal_flip_probability=horizontal_flip_probability,
+            boundary_guided_probability=0.5,
+        )
+        self.seed = seed
+        self.unknown_rich_quantile = unknown_rich_quantile
+        resized_presence = np.asarray([
+            [bool(np.any(mask == class_id)) for class_id in range(len(shared.CLASS_NAMES))]
+            for mask in masks
+        ], dtype=bool)
+        if source_mask_stats is None:
+            source_presence = resized_presence
+            unknown_shares = np.mean(
+                masks == shared.CLASS_IDS["unknown_nonwalkable"], axis=(1, 2)
+            )
+            stats_source = "resized_training_masks"
+        else:
+            if len(source_mask_stats) != len(records):
+                raise ValueError("source_mask_stats must align with records")
+            source_presence = np.asarray(
+                [stats["class_presence"] for stats in source_mask_stats], dtype=bool,
+            )
+            unknown_shares = np.asarray(
+                [float(stats["unknown_share"]) for stats in source_mask_stats], dtype=np.float64,
+            )
+            stats_source = "canonical_source_resolution_masks"
+        if not np.any(unknown_shares > 0.0):
+            raise ValueError("deterministic quota has no candidates: unknown_full_frame")
+        self.unknown_rich_threshold_by_session: dict[str, float] = {}
+        unknown_rich_indices: list[int] = []
+        for session_id, indices in self.sessions.items():
+            values = unknown_shares[indices]
+            threshold = float(np.quantile(values, unknown_rich_quantile))
+            self.unknown_rich_threshold_by_session[session_id] = threshold
+            unknown_rich_indices.extend(
+                index for index in indices
+                if float(unknown_shares[index]) > 0.0 and float(unknown_shares[index]) >= threshold
+            )
+        self.stats_source = stats_source
+        self.resized_boundary_loss_count = int(np.sum(
+            source_presence[:, BOUNDARY_CLASS_ID] & ~resized_presence[:, BOUNDARY_CLASS_ID]
+        ))
+        quota_indices = {
+            "boundary": [
+                index for index in range(len(masks))
+                if source_presence[index, BOUNDARY_CLASS_ID]
+                and resized_presence[index, BOUNDARY_CLASS_ID]
+            ],
+            "obstacle": [
+                index for index in range(len(masks))
+                if source_presence[index, OBSTACLE_CLASS_ID]
+                and resized_presence[index, OBSTACLE_CLASS_ID]
+            ],
+            "hard_negative": [
+                index for index in range(len(masks))
+                if not source_presence[index, BOUNDARY_CLASS_ID]
+            ],
+            "unknown_full_frame": unknown_rich_indices,
+        }
+        self.quota_by_session: dict[str, dict[str, tuple[int, ...]]] = {}
+        self.quota_sessions: dict[str, tuple[str, ...]] = {}
+        self.frame_cursors: dict[tuple[str, str], int] = {}
+        for quota, indices in quota_indices.items():
+            allowed = set(indices)
+            by_session: dict[str, tuple[int, ...]] = {}
+            for session_id in sorted(self.sessions):
+                values = [index for index in self.sessions[session_id] if index in allowed]
+                if values:
+                    by_session[session_id] = tuple(int(index) for index in self.rng.permutation(values))
+            if not by_session:
+                raise ValueError(f"deterministic quota has no candidates: {quota}")
+            ordered_sessions = tuple(str(value) for value in self.rng.permutation(sorted(by_session)))
+            if quota == "hard_negative":
+                weighted = [
+                    session_id for session_id, values in by_session.items() for _ in range(len(values))
+                ]
+                ordered_sessions = tuple(str(value) for value in self.rng.permutation(weighted))
+            self.quota_by_session[quota] = by_session
+            self.quota_sessions[quota] = ordered_sessions
+            for session_id in ordered_sessions:
+                self.frame_cursors[(quota, session_id)] = 0
+        self.quota_candidate_counts = {name: len(values) for name, values in quota_indices.items()}
+        self.quota_session_strategy = {
+            "boundary": "uniform_eligible_session_round_robin",
+            "obstacle": "uniform_eligible_session_round_robin",
+            "hard_negative": "candidate_count_weighted_session_round_robin",
+            "unknown_full_frame": "uniform_eligible_session_round_robin",
+        }
+        self.quota_draws = {name: 0 for name in QUOTA_NAMES}
+        self.quota_session_draws = {
+            name: {session_id: 0 for session_id in self.quota_sessions[name]}
+            for name in QUOTA_NAMES
+        }
+        self.full_frame_draws = {"hard_negative": 0, "unknown_full_frame": 0}
+        self.sample_cursor = 0
+        self.sample_trace_hasher = hashlib.sha256()
+        self.quota_class_presence = {
+            quota: {name: 0 for name in shared.CLASS_NAMES} for quota in QUOTA_NAMES
+        }
+
+    def _next_index(self, quota: str) -> tuple[int, str]:
+        draw = self.quota_draws[quota]
+        sessions = self.quota_sessions[quota]
+        session_id = sessions[draw % len(sessions)]
+        values = self.quota_by_session[quota][session_id]
+        cursor_key = (quota, session_id)
+        cursor = self.frame_cursors[cursor_key]
+        index = values[cursor % len(values)]
+        self.frame_cursors[cursor_key] = cursor + 1
+        return index, session_id
+
+    def next_batch(self) -> tuple[np.ndarray, np.ndarray]:
+        batch_images: list[np.ndarray] = []
+        batch_masks: list[np.ndarray] = []
+        for _ in range(self.batch_size):
+            quota = QUOTA_NAMES[self.sample_cursor % len(QUOTA_NAMES)]
+            self.sample_cursor += 1
+            index, session_id = self._next_index(quota)
+            self.quota_draws[quota] += 1
+            self.quota_session_draws[quota][session_id] += 1
+            self.session_draws[session_id] += 1
+            self.sample_trace_hasher.update(
+                f"{self.sample_cursor}:{quota}:{session_id}:{index};".encode("utf-8")
+            )
+            image = self.images[index]
+            mask = self.masks[index]
+            for class_id, class_name in enumerate(shared.CLASS_NAMES):
+                if np.any(mask == class_id):
+                    self.quota_class_presence[quota][class_name] += 1
+            if quota == "boundary":
+                image, mask = self._crop(image, mask, BOUNDARY_CLASS_ID)
+                if not np.any(mask == BOUNDARY_CLASS_ID):
+                    raise RuntimeError("boundary quota crop lost its target class")
+                self.guided_crop_hits[shared.CLASS_NAMES[BOUNDARY_CLASS_ID]] += 1
+            elif quota == "obstacle":
+                image, mask = self._crop(image, mask, OBSTACLE_CLASS_ID)
+                if not np.any(mask == OBSTACLE_CLASS_ID):
+                    raise RuntimeError("obstacle quota crop lost its target class")
+                self.guided_crop_hits[shared.CLASS_NAMES[OBSTACLE_CLASS_ID]] += 1
+            else:
+                image = image.copy()
+                mask = mask.copy()
+                if quota == "hard_negative" and np.any(mask == BOUNDARY_CLASS_ID):
+                    raise RuntimeError("hard-negative quota selected a boundary-positive frame")
+                self.full_frame_draws[quota] += 1
+            if self.rng.random() < self.horizontal_flip_probability:
+                image = np.flip(image, axis=1).copy()
+                mask = np.flip(mask, axis=1).copy()
+            batch_images.append(image)
+            batch_masks.append(mask)
+        return np.stack(batch_images).astype(np.float32), np.stack(batch_masks).astype(np.int64)
+
+    def report(self) -> dict[str, Any]:
+        total = max(1, sum(self.quota_draws.values()))
+        return {
+            "sampler_strategy": "deterministic_quota_round_robin",
+            "seed": self.seed,
+            "schedule": list(QUOTA_NAMES),
+            "schedule_period_samples": len(QUOTA_NAMES),
+            "quota_targets": {name: 0.25 for name in QUOTA_NAMES},
+            "quota_draws": dict(self.quota_draws),
+            "quota_realized_share": {
+                name: float(count / total) for name, count in self.quota_draws.items()
+            },
+            "quota_candidate_counts": dict(self.quota_candidate_counts),
+            "quota_candidate_session_counts": {
+                name: len(self.quota_by_session[name]) for name in QUOTA_NAMES
+            },
+            "quota_session_draws": {
+                name: dict(values) for name, values in self.quota_session_draws.items()
+            },
+            "unknown_rich_quantile": self.unknown_rich_quantile,
+            "unknown_rich_threshold_by_session": dict(self.unknown_rich_threshold_by_session),
+            "sampling_stats_source": self.stats_source,
+            "resized_boundary_loss_count": self.resized_boundary_loss_count,
+            "quota_session_strategy": dict(self.quota_session_strategy),
+            "quota_repeat_factor": {
+                name: float(self.quota_draws[name] / max(1, self.quota_candidate_counts[name]))
+                for name in QUOTA_NAMES
+            },
+            "session_draws": dict(self.session_draws),
+            "guided_crop_hits": dict(self.guided_crop_hits),
+            "full_frame_draws": dict(self.full_frame_draws),
+            "crop_fraction_range": [self.crop_min_fraction, self.crop_max_fraction],
+            "horizontal_flip_probability": self.horizontal_flip_probability,
+            "completed_schedule_cycles": self.sample_cursor // len(QUOTA_NAMES),
+            "schedule_cycle_complete": self.sample_cursor % len(QUOTA_NAMES) == 0,
+            "maximum_quota_draw_imbalance": max(self.quota_draws.values()) - min(self.quota_draws.values()),
+            "sample_trace_sha256": self.sample_trace_hasher.hexdigest(),
+            "quota_class_presence": {
+                name: dict(values) for name, values in self.quota_class_presence.items()
+            },
+        }
+
+
 def build_composite_loss(keras: Any, class_weights: np.ndarray, args: argparse.Namespace) -> Any:
     weights_tensor = keras.ops.convert_to_tensor(class_weights)
 
@@ -320,6 +638,77 @@ def evaluate_arrays(model: Any, images: np.ndarray, masks: np.ndarray, batch_siz
     return shared.confusion_and_metrics(np.argmax(logits, axis=-1), masks)
 
 
+def metric_snapshot(metrics: dict[str, Any]) -> dict[str, float]:
+    return {
+        "selection_score": selection_score(metrics),
+        "mean_iou": float(metrics["mean_iou"]),
+        "boundary_iou": float(metrics["per_class"]["boundary_step_curb"]["iou"]),
+        "unknown_iou": float(metrics["per_class"]["unknown_nonwalkable"]["iou"]),
+        "pixel_accuracy": float(metrics["pixel_accuracy"]),
+    }
+
+
+def grouped_dev_metrics(
+    predictions: np.ndarray,
+    masks: np.ndarray,
+    records: Sequence[shared.Record],
+    key_for: Any,
+) -> dict[str, dict[str, Any]]:
+    groups: dict[str, list[int]] = {}
+    for index, record in enumerate(records):
+        key = key_for(record)
+        if key:
+            groups.setdefault(str(key), []).append(index)
+    return {
+        name: shared.confusion_and_metrics(predictions[indices], masks[indices])
+        for name, indices in sorted(groups.items())
+    }
+
+
+def summarize_group_metrics(groups: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    if not groups:
+        return {"group_count": 0}
+    snapshots = {name: metric_snapshot(metrics) for name, metrics in groups.items()}
+    fields = tuple(next(iter(snapshots.values())))
+    return {
+        "group_count": len(groups),
+        "macro": {
+            field: float(np.mean([values[field] for values in snapshots.values()]))
+            for field in fields
+        },
+        "worst": {
+            field: {
+                "value": float(min(values[field] for values in snapshots.values())),
+                "group": min(snapshots, key=lambda name: snapshots[name][field]),
+            }
+            for field in fields
+        },
+        "groups": snapshots,
+    }
+
+
+def evaluate_dev_breakdown(
+    model: Any,
+    images: np.ndarray,
+    masks: np.ndarray,
+    records: Sequence[shared.Record],
+    batch_size: int,
+) -> dict[str, Any]:
+    logits = model.predict(images, batch_size=batch_size, verbose=0)
+    predictions = np.argmax(logits, axis=-1)
+    global_metrics = shared.confusion_and_metrics(predictions, masks)
+    sessions = grouped_dev_metrics(predictions, masks, records, lambda record: record.session_id)
+    scenes = grouped_dev_metrics(
+        predictions, masks, records, lambda record: record.scene_bucket or "unassigned",
+    )
+    return {
+        "global": global_metrics,
+        "global_snapshot": metric_snapshot(global_metrics),
+        "macro_session": summarize_group_metrics(sessions),
+        "scene": summarize_group_metrics(scenes),
+    }
+
+
 def train_seed(
     args: argparse.Namespace,
     *,
@@ -328,14 +717,17 @@ def train_seed(
     train_images: np.ndarray,
     train_masks: np.ndarray,
     train_records: Sequence[shared.Record],
+    train_sampling_stats: Sequence[dict[str, Any]],
     dev_images: np.ndarray,
     dev_masks: np.ndarray,
+    dev_records: Sequence[shared.Record],
     loss_weights: np.ndarray,
     base_weights: Path,
-    seed: int,
+    model_seed: int,
+    sampler_seed: int,
 ) -> dict[str, Any]:
     keras.backend.clear_session()
-    set_seed(keras, torch, seed)
+    set_seed(keras, torch, model_seed)
     model = shared.sanpo_segmentation_model.build_mobilenetv3_lraspp(
         keras,
         args.input_size,
@@ -343,28 +735,54 @@ def train_seed(
         backbone_weights="imagenet",
         backbone_alpha=args.backbone_alpha,
         decoder_channels=args.decoder_channels,
+        detail_output_stride=args.detail_output_stride,
+        semantic_output_stride=args.semantic_output_stride,
     )
-    sampler = SessionBalancedCropSampler(
-        train_images,
-        train_masks,
-        train_records,
-        batch_size=args.batch_size,
-        seed=seed,
-        guided_crop_fraction=args.guided_crop_fraction,
-        crop_min_fraction=args.crop_min_fraction,
-        crop_max_fraction=args.crop_max_fraction,
-        horizontal_flip_probability=args.horizontal_flip_probability,
-        boundary_guided_probability=args.boundary_guided_probability,
-    )
-    seed_weights = seeded_weight_path(base_weights, seed)
+    if args.sampler_strategy == "deterministic_quota":
+        sampler: Any = DeterministicQuotaSampler(
+            train_images,
+            train_masks,
+            train_records,
+            batch_size=args.batch_size,
+            seed=sampler_seed,
+            crop_min_fraction=args.crop_min_fraction,
+            crop_max_fraction=args.crop_max_fraction,
+            horizontal_flip_probability=args.horizontal_flip_probability,
+            unknown_rich_quantile=args.unknown_rich_quantile,
+            source_mask_stats=train_sampling_stats,
+        )
+    else:
+        sampler = SessionBalancedCropSampler(
+            train_images,
+            train_masks,
+            train_records,
+            batch_size=args.batch_size,
+            seed=sampler_seed,
+            guided_crop_fraction=args.guided_crop_fraction,
+            crop_min_fraction=args.crop_min_fraction,
+            crop_max_fraction=args.crop_max_fraction,
+            horizontal_flip_probability=args.horizontal_flip_probability,
+            boundary_guided_probability=args.boundary_guided_probability,
+        )
+    seed_weights = seed_pair_weight_path(base_weights, model_seed, sampler_seed)
     seed_weights.parent.mkdir(parents=True, exist_ok=True)
     evaluations: list[dict[str, Any]] = []
     stage_reports: list[dict[str, Any]] = []
     global_best_key: tuple[float, float, float] | None = None
     completed_steps = 0
+    next_evaluation_step = args.eval_every_steps
     fit_started = time.perf_counter()
     torch.cuda.reset_peak_memory_stats()
-    if args.two_stage:
+    if args.head_only:
+        stages = [{
+            "name": "head_only",
+            "steps": args.optimizer_steps,
+            "backbone_trainable": False,
+            "initial_learning_rate": args.learning_rate,
+            "final_learning_rate_ratio": 1.0,
+            "early_stopping": False,
+        }]
+    elif args.two_stage:
         stages = [
             {
                 "name": "head_warmup",
@@ -423,7 +841,9 @@ def train_seed(
         stage_best_key: tuple[float, float, float] | None = None
         stage_no_improvement = 0
         stage_completed_steps = 0
-        checkpoint = stage_weight_path(base_weights, seed, str(stage["name"]))
+        checkpoint = seed_pair_stage_weight_path(
+            base_weights, model_seed, sampler_seed, str(stage["name"]),
+        )
         for stage_step in range(1, int(stage["steps"]) + 1):
             batch_images, batch_masks = sampler.next_batch()
             train_logs = model.train_on_batch(batch_images, batch_masks, return_dict=True)
@@ -431,8 +851,18 @@ def train_seed(
             model.reset_metrics()
             stage_completed_steps = stage_step
             completed_steps += 1
-            if stage_step % args.eval_every_steps != 0 and stage_step != stage["steps"]:
+            quota_cycle_complete = (
+                not isinstance(sampler, DeterministicQuotaSampler)
+                or sampler.sample_cursor % len(QUOTA_NAMES) == 0
+            )
+            scheduled_evaluation = completed_steps >= next_evaluation_step and quota_cycle_complete
+            final_stage_step = stage_step == stage["steps"]
+            if not scheduled_evaluation and not final_stage_step:
                 continue
+            requested_evaluation_step = next_evaluation_step if scheduled_evaluation else completed_steps
+            if scheduled_evaluation:
+                while next_evaluation_step <= completed_steps:
+                    next_evaluation_step += args.eval_every_steps
             metrics = evaluate_arrays(model, dev_images, dev_masks, args.batch_size)
             key = checkpoint_key(metrics)
             stage_improved = (
@@ -467,6 +897,8 @@ def train_seed(
                 "stage": stage["name"],
                 "stage_optimizer_step": stage_step,
                 "optimizer_step": completed_steps,
+                "requested_evaluation_step": requested_evaluation_step,
+                "quota_cycle_complete": quota_cycle_complete,
                 "learning_rate": current_learning_rate,
                 "mean_train_loss_since_last_eval": float(np.mean(recent_losses)),
                 "selection_score": key[0],
@@ -509,15 +941,21 @@ def train_seed(
     if global_best_key is None or not seed_weights.is_file():
         raise RuntimeError("training completed without a dev checkpoint")
     model.load_weights(seed_weights)
-    final_metrics = evaluate_arrays(model, dev_images, dev_masks, args.batch_size)
+    dev_breakdown = evaluate_dev_breakdown(
+        model, dev_images, dev_masks, dev_records, args.batch_size,
+    )
+    final_metrics = dev_breakdown["global"]
     return {
-        "seed": seed,
+        "seed": model_seed,
+        "model_seed": model_seed,
+        "sampler_seed": sampler_seed,
         "requested_optimizer_steps": args.optimizer_steps,
         "completed_optimizer_steps": completed_steps,
         "early_stopped": completed_steps < args.optimizer_steps,
         "stages": stage_reports,
         "selection_score": selection_score(final_metrics),
         "dev_mask_metrics": final_metrics,
+        "dev_breakdown": dev_breakdown,
         "evaluations": evaluations,
         "sampler": sampler.report(),
         "fit_seconds": fit_seconds,
@@ -526,6 +964,7 @@ def train_seed(
         "weights": str(seed_weights),
         "weights_sha256": shared.sha256_file(seed_weights),
         "parameter_count": int(model.count_params()),
+        "feature_contract": dict(model.sanpo_feature_contract),
     }
 
 
@@ -540,8 +979,16 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     records = shared.load_records(manifest)
     train_records = shared.records_by_split(records, "train")
     dev_records = shared.records_by_split(records, "dev")
+    source_mask_stats_by_id: dict[str, dict[str, Any]] = {}
     for record in records:
-        shared.validate_binary_masks(record)
+        source_mask = shared.validate_binary_masks(record)
+        source_mask_stats_by_id[record.sample_id] = {
+            "class_presence": [
+                bool(np.any(source_mask == class_id)) for class_id in range(len(shared.CLASS_NAMES))
+            ],
+            "unknown_share": float(np.mean(source_mask == shared.CLASS_IDS["unknown_nonwalkable"])),
+        }
+    train_sampling_stats = [source_mask_stats_by_id[record.sample_id] for record in train_records]
 
     # Keras selects its backend at import time. Fail closed if the parent process
     # imported another backend or configured a conflicting value.
@@ -579,21 +1026,26 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             train_images=train_images,
             train_masks=train_masks,
             train_records=train_records,
+            train_sampling_stats=train_sampling_stats,
             dev_images=dev_images,
             dev_masks=dev_masks,
+            dev_records=dev_records,
             loss_weights=loss_weights,
             base_weights=weights,
-            seed=seed,
+            model_seed=model_seed,
+            sampler_seed=sampler_seed,
         )
-        for seed in args.seeds
+        for model_seed, sampler_seed in args.seed_pairs
     ]
     selected = max(seed_runs, key=lambda run: checkpoint_key(run["dev_mask_metrics"]))
     weights.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(selected["weights"], weights)
     stability = aggregate_seed_metrics(seed_runs)
     report = {
-        "schema_version": 3,
+        "schema_version": 4,
         "candidate": "MobileNetV3Small+LR-ASPP",
+        "architecture_revision": shared.sanpo_segmentation_model.ARCHITECTURE_REVISION,
+        "model_definition_sha256": shared.sha256_file(Path(shared.sanpo_segmentation_model.__file__)),
         "benchmark_only": True,
         "promotion": "do_not_replace_default_model",
         "backend": "keras3_torch",
@@ -607,9 +1059,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "input_size": args.input_size,
             "backbone_alpha": args.backbone_alpha,
             "decoder_channels": args.decoder_channels,
+            "detail_output_stride": args.detail_output_stride,
+            "semantic_output_stride": args.semantic_output_stride,
+            "feature_contract": selected["feature_contract"],
             "parameter_count": selected["parameter_count"],
         },
-        "data_pipeline": "preloaded_uint8_session_balanced_guided_crop",
+        "data_pipeline": f"preloaded_uint8_{args.sampler_strategy}",
         "manifest": str(manifest),
         "manifest_sha256": shared.sha256_file(manifest),
         "training_gate_report": str(gate_path),
@@ -638,13 +1093,22 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "minimum_optimizer_steps": args.minimum_optimizer_steps,
             "eval_every_steps": args.eval_every_steps,
             "batch_size": args.batch_size,
-            "two_stage": args.two_stage,
-            "head_warmup_steps": args.head_warmup_steps if args.two_stage else 0,
+            "head_only": args.head_only,
+            "two_stage": args.two_stage and not args.head_only,
+            "head_warmup_steps": args.head_warmup_steps if args.two_stage and not args.head_only else 0,
             "head_learning_rate": args.learning_rate,
             "finetune_learning_rate": args.finetune_learning_rate if args.two_stage else None,
             "finetune_final_learning_rate_ratio": args.finetune_final_lr_ratio if args.two_stage else None,
             "freeze_backbone_batchnorm": args.freeze_backbone_batchnorm,
             "seeds": list(args.seeds),
+            "seed_pairs": [
+                {"model_seed": model_seed, "sampler_seed": sampler_seed}
+                for model_seed, sampler_seed in args.seed_pairs
+            ],
+            "sampler_strategy": args.sampler_strategy,
+            "unknown_rich_quantile": (
+                args.unknown_rich_quantile if args.sampler_strategy == "deterministic_quota" else None
+            ),
             "checkpoint_monitor": "harmonic_mean(dev_mean_iou, dev_boundary_step_curb_iou)",
             "checkpoint_tiebreakers": ["dev_boundary_step_curb_iou", "dev_mean_iou"],
             "early_stopping_patience_evaluations": args.patience_evaluations,
@@ -653,7 +1117,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         },
         "seed_runs": seed_runs,
         "seed_stability": stability,
+        "p0_factor_variation": factor_variation_summary(seed_runs) if args.head_only else None,
         "selected_seed": selected["seed"],
+        "selected_model_seed": selected["model_seed"],
+        "selected_sampler_seed": selected["sampler_seed"],
         "dev_mask_metrics": selected["dev_mask_metrics"],
         "selection_score": selected["selection_score"],
         "weights": str(weights),
@@ -686,6 +1153,10 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         "--two-stage", action=argparse.BooleanOptionalAction, default=True,
         help="Warm up LR-ASPP with a frozen backbone, then fine-tune the backbone at a lower decayed LR.",
     )
+    parser.add_argument(
+        "--head-only", action=argparse.BooleanOptionalAction, default=False,
+        help="Freeze the backbone for the full run; intended for short P0 seed-factor audits.",
+    )
     parser.add_argument("--head-warmup-steps", type=int, default=100)
     parser.add_argument("--finetune-learning-rate", type=float, default=5e-5)
     parser.add_argument("--finetune-final-lr-ratio", type=float, default=0.10)
@@ -695,7 +1166,17 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--seeds", default=",".join(str(seed) for seed in DEFAULT_SEEDS))
     parser.add_argument("--seed", type=int, help="Compatibility shortcut for a deliberate single-seed audit run.")
+    parser.add_argument(
+        "--seed-pairs",
+        help="Comma-separated model_seed:sampler_seed pairs; separates initialization and sampling variance.",
+    )
     parser.add_argument("--guided-crop-fraction", type=float, default=0.70)
+    parser.add_argument(
+        "--sampler-strategy",
+        choices=("session_balanced_guided", "deterministic_quota"),
+        default="session_balanced_guided",
+    )
+    parser.add_argument("--unknown-rich-quantile", type=float, default=0.75)
     parser.add_argument("--boundary-guided-probability", type=float, default=0.65)
     parser.add_argument("--crop-min-fraction", type=float, default=0.55)
     parser.add_argument("--crop-max-fraction", type=float, default=0.85)
@@ -707,6 +1188,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--maximum-class-weight", type=float, default=4.0)
     parser.add_argument("--backbone-alpha", type=float, choices=[0.75, 1.0], default=0.75)
     parser.add_argument("--decoder-channels", type=int, default=96)
+    parser.add_argument("--detail-output-stride", type=int, choices=[4, 8], default=8)
+    parser.add_argument("--semantic-output-stride", type=int, choices=[16, 32], default=32)
     parser.add_argument(
         "--jit-compile",
         action=argparse.BooleanOptionalAction,
@@ -715,7 +1198,14 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     )
     args = parser.parse_args(argv)
     try:
-        args.seeds = (args.seed,) if args.seed is not None else parse_seed_list(args.seeds)
+        if args.seed_pairs and args.seed is not None:
+            parser.error("--seed-pairs and --seed are mutually exclusive")
+        if args.seed_pairs:
+            args.seed_pairs = parse_seed_pairs(args.seed_pairs)
+            args.seeds = tuple(dict.fromkeys(model_seed for model_seed, _ in args.seed_pairs))
+        else:
+            args.seeds = (args.seed,) if args.seed is not None else parse_seed_list(args.seeds)
+            args.seed_pairs = tuple((seed, seed) for seed in args.seeds)
     except ValueError as error:
         parser.error(str(error))
     positive = (
@@ -735,7 +1225,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         parser.error("step counts, batch-size, learning-rate, focal-gamma, class-weight cap and decoder channels must be positive")
     if args.minimum_optimizer_steps > args.optimizer_steps:
         parser.error("minimum-optimizer-steps must not exceed optimizer-steps")
-    if args.two_stage and args.head_warmup_steps >= args.optimizer_steps:
+    if args.two_stage and not args.head_only and args.head_warmup_steps >= args.optimizer_steps:
         parser.error("two-stage training requires head-warmup-steps < optimizer-steps")
     if not 0 < args.finetune_final_lr_ratio <= 1:
         parser.error("finetune-final-lr-ratio must be in (0, 1]")
@@ -749,6 +1239,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         parser.error("crop/flip probabilities must be in 0..1")
     if not 0 < args.crop_min_fraction <= args.crop_max_fraction <= 1:
         parser.error("crop fractions must satisfy 0 < min <= max <= 1")
+    if not 0 <= args.unknown_rich_quantile < 1:
+        parser.error("unknown-rich-quantile must be in [0, 1)")
     if min(args.ce_weight, args.dice_weight, args.focal_weight) < 0 or abs(
         args.ce_weight + args.dice_weight + args.focal_weight - 1.0
     ) > 1e-6:

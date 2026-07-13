@@ -1,65 +1,63 @@
 # 本地产物目录说明
 
-BlindAssist 的源码根目录只保留代码、文档、配置和少量明确需要版本管理的材料。设备日志、截图、临时 benchmark、真实图片评测集和历史备份统一放在本地忽略目录：
+BlindAssist 的源码根目录只保留代码、文档、配置和明确需要版本管理的材料。所有下载、数据集、设备证据、训练输出、模型源文件和临时工作区统一收敛到：
 
 ```text
-test-artifacts.local/
+artifacts.local/
 ```
 
-该目录被 `.gitignore` 的 `test-artifacts*/` 规则忽略，默认不提交 Git。
+该目录被 `.gitignore` 忽略，默认不提交 Git。
 
-## 目录结构
+## 当前结构
 
 ```text
-test-artifacts.local/
-  datasets/
-    blindassist-evalset-20260527-impl/
-  device-regression/
-    20260525-012352/
-    20260525-222502/
-    ...
-  detector-benchmark/
-    20260527-010222/
-    inspect/
-  detector-ab-device-benchmark/
-    20260527-021849/
-    20260527-022312/
-  yolo26n-device-benchmark/
-    20260527-013423/
-    ...
-  legacy/
-    test-artifacts/
-    before-rebase-20260522-014530/
+artifacts.local/
+  downloads/       # 下载缓存、候选模型和外部数据
+  evidence/        # 数据集、benchmark、真机回归和训练证据
+  models/          # ONNX/PT/SavedModel、校准数据和本地导出
+  presentations/   # 本地演示稿备份
+  work/            # 可重建的工作目录
+  tmp/             # 短期临时文件
 ```
 
-## 功能说明
+## 兼容入口
 
-- `datasets/`：真实图片评测集、数据集 manifest、YOLO/COCO 导出、QA 预览和人工复核表。当前首版 BlindAssist 评测集位于 `datasets/blindassist-evalset-20260527-impl/`。
-- `device-regression/`：`scripts/run_device_regression.ps1` 生成的真机安装、冷启动、UI dump、截图、gfx/mem 和 summary 证据。
-- `detector-benchmark/`：`scripts/benchmark_tflite_detectors.py` 生成的本机检测器 smoke benchmark、模型检查输出和 Markdown/JSON 报告。
-- `detector-ab-device-benchmark/`：`scripts/run_detector_ab_device_benchmark.ps1` 生成的同设备 yolo11n/yolo26n A/B 评测证据、logcat、APK 资产检查和设备端 per-image 结果。
-- `yolo26n-device-benchmark/`：旧 yolo26n 专项真机评测证据，保留用于历史对照。
-- `legacy/`：历史迁移、rebase 前备份和早期 `test-artifacts/` 内容。只用于追溯，不作为新产物输出位置。
+为避免一次性破坏已有脚本和历史命令，迁移阶段保留下列目录 junction：
 
-## 新产物默认位置
-
-```powershell
-.\.venv-export312\Scripts\python.exe scripts\build_blindassist_evalset.py
-# -> test-artifacts.local\datasets\blindassist-evalset-<timestamp>\
-
-.\.venv-export312\Scripts\python.exe scripts\benchmark_tflite_detectors.py
-# -> test-artifacts.local\detector-benchmark\<timestamp>\
-
-powershell -ExecutionPolicy Bypass -File .\scripts\run_device_regression.ps1 -SampleSeconds 90
-# -> test-artifacts.local\device-regression\<timestamp>\
-
-powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1
-# -> test-artifacts.local\detector-ab-device-benchmark\<timestamp>\
+```text
+test-artifacts.local -> artifacts.local/evidence
+.downloads           -> artifacts.local/downloads
+work                 -> artifacts.local/work
+tmp                  -> artifacts.local/tmp
 ```
+
+新脚本和新文档必须直接使用 `artifacts.local/`。旧入口将在对应脚本完成分批迁移和验证后移除。
+
+## evidence 目录职责
+
+- `datasets/`：评测集、manifest、标签、QA 预览和来源证明。
+- `device-regression/`：真机安装、启动、截图、性能和 summary 证据。
+- `detector-benchmark/`：本机检测器 smoke benchmark。
+- `detector-ab-device-benchmark/`：同设备检测器 A/B 证据。
+- `depth-fusion-benchmark/`：深度融合候选证据。
+- `sanpo-*`：SANPO 数据、训练、门禁和 benchmark 证据。
+- `legacy/`：历史迁移和早期备份，只用于追溯。
+
+## 工具与状态不属于产物
+
+JDK、Android SDK、Python 运行时和构建缓存位于：
+
+```text
+E:\codex-tools\projects\blindassist\toolchain\
+E:\codex-tools\projects\blindassist\state\
+```
+
+仓库内 `.jdk`、`.android-sdk`、`.gradle-local` 等旧路径在迁移期是 junction，不是工具的真实存储位置。`.python311` 与 `.venv-export312` 暂保留原位：Windows 对基础 DLL 的占用阻止了安全删除，而 venv 内含绝对解释器路径，需在 `E:\codex-tools` 重建并验证后再切换。旧 `.venv-export` 已迁移为兼容 junction，但它原先依赖已不存在的 `G:\Python`，不作为可用验证环境。
 
 ## 维护规则
 
-- 不把 `test-artifacts.local/` 下的原图、截图、日志、benchmark JSON 或设备拉取文件提交到 Git。
-- 文档中引用证据路径时，优先使用新的分组目录。
-- 需要给老师、答辩或发布包使用的 APK 仍按 `docs/APK_ARCHIVE.md` 归档，不放在 `test-artifacts.local/` 当作正式发布物。
-- 清理旧本地产物前先确认是否已经有等价归档或开发日志记录，不要删除唯一验证证据。
+- 不提交 `artifacts.local/` 下的原图、数据集、日志、模型源文件或设备证据。
+- 新脚本不得在仓库根目录创建新的数据、模型、下载或临时目录。
+- 文档引用本地证据时使用 `artifacts.local/evidence/...`。
+- 正式 APK 仍按 [APK_ARCHIVE.md](APK_ARCHIVE.md) 归档，不放入本目录充当发布物。
+- 清理前确认不存在唯一验证证据；目录迁移应先核对文件数量和失败数。

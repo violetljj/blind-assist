@@ -1,0 +1,192 @@
+{
+  "schema": "blindassist_sanpo_counterfactual_episode_collection_v1",
+  "version": 1,
+  "status": "collection_protocol_only",
+  "benchmark_only": true,
+  "network_required": false,
+  "production_model_replacement_authorized": false,
+  "design": {
+    "session_count": 6,
+    "scene_count": 4,
+    "matched_pairs_per_session_scene": 2,
+    "positive_episodes_per_session_scene": 2,
+    "negative_episodes_per_session_scene": 2,
+    "episode_count_per_session_scene": 4,
+    "expected_matched_pair_count": 48,
+    "expected_episode_count": 96,
+    "recommended_episode_duration_seconds": {"minimum": 10, "maximum": 20}
+  },
+  "sessions": [
+    {"session_id": "session_01", "collection_status": "not_collected"},
+    {"session_id": "session_02", "collection_status": "not_collected"},
+    {"session_id": "session_03", "collection_status": "not_collected"},
+    {"session_id": "session_04", "collection_status": "not_collected"},
+    {"session_id": "session_05", "collection_status": "not_collected"},
+    {"session_id": "session_06", "collection_status": "not_collected"}
+  ],
+  "scenes": [
+    {
+      "scene_id": "parallel_boundary",
+      "positive_contract": "boundary enters or crosses the center walking corridor",
+      "matched_negative_contract": "parallel boundary remains outside the center walking corridor"
+    },
+    {
+      "scene_id": "step_curb",
+      "positive_contract": "approaching a step or curb inside the alertable corridor",
+      "matched_negative_contract": "visually similar step or curb is far, already passed, or receding"
+    },
+    {
+      "scene_id": "center_obstacle",
+      "positive_contract": "obstacle intrudes into the near center corridor",
+      "matched_negative_contract": "same-type obstacle remains outside or far from the center corridor"
+    },
+    {
+      "scene_id": "lateral_pedestrian_or_ebike",
+      "positive_contract": "lateral object cuts into the walking path",
+      "matched_negative_contract": "lateral object passes without entering the walking path"
+    }
+  ],
+  "matrix_contract": {
+    "every_session_must_cover_every_scene": true,
+    "matched_pair_members_must_share_session": true,
+    "matched_pair_members_must_share_scene": true,
+    "matched_pair_members_must_share_capture_context": [
+      "location",
+      "lighting",
+      "device",
+      "camera_configuration",
+      "object_category"
+    ],
+    "intended_counterfactual_dimensions": [
+      "center_corridor_intrusion",
+      "approach_or_recede",
+      "path_cut_in",
+      "passed_or_not_passed"
+    ]
+  },
+  "episode_record_schema": {
+    "required_fields": [
+      "episode_id",
+      "session_id",
+      "scene_id",
+      "matched_pair_id",
+      "pair_role",
+      "risk_event_id",
+      "expected_should_alert",
+      "video_path",
+      "video_sha256",
+      "source_receipt_id",
+      "annotation_reviewer_ids"
+    ],
+    "pair_role_allowed": ["positive", "matched_negative"],
+    "positive_event_anchors_ms": [
+      "first_visible_ms",
+      "alertable_start_ms",
+      "passed_or_cleared_ms"
+    ],
+    "positive_anchor_order": "first_visible_ms <= alertable_start_ms < passed_or_cleared_ms",
+    "negative_anchor_policy": "all positive event anchors must be null",
+    "negative_reason_required": true,
+    "event_anchor_adjudication_tolerance_ms": 500
+  },
+  "source_receipt_schema": {
+    "required_fields": [
+      "source_receipt_id",
+      "source_owner_or_dataset",
+      "collection_date",
+      "license_status",
+      "license_evidence_path",
+      "privacy_review_status",
+      "privacy_evidence_path",
+      "reviewer_id",
+      "raw_video_path",
+      "raw_video_size_bytes",
+      "raw_video_sha256",
+      "episode_manifest_path",
+      "episode_manifest_sha256"
+    ],
+    "allowed_license_status": ["owned_and_consented", "licensed_for_research"],
+    "required_privacy_review_status": "green",
+    "hash_algorithm": "sha256",
+    "local_evidence_required": true,
+    "remote_url_required": false,
+    "reject_on_missing_or_mismatched_hash": true
+  },
+  "split_policy": {
+    "strategy": "leave_one_session_out",
+    "fold_count": 6,
+    "folds": [
+      {"fold_id": "loso_01", "holdout_session_id": "session_01"},
+      {"fold_id": "loso_02", "holdout_session_id": "session_02"},
+      {"fold_id": "loso_03", "holdout_session_id": "session_03"},
+      {"fold_id": "loso_04", "holdout_session_id": "session_04"},
+      {"fold_id": "loso_05", "holdout_session_id": "session_05"},
+      {"fold_id": "loso_06", "holdout_session_id": "session_06"}
+    ],
+    "holdout_forbidden_uses": [
+      "training",
+      "calibration",
+      "threshold_selection",
+      "active_sample_selection",
+      "early_stopping"
+    ],
+    "frame_level_random_split_forbidden": true,
+    "derived_asset_cross_session_reuse_forbidden": true,
+    "matched_pair_split_forbidden": true
+  },
+  "active_audit_policy": {
+    "enabled_after_initial_collection": true,
+    "minimum_random_audit_ratio": 0.20,
+    "selection_channels": [
+      "model_disagreement",
+      "event_regeneration",
+      "high_confidence_false_alert_candidate",
+      "fixed_random_audit"
+    ],
+    "holdout_sessions_forbidden": true,
+    "report_random_and_model_selected_separately": true
+  },
+  "evaluation_contract": {
+    "primary_metrics": [
+      "event_recall",
+      "critical_miss_rate",
+      "false_alerts_per_minute",
+      "delivered_alerts_per_event",
+      "delivered_repeated_alert_rate",
+      "post_event_clearance_rate",
+      "clearance_latency_ms",
+      "event_regeneration_rate"
+    ],
+    "diagnostic_metrics": [
+      "frame_alert_recall",
+      "mean_iou",
+      "boundary_iou",
+      "session_identity_probe_accuracy"
+    ],
+    "report_each_fold": true,
+    "report_worst_session": true,
+    "report_worst_scene": true,
+    "success_thresholds_each_fold": {
+      "minimum_event_recall": 0.90,
+      "maximum_critical_miss_rate": 0.05,
+      "maximum_false_alerts_per_minute": 0.50,
+      "maximum_delivered_repeated_alert_rate": 0.10,
+      "minimum_post_event_clearance_rate": 0.90
+    }
+  },
+  "stop_conditions": [
+    "critical misses increase on any holdout session",
+    "counterfactual constraints suppress true center intrusion or lateral cut-in events",
+    "pixel metrics improve without event metric improvement",
+    "session identity remains strongly predictable",
+    "event anchor adjudication is not stable within tolerance",
+    "fixed random audit repeatedly reveals systematic failures missed by active selection"
+  ],
+  "safety_boundaries": [
+    "collect only on static or controlled routes with a sighted safety controller",
+    "do not require blind participants to depend on an unvalidated candidate",
+    "do not use holdout sessions for model or threshold selection",
+    "do not replace the production model from this protocol alone",
+    "the prototype does not replace a cane, guide dog, human judgment, or professional assistive device"
+  ]
+}

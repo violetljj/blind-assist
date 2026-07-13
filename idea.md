@@ -1,5 +1,23 @@
 # BlindAssist 想法池
 
+## 【部分完成】独立根因诊断、反事实事件与生命周期头路线
+
+- 用户原话：**“写入idea，开始独立测试：先做确定性线性 probe，判断究竟是特征问题还是 head 优化问题。如果特征可分，做 prototype/bootstrap 初始化的五组短跑。再单独测试距离场辅助监督。同时开始采集反事实 episode。中期做‘风险轮廓 + 生命周期头’原型，让像素分割降为辅助监督。SAM/ASAM可以作为第三顺位优化实验；它可能找到更平坦的解，但不应早于根因诊断。”**
+- 目标：先用独立、可否证的实验区分 backbone 特征不可分与 head 初始化/优化不稳，再决定是否改初始化、辅助监督或任务头；同时把训练和晋级单位从高度相关的单帧/像素，转为与产品行为一致的物理风险事件。同一事件只需在有效接近窗口成功提醒一次，通过或清除后不得再次提醒。通过同一 session 覆盖多种 scene、同一 scene 跨多个 session，并为每个正事件采集视觉相近但不应提醒的 matched negative，减少模型把 session 背景误学成场景或风险的可能。
+- 已开始执行：新增 [反事实事件采集协议](docs/SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md) 与离线配置 `configs/sanpo_counterfactual_episode_collection_v1.json`，冻结首轮 `6 sessions × 4 scenes × 每格 2 positive + 2 matched negative`，共 96 个 episode、48 个 matched pair。当前仅完成协议和配置，尚未采集、复核、训练或运行设备门，因此标记为【部分完成】。
+- 2026-07-13 根因诊断结果：确定性 raw OS8 probe 与 raw OS8+OS32 联合 probe 均做到两次闭式 ridge 系数完全一致，但分别只有 global mIoU `0.2475/0.3308`、boundary IoU `0.0205/0.0297`，最差 `step_curb` session mIoU `0.0671/0.0990`，未达到预注册 `mIoU>=0.35 + boundary IoU>=0.20` 可分门。因此按用户条件停止 prototype/bootstrap 五组短跑；当前优先修复表征、taxonomy 与 P3 session/split 分布，而不是继续搜索随机 head 初始化。完整证据见 [确定性 probe 审计](docs/SANPO_DETERMINISTIC_LINEAR_PROBE_2026-07-13.md)。
+- 2026-07-13 距离场前置结果：辅助 target/权重与 blind 拒绝合同已通过独立测试，但 384 mask 中 dev/train boundary 像素占比约为 `16.976%/0.857%=19.8×`。在 P3 split 重构前直接训练距离头无法可靠归因，因此暂不接入 trainer；这属于按停止门主动暂停，不是否定距离场机制本身。
+- 阶段一——确定性线性 probe：冻结同一 backbone 和同一 train/dev split，在固定特征上训练可重复的线性分类/像素 probe，按 model seed、session、scene、boundary/unknown 报告可分性。若线性 probe 在 worst-session / worst-scene 仍不可分，停止 head 优化路线，优先修复数据、taxonomy 或 backbone 表征；不得用更复杂优化器掩盖特征问题。
+- 阶段二——prototype/bootstrap 初始化：仅在线性 probe 证明特征可分后，使用类 prototype 或 bootstrap 得到的 head 初始化进行预注册五组短跑，与随机初始化保持相同数据、step、sampler 和评价合同。只有 model-seed range、最差 seed 和最差 session 同时改善才保留；仅提高最佳 seed 即停止。
+- 阶段三——距离场辅助监督：作为独立 OFAT 实验，为 boundary/step/curb 生成有符号或截断距离场辅助目标，检验它是否改善细边界和最差 session，而不改变事件主门。若只改善几何 boundary 指标、却降低 obstacle/unknown 或事件召回，则停止。
+- 并行阶段——反事实事件采集与稀疏标注：每个正事件只标 `first_visible`、`alertable_start`、`passed_or_cleared` 三个时间点、稳定的 `risk_event_id` 和 matched pair；负例标出完整观察区间并明确 `expected_should_alert=false`。每条 session 必须覆盖四类 scene，禁止“一条 session 等于一个 scene”。固定 leave-one-session-out 六折，训练、校准和阈值选择不得访问 holdout session。
+- 中期阶段——风险轮廓 + 生命周期头：用风险轮廓提供空间证据，用生命周期头直接预测 approach / alertable / passed-or-cleared 与一次提醒决策；像素分割降为辅助监督。主指标改为 event recall、critical miss、false alerts/min、实际交付提醒次数/event、清除时延和 event regeneration，逐帧 recall、mIoU 与像素边界只作诊断。
+- 第三顺位——SAM/ASAM：仅在完成特征/head 根因诊断、初始化和距离场对照后，才测试是否能找到更平坦且跨 seed 更稳定的解。必须用相同五组 seed 和 worst-group 门评估；不得因训练 loss 更平滑或单 seed 更好而晋级。
+- 后续主动失败闭环：在独立长序列中按模型分歧、事件重复再生和高置信误提醒生成审计队列，人工只做事件接受/拒绝、事件合并与三个时间点复核；至少 20% 候选来自固定随机审计，防止模型盲区永远不进入主动队列。
+- 成功门：六个 LOSO fold 均满足 `event recall >= 0.90`、`critical miss rate <= 0.05`、`false alerts/min <= 0.50`、`delivered repeated alert rate <= 0.10`、`post-event clearance rate >= 0.90`；同时报告 worst-session / worst-scene，且 matched negative 不得靠 session 身份或静态背景被轻易区分。任何离线成功都不自动授权模型替换。
+- 停止门：线性 probe 证明固定特征不可分时停止继续调 head；prototype/bootstrap 只提高最佳 seed、不改善最差 seed/session 时停止；距离场只改善像素边界、不改善最差组或造成 obstacle/unknown/事件退化时停止；SAM/ASAM 不得提前替代根因诊断。任一 holdout session 出现关键事件漏报上升、反事实负例压制真实侧向切入或中心侵入、session identity probe 显著高于随机、事件时间点不能在容差内一致复核，或主动队列持续漏掉随机审计中的系统性失败时，也必须停止扩训并回到数据或任务合同。
+- 安全边界：本路线仅用于 benchmark-only 候选和受控研究，不接入或替换 App 默认模型，不用 holdout 调参，不以单个最佳 seed、平均 mIoU 或 GPU 速度宣布晋级。采集前须具备许可、隐私复核和本地原始资产 SHA256 闭环；涉及行走风险的采集必须由健视安全员控制，在静态或受控路线中完成，不要求盲人参与者暴露于未验证模型决策，且始终明确该原型不替代盲杖、导盲犬、人工判断或专业辅助设备。
+
 ## 【部分完成】SANPO Traversability v2
 
 - `v10.4.0` 已通过当前 30 帧否定集：错误提醒率 `3.3%`、主区域命中 `86.7%`、total P95 `65.919ms`。

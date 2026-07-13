@@ -266,6 +266,8 @@ def build_mobilenetv3_lraspp(
     *,
     backbone_alpha: float = sanpo_backend_equivalence.DEFAULT_BACKBONE_ALPHA,
     decoder_channels: int = sanpo_backend_equivalence.DEFAULT_DECODER_CHANNELS,
+    detail_output_stride: int = sanpo_backend_equivalence.DEFAULT_DETAIL_OUTPUT_STRIDE,
+    semantic_output_stride: int = sanpo_backend_equivalence.DEFAULT_SEMANTIC_OUTPUT_STRIDE,
 ) -> Any:
     """Compatibility wrapper around the backend-neutral authoritative graph."""
     return sanpo_segmentation_model.build_mobilenetv3_lraspp(
@@ -274,6 +276,8 @@ def build_mobilenetv3_lraspp(
         num_classes,
         backbone_alpha=backbone_alpha,
         decoder_channels=decoder_channels,
+        detail_output_stride=detail_output_stride,
+        semantic_output_stride=semantic_output_stride,
     )
 
 
@@ -384,6 +388,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             backbone_alpha=args.backbone_alpha,
             decoder_channels=args.decoder_channels,
             input_size=args.input_size,
+            detail_output_stride=args.detail_output_stride,
+            semantic_output_stride=args.semantic_output_stride,
         )
     records = load_records(manifest)
     train_records = records_by_split(records, "train")
@@ -398,6 +404,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         args.input_size,
         backbone_alpha=args.backbone_alpha,
         decoder_channels=args.decoder_channels,
+        detail_output_stride=args.detail_output_stride,
+        semantic_output_stride=args.semantic_output_stride,
     )
     if args.import_weights:
         weights_path = resolve(root, args.import_weights).resolve()
@@ -423,17 +431,19 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "candidate": f"MobileNetV3Small(alpha={args.backbone_alpha:g})+LR-ASPP",
         "model_config": sanpo_backend_equivalence.model_config(
             args.backbone_alpha, args.decoder_channels, args.input_size,
+            args.detail_output_stride, args.semantic_output_stride,
         ),
         "model_config_sha256": sanpo_backend_equivalence.model_config_sha256(
             sanpo_backend_equivalence.model_config(
                 args.backbone_alpha, args.decoder_channels, args.input_size,
+                args.detail_output_stride, args.semantic_output_stride,
             )
         ),
         "benchmark_only": True,
         "promotion": "do_not_replace_default_model",
         "classes": list(CLASS_NAMES),
-        "input_contract": "NHWC 256x256 RGB, int8 TFLite; dequantize then preserve 0..255 RGB values",
-        "output_contract": "NHWC 256x256x4 int8 logits ordered as classes; argmax yields semantic class ID",
+        "input_contract": f"NHWC {args.input_size}x{args.input_size} RGB, int8 TFLite; dequantize then preserve 0..255 RGB values",
+        "output_contract": f"NHWC {args.input_size}x{args.input_size}x4 int8 logits ordered as classes; argmax yields semantic class ID",
         "manifest": str(manifest),
         "manifest_sha256": sha256_file(manifest),
         "training_gate_report": str(gate_report_path),
@@ -481,6 +491,14 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--decoder-channels", type=int,
         default=sanpo_backend_equivalence.DEFAULT_DECODER_CHANNELS,
+    )
+    parser.add_argument(
+        "--detail-output-stride", type=int, choices=(4, 8),
+        default=sanpo_backend_equivalence.DEFAULT_DETAIL_OUTPUT_STRIDE,
+    )
+    parser.add_argument(
+        "--semantic-output-stride", type=int, choices=(16, 32),
+        default=sanpo_backend_equivalence.DEFAULT_SEMANTIC_OUTPUT_STRIDE,
     )
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--batch-size", type=int, default=8)

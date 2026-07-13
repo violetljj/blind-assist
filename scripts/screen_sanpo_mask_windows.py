@@ -14,6 +14,7 @@ import argparse
 import io
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any
 from urllib.request import urlopen
@@ -41,18 +42,39 @@ from select_sanpo_sequence_by_geometry import (  # noqa: E402
 )
 
 
-def source_fps_for(session_id: str, camera: str) -> float:
-    description = fetch_json(media_url(f"{GCS_PREFIX}/sanpo-real/{session_id}/description.json"))
+def retry_fetch(operation, retries: int, label: str):
+    if retries <= 0:
+        raise ValueError("retries must be positive")
+    for attempt in range(retries):
+        try:
+            return operation()
+        except Exception as error:
+            if attempt + 1 == retries:
+                raise RuntimeError(f"{label} failed after {retries} attempts: {error}") from error
+            time.sleep(1 + attempt)
+    raise AssertionError("unreachable")
+
+
+def source_fps_for(session_id: str, camera: str, retries: int) -> float:
+    description = retry_fetch(
+        lambda: fetch_json(media_url(f"{GCS_PREFIX}/sanpo-real/{session_id}/description.json")),
+        retries,
+        f"{session_id} description",
+    )
     locations = list(description.get("session_camera_location", []))
     if camera not in locations:
         raise ValueError(f"{session_id}: camera {camera!r} is absent")
     return float(description["session_camera_details"][locations.index(camera)]["fps"])
 
 
-def mask_array(url: str) -> np.ndarray:
-    with urlopen(url, timeout=60) as response:
-        with Image.open(io.BytesIO(response.read())) as image:
+def mask_array(url: str, retries: int) -> np.ndarray:
+    def fetch() -> np.ndarray:
+        with urlopen(url, timeout=60) as response:
+            payload = response.read()
+        with Image.open(io.BytesIO(payload)) as image:
             return np.asarray(image.convert("RGB"), dtype=np.uint8)
+
+    return retry_fetch(fetch, retries, url)
 
 
 def frame_evidence(frame_index: int, source_frame_index: int, rgb: np.ndarray, profile: str) -> dict[str, Any]:
@@ -81,7 +103,7 @@ def frame_evidence(frame_index: int, source_frame_index: int, rgb: np.ndarray, p
 
 
 def screen_window(session_id: str, camera: str, lens: str, start_frame: int, profile: str, target_fps: float, retries: int) -> dict[str, Any]:
-    source_fps = source_fps_for(session_id, camera)
+    source_fps = source_fps_for(session_id, camera, retries)
     prefix = f"{GCS_PREFIX}/sanpo-real/{session_id}/{camera}/{lens}/segmentation_masks/"
     objects = {frame_number(item["name"]): item for item in list_gcs_objects(prefix, retries) if item["name"].endswith(".png")}
     selected = resample_indices(objects, source_fps, target_fps, start_frame, 50)
@@ -99,7 +121,12 @@ def screen_window(session_id: str, camera: str, lens: str, start_frame: int, pro
     frames = []
     for index, source_frame in enumerate(selected):
         item = objects[source_frame]
-        frames.append(frame_evidence(index, source_frame, mask_array(media_url(item["name"], item.get("generation"))), profile))
+        frames.append(frame_evidence(
+            index,
+            source_frame,
+            mask_array(media_url(item["name"], item.get("generation")), retries),
+            profile,
+        ))
     result = summarize_frame_evidence(frames, profile, f"sanpo_{session_id}_{camera}_{lens}_{start_frame:06d}_{int(target_fps)}fps")
     result.update({
         "screen_kind": "remote_mask_only",

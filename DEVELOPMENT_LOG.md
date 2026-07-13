@@ -4,6 +4,54 @@
 
 ## 2026-07-13
 
+### SANPO 确定性 backbone probe、距离场前置诊断与反事实 episode 启动
+- 时间：2026-07-13 13:55:00 +08:00
+- 执行者：violjjet
+- 修改范围：`idea.md`、确定性 probe/距离场独立脚本与测试、两份专项文档、反事实 episode 机器配置；不修改生产 App、默认模型、现有训练图或模型资产。
+- 根因 probe：新增只消费 green training authorization 和 train/dev manifest 的闭式 ridge probe。raw OS8 特征得到 global mIoU/boundary IoU `0.2475/0.0205`、macro/worst-session `0.2348/0.0671`；raw OS8+OS32 联合特征得到 `0.3308/0.0297`、macro/worst-session `0.3279/0.0990`。两次求解系数和 dev argmax 完全一致，blind 未访问；两者均未过预注册 `mIoU>=0.35 + boundary IoU>=0.20` 可分门。
+- 决策：当前证据更支持 backbone 表征与 session/split 数据问题，按用户的条件分支停止 prototype/bootstrap 五组短跑；没有用训练过的 `lraspp_fuse` 冒充 raw backbone 可分，也没有为了得到正结果放宽门槛。
+- 距离场：新增 boundary/step/curb 截断 signed/unsigned distance target、空/全 mask sentinel、SmoothL1 权重、blind 行/路径拒绝和 384 分辨率诊断。合同测试通过；real-only train/dev boundary 像素占比为 `0.857%/16.976%`，约差 `19.8×`，近边界占比为 `3.839%/8.059%`。因此距离辅助训练在 P3 split 闭合前暂停，避免把分布错位误归因给 loss。
+- 反事实采集：`idea.md` 已记录完整路线；新增 6 sessions × 4 scenes × 每格 2 positive + 2 matched negative 的 96-episode/48-pair 配置，固定三事件时间点、来源/隐私/SHA256、六折 LOSO 和 20% 随机审计。当前状态为 protocol-only，未伪称素材已经采集。
+- 验证：probe/距离模块共 11 项定向测试通过；OS8 和 OS8+OS32 两份 probe 实跑完成，距离场 600 帧诊断完成；三份本地报告 SHA256 分别为 `66fc5420b8160d314efd18eac09f6899ad69faf52c2381e9e05a793cda964cd8`、`a6e976033333068341f987563d39b74a1c832ed647d3208da916920f1a8f37e9`、`fe329dceeae653b75890fdac9753e88ae51539949a95698229cbf70b3e0240a4`。所有结果保持 `do_not_replace_default_model`，未导出 INT8、未运行设备门、未改变版本或 APK。
+
+### SANPO P3 原分辨率 split planner 与 official-train 扩充启动
+- 时间：2026-07-13 13:45:00 +08:00
+- 执行者：violjjet
+- 修改范围：新增 P3 session split planner、定向单测、训练协议与 P3 审计文档；联网阶段只读取 SANPO 官方 train 的稀疏 mask，不修改 canonical、模型、App 或模型资产。
+- 数据审计：当前可用于 train/dev 的独立 official-train session 只有 12 个，四场景均为 `2 train + 1 dev`；本地扩窗与旧 draft 均不增加 native session，已下载的其他 session 属于 official test。canonical 全图像素为 train boundary `0.857%`、dev `16.976%`，约差 `19.8×`，因此 P3 最低还需每场景新增 3 个、合计 12 个独立 session。
+- 实现：`plan_sanpo_p3_session_split.py` 在原分辨率按固定 SANPO_MAP 统计四类像素，以 native session 为原子执行确定性精确组合搜索；硬门固定为每场景 train `4–6` / dev `2–3`、四类 train/dev share ratio `<=2×`、dev boundary 至少 3 个贡献 session且单 session `<=50%`、其余 split/class 单 session `<=60%`。official-test/blind 在打开 manifest 前拒绝；raw-mask SHA 跨 split、未知 class、SHA/路径/连续帧异常或无可行分布组合均 fail closed 且不写输出。成功输出保留 sources/顶层证据，只含选中的 train/dev sequence，并带固定 P3 coverage policy，可直接交给 canonical builder；reserve 只留在报告。
+- 验证：P3 planner 9 tests 全绿，覆盖确定性、阈值边界、极细 boundary 原图统计、official-test sentinel 零读取、raw-mask 泄漏和全候选分布不合格时零输出。180-session 通用稀疏扫描触发 20 分钟硬超时且未产出最终报告，已终止残留子进程并拒绝采信。随后以新增断点参数完成 official-train `0–99` 与 `100–219` 两段不重叠 lateral 扫描，得到 5+8 条新增稀疏候选；首段 19 个连续窗口 `0/19` 通过，均按几何合同拒绝，第二段窗口读取因权限审核链路断开未执行。窗口工具补齐 description/mask TLS 重试，断点与重试共 4 tests 全绿。
+- 当前判断：P3 planner 已闭合，但 session coverage 仍为 red；不重建 canonical、不训练、不访问 blind、不导出或替换 App 模型，维持 `do_not_replace_default_model`。
+
+### SANPO P2 确定性 quota sampler 实现与五组否决
+- 时间：2026-07-13 13:10:00 +08:00
+- 执行者：violjjet
+- 修改范围：Torch trainer、sampler 定向测试、训练协议与 P2 审计文档；不修改 dataset split、模型图、export 输出、App 或模型资产。
+- 实现：新增 `deterministic_quota` sampler，按全局样本周期固定 boundary/obstacle/hard-negative/unknown-rich 各 25%。batch 6 每两步闭合，100 step 最终各 150 draw；checkpoint 由请求 25/75 自动对齐到完整周期的 26/76。报告新增候选池、per-quota/session draw、repeat factor、quota×类 presence、cycle 状态与 trace SHA256。
+- 数据严谨性：首次全局 unknown q75 审计发现只覆盖 4/8 session，正式训练主动中止。修正版按每 session 内 q75 建 104 帧/8-session unknown pool；boundary/hard-negative 资格使用 canonical 原分辨率 mask，显式报告 3 个在 384 resize 后丢失极细 boundary 的帧并禁止其进入 hard negative。正式池为 boundary 293/7 sessions、obstacle 398/8、hard negative 104/5、unknown-rich 104/8。
+- 结果：P2 五组 sampler-seed range `0.0024`，低于 P1-A 的 `0.0072`；但固定 sampler 的 model-seed min/range 为 `0.1700/0.3097`，劣于 P1-A 的 `0.1970/0.2951`，最佳 mIoU/boundary `0.4484/0.5159` 也未超过 `0.4642/0.5235`。保留显式审计入口，默认继续使用 `session_balanced_guided`，不以更稳定的 sampler 顺序掩盖更差的模型下限。
+- 验证：相关 Python compile 与 47 tests 通过；正式训练报告及 sidecar SHA256 一致，为 `0534441fc6bb2841087d43da4a567bf023e110725085942897002163b8284140`。未读取 blind、未导出 INT8、未运行设备门、未修改 App；结论 `do_not_replace_default_model`。
+- 下一步：进入 P3 split/session 重构，不再继续调 quota 比例或 sampler 随机种子。
+
+### SANPO P1 LR-ASPP 结构对齐与四组 seed 矩阵否决
+- 时间：2026-07-13 11:40:00 +08:00
+- 执行者：violjjet
+- 修改范围：共享 LR-ASPP 模型、Torch trainer、跨后端等价、TensorFlow export、候选质量门、定向测试、训练协议与 P1 审计文档；不修改数据、App 运行时或模型资产。
+- 结构修正：按 MobileNetV3 论文与 torchvision 官方实现，将 pooled gate 改为 `GAP→Conv→Sigmoid` 并移除 pooled-BN/ReLU6。新增 OS4/8 detail 与 OS16/32 semantic 显式合同；OS16 通过 atrous depthwise blocks 保留后半深层 backbone，拒绝以裁剪后段网络的中间层伪装论文 OS16。
+- 实验：四个变体各跑五个 100-step head-only seed pair。P1-A OS8/OS32 的 best mIoU/boundary 为 `0.4642/0.5235`，但 model-seed score range `0.2951`，高于 P0 的 `0.2685`；OS4/OS32 两个 seed boundary 坍塌到 `0.0271/0.0130`；OS4/OS16 best score `0.0968`；OS8/OS16 best score `0.1549`。保留 sigmoid/no pooled-BN 的结构正确性修正，拒绝 OS4 与 dilated OS16 默认化，P1 未关闭初始化高方差。
+- 合同：backend-equivalence schema 升级为 v3，architecture revision、detail/semantic stride 在训练、等价、export、quality gate 全链路哈希绑定；旧授权 fail closed。export report 的输入/输出尺寸描述改为跟随实际 input size。
+- 验证：相关 Python compile 通过，训练/导出/等价/质量门共 45 tests 通过。保留的 P1-A 权重跨后端为 green：max abs `1.7524e-05`、argmax agreement `1.0`，报告 SHA256 `06c9d331b3d4770c9b7698d1fdd5c660ebcc29fae8a8a862c19f33ae1f2985f4`。四份训练报告 sidecar 均匹配；均为 `do_not_replace_default_model`，未访问 blind、未导出 INT8、未修改 App，版本与 APK 不变。
+- 下一步：进入 P2 确定性 quota sampler；停止继续扫描 LR、512、decoder 160、boundary 权重和更多 endpoint 组合。
+
+### SANPO P0 head-only seed 因子审计
+- 时间：2026-07-13 11:05:00 +08:00
+- 执行者：violjjet
+- 修改范围：`train_sanpo_segmentation_keras_torch.py`、协议定向单测、训练协议与 P0 审计文档；不修改 dataset split、taxonomy、App 运行时或模型资产。
+- 实现：新增 `--head-only` 单阶段冻结 backbone 模式，以及 `--seed-pairs model_seed:sampler_seed` 独立随机因子入口；权重和报告分别记录两个 seed。最终 checkpoint 新增 global、macro-session、per-session、per-scene 与 worst-group 指标，`p0_factor_variation` 对固定一因子时另一因子的描述性方差进行审计。
+- 实验：在 real-only canonical r3 上以 384×384、batch 6、alpha 1.0、decoder 96、100 head-only step 跑五组 OFAT。固定 sampler `20260711` 时三个 model seed 的 selection score 为 `0.4424/0.1739/0.1982`，跨度 `0.2685`；固定 model `20260711` 时三个 sampler seed 为 `0.4424/0.4388/0.4312`，跨度 `0.0112`，前者约为后者 `24.1×`。mIoU/boundary/unknown 同向，五组 worst scene 均为 `step_curb`。
+- 决策：高方差主因定位到 head 初始化/模型随机状态，P1 优先对齐 LR-ASPP sigmoid gate、移除 pooled-BN，再以同一矩阵复跑；quota sampler 不是当前方差主因但仍保留为 P2 数据覆盖治理。OFAT 未估交互，stairs/curb 合并标签和 HUMAN/MACHINE 分项分别留给 P5/P4。
+- 验证：Python compile 通过；`scripts.test_train_sanpo_segmentation_protocol` 与 `scripts.test_train_export_sanpo_segmentation` 共 24 tests 通过。训练报告及 sidecar SHA256 一致，为 `0c10c4ed3d2c1fb3707c86bf99b64df2f9441c6e58711a33e53a8c616bee8f38`；固定记录 `blind_holdout_access=not_accessed_by_trainer`、`promotion=do_not_replace_default_model`。版本和 APK 均不变。
+
 ### SANPO 全链路升级、真实 session 扩容与 384 候选否决
 - 时间：2026-07-13 06:20:00 +08:00
 - 执行者：violjjet
@@ -4065,3 +4113,28 @@
 - 质量观察：SANPO 机器标注可在不同 RGB 帧间复用同一 raw mask，且四类投影也可能相同；重复样本继续由 RGB SHA 拒绝，raw mask 跨 split 继续硬拒绝，同 split 重复 mask 改为报告型指标。最终 train/dev raw 与 semantic duplicate row 均为 `1/600=0.1667%`，blind 为 `0/120`。
 - 构建结果：`test-artifacts.local/datasets/sanpo-v4-real-canonical-r3-20260713` 成功发布；600 train/dev + 120 real blind，12+2 独立 session，1440 个图像/掩码哈希匹配。最终 10 项检查全绿，training gate SHA256 `4c68e43494012f0499d8f9f01a5160a80276682fcd2e78a6ac5ca4cf98a1d5e1`；build report SHA256 `f7f7b11e4ca0f733dd4c5ccfb9f01ccf30548014c406edd72f308bb1fd6967b5`。
 - 验证：builder/数据治理单元测试、Python `py_compile` 和最终 canonical 发布前/发布后门禁通过。生产 App、训练脚本和模型资产未修改；本轮不改变版本、不归档 APK。
+
+### Workspace、工具链与本地产物收敛
+
+- 时间：2026-07-13 +08:00
+- 执行者：violjjet
+- 类型：仓库结构、工具链迁移、文档信息架构
+- 修改范围：外层 `E:\linnan\README.md`、根 `README.md`、`.gitignore`、`docs/README.md`、`scripts/README.md`、`docs/LOCAL_ARTIFACTS.md`、`docs/NEW_COMPUTER_HANDOFF.md` 及本机忽略目录。
+- 修改内容与原因：
+  - 明确 `E:\linnan` 仅为 workspace，`E:\linnan\linnan` 是 BlindAssist 唯一源码和 Git 命令入口。
+  - 将约 20.7 GiB 实验证据、1.0 GiB 下载和本地工作目录归并到 ignored `artifacts.local/`；旧 `test-artifacts.local`、`.downloads`、`work`、`tmp` 保留 junction，避免一次性破坏历史命令。
+  - 将 JDK、Android SDK、Gradle/Android/Kotlin 状态和缓存迁到 `E:\codex-tools\projects\blindassist`，旧隐藏路径保留 junction。`.python311` 与 `.venv-export312` 因 Windows DLL 锁和 venv 绝对路径暂保留原位，待重建验证后再切换；已回填并验证 Python 环境完整。
+  - 新增 docs/scripts 稳定索引；根 README 从逐日工程日志收敛为产品定位、当前状态、构建方式和导航。历史与详细执行继续分别由 CHANGELOG/DEVELOPMENT_LOG 承担。
+- 验证：迁移 `robocopy` 对实验物报告 21,372 + 541 + 1,592 个文件、0 failed；回填后的 `.venv-export312` 与标准 `E:\codex-tools\bin\blindassist-python.cmd` 均通过 `scripts\inspect_tflite.py`；迁移后的 JDK/SDK/Gradle 状态执行 `:app:tasks --offline` 为 `BUILD SUCCESSFUL`；新增 Markdown 导航目标存在。`check_repo_hygiene.ps1 -AllTracked` 仍被既有受跟踪 skills snapshot ZIP 拦截，属于本轮未处理的历史二进制策略问题。
+- 版本判断：不改变 App 行为、模型资产、权限和风险规则；版本不变，不归档 APK。
+
+### Workspace 布局规范固化与最终复核
+
+- 时间：2026-07-13 +08:00
+- 执行者：violjjet
+- 类型：仓库规范、文档治理、最终核验
+- 修改范围：`E:\linnan\AGENTS.md`、`AGENTS.md`、`DEVELOPMENT_LOG.md`。
+- 修改内容与原因：将唯一源码入口、`E:\codex-tools` 工具链、`artifacts.local/` 产物职责、旧路径 junction 的迁移规则、README/docs/scripts 的知识导航职责，以及布局变更后的最低验证要求写入长期协作规范，避免后续重新在仓库根创建工具、缓存、下载或未索引文档。
+- 验证：确认 Git 根为 `E:\linnan\linnan`；`test-artifacts.local`、`.downloads`、`work`、`tmp` 均指向 `artifacts.local/`；JDK/SDK/Gradle/Android/Kotlin 路径均指向 `E:\codex-tools`；`E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py` 通过；`scripts\check_repo_hygiene.ps1` 对 35 个变更路径通过；顶层 `docs/` 索引覆盖通过；`git diff --check` 通过。
+- 剩余风险：历史受跟踪的 skills snapshot ZIP 仍会使 `check_repo_hygiene.ps1 -AllTracked` 报告二进制策略问题；它不属于本轮布局变更，需在单独的 Git 历史/归档治理任务中处理。
+- 版本判断：仅固化协作和文件管理规范，不改变 App 行为、模型资产、权限或风险规则；版本不变，不归档 APK。

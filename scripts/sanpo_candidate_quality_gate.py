@@ -408,6 +408,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         backbone_alpha=args.backbone_alpha,
         decoder_channels=args.decoder_channels,
         input_size=args.input_size,
+        detail_output_stride=args.detail_output_stride,
+        semantic_output_stride=args.semantic_output_stride,
     )
     records = shared.load_records(manifest)
     dev_records = shared.records_by_split(records, "dev")
@@ -422,6 +424,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         args.input_size,
         backbone_alpha=args.backbone_alpha,
         decoder_channels=args.decoder_channels,
+        detail_output_stride=args.detail_output_stride,
+        semantic_output_stride=args.semantic_output_stride,
     )
     model.load_weights(weights)
     examples = [shared.load_example(record, args.input_size) for record in dev_records]
@@ -476,10 +480,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "weights_sha256": sha256_file(weights),
             "model_config": sanpo_backend_equivalence.model_config(
                 args.backbone_alpha, args.decoder_channels, args.input_size,
+                args.detail_output_stride, args.semantic_output_stride,
             ),
             "model_config_sha256": sanpo_backend_equivalence.model_config_sha256(
                 sanpo_backend_equivalence.model_config(
                     args.backbone_alpha, args.decoder_channels, args.input_size,
+                    args.detail_output_stride, args.semantic_output_stride,
                 )
             ),
             "backend_equivalence_report": str(equivalence_path),
@@ -517,6 +523,14 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--decoder-channels", type=int,
         default=sanpo_backend_equivalence.DEFAULT_DECODER_CHANNELS,
+    )
+    parser.add_argument(
+        "--detail-output-stride", type=int, choices=(4, 8),
+        default=sanpo_backend_equivalence.DEFAULT_DETAIL_OUTPUT_STRIDE,
+    )
+    parser.add_argument(
+        "--semantic-output-stride", type=int, choices=(16, 32),
+        default=sanpo_backend_equivalence.DEFAULT_SEMANTIC_OUTPUT_STRIDE,
     )
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--seed", type=int, default=20260713)

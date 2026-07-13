@@ -1,211 +1,81 @@
 # BlindAssist Android 原型
 
-BlindAssist 是 Android Kotlin + Jetpack Compose 助盲避障原型：Compose/Material 3 提供启动页、功能入口、底部导航和设置体验，CameraX 实时取流，TFLite 本地运行 YOLO11n，规则层判断危险区域，并通过语音和震动提醒。
+BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本地助盲避障原型。它通过手机摄像头识别前方目标，结合规则层生成方向、相对距离、语音和震动提醒。
 
-## 版本
+> BlindAssist 仍是辅助原型，不是安全认证设备，不能替代盲杖、导盲犬、人工判断或专业出行训练。
 
-- 当前项目版本：`v10.9.0` / `versionCode=37`
-- 版本规则：小更新增加 `v0.1`，较大更新增加 `v0.5`，阶段性质变增加 `v1.0`。
-- 版本影响由 Codex/Agent 根据每次变更的范围和风险判断。
-- 会影响项目状态、使用方式、功能行为、构建流程、模型资产、测试结论或重要技术决策的更新，应同步保持 README 与当前状态一致。
-- 普通措辞、错别字、格式整理或轻量协作规则说明不计为版本更新。
+## 当前状态
 
-## 近期状态
-- 2026-07-13：完成 SANPO 全链路升级与受门禁 GPU 消融。新的 real-only canonical v4 使用 14 条互斥官方 session：8 train、4 session-held-out dev、2 official-test blind，共 720 帧；四个场景桶均满足 train≥2、dev≥1，逐帧 RGB/raw mask inventory 1,440 项闭合，总门禁 10/10 green（报告 SHA256 `4c68e43494012f0499d8f9f01a5160a80276682fcd2e78a6ac5ca4cf98a1d5e1`）。新增独立 offline/INT8/device 三段质量门、模型配置哈希绑定和 fail-closed 导出。最佳单 seed 的 384×384、alpha 1.0、decoder 96 候选达到 dev mIoU `0.4344`、boundary IoU `0.4506`，相比旧 evidence-v4 的 `0.1711` / `0.0000144` 有明显跃升；但另外两个预注册 seed 仅为 mIoU `0.1804/0.2498`、boundary IoU `0.1734/0.1548`，且最佳候选离线质量门仍因全局 mIoU、session 宏平均和最差场景三项未达阈值而 red。因此不导出 INT8、不跑设备门、不替换 App 模型；该结果只作为高方差研究候选。
-- 2026-07-13：SANPO 训练协议升级为 step-budgeted v2：优化 batch 从吞吐导向的 64 降为 12，以固定 optimizer step 比较实验；训练按 source session 均衡，并混合 boundary/obstacle guided crop；损失改为有上限的 class-weighted CE + Dice + Focal；checkpoint/早停同时约束 dev mIoU 与 boundary IoU，默认三个预注册 seed 报告均值、方差和最差结果。真实三 seed 显示 boundary 常在 50–100 step 后坍塌，因此 trainer 追加默认两阶段：冻结 backbone 预热 head，恢复阶段最佳点后以更低 cosine LR 解冻并保持 BatchNorm 冻结。MobileNetV3 alpha 0.75/1.0、decoder channels 与输入 256/384/512 现为显式审计超参；候选仍为 `do_not_replace_default_model`。
-- 2026-07-13：来源证据闭环升级完成：程序化 GT 逐帧保存 Guide RGB/polygon 与 SANPO RGB/raw mask，Guide 资产逐项对照 Kaggle ZIP member receipt；canonical 保存 assembly recipe 和逐样本 raw inventory，并禁止底层资产跨 train/dev/blind 复用。新 evidence-v4 canonical 的最终根门禁为 green（报告 SHA256 `32968a7afa081f122cee463e6578feba6efea65172f81a9a0d4341dbf7af23d4`）。修正 LR-ASPP 后已在 RTX 5060/batch 64 重训，但 dev mIoU 仅 `0.1711`、boundary/curb IoU 约 `0.0000144`。跨后端门首次发现 CuDNN TF32 漂移；固化 TF32-off 精确契约后在原阈值下全绿（max abs `0.0000634`、argmax agreement `100%`）。候选仍因质量不合格而未导出 TFLite、未替换 App 模型；旧指标继续仅作 audit-only。
-- 2026-07-13：最终安全复核已把此前 300+120 canonical green 与 GPU/TFLite 指标降级为 audit-only：source inventory 逐资产绑定和程序化原始 Guide 图像/polygon 证据尚未闭合，正式训练继续关闭。训练入口现只消费预生成 green 报告及 train/dev 资产哈希，不再自行运行会读取 blind 的门禁。
-- 2026-07-13：修复 LR-ASPP 高层分支误接 1/16 浅层、导致 MobileNetV3 后半段被裁掉的问题；现在连接 8×8 最深特征，模型由 197,212 恢复为 670,588 参数。RTX 5060 合成吞吐实测 batch 32/64/96/128 约 191/358/430/481 images/s，峰值显存约 1.46/2.88/4.32/5.74 GB；GPU 入口默认 batch 改为 64，并记录吞吐和峰值显存。以下旧候选结果仅保留审计历史，不代表当前正式授权。
-- 2026-07-13：SANPO v3 六场景 canonical 数据集已通过 300+120 总门禁，assembly report SHA256 `e43619fbfb73226fc408baa4d04ae1cc3be9effe629cb0a451d8bf8adb0bd8d0`；两条 60 帧 blind session 继续锁在 `benchmark_only`。GuideTWSI 41.6 GiB ZIP 通过 HTTP Range 仅读取目录并选择性提取 CC0 盲道 RGB/polygon；公开包没有原始 depth、PNG mask、天气或连续 session 元数据，因此只作为离散来源 GT，与不同 SANPO 连续障碍 mask 通过固定 seed/变换生成明确标记的程序化序列，绝不冒充原生连续视频。dev/blind 允许的 procedural GT 必须绑定两份不同且已 attested 的来源 mask、代码、配置、矩阵、seed 和输出 SHA256，仍禁止任何 teacher/pseudo 标签。
-- 2026-07-13：已在 Windows 原生 RTX 5060 上完成 Keras 3 + PyTorch CUDA 13.0 benchmark-only 训练，并由 TensorFlow CPU 加载同一 backend-neutral 模型权重导出全 INT8 TFLite。修复 MobileNetV3 重复预处理，使用 ImageNet backbone、逆平方根频率损失、内存预载、batch 32、mixed precision 和仅依据 dev loss 的早停；GPU 每 epoch 从约 26–52 秒降至约 2 秒。最佳候选 dev mIoU `0.3175`、pixel accuracy `0.5577`，walkable/obstacle/unknown IoU 约 `0.309/0.522/0.439`，但 boundary/curb IoU 仅约 `0.00038`，因此结论仍为 `do_not_replace_default_model`。327,056 字节 TFLite SHA256 `88f0184d2671230c1f1f43192758689d286b530d7490e1d1ca0671f83b50b50c`，未复制到 App assets。
-- 2026-07-13：已从 SANPO 官方公开 GCS 新增下载三条不同 train session（`k7SM64...`、`rjYpw8...`、`_UTPX...`）的连续 50 帧 RGB + panoptic mask，共 150 对、约 580 MiB。全部按 15→10 FPS 重采样，逐对象验证官方 GCS MD5，三条 manifest 均为 50 行且图片/掩码各 50 个唯一 SHA256，`manifest_validation.ok=true`。数据保存在忽略的 `test-artifacts.local/datasets/sanpo-v3-source-*-20260713`，当前只作为 SHA 可审计 source package；低照与盲道场景尚未由许可可验证的连续来源补齐，因此不发布 canonical、不启动训练。
-- 2026-07-13：公开数据接入改为“来源证明 + 标签权威分层”的自动化路线。新增 allow-list canonical builder：只从 SHA256 绑定的许可、隐私和 inventory 证据及原生连续像素掩码生成 manifest，未知类别或未实现 adapter 均 fail closed；train 可使用来源 GT、程序化 GT 或满足双独立 teacher、IoU/时序阈值与输出哈希约束的共识伪标签，dev/blind 仍只允许来源 GT。纯语义样本禁止夹带风险事件标签，六场景、300+120 和两条 `benchmark_only` blind session 门禁不降级。GuideTWSI/BDD100K 的实际下载仍需完成官方授权或登录，因此当前真实门禁继续为 red，训练未启动。
-- 2026-07-12：训练前总门禁已改为唯一、不可绕过的入口。`train_export_sanpo_segmentation.py` 不再接收任意 manifest；它只接收 canonical v3 dataset root，并在导入 TensorFlow 前生成 SHA256 sidecar 门禁报告。必须同时满足 300 train/dev + 120 blind、四类语义掩码、逐文件哈希、来源/隐私状态及 session 隔离；两个 blind session 被 policy 锁为 `benchmark_only`，训练和阈值选择均禁止读其目录或标签。本机当前没有完整 v3 集，最新报告为 red，因此训练仍关闭。
-- 2026-07-11：完成 `v10.9.0` SANPO 风险事件闭环。纯 Kotlin `RiskEventTracker` 以中心走廊分割目标维护 `APPROACHING → ALERTED → PASSED_OR_RECEDING → CLEARED` 生命周期；实际语音/震动成功后才消耗一次事件提醒，连续 3 帧远离/消失才清除。通过台阶后的重复提醒和报告中的平行路沿提醒均为 `0`。SM-S9280 90 帧复测仍不晋级：候选 alert FP `5.6%`（3 次，门槛 `≤5.3%`）、逐帧 alert recall `5.6%`；后者反映一次事件只提醒一次后的口径不匹配，后续应改为事件级召回。另有 90 秒 CameraX 回归因等待“检测中”文本超时失败。默认 YOLO11n、`do_not_replace_default_model` 和训练关闭状态保持不变。
-- 2026-07-11：完成 SANPO Traversability v2 公开连续序列扩展与真机复测。新增 SANPO 官方 CC BY 4.0 三条 10 FPS/90 帧本地序列：平行路沿负例、正前方台阶、中心垃圾桶通道障碍；所有样本保留来源哈希、official split 与 AI 双重复核 provenance。扩展集上候选主区域命中 `93.9%`、危险提醒召回 `88.9%`、total P95 `58.405ms`，但错误提醒率 `25.9%`，未满足 `≤5.3%` 门槛；原因是通过台阶后的重复提醒及平行路沿序列中的通用障碍误判。结论维持 `do_not_replace_default_model`，训练仍关闭。
-- 2026-07-11：完成 `v10.4.0` SANPO Traversability v2 Oracle 第一阶段。路沿改为边界证据；通用障碍增加完整连通域中心重叠、底部位置和中心优先门槛；无深度单帧分割证据最高为 `LOW/MID`。mask 改为 256×256并复用工作缓冲。30 帧真机 A/B：错误提醒率 `3.3%`、主区域命中 `86.7%`、total P95 `65.919ms`，YOLO 指标无退化。公开正负序列完成前不训练或替换模型。
-- 2026-07-11：完成首批 SANPO 30 帧序列的 Samsung `SM-S9280` 真机 Detector A/B benchmark 与 90 秒默认模型回归。修复 benchmark 将 JSON `null` 误读为字符串 `"null"`、污染 `primaryObjectHitRate` 分母的问题后重跑通过。YOLO11n/YOLO26n 对 25 帧通用障碍 `APPROACHING` 的召回均为 0，各产生 1 次错误提醒；两者均漏掉第 24/28 帧共 3 个人工 person GT，AP50/Recall 均为 0。YOLO26n 虽更快（total P50/P95 `47/48ms`，YOLO11n 为 `60/68ms`），但 FP/img 更高（`0.433` 对 `0.233`），未通过无回退门槛，默认模型继续保留 YOLO11n。结论是下一阶段需要验证通用障碍/可通行区域感知，而不是只更换 COCO 检测器；本结果仍不是安全认证。
-- 2026-07-11：完成“真实场景证据升级”首批 SANPO-Real 连续序列接入与 AI 多轮复核，不改变生产 App、模型或版本号。官方 CC BY 4.0 session 按 15→10 FPS 重采样，保留 RGB、分割区域、来源 URL、MD5/SHA256、许可证和隐私说明；仅 `pedestrian -> person`、`traffic light -> traffic light` 做无歧义 COCO 预映射，`curb/stairs/obstacle/vehicle` 等不伪装成 COCO 类。首批本地集为 30 帧、3 秒、2208×1242 胸口左目城市步行序列，30/30 唯一哈希；三路独立 AI 复核后以 `reviewer_type=ai_assistant`、逐帧置信度和显式 `--allow-ai-review` 门禁生成 canonical `manifest.jsonl`。该结果可用于工程 benchmark，但不是人工/目标用户安全验证。PEDESTRIAN 论文所列 Zenodo DOI 与 GitHub 当前均不存在，许可证和哈希不可验证，因此未接入。流程见 `docs/SANPO_SEQUENCE_EVALSET.md`。
-- 2026-07-10：完成 `v9.9.0` 16KB page-size 兼容、debug 离线回放和眼镜设备模拟中心。运行时依赖迁移到 LiteRT `1.4.2`，APK/AAB 的 16 个 native library 均满足 `PT_LOAD p_align >= 16384`，APK 与 AAB 均为 `PAGE_ALIGNMENT_16K`。LiteRT GPU 在 BlindAssist EvalSet 上稳定增加 1 个提醒误报，因此按发布预案临时使用 CPU 兼容模式：100 图关键漏报保持 `9`、提醒误报率保持 `0.037`，total P95 `61→55ms`。debug 可选择四种 COCO 素材，以 2 FPS 进入真实 detector→risk→feedback→overlay→session 链路；release 不包含 replay 资产或入口。眼镜中心在 debug/release 均明确标注“模拟”，不扫描蓝牙、不联网、不连接真实眼镜。完整 JVM/Lint/构建矩阵、Compose 真机测试、最终 90 秒 CameraX 回归和模型合同均通过；Samsung `SM-S9280` 为 4KB 页设备，真实 16KB 环境安装/运行验证继续待补。
-- 2026-07-10：完成 `v9.4.0` 安全语义、session 生命周期和测试架构修复，并在 Samsung `SM-S9280` / Android 16 上完成真机闭环。`RiskResult` 新增支持目标证据状态，`NONE` 只表示未达提醒等级；session token 对 detector、统计、反馈、UI 和错误提交做代际校验，新 session 重置反馈冷却与疲劳。11 个 Compose 功能测试全部通过。BlindAssist EvalSet 100 图 A/B 继续保留 YOLO11n：YOLO26n 虽将 total P50 从 `53ms` 降到 `48ms`，但中心风险召回 `0.688→0.667`、关键漏报 `9→10`、提醒误报率 `0.037→0.074`。MiDaS Depth-fusion 同样不晋级：关键漏报 `9→7`，但提醒误报率 `0.037→0.148`、total P50 `54→277ms`。修复 benchmark Lifecycle 依赖冲突和测试脚本签名漂移后，两条 benchmark 均完整通过执行链；强化后的 90 秒回归会自动进入相机并断言前台、模型就绪和无 Crash/ANR，本次持续产生性能帧约 85 秒，稳定约 13–15 FPS。Android 16 仍报告部分 native library 未满足 16KB page-size 对齐，属于后续发布兼容项。
-- 2026-06-12：完成 `v8.9.0` 几何、深度、运动的保守融合候选层。新增 `ConservativeRiskFusionPolicy` / `ConservativeRiskFusionConfig`，把 `RiskAnalyzer` 的深度证据提升和 `TemporalRiskTracker` 的逼近趋势提升统一到同一个保守策略：深度默认最多提升 1 档并拒绝大跨度冲突，运动趋势只在 `APPROACHING` 时最多提升 1 档，侧向目标不升到高风险。`RiskScoreBreakdown.fusionSummary` 和 `DetectorAbDeviceBenchmarkTest` 的 JSON/CSV/Markdown 会记录 `GEOMETRY_ONLY`、`DEPTH_PROMOTED`、`DEPTH_REJECTED_*`、`MOTION_PROMOTED` 等原因，便于复盘风险来源。默认 App 仍只使用 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`，不打包或启用深度候选模型；深度模型继续只属于 androidTest/benchmark 路线。当前版本为 `v8.9.0` / `versionCode=33`。
-- 2026-06-12：完成 `v8.8.0` 综合风险函数与连续帧逼近风险升级。默认 App 仍使用 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`，不替换模型资产；`RiskAnalyzer` 将置信度、类别权重、方向、框底部位置、面积、中心通道和可选距离证据输出为可解释 `RiskScoreBreakdown`，`AssistEngine` 在稳定器之前接入纯 Kotlin `TemporalRiskTracker`，用最近 5 帧、约 900ms 的同目标轨迹判断 `APPROACHING/STABLE/RECEDING`。`DetectorAbDeviceBenchmarkTest` 兼容可选序列字段 `sequence_id`、`frame_index`、`expected_approach_state`、`expected_approach_alert` 和 `expected_time_to_alert_frames`，并在 `benchmark.json` / `benchmark.md` 输出 approach recall、false positive、direction accuracy、critical miss、mean time-to-alert 和 labeled sequence count。当前版本为 `v8.8.0` / `versionCode=32`。
-- 2026-06-11：新增深度/距离感知候选增强实验脚手架，但不改变默认 App 行为。`core:assist` 新增可选 `DistanceEvidence` / `DepthBandEvidence`，`RiskAnalyzer` 在检测框几何距离之外可读取单目深度证据并输出 evidence source；`core:vision` 新增 `DepthEstimator` 和 `TfliteMonocularDepthEstimator`，仅用于候选实验。`DetectorAbDeviceBenchmarkTest` 支持 `comparisonMode=DepthFusion`，可在 BlindAssist EvalSet 上比较 `baseline_geometry` 与 `candidate_depth_fusion` 的 `distanceBandAccuracy`、`centerRiskRecall`、`alertRecall`、`alertFalsePositiveRate` 和 `criticalMissCount`；新增 `scripts/inspect_depth_model.py`、`scripts/smoke_depth_model.py` 和 `scripts/run_depth_fusion_benchmark.ps1`。候选深度模型默认从 `.downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite` 进入 androidTest assets，正式 debug APK 仍只包含默认 `yolo11n_fp16_320.tflite` 与 `coco_labels.txt`。本轮属于实验工具与评测路线补充，不提升 `versionName=8.3.0` / `versionCode=31`，不归档新 APK。
+- 当前版本：`v10.9.0`，`versionCode=37`。
+- 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
+- SANPO 分割路线仍为研究候选：当前离线质量门未通过，未导出正式 INT8、未执行设备晋级门、未替换 App 默认模型。
+- 正式 App 保持本地推理；眼镜设备中心仍是模拟功能，不扫描蓝牙、不连接真实眼镜。
 
-- 2026-06-11：完成 `v8.3.0` 生命周期串行化、隐私备份与英文无障碍一致性更新。`AssistRuntimeLifecycleGate` 统一管理相机/帧处理/反馈链路的接收、停止和在途帧 drain，`CameraXFrameSource` 增加 session generation，`FeedbackController` 串行化 `notify`、设置应用和 shutdown；系统 Auto Backup / Device Transfer 只允许迁移 `blindassist_user_preferences` 低敏偏好，不备份帧、日志、缓存或测试证据；英文界面下相机返回、底部导航、个人页状态和权限/占位弹窗语义保持英文一致。当前版本为 `v8.3.0` / `versionCode=31`，不替换模型、不调整风险阈值、不新增联网、定位、蓝牙或存储权限。模型检查、JVM 单测、lint、debug/androidTest APK 构建、Compose 真机用例和 90 秒真机回归均已通过；完整 `connectedDebugAndroidTest` 仍被历史 Detector A/B benchmark 的 signal 9 中断，需单独收敛。debug APK 已归档到 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.3.0-debug-20260611-174127.apk`。
-- 2026-05-27：完成 BlindAssist 专用真实助行评测集首版。新增 `scripts/build_blindassist_evalset.py` 和 `docs/BLINDASSIST_EVALSET.md`，从 COCO 2017 validation 真实图片和实例标注中筛选 150 张本地评测样本，额外记录 `expected_risk_direction`、`expected_distance_band`、`expected_should_alert`、`expected_risk_level` 和 `assist_scenario`，用于下一轮检测器与风险规则优化。输出目录为 `test-artifacts.local/datasets/blindassist-evalset-20260527-impl`，包含 `manifest.jsonl`、YOLO labels、标准 COCO `instances_test.json`、`qa/preview.html` 和 150 张 boxed QA 图；原图仅本地保留，不提交 Git。本轮不改变 App 行为，不调整 `versionName=8.2.0` / `versionCode=30`。
+发布变化见 [CHANGELOG.md](CHANGELOG.md)，完整工程过程见 [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。日期化审计和实验报告只代表当时快照，不作为当前状态真源。
 
-- 2026-05-27：完成 `yolo11n` 与 `yolo26n` 同设备 A/B 质量评测。新增 COCO100 标注导出 `coco100_annotations.json`、`DetectorAbDeviceBenchmarkTest` 和 `scripts/run_detector_ab_device_benchmark.ps1`，在同一台 Samsung `SM-S9280` / Android 16、同一批 100 张 COCO val2017 固定样本、同一套 BlindAssist 预处理/解析/风险规则下比较检测质量、误报漏报、风险目标与稳定性。结果：`yolo11n` AP50/precision/recall/F1 为 `0.285/0.859/0.299/0.444`，`yolo26n` 为 `0.279/0.872/0.294/0.440`；`yolo26n` total P50/P95 为 `49/51ms`，快于 `yolo11n` 的 `54/56ms`，但 AP50 与召回略低，未满足默认模型替换门槛。本轮结论为不替换默认模型，证据目录为 `test-artifacts.local/detector-ab-device-benchmark/20260527-022312`，默认模型 90 秒真机回归通过，证据目录为 `test-artifacts.local/device-regression/20260527-022510`。本轮只增强评测工具与证据，不调整 `versionName=8.2.0` / `versionCode=30`。
+## 仓库导航
 
-- 2026-05-27：完成 `yolo26n` 专项真机验证，但不替换默认模型。新增 COCO val2017 固定抽样脚本，已在 `.downloads/detector-lab/datasets/coco100/` 准备 100 张图片和 manifest；新增 yolo26n instrumentation benchmark，候选模型只进入 androidTest APK 资产，正式 debug APK 仍只包含 `assets/yolo11n_fp16_320.tflite` 与 `assets/coco_labels.txt`。在 Samsung `SM-S9280` / Android 16 上，`yolo26n_fp16_320.tflite` 纯 TFLite CPU 4 线程 invoke P50/P95 为 `36.996/42.060ms`，BlindAssist 应用链路 inference P50/P95 为 `37/39ms`，total P50/P95 为 `49/51ms`，100 张图片无失败；证据目录为 `test-artifacts.local/yolo26n-device-benchmark/20260527-015039`。随后默认模型路径执行 `scripts/run_device_regression.ps1 -SampleSeconds 90` 通过，证据目录为 `test-artifacts.local/device-regression/20260527-015153`。本轮是实验验证工具与测试证据补充，不改变用户可见行为，不调整 `versionName=8.2.0` / `versionCode=30`。
+| 路径 | 职责 |
+| --- | --- |
+| `app/` | Android 应用入口、依赖装配和正式资产 |
+| `feature/assist/` | CameraX、检测、反馈与 UI 状态协调 |
+| `core/assist/` | 风险分析、稳定、事件和提醒策略 |
+| `core/vision/` | TFLite 检测、图像处理与视觉候选能力 |
+| `core/device/` | 语音、震动和设备 adapter |
+| `core/ui/` | Compose UI 模型与可视化 |
+| `device-benchmark/` | 与正式 App 隔离的设备 benchmark module |
+| `scripts/` | 构建、验证、数据集和研究脚本；见 [脚本索引](scripts/README.md) |
+| `docs/` | 当前协议、操作指南和历史快照；见 [文档索引](docs/README.md) |
+| `artifacts.local/` | 本机下载、数据集、benchmark、训练和临时产物；不提交 Git |
 
-- 2026-05-27：完成实时检测器横向评测框架。新增项目内 detector lab，本地下载 COCO8 smoke dataset 和 `yolo26n`、`yolo12n`、`yolov10n` 候选权重到 `.downloads/detector-lab/`，导出 320 FP16 TFLite 并用 `ai-edge-litert` 完成多模型 shape/dtype 检查和 CPU smoke benchmark。当前默认 App 模型仍为 `YOLO11n FP16 320 TFLite`，不改变 `ObjectDetector` 运行路径、风险规则、用户界面或 APK 行为；本轮不调整版本号。详细流程见 `docs/DETECTOR_BENCHMARK.md`，本地证据目录为 `test-artifacts.local/detector-benchmark/20260527-010222`。
-
-- 2026-05-26：完成 `v8.2.0` 相机可靠性与无障碍修复。相机关闭后会清空旧 `PreviewView` 就绪状态，重新打开必须等待新的预览 View，避免绑定已移除预览导致黑屏；TFLite 检测与关闭使用同一生命周期锁，并在 analyzer executor 关闭时做有界等待，降低销毁竞态风险。相机页普通动作不再被 TalkBack 读成“已启用/未启用”，debug 展开态和核心开关保留本地化 state description；底部面板在大字体和 debug 展开时限制高度并支持滚动。`scripts/inspect_tflite.py` 已升级为模型 shape/dtype 断言脚本，CI 增加模型检查与 `:app:assembleDebugAndroidTest`。当前版本为 `v8.2.0` / `versionCode=30`；模型检查、多模块单测、多模块 lint、debug/androidTest APK 构建、7 个 Compose `connectedDebugAndroidTest` 真机测试和 `scripts/run_device_regression.ps1 -SampleSeconds 90` 均通过，设备证据目录为 `test-artifacts.local/device-regression/20260526-231417`。本轮属于 `+0.1` 小版本，APK 已归档到完整本地目录 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v8.2.0-debug-20260526-215736.apk`，不提交 Git 里程碑 APK。
-
-- 2026-05-25：完成 `v8.1.0` 真实使用体验 UI 升级。功能页调整为任务启动台，优先展示当前行走任务、主摄像头入口和日常模式选择；相机页重排底部面板，把风险状态、行动建议和检测/语音/震动核心开关放在前面，并让 Care Mode 成为更大字号、更低干扰的相机体验；设置页按界面与辅助、提醒方式、行走场景、调试与记录分组。当前版本为 `v8.1.0` / `versionCode=29`，已通过 UI 相关单测、lint、debug/androidTest APK 构建、6 个 Compose 真机测试和 `scripts/run_device_regression.ps1 -SampleSeconds 90` 真机回归；设备证据目录为 `test-artifacts.local/device-regression/20260525-222502`，Git 里程碑 APK 为 `releases/apk/BlindAssist-v8.1.0-debug-20260525-222724.apk`。
-- 2026-05-25：已在 Samsung `SM-S9280` / Android 16 上完成当前 `v7.6.0` 真机验证。旧 `v5.9.0` 安装包因 debug 签名不同，已在确认后卸载再安装当前 APK。模型检查、`:app:testDebugUnitTest :app:assembleDebug`、6 个 Compose `connectedDebugAndroidTest` 用例和 `scripts/run_device_regression.ps1 -SampleSeconds 90` 均通过。设备端包信息为 `versionName=7.6.0` / `versionCode=28`，本地证据目录为 `test-artifacts.local/device-regression/20260525-012352`。
-- 2026-05-25：完成 `v7.6.0` 运行时管线和发布卫生更新。`AssistRuntimeController` 已收敛为更薄的入口，运行时执行、相机生命周期、帧处理、渲染、配置同步和性能统计拆到更小的协作者中。CameraX 实时路径改用可关闭的 `VisionFrame` / `RgbaVisionFrame`，减少逐帧 `Bitmap` 分配。当前版本为 `v7.6.0` / `versionCode=28`，Git 里程碑 APK 为 `releases/apk/BlindAssist-v7.6.0-debug-20260525-004833.apk`。
-- 2026-05-24：完成 `v7.1.0` 可靠性和工程质量更新，补充模型/风险回放、运行时故障注入、反馈不可用状态、CameraX 失败清理和多模块测试/lint 验证。
-- 2026-05-22 至 2026-05-24：项目从单模块演进为 `:app`、`:feature:assist` 和 `:core:*` 多模块结构，并完成 Hilt 运行时拆分、本机工具链修复、E 盘工作区迁移、APK 归档规则和仓库卫生脚本。
-
-更完整的版本路线见 `CHANGELOG.md`，逐次执行证据见 `DEVELOPMENT_LOG.md`。
-
-## 项目材料
-
-- [新电脑交接说明](docs/NEW_COMPUTER_HANDOFF.md)：Windows 环境准备、Git 克隆、Android 构建验证、手机安装和 Codex skills 恢复说明。
-- [真机回归说明](docs/DEVICE_REGRESSION.md)：安装、冷启动、包状态、UI dump、截图、`gfxinfo`、`meminfo` 和可选 connected Compose 测试的真机证据采集流程。
-- [APK 归档策略](docs/APK_ARCHIVE.md)：Git 只保留累计 `versionName` 差值 `>= 0.5` 的里程碑 APK，完整本地归档位于 `E:\linnan\blind-assist-apk-archive\apks`，SHA256 证据写入 `APK_ARCHIVE_MANIFEST.csv`。
-- [实时检测器横向评测说明](docs/DETECTOR_BENCHMARK.md)：说明候选检测器下载、导出、多模型检查、COCO8 smoke benchmark 和真实助行图片集边界。
-- [本地产物目录说明](docs/LOCAL_ARTIFACTS.md)：说明 `test-artifacts.local/` 下数据集、真机回归、检测器 benchmark、历史备份等本机证据目录的功能和路径。
-- [BlindAssist 专用真实助行评测集](docs/BLINDASSIST_EVALSET.md)：说明 150 张本地真实图片评测集的生成、风险字段、YOLO/COCO 导出、QA 预览和原图仅本地保留限制。
-- [Codex skills 快照清单](codex/skills-snapshot/MANIFEST.md)：`codex/skills-snapshot/codex-skills-20260522.zip` 的 SHA256、大小、条目数和恢复提示。
-- [真实版本更新记录](CHANGELOG.md)：按真实版本整理功能变化、验证证据和 APK 归档路径，方便课堂展示、答辩材料和版本对比。
-- [演示指南](DEMO_GUIDE.md)：面向老师/答辩的演示脚本，包含环境准备、手机安装、现场演示顺序、无设备 fallback、隐私与安全边界说明。
-- [回顾式阶段进度说明](PROJECT_PROGRESS_REVIEW.md)：面向课程汇报、阶段检查和毕设展示的整理稿，按 2026 年 5 月 1 日前的“调研、方案、原型、测试、迭代”脉络说明项目工作量。
-- [v5.8.0 真机完整测试与 v5.9.0 修复复测报告](TEST_REPORT_2026-05-19.md)：记录 2026-05-19 在 `SM-S9280` 上执行的清数据真机功能、UI、性能、稳定性和 instrumentation 测试结果，以及 v5.9.0 对遗留问题的修复复测。
-
-## 架构
-
-BlindAssist 当前是 Gradle 多模块 Android 项目。`:app` 保持较薄，只负责启动壳层、Manifest、资源、模型资产和 APK 配置；主要业务由 `:feature:assist` 协调，底层能力拆分到多个 `:core:*` 模块。
-
-- `:core:assist`：纯 Kotlin 助盲领域模型、风险分析、提醒策略、会话统计、本地化和偏好映射。
-- `:core:vision`：TFLite YOLO 检测器、图像预处理、YOLO 输出解析和视觉帧处理。
-- `:core:device`：CameraX 帧源、Android 语音/震动反馈、SharedPreferences 用户偏好和设备侧适配。
-- `:core:ui`：Compose/UI 状态模型、检测框覆盖层、相机引导和现场测试摘要映射。
-- `:feature:assist`：Hilt ViewModel、运行时状态机、CameraX/TFLite 协调、配置同步、渲染和性能日志边界。
-- `:device-benchmark`：`com.android.test` test-only 模块，独立打包 Detector A/B、深度融合候选模型和本地评测数据，不进入功能 AndroidTest APK。
-
-## 界面行为
-
-应用启动后先进入 Compose 应用壳层，不会立即打开相机：
-
-- 可见界面状态由 Hilt 注入的 `BlindAssistViewModel` 和只读 `StateFlow` 驱动。`MainActivity` 保持为启动、权限请求和 Compose 绑定入口，`:feature:assist` 负责协调 CameraX、检测器、反馈、运行时状态和 overlay 更新。
-- 冷启动使用 Android SplashScreen API，随后展示短暂的 BlindAssist 品牌页；点击品牌页可跳过。
-- 首次使用会展示三页引导，说明本地手机摄像头识别、语音/震动提醒和原型安全边界；完成或跳过后会在本地保存引导状态。
-- 主界面使用 Material 3 底部导航，包含“功能”“个人主页”“设置”三个顶层入口。
-- “功能”页是日常辅助启动台，先展示当前行走任务、场景、提醒档位和 Care Mode 状态，再提供高优先级 `使用手机摄像头` 主入口。日常使用向导仍提供 通用日常、室内慢行、走廊通行、密集区域、户外慢行 五个一键预设。`眼镜设备模拟中心` 是正式版可见的交互演示，可模拟连接、82%/15% 电量、断连和重置；所有界面明确标注“模拟”，不扫描蓝牙、不联网、不申请额外权限，也不表示真实硬件已连接。debug 版连接后还可选择四种离线素材并进入现有识别链路，release 不展示该回放入口且不打包素材。
-- “个人主页”展示本地原型状态、当前提醒档位、版本信息和辅助偏好，不包含登录、云同步、账号数据或展示型说明卡片。
-- “设置”页按“界面与辅助、提醒方式、行走场景、调试与记录”分组，控制界面语言、Care Mode、语音提醒、震动提醒、语音风格、震动强度、提醒档位、手动使用场景和调试详情，并提供 `查看新手引导` 入口。用户手动调整后若不再匹配一键预设，主界面会显示为 自定义 / Custom。
-- 点击 `使用手机摄像头` 后，只有在相机权限可用时才进入沉浸式相机页。如果权限未授予，应用会先说明相机帧只在本地实时处理、不上传、不保存视频，然后再引导用户打开 Android 系统权限弹窗。
-- 相机权限被拒绝时，应用留在主界面，并说明手机摄像头辅助路径无法在无权限状态下启动。
-- 相机子页面隐藏底部导航，显示全屏 `PreviewView`、检测框 overlay、顶部返回按钮和紧凑底部控制面板。点击返回或使用系统返回手势会回到主界面、解绑 CameraX 并清空 overlay。
-
-实时相机页以全屏预览为主，底部面板承载交互：
-
-- 面板层级按真实助行优先级组织：主要风险状态、一句行动建议、当前场景/模式、检测/语音/震动核心开关，再到快捷调节、场景切换和调试信息。
-- 风险状态变化使用克制的短过渡，保持响应感但不干扰预览画面。
-- 竖屏使用时相机预览填满屏幕；检测框坐标与同一套填充裁剪逻辑对齐。
-- 主风险区展示当前风险等级、相对距离、方向、当前帧目标数和已锁定的主要提醒来源。
-- 如果稳定后的提醒在下一帧短暂丢失目标后继续保持，目标行会明确说明提醒来自前一帧，避免把旧目标名称和当前 0 个目标误配。
-- 检测、语音、震动、手动场景和 Care Mode 使用紧凑高对比按钮，并可独立切换。语音、震动、提醒档位、使用场景、语音风格、震动强度、Care Mode 及其组合会在下次启动恢复；检测开关每次启动默认开启。
-- 底部面板显示当前日常模式，并保留两个直接提醒强度快捷操作：调安静会应用 Quiet + Brief speech + Soft vibration，调敏感会应用 Sensitive + Standard speech + Strong vibration。两者都会保留当前使用场景并写入现有偏好存储。
-- 提醒档位可在 Quiet、Standard、Sensitive 之间切换。Quiet 降低提醒频率和震动时长，Standard 保持平衡策略，Sensitive 更快确认中风险并缩短提醒冷却。
-- 使用场景可在 通用、室内慢行、走廊通行、密集区域、户外慢行 之间切换。通用保持基础策略，其他场景只调整规则层确认、保持、冷却和震动参数，不声称自动识别场景。
-- 语音风格可选 简短、标准、详细；震动强度可选 轻柔、标准、强。它们只调整反馈措辞和触感强度，不改变检测或风险分析。
-- Care Mode 会放大主要指导语、提高面板对比度、隐藏快捷调节和调试细节，只保留检测、语音、震动和关怀模式等必要控制，并在 overlay 中增加中心参考线，以支持低视力或高压力使用场景。
-- 调试信息默认折叠。展开后显示 FPS、总耗时、预处理/推理/后处理耗时、模型状态、最新原始风险、稳定风险、紧急度分数、当前提醒档位、当前场景、反馈原因、风险解释，以及设置页使用的同一份现场测试摘要。
-- 检测框会突出当前风险来源，弱化其他检测目标；中心区域绘制为观察参考区，不当作已检测目标框。
-
-## 风险提醒行为
-
-BlindAssist 是辅助原型，不是可以替代人工判断的安全设备。检测结果会先经过平滑处理，再进入语音和震动反馈：
-
-- 应用不估算真实米制距离，只根据检测框位置和大小推导相对距离分层。
-- FAR 检测会保留在视觉显示中，但不触发语音或震动。
-- MID 检测显示为低风险视觉/状态反馈。
-- NEAR 检测在风险等级为中或高时可以触发常规语音和震动。语音提示由所选语音风格生成：简短减少字数，标准保持平衡提示，详细会在可用时补充目标类别。
-- CRITICAL 检测使用更短冷却和更强震动；正前方 critical 提示使用短句“前方很近，放慢”。
-- HIGH 风险无需等待帧确认即可提醒。
-- MEDIUM 风险需要连续两帧方向/文案匹配后才确认。
-- 已确认的中/高风险提醒在下一帧短暂丢失目标时最多保持 600ms，减少漏检导致的闪烁。
-- Standard 档位下，常规 near 语音和震动使用 1500ms 冷却；短时间重复的非 critical near 提醒会获得更长的有效冷却，以降低提醒疲劳。critical 高风险提醒仍走紧急冷却路径，不受疲劳控制压制。
-- Quiet 档位下，中风险需要三帧确认，提醒保持 450ms，near 冷却 2200ms、震动 100ms，critical 冷却 1200ms、震动 260ms。
-- Standard 档位下，中风险需要两帧确认，提醒保持 600ms，near 冷却 1500ms、震动 160ms，critical 冷却 850ms、震动 420ms。
-- Sensitive 档位下，中风险首帧确认，提醒保持 800ms，near 冷却 1000ms、震动 220ms，critical 冷却 650ms、震动 520ms。
-- 手动使用场景只调整提醒策略，不改变检测器，也不声称自动理解场景：Indoor Slow 略微增加保持时间和 near 冷却，Corridor 更快确认中风险并略微增强震动，Crowded 增加中风险确认要求并延长冷却，Outdoor Slow 延长保持时间并强化震动清晰度。
-- 相机面板会用普通语言解释最新反馈决策：已触发、不稳定、距离较远、冷却中、提醒保持、反馈关闭或暂无可反馈风险。该解释用于透明化和调试，不代表安全认证。
-
-## 环境
-
-当前仓库是 Android Studio/Gradle 项目。构建前需要安装：
+## 环境要求
 
 - JDK 17
-- Android Studio 或 Android SDK + Platform Tools
-- Android SDK Platform 35
+- Android SDK Platform 35、Build Tools 和 Platform Tools
+- Python 仅用于模型检查、数据集及研究任务
 
-验证命令：
+本机通用工具位于 `E:\codex-tools`。JDK、Android SDK 和构建状态的旧隐藏目录目前是兼容 junction；`.python311` 与 `.venv-export312` 因 Windows DLL 占用和 venv 可迁移性暂保留原位，待重建验证后移除。新电脑安装见 [新电脑交接说明](docs/NEW_COMPUTER_HANDOFF.md)。
 
-```powershell
-java -version
-adb version
-```
+## 构建与验证
 
-### 当前本机工具链
-
-2026-05-22 后续修复后，当前 Windows 机器已具备仓库本地验证工具链：
+在 `E:\linnan\linnan` 执行：
 
 ```powershell
-$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path
-$env:PATH="$env:JAVA_HOME\bin;D:\Git\cmd;$((Resolve-Path '.\.android-sdk\platform-tools').Path);$env:PATH"
-$env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path
-.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon
-.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon
-.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug --no-daemon
+$env:JAVA_HOME='E:\codex-tools\projects\blindassist\toolchain\.jdk\jdk17.0.19_10'
+$env:PATH="$env:JAVA_HOME\bin;E:\codex-tools\tools\android-sdk\platform-tools;$env:PATH"
+$env:GRADLE_USER_HOME='E:\codex-tools\projects\blindassist\state\gradle'
+.\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --console=plain
 ```
 
-上述命令已验证可得到 `BUILD SUCCESSFUL`；模型检查使用 `.venv-export312\Scripts\python.exe scripts\inspect_tflite.py`。
+完整无设备验证矩阵：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py
+.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain
+.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain
+.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug --no-daemon --console=plain
+```
+
+设备测试必须显式指定 module：
+
+- 功能测试：`:app:connectedDebugAndroidTest`
+- benchmark：`:device-benchmark:connectedDebugAndroidTest`
+- 真机回归流程：[DEVICE_REGRESSION.md](docs/DEVICE_REGRESSION.md)
 
 ## 模型资产
 
-第一版默认从 assets 加载真实 YOLO11n TFLite 模型：
+正式资产：
 
 ```text
 app/src/main/assets/yolo11n_fp16_320.tflite
 app/src/main/assets/coco_labels.txt
 ```
 
-当前仓库已包含 Android 运行和 CI 模型检查所需的受控模型资产。若需要重新生成或校验资产，推荐用本仓库脚本导出，导出参数固定为 `imgsz=320`、`half=True`、`nms=False`，这样 Android 端可以解析 raw YOLO 输出并自行执行 NMS。已验证的本机导出路径是 Python 3.12 + TensorFlow 2.19：
+Android 端消费 raw YOLO 输出并自行执行 NMS。重新导出和静态检查入口见 [scripts/README.md](scripts/README.md)；本地模型源文件和导出结果应放入 `artifacts.local/models/`，不得散落在仓库根目录。
 
-```powershell
-.\.venv-export\Scripts\python.exe -m pip install uv
-.\.venv-export\Scripts\uv.exe python install 3.12
-.\.venv-export\Scripts\uv.exe venv .venv-export312 --python 3.12
-.\.venv-export\Scripts\uv.exe pip install --python .\.venv-export312\Scripts\python.exe -r requirements-export.txt
-.\.venv-export312\Scripts\python.exe scripts\export_yolo11n_tflite.py
-.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py
-```
+## APK 与安装
 
-期望输出：
-
-```text
-assertions=passed
-input shape=[1, 320, 320, 3] dtype=float32
-output shape=[1, 84, 2100] dtype=float32
-```
-
-## 构建
-
-在 Android Studio 打开项目并同步依赖；或使用仓库本地 JDK 17 和 `.gradle-local` 运行：
-
-```powershell
-$env:JAVA_HOME=(Resolve-Path '.\.jdk\jdk17.0.19_10').Path
-$env:GRADLE_USER_HOME=(Resolve-Path '.\.gradle-local').Path
-.\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon
-```
-
-当前验证矩阵显式覆盖各模块，避免遗漏 library lint：
-
-```powershell
-.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py
-.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain
-.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain
-.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug --no-daemon --console=plain
-```
-
-设备测试入口必须显式指定模块，避免多模块歧义：功能测试使用 `:app:connectedDebugAndroidTest`，设备 benchmark 使用 `:device-benchmark:connectedDebugAndroidTest`。
-
-APK 输出位置：
+构建输出：
 
 ```text
 app/build/outputs/apk/debug/app-debug.apk
@@ -213,37 +83,19 @@ app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk
 ```
 
-## 版本 APK 归档
-
-用于演示和版本对比的 Git 里程碑 APK 位于：
-
-```text
-releases/apk/
-```
-
-Git 只保留累计 `versionName` 差值达到 `>= 0.5` 的 APK，或用户明确指定为 Git 里程碑的 APK。更小更新构建出的 APK 应复制到完整本地归档目录，不默认提交。
-
-完整本地归档目录为：
-
-```text
-E:\linnan\blind-assist-apk-archive\apks
-```
-
-SHA256 清单为：
-
-```text
-E:\linnan\blind-assist-apk-archive\APK_ARCHIVE_MANIFEST.csv
-```
-
-当前 Git 里程碑列表和校验命令见 [APK 归档策略](docs/APK_ARCHIVE.md)。
-
-CI 会运行 `scripts/check_repo_hygiene.ps1`，阻止新增本地缓存、普通测试产物和未列入白名单的大型二进制文件进入 Git。
-
-## 安装到手机
-
-打开 Android 手机 USB 调试后：
+连接已开启 USB 调试的 Android 手机后：
 
 ```powershell
-.\.android-sdk\platform-tools\adb.exe devices
-.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
+E:\codex-tools\tools\android-sdk\platform-tools\adb.exe devices
+E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
 ```
+
+正式归档、校验和与 Git 里程碑规则见 [APK 归档策略](docs/APK_ARCHIVE.md) 和 [发布与验证](docs/RELEASE_AND_VERIFICATION.md)。
+
+## 文档职责
+
+- `README.md`：当前产品、构建方式和导航。
+- `CHANGELOG.md`：已发布变化。
+- `DEVELOPMENT_LOG.md`：详细工程流水与验证记录。
+- `idea.md`：尚未落地或验证的方向。
+- `docs/*_YYYY-MM-DD.*`：日期化快照，不覆盖当前协议。

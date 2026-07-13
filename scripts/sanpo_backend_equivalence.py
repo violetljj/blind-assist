@@ -27,12 +27,14 @@ import numpy as np
 import sanpo_segmentation_model
 
 
-REPORT_SCHEMA = "blindassist_sanpo_backend_equivalence_v2"
+REPORT_SCHEMA = "blindassist_sanpo_backend_equivalence_v3"
 INPUT_SIZE = 256
 ALLOWED_INPUT_SIZES = (256, 384, 512)
 NUM_CLASSES = 4
 DEFAULT_BACKBONE_ALPHA = 0.75
 DEFAULT_DECODER_CHANNELS = 96
+DEFAULT_DETAIL_OUTPUT_STRIDE = 8
+DEFAULT_SEMANTIC_OUTPUT_STRIDE = 32
 ALLOWED_BACKBONE_ALPHAS = (0.75, 1.0)
 FIXED_INPUT_SEED = 20260713
 FIXED_INPUT_COUNT = 4
@@ -63,6 +65,8 @@ def model_config(
     backbone_alpha: float,
     decoder_channels: int,
     input_size: int = INPUT_SIZE,
+    detail_output_stride: int = DEFAULT_DETAIL_OUTPUT_STRIDE,
+    semantic_output_stride: int = DEFAULT_SEMANTIC_OUTPUT_STRIDE,
 ) -> dict[str, Any]:
     if backbone_alpha not in ALLOWED_BACKBONE_ALPHAS:
         raise ValueError(f"backbone_alpha must be one of {ALLOWED_BACKBONE_ALPHAS}")
@@ -70,12 +74,19 @@ def model_config(
         raise ValueError("decoder_channels must be positive")
     if input_size not in ALLOWED_INPUT_SIZES:
         raise ValueError(f"input_size must be one of {ALLOWED_INPUT_SIZES}")
+    if detail_output_stride not in (4, 8):
+        raise ValueError("detail_output_stride must be one of: 4, 8")
+    if semantic_output_stride not in (16, 32):
+        raise ValueError("semantic_output_stride must be one of: 16, 32")
     return {
         "architecture": "MobileNetV3Small+LR-ASPP",
+        "architecture_revision": sanpo_segmentation_model.ARCHITECTURE_REVISION,
         "input_size": int(input_size),
         "num_classes": NUM_CLASSES,
         "backbone_alpha": float(backbone_alpha),
         "decoder_channels": int(decoder_channels),
+        "detail_output_stride": int(detail_output_stride),
+        "semantic_output_stride": int(semantic_output_stride),
     }
 
 
@@ -109,6 +120,8 @@ def run_worker(
     backbone_alpha: float,
     decoder_channels: int,
     input_size: int,
+    detail_output_stride: int,
+    semantic_output_stride: int,
 ) -> None:
     os.environ["KERAS_BACKEND"] = backend
     if backend == "torch":
@@ -133,6 +146,8 @@ def run_worker(
         model = sanpo_segmentation_model.build_mobilenetv3_lraspp(
             keras, input_size, NUM_CLASSES, backbone_weights=None,
             backbone_alpha=backbone_alpha, decoder_channels=decoder_channels,
+            detail_output_stride=detail_output_stride,
+            semantic_output_stride=semantic_output_stride,
         )
         model.load_weights(weights)
         logits = model.predict(np.load(inputs), batch_size=FIXED_INPUT_COUNT, verbose=0)
@@ -143,6 +158,8 @@ def run_worker(
         model = sanpo_segmentation_model.build_mobilenetv3_lraspp(
             tf.keras, input_size, NUM_CLASSES, backbone_weights=None,
             backbone_alpha=backbone_alpha, decoder_channels=decoder_channels,
+            detail_output_stride=detail_output_stride,
+            semantic_output_stride=semantic_output_stride,
         )
         model.load_weights(weights)
         logits = model.predict(np.load(inputs), batch_size=FIXED_INPUT_COUNT, verbose=0)
@@ -160,12 +177,16 @@ def worker_command(
     backbone_alpha: float,
     decoder_channels: int,
     input_size: int = INPUT_SIZE,
+    detail_output_stride: int = DEFAULT_DETAIL_OUTPUT_STRIDE,
+    semantic_output_stride: int = DEFAULT_SEMANTIC_OUTPUT_STRIDE,
 ) -> list[str]:
     return [
         str(python), str(Path(__file__).resolve()), "--worker-backend", backend,
         "--weights", str(weights), "--fixed-input", str(inputs), "--worker-output", str(output),
         "--backbone-alpha", str(backbone_alpha), "--decoder-channels", str(decoder_channels),
         "--input-size", str(input_size),
+        "--detail-output-stride", str(detail_output_stride),
+        "--semantic-output-stride", str(semantic_output_stride),
     ]
 
 
@@ -194,7 +215,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if not weights.is_file():
         raise FileNotFoundError(weights)
     report_path = args.report.resolve()
-    expected_model_config = model_config(args.backbone_alpha, args.decoder_channels, args.input_size)
+    expected_model_config = model_config(
+        args.backbone_alpha, args.decoder_channels, args.input_size,
+        args.detail_output_stride, args.semantic_output_stride,
+    )
     with tempfile.TemporaryDirectory(prefix="sanpo-backend-equivalence-") as temp:
         root = Path(temp)
         inputs_path = root / "fixed-inputs.npy"
@@ -212,6 +236,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 worker_command(
                     python, backend, weights, inputs_path, output,
                     args.backbone_alpha, args.decoder_channels, args.input_size,
+                    args.detail_output_stride, args.semantic_output_stride,
                 ),
                 check=True,
                 cwd=Path(__file__).resolve().parents[1],
@@ -269,6 +294,8 @@ def consume_equivalence_authorization(
     backbone_alpha: float = DEFAULT_BACKBONE_ALPHA,
     decoder_channels: int = DEFAULT_DECODER_CHANNELS,
     input_size: int = INPUT_SIZE,
+    detail_output_stride: int = DEFAULT_DETAIL_OUTPUT_STRIDE,
+    semantic_output_stride: int = DEFAULT_SEMANTIC_OUTPUT_STRIDE,
 ) -> dict[str, Any]:
     """Verify a preregistered green report before TensorFlow export."""
     weights = weights.resolve()
@@ -282,7 +309,10 @@ def consume_equivalence_authorization(
     report = json.loads(report_path.read_text(encoding="utf-8"))
     if report.get("schema") != REPORT_SCHEMA:
         raise ValueError("backend-equivalence report schema mismatch")
-    expected_model_config = model_config(backbone_alpha, decoder_channels, input_size)
+    expected_model_config = model_config(
+        backbone_alpha, decoder_channels, input_size,
+        detail_output_stride, semantic_output_stride,
+    )
     if report.get("model_config") != expected_model_config:
         raise ValueError("backend-equivalence report model config differs from the requested export config")
     if report.get("model_config_sha256") != model_config_sha256(expected_model_config):
@@ -348,6 +378,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--decoder-channels", type=int, default=DEFAULT_DECODER_CHANNELS)
     parser.add_argument("--input-size", type=int, choices=ALLOWED_INPUT_SIZES, default=INPUT_SIZE)
+    parser.add_argument("--detail-output-stride", type=int, choices=(4, 8), default=DEFAULT_DETAIL_OUTPUT_STRIDE)
+    parser.add_argument("--semantic-output-stride", type=int, choices=(16, 32), default=DEFAULT_SEMANTIC_OUTPUT_STRIDE)
     args = parser.parse_args(argv)
     if args.worker_backend:
         if args.fixed_input is None or args.worker_output is None:
@@ -370,6 +402,8 @@ def main() -> int:
             args.backbone_alpha,
             args.decoder_channels,
             args.input_size,
+            args.detail_output_stride,
+            args.semantic_output_stride,
         )
         return 0
     report = run(args)

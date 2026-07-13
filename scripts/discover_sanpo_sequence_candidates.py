@@ -116,13 +116,17 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--split", choices=("train", "test", "all"), default="test")
+    parser.add_argument(
+        "--start-session-index", type=int, default=0,
+        help="Zero-based offset in the sorted official split list; use it to resume disjoint scans.",
+    )
     parser.add_argument("--max-sessions", type=int, default=0, help="0 scans every session in the selected split")
     parser.add_argument("--sample-count", type=int, default=12)
     parser.add_argument("--minimum-hits", type=int, default=3)
     parser.add_argument("--labels", nargs="+", choices=sorted(LABELS), default=sorted(LABELS))
     args = parser.parse_args()
-    if args.sample_count <= 0 or args.minimum_hits <= 0:
-        raise SystemExit("--sample-count and --minimum-hits must be positive")
+    if args.sample_count <= 0 or args.minimum_hits <= 0 or args.start_session_index < 0:
+        raise SystemExit("--sample-count/--minimum-hits must be positive and --start-session-index non-negative")
 
     splits = ("train", "test") if args.split == "all" else (args.split,)
     wanted_by_name = {name: LABELS[name] for name in args.labels}
@@ -130,6 +134,7 @@ def main() -> int:
     failures: list[dict] = []
     for split in splits:
         ids = session_ids(split)
+        ids = ids[args.start_session_index:]
         if args.max_sessions:
             ids = ids[: args.max_sessions]
         for index, session_id in enumerate(ids, start=1):
@@ -177,6 +182,7 @@ def main() -> int:
         "lens": DEFAULT_LENS,
         "sample_count": args.sample_count,
         "minimum_hits": args.minimum_hits,
+        "start_session_index": args.start_session_index,
         "labels": wanted_by_name,
         "selection_method": {
             "version": "corridor-path-persistence-v1",
