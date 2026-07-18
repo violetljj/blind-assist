@@ -1,0 +1,60 @@
+# BlindAssist 文档治理
+
+状态：current
+最后核验：2026-07-19
+适用范围：仓库内所有协作者、自动化代理与长期任务。
+
+## 目标
+
+让下一位协作者能在不依赖聊天上下文的情况下找到唯一的当前规则、验证历史和下一步，同时保留旧记录的可追溯性。
+
+## 文档职责与唯一真源
+
+| 需求 | 唯一入口 | 不应承担该职责的文件 |
+| --- | --- | --- |
+| 当前产品能力、版本、最短构建入口 | `README.md` | `idea.md`、日期化实验报告 |
+| 已发布或用户可见变化 | `CHANGELOG.md` | 研究实验日志 |
+| 当前 SANPO 状态、硬门、禁止事项、下一步 | `docs/SANPO_CURRENT_STATUS.md` | `idea.md`、`CHANGELOG.md` |
+| 当前操作协议与安全门 | `docs/README.md` 标为 `current` 的对应文件 | 日期化 snapshot |
+| 近期工程改动与验证 | `DEVELOPMENT_LOG.md` | README、CHANGELOG |
+| 尚未决定的方向 | `idea.md` | 当前状态文档、开发日志 |
+| 日期化实验、审计与研究结论 | `docs/*_YYYY-MM-DD.*` 或 `docs/research/` | current 协议 |
+| 任务断点与工作区现场 | `artifacts.local/work/codex-handoffs/` | Git 提交文档 |
+
+发生冲突时，以可复现的代码/门禁报告为事实基础；再以对应 `current` 协议为规则，以当前状态文档为操作摘要。日期化快照只说明当时结论。
+
+## 更新规则
+
+- 只改一个当前真源，再从其他入口链接它；不要复制会变化的数字、门禁结论或下一步。
+- `README.md` 仅在产品、版本、构建入口或用户可见状态变化时更新。
+- `CHANGELOG.md` 仅加入已发布或用户可见变化。候选模型、数据收集和失败实验写入研究记录，不伪装成 release note。
+- `DEVELOPMENT_LOG.md` 只追加有实际项目变化的简洁条目；保留历史原文，不为美化时间线改写旧结论。
+- `idea.md` 只保留待决方向。实验结束后写一条简短决策并链接证据，而不是复制实验流水。
+- 新的顶层 `docs/*.md` 必须在 `docs/README.md` 中列为 `current`、`snapshot` 或 `archive`；运行 `scripts/check_docs_index.ps1`。
+
+## 历史与归档
+
+- 不删除已经用于解释决策、版本或验证的历史文档。把它们标记为 `snapshot` 或 `archive`，并从当前入口链接。
+- 当 `DEVELOPMENT_LOG.md` 的近期部分再次影响查找效率时，按月复制旧日期块到 `docs/history/development-log/`；根文件保留索引和最近 2–4 周。迁移必须保持原文、日期和可访问链接。
+- 已完成任务从本地 handoff 索引移除前，先将持久决策写入相应 current 文档、CHANGELOG 或开发日志。
+
+## 新任务的最小文档动作
+
+| 任务类型 | 必需动作 |
+| --- | --- |
+| 小范围代码/文档修改 | 相关 current 文档或 `DEVELOPMENT_LOG.md` 二选一，按职责更新 |
+| 发布、演示或用户可见变化 | README + CHANGELOG + 发布验证文档 |
+| 研究实验 | 日期化 snapshot + 简短开发日志链接；不改 README/CHANGELOG，除非结论改变当前状态 |
+| 多阶段或跨窗口任务 | 遵循 `AGENTS.md` 的本地 handoff 规则 |
+| 新协议、门禁或不可逆决定 | current 协议；必要时新增 `docs/decisions/ADR-XXXX-*.md` 并链接到 `docs/README.md` |
+
+## 验证
+
+文档变更至少执行：
+
+```powershell
+git diff --check
+pwsh -File scripts/check_docs_index.ps1
+```
+
+涉及脚本入口、发布或工具链时，按对应专项文档补充验证。

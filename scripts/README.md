@@ -5,6 +5,7 @@
 ## 仓库、发布与环境
 
 - `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试。
+- `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档索引与本地链接门禁。
 - `archive_apk.ps1`、`verify_release_apk.ps1`、`verify_apk_16kb.ps1`：APK 校验与归档。
 - `restore_codex_skills.ps1`：恢复仓库内 skills 快照。
 
@@ -61,3 +62,4 @@
 - 所有下载、数据集、benchmark、训练输出和临时文件进入 `artifacts.local/`。
 - 脚本若需要联网、GPU 或 ADB，应在命令或文档中显式说明。
 - 新增脚本时同时补充配套测试、文档链接和默认输出目录。
+- 文档治理脚本不产生项目输出；文档变更完成前运行 `scripts/check_docs_index.ps1`。

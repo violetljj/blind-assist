@@ -12,6 +12,7 @@
 | [LOCAL_ARTIFACTS.md](LOCAL_ARTIFACTS.md) | current | `artifacts.local/` 本地产物契约 |
 | [CODEX_TASK_HANDOFF_TEMPLATE.md](CODEX_TASK_HANDOFF_TEMPLATE.md) | current | 多任务长任务的断点、边界与换窗口续作模板 |
 | [CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md](CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md) | current | 多任务交接索引模板 |
+| [DOCUMENT_GOVERNANCE.md](DOCUMENT_GOVERNANCE.md) | current | 文档职责、真源、历史保留与维护规则 |
 | [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md) | current | 真机功能回归 |
 
 ## 产品、硬件与评测基线
@@ -27,6 +28,7 @@
 
 以下文件是 SANPO 路线的当前真源：
 
+- [SANPO_CURRENT_STATUS.md](SANPO_CURRENT_STATUS.md)
 - [SANPO_TRAINING_PROTOCOL.md](SANPO_TRAINING_PROTOCOL.md)
 - [SANPO_CANDIDATE_PROMOTION_GATES.md](SANPO_CANDIDATE_PROMOTION_GATES.md)
 - [SANPO_SEQUENCE_EVALSET.md](SANPO_SEQUENCE_EVALSET.md)
@@ -54,6 +56,7 @@
 
 - 当前行为变化：更新对应 `current` 文档。
 - 发布事实：写入根目录 `CHANGELOG.md`。
-- 详细执行和验证：写入根目录 `DEVELOPMENT_LOG.md`。
+- 近期执行和验证：简洁写入根目录 `DEVELOPMENT_LOG.md`，详细证据链接到对应文档或 `artifacts.local/evidence/`。
 - 一次性研究或审计：使用带日期文件，并明确标记为 snapshot。
-- 新增文档时同步更新本索引，避免只依赖文件名发现内容。
+- 新增顶层 `docs/*.md` 时同步更新本索引；运行 `scripts/check_docs_index.ps1`，避免只依赖文件名发现内容。
+- 文档职责、当前真源和历史保留规则以 [DOCUMENT_GOVERNANCE.md](DOCUMENT_GOVERNANCE.md) 为准。

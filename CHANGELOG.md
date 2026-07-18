@@ -1,5 +1,11 @@
 # BlindAssist 更新记录
 
+> 本文件记录已发布或用户可见的变化。研究候选、数据采集和未晋级实验不构成 release note；其当前状态见 [SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md)，详细历史仍保留在本文件的“研究历史”章节和日期化报告中。
+
+## Unreleased
+
+- 暂无已确认的用户可见发布变化。SANPO 研究候选仍未替换正式 App 默认模型。
+
 ## v10.9.0 - SANPO 风险事件闭环
 
 - 新增纯 Kotlin `RiskEventTracker`：仅跟踪 SANPO 中心走廊分割候选，首次实际反馈后阻断同一事件重复播报；通过/远离或连续 3 帧消失后清除。YOLO 默认检测与模型资产不变。
@@ -7,7 +13,7 @@
 - benchmark 与连续序列标注新增事件阶段、事件 ID/状态、反馈抑制原因、已通过窗口与平行路沿错误提醒统计；`clone_sanpo_event_phase_evalset.py` 为现有已复核集生成不可变事件阶段克隆。固定 90 帧同设备复测仍是训练前硬门禁，尚未在本条记录中宣称通过。
 - SM-S9280 90 帧复测证据：`test-artifacts.local/detector-ab-device-benchmark/20260711-205209/`。候选总 P95 `57.581ms`、已通过窗口错误提醒 `0`、报告中的平行路沿错误提醒 `0`，但 alert FP `5.6%`、逐帧 alert recall `5.6%`，推荐仍为 `do_not_replace_default_model`。随后 90 秒 CameraX 回归在 `检测中 | Detecting` 文本等待阶段超时，证据位于 `test-artifacts.local/device-regression/20260711-205421/`。
 
-## Unreleased - SANPO v2 公开连续序列扩展验证
+## 研究历史（非发布说明）— SANPO v2 公开连续序列扩展验证
 
 - 新增 real-only canonical v4：14 条互斥 SANPO 官方 session 组成 400 train + 200 session-held-out dev + 120 official-test blind，共 720 帧；四场景桶覆盖、官方 split、raw inventory、逐资产哈希与 blind policy 的 10 项总门全绿。新增 offline quality、INT8 fidelity、device event 三段独立晋级门，并把 input size / backbone alpha / decoder channels 的 canonical 配置哈希贯穿跨后端、导出和质量报告。
 - 完成 step-budgeted、session-balanced、rare-class guided crop、CE+Dice+Focal、两阶段冻结/微调和三 seed 审计。最佳 384×384/alpha 1.0/decoder 96 单 seed 为 mIoU `0.4344`、boundary IoU `0.4506`，但其余两个 seed 为 `0.1804/0.1734` 与 `0.2498/0.1548`（mIoU/boundary IoU），稳定性不足。最佳候选离线门仍有三项 red，故停止在导出前，不生成 INT8、不运行设备事件门、不替换默认模型。

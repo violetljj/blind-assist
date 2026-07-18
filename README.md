@@ -11,7 +11,7 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - SANPO 分割路线仍为研究候选：当前离线质量门未通过，未导出正式 INT8、未执行设备晋级门、未替换 App 默认模型。
 - 正式 App 保持本地推理；眼镜设备中心仍是模拟功能，不扫描蓝牙、不连接真实眼镜。
 
-发布变化见 [CHANGELOG.md](CHANGELOG.md)，完整工程过程见 [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。日期化审计和实验报告只代表当时快照，不作为当前状态真源。
+发布变化见 [CHANGELOG.md](CHANGELOG.md)，近期工程过程见 [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。SANPO 的当前研究状态见 [SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md)；日期化审计和实验报告只代表当时快照，不作为当前状态真源。
 
 ## 仓库导航
 
@@ -97,5 +97,7 @@ E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\out
 - `README.md`：当前产品、构建方式和导航。
 - `CHANGELOG.md`：已发布变化。
 - `DEVELOPMENT_LOG.md`：详细工程流水与验证记录。
-- `idea.md`：尚未落地或验证的方向。
+- `idea.md`：尚未决定的产品与研究方向；不是实验流水或当前状态真源。
+- `docs/SANPO_CURRENT_STATUS.md`：SANPO 当前研究状态、硬门与下一步。
+- `docs/DOCUMENT_GOVERNANCE.md`：文档职责、真源与归档规则。
 - `docs/*_YYYY-MM-DD.*`：日期化快照，不覆盖当前协议。
