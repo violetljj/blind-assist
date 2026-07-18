@@ -10,6 +10,8 @@
 | [RELEASE_AND_VERIFICATION.md](RELEASE_AND_VERIFICATION.md) | current | 发布和验证总流程 |
 | [APK_ARCHIVE.md](APK_ARCHIVE.md) | current | APK 归档与 Git 里程碑策略 |
 | [LOCAL_ARTIFACTS.md](LOCAL_ARTIFACTS.md) | current | `artifacts.local/` 本地产物契约 |
+| [CODEX_TASK_HANDOFF_TEMPLATE.md](CODEX_TASK_HANDOFF_TEMPLATE.md) | current | 多任务长任务的断点、边界与换窗口续作模板 |
+| [CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md](CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md) | current | 多任务交接索引模板 |
 | [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md) | current | 真机功能回归 |
 
 ## 产品、硬件与评测基线

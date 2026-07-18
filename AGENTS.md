@@ -15,6 +15,16 @@
 - Update `README.md` only when user-visible capabilities, usage, prerequisites, current project status, or important public decisions change. Put release history in `CHANGELOG.md` and detailed evidence in the relevant `docs/` page.
 - Add an item to `idea.md` only when the user asks to retain it or the team explicitly defers a non-trivial proposal. Mark implemented items `【已完成】` and partial items `【部分完成】`.
 
+## Long-task continuity and handoff
+
+- For a long-running task with multiple phases, substantial edits, expensive verification, external or device operations, or a likely context/window handoff, create one task-specific handoff at `artifacts.local/work/codex-handoffs/<TASK-ID>.md` and register it in `artifacts.local/work/codex-handoffs/INDEX.md`. Start from [docs/CODEX_TASK_HANDOFF_TEMPLATE.md](docs/CODEX_TASK_HANDOFF_TEMPLATE.md) and [docs/CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md](docs/CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md).
+- `TASK-ID` is stable, uppercase, and descriptive (`DOMAIN-OUTCOME-ROUND`, for example `SANPO-PUBLIC-SILVER-R7`). Do not use generic names such as `TEST` or `IDEA`, and do not reuse one handoff file for separate workstreams.
+- Update the task handoff and its index row at each meaningful milestone, before a potentially irreversible external action, when blocked, and before ending or intentionally transferring the task. Do not wait for an unexpected interruption: the agent may not receive a final write opportunity.
+- Before resuming a task in a new window or after a context reset, read that task's handoff first; then verify its declared worktree or branch, working-tree claims with `git status --short`, and stated focused checks. Never treat an old handoff as current fact without verification.
+- Each handoff must state the objective and non-goals, allowed and forbidden paths, worktree or branch, dependencies, completed work, files changed, exact verification commands and results, current Git/working-tree state, decisions and constraints that must not be reversed, blockers or unknowns, and the single recommended next action.
+- A task may modify only its declared allowed paths. Unlisted working-tree changes belong to another task until proven otherwise: do not edit, revert, stage, commit, or absorb them into the current task. Two tasks that need to modify the same file are not independent; combine them or use separate Git worktrees on separate branches. Never run two code-changing tasks concurrently in the same worktree.
+- Keep credentials, tokens, personal data, and large raw logs out of handoffs. Keep durable implemented decisions in `DEVELOPMENT_LOG.md`; store detailed evidence under `artifacts.local/evidence/`.
+
 ## Workspace layout and knowledge navigation
 
 - The only BlindAssist repository root is `E:\linnan\linnan` (this is distinct from the Android application module `app/`). `E:\linnan` is a workspace container; do not run Git, Gradle, project tests, or source edits from same-named outer directories.
