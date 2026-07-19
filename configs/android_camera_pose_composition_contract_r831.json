@@ -1,0 +1,43 @@
+{
+  "schema": "blindassist_android_camera_pose_composition_contract_v1",
+  "contract_id": "r831_rotation_vector_lens_pose_composition_v1",
+  "frozen_at_utc": "2026-07-19T17:11:00.3941394Z",
+  "derivation_disclosure": "Frozen after r830 permissioned device metadata audit and official Android coordinate-semantic review, before build or test execution. This round only composes rotations in raw camera-sensor coordinates; stream orientation, crop, scale and real reprojection remain excluded.",
+  "bound_inputs": {
+    "r830_receipt_path": "artifacts.local/evidence/public-video-r830-permissioned-camera-calibration-20260720/device_camera_permissioned_calibration_r830.json",
+    "r830_receipt_sha256": "c407bbfd13d3588fa11790739ac62306a8d0dc4ac29c38c875bedb1e4cdb4377",
+    "composer_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidCameraPoseComposer.kt",
+    "composer_sha256": "2303125a58731728f2873028bc07ba182f67af803446eaacc18814ece190c236",
+    "test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidCameraPoseComposerTest.kt",
+    "test_sha256": "d06bc8b42470e80e386f79efe3c0601091c938c8d792b232cbd5f2bfa836c533"
+  },
+  "composition": {
+    "device_to_world_axes": "row_major_ENU_from_Android_rotation_vector",
+    "lens_pose_quaternion_order": "xyzw",
+    "lens_pose_mapping": "android_device_sensor_to_camera_aligned_sensor",
+    "formula": "R_camera_from_world = R_lens_pose_camera_from_device * transpose(R_rotation_vector_world_from_device)",
+    "output_scope": "raw_camera_aligned_sensor_coordinates"
+  },
+  "deterministic_gates": [
+    "identity composition",
+    "device-to-world inverse order",
+    "r830 camera-0 quaternion formula",
+    "existing world projector compatibility",
+    "invalid rotation and quaternion fail closed"
+  ],
+  "excluded": [
+    "SENSOR_ORIENTATION output rotation",
+    "CameraX crop and scale",
+    "lens distortion application",
+    "camera and IMU timestamp pairing implementation",
+    "real-image reprojection"
+  ],
+  "authorization": {
+    "benchmark_only": true,
+    "raw_rotation_composition_only": true,
+    "analysis_stream_mapping_validated": false,
+    "real_projection_accuracy_validated": false,
+    "app_runtime_change": false,
+    "production_authorized": false
+  }
+}

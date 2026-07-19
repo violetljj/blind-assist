@@ -1,0 +1,43 @@
+{
+  "schema": "blindassist_device_camera_permissioned_calibration_audit_contract_v1",
+  "contract_id": "r830_permissioned_intrinsic_pose_timestamp_audit_v1",
+  "frozen_at_utc": "2026-07-19T16:59:35.4619879Z",
+  "derivation_disclosure": "Frozen after official Android documentation confirmed that intrinsic calibration, distortion and lens pose metadata require CAMERA permission. r829d used the instrumentation context and its null fields are therefore not evidence of device absence. r830 uses the CAMERA-permissioned target app context and reports exact metadata without changing runtime code. Frozen before build, permission grant or device execution.",
+  "bound_sources": {
+    "r829d_contract_path": "configs/device_route_projection_capability_audit_contract_r829d.json",
+    "r829d_contract_sha256": "a51ec3382404eb3ba0b87235f5b5d755abe59921c4504c63c2a5269f9909e37d",
+    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/DeviceCameraPermissionedCalibrationAuditTest.kt",
+    "audit_test_sha256": "05769fd92db25c3d53e6c9944b9655bdcf2d675e76db28a351ed6de311fb7a91"
+  },
+  "audit": {
+    "context": "instrumentation_target_context",
+    "required_permission": "android.permission.CAMERA",
+    "camera_selection": "all_back_facing_camera_ids",
+    "fields": [
+      "LENS_INTRINSIC_CALIBRATION",
+      "LENS_DISTORTION",
+      "LENS_POSE_ROTATION",
+      "LENS_POSE_TRANSLATION",
+      "LENS_POSE_REFERENCE",
+      "SENSOR_INFO_TIMESTAMP_SOURCE",
+      "SYNC_MAX_LATENCY",
+      "SENSOR_INFO_PRE_CORRECTION_ACTIVE_ARRAY_SIZE"
+    ],
+    "receipt_transport": "Instrumentation.sendStatus Bundle r830_report"
+  },
+  "gates": {
+    "camera_permission_granted": true,
+    "back_camera_present": true,
+    "metadata_presence": "reported_not_required"
+  },
+  "authorization": {
+    "benchmark_only": true,
+    "permissioned_metadata_audit": true,
+    "device_to_camera_transform_validated": false,
+    "real_reprojection_accuracy_validated": false,
+    "real_navigation_route_validated": false,
+    "left_right_real_intervention_validated": false,
+    "app_runtime_change": false,
+    "production_authorized": false
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist_world_route_camera_projection_contract_v1",
+  "contract_id": "r828_benchmark_only_enu_pose_pinhole_projection_v1",
+  "frozen_at_utc": "2026-07-19T16:33:53.7350668Z",
+  "derivation_disclosure": "Frozen after r827a validated the Android external payload boundary and after source/test authoring, but before compilation or device execution. The projector consumes an external pose and calibration receipt; it does not estimate pose, route, calibration or event truth.",
+  "bound_sources": {
+    "provider_contract_path": "configs/android_external_route_payload_provider_contract_r827a.json",
+    "provider_contract_sha256": "fd6751ef33afe9b27df2f4e219f625dc4283cb57e0d5e5339b14b6949dbd8a4e",
+    "projector_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/WorldRouteCameraProjector.kt",
+    "projector_sha256": "1b984dcccfdb84b4b29c5fe44fc7e60aa0b5a080dcf9fb4119f4679bd0854c7a",
+    "test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/WorldRouteCameraProjectorTest.kt",
+    "test_sha256": "36f1766bff5e5bbe8007d571642d065f8e4fca28897ef0f5f5144fe62e9d119a"
+  },
+  "projection": {
+    "world_space": "local_enu_meters",
+    "camera_axes": "x_right_y_down_z_forward",
+    "rotation": "row_major_world_enu_delta_to_camera",
+    "model": "pinhole_pixels_then_normalize_by_frame_dimensions",
+    "required_horizons_ms": [1000, 2000, 3000],
+    "minimum_depth_m": 0.05,
+    "minimum_receipt_confidence": 0.5,
+    "maximum_receipt_age_ms": 1000,
+    "maximum_receipt_validity_span_ms": 1000,
+    "rotation_orthonormal_and_right_handed_tolerance": 0.001,
+    "out_of_frame_behind_camera_invalid_pose_stale_or_malformed": "fail_closed"
+  },
+  "gates": {
+    "device_tests": 6,
+    "straight_left_right_projection": true,
+    "translation_invariance": true,
+    "pose_time_confidence_and_visibility_rejection": true,
+    "projection_geometry_lifecycle_chain": true
+  },
+  "authorization": {
+    "benchmark_only": true,
+    "projection_math_validated": false,
+    "real_pose_provider_validated": false,
+    "real_camera_calibration_validated": false,
+    "real_navigation_route_validated": false,
+    "left_right_real_intervention_validated": false,
+    "app_or_core_wiring": false,
+    "default_runtime_change": false,
+    "production_authorized": false
+  }
+}

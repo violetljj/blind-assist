@@ -1,0 +1,48 @@
+{
+  "schema": "blindassist_device_route_projection_capability_audit_contract_v1",
+  "contract_id": "r829c_create_internal_receipt_directory_erratum_v1",
+  "frozen_at_utc": "2026-07-19T16:49:10.0788987Z",
+  "derivation_disclosure": "Frozen after r829b again completed real camera and rotation-vector sampling and all capability assertions, but internal filesDir did not yet exist. r829c explicitly creates and verifies that directory before writing. Sampling, metrics, gates and authorization are unchanged. Frozen before reexecution.",
+  "erratum": {
+    "superseded_contract_path": "configs/device_route_projection_capability_audit_contract_r829b.json",
+    "superseded_contract_sha256": "efa2d7071080f44acf6c2f9b6278f5f1c61ab4d238278976461ccea0ae55c5eb",
+    "r829b_sampling_and_assertions_completed": true,
+    "r829b_failure_stage": "receipt_write_missing_parent_directory",
+    "audit_policy_changed": false
+  },
+  "bound_sources": {
+    "projection_contract_path": "configs/world_route_camera_projection_contract_r828a.json",
+    "projection_contract_sha256": "72bb9c6b4bc2a034723729c328ec3b5fde32e72ab5adeaacde7eca1f34250957",
+    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/DeviceRouteProjectionCapabilityAuditTest.kt",
+    "audit_test_sha256": "467013f0cecd8500c98c8d331932349404f2d7b63cfad73e9db568092c0f6501"
+  },
+  "sampling": {
+    "camera_selection": "all_back_facing_camera_ids",
+    "exact_intrinsics_preferred": "LENS_INTRINSIC_CALIBRATION",
+    "fallback_intrinsics": "focal_length_mm_over_sensor_physical_size_times_pixel_array",
+    "rotation_sensor": "TYPE_ROTATION_VECTOR",
+    "rotation_duration_ms": 2500,
+    "rotation_delay": "SENSOR_DELAY_GAME",
+    "minimum_samples": 10,
+    "maximum_quaternion_norm_error": 0.05,
+    "motion_stability": "observed_only_not_a_gate",
+    "receipt_storage": "created_instrumentation_internal_files_dir_pulled_with_run_as"
+  },
+  "gates": {
+    "back_camera_present": true,
+    "at_least_one_projection_input_candidate": true,
+    "rotation_vector_present": true,
+    "minimum_rotation_samples": true,
+    "quaternion_norm_valid": true
+  },
+  "authorization": {
+    "benchmark_only": true,
+    "real_device_capability_audit": true,
+    "real_projection_accuracy_validated": false,
+    "real_navigation_route_validated": false,
+    "left_right_real_intervention_validated": false,
+    "app_or_core_wiring": false,
+    "default_runtime_change": false,
+    "production_authorized": false
+  }
+}

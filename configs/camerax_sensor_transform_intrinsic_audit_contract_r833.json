@@ -1,0 +1,32 @@
+{
+  "schema": "blindassist_camerax_sensor_transform_intrinsic_audit_contract_v1",
+  "contract_id": "r833_authoritative_sensor_to_buffer_intrinsic_mapping_v1",
+  "frozen_at_utc": "2026-07-19T17:21:24.6094268Z",
+  "derivation_disclosure": "Frozen after r832 observed a stable full-crop 640x480 camera-0 analysis stream with 90-degree output rotation, and after official CameraX ImageInfo documentation identified sensorToBufferTransformMatrix as the authoritative mapping from SENSOR_INFO_ACTIVE_ARRAY_SIZE to the image buffer. Frozen before build or device execution.",
+  "bound_sources": {
+    "r832_contract_path": "configs/camerax_analysis_stream_geometry_audit_contract_r832.json",
+    "r832_contract_sha256": "b5217bd8dfe92c7a44b416979629ba2c7f5f22e1264ffe3b1175f59a759a4ab4",
+    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraXSensorTransformAuditTest.kt",
+    "audit_test_sha256": "1f00149a8681b53dbabeb86b677722d7a99129624034c20dcd912eb83659bd01"
+  },
+  "audit": {
+    "camera_configuration": "production-matched DEFAULT_BACK_CAMERA 640x480 4:3 RGBA KEEP_ONLY_LATEST",
+    "authoritative_transform": "ImageInfo.sensorToBufferTransformMatrix",
+    "sensor_domain": "CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE",
+    "buffer_domain": "ImageProxy 0..width, 0..height",
+    "display_rotation": "ImageInfo.rotationDegrees clockwise, applied after buffer mapping",
+    "mapped_points": ["active-array four corners", "exact intrinsic principal point"]
+  },
+  "gates": {
+    "transform_affine": true,
+    "principal_inside_buffer": true,
+    "principal_inside_rotated_display": true
+  },
+  "authorization": {
+    "benchmark_only": true,
+    "coordinate_mapping_observation_only": true,
+    "real_reprojection_validated": false,
+    "app_runtime_change": false,
+    "production_authorized": false
+  }
+}

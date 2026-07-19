@@ -1,0 +1,43 @@
+{
+  "schema": "blindassist_camerax_analysis_stream_geometry_audit_contract_v1",
+  "contract_id": "r832_production_matched_camerax_geometry_clock_audit_v1",
+  "frozen_at_utc": "2026-07-19T17:17:28.9396397Z",
+  "derivation_disclosure": "Frozen after r831 raw camera-sensor pose composition passed and before build or device execution. The audit matches the production CameraX resolution selector, RGBA format and backpressure strategy, but does not change production runtime code.",
+  "bound_sources": {
+    "r831_contract_path": "configs/android_camera_pose_composition_contract_r831.json",
+    "r831_contract_sha256": "5efeb7b840df655f396bb27334d26583b4aa71546b55c0cbc68fdf9965c40a18",
+    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraXAnalysisStreamGeometryAuditTest.kt",
+    "audit_test_sha256": "980ff918ddcca48577ccfd65a59620d5e63fb1f29e7444982d07151b51fad414"
+  },
+  "matched_production_configuration": {
+    "camera_selector": "DEFAULT_BACK_CAMERA",
+    "requested_resolution": [640, 480],
+    "aspect_ratio_strategy": "RATIO_4_3_FALLBACK_AUTO_STRATEGY",
+    "resolution_fallback": "CLOSEST_HIGHER_THEN_LOWER",
+    "output_format": "RGBA_8888",
+    "backpressure": "KEEP_ONLY_LATEST"
+  },
+  "audit_fields": [
+    "bound Camera2 camera id",
+    "ImageProxy buffer width and height",
+    "ImageProxy cropRect",
+    "ImageInfo rotationDegrees",
+    "RGBA rowStride and pixelStride",
+    "ImageInfo timestamp monotonicity and cadence",
+    "callback elapsedRealtime minus capture timestamp"
+  ],
+  "gates": {
+    "required_frames": 30,
+    "timestamps_strictly_monotonic": true,
+    "geometry_shape": "reported_not_required",
+    "crop_is_full_buffer": "reported_not_required"
+  },
+  "authorization": {
+    "benchmark_only": true,
+    "stream_geometry_observation_only": true,
+    "intrinsic_stream_mapping_validated": false,
+    "real_reprojection_validated": false,
+    "app_runtime_change": false,
+    "production_authorized": false
+  }
+}

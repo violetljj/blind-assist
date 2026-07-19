@@ -1,0 +1,34 @@
+{
+  "schema": "blindassist_camera_analysis_geometry_mapper_contract_v1",
+  "contract_id": "r834_sensor_intrinsic_pose_to_rotated_analysis_geometry_v1",
+  "frozen_at_utc": "2026-07-19T17:25:05.9329644Z",
+  "derivation_disclosure": "Frozen after r833 observed the authoritative camera-0 sensorToBufferTransformMatrix, exact intrinsic mapping and 90-degree analysis rotation, and before build or test execution. This is deterministic benchmark geometry only; it does not claim real-image reprojection accuracy.",
+  "bound_sources": {
+    "r833_contract_path": "configs/camerax_sensor_transform_intrinsic_audit_contract_r833.json",
+    "r833_contract_sha256": "15caeeb128744cf13aa23102fcfa51a76507be4b1939c2869a90531a83c74b56",
+    "mapper_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraAnalysisGeometryMapper.kt",
+    "mapper_sha256": "ffc05db07ed786e6dee713676b30ed794cbe0889f0d6f958adc2a1f7e0ae383a",
+    "test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraAnalysisGeometryMapperTest.kt",
+    "test_sha256": "9553fdce568fd95f70a411b287121ae66a54b09955f730c76ad3606a2d261a27"
+  },
+  "mapping": {
+    "sensor_to_buffer": "authoritative affine ImageInfo matrix",
+    "buffer_to_display": "clockwise ImageInfo.rotationDegrees with pixel-index boundary",
+    "camera_axes_to_display_axes": "same clockwise rotation applied to camera x-y axes",
+    "r833_expected_display_size": [480, 640],
+    "r833_expected_display_intrinsics": [434.69432, 433.90063, 238.98842, 320.20874]
+  },
+  "deterministic_gates": [
+    "r833 exact intrinsic numeric mapping",
+    "90-degree camera-axis rotation",
+    "existing world projector principal-point projection",
+    "shear, skew, unsupported rotation and invalid pose fail closed"
+  ],
+  "authorization": {
+    "benchmark_only": true,
+    "deterministic_analysis_geometry_only": true,
+    "real_reprojection_validated": false,
+    "app_runtime_change": false,
+    "production_authorized": false
+  }
+}

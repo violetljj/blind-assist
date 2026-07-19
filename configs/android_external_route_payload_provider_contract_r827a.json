@@ -1,0 +1,50 @@
+{
+  "schema": "blindassist_android_external_route_payload_provider_contract_v1",
+  "contract_id": "r827a_test_fixture_compile_erratum_v1",
+  "frozen_at_utc": "2026-07-19T16:27:26.1062219Z",
+  "derivation_disclosure": "Frozen after r827 failed at Kotlin test compilation because Intent.removeExtra returns Unit in this API surface. The provider source, payload policy, test assertions, test count and all authorization remain identical. Only the two removeExtra calls now use also blocks to retain the Intent value. Frozen before recompilation or device execution.",
+  "erratum": {
+    "superseded_contract_path": "configs/android_external_route_payload_provider_contract_r827.json",
+    "superseded_contract_sha256": "0042616b562dd2137486d09c55baccd9679e5efc717ca2711cbfe97911d7f71a",
+    "failed_stage": ":device-benchmark:compileDebugKotlin",
+    "failure": "removeExtra returned Unit where Intent was expected",
+    "provider_logic_executed": false
+  },
+  "bound_sources": {
+    "geometry_contract_path": "configs/explicit_route_geometry_device_contract_r826a.json",
+    "geometry_contract_sha256": "e2b3fd9cdb8e3052cf46823aefc1071fbcda766a64f171ac5d80979b53ece0c2",
+    "provider_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidExplicitRoutePayloadProvider.kt",
+    "provider_sha256": "ab35ea73e71ca62699a3266720cdab95b770101ecdc1be5ff4eb2882a5478b91",
+    "test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidExplicitRoutePayloadProviderTest.kt",
+    "test_sha256": "d6714a3d4d5a62082adfe1e4e0d9b890a30a370a84845b28f4d027338b50ef48"
+  },
+  "payload": {
+    "action": "com.linnan.blindassist.action.EXPLICIT_ROUTE_INTENT",
+    "required_receipts": ["provider_id", "projection_receipt_id"],
+    "required_waypoint_horizons_ms": [1000, 2000, 3000],
+    "maximum_issue_age_ms": 1000,
+    "maximum_validity_span_ms": 1000,
+    "minimum_confidence": 0.5,
+    "risk_model_inferred_route_allowed": false,
+    "future_video_route_allowed": false,
+    "invalid_missing_stale_future_low_confidence_or_malformed": "fail_closed_context_only"
+  },
+  "gates": {
+    "provider_device_tests": 6,
+    "provider_geometry_lifecycle_chain": true,
+    "risk_model_and_future_video_rejection": true,
+    "timestamp_and_receipt_rejection": true
+  },
+  "authorization": {
+    "benchmark_only": true,
+    "external_payload_boundary_validated": false,
+    "real_navigation_provider_validated": false,
+    "camera_projection_accuracy_validated": false,
+    "left_right_real_intervention_validated": false,
+    "app_or_core_wiring": false,
+    "default_runtime_change": false,
+    "calibration": false,
+    "blind": false,
+    "production_authorized": false
+  }
+}

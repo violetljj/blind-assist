@@ -1,0 +1,47 @@
+{
+  "schema": "blindassist_device_route_projection_capability_audit_contract_v1",
+  "contract_id": "r829a_float_array_compile_erratum_v1",
+  "frozen_at_utc": "2026-07-19T16:44:46.8121332Z",
+  "derivation_disclosure": "Frozen after r829 failed at Kotlin compilation because nullable FloatArray has no isNullOrEmpty extension in this toolchain. r829a replaces it with an explicit null and isNotEmpty check. Sampling, capability gates, metrics and authorization are unchanged. Frozen before recompilation or device sampling.",
+  "erratum": {
+    "superseded_contract_path": "configs/device_route_projection_capability_audit_contract_r829.json",
+    "superseded_contract_sha256": "8860e4a4246eb6633c0bf8755193b8b0b65fc625132f7839ca4f1e8c21e4f745",
+    "failed_stage": ":device-benchmark:compileDebugKotlin",
+    "device_sampling_started": false,
+    "audit_policy_changed": false
+  },
+  "bound_sources": {
+    "projection_contract_path": "configs/world_route_camera_projection_contract_r828a.json",
+    "projection_contract_sha256": "72bb9c6b4bc2a034723729c328ec3b5fde32e72ab5adeaacde7eca1f34250957",
+    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/DeviceRouteProjectionCapabilityAuditTest.kt",
+    "audit_test_sha256": "5d7f0b0da6e0e0678215f9c2382aae23b05881febb9d127640667437e63804b1"
+  },
+  "sampling": {
+    "camera_selection": "all_back_facing_camera_ids",
+    "exact_intrinsics_preferred": "LENS_INTRINSIC_CALIBRATION",
+    "fallback_intrinsics": "focal_length_mm_over_sensor_physical_size_times_pixel_array",
+    "rotation_sensor": "TYPE_ROTATION_VECTOR",
+    "rotation_duration_ms": 2500,
+    "rotation_delay": "SENSOR_DELAY_GAME",
+    "minimum_samples": 10,
+    "maximum_quaternion_norm_error": 0.05,
+    "motion_stability": "observed_only_not_a_gate"
+  },
+  "gates": {
+    "back_camera_present": true,
+    "at_least_one_projection_input_candidate": true,
+    "rotation_vector_present": true,
+    "minimum_rotation_samples": true,
+    "quaternion_norm_valid": true
+  },
+  "authorization": {
+    "benchmark_only": true,
+    "real_device_capability_audit": true,
+    "real_projection_accuracy_validated": false,
+    "real_navigation_route_validated": false,
+    "left_right_real_intervention_validated": false,
+    "app_or_core_wiring": false,
+    "default_runtime_change": false,
+    "production_authorized": false
+  }
+}

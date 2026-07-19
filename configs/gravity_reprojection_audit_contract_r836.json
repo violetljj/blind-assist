@@ -1,0 +1,42 @@
+{
+  "schema": "blindassist_gravity_reprojection_audit_contract_v1",
+  "contract_id": "r836_automatic_real_frame_gravity_line_reprojection_v1",
+  "frozen_at_utc": "2026-07-19T17:41:59.7199176Z",
+  "derivation_disclosure": "Frozen after r835 proved capture-timestamp rotation-vector bracketing and before build, capture or scene inspection. This audit replaces human labeling with a deterministic gravity-direction prediction and OpenCV scene-line comparison. Scene informativeness is reported separately from geometric pass/fail.",
+  "bound_sources": {
+    "r835_contract_path": "configs/camera_rotation_timestamp_pairing_audit_contract_r835.json",
+    "r835_contract_sha256": "4cfe41f807e7390c41880b70ad6a5c7c3ac81c64579ab7ffad3945209ae3c086",
+    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/GravityReprojectionAuditTest.kt",
+    "audit_test_sha256": "654cff34f5ad08570afb5a070e4976a746e29810bbbae8ab867d51c4bf09f11e"
+  },
+  "capture": {
+    "camera_configuration": "production-matched DEFAULT_BACK_CAMERA 640x480 4:3 RGBA KEEP_ONLY_LATEST",
+    "selected_frame": "10th of 20",
+    "pose_at_capture": "quaternion SLERP between rotation-vector samples bracketing ImageInfo.timestamp",
+    "display_image": "ImageInfo clockwise rotation applied to raw RGBA frame",
+    "persisted_artifacts": ["display PNG", "metadata and line metrics JSON"]
+  },
+  "automatic_comparison": {
+    "world_reference": "ENU world-up vector [0,0,1]",
+    "projection": "r831 lens-pose composition plus r834 analysis geometry",
+    "line_detector": "grayscale Gaussian blur, Canny 60/160, HoughLinesP threshold 35, minimum length 35px, maximum gap 12px",
+    "aligned_angle_threshold_degrees": 10,
+    "minimum_informative_candidate_lines": 5,
+    "minimum_informative_aligned_lines": 2,
+    "minimum_informative_aligned_length_px": 100,
+    "minimum_pass_aligned_length_fraction": 0.12
+  },
+  "interpretation": {
+    "informative_and_pass": "supports real-frame gravity-axis reprojection only",
+    "informative_and_fail": "coordinate, timing, lens pose or scene-line assumption requires diagnosis",
+    "not_informative": "no conclusion; acquire another automatic frame without changing thresholds"
+  },
+  "authorization": {
+    "benchmark_only": true,
+    "gravity_axis_only": true,
+    "full_3d_reprojection_validated": false,
+    "route_event_validated": false,
+    "app_runtime_change": false,
+    "production_authorized": false
+  }
+}
