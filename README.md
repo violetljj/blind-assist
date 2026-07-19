@@ -90,7 +90,7 @@ E:\codex-tools\tools\android-sdk\platform-tools\adb.exe devices
 E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
 ```
 
-正式归档、校验和与 Git 里程碑规则见 [APK 归档策略](docs/APK_ARCHIVE.md) 和 [发布与验证](docs/RELEASE_AND_VERIFICATION.md)。
+正式归档、校验和与 Git 收据规则见 [APK 归档策略](docs/APK_ARCHIVE.md) 和 [发布与验证](docs/RELEASE_AND_VERIFICATION.md)。原始 APK 保留在经校验的外部归档，不再作为 Git 二进制提交。
 
 ## 文档职责
 

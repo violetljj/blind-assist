@@ -2,7 +2,7 @@
 
 - Snapshot date: `2026-05-22 00:22 +08:00`
 - Source on old computer: `C:\Users\junjie\.codex\skills`
-- Archive: `codex/skills-snapshot/codex-skills-20260522.zip`
+- Archive: `E:\codex-tools\projects\blindassist\state\skills-snapshots\codex-skills-20260522.zip`
 - Archive size: `14,005,316 bytes`
 - SHA256: `A64F7287A463BDB12BFB16D57F1538D77D3D71B95DBC088EC2F0BC6A4ABB4F1C`
 - Archive entries verified with `tar -tf`: `13,446`
@@ -12,14 +12,14 @@
   `.codex` folder and verified `13,031` restored files across `72` top-level
   skill directories.
 
-The archive contains the full `skills/` directory snapshot, including the
+The external archive contains the full `skills/` directory snapshot, including the
 Codex-managed `.system` folder and the existing `.name-cn-backup-20260516`
 backup folder. On a new computer, restoring the snapshot is enough to recreate
 the local skill files used by this project history.
 
 ## Restore
 
-From the repository root:
+From the repository root (the script defaults to the external archive and falls back to the legacy checkout path only for older checkouts):
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\restore_codex_skills.ps1

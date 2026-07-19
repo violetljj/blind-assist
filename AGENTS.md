@@ -41,7 +41,7 @@
 - If required verification cannot run, record the reason and impact in the final report and, when the work changed the project, in `DEVELOPMENT_LOG.md`.
 - Release procedure, command matrix, version decision, and final APK verification live in [docs/RELEASE_AND_VERIFICATION.md](docs/RELEASE_AND_VERIFICATION.md). APK retention rules live in [docs/APK_ARCHIVE.md](docs/APK_ARCHIVE.md).
 - Do not change a version merely because a task happened. Change it for a planned delivery or a user-visible, compatibility, safety, model, permission, or substantial architecture change, and record the rationale.
-- Archive an APK only for a delivery candidate, demonstration, teacher review, milestone, or user request; an ordinary debug build is not an archive event.
+- Archive an APK only for a delivery candidate, demonstration, teacher review, milestone, or user request; an ordinary debug build is not an archive event. Raw APKs stay in the verified external archive; `releases/apk/` stores only small text receipts or manifests.
 
 ## Local artifacts, hardware, and external operations
 

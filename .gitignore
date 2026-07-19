@@ -29,7 +29,6 @@ tmp/
 # Keep only milestone APKs in Git. See docs/APK_ARCHIVE.md.
 !releases/
 !releases/apk/
-!releases/apk/*.apk
 *.aab
 *.zip
 *.pptx

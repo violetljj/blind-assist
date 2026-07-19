@@ -2,8 +2,8 @@
 
 BlindAssist 使用两层 APK 归档，服务于已明确的演示、老师查看、交付候选或里程碑；普通 debug 构建不自动归档：
 
-- GitHub 里程碑 APK：`releases/apk/` 只保留累计 `versionName` 差值达到 `>= 0.5` 的版本，或用户明确标记为 Git 里程碑的 APK。
-- 完整本地归档：已确认需要留存的交付 APK 保存在 `E:\linnan\blind-assist-apk-archive\apks`。
+- Git 里程碑收据：`releases/apk/` 只保留小型 Markdown/JSON 收据和本页的 SHA256 清单，不保留原始 APK。
+- 完整外部归档：已确认需要留存的交付 APK 保存在 `E:\linnan\blind-assist-apk-archive\apks`。
 
 完整本地归档创建于 2026-05-22，包含历史 APK 集合以及后续本地 debug 归档。归档清单位于：
 
@@ -23,9 +23,11 @@ Get-FileHash -Algorithm SHA256 -LiteralPath "E:\linnan\blind-assist-apk-archive\
 .\scripts\archive_apk.ps1
 ```
 
-只有当该 APK 符合下方里程碑规则，或用户明确批准同步到 `releases/apk/` 时，才使用 `-Milestone`。普通 debug 构建不需要归档；只有证据确实有价值时，才同步写入 `README.md`、`CHANGELOG.md` 或 `DEVELOPMENT_LOG.md`。
+只有当该 APK 符合下方里程碑规则，或用户明确批准记录 Git 里程碑时，才使用 `-Milestone`。该开关只在 `releases/apk/` 写入 JSON 收据，不复制 APK。普通 debug 构建不需要归档；只有证据确实有价值时，才同步写入 `README.md`、`CHANGELOG.md` 或 `DEVELOPMENT_LOG.md`。
 
-## GitHub 里程碑 APK
+## 历史 Git 里程碑 APK 迁移清单
+
+以下 APK 已在 2026-07-19 逐文件 SHA256 核验并迁移为外部归档；本表和 `releases/apk/README.md` 保留可追溯的 Git 清单。
 
 | APK | 大小 bytes | SHA256 |
 | --- | ---: | --- |
@@ -43,6 +45,8 @@ Get-FileHash -Algorithm SHA256 -LiteralPath "E:\linnan\blind-assist-apk-archive\
 | BlindAssist-v7.0.0-debug-20260523-000649.apk | 47205851 | E3D7F9DC265E1A173D26378AAC6D1C95429E303B245DFDBA206B95BD7063B9D5 |
 | BlindAssist-v7.1.0-debug-20260524-162936.apk | 47205843 | 5ADA5DC82A71AABDA3438C76CA7E7AA9341C15FDD11308C2861E9695AD75F323 |
 | BlindAssist-v7.6.0-debug-20260525-004833.apk | 47222231 | 2DE5CE894D0C46A8D099000B6E2624DA4B102E61A0E31BE8F501252D102520DC |
+| BlindAssist-v8.1.0-debug-20260525-222724.apk | 47238663 | A48769A7A9F5233526DDD936AF40A6DB9321DBFD163E648D098D1F16576F94D8 |
+| BlindAssist-v8.8.0-debug-20260612-140333.apk | 47288840 | 017CF063FFD651270335DDD3033E5018C64A86A8BD78351D2F4B9C1B16D23364 |
 | BlindAssist-v9.4.0-debug-20260710-084153.apk | 47297084 | E4DB467B77F9628F04E4E2CF00AC8737C5FABE95ED60AC6EF6A8ED1518E067BC |
 | BlindAssist-v9.9.0-debug-20260710-233951.apk | 55879856 | 53065A54A43ABF6256994CDC9E6C89F2F5680BE5BEA1FC9BDF88CAF26AA77BDD |
 
@@ -58,6 +62,6 @@ E:\linnan\blind-assist-apk-archive\test-artifacts\test-artifacts-20260525-001501
 
 ## 后续规则
 
-对需要留存的交付 APK，先完成本地归档。只有它是已记录的交付里程碑、当前 `versionName` 比 `releases/apk/` 中最新已提交 APK 至少高 `0.5`，或用户明确要求提交 Git 里程碑 APK 时，才把 APK 提交到 `releases/apk/`。版本差值只是筛选条件，不能替代交付理由；普通 debug 构建无需进入完整本地归档。
+对需要留存的交付 APK，先完成外部归档并核验 SHA256。只有它是已记录的交付里程碑、当前 `versionName` 比已记录里程碑至少高 `0.5`，或用户明确要求记录 Git 里程碑时，才在 `releases/apk/` 提交收据。版本差值只是筛选条件，不能替代交付理由；普通 debug 构建无需进入完整外部归档。
 
-新的测试截图、原始设备日志、临时 APK、zip 快照、PPT 导出、ONNX/PT/NPY 模型转换中间产物和机器本地缓存默认不进入 Git。`scripts/run_device_regression.ps1` 生成的设备回归证据写入 `test-artifacts.local/device-regression/<timestamp>/` 目录，只用于后续本地对比。CI 通过 `scripts/check_repo_hygiene.ps1` 执行这条面向未来的规则；既有历史产物不会因该策略被重写或删除。
+新的测试截图、原始设备日志、临时 APK、zip 快照、PPT 导出、ONNX/PT/NPY 模型转换中间产物和机器本地缓存默认不进入 Git。`scripts/run_device_regression.ps1` 生成的设备回归证据写入 `test-artifacts.local/device-regression/<timestamp>/` 目录，只用于后续本地对比。CI 通过 `scripts/check_repo_hygiene.ps1` 执行这条面向未来的规则；既有 Git 历史不会因该策略被重写。

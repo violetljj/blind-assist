@@ -56,9 +56,17 @@ $result = [ordered]@{
 if ($Milestone) {
     $resolvedMilestoneDir = Resolve-RepoPath $MilestoneDir
     New-Item -ItemType Directory -Force -Path $resolvedMilestoneDir | Out-Null
-    $milestonePath = Join-Path $resolvedMilestoneDir $destName
-    Copy-Item -LiteralPath $archivePath -Destination $milestonePath -Force
-    $result.milestonePath = $milestonePath
+    $milestonePath = Join-Path $resolvedMilestoneDir ("{0}.json" -f [System.IO.Path]::GetFileNameWithoutExtension($destName))
+    [pscustomobject]@{
+        schema = 'blindassist_apk_receipt_v1'
+        archived_at = (Get-Date).ToString('o')
+        file_name = $destName
+        size_bytes = $hashSize
+        sha256 = $hash.Hash
+        external_archive_path = $archivePath
+        source_path = $resolvedApk
+    } | ConvertTo-Json | Set-Content -LiteralPath $milestonePath -Encoding utf8
+    $result.milestoneReceiptPath = $milestonePath
 }
 
 $result | ConvertTo-Json -Depth 3

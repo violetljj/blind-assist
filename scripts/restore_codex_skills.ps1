@@ -7,7 +7,9 @@ param(
 $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($Snapshot)) {
-    $Snapshot = Join-Path $PSScriptRoot "..\codex\skills-snapshot\codex-skills-20260522.zip"
+    $externalSnapshot = "E:\codex-tools\projects\blindassist\state\skills-snapshots\codex-skills-20260522.zip"
+    $legacySnapshot = Join-Path $PSScriptRoot "..\codex\skills-snapshot\codex-skills-20260522.zip"
+    $Snapshot = if (Test-Path -LiteralPath $externalSnapshot) { $externalSnapshot } else { $legacySnapshot }
 }
 
 $snapshotPath = (Resolve-Path -LiteralPath $Snapshot).Path
