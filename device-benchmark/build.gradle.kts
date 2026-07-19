@@ -8,11 +8,15 @@ plugins {
 val detectorBenchmarkAssetsDir = layout.buildDirectory.dir("generated/detectorBenchmarkAssets")
 val depthBenchmarkAssetsDir = layout.buildDirectory.dir("generated/depthBenchmarkAssets")
 val segmentationBenchmarkAssetsDir = layout.buildDirectory.dir("generated/segmentationBenchmarkAssets")
+val eventHeadBenchmarkAssetsDir = layout.buildDirectory.dir("generated/eventHeadBenchmarkAssets")
 val blindAssistEvalSetDir = providers
     .gradleProperty("blindAssistEvalSetDir")
     .orElse("test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
 val depthBenchmarkModelPath = providers
     .gradleProperty("depthBenchmarkModelPath")
+val publicVideoInferenceDir = providers
+    .gradleProperty("publicVideoInferenceDir")
+    .orElse("artifacts.local/evidence/public-video-edge-inference/empty")
     .orElse(".downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite")
 val depthBenchmarkModelAssetName = providers
     .gradleProperty("depthBenchmarkModelAssetName")
@@ -46,6 +50,12 @@ val prepareDetectorBenchmarkAssets = tasks.register<Sync>("prepareDetectorBenchm
     }
     into(detectorBenchmarkAssetsDir)
 }
+    from(publicVideoInferenceDir.map { rootProject.file(it) }) {
+        include("dataset_spec.json")
+        include("manifest.jsonl")
+        include("images/**")
+        into("public_video_inference")
+    }
 
 val prepareDepthBenchmarkAssets = tasks.register<Sync>("prepareDepthBenchmarkAssets") {
     from(depthBenchmarkModelPath.map { rootProject.file(it) }) {
@@ -68,6 +78,15 @@ android {
     compileSdk = libs.versions.compileSdk.get().toInt()
     targetProjectPath = ":app"
     targetVariant = "debug"
+
+val prepareEventHeadBenchmarkAssets = tasks.register<Sync>("prepareEventHeadBenchmarkAssets") {
+    from(rootProject.file("artifacts.local/experiments/secondary-corridor-causal/event-head-tcn-int8-v0-20260718/android/app/src/main/assets")) {
+        include("corridor_causal_tcn_int8_v0.tflite")
+        include("corridor_causal_tcn_int8_v0_contract.json")
+        include("corridor_causal_tcn_int8_v0_golden.json")
+    }
+    into(eventHeadBenchmarkAssetsDir)
+}
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
@@ -106,6 +125,7 @@ tasks.matching {
 }
 
 dependencies {
+            assets.srcDir(eventHeadBenchmarkAssetsDir)
     implementation(project(":core:assist"))
     implementation(project(":core:vision"))
     implementation(libs.androidx.test.runner)
@@ -114,3 +134,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.tflite)
 }
+    dependsOn(prepareEventHeadBenchmarkAssets)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)

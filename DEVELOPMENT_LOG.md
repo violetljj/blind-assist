@@ -4145,3 +4145,11 @@
 - 验证：确认 Git 根为 `E:\linnan\linnan`；`test-artifacts.local`、`.downloads`、`work`、`tmp` 均指向 `artifacts.local/`；JDK/SDK/Gradle/Android/Kotlin 路径均指向 `E:\codex-tools`；`E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py` 通过；`scripts\check_repo_hygiene.ps1` 对 35 个变更路径通过；顶层 `docs/` 索引覆盖通过；`git diff --check` 通过。
 - 剩余风险：历史受跟踪的 skills snapshot ZIP 仍会使 `check_repo_hygiene.ps1 -AllTracked` 报告二进制策略问题；它不属于本轮布局变更，需在单独的 Git 历史/归档治理任务中处理。
 - 版本判断：仅固化协作和文件管理规范，不改变 App 行为、模型资产、权限或风险规则；版本不变，不归档 APK。
+
+## 2026-07-20：Corridor-Causal Student benchmark-only 工程可行性与数据真值阻塞
+
+- 执行者：violjjet
+- 新增 YOLO + 外部对齐 IMU 的 `[4,4,8] + [20]` 因果特征契约、8 帧窗口与离线对应生产器；Android 和 Python 定向测试均通过。ADVIO 同步 RGB+IMU 仅完成实际输入传输验证，不能作为风险事件训练或评测真值。
+- 62,689 参数、未训练、全 INT8 的 TCN 组件 P95 为 `.3155ms`；真实 SM-S9280 CameraX + YOLO + 夹具三轮总 P95 为 `69.567/68.829/68.799ms`，后续缓冲区复用复核为 `69.016ms`，均为 0 失败。性能形态可行但最坏余量仅 `.433ms`，不授权 runtime 接入。
+- 三个 ADVIO IMU route/turn probe 均失败（AUROC `.4770/.4746/.3465`）；IMU 不作为行进方向、路线或转向确认器。公开数据、合成数据和未训练头均不补足 `should_alert` 人工事件真值。
+- 96 episode / 48 matched pair 采集计划仍全部 `not_captured`，故训练、校准、blind、Android shadow、提醒与默认模型替换继续关闭。完整证据和下一有效门见 `docs/CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md`。
