@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist_public_video_ego_route_distance_field_probe_contract_v1",
+  "contract_id": "r759_source_isolated_ego_route_distance_field_probe_v1",
+  "frozen_at_utc": "2026-07-19T07:02:00Z",
+  "derivation_disclosure": "r7.57 and r7.58 predicted teacher-active frames but failed event separation with global vectors. r7.59 changes the supervised object to a spatial future-route distance field before extracting any spatial DINO targets. It is one OFAT representation test, not another global-head search.",
+  "bound_inputs": {
+    "event_set_contract_sha256": "5a0ecf123c2abd6b09d39da2af1df929dc98f2aad40a43328706e488cf1d971c",
+    "offline_teacher_report_sha256": "5b097322e6e5977d7539b7332d51cc5ecb1217913e6d5ff2da2f99b2b673eea6",
+    "causal_feature_report_sha256": "42d3f6168bfe8326cd7e5b0b0ae67ad08e862b0fb4f34fb555b6d15368ce91a0",
+    "failed_regional_probe_contract_sha256": "6ac4f96a65cc18c54c2a2467d4cfca6eb3de836caea5f841c1ffaa85dda774c4",
+    "failed_regional_probe_report_sha256": "744e27ba9bf9a51854046b4a698a35190dee389749a4a772a6a9ee892c478f84",
+    "dinov2_weights_sha256": "1051e25b2ed69ddad24f3c41e7b6eed6e7f7d012103ea227e47eb82e87dc2050"
+  },
+  "route_target": {
+    "grid_side": 16,
+    "polyline_order": ["current_lower_center", "future_1000ms", "future_2000ms", "future_3000ms"],
+    "distance_field": "exp(-squared_patch_distance/(2*sigma^2))",
+    "sigma_patches": 1.0,
+    "training_only_future_information": true
+  },
+  "current_causal_input": {
+    "image_resize": "fixed 224x224 without center crop",
+    "dinov2_layer": "last_hidden_state patch tokens",
+    "fixed_random_projection": {"input_dimension": 384, "output_dimension": 96, "seed": 0},
+    "coordinate_channels": ["patch_center_x", "patch_center_y"],
+    "global_causal_channels": "three past-flow anchor x/y pairs",
+    "future_frames_forbidden": true,
+    "source_identity_forbidden": true
+  },
+  "probe": {
+    "validation": "leave-one-source-id-out",
+    "regressor": "source-balanced route-weighted ridge",
+    "ridge_alpha": 0.1,
+    "route_target_weight": "1 + 4 * target",
+    "threshold_fit": false,
+    "hyperparameter_search": false
+  },
+  "event_readout": {
+    "predicted_route_clipping": [0.0, 1.0],
+    "marker_expansion_object_heights": 0.5,
+    "score": "predicted route mass inside expanded marker mask divided by total predicted route mass"
+  },
+  "gate": {
+    "route_band_pixel_auroc_at_least": 0.8,
+    "strict_event_label_separation": "minimum positive event overlap must exceed maximum negative event overlap"
+  },
+  "evidence_role": "source_isolated_spatial_distance_field_auxiliary_supervision_probe",
+  "authorization": {
+    "five_prototype_bootstrap_short_runs": false,
+    "training_execution_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

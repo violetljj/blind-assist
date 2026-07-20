@@ -1,0 +1,29 @@
+{
+  "schema": "blindassist_public_video_explicit_turn_review_extraction_contract_v1",
+  "contract_id": "r801_dense_review_material_for_r800_candidates_v1",
+  "frozen_at_utc": "2026-07-19T13:55:00Z",
+  "bound_search_report": {
+    "path": "artifacts.local/evidence/public-video-r800-explicit-turn-candidate-search-20260719/explicit_turn_candidate_search_r800.json",
+    "sha256": "8089562c60e845142ed8fd493e0c6d17aa5361f717eed805700d86e2554b3b2c"
+  },
+  "extraction": {
+    "context_padding_ms": 3000,
+    "interval_ms": 1000,
+    "contact_sheet_columns": 3,
+    "contact_sheet_rows": 3,
+    "jpeg_quality": 94
+  },
+  "review_questions": [
+    "Is the source temporally continuous across the full window?",
+    "Is a real work-zone marker or obstacle present rather than a detector false positive?",
+    "Does the camera route visibly turn in the proposed LEFT or RIGHT direction?",
+    "Does the marker intersect that chosen route for at least two consecutive samples?",
+    "Is the event distinct from an excluded r789 review window?"
+  ],
+  "authorization": {
+    "model_vlm_review": true,
+    "candidate_as_event_truth": false,
+    "three_state_coverage_credit_before_review": false,
+    "android_runtime_change": false
+  }
+}

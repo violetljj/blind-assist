@@ -1,0 +1,30 @@
+{
+  "schema": "blindassist_public_video_directional_obstruction_discovery_transport_erratum_v1",
+  "contract_id": "r808a_windows_tls_recovery_without_query_change_v1",
+  "issued_at_utc": "2026-07-19T14:06:00Z",
+  "bound_original_contract": {
+    "path": "configs/public_video_directional_obstruction_discovery_contract_r808.json",
+    "sha256": "9129fa6cb4af7f60e68630bf8274085b1bf7ea5f142a91377e56a2d63f0bc35e"
+  },
+  "failure": {
+    "transport": "Python urllib/OpenSSL",
+    "stage": "TLS handshake before any HTTP response",
+    "error_class": "SSL_UNEXPECTED_EOF_WHILE_READING",
+    "candidate_evidence_produced": false
+  },
+  "recovery": {
+    "transport": "PowerShell Invoke-WebRequest using Windows TLS",
+    "queries_must_equal_original_byte_for_byte": true,
+    "one_request_per_original_query": true,
+    "pagination": false,
+    "query_rewrite": false,
+    "additional_retry": false
+  },
+  "authorization": {
+    "transport_recovery": true,
+    "candidate_as_event_truth": false,
+    "candidate_as_training_label": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}

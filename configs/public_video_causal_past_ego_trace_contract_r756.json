@@ -1,0 +1,36 @@
+{
+  "schema": "blindassist_public_video_causal_past_ego_trace_contract_v1",
+  "contract_id": "r756_retrospective_causal_past_ego_trace_v1",
+  "frozen_at_utc": "2026-07-19T06:49:00Z",
+  "derivation_disclosure": "r7.55's offline future-frame dense teacher achieved complete multisource separation. r7.56 freezes the causal constant-motion counterpart before running it: current-to-past dense flow maps the current lower-center anchor into prior frames and uses that mapped point as the current-frame route estimate. r7.55 remains offline-only and no prior gate is rescued.",
+  "event_set_contract_sha256": "5a0ecf123c2abd6b09d39da2af1df929dc98f2aad40a43328706e488cf1d971c",
+  "offline_teacher_contract_sha256": "5ab0f6a36f6f971f95ebeadeb3d5461dc9904ee1d2d5342c109aa5be49b04990",
+  "offline_teacher_report_sha256": "5b097322e6e5977d7539b7332d51cc5ecb1217913e6d5ff2da2f99b2b673eea6",
+  "causal_teacher": {
+    "implementation": "OpenCV DIS optical flow",
+    "preset": "MEDIUM",
+    "past_horizons_ms": [1000, 2000, 3000],
+    "current_anchor_xy_norm": [0.5, 0.9],
+    "constant_motion_projection": "current anchor plus current-to-past flow at that anchor",
+    "valid_trace_bounds_xy_norm": [-0.25, 1.25],
+    "obstacle_expansion_object_heights": 0.5,
+    "future_frame_access": false,
+    "post_flow_filtering": false,
+    "threshold_fit": false,
+    "parameter_search": false
+  },
+  "aggregation": "mean_valid_frame_trace_intrusion",
+  "gate": {
+    "minimum_valid_frame_fraction": 0.5,
+    "strict_complete_separation": "minimum positive score must exceed maximum negative score"
+  },
+  "evidence_role": "retrospective_causal_route_relation_diagnostic_not_event_truth",
+  "authorization": {
+    "five_prototype_bootstrap_short_runs": false,
+    "training_execution_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

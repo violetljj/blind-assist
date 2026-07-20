@@ -1,0 +1,77 @@
+{
+  "schema": "blindassist_public_video_tristate_lifecycle_contract_v1",
+  "contract_id": "r710_multicone_prospective_v1",
+  "frozen_at_utc": "2026-07-19T01:23:01.1992583+08:00",
+  "purpose": "Prospective validation of a mechanism-specific multi-cone corridor expert after r7.9 full-marker negative controls failed.",
+  "derivation_evidence": {
+    "r79_negative_control_report_sha256": "b4ce3f45ec2791924492df35c0402dd5325d888a08ed733cd816fc4e8b97a038",
+    "leave_one_marker_out_report_sha256": "21abdceea97d65462c2e6748bb8ee10f263175155efe31f3451ca4c403ed76eb",
+    "traffic_cone_count_threshold_audit_sha256": "517b17d00432c35b3f742f7aa752202f9e5adcdb27f01e5dc390fe0d32467ad7",
+    "thresholds_tested": [1, 2, 3, 4],
+    "unique_threshold_passing_positive_and_controls": 2
+  },
+  "model": {
+    "kind": "YOLOE prompt-free segmentation model with fixed built-in vocabulary",
+    "weights_sha256": "292bdf157a9ec7315f34b567cb93467c5043cd1889a1cc18abbfdeb88d7a948d",
+    "text_prompt_used": false
+  },
+  "scan": {
+    "sample_interval_ms": 1000,
+    "image_size": 640,
+    "confidence": 0.05,
+    "require_nearfield_corridor": false,
+    "baseline_groups": [
+      "surface_material",
+      "barrier_structure"
+    ],
+    "workzone_marker_additions": [
+      "barricade",
+      "cone",
+      "construction worker",
+      "traffic cone"
+    ]
+  },
+  "risk_evidence_policy": {
+    "policy_id": "multi_cone_corridor_v1",
+    "class_name": "traffic cone",
+    "minimum_count_per_frame": 2,
+    "other_semantic_classes_used": [],
+    "geometry_gate_used": false
+  },
+  "lifecycle": {
+    "selected_groups": [
+      "surface_material",
+      "barrier_structure"
+    ],
+    "entry_window_samples": 3,
+    "entry_min_active_samples": 2,
+    "clear_absent_samples": 3
+  },
+  "source_eligibility": {
+    "item_level_reusable_license_required": true,
+    "original_temporal_order_required": true,
+    "continuous_capture_required": true,
+    "hard_cut_or_montage_allowed": false,
+    "prospective_source_must_not_have_influenced_r78_parameters": true
+  },
+  "acceptance": {
+    "exactly_one_exit_interval_required": true,
+    "gpt_visual_reference_must_be_contained": true,
+    "post_clear_single_frame_reopen_allowed": false,
+    "minimum_risk_present_active_fraction": 0.5,
+    "maximum_stable_clear_active_fraction": 0.1,
+    "negative_control_requires_zero_intervals_and_terminal_clear": true
+  },
+  "prospective_isolation": {
+    "new_source_or_control_must_not_have_influenced_threshold_selection": true,
+    "threshold_or_lifecycle_parameter_changes_after_opening_new_control_forbidden": true
+  },
+  "authorization": {
+    "training_execution_authorized": false,
+    "human_event_truth_present": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

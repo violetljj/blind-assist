@@ -1,0 +1,59 @@
+{
+  "schema": "blindassist_public_video_route_conditioned_real_transfer_probe_contract_v1",
+  "contract_id": "r819_synthetic_distance_field_to_real_provisional_events_v1",
+  "frozen_at_utc": "2026-07-19T15:14:33.3613855Z",
+  "derivation_disclosure": "Frozen after r816 passed its synthetic LOSO route-interaction gate and before extracting or scoring any r819 real-frame Depth Anything V2 patch maps. This is one pre-registered transfer readout, not a search over event aggregators, ridge values, layers, thresholds, or gates.",
+  "bound_inputs": {
+    "synthetic_build_receipt_sha256": "96c36810a9d5fea0c8afee492b4bac391324868971a85b7115e6c247d05e3d14",
+    "synthetic_manual_review_sha256": "0344b3f8d021ee08e3b28cc1ccf85c3d855ff92cde3d342a88fef2e47edc67b0",
+    "checkpoint_sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378",
+    "r816_report_path": "artifacts.local/evidence/public-video-r816-route-conditioned-distance-aux-probe-20260719/probe_r816.json",
+    "r816_report_sha256": "88e16295da088cd8f89fce6ce29b69ff81b3e3d210063bfef644f9e01de171d4",
+    "route_oracle_path": "artifacts.local/evidence/public-video-r797a-explicit-route-intent-oracle-20260719/explicit_route_intent_oracle_r797a.json",
+    "route_oracle_sha256": "ae019fa9f9046dae578713480c391e660281881ef1a869c95af5881042eb1e85",
+    "r790_feature_contract_path": "configs/public_video_actionability_linear_probe_contract_r790.json",
+    "r790_feature_contract_sha256": "2597c6a298fa5b45438eef33f00a3790eed95da346adf1bec3e2f465ad366f66",
+    "r790_baseline_report_path": "artifacts.local/evidence/public-video-r790-actionability-linear-probe-20260719/actionability_linear_probe_r790.json",
+    "r790_baseline_report_sha256": "bfd961b90fc76b4829b4fdc153f19f9fb67c7a3c83aca0e31354aa5953ad610f"
+  },
+  "teacher": {
+    "source": "r814a accepted train-only synthetic exact composite/clear pairs",
+    "target": "continuous exp(-bbox_distance/1.5_patches)",
+    "encoder": "Depth Anything V2 Small frozen DINO-S",
+    "layer_index": 11,
+    "input_size": 224,
+    "ridge": 10.0,
+    "real_frames_used_to_fit_teacher": 0
+  },
+  "event_head": {
+    "route_frame_vector": "r816 fixed 13-dimensional three-anchor point/neighborhood statistics",
+    "global_frame_vector": "seven route-blind whole-field statistics",
+    "event_aggregation": "arithmetic mean over all valid explicit-route frames",
+    "model": "deterministic class-balanced ridge",
+    "ridge": 1.0,
+    "split": "leave one complete real parent_source_id out",
+    "hyperparameter_search": false,
+    "future_route_anchor_role": "offline explicit-route oracle proxy only",
+    "obstacle_hit_forbidden": true,
+    "trace_intrusion_score_forbidden": true,
+    "reference_transition_timestamp_forbidden": true
+  },
+  "gate": {
+    "minimum_event_count": 16,
+    "minimum_source_count": 11,
+    "route_balanced_accuracy_at_least": 0.65,
+    "route_intervention_recall_at_least": 0.5,
+    "route_context_recall_at_least": 0.7,
+    "route_gain_over_global_at_least": 0.1
+  },
+  "authorization": {
+    "real_provisional_transfer_diagnosis": true,
+    "provider_evaluation_credit": false,
+    "causal_runtime_claim": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false,
+    "sam_asam": false
+  }
+}

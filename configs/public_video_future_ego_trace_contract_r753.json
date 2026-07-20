@@ -1,0 +1,43 @@
+{
+  "schema": "blindassist_public_video_future_ego_trace_contract_v1",
+  "contract_id": "r753_retrospective_future_ego_trace_v1",
+  "frozen_at_utc": "2026-07-19T06:36:00Z",
+  "purpose": "Diagnose whether a future-frame camera-path teacher separates central route intrusion from bilateral safe-lateral markers without changing the failed r7.50/r7.52 gate.",
+  "derivation_disclosure": "This hypothesis was created after the frozen r7.47 route relation falsely scored the r7.52 Ulm safe-lateral event at +0.928303. Ulm is derivation-only and cannot receive prospective acceptance credit from this contract.",
+  "bound_inputs": {
+    "event_timing_contract_sha256": "9b3c9fb4ed42e9ad8723592e31c2ac506584d12cf54036c5202d21df52041067",
+    "ulm_route_veto_failure_sha256": "cb02a1c0de75f1c07de05666958d6c4ece2bcc4818401939b4e18d6fba7d9ea1",
+    "london_positive_evaluation_sha256": "7043eeaf60427f688e18aa75e458d8536a1ee4ffa1eb91a6644bd5d14361eb8c"
+  },
+  "teacher": {
+    "mode": "offline_future_frame_planar_trace_diagnostic_only",
+    "future_horizons_ms": [1000, 2000, 3000],
+    "feature_detector": "ORB",
+    "maximum_features": 1200,
+    "match_roi_y_norm": [0.35, 0.95],
+    "ratio_test": 0.75,
+    "minimum_matches": 12,
+    "homography_ransac_reprojection_threshold_px": 3.0,
+    "minimum_inliers": 8,
+    "future_anchor_xy_norm": [0.5, 0.9],
+    "valid_trace_bounds_xy_norm": [-0.25, 1.25],
+    "obstacle_expansion_object_heights": 0.5
+  },
+  "evaluation": {
+    "positive_source": "wikimedia_commons_poptravel_london_westminster_piccadilly_2019",
+    "negative_source": "wikimedia_commons_poptravel_ulm_germany",
+    "required_direction": "London median trace intrusion must exceed Ulm median trace intrusion",
+    "minimum_valid_frame_fraction": 0.5,
+    "no_threshold_fit": true,
+    "no_parameter_search": true
+  },
+  "evidence_role": "retrospective_representation_diagnostic_not_event_truth",
+  "authorization": {
+    "five_prototype_bootstrap_short_runs": false,
+    "training_execution_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

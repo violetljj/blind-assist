@@ -1,0 +1,58 @@
+{
+  "schema": "blindassist_public_video_tristate_lifecycle_contract_v1",
+  "contract_id": "r79_prospective_v1",
+  "frozen_at_utc": "2026-07-19T01:09:26.4335851+08:00",
+  "purpose": "Prospective external mechanism validation after the exploratory r7.8 Fremantle diagnosis; never training, calibration, blind, Android runtime, or production authorization.",
+  "model": {
+    "kind": "YOLOE prompt-free segmentation model with fixed built-in vocabulary",
+    "weights_sha256": "292bdf157a9ec7315f34b567cb93467c5043cd1889a1cc18abbfdeb88d7a948d",
+    "text_prompt_used": false
+  },
+  "scan": {
+    "sample_interval_ms": 1000,
+    "image_size": 640,
+    "confidence": 0.05,
+    "require_nearfield_corridor": false,
+    "baseline_groups": [
+      "surface_material",
+      "barrier_structure"
+    ],
+    "workzone_marker_additions": [
+      "barricade",
+      "cone",
+      "construction worker",
+      "traffic cone"
+    ]
+  },
+  "lifecycle": {
+    "selected_groups": [
+      "surface_material",
+      "barrier_structure"
+    ],
+    "entry_window_samples": 3,
+    "entry_min_active_samples": 2,
+    "clear_absent_samples": 3
+  },
+  "source_eligibility": {
+    "item_level_reusable_license_required": true,
+    "original_temporal_order_required": true,
+    "continuous_capture_required": true,
+    "hard_cut_or_montage_allowed": false,
+    "prospective_source_must_not_have_influenced_r78_parameters": true
+  },
+  "acceptance": {
+    "exactly_one_exit_interval_required": true,
+    "gpt_visual_reference_must_be_contained": true,
+    "post_clear_single_frame_reopen_allowed": false,
+    "minimum_risk_present_active_fraction": 0.5,
+    "maximum_stable_clear_active_fraction": 0.1
+  },
+  "authorization": {
+    "training_execution_authorized": false,
+    "human_event_truth_present": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "blindassist_route_conditioned_factorial_probe_contract_v1",
+  "contract_id": "r815_same_probe_cross_source_two_asset_factorial_v1",
+  "frozen_at_utc": "2026-07-19T14:45:25Z",
+  "bound_baseline": {
+    "path": "artifacts.local/evidence/public-video-r813a-route-conditioned-synthetic-probe-20260719/probe_r813a.json",
+    "sha256": "d3be5022598d80c493ad35234c247a57fa02bfa2a5beae6751dfd104c033397c",
+    "route_conditioned_balanced_accuracy": 0.624860646599777,
+    "exact_field_balanced_accuracy": 1.0
+  },
+  "bound_factorial_dataset": {
+    "root": "artifacts.local/synthetic/route-conditioned-obstruction-r814/dataset-v2",
+    "build_receipt_sha256": "96c36810a9d5fea0c8afee492b4bac391324868971a85b7115e6c247d05e3d14",
+    "manual_review_sha256": "0344b3f8d021ee08e3b28cc1ccf85c3d855ff92cde3d342a88fef2e47edc67b0",
+    "parent_source_count": 3,
+    "asset_families_per_parent": ["barricade", "sand_pile"]
+  },
+  "single_change_from_baseline": "Each LOSO training fold now contains both obstacle asset families from the two non-held parent sources.",
+  "frozen_probe": {
+    "DINO_encoder": "vits",
+    "input_size": 224,
+    "layer_index": 11,
+    "teacher_ridge": 10.0,
+    "head_ridge": 1.0,
+    "minimum_balanced_accuracy": 0.8,
+    "minimum_each_class_recall": 0.7,
+    "minimum_gain_over_global": 0.1,
+    "split": "leave_one_complete_parent_source_out"
+  },
+  "authorization": {
+    "train_only_diagnosis": true,
+    "real_event_truth": false,
+    "provider_evaluation_credit": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}

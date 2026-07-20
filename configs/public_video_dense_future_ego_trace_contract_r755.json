@@ -1,0 +1,33 @@
+{
+  "schema": "blindassist_public_video_dense_future_ego_trace_contract_v1",
+  "contract_id": "r755_retrospective_dense_future_ego_trace_v1",
+  "frozen_at_utc": "2026-07-19T06:45:00Z",
+  "derivation_disclosure": "r7.54 achieved strict score separation but failed because the four-frame Japan event had only 0.25 valid ORB-homography coverage. This contract replaces sparse matching with one fixed dense optical-flow teacher before running any dense-flow event outputs. It cannot rescue prior prospective gates.",
+  "event_set_contract_sha256": "5a0ecf123c2abd6b09d39da2af1df929dc98f2aad40a43328706e488cf1d971c",
+  "teacher": {
+    "mode": "offline_dense_future_to_current_flow_trace_diagnostic_only",
+    "implementation": "OpenCV DIS optical flow",
+    "preset": "MEDIUM",
+    "future_horizons_ms": [1000, 2000, 3000],
+    "future_anchor_xy_norm": [0.5, 0.9],
+    "valid_trace_bounds_xy_norm": [-0.25, 1.25],
+    "obstacle_expansion_object_heights": 0.5,
+    "post_flow_filtering": false,
+    "threshold_fit": false,
+    "parameter_search": false
+  },
+  "aggregation": "mean_valid_frame_trace_intrusion",
+  "gate": {
+    "minimum_valid_frame_fraction": 0.5,
+    "strict_complete_separation": "minimum positive score must exceed maximum negative score"
+  },
+  "evidence_role": "retrospective_dense_flow_auxiliary_teacher_diagnostic_not_event_truth",
+  "authorization": {
+    "five_prototype_bootstrap_short_runs": false,
+    "training_execution_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

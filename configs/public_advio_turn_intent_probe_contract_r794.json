@@ -1,0 +1,63 @@
+{
+  "schema": "blindassist_public_visual_inertial_turn_intent_probe_contract_v1",
+  "contract_id": "r794_advio15_past_imu_future_course_probe_v1",
+  "frozen_at_utc": "2026-07-19T12:45:00Z",
+  "derivation_disclosure": "Frozen after r7.91 showed that current RGB+DINO+past optical flow cannot separate cross-source intervention intent. This independent noncommercial diagnostic asks whether phone IMU contains advance route-turn signal. It does not provide obstacle risk or actionability truth.",
+  "bound_inputs": {
+    "acquisition_audit_path": "artifacts.local/evidence/public-advio-r793-acquisition-audit-20260719/advio15_acquisition_audit_r793.json",
+    "acquisition_audit_sha256": "b12ce571c95dfa4b0d212a0636f2bdecd5a98cdb8dc82f8c5a78a9f3e6b622ce",
+    "gyro_sha256": "dc4f1b77d8cc8071d7ed71ac100c9fca592a60dcf4f639698f290d1d77abc186",
+    "accelerometer_sha256": "74116b0f7befa262c629769bb9bb57a23df86659f8537b87826e59c675d9e54d",
+    "ground_truth_pose_sha256": "c410785639e813c35d2c14ad62a7864db1eb19a39ceb7da513fa2a5e852ad643"
+  },
+  "sampling": {
+    "step_seconds": 0.1,
+    "past_imu_window_seconds": 0.5,
+    "recent_course_window_seconds": 0.5,
+    "future_course_start_seconds": 0.25,
+    "future_course_end_seconds": 1.0,
+    "minimum_recent_displacement_meters": 0.1,
+    "minimum_future_displacement_meters": 0.1,
+    "turn_threshold_degrees": 20.0
+  },
+  "input": {
+    "causal": true,
+    "modalities": ["iphone_gyro", "iphone_accelerometer"],
+    "per_axis_statistics": ["mean", "std", "last", "min", "max", "linear_slope"],
+    "ground_truth_pose_as_input": false,
+    "rgb_as_input": false,
+    "future_input": false
+  },
+  "target": {
+    "definition": "absolute signed angle between recent x-z displacement and future x-z displacement",
+    "uses_future_ground_truth_for_auxiliary_training_label": true,
+    "risk_event_truth": false,
+    "actionability_event_truth": false
+  },
+  "probe": {
+    "model": "deterministic weighted ridge",
+    "alpha": 10.0,
+    "decision_threshold": 0.5,
+    "contiguous_fold_count": 5,
+    "guard_seconds": 1.0,
+    "hyperparameter_search": false
+  },
+  "feasibility_gate": {
+    "minimum_retained_samples": 250,
+    "minimum_turn_samples": 50,
+    "minimum_straight_samples": 50,
+    "oof_auroc_at_least": 0.65,
+    "oof_balanced_accuracy_at_least": 0.6,
+    "all_training_folds_have_both_classes": true,
+    "all_predictions_finite": true
+  },
+  "authorization": {
+    "single_sequence_pipeline_feasibility_only": true,
+    "multi_source_training": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false,
+    "commercial_use": false
+  }
+}

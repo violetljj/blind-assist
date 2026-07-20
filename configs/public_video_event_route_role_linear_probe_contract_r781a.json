@@ -1,0 +1,55 @@
+{
+  "schema": "blindassist_public_video_event_route_role_linear_probe_contract_v1",
+  "contract_id": "r781a_event_role_silver_marker_relation_ridge_v1",
+  "frozen_at_utc": "2026-07-19T11:27:00Z",
+  "supersedes_failed_contract": "r781_event_role_silver_marker_relation_ridge_v1",
+  "erratum": "r7.81 stopped before producing a score because some valid event detections were smaller than a 16x16 patch and the cached obstacle mask was empty. r7.81a preserves every row and reuses the already frozen r7.67a nearest-patch fallback from raw hash-bound detections. Labels, splits, alpha, threshold, weighting, and gates are unchanged.",
+  "bound_inputs": {
+    "r767a_contract_sha256": "1519ca7ee2f14e0735fccc85efab8b1b8587586a51869fda9aba4a0c46e8356c",
+    "r764_feature_cache_report_sha256": "a06bc4fea3c9c1ba62470aefd18d85eb9c5b64ef1c6b86448b8eb03c44b5f2cf",
+    "r764_feature_cache_sha256": "bb1188328363b29a6050af04c82edbd3e134346794f4e7d64b79ffd95f84b29b",
+    "r779_report_sha256": "cc54e30bc763e17d706f2ffc65899ef6bc193443751128d0ed0a7a54d2ea81e6",
+    "r780_report_sha256": "0c888b5122daba1ad1f0425c0b06f79f85a7065bff81f4ce192aff91f317cad7"
+  },
+  "data": {
+    "rows": "exact r7.64 eval event frames only",
+    "labels": "frozen provisional VLM event role from r7.54 event contract; route intrusion=1, safe-lateral/context negative=0",
+    "parent_source_isolation": "leave one complete source ID out",
+    "future_frames_in_input": false,
+    "event_frames_may_not_return_to_route-auxiliary_training": true
+  },
+  "feature_vector": {
+    "input": "frozen r7.64 43x16x16 causal tensor and frozen expanded marker mask",
+    "statistics": ["marker mean", "marker max", "marker mean minus global mean", "marker area and centroid"],
+    "dimension": 132,
+    "marker_expansion_object_heights": 0.5,
+    "empty_mask_fallback": "per-detection nearest 16x16 patch from r7.67a hash-bound raw detections"
+  },
+  "probe": {
+    "model": "multi-source weighted ridge with intercept",
+    "alpha": 1.0,
+    "target": "binary event role copied to every frame only inside its parent-isolated event",
+    "standardization": "training-fold weighted mean and standard deviation only",
+    "weighting": "equal class mass, equal source mass within class, equal frame mass within source; total weight equals training row count",
+    "decision_threshold": 0.5,
+    "hyperparameter_search": false,
+    "saved_weights": false
+  },
+  "gate": {
+    "event_oof_auroc_at_least": 0.8,
+    "event_balanced_accuracy_at_least": 0.75,
+    "positive_event_recall_at_least": 0.6666666666666666,
+    "negative_event_recall_at_least": 0.8,
+    "every_training_fold_contains_both_classes": true
+  },
+  "authorization": {
+    "event_silver_train_only_probe": true,
+    "external_replay_only_if_gate_passes": true,
+    "training": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false,
+    "sam_asam": false
+  }
+}

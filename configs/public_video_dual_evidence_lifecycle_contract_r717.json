@@ -1,0 +1,107 @@
+{
+  "schema": "blindassist_public_video_dual_evidence_lifecycle_contract_v1",
+  "contract_id": "r717_dual_evidence_lifecycle_prospective_v1",
+  "frozen_at_utc": "2026-07-18T18:42:20.9821113Z",
+  "purpose": "Prospective validation of relative risk change plus independently corroborated lifecycle exit on a new continuous public video source.",
+  "derivation_evidence": {
+    "r716_report_sha256": "b0f0a4c46bd2a0de6df6ba9a859811280c594898017e47aa98f2d21172acddc7",
+    "r716_was_post_hoc": true,
+    "margin_selected_before_new_source_review": true,
+    "new_source_visual_content_opened_before_contract_freeze": false
+  },
+  "feature_contract": {
+    "sample_interval_ms": 1000,
+    "dynamic_channel": {
+      "model": "YOLO12n frozen COCO proposals",
+      "weights_sha256": "419ff3dca37d69bacc93a50fa0c186a1c6f9fe62fae0f108b0872829689e9ca6",
+      "image_size": 320,
+      "confidence": 0.15,
+      "score": "range(max_object_area_times_corridor_overlap_per_sample)"
+    },
+    "static_channel": {
+      "model": "camera-motion-compensated lower-corridor residual",
+      "motion_size": 320,
+      "minimum_reliable_transitions_per_window": 2,
+      "score": "range(reliable_registered_lower_corridor_mean_residual)"
+    },
+    "semantic_exit_channel": {
+      "model": "YOLOE prompt-free segmentation model with fixed built-in vocabulary",
+      "weights_sha256": "292bdf157a9ec7315f34b567cb93467c5043cd1889a1cc18abbfdeb88d7a948d",
+      "image_size": 640,
+      "confidence": 0.01,
+      "text_prompt_used": false,
+      "selected_groups": {
+        "surface_material": [
+          "dirt",
+          "dirt field",
+          "dirt road",
+          "dirt track",
+          "earth",
+          "sand",
+          "sand bar",
+          "sand box"
+        ],
+        "barrier_structure": [
+          "barrier",
+          "construction site",
+          "furniture",
+          "obstacle course"
+        ]
+      },
+      "required_risk_window_detection": true,
+      "required_post_clear_absence": true,
+      "required_post_clear_dynamic_peak_below_risk_peak": true,
+      "maximum_risk_to_clear_gap_ms": 5000
+    }
+  },
+  "lifecycle_contract": {
+    "states": ["clear", "risk", "uncertain"],
+    "strong_normalized_change_margin": 0.05,
+    "open_rule": "trusted clear reference plus relative increase >= strong margin",
+    "strong_close_rule": "trusted risk reference plus relative decrease >= strong margin",
+    "weak_close_rule": "trusted risk reference plus 0 < relative decrease < strong margin plus exact causal semantic exit",
+    "cold_start_state": "uncertain",
+    "missing_or_conflicting_evidence_state": "uncertain",
+    "absolute_scene_threshold_used": false,
+    "learned_parameters": 0
+  },
+  "review_protocol": {
+    "full_feature_report_frozen_before_visual_review": true,
+    "original_temporal_order_required": true,
+    "hard_cut_or_montage_allowed": false,
+    "reviewer_may_not_edit_feature_values": true,
+    "required_windows": ["pre_risk_clear", "risk_present", "stable_post_clear"],
+    "minimum_pre_risk_clear_samples": 3,
+    "minimum_risk_present_samples": 3,
+    "minimum_stable_post_clear_samples": 6,
+    "post_clear_confirmation_samples": 3
+  },
+  "source_eligibility": {
+    "item_level_reusable_license_required": true,
+    "continuous_capture_required": true,
+    "original_temporal_order_required": true,
+    "hard_cut_or_montage_allowed": false,
+    "source_inventory_eligibility_required": true,
+    "source_must_not_have_influenced_r714_r715_r716": true,
+    "pedestrian_forward_view_reported_separately": true
+  },
+  "acceptance": {
+    "strong_open_required": true,
+    "close_required": true,
+    "weak_close_requires_exact_semantic_corroboration": true,
+    "stable_post_clear_must_not_reopen": true,
+    "cold_start_control_must_remain_uncertain": true,
+    "semantic_absence_only_control_must_remain_uncertain": true,
+    "conflicting_rise_and_exit_control_must_remain_uncertain": true,
+    "visual_boundary_must_be_contained": true,
+    "prospective_source_lineage_required": true
+  },
+  "authorization": {
+    "human_event_truth_present": false,
+    "training_execution_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

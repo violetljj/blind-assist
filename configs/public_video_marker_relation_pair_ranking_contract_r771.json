@@ -1,0 +1,43 @@
+{
+  "schema": "blindassist_public_video_marker_relation_pair_ranking_contract_v1",
+  "contract_id": "r771_same_source_nearest_time_pair_ranking_probe_v1",
+  "frozen_at_utc": "2026-07-19T09:46:00Z",
+  "derivation_disclosure": "Frozen after r7.68a showed high prototype-only source-macro accuracy but soft-target optimization reduced fixed-binary positive recall, and after r7.69 distance auxiliary failed. No r7.71 result was observed. Bangkok/r7.70 is excluded from both fitting and pass/fail.",
+  "bound_inputs": {
+    "r767a_contract_sha256": "1519ca7ee2f14e0735fccc85efab8b1b8587586a51869fda9aba4a0c46e8356c",
+    "r767a_report_sha256": "e4ae67772597d9f6ca5e6ab9587c76b5988fe8aeaa46c1bc78933e733623bc12"
+  },
+  "pair_construction": {
+    "eligible_rows": "r7.63 marker_detection_count > 0 rows",
+    "positive": "teacher_marker_hit_fraction_diagnostic_only > 0",
+    "negative": "teacher_marker_hit_fraction_diagnostic_only == 0",
+    "matching": "for every positive row choose the same-source negative with minimum absolute timestamp gap; ties choose earlier timestamp then manifest index; negative reuse allowed",
+    "difference": "132-D positive relation vector minus matched negative relation vector",
+    "split": "leave one complete source_id and all its pairs out before fitting",
+    "bangkok_used": false
+  },
+  "probe": {
+    "model": "symmetric signed-pair ridge without intercept",
+    "ridge_alpha": 1.0,
+    "weighting": "equal source mass and equal pair mass within source",
+    "randomness": false,
+    "threshold": "fixed zero pair projection",
+    "threshold_search": false
+  },
+  "gate": {
+    "source_auroc_median_at_least": 0.75,
+    "source_auroc_minimum_at_least": 0.55,
+    "source_macro_pair_ordering_at_least": 0.70,
+    "all_folds_finite": true
+  },
+  "authorization": {
+    "deterministic_pair_probe": true,
+    "five_source_bootstrap_pair_runs": "only_if_diagnostic_gate_passes",
+    "risk_event_training_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false,
+    "sam_asam_authorized": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "blindassist_public_video_event_timing_review_v1",
+  "contract_sha256": "9b3c9fb4ed42e9ad8723592e31c2ac506584d12cf54036c5202d21df52041067",
+  "review_status": "template_only_not_reviewed",
+  "evidence_role": "provisional_large_model_silver_not_human_truth",
+  "source": {
+    "source_id": "",
+    "source_url": "",
+    "local_video_path": "",
+    "source_video_sha256": "",
+    "item_level_reuse_license": "",
+    "continuous_ego_pedestrian_capture": null,
+    "registered_before_download_and_visual_review": null,
+    "not_used_to_derive_r725_r730_r747_r748_or_r749": null
+  },
+  "role": "prospective_positive_event_or_true_radial_safe_lateral_negative",
+  "prospective_positive_event": {
+    "applicable": null,
+    "material_risk_onset_ms": null,
+    "latest_useful_reminder_ms": null,
+    "reviewed_risk_end_ms": null,
+    "stable_post_clear_window_ms": [null, null],
+    "hard_cut_or_montage_present": null
+  },
+  "true_radial_safe_lateral_negative": {
+    "applicable": null,
+    "frozen_radial_entry_present": null,
+    "obstacle_remains_safely_lateral_to_ego_route": null,
+    "route_relation_should_veto_event_entry": null,
+    "review_window_ms": [null, null],
+    "hard_cut_or_montage_present": null
+  },
+  "authorization": {
+    "training_execution_authorized": false,
+    "human_event_truth_present": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

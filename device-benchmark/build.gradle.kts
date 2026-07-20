@@ -13,11 +13,11 @@ val eventHeadBenchmarkAssetsDir = layout.buildDirectory.dir("generated/eventHead
 val blindAssistEvalSetDir = providers
     .gradleProperty("blindAssistEvalSetDir")
     .orElse("test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
-val depthBenchmarkModelPath = providers
-    .gradleProperty("depthBenchmarkModelPath")
 val publicVideoInferenceDir = providers
     .gradleProperty("publicVideoInferenceDir")
     .orElse("artifacts.local/evidence/public-video-edge-inference/empty")
+val depthBenchmarkModelPath = providers
+    .gradleProperty("depthBenchmarkModelPath")
     .orElse(".downloads/depth-lab/exports/depth_anything_v2_small_fp32.tflite")
 val depthBenchmarkModelAssetName = providers
     .gradleProperty("depthBenchmarkModelAssetName")

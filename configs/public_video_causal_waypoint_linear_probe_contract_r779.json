@@ -1,0 +1,59 @@
+{
+  "schema": "blindassist_public_video_causal_waypoint_linear_probe_contract_v1",
+  "contract_id": "r779_causal_low_dimensional_waypoint_ridge_v1",
+  "frozen_at_utc": "2026-07-19T11:08:00Z",
+  "derivation_disclosure": "Frozen after r7.64 dense route-field localization failed at 0.11787 and after r7.78a independently reproduced a safe-lateral false open. This probe tests whether directly supervising six future waypoint coordinates avoids diffuse heatmap readout failure. No result-driven feature, alpha, target, split, or event threshold search is permitted.",
+  "bound_inputs": {
+    "r764_training_contract_sha256": "bc3f7a0255261dccb47bdf758a01f8d57f0807957f0cfa9c6e8a710bc13608f2",
+    "r764_feature_cache_report_sha256": "a06bc4fea3c9c1ba62470aefd18d85eb9c5b64ef1c6b86448b8eb03c44b5f2cf",
+    "r764_feature_cache_sha256": "bb1188328363b29a6050af04c82edbd3e134346794f4e7d64b79ffd95f84b29b",
+    "r764_head_report_sha256": "eaa3c8ef0e03b50254e73fb1eb34e504051f4593c115ba528a116f1dab96aa0c"
+  },
+  "input": {
+    "source": "exact frozen r7.64 43x16x16 causal tensor",
+    "future_frames_forbidden": true,
+    "source_identity_forbidden": true,
+    "spatial_pool": "non-overlapping 4x4 mean blocks yielding 43x4x4 values",
+    "additional_features": "one global standard deviation per input channel",
+    "feature_dimension": 731
+  },
+  "target": {
+    "channels_ms": [1000, 2000, 3000],
+    "coordinate_per_horizon": "center of the argmax patch in each frozen r7.64 Gaussian teacher field",
+    "output_dimension": 6,
+    "future_information_training_only": true
+  },
+  "probe": {
+    "model": "multi-output weighted ridge with intercept",
+    "alpha": 1.0,
+    "standardization": "training-fold weighted mean and standard deviation only",
+    "sample_weighting": "equal total mass per training source, weights sum to training row count",
+    "validation": "leave-one-source-id-out",
+    "prediction_clip": [0.0, 1.0],
+    "optimizer_steps": 0,
+    "hyperparameter_search": false
+  },
+  "event_readout": {
+    "evaluation_frames": "exact frozen r7.64 event tensors",
+    "point_per_horizon": "predicted continuous waypoint mapped to its containing 16x16 patch",
+    "event_score": "mean fraction of three predicted horizon points inside frozen expanded marker mask",
+    "threshold_search": false
+  },
+  "gate": {
+    "mean_waypoint_localization_error_norm_at_most": 0.1,
+    "improvement_over_r764_dense_head_at_least": 0.02,
+    "r764_dense_head_localization_error_norm": 0.11787,
+    "strict_event_label_separation": "minimum positive event score must exceed maximum negative event score",
+    "all_folds_finite": true
+  },
+  "authorization": {
+    "deterministic_probe_only": true,
+    "nonlinear_followup_only_if_gate_passes": false,
+    "training": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false,
+    "sam_asam": false
+  }
+}

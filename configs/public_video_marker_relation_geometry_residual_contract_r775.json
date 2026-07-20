@@ -1,0 +1,42 @@
+{
+  "schema": "blindassist_public_video_marker_relation_geometry_residual_contract_v1",
+  "contract_id": "r775_nearest_time_pair_geometry_residual_probe_v1",
+  "frozen_at_utc": "2026-07-19T10:25:00Z",
+  "derivation_disclosure": "Frozen after r7.74 geometry matching increased the median pair time gap to 108s and reduced source-macro pair ordering to 0.633333. This OFAT restores the exact r7.71 nearest-time pairs and, within each training fold only, linearly removes marker area/centroid-driven change from the other 129 relation dimensions. No r7.75 result was observed; Bangkok is excluded.",
+  "bound_inputs": {
+    "r767a_contract_sha256": "1519ca7ee2f14e0735fccc85efab8b1b8587586a51869fda9aba4a0c46e8356c",
+    "r774_report_sha256": "48914904e79ffd2415bf0388a4849a81952685c1bd0842a096049f3d464236f7"
+  },
+  "geometry_residualization": {
+    "pair_source": "exact r7.71 same-source nearest-time pairs",
+    "geometry_predictors": ["marker mask area fraction", "marker mask centroid x", "marker mask centroid y"],
+    "response": "the other 129 positive-minus-negative relation dimensions",
+    "fit_scope": "training pair sources only inside every held-source fold",
+    "model": "weighted no-intercept multi-output ridge",
+    "ridge_alpha": 0.001,
+    "weighting": "equal source mass and equal pair mass within source",
+    "transformed_geometry_channels": "set to zero after residualizing semantic channels"
+  },
+  "probe": {
+    "model": "same symmetric signed-pair ridge without intercept as r7.71",
+    "ridge_alpha": 1.0,
+    "randomness": false,
+    "threshold_search": false
+  },
+  "gate": {
+    "source_auroc_median_at_least": 0.75,
+    "source_auroc_minimum_at_least": 0.55,
+    "source_macro_pair_ordering_at_least": 0.70,
+    "all_folds_finite": true
+  },
+  "authorization": {
+    "geometry_residual_probe": true,
+    "bangkok_profile_replay": "only_if_diagnostic_gate_passes",
+    "risk_event_training_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false,
+    "sam_asam_authorized": false
+  }
+}

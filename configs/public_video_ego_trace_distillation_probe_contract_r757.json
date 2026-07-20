@@ -1,0 +1,52 @@
+{
+  "schema": "blindassist_public_video_ego_trace_distillation_probe_contract_v1",
+  "contract_id": "r757_source_isolated_ego_trace_distillation_probe_v1",
+  "frozen_at_utc": "2026-07-19T06:53:00Z",
+  "purpose": "Test whether the successful offline future-route teacher can be predicted from current marker geometry plus causal past-flow anchors without source identity or future frames at inference.",
+  "bound_inputs": {
+    "event_set_contract_sha256": "5a0ecf123c2abd6b09d39da2af1df929dc98f2aad40a43328706e488cf1d971c",
+    "offline_teacher_contract_sha256": "5ab0f6a36f6f971f95ebeadeb3d5461dc9904ee1d2d5342c109aa5be49b04990",
+    "offline_teacher_report_sha256": "5b097322e6e5977d7539b7332d51cc5ecb1217913e6d5ff2da2f99b2b673eea6",
+    "causal_feature_contract_sha256": "b9a35368d7512de9fa694995f67a19a1e634f77b71a63da6493a4a01e6481ad0",
+    "causal_feature_report_sha256": "42d3f6168bfe8326cd7e5b0b0ae67ad08e862b0fb4f34fb555b6d15368ce91a0"
+  },
+  "target": {
+    "name": "offline_future_trace_intrusion_score",
+    "source": "r7.55 per-frame mean of three future horizons",
+    "training_only": true,
+    "human_annotation_required": false
+  },
+  "current_causal_features": {
+    "source_identity_forbidden": true,
+    "future_frames_forbidden": true,
+    "channels": [
+      "causal_past_trace_score",
+      "three causal anchor x/y coordinates and anchor-to-expanded-marker distances",
+      "current detection count and nearfield accepted count",
+      "current maximum bottom, area, width and height",
+      "current minimum center distance and left/right detection counts",
+      "current center-anchor marker clearance"
+    ]
+  },
+  "probe": {
+    "validation": "leave-one-source-id-out",
+    "regressor": "weighted ridge with train-fold standardization and intercept",
+    "ridge_alpha": 0.01,
+    "source_weighting": "each training source has equal total weight",
+    "threshold_fit": false,
+    "hyperparameter_search": false
+  },
+  "gate": {
+    "teacher_active_frame_auroc_at_least": 0.8,
+    "strict_event_label_separation": "minimum positive event prediction must exceed maximum negative event prediction"
+  },
+  "evidence_role": "deterministic_source_isolated_auxiliary_target_predictability_probe",
+  "authorization": {
+    "five_prototype_bootstrap_short_runs": false,
+    "training_execution_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

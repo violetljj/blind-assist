@@ -1,0 +1,38 @@
+{
+  "schema": "blindassist_route_conditioned_lifecycle_probe_contract_v1",
+  "contract_id": "r817_fixed_two_consecutive_open_lifecycle_v1",
+  "frozen_at_utc": "2026-07-19T14:51:45Z",
+  "bound_frame_probe": {
+    "path": "artifacts.local/evidence/public-video-r816-route-conditioned-distance-aux-probe-20260719/probe_r816.json",
+    "sha256": "88e16295da088cd8f89fce6ce29b69ff81b3e3d210063bfef644f9e01de171d4",
+    "route_conditioned_balanced_accuracy": 0.9155518394648829,
+    "candidate_no_alert_recall": 0.8695652173913043,
+    "candidate_alert_recall": 0.9615384615384616
+  },
+  "bound_dataset": {
+    "root": "artifacts.local/synthetic/route-conditioned-obstruction-r814/dataset-v2",
+    "build_receipt_sha256": "96c36810a9d5fea0c8afee492b4bac391324868971a85b7115e6c247d05e3d14",
+    "route_examples_sha256": "f5bce5f34bb3904f59a511fac69a8b585103319e55263118384f24540a87e7f6"
+  },
+  "lifecycle": {
+    "open_consecutive_frames": 2,
+    "parameter_search": false,
+    "clear_lifecycle_evaluated": false,
+    "reason_clear_not_evaluated": "The frozen synthetic sequences contain approach plus exact-clear controls but no post-obstacle departure sequence."
+  },
+  "gate": {
+    "minimum_balanced_accuracy": 0.9,
+    "minimum_each_class_recall": 0.85,
+    "minimum_worst_parent_source_balanced_accuracy": 0.85,
+    "repeat_exact": true
+  },
+  "authorization": {
+    "train_only_diagnosis": true,
+    "real_event_truth": false,
+    "provider_evaluation_credit": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "blindassist_public_dataverse_unlabeled_candidate_source_v1",
+  "source_id": "ub_visiogeoloc_cc0_sequence_10",
+  "dataset_persistent_id": "doi:10.7910/DVN/UYFPKM",
+  "dataset_metadata_url": "https://dataverse.harvard.edu/api/datasets/:persistentId/?persistentId=doi:10.7910/DVN/UYFPKM",
+  "expected_license": "CC0 1.0",
+  "candidate_file_name": "10.7z",
+  "maximum_file_bytes": 1610612736,
+  "rgb_member_prefix": "10/Color/",
+  "expected_rgb_frame_count": 804,
+  "source_role": "unlabeled_first_person_pedestrian_representation_candidate",
+  "privacy_processing_required": true,
+  "source_constraints": [
+    "The raw archive remains an ignored local candidate and must be de-identified before any derivative is retained.",
+    "Extract only RGB members under 10/Color/; never consume Labels, Depth, GPS, IMU, or source bounding boxes as risk supervision.",
+    "No source bounding box, segmentation, GPS, or IMU field is an event-level should_alert label.",
+    "Allowed only for a separately authorized self-supervised representation experiment after de-identification.",
+    "Never use this source for calibration, blind evaluation, risk-head supervision, production training, or default-model replacement."
+  ],
+  "training_execution_authorized": false,
+  "production_model_replacement_authorized": false
+}

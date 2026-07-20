@@ -1,0 +1,23 @@
+{
+  "schema": "blindassist_public_video_explicit_choice_direction_coverage_contract_v1",
+  "contract_id": "r799a_three_state_choice_mechanism_coverage_erratum_v1",
+  "frozen_at_utc": "2026-07-19T13:35:00Z",
+  "derivation_disclosure": "Frozen immediately after r799 reported perfect aggregate accuracy and before any provider implementation. Aggregate inspection showed all four intervention events were STRAIGHT while LEFT and RIGHT contained only context events. This audit adds direction-by-class coverage; it does not change any prediction, template, threshold, or label.",
+  "bound_input": {
+    "path": "artifacts.local/evidence/public-video-r799-explicit-choice-route-template-20260719/explicit_choice_route_template_r799.json",
+    "sha256": "9aee61693b1fa721c245d49f940a2be33aa5a35040ba727d31edc8171f85d061"
+  },
+  "coverage_gate": {
+    "required_directions": ["LEFT", "STRAIGHT", "RIGHT"],
+    "minimum_intervention_events_per_direction": 1,
+    "minimum_context_events_per_direction": 1,
+    "aggregate_r799_gate_must_pass": true
+  },
+  "authorization": {
+    "straight_choice_provider_diagnostic_supported_if_straight_covered": true,
+    "full_three_state_provider_supported_if_all_coverage_passes": true,
+    "provider_implementation": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}

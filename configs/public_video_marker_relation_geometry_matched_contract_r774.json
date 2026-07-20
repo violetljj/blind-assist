@@ -1,0 +1,42 @@
+{
+  "schema": "blindassist_public_video_marker_relation_geometry_matched_contract_v1",
+  "contract_id": "r774_same_source_geometry_matched_pair_probe_v1",
+  "frozen_at_utc": "2026-07-19T10:20:00Z",
+  "derivation_disclosure": "Frozen after r7.73 safe-lateral Bangkok opened at 304s while the positive opened late at 337s. The only changed factor versus r7.71 is same-source positive/negative matching: marker area and centroid replace timestamp proximity to suppress radial scale/position nuisance. No r7.74 result was observed; Bangkok is excluded.",
+  "bound_inputs": {
+    "r767a_contract_sha256": "1519ca7ee2f14e0735fccc85efab8b1b8587586a51869fda9aba4a0c46e8356c",
+    "r773_report_sha256": "1615d161f64d2f6a093d233e249cb5a9c4bcf74b6153683d1b8b36a0a7228b25"
+  },
+  "geometry_match": {
+    "eligible_rows": "same r7.63 marker rows and active definition as r7.71",
+    "distance": "log_area_weight * abs(log(area_positive)-log(area_negative)) + centroid_l1_weight * (abs(cx_positive-cx_negative)+abs(cy_positive-cy_negative))",
+    "log_area_weight": 1.0,
+    "centroid_l1_weight": 1.0,
+    "tie_break": "smaller absolute timestamp gap, earlier negative timestamp, manifest index",
+    "negative_reuse_allowed": true,
+    "bangkok_used": false
+  },
+  "probe": {
+    "model": "same symmetric signed-pair ridge without intercept as r7.71",
+    "ridge_alpha": 1.0,
+    "weighting": "equal source mass and equal pair mass within source",
+    "randomness": false,
+    "threshold_search": false
+  },
+  "gate": {
+    "source_auroc_median_at_least": 0.75,
+    "source_auroc_minimum_at_least": 0.55,
+    "source_macro_pair_ordering_at_least": 0.70,
+    "all_folds_finite": true
+  },
+  "authorization": {
+    "geometry_matched_probe": true,
+    "bangkok_profile_replay": "only_if_diagnostic_gate_passes",
+    "risk_event_training_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false,
+    "sam_asam_authorized": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "blindassist_public_video_temporal_route_auxiliary_dataset_contract_v2",
+  "contract_id": "r763_all_continuous_frames_temporal_route_auxiliary_v1",
+  "frozen_at_utc": "2026-07-19T07:27:00Z",
+  "derivation_disclosure": "r7.62 learned the route field but failed Japan/Ulm event separation after r7.61 restricted training to frames already containing frozen marker detections. r7.63 changes only data coverage: all continuous frames become eligible, while sources, teacher, split unit and future targets remain fixed.",
+  "bound_inputs": {
+    "source_and_feature_contract_sha256": "5a0ecf123c2abd6b09d39da2af1df929dc98f2aad40a43328706e488cf1d971c",
+    "dense_future_teacher_contract_sha256": "5ab0f6a36f6f971f95ebeadeb3d5461dc9904ee1d2d5342c109aa5be49b04990",
+    "dense_future_teacher_validation_sha256": "5b097322e6e5977d7539b7332d51cc5ecb1217913e6d5ff2da2f99b2b673eea6",
+    "spatial_predictability_report_sha256": "98ec998a93f9dd00d0d60de2d43607fc90e9277e78c0c0065cfddf626bc902cc"
+  },
+  "eligibility": {
+    "sample_interval_ms": 1000,
+    "causal_history_ms": 3000,
+    "future_horizons_ms": [1000, 2000, 3000],
+    "requires_at_least_one_frozen_marker_detection": false,
+    "requires_all_future_anchors_valid": true,
+    "maximum_samples_per_source": 256,
+    "within_source_selection": "sorted eligible timestamps followed by deterministic evenly spaced index selection",
+    "event_role_or_label_not_used": true
+  },
+  "target": {
+    "teacher": "OpenCV DIS medium future-to-current dense flow",
+    "future_anchor_xy_norm": [0.5, 0.9],
+    "valid_trace_bounds_xy_norm": [-0.25, 1.25],
+    "output": "three normalized future-route anchor points",
+    "human_annotation_required": false,
+    "gpt_or_vlm_annotation_required": false
+  },
+  "isolation": {
+    "split_unit": "source_id",
+    "all_frames_and_targets_from_one_source_stay_in_one_fold": true,
+    "event_labels_forbidden": true,
+    "blind_data_forbidden": true
+  },
+  "evidence_role": "train_only_self_supervised_route_auxiliary_targets_all_continuous_frames",
+  "authorization": {
+    "route_auxiliary_manifest_materialization": true,
+    "route_auxiliary_train_only_prototype": true,
+    "risk_event_training_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

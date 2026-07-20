@@ -1,0 +1,44 @@
+{
+  "schema": "blindassist_public_video_future_ego_trace_multisource_contract_v1",
+  "contract_id": "r754_retrospective_future_ego_trace_multisource_v1",
+  "frozen_at_utc": "2026-07-19T06:41:00Z",
+  "derivation_disclosure": "r7.53 failed its fixed median gate but showed a sparse London mean signal of 0.266667 versus Ulm 0. This new multisource mean-ranking hypothesis is frozen before opening the remaining event outputs; it cannot change or rescue r7.50-r7.53.",
+  "teacher_contract_sha256": "2656cd4479994f5bbd9394348c91fa4896691299bbd66d30bcf5c48ee611097c",
+  "feature_reports": {
+    "japan": {"path": "artifacts.local/evidence/public-video-r722-prospective-20260719/japan_riverside_chromatic_features_r711.json", "sha256": "527b1b231a52a5657bf40b15a714acc0865b27f61ed06269785c50bff4a323f0"},
+    "edmonton": {"path": "artifacts.local/evidence/public-video-r729-prospective-20260719/edmonton_kampala_chromatic_features_r711.json", "sha256": "ea351ffe25201fb0e2ef6fa99d6e5cb6261784d5e429cc0fde673f519bd86ade"},
+    "jakarta": {"path": "artifacts.local/evidence/public-video-r734-prospective-20260719/jakarta_chromatic_features_r711.json", "sha256": "ab5b9cba6ff27695c6f54fb4c92cabf77c76950609c44c30395a1ffba8234b4b"},
+    "cape": {"path": "artifacts.local/evidence/public-video-r733-prospective-20260719/cape_town_chromatic_features_r711.json", "sha256": "968082ec21733802e6bff04221204e8497ce884f327495ebc7d7457e6654a15a"},
+    "bramwell": {"path": "artifacts.local/evidence/public-video-r726-prospective-20260719/bramwell_stegna_chromatic_features_r711.json", "sha256": "efd3127df05aca4a280dacbdb92d2e47b083989f1845918bc941cb63b827e160"},
+    "dallas": {"path": "artifacts.local/evidence/public-video-r731-prospective-20260719/boring_dallas_chromatic_features_r711.json", "sha256": "e6777a75890a3549d9f97fa4105baf8b3e43b7e9e1383349a2e3974c7b9ad899"},
+    "london": {"path": "artifacts.local/evidence/public-video-r750-prospective-source-20260719/commons_london_chromatic_features_r750.json", "sha256": "81e5317ef67ed4ac59f81468960e04484e522c8c7d1f967abff3f09edc083680"},
+    "ulm": {"path": "artifacts.local/evidence/public-video-r752-negative-source-search-20260719/commons_ulm_chromatic_features_r752.json", "sha256": "7053981f47d9f4c094076c27538d21eb41aac44c469204cda291895df6ad18cf"}
+  },
+  "events": [
+    {"event_id": "japan_path_intrusion", "feature_key": "japan", "source_id": "wikimedia_commons_japan_rural_riverside_walk_2025", "label": 1, "window_ms": [10000, 14000]},
+    {"event_id": "edmonton_left_corridor_intrusion", "feature_key": "edmonton", "source_id": "youtube_cc_edmonton_city_construction_chaos_pov_2025", "label": 1, "window_ms": [671000, 735000]},
+    {"event_id": "london_center_marker_intrusion", "feature_key": "london", "source_id": "wikimedia_commons_poptravel_london_westminster_piccadilly_2019", "label": 1, "window_ms": [2678000, 2688000]},
+    {"event_id": "jakarta_dense_boundary", "feature_key": "jakarta", "source_id": "youtube_cc_jakarta_car_free_reopening_2026", "label": 0, "window_ms": [35000, 49000]},
+    {"event_id": "cape_town_wide_forecourt", "feature_key": "cape", "source_id": "youtube_cc_cape_town_waterfront_construction_walk_2026", "label": 0, "window_ms": [158000, 176000]},
+    {"event_id": "bramwell_grassy_shoulder_cone", "feature_key": "bramwell", "source_id": "wikimedia_commons_bramwell_west_virginia_walk_2019", "label": 0, "window_ms": [379000, 382000]},
+    {"event_id": "dallas_grass_detour_panel", "feature_key": "dallas", "source_id": "youtube_cc_boring_dallas_cigarroa_sidewalk_cones_2025", "label": 0, "window_ms": [236000, 240000]},
+    {"event_id": "dallas_road_edge_cone", "feature_key": "dallas", "source_id": "youtube_cc_boring_dallas_cigarroa_sidewalk_cones_2025", "label": 0, "window_ms": [268000, 270000]},
+    {"event_id": "ulm_bilateral_delineators", "feature_key": "ulm", "source_id": "wikimedia_commons_poptravel_ulm_germany", "label": 0, "window_ms": [1504000, 1511000]}
+  ],
+  "aggregation": "mean_valid_frame_trace_intrusion",
+  "gate": {
+    "minimum_valid_frame_fraction": 0.5,
+    "strict_complete_separation": "minimum positive score must exceed maximum negative score",
+    "threshold_fit": false,
+    "parameter_search": false
+  },
+  "evidence_role": "retrospective_multisource_representation_diagnostic_not_event_truth",
+  "authorization": {
+    "five_prototype_bootstrap_short_runs": false,
+    "training_execution_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

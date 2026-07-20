@@ -1,0 +1,34 @@
+{
+  "schema": "blindassist_public_video_background_yaw_turn_review_extraction_contract_v1",
+  "contract_id": "r804_cross_source_review_material_for_r803_v1",
+  "frozen_at_utc": "2026-07-19T13:36:00Z",
+  "bound_search_report": {
+    "path": "artifacts.local/evidence/public-video-r803-background-yaw-turn-candidates-20260719/background_yaw_turn_candidates_r803.json",
+    "sha256": "fc8497fb0e351f38068152ca4b46804297dcf2b1856a74079d12b240cc5bebd5"
+  },
+  "selection": {
+    "mode": "top_per_direction_per_source",
+    "maximum_per_direction_per_source": 1,
+    "ranking": ["run_length_desc", "mean_absolute_median_dx_norm_desc", "candidate_id_asc"]
+  },
+  "extraction": {
+    "context_padding_ms": 3000,
+    "interval_ms": 1000,
+    "contact_sheet_columns": 3,
+    "contact_sheet_rows": 3,
+    "jpeg_quality": 94
+  },
+  "review_questions": [
+    "Is the source temporally continuous across the full window?",
+    "Does the camera route visibly turn in the proposed LEFT or RIGHT direction?",
+    "Is the matched frozen marker detection visually a real temporary marker or obstacle?",
+    "Does that real target intersect the chosen route for at least two consecutive candidate samples?",
+    "Is the event distinct from an excluded r789 review window?"
+  ],
+  "authorization": {
+    "model_vlm_review": true,
+    "candidate_as_event_truth": false,
+    "three_state_coverage_credit_before_review": false,
+    "android_runtime_change": false
+  }
+}

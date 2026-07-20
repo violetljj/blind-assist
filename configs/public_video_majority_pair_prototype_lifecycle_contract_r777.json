@@ -1,0 +1,51 @@
+{
+  "schema": "blindassist_public_video_majority_pair_prototype_lifecycle_contract_v1",
+  "contract_id": "r777_majority_target_zero_training_pair_prototype_lifecycle_v1",
+  "frozen_at_utc": "2026-07-19T10:35:00Z",
+  "derivation_disclosure": "Frozen after r7.76 majority-horizon target passed with median/minimum source AUROC 0.967742/0.719595 and pair ordering 0.942308. This replay changes only the prototype training target relative to failed r7.73; its three-frame baseline, two-positive-sample open rule, zero threshold and lifecycle are unchanged. Bangkok remains post-hoc and receives no prospective credit.",
+  "bound_inputs": {
+    "r767a_contract_sha256": "1519ca7ee2f14e0735fccc85efab8b1b8587586a51869fda9aba4a0c46e8356c",
+    "r776_report_sha256": "7b2f5d894443321cf85f8d0821828674697a88099cbbe04f8427d26a948469d2",
+    "bangkok_feature_report_sha256": "99c9d9e0d8d8699a086c42f531f3b1762db6ad4b85907b1fc8c4a7af8323fbad",
+    "bangkok_negative_result_sha256": "59b396995adf715aa04cf0b2cff5f92bb6d02240516717d7480922ab7c9b1154",
+    "bangkok_positive_result_sha256": "7582461cacc6982497cd7b7f16d29de854630de4e7553c5a3f9c30590184cccd"
+  },
+  "target": {
+    "strong_intrusion_fraction_at_least": 0.6666666666666666,
+    "semantics": "at least two of the fixed three future-route horizons hit the marker"
+  },
+  "prototype_ensemble": {
+    "seeds": [2026071901, 2026071902, 2026071903, 2026071904, 2026071905],
+    "final_seed_offset": 7919,
+    "model": "unit mean of source-bootstrap majority-positive minus nearest non-strong same-source deltas",
+    "aggregation": "median of five event-relative prototype projections",
+    "optimizer_steps": 0,
+    "saved_weights": false
+  },
+  "causal_profile": {
+    "prerequisite": "frozen r7.25 radial candidate already exists",
+    "baseline_frame_count": 3,
+    "baseline": "per prototype median of first three accepted event samples only",
+    "risk_profile": "median across prototypes of current projection minus prototype baseline",
+    "positive_consecutive_samples_to_open": 2,
+    "open_threshold": 0.0,
+    "reminders_per_event": 1,
+    "clear": "reuse frozen event-local r7.30 nine consecutive absent samples",
+    "threshold_search": false
+  },
+  "posthoc_bangkok_checks": {
+    "safe_lateral_must_never_open": true,
+    "positive_latest_open_timestamp_ms": 336000,
+    "positive_must_clear_under_bound_r766_lifecycle": true
+  },
+  "authorization": {
+    "posthoc_bangkok_diagnostic": true,
+    "independent_prospective_contract_freeze": "only_if_posthoc_diagnostic_passes",
+    "risk_event_training_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false,
+    "sam_asam_authorized": false
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "blindassist_route_conditioned_synthetic_dataset_contract_v1",
+  "contract_id": "r812_train_only_route_conditioned_obstruction_triplets_v1",
+  "frozen_at_utc": "2026-07-19T14:24:00Z",
+  "bound_parent_dataset": {
+    "root": "artifacts.local/synthetic/mainline-static-counterfactual-r8/controlled-pairs-v1",
+    "build_receipt_sha256": "79273244d32694ab9bd566eb48969b5d40862ba89c367cc75f0fc63978cabae6",
+    "generation_records_sha256": "92a8287e862c15b0cdd98ff4128f47f16d1f84778a95e4b1dc61529418ef95ec",
+    "manual_review_sha256": "f30494a89c949e31d10984cef83c1747d7b2ea0d651506119ef9c2db1098f02e",
+    "all_parent_images_reviewed": true
+  },
+  "bound_route_template": {
+    "path": "configs/public_video_explicit_choice_route_template_contract_r799.json",
+    "sha256": "8b158f974030c19308c5c089cd6570839fa47496cc7d5f25d6c251223ff5cff7"
+  },
+  "parents": [
+    {"slug": "chcne_barricade", "asset_name": "barricade"},
+    {"slug": "vcz_sand_pile", "asset_name": "sand_pile"},
+    {"slug": "bangkok_barricade", "asset_name": "barricade"}
+  ],
+  "composition": {
+    "obstacle_center_x_norm": {"LEFT": 0.34, "STRAIGHT": 0.50, "RIGHT": 0.66},
+    "bottom_y_norm": 0.95,
+    "width_fractions_by_asset": {
+      "barricade": [0.10, 0.16, 0.24],
+      "sand_pile": [0.12, 0.20, 0.30]
+    },
+    "exact_alpha_mask_required": true,
+    "parent_pixels_outside_composite_bbox_must_match": true
+  },
+  "route_relation": {
+    "route_choices": ["LEFT", "STRAIGHT", "RIGHT"],
+    "point_in_exact_composite_bbox": true,
+    "frame_intersection_fraction_threshold": 0.3333333333333333,
+    "open_consecutive_frames": 2,
+    "clear_consecutive_frames": 2,
+    "label_access_during_composition": false
+  },
+  "quality_gate": {
+    "minimum_parent_source_count": 3,
+    "all_generated_images_reviewed": true,
+    "all_hashes_and_geometry_valid": true,
+    "minimum_open_parent_sources_per_left_or_right_choice": 2,
+    "both_blocked_and_clear_examples_required": true
+  },
+  "authorization": {
+    "train_only_auxiliary_supervision": true,
+    "real_event_truth": false,
+    "provider_evaluation_credit": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}

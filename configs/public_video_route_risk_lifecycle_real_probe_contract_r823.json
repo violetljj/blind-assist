@@ -1,0 +1,51 @@
+{
+  "schema": "blindassist_public_video_route_risk_lifecycle_real_probe_contract_v1",
+  "contract_id": "r823_real_frame_state_risk_profile_fixed_lifecycle_v1",
+  "frozen_at_utc": "2026-07-19T15:36:31.1564819Z",
+  "derivation_disclosure": "Frozen after r820 and r822 rejected background concatenation and one-family synthetic expansion, and before extracting or scoring any r823 feature. It returns to the best r819 teacher and replaces event-mean classification with provisional real frame-state supervision plus fixed two-frame open/clear lifecycle. No teacher, encoder, route feature, ridge, source split, or threshold search changes.",
+  "bound_inputs": {
+    "synthetic_build_receipt_sha256": "96c36810a9d5fea0c8afee492b4bac391324868971a85b7115e6c247d05e3d14",
+    "synthetic_manual_review_sha256": "0344b3f8d021ee08e3b28cc1ccf85c3d855ff92cde3d342a88fef2e47edc67b0",
+    "checkpoint_sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378",
+    "route_oracle_path": "artifacts.local/evidence/public-video-r797a-explicit-route-intent-oracle-20260719/explicit_route_intent_oracle_r797a.json",
+    "route_oracle_sha256": "ae019fa9f9046dae578713480c391e660281881ef1a869c95af5881042eb1e85",
+    "actionability_manifest_path": "artifacts.local/evidence/public-video-r789-actionability-manifest-20260719/actionability_manifest_r789.json",
+    "actionability_manifest_sha256": "a38d0064254fc9af72a54d6ee2e7eaa0917f07288ebb9ee1c822fa8feef7e3df",
+    "r790_feature_contract_path": "configs/public_video_actionability_linear_probe_contract_r790.json",
+    "r790_feature_contract_sha256": "2597c6a298fa5b45438eef33f00a3790eed95da346adf1bec3e2f465ad366f66",
+    "r819_report_path": "artifacts.local/evidence/public-video-r819-route-conditioned-real-transfer-20260719/probe_r819.json",
+    "r819_report_sha256": "331a2f5dedb98a0baf185d6a4b1f84a547e8625505f998ee0bbd4dcf860fad60"
+  },
+  "frame_head": {
+    "feature": "unchanged 13-dimensional r819 route-local distance-field statistics",
+    "labels": "current provisional lifecycle state reconstructed only from frozen intervention_needed/route_clear transitions",
+    "weights": "equal class mass, then equal source mass within class, equal event mass within class-source, equal frame mass within event",
+    "model": "deterministic weighted two-output ridge",
+    "ridge": 1.0,
+    "split": "leave one complete parent_source_id out",
+    "hyperparameter_search": false
+  },
+  "lifecycle": {
+    "open_consecutive_frames": 2,
+    "clear_consecutive_frames": 2,
+    "frame_interval_ms": 1000,
+    "threshold": "argmax of fixed two-output ridge; no scalar threshold search"
+  },
+  "gate": {
+    "event_balanced_accuracy_at_least": 0.75,
+    "event_intervention_recall_at_least": 0.75,
+    "event_context_recall_at_least": 0.75,
+    "event_balanced_accuracy_gain_over_r819_at_least": 0.0416666666666666,
+    "clear_lifecycle_recall_at_least": 0.5
+  },
+  "authorization": {
+    "real_provisional_frame_state_diagnosis": true,
+    "provider_evaluation_credit": false,
+    "causal_runtime_claim": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false,
+    "sam_asam": false
+  }
+}

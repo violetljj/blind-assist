@@ -1,0 +1,57 @@
+{
+  "schema": "blindassist_public_video_marker_relation_bootstrap_contract_v1",
+  "contract_id": "r768a_source_class_bootstrap_source_macro_erratum_v1",
+  "frozen_at_utc": "2026-07-19T09:23:00Z",
+  "supersedes_unrun_contract": "r768_marker_relation_prototype_source_bootstrap_five_short_runs_v1",
+  "erratum": "Independent pre-run review found that pooled OOF AUROC can mix fold scales, whole-source bootstrap does not fix class mass, and Bangkok is post-hoc. No r7.68 model score had been observed. This contract makes source-class blocks and source-macro metrics authoritative and removes Bangkok from pass/fail.",
+  "bound_inputs": {
+    "r767a_contract_sha256": "1519ca7ee2f14e0735fccc85efab8b1b8587586a51869fda9aba4a0c46e8356c",
+    "r767a_report_sha256": "e4ae67772597d9f6ca5e6ab9587c76b5988fe8aeaa46c1bc78933e733623bc12"
+  },
+  "seeds": [2026071901, 2026071902, 2026071903, 2026071904, 2026071905],
+  "head": {
+    "type": "single linear sigmoid marker-relation head with fixed zero-logit decision",
+    "target": "continuous r7.55 future-route marker-hit fraction; active is fixed as target > 0",
+    "initialization": "within each bootstrap, weighted active-minus-inactive unit prototype with midpoint bias",
+    "bootstrap": "within each class independently sample complete source-class blocks with replacement; each class has 0.5 mass, each draw equal mass, each row within draw equal mass",
+    "standardization": "bootstrap-only weighted mean and standard deviation, recomputed for every fold and seed",
+    "saved_weights": false,
+    "trainable_backbone_parameters": 0
+  },
+  "optimizer": {
+    "algorithm": "deterministic full-batch Adam",
+    "steps": 80,
+    "learning_rate": 0.03,
+    "weight_decay": 0.01,
+    "loss": "source-class-block-balanced soft-target binary cross entropy plus L2"
+  },
+  "evaluation": {
+    "split": "leave one complete source_id out before bootstrap",
+    "authoritative_metrics": "source-macro class recalls, their balanced mean, and median per-source AUROC over mixed-class held sources",
+    "pooled_oof_auroc": "diagnostic only because fold scales differ",
+    "threshold_search": false,
+    "r766_threshold_reuse_forbidden": true,
+    "bangkok_role": "same-source post-hoc side diagnostic only; never pass/fail"
+  },
+  "stability_gate": {
+    "runs_passing_at_least": 4,
+    "passing_run_source_macro_balanced_accuracy_at_least": 0.70,
+    "passing_run_each_class_source_macro_recall_at_least": 0.60,
+    "passing_run_mixed_class_source_auroc_median_at_least": 0.75,
+    "every_run_each_class_source_macro_recall_at_least": 0.50,
+    "each_fold_unique_active_sources_at_least": 4,
+    "each_fold_unique_total_sources_at_least": 6,
+    "optimized_median_max_drop_from_prototype": 0.02
+  },
+  "authorization": {
+    "five_seed_short_runs": true,
+    "independent_prospective_contract_freeze": "only_if_bootstrap_stability_gate_passes",
+    "distance_field_auxiliary_next": true,
+    "risk_event_training_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false,
+    "sam_asam_authorized": false
+  }
+}

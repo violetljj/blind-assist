@@ -1,0 +1,18 @@
+{
+  "schema": "blindassist_public_video_candidate_source_v1",
+  "source_id": "gnd_cc0_v10",
+  "dataset_persistent_id": "doi:10.13021/ORC2020/JUIW5F",
+  "dataset_metadata_url": "https://dataverse.orc.gmu.edu/api/datasets/:persistentId?persistentId=doi:10.13021/ORC2020/JUIW5F",
+  "expected_license": "CC0-1.0",
+  "candidate_file_name": "AU.zip",
+  "maximum_file_bytes": 1073741824,
+  "source_role": "auxiliary_continuous_navigation_candidate",
+  "source_constraints": [
+    "The robot forward-camera domain is not the phone-camera production domain.",
+    "Traversability maps and source labels are not BlindAssist should_alert labels.",
+    "Downloaded material may only enter model-assisted candidate screening or non-production representation experiments.",
+    "No downloaded item may train, calibrate, evaluate, or replace the default production model without the counterfactual episode gate."
+  ],
+  "download_requires_explicit_flag": true,
+  "production_model_replacement_authorized": false
+}

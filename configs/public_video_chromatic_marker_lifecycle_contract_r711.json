@@ -1,0 +1,83 @@
+{
+  "schema": "blindassist_public_video_tristate_lifecycle_contract_v1",
+  "contract_id": "r711_chromatic_marker_prospective_v1",
+  "frozen_at_utc": "2026-07-19T01:41:47.5426731+08:00",
+  "purpose": "Prospective validation of a chromatic construction-marker expert covering dense traffic cones and sparse red-white delineators.",
+  "derivation_evidence": {
+    "cone_barricade_feature_report_sha256": "9f4c999a9c006b518a6ed394f992f47895c838ddeb7d36d8b679ffd7257ef80f",
+    "shanghai_false_barricade_feature_report_sha256": "a993ee87eacac43d8dd9aaf4ad03b04ba412b40b5bdcd2a2347ec0a0ae092d87",
+    "chromatic_lifecycle_audit_sha256": "1ace0742e75c63df14e34c60aef66e253c4c38d07c6a53d807b763f3d61f6065",
+    "clear_absent_values_tested": [3, 4, 5, 6],
+    "passing_values": [5, 6],
+    "selected_minimum_sufficient_value": 5
+  },
+  "model": {
+    "kind": "YOLOE prompt-free segmentation model with fixed built-in vocabulary",
+    "weights_sha256": "292bdf157a9ec7315f34b567cb93467c5043cd1889a1cc18abbfdeb88d7a948d",
+    "text_prompt_used": false
+  },
+  "scan": {
+    "sample_interval_ms": 1000,
+    "image_size": 640,
+    "confidence": 0.05,
+    "require_nearfield_corridor": false,
+    "baseline_groups": [
+      "surface_material",
+      "barrier_structure"
+    ],
+    "workzone_marker_additions": [
+      "barricade",
+      "cone",
+      "construction worker",
+      "traffic cone"
+    ]
+  },
+  "risk_evidence_policy": {
+    "policy_id": "chromatic_construction_marker_v1",
+    "target_classes": [
+      "barricade",
+      "traffic cone"
+    ],
+    "detection_acceptance": "high_saturation_fraction > dark_fraction",
+    "minimum_accepted_detections_per_active_frame": 1,
+    "absolute_color_threshold_used": false,
+    "geometry_gate_used": false
+  },
+  "lifecycle": {
+    "selected_groups": [
+      "surface_material",
+      "barrier_structure"
+    ],
+    "entry_window_samples": 3,
+    "entry_min_active_samples": 2,
+    "clear_absent_samples": 5
+  },
+  "source_eligibility": {
+    "item_level_reusable_license_required": true,
+    "original_temporal_order_required": true,
+    "continuous_capture_required": true,
+    "hard_cut_or_montage_allowed": false,
+    "prospective_source_must_not_have_influenced_r78_parameters": true
+  },
+  "acceptance": {
+    "exactly_one_exit_interval_required": true,
+    "gpt_visual_reference_must_be_contained": true,
+    "post_clear_single_frame_reopen_allowed": false,
+    "minimum_risk_present_active_fraction": 0.4,
+    "maximum_stable_clear_active_fraction": 0.1,
+    "negative_control_requires_zero_intervals_and_terminal_clear": true,
+    "persistent_risk_accepts_open_present_or_uncertain": true
+  },
+  "prospective_isolation": {
+    "new_source_or_control_must_not_have_influenced_color_or_persistence_selection": true,
+    "policy_or_lifecycle_changes_after_opening_new_control_forbidden": true
+  },
+  "authorization": {
+    "training_execution_authorized": false,
+    "human_event_truth_present": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

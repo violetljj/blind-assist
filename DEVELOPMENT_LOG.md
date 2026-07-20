@@ -17,7 +17,30 @@
 - 边界：只提升验证与文档 Locality，不改变 App、默认 YOLO、模型、设备行为或任何研究晋级结论；真实事件仍为 0，设备米制几何 admission 仍为 false。
 - 验证：Python suite 24 tests 通过；JDK 17 `:core:ustrf:test`、文档索引、仓库卫生与目标差异检查通过。
 
+### RC-OARF E0 事件门加固与 wrong-route 负控
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：修复 route-conditioned event validator 的合同/来源/authority fail-open；为 route-risk seam 增加风险场新鲜度与独立 abstain reason；冻结并执行 r816 within-image wrong-route 负控。
+- 结果：正确路线 BA `.91555`，两种错路线 BA `.72492/.79515`，3 个父来源均同方向下降；但旧 r816 report 缺逐预测 example ID，正式 gate fail-closed 为 `BLOCKED_ON_PREDICTION_IDENTITY_BINDING`。只保留 provisional 合成机制信号，不解除 r818、真实事件 0、设备或生产门。证据见 `artifacts.local/evidence/ustrf-sc/rc-oarf-route-specificity-control-v1-20260721-r3/report.json`。
+- 验证：route validator 4 tests、legacy validator 6 tests、route-specificity 4 tests、JDK 17 `:core:ustrf:test`、空模板 fail-closed、docs index 与 diff check。
+
 ## 2026-07-13
+
+### SANPO P3 中心障碍候选闭环与 step/curb 发现补齐
+- 时间：2026-07-13 16:10:00 +08:00
+- 执行者：violjjet
+- 修改范围：P3 候选发现器、定向测试、P3 审计文档；公开网络阶段只读 SANPO official-train，下载的 RGB/mask 均写入忽略的 `artifacts.local/` 草稿，不修改 canonical、训练、App、模型资产或 blind/test。
+- 数据推进：此前 100–219 稀疏清单中的 7 个 `center_obstacle` 候选完成 50 帧 mask-only 门，4 个通过：`gie8...`、`Nta3...`、`SK1...`、`wXw...`；另 2 个因对齐帧不足、1 个因中心侵入持续性不足而拒绝。`gie8...`、`Nta3...` 与 `SK1...` 已成功导入为各 50 帧的独立 official-train 待复核 draft，官方 MD5、本地 SHA、连续帧、manifest validation 与本地几何回放均通过，保持 `pending_review`；不将自动几何结果冒充人工风险真值。
+- 目视边界：对两条草稿中帧的 inspection-only 抽查显示触发主体主要为路灯杆等静态街景设施；其 source-mask “obstacle” 身份不自动推出当前行走路线的 `should_alert`。因此未写 AI/人工 review decision，也未改变 pending 状态。
+- 发现器修复：原扫描器只产生中心障碍/侧向行人候选，结构上无法补齐最薄弱的边界数据。现新增保守 `step_curb` 稀疏候选和 `--profiles` 限定入口：只要求 curb/stairs 到达下视野且走廊可走；它仅进入严格 50 帧门，后续 RGB review 才区分平行边界与 step/curb，不自动写场景或安全标签。扫描报告新增 `scan_coverage`，防止“空索引段/无 mask 页”被误报为无目标。
+- 边界候选：official-train `0–9` 的可恢复小批次产生 5 个 sparse `step_curb` candidate，4 个为已存在 native session；唯一新 session `wZ9...` 的 50 帧 remote/local gate 与下载校验通过，但只提供 `camera_head/left`。目视发现高仰视角和不确定的当前路线关系，故只保留为跨视角候选，禁止混入现有 chest-left training canonical；后续搜索显式固定 `camera_chest`。
+- 验证：`discover`、`select`、P3 planner 共 18 项单测通过，Python compile 通过。新的 220–339 coverage 报告确认 120/120 session 实际尝试但均无足够 chest-left mask 页，SHA256 `6429b89053029542a659ebcf3d3aa98358cdd287988f7b03148298651197a2c4`；三份中心导入后 selection evidence SHA256 为 `2f327c78522e08e4df5c3a75a2607e77e054e2f8aec56d4397c68903c302b65f`、`943b9fa2c4e1419e704c9480ee4512b02ddd1fbc3db8191fec4d6824895964f`、`1a6b998035af366a33e4358cd8021f15bdbd549843a0f1495ead019fc01e020b`。
+- 当前判断：center-obstacle 方向已开始补齐，但 P3 四场景整体分布门尚未闭合；保持 `do_not_replace_default_model`，不重建 canonical、不训练、不导出 INT8、不开设备门。
+
+### SANPO P3 head-left 首批候选与 draft 证据
+- 时间：2026-07-13 16:35:00 +08:00
+- 范围：official-train `0–69` auto-view mask-only scan、5 条 head-center exact window gate 与通过者 draft 下载；不读取 blind/test、不写 canonical、不训练或改 App。
+- 发现：70 个 session 中实际选择 chest `42`、head `28`，无网络失败；产生 head center `5`、head step/curb `12` 个稀疏候选。head-center exact 50-frame 结果为 `3` 条 `accept_for_model_review`、`2` 条按中心侵入持续性拒绝；扫描报告 SHA256：`34621f8621d62152cdcb3c35410d638d1912dde27f2dcbe1df4904f22ef62b69`。
+- draft：GEw 与 wZ9 两个 head-left official-train center 候选各下载 50 帧，连续 frame_index、RGB/mask 配对、50 个唯一 RGB SHA 与本地 manifest validation 均为 green；均保持 50 条 `pending_review`，只授权 PII/人工 scene review，绝不进入 recipe/canonical/训练。GEw manifest/inventory SHA256：`b6283156b5d059bfdfe97230227baa73ca9e8b64800ebdc92c5911f4e393d01f` / `c18922fafc1efdb1ab1b829b01ced79ef13839548432bfb6eb21a4d1502bdeb8`；wZ9：`8b90f8afd9bf99e96834e322d8824d62c2d4095d894fea57186e1358880c37b4` / `d0d957464e394da5a002565d6469b48332b81d4ab48a363d592beac895806873`。y9F 下载在 11/50 帧超时，缺 final manifest/inventory，已终止且不采信；未触碰其它并行边界任务。
 
 ### SANPO 确定性 backbone probe、距离场前置诊断与反事实 episode 启动
 - 时间：2026-07-13 13:55:00 +08:00
@@ -35,8 +58,25 @@
 - 修改范围：新增 P3 session split planner、定向单测、训练协议与 P3 审计文档；联网阶段只读取 SANPO 官方 train 的稀疏 mask，不修改 canonical、模型、App 或模型资产。
 - 数据审计：当前可用于 train/dev 的独立 official-train session 只有 12 个，四场景均为 `2 train + 1 dev`；本地扩窗与旧 draft 均不增加 native session，已下载的其他 session 属于 official test。canonical 全图像素为 train boundary `0.857%`、dev `16.976%`，约差 `19.8×`，因此 P3 最低还需每场景新增 3 个、合计 12 个独立 session。
 - 实现：`plan_sanpo_p3_session_split.py` 在原分辨率按固定 SANPO_MAP 统计四类像素，以 native session 为原子执行确定性精确组合搜索；硬门固定为每场景 train `4–6` / dev `2–3`、四类 train/dev share ratio `<=2×`、dev boundary 至少 3 个贡献 session且单 session `<=50%`、其余 split/class 单 session `<=60%`。official-test/blind 在打开 manifest 前拒绝；raw-mask SHA 跨 split、未知 class、SHA/路径/连续帧异常或无可行分布组合均 fail closed 且不写输出。成功输出保留 sources/顶层证据，只含选中的 train/dev sequence，并带固定 P3 coverage policy，可直接交给 canonical builder；reserve 只留在报告。
-- 验证：P3 planner 9 tests 全绿，覆盖确定性、阈值边界、极细 boundary 原图统计、official-test sentinel 零读取、raw-mask 泄漏和全候选分布不合格时零输出。180-session 通用稀疏扫描触发 20 分钟硬超时且未产出最终报告，已终止残留子进程并拒绝采信。随后以新增断点参数完成 official-train `0–99` 与 `100–219` 两段不重叠 lateral 扫描，得到 5+8 条新增稀疏候选；首段 19 个连续窗口 `0/19` 通过，均按几何合同拒绝，第二段窗口读取因权限审核链路断开未执行。窗口工具补齐 description/mask TLS 重试，断点与重试共 4 tests 全绿。
+- 验证：P3 planner 9 tests 全绿，覆盖确定性、阈值边界、极细 boundary 原图统计、official-test sentinel 零读取、raw-mask 泄漏和全候选分布不合格时零输出。180-session 通用稀疏扫描触发 20 分钟硬超时且未产出最终报告，已终止残留子进程并拒绝采信。随后以新增断点参数完成 official-train `0–99` 与 `100–219` 两段不重叠 lateral 扫描，得到 5+8 条新增稀疏候选；首段 19 个连续窗口 `0/19` 通过，第二段 8 个推荐窗口 `0/8` 通过，全部按 geometry 合同拒绝。`SPoj...` 经授权重试后完成：侧向目标/连续段/可行走走廊分别为 46/46/50 帧，但因 center target 污染拒绝；不再标为 network-indeterminate。窗口工具补齐 description/mask TLS 重试，断点与重试共 4 tests 全绿。
 - 当前判断：P3 planner 已闭合，但 session coverage 仍为 red；不重建 canonical、不训练、不访问 blind、不导出或替换 App 模型，维持 `do_not_replace_default_model`。
+
+### SANPO P3-A lateral 局部时窗预筛
+- 时间：2026-07-13 15:20:00 +08:00
+- 执行者：violjjet
+- 修改范围：`discover_sanpo_sequence_candidates.py` 及其定向测试；不修改 canonical、训练、模型、App 或任何 blind/test 数据。
+- 原因：前两段 official-train scan 的 13 条新增 sparse lateral 候选经过 27 个 exact 50-frame 窗口后均为拒绝，说明整 session 6 帧稀疏命中对 clean-lateral 合同假阳性过高，不能继续按相同漏斗盲扫。
+- 实现：发现器新增可选 16-frame local lateral prefilter。仅当 sparse lateral 命中时才读取该局部窗口；固定要求 lateral target 至少 8 帧且最长连续 8 帧、path 至少 13 帧、零 center hazard 和零 center lateral target。预筛 pass 仅允许调用原有 exact 50-frame gate，绝不接受数据；所有预筛原始帧、阈值、决定与拒绝原因写入 report。稀疏 mask 下载同时复用窗口筛选器的 TLS retry 合同。
+- 验证：P3-A 4 tests 与窗口 retry 3 tests 全绿，Python compile 与 diff check 通过。随后完成 official-train `220–339` 的 120 条只读 GCS 清单扫描：`0` candidate、`0` network/data failure、`0` local-prefilter rejection；全部 120 条在 `camera_chest/left` 首个 mask 清单中不足 6 帧，故没有读取 mask 像素。报告 SHA256 为 `be0a79899e135518aff021920f8671b980aed2e87e2c74d5f000c62cff21a61`。抽样核验 index 219/220/279/339 亦未在 chest 或 head 找到公开 left segmentation mask。剩余 `340–559` 的同类只读扫描因审批服务连接中断而未启动，不采信为负例，也不绕过授权重试。
+- 续扫结果：获得重试授权后完成 official-train `340–559` 的 220 条只读 GCS 清单扫描：`0` candidate、`0` network/data failure、`0` local-prefilter rejection；全部 220 条同样在 `camera_chest/left` 首个 mask 清单中不足 6 帧，未读取 mask 像素，报告 SHA256 为 `89bcec839f0e1187fa6537a36d04e43825a3aaad671952618344993257a50286`。结合已完成的 `0–99`、`100–219`、`220–339` 与 `340–559`，official-train 的 560 个 session 已按不重叠范围完成 chest-left 候选发现。前 220 条仅产生 13 个 sparse lateral 候选，27 个 exact 50-frame windows 全部按 geometry 合同拒绝；后 340 条没有可供稀疏抽样的 chest-left 分割序列。因此 P3 不能再把“继续扫描”当作补齐 12 个独立 session 的路径，session coverage 保持 red，禁止重建 canonical 或训练。
+- 当前判断：P3 session coverage 继续 red，禁止重建 canonical 和训练；维持 `do_not_replace_default_model`。
+
+### SANPO P3 视角/来源契约重定义与 head-left 候选发现
+- 时间：2026-07-13 16:10:00 +08:00
+- 修改范围：P3 视角/新来源机器可读合同、说明文档与官方候选发现器；不下载新来源、不读取 blind/test 标签、不训练或修改 App。
+- 决策：P3 目标域为前向自我视角 RGB 导航。SANPO 允许 `camera_chest/left`（优先）与 `camera_head/left`（回退），但 split 仍以 `source_id:native_session_id` 为原子，禁止不同相机跨 split。SANPO 论文的 237 个带 panoptic session 中 91 个为 head，继续胸前锁死会理论上舍弃约 38.4% 的标注供给。canonical 后续必须透传 camera、lens、原始尺寸、view ID 和 annotation quality，并按 camera 分层报告。
+- 新来源：新增来源采用 A/B/C 分层。A 层只有官方 SANPO 合格视角和经同意的胸前/手持前向手机序列可进入 P3；Mapillary Vistas 仅为待专用许可快照的 B 层预训练候选；BDD100K/IDD/ACDC 许可证未核验而禁下载；Cityscapes 限非商业研究；GuideTWSI 仅程序化增强。公开车载数据不进入 P3 session coverage 或最终门。
+- 实现与验证：`discover_sanpo_sequence_candidates.py` 新增 `--camera auto|camera_chest|camera_head`，默认 auto 按实测 public left-mask inventory chest 优先、head 回退，每 native session只选一个 view；报告记录选中相机计数。新增两项回退/短 inventory 定向测试；发现器 8 tests 和窗口工具 3 tests 全绿，compile 与 diff check 通过。
 
 ### SANPO P2 确定性 quota sampler 实现与五组否决
 - 时间：2026-07-13 13:10:00 +08:00
@@ -4153,6 +4193,704 @@
 - 验证：确认 Git 根为 `E:\linnan\linnan`；`test-artifacts.local`、`.downloads`、`work`、`tmp` 均指向 `artifacts.local/`；JDK/SDK/Gradle/Android/Kotlin 路径均指向 `E:\codex-tools`；`E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py` 通过；`scripts\check_repo_hygiene.ps1` 对 35 个变更路径通过；顶层 `docs/` 索引覆盖通过；`git diff --check` 通过。
 - 剩余风险：历史受跟踪的 skills snapshot ZIP 仍会使 `check_repo_hygiene.ps1 -AllTracked` 报告二进制策略问题；它不属于本轮布局变更，需在单独的 Git 历史/归档治理任务中处理。
 - 版本判断：仅固化协作和文件管理规范，不改变 App 行为、模型资产、权限或风险规则；版本不变，不归档 APK。
+# SANPO P3-B chest-view boundary continuation
+
+- Time: 2026-07-13 +08:00
+- Type: public-data discovery / isolated evidence acquisition / dataset governance
+- Scope: `scripts/discover_sanpo_sequence_candidates.py`, `artifacts.local/evidence/p3/`, `artifacts.local/evidence/datasets/`, and `docs/SANPO_P3_SPLIT_RECONSTRUCTION_2026-07-13.md`.
+- Evidence: official-train chest-left index 20-29 yielded six new sparse `step_curb` candidates; five passed the mandatory 50-frame mask geometry screen. Isolated drafts for `JtMYI6rJ4wiDsEVffAkee0kR5Zmrf8vM` and `W1ZpmAq74J8xfKg23BcwLx0QHfxM6W_w` completed 50-frame RGB/mask download, manifest validation, and local geometry replay. W1's inspection frame depicts a stair/descending entrance, but it remains `pending_review`; source segmentation and machine inspection cannot create a safety label. The non-overlapping index 30-39 scan completed with zero candidates and zero failures; report SHA256 `659f553fdb418efd083d54a68365cccd03a1a4d02bdfa99771a9292b80121824`.
+- Decision: do not rebuild canonical data, start training, merge head and chest cameras, alter risk labels, or replace the production model. Continue only with official-train candidate discovery and fail-closed 50-frame screening until coverage and independent review gates are met.
+
+- Continuation: the disjoint chest-only `40-49` scan attempted ten official-train sessions, produced seven sparse `step_curb` candidates with zero network/data failures, and all seven passed the remote 50-frame geometry gate. Sparse report SHA256: `219aaa995139d74dd5285f4e8b43b3810d5fdb7c1c1eb1285d273cc5e2f13287`. The strongest, `DD9W-6F3D126azdsR_Usvu6zkNqkP8XG`, completed a 50 RGB+mask isolated draft, manifest validation, and local geometry replay (selection SHA256 `c74c49fbc1cbbfd7dc11a2fa2d115519e54c7937692c7bc88519fcd50a2f34cb`). Its inspection-only middle RGB is an ordinary city sidewalk with street furniture and curb/snow edge, not a clear step; retain `pending_review` and do not create a risk label. This is evidence that the source-mask boundary profile needs semantic review, not a shortcut around it.
+
+- Continuation: chest-only `50-59` discovered two candidates and no terminal network/data failures; a TLS EOF recovered inside the configured retry contract. Both passed remote 50-frame geometry. `qFDP9gJDz4MyXNxjl6mIEPFCUb8n1guU` completed an isolated RGB+mask draft, manifest validation, and local replay (selection SHA256 `74ce730413f5ab6827e5b257b3c59a1661d21be6c5bdc66e5b36f87dcaed8a70`). Its inspection-only middle frame shows a curb-cut/crosswalk transition with pedestrians. Keep it `pending_review`: it is a semantically plausible step/curb review candidate, not a machine-approved alert or training label.
+
+### SANPO counterfactual episode manifest gate and P3-B continuation
+- Time: 2026-07-13 +08:00
+- Scope: `scripts/validate_sanpo_counterfactual_episodes.py`, its deterministic tests, `docs/SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md`, plus official-train chest-only discovery evidence under `artifacts.local/`.
+- Counterfactual gate: converted the collection protocol from documentation-only into a fail-closed manifest validator. It verifies local-only file paths and SHA256s, accepted license and green privacy receipts, non-empty annotator IDs, positive/negative anchor rules, same-session/same-scene/same-receipt matched pairs, exact capture-context equality, and complete per-session/per-scene quotas when requested. It may report training eligibility only for a complete, reviewed matrix and always reports `production_model_replacement_authorized=false`; it never generates labels or downloads data.
+- Verification: validator negative tests cover mismatched negative anchors, counterfactual capture-context mismatch, and incomplete collection promotion. Its 3 tests plus candidate discovery, local geometry, and P3 planner tests passed `25/25`; Python compile and `git diff --check` passed.
+- Data continuation: official-train chest-only index `60-69` attempted 10 sessions (6 chest inventories and 4 insufficient pages), found four sparse candidates with zero failures, and all four passed the remote 50-frame geometry gate. Sparse report SHA256: `0579a75754c3429b9e33830575edababff9cc102d56dd20154b8b18b3671cab0`. Their maximum corridor-blocking ratio is <= `0.04938`, so they remain mask-only review candidates; no RGB download or training decision was made.
+- Collection handoff: added `configs/sanpo_counterfactual_episode_manifest_template_v1.json` and documented the exact validator invocation. The empty template validates only as `collection_status=in_review`, `episode_count=0`, `training_eligible=false`, and `production_model_replacement_authorized=false`; it is an explicit field scaffold, not collected evidence.
+- Seed queue: recorded the downloaded chest-view windows in ignored `artifacts.local/evidence/p3/sanpo_counterfactual_seed_queue_20260713.json` (current SHA256 `29cfa415c8190d45f4ea07005da24f73045ab05281445eb6835caa29c4d17ec0`). qFDP is a curb-cut/crosswalk-transition seed and DD9W an ordinary-boundary seed. Each is only five seconds, lacks a same-session matched counterpart and human event anchors, and is explicitly forbidden from use as a complete episode, label, calibration input, or benchmark truth.
+- Continuation: official-train chest-only `70-79` attempted 10 sessions, yielded five sparse candidates and no failures (report SHA256 `a13c05a45fd750276c0c323930429be485c38d96245eded3c115421d08c71d3a`); all five passed the remote 50-frame geometry gate. `vczXAwthxnadTYUS_TiR7IHiqEQrdSJx` was downloaded as an isolated 50 RGB+mask draft and passed manifest validation plus local replay (selection SHA256 `2cf176bae0239f763f2473654fef82a05b538993a7e7aa90c96f52c1e0d0aad6`). Inspection-only middle RGB shows entrance stairs beside, rather than entering, the forward sidewalk corridor. It is added only as a `parallel_boundary`/matched-negative review seed; no alert label, P3 recipe entry, canonical row, training, or model promotion is authorized.
+- Continuation: official-train chest-only `80-89` attempted 10 sessions, yielded three sparse candidates and no failures (report SHA256 `6bbeda410b728d423a3161a68d428e4fd032ee7f21343ee4024a5326ff1a4720`). All passed 50-frame geometry but had maximum target corridor-blocking ratios <= `0.02550`; retain mask-only evidence and do not download RGB merely to inflate the candidate pool.
+- Continuation: official-train chest-only `90-99` attempted 10 sessions, yielded five sparse candidates and no failures (report SHA256 `c9600534e7129f68d5112e42070602420bd88672589352eb75720864818ca422`). All passed 50-frame geometry; the best maximum corridor-blocking ratio was `0.13272`, below existing higher-information reviewed drafts and without a new scene signal. Retain mask-only evidence; do not download RGB or infer alert labels.
+- Continuation: official-train chest-only `100-109` attempted 10 sessions, yielded two sparse candidates and no failures (report SHA256 `4130f8cb1059805461d88b75b3ec4694c56b50f4a76061a4f1cdd63186c74d67`). `gie8...` was already an isolated center-obstacle draft and was not duplicated; new `yGcm...` passed 50-frame geometry but had `max_block=0.07497`, so remains mask-only. No RGB download, risk label, canonical entry, training, or model promotion is authorized.
+
+### SANPO P3 full official-train discovery, resumable evidence contract
+
+- 时间：2026-07-13 +08:00
+- 类型：公开数据只读发现、断点恢复、数据治理、测试
+- 修改范围：`scripts/run_sanpo_p3_discovery_batches.py`、对应单测、view/source contract 与 P3 full-discovery record。
+- 实现：将 official-train 候选扫描按 20 session 分批 checkpoint；checkpoint 绑定官方 session 顺序和全部筛选参数，`--resume` 对参数/顺序变化 fail closed。每批要求完整尝试且零 unresolved failure；只有全部 batch hash/coverage 通过才写 aggregate。
+- 结果：official-train index `0–559` 的 560 session 已完成 `28/28` 批次、0 unresolved failure，aggregate 146 candidate row（chest 86/63 unique session，head 60/42 unique session）。aggregate SHA256 `a5031bea47fae0c66bd59aa12b036a2ac420d3b0681d82ee7d25867078dd9889`；checkpoint SHA256 `9b0430be23724822b2ff3c3994cd226800b8296d287b796fd0c33cc80229d7ee`。完整记录见 `docs/SANPO_P3_OFFICIAL_TRAIN_FULL_DISCOVERY_2026-07-13.md`；证据位于 ignored `artifacts.local/evidence/sanpo-p3-discovery-auto-20260713/`。
+- 决策：解除长扫描不可恢复与 official candidate-pool 未穷尽的工程阻塞；不解除 P3 canonical/训练门。候选仍需 50-frame、RGB/PII、人工语义、annotation-quality、session/split、camera cross-view 审计。未读 blind、未启动训练、未改 App/默认模型。
+
+### SANPO P3 lateral bottleneck closure and consented-capture planner gate
+
+- 时间：2026-07-13 +08:00
+- 类型：公开数据精确筛选、P3 真实来源接入、训练门治理、测试
+- 证据：full official-train pool 的四条 chest lateral 候选均完成 exact 50-frame remote-mask gate，结果 `0/4` accepted。拒绝原因分别为中心 target 污染、lateral target 仅 15 帧、中心 hazard + target 污染、以及中心 hazard 污染；因此不能伪称为 clean-lateral negative。该结果使“只靠 SANPO public official-train 补齐 lateral P3 session”明确不可行。
+- 实现：P3 planner 现在新增 `consented_forward_phone_v1` 的 source admission。它在打开 manifest 前验证无 PII 的同意 receipt，强制 granted consent、已过 residual-PII、human-verified pixel annotation、human annotation quality、approved scene review 和仅允许的前向胸前/手持手机采集模式；逐 manifest row 再绑定 receipt SHA、human quality 与 PII clearance。machine-only、缺 receipt、official-test 或其他未批准 source 均 fail closed。
+- 验证：planner 11 项单测通过，包含 consented source 通过、machine-only receipt 预读取拒绝、official-test sentinel、raw-mask 跨 split 泄漏和分布门。未采集/写入任何真实个人数据，未下载 RGB、未读 blind、未训练、未改 App。
+
+### SANPO P3 exact lateral closure and center review drafts
+
+- 时间：2026-07-13 +08:00
+- 类型：官方公开 mask 精确筛选、隔离 draft、审核队列
+- lateral：4 条全量发现的 chest lateral candidate 全部在 exact 50-frame gate 拒绝。`4P1…` 是 center target 污染，`edl…` 仅 15 帧 clean lateral，`JtMY…` 同时存在 center hazard/target，`vcz…` 存在 center hazard。四份独立 evidence SHA256 为 `b7bf03fcabf9dc8a43cec0ac0063076e8a1661798233dbf794aaabdc01c50124`、`bf0c7a034e5bfc4b1cbccbf580c603d2eaccdffee701b35b96b0fde101197588`、`c2444abec8e10c8252753a55fb31eb25de3884905322655ddfaba919e482eea0`、`c9eb5445224e963a745ebfb064d4aefb1f4d0134df7533c79bd4d185586cc872`。因此 official-train 不能单独补齐 lateral P3 配额。
+- center：8 条新 chest candidate 的 exact gate 得到 3 accept / 5 reject。`3ok1…` 和 `cBVS…` 已完成官方 train 50 RGB+mask 隔离 draft、本地 geometry replay 和 hash-bound model-review request，仍为 `pending_review`；selection evidence SHA256 分别为 `93a9a34ebe8cb3b7363c520200f9639c05d82d3af409c695026e093ce764e659`、`6b1128d27ba201178bc314043f695971e2580a621e0db0820eb2d7aa2d834ff8`。`JtMY…` 的 RGB 下载在上限超时且未写 manifest，已仅终止本任务孤儿进程并排除，不删除不完整目录。
+- 决策：公开 center 候选可继续人工/PII 审核；lateral 缺口改由 consented forward-phone A 层补齐。未把 source-mask 几何、模型审核请求或 pending draft 计为人工标注；未训练、未读 blind、未改 App。
+
+### SANPO P3 boundary semantic-review closure
+
+- 时间：2026-07-13 +08:00
+- 类型：隔离公开 draft 的模型审核路由、数据治理
+- 证据：已对 qFDP（curb-cut/crosswalk）、vcz（侧方入口台阶）和 W1（有界连续下坡/栏杆）完成 hash-bound model-review response 验证。结果依次为 `needs_recapture`、`reject`、`needs_recapture`，均显式返回 `promotion=not_promoted`；预期均为 `no_alert`。这不是人工语义审核，也不产生风险标签、训练样本、标定/benchmark 真值或模型升级授权。
+- 决策：source-mask 中持续出现的 boundary/curb 几何与事件级告警语义多次不一致，禁止将该 profile 用作伪标签。下一步只可将这些五秒公开窗口作为未标注审核 seed；补齐 P3 必须依赖 `10–20 s`、同 session 匹配对、人工锚点和隐私/同意收据均齐备的真实 episode。P3 coverage 仍红，未重建 canonical、未训练、未改默认模型、未读 blind。
+
+### SANPO P3 center-obstacle discovery continuation
+
+- 时间：2026-07-13 +08:00
+- 类型：公开 official-train 只读候选发现
+- 证据：auto-view index `110-129` 完成 20 个独立 session 的稀疏扫描，产生 7 条 `center_obstacle` candidate、0 failures，报告 SHA256 `10e4dab53e6aecf385f35671977071b846c1dfc29ae6a9a023463d70d5ef3476`。其中 `Nta3...` 是既有隔离候选，避免重复；另有 3 条 chest 和 3 条 head-only discovery row。
+- 决策：这些均未经过 exact 50-frame gate，故不是 RGB 下载、语义审核、P3 recipe、canonical、训练或模型升级候选。head-only 行继续受独立 cross-view gate 约束；未读 blind、未训练、未改默认模型。
+
+### SANPO P3 consented-capture taxonomy and RGB binding closure
+
+- 时间：2026-07-13 +08:00
+- 类型：真实采集 intake 合同修复、数据准入治理
+- 根因修复：此前 P3 planner 的像素统计只适配 SANPO 原始 31 类 ID；经同意手机来源即使具备人工四类 mask，也可能被按 SANPO taxonomy 错误映射。现将 `sanpo_real_v0_panoptic_class_id_v1` 与 `blindassist_4class_mask_v1` 分离，并把后者强制绑定到 consent receipt 和每帧 `human_pixel_mask` provenance。任何未声明、错配或含非 `0–3` 像素值的经同意 mask 都 fail closed。
+- 证据绑定：经同意 session 的每帧现在还必须绑定 RGB `image_path`/SHA256、前向 capture mode、`lens=not_applicable`、正整数原始宽高；planner 重算文件哈希，验证图片尺寸，并拒绝 session 内 camera/lens/分辨率变化。真实手机分辨率记录为 session invariant，不再误用 SANPO 的固定分辨率白名单。
+- 验证：新增 taxonomy mismatch 与 RGB 尺寸错配拒绝测试；P3 planner、counterfactual manifest、候选发现与本地 geometry 共 27 项测试通过。未采集真实个人数据、未读 blind、未训练、未生成或替换默认模型。
+
+### SANPO P3 completion-evidence audit
+
+- 时间：2026-07-13 +08:00
+- 类型：训练前事实核验
+- 核验：本地 `artifacts.local/evidence/` 未发现受同意长时 episode manifest 或完成的同意采集 receipt；唯一 counterfactual manifest template 的验证结果为 `collection_status=in_review`、`episode_count=0`、`matched_pair_count=0`、`training_eligible=false`、`production_model_replacement_authorized=false`。现有 SANPO draft/model-review result 及 procedural reviewed-source manifest 均不构成该真实事件数据。
+- 结论：P3 数据问题尚未解决，且没有证据支持启动训练、校准、canonical 重建或默认模型替换。下一份可使状态前进的外部证据必须是满足 `10–20 s`、同 session 匹配正负 pair、人工事件锚点、同意与 PII 审核、人工四类 pixel mask 的真实采集包；公开 SANPO 候选精筛可并行恢复，但不能代替该包。
+
+### SANPO P3 resumed center-obstacle exact screening
+
+- 时间：2026-07-13 +08:00
+- 类型：公开 official-train 50-frame source-mask 精筛、下载完整性治理
+- 证据：`We-WV...` 与 `J4P...` 的 chest 50-frame remote-mask gate 分别 accepted（`26/17/50` 和 `41/35/50` 的 target/run/path），screen report SHA256 分别为 `eedf3ff1ff54289141b524e1d68c387c561fbe473c67124b109b7f35606941c0` 与 `bd0acd7645bc3e2e1c111bf2c21691024e43dff29f8558656034b76982f68b04`。`HEm...` 仅有 30 个对齐 source mask，按不足 50 帧拒绝（SHA256 `f479f9cfcd6abff5b0035bbd430b3dce456316e6ac971e0a52b93e210c36a70fc`）。
+- 完整性决策：优先 J4P 的隔离 RGB+mask download 在 10 分钟上限超时，未写 `manifest.draft.jsonl`；目录中只有空的 images/qa/source_masks 框架。保留但明确排除，不删除、不重试到同一路径。未执行本地 replay、PII/语义审核、annotation queue、训练或模型替换。
+
+- Retry result: J4P was redownloaded into a fresh isolated root and completed 50 RGB/mask frames with `validation_ok=True` and `benchmark_ready=False`. Local geometry replay exactly matched remote selection (`target=41`, `run=35`, `path=50`, `median=0.9140`, `max_block=0.10590`; selection SHA256 `7d86dccd97a365c4aa9efb1765fdef8751e586e457cab3d2fe8e241babfbf88e`). Hash-bound model review returned `needs_recapture`, `center_obstacle`, corridor event present, expected `no_alert`, confidence `0.76`, selection disagreement; verifier output is `promotion=not_promoted`. The visual route context is insufficient to decide whether a large fixed structure blocks the actual intended path. It is an unclassified counterfactual seed only (current queue SHA256 `e7a0253a41372151c246ebab883c6d39e63547ec91684220c4cdea5d4cc23a7e`), never a label, canonical row, training sample, calibration input, benchmark truth, or model-promotion input.
+
+- Continuation: the other accepted chest candidate, We-WV, completed 50 RGB/mask isolated download and local replay (`target=26`, `run=17`, `path=50`, `median=0.8065`, `max_block=0.21535`; selection SHA256 `bed76cb0b28dfecc21e1469813b90f14bc145bb6f354cf0aabdd63151760b06e`). Its hash-bound model review returned `reject`, `parallel_boundary`, corridor event absent, expected `no_alert`, confidence `0.95`, selection disagreement; verifier output `promotion=not_promoted`. The visible scene is an open plaza/walkway with static benches, planters and entrance fencing; the near-forward route remains open. This is a second direct static-boundary false-positive, retained only as an unclassified counterfactual seed. The two complete center-profile drafts admit neither dense annotation nor P3 canonical/training/calibration/promotion; source geometry alone is now explicitly insufficient for that profile.
+
+- Historical-draft closure: `3ok...` (50/50 source-mask candidate) was visual-model rejected as an open plaza with static seating/fence/planting/pigeons, `parallel_boundary`, no corridor event, expected `no_alert`, confidence `0.97`, `promotion=not_promoted` (selection SHA256 `93a9a34ebe8cb3b7363c520200f9639c05d82d3af409c695026e093ce764e659`). `cBVS...` (target 43/run 31/path 50) is a crowded market walkway and remains `needs_recapture`, `center_obstacle`, corridor event present, expected `no_alert`, confidence `0.72`, selection disagreement, `promotion=not_promoted` (selection SHA256 `6b1128d27ba201178bc314043f695971e2580a621e0db0820eb2d7aa2d834ff8`). Both are unclassified counterfactual seeds only; no annotation, training, calibration or promotion use is allowed.
+
+### SANPO risk-profile and lifecycle primary-supervision gate
+
+- 时间：2026-07-14 +08:00
+- 类型：事件数据合同、训练前治理、测试
+- 实现：counterfactual manifest validator 现在强制每个 episode 具有 10–20 秒整数毫秒 `duration_ms`、与 `scene_id` 绑定的 `risk_profile`、和严格由人工事件锚点导出的 `lifecycle_intervals_ms`。positive 必须是 `enters_or_blocks / approach_alertable_clear`，且三段区间精确覆盖 approach、alertable 与 post-event；matched negative 必须是 `outside_or_nonblocking / no_alert` 且完整覆盖 `non_alert`。短片段、浮点/失序锚点、错配风险轮廓或生命周期区间均 fail closed。
+- 原因：将未来风险轮廓 + 生命周期头的主监督固定在可审计事件语义上，像素 mask 只作辅助。这直接针对本轮反复发现的围栏、长椅、广场边界、固定结构等 geometry false positive，禁止其仅凭 mask 进入 alert 正例。
+- 验证：新增时长不足与 lifecycle interval 错配拒绝测试；并新增 `build_sanpo_risk_lifecycle_targets.py`，它只从 complete、人工复核的 episode manifest 生成确定性风险轮廓/生命周期 target，输出明确 `pixel_supervision_role=auxiliary_only`、`training_execution_authorized=false`、`production_model_replacement_authorized=false`。counterfactual、P3 planner、发现器与本地几何共 29 项测试通过。未读 blind、未训练、未改 App/默认模型。
+
+### SANPO counterfactual collection-plan generator
+
+- 时间：2026-07-14 +08:00
+- 类型：真实 episode 采集执行支架
+- 实现：新增 `generate_sanpo_counterfactual_capture_plan.py`，从冻结的 6 session × 4 scene × 2 matched pair 合同生成 96 个 `not_captured` slot。每个 slot 固定正/负采集合同、10–20 秒范围、pair 必须共享的上下文、风险轮廓与生命周期模板，并显式禁止将清单当作证据、标签、receipt 或训练许可。
+- 决策：采集清单是填补 P3 根因数据缺口的执行工具；它不伪造任何真实视频、人工标注、隐私回执或训练状态。
+# 2026-07-15 — Counterfactual independent-review evidence gate
+
+- Strengthened the counterfactual episode validator: every episode now requires a local SHA256-bound review record, at least two independent human reviewers, and reviewer-ID agreement with the manifest. Positive-event anchor disagreement above 500 ms fails closed; model output cannot serve as event-label evidence.
+- Verified with the project Python under a workspace-local temporary directory: 31 focused tests passed, including rejection of a single-review record and unstable positive anchor adjudication. This remains a collection/annotation gate only; no real episode was created, no training was run, and default model replacement remains unauthorized.
+# 2026-07-15 — Autonomous public-video candidate path
+
+- Added a fail-closed public-source acquisition path. `acquire_public_gnd_candidate.py` verifies a bounded CC0 GND file through Dataverse metadata before any download and writes a receipt that permanently excludes the material from calibration, safety truth, production training, and model replacement. The remote endpoint timed out during live metadata validation, so no GND data download is claimed.
+- Added `acquire_sanpo_rgb_timeline_candidate.py` for low-bandwidth, resumable CC-BY SANPO RGB-only timelines. It intentionally omits masks and event labels; model output can only decide whether a longer public clip merits later review. Tests cover sparse 10-second selection, incomplete windows, resumability, public-file bounds, and counterfactual gates (12 focused tests passed).
+- Live candidate review stopped the J4P expansion after its first verified RGB frame: the center sidewalk is visually clear while benches, pedestrians, and parked vehicles remain lateral. This agrees with the prior `needs_recapture/no_alert` finding and is evidence against using this source-mask profile as a weak positive; no training, calibration, or promotion was run.
+- Extended the model-only RGB screen to four more local SANPO candidates and recorded every decision in `artifacts.local/evidence/p3/public_model_candidate_screening_20260715.json`. `5ll`, `J4P`, and `gie8` were rejected as weak positives: their apparent targets are edge-static or leave an open route; `cBVS` needs longer context rather than an inferred event label. `k7` is retained as the sole high-priority human-review candidate because multiple oncoming pedestrians approach within a corridor constrained by a food truck and storefront. This is acquisition prioritization only—not a `should_alert` label, a lifecycle target, or training authorization.
+- Extended autonomous visual review to the already-local cBVS and blind 5ll sequences. cBVS needs longer temporal context before any path-cut-in claim; 5ll is rejected as a weak positive because lateral snowbanks/vehicles/columns leave the center corridor usable. The model screening receipt is local-only and explicitly has no event-label or training authority.
+
+### 2026-07-15 — Public first-person sequence acquisition and privacy-prefilter audit
+
+- Source boundary: acquired the public uB-VisioGeoloc sequence-10 archive through its Harvard Dataverse metadata contract (declared CC0 1.0). The 1,319,673,592-byte archive matched the publisher MD5 `c92eff31b8e391dc6539640de1891341`; the local receipt and source config bind it to *unlabeled first-person representation candidate* use only. RGB extraction retained exactly 804 `10/Color/` PNG frames and deliberately did not extract Labels, Depth, GPS, IMU, boxes, or any source geometry as risk supervision.
+- Privacy-prefilter result: an initial Haar-plate pass was rejected for pavement false positives. The subsequent dedicated LPD_YuNet pass still missed a visible vehicle plate in spot review, and was also rejected. The retained conservative pass uses YuNet face detection, LPD_YuNet, and whole-person/vehicle blur (YOLOv8n): it produced 804 redacted frames, 199 frames with regions, and 585 blurred regions. A visual spot check confirms the visible near vehicle is blurred as a whole; it does **not** prove that distant faces, plates, or all identifying text were found.
+- Gate: the resulting receipt remains `privacy_audit_required=true`, `training_execution_authorized=false`, and `production_model_replacement_authorized=false`. This short single-scene (~27 s) sequence is neither event truth nor a sufficiently diverse training corpus. It may not be consumed until a separate privacy audit explicitly clears it, and even then only as unlabeled representation data followed by the frozen SANPO linear probe—not as risk/lifecycle/pixel truth.
+- Verification: Dataverse acquisition, RGB-only extraction, and redaction helpers have 10 focused unit tests passing. No blind data was read; no safety training, calibration, canonical rebuild, or model promotion was run.
+
+### 2026-07-15 — Foundation-feature and boundary-distance root-cause diagnostics
+
+- Frozen-feature triangulation: added a train/dev-only, deterministic Depth Anything V2 Small DINO feature probe. It reached global mIoU `0.423488` but boundary IoU only `0.131167`; repeated closed-form ridge coefficients and dev argmax matched exactly. An exploratory frozen concatenation with the current raw MobileNet OS8+OS32 features reached only `0.414418/0.138427` (mIoU/boundary), also exactly repeatable and below the preregistered `.35/.20` separability gate. Neither run opened blind data, trained a feature/decoder, or authorized a model change.
+- Distance-field admissibility: independently diagnosed signed 16-pixel boundary targets at 384² before wiring them into the trainer. Real train has boundary pixels `0.8569%` and near-boundary pixels `3.8388%`; dev has `16.9761%` and `8.0587%` respectively. This ~`19.8×` boundary-coverage mismatch makes a current auxiliary-loss short run non-attributable: it would test split composition as much as the loss. Do not present any distance-field training result before reconstructing coverage.
+- Decision: the evidence strengthens the original diagnosis—this is not a head-only optimization failure. Do not start prototype/bootstrap short runs, SAM/ASAM, or distance-loss promotion on the current split. First repair session/scene boundary coverage and collect human-reviewed event pairs; then run exactly one frozen P1-A OFAT distance-field experiment under the documented contract. Detailed evidence is in `docs/SANPO_FEATURE_AND_DISTANCE_DIAGNOSTICS_2026-07-15.md`.
+
+- Continuation: the promised OFAT distance-field test is now complete under a train-only session-held-out replay to remove the original train/dev boundary-density confound. Two held-out canonical-train sessions (100 frames) had `0.79325%` boundary pixels and the six optimization sessions (300 frames) had `0.87812%`, a permitted coverage ratio of `0.90336`; canonical dev/blind assets were not read and no weights were saved. Across five fixed model/sampler seed pairs and 100 steps per arm, signed 16 px weighted-SmoothL1 distance supervision at weight `0.20` changed mean IoU by `-0.001918`, boundary IoU by `-0.000610`, and selection score by `-0.001230` versus paired baseline. Only one pair improved boundary IoU and its mean IoU fell. Report SHA256: `f6482912c37e111e08d17214b5f3b15b30e7b99e20a58880ac672c79842fabef`. This is a negative result for the current distance-head recipe, not a model promotion or event-label result; retain `do_not_replace_default_model`.
+
+- Continuation: added `sanpo_risk_lifecycle_prototype.py`, a no-trainer temporal multi-head prototype over externally supplied frame features. It accepts only hash-attested, complete human-reviewed risk/lifecycle targets, maps their half-open millisecond intervals deterministically to `non_alert/approach/alertable/post_event`, and emits episode-level hazard/corridor/should-alert logits plus per-timestep lifecycle logits. It rejects incomplete/unauthenticated targets and any non-`auxiliary_only` pixel role; public masks, geometry and model output cannot enter as event truth. Focused contract tests passed (15 total with the adjacent counterfactual and distance tests), and a Keras-torch smoke produced shapes `(2,4)`, `(2,2)`, `(2,1)`, `(2,5,4)`. No real target collection exists, no training or weights were produced, and the contract keeps both training execution and default-model replacement unauthorized.
+
+- Continuation: added and ran `run_sanpo_corridor_anomaly_probe.py`, an explicitly non-alert, no-weight frozen Depth Anything V2 DINO familiarity diagnostic. It fitted a 32-component PCA reconstruction subspace only to 25,600 canonical-train source-semantic walkable patches, then scored held-out canonical-dev source classes. AUROC against walkable was `0.891081` for boundary_step_curb, `0.941669` for obstacle, `0.857822` for unknown_nonwalkable, and `0.898064` for all nonwalkable; the preregistered source-semantic interpretation gate passed. Report SHA256: `c7ad14b2e9ada2637f65b6a2a4db6f20298a1d0ff350bb4668292bf34c053a61`. This only permits a future `unknown_motion_or_surface` auxiliary/abstention candidate—not an alert, risk/event truth, threshold calibration, benchmark claim, or model promotion. During the first run the now-CUDA-enabled Depth Anything image tensor was on GPU while the model was on CPU; `smoke_depth_anything_v2_pytorch.py` now moves loaded frozen weights to the same selected device, with a focused unit test. No blind data, risk target, trainable model weight, or default-model change was produced.
+
+- Continuation: explicitly tested whether the current frozen MobileNetV3 raw OS8+OS32 representation could make the DINO familiarity score practical on-device before building a new head. The fixed teacher/student ridge probe used 25,600 train and 12,800 held-out dev feature rows, without training either encoder or saving a student weight. Dev teacher reproduction was poor: `R²=-0.101451`, Spearman `0.601385`, failing the preregistered `R²>=0.50 && Spearman>=0.70` gate (report SHA256 `ab84880d5026db94fe30699dbc04cdf30f7f0231b74ffcbb4d4b61e34defde1`). Therefore do not add a MobileNet unknown head, non-linear student, SAM/ASAM, or hyperparameter rescue search; this evidence further localizes the current limitation to the lightweight representation rather than an omitted scalar head. The test remains source-geometry-only, with no blind data, event truth, calibration, exported weights, or default-model change.
+
+- Continuation: completed an external event-source admissibility audit rather than treating public-video claims as data access. PEDESTRIAN is highly relevant on paper (egocentric pavement obstacles), but both its DOI resolver and Zenodo API `records/10907945` returned a persistent 404 on 2026-07-15, so it is unavailable. SideGuide remains approval-gated; VIEW360 is data-coming-soon and semantically out of scope; EgoTraj is privacy-blurred but carries non-commercial terms and VLM-generated scene descriptions, so it can at most be a separately authorized unlabeled representation candidate. No audited public source satisfies the counterfactual human event/lifecycle truth contract. The detailed source/permission matrix is `docs/SANPO_EXTERNAL_EVENT_SOURCE_AUDIT_2026-07-15.md`; no source data was downloaded or used for training.
+
+### 2026-07-15 — Auxiliary-only public boundary-candidate pipeline
+
+- Planned a separate public SANPO source-mask route strictly for pixel/geometry auxiliary work. The plan excludes every current canonical session, limits candidates to official train chest/left views, ranks sparse step/curb boundary coverage, and prohibits risk/event/lifecycle labels, calibration, benchmark truth, training execution, and default-model replacement. The initial plan selected eight candidates; its SHA256 is `aeeb445e800995d2db00be0cacbbcd6c7acd1c529009049aeaaeca687db3160f`.
+- Three candidates (`vcz`, `qtty`, `4P1`) passed exact remote 50-frame source-mask geometry screens. This is only mask geometry evidence. The qtty RGB+mask draft subsequently completed with 50/50 MD5-verified files and 50 null risk-field rows; validation explicitly reports `benchmark_ready=false`.
+- Privacy/utility check: qtty is a dense-pedestrian scene. Its conservative YuNet/LPD-YuNet/whole-person-or-vehicle prefilter created 684 blur regions across all 50 frames. The redacted derivative remains `privacy_audit_required=true`, `risk_or_event_truth_present=false`, and `training_execution_authorized=false`; it is not admitted to any training path. This prevents the public-mask coverage fix from silently introducing private or heavily occluded RGB data.
+
+- Continuation: low-density candidate `wBP` completed its isolated 50 RGB/50 source-mask draft with 50 null risk/event/lifecycle records. Three raw-frame spot checks showed no near person or readable face, but vehicles and street signage meant that no privacy clearance was inferred. The whole-object redaction pass retained 50 RGB frames and blurred 186 regions in 48 frames; receipt SHA256 `d99b794c235e0f24a0656fe8da3f1719b283a795571e6de323e03997a9501129`. It remains `privacy_audit_required=true`, `auxiliary_pixel_geometry_only`, and has no training, risk-truth, calibration, benchmark, or production-replacement authority.
+
+### 2026-07-16 — Public-silver trajectory root cause and provisional lifecycle-head experiment
+
+- The r3 public-video package contains 11 non-abstaining episodes from 9 packages: 6 alert and 5 no-alert sources, with two explicit matched counterfactual pairs and no cross-source duplicate frame hashes. Licensing, source manifests, frame hashes and provisional-training attestations passed; calibration, blind evaluation and production replacement remain unauthorized.
+- Static MobileNet/DINO pooling, segmentation-corridor pooling and fixed residual flow all remained below the frozen-feature gate. A new fixed YOLO12n-proposal trajectory representation (relative scale, bottom/corridor overlap, persistence and temporal slopes) passed source-isolated linear diagnosis at `0.816667` balanced accuracy with confusion `[[4,1],[1,5]]`; report SHA256 `ab54c01002f6a18830750a8185855e299916e1a24d18ddb191e930d2835f6596`.
+- Five prototype-initialized, within-class source-bootstrap 80-step linear-head runs produced balanced accuracy `.65/.7333/.7333/.8167/.7333`; 4/5 passed the preregistered per-run gate and the median was `.7333`, so the head-stability gate passed. Report SHA256 `84ae652907ca774990968177d12e86bc2230f04ddca74def81b3699c9d0f7b39`; no weights were saved.
+- Added a weakly supervised risk-profile MIL prototype: per-frame object/corridor features feed a tiny linear risk head and smooth-max episode pooling. Only episode alert/no-alert is supervised; lifecycle states are latent curve-derived diagnostics because the silver package has no trustworthy frame boundary labels. Five LOSO bootstrap runs had median balanced accuracy `.7333` (range `.6333–.9167`), while both matched pairs preserved correct alert-over-no-alert probability order in all five runs (10/10). Report SHA256 `af329f062b60a94c8650f6bf5232c20ad348f63cc79853067bbd4f6b6d4719d6`.
+- Remaining failure is structured rather than optimizer-only: `1sft` (persistent pedestrians in the corridor with weak scale growth) was missed in every run, while the open `We` scene and static `gie8` obstruction were bootstrap-sensitive. Next data should target those two hard counterfactual families and add explicit alertable/cleared boundaries before claiming supervised lifecycle performance. SAM/ASAM remains third priority; pixel segmentation stays auxiliary-only.
+- Post-hoc quarantine sensitivity kept the full 11-episode baseline at `.816667`. Quarantining `1sft` raised balanced accuracy to `.90`, but quarantining the explicit SK1 matched-positive also raised it to `.90`; this demonstrates severe single-positive influence rather than permission to cherry-pick. Visual review found `1sft` semantically ambiguous (wide path, persistent pedestrians, weak scale growth), so it is routed to independent policy/label review and same-type data expansion. The sensitivity report SHA256 is `b707bda5ebbc1073d43dea73e3b35e7dabb7af2626294b06ce03d7bbbe825841`, with `post_hoc_analysis_only=true` and no training-gate authority.
+- Verification: 51 focused Python tests passed, the new scripts compiled, and `git diff --check` reported no errors. Existing LF-to-CRLF warnings were unchanged.
+
+### 2026-07-17 — Public-silver r4/r5 mechanism-stratified root-cause continuation
+
+- Isolation correction: confirmed that `secondary-corridor-causal` is a separate model direction. Removed the unrun cross-line replication artifacts created earlier and kept all subsequent data, scripts, reports and gates inside the public-video silver mainline. The new r4/r5 builders and depth/mechanism audits reject any input or output path containing that independent direction; no independent data, metrics, weights or promotion decisions were consumed.
+- r4 data expansion: built an immutable child of r3 with the SANPO `gie8` timeline split into a passable early static-furniture episode and a near-field narrowing episode. r4 has 12 non-abstaining episodes, 6/6 class balance, three explicit matched pairs, no cross-source frame-hash reuse and all package validations green. The generic data gate passed.
+- r4 diagnosis: frozen object trajectories remained linearly separable at balanced accuracy `.75`, but the new pair reduced prototype-direction alignment and the five prototype/bootstrap runs fell to `.6667` median with only `2/5` passing. Frozen DINO reached `.6667`; a new explicit relative-depth corridor-profile probe reached only `.50`. The five-run risk/lifecycle MIL median was `.5833`, with `.6667` median pair-order rate. This rejects the simple fixes “use a stronger pooled backbone”, “add hand-built depth occupancy” and “tune the tiny head”.
+- Targeted acquisition: downloaded ten MD5-verified public SANPO RGB frames from `Chcne...` source frames 117–252, with no masks or human-truth claim. Visual temporal review retained only the stable 177–207 passable interval and 222–252 near static chokepoint interval; the original later 252–387 turning window remains excluded. The new pair stays GPT-5 model-provisional supervision and cannot calibrate, blind-evaluate or replace the production model.
+- r5 mechanism expansion: added Chcne as a second independent static-corridor matched source, producing 14 non-abstaining episodes, 7/7 class balance and four explicit pairs. Frozen trajectory balanced accuracy recovered to `.785714` (`[[5,2],[1,6]]`). Five prototype/bootstrap runs were `.6429/.7857/.6429/.7857/.9286`; median `.7857`, but only `3/5` passed and the stability gate remained false. Both static-source no-alert episodes (`gie8`, `Chcne`) were still false alerts under source holdout.
+- Lifecycle result: the r5 weak MIL runs were `.7857/.8571/.7143/.6429/.7857`, median `.7857`; matched-pair alert-over-no-alert ordering was `.75/.75/1/.75/1`, median `.75`. This is a material improvement over r4 and supports mechanism-matched data expansion, but the worst seed `.6429` remains below promotion quality.
+- Governance fix: added `audit_public_silver_mechanism_coverage.py`. The default hard gate separately requires at least three independent matched sources for `dynamic_agent_approach` and `static_corridor_narrowing`. r5 has only `2/2` for each mechanism, so the mechanism coverage gate correctly fails even though the old overall pair-count gate passes. Next action is data expansion, not SAM/ASAM.
+- Evidence SHA256: r5 trajectory `36b80d545c09af9fe2594bd580da8d18cda3a4b9f691c6229e736f3f12c6f5be`; r5 short runs `453d605012402532e21b8499d5a9e4b5e5f79c0cda363b349b2d89ddf377cf72`; r5 MIL `b5171d4b649aede351fb23156c678d3971c6ca5cbdf766e1eedf39a91556429e`; mechanism coverage `bf5c267194ff5c8ef9f25d57ec125a90444a06db0ce06867059e775f7608a032`. No weights were saved, no App/default model changed, and production replacement remains unauthorized.
+
+### 2026-07-17 — Public-silver r6 low-confidence dynamic-pair diagnostic
+
+- Scope/isolation: built immutable child `public-video-provisional-training-r6-20260717` from r5 and a new consolidated RGB-only timeline `sanpo-weak-jtmy-counterfactual-20260717`. It copies three existing official-train JtMY frames from 226–300 and three from 339–429; no masks, independent-model data, weights or metrics were consumed. All new paths fail closed on `secondary-corridor-causal`.
+- Label contract: added an early passable approach episode and paired it with the existing horse-carriage crossing episode. The original alert confidence `.63` was retained. The mechanism audit now requires every episode in a counted pair to meet confidence `.65`; JtMY is therefore exploratory and excluded from qualified coverage rather than used to make the gate green.
+- Coverage: dynamic `all=3`, confidence-qualified `2`, independent sources `2`; static `all=2`, qualified `2`, independent sources `2`. The generic aggregate readiness gate passes, but the mechanism+confidence gate remains authoritative and fails. No optimizer escalation or model promotion is authorized.
+- Results: frozen object trajectory balanced accuracy `.732143`, confusion `[[6,2],[2,5]]`, JtMY source-holdout pair correct, but pair-delta mean cosine `-.00651`. Five prototype/bootstrap runs `.6696/.75/.9375/.6696/.7946`, median `.75`, only `3/5` pass. Weak lifecycle MIL runs `.8661/.8036/.7946/.8661/.8661`, median `.8661`; pair-order median `1.0`, with JtMY correctly ordered in all five seeds. This strengthens the lifecycle-head direction while leaving data coverage red.
+- Sensitivity: quarantining the JtMY alert lowers balanced accuracy by `.0863`, while quarantining its early no-alert raises it by `.0536`; the dynamic signal is useful, but the negative interval is distributionally different enough to require better same-route evidence.
+- Evidence SHA256: build `c6652fc72db9c8c53eba36d51412272cd79ff611cd87e55be50b3c36057e8456`; mechanism coverage `ead765a49f94ea63d9b439ecdf42366bcf56ea4593a7759ba54a923af8149490`; trajectory `c035f3889635151e7033e0e4a70c3da83dbfa0ae120392d315bf51c8a2afb519`; short runs `30d9b1b6698abd94ea2407df30b03f7812d0a579f8d13dc3b1eaf48ebe2c49e0`; MIL `1fa5d796d0c90c1d2532821877a0aea244705e3f5b1b3a5f8df7d0294b63a7f9`; sensitivity `660318742d894cbf96696f374a4e79d380fab10a3ae1662f0e5479cddfc5e2af`. No weights were saved and the App/default model was not touched.
+- Confidence-weighting OFAT: extended the same MIL head with an optional class-normalized linear confidence loss weight. The equal-loss rerun exactly reproduced the original five metrics. The weighted run produced the same balanced-accuracy vector `.8661/.8036/.7946/.8661/.8661` and pair-order vector `.8/1/1/.8/1`; the largest episode-probability movement was about `.01`, with no systematic correction of static false alerts. Stop this optimization branch and retain confidence for gating/review routing only. Equal/weighted report SHA256: `e724d0493191d2aa8a37ddd30dc21b90d16312c54e0839d20dd8a556359ca33d` / `bddc0ed8e269a96e9d5d963096cbf4832063cad5f1c6d15ed2d42507b4c4b01b`.
+
+### 2026-07-17 — Public-silver r7 reviewed-Wikimedia mechanism closure and representation diagnosis
+
+- Isolation: kept `secondary-corridor-causal` fully independent. The r7 builder rejects any path containing that direction, and this run consumed none of its code, data, labels, weights, metrics or outputs. Only method-level lessons may be referenced.
+- Source acquisition: used the Wikimedia Commons page for POPtravel's first-person Bangkok Sukhumvit walk, licensed CC BY 3.0 and carrying a YouTubeReviewBot license-confirmation record. Downloaded the 240p WebM transcode to `artifacts.local/downloads/`; size `241402495` bytes, SHA256 `8f0efe24eddd939e8396abc60cfa35789003e9a3b9f115b9538182d0060e6a17`. No source masks or external event labels were used.
+- Governance: extended the v2 silver validator so CC BY 3.0 is accepted only with bound review status, Commons file page, original source, author, review time and exact license URL. Added positive and negative tests for reviewed/unreviewed CC BY 3.0.
+- r7 build: added a deterministic builder and tests. It verifies the exact video SHA, extracts 12 preregistered frames, writes a hash-bound source manifest and four provisional episodes, then creates immutable child `public-video-provisional-training-r7-20260717`. The pairs are driveway-clear → near-field van crossing and sand-pile blockage → clear after passing. Labels remain GPT/VLM provisional and cannot authorize calibration, blind evaluation or production replacement.
+- Coverage: r7 has 19 non-abstaining episodes and seven matched pairs. Confidence-qualified dynamic and static mechanisms each reach three independent pairs/sources, so the mechanism gate passes for the first time; low-confidence JtMY remains excluded.
+- Frozen diagnosis: object trajectory balanced accuracy is `.738889`; pooled DINO/Depth is `.361111`; explicit relative-depth corridor profile is `.522222`. The latter two fail, so neither generic foundation pooling nor the current hand-built depth profile fixes the new mechanisms.
+- Head tests: prototype/bootstrap balanced accuracy `.6833/.7444/.7889/.5833/.6778` (median `.6833`, `2/5` pass). Weak lifecycle MIL `.7222/.6722/.7389/.5833/.7833` (median `.7222`), with pair-order median `.714286`. No weights were saved.
+- Failure localization: the van-crossing alert has only one persistent COCO trajectory; the sand-pile alert and post-pass no-alert have identical detection/track counts. Source-holdout trajectory predictions for the four new episodes are `1/1/1/0` versus expected `0/1/1/0`. Quarantining the driveway-clear episode raises balanced accuracy by about `.15`, which routes it to representation/semantic review but does not authorize deletion or relabeling.
+- Decision: the minimum data-mechanism gate is now green, while the feature contract remains red. Stop optimizer and SAM/ASAM escalation. The next isolated mainline prototype must represent near-field occupancy, static surface obstruction and temporal occlusion without importing the independent direction's implementation or artifacts.
+- Evidence SHA256: build `dc0cbe6de714e3ac67bef5fdc3bf4ae8e2c9b85cbbd39c42da43e866e1ac933a`; mechanism `59dfa67b7bab5a07c6ae7a6464e26081004d6030e5c90b93d869888356dc8e52`; trajectory `0a460982ea9b703b33905613fb0abe523dba6b8afcf942cff3cd0dbb01bf9162`; DINO `16a940f949ee04512c08f090ed004d7151d27e26e7c8b7b3e3fa25a5f2861120`; depth corridor `5034cc56309155d0c1a3e94ab60e6b28456d71d7c9b9fef85ef08add971e7f9c`; short runs `2ab461a3537843ff8a85d1c4877be85dddcc18fca2811146635e1f47e5893cbc`; MIL `d047c04ab1cb0094b3add9e8e45cf4613de67d3ed2f6ce8174cb4f805ddd4515`; sensitivity `f35378391948da77a0df2109c383684f06f8e1f3a1265baab548b273911c8f02`.
+- Verification: 51 focused Python tests passed with the repository's `scripts` import path; related files passed `py_compile`; every r7 JSON sidecar matched its SHA256; the r7 package contained no `secondary-corridor-causal` reference; `git diff --check` reported no errors beyond the repository's existing line-ending warnings.
+- Follow-up frozen representation OFAT: independently added `run_public_silver_free_space_topology_probe.py`. It consumes only the current mainline frozen SANPO segmentation logits, traces an adaptive walkable path, summarizes width/bottleneck/lateral shift/nonwalkable class probabilities, and evaluates both topology-only and trajectory+topology fusion under source holdout. Pure tests cover full blockage, lateral rerouting, temporal sensitivity and independent-path rejection.
+- Result: topology-only balanced accuracy `.522222` (`no-alert=.60`, `alert=.444444`); trajectory+topology `.627778` (`.70/.555556`), below the trajectory-only `.738889`. Counterfactual delta mean cosine is `.034916` for topology and `-.027240` after fusion. Every new Wikimedia episode has minimum walkable width `0` at the fixed `.50` threshold, including the post-sand clear segment, so the current segmentation logits are not calibrated for free-space topology. This branch is stopped without threshold or hyperparameter search and is not passed to a head.
+- Topology evidence SHA256: `be519fc2034e72933bcb7140e80ca773bd2bcbd07f273199f0d8e0d5f39fd4a9`. Its sidecar matches, and the regenerated r7 evidence tree contains zero references to the independent direction name.
+- Final verification: the expanded r4–r7 focused suite passed `55/55`; all related Python files compiled; every r7 JSON sidecar matched; the r7 evidence tree retained zero independent-direction references; and `git diff --check` remained clean apart from unchanged line-ending warnings.
+
+### 2026-07-17 — Public-silver r7.1 train-only static counterfactual stabilization
+
+- Isolation remained non-negotiable: `secondary-corridor-causal` was not read, modified, imported or evaluated. The mainline r7 evidence tree and the new controlled synthetic tree contain zero references to that direction. Builders and probes retain explicit fail-closed path checks.
+- Added a motion-compensated lower-corridor occupancy probe. Motion-only balanced accuracy was `.516667`; trajectory+motion was `.683333`. A compact motion variant fused with trajectory reached `.738889` but produced the same predictions as trajectory-only. The residual exposed registration failure on the near-field van and larger alert residual ranges in static pairs, but did not add generalizable classification power. Report SHA256: `b26e18ea87e31bb1d2b5494c453098b3357a80c01f99740b23192331d7f754d6`.
+- Added a mechanism temporal-range audit. Dynamic and static source-internal pair ordering each passed `3/3`; held-out dynamic endpoints passed `6/6`, while static endpoints passed only `4/6`. A single absolute static threshold is therefore rejected in favor of source-relative baselines and lifecycle structure. Report SHA256: `5b5f59422bc30f3d2d249cd39998b42c7b6777ba32d4e2fb99a07ac7b9f96d88`.
+- Extended the weak lifecycle MIL head with registered-residual reliability, temporal change from the first reliable baseline, complete-pair logistic ranking loss, optional train-only augmentation and optional lower-corridor appearance statistics. The baseline+pairwise candidate produced balanced accuracy `.8389/.7333/.7389/.6833/.8389`, median `.7389`, minimum `.6833`, with `4/5` seeds at or above `.70` and pair-order median `.8571`. Report SHA256: `c8b7c28993913a6f7f8f84126a3505208287e71dd3c92808387571795cbc04e7`.
+- Continued public-video discovery without forcing a real r8. The Novi Sad pillar interval was rejected due to people, a truck and turn/route-change confounds. The Trubarjeva roadworks clip was rejected because the camera was largely stationary and a white van crossed the view. Neither candidate entered training or evaluation.
+- Built a controlled train-only static-counterfactual package from three exact real no-alert parent episodes. Clear frames are byte-identical copies; positive frames deterministically composite perspective-growing barricade or sand-pile cutouts. The package contains three pairs, six provisional episodes and 18 images: nine positive images with alpha-derived masks/bboxes and nine exact clear negatives. Manifest, YOLO and COCO checks passed. All 18 contact-sheet images were visually reviewed and accepted with no issue tags.
+- Leakage control is code-enforced: every synthetic pair binds a `parent_source_id`; during real LOSO evaluation it is training-only and is excluded whenever that parent source is held out. Synthetic episodes are never included in confusion matrices, balanced accuracy, counterfactual metrics, calibration, blind evaluation or production authorization.
+- The best candidate (`temporal baseline + pairwise ranking + train-only synthetic static pairs`) produced real-episode balanced accuracy `.7944/.7944/.8944/.7944/.7444`, median `.7944`, minimum `.7444`, maximum `.8944`, with `5/5` seeds at or above `.70`; pair-order median remained `.8571`. Relative to the no-synthetic candidate, median improved from `.7389` to `.7944` and minimum from `.6833` to `.7444`. Report SHA256: `4f8e68c04d5c40787fb5df262318c1a4bbd414c974660f2ab0f9203601f5eb3a`.
+- The appearance-channel OFAT did not win: `.7389/.6889/.8389/.7889/.8389`, median `.7889`, minimum `.6889`. This branch is stopped without further feature or threshold search. Report SHA256: `d851a1b99e501a29373c39dbcd61d70a65a9ae6784445ffe9e351d26092f6040`.
+- Remaining hard failure: the Bangkok sand-pile alert is correct in all five seeds, but the post-pass clear episode remains a false alert in four of five. The current result closes minimum head stability only; it does not close obstacle-exit/event-termination semantics and does not authorize saved deployment weights or production replacement.
+- Synthetic build receipt SHA256: `79273244d32694ab9bd566eb48969b5d40862ba89c367cc75f0fc63978cabae6`. Manual visual-QA receipt SHA256: `f30494a89c949e31d10984cef83c1747d7b2ea0d651506119ef9c2db1098f02e`.
+- Verification: the expanded focused suite passed `74/74`; all related implementation and test files passed `py_compile`; `18` JSON sidecars across r7 evidence and the controlled synthetic tree matched their payloads; both artifact trees retained zero independent-direction references; and `git diff --check` reported no errors beyond existing line-ending warnings.
+
+### 2026-07-17 — Public-silver r7.2 causal static-event exit
+
+- Root-cause refinement: the Bangkok post-sand clear episode has low first-frame risk in every seed, a spurious middle-frame peak from generic object/street-scene features, and partial terminal recovery. Smooth-max retains the stale middle peak. The source frames visually confirm that the forward sidewalk is clear after the pile is passed; this is not an obvious relabeling case.
+- Strict-terminal negative control: added a selectable `terminal` episode pooling mode with exact one-hot gradient tests. Five runs fell to `.6278/.6333/.7833/.6833/.6333`, median `.6333`, with pair-order median `.7143`. Current-state-only pooling loses dynamic approach evidence and is stopped. Report SHA256 `ef4f54bef65173ff6d7c1198eca1522d06c633e3ea45ad877d78062be28ae81a`.
+- Synthetic-mask teacher negative control: added a frozen dense DINO teacher trained only on matched composite-mask patches versus the same exact-clear locations. Parent-matched synthetic records are excluded in every real source holdout. Real balanced accuracy was `.5778`; the Bangkok sand/clear direction reversed. Do not attach this teacher to MIL. Report SHA256 `6aa21bc02b29907d9dcde632f070550f495c5bb7f3275fffd559efa3309da319`.
+- Downloaded and hash-bound Ultralytics YOLOE-11s prompt-free segmentation weights (`292bdf157a9ec7315f34b567cb93467c5043cd1889a1cc18abbfdeB88d7a948d`). The model uses its fixed 4,585-class vocabulary and no per-run text prompt, silver label, source mask or synthetic image. It detected `sand box` at `.5845` in the nearest pile frame and no surface-material object in any of the three clear frames.
+- Direct semantic fusion negative control: semantic-only balanced accuracy was `.6111`; trajectory+semantic was `.5778`. Sparse static semantics should not be concatenated into a global linear head. However, the held-out Bangkok source was `0/1/1/0` under fusion, correctly separating all four episodes. Report SHA256 `041a97745832e0457c8ffa1bf607e020d9ad56586ae59ef8544939a11a0301e2`.
+- Added a zero-learned-parameter causal exit router. It closes a static surface event only when the immediately preceding same-source episode has a surface-material detection, the current episode has none, the gap is at most 5 seconds (or three manifest indices), and the independent source-isolated trajectory probe predicts no current dynamic hazard. Router conditions never read the current label and contain no episode-ID exception.
+- The router found exactly one candidate: the sand-pile alert followed by the clear episode after `2000 ms`. Five balanced-accuracy values improved from `.7944/.7944/.8944/.7944/.7444` to `.8444/.8444/.8944/.8444/.7944`; median `.8444`, minimum `.7944`, every seed non-degrading. Post-event clear became correct `5/5`; no-alert recall rose by `.10` in four seeds and alert recall remained `.8889`. Report SHA256 `80b4f4badad700e5931d4f4aace88cc49f756f65d016ac4009b237d28a176697`.
+- A preregistered 1-second gap negative control produced no exit candidate and exactly reproduced the un-routed metrics. This confirms the gain depends on the observed 2-second causal continuity rather than unconditional suppression. Negative-control SHA256 `2d5d6c0bd18894e5c5da9a8b1240bd8d1869e0f49591a2ef42c23ba406e105f5`.
+- Decision: the known post-event clear failure is resolved by a lifecycle router rather than a different optimizer or global feature concatenation. This remains a one-source provisional prototype. Do not modify Android `RiskEventTracker` or claim general event-exit closure until at least two to three additional independent continuous exit sources pass the same frozen contract.
+- Verification: the expanded focused suite passed `86/86`; all related implementation and test files passed `py_compile`; all `23` JSON sidecars across the r7 evidence and controlled-synthetic trees matched their payloads; both artifact trees retained zero independent-direction references; and `git diff --check` reported no errors beyond existing line-ending warnings.
+
+### 2026-07-17 — Public-silver r7.3 cross-source exit discovery audit
+
+- Added four license-bound Commons walking sources (Greenwich, Shanghai, Harbin and Worms), about 112 minutes total. A 5-second 320px prompt-free scan covered 1,346 frames and proposed 92 exits (6 surface, 86 barrier). GPT multiframe review rejected every surface candidate and the top barrier candidates as ordinary buildings, fences, fixed entrances, vehicles, stairs, crowds or texture errors.
+- Added hash-bound persistence re-filtering. Ten seconds of consecutive absence reduced 92 proposals to 77; twenty seconds reduced them to 62, while all six surface false positives survived. A 640px, `.05` confidence, 10-second persistence rescan reduced the set to 51 (3 surface, 48 barrier), but the remaining reviewed surface and top barrier proposals were still false. Broad YOLOE-only discovery is stopped.
+- Added an optional near-field box gate as a negative experiment. It removed valid construction-boundary detections and retained low-confidence noise, so it is not adopted. Future prompt-free reports now attest input size and Ultralytics/Torch/OpenCV runtime versions.
+- Built a deterministic 301-frame temporal-reversal counterfactual from a CC BY 4.0 Hof bus rear-window construction video. Raw adjacent absence produced three proposals; ten consecutive one-second absent samples retained only the `18s -> 19s` boundary, matching GPT's roughly `19s -> 21s` visual-clearance judgment. The artifact is discovery-only and excluded from real evaluation and training because its viewpoint is not pedestrian first-person and time direction is synthetic.
+- Added persistence refilter, temporal-reversal builder, overview/review artifacts and pure tests. No Android runtime or default model was modified. The independent `secondary-corridor-causal` direction remains unread and untouched.
+
+### 2026-07-17 — Public-silver r7.4 real-source exit challenge and risk-profile router
+
+- VLM-first review found a new self-published CC BY 4.0 Hof bus-window construction clip in original temporal order. Construction is visible through six seconds, leaves the view at seven seconds, and remains absent through ten seconds. The downloaded 240p video SHA256 is `1d9dff54e8ff89c4f40b66f29818eddca5948c564ef64c2f92a02d09efcc9e4c`.
+- A frozen YOLOE-11s prompt-free scan at 640px, `.05` confidence and one-second sampling detected `construction site` through six seconds (`.5028877` at the final present sample) and no selected semantic object in four consecutive samples from seven through ten seconds. GPT timestamped multiframe review accepted `6s -> 7s` as a discovery-only exit boundary with `.92` confidence.
+- The clip exposed a structural failure in the original surface-only exit idea: a transient `sand bar` detection disappears at two seconds even though the construction scene continues to six seconds. With three-sample persistence, the isolated external challenge rejected surface-only at `1s -> 2s`; barrier-only and the union of surface plus barrier risk groups both matched `6s -> 7s`. Challenge SHA256: `7c4cdc7b724ee6a3a1ef326c8e1f81d5231b724e6601bb4f4eda3a8ab83195d8`.
+- Added a separate risk-profile router experiment without modifying the r7.2 v1 router. The main r7 replay still produced exactly one candidate, Bangkok post-sand clear, and preserved the routed five-run balanced accuracies `.8444/.8444/.8944/.8444/.7944` (median `.8444`, minimum `.7944`, all non-degrading). Report SHA256: `d18b89e6a70d392fa842874eb2adf6e61ec9990bca844a336cb94be1b1d9eb3f`.
+- The one-second-gap negative control produced no candidate and exactly restored the five baseline values `.7944/.7944/.8944/.7944/.7444`. Negative-control SHA256: `ffc79d68561e3a8d30e6abf7594b463bd28cf0b63aea5652ef06e3f653390668`.
+- Decision: the risk-profile union is a stronger lifecycle prototype than surface disappearance alone, but the Hof capture is a lateral bus view rather than a pedestrian forward corridor. It remains external discovery evidence only. No training set, Android `RiskEventTracker`, runtime, or default model was modified; calibration, blind evaluation and production replacement remain unauthorized.
+
+### 2026-07-17 — Public-silver r7.5 licensed-source acquisition gate
+
+- Reviewed two CC BY 3.0 Ljubljana worksite videos and one CC BY 3.0 Vimeo Gympie site-visit video. The Ljubljana clips were static or panning soundscapes; Gympie was a hard-cut montage mixing road, walking, aerial, machinery, plan and title-card shots. All three were hash-bound in an acquisition rejection report and excluded from exit evaluation and training.
+- Generalized the public discovery registry to v2 for non-Commons platforms while preserving v1 normalization. Added a bounded Vimeo CC-BY search ledger plus PowerShell single-request wrapper; it never paginates or logs in, records the raw response hash, and marks every search result ineligible for training until item-level license and continuity review pass.
+- The only strict Vimeo search result was licensed CC BY but semantically irrelevant: walking and roadwork were generic description examples rather than the depicted task. It was rejected before download.
+- Public YouTube search produced a high-fit 22:50 Addis Ababa construction-corridor walking tour. Logged-in Chrome confirmed the continuity claim, but no reusable video license was established, so it remains `hold_no_download`. A separate 90-second walk beside a construction site was rejected after the expanded description showed that CC BY 3.0 applied only to music while the footage itself carried a copyright assertion.
+- Added machine-readable triage with SHA256 `8a6c22482e590a3f030d769b5da00ce2aa3372e863ce2cafbf8d8cef9a3541c4`. The new qualified pedestrian-exit source count remains `0/2`; provisional training, Android runtime changes and `RiskEventTracker` integration remain closed. No independent-direction artifact, code, data, weight or metric was read or modified.
+- Verification: the new Vimeo ledger pure suite passed `6/6`; the PowerShell wrapper parsed cleanly; the registry v2 tests had previously passed `7/7`. Further online discovery paused when the execution approval service reported its usage limit, without using an alternate path to bypass it.
+
+### 2026-07-19 — Public-silver r7.6 frozen-DINO retrieval negative experiment
+
+- Added a deterministic zero-trainable-parameter retrieval probe from the frozen Depth Anything V2 DINO-S encoder. The direction is defined only by Hof present frames at `0/3/6s` versus clear frames at `8/9/10s`; it scanned the four licensed continuous walking videos every five seconds, covering 1,346 frames.
+- Raw direction projections were not treated as cross-source probabilities. Candidates were ranked only by within-source robust-z sustained drops, then expanded into two-second multiframe review windows.
+- GPT multiframe review rejected all 12 top windows. The dominant failure modes were indoor/outdoor domain shifts, close objects and shop displays, historic masonry/rock texture, fixed gates/gardens, and camera turns. No window represented a continuous construction-or-obstacle risk exit.
+- With `0/2` accepted independent sources, downstream risk-profile/persistence/trajectory challenges were intentionally not run. No training record, weight, Android runtime change, `RiskEventTracker` change, calibration or blind claim was produced. Review report SHA256: `05b5fe9637598144fce86a7fb5fb839baccf8714e4f8520ff1d33f6908d05112`.
+- Decision: do not rescue the failed retrieval by post-hoc DINO/YOLOE union weights. The bottleneck remains acquisition of item-level reusable, causally continuous pedestrian-view sources, not head optimization or SAM/ASAM.
+
+### 2026-07-19 — Public-silver r7.7 Fremantle long-work-zone lifecycle challenge
+
+- Reused the already licensed CC BY 2.5 AU Fremantle original-order dashcam source as a second external mechanism challenge, without counting it toward the pedestrian `0/2` gate. Dense GPT frame review placed the visual cone-channel exit at `178s -> 179s`, followed by a stable clear road through 195 seconds.
+- A one-second, 640px, `.05` frozen prompt-free scan covered 262 frames. Barrier-only and risk-profile union each emitted 10 exits: eight premature, two late and zero exact matches; surface-only emitted none.
+- During the reviewed risk-present interval `150–178s`, barrier evidence was active for only `2/29` samples (`.06897`) with a 20-sample absent run. The stable-clear interval `179–195s` still contained one false `construction site` activation. Challenge report SHA256: `8e37b59d75ca2c2985c06e4cd826491bebb59eaa0d4fc05415744953b277a7a4`.
+- This falsifies the assumption that consecutive semantic absence is positive clear evidence. A future lifecycle prototype needs explicit `present/uncertain/clear` state and an independent clear/traversable signal; extending a timeout alone would preserve both the long in-risk dropout and the post-exit false activation. No training, Android runtime or `RiskEventTracker` change was authorized.
+
+### 2026-07-19 — Public-silver r7.8 work-zone markers and tri-state lifecycle prototype
+
+- The frozen prompt-free vocabulary contains direct work-zone classes that the original preregistered barrier subset omitted: `barricade`, `cone`, `construction worker` and `traffic cone`. Added an explicitly exploratory, default-off scanner flag that maps only these fixed built-in classes to barrier; the established baseline remains unchanged and no text prompt or trainable parameter is introduced.
+- On Fremantle, risk-window activation improved from `2/29` to `23/29`; longest absence fell from 20 to 2 samples and raw exits fell from 10 to 3. The adjacent-exit rule still failed with one premature and two late candidates, including isolated post-clear activations.
+- Added a zero-learned-parameter `present/uncertain/clear` external lifecycle evaluator. Entry requires `2/3` active samples; absence first enters uncertain; three consecutive absent samples confirm clear; a lone activation from clear cannot reopen an event. Fremantle produced exactly one event with `last_active=177s`, `first_absent=178s`, `confirmed_clear=180s`, containing the GPT `178→179s` reference. Report SHA256: `302152ec2cb3ab2287bec387fdbc064a447f0fe5987a3d14f3694b2d56ce5744`.
+- Without changing parameters, the original Hof baseline scan also produced exactly one event with `last_active=6s`, `first_absent=7s`, `confirmed_clear=9s`, containing its existing `6→7s` reference. Report SHA256: `3f73e28d97278d68533ed434ec077939b3b8dc2a405c21c234e66e3a2a9de37e`.
+- This is a two-source vehicle-view mechanism prototype, not prospective pedestrian validation. The marker expansion was proposed after inspecting the Fremantle failure, so the pedestrian `0/2` gate, training, calibration, blind evaluation, Android runtime and `RiskEventTracker` remain closed. The next licensed continuous source must freeze the marker set and `2-of-3 / 3-clear` contract before visual review.
+
+### 2026-07-19 — Public-silver r7.9 prospective marker contract failed nuisance controls
+
+- Frozen the full work-zone marker vocabulary and `2-of-3 / 3-clear` lifecycle before opening four nuisance controls. Harbin and Worms passed, but ordinary Greenwich gates and a Shanghai street turn created sustained false events; only `2/4` controls passed. Contract SHA256: `48a8319f61bb58f9e319460e5dbb655340f8729de06871718cb258550cce5fa1`; failure report SHA256: `b4ce3f45ec2791924492df35c0402dd5325d888a08ed733cd816fc4e8b97a038`.
+- No leave-one-marker-out variant passed both Fremantle and all controls. The existing near-field corridor gate reduced Fremantle risk coverage to `.241` and still retained both false events. r7.9 remains a prospective failure and was not rescued by threshold or label edits.
+
+### 2026-07-19 — Public-silver r7.10 multi-cone expert boundary
+
+- A post-failure count audit tested `1–4` traffic-cone detections per frame. Only threshold `2` passed the Fremantle exit plus all four prior nuisance controls; audit SHA256: `517b17d00432c35b3f742f7aa752202f9e5adcdb27f01e5dc390fe0d32467ad7`.
+- After freezing the r7.10 contract (`109521ccc692d5f711ebcabf2ed0f26b4694f6c42773f72e13921235fd29c35d`), four new nuisance windows passed `4/4` with zero events. A separate persistent-risk Hof clip then exposed the boundary: only `2/18` risk frames met the dense multi-cone policy and no event opened. Reports: `d81541eeefc43997ce26def42761364e66455f01e3387fec9182db19cd0ec348` / `3335a4e466c3e9b679c9406f64dc54aad9cc20a7408eacd09fd7926dea5a9c79`.
+- Decision: retain multi-cone as a narrow mechanism expert only. Do not lower its count threshold or call it a general construction detector.
+
+### 2026-07-19 — Public-silver r7.11 chromatic marker expert
+
+- Extracted per-detection box color and geometry for true dense cones, sparse red-white delineators and fixed-gate false detections. Geometry and box shape did not separate them. The scale-free rule `high_saturation_fraction > dark_fraction` retained 75/115 Fremantle cone detections and 9/12 Hof sparse detections while rejecting 5/5 Greenwich false-cone detections; adding `barricade` brought Hof entry to 22 seconds without reopening the gate controls.
+- Testing clear persistence `3–6` showed 5 and 6 pass the dense exit, Greenwich/Shanghai controls and sparse persistent entry; selected the minimum sufficient value 5. Audit SHA256: `1ace0742e75c63df14e34c60aef66e253c4c38d07c6a53d807b763f3d61f6065`.
+- Frozen r7.11 contract SHA256: `3e6e6f410ce03053f4e8d6e38475156f69cf6a41352d8619541a7c8ae526bca7`. On four new nuisance windows, 190 frames contained 35 raw cone/barricade detections but the frozen chromatic expert produced zero events and terminal clear for all `4/4`; report SHA256: `c0c7dde0cdf0545a45d9a36fce2a971afe79ad02c0b7a931b87371e133bb746f`.
+- This supports mechanism-specific positive evidence plus tri-state lifecycle, not global barrier absence. No prospective independent positive exit or pedestrian first-person source exists yet, so training, calibration, blind evaluation, Android runtime and `RiskEventTracker` remain unchanged.
+
+### 2026-07-19 — Public-silver r7.12 source-lineage gate
+
+- Added a SHA256-deduplicated inventory covering all 14 videos in the seven local public-video registries. The audit rejects registry omissions, duplicate bytes under aliases, video drift, and any source that influenced the frozen r7.8/r7.10/r7.11 parameters.
+- Large-model review of the full local overview evidence classified Moira/Ljubljana/Anasskoko as static or panning, Duisburg/Vimeo as edited or non-causal, the four long walking sources as having no construction exit, Fremantle/Hof as derivation sources, and the longer Hof clip as persistent-risk-only.
+- The enforced result is `0/1` independent held-out positive exits and `0/1` pedestrian-view held-out positive exits across 14 unique videos. Inventory/report SHA256: `2110df3b8973a68efa7f466cb2ffe2d7f2f8a4c60c281339b11054fa62af7090` / `9070787e41d701129ec56597a09cd78c0dce834e48ce9efeefaaab7fc99bb370`.
+- Decision: the remaining bottleneck is source-level positive evidence, not source aliases or head optimization. Keep training and Android integration closed until a genuinely new eligible video passes the gate.
+
+### 2026-07-19 — Public-silver r7.13 prospective-positive acceptance harness
+
+- Added a fail-closed evaluator that binds the r7.11 contract, frozen chromatic feature report, r7.12 source-inventory audit and timestamped large-model review by SHA256. The review must attest that the policy and feature report were frozen before visual inspection.
+- Acceptance requires an eligible held-out lineage, an accepted original-order no-cut review, exactly one lifecycle interval containing the visual boundary, risk-window activity at least `.4`, stable-clear activity at most `.1`, and terminal clear with no open event. Pedestrian eligibility remains a separate reported condition.
+- Added a fixed review template (`07d872826ff68231e327c231dd52de2002b34b16256fc6bf45255673a0e355bd`) and eight unit tests covering the valid path plus derivation contamination, boundary mismatch, clear-window false activation, contract drift, feature-report substitution and hard cuts.
+- No real report was fabricated because the r7.12 inventory contains no held-out positive source. The harness is ready for the first newly acquired item-level licensed continuous video; all downstream authorizations remain false.
+
+### 2026-07-19 — Public-silver r7.14 pair-relative lifecycle probe
+
+- Added a zero-trainable-parameter probe over the six qualified same-source matched pairs. It verifies sidecars and report lineage, orders episodes only by SHA-bound source `frame_index`, rejects overlap/cross-source/incomplete pairs, and maps the sign of the later-minus-earlier mechanism score to open/close/abstain without an absolute threshold.
+- All `6/6` transitions matched the provisional episode chronology: five clear-to-risk opens and one risk-to-clear close across both required mechanisms. The Bangkok post-sand clear was correctly closed with signed delta `-.0012401`.
+- The close evidence is fragile: its normalized margin is `.0412`, so a post-result `>5%` margin stress diagnostic abstains on that one transition while retaining the other `5/5` correctly. The stress rows are diagnostics, not calibrated thresholds.
+- Final report SHA256: `421e2d5be2c7ca81991ebe36ccadc0033c4503515acb828345fbb0c63a51ec68`. The result supports a future mechanism-channel + relative-baseline + tri-state-lifecycle head, but requires a recent trusted reference state and does not solve arbitrary-frame cold start, continuous streaming, or cross-source positive validation. No Android runtime, `RiskEventTracker`, default model, calibration, blind or production state changed.
+
+### 2026-07-19 — Public-silver r7.15 retrospective dynamic-close stress case
+
+- Audited unused bound frames after each qualified pair. Only SK1 retained consecutive frames after its risk episode. GPT multiframe review was hash-frozen before detector scoring and accepted frames `5–7 risk → 8–9 clear` as a retrospective dynamic close stress case; review SHA256: `d620eb14494751ca61e9e97f591857e36e21a01c9cf6e33b5adbe3372dc15452`.
+- The frozen YOLO12n/320/`.15` contract reproduced the published risk temporal-range score exactly (`.0349100`). The later clear window scored `.0123757`, yielding delta `-.0225343`, normalized margin `.6455`, and a correct close event. Result SHA256: `8e1d212893a3e77729b911b4d93d0d8588cef1586cbe68478ecea6c43a0bf6bb`; six pure tests passed.
+- The review JSON contained a manually mistyped UTC value later than the inference output. The immutable review was not rewritten; erratum SHA256 `4458000e09c595e1a7b66cc456da55ab826330873ea5b3c204ea92023f099497` records that review and sidecar file writes preceded inference, while explicitly treating filesystem timestamps as supplementary rather than cryptographic evidence.
+- This adds a dynamic-mechanism close stress case but not a new source or prospective sample. The r7.12 independent positive count remains zero, and no training, calibration, blind, Android runtime, `RiskEventTracker`, default-model or production authorization changed.
+
+### 2026-07-19 — Public-silver r7.16 dual-evidence lifecycle fusion
+
+- Added a zero-learned-parameter fail-closed fusion over r7.14 relative changes, the r7.15 dynamic close, the existing 5-second risk-profile semantic-exit router, and its 1-second gap negative control. It never uses an absolute scene threshold.
+- A trusted clear reference plus a strong relative increase opens an event. A trusted risk reference plus a strong decrease closes directly. A weak decrease closes only when the frozen causal semantic router identifies the exact same source and previous/current episode boundary. Missing reference, zero change, missing corroboration and conflicting evidence remain uncertain.
+- All seven available transitions passed: five strong opens, one strong dynamic close and one weak semantic-corroborated static close. Four fail-closed controls also passed, including removal of the Bangkok exit under the 1-second gap contract.
+- Report SHA256: `b0f0a4c46bd2a0de6df6ba9a859811280c594898017e47aa98f2d21172acddc7`. The `.05` strong-margin boundary came from the already-published r7.14 post-result stress grid, so retrospective acceptance is true while prospective acceptance remains explicitly false. No training, calibration, blind, Android runtime, `RiskEventTracker` or production authorization changed.
+
+### 2026-07-19 — Public-silver r7.17 frozen prospective dual-evidence contract
+
+- Frozen the dual-evidence lifecycle policy before opening any new source visual content. Contract SHA256: `e7439ab3beac677ac913a0bb51155378ce2b2898c61dc4c38399c31235cd6175`. It discloses r7.16 as post-hoc and fixes the `.05` strong margin, model hashes, input sizes, semantic groups, 5-second corroboration gap, three states, review sample counts and all authorization flags false. The post-clear dynamic guard is recomputed from frozen occupancy peaks; feature reports cannot inject a hazard verdict.
+- Added a prospective evaluator that requires complete-video one-second features to be frozen before original-order large-model review. The reviewer may select only pre-clear, risk-present and stable post-clear windows; open, close, stability and controls are recomputed from immutable features.
+- Added a bounded-batch full-video extractor for frozen YOLO12n corridor occupancy, registered lower-corridor residual and prompt-free semantic counts. It follows the half-open one-second schedule, binds video/model/contract hashes, never receives review windows or labels, and emits no hazard or lifecycle verdict.
+- The evaluator rejects contract/feature/inventory substitution, feature generation after window selection, irregular or missing samples, invalid hashes, hard cuts, ineligible lineage, boundary mismatch, weak closes without semantic corroboration and stable-clear reopening. Five extractor, seven contract and thirteen evaluator tests passed, including a real temporary-sidecar `run()` and output-hash path.
+- Fixed review-template SHA256: `03923a78b3dd48bee49581d36f2fbe2ac8d2110a1e8f49c2fd3ee82742b48ffa`. No real result was fabricated because no r7.12 source is both new and independently positive. Training, calibration, blind, Android runtime, `RiskEventTracker`, default-model and production authorization remain unchanged.
+- Executed a real engineering smoke on the known-ineligible 40.117-second Hof bus source: 41 scheduled samples across multiple batches completed frozen YOLO12n, YOLOE and motion compensation. Feature report SHA256: `95f2bb6f8bc60f68622b4ecee57669b2850cde128bb39d49da8bc320b7b2a031`.
+- A deliberately invalid pre-contract review was then rejected before lifecycle scoring with a structured chronology error; neither result nor sidecar was created. Smoke audit SHA256: `9e0897599d2057411f1c606982213422b118878b9dc9f748bfc5190db9a9f59e`. This verifies execution and provenance rejection only; the independent positive source count remains zero.
+
+### 2026-07-19 — Public-silver r7.18 first real pedestrian prospective challenge failed open
+
+- Resumed licensed-source acquisition after network recovery. Registered every source before download or visual review. A CC BY 3.0 Commons clip was rejected as near-static with no lifecycle; a Pexels-licensed continuous POV clip was rejected because construction context persisted and road traffic did not create a pedestrian-path exit.
+- Found YouTube `TVCX9tpaty8` through the Creative Commons search filter and confirmed item metadata `Creative Commons Attribution license (reuse allowed)`. Downloaded format 18: `31,679,092` bytes, SHA256 `551f8483e112b38afd0a91840fb56c8539cfcbe3a6475465677a342c695e63ec`.
+- Before any visual window selection, extracted all 457 scheduled one-second samples with the frozen r7.17 YOLO12n, YOLOE and registered-residual channels. Feature report SHA256: `9ff5ecbe0abba930463cc24c4679a2419a53364f0df472008df706c7743504e4`.
+- Full 5-second review found no visible hard cut. Dense 1-second review selected `340–345s clear`, `365–371s concrete-pipe near-field risk` and `378–389s stable clear`. The candidate-only lineage audit passed `1/1` independent and `1/1` pedestrian held-out positive; SHA256 `7847f19e6494dda6af56c4a4ee4f8b101664009d16044437b151090d57d3bb50`.
+- Frozen evaluation failed only `strong_open_passed`. Static residual range was `.3058160` in visual clear versus `.1055915` in pipe risk, producing normalized open change `-.6547222` and `uncertain`. Strong close (`-.6958017`), stable no-reopen, lineage, boundary and all three controls passed. Result SHA256: `633591eafd019e2e5d6ae91c63268bde666de4564465798d7364884dcd3aae96`.
+- Diagnosis: this is prospective evidence of a static-feature robustness failure under camera rotation/compression, not a head-optimization failure. The result is not rescued by window edits, margin changes, SAM/ASAM or post-hoc calibration. Training, calibration, blind, Android runtime, `RiskEventTracker`, default-model and production authorization remain closed. Consolidated audit SHA256: `3cd003c196de87b94d4b5afe209f247a54b3bf64f12a572ba8e27f31816520fe`.
+
+### 2026-07-19 — Public-silver r7.19 static-representation diagnostics
+
+- Added a zero-parameter background-normalized registered-residual probe with robust median/q75 pooling. Five pure tests passed. Rice risk-versus-clear ordering passed, but no candidate also ordered all three legacy static pairs; report SHA256 `7a15d0e0443b359c6db0b23a4c6dd1c2dda0e0b1c3a5f63af8436e848bc695c9`.
+- Installed project-local Transformers and downloaded the frozen public `nvidia/segformer-b2-finetuned-ade-512-512` teacher under ignored `artifacts.local/`. A no-threshold soft free-space probe ordered Chcne and the sand pile correctly but reversed gie8 and ranked Rice pre-clear as more nonwalkable than pipe risk; report SHA256 `26ef0ea50707d94a7be5e2ec6faeb6a35f571d0103c4bea32c8362b51fda4f8f`.
+- One structural follow-up used a fixed continuity-constrained adaptive path over the same soft map without changing labels or fitting thresholds. Four pure tests passed, but no feature ordered all legacy pairs plus Rice open/close; report SHA256 `642ad6b6ce6e266f76d0367d68896092b2bf463e584820b0a1f8a120abc24be7`.
+- Decision: stop post-hoc mask/class/threshold and optical-flow searches. Resume independent matched-source acquisition and preserve multi-channel, mechanism-routed risk profiles. No training, calibration, blind, Android runtime, `RiskEventTracker`, default-model or production authorization changed.
+- Acquisition resumed with item-level license fail-closed behavior. Eighteen new YouTube candidates had no explicit CC license metadata and were not downloaded. Two CC BY 3.0 Commons Ljubljana worksite videos were registered before downloading only 360p transcodes; 5-second overview triage found near-static/across-street cameras, persistent construction, no pedestrian forward progress and no clear-risk-clear lifecycle. Both were rejected before feature extraction; triage SHA256 `d6ab3842d651ed3576fa55ae341c0754319e93edef08d4aaa03433377aee90e1`.
+- Added `run_public_silver_multichannel_risk_profile_probe.py` and four pure contract tests. The fixed 16-channel profile covers registered local change, absolute clearance, adaptive-path occupancy and detour offset; it is evaluated alone and concatenated with the unchanged 163-D frozen trajectory vector without feature, mask, class or threshold search.
+- On the same 19 episodes, source-isolated balanced accuracy was `.738889` for trajectory-only, `.422222` for profile-only and `.738889` for fusion. Profile/fusion matched-pair mean cosine was `-.062585/-.026414`; Rice profile-only open and close projections both failed. The fusion did not strictly improve the trajectory baseline, so the preregistered feature gate failed and five prototype/bootstrap runs were not launched. Report SHA256: `d370192ca5ca81d1693eb26274e43daa859210251afd2983d1ead561be005db1`.
+- After connectivity returned, Vimeo's CC-BY endpoint still returned HTTP 500 for three queries. Item-level YouTube checks over 30 results produced one explicit CC candidate, `SI7uinNg7jk`. It was registered before downloading a 360p copy, then rejected before feature extraction because the 10-second overview showed repeated multi-camera montage cuts rather than one ego-pedestrian clear-risk-clear episode. No training, calibration, blind, Android runtime, `RiskEventTracker`, default-model or production authorization changed.
+
+### 2026-07-19 — Public-silver r7.20 mechanism diagnosis and static counterfactual entry
+
+- Added a nested source-isolated mechanism-routed expert probe over six qualified pairs. Neither observable routing nor oracle mechanism labels produced a stable gate: best routed balanced accuracy was `.6667` for trajectory, `.5000` for risk-profile and `.5833` for fusion. Report SHA256: `8c29ea04130b2af9a65a407c58d9a318586166b13a8d0ff8320eaf5c531f5f7a`.
+- Created an ignored train-only photo-real static counterfactual dataset with six independent real clear parents, two sources for each of construction pipe, temporary barrier and surface debris, and twelve final 1280x720 images. Natural-language generation geometry was not treated as verified object geometry: annotations intentionally contain zero bbox/mask objects, while pair labels and full parent/source/image SHA lineage are retained. Model review SHA256: `522c6a98b90370b42f21081f95740b2d68cac193d7ef0332bf4b3182eba953de`.
+- Added a schema-v2 provenance/response auditor. All train-only, hash, parent-source exclusion, family coverage and no-pixel-truth checks pass. One visually accepted barrier is a frozen-teacher hard nonresponse and remains in the data rather than being filtered by teacher agreement. Audit SHA256: `2e7dcbcdb30278098aee2d33669a11b7b0d3b38a912d243d846560b168cd4b8d`.
+- Added parent-source-isolated fixed pair-delta and full ADE semantic adapter probes. Six synthetic pairs improved legacy real static ordering from `1/3` to `2/3`, but Rice open remained false; SHA256 `eb2e574bc4c86d2d7aaa454c990c240dbc9346dc9062511f2610bd159d9578bd`. The 450-D semantic adapter passed Rice open/close but only `1/3` legacy pairs; SHA256 `1d5dc9f2700c8cdf179e4a5bdd11574d6ffc02f215acbdab8f0490ea93a0d42b`.
+- The apparent complementarity is post-hoc and was not promoted into a fusion rule. Next work is actual representation-adapter training with expanded hard counterexamples and strict parent-source exclusion, followed by a newly frozen prospective source. Android runtime, default model and production gates remain unchanged.
+- Ran exactly one fixed nonlinear representation-adapter short run: seed 0, four softplus positive-evidence units, fixed unweighted readout, 300 steps, frozen teacher, no hyperparameter sweep and no saved weights. Source-isolated real ordering remained `1/3`; Rice open failed and close passed. Report SHA256: `b8630d4c08823b3bce026f9db77203e4a9d61c17c1e06b564e32f41ef1ffeb7c`. The five-seed bootstrap was therefore skipped by contract.
+- Began an inverse-counterfactual batch after network recovery: licensed real obstacle photos remain the risk endpoints and GPT image editing removes only the obstruction to create provisional clear endpoints. The first two source-isolated pairs cover a discarded sofa (CC0) and a utility pole blocking a narrow sidewalk (CC BY-SA 4.0). Four image hashes and source/license lineage validate; manifest SHA256 `fbf3a2ab6b7df429823a3f23fb68703847cdd23276672000957287808826639b`, model-review SHA256 `dbf60fd344fa67da98f1e1c495d7446245a0bb516bb63ab286645b7e3c656292`. This is train-only ranking/classification evidence with no bbox, mask, distance-field, evaluation or deployment authority.
+
+### 2026-07-19 — Public-silver r7.21–r7.23 frozen DINO and multi-expert lifecycle
+
+- The two inverse pairs passed provenance, license, hash, no-pixel-truth and parent-source isolation audit; SHA256 `784adac3c5b3d707c2159ec29e13ef174307235ab56dbd495aec2f494f4fc943`.
+- A fixed 1920-D DINOv2-S regional pair representation passed all three legacy real static pairs and Rice open/close; SHA256 `37f90be695d16cf3937a7c019cc8e2e8c04a5cb482489ee89aecb3b3fbcdfd5f`. Five fixed source-bootstrap short runs passed `5/5`; SHA256 `69223aae8d1ff4d6273cf0acf4f37d7ab01b49dc6182054d72265f1e38fa7852`.
+- Froze the r7.22 DINO prospective contract before new video review; SHA256 `6b5924ab35b9866a4ec23994518e5316de1b7ccc1e127e2e79a5535392389845`. On the independent Japan riverside pedestrian video, DINO failed the fixed open projection but passed close; immutable result SHA256 `cde840bb604766d5dcd0c3f471e32d9db64c5e4b171c271113622d16c97a4995`.
+- The older independently frozen r7.11 chromatic construction-marker expert passed the same video's small traffic-cone lifecycle without rule changes; official result SHA256 `ad71ad76a2859611401e13fad7ebc1de80c1927d1dc466d60593fd5bfb190191`.
+- Added and tested a multi-expert risk-profile/lifecycle prototype. Independent channels OR-open; every channel that opened must independently close; conflicts remain present/uncertain and absence never asserts clear. Japan derivation prototype SHA256 `ed147893f8ee49f4b9cc3648aa7ec0d6227d8671e94ad6e711ba3327c0218f63`. Before registering any new source, corrected the contract's local-time-as-UTC metadata; frozen r7.23 contract SHA256 `4918fe3e6053a3dd7b13d200ea219dfbdfee2a6e20dbc7be67fefc5b18317071`. It requires a new post-freeze source. Training, calibration, blind, Android runtime, `RiskEventTracker` and production authorizations remain false.
+
+### 2026-07-19 — Public-silver r7.24 prospective multi-expert negative failure
+
+- Registered and downloaded the CC BY 3.0 Matoaka pedestrian walk only after the corrected r7.23 contract freeze. Video SHA256 is `017f860e002c75d093206772800bd68cb1c19f226b74e4d5a933798916347821`. All 1,073 DINO and chromatic samples were frozen before visual review; report SHA256 values are `1fb898825505deedb8f611e6de62406a628e2b055a7e14a797646f90c6318a9a` and `1e526a7a2e155856559766008fab3ad8c4f75315cbb441db15ed2db5fa1e008f`.
+- Original-order review fixed a visually clear negative challenge around a traffic cone across the road. DINO falsely opened (`+.0375678`) and failed to close (`-.0551055`); the chromatic expert opened at 174 seconds and cleared at 192 seconds. Frozen result SHA256 `938c03fa3ac03a341ecb3b0885946496ad5ebe67268586f2c7b55ccf7f0ac0ef`.
+- This prospectively rejects unconditional expert OR. The next open rule must combine mechanism evidence with adaptive path relevance and approach/intrusion dynamics. A fixed center nearfield gate is insufficient because it also rejects the valid Japan side-cone event. No existing result is rewritten and all training/runtime authorizations remain false.
+
+### 2026-07-19 — Public-silver r7.25–r7.26 radial approach freeze and negative pass
+
+- Added a deterministic retrospective radial-approach diagnostic over frozen r7.11 detections. The fixed gate requires five accepted samples, first/last three-sample medians, at least `.05` bottom-coordinate progress greater than horizontal sweep, and positive log-area growth. Japan passed; all Matoaka and historical vehicle events failed. Diagnostic SHA256: `8881048ddd5f3fab4f10fc56eba435d0bc572bf3b039d65b6f988cebae70efcc`.
+- Froze r7.25 before registering any new source. Contract SHA256: `6746957ce89d4f133c21802632ba4c5c972b01d0d61e34895b11b12392e9a8ce`. DINO is support-only; an event may open only when the bound chromatic lifecycle and radial-approach gate agree.
+- Registered and downloaded two new CC BY 3.0 continuous pedestrian videos from Commons before review. Bramwell video SHA256 is `9c582c178a67b12b70df7c5a9542b18f5f00583a69c2e61e2cbcf9dd64d29b45`; Stegna is `ae0385d336785b0179e8655ab0a3feaef507c7e9885fddb5d457ebd2fd8fc3d8`. Froze 2,163 full-video samples before visual review (SHA256 `efd3127df05aca4a280dacbdb92d2e47b083989f1845918bc941cb63b827e160`) and then froze zero r7.25 candidates (SHA256 `576fe7da8cdd213e2d4ee71ef6c4dff7fb56f9cdd8907bba563aed7bdc222c9a`).
+- Dense post-freeze review classified Bramwell 375–385 seconds as a close-pass negative: the cone remains on the grassy shoulder, the paved route stays open, and the brief detection jump is caused by turn/pan rather than sustained intrusion. The scored negative passed; Stegna remains context-only because no marker lifecycle was reviewed. Result SHA256: `9c3910fc5467a0890831c721eeba3eda9371164ca121c2d11658f9ca58ec2752`.
+- Added evaluator and tests. This closes one false-open case only; it provides no independent positive recall evidence. Training, calibration, blind, Android runtime, `RiskEventTracker`, and production replacement remain unauthorized.
+
+### 2026-07-19 — Public-silver r7.27 post-freeze Tai Wo source rejection
+
+- After network recovery, registered the 9.4-second CC0 Commons clip `Roadwork with no dust control 02` before download or frame review. Video SHA256: `4e6b47fc218a7e96cfa601309315dd73462957516fb1a07d15343d0baf0ba252`.
+- Froze ten one-second chromatic samples before review (SHA256 `da2202521c783a37d9a3babc6ca70709e3a37050651b8aa7196b016c5bafc833`) and then froze zero r7.25 candidates (SHA256 `1d87766d92bc69b30bb6098f5ac7b5aaf6198e42b359ff160839eb34a00fc0f1`).
+
+### 2026-07-19 — Public-silver r7.28–r7.29 independent lifecycle failure
+
+- Preserved Rice Street as context-only after pre-review freezing: chromatic features `1baa692d...`, zero candidates `4acf7972...`; ambiguous route-choice windows were not forced into a score.
+- Registered Edmonton and Kampala before download/review. Frozen combined chromatic features SHA256: `ea351ffe25201fb0e2ef6fa99d6e5cb6261784d5e429cc0fde673f519bd86ade`; frozen radial candidates SHA256: `0c350a4659485c9df490e3937fbb586c303d6a6da5aee46209aa7d123394c78c`.
+- Edmonton opened correctly at 671 s but the frozen r7.25 lifecycle cleared at 697 s while GPT multiframe silver review kept the same constrained pedestrian episode active through 735 s. The preserved 38 s false-clear result SHA256 is `d6230f066e0684c1f65a88b2c6564071e08376011263d776fc71ed498bc7ca42`.
+
+### 2026-07-19 — Public-silver r7.30–r7.32 gap bridge freeze and source stress
+
+- Retrospective absence sweep selected the minimum passing value of 9 samples; probe SHA256 `a1070be1326b455c2ae83789c2254ada97c2465eedc4523c4633888d6e1528ca`. Froze the asymmetric entry/exit contract before further source search, SHA256 `b692f72758d7f34021a4dd02dd65371fa24a9ddc7faa48b821fb6003dd158169`.
+- Installed a local FFmpeg essentials runtime under `E:\codex-tools\media\ffmpeg` to cut pre-registered CC BY source windows without changing project dependencies or Android code.
+- r7.31 Dallas: pre-review feature SHA256 `e6777a75890a3549d9f97fa4105baf8b3e43b7e9e1383349a2e3974c7b9ad899`, zero-candidate SHA256 `6c530633e6636e5c2f716ce921fde5709acbc11fce6ab5cd17056840283b6ac9`, negative pass SHA256 `0186c526aef0b728d08f1aedaa6e46f9c5e4e73cbba52a9109688383d0a5fa5a`.
+- r7.32 object-rich garage demo was rejected after freezing 592 samples and zero candidates; rejection SHA256 `264d0d6f6f9628a78d11a96a2eb446046281a568ac8b96600193f4f519c9f08f`. It receives no event gate credit.
+- r7.33 Cape Town: registered a chapter-selected continuous CC BY window before download/review, froze 220 samples (`968082ec...`) and zero radial candidates (`38c550e9...`), then passed the wide-forecourt/roadside-marker negative control. Result SHA256: `eafef19730cf4e62774e35063f1677300f5a6913ebd5405f241085c11aee8556`.
+- No Android runtime, `RiskEventTracker`, calibration, blind set, or production model was changed. The remaining r7.30 blocker is a true-radial-entry episode with rapid visual clear, needed to measure over-persistence.
+
+### 2026-07-19 — Public-silver r7.34 dense-marker negative and local-window rejection
+
+- Pre-registered the CC BY Jakarta reopening chapter before download/review and froze an exact 80-second clip (`f2a0d3ec...84fdb`). The frozen feature report contains 221 traffic-cone detections (`ab5b9cba...34b4b`) but the r7.25 scanner produced zero candidates (`988b87ea...4735`).
+- Post-freeze multiframe review found an open curved route with markers along its boundaries, not a path-intruding obstacle. The prospective negative passed; result SHA256 `3ef05cb89c6df9cc939fa6370f673b96c23c330b484bdfc5518d214f8ff2ee3b`.
+- Added a diagnostic-only local radial-window probe. Widths 5/7/9 retain Japan but false-open Jakarta and other negatives; width 12 also false-opens Jakarta. Report SHA256 `a410ef8eeebd78bf16098d1beccda519c6f0e977484bac9378cbded50d4e9fb9`. No contract was frozen; the next representation target is adaptive path occupancy.
+
+### 2026-07-19 — Public-silver r7.35–r7.36 path relation and rapid-clear search
+
+- Rejected a whole-image generative edit because it redrew the background. Built three equal-count path-relation pairs instead using one generated transparent cone asset plus deterministic compositing. Every clear/risk image has four identical cones at identical depth/scale/spacing, translated only laterally; all pixels outside intervention masks remain unchanged. Generation report SHA256 `7a1297a6d0c6f7cf5dbf9513204a904dc89a15458f02925d9df642311a270671`.
+- The frozen DINO regional direction ordered all synthetic leave-one-out and mirrored pairs, Japan and Edmonton positives, and Cape Town negative. Jakarta remained a false positive at `+.00882`; the strict diagnostic failed. Report SHA256 `a4494f81b9cccca082bb4c65ac5b34ff3d8a45d50453f51058848745e85b7d33`. No contract or head was promoted.
+- Registered the CC BY 3.0 Trubarjeva roadworks walk before download/review. Frozen features `aad2aec4...160d8`, zero candidates `cd67d219...c2d9`; post-freeze review found lateral construction and a temporary vehicle occlusion, not ordered rapid clearance. Rejection SHA256 `70730ac7a3cd55b837ecac323dcac0b22739c73e8c45f8bc7a5d61f71adcedfc`.
+- No Android runtime, `RiskEventTracker`, training, calibration, blind or production model was changed.
+
+### 2026-07-19 — Public-silver r7.37 Tampere metadata/viewpoint mismatch
+
+- Pre-registered the full CC BY 3.0 Tampere tram-worksite item because its description explicitly says pedestrian walkways were narrowed. The fixed 137.28-second 640x360 video has SHA256 `7f930a1399165aad8822ac27b54b6924b9d8abd40a77ac0f664d66b47f47f850`.
+- Before visual review, froze 138 one-second samples and 192 target detections (`18d85399...30b2b`); r7.25 yielded zero radial candidates (`e6918d21...36d99`).
+- Post-freeze overview found a static roadside observation/pan, not a forward pedestrian traversal. Rejected before event scoring; rejection SHA256 `6ce7687fec64670fafb3ec178b08724bc24e12fe3d6afc57f51925695f1fe74a`. It receives no gate credit and authorizes no runtime or model change.
+
+### 2026-07-19 — Public-silver r7.38–r7.41 obstacle-aware route-width rejection
+
+- Added `run_public_video_obstacle_aware_route_width_probe.py` with frozen ADE20K walkable support, frozen chromatic-marker obstacles, deterministic safety expansion, and widest-route or adaptive-centerline distance-field descriptors. Eight pure geometry tests pass.
+- Hard argmax connectivity collapsed clear and risk medians to zero (`7e5a72b1...d15d5`). Soft walkable-probability capacity restored paths but reversed Japan/Edmonton and false-constrained Cape Town (`c4e6ca6d...e5861`).
+- Adaptive-centerline distance q10 retained Japan/Edmonton but false-constrained Jakarta/Cape Town and tied all original synthetic pairs (`cba812f7...ce73d`). A single physical correction from one full object height per side to half-height per side still failed (`7c906401...ba03`); no further scale search is allowed.
+- Distance-field evidence remains auxiliary only. No contract, training, Android runtime, calibration, blind, or production authorization changed.
+
+### 2026-07-19 — Public-silver r7.42 positive/negative DINO prototype gate
+
+- Added a zero-parameter source-isolated positive-minus-negative prototype over frozen DINO regional pair deltas. Synthetic descendants and real Jakarta share one parent source and leave every training fold together.
+- All five positives and all three held-parent mirrored synthetic pairs passed, but only two of five negatives passed. Jakarta boundary markers, the Bramwell turn/shoulder cone and the Dallas road-edge cone remained false positives; balanced accuracy is `.70`. Report SHA256 `4fd55dfcd57f84295a56c2335b203a62fb85f3dd2bc71b302ddf58f7446d249f`.
+- The gate rejects five bootstrap runs: feature deltas still mix camera turn/scene drift with route intrusion. No head, SAM/ASAM, contract, Android or production change was authorized.
+
+### 2026-07-19 — Public-silver r7.43 clear-drift nuisance projection
+
+- Kept every r7.42 sample, source fold, prototype and zero threshold fixed. The only OFAT projects each real marker-minus-clear DINO delta away from the direction measured between the two halves of its own clear window.
+- Negative recall improved from `2/5` to `3/5` and balanced accuracy from `.70` to `.80`; Bramwell was repaired, while Jakarta and the Dallas road-edge cone remained false positives. Report SHA256 `738d0ce65b1e80ecc67a1556f318c1ff6dd8954f33e804702bfdf83c1c435ca0`.
+- Camera drift is a partial nuisance, not the full missing representation. Bootstrap, SAM/ASAM, Android and production gates remain closed.
+
+### 2026-07-19 — Public-silver r7.44–r7.46 multisource counterfactual direction failure
+
+- Added `build_public_video_multisource_equal_count_pairs.py` with frozen parent hashes, per-pair parent source inheritance, equal-count/equal-scale/horizontal-only checks, pixel invariants, and fail-closed train/runtime authorization fields. Five generator tests pass.
+- Selected continuous forward frames at Bramwell 700s and Dallas 128s. A first Bramwell placement remained on the route edge and was visually rejected; one pre-registered position correction produced two accepted pairs. Accepted generation SHA256 is `ac294ee6224dfd5bc2313d0d3e4be7ae0250d199722778af9928d0bba3f59e96`; provisional GPT/VLM review SHA256 is `b9963c763513fb4ccebf8ce916759e77164e875104a2f4a59186004e9b7bd08a`.
+- Generalized the deterministic prototype so every synthetic descendant inherits its own public-video parent source and is removed with that source's real samples. Seven prototype tests pass. With the r7.43 nuisance contract unchanged, r7.45 fell to `.3714` balanced accuracy and `1/7` positive recall (`9be9736241976bb3ce780b526738b6a4ff5f263440f5850486ffda504e0bb422`).
+- Added a fixed position-sensitive `4x4` DINO patch-grid mode as a single OFAT. r7.46 still failed at `.3429` balanced accuracy (`7864be4266be053bba6053b19e028e1e4951d8de3ea30e522da82fd49f6aac0b`). This rejects both regional pooling and coarse spatial-grid DINO as the shared route-relation representation; no bootstrap, SAM/ASAM, Android, calibration, blind, or production authorization changed.
+
+### 2026-07-19 — Public-silver r7.47–r7.48 explicit route relation and event composition
+
+- Added `run_public_video_explicit_ego_route_relation_probe.py`. It restores frozen walkable support only inside expanded marker masks before tracing the ego route, then scores q10 route-to-obstacle distance. Four pure geometry tests pass.
+- r7.47 retained Japan/Edmonton (`2/2`) but only two of five real negatives; Jakarta, Cape Town and Bramwell remained false positives. Balanced accuracy is `.70`; original synthetic ordering is `3/5`, mirror ordering `5/5`. Report SHA256 `6a72165c166ac64b46e71a54149b928c3ea5da3b662a18419bd6c6ad36d0f87e`. No inpaint/width/threshold search follows.
+- Added `run_public_video_event_risk_profile_lifecycle_gate.py`: frozen radial approach AND positive route relation opens an event; frozen chromatic continuity and nine absent samples manage persistence/clear; segmentation is auxiliary and cannot open alone. Three pure tests pass.
+- r7.48 achieves `TN=5/FP=0/FN=0/TP=2` and balanced accuracy `1.0` on current retrospective event rows, while retaining the r7.30 Edmonton one-reminder lifecycle. Report SHA256 `11f75c2697d45b329301667d89ca8dcae3355d483e4557f8725aea8dc2a8ecb1`.
+- Full closure remains false: all reviewed negatives have zero frozen radial entries, so no independent real true-radial safe-lateral veto exists; Japan has not been causally replayed through the r7.30 lifecycle. A renewed licensed-source search found no eligible source (`e8e244517e7bdd1080137d261d3050f39225db00baea76c624c66bafc2a3382d`). Bootstrap, training, SAM/ASAM, Android and production gates remain closed.
+
+### 2026-07-19 — Public-silver r7.49 Japan causal lifecycle timing failure
+
+- Added `evaluate_public_video_japan_causal_lifecycle_replay.py`; every r7.25 decision uses only the current prefix, the route baseline is the frozen 2–7s pre-risk clear median, and r7.30 persistence/clear remains unchanged. Two helper tests pass.
+- The five-sample radial minimum first passes at 8s and route support is already above baseline, so the composed event opens at 8s. The frozen GPT/VLM risk window starts at 10s; entry is two seconds early and the timing gate fails.
+- Persistence and close are correct: one reminder, risk covered through 15s, and clear at 22s after nine absent samples inside the frozen 17–22s clear window. Report SHA256 `95ce8201dea8979634e07c07cbefe5edaa73f74c428dc1172676c1f644601d56`.
+- Event identity separation is therefore not lifecycle closure. No post-hoc onset expansion or relation-threshold fit is allowed; training, bootstrap, SAM/ASAM, Android and production remain unauthorized.
+
+### 2026-07-19 — Public-silver r7.50 prospective event-timing contract
+
+- Froze `configs/public_video_event_timing_contract_r750.json` before reviewing another source. Contract SHA256 is `9b3c9fb4ed42e9ad8723592e31c2ac506584d12cf54036c5202d21df52041067`; four validator tests pass.
+- The fixed reminder band begins 3000 ms before reviewed material-risk onset and ends at the latest useful reminder. This limit is explicitly disclosed as a post-r7.49 hypothesis; Japan remains an immutable r7.49 timing failure and is forbidden from r7.50 acceptance.
+- Full closure requires two distinct real source hashes: an independent positive with one useful reminder and valid clear, plus a true frozen-radial safe-lateral negative vetoed by the frozen route relation. Synthetic and GPT-only examples receive no gate credit; large-model review remains provisional silver.
+- The unfilled review template SHA256 is `2e823daa9fe379e61e158a5c071792a9295f9b87ec5fba43511e0a1a4ed95797`. Training, bootstrap, SAM/ASAM, calibration, blind, Android runtime and production authorizations remain false.
+
+### 2026-07-19 — Public-silver r7.51 prospective London positive
+
+- Pexels item 3874684 was stopped by item-identity lineage because it had already been used and rejected in r7.17; a new resolution/hash cannot create prospective credit. New Pexels item 5234995 froze 25 samples but yielded zero r7.25 candidates (`c547fa66...1a714`) and was rejected before visual role review.
+- Registered the CC BY 3.0 POPtravel London first-person walk before download/review. The 240p transcode SHA256 is `ee68ca320e07a84358a7adc557187811a45242dac8dd33b884c7eba922d82836`; 3301 frozen one-second samples contain 534 traffic-cone and 923 total target detections (`81e5317e...83680`). One frozen radial event spans 2678–2687s (`088f37bb...5102b`).
+- Post-candidate original-order large-model review assigned a positive role, not the requested safe-lateral negative: real red cones/delineators move into the lower center route. The frozen review uses material onset 2681s, latest useful reminder 2684s, risk end 2687s and stable clear 2688–2699s.
+- Added `evaluate_public_video_event_timing_positive.py` with three timing/veto unit tests. Frozen route delta is `+.953596`; reminder at 2678s is exactly the contract's three-second early boundary, clear occurs at 2696s after nine absent samples, and reminder count is one. Prospective positive passes; report SHA256 `7043eeaf60427f688e18aa75e458d8536a1ee4ffa1eb91a6644bd5d14361eb8c`.
+- Full r7.50 closure remains false until a distinct real true-radial safe-lateral negative is vetoed by the frozen route relation. Bootstrap, training, SAM/ASAM, Android and production remain unauthorized.
+
+### 2026-07-19 — Public-silver r7.52 Ulm true-radial route-veto failure
+
+- License screening rejected Commons items still awaiting license review and YouTube results without item-level open-license metadata. Registered CC BY 3.0 Maribor froze 2100 one-second samples and 215 target detections but zero r7.25 candidates, so it was rejected before visual role review.
+- Registered CC BY 3.0 POPtravel Ulm before download or review. Its 240p video SHA256 is `67efb35b1e0bbb15bc5be1b5289ec02b1d88a3a8a895a51e16b6de5ac49caa48`; 2177 frozen samples contain 282 target detections (`7053981f...18cf`) and three frozen radial events (`bf1c1fc6...a3b9`).
+- Froze all three review windows and 18 keyframe timestamps before viewing (`81ca66c6...e6c1`). Provisional large-model review rejected candidates 1 and 3 because construction barriers coincided with route turns, and assigned candidate 2 (`1504–1510s`) as the only true-radial safe-lateral event: delineator posts remain on both road edges while the central passage stays open.
+- Added `evaluate_public_video_true_radial_route_veto.py` and three unit tests. The frozen r7.47 relation failed the required veto with clear median intrusion `0`, marker median `.928303`, and delta `+.928303`; report SHA256 `cb02a1c0de75f1c07de05666958d6c4ece2bcc4818401939b4e18d6fba7d9ea1`.
+- This is a representation failure, not a head-optimization result. No post-review geometry tuning is permitted; bootstrap, training, SAM/ASAM, Android and production gates remain closed.
+
+### 2026-07-19 — Public-silver r7.53 offline future ego-trace diagnostic
+
+- Froze `public_video_future_ego_trace_contract_r753.json` only after the Ulm failure, explicitly making Ulm derivation-only. The contract fixes 1/2/3-second ORB+RANSAC homographies, a future lower-center anchor, half-object-height expansion and median aggregation; no parameter or aggregation search is allowed.
+- Added `run_public_video_future_ego_trace_probe.py` and three geometry tests. Both London and Ulm produced valid traces for every event frame. Ulm mean/median intrusion are `0`; London mean is `.266667`, but its fixed median is also `0`, so the diagnostic gate fails. Report SHA256 `fc9f4b0a5185a7c6d4538423dd1cd4b09628e702ca7a31f89fad84bf408362f3`.
+- Future ego trace contains sparse positive signal but is not stable enough for the primary relation score and cannot run causally at inference. It remains an offline auxiliary-teacher idea; all training/runtime authorizations stay false.
+
+### 2026-07-19 — Public-silver r7.54–r7.60 future-route teacher and distillation diagnosis
+
+- r7.54 expanded the future-anchor hypothesis to three positive and six negative real events. Valid ORB scores strictly separated the classes, but Japan coverage was only `.25`; report SHA256 `31ede4fc0f702bbab9f80543a9f602fded2d849255970e473532653fb6fcf464`.
+- r7.55 froze DIS medium dense future-to-current flow with all other horizons/readout rules unchanged. Every event reached full coverage; positive scores `.0833/.1875/.1667` all exceeded the maximum negative `.0476` from Ulm. Gate passed, SHA256 `5b097322e6e5977d7539b7332d51cc5ecb1217913e6d5ff2da2f99b2b673eea6`. This is offline auxiliary truth only.
+- r7.56 causal current-to-past constant-motion projection failed event separation (`42d3f616...e91a0`). r7.57 current geometry/past anchors and r7.58 frozen DINO regional features passed frame-level teacher-active AUROC (`.8427/.8116`) but failed event separation (`923f4583...50af`, `744e27ba...78f84`). Global/head variants stop here.
+- r7.59 spatial merged route distance fields achieved source-isolated pixel AUROC `.9311` but failed marker-overlap event separation (`547f087c...30471`). r7.60 retained three horizon heatmaps and exact argmax-point hit semantics, reaching pixel AUROC `.9161` but still failing event separation (`c4571611...f401c`).
+- The future-route auxiliary target is valid and spatially learnable; the current 126-frame static representation is insufficient for cross-source future route choice. Next work expands automatic source-isolated causal-clip/future-route targets for a dedicated temporal route head. Android, production, bootstrap and SAM/ASAM remain closed.
+
+### 2026-07-19 — Public-silver r7.61 automatic temporal-route auxiliary manifest
+
+- Froze `public_video_temporal_route_auxiliary_dataset_contract_r761.json` before materialization. Eligibility requires a frozen marker detection, three seconds of causal history and all 1/2/3-second future anchors; each source is deterministically capped at 128 evenly spaced eligible timestamps. Event roles and labels are never read.
+- Materialized 753 unique items from 10 sources. Every item has a null event label and all three valid future-route anchors. Manifest SHA256 is `05424d63fdb84cd384a75078c7df842329358e714bae3c41afe70bb97c938428`; audit report SHA256 is `86a186eb517a44a0096a829ee4569ca8d690ba109b5baad346ab7cbde6f7d6e6`.
+- The 10 sources include context-only Kampala and Stegna because their already-bound joint feature reports contain independent source rows; they receive route-auxiliary training data only, never event-gate credit. Long London/Ulm/Edmonton sources are capped at 128.
+- r7.61 authorizes only a source-isolated temporal-route auxiliary train-only prototype. Risk-event training, calibration, blind, Android and production remain unauthorized.
+
+### 2026-07-19 — Public-silver r7.62–r7.64 temporal route head
+
+- Added the fixed 43-channel temporal input (32 projected DINO patch channels, RGB, full spatial 1/2/3-second causal DIS flow and coordinates) and a 61,955-parameter convolutional route head with ten whole-source held-out folds.
+- Marker-only r7.62 reached route-field AUROC `.91058` but localization `.1222` and failed event separation (`98ec998a...902cc`). r7.63 expanded the label-free auxiliary manifest to 2,102 continuous frames across ten sources (`59923fbc...e0e`).
+- The exact same seed-0 r7.64 head improved to AUROC `.91974` and MAE `.0420`, but localization remained `.11787`; Japan scored zero while Ulm remained above London. Report SHA256 is `eaa3c8ef0e03b50254e73fb1eb34e504051f4593c115ba528a116f1dab96aa0c`. Five-seed runs remain closed.
+
+### 2026-07-19 — Public-silver r7.65–r7.66 frozen temporal risk profile
+
+- Audited the exact frozen r7.64 outputs without retraining. Only the expanded-marker relative peak ratio retrospectively separated the old three positive and six negative events; audit SHA256 is `f4f535dbc2abffd94f1802c6494cfde87a48e9d9a588c0a89222a36a1bd1a9cf`.
+- Froze the disclosed post-hoc midpoint threshold `.68`, half-object-height marker expansion, r7.25 radial entry and r7.30 nine-absent/one-reminder lifecycle before any new source scoring. Contract SHA256 is `73076ff9a37cf97218167068285924792aa3a5b7d43372fc163b6d8f6617ecf3`; diagnostic checkpoint SHA256 is `18690367a33fd5857739e41961ffac6d1d7f1f99b23ec953922401da54ad7901`.
+- Added a strictly offline prospective evaluator that reconstructs the exact r7.64 43-channel input, rejects every r7.54–r7.65 derivation source ID and video hash, binds all inputs by SHA, and requires the frozen timing/lifecycle gate for positives. It never grants acceptance, training, calibration, blind, Android or production authority by itself.
+
+### 2026-07-19 — r7.66 prospective-source acquisition round 1
+
+- Registered and downloaded the CC0 Spiegelgasse item before any visual review. Its 121 one-second samples produced zero frozen radial candidates, so it was rejected pre-visual.
+- Registered the CC BY 3.0 Alicante POPtravel item and downloaded its complete 240p transcode (`fb325c92...5445a`). The first frozen 1,200 samples produced zero candidates. Sequential proposal search over the still-unseen remainder froze another 2,581 samples and one `2408–2424s` radial candidate (`aa61c079...4f56`).
+- Candidate-bound visual review found a continuous promenade walk but no real construction marker. YOLOE had expanded over a restaurant terrace, stairs, railings and bright fascia/panels as `barricade`; the event was rejected before temporal risk-profile scoring and receives neither positive nor safe-lateral-negative credit.
+- Pexels item 2980886 was item/license registered before download but decoded to only 3.47 seconds. It cannot meet r7.25's five accepted one-second samples and was rejected before feature extraction or visual review. r7.66 remains open and diagnostic-only.
+
+### 2026-07-19 — r7.66 Bristol previsual source rejection
+
+- Selected the license-reviewed CC BY 3.0 POPtravel Bristol walk from Commons text metadata and pre-registered the first 20 minutes before download or frame review. The 240p video SHA256 is `1d2d74adab3023ea8f9abbb48f31d683f3600afc8d1641f28ac44df60399dc76`.
+- The first interval froze 1,200 samples, 66 traffic-cone and 188 total target detections (`cfd6dbf0...78ae`), but zero r7.25 candidates (`f8aac721...6cfb`). The still-unseen remainder was then registered as adaptive proposal-only search, not blind evidence.
+- The remainder froze 2,161 samples, 87 traffic-cone and 344 total target detections (`91b2f6cb...40a4`) and again zero candidates (`828b8186...7e0e`). The complete 56-minute source was rejected before visual review or r7.66 scoring (`92a0ccf7...ff88`).
+- A first extractor invocation omitted the r7.11 contract; the candidate freezer rejected it. That report was preserved under a `missing_contract_rejected` name, and the same fixed detector settings were rerun with the contract. A separate 7 ms duration endpoint mismatch was also recorded and mechanically normalized before remainder sampling.
+- No event role, training, calibration, blind, Android runtime, production, five-seed or SAM/ASAM authorization changed.
+
+### 2026-07-19 — r7.66–r7.69 Bangkok pressure pair and marker-relation diagnostics
+
+- Pre-registered and scanned the distinct CC BY 3.0 Bangkok Modern Center walk. Frozen review identified a real radial safe-lateral cone event at `300–311s` and a route-intruding cone event at `328–339s`. Frozen r7.66 scored them `.80168/.87608`; the negative crossed `.68`, so r7.66 failed without threshold retuning. The positive event-local lifecycle replay produced one reminder and a valid clear.
+- Fixed the prospective evaluator to replay lifecycle only over the selected event rather than all source candidates. Added a pair-error audit; the offline future teacher retained the correct `.11111/.33333` order while the old head compressed both above threshold (`c231b9ad...e5ec`).
+- r7.67a retained all 324 marker frames, including four sub-patch detections via a frozen nearest-patch fallback. The 132-D deterministic marker-conditioned ridge reached ten-source pooled OOF AUROC `.883995` and a post-hoc Bangkok margin `.15003` (`e4ae6777...bc12`).
+- Pre-run independent review removed Bangkok from authorization and replaced whole-source bootstrap with equal-mass `(source,class)` blocks plus source-macro metrics. r7.68a passed `0/5`: prototype-only balanced median `.8534`, optimized `.7245`, with positive recall `.39–.56` (`3e17d71a...f246`).
+- r7.69 tested distance-field auxiliary supervision as a paired five-seed OFAT. Distance MAE improved in all runs, but the median primary balanced-accuracy delta was only `+.00019`; retention failed (`8edd27a4...d59a`). No Android/runtime/default-model or production authorization changed.
+- r7.70 materialized the two Bangkok event intervals into 24 unique one-second PNGs with a parent-bound JSONL manifest (`90287f20...2612`). The package is a real same-source matched contrast and representation-training candidate only; training execution and independent evaluation remain unauthorized.
+
+### 2026-07-19 — r7.71–r7.77 pair ranking, target correction, and causal lifecycle failure
+
+- r7.71 nearest-time within-source pair ranking passed with median/minimum source AUROC `.85/.67385` and pair ordering `.792857` (`caa37275...c6d`). Five r7.72 optimized bootstrap heads were individually viable, but their median `.84889` underperformed the zero-training bootstrap prototype median `.90833` by `.05944`; the stability gate failed (`be949071...cf7`).
+- The r7.73 zero-training prototype lifecycle opened the Bangkok safe-lateral event at 304s and the positive at 337s, one second after the latest useful reminder (`1615d161...b25`). Geometry-matched r7.74 and training-fold geometry-residual r7.75 reduced median AUROC to `.7733/.675`, so both branches stopped (`48914904...6f7`, `7c03f19d...a2f`).
+- Target audit found counts `268/15/10/31` for `0/3,1/3,2/3,3/3` future-horizon hits. r7.76 froze strong-positive as at least two of three hits and reached median/minimum source AUROC `.96774/.71959` with pair ordering `.94231` (`7b2f5d89...9d2`).
+- r7.77 changed only that target, yet causal Bangkok openings remained 304s/337s (`c18cff4e...db1`). Offline separability is no longer the main blocker; current RGB, DINO, and past flow do not expose route choice early enough. Optimizer/SAM/ASAM, Android runtime, and default-model changes remain unauthorized.
+
+### 2026-07-19 — r7.78–r7.78a Düsseldorf external safe-lateral challenge
+
+- Pre-registered the license-reviewed CC BY 3.0 POPtravel Düsseldorf source and first 20 minutes before download or frame review. The 240p video SHA256 is `c9bedb93...fc5f`; 1,200 frozen samples contained 85 traffic-cone and 223 total detections, producing two radial candidates (`529f29b5...fbd4`).
+- Original-order model review rejected 117–127s as a real-barricade/route-turn confound and assigned 900–910s as a true-radial safe-lateral provisional negative: the barricade stays on the left curb while the camera proceeds through the open right corridor.
+- Frozen r7.66 scored the negative `.771165`, above `.68`, and failed (`19ba400d...19d4`). The first r7.78 attempt failed closed before scoring because two marker-absent frames exposed an implicit non-empty-mask assumption.
+- r7.78a froze gap handling before scoring, retained exactly the nine r7.25 accepted marker samples, and still opened at 906s with maximum relative score `2.6933` (`ab880466...54af`). The majority target improves offline separation but does not solve causal safe-lateral false alerts. No training, SAM/ASAM, Android, or production authorization changed.
+
+### 2026-07-19 — r7.79–r7.81c causal readout and event-role diagnostics
+
+- r7.79 replaced the dense readout with fixed block pooling plus multi-output waypoint ridge over the same causal cache. Mean localization error was `.11583`, only `.00204` better than r7.64, and strict event separation failed (`cc54e30...81e6`).
+- r7.80 split generic radial context from a past-only committed-route upgrade. It upgraded the positive at 336s and did not upgrade Düsseldorf safe, but falsely upgraded Bangkok safe at 307s. Fixed the lifecycle report to read `confirmed_clear_timestamp_ms`; r7.80a confirms clears at 320/348/919s while the overall gate remains false (`6e466af8...95e9`).
+- r7.81c retained 106 marker-present frames across eight events/sources for event-role LOSO ridge. Event AUROC was `0`, balanced accuracy `.2`, and positive recall `0` (`3f1a69ff...beb3`), exposing source shortcuts and insufficient matched mechanism coverage. The r7.81 attempts are diagnostic failures, not prospective credit.
+
+### 2026-07-19 — r7.82–r7.84 Cologne/Cardiff acquisition audit
+
+- Registered and downloaded distinct license-reviewed CC BY 3.0 Cologne and Cardiff sources. Cologne's first 40 minutes yielded 2,400 samples and 190 target detections but no frozen r7.25 candidate. Cardiff's full 3,241 samples yielded 875 target detections and likewise no r7.25 candidate.
+- A diagnostic five-accepted-sample local gate found three Cardiff windows; widths 7/9/12 found none. Review windows were frozen and hash-bound before visual inspection.
+- GPT/VLM original-order review retained two real yellow floor-warning-sign sequences as provisional path-intrusion/right-side-pass candidates and excluded the road-cone junction because the camera follows a planned right turn (`088bad8f...17a9`). Both retained events share the Cardiff parent source, add no independent-source credit, and cannot be promoted to canonical r7.25 events.
+- Training readiness remains false. No SAM/ASAM, Android runtime, default-model, calibration, blind, or production authorization changed.
+
+### 2026-07-19 — r7.85 causal actionability target correction
+
+- Froze a post-hoc semantics audit over the hash-bound r7.80a report. The state machine uses only current/past committed-motion trace: two consecutive `>=1/3` samples enter intervention and two later `<1/3` samples confirm route clear.
+- The Bangkok event formerly labeled safe-lateral entered intervention at 307s and cleared at 311s; the positive entered at 336s and remained persistent; Düsseldorf remained context-only. All frozen expectations passed (`0120009d...07e5`).
+- This exposes one causal label contradiction: eventual successful avoidance cannot be used as a no-warning target when the no-change corridor first required intervention. The original review role remains preserved for auditability.
+- Added `blindassist_public_video_silver_labels_v3` validation. It requires `silver_actionability`, `causal_evidence_basis=past_or_current_only`, and prevents `safe_pass` or `route_changed` from relabeling an earlier context/intervention state as `candidate_no_alert`.
+- This corrects supervision semantics only. It does not authorize training promotion, calibration, blind evaluation, Android runtime changes, or default-model replacement.
+## 2026-07-19：因果 actionability 与视觉惯性路线意图诊断
+
+- r7.86–r7.89 完成事件重标、Cardiff/Ulm 因果复核和 source-isolated manifest：16 个事件、11 个来源、3 个独立 intervention 来源；旧 role 标签矛盾率 `25%`。
+- r7.90 事件均值 probe 失败；r7.91 风险轮廓 + 生命周期改善但仍失败，证明当前纯视觉因果输入缺少前瞻路线选择，而非继续优化 head 即可解决。
+- 下载并校验 ADVIO-15：实际 `54,845,329` 字节，官方 MD5 完全匹配；r7.93 同步/采样率/四元数审计全通过。
+- r7.94 原始 IMU 连续块 probe AUROC `.4770`；r7.95 旋转不变 OFAT `.4746`，无改善。停止单序列未来意图 head 变体；架构方向优先改为显式 route-intent + 视觉风险轮廓/生命周期，并把 IMU 转向确认单列为待证假设。
+- r7.96 current-only 转向确认负控 AUROC `.3465`、balanced `.3878`，说明未对齐的手机旋转也不能直接确认世界路线转向；撤回“IMU 可直接作确认器”，不新增 Android sensor 接口。架构方向收紧为显式 route-intent 优先，IMU/VIO 必须先独立证明姿态对齐。
+- 新增 `docs/PUBLIC_VISUAL_INERTIAL_ROUTE_INTENT_2026-07-19.md`、三份 ADVIO 合同、三个执行脚本及配套测试。ADVIO 路线保持 CC BY-NC、research-only、production-isolated。
+- r7.97a 在 16 个事件/11 个来源上用冻结 future-route teacher 模拟外部显式路线输入，无学习参数的连续两秒交叠规则达到 intervention recall `1.0`、context recall `.8333`、balanced `.9167`；勘误版重算 12 份 feature report 与 13 个本地视频 SHA，指标不变。新增生产隔离的 route-risk 生命周期原型、机器接口模板和模型合同；未来视频仍严禁进入 eval/runtime，默认 App 未改变。
+- r7.98 将同一生命周期移植到 `device-benchmark`，JDK 17 `assembleDebug` 成功，APK `5c44bcab...284c`；SM-S9280/API 36 定向 instrumentation `3/3` 通过。未接入 App/core/default model。后续全量 connected rebuild 被并行 SparseLK 文件的既有类型错误阻塞，本任务未修改该文件，且不影响已哈希绑定 APK 的定向结果。
+- r7.99/r7.99a tested fixed LEFT/STRAIGHT/RIGHT camera-space templates. The 16-event replay scored balanced `1.0`, but all four interventions were STRAIGHT; LEFT and RIGHT had zero intervention coverage, so the full provider gate stayed closed.
+- r8.00/r8.02 searched r7.61 mean future-anchor x and visually rejected all five candidates. The audit established that a future lower-center flow correspondence is not a categorical turn label and is confounded by moving objects, camera motion, and detector false positives.
+- r8.03 replaced direction inference with robust upper-background yaw flow, producing 13 LEFT and 17 RIGHT candidates across multiple sources. r8.05 deterministic frozen-template intersection retained three windows. Dense r8.06 review and r8.07 VLM adjudication rejected all three as parallel construction boundaries or a Bramwell building false positive; LEFT/RIGHT intervention coverage remains `0/0`.
+- Preserved all reports and SHA sidecars, including the r8.01a timestamp erratum. No App/core/default-model wiring, training promotion, SAM/ASAM, calibration, blind, or production authorization changed.
+- r8.08 froze three Commons and three Vimeo directional-obstruction searches before retrieval. The original Commons Python TLS handshake produced no response; r8.08a repeated the exact queries once via Windows TLS without pagination or rewriting.
+- Commons produced one police/dashcam semantic false hit and it was rejected without download. Vimeo produced one title-relevant, item-level CC BY 3.0 Burwell candidate; 5-second whole-video review rejected it as an edited public-works/news package rather than a continuous pedestrian POV causal episode.
+- r8.09 admitted zero events; LEFT/RIGHT intervention coverage remains `0/0`. The full route-field interface result remains valid, while categorical-provider, training, Android, calibration, blind, and production gates remain closed.
+- r8.10 added a frozen, one-page Internet Archive discovery path with item license metadata and four offline parser tests. Three queries returned three archival films from 1930–1945; r8.11 rejected all three from metadata without downloading because aggregate full-text hits did not describe continuous pedestrian POV events.
+- A separate exact web search for YouTube watch pages produced no usable item-level candidate in the returned results. No query result was treated as a license or event label.
+- r8.12/r8.12a built a three-parent train-only route-conditioned dataset. The generic `static_obstacle` v1 was rejected for class-semantic leakage; the corrected `inserted_temporary_obstacle` v2 passed 36-image, 108-route-label, mask, YOLO, COCO, and full visual QA.
+- r8.13a separated feature from head: an exact-risk-field LOSO linear head scored balanced `1.0`, while binary DINO global/route readouts scored `.5000/.6249`. This localized the failure to risk representation or source/asset coverage.
+- r8.14a reexecuted a two-asset-per-parent factorial after rejecting r8.14 for an embedded future contract timestamp. All 72 regenerated image hashes matched the visually reviewed invalid run, geometry QA passed, and binary route BA remained only `.6332`.
+- r8.16 changed only the auxiliary target to a frozen bbox distance field. Route-conditioned BA passed at `.9156` with clear/block recall `.8696/.9615`, worst source `.89`, and exact repeat equality; global BA remained `.5446`.
+- r8.17 fixed two-consecutive open lifecycle passed at `.9429`, worst source `.90`. It does not test route-clear because no post-obstacle departure sequences exist.
+- r8.18 five prototype/bootstrap 80-step runs were stable (BA std `.0090`) but failed the frozen gate: mean `.8774`, worst seed `.8682`, worst clear recall `.7971`. No parameter retry, SAM/ASAM, App wiring, calibration, blind, or production authorization followed.
+
+## 2026-07-19：r8.19–r8.23 距离场真实迁移与风险生命周期诊断
+
+- 新增 r8.19 source-LOSO 真实迁移 probe。r8.16 合成距离场在 16 个真实 provisional 事件上，路线/全局 balanced 为 `.7083/.5833`；路线提升成立，但 context recall `.6667` 未过门。
+- r8.20 只追加全场背景统计后 balanced 降到 `.4583`；r8.22 只追加跨三场景 traffic-cone 合成族后降到 `.5833`。两条失败均按预注册合同保留，未改阈值或重试。
+- r8.21 新增可复现 chroma-key 资产准备脚本。无 alpha 棋盘格首稿和有色边首版均拒绝；v2 交通锥经完整视觉/几何 QA，形成 108 图、324 路线样本的 train-only 数据集。
+- r8.23 以 218 个真实 provisional 帧状态做层级等权 ridge 和固定两帧 open/clear，事件 balanced `.5417`、context recall `.3333`，证明 lifecycle 不能修复底层真实风险字段误激活。
+- 结论：生产、Android、calibration、blind、SAM/ASAM 全部保持关闭。后续优先真实训练折内的局部风险/距离监督，不再堆 head 或单个合成资产族。
+
+### r8.24 真实 provisional marker 距离场负控
+
+- 新增按完整 parent source 留一的真实 marker bbox 距离场 teacher。所有 held-out bbox 均从 teacher 拟合中排除；218 帧、28 个无检测全零场，near/far、来源、帧分层平衡。
+- 结果全局/路线 balanced `.6250/.5833`，路线 context recall `.4167`，低于 r8.19 `.7083`。报告 `7750e172...d0013`，冻结门失败。
+- 由此停止“只改善 object-distance map”的路线；后续目标改为显式 route-field × visual-patch interaction，仍先做确定性 probe，不启动优化器或端侧改动。
+
+### r8.25 route-field × frozen patch interaction
+
+- 新增固定 32 维投影与连续三点 route polyline 场，直接对冻结 DINO patch 做 route/off-route/contrast pooling；均匀场为同维负控，完整来源留一。
+- 均匀/路线 balanced `.4583/.5000`，路线 intervention recall `.25`，报告 `ec1b3684...93b60`。预注册门失败，未搜索 sigma、维度、ridge 或非线性 head。
+- 主线回到已获最强证据的 external route provider + detector bbox deterministic intersection + lifecycle；模型风险场降为辅助，不修改 App/default model。
+
+### r8.26–r8.26a explicit-route device geometry and aspect-ratio erratum
+
+- Added benchmark-only Kotlin conversion from validated 1/2/3-second route waypoints and normalized detector boxes to the frozen lifecycle score. The first build and 9 targeted device tests passed, but a new all-frame audit rejected r8.26: 59/654 anchor hits and 30/218 frame scores differed from r7.97a.
+- Diagnosed a coordinate-unit bug: the Python oracle expands in pixels by object pixel height, while r8.26 reused normalized y-height for both axes. Froze r8.26a before reexecution, added positive frame dimensions, separate x/y normalized margins, and a non-square-frame regression.
+- r8.26a passed 4 offline geometry tests, reproduced all 654 anchors and 218 frame scores with zero mismatch across 16 events/11 sources, built successfully offline, and passed `OK (10 tests)` on SM-S9280/API 36. APK SHA256 is `b543dd9d...62fe`.
+- Evidence remains benchmark-only. No App/core/default-runtime wiring or real route-provider, LEFT/RIGHT intervention, calibration, blind, or production authorization changed.
+
+### r8.27–r8.27a Android external non-future route payload boundary
+
+- Added a benchmark-only Android Intent parser requiring provider/projection receipts, issued/valid timestamps, confidence, and exact 1/2/3-second normalized camera waypoints. Risk-model-generated routes, future-video routes, future-issued, expired, overlong, low-confidence, missing-receipt and malformed payloads fail closed.
+- r8.27 failed before execution because the test fixture treated `Intent.removeExtra()` as returning Intent. r8.27a changed only the fixture to retain the Intent via `also`; provider logic, policy and assertions stayed frozen.
+- Offline build then succeeded. On SM-S9280/API 36, 6 provider tests plus 7 geometry and 3 lifecycle regressions passed: `OK (16 tests)`, APK `ffb540c1...5bcc`.
+- This validates the external Android payload boundary, not a real navigation provider, camera projection accuracy, LEFT/RIGHT intervention coverage, App wiring or production readiness.
+
+### r8.28–r8.28a world-route camera projection
+
+- Added benchmark-only local-ENU route projection using an externally supplied world-to-camera rotation, camera origin and pinhole intrinsics. Receipt age/confidence, right-handed orthonormal rotation, positive depth, in-frame coordinates and exact 1/2/3-second horizons all fail closed.
+- r8.28 device execution rejected three nominal valid cases as `invalid_pose`; the identity test fixture had eight values. r8.28a added only the missing zero and preserved projector logic and gates.
+- On SM-S9280/API 36, 6 projection, 6 external-payload, 7 geometry and 3 lifecycle tests passed: `OK (22 tests)`, APK `e4eeabf3...2716`.
+- Projection math is validated only in benchmark. Real pose/calibration/navigation accuracy, LEFT/RIGHT intervention coverage, App wiring and production authorization remain open.
+
+### r8.29–r8.29d real-device projection input capability
+
+- Audited all real back-facing Camera2 characteristics and sampled the SM-S9280 rotation-vector sensor for 2.5 seconds. r8.29 had a compile-only nullable FloatArray issue; r8.29a–c passed all device capability assertions but failed only while exporting the receipt from the com.android.test storage context. r8.29d returned the same JSON through instrumentation status and passed `OK (1 test)`.
+- Two back cameras expose focal length, physical sensor size and pixel arrays, allowing derived intrinsics. Camera 0 derives approximately `fx=fy=2625px` at 4080×3060. The apparent absence of exact intrinsic calibration and distortion was observed from a context without `CAMERA` permission and is corrected by r8.30 below.
+- The QTI rotation-vector stream produced 119 samples over 2453.9ms, median interval 20.80ms, maximum quaternion norm error `4.16e-8`, and observed maximum stationary delta `.0255°`.
+- Real pose-stream capability is supported; permissioned exact calibration is audited in r8.30. Reprojection error, navigation route accuracy, LEFT/RIGHT events, App wiring and production remain open.
+
+### r8.30 permissioned Camera2 calibration, lens-pose and timestamp audit
+
+- Froze a permission-aware audit contract before build, grant, and device execution. Android's Camera2 contract requires `CAMERA` permission for intrinsic, distortion, and lens-pose metadata, so r8.29d nulls were not evidence of device absence.
+- Built offline and passed `OK (1 test)` on SM-S9280/API 36 using the CAMERA-permissioned target App context. Both back cameras expose exact intrinsic calibration, distortion, lens pose rotation/translation, and `REALTIME` timestamp source. Camera 0 reports `fx=2766.1165px`, `fy=2771.1763px`; camera 2 reports `fx=1653.87px`, `fy=1656.9772px`.
+- Both cameras report `PRIMARY_CAMERA` pose reference. The lens-pose rotation still maps Android sensor coordinates to camera-aligned coordinates, while the rotation-vector matrix maps device coordinates to ENU world coordinates. The deterministic candidate is `R_camera_from_world = R_lens_pose * transpose(R_device_to_world)`.
+- Independent rotation-extrinsic calibration is no longer a prerequisite. Matrix-composition conformance, analysis-stream crop/scale mapping, real reprojection direction/error, navigation/LEFT-RIGHT events, App wiring, and production authorization remain open.
+
+### r8.31 deterministic Android rotation-vector and Camera2 lens-pose composition
+
+- Froze a benchmark-only contract and implemented `R_camera_from_world = R_lens_pose * transpose(R_device_to_world)` with quaternion normalization checks, orthonormal rotation validation, and fail-closed errors.
+- SM-S9280/API 36 passed `OK (5 tests)`: identity, device-to-world inversion order, the r8.30 camera-0 `xyzw` quaternion, compatibility with the existing world projector, and invalid input rejection.
+- The output intentionally remains in raw camera-aligned sensor coordinates. `SENSOR_ORIENTATION`, CameraX analysis-stream crop/scale, camera/IMU timestamp pairing, and real-image reprojection remain unvalidated; App and production authorization remain false.
+
+### r8.32 production-matched CameraX stream geometry and clock audit
+
+- Captured 30 frames on SM-S9280/API 36 with the production resolution selector, RGBA output and KEEP_ONLY_LATEST. The bound camera was ID 0; every frame was 640×480 with full `[0,0,640,480]` crop, 90-degree clockwise rotation, 2560-byte row stride and 4-byte pixel stride. Device test passed `OK (1 test)`.
+- Capture timestamps were strictly monotonic, median interval `66.64ms`; callback minus capture timestamp was `77.43ms` median. This is an observed latency distribution, not yet an interpolation error bound.
+
+### r8.33 authoritative CameraX sensor-to-buffer intrinsic transform
+
+- Read `ImageInfo.sensorToBufferTransformMatrix`, which CameraX defines as the active-array-to-buffer mapping. Device test passed `OK (1 test)`.
+- Camera 0 reported a uniform no-offset transform `diag(0.15686275, 0.15686275, 1)`, mapping 4080×3060 to 640×480. Exact principal point mapped sensor `(2041.33,1530.07)` -> buffer `(320.21,240.01)` -> rotated 480×640 display `(238.99,320.21)`.
+
+### r8.34 deterministic analysis-display camera geometry
+
+- Implemented a fail-closed benchmark mapper combining exact Camera2 intrinsics, CameraX sensor-to-buffer affine, clockwise buffer/display rotation, matching camera-axis rotation, and the r8.31 world-to-raw-camera pose.
+- SM-S9280/API 36 passed `OK (4 tests)`: r8.33 numeric intrinsic mapping, 90-degree camera-axis rotation, world-projector principal projection, and rejection of shear/skew/unsupported rotation/invalid pose.
+- The deterministic coordinate-formula gap is closed. Per-frame camera/rotation-vector pairing, distortion-aware real-image reprojection error, route/LEFT-RIGHT events, App wiring and production authorization remain open.
+
+### r8.35 CameraX capture timestamp and rotation-vector bracketing
+
+- Concurrently sampled the production-matched CameraX stream and `TYPE_ROTATION_VECTOR` at `SENSOR_DELAY_GAME`, pairing by the common capture timestamp timebase.
+- SM-S9280/API 36 passed `OK (1 test)`: all 30 camera frames were bracketed by rotation samples. Nearest-sample delta was `4.81ms` median / `9.67ms` maximum; bracket span was `19.756ms` median / `19.756ms` maximum.
+- Quaternion SLERP at each `ImageInfo.timestamp` is therefore supported by the observed sampling coverage. Interpolated pose accuracy, distortion-aware real-image reprojection error, route/LEFT-RIGHT events, App wiring and production authorization remain open.
+
+### r8.36–r8.36a automatic real-frame gravity-axis reprojection
+
+- r8.36 captured and persisted a real pose-linked display frame, predicted the world-up vanishing point through the full camera geometry, and ran a frozen Hough-line comparison. The upward-facing scene was extremely dark and the fixed Canny 60/160 pipeline returned zero candidates, so the result is non-informative rather than a geometry failure.
+- r8.36a froze a disclosed low-light rescreen after visual diagnosis and reused the exact same frame without recapture. CLAHE plus Canny 15/50 found 89 candidates and 10 lines within 10 degrees; the smallest error was `.42°`. Aligned length fraction was `8.782%`, below the frozen 10% gate, so the result is an informative fail and thresholds were not changed afterward.
+- Diagnosis: most long lines belong to horizontal ceiling-plane boundaries, invalidating the gate's assumption that all scene-line length is a useful denominator for the world-vertical family. The next independent test will compare IMU-predicted rotational homography `K R K^-1` with LK optical flow under a short automatic vibration, avoiding semantic line labels.
 
 ## 2026-07-20：Corridor-Causal Student benchmark-only 工程可行性与数据真值阻塞
 

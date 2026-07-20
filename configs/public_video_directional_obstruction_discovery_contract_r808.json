@@ -1,0 +1,47 @@
+{
+  "schema": "blindassist_public_video_directional_obstruction_discovery_contract_v1",
+  "contract_id": "r808_license_first_directional_obstruction_discovery_v1",
+  "frozen_at_utc": "2026-07-19T13:56:11Z",
+  "purpose": "Find continuous public-video candidates where a pedestrian LEFT or RIGHT branch may be blocked by a temporary obstacle and an observable stop or course correction follows.",
+  "queries": {
+    "wikimedia_commons": [
+      "walking construction detour filetype:video",
+      "pedestrian roadworks obstruction filetype:video",
+      "sidewalk barricade walking filetype:video"
+    ],
+    "vimeo_cc_by": [
+      "pedestrian detour",
+      "sidewalk construction",
+      "walking roadworks"
+    ]
+  },
+  "request_limits": {
+    "one_request_per_frozen_query": true,
+    "maximum_results_per_query": 25,
+    "maximum_response_bytes": 5242880,
+    "pagination": false,
+    "retry_query_rewrite_after_results": false
+  },
+  "candidate_requirements_before_download": {
+    "item_level_video_license_verified": true,
+    "direct_video_media_url_present": true,
+    "likely_continuous_pedestrian_or_first_person_view": true,
+    "no_hard_cut_montage_or_static_worksite": true
+  },
+  "event_requirements_before_coverage_credit": {
+    "actual_left_or_right_route_choice": true,
+    "same_matched_temporary_obstacle_blocks_selected_branch": true,
+    "two_consecutive_one_second_intersections": true,
+    "observable_stop_or_course_correction": true,
+    "continuous_large_model_review": true
+  },
+  "authorization": {
+    "candidate_ledger_generation": true,
+    "license_review": true,
+    "qualified_candidate_download": true,
+    "candidate_as_event_truth": false,
+    "candidate_as_training_label": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}

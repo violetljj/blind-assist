@@ -1,0 +1,47 @@
+{
+  "schema": "blindassist_public_video_marker_relation_pair_bootstrap_contract_v1",
+  "contract_id": "r772_same_source_pair_ranking_five_bootstrap_runs_v1",
+  "frozen_at_utc": "2026-07-19T09:50:00Z",
+  "derivation_disclosure": "Frozen after r7.71 passed with source AUROC median 0.85, minimum 0.673851 and source-macro pair ordering 0.792857. No r7.72 result was observed. Bangkok/r7.70 remains excluded.",
+  "bound_inputs": {
+    "r767a_contract_sha256": "1519ca7ee2f14e0735fccc85efab8b1b8587586a51869fda9aba4a0c46e8356c",
+    "r771_contract_sha256": "ae8ad86aa61986d01afccbf8b0d76a6cba46ab1efa3653b27edaa774c881aa44",
+    "r771_report_sha256": "caa37275f3c669ba4422d51747ee2e8d84882ed497ba94af8f01c94433994c6d"
+  },
+  "seeds": [2026071901, 2026071902, 2026071903, 2026071904, 2026071905],
+  "head": {
+    "type": "linear zero-bias same-source pair-ranking direction",
+    "initialization": "unit weighted mean of bootstrap positive-minus-nearest-negative deltas",
+    "bootstrap": "sample complete training pair sources with replacement; each draw equal mass and each pair within draw equal mass",
+    "split": "leave one complete source_id out before bootstrap",
+    "saved_weights": false,
+    "bangkok_used": false
+  },
+  "optimizer": {
+    "algorithm": "deterministic full-batch Adam",
+    "steps": 80,
+    "learning_rate": 0.03,
+    "weight_decay": 0.01,
+    "loss": "weighted softplus(pair_margin - pair_projection) plus L2",
+    "pair_margin": 1.0
+  },
+  "stability_gate": {
+    "runs_passing_at_least": 4,
+    "passing_run_source_auroc_median_at_least": 0.75,
+    "passing_run_source_auroc_minimum_at_least": 0.55,
+    "passing_run_source_macro_pair_ordering_at_least": 0.70,
+    "each_fold_unique_training_sources_at_least": 3,
+    "optimized_median_max_drop_from_prototype": 0.02
+  },
+  "authorization": {
+    "five_source_bootstrap_pair_runs": true,
+    "independent_prospective_contract_freeze": "only_if_bootstrap_stability_gate_passes",
+    "risk_profile_lifecycle_interface_prototype": "only_if_bootstrap_stability_gate_passes",
+    "risk_event_training_authorized": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false,
+    "sam_asam_authorized": false
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist_public_video_actionability_linear_probe_contract_v1",
+  "contract_id": "r790_current_past_marker_conditioned_actionability_loso_v1",
+  "frozen_at_utc": "2026-07-19T12:15:01.0307395Z",
+  "derivation_disclosure": "Frozen after r7.89 passed the minimum three-intervention-source coverage gate and before extracting or scoring r7.90 features. The probe uses current RGB, frozen DINO patch features, full past optical-flow grids, coordinates, and marker masks. It explicitly forbids causal trace scores, obstacle-hit bits, legacy route roles, and future frames.",
+  "bound_inputs": {
+    "actionability_manifest_sha256": "a38d0064254fc9af72a54d6ee2e7eaa0917f07288ebb9ee1c822fa8feef7e3df",
+    "dinov2_weights_sha256": "1051e25b2ed69ddad24f3c41e7b6eed6e7f7d012103ea227e47eb82e87dc2050"
+  },
+  "feature_reports": {
+    "japan": {"path": "artifacts.local/evidence/public-video-r722-prospective-20260719/japan_riverside_chromatic_features_r711.json", "sha256": "527b1b231a52a5657bf40b15a714acc0865b27f61ed06269785c50bff4a323f0"},
+    "edmonton": {"path": "artifacts.local/evidence/public-video-r729-prospective-20260719/edmonton_kampala_chromatic_features_r711.json", "sha256": "ea351ffe25201fb0e2ef6fa99d6e5cb6261784d5e429cc0fde673f519bd86ade"},
+    "jakarta": {"path": "artifacts.local/evidence/public-video-r734-prospective-20260719/jakarta_chromatic_features_r711.json", "sha256": "ab5b9cba6ff27695c6f54fb4c92cabf77c76950609c44c30395a1ffba8234b4b"},
+    "cape": {"path": "artifacts.local/evidence/public-video-r733-prospective-20260719/cape_town_chromatic_features_r711.json", "sha256": "968082ec21733802e6bff04221204e8497ce884f327495ebc7d7457e6654a15a"},
+    "bramwell": {"path": "artifacts.local/evidence/public-video-r726-prospective-20260719/bramwell_stegna_chromatic_features_r711.json", "sha256": "efd3127df05aca4a280dacbdb92d2e47b083989f1845918bc941cb63b827e160"},
+    "dallas": {"path": "artifacts.local/evidence/public-video-r731-prospective-20260719/boring_dallas_chromatic_features_r711.json", "sha256": "e6777a75890a3549d9f97fa4105baf8b3e43b7e9e1383349a2e3974c7b9ad899"},
+    "london": {"path": "artifacts.local/evidence/public-video-r750-prospective-source-20260719/commons_london_chromatic_features_r750.json", "sha256": "81e5317ef67ed4ac59f81468960e04484e522c8c7d1f967abff3f09edc083680"},
+    "ulm": {"path": "artifacts.local/evidence/public-video-r752-negative-source-search-20260719/commons_ulm_chromatic_features_r752.json", "sha256": "7053981f47d9f4c094076c27538d21eb41aac44c469204cda291895df6ad18cf"},
+    "bangkok": {"path": "artifacts.local/evidence/public-video-r766-prospective-bangkok-modern-20260719/bangkok_modern_chromatic_features_r766.json", "sha256": "99c9d9e0d8d8699a086c42f531f3b1762db6ad4b85907b1fc8c4a7af8323fbad"},
+    "duesseldorf": {"path": "artifacts.local/evidence/public-video-r778-prospective-duesseldorf-20260719/duesseldorf_chromatic_features_r778.json", "sha256": "3f9b26ab8c227bc0886d4173730bb94c3171610fcc415285aa63e65cb1f79bae"},
+    "cardiff_0_20": {"path": "artifacts.local/evidence/public-video-r783-prospective-cardiff-20260719/cardiff_chromatic_features_r783.json", "sha256": "fa313843c6b06bee9696a6b9559b6c24e5816ecf222fa4b3ccc5ac6b17e52d93"},
+    "cardiff_remainder": {"path": "artifacts.local/evidence/public-video-r783-prospective-cardiff-20260719/cardiff_chromatic_features_remainder_r783.json", "sha256": "9dd1c9cdf4c7b808aebd25c1bd36b8f619d8d84bb759474562b7579f0ddef7bd"}
+  },
+  "input": {
+    "grid_side": 16,
+    "current_dinov2_patch_projection": {"input_dimension": 384, "output_dimension": 32, "seed": 0},
+    "current_rgb_channels": 3,
+    "past_flow_horizons_ms": [1000, 2000, 3000],
+    "coordinate_channels": 2,
+    "marker_expansion_object_heights": 0.5,
+    "frame_vector": "r7.67 marker-region mean/max and relative global mean",
+    "event_aggregation": "mean of eligible marker-present frame vectors",
+    "future_frames_forbidden": true,
+    "trace_intrusion_score_forbidden": true,
+    "obstacle_hit_forbidden": true,
+    "source_identity_forbidden": true
+  },
+  "probe": {
+    "model": "deterministic weighted ridge",
+    "alpha": 10.0,
+    "decision_threshold": 0.5,
+    "split": "leave one complete parent_source_id out",
+    "weights": "equal class mass and equal source mass within class",
+    "hyperparameter_search": false,
+    "weights_saved": false
+  },
+  "gate": {
+    "minimum_retained_intervention_events": 4,
+    "minimum_retained_context_events": 8,
+    "minimum_retained_intervention_sources": 3,
+    "event_oof_auroc_at_least": 0.7,
+    "event_balanced_accuracy_at_least": 0.65,
+    "intervention_recall_at_least": 0.5,
+    "context_recall_at_least": 0.7,
+    "every_training_fold_contains_both_classes": true,
+    "all_folds_finite": true
+  },
+  "authorization": {
+    "deterministic_actionability_probe": true,
+    "optimization_short_runs": false,
+    "training": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false,
+    "sam_asam": false
+  }
+}

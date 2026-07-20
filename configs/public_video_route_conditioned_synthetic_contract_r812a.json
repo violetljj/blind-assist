@@ -1,0 +1,27 @@
+{
+  "schema": "blindassist_route_conditioned_synthetic_dataset_contract_erratum_v1",
+  "contract_id": "r812a_inserted_obstacle_class_semantics_erratum_v1",
+  "frozen_at_utc": "2026-07-19T14:32:00Z",
+  "bound_original_contract": {
+    "path": "configs/public_video_route_conditioned_synthetic_contract_r812.json",
+    "sha256": "a40b4548ff89a780003f6fab3e239daddc6ec70cc9a3a81217b486e115c563b2"
+  },
+  "issue": "The generic static_obstacle detection class could imply that pre-existing benches, railings, bins, or other static objects in the exact parent RGB are unlabeled targets.",
+  "correction": {
+    "annotation_class": "inserted_temporary_obstacle",
+    "geometry_changed": false,
+    "parent_frames_changed": false,
+    "route_templates_changed": false,
+    "route_labels_changed": false
+  },
+  "v1_disposition": "retain_for_audit_but_reject_as_training_input",
+  "authorization": {
+    "train_only_auxiliary_supervision": true,
+    "real_event_truth": false,
+    "provider_evaluation_credit": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "blindassist_public_video_matched_counterfactual_pair_contract_v1",
+  "contract_id": "r770_bangkok_real_same_source_matched_contrast_v1",
+  "frozen_at_utc": "2026-07-19T09:38:00Z",
+  "derivation_disclosure": "The two event roles were assigned after r7.66 candidates were frozen and before their r7.66 scores were computed. This materialization occurs after all r7.66-r7.69 diagnostics and is therefore training-candidate only, never independent evaluation or prospective evidence.",
+  "pair_id": "bangkok_modern_real_marker_route_relation_pair_r770",
+  "parent_source_id": "wikimedia_commons_poptravel_bangkok_modern_center_2019",
+  "bound_inputs": {
+    "video": {
+      "path": "artifacts.local/evidence/public-video-r766-prospective-bangkok-modern-20260719/bangkok_modern_240p.webm",
+      "sha256": "2d27115804fde2f1bee3dff8e12325c21889b1c454fbb94d23c25d32d92fb572"
+    },
+    "negative_review": {
+      "path": "artifacts.local/evidence/public-video-r766-prospective-bangkok-modern-20260719/bangkok_modern_safe_lateral_review_r766.json",
+      "sha256": "16a1fc094bdd4f44b20b5447c2d600c1d1a13c902a2cb1ddefec80b34c90652f"
+    },
+    "positive_review": {
+      "path": "artifacts.local/evidence/public-video-r766-prospective-bangkok-modern-20260719/bangkok_modern_positive_review_r766.json",
+      "sha256": "7beb2be7ce918e6e2ba83e644b6d1cee06b8e04bfb204146c1945614f1e44123"
+    }
+  },
+  "episodes": {
+    "safe_lateral": {
+      "start_ms": 300000,
+      "end_ms": 311000,
+      "provisional_binary_label": 0
+    },
+    "route_intruding": {
+      "start_ms": 328000,
+      "end_ms": 339000,
+      "provisional_binary_label": 1
+    }
+  },
+  "pair_semantics": {
+    "kind": "real same-parent-source matched contrast, not a synthetic intervention and not causal truth",
+    "shared_context": "same original continuous pedestrian video, camera, city block and traffic-cone mechanism",
+    "contrast": "curb-side safe lateral pass versus cone occupying the plausible forward route",
+    "supervision": "hash-bound GPT/VLM provisional silver, no human truth",
+    "split_rule": "both episodes and every derived frame must follow parent_source_id into the same train or holdout side"
+  },
+  "authorization": {
+    "counterfactual_episode_collection": true,
+    "representation_training_candidate": true,
+    "training_execution_authorized": false,
+    "independent_evaluation_eligible": false,
+    "prospective_credit": false,
+    "calibration_authorized": false,
+    "blind_evaluation_authorized": false,
+    "risk_event_training_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

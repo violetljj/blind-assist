@@ -1,0 +1,55 @@
+{
+  "schema": "blindassist_public_video_causal_actionability_contract_v1",
+  "contract_id": "r785_no_change_intervention_state_semantics_v1",
+  "frozen_at_utc": "2026-07-19T11:56:31.4093376Z",
+  "derivation_disclosure": "Frozen after r7.80a showed that the Bangkok event previously called safe-lateral enters the past-only committed-motion corridor at 306-309s and then clears at 310-311s. This is a post-hoc semantics audit, not prospective model evidence. It tests whether eventual successful avoidance was incorrectly used as a no-warning label.",
+  "bound_input": {
+    "r780a_report_path": "artifacts.local/evidence/public-video-r780-tiered-causal-alerts-20260719/tiered_causal_alerts_r780a.json",
+    "r780a_report_sha256": "6e466af893d6f483396d5e7894d9ffb905f2bb90961401357e6833b0ff1195e9"
+  },
+  "state_policy": {
+    "context_notice": "frozen tier-1 radial event entry",
+    "intervention_threshold": 0.3333333333333333,
+    "intervention_consecutive_one_second_samples": 2,
+    "route_clear_threshold": 0.3333333333333333,
+    "route_clear_consecutive_one_second_samples": 2,
+    "route_clear_must_follow_intervention": true,
+    "classification": {
+      "context_only": "no causal intervention transition before marker event end",
+      "intervention_then_route_clear": "causal intervention transition followed by two below-threshold samples before marker event end",
+      "persistent_intervention": "causal intervention transition without confirmed route clear before marker event end"
+    }
+  },
+  "frozen_event_expectations": [
+    {
+      "source_id": "wikimedia_commons_poptravel_bangkok_modern_center_2019",
+      "event_entry_timestamp_ms": 300000,
+      "expected_actionability_class": "intervention_then_route_clear"
+    },
+    {
+      "source_id": "wikimedia_commons_poptravel_bangkok_modern_center_2019",
+      "event_entry_timestamp_ms": 328000,
+      "expected_actionability_class": "persistent_intervention"
+    },
+    {
+      "source_id": "wikimedia_commons_poptravel_duesseldorf_central_city_2019",
+      "event_entry_timestamp_ms": 900000,
+      "expected_actionability_class": "context_only"
+    }
+  ],
+  "interpretation": {
+    "eventual_safe_pass_is_not_a_no_warning_target": true,
+    "warning_success_may_change_the_future_outcome": true,
+    "directional_instruction_requires_separate_free_space_evidence": true,
+    "original_review_labels_are_preserved": true
+  },
+  "authorization": {
+    "offline_semantics_audit_only": true,
+    "training": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false,
+    "sam_asam": false
+  }
+}

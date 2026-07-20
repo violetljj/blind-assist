@@ -1,0 +1,57 @@
+{
+  "schema": "blindassist_route_conditioned_bootstrap_short_runs_contract_v1",
+  "contract_id": "r818_distance_risk_profile_prototype_bootstrap_five_runs_v1",
+  "frozen_at_utc": "2026-07-19T14:54:10Z",
+  "bound_frame_probe": {
+    "path": "artifacts.local/evidence/public-video-r816-route-conditioned-distance-aux-probe-20260719/probe_r816.json",
+    "sha256": "88e16295da088cd8f89fce6ce29b69ff81b3e3d210063bfef644f9e01de171d4",
+    "balanced_accuracy": 0.9155518394648829
+  },
+  "bound_lifecycle_probe": {
+    "path": "artifacts.local/evidence/public-video-r817-route-conditioned-synthetic-lifecycle-20260719/lifecycle_r817.json",
+    "sha256": "9c9e5179a4ac0db6742a297833eab63f3029afa8997cae6d9aa16fc8ea4b4cda",
+    "balanced_accuracy": 0.9428571428571428
+  },
+  "bound_dataset": {
+    "root": "artifacts.local/synthetic/route-conditioned-obstruction-r814/dataset-v2",
+    "build_receipt_sha256": "96c36810a9d5fea0c8afee492b4bac391324868971a85b7115e6c247d05e3d14",
+    "manual_review_sha256": "0344b3f8d021ee08e3b28cc1ccf85c3d855ff92cde3d342a88fef2e47edc67b0"
+  },
+  "frozen_representation": {
+    "checkpoint_sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378",
+    "encoder": "vits",
+    "input_size": 224,
+    "layer_index": 11,
+    "teacher_target": "bbox_distance",
+    "distance_sigma_patches": 1.5,
+    "teacher_ridge": 10.0
+  },
+  "short_runs": {
+    "seeds": [20260719, 20260720, 20260721, 20260722, 20260723],
+    "split": "leave_one_complete_parent_source_out",
+    "bootstrap": "sample with replacement within every training parent_source_id x class cell",
+    "initialization": "nearest-class-prototype linear logits after bootstrap standardization",
+    "steps": 80,
+    "learning_rate": 0.05,
+    "l2": 0.001,
+    "saved_weights": false,
+    "parameter_search": false
+  },
+  "gate": {
+    "minimum_worst_seed_balanced_accuracy": 0.85,
+    "minimum_worst_seed_each_class_recall": 0.8,
+    "minimum_mean_balanced_accuracy": 0.9,
+    "maximum_seed_balanced_accuracy_stddev": 0.03,
+    "minimum_worst_seed_parent_source_balanced_accuracy": 0.8,
+    "repeat_exact": true
+  },
+  "authorization": {
+    "train_only_diagnosis": true,
+    "real_event_truth": false,
+    "provider_evaluation_credit": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}
