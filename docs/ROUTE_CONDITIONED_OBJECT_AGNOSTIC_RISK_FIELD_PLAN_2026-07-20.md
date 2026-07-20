@@ -29,6 +29,13 @@
 
 因此当前精确阶段为 `E0/U0 gate preparation`：真实 eligible episode 为 0，设备 metric geometry admission 为 false，学生训练仍禁止。
 
+## 2026-07-21 E0 合同加固与路线特异性负控
+
+- 真实事件 validator 现把 manifest 的 `contract_id`、`benchmark_only`、生产替换权限、route `parent_source_id` 与 episode `source_receipt_id` 原子绑定；`training_eligible` 必须同时服从 config authority。因而完整的人类真值矩阵可以授权 U0 评价，但在当前 `full_matrix_training=false` 下仍不能被误报为可训练。
+- `UstrfRouteConditionedRiskInteractor` 新增 risk-field 决策时新鲜度门。来自未来或超过 500ms 的风险场即使路线 TTL 尚未到期也会 fail closed，并用独立 `risk_field_unknown_or_invalid` 与路线失效区分；有效 evidence 的 TTL 不得晚于风险场新鲜度上限。
+- 冻结 `configs/ustrf_sc_rc_oarf_route_specificity_control_v1.json`，只复用 r816 的 216 个现有预测和同一图像的 LEFT/STRAIGHT/RIGHT 三元组，不重跑 DINO、不重拟合、不选阈值。正确路线 BA 为 `.91555`；两个互不相同、无固定点的循环错路线负控为 `.72492/.79515`，相对增益 `.19064/.12040`，三个父来源均同方向下降，观察到强路线特异性信号。
+- 旧 r816 report 没有逐预测 `example_id`，因此无法以密码学方式证明预测数组与 route row 的逐例顺序绑定；正式 E0 gate 按 fail-closed 保持 `BLOCKED_ON_PREDICTION_IDENTITY_BINDING`。需在不改模型/阈值的 identity-bound r816 复跑中补出 example ID 序列后才能转为 pass。该观察仍不解除 r818 五 seed 稳定门、真实事件真值 0、非未来 route provider、设备米制几何、学生训练或生产门。正式收据：`artifacts.local/evidence/ustrf-sc/rc-oarf-route-specificity-control-v1-20260721-r3/report.json`。
+
 ## 一、结论先行
 
 当前 BlindAssist 的生产链以单帧目标检测为感知入口：

@@ -41,6 +41,8 @@ data class UstrfRouteFieldReceipt(
 enum class UstrfRouteConditionedRiskFailure {
     SOURCE_FRAME_MISMATCH,
     COORDINATE_FRAME_MISMATCH,
+    RISK_FIELD_FROM_FUTURE,
+    RISK_FIELD_STALE,
     ROUTE_ISSUED_IN_FUTURE,
     ROUTE_STALE,
     ROUTE_LOW_CONFIDENCE,
@@ -68,7 +70,10 @@ sealed interface UstrfRouteConditionedRiskResolution {
         val failure: UstrfRouteConditionedRiskFailure,
         val abstainReason: String = ROUTE_UNKNOWN_OR_INVALID
     ) : UstrfRouteConditionedRiskResolution {
-        companion object { const val ROUTE_UNKNOWN_OR_INVALID = "route_unknown_or_invalid" }
+        companion object {
+            const val ROUTE_UNKNOWN_OR_INVALID = "route_unknown_or_invalid"
+            const val RISK_FIELD_UNKNOWN_OR_INVALID = "risk_field_unknown_or_invalid"
+        }
     }
 }
 
@@ -78,11 +83,13 @@ sealed interface UstrfRouteConditionedRiskResolution {
  */
 class UstrfRouteConditionedRiskInteractor(
     private val minimumRouteConfidence: Float = .70f,
-    private val dynamicRiskHorizonMs: Long = 3_000L
+    private val dynamicRiskHorizonMs: Long = 3_000L,
+    private val maximumRiskFieldAgeNs: Long = 500_000_000L
 ) {
     init {
         require(minimumRouteConfidence in 0f..1f)
         require(dynamicRiskHorizonMs > 0L)
+        require(maximumRiskFieldAgeNs > 0L)
     }
 
     fun interact(
@@ -94,6 +101,8 @@ class UstrfRouteConditionedRiskInteractor(
         val failure = when {
             route.sourceFrame != field.frame -> UstrfRouteConditionedRiskFailure.SOURCE_FRAME_MISMATCH
             route.coordinateFrame != field.frame.coordinateFrame -> UstrfRouteConditionedRiskFailure.COORDINATE_FRAME_MISMATCH
+            decisionAtNs < field.frame.capturedAtNs -> UstrfRouteConditionedRiskFailure.RISK_FIELD_FROM_FUTURE
+            decisionAtNs - field.frame.capturedAtNs > maximumRiskFieldAgeNs -> UstrfRouteConditionedRiskFailure.RISK_FIELD_STALE
             route.issuedAtNs > decisionAtNs -> UstrfRouteConditionedRiskFailure.ROUTE_ISSUED_IN_FUTURE
             route.validUntilNs < decisionAtNs -> UstrfRouteConditionedRiskFailure.ROUTE_STALE
             route.confidence < minimumRouteConfidence -> UstrfRouteConditionedRiskFailure.ROUTE_LOW_CONFIDENCE
@@ -104,7 +113,15 @@ class UstrfRouteConditionedRiskInteractor(
                 UstrfRouteConditionedRiskFailure.PROVIDER_NOT_ALLOWED_AT_RUNTIME
             else -> null
         }
-        if (failure != null) return UstrfRouteConditionedRiskResolution.Unavailable(failure)
+        if (failure != null) {
+            val reason = when (failure) {
+                UstrfRouteConditionedRiskFailure.RISK_FIELD_FROM_FUTURE,
+                UstrfRouteConditionedRiskFailure.RISK_FIELD_STALE ->
+                    UstrfRouteConditionedRiskResolution.Unavailable.RISK_FIELD_UNKNOWN_OR_INVALID
+                else -> UstrfRouteConditionedRiskResolution.Unavailable.ROUTE_UNKNOWN_OR_INVALID
+            }
+            return UstrfRouteConditionedRiskResolution.Unavailable(failure, reason)
+        }
 
         val activeWeights = route.weights.filterValues { it > 0f }
         val totalWeight = activeWeights.values.sum()
@@ -131,9 +148,13 @@ class UstrfRouteConditionedRiskInteractor(
                 maximumRouteCellRisk = maximumRisk,
                 routeUnknownFraction = (weightedUnknown / totalWeight).coerceIn(0f, 1f),
                 contributingCellCount = activeWeights.size,
-                validUntilNs = route.validUntilNs,
+                validUntilNs = minOf(route.validUntilNs, riskFieldValidUntil(field.frame.capturedAtNs)),
                 riskSources = sources
             )
         )
     }
+
+    private fun riskFieldValidUntil(capturedAtNs: Long): Long =
+        if (capturedAtNs > Long.MAX_VALUE - maximumRiskFieldAgeNs) Long.MAX_VALUE
+        else capturedAtNs + maximumRiskFieldAgeNs
 }

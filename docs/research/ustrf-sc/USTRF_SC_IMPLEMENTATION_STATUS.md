@@ -1,6 +1,6 @@
 # USTRF-SC 双环实施状态与证据边界
 
-状态日期：2026-07-20。
+状态日期：2026-07-21。
 总原则：本表区分“接口/单元测试存在”“设备候选观测存在”“独立验证完成”和“生产授权”。除非明确写为生产授权，否则默认均为 production-isolated experiment。
 
 | 双环模块 | 当前实现 | 已有证据 | 未满足的门 | 当前授权 |
@@ -25,6 +25,12 @@
 - detector 边界：crop/tiling r1 已冻结。后续 detector 变量只能是独立的 crop-view FP 抑制实验（如跨 view 一致性门），不得继续扫描 r1 的 NMS、overlap 或 score。
 
 因此当前授权仍是：研究主线已切换，但真实事件、设备几何、正式 App 与生产反馈均未放行。
+
+## 2026-07-21 E0 安全加固
+
+- route-conditioned 事件 manifest 现强制绑定合同 ID、benchmark-only、生产权限、route 父来源与 episode source receipt；训练资格服从 config authority。当前合同即使未来收齐 120 episode，也只授权 teacher upper-bound evaluation，不自动授权学生训练。
+- route-risk seam 现拒绝 future/stale risk field，并把 evidence TTL 截断到 500ms 风险场新鲜度窗；不再允许“路线还新、风险场已旧”的组合返回 Available。
+- r816 within-image wrong-route 特异性负控在 216 例/72 图/3 父来源上观察到强信号：正确路线 BA `.91555`，两种错路线 `.72492/.79515`，每个父来源均同方向下降。但旧 report 未保存逐预测 example ID，正式 gate 为 `BLOCKED_ON_PREDICTION_IDENTITY_BINDING`；权限仍仅为 provisional synthetic mechanism evidence，r818 稳定性、真实事件、设备与生产结论均不变。
 
 ## 已通过的验证层级
 

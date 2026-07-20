@@ -27,6 +27,7 @@ class RouteConditionedEventTruthTest(unittest.TestCase):
             report = subject.validate(self.config(), manifest, root=root, require_complete=True)
             self.assertTrue(report["route_conditioned_truth_eligible"])
             self.assertEqual(2, report["route_bound_episode_count"])
+            self.assertFalse(report["training_eligible"])
             self.assertFalse(report["production_model_replacement_authorized"])
 
     def test_future_route_or_cross_pair_route_intent_fails_closed(self) -> None:
@@ -71,6 +72,34 @@ class RouteConditionedEventTruthTest(unittest.TestCase):
             with self.assertRaisesRegex(subject.ContractError, "manifest alertable_start_ms differs"):
                 subject.validate(self.config(), manifest, root=root, require_complete=True)
 
+    def test_contract_authority_and_source_binding_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+
+            manifest = self.manifest(root)
+            manifest["contract_id"] = "wrong-contract"
+            with self.assertRaisesRegex(subject.ContractError, "contract_id"):
+                subject.validate(self.config(), manifest, root=root, require_complete=True)
+
+            manifest = self.manifest(root)
+            manifest["benchmark_only"] = False
+            with self.assertRaisesRegex(subject.ContractError, "benchmark_only"):
+                subject.validate(self.config(), manifest, root=root, require_complete=True)
+
+            manifest = self.manifest(root)
+            manifest["production_model_replacement_authorized"] = True
+            with self.assertRaisesRegex(subject.ContractError, "production replacement"):
+                subject.validate(self.config(), manifest, root=root, require_complete=True)
+
+            manifest = self.manifest(root)
+            route_path = root / manifest["episodes"][0]["route_intent_path"]
+            route = json.loads(route_path.read_text(encoding="utf-8"))
+            route["parent_source_id"] = "different-source"
+            route_path.write_text(json.dumps(route), encoding="utf-8")
+            manifest["episodes"][0]["route_intent_sha256"] = sha(route_path)
+            with self.assertRaisesRegex(subject.ContractError, "parent_source_id"):
+                subject.validate(self.config(), manifest, root=root, require_complete=True)
+
     @staticmethod
     def config() -> dict:
         fields = [
@@ -83,6 +112,10 @@ class RouteConditionedEventTruthTest(unittest.TestCase):
         ]
         return {
             "schema": "blindassist_sanpo_counterfactual_episode_collection_v1",
+            "contract_id": "test-route-conditioned-truth-v1",
+            "benchmark_only": True,
+            "production_model_replacement_authorized": False,
+            "authority": {"full_matrix_training": False},
             "design": {"session_count": 1, "scene_count": 1, "matched_pairs_per_session_scene": 1},
             "sessions": [{"session_id": "s1"}],
             "scenes": [{"scene_id": "route_obstacle"}],
@@ -154,6 +187,9 @@ class RouteConditionedEventTruthTest(unittest.TestCase):
         ]
         return {
             "schema": "blindassist_sanpo_counterfactual_episode_manifest_v1",
+            "contract_id": "test-route-conditioned-truth-v1",
+            "benchmark_only": True,
+            "production_model_replacement_authorized": False,
             "collection_status": "complete",
             "source_receipts": [receipt],
             "episodes": episodes,

@@ -65,6 +65,29 @@ class UstrfRouteConditionedRiskTest {
         assertEquals(UstrfRouteConditionedRiskFailure.ROUTE_INVALID, invalid.failure)
     }
 
+    @Test
+    fun futureOrStaleRiskFieldFailsClosedEvenWhenRouteRemainsValid() {
+        val field = UstrfRiskField(frame, mapOf(left to UstrfRiskCell(occupancy = 1f, uncertainty = .1f)))
+        val strict = UstrfRouteConditionedRiskInteractor(maximumRiskFieldAgeNs = 50L)
+
+        val future = unavailable(strict.interact(field, route(left), 999L, runtime = true))
+        assertEquals(UstrfRouteConditionedRiskFailure.RISK_FIELD_FROM_FUTURE, future.failure)
+
+        val stale = unavailable(strict.interact(field, route(left), 1_051L, runtime = true))
+        assertEquals(UstrfRouteConditionedRiskFailure.RISK_FIELD_STALE, stale.failure)
+        assertEquals("risk_field_unknown_or_invalid", stale.abstainReason)
+    }
+
+    @Test
+    fun evidenceValidityCannotOutliveTheRiskFieldFreshnessWindow() {
+        val field = UstrfRiskField(frame, mapOf(left to UstrfRiskCell(occupancy = .8f, uncertainty = .1f)))
+        val strict = UstrfRouteConditionedRiskInteractor(maximumRiskFieldAgeNs = 200L)
+
+        val evidence = available(strict.interact(field, route(left, validUntilNs = 2_000L), 1_100L, runtime = true))
+
+        assertEquals(1_200L, evidence.validUntilNs)
+    }
+
     private fun route(
         cell: UstrfGridCoordinate,
         providerType: UstrfRouteFieldProviderType = UstrfRouteFieldProviderType.NAVIGATION,
