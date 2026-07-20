@@ -4153,3 +4153,22 @@
 - 62,689 参数、未训练、全 INT8 的 TCN 组件 P95 为 `.3155ms`；真实 SM-S9280 CameraX + YOLO + 夹具三轮总 P95 为 `69.567/68.829/68.799ms`，后续缓冲区复用复核为 `69.016ms`，均为 0 失败。性能形态可行但最坏余量仅 `.433ms`，不授权 runtime 接入。
 - 三个 ADVIO IMU route/turn probe 均失败（AUROC `.4770/.4746/.3465`）；IMU 不作为行进方向、路线或转向确认器。公开数据、合成数据和未训练头均不补足 `should_alert` 人工事件真值。
 - 96 episode / 48 matched pair 采集计划仍全部 `not_captured`，故训练、校准、blind、Android shadow、提醒与默认模型替换继续关闭。完整证据和下一有效门见 `docs/CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md`。
+
+## 2026-07-20：USTRF-SC source radial-motion 分层与 V13
+
+- 执行者：violjjet
+- 新增独立 `:core:ustrf` pure-Kotlin 安全合同与回放模块、隔离的 `:ustrf-shadow-benchmark` Android 测试 App，以及公开/合成来源审计、REveL detector 与研究汇总脚本；未接入正式 App、默认 YOLO、risk/feedback runtime 或生产资产。
+- 将既有 REveL detector/Vicon 对齐升级为 CPU/NumPy v2：严格原生 Vicon 时间包围、连续性/同步门、冻结 ±0.10m/s deadband、approach/recede/quasi-static、离线非因果 TTC-proxy、逐框 JSONL/hash 和 fail-closed 缺失原因；未改 App、默认 YOLO、runtime 或 GPU 路径。
+- 770 个框中 range 仍为 502，motion 可用 488；三类 recall 为 `.93137/.90291/.90608`，TTC-proxy<3s 仅 10 个且 10/10。alignment/details 两次精确复跑哈希一致；5 个相关 Python test module 共 22 tests 通过。
+- V13 为 `15 gate / 14 pass / CONDITIONAL_RESEARCH_GO`，新增 gate 仅获 `source-motion-stratification-only`；`device_metric_geometry_admission` 仍是唯一失败，`production_authority=false`。详细协议、CI、分母和证据见 `docs/research/ustrf-sc/USTRF_SC_RESEARCH_METRICS_2026-07-20.md`。
+- GPU 调度改为风险分级：已稳定的同类 bounded 配置可按显存、温度和系统余量灵活选择 batch/规模；新型重负载或长跑才要求先做可停止 pilot、守护/分片 receipt。曾两次蓝屏的 8,580 帧、`batch=64/imgsz=320/FP16` 旧入口组合仍禁止复用。
+- 验证：22 个 USTRF Python test 文件共 60 tests 通过；46 个 Python 文件 `py_compile` 与 PowerShell guard 语法检查通过；JDK 17 下 `:core:ustrf:test`、`:ustrf-shadow-benchmark` Kotlin/AndroidTest 编译和 `:device-benchmark:compileDebugKotlin` 通过；文档索引与仓库卫生检查通过。
+
+## 2026-07-20：USTRF-SC REveL 8/32 帧 crop/tiling 配对 canary
+
+- 执行者：violjjet
+- 范围：为独立 REveL YOLO11n 公共 RGB detector 增加显式选帧合同、固定全帧 + 四角 crop 推理、跨 view NMS、view 级逐帧收据、前台 GPU 守护参数和 paired reporter；不修改正式 App、默认 YOLO、risk/feedback、模型权重、设备门或生产路径。
+- 合同：8 帧 canary 从 512 r2 的 8 个不同 small-miss segment 冻结；候选每帧为全图 + 四个 60% 角落 crop，共 5 views，映射回原图后固定 NMS IoU `.5`。只有 small 恢复不少于 2、无基线 GT 回退、F1 不降、FP 不超过 6 且系统收据全绿，才允许进入已冻结的 32 帧压力集。
+- 结果：full-frame 精确复现 `TP/FP/FN=6/4/8`、F1 `.5000`、small `0/8`；tiling 为 `10/14/4`、F1 `.5263`、small `4/8`，medium/large 仍 `3/3`。逐 GT 为 recovered `4`、regressed `0`，但 FP `4→14`，违反 canary 上限；决定固定为 `stop_after_8_frame_canary`，32 帧未运行且未放宽门槛。
+- 系统：两臂均以前台 PowerShell 守护完成；full/tiling 最高温度 `47/50°C`、整卡显存 `1276/1508MB`、功耗 `20.18/18.08W`，0 相关 System event、无 stop reason。GPU 恢复路径有效，失败属于检测质量权衡。
+- 验证与证据：benchmark/tiling/contract/comparator 共 15 个 CPU tests 通过，PowerShell guard 解析通过；机器报告位于 `artifacts.local/evidence/ustrf-sc/revel-yolo11n-crop-tiling-pair-20260720-r1/`，paired report SHA-256 `f38cf353f13199ba9fd4f9167083beee26285ecdc7b10c3e392aa8a441ad01f7`。详细边界见 `docs/research/ustrf-sc/USTRF_SC_REVEL_CROP_TILING_PAIRED_2026-07-20.md`。

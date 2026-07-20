@@ -18,6 +18,8 @@ rootProject.name = "BlindAssist"
 include(":app")
 include(":device-benchmark")
 include(":core:assist")
+include(":core:ustrf")
+include(":ustrf-shadow-benchmark")
 include(":core:vision")
 include(":core:device")
 include(":core:ui")

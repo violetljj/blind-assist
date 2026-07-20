@@ -28,6 +28,15 @@
 
 设备脚本可能调用 Gradle、ADB 并覆盖手机上的 debug 包；运行前确认设备和目标 module。证据统一写入 `artifacts.local/evidence/`。
 
+## USTRF-SC 独立研究与回放
+
+- 合成与 SANPO-Synthetic 回放：`acquire_sanpo_synthetic_replay.py`、`audit_sanpo_synthetic_replay.py`、`audit_sanpo_synthetic_metric_replay.py`、`generate_ustrf_synthetic_temporal_geometry_benchmark.py`、`generate_ustrf_synthetic_dynamic_ttc_benchmark.py`、`generate_ustrf_synthetic_corridor_safety_benchmark.py`
+- 公开几何/动态来源审计：`audit_tartanair_slice.py`、`estimate_tartanair_ground_plane.py`、`audit_tartanair_temporal_reprojection.py`、`audit_carla_ped_rgbd_slice.py`、`audit_bonn_rgbd_dynamic_source.py`、`audit_bonn_rgbd_dynamic_reprojection.py`、`audit_vkitti2_dynamic_tracks.py`、`audit_argoverse_av1_timestamped_ttc.py`
+- REveL 来源与 detector 诊断：`audit_revel_dynamic_rgb_labels.py`、`audit_revel_dynamic_bag_inventory.py`、`audit_revel_dynamic_vicon_trajectories.py`、`audit_revel_rgb_vicon_reprojection.py`、`benchmark_revel_yolo_person_detector.py`、`run_guarded_revel_yolo_smoke.ps1`、`analyze_revel_detector_failures.py`、`compare_revel_detector_sensitivity.py`、`compare_revel_detector_tiling.py`、`align_revel_detector_failures_with_vicon.py`
+- 汇总门禁：`report_ustrf_sc_research_benchmark.py`；对应 `test_*.py` 与实现同名配对。
+
+这些脚本只产出隔离研究证据；公开来源的 source-native 距离、轨迹或 TTC proxy 不能替代 body-local assistive event truth，也不授权默认 App 或模型替换。GPU 调度按 [USTRF-SC 窗口交接](../docs/research/ustrf-sc/USTRF_SC_WINDOW_HANDOFF_2026-07-20.md) 的风险分级边界执行。
+
 ## SANPO 数据集构建与治理
 
 - 发现与构建：`discover_sanpo_sequence_candidates.py`、`build_sanpo_sequence_evalset.py`、`build_blindassist_evalset.py`

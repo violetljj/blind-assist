@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <application android:label="USTRF Shadow Benchmark" android:allowBackup="false">
+        <!-- Optional: this isolated benchmark must never make the product AR-required. -->
+        <meta-data android:name="com.google.ar.core" android:value="optional" />
+        <activity android:name=".UstrfArCoreBenchmarkActivity" android:exported="false" />
+    </application>
+</manifest>

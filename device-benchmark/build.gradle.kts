@@ -48,14 +48,14 @@ val prepareDetectorBenchmarkAssets = tasks.register<Sync>("prepareDetectorBenchm
         include("source_masks/test/**")
         into("blindassist_evalset")
     }
-    into(detectorBenchmarkAssetsDir)
-}
     from(publicVideoInferenceDir.map { rootProject.file(it) }) {
         include("dataset_spec.json")
         include("manifest.jsonl")
         include("images/**")
         into("public_video_inference")
     }
+    into(detectorBenchmarkAssetsDir)
+}
 
 val prepareDepthBenchmarkAssets = tasks.register<Sync>("prepareDepthBenchmarkAssets") {
     from(depthBenchmarkModelPath.map { rootProject.file(it) }) {
@@ -73,12 +73,6 @@ val prepareSegmentationBenchmarkAssets = tasks.register<Sync>("prepareSegmentati
     into(segmentationBenchmarkAssetsDir)
 }
 
-android {
-    namespace = "com.linnan.blindassist.benchmark"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    targetProjectPath = ":app"
-    targetVariant = "debug"
-
 val prepareEventHeadBenchmarkAssets = tasks.register<Sync>("prepareEventHeadBenchmarkAssets") {
     from(rootProject.file("artifacts.local/experiments/secondary-corridor-causal/event-head-tcn-int8-v0-20260718/android/app/src/main/assets")) {
         include("corridor_causal_tcn_int8_v0.tflite")
@@ -87,6 +81,12 @@ val prepareEventHeadBenchmarkAssets = tasks.register<Sync>("prepareEventHeadBenc
     }
     into(eventHeadBenchmarkAssetsDir)
 }
+
+android {
+    namespace = "com.linnan.blindassist.benchmark"
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    targetProjectPath = ":app"
+    targetVariant = "debug"
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
@@ -112,6 +112,7 @@ val prepareEventHeadBenchmarkAssets = tasks.register<Sync>("prepareEventHeadBenc
             assets.srcDir(detectorBenchmarkAssetsDir)
             assets.srcDir(depthBenchmarkAssetsDir)
             assets.srcDir(segmentationBenchmarkAssetsDir)
+            assets.srcDir(eventHeadBenchmarkAssetsDir)
         }
     }
 }
@@ -122,11 +123,12 @@ tasks.matching {
     dependsOn(prepareDetectorBenchmarkAssets)
     dependsOn(prepareDepthBenchmarkAssets)
     dependsOn(prepareSegmentationBenchmarkAssets)
+    dependsOn(prepareEventHeadBenchmarkAssets)
 }
 
 dependencies {
-            assets.srcDir(eventHeadBenchmarkAssetsDir)
     implementation(project(":core:assist"))
+    implementation(project(":core:ustrf"))
     implementation(project(":core:vision"))
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
@@ -137,6 +139,3 @@ dependencies {
     implementation(libs.tflite)
     implementation("org.opencv:opencv:4.10.0")
 }
-    dependsOn(prepareEventHeadBenchmarkAssets)
-    implementation(libs.androidx.camera.camera2)
-    implementation(libs.androidx.camera.lifecycle)
