@@ -51,7 +51,8 @@ $env:GRADLE_USER_HOME='E:\codex-tools\projects\blindassist\state\gradle'
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py
-.\gradlew.bat :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain
+E:\codex-tools\bin\blindassist-python.cmd scripts\run_research_contract_tests.py
+.\gradlew.bat :core:assist:test :core:ustrf:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain
 .\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain
 .\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug --no-daemon --console=plain
 ```

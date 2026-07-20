@@ -6,6 +6,7 @@
 
 - `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试。
 - `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档索引与本地链接门禁。
+- `run_research_contract_tests.py`：本地与 CI 共用的无 GPU、无设备、无可选科学依赖研究合同回归入口。
 - `archive_apk.ps1`、`verify_release_apk.ps1`、`verify_apk_16kb.ps1`：APK 校验与归档。
 - `restore_codex_skills.ps1`：恢复仓库内 skills 快照。
 

@@ -9,6 +9,14 @@
 - 早期恢复式记录存在非单调日期与混合标题层级，以下原文作为历史证据保留；按日期或任务标题检索，不将其目录顺序当作当前优先级。
 - 发布事实写入 `CHANGELOG.md`，待决方向写入 `idea.md`，当前协议/状态写入 `docs/`，具体规则见 [docs/DOCUMENT_GOVERNANCE.md](docs/DOCUMENT_GOVERNANCE.md)。
 
+## 2026-07-21
+
+### USTRF 研究合同持续验证与 current truth 收口
+- 时间：2026-07-21 01:10:00 +08:00；执行者：violjjet。
+- 范围：补充 `:core:ustrf:test` 与无设备 Python research-contract 的本地/CI 统一入口；统一 route-conditioned 主线在文档索引、SANPO 当前状态和计划表中的状态表述。
+- 边界：只提升验证与文档 Locality，不改变 App、默认 YOLO、模型、设备行为或任何研究晋级结论；真实事件仍为 0，设备米制几何 admission 仍为 false。
+- 验证：Python suite 24 tests 通过；JDK 17 `:core:ustrf:test`、文档索引、仓库卫生与目标差异检查通过。
+
 ## 2026-07-13
 
 ### SANPO 确定性 backbone probe、距离场前置诊断与反事实 episode 启动

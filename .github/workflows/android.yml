@@ -35,7 +35,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run tests, lint, and assemble APKs
-        run: ./gradlew :core:assist:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest :app:bundleDebug :app:mergeReleaseAssets :device-benchmark:assembleDebug
+        run: ./gradlew :core:assist:test :core:ustrf:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest :app:bundleDebug :app:mergeReleaseAssets :device-benchmark:assembleDebug
 
       - name: Reject legacy TensorFlow Lite runtime dependencies
         shell: pwsh
@@ -73,6 +73,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Run dependency-free research contract tests
+        run: python scripts/run_research_contract_tests.py
 
       - name: Install TFLite inspection runtime
         run: python -m pip install --upgrade pip ai-edge-litert

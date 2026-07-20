@@ -62,7 +62,7 @@ CameraX
 | 正式 App | 类别 + 矩形框 + 几何规则 | 固定中心区域近似 | 主感知和主要风险证据 | 生产基线 |
 | 公共银标 / 显式路线几何 | detector bbox 与外部 route field 的确定性交叠 | 必需，非未来 | 主障碍证据 | benchmark-only；端侧几何已闭环，真实 provider 仍缺 |
 | Corridor-Causal Student | YOLO/空间特征 + 运动补偿 + 走廊网格 + causal TCN | 走廊/heading | 输入证据之一 | 独立实验；真实事件数据与训练门未闭合 |
-| 本方案 RC-OARF | 密集无类别风险场 + 显式 route field + 因果生命周期 | 必需，非未来；未知时 fail closed | 可选语义解释，不是安全权威 | `proposal_only / not_started` |
+| 本方案 RC-OARF | 密集无类别风险场 + 显式 route field + 因果生命周期 | 必需，非未来；未知时 fail closed | 可选语义解释，不是安全权威 | `active_research_mainline / hard_gates_blocked` |
 
 隔离约束：
 

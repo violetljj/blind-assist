@@ -55,6 +55,7 @@
 `research/frontier-upgrade-2026-07/` 按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层。该目录用于研究追溯；生产行为仍以当前协议、代码和门禁为准。
 
 - [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：独立安全内核、离线/公开数据证据、设备门禁与恢复入口；不代表生产授权。
+- [ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md](ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：`active_research_mainline / hard_gates_blocked`，路线条件化无类别风险场研究主线；真实事件与设备米制几何仍未放行，不是生产真源。
 
 ## 维护规则
 
