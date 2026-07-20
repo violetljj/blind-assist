@@ -27,17 +27,37 @@ class RiskEventTrackerTest {
     }
 
     @Test
-    fun threeRecedingFramesClearAndAllowNewAlert() {
+    fun postPassReappearanceIsSuppressedBeforeSameAnchorCanAlertAgain() {
         val tracker = RiskEventTracker()
-        val first = tracker.update(risk(ApproachTrend.APPROACHING))
+        val first = tracker.update(risk(ApproachTrend.APPROACHING), nowMs = 0L)
         tracker.recordFeedback(first, FeedbackDecision(null, true, FeedbackReason.TRIGGERED))
-        repeat(3) { tracker.update(risk(ApproachTrend.RECEDING)) }
+        repeat(3) { index -> tracker.update(risk(ApproachTrend.RECEDING), nowMs = (index + 1) * 100L) }
 
-        val next = tracker.update(risk(ApproachTrend.APPROACHING))
+        val rebound = tracker.update(risk(ApproachTrend.APPROACHING), nowMs = 350L)
+
+        assertEquals(first.eventId, rebound.eventId)
+        assertEquals(RiskEventState.PASSED_OR_RECEDING, rebound.state)
+        assertTrue(rebound.suppressesFeedback)
+
+        val next = tracker.update(risk(ApproachTrend.APPROACHING), nowMs = 1_301L)
 
         assertEquals(RiskEventState.APPROACHING, next.state)
         assertFalse(next.suppressesFeedback)
         assertTrue(next.eventId != first.eventId)
+    }
+
+    @Test
+    fun postPassReappearanceWithCenterShiftInsideCorridorIsStillSuppressed() {
+        val tracker = RiskEventTracker()
+        val first = tracker.update(risk(ApproachTrend.APPROACHING), nowMs = 0L)
+        tracker.recordFeedback(first, FeedbackDecision(null, true, FeedbackReason.TRIGGERED))
+        repeat(3) { index -> tracker.update(risk(ApproachTrend.RECEDING), nowMs = (index + 1) * 100L) }
+
+        val rebound = tracker.update(risk(ApproachTrend.APPROACHING, centerX = 850f), nowMs = 350L)
+
+        assertEquals(first.eventId, rebound.eventId)
+        assertEquals(RiskEventState.PASSED_OR_RECEDING, rebound.state)
+        assertTrue(rebound.suppressesFeedback)
     }
 
     @Test
@@ -77,7 +97,23 @@ class RiskEventTrackerTest {
         assertTrue(afterReset.eventId != first.eventId)
     }
 
-    private fun risk(trend: ApproachTrend): RiskResult = RiskResult(
+    @Test
+    fun objectDetectorPersonTrackingIsExplicitlyOptIn() {
+        val defaultTracker = RiskEventTracker()
+        assertEquals(null, defaultTracker.update(personRisk(ApproachTrend.APPROACHING)).eventId)
+
+        val candidateTracker = RiskEventTracker(
+            RiskEventTrackerConfig(trackCenterObjectDetectorPerson = true)
+        )
+        val first = candidateTracker.update(personRisk(ApproachTrend.APPROACHING))
+        candidateTracker.recordFeedback(first, FeedbackDecision(null, true, FeedbackReason.TRIGGERED))
+        val repeated = candidateTracker.update(personRisk(ApproachTrend.APPROACHING))
+
+        assertEquals(RiskEventState.ALERTED, repeated.state)
+        assertTrue(repeated.suppressesFeedback)
+    }
+
+    private fun risk(trend: ApproachTrend, centerX: Float = 500f): RiskResult = RiskResult(
         level = RiskLevel.MEDIUM,
         direction = RiskDirection.CENTER,
         message = "risk",
@@ -85,11 +121,19 @@ class RiskEventTrackerTest {
             classId = 10_020,
             label = "stairs",
             confidence = 1f,
-            boundingBox = BoundingBox(400f, 400f, 600f, 800f),
+            boundingBox = BoundingBox(centerX - 100f, 400f, centerX + 100f, 800f),
             frameSize = frame,
             source = DetectionSource.SEGMENTATION
         ),
         proximity = ProximityBand.MID,
         approachTrend = trend
+    )
+
+    private fun personRisk(trend: ApproachTrend): RiskResult = risk(trend).copy(
+        sourceDetection = risk(trend).sourceDetection?.copy(
+            classId = 0,
+            label = "person",
+            source = DetectionSource.OBJECT_DETECTOR
+        )
     )
 }

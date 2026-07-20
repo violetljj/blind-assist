@@ -47,6 +47,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -118,7 +119,7 @@ class DetectorAbDeviceBenchmarkTest {
             }
             val app = runAppDetectorBenchmark(spec, images, appRunsPerImage, matchIouThreshold)
             assertFalse("${spec.id} App detector produced failures", app.failures.isNotEmpty())
-            ModelBenchmarkResult(spec, pure, app)
+            ModelBenchmarkResult(spec, pure, app, sha256Asset(spec.assetName))
         }
 
         val payload = JSONObject()
@@ -353,6 +354,11 @@ class DetectorAbDeviceBenchmarkTest {
                 val firstRun = runs.firstOrNull() ?: FrameRun(emptyList(), noneRisk(), 0.0, 0.0, 0.0, 0.0, 0.0)
                 val sequenceId = image.expectedRisk?.sequenceId
                 val frameIndex = image.expectedRisk?.frameIndex
+                val eventNowMs = if (sequenceId != null && frameIndex != null) {
+                    frameIndex.toLong() * TEMPORAL_FRAME_STEP_MS
+                } else {
+                    System.currentTimeMillis()
+                }
                 val modelRisk = if (sequenceId != null && frameIndex != null) {
                     if (activeSequenceId != sequenceId) {
                         temporalRiskTracker.reset()
@@ -360,7 +366,7 @@ class DetectorAbDeviceBenchmarkTest {
                         lowConfidenceSidePersonConfirmation.reset()
                         activeSequenceId = sequenceId
                     }
-                    temporalRiskTracker.update(firstRun.risk, frameIndex.toLong() * TEMPORAL_FRAME_STEP_MS)
+                    temporalRiskTracker.update(firstRun.risk, eventNowMs)
                 } else {
                     temporalRiskTracker.reset()
                     riskEventTracker.reset()
@@ -375,7 +381,9 @@ class DetectorAbDeviceBenchmarkTest {
                     matchIouThreshold = matchIouThreshold
                 )
                 val stability = StabilitySummary.from(runs)
-                val riskEvent = riskEventTracker.update(modelRisk)
+                // Keep event expiry on the same deterministic sequence clock as temporal risk.
+                // Wall-clock timing would make a fixed replay depend on device throughput.
+                val riskEvent = riskEventTracker.update(modelRisk, eventNowMs)
                 val simulatedFeedback = feedbackFor(
                     modelRisk,
                     image.expectedRisk?.scenario ?: AssistScenario.GENERAL,
@@ -719,6 +727,20 @@ class DetectorAbDeviceBenchmarkTest {
                 actualAlert = item.actualAlert
             )
         })
+        val lifecycle = EventLifecycleMetrics.summarize(labeled.map { item ->
+            val expected = requireNotNull(item.image.expectedRisk)
+            EventLifecycleSample(
+                riskEventId = expected.riskEventId,
+                sequenceId = expected.sequenceId,
+                fallbackFrameId = item.image.fileName,
+                frameIndex = expected.frameIndex,
+                expectedEventPhase = expected.expectedEventPhase,
+                expectedShouldAlert = expected.shouldAlert,
+                actualAlert = item.actualAlert,
+                suppressedDuplicateAttempt = item.feedbackReason == FeedbackReason.EVENT_ALREADY_ALERTED,
+                runtimeEventId = item.riskEvent.eventId
+            )
+        })
         return BlindAssistMetrics(
             centerRiskRecall = ratio(
                 expectedCenterAlerts.count {
@@ -755,6 +777,8 @@ class DetectorAbDeviceBenchmarkTest {
                     (!item.actualAlert || item.modelRisk.proximity.ordinal < ProximityBand.CRITICAL.ordinal)
             },
             criticalEventMissCount = eventAlerts.criticalEventMissCount,
+            eventAlertCount = eventAlerts.eventCount,
+            criticalEventCount = eventAlerts.criticalEventCount,
             approachRiskRecall = ratio(
                 expectedApproaching.count { it.modelRisk.approachTrend == ApproachTrend.APPROACHING },
                 expectedApproaching.size
@@ -775,7 +799,18 @@ class DetectorAbDeviceBenchmarkTest {
             meanTimeToAlertFrames = meanTimeToAlertFrames(approachRows),
             approachLabeledSequenceCount = approachRows.mapNotNull { it.image.expectedRisk?.sequenceId }.toSet().size,
             labeledImageCount = labeled.size,
-            repeatedAlertCount = labeled.count { it.feedbackReason == FeedbackReason.EVENT_ALREADY_ALERTED },
+            deliveredAlertCount = lifecycle.deliveredAlertCount,
+            deliveredRepeatedAlertCount = lifecycle.deliveredRepeatedAlertCount,
+            deliveredRepeatedAlertRate = lifecycle.deliveredRepeatedAlertRate,
+            suppressedDuplicateAttemptCount = lifecycle.suppressedDuplicateAttemptCount,
+            postEventClearanceRate = lifecycle.postEventClearanceRate,
+            passedEventCount = lifecycle.passedEventCount,
+            clearedPassedEventCount = lifecycle.clearedPassedEventCount,
+            eventRegenerationCount = lifecycle.eventRegenerationCount,
+            meanPostEventAlertLatencyFrames = lifecycle.meanPostEventAlertLatencyFrames,
+            falseAlertCount = lifecycle.falseAlertCount,
+            sequenceDurationMs = lifecycle.sequenceDurationMs,
+            falseAlertsPerMinute = lifecycle.falseAlertsPerMinute,
             passedWindowFalseAlertCount = passedRows.count { it.actualAlert },
             parallelCurbLabeledFrameCount = parallelCurbRows.size,
             parallelCurbFalseAlertCount = parallelCurbRows.count { it.actualAlert },
@@ -1055,8 +1090,8 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine("- Recommendation: `${recommendation.getString("decision")}`")
             appendLine("- Replace default model now: `${recommendation.getBoolean("replace_default_model_now")}`")
             appendLine()
-            appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall (diagnostic) | Frame alert recall (diagnostic) | Event alert recall | Alert FP rate | Passed-window alerts | Parallel-curb alerts / labeled frames | Repeated suppressions | Distance acc | Risk level acc | Primary hit | SANPO primary hit | Critical frame miss (diagnostic) | Critical event miss | Approach recall | Approach FP | Approach dir acc | Approach critical miss | Mean alert frames | Approach sequences | Fusion summary counts | Depth P50 ms | Total P50 ms | Total P95 ms |")
-            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |")
+            appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall (diagnostic) | Frame alert recall (diagnostic) | Event alert recall | Alert FP rate | Passed-window alerts | Passed clearance rate | Delivered repeats / delivered alerts | Suppressed attempts | Regenerated events | Parallel-curb alerts / labeled frames | Distance acc | Risk level acc | Primary hit | SANPO primary hit | Critical frame miss (diagnostic) | Critical event miss | Approach recall | Approach FP | Approach dir acc | Approach critical miss | Mean alert frames | Approach sequences | Fusion summary counts | Depth P50 ms | Total P50 ms | Total P95 ms |")
+            appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |")
             for (index in 0 until models.length()) {
                 val model = models.getJSONObject(index)
                 val app = model.getJSONObject("app_detector")
@@ -1070,7 +1105,9 @@ class DetectorAbDeviceBenchmarkTest {
                         "${quality.getDouble("recall")} | ${quality.getDouble("f1")} | ${quality.getDouble("fp_per_image")} | " +
                         "${quality.getDouble("fn_per_image")} | ${assist.getDouble("centerRiskRecall")} | " +
                         "${assist.getDouble("alertRecall")} | ${assist.getDouble("eventAlertRecall")} | ${assist.getDouble("alertFalsePositiveRate")} | " +
-                        "${assist.getInt("passedWindowFalseAlertCount")} | ${assist.getInt("parallelCurbFalseAlertCount")} / ${assist.getInt("parallelCurbLabeledFrameCount")} | ${assist.getInt("repeatedAlertCount")} | " +
+                        "${assist.getInt("passedWindowFalseAlertCount")} | ${assist.getDouble("postEventClearanceRate")} | " +
+                        "${assist.getInt("deliveredRepeatedAlertCount")} / ${assist.getInt("deliveredAlertCount")} | ${assist.getInt("suppressedDuplicateAttemptCount")} | ${assist.getInt("eventRegenerationCount")} | " +
+                        "${assist.getInt("parallelCurbFalseAlertCount")} / ${assist.getInt("parallelCurbLabeledFrameCount")} | " +
                         "${assist.getDouble("distanceBandAccuracy")} | ${assist.getDouble("riskLevelAccuracy")} | " +
                         "${assist.getDouble("primaryObjectHitRate")} | ${assist.getDouble("sourcePrimaryRegionHitRate")} | ${assist.getInt("criticalMissCount")} | ${assist.getInt("criticalEventMissCount")} | " +
                         "${assist.getDouble("approachRiskRecall")} | ${assist.getDouble("approachFalsePositiveRate")} | " +
@@ -1208,6 +1245,21 @@ class DetectorAbDeviceBenchmarkTest {
                 descriptor.startOffset,
                 descriptor.declaredLength
             )
+        }
+    }
+
+    private fun sha256Asset(assetName: String): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        testContext.assets.open(assetName).use { stream ->
+            val buffer = ByteArray(DEFAULT_HASH_BUFFER_BYTES)
+            while (true) {
+                val count = stream.read(buffer)
+                if (count <= 0) break
+                digest.update(buffer, 0, count)
+            }
+        }
+        return digest.digest().joinToString(separator = "") { byte ->
+            (byte.toInt() and 0xff).toString(16).padStart(2, '0')
         }
     }
 
@@ -1499,12 +1551,14 @@ class DetectorAbDeviceBenchmarkTest {
     private data class ModelBenchmarkResult(
         val spec: ModelSpec,
         val pure: PureBenchmarkResult,
-        val app: AppBenchmarkResult
+        val app: AppBenchmarkResult,
+        val modelAssetSha256: String
     ) {
         fun toJson(): JSONObject {
             return JSONObject()
                 .put("id", spec.id)
                 .put("asset", spec.assetName)
+                .put("model_asset_sha256", modelAssetSha256)
                 .put("source", spec.source)
                 .put("depth_fusion", spec.depthFusion)
                 .put(
@@ -1790,6 +1844,8 @@ class DetectorAbDeviceBenchmarkTest {
         val sourcePrimaryRegionHitRate: Double,
         val criticalMissCount: Int,
         val criticalEventMissCount: Int,
+        val eventAlertCount: Int,
+        val criticalEventCount: Int,
         val approachRiskRecall: Double,
         val approachFalsePositiveRate: Double,
         val approachDirectionAccuracy: Double,
@@ -1797,7 +1853,18 @@ class DetectorAbDeviceBenchmarkTest {
         val meanTimeToAlertFrames: Double,
         val approachLabeledSequenceCount: Int,
         val labeledImageCount: Int,
-        val repeatedAlertCount: Int,
+        val deliveredAlertCount: Int,
+        val deliveredRepeatedAlertCount: Int,
+        val deliveredRepeatedAlertRate: Double,
+        val suppressedDuplicateAttemptCount: Int,
+        val postEventClearanceRate: Double,
+        val passedEventCount: Int,
+        val clearedPassedEventCount: Int,
+        val eventRegenerationCount: Int,
+        val meanPostEventAlertLatencyFrames: Double,
+        val falseAlertCount: Int,
+        val sequenceDurationMs: Long,
+        val falseAlertsPerMinute: Double?,
         val passedWindowFalseAlertCount: Int,
         val parallelCurbLabeledFrameCount: Int,
         val parallelCurbFalseAlertCount: Int,
@@ -1815,6 +1882,8 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("sourcePrimaryRegionHitRate", sourcePrimaryRegionHitRate)
                 .put("criticalMissCount", criticalMissCount)
                 .put("criticalEventMissCount", criticalEventMissCount)
+                .put("eventAlertCount", eventAlertCount)
+                .put("criticalEventCount", criticalEventCount)
                 .put("approachRiskRecall", approachRiskRecall)
                 .put("approachFalsePositiveRate", approachFalsePositiveRate)
                 .put("approachDirectionAccuracy", approachDirectionAccuracy)
@@ -1822,7 +1891,18 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("meanTimeToAlertFrames", meanTimeToAlertFrames)
                 .put("approachLabeledSequenceCount", approachLabeledSequenceCount)
                 .put("labeledImageCount", labeledImageCount)
-                .put("repeatedAlertCount", repeatedAlertCount)
+                .put("deliveredAlertCount", deliveredAlertCount)
+                .put("deliveredRepeatedAlertCount", deliveredRepeatedAlertCount)
+                .put("deliveredRepeatedAlertRate", deliveredRepeatedAlertRate)
+                .put("suppressedDuplicateAttemptCount", suppressedDuplicateAttemptCount)
+                .put("postEventClearanceRate", postEventClearanceRate)
+                .put("passedEventCount", passedEventCount)
+                .put("clearedPassedEventCount", clearedPassedEventCount)
+                .put("eventRegenerationCount", eventRegenerationCount)
+                .put("meanPostEventAlertLatencyFrames", meanPostEventAlertLatencyFrames)
+                .put("falseAlertCount", falseAlertCount)
+                .put("sequenceDurationMs", sequenceDurationMs)
+                .put("falseAlertsPerMinute", falseAlertsPerMinute ?: JSONObject.NULL)
                 .put("passedWindowFalseAlertCount", passedWindowFalseAlertCount)
                 .put("parallelCurbLabeledFrameCount", parallelCurbLabeledFrameCount)
                 .put("parallelCurbFalseAlertCount", parallelCurbFalseAlertCount)
@@ -1993,6 +2073,7 @@ class DetectorAbDeviceBenchmarkTest {
         private const val RISK_CONFIG_CRITICAL_SENSITIVE = "critical_sensitive"
         private const val RISK_CONFIG_SIDE_NEAR_SENSITIVE = "side_near_sensitive"
         private const val TEMPORAL_FRAME_STEP_MS = 100L
+        private const val DEFAULT_HASH_BUFFER_BYTES = 16 * 1024
         private const val TRAVERSABILITY_MASK_SIZE = 256
         private const val ARG_DATASET_KIND = "datasetKind"
         private const val ARG_RISK_CONFIG = "riskConfig"

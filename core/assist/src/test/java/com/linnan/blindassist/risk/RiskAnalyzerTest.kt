@@ -362,6 +362,43 @@ class RiskAnalyzerTest {
     }
 
     @Test
+    fun horseRiskTargetIsOptInAndLeavesDefaultPolicyUnchanged() {
+        val horse = detection("horse", BoundingBox(40f, 150f, 360f, 760f))
+
+        val defaultResult = analyzer.analyze(listOf(horse), frame)
+        val experimentalResult = RiskAnalyzer(
+            RiskAnalyzerConfig.Default.copy(includeHorseAsRiskTarget = true)
+        ).analyze(listOf(horse), frame)
+
+        assertEquals(RiskLevel.NONE, defaultResult.level)
+        assertEquals(RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE, defaultResult.evidenceState)
+        assertEquals(RiskDirection.LEFT, experimentalResult.direction)
+        assertEquals(ProximityBand.NEAR, experimentalResult.proximity)
+        assertEquals(RiskLevel.MEDIUM, experimentalResult.level)
+        assertEquals("horse", experimentalResult.sourceDetection?.label)
+    }
+
+    @Test
+    fun horseOptInDoesNotChangeExistingRiskTargetRanking() {
+        val inputs = listOf(
+            detection("person", BoundingBox(40f, 150f, 360f, 760f)),
+            detection("car", BoundingBox(650f, 180f, 940f, 650f)),
+            detection("bench", BoundingBox(390f, 300f, 610f, 700f))
+        )
+
+        val defaultResult = analyzer.analyze(inputs, frame)
+        val experimentalResult = RiskAnalyzer(
+            RiskAnalyzerConfig.Default.copy(includeHorseAsRiskTarget = true)
+        ).analyze(inputs, frame)
+
+        assertEquals(defaultResult.level, experimentalResult.level)
+        assertEquals(defaultResult.direction, experimentalResult.direction)
+        assertEquals(defaultResult.proximity, experimentalResult.proximity)
+        assertEquals(defaultResult.sourceDetection?.label, experimentalResult.sourceDetection?.label)
+        assertEquals(defaultResult.riskScore, experimentalResult.riskScore, 0.001f)
+    }
+
+    @Test
     fun emptyFrameHasNoSupportedTargetEvidence() {
         val result = analyzer.analyze(emptyList(), frame)
 

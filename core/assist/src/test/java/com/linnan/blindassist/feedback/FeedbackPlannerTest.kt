@@ -4,6 +4,7 @@ import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.model.FrameSize
+import com.linnan.blindassist.risk.ApproachTrend
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskFusionReason
 import com.linnan.blindassist.risk.RiskLevel
@@ -28,6 +29,28 @@ class FeedbackPlannerTest {
     @Test
     fun singleFrameSegmentationMediumMidDoesNotProduceAlert() {
         assertNull(FeedbackPlanner.planFor(segmentationRisk("GEOMETRY_ONLY")))
+    }
+
+    @Test
+    fun approachingCenterPersonMidIsOptInAndDefaultRemainsSilent() {
+        val risk = segmentationRisk("GEOMETRY_ONLY").copy(
+            sourceDetection = Detection(
+                classId = 0,
+                label = "person",
+                confidence = 0.8f,
+                boundingBox = BoundingBox(400f, 300f, 600f, 700f),
+                frameSize = frame,
+                source = DetectionSource.OBJECT_DETECTOR
+            ),
+            approachTrend = ApproachTrend.APPROACHING
+        )
+        assertNull(FeedbackPlanner.planFor(risk))
+        assertNotNull(
+            FeedbackPlanner.planFor(
+                risk,
+                config = FeedbackPlannerConfig(enableApproachingCenterPersonMidAlert = true)
+            )
+        )
     }
 
     private fun segmentationRisk(summary: String): RiskResult = RiskResult(

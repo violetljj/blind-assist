@@ -57,7 +57,7 @@ class AssistSessionCoordinator(
             metrics = detectorFrame.metrics.copy(fps = fps),
             nowMs = nowMs
         )
-        val event = riskEventTracker.update(evaluation.stableRisk)
+        val event = riskEventTracker.update(evaluation.stableRisk, nowMs)
         val eventEvaluation = evaluation.copy(riskEvent = event)
         val feedbackDecision = if (event.suppressesFeedback) {
             FeedbackDecision(null, triggered = false, reason = FeedbackReason.EVENT_ALREADY_ALERTED)

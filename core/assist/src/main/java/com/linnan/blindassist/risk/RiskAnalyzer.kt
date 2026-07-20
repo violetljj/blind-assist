@@ -21,6 +21,8 @@ data class RiskAnalyzerConfig(
     val distanceEvidenceMinConfidence: Float = RiskAnalyzer.DISTANCE_EVIDENCE_MIN_CONFIDENCE,
     val distanceEvidenceMaxPromotionSteps: Int = ConservativeRiskFusionPolicy.DEFAULT_DEPTH_MAX_PROMOTION_STEPS,
     val rejectLargeDistanceEvidencePromotion: Boolean = ConservativeRiskFusionPolicy.DEFAULT_REJECT_LARGE_DEPTH_PROMOTION,
+    // Experimental opt-in; the shipped default remains unchanged.
+    val includeHorseAsRiskTarget: Boolean = false,
     val lowRiskScoreThreshold: Float = RiskAnalyzer.LOW_RISK_SCORE_THRESHOLD,
     val mediumRiskScoreThreshold: Float = RiskAnalyzer.MEDIUM_RISK_SCORE_THRESHOLD,
     val highRiskScoreThreshold: Float = RiskAnalyzer.HIGH_RISK_SCORE_THRESHOLD
@@ -78,7 +80,9 @@ class RiskAnalyzer(
         "opening door",
         "opening gate",
         "bike rack"
-    )
+    ).let { labels ->
+        if (config.includeHorseAsRiskTarget) labels + "horse" else labels
+    }
 
     fun analyze(detections: List<Detection>, frameSize: FrameSize): RiskResult {
         val candidates = detections
@@ -313,7 +317,7 @@ class RiskAnalyzer(
     private fun classWeightFor(label: String): Float {
         return when (label) {
             "person" -> 1.12f
-            "car", "bus", "truck", "motorcycle", "bicycle" -> 1.08f
+            "car", "bus", "truck", "motorcycle", "bicycle", "horse" -> 1.08f
             "traffic light", "stop sign" -> 0.92f
             "curb", "stairs", "inaccessible surface" -> 1.16f
             "generic obstacle", "pole", "road barrier", "opening door", "opening gate", "bike rack" -> 1.10f

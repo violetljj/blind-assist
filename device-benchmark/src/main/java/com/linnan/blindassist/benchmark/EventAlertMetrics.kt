@@ -18,6 +18,7 @@ internal data class EventAlertSample(
 internal data class EventAlertSummary(
     val eventCount: Int,
     val hitCount: Int,
+    val criticalEventCount: Int,
     val criticalEventMissCount: Int
 ) {
     val recall: Double
@@ -32,14 +33,16 @@ internal object EventAlertMetrics {
                 sample.riskEventId?.takeIf { it.isNotBlank() }
                     ?: sample.sequenceId?.takeIf { it.isNotBlank() }
                     ?: "frame:${sample.fallbackFrameId}"
-            }
+        }
         val hitCount = windows.values.count { window -> window.any { it.actualAlert } }
+        val criticalEventCount = windows.values.count { window -> window.any { it.expectedCritical } }
         val criticalEventMissCount = windows.values.count { window ->
             window.any { it.expectedCritical } && window.none { it.actualAlert }
         }
         return EventAlertSummary(
             eventCount = windows.size,
             hitCount = hitCount,
+            criticalEventCount = criticalEventCount,
             criticalEventMissCount = criticalEventMissCount
         )
     }

@@ -19,6 +19,7 @@ class EventAlertMetricsTest {
 
         assertEquals(1, result.eventCount)
         assertEquals(1, result.hitCount)
+        assertEquals(1, result.criticalEventCount)
         assertEquals(1.0, result.recall, 0.0)
         assertEquals(0, result.criticalEventMissCount)
     }
@@ -34,6 +35,7 @@ class EventAlertMetricsTest {
 
         assertEquals(1, result.eventCount)
         assertEquals(0, result.hitCount)
+        assertEquals(1, result.criticalEventCount)
         assertEquals(1, result.criticalEventMissCount)
     }
 
@@ -49,6 +51,7 @@ class EventAlertMetricsTest {
 
         assertEquals(2, result.eventCount)
         assertEquals(1, result.hitCount)
+        assertEquals(1, result.criticalEventCount)
         assertEquals(0.5, result.recall, 0.0)
         assertEquals(1, result.criticalEventMissCount)
     }

@@ -4,10 +4,16 @@ import com.linnan.blindassist.alert.AlertPolicy
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.model.DetectionSource
+import com.linnan.blindassist.risk.ApproachTrend
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskFusionReason
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
+
+/** Optional experimental feedback branches; the shipped default is conservative. */
+data class FeedbackPlannerConfig(
+    val enableApproachingCenterPersonMidAlert: Boolean = false
+)
 
 object FeedbackPlanner {
     const val DEFAULT_AMPLITUDE = -1
@@ -20,7 +26,8 @@ object FeedbackPlanner {
         risk: RiskResult,
         profile: AlertProfile = AlertProfile.STANDARD,
         vibrationStrength: VibrationStrength = VibrationStrength.STANDARD,
-        scenario: AssistScenario = AssistScenario.GENERAL
+        scenario: AssistScenario = AssistScenario.GENERAL,
+        config: FeedbackPlannerConfig = FeedbackPlannerConfig()
     ): FeedbackPlan? {
         val policy = AlertPolicy.forProfile(profile, scenario)
         val basePlan = when {
@@ -38,6 +45,15 @@ object FeedbackPlanner {
                     RiskFusionReason.MOTION_PROMOTED.name in risk.scoreBreakdown.fusionSummary) -> {
                 // A center-path segmentation region reaches this branch only after the
                 // temporal tracker has confirmed it in multiple frames.
+                FeedbackPlan(policy.nearCooldownMs, policy.nearVibrationMs, DEFAULT_AMPLITUDE)
+            }
+            config.enableApproachingCenterPersonMidAlert &&
+                risk.sourceDetection?.source == DetectionSource.OBJECT_DETECTOR &&
+                risk.sourceDetection.label == "person" &&
+                risk.direction == com.linnan.blindassist.risk.RiskDirection.CENTER &&
+                risk.proximity == ProximityBand.MID &&
+                risk.level >= RiskLevel.MEDIUM &&
+                risk.approachTrend == ApproachTrend.APPROACHING -> {
                 FeedbackPlan(policy.nearCooldownMs, policy.nearVibrationMs, DEFAULT_AMPLITUDE)
             }
             else -> null

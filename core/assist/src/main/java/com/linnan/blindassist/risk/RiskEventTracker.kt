@@ -34,39 +34,50 @@ data class RiskEventSnapshot(
 data class RiskEventTrackerConfig(
     val centerCorridorHalfWidthRatio: Float = 0.42f,
     val maxCenterDeltaForSameEvent: Float = 0.25f,
-    val clearAfterRecedingOrMissingFrames: Int = 3
+    val clearAfterRecedingOrMissingFrames: Int = 3,
+    val postPassReappearanceHoldMs: Long = 1_000L,
+    val postPassMaxCenterDeltaForSameEvent: Float = 0.5f,
+    val trackCenterObjectDetectorPerson: Boolean = false
 ) {
     init {
         require(centerCorridorHalfWidthRatio in 0f..0.5f)
         require(maxCenterDeltaForSameEvent in 0f..1f)
         require(clearAfterRecedingOrMissingFrames >= 2)
+        require(postPassReappearanceHoldMs >= 0L)
+        require(postPassMaxCenterDeltaForSameEvent in 0f..1f)
     }
 }
 
 /**
- * Event-level feedback gate for segmentation candidates. YOLO detections deliberately pass
- * through untouched so existing detector reminder behaviour is preserved.
+ * Event-level feedback gate for segmentation candidates. Object-detector persons remain
+ * untouched unless an explicitly configured experiment opts them in.
  */
 class RiskEventTracker(
     private val config: RiskEventTrackerConfig = RiskEventTrackerConfig()
 ) {
     private var active: ActiveEvent? = null
+    private var recentlyPassed: PassedEvent? = null
     private var nextId = 1
 
-    fun update(risk: RiskResult): RiskEventSnapshot {
+    fun update(risk: RiskResult, nowMs: Long = System.currentTimeMillis()): RiskEventSnapshot {
+        expirePassedEvent(nowMs)
         val detection = risk.sourceDetection
         if (!isTrackedCandidate(detection)) {
-            return onMissingOrNonCentralCandidate()
+            return onMissingOrNonCentralCandidate(nowMs)
         }
         val candidate = requireNotNull(detection)
         if (!isInCenterCorridor(candidate)) {
-            clear(RiskEventClearReason.LEFT_CENTER_CORRIDOR)
+            clear(RiskEventClearReason.LEFT_CENTER_CORRIDOR, nowMs)
             return RiskEventSnapshot.none()
+        }
+
+        recentlyPassed?.takeIf { it.matches(candidate, config) }?.let { passed ->
+            return passed.snapshot()
         }
 
         val current = active
         if (current == null || !current.matches(candidate, config)) {
-            if (current != null) clear(RiskEventClearReason.REPLACED_BY_NEW_TARGET)
+            if (current != null) clear(RiskEventClearReason.REPLACED_BY_NEW_TARGET, nowMs)
             active = ActiveEvent(id = "seg-${nextId++}", label = candidate.label, centerXRatio = centerRatio(candidate))
         }
         val event = requireNotNull(active)
@@ -75,7 +86,7 @@ class RiskEventTracker(
             event.state = RiskEventState.PASSED_OR_RECEDING
             event.recedingOrMissingFrames += 1
             if (event.recedingOrMissingFrames >= config.clearAfterRecedingOrMissingFrames) {
-                clear(RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES)
+                clear(RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES, nowMs)
                 return RiskEventSnapshot.none()
             }
         } else {
@@ -96,16 +107,17 @@ class RiskEventTracker(
     }
 
     fun reset() {
-        clear(RiskEventClearReason.SESSION_RESET)
+        clear(RiskEventClearReason.SESSION_RESET, System.currentTimeMillis())
         active = null
+        recentlyPassed = null
     }
 
-    private fun onMissingOrNonCentralCandidate(): RiskEventSnapshot {
+    private fun onMissingOrNonCentralCandidate(nowMs: Long): RiskEventSnapshot {
         val event = active ?: return RiskEventSnapshot.none()
         event.state = RiskEventState.PASSED_OR_RECEDING
         event.recedingOrMissingFrames += 1
         if (event.recedingOrMissingFrames >= config.clearAfterRecedingOrMissingFrames) {
-            clear(RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES)
+            clear(RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES, nowMs)
             return RiskEventSnapshot.none()
         }
         return snapshot(event)
@@ -118,8 +130,24 @@ class RiskEventTracker(
         clearReason = event.clearReason
     )
 
-    private fun clear(reason: RiskEventClearReason) {
+    private fun expirePassedEvent(nowMs: Long) {
+        if (recentlyPassed?.expiresAtMs?.let { nowMs >= it } == true) {
+            recentlyPassed = null
+        }
+    }
+
+    private fun clear(reason: RiskEventClearReason, nowMs: Long) {
         active?.let {
+            if (reason == RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES &&
+                it.wasAlerted && config.postPassReappearanceHoldMs > 0L
+            ) {
+                recentlyPassed = PassedEvent(
+                    id = it.id,
+                    label = it.label,
+                    centerXRatio = it.centerXRatio,
+                    expiresAtMs = nowMs + config.postPassReappearanceHoldMs
+                )
+            }
             it.state = RiskEventState.CLEARED
             it.clearReason = reason
         }
@@ -127,7 +155,10 @@ class RiskEventTracker(
     }
 
     private fun isTrackedCandidate(detection: Detection?): Boolean =
-        detection?.source == DetectionSource.SEGMENTATION
+        detection?.source == DetectionSource.SEGMENTATION ||
+            (config.trackCenterObjectDetectorPerson &&
+                detection?.source == DetectionSource.OBJECT_DETECTOR &&
+                detection.label == "person")
 
     private fun isInCenterCorridor(detection: Detection): Boolean =
         abs(centerRatio(detection) - 0.5f) <= config.centerCorridorHalfWidthRatio
@@ -145,6 +176,25 @@ class RiskEventTracker(
         var clearReason: RiskEventClearReason? = null
     ) {
         fun matches(detection: Detection, config: RiskEventTrackerConfig): Boolean =
-            label == detection.label && abs(centerXRatio - detection.boundingBox.centerX / detection.frameSize.width) <= config.maxCenterDeltaForSameEvent
+            label == detection.label && abs(centerXRatio - detection.boundingBox.centerX / detection.frameSize.width) <=
+                config.maxCenterDeltaForSameEvent
+    }
+
+    private data class PassedEvent(
+        val id: String,
+        val label: String,
+        val centerXRatio: Float,
+        val expiresAtMs: Long
+    ) {
+        fun matches(detection: Detection, config: RiskEventTrackerConfig): Boolean =
+            label == detection.label && abs(centerXRatio - detection.boundingBox.centerX / detection.frameSize.width) <=
+                config.postPassMaxCenterDeltaForSameEvent
+
+        fun snapshot(): RiskEventSnapshot = RiskEventSnapshot(
+            eventId = id,
+            state = RiskEventState.PASSED_OR_RECEDING,
+            suppressesFeedback = true,
+            clearReason = RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES
+        )
     }
 }
