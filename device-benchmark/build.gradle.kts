@@ -8,6 +8,7 @@ plugins {
 val detectorBenchmarkAssetsDir = layout.buildDirectory.dir("generated/detectorBenchmarkAssets")
 val depthBenchmarkAssetsDir = layout.buildDirectory.dir("generated/depthBenchmarkAssets")
 val segmentationBenchmarkAssetsDir = layout.buildDirectory.dir("generated/segmentationBenchmarkAssets")
+val sparseLkBenchmarkAssetsDir = layout.buildDirectory.dir("generated/sparseLkBenchmarkAssets")
 val eventHeadBenchmarkAssetsDir = layout.buildDirectory.dir("generated/eventHeadBenchmarkAssets")
 val blindAssistEvalSetDir = providers
     .gradleProperty("blindAssistEvalSetDir")
@@ -73,6 +74,15 @@ val prepareSegmentationBenchmarkAssets = tasks.register<Sync>("prepareSegmentati
     into(segmentationBenchmarkAssetsDir)
 }
 
+val prepareSparseLkBenchmarkAssets = tasks.register<Sync>("prepareSparseLkBenchmarkAssets") {
+    from(rootProject.file("artifacts.local/evidence/datasets/sanpo-boundary-aux-wbp-20260715/whole_object_redacted_rgb")) {
+        include("machine_redaction_receipt.json")
+        include("images/*.png")
+        into("sparse_lk_sanpo")
+    }
+    into(sparseLkBenchmarkAssetsDir)
+}
+
 val prepareEventHeadBenchmarkAssets = tasks.register<Sync>("prepareEventHeadBenchmarkAssets") {
     from(rootProject.file("artifacts.local/experiments/secondary-corridor-causal/event-head-tcn-int8-v0-20260718/android/app/src/main/assets")) {
         include("corridor_causal_tcn_int8_v0.tflite")
@@ -112,6 +122,7 @@ android {
             assets.srcDir(detectorBenchmarkAssetsDir)
             assets.srcDir(depthBenchmarkAssetsDir)
             assets.srcDir(segmentationBenchmarkAssetsDir)
+            assets.srcDir(sparseLkBenchmarkAssetsDir)
             assets.srcDir(eventHeadBenchmarkAssetsDir)
         }
     }
@@ -123,6 +134,7 @@ tasks.matching {
     dependsOn(prepareDetectorBenchmarkAssets)
     dependsOn(prepareDepthBenchmarkAssets)
     dependsOn(prepareSegmentationBenchmarkAssets)
+    dependsOn(prepareSparseLkBenchmarkAssets)
     dependsOn(prepareEventHeadBenchmarkAssets)
 }
 
