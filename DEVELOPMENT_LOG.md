@@ -30,6 +30,13 @@
 - 边界：目录迁移不改研究算法、历史失败结论、模型、数据、App 或任何授权；当前 route-conditioned 主线不在旧 campaign 目录继续堆叠。
 - 验证：以迁移后完整 campaign 测试、研究合同测试、文档索引、仓库卫生、路径引用审计和差异检查为准。
 
+### 项目结构自动门禁
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：新增统一结构检查与 smoke tests，并接入既有 repository hygiene 和 CI；冻结 `scripts/` 根文件 allowlist、开发日志行数/字节/28 天预算、研究 Module README 合同、内部脚本路径泄漏和跨 Module 私有 import。
+- 架构：共享 RGB 脱敏 Implementation 下沉到 `research/common`，public-video 保留薄兼容 Adapter；真机闭环通过根 Adapter 调用，保持 Interface 稳定和实现 Locality。
+- 边界：只改变仓库治理与脚本组织，不改研究算法、模型、数据、App、设备行为或晋级结论；结构预算不得用提额回避，应归档或深化 Module。
+- 验证：以结构门 smoke、repo hygiene smoke、public-video/root Python 回归、research contracts、docs index、repo hygiene、PowerShell parse 和 diff check 为准。
+
 ## 2026-07-13
 
 ### SANPO P3 中心障碍候选闭环与 step/curb 发现补齐

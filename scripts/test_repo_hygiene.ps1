@@ -26,7 +26,7 @@ function Add-TestFile([string]$Repository, [string]$RelativePath) {
 function Invoke-HygieneCheck([string]$Repository) {
     Push-Location $Repository
     try {
-        & $script:HygieneScript
+        & $script:HygieneScript -SkipStructure
         return $LASTEXITCODE
     }
     finally {

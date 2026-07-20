@@ -1,0 +1,239 @@
+[CmdletBinding()]
+param(
+    [string]$RepoRoot = '',
+    [string]$PolicyPath = (Join-Path $PSScriptRoot 'policy/project_structure.json'),
+    [string]$BaseRef = $env:BASE_REF,
+    [datetime]$AsOfDate = (Get-Date).Date
+)
+
+$ErrorActionPreference = 'Stop'
+
+function Normalize-RepoPath([string]$Path) {
+    return $Path.Replace('\', '/').TrimStart('./')
+}
+
+function Resolve-FromRepo([string]$Path) {
+    if ([IO.Path]::IsPathRooted($Path)) {
+        return [IO.Path]::GetFullPath($Path)
+    }
+    return [IO.Path]::GetFullPath((Join-Path $script:ResolvedRepoRoot $Path))
+}
+
+function Read-Utf8Text([string]$Path) {
+    return [IO.File]::ReadAllText($Path, [Text.Encoding]::UTF8)
+}
+
+if ([string]::IsNullOrWhiteSpace($RepoRoot)) {
+    $detectedRoot = (& git rev-parse --show-toplevel 2>$null | Select-Object -First 1)
+    if ([string]::IsNullOrWhiteSpace($detectedRoot)) {
+        throw 'Project structure check must run inside a Git repository or receive -RepoRoot.'
+    }
+    $RepoRoot = $detectedRoot.Trim()
+}
+
+$script:ResolvedRepoRoot = (Resolve-Path -LiteralPath $RepoRoot).Path
+$resolvedPolicyPath = Resolve-FromRepo $PolicyPath
+if (-not (Test-Path -LiteralPath $resolvedPolicyPath -PathType Leaf)) {
+    throw "Project structure policy is missing: $resolvedPolicyPath"
+}
+$policy = Read-Utf8Text $resolvedPolicyPath | ConvertFrom-Json
+$failures = [Collections.Generic.List[string]]::new()
+
+$repoFiles = @(& git -C $script:ResolvedRepoRoot ls-files --cached --others --exclude-standard)
+if ($LASTEXITCODE -ne 0) {
+    throw "Unable to enumerate repository files: $script:ResolvedRepoRoot"
+}
+$repoFiles = @(
+    $repoFiles |
+        ForEach-Object { Normalize-RepoPath $_ } |
+        Where-Object { $_ -and (Test-Path -LiteralPath (Resolve-FromRepo $_) -PathType Leaf) } |
+        Sort-Object -Unique
+)
+
+# Root scripts are an explicit Interface. Any addition or removal requires a reviewed policy change.
+$scriptsRoot = (Normalize-RepoPath ([string]$policy.scripts_root)).TrimEnd('/')
+$rootPrefix = "$scriptsRoot/"
+$rootFiles = @(
+    $repoFiles |
+        Where-Object { $_.StartsWith($rootPrefix, [StringComparison]::OrdinalIgnoreCase) } |
+        ForEach-Object { $_.Substring($rootPrefix.Length) } |
+        Where-Object { $_ -notmatch '/' } |
+        Sort-Object -Unique
+)
+$allowlistPath = Resolve-FromRepo ([string]$policy.root_allowlist_path)
+if (-not (Test-Path -LiteralPath $allowlistPath -PathType Leaf)) {
+    $failures.Add("Root script allowlist is missing: $($policy.root_allowlist_path)")
+    $allowedRootFiles = @()
+}
+else {
+    $allowedRootFiles = @(
+        Get-Content -LiteralPath $allowlistPath -Encoding UTF8 |
+            ForEach-Object { $_.Trim() } |
+            Where-Object { $_ -and -not $_.StartsWith('#') } |
+            Sort-Object -Unique
+    )
+}
+foreach ($extra in @($rootFiles | Where-Object { $allowedRootFiles -notcontains $_ })) {
+    $failures.Add("Unreviewed scripts root file: $rootPrefix$extra. Put research Implementation under scripts/research/<domain>/ or update the reviewed allowlist for a stable Interface.")
+}
+foreach ($missing in @($allowedRootFiles | Where-Object { $rootFiles -notcontains $_ })) {
+    $failures.Add("Root script allowlist is stale; missing file: $rootPrefix$missing")
+}
+
+# A newly added stable root Interface must also be discoverable from the stable script index.
+if ($BaseRef -and $BaseRef -notmatch '^0+$') {
+    $resolvedBase = (& git -C $script:ResolvedRepoRoot rev-parse --verify "$BaseRef^{commit}" 2>$null | Select-Object -First 1)
+    if (-not [string]::IsNullOrWhiteSpace($resolvedBase)) {
+        $baseFiles = @(& git -C $script:ResolvedRepoRoot ls-tree -r --name-only $resolvedBase.Trim() -- $scriptsRoot)
+        $baseRootFiles = @(
+            $baseFiles |
+                ForEach-Object { Normalize-RepoPath $_ } |
+                Where-Object { $_.StartsWith($rootPrefix, [StringComparison]::OrdinalIgnoreCase) } |
+                ForEach-Object { $_.Substring($rootPrefix.Length) } |
+                Where-Object { $_ -notmatch '/' } |
+                Sort-Object -Unique
+        )
+        $scriptsIndexPath = Resolve-FromRepo "$scriptsRoot/README.md"
+        $scriptsIndexText = if (Test-Path -LiteralPath $scriptsIndexPath -PathType Leaf) { Read-Utf8Text $scriptsIndexPath } else { '' }
+        foreach ($addedRootFile in @($rootFiles | Where-Object { $baseRootFiles -notcontains $_ })) {
+            if (-not $scriptsIndexText.Contains($addedRootFile)) {
+                $failures.Add("New root Interface is not indexed in scripts/README.md: $rootPrefix$addedRootFile")
+            }
+        }
+    }
+}
+
+# The recent log has a hard budget so history cannot silently become the navigation Interface.
+$logPolicy = $policy.development_log
+$hardLogLimits = @{ max_lines = 1500; max_bytes = 300000; max_age_days = 28 }
+foreach ($limitName in $hardLogLimits.Keys) {
+    if ([long]$logPolicy.$limitName -gt [long]$hardLogLimits[$limitName]) {
+        $failures.Add("Development log policy $limitName=$($logPolicy.$limitName) exceeds hard maximum $($hardLogLimits[$limitName]). Archive or shorten content instead of raising the budget.")
+    }
+}
+$logPath = Resolve-FromRepo ([string]$logPolicy.path)
+if (-not (Test-Path -LiteralPath $logPath -PathType Leaf)) {
+    $failures.Add("Development log is missing: $($logPolicy.path)")
+}
+else {
+    $logLines = [IO.File]::ReadAllLines($logPath, [Text.Encoding]::UTF8)
+    $logBytes = (Get-Item -LiteralPath $logPath).Length
+    if ($logLines.Count -gt [int]$logPolicy.max_lines) {
+        $failures.Add("Development log has $($logLines.Count) lines; maximum is $($logPolicy.max_lines). Archive old month blocks under docs/history/development-log/ without rewriting them.")
+    }
+    if ($logBytes -gt [long]$logPolicy.max_bytes) {
+        $failures.Add("Development log has $logBytes bytes; maximum is $($logPolicy.max_bytes). Link detailed evidence instead of appending raw experiment history.")
+    }
+
+    $logText = $logLines -join "`n"
+    $dates = [Collections.Generic.List[datetime]]::new()
+    $datePatterns = @(
+        '(?m)^#{1,3}\s+(?<date>\d{4}-\d{2}-\d{2})(?:\s|$|[：—-])',
+        '(?m)^-\s*(?:时间|Time)[:：]\s*(?<date>\d{4}-\d{2}-\d{2})'
+    )
+    foreach ($pattern in $datePatterns) {
+        foreach ($match in [regex]::Matches($logText, $pattern)) {
+            $parsed = [datetime]::MinValue
+            if ([datetime]::TryParseExact(
+                $match.Groups['date'].Value,
+                'yyyy-MM-dd',
+                [Globalization.CultureInfo]::InvariantCulture,
+                [Globalization.DateTimeStyles]::None,
+                [ref]$parsed
+            )) {
+                $dates.Add($parsed.Date)
+            }
+        }
+    }
+    if ($dates.Count -eq 0) {
+        $failures.Add('Development log has no parseable dated entry.')
+    }
+    else {
+        $oldest = $dates | Sort-Object | Select-Object -First 1
+        $cutoff = $AsOfDate.Date.AddDays(-[int]$logPolicy.max_age_days)
+        if ($oldest -lt $cutoff) {
+            $failures.Add("Development log oldest entry is $($oldest.ToString('yyyy-MM-dd')); retention cutoff is $($cutoff.ToString('yyyy-MM-dd')). Archive complete old month blocks and retain links in the root log.")
+        }
+    }
+}
+
+# Every research Module owns a small, testable contract at its directory Interface.
+$researchRoot = (Normalize-RepoPath ([string]$policy.research_root)).TrimEnd('/')
+$researchPrefix = "$researchRoot/"
+$moduleNames = @(
+    $repoFiles |
+        Where-Object { $_.StartsWith($researchPrefix, [StringComparison]::OrdinalIgnoreCase) } |
+        ForEach-Object {
+            $remainder = $_.Substring($researchPrefix.Length)
+            if ($remainder -match '^([^/]+)/') { $Matches[1] }
+        } |
+        Where-Object { $_ } |
+        Sort-Object -Unique
+)
+foreach ($moduleName in $moduleNames) {
+    $readmeRelative = "$researchPrefix$moduleName/README.md"
+    $readmePath = Resolve-FromRepo $readmeRelative
+    if (-not (Test-Path -LiteralPath $readmePath -PathType Leaf)) {
+        $failures.Add("Research Module lacks README contract: $readmeRelative")
+        continue
+    }
+    $readmeText = Read-Utf8Text $readmePath
+    foreach ($marker in @($policy.research_readme_required_markers)) {
+        if (-not $readmeText.Contains([string]$marker)) {
+            $failures.Add("Research Module $moduleName README lacks required marker: $marker")
+        }
+    }
+}
+
+# Callers may use stable Adapters, but must not learn a campaign's internal file layout.
+$referenceSourceAllowlist = @($policy.internal_reference_source_allowlist | ForEach-Object { Normalize-RepoPath ([string]$_) })
+$textExtensions = @('.json', '.kt', '.kts', '.md', '.ps1', '.py', '.txt', '.yaml', '.yml')
+$internalPathPattern = 'scripts[\\/]+research[\\/]+[A-Za-z0-9_.-]+[\\/]+[A-Za-z0-9_.-]+\.(?:py|ps1)'
+foreach ($path in $repoFiles) {
+    if ($path.StartsWith($researchPrefix, [StringComparison]::OrdinalIgnoreCase) -or $referenceSourceAllowlist -contains $path) {
+        continue
+    }
+    if ($textExtensions -notcontains [IO.Path]::GetExtension($path).ToLowerInvariant()) {
+        continue
+    }
+    $absolute = Resolve-FromRepo $path
+    if (-not (Test-Path -LiteralPath $absolute -PathType Leaf)) {
+        continue
+    }
+    $content = Read-Utf8Text $absolute
+    $reference = [regex]::Match($content, $internalPathPattern, [Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    if ($reference.Success) {
+        $failures.Add("Caller depends on research Implementation path in ${path}: $($reference.Value). Use a stable root Adapter.")
+    }
+}
+
+# `research.common` is the only cross-domain shared Module. Domain-private imports fail closed.
+$researchImportPattern = '(?m)^\s*(?:from|import)\s+research\.([A-Za-z0-9_]+)'
+foreach ($path in @($repoFiles | Where-Object { $_ -like 'scripts/*.py' -or $_ -like 'scripts/research/*.py' -or $_ -like 'scripts/research/*/*.py' })) {
+    $absolute = Resolve-FromRepo $path
+    if (-not (Test-Path -LiteralPath $absolute -PathType Leaf)) {
+        continue
+    }
+    $sourceDomain = ''
+    if ($path -match '^scripts/research/([^/]+)/') {
+        $sourceDomain = $Matches[1]
+    }
+    $content = Read-Utf8Text $absolute
+    foreach ($match in [regex]::Matches($content, $researchImportPattern)) {
+        $targetDomain = $match.Groups[1].Value
+        if ($targetDomain -eq 'common' -or $targetDomain -eq $sourceDomain) {
+            continue
+        }
+        $failures.Add("Cross-Module private import in ${path}: research.$targetDomain. Move shared Implementation to research.common or add a stable Adapter.")
+    }
+}
+
+if ($failures.Count -gt 0) {
+    Write-Host 'Project structure check failed:'
+    foreach ($failure in $failures) {
+        Write-Host " - $failure"
+    }
+    exit 1
+}
+
+Write-Host "Project structure check passed: $($rootFiles.Count) root files, $($moduleNames.Count) research Module(s), log within budget."

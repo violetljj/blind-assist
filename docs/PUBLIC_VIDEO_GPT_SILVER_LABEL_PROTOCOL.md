@@ -50,7 +50,7 @@ E:\codex-tools\bin\blindassist-python.cmd scripts\run_research_tool.py public-vi
 若手机已有同包名但不同签名的 BlindAssist，Android 会报 `INSTALL_FAILED_UPDATE_INCOMPATIBLE` 并且脚本会停下。不要把它当作模型失败。只有明确接受删除该设备上现有 BlindAssist 及其应用数据时，才附加 `-RemoveConflictingInstall`：
 
 ```powershell
-pwsh -File .\scripts\research\public_video\run_public_video_edge_inference.ps1 `
+pwsh -File .\scripts\run_public_video_edge_inference.ps1 `
   -SilverManifest artifacts.local\evidence\public-video-silver\<batch>\silver_labels.json `
   -SourceManifest artifacts.local\evidence\datasets\<source>\machine_redacted_rgb\machine_redaction_receipt.json `
   -SourceImagesDir artifacts.local\evidence\datasets\<source>\machine_redacted_rgb\images `

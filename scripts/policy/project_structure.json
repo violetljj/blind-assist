@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "scripts_root": "scripts",
+  "root_allowlist_path": "scripts/policy/root-files.txt",
+  "development_log": {
+    "path": "DEVELOPMENT_LOG.md",
+    "max_lines": 1500,
+    "max_bytes": 300000,
+    "max_age_days": 28
+  },
+  "research_root": "scripts/research",
+  "research_readme_required_markers": [
+    "状态：",
+    "## 稳定 Interface",
+    "## 输出",
+    "## 安全边界",
+    "## 停止条件",
+    "artifacts.local/"
+  ],
+  "internal_reference_source_allowlist": [
+    "scripts/run_public_video_edge_inference.ps1",
+    "scripts/test_check_project_structure.ps1"
+  ]
+}
