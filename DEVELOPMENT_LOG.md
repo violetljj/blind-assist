@@ -37,6 +37,12 @@
 - 边界：只改变仓库治理与脚本组织，不改研究算法、模型、数据、App、设备行为或晋级结论；结构预算不得用提额回避，应归档或深化 Module。
 - 验证：以结构门 smoke、repo hygiene smoke、public-video/root Python 回归、research contracts、docs index、repo hygiene、PowerShell parse 和 diff check 为准。
 
+### 项目结构门执行规则固化
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：在 `AGENTS.md` 补充 research Module 放置规则、README 合同、跨域调用方式与统一结构门入口；具体根文件清单和预算仍由 `scripts/policy/` 单点维护。
+- 边界：只固化协作指令，不改脚本 Implementation、研究算法、模型、数据、App、设备行为或晋级结论。
+- 验证：项目结构检查、仓库卫生、文档索引和差异格式检查通过。
+
 ## 2026-07-13
 
 ### SANPO P3 中心障碍候选闭环与 step/curb 发现补齐
