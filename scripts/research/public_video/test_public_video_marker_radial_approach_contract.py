@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import public_video_marker_radial_approach_contract as subject
 
 
-PATH = Path(__file__).resolve().parents[1] / "configs" / "public_video_marker_radial_approach_contract_r725.json"
+PATH = Path(__file__).resolve().parents[3] / "configs" / "public_video_marker_radial_approach_contract_r725.json"
 
 
 class MarkerRadialApproachContractTest(unittest.TestCase):

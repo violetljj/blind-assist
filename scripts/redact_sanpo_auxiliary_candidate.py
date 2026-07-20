@@ -18,7 +18,7 @@ from typing import Any
 
 import cv2
 
-from machine_redact_public_rgb_candidate import (
+from research.public_video.machine_redact_public_rgb_candidate import (
     LpdYuNet,
     RedactionError,
     WholeObjectPrivacyDetector,

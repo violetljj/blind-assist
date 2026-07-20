@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import public_video_event_timing_contract as subject
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 CONTRACT = ROOT / "configs" / "public_video_event_timing_contract_r750.json"
 TEMPLATE = ROOT / "configs" / "public_video_event_timing_review_template_r750.json"
 

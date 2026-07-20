@@ -9,7 +9,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$repoRoot = Split-Path -Parent $PSScriptRoot
+$repoRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
 
 function Resolve-RepoPath([string]$Path) {
     if ([IO.Path]::IsPathRooted($Path)) { return [IO.Path]::GetFullPath($Path) }
@@ -45,7 +45,7 @@ $serial = $online[0]
 Push-Location $repoRoot
 try {
     Invoke-Native $python @(
-        "scripts\build_public_video_edge_inference_set.py",
+        "scripts\run_research_tool.py", "public-video", "build_public_video_edge_inference_set.py",
         "--silver-manifest", $silver,
         "--source-manifest", $source,
         "--source-images-dir", $images,
@@ -82,7 +82,7 @@ try {
     ) | Select-Object -First 1
     if ($null -eq $edgeReport) { throw "Device test passed but did not produce edge_events.json." }
     Invoke-Native $python @(
-        "scripts\compare_public_silver_to_edge_events.py",
+        "scripts\run_research_tool.py", "public-video", "compare_public_silver_to_edge_events.py",
         "--silver-manifest", $silver,
         "--source-manifest", $source,
         "--edge-report", $edgeReport.File.FullName,

@@ -11,7 +11,7 @@ import run_public_silver_frozen_feature_probe as common
 
 
 CONTRACT_PATH = (
-    Path(__file__).resolve().parents[1]
+    Path(__file__).resolve().parents[3]
     / "configs"
     / "public_video_dual_evidence_lifecycle_contract_r717.json"
 )

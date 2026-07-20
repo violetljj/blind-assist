@@ -97,7 +97,7 @@ E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\out
 
 - `README.md`：当前产品、构建方式和导航。
 - `CHANGELOG.md`：已发布变化。
-- `DEVELOPMENT_LOG.md`：详细工程流水与验证记录。
+- `DEVELOPMENT_LOG.md`：最近 2–4 周的工程变化与验证索引；更早原文按月归档到 `docs/history/development-log/`。
 - `idea.md`：尚未决定的产品与研究方向；不是实验流水或当前状态真源。
 - `docs/SANPO_CURRENT_STATUS.md`：SANPO 当前研究状态、硬门与下一步。
 - `docs/DOCUMENT_GOVERNANCE.md`：文档职责、真源与归档规则。

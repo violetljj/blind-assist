@@ -167,7 +167,7 @@ class ChromaticProspectivePositiveTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             contract_path = (
-                Path(__file__).resolve().parents[1]
+                Path(__file__).resolve().parents[3]
                 / "configs"
                 / "public_video_chromatic_marker_lifecycle_contract_r711.json"
             )

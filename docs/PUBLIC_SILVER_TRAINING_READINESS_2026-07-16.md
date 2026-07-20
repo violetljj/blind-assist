@@ -159,7 +159,7 @@ r7.2 新证据：
 
 ## prototype/bootstrap 五组短跑
 
-新增 `scripts/run_public_silver_prototype_bootstrap_short_runs.py`。每个 source 留出折只用训练 source 计算标准化参数，以两类 prototype 的单位差向量和中点 bias 初始化线性 softmax head，再在每类内部按 source 有放回抽样，执行 80 step 确定性 full-batch Adam。冻结 detector/轨迹提取器，不保存权重。
+新增的历史实现现位于 `scripts/research/public_video/run_public_silver_prototype_bootstrap_short_runs.py`。每个 source 留出折只用训练 source 计算标准化参数，以两类 prototype 的单位差向量和中点 bias 初始化线性 softmax head，再在每类内部按 source 有放回抽样，执行 80 step 确定性 full-batch Adam。冻结 detector/轨迹提取器，不保存权重。
 
 | seed | 负例召回 | 正例召回 | balanced accuracy |
 |---:|---:|---:|---:|
@@ -175,7 +175,7 @@ r7.2 新证据：
 
 ## 风险轮廓 + 潜生命周期 MIL 原型
 
-新增 `scripts/run_public_silver_risk_lifecycle_mil_head.py`。它从冻结对象 proposals 构造每帧对象数、相对面积、底边、固定走廊重叠、威胁值、类别组和一阶时间差；一个小型线性逐帧 head 产生风险曲线，再用 smooth-max multiple-instance pooling 接受唯一可用的 episode 级 alert/no-alert 监督。像素分割不进入主 head，继续保持 `auxiliary_only`。
+新增的历史实现现位于 `scripts/research/public_video/run_public_silver_risk_lifecycle_mil_head.py`。它从冻结对象 proposals 构造每帧对象数、相对面积、底边、固定走廊重叠、威胁值、类别组和一阶时间差；一个小型线性逐帧 head 产生风险曲线，再用 smooth-max multiple-instance pooling 接受唯一可用的 episode 级 alert/no-alert 监督。像素分割不进入主 head，继续保持 `auxiliary_only`。
 
 当前银标没有可信的逐帧生命周期边界，因此 `approach/alertable/post_event` 只从学到的风险曲线解码为**潜变量诊断**，不计算或声称生命周期准确率。五组 source-bootstrap LOSO 的 balanced accuracy 为 `.7333/.6333/.9167/.9167/.7333`，中位数 `.7333`；两组 matched counterfactual 在全部五组运行中都保持 alert 概率高于对应 no-alert，排序 10/10 正确。证据为 `artifacts.local/evidence/public-video-provisional-training-r3-20260716/risk_lifecycle_mil_five_runs_11ep.json`，SHA256 `af329f062b60a94c8650f6bf5232c20ad348f63cc79853067bbd4f6b6d4719d6`。
 
@@ -185,7 +185,7 @@ r7.2 新证据：
 
 ## 可执行训练前门禁
 
-新增 `scripts/audit_public_silver_training_readiness.py`。它会重新验证全部 v2 银标包和每个绑定图像文件，并执行以下检查：
+新增的历史实现现位于 `scripts/research/public_video/audit_public_silver_training_readiness.py`。它会重新验证全部 v2 银标包和每个绑定图像文件，并执行以下检查：
 
 1. 非弃权正负类各至少 5 个独立 `source_id`；
 2. 至少 2 个显式 `counterfactual_pair_id`，且每对同时包含 alert/no-alert；

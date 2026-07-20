@@ -8,7 +8,7 @@ import public_video_multiexpert_risk_profile_contract as contract
 
 
 CONTRACT_PATH = (
-    Path(__file__).resolve().parents[1]
+    Path(__file__).resolve().parents[3]
     / "configs"
     / "public_video_multiexpert_risk_profile_contract_r723.json"
 )

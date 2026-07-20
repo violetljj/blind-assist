@@ -11,7 +11,7 @@ import search_vimeo_ccby_public_video_candidates as subject
 
 
 TEST_ARTIFACTS = (
-    Path(__file__).resolve().parent.parent
+    Path(__file__).resolve().parents[3]
     / "artifacts.local"
     / "tests"
     / "vimeo_ccby_candidate_ledger"

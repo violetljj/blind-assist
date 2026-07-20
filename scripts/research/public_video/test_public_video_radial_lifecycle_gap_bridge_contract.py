@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import public_video_radial_lifecycle_gap_bridge_contract as subject
 
 
-PATH = Path(__file__).resolve().parents[1] / "configs" / "public_video_radial_lifecycle_gap_bridge_contract_r730.json"
+PATH = Path(__file__).resolve().parents[3] / "configs" / "public_video_radial_lifecycle_gap_bridge_contract_r730.json"
 
 
 class RadialLifecycleGapBridgeContractTest(unittest.TestCase):
