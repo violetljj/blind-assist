@@ -30,6 +30,12 @@ SCENES = (
     "center_obstacle",
     "lateral_pedestrian_or_ebike",
 )
+SANPO_REAL_SOURCE_ID = "sanpo_real_v0"
+CONSENTED_PHONE_SOURCE_ID = "consented_forward_phone_v1"
+CONSENT_RECEIPT_FORMAT = "blindassist_p3_consented_capture_receipt_v1"
+CONSENTED_CAPTURE_MODES = {"phone_chest_forward", "phone_handheld_forward"}
+SANPO_V0_MASK_TAXONOMY = "sanpo_real_v0_panoptic_class_id_v1"
+BLINDASSIST_4CLASS_MASK_TAXONOMY = "blindassist_4class_mask_v1"
 CLASS_NAMES = (
     "walkable",
     "boundary_step_curb",
@@ -69,6 +75,7 @@ class SessionStats:
     pixel_counts: tuple[int, int, int, int]
     raw_mask_sha256: tuple[str, ...]
     raw_mask_set_sha256: str
+    source_admission: dict[str, Any]
     sequence: dict[str, Any]
 
 
@@ -115,21 +122,93 @@ def row_session_id(row: dict[str, Any]) -> str:
     return str(source.get("session_id") or row.get("session_id") or "").strip()
 
 
-def native_mask_counts(path: Path) -> tuple[tuple[int, int, int, int], str]:
+def _require_positive_int(value: Any, *, where: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
+        raise PlanningError(f"{where} must be a positive integer")
+    return value
+
+
+def native_mask_counts(
+    path: Path, *, taxonomy: str = SANPO_V0_MASK_TAXONOMY,
+) -> tuple[tuple[int, int, int, int], str]:
     digest = sha256_file(path)
     with Image.open(path) as image:
         array = np.asarray(image.convert("RGB"), dtype=np.uint8)[..., 0]
     native_counts = np.bincount(array.reshape(-1), minlength=256)
-    unknown = [int(value) for value in np.flatnonzero(native_counts) if int(value) not in SANPO_MAP]
+    if taxonomy == SANPO_V0_MASK_TAXONOMY:
+        class_map = SANPO_MAP
+    elif taxonomy == BLINDASSIST_4CLASS_MASK_TAXONOMY:
+        class_map = {index: index for index in range(len(CLASS_NAMES))}
+    else:
+        raise PlanningError(f"unsupported mask taxonomy: {taxonomy!r}")
+    unknown = [int(value) for value in np.flatnonzero(native_counts) if int(value) not in class_map]
     if unknown:
-        raise PlanningError(f"native mask {path} contains unmapped class IDs {unknown}")
+        raise PlanningError(f"mask {path} contains unmapped IDs for {taxonomy}: {unknown}")
     mapped = [0, 0, 0, 0]
-    for native_id, target_id in SANPO_MAP.items():
+    for native_id, target_id in class_map.items():
         mapped[target_id] += int(native_counts[native_id])
     return tuple(mapped), digest
 
 
-def _preflight_sequences(recipe: dict[str, Any]) -> list[dict[str, Any]]:
+def _admit_sequence_source(sequence: dict[str, Any], recipe_root: Path) -> dict[str, Any]:
+    """Fail closed before any candidate manifest is opened."""
+    source_id = str(sequence.get("source_id", SANPO_REAL_SOURCE_ID)).strip()
+    native_session = str(sequence.get("native_session_id", "")).strip()
+    if not native_session:
+        raise PlanningError("every sequence requires native_session_id")
+    official_split = str(sequence.get("official_split", "")).strip()
+    if source_id == SANPO_REAL_SOURCE_ID:
+        if official_split != "train":
+            raise PlanningError("official test/blind candidates are forbidden")
+        return {
+            "kind": "official_train",
+            "source_id": source_id,
+            "official_split": "train",
+            "mask_taxonomy": SANPO_V0_MASK_TAXONOMY,
+        }
+    if source_id != CONSENTED_PHONE_SOURCE_ID:
+        raise PlanningError(f"source {source_id!r} is not approved for P3 canonical planning")
+    if official_split != "not_applicable":
+        raise PlanningError(f"{native_session}: consented source must declare official_split=not_applicable")
+    receipt_value = str(sequence.get("consent_receipt_path", "")).strip()
+    if not receipt_value:
+        raise PlanningError(f"{native_session}: consented source requires consent_receipt_path")
+    receipt_path = safe_file(recipe_root, receipt_value)
+    try:
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise PlanningError(f"{native_session}: unreadable consent receipt: {error}") from error
+    required = {
+        "format": CONSENT_RECEIPT_FORMAT,
+        "source_id": CONSENTED_PHONE_SOURCE_ID,
+        "native_session_id": native_session,
+        "consent_status": "granted",
+        "residual_pii_review_status": "passed",
+        "pixel_annotation_status": "human_verified",
+        "annotation_quality": "human",
+        "scene_review_status": "approved",
+        "mask_taxonomy": BLINDASSIST_4CLASS_MASK_TAXONOMY,
+    }
+    for field, expected in required.items():
+        if receipt.get(field) != expected:
+            raise PlanningError(f"{native_session}: consent receipt requires {field}={expected!r}")
+    if receipt.get("capture_mode") not in CONSENTED_CAPTURE_MODES:
+        raise PlanningError(f"{native_session}: consent receipt capture_mode is not an approved forward phone view")
+    if not str(receipt.get("consent_record_ref", "")).strip():
+        raise PlanningError(f"{native_session}: consent receipt requires a non-empty consent_record_ref")
+    return {
+        "kind": "consented_forward_phone",
+        "source_id": source_id,
+        "official_split": "not_applicable",
+        "consent_receipt_path": str(receipt_path),
+        "consent_receipt_sha256": sha256_file(receipt_path),
+        "capture_mode": receipt["capture_mode"],
+        "annotation_quality": receipt["annotation_quality"],
+        "mask_taxonomy": receipt["mask_taxonomy"],
+    }
+
+
+def _preflight_sequences(recipe: dict[str, Any], recipe_root: Path) -> list[dict[str, Any]]:
     sequences = recipe.get("sequences")
     if not isinstance(sequences, list) or not sequences:
         raise PlanningError("candidate recipe requires a non-empty sequences list")
@@ -137,12 +216,9 @@ def _preflight_sequences(recipe: dict[str, Any]) -> list[dict[str, Any]]:
     for index, sequence in enumerate(sequences):
         if not isinstance(sequence, dict):
             raise PlanningError(f"sequence {index} must be an object")
-        if str(sequence.get("official_split", "")).strip() != "train":
-            raise PlanningError(
-                f"sequence {index} is not official train; official test/blind candidates are forbidden"
-            )
         if str(sequence.get("scene_bucket", "")) not in SCENES:
             raise PlanningError(f"sequence {index} has unsupported scene_bucket")
+        _admit_sequence_source(sequence, recipe_root)
     return sequences
 
 
@@ -152,7 +228,7 @@ def collect_sessions(recipe_path: Path) -> tuple[list[SessionStats], dict[str, A
         recipe = json.loads(recipe_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
         raise PlanningError(f"cannot load candidate recipe: {error}") from error
-    sequences = _preflight_sequences(recipe)
+    sequences = _preflight_sequences(recipe, recipe_path.parent)
     sessions: list[SessionStats] = []
     seen: set[str] = set()
     manifest_hashes: dict[str, str] = {}
@@ -162,7 +238,7 @@ def collect_sessions(recipe_path: Path) -> tuple[list[SessionStats], dict[str, A
         manifest_digest = sha256_file(manifest)
         manifest_hashes[str(manifest)] = manifest_digest
         native_session = str(sequence.get("native_session_id", "")).strip()
-        source_id = str(sequence.get("source_id", "sanpo_real_v0")).strip()
+        source_id = str(sequence.get("source_id", SANPO_REAL_SOURCE_ID)).strip()
         if not native_session or not source_id:
             raise PlanningError("every sequence requires source_id and native_session_id")
         global_session = f"{source_id}:{native_session}"
@@ -177,19 +253,58 @@ def collect_sessions(recipe_path: Path) -> tuple[list[SessionStats], dict[str, A
             raise PlanningError(
                 f"{global_session}: requires contiguous 0..{expected_count - 1} frames, got {indexes[:8]}"
             )
-        row_official_splits = {
-            str(
-                (row.get("source") if isinstance(row.get("source"), dict) else {}).get(
-                    "official_split", row.get("official_split", "")
+        source_admission = _admit_sequence_source(sequence, recipe_path.parent)
+        if source_id == SANPO_REAL_SOURCE_ID:
+            row_official_splits = {
+                str(
+                    (row.get("source") if isinstance(row.get("source"), dict) else {}).get(
+                        "official_split", row.get("official_split", "")
+                    )
+                ).strip()
+                for row in rows
+            }
+            if row_official_splits != {"train"}:
+                raise PlanningError(
+                    f"{global_session}: source manifest is not exclusively official train: "
+                    f"{sorted(row_official_splits)}"
                 )
-            ).strip()
-            for row in rows
-        }
-        if row_official_splits != {"train"}:
-            raise PlanningError(
-                f"{global_session}: source manifest is not exclusively official train: "
-                f"{sorted(row_official_splits)}"
-            )
+        else:
+            consented_resolution: tuple[int, int] | None = None
+            for row in rows:
+                source = row.get("source") if isinstance(row.get("source"), dict) else {}
+                if source.get("source_id") != CONSENTED_PHONE_SOURCE_ID:
+                    raise PlanningError(f"{global_session}: consented manifest row has wrong source_id")
+                if source.get("consent_receipt_sha256") != source_admission["consent_receipt_sha256"]:
+                    raise PlanningError(f"{global_session}: consented manifest receipt hash mismatch")
+                if source.get("annotation_quality") != "human" or source.get("residual_pii_review_status") != "passed":
+                    raise PlanningError(f"{global_session}: consented manifest row lacks human annotation or PII clearance")
+                provenance = row.get("label_provenance") if isinstance(row.get("label_provenance"), dict) else {}
+                if provenance.get("annotation_kind") != "human_pixel_mask":
+                    raise PlanningError(f"{global_session}: consented manifest row lacks human_pixel_mask provenance")
+                if provenance.get("mask_taxonomy") != source_admission["mask_taxonomy"]:
+                    raise PlanningError(f"{global_session}: consented manifest row mask taxonomy mismatch")
+                if source.get("camera") != source_admission["capture_mode"] or source.get("lens") != "not_applicable":
+                    raise PlanningError(f"{global_session}: consented manifest row has an unapproved camera or lens")
+                width = _require_positive_int(source.get("source_width"), where=f"{global_session}.source_width")
+                height = _require_positive_int(source.get("source_height"), where=f"{global_session}.source_height")
+                if consented_resolution is None:
+                    consented_resolution = (width, height)
+                elif consented_resolution != (width, height):
+                    raise PlanningError(f"{global_session}: consented source resolution changes within a session")
+                image_value = str(row.get("image_path", "")).strip()
+                image_digest = str(row.get("image_sha256", "")).strip()
+                if not image_value:
+                    raise PlanningError(f"{global_session}: consented manifest row requires image_path")
+                image_path = safe_file(package_root, image_value)
+                if sha256_file(image_path) != image_digest:
+                    raise PlanningError(f"{global_session}: consented manifest image SHA256 mismatch")
+                with Image.open(image_path) as image:
+                    if image.size != (width, height):
+                        raise PlanningError(f"{global_session}: consented image dimensions do not match source metadata")
+            if consented_resolution is None:
+                raise PlanningError(f"{global_session}: consented session has no frame resolution")
+            source_admission["source_width"] = consented_resolution[0]
+            source_admission["source_height"] = consented_resolution[1]
         counts = np.zeros(4, dtype=np.int64)
         mask_hashes: list[str] = []
         for row in rows:
@@ -201,7 +316,7 @@ def collect_sessions(recipe_path: Path) -> tuple[list[SessionStats], dict[str, A
             if not mask_value:
                 raise PlanningError(f"{global_session}: cannot resolve the raw source mask path")
             mask = safe_file(package_root, mask_value)
-            mask_counts, mask_digest = native_mask_counts(mask)
+            mask_counts, mask_digest = native_mask_counts(mask, taxonomy=str(source_admission["mask_taxonomy"]))
             source = row.get("source") if isinstance(row.get("source"), dict) else {}
             provenance = row.get("label_provenance") if isinstance(row.get("label_provenance"), dict) else {}
             declared = str(
@@ -226,6 +341,7 @@ def collect_sessions(recipe_path: Path) -> tuple[list[SessionStats], dict[str, A
             pixel_counts=tuple(int(value) for value in counts),
             raw_mask_sha256=tuple(mask_hashes),
             raw_mask_set_sha256=canonical_sha256(mask_hashes),
+            source_admission=source_admission,
             sequence=dict(sequence),
         ))
     input_hashes = {
@@ -451,6 +567,10 @@ def plan_split(
             for scene in SCENES
         },
         "official_split_by_target_split": {"train": "train", "dev": "train", "blind": "test"},
+        "source_admission": {
+            SANPO_REAL_SOURCE_ID: "official_train_only",
+            CONSENTED_PHONE_SOURCE_ID: "consent_receipt + passed_residual_pii_review + human_verified_pixel_annotation + approved_scene_review",
+        },
     })
     plan = deepcopy(candidate_recipe)
     plan["split_plan_schema"] = "blindassist_sanpo_p3_session_split_plan_v1"
@@ -472,12 +592,18 @@ def plan_split(
             "manifest_sha256": session.manifest_sha256,
             "raw_mask_set_sha256": session.raw_mask_set_sha256,
             "raw_mask_sha256": list(session.raw_mask_sha256),
+            "source_admission": session.source_admission,
         })
+    source_admission_counts: dict[str, int] = {}
+    for session in sessions:
+        kind = str(session.source_admission["kind"])
+        source_admission_counts[kind] = source_admission_counts.get(kind, 0) + 1
     report = {
         "schema": "blindassist_sanpo_p3_session_split_report_v1",
         "status": "green",
         "blind_access": "not_accessed",
-        "official_split_consumed": "train_only",
+        "official_split_consumed": "train_only" if set(source_admission_counts) == {"official_train"} else "official_train_plus_consented_capture",
+        "source_admission_counts": source_admission_counts,
         "input_hashes": input_hashes,
         "constraints": {
             "train_sessions_per_scene": [MIN_TRAIN, MAX_TRAIN],

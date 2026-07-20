@@ -20,15 +20,19 @@ SPEC.loader.exec_module(planner)
 
 
 class SanpoP3SessionSplitPlannerTest(unittest.TestCase):
-    def make_recipe(self, root: Path, sessions_per_scene: int = 6) -> Path:
+    def make_recipe(
+        self, root: Path, sessions_per_scene: int = 6, source_id: str = planner.SANPO_REAL_SOURCE_ID,
+    ) -> Path:
         sequences = []
-        native_for_target = (1, 2, 4, 0)
+        native_for_target = (1, 2, 4, 0) if source_id == planner.SANPO_REAL_SOURCE_ID else (0, 1, 2, 3)
         for scene_index, scene in enumerate(planner.SCENES):
             for session_index in range(sessions_per_scene):
                 session_id = f"s{scene_index}_{session_index}"
                 package = root / session_id
                 masks = package / "source_masks"
                 masks.mkdir(parents=True)
+                images = package / "images"
+                images.mkdir(parents=True)
                 # Every original-resolution mask contains all four mapped classes.
                 # The rotating tail makes its raw SHA and class histogram session-specific.
                 values = list(native_for_target) * 4
@@ -38,22 +42,65 @@ class SanpoP3SessionSplitPlannerTest(unittest.TestCase):
                 array = np.asarray(values, dtype=np.uint8).reshape(4, 4)
                 mask = masks / "000.png"
                 Image.fromarray(array, mode="L").save(mask)
+                image = images / "000.png"
+                Image.fromarray(np.full((4, 4, 3), 127, dtype=np.uint8), mode="RGB").save(image)
                 manifest = package / "manifest.draft.jsonl"
+                receipt_path = root / "receipts" / f"{session_id}.json"
+                if source_id == planner.CONSENTED_PHONE_SOURCE_ID:
+                    receipt_path.parent.mkdir(parents=True, exist_ok=True)
+                    receipt_path.write_text(json.dumps({
+                        "format": planner.CONSENT_RECEIPT_FORMAT,
+                        "source_id": source_id,
+                        "native_session_id": session_id,
+                        "consent_status": "granted",
+                        "consent_record_ref": f"receipt-{session_id}",
+                        "capture_mode": "phone_chest_forward",
+                        "residual_pii_review_status": "passed",
+                        "pixel_annotation_status": "human_verified",
+                        "annotation_quality": "human",
+                        "scene_review_status": "approved",
+                        "mask_taxonomy": planner.BLINDASSIST_4CLASS_MASK_TAXONOMY,
+                    }), encoding="utf-8")
+                    source = {
+                        "source_id": source_id,
+                        "session_id": session_id,
+                        "consent_receipt_sha256": planner.sha256_file(receipt_path),
+                        "annotation_quality": "human",
+                        "residual_pii_review_status": "passed",
+                        "camera": "phone_chest_forward",
+                        "lens": "not_applicable",
+                        "source_width": 4,
+                        "source_height": 4,
+                    }
+                    official_split = "not_applicable"
+                else:
+                    source = {"official_split": "train", "session_id": session_id}
+                    official_split = "train"
+                provenance = {
+                    "annotation_kind": "human_pixel_mask",
+                    "mask_taxonomy": planner.BLINDASSIST_4CLASS_MASK_TAXONOMY,
+                } if source_id == planner.CONSENTED_PHONE_SOURCE_ID else {}
                 manifest.write_text(json.dumps({
                     "session_id": session_id,
                     "frame_index": 0,
                     "source_mask_path": "source_masks/000.png",
-                    "source": {"official_split": "train", "session_id": session_id},
+                    "image_path": "images/000.png",
+                    "image_sha256": planner.sha256_file(image),
+                    "source": source,
+                    "label_provenance": provenance,
                 }) + "\n", encoding="utf-8")
-                sequences.append({
-                    "source_id": "sanpo_real_v0",
+                sequence = {
+                    "source_id": source_id,
                     "package_root": str(package),
                     "manifest_path": "manifest.draft.jsonl",
                     "native_session_id": session_id,
-                    "official_split": "train",
+                    "official_split": official_split,
                     "expected_frame_count": 1,
                     "scene_bucket": scene,
-                })
+                }
+                if source_id == planner.CONSENTED_PHONE_SOURCE_ID:
+                    sequence["consent_receipt_path"] = str(receipt_path.relative_to(root))
+                sequences.append(sequence)
         recipe = root / "candidates.json"
         recipe.write_text(json.dumps({
             "coverage_policy": {
@@ -150,6 +197,57 @@ class SanpoP3SessionSplitPlannerTest(unittest.TestCase):
             })
             recipe.write_text(json.dumps(payload), encoding="utf-8")
             with self.assertRaisesRegex(planner.PlanningError, "official test/blind"):
+                planner.collect_sessions(recipe)
+
+    def test_consented_forward_phone_requires_and_preserves_admission_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            recipe = self.make_recipe(Path(temp), source_id=planner.CONSENTED_PHONE_SOURCE_ID)
+            plan, report = planner.plan_split(recipe)
+            self.assertEqual("official_train_plus_consented_capture", report["official_split_consumed"])
+            self.assertEqual(24, report["source_admission_counts"]["consented_forward_phone"])
+            self.assertTrue(all(
+                item["source_admission"]["annotation_quality"] == "human"
+                for item in report["session_inventory"]
+            ))
+            self.assertEqual(
+                "consented_forward_phone_v1",
+                plan["sequences"][0]["source_id"],
+            )
+
+    def test_consented_forward_phone_rejects_machine_only_receipt_before_manifest_open(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            recipe = self.make_recipe(root, source_id=planner.CONSENTED_PHONE_SOURCE_ID)
+            payload = json.loads(recipe.read_text(encoding="utf-8"))
+            receipt = root / payload["sequences"][0]["consent_receipt_path"]
+            row = json.loads(receipt.read_text(encoding="utf-8"))
+            row["pixel_annotation_status"] = "machine_only"
+            receipt.write_text(json.dumps(row), encoding="utf-8")
+            with self.assertRaisesRegex(planner.PlanningError, "pixel_annotation_status"):
+                planner.collect_sessions(recipe)
+
+    def test_consented_forward_phone_rejects_taxonomy_mismatch(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            recipe = self.make_recipe(root, source_id=planner.CONSENTED_PHONE_SOURCE_ID)
+            payload = json.loads(recipe.read_text(encoding="utf-8"))
+            manifest = Path(payload["sequences"][0]["package_root"]) / "manifest.draft.jsonl"
+            row = json.loads(manifest.read_text(encoding="utf-8"))
+            row["label_provenance"]["mask_taxonomy"] = planner.SANPO_V0_MASK_TAXONOMY
+            manifest.write_text(json.dumps(row) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(planner.PlanningError, "mask taxonomy mismatch"):
+                planner.collect_sessions(recipe)
+
+    def test_consented_forward_phone_rejects_image_dimension_mismatch(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            recipe = self.make_recipe(root, source_id=planner.CONSENTED_PHONE_SOURCE_ID)
+            payload = json.loads(recipe.read_text(encoding="utf-8"))
+            manifest = Path(payload["sequences"][0]["package_root"]) / "manifest.draft.jsonl"
+            row = json.loads(manifest.read_text(encoding="utf-8"))
+            row["source"]["source_width"] = 5
+            manifest.write_text(json.dumps(row) + "\n", encoding="utf-8")
+            with self.assertRaisesRegex(planner.PlanningError, "dimensions do not match"):
                 planner.collect_sessions(recipe)
 
     def test_duplicate_raw_mask_cannot_cross_train_and_dev(self) -> None:

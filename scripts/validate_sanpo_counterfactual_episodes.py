@@ -343,6 +343,21 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
 
     if manifest.get("schema") != "blindassist_sanpo_counterfactual_episode_manifest_v1":
         raise ContractError("unexpected episode manifest schema")
+    route_conditioned = config.get("route_conditioning_policy") is not None
+    if route_conditioned:
+        contract_id = _require_string(config, "contract_id", where="config")
+        if manifest.get("contract_id") != contract_id:
+            raise ContractError("manifest contract_id does not match config")
+        if config.get("benchmark_only") is not True or manifest.get("benchmark_only") is not True:
+            raise ContractError("route-conditioned truth must remain benchmark_only")
+        if (
+            config.get("production_model_replacement_authorized") is not False
+            or manifest.get("production_model_replacement_authorized") is not False
+        ):
+            raise ContractError("route-conditioned truth cannot authorize production replacement")
+        authority = config.get("authority")
+        if not isinstance(authority, dict):
+            raise ContractError("route-conditioned config.authority must be an object")
     receipts = manifest.get("source_receipts")
     episodes = manifest.get("episodes")
     if not isinstance(receipts, list) or not isinstance(episodes, list):
@@ -434,6 +449,8 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
             episode, config=config, root=root, duration_ms=duration_ms, where=where,
         )
         if route_binding is not None:
+            if route_binding["parent_source_id"] != receipt_id:
+                raise ContractError(f"{where}.route intent parent_source_id does not match source_receipt_id")
             route_binding_by_episode_id[episode["episode_id"]] = route_binding
         context = episode.get("capture_context")
         if not isinstance(context, dict) or not all(isinstance(context.get(key), str) and context[key] for key in config["matrix_contract"]["matched_pair_members_must_share_capture_context"]):
@@ -470,12 +487,18 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
                     if counts[(session_id, scene_id, role)] != expected_pairs:
                         raise ContractError(f"complete collection needs {expected_pairs} {role} episodes for {session_id}/{scene_id}")
 
+    authority = config.get("authority")
+    training_authorized = (
+        authority.get("full_matrix_training") is True
+        if isinstance(authority, dict)
+        else True
+    )
     return {
         "ok": True,
         "collection_status": manifest.get("collection_status", "unknown"),
         "episode_count": len(episodes),
         "matched_pair_count": len(pairs),
-        "training_eligible": bool(complete and require_complete),
+        "training_eligible": bool(complete and require_complete and training_authorized),
         "route_bound_episode_count": len(route_binding_by_episode_id),
         "route_conditioned_truth_eligible": bool(
             complete

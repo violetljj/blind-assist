@@ -99,6 +99,8 @@ YOLO 指标无退化，benchmark 判定 `traversability_rules_ok_for_model_stage
 
 最终 SM-S9280 90 帧 benchmark（证据：`test-artifacts.local/detector-ab-device-benchmark/20260711-191206/`）：候选危险提醒召回 `88.9%`、中心风险召回 `83.3%`、主区域命中 `93.9%`、total P95 `58.405ms`；YOLO AP50/precision/recall 与几何基线一致。但错误提醒率 `25.9%`，高于 `5.3%`，原因是登阶后的 receding 段仍有重复提醒，以及平行路沿负例中部分区域被标成 generic obstacle。因此本扩展集未通过 Oracle v2 晋级，保持 `do_not_replace_default_model`；不得训练或接入 MobileNetV3 + LR-ASPP。
 
+2026-07-15：为收紧已通过台阶的重现漏洞，`RiskEventTracker` 对“已实际反馈、连续三帧远离或缺失后清除”的分割事件保留同标签、同中心锚点的 `1,000 ms` 短暂重现抑制。该窗口内即使上游趋势短暂回弹为 `APPROACHING`，仍返回原事件并阻断第二次反馈；窗口届满后，同锚点候选才可建立新事件。连续基准将事件状态机与 `TemporalRiskTracker` 共同绑定到 `frame_index × 100 ms` 的序列时钟，禁止以墙钟吞吐决定该窗口。此规则不作用于 YOLO、标签变化或中心位置变化的候选，不能替代真实事件级评测。核心 JVM 测试和 `device-benchmark` 编译已通过；尚未重跑真机 90 帧基准，因此仍不得晋级或替换默认模型。
+
 盲道占用是已记录但未伪造的缺口：本轮未找到同时满足“连续、许可明确、可小规模下载、明确盲道被占用”的公开序列。后续可在获得许可明确的小分片后接入 VIP-Mobility360 或其他来源，但必须使用独立 importer 与同样 review/finalize 门禁。
 
 ## 下一阶段模型契约
@@ -111,3 +113,28 @@ YOLO 指标无退化，benchmark 判定 `traversability_rules_ok_for_model_stage
 4. `unknown_nonwalkable`
 
 训练顺序为 SANPO-Synthetic 预训练、SANPO-Real 微调；另建中国场景回归集，覆盖路桩、低矮台阶、盲道占用、电动车和临时施工。晋级门槛看近场危险召回、台阶/路沿召回、错误提醒率、时序抖动和端侧 P95 延迟，不以总体 mIoU 单独决定上线。
+
+## 2026-07-15 事件生命周期复测（SM-S9280）
+
+固定评测集为 `test-artifacts.local/datasets/blindassist-sanpo-v2-event-labeled-20260711`（90 帧、3 条连续序列、每帧 3 次 App 推理）。在 `SanpoTraversabilityOracle` / `current` 风险配置下，设备端报告为 `test-artifacts.local/detector-ab-device-benchmark/20260715-183528/`，模型资产 SHA-256 为 `00edb41a528b0a7e709c4af8ce3e685491492c4539274804e5cfc17a1a867cd2`。
+
+| 指标 | YOLO 几何基线 | SANPO oracle |
+| --- | ---: | ---: |
+| 事件级提醒召回 | 0.50 | 1.00 |
+| 关键事件漏报 | 1 | 0 |
+| 实际交付的重复提醒 | 2 | 0 |
+| 通过窗口清除率 | 0.50 | 1.00 |
+| 通过窗口实际提醒 | 1 | 0 |
+| 误提醒 / 分钟 | 6.67 | 0 |
+| 平行路沿误提醒 | 0 / 30 | 0 / 30 |
+| App 总耗时 P95 | 70.0 ms | 76.0 ms |
+
+此轮证明“实际用户收到的重复提醒”和通过窗口误报已被事件门控消除；但 oracle 仍报告 2 次运行时事件 ID 再生。逐帧审计表明，其中已提醒楼梯在通过后短时间内横向位移，超出活动事件的 0.25 中心偏移阈值而被重新编号。后续修复只对“已通过且已实际提醒”的 1 秒缓存放宽匹配至 0.5；活动事件仍保留 0.25 阈值。该修复及横向位移回归用例已通过 `:core:assist:test`（112 tests）和 `:device-benchmark:compileDebugKotlin`，但设备在同配置复跑前从 ADB 断开，因此尚未以此报告作为最终真机闭环或候选模型晋级依据。
+
+本轮 recommendation 仍为 `do_not_replace_default_model`：oracle 是带真值 mask 的规则诊断，并非可部署的分割模型；即使事件指标改善，也不能替换默认 YOLO 或解锁训练/生产晋级。
+
+### 横向位移修复的同设备复验
+
+修复后的同配置复验已在同一 SM-S9280 完成，产物为 `test-artifacts.local/detector-ab-device-benchmark/20260715-224608/`。结果保持 `eventAlertRecall=1.0`、`criticalEventMissCount=0`、`deliveredRepeatedAlertCount=0`、`postEventClearanceRate=1.0`、`falseAlertCount=0` 和 `falseAlertsPerMinute=0`；45 次重复尝试均被事件门控抑制。`eventRegenerationCount` 仍为 2，但逐帧审计确认它们没有形成第二次实际反馈：其中一条已提醒楼梯在通过后以超过 0.5 中心比例的横向跳变重新出现。
+
+因此当前结论是：用户可感知的重复提醒/通过窗口误报已在这组固定数据上关闭，运行时身份分裂仍作为诊断信号保留。不得为了压低该诊断数而把短时匹配放宽到整个中心走廊，因为这会在短窗口内吞掉同标签但确实不同的中心风险。保持 `do_not_replace_default_model`；下一步只能用新增的、人工审阅的连续真实事件来验证身份分裂是否对应新的风险，而不是由 oracle 或公开 mask 伪造答案。

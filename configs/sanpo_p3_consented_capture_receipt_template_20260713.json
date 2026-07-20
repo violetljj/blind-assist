@@ -1,0 +1,13 @@
+{
+  "format": "blindassist_p3_consented_capture_receipt_v1",
+  "source_id": "consented_forward_phone_v1",
+  "native_session_id": "replace-with-stable-pseudonymous-session-id",
+  "consent_status": "pending",
+  "consent_record_ref": "replace-with-pseudonymous-consent-record-reference",
+  "capture_mode": "phone_chest_forward",
+  "residual_pii_review_status": "pending",
+  "pixel_annotation_status": "pending",
+  "annotation_quality": "machine",
+  "scene_review_status": "pending",
+  "mask_taxonomy": "blindassist_4class_mask_v1"
+}

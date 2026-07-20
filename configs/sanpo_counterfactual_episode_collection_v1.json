@@ -5,6 +5,11 @@
   "benchmark_only": true,
   "network_required": false,
   "production_model_replacement_authorized": false,
+  "episode_duration_policy": {
+    "minimum_duration_ms": 10000,
+    "maximum_duration_ms": 20000,
+    "shorter_or_longer_clips_are_not_episode_eligible": true
+  },
   "design": {
     "session_count": 6,
     "scene_count": 4,
@@ -76,7 +81,12 @@
       "video_path",
       "video_sha256",
       "source_receipt_id",
-      "annotation_reviewer_ids"
+      "annotation_reviewer_ids",
+      "annotation_evidence_path",
+      "annotation_evidence_sha256",
+      "duration_ms",
+      "risk_profile",
+      "lifecycle_intervals_ms"
     ],
     "pair_role_allowed": ["positive", "matched_negative"],
     "positive_event_anchors_ms": [
@@ -88,6 +98,29 @@
     "negative_anchor_policy": "all positive event anchors must be null",
     "negative_reason_required": true,
     "event_anchor_adjudication_tolerance_ms": 500
+  },
+  "annotation_evidence_schema": {
+    "schema": "blindassist_sanpo_counterfactual_annotation_evidence_v1",
+    "minimum_independent_reviewers_per_episode": 2,
+    "reviewer_id_must_match_episode": true,
+    "positive_anchor_agreement_tolerance_ms": 500,
+    "local_hashed_evidence_required": true,
+    "model_output_is_not_annotation_evidence": true
+  },
+  "risk_profile_and_lifecycle_schema": {
+    "primary_hazard_type": "must equal scene_id",
+    "positive": {
+      "corridor_relation": "enters_or_blocks",
+      "lifecycle": "approach_alertable_clear",
+      "required_intervals_ms": ["approach", "alertable", "post_event"]
+    },
+    "matched_negative": {
+      "corridor_relation": "outside_or_nonblocking",
+      "lifecycle": "no_alert",
+      "required_intervals_ms": ["non_alert"]
+    },
+    "intervals_are_half_open_ms": true,
+    "purpose": "risk-profile and lifecycle targets are primary event supervision; pixel masks remain auxiliary"
   },
   "source_receipt_schema": {
     "required_fields": [

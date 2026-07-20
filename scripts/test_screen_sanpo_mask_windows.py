@@ -57,6 +57,16 @@ class ScreenSanpoMaskWindowsRetryTest(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "failed after 2 attempts"):
                 screen.retry_fetch(lambda: (_ for _ in ()).throw(OSError("tls eof")), 2, "fixture")
 
+    def test_frame_evidence_records_person_vehicle_density_proxy(self) -> None:
+        # class 12 is pedestrian and class 21 is vehicle in the shared SANPO geometry contract.
+        mask = np.zeros((10, 10, 3), dtype=np.uint8)
+        mask[:2, :2, 0] = 12
+        mask[2:4, :3, 0] = 21
+        evidence = screen.frame_evidence(0, 100, mask, "step_curb")
+        proxy = evidence["person_vehicle_privacy_proxy"]
+        self.assertEqual(2, proxy["component_count"])
+        self.assertEqual(0.1, proxy["pixel_fraction"])
+
 
 if __name__ == "__main__":
     unittest.main()

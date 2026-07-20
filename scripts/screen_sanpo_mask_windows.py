@@ -90,6 +90,14 @@ def frame_evidence(frame_index: int, source_frame_index: int, rgb: np.ndarray, p
         and (item["center_x_ratio"] <= 0.35 or item["center_x_ratio"] >= 0.65)
         and item["bottom_ratio"] >= 0.35
     ]
+    privacy_proxy_classes = {12, 13, 21}  # pedestrian, rider/ebike, vehicle
+    privacy_proxy = [
+        component
+        for class_id in privacy_proxy_classes
+        for component in components.get(class_id, [])
+    ]
+    source_pixels = int(rgb.shape[0] * rgb.shape[1])
+    privacy_proxy_pixels = sum(int(component["pixel_count"]) for component in privacy_proxy)
     return {
         "frame_index": frame_index,
         "source_frame_index": source_frame_index,
@@ -99,6 +107,11 @@ def frame_evidence(frame_index: int, source_frame_index: int, rgb: np.ndarray, p
         "target_clean_lateral": bool(lateral_targets),
         "any_center_hazard": bool(central_hazards),
         "best_target": max(targets, key=lambda item: item["corridor_blocking_ratio"], default=None),
+        "person_vehicle_privacy_proxy": {
+            "component_count": len(privacy_proxy),
+            "pixel_fraction": round(privacy_proxy_pixels / max(1, source_pixels), 6),
+            "purpose": "download-prior density proxy only; not a privacy-audit pass/fail or risk label",
+        },
     }
 
 

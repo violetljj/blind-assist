@@ -47,7 +47,16 @@
 - 复核：`create_sanpo_v2_review_decisions.py`、`apply_sanpo_review_decisions.py`、`review_sanpo_sequence_with_model.py`、`screen_sanpo_mask_windows.py`
 - v3 治理：`build_sanpo_v3_annotation_queue.py`、`prepare_sanpo_v3_dataset_views.py`、`validate_sanpo_v3_dataset.py`、`freeze_sanpo_v3_regression.py`
 - 公开与程序化数据：`build_public_v3_canonical_dataset.py`、`build_procedural_tactile_sequences.py`
-- session 拆分：`plan_sanpo_p3_session_split.py`
+- session 拆分：`plan_sanpo_p3_session_split.py`（经同意手机来源只接受 `blindassist_4class_mask_v1` 的人工像素 mask，并逐帧重验 RGB/mask 哈希、原始尺寸、camera/lens 与同意回执）
+- 全量候选发现：`run_sanpo_p3_discovery_batches.py`（按参数与官方 session 顺序绑定 checkpoint，支持 fail-closed 断点续跑；完整发现不等于候选接纳、人工真值或训练授权）
+- 反事实事件：`validate_sanpo_counterfactual_episodes.py`（字段模板：`configs/sanpo_counterfactual_episode_manifest_template_v1.json`；只验证人工复核的本地 manifest；每条均需两名独立人工复核的本地 SHA256 证据，不下载、不生成标签，且永不授权替换生产模型）
+- 风险轮廓/生命周期 target：`build_sanpo_risk_lifecycle_targets.py`（只从已完整验证的 episode manifest 生成主监督 target；像素监督标注为 `auxiliary_only`，不执行训练或模型升级）
+- 风险轮廓/生命周期原型：`sanpo_risk_lifecycle_prototype.py`（读取 hash-attested 的人工双审 target，或显式授权的 `hash_bound_model_silver_provisional` 暂定监督；将半开生命周期区间映射为时序标签，像素监督保持 `auxiliary_only`，不授权校准、blind 评测或默认模型替换）
+- 走廊熟悉度诊断：`run_sanpo_corridor_anomaly_probe.py`（冻结 DINO 仅拟合 canonical-train 的 source-semantic walkable 特征，并在 dev 报告 source-class outlier AUROC；高分只能表示 `unknown_motion_or_surface` 候选，永不等价于提醒）
+- unknown 蒸馏可行性：`run_sanpo_mobile_unknown_distill_probe.py`（以冻结 DINO 熟悉度分数为 teacher，测试冻结 MobileNet 特征能否在 dev 上重现该非安全分数；不训练学生网络、不保存权重）
+- 反事实采集清单：`generate_sanpo_counterfactual_capture_plan.py`（从冻结合同生成空的 96-slot 采集计划；不生成证据、标签或训练许可）
+- 稀疏 SANPO 长时间线：`acquire_sanpo_rgb_timeline_candidate.py`（只下载公开 CC-BY RGB 帧，默认 1 FPS × 10 秒；不下载 mask、不生成事件标签，只供大模型决定是否值得后续审查）
+- SANPO 边界辅助候选：`plan_sanpo_boundary_aux_candidates.py`、`redact_sanpo_auxiliary_candidate.py`（从完整公开 discovery 记录中排除 canonical session，只规划 `auxiliary_pixel_geometry_only` 的 source-mask 候选；SANPO RGB 草稿必须先整人/车脱敏且仍需隐私审核，永不从此路径构造事件或风险真值。）
 
 改变 canonical 数据、冻结回归集或读取 blind 数据的脚本必须遵守 [SANPO 训练协议](../docs/SANPO_TRAINING_PROTOCOL.md)。
 
@@ -55,9 +64,9 @@
 
 - 模型与训练：`sanpo_segmentation_model.py`、`train_sanpo_segmentation_keras_torch.py`
 - 导出：`train_export_sanpo_segmentation.py`
-- 门禁：`sanpo_training_gate.py`、`sanpo_candidate_quality_gate.py`
+- 门禁：`sanpo_training_gate.py`、`sanpo_candidate_quality_gate.py`、`extract_sanpo_device_event_report.py`（仅将模型 SHA256、事件分母和序列时长完整的真机 `benchmark.json` 转为设备事件门输入；任一绑定缺失即拒绝）
 - 后端一致性：`sanpo_backend_equivalence.py`
-- 辅助损失与诊断：`sanpo_boundary_distance_aux.py`、`sanpo_deterministic_linear_probe.py`
+- 辅助损失与诊断：`sanpo_boundary_distance_aux.py`、`run_sanpo_balanced_distance_ablation.py`、`sanpo_deterministic_linear_probe.py`、`sanpo_depth_anything_linear_probe.py`。`run_sanpo_balanced_distance_ablation.py` 只从 canonical train 中按完整 session 隔离评测，并要求 train/eval 的边界像素覆盖比落在预设区间；它不读取 canonical dev/blind、不保存权重，且无论结果均不授权事件真值、训练升级或默认模型替换。后者以冻结官方 Depth Anything V2 特征做 train/dev-only ridge 诊断；可选拼接既有 raw OS8/OS32，但不训练、不读取 blind、不产生可部署权重。
 
 对应的 `test_*.py` 与实现保持同名配对。候选只有在离线、INT8 和设备门全部通过后才允许进入正式 App。
 

@@ -108,6 +108,15 @@ def bbox_summary(depth: np.ndarray, row: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def inference_device(torch) -> str:
+    """Keep official model weights on the same accelerator as image2tensor()."""
+    if torch.cuda.is_available():
+        return "cuda"
+    if torch.backends.mps.is_available():
+        return "mps"
+    return "cpu"
+
+
 def load_model(src_root: Path, checkpoint: Path, encoder: str):
     import torch
 
@@ -117,6 +126,7 @@ def load_model(src_root: Path, checkpoint: Path, encoder: str):
     model = DepthAnythingV2(**model_config(encoder))
     state = torch.load(str(checkpoint), map_location="cpu")
     model.load_state_dict(state)
+    model.to(inference_device(torch))
     model.eval()
     return model
 
