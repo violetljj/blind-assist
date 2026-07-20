@@ -10,41 +10,64 @@ class UstrfMetricGeometryReceiptTest {
 
     @Test
     fun fullyVerifiedFreshInputsPrepareProjectionButDoNotCreateGeometry() {
-        val admission = promoter.admit(rawDepth(), capture(), intrinsics(), registration(), extrinsics(), 1_100L)
+        val admission = promoter.admit(rawDepth(), capture(), intrinsics(), registration(), extrinsics(), calibration(), 1_100L)
         val available = admission as UstrfMetricGeometryProjectionAdmission.Available
         assertEquals(frame, available.sourceFrame)
         assertEquals("body-v2", available.bodyFrame)
         assertEquals(1_500L, available.validUntilNs)
+        assertEquals("mount-cal-v1", available.calibrationId)
+        assertEquals("a".repeat(64), available.calibrationSourceArtifactSha256)
     }
 
     @Test
     fun reprojectedDepthAndMismatchedConfidenceAreRejectedIndependently() {
-        val reprojected = promoter.admit(rawDepth(depthTimestampNs = 999L), capture(), intrinsics(), registration(), extrinsics(), 1_100L)
+        val reprojected = promoter.admit(rawDepth(depthTimestampNs = 999L), capture(), intrinsics(), registration(), extrinsics(), calibration(), 1_100L)
         assertEquals(UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.RAW_DEPTH_TIMESTAMP_MISMATCH), reprojected)
 
-        val confidenceMismatch = promoter.admit(rawDepth(confidenceTimestampNs = 999L), capture(), intrinsics(), registration(), extrinsics(), 1_100L)
+        val confidenceMismatch = promoter.admit(rawDepth(confidenceTimestampNs = 999L), capture(), intrinsics(), registration(), extrinsics(), calibration(), 1_100L)
         assertEquals(UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.CONFIDENCE_TIMESTAMP_MISMATCH), confidenceMismatch)
     }
 
     @Test
     fun unverifiedCalibrationOrRegistrationNeverAuthorizesMetricProjection() {
-        val intrinsicsUnverified = promoter.admit(rawDepth(), capture(), intrinsics(independentlyVerified = false), registration(), extrinsics(), 1_100L)
+        val intrinsicsUnverified = promoter.admit(rawDepth(), capture(), intrinsics(independentlyVerified = false), registration(), extrinsics(), calibration(), 1_100L)
         assertEquals(UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.INTRINSICS_NOT_INDEPENDENTLY_VERIFIED), intrinsicsUnverified)
 
-        val registrationUnverified = promoter.admit(rawDepth(), capture(), intrinsics(), registration(independentlyVerified = false), extrinsics(), 1_100L)
+        val registrationUnverified = promoter.admit(rawDepth(), capture(), intrinsics(), registration(independentlyVerified = false), extrinsics(), calibration(), 1_100L)
         assertEquals(UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.REGISTRATION_NOT_INDEPENDENTLY_VERIFIED), registrationUnverified)
     }
 
     @Test
     fun versionFrameAndFullExtrinsicsFailuresFailClosed() {
-        val wrongVersion = promoter.admit(rawDepth(), capture(), intrinsics(calibrationVersion = "other"), registration(), extrinsics(), 1_100L)
-        assertEquals(UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.INTRINSICS_CALIBRATION_VERSION_MISMATCH), wrongVersion)
+        val wrongVersion = promoter.admit(rawDepth(), capture(), intrinsics(calibrationVersion = "other"), registration(), extrinsics(), calibration(), 1_100L)
+        assertEquals(UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_VERSION_MISMATCH), wrongVersion)
 
-        val wrongDepthFrame = promoter.admit(rawDepth(), capture(), intrinsics(), registration(depthCoordinateFrame = "rotated-depth"), extrinsics(), 1_100L)
+        val wrongDepthFrame = promoter.admit(rawDepth(), capture(), intrinsics(), registration(depthCoordinateFrame = "rotated-depth"), extrinsics(), calibration(), 1_100L)
         assertEquals(UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.REGISTRATION_DEPTH_FRAME_MISMATCH), wrongDepthFrame)
 
-        val unverifiedExtrinsics = promoter.admit(rawDepth(), capture(), intrinsics(), registration(), extrinsics(independentlyVerified = false), 1_100L)
+        val unverifiedExtrinsics = promoter.admit(rawDepth(), capture(), intrinsics(), registration(), extrinsics(independentlyVerified = false), calibration(), 1_100L)
         assertEquals(UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.EXTRINSICS_NOT_INDEPENDENTLY_VERIFIED), unverifiedExtrinsics)
+    }
+
+    @Test
+    fun unavailableOrMismatchedIndependentCalibrationFailsBeforeProjection() {
+        val unavailable = promoter.admit(
+            rawDepth(), capture(), intrinsics(), registration(), extrinsics(),
+            calibration(independentReviewApproved = false), 1_100L
+        )
+        assertEquals(
+            UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_EVIDENCE_UNAVAILABLE),
+            unavailable
+        )
+
+        val wrongBody = promoter.admit(
+            rawDepth(), capture(), intrinsics(), registration(), extrinsics(),
+            calibration(bodyFrame = "other-body"), 1_100L
+        )
+        assertEquals(
+            UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_BODY_FRAME_MISMATCH),
+            wrongBody
+        )
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -117,5 +140,30 @@ class UstrfMetricGeometryReceiptTest {
         validUntilNs = 1_500L,
         confidence = .99f,
         independentlyVerified = independentlyVerified
+    )
+
+    private fun calibration(
+        bodyFrame: String = "body-v2",
+        independentReviewApproved: Boolean = true
+    ): UstrfCalibrationEvidenceAdmission = UstrfIndependentCalibrationEvidenceVerifier().admit(
+        UstrfCalibrationTrialEvidence(
+            calibrationId = "mount-cal-v1",
+            cameraFrame = "camera-v2",
+            bodyFrame = bodyFrame,
+            cameraCalibrationVersion = "camera-cal-v2",
+            sourceArtifactSha256 = "a".repeat(64),
+            collectorId = "collector",
+            reviewerId = "reviewer",
+            independentReviewApproved = independentReviewApproved,
+            sampleCount = 30,
+            poseCoverageBins = 5,
+            intrinsicsP95ReprojectionPx = 1f,
+            depthRegistrationP95ErrorM = .02f,
+            mountTranslationRepeatabilityM = .005f,
+            mountRotationRepeatabilityDeg = .5f,
+            collectedAtNs = 800L,
+            validUntilNs = 1_800L
+        ),
+        decisionAtNs = 1_100L
     )
 }

@@ -33,7 +33,8 @@
 - 合成与 SANPO-Synthetic 回放：`acquire_sanpo_synthetic_replay.py`、`audit_sanpo_synthetic_replay.py`、`audit_sanpo_synthetic_metric_replay.py`、`generate_ustrf_synthetic_temporal_geometry_benchmark.py`、`generate_ustrf_synthetic_dynamic_ttc_benchmark.py`、`generate_ustrf_synthetic_corridor_safety_benchmark.py`
 - 公开几何/动态来源审计：`audit_tartanair_slice.py`、`estimate_tartanair_ground_plane.py`、`audit_tartanair_temporal_reprojection.py`、`audit_carla_ped_rgbd_slice.py`、`audit_bonn_rgbd_dynamic_source.py`、`audit_bonn_rgbd_dynamic_reprojection.py`、`audit_vkitti2_dynamic_tracks.py`、`audit_argoverse_av1_timestamped_ttc.py`
 - REveL 来源与 detector 诊断：`audit_revel_dynamic_rgb_labels.py`、`audit_revel_dynamic_bag_inventory.py`、`audit_revel_dynamic_vicon_trajectories.py`、`audit_revel_rgb_vicon_reprojection.py`、`benchmark_revel_yolo_person_detector.py`、`run_guarded_revel_yolo_smoke.ps1`、`analyze_revel_detector_failures.py`、`compare_revel_detector_sensitivity.py`、`compare_revel_detector_tiling.py`、`align_revel_detector_failures_with_vicon.py`
-- 汇总门禁：`report_ustrf_sc_research_benchmark.py`；对应 `test_*.py` 与实现同名配对。
+- 路线事件与设备硬门：`validate_sanpo_counterfactual_episodes.py` 在 route-conditioned 配置下额外验证 capture clock、非未来 route trace、criticality 与 hashed adjudication；`validate_ustrf_sc_device_metric_geometry.py` 验证独立标定、稳定 pose、source-aligned depth、body-local ground、完整路线事件真值和同机性能收据。
+- 汇总门禁：`report_ustrf_sc_research_benchmark.py`；默认继续关闭 device gate，只有原始设备 evidence bundle 经上述 validator 完整通过才可标为 `device-geometry-shadow-only`。对应 `test_*.py` 与实现同名配对。
 
 这些脚本只产出隔离研究证据；公开来源的 source-native 距离、轨迹或 TTC proxy 不能替代 body-local assistive event truth，也不授权默认 App 或模型替换。GPU 调度按 [USTRF-SC 窗口交接](../docs/research/ustrf-sc/USTRF_SC_WINDOW_HANDOFF_2026-07-20.md) 的风险分级边界执行。
 

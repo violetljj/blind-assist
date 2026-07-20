@@ -100,6 +100,12 @@ data class UstrfCameraBodyFullExtrinsicsReceipt(
 }
 
 enum class UstrfMetricGeometryAdmissionFailure {
+    CALIBRATION_EVIDENCE_UNAVAILABLE,
+    CALIBRATION_EVIDENCE_STALE,
+    CALIBRATION_CAMERA_FRAME_MISMATCH,
+    CALIBRATION_BODY_FRAME_MISMATCH,
+    CALIBRATION_VERSION_MISMATCH,
+    CALIBRATION_ID_MISMATCH,
     SOURCE_FRAME_MISMATCH,
     RAW_DEPTH_TIMESTAMP_MISMATCH,
     CONFIDENCE_TIMESTAMP_MISMATCH,
@@ -127,11 +133,14 @@ sealed interface UstrfMetricGeometryProjectionAdmission {
      * The inputs are eligible for a future pixel-to-body projection Adapter only. No scene labels,
      * ground plane, obstacle, drop, traversability, or [UstrfGeometryPacket] is created here.
      */
-    data class Available(
+    @ConsistentCopyVisibility
+    data class Available internal constructor(
         val sourceFrame: UstrfFrameStamp,
         val depthCoordinateFrame: String,
         val cameraFrame: String,
         val bodyFrame: String,
+        val calibrationId: String,
+        val calibrationSourceArtifactSha256: String,
         val registrationTransformId: String,
         val validUntilNs: Long
     ) : UstrfMetricGeometryProjectionAdmission
@@ -161,8 +170,19 @@ class UstrfMetricGeometryReceiptPromoter(
         intrinsics: UstrfCameraIntrinsicsReceipt,
         registration: UstrfDepthCameraRegistrationReceipt,
         extrinsics: UstrfCameraBodyFullExtrinsicsReceipt,
+        calibration: UstrfCalibrationEvidenceAdmission,
         decisionAtNs: Long
     ): UstrfMetricGeometryProjectionAdmission {
+        val admittedCalibration = calibration as? UstrfCalibrationEvidenceAdmission.Available
+            ?: return unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_EVIDENCE_UNAVAILABLE)
+        if (decisionAtNs > admittedCalibration.validUntilNs) return unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_EVIDENCE_STALE)
+        if (admittedCalibration.cameraFrame != intrinsics.cameraFrame) return unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_CAMERA_FRAME_MISMATCH)
+        if (admittedCalibration.bodyFrame != extrinsics.bodyFrame) return unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_BODY_FRAME_MISMATCH)
+        if (admittedCalibration.cameraCalibrationVersion != intrinsics.calibrationVersion ||
+            admittedCalibration.cameraCalibrationVersion != registration.calibrationVersion
+        ) return unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_VERSION_MISMATCH)
+        if (admittedCalibration.calibrationId != extrinsics.calibrationId) return unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_ID_MISMATCH)
+
         val frame = capture.frame
         if (rawDepth.sourceFrame != frame) return unavailable(UstrfMetricGeometryAdmissionFailure.SOURCE_FRAME_MISMATCH)
         if (rawDepth.depthTimestampNs != frame.capturedAtNs) return unavailable(UstrfMetricGeometryAdmissionFailure.RAW_DEPTH_TIMESTAMP_MISMATCH)
@@ -193,8 +213,16 @@ class UstrfMetricGeometryReceiptPromoter(
             depthCoordinateFrame = rawDepth.depthCoordinateFrame,
             cameraFrame = intrinsics.cameraFrame,
             bodyFrame = extrinsics.bodyFrame,
+            calibrationId = admittedCalibration.calibrationId,
+            calibrationSourceArtifactSha256 = admittedCalibration.sourceArtifactSha256,
             registrationTransformId = registration.transformId,
-            validUntilNs = minOf(rawDepth.validUntilNs, intrinsics.validUntilNs, registration.validUntilNs, extrinsics.validUntilNs)
+            validUntilNs = minOf(
+                rawDepth.validUntilNs,
+                intrinsics.validUntilNs,
+                registration.validUntilNs,
+                extrinsics.validUntilNs,
+                admittedCalibration.validUntilNs
+            )
         )
     }
 

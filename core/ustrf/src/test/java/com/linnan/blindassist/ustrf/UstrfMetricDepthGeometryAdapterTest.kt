@@ -69,6 +69,8 @@ class UstrfMetricDepthGeometryAdapterTest {
         depthCoordinateFrame = "registered-depth",
         cameraFrame = "camera",
         bodyFrame = "body",
+        calibrationId = "mount-v1",
+        calibrationSourceArtifactSha256 = "a".repeat(64),
         registrationTransformId = "depth-to-camera-v1",
         validUntilNs = 2_000L
     )

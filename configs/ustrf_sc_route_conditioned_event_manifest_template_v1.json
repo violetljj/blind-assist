@@ -1,0 +1,16 @@
+{
+  "schema": "blindassist_sanpo_counterfactual_episode_manifest_v1",
+  "collection_status": "in_review",
+  "benchmark_only": true,
+  "contract_id": "ustrf_sc_route_conditioned_event_truth_v1",
+  "production_model_replacement_authorized": false,
+  "notes": [
+    "Template only. The current project has captured zero eligible route-conditioned episodes.",
+    "Copy this file under artifacts.local/evidence before collection; never write private raw media into the repository.",
+    "Each episode must bind hashed video, capture-clock, explicit-route, dual-human-review, adjudication, license, privacy, and calibration identifiers.",
+    "Public, synthetic, silver, detector, Vicon marker, future-route oracle, or model output cannot fill source_receipts or episodes in this manifest.",
+    "Use collection_status=complete only after the full 6-session x 5-scene x 2-pair matrix passes the validator."
+  ],
+  "source_receipts": [],
+  "episodes": []
+}

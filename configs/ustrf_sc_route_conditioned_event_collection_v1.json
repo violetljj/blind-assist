@@ -1,0 +1,219 @@
+{
+  "schema": "blindassist_sanpo_counterfactual_episode_collection_v1",
+  "contract_id": "ustrf_sc_route_conditioned_event_truth_v1",
+  "version": 1,
+  "status": "collection_protocol_only_not_captured",
+  "benchmark_only": true,
+  "research_mainline": "route_conditioned_object_agnostic_risk_field",
+  "production_model_replacement_authorized": false,
+  "episode_duration_policy": {
+    "minimum_duration_ms": 10000,
+    "maximum_duration_ms": 20000
+  },
+  "design": {
+    "session_count": 6,
+    "scene_count": 5,
+    "matched_pairs_per_session_scene": 2,
+    "positive_episodes_per_session_scene": 2,
+    "negative_episodes_per_session_scene": 2,
+    "expected_matched_pair_count": 60,
+    "expected_episode_count": 120,
+    "pilot_before_full_matrix": {
+      "session_count": 1,
+      "matched_pairs_per_scene": 1,
+      "episode_count": 10,
+      "authority": "collection-pipeline-audit-only"
+    }
+  },
+  "sessions": [
+    {"session_id": "route_session_01", "collection_status": "not_collected"},
+    {"session_id": "route_session_02", "collection_status": "not_collected"},
+    {"session_id": "route_session_03", "collection_status": "not_collected"},
+    {"session_id": "route_session_04", "collection_status": "not_collected"},
+    {"session_id": "route_session_05", "collection_status": "not_collected"},
+    {"session_id": "route_session_06", "collection_status": "not_collected"}
+  ],
+  "scenes": [
+    {
+      "scene_id": "parallel_boundary",
+      "positive_contract": "a boundary enters or crosses the selected user route",
+      "matched_negative_contract": "the same boundary remains outside the selected user route"
+    },
+    {
+      "scene_id": "step_curb",
+      "positive_contract": "a step or curb intersects the selected user route during approach",
+      "matched_negative_contract": "the same step or curb is outside, already passed, or receding from the selected route"
+    },
+    {
+      "scene_id": "route_obstacle",
+      "positive_contract": "an obstacle intrudes into the selected user route",
+      "matched_negative_contract": "the same-type obstacle remains outside the selected user route"
+    },
+    {
+      "scene_id": "lateral_pedestrian_or_ebike",
+      "positive_contract": "a lateral actor cuts into the selected user route",
+      "matched_negative_contract": "a matched lateral actor passes without entering the selected user route"
+    },
+    {
+      "scene_id": "unknown_low_obstacle",
+      "positive_contract": "a low or non-COCO obstacle intrudes into the selected user route",
+      "matched_negative_contract": "a matched low or non-COCO obstacle remains outside the selected user route"
+    }
+  ],
+  "route_conditioning_policy": {
+    "required": true,
+    "route_is_an_external_condition_not_a_risk_model_prediction": true,
+    "runtime_eligible_provider_required": true,
+    "future_video_route_forbidden": true,
+    "current_camera_projection_required": true,
+    "minimum_confidence": 0.70,
+    "minimum_valid_sample_fraction": 0.95,
+    "maximum_valid_sample_gap_ms": 500,
+    "endpoint_coverage_tolerance_ms": 500,
+    "capture_clock_receipt_schema": "blindassist_capture_clock_receipt_v1",
+    "manifest_must_match_hashed_adjudication": true,
+    "invalid_route_behavior": "route_unknown_or_invalid_context_attention_only",
+    "fixed_center_corridor_fallback_as_user_route_forbidden": true
+  },
+  "matrix_contract": {
+    "every_session_must_cover_every_scene": true,
+    "matched_pair_members_must_share_session": true,
+    "matched_pair_members_must_share_scene": true,
+    "matched_pair_members_must_share_route_intent_id": true,
+    "matched_pair_members_must_share_provider_id": true,
+    "matched_pair_members_must_share_capture_context": [
+      "location",
+      "lighting",
+      "device",
+      "mount_revision",
+      "camera_configuration",
+      "camera_frame",
+      "calibration_id",
+      "object_category",
+      "route_choice"
+    ],
+    "intended_counterfactual_dimensions": [
+      "selected_route_intrusion",
+      "approach_or_recede",
+      "path_cut_in",
+      "passed_or_not_passed"
+    ]
+  },
+  "episode_record_schema": {
+    "required_fields": [
+      "episode_id",
+      "session_id",
+      "scene_id",
+      "matched_pair_id",
+      "pair_role",
+      "risk_event_id",
+      "expected_should_alert",
+      "expected_critical",
+      "criticality_reason",
+      "video_path",
+      "video_sha256",
+      "source_receipt_id",
+      "capture_clock_receipt_path",
+      "capture_clock_receipt_sha256",
+      "route_intent_path",
+      "route_intent_sha256",
+      "annotation_reviewer_ids",
+      "annotation_evidence_path",
+      "annotation_evidence_sha256",
+      "duration_ms",
+      "risk_profile",
+      "lifecycle_intervals_ms"
+    ],
+    "pair_role_allowed": ["positive", "matched_negative"],
+    "positive_event_anchors_ms": [
+      "first_visible_ms",
+      "alertable_start_ms",
+      "passed_or_cleared_ms"
+    ],
+    "positive_anchor_order": "first_visible_ms <= alertable_start_ms < passed_or_cleared_ms",
+    "negative_anchor_policy": "all positive event anchors must be null",
+    "negative_reason_required": true,
+    "event_anchor_adjudication_tolerance_ms": 500
+  },
+  "annotation_evidence_schema": {
+    "schema": "blindassist_sanpo_counterfactual_annotation_evidence_v1",
+    "minimum_independent_reviewers_per_episode": 2,
+    "reviewer_id_must_match_episode": true,
+    "positive_anchor_agreement_tolerance_ms": 500,
+    "hashed_adjudication_required": true,
+    "criticality_must_be_human_reviewed": true,
+    "model_output_is_not_annotation_evidence": true
+  },
+  "risk_profile_and_lifecycle_schema": {
+    "primary_hazard_type": "must equal scene_id",
+    "positive": {
+      "corridor_relation": "enters_or_blocks",
+      "lifecycle": "approach_alertable_clear",
+      "required_intervals_ms": ["approach", "alertable", "post_event"]
+    },
+    "matched_negative": {
+      "corridor_relation": "outside_or_nonblocking",
+      "lifecycle": "no_alert",
+      "required_intervals_ms": ["non_alert"]
+    },
+    "pixel_supervision_role": "auxiliary_only"
+  },
+  "critical_event_policy": {
+    "definition": "a missed intervention during the adjudicated alertable interval could plausibly cause contact, fall, forced stop, or unavoidable route abandonment",
+    "human_review_required": true,
+    "detector_distance_band_is_not_critical_truth": true
+  },
+  "source_receipt_schema": {
+    "allowed_license_status": ["owned_and_consented", "licensed_for_research"],
+    "required_privacy_review_status": "green",
+    "hash_license_and_privacy_evidence": true,
+    "local_evidence_required": true,
+    "reject_on_missing_or_mismatched_hash": true
+  },
+  "split_policy": {
+    "strategy": "leave_one_session_out",
+    "fold_count": 6,
+    "frame_level_random_split_forbidden": true,
+    "matched_pair_split_forbidden": true,
+    "route_trace_cross_fold_reuse_forbidden": true,
+    "holdout_forbidden_uses": [
+      "training",
+      "calibration",
+      "threshold_selection",
+      "active_sample_selection",
+      "early_stopping"
+    ]
+  },
+  "evaluation_contract": {
+    "primary_metrics": [
+      "event_recall",
+      "critical_miss_rate",
+      "false_alerts_per_minute",
+      "delivered_alerts_per_event",
+      "delivered_repeated_alert_rate",
+      "post_event_clearance_rate",
+      "clearance_latency_ms",
+      "event_regeneration_rate"
+    ],
+    "report_each_fold": true,
+    "report_worst_session": true,
+    "report_worst_scene": true,
+    "report_matched_negative_breakdown": true,
+    "success_thresholds_each_fold": {
+      "minimum_event_recall": 0.90,
+      "maximum_critical_miss_rate": 0.05,
+      "maximum_false_alerts_per_minute": 0.50,
+      "maximum_delivered_repeated_alert_rate": 0.10,
+      "minimum_post_event_clearance_rate": 0.90
+    }
+  },
+  "authority": {
+    "pilot_training": false,
+    "full_matrix_training": false,
+    "teacher_upper_bound_evaluation_after_truth_gate": true,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}

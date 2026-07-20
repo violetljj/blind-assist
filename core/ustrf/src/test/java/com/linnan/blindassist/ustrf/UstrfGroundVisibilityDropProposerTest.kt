@@ -19,7 +19,9 @@ class UstrfGroundVisibilityDropProposerTest {
     }
 
     private fun frame() = UstrfFrameStamp(1L, 1_000L, "camera")
-    private fun admission() = UstrfMetricGeometryProjectionAdmission.Available(frame(), "depth", "camera", "body", "reg", 2_000L)
+    private fun admission() = UstrfMetricGeometryProjectionAdmission.Available(
+        frame(), "depth", "camera", "body", "fixture-calibration", "a".repeat(64), "reg", 2_000L
+    )
     private fun intrinsics() = UstrfCameraIntrinsicsReceipt("camera", "v1", 3, 3, 1f, 1f, 1f, 1f, 0L, 2_000L, 1f, true)
     private fun extrinsics() = UstrfCameraBodyFullExtrinsicsReceipt("camera", "body", UstrfVector3(0f, 1.5f, 0f), floatArrayOf(0f,0f,0f,1f), "m", 0L, 2_000L, 1f, true)
     private fun ground() = UstrfVerifiedGroundPlaneReceipt(frame(), "body", UstrfVector3(0f,1f,0f), 0f, 1f, true, 2_000L)

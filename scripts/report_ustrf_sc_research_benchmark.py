@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+import importlib.util
 import json
 from pathlib import Path
 from typing import Any
@@ -30,6 +31,34 @@ def _gate(name: str, passed: bool, detail: str, authority: str) -> dict[str, Any
     return {"name": name, "passed": passed, "detail": detail, "authority": authority}
 
 
+def _device_metric_geometry_gate(path: Path | None) -> tuple[bool, str]:
+    if path is None:
+        return False, (
+            "blocked: no independently verified device depth registration, full camera-body "
+            "extrinsics, body-local ground truth, route-conditioned human event truth, or "
+            "target-device latency/thermal receipt"
+        )
+    validator_path = Path(__file__).with_name("validate_ustrf_sc_device_metric_geometry.py")
+    spec = importlib.util.spec_from_file_location("ustrf_device_metric_geometry_validator", validator_path)
+    if spec is None or spec.loader is None:
+        return False, f"blocked: cannot load device evidence validator {validator_path}"
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    try:
+        report = module.validate(_read(path), root=path.parent, require_complete=True)
+    except (OSError, KeyError, TypeError, ValueError) as error:
+        return False, f"blocked: device evidence bundle rejected: {error}"
+    passed = (
+        report.get("device_metric_geometry_admitted") is True
+        and report.get("geometry_shadow_authorized") is True
+        and report.get("production_authority") is False
+    )
+    return passed, (
+        f"device={report.get('device_id')}; mount={report.get('mount_revision')}; "
+        f"calibration={report.get('calibration_id')}; geometry shadow only; production authority=false"
+    )
+
+
 def build(
     geometry_audit: Path,
     dynamic_audit: Path,
@@ -47,6 +76,7 @@ def build(
     revel_detector_benchmark: Path | None = None,
     revel_detector_guard: Path | None = None,
     revel_detector_vicon_alignment: Path | None = None,
+    device_metric_geometry_evidence: Path | None = None,
 ) -> dict[str, Any]:
     geometry = _read(geometry_audit)
     dynamic = _read(dynamic_audit)
@@ -368,11 +398,12 @@ def build(
             for name, item in sorted(classes.items())
         ) + "; calibrated source RGB/Vicon consistency only"
         gates.append(_gate("public_dynamic_rgb_vicon_cross_modal_alignment", reprojection_passed, detail, "source-data-screening-only"))
+    device_geometry_passed, device_geometry_detail = _device_metric_geometry_gate(device_metric_geometry_evidence)
     gates.append(_gate(
         "device_metric_geometry_admission",
-        False,
-        "blocked: no independently verified device depth registration, full camera-body extrinsics, body-local ground truth, dynamic event truth, or target-device latency/thermal receipt",
-        "not-authorized",
+        device_geometry_passed,
+        device_geometry_detail,
+        "device-geometry-shadow-only" if device_geometry_passed else "not-authorized",
     ))
     return {
         "format": "blindassist_ustrf_sc_research_benchmark_v3",
@@ -381,6 +412,7 @@ def build(
         "gates": gates,
         "input_receipts": {
             "geometry": str(geometry_audit), "dynamic": str(dynamic_audit), "source_native_temporal": [str(path) for path in temporal_audits], "source_native_dynamic_tracks": str(vkitti_track_audit) if vkitti_track_audit else None, "source_native_timestamped_ttc": str(argoverse_ttc_audit) if argoverse_ttc_audit else None, "source_native_rgbd_pose": str(carla_rgbd_audit) if carla_rgbd_audit else None, "analytic_body_capsule_corridor": str(corridor_safety_audit) if corridor_safety_audit else None, "analytic_body_capsule_corridor_replay": str(corridor_safety_replay) if corridor_safety_replay else None, "public_dynamic_rgbd_pose": str(bonn_rgbd_audit) if bonn_rgbd_audit else None, "public_dynamic_rgbd_reprojection": str(bonn_reprojection_audit) if bonn_reprojection_audit else None, "public_dynamic_2d_person_labels": str(revel_rgb_labels_audit) if revel_rgb_labels_audit else None, "public_dynamic_2d_person_detector": str(revel_detector_benchmark) if revel_detector_benchmark else None, "public_dynamic_2d_person_detector_guard": str(revel_detector_guard) if revel_detector_guard else None, "public_detector_source_vicon_range_stratification": str(revel_detector_vicon_alignment) if revel_detector_vicon_alignment else None, "public_detector_source_vicon_radial_motion_stratification": str(revel_detector_vicon_alignment) if detector_vicon and detector_vicon.get("format") == "blindassist_revel_detector_vicon_failure_alignment_v2" else None, "public_dynamic_metric_person_sensor_trajectories": str(revel_vicon_trajectory_audit) if revel_vicon_trajectory_audit else None, "public_dynamic_rgb_vicon_cross_modal_alignment": str(revel_rgb_vicon_reprojection_audit) if revel_rgb_vicon_reprojection_audit else None,
+            "device_metric_geometry_evidence": str(device_metric_geometry_evidence) if device_metric_geometry_evidence else None,
         },
         "next_required_evidence": [
             "tracked continuous RGB-D/VIO sequences with dynamic trajectory truth stratified by TTC",
@@ -429,9 +461,10 @@ def main() -> int:
     parser.add_argument("--revel-detector-benchmark", type=Path)
     parser.add_argument("--revel-detector-guard", type=Path)
     parser.add_argument("--revel-detector-vicon-alignment", type=Path)
+    parser.add_argument("--device-metric-geometry-evidence", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    report = build(args.geometry_audit, args.dynamic_audit, args.temporal_audit, args.vkitti_track_audit, args.argoverse_ttc_audit, args.carla_rgbd_audit, args.corridor_safety_audit, args.corridor_safety_replay, args.bonn_rgbd_audit, args.bonn_reprojection_audit, args.revel_rgb_labels_audit, args.revel_vicon_trajectory_audit, args.revel_rgb_vicon_reprojection_audit, args.revel_detector_benchmark, args.revel_detector_guard, args.revel_detector_vicon_alignment)
+    report = build(args.geometry_audit, args.dynamic_audit, args.temporal_audit, args.vkitti_track_audit, args.argoverse_ttc_audit, args.carla_rgbd_audit, args.corridor_safety_audit, args.corridor_safety_replay, args.bonn_rgbd_audit, args.bonn_reprojection_audit, args.revel_rgb_labels_audit, args.revel_vicon_trajectory_audit, args.revel_rgb_vicon_reprojection_audit, args.revel_detector_benchmark, args.revel_detector_guard, args.revel_detector_vicon_alignment, args.device_metric_geometry_evidence)
     write(report, args.output)
     print(json.dumps({"decision": report["decision"], "gate_count": len(report["gates"]), "passing_gate_count": sum(gate["passed"] for gate in report["gates"])}))
     return 0

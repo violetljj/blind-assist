@@ -17,6 +17,15 @@
 | 任务与目标 | task/goal proposal 合同 | event binding、TTL/low confidence 回归 | 用户目标输入、route provider、人工验收 | 不生成 corridor/action |
 | 反馈与日志 | `UstrfStructuredSafetyOutput`：CONTINUE/ADJUST_LEFT/ADJUST_RIGHT/SLOW_DOWN/STOP/SCAN，包含 heading、speed scale、risk、confidence、走廊宽度、TTL、reason；由 `UstrfSafetyDecision` 单向派生并写入 session trace digest v2 | JVM 映射、降级不放行、session/digest binding 回归 | 用户反馈、音频/震动策略及隐私评估；设备左右坐标约定与走廊实体宽度的独立核验 | 仅 shadow/audit artifact，不驱动用户指令 |
 
+## 2026-07-20 route-conditioned 主线补充
+
+- 主线 seam：`UstrfRouteConditionedRiskInteractor` 只消费同 frame/coordinate system 的显式 route receipt 与 object-agnostic `UstrfRiskField`，输出 route intrusion evidence；不读取类别、box 或 detector AP，不输出用户动作。任何 invalid/stale/future/risk-model-inferred route 都拒绝且不回退中心走廊。
+- 事件硬门：`configs/ustrf_sc_route_conditioned_event_collection_v1.json` 冻结 120 episode / 60 matched pair，要求 capture-clock receipt、显式路线 sidecar、正负 episode 共用路线条件、双人独立复核和哈希绑定 adjudication。当前只有空模板，eligible truth 为 0；pilot 只审计采集链。
+- 几何硬门：`scripts/validate_ustrf_sc_device_metric_geometry.py` 要求五类同设备、哈希绑定证据；研究总报告可直接消费该 raw bundle。校准 verifier 的 admission 已与 metric-geometry promoter 原子绑定。当前无 bundle，`device_metric_geometry_admission=false`；未来单独通过也只允许 geometry shadow。
+- detector 边界：crop/tiling r1 已冻结。后续 detector 变量只能是独立的 crop-view FP 抑制实验（如跨 view 一致性门），不得继续扫描 r1 的 NMS、overlap 或 score。
+
+因此当前授权仍是：研究主线已切换，但真实事件、设备几何、正式 App 与生产反馈均未放行。
+
 ## 已通过的验证层级
 
 1. `:core:ustrf:test`：纯 Kotlin 的安全、校准、慢环和 digest 合同。

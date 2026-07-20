@@ -55,7 +55,8 @@ sealed interface UstrfCalibrationEvidenceAdmission {
      * This approves a particular evidence manifest for experimental calibration use. It does not
      * authorize safety geometry, production feedback, or any new user-facing motion command.
      */
-    data class Available(
+    @ConsistentCopyVisibility
+    data class Available internal constructor(
         val calibrationId: String,
         val cameraFrame: String,
         val bodyFrame: String,

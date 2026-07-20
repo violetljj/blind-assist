@@ -122,7 +122,14 @@ class UstrfSyntheticTemporalGeometryReplay {
     }
 
     private fun admission(frame: UstrfFrameStamp) = UstrfMetricGeometryProjectionAdmission.Available(
-        frame, DEPTH_FRAME, CAMERA_FRAME, BODY_FRAME, TRANSFORM_ID, frame.capturedAtNs + VALIDITY_NS
+        frame,
+        DEPTH_FRAME,
+        CAMERA_FRAME,
+        BODY_FRAME,
+        "synthetic-mount-v1",
+        "a".repeat(64),
+        TRANSFORM_ID,
+        frame.capturedAtNs + VALIDITY_NS
     )
 
     private fun intrinsics() = UstrfCameraIntrinsicsReceipt(

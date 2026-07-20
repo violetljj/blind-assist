@@ -13,6 +13,7 @@
 
 ## 协议与专项记录
 
+- [路线条件化无类别风险场主线](../../ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：当前优先研究路线；typed route-risk seam 已建立，真实事件与设备米制几何硬门仍阻塞，未授权训练或接入 App。
 - [REveL YOLO11n 8/32 帧 crop/tiling 配对实验](USTRF_SC_REVEL_CROP_TILING_PAIRED_2026-07-20.md)：8 帧 canary 恢复 4/8 small miss，但 FP 从 4 增至 14，按预注册停止并跳过 32 帧。
 - [设备阶段策略](USTRF_SC_DEVICE_PHASE_POLICY.md)
 - [设备几何校准与证据协议](USTRF_SC_CALIBRATION_PROTOCOL.md)

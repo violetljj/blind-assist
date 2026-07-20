@@ -1,0 +1,18 @@
+{
+  "schema": "blindassist_ustrf_sc_device_metric_geometry_evidence_v1",
+  "status": "not_collected",
+  "production_authority": false,
+  "notes": [
+    "Template only. Current SM-S9280 and future-glasses device_metric_geometry_admission remain false.",
+    "Copy under artifacts.local/evidence and replace every REQUIRED_* value with measured, independently reviewed evidence.",
+    "A complete passing bundle authorizes isolated geometry shadow only; it does not authorize user-facing navigation or production replacement.",
+    "Changing device, lens, resolution, mount, body frame, camera configuration, calibration digest, or TTL invalidates the bundle."
+  ],
+  "device_identity": {},
+  "evidence_artifacts": {},
+  "calibration": {},
+  "frame_clock": {},
+  "body_local_ground_truth": {},
+  "route_event_truth": {},
+  "target_device_benchmark": {}
+}

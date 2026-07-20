@@ -76,6 +76,16 @@ USTRF-SC 已从方案图推进到可测试的 pure-Kotlin 安全合同、确定�
 4. 更高价值的主线仍是 route-conditioned、object-agnostic risk field 与事件级指标，而不是只追 global mIoU/AP。
 5. 真机人工采集恢复前，不打开 device metric geometry gate；未来眼镜另建整套证据链。
 
+### 6.1 主线接管落地（2026-07-20）
+
+- 研究主线已切换为 [route-conditioned、object-agnostic risk field](../../ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)。新增 `UstrfRouteConditionedRiskInteractor` 直接计算当前 risk field 与当前显式路线的侵入关系；它不依赖 detector 类别、box 或 track ID，也不产出 alert/action。route 无效、过期、来自未来、由 risk model 自推或仅是 offline teacher 时一律 fail closed，并稳定输出 `route_unknown_or_invalid`，不会回退到固定中心走廊。
+- 真实事件真值合同已冻结为 `configs/ustrf_sc_route_conditioned_event_collection_v1.json`：正式门为 6 session × 5 scene × 正/负匹配对，共 120 episode / 60 pair。`configs/ustrf_sc_route_conditioned_event_manifest_template_v1.json` 只是空模板；当前 eligible truth 仍为 0。10-episode pilot 只允许审计采集、哈希、时钟、路线和双人复核链，不能用于效果结论或 production gate。
+- 设备米制几何硬门由 `scripts/validate_ustrf_sc_device_metric_geometry.py` 执行，要求同一目标设备上的独立标定、current-frame metric depth 登记、稳定 body pose、body-local ground truth、完整 route-event truth 和同机时延/热证据。`UstrfMetricGeometryReceiptPromoter` 现在必须原子消费已验证 calibration admission，且绑定 calibration ID/source SHA；自报 `independentlyVerified=true` 不再足够。当前仍无真实 evidence bundle，所以 gate 保持 false；即使未来通过，也只授权 geometry shadow，不自动进入 App 或生产。
+- Crop/tiling r1 保持冻结，不补跑 32 帧，不扫描 NMS、overlap 或 score。detector 若继续，只能另建带独立 receipt 的 crop-view FP 抑制变量（首选跨 view 一致性准入）和新的 bounded canary；不得把它并入本主线或当作硬门替代品。
+- 本轮只完成合同、验证器、空模板和 pure-Kotlin 研究 seam，没有采集真实事件、没有运行 ADB/GPU、没有修改正式 App 或默认 YOLO。
+
+当前权限结论：`route-conditioned-mainline-active / real-event-truth-blocked / device-metric-geometry-blocked / production-unchanged`。
+
 ## 7. GPU 和系统安全边界
 
 - 驱动 610.62 仍在用；备份在 `artifacts.local/crash-diagnosis/2026-07-20/driver-backup-610.62/`。
