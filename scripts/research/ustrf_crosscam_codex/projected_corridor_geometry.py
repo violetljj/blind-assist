@@ -84,9 +84,33 @@ def classify_bottom_center(
         raise ValueError("detection box is invalid")
     if not math.isfinite(uncertainty_frame_ratio) or not 0.0 <= uncertainty_frame_ratio <= 0.25:
         raise ValueError("projection uncertainty ratio is invalid")
-    polygon_norm = validate_polygon(polygon_xy_norm)
-    polygon_px = [(x * frame_width, y * frame_height) for x, y in polygon_norm]
     footpoint = ((left + right) / 2.0, bottom)
+    return classify_contact_point(
+        footpoint,
+        frame_width=frame_width,
+        frame_height=frame_height,
+        polygon_xy_norm=polygon_xy_norm,
+        uncertainty_frame_ratio=uncertainty_frame_ratio,
+    )
+
+
+def classify_contact_point(
+    contact_xy_px: Sequence[float], *, frame_width: int, frame_height: int,
+    polygon_xy_norm: Sequence[Sequence[float]], uncertainty_frame_ratio: float,
+) -> Classification:
+    """Classify a frozen target ground-contact point independently of a detector bbox."""
+    if frame_width <= 0 or frame_height <= 0:
+        raise ValueError("frame dimensions must be positive")
+    if len(contact_xy_px) != 2:
+        raise ValueError("contact point must contain xy")
+    x, y = map(float, contact_xy_px)
+    if not all(math.isfinite(value) for value in (x, y)) or not (0 <= x <= frame_width and 0 <= y <= frame_height):
+        raise ValueError("contact point is invalid")
+    if not math.isfinite(uncertainty_frame_ratio) or not 0.0 <= uncertainty_frame_ratio <= 0.25:
+        raise ValueError("projection uncertainty ratio is invalid")
+    polygon_norm = validate_polygon(polygon_xy_norm)
+    polygon_px = [(px * frame_width, py * frame_height) for px, py in polygon_norm]
+    footpoint = (x, y)
     inside = point_in_polygon(footpoint, polygon_px)
     distance = min(
         point_segment_distance(footpoint, polygon_px[index], polygon_px[(index + 1) % len(polygon_px)])

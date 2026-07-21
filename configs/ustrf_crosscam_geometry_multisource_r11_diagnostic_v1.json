@@ -1,0 +1,97 @@
+{
+  "schema": "blindassist_ustrf_crosscam_r11_diagnostic_protocol_v1",
+  "contract_id": "ustrf_crosscam_target_attribution_r11_v1",
+  "diagnostic_set_role": "seen_diagnostic_not_held_out",
+  "purpose": "Diagnose target geometry, detector coverage/miss, and risk attribution without training or threshold search.",
+  "source_preregistration": {
+    "path": "configs/ustrf_crosscam_geometry_multisource_r1_v1.json",
+    "sha256": "a97697da30660f21c29145c36fad5b092ed20a4ca31b1c4c92e48b4be13a2c0b",
+    "role": "historical_source_and_window_binding_only_not_a_blind_gate"
+  },
+  "fixed_contracts": {
+    "uncertainty_frame_ratios": [0.01, 0.02, 0.03],
+    "oracle_input": "frozen_target_contact_plus_exact_frame_polygon",
+    "target_match_contract_id": "target_label_allowlist_max_iou_030_v1",
+    "event_metric_policy": "matched_target_only",
+    "cooccurrence_policy": "report_separately_never_substitute_for_target",
+    "projection_policy": "exact_per_frame_or_predeclared_stable_windows_no_nearest_fallback",
+    "attribution_order": [
+      "polygon_or_projection_contract",
+      "detector_class_unsupported_or_target_miss",
+      "risk_semantics_or_target_association"
+    ]
+  },
+  "frozen_evidence": {
+    "target_instance_ledger": "artifacts.local/evidence/ustrf-crosscam-codex/multisource-r11-diagnostic-v1/target_instance_ledger.json",
+    "target_instance_ledger_sha256": "c6800fe25d25942b95ccc1fd7f3a273402123cfc9b78904cf7e4e899caf38b4b",
+    "frame_projection_receipt": "artifacts.local/evidence/ustrf-crosscam-codex/multisource-r11-diagnostic-v1/frame_projection_receipt.json",
+    "frame_projection_receipt_sha256": "d92576001127c086860afbe17758f565e4eb94a90447f214e466ab2ff786770c"
+  },
+  "target_freeze_queue": [
+    {
+      "event_id": "japan_path_intrusion",
+      "target_instance_id": "japan_rail_red_white_cone_01",
+      "semantic_type": "traffic_cone",
+      "visual_identity_anchor": "single red-white cone beside the right rail; use its visible base contact",
+      "expected_route_relation": "inside",
+      "detector_label_allowlist": ["traffic cone"],
+      "freeze_status": "unique_target_bbox_contact_frozen"
+    },
+    {
+      "event_id": "edmonton_left_corridor_intrusion",
+      "target_instance_id": "edmonton_right_row_nearest_delineator_01",
+      "semantic_type": "temporary_delineator",
+      "visual_identity_anchor": "703.000s nearest orange-red flexible delineator with black base in the right/central row; stable window 702750-703500ms",
+      "expected_route_relation": "inside",
+      "detector_label_allowlist": ["traffic cone", "delineator"],
+      "freeze_status": "unique_target_bbox_contact_and_stable_window_projection_frozen"
+    },
+    {
+      "event_id": "london_center_marker_intrusion",
+      "target_instance_id": "london_center_flexible_marker_01",
+      "semantic_type": "flexible_delineator",
+      "visual_identity_anchor": "center-road flexible marker under the Chinatown gate approach",
+      "expected_route_relation": "inside",
+      "detector_label_allowlist": ["delineator", "bollard"],
+      "freeze_status": "unique_target_bbox_contact_frozen"
+    },
+    {
+      "event_id": "ulm_bilateral_delineators",
+      "target_instance_id": "ulm_left_opening_post_01",
+      "semantic_type": "delineator_post",
+      "visual_identity_anchor": "left red-white post beside the parked black car at the forward opening; never substitute the right post",
+      "expected_route_relation": "outside",
+      "detector_label_allowlist": ["delineator", "bollard"],
+      "freeze_status": "unique_target_bbox_contact_frozen"
+    },
+    {
+      "event_id": "jakarta_dense_boundary",
+      "target_instance_id": "jakarta_right_curve_near_cone_at_35s_01",
+      "semantic_type": "traffic_cone",
+      "visual_identity_anchor": "35.000s nearest large orange cone on the camera-right grey-asphalt/red-white-curve seam",
+      "expected_route_relation": "outside",
+      "detector_label_allowlist": ["traffic cone"],
+      "freeze_status": "unique_target_bbox_contact_frozen"
+    },
+    {
+      "event_id": "cape_town_wide_forecourt",
+      "target_instance_id": "cape_town_left_pickup_orange_white_cone_01",
+      "semantic_type": "traffic_cone",
+      "visual_identity_anchor": "175.750s single orange-white cone on red paving beside the black pickup at camera-left",
+      "expected_route_relation": "outside",
+      "detector_label_allowlist": ["bollard", "delineator"],
+      "freeze_status": "unique_target_bbox_contact_frozen"
+    }
+  ],
+  "hard_stops": {
+    "target_ledger_must_be_complete_before_oracle_or_android": true,
+    "edmonton_static_full_window_projection_forbidden": true,
+    "legacy_any_inside_detection_event_metric_forbidden": true,
+    "current_six_sources_may_be_final_held_out": false,
+    "training_authorized": false,
+    "threshold_fit": false,
+    "parameter_search": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

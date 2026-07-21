@@ -11,6 +11,9 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-cro
 E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex prepare_android_bbox_route_proxy.py --help
 E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex convert_android_bbox_route_candidate.py --help
 E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex audit_projected_corridor_geometry.py --help
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex evaluate_target_oracle_geometry.py --help
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex materialize_r11_android_input.py --help
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex evaluate_r11_attribution.py --help
 ```
 
 输入必须是有来源、许可和 SHA-256 收据的公开第一视角视频。准备器只向 Codex 教师暴露当前/过去图像、时间戳和预注册路线覆盖；隐藏代理标签、未来帧、深度、review、adjudication 或 blind 字段不得进入评审材料。
@@ -30,3 +33,5 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-cro
 ## 停止条件
 
 若跨来源最差值没有方向一致的 route-specific 增益，结果依赖未来帧泄漏、单一教师自评、单一相机假设或 `unknown` 膨胀，则停止 R0，不调阈值回救；改写数据/评审假设后另开一轮。
+
+R1.1 诊断另有硬停止：目标实例账本必须先冻结唯一实例、可见性、bbox 与接触点；投影必须逐帧精确覆盖，或来自预声明的稳定窗口。普通 person/car 只能计为共现，不能代替目标召回。当前六来源已解封，只能作为 `seen_diagnostic_not_held_out`；最终门必须换新来源。

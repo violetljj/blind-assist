@@ -1404,3 +1404,11 @@
 - 将跨相机 route 从隐式固定中心折线拆为 hash-bound projection receipt + 当前相机帧凸 polygon；新增 bbox bottom-center 地面接触代理、1%/2%/3% frame-width 投影误差和 inside/outside/uncertain 三态。invalid/unknown route fail closed，label 不参与 gate。
 - Pexels 同设备输出的 8 个 detection 在旧 gate 保留 1 个；R1 三档鲁棒结果为 inside 0、uncertain 1、outside 7。原道路车辆在 1% 下 outside、2%/3% 下 uncertain，不再作为确定路线内 HIGH 的几何依据。
 - 新 Kotlin gate 仅在 `device-benchmark`，未改 App/U0 v1；JDK 17 编译与 assemble 通过，SM-S9280/API 36 上 3/3 instrumentation tests 通过。六来源 held-out 正负预注册已冻结，未验证正例召回，所有 authority 保持 false。
+
+## 2026-07-21：USTRF 跨相机目标归因诊断 R1.1
+
+- 执行者：violjjet
+- 将已解封的 R1 六来源降级为 `seen_diagnostic_not_held_out`，新增唯一目标实例账本、精确逐帧/稳定窗口 polygon、独立 oracle 几何和三段式失败归因合同；目标 bbox/接触点缺失或 Edmonton 静态全窗投影均 fail closed。
+- Android benchmark 新增 target-aware v2 重放与纯匹配器：先检查 detector label inventory，再按 label allowlist + 唯一最大 IoU `.30` 匹配目标；普通 person/car 只进 cooccurrence，不能重算事件召回或假告警。历史 R1 v1 重放保持不变。
+- 六来源唯一目标 bbox/contact 已冻结；Edmonton 以 702750–703500ms 目标绑定短窗替代失效的 64 秒静态 polygon。Oracle 5/6：Edmonton/London/三个负来源通过，Japan 唯一锥桶两帧均 robust outside，故首因改判 polygon/事件路线合同。
+- 当前 COCO 80 类不含 traffic cone/delineator/bollard。SM-S9280/API 36 六来源 v2 `OK (1 test)`：全部 `unsupported_taxonomy`、目标匹配均为 0；London/Jakarta/Cape Town 另有 3 个 legacy 共现 inside 帧，但不再计事件召回/假告警。8 个 Python tests、APK assemble 与 matcher `OK (3 tests)` 均通过；未训练、未调阈值、未开放 App/生产权限。
