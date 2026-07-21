@@ -1412,3 +1412,9 @@
 - Android benchmark 新增 target-aware v2 重放与纯匹配器：先检查 detector label inventory，再按 label allowlist + 唯一最大 IoU `.30` 匹配目标；普通 person/car 只进 cooccurrence，不能重算事件召回或假告警。历史 R1 v1 重放保持不变。
 - 六来源唯一目标 bbox/contact 已冻结；Edmonton 以 702750–703500ms 目标绑定短窗替代失效的 64 秒静态 polygon。Oracle 5/6：Edmonton/London/三个负来源通过，Japan 唯一锥桶两帧均 robust outside，故首因改判 polygon/事件路线合同。
 - 当前 COCO 80 类不含 traffic cone/delineator/bollard。SM-S9280/API 36 六来源 v2 `OK (1 test)`：全部 `unsupported_taxonomy`、目标匹配均为 0；London/Jakarta/Cape Town 另有 3 个 legacy 共现 inside 帧，但不再计事件召回/假告警。8 个 Python tests、APK assemble 与 matcher `OK (3 tests)` 均通过；未训练、未调阈值、未开放 App/生产权限。
+
+## 2026-07-21：USTRF 跨相机 marker held-out R1.2 预注册
+
+- 在查看新来源 detector 结果前，先冻结 YOLOE-11s prompted 候选的 `traffic cone / delineator / bollard` 静态 taxonomy 与 `.05` confidence、`.30` target IoU。预检只使用已见 R1.1 诊断集：9 个可见帧匹配 6 帧，三类均有真实目标匹配；这只通过 taxonomy 门，不声称通过召回门。
+- 另选六个全新 Pexels 来源并冻结为 `new_held_out_unscored`：3 个 inside、3 个 outside，唯一目标身份、视频哈希、窗口、预期关系与停止规则均写入 R1.2 预注册。旧 R1.1 来源未复用，新六来源未运行 detector。
+- 候选仍为 offline PyTorch 研究臂；静态 export、Android parser、同设备 benchmark 和默认模型替换全部未授权。机器校验 `USTRF_R12_PREREG_OK 6 3 3 bollard,delineator,traffic cone`，5 个预注册单测通过。
