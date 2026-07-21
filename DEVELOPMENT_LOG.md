@@ -1418,3 +1418,10 @@
 - 在查看新来源 detector 结果前，先冻结 YOLOE-11s prompted 候选的 `traffic cone / delineator / bollard` 静态 taxonomy 与 `.05` confidence、`.30` target IoU。预检只使用已见 R1.1 诊断集：9 个可见帧匹配 6 帧，三类均有真实目标匹配；这只通过 taxonomy 门，不声称通过召回门。
 - 另选六个全新 Pexels 来源并冻结为 `new_held_out_unscored`：3 个 inside、3 个 outside，唯一目标身份、视频哈希、窗口、预期关系与停止规则均写入 R1.2 预注册。旧 R1.1 来源未复用，新六来源未运行 detector。
 - 候选仍为 offline PyTorch 研究臂；静态 export、Android parser、同设备 benchmark 和默认模型替换全部未授权。机器校验 `USTRF_R12_PREREG_OK 6 3 3 bollard,delineator,traffic cone`，5 个预注册单测通过。
+
+## 2026-07-21：USTRF 跨相机 marker held-out R1.2 执行
+
+- 在预注册提交 `b8ebc02` 后，使用固定 Ultralytics 8.4.52 导出三类 YOLOE FP16 TFLite；主输出 `[1,39,8400]`、第二 mask prototype 输出 `[1,160,160,32]`，benchmark-only APK 编译通过。新 Ultralytics/LiteRT 在 Windows 拒绝导出，回到既有隔离导出环境后完成，未改变类别、输入或阈值。
+- 六来源各冻结一个预注册评分帧的唯一目标 bbox/contact 与 current-frame convex polygon。Oracle 6/6：三个正例 robust inside，三个负例 robust outside；结果解封后没有换源或回调参数。
+- 冻结 offline YOLOE 结果：正例召回 3/3、负例目标假告警 0/3、目标匹配 5/6；Vancouver 指定柔性标杆未匹配。另有 7 个共现 inside detection，均未替代目标事件。
+- SM-S9280 / Android 16 API 36 恢复在线后，先用旧 R1.1 九帧运行 parser canary：`OK (1 test)`，41 个检测、6 帧目标匹配，三类标签均在 Android 输出出现；随后六来源 R1.2 replay `OK (1 test)`。Android 与离线臂的正例召回 3/3、负例目标假告警 0/3、目标匹配 5/6 逐项一致，Vancouver 均未匹配；共现 inside 因后端 NMS/数值差异为离线 7、Android 5，但没有改变目标事件结论。默认 detector/App/生产授权保持不变。

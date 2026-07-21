@@ -21,6 +21,8 @@ ANDROID_SCHEMA = "blindassist_ustrf_crosscam_target_aware_android_output_v2"
 ATTRIBUTION_SCHEMA = "blindassist_ustrf_crosscam_r11_attribution_report_v1"
 UNCERTAINTY_RATIOS = [0.01, 0.02, 0.03]
 DIAGNOSTIC_ROLE = "seen_diagnostic_not_held_out"
+HELD_OUT_UNSCORED_ROLE = "new_held_out_unscored"
+ALLOWED_DATASET_ROLES = {DIAGNOSTIC_ROLE, HELD_OUT_UNSCORED_ROLE}
 
 
 def require(condition: bool, message: str) -> None:
@@ -46,7 +48,7 @@ def _normalized_box(value: Any, label: str) -> list[float]:
 def load_target_ledger(path: Path) -> dict[str, Any]:
     ledger = load_json(path)
     require(ledger.get("schema") == TARGET_LEDGER_SCHEMA, "target ledger schema mismatch")
-    require(ledger.get("diagnostic_set_role") == DIAGNOSTIC_ROLE, "R1 sources must be marked seen diagnostic, not held-out")
+    require(ledger.get("diagnostic_set_role") in ALLOWED_DATASET_ROLES, "unsupported target-ledger dataset role")
     require(ledger.get("uncertainty_frame_ratios") == UNCERTAINTY_RATIOS, "uncertainty profiles drifted")
     require_false_flags(ledger["authority"], "target_ledger.authority")
     events = ledger.get("events")
@@ -98,7 +100,7 @@ def load_target_ledger(path: Path) -> dict[str, Any]:
 def load_projection(path: Path, ledger_path: Path, ledger: dict[str, Any]) -> dict[str, Any]:
     projection = load_json(path)
     require(projection.get("schema") == PROJECTION_SCHEMA, "projection schema mismatch")
-    require(projection.get("diagnostic_set_role") == DIAGNOSTIC_ROLE, "projection role mismatch")
+    require(projection.get("diagnostic_set_role") == ledger.get("diagnostic_set_role"), "projection role mismatch")
     require(projection.get("target_ledger_sha256") == sha256_file(ledger_path), "projection is not bound to target ledger")
     require_false_flags(projection["authority"], "projection.authority")
     expected = {event["event_id"]: event for event in ledger["events"]}

@@ -10,6 +10,7 @@ val depthBenchmarkAssetsDir = layout.buildDirectory.dir("generated/depthBenchmar
 val segmentationBenchmarkAssetsDir = layout.buildDirectory.dir("generated/segmentationBenchmarkAssets")
 val sparseLkBenchmarkAssetsDir = layout.buildDirectory.dir("generated/sparseLkBenchmarkAssets")
 val eventHeadBenchmarkAssetsDir = layout.buildDirectory.dir("generated/eventHeadBenchmarkAssets")
+val ustrfR12DetectorAssetsDir = layout.buildDirectory.dir("generated/ustrfR12DetectorAssets")
 val blindAssistEvalSetDir = providers
     .gradleProperty("blindAssistEvalSetDir")
     .orElse("test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
@@ -28,6 +29,12 @@ val segmentationBenchmarkModelPath = providers
 val segmentationBenchmarkModelAssetName = providers
     .gradleProperty("segmentationBenchmarkModelAssetName")
     .orElse("mobilenetv3_lraspp_int8_256.tflite")
+val ustrfR12DetectorModelPath = providers.gradleProperty("ustrfR12DetectorModelPath")
+    .orElse("artifacts.local/evidence/ustrf-crosscam-codex/r12-detector-export/yoloe11s_marker_static3_fp16_640.tflite")
+val ustrfR12DetectorLabelsPath = providers.gradleProperty("ustrfR12DetectorLabelsPath")
+    .orElse("artifacts.local/evidence/ustrf-crosscam-codex/r12-detector-export/marker_labels.txt")
+val ustrfR12DetectorCanaryDir = providers.gradleProperty("ustrfR12DetectorCanaryDir")
+    .orElse("artifacts.local/evidence/ustrf-crosscam-codex/r12-detector-export/android-canary")
 
 val prepareDetectorBenchmarkAssets = tasks.register<Sync>("prepareDetectorBenchmarkAssets") {
     from(rootProject.file("app/src/main/assets")) {
@@ -92,6 +99,23 @@ val prepareEventHeadBenchmarkAssets = tasks.register<Sync>("prepareEventHeadBenc
     into(eventHeadBenchmarkAssetsDir)
 }
 
+val prepareUstrfR12DetectorAssets = tasks.register<Sync>("prepareUstrfR12DetectorAssets") {
+    from(ustrfR12DetectorModelPath.map { rootProject.file(it) }) {
+        rename { "yoloe11s_marker_static3_fp16_640.tflite" }
+        into("ustrf_r12_detector")
+    }
+    from(ustrfR12DetectorLabelsPath.map { rootProject.file(it) }) {
+        rename { "marker_labels.txt" }
+        into("ustrf_r12_detector")
+    }
+    from(ustrfR12DetectorCanaryDir.map { rootProject.file(it) }) {
+        include("canary_manifest.json")
+        include("images/**")
+        into("ustrf_r12_detector")
+    }
+    into(ustrfR12DetectorAssetsDir)
+}
+
 android {
     namespace = "com.linnan.blindassist.benchmark"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -124,6 +148,7 @@ android {
             assets.srcDir(segmentationBenchmarkAssetsDir)
             assets.srcDir(sparseLkBenchmarkAssetsDir)
             assets.srcDir(eventHeadBenchmarkAssetsDir)
+            assets.srcDir(ustrfR12DetectorAssetsDir)
         }
     }
 }
@@ -136,6 +161,7 @@ tasks.matching {
     dependsOn(prepareSegmentationBenchmarkAssets)
     dependsOn(prepareSparseLkBenchmarkAssets)
     dependsOn(prepareEventHeadBenchmarkAssets)
+    dependsOn(prepareUstrfR12DetectorAssets)
 }
 
 dependencies {

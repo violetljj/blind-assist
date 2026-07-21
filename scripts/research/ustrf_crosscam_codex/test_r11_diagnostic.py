@@ -56,6 +56,16 @@ class R11DiagnosticTest(unittest.TestCase):
             run_oracle(Namespace(target_ledger=self.ledger_path, projection_receipt=self.projection_path,
                                  output=self.root / "oracle.json"))
 
+    def test_oracle_accepts_new_held_out_unscored_role(self) -> None:
+        self.ledger["diagnostic_set_role"] = "new_held_out_unscored"
+        self.ledger_path.write_text(json.dumps(self.ledger), encoding="utf-8")
+        self.projection["diagnostic_set_role"] = "new_held_out_unscored"
+        self.projection["target_ledger_sha256"] = sha256_file(self.ledger_path)
+        self.projection_path.write_text(json.dumps(self.projection), encoding="utf-8")
+        result = run_oracle(Namespace(target_ledger=self.ledger_path, projection_receipt=self.projection_path,
+                                      output=self.root / "oracle-held-out.json"))
+        self.assertTrue(result["sources"][0]["oracle_geometry_passed"])
+
     def test_attribution_separates_unsupported_taxonomy_and_cooccurrence_alert(self) -> None:
         oracle_path = self.root / "oracle.json"
         oracle = run_oracle(Namespace(target_ledger=self.ledger_path, projection_receipt=self.projection_path, output=oracle_path))

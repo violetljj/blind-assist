@@ -26,15 +26,54 @@ class UstrfCrossCameraR11DeviceTest {
 
     @Test
     fun replayTargetLedger() {
-        val inputRelative = arguments.getString(ARG_INPUT)
+        replayTargetLedger(
+            requiredArgument = ARG_REQUIRED,
+            inputArgument = ARG_INPUT,
+            outputArgument = ARG_OUTPUT,
+            expectedRole = DIAGNOSTIC_ROLE,
+            modelAsset = TfliteYoloDetector.MODEL_ASSET,
+            labelsAsset = TfliteYoloDetector.LABELS_ASSET,
+            inputSize = TfliteYoloDetector.INPUT_SIZE,
+            confidenceThreshold = TfliteYoloDetector.CONFIDENCE_THRESHOLD,
+            iouThreshold = TfliteYoloDetector.IOU_THRESHOLD,
+        )
+    }
+
+    @Test
+    fun replayR12TargetLedger() {
+        replayTargetLedger(
+            requiredArgument = ARG_R12_REQUIRED,
+            inputArgument = ARG_R12_INPUT,
+            outputArgument = ARG_R12_OUTPUT,
+            expectedRole = HELD_OUT_UNSCORED_ROLE,
+            modelAsset = R12_MODEL_ASSET,
+            labelsAsset = R12_LABELS_ASSET,
+            inputSize = 640,
+            confidenceThreshold = 0.05f,
+            iouThreshold = 0.45f,
+        )
+    }
+
+    private fun replayTargetLedger(
+        requiredArgument: String,
+        inputArgument: String,
+        outputArgument: String,
+        expectedRole: String,
+        modelAsset: String,
+        labelsAsset: String,
+        inputSize: Int,
+        confidenceThreshold: Float,
+        iouThreshold: Float,
+    ) {
+        val inputRelative = arguments.getString(inputArgument)
         if (inputRelative.isNullOrBlank()) {
-            assumeTrue("R1.1 diagnostic input was not supplied", arguments.getString(ARG_REQUIRED)?.toBooleanStrictOrNull() != true)
+            assumeTrue("target ledger input was not supplied", arguments.getString(requiredArgument)?.toBooleanStrictOrNull() != true)
             return
         }
-        check(arguments.getString(ARG_REQUIRED)?.toBooleanStrictOrNull() == true) { "R1.1 replay requires required=true" }
+        check(arguments.getString(requiredArgument)?.toBooleanStrictOrNull() == true) { "target replay requires required=true" }
         val input = JSONObject(privateFile(inputRelative, "input").readText(Charsets.UTF_8))
         check(input.getString("schema") == INPUT_SCHEMA)
-        check(input.getString("diagnostic_set_role") == DIAGNOSTIC_ROLE)
+        check(input.getString("diagnostic_set_role") == expectedRole)
         check(!input.getBoolean("training_authorized") && !input.getBoolean("production_model_replacement_authorized"))
         val ledgerFile = privateFile(input.getString("target_ledger_path"), "target ledger")
         val projectionFile = privateFile(input.getString("projection_receipt_path"), "projection receipt")
@@ -48,8 +87,15 @@ class UstrfCrossCameraR11DeviceTest {
         val projectionEvents = projection.getJSONArray("events").associateByString("event_id")
         val videos = input.getJSONArray("sources").associateByString("event_id")
 
-        val detector = TfliteYoloDetector(testContext)
-        check(detector.isReady) { "default detector failed to initialize: ${detector.statusMessage}" }
+        val detector = TfliteYoloDetector(
+            context = testContext,
+            modelAssetName = modelAsset,
+            labelsAssetName = labelsAsset,
+            inputSize = inputSize,
+            confidenceThreshold = confidenceThreshold,
+            iouThreshold = iouThreshold,
+        )
+        check(detector.isReady) { "detector failed to initialize: ${detector.statusMessage}" }
         val sourceResults = JSONArray()
         try {
             ledgerEvents.forEach { (eventId, event) ->
@@ -61,20 +107,20 @@ class UstrfCrossCameraR11DeviceTest {
         }
         val output = JSONObject()
             .put("schema", OUTPUT_SCHEMA)
-            .put("diagnostic_set_role", DIAGNOSTIC_ROLE)
+            .put("diagnostic_set_role", expectedRole)
             .put("target_ledger_sha256", input.getString("target_ledger_sha256"))
             .put("projection_receipt_sha256", input.getString("projection_receipt_sha256"))
-            .put("model_asset", TfliteYoloDetector.MODEL_ASSET)
-            .put("model_asset_sha256", sha256Asset(TfliteYoloDetector.MODEL_ASSET))
-            .put("labels_asset", TfliteYoloDetector.LABELS_ASSET)
-            .put("labels_asset_sha256", sha256Asset(TfliteYoloDetector.LABELS_ASSET))
+            .put("model_asset", modelAsset)
+            .put("model_asset_sha256", sha256Asset(modelAsset))
+            .put("labels_asset", labelsAsset)
+            .put("labels_asset_sha256", sha256Asset(labelsAsset))
             .put("model_label_inventory", JSONArray(detector.labels))
             .put("target_match_contract_id", UstrfTargetInstanceMatcher.CONTRACT_ID)
             .put("uncertainty_frame_ratios", JSONArray(UNCERTAINTY_RATIOS))
             .put("threshold_fit", false).put("parameter_search", false).put("training_performed", false)
             .put("held_out_gate_authorized", false).put("sources", sourceResults)
-        privateOutputFile(requireNotNull(arguments.getString(ARG_OUTPUT))).writeText(output.toString(2), Charsets.UTF_8)
-        Log.i(TAG, "USTRF_CROSSCAM_R11_OUTPUT")
+        privateOutputFile(requireNotNull(arguments.getString(outputArgument))).writeText(output.toString(2), Charsets.UTF_8)
+        Log.i(TAG, "USTRF_CROSSCAM_TARGET_OUTPUT")
     }
 
     private fun replayEvent(
@@ -227,9 +273,15 @@ class UstrfCrossCameraR11DeviceTest {
         const val LEDGER_SCHEMA = "blindassist_ustrf_crosscam_target_instance_ledger_v1"
         const val PROJECTION_SCHEMA = "blindassist_ustrf_crosscam_frame_projection_receipt_v2"
         const val DIAGNOSTIC_ROLE = "seen_diagnostic_not_held_out"
+        const val HELD_OUT_UNSCORED_ROLE = "new_held_out_unscored"
         const val ARG_REQUIRED = "ustrfCrosscamR11Required"
         const val ARG_INPUT = "ustrfCrosscamR11Input"
         const val ARG_OUTPUT = "ustrfCrosscamR11Output"
+        const val ARG_R12_REQUIRED = "ustrfCrosscamR12Required"
+        const val ARG_R12_INPUT = "ustrfCrosscamR12Input"
+        const val ARG_R12_OUTPUT = "ustrfCrosscamR12Output"
+        const val R12_MODEL_ASSET = "ustrf_r12_detector/yoloe11s_marker_static3_fp16_640.tflite"
+        const val R12_LABELS_ASSET = "ustrf_r12_detector/marker_labels.txt"
         const val TAG = "UstrfCrosscamR11"
         const val MAX_ASPECT_RATIO_DRIFT = 0.005
         val UNCERTAINTY_RATIOS = listOf(0.01, 0.02, 0.03)
