@@ -53,6 +53,18 @@
 - `detector_bbox_explicit_route` 也已有真实 Android adapter：对每个 500ms ledger frame 只选择 `timestamp <= frame <= valid_until` 的最新显式路线 sample，固定使用 bottom-centre anchor + 1/2/3 秒 waypoints、0.08 frame-width 半宽走廊和 bbox 底部 25% footprint。门控只保留或排除原始 detection，不改 bbox/置信度/kernel 阈值；future/stale/低置信/invalid route 送空 detection 列表。设备逐帧回执记录 sample、waypoints、每个 bbox/footprint、最短距离与 keep，host 和 admission 独立重算因果与门控算术。最终内核 APK 的 r3 负控仍在同一 encoded sample/RGBA/APK 下使中心路线排除左侧 person（669.07px，raw `NONE`）、左侧路线保留它（75.75px，raw `MEDIUM`），左侧路线复跑的 backend/gate/decision 稳定字段一致；三份 output SHA256 为 `dca5a025...9b52f3`、`b206e2d2...f8cca9`、`9db2cff5...15bf9`，receipt SHA256 `c64a5eff...cd353`。证据位于 ignored `artifacts.local/evidence/ustrf-u0-bbox-route-device-smoke-20260721-r3/`，没有人类事件真值或 U0 权限。
 - 当前状态提升为 `U0_TWO_ANDROID_ADAPTERS_AND_DENSE_KERNEL_SEAM_DEVICE_VERIFIED_BLOCKED_ON_HUMAN_TRUTH_AND_FOUR_REAL_ADAPTERS`，不是 U0 PASS；teacher field generator/LOSO artifact 与四个 dense/control 真 adapter 仍缺失并继续 fail closed。
 
+## 2026-07-21 跨相机 Codex proxy R0
+
+- 新增独立 `scripts/research/ustrf_crosscam_codex/`：公开来源/许可/SHA 收据、250ms full-context Codex provisional teacher、500ms causal Codex、三轮 2/3 共识、相机投影、assumed route 和 Android bbox-route candidate 均 hash-bound；正式 U0、人工真值、设备米制几何、训练和生产权限不变。
+- MuSoHu 360° 样本因全景直用风险分歧及 forward-axis/遮挡不确定而 fail closed。Pexels 3874684 前 6 秒负样本获 6/6 Codex `none`；真实 SM-S9280 Android bbox-route 臂产生 1 次边界假阳性（车辆 route distance `48.4636px` < corridor half-width `51.2px`），代理折算 false alerts/min `10.0`。该短窗只定位路线投影/走廊问题，不能评价召回或长期告警率。
+- 下一有效动作是 source-held-out 的小规模正负跨相机扩样与预注册几何敏感性，不在该单样本上调阈值，不微调模型。完整记录见 [R0 报告](USTRF_CROSSCAM_CODEX_PROXY_R0_2026-07-21.md)。
+
+## 2026-07-21 路线投影与走廊几何 R1
+
+- 新增显式 `route-projection-receipt`：绑定投影模式、forward axis、路线来源/权限/置信度来源、当前相机帧凸 polygon，以及 world route / camera pose / dynamic projection 是否真实存在。MuSoHu 缺可信 forward axis 继续 fail closed；Pexels 只承认 manual current-frame proxy。
+- 新 gate 使用 bbox bottom-center 地面接触代理，不再用 bottom-25% footprint 与固定中心折线相交；按画面宽度 1%/2%/3% 三档投影误差输出 inside/outside/uncertain，三档不一致即 abstain。Pexels 同一 8 detections 从旧 gate `kept=1` 变为 robust `inside=0 / uncertain=1 / outside=7`，边缘车辆不再获得确定路线内断言。
+- Kotlin 等价实现仅在 `device-benchmark`；SM-S9280/API 36 instrumentation 3/3 通过。正式 App、旧 U0 v1 gate、模型和生产权限未改。六来源 held-out 清单与停止门已冻结，正样本召回仍待验证。完整记录见 [R1 报告](USTRF_CROSSCAM_ROUTE_PROJECTION_CORRIDOR_R1_2026-07-21.md)。
+
 ## 已通过的验证层级
 
 1. `:core:ustrf:test`：纯 Kotlin 的安全、校准、慢环和 digest 合同。

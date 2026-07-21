@@ -13,6 +13,7 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPTS_DIR.parent
 DOMAINS = {
     "public-video": SCRIPTS_DIR / "research" / "public_video",
+    "ustrf-crosscam-codex": SCRIPTS_DIR / "research" / "ustrf_crosscam_codex",
 }
 
 

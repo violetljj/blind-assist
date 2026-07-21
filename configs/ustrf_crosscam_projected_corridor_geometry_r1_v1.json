@@ -1,0 +1,18 @@
+{
+  "schema": "blindassist_ustrf_crosscam_projected_corridor_config_v1",
+  "contract_id": "ustrf_crosscam_codex_proxy_r0_v1",
+  "status": "active_geometry_audit",
+  "object_geometry": "bbox_bottom_center_ground_contact_proxy_v1",
+  "route_geometry": "explicit_convex_polygon_current_camera_frame_v1",
+  "projection_uncertainty_frame_ratios": [0.01, 0.02, 0.03],
+  "robust_rule": "all_sensitivity_profiles_must_agree_v1",
+  "uncertain_policy": "abstain_from_route_inside_claim_v1",
+  "labels_used_for_gate": false,
+  "formal_u0_contract_modified": false,
+  "human_event_truth_present": false,
+  "metric_geometry_present": false,
+  "training_authorized": false,
+  "u0_authority_granted": false,
+  "android_runtime_change_authorized": false,
+  "production_model_replacement_authorized": false
+}

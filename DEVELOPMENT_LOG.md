@@ -1390,3 +1390,17 @@
 
 - Refreshed the frozen U0 prediction-evidence validator SHA after the timing/shadow hardening changed the validator implementation.
 - This restores the intended fail-closed order: the official empty manifest is rejected by the human-truth gate, not by stale provenance metadata. No truth, training, shadow, or production authority was opened.
+
+## 2026-07-21：USTRF 跨相机 Codex proxy R0
+
+- 执行者：violjjet
+- 新增隔离 `ustrf_crosscam_codex` 研究域：公开来源收据、相机投影/assumed route、三轮 Codex provisional teacher/causal consensus、代理指标和真实 Android bbox-route 转换；不改 App、默认模型或正式 U0。
+- MuSoHu 360° 样本因 forward-axis/遮挡与三轮教师分歧被拒绝。Pexels 3874684 的 6 秒右侧人行道负样本获 6/6 Codex `none`；SM-S9280 Android 臂在首帧对道路车辆触发 1 次 HIGH，route distance `48.4636px` 刚低于 `51.2px` 走廊半宽。
+- 决策：下轮优先跨相机路线投影/走廊敏感性与 source-held-out 正负扩样；不据单样本调阈值或微调。所有 authority flag 继续 false。
+
+## 2026-07-21：USTRF 路线投影与走廊几何 R1
+
+- 执行者：Codex
+- 将跨相机 route 从隐式固定中心折线拆为 hash-bound projection receipt + 当前相机帧凸 polygon；新增 bbox bottom-center 地面接触代理、1%/2%/3% frame-width 投影误差和 inside/outside/uncertain 三态。invalid/unknown route fail closed，label 不参与 gate。
+- Pexels 同设备输出的 8 个 detection 在旧 gate 保留 1 个；R1 三档鲁棒结果为 inside 0、uncertain 1、outside 7。原道路车辆在 1% 下 outside、2%/3% 下 uncertain，不再作为确定路线内 HIGH 的几何依据。
+- 新 Kotlin gate 仅在 `device-benchmark`，未改 App/U0 v1；JDK 17 编译与 assemble 通过，SM-S9280/API 36 上 3/3 instrumentation tests 通过。六来源 held-out 正负预注册已冻结，未验证正例召回，所有 authority 保持 false。
