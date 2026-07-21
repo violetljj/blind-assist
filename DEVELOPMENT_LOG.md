@@ -5,6 +5,7 @@
 ### Stacked PR CI bootstrap fixes
 - 时间：2026-07-21；执行者：violjjet。
 - 范围：仓库卫生门对 PR base 中已存在、当前仅删除的历史二进制视为清理，同时仍拒绝新增二进制；release signing 只在显式请求 `assembleRelease`/`bundleRelease` 时要求本地 keystore，不再被 `mergeReleaseAssets` 的任务图误触发。
+- Android lint：Camera2 interop 的 camera ID 读取在窄函数边界显式 opt-in，不通过关闭 `UnsafeOptInUsageError` 或 lint baseline 掩盖错误。
 - 验证：hygiene smoke 含 deleted-only/added-from-base 反例；`master...HEAD` hygiene 通过；CI debug/merge-assets 任务不需要 release keystore，显式 release 打包仍 fail closed。
 
 本文件是 BlindAssist 的追加式工程历史：记录有代码、配置、模型、测试或已采纳技术决定的任务。近期条目应简洁写明范围、验证、风险并链接证据；长篇实验结论应写入对应 `docs/` 页面，当前状态以 [docs/SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md) 为准。

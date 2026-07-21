@@ -6,6 +6,7 @@ import android.hardware.camera2.CameraManager
 import android.os.SystemClock
 import android.util.Size
 import androidx.camera.camera2.interop.Camera2CameraInfo
+import androidx.camera.camera2.interop.ExperimentalCamera2Interop
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -187,6 +188,7 @@ class CameraXFrameSource(
         }
     }
 
+    @androidx.annotation.OptIn(markerClass = [ExperimentalCamera2Interop::class])
     private fun cameraSourceDescriptor(cameraInfo: androidx.camera.core.CameraInfo): CameraSourceDescriptor {
         val cameraId = Camera2CameraInfo.from(cameraInfo).cameraId
         val manager = appContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager
