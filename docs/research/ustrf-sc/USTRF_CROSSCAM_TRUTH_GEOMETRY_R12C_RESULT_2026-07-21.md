@@ -31,6 +31,8 @@ Japan 在 `10000ms` 与 `12000ms` 的接触点都对旧 polygon 为 robust outsi
 
 ## London 单变量与后续门
 
+2026-07-22 后续已预注册一个不消费 R1.3 的补位正例：Bangkok Modern Center `328000–340000ms` 红白交通锥事件。两份独立模型复核一致，333s/336s 在 `.01/.02/.03` 下均 robust inside；328s 因边界余量不足降为非计分 uncertain，339s 只作 clear proxy。详见 [seen positive 预注册](USTRF_CROSSCAM_SEEN_POSITIVE_R12C_PREREG_2026-07-22.md)。该合同将资格计数补到六个，但仍须物化 R1.2c v2 并重跑完整六正例 oracle，本页 v1/Japan 失败历史不改写，768 仍未授权。
+
 唯一候选为 `r12c_c1_sameweights_fp16_768_gpu_london_only`：复用 `yoloe-11s-seg.pt` 同一 SHA-256、静态三类、`.05/.30/.45`、FP16 与 GPU delegate，仅将输入从 `640` 改为 `768`。协议顺序固定为：
 
 1. 六个正事件 truth—geometry 全部一致；

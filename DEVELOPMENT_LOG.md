@@ -1,5 +1,13 @@
 # Development Log
 
+## 2026-07-22
+
+### USTRF R1.2c 非 R1.3 seen positive 预注册
+- 时间：2026-07-22；执行者：Codex。
+- 范围：从 2026-07-19 已打开的 Wikimedia Commons/POPtravel Bangkok Modern Center 来源冻结 `bangkok_tactile_cone_intrusion`，以两份互盲模型复核、唯一目标与保守凸路线多边形补 Japan 排除后的第六正例；未读取或占用 R1.3。
+- 结果：333s/336s 在 `.01/.02/.03` 三档均 robust inside，边界距离 `28.45/61.34px`；328s 固定为 non-gate uncertain，339s 仅作 robust-outside clear proxy。验证后 eligible seen positives 为 `5+1=6`，但 768/连续/soak/R1.3 权限仍为 false，须先物化 R1.2c v2 并重跑全六例 oracle。
+- 验证：focused `3 tests OK`，完整 crosscam `25 tests OK`；收据 SHA-256 `94154e091bec1e80cb1accc15fe20de0472c90db96619c1948e75d98ae70d083`。详见 [seen positive 预注册](docs/research/ustrf-sc/USTRF_CROSSCAM_SEEN_POSITIVE_R12C_PREREG_2026-07-22.md)。
+
 ## 2026-07-21
 
 ### USTRF truth—路线几何一致性 R1.2c
