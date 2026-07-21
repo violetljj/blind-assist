@@ -2,6 +2,13 @@
 
 ## 2026-07-21
 
+### USTRF truth—路线几何一致性 R1.2c
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：冻结六个正事件的独立 alertable-anchor oracle、冲突仲裁与 London-only FP16-768 GPU 单变量协议；完整事件门先于 600 秒 soak，R1.3 v2 保留 12 个未打开槽位并把双 VLM 分歧或 truth/geometry 冲突转人工仲裁。未改 App、默认模型、阈值、bbox/contact、旧 polygon 或 tracker。
+- 结果：oracle `5/6` 一致；Japan 在 `10000/12000ms` 两个 alertable anchors 均为 robust outside，固定标为 `truth_geometry_conflict`。因此 768 执行、连续重放、soak 与 R1.3 解封权限全部为 false；禁止移动旧 polygon 回救历史结果。
+- 模型仲裁：按项目约定由两个 fresh-context 模型独立复核、第三模型仲裁，不等待真人。最终将 Japan 裁为 `event_truth_unknown / route_relation_inconsistent / EXCLUDE_FROM_SCORE`，不保留 positive，也不越权改成 strict negative；当前缺少第六个合格正事件。
+- 验证：R1.2c focused Python 合同 `4 tests` 通过；hash-bound adjudicated oracle 无未决冲突，但 Japan 被排除后仅剩 `5` 个合格正事件。详见 [R1.2c 结果](docs/research/ustrf-sc/USTRF_CROSSCAM_TRUTH_GEOMETRY_R12C_RESULT_2026-07-21.md)。
+
 ### USTRF 跨相机移动端连续事件 R1.2b
 - 时间：2026-07-21；执行者：Codex。
 - 范围：只在 R1.2a 的 12 个 seen diagnostic 上冻结移动端 OFAT 候选顺序、分段延迟、取帧等价门与逐帧 SHA-256 传输；正式 App/core runtime 未改，R1.3 未解封，Vancouver 未用于候选选择，prompt/类别/`.05/.30/.45`/bbox/polygon 均未改变。
