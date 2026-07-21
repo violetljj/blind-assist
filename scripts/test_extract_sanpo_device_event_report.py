@@ -21,6 +21,8 @@ class ExtractSanpoDeviceEventReportTest(unittest.TestCase):
         self.assertEqual(0.5, result["metrics"]["critical_miss_rate"])
         self.assertEqual(0.4, result["metrics"]["false_alerts_per_minute"])
         self.assertEqual(72.0, result["metrics"]["p95_latency_ms"])
+        self.assertEqual(converter.DECISION_KERNEL_CONTRACT, result["provenance"]["decision_kernel_contract_id"])
+        self.assertEqual(converter.FEEDBACK_ADAPTER, result["provenance"]["feedback_adapter"])
 
     def test_rejects_missing_duration_and_hash_mismatch(self) -> None:
         model_sha = "a" * 64
@@ -29,6 +31,28 @@ class ExtractSanpoDeviceEventReportTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "sequenceDurationMs"):
             converter.build_report(
                 missing_duration,
+                model_id="segmentation_candidate",
+                model_sha256=model_sha,
+                benchmark_sha256="b" * 64,
+            )
+
+    def test_rejects_legacy_or_non_shared_decision_benchmark(self) -> None:
+        model_sha = "a" * 64
+        legacy = self.benchmark(model_sha)
+        del legacy["schema"]
+        with self.assertRaisesRegex(ValueError, "benchmark schema"):
+            converter.build_report(
+                legacy,
+                model_id="segmentation_candidate",
+                model_sha256=model_sha,
+                benchmark_sha256="b" * 64,
+            )
+
+        wrong_kernel = self.benchmark(model_sha)
+        wrong_kernel["decision_kernel_contract_id"] = "legacy_manual_feedback"
+        with self.assertRaisesRegex(ValueError, "decision kernel"):
+            converter.build_report(
+                wrong_kernel,
                 model_id="segmentation_candidate",
                 model_sha256=model_sha,
                 benchmark_sha256="b" * 64,
@@ -44,12 +68,19 @@ class ExtractSanpoDeviceEventReportTest(unittest.TestCase):
     @staticmethod
     def benchmark(model_sha: str) -> dict:
         return {
+            "schema": converter.BENCHMARK_SCHEMA,
+            "decision_kernel_contract_id": converter.DECISION_KERNEL_CONTRACT,
+            "risk_metric_semantics": "shared_production_stable_risk_v1",
+            "feedback_adapter": converter.FEEDBACK_ADAPTER,
+            "alert_profile": converter.ALERT_PROFILE,
+            "synthetic_clock_frame_step_ms": converter.SYNTHETIC_CLOCK_FRAME_STEP_MS,
             "device_under_test": "instrumentation-connected-device",
             "models": [
                 {
                     "id": "segmentation_candidate",
                     "model_asset_sha256": model_sha,
                     "app_detector": {
+                        "decision_kernel_contract_id": converter.DECISION_KERNEL_CONTRACT,
                         "total_ms": {"p95": 72.0},
                         "blindassist_metrics": {
                             "eventAlertCount": 10,

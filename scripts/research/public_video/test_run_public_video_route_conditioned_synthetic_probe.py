@@ -8,6 +8,18 @@ import run_public_video_route_conditioned_synthetic_probe as subject
 
 
 class RouteConditionedSyntheticProbeTest(unittest.TestCase):
+    def test_ordered_example_ids_preserve_prediction_binding(self) -> None:
+        rows = [{"example_id": "e-left"}, {"example_id": "e-straight"}, {"example_id": "e-right"}]
+        self.assertEqual(["e-left", "e-straight", "e-right"], subject.ordered_example_ids(rows))
+
+    def test_ordered_example_ids_reject_duplicates(self) -> None:
+        with self.assertRaisesRegex(ValueError, "unique"):
+            subject.ordered_example_ids([{"example_id": "e"}, {"example_id": "e"}])
+
+    def test_ordered_example_ids_reject_missing_identity(self) -> None:
+        with self.assertRaisesRegex(ValueError, "non-empty"):
+            subject.ordered_example_ids([{}])
+
     def test_global_features_change_route_token_but_not_visual_stats(self) -> None:
         scores = np.arange(16, dtype=np.float64).reshape(4, 4)
         left = subject.global_risk_features(scores, "LEFT")

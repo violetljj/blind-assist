@@ -79,6 +79,138 @@ class RouteSpecificityControlTest(unittest.TestCase):
             with self.assertRaisesRegex(subject.ContractError, "distinct derangements"):
                 subject.evaluate(contract, repo_root=repo)
 
+    def test_legacy_prediction_replay_requires_exact_predictions(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            contract, repo = self.fixture(Path(temp))
+            current_path = repo / contract["bound_r816_report"]["path"]
+            legacy_path = repo / "artifacts.local" / "legacy.json"
+            legacy = json.loads(current_path.read_text(encoding="utf-8"))
+            legacy["evaluation"]["route_conditioned_readout"].pop("example_ids")
+            legacy_path.write_text(json.dumps(legacy), encoding="utf-8")
+            contract["legacy_prediction_replay"] = {
+                "path": "artifacts.local/legacy.json",
+                "sha256": sha(legacy_path),
+                "schema": "test-r816",
+                "prediction_path": "evaluation.route_conditioned_readout.predictions",
+                "require_exact_predictions": True,
+                "require_exact_evaluation_except_example_ids": True,
+            }
+            contract["frozen_execution"] = {
+                "checkpoint_sha256": "c" * 64,
+                "input_size": 224,
+                "layer_index": 11,
+                "teacher_target": "bbox_distance",
+                "distance_sigma_patches": 1.5,
+                "seed": 20260719,
+                "teacher_ridge": 10.0,
+                "head_ridge": 1.0,
+                "route_balanced_accuracy_gte": 0.80,
+                "each_class_recall_gte": 0.70,
+                "balanced_accuracy_gain_over_global_gte": 0.10,
+            }
+            legacy_contract_path = repo / "configs" / "legacy-control.json"
+            legacy_contract_path.parent.mkdir(parents=True, exist_ok=True)
+            legacy_scope = {
+                key: json.loads(json.dumps(contract[key]))
+                for key in ("bound_route_examples", "permutation_policy", "gate", "authority")
+            }
+            legacy_contract_path.write_text(json.dumps(legacy_scope), encoding="utf-8")
+            contract["frozen_at_utc"] = "2026-07-20T19:01:00Z"
+            contract["post_run_binding_disclosure"] = {
+                "identity_report_was_created_before_this_hash_binding": True,
+                "legacy_preregistered_contract": {
+                    "path": "configs/legacy-control.json",
+                    "sha256": sha(legacy_contract_path),
+                },
+                "unchanged_from_legacy_contract": [
+                    "route rows", "wrong-route permutations", "gate thresholds", "authority",
+                ],
+                "new_binding_only": "test identity replay",
+            }
+            stability_contract_path = repo / "configs" / "stability.json"
+            stability_contract = {
+                "bound_frame_probe": {"sha256": contract["legacy_prediction_replay"]["sha256"]},
+                "gate": {
+                    "minimum_worst_seed_balanced_accuracy": 0.85,
+                    "minimum_worst_seed_each_class_recall": 0.80,
+                    "minimum_mean_balanced_accuracy": 0.90,
+                    "maximum_seed_balanced_accuracy_stddev": 0.03,
+                    "minimum_worst_seed_parent_source_balanced_accuracy": 0.80,
+                    "repeat_exact": True,
+                },
+            }
+            stability_contract_path.write_text(json.dumps(stability_contract), encoding="utf-8")
+            stability_report_path = repo / "artifacts.local" / "stability-report.json"
+            stability_report = {
+                "schema": "test-stability",
+                "contract_sha256": sha(stability_contract_path),
+                "repeat_exact": True,
+                "stability": {
+                    "mean_balanced_accuracy": 0.87,
+                    "stddev_balanced_accuracy": 0.01,
+                    "worst_seed_balanced_accuracy": 0.86,
+                    "worst_seed_candidate_no_alert_recall": 0.79,
+                    "worst_seed_candidate_alert_recall": 0.90,
+                    "worst_seed_parent_source_balanced_accuracy": 0.84,
+                },
+                "prototype_bootstrap_gate": {"passed": False},
+            }
+            stability_report_path.write_text(json.dumps(stability_report), encoding="utf-8")
+            contract["bound_stability_gate"] = {
+                "contract": {"path": "configs/stability.json", "sha256": sha(stability_contract_path)},
+                "report": {
+                    "path": "artifacts.local/stability-report.json",
+                    "sha256": sha(stability_report_path),
+                    "schema": "test-stability",
+                },
+                "required_for_student_training": True,
+            }
+
+            result = subject.evaluate(contract, repo_root=repo)
+            self.assertTrue(result["legacy_prediction_replay"]["exact"])
+            self.assertFalse(result["stability_gate"]["passed"])
+            self.assertEqual("BLOCKED_ON_R818_STABILITY", result["combined_readiness_decision"])
+
+            stability_report["prototype_bootstrap_gate"]["passed"] = True
+            stability_report_path.write_text(json.dumps(stability_report), encoding="utf-8")
+            contract["bound_stability_gate"]["report"]["sha256"] = sha(stability_report_path)
+            with self.assertRaisesRegex(subject.ContractError, "differs from recomputed frozen checks"):
+                subject.evaluate(contract, repo_root=repo)
+            stability_report["prototype_bootstrap_gate"]["passed"] = False
+            stability_report_path.write_text(json.dumps(stability_report), encoding="utf-8")
+            contract["bound_stability_gate"]["report"]["sha256"] = sha(stability_report_path)
+
+            original_gate = contract["gate"]["minimum_true_route_balanced_accuracy"]
+            contract["gate"]["minimum_true_route_balanced_accuracy"] = 0.79
+            with self.assertRaisesRegex(subject.ContractError, "inherited legacy scope: gate"):
+                subject.evaluate(contract, repo_root=repo)
+            contract["gate"]["minimum_true_route_balanced_accuracy"] = original_gate
+
+            current = json.loads(current_path.read_text(encoding="utf-8"))
+            original_accuracy = current["evaluation"]["global_readout"]["metrics"]["accuracy"]
+            current["frozen_risk_representation"]["head_ridge"] = 2.0
+            current_path.write_text(json.dumps(current), encoding="utf-8")
+            contract["bound_r816_report"]["sha256"] = sha(current_path)
+            with self.assertRaisesRegex(subject.ContractError, "execution changed: head_ridge"):
+                subject.evaluate(contract, repo_root=repo)
+
+            current["frozen_risk_representation"]["head_ridge"] = 1.0
+            current["evaluation"]["global_readout"]["metrics"]["accuracy"] = 0.5
+            current_path.write_text(json.dumps(current), encoding="utf-8")
+            contract["bound_r816_report"]["sha256"] = sha(current_path)
+            with self.assertRaisesRegex(subject.ContractError, "evaluation differs"):
+                subject.evaluate(contract, repo_root=repo)
+
+            current["evaluation"]["global_readout"]["metrics"]["accuracy"] = original_accuracy
+            current_path.write_text(json.dumps(current), encoding="utf-8")
+            contract["bound_r816_report"]["sha256"] = sha(current_path)
+
+            legacy["evaluation"]["route_conditioned_readout"]["predictions"][0] ^= 1
+            legacy_path.write_text(json.dumps(legacy), encoding="utf-8")
+            contract["legacy_prediction_replay"]["sha256"] = sha(legacy_path)
+            with self.assertRaisesRegex(subject.ContractError, "differ from the frozen legacy"):
+                subject.evaluate(contract, repo_root=repo)
+
     @staticmethod
     def fixture(root: Path) -> tuple[dict, Path]:
         repo = root / "repo"
@@ -106,12 +238,40 @@ class RouteSpecificityControlTest(unittest.TestCase):
         metrics = subject.binary_metrics([row["route_blocked"] for row in rows], predictions)
         report = {
             "schema": "test-r816",
+            "created_at_utc": "2026-07-20T19:00:00Z",
             "dataset_build_receipt_sha256": "a" * 64,
             "dataset_manual_review_sha256": "b" * 64,
-            "evaluation": {"route_conditioned_readout": {
-                "predictions": predictions,
-                "example_ids": [row["example_id"] for row in rows],
-                "metrics": metrics,
+            "evaluation": {
+                "global_readout": {
+                    "predictions": predictions,
+                    "example_ids": [row["example_id"] for row in rows],
+                    "metrics": metrics,
+                },
+                "route_conditioned_readout": {
+                    "predictions": predictions,
+                    "example_ids": [row["example_id"] for row in rows],
+                    "metrics": metrics,
+                },
+                "exact_field_linear_head": {
+                    "predictions": predictions,
+                    "example_ids": [row["example_id"] for row in rows],
+                    "metrics": metrics,
+                },
+            },
+            "frozen_risk_representation": {
+                "checkpoint_sha256": "c" * 64,
+                "input_size": 224,
+                "layer_index": 11,
+                "teacher_target": "bbox_distance",
+                "distance_sigma_patches": 1.5,
+                "seed": 20260719,
+                "teacher_ridge": 10.0,
+                "head_ridge": 1.0,
+            },
+            "route_interaction_gate": {"thresholds": {
+                "route_balanced_accuracy_gte": 0.80,
+                "each_class_recall_gte": 0.70,
+                "balanced_accuracy_gain_over_global_gte": 0.10,
             }},
         }
         report_path.write_text(json.dumps(report), encoding="utf-8")

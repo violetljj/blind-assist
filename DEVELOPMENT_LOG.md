@@ -43,6 +43,78 @@
 - 边界：只固化协作指令，不改脚本 Implementation、研究算法、模型、数据、App、设备行为或晋级结论。
 - 验证：项目结构检查、仓库卫生、文档索引和差异格式检查通过。
 
+### RC-OARF E0 identity-bound 复跑与稳定门收口
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：r816 输出增加唯一且保序的 example ID；用原 Python 环境和冻结参数复跑，并在 RC-OARF 收据中同时绑定旧 r816 全 evaluation parity、执行参数和 r818 稳定门。
+- 结果：216 个 ID 与 route rows 逐项一致，新旧 r816 的 global/route/exact 预测、指标、fold 和系数 SHA 精确一致；路线特异性转为 `PASS_IDENTITY_BOUND_SYNTHETIC_ROUTE_SPECIFICITY`。r818 仍因 mean BA `.87737 < .90` 与 worst no-alert recall `.79710 < .80` 失败，组合决策 `BLOCKED_ON_R818_STABILITY`，不授权学生训练、设备或生产。
+- 验证：r816 runner 9 tests、route-specificity 5 tests、dependency-free research contracts 24 tests、JDK 17 `:core:ustrf:test`、docs index、repo hygiene 与 diff check 通过；正式收据为 `artifacts.local/evidence/ustrf-sc/rc-oarf-route-specificity-control-identity-bound-v1-20260721-r4/report.json`。
+
+### USTRF P0 生产与 benchmark shared decision parity
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：抽取 Android-free `AssistDecisionKernel`，让生产 Coordinator 与 device benchmark 共用 temporal、stabilization、event、confirmation、feedback receipt 和 trace 顺序；不改风险阈值、默认 YOLO、UI 或生产 lifecycle gate。
+- 契约：benchmark 报告升级为 v2，显式绑定 shared-kernel、STANDARD profile、manifest scenario、100ms 合成时钟与 planner adapter；保留旧 raw `model_risk` alias，新增 stable risk，并标记旧新聚合不可直接比较。device-event extractor 对旧 schema/旧 kernel/未知 adapter fail closed，且明确 planner 接受不等于物理设备投递。
+- 回归：新增独立四帧 segmentation 黄金矩阵，锁定 `DISTANCE_TOO_FAR -> UNSTABLE -> TRIGGERED -> EVENT_ALREADY_ALERTED`，并覆盖 feedback unavailable 后事件不被消费、下一帧可重试；生产 wrapper 与 shared kernel 逐帧 raw/stable/event/feedback/trace 一致。
+- 边界：本轮只关闭 P0 code/host parity，没有生成新的真机 benchmark 或物理反馈证据，不解除 r818、真实事件 0、设备米制几何、U0 或生产授权。
+- 验证：extractor 3 tests 通过；JDK 17 `:core:assist:test`、`:core:device:testDebugUnitTest`、`:feature:assist:testDebugUnitTest`、`:app:testDebugUnitTest`、`:device-benchmark:compileDebugKotlin` 与 `:app:assembleDebug` 组合构建通过。首次 `--offline` 因本机缺 AndroidX test AAR 停在依赖解析，切换正常解析后同一任务组全绿；docs index、structure、repo hygiene 与 diff check 另行闭合。
+
+### USTRF U0 teacher upper-bound 可执行门
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：新增 U0 六臂预注册合同与 dependency-free evaluator；四个正式臂和 uniform/shuffled route 负控共用 frame ledger/shared decision kernel，并绑定 truth、实现、artifact、阈值、视频、route、frame IDs 与 trace SHA。不实现 teacher、不读取 blind、不生成标签或训练模型。
+- 门禁：评价前重算完整 120 episode / 60 matched-pair route-conditioned 双人人类真值门；额外拒绝重复 episode/event ID、pair route samples 漂移、LOSO 错绑、critical fold 零分母、future/blind、漏臂/漏 episode 和 synthetic 授权。冻结逐 fold 事件硬门、route/control BA `.10` 增益、unknown-low-obstacle `.10`/2-session 增益与 causal lifecycle 不退化门。
+- 结果：合成 fixture 3 tests 与统一 research-contract suite 27 tests 通过；当前正式空 template 的 CLI fail-closed 实跑 exit 2 且未写报告。状态 `U0_EVALUATOR_READY_BLOCKED_ON_TRUTH`，S0/student/Android/production 权限均未打开。
+
+### USTRF U0 十集试采证据链与正式 truth 防绕过
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：把 1 session × 5 scene × 1 matched pair 的 10-episode pilot 冻结为独立 contract/schema/scope；新增确定性空槽生成器、逐帧 video/clock/route 原子绑定、两份互不可见的人类 review 与独立 adjudication 校验，并把同一验证链接入正式 full-matrix truth。未采集媒体、未生成标签、未读取 blind/test。
+- 合同修正：matched pair 不再要求两个独立拍摄复制逐像素 route trace，而是共享 `route_plan_id + provider policy + route choice`；每个 episode 的 current-camera 投影必须分别绑定自身 frame ledger、video、camera/calibration 和 projection receipt。U0 额外钉死官方 truth config SHA 与 route/base/frame/review validator bundle SHA，并逐 episode 绑定 source frame-ledger SHA。
+- 结果：本地 ignored capture plan R2 精确生成 10 slot / 5 pair；空 pilot template CLI 以 exit 2 拒绝且不写报告；source receipt/episode 的 origin scope 能阻止仅改状态把 pilot 升格成正式 truth。官方 JSON 使用 canonical hash、validator 使用 LF-normalized text hash，CRLF/LF 回归通过；统一 dependency-free research-contract suite 7 files / 35 tests 全绿。已审计的 non-blind SANPO-Real 只有约 5 秒正式片段；相邻 `d3CK...` 素材也仅是待补收据、隐私、时钟、路线和人工双审的 raw candidate，不能冒充 pilot episode。
+- 边界：pilot 审计输出的 route truth/U0/S0/training/Android/production 字段永远为 false；正式 eligible truth 仍为 0，状态保持 `U0_EVALUATOR_READY_BLOCKED_ON_TRUTH`。
+
+### USTRF P0 真机 shared-kernel v2 与 U0 prediction evidence admission
+- 时间：2026-07-21；执行者：violjjet。
+- 真机：在 SM-S9280/API 36 上按历史同一 90 帧 SANPO v2 连续基准重跑 `SanpoTraversabilityOracle/current`；报告 schema v2、shared-kernel、STANDARD profile、100ms 序列时钟与 planner adapter 均已绑定。candidate total P95 `57.674ms`，event recall `1.0`、critical miss `0`、delivered repeat `0`、clearance `1.0`、false alerts/min `0`，49 次 duplicate attempt 被抑制；报告 SHA256 `6b2d39b36996613515a6988654c16d06d62c00ee023eda4cabf99563b96b4a25`。仍有 2 次 event ID regeneration，且 planner acceptance 不代表物理反馈送达。
+- U0 加固：新增 prediction-bundle validator 并在 evaluator 指标计算前强制调用。六臂必须绑定真实本地 implementation/artifact/threshold/execution receipt 和逐帧 shared-kernel trace；逐帧核对 truth ledger、video/route/ledger hash、candidate adapter、kernel 顺序和 feedback receipt，提醒时间由 trace 重算，手写摘要不再是评价输入真源。
+- 负控：占位/漂移文件 SHA、trace 单字节篡改、漏帧、手改提醒、adapter 漂移和 execution failure 均 fail closed；valid synthetic bundle 覆盖 6 arms / 12 episode traces / 252 frame traces，但正式 authority 仍强制 `u0_passed=false`。统一 dependency-free suite 为 8 files / 39 tests 全绿，空正式 truth CLI exit 2 且零报告。
+- 边界：该设备数据是 historical benchmark-only，不是 U0 双审人类 truth；未实现或运行真实 teacher 六臂，不训练、不改 App/默认模型、不授权 S0/Android/production。
+
+### USTRF U0 v2 unified candidate runner 与 LOSO/去标签执行合同
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：新增稳定 `run_ustrf_sc_u0_candidate_bundle.py`，把 U0 从“可校验手工 bundle”推进为实际 subprocess-bound adapter 执行；prediction/evidence schema 升级 v2。修复 evaluator 对 adapter 字符串使用对象身份比较及重复 arm 可覆盖的问题。
+- 执行边界：adapter 只收到不含 review、adjudication、`should_alert` 或事件标签的 sanitized inference manifest；U0 cadence 冻结为采集合同的 500ms exact grid。正式 backend 必须绑定 Android/Kotlin shared `AssistDecisionKernel`；synthetic process proof 使用独立 fixture backend，不冒充真机或模型证据。
+- 实验设计：fixed baseline 声明 no-fit；拟合臂逐 held-out session 绑定 exact train-session/episode inventory、fold artifact 与 training receipt。uniform 由 runner 生成 constant full-frame field；shuffled 使用 session 内 sorted episode cyclic shift-one，control 禁止标签、seed 与 refit。truth route 与 adapter route input 分别记账。
+- 兼容修正：trace 状态改为 kernel 原生 `APPROACHING/ALERTED/PASSED_OR_RECEDING/CLEARED`，feedback outcome 显式绑定 Kotlin reason；YOLO/bbox 保留生产现状的 optional event ID，dense 臂强制 kernel-native ID，禁止 writer 补造。
+- 验证：统一 dependency-free suite 9 files / 44 tests 全绿；synthetic proof 实际执行 6 arms / 12 subprocess / 252 frames。LOSO held-out 泄漏、漏臂/重复臂、独立 JSON identity、非零退出、漏帧、标签注入、route/control 漂移、文件/registry/kernel/hash 漂移及 feedback/event 映射漂移均 fail closed。
+- 边界：没有真实六臂 adapter、人类 full-matrix truth 或 device metric geometry；不训练、不改 App/默认模型/阈值，不授权 U0、S0、Android 或 production。
+
+### USTRF U0 baseline Android adapter 与可审计真机 receipt
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：新增 `baseline_yolo_geometry` 的稳定 host ADB adapter、device-benchmark instrumentation 与冻结配置。host 不生成 decision；Android 重算 request/manifest/video/ledger/artifact/config，枚举编码 sample PTS、解码 canonical RGBA8888、调用 shipped YOLO11n TFLite 和 shared `AssistDecisionKernel`，再生成最终 adapter JSON。
+- 证据加固：Android receipt 绑定 device/build fingerprint、app/test APK SHA、模型/标签 SHA、host/device 源码 SHA、ledger、逐帧 requested/selected PTS、20ms 误差上限、压缩 video sample SHA、RGBA8888 内容 SHA 与 detector timing。runner/admission 对正式 Android backend 强制此 receipt，对 synthetic backend 反而拒绝伪 Android receipt。
+- 真机：使用与设备现有安装包一致的 `.android-home` 调试证书，无清数据覆盖安装 app/benchmark。SM-S9280/API 36 对 3 帧公开视频完成 r2 两次 smoke，设备/APK/encoded-sample/RGBA/决策稳定字段一致；首次/repeat output SHA256 为 `592ad572...ef26d9d3` / `1f344b9f...f70d1b55`，receipt SHA256 `50fe0692...5bb086c7`。证据在 `artifacts.local/evidence/ustrf-u0-baseline-device-smoke-20260721-r2/`。
+- 验证：统一 dependency-free suite 10 files / 48 tests、额外 device-event extractor 3 tests、JDK 17 `:core:assist:test`、`:core:ustrf:test`、benchmark compile/assemble 与 App assemble 通过；同签名 APK 安装与双次真机复跑通过。
+- 边界：smoke 无 U0 人类事件真值，不证明安全精度或模型晋级；其他五臂、120-episode truth、r818 稳定性与 device metric geometry 仍未闭合，不改 App 运行时/默认模型/阈值。
+
+### USTRF U0 detector bbox × explicit route 第二真实 Android adapter
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：实现 `detector_bbox_explicit_route_adapter_v1` 的 host/device 全链与冻结配置。设备在每个 500ms truth-ledger frame 只选择当前或过去最新且仍有效的外部显式路线 sample，以相机底部中心连接 1/2/3 秒 waypoint、0.08 frame-width 半宽走廊和 bbox 底部 25% footprint 做二值 gate；保留 detection 原 bbox/置信度后送入同一个 `AssistDecisionKernel`。future/stale/低置信/invalid route 统一向 kernel 传空列表，禁止 intervention upgrade。
+- 证据：新增 route-conditioning receipt，逐帧绑定 provider/projection、selected sample/waypoints、每个 source bbox/footprint、最短走廊距离与 keep；host 独立重算 sample 因果、footprint、距离和 keep，U0 runner/admission 另强制 Android bbox-route receipt 与 threshold/source hash 绑定。SM-S9280/API 36 公开视频负控保持 encoded sample、RGBA、app/test APK 和模型不变，仅把路线从中心改为左侧：同一 person bbox 从 `669.07px > 172.8px` 的排除/raw `NONE` 变为 `75.75px` 的保留/raw `MEDIUM`。左侧路线复跑的 backend、gate 与 decision 稳定字段一致；证据在 `artifacts.local/evidence/ustrf-u0-bbox-route-device-smoke-20260721-r1/`。
+- 验证：route gate instrumentation 6 tests、统一 dependency-free suite 11 files / 52 tests、JDK 17 benchmark compile/assemble、同签名 APK 安装、三次完整 host→ADB→device→host 执行与 admission 重验通过。
+- 边界：这是无人类事件真值的 public-video mechanism/pipeline smoke，不证明安全精度或 U0 通过；四个 dense/control 臂、120-episode truth 与 device metric geometry 仍未闭合，不训练、不改 App 运行时/默认模型/阈值。当前状态为 `U0_TWO_ANDROID_ADAPTERS_DEVICE_VERIFIED_BLOCKED_ON_HUMAN_TRUTH_AND_FOUR_REAL_ADAPTERS`。
+
+### USTRF U0 dense risk-evidence seam 与最终内核真机重封存
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：为 shared `AssistDecisionKernel` 新增 object-agnostic risk-evidence 输入，复用 temporal/stabilizer/event/confirmation/feedback；冻结 `UstrfU0DenseRiskEvidenceAdapter` 的 route-intrusion/local-peak 归一化，并把 kernel facade 加 7 个直接依赖文件纳入 U0 bundle hash inventory。未实现 teacher field generator、模型或第三臂。
+- Fail-closed：拒绝 bbox、检测式 distance、预置 trend/event/feedback、矛盾 NONE 语义、越界/不一致分数、stale/current-frame 漂移和非单调时间。prediction admission 新增四个 dense/control 臂的 teacher 名称/版本/许可证/权重/实现、LOSO fold、route、逐帧 field SHA/evidence/unknown/归一化算术 receipt，缺项或篡改均拒绝。
+- 执行修正：发现 baseline host 误用类级 instrumentation selector，导致同类 bbox test 被一并运行；改为方法级 selector并新增回归。最终 shared-kernel SHA `d28ea341...d7ac04d` 下重新同签名安装 APK，SM-S9280/API 36 完成 baseline r4 双跑和 bbox-route r3 中心/左侧/左侧复跑，五份输出全部通过 formal admission；证据分别在 `artifacts.local/evidence/ustrf-u0-baseline-device-smoke-20260721-r4/` 与 `artifacts.local/evidence/ustrf-u0-bbox-route-device-smoke-20260721-r3/`。
+- 验证：dependency-free research contracts `11 files / 54 tests`；JDK 17 `:core:assist:test`、`:core:ustrf:test`、`:device-benchmark:compileDebugKotlin`、`:app:assembleDebug`；SM-S9280/API 36 dense seam `3/3`、route gate `6/6` instrumentation，五次 host→ADB→Android→host 与 admission 重验全绿。
+- 边界：当前仅为两条真实 Android adapter 加 dense kernel seam，不是第三臂或 U0 PASS；正式人类 truth 仍为 0/120，teacher generator/LOSO artifact、四个 dense/control adapter 与 device metric geometry 仍缺。状态为 `U0_TWO_ANDROID_ADAPTERS_AND_DENSE_KERNEL_SEAM_DEVICE_VERIFIED_BLOCKED_ON_HUMAN_TRUTH_AND_FOUR_REAL_ADAPTERS`。
+
+### USTRF U0 第三臂离线 dense teacher 前置原型
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：在隔离的 `scripts/research/ustrf_sc` Module 新增 Apache-2.0 Depth Anything V2 Small ONNX teacher field 原型，并新增 label-free、fold-local 校准 artifact/receipt 稳定入口；输入合同拒绝 event/review/adjudication、blind、future 与 held-out 泄漏，所有输出保持 auxiliary-only 且 authority false。
+- 验证：隔离 Python 3.11 venv 中 field 与 fitter 各 3 tests 通过，Python compile 与 diff check 通过；尚未运行真实 fold fit、Android field consumer、第三臂 device smoke 或 formal admission。
+- 边界：审计发现现有 dense receipt 仍缺可从 fixed-point cells 重算的 field/route 证据，Android backend receipt 仍为 YOLO 专用，runner 另有复制后执行原文件的 TOCTOU。原型因此不得计为第三条真实 adapter；状态和 human truth `0/120` 均不变。
+
 ## 2026-07-13
 
 ### SANPO P3 中心障碍候选闭环与 step/curb 发现补齐

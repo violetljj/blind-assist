@@ -1,0 +1,97 @@
+{
+  "schema": "blindassist_ustrf_sc_rc_oarf_route_specificity_control_contract_v1",
+  "contract_id": "ustrf_sc_rc_oarf_e0_within_image_wrong_route_identity_bound_v1",
+  "frozen_at_utc": "2026-07-20T19:01:00Z",
+  "objective": "Confirm the frozen r816 route-specificity signal with prediction identities emitted by the same no-refit evaluation run.",
+  "post_run_binding_disclosure": {
+    "identity_report_was_created_before_this_hash_binding": true,
+    "legacy_preregistered_contract": {
+      "path": "configs/ustrf_sc_rc_oarf_route_specificity_control_v1.json",
+      "sha256": "ee3cc9ebfaabf76f9bdfb7d031f4d69571bdea259e16274fde6843a3969434ad"
+    },
+    "unchanged_from_legacy_contract": ["route rows", "wrong-route permutations", "gate thresholds", "authority"],
+    "new_binding_only": "identity-bearing r816 replay plus exact parity with the frozen legacy r816 evaluation"
+  },
+  "bound_r816_report": {
+    "path": "artifacts.local/evidence/public-video-r816c-route-conditioned-distance-aux-identity-bound-20260721/probe_r816c.json",
+    "sha256": "ed4c30cee63158ef6fe643b7be0d3db489aeb40df2c8f337598ca662b56e9006",
+    "schema": "blindassist_route_conditioned_synthetic_dino_probe_v1",
+    "prediction_path": "evaluation.route_conditioned_readout.predictions",
+    "prediction_example_id_path": "evaluation.route_conditioned_readout.example_ids",
+    "example_count": 216
+  },
+  "legacy_prediction_replay": {
+    "path": "artifacts.local/evidence/public-video-r816-route-conditioned-distance-aux-probe-20260719/probe_r816.json",
+    "sha256": "88e16295da088cd8f89fce6ce29b69ff81b3e3d210063bfef644f9e01de171d4",
+    "schema": "blindassist_route_conditioned_synthetic_dino_probe_v1",
+    "prediction_path": "evaluation.route_conditioned_readout.predictions",
+    "require_exact_predictions": true,
+    "require_exact_evaluation_except_example_ids": true
+  },
+  "frozen_execution": {
+    "checkpoint_sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378",
+    "input_size": 224,
+    "layer_index": 11,
+    "teacher_target": "bbox_distance",
+    "distance_sigma_patches": 1.5,
+    "seed": 20260719,
+    "teacher_ridge": 10.0,
+    "head_ridge": 1.0,
+    "route_balanced_accuracy_gte": 0.80,
+    "each_class_recall_gte": 0.70,
+    "balanced_accuracy_gain_over_global_gte": 0.10
+  },
+  "bound_stability_gate": {
+    "contract": {
+      "path": "configs/public_video_route_conditioned_bootstrap_short_runs_contract_r818.json",
+      "sha256": "4ecc4d7804081b6641c3ae5b50a676830cc3da220e4a85aaddb7c79c28d9a5de"
+    },
+    "report": {
+      "path": "artifacts.local/evidence/public-video-r818-route-conditioned-bootstrap-short-runs-20260719/bootstrap_r818.json",
+      "sha256": "ae6427b838759ce9ba18399e6325265000de817eda88a03eea8d7a3eb41366f0",
+      "schema": "blindassist_route_conditioned_bootstrap_short_runs_v1"
+    },
+    "required_for_student_training": true
+  },
+  "bound_route_examples": {
+    "path": "artifacts.local/synthetic/route-conditioned-obstruction-r814/dataset-v2/route_examples.jsonl",
+    "sha256": "f5bce5f34bb3904f59a511fac69a8b585103319e55263118384f24540a87e7f6",
+    "dataset_build_receipt_sha256": "96c36810a9d5fea0c8afee492b4bac391324868971a85b7115e6c247d05e3d14",
+    "manual_review_sha256": "0344b3f8d021ee08e3b28cc1ccf85c3d855ff92cde3d342a88fef2e47edc67b0",
+    "required_route_choices": ["LEFT", "STRAIGHT", "RIGHT"]
+  },
+  "permutation_policy": {
+    "kind": "within_image_cyclic_derangements_only",
+    "seed": null,
+    "threshold_or_model_refit": false,
+    "controls": {
+      "cyclic_left_to_straight": {
+        "LEFT": "STRAIGHT",
+        "STRAIGHT": "RIGHT",
+        "RIGHT": "LEFT"
+      },
+      "cyclic_left_to_right": {
+        "LEFT": "RIGHT",
+        "STRAIGHT": "LEFT",
+        "RIGHT": "STRAIGHT"
+      }
+    }
+  },
+  "gate": {
+    "minimum_true_route_balanced_accuracy": 0.80,
+    "minimum_true_route_each_class_recall": 0.70,
+    "minimum_true_minus_each_wrong_route_balanced_accuracy": 0.10,
+    "every_parent_source_true_route_must_exceed_every_wrong_route": true,
+    "formal_gate_requires_identity_bound_predictions": true
+  },
+  "authority": {
+    "train_only_synthetic_mechanism_evidence": true,
+    "real_event_truth": false,
+    "route_provider_evaluation": false,
+    "student_training": false,
+    "calibration": false,
+    "blind": false,
+    "android_runtime_change": false,
+    "production_model_replacement": false
+  }
+}

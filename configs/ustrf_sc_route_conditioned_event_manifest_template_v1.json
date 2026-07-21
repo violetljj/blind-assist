@@ -1,9 +1,13 @@
 {
   "schema": "blindassist_sanpo_counterfactual_episode_manifest_v1",
   "collection_status": "in_review",
+  "collection_scope": "official_full_matrix",
+  "pilot": false,
   "benchmark_only": true,
   "contract_id": "ustrf_sc_route_conditioned_event_truth_v1",
   "production_model_replacement_authorized": false,
+  "training_eligible": false,
+  "android_runtime_change_authorized": false,
   "notes": [
     "Template only. The current project has captured zero eligible route-conditioned episodes.",
     "Copy this file under artifacts.local/evidence before collection; never write private raw media into the repository.",

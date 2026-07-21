@@ -95,6 +95,43 @@ class RiskEventTracker(
         return snapshot(event)
     }
 
+    /** Tracks one frame-bound, object-agnostic route-risk identity without manufacturing a box. */
+    fun updateExternalEvidence(
+        risk: RiskResult,
+        eventKey: String,
+        nowMs: Long = System.currentTimeMillis()
+    ): RiskEventSnapshot {
+        require(risk.sourceDetection == null) { "external risk evidence must not contain a detection" }
+        require(eventKey.isNotBlank()) { "external risk event key must be non-blank" }
+        expirePassedEvent(nowMs)
+        if (risk.level == RiskLevel.NONE || risk.evidenceState == RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE) {
+            return onMissingOrNonCentralCandidate(nowMs)
+        }
+        recentlyPassed?.takeIf { it.matchesExternal(eventKey) }?.let { return it.snapshot() }
+        val current = active
+        if (current == null || !current.matchesExternal(eventKey)) {
+            if (current != null) clear(RiskEventClearReason.REPLACED_BY_NEW_TARGET, nowMs)
+            active = ActiveEvent(
+                id = "risk-${nextId++}",
+                label = "external-risk-evidence",
+                centerXRatio = 0.5f,
+                externalEventKey = eventKey
+            )
+        }
+        val event = requireNotNull(active)
+        if (risk.approachTrend == ApproachTrend.RECEDING) {
+            event.state = RiskEventState.PASSED_OR_RECEDING
+            event.recedingOrMissingFrames += 1
+            if (event.recedingOrMissingFrames >= config.clearAfterRecedingOrMissingFrames) {
+                clear(RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES, nowMs)
+                return RiskEventSnapshot.none()
+            }
+        } else {
+            event.recedingOrMissingFrames = 0
+        }
+        return snapshot(event)
+    }
+
     /** Mark the active event only after speech or vibration was actually accepted. */
     fun recordFeedback(snapshot: RiskEventSnapshot, decision: FeedbackDecision): RiskEventSnapshot {
         val event = active ?: return RiskEventSnapshot.none()
@@ -145,7 +182,8 @@ class RiskEventTracker(
                     id = it.id,
                     label = it.label,
                     centerXRatio = it.centerXRatio,
-                    expiresAtMs = nowMs + config.postPassReappearanceHoldMs
+                    expiresAtMs = nowMs + config.postPassReappearanceHoldMs,
+                    externalEventKey = it.externalEventKey
                 )
             }
             it.state = RiskEventState.CLEARED
@@ -173,22 +211,30 @@ class RiskEventTracker(
         var state: RiskEventState = RiskEventState.APPROACHING,
         var wasAlerted: Boolean = false,
         var recedingOrMissingFrames: Int = 0,
-        var clearReason: RiskEventClearReason? = null
+        var clearReason: RiskEventClearReason? = null,
+        val externalEventKey: String? = null
     ) {
         fun matches(detection: Detection, config: RiskEventTrackerConfig): Boolean =
-            label == detection.label && abs(centerXRatio - detection.boundingBox.centerX / detection.frameSize.width) <=
+            externalEventKey == null && label == detection.label &&
+                abs(centerXRatio - detection.boundingBox.centerX / detection.frameSize.width) <=
                 config.maxCenterDeltaForSameEvent
+
+        fun matchesExternal(eventKey: String): Boolean = externalEventKey == eventKey
     }
 
     private data class PassedEvent(
         val id: String,
         val label: String,
         val centerXRatio: Float,
-        val expiresAtMs: Long
+        val expiresAtMs: Long,
+        val externalEventKey: String? = null
     ) {
         fun matches(detection: Detection, config: RiskEventTrackerConfig): Boolean =
-            label == detection.label && abs(centerXRatio - detection.boundingBox.centerX / detection.frameSize.width) <=
+            externalEventKey == null && label == detection.label &&
+                abs(centerXRatio - detection.boundingBox.centerX / detection.frameSize.width) <=
                 config.postPassMaxCenterDeltaForSameEvent
+
+        fun matchesExternal(eventKey: String): Boolean = externalEventKey == eventKey
 
         fun snapshot(): RiskEventSnapshot = RiskEventSnapshot(
             eventId = id,

@@ -17,6 +17,14 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 TEST_FILES = (
     "scripts/test_validate_explicit_route_intent_episode.py",
     "scripts/test_validate_route_conditioned_event_truth.py",
+    "scripts/test_generate_sanpo_counterfactual_capture_plan.py",
+    "scripts/test_validate_ustrf_sc_route_conditioned_event_pilot.py",
+    "scripts/test_run_ustrf_sc_u0_candidate_bundle.py",
+    "scripts/test_run_ustrf_sc_u0_android_baseline_adapter.py",
+    "scripts/test_run_ustrf_sc_u0_android_bbox_route_adapter.py",
+    "scripts/test_generate_ustrf_sc_u0_dense_teacher_loso_artifact.py",
+    "scripts/test_validate_ustrf_sc_u0_prediction_bundle.py",
+    "scripts/test_evaluate_ustrf_sc_u0_teacher_upper_bound.py",
     "scripts/test_validate_ustrf_sc_device_metric_geometry.py",
     "scripts/test_report_ustrf_sc_research_benchmark.py",
 )

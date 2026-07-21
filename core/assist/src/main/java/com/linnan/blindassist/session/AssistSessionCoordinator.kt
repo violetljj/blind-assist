@@ -3,8 +3,6 @@ package com.linnan.blindassist.session
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.FeedbackGateway
-import com.linnan.blindassist.feedback.FeedbackDecision
-import com.linnan.blindassist.feedback.FeedbackReason
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.risk.RiskEventTracker
@@ -21,25 +19,24 @@ class AssistSessionCoordinator(
     private val fpsTracker: FpsTracker = FpsTracker(),
     private val riskEventTracker: RiskEventTracker = RiskEventTracker()
 ) {
-    private val lowConfidenceSidePersonConfirmation = LowConfidenceSidePersonConfirmation()
+    private val decisionKernel = AssistDecisionKernel(
+        assistEngine = assistEngine,
+        riskEventTracker = riskEventTracker
+    )
 
     fun startSession(nowMs: Long = System.currentTimeMillis()) {
         feedbackGateway.resetSession()
         fpsTracker.reset()
-        assistEngine.startSession(nowMs)
-        riskEventTracker.reset()
-        lowConfidenceSidePersonConfirmation.reset()
+        decisionKernel.startSession(nowMs)
     }
 
     fun reset() {
         fpsTracker.reset()
-        assistEngine.reset()
-        riskEventTracker.reset()
-        lowConfidenceSidePersonConfirmation.reset()
+        decisionKernel.reset()
     }
 
     fun sessionSummary(): SessionSummary {
-        return assistEngine.sessionSummary()
+        return decisionKernel.sessionSummary()
     }
 
     fun processFrame(
@@ -49,25 +46,15 @@ class AssistSessionCoordinator(
         nowMs: Long = System.currentTimeMillis()
     ): AssistFrameResult {
         val fps = fpsTracker.onFrame()
-        val evaluation = assistEngine.evaluate(
+        return decisionKernel.processFrame(
             detections = detectorFrame.detections,
             frameSize = detectorFrame.frameSize,
             profile = profile,
             scenario = scenario,
             metrics = detectorFrame.metrics.copy(fps = fps),
+            feedbackGateway = feedbackGateway,
             nowMs = nowMs
         )
-        val event = riskEventTracker.update(evaluation.stableRisk, nowMs)
-        val eventEvaluation = evaluation.copy(riskEvent = event)
-        val feedbackDecision = if (event.suppressesFeedback) {
-            FeedbackDecision(null, triggered = false, reason = FeedbackReason.EVENT_ALREADY_ALERTED)
-        } else if (!lowConfidenceSidePersonConfirmation.isConfirmed(eventEvaluation.stableRisk)) {
-            FeedbackDecision(null, triggered = false, reason = FeedbackReason.UNSTABLE_RISK)
-        } else {
-            feedbackGateway.notify(eventEvaluation.stableRisk, profile, scenario)
-        }
-        val completedEvent = riskEventTracker.recordFeedback(event, feedbackDecision)
-        return assistEngine.completeFeedback(eventEvaluation.copy(riskEvent = completedEvent), feedbackDecision)
     }
 }
 

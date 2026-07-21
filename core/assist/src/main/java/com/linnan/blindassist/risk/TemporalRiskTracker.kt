@@ -17,7 +17,9 @@ data class TemporalRiskTrackerConfig(
     val minDepthScoreDeltaForApproach: Float = TemporalRiskTracker.DEFAULT_MIN_DEPTH_SCORE_DELTA_FOR_APPROACH,
     val approachScoreBoost: Float = TemporalRiskTracker.DEFAULT_APPROACH_SCORE_BOOST,
     val minStableSegmentationFrames: Int = TemporalRiskTracker.DEFAULT_MIN_STABLE_SEGMENTATION_FRAMES,
-    val minStableSegmentationBottomRatio: Float = TemporalRiskTracker.DEFAULT_MIN_STABLE_SEGMENTATION_BOTTOM_RATIO
+    val minStableSegmentationBottomRatio: Float = TemporalRiskTracker.DEFAULT_MIN_STABLE_SEGMENTATION_BOTTOM_RATIO,
+    val minExternalEvidenceTrendFrames: Int = TemporalRiskTracker.DEFAULT_MIN_EXTERNAL_EVIDENCE_TREND_FRAMES,
+    val minExternalEvidenceScoreDelta: Float = TemporalRiskTracker.DEFAULT_MIN_EXTERNAL_EVIDENCE_SCORE_DELTA
 ) {
     init {
         require(maxFrames >= minApproachFrames) { "maxFrames must be >= minApproachFrames" }
@@ -27,6 +29,8 @@ data class TemporalRiskTrackerConfig(
         require(minStableSegmentationBottomRatio in 0f..1f) {
             "minStableSegmentationBottomRatio must be in [0, 1]"
         }
+        require(minExternalEvidenceTrendFrames >= 2)
+        require(minExternalEvidenceScoreDelta > 0f && minExternalEvidenceScoreDelta.isFinite())
     }
 }
 
@@ -34,11 +38,13 @@ class TemporalRiskTracker(
     private val config: TemporalRiskTrackerConfig = TemporalRiskTrackerConfig()
 ) {
     private val observations = ArrayDeque<TargetObservation>()
+    private val externalEvidenceObservations = ArrayDeque<ExternalEvidenceObservation>()
     private val fusionPolicy = ConservativeRiskFusionPolicy(
         ConservativeRiskFusionConfig(motionMaxPromotionSteps = 1)
     )
 
     fun update(raw: RiskResult, nowMs: Long): RiskResult {
+        externalEvidenceObservations.clear()
         val detection = raw.sourceDetection ?: run {
             reset()
             return raw.copy(approachTrend = ApproachTrend.UNKNOWN)
@@ -60,8 +66,48 @@ class TemporalRiskTracker(
         return applyTrend(raw, trend, observations.size)
     }
 
+    /**
+     * Causal scalar trend annotation for frame-bound, object-agnostic risk evidence.
+     *
+     * This path never promotes a risk level. It only labels a stable event key as
+     * approaching/receding from past-and-current scores so the shared event lifecycle
+     * can clear monotonically without inventing a detector box.
+     */
+    fun updateExternalEvidence(raw: RiskResult, eventKey: String, nowMs: Long): RiskResult {
+        require(raw.sourceDetection == null) { "external risk evidence must not contain a detection" }
+        require(eventKey.isNotBlank()) { "external risk evidence event key must be non-blank" }
+        require(raw.riskScore.isFinite() && raw.riskScore >= 0f) { "external risk score must be finite and non-negative" }
+        observations.clear()
+        externalEvidenceObservations.lastOrNull()?.let { latest ->
+            require(nowMs > latest.observedAtMs) { "external risk evidence time must increase monotonically" }
+        }
+        while (
+            externalEvidenceObservations.isNotEmpty() &&
+            nowMs - externalEvidenceObservations.first().observedAtMs > config.maxWindowMs
+        ) {
+            externalEvidenceObservations.removeFirst()
+        }
+        if (externalEvidenceObservations.lastOrNull()?.eventKey?.let { it != eventKey } == true) {
+            externalEvidenceObservations.clear()
+        }
+        externalEvidenceObservations.addLast(ExternalEvidenceObservation(eventKey, raw.riskScore, nowMs))
+        while (externalEvidenceObservations.size > config.maxFrames) externalEvidenceObservations.removeFirst()
+        val trend = if (externalEvidenceObservations.size < config.minExternalEvidenceTrendFrames) {
+            ApproachTrend.UNKNOWN
+        } else {
+            val delta = externalEvidenceObservations.last().riskScore - externalEvidenceObservations.first().riskScore
+            when {
+                delta >= config.minExternalEvidenceScoreDelta -> ApproachTrend.APPROACHING
+                delta <= -config.minExternalEvidenceScoreDelta -> ApproachTrend.RECEDING
+                else -> ApproachTrend.STABLE
+            }
+        }
+        return raw.copy(approachTrend = trend)
+    }
+
     fun reset() {
         observations.clear()
+        externalEvidenceObservations.clear()
     }
 
     private fun trim(nowMs: Long) {
@@ -221,6 +267,12 @@ class TemporalRiskTracker(
         }
     }
 
+    private data class ExternalEvidenceObservation(
+        val eventKey: String,
+        val riskScore: Float,
+        val observedAtMs: Long
+    )
+
     companion object {
         const val DEFAULT_MAX_FRAMES = 5
         const val DEFAULT_MAX_WINDOW_MS = 900L
@@ -233,6 +285,8 @@ class TemporalRiskTracker(
         const val DEFAULT_APPROACH_SCORE_BOOST = 1.1f
         const val DEFAULT_MIN_STABLE_SEGMENTATION_FRAMES = 2
         const val DEFAULT_MIN_STABLE_SEGMENTATION_BOTTOM_RATIO = 0.65f
+        const val DEFAULT_MIN_EXTERNAL_EVIDENCE_TREND_FRAMES = 3
+        const val DEFAULT_MIN_EXTERNAL_EVIDENCE_SCORE_DELTA = 0.12f
         const val SEGMENTATION_MAX_CENTER_DELTA = 0.25f
         private val STABLE_SEGMENTATION_OBSTACLE_LABELS = setOf(
             "generic obstacle",

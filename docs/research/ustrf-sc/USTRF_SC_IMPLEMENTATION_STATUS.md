@@ -20,7 +20,7 @@
 ## 2026-07-20 route-conditioned 主线补充
 
 - 主线 seam：`UstrfRouteConditionedRiskInteractor` 只消费同 frame/coordinate system 的显式 route receipt 与 object-agnostic `UstrfRiskField`，输出 route intrusion evidence；不读取类别、box 或 detector AP，不输出用户动作。任何 invalid/stale/future/risk-model-inferred route 都拒绝且不回退中心走廊。
-- 事件硬门：`configs/ustrf_sc_route_conditioned_event_collection_v1.json` 冻结 120 episode / 60 matched pair，要求 capture-clock receipt、显式路线 sidecar、正负 episode 共用路线条件、双人独立复核和哈希绑定 adjudication。当前只有空模板，eligible truth 为 0；pilot 只审计采集链。
+- 事件硬门：`configs/ustrf_sc_route_conditioned_event_collection_v1.json` 冻结 120 episode / 60 matched pair。正式 full-matrix 与 10-episode pilot 已拆成独立 scope/contract/schema；逐帧 ledger 会重算 capture ns、video PTS、clock summary、route 因果/投影绑定，双审必须是两份互不可见的人类 review 文件并由独立哈希 adjudication 绑定。当前只有空模板，eligible truth 为 0；pilot 成功也只表示采集链完整。
 - 几何硬门：`scripts/validate_ustrf_sc_device_metric_geometry.py` 要求五类同设备、哈希绑定证据；研究总报告可直接消费该 raw bundle。校准 verifier 的 admission 已与 metric-geometry promoter 原子绑定。当前无 bundle，`device_metric_geometry_admission=false`；未来单独通过也只允许 geometry shadow。
 - detector 边界：crop/tiling r1 已冻结。后续 detector 变量只能是独立的 crop-view FP 抑制实验（如跨 view 一致性门），不得继续扫描 r1 的 NMS、overlap 或 score。
 
@@ -30,7 +30,27 @@
 
 - route-conditioned 事件 manifest 现强制绑定合同 ID、benchmark-only、生产权限、route 父来源与 episode source receipt；训练资格服从 config authority。当前合同即使未来收齐 120 episode，也只授权 teacher upper-bound evaluation，不自动授权学生训练。
 - route-risk seam 现拒绝 future/stale risk field，并把 evidence TTL 截断到 500ms 风险场新鲜度窗；不再允许“路线还新、风险场已旧”的组合返回 Available。
-- r816 within-image wrong-route 特异性负控在 216 例/72 图/3 父来源上观察到强信号：正确路线 BA `.91555`，两种错路线 `.72492/.79515`，每个父来源均同方向下降。但旧 report 未保存逐预测 example ID，正式 gate 为 `BLOCKED_ON_PREDICTION_IDENTITY_BINDING`；权限仍仅为 provisional synthetic mechanism evidence，r818 稳定性、真实事件、设备与生产结论均不变。
+- r816c 在原环境和全部冻结参数下完成 identity-bound 复跑：216 个 example ID 与 route rows 逐项一致，global/route/exact 预测、指标、fold 和系数 SHA 与旧 r816 精确一致。within-image wrong-route 正式 gate 为 `PASS_IDENTITY_BOUND_SYNTHETIC_ROUTE_SPECIFICITY`：正确路线 BA `.91555`，两种错路线 `.72492/.79515`，每个父来源均同方向下降。但绑定的 r818 稳定门仍失败（mean BA `.87737 < .90`，worst no-alert recall `.79710 < .80`），所以组合结论是 `BLOCKED_ON_R818_STABILITY`；真实事件、设备、学生训练与生产权限均不变。
+
+## 2026-07-21 P0 shared decision parity
+
+- 生产 `AssistSessionCoordinator` 与 Android device benchmark 已共用 `AssistDecisionKernel`，统一 temporal、stabilization、event、低置信侧向行人确认、反馈 receipt 和 trace 顺序；正式 App 的 lifecycle `commitIfCurrent` 边界不变。
+- 四帧分割风险黄金矩阵与 unavailable-retry 回归锁定旧生产语义；benchmark v2 同时输出 raw/stable risk，旧 `model_risk` alias 保持 raw，事件/提醒聚合采用 production stable-risk 语义并明确与旧报告不可直接比较。
+- device-event extractor 只接受 v2 + `blindassist_shared_decision_kernel_v1` + 已知反馈 adapter；模拟 planner 接受不冒充物理设备反馈送达。
+- 当前授权：`P0_HOST_VERIFIED`。这只关闭生产/benchmark 决策实现漂移；本轮没有新增真机 benchmark、U0 teacher、120-episode 人工事件真值、设备米制几何或生产模型授权。
+- P0 真机旁证已补齐：SM-S9280/API 36、90 帧/3 序列、shared-kernel v2 报告 SHA256 `6b2d39b...b96b4a25`；candidate P95 `57.674ms`、event recall `1.0`、critical miss `0`、repeat delivery `0`、clearance `1.0`、false alerts/min `0`，49 次 duplicate attempt 被抑制。仍有 2 次 event ID regeneration；反馈 adapter 是 deterministic planner acceptance，不是物理投递，且该 historical benchmark 不提供 U0 人类真值，因此授权只提升为 `P0_DEVICE_TRACE_VERIFIED`，不触发 App/模型晋级。
+
+## 2026-07-21 U0 evaluator readiness
+
+- 已新增 eval-only、dependency-free 的 U0 六臂 evaluator：四个正式臂加 uniform/shuffled route 负控，共用 frozen frame ledger 与 `blindassist_shared_decision_kernel_v1`，并绑定 truth/config/manifest/implementation/artifact/threshold/trace SHA。
+- evaluator 内部重算 route-conditioned human truth validator，并钉死官方 config 与四文件 validator bundle SHA；要求正式 120 episode / 60 pair 分母、LOSO、唯一身份、critical fold 分母和逐 session/scene/matched-pair 指标。pair 共享 route plan/provider policy/route choice，各 episode 投影分别绑定自身 video/frame ledger；绝对门、route-control 增益、unknown-low-obstacle 跨 session 增益和 causal 不退化门均已预注册。
+- U0 prediction schema 已升级为 v2 unified-runner 合同：实际启动 preregistered Python subprocess wrapper，但正式 registry 必须声明并绑定 `android_kotlin_assist_decision_kernel_v1` 与 frozen `AssistDecisionKernel` 实现；synthetic protocol fixture 使用独立 backend，不能冒充 Android。每臂只获得不含 review/adjudication/event label 的 inference manifest；决策 cadence 冻结为与采集 ledger 一致的 500ms exact grid，kernel 原生事件状态与 feedback reason 有显式映射，YOLO/bbox 允许 kernel-native optional event ID，dense 臂仍强制原生 event identity。
+- LOSO 不再是自报 held-out 字段：每个 arm 的每个 session 都必须提交 exact train-session/episode inventory、fold artifact 与 training receipt；fixed baseline 声明 `fixed_no_fit_v1`。uniform control 由 runner 生成 full-frame constant field；shuffled control 使用 held-out session 内按 episode ID 排序的 cyclic shift-one，禁止 seed、标签与 refit。正确 route、control route 与 truth-route binding 分离，不能继续给 control 假报原 route hash。
+- 统一 dependency-free suite 现为 11 files / 54 tests。valid synthetic process proof 实际执行 6 arms / 12 subprocess / 252 frame traces；LOSO 泄漏、漏臂/重复臂、跨 JSON identity、非零退出、漏帧、标签字段注入、手改摘要、文件/registry/kernel/dependency 漂移、旧事件状态、feedback 映射、bbox-route receipt 因果/门控漂移，以及 dense teacher provenance/normalization 漂移全部拒绝。空正式 template 仍 exit 2/零报告，synthetic bundle 在正式 authority 下仍不能授权 U0/S0。
+- shared `AssistDecisionKernel` 新增严格 object-agnostic risk-evidence input：只接收当前帧、有限期、无 bbox/检测距离/预置 trend/event/feedback 的归一化 `RiskResult`，并继续走同一 temporal、stabilizer、event、confirmation 与 feedback 顺序。NONE 语义矛盾、score-breakdown 漂移、越界分数和乱序时间全部 fail closed；共享内核 facade 加 7 个直接依赖文件均由 U0 bundle 独立哈希。`UstrfU0DenseRiskEvidenceAdapter` 冻结 route-intrusion/local-peak 到 NONE/LOW/MEDIUM/HIGH 的映射，并在 SM-S9280/API 36 通过 3 个 instrumentation tests。U0 admission 另冻结四个 dense/control 臂必须提交的 teacher 模型/许可证/权重/实现、LOSO fold、route、逐帧 field/evidence/unknown/归一化算术 receipt；这只是第三臂前置 seam，不是 teacher 实现。
+- `baseline_yolo_geometry` 已有真实 Android adapter：host 只负责去标签输入的 hash/ADB 搬运，Android instrumentation 重算 video/ledger/artifact/config，以 `MediaExtractor` 选择 20ms 内最近编码 sample，同时哈希选中的压缩 sample 字节与解码后 canonical RGBA8888，运行 shipped YOLO11n CPU-4-thread TFLite 与 shared `AssistDecisionKernel`，最终由设备生成 adapter output。receipt 绑定 app/test APK、build fingerprint、模型/标签、host/device 源码、逐帧 PTS/encoded-sample/RGBA/detector timing；admission 独立重验。方法级 instrumentation selector 回归已防止同类其他 adapter 测试被误执行。最终内核哈希 `d28ea341...d7ac04d` 的 SM-S9280/API 36 公开视频 3 帧 r4 smoke 连续两次稳定字段完全相同；首次/repeat output SHA256 为 `ad061060...a57cfa` / `4a99c43f...be12d5`，receipt SHA256 `06a214ab...d5ac0`。该 smoke 无人类事件真值，不是安全精度评估。
+- `detector_bbox_explicit_route` 也已有真实 Android adapter：对每个 500ms ledger frame 只选择 `timestamp <= frame <= valid_until` 的最新显式路线 sample，固定使用 bottom-centre anchor + 1/2/3 秒 waypoints、0.08 frame-width 半宽走廊和 bbox 底部 25% footprint。门控只保留或排除原始 detection，不改 bbox/置信度/kernel 阈值；future/stale/低置信/invalid route 送空 detection 列表。设备逐帧回执记录 sample、waypoints、每个 bbox/footprint、最短距离与 keep，host 和 admission 独立重算因果与门控算术。最终内核 APK 的 r3 负控仍在同一 encoded sample/RGBA/APK 下使中心路线排除左侧 person（669.07px，raw `NONE`）、左侧路线保留它（75.75px，raw `MEDIUM`），左侧路线复跑的 backend/gate/decision 稳定字段一致；三份 output SHA256 为 `dca5a025...9b52f3`、`b206e2d2...f8cca9`、`9db2cff5...15bf9`，receipt SHA256 `c64a5eff...cd353`。证据位于 ignored `artifacts.local/evidence/ustrf-u0-bbox-route-device-smoke-20260721-r3/`，没有人类事件真值或 U0 权限。
+- 当前状态提升为 `U0_TWO_ANDROID_ADAPTERS_AND_DENSE_KERNEL_SEAM_DEVICE_VERIFIED_BLOCKED_ON_HUMAN_TRUTH_AND_FOUR_REAL_ADAPTERS`，不是 U0 PASS；teacher field generator/LOSO artifact 与四个 dense/control 真 adapter 仍缺失并继续 fail closed。
 
 ## 已通过的验证层级
 

@@ -27,6 +27,20 @@ if _ROUTE_SPEC is None or _ROUTE_SPEC.loader is None:  # pragma: no cover - repo
 _ROUTE_VALIDATOR = importlib.util.module_from_spec(_ROUTE_SPEC)
 _ROUTE_SPEC.loader.exec_module(_ROUTE_VALIDATOR)
 
+_BINDING_VALIDATOR_PATH = Path(__file__).with_name("validate_ustrf_sc_capture_frame_ledger.py")
+_BINDING_SPEC = importlib.util.spec_from_file_location("ustrf_frame_binding_validator", _BINDING_VALIDATOR_PATH)
+if _BINDING_SPEC is None or _BINDING_SPEC.loader is None:  # pragma: no cover
+    raise RuntimeError(f"cannot load frame-binding validator: {_BINDING_VALIDATOR_PATH}")
+_BINDING_VALIDATOR = importlib.util.module_from_spec(_BINDING_SPEC)
+_BINDING_SPEC.loader.exec_module(_BINDING_VALIDATOR)
+
+_REVIEW_VALIDATOR_PATH = Path(__file__).with_name("validate_ustrf_sc_independent_human_review.py")
+_REVIEW_SPEC = importlib.util.spec_from_file_location("ustrf_independent_review_validator", _REVIEW_VALIDATOR_PATH)
+if _REVIEW_SPEC is None or _REVIEW_SPEC.loader is None:  # pragma: no cover
+    raise RuntimeError(f"cannot load independent-review validator: {_REVIEW_VALIDATOR_PATH}")
+_REVIEW_VALIDATOR = importlib.util.module_from_spec(_REVIEW_SPEC)
+_REVIEW_SPEC.loader.exec_module(_REVIEW_VALIDATOR)
+
 
 def _load_json(path: Path) -> dict[str, Any]:
     try:
@@ -238,6 +252,9 @@ def _route_intent_evidence(
         raise ContractError(f"{where}.route intent is invalid: {error}") from error
 
     route_intent_id = _require_string(route, "route_intent_id", where=f"{where}.route_intent")
+    route_plan_id = None
+    if config.get("capture_frame_ledger_policy") is not None:
+        route_plan_id = _require_string(route, "route_plan_id", where=f"{where}.route_intent")
     provider = route.get("provider")
     if not isinstance(provider, dict):
         raise ContractError(f"{where}.route_intent.provider must be an object")
@@ -286,6 +303,7 @@ def _route_intent_evidence(
 
     return {
         "route_intent_id": route_intent_id,
+        "route_plan_id": route_plan_id or route_intent_id,
         "provider_id": provider_id,
         "parent_source_id": str(route_report["parent_source_id"]),
     }
@@ -355,6 +373,12 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
             or manifest.get("production_model_replacement_authorized") is not False
         ):
             raise ContractError("route-conditioned truth cannot authorize production replacement")
+        configured_scope = config.get("collection_scope")
+        if configured_scope is not None:
+            if configured_scope != "official_full_matrix" or manifest.get("collection_scope") != "official_full_matrix":
+                raise ContractError("route-conditioned truth must use collection_scope=official_full_matrix")
+            if manifest.get("pilot") is not False:
+                raise ContractError("official route-conditioned truth manifest must declare pilot=false")
         authority = config.get("authority")
         if not isinstance(authority, dict):
             raise ContractError("route-conditioned config.authority must be an object")
@@ -376,6 +400,9 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
             _require_string(receipt, field, where=where)
         if receipt.get("license_status") not in allowed_license:
             raise ContractError(f"{where}.license_status is not allowed")
+        required_origin_scope = config["source_receipt_schema"].get("required_origin_scope")
+        if required_origin_scope is not None and receipt.get("origin_scope") != required_origin_scope:
+            raise ContractError(f"{where}.origin_scope does not match the collection contract")
         if receipt.get("privacy_review_status") != config["source_receipt_schema"]["required_privacy_review_status"]:
             raise ContractError(f"{where}.privacy_review_status must be green")
         if config["source_receipt_schema"].get("hash_license_and_privacy_evidence") is True:
@@ -398,7 +425,9 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
     required_episode_fields = config["episode_record_schema"]["required_fields"]
     pairs: dict[str, list[dict[str, Any]]] = defaultdict(list)
     counts: Counter[tuple[str, str, str]] = Counter()
-    route_binding_by_episode_id: dict[str, dict[str, str]] = {}
+    route_binding_by_episode_id: dict[str, dict[str, Any]] = {}
+    episode_ids_seen: set[str] = set()
+    risk_event_ids_seen: set[str] = set()
     for index, episode in enumerate(episodes):
         where = f"episodes[{index}]"
         if not isinstance(episode, dict):
@@ -410,8 +439,12 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
         scene_id = _require_string(episode, "scene_id", where=where)
         pair_id = _require_string(episode, "matched_pair_id", where=where)
         role = _require_string(episode, "pair_role", where=where)
-        _require_string(episode, "episode_id", where=where)
-        _require_string(episode, "risk_event_id", where=where)
+        episode_id = _require_string(episode, "episode_id", where=where)
+        risk_event_id = _require_string(episode, "risk_event_id", where=where)
+        if episode_id in episode_ids_seen or risk_event_id in risk_event_ids_seen:
+            raise ContractError("episode_id and risk_event_id values must be unique")
+        episode_ids_seen.add(episode_id)
+        risk_event_ids_seen.add(risk_event_id)
         if session_id not in session_ids or scene_id not in scene_ids:
             raise ContractError(f"{where} uses a session or scene outside the config")
         if role not in set(config["episode_record_schema"]["pair_role_allowed"]):
@@ -423,6 +456,9 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
         receipt_id = _require_string(episode, "source_receipt_id", where=where)
         if receipt_id not in receipt_by_id:
             raise ContractError(f"{where} references unknown source_receipt_id")
+        required_origin_scope = config["source_receipt_schema"].get("required_origin_scope")
+        if required_origin_scope is not None and episode.get("origin_scope") != required_origin_scope:
+            raise ContractError(f"{where}.origin_scope does not match the collection contract")
         video_path = _require_string(episode, "video_path", where=where)
         _verify_file_hash(root, video_path, episode.get("video_sha256"), where=f"{where}.video_path")
         if config.get("route_conditioning_policy") is not None:
@@ -445,12 +481,39 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
             episode, scene_id=scene_id, role=role, duration_ms=duration_ms, where=where,
         )
         _annotation_evidence(episode, config=config, root=root, role=role, where=where)
+        independent_review_policy = config.get("independent_human_review_policy")
+        if independent_review_policy is not None:
+            if not isinstance(independent_review_policy, dict):
+                raise ContractError("config.independent_human_review_policy must be an object")
+            try:
+                _REVIEW_VALIDATOR.validate_episode_review(
+                    episode, root=root, policy=independent_review_policy, where=where,
+                )
+            except (ValueError, KeyError, TypeError) as error:
+                raise ContractError(f"{where}.independent human review evidence is invalid: {error}") from error
         route_binding = _route_intent_evidence(
             episode, config=config, root=root, duration_ms=duration_ms, where=where,
         )
         if route_binding is not None:
             if route_binding["parent_source_id"] != receipt_id:
                 raise ContractError(f"{where}.route intent parent_source_id does not match source_receipt_id")
+            ledger_policy = config.get("capture_frame_ledger_policy")
+            if ledger_policy is not None:
+                if not isinstance(ledger_policy, dict):
+                    raise ContractError("config.capture_frame_ledger_policy must be an object")
+                try:
+                    atomic_binding = _BINDING_VALIDATOR.validate_episode_binding(
+                        episode,
+                        root=root,
+                        policy=ledger_policy,
+                        endpoint_tolerance_ms=config["route_conditioning_policy"]["endpoint_coverage_tolerance_ms"],
+                        where=where,
+                    )
+                except (ValueError, KeyError, TypeError) as error:
+                    raise ContractError(f"{where}.atomic frame/route binding is invalid: {error}") from error
+                if atomic_binding["route_plan_id"] != route_binding["route_plan_id"]:
+                    raise ContractError(f"{where}.route plan binding mismatch")
+                route_binding.update(atomic_binding)
             route_binding_by_episode_id[episode["episode_id"]] = route_binding
         context = episode.get("capture_context")
         if not isinstance(context, dict) or not all(isinstance(context.get(key), str) and context[key] for key in config["matrix_contract"]["matched_pair_members_must_share_capture_context"]):
@@ -470,7 +533,12 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
         if config.get("route_conditioning_policy") is not None:
             positive_route = route_binding_by_episode_id[positive["episode_id"]]
             negative_route = route_binding_by_episode_id[negative["episode_id"]]
-            for key in ("route_intent_id", "provider_id"):
+            pair_keys = (
+                ("route_plan_id", "provider_policy", "route_choice")
+                if config.get("capture_frame_ledger_policy") is not None
+                else ("route_intent_id", "provider_id")
+            )
+            for key in pair_keys:
                 if positive_route[key] != negative_route[key]:
                     raise ContractError(f"matched_pair {pair_id} crosses {key}")
 

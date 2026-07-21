@@ -48,6 +48,35 @@ class AssistEngine(
         )
     }
 
+    /** Evaluates already-normalized, object-agnostic evidence through the shared post-analyzer chain. */
+    fun evaluateRiskEvidence(
+        rawRisk: RiskResult,
+        eventKey: String,
+        evidenceCount: Int,
+        frameSize: FrameSize,
+        profile: AlertProfile,
+        scenario: AssistScenario = AssistScenario.GENERAL,
+        metrics: DetectorMetrics,
+        nowMs: Long = System.currentTimeMillis()
+    ): AssistFrameEvaluation {
+        require(rawRisk.sourceDetection == null) { "object-agnostic risk evidence must not contain a detection" }
+        require(evidenceCount > 0) { "object-agnostic risk evidence count must be positive" }
+        val temporalRisk = temporalRiskTracker.updateExternalEvidence(rawRisk, eventKey, nowMs)
+        val stableRisk = riskStabilizer.update(temporalRisk, profile, scenario, nowMs)
+        return AssistFrameEvaluation(
+            rawRisk = temporalRisk,
+            stableRisk = stableRisk,
+            detectionCount = 0,
+            frameSize = frameSize,
+            profile = profile,
+            scenario = scenario,
+            metrics = metrics,
+            preliminaryReason = displayReasonFor(temporalRisk, stableRisk, null),
+            evaluatedAtMs = nowMs,
+            riskEvidenceCount = evidenceCount
+        )
+    }
+
     fun completeFeedback(
         evaluation: AssistFrameEvaluation,
         feedbackDecision: FeedbackDecision
@@ -125,7 +154,11 @@ class AssistEngine(
             )
             FeedbackReason.DISTANCE_TOO_FAR -> RiskExplanation(
                 headline = "暂不提醒：目标距离较远",
-                detail = "检测到${evaluation.detectionCount}个目标，但稳定风险处于${riskText(stableRisk)}。",
+                detail = if (evaluation.riskEvidenceCount > 0) {
+                    "融合${evaluation.riskEvidenceCount}个风险证据单元，但稳定风险处于${riskText(stableRisk)}。"
+                } else {
+                    "检测到${evaluation.detectionCount}个目标，但稳定风险处于${riskText(stableRisk)}。"
+                },
                 accessibilityText = "暂不提醒，目标距离较远，当前场景为$scenarioName。"
             )
             FeedbackReason.COOLDOWN -> RiskExplanation(
@@ -239,7 +272,8 @@ data class AssistFrameEvaluation(
     val metrics: DetectorMetrics,
     val preliminaryReason: FeedbackReason,
     val evaluatedAtMs: Long,
-    val riskEvent: RiskEventSnapshot = RiskEventSnapshot.none()
+    val riskEvent: RiskEventSnapshot = RiskEventSnapshot.none(),
+    val riskEvidenceCount: Int = 0
 )
 
 data class AssistFrameResult(

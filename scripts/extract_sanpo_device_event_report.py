@@ -18,6 +18,11 @@ from typing import Any, Mapping
 
 
 SCHEMA = "blindassist_sanpo_device_event_gate_input_v1"
+BENCHMARK_SCHEMA = "blindassist_detector_ab_device_benchmark_v2"
+DECISION_KERNEL_CONTRACT = "blindassist_shared_decision_kernel_v1"
+FEEDBACK_ADAPTER = "planner_accept_all_v1"
+ALERT_PROFILE = "STANDARD"
+SYNTHETIC_CLOCK_FRAME_STEP_MS = 100
 HASH_LENGTH = 64
 
 
@@ -34,6 +39,20 @@ def build_report(
 ) -> dict[str, Any]:
     if len(model_sha256) != HASH_LENGTH or any(char not in "0123456789abcdef" for char in model_sha256):
         raise ValueError("model_sha256 must be a lowercase 64-character SHA-256")
+    if benchmark.get("schema") != BENCHMARK_SCHEMA:
+        raise ValueError(f"benchmark schema must be {BENCHMARK_SCHEMA}")
+    if benchmark.get("decision_kernel_contract_id") != DECISION_KERNEL_CONTRACT:
+        raise ValueError(f"benchmark decision kernel must be {DECISION_KERNEL_CONTRACT}")
+    if benchmark.get("risk_metric_semantics") != "shared_production_stable_risk_v1":
+        raise ValueError("benchmark must use shared production stable-risk metrics")
+    if benchmark.get("feedback_adapter") != FEEDBACK_ADAPTER:
+        raise ValueError(f"benchmark feedback adapter must be {FEEDBACK_ADAPTER}")
+    if benchmark.get("alert_profile") != ALERT_PROFILE:
+        raise ValueError(f"benchmark alert profile must be {ALERT_PROFILE}")
+    if benchmark.get("synthetic_clock_frame_step_ms") != SYNTHETIC_CLOCK_FRAME_STEP_MS:
+        raise ValueError(
+            f"benchmark synthetic clock step must be {SYNTHETIC_CLOCK_FRAME_STEP_MS} ms"
+        )
     if benchmark.get("device_under_test") != "instrumentation-connected-device":
         raise ValueError("benchmark is not marked as a connected-device run")
     models = benchmark.get("models")
@@ -47,6 +66,8 @@ def build_report(
     app = model.get("app_detector")
     if not isinstance(app, Mapping):
         raise ValueError("benchmark model lacks app_detector results")
+    if app.get("decision_kernel_contract_id") != DECISION_KERNEL_CONTRACT:
+        raise ValueError("app_detector decision kernel contract does not match benchmark contract")
     metrics = app.get("blindassist_metrics")
     total_ms = app.get("total_ms")
     if not isinstance(metrics, Mapping) or not isinstance(total_ms, Mapping):
@@ -72,6 +93,12 @@ def build_report(
         "provenance": {
             "benchmark_sha256": benchmark_sha256,
             "model_id": model_id,
+            "benchmark_schema": BENCHMARK_SCHEMA,
+            "decision_kernel_contract_id": DECISION_KERNEL_CONTRACT,
+            "feedback_adapter": FEEDBACK_ADAPTER,
+            "alert_profile": ALERT_PROFILE,
+            "synthetic_clock_frame_step_ms": SYNTHETIC_CLOCK_FRAME_STEP_MS,
+            "feedback_delivery_semantics": "deterministic_planner_acceptance_not_physical_device_delivery",
             "event_alert_count": event_count,
             "critical_event_count": critical_event_count,
             "sequence_duration_ms": sequence_duration_ms,

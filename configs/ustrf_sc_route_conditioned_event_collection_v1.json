@@ -1,6 +1,7 @@
 {
   "schema": "blindassist_sanpo_counterfactual_episode_collection_v1",
   "contract_id": "ustrf_sc_route_conditioned_event_truth_v1",
+  "collection_scope": "official_full_matrix",
   "version": 1,
   "status": "collection_protocol_only_not_captured",
   "benchmark_only": true,
@@ -19,6 +20,8 @@
     "expected_matched_pair_count": 60,
     "expected_episode_count": 120,
     "pilot_before_full_matrix": {
+      "contract_id": "ustrf_sc_route_conditioned_event_pilot_v1",
+      "origin_scope": "pipeline_audit_pilot_capture",
       "session_count": 1,
       "matched_pairs_per_scene": 1,
       "episode_count": 10,
@@ -75,12 +78,24 @@
     "invalid_route_behavior": "route_unknown_or_invalid_context_attention_only",
     "fixed_center_corridor_fallback_as_user_route_forbidden": true
   },
+  "capture_frame_ledger_policy": {
+    "ledger_schema": "blindassist_capture_frame_ledger_v1",
+    "clock_receipt_schema": "blindassist_capture_clock_receipt_v1",
+    "maximum_capture_gap_ns": 600000000,
+    "maximum_clock_pts_alignment_error_ns": 20000000,
+    "frame_index_must_be_contiguous_from_zero": true,
+    "episode_time_must_equal_video_pts": true,
+    "route_sample_requires_source_and_consuming_frame": true,
+    "route_generation_must_be_causal": true,
+    "projection_receipt_must_bind_video_ledger_camera_and_calibration": true
+  },
   "matrix_contract": {
     "every_session_must_cover_every_scene": true,
     "matched_pair_members_must_share_session": true,
     "matched_pair_members_must_share_scene": true,
-    "matched_pair_members_must_share_route_intent_id": true,
+    "matched_pair_members_must_share_route_plan_id": true,
     "matched_pair_members_must_share_provider_id": true,
+    "matched_pair_members_may_have_episode_specific_current_camera_projection": true,
     "matched_pair_members_must_share_capture_context": [
       "location",
       "lighting",
@@ -102,6 +117,7 @@
   "episode_record_schema": {
     "required_fields": [
       "episode_id",
+      "origin_scope",
       "session_id",
       "scene_id",
       "matched_pair_id",
@@ -115,11 +131,17 @@
       "source_receipt_id",
       "capture_clock_receipt_path",
       "capture_clock_receipt_sha256",
+      "capture_frame_ledger_path",
+      "capture_frame_ledger_sha256",
       "route_intent_path",
       "route_intent_sha256",
       "annotation_reviewer_ids",
       "annotation_evidence_path",
       "annotation_evidence_sha256",
+      "independent_review_paths",
+      "independent_review_sha256s",
+      "adjudication_evidence_path",
+      "adjudication_evidence_sha256",
       "duration_ms",
       "risk_profile",
       "lifecycle_intervals_ms"
@@ -144,6 +166,15 @@
     "criticality_must_be_human_reviewed": true,
     "model_output_is_not_annotation_evidence": true
   },
+  "independent_human_review_policy": {
+    "review_schema": "blindassist_independent_human_event_review_v1",
+    "adjudication_schema": "blindassist_independent_human_event_adjudication_v1",
+    "required_independent_review_count": 2,
+    "anchor_agreement_tolerance_ms": 500,
+    "model_assistance_used_must_be_false": true,
+    "other_review_visible_before_submission_must_be_false": true,
+    "disagreement_requires_third_independent_human": true
+  },
   "risk_profile_and_lifecycle_schema": {
     "primary_hazard_type": "must equal scene_id",
     "positive": {
@@ -164,6 +195,7 @@
     "detector_distance_band_is_not_critical_truth": true
   },
   "source_receipt_schema": {
+    "required_origin_scope": "official_full_matrix_capture",
     "allowed_license_status": ["owned_and_consented", "licensed_for_research"],
     "required_privacy_review_status": "green",
     "hash_license_and_privacy_evidence": true,

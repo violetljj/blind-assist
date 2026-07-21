@@ -21,6 +21,19 @@ from build_public_video_route_conditioned_synthetic_dataset import load_json, lo
 SCHEMA = "blindassist_route_conditioned_synthetic_dino_probe_v1"
 
 
+def ordered_example_ids(route_examples: Sequence[dict[str, Any]]) -> list[str]:
+    """Return the exact evaluation order, rejecting identities that cannot bind predictions."""
+    example_ids: list[str] = []
+    for index, row in enumerate(route_examples):
+        value = row.get("example_id")
+        if not isinstance(value, str) or not value:
+            raise ValueError(f"route example {index} lacks a non-empty example_id")
+        example_ids.append(value)
+    if len(set(example_ids)) != len(example_ids):
+        raise ValueError("route example IDs must be unique")
+    return example_ids
+
+
 def global_risk_features(score_map: np.ndarray, route_choice: str) -> np.ndarray:
     values = np.asarray(score_map, dtype=np.float64)
     if values.ndim != 2 or not np.isfinite(values).all():
@@ -179,6 +192,7 @@ def predict_head(train_features: np.ndarray, train_labels: np.ndarray, test_feat
 def evaluate(route_examples: Sequence[dict[str, Any]], patch_records: Sequence[dict[str, Any]],
              feature_maps: dict[str, np.ndarray], *, teacher_ridge: float, head_ridge: float,
              teacher_target: str = "binary_patch", distance_sigma_patches: float = 1.5) -> dict[str, Any]:
+    example_ids = ordered_example_ids(route_examples)
     labels = np.asarray([int(row["route_blocked"]) for row in route_examples], dtype=np.int64)
     source_ids = np.asarray([row["parent_source_id"] for row in route_examples], dtype=object)
     global_predictions = np.full(len(labels), -1, dtype=np.int64)
@@ -233,9 +247,12 @@ def evaluate(route_examples: Sequence[dict[str, Any]], patch_records: Sequence[d
             "exact_field_head_metrics": common.binary_metrics(labels[indices], exact_predictions[indices]),
         }
     return {
-        "global_readout": {"metrics": common.binary_metrics(labels, global_predictions), "predictions": global_predictions.tolist()},
-        "route_conditioned_readout": {"metrics": common.binary_metrics(labels, route_predictions), "predictions": route_predictions.tolist()},
+        "global_readout": {"metrics": common.binary_metrics(labels, global_predictions), "predictions": global_predictions.tolist(),
+                           "example_ids": example_ids},
+        "route_conditioned_readout": {"metrics": common.binary_metrics(labels, route_predictions), "predictions": route_predictions.tolist(),
+                                       "example_ids": example_ids},
         "exact_field_linear_head": {"metrics": common.binary_metrics(labels, exact_predictions), "predictions": exact_predictions.tolist(),
+                                    "example_ids": example_ids,
                                     "feature": "frozen route-to-exact-composite-bbox intersection fraction only"},
         "by_route_choice": by_choice, "folds": folds,
     }
@@ -291,6 +308,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "frozen_risk_representation": {"model": "Depth Anything V2 frozen DINO-S patch tokens + train-only auxiliary ridge teacher",
             "checkpoint_sha256": sha256_file(args.checkpoint), "input_size": args.input_size, "layer_index": args.layer_index,
             "teacher_target": args.teacher_target, "distance_sigma_patches": args.distance_sigma_patches,
+            "seed": args.seed, "teacher_ridge": args.teacher_ridge, "head_ridge": args.head_ridge,
             "trainable_backbone_parameters": 0, "parent_matched_holdout_exclusion": True},
         "exact_geometry_reference": {"balanced_accuracy": 1.0, "meaning": "Label-construction consistency only; not a learned or real-world score."},
         "evaluation": {**first, "repeat_exact": repeat_exact,

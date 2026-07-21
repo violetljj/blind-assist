@@ -39,7 +39,9 @@
 
 真机 harness 生成的输入必须使用以下 schema，并把 `model_sha256` 绑定到本轮 INT8 文件；路径、文件名或“latest”标签不能替代哈希绑定。
 
-不得手写或从非连续基准拼接该报告。先由同设备 `DetectorAbDeviceBenchmarkTest` 写出含 `model_asset_sha256`、事件/关键事件分母、有效 `sequenceDurationMs` 与 `falseAlertsPerMinute` 的 `benchmark.json`，再运行 `scripts/extract_sanpo_device_event_report.py`。转换器会把基准 SHA256 写入 provenance，并拒绝非真机标记、模型哈希不一致或缺分母/时长的输入；转换成功仍只满足设备事件门输入，不能覆盖离线质量、INT8 fidelity 或默认模型替换授权。
+不得手写或从非连续基准拼接该报告。先由同设备 `DetectorAbDeviceBenchmarkTest` 写出含 `schema=blindassist_detector_ab_device_benchmark_v2`、`decision_kernel_contract_id=blindassist_shared_decision_kernel_v1`、`model_asset_sha256`、事件/关键事件分母、有效 `sequenceDurationMs` 与 `falseAlertsPerMinute` 的 `benchmark.json`，再运行 `scripts/extract_sanpo_device_event_report.py`。转换器会把基准 SHA256、shared-kernel contract 和反馈 adapter 写入 provenance，并拒绝旧版手工 feedback 语义、非真机标记、模型哈希不一致或缺分母/时长的输入；转换成功仍只满足设备事件门输入，不能覆盖离线质量、INT8 fidelity 或默认模型替换授权。
+
+当前 benchmark 的 `feedback_adapter=planner_accept_all_v1` 表示确定性的“计划可接受”模拟，只用于让生产与 benchmark 共享 stabilization、event 和 feedback-gating 顺序；其中 `deliveredAlertCount` 等历史字段不构成 TTS/震动在物理设备上实际送达的证据。真实反馈接受、冷却和 lifecycle 仍须由 `FeedbackController` 回归及独立真机验证覆盖。
 
 历史报告不可补签：2026-07-11 的最近一次 SANPO oracle 真机 `benchmark.json` 没有嵌入 `model_asset_sha256` 或 `sequenceDurationMs`，转换器已按预期拒绝它。该结果只保留为旧版诊断证据，不能回填为候选设备门输入。
 
