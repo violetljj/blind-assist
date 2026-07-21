@@ -21,10 +21,10 @@
 
 - 主线 seam：`UstrfRouteConditionedRiskInteractor` 只消费同 frame/coordinate system 的显式 route receipt 与 object-agnostic `UstrfRiskField`，输出 route intrusion evidence；不读取类别、box 或 detector AP，不输出用户动作。任何 invalid/stale/future/risk-model-inferred route 都拒绝且不回退中心走廊。
 - 事件硬门：`configs/ustrf_sc_route_conditioned_event_collection_v1.json` 冻结 120 episode / 60 matched pair。正式 full-matrix 与 10-episode pilot 已拆成独立 scope/contract/schema；逐帧 ledger 会重算 capture ns、video PTS、clock summary、route 因果/投影绑定，双审必须是两份互不可见的人类 review 文件并由独立哈希 adjudication 绑定。当前只有空模板，eligible truth 为 0；pilot 成功也只表示采集链完整。
-- 几何硬门：`scripts/validate_ustrf_sc_device_metric_geometry.py` 要求五类同设备、哈希绑定证据；研究总报告可直接消费该 raw bundle。校准 verifier 的 admission 已与 metric-geometry promoter 原子绑定。当前无 bundle，`device_metric_geometry_admission=false`；未来单独通过也只允许 geometry shadow。
+- 几何硬门：`scripts/validate_ustrf_sc_device_metric_geometry.py` 要求五类同设备 typed artifact、设备/mount/calibration 绑定、分项 metrics 精确一致，并让每项收据继续 hash-bind 至少一个 raw/gate source artifact；`blocked/in_progress` 也审计已有收据。SM-S9280 已建立红灯 bundle，绑定 r3 `1/861`、r5 `0/843` source-aligned depth 与 `EPHEMERAL_PER_FRAME` pose，blocker 为 `BLOCKED_ON_SOURCE_ALIGNED_METRIC_DEPTH_AND_INTER_FRAME_STABLE_POSE`。`device_metric_geometry_admission=false`；未来单独通过也只允许 geometry shadow。
 - detector 边界：crop/tiling r1 已冻结。后续 detector 变量只能是独立的 crop-view FP 抑制实验（如跨 view 一致性门），不得继续扫描 r1 的 NMS、overlap 或 score。
 
-因此当前授权仍是：研究主线已切换，但真实事件、设备几何、正式 App 与生产反馈均未放行。
+因此当前授权仍是：研究主线已切换且实验扩展已冻结，主动队列只保留真实路线事件 pilot 与同设备米制几何 evidence pack；真实事件、设备几何、正式 App 与生产反馈均未放行。
 
 ## 2026-07-21 E0 安全加固
 

@@ -11,6 +11,7 @@
 - 公开视频银标、反事实和生命周期 r7.* 工作属于受限研究证据。它们不能仅凭单次实验授权训练、校准、blind 评测、Android runtime 或默认模型替换。
 - Corridor-Causal Student 仅完成 benchmark-only 特征与性能可行性检查；缺少完整双人复核的连续事件真值，`96 episode / 48 matched pair` 门仍阻塞训练和事件效果评测。详见 [CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md](CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md)。
 - USTRF-SC 已把 route-conditioned、object-agnostic risk field 设为优先研究主线；P0 shared decision、U0 v2 unified runner，以及 `baseline_yolo_geometry` 和 `detector_bbox_explicit_route` 两条真实 Android adapter 执行链现已就绪。第二臂在设备内因果选择显式路线并以固定走廊筛选原始 YOLO bbox；最终内核 APK 的 SM-S9280/API 36 负控仍在相同 encoded sample/RGBA 下使同一 person 从排除/raw `NONE` 变为保留/raw `MEDIUM`，复跑稳定。dense→shared-kernel seam 也已在真机冻结；label-free LOSO teacher generator/field contract 已硬化为 deterministic v2 fixed-point，admission 会从序列化 cell 重算 field hash、route interaction 与风险摘要。但四个 dense/control 真 adapter、正式 teacher model run 与真实 evidence 仍未完成，所以仍不计作第三臂完成。`120 episode / 60 matched pair` 人类真值仍为 0，设备米制几何 admission 仍为 false，不运行有效 U0、不训练 student、不授权 App feedback、不替换默认模型。详见 [ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md](ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)。
+- 自 2026-07-21 起冻结新的 detector、teacher、dense arm 与公开/合成实验轮次；当前唯一主动工作面是 `10-episode` 真实路线事件 pilot 和 SM-S9280 同设备米制几何 evidence pack。首个 `route_obstacle` matched pair 已物化执行目录但尚未物理采集；几何包以 `BLOCKED_ON_SOURCE_ALIGNED_METRIC_DEPTH_AND_INTER_FRAME_STABLE_POSE` 红灯启动，不能通过重复同一 ARCore 窗口或填报汇总数字回救。
 
 ## 当前操作入口
 
@@ -21,7 +22,7 @@
 | 连续序列评测和 baseline | [SANPO_SEQUENCE_EVALSET.md](SANPO_SEQUENCE_EVALSET.md)、[SANPO_TRAVERSABILITY_BASELINE.md](SANPO_TRAVERSABILITY_BASELINE.md) |
 | 反事实采集与生命周期目标 | [SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md](SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md) |
 | Corridor-Causal 候选的本轮结论 | [CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md](CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md)：仅工程可行性，未获得事件效果或晋级授权。 |
-| Route-conditioned USTRF-SC 主线 | [ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md](ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：P0 device trace、U0 v2 unified-runner/evidence gate、10-episode pilot pipeline、两条 Android adapter 及 dense kernel seam 已闭合；尚未采集 eligible pilot/truth，teacher generator/LOSO artifact 与四个 dense/control 真 adapter 未实现，事件和设备米制几何硬门仍阻塞，生产路径不变。 |
+| Route-conditioned USTRF-SC 主线 | [ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md](ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：停止扩展实验臂；只执行真实路线事件 pilot 与同设备米制几何 evidence pack。首个 matched pair 待物理采集；SM-S9280 几何包已红灯绑定现有 freshness/stable-pose 负证据，生产路径不变。 |
 | 公开银标与来源研究 | 仅在对应协议已登记为 `current` 后按其执行；未提交的本地草稿不能作为仓库规则或授权依据。 |
 | 最近研究证据 | 已提交的日期化 snapshot；未提交的研究记录保持任务本地状态，待其所属任务完成后再登记。 |
 

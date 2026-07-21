@@ -13,6 +13,14 @@
 - Android shadow 授权：`false`
 - 生产模型替换授权：`false`
 
+## 2026-07-21 真实证据切换与实验冻结
+
+- PR #1 已按历史集成基线、项目结构门、最新 USTRF/CI 三层拆分；不 force-push、不改写旧分支历史。
+- 从本节点停止新增 detector、teacher、dense arm、公开/合成数据轮次与参数扫描。未完成的实验资产保留但不再扩写；只有真实路线事件采集和同设备米制几何证据允许进入主动队列。
+- 真实事件先执行一个 `route_obstacle` matched pair，再扩到 10-episode pilot；必须保留视频、capture clock、frame ledger、非未来 explicit route/projection、双人隔离 review 与裁决哈希。pilot 通过仍不是真实 U0 truth authority。
+- SM-S9280 几何 evidence pack 以红灯状态启动：r3 source-aligned depth `1/861`、r5 `0/843`，raw pose 为 `EPHEMERAL_PER_FRAME`，与 `>=100`、`>=0.95` 和 `INTER_FRAME_STABLE` 硬门不相容。冻结 blocker 为 `BLOCKED_ON_SOURCE_ALIGNED_METRIC_DEPTH_AND_INTER_FRAME_STABLE_POSE`；确定新的同帧 metric-depth/stable-pose 来源前不重复同一 ARCore 900-update 审计。
+- `validate_ustrf_sc_device_metric_geometry.py` 现解析五类 typed artifact，要求分项 metrics 与设备/mount/calibration identity 精确一致，并递归校验至少一项 raw/gate source evidence；`blocked/in_progress` 包也必须校验已有收据，不再允许只凭五个空 JSON 的 SHA 假绿。
+
 本方案现作为 USTRF-SC 的优先研究主线，目标允许最终不依赖 YOLO 安全决策。主线激活不等于模型通过：它仍不授权训练、App 接入、模型导出、blind 访问或默认模型替换，也不改变生产 YOLO、SANPO 或 Corridor-Causal Student 的既有结论。
 
 ## 2026-07-20 主线激活与当前阻塞

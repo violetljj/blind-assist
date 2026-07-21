@@ -40,7 +40,8 @@ class DeviceMetricGeometryValidatorTest(unittest.TestCase):
             "production_authority": False,
         }, root=Path("."), require_complete=False)
         self.assertFalse(report["device_metric_geometry_admitted"])
-        self.assertEqual(["EVIDENCE_BUNDLE_NOT_COMPLETE"], report["blockers"])
+        self.assertIn("MISSING_DEVICE_IDENTITY", report["blockers"])
+        self.assertIn("MISSING_EVIDENCE_ARTIFACTS", report["blockers"])
 
     def test_unstable_pose_or_wrong_hash_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -49,6 +50,47 @@ class DeviceMetricGeometryValidatorTest(unittest.TestCase):
             value["frame_clock"]["pose_reference_mode"] = "EPHEMERAL_PER_FRAME"
             with self.assertRaisesRegex(subject.ContractError, "INTER_FRAME_STABLE"):
                 subject.validate(value, root=root, require_complete=True)
+
+    def test_hollow_artifact_or_summary_drift_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            value = self.bundle(root)
+            artifact_path = root / "calibration.json"
+            artifact_path.write_text(json.dumps({"name": "calibration"}), encoding="utf-8")
+            value["evidence_artifacts"]["calibration"]["sha256"] = sha(artifact_path)
+            with self.assertRaisesRegex(subject.ContractError, "source_evidence"):
+                subject.validate(value, root=root, require_complete=True)
+
+            value = self.bundle(root)
+            value["calibration"]["sample_count"] = 31
+            with self.assertRaisesRegex(subject.ContractError, "metrics do not exactly match"):
+                subject.validate(value, root=root, require_complete=True)
+
+    def test_blocked_partial_bundle_verifies_blocker_receipt_without_admission(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            blocker = root / "freshness-summary.json"
+            blocker.write_text(json.dumps({"source_aligned": 0, "candidates": 843}), encoding="utf-8")
+            report = subject.validate({
+                "schema": subject.SCHEMA,
+                "status": "blocked",
+                "production_authority": False,
+                "blocker_code": "BLOCKED_ON_SOURCE_ALIGNED_METRIC_DEPTH_AND_INTER_FRAME_STABLE_POSE",
+                "blocker_evidence": [{"path": blocker.name, "sha256": sha(blocker)}],
+                "device_identity": {"device_id": "device-1"},
+                "evidence_artifacts": {},
+                "calibration": {},
+                "frame_clock": {},
+                "body_local_ground_truth": {},
+                "route_event_truth": {},
+                "target_device_benchmark": {},
+            }, root=root, require_complete=False)
+            self.assertFalse(report["device_metric_geometry_admitted"])
+            self.assertEqual(
+                "BLOCKED_ON_SOURCE_ALIGNED_METRIC_DEPTH_AND_INTER_FRAME_STABLE_POSE",
+                report["declared_blocker_code"],
+            )
+            self.assertIn("MISSING_CALIBRATION", report["blockers"])
 
     def test_research_report_device_gate_consumes_raw_bundle_instead_of_hardcoded_false(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -66,12 +108,7 @@ class DeviceMetricGeometryValidatorTest(unittest.TestCase):
 
     @staticmethod
     def bundle(root: Path) -> dict:
-        artifacts = {}
-        for name in subject.REQUIRED_ARTIFACTS:
-            path = root / f"{name}.json"
-            path.write_text(json.dumps({"name": name}), encoding="utf-8")
-            artifacts[name] = {"path": path.name, "sha256": sha(path)}
-        return {
+        value = {
             "schema": subject.SCHEMA,
             "status": "complete",
             "production_authority": False,
@@ -84,7 +121,6 @@ class DeviceMetricGeometryValidatorTest(unittest.TestCase):
                 "device_stage": "fixed_body_mount",
                 "reused_phone_evidence": False,
             },
-            "evidence_artifacts": artifacts,
             "calibration": {
                 "calibration_id": "cal-1",
                 "camera_calibration_version": "camera-cal-1",
@@ -133,6 +169,22 @@ class DeviceMetricGeometryValidatorTest(unittest.TestCase):
                 "thermal_throttle_count": 0,
             },
         }
+        binding = subject.artifact_binding(value["device_identity"], value["calibration"])
+        artifacts = {}
+        for name in subject.REQUIRED_ARTIFACTS:
+            source_path = root / f"{name}-source.json"
+            source_path.write_text(json.dumps({"raw_or_gate_evidence": name}), encoding="utf-8")
+            path = root / f"{name}.json"
+            path.write_text(json.dumps({
+                "schema": subject.ARTIFACT_SCHEMAS[name],
+                "artifact_kind": name,
+                "bundle_binding": binding,
+                "metrics": value[name],
+                "source_evidence": [{"path": source_path.name, "sha256": sha(source_path)}],
+            }), encoding="utf-8")
+            artifacts[name] = {"path": path.name, "sha256": sha(path)}
+        value["evidence_artifacts"] = artifacts
+        return value
 
 
 if __name__ == "__main__":

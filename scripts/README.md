@@ -14,6 +14,7 @@
 - `validate_ustrf_sc_route_conditioned_event_pilot.py`：试采链路审计；重算 video/clock/frame ledger/route 投影因果绑定及独立双审/裁决，只能输出 pipeline audit，永不产生 truth、U0、训练或运行时授权。
 - `validate_ustrf_sc_u0_prediction_bundle.py`：U0 预测证据 admission；重算 runner/registry、去标签输入、逐 fold LOSO provenance、route control、adapter request/output 与逐帧 shared-kernel trace，只允许从 feedback receipt 派生提醒；Android dense/control 臂另强制 teacher 许可证/权重/实现、fold、field、unknown 与归一化算术 receipt，当前缺真实 adapter 时 fail closed。
 - `validate_ustrf_sc_capture_frame_ledger.py`、`validate_ustrf_sc_independent_human_review.py`：正式 full-matrix truth 与 pilot 共用的原子证据验证 Implementation；由上述稳定入口调用。
+- `validate_ustrf_sc_device_metric_geometry.py`：同设备米制几何总门；完整包要求五类 typed artifact 与设备/mount/calibration/metrics 精确绑定并继续 hash-bind raw/gate source，`blocked/in_progress` 包也会审计已有收据；通过只授权 isolated geometry shadow。
 - `run_research_tool.py public-video <tool.py> [args...]`：通过统一 Adapter 运行已归档的公开视频研究工具。
 - `run_public_video_campaign_tests.py`：发现并运行 `scripts/research/public_video/` 的完整测试集。
 - `run_public_video_edge_inference.ps1`：已冻结 campaign 真机闭环的稳定 Adapter；调用方不依赖研究目录内部路径。

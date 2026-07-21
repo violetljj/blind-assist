@@ -18,6 +18,13 @@
 - 边界：不向脚本索引灌入历史测试名，不放宽根目录清单、研究 Module、跨域 import 或开发日志预算；不改 App、模型、研究结论或生产权限。
 - 验证：结构门新增 bootstrap/test-exemption 反例；structure smoke 13 场景通过，`origin/master` 与 `eea9ea3` 两种 CI base-ref 的 repo hygiene 均通过。
 
+### USTRF 真实事件与同设备米制几何 evidence pivot
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：冻结新的 detector/teacher/dense/public/synthetic 实验轮次；物化首个 `route_obstacle` matched-pair 真实采集执行目录与 SM-S9280 红灯几何包。真实媒体、双审和标定尚未采集，authority 全部保持 false。
+- 几何门：五类 evidence artifact 必须解析为 typed JSON，精确绑定设备/mount/calibration 与顶层 metrics，并继续哈希绑定 raw/gate source；`blocked/in_progress` 包也校验已有收据。空 `{name: ...}` artifact 与汇总漂移不再可能通过。
+- 现状：手机已通过 ADB 确认为 `R5CX10M8Y8X / SM-S9280 / Android 16 API 36`；红灯 blocker 为 `BLOCKED_ON_SOURCE_ALIGNED_METRIC_DEPTH_AND_INTER_FRAME_STABLE_POSE`，绑定 r3 `1/861`、r5 `0/843` 与 `EPHEMERAL_PER_FRAME`。不重复同一 ARCore 窗口碰运气。
+- 验证：geometry validator 6 tests 与统一 dependency-free research contracts 通过；blocked bundle 审计成功且 admission/shadow=false；空真实 pilot manifest exit 2 且未生成报告。
+
 ### USTRF P0 时间、风险场、栅格、路线与 dense 第三臂合同硬化
 - 时间：2026-07-21；执行者：violjjet。
 - 生产时间链：CameraX `ImageProxy.imageInfo.timestamp` 现以带 clock-domain/source/frame identity 的 `FrameStamp` 贯穿 VisionFrame、detector、Assist evaluation 与 session trace；采集时钟用于趋势，decision/effect 时钟独立，处理延迟变化不再改变 approach/recede。新增 `feature:assist -> core:ustrf` write-only shadow adapter；未获米制 geometry/pose/route 时只记录 fail-closed/abstain，结果不进入 UI、语音或震动。

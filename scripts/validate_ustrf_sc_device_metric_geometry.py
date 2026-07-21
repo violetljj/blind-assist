@@ -22,6 +22,11 @@ REQUIRED_ARTIFACTS = {
     "route_event_truth",
     "target_device_benchmark",
 }
+ARTIFACT_SCHEMAS = {
+    name: f"blindassist_ustrf_sc_metric_geometry_{name}_artifact_v1"
+    for name in REQUIRED_ARTIFACTS
+}
+ALLOWED_STATUSES = {"not_collected", "in_progress", "blocked", "complete"}
 
 
 class ContractError(ValueError):
@@ -53,7 +58,7 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def verify_artifact(root: Path, receipt: dict[str, Any], where: str) -> None:
+def verify_file_receipt(root: Path, receipt: dict[str, Any], where: str) -> Path:
     relative = require_text(receipt, "path", where)
     expected = require_text(receipt, "sha256", where)
     if len(expected) != 64 or any(char not in "0123456789abcdefABCDEF" for char in expected):
@@ -65,6 +70,48 @@ def verify_artifact(root: Path, receipt: dict[str, Any], where: str) -> None:
         raise ContractError(f"{where}.path escapes manifest root") from error
     if not path.is_file() or sha256(path) != expected.lower():
         raise ContractError(f"{where} artifact is missing or has a mismatched SHA256")
+    return path
+
+
+def artifact_binding(device: dict[str, Any], calibration: dict[str, Any]) -> dict[str, str]:
+    return {
+        "device_id": require_text(device, "device_id", "device_identity"),
+        "hardware_revision": require_text(device, "hardware_revision", "device_identity"),
+        "mount_revision": require_text(device, "mount_revision", "device_identity"),
+        "camera_frame": require_text(device, "camera_frame", "device_identity"),
+        "body_frame": require_text(device, "body_frame", "device_identity"),
+        "calibration_id": require_text(calibration, "calibration_id", "calibration"),
+    }
+
+
+def verify_source_evidence(root: Path, artifact: dict[str, Any], where: str) -> None:
+    sources = artifact.get("source_evidence")
+    if not isinstance(sources, list) or not sources:
+        raise ContractError(f"{where}.source_evidence must contain at least one hash-bound raw or gate artifact")
+    for index, receipt in enumerate(sources):
+        if not isinstance(receipt, dict):
+            raise ContractError(f"{where}.source_evidence[{index}] must be an object")
+        verify_file_receipt(root, receipt, f"{where}.source_evidence[{index}]")
+
+
+def load_verified_artifact(root: Path, receipt: dict[str, Any], where: str) -> dict[str, Any]:
+    path = verify_file_receipt(root, receipt, where)
+    artifact = load_json(path)
+    verify_source_evidence(root, artifact, where)
+    return artifact
+
+
+def verify_artifact_semantics(
+    artifact: dict[str, Any], *, name: str, binding: dict[str, str], metrics: dict[str, Any], where: str,
+) -> None:
+    if artifact.get("schema") != ARTIFACT_SCHEMAS[name]:
+        raise ContractError(f"{where}.schema does not match the frozen {name} artifact schema")
+    if artifact.get("artifact_kind") != name:
+        raise ContractError(f"{where}.artifact_kind mismatch")
+    if artifact.get("bundle_binding") != binding:
+        raise ContractError(f"{where}.bundle_binding does not match device/mount/calibration identity")
+    if artifact.get("metrics") != metrics:
+        raise ContractError(f"{where}.metrics do not exactly match the bundle summary")
 
 
 def numeric(row: dict[str, Any], key: str, where: str) -> float:
@@ -74,23 +121,79 @@ def numeric(row: dict[str, Any], key: str, where: str) -> float:
     return float(value)
 
 
+def validate_partial(value: dict[str, Any], *, root: Path) -> dict[str, Any]:
+    blockers: list[str] = []
+    device = value.get("device_identity")
+    calibration = value.get("calibration")
+    if not isinstance(device, dict) or not device:
+        blockers.append("MISSING_DEVICE_IDENTITY")
+    if not isinstance(calibration, dict) or not calibration:
+        blockers.append("MISSING_CALIBRATION")
+    for name in ("frame_clock", "body_local_ground_truth", "route_event_truth", "target_device_benchmark"):
+        if not isinstance(value.get(name), dict) or not value[name]:
+            blockers.append(f"MISSING_{name.upper()}")
+
+    artifacts = value.get("evidence_artifacts")
+    if not isinstance(artifacts, dict):
+        blockers.append("MISSING_EVIDENCE_ARTIFACTS")
+    else:
+        unknown = set(artifacts) - REQUIRED_ARTIFACTS
+        if unknown:
+            raise ContractError(f"evidence_artifacts contains unknown kinds: {sorted(unknown)}")
+        binding: dict[str, str] | None = None
+        if isinstance(device, dict) and device and isinstance(calibration, dict) and calibration:
+            try:
+                binding = artifact_binding(device, calibration)
+            except ContractError:
+                binding = None
+        for name in sorted(REQUIRED_ARTIFACTS):
+            receipt = artifacts.get(name)
+            if not isinstance(receipt, dict) or not receipt:
+                blockers.append(f"MISSING_{name.upper()}_ARTIFACT")
+                continue
+            where = f"evidence_artifacts.{name}"
+            artifact = load_verified_artifact(root, receipt, where)
+            if artifact.get("schema") != ARTIFACT_SCHEMAS[name] or artifact.get("artifact_kind") != name:
+                raise ContractError(f"{where} does not match the frozen {name} artifact contract")
+            metrics = value.get(name)
+            if isinstance(metrics, dict) and metrics and artifact.get("metrics") != metrics:
+                raise ContractError(f"{where}.metrics do not exactly match the bundle summary")
+            if binding is not None and artifact.get("bundle_binding") != binding:
+                raise ContractError(f"{where}.bundle_binding does not match device/mount/calibration identity")
+
+    if value.get("status") == "blocked":
+        require_text(value, "blocker_code", "bundle")
+        blocker_evidence = value.get("blocker_evidence")
+        if not isinstance(blocker_evidence, list) or not blocker_evidence:
+            raise ContractError("blocked bundle needs at least one blocker_evidence receipt")
+        for index, receipt in enumerate(blocker_evidence):
+            if not isinstance(receipt, dict):
+                raise ContractError(f"blocker_evidence[{index}] must be an object")
+            verify_file_receipt(root, receipt, f"blocker_evidence[{index}]")
+
+    return {
+        "ok": True,
+        "status": value["status"],
+        "device_metric_geometry_admitted": False,
+        "geometry_shadow_authorized": False,
+        "blockers": blockers or ["EVIDENCE_BUNDLE_NOT_COMPLETE"],
+        "declared_blocker_code": value.get("blocker_code"),
+        "production_authority": False,
+    }
+
+
 def validate(value: dict[str, Any], *, root: Path, require_complete: bool) -> dict[str, Any]:
     if value.get("schema") != SCHEMA:
         raise ContractError("unexpected device metric-geometry schema")
     if value.get("production_authority") is not False:
         raise ContractError("production_authority must remain false")
+    if value.get("status") not in ALLOWED_STATUSES:
+        raise ContractError("status must be not_collected, in_progress, blocked, or complete")
     complete = value.get("status") == "complete"
     if not complete:
         if require_complete:
             raise ContractError("--require-complete needs status=complete")
-        return {
-            "ok": True,
-            "status": value.get("status", "unknown"),
-            "device_metric_geometry_admitted": False,
-            "geometry_shadow_authorized": False,
-            "blockers": ["EVIDENCE_BUNDLE_NOT_COMPLETE"],
-            "production_authority": False,
-        }
+        return validate_partial(value, root=root)
 
     device = value.get("device_identity")
     if not isinstance(device, dict):
@@ -101,14 +204,6 @@ def validate(value: dict[str, Any], *, root: Path, require_complete: bool) -> di
         raise ContractError("device_identity.device_stage is invalid")
     if device.get("device_stage") == "glasses" and device.get("reused_phone_evidence") is not False:
         raise ContractError("glasses evidence must not reuse phone calibration or device receipts")
-
-    artifacts = value.get("evidence_artifacts")
-    if not isinstance(artifacts, dict) or set(artifacts) != REQUIRED_ARTIFACTS:
-        raise ContractError("evidence_artifacts must contain the exact frozen evidence set")
-    for name, receipt in artifacts.items():
-        if not isinstance(receipt, dict):
-            raise ContractError(f"evidence_artifacts.{name} must be an object")
-        verify_artifact(root, receipt, f"evidence_artifacts.{name}")
 
     calibration = value.get("calibration")
     if not isinstance(calibration, dict):
@@ -191,6 +286,19 @@ def validate(value: dict[str, Any], *, root: Path, require_complete: bool) -> di
         raise ContractError("target-device benchmark did not verify latest-only freshness")
     if numeric(benchmark, "thermal_throttle_count", "target_device_benchmark") != 0:
         raise ContractError("target-device benchmark observed thermal throttling")
+
+    artifacts = value.get("evidence_artifacts")
+    if not isinstance(artifacts, dict) or set(artifacts) != REQUIRED_ARTIFACTS:
+        raise ContractError("evidence_artifacts must contain the exact frozen evidence set")
+    binding = artifact_binding(device, calibration)
+    for name in sorted(REQUIRED_ARTIFACTS):
+        receipt = artifacts[name]
+        if not isinstance(receipt, dict):
+            raise ContractError(f"evidence_artifacts.{name} must be an object")
+        where = f"evidence_artifacts.{name}"
+        artifact = load_verified_artifact(root, receipt, where)
+        metrics = value[name]
+        verify_artifact_semantics(artifact, name=name, binding=binding, metrics=metrics, where=where)
 
     return {
         "ok": True,
