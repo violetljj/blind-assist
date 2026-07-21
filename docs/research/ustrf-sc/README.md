@@ -21,6 +21,10 @@
 - [离线安全仿真与自动验证](USTRF_SC_OFFLINE_SAFETY_SIMULATION.md)
 - [SANPO 数据回放接入](USTRF_SC_SANPO_REPLAY_INTEGRATION.md)
 
+## 外部与历史参考
+
+- [GPT USTFR 完整算法框架与 Codex 交接指引（2026-07-21）](archive/2026-07-21-gpt-guidance/README.md)：保存用户提供的 Markdown/Word 原件；仅作外部历史参考，不覆盖当前 USTRF-SC 实施状态、门禁或生产授权。
+
 ## 阅读规则
 
 - 想知道“现在做到哪里、下一步从哪里接”：先读项目工作记录，再读实施状态。
