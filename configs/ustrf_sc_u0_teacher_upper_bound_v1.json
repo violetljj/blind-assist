@@ -6,7 +6,7 @@
   "prediction_schema": "blindassist_ustrf_sc_u0_six_arm_predictions_v2",
   "prediction_evidence_contract": {
     "schema": "blindassist_ustrf_sc_u0_prediction_evidence_contract_v2",
-    "validator_implementation_sha256": "5ef60cd35af25d3bf77dd6087b10960ac84b56362c437ad749f834ea8f97335f",
+    "validator_implementation_sha256": "733478420c6dccc9bffd00b5d40d23f842b2464269f3dad98044e3cb8f682c9a",
     "runner_implementation_sha256": "f2b05de2ea5c49417f7f8ca27258476c3d9fe4662fb50dccfa40f81837a3207f",
     "adapter_registry_schema": "blindassist_ustrf_sc_u0_candidate_adapter_registry_v1",
     "adapter_request_schema": "blindassist_ustrf_sc_u0_candidate_adapter_request_v1",

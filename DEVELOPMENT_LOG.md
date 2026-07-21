@@ -1386,3 +1386,7 @@
 - 结果：full-frame 精确复现 `TP/FP/FN=6/4/8`、F1 `.5000`、small `0/8`；tiling 为 `10/14/4`、F1 `.5263`、small `4/8`，medium/large 仍 `3/3`。逐 GT 为 recovered `4`、regressed `0`，但 FP `4→14`，违反 canary 上限；决定固定为 `stop_after_8_frame_canary`，32 帧未运行且未放宽门槛。
 - 系统：两臂均以前台 PowerShell 守护完成；full/tiling 最高温度 `47/50°C`、整卡显存 `1276/1508MB`、功耗 `20.18/18.08W`，0 相关 System event、无 stop reason。GPU 恢复路径有效，失败属于检测质量权衡。
 - 验证与证据：benchmark/tiling/contract/comparator 共 15 个 CPU tests 通过，PowerShell guard 解析通过；机器报告位于 `artifacts.local/evidence/ustrf-sc/revel-yolo11n-crop-tiling-pair-20260720-r1/`，paired report SHA-256 `f38cf353f13199ba9fd4f9167083beee26285ecdc7b10c3e392aa8a441ad01f7`。详细边界见 `docs/research/ustrf-sc/USTRF_SC_REVEL_CROP_TILING_PAIRED_2026-07-20.md`。
+## 2026-07-21 — Restore USTRF U0 validator provenance after stacked merge
+
+- Refreshed the frozen U0 prediction-evidence validator SHA after the timing/shadow hardening changed the validator implementation.
+- This restores the intended fail-closed order: the official empty manifest is rejected by the human-truth gate, not by stale provenance metadata. No truth, training, shadow, or production authority was opened.
