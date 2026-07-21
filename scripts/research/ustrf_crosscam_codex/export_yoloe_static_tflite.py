@@ -77,7 +77,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     payload = {
         "schema": "blindassist_ustrf_crosscam_yoloe_static_export_receipt_v1",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "candidate_id": "yoloe11s_prompted_marker_static3_r12_v1",
+        "candidate_id": args.candidate_id,
         "source_weights_sha256": sha256_file(weights),
         "frozen_classes": args.candidate_class,
         "image_size": args.image_size,
@@ -112,6 +112,7 @@ def main() -> None:
     parser.add_argument("--cache-dir", type=Path, required=True)
     parser.add_argument("--embedding-cache-dir", type=Path, required=True)
     parser.add_argument("--candidate-class", action="append", required=True)
+    parser.add_argument("--candidate-id", default="yoloe11s_prompted_marker_static3_r12_v1")
     parser.add_argument("--image-size", type=int, default=640)
     parser.add_argument("--half", action="store_true")
     run(parser.parse_args())

@@ -1,0 +1,85 @@
+{
+  "schema": "blindassist_ustrf_crosscam_continuous_event_protocol_v2",
+  "contract_id": "ustrf_crosscam_continuous_events_r12c_seen_v2",
+  "frozen_at_utc": "2026-07-22T00:00:00Z",
+  "dataset_role": "seen_diagnostic_not_held_out",
+  "purpose": "Materialize the forward-only R1.2c v2 inventory by replacing the adjudicated-out Japan event with the already-seen Bangkok tactile-route cone event. This inventory exists first for the six-positive truth-geometry oracle and may be used for the frozen 12-event replay only after that oracle passes.",
+  "parents": {
+    "continuous_r12a_path": "configs/ustrf_crosscam_continuous_events_r12a_seen_v1.json",
+    "continuous_r12a_sha256": "57bf4bea498af6c0817e4ee595c546760418cd7e0acab1dc97835e163555fd49",
+    "seen_positive_prereg_path": "configs/ustrf_crosscam_seen_positive_r12c_prereg_v1.json",
+    "seen_positive_prereg_sha256": "b8a10d90312a440edd4e48e9d7a3c4bbb7fe1e5b1b2c42b903a9628062989df6"
+  },
+  "replacement": {
+    "removed_event_id": "japan_path_intrusion",
+    "removed_event_disposition": "event_truth_unknown_route_relation_inconsistent_exclude_from_score",
+    "added_event_id": "bangkok_tactile_cone_intrusion",
+    "source_id": "wikimedia_commons_poptravel_bangkok_modern_center_2019",
+    "target_instance_id": "bangkok_red_white_tactile_route_cone_01",
+    "new_held_out_slot_consumed": false,
+    "r13_slot_consumed": false,
+    "old_japan_result_remains_immutable": true
+  },
+  "frozen_detector": {
+    "contract_path": "configs/ustrf_crosscam_detector_candidate_r12_v1.json",
+    "contract_sha256": "87ebdf05538d8ccfa1f97037c244820f61c2517c28a979699171f56c295399ed",
+    "confidence_threshold": 0.05,
+    "target_anchor_iou_threshold": 0.30,
+    "prompt_or_label_inventory_change_allowed": false,
+    "threshold_change_allowed": false,
+    "bbox_or_polygon_refit_allowed": false
+  },
+  "replay_contract": {
+    "sample_period_ms": 500,
+    "minimum_clip_duration_ms": 5000,
+    "maximum_clip_duration_ms": 15000,
+    "association_mode": "frozen_anchor_bidirectional_diagnostic_v1",
+    "association_iou_at_least": 0.10,
+    "association_center_distance_frame_diagonal_at_most": 0.12,
+    "association_area_ratio_min": 0.33,
+    "association_area_ratio_max": 3.0,
+    "association_ambiguity_margin": 0.05,
+    "clear_after_consecutive_misses": 2,
+    "route_proxy_policy": "nearest_existing_frozen_anchor_polygon_held_constant_diagnostic_only",
+    "route_proxy_is_geometry_truth": false,
+    "alert_policy": "one_delivery_per_target_event_then_suppress_until_cleared",
+    "cooccurrence_may_start_or_keep_target_event": false
+  },
+  "event_gate": {
+    "positive_event_recall_required": "6/6",
+    "negative_false_alert_count_at_most": 0,
+    "first_correct_alert_delay_ms_at_most": 5000,
+    "delivered_repeated_alert_count_at_most": 0,
+    "target_exit_clearance_delay_ms_at_most": 1000,
+    "cooccurrence_triggered_target_event_count_at_most": 0,
+    "identity_switch_count_at_most": 0,
+    "association_ambiguous_frame_rate_at_most": 0.10,
+    "vancouver_included_in_gate": false
+  },
+  "events": [
+    {"event_id":"bangkok_tactile_cone_intrusion","round":"r12c_seen_replacement","expected_class":"positive","clip_window_ms":[328000,340000],"alertable_start_ms":333000,"latest_useful_alert_ms":336000,"known_not_visible_from_ms":339000,"source_id":"wikimedia_commons_poptravel_bangkok_modern_center_2019","target_instance_id":"bangkok_red_white_tactile_route_cone_01"},
+    {"event_id":"edmonton_left_corridor_intrusion","round":"r11","expected_class":"positive","clip_window_ms":[698000,708000],"alertable_start_ms":702750,"known_not_visible_from_ms":null},
+    {"event_id":"london_center_marker_intrusion","round":"r11","expected_class":"positive","clip_window_ms":[2678000,2688000],"alertable_start_ms":2678000,"known_not_visible_from_ms":2687750},
+    {"event_id":"ulm_bilateral_delineators","round":"r11","expected_class":"negative","clip_window_ms":[1504000,1511000],"alertable_start_ms":null,"known_not_visible_from_ms":1510750},
+    {"event_id":"jakarta_dense_boundary","round":"r11","expected_class":"negative","clip_window_ms":[35000,49000],"alertable_start_ms":null,"known_not_visible_from_ms":42000},
+    {"event_id":"cape_town_wide_forecourt","round":"r11","expected_class":"negative","clip_window_ms":[161000,176000],"alertable_start_ms":null,"known_not_visible_until_ms":167000},
+    {"event_id":"thailand_border_nearest_cone_intrusion","round":"r12","expected_class":"positive","clip_window_ms":[3000,8000],"alertable_start_ms":4000,"known_not_visible_from_ms":null},
+    {"event_id":"bridge_center_bollard_intrusion","round":"r12","expected_class":"positive","clip_window_ms":[0,5000],"alertable_start_ms":0,"known_not_visible_from_ms":null},
+    {"event_id":"roadwork_center_cone_intrusion","round":"r12","expected_class":"positive","clip_window_ms":[2000,12000],"alertable_start_ms":2000,"known_not_visible_from_ms":null},
+    {"event_id":"tokyo_driveway_cone_lateral_clear","round":"r12","expected_class":"negative","clip_window_ms":[0,6000],"alertable_start_ms":null,"known_not_visible_from_ms":null},
+    {"event_id":"sidewalk_closed_left_cone_lateral_clear","round":"r12","expected_class":"negative","clip_window_ms":[0,8000],"alertable_start_ms":null,"known_not_visible_from_ms":null},
+    {"event_id":"vancouver_right_delineator_lateral_clear","round":"r12","expected_class":"negative","clip_window_ms":[8000,16000],"alertable_start_ms":null,"known_not_visible_from_ms":null,"diagnostic_role":"miss_lead_only","gate_eligible":false}
+  ],
+  "authority": {
+    "new_held_out_read": false,
+    "truth_geometry_oracle_authorized": true,
+    "london_768_candidate_execution_authorized": false,
+    "full_continuous_replay_authorized": false,
+    "device_soak_authorized": false,
+    "r13_inventory_unlock_authorized": false,
+    "training_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false,
+    "benchmark_only": true
+  }
+}

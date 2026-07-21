@@ -24,7 +24,7 @@ import java.security.MessageDigest
 import kotlin.math.ceil
 import kotlin.math.max
 
-/** R1.2b exact-frame continuous replay plus 10-minute GPU stability and thermal gate. */
+/** R1.2 exact-frame event replay, optionally followed by the 10-minute GPU stability gate. */
 @RunWith(AndroidJUnit4::class)
 class UstrfCrossCameraContinuousR12bDeviceTest {
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
@@ -43,29 +43,40 @@ class UstrfCrossCameraContinuousR12bDeviceTest {
         val inputFile = privateFile(inputRelative, "R1.2b input")
         val input = JSONObject(inputFile.readText(Charsets.UTF_8))
         check(input.getString("schema") == INPUT_SCHEMA)
-        check(input.getString("transport_contract_sha256") == TRANSPORT_SHA)
+        val transportSha = input.getString("transport_contract_sha256")
+        check(transportSha == R12B_TRANSPORT_SHA || transportSha == R12C_V2_TRANSPORT_SHA)
         check(input.getString("dataset_role") == SEEN_ROLE)
         val authority = input.getJSONObject("authority")
         check(!authority.getBoolean("new_held_out_read") && !authority.getBoolean("r13_sources_read"))
         check(authority.getBoolean("benchmark_only") && !authority.getBoolean("training_authorized"))
         check(!authority.getBoolean("production_model_replacement_authorized"))
         val candidate = input.getJSONObject("candidate")
-        check(candidate.getString("candidate_id") == CANDIDATE_ID)
-        check(candidate.getInt("input_size") == 640 && candidate.getString("execution_backend") == "gpu_delegate")
+        val candidateId = candidate.getString("candidate_id")
+        val isR12cV2 = transportSha == R12C_V2_TRANSPORT_SHA
+        val expectedCandidateId = if (isR12cV2) R12C_V2_CANDIDATE_ID else R12B_CANDIDATE_ID
+        val inputSize = if (isR12cV2) 768 else 640
+        val modelAsset = if (isR12cV2) R12C_V2_MODEL_ASSET else R12B_MODEL_ASSET
+        check(candidateId == expectedCandidateId)
+        check(candidate.getInt("input_size") == inputSize && candidate.getString("execution_backend") == "gpu_delegate")
         check(candidate.getDouble("confidence_threshold") == 0.05)
         check(candidate.getDouble("target_anchor_iou_threshold") == 0.30)
         check(candidate.getDouble("nms_iou_threshold") == 0.45)
-        check(sha256Asset(MODEL_ASSET) == candidate.getString("model_sha256"))
+        check(sha256Asset(modelAsset) == candidate.getString("model_sha256"))
         val deviceGate = input.getJSONObject("device_gate")
         check(Build.MODEL.replace("_", "-") == deviceGate.getString("device_model")) { "wrong device ${Build.MODEL}" }
         val soakSeconds = requireNotNull(arguments.getString(ARG_SOAK_SECONDS)).toInt()
-        check(soakSeconds == REQUIRED_SOAK_SECONDS && soakSeconds == deviceGate.getInt("soak_duration_seconds"))
+        val eventOnly = arguments.getString(ARG_EVENT_ONLY)?.toBooleanStrictOrNull() == true
+        if (eventOnly) {
+            check(isR12cV2 && soakSeconds == 0) { "event-only execution is reserved for the R1.2c v2 event-first gate" }
+        } else {
+            check(soakSeconds == REQUIRED_SOAK_SECONDS && soakSeconds == deviceGate.getInt("soak_duration_seconds"))
+        }
         val replay = input.getJSONObject("replay_contract")
         check(replay.getLong("sample_period_ms") == SAMPLE_PERIOD_MS)
         check(replay.getString("association_mode") == UstrfContinuousTargetAssociation.CONTRACT_ID)
 
         val detector = UstrfBenchmarkYoloDetector(
-            testContext, MODEL_ASSET, LABELS_ASSET, 640, 0.05f, 0.45f,
+            testContext, modelAsset, LABELS_ASSET, inputSize, 0.05f, 0.45f,
             UstrfBenchmarkYoloDetector.Backend.GPU_DELEGATE,
         )
         check(detector.actualBackend == UstrfBenchmarkYoloDetector.Backend.GPU_DELEGATE)
@@ -84,9 +95,11 @@ class UstrfCrossCameraContinuousR12bDeviceTest {
                 inferenceFailures += result.inferenceFailures
                 eventRows.put(result.output)
             }
-            val soak = runSoak(sources, detector, soakSeconds, timings, thermalSamples, temperatureSamples)
-            decodeFailures += soak.first
-            inferenceFailures += soak.second
+            if (!eventOnly) {
+                val soak = runSoak(sources, detector, soakSeconds, timings, thermalSamples, temperatureSamples)
+                decodeFailures += soak.first
+                inferenceFailures += soak.second
+            }
         } finally {
             detector.close()
         }
@@ -118,7 +131,7 @@ class UstrfCrossCameraContinuousR12bDeviceTest {
             cooccurrenceTriggered <= eventGate.getInt("cooccurrence_triggered_target_event_count_at_most") &&
             identitySwitches <= eventGate.getInt("identity_switch_count_at_most") &&
             ambiguousRate <= eventGate.getDouble("association_ambiguous_frame_rate_at_most")
-        val devicePassed = decodeFailures <= deviceGate.getInt("decode_or_inference_failure_count_at_most") &&
+        val devicePassed = !eventOnly && decodeFailures <= deviceGate.getInt("decode_or_inference_failure_count_at_most") &&
             inferenceFailures <= deviceGate.getInt("decode_or_inference_failure_count_at_most") &&
             percentile(timings.inference, 0.95) <= INFERENCE_P95_LIMIT_MS &&
             percentile(timings.totalDetect, 0.95) <= TOTAL_DETECT_P95_LIMIT_MS &&
@@ -127,8 +140,9 @@ class UstrfCrossCameraContinuousR12bDeviceTest {
             maxThermalStatus <= deviceGate.getInt("maximum_android_thermal_status")
         val output = JSONObject()
             .put("schema", OUTPUT_SCHEMA).put("dataset_role", SEEN_ROLE)
-            .put("input_sha256", sha256File(inputFile)).put("transport_contract_sha256", TRANSPORT_SHA)
-            .put("candidate_id", CANDIDATE_ID).put("actual_backend", "gpu_delegate")
+            .put("execution_phase", if (eventOnly) "event_gate_only" else "event_then_device_soak")
+            .put("input_sha256", sha256File(inputFile)).put("transport_contract_sha256", transportSha)
+            .put("candidate_id", candidateId).put("actual_backend", "gpu_delegate")
             .put("device", JSONObject().put("model", Build.MODEL).put("fingerprint", Build.FINGERPRINT)
                 .put("sdk", Build.VERSION.SDK_INT))
             .put("events", eventRows)
@@ -155,12 +169,16 @@ class UstrfCrossCameraContinuousR12bDeviceTest {
                 .put("battery_temperature_delta_c", thermalDelta).put("maximum_thermal_status", maxThermalStatus)
                 .put("thermal_status_samples", JSONArray(thermalSamples))
                 .put("battery_temperature_samples_c", JSONArray(temperatureSamples)))
-            .put("gate", JSONObject().put("event_protocol_passed", eventPassed).put("device_gate_passed", devicePassed)
-                .put("overall_passed", eventPassed && devicePassed).put("benchmark_only", true)
+            .put("gate", JSONObject().put("event_protocol_passed", eventPassed)
+                .put("device_gate_evaluated", !eventOnly)
+                .put("device_gate_passed", if (eventOnly) JSONObject.NULL else devicePassed)
+                .put("overall_passed", if (eventOnly) eventPassed else eventPassed && devicePassed).put("benchmark_only", true)
                 .put("production_model_replacement_authorized", false))
         privateOutputFile(requireNotNull(arguments.getString(ARG_OUTPUT))).writeText(output.toString(2), Charsets.UTF_8)
         Log.i(TAG, "USTRF_R12B_CONTINUOUS event=$eventPassed device=$devicePassed inferenceP95=${percentile(timings.inference, 0.95)}")
-        check(eventPassed && devicePassed) { "R1.2b frozen gate failed; inspect output receipt" }
+        check(if (eventOnly) eventPassed else eventPassed && devicePassed) {
+            "R1.2 frozen gate failed; inspect output receipt"
+        }
     }
 
     private data class Timings(
@@ -352,10 +370,13 @@ class UstrfCrossCameraContinuousR12bDeviceTest {
     private companion object {
         const val INPUT_SCHEMA = "blindassist_ustrf_crosscam_exact_frame_android_input_v1"
         const val OUTPUT_SCHEMA = "blindassist_ustrf_crosscam_continuous_r12b_android_output_v1"
-        const val TRANSPORT_SHA = "86945f31f98e576a042af090d58330b99270b7adc5f3ab3ce4632fa45aa03009"
-        const val CANDIDATE_ID = "r12b_c1_same640_gpu_delegate"
+        const val R12B_TRANSPORT_SHA = "86945f31f98e576a042af090d58330b99270b7adc5f3ab3ce4632fa45aa03009"
+        const val R12C_V2_TRANSPORT_SHA = "35fd28f37353c9bcc3625febf752417739f296e6ba8b19803fc805088e9bd9c9"
+        const val R12B_CANDIDATE_ID = "r12b_c1_same640_gpu_delegate"
+        const val R12C_V2_CANDIDATE_ID = "r12c_c1_sameweights_fp16_768_gpu_london_only"
         const val SEEN_ROLE = "seen_diagnostic_not_held_out"
-        const val MODEL_ASSET = "ustrf_r12_detector/yoloe11s_marker_static3_fp16_640.tflite"
+        const val R12B_MODEL_ASSET = "ustrf_r12_detector/yoloe11s_marker_static3_fp16_640.tflite"
+        const val R12C_V2_MODEL_ASSET = "ustrf_r12_detector/yoloe11s_marker_static3_fp16_768.tflite"
         const val LABELS_ASSET = "ustrf_r12_detector/marker_labels.txt"
         const val SAMPLE_PERIOD_MS = 500L
         const val REQUIRED_SOAK_SECONDS = 600
@@ -365,6 +386,7 @@ class UstrfCrossCameraContinuousR12bDeviceTest {
         const val ARG_INPUT = "ustrfR12bContinuousInput"
         const val ARG_OUTPUT = "ustrfR12bOutput"
         const val ARG_SOAK_SECONDS = "ustrfR12bSoakSeconds"
+        const val ARG_EVENT_ONLY = "ustrfR12bEventOnly"
         const val TAG = "UstrfR12bContinuous"
     }
 }

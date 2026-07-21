@@ -1,0 +1,67 @@
+{
+  "schema": "blindassist_ustrf_crosscam_truth_geometry_preregistration_v2",
+  "contract_id": "ustrf_crosscam_truth_geometry_r12c_v2",
+  "frozen_at_utc": "2026-07-22T00:05:00Z",
+  "dataset_role": "seen_diagnostic_not_held_out",
+  "purpose": "Run the complete six-positive detector-independent truth-geometry oracle over the forward-only R1.2c v2 inventory after replacing adjudicated-out Japan with the already-seen Bangkok event. A perfect oracle may authorize only the single frozen London FP16-768 GPU candidate.",
+  "parents": {
+    "r12c_v1_path": "configs/ustrf_crosscam_truth_geometry_r12c_prereg_v1.json",
+    "r12c_v1_sha256": "32a0cd50f6731c8374b78eaa00a8fa3f5b05f503c2221ae193fcca3b87c0b276",
+    "continuous_v2_path": "configs/ustrf_crosscam_continuous_events_r12c_seen_v2.json",
+    "continuous_v2_sha256": "35fd28f37353c9bcc3625febf752417739f296e6ba8b19803fc805088e9bd9c9",
+    "seen_positive_prereg_path": "configs/ustrf_crosscam_seen_positive_r12c_prereg_v1.json",
+    "seen_positive_prereg_sha256": "b8a10d90312a440edd4e48e9d7a3c4bbb7fe1e5b1b2c42b903a9628062989df6",
+    "seen_positive_validation_path": "artifacts.local/evidence/ustrf-crosscam-codex/r12c-seen-positive-prereg-v1/validation.json",
+    "seen_positive_validation_sha256": "94154e091bec1e80cb1accc15fe20de0472c90db96619c1948e75d98ae70d083",
+    "r13_prereg_v2_path": "configs/ustrf_crosscam_continuous_events_r13_prereg_v2.json",
+    "r13_prereg_v2_sha256": "21398bdbedee1c9b5fa7013ebf1255c63fc755cca3e50aecdd196d75969dab75"
+  },
+  "independent_truth_geometry_oracle": {
+    "detector_outputs_may_define_truth_or_geometry": false,
+    "association_outputs_may_define_truth_or_geometry": false,
+    "positive_event_ids": [
+      "bangkok_tactile_cone_intrusion",
+      "edmonton_left_corridor_intrusion",
+      "london_center_marker_intrusion",
+      "thailand_border_nearest_cone_intrusion",
+      "bridge_center_bollard_intrusion",
+      "roadwork_center_cone_intrusion"
+    ],
+    "required_positive_event_count": 6,
+    "alertable_anchor_definition": "frozen visible target anchor with timestamp_ms greater than or equal to the frozen alertable_start_ms",
+    "event_consistency_rule": "each positive event must contain at least one alertable anchor whose detector-independent contact point is robust inside for every frozen uncertainty ratio",
+    "uncertainty_frame_ratios": [0.01, 0.02, 0.03],
+    "legacy_r11_oracle_path": "artifacts.local/evidence/ustrf-crosscam-codex/multisource-r11-diagnostic-v1/oracle_geometry_output.json",
+    "legacy_r11_oracle_sha256": "aa0e84c06fb7b118d37d342ddf207314a01e27faecf6937711f68bdfd9a5393c",
+    "legacy_r12_oracle_path": "artifacts.local/evidence/ustrf-crosscam-codex/multisource-r12-heldout-v1/oracle_geometry_output.json",
+    "legacy_r12_oracle_sha256": "2bdf23d4845a579749976d7d9447a151de12ded2263b548740c4389c21a02c5c",
+    "replacement_geometry_source": "hash_bound_seen_positive_preregistration_recomputed_by_v2_evaluator",
+    "replacement_event_id": "bangkok_tactile_cone_intrusion",
+    "excluded_event_id": "japan_path_intrusion",
+    "excluded_event_old_failure_must_remain_immutable": true,
+    "no_alertable_robust_inside_status": "truth_geometry_conflict",
+    "all_six_consistent_required_before_london_candidate": true
+  },
+  "candidate_inheritance": {
+    "source": "r12c_v1.london_single_variable_candidate",
+    "candidate_id": "r12c_c1_sameweights_fp16_768_gpu_london_only",
+    "only_changed_factor_from_r12b_c1": "export_input_size_640_to_768",
+    "candidate_count": 1,
+    "additional_resolution_candidates_allowed": false,
+    "threshold_class_prompt_bbox_polygon_or_tracker_change_allowed": false,
+    "if_768_misses_london": "stop_resolution_search_and_preregister_a_new_small_target_detector_hypothesis"
+  },
+  "authorization_policy": {
+    "oracle_pass_may_authorize_london_768_candidate_execution": true,
+    "oracle_pass_may_authorize_full_continuous_replay": false,
+    "oracle_pass_may_authorize_device_soak": false,
+    "oracle_pass_may_authorize_r13_inventory_unlock": false
+  },
+  "authority": {
+    "new_held_out_read": false,
+    "benchmark_only": true,
+    "app_default_backend_change_authorized": false,
+    "training_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

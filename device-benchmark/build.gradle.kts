@@ -31,6 +31,8 @@ val segmentationBenchmarkModelAssetName = providers
     .orElse("mobilenetv3_lraspp_int8_256.tflite")
 val ustrfR12DetectorModelPath = providers.gradleProperty("ustrfR12DetectorModelPath")
     .orElse("artifacts.local/evidence/ustrf-crosscam-codex/r12-detector-export/yoloe11s_marker_static3_fp16_640.tflite")
+val ustrfR12DetectorModelAssetName = providers.gradleProperty("ustrfR12DetectorModelAssetName")
+    .orElse("yoloe11s_marker_static3_fp16_640.tflite")
 val ustrfR12DetectorLabelsPath = providers.gradleProperty("ustrfR12DetectorLabelsPath")
     .orElse("artifacts.local/evidence/ustrf-crosscam-codex/r12-detector-export/marker_labels.txt")
 val ustrfR12DetectorCanaryDir = providers.gradleProperty("ustrfR12DetectorCanaryDir")
@@ -101,7 +103,7 @@ val prepareEventHeadBenchmarkAssets = tasks.register<Sync>("prepareEventHeadBenc
 
 val prepareUstrfR12DetectorAssets = tasks.register<Sync>("prepareUstrfR12DetectorAssets") {
     from(ustrfR12DetectorModelPath.map { rootProject.file(it) }) {
-        rename { "yoloe11s_marker_static3_fp16_640.tflite" }
+        rename { ustrfR12DetectorModelAssetName.get() }
         into("ustrf_r12_detector")
     }
     from(ustrfR12DetectorLabelsPath.map { rootProject.file(it) }) {

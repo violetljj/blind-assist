@@ -2,6 +2,12 @@
 
 ## 2026-07-22
 
+### USTRF Bangkok 替换与 R1.2c v2 真机事件门
+- 时间：2026-07-22；执行者：Codex。
+- 范围：前向物化 Bangkok 替换 Japan 的 12 事件清单并重跑六正例 truth—路线 oracle；只在 `6/6` 后导出并执行唯一同权重 FP16-768 GPU 候选，事件门先于 600 秒 soak。未读 R1.3、未改 App 默认模型/反馈路径。
+- 结果：oracle `6/6`；机械 canary 通过。SM-S9280 完整事件门为正例 `5/6`，London 22 帧仍未关联；负例假告警、重复交付、共现接管、身份切换均为 0，歧义率 `3.65%`。事件门失败后跳过 soak，设备门显式未评估，R1.3/训练/生产权限保持 false。
+- 后续：关闭同权重分辨率搜索，前瞻冻结 stride-4/P2 小目标 detector 假设；当前候选数 0，须先补唯一权重、训练 manifest 与审查/许可/精确几何收据。验证为 cross-camera `30 tests OK`、JDK 17 双 APK 构建通过。详见 [R1.2c v2 结果](docs/research/ustrf-sc/USTRF_CROSSCAM_R12C_V2_RESULT_2026-07-22.md)。
+
 ### USTRF R1.2c 非 R1.3 seen positive 预注册
 - 时间：2026-07-22；执行者：Codex。
 - 范围：从 2026-07-19 已打开的 Wikimedia Commons/POPtravel Bangkok Modern Center 来源冻结 `bangkok_tactile_cone_intrusion`，以两份互盲模型复核、唯一目标与保守凸路线多边形补 Japan 排除后的第六正例；未读取或占用 R1.3。

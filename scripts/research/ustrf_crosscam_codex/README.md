@@ -17,6 +17,8 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-cro
 E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex materialize_r12a_continuous_input.py --help
 E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex materialize_r12b_exact_frame_input.py --help
 E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex evaluate_r12c_truth_geometry_consistency.py --help
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex evaluate_r12c_v2_truth_geometry_consistency.py --help
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex materialize_r12c_v2_exact_frame_input.py --help
 ```
 
 输入必须是有来源、许可和 SHA-256 收据的公开第一视角视频。准备器只向 Codex 教师暴露当前/过去图像、时间戳和预注册路线覆盖；隐藏代理标签、未来帧、深度、review、adjudication 或 blind 字段不得进入评审材料。
@@ -46,3 +48,5 @@ R1.2b 只在同一 seen diagnostic 上做移动端工程隔离：先验证冻结
 R1.2c 先把六个正事件的 alertable anchor 与独立 route oracle 对齐；每个正例至少需要一个在 `.01/.02/.03` 三档不确定性下均为 inside 的 anchor。缺失时固定标为 `truth_geometry_conflict`，由两个 fresh-context 模型独立复核，再由第三模型仲裁；这里的“人工角色”由模型承担，不等待真人，但也不授予真人或生产真值权限。禁止拖动旧 polygon 回救历史失败。只有六例全部一致才允许唯一的 London FP16-768 GPU 单变量候选；机械 canary 后直接跑完整连续事件，须正例 `6/6` 且负例、重复交付、共现接管、身份切换均为 `0`，才可运行 600 秒 soak。768 仍漏 London 时停止分辨率搜索，转向新预注册的小目标 detector 假设；R1.3 在全门通过前保持封存。
 
 Japan 经模型仲裁排除后，非 R1.3 补位只允许使用在 R1.2c 前已经打开的 seen source。`validate_r12c_seen_positive_prereg.py` 会验证来源/许可/视频/关键帧哈希、两份独立模型复核、唯一目标、`.01/.02/.03` robust geometry、清除代理和 R1.3 封存状态。补位合同本身不授权 768；必须先把补位事件物化到新的 R1.2c 连续清单并重跑完整六正例 oracle。
+
+R1.2c v2 已以 Bangkok 完成六正例 oracle `6/6`，但 768 真机连续事件仍漏 London，故 600 秒 soak 被顺序门跳过，分辨率搜索关闭。R1.2d 只允许前瞻冻结的 stride-4/P2 小目标 detector 假设；候选权重、训练 manifest 与数据审查/许可/精确几何收据未齐前，candidate execution、R1.3、训练和生产权限均为 false。

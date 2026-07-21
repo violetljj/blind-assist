@@ -22,6 +22,7 @@
 - [跨相机移动端连续事件 R1.2b（2026-07-21）](USTRF_CROSSCAM_MOBILE_R12B_RESULT_2026-07-21.md)：同一 FP16-640 模型的 benchmark-only GPU 路线在 SM-S9280 达到 inference p50/p95 `40/54ms`、600 秒 0 失败、温升 `4.0°C`；但正事件仅 `4/6`，Japan 暴露事件 truth/路线代理冲突，London 仍为 detector 连续漏检，总体门失败且 R1.3 继续锁定。
 - [跨相机 truth—路线几何一致性 R1.2c（2026-07-21）](USTRF_CROSSCAM_TRUTH_GEOMETRY_R12C_RESULT_2026-07-21.md)：独立正事件 oracle 为 `5/6` 一致；双模型复核加第三模型仲裁后，Japan 被裁为 `unknown/exclude` 而非正例或计分负例。当前缺第六个合格正事件，London FP16-768 GPU 候选仍禁止执行，R1.3 继续封存。
 - [R1.2c 非 R1.3 seen positive 预注册（2026-07-22）](USTRF_CROSSCAM_SEEN_POSITIVE_R12C_PREREG_2026-07-22.md)：从已打开的 Bangkok Modern Center 来源冻结红白交通锥路线侵入事件；333s/336s 为 robust inside、339s 为 clear proxy，资格计数补到 6，但须先物化 R1.2c v2 并重跑全六例 oracle，768 仍未授权。
+- [Bangkok 替换与 R1.2c v2 结果（2026-07-22）](USTRF_CROSSCAM_R12C_V2_RESULT_2026-07-22.md)：六正例 oracle `6/6` 后执行唯一 FP16-768 GPU 候选；真机事件召回 `5/6`，London 仍连续漏检，故跳过 soak、锁住 R1.3，并前瞻冻结 stride-4/P2 小目标 detector 假设。
 - [路线条件化无类别风险场主线](../../ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：当前优先研究路线；typed route-risk seam 已建立，真实事件与设备米制几何硬门仍阻塞，未授权训练或接入 App。
 - [REveL YOLO11n 8/32 帧 crop/tiling 配对实验](USTRF_SC_REVEL_CROP_TILING_PAIRED_2026-07-20.md)：8 帧 canary 恢复 4/8 small miss，但 FP 从 4 增至 14，按预注册停止并跳过 32 帧。
 - [设备阶段策略](USTRF_SC_DEVICE_PHASE_POLICY.md)

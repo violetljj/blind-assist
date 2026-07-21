@@ -16,7 +16,7 @@ import java.io.InputStream
 import java.security.MessageDigest
 import kotlin.math.ceil
 
-/** R1.2b fixed nine-frame seen canary. It can select only a full continuous replay candidate. */
+/** R1.2b/R1.2c fixed nine-frame seen canary. It can select only a full continuous replay candidate. */
 @RunWith(AndroidJUnit4::class)
 class UstrfR12bMobileCanaryDeviceTest {
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
@@ -30,7 +30,10 @@ class UstrfR12bMobileCanaryDeviceTest {
             assumeTrue("R1.2b canary was not requested", false)
             return
         }
-        check(arguments.getString(ARG_PROTOCOL_SHA) == PROTOCOL_SHA) { "R1.2b protocol hash mismatch" }
+        val protocolSha = arguments.getString(ARG_PROTOCOL_SHA)
+        check(protocolSha == R12B_PROTOCOL_SHA || protocolSha == R12C_V2_PROTOCOL_SHA) {
+            "R1.2b/R1.2c protocol hash mismatch"
+        }
         val candidateId = requireNotNull(arguments.getString(ARG_CANDIDATE_ID))
         val modelAsset = requireNotNull(arguments.getString(ARG_MODEL_ASSET))
         check(modelAsset.startsWith("ustrf_r12_detector/") || modelAsset.startsWith("ustrf_r12b_detector/"))
@@ -109,7 +112,7 @@ class UstrfR12bMobileCanaryDeviceTest {
             emittedLabels.size == REQUIRED_LABEL_COUNT && percentile(inference, 0.95) <= INFERENCE_P95_LIMIT_MS &&
             percentile(total, 0.95) <= TOTAL_P95_LIMIT_MS
         val output = JSONObject()
-            .put("schema", OUTPUT_SCHEMA).put("protocol_sha256", PROTOCOL_SHA).put("candidate_id", candidateId)
+            .put("schema", OUTPUT_SCHEMA).put("protocol_sha256", protocolSha).put("candidate_id", candidateId)
             .put("dataset_role", "seen_r11_diagnostic_parser_canary_not_r12_or_r13")
             .put("device", JSONObject().put("model", Build.MODEL).put("sdk", Build.VERSION.SDK_INT)
                 .put("fingerprint", Build.FINGERPRINT))
@@ -160,7 +163,8 @@ class UstrfR12bMobileCanaryDeviceTest {
     }
 
     private companion object {
-        const val PROTOCOL_SHA = "c56f49d19c8afd469e86c4ad970f5c994f827a260971907f746cd5c296b33757"
+        const val R12B_PROTOCOL_SHA = "c56f49d19c8afd469e86c4ad970f5c994f827a260971907f746cd5c296b33757"
+        const val R12C_V2_PROTOCOL_SHA = "10f245b316fa86a55b5bae5d275939d668f7d34ba12a51287ad38ce961ba5e0a"
         const val MANIFEST_ASSET = "ustrf_r12_detector/canary_manifest.json"
         const val MANIFEST_SCHEMA = "blindassist_ustrf_r12_android_parser_canary_v1"
         const val LABELS_ASSET = "ustrf_r12_detector/marker_labels.txt"
