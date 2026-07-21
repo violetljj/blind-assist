@@ -11,6 +11,8 @@ function New-TestRepository([string]$Name) {
     if ($LASTEXITCODE -ne 0) {
         throw "Unable to initialize test repository: $repository"
     }
+    & git -C $repository config user.name 'BlindAssist Hygiene Test'
+    & git -C $repository config user.email 'hygiene-test@invalid.local'
     return $repository
 }
 
@@ -23,15 +25,24 @@ function Add-TestFile([string]$Repository, [string]$RelativePath) {
     [System.IO.File]::WriteAllText($path, 'smoke-test', [System.Text.UTF8Encoding]::new($false))
 }
 
-function Invoke-HygieneCheck([string]$Repository) {
+function Invoke-HygieneCheck([string]$Repository, [string]$BaseRef = '') {
     Push-Location $Repository
     try {
-        & $script:HygieneScript
+        & $script:HygieneScript -BaseRef $BaseRef
         return $LASTEXITCODE
     }
     finally {
         Pop-Location
     }
+}
+
+function Commit-TestRepository([string]$Repository, [string]$Message) {
+    & git -C $Repository add --all
+    & git -C $Repository commit --quiet -m $Message
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to commit test repository '$Repository': $Message"
+    }
+    return (& git -C $Repository rev-parse HEAD).Trim()
 }
 
 function Assert-HygieneResult(
@@ -87,6 +98,26 @@ try {
         -Name 'milestone-apk-with-docs' `
         -ShouldPass $true `
         -Paths @('releases/apk/blindassist-v9.4.0-debug.apk', 'docs/APK_ARCHIVE.md')
+
+    $deletedRepository = New-TestRepository 'deleted-binary-cleanup'
+    Add-TestFile $deletedRepository 'codex/skills-snapshot/historical.zip'
+    $deletedBase = Commit-TestRepository $deletedRepository 'add historical binary fixture'
+    Remove-Item -LiteralPath (Join-Path $deletedRepository 'codex/skills-snapshot/historical.zip')
+    Commit-TestRepository $deletedRepository 'remove historical binary fixture' | Out-Null
+    if ((Invoke-HygieneCheck $deletedRepository $deletedBase) -ne 0) {
+        throw 'Deleted historical binary cleanup was expected to pass.'
+    }
+    Write-Host 'PASS: deleted-binary-cleanup'
+
+    $addedRepository = New-TestRepository 'added-binary-from-base'
+    Add-TestFile $addedRepository 'notes/readme.md'
+    $addedBase = Commit-TestRepository $addedRepository 'add clean base fixture'
+    Add-TestFile $addedRepository 'snapshot.zip'
+    Commit-TestRepository $addedRepository 'add forbidden binary fixture' | Out-Null
+    if ((Invoke-HygieneCheck $addedRepository $addedBase) -eq 0) {
+        throw 'Added binary relative to a base commit was expected to fail.'
+    }
+    Write-Host 'PASS: added-binary-from-base'
 
     Write-Host 'Repository hygiene smoke tests passed.'
 }

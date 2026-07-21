@@ -42,40 +42,39 @@ function Resolve-BaseCommit {
 }
 
 function Test-DeletedOnly([string]$Path) {
-    if ($script:ResolvedBaseRef) {
-        $deletedFromBase = git diff --name-only --diff-filter=D "$script:ResolvedBaseRef...HEAD" -- $Path |
-            ForEach-Object { Normalize-PathForGit $_ }
-        if (-not ($deletedFromBase -contains $Path)) {
-            return $false
-        }
+    return $script:DeletedOnlyPaths -contains $Path
+}
 
-        $changedFromBase = git diff --name-only --diff-filter=ACMRTUXB "$script:ResolvedBaseRef...HEAD" -- $Path |
+function Get-DeletedOnlyPaths {
+    if ($script:ResolvedBaseRef) {
+        return git diff --name-only --diff-filter=D "$script:ResolvedBaseRef...HEAD" |
             ForEach-Object { Normalize-PathForGit $_ }
-        return -not ($changedFromBase -contains $Path)
     }
 
     $deleted = @(
-        git diff --name-only --diff-filter=D -- $Path
-        git diff --name-only --cached --diff-filter=D -- $Path
+        git diff --name-only --diff-filter=D
+        git diff --name-only --cached --diff-filter=D
     ) | ForEach-Object { Normalize-PathForGit $_ }
-    if (-not ($deleted -contains $Path)) {
-        return $false
-    }
-
     $notDeleted = @(
-        git diff --name-only --diff-filter=ACMRTUXB -- $Path
-        git diff --name-only --cached --diff-filter=ACMRTUXB -- $Path
-        git ls-files --others --exclude-standard -- $Path
+        git diff --name-only --diff-filter=ACMRTUXB
+        git diff --name-only --cached --diff-filter=ACMRTUXB
+        git ls-files --others --exclude-standard
     ) | ForEach-Object { Normalize-PathForGit $_ }
-    return -not ($notDeleted -contains $Path)
+    return $deleted | Where-Object { $_ -and -not ($notDeleted -contains $_) } | Sort-Object -Unique
 }
 
 $script:ResolvedBaseRef = Resolve-BaseCommit
+$script:DeletedOnlyPaths = @(Get-DeletedOnlyPaths)
 $paths = @(Get-ChangedPaths | Where-Object { $_ } | Sort-Object -Unique)
 $docsArchiveChanged = $paths -contains 'docs/APK_ARCHIVE.md'
 $failures = New-Object System.Collections.Generic.List[string]
 
 foreach ($path in $paths) {
+    # Deleting a historical forbidden artifact is cleanup, not a new violation.
+    if (Test-DeletedOnly $path) {
+        continue
+    }
+
     if ($path -match '^(\.gradle/|\.gradle-local/|\.android-sdk/|\.android-home/|\.jdk/|\.python311/|\.venv-|\.cache/|\.kotlin/|\.kotlin-home/|work/|app/build/|.*/build/)' -or
         $path -match '(^|/)__pycache__/') {
         $failures.Add("Local build/cache path must not be committed: $path")
@@ -83,9 +82,6 @@ foreach ($path in $paths) {
     }
 
     if ($path -match '^test-artifacts([./-]|$)') {
-        if (Test-DeletedOnly $path) {
-            continue
-        }
         $failures.Add("New test artifacts must stay in local evidence storage, not Git: $path")
         continue
     }
