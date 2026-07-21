@@ -18,6 +18,8 @@
 - [跨相机目标归因诊断 R1.1（2026-07-21）](USTRF_CROSSCAM_TARGET_ATTRIBUTION_R11_2026-07-21.md)：六来源唯一目标账本、oracle 几何、Edmonton 稳定短窗投影与 SM-S9280 target-aware v2 已完成；Japan 首因改判路线合同，其余五来源首先受 detector taxonomy 覆盖阻塞。
 - [跨相机 marker held-out R1.2 预注册（2026-07-21）](USTRF_CROSSCAM_HELDOUT_R12_PREREG_2026-07-21.md)：先在已见 R1.1 诊断集确认 YOLOE 静态三类 taxonomy，再冻结全新 3 正/3 负来源；新来源尚未运行 detector，Android export/parser 门仍关闭。
 - [跨相机 marker held-out R1.2 结果（2026-07-21）](USTRF_CROSSCAM_HELDOUT_R12_RESULT_2026-07-21.md)：oracle 6/6；离线与 SM-S9280 真机均为正例召回 3/3、负例目标假告警 0/3、实例匹配 5/6；parser canary 与 host/device 事件结论一致性已闭合，但仍无生产授权。
+- [跨相机连续事件工程 R1.2a（2026-07-21）](USTRF_CROSSCAM_CONTINUOUS_R12A_RESULT_2026-07-21.md)：12 个已见来源连续重放为正例 `4/6`、负例假告警/重复交付/共现接管均为 `0`；SM-S9280 600 秒无推理解码失败且温升通过，但 inference p50/p95 `762/978ms` 使设备门失败。R1.3 仅预注册 12 个未打开槽位。
+- [跨相机移动端连续事件 R1.2b（2026-07-21）](USTRF_CROSSCAM_MOBILE_R12B_RESULT_2026-07-21.md)：同一 FP16-640 模型的 benchmark-only GPU 路线在 SM-S9280 达到 inference p50/p95 `40/54ms`、600 秒 0 失败、温升 `4.0°C`；但正事件仅 `4/6`，Japan 暴露事件 truth/路线代理冲突，London 仍为 detector 连续漏检，总体门失败且 R1.3 继续锁定。
 - [路线条件化无类别风险场主线](../../ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：当前优先研究路线；typed route-risk seam 已建立，真实事件与设备米制几何硬门仍阻塞，未授权训练或接入 App。
 - [REveL YOLO11n 8/32 帧 crop/tiling 配对实验](USTRF_SC_REVEL_CROP_TILING_PAIRED_2026-07-20.md)：8 帧 canary 恢复 4/8 small miss，但 FP 从 4 增至 14，按预注册停止并跳过 32 帧。
 - [设备阶段策略](USTRF_SC_DEVICE_PHASE_POLICY.md)

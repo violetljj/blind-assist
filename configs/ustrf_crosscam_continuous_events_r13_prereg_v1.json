@@ -1,0 +1,84 @@
+{
+  "schema": "blindassist_ustrf_crosscam_continuous_event_preregistration_v1",
+  "contract_id": "ustrf_crosscam_continuous_events_r13_prereg_v1",
+  "frozen_at_utc": "2026-07-21T14:18:00Z",
+  "dataset_role": "preregistered_unopened_inventory_slots",
+  "purpose": "Freeze the next independent 12-source, 6-positive/6-negative continuous-event gate after R1.2a without selecting, downloading, decoding or scoring any new source in this round.",
+  "prerequisite": {
+    "r12a_protocol_path": "configs/ustrf_crosscam_continuous_events_r12a_seen_v1.json",
+    "r12a_protocol_sha256": "57bf4bea498af6c0817e4ee595c546760418cd7e0acab1dc97835e163555fd49",
+    "r12a_protocol_and_thresholds_frozen_before_source_discovery": true,
+    "r12a_device_receipt_required_before_r13_inventory_unlock": true
+  },
+  "inventory": {
+    "source_count": 12,
+    "positive_source_count": 6,
+    "negative_source_count": 6,
+    "one_event_per_parent_source": true,
+    "clip_duration_ms_range": [5000, 15000],
+    "source_slots": [
+      {"slot_id":"r13_positive_01","expected_class":"positive"},
+      {"slot_id":"r13_positive_02","expected_class":"positive"},
+      {"slot_id":"r13_positive_03","expected_class":"positive"},
+      {"slot_id":"r13_positive_04","expected_class":"positive"},
+      {"slot_id":"r13_positive_05","expected_class":"positive"},
+      {"slot_id":"r13_positive_06","expected_class":"positive"},
+      {"slot_id":"r13_negative_01","expected_class":"negative"},
+      {"slot_id":"r13_negative_02","expected_class":"negative"},
+      {"slot_id":"r13_negative_03","expected_class":"negative"},
+      {"slot_id":"r13_negative_04","expected_class":"negative"},
+      {"slot_id":"r13_negative_05","expected_class":"negative"},
+      {"slot_id":"r13_negative_06","expected_class":"negative"}
+    ]
+  },
+  "novelty_and_access": {
+    "all_parent_source_ids_and_video_sha256_must_be_new": true,
+    "r11_r12_vancouver_or_other_seen_source_reuse_forbidden": true,
+    "vancouver_may_only_seed_future_miss_taxonomy_notes": true,
+    "vancouver_may_change_prompt_threshold_bbox_or_polygon": false,
+    "source_discovery_authorized_in_r12a_round": false,
+    "download_decode_or_detector_inference_authorized_in_r12a_round": false,
+    "result_access_authorized": false
+  },
+  "event_truth_review": {
+    "truth_contract_id": "independent_dual_vlm_event_review_v1",
+    "review_inputs": "causal_current_and_past_frames_only_plus_source_provenance_and_target_identity_anchor",
+    "detector_outputs_hidden_from_reviewers": true,
+    "reviewer_a": "independent_large_vision_model_pass_a",
+    "reviewer_b": "independent_large_vision_model_pass_b_fresh_context",
+    "required_fields": [
+      "physical_target_instance_id",
+      "target_visible_intervals_ms",
+      "alertable_start_ms",
+      "passed_or_cleared_ms",
+      "expected_route_relation",
+      "cooccurring_objects_to_exclude",
+      "should_alert_event"
+    ],
+    "exact_agreement_required": ["physical_target_instance_id","expected_route_relation","should_alert_event"],
+    "timing_tolerance_ms": 500,
+    "disagreement_policy": "unresolved_fail_closed_no_score_until_third_independent_adjudication",
+    "truth_authority": "dual_vlm_reviewed_provisional_event_truth_not_human_truth",
+    "human_review_still_required_for_production_authority": true
+  },
+  "frozen_metrics_and_gates": {
+    "positive_event_recall_at_least": 0.90,
+    "negative_false_alert_count_at_most": 0,
+    "first_correct_alert_delay_ms_at_most": 5000,
+    "delivered_repeated_alert_count_at_most": 0,
+    "target_exit_clearance_delay_ms_at_most": 1000,
+    "cooccurrence_triggered_target_event_count_at_most": 0,
+    "identity_switch_count_at_most": 0,
+    "association_ambiguous_frame_rate_at_most": 0.10,
+    "device_inference_latency_p95_ms_at_most": 120.0,
+    "device_soak_duration_seconds": 600,
+    "device_thermal_delta_c_at_most": 8.0,
+    "single_frame_metrics_are_diagnostic_only": true
+  },
+  "authority": {
+    "benchmark_only": true,
+    "training_authorized": false,
+    "android_runtime_change_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

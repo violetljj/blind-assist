@@ -175,5 +175,7 @@ dependencies {
     implementation(libs.androidx.test.ext.junit)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.tflite)
+    implementation(libs.tflite.gpu)
+    implementation(libs.tflite.gpu.api)
     implementation("org.opencv:opencv:4.10.0")
 }

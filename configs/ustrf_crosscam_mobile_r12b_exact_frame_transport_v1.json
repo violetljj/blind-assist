@@ -1,0 +1,54 @@
+{
+  "schema": "blindassist_ustrf_crosscam_exact_frame_transport_preregistration_v1",
+  "contract_id": "ustrf_crosscam_mobile_r12b_exact_frame_transport_v1",
+  "frozen_at_utc": "2026-07-21T15:12:00Z",
+  "dataset_role": "seen_diagnostic_not_held_out",
+  "purpose": "Replace non-equivalent Android MediaMetadataRetriever frames with hash-bound host-decoded exact timestamp PNG frames before attributing continuous outcomes to the selected detector backend.",
+  "parent": {
+    "r12b_protocol_sha256": "c56f49d19c8afd469e86c4ad970f5c994f827a260971907f746cd5c296b33757",
+    "r12a_android_input_path": "artifacts.local/evidence/ustrf-crosscam-codex/continuous-r12a-seen-diagnostic-v1/android-input/android_r12a_continuous_input.json",
+    "r12a_android_input_sha256": "61c63ed36102c919b72aa0323fb5c703e8f2697a222aeb2259766d6eb7523c04",
+    "failed_video_transport_audit_sha256": "59bbfc506dd4ee277ac2405113674e6851f4af75cfa96b56d97c21c0cfbe1976",
+    "failed_video_transport_parity": "4/9"
+  },
+  "selected_candidate": {
+    "candidate_id": "r12b_c1_same640_gpu_delegate",
+    "selection_rule": "first_candidate_passing_all_canary_gates",
+    "canary_output_sha256": "37d7112e641bc3451ce21bcb576867ebd6d9da05438a4c7e767874db6ca2944c",
+    "model_sha256": "f726ea0f5cea1cdf0a4e1a473f37ccbadc8b9bdf4b9ea71d02311556c0690163",
+    "input_size": 640,
+    "execution_backend": "gpu_delegate",
+    "confidence_threshold": 0.05,
+    "target_anchor_iou_threshold": 0.30,
+    "nms_iou_threshold": 0.45
+  },
+  "transport": {
+    "decoder": "ffmpeg 8.1.2 essentials build",
+    "decoder_executable_sha256": "1326dde4c84ff1f96fe6b8916c5bed29e163e9b5dccf995f6f3db069d143ec5e",
+    "frame_format": "png",
+    "regular_sample_period_ms": 500,
+    "timestamp_inventory": "inclusive_regular_grid_union_all_frozen_target_anchor_timestamps_inside_clip",
+    "command_semantics": "-ss timestamp_seconds -i source -map 0:v:0 -frames:v 1 -vsync 0 output.png",
+    "autorotate": true,
+    "source_video_sha256_required": true,
+    "each_output_frame_sha256_required": true,
+    "device_may_decode_original_video": false
+  },
+  "admission": {
+    "static_canary_exact_frame_target_status_parity_required": "9/9",
+    "orientation_parity_required": true,
+    "continuous_event_gate": "unchanged_r12a_event_gate",
+    "continuous_inference_p95_ms_at_most": 120.0,
+    "continuous_total_detect_p95_ms_at_most": 160.0,
+    "full_soak_seconds": 600,
+    "soak_runs_only_after_exact_frame_transport_admission": true
+  },
+  "hard_stops": {
+    "c2_or_c3_may_run_after_c1_pass": false,
+    "vancouver_may_change_transport_or_candidate": false,
+    "prompt_threshold_bbox_or_polygon_change_allowed": false,
+    "r13_inventory_may_open": false,
+    "training_authorized": false,
+    "app_or_production_change_authorized": false
+  }
+}

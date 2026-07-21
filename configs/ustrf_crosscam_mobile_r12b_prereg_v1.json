@@ -1,0 +1,93 @@
+{
+  "schema": "blindassist_ustrf_crosscam_mobile_engineering_preregistration_v1",
+  "contract_id": "ustrf_crosscam_mobile_r12b_v1",
+  "frozen_at_utc": "2026-07-21T14:55:00Z",
+  "dataset_role": "seen_diagnostic_not_held_out",
+  "purpose": "Recover continuous mobile scheduling feasibility without consuming R1.3. Profile the frozen 640 CPU path, then test a fixed first-passing OFAT ladder: same 640 model on GPU delegate, same static weights/classes at 320 on CPU, then the same 320 export on GPU.",
+  "parent_protocol": {
+    "path": "configs/ustrf_crosscam_continuous_events_r12a_seen_v1.json",
+    "sha256": "57bf4bea498af6c0817e4ee595c546760418cd7e0acab1dc97835e163555fd49",
+    "r13_prereg_path": "configs/ustrf_crosscam_continuous_events_r13_prereg_v1.json",
+    "r13_sha256": "4ad7a29bc98693e16a7567e1bdcd9b0f1b71d780e56e511f5b394da09b7965c5",
+    "r13_inventory_must_remain_locked": true
+  },
+  "frozen_detector_semantics": {
+    "source_weights_sha256": "8e439445c87338b79d9ce21dec109f4621e26df67e94d26ea1a98c1e64dce3e3",
+    "classes": ["traffic cone", "delineator", "bollard"],
+    "confidence_threshold": 0.05,
+    "target_anchor_iou_threshold": 0.30,
+    "nms_iou_threshold": 0.45,
+    "prompt_or_class_change_allowed": false,
+    "threshold_change_allowed": false,
+    "bbox_or_polygon_change_allowed": false,
+    "training_or_distillation_authorized": false
+  },
+  "preconditions": {
+    "p0_anchor_equivalence_audit_required": true,
+    "p0_scope": "seen_r11_static_canary_png_vs_same_timestamp_android_video_decode_on_cpu640",
+    "required_orientation_and_dimension_parity": true,
+    "required_target_match_status_parity": true,
+    "failure_action": "do_not_blame_detector_or_run_candidate_continuous_gate; replace the replay transport with hash-bound exact timestamp frames or fix decoder timestamp/rotation semantics",
+    "p0_may_change_detector_or_annotations": false
+  },
+  "canary": {
+    "dataset_role": "seen_r11_diagnostic_parser_canary_not_r12_or_r13",
+    "manifest_asset": "ustrf_r12_detector/canary_manifest.json",
+    "r12_sources_read": false,
+    "r13_sources_read": false,
+    "warmup_iterations": 3,
+    "measurement_repetitions": 3,
+    "required_frame_count": 9,
+    "required_target_match_frame_count_at_least": 6,
+    "required_emitted_label_count": 3,
+    "decode_or_inference_failures_at_most": 0,
+    "inference_latency_p95_ms_at_most": 120.0,
+    "total_detect_latency_p95_ms_at_most": 160.0
+  },
+  "candidate_ladder": [
+    {
+      "order": 1,
+      "candidate_id": "r12b_c1_same640_gpu_delegate",
+      "model_path": "artifacts.local/evidence/ustrf-crosscam-codex/r12-detector-export/yoloe11s_marker_static3_fp16_640.tflite",
+      "model_sha256": "f726ea0f5cea1cdf0a4e1a473f37ccbadc8b9bdf4b9ea71d02311556c0690163",
+      "input_size": 640,
+      "execution_backend": "gpu_delegate",
+      "single_changed_factor": "execution_backend"
+    },
+    {
+      "order": 2,
+      "candidate_id": "r12b_c2_sameweights_fp16_320_cpu",
+      "model_path": "artifacts.local/evidence/ustrf-crosscam-codex/mobile-r12b-export/yoloe11s_marker_static3_fp16_320.tflite",
+      "input_size": 320,
+      "execution_backend": "cpu",
+      "single_changed_factor": "export_input_size",
+      "run_only_if_all_earlier_candidates_fail": true
+    },
+    {
+      "order": 3,
+      "candidate_id": "r12b_c3_same320_gpu_delegate",
+      "model_path": "artifacts.local/evidence/ustrf-crosscam-codex/mobile-r12b-export/yoloe11s_marker_static3_fp16_320.tflite",
+      "input_size": 320,
+      "execution_backend": "gpu_delegate",
+      "single_changed_factor_from_c2": "execution_backend",
+      "run_only_if_all_earlier_candidates_fail": true
+    }
+  ],
+  "selection_and_stop": {
+    "selection_rule": "first_candidate_passing_all_canary_gates",
+    "vancouver_may_select_or_reject_candidate": false,
+    "single_frame_canary_may_authorize_production": false,
+    "passing_canary_authorizes_only_full_r12a_seen_continuous_replay": true,
+    "full_continuous_gate_must_equal_r12a": true,
+    "full_600_second_soak_required_before_device_pass": true,
+    "if_all_candidates_fail": "stop_resolution_or_backend_search_and_require_a_new_preregistered_mobile_detector_hypothesis",
+    "candidate_count_may_expand_after_results": false
+  },
+  "authority": {
+    "new_held_out_read": false,
+    "benchmark_only": true,
+    "app_default_backend_change_authorized": false,
+    "training_authorized": false,
+    "production_model_replacement_authorized": false
+  }
+}

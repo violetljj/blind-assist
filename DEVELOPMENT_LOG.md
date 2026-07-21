@@ -2,11 +2,25 @@
 
 ## 2026-07-21
 
+### USTRF 跨相机移动端连续事件 R1.2b
+- 时间：2026-07-21；执行者：Codex。
+- 范围：只在 R1.2a 的 12 个 seen diagnostic 上冻结移动端 OFAT 候选顺序、分段延迟、取帧等价门与逐帧 SHA-256 传输；正式 App/core runtime 未改，R1.3 未解封，Vancouver 未用于候选选择，prompt/类别/`.05/.30/.45`/bbox/polygon 均未改变。
+- 结果：首个候选“同 FP16-640 模型 + benchmark-only GPU delegate”即通过 canary，故未运行 320 候选。SM-S9280 600 秒、4,795 次检测为 inference p50/p95 `40/54ms`、总检测 `84/105ms`、0 解码/推理失败、温升 `4.0°C`、thermal status 最大 `0`，设备门通过。
+- 事件门：正例 `4/6`，Japan 已持续关联但与冻结 route polygon 的事件关系不相容，London 22 帧关联为 0；负例假告警、重复交付、共现接管、身份切换均为 0，出画门随 London fail-closed。总体失败并保持 `do_not_replace_default_model`。
+- 验证：R1.2b Python 合同测试；`:device-benchmark:assembleDebug`；精确帧设备准入 `OK (1 test)`；完整连续 instrumentation 跑满 600 秒并按预期在写出收据后因事件门失败。详见 [R1.2b 结果](docs/research/ustrf-sc/USTRF_CROSSCAM_MOBILE_R12B_RESULT_2026-07-21.md)。
+
 ### Stacked PR CI bootstrap fixes
 - 时间：2026-07-21；执行者：violjjet。
 - 范围：仓库卫生门对 PR base 中已存在、当前仅删除的历史二进制视为清理，同时仍拒绝新增二进制；release signing 只在显式请求 `assembleRelease`/`bundleRelease` 时要求本地 keystore，不再被 `mergeReleaseAssets` 的任务图误触发。
 - Android lint：Camera2 interop 的 camera ID 读取在窄函数边界显式 opt-in，不通过关闭 `UnsafeOptInUsageError` 或 lint baseline 掩盖错误。
 - 验证：hygiene smoke 含 deleted-only/added-from-base 反例；`master...HEAD` hygiene 通过；CI debug/merge-assets 任务不需要 release keystore，显式 release 打包仍 fail closed。
+
+### USTRF 跨相机连续事件 R1.2a 与 R1.3 预注册
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：将已解封 R1.1/R1.2 降级为 12 段 5–15 秒 seen diagnostic；新增 benchmark-only 冻结 anchor 双向关联、一次交付/重复抑制、出画 fail-closed、共现隔离、设备延迟/soak/thermal 收据。App、core runtime、默认模型与反馈路径未改变。
+- 结果：SM-S9280 600 秒、648 次 inference 无 decode/inference failure，温升 `5.1°C`、thermal status 最大 `0`；但正例事件仅 `4/6`，出画证据不完整，inference p50/p95 `762/978ms` 远超 `120ms` 门，事件门和设备门均失败，维持 `do_not_replace_default_model`。
+- R1.3：只冻结 12 个未打开来源槽位（6 正/6 负）与双 VLM 独立复核 provisional event truth；未发现、下载、解码或消耗新 held-out。Vancouver 仅作漏检线索，不回调 prompt、`.05/.30`、bbox、polygon 或门槛。
+- 验证：Python R1.2a/R1.3 合同 2 tests；`:device-benchmark:assembleDebug`；SM-S9280 association `OK (2 tests)`；完整 instrumentation 按预期以 frozen gate failure 结束并先写出可审计 JSON。详见 [R1.2a 结果](docs/research/ustrf-sc/USTRF_CROSSCAM_CONTINUOUS_R12A_RESULT_2026-07-21.md)。
 
 本文件是 BlindAssist 的追加式工程历史：记录有代码、配置、模型、测试或已采纳技术决定的任务。近期条目应简洁写明范围、验证、风险并链接证据；长篇实验结论应写入对应 `docs/` 页面，当前状态以 [docs/SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md) 为准。
 
