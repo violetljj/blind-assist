@@ -2,6 +2,10 @@
   "schema_version": 1,
   "scripts_root": "scripts",
   "root_allowlist_path": "scripts/policy/root-files.txt",
+  "root_index_exempt_patterns": [
+    "^test_",
+    "^README\\.md$"
+  ],
   "development_log": {
     "path": "DEVELOPMENT_LOG.md",
     "max_lines": 1500,

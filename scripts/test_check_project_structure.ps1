@@ -55,6 +55,7 @@ function New-TestRepository([string]$Name) {
         schema_version = 1
         scripts_root = 'scripts'
         root_allowlist_path = 'policy/root-files.txt'
+        root_index_exempt_patterns = @('^test_', '^README\.md$')
         development_log = [ordered]@{
             path = 'DEVELOPMENT_LOG.md'
             max_lines = 20
@@ -154,6 +155,42 @@ try {
         throw 'Indexed new root Interface was expected to pass.'
     }
     Write-Host 'PASS: new-root-interface-index'
+
+    $testExemptRepository = New-TestRepository 'new-root-test-index-exempt'
+    & git -C $testExemptRepository add --all
+    & git -C $testExemptRepository -c user.name=structure-test -c user.email=structure-test@example.invalid commit --quiet -m baseline
+    if ($LASTEXITCODE -ne 0) { throw 'Unable to create test-exempt baseline commit.' }
+    $testExemptBase = (& git -C $testExemptRepository rev-parse HEAD).Trim()
+    Write-TestFile $testExemptRepository 'scripts/test_new_stable.py' 'print("test")'
+    Write-TestFile $testExemptRepository 'policy/root-files.txt' "README.md`ncheck.ps1`ntest_new_stable.py`n"
+    if ((Invoke-StructureCheck $testExemptRepository $testExemptBase) -ne 0) {
+        throw 'New root test matching the policy exemption was expected to pass without a stable-index entry.'
+    }
+    Write-Host 'PASS: new-root-test-index-exempt'
+
+    $bootstrapRepository = New-TestRepository 'gate-bootstrap-base'
+    Remove-Item -LiteralPath (Join-Path $bootstrapRepository 'policy/project_structure.json') -Force
+    & git -C $bootstrapRepository add --all
+    & git -C $bootstrapRepository -c user.name=structure-test -c user.email=structure-test@example.invalid commit --quiet -m pre-gate-baseline
+    if ($LASTEXITCODE -ne 0) { throw 'Unable to create pre-gate baseline commit.' }
+    $bootstrapBase = (& git -C $bootstrapRepository rev-parse HEAD).Trim()
+    $bootstrapPolicy = [ordered]@{
+        schema_version = 1
+        scripts_root = 'scripts'
+        root_allowlist_path = 'policy/root-files.txt'
+        root_index_exempt_patterns = @('^test_', '^README\.md$')
+        development_log = [ordered]@{ path = 'DEVELOPMENT_LOG.md'; max_lines = 20; max_bytes = 4096; max_age_days = 28 }
+        research_root = 'scripts/research'
+        research_readme_required_markers = @('状态：', '## 稳定 Interface', '## 输出', '## 安全边界', '## 停止条件', 'artifacts.local/')
+        internal_reference_source_allowlist = @()
+    }
+    Write-TestFile $bootstrapRepository 'policy/project_structure.json' ($bootstrapPolicy | ConvertTo-Json -Depth 5)
+    Write-TestFile $bootstrapRepository 'scripts/preexisting_tool.py' 'print("pre-gate")'
+    Write-TestFile $bootstrapRepository 'policy/root-files.txt' "README.md`ncheck.ps1`npreexisting_tool.py`n"
+    if ((Invoke-StructureCheck $bootstrapRepository $bootstrapBase) -ne 0) {
+        throw 'Gate bootstrap against a base without the policy was expected to skip retroactive index enforcement.'
+    }
+    Write-Host 'PASS: gate-bootstrap-base'
 
     Write-Host 'Project structure smoke tests passed.'
 }

@@ -12,6 +12,12 @@
 
 ## 2026-07-21
 
+### CI 结构门基线语义修复
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：结构门只在 base 已含同一 policy 时检查新增稳定根 Interface，避免把门禁引入前的历史脚本追溯判错；`test_*` 与 `README.md` 的索引豁免由 `scripts/policy/project_structure.json` 单点声明，根 allowlist 仍保持精确失败门。
+- 边界：不向脚本索引灌入历史测试名，不放宽根目录清单、研究 Module、跨域 import 或开发日志预算；不改 App、模型、研究结论或生产权限。
+- 验证：结构门新增 bootstrap/test-exemption 反例；structure smoke 13 场景通过，`origin/master` 与 `eea9ea3` 两种 CI base-ref 的 repo hygiene 均通过。
+
 ### USTRF P0 时间、风险场、栅格、路线与 dense 第三臂合同硬化
 - 时间：2026-07-21；执行者：violjjet。
 - 生产时间链：CameraX `ImageProxy.imageInfo.timestamp` 现以带 clock-domain/source/frame identity 的 `FrameStamp` 贯穿 VisionFrame、detector、Assist evaluation 与 session trace；采集时钟用于趋势，decision/effect 时钟独立，处理延迟变化不再改变 approach/recede。新增 `feature:assist -> core:ustrf` write-only shadow adapter；未获米制 geometry/pose/route 时只记录 fail-closed/abstain，结果不进入 UI、语音或震动。

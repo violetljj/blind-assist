@@ -81,23 +81,41 @@ foreach ($missing in @($allowedRootFiles | Where-Object { $rootFiles -notcontain
 }
 
 # A newly added stable root Interface must also be discoverable from the stable script index.
+# Do not retroactively judge files that predate this gate: if the selected base did not yet
+# contain the policy, the branch is bootstrapping the gate and has no reviewed comparison point.
 if ($BaseRef -and $BaseRef -notmatch '^0+$') {
     $resolvedBase = (& git -C $script:ResolvedRepoRoot rev-parse --verify "$BaseRef^{commit}" 2>$null | Select-Object -First 1)
     if (-not [string]::IsNullOrWhiteSpace($resolvedBase)) {
-        $baseFiles = @(& git -C $script:ResolvedRepoRoot ls-tree -r --name-only $resolvedBase.Trim() -- $scriptsRoot)
-        $baseRootFiles = @(
-            $baseFiles |
-                ForEach-Object { Normalize-RepoPath $_ } |
-                Where-Object { $_.StartsWith($rootPrefix, [StringComparison]::OrdinalIgnoreCase) } |
-                ForEach-Object { $_.Substring($rootPrefix.Length) } |
-                Where-Object { $_ -notmatch '/' } |
-                Sort-Object -Unique
-        )
-        $scriptsIndexPath = Resolve-FromRepo "$scriptsRoot/README.md"
-        $scriptsIndexText = if (Test-Path -LiteralPath $scriptsIndexPath -PathType Leaf) { Read-Utf8Text $scriptsIndexPath } else { '' }
-        foreach ($addedRootFile in @($rootFiles | Where-Object { $baseRootFiles -notcontains $_ })) {
-            if (-not $scriptsIndexText.Contains($addedRootFile)) {
-                $failures.Add("New root Interface is not indexed in scripts/README.md: $rootPrefix$addedRootFile")
+        $policyRelativePath = Normalize-RepoPath ([IO.Path]::GetRelativePath($script:ResolvedRepoRoot, $resolvedPolicyPath))
+        $baseHasPolicy = $false
+        if (-not $policyRelativePath.StartsWith('../', [StringComparison]::Ordinal)) {
+            & git -C $script:ResolvedRepoRoot cat-file -e "$($resolvedBase.Trim()):$policyRelativePath" 2>$null
+            $baseHasPolicy = $LASTEXITCODE -eq 0
+        }
+        if ($baseHasPolicy) {
+            $baseFiles = @(& git -C $script:ResolvedRepoRoot ls-tree -r --name-only $resolvedBase.Trim() -- $scriptsRoot)
+            $baseRootFiles = @(
+                $baseFiles |
+                    ForEach-Object { Normalize-RepoPath $_ } |
+                    Where-Object { $_.StartsWith($rootPrefix, [StringComparison]::OrdinalIgnoreCase) } |
+                    ForEach-Object { $_.Substring($rootPrefix.Length) } |
+                    Where-Object { $_ -notmatch '/' } |
+                    Sort-Object -Unique
+            )
+            $scriptsIndexPath = Resolve-FromRepo "$scriptsRoot/README.md"
+            $scriptsIndexText = if (Test-Path -LiteralPath $scriptsIndexPath -PathType Leaf) { Read-Utf8Text $scriptsIndexPath } else { '' }
+            $indexExemptPatterns = @($policy.root_index_exempt_patterns | ForEach-Object { [string]$_ })
+            foreach ($addedRootFile in @($rootFiles | Where-Object { $baseRootFiles -notcontains $_ })) {
+                $isIndexExempt = $false
+                foreach ($pattern in $indexExemptPatterns) {
+                    if ($pattern -and $addedRootFile -match $pattern) {
+                        $isIndexExempt = $true
+                        break
+                    }
+                }
+                if (-not $isIndexExempt -and -not $scriptsIndexText.Contains($addedRootFile)) {
+                    $failures.Add("New root Interface is not indexed in scripts/README.md: $rootPrefix$addedRootFile")
+                }
             }
         }
     }
@@ -237,3 +255,4 @@ if ($failures.Count -gt 0) {
 }
 
 Write-Host "Project structure check passed: $($rootFiles.Count) root files, $($moduleNames.Count) research Module(s), log within budget."
+exit 0
