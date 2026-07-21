@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evaluate the preregistered USTRF U0 arms against eligible human event truth.
+"""Evaluate preregistered USTRF U0 arms against eligible GPT/Codex consensus event truth.
 
 The evaluator is deliberately fail-closed. It recomputes the route-conditioned
 truth gate, binds every arm to the exact config/manifest hashes, rejects future
@@ -281,7 +281,7 @@ def evaluate(
     expected_dependencies = {
         "validate_explicit_route_intent_episode.py",
         "validate_ustrf_sc_capture_frame_ledger.py",
-        "validate_ustrf_sc_independent_human_review.py",
+        "validate_ai_review_receipt.py",
     }
     if not isinstance(dependency_hashes, dict) or set(dependency_hashes) != expected_dependencies:
         raise ContractError("U0 truth validator dependency hash inventory mismatch")
@@ -296,9 +296,9 @@ def evaluate(
     try:
         truth_gate = _TRUTH.validate(truth_config, truth_manifest, root=truth_root, require_complete=True)
     except (ValueError, KeyError, TypeError) as error:
-        raise ContractError(f"route-conditioned human truth gate failed: {error}") from error
+        raise ContractError(f"route-conditioned GPT/Codex truth gate failed: {error}") from error
     if truth_gate.get("route_conditioned_truth_eligible") is not True:
-        raise ContractError("route-conditioned human truth is not eligible for U0")
+        raise ContractError("route-conditioned GPT/Codex consensus truth is not eligible for U0")
     for key in ("episode_count", "matched_pair_count", "route_bound_episode_count"):
         if truth_gate.get(key) != requirements.get(key):
             raise ContractError(f"truth gate {key} does not meet the preregistered U0 denominator")

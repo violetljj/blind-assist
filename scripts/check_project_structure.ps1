@@ -246,6 +246,43 @@ foreach ($path in @($repoFiles | Where-Object { $_ -like 'scripts/*.py' -or $_ -
     }
 }
 
+# Technical review gates are AI-owned. Reintroducing a human-interrupt authority into an
+# authoritative Interface must fail in CI instead of silently reviving a manual queue.
+$aiReviewPolicyPath = Resolve-FromRepo 'scripts/policy/ai_review_authority.json'
+if (-not (Test-Path -LiteralPath $aiReviewPolicyPath -PathType Leaf)) {
+    $failures.Add('AI review authority policy is missing: scripts/policy/ai_review_authority.json')
+}
+else {
+    $aiReviewPolicy = Read-Utf8Text $aiReviewPolicyPath | ConvertFrom-Json
+    foreach ($path in @($aiReviewPolicy.scan_paths | ForEach-Object { Normalize-RepoPath ([string]$_) })) {
+        $absolute = Resolve-FromRepo $path
+        if (-not (Test-Path -LiteralPath $absolute -PathType Leaf)) {
+            $failures.Add("AI review authority scan target is missing: $path")
+            continue
+        }
+        $content = Read-Utf8Text $absolute
+        foreach ($pattern in @($aiReviewPolicy.forbidden_patterns | ForEach-Object { [string]$_ })) {
+            if ($pattern -and [regex]::IsMatch($content, $pattern, [Text.RegularExpressions.RegexOptions]::IgnoreCase)) {
+                $failures.Add("Human-interrupt review authority reintroduced in ${path}: $pattern")
+            }
+        }
+    }
+    foreach ($property in $aiReviewPolicy.required_markers.PSObject.Properties) {
+        $path = Normalize-RepoPath ([string]$property.Name)
+        $absolute = Resolve-FromRepo $path
+        if (-not (Test-Path -LiteralPath $absolute -PathType Leaf)) {
+            $failures.Add("AI review authority marker target is missing: $path")
+            continue
+        }
+        $content = Read-Utf8Text $absolute
+        foreach ($marker in @($property.Value | ForEach-Object { [string]$_ })) {
+            if (-not $content.Contains($marker)) {
+                $failures.Add("AI review authority marker missing in ${path}: $marker")
+            }
+        }
+    }
+}
+
 if ($failures.Count -gt 0) {
     Write-Host 'Project structure check failed:'
     foreach ($failure in $failures) {

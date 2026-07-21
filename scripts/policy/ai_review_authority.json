@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "description": "Prevent authoritative review gates from regressing to human-interrupt workflows.",
+  "scan_paths": [
+    "scripts/finalize_sanpo_sequence_evalset.py",
+    "scripts/plan_sanpo_p3_session_split.py",
+    "scripts/validate_sanpo_counterfactual_episodes.py",
+    "scripts/generate_sanpo_counterfactual_capture_plan.py",
+    "scripts/build_sanpo_risk_lifecycle_targets.py",
+    "scripts/sanpo_risk_lifecycle_prototype.py",
+    "scripts/validate_ustrf_sc_device_metric_geometry.py",
+    "scripts/sanpo_candidate_quality_gate.py",
+    "scripts/evaluate_ustrf_sc_u0_teacher_upper_bound.py",
+    "configs/sanpo_counterfactual_episode_collection_v1.json",
+    "configs/sanpo_p3_view_source_contract_20260713.json",
+    "configs/ustrf_sc_route_conditioned_event_collection_v1.json",
+    "configs/ai_review_workflows_v1.json",
+    "core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfCalibrationEvidence.kt",
+    "core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfRouteConditionedRisk.kt"
+  ],
+  "forbidden_patterns": [
+    "reviewer_type[\\s\\\"':=]+human",
+    "accepted_manual_review",
+    "pending_manual_review",
+    "independent_human_review",
+    "human_event_adjudication_required",
+    "attested_human_reviewed",
+    "OFFLINE_HUMAN_TEACHER"
+  ],
+  "required_markers": {
+    "AGENTS.md": [
+      "Do not stop a workflow to request human review",
+      "fresh third-model adjudication"
+    ],
+    "docs/AI_REVIEW_GOVERNANCE.md": [
+      "当前 Codex/GPT 会话就是执行模型",
+      "不要求 API key",
+      "independent_ai_adjudicator"
+    ],
+    "configs/ai_review_workflows_v1.json": [
+      "current_codex_or_gpt_session",
+      "fail_closed_and_continue_other_work_without_requesting_human_review"
+    ]
+  }
+}

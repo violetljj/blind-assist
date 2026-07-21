@@ -1,13 +1,13 @@
 {
   "schema": "blindassist_sanpo_counterfactual_episode_manifest_v1",
-  "collection_status": "in_review",
+  "collection_status": "pending_ai_review",
   "benchmark_only": true,
   "production_model_replacement_authorized": false,
   "notes": [
     "Template only: do not place candidate geometry or model output here as event truth.",
-    "Create a copied manifest under artifacts.local/evidence/ for each human-reviewed collection batch.",
+    "Create a copied manifest under artifacts.local/evidence/ for each GPT/Codex-reviewed collection batch.",
     "Use collection_status=complete only after all configured session-scene matched pairs, local receipts, privacy evidence, and anchor adjudication are complete.",
-    "Every episode must bind a local SHA256 annotation evidence file with at least two independent human reviewers; model output is never event-label evidence."
+    "Every episode must bind two isolated GPT/Codex review receipts plus hash-bound automatic consensus or a fresh third-model adjudication; the evaluated candidate output stays hidden."
   ],
   "source_receipts": [],
   "episodes": []

@@ -13,6 +13,8 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 
 发布变化见 [CHANGELOG.md](CHANGELOG.md)，近期工程过程见 [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。SANPO 的当前研究状态见 [SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md)；日期化审计和实验报告只代表当时快照，不作为当前状态真源。
 
+研发数据、事件、几何证据和模型晋级的技术复核默认由 GPT/Codex 独立多轮完成，不等待人工审查；统一 receipt、仲裁和失败关闭规则见 [GPT / Codex 自主复核治理](docs/AI_REVIEW_GOVERNANCE.md)。
+
 ## 仓库导航
 
 | 路径 | 职责 |

@@ -2,6 +2,13 @@
 
 ## 2026-07-21
 
+### GPT/Codex 自主复核 authority 收口
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：评测集、P3 准入、连续事件真值、设备米制几何与候选发布统一改为隔离 GPT/Codex 双路复核；一致自动共识，分歧由全新第三模型仲裁，缺证据或 abstain 仅让相关分支失败关闭，不再请求人工复核或 API key。
+- 自动推进：完整事件模型共识可授权研究训练；生产模型替换仍需 benchmark、INT8、同机事件、Android 证据全部通过，并附独立发布模型复核收据。参与者同意、许可证、真实采集/物理测量和签名凭据仍必须来自真实主体或设备，模型只审计收据。
+- 治理：新增 `configs/ai_review_workflows_v1.json`、`docs/AI_REVIEW_GOVERNANCE.md` 与哈希绑定 receipt validator；项目结构门会拒绝关键路径重新引入 human/manual review authority。
+- 验证：聚焦 Python 回归 72 tests、JDK 17 `:core:ustrf:test`、项目结构门、文档索引、仓库卫生、统一 research contracts 与 diff check。
+
 ### Stacked PR CI bootstrap fixes
 - 时间：2026-07-21；执行者：violjjet。
 - 范围：仓库卫生门对 PR base 中已存在、当前仅删除的历史二进制视为清理，同时仍拒绝新增二进制；release signing 只在显式请求 `assembleRelease`/`bundleRelease` 时要求本地 keystore，不再被 `mergeReleaseAssets` 的任务图误触发。

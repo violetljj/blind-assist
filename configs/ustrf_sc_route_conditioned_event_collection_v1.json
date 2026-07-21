@@ -163,17 +163,23 @@
     "reviewer_id_must_match_episode": true,
     "positive_anchor_agreement_tolerance_ms": 500,
     "hashed_adjudication_required": true,
-    "criticality_must_be_human_reviewed": true,
-    "model_output_is_not_annotation_evidence": true
+    "criticality_review_authority": "independent_gpt_codex_consensus",
+    "candidate_model_output_is_not_annotation_evidence": true,
+    "ai_review_receipts_are_annotation_evidence": true
   },
-  "independent_human_review_policy": {
-    "review_schema": "blindassist_independent_human_event_review_v1",
-    "adjudication_schema": "blindassist_independent_human_event_adjudication_v1",
+  "independent_ai_review_policy": {
+    "review_schema": "blindassist_independent_ai_event_review_v1",
+    "adjudication_schema": "blindassist_ai_event_adjudication_v1",
     "required_independent_review_count": 2,
+    "required_reviewer_roles": ["gpt_multimodal_reviewer", "codex_evidence_reviewer"],
+    "allowed_adjudicator_roles": ["gpt_adjudicator", "codex_adjudicator"],
     "anchor_agreement_tolerance_ms": 500,
-    "model_assistance_used_must_be_false": true,
+    "minimum_confidence": 0.65,
+    "candidate_output_hidden_from_reviewers": true,
+    "isolated_context_required": true,
     "other_review_visible_before_submission_must_be_false": true,
-    "disagreement_requires_third_independent_human": true
+    "disagreement_requires_fresh_ai_adjudicator": true,
+    "unresolved_or_abstained_behavior": "fail_closed_without_requesting_human_review"
   },
   "risk_profile_and_lifecycle_schema": {
     "primary_hazard_type": "must equal scene_id",
@@ -191,13 +197,13 @@
   },
   "critical_event_policy": {
     "definition": "a missed intervention during the adjudicated alertable interval could plausibly cause contact, fall, forced stop, or unavoidable route abandonment",
-    "human_review_required": true,
+    "independent_gpt_codex_review_required": true,
     "detector_distance_band_is_not_critical_truth": true
   },
   "source_receipt_schema": {
     "required_origin_scope": "official_full_matrix_capture",
     "allowed_license_status": ["owned_and_consented", "licensed_for_research"],
-    "required_privacy_review_status": "green",
+    "required_privacy_review_status": "ai_review_passed",
     "hash_license_and_privacy_evidence": true,
     "local_evidence_required": true,
     "reject_on_missing_or_mismatched_hash": true

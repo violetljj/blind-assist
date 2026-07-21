@@ -15,7 +15,7 @@
   "notes": [
     "Template only. Empty slots are not evidence and cannot pass the pilot audit.",
     "Copy under artifacts.local/evidence before collection; never commit private raw media.",
-    "Set collection_status=pilot_complete only after all 10 episodes and five matched pairs have hash-bound source, frame/clock/route, independent human review, and adjudication evidence.",
+    "Set collection_status=pilot_complete only after all 10 episodes and five matched pairs have hash-bound source, frame/clock/route, isolated GPT/Codex review, and adjudication evidence.",
     "A successful pilot audit proves collection-pipeline integrity only and can never be promoted into route-conditioned truth or U0 by changing a status field."
   ],
   "source_receipts": [],

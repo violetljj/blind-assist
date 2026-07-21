@@ -22,7 +22,7 @@ RESET_FIELDS = {
     "expected_event_phase": None,
     "scene_bucket": None,
     "risk_event_id": None,
-    "review_status": "pending_manual_risk_review",
+    "review_status": "pending_model_review",
     "status": "pending_review",
 }
 
@@ -53,7 +53,7 @@ def main() -> int:
         shutil.copytree(source / name, output / name)
     for name in (
         "dataset_spec.json", "source_session_description.json", "source_labelmap.json",
-        "source_annotation_types.json", "source_licenses.md", "qa/manual_review_checklist.csv",
+        "source_annotation_types.json", "source_licenses.md", "qa/model_review_checklist.csv",
     ):
         source_file = source / name
         if source_file.exists():

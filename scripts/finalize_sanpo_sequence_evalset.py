@@ -17,7 +17,7 @@ DISTANCES = {"FAR", "MID", "NEAR", "CRITICAL"}
 RISK_LEVELS = {"NONE", "LOW", "MEDIUM", "HIGH"}
 APPROACH_STATES = {"UNKNOWN", "STABLE", "APPROACHING", "RECEDING"}
 EVENT_PHASES = {"APPROACHING", "ALERTED", "PASSED"}
-ACCEPTED_REVIEW_STATUSES = {"accepted_manual_review", "accepted_ai_review"}
+ACCEPTED_REVIEW_STATUSES = {"accepted_ai_review"}
 
 
 def parse_bool(value: str, field: str) -> bool:
@@ -54,28 +54,22 @@ def issue_tags(value: str) -> list[str]:
     return [item for item in re.split(r"[\s,;|]+", value.strip()) if item]
 
 
-def finalize_row(row: dict[str, Any], review: dict[str, str], allow_ai_review: bool = False) -> dict[str, Any]:
+def finalize_row(row: dict[str, Any], review: dict[str, str], allow_ai_review: bool = True) -> dict[str, Any]:
     review_status = review.get("review_status", "").strip()
     if review_status not in ACCEPTED_REVIEW_STATUSES:
-        raise ValueError("review_status must be accepted_manual_review or accepted_ai_review")
+        raise ValueError("review_status must be accepted_ai_review")
     reviewer_type = review.get("reviewer_type", "").strip()
     reviewer_id = review.get("reviewer_id", "").strip()
     confidence_text = review.get("review_confidence", "").strip()
     review_count_text = review.get("independent_review_count", "").strip()
-    if review_status == "accepted_ai_review":
-        if not allow_ai_review:
-            raise ValueError("accepted_ai_review requires explicit --allow-ai-review")
-        if reviewer_type != "ai_assistant" or not reviewer_id:
-            raise ValueError("AI review requires reviewer_type=ai_assistant and reviewer_id")
-        confidence = float(confidence_text)
-        review_count = int(review_count_text)
-        if not 0.65 <= confidence <= 1.0:
-            raise ValueError("AI review confidence must be between 0.65 and 1.0")
-        if review_count < 2:
-            raise ValueError("AI review requires at least two independent review passes")
-    else:
-        confidence = float(confidence_text) if confidence_text else None
-        review_count = int(review_count_text) if review_count_text else 1
+    if reviewer_type != "ai_model" or not reviewer_id:
+        raise ValueError("AI review requires reviewer_type=ai_model and reviewer_id")
+    confidence = float(confidence_text)
+    review_count = int(review_count_text)
+    if not 0.65 <= confidence <= 1.0:
+        raise ValueError("AI review confidence must be between 0.65 and 1.0")
+    if review_count < 2:
+        raise ValueError("AI review requires at least two independent review passes")
     blocking_tags = issue_tags(review.get("issue_tags", ""))
     if blocking_tags:
         raise ValueError(f"blocking issue_tags must be resolved: {','.join(blocking_tags)}")
@@ -136,11 +130,11 @@ def finalize_row(row: dict[str, Any], review: dict[str, str], allow_ai_review: b
         "objects_review_status": review.get("objects_review_status", "").strip(),
         "review_status": review_status,
         "review_provenance": {
-            "reviewer_type": reviewer_type or "human",
+            "reviewer_type": reviewer_type,
             "reviewer_id": reviewer_id or None,
             "confidence": confidence,
             "independent_review_count": review_count,
-            "policy": "multi_agent_consensus_v1" if review_status == "accepted_ai_review" else "manual_review",
+            "policy": "gpt_codex_isolated_consensus_v1",
         },
         "review_notes": review.get("review_notes", "").strip(),
         "status": "accepted",
@@ -232,14 +226,13 @@ def validate_final(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Promote a manually reviewed SANPO draft into benchmark manifest.jsonl.")
+    parser = argparse.ArgumentParser(description="Promote a GPT/Codex-reviewed SANPO draft into benchmark manifest.jsonl.")
     parser.add_argument("--dataset-root", required=True)
     parser.add_argument("--review-csv", default=None)
-    parser.add_argument("--allow-ai-review", action="store_true", help="Allow explicitly provenance-marked multi-pass AI review.")
     args = parser.parse_args()
     root = Path(args.dataset_root).resolve()
     draft_path = root / "manifest.draft.jsonl"
-    review_path = Path(args.review_csv).resolve() if args.review_csv else root / "qa" / "manual_review_checklist.csv"
+    review_path = Path(args.review_csv).resolve() if args.review_csv else root / "qa" / "model_review_checklist.csv"
     manifest_path = root / "manifest.jsonl"
     if manifest_path.exists():
         raise SystemExit("Dataset roots are immutable after canonical manifest.jsonl is published; build a new root")
@@ -276,7 +269,7 @@ def main() -> int:
             errors.append(f"{row['id']}: missing review row")
             continue
         try:
-            finalized.append(finalize_row(row, review, allow_ai_review=args.allow_ai_review))
+            finalized.append(finalize_row(row, review))
         except (TypeError, ValueError) as error:
             errors.append(f"{row['id']}: {error}")
     errors.extend(validate_final(finalized, root, coco_labels))

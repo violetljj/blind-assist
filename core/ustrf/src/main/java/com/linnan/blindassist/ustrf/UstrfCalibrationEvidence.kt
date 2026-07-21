@@ -3,7 +3,7 @@ package com.linnan.blindassist.ustrf
 /**
  * Summary of an off-device calibration trial. The referenced source artifact stays outside the
  * repository; only its immutable SHA-256 and aggregate error metrics belong in an experiment
- * receipt. This model never treats a self-authored manifest as independent verification.
+ * receipt. GPT/Codex review is bound by an immutable consensus-receipt SHA-256.
  */
 data class UstrfCalibrationTrialEvidence(
     val calibrationId: String,
@@ -12,8 +12,8 @@ data class UstrfCalibrationTrialEvidence(
     val cameraCalibrationVersion: String,
     val sourceArtifactSha256: String,
     val collectorId: String,
-    val reviewerId: String,
-    val independentReviewApproved: Boolean,
+    val aiReviewReceiptSha256: String,
+    val aiConsensusApproved: Boolean,
     val sampleCount: Int,
     val poseCoverageBins: Int,
     val intrinsicsP95ReprojectionPx: Float,
@@ -27,7 +27,8 @@ data class UstrfCalibrationTrialEvidence(
         require(calibrationId.isNotBlank() && cameraFrame.isNotBlank() && bodyFrame.isNotBlank())
         require(cameraCalibrationVersion.isNotBlank())
         require(sourceArtifactSha256.matches(Regex("[0-9a-fA-F]{64}")))
-        require(collectorId.isNotBlank() && reviewerId.isNotBlank())
+        require(collectorId.isNotBlank())
+        require(aiReviewReceiptSha256.matches(Regex("[0-9a-fA-F]{64}")))
         require(sampleCount >= 0 && poseCoverageBins >= 0)
         require(intrinsicsP95ReprojectionPx.isFinite() && intrinsicsP95ReprojectionPx >= 0f)
         require(depthRegistrationP95ErrorM.isFinite() && depthRegistrationP95ErrorM >= 0f)
@@ -40,8 +41,7 @@ data class UstrfCalibrationTrialEvidence(
 enum class UstrfCalibrationEvidenceFailure {
     EVIDENCE_FROM_FUTURE,
     EVIDENCE_STALE,
-    INDEPENDENT_REVIEW_NOT_APPROVED,
-    REVIEWER_NOT_INDEPENDENT,
+    AI_CONSENSUS_NOT_APPROVED,
     SAMPLE_COUNT_INSUFFICIENT,
     POSE_COVERAGE_INSUFFICIENT,
     INTRINSICS_REPROJECTION_TOO_LARGE,
@@ -69,10 +69,10 @@ sealed interface UstrfCalibrationEvidenceAdmission {
 }
 
 /**
- * Deterministic admission for independently reviewed calibration evidence. The thresholds are
+ * Deterministic admission for GPT/Codex-reviewed calibration evidence. The thresholds are
  * experiment starting gates, not a claim of clinical or production safety adequacy.
  */
-class UstrfIndependentCalibrationEvidenceVerifier(
+class UstrfAiReviewedCalibrationEvidenceVerifier(
     private val minimumSamples: Int = 30,
     private val minimumPoseCoverageBins: Int = 5,
     private val maximumIntrinsicsP95ReprojectionPx: Float = 1.5f,
@@ -92,8 +92,7 @@ class UstrfIndependentCalibrationEvidenceVerifier(
     ): UstrfCalibrationEvidenceAdmission {
         if (decisionAtNs < evidence.collectedAtNs) return unavailable(UstrfCalibrationEvidenceFailure.EVIDENCE_FROM_FUTURE)
         if (decisionAtNs > evidence.validUntilNs) return unavailable(UstrfCalibrationEvidenceFailure.EVIDENCE_STALE)
-        if (!evidence.independentReviewApproved) return unavailable(UstrfCalibrationEvidenceFailure.INDEPENDENT_REVIEW_NOT_APPROVED)
-        if (evidence.collectorId == evidence.reviewerId) return unavailable(UstrfCalibrationEvidenceFailure.REVIEWER_NOT_INDEPENDENT)
+        if (!evidence.aiConsensusApproved) return unavailable(UstrfCalibrationEvidenceFailure.AI_CONSENSUS_NOT_APPROVED)
         if (evidence.sampleCount < minimumSamples) return unavailable(UstrfCalibrationEvidenceFailure.SAMPLE_COUNT_INSUFFICIENT)
         if (evidence.poseCoverageBins < minimumPoseCoverageBins) return unavailable(UstrfCalibrationEvidenceFailure.POSE_COVERAGE_INSUFFICIENT)
         if (evidence.intrinsicsP95ReprojectionPx > maximumIntrinsicsP95ReprojectionPx) return unavailable(UstrfCalibrationEvidenceFailure.INTRINSICS_REPROJECTION_TOO_LARGE)

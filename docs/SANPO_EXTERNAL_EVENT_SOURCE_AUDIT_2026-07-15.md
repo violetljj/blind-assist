@@ -2,9 +2,9 @@
 
 ## 结论先行
 
-截至本次审计，**没有发现一个可直接替代本项目双人复核反事实 episode 合同的公开数据源**。能够确认存在的候选要么缺少 `should_alert` / 生命周期人工真值，要么要求访问审批，要么许可证禁止当前潜在产品路径，或公开 DOI 实际不可解析。
+截至本次审计，**没有发现一个可直接替代本项目 GPT/Codex 双模型复核反事实 episode 合同的公开数据源**。能够确认存在的候选要么缺少 `should_alert` / 生命周期事件标签，要么要求访问审批，要么许可证禁止当前潜在产品路径，或公开 DOI 实际不可解析。
 
-因此，外部素材只能按各自的最低权限使用，不能绕过 `configs/sanpo_counterfactual_episode_collection_v1.json` 的来源、隐私、配对、双审锚点和 LOSO 要求。任何候选均不授权默认模型替换。
+因此，外部素材只能按各自的最低权限使用，不能绕过 `configs/sanpo_counterfactual_episode_collection_v1.json` 的来源、隐私、配对、双模型锚点共识和 LOSO 要求。任何候选均不授权默认模型替换。
 
 ## 已审计候选
 
@@ -20,9 +20,9 @@
 ## 可执行规则
 
 1. 在可复核下载、明确许可证、隐私证据和本地哈希全部齐备之前，候选保持 `not_training_eligible`。
-2. 即使候选公开且存在 object/distance 标注，也只允许成为检测/像素/表征辅助；它不会自动满足“是否提醒、何时开始、何时清除”的人审事件合同。
-3. 唯一能启动风险轮廓/生命周期训练的输入，仍是：完整 6-session × 4-scene × 48 matched-pair 的本地 episode collection，含正负配对、至少两名独立人工复核、500ms 内锚点一致性、来源和隐私 receipt，以及 LOSO 隔离。
-4. YouTube 或其他公开视频可用于发现候选，但除非其来源许可、隐私和人工事件标注均被独立证明，否则只能停留在 `unclassified_candidate`，不下载、不标注、不训练。
+2. 即使候选公开且存在 object/distance 标注，也只允许成为检测/像素/表征辅助；它不会自动满足“是否提醒、何时开始、何时清除”的模型共识事件合同。
+3. 唯一能启动风险轮廓/生命周期训练的输入，仍是：完整 6-session × 4-scene × 48 matched-pair 的本地 episode collection，含正负配对、隔离的 GPT/Codex 复核、500ms 内锚点共识或第三模型仲裁、来源和隐私 receipt，以及 LOSO 隔离。
+4. YouTube 或其他公开视频可用于发现候选，但除非其来源许可、隐私和 GPT/Codex 事件共识均被独立证明，否则只能停留在 `unclassified_candidate`，不下载、不标注、不训练。
 
 ## SideGuide 申请前置条件（未提交）
 

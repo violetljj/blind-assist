@@ -68,10 +68,10 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
         self.assertFalse(result["ok"])
         self.assertIn("unreviewed risk field is not null", json.dumps(result))
 
-    def test_finalize_requires_explicit_manual_acceptance(self) -> None:
+    def test_finalize_requires_explicit_ai_acceptance(self) -> None:
         row = {"id": "sample"}
         review = {
-            "review_status": "pending_manual_risk_review",
+            "review_status": "pending_model_review",
             "expected_risk_direction": "CENTER",
             "expected_distance_band": "NEAR",
             "expected_should_alert": "true",
@@ -80,7 +80,7 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
             "expected_approach_alert": "true",
             "expected_time_to_alert_frames": "3",
         }
-        with self.assertRaisesRegex(ValueError, "accepted_manual_review"):
+        with self.assertRaisesRegex(ValueError, "accepted_ai_review"):
             finalize.finalize_row(row, review)
 
     def test_gcs_md5_verification_detects_corruption(self) -> None:
@@ -99,7 +99,11 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
             "source_regions": [{"id": "sanpo_20_1", "class": "obstacle"}],
         }
         review = {
-            "review_status": "accepted_manual_review",
+            "review_status": "accepted_ai_review",
+            "reviewer_type": "ai_model",
+            "reviewer_id": "gpt_codex_consensus",
+            "review_confidence": "0.90",
+            "independent_review_count": "2",
             "primary_object_id": "",
             "source_primary_region_id": "sanpo_20_1",
             "expected_risk_direction": "CENTER",
@@ -124,7 +128,11 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
             "attributes": {"existing_annotation": "preserved"},
         }
         review = {
-            "review_status": "accepted_manual_review",
+            "review_status": "accepted_ai_review",
+            "reviewer_type": "ai_model",
+            "reviewer_id": "gpt_codex_consensus",
+            "review_confidence": "0.90",
+            "independent_review_count": "2",
             "source_primary_region_id": "sanpo_20_1",
             "expected_risk_direction": "CENTER",
             "expected_distance_band": "NEAR",
@@ -160,11 +168,11 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
             {"expected_should_alert": True, "source_primary_region_id": "sanpo_20_7"},
         ]))
 
-    def test_finalize_ai_review_requires_explicit_opt_in(self) -> None:
+    def test_finalize_ai_review_is_the_default_path(self) -> None:
         row = {"id": "sample", "objects": [], "source_regions": [{"id": "sanpo_20_1"}]}
         review = {
             "review_status": "accepted_ai_review",
-            "reviewer_type": "ai_assistant",
+            "reviewer_type": "ai_model",
             "reviewer_id": "test_consensus",
             "review_confidence": "0.80",
             "independent_review_count": "3",
@@ -177,30 +185,31 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
             "expected_approach_alert": "false",
             "expected_time_to_alert_frames": "",
         }
-        with self.assertRaisesRegex(ValueError, "explicit --allow-ai-review"):
-            finalize.finalize_row(row, review)
-
-        actual = finalize.finalize_row(row, review, allow_ai_review=True)
-        self.assertEqual("ai_assistant", actual["review_provenance"]["reviewer_type"])
+        actual = finalize.finalize_row(row, review)
+        self.assertEqual("ai_model", actual["review_provenance"]["reviewer_type"])
         self.assertEqual(3, actual["review_provenance"]["independent_review_count"])
-        self.assertEqual("multi_agent_consensus_v1", actual["review_provenance"]["policy"])
+        self.assertEqual("gpt_codex_isolated_consensus_v1", actual["review_provenance"]["policy"])
 
     def test_finalize_ai_review_rejects_weak_provenance(self) -> None:
         row = {"id": "sample", "objects": [], "source_regions": []}
         review = {
             "review_status": "accepted_ai_review",
-            "reviewer_type": "ai_assistant",
+            "reviewer_type": "ai_model",
             "reviewer_id": "single_pass",
             "review_confidence": "0.60",
             "independent_review_count": "1",
         }
         with self.assertRaisesRegex(ValueError, "confidence"):
-            finalize.finalize_row(row, review, allow_ai_review=True)
+            finalize.finalize_row(row, review)
 
     def test_finalize_rejects_source_region_as_detection_primary(self) -> None:
         row = {"id": "sample", "objects": [], "source_regions": [{"id": "sanpo_20_1"}]}
         review = {
-            "review_status": "accepted_manual_review",
+            "review_status": "accepted_ai_review",
+            "reviewer_type": "ai_model",
+            "reviewer_id": "gpt_codex_consensus",
+            "review_confidence": "0.90",
+            "independent_review_count": "2",
             "primary_object_id": "sanpo_20_1",
             "expected_risk_direction": "CENTER",
             "expected_distance_band": "NEAR",
@@ -215,7 +224,11 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
 
     def test_finalize_rejects_blocking_issue_tags(self) -> None:
         row = {"id": "sample", "objects": [], "source_regions": []}
-        review = {"review_status": "accepted_manual_review", "issue_tags": "unsafe_or_sensitive"}
+        review = {
+            "review_status": "accepted_ai_review", "reviewer_type": "ai_model",
+            "reviewer_id": "gpt_codex_consensus", "review_confidence": "0.90",
+            "independent_review_count": "2", "issue_tags": "unsafe_or_sensitive",
+        }
         with self.assertRaisesRegex(ValueError, "blocking issue_tags"):
             finalize.finalize_row(row, review)
 
@@ -238,7 +251,7 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
                 "sequence_id": "seq",
                 "frame_index": 0,
                 "status": "accepted",
-                "review_status": "accepted_manual_review",
+                "review_status": "accepted_ai_review",
                 "primary_object_id": None,
                 "source_primary_region_id": None,
                 "source": {
@@ -272,7 +285,7 @@ class SanpoSequenceEvalsetTest(unittest.TestCase):
                 "sequence_id": "seq",
                 "frame_index": 0,
                 "status": "accepted",
-                "review_status": "accepted_manual_review",
+                "review_status": "accepted_ai_review",
                 "primary_object_id": "person_1",
                 "source_primary_region_id": None,
                 "source": {

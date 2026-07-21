@@ -359,7 +359,7 @@ class UstrfU0PredictionBundleTest(unittest.TestCase):
             "fold_training_input_manifest_sha256": request["fold_training_input_manifest_sha256"],
             "fold_training_receipt_sha256": request["fold_training_receipt_sha256"],
             **threshold,
-            "teacher_output_role": "auxiliary_only_not_human_truth",
+            "teacher_output_role": "auxiliary_only_not_consensus_truth",
             "blind_accessed": False,
             "future_inputs_used": False,
             "human_event_truth_used": False,

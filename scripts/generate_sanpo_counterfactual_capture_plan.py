@@ -86,13 +86,13 @@ def build_capture_plan(config: dict[str, Any], *, pilot: bool = False) -> dict[s
                         "must_share_with_pair": context_fields,
                         "risk_profile_template": profile,
                         "lifecycle_intervals_template": lifecycle,
-                        "human_event_adjudication_required": True,
+                        "ai_event_adjudication_required": True,
                         "evidence_requirements": {
                             "source_receipt": "local hash-bound license, consent/privacy, raw video and inventory",
                             "capture_clock_receipt": "nanosecond monotonic camera timestamps bound to the frame ledger",
                             "capture_frame_ledger": "ordered frame IDs, capture timestamps, video PTS and payload SHA256 bound to video/clock/route",
                             "explicit_route": "runtime-eligible current-camera route samples bound to the same frame ledger; no future-video oracle",
-                            "annotation": "two independent human reviews plus hashed adjudication",
+                            "annotation": "isolated GPT and Codex reviews plus hash-bound consensus or a fresh third-model adjudication",
                         },
                     })
     expected = len(session_ids) * len(scenes) * pair_count * 2

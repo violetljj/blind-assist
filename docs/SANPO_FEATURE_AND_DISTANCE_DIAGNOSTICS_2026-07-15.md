@@ -46,11 +46,11 @@ dev/train boundary 像素占比约为 **19.8×**。因此现在把 distance Smoo
 
 - 排除：再做 head-only bootstrap、直接拼接基础特征、或继续为当前距离场配方更换损失/权重；覆盖匹配后的五组短跑已给出负向证据。
 - 保留：首先按 session/scene 重建 boundary coverage contract；新数据必须保留对应的非事件/平行边界对，才能把 geometry 与 alert 语义分开。
-- 风险轮廓与生命周期头采用分层监督：双人独立复核为 `attested_human_reviewed`；许可、哈希绑定的公开 RGB/source mask/GPT-VLM 可生成 `hash_bound_model_silver_provisional` 暂定训练标签。像素/距离场仍为 `auxiliary_only`；机器监督不能被表述为人工真值，也不能单独承担标定、blind 评测或默认模型替换。
+- 风险轮廓与生命周期头采用分层监督：隔离 GPT/Codex 共识为 `hash_bound_model_consensus`；许可、哈希绑定的公开 RGB/source mask/GPT-VLM 可生成 `hash_bound_model_silver_provisional` 暂定训练标签。像素/距离场仍为 `auxiliary_only`；单次模型输出不能冒充已审计共识，也不能单独承担标定、blind 评测或默认模型替换。
 
 ### 风险轮廓 / 生命周期原型已落地，但尚无可训练事件集
 
-新增 `scripts/sanpo_risk_lifecycle_prototype.py` 将事件合同落实为一个带分层来源的时序接口：外部 frame feature 进入两个 causal temporal convolution；episode 级输出为四类 scene hazard、两类 corridor relation 和 `should_alert` logit，逐时刻输出 `non_alert / approach / alertable / post_event` 四态 logits。target adapter 接受 `attested_human_reviewed` 的完整双审报告，或有 CC-BY 来源哈希、模型/提示词 attestation 的 `hash_bound_model_silver_provisional` 报告；后者须显式 `provisional_training_only=true`、`training_execution_authorized=true`，且仍要求 `production_model_replacement_authorized=false` 和 `pixel_supervision_role=auxiliary_only`。
+新增 `scripts/sanpo_risk_lifecycle_prototype.py` 将事件合同落实为一个带分层来源的时序接口：外部 frame feature 进入两个 causal temporal convolution；episode 级输出为四类 scene hazard、两类 corridor relation 和 `should_alert` logit，逐时刻输出 `non_alert / approach / alertable / post_event` 四态 logits。target adapter 接受 `hash_bound_model_consensus` 的完整双模型审查报告，或有 CC-BY 来源哈希、模型/提示词 attestation 的 `hash_bound_model_silver_provisional` 报告；两者可授权研究训练，但仍要求 `production_model_replacement_authorized=false` 和 `pixel_supervision_role=auxiliary_only`。
 
 这只是结构与标签转换原型：它没有 trainer、图片加载器、伪标签路径、权重保存或阈值校准。对长度为 5 的两条 dummy feature 序列的 Keras torch smoke 已得到 `hazard=(2,4)`、`corridor=(2,2)`、`should_alert=(2,1)`、`lifecycle=(2,5,4)`；其运行时合同仍为 `do_not_replace_default_model`。由于真实双审 96-episode 矩阵仍不存在，不能把这个原型当作已开始的训练或效果结论。
 

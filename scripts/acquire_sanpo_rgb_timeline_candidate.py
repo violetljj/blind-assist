@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Download a sparse public SANPO RGB timeline for provisional supervision.
 
-The output has no human event truth.  It is a CC-BY RGB source that may later
+The output has no independent GPT/Codex consensus event truth. It is a CC-BY RGB source that may later
 be paired with hash-bound model labels for provisional training only.
 """
 
@@ -84,7 +84,7 @@ def main() -> int:
             "human_event_truth_present": False,
             "provisional_training_authorized": True,
             "production_model_replacement_authorized": False,
-            "important_limit": "Public RGB plus model labels may support provisional training only; it is not human event truth, a calibration input, blind-evaluation truth, or production-replacement evidence."
+            "important_limit": "Public RGB plus provisional model labels may support provisional training only; it is not independent GPT/Codex consensus truth, a calibration input, blind-evaluation truth, or production-replacement evidence."
         }
         (args.output_root / "candidate_spec.json").write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"ok": True, "output_root": str(args.output_root.resolve()), "frame_count": len(rows), "provisional_training_authorized": True}, ensure_ascii=False))

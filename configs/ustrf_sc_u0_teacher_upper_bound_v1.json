@@ -1,7 +1,7 @@
 {
   "schema": "blindassist_ustrf_sc_u0_teacher_upper_bound_contract_v1",
   "contract_id": "ustrf_sc_u0_teacher_upper_bound_v1",
-  "status": "preregistered_waiting_for_human_event_truth",
+  "status": "preregistered_waiting_for_gpt_codex_consensus_event_truth",
   "truth_contract_id": "ustrf_sc_route_conditioned_event_truth_v1",
   "prediction_schema": "blindassist_ustrf_sc_u0_six_arm_predictions_v2",
   "prediction_evidence_contract": {
@@ -93,7 +93,7 @@
         "local_peak_weight",
         "maximum_route_unknown_fraction"
       ],
-      "teacher_output_role": "auxiliary_only_not_human_truth"
+      "teacher_output_role": "auxiliary_only_not_consensus_truth"
     },
     "decision_profile_id": "STANDARD",
     "feedback_adapter_id": "offline_u0_feedback_receipt_v1",
@@ -138,12 +138,12 @@
       "json": "utf8_canonical_sorted_keys_compact",
       "validator_text": "utf8_lf_normalized"
     },
-    "official_truth_config_sha256": "a6da5120f33d435f8f30717a75979219c4c7453fe198e35435b5ddaf954c2516",
-    "truth_validator_implementation_sha256": "c700817046e3a316804b7d5db9ff9b8c9fe3afe05ab04ff0e65979e041241f0f",
+    "official_truth_config_sha256": "19afdc062e4e2edbd982bb67566aeed44b7e200d1062813e5782ed17833f2630",
+    "truth_validator_implementation_sha256": "5b9ce60a85854ded6e5a9ec824575a6a7bb9a44d124d5b14608ed85972a93b83",
     "truth_validator_dependency_sha256": {
       "validate_explicit_route_intent_episode.py": "4974a2ea5d10d897ea1ec38b889116167e34c882cc9ae748a798147f9be86144",
       "validate_ustrf_sc_capture_frame_ledger.py": "f69063619ace3152738fc1de33de7501546d6a0197fd0e4ce4de98318a149dde",
-      "validate_ustrf_sc_independent_human_review.py": "3e222d6d0152ff9cbbbc52134640874e0a46d8ba295933a3cca895d3483be41d"
+      "validate_ai_review_receipt.py": "f750fea7c230da5841c3cd097b5e766e1c221ba63c18ee2f3fe3de7e73f01705"
     },
     "episode_count": 120,
     "matched_pair_count": 60,

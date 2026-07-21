@@ -9,9 +9,18 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 from typing import Any
+
+
+_AI_REVIEW_PATH = Path(__file__).with_name("validate_ai_review_receipt.py")
+_AI_REVIEW_SPEC = importlib.util.spec_from_file_location("metric_geometry_ai_review", _AI_REVIEW_PATH)
+if _AI_REVIEW_SPEC is None or _AI_REVIEW_SPEC.loader is None:  # pragma: no cover
+    raise RuntimeError(f"cannot load AI review authority: {_AI_REVIEW_PATH}")
+_AI_REVIEW = importlib.util.module_from_spec(_AI_REVIEW_SPEC)
+_AI_REVIEW_SPEC.loader.exec_module(_AI_REVIEW)
 
 
 SCHEMA = "blindassist_ustrf_sc_device_metric_geometry_evidence_v1"
@@ -27,6 +36,13 @@ ARTIFACT_SCHEMAS = {
     for name in REQUIRED_ARTIFACTS
 }
 ALLOWED_STATUSES = {"not_collected", "in_progress", "blocked", "complete"}
+AI_REVIEW_POLICY = {
+    "receipt_schema": "blindassist_ai_review_consensus_v1",
+    "required_reviewer_roles": ["gpt_multimodal_reviewer", "codex_evidence_reviewer"],
+    "allowed_adjudicator_roles": ["gpt_adjudicator", "codex_adjudicator"],
+    "minimum_confidence": 0.65,
+    "candidate_output_hidden_from_reviewers": False,
+}
 
 
 class ContractError(ValueError):
@@ -99,6 +115,19 @@ def load_verified_artifact(root: Path, receipt: dict[str, Any], where: str) -> d
     artifact = load_json(path)
     verify_source_evidence(root, artifact, where)
     return artifact
+
+
+def verify_ai_review(root: Path, row: dict[str, Any], *, subject_id: str, where: str) -> dict[str, Any]:
+    receipt_path = verify_file_receipt(root, {
+        "path": row.get("ai_review_receipt_path"),
+        "sha256": row.get("ai_review_receipt_sha256"),
+    }, f"{where}.ai_review_receipt")
+    try:
+        return _AI_REVIEW.validate_consensus_receipt(
+            load_json(receipt_path), policy=AI_REVIEW_POLICY, subject_id=subject_id, where=f"{where}.ai_review",
+        )
+    except (ValueError, TypeError, KeyError) as error:
+        raise ContractError(f"{where} AI review is invalid: {error}") from error
 
 
 def verify_artifact_semantics(
@@ -208,12 +237,9 @@ def validate(value: dict[str, Any], *, root: Path, require_complete: bool) -> di
     calibration = value.get("calibration")
     if not isinstance(calibration, dict):
         raise ContractError("calibration must be an object")
-    for key in ("calibration_id", "camera_calibration_version", "collector_id", "reviewer_id"):
+    for key in ("calibration_id", "camera_calibration_version", "collector_id"):
         require_text(calibration, key, "calibration")
-    if calibration.get("collector_id") == calibration.get("reviewer_id"):
-        raise ContractError("calibration collector and reviewer must differ")
-    if calibration.get("independent_review_approved") is not True:
-        raise ContractError("calibration independent review is not approved")
+    verify_ai_review(root, calibration, subject_id=calibration["calibration_id"], where="calibration")
     if calibration.get("camera_frame") != device["camera_frame"] or calibration.get("body_frame") != device["body_frame"]:
         raise ContractError("calibration frame does not match device identity")
     if numeric(calibration, "sample_count", "calibration") < 30:
@@ -250,8 +276,12 @@ def validate(value: dict[str, Any], *, root: Path, require_complete: bool) -> di
         raise ContractError("body_local_ground_truth must be an object")
     if ground.get("body_frame") != device["body_frame"]:
         raise ContractError("ground-truth body frame does not match device")
-    if ground.get("independent_review_approved") is not True or ground.get("collector_id") == ground.get("reviewer_id"):
-        raise ContractError("body-local ground truth lacks independent review")
+    verify_ai_review(
+        root,
+        ground,
+        subject_id=f"body-local-ground:{device['device_id']}:{calibration['calibration_id']}",
+        where="body_local_ground_truth",
+    )
     if numeric(ground, "sample_count", "body_local_ground_truth") < 30:
         raise ContractError("body-local ground truth needs at least 30 samples")
     if numeric(ground, "p95_plane_distance_error_m", "body_local_ground_truth") > 0.03:
@@ -263,7 +293,7 @@ def validate(value: dict[str, Any], *, root: Path, require_complete: bool) -> di
     if not isinstance(event_truth, dict):
         raise ContractError("route_event_truth must be an object")
     if event_truth.get("route_conditioned_truth_eligible") is not True:
-        raise ContractError("route-conditioned human event truth is not eligible")
+        raise ContractError("route-conditioned GPT/Codex consensus event truth is not eligible")
     if numeric(event_truth, "episode_count", "route_event_truth") < 120:
         raise ContractError("route event truth needs the frozen 120-episode matrix")
     if numeric(event_truth, "matched_pair_count", "route_event_truth") < 60:

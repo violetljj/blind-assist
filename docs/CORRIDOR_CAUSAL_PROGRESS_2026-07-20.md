@@ -36,6 +36,6 @@ ADVIO 的三个独立 IMU route/turn probe 未达可分门：原始、旋转不�
 
 默认 App 仍使用 `yolo11n_fp16_320.tflite`。本快照不改变 [SANPO_CANDIDATE_PROMOTION_GATES.md](SANPO_CANDIDATE_PROMOTION_GATES.md) 的数据、离线、INT8 和同机事件门。
 
-下一道有效门不是继续调参，而是按 [SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md](SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md) 准入带双人人工复核、许可/隐私收据和哈希的连续 episode。矩阵完整后才可在六折 leave-one-session-out 上执行预注册 S0：比较静态 pooled、运动几何和空间网格 + causal TCN；只有满足 `balanced accuracy >= .70`、正负召回均 `>= .50` 且 matched-pair 方向一致，才允许训练冻结 backbone 的事件头。
+下一道有效门不是继续调参，而是按 [SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md](SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md) 准入带隔离 GPT/Codex 共识、许可/隐私收据和哈希的连续 episode。矩阵完整后可自动在六折 leave-one-session-out 上执行预注册 S0：比较静态 pooled、运动几何和空间网格 + causal TCN；只有满足 `balanced accuracy >= .70`、正负召回均 `>= .50` 且 matched-pair 方向一致，才允许训练冻结 backbone 的事件头。
 
-在此之前，不以公开视频、合成数据、模型输出、未训练 TCN 或性能夹具充当人工风险事件真值，也不把本快照表述为助盲能力验证。
+在此之前，不以单次未审计的公开视频、合成数据、模型输出、未训练 TCN 或性能夹具充当风险事件共识，也不把本快照表述为助盲能力验证。

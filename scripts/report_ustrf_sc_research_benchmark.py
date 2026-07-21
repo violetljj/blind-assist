@@ -35,7 +35,7 @@ def _device_metric_geometry_gate(path: Path | None) -> tuple[bool, str]:
     if path is None:
         return False, (
             "blocked: no independently verified device depth registration, full camera-body "
-            "extrinsics, body-local ground truth, route-conditioned human event truth, or "
+            "extrinsics, body-local measured truth, route-conditioned GPT/Codex consensus event truth, or "
             "target-device latency/thermal receipt"
         )
     validator_path = Path(__file__).with_name("validate_ustrf_sc_device_metric_geometry.py")

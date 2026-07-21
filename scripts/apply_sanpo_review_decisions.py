@@ -22,7 +22,7 @@ def main() -> int:
     parser.add_argument("--decisions", required=True)
     args = parser.parse_args()
     root = Path(args.dataset_root).resolve()
-    csv_path = root / "qa" / "manual_review_checklist.csv"
+    csv_path = root / "qa" / "model_review_checklist.csv"
     decisions_path = Path(args.decisions).resolve()
     decisions = load_decisions(decisions_path)
     by_frame: dict[int, dict[str, Any]] = {}

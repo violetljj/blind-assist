@@ -53,7 +53,7 @@ class UstrfMetricGeometryReceiptTest {
     fun unavailableOrMismatchedIndependentCalibrationFailsBeforeProjection() {
         val unavailable = promoter.admit(
             rawDepth(), capture(), intrinsics(), registration(), extrinsics(),
-            calibration(independentReviewApproved = false), 1_100L
+            calibration(aiConsensusApproved = false), 1_100L
         )
         assertEquals(
             UstrfMetricGeometryProjectionAdmission.Unavailable(UstrfMetricGeometryAdmissionFailure.CALIBRATION_EVIDENCE_UNAVAILABLE),
@@ -144,8 +144,8 @@ class UstrfMetricGeometryReceiptTest {
 
     private fun calibration(
         bodyFrame: String = "body-v2",
-        independentReviewApproved: Boolean = true
-    ): UstrfCalibrationEvidenceAdmission = UstrfIndependentCalibrationEvidenceVerifier().admit(
+        aiConsensusApproved: Boolean = true
+    ): UstrfCalibrationEvidenceAdmission = UstrfAiReviewedCalibrationEvidenceVerifier().admit(
         UstrfCalibrationTrialEvidence(
             calibrationId = "mount-cal-v1",
             cameraFrame = "camera-v2",
@@ -153,8 +153,8 @@ class UstrfMetricGeometryReceiptTest {
             cameraCalibrationVersion = "camera-cal-v2",
             sourceArtifactSha256 = "a".repeat(64),
             collectorId = "collector",
-            reviewerId = "reviewer",
-            independentReviewApproved = independentReviewApproved,
+            aiReviewReceiptSha256 = "b".repeat(64),
+            aiConsensusApproved = aiConsensusApproved,
             sampleCount = 30,
             poseCoverageBins = 5,
             intrinsicsP95ReprojectionPx = 1f,

@@ -49,7 +49,7 @@ class UstrfRouteConditionedRiskTest {
 
         val offlineRuntime = unavailable(interactor.interact(
             field,
-            route(left, providerType = UstrfRouteFieldProviderType.OFFLINE_HUMAN_TEACHER),
+            route(left, providerType = UstrfRouteFieldProviderType.OFFLINE_AI_TEACHER),
             1_100L,
             runtime = true
         ))

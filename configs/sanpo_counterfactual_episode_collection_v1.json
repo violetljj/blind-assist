@@ -84,6 +84,11 @@
       "annotation_reviewer_ids",
       "annotation_evidence_path",
       "annotation_evidence_sha256",
+      "independent_review_paths",
+      "independent_review_sha256s",
+      "adjudication_evidence_path",
+      "adjudication_evidence_sha256",
+      "review_input_sha256",
       "duration_ms",
       "risk_profile",
       "lifecycle_intervals_ms"
@@ -105,7 +110,19 @@
     "reviewer_id_must_match_episode": true,
     "positive_anchor_agreement_tolerance_ms": 500,
     "local_hashed_evidence_required": true,
-    "model_output_is_not_annotation_evidence": true
+    "model_output_is_not_annotation_evidence": false,
+    "authority": "gpt_codex_isolated_consensus_v1"
+  },
+  "independent_ai_review_policy": {
+    "review_schema": "blindassist_independent_ai_event_review_v1",
+    "adjudication_schema": "blindassist_ai_event_adjudication_v1",
+    "required_independent_review_count": 2,
+    "required_reviewer_roles": ["gpt_multimodal_reviewer", "codex_evidence_reviewer"],
+    "allowed_adjudicator_roles": ["gpt_adjudicator", "codex_adjudicator"],
+    "minimum_confidence": 0.65,
+    "anchor_agreement_tolerance_ms": 500,
+    "candidate_output_hidden_from_reviewers": true,
+    "unresolved_or_abstained_behavior": "fail_closed_without_requesting_human_review"
   },
   "risk_profile_and_lifecycle_schema": {
     "primary_hazard_type": "must equal scene_id",
@@ -139,7 +156,7 @@
       "episode_manifest_sha256"
     ],
     "allowed_license_status": ["owned_and_consented", "licensed_for_research"],
-    "required_privacy_review_status": "green",
+    "required_privacy_review_status": "ai_review_passed",
     "hash_algorithm": "sha256",
     "local_evidence_required": true,
     "remote_url_required": false,

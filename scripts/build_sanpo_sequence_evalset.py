@@ -240,7 +240,7 @@ def parse_mask_regions(
                     "id": region_id,
                     "class": mapped,
                     "bbox_xyxy": bbox,
-                    "bbox_source": "sanpo_exact_class_mapping_pending_human_review",
+                    "bbox_source": "sanpo_exact_class_mapping_pending_model_consensus",
                     "source_class": class_name,
                     "source_class_id": class_id,
                 }
@@ -284,7 +284,7 @@ def build_preview(dataset_root: Path, rows: list[dict[str, Any]]) -> None:
             )
         )
     document = """<!doctype html><html lang='en'><head><meta charset='utf-8'><title>BlindAssist SANPO review</title>
-<style>body{font:15px system-ui;background:#f6f5f1;color:#172033;margin:0;padding:24px}main{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px}article{background:white;border:1px solid #d8dce5;border-radius:14px;padding:14px}img{width:100%;height:auto;border-radius:9px}h2{font-size:15px}p{color:#526075;line-height:1.45}</style></head><body><h1>BlindAssist SANPO pilot — pending human review</h1><main>""" + "\n".join(cards) + "</main></body></html>\n"
+<style>body{font:15px system-ui;background:#f6f5f1;color:#172033;margin:0;padding:24px}main{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px}article{background:white;border:1px solid #d8dce5;border-radius:14px;padding:14px}img{width:100%;height:auto;border-radius:9px}h2{font-size:15px}p{color:#526075;line-height:1.45}</style></head><body><h1>BlindAssist SANPO pilot — pending GPT/Codex review</h1><main>""" + "\n".join(cards) + "</main></body></html>\n"
     (dataset_root / "qa" / "preview.html").write_text(document, encoding="utf-8")
 
 
@@ -329,7 +329,7 @@ def validate_rows(rows: list[dict[str, Any]], dataset_root: Path) -> dict[str, A
     return {
         "ok": not errors,
         "benchmark_ready": False,
-        "reason": "BlindAssist risk and approach fields require human review before benchmark promotion.",
+        "reason": "BlindAssist risk and approach fields require isolated GPT/Codex consensus before benchmark promotion.",
         "errors": errors,
         "image_count": len(rows),
         "unique_hashes": len(seen_hashes),
