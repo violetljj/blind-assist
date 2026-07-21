@@ -17,9 +17,8 @@ val releaseSigningProperties = Properties().apply {
 val hasReleaseSigningProperties = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
     .all { key -> releaseSigningProperties.getProperty(key).isNullOrBlank().not() }
 gradle.taskGraph.whenReady {
-    val releasePackageTaskRequested = allTasks.any { task ->
-        task.path in setOf(":app:assembleRelease", ":app:bundleRelease") ||
-            task.path.contains("packageRelease", ignoreCase = true)
+    val releasePackageTaskRequested = gradle.startParameter.taskNames.any { requestedTask ->
+        requestedTask.substringAfterLast(':') in setOf("assembleRelease", "bundleRelease")
     }
     if (releasePackageTaskRequested && !hasReleaseSigningProperties) {
         throw GradleException(
