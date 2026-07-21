@@ -14,7 +14,7 @@ class RiskStabilizer {
         raw: RiskResult,
         profile: AlertProfile = AlertProfile.STANDARD,
         scenario: AssistScenario = AssistScenario.GENERAL,
-        nowMs: Long = System.currentTimeMillis()
+        nowMs: Long = System.nanoTime() / NANOS_PER_MILLISECOND
     ): RiskResult {
         val policy = AlertPolicy.forProfile(profile, scenario)
         return when (raw.level) {
@@ -91,6 +91,7 @@ class RiskStabilizer {
     }
 
     companion object {
+        private const val NANOS_PER_MILLISECOND = 1_000_000L
         const val STANDARD_MEDIUM_CONFIRM_FRAMES = 2
         const val STANDARD_HOLD_ALERT_MS = 600L
     }

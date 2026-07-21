@@ -69,7 +69,8 @@ data class UstrfPerceptionPacket(
     val sourceFrame: UstrfFrameStamp,
     val producedAtNs: Long,
     val validUntilNs: Long,
-    val observations: List<UstrfRiskObservation>
+    val observations: List<UstrfRiskObservation>,
+    val gridSpec: UstrfGridSpec = UstrfGridSpec.LEGACY_KERNEL
 ) {
     init {
         require(producedAtNs >= sourceFrame.capturedAtNs) { "perception cannot predate source" }
@@ -110,6 +111,7 @@ enum class UstrfSafetyReason {
     CENTRAL_CORRIDOR_UNKNOWN,
     NO_SAFE_CORRIDOR,
     HARD_RISK,
+    GRID_SPEC_MISMATCH,
     SHADOW_ONLY
 }
 

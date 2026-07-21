@@ -28,6 +28,7 @@ dependencies {
     implementation(project(":core:assist"))
     implementation(project(":core:vision"))
     implementation(project(":core:device"))
+    implementation(project(":core:ustrf"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.camera.view)

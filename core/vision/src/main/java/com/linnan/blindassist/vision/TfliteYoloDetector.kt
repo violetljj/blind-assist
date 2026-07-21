@@ -101,6 +101,7 @@ class TfliteYoloDetector(
         val frameSize = FrameSize(bitmap.width, bitmap.height)
         return detectFrame(
             frameSize = frameSize,
+            sourceFrame = null,
             prepareInput = { preprocessor.prepare(bitmap) }
         )
     }
@@ -109,6 +110,7 @@ class TfliteYoloDetector(
         val frameSize = FrameSize(frame.displayWidth(), frame.displayHeight())
         return detectFrame(
             frameSize = frameSize,
+            sourceFrame = frame.frameStamp,
             prepareInput = {
                 require(frame is RgbaVisionFrame) {
                     "Only RGBA camera frames are supported by the realtime detector"
@@ -120,13 +122,15 @@ class TfliteYoloDetector(
 
     private fun detectFrame(
         frameSize: FrameSize,
+        sourceFrame: FrameStamp?,
         prepareInput: () -> ModelInput
     ): DetectorFrameResult {
         synchronized(lifecycleLock) {
             val localInterpreter = interpreter ?: return DetectorFrameResult(
                 detections = emptyList(),
                 frameSize = frameSize,
-                metrics = currentMetrics()
+                metrics = currentMetrics(),
+                sourceFrame = sourceFrame
             )
             val totalStart = System.nanoTime()
             val preprocessStart = totalStart
@@ -156,7 +160,8 @@ class TfliteYoloDetector(
             return DetectorFrameResult(
                 detections = detections,
                 frameSize = frameSize,
-                metrics = currentMetrics()
+                metrics = currentMetrics(),
+                sourceFrame = sourceFrame
             )
         }
     }

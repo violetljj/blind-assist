@@ -26,7 +26,8 @@ data class UstrfRouteFieldReceipt(
     val routeValid: Boolean,
     val inferredByRiskModel: Boolean,
     val derivedFromFutureFrames: Boolean,
-    val weights: Map<UstrfGridCoordinate, Float>
+    val weights: Map<UstrfGridCoordinate, Float>,
+    val gridSpec: UstrfGridSpec = UstrfGridSpec.LEGACY_KERNEL
 ) {
     init {
         require(routeIntentId.isNotBlank() && providerId.isNotBlank() && coordinateFrame.isNotBlank())
@@ -35,6 +36,7 @@ data class UstrfRouteFieldReceipt(
         require(weights.isNotEmpty())
         require(weights.values.all { it.isFinite() && it in 0f..1f })
         require(weights.values.any { it > 0f })
+        require(weights.keys.all(gridSpec::contains)) { "route weights exceed the declared grid spec" }
     }
 }
 
@@ -49,7 +51,8 @@ enum class UstrfRouteConditionedRiskFailure {
     ROUTE_INVALID,
     ROUTE_INFERRED_BY_RISK_MODEL,
     FUTURE_DERIVED_ROUTE_FORBIDDEN,
-    PROVIDER_NOT_ALLOWED_AT_RUNTIME
+    PROVIDER_NOT_ALLOWED_AT_RUNTIME,
+    GRID_SPEC_MISMATCH
 }
 
 data class UstrfRouteIntrusionEvidence(
@@ -100,6 +103,7 @@ class UstrfRouteConditionedRiskInteractor(
     ): UstrfRouteConditionedRiskResolution {
         val failure = when {
             route.sourceFrame != field.frame -> UstrfRouteConditionedRiskFailure.SOURCE_FRAME_MISMATCH
+            route.gridSpec != field.gridSpec -> UstrfRouteConditionedRiskFailure.GRID_SPEC_MISMATCH
             route.coordinateFrame != field.frame.coordinateFrame -> UstrfRouteConditionedRiskFailure.COORDINATE_FRAME_MISMATCH
             decisionAtNs < field.frame.capturedAtNs -> UstrfRouteConditionedRiskFailure.RISK_FIELD_FROM_FUTURE
             decisionAtNs - field.frame.capturedAtNs > maximumRiskFieldAgeNs -> UstrfRouteConditionedRiskFailure.RISK_FIELD_STALE

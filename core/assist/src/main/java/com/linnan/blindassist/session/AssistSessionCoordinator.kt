@@ -24,7 +24,7 @@ class AssistSessionCoordinator(
         riskEventTracker = riskEventTracker
     )
 
-    fun startSession(nowMs: Long = System.currentTimeMillis()) {
+    fun startSession(nowMs: Long = monotonicNowMs()) {
         feedbackGateway.resetSession()
         fpsTracker.reset()
         decisionKernel.startSession(nowMs)
@@ -43,7 +43,9 @@ class AssistSessionCoordinator(
         detectorFrame: DetectorFrameResult,
         profile: AlertProfile,
         scenario: AssistScenario,
-        nowMs: Long = System.currentTimeMillis()
+        nowMs: Long = detectorFrame.sourceFrame?.capturedAtNs?.div(NANOS_PER_MILLISECOND)
+            ?: monotonicNowMs(),
+        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
     ): AssistFrameResult {
         val fps = fpsTracker.onFrame()
         return decisionKernel.processFrame(
@@ -53,8 +55,15 @@ class AssistSessionCoordinator(
             scenario = scenario,
             metrics = detectorFrame.metrics.copy(fps = fps),
             feedbackGateway = feedbackGateway,
-            nowMs = nowMs
+            nowMs = nowMs,
+            sourceFrame = detectorFrame.sourceFrame,
+            decisionAtNs = decisionAtNs
         )
+    }
+
+    private companion object {
+        const val NANOS_PER_MILLISECOND = 1_000_000L
+        fun monotonicNowMs(): Long = System.nanoTime() / NANOS_PER_MILLISECOND
     }
 }
 

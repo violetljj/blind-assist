@@ -46,17 +46,9 @@ data class UstrfStructuredSafetyOutput(
 enum class UstrfLateralConvention { LEFT_POSITIVE, RIGHT_POSITIVE }
 
 class UstrfStructuredSafetyOutputMapper(
-    private val cellMeters: Float = 1f,
-    private val lookaheadMeters: Float = 4f,
-    private val corridorWidthMeters: Float = .60f,
+    val gridSpec: UstrfGridSpec = UstrfGridSpec.LEGACY_KERNEL,
     private val lateralConvention: UstrfLateralConvention = UstrfLateralConvention.LEFT_POSITIVE
 ) {
-    init {
-        require(cellMeters.isFinite() && cellMeters > 0f)
-        require(lookaheadMeters.isFinite() && lookaheadMeters > 0f)
-        require(corridorWidthMeters.isFinite() && corridorWidthMeters > 0f)
-    }
-
     fun map(
         decision: UstrfSafetyDecision,
         selected: UstrfCorridorCandidate?
@@ -78,8 +70,8 @@ class UstrfStructuredSafetyOutputMapper(
             }
         }
         val heading = if (action == UstrfStructuredAction.ADJUST_LEFT || action == UstrfStructuredAction.ADJUST_RIGHT) {
-            val signedOffsetMeters = selected!!.offsetCells * cellMeters
-            atan2(signedOffsetMeters, lookaheadMeters).toFloat() * if (lateralConvention == UstrfLateralConvention.LEFT_POSITIVE) 1f else -1f
+            val signedOffsetMeters = selected!!.offsetCells * gridSpec.cellMeters
+            atan2(signedOffsetMeters, gridSpec.lookaheadMeters).toFloat() * if (lateralConvention == UstrfLateralConvention.LEFT_POSITIVE) 1f else -1f
         } else 0f
         val speed = when (action) {
             UstrfStructuredAction.CONTINUE -> 1f
@@ -93,7 +85,7 @@ class UstrfStructuredSafetyOutputMapper(
             speedScale = speed,
             risk = decision.risk,
             confidence = decision.confidence,
-            corridorWidthMeters = selected?.let { corridorWidthMeters },
+            corridorWidthMeters = selected?.let { gridSpec.bodyWidthMeters },
             validUntilNs = decision.validUntilNs,
             reasons = decision.reasons
         )

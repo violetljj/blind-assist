@@ -41,10 +41,12 @@ class UstrfDocumentFiveMeterProfileTest {
         perception = UstrfPerceptionAssembly.Available(
             UstrfPerceptionPacket(
                 frame, frame.capturedAtNs, frame.capturedAtNs + 1_000_000L,
-                (-2..2).flatMap { lateral -> (1..10).map { forward ->
+                (-3..3).flatMap { lateral -> (1..10).map { forward ->
                     val coordinate = UstrfGridCoordinate(lateral, forward)
-                    UstrfRiskObservation(coordinate, if (coordinate == blocked) .95f else 0f, 1f, 0f, 0f, null, 0f, "fixture", frame.capturedAtNs + 1_000_000L)
-                } }
+                    val blockedCrossSection = blocked != null && coordinate.forward == blocked.forward
+                    UstrfRiskObservation(coordinate, if (blockedCrossSection) .95f else 0f, 1f, 0f, 0f, null, 0f, "fixture", frame.capturedAtNs + 1_000_000L)
+                } },
+                UstrfDocumentFiveMeterProfile.GRID_SPEC
             )
         ),
         route = UstrfRouteIntent("offline-five-meter", 0, 1f, frame.capturedAtNs + 1_000_000L)

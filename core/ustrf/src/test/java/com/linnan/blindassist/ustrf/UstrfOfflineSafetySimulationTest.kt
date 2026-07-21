@@ -20,10 +20,11 @@ class UstrfOfflineSafetySimulationTest {
                 )
             }
         }.toMap()
-        val plan = UstrfCorridorPlanner(
-            capsuleHalfWidthCells = 1,
-            fixedCandidateOffsets = listOf(-2, -1, 0, 1, 2)
-        ).plan(UstrfRiskField(frame, cells), UstrfRouteIntent("synthetic-local-v1", 0, 1f, 2_000L))
+        val gridSpec = UstrfGridSpec.SYNTHETIC_CORRIDOR
+        val plan = UstrfCorridorPlanner(gridSpec).plan(
+            UstrfRiskField(frame, cells, gridSpec),
+            UstrfRouteIntent("synthetic-local-v1", 0, 1f, 2_000L)
+        )
 
         assertEquals(listOf(-2, -1, 0, 1, 2), plan.candidates.map { it.offsetCells })
         assertTrue(plan.candidates.filter { it.offsetCells in -1..1 }.none { it.hardSafe })

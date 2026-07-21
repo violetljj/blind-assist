@@ -87,7 +87,7 @@ class UstrfSyntheticCorridorSafetyReplay {
             }
         }
         val dynamic = tokens.filter { it.kind == "M" }.map { hazard ->
-            UstrfMotionGridEvidence(frame, UstrfGridCoordinate(hazard.lateral, hazard.forward), UstrfRelativeMotionEvidence(UstrfVector2(1f, 0f), UstrfVector2(-1f, 0f), CAPTURED_AT_NS, validUntil, "synthetic-corridor-motion"))
+            UstrfMotionGridEvidence(frame, UstrfGridCoordinate(hazard.lateral, hazard.forward), UstrfRelativeMotionEvidence(UstrfVector2(1f, 0f), UstrfVector2(-1f, 0f), CAPTURED_AT_NS, validUntil, "synthetic-corridor-motion"), GRID_SPEC)
         }
         val fault = row.getValue("fault")
         val now = if (fault == "stale_geometry") validUntil + 1L else CAPTURED_AT_NS
@@ -96,10 +96,12 @@ class UstrfSyntheticCorridorSafetyReplay {
             capture = UstrfEvidenceState.VALID, geometry = UstrfEvidenceState.VALID, motion = UstrfEvidenceState.VALID
         )
         val packet = UstrfGeometryPacket(frame, CAPTURED_AT_NS, validUntil, UstrfDepthScale.METRIC, geometry)
-        val assembled = UstrfPerceptionAssembler(UstrfGeometryProjector(halfWidthCells = 3, horizonCells = 4)).assemble(frame, packet, dynamic, now)
+        val assembled = UstrfPerceptionAssembler(UstrfGeometryProjector(gridSpec = GRID_SPEC)).assemble(frame, packet, dynamic, now)
         return UstrfSafetySession(
-            fieldBuilder = UstrfRiskFieldBuilder(UstrfRiskFieldConfig(halfWidthCells = 3, horizonCells = 4)),
-            planner = UstrfCorridorPlanner(horizonCells = 4, capsuleHalfWidthCells = 1, fixedCandidateOffsets = listOf(-2, -1, 0, 1, 2))
+            fieldBuilder = UstrfRiskFieldBuilder(UstrfRiskFieldConfig(gridSpec = GRID_SPEC)),
+            planner = UstrfCorridorPlanner(gridSpec = GRID_SPEC),
+            supervisor = UstrfSafetySupervisor(centralHorizonCells = GRID_SPEC.horizonCells),
+            structuredOutputMapper = UstrfStructuredSafetyOutputMapper(gridSpec = GRID_SPEC)
         ).evaluate(UstrfSessionInput(frame, health, assembled, UstrfRouteIntent(BODY_FRAME, 0, 1f, validUntil), decisionAtNs = now))
     }
 
@@ -110,6 +112,7 @@ class UstrfSyntheticCorridorSafetyReplay {
     private data class Hazard(val kind: String, val lateral: Int, val forward: Int)
 
     private companion object {
+        val GRID_SPEC = UstrfGridSpec.SYNTHETIC_CORRIDOR
         const val BODY_FRAME = "synthetic-body-local-v1"
         const val CAPTURED_AT_NS = 1_000_000_000L
         const val TTL_NS = 1_000_000_000L

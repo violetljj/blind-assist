@@ -15,7 +15,9 @@ internal class AssistFrameProcessor(
     private val lifecycleGate: AssistRuntimeLifecycleGate,
     private val isCameraActive: () -> Boolean,
     private val runOnUiThread: (() -> Unit) -> Unit,
-    private val onCameraFailure: (String) -> Unit
+    private val onCameraFailure: (String) -> Unit,
+    private val decisionClockNs: () -> Long = System::nanoTime,
+    private val ustrfShadowAdapter: AssistUstrfShadowAdapter = AssistUstrfShadowAdapter()
 ) {
     private val isProcessing = AtomicBoolean(false)
 
@@ -53,8 +55,20 @@ internal class AssistFrameProcessor(
         }
 
         try {
-            val detectorFrame = detector.detect(frame)
+            val detectedFrame = detector.detect(frame)
+            val detectorFrame = when {
+                detectedFrame.sourceFrame != null && frame.frameStamp != null &&
+                    detectedFrame.sourceFrame != frame.frameStamp ->
+                    error("detector result source frame does not match the input frame")
+                detectedFrame.sourceFrame == null && frame.frameStamp != null ->
+                    detectedFrame.copy(sourceFrame = frame.frameStamp)
+                else -> detectedFrame
+            }
             val committedFrame = lifecycleGate.commitIfCurrent(lease) {
+                val decisionAtNs = decisionClockNs()
+                require(decisionAtNs >= 0L) { "decision clock must be non-negative" }
+                val eventTimeMs = detectorFrame.sourceFrame?.capturedAtNs?.div(NANOS_PER_MILLISECOND)
+                    ?: decisionAtNs / NANOS_PER_MILLISECOND
                 val snapshot = stats.onProcessed(detectorFrame.metrics.inferenceMs)
                 val detectorFrameWithPipelineStats = detectorFrame.copy(
                     metrics = detectorFrame.metrics.copy(
@@ -66,8 +80,11 @@ internal class AssistFrameProcessor(
                 val frameResult = coordinator.processFrame(
                     detectorFrameWithPipelineStats,
                     runtimeConfig.alertProfile,
-                    runtimeConfig.assistScenario
+                    runtimeConfig.assistScenario,
+                    nowMs = eventTimeMs,
+                    decisionAtNs = decisionAtNs
                 )
+                ustrfShadowAdapter.observe(detectorFrameWithPipelineStats, decisionAtNs)
                 CommittedFrame(detectorFrameWithPipelineStats, frameResult)
             }
             if (committedFrame != null) {
@@ -99,6 +116,7 @@ internal class AssistFrameProcessor(
 
     fun resetSessionStats() {
         stats.reset()
+        ustrfShadowAdapter.reset()
     }
 
     private data class CommittedFrame(
@@ -108,6 +126,7 @@ internal class AssistFrameProcessor(
 
     private companion object {
         const val PERF_TAG = AssistRuntimePerformanceLogger.PERF_TAG
+        const val NANOS_PER_MILLISECOND = 1_000_000L
 
         fun logError(message: String, error: Throwable) {
             try {

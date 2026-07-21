@@ -7,5 +7,6 @@ import com.linnan.blindassist.session.DetectorMetrics
 data class DetectorFrameResult(
     val detections: List<Detection>,
     val frameSize: FrameSize,
-    val metrics: DetectorMetrics
+    val metrics: DetectorMetrics,
+    val sourceFrame: FrameStamp? = null
 )

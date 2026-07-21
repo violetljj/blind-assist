@@ -1,7 +1,11 @@
 package com.linnan.blindassist.camera
 
 import android.content.Context
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
+import android.os.SystemClock
 import android.util.Size
+import androidx.camera.camera2.interop.Camera2CameraInfo
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -13,12 +17,15 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.linnan.blindassist.util.FatalThrowables
+import com.linnan.blindassist.vision.FrameClockDomain
+import com.linnan.blindassist.vision.FrameStamp
 import com.linnan.blindassist.vision.VisionFrame
 import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicLong
 
 class CameraXFrameSource(
     context: Context,
@@ -66,33 +73,40 @@ class CameraXFrameSource(
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                     .build()
-                    .also { analyzer ->
-                        analyzer.setAnalyzer(analysisExecutor) { imageProxy ->
-                            val frame = ImageProxyVisionFrame(imageProxy)
-                            if (!isCurrentSession(generation)) {
-                                frame.close()
-                                return@setAnalyzer
-                            }
-                            try {
-                                onFrame(frame)
-                            } catch (error: Throwable) {
-                                FatalThrowables.rethrowIfFatal(error)
-                                frame.close()
-                                reportAnalyzerError(generation, error, onError)
-                            }
-                        }
-                    }
 
                 synchronized(lifecycleLock) {
                     if (!isCurrentSessionLocked(generation)) return@addListener
                     cameraProvider = provider
                     provider.unbindAll()
-                    provider.bindToLifecycle(
+                    val camera = provider.bindToLifecycle(
                         lifecycleOwner,
                         CameraSelector.DEFAULT_BACK_CAMERA,
                         preview,
                         analysis
                     )
+                    val source = cameraSourceDescriptor(camera.cameraInfo)
+                    analysis.setAnalyzer(analysisExecutor) { imageProxy ->
+                        val stamp = FrameStamp(
+                            frameId = NEXT_FRAME_ID.getAndIncrement(),
+                            capturedAtNs = imageProxy.imageInfo.timestamp,
+                            receivedAtNs = SystemClock.elapsedRealtimeNanos(),
+                            sourceId = source.sourceId,
+                            coordinateFrame = source.coordinateFrame,
+                            clockDomain = source.clockDomain
+                        )
+                        val frame = ImageProxyVisionFrame(imageProxy, stamp)
+                        if (!isCurrentSession(generation)) {
+                            frame.close()
+                            return@setAnalyzer
+                        }
+                        try {
+                            onFrame(frame)
+                        } catch (error: Throwable) {
+                            FatalThrowables.rethrowIfFatal(error)
+                            frame.close()
+                            reportAnalyzerError(generation, error, onError)
+                        }
+                    }
                     started = true
                     onStarted()
                 }
@@ -173,6 +187,23 @@ class CameraXFrameSource(
         }
     }
 
+    private fun cameraSourceDescriptor(cameraInfo: androidx.camera.core.CameraInfo): CameraSourceDescriptor {
+        val cameraId = Camera2CameraInfo.from(cameraInfo).cameraId
+        val manager = appContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val timestampSource = manager.getCameraCharacteristics(cameraId)
+            .get(CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE)
+        val clockDomain = if (timestampSource == CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE_REALTIME) {
+            FrameClockDomain.ANDROID_ELAPSED_REALTIME
+        } else {
+            FrameClockDomain.CAMERA_HARDWARE_UNMAPPED
+        }
+        return CameraSourceDescriptor(
+            sourceId = "camera2:$cameraId",
+            coordinateFrame = "camera2:$cameraId:analysis-buffer",
+            clockDomain = clockDomain
+        )
+    }
+
     private fun isCurrentSession(generation: Long): Boolean {
         return synchronized(lifecycleLock) {
             isCurrentSessionLocked(generation)
@@ -183,7 +214,14 @@ class CameraXFrameSource(
         return !shutdownRequested && sessionGeneration == generation
     }
 
+    private data class CameraSourceDescriptor(
+        val sourceId: String,
+        val coordinateFrame: String,
+        val clockDomain: FrameClockDomain
+    )
+
     companion object {
+        private val NEXT_FRAME_ID = AtomicLong(0L)
         private const val ANALYSIS_WIDTH = 640
         private const val ANALYSIS_HEIGHT = 480
     }

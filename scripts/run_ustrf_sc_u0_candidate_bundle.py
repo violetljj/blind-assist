@@ -41,6 +41,11 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def require_unchanged(path: Path, expected_sha256: str, *, where: str) -> None:
+    if not path.is_file() or sha256_file(path) != expected_sha256:
+        raise RunnerError(f"{where} changed after evidence materialization")
+
+
 def canonical_json_sha256(path: Path) -> str:
     value = load_json(path, where=str(path))
     payload = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -812,17 +817,23 @@ def run_bundle(
             stderr_path = episode_root / "adapter-stderr.txt"
             write_json(request_path, request)
             request_sha = sha256_file(request_path)
+            require_unchanged(
+                copied["implementation"], hashes["implementation"], where=f"{arm_id} copied implementation"
+            )
+            require_unchanged(
+                copied["threshold_config"], hashes["threshold_config"], where=f"{arm_id} copied threshold config"
+            )
             started = time.monotonic_ns()
             try:
                 completed = subprocess.run(
                     [
                         sys.executable,
-                        str(registration["implementation"]),
+                        str(copied["implementation"]),
                         "--request", str(request_path),
                         "--inference-manifest", str(inference_manifest_path),
                         "--inference-root", str(output_dir),
                         "--artifact", str(fold["artifact"]),
-                        "--threshold-config", str(registration["threshold_config"]),
+                        "--threshold-config", str(copied["threshold_config"]),
                         "--output", str(output_path),
                     ],
                     cwd=episode_root,
@@ -845,8 +856,14 @@ def run_bundle(
                 raise RunnerError(f"{arm_id}/{episode_id} adapter exited {completed.returncode}")
             if not output_path.is_file():
                 raise RunnerError(f"{arm_id}/{episode_id} adapter produced no output")
+            require_unchanged(
+                copied["implementation"], hashes["implementation"], where=f"{arm_id} copied implementation"
+            )
+            require_unchanged(
+                copied["threshold_config"], hashes["threshold_config"], where=f"{arm_id} copied threshold config"
+            )
             raw_output = load_json(output_path, where=f"{arm_id}/{episode_id} adapter output")
-            threshold_config = load_json(registration["threshold_config"], where=f"{arm_id} threshold config")
+            threshold_config = load_json(copied["threshold_config"], where=f"{arm_id} threshold config")
             frames, alerts, abstained = validate_adapter_output(
                 raw_output,
                 request=request,

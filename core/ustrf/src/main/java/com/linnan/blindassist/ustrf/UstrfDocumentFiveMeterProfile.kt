@@ -6,42 +6,25 @@ package com.linnan.blindassist.ustrf
  * production configuration.
  */
 object UstrfDocumentFiveMeterProfile {
+    val GRID_SPEC: UstrfGridSpec = UstrfGridSpec.DOCUMENT_FIVE_METER
     const val CELL_METERS = .5f
-    const val HALF_WIDTH_CELLS = 2
+    const val HALF_WIDTH_CELLS = 3
     const val HORIZON_CELLS = 10
     const val BODY_CAPSULE_HALF_WIDTH_CELLS = 1
 
     fun safetySession(): UstrfSafetySession = UstrfSafetySession(
         fieldBuilder = UstrfRiskFieldBuilder(
-            UstrfRiskFieldConfig(
-                halfWidthCells = HALF_WIDTH_CELLS,
-                horizonCells = HORIZON_CELLS,
-                cellMeters = CELL_METERS
-            )
+            UstrfRiskFieldConfig(gridSpec = GRID_SPEC)
         ),
-        planner = UstrfCorridorPlanner(
-            horizonCells = HORIZON_CELLS,
-            capsuleHalfWidthCells = BODY_CAPSULE_HALF_WIDTH_CELLS,
-            fixedCandidateOffsets = listOf(-2, -1, 0, 1, 2)
-        ),
+        planner = UstrfCorridorPlanner(gridSpec = GRID_SPEC),
         supervisor = UstrfSafetySupervisor(centralHorizonCells = HORIZON_CELLS),
-        structuredOutputMapper = UstrfStructuredSafetyOutputMapper(
-            cellMeters = CELL_METERS,
-            lookaheadMeters = HORIZON_CELLS * CELL_METERS
-        )
+        structuredOutputMapper = UstrfStructuredSafetyOutputMapper(gridSpec = GRID_SPEC)
     )
 
     fun perceptionAssembler(): UstrfPerceptionAssembler = UstrfPerceptionAssembler(
-        geometryProjector = UstrfGeometryProjector(
-            cellSizeMeters = CELL_METERS,
-            halfWidthCells = HALF_WIDTH_CELLS,
-            horizonCells = HORIZON_CELLS
-        )
+        geometryProjector = UstrfGeometryProjector(gridSpec = GRID_SPEC)
     )
 
-    fun egoMotionPromoter(): UstrfEgoCompensatedMotionPromoter = UstrfEgoCompensatedMotionPromoter(
-        cellMeters = CELL_METERS,
-        halfWidthCells = HALF_WIDTH_CELLS,
-        horizonCells = HORIZON_CELLS
-    )
+    fun egoMotionPromoter(): UstrfEgoCompensatedMotionPromoter =
+        UstrfEgoCompensatedMotionPromoter(gridSpec = GRID_SPEC)
 }

@@ -9,17 +9,92 @@ real local files with matching hashes.
 
 from __future__ import annotations
 
+import base64
+import binascii
 import hashlib
 import json
 from pathlib import Path
+import struct
 from typing import Any, Mapping
 
 
 REPORT_SCHEMA = "blindassist_ustrf_sc_u0_prediction_evidence_admission_v2"
+DENSE_FIELD_CONTRACT_ID = "ustrf_sc_u0_dense_teacher_field_v2"
+DENSE_QUANTIZATION = "uint32_le_round_clip_0_1000000_v1"
+DENSE_SCALE = 1_000_000
+DENSE_SOURCE_FIELDS = ("boundary_field", "local_obstacle_field", "unknown_field", "walkability_field")
+DENSE_ROUTE_FIELDS = ("route_relative_risk_field", "route_weight_field")
 
 
 class ContractError(ValueError):
     pass
+
+
+def _dense_field_sha(width: int, height: int, fields: Mapping[str, bytes], *, domain: str) -> str:
+    digest = hashlib.sha256()
+    digest.update(
+        f"{DENSE_FIELD_CONTRACT_ID}|{domain}|{width}|{height}|{DENSE_QUANTIZATION}\n".encode("ascii")
+    )
+    for name in sorted(fields):
+        digest.update(name.encode("ascii") + b"\0")
+        digest.update(fields[name])
+    return digest.hexdigest()
+
+
+def _dense_summary_from_payload(payload: Any, *, where: str) -> dict[str, Any]:
+    if not isinstance(payload, Mapping):
+        raise ContractError(f"{where} is required")
+    width = payload.get("grid_width")
+    height = payload.get("grid_height")
+    encoded = payload.get("fields_base64")
+    all_names = DENSE_SOURCE_FIELDS + DENSE_ROUTE_FIELDS
+    if (
+        not isinstance(width, int) or isinstance(width, bool) or width <= 0
+        or not isinstance(height, int) or isinstance(height, bool) or height <= 0
+        or payload.get("quantization") != DENSE_QUANTIZATION
+        or not isinstance(encoded, Mapping) or set(encoded) != set(all_names)
+    ):
+        raise ContractError(f"{where} dimensions/quantization/field inventory is invalid")
+    cell_count = width * height
+    raw_fields: dict[str, bytes] = {}
+    values: dict[str, tuple[int, ...]] = {}
+    for name in all_names:
+        text = encoded.get(name)
+        if not isinstance(text, str):
+            raise ContractError(f"{where}.{name} is not base64 text")
+        try:
+            raw = base64.b64decode(text, validate=True)
+        except (binascii.Error, ValueError) as error:
+            raise ContractError(f"{where}.{name} is invalid base64") from error
+        if len(raw) != cell_count * 4:
+            raise ContractError(f"{where}.{name} byte length mismatch")
+        unpacked = tuple(value[0] for value in struct.iter_unpack("<I", raw))
+        if any(value > DENSE_SCALE for value in unpacked):
+            raise ContractError(f"{where}.{name} exceeds fixed-point range")
+        raw_fields[name] = raw
+        values[name] = unpacked
+    route_weight = values["route_weight_field"]
+    active = tuple(index for index, value in enumerate(route_weight) if value > 0)
+    if not active:
+        raise ContractError(f"{where} route field has no contributing cells")
+    total_weight = sum(route_weight[index] for index in active)
+    return {
+        "source_field_sha256": _dense_field_sha(
+            width, height, {name: raw_fields[name] for name in DENSE_SOURCE_FIELDS}, domain="source"
+        ),
+        "route_interaction_field_sha256": _dense_field_sha(
+            width, height, {name: raw_fields[name] for name in DENSE_ROUTE_FIELDS}, domain="route-interaction"
+        ),
+        "field_cell_count": cell_count,
+        "risk_evidence_count": len(active),
+        "route_intrusion_score": sum(values["route_relative_risk_field"][index] for index in active) / total_weight,
+        "maximum_route_cell_risk": max(
+            max(values["local_obstacle_field"][index], values["boundary_field"][index]) for index in active
+        ) / DENSE_SCALE,
+        "route_unknown_fraction": sum(
+            values["unknown_field"][index] * route_weight[index] for index in active
+        ) / (DENSE_SCALE * total_weight),
+    }
 
 
 def _sha256(path: Path) -> str:
@@ -520,6 +595,8 @@ def _validate_dense_risk_evidence_receipt(
             or row.get("source_frame_payload_sha256") != request_frame.get("frame_payload_sha256")
         ):
             raise ContractError(f"{frame_where} frame/time identity mismatch")
+        if row.get("evidence_status") != "AVAILABLE":
+            raise ContractError(f"{frame_where}.evidence_status must be AVAILABLE for a dense receipt")
         valid_until = row.get("valid_until_ms")
         evidence_count = row.get("risk_evidence_count")
         field_cell_count = row.get("field_cell_count")
@@ -529,7 +606,26 @@ def _validate_dense_risk_evidence_receipt(
             or not isinstance(field_cell_count, int) or isinstance(field_cell_count, bool) or field_cell_count < evidence_count
         ):
             raise ContractError(f"{frame_where} validity/evidence inventory is invalid")
+        if receipt.get("dense_field_contract_id") != DENSE_FIELD_CONTRACT_ID:
+            raise ContractError(f"{frame_where} unsupported dense field contract")
+        computed_field = _dense_summary_from_payload(
+            row.get("field_payload"), where=f"{frame_where}.field_payload"
+        )
+        for key, expected_value in computed_field.items():
+            actual_value = row.get(key)
+            if isinstance(expected_value, float):
+                if (
+                    not isinstance(actual_value, (int, float)) or isinstance(actual_value, bool)
+                    or abs(float(actual_value) - expected_value) > 1e-12
+                ):
+                    raise ContractError(f"{frame_where}.{key} does not match serialized field payload")
+            elif actual_value != expected_value:
+                raise ContractError(f"{frame_where}.{key} does not match serialized field payload")
         _require_sha(row.get("source_field_sha256"), where=f"{frame_where}.source_field_sha256")
+        _require_sha(
+            row.get("route_interaction_field_sha256"),
+            where=f"{frame_where}.route_interaction_field_sha256",
+        )
         route_id = _require_text(row.get("route_intent_id"), where=f"{frame_where}.route_intent_id")
         if row.get("event_key") != f"{request.get('episode_id')}:{route_id}":
             raise ContractError(f"{frame_where} event key mismatch")

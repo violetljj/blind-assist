@@ -5,7 +5,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class UstrfStructuredSafetyOutputTest {
-    private val mapper = UstrfStructuredSafetyOutputMapper(cellMeters = .5f, lookaheadMeters = 2f)
+    private val mapper = UstrfStructuredSafetyOutputMapper(
+        UstrfGridSpec.SYNTHETIC_CORRIDOR.copy(horizonCells = 4)
+    )
 
     @Test
     fun nominalSafeCorridorIsReportedAsContinueOrLateralAdjustmentWithoutBypassingShadowMode() {

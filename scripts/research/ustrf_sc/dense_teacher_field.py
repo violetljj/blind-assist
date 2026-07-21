@@ -9,6 +9,7 @@ event IDs, feedback decisions, metric depth, or production authority.
 from __future__ import annotations
 
 import base64
+import binascii
 from dataclasses import dataclass
 import hashlib
 import json
@@ -18,17 +19,26 @@ import time
 from typing import Any, Mapping, Sequence
 
 
-FIELD_SCHEMA = "blindassist_ustrf_sc_u0_dense_teacher_field_bundle_v1"
-FIELD_CONTRACT_ID = "ustrf_sc_u0_dense_teacher_field_v1"
-ARTIFACT_SCHEMA = "blindassist_ustrf_sc_u0_dense_teacher_loso_artifact_v1"
+FIELD_SCHEMA = "blindassist_ustrf_sc_u0_dense_teacher_field_bundle_v2"
+FIELD_CONTRACT_ID = "ustrf_sc_u0_dense_teacher_field_v2"
+ARTIFACT_SCHEMA = "blindassist_ustrf_sc_u0_dense_teacher_loso_artifact_v2"
 MODEL_NAME = "Depth Anything V2 Small"
 MODEL_VERSION = "depth_anything_v2_vits_252_nhwc_onnx"
 MODEL_LICENSE = "Apache-2.0"
 MODEL_INPUT_CONTRACT = "rgb_imagenet_normalized_nhwc_252_v1"
 MODEL_OUTPUT_CONTRACT = "relative_inverse_depth_nhwc_252_v1"
 DECODE_POLICY = "opencv_video_capture_requested_pts_v1"
-QUANTIZATION = "uint8_round_clip_0_1_v1"
+QUANTIZATION = "uint32_le_round_clip_0_1000000_v1"
+QUANTIZATION_SCALE = 1_000_000
 RISK_SOURCES = ["depth-anything-v2-small-relative-depth", "relative-depth-boundary"]
+SOURCE_FIELD_NAMES = (
+    "boundary_field",
+    "local_obstacle_field",
+    "unknown_field",
+    "walkability_field",
+)
+ROUTE_FIELD_NAMES = ("route_relative_risk_field", "route_weight_field")
+ALL_FIELD_NAMES = SOURCE_FIELD_NAMES + ROUTE_FIELD_NAMES
 
 
 class DenseTeacherError(ValueError):
@@ -102,6 +112,11 @@ def validate_loso_artifact(
         "teacher_model_name": MODEL_NAME,
         "teacher_model_version": MODEL_VERSION,
         "teacher_model_license": MODEL_LICENSE,
+        "teacher_model_input_contract": MODEL_INPUT_CONTRACT,
+        "teacher_model_output_contract": MODEL_OUTPUT_CONTRACT,
+        "teacher_decode_policy": DECODE_POLICY,
+        "teacher_inference_runtime": "onnxruntime_cpu_v1",
+        "calibration_input_schema": "blindassist_ustrf_sc_u0_dense_teacher_calibration_inputs_v1",
         "blind_accessed": False,
         "future_inputs_used": False,
         "human_event_truth_used": False,
@@ -128,8 +143,36 @@ def validate_loso_artifact(
         raise DenseTeacherError("LOSO artifact calibration values must be finite")
     if not low < high or gradient <= 0:
         raise DenseTeacherError("LOSO artifact calibration ranges are invalid")
-    for key in ("fit_implementation_sha256", "training_sample_inventory_sha256"):
+    for key in (
+        "fit_implementation_file_sha256",
+        "fit_implementation_sha256",
+        "training_sample_inventory_sha256",
+    ):
         require_sha(artifact.get(key), where=f"LOSO artifact {key}")
+    training_samples = artifact.get("training_samples")
+    if (
+        not isinstance(training_samples, list)
+        or not training_samples
+        or calibration.get("training_frame_count") != len(training_samples)
+    ):
+        raise DenseTeacherError("LOSO artifact training sample provenance is invalid")
+    identities: set[tuple[Any, Any, Any, Any]] = set()
+    for index, sample in enumerate(training_samples):
+        if not isinstance(sample, Mapping):
+            raise DenseTeacherError("LOSO artifact training sample must be an object")
+        identity = (
+            sample.get("session_id"), sample.get("episode_id"),
+            sample.get("frame_id"), sample.get("video_pts_ms"),
+        )
+        if (
+            any(not isinstance(value, str) or not value for value in identity[:3])
+            or not isinstance(identity[3], int) or isinstance(identity[3], bool) or identity[3] < 0
+            or identity in identities
+        ):
+            raise DenseTeacherError("LOSO artifact training sample identity is invalid")
+        identities.add(identity)
+        for key in ("teacher_decoded_rgb_sha256", "raw_depth_sha256"):
+            require_sha(sample.get(key), where=f"LOSO artifact training_samples[{index}].{key}")
 
 
 def select_route_sample(
@@ -263,18 +306,91 @@ def decode_video_frame_rgb(video_path: Path, requested_pts_ms: int) -> tuple[Any
         capture.release()
 
 
-def _quantize(field: Any) -> bytes:
+def _quantize(field: Any) -> Any:
     np, _ = _lazy_numeric()
-    return np.rint(np.clip(field, 0.0, 1.0) * 255.0).astype(np.uint8).tobytes(order="C")
+    return np.rint(np.clip(field, 0.0, 1.0) * QUANTIZATION_SCALE).astype("<u4")
 
 
-def _field_payload_sha(width: int, height: int, fields: Mapping[str, bytes]) -> str:
+def _field_payload_sha(width: int, height: int, fields: Mapping[str, bytes], *, domain: str) -> str:
     digest = hashlib.sha256()
-    digest.update(f"{FIELD_CONTRACT_ID}|{width}|{height}|{QUANTIZATION}\n".encode("ascii"))
+    digest.update(f"{FIELD_CONTRACT_ID}|{domain}|{width}|{height}|{QUANTIZATION}\n".encode("ascii"))
     for name in sorted(fields):
         digest.update(name.encode("ascii") + b"\0")
         digest.update(fields[name])
     return digest.hexdigest()
+
+
+def _decode_serialized_fields(payload: Mapping[str, Any]) -> tuple[int, int, dict[str, Any], dict[str, bytes]]:
+    np, _ = _lazy_numeric()
+    width = payload.get("grid_width")
+    height = payload.get("grid_height")
+    if (
+        not isinstance(width, int) or isinstance(width, bool) or width <= 0
+        or not isinstance(height, int) or isinstance(height, bool) or height <= 0
+        or payload.get("quantization") != QUANTIZATION
+    ):
+        raise DenseTeacherError("serialized dense field dimensions/quantization are invalid")
+    encoded = payload.get("fields_base64")
+    if not isinstance(encoded, Mapping) or set(encoded) != set(ALL_FIELD_NAMES):
+        raise DenseTeacherError("serialized dense field inventory is invalid")
+    arrays: dict[str, Any] = {}
+    binary: dict[str, bytes] = {}
+    expected_bytes = width * height * 4
+    for name in ALL_FIELD_NAMES:
+        value = encoded.get(name)
+        if not isinstance(value, str):
+            raise DenseTeacherError(f"serialized dense field {name} is not base64 text")
+        try:
+            raw = base64.b64decode(value, validate=True)
+        except (binascii.Error, ValueError) as error:
+            raise DenseTeacherError(f"serialized dense field {name} is invalid base64") from error
+        if len(raw) != expected_bytes:
+            raise DenseTeacherError(f"serialized dense field {name} byte length mismatch")
+        array = np.frombuffer(raw, dtype="<u4").reshape((height, width))
+        if bool((array > QUANTIZATION_SCALE).any()):
+            raise DenseTeacherError(f"serialized dense field {name} exceeds fixed-point range")
+        arrays[name] = array
+        binary[name] = raw
+    return width, height, arrays, binary
+
+
+def summarize_serialized_field(payload: Mapping[str, Any]) -> dict[str, Any]:
+    np, _ = _lazy_numeric()
+    width, height, fields, binary = _decode_serialized_fields(payload)
+    route_weight = fields["route_weight_field"]
+    active = route_weight > 0
+    if not bool(active.any()):
+        raise DenseTeacherError("serialized route field has no contributing cells")
+    total_weight = int(route_weight[active].astype(np.uint64).sum())
+    route_relative = fields["route_relative_risk_field"]
+    local = fields["local_obstacle_field"]
+    boundary = fields["boundary_field"]
+    unknown = fields["unknown_field"]
+    source_binary = {name: binary[name] for name in SOURCE_FIELD_NAMES}
+    route_binary = {name: binary[name] for name in ROUTE_FIELD_NAMES}
+    return {
+        "source_field_sha256": _field_payload_sha(width, height, source_binary, domain="source"),
+        "route_interaction_field_sha256": _field_payload_sha(width, height, route_binary, domain="route-interaction"),
+        "field_cell_count": width * height,
+        "risk_evidence_count": int(active.sum()),
+        "route_intrusion_score": float(route_relative[active].astype(np.uint64).sum() / total_weight),
+        "maximum_route_cell_risk": float(np.maximum(local, boundary)[active].max() / QUANTIZATION_SCALE),
+        "route_unknown_fraction": float(
+            (unknown[active].astype(np.uint64) * route_weight[active].astype(np.uint64)).sum()
+            / (QUANTIZATION_SCALE * total_weight)
+        ),
+    }
+
+
+def validate_serialized_field_summary(payload: Mapping[str, Any], summary: Mapping[str, Any]) -> None:
+    expected = summarize_serialized_field(payload)
+    for key, value in expected.items():
+        actual = summary.get(key)
+        if isinstance(value, float):
+            if not isinstance(actual, (int, float)) or isinstance(actual, bool) or abs(float(actual) - value) > 1e-12:
+                raise DenseTeacherError(f"serialized dense field summary mismatch: {key}")
+        elif actual != value:
+            raise DenseTeacherError(f"serialized dense field summary mismatch: {key}")
 
 
 def build_frame_field(
@@ -300,14 +416,7 @@ def build_frame_field(
     unknown = ((resized < low - range_margin) | (resized > high + range_margin) | ~np.isfinite(resized)).astype(np.float32)
     route_weight = route_weight_field(route_sample, config)
     route_relative = np.maximum(local_obstacle, boundary) * route_weight
-    active = route_weight > 0.0
-    if not bool(active.any()):
-        raise DenseTeacherError("route field has no contributing cells")
-    total_weight = float(route_weight[active].sum())
-    route_intrusion = float(route_relative[active].sum() / total_weight)
-    maximum = float(np.maximum(local_obstacle, boundary)[active].max())
-    unknown_fraction = float((unknown[active] * route_weight[active]).sum() / total_weight)
-    binary_fields = {
+    quantized_fields = {
         "local_obstacle_field": _quantize(local_obstacle),
         "walkability_field": _quantize(walkability),
         "boundary_field": _quantize(boundary),
@@ -315,6 +424,7 @@ def build_frame_field(
         "route_weight_field": _quantize(route_weight),
         "route_relative_risk_field": _quantize(route_relative),
     }
+    binary_fields = {name: value.tobytes(order="C") for name, value in quantized_fields.items()}
     payload = {
         "grid_width": config.grid_width,
         "grid_height": config.grid_height,
@@ -322,14 +432,10 @@ def build_frame_field(
         "fields_base64": {name: base64.b64encode(value).decode("ascii") for name, value in binary_fields.items()},
     }
     summary = {
-        "source_field_sha256": _field_payload_sha(config.grid_width, config.grid_height, binary_fields),
-        "field_cell_count": config.grid_width * config.grid_height,
-        "risk_evidence_count": int(active.sum()),
-        "route_intrusion_score": route_intrusion,
-        "maximum_route_cell_risk": maximum,
-        "route_unknown_fraction": unknown_fraction,
+        **summarize_serialized_field(payload),
         "risk_sources": list(RISK_SOURCES),
     }
+    validate_serialized_field_summary(payload, summary)
     return payload, summary
 
 
@@ -364,9 +470,9 @@ def generate_field_bundle(
         if not isinstance(frame_ms, int) or isinstance(frame_ms, bool) or frame_ms < 0:
             raise DenseTeacherError("request video_pts_ms is invalid")
         sample_index, sample = select_route_sample(route_episode, frame_ms, config)
-        rgb, decode_ms = decode_video_frame_rgb(video_path, frame_ms)
+        rgb, _decode_ms = decode_video_frame_rgb(video_path, frame_ms)
         rgb_sha = sha256_bytes(rgb.tobytes(order="C"))
-        depth, inference_ms = teacher.infer_rgb(rgb)
+        depth, _inference_ms = teacher.infer_rgb(rgb)
         field_payload, summary = build_frame_field(
             depth, artifact=artifact, route_sample=sample, config=config
         )
@@ -378,8 +484,7 @@ def generate_field_bundle(
             "valid_until_ms": valid_until,
             "source_frame_payload_sha256": request_frame["frame_payload_sha256"],
             "teacher_decoded_rgb_sha256": rgb_sha,
-            "teacher_decode_duration_ms": decode_ms,
-            "teacher_inference_duration_ms": inference_ms,
+            "evidence_status": "AVAILABLE",
             "selected_route_sample_index": sample_index,
             "selected_route_sample_timestamp_ms": sample["timestamp_ms"],
             "selected_route_valid_until_ms": sample["valid_until_timestamp_ms"],

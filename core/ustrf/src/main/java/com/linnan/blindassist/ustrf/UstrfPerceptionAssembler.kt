@@ -4,7 +4,8 @@ package com.linnan.blindassist.ustrf
 data class UstrfMotionGridEvidence(
     val sourceFrame: UstrfFrameStamp,
     val coordinate: UstrfGridCoordinate,
-    val motion: UstrfRelativeMotionEvidence
+    val motion: UstrfRelativeMotionEvidence,
+    val gridSpec: UstrfGridSpec = UstrfGridSpec.LEGACY_KERNEL
 )
 
 enum class UstrfPerceptionAssemblyFailure {
@@ -18,7 +19,8 @@ enum class UstrfPerceptionAssemblyFailure {
     GEOMETRY_STALE,
     MOTION_UNAVAILABLE,
     PERCEPTION_TIMING_INVALID,
-    POSE_DELTA_INVALID
+    POSE_DELTA_INVALID,
+    GRID_SPEC_MISMATCH
 }
 
 sealed interface UstrfPerceptionAssembly {
@@ -37,6 +39,8 @@ class UstrfPerceptionAssembler(
     private val ttcEstimator: UstrfTtcEstimator = UstrfTtcEstimator(),
     private val dynamicCollisionRadiusMeters: Float = .75f
 ) {
+    val gridSpec: UstrfGridSpec get() = geometryProjector.gridSpec
+
     init {
         require(dynamicCollisionRadiusMeters > 0f)
     }
@@ -58,6 +62,7 @@ class UstrfPerceptionAssembler(
         val geometryObservations = (projected as UstrfGeometryProjection.Available).observations
         val failures = dynamicMotion.mapNotNull { evidence ->
             when {
+                evidence.gridSpec != gridSpec -> UstrfPerceptionAssemblyFailure.GRID_SPEC_MISMATCH
                 evidence.sourceFrame != frame -> UstrfPerceptionAssemblyFailure.MOTION_SOURCE_FRAME_MISMATCH
                 ttcEstimator.estimate(evidence.motion, nowNs) == null -> UstrfPerceptionAssemblyFailure.MOTION_UNAVAILABLE
                 else -> null
@@ -84,7 +89,7 @@ class UstrfPerceptionAssembler(
         val validUntilNs = (listOf(geometry.validUntilNs) + dynamicMotion.map { it.motion.validUntilNs }).minOrNull()
             ?: geometry.validUntilNs
         return UstrfPerceptionAssembly.Available(
-            UstrfPerceptionPacket(frame, nowNs, validUntilNs, geometryObservations + dynamicObservations)
+            UstrfPerceptionPacket(frame, nowNs, validUntilNs, geometryObservations + dynamicObservations, gridSpec)
         )
     }
 

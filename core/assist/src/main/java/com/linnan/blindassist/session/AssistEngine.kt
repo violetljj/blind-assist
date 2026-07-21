@@ -14,6 +14,7 @@ import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.risk.RiskStabilizer
 import com.linnan.blindassist.risk.RiskEventSnapshot
 import com.linnan.blindassist.risk.TemporalRiskTracker
+import com.linnan.blindassist.vision.FrameStamp
 
 class AssistEngine(
     private val riskAnalyzer: RiskAnalyzer = RiskAnalyzer(),
@@ -28,7 +29,9 @@ class AssistEngine(
         profile: AlertProfile,
         scenario: AssistScenario = AssistScenario.GENERAL,
         metrics: DetectorMetrics,
-        nowMs: Long = System.currentTimeMillis()
+        nowMs: Long = monotonicNowMs(),
+        sourceFrame: FrameStamp? = null,
+        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
     ): AssistFrameEvaluation {
         val rawRisk = temporalRiskTracker.update(
             riskAnalyzer.analyze(detections, frameSize),
@@ -44,7 +47,9 @@ class AssistEngine(
             scenario = scenario,
             metrics = metrics,
             preliminaryReason = displayReasonFor(rawRisk, stableRisk, null),
-            evaluatedAtMs = nowMs
+            evaluatedAtMs = nowMs,
+            sourceFrame = sourceFrame,
+            decisionAtNs = decisionAtNs
         )
     }
 
@@ -57,7 +62,8 @@ class AssistEngine(
         profile: AlertProfile,
         scenario: AssistScenario = AssistScenario.GENERAL,
         metrics: DetectorMetrics,
-        nowMs: Long = System.currentTimeMillis()
+        nowMs: Long = monotonicNowMs(),
+        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
     ): AssistFrameEvaluation {
         require(rawRisk.sourceDetection == null) { "object-agnostic risk evidence must not contain a detection" }
         require(evidenceCount > 0) { "object-agnostic risk evidence count must be positive" }
@@ -73,7 +79,8 @@ class AssistEngine(
             metrics = metrics,
             preliminaryReason = displayReasonFor(temporalRisk, stableRisk, null),
             evaluatedAtMs = nowMs,
-            riskEvidenceCount = evidenceCount
+            riskEvidenceCount = evidenceCount,
+            decisionAtNs = decisionAtNs
         )
     }
 
@@ -104,7 +111,7 @@ class AssistEngine(
         trace.clear()
     }
 
-    fun startSession(nowMs: Long = System.currentTimeMillis()) {
+    fun startSession(nowMs: Long = monotonicNowMs()) {
         temporalRiskTracker.reset()
         riskStabilizer.reset()
         trace.start(nowMs)
@@ -229,6 +236,11 @@ class AssistEngine(
             ProximityBand.FAR -> "远处"
         }
     }
+
+    private companion object {
+        const val NANOS_PER_MILLISECOND = 1_000_000L
+        fun monotonicNowMs(): Long = System.nanoTime() / NANOS_PER_MILLISECOND
+    }
 }
 
 data class DetectorMetrics(
@@ -273,7 +285,9 @@ data class AssistFrameEvaluation(
     val preliminaryReason: FeedbackReason,
     val evaluatedAtMs: Long,
     val riskEvent: RiskEventSnapshot = RiskEventSnapshot.none(),
-    val riskEvidenceCount: Int = 0
+    val riskEvidenceCount: Int = 0,
+    val sourceFrame: FrameStamp? = null,
+    val decisionAtNs: Long = evaluatedAtMs * 1_000_000L
 )
 
 data class AssistFrameResult(

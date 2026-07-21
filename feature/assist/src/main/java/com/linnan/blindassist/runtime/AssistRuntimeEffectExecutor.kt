@@ -12,7 +12,8 @@ internal class AssistRuntimeEffectExecutor(
     private val lifecycleGate: AssistRuntimeLifecycleGate,
     private val configSnapshot: AssistRuntimeConfigSnapshot,
     private val syncConfigFromViewModel: () -> Unit,
-    private val startCameraIfReady: () -> Unit
+    private val startCameraIfReady: () -> Unit,
+    private val decisionClockNs: () -> Long = System::nanoTime
 ) {
     fun execute(
         transition: AssistRuntimeTransition,
@@ -25,7 +26,7 @@ internal class AssistRuntimeEffectExecutor(
                 AssistRuntimeEffect.LaunchPermissionRequest -> launchPermissionRequest?.invoke()
                 AssistRuntimeEffect.StartSession -> {
                     lifecycleGate.startSession {
-                        coordinator.startSession()
+                        coordinator.startSession(decisionClockNs() / NANOS_PER_MILLISECOND)
                         frameProcessor.resetSessionStats()
                     }
                     renderer.updateFieldTestSummary(active = true, configSnapshot.get())
@@ -52,5 +53,9 @@ internal class AssistRuntimeEffectExecutor(
                 is AssistRuntimeEffect.Render -> renderer.renderTarget(effect.target, effect.message)
             }
         }
+    }
+
+    private companion object {
+        const val NANOS_PER_MILLISECOND = 1_000_000L
     }
 }

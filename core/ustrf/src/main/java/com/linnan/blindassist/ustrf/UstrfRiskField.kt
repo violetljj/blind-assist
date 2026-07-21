@@ -6,15 +6,11 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 data class UstrfRiskFieldConfig(
-    val halfWidthCells: Int = 2,
-    val horizonCells: Int = 4,
-    val cellMeters: Float = 1f,
+    val gridSpec: UstrfGridSpec = UstrfGridSpec.LEGACY_KERNEL,
     val staticLifetimeNs: Long = 2_000_000_000L,
     val dynamicLifetimeNs: Long = 700_000_000L
 ) {
     init {
-        require(halfWidthCells >= 1 && horizonCells >= 1)
-        require(cellMeters > 0f && cellMeters.isFinite())
         require(staticLifetimeNs > 0L && dynamicLifetimeNs > 0L)
     }
 }
@@ -63,7 +59,8 @@ data class UstrfRiskCell(
 
 data class UstrfRiskField(
     val frame: UstrfFrameStamp,
-    val cells: Map<UstrfGridCoordinate, UstrfRiskCell>
+    val cells: Map<UstrfGridCoordinate, UstrfRiskCell>,
+    val gridSpec: UstrfGridSpec = UstrfGridSpec.LEGACY_KERNEL
 ) {
     fun cellAt(coordinate: UstrfGridCoordinate): UstrfRiskCell = cells[coordinate] ?: UstrfRiskCell()
 }
@@ -76,9 +73,11 @@ data class UstrfRiskField(
  * frame-mismatched pose receipts rather than silently reusing stale geometry.
  */
 class UstrfRiskFieldBuilder(private val config: UstrfRiskFieldConfig = UstrfRiskFieldConfig()) {
+    val gridSpec: UstrfGridSpec get() = config.gridSpec
     private var previous: UstrfRiskField? = null
 
     fun update(packet: UstrfPerceptionPacket, poseDelta: UstrfVerifiedPoseDelta? = null): UstrfRiskField {
+        require(packet.gridSpec == gridSpec) { "perception grid spec does not match risk-field builder" }
         val prior = previous
         if (prior != null) {
             require(packet.sourceFrame.capturedAtNs > prior.frame.capturedAtNs) { "non-monotonic capture time" }
@@ -92,20 +91,14 @@ class UstrfRiskFieldBuilder(private val config: UstrfRiskFieldConfig = UstrfRisk
         val cells = prior?.let { priorField ->
             retainedPriorCells(priorField, now, poseDelta).toMutableMap()
         } ?: mutableMapOf()
-        packet.observations.filter { it.validUntilNs >= now && inBounds(it.coordinate) }.forEach { observation ->
-            val old = cells[observation.coordinate] ?: UstrfRiskCell()
-            cells[observation.coordinate] = UstrfRiskCell(
-                occupancy = max(old.occupancy, observation.occupancy),
-                traversability = max(old.traversability, observation.traversability),
-                dropRisk = max(old.dropRisk, observation.dropRisk),
-                headRisk = max(old.headRisk, observation.headRisk),
-                dynamicTtcMs = listOfNotNull(old.dynamicTtcMs, observation.dynamicTtcMs).minOrNull(),
-                uncertainty = max(if (old.ageNs == Long.MAX_VALUE) 0f else old.uncertainty, observation.uncertainty),
-                ageNs = 0L,
-                sources = old.sources + observation.source
-            )
-        }
-        return UstrfRiskField(packet.sourceFrame, cells).also { previous = it }
+        packet.observations
+            .filter { it.validUntilNs >= now && inBounds(it.coordinate) }
+            .groupBy { it.coordinate }
+            .forEach { (coordinate, observations) ->
+                val fresh = observations.map(::freshCell).reduce(::mergeFresh)
+                cells[coordinate] = mergeHistoricalWithFresh(cells[coordinate], fresh)
+            }
+        return UstrfRiskField(packet.sourceFrame, cells, gridSpec).also { previous = it }
     }
 
     fun reset() { previous = null }
@@ -126,7 +119,7 @@ class UstrfRiskFieldBuilder(private val config: UstrfRiskFieldConfig = UstrfRisk
         prior.cells.forEach { (coordinate, cell) ->
             val destination = poseDelta?.let { warp(coordinate, it) } ?: coordinate
             if (!inBounds(destination)) return@forEach
-            val decayed = decay(cell, elapsed)
+            val decayed = decay(cell, elapsed) ?: return@forEach
             retained[destination] = retained[destination]?.let { old -> merge(old, decayed) } ?: decayed
         }
         return retained
@@ -134,8 +127,8 @@ class UstrfRiskFieldBuilder(private val config: UstrfRiskFieldConfig = UstrfRisk
 
     /** Converts prior-body grid coordinates into the current body grid. */
     private fun warp(coordinate: UstrfGridCoordinate, delta: UstrfVerifiedPoseDelta): UstrfGridCoordinate {
-        val forward = coordinate.forward.toFloat() - delta.forwardMeters / config.cellMeters
-        val lateral = coordinate.lateral.toFloat() - delta.lateralMeters / config.cellMeters
+        val forward = coordinate.forward.toFloat() - delta.forwardMeters / gridSpec.cellMeters
+        val lateral = coordinate.lateral.toFloat() - delta.lateralMeters / gridSpec.cellMeters
         val cosYaw = cos(delta.yawRadians)
         val sinYaw = sin(delta.yawRadians)
         return UstrfGridCoordinate(
@@ -144,11 +137,11 @@ class UstrfRiskFieldBuilder(private val config: UstrfRiskFieldConfig = UstrfRisk
         )
     }
 
-    private fun inBounds(point: UstrfGridCoordinate): Boolean =
-        point.lateral in -config.halfWidthCells..config.halfWidthCells && point.forward in 0..config.horizonCells
+    private fun inBounds(point: UstrfGridCoordinate): Boolean = gridSpec.contains(point)
 
-    private fun decay(cell: UstrfRiskCell, deltaNs: Long): UstrfRiskCell {
+    private fun decay(cell: UstrfRiskCell, deltaNs: Long): UstrfRiskCell? {
         val lifetime = if (cell.dynamicTtcMs == null) config.staticLifetimeNs else config.dynamicLifetimeNs
+        if (deltaNs >= lifetime) return null
         val retained = (1f - deltaNs.toFloat() / lifetime.toFloat()).coerceIn(0f, 1f)
         return cell.copy(
             occupancy = cell.occupancy * retained,
@@ -160,6 +153,31 @@ class UstrfRiskFieldBuilder(private val config: UstrfRiskFieldConfig = UstrfRisk
             ageNs = if (cell.ageNs == Long.MAX_VALUE) Long.MAX_VALUE else cell.ageNs + deltaNs
         )
     }
+
+    private fun freshCell(observation: UstrfRiskObservation): UstrfRiskCell = UstrfRiskCell(
+        occupancy = observation.occupancy,
+        traversability = observation.traversability,
+        dropRisk = observation.dropRisk,
+        headRisk = observation.headRisk,
+        dynamicTtcMs = observation.dynamicTtcMs,
+        uncertainty = observation.uncertainty,
+        ageNs = 0L,
+        sources = setOf(observation.source)
+    )
+
+    /** Multiple current sources remain conservative, but aged uncertainty cannot poison coverage. */
+    private fun mergeFresh(first: UstrfRiskCell, second: UstrfRiskCell): UstrfRiskCell = merge(first, second)
+
+    private fun mergeHistoricalWithFresh(old: UstrfRiskCell?, fresh: UstrfRiskCell): UstrfRiskCell = UstrfRiskCell(
+        occupancy = max(old?.occupancy ?: 0f, fresh.occupancy),
+        traversability = max(old?.traversability ?: 0f, fresh.traversability),
+        dropRisk = max(old?.dropRisk ?: 0f, fresh.dropRisk),
+        headRisk = max(old?.headRisk ?: 0f, fresh.headRisk),
+        dynamicTtcMs = listOfNotNull(old?.dynamicTtcMs, fresh.dynamicTtcMs).minOrNull(),
+        uncertainty = fresh.uncertainty,
+        ageNs = 0L,
+        sources = old?.sources.orEmpty() + fresh.sources
+    )
 
     private fun merge(first: UstrfRiskCell, second: UstrfRiskCell): UstrfRiskCell = UstrfRiskCell(
         occupancy = max(first.occupancy, second.occupancy),

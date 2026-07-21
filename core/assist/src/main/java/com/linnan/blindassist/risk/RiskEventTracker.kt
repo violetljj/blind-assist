@@ -59,7 +59,7 @@ class RiskEventTracker(
     private var recentlyPassed: PassedEvent? = null
     private var nextId = 1
 
-    fun update(risk: RiskResult, nowMs: Long = System.currentTimeMillis()): RiskEventSnapshot {
+    fun update(risk: RiskResult, nowMs: Long = monotonicNowMs()): RiskEventSnapshot {
         expirePassedEvent(nowMs)
         val detection = risk.sourceDetection
         if (!isTrackedCandidate(detection)) {
@@ -99,7 +99,7 @@ class RiskEventTracker(
     fun updateExternalEvidence(
         risk: RiskResult,
         eventKey: String,
-        nowMs: Long = System.currentTimeMillis()
+        nowMs: Long = monotonicNowMs()
     ): RiskEventSnapshot {
         require(risk.sourceDetection == null) { "external risk evidence must not contain a detection" }
         require(eventKey.isNotBlank()) { "external risk event key must be non-blank" }
@@ -144,7 +144,7 @@ class RiskEventTracker(
     }
 
     fun reset() {
-        clear(RiskEventClearReason.SESSION_RESET, System.currentTimeMillis())
+        clear(RiskEventClearReason.SESSION_RESET, monotonicNowMs())
         active = null
         recentlyPassed = null
     }
@@ -242,5 +242,10 @@ class RiskEventTracker(
             suppressesFeedback = true,
             clearReason = RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES
         )
+    }
+
+    private companion object {
+        const val NANOS_PER_MILLISECOND = 1_000_000L
+        fun monotonicNowMs(): Long = System.nanoTime() / NANOS_PER_MILLISECOND
     }
 }

@@ -3,6 +3,7 @@ package com.linnan.blindassist.feedback
 import android.Manifest
 import android.content.Context
 import android.os.Build
+import android.os.SystemClock
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
@@ -57,7 +58,7 @@ class FeedbackController constructor(
     constructor(context: Context) : this(
         speechOutput = AndroidSpeechOutput(context.applicationContext),
         hapticOutput = AndroidHapticOutput(context.applicationContext),
-        clock = FeedbackClock { System.currentTimeMillis() },
+        clock = FeedbackClock { SystemClock.elapsedRealtime() },
         initialSettings = FeedbackRuntimeSettings()
     )
 

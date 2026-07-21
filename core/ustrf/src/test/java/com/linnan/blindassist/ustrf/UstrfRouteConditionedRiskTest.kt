@@ -88,6 +88,53 @@ class UstrfRouteConditionedRiskTest {
         assertEquals(1_200L, evidence.validUntilNs)
     }
 
+    @Test
+    fun continuousRouteFieldEntersTheSafetySessionAndSelectsTheAlignedSafeEnvelope() {
+        val observations = (-1..1).flatMap { lateral ->
+            (1..4).map { forward ->
+                UstrfRiskObservation(
+                    UstrfGridCoordinate(lateral, forward),
+                    0f, 1f, 0f, 0f, null, 0f, "metric-fixture", 2_000L
+                )
+            }
+        }
+        val routeField = UstrfRouteFieldReceipt(
+            sourceFrame = frame,
+            routeIntentId = "route-field-session",
+            providerId = "navigation",
+            providerType = UstrfRouteFieldProviderType.NAVIGATION,
+            coordinateFrame = frame.coordinateFrame,
+            issuedAtNs = 900L,
+            validUntilNs = 2_000L,
+            confidence = .95f,
+            routeValid = true,
+            inferredByRiskModel = false,
+            derivedFromFutureFrames = false,
+            weights = (1..4).associate { UstrfGridCoordinate(-1, it) to 1f }
+        )
+        val record = UstrfSafetySession().evaluate(
+            UstrfSessionInput(
+                frame = frame,
+                health = UstrfHealth(
+                    UstrfPoseState.TRACKING,
+                    UstrfEvidenceState.VALID,
+                    UstrfEvidenceState.VALID,
+                    UstrfEvidenceState.VALID
+                ),
+                perception = UstrfPerceptionAssembly.Available(
+                    UstrfPerceptionPacket(frame, 1_000L, 2_000L, observations)
+                ),
+                route = null,
+                decisionAtNs = 1_100L,
+                routeField = routeField
+            )
+        )
+
+        assertEquals(-1, record.decision.experimentalCorridorOffsetCells)
+        assertEquals("route-field-session", record.routeIntrusionEvidence?.routeIntentId)
+        assertTrue(UstrfSafetyReason.SHADOW_ONLY in record.decision.reasons)
+    }
+
     private fun route(
         cell: UstrfGridCoordinate,
         providerType: UstrfRouteFieldProviderType = UstrfRouteFieldProviderType.NAVIGATION,

@@ -12,6 +12,8 @@ import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.vision.DetectorFrameResult
+import com.linnan.blindassist.vision.FrameClockDomain
+import com.linnan.blindassist.vision.FrameStamp
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -176,13 +178,76 @@ class AssistSessionCoordinatorTest {
         assertEquals(1, sideGateway.notifyCalls)
     }
 
+    @Test
+    fun stampedFrameUsesCaptureTimeButRetainsIndependentDecisionTime() {
+        val coordinator = AssistSessionCoordinator(
+            feedbackGateway = FakeFeedbackGateway(FeedbackDecision(null, false, FeedbackReason.NO_FEEDBACK_RISK)),
+            fpsTracker = fixedFpsTracker()
+        )
+        val stamp = stamp(frameId = 4L, capturedAtMs = 1_250L, receivedAtMs = 1_300L)
+
+        val result = coordinator.processFrame(
+            detectorFrame = detectorFrame(emptyList(), stamp),
+            profile = AlertProfile.STANDARD,
+            scenario = AssistScenario.GENERAL,
+            decisionAtNs = 9_000_000_000L
+        )
+
+        assertEquals(1_250L, result.evaluation.evaluatedAtMs)
+        assertEquals(9_000_000_000L, result.evaluation.decisionAtNs)
+        assertEquals(stamp, result.evaluation.sourceFrame)
+    }
+
+    @Test
+    fun processingDelayDoesNotChangeCaptureBoundApproachTrend() {
+        val captureTimes = listOf(1_000L, 1_100L, 1_200L)
+        val boxes = listOf(
+            BoundingBox(400f, 200f, 600f, 600f),
+            BoundingBox(390f, 180f, 610f, 680f),
+            BoundingBox(370f, 140f, 630f, 780f)
+        )
+
+        fun replay(decisionOffsetMs: Long): List<com.linnan.blindassist.risk.ApproachTrend> {
+            val coordinator = AssistSessionCoordinator(
+                feedbackGateway = FakeFeedbackGateway(FeedbackDecision(null, false, FeedbackReason.NO_FEEDBACK_RISK)),
+                fpsTracker = fixedFpsTracker()
+            )
+            return boxes.mapIndexed { index, box ->
+                val captureMs = captureTimes[index]
+                coordinator.processFrame(
+                    detectorFrame = detectorFrame(
+                        listOf(detection("person", box)),
+                        stamp(index.toLong(), captureMs, captureMs + 10L)
+                    ),
+                    profile = AlertProfile.STANDARD,
+                    scenario = AssistScenario.GENERAL,
+                    decisionAtNs = (captureMs + decisionOffsetMs) * 1_000_000L
+                ).evaluation.rawRisk.approachTrend
+            }
+        }
+
+        assertEquals(replay(decisionOffsetMs = 20L), replay(decisionOffsetMs = 2_000L))
+    }
+
     private fun fixedFpsTracker(): FpsTracker {
         return FpsTracker(clock = { 1000L }).also { it.onFrame() }
     }
 
-    private fun detectorFrame(detections: List<Detection>): DetectorFrameResult {
-        return DetectorFrameResult(detections, frame, metrics())
+    private fun detectorFrame(
+        detections: List<Detection>,
+        sourceFrame: FrameStamp? = null
+    ): DetectorFrameResult {
+        return DetectorFrameResult(detections, frame, metrics(), sourceFrame)
     }
+
+    private fun stamp(frameId: Long, capturedAtMs: Long, receivedAtMs: Long): FrameStamp = FrameStamp(
+        frameId = frameId,
+        capturedAtNs = capturedAtMs * 1_000_000L,
+        receivedAtNs = receivedAtMs * 1_000_000L,
+        sourceId = "camera2:0",
+        coordinateFrame = "camera2:0:analysis-buffer",
+        clockDomain = FrameClockDomain.ANDROID_ELAPSED_REALTIME
+    )
 
     private fun detection(
         label: String,

@@ -221,7 +221,8 @@ class UstrfSafetyKernelTest {
             )
         )
 
-        val projected = UstrfGeometryProjector().project(packet, 1_000L) as UstrfGeometryProjection.Available
+        val projected = UstrfGeometryProjector(UstrfGridSpec.DOCUMENT_FIVE_METER)
+            .project(packet, 1_000L) as UstrfGeometryProjection.Available
         assertEquals(.8f, projected.observations.first { it.coordinate == UstrfGridCoordinate(0, 1) }.dropRisk, .0001f)
         assertEquals(.9f, projected.observations.first { it.coordinate == UstrfGridCoordinate(1, 2) }.headRisk, .0001f)
     }

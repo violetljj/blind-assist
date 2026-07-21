@@ -48,12 +48,10 @@ class UstrfOfflineSafetyScenarioRunner(
         val frame = UstrfFrameStamp(id.ordinal.toLong() + 1L, frameTimeNs, coordinateFrame)
         val scenario = fixture(id, frame)
         val session = UstrfSafetySession(
-            fieldBuilder = UstrfRiskFieldBuilder(UstrfRiskFieldConfig(halfWidthCells = HALF_WIDTH_CELLS, horizonCells = HORIZON_CELLS)),
-            planner = UstrfCorridorPlanner(
-                horizonCells = HORIZON_CELLS,
-                capsuleHalfWidthCells = 1,
-                fixedCandidateOffsets = listOf(-2, -1, 0, 1, 2)
-            )
+            fieldBuilder = UstrfRiskFieldBuilder(UstrfRiskFieldConfig(gridSpec = GRID_SPEC)),
+            planner = UstrfCorridorPlanner(gridSpec = GRID_SPEC),
+            supervisor = UstrfSafetySupervisor(centralHorizonCells = GRID_SPEC.horizonCells),
+            structuredOutputMapper = UstrfStructuredSafetyOutputMapper(gridSpec = GRID_SPEC)
         )
         val record = session.evaluate(scenario.input)
         return UstrfOfflineSafetyScenarioResult(
@@ -111,7 +109,8 @@ class UstrfOfflineSafetyScenarioRunner(
                     UstrfMotionGridEvidence(
                         frame,
                         UstrfGridCoordinate(lateral, 2),
-                        UstrfRelativeMotionEvidence(UstrfVector2(1f, 0f), UstrfVector2(-1f, 0f), frame.capturedAtNs, validUntilNs, "synthetic-motion")
+                        UstrfRelativeMotionEvidence(UstrfVector2(1f, 0f), UstrfVector2(-1f, 0f), frame.capturedAtNs, validUntilNs, "synthetic-motion"),
+                        GRID_SPEC
                     )
                 }
                 health = healthy()
@@ -143,7 +142,7 @@ class UstrfOfflineSafetyScenarioRunner(
         }
         val geometry = UstrfGeometryPacket(frame, frame.capturedAtNs, validUntilNs, UstrfDepthScale.METRIC, evidence)
         val assembled = UstrfPerceptionAssembler(
-            geometryProjector = UstrfGeometryProjector(halfWidthCells = HALF_WIDTH_CELLS, horizonCells = HORIZON_CELLS)
+            geometryProjector = UstrfGeometryProjector(gridSpec = GRID_SPEC)
         ).assemble(frame, geometry, motion, assemblyNowNs)
         return Fixture(
             UstrfSessionInput(
@@ -191,6 +190,7 @@ class UstrfOfflineSafetyScenarioRunner(
     private data class Fixture(val input: UstrfSessionInput, val expectation: UstrfOfflineSafetyExpectation)
 
     private companion object {
+        val GRID_SPEC = UstrfGridSpec.SYNTHETIC_CORRIDOR
         const val CELL_SIZE_METERS = .5f
         const val HALF_WIDTH_CELLS = 3
         const val HORIZON_CELLS = 4

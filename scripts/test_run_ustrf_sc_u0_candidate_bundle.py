@@ -6,6 +6,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import run_ustrf_sc_u0_candidate_bundle as subject
 
@@ -40,6 +41,29 @@ def rerun(root: Path) -> Path:
 
 
 class UstrfU0CandidateRunnerTest(unittest.TestCase):
+    def test_runner_executes_the_hash_bound_materialized_adapter_and_threshold(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            fixture_module.UstrfU0TeacherUpperBoundTest.fixture(root)
+            shutil.rmtree(root / "prediction-bundle")
+            calls: list[list[str]] = []
+            real_run = subject.subprocess.run
+
+            def capture_run(args: list[str], **kwargs: object):
+                calls.append([str(value) for value in args])
+                return real_run(args, **kwargs)
+
+            with mock.patch.object(subject.subprocess, "run", side_effect=capture_run):
+                rerun(root)
+
+            self.assertTrue(calls)
+            for args in calls:
+                implementation = Path(args[1]).resolve()
+                threshold = Path(args[args.index("--threshold-config") + 1]).resolve()
+                self.assertTrue(implementation.is_relative_to((root / "prediction-bundle/arms").resolve()))
+                self.assertTrue(threshold.is_relative_to((root / "prediction-bundle/arms").resolve()))
+                self.assertNotEqual(implementation, (root / "registry/adapter.py").resolve())
+
     def test_subprocess_bundle_uses_only_sanitized_policy_specific_inputs(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

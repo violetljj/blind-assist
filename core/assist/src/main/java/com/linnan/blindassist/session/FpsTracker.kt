@@ -2,7 +2,7 @@ package com.linnan.blindassist.session
 
 class FpsTracker(
     private val windowMs: Long = 1000L,
-    private val clock: () -> Long = System::currentTimeMillis
+    private val clock: () -> Long = { System.nanoTime() / 1_000_000L }
 ) {
     private var frameCount = 0
     private var windowStartMs = clock()

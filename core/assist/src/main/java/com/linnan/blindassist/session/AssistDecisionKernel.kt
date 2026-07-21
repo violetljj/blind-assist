@@ -13,6 +13,7 @@ import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskEvidenceState
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
+import com.linnan.blindassist.vision.FrameStamp
 
 data class AssistRiskEvidenceFrame(
     val sourceContractId: String,
@@ -71,7 +72,7 @@ class AssistDecisionKernel(
     private val lowConfidenceSidePersonConfirmation: LowConfidenceSidePersonConfirmation =
         LowConfidenceSidePersonConfirmation()
 ) {
-    fun startSession(nowMs: Long = System.currentTimeMillis()) {
+    fun startSession(nowMs: Long = monotonicNowMs()) {
         assistEngine.startSession(nowMs)
         riskEventTracker.reset()
         lowConfidenceSidePersonConfirmation.reset()
@@ -92,7 +93,9 @@ class AssistDecisionKernel(
         scenario: AssistScenario,
         metrics: DetectorMetrics,
         feedbackGateway: FeedbackGateway,
-        nowMs: Long = System.currentTimeMillis()
+        nowMs: Long = monotonicNowMs(),
+        sourceFrame: FrameStamp? = null,
+        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
     ): AssistFrameResult {
         val evaluation = assistEngine.evaluate(
             detections = detections,
@@ -100,7 +103,9 @@ class AssistDecisionKernel(
             profile = profile,
             scenario = scenario,
             metrics = metrics,
-            nowMs = nowMs
+            nowMs = nowMs,
+            sourceFrame = sourceFrame,
+            decisionAtNs = decisionAtNs
         )
         val event = riskEventTracker.update(evaluation.stableRisk, nowMs)
         val eventEvaluation = evaluation.copy(riskEvent = event)
@@ -125,7 +130,8 @@ class AssistDecisionKernel(
         scenario: AssistScenario,
         metrics: DetectorMetrics,
         feedbackGateway: FeedbackGateway,
-        nowMs: Long
+        nowMs: Long,
+        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
     ): AssistFrameResult {
         require(evidence.sourceContractId == RISK_EVIDENCE_INPUT_CONTRACT_ID) {
             "unsupported risk-evidence input contract"
@@ -140,7 +146,8 @@ class AssistDecisionKernel(
             profile = profile,
             scenario = scenario,
             metrics = metrics,
-            nowMs = nowMs
+            nowMs = nowMs,
+            decisionAtNs = decisionAtNs
         )
         val event = riskEventTracker.updateExternalEvidence(evaluation.stableRisk, evidence.eventKey, nowMs)
         val eventEvaluation = evaluation.copy(riskEvent = event)
@@ -177,6 +184,8 @@ class AssistDecisionKernel(
     }
 
     companion object {
+        private const val NANOS_PER_MILLISECOND = 1_000_000L
+        private fun monotonicNowMs(): Long = System.nanoTime() / NANOS_PER_MILLISECOND
         const val CONTRACT_ID = "blindassist_shared_decision_kernel_v1"
         const val RISK_EVIDENCE_INPUT_CONTRACT_ID = "blindassist_shared_decision_kernel_risk_evidence_input_v1"
     }

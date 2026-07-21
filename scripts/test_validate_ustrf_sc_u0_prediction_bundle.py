@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import base64
 import importlib.util
 import json
+import struct
 import tempfile
 import unittest
 from pathlib import Path
@@ -18,6 +20,29 @@ FIXTURE_SPEC = importlib.util.spec_from_file_location(
 assert FIXTURE_SPEC and FIXTURE_SPEC.loader
 fixture_module = importlib.util.module_from_spec(FIXTURE_SPEC)
 FIXTURE_SPEC.loader.exec_module(fixture_module)
+
+
+def dense_field_fixture() -> tuple[dict, dict]:
+    scale = subject.DENSE_SCALE
+    active = [True] * 4 + [False] * 12
+
+    def encoded(values: list[int]) -> str:
+        return base64.b64encode(b"".join(struct.pack("<I", value) for value in values)).decode("ascii")
+
+    payload = {
+        "grid_width": 4,
+        "grid_height": 4,
+        "quantization": subject.DENSE_QUANTIZATION,
+        "fields_base64": {
+            "local_obstacle_field": encoded([800_000 if value else 0 for value in active]),
+            "walkability_field": encoded([200_000 if value else scale for value in active]),
+            "boundary_field": encoded([0] * 16),
+            "unknown_field": encoded([100_000 if value else 0 for value in active]),
+            "route_weight_field": encoded([scale if value else 0 for value in active]),
+            "route_relative_risk_field": encoded([400_000 if value else 0 for value in active]),
+        },
+    }
+    return payload, subject._dense_summary_from_payload(payload, where="fixture")
 
 
 class UstrfU0PredictionBundleTest(unittest.TestCase):
@@ -297,7 +322,7 @@ class UstrfU0PredictionBundleTest(unittest.TestCase):
         )
         evidence = contract["prediction_evidence_contract"]
         threshold = {
-            "dense_field_contract_id": "ustrf_sc_u0_dense_teacher_field_v1",
+            "dense_field_contract_id": "ustrf_sc_u0_dense_teacher_field_v2",
             "normalization_contract_id": "ustrf_u0_dense_route_intrusion_to_kernel_risk_v1",
             "shared_risk_evidence_input_contract_id": "blindassist_shared_decision_kernel_risk_evidence_input_v1",
             "low_threshold": 0.35,
@@ -322,8 +347,9 @@ class UstrfU0PredictionBundleTest(unittest.TestCase):
                 "frame_payload_sha256": "e" * 64,
             }],
         }
+        field_payload, field_summary = dense_field_fixture()
         receipt = {
-            "schema": "blindassist_ustrf_sc_u0_dense_risk_evidence_receipt_v1",
+            "schema": "blindassist_ustrf_sc_u0_dense_risk_evidence_receipt_v2",
             "arm_id": request["arm_id"],
             "candidate_adapter_id": request["candidate_adapter_id"],
             "route_input_policy": request["route_input_policy"],
@@ -351,16 +377,13 @@ class UstrfU0PredictionBundleTest(unittest.TestCase):
                 "frame_timestamp_ms": 500,
                 "observed_at_ms": 500,
                 "valid_until_ms": 1000,
+                "evidence_status": "AVAILABLE",
                 "source_frame_payload_sha256": "e" * 64,
-                "source_field_sha256": "2" * 64,
-                "field_cell_count": 16,
-                "risk_evidence_count": 4,
+                **field_summary,
+                "field_payload": field_payload,
                 "route_intent_id": "route-1",
                 "event_key": "episode-1:route-1",
                 "risk_sources": ["depth-gradient", "relative-depth"],
-                "route_intrusion_score": 0.4,
-                "maximum_route_cell_risk": 0.8,
-                "route_unknown_fraction": 0.1,
                 "normalized_risk_score": 0.6,
                 "raw_risk_level": "MEDIUM",
                 "risk_direction": "CENTER",

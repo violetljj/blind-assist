@@ -72,7 +72,7 @@
       ]
     },
     "dense_risk_evidence_receipt_contract": {
-      "schema": "blindassist_ustrf_sc_u0_dense_risk_evidence_receipt_v1",
+      "schema": "blindassist_ustrf_sc_u0_dense_risk_evidence_receipt_v2",
       "required_for_candidate_adapter_ids": [
         "teacher_dense_explicit_route_adapter_v1",
         "teacher_dense_explicit_route_causal_adapter_v1",
@@ -80,7 +80,7 @@
         "teacher_dense_shuffled_route_control_adapter_v1"
       ],
       "required_for_backend_id": "android_kotlin_assist_decision_kernel_v1",
-      "dense_field_contract_id": "ustrf_sc_u0_dense_teacher_field_v1",
+      "dense_field_contract_id": "ustrf_sc_u0_dense_teacher_field_v2",
       "normalization_contract_id": "ustrf_u0_dense_route_intrusion_to_kernel_risk_v1",
       "shared_risk_evidence_input_contract_id": "blindassist_shared_decision_kernel_risk_evidence_input_v1",
       "threshold_config_receipt_bindings": [

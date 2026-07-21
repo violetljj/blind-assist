@@ -4,31 +4,36 @@ data class UstrfCorridorCandidate(
     val offsetCells: Int,
     val hardSafe: Boolean,
     val risk: Float,
-    val hasUnknown: Boolean
+    val hasUnknown: Boolean,
+    val routeAlignment: Float = 0f
 )
 
 data class UstrfCorridorPlan(val candidates: List<UstrfCorridorCandidate>, val selected: UstrfCorridorCandidate?)
 
+sealed interface UstrfRouteFieldCorridorResolution {
+    data class Available(
+        val plan: UstrfCorridorPlan,
+        val intrusionEvidence: UstrfRouteIntrusionEvidence
+    ) : UstrfRouteFieldCorridorResolution
+
+    data class Unavailable(val failure: UstrfRouteConditionedRiskFailure) : UstrfRouteFieldCorridorResolution
+}
+
 class UstrfCorridorPlanner(
-    private val horizonCells: Int = 4,
+    val gridSpec: UstrfGridSpec = UstrfGridSpec.LEGACY_KERNEL,
     private val hardOccupancy: Float = 0.60f,
     private val hardDrop: Float = 0.20f,
     private val hardHead: Float = 0.35f,
     private val hardTtcMs: Long = 1_200L,
-    private val capsuleHalfWidthCells: Int = 0,
-    private val fixedCandidateOffsets: List<Int>? = null,
     private val goalDeviationPenalty: Float = .05f
 ) {
     init {
-        require(horizonCells >= 1)
-        require(capsuleHalfWidthCells >= 0)
-        require(fixedCandidateOffsets == null || fixedCandidateOffsets.isNotEmpty())
         require(goalDeviationPenalty >= 0f)
     }
 
     fun plan(field: UstrfRiskField, route: UstrfRouteIntent): UstrfCorridorPlan {
-        val offsets = fixedCandidateOffsets ?: listOf(route.desiredOffsetCells, route.desiredOffsetCells - 1, route.desiredOffsetCells + 1)
-        val candidates = offsets.distinct().map { evaluate(field, it) }
+        require(field.gridSpec == gridSpec) { "risk-field grid spec does not match corridor planner" }
+        val candidates = gridSpec.candidateOffsets.map { evaluate(field, it) }
         val selected = candidates.filter { it.hardSafe }.minWithOrNull(
             compareBy<UstrfCorridorCandidate> { it.risk + goalDeviationPenalty * kotlin.math.abs(it.offsetCells - route.desiredOffsetCells) }
                 .thenBy { kotlin.math.abs(it.offsetCells - route.desiredOffsetCells) }
@@ -37,12 +42,37 @@ class UstrfCorridorPlanner(
         return UstrfCorridorPlan(candidates, selected)
     }
 
+    fun plan(
+        field: UstrfRiskField,
+        route: UstrfRouteFieldReceipt,
+        decisionAtNs: Long,
+        runtime: Boolean,
+        interactor: UstrfRouteConditionedRiskInteractor = UstrfRouteConditionedRiskInteractor()
+    ): UstrfRouteFieldCorridorResolution {
+        require(field.gridSpec == gridSpec) { "risk-field grid spec does not match corridor planner" }
+        val interaction = interactor.interact(field, route, decisionAtNs, runtime)
+        if (interaction is UstrfRouteConditionedRiskResolution.Unavailable) {
+            return UstrfRouteFieldCorridorResolution.Unavailable(interaction.failure)
+        }
+        val evidence = (interaction as UstrfRouteConditionedRiskResolution.Available).evidence
+        val candidates = gridSpec.candidateOffsets.map { offset ->
+            evaluate(field, offset).copy(routeAlignment = routeAlignment(route, offset))
+        }
+        val selected = candidates.filter { it.hardSafe }.minWithOrNull(
+            compareBy<UstrfCorridorCandidate> { it.risk + goalDeviationPenalty * (1f - it.routeAlignment) }
+                .thenByDescending { it.routeAlignment }
+                .thenBy { kotlin.math.abs(it.offsetCells) }
+                .thenBy { it.offsetCells }
+        )
+        return UstrfRouteFieldCorridorResolution.Available(UstrfCorridorPlan(candidates, selected), evidence)
+    }
+
     private fun evaluate(field: UstrfRiskField, offset: Int): UstrfCorridorCandidate {
         var risk = 0f
         var hardSafe = true
         var unknown = false
-        for (forward in 1..horizonCells) {
-            for (lateral in (offset - capsuleHalfWidthCells)..(offset + capsuleHalfWidthCells)) {
+        for (forward in 1..gridSpec.horizonCells) {
+            for (lateral in (offset - gridSpec.bodyCapsuleHalfWidthCells)..(offset + gridSpec.bodyCapsuleHalfWidthCells)) {
                 val cell = field.cellAt(UstrfGridCoordinate(lateral, forward))
                 val dynamicRisk = if ((cell.dynamicTtcMs ?: Long.MAX_VALUE) <= hardTtcMs) 1f else 0f
                 risk = maxOf(risk, cell.occupancy, cell.dropRisk, cell.headRisk, cell.uncertainty, dynamicRisk)
@@ -52,6 +82,17 @@ class UstrfCorridorPlanner(
             }
         }
         return UstrfCorridorCandidate(offset, hardSafe, risk, unknown)
+    }
+
+    private fun routeAlignment(route: UstrfRouteFieldReceipt, offset: Int): Float {
+        val total = route.weights.values.sum()
+        var swept = 0f
+        for (forward in 1..gridSpec.horizonCells) {
+            for (lateral in (offset - gridSpec.bodyCapsuleHalfWidthCells)..(offset + gridSpec.bodyCapsuleHalfWidthCells)) {
+                swept += route.weights[UstrfGridCoordinate(lateral, forward)] ?: 0f
+            }
+        }
+        return (swept / total).coerceIn(0f, 1f)
     }
 }
 
@@ -89,6 +130,7 @@ class UstrfSafetySupervisor(
             UstrfSafetyReason.POSE_NOT_TRACKING in reasons || UstrfSafetyReason.SOURCE_FRAME_MISMATCH in reasons ||
                 UstrfSafetyReason.CAPTURE_UNAVAILABLE in reasons || UstrfSafetyReason.GEOMETRY_UNAVAILABLE in reasons ||
                 UstrfSafetyReason.MOTION_UNAVAILABLE in reasons || UstrfSafetyReason.PERCEPTION_STALE in reasons ||
+                UstrfSafetyReason.GRID_SPEC_MISMATCH in reasons ||
                 UstrfSafetyReason.CENTRAL_CORRIDOR_UNKNOWN in reasons || UstrfSafetyReason.NO_SAFE_CORRIDOR in reasons ||
                 UstrfSafetyReason.HARD_RISK in reasons -> UstrfSafetyAction.STOP_AND_REASSESS
             UstrfSafetyReason.ROUTE_INVALID in reasons -> UstrfSafetyAction.SCAN
@@ -109,9 +151,14 @@ data class UstrfSessionInput(
     val semanticHints: List<UstrfSemanticHint> = emptyList(),
     val decisionAtNs: Long = frame.capturedAtNs,
     /** Optional, independently verified delta for offline replay only; invalid deltas fail closed. */
-    val poseDelta: UstrfVerifiedPoseDelta? = null
+    val poseDelta: UstrfVerifiedPoseDelta? = null,
+    /** Continuous external route authority; mutually exclusive with the legacy offset intent. */
+    val routeField: UstrfRouteFieldReceipt? = null
 ) {
-    init { require(decisionAtNs >= frame.capturedAtNs) }
+    init {
+        require(decisionAtNs >= frame.capturedAtNs)
+        require(route == null || routeField == null) { "legacy route intent and continuous route field are mutually exclusive" }
+    }
 }
 
 data class UstrfSessionRecord(
@@ -121,7 +168,8 @@ data class UstrfSessionRecord(
     val decision: UstrfSafetyDecision,
     val assemblyFailures: Set<UstrfPerceptionAssemblyFailure>,
     /** Shadow-only downstream feedback contract, derived from [decision] and never authoritative. */
-    val structuredOutput: UstrfStructuredSafetyOutput
+    val structuredOutput: UstrfStructuredSafetyOutput,
+    val routeIntrusionEvidence: UstrfRouteIntrusionEvidence? = null
 )
 
 /**
@@ -137,6 +185,11 @@ class UstrfSafetySession(
     private val structuredOutputMapper: UstrfStructuredSafetyOutputMapper = UstrfStructuredSafetyOutputMapper()
 ) {
     private var priorFrame: UstrfFrameStamp? = null
+
+    init {
+        require(fieldBuilder.gridSpec == planner.gridSpec) { "field and planner grid specs must match" }
+        require(fieldBuilder.gridSpec == structuredOutputMapper.gridSpec) { "field and output grid specs must match" }
+    }
 
     fun evaluate(input: UstrfSessionInput): UstrfSessionRecord {
         priorFrame?.let { prior ->
@@ -156,9 +209,29 @@ class UstrfSafetySession(
         } catch (error: IllegalArgumentException) {
             return unavailableRecord(input, setOf(UstrfPerceptionAssemblyFailure.POSE_DELTA_INVALID))
         }
-        val tick = UstrfTick(input.frame, input.health, packet, input.route, input.semanticHints, input.decisionAtNs)
-        val route = input.route?.takeIf { it.isValidAt(input.decisionAtNs, input.frame.coordinateFrame, .70f) }
-        val plan = route?.let { planner.plan(field, it) }
+        var routeEvidence: UstrfRouteIntrusionEvidence? = null
+        val continuousResolution = input.routeField?.let {
+            planner.plan(field, it, input.decisionAtNs, runtime = true)
+        }
+        val route = when (continuousResolution) {
+            is UstrfRouteFieldCorridorResolution.Available -> {
+                routeEvidence = continuousResolution.intrusionEvidence
+                UstrfRouteIntent(
+                    input.frame.coordinateFrame,
+                    continuousResolution.plan.selected?.offsetCells ?: 0,
+                    input.routeField!!.confidence,
+                    input.routeField.validUntilNs
+                )
+            }
+            is UstrfRouteFieldCorridorResolution.Unavailable -> null
+            null -> input.route?.takeIf { it.isValidAt(input.decisionAtNs, input.frame.coordinateFrame, .70f) }
+        }
+        val plan = when (continuousResolution) {
+            is UstrfRouteFieldCorridorResolution.Available -> continuousResolution.plan
+            is UstrfRouteFieldCorridorResolution.Unavailable -> null
+            null -> route?.let { planner.plan(field, it) }
+        }
+        val tick = UstrfTick(input.frame, input.health, packet, route, input.semanticHints, input.decisionAtNs)
         val decision = supervisor.decide(tick, field, plan)
         return UstrfSessionRecord(
             input.frame.frameId,
@@ -166,7 +239,8 @@ class UstrfSafetySession(
             field,
             decision,
             emptySet(),
-            structuredOutputMapper.map(decision, plan?.selected)
+            structuredOutputMapper.map(decision, plan?.selected),
+            routeEvidence
         )
     }
 
@@ -180,10 +254,16 @@ class UstrfSafetySession(
         // decay/reuse a field that may belong to an untracked or otherwise unverifiable interval.
         fieldBuilder.reset()
         val health = input.health.withAssemblyFailures(failures)
-        val packet = UstrfPerceptionPacket(input.frame, input.frame.capturedAtNs, input.frame.capturedAtNs, emptyList())
+        val packet = UstrfPerceptionPacket(
+            input.frame,
+            input.frame.capturedAtNs,
+            input.frame.capturedAtNs,
+            emptyList(),
+            fieldBuilder.gridSpec
+        )
         val tick = UstrfTick(input.frame, health, packet, input.route, input.semanticHints, input.decisionAtNs)
         val reasons = failures.toSafetyReasons() + UstrfSafetyReason.PERCEPTION_ASSEMBLY_UNAVAILABLE
-        val emptyField = UstrfRiskField(input.frame, emptyMap())
+        val emptyField = UstrfRiskField(input.frame, emptyMap(), fieldBuilder.gridSpec)
         val decision = supervisor.decide(tick, emptyField, null, reasons)
         return UstrfSessionRecord(
             input.frame.frameId,
@@ -205,6 +285,7 @@ class UstrfSafetySession(
         is UstrfPerceptionAssembly.Available -> {
             when {
                 packet.sourceFrame != frame -> NormalisedAssembly(null, setOf(UstrfPerceptionAssemblyFailure.GEOMETRY_SOURCE_FRAME_MISMATCH))
+                packet.gridSpec != fieldBuilder.gridSpec -> NormalisedAssembly(null, setOf(UstrfPerceptionAssemblyFailure.GRID_SPEC_MISMATCH))
                 packet.producedAtNs > decisionAtNs || !packet.isFreshAt(decisionAtNs) -> NormalisedAssembly(null, setOf(UstrfPerceptionAssemblyFailure.PERCEPTION_TIMING_INVALID))
                 else -> NormalisedAssembly(packet, emptySet())
             }
@@ -239,6 +320,7 @@ class UstrfSafetySession(
             UstrfPerceptionAssemblyFailure.MOTION_UNAVAILABLE,
             UstrfPerceptionAssemblyFailure.MOTION_EVIDENCE_UNAVAILABLE -> UstrfSafetyReason.MOTION_UNAVAILABLE
             UstrfPerceptionAssemblyFailure.PERCEPTION_TIMING_INVALID -> UstrfSafetyReason.PERCEPTION_STALE
+            UstrfPerceptionAssemblyFailure.GRID_SPEC_MISMATCH -> UstrfSafetyReason.GRID_SPEC_MISMATCH
         }
     }.toSet()
 }
@@ -248,6 +330,10 @@ class UstrfReplayRunner(
     private val planner: UstrfCorridorPlanner = UstrfCorridorPlanner(),
     private val supervisor: UstrfSafetySupervisor = UstrfSafetySupervisor()
 ) {
+    init {
+        require(fieldBuilder.gridSpec == planner.gridSpec) { "field and planner grid specs must match" }
+    }
+
     fun run(ticks: List<UstrfTick>): List<UstrfReplayRecord> {
         var prior: UstrfFrameStamp? = null
         return ticks.map { tick ->

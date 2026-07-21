@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest import mock
 
 
 SCRIPT = Path(__file__).with_name("generate_ustrf_sc_u0_dense_teacher_loso_artifact.py")
@@ -77,6 +81,58 @@ class DenseTeacherLosoArtifactTest(unittest.TestCase):
         self.assertLess(fitted["raw_depth_lower_quantile"], fitted["raw_depth_upper_quantile"])
         self.assertGreater(fitted["gradient_upper_quantile"], 0.0)
         self.assertEqual(2, fitted["training_frame_count"])
+
+    def test_runtime_timing_does_not_change_the_hash_bound_artifact(self) -> None:
+        try:
+            import numpy as np
+        except ImportError:
+            self.skipTest("numpy not installed")
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            video = root / "video.mp4"
+            model = root / "teacher.onnx"
+            video.write_bytes(b"video-fixture")
+            model.write_bytes(b"model-fixture")
+            manifest_path = root / "training.json"
+            manifest_path.write_text(json.dumps(self.manifest(), sort_keys=True), encoding="utf-8")
+            manifest_sha = subject.sha256_file(manifest_path)
+            calibration = self.calibration()
+            calibration["training_input_manifest_sha256"] = manifest_sha
+            calibration["episodes"][0]["video_sha256"] = subject.sha256_file(video)
+            calibration_path = root / "calibration.json"
+            calibration_path.write_text(json.dumps(calibration, sort_keys=True), encoding="utf-8")
+            model_sha = subject.sha256_file(model)
+            depth = np.linspace(0.0, 1.0, 16, dtype=np.float32).reshape(4, 4)
+            rgb = np.zeros((4, 4, 3), dtype=np.uint8)
+
+            class FakeTeacher:
+                def __init__(self, _path: Path) -> None:
+                    self.model_sha256 = model_sha
+
+                def infer_rgb(self, _rgb: object):
+                    return depth, 999.0
+
+            def execute(suffix: str, decode_duration: float) -> tuple[bytes, bytes]:
+                artifact = root / f"artifact-{suffix}.json"
+                receipt = root / f"receipt-{suffix}.json"
+                args = SimpleNamespace(
+                    training_input_manifest=manifest_path,
+                    calibration_inputs=calibration_path,
+                    inference_root=root,
+                    teacher_model=model,
+                    expected_teacher_model_sha256=model_sha,
+                    artifact_output=artifact,
+                    training_receipt_output=receipt,
+                )
+                with mock.patch.object(subject, "DepthAnythingOnnxTeacher", FakeTeacher), mock.patch.object(
+                    subject, "decode_video_frame_rgb", return_value=(rgb, decode_duration)
+                ):
+                    subject.run(args)
+                return artifact.read_bytes(), receipt.read_bytes()
+
+            first = execute("first", 1.0)
+            second = execute("second", 10_000.0)
+            self.assertEqual(first, second)
 
 
 if __name__ == "__main__":

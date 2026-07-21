@@ -57,14 +57,10 @@ sealed interface UstrfEgoCompensatedMotionResolution {
  * their separate gates.
  */
 class UstrfEgoCompensatedMotionPromoter(
-    private val cellMeters: Float = 1f,
-    private val halfWidthCells: Int = 2,
-    private val horizonCells: Int = 4,
+    val gridSpec: UstrfGridSpec = UstrfGridSpec.LEGACY_KERNEL,
     private val minimumTrackConfidence: Float = .70f
 ) {
     init {
-        require(cellMeters.isFinite() && cellMeters > 0f)
-        require(halfWidthCells >= 1 && horizonCells >= 1)
         require(minimumTrackConfidence in 0f..1f)
     }
 
@@ -87,10 +83,10 @@ class UstrfEgoCompensatedMotionPromoter(
         val current = pair.currentPositionMeters
         if (current.forward < 0f) return unavailable(UstrfEgoCompensatedMotionFailure.TARGET_BEHIND_ORIGIN)
         val coordinate = UstrfGridCoordinate(
-            lateral = (current.lateral / cellMeters).roundToInt(),
-            forward = (current.forward / cellMeters).roundToInt()
+            lateral = (current.lateral / gridSpec.cellMeters).roundToInt(),
+            forward = (current.forward / gridSpec.cellMeters).roundToInt()
         )
-        if (coordinate.lateral !in -halfWidthCells..halfWidthCells || coordinate.forward !in 0..horizonCells) {
+        if (!gridSpec.contains(coordinate)) {
             return unavailable(UstrfEgoCompensatedMotionFailure.TARGET_OUTSIDE_LOCAL_GRID)
         }
         val seconds = (pair.currentFrame.capturedAtNs - pair.previousFrame.capturedAtNs) / 1_000_000_000f
@@ -108,7 +104,8 @@ class UstrfEgoCompensatedMotionPromoter(
                     observedAtNs = pair.currentFrame.capturedAtNs,
                     validUntilNs = pair.validUntilNs,
                     source = "${pair.source}:ego-compensated:${pair.trackId}"
-                )
+                ),
+                gridSpec = gridSpec
             ),
             egoCompensatedPreviousPositionMeters = previousInCurrent
         )

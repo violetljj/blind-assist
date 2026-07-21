@@ -12,6 +12,14 @@
 
 ## 2026-07-21
 
+### USTRF P0 时间、风险场、栅格、路线与 dense 第三臂合同硬化
+- 时间：2026-07-21；执行者：violjjet。
+- 生产时间链：CameraX `ImageProxy.imageInfo.timestamp` 现以带 clock-domain/source/frame identity 的 `FrameStamp` 贯穿 VisionFrame、detector、Assist evaluation 与 session trace；采集时钟用于趋势，decision/effect 时钟独立，处理延迟变化不再改变 approach/recede。新增 `feature:assist -> core:ustrf` write-only shadow adapter；未获米制 geometry/pose/route 时只记录 fail-closed/abstain，结果不进入 UI、语音或震动。
+- USTRF 内核：过期 risk cell 会移除，新鲜覆盖可从 unknown 恢复 known；新增共享 `UstrfGridSpec`，投影、运动、风险场、包络规划与结构化输出强制同 spec，五候选 profile 扩为 ±3 cell 并拒绝包络越界，corridor width 来自 body profile。连续 `RouteFieldReceipt` 已能进入同一 shadow session 候选规划并保留 intrusion evidence，但仍是直线候选，不宣称曲率轨迹完成。
+- U0/dense：runner 改为执行并复验 bundle 内哈希副本，消除 implementation/threshold TOCTOU；dense field v2 使用 `uint32-le / 1e6` 固定点，source 与 route-interaction hash 分离，admission 从序列化 cell 重算摘要，不再信任自报 SHA/分数；LOSO artifact 移除运行耗时噪声并补模型、实现、样本 provenance。四个真实 dense/control adapter、真实 teacher 运行、人类 truth 与 device metric geometry 仍缺失，所有晋级/生产权限保持关闭。
+- 仓库治理：repo hygiene 对 base-ref deleted-only 历史禁用产物放行，但新增同类产物仍拒绝；PR #1 仍需拆分，本轮未改写或推送远端。
+- 验证：JDK 17 `:core:assist:test`、`:core:vision:testDebugUnitTest`、`:core:device:testDebugUnitTest`、`:core:ustrf:test`、`:feature:assist:testDebugUnitTest` 与 `:app:assembleDebug` 全绿；dense/runner/admission/LOSO 18 tests 在 USTRF teacher Python 环境全绿，LOSO 双跑 artifact SHA 一致；structure smoke/current gate、docs index、repo hygiene smoke/current/base-ref 与 diff check 通过。
+
 ### USTRF 研究合同持续验证与 current truth 收口
 - 时间：2026-07-21 01:10:00 +08:00；执行者：violjjet。
 - 范围：补充 `:core:ustrf:test` 与无设备 Python research-contract 的本地/CI 统一入口；统一 route-conditioned 主线在文档索引、SANPO 当前状态和计划表中的状态表述。

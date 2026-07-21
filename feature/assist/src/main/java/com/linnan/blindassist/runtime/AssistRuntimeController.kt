@@ -1,6 +1,7 @@
 package com.linnan.blindassist.runtime
 
 import android.Manifest
+import android.os.SystemClock
 import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity
 import androidx.camera.view.PreviewView
@@ -41,6 +42,7 @@ internal class AssistRuntimeSession(
     private val configSnapshot = AssistRuntimeConfigSnapshot(appViewModel.runtimeConfig())
     private val config: AssistRuntimeConfig get() = configSnapshot.get()
     private val lifecycleGate = AssistRuntimeLifecycleGate()
+    private val decisionClockNs: () -> Long = SystemClock::elapsedRealtimeNanos
     private val guidanceFactory = AssistRuntimeGuidanceFactory(detector) { config }
     private val fieldTestSummaryProvider = FieldTestSummaryProvider(coordinator)
     private val framePipelineStats = FramePipelineStats()
@@ -59,7 +61,8 @@ internal class AssistRuntimeSession(
         lifecycleGate = lifecycleGate,
         isCameraActive = { appViewModel.uiState.value.cameraActive },
         runOnUiThread = { block -> activity.runOnUiThread(Runnable(block)) },
-        onCameraFailure = ::handleCameraFailure
+        onCameraFailure = ::handleCameraFailure,
+        decisionClockNs = decisionClockNs
     )
     private val cameraLifecycleAdapter = AssistCameraLifecycleAdapter(
         initialFrameSource = initialFrameSource,
@@ -89,7 +92,8 @@ internal class AssistRuntimeSession(
         lifecycleGate = lifecycleGate,
         configSnapshot = configSnapshot,
         syncConfigFromViewModel = { settingsController.syncConfigFromViewModel() },
-        startCameraIfReady = ::startCameraIfReady
+        startCameraIfReady = ::startCameraIfReady,
+        decisionClockNs = decisionClockNs
     )
 
     override fun initialize() {

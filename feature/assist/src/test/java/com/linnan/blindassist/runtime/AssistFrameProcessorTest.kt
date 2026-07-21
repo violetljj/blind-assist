@@ -17,6 +17,8 @@ import com.linnan.blindassist.session.AssistSessionCoordinator
 import com.linnan.blindassist.session.DetectorMetrics
 import com.linnan.blindassist.ui.BlindAssistViewModel
 import com.linnan.blindassist.vision.DetectorFrameResult
+import com.linnan.blindassist.vision.FrameClockDomain
+import com.linnan.blindassist.vision.FrameStamp
 import com.linnan.blindassist.vision.ObjectDetector
 import com.linnan.blindassist.vision.VisionFrame
 import org.junit.Assert.assertEquals
@@ -209,6 +211,23 @@ class AssistFrameProcessorTest {
         assertEquals(initialState, appViewModel.uiState.value)
     }
 
+    @Test
+    fun mismatchedDetectorStampFailsClosedAndReportsFailure() {
+        val failures = mutableListOf<String>()
+        val inputStamp = stamp(1L, 1_000L)
+        val frame = FakeVisionFrame(frameStamp = inputStamp)
+        val processor = processor(
+            detector = FakeDetector(resultStamp = stamp(2L, 1_000L)),
+            onCameraFailure = { failures += it }
+        )
+
+        processor.process(frame)
+
+        assertEquals(1, frame.closeCalls)
+        assertEquals(1, failures.size)
+        assertTrue(failures.single().contains("source frame"))
+    }
+
     private fun processor(
         detector: FakeDetector = FakeDetector(),
         stats: FramePipelineStats = FramePipelineStats(),
@@ -219,7 +238,8 @@ class AssistFrameProcessorTest {
         onCameraFailure: (String) -> Unit = {},
         feedbackGateway: FakeFeedbackGateway = FakeFeedbackGateway(),
         appViewModel: BlindAssistViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore())),
-        runOnUiThread: ((() -> Unit) -> Unit) = { it() }
+        runOnUiThread: ((() -> Unit) -> Unit) = { it() },
+        decisionClockNs: () -> Long = { 2_000_000_000L }
     ): AssistFrameProcessor {
         val coordinator = AssistSessionCoordinator(feedbackGateway = feedbackGateway)
         if (startLifecycleGate) {
@@ -243,14 +263,16 @@ class AssistFrameProcessorTest {
             lifecycleGate = lifecycleGate,
             isCameraActive = { active },
             runOnUiThread = runOnUiThread,
-            onCameraFailure = onCameraFailure
+            onCameraFailure = onCameraFailure,
+            decisionClockNs = decisionClockNs
         )
     }
 
     private class FakeVisionFrame(
         override val width: Int = 2,
         override val height: Int = 2,
-        override val rotationDegrees: Int = 0
+        override val rotationDegrees: Int = 0,
+        override val frameStamp: FrameStamp? = null
     ) : VisionFrame {
         var closeCalls = 0
             private set
@@ -264,7 +286,8 @@ class AssistFrameProcessorTest {
         private val ready: Boolean = true,
         private val error: Exception? = null,
         private val inferenceMs: Long = 22L,
-        private val onDetect: () -> Unit = {}
+        private val onDetect: () -> Unit = {},
+        private val resultStamp: FrameStamp? = null
     ) : ObjectDetector {
         var detectCalls = 0
             private set
@@ -286,7 +309,8 @@ class AssistFrameProcessorTest {
                     postprocessMs = 6L,
                     fps = 0f,
                     modelStatus = statusMessage
-                )
+                ),
+                sourceFrame = resultStamp
             )
         }
 
@@ -333,6 +357,15 @@ class AssistFrameProcessorTest {
     }
 
     private companion object {
+        fun stamp(frameId: Long, capturedAtMs: Long): FrameStamp = FrameStamp(
+            frameId = frameId,
+            capturedAtNs = capturedAtMs * 1_000_000L,
+            receivedAtNs = (capturedAtMs + 10L) * 1_000_000L,
+            sourceId = "camera2:0",
+            coordinateFrame = "camera2:0:analysis-buffer",
+            clockDomain = FrameClockDomain.ANDROID_ELAPSED_REALTIME
+        )
+
         fun runtimeConfig(): AssistRuntimeConfig {
             return AssistRuntimeConfig(
                 detectionEnabled = true,

@@ -48,14 +48,8 @@ sealed interface UstrfGeometryProjection {
 }
 
 class UstrfGeometryProjector(
-    private val cellSizeMeters: Float = .5f,
-    private val halfWidthCells: Int = 2,
-    private val horizonCells: Int = 4
+    val gridSpec: UstrfGridSpec = UstrfGridSpec.LEGACY_KERNEL
 ) {
-    init {
-        require(cellSizeMeters > 0f)
-        require(halfWidthCells >= 1 && horizonCells >= 1)
-    }
 
     fun project(packet: UstrfGeometryPacket, nowNs: Long): UstrfGeometryProjection {
         if (packet.scale != UstrfDepthScale.METRIC) {
@@ -67,10 +61,10 @@ class UstrfGeometryProjector(
         return UstrfGeometryProjection.Available(
             packet.evidence.filter { it.validUntilNs >= nowNs }.mapNotNull { evidence ->
                 val coordinate = UstrfGridCoordinate(
-                    lateral = (evidence.lateralMeters / cellSizeMeters).roundToInt(),
-                    forward = floor(evidence.forwardMeters / cellSizeMeters).toInt()
+                    lateral = (evidence.lateralMeters / gridSpec.cellMeters).roundToInt(),
+                    forward = floor(evidence.forwardMeters / gridSpec.cellMeters).toInt()
                 )
-                if (coordinate.lateral !in -halfWidthCells..halfWidthCells || coordinate.forward !in 0..horizonCells) {
+                if (!gridSpec.contains(coordinate)) {
                     null
                 } else {
                     observationFor(coordinate, evidence)

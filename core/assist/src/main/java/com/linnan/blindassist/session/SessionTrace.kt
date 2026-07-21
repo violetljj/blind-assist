@@ -6,6 +6,7 @@ import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.localization.LocalizedText
 import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskLevel
+import com.linnan.blindassist.vision.FrameStamp
 import java.util.Locale
 
 class SessionTrace(private val capacity: Int = DEFAULT_CAPACITY) {
@@ -25,9 +26,9 @@ class SessionTrace(private val capacity: Int = DEFAULT_CAPACITY) {
         explanation: RiskExplanation
     ): SessionSummary {
         if (startedAtMs == null) {
-            startedAtMs = evaluation.evaluatedAtMs
+            startedAtMs = evaluation.decisionAtNs / NANOS_PER_MILLISECOND
         }
-        latestAtMs = evaluation.evaluatedAtMs
+        latestAtMs = evaluation.decisionAtNs / NANOS_PER_MILLISECOND
         if (frames.size == capacity) {
             frames.removeFirst()
         }
@@ -40,7 +41,9 @@ class SessionTrace(private val capacity: Int = DEFAULT_CAPACITY) {
                 feedbackReason = feedbackDecision.reason,
                 explanationHeadline = explanation.headline,
                 speechTriggered = feedbackDecision.speechTriggered,
-                vibrationTriggered = feedbackDecision.vibrationTriggered
+                vibrationTriggered = feedbackDecision.vibrationTriggered,
+                sourceFrame = evaluation.sourceFrame,
+                decisionAtNs = evaluation.decisionAtNs
             )
         )
         return summary()
@@ -120,10 +123,13 @@ class SessionTrace(private val capacity: Int = DEFAULT_CAPACITY) {
         val feedbackReason: FeedbackReason,
         val explanationHeadline: String,
         val speechTriggered: Boolean,
-        val vibrationTriggered: Boolean
+        val vibrationTriggered: Boolean,
+        val sourceFrame: FrameStamp?,
+        val decisionAtNs: Long
     )
 
     companion object {
+        private const val NANOS_PER_MILLISECOND = 1_000_000L
         const val DEFAULT_CAPACITY = 30
     }
 }

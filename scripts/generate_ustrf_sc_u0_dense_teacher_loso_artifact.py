@@ -20,8 +20,11 @@ sys.path.insert(0, str(MODULE))
 
 from dense_teacher_field import (  # noqa: E402
     ARTIFACT_SCHEMA,
+    DECODE_POLICY,
     MODEL_LICENSE,
+    MODEL_INPUT_CONTRACT,
     MODEL_NAME,
+    MODEL_OUTPUT_CONTRACT,
     MODEL_VERSION,
     DepthAnythingOnnxTeacher,
     DenseTeacherError,
@@ -35,7 +38,7 @@ from dense_teacher_field import (  # noqa: E402
 
 CALIBRATION_SCHEMA = "blindassist_ustrf_sc_u0_dense_teacher_calibration_inputs_v1"
 TRAINING_MANIFEST_SCHEMA = "blindassist_ustrf_sc_u0_fold_training_input_manifest_v1"
-TRAINING_RECEIPT_SCHEMA = "blindassist_ustrf_sc_u0_fold_training_receipt_v1"
+TRAINING_RECEIPT_SCHEMA = "blindassist_ustrf_sc_u0_fold_training_receipt_v2"
 ARM_ID = "teacher_dense_explicit_route"
 ADAPTER_ID = "teacher_dense_explicit_route_adapter_v1"
 FIT_POLICY = "leave_one_session_out_fit_v1"
@@ -209,8 +212,8 @@ def run(args: argparse.Namespace) -> None:
             where=f"{episode['episode_id']} video",
         )
         for frame in episode["frames"]:
-            rgb, decode_ms = decode_video_frame_rgb(video, frame["video_pts_ms"])
-            depth, inference_ms = teacher.infer_rgb(rgb)
+            rgb, _decode_ms = decode_video_frame_rgb(video, frame["video_pts_ms"])
+            depth, _inference_ms = teacher.infer_rgb(rgb)
             raw_depths.append(depth)
             sample_rows.append({
                 "session_id": episode["session_id"],
@@ -218,10 +221,9 @@ def run(args: argparse.Namespace) -> None:
                 "frame_id": frame["frame_id"],
                 "video_pts_ms": frame["video_pts_ms"],
                 "teacher_decoded_rgb_sha256": sha256_bytes(rgb.tobytes(order="C")),
-                "raw_depth_sha256": sha256_bytes(depth.astype("float32").tobytes(order="C")),
-                "decode_duration_ms": decode_ms,
-                "inference_duration_ms": inference_ms,
+                "raw_depth_sha256": sha256_bytes(depth.astype("<f4").tobytes(order="C")),
             })
+    implementation_path = Path(__file__).resolve()
     artifact = {
         "schema": ARTIFACT_SCHEMA,
         "contract_id": training_manifest["contract_id"],
@@ -237,7 +239,13 @@ def run(args: argparse.Namespace) -> None:
         "teacher_model_version": MODEL_VERSION,
         "teacher_model_license": MODEL_LICENSE,
         "teacher_model_sha256": teacher.model_sha256,
-        "fit_implementation_sha256": normalized_text_sha256(Path(__file__)),
+        "teacher_model_input_contract": MODEL_INPUT_CONTRACT,
+        "teacher_model_output_contract": MODEL_OUTPUT_CONTRACT,
+        "teacher_decode_policy": DECODE_POLICY,
+        "teacher_inference_runtime": "onnxruntime_cpu_v1",
+        "fit_implementation_file_sha256": sha256_file(implementation_path),
+        "fit_implementation_sha256": normalized_text_sha256(implementation_path),
+        "calibration_input_schema": CALIBRATION_SCHEMA,
         "calibration": fit_calibration(raw_depths),
         "training_samples": sample_rows,
         "held_out_inputs_used": False,
