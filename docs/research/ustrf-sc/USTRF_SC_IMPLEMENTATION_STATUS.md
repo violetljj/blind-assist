@@ -9,6 +9,15 @@
 - 当前输入是同帧 CameraX/YOLO 检测框和固定画面中心假设路线。候选路线的最低代理风险只作诊断，绝不输出“向左/向右安全”；没有代理侵入时明确提示“不代表安全”，帧、时钟或尺寸不可信时 fail closed 为 HIGH/停下重扫。
 - 这是为了提前体验 USTRF 的“路线条件化、对象无关风险、共享稳定/反馈内核”交互，不是完整 USTRF-SC。米制深度、稳定 pose、ground、physical TTC、真实 route truth 和事件验证仍缺失，所以授权仅为 `EXPERIMENTAL_APP_EXPERIENCE_ONLY`，不构成训练、生产或独立行走授权。
 
+## 2026-07-22 LILocBench 来源门
+
+- OpenLORIS 9/9 轨迹穷尽且准入 0/3 后，R3 只替换到 LILocBench `dynamics_0`，不调整 24/12/0.03/0.50、candidate、事件阈值或 15 帧双模型审核容差。
+- 已哈希官方 518851-byte `base_link` GT；按 nominal 15 Hz RGB 时间线而非 20 Hz GT 行号重采样后，truth/causal route proxy unknown 为 `0.07875/0.088333`，通过 `<=0.50` 的 reject-only 预检。
+- 官方数据页/论文/ZIP 未提供明确数据许可证、参与者同意或隐私条款；评价工具 MIT 只覆盖代码。按当前仓库原则，官方公开直链已足以开放完整 RGB-D 下载和隔离内部研究，缺失元数据仅作为限制披露；外部共享/再分发、商业/生产晋级仍单独评估。澄清 issue 为 `PRBonn/LILocBench#1`，当前 OPEN/0 回复但不阻塞研究。
+- `dynamics_0` 官方 3,753,768,874-byte ZIP 的 SHA/CRC 与四个标定成员哈希均通过；`camera_front` 完整包为 2397 帧，RGB-depth 对齐率 `.999583`，注册后最小有效深度率 `.61833`，独立 ORB RGB-D pose 覆盖 `1.0`。双 reviewer 都准入，第三模型只裁决不同事件集合，冻结 3 个 canonical 事件，因此来源计 `1/3`。
+- `lt_changes_dynamics_0` 官方 12,940,694,854-byte ZIP 的 SHA/CRC 与标定成员哈希均通过；完整前相机包 8377 帧，RGB-depth 对齐率 `.999881`，最小有效深度率 `.63792`，独立 pose 覆盖 `.999164`。双 reviewer 都准入，第三模型复核 84 张完整 sheet 后冻结 12 个 canonical 事件；累计来源计 `2/3`。两条 candidate 各 50 alerts 均未评测，evaluator 未运行。详细证据见 [LILocBench 动态来源闭环](USTRF_SENSOR_REPLAY_R3_LILOCBENCH_GT_PRESCREEN_2026-07-22.md)。
+- Bonn 独立数据族中，`moving_obstructing_box` 与 `person_tracking` 均被双 reviewer 以旋转主导/前向路线不足拒绝；`crowd` 的 route unknown `.976268 > .50` 被稀疏拒绝门直接拒绝。它们只构成负证据，不计第 3 条；不再无界扩 Bonn。
+
 | 双环模块 | 当前实现 | 已有证据 | 未满足的门 | 当前授权 |
 | --- | --- | --- | --- | --- |
 | 传感输入与时间戳 | 隔离 CameraX timestamp/rotation/latest-only shadow | SM-S9280 上 receipt、rotation bracket 和 fresh sidecar 通过 | 跨传感器时钟与长期热/延迟 | benchmark-only |

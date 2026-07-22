@@ -1,6 +1,6 @@
 # USTRF sensor replay
 
-状态：active / R3 source admission failed / benchmark-only / production-isolated
+状态：active / R3 admitted 1-of-3 / evaluator not run / benchmark-only / production-isolated
 
 ## 稳定 Interface
 
@@ -10,11 +10,17 @@ R3 使用 `prepare_estimator_inputs.py -> estimate_rgbd_pose.py -> derive_r3_rou
 
 R3 来源替换先运行 `prescreen_openloris_sources.py`。它根据普通公开可下载性、D435i RGB-D、独立 ground-truth trajectory 与轨迹运动统计生成候选；许可和隐私元数据缺失不阻止下载或隔离研究。即使发现三条以上轨迹，`three_source_count_credit` 仍固定为 false。只有下载完整连续 RGB-D 片段、按原流程冻结 candidate，并由两位隔离 reviewer 都准入后，轨迹才可计入三源。来源替换不得改 `configs/ustrf_sensor_replay_r3_prereg_v1.json`，审核 anchor 容差继续为 15 帧。
 
+OpenLORIS 穷尽后，LILocBench 来源替换使用 `prescreen_lilocbench_sources.py`。该工具读取已哈希的 `dynamics_0` / `lt_changes_dynamics_0` `base_link` GT；因 GT 为 20 Hz、RGB-D 为 15 Hz，工具先建立 nominal 15 Hz RGB 时间线，再按冻结的最大 pose 时间差关联 GT，从而保持 24/12 是 RGB 帧而不是原始 GT 行。官方直链已经足以开放完整 RGB-D 下载和隔离内部研究，不再等待数据权利、同意或隐私收据；两条轨迹在完整 RGB-D、`base_link -> D455 color optical` 外参链和完整片段双模型/裁决闭环后累计准入 `2/3`，第三条前 evaluator 仍关闭。
+
+`lilocbench_calibration.py` 实现无 I/O authority 的 fail-closed 数学核心：解析官方 intrinsics/transform 列表，按显式 `parent_T_child` 方向组合 `base_link -> camera_front_color_optical_frame`，核验 optical `+Z` 确为 base `+X` 前向，并用 `T_color_depth`、plumb-bob color distortion 和 nearest-z buffer 将 raw depth 注册到 color raster。它本身不负责下载、不绕过认证、付费或访问控制、不填洞，也不自行生成 source bundle；完整归档到位后仍必须先复核成员哈希、同步和 registration receipt。
+
+`prepare_lilocbench_rgbd.py` 消费已校验的官方解包目录与 GT，先复核四个标定成员和 GT 哈希，再把 `camera_front` 原始 `uint16` 深度注册到 color raster。原始 `0/65535` 均保留为未知，输出仍为毫米 `uint16` PNG，不填洞；RGB 使用同卷 hardlink，收据记录 2397 帧完整关联、同步分位数、有效深度率、外参方向和 raw/aligned hash chain。随后用 `configs/ustrf_sensor_replay_r3_lilocbench_dynamics_0_source_v1.json` 的 `lilocbench_package` Adapter 生成统一 bundle；单源 normalize 完成不等于审核准入或三源门通过。
+
 `openloris_package` Adapter 使用 `color.txt` 与 `aligned_depth.txt` 做一对一时间关联，并从 OpenCV YAML 读取 D435i 内外参。office 的 OptiTrack 真值在 marker frame，必须转换为 `world_T_marker × inverse(base_T_marker) × base_T_color`；cafe 的 LiDAR-SLAM 真值在 base_link frame，转换为 `world_T_base × base_T_color`。二者都不能把原始 groundtruth 直接冒充 camera pose。
 
 ## 输出
 
-只写调用者指定的 `artifacts.local/evidence/ustrf-sensor-replay-r2/`。下载保存在 `artifacts.local/downloads/ustrf-sensor-replay-r2/`；不写 App assets、训练集或仓库根目录。
+只写调用者指定的 `artifacts.local/evidence/ustrf-sensor-replay-r3/`。下载保存在 `artifacts.local/downloads/ustrf-sensor-replay-r3/`；不写 App assets、训练集或仓库根目录。
 
 ## 安全边界
 

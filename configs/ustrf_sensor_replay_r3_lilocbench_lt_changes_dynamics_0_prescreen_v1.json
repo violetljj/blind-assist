@@ -1,0 +1,107 @@
+{
+  "schema": "blindassist_ustrf_sensor_replay_r3_lilocbench_prescreen_v1",
+  "authority": "discovery_candidate_only",
+  "frozen_on": "2026-07-22",
+  "source_replacement_only": true,
+  "frozen_r3_prereg": {
+    "path": "configs/ustrf_sensor_replay_r3_prereg_v1.json",
+    "sha256": "3aa3fdb460c697d6d669e2174f7f7c9d17f1fc06b6f6392d35ba1ac5b2b73eaa"
+  },
+  "complete_sequence_two_model_review": {
+    "anchor_tolerance_frames": 15,
+    "both_reviewers_must_admit": true,
+    "candidate_alerts_hidden": true,
+    "other_reviewer_output_hidden": true,
+    "every_consecutive_frame_included_once": true,
+    "minimum_admitted_trajectories_before_source_count_credit": 3
+  },
+  "dataset": {
+    "id": "lilocbench",
+    "official_page_url": "https://www.ipb.uni-bonn.de/html/projects/localization_benchmark/",
+    "ground_truth_frame": "base_link",
+    "data_rights": {
+      "status": "clarification_requested_pending_maintainer_response",
+      "official_direct_download": true,
+      "source_admission_rights_gate_passed": false,
+      "source_admission_use_policy_gate_passed": true,
+      "full_rgbd_download_authorized": true,
+      "redistribution_authorized": false,
+      "training_authorized": false,
+      "clarification_issue_url": "https://github.com/PRBonn/LILocBench/issues/1",
+      "project_download_and_use_policy": "user_authorized_official_public_download_and_research_use"
+    }
+  },
+  "sequence": {
+    "sequence_id": "lt_changes_dynamics_0",
+    "official_description": "rearranged objects in multiple rooms and hallway plus moving people",
+    "priority": 2,
+    "ground_truth": {
+      "url": "https://www.ipb.uni-bonn.de/html/projects/localization_benchmark/data/gt_poses_public/lt_changes_dynamics_0/gt_poses.txt",
+      "relative_path": "artifacts.local/downloads/ustrf-sensor-replay-r3/lilocbench/lt_changes_dynamics_0/gt_poses.txt",
+      "size_bytes": 1814325,
+      "sha256": "277699961867b9d5d3bcaa14de1e577bf7ef9e6737b6f971460231461ff1d2d0",
+      "http_etag": "\"1baf35-630b0d7e6100b\"",
+      "http_last_modified": "2025-03-19",
+      "format": "TUM timestamp tx ty tz qx qy qz qw",
+      "nominal_rate_hz": 20.0
+    },
+    "individual_files_rgbd_archive": {
+      "url": "https://www.ipb.uni-bonn.de/html/projects/localization_benchmark/data/data_files_zipped/lt_changes_dynamics_0.zip",
+      "official_display_size": "12.9 GB",
+      "http_content_length_bytes": 12940694854,
+      "http_etag": "\"303535546-630a3f1c17212\"",
+      "http_last_modified": "2025-03-18",
+      "downloaded": true,
+      "downloaded_path": "artifacts.local/downloads/ustrf-sensor-replay-r3/lilocbench/lt_changes_dynamics_0/lt_changes_dynamics_0.zip",
+      "sha256": "98c42aa5f22e839749c6221e3c9ed63ffd460a66b28a66b7003f29c186640ee9",
+      "zip_member_count": 50298,
+      "zip_uncompressed_bytes": 14171916297,
+      "zip_crc_verified": true,
+      "download_gate": "ordinary_public_download; license, consent, and privacy receipts are non-blocking metadata for isolated internal research",
+      "camera_optical_plan": {
+        "selected_camera": "camera_front",
+        "transform_chain": [
+          "base_link",
+          "camera_front_link",
+          "camera_front_color_frame",
+          "camera_front_color_optical_frame"
+        ],
+        "expected_transformations_yaml_sha256": "b41334513af1bf368ac46e2bdeecb83fac506c54e61a0b288451f2ec11ebc6de",
+        "expected_color_intrinsics_yaml_sha256": "a717bb66bda1a31d4f34abd10abe6d0ed9b48e0dbfd49345dfbf9be7e2ab570c",
+        "expected_depth_intrinsics_yaml_sha256": "3bca043cb85b35257cc2ecdef28f7d05fa1b7caebe4e0360b9cc86d0cd1d305f",
+        "expected_depth_to_color_yaml_sha256": "0c5b9ba6c1a9341c2e218ce3da817a7009c670eecdb37d6c6811b2031482bb5e",
+        "depth_to_color_transform_direction": "T_color_depth according to parent=color child=depth; do not invert from filename alone",
+        "depth_registered_to_color_in_official_archive": false,
+        "depth_to_color_registration_required_before_normalization": true,
+        "selection_evidence": "camera_front color optical +Z must compose toward +base_link X and is revalidated during preparation",
+        "must_revalidate_after_archive_download": true,
+        "member_hashes_revalidated": true,
+        "front_color_image_count": 8378,
+        "front_depth_image_count": 8378,
+        "must_revalidate_after_archive_download": false,
+        "prepared_package_path": "artifacts.local/evidence/ustrf-sensor-replay-r3/source-replacement-lilocbench-v1/lt_changes_dynamics_0-prepared-front-v1",
+        "preparation_receipt_sha256": "afe6b31d79db6d648491b458ac282213f56057ae48a0b21795b4373932917697",
+        "prepared_frame_count": 8377,
+        "rgb_depth_aligned_fraction": 0.9998806397708283,
+        "minimum_registered_valid_depth_fraction": 0.637919921875
+      }
+    }
+  },
+  "gt_only_route_prescreen": {
+    "rgb_frame_rate_hz": 15.0,
+    "timeline_policy": "nominal_rgb_timestamps_nearest_gt_with_frozen_pose_delta",
+    "base_forward_axis": "+x",
+    "forward_proxy": "delta_base_x > abs(delta_base_y)",
+    "prescreen_authority": "reject_only",
+    "camera_fov_and_lifecycle_not_evaluable": true
+  },
+  "later_candidates": [
+    {
+      "dataset_id": "bonn_rgbd_dynamic_dataset",
+      "dataset_family": "bonn_rgbd_dynamic",
+      "priority": 3,
+      "role": "independent_dataset_family_after_lilocbench"
+    }
+  ],
+  "evidence_limit": "GT-only prescreen has rejection authority only; no source-count, evaluator, training, hardware, or production authority."
+}

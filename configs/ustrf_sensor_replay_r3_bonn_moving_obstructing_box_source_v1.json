@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist_ustrf_sensor_replay_r3_sources_v1",
+  "authority": "single_source_candidate_pending_two_isolated_reviews",
+  "sources": [
+    {
+      "source_id": "bonn_moving_obstructing_box",
+      "adapter": "tum_rgbd_dynamic",
+      "kind": "real_dynamic_handheld_rgbd_optitrack_camera_ground_truth",
+      "dataset_id": "bonn_rgbd_dynamic_dataset",
+      "sequence_id": "moving_obstructing_box",
+      "license": "not_explicitly_stated_by_dataset_page",
+      "license_url": null,
+      "official_page_url": "https://www.ipb.uni-bonn.de/data/rgbd-dynamic-dataset/",
+      "archive_sha256": "d0fc8c33d896b6a4c4a506508f44ddec63bf7dc37c8f58524826cbca1bbba689",
+      "root": "artifacts.local/evidence/datasets/bonn-rgbd-moving-obstructing-box-v1-20260720/extracted/rgbd_bonn_moving_obstructing_box",
+      "intrinsics": [542.822841, 542.57687, 315.59352, 237.756098],
+      "depth_scale": 5000.0,
+      "depth_scale_basis": "official Bonn RGB-D Dynamic Dataset convention plus local archive audit",
+      "pose_stability": "INTER_FRAME_STABLE",
+      "groundtruth_frame": "camera_optical_frame_tracked_by_optitrack",
+      "camera_frame": "rgb_camera_optical_frame",
+      "frame_count": 0,
+      "minimum_frame_count": 589,
+      "maximum_rgb_depth_delta_s": 0.02,
+      "maximum_rgb_pose_delta_s": 0.04,
+      "route_event_suitability": "rejected_by_two_isolated_full_sequence_reviews",
+      "review_consensus_sha256": "42032693643d8b26a5cbe3e289c6645b21d67cc87f5b8b13ac31ec5f655597c2",
+      "known_risk": "handheld trajectory may be rotation-dominant; reviewer admission is fail-closed",
+      "project_use_policy": "user_authorized_official_public_download_and_research_use",
+      "redistribution_authorized": false,
+      "training_authorized": false,
+      "production_authority": false
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "blindassist_ustrf_sensor_replay_r3_sources_v1",
+  "authority": "single_source_candidate_pending_two_isolated_reviews",
+  "sources": [
+    {
+      "source_id": "bonn_person_tracking",
+      "adapter": "tum_rgbd_dynamic",
+      "kind": "real_dynamic_handheld_rgbd_optitrack_camera_ground_truth",
+      "dataset_id": "bonn_rgbd_dynamic_dataset",
+      "sequence_id": "person_tracking",
+      "license": "not_explicitly_stated_by_dataset_page",
+      "license_url": null,
+      "official_page_url": "https://www.ipb.uni-bonn.de/data/rgbd-dynamic-dataset/",
+      "sequence_url": "https://www.ipb.uni-bonn.de/html/projects/rgbd_dynamic2019/rgbd_bonn_person_tracking.zip",
+      "archive_sha256": "a4810fd91ef2ea1d630b53fe0df5d76144c1b18d86ca91fb3a035debd0c9c5f5",
+      "root": "artifacts.local/downloads/ustrf-sensor-replay-r3/bonn/person_tracking/extracted/rgbd_bonn_person_tracking",
+      "intrinsics": [542.822841, 542.57687, 315.59352, 237.756098],
+      "depth_scale": 5000.0,
+      "depth_scale_basis": "official Bonn RGB-D Dynamic Dataset convention",
+      "pose_stability": "INTER_FRAME_STABLE",
+      "groundtruth_frame": "camera_optical_frame_tracked_by_optitrack",
+      "camera_frame": "rgb_camera_optical_frame",
+      "frame_count": 0,
+      "minimum_frame_count": 580,
+      "maximum_rgb_depth_delta_s": 0.02,
+      "maximum_rgb_pose_delta_s": 0.04,
+      "route_event_suitability": "rejected_by_two_isolated_full_sequence_reviews",
+      "review_consensus_sha256": "323627cee037393b9f8e7493cca8d497cd22035ca0a6338daee37292c6f49c40",
+      "known_risk": "handheld tracking can remain rotation-dominant; reviewer admission is fail-closed",
+      "project_use_policy": "user_authorized_official_public_download_and_research_use",
+      "redistribution_authorized": false,
+      "training_authorized": false,
+      "production_authority": false
+    }
+  ]
+}

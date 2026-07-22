@@ -9,6 +9,13 @@ import numpy as np
 import cv2
 
 from contract import BUNDLE_SCHEMA, nearest_pose, parse_rows, quaternion_matrix, read_json, sha256, validate_pose, write_json
+from lilocbench_calibration import (
+    compose_transform_chain,
+    parse_intrinsics_yaml,
+    parse_transformations_yaml,
+    validate_front_color_optical,
+    world_from_color_optical,
+)
 
 
 def _eth3d(root: Path, source: dict[str, Any], limit: int) -> list[dict[str, Any]]:
@@ -207,6 +214,58 @@ def _openloris_package(root: Path, source: dict[str, Any], limit: int) -> list[d
     return result
 
 
+def _lilocbench_package(root: Path, source: dict[str, Any], limit: int) -> list[dict[str, Any]]:
+    receipt_path = root / "preparation_receipt.json"
+    if sha256(receipt_path) != source["preparation_receipt_sha256"]:
+        raise ValueError("LILocBench preparation receipt hash mismatch")
+    receipt = read_json(receipt_path)
+    if receipt.get("schema") != "blindassist_ustrf_lilocbench_rgbd_preparation_v1":
+        raise ValueError("invalid LILocBench preparation receipt")
+    if receipt.get("selected_camera") != "camera_front" or not receipt.get("depth_registered_to_color"):
+        raise ValueError("LILocBench package is not registered to camera_front color")
+    color = _timestamp_rows(root / "color.txt")
+    aligned_depth = _timestamp_rows(root / "aligned_depth.txt")
+    if receipt.get("frame_count") != len(color) or len(color) != len(aligned_depth):
+        raise ValueError("LILocBench prepared frame count mismatch")
+    if float(receipt.get("depth_scale_units_per_meter")) != float(source["depth_scale"]):
+        raise ValueError("LILocBench prepared depth scale mismatch")
+    maximum_delta_s = float(source.get("maximum_rgb_depth_delta_s", 0.02))
+    associated = _associate_nearest(color, aligned_depth, maximum_delta_s)
+    start = int(source.get("start_association_index", 0))
+    associated = associated[start:start + limit] if limit > 0 else associated[start:]
+    poses = [(float(row[0]), [float(v) for v in row[1:]]) for row in parse_rows(root / "groundtruth.txt", 8)]
+    color_calibration = parse_intrinsics_yaml(root / "calibration/color_intrinsics.yaml")
+    entries = parse_transformations_yaml(root / "transformations.yaml")
+    transform_chain = source["camera_transform_chain"]
+    if receipt.get("transform_chain") != transform_chain:
+        raise ValueError("LILocBench prepared transform-chain mismatch")
+    base_from_color = compose_transform_chain(entries, transform_chain)
+    validate_front_color_optical(base_from_color)
+    camera_matrix = color_calibration["K"]
+    intrinsics = [float(camera_matrix[0]), float(camera_matrix[4]), float(camera_matrix[2]), float(camera_matrix[5])]
+    result = []
+    for index, (rgb_ts, rgb_path, depth_ts, depth_path) in enumerate(associated):
+        pose_ts, pose_values = nearest_pose(poses, rgb_ts)
+        world_from_base = np.asarray(quaternion_matrix(pose_values), dtype=np.float64)
+        camera_pose = world_from_color_optical(world_from_base, base_from_color)
+        result.append(
+            _frame(
+                root,
+                index,
+                rgb_ts,
+                depth_ts,
+                pose_ts,
+                rgb_path,
+                depth_path,
+                intrinsics,
+                camera_pose.tolist(),
+                source,
+                "uint16_png_z_meters",
+            )
+        )
+    return result
+
+
 def _frame(root: Path, index: int, rgb_ts: float, depth_ts: float, pose_ts: float, rgb_path: str, depth_path: str, intrinsics: list[float], pose: list[list[float]], source: dict[str, Any], depth_encoding: str, camera_path: str | None = None) -> dict[str, Any]:
     rgb = (root / rgb_path).resolve(); depth = (root / depth_path).resolve()
     if root.resolve() not in rgb.parents or root.resolve() not in depth.parents or not rgb.is_file() or not depth.is_file():
@@ -230,6 +289,7 @@ ADAPTERS = {
     "tartanair_preprocessed": _tartanair,
     "tum_rgbd_dynamic": _tum_rgbd_dynamic,
     "openloris_package": _openloris_package,
+    "lilocbench_package": _lilocbench_package,
 }
 
 
