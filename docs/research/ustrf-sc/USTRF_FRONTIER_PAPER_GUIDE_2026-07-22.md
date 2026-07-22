@@ -19,12 +19,15 @@
 
 ```text
 数据源与可评分事件闭环
+  -> detector input/raw/decode parity 与目标 person coverage
   -> 跟踪/ego-motion/TTC 消融
   -> 单帧深度与时序深度 teacher 消融
   -> 显式路线下的 dense traversability-risk field
   -> 提醒时机、语言和触觉评价
   -> 独立设备、用户与生产晋级门
 ```
+
+2026-07-22 最新前置门：tracker/TTC R1 的 0-person host 结果已定位为 `[1,84,2100]` 解码轴错误；但 Android Canvas 与 PIL 的 4,594 帧 exact input/raw parity 为 `0/4594`，目标 person bbox truth 也未冻结。因此先完成 `detector_taxonomy_coverage_v1` G1–G4，T0–T3 与 H2 暂不开放。
 
 ## 二、证据—论点映射
 

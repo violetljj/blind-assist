@@ -1,0 +1,115 @@
+{
+  "schema": "blindassist_ustrf_detector_taxonomy_coverage_v1",
+  "contract_id": "detector_taxonomy_coverage_v1",
+  "authority": "benchmark_only_diagnostic",
+  "frozen_on": "2026-07-22",
+  "hypothesis": "冻结 App detector 的 person observation 缺口必须先区分 host/Android parity、tensor/layout/labels/NMS 解码错误、taxonomy/domain shift 与真实 localization miss；在该门闭合前 tracker/TTC 和 H2 均不得继续。",
+  "parent": {
+    "config_path": "configs/ustrf_tracker_ttc_ablation_v1.json",
+    "config_sha256": "7cc9878fb6f50f3ef51a75383c6a0d15509111a06b37226def203245866df7f6",
+    "windows_path": "artifacts.local/evidence/ustrf-tracker-ttc-ablation-v1/windows-v2.json",
+    "windows_sha256": "383c1a8aabfbe3bb2d5ccbf53c67a091d012b06c31a02fd44b93cea6ce1445b5",
+    "frame_count": 4594,
+    "source_frame_counts": {
+      "lilocbench_dynamics_0_front": 558,
+      "lilocbench_lt_changes_dynamics_0_front": 4036
+    },
+    "historical_result_is_immutable": true,
+    "historical_host_decoder_sha256": "0a5a1e949776ad1bb8857bb5bc324930f96fc2ecd2069d086b07f3ce973b29bd"
+  },
+  "detector": {
+    "model_path": "app/src/main/assets/yolo11n_fp16_320.tflite",
+    "model_sha256": "00edb41a528b0a7e709c4af8ce3e685491492c4539274804e5cfc17a1a867cd2",
+    "labels_path": "app/src/main/assets/coco_labels.txt",
+    "labels_sha256": "bd17f1ee35d5f3c862a4894605855abbb9dda4b0621fdb0ac4c2c8c7bb7e730a",
+    "person_class_index": 0,
+    "person_label": "person",
+    "input_shape": [1, 320, 320, 3],
+    "input_dtype": "float32",
+    "output_shape": [1, 84, 2100],
+    "output_dtype": "float32",
+    "output_layout": "channels_first_box4_plus_coco80_by_prediction2100",
+    "confidence_threshold": 0.35,
+    "nms_iou_threshold": 0.45,
+    "nms_is_classwise": true
+  },
+  "implementation_receipts": {
+    "android_image_preprocessor_path": "core/vision/src/main/java/com/linnan/blindassist/vision/ImagePreprocessor.kt",
+    "android_image_preprocessor_sha256": "d23ac65cba4ae3c766e71810a738709b161ebd20e4a0fb825aacee405272c666",
+    "android_decoder_path": "core/vision/src/main/java/com/linnan/blindassist/vision/YoloOutputDecoder.kt",
+    "android_decoder_sha256": "a50a303f60a8d69df5917a1f52b7edf68846a398281f2f76a2da1cabe1442495",
+    "historical_host_layout_defect": "[84,2100] was treated as 84 predictions instead of 84 channels",
+    "historical_zero_person_result_is_not_taxonomy_evidence": true
+  },
+  "gates": {
+    "G0_manifest": {
+      "required_frame_count": 4594,
+      "missing_frames_max": 0,
+      "non_finite_values_max": 0,
+      "result_fields_forbidden_in_preregistration": true
+    },
+    "G1_android_host_parity": {
+      "all_frames_required": true,
+      "input_tensor_exact_sha256_match": true,
+      "raw_output_exact_sha256_match_preferred": true,
+      "raw_output_fallback_max_abs_error": 1e-5,
+      "raw_output_fallback_max_rel_error": 1e-4,
+      "raw_output_mismatches_over_tolerance_max": 0,
+      "decode_detection_exact_match_after_tolerance": true,
+      "parity_failure_closes_taxonomy_attribution": true
+    },
+    "G2_controlled_person_canary": {
+      "dataset_role": "seen_diagnostic_only_no_selection_credit",
+      "source_id": "lilocbench_dynamics_0_front",
+      "frame_id": "000150",
+      "image_sha256": "5fdad9e131b44311453cef7657580698e303174dc6bc608a3f78c61ee47e54fa",
+      "required_checks": [
+        "input_tensor_contract",
+        "raw_output_tensor_contract",
+        "person_index_zero",
+        "labels_zero_is_person",
+        "pre_nms_person_score_at_or_above_frozen_confidence",
+        "source_box_remap",
+        "classwise_nms"
+      ],
+      "selection_credit": false
+    },
+    "G3_taxonomy_attribution": {
+      "requires_G1_and_G2": true,
+      "report_target_localized_top_classes": true,
+      "mutually_exclusive_outcomes": [
+        "preprocess_or_runtime_parity_failure",
+        "class_labels_or_nms_decode_failure",
+        "taxonomy_or_domain_shift",
+        "person_score_coverage_failure_at_frozen_threshold",
+        "model_localization_or_true_miss",
+        "unresolved_without_target_box_truth"
+      ],
+      "unresolved_is_not_pass": true
+    },
+    "G4_frozen_baseline_coverage": {
+      "positive_event_coverage_min_by_source": 1.0,
+      "critical_event_miss_max_by_source": 0,
+      "negative_route_event_false_alerts_max_by_source": 0,
+      "negative_windows_are_not_person_absent_truth": true,
+      "pooled_metric_cannot_override_worst_source": true
+    },
+    "G5_candidate_comparison": {
+      "opens_only_if_G1_G2_pass_and_G4_fails": true,
+      "max_preregistered_candidates": 3,
+      "candidate_roster": [],
+      "shared_hidden_windows": true,
+      "candidate_outputs_hidden_until_all_ledgers_frozen": true,
+      "candidate_specific_threshold_nms_route_event_or_tracker_changes_forbidden": true,
+      "promotion_requires_both_source_coverage_and_each_source_negative_gate": true,
+      "no_passing_candidate_outcome": "detector_data_domain_limit_documented"
+    }
+  },
+  "stage_locks": {
+    "T0_T3_reopen": false,
+    "H2_temporal_depth_reopen": false,
+    "training_authorized": false,
+    "app_change_authorized": false,
+    "production_authorized": false
+  }
+}

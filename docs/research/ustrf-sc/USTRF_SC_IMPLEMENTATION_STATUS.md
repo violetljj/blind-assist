@@ -93,7 +93,7 @@
 
 ## 当前路线与下一次可执行证据
 
-当前手机路线是 reference-free shadow，不再以物理棋盘格或 calibration manifest 作为前置。CameraX event gate 已完成静止设备的帧绑定和节流证据；离线安全内核已增加 8 个带标签合成场景与五通道人体包络回归，见 [离线安全仿真](USTRF_SC_OFFLINE_SAFETY_SIMULATION.md)。风险场现在可在 `UstrfVerifiedPoseDelta` 精确绑定前后 frame、并由独立 offline/geometry gate 标记后执行静态证据的平移与转向重投影；任何缺失、未验证或错帧 receipt 都会拒绝 warp。session record 现同步生成影子结构化输出：只有 supervisor 仅保留 `SHADOW_ONLY`、且已选走廊严格匹配时，才会把安全候选标为 CONTINUE 或左右微调；任何其他原因继续映射为 SLOW_DOWN、STOP 或 SCAN。它不是用户可执行指令。新的 metric-depth Adapter 已覆盖“受准入深度 + ground plane → geometry packet”这段离线理论链；`UstrfTemporalGeometryConsistency` 随后以精确 frame-bound pose delta 对相邻 geometry packet 做匹配 receipt。二者均没有设备证据时仍不被调用，且明确不把缺失深度转换为 `DROP`。几何/SANPO 模型层的下一变量仍应是相邻帧可见性/一致性与 metric-depth 平面边缘；detector 层的 source radial-motion CPU 分层已经完成，不能混称为设备 TTC 或事件验证。
+当前手机路线是 reference-free shadow，不再以物理棋盘格或 calibration manifest 作为前置。CameraX event gate 已完成静止设备的帧绑定和节流证据；离线安全内核已增加 8 个带标签合成场景与五通道人体包络回归，见 [离线安全仿真](USTRF_SC_OFFLINE_SAFETY_SIMULATION.md)。风险场现在可在 `UstrfVerifiedPoseDelta` 精确绑定前后 frame、并由独立 offline/geometry gate 标记后执行静态证据的平移与转向重投影；任何缺失、未验证或错帧 receipt 都会拒绝 warp。session record 现同步生成影子结构化输出：只有 supervisor 仅保留 `SHADOW_ONLY`、且已选走廊严格匹配时，才会把安全候选标为 CONTINUE 或左右微调；任何其他原因继续映射为 SLOW_DOWN、STOP 或 SCAN。它不是用户可执行指令。新的 metric-depth Adapter 已覆盖“受准入深度 + ground plane → geometry packet”这段离线理论链；`UstrfTemporalGeometryConsistency` 随后以精确 frame-bound pose delta 对相邻 geometry packet 做匹配 receipt。二者均没有设备证据时仍不被调用，且明确不把缺失深度转换为 `DROP`。当前直接阻塞发生在 detector coverage admission：旧 0-person host 结论由 raw tensor 解码轴错误造成，Android 已有大量 person proposal，但 PIL/Canvas exact parity 与目标实例 truth 未闭合；先完成 `detector_taxonomy_coverage_v1` G1–G4，再决定是否重开 tracker，H2 时序深度暂缓。
 
 未来眼镜路线需按 [设备阶段策略](USTRF_SC_DEVICE_PHASE_POLICY.md) 新建 frame、时钟、标定和设备证据，不能迁移手机观测或 manifest。
 

@@ -2,6 +2,8 @@
 
 状态：`STOP_T1_T3_NO_PERSON_DETECTIONS_AND_ID_TRUTH_UNAVAILABLE / BENCHMARK_ONLY / R3_EVALUATOR_NOT_RUN`
 
+> 2026-07-22 后续诊断：本报告冻结并保留当时的 host 结果，但其 detector coverage 解释已被 [detector taxonomy coverage v1](USTRF_DETECTOR_TAXONOMY_COVERAGE_V1_RESULT_2026-07-22.md) 取代。旧脚本把 `[1,84,2100]` 的 channel 轴误读为 prediction；正确 host/SM-S9280 实际有 2639/2617 个 person proposal 帧。T1–T3 仍未自动重开，因为 PIL/Android Canvas exact parity 与目标实例 truth 尚未闭合。
+
 ## 结论
 
 按 `tracker_ttc_ablation_v1` 预注册完成 T0 输入与基线后，冻结的 App YOLO11n FP16-320 模型在 host PIL 复现的 Android letterbox 几何上，对 15 个动态行人正事件窗口和 15 个同源等长负窗口、共 4,594 帧产生 `0` 个阈值内 `person` 框。阈值前 person 最高分仅为 `.300942/.329009`，均低于冻结 `.35`。T0 host 基线因此为 event recall `0.0`、critical miss rate `1.0`、negative false alerts/min `0.0`；clearance、对象 ID switch 和 TTC proxy 均不可评。
