@@ -1,0 +1,25 @@
+{
+  "schema": "blindassist_ustrf_sensor_replay_r3_third_source_sequence_input_v1",
+  "authority": "frozen_backup_sequence_gt_only_reject_only",
+  "discovery_manifest_sha256": "00e3646f730e509fe1b4ebd3e1215948a2cde4fa27fe3ba3fdb82dd7dc9e20cd",
+  "sequence_id": "s12",
+  "prior_rejection_receipts": [
+    {
+      "sequence_id": "s9",
+      "path": "artifacts.local/evidence/ustrf-sensor-replay-r3/third-source-discovery-v1/idsia-s9-gt-prescreen-v1.json",
+      "sha256": "b65c22b79852bd4d2e869a35d531dade5eb4faba2039fe451eb5ccc20c183b86"
+    }
+  ],
+  "remote_bag_member": {
+    "path": "sequences/s12/out_0.db3",
+    "file_size": 6028386304,
+    "compress_size": 2552960727,
+    "zip_crc32": "78ba3ac7",
+    "header_offset": 7579636655,
+    "compressed_data_offset": 7579636760,
+    "compressed_data_end": 10132597486,
+    "compressed_sha256": "c20c328a86fc160c7567d266ed63901bcd9d57abc1bba03219920d78c4cf4ee0",
+    "raw_db3_sha256": "306991f329ba00aa93d19b947b3f9e7e01b587979c2f15ddd857460fd3376217",
+    "metadata_sha256": "a9d45cc715f7ecdd16abefce937721eef63e2828c27a5c67e74f1a7462b193be"
+  }
+}

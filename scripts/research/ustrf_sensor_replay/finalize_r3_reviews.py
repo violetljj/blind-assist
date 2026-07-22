@@ -10,10 +10,22 @@ from contract import read_json, sha256, write_json
 def validate_review(value: dict, role: str, expected: dict[str, str]) -> dict[str, dict]:
     if value.get("schema") != "blindassist_ustrf_sensor_replay_r3_review_v1":
         raise ValueError(f"reviewer {role} schema mismatch")
-    if not isinstance(value.get("reviewer_role"), str) or not value["reviewer_role"] or value.get("independent_review") is not True:
+    if value.get("reviewer_role") != role or value.get("independent_review") is not True:
         raise ValueError(f"reviewer {role} identity/isolation mismatch")
-    if value.get("other_reviewer_outputs_viewed") is not False or value.get("candidate_alerts_viewed") is not False:
+    if (
+        value.get("reviewer_type") != "ai_model"
+        or value.get("isolated_context") is not True
+        or value.get("other_reviewer_outputs_viewed") is not False
+        or value.get("other_review_visible_before_submission") is not False
+        or value.get("candidate_alerts_viewed") is not False
+        or value.get("candidate_output_visible") is not False
+    ):
         raise ValueError(f"reviewer {role} was not isolated")
+    confidence = value.get("confidence")
+    if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0.0 <= float(confidence) <= 1.0:
+        raise ValueError(f"reviewer {role} confidence invalid")
+    if not isinstance(value.get("abstained"), bool) or not isinstance(value.get("abstain_reasons"), list):
+        raise ValueError(f"reviewer {role} abstention fields invalid")
     rows = value.get("sources")
     if not isinstance(rows, list):
         raise ValueError(f"reviewer {role} sources missing")
@@ -27,6 +39,10 @@ def validate_review(value: dict, role: str, expected: dict[str, str]) -> dict[st
             raise ValueError(f"reviewer {role} invalid route disposition: {source_id}")
         if not isinstance(row.get("events"), list):
             raise ValueError(f"reviewer {role} events missing: {source_id}")
+        for event_index, event in enumerate(row["events"]):
+            values = [anchor(event, key) for key in ("onset_frame", "alertable_frame", "passed_or_cleared_frame", "end_frame")]
+            if not (values[0] <= values[1] <= values[2] <= values[3]) or not isinstance(event.get("critical"), bool):
+                raise ValueError(f"reviewer {role} event invalid: {source_id} event {event_index}")
     return by_id
 
 
@@ -45,6 +61,8 @@ def build_consensus_events(first: dict, second: dict, tolerance: int, frame_coun
         return [], None
     result = []
     for event_index, (left, right) in enumerate(zip(first["events"], second["events"])):
+        if left.get("critical") is not right.get("critical"):
+            return [], f"criticality disagreement: event {event_index}"
         values = {}
         for key in ("onset_frame", "alertable_frame", "passed_or_cleared_frame", "end_frame"):
             pair = [anchor(left, key), anchor(right, key)]
@@ -55,7 +73,7 @@ def build_consensus_events(first: dict, second: dict, tolerance: int, frame_coun
             raise ValueError(f"invalid lifecycle order or range: event {event_index}")
         values.update({
             "event_id": f"consensus_event_{event_index:02d}",
-            "critical": bool(left.get("critical")) and bool(right.get("critical")),
+            "critical": left["critical"],
         })
         result.append(values)
     return result, None
@@ -99,7 +117,7 @@ def validate_adjudication(
             raise ValueError(f"R3 adjudication disposition invalid: {source_id}")
         for event_index, event in enumerate(row["events"]):
             values = [anchor(event, key) for key in ("onset_frame", "alertable_frame", "passed_or_cleared_frame", "end_frame")]
-            if not (values[0] <= values[1] <= values[2] <= values[3] < frame_counts[source_id]):
+            if not (values[0] <= values[1] <= values[2] <= values[3] < frame_counts[source_id]) or not isinstance(event.get("critical"), bool):
                 raise ValueError(f"R3 adjudication lifecycle invalid: {source_id} event {event_index}")
     return by_id
 

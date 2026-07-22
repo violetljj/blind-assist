@@ -266,6 +266,60 @@ def _lilocbench_package(root: Path, source: dict[str, Any], limit: int) -> list[
     return result
 
 
+def _idsia_msmpt_package(root: Path, source: dict[str, Any], limit: int) -> list[dict[str, Any]]:
+    receipt_path = root / "preparation_receipt.json"
+    if sha256(receipt_path) != source["preparation_receipt_sha256"]:
+        raise ValueError("IDSIA MSMPT preparation receipt hash mismatch")
+    receipt = read_json(receipt_path)
+    if receipt.get("schema") != "blindassist_ustrf_idsia_msmpt_rgbd_preparation_v1":
+        raise ValueError("invalid IDSIA MSMPT preparation receipt")
+    if receipt.get("selected_camera") != "camera_1" or not receipt.get("depth_registered_to_color"):
+        raise ValueError("IDSIA MSMPT package is not registered to camera_1 color")
+    if receipt.get("gt_prescreen_sha256") != source["gt_prescreen_sha256"]:
+        raise ValueError("IDSIA MSMPT GT prescreen receipt mismatch")
+    color = _timestamp_rows(root / "color.txt")
+    aligned_depth = _timestamp_rows(root / "aligned_depth.txt")
+    if receipt.get("frame_count") != len(color) or len(color) != len(aligned_depth):
+        raise ValueError("IDSIA MSMPT prepared frame count mismatch")
+    if float(receipt.get("depth_scale_units_per_meter")) != float(source["depth_scale"]):
+        raise ValueError("IDSIA MSMPT prepared depth scale mismatch")
+    associated = _associate_nearest(color, aligned_depth, float(source.get("maximum_rgb_depth_delta_s", 0.02)))
+    start = int(source.get("start_association_index", 0))
+    associated = associated[start:start + limit] if limit > 0 else associated[start:]
+    poses = [(float(row[0]), [float(value) for value in row[1:]]) for row in parse_rows(root / "groundtruth.txt", 8)]
+    calibration = read_json(root / "calibration.json")
+    if sha256(root / "calibration.json") != receipt.get("calibration_sha256"):
+        raise ValueError("IDSIA MSMPT calibration hash mismatch")
+    body_from_color = np.asarray(calibration["body_from_color_optical"], dtype=np.float64)
+    validate_pose(body_from_color.tolist())
+    validate_front_color_optical(body_from_color)
+    if calibration.get("body_to_color_chain") != source["camera_transform_chain"]:
+        raise ValueError("IDSIA MSMPT camera transform-chain mismatch")
+    camera_matrix = np.asarray(calibration["color"]["K"], dtype=np.float64).reshape(3, 3)
+    intrinsics = [float(camera_matrix[0, 0]), float(camera_matrix[1, 1]), float(camera_matrix[0, 2]), float(camera_matrix[1, 2])]
+    result = []
+    for index, (rgb_ts, rgb_path, depth_ts, depth_path) in enumerate(associated):
+        pose_ts, pose_values = nearest_pose(poses, rgb_ts)
+        world_from_body = np.asarray(quaternion_matrix(pose_values), dtype=np.float64)
+        camera_pose = world_from_color_optical(world_from_body, body_from_color)
+        result.append(
+            _frame(
+                root,
+                index,
+                rgb_ts,
+                depth_ts,
+                pose_ts,
+                rgb_path,
+                depth_path,
+                intrinsics,
+                camera_pose.tolist(),
+                source,
+                "uint16_png_z_meters",
+            )
+        )
+    return result
+
+
 def _frame(root: Path, index: int, rgb_ts: float, depth_ts: float, pose_ts: float, rgb_path: str, depth_path: str, intrinsics: list[float], pose: list[list[float]], source: dict[str, Any], depth_encoding: str, camera_path: str | None = None) -> dict[str, Any]:
     rgb = (root / rgb_path).resolve(); depth = (root / depth_path).resolve()
     if root.resolve() not in rgb.parents or root.resolve() not in depth.parents or not rgb.is_file() or not depth.is_file():
@@ -290,6 +344,7 @@ ADAPTERS = {
     "tum_rgbd_dynamic": _tum_rgbd_dynamic,
     "openloris_package": _openloris_package,
     "lilocbench_package": _lilocbench_package,
+    "idsia_msmpt_package": _idsia_msmpt_package,
 }
 
 

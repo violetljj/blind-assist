@@ -1,0 +1,30 @@
+{
+  "schema": "blindassist_ustrf_sensor_replay_r3_third_source_sequence_input_v1",
+  "authority": "frozen_backup_sequence_gt_only_reject_only",
+  "discovery_manifest_sha256": "00e3646f730e509fe1b4ebd3e1215948a2cde4fa27fe3ba3fdb82dd7dc9e20cd",
+  "sequence_id": "s13",
+  "prior_rejection_receipts": [
+    {
+      "sequence_id": "s9",
+      "path": "artifacts.local/evidence/ustrf-sensor-replay-r3/third-source-discovery-v1/idsia-s9-gt-prescreen-v1.json",
+      "sha256": "b65c22b79852bd4d2e869a35d531dade5eb4faba2039fe451eb5ccc20c183b86"
+    },
+    {
+      "sequence_id": "s12",
+      "path": "artifacts.local/evidence/ustrf-sensor-replay-r3/third-source-discovery-v1/idsia-s12-terminal-rejection-v1.json",
+      "sha256": "39f73f7d3096c14551933ee7f1decdf0389fe47c45326ec09691eec246bf953a"
+    }
+  ],
+  "remote_bag_member": {
+    "path": "sequences/s13/out_0.db3",
+    "file_size": 4649672704,
+    "compress_size": 2002700460,
+    "zip_crc32": "02fac91d",
+    "header_offset": 4885656100,
+    "compressed_data_offset": 4885656205,
+    "compressed_data_end": 6888356665,
+    "compressed_sha256": "d2faa2a8bed41b39017e9fc737a5868c3b3e520433396e64f0a457f330427c0e",
+    "raw_db3_sha256": "96501eec4b07bbb36ae51625680cc40cce35e44ad04c7d35364f01281b48bd87",
+    "metadata_sha256": "b71681e087c747117ae6e58258a9e2374dca14e659e1ffaf550424d48f2a0525"
+  }
+}

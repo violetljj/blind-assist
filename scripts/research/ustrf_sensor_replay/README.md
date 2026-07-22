@@ -1,6 +1,6 @@
 # USTRF sensor replay
 
-状态：active / R3 admitted 1-of-3 / evaluator not run / benchmark-only / production-isolated
+状态：bounded discovery closed / R3 admitted 2-of-3 / formal data limitation / evaluator not run / benchmark-only / production-isolated
 
 ## 稳定 Interface
 
@@ -11,6 +11,12 @@ R3 使用 `prepare_estimator_inputs.py -> estimate_rgbd_pose.py -> derive_r3_rou
 R3 来源替换先运行 `prescreen_openloris_sources.py`。它根据普通公开可下载性、D435i RGB-D、独立 ground-truth trajectory 与轨迹运动统计生成候选；许可和隐私元数据缺失不阻止下载或隔离研究。即使发现三条以上轨迹，`three_source_count_credit` 仍固定为 false。只有下载完整连续 RGB-D 片段、按原流程冻结 candidate，并由两位隔离 reviewer 都准入后，轨迹才可计入三源。来源替换不得改 `configs/ustrf_sensor_replay_r3_prereg_v1.json`，审核 anchor 容差继续为 15 帧。
 
 OpenLORIS 穷尽后，LILocBench 来源替换使用 `prescreen_lilocbench_sources.py`。该工具读取已哈希的 `dynamics_0` / `lt_changes_dynamics_0` `base_link` GT；因 GT 为 20 Hz、RGB-D 为 15 Hz，工具先建立 nominal 15 Hz RGB 时间线，再按冻结的最大 pose 时间差关联 GT，从而保持 24/12 是 RGB 帧而不是原始 GT 行。官方直链已经足以开放完整 RGB-D 下载和隔离内部研究，不再等待数据权利、同意或隐私收据；两条轨迹在完整 RGB-D、`base_link -> D455 color optical` 外参链和完整片段双模型/裁决闭环后累计准入 `2/3`，第三条前 evaluator 仍关闭。
+
+第三来源检索由 `configs/ustrf_sensor_replay_r3_third_source_discovery_v1.json` fail-closed 冻结。`prescreen_third_source_gt.py` 只读取选中 ROS 2 bag 的实际 RGB header 时间、独立 `world_T_body` mocap pose 与静态 body-to-color-optical 链，运行相同 24/12/0.03/0.50 reject-only 门；不解码 RGB/depth 像素、不生成 candidate、不授予来源计数，也不运行 evaluator。只有报告字段 `gt_route_prescreen_passed=true` 才能进入完整连续 RGB-D 适配。
+
+该有界检索已按 `s9 -> s12 -> s13 -> s14` 顺序闭合：s9 在 GT-only 阶段因 pose 对齐率和 truth/causal unknown 门失败，未做完整适配；s12、s13 通过 GT-only 与完整 RGB-D 几何门，但两位隔离 reviewer 对路线有效性不一致，按双模型 AND 门拒绝；s14 通过 GT-only，完整适配后最低有效深度率 `.440792 < .50`，且两位 reviewer 均拒绝路线有效性。最终仍为 `2/3` 数据局限，不降低门、不复用 Bonn 负样本、不运行 evaluator，因而不输出五项事件指标或 worst-source 结果。
+
+`idsia_msmpt_package` Adapter 消费 IDSIA MSMPT 的 camera-1 完整准备包。`prepare_idsia_msmpt_rgbd.py` 从 ROS 2 bag 提取 RGB/depth，按 20 ms 上限关联，以静态 `chair -> camera_1_color_optical_frame` / depth optical 外参执行 Brown 模型 pure registration 和 nearest-z 冲突处理；`0/65535`、非有限、负值和无法以 `uint16` 毫米表示的投影深度全部保持 unknown，不填洞。准备收据绑定 bag、metadata、GT、标定与 RGB/depth hash chain；单源 normalize 或 candidate 生成均不等于准入。
 
 `lilocbench_calibration.py` 实现无 I/O authority 的 fail-closed 数学核心：解析官方 intrinsics/transform 列表，按显式 `parent_T_child` 方向组合 `base_link -> camera_front_color_optical_frame`，核验 optical `+Z` 确为 base `+X` 前向，并用 `T_color_depth`、plumb-bob color distortion 和 nearest-z buffer 将 raw depth 注册到 color raster。它本身不负责下载、不绕过认证、付费或访问控制、不填洞，也不自行生成 source bundle；完整归档到位后仍必须先复核成员哈希、同步和 registration receipt。
 

@@ -9,7 +9,8 @@ import numpy as np
 
 MODULE=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(MODULE))
-from contract import nearest_pose, quaternion_matrix, safe_file, validate_pose
+from contract import nearest_pose, quaternion_matrix, safe_file, sha256, validate_pose
+from idsia_msmpt_calibration import register_depth_to_color as register_idsia_depth_to_color
 from finalize_reviews import _rows
 from finalize_r3_reviews import build_consensus_events, validate_review
 from lilocbench_calibration import (
@@ -24,9 +25,11 @@ from lilocbench_calibration import (
 )
 from normalize_sources import _associate_nearest, _lilocbench_package, _openloris_camera_pose
 from prepare_lilocbench_rgbd import _associate_sorted, sanitize_raw_depth
+from prepare_idsia_msmpt_rgbd import associate_monotonic_ns
 from prepare_r3_review_bundle import PROMPT as R3_REVIEW_PROMPT
 from prescreen_lilocbench_sources import build_report as build_lilocbench_report
 from prescreen_openloris_sources import build_report, trajectory_stats
+from prescreen_third_source_gt import associate_rgb_to_gt, select_sequence
 from run_replay import _rotation_error_deg
 
 
@@ -64,7 +67,7 @@ class ContractTest(unittest.TestCase):
             validate_review(value,"a",{})
 
     def test_r3_review_requires_manifest_binding(self):
-        value={"schema":"blindassist_ustrf_sensor_replay_r3_review_v1","reviewer_role":"a","independent_review":True,"other_reviewer_outputs_viewed":False,"candidate_alerts_viewed":False,"sources":[{"source_id":"s","manifest_sha256":"bad","route_valid":False,"events":[]}]}
+        value={"schema":"blindassist_ustrf_sensor_replay_r3_review_v1","reviewer_type":"ai_model","reviewer_role":"a","independent_review":True,"isolated_context":True,"other_reviewer_outputs_viewed":False,"other_review_visible_before_submission":False,"candidate_alerts_viewed":False,"candidate_output_visible":False,"confidence":0.9,"abstained":False,"abstain_reasons":[],"sources":[{"source_id":"s","manifest_sha256":"bad","route_valid":False,"events":[]}]}
         with self.assertRaisesRegex(ValueError,"manifest binding"):
             validate_review(value,"a",{"s":"good"})
 
@@ -78,6 +81,11 @@ class ContractTest(unittest.TestCase):
         events,disagreement=build_consensus_events(first,second,15,100)
         self.assertIsNone(disagreement)
         self.assertEqual(events[0]["onset_frame"],11)
+        second["events"][0]["critical"]=False
+        events,disagreement=build_consensus_events(first,second,15,100)
+        self.assertEqual(events,[])
+        self.assertEqual(disagreement,"criticality disagreement: event 0")
+        second["events"][0]["critical"]=True
         second["events"].append(dict(second["events"][0]))
         events,disagreement=build_consensus_events(first,second,15,100)
         self.assertEqual(events,[])
@@ -166,6 +174,54 @@ class ContractTest(unittest.TestCase):
             self.assertFalse(private_report["ordinary_public_download"])
             self.assertFalse(private_report["full_rgbd_download_authorized"])
             self.assertFalse(private_report["source_admission_rights_gate_passed"])
+
+    def test_third_source_gt_association_is_nearest_and_fail_closed_on_time_order(self):
+        rgb=np.asarray([100,200,300],dtype=np.int64)
+        gt=np.asarray([90,210,290],dtype=np.int64)
+        indices,aligned,deltas=associate_rgb_to_gt(rgb,gt,15)
+        np.testing.assert_array_equal(indices,[0,1,2])
+        np.testing.assert_array_equal(aligned,[True,True,True])
+        np.testing.assert_array_equal(deltas,[10,10,10])
+        with self.assertRaisesRegex(ValueError,"strictly increasing"):
+            associate_rgb_to_gt(np.asarray([100,100]),gt,15)
+
+    def test_third_source_backup_requires_hash_bound_prior_rejection(self):
+        import json
+        with tempfile.TemporaryDirectory() as directory:
+            repo=Path(directory)
+            receipt=repo/"s9.json"
+            receipt.write_text(json.dumps({
+                "schema":"blindassist_ustrf_sensor_replay_r3_third_source_gt_prescreen_v1",
+                "sequence_id":"s9","config_sha256":"frozen",
+                "gt_route_prescreen_passed":False,"source_count_credit":0,"evaluator_ran":False,
+            }),encoding="utf-8")
+            sequence_input=repo/"s12.json"
+            sequence_input.write_text(json.dumps({
+                "schema":"blindassist_ustrf_sensor_replay_r3_third_source_sequence_input_v1",
+                "discovery_manifest_sha256":"frozen","sequence_id":"s12",
+                "prior_rejection_receipts":[{"sequence_id":"s9","path":"s9.json","sha256":sha256(receipt)}],
+                "remote_bag_member":{"path":"sequences/s12/out_0.db3"},
+            }),encoding="utf-8")
+            config={"selected_dataset":{"sequence_priority":[
+                {"sequence_id":"s9","selected":True,"remote_bag_member":{}},
+                {"sequence_id":"s12","selected":False},
+            ]}}
+            sequence,bag_member,value=select_sequence(repo,config,"frozen",sequence_input)
+            self.assertEqual(sequence["sequence_id"],"s12")
+            self.assertEqual(bag_member["path"],"sequences/s12/out_0.db3")
+            self.assertIsNotNone(value)
+
+    def test_idsia_rgb_depth_association_skips_early_outlier_and_registration_keeps_z(self):
+        self.assertEqual(associate_monotonic_ns([100,200,300],[1,105,195,305],10),[(100,105),(200,195),(300,305)])
+        calibration={
+            "width":3,"height":3,"distortion_model":"plumb_bob","D":[0,0,0,0,0],
+            "K":[1,0,1,0,1,1,0,0,1],"R":[1,0,0,0,1,0,0,0,1],
+            "P":[1,0,1,0,0,1,1,0,0,0,1,0],"binning_x":0,"binning_y":0,
+        }
+        depth=np.zeros((3,3),dtype=np.uint16); depth[1,1]=1000
+        aligned=register_idsia_depth_to_color(depth,1000.0,calibration,calibration,np.eye(4))
+        self.assertAlmostEqual(float(aligned[1,1]),1.0)
+        self.assertEqual(int(np.count_nonzero(aligned)),1)
 
     def test_lilocbench_front_color_optical_chain_has_forward_axis_and_camera_pose(self):
         with tempfile.TemporaryDirectory() as directory:
