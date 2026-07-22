@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+import cv2
 
 from contract import BUNDLE_SCHEMA, nearest_pose, parse_rows, quaternion_matrix, read_json, sha256, validate_pose, write_json
 
@@ -122,6 +123,90 @@ def _tum_rgbd_dynamic(root: Path, source: dict[str, Any], limit: int) -> list[di
     return result
 
 
+def _opencv_calibration(root: Path) -> tuple[list[float], dict[tuple[str, str], np.ndarray]]:
+    sensors = cv2.FileStorage(str(root / "sensors.yaml"), cv2.FILE_STORAGE_READ)
+    transforms = cv2.FileStorage(str(root / "trans_matrix.yaml"), cv2.FILE_STORAGE_READ)
+    try:
+        raw = sensors.getNode("d400_color_optical_frame").getNode("intrinsics").mat()
+        if raw is None or raw.shape != (1, 4):
+            raise ValueError("OpenLORIS D435i color intrinsics missing")
+        # OpenLORIS stores [fx, cx, fy, cy]; the replay contract uses [fx, fy, cx, cy].
+        intrinsics = [float(raw[0, 0]), float(raw[0, 2]), float(raw[0, 1]), float(raw[0, 3])]
+        sequence = transforms.getNode("trans_matrix")
+        by_frames: dict[tuple[str, str], np.ndarray] = {}
+        for index in range(sequence.size()):
+            row = sequence.at(index)
+            key = (row.getNode("parent_frame").string(), row.getNode("child_frame").string())
+            matrix = np.asarray(row.getNode("matrix").mat(), dtype=np.float64)
+            validate_pose(matrix.tolist())
+            by_frames[key] = matrix
+        return intrinsics, by_frames
+    finally:
+        sensors.release()
+        transforms.release()
+
+
+def _openloris_camera_pose(
+    groundtruth_pose: np.ndarray,
+    base_to_color: np.ndarray,
+    base_to_groundtruth: np.ndarray | None,
+    groundtruth_frame: str,
+) -> np.ndarray:
+    if groundtruth_frame == "base_link":
+        world_to_base = groundtruth_pose
+    elif groundtruth_frame == "marker":
+        if base_to_groundtruth is None:
+            raise ValueError("OpenLORIS marker ground truth requires base_link-to-marker calibration")
+        world_to_base = groundtruth_pose @ np.linalg.inv(base_to_groundtruth)
+    else:
+        raise ValueError(f"unsupported OpenLORIS ground-truth frame: {groundtruth_frame}")
+    camera_pose = world_to_base @ base_to_color
+    validate_pose(camera_pose.tolist())
+    return camera_pose
+
+
+def _openloris_package(root: Path, source: dict[str, Any], limit: int) -> list[dict[str, Any]]:
+    color = _timestamp_rows(root / "color.txt")
+    aligned_depth = _timestamp_rows(root / "aligned_depth.txt")
+    maximum_delta_s = float(source.get("maximum_rgb_depth_delta_s", 0.02))
+    associated = _associate_nearest(color, aligned_depth, maximum_delta_s)
+    start = int(source.get("start_association_index", 0))
+    associated = associated[start:start + limit] if limit > 0 else associated[start:]
+    poses = [(float(row[0]), [float(v) for v in row[1:]]) for row in parse_rows(root / "groundtruth.txt", 8)]
+    intrinsics, transforms = _opencv_calibration(root)
+    base_to_color = transforms.get(("base_link", "d400_color_optical_frame"))
+    if base_to_color is None:
+        raise ValueError("OpenLORIS base_link-to-D435i color calibration missing")
+    groundtruth_frame = source["groundtruth_frame"]
+    base_to_groundtruth = transforms.get(("base_link", groundtruth_frame))
+    result = []
+    for index, (rgb_ts, rgb_path, depth_ts, depth_path) in enumerate(associated):
+        pose_ts, pose_values = nearest_pose(poses, rgb_ts)
+        groundtruth_pose = np.asarray(quaternion_matrix(pose_values), dtype=np.float64)
+        camera_pose = _openloris_camera_pose(
+            groundtruth_pose,
+            base_to_color,
+            base_to_groundtruth,
+            groundtruth_frame,
+        )
+        result.append(
+            _frame(
+                root,
+                index,
+                rgb_ts,
+                depth_ts,
+                pose_ts,
+                rgb_path,
+                depth_path,
+                intrinsics,
+                camera_pose.tolist(),
+                source,
+                "uint16_png_z_meters",
+            )
+        )
+    return result
+
+
 def _frame(root: Path, index: int, rgb_ts: float, depth_ts: float, pose_ts: float, rgb_path: str, depth_path: str, intrinsics: list[float], pose: list[list[float]], source: dict[str, Any], depth_encoding: str, camera_path: str | None = None) -> dict[str, Any]:
     rgb = (root / rgb_path).resolve(); depth = (root / depth_path).resolve()
     if root.resolve() not in rgb.parents or root.resolve() not in depth.parents or not rgb.is_file() or not depth.is_file():
@@ -144,6 +229,7 @@ ADAPTERS = {
     "icl_nuim_tum": _icl,
     "tartanair_preprocessed": _tartanair,
     "tum_rgbd_dynamic": _tum_rgbd_dynamic,
+    "openloris_package": _openloris_package,
 }
 
 

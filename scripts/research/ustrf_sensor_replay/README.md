@@ -8,6 +8,10 @@
 
 R3 使用 `prepare_estimator_inputs.py -> estimate_rgbd_pose.py -> derive_r3_route_candidate.py -> prepare_r3_review_bundle.py -> finalize_r3_reviews.py -> run_replay.py`。estimator 输入账本物理删除 GT pose；candidate trace 必须在 review 前冻结且对两位 reviewer 隐藏；五项事件门逐来源 AND，并分别记录 worst source。任何 source review 拒绝、pose/route 不可评或单源阈值失败都保持 `DO_NOT_SELECT_HARDWARE`。
 
+R3 来源替换先运行 `prescreen_openloris_sources.py`。它只根据官方许可、D435i RGB-D、独立 ground-truth trajectory 与轨迹运动统计生成下载候选；即使发现三条以上轨迹，`three_source_count_credit` 仍固定为 false。只有下载完整连续 RGB-D 片段、按原流程冻结 candidate，并由两位隔离 reviewer 都准入后，轨迹才可计入三源。来源替换不得改 `configs/ustrf_sensor_replay_r3_prereg_v1.json`，审核 anchor 容差继续为 15 帧。
+
+`openloris_package` Adapter 使用 `color.txt` 与 `aligned_depth.txt` 做一对一时间关联，并从 OpenCV YAML 读取 D435i 内外参。office 的 OptiTrack 真值在 marker frame，必须转换为 `world_T_marker × inverse(base_T_marker) × base_T_color`；cafe 的 LiDAR-SLAM 真值在 base_link frame，转换为 `world_T_base × base_T_color`。二者都不能把原始 groundtruth 直接冒充 camera pose。
+
 ## 输出
 
 只写调用者指定的 `artifacts.local/evidence/ustrf-sensor-replay-r2/`。下载保存在 `artifacts.local/downloads/ustrf-sensor-replay-r2/`；不写 App assets、训练集或仓库根目录。
