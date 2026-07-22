@@ -2,6 +2,14 @@
 
 ## 2026-07-22
 
+### USTRF stride-4/P2 小目标 detector R1.2d 受控研究
+- 时间：2026-07-22；执行者：violjjet。
+- 范围：在许可/哈希/精确 bbox 几何闭合的数据收据上，以 YOLO26n 共享骨干做三 seed P2 stride-4/P3 配对训练；固定 `.05/.45/.30` 阈值、640 输入和既有 12 事件 truth-blind 协议，并把 YOLOE-768 只作为外部参考。未读 R1.3、未改 App、默认模型或生产权限。
+- 数据与受控性：2,106 个唯一图像，Pittsburgh 训练、17 个其他城市来源验证，事件帧与 synthetic/provisional 标签均未入训。先后在结果前拒绝未显式标签去重、trainer 丢失共享初始化和残留进程显存竞争三轮；最终 v4 六份训练回执的同 seed 骨干哈希全部一致。
+- 结果：P2/P3 三 seed 均为正事件 `4/6`，均漏 London `0/22` 与 Bridge；YOLOE 为 `5/6`。P2 离线 small/London-like recall 配对均值提高 `+2.20pp/+2.54pp`，但正事件增益为 0、假检测增加 `+0.236/图`，路线内未分配检测压力 `486–640` 且波动更大。假设判定 false，不选 seed、不调阈值、不运行 R1.3/INT8/Android/生产替换。
+- 后续：停止新 detector 训练，第一优先执行既有 `route_obstacle` 正/负 matched pair 与 10-episode 采集链；第二优先只做独占 ARCore 单 frame 绑定 RGB/raw-depth/pose 的可停止 canary。正式 truth 与 device metric geometry 双门前不运行 U0。详见 [post-R1.2d 计划](docs/research/ustrf-sc/USTRF_POST_R12D_NEXT_WORK_PLAN_2026-07-22.md)。
+- 验证：R1.2d focused `6 tests OK`；六份训练/七份评测与多 seed 汇总收据闭合；文档索引、仓库卫生与差异检查以本轮最终命令为准。详见 [R1.2d 结果](docs/research/ustrf-sc/USTRF_CROSSCAM_SMALL_TARGET_R12D_RESULT_2026-07-22.md)。
+
 ### USTRF Bangkok 替换与 R1.2c v2 真机事件门
 - 时间：2026-07-22；执行者：Codex。
 - 范围：前向物化 Bangkok 替换 Japan 的 12 事件清单并重跑六正例 truth—路线 oracle；只在 `6/6` 后导出并执行唯一同权重 FP16-768 GPU 候选，事件门先于 600 秒 soak。未读 R1.3、未改 App 默认模型/反馈路径。
