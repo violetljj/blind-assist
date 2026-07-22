@@ -3,7 +3,7 @@
 ## 2026-07-22
 
 ### USTRF 前沿论文研究指导与 R3 LILocBench 来源准入
-- 时间：2026-07-22；执行者：violjjet。OpenLORIS 准入 0/3 后按冻结 24/12/0.03/0.50 替换到 LILocBench：`dynamics_0` 与 `lt_changes_dynamics_0` 完整适配为 2397 / 8377 帧，双隔离 reviewer 均准入并由第三模型冻结 3 / 12 个 canonical 事件，累计 `2/3`；三源 evaluator、U0 与生产仍关闭。后续 tracker/TTC R1 的 4594 帧 host 0-person 结果被 `detector_taxonomy_coverage_v1` 定位为 `[1,84,2100]` 解码轴错误：正确 host/SM-S9280 分别有 2639/2617 个 person proposal 帧，15/15 正事件区间至少出现 proposal；但 PIL/Android Canvas input 与 raw exact parity 均为 `0/4594`，30 帧在 `.35` 上分歧，且缺目标 person bbox truth，故 G3–G5、T0–T3、H2、训练/App/生产继续 fail closed。模块 9 tests、双 APK build、SM-S9280 全量 4594 帧 0 failure 与完整仓库门以本轮最终复跑为准。
+- 时间：2026-07-22；执行者：violjjet。OpenLORIS 准入 0/3 后按冻结 24/12/0.03/0.50 替换到 LILocBench：`dynamics_0` 与 `lt_changes_dynamics_0` 完整适配为 2397 / 8377 帧，双隔离 reviewer 均准入并由第三模型冻结 3 / 12 个 canonical 事件，累计 `2/3`；三源 evaluator、U0 与生产仍关闭。后续 tracker/TTC R1 的 4594 帧 host 0-person 结果被 `detector_taxonomy_coverage_v1` 定位为 `[1,84,2100]` 解码轴错误：正确 host/SM-S9280 分别有 2639/2617 个 person proposal 帧，15/15 正事件区间至少出现 proposal；但 PIL/Android Canvas input 与 raw exact parity 均为 `0/4594`，30 帧在 `.35` 上分歧，且缺目标 person bbox truth，故 G3–G5、T0–T3、H2、训练/App/生产继续 fail closed。模块 13 tests、逐帧 manifest/device/host receipt 身份绑定、双 APK build、SM-S9280 全量 4594 帧 0 failure 与完整仓库门以本轮最终复跑为准。
 - 时间：2026-07-22；执行者：violjjet。将 13 篇有效论文保存到本地 `artifacts.local/downloads/papers/2026-07-22-ustrf-frontier-guidance/`，排除已撤回的 Eye4B 旧稿并改用作者指定后继版本；新增证据—论点映射、固定实验协议和停止条件。论文只进入可证伪研究臂，不改变 App、默认模型或生产权限；13/13 PDF 的解析、首页、页数和 SHA-256 已核对，仓库门禁以本轮最终复跑为准。
 
 ### USTRF 二维路线代理独立实验 App

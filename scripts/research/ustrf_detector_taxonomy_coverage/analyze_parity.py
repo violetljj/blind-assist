@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
+from materialize_device_bundle import validate_host_ledgers
 from run_host_coverage import read_json, sha256
 
 
@@ -13,9 +14,58 @@ CONSENSUS = {
 }
 
 
+def index_unique_frames(rows: list[dict], label: str) -> dict[tuple[str, str], dict]:
+    indexed: dict[tuple[str, str], dict] = {}
+    for row in rows:
+        key = (row["source_name"], row["frame_id"])
+        if key in indexed:
+            raise ValueError(f"duplicate {label} frame identity: {key}")
+        indexed[key] = row
+    return indexed
+
+
+def validate_device_binding(config: dict, manifest: dict, manifest_sha: str, device: dict) -> None:
+    if manifest.get("schema") != "blindassist_ustrf_detector_taxonomy_device_input_v1":
+        raise ValueError("unexpected device input manifest schema")
+    if device.get("schema") != "blindassist_ustrf_detector_taxonomy_device_output_v1":
+        raise ValueError("unexpected device receipt schema")
+    if device.get("input_manifest_sha256") != manifest_sha:
+        raise ValueError("device receipt/input manifest hash mismatch")
+    if manifest.get("config_sha256") != config["_config_sha256"]:
+        raise ValueError("device input manifest config/window binding mismatch")
+    if "windows_sha256" in manifest and manifest["windows_sha256"] != config["parent"]["windows_sha256"]:
+        raise ValueError("device input manifest config/window binding mismatch")
+    if manifest.get("model_sha256") != config["detector"]["model_sha256"] or manifest.get("labels_sha256") != config["detector"]["labels_sha256"]:
+        raise ValueError("device input manifest model/labels binding mismatch")
+    if manifest.get("input_shape") != config["detector"]["input_shape"] or manifest.get("output_shape") != config["detector"]["output_shape"]:
+        raise ValueError("device input manifest tensor contract mismatch")
+    expected_count = config["parent"]["frame_count"]
+    if manifest.get("frame_count") != expected_count or device.get("frame_count") != expected_count or device.get("failure_count") != 0:
+        raise ValueError("incomplete device manifest/receipt")
+    manifest_rows = index_unique_frames(manifest["frames"], "manifest")
+    device_rows = index_unique_frames(device["frames"], "device")
+    if len(manifest_rows) != expected_count or set(manifest_rows) != set(device_rows):
+        raise ValueError("device receipt frame inventory mismatch")
+    actual_source_counts: dict[str, int] = {}
+    for key, expected in manifest_rows.items():
+        actual = device_rows[key]
+        actual_source_counts[expected["source_id"]] = actual_source_counts.get(expected["source_id"], 0) + 1
+        bindings = {
+            "image_sha256": "image_sha256",
+            "host_input_tensor_sha256": "host_input_tensor_sha256",
+            "host_raw_output_sha256": "host_raw_output_sha256",
+        }
+        for expected_field, actual_field in bindings.items():
+            if actual.get(actual_field) != expected.get(expected_field):
+                raise ValueError(f"device receipt per-frame binding mismatch: {key}/{actual_field}")
+    if actual_source_counts != config["parent"]["source_frame_counts"]:
+        raise ValueError("device manifest per-source inventory mismatch")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--device-input-manifest", type=Path, required=True)
     parser.add_argument("--device", type=Path, required=True)
     parser.add_argument("--host-ledger", type=Path, action="append", required=True)
     parser.add_argument("--output", type=Path, required=True)
@@ -23,11 +73,10 @@ def main() -> int:
     if args.output.exists():
         raise SystemExit(f"refusing to overwrite output: {args.output}")
     config = read_json(args.config)
+    config["_config_sha256"] = sha256(args.config)
+    manifest = read_json(args.device_input_manifest)
     device = read_json(args.device)
-    if device["schema"] != "blindassist_ustrf_detector_taxonomy_device_output_v1":
-        raise ValueError("unexpected device receipt schema")
-    if device["frame_count"] != config["parent"]["frame_count"] or device["failure_count"] != 0:
-        raise ValueError("incomplete device receipt")
+    validate_device_binding(config, manifest, sha256(args.device_input_manifest), device)
     threshold = float(config["detector"]["confidence_threshold"])
     device_by_source: dict[str, dict[str, dict]] = {}
     for row in device["frames"]:
@@ -35,14 +84,18 @@ def main() -> int:
     source_summaries = []
     total_disagreements = 0
     event_rows = []
-    for host_path in args.host_ledger:
-        host = read_json(host_path)
+    _, host_ledgers = validate_host_ledgers(args.config, args.host_ledger)
+    manifest_rows = index_unique_frames(manifest["frames"], "manifest")
+    for host in host_ledgers:
         source_name = host["source_name"]
         device_rows = device_by_source[source_name]
         both_person = both_no_person = host_only = device_only = 0
         max_score_difference = 0.0
         for row in host["frames"]:
             other = device_rows[row["frame_id"]]
+            expected = manifest_rows[(source_name, row["frame_id"])]
+            if expected["host_input_tensor_sha256"] != row["input_tensor_sha256"] or expected["host_raw_output_sha256"] != row["raw_output_sha256"] or expected["image_sha256"] != row["image_sha256"]:
+                raise ValueError(f"manifest/host ledger per-frame binding mismatch: {source_name}/{row['frame_id']}")
             host_person = float(row["raw_person_max_confidence"]) >= threshold
             device_person = float(other["android_raw_person_max_confidence"]) >= threshold
             if host_person and device_person:

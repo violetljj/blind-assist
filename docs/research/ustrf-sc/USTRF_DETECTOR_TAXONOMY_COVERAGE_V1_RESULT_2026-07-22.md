@@ -13,7 +13,7 @@
 - 预注册：`configs/ustrf_detector_taxonomy_coverage_v1.json`；模型、COCO labels、父窗口、Android `ImagePreprocessor`/`YoloOutputDecoder` 实现、`.35/.45` 和 `[1,320,320,3] -> [1,84,2100]` 均哈希绑定。
 - 输入：沿用 tracker/TTC R1 的 15 正/15 同源等长负窗口，共 4,594 个唯一 PNG；不改 frame、route、event、confidence 或 NMS。
 - Host：新 Module 严格接受 channels-first 或 predictions-first 中唯一满足 `4 + labels` 的轴；保存每帧 image/input/raw SHA、阈值前 top predictions、全部 class-wise NMS 检测，不覆盖旧 ledger。
-- Device：SM-S9280 / Android 16，生产同源 Android Canvas `ImagePreprocessor`、TFLite CPU 4 threads；4,594/4,594 帧完成、0 failure，运行约 344.7 秒。
+- Device：SM-S9280 / Android 16，生产同源 Android Canvas `ImagePreprocessor`、TFLite CPU 4 threads；4,594/4,594 帧完成、0 failure，运行约 344.7 秒；device receipt 强制绑定本次 input manifest SHA、两份 host ledger 的 config/window/model/labels 及逐帧 image/input/raw hash，拒绝 stale、重复、缺帧或拼接证据。
 - 受控 person canary：`dynamics_0/000150`，图像 SHA `5fdad9e…e54fa`；Android/host person 最大分分别为 `.918618/.917334`，均映射到 COCO zero-based index 0=`person` 并高于冻结 `.35`。合成双布局、person/其他类、class-wise NMS 回归通过；因 G1 失败且缺 target bbox，source-box/目标实例覆盖不计通过。
 
 ## 可复现结果
