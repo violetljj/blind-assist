@@ -53,6 +53,75 @@ def _tartanair(root: Path, source: dict[str, Any], limit: int) -> list[dict[str,
     return result
 
 
+def _timestamp_rows(path: Path) -> list[tuple[float, str]]:
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line or line.startswith("#"):
+            continue
+        timestamp, relative = line.split()
+        rows.append((float(timestamp), relative))
+    if not rows:
+        raise ValueError(f"empty timestamp table: {path}")
+    return rows
+
+
+def _associate_nearest(
+    first: list[tuple[float, str]],
+    second: list[tuple[float, str]],
+    maximum_delta_s: float,
+) -> list[tuple[float, str, float, str]]:
+    """Greedy one-to-one association matching the public TUM benchmark tool."""
+    candidates = sorted(
+        (abs(a[0] - b[0]), ai, bi)
+        for ai, a in enumerate(first)
+        for bi, b in enumerate(second)
+        if abs(a[0] - b[0]) <= maximum_delta_s
+    )
+    used_first: set[int] = set()
+    used_second: set[int] = set()
+    matches = []
+    for _, ai, bi in candidates:
+        if ai in used_first or bi in used_second:
+            continue
+        used_first.add(ai)
+        used_second.add(bi)
+        matches.append((*first[ai], *second[bi]))
+    return sorted(matches, key=lambda row: row[0])
+
+
+def _tum_rgbd_dynamic(root: Path, source: dict[str, Any], limit: int) -> list[dict[str, Any]]:
+    rgb = _timestamp_rows(root / "rgb.txt")
+    depth = _timestamp_rows(root / "depth.txt")
+    maximum_delta_s = float(source.get("maximum_rgb_depth_delta_s", 0.02))
+    associated = _associate_nearest(rgb, depth, maximum_delta_s)
+    start = int(source.get("start_association_index", 0))
+    if limit > 0:
+        associated = associated[start:start + limit]
+    else:
+        associated = associated[start:]
+    poses = [(float(row[0]), [float(v) for v in row[1:]]) for row in parse_rows(root / "groundtruth.txt", 8)]
+    intrinsics = [float(v) for v in source["intrinsics"]]
+    result = []
+    for index, (rgb_ts, rgb_path, depth_ts, depth_path) in enumerate(associated):
+        pose_ts, pose_values = nearest_pose(poses, rgb_ts)
+        result.append(
+            _frame(
+                root,
+                index,
+                rgb_ts,
+                depth_ts,
+                pose_ts,
+                rgb_path,
+                depth_path,
+                intrinsics,
+                quaternion_matrix(pose_values),
+                source,
+                "uint16_png_z_meters",
+            )
+        )
+    return result
+
+
 def _frame(root: Path, index: int, rgb_ts: float, depth_ts: float, pose_ts: float, rgb_path: str, depth_path: str, intrinsics: list[float], pose: list[list[float]], source: dict[str, Any], depth_encoding: str, camera_path: str | None = None) -> dict[str, Any]:
     rgb = (root / rgb_path).resolve(); depth = (root / depth_path).resolve()
     if root.resolve() not in rgb.parents or root.resolve() not in depth.parents or not rgb.is_file() or not depth.is_file():
@@ -70,7 +139,12 @@ def _frame(root: Path, index: int, rgb_ts: float, depth_ts: float, pose_ts: floa
     return row
 
 
-ADAPTERS = {"eth3d_tum": _eth3d, "icl_nuim_tum": _icl, "tartanair_preprocessed": _tartanair}
+ADAPTERS = {
+    "eth3d_tum": _eth3d,
+    "icl_nuim_tum": _icl,
+    "tartanair_preprocessed": _tartanair,
+    "tum_rgbd_dynamic": _tum_rgbd_dynamic,
+}
 
 
 def normalize(repo: Path, sources_path: Path, prereg_path: Path, output: Path) -> dict[str, Any]:
@@ -81,9 +155,11 @@ def normalize(repo: Path, sources_path: Path, prereg_path: Path, output: Path) -
     summaries = []
     for source in sources["sources"]:
         root = (repo / source["root"]).resolve()
-        frames = ADAPTERS[source["adapter"]](root, source, int(prereg["frames_per_source"]))
-        if len(frames) != int(prereg["frames_per_source"]):
-            raise ValueError(f"source {source['source_id']} has only {len(frames)} frames")
+        requested = int(source.get("frame_count", prereg["frames_per_source"]))
+        frames = ADAPTERS[source["adapter"]](root, source, requested)
+        minimum = int(source.get("minimum_frame_count", requested))
+        if len(frames) < minimum:
+            raise ValueError(f"source {source['source_id']} has only {len(frames)} frames; needs {minimum}")
         target = output / source["source_id"]
         target.mkdir()
         ledger = target / "frames.jsonl"

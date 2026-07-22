@@ -1,0 +1,59 @@
+{
+  "schema": "blindassist_ustrf_sensor_replay_r3_prereg_v1",
+  "authority": "benchmark_only",
+  "frozen_on": "2026-07-22",
+  "minimum_admitted_sources": 3,
+  "frames_per_source": 0,
+  "synchronization": {
+    "maximum_rgb_depth_delta_ms": 20.0,
+    "maximum_rgb_pose_delta_ms": 40.0,
+    "minimum_source_aligned_fraction": 0.95
+  },
+  "geometry": {
+    "maximum_temporal_reprojection_p95_m": 0.30,
+    "minimum_valid_depth_fraction": 0.50,
+    "reprojection_pair_count": 20,
+    "reprojection_pixel_stride": 12
+  },
+  "pose_estimator": {
+    "id": "opencv_orb_rgbd_pnp_r3_v1",
+    "ground_truth_pose_access": false,
+    "minimum_estimated_fraction": 0.80
+  },
+  "route": {
+    "truth_horizon_frames": 24,
+    "causal_history_frames": 12,
+    "minimum_forward_displacement_m": 0.03,
+    "maximum_unknown_rate": 0.50
+  },
+  "candidate": {
+    "id": "ustrf_metric_depth_causal_route_r3_v1",
+    "alert_depth_m": 1.35,
+    "clear_depth_m": 1.65,
+    "minimum_alert_frames": 2,
+    "minimum_clear_frames": 3,
+    "route_radius_fraction": 0.08
+  },
+  "event_thresholds": {
+    "minimum_event_recall": 0.90,
+    "maximum_critical_miss_rate": 0.05,
+    "maximum_false_alerts_per_minute": 0.50,
+    "minimum_clearance_rate": 0.90,
+    "maximum_clearance_p95_ms": 500.0
+  },
+  "required_closure_metrics": [
+    "event_recall",
+    "critical_miss_rate",
+    "false_alerts_per_minute",
+    "clearance_rate",
+    "clearance_p95_ms"
+  ],
+  "closed_branches": [
+    "model_proxy_120_episode_expansion",
+    "ustrf_u0",
+    "repeat_static_arcore",
+    "hardware_selection",
+    "android_runtime",
+    "production_replacement"
+  ]
+}

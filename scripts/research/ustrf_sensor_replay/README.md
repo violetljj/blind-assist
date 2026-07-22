@@ -1,10 +1,12 @@
 # USTRF sensor replay
 
-状态：active / benchmark-only / production-isolated
+状态：active / R3 source admission failed / benchmark-only / production-isolated
 
 ## 稳定 Interface
 
 通过 `scripts/run_research_tool.py ustrf-sensor-replay <tool.py>` 调用。`normalize_sources.py` 只接收冻结的来源清单与预注册，输出统一、hash-bound 的 RGB + metric depth + camera-to-world pose bundle；`run_replay.py` 重新校验所有文件后计算同步、深度重投影、clearance proxy 与跨来源最差项，并在提供独立 pose estimate、route truth/prediction、event truth/candidate alert 时计算 pose drift、路线投影误差、event recall、false alerts/min 与 alert clearance。来源 Adapter 内显式封装单位、时间和坐标约定。
+
+R3 使用 `prepare_estimator_inputs.py -> estimate_rgbd_pose.py -> derive_r3_route_candidate.py -> prepare_r3_review_bundle.py -> finalize_r3_reviews.py -> run_replay.py`。estimator 输入账本物理删除 GT pose；candidate trace 必须在 review 前冻结且对两位 reviewer 隐藏；五项事件门逐来源 AND，并分别记录 worst source。任何 source review 拒绝、pose/route 不可评或单源阈值失败都保持 `DO_NOT_SELECT_HARDWARE`。
 
 ## 输出
 

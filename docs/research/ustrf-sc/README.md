@@ -13,6 +13,7 @@
 
 ## 协议与专项记录
 
+- [连续 RGB-D+pose closed-loop R3（2026-07-22）](USTRF_SENSOR_REPLAY_R3_RESULT_2026-07-22.md)：独立 RGB-D VO、route truth/causal prediction、审核前 candidate trace、完整序列双模型 review 与逐来源五项门已实现；三条 TUM dynamic 序列均因非身体绑定前向路线被一致拒绝，五项保持不可评，`DO_NOT_SELECT_HARDWARE`。
 - [多来源 RGB-D+pose sensor replay R2（2026-07-22）](USTRF_SENSOR_REPLAY_R2_RESULT_2026-07-22.md)：ETH3D/ICL-NUIM/TartanAir 各 120 帧的同步与时序重投影运输层通过，但隔离双模型一致拒绝 route/event admission，故 pose drift、路线投影和事件闭环仍不可评；保持 `DO_NOT_SELECT_HARDWARE`、120/U0 关闭。
 - [跨相机 Codex 代理评测 R0（2026-07-21）](USTRF_CROSSCAM_CODEX_PROXY_R0_2026-07-21.md)：公开 360/POV 输入适配、三轮 Codex 共识与真实 Android bbox-route 对比；首个负样本暴露路线边界假阳性，只授权后续 proxy 扩样。
 - [跨相机路线投影与走廊几何 R1（2026-07-21）](USTRF_CROSSCAM_ROUTE_PROJECTION_CORRIDOR_R1_2026-07-21.md)：显式投影收据、polygon + bbox bottom-center + 三档不确定性；Pexels 边缘车辆由确定侵入降为弃权，并完成 SM-S9280 等价实现测试。
