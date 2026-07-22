@@ -2,6 +2,13 @@
 
 ## 2026-07-22
 
+### USTRF 全模型代理 pilot 与 ARCore frame-bound 停止门
+- 时间：2026-07-22；执行者：violjjet。
+- 范围：按用户的全模型替代规则，以图像模型生成 5 场景/10 episode matched pair，并用两个隔离模型 run 复核；新增生成/review/raw-media 哈希审计与 17 个反绕过测试。随后在 SM-S9280 自动运行独占 ARCore `Session` 单 `Frame` canary，不要求用户移动或人工验收。
+- 结果：模型代理 10/10 接受、1000 解码帧重算通过，只开放正式代理矩阵扩展，U0 永远 false。设备 150 行中有 139 个唯一 Camera2 时间戳与 139 个 camera-image pair，但 raw depth/confidence、tracking、valid pair 与稳定 Anchor 均为 0；host verdict 为 `FREEZE_FRAME_BOUND_METRIC_GEOMETRY`。
+- 决策：按 `100 / 0.95 / INTER_FRAME_STABLE` 停止条件，不扩 120 episode、不运行 U0、不以人工动作回救；App/runtime/training/production authority 均未改变。详见 [R1 结果](docs/research/ustrf-sc/USTRF_MODEL_PROXY_FRAMEBOUND_R1_RESULT_2026-07-22.md)。
+- 验证：model-proxy 17 tests + ARCore host 9 tests（合计 26）通过、Python compile、`:ustrf-shadow-benchmark` compile/assemble、SM-S9280 instrumentation `OK (1 test)`；项目结构、文档索引、仓库卫生与 diff check 通过。
+
 ### USTRF stride-4/P2 小目标 detector R1.2d 受控研究
 - 时间：2026-07-22；执行者：violjjet。
 - 范围：在许可/哈希/精确 bbox 几何闭合的数据收据上，以 YOLO26n 共享骨干做三 seed P2 stride-4/P3 配对训练；固定 `.05/.45/.30` 阈值、640 输入和既有 12 事件 truth-blind 协议，并把 YOLOE-768 只作为外部参考。未读 R1.3、未改 App、默认模型或生产权限。

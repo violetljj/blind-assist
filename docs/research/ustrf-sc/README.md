@@ -25,6 +25,7 @@
 - [Bangkok 替换与 R1.2c v2 结果（2026-07-22）](USTRF_CROSSCAM_R12C_V2_RESULT_2026-07-22.md)：六正例 oracle `6/6` 后执行唯一 FP16-768 GPU 候选；真机事件召回 `5/6`，London 仍连续漏检，故跳过 soak、锁住 R1.3，并前瞻冻结 stride-4/P2 小目标 detector 假设。
 - [stride-4/P2 小目标 detector R1.2d 受控研究（2026-07-22）](USTRF_CROSSCAM_SMALL_TARGET_R12D_RESULT_2026-07-22.md)：三 seed 配对 P2/P3 均只命中 `4/6`，London 均为 `0/22`，P2 虽提高离线小框 recall 但未转化为事件收益且稳定性/假检测更差；假设不支持，停止候选并继续锁住 R1.3。
 - [R1.2d 后续工作计划（2026-07-22）](USTRF_POST_R12D_NEXT_WORK_PLAN_2026-07-22.md)：停止 detector 架构竞赛；按首个真实 matched pair、10-episode 采集链、独占 ARCore frame-bound 几何 canary、正式 truth/geometry 双门和 U0 的顺序推进，并为每阶段冻结停止条件。
+- [模型代理 pilot 与 ARCore frame-bound R1 结果（2026-07-22）](USTRF_MODEL_PROXY_FRAMEBOUND_R1_RESULT_2026-07-22.md)：10 个模型生成 episode 经两次隔离模型 review 与 1000 帧重算后只开放正式代理矩阵扩展；SM-S9280 自动 canary 因 raw depth/tracking/稳定 Anchor 均为 0 触发冻结，故不扩 120 集、不运行 U0。
 - [路线条件化无类别风险场主线](../../ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：当前优先研究路线；typed route-risk seam 已建立，真实事件与设备米制几何硬门仍阻塞，未授权训练或接入 App。
 - [REveL YOLO11n 8/32 帧 crop/tiling 配对实验](USTRF_SC_REVEL_CROP_TILING_PAIRED_2026-07-20.md)：8 帧 canary 恢复 4/8 small miss，但 FP 从 4 增至 14，按预注册停止并跳过 32 帧。
 - [设备阶段策略](USTRF_SC_DEVICE_PHASE_POLICY.md)

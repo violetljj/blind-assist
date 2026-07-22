@@ -60,7 +60,7 @@ class UstrfArCoreBenchmarkActivity : Activity() {
                 setTextColor(Color.WHITE)
                 setShadowLayer(4f, 1f, 1f, Color.BLACK)
                 textSize = 16f
-                text = "USTRF ARCore audit active\\nMove the device slowly in a safe, open area.\\nNo navigation command will be issued."
+                text = "USTRF ARCore benchmark capture active\\nAutonomous stationary canary; no user action is requested.\\nNo navigation command will be issued."
                 gravity = Gravity.CENTER
             }, FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,

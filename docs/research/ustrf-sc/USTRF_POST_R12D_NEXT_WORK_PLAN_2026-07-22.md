@@ -2,6 +2,8 @@
 
 状态：execution plan / production-isolated / authority unchanged
 
+执行结果：已按本计划运行至预注册停止门；10-episode 模型代理 pilot 通过链路审计，但 SM-S9280 单 `Frame` canary 未获得 raw depth、tracking 或稳定 Anchor，已冻结手机 metric geometry。正式 120 episode 与 U0 因此未启动。详见 [R1 结果](USTRF_MODEL_PROXY_FRAMEBOUND_R1_RESULT_2026-07-22.md)。
+
 ## 结论先行
 
 > 2026-07-22 自动化治理更新：本文所有原人工采集、双人复核与人工 truth 前置条件，均由 [GPT / Codex 端到端自主工作流治理](../../AI_REVIEW_GOVERNANCE.md) 取代。正文中的历史结果保留，但当前执行不得创建人工待办。
