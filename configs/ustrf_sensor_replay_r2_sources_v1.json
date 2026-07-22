@@ -1,0 +1,54 @@
+{
+  "schema": "blindassist_ustrf_sensor_replay_r2_sources_v1",
+  "sources": [
+    {
+      "source_id": "eth3d_cables_1",
+      "adapter": "eth3d_tum",
+      "kind": "real_rgbd_mocap",
+      "license": "CC-BY-NC-SA-4.0",
+      "license_url": "https://eth3d.ethz.ch/",
+      "format_url": "https://eth3d.ethz.ch/slam_documentation",
+      "sequence_url": "https://eth3d.ethz.ch/slam_datasets",
+      "root": "artifacts.local/evidence/ustrf-sensor-replay-r2/sources/eth3d-cables-1/cables_1",
+      "archives": [
+        {"url": "https://eth3d.ethz.ch/data/slam/datasets/cables_1_mono.zip", "sha256": "682857a3e5f826f16bad3c18a24721a441ad079fe58c2210ec07378c47fcc651"},
+        {"url": "https://eth3d.ethz.ch/data/slam/datasets/cables_1_rgbd.zip", "sha256": "7770bab42fdac4ef3214e7f0070bbbc330469b70aa9955494490c1610cf74a31"}
+      ],
+      "intrinsics_source": "calibration.txt",
+      "depth_scale": 5000.0,
+      "pose_stability": "INTER_FRAME_STABLE"
+    },
+    {
+      "source_id": "icl_nuim_living_room_traj0",
+      "adapter": "icl_nuim_tum",
+      "kind": "synthetic_exact_rgbd_pose",
+      "license": "CC-BY-3.0",
+      "license_url": "https://www.doc.ic.ac.uk/~ahanda/VaFRIC/iclnuim.html",
+      "format_url": "https://www.doc.ic.ac.uk/~ahanda/VaFRIC/codes.html",
+      "root": "artifacts.local/evidence/ustrf-sensor-replay-r2/sources/icl-nuim-living-room-traj0",
+      "archives": [
+        {"url": "https://www.doc.ic.ac.uk/~ahanda/living_room_traj0_frei_png.tar.gz", "sha256": "4eca8c2e9f77c1bd7436c746d22ea6144b8c01fe9bc29a84e734186823f1f1ad"},
+        {"url": "https://www.doc.ic.ac.uk/~ahanda/VaFRIC/livingRoom0.gt.freiburg", "sha256": "658bfae1e3118c9f97ad7c99721649e3de65b16e209c1f5271dbc2a84cb67d61"}
+      ],
+      "intrinsics": [481.2, -480.0, 319.5, 239.5],
+      "depth_scale": 5000.0,
+      "pose_index_offset": 1,
+      "pose_stability": "INTER_FRAME_STABLE"
+    },
+    {
+      "source_id": "tartanair_japanesealley_hard_p000",
+      "adapter": "tartanair_preprocessed",
+      "kind": "synthetic_exact_rgbd_pose",
+      "license": "CC-BY-4.0",
+      "license_url": "https://tartanair.org/",
+      "format_url": "https://tartanair.org/modalities.html",
+      "root": "artifacts.local/evidence/ustrf-sensor-replay-r2/sources/tartanair-v1-japanesealley/japanesealley/Hard/P000",
+      "archives": [
+        {"source": "official TartanAir preprocessed mirror acquired by Agent", "sha256": "7a30f648255381b637c28eb28bbe095a5fdad6cd5bb6d53357896e19e8a1cfcf"}
+      ],
+      "frame_rate_hz": 10.0,
+      "depth_scale": 1.0,
+      "pose_stability": "INTER_FRAME_STABLE"
+    }
+  ]
+}

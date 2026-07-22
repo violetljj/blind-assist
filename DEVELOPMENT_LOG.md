@@ -2,6 +2,12 @@
 
 ## 2026-07-22
 
+### USTRF-SENSOR-REPLAY-R2 多来源同步 RGB-D+pose 回放
+- 时间：2026-07-22；执行者：violjjet。
+- 范围：新建 production-isolated `ustrf_sensor_replay` Module，冻结统一 RGB/metric-depth/camera-pose 合同、三来源许可/哈希和跨来源门；Agent 自动取得 ETH3D、ICL-NUIM，并复用已哈希 TartanAir archive，各规范化连续 120 帧。未扩 120 episode、未运行 U0/ARCore、未改 App 或默认模型。
+- 结果：三来源 source-aligned 均为 `1.0`，时序 depth reprojection p95 分别为 `4.13/9.15/288.83mm`，geometry transport `3/3` 通过，TartanAir 为 worst source。两次隔离模型审核均拒绝 route/event admission；独立 pose estimate、route truth 和事件 lifecycle truth 缺失，五项闭环指标保持不可评，verdict 为 `DO_NOT_SELECT_HARDWARE`。
+- 验证：Module tests、Python compile、规范化哈希重算、三来源 replay、review consensus、项目结构、仓库卫生、文档索引与 diff check；详见 [R2 结果](docs/research/ustrf-sc/USTRF_SENSOR_REPLAY_R2_RESULT_2026-07-22.md)。
+
 ### USTRF 全模型代理 pilot 与 ARCore frame-bound 停止门
 - 时间：2026-07-22；执行者：violjjet。
 - 范围：按用户的全模型替代规则，以图像模型生成 5 场景/10 episode matched pair，并用两个隔离模型 run 复核；新增生成/review/raw-media 哈希审计与 17 个反绕过测试。随后在 SM-S9280 自动运行独占 ARCore `Session` 单 `Frame` canary，不要求用户移动或人工验收。
