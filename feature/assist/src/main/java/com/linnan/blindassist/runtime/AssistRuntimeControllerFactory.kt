@@ -15,7 +15,11 @@ class AssistRuntimeControllerFactory @Inject constructor(
     private val frameSourceFactory: FrameSourceFactory,
     private val configApplier: RuntimeConfigApplier
 ) {
-    fun create(activity: ComponentActivity, appViewModel: BlindAssistViewModel): AssistSession {
+    fun create(
+        activity: ComponentActivity,
+        appViewModel: BlindAssistViewModel,
+        mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE
+    ): AssistSession {
         return AssistRuntimeSession(
             activity = activity,
             appViewModel = appViewModel,
@@ -23,7 +27,8 @@ class AssistRuntimeControllerFactory @Inject constructor(
             feedbackController = feedbackController,
             coordinator = coordinator,
             frameSourceFactory = frameSourceFactory,
-            configApplier = configApplier
+            configApplier = configApplier,
+            mode = mode
         )
     }
 }

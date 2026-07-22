@@ -30,6 +30,7 @@ internal class AssistRuntimeSession(
     private val coordinator: AssistSessionCoordinator,
     private val frameSourceFactory: FrameSourceFactory,
     private val configApplier: RuntimeConfigApplier,
+    private val mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE,
     private val stateMachine: AssistRuntimeStateMachine = AssistRuntimeStateMachine()
 ) : AssistSession {
     private var currentInputSource: AssistInputSource = AssistInputSource.PHONE_CAMERA
@@ -50,7 +51,8 @@ internal class AssistRuntimeSession(
         appViewModel = appViewModel,
         detector = detector,
         guidanceFactory = guidanceFactory,
-        fieldTestSummaryProvider = fieldTestSummaryProvider
+        fieldTestSummaryProvider = fieldTestSummaryProvider,
+        mode = mode
     )
     private val frameProcessor = AssistFrameProcessor(
         detector = detector,
@@ -62,7 +64,8 @@ internal class AssistRuntimeSession(
         isCameraActive = { appViewModel.uiState.value.cameraActive },
         runOnUiThread = { block -> activity.runOnUiThread(Runnable(block)) },
         onCameraFailure = ::handleCameraFailure,
-        decisionClockNs = decisionClockNs
+        decisionClockNs = decisionClockNs,
+        mode = mode
     )
     private val cameraLifecycleAdapter = AssistCameraLifecycleAdapter(
         initialFrameSource = initialFrameSource,

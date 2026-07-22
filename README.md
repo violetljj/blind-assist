@@ -8,6 +8,7 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 
 - 当前版本：`v10.9.0`，`versionCode=37`。
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
+- 可并存安装的 `ustrfExperiment` 实验版已接入 USTRF 二维路线代理，并直接替代旧风险分析入口；它只使用画面中心假设路线与检测框生成保守代理风险，不具备米制深度、稳定姿态或真实路线，因此不可用于独立行走，也不改变正式 App。
 - SANPO 分割路线仍为研究候选：当前离线质量门未通过，未导出正式 INT8、未执行设备晋级门、未替换 App 默认模型。
 - 正式 App 保持本地推理；眼镜设备中心仍是模拟功能，不扫描蓝牙、不连接真实眼镜。
 
@@ -47,6 +48,7 @@ $env:JAVA_HOME='E:\codex-tools\projects\blindassist\toolchain\.jdk\jdk17.0.19_10
 $env:PATH="$env:JAVA_HOME\bin;E:\codex-tools\tools\android-sdk\platform-tools;$env:PATH"
 $env:GRADLE_USER_HOME='E:\codex-tools\projects\blindassist\state\gradle'
 .\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --console=plain
+.\gradlew.bat :app:assembleUstrfExperiment --no-daemon --console=plain
 ```
 
 完整无设备验证矩阵：
@@ -82,6 +84,7 @@ Android 端消费 raw YOLO 输出并自行执行 NMS。重新导出和静态检�
 
 ```text
 app/build/outputs/apk/debug/app-debug.apk
+app/build/outputs/apk/ustrfExperiment/app-ustrfExperiment.apk
 app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk
 ```
@@ -91,7 +94,10 @@ device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk
 ```powershell
 E:\codex-tools\tools\android-sdk\platform-tools\adb.exe devices
 E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
+E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\ustrfExperiment\app-ustrfExperiment.apk
 ```
+
+实验版包名为 `com.linnan.blindassist.ustrf.experimental`，可与正式包并存；应用名和页顶常驻条幅会明确标出 USTRF 实验边界。
 
 正式归档、校验和与 Git 收据规则见 [APK 归档策略](docs/APK_ARCHIVE.md) 和 [发布与验证](docs/RELEASE_AND_VERIFICATION.md)。原始 APK 保留在经校验的外部归档，不再作为 Git 二进制提交。
 

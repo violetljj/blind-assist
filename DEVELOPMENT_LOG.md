@@ -2,6 +2,12 @@
 
 ## 2026-07-22
 
+### USTRF 二维路线代理独立实验 App
+- 时间：2026-07-22；执行者：violjjet。
+- 范围：新增可与正式包并存的 `ustrfExperiment` build type（包名 `com.linnan.blindassist.ustrf.experimental`），在该变体中用 `UstrfImageRouteProxy` 和 object-agnostic risk evidence 直接替代旧 `RiskAnalyzer` 决策入口；debug/release、正式模型资产和默认 App 行为不变。
+- 边界：当前只使用 CameraX 同帧时间戳、YOLO bbox 与固定画面中心假设路线，不提供米制深度、稳定姿态、地面、物理 TTC 或真实导航路线；无证据不等于安全，输入/时钟异常一律 HIGH 并提示停下重扫。实验版常驻显示“不可用于独立行走”。
+- 验证：`:core:ustrf:test`、`:core:assist:test`、`:core:ui:testDebugUnitTest`、`:feature:assist:testDebugUnitTest`、App debug/实验变体编译与实验 APK 构建通过；SM-S9280 已并存安装、完成首次授权并进入实时相机页，确认实验包名、版本和常驻警示。最终 lint、结构/文档/卫生门与 APK 哈希以本轮交付记录为准。
+
 ### USTRF-SENSOR-REPLAY-R2 多来源同步 RGB-D+pose 回放
 - 时间：2026-07-22；执行者：violjjet。
 - 范围：新建 production-isolated `ustrf_sensor_replay` Module，冻结统一 RGB/metric-depth/camera-pose 合同、三来源许可/哈希和跨来源门；Agent 自动取得 ETH3D、ICL-NUIM，并复用已哈希 TartanAir archive，各规范化连续 120 帧。未扩 120 episode、未运行 U0/ARCore、未改 App 或默认模型。

@@ -452,6 +452,18 @@ class CameraControlPanelStandaloneTest {
     }
 
     @Test
+    fun experimentalEditionBannerKeepsSafetyBoundaryVisible() {
+        composeRule.setContent {
+            BlindAssistTheme {
+                ExperimentalEditionBanner("USTRF二维路线代理实验版 · 不可用于独立行走")
+            }
+        }
+
+        composeRule.onNodeWithTag("experimental_edition_banner").assertIsDisplayed()
+        composeRule.onNodeWithText("USTRF二维路线代理实验版 · 不可用于独立行走").assertIsDisplayed()
+    }
+
+    @Test
     fun cameraExperienceUsesEnglishBackAndToggleSemantics() {
         composeRule.setContent {
             BlindAssistTheme {

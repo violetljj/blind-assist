@@ -17,7 +17,10 @@ internal class AssistFrameProcessor(
     private val runOnUiThread: (() -> Unit) -> Unit,
     private val onCameraFailure: (String) -> Unit,
     private val decisionClockNs: () -> Long = System::nanoTime,
-    private val ustrfShadowAdapter: AssistUstrfShadowAdapter = AssistUstrfShadowAdapter()
+    private val ustrfShadowAdapter: AssistUstrfShadowAdapter = AssistUstrfShadowAdapter(),
+    private val mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE,
+    private val ustrfExperimentalAdapter: AssistUstrfExperimentalAdapter =
+        AssistUstrfExperimentalAdapter(coordinator)
 ) {
     private val isProcessing = AtomicBoolean(false)
 
@@ -77,14 +80,24 @@ internal class AssistFrameProcessor(
                         inferenceP95Ms = snapshot.inferenceP95Ms
                     )
                 )
-                val frameResult = coordinator.processFrame(
-                    detectorFrameWithPipelineStats,
-                    runtimeConfig.alertProfile,
-                    runtimeConfig.assistScenario,
-                    nowMs = eventTimeMs,
-                    decisionAtNs = decisionAtNs
-                )
-                ustrfShadowAdapter.observe(detectorFrameWithPipelineStats, decisionAtNs)
+                val frameResult = when (mode) {
+                    AssistRuntimeMode.BASELINE -> coordinator.processFrame(
+                        detectorFrameWithPipelineStats,
+                        runtimeConfig.alertProfile,
+                        runtimeConfig.assistScenario,
+                        nowMs = eventTimeMs,
+                        decisionAtNs = decisionAtNs
+                    ).also {
+                        ustrfShadowAdapter.observe(detectorFrameWithPipelineStats, decisionAtNs)
+                    }
+                    AssistRuntimeMode.USTRF_EXPERIMENT -> ustrfExperimentalAdapter.process(
+                        frame = detectorFrameWithPipelineStats,
+                        profile = runtimeConfig.alertProfile,
+                        scenario = runtimeConfig.assistScenario,
+                        nowMs = eventTimeMs,
+                        decisionAtNs = decisionAtNs
+                    )
+                }
                 CommittedFrame(detectorFrameWithPipelineStats, frameResult)
             }
             if (committedFrame != null) {

@@ -228,6 +228,27 @@ class AssistFrameProcessorTest {
         assertTrue(failures.single().contains("source frame"))
     }
 
+    @Test
+    fun ustrfExperimentUsesFailClosedEvidencePathWhileBaselineKeepsLegacyEmptyFrame() {
+        val baselineGateway = FakeFeedbackGateway()
+        val experimentGateway = FakeFeedbackGateway()
+        val experimentViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore()))
+        val baseline = processor(feedbackGateway = baselineGateway)
+        val experiment = processor(
+            feedbackGateway = experimentGateway,
+            appViewModel = experimentViewModel,
+            mode = AssistRuntimeMode.USTRF_EXPERIMENT
+        )
+
+        baseline.process(FakeVisionFrame())
+        experiment.process(FakeVisionFrame())
+
+        assertEquals(com.linnan.blindassist.risk.RiskLevel.NONE, baselineGateway.lastRisk?.level)
+        assertEquals(com.linnan.blindassist.risk.RiskLevel.HIGH, experimentGateway.lastRisk?.level)
+        assertEquals("USTRF 实验代理判断", experimentViewModel.uiState.value.cameraGuidance.explanationHeadline)
+        assertTrue(experimentViewModel.uiState.value.cameraGuidance.detail.contains("USTRF实验输入不完整"))
+    }
+
     private fun processor(
         detector: FakeDetector = FakeDetector(),
         stats: FramePipelineStats = FramePipelineStats(),
@@ -239,7 +260,8 @@ class AssistFrameProcessorTest {
         feedbackGateway: FakeFeedbackGateway = FakeFeedbackGateway(),
         appViewModel: BlindAssistViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore())),
         runOnUiThread: ((() -> Unit) -> Unit) = { it() },
-        decisionClockNs: () -> Long = { 2_000_000_000L }
+        decisionClockNs: () -> Long = { 2_000_000_000L },
+        mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE
     ): AssistFrameProcessor {
         val coordinator = AssistSessionCoordinator(feedbackGateway = feedbackGateway)
         if (startLifecycleGate) {
@@ -252,6 +274,7 @@ class AssistFrameProcessorTest {
             detector = detector,
             guidanceFactory = guidanceFactory,
             fieldTestSummaryProvider = FieldTestSummaryProvider(coordinator),
+            mode = mode,
             performanceLogger = AssistRuntimePerformanceLogger(clockMs = { 0L })
         )
         return AssistFrameProcessor(
@@ -264,7 +287,8 @@ class AssistFrameProcessorTest {
             isCameraActive = { active },
             runOnUiThread = runOnUiThread,
             onCameraFailure = onCameraFailure,
-            decisionClockNs = decisionClockNs
+            decisionClockNs = decisionClockNs,
+            mode = mode
         )
     }
 
@@ -326,6 +350,8 @@ class AssistFrameProcessorTest {
             private set
         var notifyCalls = 0
             private set
+        var lastRisk: com.linnan.blindassist.risk.RiskResult? = null
+            private set
 
         override fun resetSession() {
             resetCalls += 1
@@ -337,6 +363,7 @@ class AssistFrameProcessorTest {
             scenario: AssistScenario
         ): FeedbackDecision {
             notifyCalls += 1
+            lastRisk = risk
             return FeedbackDecision(null, triggered = false, reason = FeedbackReason.NO_FEEDBACK_RISK)
         }
     }

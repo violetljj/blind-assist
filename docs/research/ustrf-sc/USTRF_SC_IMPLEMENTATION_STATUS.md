@@ -1,7 +1,13 @@
 # USTRF-SC 双环实施状态与证据边界
 
-状态日期：2026-07-21。
+状态日期：2026-07-22。
 总原则：本表区分“接口/单元测试存在”“设备候选观测存在”“独立验证完成”和“生产授权”。除非明确写为生产授权，否则默认均为 production-isolated experiment。
+
+## 2026-07-22 独立体验版边界
+
+- `ustrfExperiment` 是独立 application ID 的体验变体，可与正式 App 并存；只有该变体会绕过旧 `RiskAnalyzer`，将 `UstrfImageRouteProxy` 输出通过 object-agnostic risk-evidence seam 送入共享 `AssistDecisionKernel`。正式 debug/release 路径不变。
+- 当前输入是同帧 CameraX/YOLO 检测框和固定画面中心假设路线。候选路线的最低代理风险只作诊断，绝不输出“向左/向右安全”；没有代理侵入时明确提示“不代表安全”，帧、时钟或尺寸不可信时 fail closed 为 HIGH/停下重扫。
+- 这是为了提前体验 USTRF 的“路线条件化、对象无关风险、共享稳定/反馈内核”交互，不是完整 USTRF-SC。米制深度、稳定 pose、ground、physical TTC、真实 route truth 和事件验证仍缺失，所以授权仅为 `EXPERIMENTAL_APP_EXPERIENCE_ONLY`，不构成训练、生产或独立行走授权。
 
 | 双环模块 | 当前实现 | 已有证据 | 未满足的门 | 当前授权 |
 | --- | --- | --- | --- | --- |

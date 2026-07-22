@@ -23,7 +23,8 @@ data class BlindAssistAppState(
     val activeReplayScenario: ReplayScenario?,
     val showOnboarding: Boolean,
     val showGlassesCenter: Boolean,
-    val glassesSimulator: GlassesSimulatorUiState
+    val glassesSimulator: GlassesSimulatorUiState,
+    val editionLabel: String? = null
 )
 
 data class BlindAssistAppActions(

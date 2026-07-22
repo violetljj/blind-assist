@@ -131,6 +131,7 @@ class AssistDecisionKernel(
         metrics: DetectorMetrics,
         feedbackGateway: FeedbackGateway,
         nowMs: Long,
+        sourceFrame: FrameStamp? = null,
         decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
     ): AssistFrameResult {
         require(evidence.sourceContractId == RISK_EVIDENCE_INPUT_CONTRACT_ID) {
@@ -147,6 +148,7 @@ class AssistDecisionKernel(
             scenario = scenario,
             metrics = metrics,
             nowMs = nowMs,
+            sourceFrame = sourceFrame,
             decisionAtNs = decisionAtNs
         )
         val event = riskEventTracker.updateExternalEvidence(evaluation.stableRisk, evidence.eventKey, nowMs)

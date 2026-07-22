@@ -63,6 +63,7 @@ class AssistEngine(
         scenario: AssistScenario = AssistScenario.GENERAL,
         metrics: DetectorMetrics,
         nowMs: Long = monotonicNowMs(),
+        sourceFrame: FrameStamp? = null,
         decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
     ): AssistFrameEvaluation {
         require(rawRisk.sourceDetection == null) { "object-agnostic risk evidence must not contain a detection" }
@@ -80,6 +81,7 @@ class AssistEngine(
             preliminaryReason = displayReasonFor(temporalRisk, stableRisk, null),
             evaluatedAtMs = nowMs,
             riskEvidenceCount = evidenceCount,
+            sourceFrame = sourceFrame,
             decisionAtNs = decisionAtNs
         )
     }

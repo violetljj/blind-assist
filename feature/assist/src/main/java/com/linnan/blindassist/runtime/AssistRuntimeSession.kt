@@ -17,6 +17,11 @@ interface AssistSession {
     fun shutdown()
 }
 
+enum class AssistRuntimeMode {
+    BASELINE,
+    USTRF_EXPERIMENT
+}
+
 sealed interface AssistRuntimeIntent {
     data object OpenPhoneCamera : AssistRuntimeIntent
     data class OpenOfflineReplay(val scenario: ReplayScenario) : AssistRuntimeIntent

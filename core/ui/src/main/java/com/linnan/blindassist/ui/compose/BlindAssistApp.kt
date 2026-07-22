@@ -129,64 +129,94 @@ fun BlindAssistApp(
         modifier = modifier.fillMaxSize(),
         color = BaNight
     ) {
-        AnimatedContent(
-            targetState = state.cameraActive,
-            label = "camera-shell"
-        ) { isCameraActive ->
-            when {
-                isCameraActive -> CameraExperienceScreen(
-                    controls = state.controls,
-                    guidance = state.cameraGuidance,
-                    fieldTestSummary = state.fieldTestSummary,
-                    inputSource = state.activeInputSource,
-                    replayScenario = state.activeReplayScenario,
-                    onBack = actions.runtime.onCloseCamera,
-                    onDetectionChange = actions.runtime.onDetectionChange,
-                    onSpeechChange = actions.runtime.onSpeechChange,
-                    onVibrationChange = actions.runtime.onVibrationChange,
-                    onCareModeChange = actions.runtime.onCareModeChange,
-                    onDebugVisibleChange = actions.runtime.onDebugVisibleChange,
-                    onProfileChange = actions.runtime.onProfileChange,
-                    onScenarioChange = actions.runtime.onScenarioChange,
-                    onQuietShortcut = actions.runtime.onQuietShortcut,
-                    onSensitiveShortcut = actions.runtime.onSensitiveShortcut,
-                    onCameraViewsReady = actions.runtime.onCameraViewsReady
-                )
-                splashVisible -> BrandSplashScreen(onFinished = { splashVisible = false })
-                state.showOnboarding -> OnboardingScreen(onFinished = actions.navigation.onCompleteOnboarding)
-                state.showGlassesCenter -> GlassesSimulatorScreen(
-                    state = state.glassesSimulator,
-                    language = state.controls.appLanguage,
-                    onBack = actions.navigation.onDismissGlassesCenter,
-                    onConnect = actions.glasses.onSimulateConnection,
-                    onConnectionCompleted = actions.glasses.onConnectionCompleted,
-                    onLowBattery = actions.glasses.onSimulateLowBattery,
-                    onDisconnect = actions.glasses.onSimulateDisconnect,
-                    onReset = actions.glasses.onReset,
-                    onReplayScenarioSelected = actions.glasses.onReplayScenarioSelected,
-                    onStartReplay = actions.runtime.onStartOfflineReplay
-                )
-                else -> MainShell(
-                    controls = state.controls,
-                    fieldTestSummary = state.fieldTestSummary,
-                    modelStatus = state.modelStatus,
-                    appVersion = state.appVersion,
-                    onOpenCamera = actions.runtime.onOpenCamera,
-                    onShowGlassesCenter = actions.navigation.onShowGlassesCenter,
-                    onSpeechChange = actions.runtime.onSpeechChange,
-                    onVibrationChange = actions.runtime.onVibrationChange,
-                    onCareModeChange = actions.runtime.onCareModeChange,
-                    onDebugVisibleChange = actions.runtime.onDebugVisibleChange,
-                    onProfileChange = actions.runtime.onProfileChange,
-                    onScenarioChange = actions.runtime.onScenarioChange,
-                    onSpeechStyleChange = actions.runtime.onSpeechStyleChange,
-                    onVibrationStrengthChange = actions.runtime.onVibrationStrengthChange,
-                    onDailyUsageModeChange = actions.runtime.onDailyUsageModeChange,
-                    onLanguageChange = actions.runtime.onLanguageChange,
-                    onShowOnboarding = actions.navigation.onShowOnboarding
+        Box(modifier = Modifier.fillMaxSize()) {
+            AnimatedContent(
+                targetState = state.cameraActive,
+                label = "camera-shell"
+            ) { isCameraActive ->
+                when {
+                    isCameraActive -> CameraExperienceScreen(
+                        controls = state.controls,
+                        guidance = state.cameraGuidance,
+                        fieldTestSummary = state.fieldTestSummary,
+                        inputSource = state.activeInputSource,
+                        replayScenario = state.activeReplayScenario,
+                        onBack = actions.runtime.onCloseCamera,
+                        onDetectionChange = actions.runtime.onDetectionChange,
+                        onSpeechChange = actions.runtime.onSpeechChange,
+                        onVibrationChange = actions.runtime.onVibrationChange,
+                        onCareModeChange = actions.runtime.onCareModeChange,
+                        onDebugVisibleChange = actions.runtime.onDebugVisibleChange,
+                        onProfileChange = actions.runtime.onProfileChange,
+                        onScenarioChange = actions.runtime.onScenarioChange,
+                        onQuietShortcut = actions.runtime.onQuietShortcut,
+                        onSensitiveShortcut = actions.runtime.onSensitiveShortcut,
+                        onCameraViewsReady = actions.runtime.onCameraViewsReady
+                    )
+                    splashVisible -> BrandSplashScreen(onFinished = { splashVisible = false })
+                    state.showOnboarding -> OnboardingScreen(onFinished = actions.navigation.onCompleteOnboarding)
+                    state.showGlassesCenter -> GlassesSimulatorScreen(
+                        state = state.glassesSimulator,
+                        language = state.controls.appLanguage,
+                        onBack = actions.navigation.onDismissGlassesCenter,
+                        onConnect = actions.glasses.onSimulateConnection,
+                        onConnectionCompleted = actions.glasses.onConnectionCompleted,
+                        onLowBattery = actions.glasses.onSimulateLowBattery,
+                        onDisconnect = actions.glasses.onSimulateDisconnect,
+                        onReset = actions.glasses.onReset,
+                        onReplayScenarioSelected = actions.glasses.onReplayScenarioSelected,
+                        onStartReplay = actions.runtime.onStartOfflineReplay
+                    )
+                    else -> MainShell(
+                        controls = state.controls,
+                        fieldTestSummary = state.fieldTestSummary,
+                        modelStatus = state.modelStatus,
+                        appVersion = state.appVersion,
+                        onOpenCamera = actions.runtime.onOpenCamera,
+                        onShowGlassesCenter = actions.navigation.onShowGlassesCenter,
+                        onSpeechChange = actions.runtime.onSpeechChange,
+                        onVibrationChange = actions.runtime.onVibrationChange,
+                        onCareModeChange = actions.runtime.onCareModeChange,
+                        onDebugVisibleChange = actions.runtime.onDebugVisibleChange,
+                        onProfileChange = actions.runtime.onProfileChange,
+                        onScenarioChange = actions.runtime.onScenarioChange,
+                        onSpeechStyleChange = actions.runtime.onSpeechStyleChange,
+                        onVibrationStrengthChange = actions.runtime.onVibrationStrengthChange,
+                        onDailyUsageModeChange = actions.runtime.onDailyUsageModeChange,
+                        onLanguageChange = actions.runtime.onLanguageChange,
+                        onShowOnboarding = actions.navigation.onShowOnboarding
+                    )
+                }
+            }
+            state.editionLabel?.let { label ->
+                ExperimentalEditionBanner(
+                    label = label,
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 8.dp, start = 12.dp, end = 12.dp)
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ExperimentalEditionBanner(
+    label: String,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier.testTag("experimental_edition_banner"),
+        color = MaterialTheme.colorScheme.errorContainer,
+        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+        shape = RoundedCornerShape(12.dp),
+        tonalElevation = 4.dp
+    ) {
+        Text(
+            text = label,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            style = MaterialTheme.typography.labelLarge
+        )
     }
 }
 

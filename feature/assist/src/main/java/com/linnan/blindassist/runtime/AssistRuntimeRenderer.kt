@@ -13,6 +13,7 @@ internal class AssistRuntimeRenderer(
     private val detector: ObjectDetector,
     private val guidanceFactory: AssistRuntimeGuidanceFactory,
     private val fieldTestSummaryProvider: FieldTestSummaryProvider,
+    private val mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE,
     private val performanceLogger: AssistRuntimePerformanceLogger = AssistRuntimePerformanceLogger()
 ) {
     private var overlayView: DetectionOverlayView? = null
@@ -86,7 +87,14 @@ internal class AssistRuntimeRenderer(
             detectorFrame.frameSize,
             frameResult.evaluation.stableRisk
         )
-        renderUi(CameraGuidanceMapper.fromFrameResult(frameResult, runtimeConfig.appLanguage))
+        val guidance = CameraGuidanceMapper.fromFrameResult(frameResult, runtimeConfig.appLanguage)
+        renderUi(
+            if (mode == AssistRuntimeMode.USTRF_EXPERIMENT) {
+                guidance.withUstrfExperimentalMessage(frameResult.evaluation.rawRisk.message)
+            } else {
+                guidance
+            }
+        )
         appViewModel.updateFieldTestSummary(
             fieldTestSummaryProvider.fromSummary(
                 summary = frameResult.sessionSummary,
@@ -102,5 +110,18 @@ internal class AssistRuntimeRenderer(
 
     private fun renderUi(snapshot: CameraGuidanceUiState) {
         appViewModel.renderCameraGuidance(snapshot, detector.statusMessage)
+    }
+
+    private fun CameraGuidanceUiState.withUstrfExperimentalMessage(message: String): CameraGuidanceUiState {
+        return copy(
+            detail = message,
+            careDetail = message,
+            explanationHeadline = "USTRF 实验代理判断",
+            explanationDetail = message,
+            careExplanation = message,
+            careAccessibilitySummary = "$careTitle，$message",
+            accessibilitySummary = "$title，$message",
+            accessibilityKey = "$accessibilityKey-ustrf-experiment"
+        )
     }
 }

@@ -11,6 +11,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.linnan.blindassist.runtime.AssistRuntimeControllerFactory
 import com.linnan.blindassist.runtime.AssistRuntimeIntent
+import com.linnan.blindassist.runtime.AssistRuntimeMode
 import com.linnan.blindassist.runtime.AssistSession
 import com.linnan.blindassist.ui.BlindAssistViewModel
 import com.linnan.blindassist.ui.compose.BlindAssistApp
@@ -42,7 +43,12 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        assistSession = runtimeControllerFactory.create(this, appViewModel).also { it.initialize() }
+        val runtimeMode = if (BuildConfig.USTRF_EXPERIMENT) {
+            AssistRuntimeMode.USTRF_EXPERIMENT
+        } else {
+            AssistRuntimeMode.BASELINE
+        }
+        assistSession = runtimeControllerFactory.create(this, appViewModel, runtimeMode).also { it.initialize() }
         appViewModel.onDebugReplayAvailabilityChanged(BuildConfig.DEBUG)
 
         setContent {
@@ -55,6 +61,11 @@ class MainActivity : ComponentActivity() {
                         fieldTestSummary = uiState.fieldTestSummary,
                         modelStatus = uiState.modelStatus,
                         appVersion = BuildConfig.VERSION_NAME,
+                        editionLabel = if (BuildConfig.USTRF_EXPERIMENT) {
+                            "USTRF二维路线代理实验版 · 不可用于独立行走"
+                        } else {
+                            null
+                        },
                         cameraActive = uiState.cameraActive,
                         activeInputSource = uiState.activeInputSource,
                         activeReplayScenario = uiState.activeReplayScenario,

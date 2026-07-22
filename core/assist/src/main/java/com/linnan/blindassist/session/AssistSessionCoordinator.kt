@@ -5,10 +5,12 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.FeedbackGateway
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.DetectionSource
+import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.RiskEventTracker
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.vision.DetectorFrameResult
+import com.linnan.blindassist.vision.FrameStamp
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -57,6 +59,31 @@ class AssistSessionCoordinator(
             feedbackGateway = feedbackGateway,
             nowMs = nowMs,
             sourceFrame = detectorFrame.sourceFrame,
+            decisionAtNs = decisionAtNs
+        )
+    }
+
+    /** Experimental object-agnostic evidence path; bypasses legacy detector risk analysis. */
+    fun processRiskEvidence(
+        evidence: AssistRiskEvidenceFrame,
+        frameSize: FrameSize,
+        profile: AlertProfile,
+        scenario: AssistScenario,
+        metrics: DetectorMetrics,
+        nowMs: Long,
+        sourceFrame: FrameStamp?,
+        decisionAtNs: Long
+    ): AssistFrameResult {
+        val fps = fpsTracker.onFrame()
+        return decisionKernel.processRiskEvidence(
+            evidence = evidence,
+            frameSize = frameSize,
+            profile = profile,
+            scenario = scenario,
+            metrics = metrics.copy(fps = fps),
+            feedbackGateway = feedbackGateway,
+            nowMs = nowMs,
+            sourceFrame = sourceFrame,
             decisionAtNs = decisionAtNs
         )
     }

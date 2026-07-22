@@ -40,6 +40,7 @@ android {
         versionName = "10.9.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("boolean", "USTRF_EXPERIMENT", "false")
     }
 
     signingConfigs {
@@ -64,6 +65,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        create("ustrfExperiment") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".ustrf.experimental"
+            versionNameSuffix = "-ustrf-exp"
+            matchingFallbacks += listOf("debug")
+            buildConfigField("boolean", "USTRF_EXPERIMENT", "true")
         }
     }
 
