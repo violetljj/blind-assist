@@ -6,7 +6,7 @@ deployment path.  It turns only hash-attested, fully validated human episode
 targets into deterministic temporal supervision and can build a small Keras
 head over *externally supplied* per-frame features.  Public RGB/masks and
 GPT/VLM labels can be admitted only through an explicitly provisional,
-hash-attested report; they never become human truth or production evidence.
+hash-attested report; they never become independent GPT/Codex consensus truth or production evidence.
 """
 
 from __future__ import annotations
@@ -125,17 +125,19 @@ def validate_target(target: dict[str, Any], *, allowed_hazard_types: Iterable[st
 def load_attested_targets(
     *, targets_path: Path, report_path: Path, allowed_hazard_types: Iterable[str],
 ) -> list[dict[str, Any]]:
-    """Load human or explicitly-provisional targets with matching attestation."""
+    """Load hash-bound model-consensus targets with matching attestation."""
     report = _read_json(report_path)
     if report.get("format") != REPORT_FORMAT:
         raise TargetContractError("target report format is invalid")
-    supervision_tier = report.get("supervision_tier", "attested_human_reviewed")
-    if supervision_tier == "attested_human_reviewed":
+    supervision_tier = report.get("supervision_tier")
+    if supervision_tier == "hash_bound_model_consensus":
         validation = report.get("validated_collection")
         if not isinstance(validation, dict) or validation.get("training_eligible") is not True:
-            raise TargetContractError("target report is not attested as a complete human-reviewed collection")
-        if report.get("training_execution_authorized") is not False:
-            raise TargetContractError("human target report must not grant training execution authorization")
+            raise TargetContractError("target report is not bound to a complete GPT/Codex-reviewed collection")
+        if report.get("training_execution_authorized") is not True:
+            raise TargetContractError("model-consensus target report must authorize research training")
+        if report.get("review_authority") != "gpt_codex_isolated_consensus_v1":
+            raise TargetContractError("target report review authority is invalid")
     elif supervision_tier == "hash_bound_model_silver_provisional":
         if report.get("training_execution_authorized") is not True:
             raise TargetContractError("provisional model target report must explicitly authorize training")
@@ -230,7 +232,7 @@ def build_temporal_risk_lifecycle_head(
     model.risk_lifecycle_contract = {
         "format": "blindassist_sanpo_risk_lifecycle_prototype_v1",
         "feature_input": "externally_supplied_frame_features_only",
-        "primary_supervision": "attested_human_reviewed_or_hash_bound_model_silver_provisional",
+        "primary_supervision": "hash_bound_model_consensus_or_hash_bound_model_silver_provisional",
         "pixel_supervision_role": "auxiliary_only",
         "training_execution_authorized": "depends_on_target_report_supervision_tier",
         "production_model_replacement_authorized": False,

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import itertools
 import json
 import math
@@ -22,6 +23,14 @@ from typing import Any, Iterable
 
 import numpy as np
 from PIL import Image
+
+
+_AI_REVIEW_PATH = Path(__file__).with_name("validate_ai_review_receipt.py")
+_AI_REVIEW_SPEC = importlib.util.spec_from_file_location("blindassist_ai_review_authority", _AI_REVIEW_PATH)
+if _AI_REVIEW_SPEC is None or _AI_REVIEW_SPEC.loader is None:  # pragma: no cover
+    raise RuntimeError(f"cannot load AI review authority: {_AI_REVIEW_PATH}")
+_AI_REVIEW = importlib.util.module_from_spec(_AI_REVIEW_SPEC)
+_AI_REVIEW_SPEC.loader.exec_module(_AI_REVIEW)
 
 
 SCENES = (
@@ -36,6 +45,13 @@ CONSENT_RECEIPT_FORMAT = "blindassist_p3_consented_capture_receipt_v1"
 CONSENTED_CAPTURE_MODES = {"phone_chest_forward", "phone_handheld_forward"}
 SANPO_V0_MASK_TAXONOMY = "sanpo_real_v0_panoptic_class_id_v1"
 BLINDASSIST_4CLASS_MASK_TAXONOMY = "blindassist_4class_mask_v1"
+P3_AI_REVIEW_POLICY = {
+    "receipt_schema": "blindassist_ai_review_consensus_v1",
+    "required_reviewer_roles": ["gpt_multimodal_reviewer", "codex_evidence_reviewer"],
+    "allowed_adjudicator_roles": ["gpt_adjudicator", "codex_adjudicator"],
+    "minimum_confidence": 0.65,
+    "candidate_output_hidden_from_reviewers": False,
+}
 CLASS_NAMES = (
     "walkable",
     "boundary_step_curb",
@@ -183,10 +199,10 @@ def _admit_sequence_source(sequence: dict[str, Any], recipe_root: Path) -> dict[
         "source_id": CONSENTED_PHONE_SOURCE_ID,
         "native_session_id": native_session,
         "consent_status": "granted",
-        "residual_pii_review_status": "passed",
-        "pixel_annotation_status": "human_verified",
-        "annotation_quality": "human",
-        "scene_review_status": "approved",
+        "residual_pii_review_status": "ai_review_passed",
+        "pixel_annotation_status": "model_consensus_verified",
+        "annotation_quality": "model_consensus",
+        "scene_review_status": "ai_accepted_for_research",
         "mask_taxonomy": BLINDASSIST_4CLASS_MASK_TAXONOMY,
     }
     for field, expected in required.items():
@@ -196,12 +212,32 @@ def _admit_sequence_source(sequence: dict[str, Any], recipe_root: Path) -> dict[
         raise PlanningError(f"{native_session}: consent receipt capture_mode is not an approved forward phone view")
     if not str(receipt.get("consent_record_ref", "")).strip():
         raise PlanningError(f"{native_session}: consent receipt requires a non-empty consent_record_ref")
+    ai_review_path_value = str(receipt.get("ai_review_receipt_path", "")).strip()
+    if not ai_review_path_value:
+        raise PlanningError(f"{native_session}: consent receipt requires ai_review_receipt_path")
+    ai_review_path = safe_file(recipe_root, ai_review_path_value)
+    expected_ai_sha = str(receipt.get("ai_review_receipt_sha256", ""))
+    if sha256_file(ai_review_path) != expected_ai_sha:
+        raise PlanningError(f"{native_session}: AI review receipt SHA-256 mismatch")
+    try:
+        ai_review_receipt = json.loads(ai_review_path.read_text(encoding="utf-8"))
+        ai_review_summary = _AI_REVIEW.validate_consensus_receipt(
+            ai_review_receipt,
+            policy=P3_AI_REVIEW_POLICY,
+            subject_id=native_session,
+            where=f"{native_session}.ai_review",
+        )
+    except (OSError, json.JSONDecodeError, ValueError, TypeError) as error:
+        raise PlanningError(f"{native_session}: invalid AI review receipt: {error}") from error
     return {
         "kind": "consented_forward_phone",
         "source_id": source_id,
         "official_split": "not_applicable",
         "consent_receipt_path": str(receipt_path),
         "consent_receipt_sha256": sha256_file(receipt_path),
+        "ai_review_receipt_path": str(ai_review_path),
+        "ai_review_receipt_sha256": expected_ai_sha,
+        "ai_review_method": ai_review_summary["method"],
         "capture_mode": receipt["capture_mode"],
         "annotation_quality": receipt["annotation_quality"],
         "mask_taxonomy": receipt["mask_taxonomy"],
@@ -276,11 +312,13 @@ def collect_sessions(recipe_path: Path) -> tuple[list[SessionStats], dict[str, A
                     raise PlanningError(f"{global_session}: consented manifest row has wrong source_id")
                 if source.get("consent_receipt_sha256") != source_admission["consent_receipt_sha256"]:
                     raise PlanningError(f"{global_session}: consented manifest receipt hash mismatch")
-                if source.get("annotation_quality") != "human" or source.get("residual_pii_review_status") != "passed":
-                    raise PlanningError(f"{global_session}: consented manifest row lacks human annotation or PII clearance")
+                if source.get("annotation_quality") != "model_consensus" or source.get("residual_pii_review_status") != "ai_review_passed":
+                    raise PlanningError(f"{global_session}: consented manifest row lacks model-consensus annotation or AI PII clearance")
+                if source.get("ai_review_receipt_sha256") != source_admission["ai_review_receipt_sha256"]:
+                    raise PlanningError(f"{global_session}: consented manifest AI review receipt hash mismatch")
                 provenance = row.get("label_provenance") if isinstance(row.get("label_provenance"), dict) else {}
-                if provenance.get("annotation_kind") != "human_pixel_mask":
-                    raise PlanningError(f"{global_session}: consented manifest row lacks human_pixel_mask provenance")
+                if provenance.get("annotation_kind") != "gpt_codex_consensus_pixel_mask":
+                    raise PlanningError(f"{global_session}: consented manifest row lacks GPT/Codex consensus mask provenance")
                 if provenance.get("mask_taxonomy") != source_admission["mask_taxonomy"]:
                     raise PlanningError(f"{global_session}: consented manifest row mask taxonomy mismatch")
                 if source.get("camera") != source_admission["capture_mode"] or source.get("lens") != "not_applicable":
@@ -569,7 +607,7 @@ def plan_split(
         "official_split_by_target_split": {"train": "train", "dev": "train", "blind": "test"},
         "source_admission": {
             SANPO_REAL_SOURCE_ID: "official_train_only",
-            CONSENTED_PHONE_SOURCE_ID: "consent_receipt + passed_residual_pii_review + human_verified_pixel_annotation + approved_scene_review",
+            CONSENTED_PHONE_SOURCE_ID: "consent_receipt + GPT/Codex PII/scene/mask consensus receipt",
         },
     })
     plan = deepcopy(candidate_recipe)

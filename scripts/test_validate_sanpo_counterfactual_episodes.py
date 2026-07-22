@@ -86,13 +86,14 @@ class CounterfactualEpisodeValidatorTest(unittest.TestCase):
             with self.assertRaisesRegex(counterfactual.ContractError, "alertable_start_ms exceeds"):
                 counterfactual.validate(self._config(root), manifest, root=root, require_complete=True)
 
-    def test_builds_risk_lifecycle_targets_but_never_authorizes_execution(self) -> None:
+    def test_builds_risk_lifecycle_targets_and_authorizes_research_training(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             targets, report = risk_lifecycle_builder.build(self._config(root), self._manifest(root), root=root)
             self.assertEqual(2, len(targets))
             self.assertEqual("auxiliary_only", targets[0]["pixel_supervision_role"])
-            self.assertFalse(report["training_execution_authorized"])
+            self.assertTrue(report["training_execution_authorized"])
+            self.assertEqual("hash_bound_model_consensus", report["supervision_tier"])
             self.assertFalse(report["production_model_replacement_authorized"])
 
     @staticmethod
@@ -102,7 +103,7 @@ class CounterfactualEpisodeValidatorTest(unittest.TestCase):
             "design": {"session_count": 1, "scene_count": 1, "matched_pairs_per_session_scene": 1},
             "sessions": [{"session_id": "s1"}],
             "scenes": [{"scene_id": "step_curb"}],
-            "source_receipt_schema": {"allowed_license_status": ["licensed_for_research"], "required_privacy_review_status": "green"},
+            "source_receipt_schema": {"allowed_license_status": ["licensed_for_research"], "required_privacy_review_status": "ai_review_passed"},
             "episode_duration_policy": {"minimum_duration_ms": 10000, "maximum_duration_ms": 20000},
             "episode_record_schema": {"required_fields": ["episode_id", "session_id", "scene_id", "matched_pair_id", "pair_role", "risk_event_id", "expected_should_alert", "video_path", "video_sha256", "source_receipt_id", "annotation_reviewer_ids", "annotation_evidence_path", "annotation_evidence_sha256", "duration_ms", "risk_profile", "lifecycle_intervals_ms"], "pair_role_allowed": ["positive", "matched_negative"]},
             "annotation_evidence_schema": {"schema": "blindassist_sanpo_counterfactual_annotation_evidence_v1", "minimum_independent_reviewers_per_episode": 2, "reviewer_id_must_match_episode": True, "positive_anchor_agreement_tolerance_ms": 500},
@@ -115,12 +116,12 @@ class CounterfactualEpisodeValidatorTest(unittest.TestCase):
         evidence = root / "receipt-evidence.json"
         raw.write_bytes(b"controlled route video")
         evidence.write_text("{}", encoding="utf-8")
-        receipt = {"source_receipt_id": "r1", "source_owner_or_dataset": "SANPO", "collection_date": "2026-07-13", "license_status": "licensed_for_research", "license_evidence_path": "receipt-evidence.json", "privacy_review_status": "green", "privacy_evidence_path": "receipt-evidence.json", "reviewer_id": "reviewer", "raw_video_path": "raw.mp4", "raw_video_sha256": sha(raw), "episode_manifest_path": "receipt-evidence.json", "episode_manifest_sha256": sha(evidence)}
+        receipt = {"source_receipt_id": "r1", "source_owner_or_dataset": "SANPO", "collection_date": "2026-07-13", "license_status": "licensed_for_research", "license_evidence_path": "receipt-evidence.json", "privacy_review_status": "ai_review_passed", "privacy_evidence_path": "receipt-evidence.json", "reviewer_id": "codex-privacy-review", "raw_video_path": "raw.mp4", "raw_video_sha256": sha(raw), "episode_manifest_path": "receipt-evidence.json", "episode_manifest_sha256": sha(evidence)}
         context = {"location": "corner", "lighting": "day", "device": "chest", "camera_configuration": "left", "object_category": "curb"}
         pos_review = root / "pos-review.json"
         neg_review = root / "neg-review.json"
-        pos_review.write_text(json.dumps({"schema": "blindassist_sanpo_counterfactual_annotation_evidence_v1", "episode_id": "pos", "reviews": [{"reviewer_id": "r1", "reviewer_type": "human", "should_alert": True, "first_visible_ms": 0, "alertable_start_ms": 100, "passed_or_cleared_ms": 9000}, {"reviewer_id": "r2", "reviewer_type": "human", "should_alert": True, "first_visible_ms": 50, "alertable_start_ms": 200, "passed_or_cleared_ms": 9100}]}), encoding="utf-8")
-        neg_review.write_text(json.dumps({"schema": "blindassist_sanpo_counterfactual_annotation_evidence_v1", "episode_id": "neg", "reviews": [{"reviewer_id": "r1", "reviewer_type": "human", "should_alert": False}, {"reviewer_id": "r2", "reviewer_type": "human", "should_alert": False}]}), encoding="utf-8")
+        pos_review.write_text(json.dumps({"schema": "blindassist_sanpo_counterfactual_annotation_evidence_v1", "episode_id": "pos", "reviews": [{"reviewer_id": "r1", "reviewer_type": "ai_model", "should_alert": True, "first_visible_ms": 0, "alertable_start_ms": 100, "passed_or_cleared_ms": 9000}, {"reviewer_id": "r2", "reviewer_type": "ai_model", "should_alert": True, "first_visible_ms": 50, "alertable_start_ms": 200, "passed_or_cleared_ms": 9100}]}), encoding="utf-8")
+        neg_review.write_text(json.dumps({"schema": "blindassist_sanpo_counterfactual_annotation_evidence_v1", "episode_id": "neg", "reviews": [{"reviewer_id": "r1", "reviewer_type": "ai_model", "should_alert": False}, {"reviewer_id": "r2", "reviewer_type": "ai_model", "should_alert": False}]}), encoding="utf-8")
         common = {"session_id": "s1", "scene_id": "step_curb", "matched_pair_id": "p1", "video_path": "raw.mp4", "video_sha256": sha(raw), "source_receipt_id": "r1", "annotation_reviewer_ids": ["r1", "r2"]}
         return {"schema": "blindassist_sanpo_counterfactual_episode_manifest_v1", "collection_status": "complete", "source_receipts": [receipt], "episodes": [{**common, "capture_context": dict(context), "episode_id": "pos", "pair_role": "positive", "risk_event_id": "event-1", "expected_should_alert": True, "annotation_evidence_path": "pos-review.json", "annotation_evidence_sha256": sha(pos_review), "duration_ms": 10000, "risk_profile": {"primary_hazard_type": "step_curb", "corridor_relation": "enters_or_blocks", "lifecycle": "approach_alertable_clear"}, "lifecycle_intervals_ms": {"approach": [0, 100], "alertable": [100, 9000], "post_event": [9000, 10000]}, "first_visible_ms": 0, "alertable_start_ms": 100, "passed_or_cleared_ms": 9000}, {**common, "capture_context": dict(context), "episode_id": "neg", "pair_role": "matched_negative", "risk_event_id": "event-1-neg", "expected_should_alert": False, "annotation_evidence_path": "neg-review.json", "annotation_evidence_sha256": sha(neg_review), "duration_ms": 10000, "risk_profile": {"primary_hazard_type": "step_curb", "corridor_relation": "outside_or_nonblocking", "lifecycle": "no_alert"}, "lifecycle_intervals_ms": {"non_alert": [0, 10000]}, "first_visible_ms": None, "alertable_start_ms": None, "passed_or_cleared_ms": None, "negative_reason": "already passed"}]}
 

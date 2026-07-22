@@ -121,7 +121,7 @@ class RouteConditionedEventTruthTest(unittest.TestCase):
             "scenes": [{"scene_id": "route_obstacle"}],
             "source_receipt_schema": {
                 "allowed_license_status": ["owned_and_consented"],
-                "required_privacy_review_status": "green",
+            "required_privacy_review_status": "ai_review_passed",
                 "hash_license_and_privacy_evidence": True,
             },
             "episode_duration_policy": {"minimum_duration_ms": 10000, "maximum_duration_ms": 20000},
@@ -165,7 +165,7 @@ class RouteConditionedEventTruthTest(unittest.TestCase):
             "license_status": "owned_and_consented",
             "license_evidence_path": license_file.name,
             "license_evidence_sha256": sha(license_file),
-            "privacy_review_status": "green",
+            "privacy_review_status": "ai_review_passed",
             "privacy_evidence_path": privacy_file.name,
             "privacy_evidence_sha256": sha(privacy_file),
             "reviewer_id": "privacy-reviewer",
@@ -245,7 +245,7 @@ class RouteConditionedEventTruthTest(unittest.TestCase):
         annotation_path = root / f"{episode_id}-annotation.json"
         reviews = [{
             "reviewer_id": reviewer,
-            "reviewer_type": "human",
+            "reviewer_type": "ai_model",
             "should_alert": positive,
             "critical": positive,
             "first_visible_ms": 0 if positive else None,
@@ -253,7 +253,7 @@ class RouteConditionedEventTruthTest(unittest.TestCase):
             "passed_or_cleared_ms": 9000 if positive else None,
         } for reviewer in ("reviewer-1", "reviewer-2")]
         adjudication = {
-            "method": "reviewer_consensus",
+            "method": "model_consensus",
             "should_alert": positive,
             "critical": positive,
             "first_visible_ms": 0 if positive else None,

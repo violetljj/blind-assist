@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "description": "Prevent end-to-end acquisition, annotation, review, admission, acceptance, and release workflows from regressing to human-required queues or gates.",
+  "scan_roots": ["AGENTS.md", "README.md", "configs", "scripts", "docs"],
+  "scan_extensions": [".md", ".json", ".py", ".ps1", ".kt", ".kts"],
+  "exclude_path_prefixes": [
+    "docs/history/",
+    "docs/research/ustrf-sc/archive/",
+    "scripts/policy/ai_review_authority.json",
+    "scripts/test_check_project_structure.ps1",
+    "docs/AI_REVIEW_GOVERNANCE.md",
+    "docs/CODEX_TASK_HANDOFF_TEMPLATE.md",
+    "docs/CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md"
+  ],
+  "scan_paths": [
+    "scripts/finalize_sanpo_sequence_evalset.py",
+    "scripts/plan_sanpo_p3_session_split.py",
+    "scripts/validate_sanpo_counterfactual_episodes.py",
+    "scripts/generate_sanpo_counterfactual_capture_plan.py",
+    "scripts/build_sanpo_risk_lifecycle_targets.py",
+    "scripts/sanpo_risk_lifecycle_prototype.py",
+    "scripts/validate_ustrf_sc_device_metric_geometry.py",
+    "scripts/sanpo_candidate_quality_gate.py",
+    "scripts/evaluate_ustrf_sc_u0_teacher_upper_bound.py",
+    "configs/sanpo_counterfactual_episode_collection_v1.json",
+    "configs/sanpo_p3_view_source_contract_20260713.json",
+    "configs/ustrf_sc_route_conditioned_event_collection_v1.json",
+    "configs/ai_review_workflows_v1.json",
+    "configs/sanpo_counterfactual_episode_manifest_template_v1.json",
+    "configs/ustrf_sc_route_conditioned_event_manifest_template_v1.json",
+    "configs/ustrf_sc_route_conditioned_event_pilot_manifest_template_v1.json",
+    "docs/SANPO_CURRENT_STATUS.md",
+    "docs/SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md",
+    "docs/PUBLIC_VIDEO_GPT_SILVER_LABEL_PROTOCOL.md",
+    "docs/CODEX_TASK_HANDOFF_TEMPLATE.md",
+    "docs/CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md",
+    "scripts/generate_sanpo_counterfactual_capture_plan.py",
+    "scripts/test_generate_sanpo_counterfactual_capture_plan.py",
+    "core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfCalibrationEvidence.kt",
+    "core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfRouteConditionedRisk.kt"
+  ],
+  "forbidden_patterns": [
+    "reviewer_type[\\s\\\"':=]+human",
+    "accepted_manual_review",
+    "pending_manual_review",
+    "independent_human_review",
+    "human_event_adjudication_required",
+    "attested_human_reviewed",
+    "OFFLINE_HUMAN_TEACHER",
+    "waiting_for_human",
+    "human_review_required[\\s\\\"':=]+true",
+    "human_operator_required[\\s\\\"':=]+true",
+    "requires?[^\\r\\n]{0,48}human reviewer",
+    "人工(采集|标注|复核|审核|仲裁|验收).{0,24}(必须|需要|等待|必经)",
+    "(必须|需要|等待).{0,24}人工(采集|标注|复核|审核|仲裁|验收)",
+    "待物理采集"
+  ],
+  "required_markers": {
+    "AGENTS.md": [
+      "Default to an end-to-end autonomous workflow",
+      "Do not create, preserve, or wait on a human-required queue or gate",
+      "never convert the gap into a human task"
+    ],
+    "docs/AI_REVIEW_GOVERNANCE.md": [
+      "项目默认端到端无人化",
+      "当前 Codex/GPT 会话就是执行模型",
+      "不要求 API key",
+      "不建立、不保留、也不等待人工队列"
+    ],
+    "configs/ai_review_workflows_v1.json": [
+      "current_codex_or_gpt_session",
+      "human_required_queue_forbidden",
+      "select_lawful_automated_alternative_or_mark_evidence_unavailable_never_create_human_task"
+    ],
+    "docs/CODEX_TASK_HANDOFF_TEMPLATE.md": [
+      "不得创建人工采集、人工标注、人工审核、人工仲裁或人工验收任务",
+      "合法自动替代、模型/Agent 补采、隔离/拒收或局部分支 fail closed"
+    ],
+    "docs/CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md": [
+      "不得要求人工采集、标注、审核、仲裁或验收",
+      "自动 Agent/模型替代、隔离/拒收或局部分支 fail closed"
+    ]
+  }
+}

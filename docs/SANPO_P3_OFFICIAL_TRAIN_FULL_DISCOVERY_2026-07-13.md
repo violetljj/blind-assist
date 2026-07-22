@@ -4,7 +4,7 @@
 
 已完成 SANPO-Real v0 official-train 索引 `0–559` 的全量、只读候选发现。结果**解除的是“公开 official-train 候选池未穷尽 / 长扫描不可恢复”的工程阻塞**，不是 P3 canonical 或训练门。
 
-聚合出 `146` 条 candidate row：胸前视角 `86`（来自 `63` 个独立 native session），头戴视角 `60`（来自 `42` 个独立 native session）。所有候选仍是 source-mask 稀疏证据，必须继续经过 16-frame 局部预筛（如适用）、50-frame 几何门、RGB 下载与 PII 审核、人工场景/风险语义复核，才可以进入 P3 split planner。head 候选还必须先通过独立的 cross-view 门，不能静默混入 chest canonical。
+聚合出 `146` 条 candidate row：胸前视角 `86`（来自 `63` 个独立 native session），头戴视角 `60`（来自 `42` 个独立 native session）。所有候选仍是 source-mask 稀疏证据，必须继续经过 16-frame 局部预筛（如适用）、50-frame 几何门、自动 RGB 下载与 PII 检查、隔离多模型场景/风险语义复核，才可以进入 P3 split planner。head 候选还必须先通过独立的 cross-view 门，不能静默混入 chest canonical。
 
 因此：
 

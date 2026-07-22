@@ -48,6 +48,9 @@ function New-TestRepository([string]$Name) {
     Write-TestFile $repository 'scripts/research/demo/tool.py' 'from research.common.util import value'
     Write-TestFile $repository 'scripts/research/common/README.md' (Research-Readme 'common')
     Write-TestFile $repository 'scripts/research/common/util.py' 'value = 1'
+    Write-TestFile $repository 'AGENTS.md' 'Default to an end-to-end autonomous workflow. Do not create, preserve, or wait on a human-required queue or gate. Missing evidence must never convert the gap into a human task.'
+    Write-TestFile $repository 'docs/AI_REVIEW_GOVERNANCE.md' '项目默认端到端无人化。当前 Codex/GPT 会话就是执行模型，不要求 API key；不建立、不保留、也不等待人工队列。'
+    Write-TestFile $repository 'configs/ai_review_workflows_v1.json' '{"execution_surface":"current_codex_or_gpt_session","human_required_queue_forbidden":true,"missing_fact_policy":"select_lawful_automated_alternative_or_mark_evidence_unavailable_never_create_human_task"}'
     Write-TestFile $repository 'DEVELOPMENT_LOG.md' "# Development Log`n`n## 2026-07-21`n`n### fixture`n- 时间：2026-07-21；执行者：test。`n"
     Write-TestFile $repository 'policy/root-files.txt' "README.md`ncheck.ps1`n"
 
@@ -67,6 +70,20 @@ function New-TestRepository([string]$Name) {
         internal_reference_source_allowlist = @()
     }
     Write-TestFile $repository 'policy/project_structure.json' ($policy | ConvertTo-Json -Depth 5)
+    $authorityPolicy = [ordered]@{
+        version = 1
+        scan_roots = @('AGENTS.md', 'configs', 'scripts', 'docs')
+        scan_extensions = @('.md', '.json', '.py', '.ps1')
+        exclude_path_prefixes = @('scripts/policy/ai_review_authority.json')
+        scan_paths = @()
+        forbidden_patterns = @('reviewer_type[\s\"'':=]+human', 'waiting_for_human', 'human_operator_required[\s\"'':=]+true')
+        required_markers = [ordered]@{
+            'AGENTS.md' = @('Default to an end-to-end autonomous workflow', 'Do not create, preserve, or wait on a human-required queue or gate', 'never convert the gap into a human task')
+            'docs/AI_REVIEW_GOVERNANCE.md' = @('项目默认端到端无人化', '当前 Codex/GPT 会话就是执行模型', '不要求 API key', '不建立、不保留、也不等待人工队列')
+            'configs/ai_review_workflows_v1.json' = @('current_codex_or_gpt_session', 'human_required_queue_forbidden', 'select_lawful_automated_alternative_or_mark_evidence_unavailable_never_create_human_task')
+        }
+    }
+    Write-TestFile $repository 'scripts/policy/ai_review_authority.json' ($authorityPolicy | ConvertTo-Json -Depth 6)
     return $repository
 }
 
@@ -138,6 +155,18 @@ try {
         param($repo)
         Write-TestFile $repo 'scripts/research/other/README.md' (Research-Readme 'other')
         Write-TestFile $repo 'scripts/research/other/tool.py' 'from research.demo.tool import main'
+    }
+    Assert-Scenario 'human-gate-in-current-doc' $false {
+        param($repo)
+        Write-TestFile $repo 'docs/current.md' 'status: waiting_for_human_review'
+    }
+    Assert-Scenario 'human-gate-in-script' $false {
+        param($repo)
+        Write-TestFile $repo 'scripts/research/demo/human_gate.py' 'reviewer_type = "human"'
+    }
+    Assert-Scenario 'human-truth-disclaimer-is-not-a-gate' $true {
+        param($repo)
+        Write-TestFile $repo 'docs/current.md' 'Model evidence is not human truth or objective sensor measurement.'
     }
 
     $indexedRepository = New-TestRepository 'new-root-interface-index'

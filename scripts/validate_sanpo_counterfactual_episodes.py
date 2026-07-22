@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Fail-closed validation for SANPO counterfactual episode manifests.
-
-This tool validates human-reviewed event data only. It does not infer labels,
-download data, select a model, or authorize production-model replacement.
-"""
+"""Fail-closed validation for GPT/Codex-reviewed counterfactual episodes."""
 
 from __future__ import annotations
 
@@ -34,7 +30,7 @@ if _BINDING_SPEC is None or _BINDING_SPEC.loader is None:  # pragma: no cover
 _BINDING_VALIDATOR = importlib.util.module_from_spec(_BINDING_SPEC)
 _BINDING_SPEC.loader.exec_module(_BINDING_VALIDATOR)
 
-_REVIEW_VALIDATOR_PATH = Path(__file__).with_name("validate_ustrf_sc_independent_human_review.py")
+_REVIEW_VALIDATOR_PATH = Path(__file__).with_name("validate_ai_review_receipt.py")
 _REVIEW_SPEC = importlib.util.spec_from_file_location("ustrf_independent_review_validator", _REVIEW_VALIDATOR_PATH)
 if _REVIEW_SPEC is None or _REVIEW_SPEC.loader is None:  # pragma: no cover
     raise RuntimeError(f"cannot load independent-review validator: {_REVIEW_VALIDATOR_PATH}")
@@ -181,8 +177,8 @@ def _annotation_evidence(
         if not isinstance(review, dict):
             raise ContractError(f"{review_where} must be an object")
         reviewer_ids.append(_require_string(review, "reviewer_id", where=review_where))
-        if review.get("reviewer_type") != "human":
-            raise ContractError(f"{review_where}.reviewer_type must be human")
+        if review.get("reviewer_type") != "ai_model":
+            raise ContractError(f"{review_where}.reviewer_type must be ai_model")
         if review.get("should_alert") is not row["expected_should_alert"]:
             raise ContractError(f"{review_where}.should_alert disagrees with episode")
         if config.get("route_conditioning_policy") is not None and review.get("critical") is not row.get("expected_critical"):
@@ -212,7 +208,7 @@ def _annotation_evidence(
         adjudication = evidence.get("adjudication")
         if not isinstance(adjudication, dict):
             raise ContractError(f"{where}.annotation evidence needs hashed adjudication")
-        if adjudication.get("method") not in {"reviewer_consensus", "independent_human_adjudicator"}:
+        if adjudication.get("method") not in {"model_consensus", "independent_ai_adjudicator"}:
             raise ContractError(f"{where}.annotation adjudication method is invalid")
         if adjudication.get("should_alert") is not row["expected_should_alert"]:
             raise ContractError(f"{where}.manifest should_alert differs from adjudication")
@@ -481,16 +477,16 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
             episode, scene_id=scene_id, role=role, duration_ms=duration_ms, where=where,
         )
         _annotation_evidence(episode, config=config, root=root, role=role, where=where)
-        independent_review_policy = config.get("independent_human_review_policy")
+        independent_review_policy = config.get("independent_ai_review_policy")
         if independent_review_policy is not None:
             if not isinstance(independent_review_policy, dict):
-                raise ContractError("config.independent_human_review_policy must be an object")
+                raise ContractError("config.independent_ai_review_policy must be an object")
             try:
                 _REVIEW_VALIDATOR.validate_episode_review(
                     episode, root=root, policy=independent_review_policy, where=where,
                 )
             except (ValueError, KeyError, TypeError) as error:
-                raise ContractError(f"{where}.independent human review evidence is invalid: {error}") from error
+                raise ContractError(f"{where}.independent AI review evidence is invalid: {error}") from error
         route_binding = _route_intent_evidence(
             episode, config=config, root=root, duration_ms=duration_ms, where=where,
         )
@@ -579,7 +575,7 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate a human-reviewed SANPO counterfactual episode manifest.")
+    parser = argparse.ArgumentParser(description="Validate a GPT/Codex-reviewed SANPO counterfactual episode manifest.")
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--require-complete", action="store_true")

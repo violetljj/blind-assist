@@ -4,14 +4,14 @@ package com.linnan.blindassist.ustrf
 enum class UstrfRouteFieldProviderType {
     NAVIGATION,
     EXPLICIT_USER_CHOICE,
-    OFFLINE_HUMAN_TEACHER
+    OFFLINE_AI_TEACHER
 }
 
 /**
  * A frame-bound continuous route field in the same user-local grid as [UstrfRiskField].
  *
  * Values are membership weights, not obstacle scores. A receipt must come from navigation,
- * explicit user choice, or an offline human teacher; it cannot be inferred by the model whose
+ * explicit user choice, or an independently reviewed offline AI teacher; it cannot be inferred by the model whose
  * route-relative risk is being evaluated.
  */
 data class UstrfRouteFieldReceipt(
@@ -113,7 +113,7 @@ class UstrfRouteConditionedRiskInteractor(
             !route.routeValid -> UstrfRouteConditionedRiskFailure.ROUTE_INVALID
             route.inferredByRiskModel -> UstrfRouteConditionedRiskFailure.ROUTE_INFERRED_BY_RISK_MODEL
             route.derivedFromFutureFrames -> UstrfRouteConditionedRiskFailure.FUTURE_DERIVED_ROUTE_FORBIDDEN
-            runtime && route.providerType == UstrfRouteFieldProviderType.OFFLINE_HUMAN_TEACHER ->
+            runtime && route.providerType == UstrfRouteFieldProviderType.OFFLINE_AI_TEACHER ->
                 UstrfRouteConditionedRiskFailure.PROVIDER_NOT_ALLOWED_AT_RUNTIME
             else -> null
         }

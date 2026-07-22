@@ -121,7 +121,7 @@ class RouteConditionedEventPilotTest(unittest.TestCase):
             adjudication["input_review_sha256s"] = row["independent_review_sha256s"]
             adjudication_path.write_text(json.dumps(adjudication), encoding="utf-8")
             row["adjudication_evidence_sha256"] = sha(adjudication_path)
-            with self.assertRaisesRegex(subject.ContractError, "requires an independent human adjudicator"):
+            with self.assertRaisesRegex(subject.ContractError, "requires an independent AI adjudicator"):
                 subject.validate_pilot(config, manifest, root=root)
 
     def test_pilot_origin_cannot_be_relabelled_as_official_truth(self) -> None:
@@ -162,11 +162,15 @@ class RouteConditionedEventPilotTest(unittest.TestCase):
             "maximum_capture_gap_ns": 600000000,
             "maximum_clock_pts_alignment_error_ns": 20000000,
         }
-        config["independent_human_review_policy"] = {
-            "review_schema": "blindassist_independent_human_event_review_v1",
-            "adjudication_schema": "blindassist_independent_human_event_adjudication_v1",
+        config["independent_ai_review_policy"] = {
+            "review_schema": "blindassist_independent_ai_event_review_v1",
+            "adjudication_schema": "blindassist_ai_event_adjudication_v1",
             "required_independent_review_count": 2,
+            "required_reviewer_roles": ["gpt_multimodal_reviewer", "codex_evidence_reviewer"],
+            "allowed_adjudicator_roles": ["gpt_adjudicator", "codex_adjudicator"],
             "anchor_agreement_tolerance_ms": 500,
+            "minimum_confidence": 0.65,
+            "candidate_output_hidden_from_reviewers": True,
         }
         manifest = fixture.RouteConditionedEventTruthTest.manifest(root)
         manifest.update({
@@ -277,15 +281,27 @@ class RouteConditionedEventPilotTest(unittest.TestCase):
             })
             review_paths = []
             review_hashes = []
-            for reviewer_id in row["annotation_reviewer_ids"]:
+            for review_index, reviewer_id in enumerate(row["annotation_reviewer_ids"]):
                 review_path = root / f"{row['episode_id']}-{reviewer_id}.json"
                 review_path.write_text(json.dumps({
-                    "schema": "blindassist_independent_human_event_review_v1",
+                    "schema": "blindassist_independent_ai_event_review_v1",
                     "episode_id": row["episode_id"],
                     "reviewer_id": reviewer_id,
-                    "reviewer_type": "human",
-                    "model_assistance_used": False,
+                    "reviewer_type": "ai_model",
+                    "reviewer_role": ["gpt_multimodal_reviewer", "codex_evidence_reviewer"][review_index],
+                    "provider": "openai",
+                    "model": ["gpt-multimodal", "codex"][review_index],
+                    "model_version": "2026-07-21",
+                    "review_run_id": f"{row['episode_id']}-run-{review_index + 1}",
+                    "workflow_id": "ustrf_event_review_v1",
+                    "prompt_sha256": f"{review_index + 1}" * 64,
+                    "input_sha256": row["video_sha256"],
+                    "isolated_context": True,
                     "other_review_visible_before_submission": False,
+                    "candidate_output_visible": False,
+                    "confidence": 0.9,
+                    "abstained": False,
+                    "abstain_reasons": [],
                     "should_alert": row["expected_should_alert"],
                     "critical": row["expected_critical"],
                     "criticality_reason": row["criticality_reason"],
@@ -299,10 +315,10 @@ class RouteConditionedEventPilotTest(unittest.TestCase):
                 review_hashes.append(sha(review_path))
             adjudication_path = root / f"{row['episode_id']}-independent-adjudication.json"
             adjudication_path.write_text(json.dumps({
-                "schema": "blindassist_independent_human_event_adjudication_v1",
+                "schema": "blindassist_ai_event_adjudication_v1",
                 "episode_id": row["episode_id"],
                 "input_review_sha256s": review_hashes,
-                "method": "reviewer_consensus",
+                "method": "model_consensus",
                 "should_alert": row["expected_should_alert"],
                 "critical": row["expected_critical"],
                 "criticality_reason": row["criticality_reason"],

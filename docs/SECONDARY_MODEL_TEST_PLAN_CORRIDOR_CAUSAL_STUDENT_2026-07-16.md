@@ -36,7 +36,7 @@
 | 模型资产 | 不写入 `app/src/main/assets` |
 | 本地产物 | 统一写入 `artifacts.local/experiments/secondary-corridor-causal/<run-id>/` |
 | 评价 | 使用独立报告；不得把主线结果拼接成第二方案通过证据 |
-| 晋级 | 仍须依次通过离线事件门、INT8 保真门、同机事件门和人工发布决策 |
+| 晋级 | 仍须依次通过离线事件门、INT8 保真门、同机事件门和隔离 GPT/Codex 自动发布准入 |
 
 如果后续实现需要修改共享 runtime 或 benchmark，只允许增加默认关闭的实验入口，并保持生产行为和主线结果不变。
 
@@ -113,7 +113,7 @@ RGB 10 FPS + 可选 IMU/相机运动
 | [DINOv3](https://github.com/facebookresearch/dinov3) | 离线 dense matching、unknown 和 failure mining | 直接触发提醒；未完成许可证审核前进入生产资产 |
 | [PIDNet](https://github.com/XuJiacong/PIDNet) / MobileNetV4 / RepViT | 第二阶段 backbone A/B 候选 | 在走廊时序表征未证明有效前直接替换主干 |
 
-大模型、VLM、深度和开放词汇输出只能是离线 teacher 或 provisional silver evidence，不能被表述为人工事件真值，也不能直接触发安全提醒。
+大模型、VLM、深度和开放词汇输出可以作为披露 provenance 的离线 teacher、model-consensus reference 或 provisional evidence，不能被表述为客观传感器事实、真人用户效果，也不能直接触发安全提醒。
 
 ## 六、分阶段可证伪实验
 
@@ -162,7 +162,7 @@ RGB 10 FPS + 可选 IMU/相机运动
 - full-INT8 输出保真；
 - 同一 SM-S9280、同一脚本、同一连续 evalset A/B；
 - 生产 APK 不含候选模型资产；
-- 最终结果保持 `replace_default_model_now=false`，直到人工发布决策。
+- 最终结果保持 `replace_default_model_now=false`，直到隔离 GPT/Codex 发布收据与所有自动门禁通过。
 
 ## 七、晋级指标
 
@@ -196,7 +196,7 @@ RGB 10 FPS + 可选 IMU/相机运动
 3. 转弯、俯仰或相机抖动导致走廊坐标系统性失效；
 4. matched negative 压制真实 lateral cut-in 或关键台阶提醒；
 5. 依靠频繁 unknown/abstain 降低误报，同时关键事件召回下降；
-6. teacher 输出泄漏到 blind、标定或人工真值字段；
+6. teacher 输出泄漏到 blind、标定或冻结评价答案字段；
 7. INT8 或端侧 P95 超出预算；
 8. 需要修改默认 App 行为才能证明离线收益。
 

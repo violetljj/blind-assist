@@ -107,7 +107,44 @@ class DeviceMetricGeometryValidatorTest(unittest.TestCase):
                 subject.validate(value, root=root, require_complete=True)
 
     @staticmethod
+    def ai_review_receipt(root: Path, name: str, subject_id: str, input_sha: str) -> tuple[str, str]:
+        path = root / f"{name}-ai-review.json"
+        path.write_text(json.dumps({
+            "schema": "blindassist_ai_review_consensus_v1",
+            "subject_id": subject_id,
+            "input_sha256": input_sha,
+            "reviews": [
+                {
+                    "reviewer_id": f"gpt-{name}", "reviewer_type": "ai_model",
+                    "reviewer_role": "gpt_multimodal_reviewer", "provider": "openai",
+                    "model": "gpt-multimodal", "model_version": "2026-07-21",
+                    "review_run_id": f"gpt-{name}-run", "workflow_id": "metric_geometry_review_v1",
+                    "prompt_sha256": "1" * 64, "input_sha256": input_sha,
+                    "isolated_context": True, "other_review_visible_before_submission": False,
+                    "confidence": 0.91, "abstained": False, "abstain_reasons": [], "verdict": "accept",
+                },
+                {
+                    "reviewer_id": f"codex-{name}", "reviewer_type": "ai_model",
+                    "reviewer_role": "codex_evidence_reviewer", "provider": "openai",
+                    "model": "codex", "model_version": "2026-07-21",
+                    "review_run_id": f"codex-{name}-run", "workflow_id": "metric_geometry_review_v1",
+                    "prompt_sha256": "2" * 64, "input_sha256": input_sha,
+                    "isolated_context": True, "other_review_visible_before_submission": False,
+                    "confidence": 0.89, "abstained": False, "abstain_reasons": [], "verdict": "accept",
+                },
+            ],
+            "consensus": {"method": "model_consensus", "disposition": "accept"},
+        }), encoding="utf-8")
+        return path.name, sha(path)
+
+    @staticmethod
     def bundle(root: Path) -> dict:
+        calibration_review_path, calibration_review_sha = DeviceMetricGeometryValidatorTest.ai_review_receipt(
+            root, "calibration", "cal-1", "a" * 64,
+        )
+        ground_review_path, ground_review_sha = DeviceMetricGeometryValidatorTest.ai_review_receipt(
+            root, "body-ground", "body-local-ground:device-1:cal-1", "b" * 64,
+        )
         value = {
             "schema": subject.SCHEMA,
             "status": "complete",
@@ -127,8 +164,8 @@ class DeviceMetricGeometryValidatorTest(unittest.TestCase):
                 "camera_frame": "camera-1",
                 "body_frame": "body-1",
                 "collector_id": "collector",
-                "reviewer_id": "reviewer",
-                "independent_review_approved": True,
+                "ai_review_receipt_path": calibration_review_path,
+                "ai_review_receipt_sha256": calibration_review_sha,
                 "sample_count": 30,
                 "pose_coverage_bins": 5,
                 "intrinsics_p95_reprojection_px": 1.5,
@@ -147,8 +184,8 @@ class DeviceMetricGeometryValidatorTest(unittest.TestCase):
             "body_local_ground_truth": {
                 "body_frame": "body-1",
                 "collector_id": "collector",
-                "reviewer_id": "reviewer",
-                "independent_review_approved": True,
+                "ai_review_receipt_path": ground_review_path,
+                "ai_review_receipt_sha256": ground_review_sha,
                 "sample_count": 30,
                 "p95_plane_distance_error_m": 0.03,
                 "clear_obstacle_head_drop_and_missing_depth_covered": True,

@@ -10,7 +10,7 @@
 - 固定误差档始终为画面宽度 `1% / 2% / 3%`；`threshold_fit=false`、`parameter_search=false`、`thresholds_changed=false`、`training_performed=false`。
 - Pexels 未参与 held-out 门。
 
-Codex 教师臂的三个关键帧参考为：Japan `inside=3/outside=0/uncertain=0`，Edmonton `0/0/3`，London `3/0/0`，Ulm、Jakarta、Cape Town 均为 `0/3/0`。教师参考门为正来源 `2`、负来源 `0`、unresolved `1`，单臂通过；它是 provisional 事件目标参考，不是人工真值或 Android 全帧计数。
+Codex 教师臂的三个关键帧参考为：Japan `inside=3/outside=0/uncertain=0`，Edmonton `0/0/3`，London `3/0/0`，Ulm、Jakarta、Cape Town 均为 `0/3/0`。教师参考门为正来源 `2`、负来源 `0`、unresolved `1`，单臂通过；它是 provisional 事件目标参考，不是客观传感器事实、真人用户效果或 Android 全帧计数。
 
 ## SM-S9280 Android 固定重放
 

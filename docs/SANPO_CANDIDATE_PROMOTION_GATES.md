@@ -61,4 +61,4 @@
 }
 ```
 
-将该文件通过 `--device-event-report` 传入同一评价入口即可得到独立的 `device_event.gate`。最终报告固定写入 `production_model_replacement_authorized: false`；真正替换仍需人工复核、Android 集中验证和发布决策。
+将该文件通过 `--device-event-report` 传入同一评价入口即可得到独立的 `device_event.gate`。全部 benchmark、INT8、同机事件和 Android 证据通过后，再通过 `--ai-release-review` 提交隔离的 GPT 发布审查与 Codex 证据审查收据；一致或第三模型仲裁为 `accept` 时，报告才写入 `production_model_replacement_authorized: true`。缺失、低置信度、abstain 或未解决分歧都会失败关闭，不回退到人工复核。

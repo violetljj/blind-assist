@@ -15,13 +15,14 @@
 | 当前产品能力、版本、最短构建入口 | `README.md` | `idea.md`、日期化实验报告 |
 | 已发布或用户可见变化 | `CHANGELOG.md` | 研究实验日志 |
 | 当前 SANPO 状态、硬门、禁止事项、下一步 | `docs/SANPO_CURRENT_STATUS.md` | `idea.md`、`CHANGELOG.md` |
+| 端到端自主工作流与禁止人工前置条件 | `docs/AI_REVIEW_GOVERNANCE.md` | 日期化 snapshot、旧 handoff、历史实验合同 |
 | 当前操作协议与安全门 | `docs/README.md` 标为 `current` 的对应文件 | 日期化 snapshot |
 | 近期工程改动与验证 | `DEVELOPMENT_LOG.md` | README、CHANGELOG |
 | 尚未决定的方向 | `idea.md` | 当前状态文档、开发日志 |
 | 日期化实验、审计与研究结论 | `docs/*_YYYY-MM-DD.*` 或 `docs/research/` | current 协议 |
 | 任务断点与工作区现场 | `artifacts.local/work/codex-handoffs/` | Git 提交文档 |
 
-发生冲突时，以可复现的代码/门禁报告为事实基础；再以对应 `current` 协议为规则，以当前状态文档为操作摘要。日期化快照只说明当时结论。
+发生冲突时，以可复现的代码/门禁报告为事实基础；再以对应 `current` 协议为规则，以当前状态文档为操作摘要。`AI_REVIEW_GOVERNANCE.md` 覆盖旧 current/snapshot/handoff 中任何人工采集、标注、复核、仲裁或验收步骤；日期化快照只说明当时结论，不具有当前执行 authority。
 
 ## 更新规则
 

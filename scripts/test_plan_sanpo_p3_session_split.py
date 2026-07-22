@@ -48,6 +48,53 @@ class SanpoP3SessionSplitPlannerTest(unittest.TestCase):
                 receipt_path = root / "receipts" / f"{session_id}.json"
                 if source_id == planner.CONSENTED_PHONE_SOURCE_ID:
                     receipt_path.parent.mkdir(parents=True, exist_ok=True)
+                    ai_review_path = root / "ai-reviews" / f"{session_id}.json"
+                    ai_review_path.parent.mkdir(parents=True, exist_ok=True)
+                    review_input_sha = planner.sha256_file(image)
+                    ai_review_path.write_text(json.dumps({
+                        "schema": "blindassist_ai_review_consensus_v1",
+                        "subject_id": session_id,
+                        "input_sha256": review_input_sha,
+                        "reviews": [
+                            {
+                                "reviewer_id": f"gpt-{session_id}",
+                                "reviewer_type": "ai_model",
+                                "reviewer_role": "gpt_multimodal_reviewer",
+                                "provider": "openai",
+                                "model": "gpt-multimodal",
+                                "model_version": "2026-07-21",
+                                "review_run_id": f"gpt-run-{session_id}",
+                                "workflow_id": "sanpo_p3_intake_v1",
+                                "prompt_sha256": "1" * 64,
+                                "input_sha256": review_input_sha,
+                                "isolated_context": True,
+                                "other_review_visible_before_submission": False,
+                                "confidence": 0.91,
+                                "abstained": False,
+                                "abstain_reasons": [],
+                                "verdict": "accept",
+                            },
+                            {
+                                "reviewer_id": f"codex-{session_id}",
+                                "reviewer_type": "ai_model",
+                                "reviewer_role": "codex_evidence_reviewer",
+                                "provider": "openai",
+                                "model": "codex",
+                                "model_version": "2026-07-21",
+                                "review_run_id": f"codex-run-{session_id}",
+                                "workflow_id": "sanpo_p3_intake_v1",
+                                "prompt_sha256": "2" * 64,
+                                "input_sha256": review_input_sha,
+                                "isolated_context": True,
+                                "other_review_visible_before_submission": False,
+                                "confidence": 0.88,
+                                "abstained": False,
+                                "abstain_reasons": [],
+                                "verdict": "accept",
+                            },
+                        ],
+                        "consensus": {"method": "model_consensus", "disposition": "accept"},
+                    }), encoding="utf-8")
                     receipt_path.write_text(json.dumps({
                         "format": planner.CONSENT_RECEIPT_FORMAT,
                         "source_id": source_id,
@@ -55,18 +102,21 @@ class SanpoP3SessionSplitPlannerTest(unittest.TestCase):
                         "consent_status": "granted",
                         "consent_record_ref": f"receipt-{session_id}",
                         "capture_mode": "phone_chest_forward",
-                        "residual_pii_review_status": "passed",
-                        "pixel_annotation_status": "human_verified",
-                        "annotation_quality": "human",
-                        "scene_review_status": "approved",
+                        "residual_pii_review_status": "ai_review_passed",
+                        "pixel_annotation_status": "model_consensus_verified",
+                        "annotation_quality": "model_consensus",
+                        "scene_review_status": "ai_accepted_for_research",
+                        "ai_review_receipt_path": str(ai_review_path.relative_to(root)),
+                        "ai_review_receipt_sha256": planner.sha256_file(ai_review_path),
                         "mask_taxonomy": planner.BLINDASSIST_4CLASS_MASK_TAXONOMY,
                     }), encoding="utf-8")
                     source = {
                         "source_id": source_id,
                         "session_id": session_id,
                         "consent_receipt_sha256": planner.sha256_file(receipt_path),
-                        "annotation_quality": "human",
-                        "residual_pii_review_status": "passed",
+                        "annotation_quality": "model_consensus",
+                        "residual_pii_review_status": "ai_review_passed",
+                        "ai_review_receipt_sha256": planner.sha256_file(ai_review_path),
                         "camera": "phone_chest_forward",
                         "lens": "not_applicable",
                         "source_width": 4,
@@ -77,7 +127,7 @@ class SanpoP3SessionSplitPlannerTest(unittest.TestCase):
                     source = {"official_split": "train", "session_id": session_id}
                     official_split = "train"
                 provenance = {
-                    "annotation_kind": "human_pixel_mask",
+                    "annotation_kind": "gpt_codex_consensus_pixel_mask",
                     "mask_taxonomy": planner.BLINDASSIST_4CLASS_MASK_TAXONOMY,
                 } if source_id == planner.CONSENTED_PHONE_SOURCE_ID else {}
                 manifest.write_text(json.dumps({
@@ -206,7 +256,7 @@ class SanpoP3SessionSplitPlannerTest(unittest.TestCase):
             self.assertEqual("official_train_plus_consented_capture", report["official_split_consumed"])
             self.assertEqual(24, report["source_admission_counts"]["consented_forward_phone"])
             self.assertTrue(all(
-                item["source_admission"]["annotation_quality"] == "human"
+                item["source_admission"]["annotation_quality"] == "model_consensus"
                 for item in report["session_inventory"]
             ))
             self.assertEqual(

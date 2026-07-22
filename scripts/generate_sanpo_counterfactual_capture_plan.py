@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a non-evidentiary capture plan for counterfactual episodes."""
+"""Generate a non-evidentiary autonomous-acquisition plan for counterfactual episodes."""
 
 from __future__ import annotations
 
@@ -75,7 +75,7 @@ def build_capture_plan(config: dict[str, Any], *, pilot: bool = False) -> dict[s
                 for role, contract, profile, lifecycle in records:
                     slots.append({
                         "slot_id": f"{pair_id}__{role}",
-                        "status": "not_captured",
+                        "status": "awaiting_autonomous_acquisition",
                         "origin_scope": pilot_policy.get("origin_scope") if pilot else config.get("source_receipt_schema", {}).get("required_origin_scope"),
                         "session_id": session_id,
                         "scene_id": scene_id,
@@ -86,13 +86,21 @@ def build_capture_plan(config: dict[str, Any], *, pilot: bool = False) -> dict[s
                         "must_share_with_pair": context_fields,
                         "risk_profile_template": profile,
                         "lifecycle_intervals_template": lifecycle,
-                        "human_event_adjudication_required": True,
+                        "ai_event_adjudication_required": True,
+                        "human_operator_required": False,
+                        "human_fallback_forbidden": True,
+                        "autonomous_acquisition_priority": [
+                            "licensed_public_source_agent",
+                            "automated_device_capture",
+                            "simulation_or_synthetic_generation",
+                            "model_generation_with_provenance",
+                        ],
                         "evidence_requirements": {
-                            "source_receipt": "local hash-bound license, consent/privacy, raw video and inventory",
+                            "source_receipt": "agent-produced hash-bound license/consent reference, automated privacy audit, raw input and inventory",
                             "capture_clock_receipt": "nanosecond monotonic camera timestamps bound to the frame ledger",
                             "capture_frame_ledger": "ordered frame IDs, capture timestamps, video PTS and payload SHA256 bound to video/clock/route",
                             "explicit_route": "runtime-eligible current-camera route samples bound to the same frame ledger; no future-video oracle",
-                            "annotation": "two independent human reviews plus hashed adjudication",
+                            "annotation": "isolated GPT and Codex reviews plus hash-bound consensus or a fresh third-model adjudication",
                         },
                     })
     expected = len(session_ids) * len(scenes) * pair_count * 2
@@ -105,7 +113,7 @@ def build_capture_plan(config: dict[str, Any], *, pilot: bool = False) -> dict[s
         "contract_id": pilot_policy.get("contract_id") if pilot else config.get("contract_id"),
         "source_truth_contract_id": config.get("contract_id") if pilot else None,
         "collection_scope": "pipeline_audit_pilot" if pilot else config.get("collection_scope"),
-        "status": "pilot_collection_plan_only" if pilot else "collection_plan_only",
+        "status": "pilot_autonomous_acquisition_plan_only" if pilot else "autonomous_acquisition_plan_only",
         "pilot": pilot,
         "authority": pilot_policy.get("authority") if pilot else "full-matrix-collection-plan-only",
         "episode_slot_count": len(slots),
@@ -116,7 +124,7 @@ def build_capture_plan(config: dict[str, Any], *, pilot: bool = False) -> dict[s
         "training_eligible": False,
         "android_runtime_change_authorized": False,
         "production_model_replacement_authorized": False,
-        "important_limit": "Slots are empty instructions, not captured evidence, labels, receipts, or training data.",
+        "important_limit": "Slots are autonomous-agent instructions, not acquired evidence, labels, receipts, or training data.",
         "slots": slots,
     }
 

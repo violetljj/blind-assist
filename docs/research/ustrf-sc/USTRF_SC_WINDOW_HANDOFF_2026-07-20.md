@@ -74,7 +74,7 @@ USTRF-SC 已从方案图推进到可测试的 pure-Kotlin 安全合同、确定�
 2. source radial range-rate / approach-recede / TTC-proxy CPU 分层已完成；只把它用于公开源压力样本选择，不提升权限。
 3. Crop/tiling r1 已因 crop-view FP 过多在 8 帧停止，32 帧不得补跑。若继续 detector，下一独立变量必须先冻结跨 view 一致性或其他 FP 准入策略，并从新的 bounded canary 开始；不得在 r1 上扫描 overlap/NMS/score。
 4. 更高价值的主线仍是 route-conditioned、object-agnostic risk field 与事件级指标，而不是只追 global mIoU/AP。
-5. 真机人工采集恢复前，不打开 device metric geometry gate；未来眼镜另建整套证据链。
+5. device metric geometry gate 只接受自动设备脚本产生并哈希绑定的测量收据；无法自动取得时保持关闭并转向其他自主研究分支。未来眼镜另建整套证据链。
 
 ### 6.1 主线接管落地（2026-07-20）
 

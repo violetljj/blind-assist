@@ -100,7 +100,7 @@ P2 实现 boundary、obstacle、zero-boundary hard negative、per-session unknow
 
 P3 不允许在当前每场景 `2 train + 1 dev` 的 12 个 official-train session 上仅做重排后宣称完成。`plan_sanpo_p3_session_split.py` 只读取 official-train 候选的原分辨率 native mask，并在 session 原子性和底层 raw-mask SHA 隔离下搜索 split。固定门为每场景 train `4–6`、dev `2–3`；四类 train/dev pixel-share ratio `<=2×`；dev boundary 至少 3 个贡献 session、单 session 贡献 `<=50%`；其他 split/class 单 session 贡献 `<=60%`，每类两边至少 2 个贡献 session。无可行组合时不写 plan。
 
-当前 canonical 的 train/dev boundary 占比为 `0.857%/16.976%`，且本地没有额外完整 official-train session；因此至少还需每场景新增 3 个、合计 12 个独立 session。候选必须依次通过 official-train 稀疏 mask 发现、连续 50 帧几何门、RGB/scene 人工复核和 P3 分布规划门，之后才能重建 canonical 或启动训练。阶段证据见 [SANPO_P3_SPLIT_RECONSTRUCTION_2026-07-13.md](SANPO_P3_SPLIT_RECONSTRUCTION_2026-07-13.md)。
+当前 canonical 的 train/dev boundary 占比为 `0.857%/16.976%`，且本地没有额外完整 official-train session；因此至少还需每场景新增 3 个、合计 12 个独立 session。候选必须依次通过 official-train 稀疏 mask 发现、连续 50 帧几何门、隔离的 GPT/Codex RGB/scene 共识门和 P3 分布规划门，之后才能重建 canonical 或启动训练；分歧交由全新上下文的第三模型仲裁。阶段证据见 [SANPO_P3_SPLIT_RECONSTRUCTION_2026-07-13.md](SANPO_P3_SPLIT_RECONSTRUCTION_2026-07-13.md)。
 
 ## 快速验证
 

@@ -2,7 +2,7 @@
 """Audit the 10-episode USTRF route-conditioned collection pilot.
 
 The pilot exists only to prove that the collection pipeline can produce a
-hash-bound, frame-aligned package.  It can never authorize human event truth,
+hash-bound, frame-aligned package. It can never authorize full-matrix GPT/Codex consensus truth,
 U0 evaluation, training, Android changes, or production replacement.
 """
 

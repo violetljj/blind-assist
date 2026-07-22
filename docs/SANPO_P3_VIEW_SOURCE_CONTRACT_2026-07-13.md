@@ -25,7 +25,7 @@ SANPO 论文说明：237 个带 panoptic segmentation 的 session 中 146 个为
 | 来源 | 层级 | 当前结论 |
 |---|---|---|
 | SANPO-Real v0 head-left | A：P3 canonical 候选 | 已批准，遵循同一官方 train、CC BY 4.0、隐私和 split 合同。 |
-| 经同意的胸前/手持手机前向序列 | A：P3 canonical 候选 | 必须有采集同意、残余 PII 复核、像素级标注、会话隔离与人工 scene 复核。 |
+| 经同意的胸前/手持手机前向序列 | A：P3 canonical 候选 | 必须有真实主体的采集同意凭证，以及自动残余 PII 检查、模型共识像素标注、会话隔离与多模型 scene 复核。 |
 | Mapillary Vistas | B：辅助预训练候选 | 下载前必须保存数据集专用许可快照并完成商业/再分发核验；单帧不能补 P3 session。 |
 | BDD100K / IDD / ACDC | 未批准候选 | 当前许可未核验，禁止下载或纳入训练。 |
 | Cityscapes | 研究对照 | 官方许可限非商业；禁止进入产品训练路径或 P3。 |

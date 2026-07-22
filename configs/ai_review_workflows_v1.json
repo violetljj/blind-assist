@@ -1,0 +1,72 @@
+{
+  "schema": "blindassist_ai_review_workflows_v1",
+  "execution_surface": "current_codex_or_gpt_session",
+  "api_key_required": false,
+  "autonomous_scope": [
+    "source_discovery_and_acquisition",
+    "collection_orchestration",
+    "annotation",
+    "review",
+    "adjudication",
+    "privacy_and_quality_screening",
+    "data_admission",
+    "experiment_acceptance",
+    "release_evidence_review"
+  ],
+  "human_required_queue_forbidden": true,
+  "default_policy": {
+    "required_independent_reviews": 2,
+    "required_roles": ["gpt_task_reviewer", "codex_evidence_reviewer"],
+    "fresh_context_per_review": true,
+    "other_review_hidden": true,
+    "input_and_prompt_sha256_required": true,
+    "minimum_confidence": 0.65,
+    "abstain_supported": true,
+    "disagreement_policy": "fresh_third_model_adjudication",
+    "unresolved_policy": "fail_closed_and_continue_other_work_without_requesting_human_review"
+  },
+  "workflows": {
+    "autonomous_source_acquisition_v1": {
+      "gpt_role": "source_content_continuity_and_privacy_risk_review",
+      "codex_role": "license_provenance_download_or_device_receipt_and_hash_review",
+      "uncertainty_behavior": "reject_quarantine_or_select_lawful_automated_alternative",
+      "authority": "automated_source_admission"
+    },
+    "evalset_visual_semantics_v1": {
+      "gpt_role": "multimodal_scene_risk_and_residual_pii_review",
+      "codex_role": "manifest_provenance_and_cross_frame_consistency_review",
+      "authority": "benchmark_data_admission"
+    },
+    "sanpo_p3_intake_v1": {
+      "gpt_role": "multimodal_scene_mask_and_residual_pii_review",
+      "codex_role": "consent_receipt_hash_taxonomy_and_session_isolation_review",
+      "authority": "research_dataset_admission"
+    },
+    "ustrf_event_review_v1": {
+      "gpt_role": "causal_multiframe_route_event_and_lifecycle_review",
+      "codex_role": "evidence_binding_route_relation_and_protocol_review",
+      "authority": "model_consensus_event_truth"
+    },
+    "metric_geometry_review_v1": {
+      "gpt_role": "plots_coverage_and_failure_case_review",
+      "codex_role": "raw_receipt_metric_threshold_and_identity_review",
+      "authority": "isolated_geometry_shadow_admission"
+    },
+    "sanpo_release_review_v1": {
+      "gpt_role": "worst_case_event_and_user_risk_review",
+      "codex_role": "full_gate_hash_release_and_regression_review",
+      "minimum_confidence": 0.75,
+      "authority": "production_model_replacement_authorization"
+    }
+  },
+  "non_review_facts": {
+    "must_come_from_the_real_actor_or_device": [
+      "participant_consent",
+      "license_or_rights_grant",
+      "device_produced_physical_measurement",
+      "credential_or_signing_identity"
+    ],
+    "missing_fact_policy": "select_lawful_automated_alternative_or_mark_evidence_unavailable_never_create_human_task",
+    "note": "Models may acquire or audit these receipts through authorized automation but never fabricate the underlying fact."
+  }
+}

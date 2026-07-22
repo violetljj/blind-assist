@@ -47,7 +47,7 @@ USTRF-SC 是安全内核实验，不是第四个待训练视觉模型。感知 A
 - 不读取训练集、SANPO canonical、公开银标、blind 数据、用户视频或现有未提交实验产物作为本轮输入。
 - 首轮只使用合成、纯 Kotlin 的 `RiskObservation` fixture，验证内核的时序与 fail-closed 语义。
 - 产物将来只写入 `artifacts.local/experiments/ustrf-sc/<run-id>/`；源代码只提供实验内核与测试。
-- 任意未来的 Android 接入都必须是默认关闭的 shadow Adapter，并重新通过数据、离线、INT8、同机事件和人工发布决策。
+- 任意未来的 Android 接入都必须是默认关闭的 shadow Adapter，并重新通过数据、离线、INT8、同机事件和独立 GPT/Codex 自动发布准入。
 
 ## 4. P0 实现合同
 
@@ -121,7 +121,7 @@ dynamicTtcMs, uncertainty, ageMs, sources
 
 ## 7. 后续门与停止条件
 
-进入 Android shadow 前，必须先完成受控 replay 的上述矩阵、真实 `PoseAdapter`/深度 Adapter Spike、数据来源与人工连续事件真值门。任何一项不足时，输出只能是研究日志，不能是 App 行为。
+进入 Android shadow 前，必须先完成受控 replay 的上述矩阵、真实 `PoseAdapter`/深度 Adapter Spike、数据来源与自动多模型连续事件参考门。任何一项不足时，输出只能是研究日志，不能是 App 行为。
 
 立即停止或保持 `proposal_only` 的条件：真实 Adapter 无法提供统一时钟/TTL；未知区被默认成可通行；方向建议需绕过监督器；通过大量 abstain 掩盖关键漏报；或同机 P95/新鲜度不满足当前项目门。
 
@@ -160,7 +160,7 @@ dynamicTtcMs, uncertainty, ageMs, sources
 - 结构化影子输出与 pose-warp 闭环：`UstrfSafetySession` 现将经过严格相邻 frame 绑定且显式 `verifiedForOfflineReplay` 的 `UstrfVerifiedPoseDelta` 传给 risk field；错误或未验证的 receipt 触发 `POSE_DELTA_INVALID`、reset field 与 shadow STOP。每个 session record 同时携带由 supervisor 单向映射的 `UstrfStructuredSafetyOutput`（CONTINUE/ADJUST_LEFT/ADJUST_RIGHT/SLOW_DOWN/STOP/SCAN、heading、speed、risk、confidence、走廊宽度、TTL、reason），trace digest 升级为 v2 并绑定该输出。它只用于 offline/shadow replay；任何非 nominal reason 都不可输出 CONTINUE/ADJUST，更不可成为 App 用户指令。
 - 动态轨迹自运动补偿：新增 `UstrfEgoCompensatedMotionPromoter`。它仅接受严格相邻 frame、同一 track、未过期且达到置信阈值的局部坐标观测，并以已验证 `UstrfVerifiedPoseDelta` 把上一帧目标位置转换至当前 body frame 后才计算相对速度；结果可作为既有 TTC estimator/assembly 的 `UstrfMotionGridEvidence`。未验证或错绑 pose、低置信/过期轨迹、身后或局部栅格外目标一律不产生 TTC evidence。它仍不是 Android optical-flow/tracker Adapter，也没有动态人因事件真值。
 - 文档空间范围 profile：新增 `UstrfDocumentFiveMeterProfile`，将 geometry projector、ego-motion promoter、risk field、corridor planner、supervisor 与结构化输出配置到同一 `0.5 m × 0–5 m` 的本地 BEV 网格，且 corridor 使用 `[-2,-1,0,1,2]` 五候选与一格半宽人体包络。回归覆盖完整五米安全通道的 shadow CONTINUE、5m 中心高风险的 STOP，以及 metric geometry 与 ego-motion 目标在同一 0.5m 栅格坐标上的对齐。该 profile 仍只接收 typed offline evidence，不能被扩大解释为真实设备几何或用户安全证明。
-- 尚未实现：CameraX 时间戳 Adapter、VIO/pose 插值和 world warp、深度/地面/动态 Adapter、录制日志格式、Android shadow、真机延迟/热/功耗 Spike、连续人工事件评测。
+- 尚未实现：CameraX 时间戳 Adapter、VIO/pose 插值和 world warp、深度/地面/动态 Adapter、录制日志格式、Android shadow、真机延迟/热/功耗 Spike、连续自动多模型事件评测。
 - 未修改 `DEVELOPMENT_LOG.md` 与 `docs/README.md`：两者在本轮开始前已有其他任务的未提交改动；为避免跨任务覆盖，本日期化研究快照承担本轮持久记录，待该文档现场可安全合并时再补开发日志和索引入口。
 
 ### R1.1 原始深度新鲜度审计

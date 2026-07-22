@@ -18,7 +18,7 @@
 
 1. 打印 [A4 20 mm 棋盘格标定靶](../../../artifacts.local/calibration/ustrf-sc/ustrf_sc_checkerboard_a4_20mm_r1.pdf)，并参照同目录的 `ustrf_sc_checkerboard_a4_20mm_r1.manifest.json` 核对 SHA-256、方格规格和 100 mm 尺寸线。必须 A4、100% 打印、关闭适应页面；若实测线不是正好 100 mm、靶被裁切/弯折/反光，则拒绝使用。
 2. 同一手机、相同保护壳和相同后置相机配置。
-3. 可由第二人复核的原始 artifact 存储位置；不把原始画面写入仓库。
+3. 可由隔离 calibration-auditor 模型和机械 verifier 读取的原始 artifact 存储位置；不把原始画面写入仓库。
 4. 安全、静止环境；本轮不测试导航、不让用户依照应用输出行动。
 
 当前产品路线不以本执行单作为手持手机阶段的前置条件；手机可继续做 reference-free shadow。只有用户选择开启手机几何实验时才需要完成本单。未来眼镜设备也不能复用本单，见 [设备阶段策略](USTRF_SC_DEVICE_PHASE_POLICY.md)。
@@ -29,7 +29,7 @@
 2. 在至少 5 个距离/角度桶中采集 30 个以上有效样本；记录每个样本的 source-frame、depth/confidence freshness、标定板观测与失败原因。
 3. 仅以 depth timestamp 和 confidence timestamp 同时等于 source frame timestamp 的样本计算 depth registration 误差。
 4. 在两次拆装/复装后重复测量完整 camera-to-body translation + quaternion，计算平移和旋转 repeatability。
-5. 对 raw artifact 与计算脚本生成 SHA-256 manifest，由与采集者不同的复核者核对。
+5. 对 raw artifact 与计算脚本生成 SHA-256 manifest，由不同运行上下文的 calibration-auditor 模型与机械 verifier 核对。
 6. 将汇总填入 `UstrfCalibrationTrialEvidence`；只有 verifier 返回 `Available`，才可将对应的内参/登记/完整外参作为后续 shadow 的实验输入。
 
 ## 禁止事项

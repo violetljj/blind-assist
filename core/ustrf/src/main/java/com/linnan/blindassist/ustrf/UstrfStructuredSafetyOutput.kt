@@ -7,7 +7,7 @@ import kotlin.math.atan2
  *
  * This is a shadow-only report. It is derived from, and cannot override, the fast-loop
  * [UstrfSafetyDecision]. A device adapter must never treat it as a motor or user-direction
- * authority until independent device and human-safety gates are satisfied.
+ * authority until independent device evidence and GPT/Codex safety-review gates are satisfied.
  */
 enum class UstrfStructuredAction {
     CONTINUE,

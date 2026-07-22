@@ -56,7 +56,7 @@ powershell -ExecutionPolicy Bypass -File scripts\run_detector_ab_device_benchmar
 
 oracle 区域只进入风险分析，不进入 YOLO 的 AP/precision/recall 统计。
 
-当前 30 帧本地 pilot 的离线 oracle 结果（mask 最近邻缩放到 512×512）：中心走廊 30/30 帧存在候选风险，人工指定的主分割区域有 26/30（86.67%）被同口径四连通域规则覆盖；走廊平均像素构成为 safe 71.22%、not-safe 15.26%、obstacle 13.53%。该结果只证明规则能覆盖当前单序列，不代表真实模型召回率，也不能作为上线依据。
+当前 30 帧本地 pilot 的离线 oracle 结果（mask 最近邻缩放到 512×512）：中心走廊 30/30 帧存在候选风险，由模型/程序化规则指定并记录 provenance 的主分割区域有 26/30（86.67%）被同口径四连通域规则覆盖；走廊平均像素构成为 safe 71.22%、not-safe 15.26%、obstacle 13.53%。该结果只证明规则能覆盖当前单序列，不代表真实模型召回率，也不能作为上线依据。
 
 ## 2026-07-11 真机 A/B
 
@@ -137,4 +137,4 @@ YOLO 指标无退化，benchmark 判定 `traversability_rules_ok_for_model_stage
 
 修复后的同配置复验已在同一 SM-S9280 完成，产物为 `test-artifacts.local/detector-ab-device-benchmark/20260715-224608/`。结果保持 `eventAlertRecall=1.0`、`criticalEventMissCount=0`、`deliveredRepeatedAlertCount=0`、`postEventClearanceRate=1.0`、`falseAlertCount=0` 和 `falseAlertsPerMinute=0`；45 次重复尝试均被事件门控抑制。`eventRegenerationCount` 仍为 2，但逐帧审计确认它们没有形成第二次实际反馈：其中一条已提醒楼梯在通过后以超过 0.5 中心比例的横向跳变重新出现。
 
-因此当前结论是：用户可感知的重复提醒/通过窗口误报已在这组固定数据上关闭，运行时身份分裂仍作为诊断信号保留。不得为了压低该诊断数而把短时匹配放宽到整个中心走廊，因为这会在短窗口内吞掉同标签但确实不同的中心风险。保持 `do_not_replace_default_model`；下一步只能用新增的、人工审阅的连续真实事件来验证身份分裂是否对应新的风险，而不是由 oracle 或公开 mask 伪造答案。
+因此当前结论是：用户可感知的重复提醒/通过窗口误报已在这组固定数据上关闭，运行时身份分裂仍作为诊断信号保留。不得为了压低该诊断数而把短时匹配放宽到整个中心走廊，因为这会在短窗口内吞掉同标签但确实不同的中心风险。保持 `do_not_replace_default_model`；下一步由来源 Agent 获取新增连续事件，并以互盲双模型复核/第三模型裁决验证身份分裂是否对应新的风险，而不是由候选 oracle 或公开 mask 自证答案。

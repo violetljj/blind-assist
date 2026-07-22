@@ -377,7 +377,7 @@ Hof 公交后窗施工片段被确定性时间反转为 discovery-only 退出反
 - Bramwell 与 Stegna 两条 CC BY 3.0 连续行人视频在下载/审阅前登记。2163 个全片逐秒特征先冻结，SHA256 `efd3127df05aca4a280dacbdb92d2e47b083989f1845918bc941cb63b827e160`；冻结候选报告为 0 个事件，SHA256 `576fe7da8cdd213e2d4ee71ef6c4dff7fb56f9cdd8907bba563aed7bdc222c9a`。
 - 后验视觉复核将 Bramwell `375–385s` 固定为路肩锥桶近距离旁路负例：通行路面保持开放，短暂识别由转身/横扫主导。负控结果通过，SHA256 `9c3910fc5467a0890831c721eeba3eda9371164ca121c2d11658f9ca58ec2752`。Stegna 只作拥挤动态场景 context，未形成可评分的施工标志风险生命周期，不计门禁信用。
 
-当前训练就绪结论仍为 **false**：新增证据只支持一个合同后负例，没有合同后独立正例，召回门未闭合。大模型视觉判断仍为 provisional silver、非人工真值；不得授权训练、校准、blind、Android runtime、`RiskEventTracker` 或生产替换。
+当前训练就绪结论仍为 **false**：新增证据只支持一个合同后负例，没有合同后独立正例，召回门未闭合。关闭原因是来源覆盖与冻结协议门未闭合，而不是缺少人工；当前单路大模型视觉判断仍为 provisional silver，尚未升级为隔离双模型共识/裁决证据，因此不得授权训练、校准、blind、Android runtime、`RiskEventTracker` 或生产替换。
 
 ## r7.27 Tai Wo 来源拒绝（2026-07-19）
 
@@ -395,7 +395,7 @@ Hof 公交后窗施工片段被确定性时间反转为 discovery-only 退出反
 - r7.31 Dallas 独立连续步行负控先冻 321 个特征 `e6777a75...` 和 0 候选 `6c530633...`，再复核为“牌在草地、锥桶在道路边缘、步道清晰”；负控通过，结果 SHA256 `0186c526aef0b728d08f1aedaa6e46f9c5e4e73cbba52a9109688383d0a5fa5a`。
 - r7.32 `More cones, barriers and lights.` 在特征/0 候选冻结后确认是车库对象演示，不是行人走廊；拒绝报告 SHA256 `264d0d6f6f9628a78d11a96a2eb446046281a568ac8b96600193f4f519c9f08f`。
 - r7.33 Cape Town CC BY 连续窗口先冻结特征 `968082ec...` 与 0 候选 `38c550e9...`，再把固定混凝土柱和宽广场旁路锥桶复核为无走廊风险；负控通过，结果 SHA256 `eafef19730cf4e62774e35063f1677300f5a6913ebd5405f241085c11aee8556`。
-- 训练就绪仍为 **否**：r7.30 缺少“真实径向 entry 后迅速视觉净空”的独立负压力，也尚无第二条冻结后正例。大模型复核是 provisional silver，不是人工真值；训练、校准、blind、Android runtime 和生产替换全关闭。
+- 训练就绪仍为 **否**：r7.30 缺少“真实径向 entry 后迅速视觉净空”的独立负压力，也尚无第二条冻结后正例。关闭原因是独立正负来源与冻结协议门未闭合；该轮单路大模型复核仍是 provisional silver，尚未形成隔离双模型共识/裁决证据，训练、校准、blind、Android runtime 和生产替换全关闭。
 
 ## r7.34 Jakarta 高密度负控与局部短窗诊断（2026-07-19）
 

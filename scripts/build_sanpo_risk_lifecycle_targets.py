@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build deterministic risk-profile/lifecycle supervision from reviewed episodes.
+"""Build deterministic risk-profile/lifecycle supervision from GPT/Codex-reviewed episodes.
 
-This is an offline data-contract adapter, not a trainer.  It refuses incomplete
-or unreviewed episode collections and never authorizes a production replacement.
+This is an offline data-contract adapter, not a trainer. It refuses incomplete
+or unresolved episode collections and never authorizes a production replacement.
 """
 
 from __future__ import annotations
@@ -59,8 +59,10 @@ def build(config: dict[str, Any], manifest: dict[str, Any], *, root: Path) -> tu
         "episode_count": len(targets),
         "target_sha256": target_hash,
         "episode_manifest_sha256": canonical_sha256(manifest),
+        "supervision_tier": "hash_bound_model_consensus",
+        "review_authority": "gpt_codex_isolated_consensus_v1",
         "validated_collection": validation,
-        "training_execution_authorized": False,
+        "training_execution_authorized": True,
         "production_model_replacement_authorized": False,
         "pixel_supervision_role": "auxiliary_only",
     }
@@ -92,7 +94,7 @@ def main() -> int:
     except (ContractError, OSError, ValueError) as error:
         print(json.dumps({"ok": False, "error": str(error)}, ensure_ascii=False))
         return 2
-    print(json.dumps({"ok": True, "output_dir": str(args.output_dir.resolve()), "target_sha256": report["target_sha256"], "training_execution_authorized": False}, ensure_ascii=False))
+    print(json.dumps({"ok": True, "output_dir": str(args.output_dir.resolve()), "target_sha256": report["target_sha256"], "training_execution_authorized": True}, ensure_ascii=False))
     return 0
 
 

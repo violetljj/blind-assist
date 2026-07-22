@@ -26,7 +26,9 @@ class CounterfactualCapturePlanTest(unittest.TestCase):
         self.assertEqual(2, plan["episode_slot_count"])
         self.assertFalse(plan["training_eligible"])
         positive, negative = plan["slots"]
-        self.assertEqual("not_captured", positive["status"])
+        self.assertEqual("awaiting_autonomous_acquisition", positive["status"])
+        self.assertFalse(positive["human_operator_required"])
+        self.assertTrue(positive["human_fallback_forbidden"])
         self.assertEqual("approach_alertable_clear", positive["risk_profile_template"]["lifecycle"])
         self.assertEqual("no_alert", negative["risk_profile_template"]["lifecycle"])
 
@@ -56,7 +58,7 @@ class CounterfactualCapturePlanTest(unittest.TestCase):
 
         plan = capture_plan.build_capture_plan(config, pilot=True)
 
-        self.assertEqual("pilot_collection_plan_only", plan["status"])
+        self.assertEqual("pilot_autonomous_acquisition_plan_only", plan["status"])
         self.assertEqual("route-pilot-v1", plan["contract_id"])
         self.assertEqual("route-truth-v1", plan["source_truth_contract_id"])
         self.assertEqual({"pipeline_audit_pilot_capture"}, {row["origin_scope"] for row in plan["slots"]})

@@ -418,7 +418,7 @@ This local evaluation set contains {sample_count} real public-dataset images sel
 - Redistribution policy in this workspace: original images are local-only evaluation artifacts under `test-artifacts.local/datasets/` and must not be committed to Git.
 - BlindAssist risk fields are project-specific annotations generated for review and algorithm evaluation; standard COCO exports intentionally exclude those fields.
 
-Planned but not included in this first generated artifact: Open Images, LOCO, GND, LAVN. They remain good sources for a future manually curated expansion after license/source review and download setup.
+Planned but not included in this first generated artifact: Open Images, LOCO, GND, LAVN. They remain good sources for a future GPT/Codex-curated expansion after license/source evidence review and download setup.
 """
     (dataset_root / "source_licenses.md").write_text(text, encoding="utf-8")
 
@@ -537,7 +537,7 @@ def main() -> int:
         rationale = (
             f"{item['bucket']} selected from COCO object '{primary_label}', "
             f"direction={direction}, distance={distance_band}, should_alert={should_alert}; "
-            "risk label is a BlindAssist prelabel for human review, not a safety guarantee."
+            "risk label is a BlindAssist prelabel for isolated GPT/Codex review, not a safety guarantee."
         )
         row = {
             "id": sample_id,
@@ -562,8 +562,8 @@ def main() -> int:
             "assist_scenario": assist_scenario,
             "primary_object_id": f"coco_ann_{int(primary['id'])}",
             "risk_rationale": rationale,
-            "review_status": "accepted_auto_prelabel_needs_human_visual_review",
-            "status": "accepted",
+            "review_status": "pending_model_review",
+            "status": "pending_review",
             "source": {
                 "dataset": "COCO2017 val",
                 "license": "COCO dataset terms; annotations from COCO, images from source URLs",
@@ -588,6 +588,10 @@ def main() -> int:
                 "expected_risk_level": risk_level,
                 "assist_scenario": assist_scenario,
                 "review_status": row["review_status"],
+                "reviewer_type": "ai_model",
+                "reviewer_id": "",
+                "review_confidence": "",
+                "independent_review_count": "",
                 "review_notes": "",
             }
         )
@@ -600,7 +604,7 @@ def main() -> int:
     (dataset_root / "generation_records.jsonl").write_text("", encoding="utf-8")
     write_source_notes(dataset_root, len(rows))
 
-    with (dataset_root / "qa" / "manual_review_checklist.csv").open("w", newline="", encoding="utf-8") as handle:
+    with (dataset_root / "qa" / "model_review_checklist.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(review_rows[0].keys()))
         writer.writeheader()
         writer.writerows(review_rows)

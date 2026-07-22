@@ -37,7 +37,7 @@ Android 逐帧关键证据：`t=0ms` 检出 2 辆车，route gate 保留 1 辆�
 2. 每个 source 在看风险答案前冻结 projection mode、forward axis、路线 polygon 和一组宽/中/窄几何敏感性；报告 worst geometry，而非只报最好宽度。
 3. Codex full-context 若三轮无 2/3 共识，样本直接记为 teacher abstention，不生成事件分数；它证明“可以直接用 Codex”，也证明不能把单次回答当真值。
 4. 正样本加入后再比较 event recall、critical miss、onset/clearance；当前只有负样本，不能评价召回。
-5. 细调或训练必须等待公开代理结果在 source-held-out 上稳定，并继续与正式 120/60 人类真值、设备米制几何、App/生产门完全隔离。
+5. 细调或训练必须等待公开代理结果在 source-held-out 上稳定，并继续与正式 120/60 自动多模型事件参考、设备米制几何、App/生产门完全隔离。
 
 ## R1 后续
 

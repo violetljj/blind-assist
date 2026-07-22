@@ -13,9 +13,9 @@
 
 ## 安全边界
 
-- 导入结果默认是 `pending_review`，不是可直接运行 benchmark 的人工真值。
+- 导入结果默认是 `pending_review`，不是可直接运行 benchmark 的模型共识真值。
 - SANPO 分割区域可以生成候选框，但不能自动决定 BlindAssist 的主要风险目标、方向、距离、提醒等级或逼近状态。
-- 人工复核完成前，所有 `expected_*` 风险字段保持 `null`；不能把自动预标描述为助盲安全结论。
+- GPT/Codex 共识复核完成前，所有 `expected_*` 风险字段保持 `null`；不能把自动预标描述为助盲安全结论。
 - 原始帧和掩码只写入被 Git 忽略的 `test-artifacts.local/datasets/`，不提交仓库。
 - 每个下载对象都必须通过 SANPO GCS 官方 MD5；同时记录本地 SHA256。RGB、掩码和 session description 的尺寸不一致时立即失败。
 
@@ -64,7 +64,7 @@ test-artifacts.local/datasets/blindassist-sanpo-pilot-*/
   qa/
     preview.html
     boxed/
-    manual_review_checklist.csv
+    model_review_checklist.csv
     manifest_validation.json
     download_inventory.json
 ```
@@ -82,7 +82,7 @@ SANPO 掩码的红通道保存类别 ID，后两通道保存实例 ID。脚本�
 
 ## 复核与晋级
 
-打开 `<dataset>/qa/preview.html`，逐帧填写 `manual_review_checklist.csv`：
+当前 Codex/GPT 会话读取 `<dataset>/qa/preview.html` 与 `model_review_checklist.csv`，按 [自主复核治理](AI_REVIEW_GOVERNANCE.md) 执行隔离复核：
 
 1. 确认画面中真正影响行走的主要风险区域。
 2. 补 `primary_object_id`；非 COCO 障碍应明确保留来源类别，不能伪造 COCO 类别。
@@ -92,7 +92,7 @@ SANPO 掩码的红通道保存类别 ID，后两通道保存实例 ID。脚本�
 6. 对缺帧、坏框、重复帧、风险不确定和敏感内容使用统一 issue tag。
 7. 存在 detection GT `objects` 的帧还必须让 `objects_review_status` 与复核方式一致；任何 `issue_tags` 未清空都会阻止 finalize。
 
-人工复核仍是安全语义的首选。全部字段由人工确认时，使用 `review_status=accepted_manual_review`，然后生成 canonical `manifest.jsonl`：
+GPT/Codex 共识是唯一工程复核入口。全部字段通过两个隔离模型 pass 后，使用 `review_status=accepted_ai_review`、`reviewer_type=ai_model`、非空 reviewer ID、置信度不低于 `0.65` 且 `independent_review_count>=2`，然后生成 canonical `manifest.jsonl`：
 
 ```powershell
 .\.venv-export312\Scripts\python.exe scripts\finalize_sanpo_sequence_evalset.py `
@@ -101,7 +101,7 @@ SANPO 掩码的红通道保存类别 ID，后两通道保存实例 ID。脚本�
 
 finalize 会重新校验草稿/复核表哈希、图片和掩码 SHA256、路径范围、尺寸、bbox、COCO 类别、重复 ID/图片、官方 split、连续 `frame_index`、检测框复核状态和全部风险枚举。任何一行未复核都会拒绝生成 `manifest.jsonl`；canonical manifest 使用临时文件原子发布，且发布后的 dataset root 被视为不可变，避免旧或半写入 manifest 被 Gradle 误打包。
 
-若当前阶段明确采用多轮 AI 工程复核，可使用独立决策文件和显式门禁：
+使用独立决策文件写入模型结论：
 
 ```powershell
 .\.venv-export312\Scripts\python.exe scripts\apply_sanpo_review_decisions.py `
@@ -109,11 +109,10 @@ finalize 会重新校验草稿/复核表哈希、图片和掩码 SHA256、路径
   --decisions <review-decisions.json>
 
 .\.venv-export312\Scripts\python.exe scripts\finalize_sanpo_sequence_evalset.py `
-  --dataset-root <dataset-root> `
-  --allow-ai-review
+  --dataset-root <dataset-root>
 ```
 
-AI 路径要求每行 `review_status=accepted_ai_review`、`reviewer_type=ai_assistant`、非空 reviewer ID、置信度不低于 0.65，且至少两次独立复核；这些字段会原样写入 `review_provenance`。不传 `--allow-ai-review` 时一律拒绝。AI 复核只代表工程数据门禁通过，不能写成“人工已复核”，也不能替代盲人用户测试、受控路线验证或安全认证。
+模型字段会原样写入 `review_provenance`，policy 固定为 `gpt_codex_isolated_consensus_v1`。缺失、低置信度、abstain、分歧未仲裁或 issue tag 未清空都会失败关闭；不再回退到人工复核。模型共识只代表工程数据门禁通过，不能替代盲人用户测试、受控路线验证或安全认证。
 
 ## 首批真机结果
 

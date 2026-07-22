@@ -7,8 +7,8 @@
 ## 结论先行
 
 - 已排除两个工程可行性风险：候选可从既有 YOLO 检测和同步 IMU 形成 8 帧因果特征；未训练的 INT8 TCN 夹具在 SM-S9280 的真实 CameraX + YOLO 热路径中通过了 `<= 70 ms` 总 P95 性能门。
-- 没有获得模型效果结论：特征、TCN 和公开 ADVIO 序列均未提供可审计的 `should_alert`、生命周期或 matched-negative 人工事件真值。因此没有训练、校准、blind 评测、Android shadow、提醒路由或默认模型替换授权。
-- 当前阻塞点是数据真值而不是端侧算力。96 个 episode / 48 个 matched pair 的采集计划仍全部为 `not_captured`；在合格人工连续事件数据进入前，S0 可分性和后续事件头训练保持关闭。
+- 没有获得模型效果结论：特征、TCN 和公开 ADVIO 序列尚未提供按冻结合同审计的 `should_alert`、生命周期或 matched-negative 自动多模型事件参考。因此没有校准、blind 评测、Android shadow、提醒路由或默认模型替换授权。
+- 当前阻塞点是自动多模型事件证据覆盖而不是端侧算力。96 个 episode / 48 个 matched pair 的槽位仍全部为 `awaiting_autonomous_acquisition`；在来源 Agent/自动设备/仿真生成的数据完成隔离双模型复核与必要的第三模型裁决前，S0 可分性和后续事件头训练保持关闭。
 
 ## 本轮完成的独立证据
 
@@ -36,6 +36,6 @@ ADVIO 的三个独立 IMU route/turn probe 未达可分门：原始、旋转不�
 
 默认 App 仍使用 `yolo11n_fp16_320.tflite`。本快照不改变 [SANPO_CANDIDATE_PROMOTION_GATES.md](SANPO_CANDIDATE_PROMOTION_GATES.md) 的数据、离线、INT8 和同机事件门。
 
-下一道有效门不是继续调参，而是按 [SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md](SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md) 准入带双人人工复核、许可/隐私收据和哈希的连续 episode。矩阵完整后才可在六折 leave-one-session-out 上执行预注册 S0：比较静态 pooled、运动几何和空间网格 + causal TCN；只有满足 `balanced accuracy >= .70`、正负召回均 `>= .50` 且 matched-pair 方向一致，才允许训练冻结 backbone 的事件头。
+下一道有效门不是继续调参，而是按 [SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md](SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md) 准入带隔离 GPT/Codex 共识、许可/隐私收据和哈希的连续 episode。矩阵完整后可自动在六折 leave-one-session-out 上执行预注册 S0：比较静态 pooled、运动几何和空间网格 + causal TCN；只有满足 `balanced accuracy >= .70`、正负召回均 `>= .50` 且 matched-pair 方向一致，才允许训练冻结 backbone 的事件头。
 
-在此之前，不以公开视频、合成数据、模型输出、未训练 TCN 或性能夹具充当人工风险事件真值，也不把本快照表述为助盲能力验证。
+在此之前，不以单次未审计的公开视频、合成数据、模型输出、未训练 TCN 或性能夹具充当风险事件共识，也不把本快照表述为助盲能力验证。

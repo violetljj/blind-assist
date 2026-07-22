@@ -75,7 +75,7 @@ class RiskLifecyclePrototypeTest(unittest.TestCase):
         with self.assertRaisesRegex(subject.TargetContractError, "half-open"):
             subject.lifecycle_labels_for_timestamps(positive(), [10000])
 
-    def test_loader_requires_complete_attested_human_targets_and_matching_hash(self) -> None:
+    def test_loader_requires_complete_model_consensus_targets_and_matching_hash(self) -> None:
         targets = [positive(), negative()]
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -85,8 +85,10 @@ class RiskLifecyclePrototypeTest(unittest.TestCase):
             report = {
                 "format": subject.REPORT_FORMAT,
                 "target_sha256": subject.canonical_sha256(targets),
+                "supervision_tier": "hash_bound_model_consensus",
+                "review_authority": "gpt_codex_isolated_consensus_v1",
                 "validated_collection": {"training_eligible": True},
-                "training_execution_authorized": False,
+                "training_execution_authorized": True,
                 "production_model_replacement_authorized": False,
                 "pixel_supervision_role": "auxiliary_only",
             }
@@ -95,7 +97,7 @@ class RiskLifecyclePrototypeTest(unittest.TestCase):
             self.assertEqual(["positive", "negative"], [row["episode_id"] for row in loaded])
             report["validated_collection"] = {"training_eligible": False}
             report_path.write_text(json.dumps(report), encoding="utf-8")
-            with self.assertRaisesRegex(subject.TargetContractError, "complete human-reviewed"):
+            with self.assertRaisesRegex(subject.TargetContractError, "complete GPT/Codex-reviewed"):
                 subject.load_attested_targets(targets_path=target_path, report_path=report_path, allowed_hazard_types=HAZARDS)
 
     def test_loader_accepts_explicit_hash_bound_model_silver_provisional_targets(self) -> None:

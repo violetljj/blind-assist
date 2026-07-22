@@ -43,7 +43,7 @@
 }
 ```
 
-每个 manifest row 还必须有以下 `label_provenance`。经同意手机来源使用项目冻结的四类灰度 mask（`0=walkable`、`1=boundary_step_curb`、`2=obstacle`、`3=unknown_nonwalkable`）；它**不是** SANPO 的 31 类 panoptic ID。P3 planner 会按来源回执选择 taxonomy，并拒绝未声明、错配或出现非 `0–3` 值的人工 mask，避免把人工类别静默按 SANPO 类别误解。
+每个 manifest row 还必须有以下 `label_provenance`。经同意手机来源使用项目冻结的四类灰度 mask（`0=walkable`、`1=boundary_step_curb`、`2=obstacle`、`3=unknown_nonwalkable`）；它**不是** SANPO 的 31 类 panoptic ID。P3 planner 会按来源回执选择 taxonomy，并拒绝未声明、错配或出现非 `0–3` 值的模型共识 mask，避免把项目类别静默按 SANPO 类别误解。
 
 ```json
 {
@@ -70,6 +70,6 @@ recipe sequence 必须声明：
 ## 标注与报告边界
 
 - `machine` annotation 可以保留作预标注、复核工作队列或单独报告，但不能满足 P3 canonical/训练门。
-- `human` annotation 仍需要通过 P3 planner 的 class-share、boundary 集中度和独立 session 门；人工标注不是自动训练许可。
-- 每个候选保留 `HUMAN/MACHINE` quality，最终分别报告，不能把机器预标注与人工标注合并为一个未分层指标。
+- `model_consensus` annotation 仍需要通过 P3 planner 的 class-share、boundary 集中度和独立 session 门；模型共识不是自动训练许可。
+- 每个候选保留上游原生 `HUMAN_ANNOTATED/MACHINE_ANNOTATED` provenance（若来源提供）以及本项目 `model_consensus` 准入状态，最终分层报告，不能把来源元数据与项目复核 authority 混为一项。
 - 新采集必须覆盖真实的 target camera/view；车载、Mapillary 或合成素材仍不得代替 P3 dev/blind。

@@ -5,7 +5,7 @@ The package is deliberately *not* a canonical training dataset or an assistive
 event benchmark.  It preserves official RGB, panoptic masks, metric-depth
 bytes, camera poses and split receipts so that a later, separately authorized
 SANPO-Synthetic pretraining experiment can be reproduced without inventing
-human event truth or device-safety evidence.
+independent GPT/Codex consensus event truth or device-safety evidence.
 """
 
 from __future__ import annotations
@@ -268,7 +268,7 @@ def main() -> int:
             "camera": dimensions,
             "source_inventory": {**{name: object_inventory(item) for name, item in objects.items()}, "train_split": object_inventory(split_object), "rgb": [object_inventory(rgb[i]) for i in selected], "masks": [object_inventory(masks[i]) for i in selected], "depth": [object_inventory(depth[i]) for i in selected]},
             "required_downstream_order": ["SANPO-Synthetic pretraining candidate", "separately gated SANPO-Real finetune", "independent offline/INT8/device gates"],
-            "prohibited_claims": ["human event truth", "calibration evidence", "blind evaluation", "Android runtime authorization", "production model replacement", "user safety proof"],
+            "prohibited_claims": ["independent GPT/Codex consensus event truth", "calibration evidence", "blind evaluation", "Android runtime authorization", "production model replacement", "user safety proof"],
         }
         (output_root / "dataset_spec.json").write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (output_root / "source_licenses.md").write_text(

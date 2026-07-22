@@ -38,6 +38,13 @@
 - 事件门：正例 `4/6`，Japan 已持续关联但与冻结 route polygon 的事件关系不相容，London 22 帧关联为 0；负例假告警、重复交付、共现接管、身份切换均为 0，出画门随 London fail-closed。总体失败并保持 `do_not_replace_default_model`。
 - 验证：R1.2b Python 合同测试；`:device-benchmark:assembleDebug`；精确帧设备准入 `OK (1 test)`；完整连续 instrumentation 跑满 600 秒并按预期在写出收据后因事件门失败。详见 [R1.2b 结果](docs/research/ustrf-sc/USTRF_CROSSCAM_MOBILE_R12B_RESULT_2026-07-21.md)。
 
+### GPT/Codex 端到端自主工作流 authority 收口
+- 时间：2026-07-21；执行者：violjjet。
+- 范围：来源发现/获取、采集编排、标注、评测集、P3 准入、连续事件参考、设备米制几何、实验验收与候选发布统一改为 GPT/Codex/自动 Agent 工作流；隔离双模型一致即共识，分歧由全新第三模型仲裁，缺证据或 abstain 仅让相关样本/分支隔离或失败关闭，不创建人工待办。
+- 自动推进：完整事件模型共识可授权研究训练与冻结评测；生产模型替换仍需 benchmark、INT8、同机事件、Android 证据全部通过，并附独立发布模型复核收据。参与者同意、许可证、设备真实测量和签名凭据仍必须来自真实主体或设备，模型通过授权自动化获取/审计收据但不得伪造。
+- 治理：新增 `configs/ai_review_workflows_v1.json`、`docs/AI_REVIEW_GOVERNANCE.md` 与哈希绑定 receipt validator；扩展项目结构门，递归扫描现行 scripts/configs/docs，拒绝重新引入 human/manual authority，并增加正反 smoke test。
+- 验证：聚焦 Python/JVM 回归、项目结构门及其 smoke tests、文档索引、仓库卫生、统一 research contracts 与 diff check；最终结果以本次实际复跑为准。
+
 ### Stacked PR CI bootstrap fixes
 - 时间：2026-07-21；执行者：violjjet。
 - 范围：仓库卫生门对 PR base 中已存在、当前仅删除的历史二进制视为清理，同时仍拒绝新增二进制；release signing 只在显式请求 `assembleRelease`/`bundleRelease` 时要求本地 keystore，不再被 `mergeReleaseAssets` 的任务图误触发。

@@ -19,7 +19,7 @@
 1. 新 `cameraFrame` 和 `bodyFrame`，例如 `glasses-camera-<revision>` / `glasses-body-<revision>`。
 2. 独立 capture clock、帧背压、连接失效与离线降级 receipt。
 3. 独立内参、depth-to-camera registration、完整 SE(3) mount calibration manifest 与复核记录。
-4. 该设备上的时延、热、动态事件和连续人工事件 shadow。
+4. 该设备上的时延、热、动态事件和连续自动多模型事件 shadow。
 
 手机产生的 ARCore observation、手持刚体、内参数值、时间戳统计和任何未来 calibration manifest 都不得迁移或复制到眼镜设备。
 
@@ -29,7 +29,7 @@
 | --- | --- | --- |
 | 手机上的 reference-free shadow | SM-S9280 本机候选观测和 JVM 合同 | ARCore tracking 作为米制几何证明 |
 | 眼镜帧源实验 | 新设备的明确授权、FrameSource/连接 seam 和隔离 benchmark | 手机相机/外参/时间数据 |
-| 眼镜几何 shadow | 眼镜自身的独立 calibration manifest + device gate | 手机 manifest、人工口头确认或单帧深度 |
+| 眼镜几何 shadow | 眼镜自身的独立 calibration manifest + device gate | 手机 manifest、不可验证的口头确认或单帧深度 |
 | 生产扩展 | 独立事件、性能、隐私和默认链路 gate 全部完成 | 任一单项 benchmark 通过 |
 
 本策略降低当前试验门槛，但不降低未来设备的安全证据标准。

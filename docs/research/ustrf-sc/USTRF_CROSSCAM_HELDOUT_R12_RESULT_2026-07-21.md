@@ -44,4 +44,4 @@
 - `evidence_index.json`：`3155c1125e38c95b040f90dedb24d3252c02f91bc61a09b525a5ba0802e35aae`
 - 证据根：`artifacts.local/evidence/ustrf-crosscam-codex/multisource-r12-heldout-v1/`
 
-下一轮应扩大独立来源与连续事件数据，并引入 human-reviewed event truth、设备米制几何、延迟和热稳定门。Vancouver 只能作为后续新诊断集的问题线索，不能回调本轮阈值或 prompt。
+下一轮应由来源 Agent 扩大独立来源与连续事件数据，并引入 hash-bound automated multimodel event reference、设备米制几何、延迟和热稳定门。Vancouver 只能作为后续新诊断集的问题线索，不能回调本轮阈值或 prompt。

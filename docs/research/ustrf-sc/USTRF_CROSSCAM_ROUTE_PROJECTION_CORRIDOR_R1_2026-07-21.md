@@ -8,7 +8,7 @@ R0 的边界假阳性不是 detector 置信度问题，而是旧 gate 把“底�
 
 R1 把问题拆为两个独立合同：路线投影必须先给出当前相机帧中的显式凸多边形和来源收据；物体与走廊的关系只用 bbox 底边中心作为无类别地面接触代理，并显式保留投影误差带。只有名义位置和边界距离在窄/中/宽三档下全部一致，才可称为确定 inside/outside；靠近边界一律是 `UNCERTAIN_BOUNDARY`，不得升级为路线内风险。
 
-这解决了“把固定画面中心当路线”和“边界轻微相交即确定侵入”两个结构问题，但没有凭空产生眼镜相机的标定、位姿或米制路线。公开视频使用的仍是逐样本人工可见人行道 proxy。
+这解决了“把固定画面中心当路线”和“边界轻微相交即确定侵入”两个结构问题，但没有凭空产生眼镜相机的标定、位姿或米制路线。公开视频使用的仍是逐样本大模型可见人行道 proxy。
 
 ## 投影合同
 
@@ -18,7 +18,7 @@ R1 把问题拆为两个独立合同：路线投影必须先给出当前相机�
 - 路线来源、来源权限和投影置信度来源；
 - 归一化相机图像坐标中的凸路线 polygon；
 - 是否存在 world route、动态 projection 和 camera-pose receipt；
-- human truth、metric geometry、U0、训练、Android runtime 与 production authority。
+- 自动多模型事件参考、metric geometry、U0、训练、Android runtime 与 production authority。
 
 Pexels receipt 明确为 `rectilinear_identity_v1 + manual_visible_sidewalk_proxy_v1`，置信度使用披露的 proxy 默认值 `0.5`；`dynamic_projection_present/world_route_present/camera_pose_receipt_present` 全为 false。因此该 polygon 只在本样本当前画面中有效。
 

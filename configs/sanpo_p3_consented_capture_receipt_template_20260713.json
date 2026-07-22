@@ -5,9 +5,11 @@
   "consent_status": "pending",
   "consent_record_ref": "replace-with-pseudonymous-consent-record-reference",
   "capture_mode": "phone_chest_forward",
-  "residual_pii_review_status": "pending",
-  "pixel_annotation_status": "pending",
-  "annotation_quality": "machine",
-  "scene_review_status": "pending",
+  "residual_pii_review_status": "pending_ai_review",
+  "pixel_annotation_status": "pending_ai_review",
+  "annotation_quality": "pending_model_consensus",
+  "scene_review_status": "pending_ai_review",
+  "ai_review_receipt_path": "replace-with-local-gpt-codex-consensus-receipt.json",
+  "ai_review_receipt_sha256": "replace-with-lowercase-sha256",
   "mask_taxonomy": "blindassist_4class_mask_v1"
 }

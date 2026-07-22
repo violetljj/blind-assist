@@ -27,6 +27,7 @@ import numpy as np
 import sanpo_backend_equivalence
 import sanpo_training_gate as training_gate
 import train_export_sanpo_segmentation as shared
+import validate_ai_review_receipt as ai_review
 
 
 REPORT_SCHEMA = "blindassist_sanpo_candidate_quality_gate_v1"
@@ -34,6 +35,13 @@ DEVICE_REPORT_SCHEMA = "blindassist_sanpo_device_event_gate_input_v1"
 SIDECAR_SUFFIX = ".sha256"
 UNKNOWN_ID = shared.CLASS_IDS["unknown_nonwalkable"]
 BOUNDARY_ID = shared.CLASS_IDS["boundary_step_curb"]
+AI_RELEASE_REVIEW_POLICY = {
+    "receipt_schema": "blindassist_ai_review_consensus_v1",
+    "required_reviewer_roles": ["gpt_release_reviewer", "codex_evidence_reviewer"],
+    "allowed_adjudicator_roles": ["gpt_adjudicator", "codex_adjudicator"],
+    "minimum_confidence": 0.75,
+    "candidate_output_hidden_from_reviewers": False,
+}
 
 
 @dataclass(frozen=True)
@@ -75,6 +83,40 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def canonical_sha256(payload: Any) -> str:
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    ).hexdigest()
+
+
+def evaluate_ai_release_review(
+    path: Path | None, *, subject_id: str, release_input_sha256: str,
+) -> dict[str, Any]:
+    if path is None:
+        return {
+            "status": "not_evaluated",
+            "passed": False,
+            "subject_id": subject_id,
+            "input_sha256": release_input_sha256,
+            "reason": "Run isolated GPT and Codex release-review passes; no human review is required.",
+        }
+    receipt = json.loads(path.read_text(encoding="utf-8"))
+    summary = ai_review.validate_consensus_receipt(
+        receipt, policy=AI_RELEASE_REVIEW_POLICY, subject_id=subject_id, where="ai_release_review",
+    )
+    if summary["input_sha256"] != release_input_sha256:
+        raise ValueError("AI release review is not bound to the current quality-gate inputs")
+    return {
+        "status": "green",
+        "passed": True,
+        "subject_id": subject_id,
+        "input_sha256": release_input_sha256,
+        "receipt": str(path),
+        "receipt_sha256": sha256_file(path),
+        **summary,
+    }
 
 
 def _safe_ratio(numerator: int, denominator: int) -> float | None:
@@ -457,18 +499,39 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     device_gate = evaluate_device_event_report(device_payload, tflite_sha256 or "", DeviceEventThresholds())
     device_candidate_eligible = quality_gate["passed"] and fidelity_gate["passed"]
     benchmark_promotion_eligible = device_candidate_eligible and device_gate["passed"]
+    release_subject_id = f"sanpo-release:{tflite_sha256 or 'missing-tflite'}"
+    release_input_sha256 = canonical_sha256({
+        "manifest_sha256": sha256_file(manifest),
+        "training_gate_report_sha256": gate_report["report_sha256"],
+        "weights_sha256": sha256_file(weights),
+        "backend_equivalence_report_sha256": equivalence["report_sha256"],
+        "tflite_sha256": tflite_sha256,
+        "device_event_report_sha256": sha256_file(device_path) if device_path else None,
+        "quality_gate": quality_gate,
+        "fidelity_gate": fidelity_gate,
+        "device_gate": device_gate,
+    })
+    release_review_path = shared.resolve(root, args.ai_release_review).resolve() if args.ai_release_review else None
+    release_review = evaluate_ai_release_review(
+        release_review_path, subject_id=release_subject_id, release_input_sha256=release_input_sha256,
+    )
+    production_authorized = benchmark_promotion_eligible and release_review["passed"]
     report: dict[str, Any] = {
         "schema": REPORT_SCHEMA,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "benchmark_only": True,
-        "production_model_replacement_authorized": False,
+        "benchmark_only": not production_authorized,
+        "production_model_replacement_authorized": production_authorized,
         "decision": {
             "device_benchmark_candidate_eligible": device_candidate_eligible,
             "benchmark_promotion_eligible": benchmark_promotion_eligible,
             "reason": (
-                "all gates green; an explicit human-reviewed production release decision is still required"
-                if benchmark_promotion_eligible
-                else "one or more independent gates are red or not evaluated"
+                "all evidence gates and isolated GPT/Codex release reviews are green"
+                if production_authorized
+                else (
+                    "benchmark gates are green; GPT/Codex release review receipt is missing or red"
+                    if benchmark_promotion_eligible
+                    else "one or more independent gates are red or not evaluated"
+                )
             ),
         },
         "bindings": {
@@ -493,10 +556,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "tflite": str(tflite) if tflite is not None else None,
             "tflite_sha256": tflite_sha256,
             "device_event_report": str(device_path) if device_path else None,
+            "ai_release_review": str(release_review_path) if release_review_path else None,
         },
         "offline_training_quality": {"gate": quality_gate, "metrics": stratified},
         "int8_fidelity": {"gate": fidelity_gate, "metrics": fidelity_metrics},
         "device_event": {"gate": device_gate},
+        "ai_release_review": release_review,
     }
     report["report_sha256"] = write_report(report_path, report)
     return report
@@ -510,6 +575,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--backend-equivalence-report", required=True)
     parser.add_argument("--tflite", help="Optional benchmark-only full-INT8 TFLite candidate; omit for pre-export quality audit.")
     parser.add_argument("--device-event-report", help="Optional separately generated same-device event report.")
+    parser.add_argument("--ai-release-review", help="Hash-bound isolated GPT/Codex release-review consensus receipt.")
     parser.add_argument("--report", required=True)
     parser.add_argument(
         "--input-size", type=int, default=shared.INPUT_SIZE,

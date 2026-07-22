@@ -263,7 +263,7 @@ class UstrfU0TeacherUpperBoundTest(unittest.TestCase):
                 for filename in (
                     "validate_explicit_route_intent_episode.py",
                     "validate_ustrf_sc_capture_frame_ledger.py",
-                    "validate_ustrf_sc_independent_human_review.py",
+                    "validate_ai_review_receipt.py",
                 )
             },
         })

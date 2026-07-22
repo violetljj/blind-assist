@@ -17,7 +17,7 @@
 
 - PR #1 已按历史集成基线、项目结构门、最新 USTRF/CI 三层拆分；不 force-push、不改写旧分支历史。
 - 从本节点停止新增 detector、teacher、dense arm、公开/合成数据轮次与参数扫描。未完成的实验资产保留但不再扩写；只有真实路线事件采集和同设备米制几何证据允许进入主动队列。
-- 真实事件先执行一个 `route_obstacle` matched pair，再扩到 10-episode pilot；必须保留视频、capture clock、frame ledger、非未来 explicit route/projection、双人隔离 review 与裁决哈希。pilot 通过仍不是真实 U0 truth authority。
+- 真实事件先执行一个 `route_obstacle` matched pair，再扩到 10-episode pilot；必须保留视频、capture clock、frame ledger、非未来 explicit route/projection、GPT/Codex 隔离 review 与裁决哈希。pilot 通过仍不是真实 U0 truth authority。
 - SM-S9280 几何 evidence pack 以红灯状态启动：r3 source-aligned depth `1/861`、r5 `0/843`，raw pose 为 `EPHEMERAL_PER_FRAME`，与 `>=100`、`>=0.95` 和 `INTER_FRAME_STABLE` 硬门不相容。冻结 blocker 为 `BLOCKED_ON_SOURCE_ALIGNED_METRIC_DEPTH_AND_INTER_FRAME_STABLE_POSE`；确定新的同帧 metric-depth/stable-pose 来源前不重复同一 ARCore 900-update 审计。
 - `validate_ustrf_sc_device_metric_geometry.py` 现解析五类 typed artifact，要求分项 metrics 与设备/mount/calibration identity 精确一致，并递归校验至少一项 raw/gate source evidence；`blocked/in_progress` 包也必须校验已有收据，不再允许只凭五个空 JSON 的 SHA 假绿。
 
@@ -39,7 +39,7 @@
 
 ## 2026-07-21 E0 合同加固与路线特异性负控
 
-- 真实事件 validator 现把 manifest 的 `contract_id`、`benchmark_only`、生产替换权限、route `parent_source_id` 与 episode `source_receipt_id` 原子绑定；`training_eligible` 必须同时服从 config authority。因而完整的人类真值矩阵可以授权 U0 评价，但在当前 `full_matrix_training=false` 下仍不能被误报为可训练。
+- 事件 validator 现把 manifest 的 `contract_id`、`benchmark_only`、生产替换权限、route `parent_source_id` 与 episode `source_receipt_id` 原子绑定；`training_eligible` 必须同时服从 config authority。因而完整的自动多模型事件参考矩阵可以授权 U0 评价，但在当前 `full_matrix_training=false` 下仍不能被误报为可训练；它不等同于客观传感器事实或真人用户效果。
 - `UstrfRouteConditionedRiskInteractor` 新增 risk-field 决策时新鲜度门。来自未来或超过 500ms 的风险场即使路线 TTL 尚未到期也会 fail closed，并用独立 `risk_field_unknown_or_invalid` 与路线失效区分；有效 evidence 的 TTL 不得晚于风险场新鲜度上限。
 - 冻结 `configs/ustrf_sc_rc_oarf_route_specificity_control_v1.json`，只复用 r816 的 216 个现有预测和同一图像的 LEFT/STRAIGHT/RIGHT 三元组，不重跑 DINO、不重拟合、不选阈值。正确路线 BA 为 `.91555`；两个互不相同、无固定点的循环错路线负控为 `.72492/.79515`，相对增益 `.19064/.12040`，三个父来源均同方向下降，观察到强路线特异性信号。
 - 旧 r816 report 没有逐预测 `example_id`，故原 r3 收据仍保留为 `BLOCKED_ON_PREDICTION_IDENTITY_BINDING`，不覆写、不事后补 ID。随后用原 `.venv-export312`、原 checkpoint/输入/层/距离教师/seed/ridge/阈值重跑 r816c；216 个预测 ID 与 route rows 逐项一致，global/route/exact 预测、指标、fold 与系数 SHA 与旧 r816 精确一致。因而路线特异性 gate 正式转为 `PASS_IDENTITY_BOUND_SYNTHETIC_ROUTE_SPECIFICITY`：正确路线 BA `.91555`，两个错路线 BA `.72492/.79515`。
@@ -271,14 +271,14 @@ shared Assist Decision Module
 - 模型名称、版本、权重 SHA256 和许可证；
 - 输入视频/图像来源、许可和 SHA256；
 - 推理尺寸、采样频率和预处理；
-- 输出角色：`auxiliary_only / provisional / not_human_truth`；
+- 输出角色：`auxiliary_only / provisional / not_model_consensus`；
 - 禁止训练、校准、blind 或生产的默认授权字段。
 
 ## 七、真实监督层级
 
 监督优先级从高到低固定为：
 
-1. 双人独立复核的物理事件锚点与 actionability；
+1. GPT/Codex 独立复核并形成共识或第三模型仲裁的物理事件锚点与 actionability；
 2. 同一用户选择或导航计划绑定的显式 route field；
 3. matched positive/negative 的 route-relative 风险关系；
 4. 人工或受控来源的局部边界、可通行和 unknown 标注；
@@ -369,7 +369,7 @@ shared Assist Decision Module
 
 U0 只用于判断问题是否值得学习，不授权训练或生产。
 
-2026-07-21 gate 状态：`U0_TWO_ANDROID_ADAPTERS_AND_DENSE_KERNEL_SEAM_DEVICE_VERIFIED_BLOCKED_ON_HUMAN_TRUTH_AND_FOUR_REAL_ADAPTERS`。
+2026-07-21 gate 状态：`U0_TWO_ANDROID_ADAPTERS_AND_DENSE_KERNEL_SEAM_DEVICE_VERIFIED_WAITING_GPT_CODEX_EVENT_CONSENSUS_AND_FOUR_REAL_ADAPTERS`。
 
 - `configs/ustrf_sc_u0_teacher_upper_bound_v1.json` 已冻结四个正式比较臂与 uniform/shuffled route 两个负控；所有臂必须绑定同一 ordered frame ledger、shared decision kernel、实现/模型/阈值 SHA，并逐 episode 绑定视频、原始 route、frame IDs 与预测 trace。
 - `scripts/evaluate_ustrf_sc_u0_teacher_upper_bound.py` 会在评价前重算完整 route-conditioned truth gate，以 canonical JSON 和 LF-normalized text 的跨平台合同钉死官方 full-matrix config SHA 与 route/frame/review 四个 validator SHA，严格要求 120 episode / 60 matched pair / 120 route-bound episode、唯一 episode/event ID、LOSO holdout 与每 fold critical 分母。matched pair 共享 `route_plan_id + provider policy + route choice`，但各自 current-camera 投影必须绑定自己的 video/frame ledger；禁止复制逐像素 route trace 冒充反事实一致性，并拒绝 blind、future input、漏臂、漏 episode、哈希漂移和 synthetic 授权。
@@ -388,7 +388,7 @@ U0 只用于判断问题是否值得学习，不授权训练或生产。
 - 事件召回提高但误提醒或清除显著恶化；
 - 增益只出现在同一来源或合成样本；
 - 显式路线不可获得，只能依赖未来视频 proxy；
-- teacher 输出必须经过人工事后解释才能通过。
+- teacher 输出必须经过冻结输入上的独立模型审计才能通过，禁止人工事后解释回救。
 
 ### S0：确定性表示 probe
 
@@ -457,7 +457,7 @@ U0 只用于判断问题是否值得学习，不授权训练或生产。
 }
 ```
 
-替换默认模型需要单独的人工决策、Android集中回归、APK资产检查和发布流程。
+替换默认模型需要独立 GPT/Codex 发布准入收据、Android 集中回归、APK 资产检查和自动发布门；不设置人工发布决策。
 
 ## 十、预注册事件与设备硬门
 
@@ -514,7 +514,7 @@ U0 只用于判断问题是否值得学习，不授权训练或生产。
 - 合成距离场迁移到真实 provisional 事件后只部分成立，context 误激活严重；
 - 使用真实 marker bbox 学“哪里有物体”仍不能判断它是否阻断所选路线；
 - 当前真实 route provider 与 LEFT/RIGHT intervention 覆盖尚未闭合；
-- 公共银标和大模型复核不能替代双人事件真值；
+- 公共银标和单次大模型输出不能替代 GPT/Codex 隔离事件共识；
 - 现有真实事件数量不足以支持复杂端到端模型或大规模结构搜索。
 
 因此，本方案当前可信度为：
@@ -532,7 +532,7 @@ U0 只用于判断问题是否值得学习，不授权训练或生产。
 1. 冻结本方案配置、目录、来源和禁用字段；
 2. 建立生产与 benchmark 共用决策内核的行为等价测试计划；
 3. 定义最小的模型无关感知证据 seam，但不提前设计万能 interface；
-4. 选择一小组非 blind、人工复核、显式路线可用的真实连续 episode；
+4. 选择一小组非 blind、经 GPT/Codex 隔离复核、显式路线可用的真实连续 episode；
 5. 运行 U0 教师上界与 uniform/shuffled route 负控；
 6. 写出单一 `go / no_go` 报告。
 

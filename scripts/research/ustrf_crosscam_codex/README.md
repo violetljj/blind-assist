@@ -37,7 +37,7 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-cro
 ## 安全边界
 
 - `codex_visual_teacher_provisional_v1` 是交互式视觉银标，不是人工事件真值、设备米制几何或用户提醒权威。
-- 几何只能声明为 `assumed_geometry_v1` / `pseudo_metric`；正式 U0 120/60 人类真值合同、Android、训练和生产权限保持 false。
+- 几何只能声明为 `assumed_geometry_v1` / `pseudo_metric`；正式 U0 120/60 自动多模型事件参考合同、Android、训练和生产权限保持 false，直到各自自动门禁闭合。
 - 本通道不修改 App、默认 YOLO、正式 U0 evaluator 或设备 admission。
 
 ## 停止条件

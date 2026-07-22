@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -25,6 +27,43 @@ def record(sample: str, session: str, scene: str | None) -> shared.Record:
 
 
 class CandidateQualityGateTest(unittest.TestCase):
+    def test_ai_release_review_replaces_human_release_gate(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            input_sha = "a" * 64
+            receipt = root / "release-review.json"
+            receipt.write_text(json.dumps({
+                "schema": "blindassist_ai_review_consensus_v1",
+                "subject_id": "sanpo-release:model-sha",
+                "input_sha256": input_sha,
+                "reviews": [
+                    {
+                        "reviewer_id": "gpt-release-1", "reviewer_type": "ai_model",
+                        "reviewer_role": "gpt_release_reviewer", "provider": "openai",
+                        "model": "gpt-multimodal", "model_version": "2026-07-21",
+                        "review_run_id": "gpt-release-run", "workflow_id": "sanpo_release_review_v1",
+                        "prompt_sha256": "1" * 64, "input_sha256": input_sha,
+                        "isolated_context": True, "other_review_visible_before_submission": False,
+                        "confidence": 0.91, "abstained": False, "abstain_reasons": [], "verdict": "accept",
+                    },
+                    {
+                        "reviewer_id": "codex-release-1", "reviewer_type": "ai_model",
+                        "reviewer_role": "codex_evidence_reviewer", "provider": "openai",
+                        "model": "codex", "model_version": "2026-07-21",
+                        "review_run_id": "codex-release-run", "workflow_id": "sanpo_release_review_v1",
+                        "prompt_sha256": "2" * 64, "input_sha256": input_sha,
+                        "isolated_context": True, "other_review_visible_before_submission": False,
+                        "confidence": 0.89, "abstained": False, "abstain_reasons": [], "verdict": "accept",
+                    },
+                ],
+                "consensus": {"method": "model_consensus", "disposition": "accept"},
+            }), encoding="utf-8")
+            result = gate.evaluate_ai_release_review(
+                receipt, subject_id="sanpo-release:model-sha", release_input_sha256=input_sha,
+            )
+            self.assertTrue(result["passed"])
+            self.assertEqual("green", result["status"])
+
     def test_quality_gate_cli_carries_model_config(self) -> None:
         args = gate.parse_args([
             "--dataset-root", "dataset",

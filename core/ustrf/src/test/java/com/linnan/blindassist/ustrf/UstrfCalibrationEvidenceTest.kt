@@ -4,7 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class UstrfCalibrationEvidenceTest {
-    private val verifier = UstrfIndependentCalibrationEvidenceVerifier()
+    private val verifier = UstrfAiReviewedCalibrationEvidenceVerifier()
 
     @Test
     fun independentlyReviewedEvidenceWithinAllStartingGatesIsAdmitted() {
@@ -16,12 +16,9 @@ class UstrfCalibrationEvidenceTest {
     }
 
     @Test
-    fun selfReviewOrMissingApprovalNeverCountsAsIndependent() {
-        val missingApproval = verifier.admit(evidence(independentReviewApproved = false), 1_100L)
-        assertEquals(UstrfCalibrationEvidenceAdmission.Unavailable(UstrfCalibrationEvidenceFailure.INDEPENDENT_REVIEW_NOT_APPROVED), missingApproval)
-
-        val selfReview = verifier.admit(evidence(reviewerId = "collector-a"), 1_100L)
-        assertEquals(UstrfCalibrationEvidenceAdmission.Unavailable(UstrfCalibrationEvidenceFailure.REVIEWER_NOT_INDEPENDENT), selfReview)
+    fun missingAiConsensusNeverCountsAsReviewed() {
+        val missingApproval = verifier.admit(evidence(aiConsensusApproved = false), 1_100L)
+        assertEquals(UstrfCalibrationEvidenceAdmission.Unavailable(UstrfCalibrationEvidenceFailure.AI_CONSENSUS_NOT_APPROVED), missingApproval)
     }
 
     @Test
@@ -47,8 +44,7 @@ class UstrfCalibrationEvidenceTest {
     ) = assertEquals(UstrfCalibrationEvidenceAdmission.Unavailable(expected), verifier.admit(evidence, decisionAtNs))
 
     private fun evidence(
-        reviewerId: String = "reviewer-b",
-        independentReviewApproved: Boolean = true,
+        aiConsensusApproved: Boolean = true,
         sampleCount: Int = 30,
         poseCoverageBins: Int = 5,
         intrinsicsP95ReprojectionPx: Float = 1.5f,
@@ -64,8 +60,8 @@ class UstrfCalibrationEvidenceTest {
         cameraCalibrationVersion = "camera-cal-v1",
         sourceArtifactSha256 = "a".repeat(64),
         collectorId = "collector-a",
-        reviewerId = reviewerId,
-        independentReviewApproved = independentReviewApproved,
+        aiReviewReceiptSha256 = "b".repeat(64),
+        aiConsensusApproved = aiConsensusApproved,
         sampleCount = sampleCount,
         poseCoverageBins = poseCoverageBins,
         intrinsicsP95ReprojectionPx = intrinsicsP95ReprojectionPx,

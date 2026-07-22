@@ -57,7 +57,7 @@ test-artifacts.local/datasets/blindassist-evalset-*/
     report.json
     yolo_validation.json
     blindassist_manifest_validation.json
-    manual_review_checklist.csv
+    model_review_checklist.csv
     *_boxed.png
 ```
 
@@ -67,9 +67,9 @@ test-artifacts.local/datasets/blindassist-evalset-*/
 
 - `expected_risk_direction` 根据主要风险目标的框中心位置分为左、中、右。
 - `expected_distance_band` 使用目标框底部位置和面积比例生成预标注，字段值与 `RiskAnalyzer` 的 `ProximityBand` 对齐。
-- `expected_should_alert` 按标准提醒档位下的人类助行预期预标，不等同于当前算法一定会触发提醒。
+- `expected_should_alert` 按标准提醒档位生成预标，不等同于当前算法一定会触发提醒。
 - `primary_object_id` 指向当前样本中用于风险预标的 COCO annotation id。
-- `review_status` 当前为 `accepted_auto_prelabel_needs_human_visual_review`，表示已通过自动格式校验并进入评测导出，但仍建议人工逐张确认视觉语义。
+- `review_status=pending_model_review`，`status=pending_review`；只有 GPT 多模态与 Codex 证据复核形成独立共识后才能进入评测。
 
 ## 质量检查
 
@@ -81,11 +81,11 @@ test-artifacts.local/datasets/blindassist-evalset-*/
 .\.venv-export312\Scripts\python.exe C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\make_preview.py --dataset <dataset_dir> --limit 150
 ```
 
-人工复核时打开：
+当前 Codex/GPT 会话自动读取：
 
 ```text
 <dataset_dir>/qa/preview.html
-<dataset_dir>/qa/manual_review_checklist.csv
+<dataset_dir>/qa/model_review_checklist.csv
 ```
 
 重点检查：
@@ -103,7 +103,7 @@ test-artifacts.local/datasets/blindassist-evalset-*/
 test-artifacts.local/datasets/blindassist-evalset-20260527-impl/
 ```
 
-连续场景扩展已于 2026-07-11 启动，首批使用官方 SANPO-Real CC BY 4.0 数据，流程见 [SANPO 连续场景试验集](SANPO_SEQUENCE_EVALSET.md)。该工作流将 15 FPS 原始序列重采样到现有 benchmark 对齐的 10 FPS，保留全部 SANPO 分割区域，但人工复核前不生成 canonical `manifest.jsonl`。
+连续场景扩展已于 2026-07-11 启动，首批使用官方 SANPO-Real CC BY 4.0 数据，流程见 [SANPO 连续场景试验集](SANPO_SEQUENCE_EVALSET.md)。该工作流将 15 FPS 原始序列重采样到现有 benchmark 对齐的 10 FPS，保留全部 SANPO 分割区域，但 GPT/Codex 共识复核前不生成 canonical `manifest.jsonl`。
 
 Open Images、VIP-Mobility360、GND 和 LAVN 仍适合作为后续扩展来源，但需要独立确认下载体积、相机视角、许可证和标注格式后再合入。PEDESTRIAN 论文给出的 Zenodo DOI 与 GitHub 仓库在 2026-07-11 均不存在，暂不接入，也不把论文开放状态推断成数据集许可证。
 
