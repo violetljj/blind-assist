@@ -1,19 +1,19 @@
 # detector_taxonomy_coverage_v1
 
-状态：active
+状态：target attribution R1 complete / baseline hard gate pass / T0-T3 complete / shadow gate fail / H2 closed
 
 ## 稳定 Interface
 
-`validate_manifest.py --config configs/ustrf_detector_taxonomy_coverage_v1.json` 先重算父协议、窗口、模型、labels 与 Android 实现哈希，并拒绝阈值、tensor contract、person index、候选清单或阶段锁漂移。`run_host_coverage.py` 只在冻结 4,594 帧上生成独立 host input/raw-output/decode ledger；它按 `[1,84,2100] = channels-first` 解码，不改写历史 tracker ledger。
+`validate_manifest.py --config configs/ustrf_detector_taxonomy_coverage_v1.json` 先重算父协议、窗口、模型、labels 与 Android 实现哈希。R1 后续用 `run_host_canonical_coverage.py` 直接消费 Android Canvas RGB tensor，`finalize_target_truth.py` 在 baseline target association 隐藏时冻结 target/negative truth，`evaluate_target_attribution.py` 解封同一 baseline，`run_association_only_r1.py` 固定 detection/route/event kernel 重跑 T0–T3。
 
 ## 输出
 
-所有运行输出只写入 `artifacts.local/evidence/ustrf-detector-taxonomy-coverage-v1/`。逐帧账本记录源图、输入 tensor、原始输出的 SHA-256，以及阈值前 winner、正确 COCO 映射和 class-wise NMS 后检测；不得只保存 person count 后声称 taxonomy 归因。
+历史 taxonomy 输出保留在 `artifacts.local/evidence/ustrf-detector-taxonomy-coverage-v1/`；target attribution R1 输出写入 `artifacts.local/evidence/ustrf-detector-target-attribution-r1/`。逐帧账本绑定 canonical tensor/raw stream、冻结 truth、target attribution 与 association-only 结果。
 
 ## 安全边界
 
-本 Module 仅为 benchmark-only detector 诊断。旧 0-person 结果已发现 host layout 错位，在 Android/host 全量 parity 闭合前不得称为 taxonomy/domain shift。当前同源负窗口不是 person-absent truth，只能承担冻结 route-event 负窗，不能冒充逐框 detector false-positive truth。训练、App、生产、T0–T3 与 H2 均保持关闭。
+本 Module 仅为 benchmark-only。R1 已补齐逐帧负窗 all-person/confirmed-absent truth，旧 first-fit 窗口不再冒充 FP truth。baseline target coverage 硬门通过后 detector 候选已停止；T0–T3 虽重开并完成，但 shadow gate 失败，所以 App、production shadow、训练与 H2 均未授权。
 
 ## 停止条件
 
-任一输入/实现哈希漂移、帧数不是 4,594、非有限 tensor、Android/host input 不逐像素一致、raw output 超出预注册容差、受控 person canary 的 tensor/index/labels/NMS 失败，均立即关闭 taxonomy 归因与候选比较。只有 G1/G2 通过而冻结 baseline 的两来源覆盖门失败，才允许一次性比较 manifest 中预注册的少量候选；不得通过 `.35`、NMS、route、事件门或 tracker 回救。
+任一绑定哈希漂移、帧数不是 4,594、canonical input 或 detection identity 语义 parity 失败、truth lifecycle/negative frame 不完整，均 fail closed。baseline 两来源 coverage 已通过，禁止再开 detector 候选。association-only 的 `14/15`、高负例误提醒与 repeat 失败不得用 `.35`、NMS、route、事件门、TTC 或深度回救；H1 稳定前 H2 保持关闭。

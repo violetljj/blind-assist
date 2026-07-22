@@ -14,6 +14,7 @@
 
 ## 协议与专项记录
 
+- [detector target attribution R1 与 association-only H1（2026-07-23）](USTRF_DETECTOR_TARGET_ATTRIBUTION_R1_RESULT_2026-07-23.md)：Android canonical G1b 语义 parity `4594/4594`；隐藏输出后冻结 15 个 target person 事件与 2,297 帧负窗 all-person/absent truth，baseline 两来源 coverage `3/3 + 12/12`、critical miss `0`，因此停止换 detector；T0–T3 均仅 `14/15` 且负窗误提醒 `8.620/min`，shadow 门失败，H2 继续关闭。
 - [detector taxonomy coverage v1（2026-07-22）](USTRF_DETECTOR_TAXONOMY_COVERAGE_V1_RESULT_2026-07-22.md)：定位 tracker/TTC R1 的 host `[1,84,2100]` 解码轴错误；正确 host/SM-S9280 分别在 2639/2617 帧产生 person proposal，15/15 正事件区间均有 proposal，但 Android Canvas 与 PIL input/raw exact parity 为 0/4594 且缺目标 person bbox truth，因此 G3–G5、T0–T3 与 H2 继续关闭。
 - [tracker/TTC 固定协议消融 R1（2026-07-22）](USTRF_TRACKER_TTC_ABLATION_R1_RESULT_2026-07-22.md)：两条 LILocBench 准入来源按 15 正/15 同源等长负窗口生成 4594 帧 host detector ledger；冻结 App 模型在 PIL letterbox 几何下输出 0 个阈值内 person 框，T0 event recall `0`、critical miss `1`，clearance/ID/TTC 不可评，按停止门跳过 T1–T3；不声称 Android 像素 parity。
 - [R3 第三来源有界检索结论（2026-07-22）](USTRF_SENSOR_REPLAY_R3_THIRD_SOURCE_BOUNDED_OUTCOME_2026-07-22.md)：fail-closed 检索 IDSIA MSMPT `s9/s12/s13/s14`；s9 在 GT-only 门拒绝，s12/s13 在完整适配后双模型 AND 门拒绝，s14 同时失败 `.50` 深度几何门并被双模型拒绝。正式冻结 `2/3` 数据局限，不降门、不拿 Bonn 负样本补数、evaluator 未运行。

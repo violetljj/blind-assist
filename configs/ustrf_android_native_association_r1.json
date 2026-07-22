@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist_ustrf_android_native_association_r1",
+  "authority": "benchmark_only_association_selection_no_app_or_production_authority",
+  "frozen_on": "2026-07-23",
+  "detector_target_attribution_result_path": "artifacts.local/evidence/ustrf-detector-target-attribution-r1/target-attribution-result-r1.json",
+  "detector_target_attribution_result_sha256": "d2bec849b54436c3dfb3dcaa1e33b5e99f139f42aa552f7df883f4bf523883ae",
+  "required_detector_decision": "STOP_DETECTOR_CHANGES_AND_REOPEN_T0_T3",
+  "tracker_parent_config_path": "configs/ustrf_tracker_ttc_ablation_v1.json",
+  "tracker_parent_config_sha256": "7cc9878fb6f50f3ef51a75383c6a0d15509111a06b37226def203245866df7f6",
+  "windows_path": "artifacts.local/evidence/ustrf-tracker-ttc-ablation-v1/windows-v2.json",
+  "windows_sha256": "383c1a8aabfbe3bb2d5ccbf53c67a091d012b06c31a02fd44b93cea6ce1445b5",
+  "truth_path": "artifacts.local/evidence/ustrf-detector-target-attribution-r1/frozen-target-truth-r1.json",
+  "truth_sha256": "564c3c1986176a53c42297e6114f1e5ea83f7fc21da12072ab94c8dff5240bb8",
+  "canonical_detection_ledger_path": "artifacts.local/evidence/ustrf-detector-target-attribution-r1/canonical-host-ledger-v2.json",
+  "canonical_detection_ledger_sha256": "a386480d0858d431a97c47c768b16d2edb48a6d9fadf6c7e9da31060358c293c",
+  "route_sources": {
+    "lilocbench_dynamics_0_front": {
+      "path": "artifacts.local/evidence/ustrf-sensor-replay-r3/source-replacement-lilocbench-v1/dynamics_0-candidate-evaluation-frozen-v1.json",
+      "sha256": "6481193cfa1af062efa7298da57fa1aa1b8da621143ad86cbf810fedf2e0d697"
+    },
+    "lilocbench_lt_changes_dynamics_0_front": {
+      "path": "artifacts.local/evidence/ustrf-sensor-replay-r3/source-replacement-lilocbench-v1/lt_changes_dynamics_0-candidate-v1.json",
+      "sha256": "591fd45075f28a5a2792af9c7f8e55c67e9b31adfd5369e6a42439ea972ed830"
+    }
+  },
+  "fixed_kernel": {
+    "person_confidence_threshold": 0.35,
+    "nms_iou_threshold": 0.45,
+    "route_point_margin_fraction": 0.08,
+    "min_alert_frames": 2,
+    "min_clear_frames": 3,
+    "unknown_route_is_no_alert": true,
+    "target_match_iou": 0.30,
+    "frame_rate_hz": 15.0
+  },
+  "arms": ["T0", "T1", "T2", "T3"],
+  "association_only": true,
+  "ttc_or_depth_allowed": false,
+  "metrics": [
+    "event_recall",
+    "critical_miss",
+    "false_alerts_per_minute",
+    "first_correct_alert_delay_p95_ms",
+    "clearance_rate",
+    "clearance_p95_ms",
+    "repeat_alerts",
+    "target_track_fragmentation",
+    "evidence_age_p95_ms",
+    "worst_source"
+  ],
+  "winner_lexicographic_order": [
+    "critical_miss_count_asc",
+    "worst_source_event_recall_desc",
+    "false_alerts_per_minute_asc",
+    "clearance_rate_desc",
+    "clearance_p95_ms_asc",
+    "repeat_alerts_asc",
+    "first_correct_alert_delay_p95_ms_asc",
+    "target_track_fragmentation_asc",
+    "evidence_age_p95_ms_asc",
+    "arm_name_asc"
+  ],
+  "shadow_entry_requires": {
+    "event_recall_each_source": 1.0,
+    "critical_miss_each_source": 0,
+    "unknown_route_alert_count": 0
+  }
+}

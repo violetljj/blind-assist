@@ -14,6 +14,8 @@ import org.junit.runner.RunWith
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
 import java.io.File
+import java.io.BufferedOutputStream
+import java.io.FileOutputStream
 import java.io.FileInputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
@@ -21,7 +23,9 @@ import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.security.MessageDigest
+import java.util.zip.GZIPOutputStream
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 /** Full frozen-frame receipt for Android Canvas input and raw detector output parity. */
 @RunWith(AndroidJUnit4::class)
@@ -59,11 +63,17 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
         check(outputTensor.dataType() == DataType.FLOAT32 && outputTensor.shape().contentEquals(intArrayOf(1, 84, 2100)))
         val preprocessor = ImagePreprocessor(320)
         val outputBuffer = ByteBuffer.allocateDirect(outputTensor.numBytes()).order(ByteOrder.nativeOrder())
+        val canonicalInputFile = privateNewOutputFile(requireNotNull(arguments.getString(ARG_CANONICAL_INPUT)))
+        val canonicalRawFile = privateNewOutputFile(requireNotNull(arguments.getString(ARG_CANONICAL_RAW)))
+        val canonicalInputDigest = MessageDigest.getInstance("SHA-256")
+        val canonicalRawDigest = MessageDigest.getInstance("SHA-256")
         val rows = JSONArray()
         var failures = 0
         var inputHashMatches = 0
         var rawHashMatches = 0
         var personFrames = 0
+        GZIPOutputStream(BufferedOutputStream(FileOutputStream(canonicalInputFile), STREAM_BUFFER_BYTES)).use { canonicalInput ->
+        GZIPOutputStream(BufferedOutputStream(FileOutputStream(canonicalRawFile), STREAM_BUFFER_BYTES)).use { canonicalRaw ->
         try {
             val frames = input.getJSONArray("frames")
             for (index in 0 until frames.length()) {
@@ -82,9 +92,15 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
                     try {
                         val prepared = preprocessor.prepare(bitmap)
                         androidInputHash = sha256Buffer(prepared.buffer)
+                        val canonicalRgb = canonicalRgbBytes(prepared.buffer)
+                        canonicalInput.write(canonicalRgb)
+                        canonicalInputDigest.update(canonicalRgb)
                         outputBuffer.rewind()
                         interpreter.run(prepared.buffer, outputBuffer)
                         androidOutputHash = sha256Buffer(outputBuffer)
+                        val canonicalRawBytes = bufferBytes(outputBuffer)
+                        canonicalRaw.write(canonicalRawBytes)
+                        canonicalRawDigest.update(canonicalRawBytes)
                         val values = FloatArray(outputTensor.numElements())
                         outputBuffer.rewind()
                         outputBuffer.asFloatBuffer().get(values)
@@ -132,6 +148,8 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
         } finally {
             interpreter.close()
         }
+        }
+        }
         val output = JSONObject()
             .put("schema", OUTPUT_SCHEMA)
             .put("input_manifest_sha256", sha256File(inputFile))
@@ -142,6 +160,18 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
             .put("input_tensor_exact_match_count", inputHashMatches)
             .put("raw_output_exact_match_count", rawHashMatches)
             .put("person_frame_count", personFrames)
+            .put("canonical_input_stream", JSONObject()
+                .put("encoding", "gzip_concatenated_rgb_u8_nhwc")
+                .put("bytes_per_frame_uncompressed", CANONICAL_RGB_BYTES_PER_FRAME)
+                .put("uncompressed_sha256", canonicalInputDigest.digest().toHex())
+                .put("compressed_sha256", sha256File(canonicalInputFile))
+                .put("compressed_bytes", canonicalInputFile.length()))
+            .put("canonical_raw_stream", JSONObject()
+                .put("encoding", "gzip_concatenated_float32_native_little_endian")
+                .put("bytes_per_frame_uncompressed", CANONICAL_RAW_BYTES_PER_FRAME)
+                .put("uncompressed_sha256", canonicalRawDigest.digest().toHex())
+                .put("compressed_sha256", sha256File(canonicalRawFile))
+                .put("compressed_bytes", canonicalRawFile.length()))
             .put("full_exact_parity_passed", failures == 0 && inputHashMatches == REQUIRED_FRAME_COUNT && rawHashMatches == REQUIRED_FRAME_COUNT)
             .put("frames", rows)
             .put("authority", JSONObject().put("benchmark_only", true).put("tracker_reopened", false)
@@ -156,7 +186,9 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
         check(relative.isNotBlank() && !relative.startsWith('/') && !relative.contains(".."))
         val root = requireNotNull(targetContext.getExternalFilesDir(null)).canonicalFile
         return File(root, relative).canonicalFile.also {
-            check(it.path.startsWith(root.path + File.separator) && it.isFile) { "$label unavailable: $relative" }
+            check(it.path.startsWith(root.path + File.separator) && it.isFile) {
+                "$label unavailable: $relative root=${root.path} resolved=${it.path} exists=${it.exists()} file=${it.isFile} readable=${it.canRead()}"
+            }
         }
     }
     private fun privateChild(parent: File?, relative: String, label: String): File {
@@ -173,6 +205,9 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
             check(it.path.startsWith(root.path + File.separator)); it.parentFile?.mkdirs()
         }
     }
+    private fun privateNewOutputFile(relative: String): File = privateOutputFile(relative).also {
+        check(!it.exists()) { "refusing to overwrite canonical stream: $relative" }
+    }
     private fun sha256Buffer(buffer: ByteBuffer): String {
         val duplicate = buffer.duplicate().order(ByteOrder.nativeOrder())
         duplicate.rewind()
@@ -185,6 +220,24 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
         }
         return digest.digest().joinToString("") { "%02x".format(it) }
     }
+    private fun bufferBytes(buffer: ByteBuffer): ByteArray {
+        val duplicate = buffer.duplicate().order(ByteOrder.nativeOrder())
+        duplicate.rewind()
+        return ByteArray(duplicate.remaining()).also(duplicate::get)
+    }
+    private fun canonicalRgbBytes(buffer: ByteBuffer): ByteArray {
+        val duplicate = buffer.duplicate().order(ByteOrder.nativeOrder())
+        duplicate.rewind()
+        val result = ByteArray(CANONICAL_RGB_BYTES_PER_FRAME)
+        for (index in result.indices) {
+            val value = duplicate.float
+            check(value.isFinite() && value in 0f..1f)
+            result[index] = (value * 255f).roundToInt().coerceIn(0, 255).toByte()
+        }
+        check(!duplicate.hasRemaining())
+        return result
+    }
+    private fun ByteArray.toHex() = joinToString("") { "%02x".format(it) }
     private fun sha256File(file: File) = file.inputStream().use(::digest)
     private fun sha256Asset(path: String) = testContext.assets.open(path).use(::digest)
     private fun digest(input: InputStream): String {
@@ -209,9 +262,14 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
         const val MODEL_ASSET = "yolo11n_fp16_320.tflite"
         const val LABELS_ASSET = "coco_labels.txt"
         const val REQUIRED_FRAME_COUNT = 4594
+        const val CANONICAL_RGB_BYTES_PER_FRAME = 320 * 320 * 3
+        const val CANONICAL_RAW_BYTES_PER_FRAME = 84 * 2100 * 4
+        const val STREAM_BUFFER_BYTES = 1024 * 1024
         const val ARG_REQUIRED = "ustrfDetectorTaxonomyRequired"
         const val ARG_INPUT = "ustrfDetectorTaxonomyInput"
         const val ARG_OUTPUT = "ustrfDetectorTaxonomyOutput"
+        const val ARG_CANONICAL_INPUT = "ustrfDetectorTaxonomyCanonicalInput"
+        const val ARG_CANONICAL_RAW = "ustrfDetectorTaxonomyCanonicalRaw"
         const val TAG = "UstrfDetectorTaxonomy"
     }
 }
