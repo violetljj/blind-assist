@@ -103,7 +103,7 @@ class CounterfactualEpisodeValidatorTest(unittest.TestCase):
             "design": {"session_count": 1, "scene_count": 1, "matched_pairs_per_session_scene": 1},
             "sessions": [{"session_id": "s1"}],
             "scenes": [{"scene_id": "step_curb"}],
-            "source_receipt_schema": {"allowed_license_status": ["licensed_for_research"], "required_privacy_review_status": "ai_review_passed"},
+            "source_receipt_schema": {"allowed_license_status": ["public_download_unknown_recorded"], "allowed_privacy_review_status": ["unknown_recorded"], "hash_license_and_privacy_evidence": False},
             "episode_duration_policy": {"minimum_duration_ms": 10000, "maximum_duration_ms": 20000},
             "episode_record_schema": {"required_fields": ["episode_id", "session_id", "scene_id", "matched_pair_id", "pair_role", "risk_event_id", "expected_should_alert", "video_path", "video_sha256", "source_receipt_id", "annotation_reviewer_ids", "annotation_evidence_path", "annotation_evidence_sha256", "duration_ms", "risk_profile", "lifecycle_intervals_ms"], "pair_role_allowed": ["positive", "matched_negative"]},
             "annotation_evidence_schema": {"schema": "blindassist_sanpo_counterfactual_annotation_evidence_v1", "minimum_independent_reviewers_per_episode": 2, "reviewer_id_must_match_episode": True, "positive_anchor_agreement_tolerance_ms": 500},
@@ -116,7 +116,7 @@ class CounterfactualEpisodeValidatorTest(unittest.TestCase):
         evidence = root / "receipt-evidence.json"
         raw.write_bytes(b"controlled route video")
         evidence.write_text("{}", encoding="utf-8")
-        receipt = {"source_receipt_id": "r1", "source_owner_or_dataset": "SANPO", "collection_date": "2026-07-13", "license_status": "licensed_for_research", "license_evidence_path": "receipt-evidence.json", "privacy_review_status": "ai_review_passed", "privacy_evidence_path": "receipt-evidence.json", "reviewer_id": "codex-privacy-review", "raw_video_path": "raw.mp4", "raw_video_sha256": sha(raw), "episode_manifest_path": "receipt-evidence.json", "episode_manifest_sha256": sha(evidence)}
+        receipt = {"source_receipt_id": "r1", "source_owner_or_dataset": "SANPO", "collection_date": "2026-07-13", "source_url": "https://example.test/public-video", "retrieved_at": "2026-07-13T00:00:00Z", "license_status": "public_download_unknown_recorded", "privacy_review_status": "unknown_recorded", "reviewer_id": "codex-provenance-review", "raw_video_path": "raw.mp4", "raw_video_sha256": sha(raw), "episode_manifest_path": "receipt-evidence.json", "episode_manifest_sha256": sha(evidence)}
         context = {"location": "corner", "lighting": "day", "device": "chest", "camera_configuration": "left", "object_category": "curb"}
         pos_review = root / "pos-review.json"
         neg_review = root / "neg-review.json"

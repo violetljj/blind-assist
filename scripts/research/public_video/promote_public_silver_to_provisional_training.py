@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Create a new v2 provisional-training attestation from immutable v1 inputs.
 
-The command never edits a legacy source or silver manifest.  It only permits
-CC-BY-4.0 or attested CC0-1.0, hash-bound, model-only v1 inputs and preserves
-their privacy flag.
+The command never edits a legacy source or silver manifest. It permits any
+ordinary publicly downloadable, hash-bound, model-only v1 input and preserves
+its privacy limitation flag; license metadata is recorded when available but
+is not an isolated-research gate.
 The resulting labels are trainable provisional supervision, not human truth,
 calibration data, blind-evaluation truth, or production authorization.
 """
@@ -46,15 +47,14 @@ def promote(*, legacy_silver_path: Path, legacy_source_path: Path, output_root: 
     source_info = legacy_source.get("source")
     license_name = source_info.get("license") if isinstance(source_info, dict) else None
     license_receipt: dict[str, Any] | None = None
-    if license_name != "CC-BY-4.0":
+    if not license_name:
         receipt_path = legacy_source_path.parent.parent / "public_candidate_receipt.json"
         if receipt_path.is_file():
             receipt = load_json(receipt_path)
             if receipt.get("source_id") == legacy_source.get("source_id") and receipt.get("expected_license") == "CC0 1.0":
                 license_name = "CC0-1.0"
                 license_receipt = {"path": str(receipt_path.resolve()), "sha256": sha256_file(receipt_path)}
-        if license_name != "CC0-1.0":
-            raise PromotionError("provisional training promotion requires a CC-BY-4.0 or attested CC0-1.0 source")
+    license_name = license_name or "unknown_recorded_nonblocking"
     if legacy_source.get("human_event_truth_present") is not False or legacy_source.get("privacy_audit_required") is not True:
         raise PromotionError("legacy source must preserve non-human truth and privacy-audit flags")
     image_root = (legacy_source_path.parent / "images").resolve()
@@ -82,6 +82,7 @@ def promote(*, legacy_silver_path: Path, legacy_source_path: Path, output_root: 
             "source_manifest_v1_path": str(legacy_source_path.resolve()),
             "image_root": str(image_root),
             "mode": "provisional_model_supervision",
+            "research_use_basis": "ordinary_public_download",
             "important_limit": "Not human event truth, calibration data, blind-evaluation truth, or production authorization.",
         },
     })

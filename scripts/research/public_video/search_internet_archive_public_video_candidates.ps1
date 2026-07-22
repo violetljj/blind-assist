@@ -29,7 +29,7 @@ $headers = @{
 }
 for ($index = 0; $index -lt $queries.Count; $index++) {
     $tokens = @(([string]$queries[$index]).Split(' ', [System.StringSplitOptions]::RemoveEmptyEntries) | ForEach-Object { "($_)" })
-    $archiveQuery = "mediatype:movies AND licenseurl:* AND (" + ($tokens -join " AND ") + ")"
+    $archiveQuery = "mediatype:movies AND (" + ($tokens -join " AND ") + ")"
     $fields = @("identifier", "title", "description", "creator", "licenseurl", "subject", "date", "downloads")
     $parts = @("q=$([System.Uri]::EscapeDataString($archiveQuery))")
     $parts += $fields | ForEach-Object { "fl%5B%5D=$([System.Uri]::EscapeDataString($_))" }

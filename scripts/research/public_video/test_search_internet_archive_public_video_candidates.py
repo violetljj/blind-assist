@@ -25,17 +25,19 @@ FIXTURE = {
 
 
 class InternetArchiveCandidateSearchTest(unittest.TestCase):
-    def test_api_url_is_bounded_and_license_filtered(self) -> None:
+    def test_api_url_is_bounded_without_license_filter(self) -> None:
         url = subject.api_query_url("walking detour", 25)
         self.assertIn("advancedsearch.php", url)
         self.assertIn("rows=25", url)
         self.assertIn("page=1", url)
-        self.assertIn("licenseurl%3A%2A", url)
+        self.assertNotIn("licenseurl%3A%2A", url)
 
-    def test_parser_requires_license_and_never_marks_training_eligible(self) -> None:
+    def test_parser_keeps_missing_license_as_nonblocking_metadata(self) -> None:
         rows = subject.parse_api_payload(json.dumps(FIXTURE).encode(), "walking detour")
-        self.assertEqual(1, len(rows))
+        self.assertEqual(2, len(rows))
         self.assertEqual("walking-detour", rows[0]["identifier"])
+        missing = next(row for row in rows if row["identifier"] == "missing-license")
+        self.assertEqual("unknown_recorded_nonblocking", missing["item_license_status"])
         self.assertFalse(rows[0]["training_eligible"])
         self.assertGreater(rows[0]["title_priority_score"], 0)
 
@@ -45,7 +47,7 @@ class InternetArchiveCandidateSearchTest(unittest.TestCase):
             ("walking", "https://example/1", payload),
             ("detour", "https://example/2", payload),
         ])
-        self.assertEqual(1, report["candidate_count"])
+        self.assertEqual(2, report["candidate_count"])
         self.assertEqual(2, report["request_count"])
 
     def test_write_report_hashes_and_refuses_overwrite(self) -> None:

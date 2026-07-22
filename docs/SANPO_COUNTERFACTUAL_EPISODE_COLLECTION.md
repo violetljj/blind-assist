@@ -8,7 +8,7 @@
 
 机器可读合同位于 `configs/sanpo_counterfactual_episode_collection_v1.json`。配置中的 session 是待自动获取/生成的槽位，不代表数据已经存在或通过模型复核。
 
-执行入口为 `scripts/validate_sanpo_counterfactual_episodes.py`。它只验证经 GPT/Codex 隔离复核并完成模型共识/仲裁的本地 episode manifest，强制来源许可/隐私证据与文件 SHA256、配对上下文、正负事件锚点和完整 session-scene 矩阵；缺任一项均 fail closed。只有带 `--require-complete` 且完整矩阵通过时才会报告 `training_eligible=true`，并且它始终输出 `production_model_replacement_authorized=false`。它不下载数据；模型复核流程负责 `should_alert`、criticality 和事件锚点判断。
+执行入口为 `scripts/validate_sanpo_counterfactual_episodes.py`。它只验证经 GPT/Codex 隔离复核并完成模型共识/仲裁的本地 episode manifest，强制公开来源 URL/抓取时间/文件 SHA256、配对上下文、正负事件锚点和完整 session-scene 矩阵；许可、同意和隐私状态可记为 unknown/pending，不阻止公开数据的下载或隔离内部研究。只有带 `--require-complete` 且完整矩阵通过时才会报告 `training_eligible=true`，并且它始终输出 `production_model_replacement_authorized=false`。它不下载数据；模型复核流程负责 `should_alert`、criticality 和事件锚点判断。
 
 以 `configs/sanpo_counterfactual_episode_manifest_template_v1.json` 为字段模板，在 `artifacts.local/evidence/` 创建每批本地 manifest；模板本身是空的 `in_review` 文件，不能被当作已采集数据。正式复核后执行：
 
@@ -100,7 +100,7 @@ validator 会拒绝 reviewer run 与 episode 不一致、角色不完整、输�
 - 设备、相机参数和任何重编码/裁剪派生关系；
 - episode manifest 与标注文件 SHA256。
 
-配置和 manifest 不依赖网络 URL 才能验证。远程出处可以作为说明字段，但本地证据、许可文本、隐私记录与哈希 inventory 必须足以独立完成审计。缺许可、隐私状态不是 green、SHA256 缺失或哈希不匹配时，该 session 整体不得进入训练或评价。
+配置和 manifest 的技术验证不依赖实时网络。公开来源必须保存 URL、抓取时间与本地哈希；许可和隐私元数据有则绑定、无则标记 `unknown_recorded` / `pending_nonblocking`，不阻止隔离内部训练或评价。SHA256 缺失/不匹配、来源路径不闭合、事件 review 或同步证据无效时，该 session 才不得进入相应训练或评价。
 
 ## 切分与随机审计
 

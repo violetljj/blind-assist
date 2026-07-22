@@ -152,7 +152,7 @@ def build_report(contract: dict[str, Any], responses: list[tuple[str, str, bytes
         "responses": evidence,
         "candidate_count": len(candidates),
         "candidates": candidates,
-        "license_gate": "Item metadata is a review input. Verify the file page and exact video license before download.",
+        "download_gate": "An ordinary public file URL is sufficient for isolated internal research; preserve item license metadata when available without blocking download.",
         "evidence_limit": "Discovery ledger only; no row is event truth, a training label, calibration, blind evidence, or production authorization.",
     }
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a bounded, license-aware Internet Archive video candidate ledger."""
+"""Build a bounded Internet Archive public-video candidate ledger."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def api_query_url(query: str, limit: int) -> str:
     if not query:
         raise ValueError("search query must not be empty")
     quoted = " AND ".join(f'({token})' for token in query.split())
-    search = f"mediatype:movies AND licenseurl:* AND ({quoted})"
+    search = f"mediatype:movies AND ({quoted})"
     fields = ["identifier", "title", "description", "creator", "licenseurl", "subject", "date", "downloads"]
     params: list[tuple[str, str]] = [("q", search)]
     params.extend(("fl[]", field) for field in fields)
@@ -74,7 +74,7 @@ def parse_api_payload(payload: bytes, query: str) -> list[dict[str, Any]]:
     for document in documents:
         identifier = as_text(document.get("identifier")).strip()
         license_url = as_text(document.get("licenseurl")).strip()
-        if not identifier or not license_url:
+        if not identifier:
             continue
         row = {
             "identifier": identifier,
@@ -83,8 +83,8 @@ def parse_api_payload(payload: bytes, query: str) -> list[dict[str, Any]]:
             "creator": as_text(document.get("creator")).strip() or None,
             "date": as_text(document.get("date")).strip() or None,
             "downloads": int(document.get("downloads") or 0),
-            "license_url": license_url,
-            "item_license_status": "metadata_present_requires_item_page_verification",
+            "license_url": license_url or None,
+            "item_license_status": "metadata_present" if license_url else "unknown_recorded_nonblocking",
             "downloadable_video_status": "unverified",
             "continuity_status": "unreviewed",
             "training_eligible": False,
@@ -101,7 +101,7 @@ def build_report(contract: dict[str, Any], responses: list[tuple[str, str, bytes
     for query, url, payload in responses:
         parsed = parse_api_payload(payload, query)
         evidence.append({"query": query, "request_url": url, "response_sha256": sha256_bytes(payload),
-                         "parsed_licensed_item_count": len(parsed)})
+                         "parsed_public_item_count": len(parsed)})
         for row in parsed:
             if row["identifier"] in seen:
                 continue
@@ -118,7 +118,7 @@ def build_report(contract: dict[str, Any], responses: list[tuple[str, str, bytes
         "responses": evidence,
         "candidate_count": len(candidates),
         "candidates": candidates,
-        "license_gate": "Verify the item page, exact license, and downloadable video file before download.",
+        "download_gate": "Downloadable through an ordinary public item page without bypassing authentication, payment, or access controls; license metadata is non-blocking for isolated internal research.",
         "evidence_limit": "Discovery only; no candidate is event truth, training data, calibration, blind evidence, Android authorization, or production evidence.",
     }
 

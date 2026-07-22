@@ -9,7 +9,8 @@
   ],
   "search_filter": {
     "mediatype": "movies",
-    "licenseurl_must_exist": true
+    "licenseurl_must_exist": false,
+    "ordinary_public_download_is_sufficient_for_isolated_internal_research": true
   },
   "request_limits": {
     "one_request_per_frozen_query": true,

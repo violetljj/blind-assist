@@ -392,16 +392,26 @@ def validate(config: dict[str, Any], manifest: dict[str, Any], *, root: Path, re
         receipt_id = _require_string(receipt, "source_receipt_id", where=where)
         if receipt_id in receipt_by_id:
             raise ContractError(f"duplicate source_receipt_id: {receipt_id}")
-        for field in ("source_owner_or_dataset", "collection_date", "license_evidence_path", "privacy_evidence_path", "reviewer_id", "raw_video_path", "episode_manifest_path"):
+        for field in ("source_owner_or_dataset", "collection_date", "reviewer_id", "raw_video_path", "episode_manifest_path"):
             _require_string(receipt, field, where=where)
-        if receipt.get("license_status") not in allowed_license:
+        license_status = receipt.get("license_status", "public_download_unknown_recorded")
+        if license_status not in allowed_license:
             raise ContractError(f"{where}.license_status is not allowed")
+        if license_status == "public_download_unknown_recorded":
+            _require_string(receipt, "source_url", where=where)
+            _require_string(receipt, "retrieved_at", where=where)
         required_origin_scope = config["source_receipt_schema"].get("required_origin_scope")
         if required_origin_scope is not None and receipt.get("origin_scope") != required_origin_scope:
             raise ContractError(f"{where}.origin_scope does not match the collection contract")
-        if receipt.get("privacy_review_status") != config["source_receipt_schema"]["required_privacy_review_status"]:
-            raise ContractError(f"{where}.privacy_review_status must be green")
+        required_privacy = config["source_receipt_schema"].get("required_privacy_review_status")
+        allowed_privacy = config["source_receipt_schema"].get("allowed_privacy_review_status")
+        if required_privacy is not None and receipt.get("privacy_review_status") != required_privacy:
+            raise ContractError(f"{where}.privacy_review_status must match the required status")
+        if allowed_privacy is not None and receipt.get("privacy_review_status", "unknown_recorded") not in set(allowed_privacy):
+            raise ContractError(f"{where}.privacy_review_status is not allowed")
         if config["source_receipt_schema"].get("hash_license_and_privacy_evidence") is True:
+            _require_string(receipt, "license_evidence_path", where=where)
+            _require_string(receipt, "privacy_evidence_path", where=where)
             _verify_file_hash(
                 root,
                 receipt["license_evidence_path"],

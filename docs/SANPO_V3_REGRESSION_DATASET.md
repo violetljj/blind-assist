@@ -21,7 +21,7 @@
 
 ## v3 四类语义数据结构
 
-每个 RGB 一张单通道 `semantic_mask_path` PNG，类别 ID 固定为：`0=walkable`、`1=boundary_step_curb`、`2=obstacle`、`3=unknown_nonwalkable`。每行必须有 `image_sha256`、`semantic_mask_sha256`、`scene_bucket`、`session_id`、`sequence_id`、连续 `frame_index`、`risk_event_id`、`expected_event_phase` 和布尔 `expected_should_alert`。来源字段必须记录 `dataset`、`license`、`license_url`、`privacy_review_status`。
+每个 RGB 一张单通道 `semantic_mask_path` PNG，类别 ID 固定为：`0=walkable`、`1=boundary_step_curb`、`2=obstacle`、`3=unknown_nonwalkable`。每行必须有 `image_sha256`、`semantic_mask_sha256`、`scene_bucket`、`session_id`、`sequence_id`、连续 `frame_index`、`risk_event_id`、`expected_event_phase` 和布尔 `expected_should_alert`。来源必须记录 `dataset` 与来源/文件哈希；`license`、`license_url`、`privacy_review_status` 有则记录，缺失时使用 `unknown_recorded_nonblocking` / `unknown_recorded`，不阻止隔离内部研究。
 
 `scene_bucket` 只能为：
 

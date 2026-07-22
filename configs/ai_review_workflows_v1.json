@@ -14,6 +14,15 @@
     "release_evidence_review"
   ],
   "human_required_queue_forbidden": true,
+  "public_download_research_policy": {
+    "ordinary_public_download_is_sufficient_for_isolated_internal_research": true,
+    "separate_license_privacy_or_consent_receipt_required_before_download": false,
+    "separate_license_privacy_or_consent_receipt_required_before_internal_training_or_offline_evaluation": false,
+    "minimum_provenance": ["source_url", "retrieved_at", "content_sha256"],
+    "allowed_retrieval": ["official_url_or_api", "public_mirror", "archive_service", "resumable_downloader"],
+    "forbidden_retrieval": ["authentication_bypass", "payment_bypass", "access_control_evasion", "technical_restriction_evasion"],
+    "separate_boundary_review": ["external_upload", "sharing_or_redistribution", "commercial_release", "production_promotion", "claim_of_participant_consent"]
+  },
   "default_policy": {
     "required_independent_reviews": 2,
     "required_roles": ["gpt_task_reviewer", "codex_evidence_reviewer"],
@@ -27,10 +36,10 @@
   },
   "workflows": {
     "autonomous_source_acquisition_v1": {
-      "gpt_role": "source_content_continuity_and_privacy_risk_review",
-      "codex_role": "license_provenance_download_or_device_receipt_and_hash_review",
-      "uncertainty_behavior": "reject_quarantine_or_select_lawful_automated_alternative",
-      "authority": "automated_source_admission"
+      "gpt_role": "source_content_continuity_and_privacy_risk_disclosure",
+      "codex_role": "public_reachability_provenance_download_or_device_receipt_and_hash_review",
+      "uncertainty_behavior": "record_missing_rights_or_privacy_metadata_as_limitation_and_continue_isolated_internal_research",
+      "authority": "isolated_internal_research_source_admission"
     },
     "evalset_visual_semantics_v1": {
       "gpt_role": "multimodal_scene_risk_and_residual_pii_review",
@@ -66,7 +75,7 @@
       "device_produced_physical_measurement",
       "credential_or_signing_identity"
     ],
-    "missing_fact_policy": "select_lawful_automated_alternative_or_mark_evidence_unavailable_never_create_human_task",
-    "note": "Models may acquire or audit these receipts through authorized automation but never fabricate the underlying fact."
+    "missing_fact_policy": "for_publicly_downloadable_data_continue_isolated_internal_research_and_mark_unknown; fail_only_the_external_upload_redistribution_commercial_production_or_corresponding_rights_claim_branch",
+    "note": "Models never fabricate the underlying fact. Missing license, consent, or privacy metadata does not block ordinary public download or isolated internal research."
   }
 }

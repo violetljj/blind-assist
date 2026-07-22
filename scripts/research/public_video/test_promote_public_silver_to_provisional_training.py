@@ -61,12 +61,14 @@ class PublicSilverPromotionTest(unittest.TestCase):
             with self.assertRaisesRegex(PromotionError, "image directory is missing"):
                 promote(legacy_silver_path=silver, legacy_source_path=source, output_root=root / "v2")
 
-    def test_rejects_non_ccby_source(self) -> None:
+    def test_accepts_non_ccby_source_for_isolated_internal_training(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             silver, source = self._inputs(root, license="CC-BY-NC-4.0")
-            with self.assertRaisesRegex(PromotionError, "CC-BY-4.0 or attested CC0-1.0"):
-                promote(legacy_silver_path=silver, legacy_source_path=source, output_root=root / "v2")
+            receipt = promote(legacy_silver_path=silver, legacy_source_path=source, output_root=root / "v2")
+            promoted_source = json.loads((root / "v2" / "source_manifest_v2.json").read_text(encoding="utf-8"))
+        self.assertTrue(receipt["validation"]["training_execution_authorized"])
+        self.assertEqual("CC-BY-NC-4.0", promoted_source["source"]["license"])
 
     def test_accepts_cc0_source_with_bound_candidate_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

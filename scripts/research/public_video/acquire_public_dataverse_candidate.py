@@ -36,7 +36,6 @@ def validate_config(config: dict[str, Any]) -> None:
         "source_id",
         "dataset_persistent_id",
         "dataset_metadata_url",
-        "expected_license",
         "candidate_file_name",
         "source_role",
     )
@@ -46,8 +45,6 @@ def validate_config(config: dict[str, Any]) -> None:
         raise AcquisitionError("source config has missing text fields")
     if not isinstance(config.get("maximum_file_bytes"), int) or config["maximum_file_bytes"] <= 0:
         raise AcquisitionError("source config maximum_file_bytes must be positive")
-    if config.get("privacy_processing_required") is not True:
-        raise AcquisitionError("public pedestrian source must require de-identification")
     if not isinstance(config.get("source_constraints"), list) or not config["source_constraints"]:
         raise AcquisitionError("source config requires constraints")
     if config.get("training_execution_authorized") is not False:
@@ -59,12 +56,11 @@ def validate_config(config: dict[str, Any]) -> None:
 def select_file(config: dict[str, Any], metadata: dict[str, Any]) -> dict[str, Any]:
     try:
         version = metadata["data"]["latestVersion"]
-        license_name = version["license"]["name"]
         files = version["files"]
     except (KeyError, TypeError) as error:
-        raise AcquisitionError("Dataverse metadata lacks license or files") from error
-    if license_name != config["expected_license"]:
-        raise AcquisitionError(f"unexpected source license: {license_name!r}")
+        raise AcquisitionError("Dataverse metadata lacks files") from error
+    license_info = version.get("license")
+    license_name = license_info.get("name") if isinstance(license_info, dict) else None
     if not isinstance(files, list):
         raise AcquisitionError("Dataverse metadata files must be a list")
     matches = [
@@ -85,7 +81,7 @@ def select_file(config: dict[str, Any], metadata: dict[str, Any]) -> dict[str, A
         raise AcquisitionError("candidate file violates configured byte bound")
     if not isinstance(data_file.get("md5"), str) or len(data_file["md5"]) != 32:
         raise AcquisitionError("candidate file metadata lacks an MD5 checksum")
-    return data_file
+    return {**data_file, "observed_license": license_name}
 
 
 def download_file(opener: Callable[[str], BinaryIO], url: str, destination: Path, *, expected_md5: str) -> tuple[str, str]:
@@ -154,7 +150,9 @@ def build_receipt(config: dict[str, Any], data_file: dict[str, Any], *, local_na
         "format": "blindassist_public_dataverse_unlabeled_candidate_receipt_v1",
         "source_id": config["source_id"],
         "dataset_persistent_id": config["dataset_persistent_id"],
-        "expected_license": config["expected_license"],
+        "expected_license": config.get("expected_license"),
+        "observed_license": data_file.get("observed_license"),
+        "license_status": "recorded_nonblocking" if data_file.get("observed_license") else "unknown_recorded_nonblocking",
         "source_role": config["source_role"],
         "remote_file": {
             "id": data_file["id"],
@@ -165,7 +163,7 @@ def build_receipt(config: dict[str, Any], data_file: dict[str, Any], *, local_na
         "local_file_name": local_name,
         "local_file_sha256": local_sha256,
         "download_status": "raw_candidate_pending_deidentification" if local_name else "metadata_verified_not_downloaded",
-        "privacy_processing_required": True,
+        "privacy_processing_required": bool(config.get("privacy_processing_required", True)),
         "human_event_truth_present": False,
         "training_execution_authorized": False,
         "production_model_replacement_authorized": False,

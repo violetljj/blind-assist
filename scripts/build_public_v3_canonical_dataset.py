@@ -255,13 +255,25 @@ def assemble(recipe_path: Path, output_root: Path, report_path: Path) -> dict[st
                 raise ValueError(f"{source_id}: adapter is not allow-listed")
             package_root = Path(receipt["package_root"]).resolve()
             bound: dict[str, str] = {}
-            for kind in ("license_evidence", "privacy_evidence", "inventory"):
+            for kind in ("inventory",):
                 bound[f"{kind}_path"], bound[f"{kind}_sha256"] = evidence_copy(
                     safe_source_path(package_root, str(receipt[f"{kind}_path"])), staging, source_id, kind
                 )
-            attested_sources.append({key: receipt[key] for key in (
-                "source_id", "adapter_id", "dataset", "dataset_version", "license", "license_url", "privacy_review_status"
-            )} | bound)
+            for kind in ("license_evidence", "privacy_evidence"):
+                if receipt.get(f"{kind}_path"):
+                    bound[f"{kind}_path"], bound[f"{kind}_sha256"] = evidence_copy(
+                        safe_source_path(package_root, str(receipt[f"{kind}_path"])), staging, source_id, kind
+                    )
+            attested_sources.append({
+                "source_id": receipt["source_id"],
+                "adapter_id": receipt["adapter_id"],
+                "dataset": receipt["dataset"],
+                "dataset_version": receipt["dataset_version"],
+                "license": receipt.get("license", "unknown_recorded_nonblocking"),
+                "license_url": receipt.get("license_url", "unknown_recorded_nonblocking"),
+                "privacy_review_status": receipt.get("privacy_review_status", "unknown_recorded"),
+                "research_use_basis": "ordinary_public_download",
+            } | bound)
         rows: list[dict[str, Any]] = []
         inventory_assets: list[dict[str, Any]] = []
         seen_sessions: set[str] = set()

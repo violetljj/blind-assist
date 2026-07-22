@@ -27,6 +27,8 @@ ALLOWED_PRIVACY_STATUSES = {
     "approved_no_identifiable_subjects",
     "public_dataset_no_personal_data",
     "automated_privacy_clear",
+    "pending_nonblocking",
+    "unknown_recorded",
 }
 ATTESTATION_SCHEMA = "blindassist_v3_source_attestation_v1"
 ASSET_INVENTORY_SCHEMA = "blindassist_source_asset_inventory_v1"
@@ -66,10 +68,10 @@ def privacy_and_source_errors(rows: list[dict[str, Any]]) -> list[str]:
     for row in rows:
         sample_id = str(row.get("id", "<unknown>"))
         source = row.get("source") if isinstance(row.get("source"), dict) else {}
-        missing = [field for field in ("dataset", "license", "license_url") if not str(source.get(field, "")).strip()]
+        missing = [field for field in ("dataset",) if not str(source.get(field, "")).strip()]
         if missing:
             errors.append(f"{sample_id}: missing source fields {missing}")
-        status = str(source.get("privacy_review_status", "")).strip()
+        status = str(source.get("privacy_review_status", "unknown_recorded")).strip()
         if status not in ALLOWED_PRIVACY_STATUSES:
             errors.append(f"{sample_id}: privacy_review_status must be one of {sorted(ALLOWED_PRIVACY_STATUSES)}")
     return errors
@@ -139,13 +141,15 @@ def source_attestation_errors(root: Path, rows: list[dict[str, Any]], payload: d
         by_id[source_id] = item
         if adapter_id not in ALLOWED_SOURCE_ADAPTERS:
             errors.append(f"{source_id}: adapter_id {adapter_id!r} is not allow-listed")
-        for field in ("dataset", "dataset_version", "license", "license_url", "privacy_review_status"):
+        for field in ("dataset", "dataset_version"):
             if not str(item.get(field, "")).strip():
                 errors.append(f"{source_id}: missing attestation {field}")
-        if item.get("privacy_review_status") not in ALLOWED_PRIVACY_STATUSES:
+        if item.get("privacy_review_status", "unknown_recorded") not in ALLOWED_PRIVACY_STATUSES:
             errors.append(f"{source_id}: attestation privacy status is not allowed")
-        for prefix in ("license_evidence", "privacy_evidence", "inventory"):
-            verify_bound_file(root, item, prefix, errors)
+        verify_bound_file(root, item, "inventory", errors)
+        for prefix in ("license_evidence", "privacy_evidence"):
+            if item.get(f"{prefix}_path") is not None or item.get(f"{prefix}_sha256") is not None:
+                verify_bound_file(root, item, prefix, errors)
     for row in rows:
         sample_id = str(row.get("id", "<unknown>"))
         source = row.get("source") if isinstance(row.get("source"), dict) else {}
@@ -155,7 +159,9 @@ def source_attestation_errors(root: Path, rows: list[dict[str, Any]], payload: d
             errors.append(f"{sample_id}: source.source_id is missing from source attestation")
             continue
         for field in ("dataset", "license", "license_url", "privacy_review_status"):
-            if source.get(field) != receipt.get(field):
+            expected = receipt.get(field, "unknown_recorded" if field == "privacy_review_status" else "unknown_recorded_nonblocking")
+            actual = source.get(field, "unknown_recorded" if field == "privacy_review_status" else "unknown_recorded_nonblocking")
+            if actual != expected:
                 errors.append(f"{sample_id}: source.{field} differs from attested receipt")
         if row.get("label_authority") == "procedural_ground_truth":
             provenance = row.get("label_provenance") if isinstance(row.get("label_provenance"), dict) else {}
@@ -427,8 +433,8 @@ def build_report(dataset_root: Path) -> dict[str, Any]:
             ),
             check("four_class_semantic_masks", not (row_errors + blind_errors) and not coverage_errors, "all masks are dimension-matched 0..3 IDs and all four classes occur in train/dev"),
             check("asset_sha256", not hash_errors, f"{len(hashes)} image/mask hashes match manifest declarations"),
-            check("source_and_privacy", not provenance_errors, "source license fields and allowed privacy status are present"),
-            check("source_attestation", not attestation_errors, "source receipts, evidence and inventories are SHA256-bound"),
+            check("source_and_privacy", not provenance_errors, "source identity is present; license/privacy metadata may be unknown for isolated internal research"),
+            check("source_attestation", not attestation_errors, "source receipts and inventories are SHA256-bound; optional rights/privacy evidence is checked when present"),
             check("raw_asset_closure", not inventory_errors, "recipe and every raw source asset are inventoried, copied and SHA256-bound"),
             check("label_authority", not (row_errors + blind_errors), "authority is explicit; dev/blind allow only source GT or fully SHA256-bound procedural GT and always reject pseudo labels"),
             check("session_isolation", not isolation_errors and not policy_lock_errors, "train/dev and exactly two benchmark_only blind sessions are disjoint"),

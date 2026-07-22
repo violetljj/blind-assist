@@ -60,7 +60,7 @@
 - 公开连续视频候选：`acquire_public_gnd_candidate.py`（先验证 CC0 GND 文件元数据；只有带 `--download` 才下载一个受限大小的公共包，并始终写为模型筛选候选，不能进入训练、校准或生产替换）
 - 稀疏 SANPO 长时间线：`acquire_sanpo_rgb_timeline_candidate.py`（只下载公开 CC-BY RGB 帧，默认 1 FPS × 10 秒；不下载 mask、不生成事件标签，只供大模型决定是否值得后续审查）
 - SANPO 边界辅助候选：`plan_sanpo_boundary_aux_candidates.py`、`redact_sanpo_auxiliary_candidate.py`（从完整公开 discovery 记录中排除 canonical session，只规划 `auxiliary_pixel_geometry_only` 的 source-mask 候选；SANPO RGB 草稿必须先整人/车脱敏且仍需隐私审核，永不从此路径构造事件或风险真值。）
-- 公开视频 GPT/VLM 银标：`validate_public_video_silver_labels.py`（校验多帧时序银标与源帧 SHA256 的绑定；v1 保持只对照，许可和哈希完整的 v2 可显式授权暂定模型监督，但银标永不表述为人工真值，且不授权校准、blind 评测或默认模型替换。CC BY 3.0 只接受绑定 Commons 文件页、作者、原始来源、review 时间和 YouTubeReviewBot 许可确认状态的受控 v2 来源；未复核 CC BY 3.0 仍 fail closed）
+- 公开视频 GPT/VLM 银标：`validate_public_video_silver_labels.py`（校验多帧时序银标与源帧 SHA256 的绑定；v1 保持只对照，普通公开渠道可下载且哈希完整的 v2 可显式授权隔离的暂定模型监督，许可/隐私元数据缺失只作 limitation。银标永不表述为人工真值，且不授权校准、blind 评测或默认模型替换。）
 - 银标—端侧事件对照：`compare_public_silver_to_edge_events.py`（把 hash-bound 的端侧推理事件报告与银标逐 episode 比对；弃权单列、不给一致率分母，输出只称为候选一致性）
 - 银标暂定训练迁移：`promote_public_silver_to_provisional_training.py`（从不可变的 v1 CC-BY 或有回执的 CC0 银标生成独立 v2 暂定训练证据包；绑定 image root、逐帧复验文件 SHA，保留原始清单 SHA 和机器隐私标记，且不授权校准、盲测或默认模型替换）
 - 银标冻结特征诊断：`run_public_silver_frozen_feature_probe.py`、`run_public_silver_depth_feature_probe.py`（分别冻结现有 MobileNetV3 OS8+OS32 与 Depth Anything V2/DINO 特征，按 `source_id` 分组留一做确定性 class-balanced ridge；MobileNet 路径还可单次测试固定的 segmentation-corridor-relative 池化或全局平移消除后的 residual-motion 统计，并报告显式反事实对的特征增量方向是否足以支持 prototype 初始化）
@@ -147,8 +147,8 @@
 - 风险轮廓退出路由：`run_public_silver_risk_profile_exit_router.py`（不修改 v1 router，在隔离实验中要求选定的 surface/barrier 风险类全部消失且轨迹清空；保留同样的 source/gap/sidecar 门禁和负控）
 - 公开视频退出外部挑战：`evaluate_public_video_exit_router_external_challenge.py`（先从冻结 prompt-free 扫描产生 surface-only、barrier-only 和风险轮廓并集候选，再打开 GPT 多帧时间边界评分；同时报告风险存在段的语义覆盖率/最长漏检和稳定净空段假激活，避免把连续未检出误写成清空证据。输出只是 discovery challenge，不是人工真值、校准、blind 或生产证据）
 - 公开视频 prompt-free 退出发现：`scan_public_video_prompt_free_exit_candidates.py`（registry v1 继续接受 Commons 字段并规范化为通用来源字段；v2 接受 Vimeo 等非 Commons 平台。所有来源先做路径隔离与许可登记，输出仍只是 proposal。默认保持原预注册词表；`--include-workzone-markers` 是默认关闭的探索开关，仅追加冻结内置类 `barricade/cone/construction worker/traffic cone`，不能反写既有基线或直接授权训练）
-- Vimeo CC-BY 候选台账：`search_vimeo_ccby_public_video_candidates.py`、`search_vimeo_ccby_public_video_candidates.ps1`（PowerShell 包装器每次只请求一个官方 CC-BY 搜索页，不分页、不登录并保留原始 HTML 哈希；Python 解析器也支持离线夹具。搜索页命中默认不可训练，必须再做视频条目级许可、连续性和画面审阅；音乐许可不能替代视频许可）
-- Wikimedia Commons 视频候选台账：`search_wikimedia_public_video_candidates.py`、`search_wikimedia_public_video_candidates.ps1`（MediaWiki 查询必须来自冻结合同；Python TLS 未产生响应时，只有单独 transport erratum 才能允许 Windows TLS 对原查询各执行一次并离线解析原始 JSON。标题候选仍须经过条目许可、连续 POV 和事件因果复核）
+- Vimeo 候选台账：`search_vimeo_ccby_public_video_candidates.py`、`search_vimeo_ccby_public_video_candidates.ps1`（包装器保持不分页、不登录并保留原始 HTML 哈希；普通公开视频 URL 足以下载和进入隔离研究，条目许可缺失只作 limitation，连续性和画面审阅决定任务有效性。）
+- Wikimedia Commons 视频候选台账：`search_wikimedia_public_video_candidates.py`、`search_wikimedia_public_video_candidates.ps1`（MediaWiki 查询必须来自冻结合同；Python TLS 未产生响应时，只有单独 transport erratum 才能允许 Windows TLS 对原查询各执行一次并离线解析原始 JSON。普通公开文件可先下载；连续 POV 和事件因果复核决定事件 authority。）
 - Internet Archive 视频候选台账：`search_internet_archive_public_video_candidates.py`、`search_internet_archive_public_video_candidates.ps1`（每条冻结查询只取高级搜索第一页，并要求候选元数据包含 license URL；解析器离线读取原始响应并哈希台账。全文关键词高分不能替代条目页、可下载视频、连续 POV 和因果事件复核）
 - 冻结 DINO 退出检索负实验：`retrieve_public_video_exit_windows_with_frozen_dino.py`（用一个已审阅风险/清空短片构造零训练参数的冻结 DINO-S 原型方向，按来源内 robust-z 持续下降排序长视频窗口；原始投影不是跨来源概率，候选必须经过独立多帧连续性审阅，且不得直接授权训练、校准、blind、Android runtime 或生产替换）
 - 三态生命周期外部挑战：`evaluate_public_video_tristate_lifecycle_external_challenge.py`（零学习参数的 `present/uncertain/clear` 状态机；固定 `2-of-3` 才进入风险、连续 3 帧缺失才确认净空、clear 后单帧假激活不重开事件。候选状态在读取 GPT 时间参考前冻结，输出只支持外部机制诊断，不授权行人真值、训练、校准、blind、Android runtime 或生产）
@@ -164,7 +164,7 @@
 - 公开视频真机推理集：`build_public_video_edge_inference_set.py`（只从银标引用的源帧构建真机资产，逐帧复验 SHA256；不把银标 verdict 放进 Android 输入，也不授权训练或默认模型替换）
 - RGB 时间线来源清单：`materialize_public_rgb_timeline_source_manifest.py`（将公开 SANPO RGB-only 时间线变为银标可验证的帧哈希清单；不读取或导出 mask、几何或事件标签）
 - 公开视频真机—银标闭环：`run_public_video_edge_inference.ps1`（构建推理集、运行默认端侧模型、拉回事件报告并自动对照；同包名签名冲突时 fail closed，只有显式 `-RemoveConflictingInstall` 才会卸载手机上的现有 BlindAssist）
-- Dataverse 连续第一视角候选：`acquire_public_dataverse_candidate.py`、`extract_public_dataverse_rgb_candidate.py`、`machine_redact_public_rgb_candidate.py`（先复核来源许可、大小和 MD5，再只提取 RGB；脱敏用人脸、车牌和整个人/车辆检测。所有输出均保留 `privacy_audit_required=true`、无事件标签、禁止训练/校准/默认模型替换；机器脱敏不是隐私审计通过证明。）
+- Dataverse 连续第一视角候选：`acquire_public_dataverse_candidate.py`、`extract_public_dataverse_rgb_candidate.py`、`machine_redact_public_rgb_candidate.py`（普通公开文件先按大小和 MD5 下载，许可元数据仅记录；脱敏用人脸、车牌和整个人/车辆检测。输出保留 `privacy_audit_required=true` 与无事件真值边界，可进入隔离内部研究/银标训练，但不授权校准、blind 或默认模型替换。）
 
 改变 canonical 数据、冻结回归集或读取 blind 数据的脚本必须遵守 [SANPO 训练协议](../../../docs/SANPO_TRAINING_PROTOCOL.md)。
 

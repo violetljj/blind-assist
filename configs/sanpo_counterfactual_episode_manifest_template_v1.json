@@ -6,7 +6,7 @@
   "notes": [
     "Template only: do not place candidate geometry or model output here as event truth.",
     "Create a copied manifest under artifacts.local/evidence/ for each GPT/Codex-reviewed collection batch.",
-    "Use collection_status=complete only after all configured session-scene matched pairs, local receipts, privacy evidence, and anchor adjudication are complete.",
+    "Use collection_status=complete only after all configured session-scene matched pairs, source URL/retrieval/hash receipts, and anchor adjudication are complete; license and privacy metadata may remain recorded as unknown/pending for isolated internal research.",
     "Every episode must bind two isolated GPT/Codex review receipts plus hash-bound automatic consensus or a fresh third-model adjudication; the evaluated candidate output stays hidden."
   ],
   "source_receipts": [],

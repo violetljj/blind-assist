@@ -32,8 +32,8 @@
   "source_tiers": [
     {"source_id": "sanpo_real_v0", "tier": "p3_canonical_candidate", "status": "approved_subject_to_view_policy", "role": "real egocentric segmentation"},
     {"source_id": "consented_forward_phone_v1", "tier": "p3_canonical_candidate", "status": "intake_required", "role": "target-domain coverage", "required_before_use": ["consent receipt", "GPT/Codex residual-PII consensus receipt", "GPT/Codex pixel-mask consensus receipt", "session split"]},
-    {"source_id": "mapillary_vistas", "tier": "auxiliary_pretraining_only", "status": "license_snapshot_required", "role": "street semantic prior; never P3 metrics", "required_before_use": ["dataset-specific license snapshot", "GPT/Codex commercial and redistribution assessment", "class-map and privacy receipt"]},
-    {"source_id": "bdd100k", "tier": "candidate_not_approved", "status": "license_unverified", "role": "driving-video candidate; no download or use"},
+    {"source_id": "mapillary_vistas", "tier": "auxiliary_pretraining_only", "status": "public_download_internal_research_allowed", "role": "street semantic prior; never P3 metrics", "required_before_use": ["public source URL", "retrieval time", "content SHA256", "class-map"], "nonblocking_limitations": ["license metadata", "privacy metadata", "commercial and redistribution assessment"]},
+    {"source_id": "bdd100k", "tier": "public_download_research_candidate", "status": "internal_research_allowed_when_publicly_downloadable", "role": "driving-video candidate; P3 use depends on view, sequence, annotation, and split validity"},
     {"source_id": "cityscapes", "tier": "research_only_control", "status": "noncommercial_only", "role": "forbidden from product-training path and P3 metrics"},
     {"source_id": "guidetwsi_sdome_15k", "tier": "synthetic_or_procedural_augmentation_only", "status": "existing_controlled_adapter", "role": "cannot substitute for real target-domain sessions"}
   ],

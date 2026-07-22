@@ -26,7 +26,7 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-cro
 E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ustrf-crosscam-codex summarize_r12d_multiseed.py --help
 ```
 
-输入必须是有来源、许可和 SHA-256 收据的公开第一视角视频。准备器只向 Codex 教师暴露当前/过去图像、时间戳和预注册路线覆盖；隐藏代理标签、未来帧、深度、review、adjudication 或 blind 字段不得进入评审材料。
+输入必须是能通过普通公开渠道下载、并有来源与 SHA-256 收据的第一视角视频；许可和隐私元数据缺失只作为限制披露，不阻止隔离内部研究。准备器只向 Codex 教师暴露当前/过去图像、时间戳和预注册路线覆盖；隐藏代理标签、未来帧、深度、review、adjudication 或 blind 字段不得进入评审材料。
 
 360° 等距柱状视频必须先按配置中的冻结 yaw/pitch/FOV 投影为普通透视视野；投影方向仍属于近似相机几何，不能宣称眼镜真实光轴。原始全景直用造成的失败 run 必须保留，不能覆盖。
 

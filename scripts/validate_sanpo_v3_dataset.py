@@ -253,7 +253,7 @@ def validate_rows(rows: list[dict[str, Any]], root: Path, expected_split: set[st
             if not isinstance(row.get("expected_should_alert"), bool):
                 errors.append(f"{sample_id}: expected_should_alert must be boolean")
         source = row.get("source") if isinstance(row.get("source"), dict) else {}
-        for field in ("dataset", "license", "license_url", "privacy_review_status"):
+        for field in ("dataset",):
             if not str(source.get(field, "")).strip():
                 errors.append(f"{sample_id}: missing source.{field}")
         image_rel = required_string(row, "image_path", sample_id, errors)

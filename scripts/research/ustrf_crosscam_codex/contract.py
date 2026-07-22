@@ -99,15 +99,17 @@ def validate_source_receipt(value: Any, *, video_path: Path | None = None) -> Ma
     if row.get("schema") != SOURCE_SCHEMA or row.get("contract_id") != CONTRACT_ID:
         raise ContractError("source receipt schema/contract mismatch")
     for key in (
-        "source_id", "dataset_name", "dataset_page", "citation", "license_name", "license_url",
+        "source_id", "dataset_name", "dataset_page", "citation",
         "camera_domain",
     ):
         if not isinstance(row.get(key), str) or not row[key].strip():
             raise ContractError(f"source receipt lacks {key}")
-    if row.get("lawfully_available") is not True or row.get("public_data") is not True:
-        raise ContractError("source must be explicitly public and lawfully available")
-    if row.get("privacy_review_status") not in ("source_redacted", "passed", "not_required_public_release"):
-        raise ContractError("source privacy review is not admissible")
+    if row.get("public_data") is not True and row.get("ordinary_public_download") is not True:
+        raise ContractError("source must be downloadable through an ordinary public channel")
+    for optional_text in ("license_name", "license_url", "privacy_review_status"):
+        value = row.get(optional_text)
+        if value is not None and (not isinstance(value, str) or not value.strip()):
+            raise ContractError(f"source receipt.{optional_text} must be non-empty when present")
     require_false_flags(row, "source receipt")
     expected = require_sha256(row.get("video_sha256"), "source receipt.video_sha256")
     if video_path is not None:

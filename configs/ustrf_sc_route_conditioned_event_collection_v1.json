@@ -209,9 +209,11 @@
   },
   "source_receipt_schema": {
     "required_origin_scope": "official_full_matrix_capture",
-    "allowed_license_status": ["owned_and_consented", "licensed_for_research"],
-    "required_privacy_review_status": "ai_review_passed",
-    "hash_license_and_privacy_evidence": true,
+    "public_download_research_policy": "ordinary public download is sufficient for isolated internal research",
+    "required_public_source_fields": ["source_url", "retrieved_at", "content_sha256"],
+    "allowed_license_status": ["owned_and_consented", "licensed_for_research", "public_download_unknown_recorded"],
+    "allowed_privacy_review_status": ["ai_review_passed", "pending_nonblocking", "unknown_recorded"],
+    "hash_license_and_privacy_evidence": false,
     "local_evidence_required": true,
     "reject_on_missing_or_mismatched_hash": true
   },

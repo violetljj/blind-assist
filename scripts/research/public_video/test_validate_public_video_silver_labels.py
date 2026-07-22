@@ -75,7 +75,7 @@ class SilverLabelContractTest(unittest.TestCase):
         self.assertTrue(result["training_execution_authorized"])
         self.assertTrue(result["provisional_model_supervision"])
 
-    def test_rejects_v2_training_without_authorized_source(self) -> None:
+    def test_accepts_v2_training_without_license_metadata(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             source, first, second = self._source(Path(temporary))
             manifest = self._manifest(source, first, second)
@@ -84,8 +84,8 @@ class SilverLabelContractTest(unittest.TestCase):
                 "training_execution_authorized": True,
                 "training_mode": "provisional_model_supervision",
             })
-            with self.assertRaisesRegex(SilverLabelError, "source license metadata"):
-                validate(manifest, source_manifest_path=source)
+            result = validate(manifest, source_manifest_path=source)
+        self.assertTrue(result["training_execution_authorized"])
 
     def test_accepts_reviewed_wikimedia_ccby3_source(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -114,7 +114,7 @@ class SilverLabelContractTest(unittest.TestCase):
             result = validate(manifest, source_manifest_path=source)
         self.assertTrue(result["training_execution_authorized"])
 
-    def test_rejects_unreviewed_ccby3_source(self) -> None:
+    def test_accepts_unreviewed_ccby3_source_for_isolated_training(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
             first, second = "a" * 64, "b" * 64
@@ -130,8 +130,8 @@ class SilverLabelContractTest(unittest.TestCase):
                 "training_execution_authorized": True,
                 "training_mode": "provisional_model_supervision",
             })
-            with self.assertRaisesRegex(SilverLabelError, "Wikimedia license review"):
-                validate(manifest, source_manifest_path=source)
+            result = validate(manifest, source_manifest_path=source)
+        self.assertTrue(result["training_execution_authorized"])
 
     def test_rejects_ambiguous_candidate_no_alert(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

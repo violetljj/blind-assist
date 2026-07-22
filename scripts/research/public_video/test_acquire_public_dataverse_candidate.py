@@ -45,10 +45,9 @@ class PublicDataverseCandidateTests(unittest.TestCase):
         validate_config(source)
         self.assertEqual(select_file(source, metadata())["id"], 7)
 
-    def test_rejects_license_or_restricted_file(self) -> None:
+    def test_records_mismatched_license_but_rejects_restricted_file(self) -> None:
         source = config()
-        with self.assertRaises(AcquisitionError):
-            select_file(source, metadata(license_name="CC-BY 4.0"))
+        self.assertEqual("CC-BY 4.0", select_file(source, metadata(license_name="CC-BY 4.0"))["observed_license"])
         with self.assertRaises(AcquisitionError):
             select_file(source, metadata(restricted=True))
 

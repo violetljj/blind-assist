@@ -59,7 +59,7 @@
     "AGENTS.md": [
       "Default to an end-to-end autonomous workflow",
       "Do not create, preserve, or wait on a human-required queue or gate",
-      "never convert the gap into a human task"
+      "ordinary public channel"
     ],
     "docs/AI_REVIEW_GOVERNANCE.md": [
       "项目默认端到端无人化",
@@ -70,7 +70,7 @@
     "configs/ai_review_workflows_v1.json": [
       "current_codex_or_gpt_session",
       "human_required_queue_forbidden",
-      "select_lawful_automated_alternative_or_mark_evidence_unavailable_never_create_human_task"
+      "ordinary_public_download_is_sufficient_for_isolated_internal_research"
     ],
     "docs/CODEX_TASK_HANDOFF_TEMPLATE.md": [
       "不得创建人工采集、人工标注、人工审核、人工仲裁或人工验收任务",

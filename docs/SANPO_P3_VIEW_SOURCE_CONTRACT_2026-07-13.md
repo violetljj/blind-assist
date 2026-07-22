@@ -26,18 +26,18 @@ SANPO 论文说明：237 个带 panoptic segmentation 的 session 中 146 个为
 |---|---|---|
 | SANPO-Real v0 head-left | A：P3 canonical 候选 | 已批准，遵循同一官方 train、CC BY 4.0、隐私和 split 合同。 |
 | 经同意的胸前/手持手机前向序列 | A：P3 canonical 候选 | 必须有真实主体的采集同意凭证，以及自动残余 PII 检查、模型共识像素标注、会话隔离与多模型 scene 复核。 |
-| Mapillary Vistas | B：辅助预训练候选 | 下载前必须保存数据集专用许可快照并完成商业/再分发核验；单帧不能补 P3 session。 |
-| BDD100K / IDD / ACDC | 未批准候选 | 当前许可未核验，禁止下载或纳入训练。 |
+| Mapillary Vistas | B：辅助预训练候选 | 可通过普通公开渠道立即下载并用于隔离预训练；记录来源 URL、时间和哈希，许可/隐私未知项作为限制披露；单帧不能补 P3 session。 |
+| BDD100K / IDD / ACDC | B：公开下载研究候选 | 能通过普通公开渠道取得即可下载、筛选和用于隔离内部研究；是否进入 P3 只由视角、连续性、标注质量和 split 合同决定。 |
 | Cityscapes | 研究对照 | 官方许可限非商业；禁止进入产品训练路径或 P3。 |
 | GuideTWSI procedural | C：程序化增强 | 不能替代真实 session。 |
 
-Mapillary 的通用公开影像采用 CC BY-SA，但其条款说明数据集可能有优先适用的独立许可，因此不得以通用条款代替 Vistas 下载页的专用许可。[Mapillary 许可说明](https://help.mapillary.com/hc/en-us/articles/115001770409-CC-BY-SA-license-for-open-data)；[Mapillary 条款](https://www.mapillary.com/legal/terms)。Cityscapes 官方许可明确限非商业用途。[Cityscapes 许可](https://www.cityscapes-dataset.com/license/)。
+Mapillary 的通用公开影像与 Vistas 可能有不同条款，仍按来源记录供后续外发、再分发或商业边界参考，但不作为下载和隔离内部研究前置门。[Mapillary 许可说明](https://help.mapillary.com/hc/en-us/articles/115001770409-CC-BY-SA-license-for-open-data)；[Mapillary 条款](https://www.mapillary.com/legal/terms)。Cityscapes 的非商业条款继续限制产品发布边界，不阻止隔离研究对照。[Cityscapes 许可](https://www.cityscapes-dataset.com/license/)。
 
 ## 执行顺序
 
 1. 用更新后的 chest-priority/head-fallback 发现器重新扫描 SANPO official-train；候选仍须依次通过 16-frame、50-frame、RGB、PII、人工 scene 和 P3 planner。
 2. 建立经同意手机序列的 intake receipt 与像素级标注队列；只有 A 层可满足 P3 session 数量与最终门。
-3. 固化 Mapillary Vistas 专用许可、类别映射、隐私和分发审计后，才可作为 B 层预训练候选；B 层不得改变 P3 dev/benchmark 结论。
+3. 直接拉取 Mapillary Vistas 等公开候选，先做类别映射和隔离预训练；许可、隐私和分发信息并行记录，只在外部共享、商业/产品发布边界处理。B 层不得改变 P3 dev/benchmark 结论。
 
 未读取 blind 标签，未下载任何外部新数据，未启动训练或改变 App。
 

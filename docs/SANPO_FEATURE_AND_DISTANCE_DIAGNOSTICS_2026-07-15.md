@@ -76,4 +76,4 @@ dev/train boundary 像素占比约为 **19.8×**。因此现在把 distance Smoo
 
 机器脱敏后只保留了 50 帧 RGB 副本：YuNet 人脸、LPD-YuNet 车牌和 YOLOv8n 整个人/车辆保守模糊共命中 48 帧、186 个区域。回执 `machine_redaction_receipt.json` 的 SHA256 为 `d99b794c235e0f24a0656fe8da3f1719b283a795571e6de323e03997a9501129`，它显式声明 `source_mask_role=auxiliary_pixel_geometry_only`、`risk_or_event_truth_present=false`、`privacy_audit_required=true`、`training_execution_authorized=false`。因而该副本只能作为待独立隐私审核的像素/几何辅助候选，不可用于任何风险、事件、生命周期真值、校准、benchmark 或默认模型替换。
 
-因此下一条下载候选必须同时满足：非 canonical session、remote mask coverage、低遮挡的机器脱敏检查、以及独立隐私审核。没有任何一项可由 source mask 或模型输出替代。
+因此下一条候选只要通过普通公开渠道可下载即可先获取；非 canonical session、remote mask coverage、低遮挡和隐私检查决定它能承担的诊断/标签角色，但不再作为下载前置门。source mask 或模型输出仍不能冒充客观事件真值。

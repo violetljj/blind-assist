@@ -36,13 +36,13 @@ R1.2d 之后不应立即启动另一轮 detector 架构竞赛。P2 在离线 17 
 
 - 同一安全地点、光照、SM-S9280、mount、相机配置、route plan/provider/choice；
 - positive：轻质静态障碍物进入所选路线；matched negative：同类障碍物保持在路线外；
-- 各 `10–20s`；优先由许可公开来源 Agent 获取，或由无人值守设备脚本在静态安全设置中采集，禁止要求人员依据 App 输出行动；
-- 自动生成原始输入、source/license-or-consent/privacy receipt、capture clock、frame ledger、非未来 explicit route/projection receipt；
+- 各 `10–20s`；优先由 Agent 从普通公开渠道直接获取，或由无人值守设备脚本在静态安全设置中采集，禁止要求人员依据 App 输出行动；
+- 自动生成原始输入、source URL/抓取时间/内容哈希、capture clock、frame ledger、非未来 explicit route/projection receipt；许可、同意和隐私元数据有则记录、无则标 unknown；
 - 机械 validator 通过后进入两份互不可见的模型 review；有分歧时自动启动全新第三模型裁决，不产生人工待办。
 
 现成入口：`artifacts.local/evidence/ustrf-sc/real-route-event-pilot-v1-20260721-r1/START_HERE.md`。
 
-停止条件：任一视频时长、clock、frame identity、route causality、投影哈希或隐私/许可收据失败，则隔离该来源并由 Agent 修复自动链路、自动补采或切换合法来源；禁止补写摘要数字、伪造外部事实或绕过 validator。
+停止条件：任一视频时长、clock、frame identity、route causality 或投影哈希失败，则隔离该来源并由 Agent 修复自动链路、自动补采或切换来源；许可/隐私收据缺失只作限制披露，不停止隔离内部研究。禁止补写摘要数字、伪造外部事实或绕过 validator。
 
 ### A2. 扩到 10-episode pilot
 
@@ -109,7 +109,7 @@ B2 通过只说明输入可绑定。之后仍须补齐 `validate_ustrf_sc_device
 在 A/B 取得新证据或用户再次明确授权前，不执行下列工作，只保留设计：
 
 1. 对 London/Bridge 做 expected-class-blind top-k、pre/post-NMS、IoU/中心距离和目标尺度诊断，区分“无候选”“错类”“几何不匹配”“关联失败”；不得据诊断调本轮阈值。
-2. 先发现并审查多个独立来源的 bollard/delineator 数据，要求许可、exact geometry、图像 SHA、来源互斥验证和零未决标签冲突；事件帧仍禁止入训。
+2. 先从普通公开渠道直接拉取多个独立来源的 bollard/delineator 数据，要求 exact geometry、图像 SHA、来源互斥验证和零未决标签冲突；许可/隐私元数据不作为隔离训练门，事件帧仍禁止入训。
 3. 数据准入后先用固定 P3 baseline 做 data-only 配对消融，确认 London/Bridge 事件收益，再决定是否提出新架构；P2 不自动复活。
 4. 任何新 detector 轮次继续要求三 seed、最差来源、固定事件、目标条件假告警和未分配路线压力；单一 detector AP 不能晋级。
 

@@ -171,7 +171,7 @@ def build_report(
         candidate.update({
             "source_platform": "vimeo",
             "discovery_license_filter": "CC BY",
-            "item_license_status": "unverified_requires_item_level_attestation",
+            "item_license_status": "unverified_recorded_nonblocking_for_internal_research",
             "continuity_status": "unreviewed",
             "training_eligible": False,
         })
@@ -189,7 +189,7 @@ def build_report(
         "response_sha256": sha256_bytes(html_payload),
         "parsed_candidate_count": len(candidates),
         "candidates": candidates,
-        "license_gate": "Search-page membership is not item-level proof. Re-check the selected video's license metadata before download.",
+        "download_gate": "An ordinary public video URL is sufficient for isolated internal research; retain search-page license metadata as a non-blocking limitation.",
         "evidence_limit": "This ledger is acquisition triage only. It is not a source registry, an event label, human truth, calibration evidence, blind evidence, production evidence, or permission to train.",
     }
 

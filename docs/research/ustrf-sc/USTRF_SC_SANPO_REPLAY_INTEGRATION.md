@@ -44,7 +44,7 @@
 
 1. SANPO-Synthetic 只可作为 benchmark-only 预训练候选；先验证四类像素映射与离线回放，再考虑训练。
 2. SANPO-Real 的真实连续序列仍独立承担微调/开发/盲集隔离；既有 canonical recipe 与 review/finalize 门禁不被本脚本修改。
-3. 公开视频只可作为许可、脱敏、哈希和银标隔离后的补充压力测试；它不能填补 Real 的事件真值，也不能改变训练/校准/blind/默认模型权限。
+3. 公开视频可在普通公开渠道下载后立即凭 URL、抓取时间和哈希进入隔离研究、银标与补充压力测试；许可和隐私元数据可并行补记，不作为内部研究门。它不能填补 Real 的事件真值，也不能改变校准、blind 或默认模型权限。
 4. 任一候选还必须分别通过离线、INT8 与同设备连续事件门；任一未通过即维持 `do_not_replace_default_model`。
 
 官方 SANPO 同时提供真实与合成的第一视角 RGB、分割、深度与相机相关数据；合成会话的发布清单在本次最小样本中未列出 IMU 文件，因此接入器 fail-closed 地记录此缺口，而不是假定 IMU 可用。[SANPO 官方数据说明](https://github.com/google-research-datasets/sanpo_dataset)

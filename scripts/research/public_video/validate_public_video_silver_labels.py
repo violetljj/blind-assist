@@ -2,8 +2,9 @@
 """Validate hash-bound GPT/VLM supervision for public navigation videos.
 
 Legacy v1 manifests remain comparison-only.  The explicit v2 path permits
-provisional model training from licensed, hash-bound, machine-labelled public
-RGB, while preserving the distinction from human event truth and forbidding
+provisional model training from publicly downloadable, hash-bound,
+machine-labelled RGB without a license/privacy pre-clearance gate, while
+preserving the distinction from human event truth and forbidding
 calibration, blind evaluation, and production replacement.
 """
 
@@ -67,41 +68,11 @@ def known_hashes(source_manifest: dict[str, Any]) -> set[str]:
     return hashes
 
 
-def validate_v2_source_license(source_manifest: dict[str, Any]) -> None:
+def validate_v2_source_provenance(source_manifest: dict[str, Any]) -> None:
+    """Keep source metadata auditable without using license as a research gate."""
     source_info = source_manifest.get("source")
-    if not isinstance(source_info, dict):
-        raise SilverLabelError("v2 provisional training requires source license metadata")
-    license_name = source_info.get("license")
-    if license_name in {"CC-BY-4.0", "CC0-1.0"}:
-        return
-    if license_name != "CC-BY-3.0":
-        raise SilverLabelError(
-            "v2 provisional training requires CC-BY-4.0, reviewed CC-BY-3.0, or CC0-1.0"
-        )
-    review = source_manifest.get("license_review")
-    if not isinstance(review, dict):
-        raise SilverLabelError(
-            "CC-BY-3.0 provisional training requires a bound Wikimedia license review"
-        )
-    required = {
-        "status": "license_confirmed_by_youtube_review_bot",
-        "license_url": "https://creativecommons.org/licenses/by/3.0/",
-    }
-    for field, expected in required.items():
-        if review.get(field) != expected:
-            raise SilverLabelError(
-                f"CC-BY-3.0 license_review.{field} must be {expected!r}"
-            )
-    for field in ("reviewed_at", "file_page_url", "original_source_url", "author"):
-        text(review.get(field), where=f"license_review.{field}")
-    if not str(review["file_page_url"]).startswith("https://commons.wikimedia.org/"):
-        raise SilverLabelError(
-            "CC-BY-3.0 license_review.file_page_url must bind a Wikimedia Commons page"
-        )
-    if source_info.get("author") != review.get("author"):
-        raise SilverLabelError(
-            "CC-BY-3.0 source author must match the bound license review attribution"
-        )
+    if source_info is not None and not isinstance(source_info, dict):
+        raise SilverLabelError("source metadata must be an object when present")
 
 
 def validate_negative_decision_quality(episode: dict[str, Any], *, where: str) -> None:
@@ -171,9 +142,7 @@ def validate(manifest: dict[str, Any], *, source_manifest_path: Path) -> dict[st
     if source.get("privacy_audit_required") is not True:
         raise SilverLabelError("source must keep privacy_audit_required=true")
     if schema in {"blindassist_public_video_silver_labels_v2", "blindassist_public_video_silver_labels_v3"}:
-        validate_v2_source_license(source_manifest)
-        if source_manifest.get("provisional_training_authorized") is not True:
-            raise SilverLabelError("v2 provisional training requires an authorized source manifest")
+        validate_v2_source_provenance(source_manifest)
     for field in ("provider", "model", "prompt_id", "prompt_sha256", "review_mode"):
         text(labeler.get(field), where=f"labeler.{field}")
     if labeler.get("review_mode") != "multiframe_temporal":
