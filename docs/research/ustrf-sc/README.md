@@ -14,6 +14,7 @@
 
 ## 协议与专项记录
 
+- [tracker/TTC 固定协议消融 R1（2026-07-22）](USTRF_TRACKER_TTC_ABLATION_R1_RESULT_2026-07-22.md)：两条 LILocBench 准入来源按 15 正/15 同源等长负窗口生成 4594 帧 host detector ledger；冻结 App 模型在 PIL letterbox 几何下输出 0 个阈值内 person 框，T0 event recall `0`、critical miss `1`，clearance/ID/TTC 不可评，按停止门跳过 T1–T3；不声称 Android 像素 parity。
 - [R3 第三来源有界检索结论（2026-07-22）](USTRF_SENSOR_REPLAY_R3_THIRD_SOURCE_BOUNDED_OUTCOME_2026-07-22.md)：fail-closed 检索 IDSIA MSMPT `s9/s12/s13/s14`；s9 在 GT-only 门拒绝，s12/s13 在完整适配后双模型 AND 门拒绝，s14 同时失败 `.50` 深度几何门并被双模型拒绝。正式冻结 `2/3` 数据局限，不降门、不拿 Bonn 负样本补数、evaluator 未运行。
 - [LILocBench 动态来源闭环（2026-07-22）](USTRF_SENSOR_REPLAY_R3_LILOCBENCH_GT_PRESCREEN_2026-07-22.md)：冻结 24/12/0.03/0.50，完整下载并适配 `dynamics_0` 2397 帧与 `lt_changes_dynamics_0` 8377 帧；双 reviewer + 独立裁决分别冻结 3/12 个事件，累计计 `2/3`。Bonn 两条双审拒绝、一条稀疏门拒绝；满三条前 evaluator 不运行。
 - [OpenLORIS 来源替换结果（2026-07-22）](USTRF_SENSOR_REPLAY_R3_OPENLORIS_SOURCE_REPLACEMENT_2026-07-22.md)：只替换来源、不调整 R3 冻结门；7 条 office 稀疏预筛拒绝，2 条 cafe 经完整连续片段双模型一致拒绝，故准入仍为 `0/3`，冻结 evaluator 未运行。

@@ -3,7 +3,7 @@
 ## 2026-07-22
 
 ### USTRF 前沿论文研究指导与 R3 LILocBench 来源准入
-- 时间：2026-07-22；执行者：violjjet。OpenLORIS 准入 0/3 后按冻结 24/12/0.03/0.50 替换到 LILocBench：`dynamics_0` 与 `lt_changes_dynamics_0` 分别完整下载 3,753,768,874 / 12,940,694,854-byte 官方包并通过 SHA/CRC/标定门，将 `camera_front` raw depth 按 `T_color_depth` 注册成 2397 / 8377 帧连续包；双隔离 reviewer 均准入，独立第三模型分别冻结 3 / 12 个 canonical 事件，累计计 `2/3`。两条 candidate 各 50 alerts 尚未评测，三源前 evaluator 不运行。Bonn `moving_obstructing_box`/`person_tracking` 双审拒绝，`crowd` 以 route unknown `.976268` 稀疏门拒绝，均只作负证据。许可/隐私元数据未知只作限制披露，不阻塞公开数据研究；再分发、硬件、U0 与生产权限仍关闭。模块 23、crosscam 36、USTRF-SC 26 tests 通过，完整仓库门以本轮最终复跑为准。
+- 时间：2026-07-22；执行者：violjjet。OpenLORIS 准入 0/3 后按冻结 24/12/0.03/0.50 替换到 LILocBench：`dynamics_0` 与 `lt_changes_dynamics_0` 分别完整下载 3,753,768,874 / 12,940,694,854-byte 官方包并通过 SHA/CRC/标定门，将 `camera_front` raw depth 按 `T_color_depth` 注册成 2397 / 8377 帧连续包；双隔离 reviewer 均准入，独立第三模型分别冻结 3 / 12 个 canonical 事件，累计计 `2/3`。两条 candidate 各 50 alerts 尚未评测，三源前 evaluator 不运行。Bonn `moving_obstructing_box`/`person_tracking` 双审拒绝，`crowd` 以 route unknown `.976268` 稀疏门拒绝，均只作负证据。后续 tracker/TTC R1 在 15 正/15 同源负窗口、4594 帧上以冻结 App 模型运行 host PIL letterbox；阈值前 person 最高 `.329009 < .35`、阈值内 person 输出为 0，T0 recall `0`/critical miss `1`，clearance/ID/TTC 不可评，按门跳过 T1–T3，且不声明 Android 像素 parity。再分发、硬件、U0 与生产权限仍关闭。模块测试与完整仓库门以本轮最终复跑为准。
 - 时间：2026-07-22；执行者：violjjet。将 13 篇有效论文保存到本地 `artifacts.local/downloads/papers/2026-07-22-ustrf-frontier-guidance/`，排除已撤回的 Eye4B 旧稿并改用作者指定后继版本；新增证据—论点映射、固定实验协议和停止条件。论文只进入可证伪研究臂，不改变 App、默认模型或生产权限；13/13 PDF 的解析、首页、页数和 SHA-256 已核对，仓库门禁以本轮最终复跑为准。
 
 ### USTRF 二维路线代理独立实验 App
