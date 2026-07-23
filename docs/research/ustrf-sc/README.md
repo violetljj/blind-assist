@@ -14,6 +14,8 @@
 
 ## 协议与专项记录
 
+- [route-target R2-L1E 单次探索 profile 通宵目标（2026-07-24）](USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_OVERNIGHT_GOAL_2026-07-24.md)：绑定 R2-L1 收据与冻结 C1–C3，让三个候选各按 41 条完整 sequence 单次运行，只生成分指标探索 profile；具备断点恢复、失败收据和三种封闭终态，不选胜者、不新增数据、不开放 Android/H2/生产。
+- [route-target R2-L1 指标资格物化结果（2026-07-23）](USTRF_ROUTE_TARGET_METRIC_ELIGIBILITY_R2_L1_RESULT_2026-07-23.md)：候选盲覆盖 6,369 个事件/提案 × 8 指标；critical miss、clearance、unknown/stale 具备 L1 探索资格，repeat/evidence age 为条件资格，event recall/regeneration/false alerts 仍为 L0。mask、分母、来源贡献和删失原因已哈希绑定并通过完整复算；C1–C3 仍未运行。
 - [route-target 证据成熟度分层标准 V2](USTRF_ROUTE_TARGET_EVIDENCE_MATURITY_STANDARD_V2.md)：当前协议真源；把全或无来源准入拆成指标级可评估性、右删失与 L0–L4 授权，保留 R1 性能/真实性门并冻结轮间版本化调整和来源预算。当前仅 L0，R2 候选未运行。
 - [route-target evidence closure R1 阶段结果（2026-07-23）](USTRF_ROUTE_TARGET_EVIDENCE_CLOSURE_R1_RESULT_2026-07-23.md)：历史结果保持 `DATA_BLOCKED / STOP_SOURCE_SEARCH`；C1–C3 未运行，现有数据只保留诊断/回归或由 V2 重新冻结后的最高 L1 探索权限，Android shadow/H2 关闭。
 - [route-target evidence closure R1 预注册（2026-07-23）](USTRF_ROUTE_TARGET_EVIDENCE_CLOSURE_R1_PREREG_2026-07-23.md)：固定 detector/tracker 与 H2 关闭边界，冻结五态逐人 route role、三条单接缝 oracle 和最多三个结构候选；当前 15+15 只做归因，胜者只能由全新两来源、含共现 person 的 sealed holdout 按逐来源/worst-source 门选出。

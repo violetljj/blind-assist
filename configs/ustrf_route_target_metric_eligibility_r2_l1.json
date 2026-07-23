@@ -1,0 +1,322 @@
+{
+  "schema": "blindassist_ustrf_route_target_metric_eligibility_r2_l1_v1",
+  "status": "candidate_blind_materialization_protocol_frozen",
+  "frozen_on": "2026-07-23",
+  "purpose": "Materialize every existing LILocBench and CrowdBot event or proposal into an eight-metric eligibility mask, plus unique exposure and frame ledgers, without reading or running C1-C3.",
+  "authority": {
+    "maximum_level": "L1_EXPLORATORY_METRIC_PROFILE",
+    "candidate_execution_in_this_task": false,
+    "candidate_winner_allowed": false,
+    "selection_confirmation_android_h2_human_or_production_authority": false,
+    "result_status_before_candidate_execution": "not_tested"
+  },
+  "parent_standard": {
+    "path": "configs/ustrf_route_target_evidence_maturity_v2.json",
+    "sha256": "62c6cf995d9b3a673ae50c016cfebe0ffc69e412e3ffa4c03ea5cd29e3d69e6d",
+    "must_remain_immutable": true
+  },
+  "parent_metric_aliases": {
+    "event_recall": "event_recall",
+    "critical_miss": "critical_miss",
+    "repeat": "repeat_within_observation",
+    "clearance": "clearance",
+    "regeneration": "event_regeneration_after_clear",
+    "false_alerts_per_minute": "false_alerts_per_minute",
+    "evidence_age": "evidence_age",
+    "unknown_or_stale_alert": "unknown_or_stale_active_alert"
+  },
+  "candidate_blind_dependency_manifest": [
+    {
+      "id": "lilocbench_dynamics_event_consensus",
+      "path": "artifacts.local/evidence/ustrf-sensor-replay-r3/source-replacement-lilocbench-v1/dynamics_0-review-consensus-v2.json",
+      "sha256": "395a3b4cf1a14a49f0814dd27f7650de0e748e9b5c67a03706632dba7321bb73",
+      "assertions": {
+        "candidate_alerts_visible_to_reviewers": false
+      }
+    },
+    {
+      "id": "lilocbench_lt_event_consensus",
+      "path": "artifacts.local/evidence/ustrf-sensor-replay-r3/source-replacement-lilocbench-v1/lt_changes_dynamics_0-review-v1/review-consensus-v2.json",
+      "sha256": "1b79c73c037496663339025b13037196b0d1c5ffdded164c07ea2f74ba5de0c6",
+      "assertions": {
+        "candidate_alerts_visible_to_reviewers": false
+      }
+    },
+    {
+      "id": "lilocbench_review_bundle",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/seen-route-role-review-bundle-r1.json",
+      "sha256": "e067e64148a313fff60a90d215acc730113b40446591a1506cc9209f7a22502d",
+      "assertions": {
+        "candidate_alerts_exposed": false,
+        "detector_outputs_exposed": false
+      }
+    },
+    {
+      "id": "lilocbench_blind_review_bundle",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/seen-route-role-blind-review-bundle-r2.json",
+      "sha256": "fcca02de275b614728ad5c8e9db0afb5a35b3bd586641f45a61d1cdd3328e386",
+      "assertions": {
+        "candidate_alerts_exposed": false,
+        "detector_outputs_exposed": false,
+        "window_labels_exposed": false
+      }
+    },
+    {
+      "id": "lilocbench_person_route_truth",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/route-role-model-proxy-truth-r6.json",
+      "sha256": "a0d51ca50d36a746de979e7d1fe010cf614e167742aaa1cf99443884db6e7d29",
+      "assertions": {
+        "authority": "model_proxy_route_role_evidence_not_human_truth_not_candidate_H2_or_production_authority"
+      }
+    },
+    {
+      "id": "crowdbot_initial_truth_windows",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/holdout-route-role-truth-windows-r1.json",
+      "sha256": "df8fbc258b12bece40623281cc9aa438e3ed73ac4577be1160bc7db77084ea6e",
+      "assertions": {
+        "candidate_outputs_executed": false,
+        "app_detector_or_event_outputs_exposed": false
+      }
+    },
+    {
+      "id": "crowdbot_initial_person_route_truth",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/holdout-person-role-fusion-r1.json",
+      "sha256": "d15f88a1c81a191191f8843cd0a0c429f1e561920475f166fe30f42be7bc336f",
+      "assertions": {
+        "candidate_outputs_executed": false,
+        "app_detector_or_event_outputs_exposed": false
+      }
+    },
+    {
+      "id": "crowdbot_initial_causal_route",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/holdout-causal-route-ledger-r1.json",
+      "sha256": "d63227d00c22c166f52d4998c3a48e0740cd03788fae01d62dbbbfdbf3d26c73",
+      "assertions": {
+        "candidate_outputs_executed": false,
+        "future_pose_access_for_candidate": false
+      }
+    },
+    {
+      "id": "crowdbot_replacement_truth_windows",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-route-role-truth-windows-r1.json",
+      "sha256": "ebba22d5c5d90c81d8961852036c3b56db53c70da6ba5910d5be114b1ffd9036",
+      "assertions": {
+        "candidate_outputs_executed": false,
+        "app_detector_or_event_outputs_exposed": false
+      }
+    },
+    {
+      "id": "crowdbot_replacement_person_route_truth",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-person-role-fusion-r1.json",
+      "sha256": "154dbd8a81fb1e7d262d3d448fa6ba69f6b31f12001f6cbb88ac4c47e7cb00da",
+      "assertions": {
+        "candidate_outputs_executed": false,
+        "app_detector_or_event_outputs_exposed": false
+      }
+    },
+    {
+      "id": "crowdbot_replacement_causal_route",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-causal-route-ledger-r1.json",
+      "sha256": "7c83a2c0cfe7d383438c581da2f747f98e806755cd14f04a68e71db8d1260eed",
+      "assertions": {
+        "candidate_outputs_executed": false,
+        "future_pose_access_for_candidate": false
+      }
+    }
+  ],
+  "dependency_policy": {
+    "exact_allowlist_required": true,
+    "directory_scan_or_glob_for_inputs_allowed": false,
+    "forbidden_path_fragments": [
+      "holdout-candidate-selection",
+      "holdout-candidate-result",
+      "holdout-app-detector-ledger",
+      "seen-oracle-attribution",
+      "ustrf-tracker-ttc-ablation-v1/result",
+      "candidate-profile"
+    ],
+    "candidate_output_inputs_read_must_equal": 0,
+    "candidate_module_import_or_execution_allowed": false
+  },
+  "source_families": {
+    "lilocbench_dynamics_0_front": "lilocbench",
+    "lilocbench_lt_changes_dynamics_0_front": "lilocbench",
+    "crowdbot_0410_shared_control": "crowdbot_qolo",
+    "crowdbot_0424_shared_control": "crowdbot_qolo",
+    "crowdbot_0410_mds": "crowdbot_qolo",
+    "crowdbot_1203_shared_control": "crowdbot_qolo"
+  },
+  "event_universe": {
+    "required_dataset_groups": [
+      "lilocbench_seen",
+      "crowdbot_initial_superseded_proposals",
+      "crowdbot_replacement"
+    ],
+    "expected_event_count": 6369,
+    "expected_lilocbench_event_count": 15,
+    "expected_crowdbot_initial_proposal_count": 6340,
+    "expected_crowdbot_replacement_event_count": 14,
+    "every_event_requires_exactly_eight_metric_classifications": true,
+    "negative_windows_and_non_target_person_episodes_are_not_events": true
+  },
+  "metric_roster": [
+    "event_recall",
+    "critical_miss",
+    "repeat",
+    "clearance",
+    "regeneration",
+    "false_alerts_per_minute",
+    "evidence_age",
+    "unknown_or_stale_alert"
+  ],
+  "metric_units": {
+    "event_recall": "event",
+    "critical_miss": "critical_event",
+    "repeat": "candidate_delivered_event_subset_of_truth_observation_pool",
+    "clearance": "truth_terminal_clear_event",
+    "regeneration": "complete_post_clear_identity_interval",
+    "false_alerts_per_minute": "unique_half_open_negative_exposure_interval_ns",
+    "evidence_age": "preoutput_frame_mask_requiring_runtime_capture_consume_binding",
+    "unknown_or_stale_alert": "preoutput_frame_mask_with_route_validity_state"
+  },
+  "candidate_blind_operational_definitions": {
+    "event_recall": {
+      "alertable_deadline_must_be_explicitly_frozen_in_source_truth": true,
+      "alertable_start_or_terminal_clear_may_not_be_guessed_as_deadline": true,
+      "missing_deadline_reason": "alertable_deadline_not_frozen"
+    },
+    "critical_miss": {
+      "critical_boolean_alone_is_insufficient": true,
+      "interval_reconstruction_role": "route_intersecting",
+      "minimum_contiguous_frames": 3,
+      "exactly_one_qualifying_contiguous_interval_required": true,
+      "same_person_identity_continuous_over_interval_required": true,
+      "causal_route_known_on_every_interval_frame_required": true
+    },
+    "repeat": {
+      "truth_observation_pool_is_not_scoring_denominator": true,
+      "actual_denominator_requires_first_candidate_delivery": true,
+      "complete_active_episode_required_for_gate_pass": true,
+      "administratively_censored_identity_continuous_episode_is_observed_repeat_only": true
+    },
+    "clearance": {
+      "assessment_horizon_ms": 1500,
+      "lilocbench_passed_or_cleared_is_terminal_clear_only_when_same_person_proxy_truth_clear_frame_matches": true,
+      "truth_clear_frame_must_be_covered_by_same_person_identity": true,
+      "post_clear_sequence_followup_required": true,
+      "pre_clear_end_state": "not_evaluable_pre_clear"
+    },
+    "regeneration": {
+      "assessment_horizon_ms": 2000,
+      "maximum_adjacent_identity_frame_gap_ns": 1000000000,
+      "same_person_identity_must_remain_observable_for_full_horizon": true,
+      "sequence_followup_without_identity_is_insufficient": true
+    },
+    "false_alerts_per_minute": {
+      "frame_pair_both_endpoints_require_causal_route_known": true,
+      "frame_pair_both_endpoints_require_route_relevant_person_truth_complete": true,
+      "frame_pair_both_endpoints_require_no_active_truth_role": true,
+      "active_truth_roles": [
+        "approaching_route",
+        "route_intersecting"
+      ],
+      "maximum_adjacent_frame_gap_ns": 1000000000,
+      "duration_storage": "integer_nanoseconds",
+      "matched_negative_windows_do_not_define_or_expand_exposure": true
+    },
+    "evidence_age": {
+      "preoutput_mask_requires_capture_timestamp": true,
+      "runtime_profile_requires_consuming_timestamp_for_every_masked_frame": true,
+      "missing_runtime_timestamp_invalidates_the_metric_profile_instead_of_shrinking_denominator": true
+    },
+    "unknown_or_stale_alert": {
+      "preoutput_mask_requires_route_validity_state_on_every_frame": true,
+      "allowed_route_validity_states": [
+        "known",
+        "unknown"
+      ],
+      "runtime_candidate_alert_outcome_required_for_every_masked_frame": true
+    }
+  },
+  "l1_readiness": {
+    "event_recall": {
+      "minimum_denominator": 5
+    },
+    "critical_miss": {
+      "minimum_denominator": 5
+    },
+    "repeat": {
+      "minimum_actual_candidate_delivered_denominator": 5,
+      "preoutput_truth_pool_may_only_be_conditional": true
+    },
+    "clearance": {
+      "minimum_denominator": 5
+    },
+    "regeneration": {
+      "minimum_denominator": 5
+    },
+    "false_alerts_per_minute": {
+      "minimum_exposure_ns": 300000000000
+    },
+    "evidence_age": {
+      "all_preoutput_masked_frames_must_have_capture_timestamp": true,
+      "runtime_profile_is_conditional_on_all_frames_having_consuming_timestamp": true
+    },
+    "unknown_or_stale_alert": {
+      "all_preoutput_masked_frames_must_have_route_validity_state": true
+    },
+    "ready_status": "L1_EXPLORATORY_ELIGIBLE",
+    "conditional_status": "L1_CONDITIONAL_ON_CANDIDATE_OBSERVATION",
+    "not_ready_status": "L0_ENGINEERING_DIAGNOSTIC"
+  },
+  "reason_taxonomy": [
+    "alertable_deadline_not_frozen",
+    "critical_interval_not_frozen_or_ambiguous",
+    "not_critical_event",
+    "camera_bound_person_identity_missing",
+    "person_identity_not_continuous",
+    "person_identity_not_bound_onset_to_alertable",
+    "causal_route_not_known_for_scored_interval",
+    "superseded_nonvisual_lidar_event_proposal",
+    "incomplete_all_person_route_role_truth",
+    "right_censored_administrative",
+    "right_censored_identity_loss",
+    "not_evaluable_pre_clear",
+    "truth_terminal_clear_missing",
+    "truth_clear_not_covered_by_same_person_identity",
+    "post_clear_followup_shorter_than_horizon",
+    "post_clear_identity_not_bound",
+    "first_candidate_delivery_required",
+    "metric_uses_exposure_ledger_not_event_denominator",
+    "metric_uses_frame_ledger_not_event_denominator",
+    "candidate_consuming_timestamp_required",
+    "candidate_alert_outcome_required"
+  ],
+  "negative_exposure_pair_exclusion_reason_priority": [
+    "source_not_authorized_for_r2_l1_exposure",
+    "frame_id_not_consecutive",
+    "timestamp_nonpositive",
+    "timestamp_gap_exceeds_maximum",
+    "causal_route_unknown_at_endpoint",
+    "route_relevant_person_truth_incomplete_at_endpoint",
+    "active_truth_role_at_endpoint"
+  ],
+  "receipt_contract": {
+    "result_status": "not_tested",
+    "numerator_value_ci_must_be_null": true,
+    "gate_result": "not_applicable",
+    "empty_denominator_support_status": "not_evaluable",
+    "zero_over_zero_may_not_pass_or_fail": true,
+    "event_mask_and_denominator_receipt_are_separate_hash_bound_files": true,
+    "source_and_provenance_family_contributions_required": true,
+    "terminal_clear_observability_required": true,
+    "exclusion_and_censor_reason_counts_required": true,
+    "selection_android_h2_human_and_production_authority": false
+  },
+  "outputs": {
+    "root": "artifacts.local/evidence/ustrf-route-target-metric-eligibility-r2-l1",
+    "event_mask": "eligibility-mask-r2-l1.json",
+    "denominator_receipt": "denominator-receipt-r2-l1.json",
+    "validation_receipt": "validation-receipt-r2-l1.json"
+  }
+}

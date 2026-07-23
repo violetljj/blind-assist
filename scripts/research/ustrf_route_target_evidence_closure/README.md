@@ -2,6 +2,24 @@
 
 状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active at L0 / candidates unrun
 
+## R2-L1 metric eligibility materialization
+
+`configs/ustrf_route_target_metric_eligibility_r2_l1.json` 将当前 6,369 个 LILocBench/CrowdBot 事件或提案逐项物化为 8 指标 eligibility mask，并把非事件粒度的负暴露和 preoutput frame support 放入独立 ledger。输入只允许读取 11 个哈希冻结、candidate-blind 的 truth/route/review 文件；禁止目录扫描、候选模块执行和候选输出读取。
+
+运行：
+
+```powershell
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure materialize_metric_eligibility_r2_l1.py --config configs/ustrf_route_target_metric_eligibility_r2_l1.json --repo .
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_metric_eligibility_r2_l1.py --config configs/ustrf_route_target_metric_eligibility_r2_l1.json --repo .
+python scripts/research/ustrf_route_target_evidence_closure/test_metric_eligibility_r2_l1.py -v
+```
+
+输出位于忽略的 `artifacts.local/evidence/ustrf-route-target-metric-eligibility-r2-l1/`：`eligibility-mask-r2-l1.json`、`denominator-receipt-r2-l1.json` 和 `validation-receipt-r2-l1.json`。mask 同时包含 62,188 个相邻 frame-pair 的 eligibility/exclusion audit 与 62,229 行显式 preoutput frame ledger。validator 会完整重建前两者并检查规范 JSON 精确一致，同时硬拒绝 0/0 pass、pre-clear 进入 clearance、truth pool 冒充 repeat 分母、pair universe 缺口、负暴露重叠和任何候选输出访问。
+
+当前物化结论是：`critical_miss`、`clearance`、`unknown_or_stale_alert` 为 L1 探索资格；`repeat`、`evidence_age` 为候选观测完整后才成立的条件资格；`event_recall`、`regeneration`、`false_alerts_per_minute` 仍为 L0。该结论只授权另开独立任务生成单次探索 profile，不授权选择候选或进入 Android/H2/生产。
+
+下一独立任务使用 [R2-L1E 单次探索 profile 通宵目标](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_OVERNIGHT_GOAL_2026-07-24.md)：先检查全量 canonical input，再让 C1–C3 各按 41 条完整 sequence 单次运行；输出只有分指标探索 profile 和机器收据，不产生 winner、排名或晋级。
+
 ## 稳定 Interface
 
 运行 `python scripts/research/ustrf_route_target_evidence_closure/validate_prereg.py --config configs/ustrf_route_target_evidence_closure_r1.json --repo .`。validator 重算父 evidence 哈希，并冻结五态逐人路线角色、三条 oracle 臂、最多三个累积结构候选和逐来源 holdout 门；任一漂移均 fail closed。
