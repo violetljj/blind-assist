@@ -1,0 +1,5 @@
+# Route-target research contracts bind raw SHA-256 values and must remain byte-stable.
+/configs/ustrf_route_target_evidence_closure_r1*.json text eol=lf
+/configs/ustrf_route_target_evidence_maturity_v2.json text eol=lf
+/docs/research/ustrf-sc/USTRF_ROUTE_TARGET_EVIDENCE_*.md text eol=lf
+/scripts/research/ustrf_route_target_evidence_closure/** text eol=lf

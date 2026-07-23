@@ -1,0 +1,33 @@
+{
+  "schema": "blindassist_ustrf_route_target_evidence_closure_materialization_amendment_r1",
+  "frozen_on": "2026-07-23",
+  "authority": "candidate_blind_operational_recovery_amendment_not_truth_candidate_or_production_authority",
+  "replacement_preregistration_path": "configs/ustrf_route_target_evidence_closure_r1_replacement_holdout.json",
+  "replacement_preregistration_sha256": "f68a59cfc9eb4cff59c355d42b3f849b022977000a054e8fbf8ce2cfdd7f72a1",
+  "superseded_materializer_implementation_sha256": "6aca07b197cbe2fb75af7c3a588a96febb2e2a4daab89d299148d4b20e328c46",
+  "materializer_implementation_path": "scripts/research/ustrf_route_target_evidence_closure/materialize_crowdbot_holdout_sources.py",
+  "materializer_implementation_sha256": "735b4b027880b1f7cebcb25b0b34908fd888291d0f2e134b74b617cf0b8d7791",
+  "streamer_implementation_path": "scripts/research/ustrf_route_target_evidence_closure/stream_remote_zip_entry.py",
+  "streamer_implementation_sha256": "c501e6b9dd40c867efa98e1dacb5a66959640f4b8ebb92bfb1e6b281b0bf21fc",
+  "transport_lineage_tip": {
+    "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/transport-acceleration-r7.json",
+    "sha256": "01bce46f04ded33bf6d4beb1b945eba70d7d99447d271936cb515d6b9434f36b"
+  },
+  "frozen_after_materialization_before_truth_freeze": true,
+  "candidate_outputs_executed_before_amendment": false,
+  "app_detector_or_event_outputs_exposed_before_amendment": false,
+  "changes": [
+    "optional_parallel_http_range_transport_with_exact_content_range_and_part_hashes",
+    "resume_from_verified_cached_part_bytes",
+    "bounded_socket_timeout_and_retry",
+    "child_transport_sidecar_auto_discovery",
+    "bounded_windows_raw_bag_unlink_retry"
+  ],
+  "reason": "large_public_archive_transport_stalled_and_windows_delayed_verified_raw_bag_release",
+  "candidate_or_truth_algorithm_change": false,
+  "candidate_threshold_nms_tracker_or_scalar_change": false,
+  "selection_gate_change": false,
+  "integrity_contract_change": false,
+  "android_shadow": "closed",
+  "h2_depth_ttc_route_risk_flip": "closed"
+}

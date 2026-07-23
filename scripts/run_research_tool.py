@@ -14,6 +14,7 @@ REPO_ROOT = SCRIPTS_DIR.parent
 DOMAINS = {
     "public-video": SCRIPTS_DIR / "research" / "public_video",
     "ustrf-crosscam-codex": SCRIPTS_DIR / "research" / "ustrf_crosscam_codex",
+    "ustrf-route-target-evidence-closure": SCRIPTS_DIR / "research" / "ustrf_route_target_evidence_closure",
     "ustrf-sensor-replay": SCRIPTS_DIR / "research" / "ustrf_sensor_replay",
 }
 

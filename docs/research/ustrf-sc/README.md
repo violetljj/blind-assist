@@ -14,6 +14,9 @@
 
 ## 协议与专项记录
 
+- [route-target 证据成熟度分层标准 V2](USTRF_ROUTE_TARGET_EVIDENCE_MATURITY_STANDARD_V2.md)：当前协议真源；把全或无来源准入拆成指标级可评估性、右删失与 L0–L4 授权，保留 R1 性能/真实性门并冻结轮间版本化调整和来源预算。当前仅 L0，R2 候选未运行。
+- [route-target evidence closure R1 阶段结果（2026-07-23）](USTRF_ROUTE_TARGET_EVIDENCE_CLOSURE_R1_RESULT_2026-07-23.md)：历史结果保持 `DATA_BLOCKED / STOP_SOURCE_SEARCH`；C1–C3 未运行，现有数据只保留诊断/回归或由 V2 重新冻结后的最高 L1 探索权限，Android shadow/H2 关闭。
+- [route-target evidence closure R1 预注册（2026-07-23）](USTRF_ROUTE_TARGET_EVIDENCE_CLOSURE_R1_PREREG_2026-07-23.md)：固定 detector/tracker 与 H2 关闭边界，冻结五态逐人 route role、三条单接缝 oracle 和最多三个结构候选；当前 15+15 只做归因，胜者只能由全新两来源、含共现 person 的 sealed holdout 按逐来源/worst-source 门选出。
 - [detector target attribution R1 与 association-only H1（2026-07-23）](USTRF_DETECTOR_TARGET_ATTRIBUTION_R1_RESULT_2026-07-23.md)：Android canonical G1b 语义 parity `4594/4594`；隐藏输出后冻结 15 个 target person 事件与 2,297 帧负窗 all-person/absent truth，baseline 两来源 coverage `3/3 + 12/12`、critical miss `0`，因此停止换 detector；T0–T3 均仅 `14/15` 且负窗误提醒 `8.620/min`，shadow 门失败，H2 继续关闭。
 - [detector taxonomy coverage v1（2026-07-22）](USTRF_DETECTOR_TAXONOMY_COVERAGE_V1_RESULT_2026-07-22.md)：定位 tracker/TTC R1 的 host `[1,84,2100]` 解码轴错误；正确 host/SM-S9280 分别在 2639/2617 帧产生 person proposal，15/15 正事件区间均有 proposal，但 Android Canvas 与 PIL input/raw exact parity 为 0/4594 且缺目标 person bbox truth，因此 G3–G5、T0–T3 与 H2 继续关闭。
 - [tracker/TTC 固定协议消融 R1（2026-07-22）](USTRF_TRACKER_TTC_ABLATION_R1_RESULT_2026-07-22.md)：两条 LILocBench 准入来源按 15 正/15 同源等长负窗口生成 4594 帧 host detector ledger；冻结 App 模型在 PIL letterbox 几何下输出 0 个阈值内 person 框，T0 event recall `0`、critical miss `1`，clearance/ID/TTC 不可评，按停止门跳过 T1–T3；不声称 Android 像素 parity。

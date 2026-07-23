@@ -43,8 +43,11 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
         }
         val inputFile = privateFile(requireNotNull(arguments.getString(ARG_INPUT)), "detector taxonomy manifest")
         val input = JSONObject(inputFile.readText(Charsets.UTF_8))
+        val requiredFrameCount = arguments.getString(ARG_EXPECTED_FRAME_COUNT)?.toIntOrNull()
+            ?: REQUIRED_FRAME_COUNT
+        check(requiredFrameCount > 0)
         check(input.getString("schema") == INPUT_SCHEMA)
-        check(input.getInt("frame_count") == REQUIRED_FRAME_COUNT)
+        check(input.getInt("frame_count") == requiredFrameCount)
         check(input.getJSONArray("input_shape").toIntArray().contentEquals(intArrayOf(1, 320, 320, 3)))
         check(input.getJSONArray("output_shape").toIntArray().contentEquals(intArrayOf(1, 84, 2100)))
         check(input.getInt("person_class_index") == 0)
@@ -131,6 +134,7 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
                 if (rowFailure != null) failures++
                 rows.put(JSONObject()
                     .put("source_name", expected.getString("source_name"))
+                    .put("sequence_id", expected.optString("sequence_id", ""))
                     .put("frame_id", expected.getString("frame_id"))
                     .put("image_sha256", imageHash)
                     .put("android_input_tensor_sha256", androidInputHash)
@@ -155,7 +159,7 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
             .put("input_manifest_sha256", sha256File(inputFile))
             .put("device", JSONObject().put("model", Build.MODEL).put("sdk", Build.VERSION.SDK_INT))
             .put("runtime", "tflite_cpu_4_threads")
-            .put("frame_count", REQUIRED_FRAME_COUNT)
+            .put("frame_count", requiredFrameCount)
             .put("failure_count", failures)
             .put("input_tensor_exact_match_count", inputHashMatches)
             .put("raw_output_exact_match_count", rawHashMatches)
@@ -270,6 +274,7 @@ class UstrfDetectorTaxonomyCoverageDeviceTest {
         const val ARG_OUTPUT = "ustrfDetectorTaxonomyOutput"
         const val ARG_CANONICAL_INPUT = "ustrfDetectorTaxonomyCanonicalInput"
         const val ARG_CANONICAL_RAW = "ustrfDetectorTaxonomyCanonicalRaw"
+        const val ARG_EXPECTED_FRAME_COUNT = "ustrfDetectorTaxonomyExpectedFrameCount"
         const val TAG = "UstrfDetectorTaxonomy"
     }
 }

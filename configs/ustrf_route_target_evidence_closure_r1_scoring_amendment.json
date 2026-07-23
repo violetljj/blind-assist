@@ -1,0 +1,30 @@
+{
+  "schema": "blindassist_ustrf_route_target_evidence_closure_scoring_amendment_r1",
+  "frozen_on": "2026-07-23",
+  "authority": "candidate_blind_scoring_correctness_amendment_not_candidate_or_production_authority",
+  "replacement_preregistration_path": "configs/ustrf_route_target_evidence_closure_r1_replacement_holdout.json",
+  "replacement_preregistration_sha256": "f68a59cfc9eb4cff59c355d42b3f849b022977000a054e8fbf8ce2cfdd7f72a1",
+  "candidate_implementation_path": "scripts/research/ustrf_route_target_evidence_closure/candidates.py",
+  "candidate_implementation_sha256": "82fb1a6391a6cb5fd5dd5116f16f26e250bb2421ee7211f57d691738176816c4",
+  "superseded_runner_implementation_sha256": "5123a000e338c0848eb9bcc8200ca20cadd8573cbe67718bdebb6d6fab64be31",
+  "runner_implementation_path": "scripts/research/ustrf_route_target_evidence_closure/run_crowdbot_holdout_candidates.py",
+  "runner_implementation_sha256": "f2eb27acb4b1a45382f4bfe2e26debb7f89bf0eb14e0e3c3546300f6d11077ef",
+  "candidate_outputs_executed_before_freeze": false,
+  "app_detector_or_event_outputs_exposed_before_freeze": false,
+  "reason": "old_runner_counted_false_alerts_only_inside_matched_windows_but_divided_by_full_source_negative_exposure_minutes",
+  "false_alert_numerator": {
+    "unit": "delivery",
+    "scope": "each_candidate_each_full_sequence_once",
+    "count_when": "route_known_and_no_truth_event_attribution_and_not_unknown_person_overlap",
+    "positive_window_wrong_person_delivery_counts": true,
+    "outside_matched_window_route_known_delivery_counts": true,
+    "unknown_route_delivery": "separate_hard_gate",
+    "unknown_person_overlap": "separate_hard_source_failure"
+  },
+  "false_alert_denominator": "frozen_full_source_scorable_negative_exposure_minutes",
+  "candidate_or_threshold_change": false,
+  "selection_gate_change": false,
+  "detector_nms_tracker_or_scalar_change": false,
+  "android_shadow": "closed",
+  "h2_depth_ttc_route_risk_flip": "closed"
+}

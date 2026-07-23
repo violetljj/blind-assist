@@ -1,0 +1,224 @@
+{
+  "schema": "blindassist_ustrf_route_target_evidence_closure_replacement_holdout_r1",
+  "frozen_on": "2026-07-23",
+  "authority": "replacement_sealed_holdout_preregistration_not_candidate_or_production_authority",
+  "base_preregistration": {
+    "path": "configs/ustrf_route_target_evidence_closure_r1.json",
+    "sha256": "a074b5d71ff627dd2b763c013f5597982f94845f607aa5953ee65e59cb76b977"
+  },
+  "candidate_implementation": {
+    "path": "scripts/research/ustrf_route_target_evidence_closure/candidates.py",
+    "sha256": "82fb1a6391a6cb5fd5dd5116f16f26e250bb2421ee7211f57d691738176816c4",
+    "candidate_count": 3,
+    "changed_for_replacement": false
+  },
+  "failed_first_holdout": {
+    "candidate_outputs_executed": false,
+    "fusion": {
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/holdout-person-role-fusion-r1.json",
+      "sha256": "d15f88a1c81a191191f8843cd0a0c429f1e561920475f166fe30f42be7bc336f"
+    },
+    "truth_windows": {
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/holdout-route-role-truth-windows-r1.json",
+      "sha256": "df8fbc258b12bece40623281cc9aa438e3ed73ac4577be1160bc7db77084ea6e",
+      "admitted_source_count": 0
+    },
+    "failure_class": "truth_protocol_invalidated_whole_window_for_unrelated_unknown_person_and_inherited_nonvisible_lidar_event_onset",
+    "candidate_performance_observed": false
+  },
+  "replacement_sources": [
+    {
+      "source_id": "crowdbot_0410_mds",
+      "sequence_selection": "all_10_sequences_in_bound_capacity_receipt_lexicographic_order",
+      "capacity_receipt": {
+        "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/crowdbot-holdout-content-capacity-proxy-0410-mds-r1.json",
+        "sha256": "e669c379ead2d626b1fb0022b7e6f92cbc23737c89404ac1f08b8a189047ec0b"
+      },
+      "capacity": {
+        "scorable_route_minutes": 23.82376630703608,
+        "negative_route_minutes_proxy": 23.602786997954052,
+        "positive_event_capacity_proxy": 21,
+        "critical_event_capacity_proxy": 17,
+        "cooccurrence_frame_rate_proxy": 1.0
+      },
+      "processed_inventory": {
+        "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/crowdbot-remote-inventory/17694140-processed_0410_mds_defaced-r1.json",
+        "sha256": "783ef38ad10fa0c277d8672165719cf34ce9ceb1a495b859883d203521671e8e"
+      },
+      "raw_inventories": [
+        {
+          "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/crowdbot-remote-inventory/17707394-rosbags_0410_mds_defaced_part1-r1.json",
+          "sha256": "c4eb0b0718e87cf2c29d7972e15dc589af2ff41b977f4fd52f1967e829255da7"
+        },
+        {
+          "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/crowdbot-remote-inventory/17717808-rosbags_0410_mds_defaced_part2-r1.json",
+          "sha256": "4e68bb573d8ad04f13a5c427b5c807dd1335333382ff593f5e0d67cba1819c31"
+        }
+      ],
+      "metadata_sequence_count": 10,
+      "raw_bag_match_count": 10
+    },
+    {
+      "source_id": "crowdbot_1203_shared_control",
+      "sequence_selection": "all_13_sequences_in_bound_capacity_receipt_lexicographic_order",
+      "capacity_receipt": {
+        "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/crowdbot-holdout-content-capacity-proxy-1203-r1.json",
+        "sha256": "31f472e57ade7df1daa1f246ac9b5d144c87faca0620e445f5fa6210775597b1"
+      },
+      "capacity": {
+        "scorable_route_minutes": 25.597932708263397,
+        "negative_route_minutes_proxy": 25.41729347308477,
+        "positive_event_capacity_proxy": 35,
+        "critical_event_capacity_proxy": 24,
+        "cooccurrence_frame_rate_proxy": 1.0
+      },
+      "processed_inventory": {
+        "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/crowdbot-remote-inventory/17694140-processed_1203_shared_control_defaced-r1.json",
+        "sha256": "4ac0c0217740f09cc46d17ed9682035cab7821579011542f67a4782b241118e3"
+      },
+      "raw_inventories": [
+        {
+          "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/crowdbot-remote-inventory/17720448-rosbags_1203_shared_control_defaced_part1-r1.json",
+          "sha256": "52b7b37b19ced0e7a5c22097525aa5f25e961afbff5e2fa04b6f1238babcc5d3"
+        },
+        {
+          "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/crowdbot-remote-inventory/17730560-rosbags_1203_shared_control_defaced_part2-r1.json",
+          "sha256": "32e9879efe887f7a203d3078ff9033cbf8395f2154d3b76a1ad85d96b6cee308"
+        }
+      ],
+      "metadata_sequence_count": 13,
+      "raw_bag_match_count": 13
+    }
+  ],
+  "modality_admission_receipts": [
+    {
+      "source_id": "crowdbot_0410_mds",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/crowdbot_0410_mds_visual-modality-review-r1.json",
+      "sha256": "bee3c17e51f8049524e7bfd6ad722c969ea8c0ee999145a806725b07b160b658",
+      "decision": "ADMIT_MODALITY_INTERNAL_RESEARCH_ONLY"
+    },
+    {
+      "source_id": "crowdbot_1203_shared_control",
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/crowdbot_1203_shared_control_visual-modality-review-r1.json",
+      "sha256": "4da5be4f5fb8c4b71f23a47e602354d63bbe5311ac5bb9ddb4c95f9ab3624174",
+      "decision": "ADMIT_MODALITY_WITH_SOURCE_NATIVE_IMAGE_CORRUPTION_LIMITATION_INTERNAL_RESEARCH_ONLY"
+    }
+  ],
+  "freshness_and_independence": {
+    "fresh_from_seen_lilocbench": true,
+    "disjoint_from_failed_first_holdout_person_route_traces": true,
+    "capture_date_disjoint_between_replacement_sources": true,
+    "source_modes": [
+      "mds",
+      "shared_control"
+    ],
+    "same_crowdbot_qolo_family_limitation": true,
+    "near_duplicate_audit_required_after_materialization": true
+  },
+  "truth_protocol_amendment": {
+    "reason": "first_holdout_showed_whole_window_all_person_completeness_is_not_a_valid_route_target_scoring_unit",
+    "uses_candidate_or_app_detector_outputs": false,
+    "uses_failed_holdout_candidate_scores": false,
+    "person_presence_proposals": "inherit_base_two_visual_passes_and_published_track_projection",
+    "positive_event_truth": {
+      "event_source": "visible_metric_person_rows_after_visual_published_track_fusion_not_raw_lidar_event_onset",
+      "alertable_start": "second_consecutive_visible_route_intersecting_or_approaching_route_frame_for_same_metric_person",
+      "critical": "at_least_three_consecutive_visible_route_intersecting_frames_for_same_metric_person",
+      "clear": "same_visible_metric_person_reaches_explicit_cleared_role_after_active_episode",
+      "missing_occluded_stale_or_unknown_can_clear": false,
+      "new_event_requires_prior_terminal_clear": true,
+      "positive_window_requires": "event_person_identity_and_role_continuity_not_unrelated_all_person_completeness"
+    },
+    "negative_truth": {
+      "frame_unit": "route_relevant_person_truth_complete",
+      "requires_causal_route_known": true,
+      "unresolved_visual_person_intersecting_or_potentially_intersecting_route": "frame_not_evaluable",
+      "unresolved_visual_person_provably_outside_known_route_corridor": "does_not_invalidate_frame",
+      "accepted_active_metric_person": "frame_not_negative",
+      "candidate_specific_denominator": false
+    },
+    "unknown_person_alert": {
+      "candidate_alert_overlapping_unresolved_person": "hard_fail_unknown_person_active_alert_for_source",
+      "cannot_be_counted_safe_or_cleared": true
+    },
+    "frozen_scalars_unchanged": {
+      "person_confidence_threshold": 0.35,
+      "visual_consensus_iou_min": 0.3,
+      "route_point_margin_fraction": 0.08,
+      "positive_pre_context_frames": 30,
+      "positive_post_clear_context_frames": 30,
+      "minimum_positive_events_each_source": 10,
+      "minimum_critical_events_each_source": 2,
+      "minimum_matched_negative_windows_each_source": 10,
+      "minimum_scorable_negative_exposure_minutes_each_source": 10.0
+    }
+  },
+  "implementation_bindings": [
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/inspect_crowdbot_rosbag_modalities.py",
+      "sha256": "13ec52ed4e1b823b3afde842fcf2b9709a7bf5f2b23d8b89c84a80f91ea354a6"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/materialize_crowdbot_rgbd_sequence.py",
+      "sha256": "3f565913c8d7f33e6ba8538900b14cf5ceb449c99825358b93c69b64e7960a39"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/materialize_crowdbot_holdout_sources.py",
+      "sha256": "6aca07b197cbe2fb75af7c3a588a96febb2e2a4daab89d299148d4b20e328c46"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/build_crowdbot_causal_route_ledger.py",
+      "sha256": "71ef1b0b77c3390186ff3bf28d464e368c936a39ccd969414bad394a4680004c"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/build_crowdbot_projected_track_role_proposal.py",
+      "sha256": "fbce5a2070aa9db4dd7f6bc7bdd7a352251629591d531142af2d41f56a1c3549"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/annotate_crowdbot_holdout_person_proposals.py",
+      "sha256": "1762e0ed20601f8e6678867657e1bd44acddc82525c69318efd29e5d8e767580"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/fuse_crowdbot_holdout_person_role_truth.py",
+      "sha256": "4e5740fc1f157da8df00f493e826efe3350824ae523e4429517377cf7705c0e4"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/freeze_crowdbot_holdout_truth_windows.py",
+      "sha256": "73a7bf9487e419d53c63874031b8f685a9779f78cfbc50decd02457931b8321f"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/prepare_crowdbot_holdout_detector_device_bundle.py",
+      "sha256": "4dbdaa739e27175e98cfeee525b6580eec8b88512c54fd2760886268bda20935"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_crowdbot_holdout_app_detector.py",
+      "sha256": "21b794eb512e5b7578d0193382fc62ab2d3655cbe78f23490abea5fc851879ba"
+    },
+    {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_crowdbot_holdout_candidates.py",
+      "sha256": "5123a000e338c0848eb9bcc8200ca20cadd8573cbe67718bdebb6d6fab64be31"
+    }
+  ],
+  "planned_outputs": {
+    "dataset_root": "artifacts.local/datasets/ustrf-route-target-evidence-closure-r1-replacement",
+    "evidence_root": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement",
+    "materialization_state": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/crowdbot-holdout-materialization-state-r1.json",
+    "integrity_audit": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-materialization-integrity-audit-r1.json",
+    "causal_route_ledger": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-causal-route-ledger-r1.json",
+    "projected_track_role": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-projected-track-role-proposal-r1.json",
+    "visual_pass_b": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-person-proposals-yolov8n-r1.json",
+    "visual_pass_c": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-person-proposals-yolo11x-r1.json",
+    "fusion": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-person-role-fusion-r1.json",
+    "truth_windows": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-route-role-truth-windows-r1.json",
+    "detector_device_bundle": "artifacts.local/device-input/ustrf-route-target-evidence-closure-r1-replacement",
+    "app_detector_ledger": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-app-detector-ledger-r1.json",
+    "candidate_result": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-candidate-result-r1.json"
+  },
+  "execution_boundaries": {
+    "candidate_outputs_executed": false,
+    "app_detector_or_event_outputs_exposed": false,
+    "android_shadow": "closed_until_replacement_two_of_two_admission_and_candidate_winner",
+    "h2_depth_ttc_route_risk_flip": "closed",
+    "no_threshold_nms_tracker_or_scalar_retuning": true
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "schema": "blindassist_ustrf_route_target_camera_source_prescreen_policy_r1",
+  "frozen_on": "2026-07-23",
+  "objective": "reject_sources_that_lack_camera_visible_metric_identity_continuity_terminal_clear_or_evaluable_negative_context_before_full_materialization",
+  "authority": "candidate_blind_reject_only_source_prescreen_not_holdout_admission_not_candidate_score",
+  "base_preregistration": {
+    "path": "configs/ustrf_route_target_evidence_closure_r1.json",
+    "sha256": "a074b5d71ff627dd2b763c013f5597982f94845f607aa5953ee65e59cb76b977"
+  },
+  "candidate_implementation": {
+    "path": "scripts/research/ustrf_route_target_evidence_closure/candidates.py",
+    "sha256": "82fb1a6391a6cb5fd5dd5116f16f26e250bb2421ee7211f57d691738176816c4",
+    "candidate_count": 3
+  },
+  "truth_implementation": {
+    "fusion": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/fuse_crowdbot_holdout_person_role_truth.py",
+      "sha256": "4e5740fc1f157da8df00f493e826efe3350824ae523e4429517377cf7705c0e4"
+    },
+    "window_freeze": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/freeze_crowdbot_holdout_truth_windows.py",
+      "sha256": "73a7bf9487e419d53c63874031b8f685a9779f78cfbc50decd02457931b8321f"
+    },
+    "must_use_same_identity_role_clear_and_negative_window_semantics_as_final_holdout": true
+  },
+  "information_boundary": {
+    "before_source_specific_canary_roster_freeze": [
+      "official_archive_filename_inventory",
+      "published_track_and_robot_pose_metadata",
+      "archive_entry_compressed_size_and_crc32"
+    ],
+    "forbidden_before_source_specific_canary_roster_freeze": [
+      "rgb_or_depth_decode",
+      "visual_person_proposals",
+      "candidate_outputs",
+      "app_detector_or_event_outputs",
+      "manual_camera_content_review"
+    ],
+    "candidate_outputs_executed": false,
+    "app_detector_or_event_outputs_exposed": false
+  },
+  "canary_roster": {
+    "canary_count_each_source": 2,
+    "event_canary_selection": "maximum_lexicographic_positive_event_capacity_proxy_then_critical_event_capacity_proxy_then_active_route_frame_count_among_official_raw_inventory_backed_sequences",
+    "negative_canary_selection": "excluding_event_canary_maximum_negative_route_seconds_per_compressed_gib_among_official_raw_inventory_backed_sequences",
+    "ties": "lexicographically_smallest_full_source_sequence_key",
+    "selected_canaries_permanently_excluded_from_any_future_lockbox": true,
+    "same_parent_or_near_duplicate_of_canary_excluded": true,
+    "canary_pass_can_only_authorize_noncanary_source_materialization": true
+  },
+  "scaled_reject_only_gates": {
+    "derivation": "ceil_final_count_floor_times_canary_count_divided_by_metadata_sequence_count_and_exact_final_negative_minutes_times_same_fraction",
+    "minimum_accepted_positive_events": "ceil(10*canary_count/metadata_sequence_count)",
+    "minimum_accepted_critical_events": "ceil(2*canary_count/metadata_sequence_count)",
+    "minimum_matched_negative_windows": "ceil(10*canary_count/metadata_sequence_count)",
+    "minimum_scorable_negative_exposure_minutes": "10.0*canary_count/metadata_sequence_count",
+    "accepted_event_requires_continuous_camera_visible_unique_metric_identity": true,
+    "accepted_event_requires_terminal_clear_and_fixed_context": true,
+    "missing_or_ambiguous_identity_role_is_unknown_not_safe": true,
+    "track_or_detection_disappearance_cannot_establish_terminal_clear": true,
+    "each_selected_canary_must_decode_and_bind_timestamps_without_integrity_error": true,
+    "all_gates_required": true
+  },
+  "decisions": {
+    "fail": "reject_source_without_downloading_noncanary_sequences",
+    "pass": "permit_full_truth_materialization_of_only_noncanary_sequences_then_require_unchanged_final_holdout_admission",
+    "pass_does_not_mean": [
+      "source_admitted",
+      "holdout_sealed",
+      "candidate_selection_allowed",
+      "android_shadow_allowed",
+      "production_or_safety_evidence"
+    ],
+    "no_replay_after_failure": true,
+    "no_threshold_or_truth_relaxation_after_failure": true
+  },
+  "final_holdout_gates_unchanged": {
+    "minimum_positive_events_each_source": 10,
+    "minimum_critical_events_each_source": 2,
+    "minimum_matched_negative_windows_each_source": 10,
+    "minimum_scorable_negative_exposure_minutes_each_source": 10.0,
+    "two_independent_sources_required": true,
+    "per_source_and_worst_source_required": true
+  },
+  "android_shadow": "closed",
+  "h2_depth_ttc_route_risk_flip": "closed"
+}
