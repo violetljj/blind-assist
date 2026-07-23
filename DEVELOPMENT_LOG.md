@@ -1,11 +1,12 @@
 # Development Log
-
 ## 2026-07-23
 ### USTRF route-target 证据成熟度分层标准 V2
 - 时间：2026-07-23；执行者：violjjet。保留 R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` 与候选未运行事实，新建机器可校验的 L0–L4 evidence-maturity 标准：recall/critical/repeat/clearance/false-alert exposure/evidence-age 各自使用独立 eligibility 与分母；terminal clear 缺失只限制 clearance，right-censored 不得记成成功、失败或零延迟，空分母不得以 `0` 通过。
 - 权限：现有 LILocBench/CrowdBot 最高只能在新 eligibility mask 冻结后进入 L1 exploratory profile；L2 需要新鲜两-family selection，L3 需要 6-session/60+60/LOSO confirmation，L4 仍是 production-isolated Android shadow。R1 性能门不降低，unknown/stale alert、身份唯一性、因果路线、missing 不得 clear 与 candidate-blind truth 均保留。
 - 停止与验证：来源工作每轮最多 2 family、每来源 2 canary、默认 2 GiB；连续两个 family 不合格后停止为 `STOP_DATA_COLLECTION_AT_CURRENT_LEVEL`，不再用无限搜索或全局 block 抹掉局部证据。Clearance 删失只从 observed truth clear 起算，pre-clear 缺失单列 observability；L3 按来源族固定分层、族内 session 重采。验证器锁定各层权限与超预算预注册；validator、Python compile、diff check 和 28 项含 mutation 的 focused tests 全部通过。当前仍为 L0，候选、Android shadow、人体与生产权限均未开放。详见 [V2 当前标准](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_EVIDENCE_MATURITY_STANDARD_V2.md)。2026-07-24 续记（执行者：violjjet）：R2-L1 已用候选盲 materializer 和完整重建 validator 覆盖 LILocBench/CrowdBot 6,369 个 event/proposal unit × 8 指标，固定 62,229 帧、62,188 个相邻 pair、4.956268516min 严格负暴露及全部排除/删失原因；`critical_miss`、`clearance`、`unknown_or_stale_alert` 获 L1 探索资格，`repeat`/`evidence_age` 为条件 L1，其余三项保持 L0。未运行或读取 C1–C3。validator 18 项、R2-L1 38/38、父 V2 28/28 tests、compile、文档索引、secret scan 和 scoped diff check 通过；结构/卫生门仅余 8 项旧 R1 告警。下一任务须在冻结断点重置并逐 ledger 分片闭合 canonical raw，只产探索 profile。详见 [R2-L1 结果](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_METRIC_ELIGIBILITY_R2_L1_RESULT_2026-07-23.md)与 [R2-L1E 通宵目标](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_OVERNIGHT_GOAL_2026-07-24.md)。
-
+### USTRF route-target evidence closure R1 启动
+- 时间：2026-07-23；执行者：violjjet。基于 detector coverage 硬门通过与 T0–T3 事件门失败，新建 production-isolated Module/预注册，冻结五态逐人路线角色、三条单接缝 oracle、三个结构候选及两来源 sealed holdout 门；父 evidence 已绑定，seen 盲审 bundle 已复核 `4594/4594` RGB 哈希并联结 route receipt，含 3,745 个 truth seed boxes。15+15 只具归因权限；route-role truth/holdout 未物化，detector/`.35`/NMS/tracker/App/H2/深度/TTC/route-risk flip 均未开放。详见 [R1 预注册](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_EVIDENCE_CLOSURE_R1_PREREG_2026-07-23.md)。
+- 时间：2026-07-23；执行者：violjjet。首组 CrowdBot 两来源完成 16/16、22,856 唯一 RGB 的物化、重复时间戳 last-message-wins 修复、TF 回填、0 精确/近重复审计、双视觉 pass 与 route/person 融合，但真值窗口准入为 `0/2`：旧协议把无关未知人升级为整窗不可评，并继承相机不可见的 LiDAR event onset，6,340/6,340 event proposal 全隔离；未运行任何候选。随后在候选盲条件下以固定容量门拒绝仅 4.526min 的 `1203 manual`，冻结 `0410 mds + 1203 shared-control` 23 条替换 holdout 与“可见 metric-person 正事件 / route-relevant complete 负帧”修正协议；候选对未知人物告警逐来源硬失败，`.35`/NMS/tracker/C1–C3/H2 不变。两来源 RGB-D/TF canary 均通过；`1203` 的 BGR8 无损转 RGB 与来源原生坏行单列限制。最终预注册 `f68a59cf...7f72a1`；候选盲静态审计再以 `9af8c307...34d148` scoring amendment 修复全量 false-alert numerator/分母不一致，36 tests 通过，23 条正式顺序物化已启动。详见 [R1 阶段结果](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_EVIDENCE_CLOSURE_R1_RESULT_2026-07-23.md)。
 ## 2026-07-22
 
 ### USTRF 前沿论文研究指导与 R3 LILocBench 来源准入
@@ -52,7 +53,6 @@
 - 验证：focused `3 tests OK`，完整 crosscam `25 tests OK`；收据 SHA-256 `94154e091bec1e80cb1accc15fe20de0472c90db96619c1948e75d98ae70d083`。详见 [seen positive 预注册](docs/research/ustrf-sc/USTRF_CROSSCAM_SEEN_POSITIVE_R12C_PREREG_2026-07-22.md)。
 
 ## 2026-07-21
-
 ### USTRF truth—路线几何一致性 R1.2c
 - 时间：2026-07-21；执行者：violjjet。
 - 范围：冻结六个正事件的独立 alertable-anchor oracle、冲突仲裁与 London-only FP16-768 GPU 单变量协议；完整事件门先于 600 秒 soak，R1.3 v2 保留 12 个未打开槽位并把双 VLM 分歧或 truth/geometry 冲突转人工仲裁。未改 App、默认模型、阈值、bbox/contact、旧 polygon 或 tracker。
@@ -90,9 +90,8 @@
 本文件是 BlindAssist 的追加式工程历史：记录有代码、配置、模型、测试或已采纳技术决定的任务。近期条目应简洁写明范围、验证、风险并链接证据；长篇实验结论应写入对应 `docs/` 页面，当前状态以 [docs/SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md) 为准。
 
 ## 使用与历史保留
-
 - 历史条目全部保留，不能因重整索引而删除或重写结论。
-- 月度历史归档：[2026-05](docs/history/development-log/2026-05.md) · [2026-06](docs/history/development-log/2026-06.md)。根文件只保留最近 2–4 周；归档仅迁移原文，不改变当时结论。
+- 月度历史归档：[2026-05](docs/history/development-log/2026-05.md) · [2026-06](docs/history/development-log/2026-06.md) · [2026-07](docs/history/development-log/2026-07.md)。根文件只保留最近 2–4 周；归档仅迁移原文，不改变当时结论。
 - 新条目使用 `## YYYY-MM-DD` 和其下的 `### 任务标题`；追加在当前日期块，不为追求排序而搬动旧条目。
 - 早期恢复式记录存在非单调日期与混合标题层级，以下原文作为历史证据保留；按日期或任务标题检索，不将其目录顺序当作当前优先级。
 - 发布事实写入 `CHANGELOG.md`，待决方向写入 `idea.md`，当前协议/状态写入 `docs/`，具体规则见 [docs/DOCUMENT_GOVERNANCE.md](docs/DOCUMENT_GOVERNANCE.md)。
@@ -1492,15 +1491,10 @@
 - 六来源唯一目标 bbox/contact 已冻结；Edmonton 以 702750–703500ms 目标绑定短窗替代失效的 64 秒静态 polygon。Oracle 5/6：Edmonton/London/三个负来源通过，Japan 唯一锥桶两帧均 robust outside，故首因改判 polygon/事件路线合同。
 - 当前 COCO 80 类不含 traffic cone/delineator/bollard。SM-S9280/API 36 六来源 v2 `OK (1 test)`：全部 `unsupported_taxonomy`、目标匹配均为 0；London/Jakarta/Cape Town 另有 3 个 legacy 共现 inside 帧，但不再计事件召回/假告警。8 个 Python tests、APK assemble 与 matcher `OK (3 tests)` 均通过；未训练、未调阈值、未开放 App/生产权限。
 
-## 2026-07-21：USTRF 跨相机 marker held-out R1.2 预注册
+## 2026-07-23：USTRF route-target evidence closure R1 seen truth / oracle / candidate freeze
 
-- 在查看新来源 detector 结果前，先冻结 YOLOE-11s prompted 候选的 `traffic cone / delineator / bollard` 静态 taxonomy 与 `.05` confidence、`.30` target IoU。预检只使用已见 R1.1 诊断集：9 个可见帧匹配 6 帧，三类均有真实目标匹配；这只通过 taxonomy 门，不声称通过召回门。
-- 另选六个全新 Pexels 来源并冻结为 `new_held_out_unscored`：3 个 inside、3 个 outside，唯一目标身份、视频哈希、窗口、预期关系与停止规则均写入 R1.2 预注册。旧 R1.1 来源未复用，新六来源未运行 detector。
-- 候选仍为 offline PyTorch 研究臂；静态 export、Android parser、同设备 benchmark 和默认模型替换全部未授权。机器校验 `USTRF_R12_PREREG_OK 6 3 3 bollard,delineator,traffic cone`，5 个预注册单测通过。
-
-## 2026-07-21：USTRF 跨相机 marker held-out R1.2 执行
-
-- 在预注册提交 `b8ebc02` 后，使用固定 Ultralytics 8.4.52 导出三类 YOLOE FP16 TFLite；主输出 `[1,39,8400]`、第二 mask prototype 输出 `[1,160,160,32]`，benchmark-only APK 编译通过。新 Ultralytics/LiteRT 在 Windows 拒绝导出，回到既有隔离导出环境后完成，未改变类别、输入或阈值。
-- 六来源各冻结一个预注册评分帧的唯一目标 bbox/contact 与 current-frame convex polygon。Oracle 6/6：三个正例 robust inside，三个负例 robust outside；结果解封后没有换源或回调参数。
-- 冻结 offline YOLOE 结果：正例召回 3/3、负例目标假告警 0/3、目标匹配 5/6；Vancouver 指定柔性标杆未匹配。另有 7 个共现 inside detection，均未替代目标事件。
-- SM-S9280 / Android 16 API 36 恢复在线后，先用旧 R1.1 九帧运行 parser canary：`OK (1 test)`，41 个检测、6 帧目标匹配，三类标签均在 Android 输出出现；随后六来源 R1.2 replay `OK (1 test)`。Android 与离线臂的正例召回 3/3、负例目标假告警 0/3、目标匹配 5/6 逐项一致，Vancouver 均未匹配；共现 inside 因后端 NMS/数值差异为离线 7、Android 5，但没有改变目标事件结论。默认 detector/App/生产授权保持不变。
+- 在不改 detector、`.35`、NMS、T0 association、深度/TTC/route-risk flip 的前提下，新增独立 `ustrf_route_target_evidence_closure` 研究域；4,594 帧 reviewer bundle 隐藏评分标签、future truth、App detector 与候选告警。
+- 两条全人 proposal + disagreement-only YOLO11x 第三裁决形成窗口内身份账本。修复 ByteTrack 片段 ID 冲突与跨 blind-window union；最终 823 tracklet 中 789 接受、34 fail-closed 隔离，跨窗身份为 0。冻结 seed 身份优先，冲突的非 seed 延伸单独隔离。
+- causal route prediction + registered RGB-D 仅作离线 model-proxy truth 支持；3,804 可见 person-frame 中 known 2,567、unknown 1,237，unknown 不写成 safe/clear。15/15 既有目标各保留一个 person-bound event 与独立 clear anchor；该 truth 不具人工、设备或生产权威。
+- Seen oracle：T0 仍 14/15；O3 将两来源 FA/repeat 降为 0 但仍 14/15，确认 lifecycle 缺口而非 detector 首因。O1 因 34 个共现身份隔离不可评；O2 proxy relation 产生更多 repeat/FA，不构成路线闭合证据。
+- C1/C2/C3 因果结构实现已在 holdout 内容解码前按 SHA-256 `82fb1a63...16c4` 冻结，29 个 focused tests 通过。通过 CrowdBot_v2 `hasPart` raw rosbag 与 Range ZIP inventory，在候选未运行状态筛出 `0410/0424 shared_control` 两个容量合格、日期断开的 session family；forward defaced RGB-D、静态 TF 与无损 bundle 已通过，16 序列正顺序物化。候选盲的纯视觉 route truth 使用 1.6 秒窗口内完整 actual-future UV polyline，禁止退化为终点命中；单序列 probe 为 1,179 帧、1,087 known truth、known 行中 polyline 中位 24 点。Android Canvas canonical raw App-detector/T0 执行绑定、full-sequence one-shot C1–C3 runner 与逐来源/worst-source scorer 已冻结，明确拒绝 host PIL 代理，但必须等 truth/window 两来源 admission 后才可运行。最终 admission/候选评分仍关闭，Android shadow/H2 继续关闭。

@@ -68,7 +68,7 @@
 
 - [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。
 - [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：独立安全内核、离线/公开数据证据、设备门禁与恢复入口；不代表生产授权。
-- 开发日志月度历史：[2026-05](history/development-log/2026-05.md) · [2026-06](history/development-log/2026-06.md)。近期记录继续以根 `DEVELOPMENT_LOG.md` 为准。
+- 开发日志月度历史：[2026-05](history/development-log/2026-05.md) · [2026-06](history/development-log/2026-06.md) · [2026-07](history/development-log/2026-07.md)。近期记录继续以根 `DEVELOPMENT_LOG.md` 为准。
 
 ## 维护规则
 
