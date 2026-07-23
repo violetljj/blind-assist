@@ -1,5 +1,19 @@
 # Route-target research contracts bind raw SHA-256 values and must remain byte-stable.
 /configs/ustrf_route_target_evidence_closure_r1*.json text eol=lf
 /configs/ustrf_route_target_evidence_maturity_v2.json text eol=lf
+/configs/ustrf_route_target_l2_fresh_selection_prereg_r1.json text eol=lf
+/configs/ustrf_route_target_l3_confirmation_lockbox_template_r1.json text eol=lf
+/configs/ustrf_route_target_r2_l1x_l2p_prereg_r1.json text eol=lf
+/configs/ustrf_route_target_r2_l1x_l2p_transport_amendment_a1.json text eol=lf
 /docs/research/ustrf-sc/USTRF_ROUTE_TARGET_EVIDENCE_*.md text eol=lf
 /scripts/research/ustrf_route_target_evidence_closure/** text eol=lf
+
+# These terminal-bound R2 artifacts retain their frozen trailing blank line byte.
+/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1ExploratoryProfileR2DeviceTest.kt text eol=lf
+/schemas/ustrf_route_target_l2_fresh_selection_prereg_r1.schema.json text eol=lf
+/schemas/ustrf_route_target_l3_confirmation_lockbox_template_r1.schema.json text eol=lf
+/schemas/ustrf_route_target_r2_l1x_l2p_prereg_r1.schema.json text eol=lf whitespace=-blank-at-eof
+/schemas/ustrf_route_target_r2_l1x_l2p_terminal_receipt_r1.schema.json text eol=lf whitespace=-blank-at-eof
+/scripts/research/ustrf_route_target_evidence_closure/finalize_r2_l1x_l2p.py whitespace=-blank-at-eof
+/scripts/research/ustrf_route_target_evidence_closure/test_r2_l1x_l2p.py whitespace=-blank-at-eof
+/scripts/research/ustrf_route_target_evidence_closure/validate_r2_l1x_l2p.py whitespace=-blank-at-eof

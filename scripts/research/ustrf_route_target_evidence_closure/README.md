@@ -1,6 +1,22 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active at L0 / R2-L1E `FAIL_CLOSED_EXECUTION_ABORTED` / candidates unrun
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active at L0 / R2-L1X-L2P `FAIL_CLOSED_EXECUTION_ABORTED` / L2+L3 prereg frozen / candidates unrun
+
+## R2-L1X-L2P recovery and preregistration
+
+`configs/ustrf_route_target_r2_l1x_l2p_prereg_r1.json` 在任何新 C1–C3 输出前绑定旧 R1 failure receipts，并冻结 L2 fresh-selection 与 non-executable L3 lockbox。`run_r2_l1x_l2p.py` 只在独立 namespace 恢复逐 ledger canonical raw；`validate_r2_l1x_l2p.py` 复建 41 ledger / 62,229 frame / 15 reset、权限和唯一终态。`validate_l2_l3_prereg_r1.py` 独立校验 L2 required metrics/门/primary/tie-break/source/veto/role/selection 语义，以及 L3 的 `executable=false`、`candidate_id=null` 和 lockbox/statistics floors。
+
+原 R2 在三次远端清理白名单失败后保留 `FAIL_CLOSED_EXECUTION_ABORTED`。outcome-unseen A1 只修远端路径白名单，但两次 instrumentation 仍无法从 app external-files 识别 shell materialized manifest，第三次又触发不可降低的 6 GiB 内存门；A1 尝试耗尽并成为最终合法终态。当前仍只有 2/41 ledger、4,594/62,229 frame canonical input，C1–C3、trace/profile、机制成绩审计和 selection 均为 0。详见 [R2-L1X-L2P 日期化结果](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_R2_L1X_L2P_RESULT_2026-07-24.md)。
+
+验证入口：
+
+```powershell
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_l2_l3_prereg_r1.py --repo .
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure test_l2_l3_prereg_r1.py
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure test_r2_l1x_l2p.py
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure test_r2_l1x_l2p_transport_amendment_a1.py
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_r2_l1x_l2p.py --config artifacts.local/evidence/ustrf-route-target-r2-l1x-l2p-a1/frozen-merged-prereg-a1.json --repo .
+```
 
 ## R2-L1E receipt-aware exploratory profiles
 

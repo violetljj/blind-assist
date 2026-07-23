@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "blindassist_ustrf_route_target_r2_l1x_l2p_terminal_receipt_r1",
+  "title": "USTRF route-target R2-L1X-L2P terminal receipt R1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "stage",
+    "terminal_state",
+    "bindings",
+    "immutable_r1_parent_summary",
+    "preoutput_freeze_validation",
+    "verified_scope",
+    "gap_matrix",
+    "claim_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "blindassist_ustrf_route_target_r2_l1x_l2p_terminal_receipt_r1"
+    },
+    "stage": {
+      "const": "R2-L1X-L2P"
+    },
+    "terminal_state": {
+      "enum": [
+        "L2_FRESH_SELECTION_PREREG_READY",
+        "FAIL_CLOSED_INPUT_BLOCKED",
+        "FAIL_CLOSED_EXECUTION_ABORTED"
+      ]
+    },
+    "verified_scope": {
+      "type": "object",
+      "required": [
+        "expected_sequence_ledgers",
+        "verified_sequence_ledgers",
+        "expected_frames",
+        "verified_frames",
+        "expected_discontinuity_resets",
+        "verified_discontinuity_resets",
+        "first_blocker"
+      ],
+      "properties": {
+        "expected_sequence_ledgers": {
+          "const": 41
+        },
+        "verified_sequence_ledgers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 41
+        },
+        "expected_frames": {
+          "const": 62229
+        },
+        "verified_frames": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 62229
+        },
+        "expected_discontinuity_resets": {
+          "const": 15
+        },
+        "verified_discontinuity_resets": {
+          "const": 15
+        },
+        "first_blocker": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "claim_boundary": {
+      "type": "object",
+      "required": [
+        "new_replay_data_added",
+        "candidate_selected",
+        "candidate_ranked",
+        "candidate_recommended",
+        "provisional_selection_produced",
+        "android_shadow_executed",
+        "l3_executed",
+        "h2_opened",
+        "human_outcome_claimed",
+        "independent_walking_safety_claimed",
+        "production_authorized"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "new_replay_data_added": {
+          "const": false
+        },
+        "candidate_selected": {
+          "const": false
+        },
+        "candidate_ranked": {
+          "const": false
+        },
+        "candidate_recommended": {
+          "const": false
+        },
+        "provisional_selection_produced": {
+          "const": false
+        },
+        "android_shadow_executed": {
+          "const": false
+        },
+        "l3_executed": {
+          "const": false
+        },
+        "h2_opened": {
+          "const": false
+        },
+        "human_outcome_claimed": {
+          "const": false
+        },
+        "independent_walking_safety_claimed": {
+          "const": false
+        },
+        "production_authorized": {
+          "const": false
+        }
+      }
+    }
+  }
+}
+

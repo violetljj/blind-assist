@@ -1,0 +1,100 @@
+{
+  "$schema": "../schemas/ustrf_route_target_l3_confirmation_lockbox_template_r1.schema.json",
+  "schema": "blindassist_ustrf_route_target_l3_confirmation_lockbox_template_r1",
+  "stage": "R2-L1X-L3T",
+  "status": "NON_EXECUTABLE_TEMPLATE_ONLY",
+  "frozen_on": "2026-07-24",
+  "executable": false,
+  "candidate_id": null,
+  "purpose": "Freeze the minimum L3 fresh-confirmation lockbox contract without binding a candidate, acquiring data, generating an executable preregistration, or running confirmation.",
+  "generation_gate": {
+    "requires_independent_l2_pass": true,
+    "required_l2_decision": "PROVISIONAL_SELECTION_FOR_FRESH_CONFIRMATION_ONLY",
+    "required_l2_dataset_role": "fresh_selection",
+    "current_l2_pass_available": false,
+    "executable_prereg_may_only_be_generated_after_future_l2_pass": true,
+    "template_itself_cannot_be_mutated_into_executable": true,
+    "candidate_id_may_only_be_bound_in_new_versioned_executable_prereg": true
+  },
+  "dataset_role": "fresh_confirmation_lockbox",
+  "role_isolation": {
+    "strictly_disjoint_from_l2_selection_data": true,
+    "strictly_disjoint_from_seen_development_diagnostic_exploratory_data": true,
+    "source_session_frame_truth_and_hash_membership_frozen_before_candidate_access": true,
+    "candidate_output_cannot_change_truth_exclusion_fold_or_denominator": true
+  },
+  "required_metrics": [
+    "event_recall",
+    "critical_miss",
+    "clearance",
+    "repeat_within_observation",
+    "event_regeneration_after_clear",
+    "false_alerts_per_minute",
+    "evidence_age",
+    "unknown_or_stale_active_alert"
+  ],
+  "lockbox_floors": {
+    "sessions": 6,
+    "minimum_provenance_families": 2,
+    "complete_positive_negative_matched_pairs": 60,
+    "complete_repeat_events": 60,
+    "complete_regeneration_intervals": 60,
+    "minimum_scenario_strata": 5,
+    "loso_folds": 6,
+    "maximum_single_family_share": 0.6,
+    "minimum_critical_events": 59,
+    "each_required_metric_minimum_provenance_families": 2
+  },
+  "pair_and_fold_contract": {
+    "positive_and_matched_negative_remain_in_same_fold": true,
+    "fold_unit": "session",
+    "loso": true,
+    "one_held_out_session_per_fold": true,
+    "session_count_equals_fold_count": true,
+    "fold_assignment_frozen_before_candidate_access": true
+  },
+  "statistical_contract": {
+    "confidence_level": 0.95,
+    "bootstrap_iterations": 10000,
+    "bootstrap_seed": 20260723,
+    "bootstrap_stratify_by": "provenance_family",
+    "bootstrap_resample_unit": "session_within_family",
+    "provenance_family_random_resampling_enabled": false,
+    "minimum_sessions_per_family": 3,
+    "worst_family_sentinel_required": true,
+    "loso_worst_session_sentinel_required": true,
+    "undefined_or_degenerate_cluster_ci_is_failure": true,
+    "inferential_bound_metrics": [
+      "event_recall",
+      "critical_miss",
+      "false_alerts_per_minute",
+      "clearance"
+    ],
+    "complete_denominator_or_engineering_metrics": [
+      "repeat_within_observation",
+      "event_regeneration_after_clear",
+      "unknown_or_stale_active_alert",
+      "evidence_age"
+    ]
+  },
+  "confirmation_gate": {
+    "all_required_metrics_must_be_evaluable_powered": true,
+    "all_point_gates_must_pass": true,
+    "all_required_inferential_bounds_must_be_sufficient": true,
+    "all_worst_family_sentinels_must_pass": true,
+    "all_loso_worst_session_sentinels_must_pass": true,
+    "promotion_veto_count_must_equal": 0,
+    "not_evaluable_is_never_zero_or_pass": true,
+    "pooled_result_cannot_override_family_or_loso_failure": true
+  },
+  "current_stage_claim_boundary": {
+    "data_added_or_downloaded": false,
+    "candidate_run": false,
+    "candidate_bound": false,
+    "confirmation_run": false,
+    "offline_confirmation_claim_allowed": false,
+    "android_shadow_execution_allowed": false,
+    "human_safety_claim_allowed": false,
+    "production_allowed": false
+  }
+}

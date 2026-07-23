@@ -1,0 +1,74 @@
+{
+  "schema": "blindassist_ustrf_route_target_r2_l1x_l2p_transport_amendment_a1",
+  "stage": "R2-L1X-L2P",
+  "amendment_stage": "R2-L1E-R2-TRANSPORT-A1",
+  "frozen_on": "2026-07-24",
+  "parent_prereg": {
+    "path": "configs/ustrf_route_target_r2_l1x_l2p_prereg_r1.json",
+    "sha256": "da428f58b661d7f66c0c4d7ebe25372cb8381faa7fa1249d662bbefb8201332a"
+  },
+  "output_root": "artifacts.local/evidence/ustrf-route-target-r2-l1x-l2p-a1",
+  "transport_amendment": {
+    "id": "R2-L1E-R2-TRANSPORT-A1",
+    "outcome_unseen": true,
+    "only_change": "remote_cleanup_path_validation",
+    "reason": "The original R2 cleanup helper admitted only r2l1e/<single-leaf>; the new versioned remote path r2l1e-r2/<ledger>/attempt-00N was rejected before adb cleanup, device execution, raw creation, candidate execution, or scoring.",
+    "parent_attempts_count_toward_amendment": false,
+    "new_attempt_budget": {
+      "initial_attempts": 1,
+      "bounded_retries": 2
+    },
+    "unchanged": [
+      "model",
+      "labels",
+      "confidence_threshold_0_35",
+      "nms_iou_threshold_0_45",
+      "android_canvas_preprocess",
+      "tflite_runtime_cpu_4_threads",
+      "tracker",
+      "candidate_implementations",
+      "c1_c2_c3",
+      "l1_metric_authority",
+      "l2_preregistration",
+      "l3_non_executable_template",
+      "six_gib_memory_guard",
+      "disk_rss_and_thermal_guards"
+    ],
+    "failed_r2_parent_bindings": {
+      "terminal_receipt": {
+        "path": "artifacts.local/evidence/ustrf-route-target-r2-l1x-l2p-r1/terminal-receipt-r2-l1x-l2p.json",
+        "sha256": "66396d7a55dcbc3d69e49f942ae13fd014056c1d2d56455157a08259ed811fb1"
+      },
+      "validation_receipt": {
+        "path": "artifacts.local/evidence/ustrf-route-target-r2-l1x-l2p-r1/validation-receipt-r2-l1x-l2p.json",
+        "sha256": "adf2cf0bd8e72737da442e6540f5568d34249b1b3eb59c0724051bf709c92539"
+      },
+      "attempt_001_manifest": {
+        "path": "artifacts.local/evidence/ustrf-route-target-r2-l1x-l2p-r1/attempts/r2-l1e-r2/crowdbot_0410_mds__defaced_2021-04-10-11-28-10-009_filtered_lidar_odom__94ea1f2770a4/attempt-001/device-manifest.json",
+        "sha256": "1e1c1e4babfe7beafaec0b723877ea8233bf978a7c7b3d7a3ebb14e4c9687c11"
+      },
+      "attempt_002_manifest": {
+        "path": "artifacts.local/evidence/ustrf-route-target-r2-l1x-l2p-r1/attempts/r2-l1e-r2/crowdbot_0410_mds__defaced_2021-04-10-11-28-10-009_filtered_lidar_odom__94ea1f2770a4/attempt-002/device-manifest.json",
+        "sha256": "41f9fbe74a1606624b4537e4e0356341d2488389d52d83c548df3a8081a99db7"
+      },
+      "attempt_003_manifest": {
+        "path": "artifacts.local/evidence/ustrf-route-target-r2-l1x-l2p-r1/attempts/r2-l1e-r2/crowdbot_0410_mds__defaced_2021-04-10-11-28-10-009_filtered_lidar_odom__94ea1f2770a4/attempt-003/device-manifest.json",
+        "sha256": "534e6b4a020fcb1e10bb1187db5fc288c37b7dfa1af2eca98c6f03b1493aab65"
+      }
+    }
+  },
+  "amended_implementation_bindings": {
+    "runner": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_r2_l1x_l2p_transport_amendment_a1.py",
+      "sha256": "cfa0921a5d5e6ad89b3c7588471e24de4abe6d547624ceec3fd4e8caa4360b55"
+    },
+    "mutation_tests": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/test_r2_l1x_l2p_transport_amendment_a1.py",
+      "sha256": "5dc58166a91adf18cd500fc8fe8b1d5d8240a3c8189f252641b7063ae87e0f72"
+    },
+    "base_r2_mutation_tests": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/test_r2_l1x_l2p.py",
+      "sha256": "3343fa538ff7e68155cabb70ce8c9bd7d5367f12ec6e2a83ec32311b4472d846"
+    }
+  }
+}
