@@ -18,7 +18,7 @@ python scripts/research/ustrf_route_target_evidence_closure/test_metric_eligibil
 
 当前物化结论是：`critical_miss`、`clearance`、`unknown_or_stale_alert` 为 L1 探索资格；`repeat`、`evidence_age` 为候选观测完整后才成立的条件资格；`event_recall`、`regeneration`、`false_alerts_per_minute` 仍为 L0。该结论只授权另开独立任务生成单次探索 profile，不授权选择候选或进入 Android/H2/生产。
 
-下一独立任务使用 [R2-L1E 单次探索 profile 通宵目标](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_OVERNIGHT_GOAL_2026-07-24.md)：先检查全量 canonical input，再让 C1–C3 各按 41 条完整 sequence 单次运行；输出只有分指标探索 profile 和机器收据，不产生 winner、排名或晋级。
+下一独立任务使用 [R2-L1E 单次探索 profile 通宵目标](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_OVERNIGHT_GOAL_2026-07-24.md)：先检查全量 canonical input，再让 C1–C3 各对 41 条 masked sequence ledger 单次 replay，并在冻结观测断点重置状态；canonical raw 逐 ledger 分片验证和清理，输出只有分指标探索 profile 与机器收据，不产生 winner、排名或晋级。
 
 ## 稳定 Interface
 
