@@ -1,5 +1,11 @@
 # Development Log
 
+## 2026-07-23
+### USTRF route-target 证据成熟度分层标准 V2
+- 时间：2026-07-23；执行者：violjjet。保留 R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` 与候选未运行事实，新建机器可校验的 L0–L4 evidence-maturity 标准：recall/critical/repeat/clearance/false-alert exposure/evidence-age 各自使用独立 eligibility 与分母；terminal clear 缺失只限制 clearance，right-censored 不得记成成功、失败或零延迟，空分母不得以 `0` 通过。
+- 权限：现有 LILocBench/CrowdBot 最高只能在新 eligibility mask 冻结后进入 L1 exploratory profile；L2 需要新鲜两-family selection，L3 需要 6-session/60+60/LOSO confirmation，L4 仍是 production-isolated Android shadow。R1 性能门不降低，unknown/stale alert、身份唯一性、因果路线、missing 不得 clear 与 candidate-blind truth 均保留。
+- 停止与验证：来源工作每轮最多 2 family、每来源 2 canary、默认 2 GiB；连续两个 family 不合格后停止为 `STOP_DATA_COLLECTION_AT_CURRENT_LEVEL`，不再用无限搜索或全局 block 抹掉局部证据。Clearance 删失只从 observed truth clear 起算，pre-clear 缺失单列 observability；L3 按来源族固定分层、族内 session 重采。验证器锁定各层权限与超预算预注册；validator、Python compile、diff check 和 28 项含 mutation 的 focused tests 全部通过。当前仍为 L0，候选、Android shadow、人体与生产权限均未开放。详见 [V2 当前标准](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_EVIDENCE_MATURITY_STANDARD_V2.md)。
+
 ## 2026-07-22
 
 ### USTRF 前沿论文研究指导与 R3 LILocBench 来源准入
