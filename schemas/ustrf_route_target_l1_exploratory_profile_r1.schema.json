@@ -1,0 +1,446 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "blindassist://schemas/ustrf_route_target_l1_exploratory_profile_r1",
+  "title": "USTRF route-target R2-L1E terminal receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "stage",
+    "terminal_state",
+    "authority",
+    "bindings",
+    "verified_scope",
+    "verified_input_artifacts",
+    "discontinuity_resets",
+    "gap_matrix",
+    "candidate_execution",
+    "profiles",
+    "guards",
+    "claim_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "blindassist_ustrf_route_target_l1_exploratory_profile_terminal_receipt_r1"
+    },
+    "stage": {
+      "const": "R2-L1E"
+    },
+    "terminal_state": {
+      "enum": [
+        "EXPLORATORY_PROFILES_COMPLETE",
+        "FAIL_CLOSED_INPUT_BLOCKED",
+        "FAIL_CLOSED_EXECUTION_ABORTED"
+      ]
+    },
+    "authority": {
+      "const": "l1_exploratory_profiles_only_no_selection_android_h2_human_or_production_authority"
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "config_sha256",
+        "protocol_sha256",
+        "eligibility_mask_sha256",
+        "denominator_receipt_sha256",
+        "validation_receipt_sha256",
+        "candidate_implementation_sha256",
+        "terminal_receipt_schema_sha256",
+        "model_sha256",
+        "labels_sha256",
+        "association_config_sha256",
+        "association_implementation_sha256",
+        "causal_route_0_sha256",
+        "causal_route_1_sha256",
+        "causal_route_2_sha256",
+        "truth_join_0_sha256",
+        "truth_join_1_sha256",
+        "truth_join_2_sha256",
+        "core_implementation_sha256",
+        "runner_implementation_sha256",
+        "validator_implementation_sha256",
+        "mutation_test_implementation_sha256",
+        "device_exporter_implementation_sha256",
+        "terminal_schema_sha256"
+      ],
+      "properties": {
+        "config_sha256": { "$ref": "#/$defs/sha256" },
+        "protocol_sha256": { "$ref": "#/$defs/sha256" },
+        "eligibility_mask_sha256": { "$ref": "#/$defs/sha256" },
+        "denominator_receipt_sha256": { "$ref": "#/$defs/sha256" },
+        "validation_receipt_sha256": { "$ref": "#/$defs/sha256" },
+        "candidate_implementation_sha256": { "$ref": "#/$defs/sha256" },
+        "terminal_receipt_schema_sha256": { "$ref": "#/$defs/sha256" },
+        "model_sha256": { "$ref": "#/$defs/sha256" },
+        "labels_sha256": { "$ref": "#/$defs/sha256" },
+        "association_config_sha256": { "$ref": "#/$defs/sha256" },
+        "association_implementation_sha256": { "$ref": "#/$defs/sha256" },
+        "causal_route_0_sha256": { "$ref": "#/$defs/sha256" },
+        "causal_route_1_sha256": { "$ref": "#/$defs/sha256" },
+        "causal_route_2_sha256": { "$ref": "#/$defs/sha256" },
+        "truth_join_0_sha256": { "$ref": "#/$defs/sha256" },
+        "truth_join_1_sha256": { "$ref": "#/$defs/sha256" },
+        "truth_join_2_sha256": { "$ref": "#/$defs/sha256" },
+        "core_implementation_sha256": { "$ref": "#/$defs/sha256" },
+        "runner_implementation_sha256": { "$ref": "#/$defs/sha256" },
+        "validator_implementation_sha256": { "$ref": "#/$defs/sha256" },
+        "mutation_test_implementation_sha256": { "$ref": "#/$defs/sha256" },
+        "device_exporter_implementation_sha256": { "$ref": "#/$defs/sha256" },
+        "terminal_schema_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "verified_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_sequence_ledgers",
+        "expected_frames",
+        "fully_input_verified_sequence_ledgers",
+        "fully_input_verified_frames",
+        "first_blocker"
+      ],
+      "properties": {
+        "expected_sequence_ledgers": { "const": 41 },
+        "expected_frames": { "const": 62229 },
+        "fully_input_verified_sequence_ledgers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 41
+        },
+        "fully_input_verified_frames": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 62229
+        },
+        "first_blocker": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "verified_input_artifacts": {
+      "type": "array",
+      "maxItems": 41,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "sequence_id",
+          "frame_count",
+          "frame_mask_sha256",
+          "compact_ledger_path",
+          "compact_ledger_sha256",
+          "successor_receipt_path",
+          "successor_receipt_sha256"
+        ],
+        "properties": {
+          "source_id": { "type": "string", "minLength": 1 },
+          "sequence_id": { "type": "string", "minLength": 1 },
+          "frame_count": { "type": "integer", "minimum": 1 },
+          "frame_mask_sha256": { "$ref": "#/$defs/sha256" },
+          "compact_ledger_path": { "type": "string", "minLength": 1 },
+          "compact_ledger_sha256": { "$ref": "#/$defs/sha256" },
+          "successor_receipt_path": { "type": "string", "minLength": 1 },
+          "successor_receipt_sha256": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    "discontinuity_resets": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "sequence_id",
+          "previous_frame_id",
+          "next_frame_id",
+          "previous_timestamp_ns",
+          "next_timestamp_ns",
+          "gap_ns",
+          "reasons"
+        ],
+        "properties": {
+          "source_id": { "type": "string" },
+          "sequence_id": { "type": "string" },
+          "previous_frame_id": { "type": "integer" },
+          "next_frame_id": { "type": "integer" },
+          "previous_timestamp_ns": { "type": "integer" },
+          "next_timestamp_ns": { "type": "integer" },
+          "gap_ns": { "type": "integer" },
+          "reasons": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": [
+                "frame_id_not_consecutive",
+                "timestamp_nonpositive",
+                "timestamp_gap_exceeds_one_second"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "gap_matrix": {
+      "type": "array",
+      "minItems": 41,
+      "maxItems": 41,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "sequence_id",
+          "frame_mask_sha256",
+          "expected_frame_count",
+          "canonical_detector_frame_count",
+          "causal_route_frame_count",
+          "capture_timestamp_frame_count",
+          "t0_association_contract_frozen",
+          "candidate_consume_timestamp_runtime_field",
+          "missing_fields",
+          "missing_frame_rows"
+        ],
+        "properties": {
+          "source_id": { "type": "string" },
+          "sequence_id": { "type": "string" },
+          "frame_mask_sha256": { "$ref": "#/$defs/sha256" },
+          "expected_frame_count": { "type": "integer", "minimum": 1 },
+          "canonical_detector_frame_count": { "type": "integer", "minimum": 0 },
+          "causal_route_frame_count": { "type": "integer", "minimum": 0 },
+          "capture_timestamp_frame_count": { "type": "integer", "minimum": 0 },
+          "t0_association_contract_frozen": { "const": true },
+          "candidate_consume_timestamp_runtime_field": { "const": true },
+          "missing_fields": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "android_canvas_canonical_detector_raw_successor",
+                "causal_route"
+              ]
+            }
+          },
+          "missing_frame_rows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "unit_id",
+                "source_id",
+                "sequence_id",
+                "frame_id",
+                "source_capture_timestamp_ns",
+                "missing_fields"
+              ],
+              "properties": {
+                "unit_id": { "type": "string" },
+                "source_id": { "type": "string" },
+                "sequence_id": { "type": "string" },
+                "frame_id": { "type": "integer" },
+                "source_capture_timestamp_ns": { "type": "integer" },
+                "missing_fields": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "enum": [
+                      "android_canvas_canonical_detector_raw_successor",
+                      "causal_route"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "candidate_execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "started",
+        "candidate_order",
+        "authoritative_trace_count",
+        "partial_trace_evaluation_authority"
+      ],
+      "properties": {
+        "started": { "type": "boolean" },
+        "candidate_order": {
+          "const": [
+            "C1_CAUSAL_ROUTE_RELATION_FSM",
+            "C2_ROUTE_OCCUPANCY_EPISODE_FSM",
+            "C3_DUAL_KEY_CLEARANCE_FSM"
+          ]
+        },
+        "authoritative_trace_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 123
+        },
+        "partial_trace_evaluation_authority": { "const": false },
+        "trace_receipts": {
+          "type": "array",
+          "minItems": 123,
+          "maxItems": 123,
+          "items": { "type": "object" }
+        }
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "maxItems": 3,
+      "items": { "type": "object" }
+    },
+    "guards": {
+      "type": "object",
+      "required": [
+        "output_root",
+        "minimum_free_space_formula",
+        "reserve_bytes",
+        "host_maximum_rss_bytes",
+        "minimum_system_available_physical_memory_bytes",
+        "maximum_thermal_status",
+        "maximum_final_battery_temperature_c",
+        "maximum_battery_temperature_rise_c",
+        "maximum_retry_count_after_initial_attempt",
+        "cleanup_retry_count",
+        "network_allowed"
+      ],
+      "properties": {
+        "output_root": { "type": "string" },
+        "minimum_free_space_formula": { "type": "string" },
+        "reserve_bytes": { "type": "integer" },
+        "host_maximum_rss_bytes": { "type": "integer" },
+        "minimum_system_available_physical_memory_bytes": { "const": 6442450944 },
+        "maximum_thermal_status": { "const": 2 },
+        "maximum_final_battery_temperature_c": { "const": 45.0 },
+        "maximum_battery_temperature_rise_c": { "const": 8.0 },
+        "maximum_retry_count_after_initial_attempt": { "const": 2 },
+        "cleanup_retry_count": { "const": 2 },
+        "network_allowed": { "const": false },
+        "attempt_receipt_path": { "type": "string" },
+        "attempt_receipt_sha256": { "$ref": "#/$defs/sha256" },
+        "attempt_count": { "const": 3 },
+        "retry_limit_exhausted": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "claim_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selection_allowed",
+        "candidate_comparison_allowed",
+        "android_shadow_allowed",
+        "h2_allowed",
+        "human_outcome_allowed",
+        "production_allowed",
+        "new_data_added"
+      ],
+      "properties": {
+        "selection_allowed": { "const": false },
+        "candidate_comparison_allowed": { "const": false },
+        "android_shadow_allowed": { "const": false },
+        "h2_allowed": { "const": false },
+        "human_outcome_allowed": { "const": false },
+        "production_allowed": { "const": false },
+        "new_data_added": { "const": false }
+      }
+    },
+    "execution_error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "message",
+        "stage",
+        "device_attempt_created",
+        "last_safe_checkpoint"
+      ],
+      "properties": {
+        "type": { "type": "string", "minLength": 1 },
+        "message": { "type": "string" },
+        "stage": { "type": "string", "minLength": 1 },
+        "device_attempt_created": { "type": "boolean" },
+        "last_safe_checkpoint": { "type": "object" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "terminal_state": { "const": "FAIL_CLOSED_EXECUTION_ABORTED" }
+        }
+      },
+      "then": {
+        "required": ["execution_error"],
+        "properties": {
+          "candidate_execution": {
+            "properties": {
+              "started": { "const": false },
+              "authoritative_trace_count": { "const": 0 }
+            }
+          },
+          "profiles": { "maxItems": 0 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "terminal_state": { "const": "FAIL_CLOSED_INPUT_BLOCKED" }
+        }
+      },
+      "then": {
+        "properties": {
+          "candidate_execution": {
+            "properties": {
+              "started": { "const": false },
+              "authoritative_trace_count": { "const": 0 }
+            }
+          },
+          "profiles": { "maxItems": 0 }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "terminal_state": { "const": "EXPLORATORY_PROFILES_COMPLETE" }
+        }
+      },
+      "then": {
+        "properties": {
+          "verified_scope": {
+            "properties": {
+              "fully_input_verified_sequence_ledgers": { "const": 41 },
+              "fully_input_verified_frames": { "const": 62229 },
+              "first_blocker": { "const": null }
+            }
+          },
+          "verified_input_artifacts": { "minItems": 41, "maxItems": 41 },
+          "candidate_execution": {
+            "required": ["trace_receipts"],
+            "properties": {
+              "started": { "const": true },
+              "authoritative_trace_count": { "const": 123 }
+            }
+          },
+          "profiles": { "minItems": 3, "maxItems": 3 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

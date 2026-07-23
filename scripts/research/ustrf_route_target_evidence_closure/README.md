@@ -1,6 +1,20 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active at L0 / candidates unrun
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active at L0 / R2-L1E `FAIL_CLOSED_EXECUTION_ABORTED` / candidates unrun
+
+## R2-L1E receipt-aware exploratory profiles
+
+`configs/ustrf_route_target_l1_exploratory_profile_r1.json` 精确绑定父 R2-L1 protocol/mask/denominator/validation、冻结 C1–C3 实现、41 条 masked sequence ledger、62,229 帧和 15 个 discontinuity reset。独立 runner 只允许逐 ledger Android Canvas canonical raw 分片、host compact successor、冻结 T0 replay-local association 和因果 route input；truth 只能在候选输出后 join。终态 schema 只允许 `EXPLORATORY_PROFILES_COMPLETE`、`FAIL_CLOSED_INPUT_BLOCKED` 或 `FAIL_CLOSED_EXECUTION_ABORTED`，且所有 selection、Android shadow、H2、人体和生产权限固定关闭。
+
+运行：
+
+```powershell
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure run_metric_eligibility_exploratory_profiles_r2_l1.py --config configs/ustrf_route_target_l1_exploratory_profile_r1.json --repo .
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_exploratory_profiles_r2_l1.py --config configs/ustrf_route_target_l1_exploratory_profile_r1.json --repo .
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure test_exploratory_profiles_r2_l1.py
+```
+
+当前机器收据为 `FAIL_CLOSED_EXECUTION_ABORTED`：冻结的 6 GiB 系统可用内存门在初始尝试和两次有界重试中均触发，首个 CrowdBot device attempt 未创建。validator 重建为 2/41 ledger、4,594/62,229 帧 canonical raw 已验证，39 ledger、57,635 帧缺失；候选、trace 和 profile 均为 0。结果见 [R2-L1E 日期化结果](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_R1_RESULT_2026-07-24.md)。
 
 ## R2-L1 metric eligibility materialization
 

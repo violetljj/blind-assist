@@ -14,6 +14,7 @@
 
 ## 协议与专项记录
 
+- [route-target R2-L1E 单次探索 profile 结果（2026-07-24）](USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_R1_RESULT_2026-07-24.md)：合法终态为 `FAIL_CLOSED_EXECUTION_ABORTED`；6 GiB 可用内存门在初始尝试和两次有界重试中均触发，故首个 CrowdBot device raw attempt 未创建、候选未运行。逐 ledger 审计验证 2/41 条、4,594/62,229 帧 canonical raw，精确记录其余 39 条、57,635 帧缺口；selection、Android shadow、H2 与生产权限保持关闭。
 - [route-target R2-L1E 单次探索 profile 通宵目标（2026-07-24）](USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_OVERNIGHT_GOAL_2026-07-24.md)：绑定 R2-L1 收据与冻结 C1–C3，让三个候选各对 41 条 masked sequence ledger 单次 replay，并在 15 个冻结观测断点重置状态；canonical raw 逐 ledger 分片闭环，不选胜者、不新增数据、不开放 Android/H2/生产。
 - [route-target R2-L1 指标资格物化结果（2026-07-23）](USTRF_ROUTE_TARGET_METRIC_ELIGIBILITY_R2_L1_RESULT_2026-07-23.md)：候选盲覆盖 6,369 个事件/提案 × 8 指标；critical miss、clearance、unknown/stale 具备 L1 探索资格，repeat/evidence age 为条件资格，event recall/regeneration/false alerts 仍为 L0。mask、分母、来源贡献和删失原因已哈希绑定并通过完整复算；C1–C3 仍未运行。
 - [route-target 证据成熟度分层标准 V2](USTRF_ROUTE_TARGET_EVIDENCE_MATURITY_STANDARD_V2.md)：当前协议真源；把全或无来源准入拆成指标级可评估性、右删失与 L0–L4 授权，保留 R1 性能/真实性门并冻结轮间版本化调整和来源预算。当前仅 L0，R2 候选未运行。
