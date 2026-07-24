@@ -6,21 +6,29 @@
 
 `R2-L1E-RECOVERY-B1` 保留父 R2/A1 failure receipts，只修复执行运输与资源调度。canary 使用 `adb push /data/local/tmp` 后由 `run-as com.linnan.blindassist` 复制到 `targetContext.filesDir`，逐一验证 manifest 中全部图像哈希且不加载 TFLite。one-shard runner 继续使用同一目标私有目录，raw 通过 `adb exec-out run-as ... cat` 直接流入文件，不捕获到主机内存；compact successor 验证后删除 raw 和设备 staging。
 
-冻结的 6 GiB 可用物理内存门未降低。canary 与 materialization 都要求连续 6 次 readiness 采样，并在输入加载后、instrumentation 前复查。2026-07-24 真机结果为 canary `1,455/1,455` RGB，通过后首条 CrowdBot ledger `1,455/1,455` 帧闭合；跨阶段累计 `3/41` ledger、`6,049/62,229` 帧，剩余 38 条。C1–C3、trace、profile 和所有晋级权限仍关闭。详见 [R3 日期化结果](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1E_MATERIALIZATION_RECOVERY_R3_RESULT_2026-07-24.md)。
+B1 首分片阶段保留冻结的 6 GiB 可用物理内存门。canary 与 materialization 都要求连续 6 次 readiness 采样，并在输入加载后、instrumentation 前复查。2026-07-24 真机结果为 canary `1,455/1,455` RGB，通过后首条 CrowdBot ledger `1,455/1,455` 帧闭合；当时跨阶段累计 `3/41` ledger、`6,049/62,229` 帧。后续 continuation 经用户明确授权才将门修订为 4 GiB；数据、覆盖与权限标准未改变。详见 [R3 日期化结果](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1E_MATERIALIZATION_RECOVERY_R3_RESULT_2026-07-24.md)。
+
+剩余 38 条使用 continuation A1–A3 严格串行完成：父编排器只串行启动 child，每个 child 在双 canonical root 上重算下一条缺失 ledger、获取独占锁、复用 B1 单分片 materializer，验证恰好新增一个 successor 后立即退出。无效/半写 pair、重复权威根、额外 ledger、并发 child、重试耗尽或覆盖不精确都会 fail closed。父编排器只能在 `41/41`、`62,229/62,229`、`15/15` reset 同时成立后写出 input-complete receipt；它不导入或执行 C1–C3。
+
+A1 在原 6 GiB 门下完成 9 条至 `12/41`，随后由一次真实内存失败和两次 Windows 长控制路径失败闭合。用户明确授权将门修订为 4 GiB 后，A2 用短控制路径完成 1 条至 `13/41`，但在 successor 后写长 host receipt 时失败；A3 使用 Windows extended-path 原子写，完成其余 28 条且 0 失败。最终独立重算为 `41/41`、`62,229/62,229`、`15/15 reset`，C1–C3、trace/profile 仍为 0。
 
 验证入口：
 
 ```powershell
 .\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\test_l1e_materialization_recovery_r3.py -v
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\test_l1e_materialization_recovery_r3_remaining.py -v
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\test_l1e_materialization_recovery_r3_continuation_a3.py -v
 .\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_l1e_materialization_recovery_r3_canary.py --config configs\ustrf_route_target_l1e_materialization_recovery_r3_canary.json --repo .
 .\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_l1e_materialization_recovery_r3_one_shard.py --config configs\ustrf_route_target_l1e_materialization_recovery_r3_one_shard.json --repo .
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_l1e_materialization_recovery_r3_remaining.py --config configs\ustrf_route_target_l1e_materialization_recovery_r3_continuation_a1.json --repo .
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_l1e_materialization_recovery_r3_continuation_a3.py --config configs\ustrf_route_target_l1e_materialization_recovery_r3_continuation_a3.json --repo .
 ```
 
 ## R2-L1X-L2P recovery and preregistration
 
 `configs/ustrf_route_target_r2_l1x_l2p_prereg_r1.json` 在任何新 C1–C3 输出前绑定旧 R1 failure receipts，并冻结 L2 fresh-selection 与 non-executable L3 lockbox。`run_r2_l1x_l2p.py` 只在独立 namespace 恢复逐 ledger canonical raw；`validate_r2_l1x_l2p.py` 复建 41 ledger / 62,229 frame / 15 reset、权限和唯一终态。`validate_l2_l3_prereg_r1.py` 独立校验 L2 required metrics/门/primary/tie-break/source/veto/role/selection 语义，以及 L3 的 `executable=false`、`candidate_id=null` 和 lockbox/statistics floors。
 
-原 R2 在三次远端清理白名单失败后保留 `FAIL_CLOSED_EXECUTION_ABORTED`。outcome-unseen A1 只修远端路径白名单，但两次 instrumentation 仍无法从 app external-files 识别 shell materialized manifest，第三次又触发不可降低的 6 GiB 内存门；A1 尝试耗尽并成为最终合法终态。当前仍只有 2/41 ledger、4,594/62,229 frame canonical input，C1–C3、trace/profile、机制成绩审计和 selection 均为 0。详见 [R2-L1X-L2P 日期化结果](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_R2_L1X_L2P_RESULT_2026-07-24.md)。
+原 R2 在三次远端清理白名单失败后保留 `FAIL_CLOSED_EXECUTION_ABORTED`。outcome-unseen A1 只修远端路径白名单，但两次 instrumentation 仍无法从 app external-files 识别 shell materialized manifest，第三次又触发该阶段不可降低的 6 GiB 内存门；A1 尝试耗尽并成为最终合法终态。该历史阶段终态只有 2/41 ledger、4,594/62,229 frame canonical input，C1–C3、trace/profile、机制成绩审计和 selection 均为 0；其缺口后来由独立 R3 materialization closure 闭合。详见 [R2-L1X-L2P 日期化结果](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_R2_L1X_L2P_RESULT_2026-07-24.md)。
 
 验证入口：
 

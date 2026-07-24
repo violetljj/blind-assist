@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist_ustrf_l1e_materialization_recovery_r3_continuation_a1",
+  "stage": "R2-L1E-RECOVERY-B1-CONTINUATION-A1",
+  "status": "FROZEN_BEFORE_REMAINING_R3_MATERIALIZATION",
+  "frozen_on": "2026-07-24",
+  "parent_bindings": {
+    "first_shard_materializer_config": {
+      "path": "configs/ustrf_route_target_l1e_materialization_recovery_r3_one_shard.json",
+      "sha256": "61677cfa1c988bff474ca06b263857516999563a528f134c3769e34c13aaed7e"
+    },
+    "first_shard_host_receipt": {
+      "path": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/materialization/crowdbot_0410_mds__defaced_2021-04-10-11-28-10-009_filtered_lidar_odom__94ea1f2770a4/attempt-001/host-materialization-receipt.json",
+      "sha256": "e01d8773d742e742051d4fdfe90b94718dcb024006dfa9615ccd2d30a1d7ae24"
+    },
+    "first_shard_compact_ledger": {
+      "path": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/detector-ledgers/crowdbot_0410_mds__defaced_2021-04-10-11-28-10-009_filtered_lidar_odom__94ea1f2770a4.json",
+      "sha256": "f09787f33fbf5f585d104ebd975fbd2644a6694a6e9bfb904847de851c342066"
+    },
+    "first_shard_successor": {
+      "path": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/detector-ledgers/crowdbot_0410_mds__defaced_2021-04-10-11-28-10-009_filtered_lidar_odom__94ea1f2770a4.successor-receipt.json",
+      "sha256": "ee0523f10148a20d38abdc02d030e2383b0a002f5317b7f34b06340b45ee07a6"
+    }
+  },
+  "execution": {
+    "maximum_total_remaining_crowdbot_shards": 38,
+    "one_host_process_per_shard": true,
+    "child_processes_serial": true,
+    "initial_attempts_per_ledger": 1,
+    "bounded_retries_per_ledger": 2,
+    "stop_after_exhausted_ledger": true,
+    "materializer_stage": "R2-L1E-RECOVERY-B1",
+    "materializer_attempt_namespace": "r2-l1e-recovery-b1",
+    "candidate_execution_forbidden": true
+  },
+  "expected_coverage": {
+    "starting_ledgers": 3,
+    "starting_frames": 6049,
+    "final_ledgers": 41,
+    "final_frames": 62229,
+    "discontinuity_resets": 15
+  },
+  "implementation_bindings": {
+    "continuation_core": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/l1e_materialization_recovery_r3_remaining.py",
+      "sha256": "541addbc7e4b9b0af5695a379c102bf9c605228f505d4a5371b4e0f7b606a309"
+    },
+    "remaining_one_shard_runner": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_l1e_materialization_recovery_r3_remaining_one_shard.py",
+      "sha256": "f3d7ca0b35c273579457d96694935ed8aca060605950cd1330ad028bdb9cda16"
+    },
+    "serial_orchestrator": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_l1e_materialization_recovery_r3_remaining.py",
+      "sha256": "b24e8ced56a28aa689aeff208d6eefd6d3d0f6cb2df0c73ecba7b662823f5f10"
+    },
+    "contract_tests": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/test_l1e_materialization_recovery_r3_remaining.py",
+      "sha256": "f5b0b8db316340996b40ba69ff53f92edf0fcfaa621c454f1844b76f45ba58b5"
+    }
+  },
+  "authority": {
+    "candidate_execution": false,
+    "candidate_trace": false,
+    "candidate_profile": false,
+    "selection": false,
+    "ranking": false,
+    "recommendation": false,
+    "provisional_selection": false,
+    "l2_execution": false,
+    "l3_execution": false,
+    "android_shadow": false,
+    "h2": false,
+    "human_outcome": false,
+    "independent_walking_safety": false,
+    "production": false
+  }
+}

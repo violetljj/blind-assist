@@ -1,0 +1,84 @@
+{
+  "schema": "blindassist_ustrf_l1e_materialization_recovery_r3_continuation_a3",
+  "stage": "R2-L1E-RECOVERY-B1-CONTINUATION-A3",
+  "status": "FROZEN_AFTER_A2_OUTPUT_BEFORE_A3_DEVICE_OUTPUT",
+  "frozen_on": "2026-07-24",
+  "parent_bindings": {
+    "first_shard_materializer_config": {
+      "path": "configs/ustrf_route_target_l1e_materialization_recovery_r3_one_shard.json",
+      "sha256": "61677cfa1c988bff474ca06b263857516999563a528f134c3769e34c13aaed7e"
+    },
+    "a2_config": {
+      "path": "configs/ustrf_route_target_l1e_materialization_recovery_r3_continuation_a2.json",
+      "sha256": "218ccb90e1f7af817e6edd41a00b3e49c75755ff5fbe6ea3a535c8fe8170c9f0"
+    },
+    "a2_failure_receipt": {
+      "path": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/c-a2/14015ece9b5fba64/a002/r.json",
+      "sha256": "94fe71e8a4dfd035b1e5f64f21a2fcb95b3d42b9fd82cb025758bf58c52886e2"
+    },
+    "a2_failure_log": {
+      "path": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/logs-a2/14015ece9b5fba64.a002.log",
+      "sha256": "9b569eb217da4d5427709d9d46148503a1da142c6ca852dcba1c1ffd95f64d6c"
+    },
+    "a2_validated_compact_ledger": {
+      "path": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/detector-ledgers/crowdbot_0410_shared_control__defaced_2021-04-10-10-25-43-008_filtered_lidar_odom__14015ece9b5f.json",
+      "sha256": "7566900be68e35f8690397d6e620663d7fd4964b173c275a12701def82fdfe68"
+    },
+    "a2_validated_successor": {
+      "path": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/detector-ledgers/crowdbot_0410_shared_control__defaced_2021-04-10-10-25-43-008_filtered_lidar_odom__14015ece9b5f.successor-receipt.json",
+      "sha256": "2c73153ac6fc6a681041de149824d399a11463b2fb5731c6bfaf203a92fca7e5"
+    }
+  },
+  "execution": {
+    "maximum_remaining_crowdbot_shards": 28,
+    "one_host_process_per_shard": true,
+    "child_processes_serial": true,
+    "maximum_cumulative_child_attempts_per_ledger": 3,
+    "windows_extended_path_atomic_writes": true,
+    "minimum_system_available_physical_memory_bytes": 4294967296,
+    "memory_guard_amendment_authority": "explicit_user_direction_2026-07-24",
+    "stop_after_exhausted_ledger": true,
+    "candidate_execution_forbidden": true
+  },
+  "expected_coverage": {
+    "starting_ledgers": 13,
+    "starting_frames": 22699,
+    "final_ledgers": 41,
+    "final_frames": 62229,
+    "discontinuity_resets": 15
+  },
+  "implementation_bindings": {
+    "a3_core": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/l1e_materialization_recovery_r3_continuation_a3.py",
+      "sha256": "8dee07af47dfd3a45248c7fdcfae7016b35c3a07b43ef0c9041783a0caee1853"
+    },
+    "a3_one_shard_runner": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_l1e_materialization_recovery_r3_continuation_a3_one_shard.py",
+      "sha256": "1b67489a906700904dd7a80ff0cf40228f12f10b185148fff9a97a8d2144ecf4"
+    },
+    "a3_serial_orchestrator": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_l1e_materialization_recovery_r3_continuation_a3.py",
+      "sha256": "04a4d6a7f375897b7c814724e0b9e7215af61ca272afeb0193d4b8d137f9a9ab"
+    },
+    "a3_contract_tests": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/test_l1e_materialization_recovery_r3_continuation_a3.py",
+      "sha256": "841b5ccbed6a8b10d01287513a93005f3b97e98cf799475735d70336ff550a29"
+    }
+  },
+  "authority": {
+    "candidate_execution": false,
+    "candidate_trace": false,
+    "candidate_profile": false,
+    "selection": false,
+    "ranking": false,
+    "recommendation": false,
+    "provisional_selection": false,
+    "l2_execution": false,
+    "l3_execution": false,
+    "android_shadow": false,
+    "h2": false,
+    "human_outcome": false,
+    "independent_walking_safety": false,
+    "production": false
+  }
+}

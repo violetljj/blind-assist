@@ -1,5 +1,10 @@
 # Development Log
 ## 2026-07-24
+### USTRF route-target L1E R3 remaining-shard continuation A1–A3
+- 时间：2026-07-24；执行者：Codex。冻结 `R2-L1E-RECOVERY-B1-CONTINUATION-A1`，保留首分片 B1 配置、实现与收据哈希；新增双 canonical root 覆盖复核、严格串行父编排器和独占 child 锁。每个 fresh child 只处理冻结顺序中的下一缺失 CrowdBot ledger，compact successor 验证后立即退出；无效/半写 pair、重复权威根、额外 ledger、并发 child、非 CrowdBot 缺口、覆盖漂移或单 ledger 三次尝试耗尽均 fail closed。完整输入门固定为 `41/41`、`62,229/62,229`、`15/15 reset`，父流程不导入或执行 C1–C3。
+- A1 在原 6 GiB 门下成功补齐 9 条至 `12/41`；随后一次真实 readiness 内存失败和两次 Windows 长控制回执路径失败，按冻结尝试预算写出 `FAIL_CLOSED_LEDGER_ATTEMPTS_EXHAUSTED`。经用户明确指示将门修订为 4 GiB 后，A2 用短哈希控制路径补齐 1 条至 `13/41`，但在 successor 已验证后写 host receipt 时再次触发 Windows 长路径失败。A3 保留 4 GiB 门并使用 Windows extended-path 原子写，严格串行完成剩余 28 条，28 个 child 成功、0 失败。
+- 最终独立重算为 `41/41` ledger、`62,229/62,229` 帧、`15/15 reset`；相对初始 `3/41` 共补齐 38 条、56,180 帧。终态为 `CANONICAL_INPUT_41_OF_41_COMPLETE`，`c1_c2_c3_executed=false`，candidate trace/profile 均为 0；C1–C3 仍须作为下一独立阶段显式启动。
+
 ### USTRF route-target L1E materialization recovery R3
 - 时间：2026-07-24；执行者：violjjet。新建独立 `R2-L1E-RECOVERY-B1` 阶段，保留父 R2/A1 `FAIL_CLOSED_EXECUTION_ABORTED` 与旧重试预算；将 Android 输入运输改为 `/data/local/tmp -> run-as target -> targetContext.filesDir`，并保持冻结 6 GiB 可用内存门，以 6 次 readiness 采样、加载后/启动前复查和单进程单分片控制资源。SM-S9280 transport canary 逐一通过首个 CrowdBot 分片 `1,455/1,455` RGB 哈希；随后同一分片完成 Android Canvas/TFLite raw、流式拉取、逐帧回执、host decode、compact ledger 与 successor 验证。跨阶段 canonical input 进度为 `3/41` ledger、`6,049/62,229` 帧，剩余 38 条；C1–C3、trace/profile/selection/L2/L3/shadow/H2/人体/生产仍为 0 或 false。双 APK build、真机两个 `OK (1 test)`、6 项 focused contract tests、Python compile 和 cleanup 通过。详见 [R3 结果](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1E_MATERIALIZATION_RECOVERY_R3_RESULT_2026-07-24.md)。
 
