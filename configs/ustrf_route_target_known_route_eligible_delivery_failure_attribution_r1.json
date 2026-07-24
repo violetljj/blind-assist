@@ -1,0 +1,153 @@
+{
+  "schema": "blindassist_ustrf_known_route_eligible_delivery_failure_attribution_r1",
+  "stage": "KNOWN-ROUTE-ELIGIBLE-DELIVERY-FAILURE-ATTRIBUTION-R1",
+  "status": "preregistered_candidate_blind_failure_attribution",
+  "frozen_on": "2026-07-24",
+  "purpose": "Explain every C1-C3 x 12 clearance-eligible known-route delivery-formation outcome from immutable candidate and lifecycle traces. Persist all candidate-blind formation facts before joining frozen truth, assign one mutually exclusive label per cell, and fail closed on any unexplained gap.",
+  "authority": {
+    "maximum": "MECHANISM_DIAGNOSTIC_ONLY",
+    "candidate_rerun": false,
+    "detector_rerun": false,
+    "route_rerun": false,
+    "truth_available_to_blind_ledger": false,
+    "candidate_comparison": false,
+    "winner_or_ranking": false,
+    "selection": false,
+    "threshold_or_denominator_change": false,
+    "guard_change": false,
+    "clearance_change": false,
+    "l2_or_l3": false,
+    "android_shadow": false,
+    "h2": false,
+    "human_outcome": false,
+    "independent_walking_safety": false,
+    "production": false,
+    "new_data": false,
+    "training": false
+  },
+  "non_goals": [
+    "modify or rerun the frozen detector, T0 association, route, C1-C3 candidate, or route-invalid/reset guard",
+    "change min_alert_frames, min_clear_frames, IoU, route thresholds, metric thresholds, denominators, truth, or clearance semantics",
+    "repair consume timestamps, score or rank candidates, select a winner, or authorize L2, L3, Android shadow, H2, human use, or production",
+    "diagnose relation-based post-delivery closure; this boundary stops at eligible-delivery formation"
+  ],
+  "candidate_roster": [
+    "C1_CAUSAL_ROUTE_RELATION_FSM",
+    "C2_ROUTE_OCCUPANCY_EPISODE_FSM",
+    "C3_DUAL_KEY_CLEARANCE_FSM"
+  ],
+  "phase_order": [
+    "verify_parent_receipts_and_all_123_trace_hashes",
+    "construct_and_persist_all_123_candidate_blind_formation_trace_receipts",
+    "persist_and_reverify_blind_trace_inventory",
+    "load_12_event_clearance_mask_and_construct_event_scope_blind_traces",
+    "hash_event_scope_blind_traces_before_truth_decode",
+    "load_frozen_truth_payloads",
+    "assign_exactly_one_failure_label_per_candidate_event_cell"
+  ],
+  "failure_taxonomy": {
+    "labels": [
+      "formed_eligible_delivery",
+      "no_observation",
+      "never_active_relation",
+      "active_streak_lt_min_alert",
+      "episode_opened_before_alertable_window",
+      "episode_opened_inside_window_before_target_attribution",
+      "pre_invalid_baseline_latch_guard_quarantine",
+      "reset_split",
+      "unexplained_gap"
+    ],
+    "priority": [
+      "formed_eligible_delivery",
+      "no_observation",
+      "never_active_relation",
+      "pre_invalid_baseline_latch_guard_quarantine",
+      "reset_split",
+      "episode_opened_before_alertable_window",
+      "episode_opened_inside_window_before_target_attribution",
+      "active_streak_lt_min_alert",
+      "unexplained_gap"
+    ],
+    "exactly_one_label_per_candidate_event_cell": true,
+    "unexplained_gap_is_fail_closed": true
+  },
+  "parent_bindings": {
+    "metric_profile_config": {
+      "path": "configs/ustrf_route_target_r2_l1_metric_profile_r1.json",
+      "sha256": "c922a8c88a92794ab17485d00830cc91d31e2f1985e263692c5fb0645add0012"
+    },
+    "candidate_replay_a2_terminal": {
+      "path": "artifacts.local/r2a2/terminal-receipt-a2.json",
+      "sha256": "192b6c3b961945bab675a01ba0d500be119a66a444ae195200e35408276c80ac"
+    },
+    "route_invalid_terminal": {
+      "path": "artifacts.local/evidence/ustrf-route-invalid-reset-lifecycle-diagnostic-r1/terminal-receipt-r1.json",
+      "sha256": "27d2c9a74d6e5cfc5b848197302aff20db2d996b501872f56e716758e1bf380b"
+    },
+    "route_invalid_validation": {
+      "path": "artifacts.local/evidence/ustrf-route-invalid-reset-lifecycle-diagnostic-r1/validation-receipt-r1.json",
+      "sha256": "67e19ac27d952b42f6ffdde6bba425833feed526d92c1f9527b5723314ff2f7f"
+    },
+    "eligibility_mask": {
+      "path": "artifacts.local/evidence/ustrf-route-target-metric-eligibility-r2-l1/eligibility-mask-r2-l1.json",
+      "sha256": "b7dd5cfacc6f14153900bfaf811f3e76a1e188d1064013823f717f615e528157"
+    },
+    "crowdbot_truth": {
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/route-role-model-proxy-truth-r6.json",
+      "sha256": "a0d51ca50d36a746de979e7d1fe010cf614e167742aaa1cf99443884db6e7d29"
+    },
+    "lilocbench_truth": {
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/holdout-person-role-fusion-r1.json",
+      "sha256": "d15f88a1c81a191191f8843cd0a0c429f1e561920475f166fe30f42be7bc336f"
+    },
+    "lilocbench_replacement_truth": {
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-person-role-fusion-r1.json",
+      "sha256": "154dbd8a81fb1e7d262d3d448fa6ba69f6b31f12001f6cbb88ac4c47e7cb00da"
+    }
+  },
+  "implementation_bindings": {
+    "attribution_core_sha256": "ea79342071ea3da7fa540a2845aa0cd2f3bdf34087d25d475f2ad0fc94dfb671",
+    "runner_sha256": "91b6fd15e8601956792f282e950a49366941e3c5367885628f72a915114fa2bb",
+    "validator_sha256": "743c4fae9d06bf0850de65da3bad249e982afd57f9a2c49094fd5e2c559068fa",
+    "tests_sha256": "931952532fc0e589b7c7d815c1bb6fc024b3f7db332c98492c4b4dd90686c720",
+    "truth_join_dependency_sha256": "30fc93b8358e484e804ee2621c301b7a477e5ed696b39a033a60aaffc7c16b36"
+  },
+  "evaluation": {
+    "truth_attribution_minimum_iou": 0.3,
+    "min_alert_frames": 2,
+    "clearance_events_per_candidate": 12,
+    "candidate_event_cells": 36,
+    "unexplained_gap_max": 0,
+    "expected_aggregate_counts": {
+      "formed_eligible_delivery": 6,
+      "no_observation": 0,
+      "never_active_relation": 3,
+      "active_streak_lt_min_alert": 0,
+      "episode_opened_before_alertable_window": 9,
+      "episode_opened_inside_window_before_target_attribution": 13,
+      "pre_invalid_baseline_latch_guard_quarantine": 5,
+      "reset_split": 0,
+      "unexplained_gap": 0
+    }
+  },
+  "expected_scope": {
+    "baseline_authoritative_traces": 123,
+    "guarded_lifecycle_traces": 123,
+    "candidate_blind_traces": 123,
+    "candidate_blind_frames": 186687,
+    "candidate_count": 3,
+    "clearance_events_per_candidate": 12,
+    "candidate_event_cells": 36,
+    "candidate_reruns": 0,
+    "detector_reruns": 0,
+    "route_reruns": 0,
+    "new_data": 0
+  },
+  "outputs": {
+    "root": "artifacts.local/evidence/ustrf-known-route-eligible-delivery-failure-attribution-r1",
+    "blind_inventory": "candidate-blind-inventory-r1.json",
+    "event_scope_blind_inventory": "event-scope-candidate-blind-inventory-r1.json",
+    "terminal_receipt": "terminal-receipt-r1.json",
+    "validation_receipt": "validation-receipt-r1.json"
+  }
+}
