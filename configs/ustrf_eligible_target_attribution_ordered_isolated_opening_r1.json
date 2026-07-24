@@ -1,0 +1,134 @@
+{
+  "schema": "blindassist_ustrf_eligible_target_attribution_ordered_isolated_opening_r1",
+  "stage": "ELIGIBLE-TARGET-ATTRIBUTION-ORDERED-ISOLATED-OPENING-R1",
+  "status": "preregistered_truth_assisted_oracle_mechanism_repair_diagnostic",
+  "frozen_on": "2026-07-24",
+  "purpose": "Test one isolated mechanism variable on the immutable 36 candidate-event cells: an event-scoped one-shot opener may start only after a frozen eligible-target-attribution token reaches the unchanged two-frame qualification gate. Baseline pre-window, pre-attribution, and pre-invalid episode state remains isolated and cannot consume the target delivery edge.",
+  "authority": {
+    "maximum": "TRUTH_ASSISTED_ORACLE_MECHANISM_DIAGNOSTIC_ONLY",
+    "candidate_rerun": false,
+    "detector_rerun": false,
+    "route_rerun": false,
+    "truth_used_only_to_build_frozen_attribution_tokens": true,
+    "raw_truth_payload_available_to_opener": false,
+    "truth_derived_event_scoped_tokens_available_to_opener": true,
+    "truth_window_boundaries_encoded_by_ledger_extent": true,
+    "causal_candidate_blind_token_producer_proven": false,
+    "candidate_comparison": false,
+    "winner_or_ranking": false,
+    "selection": false,
+    "threshold_or_denominator_change": false,
+    "baseline_fsm_change": false,
+    "route_invalid_guard_change": false,
+    "clearance_change": false,
+    "l2_or_l3": false,
+    "android_shadow": false,
+    "h2": false,
+    "human_outcome": false,
+    "independent_walking_safety": false,
+    "production": false,
+    "new_data": false,
+    "training": false
+  },
+  "non_goals": [
+    "modify or rerun the frozen detector, T0 association, route, C1-C3 candidate, route-invalid/reset guard, truth, or clearance",
+    "change min_alert_frames, min_clear_frames, IoU, route thresholds, metric thresholds, denominators, or event windows",
+    "use event identity, truth boxes, alertable boundaries, or oracle tokens as a deployable runtime input",
+    "diagnose or repair post-delivery relation clearance, repeats, false-alert rate, evidence age, or unknown-route lifecycle",
+    "score, rank, select, or authorize L2, L3, Android shadow, H2, human use, independent walking, or production"
+  ],
+  "candidate_roster": [
+    "C1_CAUSAL_ROUTE_RELATION_FSM",
+    "C2_ROUTE_OCCUPANCY_EPISODE_FSM",
+    "C3_DUAL_KEY_CLEARANCE_FSM"
+  ],
+  "phase_order": [
+    "verify_parent_attribution_config_terminal_validation_and_event_scope_inventory",
+    "verify_event_scope_pack_and_reconstruct_full_reset_scope_candidate_blind_facts",
+    "join_frozen_truth_only_to_build_eligible_attribution_token_ledgers",
+    "persist_and_reverify_all_36_token_ledgers_before_opener_execution",
+    "run_raw_truth_payload_blind_event_scoped_one_shot_opener_from_frozen_truth_derived_tokens",
+    "compare_mechanism_outcomes_to_parent_mutually_exclusive_attribution_labels",
+    "fail_closed_on_any_ordering_isolation_duplicate_or_accounting_gap"
+  ],
+  "mechanism": {
+    "token_authority": "truth_assisted_oracle_upper_bound_not_runtime_authority",
+    "token_scope": "candidate_source_sequence_reset_event",
+    "ledger_extent": "reset_scope_start_through_truth_terminal_clear",
+    "token_condition": "route_known_and_target_iou_attributed_active_relation",
+    "opening_condition": "unchanged_min_alert_consecutive_eligible_attribution_tokens",
+    "c1_continuity": "same_attributed_track_id",
+    "c2_c3_continuity": "same_frozen_event_identity",
+    "pre_token_baseline_state": "explicit_background_non_delivering_namespace",
+    "pre_window_baseline_state": "explicit_background_non_delivering_namespace",
+    "pre_invalid_baseline_and_guard_state": "explicit_background_non_delivering_namespace",
+    "isolation_test": "target_delivery_output_invariant_to_background_namespace_mutation",
+    "delivery_cardinality": "at_most_one_per_candidate_event_cell",
+    "delivery_frame": "qualification_frame_not_support_start_frame",
+    "clearance_semantics": "out_of_scope_unchanged"
+  },
+  "parent_bindings": {
+    "failure_attribution_config": {
+      "path": "configs/ustrf_route_target_known_route_eligible_delivery_failure_attribution_r1.json",
+      "sha256": "2cfa3afd2c548be0f43fa18fb36be1ce07493a66cda5b6df0ff51105a2b32c69"
+    },
+    "failure_attribution_terminal": {
+      "path": "artifacts.local/evidence/ustrf-known-route-eligible-delivery-failure-attribution-r1/terminal-receipt-r1.json",
+      "sha256": "77880060384f3288b589a23a87da49f95be10554b98ffd2690c4c8b38efc1e33"
+    },
+    "failure_attribution_validation": {
+      "path": "artifacts.local/evidence/ustrf-known-route-eligible-delivery-failure-attribution-r1/validation-receipt-r1.json",
+      "sha256": "51f2c6ae414b1bad34b1393ea614b86b85e966c1c94fe0b9e5ff3111e552b8d7"
+    },
+    "event_scope_blind_inventory": {
+      "path": "artifacts.local/evidence/ustrf-known-route-eligible-delivery-failure-attribution-r1/event-scope-candidate-blind-inventory-r1.json",
+      "sha256": "95a8bb61a14d723291f7a04d97f40c17dabc602dbbc5f0c70d47dbe86f1125f5"
+    }
+  },
+  "implementation_bindings": {
+    "mechanism_core_sha256": "8d8f7ebabe9187756e6283546cb276a3a87b0ac43c7e204d50539648bb73e65a",
+    "runner_sha256": "83a7eb27391022907b8197fea5b9ef9be41f2f65f9b686491caa11c9bc8f3cfb",
+    "validator_sha256": "d7afe4d4b9086872bb145d9d6d0cda4f7f3c692acd0218314717a8da66561572",
+    "tests_sha256": "cdb61bb534334ad83ac0d0316f62ddce15b005349014e843dc4cf29d87963116"
+  },
+  "evaluation": {
+    "truth_attribution_minimum_iou": 0.3,
+    "min_alert_frames": 2,
+    "clearance_events_per_candidate": 12,
+    "candidate_event_cells": 36,
+    "parent_formed_delivery_cells": 6,
+    "expected_token_qualified_cells": 33,
+    "expected_recovered_cells": 27,
+    "expected_remaining_no_support_cells": 3,
+    "opening_before_qualification_max": 0,
+    "background_namespace_invariance_failures_max": 0,
+    "one_shot_cardinality_violations_max": 0,
+    "duplicate_delivery_keys_max": 0,
+    "accounting_gap_max": 0,
+    "expected_outcome_counts": {
+      "parent_formed_delivery_cell_remains_token_qualified": 6,
+      "recovered_episode_opened_before_alertable_window": 9,
+      "recovered_episode_opened_inside_window_before_target_attribution": 13,
+      "recovered_pre_invalid_baseline_latch_guard_quarantine": 5,
+      "remaining_never_active_relation": 3
+    }
+  },
+  "expected_scope": {
+    "candidate_count": 3,
+    "clearance_events_per_candidate": 12,
+    "candidate_event_cells": 36,
+    "token_ledger_count": 36,
+    "token_frame_count": 5043,
+    "candidate_reruns": 0,
+    "detector_reruns": 0,
+    "route_reruns": 0,
+    "threshold_changes": 0,
+    "new_data": 0
+  },
+  "outputs": {
+    "root": "artifacts.local/evidence/ustrf-eligible-target-attribution-ordered-isolated-opening-r1",
+    "token_inventory": "eligible-attribution-token-inventory-r1.json",
+    "terminal_receipt": "terminal-receipt-r1.json",
+    "validation_receipt": "validation-receipt-r1.json"
+  }
+}

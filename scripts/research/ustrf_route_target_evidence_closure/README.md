@@ -1,6 +1,18 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / L2+L3 prereg frozen but not authorized
+
+## Eligible target attribution → isolated one-shot opening R1
+
+`configs/ustrf_eligible_target_attribution_ordered_isolated_opening_r1.json` 绑定上一轮 failure-attribution config/terminal/validation 与 event-scope blind inventory。它先从父 full blind trace 重建每个 event 的 reset-scope 前缀，再联结冻结 proxy/model truth，生成并冻结 36 个 eligible-attribution token ledger。one-shot opener 明确消费 truth-derived event token/window scope，但拒绝 raw truth、observed box、baseline key、delivery 与 guard event 输入。
+
+结果为 `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID`：父 formed-delivery 的 6 个单元仍 token-qualified，27 个 pre-open/quarantine 单元反事实恢复，C1/C2/C3 均为 `11/12`；唯一从未形成 active relation 的 event 在三候选上继续 fail closed。36 次 background namespace 强制变异均不改变目标 opening，27 个恢复单元都在 qualification 前或当帧有 background activity；opening-before-qualification、one-shot cardinality violation、duplicate key 与 accounting gap 均为 0。该阶段是 truth-assisted oracle upper bound，不是可部署修复；causal candidate-blind token producer、候选比较、selection、clearance 修复及所有更高权限均为 0。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_ELIGIBLE_TARGET_ATTRIBUTION_ORDERED_ISOLATED_OPENING_R1_RESULT_2026-07-24.md)。
+
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_eligible_target_attribution_ordered_isolated_opening.py --config configs\ustrf_eligible_target_attribution_ordered_isolated_opening_r1.json --repo .
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\validate_eligible_target_attribution_ordered_isolated_opening.py --config configs\ustrf_eligible_target_attribution_ordered_isolated_opening_r1.json --repo .
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\test_eligible_target_attribution_ordered_isolated_opening.py -v
+```
 
 ## Route-invalid + reset-scoped lifecycle diagnostic R1
 
