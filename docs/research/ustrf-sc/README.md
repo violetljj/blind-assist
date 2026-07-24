@@ -5,6 +5,7 @@
 
 ## 首要入口
 
+- [下一阶段新信号可分性目标（2026-07-25）](USTRF_SC_NEXT_STAGE_SIGNAL_SEPARABILITY_GOAL_2026-07-25.md)：封存已证伪的 current-input policy 搜索，当前唯一可执行边界为 route-conditioned absolute scale growth 的 standalone token-qualification Pareto 审计；失败关闭当前角色，表面成功只冻结 discovery candidate。后继 ego-motion availability、扩张分解、validation/holdout 与 producer 必须逐级另立 goal，Android/H2/人体/生产权限保持关闭。
 - [前沿论文研究指导（2026-07-22）](USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md)：13 篇本地论文的证据—论点映射，以及 tracker/TTC、时序深度、显式路线 dense risk、开放词汇/VLM 和反馈研究的固定协议与停止条件；仅为日期化研究指导。
 - [项目工作记录与恢复入口（2026-07-20）](USTRF_SC_PROJECT_RECORD_AND_RESUME_2026-07-20.md)：本轮总体思路、实验结果、GPU 中断边界和下一步。
 - [新窗口交接（2026-07-20）](USTRF_SC_WINDOW_HANDOFF_2026-07-20.md)：当前暂停点、证据入口、GPU 边界、参考文档清单和可复制续接提示词。
