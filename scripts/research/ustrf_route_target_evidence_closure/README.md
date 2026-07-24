@@ -1,6 +1,18 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / L2+L3 prereg frozen but not authorized
+
+## Candidate-independent policy failure attribution R1
+
+`configs/ustrf_candidate_independent_policy_failure_attribution_r1.json` 只读绑定并复算冻结 policy gate 的 inventory、risk、terminal 与 oracle。归因按 timestamp 半开有效期进行；96 次 miss oracle qualification opportunity 各自唯一分类，同时让 24 个 cell 保留 mixed 原因集合。
+
+结果为 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID`：opportunity 为资格不足 `39`、TTL 后 oracle `39`、relation gap 提前失效 `12`、route unknown 提前失效 `6`、track `0`；24 个 miss cell 中 6 个为混合原因。34 个负暴露 token 全部按 source/sequence/invalidation reason 归因：TTL `16`、relation gap `9`、track unobserved `8`、route unknown `1`。该结果不修改 policy，也不授权 successor policy 或 opener。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_CANDIDATE_INDEPENDENT_POLICY_FAILURE_ATTRIBUTION_R1_RESULT_2026-07-24.md)。
+
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_candidate_independent_policy_failure_attribution_r1.py --repo . --config configs\ustrf_candidate_independent_policy_failure_attribution_r1.json
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\validate_candidate_independent_policy_failure_attribution_r1.py --repo . --config configs\ustrf_candidate_independent_policy_failure_attribution_r1.json
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\test_candidate_independent_policy_failure_attribution_r1.py -v
+```
 
 ## Candidate-independent causal token policy/risk gate R1
 
