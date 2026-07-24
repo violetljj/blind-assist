@@ -1,0 +1,159 @@
+{
+  "schema": "blindassist_ustrf_route_conditioned_scale_growth_separability_r0",
+  "stage": "ROUTE-CONDITIONED-SCALE-GROWTH-SEPARABILITY-R0",
+  "status": "frozen_before_any_signal_outcome",
+  "frozen_on": "2026-07-25",
+  "purpose": "Audit whether route-conditioned absolute normalized bbox-area growth can qualify a standalone candidate-independent causal token, but fail closed before any signal outcome when canonical geometry or truncation authority is incomplete.",
+  "claim_boundary": {
+    "maximum": "SIGNAL_AVAILABILITY_AND_DISCOVERY_SEPARABILITY_ONLY",
+    "candidate_independent": true,
+    "research_only": true,
+    "online_policy": false,
+    "causal_producer": false,
+    "opener": false,
+    "android": false,
+    "shadow": false,
+    "h2": false,
+    "human": false,
+    "production": false
+  },
+  "signal_contract": {
+    "formula": "S_t=0.5*log(w_norm*h_norm)",
+    "window_ms": 600,
+    "minimum_valid_observations": 5,
+    "maximum_adjacent_gap_ms": 150,
+    "timestamp_axis": "source_capture_timestamp_seconds",
+    "slope_estimator": "theil_sen_median_all_pairwise_slopes",
+    "interpolation": false,
+    "touching_boundary_invalid": true,
+    "severe_truncation_invalid": true,
+    "diagnostic_only": "log_height_norm",
+    "only_swept_variable": "looming_score_threshold",
+    "threshold_comparison": "looming_score_greater_than_or_equal",
+    "threshold_breakpoints": "all_unique_finite_observed_slopes_descending"
+  },
+  "delay_contract": {
+    "metric": "first threshold qualification timestamp minus frozen event window start timestamp",
+    "reference": "frozen_event_window_start_timestamp",
+    "maximum_first_qualification_delay_ms": 5000,
+    "aggregation": "every one of 11 supported unique events and all 33 mechanically mapped supported cells must pass",
+    "rationale": "Independently freeze the existing USTRF continuous-event first-correct-alert ceiling before any scale signal outcome; this is not inherited from the parent evaluator, whose alertable deadline was absent.",
+    "rationale_binding": {
+      "path": "configs/ustrf_crosscam_continuous_events_r13_prereg_v2.json",
+      "sha256": "21398bdbedee1c9b5fa7013ebf1255c63fc755cca3e50aecdd196d75969dab75"
+    },
+    "frozen_before_signal_outcome": true,
+    "inherited_from_parent_evaluator": false
+  },
+  "discovery_gate": {
+    "supported_unique_events": 11,
+    "supported_candidate_cells": 33,
+    "negative_first_opportunity_max": 2,
+    "negative_risk_unit": "first_opportunity_per_track_reset",
+    "negative_exposure_interval_count": 836,
+    "negative_exposure_duration_ns": 297376110945,
+    "negative_exposure_minutes": 4.95626851575,
+    "point_risk_only": true,
+    "credible_population_risk_pass": false
+  },
+  "required_geometry_contract": {
+    "source_size_bound_per_frame": true,
+    "source_to_canonical_rotation_receipt_bound_per_frame": true,
+    "bbox_coordinates_are_canonical_source_frame_xyxy": true,
+    "severe_truncation_status_bound_per_observed_track": true,
+    "hardcoded_640x480_is_not_authority": true,
+    "rotation_zero_must_not_be_assumed": true
+  },
+  "expected_scope": {
+    "candidate_projections": 123,
+    "sequences": 41,
+    "frames": 62229,
+    "candidate_executions": 0
+  },
+  "parent_bindings": {
+    "current_family_config": {
+      "path": "configs/ustrf_current_input_policy_feasibility_bound_r0.json",
+      "sha256": "a809d5a5ba2299883f9d0f1ea98e8506b5304f1fe3b082746639e3bcd869de5f"
+    },
+    "current_family_certificate": {
+      "path": "artifacts.local/evidence/ustrf-current-input-policy-feasibility-bound-r0/bound-certificate-r0.json",
+      "sha256": "f7a7962cebe1863893e8140d8c8857b5c6d95a327c2f6be971b8c41848b22108"
+    },
+    "current_family_terminal": {
+      "path": "artifacts.local/evidence/ustrf-current-input-policy-feasibility-bound-r0/terminal-receipt-r0.json",
+      "sha256": "2d5b3eda1bc047302d8ce2c2de3998821fb81dcb4cbbcfc66b5cb3f935803cf6"
+    },
+    "current_family_validation": {
+      "path": "artifacts.local/evidence/ustrf-current-input-policy-feasibility-bound-r0/validation-receipt-r0.json",
+      "sha256": "7ac13bbb90a6e684d7512008f9027e01f43d16d28fb75a5580c4dda6cb6bc865"
+    },
+    "causal_signal_config": {
+      "path": "configs/ustrf_causal_route_intrusion_signal_r0.json",
+      "sha256": "c76664ba61c356c40b8e01f194bc5bc56862a668947aac0f01323770ee342d31"
+    },
+    "causal_signal_inventory": {
+      "path": "artifacts.local/evidence/ustrf-causal-route-intrusion-signal-r0/signal-inventory-r0.json",
+      "sha256": "892abf429cfa4947b7f019f73258e4eeac380ab97bc8c8ebd2bd945091cd361d"
+    },
+    "causal_signal_terminal": {
+      "path": "artifacts.local/evidence/ustrf-causal-route-intrusion-signal-r0/terminal-receipt-r0.json",
+      "sha256": "0bf3a272bbf447a4e8ca868ffd3bfe1b33b60b18646260cdb113d1ceff5fff45"
+    },
+    "causal_signal_validation": {
+      "path": "artifacts.local/evidence/ustrf-causal-route-intrusion-signal-r0/validation-receipt-r0.json",
+      "sha256": "50f986866c77463b1dd48a6067e2adad0591af2f213af6089df5054042d2e431"
+    },
+    "eligibility_config": {
+      "path": "configs/ustrf_route_target_metric_eligibility_r2_l1.json",
+      "sha256": "4ab0c5dd687f7c9a3b791795271e4ecf5f23c1bbea41d2561503e6ce72e196ac"
+    },
+    "eligibility_mask": {
+      "path": "artifacts.local/evidence/ustrf-route-target-metric-eligibility-r2-l1/eligibility-mask-r2-l1.json",
+      "sha256": "b7dd5cfacc6f14153900bfaf811f3e76a1e188d1064013823f717f615e528157"
+    },
+    "denominator_receipt": {
+      "path": "artifacts.local/evidence/ustrf-route-target-metric-eligibility-r2-l1/denominator-receipt-r2-l1.json",
+      "sha256": "3f356ca69eb50bd176210d01bd9deb69e35acca46764b14603d0bb155d7b82bd"
+    },
+    "eligibility_validation": {
+      "path": "artifacts.local/evidence/ustrf-route-target-metric-eligibility-r2-l1/validation-receipt-r2-l1.json",
+      "sha256": "6bae841457ed0bd98cea6653e3c291b8cac5ba80603ec155811fcf95057196b9"
+    },
+    "producer_parent_config": {
+      "path": "configs/ustrf_truth_blind_causal_per_track_attribution_token_producer_audit_r0.json",
+      "sha256": "74b299f14a6c82fa747ce16c0961b20fcf2259ff685ad8b08093514d1cd81d8d"
+    },
+    "producer_parent_inventory": {
+      "path": "artifacts.local/evidence/ustrf-truth-blind-causal-per-track-token-producer-audit-r0/causal-token-inventory-r0.json",
+      "sha256": "6d3effc77b693f76e44bb7f1676169b496d8dd0d90f1b034a5ea3814b7714368"
+    },
+    "producer_parent_terminal": {
+      "path": "artifacts.local/evidence/ustrf-truth-blind-causal-per-track-token-producer-audit-r0/terminal-receipt-r0.json",
+      "sha256": "1ab95c5d9bf01d9c23dcd8198fc614ceef35231e85e633b86c9c62bbb9bca197"
+    },
+    "producer_parent_validation": {
+      "path": "artifacts.local/evidence/ustrf-truth-blind-causal-per-track-token-producer-audit-r0/validation-receipt-r0.json",
+      "sha256": "e222d2e0db8b36a623c0991c0595a23b86af75ed4793defd33493746ba3efb17"
+    }
+  },
+  "implementation_bindings": {
+    "core": "6d7addbb8dfb00748351377a69e92db99673e350e7e75bd950247ef66502bf77",
+    "runner": "f67a71a5a7a90ea6085850faa5aabb88949bf05c2b123139ec32c61e265369c5",
+    "validator": "87783faffc791a76071ff072c09b7e6430ecc1bae652bb85304365aa70408547",
+    "tests": "4834c322ff28f0942f2ef70b6a14bc339743437ea243cfccb5b44a8058488659"
+  },
+  "terminal_states": [
+    "PURE_SCALE_GROWTH_NOT_SUFFICIENT_FOR_STANDALONE_TOKEN_QUALIFICATION",
+    "SCALE_GROWTH_DISCOVERY_CANDIDATE_FROZEN",
+    "FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED"
+  ],
+  "outputs": {
+    "root": "artifacts.local/evidence/ustrf-route-conditioned-scale-growth-separability-r0",
+    "contract_violation": "contract-violation-receipt-r0.json",
+    "inventory": "scale-growth-inventory-r0.json",
+    "frontier": "complete-threshold-frontier-r0.json",
+    "terminal": "terminal-receipt-r0.json",
+    "audit": "audit-receipt-r0.json",
+    "validation": "validation-receipt-r0.json"
+  }
+}

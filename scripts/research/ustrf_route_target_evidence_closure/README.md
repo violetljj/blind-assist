@@ -1,6 +1,19 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / causal route-intrusion signal R0 `SIGNAL_REJECT / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / causal route-intrusion signal R0 `SIGNAL_REJECT / VALID` / route-conditioned scale-growth R0 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID` / L2+L3 prereg frozen but not authorized
+
+## Route-conditioned scale growth separability R0
+
+`configs/ustrf_route_conditioned_scale_growth_separability_r0.json` 冻结 normalized bbox-area `S_t=0.5*log(w_norm*h_norm)`、past-only 600ms / 至少 5 观测 / 最大 150ms gap、真实 timestamp 与 Theil–Sen slope；唯一可扫描变量为全部实际 slope breakpoint。父 evaluator 没有 alertable deadline，本轮在任何 signal outcome 前独立冻结 5000ms event-window delay 门，并明确不冒充父门。
+
+producer-preflight 复核全部父 SHA 和 123 条候选投影，折叠为 41 序列 / 62,229 帧后发现：逐帧 source-size 与 rotation receipt 均未绑定，263,680 个 observed-track 也没有 severe-truncation authority。因此在 signal score、truth/event/oracle/negative/candidate decode 均为 0 时合法终止为 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED`；inventory、frontier 与 candidate 均未生成。独立 audit 和 validator 在不同进程复算为 `VALID`。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_ROUTE_CONDITIONED_SCALE_GROWTH_SEPARABILITY_R0_RESULT_2026-07-25.md)。
+
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure test_route_conditioned_scale_growth_separability_r0.py -v
+.\.venv-export312\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure run_route_conditioned_scale_growth_separability_r0.py --repo . --config configs\ustrf_route_conditioned_scale_growth_separability_r0.json --phase producer
+.\.venv-export312\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure run_route_conditioned_scale_growth_separability_r0.py --repo . --config configs\ustrf_route_conditioned_scale_growth_separability_r0.json --phase audit
+.\.venv-export312\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure validate_route_conditioned_scale_growth_separability_r0.py --repo . --config configs\ustrf_route_conditioned_scale_growth_separability_r0.json
+```
 
 ## Candidate-independent causal route-intrusion signal R0
 

@@ -5,7 +5,9 @@
 
 ## 首要入口
 
-- [下一阶段新信号可分性目标（2026-07-25）](USTRF_SC_NEXT_STAGE_SIGNAL_SEPARABILITY_GOAL_2026-07-25.md)：封存已证伪的 current-input policy 搜索，当前唯一可执行边界为 route-conditioned absolute scale growth 的 standalone token-qualification Pareto 审计；失败关闭当前角色，表面成功只冻结 discovery candidate。后继 ego-motion availability、扩张分解、validation/holdout 与 producer 必须逐级另立 goal，Android/H2/人体/生产权限保持关闭。
+- [可观测性优先架构与持续研究总目标（2026-07-25）](USTRF_SC_OBSERVABILITY_FIRST_CONTINUOUS_RESEARCH_GOAL_2026-07-25.md)：USTRF-SC 当前跨阶段研究总纲与持续 `/goal`；保留 route-conditioned dense risk、event lifecycle 和 fail-closed，关闭 current-input timing/token 死胡同，优先建立 canonical observation spine，并按 authority audit → repair → scale → ego-motion → temporal-depth teacher → independent validation → formal U0 逐门推进。持续允许仅覆盖最小离线可证伪研究，不开放 Android、人体、独立行走、生产、commit 或 push。
+- [route-conditioned scale growth separability R0 结果（2026-07-25）](USTRF_ROUTE_CONDITIONED_SCALE_GROWTH_SEPARABILITY_R0_RESULT_2026-07-25.md)：父结果与 123→41 candidate-blind scope 均通过复验，但 62,229 帧没有逐帧 source-size/rotation receipt，263,680 个 observed-track 没有 severe-truncation authority；在计算任何 slope、truth join 或 frontier 前以 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID` 终止。当前没有尺度可分性结论、candidate 或 producer 权限；下一独立边界只能修复 canonical geometry input contract。
+- [下一阶段新信号可分性目标（2026-07-25）](USTRF_SC_NEXT_STAGE_SIGNAL_SEPARABILITY_GOAL_2026-07-25.md)：本次执行所依据的冻结目标；current-input policy 搜索继续封存。R0 已因 input contract 缺口 fail closed，后继 ego-motion availability、扩张分解、validation/holdout 与 producer 均不得在本轮自动启动。
 - [前沿论文研究指导（2026-07-22）](USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md)：13 篇本地论文的证据—论点映射，以及 tracker/TTC、时序深度、显式路线 dense risk、开放词汇/VLM 和反馈研究的固定协议与停止条件；仅为日期化研究指导。
 - [项目工作记录与恢复入口（2026-07-20）](USTRF_SC_PROJECT_RECORD_AND_RESUME_2026-07-20.md)：本轮总体思路、实验结果、GPU 中断边界和下一步。
 - [新窗口交接（2026-07-20）](USTRF_SC_WINDOW_HANDOFF_2026-07-20.md)：当前暂停点、证据入口、GPU 边界、参考文档清单和可复制续接提示词。
@@ -15,6 +17,7 @@
 
 ## 协议与专项记录
 
+- [route-conditioned scale growth separability R0（2026-07-25）](USTRF_ROUTE_CONDITIONED_SCALE_GROWTH_SEPARABILITY_R0_RESULT_2026-07-25.md)：冻结 normalized bbox-area、600ms/5-observation/150ms-gap Theil–Sen 单变量协议和独立 5000ms 延迟门；producer-preflight 在 truth/event/oracle/negative/candidate decode 均为 0 时发现 canonical source-size、rotation 与 severe-truncation binding 缺口。三进程独立复算为 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID`，inventory/frontier 均未生成。
 - [causal route-relative intrusion signal R0（2026-07-24）](USTRF_CAUSAL_ROUTE_INTRUSION_SIGNAL_R0_RESULT_2026-07-24.md)：首次加入 track/relation/timing 之外的 route-relative radial/lateral trend 与 bbox-scale expansion，冻结 5-frame `2-of-3` 后一次性跑完整 41 序列；仅覆盖 `7/11=21/33`，负暴露 `43/4.956min=8.6759/min`，终态 `SIGNAL_REJECT / VALID`。这是新信息信号的定量淘汰，不是提醒能力提升，也不允许事后调阈值回救。
 - [current-input policy feasibility bound R0（2026-07-24）](USTRF_CURRENT_INPUT_POLICY_FEASIBILITY_BOUND_R0_RESULT_2026-07-24.md)：只对 track scope、active route relation、route validity、reset 与相对 timestamp 构成的共享单调 lease family 求经验上界；保留 two-frame、fail-closed、one-token/reset、no-renewal，并以忽略 nominal TTL 的乐观 relaxation 穷尽完整 duration frontier，不输出候选 policy/threshold。最大 coverage 仅 `8/11=24/33`，经验风险 `<=2 token` 时仅 `2/11=6/33`，终态 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID`；不再调时间参数或接 opener。
 - [candidate-independent policy failure attribution R1（2026-07-24）](USTRF_CANDIDATE_INDEPENDENT_POLICY_FAILURE_ATTRIBUTION_R1_RESULT_2026-07-24.md)：只读复算冻结 policy 的 24 个 supported-cell miss 与 34 个负暴露 token。以 96 次 oracle qualification opportunity 为互斥原子，得到资格不足 `39`、TTL 后 oracle `39`、relation gap 提前失效 `12`、route unknown 提前失效 `6`、track `0`；24 个 cell 中 6 个保留混合原因。34 个负 token 全部联结失效原因，终态 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID`，但 policy coverage/risk reject 不变。

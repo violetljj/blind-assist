@@ -9,6 +9,7 @@
 
 ## Research priority and evidence
 
+- For USTRF-SC work, read [the current observability-first continuous research goal](docs/research/ustrf-sc/USTRF_SC_OBSERVABILITY_FIRST_CONTINUOUS_RESEARCH_GOAL_2026-07-25.md) before starting. It is the current cross-stage architecture and research-authority guide: keep each executable gate independently versioned, honor closed terminals, and do not use the continuous goal to bypass Android, human-facing, independent-walking, production, commit, or push boundaries.
 - Treat SANPO and other candidate-model work as research by default unless a task explicitly targets a release or runtime integration. Prioritize theoretical progress, larger valid datasets, controlled ablations, and reproducible quantitative evidence over immediate engineering delivery.
 - Do not reject or delay a research hypothesis solely because it exceeds the current Android latency, model-size, default-model, release, or deployment constraints. Keep such experiments isolated from production assets and report deployment metrics separately when they are measured.
 - For research claims, define the hypothesis, data split, fixed protocol, and acceptance metrics before interpreting results. Prefer worst-seed, worst-session, worst-scene, event-level recall and false-alert rate, boundary/unknown behavior, calibration or abstention, and repeatability over a single best aggregate score.
