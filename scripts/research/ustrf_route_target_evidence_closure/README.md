@@ -1,6 +1,19 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / L2+L3 prereg frozen but not authorized
+
+## Truth-blind causal per-track attribution-token producer audit R0
+
+`configs/ustrf_truth_blind_causal_per_track_attribution_token_producer_audit_r0.json` 只允许 detector/T0 track、per-track route relation、route validity 与 reset。producer 进程先验证 C1/C2/C3 的 runtime 输入投影在 123 条 trace 上逐帧一致，再折叠并冻结 41 条候选无关 full-sequence ledger / 62,229 帧；truth、event window、oracle token 在 inventory 冻结前的解码数均为 0。第二个进程先复验所有 ledger SHA，之后才联结既有 oracle token 与负暴露 mask。
+
+结果为 `HOLD_FOR_POLICY_GATE / VALID`：33 个 oracle-supported candidate-event cell 达到 33/33 coverage，3 个无 active relation cell 继续关闭，unknown-route、cross-reset 和 duplicate token 都为 0。但 5,126 枚 producer token 中 5,113 枚为 extra；4.956 分钟负暴露内有 153 枚（30.87/min），另有 6,328 次重复激活被记录并抑制。该结果不允许连接 isolated opener；下一边界必须先冻结并通过 candidate-independent token policy/risk gate。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_TRUTH_BLIND_CAUSAL_PER_TRACK_ATTRIBUTION_TOKEN_PRODUCER_AUDIT_R0_RESULT_2026-07-24.md)。
+
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_causal_per_track_attribution_token_audit_r0.py --repo . --config configs\ustrf_truth_blind_causal_per_track_attribution_token_producer_audit_r0.json --phase producer
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_causal_per_track_attribution_token_audit_r0.py --repo . --config configs\ustrf_truth_blind_causal_per_track_attribution_token_producer_audit_r0.json --phase audit
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\validate_causal_per_track_attribution_token_audit_r0.py --repo . --config configs\ustrf_truth_blind_causal_per_track_attribution_token_producer_audit_r0.json
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\test_causal_per_track_attribution_token_audit_r0.py -v
+```
 
 ## Eligible target attribution → isolated one-shot opening R1
 

@@ -1,5 +1,6 @@
 # Development Log
 ## 2026-07-24
+- 时间：2026-07-24；执行者：violjjet。冻结 truth-blind causal per-track attribution-token producer R0：只读取 detector/T0 track、route relation、route validity 与 reset，硬拒绝 event/truth/window/future/clearance/oracle/candidate 输入；先在独立进程验证 123 条 C1–C3 runtime 投影逐帧一致并折叠为 41 条候选无关 full-sequence ledger / 62,229 帧，truth/event/oracle 解码均为 0，第二进程复验 inventory 后才 post-hoc 联结。结果为 `HOLD_FOR_POLICY_GATE / VALID`：33/33 oracle-supported cell 覆盖，3 个无 active relation cell 继续关闭，unknown/reset/duplicate token 为 0；但 5,126 枚 token 中 5,113 枚为 extra，4.956 分钟负暴露内 153 枚（30.87/min），并完整记录 6,328 次被抑制重复激活。未修改 C1–C3、opener 或 clearance，不能进入集成、比较、selection、L2/L3、shadow/H2、人体或生产。详见 [R0 结果](docs/research/ustrf-sc/USTRF_TRUTH_BLIND_CAUSAL_PER_TRACK_ATTRIBUTION_TOKEN_PRODUCER_AUDIT_R0_RESULT_2026-07-24.md)。
 - 时间：2026-07-24；执行者：Codex。单变量 route-invalid + reset-scoped lifecycle guard 只读 A2 `123/123` trace；unknown/stale active 从 `12,621 / 7,165 / 12,759` 降为 0，known→invalid-active `1,235 / 801 / 1,238` 同帧关闭且跨 reset key 为 0；validator 重算父/新 trace 各 `186,687` 帧为 `VALID`，但仅 known-route relation closure 可获 credit，clearance 仍为 `0/12 / 1/12 / 0/12`，overall gate false。未重跑候选/detector、补 consume timestamp、比较或开放 L2/L3/shadow/H2/人体/独立行走/生产权限。详见 [R1 结果](docs/research/ustrf-sc/USTRF_ROUTE_INVALID_RESET_LIFECYCLE_DIAGNOSTIC_R1_RESULT_2026-07-24.md)。
 ### USTRF route-target R2-L1 trace-only metric profiles
 - 时间：2026-07-24；执行者：violjjet。新增 profile-only 冻结合同、schema、runner、validator 与 7 项 focused tests；只读采用 A2 terminal 的 `123/123` 权威 trace，并绑定 A3 completion、A4 memory validation、eligibility protocol/mask/receipt 和三份 post-output truth。评分前逐条复核 trace/authoritative-receipt SHA、四元 frame identity、每候选 `41` ledger / `62,229` 帧 / `15` reset；候选重跑、新权威 trace 和新数据均为 0。
@@ -1487,14 +1488,3 @@
 - 结果：full-frame 精确复现 `TP/FP/FN=6/4/8`、F1 `.5000`、small `0/8`；tiling 为 `10/14/4`、F1 `.5263`、small `4/8`，medium/large 仍 `3/3`。逐 GT 为 recovered `4`、regressed `0`，但 FP `4→14`，违反 canary 上限；决定固定为 `stop_after_8_frame_canary`，32 帧未运行且未放宽门槛。
 - 系统：两臂均以前台 PowerShell 守护完成；full/tiling 最高温度 `47/50°C`、整卡显存 `1276/1508MB`、功耗 `20.18/18.08W`，0 相关 System event、无 stop reason。GPU 恢复路径有效，失败属于检测质量权衡。
 - 验证与证据：benchmark/tiling/contract/comparator 共 15 个 CPU tests 通过，PowerShell guard 解析通过；机器报告位于 `artifacts.local/evidence/ustrf-sc/revel-yolo11n-crop-tiling-pair-20260720-r1/`，paired report SHA-256 `f38cf353f13199ba9fd4f9167083beee26285ecdc7b10c3e392aa8a441ad01f7`。详细边界见 `docs/research/ustrf-sc/USTRF_SC_REVEL_CROP_TILING_PAIRED_2026-07-20.md`。
-## 2026-07-21 — Restore USTRF U0 validator provenance after stacked merge
-
-- Refreshed the frozen U0 prediction-evidence validator SHA after the timing/shadow hardening changed the validator implementation.
-- This restores the intended fail-closed order: the official empty manifest is rejected by the human-truth gate, not by stale provenance metadata. No truth, training, shadow, or production authority was opened.
-
-## 2026-07-21：USTRF 跨相机 Codex proxy R0
-
-- 执行者：violjjet
-- 新增隔离 `ustrf_crosscam_codex` 研究域：公开来源收据、相机投影/assumed route、三轮 Codex provisional teacher/causal consensus、代理指标和真实 Android bbox-route 转换；不改 App、默认模型或正式 U0。
-- MuSoHu 360° 样本因 forward-axis/遮挡与三轮教师分歧被拒绝。Pexels 3874684 的 6 秒右侧人行道负样本获 6/6 Codex `none`；SM-S9280 Android 臂在首帧对道路车辆触发 1 次 HIGH，route distance `48.4636px` 刚低于 `51.2px` 走廊半宽。
-- 决策：下轮优先跨相机路线投影/走廊敏感性与 source-held-out 正负扩样；不据单样本调阈值或微调。所有 authority flag 继续 false。

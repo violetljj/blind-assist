@@ -11,12 +11,14 @@
 /configs/ustrf_route_target_route_invalid_reset_lifecycle_diagnostic_r1.json text eol=lf
 /configs/ustrf_route_target_known_route_eligible_delivery_failure_attribution_r1.json text eol=lf
 /configs/ustrf_eligible_target_attribution_ordered_isolated_opening_r1.json text eol=lf
+/configs/ustrf_truth_blind_causal_per_track_attribution_token_producer_audit_r0.json text eol=lf
 /docs/research/ustrf-sc/USTRF_ROUTE_TARGET_EVIDENCE_*.md text eol=lf
 /docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1_CANDIDATE_REPLAY_*.md text eol=lf
 /docs/research/ustrf-sc/USTRF_ROUTE_TARGET_R2_L1_METRIC_PROFILE_*.md text eol=lf
 /docs/research/ustrf-sc/USTRF_ROUTE_INVALID_RESET_LIFECYCLE_*.md text eol=lf
 /docs/research/ustrf-sc/USTRF_KNOWN_ROUTE_ELIGIBLE_DELIVERY_*.md text eol=lf
 /docs/research/ustrf-sc/USTRF_ELIGIBLE_TARGET_ATTRIBUTION_*.md text eol=lf
+/docs/research/ustrf-sc/USTRF_TRUTH_BLIND_CAUSAL_PER_TRACK_ATTRIBUTION_TOKEN_*.md text eol=lf
 /schemas/ustrf_route_target_l1_candidate_replay*.schema.json text eol=lf
 /schemas/ustrf_route_target_r2_l1_metric_profile_r1.schema.json text eol=lf
 /scripts/research/ustrf_route_target_evidence_closure/** text eol=lf
