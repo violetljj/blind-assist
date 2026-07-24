@@ -1,6 +1,18 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / L2+L3 prereg frozen but not authorized
+
+## Route-invalid + reset-scoped lifecycle diagnostic R1
+
+`configs/ustrf_route_target_route_invalid_reset_lifecycle_diagnostic_r1.json` 只读取 A2 的 123 条权威 trace，在冻结候选之外加入单一 lifecycle guard：route invalid 同帧终止 active，discontinuity reset 终止旧 scope，episode key 绑定 source/sequence/reset/local key/activation ordinal。guard 不读取 truth；123 条 guarded trace 全部构造后，才用既有 12-event clearance 分母检查同 scope 的 known-route relation closure。
+
+结果为 `MECHANISM_DIAGNOSTIC_COMPLETE / VALID`，但 overall gate 为 false。三个候选的 unknown/stale active 帧从 `12,621 / 7,165 / 12,759` 降为 0，跨 reset key 为 0；clearance 仍为 `0/12 / 1/12 / 0/12`。`route_invalid` 与 `reset_scope_end` 只表示 fail-closed terminalization，永不计 truth clearance。没有候选重跑、比较、selection、consume timestamp 修复或更高权限。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_ROUTE_INVALID_RESET_LIFECYCLE_DIAGNOSTIC_R1_RESULT_2026-07-24.md)。
+
+```powershell
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure test_route_invalid_reset_lifecycle_diagnostic.py
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure run_route_invalid_reset_lifecycle_diagnostic.py --config configs/ustrf_route_target_route_invalid_reset_lifecycle_diagnostic_r1.json --repo .
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_route_invalid_reset_lifecycle_diagnostic.py --config configs/ustrf_route_target_route_invalid_reset_lifecycle_diagnostic_r1.json --terminal artifacts.local/evidence/ustrf-route-invalid-reset-lifecycle-diagnostic-r1/terminal-receipt-r1.json --output artifacts.local/evidence/ustrf-route-invalid-reset-lifecycle-diagnostic-r1/validation-receipt-r1.json --repo .
+```
 
 ## R2-L1 trace-only metric profiles
 
