@@ -1,6 +1,19 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / causal route-intrusion signal R0 `SIGNAL_REJECT / VALID` / L2+L3 prereg frozen but not authorized
+
+## Candidate-independent causal route-intrusion signal R0
+
+本轮加入 track/relation/timing family 不含的新测量变量，而不是继续扩 policy：对同一 track/reset 的 5 帧 causal history，计算 bbox footpoint 相对 route UV 的径向接近、横向收敛及 normalized bbox-height expansion，固定 `2-of-3` 符号门。producer 先证明 123 条候选投影 bbox-exact，再折叠为 41 序列 / 62,229 帧；冻结 inventory 前 truth/event/oracle/负暴露解码均为 0。
+
+结果为 `SIGNAL_REJECT / VALID`：1,903 个激活只覆盖 `7/11 = 21/33`，低于旧 timing family 的乐观 `8/11 = 24/33`；负暴露有 `43` 个，即 `8.6759/min`，远高于 `<=2 / <=0.50/min`。该信号直接淘汰，不调窗口/组合/阈值，不生成 policy 或连接 opener。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_CAUSAL_ROUTE_INTRUSION_SIGNAL_R0_RESULT_2026-07-24.md)。
+
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure run_causal_route_intrusion_signal_r0.py --repo . --config configs/ustrf_causal_route_intrusion_signal_r0.json --phase producer
+.\.venv-export312\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure run_causal_route_intrusion_signal_r0.py --repo . --config configs/ustrf_causal_route_intrusion_signal_r0.json --phase audit
+.\.venv-export312\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure validate_causal_route_intrusion_signal_r0.py --repo . --config configs/ustrf_causal_route_intrusion_signal_r0.json
+.\.venv-export312\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure test_causal_route_intrusion_signal_r0.py -v
+```
 
 ## Current-input policy feasibility bound R0
 

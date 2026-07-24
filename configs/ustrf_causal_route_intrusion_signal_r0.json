@@ -1,0 +1,162 @@
+{
+  "schema": "blindassist_ustrf_causal_route_intrusion_signal_r0",
+  "stage": "CANDIDATE-INDEPENDENT-CAUSAL-ROUTE-INTRUSION-SIGNAL-R0",
+  "status": "frozen_before_any_signal_output",
+  "frozen_on": "2026-07-24",
+  "purpose": "Test whether a genuinely new candidate-independent causal route-relative approach/intrusion measurement adds separability beyond track/relation/timing, without training, candidate execution, policy tuning, or opener integration.",
+  "hypothesis": "A track is more discriminative when at least two of route-relative radial distance, route-relative lateral distance, and normalized bbox scale move toward the route-risk direction over the same causal five-frame history.",
+  "claim_boundary": {
+    "maximum": "NEW_SIGNAL_SEPARABILITY_PROBE_ONLY",
+    "candidate_independent": true,
+    "signal_output_visible_at_freeze": false,
+    "training": false,
+    "successor_policy": false,
+    "threshold_sweep_or_tuning": false,
+    "ttl_or_renewal_change": false,
+    "candidate_execution_or_comparison": false,
+    "opener_integration": false,
+    "selection": false,
+    "l2_or_l3": false,
+    "android_shadow": false,
+    "h2": false,
+    "human_outcome": false,
+    "independent_walking_safety": false,
+    "production": false
+  },
+  "non_goals": [
+    "train or fit a model, sweep a threshold, select a history window, or choose a component combination after signal output is visible",
+    "modify detector, T0, causal route, active relation, reset, C1-C3, truth, oracle, clearance, two-frame guard, TTL, renewal, or opener",
+    "interpret image-plane trend as physical TTC, calibrated distance, collision probability, user outcome, or safety authority",
+    "retain the signal if it fails simultaneous complete coverage and empirical negative-exposure risk",
+    "create more policy contracts or timing variants to rescue a rejected new-information signal"
+  ],
+  "signal": {
+    "name": "causal_route_relative_intrusion_trend_2_of_3",
+    "version": "r0",
+    "history_length_frames": 5,
+    "source_size": [640, 480],
+    "scope": "source_sequence_reset_segment_track",
+    "allowed_inputs": [
+      "track_identity_as_permutation_equivariant_scope_only",
+      "current_and_past_t0_bbox",
+      "current_and_past_causal_route_uv",
+      "current_and_past_active_route_relation",
+      "route_validity",
+      "reset",
+      "relative_capture_time"
+    ],
+    "components": {
+      "route_relative_radial_distance": "sqrt((bbox_bottom_center_x-route_u)^2+(bbox_y2-route_v)^2)/frame_diagonal",
+      "route_relative_lateral_distance": "abs(bbox_bottom_center_x-route_u)/frame_width",
+      "normalized_log_bbox_height": "ln((bbox_y2-bbox_y1)/frame_height)"
+    },
+    "camera_motion_scope": "route-relative image-plane position subtracts the contemporaneous causal route-UV displacement and therefore compensates common image translation only; rotation, scale, depth, and full ego-motion compensation are not claimed",
+    "slope_estimator": "median of all 10 past-only pairwise slopes over exactly five consecutive valid frames",
+    "component_thresholds_per_second": {
+      "route_relative_radial_distance_slope": 0.0,
+      "route_relative_lateral_distance_slope": 0.0,
+      "log_bbox_height_slope": 0.0
+    },
+    "positive_component_count_required": 2,
+    "positive_rule": "radial slope < 0 plus lateral slope < 0 plus log-height slope > 0; at least two of three",
+    "history_invalidation": [
+      "reset_before_frame",
+      "route_unknown",
+      "track_unobserved",
+      "active_relation_gap",
+      "nonconsecutive_frame",
+      "nonincreasing_timestamp",
+      "invalid_bbox_or_route_uv",
+      "sequence_end"
+    ],
+    "one_token_per_track_per_reset": true,
+    "renewal": false,
+    "optimistic_validity": "activation remains eligible only through the same uninterrupted route-known active-relation episode; no nominal TTL is applied in this separability probe",
+    "forbidden_inputs": [
+      "candidate_identity",
+      "source_or_sequence_as_feature",
+      "raw_track_id_value_order_hash_or_tie_break",
+      "absolute_timestamp",
+      "truth_or_event",
+      "future_frames",
+      "clearance",
+      "oracle_token",
+      "negative_exposure_membership"
+    ]
+  },
+  "phase_order": [
+    "verify frozen config and all parent hashes before signal output",
+    "rebuild 123 candidate projections and prove frame-exact equality before collapse",
+    "collapse to 41 candidate-independent sequences",
+    "producer computes and freezes all signal ledgers with zero truth event oracle or negative-exposure decode",
+    "separate audit process reverifies every ledger SHA",
+    "only then join 12 candidate-independent events and full half-open negative exposure",
+    "quantify coverage risk and delta versus the current-family bound",
+    "retain only on simultaneous 11/11 coverage and at most two empirical negative activations; otherwise reject"
+  ],
+  "expected_scope": {
+    "candidate_projections": 123,
+    "sequences": 41,
+    "frames": 62229,
+    "candidate_executions": 0
+  },
+  "evaluation_gate": {
+    "required_supported_unique_events": 11,
+    "required_supported_candidate_cells": 33,
+    "required_no_active_relation_unique_events_closed": 1,
+    "required_no_active_relation_candidate_cells_closed": 3,
+    "current_negative_exposure_minutes": 4.95626851575,
+    "point_rate_max_per_minute": 0.5,
+    "maximum_empirical_negative_token_count": 2,
+    "poisson_confidence": 0.95,
+    "poisson_ucb_max_per_minute": 0.5,
+    "minimum_zero_event_exposure_minutes": 5.9915,
+    "minimum_negative_sequences_per_source": 3,
+    "unknown_route_activation_max": 0,
+    "cross_reset_activation_max": 0,
+    "duplicate_token_max": 0,
+    "current_risk_support_known_insufficient_for_full_pass": true
+  },
+  "parent_bindings": {
+    "producer_config": {
+      "path": "configs/ustrf_truth_blind_causal_per_track_attribution_token_producer_audit_r0.json",
+      "sha256": "74b299f14a6c82fa747ce16c0961b20fcf2259ff685ad8b08093514d1cd81d8d"
+    },
+    "current_family_config": {
+      "path": "configs/ustrf_current_input_policy_feasibility_bound_r0.json",
+      "sha256": "a809d5a5ba2299883f9d0f1ea98e8506b5304f1fe3b082746639e3bcd869de5f"
+    },
+    "current_family_terminal": {
+      "path": "artifacts.local/evidence/ustrf-current-input-policy-feasibility-bound-r0/terminal-receipt-r0.json",
+      "sha256": "2d5b3eda1bc047302d8ce2c2de3998821fb81dcb4cbbcfc66b5cb3f935803cf6"
+    },
+    "current_family_validation": {
+      "path": "artifacts.local/evidence/ustrf-current-input-policy-feasibility-bound-r0/validation-receipt-r0.json",
+      "sha256": "7ac13bbb90a6e684d7512008f9027e01f43d16d28fb75a5580c4dda6cb6bc865"
+    }
+  },
+  "route_bindings": [
+    {
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/seen-route-role-review-bundle-r1.json",
+      "sha256": "e067e64148a313fff60a90d215acc730113b40446591a1506cc9209f7a22502d"
+    },
+    {
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/holdout-causal-route-ledger-r1.json",
+      "sha256": "d63227d00c22c166f52d4998c3a48e0740cd03788fae01d62dbbbfdbf3d26c73"
+    },
+    {
+      "path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1-replacement/holdout-causal-route-ledger-r1.json",
+      "sha256": "7c83a2c0cfe7d383438c581da2f747f98e806755cd14f04a68e71db8d1260eed"
+    }
+  ],
+  "terminal_states": [
+    "SIGNAL_SEPARABILITY_PASS_RISK_SUPPORT_INSUFFICIENT",
+    "SIGNAL_REJECT"
+  ],
+  "outputs": {
+    "root": "artifacts.local/evidence/ustrf-causal-route-intrusion-signal-r0",
+    "inventory": "signal-inventory-r0.json",
+    "terminal": "terminal-receipt-r0.json",
+    "validation": "validation-receipt-r0.json"
+  }
+}
