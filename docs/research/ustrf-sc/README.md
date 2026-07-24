@@ -14,6 +14,7 @@
 
 ## 协议与专项记录
 
+- [route-target L1E materialization recovery R3 结果（2026-07-24）](USTRF_ROUTE_TARGET_L1E_MATERIALIZATION_RECOVERY_R3_RESULT_2026-07-24.md)：以目标 App 私有目录替代跨 UID external-files，保留冻结 6 GiB 门并按连续采样/单进程单分片执行；canary `1,455/1,455` RGB 可见，首条 CrowdBot raw/compact successor 已闭合。跨阶段 canonical input 为 `3/41` ledger、`6,049/62,229` 帧；剩余 38 条，C1–C3 仍未运行。
 - [route-target R2-L1X-L2P 结果（2026-07-24）](USTRF_ROUTE_TARGET_R2_L1X_L2P_RESULT_2026-07-24.md)：在任何新候选输出前冻结 L2 fresh-selection 执行级预注册与 non-executable L3 lockbox 模板；R2 和 outcome-unseen A1 均保留独立失败收据。最终因设备 manifest materialization 与 6 GiB 内存门耗尽，以 `FAIL_CLOSED_EXECUTION_ABORTED` 闭合；C1–C3、trace/profile、selection、L3、shadow/H2/人体/生产均未运行或开放。
 - [route-target R2-L1E 单次探索 profile 结果（2026-07-24）](USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_R1_RESULT_2026-07-24.md)：合法终态为 `FAIL_CLOSED_EXECUTION_ABORTED`；6 GiB 可用内存门在初始尝试和两次有界重试中均触发，故首个 CrowdBot device raw attempt 未创建、候选未运行。逐 ledger 审计验证 2/41 条、4,594/62,229 帧 canonical raw，精确记录其余 39 条、57,635 帧缺口；selection、Android shadow、H2 与生产权限保持关闭。
 - [route-target R2-L1E 单次探索 profile 通宵目标（2026-07-24）](USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_OVERNIGHT_GOAL_2026-07-24.md)：绑定 R2-L1 收据与冻结 C1–C3，让三个候选各对 41 条 masked sequence ledger 单次 replay，并在 15 个冻结观测断点重置状态；canonical raw 逐 ledger 分片闭环，不选胜者、不新增数据、不开放 Android/H2/生产。

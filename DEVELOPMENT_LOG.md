@@ -1,5 +1,8 @@
 # Development Log
 ## 2026-07-24
+### USTRF route-target L1E materialization recovery R3
+- 时间：2026-07-24；执行者：violjjet。新建独立 `R2-L1E-RECOVERY-B1` 阶段，保留父 R2/A1 `FAIL_CLOSED_EXECUTION_ABORTED` 与旧重试预算；将 Android 输入运输改为 `/data/local/tmp -> run-as target -> targetContext.filesDir`，并保持冻结 6 GiB 可用内存门，以 6 次 readiness 采样、加载后/启动前复查和单进程单分片控制资源。SM-S9280 transport canary 逐一通过首个 CrowdBot 分片 `1,455/1,455` RGB 哈希；随后同一分片完成 Android Canvas/TFLite raw、流式拉取、逐帧回执、host decode、compact ledger 与 successor 验证。跨阶段 canonical input 进度为 `3/41` ledger、`6,049/62,229` 帧，剩余 38 条；C1–C3、trace/profile/selection/L2/L3/shadow/H2/人体/生产仍为 0 或 false。双 APK build、真机两个 `OK (1 test)`、6 项 focused contract tests、Python compile 和 cleanup 通过。详见 [R3 结果](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1E_MATERIALIZATION_RECOVERY_R3_RESULT_2026-07-24.md)。
+
 ### USTRF route-target R2-L1X-L2P fail-closed recovery and preregistration
 - 时间：2026-07-24；执行者：violjjet。在任何新 C1–C3 输出前冻结 L2 fresh-selection 的 8 required metrics、原性能门、primary/tie-break、单次运行、两-family/逐-family分母、worst-source、hard veto、数据角色与唯一 provisional selection 语义，并建立 `executable=false`、`candidate_id=null` 的 L3 6-session/60-pair/LOSO/bootstrap lockbox 模板；L2/L3 validator 与 38 项 mutation tests 通过，未下载或新增 replay 数据。
 - 执行：R2 使用独立 evidence/attempt/device namespace 并保留父 R1 failure。原 R2 三次在新远端路径与旧 cleanup 白名单不兼容处、设备/raw 前 fail closed；outcome-unseen A1 仅修路径白名单，前两次 instrumentation 因 app external-files manifest materialization 不可见而无 receipt/raw，第三次在 bundle load 后可用内存 `5,512,597,504 < 6,442,450,944` bytes，尝试耗尽。最终 `FAIL_CLOSED_EXECUTION_ABORTED` validator 有效，仍为 2/41 ledger、4,594/62,229 帧、15/15 reset，C1–C3/trace/profile/selection/L3/shadow/H2/人体/生产均未运行或开放。详见 [日期化结果](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_R2_L1X_L2P_RESULT_2026-07-24.md)。

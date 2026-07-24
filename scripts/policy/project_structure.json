@@ -24,6 +24,8 @@
   "internal_reference_source_allowlist": [
     "configs/ustrf_route_target_r2_l1x_l2p_prereg_r1.json",
     "configs/ustrf_route_target_r2_l1x_l2p_transport_amendment_a1.json",
+    "configs/ustrf_route_target_l1e_materialization_recovery_r3_canary.json",
+    "configs/ustrf_route_target_l1e_materialization_recovery_r3_one_shard.json",
     "scripts/run_public_video_edge_inference.ps1",
     "scripts/test_check_project_structure.ps1"
   ]
