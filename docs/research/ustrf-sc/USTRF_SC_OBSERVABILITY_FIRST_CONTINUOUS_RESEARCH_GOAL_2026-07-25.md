@@ -1,10 +1,10 @@
 # USTRF-SC 可观测性优先架构与持续研究总目标（2026-07-25）
 
-状态：`CURRENT / CONTINUOUS_GOAL / ACTIVE_RESEARCH_GUIDANCE`
+状态：`TERMINAL_RESEARCH_OUTCOME / EVIDENCE_PROGRAM_BLOCKED_BY_REAL_WORLD_AUTHORITY / VALID`
 
 持续授权：`OBSERVABILITY_AUDIT_AND_FALSIFIABLE_OFFLINE_RESEARCH_ONLY`
 
-当前第一可执行边界：`CANONICAL_OBSERVATION_AUTHORITY_AND_REPAIRABILITY_AUDIT_R0`
+当前研究边界：无可在现有 authority 内继续执行的 G1–G7；恢复须取得 fresh metric geometry + stable pose、intended-route truth、独立 event lifecycle truth 或明确的新采集授权
 
 算法成熟度：`CORE_ALGORITHM_EFFECT_NOT_PROVEN`
 
@@ -322,6 +322,16 @@ G10 controlled device / human-facing review
 G0–G7 均是研究阶段。G8 之后仍需独立权限，不因本总目标自动开放。
 
 ## 七、当前第一可执行边界：G0
+
+> 2026-07-25 进度：G0 已按 A source-only inventory、B aggregate-denominator-only availability、第三进程 validator 完成，终态为 `SOURCE_AUTHORITY_ABSENT / VALID`。现有 41/41 sequence、62,229/62,229 frame 的 geometry/RGB/time/membership 可核验，但 canonical transform 全部 unknown、authoritative severe truncation 全部 absent。按本节优先级不得启动 G1；若继续，须另立 `CANONICAL_OBSERVATION_SOURCE_AUTHORITY_DATA_PACK_R0`，不得用 schema repair、heuristic truncation 或缩分母回救。日期化证据见 [G0 结果](USTRF_CANONICAL_OBSERVATION_AUTHORITY_AND_REPAIRABILITY_AUDIT_R0_RESULT_2026-07-25.md)。
+
+> 2026-07-25 后继进度：JRDB 官方 test labels + sensor PDF 已形成 27 sequence / 27,661 frame / 956,803 object 的 source-authority canary；source-native truncation true/false/missing 为 30,889/925,799/115，独立复算为 `AUTHORITY_CANARY_PRESENT_ROUTE_ROLE_PENDING / VALID`。这只证明新公开来源的 label/calibration authority 可行；RGB frame identity、timestamp 与 route-role truth 未物化，父 G0 不变，G1 仍不得启动。证据见 [data-pack R0 结果](USTRF_CANONICAL_OBSERVATION_SOURCE_AUTHORITY_DATA_PACK_R0_RESULT_2026-07-25.md)。
+
+> 2026-07-25 access canary：JRDB 官方 toolkit 与 sample structure 已 hash-bound。static calibration、stitched image 路径合同和 `timestamps/` 目录约定存在，但 sample 只有 16 个空目录、0 payload；toolkit 把 label key 称为 timestamp，不能提供独立 capture clock。公开下载页要求登录，两个浏览器均无 JRDB 登录态，故独立复算终态为 `ACCESS_BLOCKED_LOGIN_REQUIRED / VALID`。当前不得猜 URL 或启动 G1；只有用户自行登录后，才可另立单 sequence、小预算的 RGB/time canary。证据见 [access canary R0 结果](USTRF_JRDB_RGB_TIME_FRAME_TRANSFORM_ACCESS_CANARY_R0_RESULT_2026-07-25.md)。
+
+> 2026-07-25 登录后续：用户自行建立登录态后，官方清单暴露旧版 test images/timestamps/calibration 的精确 URL。R1 以 64 MiB 门对 22.5 GB ZIP64 做 byte-range，只读取 21.9 MB central directory 与一个 compressed JPEG；同一 `cubberly-auditorium-2019-04-22_1/000000.jpg` 的 9-object label、capture timestamp `1555960991.4668088`、3760×480 RGB 与 calibration 闭合。producer/validator 各 22,257,329 bytes，终态 `RGB_TIME_TRANSFORM_CANARY_PRESENT / VALID`。这解除新来源 transport blocker，但不改写父 G0，不开放 G1、route truth 或 signal；下一合法边界只可做短连续窗口的 RGB continuity/ego-motion availability。证据见 [single-frame R1 结果](USTRF_JRDB_SINGLE_FRAME_RGB_TIME_TRANSFORM_CANARY_R1_RESULT_2026-07-25.md)。
+
+> 2026-07-25 短窗后续：冻结 32 帧/31 pair、person+16px mask、sparse LK 与单一 RANSAC full affine。timestamp、657–803 features、649–792 tracks、11–12/12 grid、residual、condition 和 determinant 均通过，但仅 11/31 pair 达到 inlier ratio ≥0.65，低于 28/31 availability 门；独立终态 `EGOMOTION_QUALITY_AVAILABILITY_INSUFFICIENT / VALID`。不降门、不扩 JRDB sequence、不运行 G3/G4；后续只接受 metric depth、VIO/IMU、真实 route provider 或 route-authoritative 新数据。证据见 [continuity/ego-motion R0 结果](USTRF_JRDB_RGB_CONTINUITY_EGOMOTION_AVAILABILITY_R0_RESULT_2026-07-25.md)。
 
 阶段名：
 
@@ -893,11 +903,13 @@ U0 通过也只授权后继 student 或 offline producer 研究，不授权 App 
 
 ## 二十二、持续完成条件
 
+> 2026-07-25 终局：七族 hash-bound 证据由 producer/validator 独立复算为 `EVIDENCE_PROGRAM_BLOCKED_BY_REAL_WORLD_AUTHORITY / VALID`。当前 source transport 可行，但 canonical transform/truncation、fresh metric geometry、inter-frame stable pose、intended-route truth 与独立 event lifecycle truth 未同时存在；因此 G1–G7 不能完整执行。该结论不是算法 reject，也不是任务在权威输入下不可观测。证据见 [program terminal R0 结果](USTRF_OBSERVABILITY_PROGRAM_REAL_WORLD_AUTHORITY_TERMINAL_R0_RESULT_2026-07-25.md)。
+
 本总目标不是以“某个脚本运行完成”结束，而按里程碑更新状态。
 
 ### 22.1 研究架构里程碑
 
-- [ ] G0 authority/repairability audit 完成；
+- [x] G0 authority/repairability audit 完成（`SOURCE_AUTHORITY_ABSENT / VALID`；G1 未开放）；
 - [ ] G1 canonical observation spine 可复算；
 - [ ] G2 pure-scale 获得合法终态；
 - [ ] G3 ego-motion availability 获得合法终态；
@@ -926,6 +938,8 @@ U0 通过也只授权后继 student 或 offline producer 研究，不授权 App 
 
 核心研究尚不能获得所需 source fact、route truth、event truth、参与者 consent 或用户权限，因而实验不能完整执行。明确阻塞项并保持研究/产品权限关闭；不得把这一结局写成算法不可分。
 
+当前最终结局：`EVIDENCE_PROGRAM_BLOCKED_BY_REAL_WORLD_AUTHORITY / VALID`（2026-07-25）。
+
 任何结局都必须保留：
 
 - 不扩大负结果；
@@ -945,11 +959,11 @@ U0 通过也只授权后继 student 或 offline producer 研究，不授权 App 
 4. Evidence Maturity V2；
 5. 本持续研究总目标。
 
-当前第一且唯一可执行边界为 CANONICAL_OBSERVATION_AUTHORITY_AND_REPAIRABILITY_AUDIT_R0。只读审计现有 41 条 sequence 的 source width/height、orientation/rotation、crop/letterbox/flip、bbox coordinate frame、authoritative severe truncation、RGB continuity、capture timestamp/PTS、frame gap/reset、route/frame membership 和后继 ego-motion 输入可用性。
+G0 `CANONICAL_OBSERVATION_AUTHORITY_AND_REPAIRABILITY_AUDIT_R0` 已闭合为 `SOURCE_AUTHORITY_ABSENT / VALID`。JRDB 单帧 authority canary 为 `RGB_TIME_TRANSFORM_CANARY_PRESENT / VALID`，但短窗 global-affine availability 为 `EGOMOTION_QUALITY_AVAILABILITY_INSUFFICIENT / VALID`。不得启动当前数据的 G1，也不得扩大 JRDB、降低 inlier 门或把新来源当 route truth。下一信息增量只能来自 metric depth、VIO/IMU、真实 route provider 或 route-authoritative 新 data pack。
 
 严格分两阶段：A 阶段 candidate-blind 冻结逐帧字段 authority inventory，event/truth/oracle/cell/negative/signal/candidate decode 均为 0；B 阶段新进程先复验 inventory SHA，再只联结冻结 denominator/eligibility key，计算 unknown 即弃权下的 availability upper bound，不读取 signal、candidate、alert 或 truth outcome。对于当前 scale role，repairable 必须能同时保留 11/11 event、33/33 cell、完整 4.95626851575min 负暴露、41/41 sequence 和 62,229/62,229 frame membership。
 
-G0 不实现 signal、不计算 slope、不读取 truth outcome、不修 schema、不生成 frontier、不写 Android/runtime/opener/通用框架。时间预算 2–4 小时；若需要大规模重新物化，先输出 gap matrix 并终止。
+已完成的 G0 不实现 signal、不计算 slope、不读取 truth outcome、不修 schema、不生成 frontier、不写 Android/runtime/opener/通用框架；其 gap matrix 与三进程验证必须保留为后继 data-pack 的父终态。
 
 G0 唯一合法终态：
 1. AUTHORITY_PRESENT_AND_REPAIRABLE；

@@ -1,0 +1,57 @@
+{
+  "schema": "blindassist_ustrf_observability_program_authority_terminal_r0_config",
+  "stage": "USTRF_OBSERVABILITY_PROGRAM_REAL_WORLD_AUTHORITY_TERMINAL_R0",
+  "status": "frozen_before_execution",
+  "frozen_on": "2026-07-25",
+  "bindings": {
+    "source_goal": {
+      "path": "docs/research/ustrf-sc/USTRF_OBSERVABILITY_PROGRAM_REAL_WORLD_AUTHORITY_TERMINAL_R0_GOAL_2026-07-25.md",
+      "sha256": "c4b509a4a8139ad22b23e030c9307af7bb064830a520392b108b2e3ee56fc866"
+    },
+    "stable_research_adapter": {
+      "path": "scripts/run_research_tool.py",
+      "sha256": "0899ee10d43274105b5182975c492f1dbb8a9a81e06bc9969c01ed1b84d6078a"
+    },
+    "g0_validation": {
+      "path": "artifacts.local/evidence/ustrf-canonical-observation-authority-repairability-r0/validation-receipt-r0.json",
+      "sha256": "5206eb27b90e6a48788cd59fe1446a7e035571c101afbb3a6f3a8ad7bd39b4b1"
+    },
+    "jrdb_single_frame_validation": {
+      "path": "artifacts.local/evidence/ustrf-jrdb-single-frame-rgb-time-transform-canary-r1/validation.json",
+      "sha256": "d6744c387d6142bb9415b98bad24739a2cf7b0020a08efaf4c6812e7cbd9cb31"
+    },
+    "jrdb_egomotion_validation": {
+      "path": "artifacts.local/evidence/ustrf-jrdb-rgb-continuity-egomotion-availability-r0/validation.json",
+      "sha256": "35fb44deced94034feee15f603ddd893b720a315bb905e3537452936b212227e"
+    },
+    "arcore_freshness": {
+      "path": "artifacts.local/evidence/ustrf-sc/2026-07-20-arcore-moving-freshness-sm-s9280-r3/summary.json",
+      "sha256": "255ba54d9535555104ac95382961fa1b5378a5f2944960cb6ea85baf40f967c6"
+    },
+    "sensor_replay_r2": {
+      "path": "artifacts.local/evidence/ustrf-sensor-replay-r2/replay-report-v2.json",
+      "sha256": "75c8f4172f3ecb8e382a5b7c0d38f4d5243a3d4074a18da24e283b49b1ef6580"
+    },
+    "sensor_replay_r3": {
+      "path": "artifacts.local/evidence/ustrf-sensor-replay-r3/replay-report-v1.json",
+      "sha256": "c599c1a2f26ee7dbc77cdc3482f6cec6f8c26bd0243c6c8bc5209544ea25dd1d"
+    },
+    "sanpo_current_status": {
+      "path": "docs/SANPO_CURRENT_STATUS.md",
+      "sha256": "9e1e949739fd71575defede4f6999e8a1e662c16769867d11bcc857dcb099103"
+    }
+  },
+  "research_implementation_digests": {
+    "producer": "9f282b186c7dac24262053cfde45a82d70a46b2370120733ca087ed530c210ac",
+    "validator": "2826cf9ae60b0299a88abdd224454004d09d046536cd49074c8f072da8434e46"
+  },
+  "terminal_states": [
+    "FAIL_CLOSED_PROGRAM_AUDIT_INCOMPLETE",
+    "NEXT_STAGE_REAL_WORLD_AUTHORITY_PRESENT",
+    "EVIDENCE_PROGRAM_BLOCKED_BY_REAL_WORLD_AUTHORITY"
+  ],
+  "outputs": {
+    "receipt": "artifacts.local/evidence/ustrf-observability-program-authority-terminal-r0/receipt.json",
+    "validation": "artifacts.local/evidence/ustrf-observability-program-authority-terminal-r0/validation.json"
+  }
+}

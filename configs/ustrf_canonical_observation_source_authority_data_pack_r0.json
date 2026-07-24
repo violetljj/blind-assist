@@ -1,0 +1,49 @@
+{
+  "schema": "blindassist_ustrf_canonical_observation_source_authority_data_pack_r0",
+  "stage": "CANONICAL_OBSERVATION_SOURCE_AUTHORITY_DATA_PACK_R0",
+  "status": "frozen_before_canary",
+  "frozen_on": "2026-07-25",
+  "purpose": "Audit JRDB public test labels and official sensor documentation as a labels/calibration-only source-authority canary after G0 SOURCE_AUTHORITY_ABSENT.",
+  "bindings": {
+    "source_goal": {
+      "path": "docs/research/ustrf-sc/USTRF_CANONICAL_OBSERVATION_SOURCE_AUTHORITY_DATA_PACK_R0_GOAL_2026-07-25.md",
+      "sha256": "0b6f460ce16d9aee6f32c335efc7f96c21ea79a8037fd92fd6b200b62a2bea3d"
+    },
+    "jrdb_test_labels": {
+      "path": "artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb/test_labels.zip",
+      "sha256": "a6247ef79a5d37033accf0c96128943fb4116ebad9fc10663a8464440646b10d"
+    },
+    "jrdb_sensor_documentation": {
+      "path": "artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb/Sensor_setup_JRDB.pdf",
+      "sha256": "39b888686160c4d0beedc11e15d68c1de840dfd834adc1c91392aa87b0495d7d"
+    },
+    "stable_research_adapter": {
+      "path": "scripts/run_research_tool.py",
+      "sha256": "0899ee10d43274105b5182975c492f1dbb8a9a81e06bc9969c01ed1b84d6078a"
+    }
+  },
+  "research_implementation_digests": {
+    "producer": "ad6fc9e8a9bd8205d7a77bc4703f0a6248be77fdae82a5734c006d97a618f0b5",
+    "validator": "d4201d86ed9d76196cb18b30215013544dc7c1f854e66fef4724df3d6c7530ec"
+  },
+  "resource_gate": {
+    "maximum_download_bytes": 2147483648,
+    "full_rgb_download_authorized": false,
+    "point_cloud_download_authorized": false
+  },
+  "known_missing": {
+    "rgb_frame_identity": "not_in_test_labels_archive",
+    "capture_timestamp": "not_in_test_labels_archive",
+    "route_role_truth": "not_materialized"
+  },
+  "terminal_states": [
+    "FAIL_CLOSED_ACCESS_OR_AUDIT_INCOMPLETE",
+    "SOURCE_SCHEMA_AUTHORITY_INSUFFICIENT",
+    "AUTHORITY_CANARY_PRESENT_ROUTE_ROLE_PENDING",
+    "SOURCE_DATA_PACK_ADMISSIBLE_FOR_NEW_DISCOVERY"
+  ],
+  "outputs": {
+    "receipt": "artifacts.local/evidence/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb-source-authority-canary-r0.json",
+    "validation": "artifacts.local/evidence/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb-source-authority-canary-validation-r0.json"
+  }
+}

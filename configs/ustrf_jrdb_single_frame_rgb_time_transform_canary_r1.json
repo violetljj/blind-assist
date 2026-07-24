@@ -1,0 +1,69 @@
+{
+  "schema": "blindassist_ustrf_jrdb_single_frame_rgb_time_transform_canary_r1_config",
+  "stage": "JRDB_SINGLE_FRAME_RGB_TIME_TRANSFORM_CANARY_R1",
+  "status": "frozen_before_execution",
+  "frozen_on": "2026-07-25",
+  "canary": {
+    "sequence": "cubberly-auditorium-2019-04-22_1",
+    "frame": "000000.jpg",
+    "timestamp_camera": "stitched_image0"
+  },
+  "bindings": {
+    "source_goal": {
+      "path": "docs/research/ustrf-sc/USTRF_JRDB_SINGLE_FRAME_RGB_TIME_TRANSFORM_CANARY_R1_GOAL_2026-07-25.md",
+      "sha256": "57c3440168cbb105595db5a85cabedade9d46db0f09c5511c61105ddd2e0f74f"
+    },
+    "stable_research_adapter": {
+      "path": "scripts/run_research_tool.py",
+      "sha256": "0899ee10d43274105b5182975c492f1dbb8a9a81e06bc9969c01ed1b84d6078a"
+    },
+    "test_labels": {
+      "path": "artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb/test_labels.zip",
+      "sha256": "a6247ef79a5d37033accf0c96128943fb4116ebad9fc10663a8464440646b10d"
+    },
+    "test_timestamps": {
+      "path": "artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb/test_timestamps.zip",
+      "sha256": "c481b9ead17ce9b18b9f2acc4fcd402b74cb5b39d704bebc8af50ddcf3e2fc37"
+    },
+    "test_calibration": {
+      "path": "artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb/test_calibration_2019.zip",
+      "sha256": "bb49fa4f69f8932eb8a1c02c02bd85d526c9c37e9c3b63c137f464eed3efee74"
+    },
+    "toolkit_calibration_defaults": {
+      "path": "artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb_toolkit/calibration/defaults.yaml",
+      "sha256": "0470cc0b44dd52bc1fb102e5357f2c604d065e775fe0bd67871291436f0accc5"
+    },
+    "toolkit_calibration_cameras": {
+      "path": "artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb_toolkit/calibration/cameras.yaml",
+      "sha256": "80ac6cd05690cc94c10eaf14cb5312efab06f0c4d4e535015146a8aa2e39972d"
+    }
+  },
+  "research_implementation_digests": {
+    "producer": "409ea593c771d28b9c7b063a757ef06dccb3d8e5c453e7509c1247e53ae2e918",
+    "validator": "e288a06b7d3e539b48f7da76a41150685b6f7536347771ea5584f16e07b268b4"
+  },
+  "remote_archive": {
+    "url": "https://jrdb.erc.monash.edu/static/downloads/test_images.zip",
+    "content_length": 22527101047,
+    "etag": "\"53eb84877-5e0c07f2eed9c\"",
+    "entry_count": 166135,
+    "central_directory_offset": 22505185483,
+    "central_directory_size": 21915466
+  },
+  "resource_gate": {
+    "maximum_network_bytes": 67108864,
+    "maximum_member_bytes": 8388608,
+    "full_archive_download_authorized": false
+  },
+  "terminal_states": [
+    "FAIL_CLOSED_AUDIT_INCOMPLETE",
+    "RANGE_EXTRACTION_RESOURCE_BLOCKED",
+    "SAME_FRAME_IDENTITY_OR_TIME_INSUFFICIENT",
+    "RGB_TIME_TRANSFORM_CANARY_PRESENT"
+  ],
+  "outputs": {
+    "image": "artifacts.local/evidence/ustrf-jrdb-single-frame-rgb-time-transform-canary-r1/cubberly-auditorium-2019-04-22_1__000000.jpg",
+    "receipt": "artifacts.local/evidence/ustrf-jrdb-single-frame-rgb-time-transform-canary-r1/receipt.json",
+    "validation": "artifacts.local/evidence/ustrf-jrdb-single-frame-rgb-time-transform-canary-r1/validation.json"
+  }
+}

@@ -1,6 +1,27 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / causal route-intrusion signal R0 `SIGNAL_REJECT / VALID` / route-conditioned scale-growth R0 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / causal route-intrusion signal R0 `SIGNAL_REJECT / VALID` / route-conditioned scale-growth R0 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID` / canonical observation authority R0 `SOURCE_AUTHORITY_ABSENT / VALID` / L2+L3 prereg frozen but not authorized
+
+## Canonical observation authority / repairability audit R0
+
+A 进程不复用会先解码 candidate/lifecycle 的旧 scale producer，而是从 source bundle、source frame ledger、canonical observation transport 和逐帧 RGB 独立重建 41 条 frame-ledger。结果覆盖 `41/41` sequence、`62,229/62,229` frame 与 263,680 person box：source geometry、RGB、capture time、frame membership 为 authoritative，bbox frame 为 verifiable transform；canonical transform 全部 unknown，authoritative severe truncation 全部 absent。
+
+B 新进程先复验 inventory SHA，再只读取 aggregate denominator projection；event/cell/negative identifier 与 truth/oracle/outcome/signal/candidate 解码均为 0。由于 severe truncation 全局 absent，availability 上界为 `0/11` independent event、`0/33` mechanical cell、`0/836` negative interval，第三进程复算为 `SOURCE_AUTHORITY_ABSENT / VALID`。G1、signal、Android 与更高权限保持关闭；详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_CANONICAL_OBSERVATION_AUTHORITY_AND_REPAIRABILITY_AUDIT_R0_RESULT_2026-07-25.md)。
+
+```powershell
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure run_canonical_observation_authority_inventory_r0.py --repo . --config configs/ustrf_canonical_observation_authority_inventory_r0.json
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure run_canonical_observation_denominator_availability_r0.py --repo . --config configs/ustrf_canonical_observation_denominator_availability_r0.json --inventory artifacts.local/evidence/ustrf-canonical-observation-authority-repairability-r0/authority-inventory-r0.json --inventory-sha256 <frozen-inventory-sha256>
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_canonical_observation_authority_repairability_r0.py --repo . --config configs/ustrf_canonical_observation_denominator_availability_r0.json
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure test_canonical_observation_authority_repairability_r0.py
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure audit_jrdb_rgb_time_frame_transform_access_canary_r0.py --repo . --config configs/ustrf_jrdb_rgb_time_frame_transform_access_canary_r0.json
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_jrdb_rgb_time_frame_transform_access_canary_r0.py --repo . --config configs/ustrf_jrdb_rgb_time_frame_transform_access_canary_r0.json
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure materialize_jrdb_single_frame_rgb_time_transform_canary_r1.py --repo . --config configs/ustrf_jrdb_single_frame_rgb_time_transform_canary_r1.json
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_jrdb_single_frame_rgb_time_transform_canary_r1.py --repo . --config configs/ustrf_jrdb_single_frame_rgb_time_transform_canary_r1.json
+E:\codex-tools\projects\blindassist\toolchain\venv-corridor-causal-py311\Scripts\python.exe scripts/run_research_tool.py ustrf-route-target-evidence-closure audit_jrdb_rgb_continuity_egomotion_availability_r0.py --repo . --config configs/ustrf_jrdb_rgb_continuity_egomotion_availability_r0.json
+E:\codex-tools\projects\blindassist\toolchain\venv-corridor-causal-py311\Scripts\python.exe scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_jrdb_rgb_continuity_egomotion_availability_r0.py --repo . --config configs/ustrf_jrdb_rgb_continuity_egomotion_availability_r0.json
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure audit_ustrf_observability_program_authority_terminal_r0.py --repo . --config configs/ustrf_observability_program_authority_terminal_r0.json
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_ustrf_observability_program_authority_terminal_r0.py --repo . --config configs/ustrf_observability_program_authority_terminal_r0.json
+```
 
 ## Route-conditioned scale growth separability R0
 
