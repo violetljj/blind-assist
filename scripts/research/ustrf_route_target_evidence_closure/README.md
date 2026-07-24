@@ -1,6 +1,18 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / metric profiles unrun / L2+L3 prereg frozen
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / L2+L3 prereg frozen but not authorized
+
+## R2-L1 trace-only metric profiles
+
+`configs/ustrf_route_target_r2_l1_metric_profile_r1.json` 只读取 A2 terminal 中的 `123` 条权威 trace，并绑定 A3 completion、A4 4 GiB memory validation、eligibility protocol/mask/receipt 与三份 post-output truth。入口逐条复核 trace/authoritative-receipt SHA、四元 frame identity、每候选 `41` ledger / `62,229` 帧 / `15` reset，再做 truth join；不运行候选、不创建新 trace。
+
+评分器按 delivery track 独立归因，critical miss 使用精确 critical interval 上的 active relation，closure key 附加 reset segment，clearance 使用 capture timestamp + `1500ms` horizon。现有 trace 的 consume timestamp 为 `0/62,229`，因此三个 evidence-age profile 均严格为 `not_evaluable`。结果为 `METRIC_PROFILES_COMPLETE / VALID`：critical miss 都是 `0/8` 但 bound 不足；三个 profile 都存在 unknown/stale active-alert 硬 veto 且 clearance 点估计失败；repeat 仅 underpowered。没有候选比较、排名、selection 或更高权限。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_R2_L1_METRIC_PROFILE_R1_RESULT_2026-07-24.md)。
+
+```powershell
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure test_metric_profiles_r2_l1.py
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure run_metric_profiles_r2_l1_from_traces.py --config configs/ustrf_route_target_r2_l1_metric_profile_r1.json --repo .
+python scripts/run_research_tool.py ustrf-route-target-evidence-closure validate_metric_profiles_r2_l1.py --config configs/ustrf_route_target_r2_l1_metric_profile_r1.json --repo .
+```
 
 ## L1 candidate replay R2
 

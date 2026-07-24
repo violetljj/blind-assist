@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "blindassist://schemas/ustrf_route_target_r2_l1_metric_profile_r1.schema.json",
+  "title": "USTRF route-target R2-L1 metric profile terminal receipt R1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "stage",
+    "terminal_state",
+    "authority",
+    "bindings",
+    "verified_scope",
+    "profile_inventory",
+    "metric_authority",
+    "claim_boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "blindassist_ustrf_route_target_r2_l1_metric_profile_terminal_r1"
+    },
+    "stage": {
+      "const": "R2-L1-METRIC-PROFILE-R1"
+    },
+    "terminal_state": {
+      "const": "METRIC_PROFILES_COMPLETE"
+    },
+    "authority": {
+      "const": "per_metric_l1_exploratory_only_no_comparison_selection_or_promotion"
+    },
+    "bindings": {
+      "type": "object",
+      "minProperties": 10,
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "verified_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_count",
+        "sequence_ledgers_per_candidate",
+        "authoritative_traces",
+        "authoritative_trace_frames",
+        "eligibility_mask_frames",
+        "truth_joined_after_output",
+        "candidate_reruns",
+        "new_authoritative_traces"
+      ],
+      "properties": {
+        "candidate_count": { "const": 3 },
+        "sequence_ledgers_per_candidate": { "const": 41 },
+        "authoritative_traces": { "const": 123 },
+        "authoritative_trace_frames": { "const": 186687 },
+        "eligibility_mask_frames": { "const": 62229 },
+        "truth_joined_after_output": { "const": true },
+        "candidate_reruns": { "const": 0 },
+        "new_authoritative_traces": { "const": 0 }
+      }
+    },
+    "profile_inventory": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["candidate_id", "profile_path", "profile_sha256"],
+        "properties": {
+          "candidate_id": {
+            "enum": [
+              "C1_CAUSAL_ROUTE_RELATION_FSM",
+              "C2_ROUTE_OCCUPANCY_EPISODE_FSM",
+              "C3_DUAL_KEY_CLEARANCE_FSM"
+            ]
+          },
+          "profile_path": { "type": "string", "minLength": 1 },
+          "profile_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "metric_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["l1", "conditional_l1", "l0_diagnostic_only"],
+      "properties": {
+        "l1": {
+          "const": [
+            "critical_miss",
+            "clearance",
+            "unknown_or_stale_alert"
+          ]
+        },
+        "conditional_l1": {
+          "const": ["repeat", "evidence_age"]
+        },
+        "l0_diagnostic_only": {
+          "const": [
+            "event_recall",
+            "regeneration",
+            "false_alerts_per_minute"
+          ]
+        }
+      }
+    },
+    "claim_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_comparison",
+        "winner_or_ranking",
+        "selection",
+        "threshold_or_denominator_change",
+        "l2_or_l3",
+        "android_shadow",
+        "h2",
+        "human_outcome",
+        "independent_walking_safety",
+        "production"
+      ],
+      "properties": {
+        "candidate_comparison": { "const": false },
+        "winner_or_ranking": { "const": false },
+        "selection": { "const": false },
+        "threshold_or_denominator_change": { "const": false },
+        "l2_or_l3": { "const": false },
+        "android_shadow": { "const": false },
+        "h2": { "const": false },
+        "human_outcome": { "const": false },
+        "independent_walking_safety": { "const": false },
+        "production": { "const": false }
+      }
+    }
+  }
+}

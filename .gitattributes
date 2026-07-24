@@ -6,9 +6,12 @@
 /configs/ustrf_route_target_r2_l1x_l2p_prereg_r1.json text eol=lf
 /configs/ustrf_route_target_r2_l1x_l2p_transport_amendment_a1.json text eol=lf
 /configs/ustrf_route_target_l1_candidate_replay_r2*.json text eol=lf
+/configs/ustrf_route_target_r2_l1_metric_profile_r1.json text eol=lf
 /docs/research/ustrf-sc/USTRF_ROUTE_TARGET_EVIDENCE_*.md text eol=lf
 /docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1_CANDIDATE_REPLAY_*.md text eol=lf
+/docs/research/ustrf-sc/USTRF_ROUTE_TARGET_R2_L1_METRIC_PROFILE_*.md text eol=lf
 /schemas/ustrf_route_target_l1_candidate_replay*.schema.json text eol=lf
+/schemas/ustrf_route_target_r2_l1_metric_profile_r1.schema.json text eol=lf
 /scripts/research/ustrf_route_target_evidence_closure/** text eol=lf
 
 # These terminal-bound R2 artifacts retain their frozen trailing blank line byte.

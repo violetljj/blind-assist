@@ -1,5 +1,9 @@
 # Development Log
 ## 2026-07-24
+### USTRF route-target R2-L1 trace-only metric profiles
+- 时间：2026-07-24；执行者：violjjet。新增 profile-only 冻结合同、schema、runner、validator 与 7 项 focused tests；只读采用 A2 terminal 的 `123/123` 权威 trace，并绑定 A3 completion、A4 memory validation、eligibility protocol/mask/receipt 和三份 post-output truth。评分前逐条复核 trace/authoritative-receipt SHA、四元 frame identity、每候选 `41` ledger / `62,229` 帧 / `15` reset；候选重跑、新权威 trace 和新数据均为 0。
+- 结果：终态 `METRIC_PROFILES_COMPLETE / VALID`，validator 重算 `186,687` candidate-frame。三个 profile 的 critical miss 均为 `0/8`，但 `n=8 < 59`，只能 `estimate_only / bound_sufficient=false`；clearance 分别为 `0/12`、`1/12`、`0/12`，unknown/stale active alert 分别为 `12,621`、`7,165`、`12,759` / `62,229`，均存在硬 veto；repeat 分母仅 `3/2/1`，evidence age 因 consume timestamp `0/62,229` 为 `not_evaluable`。L0 三项保持 diagnostic-only；未比较、排名、selection 或开放 L2/L3、shadow/H2、人体、独立行走和生产权限。详见 [R2-L1 metric profile 结果](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_R2_L1_METRIC_PROFILE_R1_RESULT_2026-07-24.md)。
+
 ### USTRF route-target L1 candidate replay R2
 - 时间：2026-07-24；执行者：violjjet。新建 replay-only R2 namespace，精确绑定旧 exploratory failure、R3 `41/41` completion、两个唯一 canonical input root、冻结 C1–C3/T0/route/reset 与独立 terminal/schema；同一 ledger 多根命中、compact/successor 漂移、partial attempt 或候选/config hash 漂移均 fail closed。权威 trace 只保留确定性状态/decision，wall time/RSS 留在 receipt；attempt-local trace+receipt 验证后才发布 authority。
 - 执行：初始 R2 在首个 attempt 前因 Windows 长路径失败、trace 为 0；A1 短 root 完成 10 条后仍在原子临时后缀处触发长路径。用户明确将本次 C1–C3 replay 内存门从 6 GiB 修订为 4 GiB；A2 同时使用短哈希 trace path，按父 receipt/hash 引用继承 A1 的 10 条完整 trace、不重跑，并新运行其余 113 条。
