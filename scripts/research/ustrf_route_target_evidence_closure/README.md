@@ -1,6 +1,18 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / L2+L3 prereg frozen but not authorized
+
+## Current-input policy feasibility bound R0
+
+`configs/ustrf_current_input_policy_feasibility_bound_r0.json` 冻结 current-input monotone lease family：同一共享 active-relation 持续时长、至少连续 2 帧、one-token-per-track/reset、fail-closed、no-renewal。求解先把 36 个 candidate cell 去重为 12 个候选无关事件，再穷尽全部正整数 duration breakpoint；为形成 coverage 上界只乐观忽略 nominal TTL，不跨越 relation/route/track/reset 失效，也不输出任何 threshold、TTL、activation map、witness 或候选 policy。
+
+结果为 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID`：完整 frontier 的最大 coverage 仅 `8/11 = 24/33`；冻结负暴露 `4.956min` 在 `0.50/min` 点率门下最多容许 2 个负 token，而风险约束下 coverage 上界仅 `2/11 = 6/33`。可信风险证据仍不足且没有被冒充为不可行原因。不能继续调资格时长/TTL/renewal，也不能接 opener；若继续，须另行预注册新的候选无关因果判别信号。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_CURRENT_INPUT_POLICY_FEASIBILITY_BOUND_R0_RESULT_2026-07-24.md)。
+
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_current_input_policy_feasibility_bound_r0.py --repo . --config configs\ustrf_current_input_policy_feasibility_bound_r0.json
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\validate_current_input_policy_feasibility_bound_r0.py --repo . --config configs\ustrf_current_input_policy_feasibility_bound_r0.json
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\test_current_input_policy_feasibility_bound_r0.py -v
+```
 
 ## Candidate-independent policy failure attribution R1
 

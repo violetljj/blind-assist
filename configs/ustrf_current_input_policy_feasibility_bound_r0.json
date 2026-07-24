@@ -1,0 +1,147 @@
+{
+  "schema": "blindassist_ustrf_current_input_policy_feasibility_bound_r0",
+  "stage": "CURRENT-INPUT-POLICY-FEASIBILITY-BOUND-R0",
+  "status": "frozen_before_r0_output",
+  "frozen_on": "2026-07-24",
+  "purpose": "Decide whether the current candidate-independent monotone lease-policy family has any frozen-data empirical upper bound that can simultaneously cover all 33 supported candidate-event cells and keep negative-exposure token activations at or below 0.50 per minute.",
+  "claim_boundary": {
+    "maximum": "CURRENT_INPUT_POLICY_FAMILY_EMPIRICAL_FEASIBILITY_BOUND_ONLY",
+    "candidate_independent": true,
+    "point_rate_bound_only": true,
+    "credible_population_risk_bound": false,
+    "candidate_policy_generated": false,
+    "threshold_selected_or_changed": false,
+    "ttl_changed": false,
+    "renewal_enabled": false,
+    "opener_integration": false,
+    "candidate_execution_or_comparison": false,
+    "selection": false,
+    "l2_or_l3": false,
+    "android_shadow": false,
+    "h2": false,
+    "human_outcome": false,
+    "independent_walking_safety": false,
+    "production": false
+  },
+  "non_goals": [
+    "emit a qualification duration, TTL, activation map, solver witness, successor policy, ranking, or recommendation",
+    "change the frozen two-consecutive-frame guard, fail-closed invalidations, one-token-per-track-reset scope, or no-renewal rule",
+    "modify or rerun detector, T0, route relation, route validity, reset, C1-C3, truth, oracle, event windows, or clearance",
+    "use candidate identity, source identity, sequence identity, raw track-id value, absolute timestamp, truth, event identity, future frames, clearance, or oracle tokens in a policy decision",
+    "treat the empirical point-rate bound as a credible confidence bound, human-safety result, independent-walking authority, or production evidence"
+  ],
+  "policy_family": {
+    "name": "shared_monotone_sustained_relation_lease_family",
+    "allowed_decision_inputs": [
+      "track_identity_as_permutation_equivariant_scope_only",
+      "per_track_active_route_relation",
+      "route_validity",
+      "reset",
+      "causal_elapsed_timestamp"
+    ],
+    "forbidden_decision_inputs": [
+      "candidate_identity",
+      "source_identity",
+      "sequence_identity",
+      "frame_id",
+      "raw_track_id_value_order_hash_or_tie_break",
+      "absolute_timestamp",
+      "truth_identity_or_box",
+      "event_id_or_window",
+      "future_frames",
+      "clearance",
+      "oracle_token"
+    ],
+    "equivariance": [
+      "track_id_alpha_renaming",
+      "source_and_sequence_renaming",
+      "per_sequence_timestamp_translation"
+    ],
+    "minimum_consecutive_active_frames": 2,
+    "qualification_family": "one shared positive integer minimum active-relation duration in nanoseconds, used only through monotone elapsed_duration >= duration",
+    "token_scope": "one_token_per_track_per_reset",
+    "renewal": false,
+    "fail_closed_invalidation": [
+      "reset_before_frame",
+      "route_unknown",
+      "track_unobserved",
+      "active_relation_gap",
+      "sequence_end"
+    ],
+    "ttl_upper_bound_relaxation": "for impossibility only, ignore nominal TTL while retaining every fail-closed invalidation; every finite TTL is coverage-dominated and has the same qualification-time risk count",
+    "risk_event": "first qualification timestamp for a track-reset falls in any frozen half-open negative-exposure interval",
+    "candidate_cells_are_posthoc_only": true,
+    "no_policy_or_threshold_is_serialized": true
+  },
+  "feasibility_gate": {
+    "oracle_candidate_event_cells": 36,
+    "required_supported_candidate_event_cells": 33,
+    "required_no_active_relation_candidate_event_cells": 3,
+    "candidate_independent_unique_event_count": 12,
+    "required_supported_unique_events": 11,
+    "required_no_active_relation_unique_events": 1,
+    "negative_exposure_minutes": 4.95626851575,
+    "acceptance_threshold_tokens_per_minute": 0.5,
+    "maximum_empirical_negative_token_count": 2,
+    "terminal_rule": "FEASIBLE iff one shared monotone qualification duration covers 11/11 unique supported events under the optimistic no-TTL relaxation and produces at most 2 frozen negative-exposure activations; mechanically map 11/11 to 33/33"
+  },
+  "evidence_limit": {
+    "point_rate_only": true,
+    "parent_minimum_zero_event_exposure_minutes": 5.9915,
+    "current_exposure_meets_parent_credible_floor": false,
+    "zero_event_95pct_poisson_ucb_tokens_per_minute": 0.6044330052,
+    "credible_risk_gate_not_claimed": true
+  },
+  "expected_scope": {
+    "candidate_independent_sequences": 41,
+    "frames": 62229,
+    "candidate_or_fsm_executions": 0,
+    "policy_outputs_or_witnesses": 0
+  },
+  "parent_bindings": {
+    "policy_config": {
+      "path": "configs/ustrf_candidate_independent_causal_token_policy_risk_gate_r1.json",
+      "sha256": "2079eaa684eeacd0b1be6d21e11b5c21bf4140e89e2dbab87666e4c420f7d1af"
+    },
+    "policy_inventory": {
+      "path": "artifacts.local/evidence/ustrf-candidate-independent-causal-token-policy-risk-gate-r1/policy-token-inventory-r1.json",
+      "sha256": "1e365f825277061393194cb8546b6df500b716b48a73537669f37094858f1874"
+    },
+    "policy_terminal": {
+      "path": "artifacts.local/evidence/ustrf-candidate-independent-causal-token-policy-risk-gate-r1/terminal-receipt-r1.json",
+      "sha256": "30a8cb1d768ae656409265f00a1c7562abfb593edf2659f3292ed29aa550a9f2"
+    },
+    "policy_validation": {
+      "path": "artifacts.local/evidence/ustrf-candidate-independent-causal-token-policy-risk-gate-r1/validation-receipt-r1.json",
+      "sha256": "f674999167e6012d667e4e94ad407e5db374c1d4eac5ffa79455f4093b7e32a1"
+    },
+    "failure_attribution_config": {
+      "path": "configs/ustrf_candidate_independent_policy_failure_attribution_r1.json",
+      "sha256": "b838192e48e1d01f3f4cc75c19388dd7c5dc771e39b4de6c2fcc57cbe0942e21"
+    },
+    "failure_attribution_terminal": {
+      "path": "artifacts.local/evidence/ustrf-candidate-independent-policy-failure-attribution-r1/terminal-receipt-r1.json",
+      "sha256": "d9ef42df1844913e43b6d2275cd7907cf3ac4701d292bfd52b871524e5cd28c5"
+    },
+    "failure_attribution_validation": {
+      "path": "artifacts.local/evidence/ustrf-candidate-independent-policy-failure-attribution-r1/validation-receipt-r1.json",
+      "sha256": "26e6cce3ae17e0353bdd2f86f75cf8b863f5bd32b1e189d122aa9c47ef755b69"
+    }
+  },
+  "implementation_bindings": {
+    "core_sha256": "f6d949c6fcf5cb7190837d5766f0a0e94a9df6c063d411eb41ed11de45a2dbdd",
+    "runner_sha256": "d359d7c986cccb44ffe0e63df3e1bfbdf84ed8a04b9c739608b6d96c87605670",
+    "validator_sha256": "6dd0385d7144179e9171a272e827da6f3d9a2f1c003ad0bd389656a29eb6a760",
+    "tests_sha256": "7dcff7e9ecedd92ff3f3b06190a71515f3ff1effd7d47c05ed4db1591f1efb6b"
+  },
+  "terminal_states": [
+    "CURRENT_INPUT_POLICY_FAMILY_FEASIBLE",
+    "CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE"
+  ],
+  "outputs": {
+    "root": "artifacts.local/evidence/ustrf-current-input-policy-feasibility-bound-r0",
+    "bound_certificate": "bound-certificate-r0.json",
+    "terminal_receipt": "terminal-receipt-r0.json",
+    "validation_receipt": "validation-receipt-r0.json"
+  }
+}
