@@ -1,0 +1,171 @@
+{
+  "schema": "blindassist_ustrf_causal_token_policy_risk_gate_r1",
+  "stage": "CANDIDATE-INDEPENDENT-CAUSAL-TOKEN-POLICY-RISK-GATE-R1",
+  "status": "frozen_before_any_r1_output",
+  "frozen_on": "2026-07-24",
+  "purpose": "Freeze and audit a candidate-independent causal attribution-token policy before any isolated-opener integration, including finite validity, fail-closed invalidation, reset-scoped requalification suppression, complete negative-exposure accounting, and a predeclared credible risk bound.",
+  "claim_boundary": {
+    "maximum": "CANDIDATE_INDEPENDENT_TOKEN_POLICY_AND_RISK_AUDIT_ONLY",
+    "candidate_independent": true,
+    "truth_blind_policy_producer": true,
+    "full_sequence_before_truth_or_negative_join": true,
+    "opener_integration": false,
+    "c1_c3_modified_or_rerun": false,
+    "clearance_change": false,
+    "candidate_comparison": false,
+    "winner_or_ranking": false,
+    "selection": false,
+    "l2_or_l3": false,
+    "android_shadow": false,
+    "h2": false,
+    "human_outcome": false,
+    "independent_walking_safety": false,
+    "production": false,
+    "new_data": false,
+    "training": false
+  },
+  "non_goals": [
+    "connect a policy token to the isolated opener, candidate FSM, feedback adapter, or Android runtime",
+    "modify or rerun detector, T0 association, route relation, route validity, reset, C1-C3, truth, event windows, or clearance",
+    "use candidate identity, truth, event windows, future frames, clearance, or oracle tokens in the policy producer",
+    "tune the risk acceptance line against R0 or R1 outputs",
+    "compare, rank, select, enter L2/L3, Android shadow, H2, human use, independent walking, or production",
+    "treat a token as an alert, user outcome, physical hazard measurement, or safety authorization"
+  ],
+  "phase_order": [
+    "verify_parent_r0_truth_blind_inventory_and_all_ledger_hashes",
+    "project_only_candidate_independent_causal_track_route_reset_timestamp_facts",
+    "apply_frozen_policy_to_all_41_full_sequences",
+    "persist_and_hash_inventory_all_policy_ledgers",
+    "reverify_all_policy_ledgers_in_a_separate_process",
+    "only_then_decode_and_join_frozen_oracle_and_complete_negative_exposure",
+    "apply_predeclared_coverage_integrity_and_risk_terminal_rules"
+  ],
+  "policy": {
+    "allowed_inputs": [
+      "detector_track_identity",
+      "per_track_route_relation",
+      "route_validity",
+      "reset",
+      "causal_timestamp"
+    ],
+    "forbidden_inputs": [
+      "candidate_identity",
+      "truth_identity_or_box",
+      "event_id_or_window",
+      "future_frames",
+      "clearance",
+      "oracle_token"
+    ],
+    "token_scope": "source_sequence_reset_segment_track",
+    "minimum_consecutive_active_frames": 2,
+    "minimum_active_relation_duration_ns": 500000000,
+    "maximum_token_ttl_ns": 500000000,
+    "validity_semantics": "half_open_lease_valid_from_qualification_inclusive_until_first_fail_closed_invalidation_or_nominal_ttl_exclusive",
+    "invalidation": [
+      "reset_before_frame",
+      "route_unknown",
+      "track_unobserved",
+      "active_relation_gap",
+      "ttl_elapsed",
+      "sequence_end"
+    ],
+    "requalification": "one_token_per_track_per_reset_suppress_and_ledger_fresh_support_run_requalification_only",
+    "continuous_active_after_ttl": "no_renewal_attempt_support_run_remains_qualified_until_gap",
+    "rationale": "The 500 ms sustained qualification and 500 ms maximum validity match the already established causal observation window. They are frozen as mechanism semantics, not selected from R1 outcomes. Unknown route, missing track, relation gap, reset, and expiry all fail closed."
+  },
+  "coverage_gate": {
+    "oracle_candidate_event_cells": 36,
+    "required_supported_cell_coverage": 33,
+    "required_no_active_relation_cells": 3,
+    "coverage_requires_oracle_qualification_within_policy_token_validity": true,
+    "posthoc_only": true
+  },
+  "risk_gate": {
+    "risk_event": "candidate_independent_policy_token_activation_whose_qualification_timestamp_falls_in_any_frozen_half_open_negative_exposure_interval",
+    "denominator": "complete_unique_half_open_negative_exposure_interval_ns",
+    "acceptance_threshold_tokens_per_minute": 0.5,
+    "threshold_source": "existing_frozen_ustrf_false_alerts_per_minute_max_not_r0_or_r1_output",
+    "confidence_level": 0.95,
+    "minimum_zero_event_exposure_minutes": 5.9915,
+    "inference": "poisson_working_model_plus_cluster_bound_required",
+    "poisson_upper_bound": "one_sided_exact_chi_square",
+    "cluster_unit": "source_sequence",
+    "cluster_stratification": "source_id",
+    "worst_source_multiple_comparison_correction": "bonferroni",
+    "cluster_bootstrap_statistic": "max_source_rate_per_iteration",
+    "minimum_sequences_per_source": 3,
+    "cluster_bootstrap_iterations": 10000,
+    "cluster_bootstrap_seed": 20260724,
+    "worst_source_upper_bound_required": true,
+    "insufficient_exposure_or_cluster_support": "HOLD_FOR_CREDIBLE_RISK_BOUND",
+    "observed_point_rate_above_threshold": "pooled_or_any_source_above_threshold_is_POLICY_RISK_REJECT",
+    "zero_over_zero_pass_forbidden": true
+  },
+  "parent_bindings": {
+    "r0_config": {
+      "path": "configs/ustrf_truth_blind_causal_per_track_attribution_token_producer_audit_r0.json",
+      "sha256": "74b299f14a6c82fa747ce16c0961b20fcf2259ff685ad8b08093514d1cd81d8d"
+    },
+    "r0_inventory": {
+      "path": "artifacts.local/evidence/ustrf-truth-blind-causal-per-track-token-producer-audit-r0/causal-token-inventory-r0.json",
+      "sha256": "6d3effc77b693f76e44bb7f1676169b496d8dd0d90f1b034a5ea3814b7714368"
+    },
+    "r0_validation": {
+      "path": "artifacts.local/evidence/ustrf-truth-blind-causal-per-track-token-producer-audit-r0/validation-receipt-r0.json",
+      "sha256": "e222d2e0db8b36a623c0991c0595a23b86af75ed4793defd33493746ba3efb17"
+    },
+    "oracle_config": {
+      "path": "configs/ustrf_eligible_target_attribution_ordered_isolated_opening_r1.json",
+      "sha256": "f222d210c7994e8986d69b98df1d0786962790e0a2bc27fb5ce6d60366135145"
+    },
+    "oracle_inventory": {
+      "path": "artifacts.local/evidence/ustrf-eligible-target-attribution-ordered-isolated-opening-r1/eligible-attribution-token-inventory-r1.json",
+      "sha256": "98344298d25dfa4fecb5b3d07699016e4181c3149d6b730b051548c49f14ff64"
+    },
+    "oracle_validation": {
+      "path": "artifacts.local/evidence/ustrf-eligible-target-attribution-ordered-isolated-opening-r1/validation-receipt-r1.json",
+      "sha256": "bb693bcea53ef9a35e3b0f5496367924e34df615dfaa56a1dc3ec9a67d36f068"
+    },
+    "eligibility_mask": {
+      "path": "artifacts.local/evidence/ustrf-route-target-metric-eligibility-r2-l1/eligibility-mask-r2-l1.json",
+      "sha256": "b7dd5cfacc6f14153900bfaf811f3e76a1e188d1064013823f717f615e528157"
+    }
+  },
+  "implementation_bindings": {
+    "policy_core_sha256": "9fab7a32e36bd02a51f3a51e611788c3ecfe6659ca603a28a8ff70e0c55307c0",
+    "runner_sha256": "e0b79bed2348451006478bc98c50d0b500454f471654178b22291183ae7ef9aa",
+    "validator_sha256": "54bce88fa0e54ae81c183ce1d94d4fef0d9e51387a650234025c9b9579f4eb00",
+    "tests_sha256": "ecd4d00b9dfa48b69eb1a129dd57bfe22f37e0a2ecc3d29640f341926c503b01"
+  },
+  "expected_scope": {
+    "candidate_independent_sequences": 41,
+    "frames": 62229,
+    "candidate_or_fsm_executions": 0,
+    "truth_decodes_before_inventory_freeze": 0,
+    "event_window_decodes_before_inventory_freeze": 0,
+    "oracle_token_decodes_before_inventory_freeze": 0
+  },
+  "terminal_states": [
+    "POLICY_INTEGRITY_REJECT",
+    "POLICY_COVERAGE_REJECT",
+    "POLICY_RISK_REJECT",
+    "HOLD_FOR_CREDIBLE_RISK_BOUND",
+    "POLICY_RISK_GATE_PASSED"
+  ],
+  "terminal_precedence": [
+    "POLICY_INTEGRITY_REJECT",
+    "POLICY_COVERAGE_REJECT",
+    "POLICY_RISK_REJECT",
+    "HOLD_FOR_CREDIBLE_RISK_BOUND",
+    "POLICY_RISK_GATE_PASSED"
+  ],
+  "outputs": {
+    "root": "artifacts.local/evidence/ustrf-candidate-independent-causal-token-policy-risk-gate-r1",
+    "inventory": "policy-token-inventory-r1.json",
+    "risk_ledger": "policy-risk-ledger-r1.json",
+    "repeat_ledger": "policy-requalification-ledger-r1.json",
+    "terminal_receipt": "terminal-receipt-r1.json",
+    "validation_receipt": "validation-receipt-r1.json"
+  }
+}

@@ -1,6 +1,19 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / L2+L3 prereg frozen but not authorized
+
+## Candidate-independent causal token policy/risk gate R1
+
+`configs/ustrf_candidate_independent_causal_token_policy_risk_gate_r1.json` 在任何 R1 输出前冻结 `2 frames + 500ms` active-relation 资格、500ms token TTL、reset/route unknown/track unobserved/relation gap/TTL 的 fail-closed 失效，以及同 track/reset 再资格化只记账不重发。producer 只重放父 R0 的 candidate-independent runtime facts；41 条 policy ledger / 62,229 帧全部落盘并冻结 inventory 后，第二进程才读取 oracle 与半开负暴露。
+
+结果为 `POLICY_COVERAGE_REJECT / VALID`：supported oracle cell 在 token 有效期内仅 `9/33`，3 个无 active relation cell 继续关闭；完整序列 `1,448` token、`1,445` extra，负暴露 `34/4.956min=6.86/min`，95% Poisson UCB `9.13/min`，并且两个 LILocBench source 不满足每 source 3 sequence 的 cluster floor。不能接 isolated opener，也不能用扩负样本回救 coverage reject。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_CANDIDATE_INDEPENDENT_CAUSAL_TOKEN_POLICY_RISK_GATE_R1_RESULT_2026-07-24.md)。
+
+```powershell
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_causal_token_policy_risk_gate_r1.py --repo . --config configs\ustrf_candidate_independent_causal_token_policy_risk_gate_r1.json --phase producer
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\run_causal_token_policy_risk_gate_r1.py --repo . --config configs\ustrf_candidate_independent_causal_token_policy_risk_gate_r1.json --phase audit
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\validate_causal_token_policy_risk_gate_r1.py --repo . --config configs\ustrf_candidate_independent_causal_token_policy_risk_gate_r1.json
+.\.venv-export312\Scripts\python.exe scripts\research\ustrf_route_target_evidence_closure\test_causal_token_policy_risk_gate_r1.py -v
+```
 
 ## Truth-blind causal per-track attribution-token producer audit R0
 
