@@ -1,6 +1,21 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active at L0 / R2-L1X-L2P `FAIL_CLOSED_EXECUTION_ABORTED` / L2+L3 prereg frozen / candidates unrun
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / metric profiles unrun / L2+L3 prereg frozen
+
+## L1 candidate replay R2
+
+`configs/ustrf_route_target_l1_candidate_replay_r2*.json` 把旧 exploratory R1 失败收据、R3 `41/41` input completion、两个唯一 canonical root、冻结 C1–C3 和新 retry namespace 分开绑定。replay-only runner 只生成 candidate trace，不读取 truth、不生成 metric profile，也不携带 comparison/selection/shadow/H2/生产权限。
+
+初始 R2 与 A1 分别保留 Windows 长路径失败收据；A1 已完成的 10 条 first-valid trace 在 A2 中按父哈希引用继承，没有候选重跑。用户明确将本次 replay 的可用内存门从 6 GiB 修订为 4 GiB 后，A2 使用短哈希 authority path 完成其余 113 条。最终为 C1/C2/C3 各 `41/41`、总 `123/123` trace、`186,687` candidate-frame、`45` reset；独立 validator 重放确定性状态输出，A3 再以严格 schema 绑定 A2 terminal/validation。由于 A2 的启动时 4 GiB 观测未持久化为逐 ledger 回执，A4 在 123 条独立确定性复演前逐条真实采样可用内存并 fail closed，最小观测 `7,592,321,024` bytes，未创建新权威 trace。结果见 [日期化报告](../../../docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1_CANDIDATE_REPLAY_R2_RESULT_2026-07-24.md)。
+
+运行与验证使用项目 Python 环境：
+
+```powershell
+E:\codex-tools\projects\blindassist\toolchain\venv-corridor-causal-py311\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure run_candidate_replay_r2_continuation_a2.py --config configs\ustrf_route_target_l1_candidate_replay_r2_continuation_a2.json
+E:\codex-tools\projects\blindassist\toolchain\venv-corridor-causal-py311\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure validate_candidate_replay_r2_continuation_a2.py --config configs\ustrf_route_target_l1_candidate_replay_r2_continuation_a2.json
+E:\codex-tools\projects\blindassist\toolchain\venv-corridor-causal-py311\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure validate_candidate_replay_r2_a3.py --config configs\ustrf_route_target_l1_candidate_replay_r2_finalization_a3.json
+E:\codex-tools\projects\blindassist\toolchain\venv-corridor-causal-py311\Scripts\python.exe scripts\run_research_tool.py ustrf-route-target-evidence-closure validate_candidate_replay_r2_memory_guard_a4.py --config configs\ustrf_route_target_l1_candidate_replay_r2_memory_guard_a4.json
+```
 
 ## R2-L1E materialization recovery R3
 

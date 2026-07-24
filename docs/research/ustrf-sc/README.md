@@ -14,6 +14,7 @@
 
 ## 协议与专项记录
 
+- [route-target L1 candidate replay R2 结果（2026-07-24）](USTRF_ROUTE_TARGET_L1_CANDIDATE_REPLAY_R2_RESULT_2026-07-24.md)：在 41/41 canonical ledger 上完成 C1–C3 共 `123/123` 条权威 trace、`186,687` candidate-frame 和 `45` 次 reset；用户明确将本次 replay 内存门修订为 4 GiB，A1 的 10 条完整 trace 按父哈希继承、A2 新运行 113 条。A2 独立逐帧状态重放与 A3 strict-schema finalization 均为 `VALID`；A4 又在每条确定性复演前真实检查 4 GiB 门，123 次观测最小 `7,592,321,024` bytes，回执 `PASS`，且不创建新权威 trace。未生成 profile、比较、selection、shadow/H2 或生产权限。
 - [route-target L1E materialization recovery R3 结果（2026-07-24）](USTRF_ROUTE_TARGET_L1E_MATERIALIZATION_RECOVERY_R3_RESULT_2026-07-24.md)：以目标 App 私有目录替代跨 UID external-files，并以严格串行“一进程一分片”完成剩余 38 条。A1 保留原 6 GiB 门；用户明确授权后，A2/A3 将主机可用内存门修订为 4 GiB，并分别用短控制路径与 Windows extended-path 写入闭合路径故障。最终 canonical input 为 `41/41` ledger、`62,229/62,229` 帧、`15/15 reset`；C1–C3、trace/profile 仍为 0。
 - [route-target R2-L1X-L2P 结果（2026-07-24）](USTRF_ROUTE_TARGET_R2_L1X_L2P_RESULT_2026-07-24.md)：在任何新候选输出前冻结 L2 fresh-selection 执行级预注册与 non-executable L3 lockbox 模板；R2 和 outcome-unseen A1 均保留独立失败收据。最终因设备 manifest materialization 与 6 GiB 内存门耗尽，以 `FAIL_CLOSED_EXECUTION_ABORTED` 闭合；C1–C3、trace/profile、selection、L3、shadow/H2/人体/生产均未运行或开放。
 - [route-target R2-L1E 单次探索 profile 结果（2026-07-24）](USTRF_ROUTE_TARGET_L1_EXPLORATORY_PROFILE_R1_RESULT_2026-07-24.md)：合法终态为 `FAIL_CLOSED_EXECUTION_ABORTED`；6 GiB 可用内存门在初始尝试和两次有界重试中均触发，故首个 CrowdBot device raw attempt 未创建、候选未运行。逐 ledger 审计验证 2/41 条、4,594/62,229 帧 canonical raw，精确记录其余 39 条、57,635 帧缺口；selection、Android shadow、H2 与生产权限保持关闭。

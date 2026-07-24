@@ -1,0 +1,46 @@
+{
+  "schema": "blindassist_ustrf_route_target_l1_candidate_replay_memory_guard_validation_a4",
+  "stage": "R2-L1-CANDIDATE-REPLAY-R2-MEMORY-GUARD-A4",
+  "status": "independent_four_gib_memory_guard_validation_frozen",
+  "authority": {
+    "authoritative_candidate_trace": false,
+    "metric_profile": false,
+    "truth_join": false,
+    "candidate_comparison": false,
+    "winner_or_ranking": false,
+    "selection": false,
+    "l2_or_l3": false,
+    "android_shadow": false,
+    "h2": false,
+    "human_outcome": false,
+    "independent_walking_safety": false,
+    "production": false,
+    "new_data": false
+  },
+  "parent": {
+    "a2_config": {
+      "path": "configs/ustrf_route_target_l1_candidate_replay_r2_continuation_a2.json",
+      "sha256": "17e3c7054f1054a9a20df3ad32086621d6ccc241e7a292022f833e7ed501a6f8"
+    },
+    "a2_terminal": {
+      "path": "artifacts.local/r2a2/terminal-receipt-a2.json",
+      "sha256": "192b6c3b961945bab675a01ba0d500be119a66a444ae195200e35408276c80ac"
+    },
+    "a2_validation": {
+      "path": "artifacts.local/r2a2/validation-receipt-a2.json",
+      "sha256": "19eaf7776e7c41bdca314b338d08c90398aa060ddfadcf2682e15205d63dc409"
+    },
+    "a3_terminal": {
+      "path": "artifacts.local/r2a3/terminal-receipt-a3.json",
+      "sha256": "05ea7dc69dd5045b9d632ae5bcf6f6fe10d6a93d30adc064c3528a6fbca97ddc"
+    },
+    "a3_validation": {
+      "path": "artifacts.local/r2a3/validation-receipt-a3.json",
+      "sha256": "5992d402a255002c484513fad0e9ef737a99f12fc04cf5626f1d23db7c756fa3"
+    }
+  },
+  "implementation_sha256": "e547ce46b6e5064de3b9014f542c19390c12f85ed8d81c53797a2494268833b7",
+  "test_sha256": "36eb1ec4ff4cb6dbcc8d092774f8088c3a75e7293880cbff2e3a880536091b30",
+  "minimum_available_memory_bytes": 4294967296,
+  "output_root": "artifacts.local/r2a4"
+}

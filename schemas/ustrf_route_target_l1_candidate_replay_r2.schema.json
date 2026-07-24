@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "blindassist://schemas/ustrf_route_target_l1_candidate_replay_r2",
+  "title": "USTRF route-target L1 candidate replay R2 terminal receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "stage",
+    "terminal_state",
+    "authority",
+    "bindings",
+    "verified_input",
+    "candidate_execution",
+    "profiles",
+    "blocker",
+    "claim_boundary",
+    "finished_at_utc"
+  ],
+  "properties": {
+    "schema": {
+      "const": "blindassist_ustrf_route_target_l1_candidate_replay_terminal_r2"
+    },
+    "stage": {
+      "const": "R2-L1-CANDIDATE-REPLAY-R2"
+    },
+    "terminal_state": {
+      "enum": [
+        "CANDIDATE_REPLAY_COMPLETE",
+        "FAIL_CLOSED_INPUT_BLOCKED",
+        "FAIL_CLOSED_EXECUTION_ABORTED"
+      ]
+    },
+    "authority": {
+      "const": "candidate_replay_only_no_profile_comparison_or_promotion_authority"
+    },
+    "bindings": {
+      "type": "object"
+    },
+    "verified_input": {
+      "type": "object",
+      "required": [
+        "sequence_ledgers",
+        "frames",
+        "discontinuity_resets",
+        "inventory"
+      ],
+      "properties": {
+        "sequence_ledgers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 41
+        },
+        "frames": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 62229
+        },
+        "discontinuity_resets": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15
+        },
+        "inventory": {
+          "type": "array",
+          "maxItems": 41
+        }
+      },
+      "additionalProperties": false
+    },
+    "candidate_execution": {
+      "type": "object",
+      "required": [
+        "candidate_order",
+        "expected_authoritative_trace_count",
+        "authoritative_trace_count",
+        "trace_inventory",
+        "partial_trace_profile_authority",
+        "candidate_comparison_authority"
+      ],
+      "properties": {
+        "candidate_order": {
+          "const": [
+            "C1_CAUSAL_ROUTE_RELATION_FSM",
+            "C2_ROUTE_OCCUPANCY_EPISODE_FSM",
+            "C3_DUAL_KEY_CLEARANCE_FSM"
+          ]
+        },
+        "expected_authoritative_trace_count": {
+          "const": 123
+        },
+        "authoritative_trace_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 123
+        },
+        "trace_inventory": {
+          "type": "array",
+          "maxItems": 123
+        },
+        "partial_trace_profile_authority": {
+          "const": false
+        },
+        "candidate_comparison_authority": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "profiles": {
+      "const": {
+        "generated": false,
+        "count": 0,
+        "authority": false
+      }
+    },
+    "blocker": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claim_boundary": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "finished_at_utc": {
+      "type": "string",
+      "minLength": 1
+    },
+    "execution_error": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "terminal_state": {
+            "const": "CANDIDATE_REPLAY_COMPLETE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "verified_input": {
+            "properties": {
+              "sequence_ledgers": {
+                "const": 41
+              },
+              "frames": {
+                "const": 62229
+              },
+              "discontinuity_resets": {
+                "const": 15
+              },
+              "inventory": {
+                "minItems": 41
+              }
+            }
+          },
+          "candidate_execution": {
+            "properties": {
+              "authoritative_trace_count": {
+                "const": 123
+              },
+              "trace_inventory": {
+                "minItems": 123
+              }
+            }
+          },
+          "blocker": {
+            "const": null
+          }
+        }
+      }
+    }
+  ]
+}

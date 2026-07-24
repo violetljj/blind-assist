@@ -1,5 +1,10 @@
 # Development Log
 ## 2026-07-24
+### USTRF route-target L1 candidate replay R2
+- 时间：2026-07-24；执行者：violjjet。新建 replay-only R2 namespace，精确绑定旧 exploratory failure、R3 `41/41` completion、两个唯一 canonical input root、冻结 C1–C3/T0/route/reset 与独立 terminal/schema；同一 ledger 多根命中、compact/successor 漂移、partial attempt 或候选/config hash 漂移均 fail closed。权威 trace 只保留确定性状态/decision，wall time/RSS 留在 receipt；attempt-local trace+receipt 验证后才发布 authority。
+- 执行：初始 R2 在首个 attempt 前因 Windows 长路径失败、trace 为 0；A1 短 root 完成 10 条后仍在原子临时后缀处触发长路径。用户明确将本次 C1–C3 replay 内存门从 6 GiB 修订为 4 GiB；A2 同时使用短哈希 trace path，按父 receipt/hash 引用继承 A1 的 10 条完整 trace、不重跑，并新运行其余 113 条。
+- 结果：C1/C2/C3 各 `41/41` ledger、每候选 `62,229` 帧与 `15` reset，总 `123/123` 权威 trace、`186,687` candidate-frame、`45` reset。A2 independent validator 逐 trace 重放确定性状态为 `VALID`；A3 strict-schema finalization 也为 `VALID`。原 A2 启动时 4 GiB 检查观测到 `9,615,626,240` bytes，但未持久化逐 ledger 观测；A4 因而在 123 条独立确定性复演前逐条执行真实 4 GiB fail-closed 检查，最小 `7,592,321,024` bytes，`PASS`，且新权威 trace 为 0。未做 truth join、metric profile、比较、winner/ranking/selection，也未开放 L2/L3、Android shadow、H2、人体、独立行走或生产权限。详见 [R2 结果](docs/research/ustrf-sc/USTRF_ROUTE_TARGET_L1_CANDIDATE_REPLAY_R2_RESULT_2026-07-24.md)。
+
 ### USTRF route-target L1E R3 remaining-shard continuation A1–A3
 - 时间：2026-07-24；执行者：Codex。冻结 `R2-L1E-RECOVERY-B1-CONTINUATION-A1`，保留首分片 B1 配置、实现与收据哈希；新增双 canonical root 覆盖复核、严格串行父编排器和独占 child 锁。每个 fresh child 只处理冻结顺序中的下一缺失 CrowdBot ledger，compact successor 验证后立即退出；无效/半写 pair、重复权威根、额外 ledger、并发 child、非 CrowdBot 缺口、覆盖漂移或单 ledger 三次尝试耗尽均 fail closed。完整输入门固定为 `41/41`、`62,229/62,229`、`15/15 reset`，父流程不导入或执行 C1–C3。
 - A1 在原 6 GiB 门下成功补齐 9 条至 `12/41`；随后一次真实 readiness 内存失败和两次 Windows 长控制回执路径失败，按冻结尝试预算写出 `FAIL_CLOSED_LEDGER_ATTEMPTS_EXHAUSTED`。经用户明确指示将门修订为 4 GiB 后，A2 用短哈希控制路径补齐 1 条至 `13/41`，但在 successor 已验证后写 host receipt 时再次触发 Windows 长路径失败。A3 保留 4 GiB 门并使用 Windows extended-path 原子写，严格串行完成剩余 28 条，28 个 child 成功、0 失败。
@@ -1488,18 +1493,3 @@
 - 新增隔离 `ustrf_crosscam_codex` 研究域：公开来源收据、相机投影/assumed route、三轮 Codex provisional teacher/causal consensus、代理指标和真实 Android bbox-route 转换；不改 App、默认模型或正式 U0。
 - MuSoHu 360° 样本因 forward-axis/遮挡与三轮教师分歧被拒绝。Pexels 3874684 的 6 秒右侧人行道负样本获 6/6 Codex `none`；SM-S9280 Android 臂在首帧对道路车辆触发 1 次 HIGH，route distance `48.4636px` 刚低于 `51.2px` 走廊半宽。
 - 决策：下轮优先跨相机路线投影/走廊敏感性与 source-held-out 正负扩样；不据单样本调阈值或微调。所有 authority flag 继续 false。
-
-## 2026-07-21：USTRF 路线投影与走廊几何 R1
-
-- 执行者：Codex
-- 将跨相机 route 从隐式固定中心折线拆为 hash-bound projection receipt + 当前相机帧凸 polygon；新增 bbox bottom-center 地面接触代理、1%/2%/3% frame-width 投影误差和 inside/outside/uncertain 三态。invalid/unknown route fail closed，label 不参与 gate。
-- Pexels 同设备输出的 8 个 detection 在旧 gate 保留 1 个；R1 三档鲁棒结果为 inside 0、uncertain 1、outside 7。原道路车辆在 1% 下 outside、2%/3% 下 uncertain，不再作为确定路线内 HIGH 的几何依据。
-- 新 Kotlin gate 仅在 `device-benchmark`，未改 App/U0 v1；JDK 17 编译与 assemble 通过，SM-S9280/API 36 上 3/3 instrumentation tests 通过。六来源 held-out 正负预注册已冻结，未验证正例召回，所有 authority 保持 false。
-
-## 2026-07-21：USTRF 跨相机目标归因诊断 R1.1
-
-- 执行者：violjjet
-- 将已解封的 R1 六来源降级为 `seen_diagnostic_not_held_out`，新增唯一目标实例账本、精确逐帧/稳定窗口 polygon、独立 oracle 几何和三段式失败归因合同；目标 bbox/接触点缺失或 Edmonton 静态全窗投影均 fail closed。
-- Android benchmark 新增 target-aware v2 重放与纯匹配器：先检查 detector label inventory，再按 label allowlist + 唯一最大 IoU `.30` 匹配目标；普通 person/car 只进 cooccurrence，不能重算事件召回或假告警。历史 R1 v1 重放保持不变。
-- 六来源唯一目标 bbox/contact 已冻结；Edmonton 以 702750–703500ms 目标绑定短窗替代失效的 64 秒静态 polygon。Oracle 5/6：Edmonton/London/三个负来源通过，Japan 唯一锥桶两帧均 robust outside，故首因改判 polygon/事件路线合同。
-- 当前 COCO 80 类不含 traffic cone/delineator/bollard。SM-S9280/API 36 六来源 v2 `OK (1 test)`：全部 `unsupported_taxonomy`、目标匹配均为 0；London/Jakarta/Cape Town 另有 3 个 legacy 共现 inside 帧，但不再计事件召回/假告警。8 个 Python tests、APK assemble 与 matcher `OK (3 tests)` 均通过；未训练、未调阈值、未开放 App/生产权限。

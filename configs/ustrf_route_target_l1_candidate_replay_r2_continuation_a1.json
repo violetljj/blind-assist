@@ -1,0 +1,111 @@
+{
+  "schema": "blindassist_ustrf_route_target_l1_candidate_replay_r2",
+  "stage": "R2-L1-CANDIDATE-REPLAY-R2",
+  "status": "continuation_a1_short_output_namespace_frozen_after_win206_no_trace_abort",
+  "frozen_on": "2026-07-24",
+  "authority": {
+    "maximum": "CANDIDATE_TRACE_ONLY",
+    "metric_profile": false,
+    "truth_join": false,
+    "candidate_comparison": false,
+    "winner": false,
+    "ranking": false,
+    "selection": false,
+    "l2": false,
+    "l3": false,
+    "android_shadow": false,
+    "h2": false,
+    "training": false,
+    "human_outcome": false,
+    "independent_walking_safety": false,
+    "production": false,
+    "new_data": false,
+    "device_materialization": false
+  },
+  "parent_bindings": {
+    "base_exploratory_config": {
+      "path": "configs/ustrf_route_target_l1_exploratory_profile_r1.json",
+      "sha256": "9cd46c71426ce97420b1565808af58388299e4bf7f2ab58a2f22ffb476136922"
+    },
+    "old_exploratory_terminal": {
+      "path": "artifacts.local/evidence/ustrf-route-target-l1-candidate-replay-r2/terminal-receipt-r2-failed-win206.json",
+      "sha256": "b08510aa111010eb3e3986ee9c47c7fec973e3c4e51cf4ab42e06fc0cdfc54d6",
+      "required_terminal_state": "FAIL_CLOSED_EXECUTION_ABORTED",
+      "required_authoritative_trace_count": 0
+    },
+    "old_resource_guard": {
+      "path": "artifacts.local/evidence/ustrf-route-target-l1-exploratory-profile-r1/resource-guard-attempts-r1.json",
+      "sha256": "b0f1940c225fb4eed966a853a65bc4b6600a8d81f356312e6bd6bb7e9e1846a5",
+      "required_attempt_count": 3,
+      "required_retry_limit_exhausted": true,
+      "automatic_retry_allowed": false
+    },
+    "recovery_completion_terminal": {
+      "path": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/continuation-terminal-a3.json",
+      "sha256": "99e263b0977a7dfb2d34b5ba5b8abe7327bcd297264197b728ceec565ca15ced",
+      "required_status": "CANONICAL_INPUT_41_OF_41_COMPLETE",
+      "candidate_outputs_executed": false
+    }
+  },
+  "implementation_bindings": {
+    "legacy_replay_core_sha256": "11c971f69ece0c5bea8e093b212072255842646318add065e35e7bfe0a8b608d",
+    "replay_core_sha256": "f445173b8924e69d59797f62118f58bf1ee3125f2e5bbfadbc1fdc301b178861",
+    "runner_sha256": "053a892f8b90ef68b4a9e9ca284ad7a776444b8e83dee6d0c897d4fa6ae91672",
+    "validator_sha256": "cab7d9fbb8879447dc07366052dccc095f584dcbd1eb0898350a4464046fe57d",
+    "mutation_tests_sha256": "c2f7b826f920796c79d06ad2aaba029d01971dc1e9a2bb40a45c77b56afe71ad",
+    "terminal_schema_sha256": "45d28966d98891bc2fa458ca861befeebc6ad31b5d174b190968940b3be41862"
+  },
+  "candidate_roster": [
+    "C1_CAUSAL_ROUTE_RELATION_FSM",
+    "C2_ROUTE_OCCUPANCY_EPISODE_FSM",
+    "C3_DUAL_KEY_CLEARANCE_FSM"
+  ],
+  "canonical_input_roots": [
+    {
+      "id": "historical_lilocbench_r1",
+      "path": "artifacts.local/evidence/ustrf-route-target-l1-exploratory-profile-r1/detector-ledgers",
+      "allowed_source_prefixes": [
+        "lilocbench_"
+      ],
+      "expected_ledger_count": 2,
+      "read_only": true
+    },
+    {
+      "id": "recovery_r3_crowdbot",
+      "path": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/detector-ledgers",
+      "allowed_source_prefixes": [
+        "crowdbot_"
+      ],
+      "expected_ledger_count": 39,
+      "read_only": true
+    }
+  ],
+  "expected_scope": {
+    "candidates": 3,
+    "sequence_ledgers": 41,
+    "frames": 62229,
+    "discontinuity_resets": 15,
+    "candidate_ledger_traces": 123,
+    "candidate_trace_frames": 186687
+  },
+  "execution_contract": {
+    "candidate_order_is_roster_order": true,
+    "candidates_are_isolated": true,
+    "one_first_valid_complete_authoritative_trace_per_candidate_ledger": true,
+    "resume_unit": "candidate_ledger_start",
+    "attempt_local_trace_and_receipt_before_authority_publish": true,
+    "partial_trace_profile_authority": false,
+    "candidate_specific_best_of_retry": false,
+    "maximum_retry_count": 2,
+    "truth_join": false,
+    "profile_generation": false,
+    "device_materialization": false,
+    "network_allowed": false
+  },
+  "output_root": "artifacts.local/r2a1",
+  "terminal_states": [
+    "CANDIDATE_REPLAY_COMPLETE",
+    "FAIL_CLOSED_INPUT_BLOCKED",
+    "FAIL_CLOSED_EXECUTION_ABORTED"
+  ]
+}
