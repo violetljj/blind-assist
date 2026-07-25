@@ -4,7 +4,7 @@
 
 持续授权：`OBSERVABILITY_AUDIT_AND_FALSIFIABLE_OFFLINE_RESEARCH_ONLY`
 
-当前研究边界：无可在现有 authority 内继续执行的 G1–G7；恢复须取得 fresh metric geometry + stable pose、intended-route truth、独立 event lifecycle truth 或明确的新采集授权
+当前研究边界：JRDB 原生 stable pose/IMU/time P1B 已通过，只允许另立 P2 perception/geometry canary；正式 G1–G7 仍缺 intended-route 与独立 event lifecycle truth
 
 算法成熟度：`CORE_ALGORITHM_EFFECT_NOT_PROVEN`
 
@@ -332,6 +332,8 @@ G0–G7 均是研究阶段。G8 之后仍需独立权限，不因本总目标自
 > 2026-07-25 登录后续：用户自行建立登录态后，官方清单暴露旧版 test images/timestamps/calibration 的精确 URL。R1 以 64 MiB 门对 22.5 GB ZIP64 做 byte-range，只读取 21.9 MB central directory 与一个 compressed JPEG；同一 `cubberly-auditorium-2019-04-22_1/000000.jpg` 的 9-object label、capture timestamp `1555960991.4668088`、3760×480 RGB 与 calibration 闭合。producer/validator 各 22,257,329 bytes，终态 `RGB_TIME_TRANSFORM_CANARY_PRESENT / VALID`。这解除新来源 transport blocker，但不改写父 G0，不开放 G1、route truth 或 signal；下一合法边界只可做短连续窗口的 RGB continuity/ego-motion availability。证据见 [single-frame R1 结果](USTRF_JRDB_SINGLE_FRAME_RGB_TIME_TRANSFORM_CANARY_R1_RESULT_2026-07-25.md)。
 
 > 2026-07-25 短窗后续：冻结 32 帧/31 pair、person+16px mask、sparse LK 与单一 RANSAC full affine。timestamp、657–803 features、649–792 tracks、11–12/12 grid、residual、condition 和 determinant 均通过，但仅 11/31 pair 达到 inlier ratio ≥0.65，低于 28/31 availability 门；独立终态 `EGOMOTION_QUALITY_AVAILABILITY_INSUFFICIENT / VALID`。不降门、不扩 JRDB sequence、不运行 G3/G4；后续只接受 metric depth、VIO/IMU、真实 route provider 或 route-authoritative 新数据。证据见 [continuity/ego-motion R0 结果](USTRF_JRDB_RGB_CONTINUITY_EGOMOTION_AVAILABILITY_R0_RESULT_2026-07-25.md)。
+
+> 2026-07-25 原生 P1B 恢复：27 条 train bag 中最小 Meyer Green member 已做单 bag payload 审计。动态 `odom -> base_link` TF 3,183 条、`imu/data` 622 条、上下 Velodyne 471/478 条均以原生 header clock 覆盖外部前 120 帧 timestamp，第二进程完整复算为 `NATIVE_POSE_IMU_TIME_AUTHORITY_PRESENT / VALID`。这满足“stable pose/IMU 新 authority”恢复条件，但只允许另立 P2 perception/geometry canary；P2 尚未执行，正式 G1–G7 的 intended-route/event lifecycle、Android、human 与 production 权限仍关闭。证据见 [single-rosbag P1B 结果](USTRF_JRDB_SINGLE_ROSBAG_NATIVE_POSE_IMU_TIME_AUTHORITY_CANARY_R0_RESULT_2026-07-25.md)。
 
 阶段名：
 
