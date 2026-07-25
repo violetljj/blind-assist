@@ -1,0 +1,142 @@
+{
+  "schema": "blindassist_ustrf_independent_person_trajectory_truth_source_authority_and_admission_r0_config",
+  "stage": "INDEPENDENT_PERSON_TRAJECTORY_TRUTH_SOURCE_AUTHORITY_AND_ADMISSION_R0",
+  "status": "frozen_before_candidate_output_read",
+  "frozen_on": "2026-07-25",
+  "research_question": "Does a source independent of JRDB 3D boxes, PCD point-in-box queries and derived centroids provide stable person identities, metric 3D trajectories, source-bound time, coordinate semantics, stated measurement error and preregistered person-to-robot distance denominators?",
+  "parents": [
+    {
+      "path": "docs/research/ustrf-sc/USTRF_JRDB_PERSON_3D_TRAJECTORY_FAR_RANGE_DENOMINATOR_ADEQUACY_METADATA_BLIND_REPLICATION_R0_RESULT_2026-07-25.md",
+      "sha256": "b416dbd2b45bf837abdd86a9c3cc47370158bb1d1a24543c7272fab61b5cb8c7"
+    },
+    {
+      "path": "configs/ustrf_jrdb_person_3d_trajectory_far_range_denominator_adequacy_metadata_blind_replication_r0.json",
+      "sha256": "0587a9f89d2b4a442d6a294539943e5e94f79bd0fce563c4f45bc3aa842d9f0c"
+    }
+  ],
+  "forbidden_truth_substitutes": [
+    "JRDB 3D box center",
+    "JRDB PCD point-in-box support",
+    "JRDB box-conditioned point centroid",
+    "manually selected trajectories or windows",
+    "candidate algorithm outputs"
+  ],
+  "source_inventory": [
+    {
+      "source_id": "jrdb_annotation_derived_person_geometry",
+      "decision": "REJECTED_CIRCULAR_TRUTH",
+      "reason": "The ROI, identity and reference center all originate from the JRDB annotation chain; PCD support does not make that chain independent."
+    },
+    {
+      "source_id": "revel_dynamic_vicon",
+      "decision": "SOURCE_CANDIDATE_LIMITED",
+      "binding": {
+        "path": "artifacts.local/evidence/datasets/revel-dynamic-bag-v1-20260720/qa/revel_dynamic_vicon_trajectory_audit.json",
+        "sha256": "2a223e40d846ee9983bf08e02c3479015d67b143fb08976ce995a13edc0e75e4"
+      },
+      "reason": "Independent Vicon person/sensor trajectories exist, but the existing receipt has no quantitative Vicon calibration-error statement and reaches only about 10.41 m."
+    },
+    {
+      "source_id": "thor_people_tracks_v1",
+      "decision": "SELECTED_FOR_BOUNDED_PAYLOAD_CANARY",
+      "official_record": "https://zenodo.org/records/3382145",
+      "paper": "https://arxiv.org/abs/1909.04403",
+      "license": "CC-BY-4.0",
+      "source_authority_claims": {
+        "measurement": "Qualisys Oqus 7+ motion capture with ten infrared cameras",
+        "sampling_hz": 100,
+        "spatial_discretization_mm": 1,
+        "average_residual_tracking_error_mm": 2,
+        "identity": "unique helmet rigid bodies 2 through 10 and a unique robot rigid body",
+        "world_frame": "origin on ground level in the middle of the room",
+        "clock": "Qualisys, stationary Velodyne and eye-tracking machines synchronized to the same NTP server"
+      }
+    }
+  ],
+  "canary": {
+    "source_id": "thor_people_tracks_v1",
+    "selection_rule": "Among the five Exp_2 moving-robot 6D TSV members in the official Zenodo record, choose the smallest declared byte size; do not inspect payload values before freezing.",
+    "member": "Exp_2_run_2_6D.tsv",
+    "url": "https://zenodo.org/api/records/3382145/files/Exp_2_run_2_6D.tsv/content",
+    "declared_bytes": 40058682,
+    "declared_md5": "17196097564662ca2b72663b8d0a8a3e",
+    "window": "entire_file",
+    "person_track_rule": "all unique Helmet_2 through Helmet_10 rigid bodies present in the frozen payload",
+    "reference_track": "Citi_1",
+    "distance_definition": "Euclidean 3D distance between the same-row helmet rigid-body translation and Citi_1 rigid-body translation in the shared Qualisys world frame; metre conversion is reportable only if the source unit is authoritative",
+    "candidate_outputs_visible": false
+  },
+  "source_schema_amendment_before_candidate_output_read": {
+    "reason": "The frozen official payload header names the moving robot rigid body Citi_1 rather than the pre-payload placeholder Robot_1.",
+    "changed_fields": [
+      "canary.reference_track",
+      "canary.distance_definition",
+      "status"
+    ],
+    "unchanged_fields": [
+      "source",
+      "member",
+      "entire-file window",
+      "Helmet_2 through Helmet_10 tracks",
+      "distance bands",
+      "denominator gates",
+      "missing policy",
+      "terminal states"
+    ],
+    "candidate_outputs_read": false
+  },
+  "distance_bands_m": [
+    {"id": "0-5", "lower_inclusive": 0.0, "upper_exclusive": 5.0, "role": "near"},
+    {"id": "5-10", "lower_inclusive": 5.0, "upper_exclusive": 10.0, "role": "product_core"},
+    {"id": "10-20", "lower_inclusive": 10.0, "upper_exclusive": 20.0, "role": "product_core"},
+    {"id": "20-40", "lower_inclusive": 20.0, "upper_exclusive": 40.0, "role": "extended"},
+    {"id": "40-plus", "lower_inclusive": 40.0, "upper_exclusive": null, "role": "capability_boundary"}
+  ],
+  "denominator_gates": {
+    "minimum_valid_object_frames_per_product_core_band": 1000,
+    "minimum_distinct_person_track_ids_per_product_core_band": 2,
+    "all_valid_and_missing_rows_must_be_accounted": true,
+    "empty_extended_or_capability_band_is_not_a_pass": true,
+    "empty_extended_or_capability_band_does_not_invalidate_source_authority": true,
+    "authority_scope_must_list_every_band_without_adequate_denominator": true
+  },
+  "missing_policy": {
+    "no_interpolation": true,
+    "no_track_reassignment": true,
+    "no_window_replacement": true,
+    "missing_person_or_robot_translation": "exclude_only_that_person_frame_and_count_as_missing; an all-zero 6D rigid-body record is the frozen payload-level missing sentinel",
+    "duplicate_frame_or_nonmonotonic_time": "fail_closed",
+    "unknown_units_or_missing_robot_rigid_body": "fail_closed",
+    "postprocessed_track_note": "source-reported manual ID-switch cleaning and automated recovery must be retained as a limitation, not hidden"
+  },
+  "admission_gates": {
+    "independent_measurement_chain": true,
+    "stable_person_track_ids": true,
+    "metric_3d_position": true,
+    "shared_time_binding": true,
+    "coordinate_frame_and_transform_semantics": true,
+    "quantitative_error_or_calibration_statement": true,
+    "product_core_distance_denominators": true,
+    "candidate_blind_freeze": true
+  },
+  "authority_limits": {
+    "truth_role": "provisional source-native helmet-to-robot trajectory profile only; not admitted as metric truth",
+    "sensor_observation_to_mocap_spatial_extrinsic_admitted": false,
+    "helmet_to_body_center_transform_admitted": false,
+    "route_event_truth_admitted": false,
+    "algorithm_comparison_or_selection_admitted": false,
+    "android_human_independent_walking_production_authority": false
+  },
+  "terminal_states": [
+    "INDEPENDENT_PERSON_TRAJECTORY_TRUTH_SOURCE_ADMITTED",
+    "INDEPENDENT_PERSON_TRAJECTORY_TRUTH_AUTHORITY_ABSENT",
+    "FAIL_CLOSED_AUDIT_INCOMPLETE"
+  ],
+  "outputs": {
+    "dataset": "artifacts.local/datasets/independent-person-trajectory-truth-source-authority-and-admission-r0/Exp_2_run_2_6D.tsv",
+    "acquisition": "artifacts.local/evidence/independent-person-trajectory-truth-source-authority-and-admission-r0/acquisition.json",
+    "ledger": "artifacts.local/evidence/independent-person-trajectory-truth-source-authority-and-admission-r0/denominator-ledger.json",
+    "receipt": "artifacts.local/evidence/independent-person-trajectory-truth-source-authority-and-admission-r0/receipt.json",
+    "validation": "artifacts.local/evidence/independent-person-trajectory-truth-source-authority-and-admission-r0/validation.json"
+  }
+}

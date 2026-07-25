@@ -4,7 +4,7 @@
 
 持续授权：`OBSERVABILITY_AUDIT_AND_FALSIFIABLE_OFFLINE_RESEARCH_ONLY`
 
-当前研究边界：JRDB far-range denominator adequacy metadata-blind replication 已完成。8 条未见 sequence × 360 连续帧先由 metadata-only process 冻结，label-only `>=100` 个 `40m+` object-frame 门预注册筛出 4 条充分 sequence；不变 PCD/oriented-box/`>=3` 点/四类 ledger/算术质心 kernel 得到 `40m+` 相对 pooled `0-20m` 支持率下降在 `4/4` 条同向复现，终态 `FAR_RANGE_SUPPORT_DECLINE_REPLICATED / VALID`。3D-only support 为 `4/4` 更低，但 residual median 只在 `3/4` 更差。权限上限仍为 diagnostic；正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth，且在取得独立 person truth 前不比较或选择更复杂 centroid
+当前研究边界：`INDEPENDENT_PERSON_TRAJECTORY_TRUTH_SOURCE_AUTHORITY_AND_ADMISSION_R0` 已完成并终止为 `INDEPENDENT_PERSON_TRAJECTORY_TRUTH_AUTHORITY_ABSENT / VALID`。JRDB annotation-derived geometry 因循环论证拒绝；REveL 与 THÖR 虽有独立 mocap，但稳定 ID provenance、显式 metric unit、测得同步误差、marker/world 到 sensor measurement frame 的完整 transform/uncertainty 和 admitted 距离分母未同时闭合。THÖR 整文件 `25,912` frame / 9 person tracks 已在候选输出不可见时冻结并审计，provisional `/1000` 分带为 `43,821 / 41,035 / 7,286 / 0 / 0`，但不得授予 metric truth authority；`40m+` 保留为空能力边界。正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth，且在取得独立 person truth 前不比较或选择更复杂 centroid。
 
 算法成熟度：`CORE_ALGORITHM_EFFECT_NOT_PROVEN`
 
