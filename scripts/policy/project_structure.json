@@ -30,6 +30,7 @@
     "configs/ustrf_route_target_l1e_materialization_recovery_r3_continuation_a2.json",
     "configs/ustrf_route_target_l1e_materialization_recovery_r3_continuation_a3.json",
     "configs/ustrf_jrdb_person_3d_trajectory_sensor_support_and_bias_cross_sequence_replication_r0.json",
+    "configs/ustrf_jrdb_person_3d_trajectory_far_range_denominator_adequacy_metadata_blind_replication_r0.json",
     "scripts/run_public_video_edge_inference.ps1",
     "scripts/test_check_project_structure.ps1"
   ]

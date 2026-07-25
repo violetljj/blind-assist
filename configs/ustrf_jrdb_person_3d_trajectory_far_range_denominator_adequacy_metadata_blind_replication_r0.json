@@ -1,0 +1,183 @@
+{
+  "schema": "blindassist_ustrf_jrdb_person_3d_trajectory_far_range_denominator_adequacy_metadata_blind_replication_r0_config",
+  "stage": "JRDB_PERSON_3D_TRAJECTORY_FAR_RANGE_DENOMINATOR_ADEQUACY_METADATA_BLIND_REPLICATION_R0",
+  "status": "preregistered_before_candidate_label_or_pcd_payload",
+  "frozen_on": "2026-07-25",
+  "prepayload_amendment": {
+    "reason": "The first metadata-only freeze config described the distance formula as horizontal sqrt(x^2+y^2), while the already hash-frozen parent kernel has always defined range as 3D sqrt(x^2+y^2+z^2). Before any candidate label or PCD payload was read, the text was corrected and the identical deterministic metadata freeze was rebound to this amended config.",
+    "candidate_payload_read_before_amendment": false,
+    "selection_rule_changed": false,
+    "denominator_threshold_changed": false,
+    "selected_windows_must_exactly_match_initial_metadata_freeze": true
+  },
+  "research_question": "Does the 40m-plus object-frame sensor-support decline replicate across at least three metadata-blind frozen unseen JRDB sequences with adequate far-range denominators?",
+  "phase_order": [
+    "A_METADATA_ONLY_SEQUENCE_WINDOW_FREEZE",
+    "B_LABEL_ONLY_DENOMINATOR_ADEQUACY",
+    "C_FROZEN_PCD_SUPPORT_REPLICATION_IF_AND_ONLY_IF_ADEQUATE",
+    "D_INDEPENDENT_VALIDATION"
+  ],
+  "freeze_boundary": {
+    "candidate_label_payload_read_before_freeze": false,
+    "candidate_pcd_payload_read_before_freeze": false,
+    "candidate_support_or_distance_result_read_before_freeze": false,
+    "selection_inputs_allowed": [
+      "train frames_pc timestamp payload",
+      "labels ZIP central-directory member names and metadata",
+      "pointclouds ZIP central-directory member names and metadata",
+      "rosbags ZIP central-directory member names and metadata"
+    ],
+    "selection_inputs_forbidden": [
+      "candidate 2D or 3D label JSON payload",
+      "candidate PCD payload",
+      "candidate annotation range band",
+      "candidate in-box point count",
+      "candidate support classification or fraction",
+      "candidate centroid or motion residual",
+      "candidate bias profile or result ledger"
+    ],
+    "previously_seen_sequences": [
+      "meyer-green-2019-03-16_0",
+      "gates-basement-elevators-2019-01-17_1",
+      "stlc-111-2019-04-19_0",
+      "clark-center-2019-02-28_0",
+      "cubberly-auditorium-2019-04-22_0"
+    ],
+    "selection_seed": "jrdb-person-3d-far-range-denominator-r0",
+    "selection_rule": "Exclude every previously_seen_sequence; require at least 360 frames_pc rows, finite strictly increasing upper/lower timestamps with maximum adjacent gap <=0.2 seconds, matching upper/lower stems, both 2D/3D sequence label members, both upper/lower PCD member names for every frozen stem, and one same-name rosbag member. Order sequences by sha256(selection_seed + '|sequence|' + sequence_id), then sequence_id. For each ordered sequence set window_start = int(sha256(selection_seed + '|window|' + sequence_id), 16) mod (row_count - 360 + 1), require the resulting 360 logical rows and stems to be consecutive, and freeze the first eight eligible sequence/windows simultaneously.",
+    "selected_sequence_count": 8,
+    "frame_count": 360,
+    "replacement_after_freeze_allowed": false,
+    "post_freeze_window_extension_allowed": false
+  },
+  "denominator_adequacy": {
+    "distance_definition": "sqrt(box_center_x^2 + box_center_y^2 + box_center_z^2) in logical_rgb360 annotation coordinates, exactly matching the frozen support kernel",
+    "far_range_band": "40-plus",
+    "near_reference_band": "pooled 0-20",
+    "minimum_40_plus_object_frames_per_sequence": 100,
+    "minimum_0_20_object_frames_per_sequence": 100,
+    "minimum_adequate_sequences": 3,
+    "rationale": "At n=100 the worst-case normal-approximation 95% half-width for a sequence-level binomial support fraction is about 9.8 percentage points; requiring three separately adequate sequences tests replication at the sequence-cluster level rather than through a pooled denominator.",
+    "label_only_audit_may_read": [
+      "frozen sequence 3D label payload",
+      "frozen sequence 2D stitched label payload"
+    ],
+    "label_only_audit_must_not_read": [
+      "PCD payload",
+      "in-box point count",
+      "support classification",
+      "centroid or motion residual",
+      "prior candidate result ledger"
+    ],
+    "failure_terminal": "DENOMINATOR_INSUFFICIENT",
+    "failure_action": "Stop before PCD acquisition or support execution; do not replace sequences, move or extend windows, lower denominators, pool sequences to pass, or report a far-range replication direction."
+  },
+  "frozen_kernel": {
+    "support_producer": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.py",
+      "sha256": "a1abb783828cc22c7058a365c5ab401b70420cc01135326256abb594c9e90364"
+    },
+    "geometry_helper": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_jrdb_single_sequence_native_multisensor_person_geometry_canary_r0.py",
+      "sha256": "43dea32f1ea93ea96a8a3ac663ce38ca7a8b31b9034625462d1bc8e60f8eed01"
+    },
+    "eligibility_producer": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_jrdb_single_sequence_native_multisensor_person_geometry_canary_r1.py",
+      "sha256": "6e3d12d16dd81142b751426e6286b4c915c42ad59e19dcd3449cd872468172e9"
+    },
+    "baseline_config": {
+      "path": "configs/ustrf_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.json",
+      "sha256": "004a97b6af6dbac8d8b554f71bf5ccfcc42cbaf83a47bef69aecc1b701e9dda3"
+    },
+    "invariants": {
+      "pcd_decode": "binary_compressed full LZF field-major little-endian float32 XYZ with size and finite-point conservation",
+      "oriented_box": "logical_rgb360; length local-x, width local-y, height z; closed half extents",
+      "minimum_fused_in_box_points": 3,
+      "fusion": "upper and lower separately decoded/transformed/audited, no cross-sensor deduplication, no deskew, descriptive concatenation",
+      "centroid": "arithmetic mean of all fused in-box XYZ points",
+      "classes": [
+        "sensor-supported",
+        "annotation-only",
+        "abstained",
+        "invalid"
+      ],
+      "pair_precedence": [
+        "invalid",
+        "abstained",
+        "annotation-only",
+        "sensor-supported"
+      ],
+      "maximum_pair_gap_seconds": 0.2,
+      "quantile_implementation": "frozen baseline linear interpolation",
+      "pooled_rule": "concatenate primitive rows then recompute; never average sequence percentages or quantiles"
+    }
+  },
+  "metadata_inputs": {
+    "timestamps": {
+      "path": "artifacts.local/datasets/jrdb-native-pose-and-3d-person-motion-authority-audit-r0/train_timestamps.zip",
+      "bytes": 2113192,
+      "sha256": "60b440f4fd69b93a96b84ae07b957c169f8af304106a61b5f297286ed04b2e30"
+    },
+    "labels_inventory": {
+      "path": "artifacts.local/work/jrdb-far-range-denominator-r0/labels-inventory.json",
+      "bytes": 60552,
+      "sha256": "90894486eaedcde6342f0df1285492ddb80ff1db8a4d17c0ba952e5d00a422f3"
+    },
+    "pointclouds_inventory": {
+      "path": "artifacts.local/work/jrdb-far-range-denominator-r0/pointclouds-inventory.json",
+      "bytes": 17880474,
+      "sha256": "66d994b2d95f7c3dbe746b493e16eee6361f44826380b1803925cb164dcb91b7"
+    },
+    "rosbags_inventory": {
+      "path": "artifacts.local/work/jrdb-far-range-denominator-r0/rosbags-inventory.json",
+      "bytes": 16102,
+      "sha256": "1826078bf91c731d4d8b007b0837ac3b18c0b5f2d671373528c8b6a5a4b7d81e"
+    }
+  },
+  "remote_archives": {
+    "labels": {
+      "url": "https://jrdb.erc.monash.edu/static/downloads/train_labels.zip",
+      "content_length": 169218284,
+      "etag": "\"a1610ec-5e0c0099511a0\""
+    },
+    "pointclouds": {
+      "url": "https://jrdb.erc.monash.edu/static/downloads/JRDB2024/train_pointclouds.zip",
+      "content_length": 11057816292,
+      "etag": "\"29318e2e4-6150329eeaea5\""
+    },
+    "rosbags": {
+      "url": "https://jrdb.erc.monash.edu/static/downloads/train_rosbags.zip",
+      "content_length": 41876187771,
+      "etag": "\"9c003ea7b-5e0c37ce6caac\""
+    }
+  },
+  "outputs": {
+    "root": "artifacts.local/evidence/jrdb-person-3d-trajectory-far-range-denominator-adequacy-metadata-blind-replication-r0",
+    "initial_metadata_freeze": "artifacts.local/evidence/jrdb-person-3d-trajectory-far-range-denominator-adequacy-metadata-blind-replication-r0/sequence-freeze.json",
+    "sequence_freeze": "artifacts.local/evidence/jrdb-person-3d-trajectory-far-range-denominator-adequacy-metadata-blind-replication-r0/sequence-freeze-amended-prepayload.json",
+    "label_payload_root": "artifacts.local/datasets/jrdb-person-3d-trajectory-far-range-denominator-adequacy-metadata-blind-replication-r0/labels",
+    "denominator_ledger": "artifacts.local/evidence/jrdb-person-3d-trajectory-far-range-denominator-adequacy-metadata-blind-replication-r0/denominator-ledger.json",
+    "denominator_receipt": "artifacts.local/evidence/jrdb-person-3d-trajectory-far-range-denominator-adequacy-metadata-blind-replication-r0/denominator-receipt.json",
+    "support_ledger": "artifacts.local/evidence/jrdb-person-3d-trajectory-far-range-denominator-adequacy-metadata-blind-replication-r0/support-ledger.json",
+    "support_receipt": "artifacts.local/evidence/jrdb-person-3d-trajectory-far-range-denominator-adequacy-metadata-blind-replication-r0/support-receipt.json",
+    "validation": "artifacts.local/evidence/jrdb-person-3d-trajectory-far-range-denominator-adequacy-metadata-blind-replication-r0/validation.json"
+  },
+  "terminal_states": [
+    "INVALID_GLOBAL_INTEGRITY",
+    "DENOMINATOR_INSUFFICIENT",
+    "FAR_RANGE_SUPPORT_DECLINE_REPLICATED",
+    "FAR_RANGE_SUPPORT_DECLINE_NOT_REPLICATED"
+  ],
+  "authority": {
+    "ceiling": "DIAGNOSTIC",
+    "candidate_selection": false,
+    "route_risk": false,
+    "event_lifecycle": false,
+    "alert_logic": false,
+    "android": false,
+    "human_safety": false,
+    "production": false,
+    "commit": false,
+    "push": false
+  }
+}

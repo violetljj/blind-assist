@@ -4,7 +4,7 @@
 
 持续授权：`OBSERVABILITY_AUDIT_AND_FALSIFIABLE_OFFLINE_RESEARCH_ONLY`
 
-当前研究边界：JRDB sensor-support/bias 已完成 3 个 metadata-frozen 新 sequence × 120 帧的跨序列复现；合计 8,118/9,771 个 annotation-derived 3D object-frame 与 7,822/9,679 个 motion pair 得到冻结 LiDAR 支持，pooled centroid residual median/P95 为 `0.168/0.446m`。但 worst object/pair support 为 `73.67%/70.15%`、worst P95 为 `0.669m`；3D-only residual 方向复现，远距仅 1/3 sequence 可评，终态 `CROSS_SEQUENCE_PROFILE_AVAILABLE_WITH_PARTIAL_REPLICATION / VALID`。权限上限仍为 diagnostic，正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth
+当前研究边界：JRDB far-range denominator adequacy metadata-blind replication 已完成。8 条未见 sequence × 360 连续帧先由 metadata-only process 冻结，label-only `>=100` 个 `40m+` object-frame 门预注册筛出 4 条充分 sequence；不变 PCD/oriented-box/`>=3` 点/四类 ledger/算术质心 kernel 得到 `40m+` 相对 pooled `0-20m` 支持率下降在 `4/4` 条同向复现，终态 `FAR_RANGE_SUPPORT_DECLINE_REPLICATED / VALID`。3D-only support 为 `4/4` 更低，但 residual median 只在 `3/4` 更差。权限上限仍为 diagnostic；正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth，且在取得独立 person truth 前不比较或选择更复杂 centroid
 
 算法成熟度：`CORE_ALGORITHM_EFFECT_NOT_PROVEN`
 
