@@ -5,6 +5,8 @@
 
 ## 首要入口
 
+- [JRDB native pose / 3D person motion authority audit R0 结果（2026-07-25）](USTRF_JRDB_NATIVE_POSE_AND_3D_PERSON_MOTION_AUTHORITY_AUDIT_R0_RESULT_2026-07-25.md)：同 train sequence 的 RGB、双 Velodyne 目录、逐源 timestamp、2D/3D person track、静态 transform 与 rosbag 均存在，前 120 帧目录完整；但 native dynamic pose 与 IMU 尚未直接核验 bag topic/time coverage，故终态 `NATIVE_MULTISENSOR_CANARY_ELIGIBLE_POSE_IMU_TOPIC_AUDIT_REQUIRED / VALID`，P2 关闭。
+- [JRDB native pose / 3D person motion authority audit R0 目标（2026-07-25）](USTRF_JRDB_NATIVE_POSE_AND_3D_PERSON_MOTION_AUTHORITY_AUDIT_R0_GOAL_2026-07-25.md)：metadata/central-directory-only P1，冻结同 sequence/frame/time/label-ID join、64 MiB 门和 pose/IMU payload 必须直接核验的通过语义。
 - [observability program real-world authority terminal R0 结果（2026-07-25）](USTRF_OBSERVABILITY_PROGRAM_REAL_WORLD_AUTHORITY_TERMINAL_R0_RESULT_2026-07-25.md)：综合 G0、JRDB、ARCore 与 RGB-D replay 的 hash-bound 证据，独立闭合为 `EVIDENCE_PROGRAM_BLOCKED_BY_REAL_WORLD_AUTHORITY / VALID`。结论不是算法 reject 或任务不可观测；正式 G1–G7 缺 canonical、fresh metric geometry、intended-route 与 event lifecycle authority。总目标以允许的研究终局结束，恢复须带来新的外部 authority。
 - [observability program real-world authority terminal R0 目标（2026-07-25）](USTRF_OBSERVABILITY_PROGRAM_REAL_WORLD_AUTHORITY_TERMINAL_R0_GOAL_2026-07-25.md)：冻结七族权威证据、三终态优先级、反算法失败/反不可观测误判边界与恢复条件。
 - [JRDB RGB continuity / ego-motion availability R0 结果（2026-07-25）](USTRF_JRDB_RGB_CONTINUITY_EGOMOTION_AVAILABILITY_R0_RESULT_2026-07-25.md)：32 帧/31 pair 的 timestamp、RGB、person mask 与 sparse-LK 完整，但冻结 global affine 只有 11/31 通过；20 pair 唯一失败项为 inlier ratio `<0.65`，其余特征、空间、残差、condition 与 determinant 均通过。独立终态 `EGOMOTION_QUALITY_AVAILABILITY_INSUFFICIENT / VALID`；不降门、不扩 sequence、不开放 G3/G4。
