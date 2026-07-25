@@ -1,0 +1,283 @@
+{
+  "schema": "blindassist_ustrf_jrdb_person_3d_trajectory_sensor_support_and_bias_cross_sequence_replication_r0_config",
+  "stage": "JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CROSS_SEQUENCE_REPLICATION_R0",
+  "status": "frozen_before_support_execution",
+  "frozen_on": "2026-07-25",
+  "research_question": "Do the single seen-development sequence object-frame and pair support rates, centroid residual scale, and far-range and 3d-only degradation directions replicate across three metadata-frozen JRDB train sequences?",
+  "freeze_boundary": {
+    "support_results_read_before_freeze": false,
+    "selection_inputs_allowed": [
+      "train timestamp frames_pc sequence and member inventory",
+      "train labels ZIP central-directory member names",
+      "train pointclouds ZIP central-directory member names",
+      "train rosbags ZIP central-directory member metadata"
+    ],
+    "selection_inputs_forbidden": [
+      "PCD payload",
+      "label JSON payload",
+      "in-box point count",
+      "support classification or fraction",
+      "centroid or motion residual",
+      "bias profile or result ledger"
+    ],
+    "selection_rule": "Exclude meyer-green-2019-03-16_0; require train frames_pc logical positions 0..119 with both sensor URL stems exactly 000000..000119, both 2d/3d label member names, both upper/lower PCD member-name windows, and one same-name rosbag member; order eligible sequence IDs by sha256('jrdb-cross-sequence-r0|' + sequence_id), then sequence_id; take the first three simultaneously.",
+    "eligible_sequence_count": 26,
+    "selected_sequence_count": 3,
+    "replacement_after_freeze_allowed": false
+  },
+  "baseline": {
+    "sequence": "meyer-green-2019-03-16_0",
+    "data_role": "seen_development_reference_only",
+    "result": {
+      "path": "docs/research/ustrf-sc/USTRF_JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CANARY_R0_RESULT_2026-07-25.md",
+      "sha256": "8bfe3c72258425815be37f039260e99c0e135988c22dcd8c0e22b55fdf73e27d"
+    },
+    "ledger": {
+      "path": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-canary-r0/ledger.json",
+      "sha256": "850fff5ae9df09fc9453bba4706784b12ac87bd436ac9b1af77aa64bf47692a8"
+    },
+    "receipt": {
+      "path": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-canary-r0/receipt.json",
+      "sha256": "6d3bd96b5501b87eb2d42f8a8db7d2af6901d4b866cb23fa575343abc6ee9978"
+    },
+    "validation": {
+      "path": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-canary-r0/validation.json",
+      "sha256": "34adc7e18247fe44e2c43829b9ed3320392cc691519b67e60c40a9ce018680d7",
+      "required_status": "VALID"
+    },
+    "reference_metrics": {
+      "object_frame_support_fraction": 0.8185185185185185,
+      "pair_support_fraction": 0.781437125748503,
+      "centroid_residual_3d_median_m": 0.19493341874648767,
+      "centroid_residual_3d_p95_m": 0.480664027916771,
+      "far_40_plus_support_fraction": 0.1527777777777778,
+      "near_0_20_support_fraction_recomputed_from_rows": true,
+      "three_d_only_support_fraction": 0.034482758620689655,
+      "three_d_and_two_d_support_fraction": 0.8357305071915215
+    }
+  },
+  "frozen_kernel": {
+    "support_producer": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.py",
+      "sha256": "a1abb783828cc22c7058a365c5ab401b70420cc01135326256abb594c9e90364"
+    },
+    "geometry_helper": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_jrdb_single_sequence_native_multisensor_person_geometry_canary_r0.py",
+      "sha256": "43dea32f1ea93ea96a8a3ac663ce38ca7a8b31b9034625462d1bc8e60f8eed01"
+    },
+    "eligibility_producer": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/run_jrdb_single_sequence_native_multisensor_person_geometry_canary_r1.py",
+      "sha256": "6e3d12d16dd81142b751426e6286b4c915c42ad59e19dcd3449cd872468172e9"
+    },
+    "focused_tests": {
+      "path": "scripts/research/ustrf_route_target_evidence_closure/test_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.py",
+      "sha256": "fc11bc8b265be66c8054aa06b4ba1005dbf1302e18ed3dc2d59755dfe298445f"
+    },
+    "baseline_config": {
+      "path": "configs/ustrf_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.json",
+      "sha256": "004a97b6af6dbac8d8b554f71bf5ccfcc42cbaf83a47bef69aecc1b701e9dda3"
+    },
+    "invariants": {
+      "pcd_decode": "binary_compressed full LZF field-major little-endian float32 XYZ with size and finite-point conservation",
+      "oriented_box": "logical_rgb360; length local-x, width local-y, height z; closed half extents",
+      "minimum_fused_in_box_points": 3,
+      "fusion": "upper and lower separately decoded/transformed/audited, no cross-sensor deduplication, no deskew, descriptive concatenation",
+      "classes": ["sensor-supported", "annotation-only", "abstained", "invalid"],
+      "pair_precedence": ["invalid", "abstained", "annotation-only", "sensor-supported"],
+      "maximum_pair_gap_seconds": 0.2,
+      "jump_displacement_flag_meters": 0.5,
+      "speed_flag_mps": 4.5,
+      "acceleration_flag_mps2": 12.0,
+      "quantile_implementation": "frozen baseline linear interpolation",
+      "pooled_rule": "concatenate primitive rows then recompute; never average sequence percentages or quantiles"
+    }
+  },
+  "source_metadata": {
+    "authority_config": {
+      "path": "configs/ustrf_jrdb_native_pose_and_3d_person_motion_authority_audit_r0.json",
+      "sha256": "750e2302e4b85117743e39af213d4c2371ae6bcc55ae61f2601ee434cad221b2"
+    },
+    "timestamps": {
+      "path": "artifacts.local/datasets/jrdb-native-pose-and-3d-person-motion-authority-audit-r0/train_timestamps.zip",
+      "sha256": "60b440f4fd69b93a96b84ae07b957c169f8af304106a61b5f297286ed04b2e30",
+      "member_pattern": "timestamps/<sequence_id>/frames_pc.json"
+    },
+    "archives": {
+      "labels": {
+        "url": "https://jrdb.erc.monash.edu/static/downloads/train_labels.zip",
+        "content_length": 169218284,
+        "etag": "\"a1610ec-5e0c0099511a0\"",
+        "central_directory_offset": 169193920,
+        "central_directory_size": 24342,
+        "central_directory_sha256": "8674b29c94645d6eeae224c6617773c81ca80e1a009d78d5652cf4cbd8f97c70"
+      },
+      "images": {
+        "url": "https://jrdb.erc.monash.edu/static/downloads/train_images.zip",
+        "content_length": 22279649207,
+        "etag": "\"52ff877b7-5e0c071fdaa94\"",
+        "central_directory_offset": 22257177895,
+        "central_directory_size": 22471214
+      },
+      "pointclouds": {
+        "url": "https://jrdb.erc.monash.edu/static/downloads/JRDB2024/train_pointclouds.zip",
+        "content_length": 11057816292,
+        "etag": "\"29318e2e4-6150329eeaea5\"",
+        "central_directory_offset": 11049362248,
+        "central_directory_size": 8453946,
+        "central_directory_sha256": "66751757702b9d3bcf58eb4436754eaf83b173295066b3374fc0637d6eb1bfa1"
+      },
+      "rosbags": {
+        "url": "https://jrdb.erc.monash.edu/static/downloads/train_rosbags.zip",
+        "content_length": 41876187771,
+        "etag": "\"9c003ea7b-5e0c37ce6caac\"",
+        "central_directory_offset": 41876181387,
+        "central_directory_size": 6286,
+        "central_directory_sha256": "49779c11cedee0dc43af488df28fd3ad97dce8ca640bc41d88a27c406b08dd6f"
+      }
+    }
+  },
+  "eligible_sequence_order": [
+    ["gates-basement-elevators-2019-01-17_1", "012bd0ea814510fe8b5725ee2fa7bfee5cfb489171902af7913b1cb3911919c0"],
+    ["stlc-111-2019-04-19_0", "035ad8dc66e1cc9f2fc2a007b607bf1c09f92fbb70966d584529604dbcbb2e46"],
+    ["clark-center-2019-02-28_0", "07cd438bd10c892aaf7a2f06327552710f47dc8807b94599d7f3a277eae9c5bc"],
+    ["memorial-court-2019-03-16_0", "09a94c8bd2cef32ac9017f7ec0edc16b4783bae9c76c346e993af7ffa47befd9"],
+    ["clark-center-2019-02-28_1", "0a5fc542fc15633bb831298f2de00208653bcb37dd375fe5e7ae44e24a952a85"],
+    ["cubberly-auditorium-2019-04-22_0", "0e6feb8e9e424d66a897243e51c571258e6dc87e417d7a32543e863a93e50578"],
+    ["gates-ai-lab-2019-02-08_0", "13f940cc7723d35c28ed3f8ec7465f3c351b6bb401193e7c6dd6b02b9eaf6a71"],
+    ["hewlett-packard-intersection-2019-01-24_0", "20a4f5ad3c18f7dd80ad0dea5af5ebf57cc7a871c92462ae9e1e916583009092"],
+    ["tressider-2019-04-26_2", "255d64c3d3a6e0eecda2d49a1591de423376041c8ef5a2d909735ea7bf6b6412"],
+    ["jordan-hall-2019-04-22_0", "2ccf772d87232e1b92a77cdd45c3e49cea294e5013562c3826af8ee1846114e6"],
+    ["gates-159-group-meeting-2019-04-03_0", "2e977df1628b5785459a006e9508c14943b211b004edf0d7522cf618329f1540"],
+    ["huang-lane-2019-02-12_0", "2f48dc7aa5451371d9725d7576053fc212a2b44546ae1f7816b9176812b8965c"],
+    ["nvidia-aud-2019-04-18_0", "45cf5228d02bac183aadfb2e0873e5d055c28ef4aba9900a9bbfcdca163660fe"],
+    ["tressider-2019-03-16_1", "5090af317a464ff886d71504518b6af849886392f62fa87bcb76f6d8d4fd6b02"],
+    ["huang-basement-2019-01-25_0", "6e3a904578c9d1cae1e84f86fd55ac3443b7c6c24503df0b903f4a0ba60871ff"],
+    ["huang-2-2019-01-25_0", "71af4863b46301ac2b1ca0d541006192dcfa5c78bd2bce34580f50d5247c128b"],
+    ["packard-poster-session-2019-03-20_0", "71c1c06d54ecbbfc4d4ce71a4e460f722327642c58c3eddd041e9d755ada79e2"],
+    ["bytes-cafe-2019-02-07_0", "7aacf78e301bdb9ed980d3d78b1bf517ef388e55a85f19987b9a386b6281250a"],
+    ["forbes-cafe-2019-01-22_0", "7b2cbc715e955973e2c6efa31084a0b435e092bcf1fdf567be5995fbbe503f0a"],
+    ["svl-meeting-gates-2-2019-04-08_1", "7e6dafeb989e5c41ca6fe458fcef818519f54afc672a65e19c3e089d6900a846"],
+    ["svl-meeting-gates-2-2019-04-08_0", "b7f22f80bd70cf331093dac0c255c054350b694fccf3ae281264b296e0b05cf1"],
+    ["clark-center-intersection-2019-02-28_0", "bae63a51c7244781e8d96ee33044580aa7fbc6ea9a842343303fa12f3731bd68"],
+    ["packard-poster-session-2019-03-20_1", "cd285ada13a6f2a6e272f5e8eec4a0edd430f1a559330a95da24ba6fe72feecf"],
+    ["packard-poster-session-2019-03-20_2", "dc05aced9eb9ffc24eb3bfbd81c54109a54d574b7833f702b7f58dda5338decc"],
+    ["tressider-2019-03-16_0", "dc375c22f5bdb6d7882c5f513016cc5ffe1fa4d21aa11f7089b1541b88c6d7c4"],
+    ["gates-to-clark-2019-02-28_1", "f8f9c994ede4fd084f1dbd41eee80a899063275d14c4e2adcb8211dcf75c2df8"]
+  ],
+  "sequences": [
+    {
+      "sequence": "gates-basement-elevators-2019-01-17_1",
+      "rank_hash": "012bd0ea814510fe8b5725ee2fa7bfee5cfb489171902af7913b1cb3911919c0",
+      "window_first_position": 0,
+      "window_last_position": 119,
+      "frame_first_stem": "000000",
+      "frame_last_stem": "000119",
+      "frame_count": 120,
+      "frames_pc_rows": 1011,
+      "frames_pc_member_crc32_hex": "8339337a",
+      "frames_pc_member_bytes": 538460,
+      "timestamp_window_inventory_sha256": "81f005e4c65dd46c99f282a60f28908ec045b222aa7e7d9ac23315137555690e",
+      "pcd_member_name_inventory_sha256": "1a030a0b53c21b9cbd906019549ef076f4c99e6dfd7da87dcce96175a9d3395f",
+      "label_member_name_inventory_sha256": "3b0987b2f83f02b39553447b4af6d1d36f194ecba43ef5f58863199334798ed1",
+      "rosbag_member": {
+        "name": "rosbags/gates-basement-elevators-2019-01-17_1.bag",
+        "flags": 0,
+        "method": 8,
+        "compressed_size": 1504593311,
+        "uncompressed_size": 1619313222,
+        "local_header_offset": 34552579364,
+        "crc32_hex": "072d4f63"
+      }
+    },
+    {
+      "sequence": "stlc-111-2019-04-19_0",
+      "rank_hash": "035ad8dc66e1cc9f2fc2a007b607bf1c09f92fbb70966d584529604dbcbb2e46",
+      "window_first_position": 0,
+      "window_last_position": 119,
+      "frame_first_stem": "000000",
+      "frame_last_stem": "000119",
+      "frame_count": 120,
+      "frames_pc_rows": 1737,
+      "frames_pc_member_crc32_hex": "685cab0b",
+      "frames_pc_member_bytes": 870267,
+      "timestamp_window_inventory_sha256": "088ccb5c73b987081f2696dcd72f96306c0300d61e73813a79c9e25c6c635b22",
+      "pcd_member_name_inventory_sha256": "f0b62f64dfe4773015086ea4e83d1fd1ae69e7d212de07f0f0ea849e5d4eb665",
+      "label_member_name_inventory_sha256": "fd49a68e3224168567b8c4d2342261d078c6afd26593ab3ea7bdfde426e1892f",
+      "rosbag_member": {
+        "name": "rosbags/stlc-111-2019-04-19_0.bag",
+        "flags": 0,
+        "method": 8,
+        "compressed_size": 2621925638,
+        "uncompressed_size": 2805715619,
+        "local_header_offset": 25408368098,
+        "crc32_hex": "9dc173a1"
+      }
+    },
+    {
+      "sequence": "clark-center-2019-02-28_0",
+      "rank_hash": "07cd438bd10c892aaf7a2f06327552710f47dc8807b94599d7f3a277eae9c5bc",
+      "window_first_position": 0,
+      "window_last_position": 119,
+      "frame_first_stem": "000000",
+      "frame_last_stem": "000119",
+      "frame_count": 120,
+      "frames_pc_rows": 580,
+      "frames_pc_member_crc32_hex": "c75faef1",
+      "frames_pc_member_bytes": 294946,
+      "timestamp_window_inventory_sha256": "6763f8c778e1cab78c311e1d92a77512964eb0bf5d097fc30db7855f45f9f0ac",
+      "pcd_member_name_inventory_sha256": "2824ec3f2d619e55f2126b15d4220112a351b83be86f4a092e295392f3c2b68d",
+      "label_member_name_inventory_sha256": "7b0ed0e4f6971cb636a8fad88b93e77157710cb447014e4d27725cc95f14149d",
+      "rosbag_member": {
+        "name": "rosbags/clark-center-2019-02-28_0.bag",
+        "flags": 0,
+        "method": 8,
+        "compressed_size": 917110882,
+        "uncompressed_size": 950869946,
+        "local_header_offset": 28949899093,
+        "crc32_hex": "1451884a"
+      }
+    }
+  ],
+  "replication_contract": {
+    "per_sequence_report_required": true,
+    "worst_sequence_report_required": true,
+    "pooled_report_required": true,
+    "baseline_delta_report_required": true,
+    "empty_group": "NOT_EVALUABLE",
+    "level_replication": "DESCRIPTIVE_ONLY_REPORT_EXACT_DELTA_RANGE_AND_POOLED; no post-hoc numeric tolerance pass gate",
+    "degradation_direction": {
+      "far_range_contrast": "40-plus versus pooled 0-20; lower support or higher centroid residual is adverse",
+      "three_d_only_contrast": "3d-only versus 3d-and-2d; lower support or higher centroid residual is adverse",
+      "minimum_group_denominator": 1,
+      "all_evaluable_sequences_same_adverse_direction": "DIRECTION_REPLICATED",
+      "any_opposite_direction": "MIXED_OR_CONTRADICTED",
+      "fewer_than_two_evaluable_sequences": "NOT_EVALUABLE"
+    }
+  },
+  "terminal_states": [
+    "INVALID_GLOBAL_INTEGRITY",
+    "NOT_EVALUABLE_CROSS_SEQUENCE_SUPPORT",
+    "CROSS_SEQUENCE_PROFILE_AVAILABLE_WITH_PARTIAL_REPLICATION",
+    "CROSS_SEQUENCE_PROFILE_AVAILABLE_REPLICATION_CONSISTENT"
+  ],
+  "outputs": {
+    "sequence_freeze": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-cross-sequence-replication-r0/sequence-freeze.json",
+    "input_manifest": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-cross-sequence-replication-r0/input-manifest.json",
+    "ledger": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-cross-sequence-replication-r0/ledger.json",
+    "receipt": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-cross-sequence-replication-r0/receipt.json",
+    "validation": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-cross-sequence-replication-r0/validation.json",
+    "dataset_root": "artifacts.local/datasets/jrdb-person-3d-trajectory-sensor-support-and-bias-cross-sequence-replication-r0"
+  },
+  "authority": {
+    "ceiling": "DIAGNOSTIC",
+    "candidate_selection": false,
+    "route_risk": false,
+    "event_lifecycle": false,
+    "alert_logic": false,
+    "android": false,
+    "human_safety": false,
+    "production": false,
+    "commit": false,
+    "push": false
+  }
+}

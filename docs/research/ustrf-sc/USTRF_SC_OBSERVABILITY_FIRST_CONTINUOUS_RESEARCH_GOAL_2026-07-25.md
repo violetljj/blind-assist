@@ -4,7 +4,7 @@
 
 持续授权：`OBSERVABILITY_AUDIT_AND_FALSIFIABLE_OFFLINE_RESEARCH_ONLY`
 
-当前研究边界：JRDB sensor-support/bias R0 已独立解码双 PCD；1,105/1,350 个 annotation-derived 3D object-frame 与 1,044/1,336 个 motion pair 得到冻结 LiDAR 支持，3D centroid residual median/P95 为 `0.195/0.481m`；3D-only、远距、遮挡和稀疏点云按最小单元降级。权限上限仍为 diagnostic，正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth
+当前研究边界：JRDB sensor-support/bias 已完成 3 个 metadata-frozen 新 sequence × 120 帧的跨序列复现；合计 8,118/9,771 个 annotation-derived 3D object-frame 与 7,822/9,679 个 motion pair 得到冻结 LiDAR 支持，pooled centroid residual median/P95 为 `0.168/0.446m`。但 worst object/pair support 为 `73.67%/70.15%`、worst P95 为 `0.669m`；3D-only residual 方向复现，远距仅 1/3 sequence 可评，终态 `CROSS_SEQUENCE_PROFILE_AVAILABLE_WITH_PARTIAL_REPLICATION / VALID`。权限上限仍为 diagnostic，正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth
 
 算法成熟度：`CORE_ALGORITHM_EFFECT_NOT_PROVEN`
 

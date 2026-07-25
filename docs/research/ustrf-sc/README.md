@@ -5,6 +5,8 @@
 
 ## 首要入口
 
+- [JRDB person 3D trajectory sensor support and bias cross-sequence replication R0 结果（2026-07-25）](USTRF_JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CROSS_SEQUENCE_REPLICATION_R0_RESULT_2026-07-25.md)：3 个 metadata-frozen 新 sequence 共 `9,771` object-frame / `9,679` pair；pooled support `83.08% / 80.81%`、residual median/P95 `0.168/0.446m`，但 worst object/pair support 降到 `73.67% / 70.15%`、worst P95 升到 `0.669m`。3D-only residual 方向复现，远距仅 1/3 sequence 可评，终态 `CROSS_SEQUENCE_PROFILE_AVAILABLE_WITH_PARTIAL_REPLICATION / VALID`。
+- [JRDB person 3D trajectory sensor support and bias cross-sequence replication R0 目标（2026-07-25）](USTRF_JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CROSS_SEQUENCE_REPLICATION_R0_GOAL_2026-07-25.md)：在读取支持结果前，仅按 source metadata 一次性冻结 3 个新 sequence × 120 帧，并锁定原 PCD/oriented-box/`>=3` 点门/四类 ledger。
 - [JRDB person 3D trajectory sensor support and bias canary R0 结果（2026-07-25）](USTRF_JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CANARY_R0_RESULT_2026-07-25.md)：真实解码同一 120 帧的双 PCD；1,105/1,350 个可计算 3D object-frame 与 1,044/1,336 个 motion pair 得到冻结的 LiDAR 支持，质心残差 median/P95 为 `0.195/0.481m`。3D-only、远距与遮挡形成明显局部退化，终态 `SENSOR_SUPPORT_AND_BIAS_PROFILE_AVAILABLE_WITH_ABSTENTION / VALID`，上限仍为 diagnostic。
 - [JRDB person 3D trajectory sensor support and bias canary R0 目标（2026-07-25）](USTRF_JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CANARY_R0_GOAL_2026-07-25.md)：冻结双 PCD oriented-box 查询、四类局部 ledger、质心/运动/pose 敏感性和分组偏差合同。
 - [USTRF 弹性证据与降级标准 R1](USTRF_ELASTIC_EVIDENCE_AND_DEGRADATION_STANDARD_R1.md)：结构损坏才允许全局关闭；普通缺失按最小依赖单元 abstain，逐 claim 报告 integrity、availability 与 authority ceiling，并强制 source-native 分母守恒。
