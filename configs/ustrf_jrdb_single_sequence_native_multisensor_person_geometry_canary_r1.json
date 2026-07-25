@@ -1,0 +1,131 @@
+{
+  "schema": "blindassist_ustrf_jrdb_single_sequence_native_multisensor_person_geometry_canary_r1_config",
+  "stage": "JRDB_SINGLE_SEQUENCE_NATIVE_MULTISENSOR_PERSON_GEOMETRY_CANARY_R1",
+  "status": "frozen_before_execution",
+  "frozen_on": "2026-07-25",
+  "correction": {
+    "parent_terminal_preserved": true,
+    "parent_error": "R0 incorrectly made complete 3d_to_2d join a dependency of 3d-native motion and robot-relative geometry",
+    "r1_rule": "cross-modal missingness abstains only the affected cross-modal object-frame; 3d-native claims use the complete source-native 3d denominator"
+  },
+  "elastic_standard": {
+    "document": {
+      "path": "docs/research/ustrf-sc/USTRF_ELASTIC_EVIDENCE_AND_DEGRADATION_STANDARD_R1.md",
+      "sha256": "08adac1c09ad7d369a58d20336e86f39237aa403b310d353b12df838259508a0"
+    },
+    "config": {
+      "path": "configs/ustrf_elastic_evidence_and_degradation_standard_r1.json",
+      "sha256": "772a39c9d1a3c53d202e7fdfdae6fc127617a11a329b034f5b5793e637bb5109"
+    },
+    "validation": {
+      "path": "artifacts.local/evidence/ustrf-elastic-evidence-and-degradation-standard-r1/validation.json",
+      "sha256": "96bc1867b55f73be3da94afc2b436d0eeb7caeea2cde8bd01d17a637eff79d20",
+      "required_status": "VALID"
+    }
+  },
+  "parent_r0": {
+    "result": {
+      "path": "docs/research/ustrf-sc/USTRF_JRDB_SINGLE_SEQUENCE_NATIVE_MULTISENSOR_PERSON_GEOMETRY_CANARY_R0_RESULT_2026-07-25.md",
+      "sha256": "fcbb563a6d8f67651155dbecd574b7a94469698d3391eb03688f1e1f87d49d9d"
+    },
+    "observation_packet": {
+      "path": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r0/observation-packet.json",
+      "sha256": "6db4925540a063fa852427b8a5152a0fb40f9ff6df06a7132d0cfe359660e9ec",
+      "required_status": "IMMUTABLE_OBSERVATION_PACKET"
+    },
+    "receipt": {
+      "path": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r0/receipt.json",
+      "sha256": "d5394ea7791fc31fda7069e7d90cb9f95ddb9aa28e3344378824a350c7367ba2",
+      "required_terminal": "FAIL_CLOSED_LABEL_JOIN"
+    },
+    "validation": {
+      "path": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r0/validation.json",
+      "sha256": "ca9aab02b965d06af5da9cee12d72f13daa34a59edbaa745ba599ad0ca0779e9",
+      "required_status": "VALID"
+    }
+  },
+  "canary": {
+    "split": "train",
+    "sequence": "meyer-green-2019-03-16_0",
+    "window_first_frame": 0,
+    "window_last_frame": 119,
+    "frame_count": 120,
+    "data_role": "seen_development_availability_only"
+  },
+  "claims": {
+    "robot_relative_3d_geometry": {
+      "unit_of_analysis": "source_native_3d_object_frame",
+      "required_roles": ["unique_3d_label_id", "finite_3d_center", "logical_rgb360_to_base_link_static_transform"],
+      "optional_roles": ["2d_label", "rgb_projection"],
+      "minimum_observed_frames": 32,
+      "minimum_object_observations": 1
+    },
+    "source_annotation_derived_3d_motion": {
+      "unit_of_analysis": "adjacent_source_native_3d_track_pair",
+      "required_roles": ["unique_3d_label_id", "finite_3d_center", "monotonic_source_time", "bounded_odom_to_base_pose", "closed_static_frame_chain"],
+      "optional_roles": ["2d_label", "rgb_projection"],
+      "maximum_pair_gap_seconds": 0.2,
+      "minimum_observed_frames": 32,
+      "minimum_valid_adjacent_pairs": 31,
+      "minimum_motion_tracks": 1,
+      "direct_sensor_measurement_claim_allowed": false
+    },
+    "cross_modal_2d_3d_identity": {
+      "unit_of_analysis": "source_native_union_object_frame",
+      "required_roles": ["unique_2d_label_id", "unique_3d_label_id", "same_sequence_frame_stem"],
+      "missing_role_action": "abstain_affected_object_frame_and_report_bidirectional_coverage",
+      "coverage_is_motion_gate": false
+    }
+  },
+  "missingness": {
+    "3d_only": {
+      "classification": "unknown_missing_2d",
+      "eligible_claims": ["robot_relative_3d_geometry", "source_annotation_derived_3d_motion"],
+      "abstained_claims": ["cross_modal_2d_3d_identity"]
+    },
+    "2d_only": {
+      "classification": "unknown_missing_3d",
+      "eligible_claims": [],
+      "abstained_claims": ["robot_relative_3d_geometry", "source_annotation_derived_3d_motion", "cross_modal_2d_3d_identity"]
+    },
+    "duplicate_or_ambiguous_id": {
+      "classification": "localized_ambiguity",
+      "action": "invalidate_affected_object_frame_and_dependent_track_pairs; escalate only with unlocalizable propagation evidence"
+    }
+  },
+  "denominators": {
+    "cross_modal_3d_expected": "all unique source-native 3d object-frames",
+    "cross_modal_2d_expected": "all unique source-native 2d object-frames",
+    "motion_expected": "all adjacent same-label 3d observations with consecutive frame index before gap/validity eligibility",
+    "intersection_as_expected_denominator_allowed": false,
+    "conservation_required": true
+  },
+  "source_annotation_provenance": {
+    "interpolated_attribute_reported": true,
+    "interpolated_counts_as_direct_observation": false,
+    "maximum_claim_language": "source-annotation-derived person 3d motion and robot-relative geometry availability"
+  },
+  "terminal_states": [
+    "INVALID_GLOBAL_INTEGRITY",
+    "NOT_EVALUABLE_3D_GEOMETRY_SUPPORT_INSUFFICIENT",
+    "ANNOTATION_DERIVED_PERSON_GEOMETRY_AVAILABLE_WITH_ABSTENTION",
+    "ANNOTATION_DERIVED_PERSON_GEOMETRY_AVAILABLE_COMPLETE"
+  ],
+  "outputs": {
+    "eligibility_ledger": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r1/eligibility-ledger.json",
+    "receipt": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r1/receipt.json",
+    "validation": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r1/validation.json"
+  },
+  "authority": {
+    "ceiling": "DIAGNOSTIC",
+    "candidate_selection": false,
+    "route_risk": false,
+    "event_lifecycle": false,
+    "alert_logic": false,
+    "android": false,
+    "human_safety": false,
+    "production": false,
+    "commit": false,
+    "push": false
+  }
+}

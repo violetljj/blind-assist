@@ -1,0 +1,132 @@
+{
+  "schema": "blindassist_ustrf_elastic_evidence_and_degradation_standard_r1",
+  "version": "R1",
+  "status": "current",
+  "adopted_on": "2026-07-25",
+  "principle": "fail_closed_at_the_smallest_unit_that_contains_the_defect_and_preserve_unaffected_claim_specific_evidence",
+  "impact_granularity": [
+    "field",
+    "observation_or_object",
+    "frame",
+    "window",
+    "sequence",
+    "source",
+    "program"
+  ],
+  "defect_classes": {
+    "structural_integrity": {
+      "examples": ["hash_or_crc_drift", "clock_reversal", "broken_frame_chain", "ambiguous_join_key", "cross_reset_leakage"],
+      "default_action": "fail_closed_at_minimum_contaminated_unit",
+      "global_escalation_requires_propagation_evidence": true
+    },
+    "normal_observation_missingness": {
+      "examples": ["field_of_view_difference", "occlusion", "2d_only", "3d_only", "temporary_unobserved"],
+      "default_action": "abstain_affected_unit_and_report_union_coverage",
+      "global_failure_allowed_by_default": false
+    },
+    "support_shortfall": {
+      "examples": ["small_denominator", "cluster_imbalance", "missing_source_family"],
+      "default_action": "insufficient_support_or_not_evaluable",
+      "algorithm_failure_allowed": false
+    },
+    "performance_failure": {
+      "examples": ["recall_gate", "false_alert_gate", "latency_gate", "quality_gate"],
+      "default_action": "reject_method_candidate_or_claim",
+      "source_unusable_inference_allowed": false
+    },
+    "authority_gap": {
+      "examples": ["route_truth_absent", "event_truth_absent", "human_evidence_absent", "production_evidence_absent"],
+      "default_action": "hold_only_the_missing_authority",
+      "erase_lower_level_evidence_allowed": false
+    }
+  },
+  "dispositions": [
+    "ADMIT_COMPLETE",
+    "ADMIT_WITH_ABSTENTION",
+    "DIAGNOSTIC_ONLY",
+    "NOT_EVALUABLE_FOR_CLAIM",
+    "REJECT_METHOD_OR_CANDIDATE",
+    "FAIL_CLOSED_CORRUPT_EVIDENCE",
+    "AUTHORITY_HOLD"
+  ],
+  "report_axes": {
+    "artifact_integrity": ["VALID", "INVALID"],
+    "claim_status": [
+      "INVALID_DEPENDENCY",
+      "NOT_EVALUABLE_AUTHORITY_MISSING",
+      "NOT_EVALUABLE_INSUFFICIENT_SUPPORT",
+      "AVAILABLE_WITH_DEGRADATION",
+      "AVAILABLE_COMPLETE"
+    ],
+    "authority_ceiling": ["DIAGNOSTIC", "EXPLORATORY", "SELECTION", "SHADOW", "PRODUCTION"]
+  },
+  "overall_statuses": [
+    "VALID",
+    "VALID_WITH_PARTIAL_OR_DEGRADED_CLAIMS",
+    "INVALID_GLOBAL_INTEGRITY"
+  ],
+  "coverage_bands": {
+    "HIGH_COVERAGE": {"minimum": 0.95, "maximum": 1.0},
+    "MODERATE_COVERAGE": {"minimum": 0.8, "maximum_exclusive": 0.95},
+    "LOW_COVERAGE": {"minimum": 0.0, "maximum_exclusive": 0.8},
+    "bands_are_automatic_pass_fail_gates": false
+  },
+  "mandatory_decision_fields": [
+    "claim_id",
+    "required_roles",
+    "optional_roles",
+    "unit_of_analysis",
+    "defect_class",
+    "missingness_mechanism",
+    "union_denominator",
+    "eligible_denominator",
+    "abstained_denominator",
+    "coverage",
+    "cluster_distribution",
+    "propagation_evidence",
+    "bias_risk",
+    "disposition",
+    "maximum_claim_scope",
+    "authority_granted",
+    "authority_closed"
+  ],
+  "mandatory_defect_fields": [
+    "defect_id",
+    "defect_class",
+    "scope_type",
+    "scope_ids",
+    "affected_modalities",
+    "affected_claims",
+    "reason_code",
+    "localized",
+    "denominator_impact",
+    "evidence_refs"
+  ],
+  "denominator_invariant": "expected_denominator_equals_eligible_plus_abstained_plus_invalid",
+  "source_native_expected_denominator_required": true,
+  "interpolated_or_imputed_counts_as_direct_observation": false,
+  "unknown_missingness_default": "abstain_affected_unit_without_global_propagation_unless_contamination_scope_is_unresolvable",
+  "non_negotiable_integrity_gates": [
+    "immutable_source_identity",
+    "hash_and_crc_integrity",
+    "monotonic_bound_clock",
+    "unique_join_within_claim_eligible_unit",
+    "closed_frame_chain",
+    "bounded_interpolation",
+    "reset_isolation",
+    "finite_required_values"
+  ],
+  "anti_gaming": {
+    "historical_terminal_rewrite": false,
+    "silent_missing_unit_drop": false,
+    "union_denominator_reduction": false,
+    "missing_as_zero_success_or_failure": false,
+    "post_outcome_eligibility_rescue": false,
+    "pooled_coverage_hides_zero_cluster": false,
+    "relaxed_data_handling_grants_higher_authority": false,
+    "validator_rebuilds_from_immutable_inputs": true
+  },
+  "outputs": {
+    "validation": "artifacts.local/evidence/ustrf-elastic-evidence-and-degradation-standard-r1/validation.json"
+  }
+}

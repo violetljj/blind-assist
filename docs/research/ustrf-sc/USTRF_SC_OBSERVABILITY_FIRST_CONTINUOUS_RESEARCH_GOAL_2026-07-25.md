@@ -4,7 +4,7 @@
 
 持续授权：`OBSERVABILITY_AUDIT_AND_FALSIFIABLE_OFFLINE_RESEARCH_ONLY`
 
-当前研究边界：JRDB 原生 stable pose/IMU/time P1B 已通过，只允许另立 P2 perception/geometry canary；正式 G1–G7 仍缺 intended-route 与独立 event lifecycle truth
+当前研究边界：JRDB P2 R1 已按弹性证据标准修正过宽 label dependency；1,350/1,350 个 source-native 3D geometry 与 1,336/1,336 个 source-annotation-derived motion pair 可计算，cross-modal identity 对 29 个 3D-only 局部 abstain；权限上限仍为 diagnostic，正式 G1–G7 仍缺 direct person-motion accuracy、intended-route 与独立 event lifecycle truth
 
 算法成熟度：`CORE_ALGORITHM_EFFECT_NOT_PROVEN`
 
@@ -334,6 +334,10 @@ G0–G7 均是研究阶段。G8 之后仍需独立权限，不因本总目标自
 > 2026-07-25 短窗后续：冻结 32 帧/31 pair、person+16px mask、sparse LK 与单一 RANSAC full affine。timestamp、657–803 features、649–792 tracks、11–12/12 grid、residual、condition 和 determinant 均通过，但仅 11/31 pair 达到 inlier ratio ≥0.65，低于 28/31 availability 门；独立终态 `EGOMOTION_QUALITY_AVAILABILITY_INSUFFICIENT / VALID`。不降门、不扩 JRDB sequence、不运行 G3/G4；后续只接受 metric depth、VIO/IMU、真实 route provider 或 route-authoritative 新数据。证据见 [continuity/ego-motion R0 结果](USTRF_JRDB_RGB_CONTINUITY_EGOMOTION_AVAILABILITY_R0_RESULT_2026-07-25.md)。
 
 > 2026-07-25 原生 P1B 恢复：27 条 train bag 中最小 Meyer Green member 已做单 bag payload 审计。动态 `odom -> base_link` TF 3,183 条、`imu/data` 622 条、上下 Velodyne 471/478 条均以原生 header clock 覆盖外部前 120 帧 timestamp，第二进程完整复算为 `NATIVE_POSE_IMU_TIME_AUTHORITY_PRESENT / VALID`。这满足“stable pose/IMU 新 authority”恢复条件，但只允许另立 P2 perception/geometry canary；P2 尚未执行，正式 G1–G7 的 intended-route/event lifecycle、Android、human 与 production 权限仍关闭。证据见 [single-rosbag P1B 结果](USTRF_JRDB_SINGLE_ROSBAG_NATIVE_POSE_IMU_TIME_AUTHORITY_CANARY_R0_RESULT_2026-07-25.md)。
+
+> 2026-07-25 P2 终局：Meyer Green 前 120 帧的 120 stitched RGB、240 PCD、2D/3D labels、动态 pose、IMU 与静态 TF 已形成第二进程可精确重建的 immutable packet。clock、PCD、frame chain 与 pose/IMU interpolation 门均通过，但 1,350 个 3D object-frame 中 29 个没有同帧唯一 2D `label_id`；按执行前冻结的全量 join 门，以 `FAIL_CLOSED_LABEL_JOIN / VALID` 关闭，motion pair 保持 0。不得改用 1,321 交集分母、换 sequence 或继续 route/event；证据见 [P2 结果](USTRF_JRDB_SINGLE_SEQUENCE_NATIVE_MULTISENSOR_PERSON_GEOMETRY_CANARY_R0_RESULT_2026-07-25.md)。
+
+> 2026-07-25 P2 R1 纠错：R0 receipt 和旧合同终态不改写，但“完整 2D join 是 3D-native geometry/motion 的依赖”被确认为过宽。R1 使用 source-native union denominator：1,350/1,350 个 3D object-frame 与 1,336/1,336 个 adjacent motion pair 可计算；29 个 3D-only 只对 cross-modal identity abstain。由于全部 3D label 都是 source-interpolated annotation，direct observation 为 0，最大权威仍为 diagnostic，route/event/alert/Android/human/production 继续关闭。证据见 [弹性标准](USTRF_ELASTIC_EVIDENCE_AND_DEGRADATION_STANDARD_R1.md)与 [P2 R1 结果](USTRF_JRDB_SINGLE_SEQUENCE_NATIVE_MULTISENSOR_PERSON_GEOMETRY_CANARY_R1_RESULT_2026-07-25.md)。
 
 阶段名：
 

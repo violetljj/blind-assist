@@ -1,6 +1,28 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / evidence maturity V2 governance active / JRDB native multisensor P1B `NATIVE_POSE_IMU_TIME_AUTHORITY_PRESENT / VALID` / P2 not executed / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / causal route-intrusion signal R0 `SIGNAL_REJECT / VALID` / route-conditioned scale-growth R0 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID` / canonical observation authority R0 `SOURCE_AUTHORITY_ABSENT / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / elastic evidence R1 active / JRDB native multisensor P1B `NATIVE_POSE_IMU_TIME_AUTHORITY_PRESENT / VALID` / P2 R0 history `FAIL_CLOSED_LABEL_JOIN / VALID` / P2 R1 `ANNOTATION_DERIVED_PERSON_GEOMETRY_AVAILABLE_WITH_ABSTENTION / VALID` / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / causal route-intrusion signal R0 `SIGNAL_REJECT / VALID` / route-conditioned scale-growth R0 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID` / canonical observation authority R0 `SOURCE_AUTHORITY_ABSENT / VALID` / L2+L3 prereg frozen but not authorized
+
+## Elastic evidence standard / JRDB person geometry R1
+
+R1 不覆盖 R0 receipt，而是修正 claim dependency：结构完整性、逐 claim availability 与 authority ceiling 分轴报告；普通缺失只在最小依赖单元 abstain，且 `expected = eligible + abstained + invalid`。同一 R0 packet 上，1,350 个 3D geometry 与 1,336 个 adjacent annotation-derived motion pair 全部可计算；29 个 3D-only 只降低 cross-modal coverage。详见[弹性标准](../../../docs/research/ustrf-sc/USTRF_ELASTIC_EVIDENCE_AND_DEGRADATION_STANDARD_R1.md)与 [R1 结果](../../../docs/research/ustrf-sc/USTRF_JRDB_SINGLE_SEQUENCE_NATIVE_MULTISENSOR_PERSON_GEOMETRY_CANARY_R1_RESULT_2026-07-25.md)。
+
+```powershell
+E:\codex-tools\projects\blindassist\toolchain\python311\python.exe scripts/research/ustrf_route_target_evidence_closure/validate_ustrf_elastic_evidence_and_degradation_standard_r1.py --repo . --config configs/ustrf_elastic_evidence_and_degradation_standard_r1.json
+$env:PYTHONPATH="artifacts.local/work/python-deps/rosbags-cpu-20260720;scripts/research/ustrf_route_target_evidence_closure"
+E:\codex-tools\projects\blindassist\toolchain\python311\python.exe scripts/research/ustrf_route_target_evidence_closure/run_jrdb_single_sequence_native_multisensor_person_geometry_canary_r1.py --repo . --config configs/ustrf_jrdb_single_sequence_native_multisensor_person_geometry_canary_r1.json
+E:\codex-tools\projects\blindassist\toolchain\python311\python.exe scripts/research/ustrf_route_target_evidence_closure/validate_jrdb_single_sequence_native_multisensor_person_geometry_canary_r1.py --repo . --config configs/ustrf_jrdb_single_sequence_native_multisensor_person_geometry_canary_r1.json
+```
+
+## JRDB single-sequence native multisensor person geometry canary R0
+
+Meyer Green 前 120 帧的 120 stitched RGB、240 PCD、2D/3D labels、bag RGB/LiDAR header、动态 pose、IMU 与静态 TF 已物化为 immutable packet。第二进程从 raw payload + bag 精确重建 packet/receipt；clock、PCD、frame chain 与 interpolation 门通过，但 29/1,350 个 3D object-frame 无唯一同帧 2D `label_id`，故 `FAIL_CLOSED_LABEL_JOIN / VALID`，motion 未计算。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_JRDB_SINGLE_SEQUENCE_NATIVE_MULTISENSOR_PERSON_GEOMETRY_CANARY_R0_RESULT_2026-07-25.md)。
+
+```powershell
+$env:PYTHONPATH="artifacts.local/work/python-deps/rosbags-cpu-20260720;scripts/research/ustrf_route_target_evidence_closure"
+E:\codex-tools\projects\blindassist\toolchain\python311\python.exe scripts/research/ustrf_route_target_evidence_closure/run_jrdb_single_sequence_native_multisensor_person_geometry_canary_r0.py --repo . --config configs/ustrf_jrdb_single_sequence_native_multisensor_person_geometry_canary_r0.json --phase materialize
+E:\codex-tools\projects\blindassist\toolchain\python311\python.exe scripts/research/ustrf_route_target_evidence_closure/run_jrdb_single_sequence_native_multisensor_person_geometry_canary_r0.py --repo . --config configs/ustrf_jrdb_single_sequence_native_multisensor_person_geometry_canary_r0.json --phase audit
+E:\codex-tools\projects\blindassist\toolchain\python311\python.exe scripts/research/ustrf_route_target_evidence_closure/validate_jrdb_single_sequence_native_multisensor_person_geometry_canary_r0.py --repo . --config configs/ustrf_jrdb_single_sequence_native_multisensor_person_geometry_canary_r0.json
+```
 
 ## JRDB single-rosbag native pose / IMU / time authority canary R0
 
