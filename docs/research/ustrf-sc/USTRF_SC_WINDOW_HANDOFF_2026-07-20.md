@@ -1,5 +1,7 @@
 # USTRF-SC 新窗口交接（2026-07-20 23:00 +08:00）
 
+> 2026-07-25 终态：本交接已被 [USTRF route-conditioned program 收口 R1](USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md) 取代。下文仅保留历史现场，不得从其中的 `CONDITIONAL_RESEARCH_GO`、`active`、阻塞项或下一步恢复工作。dense、bbox-route、causal lifecycle、120 episode / U0 与 architecture convergence 全部关闭；现有 YOLO/bbox 只保留为普通 detector baseline。
+
 ## 1. 新窗口先看什么
 
 按以下顺序读取，避免从聊天上下文猜状态：
@@ -84,7 +86,7 @@ USTRF-SC 已从方案图推进到可测试的 pure-Kotlin 安全合同、确定�
 - Crop/tiling r1 保持冻结，不补跑 32 帧，不扫描 NMS、overlap 或 score。detector 若继续，只能另建带独立 receipt 的 crop-view FP 抑制变量（首选跨 view 一致性准入）和新的 bounded canary；不得把它并入本主线或当作硬门替代品。
 - 本轮只完成合同、验证器、空模板和 pure-Kotlin 研究 seam，没有采集真实事件、没有运行 ADB/GPU、没有修改正式 App 或默认 YOLO。
 
-当前权限结论：`route-conditioned-mainline-active / real-event-truth-blocked / device-metric-geometry-blocked / production-unchanged`。
+当时权限结论：`route-conditioned-mainline-active / real-event-truth-blocked / device-metric-geometry-blocked / production-unchanged`；当前已由 closure R1 统一替换为 `ROUTE_CONDITIONED_PROGRAM_CLOSED / production-unchanged`。
 
 ## 7. GPU 和系统安全边界
 

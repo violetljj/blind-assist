@@ -1,7 +1,18 @@
 # USTRF-SC 双环实施状态与证据边界
 
-状态日期：2026-07-22。
+状态日期：2026-07-25。
 总原则：本表区分“接口/单元测试存在”“设备候选观测存在”“独立验证完成”和“生产授权”。除非明确写为生产授权，否则默认均为 production-isolated experiment。
+
+## 2026-07-25 route-conditioned program 终态
+
+当前状态：`ROUTE_CONDITIONED_PROGRAM_CLOSED / VALID`。
+
+[bbox-route 归因 R1](USTRF_BBOX_ROUTE_ATTRIBUTION_R1_RESULT_2026-07-25.md) 已触发 `STOP_ROUTE_CONDITIONED_USTRF_DOWNGRADE_TO_DETECTOR_BASELINE`；统一收口见 [closure R1](USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md)。因此，下文旧 `active`、`conditional`、`blocked` 和“下一步”只说明当时状态，不再形成执行权限：
+
+- dense、bbox-route、causal lifecycle、120 episode / U0 和 architecture convergence 全部关闭；
+- 现有 YOLO/bbox 仅作为普通 detector baseline 保留，不删除、不重构、不替换默认模型；
+- 本收口不改变 App、Kotlin、Android、CameraX、风险规则或反馈行为；
+- 未来算法研究必须提出全新信号假设和独立证据，不得继续使用本轮 15 对窗口调整 route、quantile、窗口汇总或阈值。
 
 ## 2026-07-22 独立体验版边界
 
@@ -39,7 +50,7 @@
 - 几何硬门：`scripts/validate_ustrf_sc_device_metric_geometry.py` 要求五类同设备 typed artifact、设备/mount/calibration 绑定、分项 metrics 精确一致，并让每项收据继续 hash-bind 至少一个 raw/gate source artifact；`blocked/in_progress` 也审计已有收据。SM-S9280 已建立红灯 bundle，绑定 r3 `1/861`、r5 `0/843` source-aligned depth 与 `EPHEMERAL_PER_FRAME` pose，blocker 为 `BLOCKED_ON_SOURCE_ALIGNED_METRIC_DEPTH_AND_INTER_FRAME_STABLE_POSE`。`device_metric_geometry_admission=false`；未来单独通过也只允许 geometry shadow。
 - detector 边界：crop/tiling r1 已冻结。后续 detector 变量只能是独立的 crop-view FP 抑制实验（如跨 view 一致性门），不得继续扫描 r1 的 NMS、overlap 或 score。
 
-因此当前授权仍是：研究主线已切换且实验扩展已冻结，主动队列只保留真实路线事件 pilot 与同设备米制几何 evidence pack；真实事件、设备几何、正式 App 与生产反馈均未放行。
+因此该阶段当时的授权是：研究主线已切换且实验扩展已冻结，主动队列只保留真实路线事件 pilot 与同设备米制几何 evidence pack；该队列现已由 2026-07-25 closure R1 关闭，不能恢复为当前下一步。
 
 ## 2026-07-21 E0 安全加固
 

@@ -4,14 +4,16 @@
 
 - 方案编号：`route_conditioned_object_agnostic_risk_field_v1`
 - 简称：`RC-OARF v1`
-- 状态：`active_research_mainline / hard_gates_blocked`
+- 状态：`STOPPED / SUPERSEDED_BY_USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1`
 - 文档类型：日期化研究主线与执行合同，不是当前生产真源
-- 定位：USTRF-SC 当前优先研究路线；独立于生产 YOLO、SANPO 公共银标与 `secondary-corridor-causal`
+- 定位：USTRF-SC 已停止的历史研究路线；独立于生产 YOLO、SANPO 公共银标与 `secondary-corridor-causal`
 - 当前结论：`prepare_u0_and_hard_gates / do_not_train_student / do_not_replace_default_model`
 - 默认 App：继续使用 `app/src/main/assets/yolo11n_fp16_320.tflite`
 - 训练授权：`false`
 - Android shadow 授权：`false`
 - 生产模型替换授权：`false`
+
+> 2026-07-25 收口：本计划已由 [USTRF route-conditioned program 收口 R1](research/ustrf-sc/USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md) 终止。下文保留为历史 roadmap，不再构成 active、conditional、blocked-waiting 或自动后继队列。dense、bbox-route、causal lifecycle、120 episode / U0 与 architecture convergence 全部关闭；现有 YOLO/bbox 仅保留为普通 detector baseline，不删除、不重构、不改变 App。
 
 ## 2026-07-21 真实证据切换与实验冻结
 
@@ -78,7 +80,7 @@ CameraX
 | 正式 App | 类别 + 矩形框 + 几何规则 | 固定中心区域近似 | 主感知和主要风险证据 | 生产基线 |
 | 公共银标 / 显式路线几何 | detector bbox 与外部 route field 的确定性交叠 | 必需，非未来 | 主障碍证据 | benchmark-only；端侧几何已闭环，真实 provider 仍缺 |
 | Corridor-Causal Student | YOLO/空间特征 + 运动补偿 + 走廊网格 + causal TCN | 走廊/heading | 输入证据之一 | 独立实验；真实事件数据与训练门未闭合 |
-| 本方案 RC-OARF | 密集无类别风险场 + 显式 route field + 因果生命周期 | 必需，非未来；未知时 fail closed | 可选语义解释，不是安全权威 | `active_research_mainline / hard_gates_blocked` |
+| 本方案 RC-OARF | 密集无类别风险场 + 显式 route field + 因果生命周期 | 必需，非未来；未知时 fail closed | 可选语义解释，不是安全权威 | `stopped / superseded_by_closure_r1` |
 
 隔离约束：
 

@@ -1,7 +1,7 @@
 # SANPO 当前状态
 
 状态：current
-最后核验：2026-07-21
+最后核验：2026-07-25
 适用范围：SANPO 数据、候选模型、公开银标和设备评测工作。
 
 ## 结论先行
@@ -10,8 +10,7 @@
 - SANPO 的数据、离线质量、INT8 和设备事件门必须按当前协议逐段通过；任一门未通过，不导出、不接入 App、不表述为生产能力。
 - 公开视频银标、反事实和生命周期 r7.* 工作属于受限研究证据。它们不能仅凭单次实验授权训练、校准、blind 评测、Android runtime 或默认模型替换。
 - Corridor-Causal Student 仅完成 benchmark-only 特征与性能可行性检查；缺少完整、隔离的 GPT/Codex 连续事件共识 receipt，`96 episode / 48 matched pair` 门仍阻塞训练和事件效果评测。旧日期化快照中的“双人人工复核”要求由 [GPT / Codex 自主复核治理](AI_REVIEW_GOVERNANCE.md) 取代。
-- USTRF-SC 已把 route-conditioned、object-agnostic risk field 设为优先研究主线；P0 shared decision、U0 v2 unified runner，以及 `baseline_yolo_geometry` 和 `detector_bbox_explicit_route` 两条真实 Android adapter 执行链现已就绪。第二臂在设备内因果选择显式路线并以固定走廊筛选原始 YOLO bbox；dense→shared-kernel seam 也已在真机冻结。但四个 dense/control 真 adapter、正式 teacher model run 与真实 evidence 仍未完成。`120 episode / 60 matched pair` GPT/Codex 共识事件 truth 仍为 0，设备米制几何 admission 仍为 false，不运行有效 U0、不训练 student、不授权 App feedback、不替换默认模型。事件、几何和发布复核均按 [GPT / Codex 自主复核治理](AI_REVIEW_GOVERNANCE.md) 自动执行，不再等待人工。
-- 自 2026-07-22 起主动工作面改为无人化 `10-episode` 路线事件 pilot 与自动设备米制几何 evidence pack：由来源 Agent 自动发现/获取合法连续数据，或由设备脚本自主采集；双模型完成事件复核，第三模型处理分歧。首个 `route_obstacle` matched pair 目录仍为空，不再等待人员现场拍摄；无法自动取得合法来源或设备事实时，该样本隔离并转向其他自动来源。几何包仍以 `BLOCKED_ON_SOURCE_ALIGNED_METRIC_DEPTH_AND_INTER_FRAME_STABLE_POSE` 红灯启动，不能通过模型编造测量、重复同一 ARCore 窗口或填报汇总数字回救。
+- USTRF route-conditioned program 已按 [closure R1](research/ustrf-sc/USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md) 收口为 `ROUTE_CONDITIONED_PROGRAM_CLOSED / VALID`。dense、bbox-route、causal lifecycle、120 episode / U0 和 architecture convergence 全部关闭，不再保留 pilot、evidence pack 或 blocked-waiting 队列。现有 YOLO/bbox 仅作为普通 detector baseline 保留；不删除、不重构、不替换默认模型、不改变 App。未来算法研究必须提出全新信号假设与独立证据，不得继续使用既有 15 对窗口调 route、quantile 或阈值。
 
 ## 当前操作入口
 
@@ -23,7 +22,7 @@
 | 连续序列评测和 baseline | [SANPO_SEQUENCE_EVALSET.md](SANPO_SEQUENCE_EVALSET.md)、[SANPO_TRAVERSABILITY_BASELINE.md](SANPO_TRAVERSABILITY_BASELINE.md) |
 | 反事实采集与生命周期目标 | [SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md](SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md) |
 | Corridor-Causal 候选的本轮结论 | [CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md](CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md)：仅工程可行性，未获得事件效果或晋级授权。 |
-| Route-conditioned USTRF-SC 主线 | [ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md](ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：停止扩展实验臂；自动获取/生成路线事件 pilot，并由设备脚本产生米制几何 evidence pack。缺失项隔离或换合法自动来源，不创建人工采集任务；生产路径不变。 |
+| Route-conditioned USTRF-SC 终态 | [USTRF route-conditioned program 收口 R1](research/ustrf-sc/USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md)：当前路线已停止，无自动算法后继；YOLO/bbox 仅保留为普通 detector baseline，生产路径不变。 |
 | 公开银标与来源研究 | 仅在对应协议已登记为 `current` 后按其执行；未提交的本地草稿不能作为仓库规则或授权依据。 |
 | 最近研究证据 | 已提交的日期化 snapshot；未提交的研究记录保持任务本地状态，待其所属任务完成后再登记。 |
 

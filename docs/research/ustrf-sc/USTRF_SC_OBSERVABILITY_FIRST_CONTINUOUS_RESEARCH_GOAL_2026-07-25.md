@@ -1,8 +1,10 @@
 # USTRF-SC 可观测性优先架构与持续研究总目标（2026-07-25）
 
-状态：`TERMINAL_RESEARCH_OUTCOME / EVIDENCE_PROGRAM_BLOCKED_BY_REAL_WORLD_AUTHORITY / VALID`
+状态：`CLOSED / SUPERSEDED_BY_USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1 / VALID`
 
-持续授权：`OBSERVABILITY_AUDIT_AND_FALSIFIABLE_OFFLINE_RESEARCH_ONLY`
+持续授权：`NONE`
+
+当前解释：本持续研究总目标已由 [USTRF route-conditioned program 收口 R1](USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md) 终止。下文保留为历史架构、证据地图与停止规则，不再授权选择“下一个最小切片”、推进 G1–G7、进入 lifecycle、扩到 120 episode / U0 或进行 architecture convergence。现有 YOLO/bbox 仅保留为普通 detector baseline；未来算法研究必须另立全新信号假设与独立证据，且不得继续使用既有 15 对窗口调整 route、quantile 或阈值。
 
 当前研究边界：`THOR_SOURCE_NATIVE_ID_TIME_TRANSFORM_AUTHORITY_RECOVERY_R1` 已完成并终止为 `INDEPENDENT_PERSON_TRAJECTORY_TRUTH_AUTHORITY_ABSENT / VALID`。Qualisys 官方 `_6D.tsv` 格式已关闭毫米单位，THÖR record 已定义 Helmet position 为 rigid-body marker centre；但官方未发布 raw QTM/逐帧 ID repair-recovery mask，冻结 `Exp_2_run_2` 没有 paired Qualisys/LiDAR bag 或实测 clock offset/jitter，且 `Velodyne` mocap rigid body 到 LiDAR measurement frame 的 lever arm/rotation/axes/error 未闭合。R0 冻结的 `25,912` frame、9 person tracks、整文件窗口、missing policy 与五带 `43,821 / 41,035 / 7,286 / 0 / 0` 原样保持；这些计数现可按米解释，但仍不得授予 independent sensor-paired truth authority。正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth，且在取得独立 person truth 前不比较或选择更复杂 centroid。
 
@@ -12,7 +14,7 @@
 
 ## 一、这份总目标如何使用
 
-本文件是 USTRF-SC 后续研究的长期总目标和当前研究指导，不是一次性实验合同，也不是把所有后继阶段一次性打开。
+本文件曾是 USTRF-SC 后续研究的长期总目标；自 closure R1 起只作为历史记录，不再是当前研究指导。
 
 “持续允许”表示：在不改变本文权限边界的前提下，Codex 可以持续选择当前证据所允许的**下一个最小、独立、可失败垂直切片**，完成仓库内审计、实现、离线运行、验证和日期化记录，而不需要反复要求用户重新表达“继续研究 USTRF-SC”这一总体意图。
 

@@ -5,6 +5,7 @@
 
 ## 首要入口
 
+- [route-conditioned program 收口 R1（2026-07-25）](USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md)：当前唯一 program authority；dense、bbox-route、causal lifecycle、120 episode / U0 与 architecture convergence 全部关闭，现有 YOLO/bbox 仅保留为普通 detector baseline。未来算法研究须有全新信号假设和独立证据，禁止继续用既有 15 对窗口调 route、quantile 或阈值。
 - [bbox-route 归因 R1 结果（2026-07-25）](USTRF_BBOX_ROUTE_ATTRIBUTION_R1_RESULT_2026-07-25.md)：matched A 的 q90 `12/1/2` 已逐帧零偏差复现，但相对 uniform/shuffled/bbox-only 的直接 W/T/L 仅 `11/0/4`、`9/1/5`、`9/0/6`，且 dynamics_0 来源中位差 `-0.771457`；终态 `STOP_ROUTE_CONDITIONED_USTRF_DOWNGRADE_TO_DETECTOR_BASELINE / VALID`，不进入 lifecycle、扩样、120 episode 或架构收敛。
 - [THÖR source-native ID / time / transform authority recovery R1 结果（2026-07-25）](USTRF_THOR_SOURCE_NATIVE_ID_TIME_TRANSFORM_AUTHORITY_RECOVERY_R1_RESULT_2026-07-25.md)：Qualisys 官方格式关闭了 `_6D.tsv` 毫米单位，THÖR record 关闭 Helmet marker-centre reference point；但 raw QTM/recovery mask、冻结 run 2 paired offset/jitter、Velodyne marker→LiDAR measurement-frame extrinsic/error 仍缺，终态 `INDEPENDENT_PERSON_TRAJECTORY_TRUTH_AUTHORITY_ABSENT / VALID`。
 - [THÖR source-native ID / time / transform authority recovery R1 目标（2026-07-25）](USTRF_THOR_SOURCE_NATIVE_ID_TIME_TRANSFORM_AUTHORITY_RECOVERY_R1_GOAL_2026-07-25.md)：只审计官方 raw QTM、paired bags、calibration/format，不读候选输出、不比较 centroid/tracker/deskew，冻结 R0 source/member/window/tracks/missing/bands。
@@ -37,12 +38,12 @@
 - [canonical observation source-authority data pack R0 结果（2026-07-25）](USTRF_CANONICAL_OBSERVATION_SOURCE_AUTHORITY_DATA_PACK_R0_RESULT_2026-07-25.md)：JRDB 官方 test labels 与 sensor PDF 形成可复算 canary；27 sequence、27,661 frame、956,803 object 中 truncation true/false/missing 为 30,889/925,799/115，非占位且覆盖 99.98798%。独立 validator 通过，但 RGB identity、timestamp 与 route-role truth 未物化，故只到 `AUTHORITY_CANARY_PRESENT_ROUTE_ROLE_PENDING / VALID`，不解除父 G0、不开放 G1。
 - [canonical observation source-authority data pack R0 目标（2026-07-25）](USTRF_CANONICAL_OBSERVATION_SOURCE_AUTHORITY_DATA_PACK_R0_GOAL_2026-07-25.md)：承接 G0 `SOURCE_AUTHORITY_ABSENT`，不进入 G1；只对 JRDB 做 labels/calibration-first canary，并以 nuScenes 作 metadata-only 负对照。冻结 source-native truncation/occlusion、frame-bound transform、archive safety、2 GiB 和 no-route-truth/no-signal 边界。
 - [canonical observation authority / repairability audit R0 结果（2026-07-25）](USTRF_CANONICAL_OBSERVATION_AUTHORITY_AND_REPAIRABILITY_AUDIT_R0_RESULT_2026-07-25.md)：A 进程只从 source/transport 逐帧复核 41/41 sequence、62,229/62,229 frame，B 进程在先验 SHA 冻结后只计算聚合分母上界，第三进程独立复算。source geometry、RGB、timestamp、membership 可绑定，但 canonical transform 全部 unknown、authoritative severe truncation 全部 absent，故唯一终态为 `SOURCE_AUTHORITY_ABSENT / VALID`；G1 与 signal 均关闭，下一合法边界只能是新的 authoritative source/data pack。
-- [可观测性优先架构与持续研究总目标（2026-07-25）](USTRF_SC_OBSERVABILITY_FIRST_CONTINUOUS_RESEARCH_GOAL_2026-07-25.md)：USTRF-SC 当前跨阶段研究总纲与持续 `/goal`；保留 route-conditioned dense risk、event lifecycle 和 fail-closed，关闭 current-input timing/token 死胡同，优先建立 canonical observation spine，并按 authority audit → repair → scale → ego-motion → temporal-depth teacher → independent validation → formal U0 逐门推进。持续允许仅覆盖最小离线可证伪研究，不开放 Android、人体、独立行走、生产、commit 或 push。
+- [可观测性优先架构与持续研究总目标（2026-07-25）](USTRF_SC_OBSERVABILITY_FIRST_CONTINUOUS_RESEARCH_GOAL_2026-07-25.md)：已被 closure R1 关闭的历史架构与证据地图；不再具有持续 `/goal`、阶段选择或自动后继权限。
 - [route-conditioned scale growth separability R0 结果（2026-07-25）](USTRF_ROUTE_CONDITIONED_SCALE_GROWTH_SEPARABILITY_R0_RESULT_2026-07-25.md)：父结果与 123→41 candidate-blind scope 均通过复验，但 62,229 帧没有逐帧 source-size/rotation receipt，263,680 个 observed-track 没有 severe-truncation authority；在计算任何 slope、truth join 或 frontier 前以 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID` 终止。当前没有尺度可分性结论、candidate 或 producer 权限；下一独立边界只能修复 canonical geometry input contract。
 - [下一阶段新信号可分性目标（2026-07-25）](USTRF_SC_NEXT_STAGE_SIGNAL_SEPARABILITY_GOAL_2026-07-25.md)：本次执行所依据的冻结目标；current-input policy 搜索继续封存。R0 已因 input contract 缺口 fail closed，后继 ego-motion availability、扩张分解、validation/holdout 与 producer 均不得在本轮自动启动。
 - [前沿论文研究指导（2026-07-22）](USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md)：13 篇本地论文的证据—论点映射，以及 tracker/TTC、时序深度、显式路线 dense risk、开放词汇/VLM 和反馈研究的固定协议与停止条件；仅为日期化研究指导。
-- [项目工作记录与恢复入口（2026-07-20）](USTRF_SC_PROJECT_RECORD_AND_RESUME_2026-07-20.md)：本轮总体思路、实验结果、GPU 中断边界和下一步。
-- [新窗口交接（2026-07-20）](USTRF_SC_WINDOW_HANDOFF_2026-07-20.md)：当前暂停点、证据入口、GPU 边界、参考文档清单和可复制续接提示词。
+- [项目工作记录与恢复入口（2026-07-20）](USTRF_SC_PROJECT_RECORD_AND_RESUME_2026-07-20.md)：历史总体思路、实验结果与当时恢复入口；不得绕过 closure R1 恢复旧路线。
+- [新窗口交接（2026-07-20）](USTRF_SC_WINDOW_HANDOFF_2026-07-20.md)：已被 closure R1 取代的历史现场与续接记录，不再是当前 handoff。
 - [双环实施状态与证据边界](USTRF_SC_IMPLEMENTATION_STATUS.md)：逐模块实现、证据、缺口和授权。
 - [研究型离线量化基线（2026-07-20）](USTRF_SC_RESEARCH_METRICS_2026-07-20.md)：SANPO 表征、公开 source-native 几何/轨迹、REveL detector、range/radial-motion 分层与 V13 门禁。
 - [安全内核实验方案（2026-07-20）](USTRF_SC_SAFETY_KERNEL_EXPERIMENT_2026-07-20.md)：本轮详细实现与实验演化。
@@ -90,7 +91,7 @@
 - [stride-4/P2 小目标 detector R1.2d 受控研究（2026-07-22）](USTRF_CROSSCAM_SMALL_TARGET_R12D_RESULT_2026-07-22.md)：三 seed 配对 P2/P3 均只命中 `4/6`，London 均为 `0/22`，P2 虽提高离线小框 recall 但未转化为事件收益且稳定性/假检测更差；假设不支持，停止候选并继续锁住 R1.3。
 - [R1.2d 后续工作计划（2026-07-22）](USTRF_POST_R12D_NEXT_WORK_PLAN_2026-07-22.md)：停止 detector 架构竞赛；按首个真实 matched pair、10-episode 采集链、独占 ARCore frame-bound 几何 canary、正式 truth/geometry 双门和 U0 的顺序推进，并为每阶段冻结停止条件。
 - [模型代理 pilot 与 ARCore frame-bound R1 结果（2026-07-22）](USTRF_MODEL_PROXY_FRAMEBOUND_R1_RESULT_2026-07-22.md)：10 个模型生成 episode 经两次隔离模型 review 与 1000 帧重算后只开放正式代理矩阵扩展；SM-S9280 自动 canary 因 raw depth/tracking/稳定 Anchor 均为 0 触发冻结，故不扩 120 集、不运行 U0。
-- [路线条件化无类别风险场主线](../../ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：当前优先研究路线；typed route-risk seam 已建立，真实事件与设备米制几何硬门仍阻塞，未授权训练或接入 App。
+- [路线条件化无类别风险场历史 roadmap](../../ROUTE_CONDITIONED_OBJECT_AGNOSTIC_RISK_FIELD_PLAN_2026-07-20.md)：已由 closure R1 终止；旧 blocked/conditional 项不再构成待执行队列。
 - [REveL YOLO11n 8/32 帧 crop/tiling 配对实验](USTRF_SC_REVEL_CROP_TILING_PAIRED_2026-07-20.md)：8 帧 canary 恢复 4/8 small miss，但 FP 从 4 增至 14，按预注册停止并跳过 32 帧。
 - [设备阶段策略](USTRF_SC_DEVICE_PHASE_POLICY.md)
 - [设备几何校准与证据协议](USTRF_SC_CALIBRATION_PROTOCOL.md)
