@@ -4,7 +4,7 @@
 
 持续授权：`OBSERVABILITY_AUDIT_AND_FALSIFIABLE_OFFLINE_RESEARCH_ONLY`
 
-当前研究边界：JRDB P2 R1 已按弹性证据标准修正过宽 label dependency；1,350/1,350 个 source-native 3D geometry 与 1,336/1,336 个 source-annotation-derived motion pair 可计算，cross-modal identity 对 29 个 3D-only 局部 abstain；权限上限仍为 diagnostic，正式 G1–G7 仍缺 direct person-motion accuracy、intended-route 与独立 event lifecycle truth
+当前研究边界：JRDB sensor-support/bias R0 已独立解码双 PCD；1,105/1,350 个 annotation-derived 3D object-frame 与 1,044/1,336 个 motion pair 得到冻结 LiDAR 支持，3D centroid residual median/P95 为 `0.195/0.481m`；3D-only、远距、遮挡和稀疏点云按最小单元降级。权限上限仍为 diagnostic，正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth
 
 算法成熟度：`CORE_ALGORITHM_EFFECT_NOT_PROVEN`
 

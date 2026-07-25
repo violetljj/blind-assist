@@ -1,6 +1,17 @@
 # USTRF route-target evidence closure
 
-状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / elastic evidence R1 active / JRDB native multisensor P1B `NATIVE_POSE_IMU_TIME_AUTHORITY_PRESENT / VALID` / P2 R0 history `FAIL_CLOSED_LABEL_JOIN / VALID` / P2 R1 `ANNOTATION_DERIVED_PERSON_GEOMETRY_AVAILABLE_WITH_ABSTENTION / VALID` / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / causal route-intrusion signal R0 `SIGNAL_REJECT / VALID` / route-conditioned scale-growth R0 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID` / canonical observation authority R0 `SOURCE_AUTHORITY_ABSENT / VALID` / L2+L3 prereg frozen but not authorized
+状态：R1 `DATA_BLOCKED / STOP_SOURCE_SEARCH` / elastic evidence R1 active / JRDB sensor support/bias R0 `SENSOR_SUPPORT_AND_BIAS_PROFILE_AVAILABLE_WITH_ABSTENTION / VALID` / JRDB native multisensor P1B `NATIVE_POSE_IMU_TIME_AUTHORITY_PRESENT / VALID` / P2 R0 history `FAIL_CLOSED_LABEL_JOIN / VALID` / P2 R1 `ANNOTATION_DERIVED_PERSON_GEOMETRY_AVAILABLE_WITH_ABSTENTION / VALID` / candidate replay R2 `CANDIDATE_REPLAY_COMPLETE / VALID` / R2-L1 metric profiles `METRIC_PROFILES_COMPLETE / VALID` / route-invalid + reset-scoped lifecycle `MECHANISM_DIAGNOSTIC_COMPLETE / VALID / overall gate false` / eligible-attribution ordered isolated opening `ORACLE_MECHANISM_REPAIR_DIAGNOSTIC_COMPLETE / VALID` / truth-blind causal per-track token R0 `HOLD_FOR_POLICY_GATE / VALID` / causal token policy/risk R1 `POLICY_COVERAGE_REJECT / VALID` / policy failure attribution R1 `POLICY_FAILURE_ATTRIBUTION_CLOSED / VALID` / current-input policy feasibility bound R0 `CURRENT_INPUT_POLICY_FAMILY_NOT_FEASIBLE / VALID` / causal route-intrusion signal R0 `SIGNAL_REJECT / VALID` / route-conditioned scale-growth R0 `FAIL_CLOSED_INPUT_OR_CONTRACT_BLOCKED / VALID` / canonical observation authority R0 `SOURCE_AUTHORITY_ABSENT / VALID` / L2+L3 prereg frozen but not authorized
+
+## JRDB person 3D trajectory sensor support and bias canary R0
+
+真实解码 Meyer Green 120 帧的 240 份 `binary_compressed` PCD，分别保留 upper/lower 支持后，以冻结 oriented-box 合同审计父 R1 的 annotation-derived 轨迹。结果为 1,105/1,350 object-frame、1,044/1,336 pair sensor-supported；局部 0 点、1–2 点和 2D-only 不升级整段失败。详见[日期化结果](../../../docs/research/ustrf-sc/USTRF_JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CANARY_R0_RESULT_2026-07-25.md)。
+
+```powershell
+$env:PYTHONPATH="scripts/research/ustrf_route_target_evidence_closure"
+.\.python311\python.exe scripts/research/ustrf_route_target_evidence_closure/run_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.py --repo . --config configs/ustrf_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.json
+.\.python311\python.exe scripts/research/ustrf_route_target_evidence_closure/validate_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.py --repo . --config configs/ustrf_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.json
+.\.python311\python.exe scripts/research/ustrf_route_target_evidence_closure/test_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0.py -v
+```
 
 ## Elastic evidence standard / JRDB person geometry R1
 

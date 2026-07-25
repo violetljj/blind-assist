@@ -1,0 +1,96 @@
+{
+  "schema": "blindassist_ustrf_jrdb_person_3d_trajectory_sensor_support_and_bias_canary_r0_config",
+  "stage": "JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CANARY_R0",
+  "status": "frozen_before_execution",
+  "frozen_on": "2026-07-25",
+  "research_question": "Among computable source-annotation-derived person trajectories, what fraction has independent dual-PCD LiDAR support and how large and structured are centroid and motion residuals?",
+  "parent": {
+    "result": {
+      "path": "docs/research/ustrf-sc/USTRF_JRDB_SINGLE_SEQUENCE_NATIVE_MULTISENSOR_PERSON_GEOMETRY_CANARY_R1_RESULT_2026-07-25.md",
+      "sha256": "920b853d0e6aea98e3d671c6df470cd8c92a31313502d8b9b5d95d8ec27ccb5e"
+    },
+    "eligibility_ledger": {
+      "path": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r1/eligibility-ledger.json",
+      "sha256": "2f3fd20170373a22fec2be39dc974f8ae432da66ea100c588e0c2985db3d10b2"
+    },
+    "receipt": {
+      "path": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r1/receipt.json",
+      "sha256": "012a458845229dcf575a08b49993137515db608338b1978d21a37471a3d7281a",
+      "required_terminal": "ANNOTATION_DERIVED_PERSON_GEOMETRY_AVAILABLE_WITH_ABSTENTION"
+    },
+    "validation": {
+      "path": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r1/validation.json",
+      "sha256": "63aae98ef0ce759eed88342b2fb03082411b847eb400b8e79abc4f26b05421dd",
+      "required_status": "VALID"
+    },
+    "observation_packet": {
+      "path": "artifacts.local/evidence/jrdb-single-sequence-native-multisensor-person-geometry-canary-r0/observation-packet.json",
+      "sha256": "6db4925540a063fa852427b8a5152a0fb40f9ff6df06a7132d0cfe359660e9ec",
+      "required_status": "IMMUTABLE_OBSERVATION_PACKET"
+    }
+  },
+  "canary": {
+    "split": "train",
+    "sequence": "meyer-green-2019-03-16_0",
+    "window_first_frame": 0,
+    "window_last_frame": 119,
+    "frame_count": 120,
+    "data_role": "seen_development_diagnostic_only"
+  },
+  "support_contract": {
+    "coordinate_frame": "logical_rgb360",
+    "box_dimensions": "length_along_local_x_width_along_local_y_height_along_z",
+    "box_query_is_annotation_conditioned": true,
+    "minimum_fused_in_box_points": 3,
+    "zero_point_class": "annotation-only",
+    "positive_below_minimum_class": "abstained",
+    "missing_pointcloud_class": "abstained",
+    "structural_or_nonfinite_class": "invalid",
+    "fusion_duplicate_policy": "no_cross_sensor_deduplication; preserve upper/lower counts and timestamps before descriptive fusion",
+    "sensor_patterns_reported": ["upper-only", "lower-only", "both", "neither"]
+  },
+  "motion_contract": {
+    "maximum_pair_gap_seconds": 0.2,
+    "jump_displacement_flag_meters": 0.5,
+    "speed_flag_mps": 4.5,
+    "acceleration_flag_mps2": 12.0,
+    "pose_sensitivity": "difference_between_dynamic_odom_displacement_and_left_pose_frozen_displacement",
+    "pair_support_requires_both_endpoints_sensor_supported": true
+  },
+  "bias_groups": {
+    "cross_modal_presence": ["3d-and-2d", "3d-only", "2d-only"],
+    "occlusion": ["Fully_visible", "Mostly_visible", "Severely_occluded", "Fully_occluded", "Unknown"],
+    "point_support": ["zero", "sparse-1-2", "supported-3-9", "supported-10-plus"],
+    "range_meters": ["0-10", "10-20", "20-40", "40-plus"]
+  },
+  "denominators": {
+    "object_frame_expected": "union of source-native 3d and 2d object-frames",
+    "computable_trajectory_object_frame_expected": "all source-native 3d object-frames from parent R1",
+    "motion_pair_expected": "all parent R1 adjacent source-native 3d track pairs",
+    "conservation_required": true,
+    "intersection_as_expected_denominator_allowed": false
+  },
+  "terminal_states": [
+    "INVALID_GLOBAL_INTEGRITY",
+    "NOT_EVALUABLE_POINTCLOUD_SUPPORT",
+    "SENSOR_SUPPORT_AND_BIAS_PROFILE_AVAILABLE_WITH_ABSTENTION",
+    "SENSOR_SUPPORT_AND_BIAS_PROFILE_AVAILABLE_COMPLETE"
+  ],
+  "outputs": {
+    "ledger": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-canary-r0/ledger.json",
+    "receipt": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-canary-r0/receipt.json",
+    "validation": "artifacts.local/evidence/jrdb-person-3d-trajectory-sensor-support-and-bias-canary-r0/validation.json"
+  },
+  "authority": {
+    "ceiling": "DIAGNOSTIC",
+    "candidate_selection": false,
+    "route_risk": false,
+    "event_lifecycle": false,
+    "alert_logic": false,
+    "android": false,
+    "human_safety": false,
+    "production": false,
+    "commit": false,
+    "push": false
+  }
+}

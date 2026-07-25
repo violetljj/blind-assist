@@ -5,6 +5,8 @@
 
 ## 首要入口
 
+- [JRDB person 3D trajectory sensor support and bias canary R0 结果（2026-07-25）](USTRF_JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CANARY_R0_RESULT_2026-07-25.md)：真实解码同一 120 帧的双 PCD；1,105/1,350 个可计算 3D object-frame 与 1,044/1,336 个 motion pair 得到冻结的 LiDAR 支持，质心残差 median/P95 为 `0.195/0.481m`。3D-only、远距与遮挡形成明显局部退化，终态 `SENSOR_SUPPORT_AND_BIAS_PROFILE_AVAILABLE_WITH_ABSTENTION / VALID`，上限仍为 diagnostic。
+- [JRDB person 3D trajectory sensor support and bias canary R0 目标（2026-07-25）](USTRF_JRDB_PERSON_3D_TRAJECTORY_SENSOR_SUPPORT_AND_BIAS_CANARY_R0_GOAL_2026-07-25.md)：冻结双 PCD oriented-box 查询、四类局部 ledger、质心/运动/pose 敏感性和分组偏差合同。
 - [USTRF 弹性证据与降级标准 R1](USTRF_ELASTIC_EVIDENCE_AND_DEGRADATION_STANDARD_R1.md)：结构损坏才允许全局关闭；普通缺失按最小依赖单元 abstain，逐 claim 报告 integrity、availability 与 authority ceiling，并强制 source-native 分母守恒。
 - [JRDB person geometry canary R1 结果（2026-07-25）](USTRF_JRDB_SINGLE_SEQUENCE_NATIVE_MULTISENSOR_PERSON_GEOMETRY_CANARY_R1_RESULT_2026-07-25.md)：保留 R0 历史并修正过宽 dependency；1,350/1,350 个 3D geometry 与 1,336/1,336 个 annotation-derived motion pair 可计算，29 个 3D-only 只让 cross-modal claim 局部 abstain，终态 `ANNOTATION_DERIVED_PERSON_GEOMETRY_AVAILABLE_WITH_ABSTENTION / VALID`，上限仍为 diagnostic。
 - [JRDB person geometry canary R1 目标（2026-07-25）](USTRF_JRDB_SINGLE_SEQUENCE_NATIVE_MULTISENSOR_PERSON_GEOMETRY_CANARY_R1_GOAL_2026-07-25.md)：冻结 claim-specific dependency、union denominator、局部 abstention 与 source interpolation 边界。
