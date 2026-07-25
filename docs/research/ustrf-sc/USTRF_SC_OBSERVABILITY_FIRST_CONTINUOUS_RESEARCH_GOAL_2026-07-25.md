@@ -4,7 +4,7 @@
 
 持续授权：`OBSERVABILITY_AUDIT_AND_FALSIFIABLE_OFFLINE_RESEARCH_ONLY`
 
-当前研究边界：`INDEPENDENT_PERSON_TRAJECTORY_TRUTH_SOURCE_AUTHORITY_AND_ADMISSION_R0` 已完成并终止为 `INDEPENDENT_PERSON_TRAJECTORY_TRUTH_AUTHORITY_ABSENT / VALID`。JRDB annotation-derived geometry 因循环论证拒绝；REveL 与 THÖR 虽有独立 mocap，但稳定 ID provenance、显式 metric unit、测得同步误差、marker/world 到 sensor measurement frame 的完整 transform/uncertainty 和 admitted 距离分母未同时闭合。THÖR 整文件 `25,912` frame / 9 person tracks 已在候选输出不可见时冻结并审计，provisional `/1000` 分带为 `43,821 / 41,035 / 7,286 / 0 / 0`，但不得授予 metric truth authority；`40m+` 保留为空能力边界。正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth，且在取得独立 person truth 前不比较或选择更复杂 centroid。
+当前研究边界：`THOR_SOURCE_NATIVE_ID_TIME_TRANSFORM_AUTHORITY_RECOVERY_R1` 已完成并终止为 `INDEPENDENT_PERSON_TRAJECTORY_TRUTH_AUTHORITY_ABSENT / VALID`。Qualisys 官方 `_6D.tsv` 格式已关闭毫米单位，THÖR record 已定义 Helmet position 为 rigid-body marker centre；但官方未发布 raw QTM/逐帧 ID repair-recovery mask，冻结 `Exp_2_run_2` 没有 paired Qualisys/LiDAR bag 或实测 clock offset/jitter，且 `Velodyne` mocap rigid body 到 LiDAR measurement frame 的 lever arm/rotation/axes/error 未闭合。R0 冻结的 `25,912` frame、9 person tracks、整文件窗口、missing policy 与五带 `43,821 / 41,035 / 7,286 / 0 / 0` 原样保持；这些计数现可按米解释，但仍不得授予 independent sensor-paired truth authority。正式 G1–G7 仍缺 independent person trajectory truth、intended-route 与独立 event lifecycle truth，且在取得独立 person truth 前不比较或选择更复杂 centroid。
 
 算法成熟度：`CORE_ALGORITHM_EFFECT_NOT_PROVEN`
 

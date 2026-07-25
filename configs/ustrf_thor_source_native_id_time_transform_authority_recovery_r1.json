@@ -1,0 +1,118 @@
+{
+  "schema": "blindassist_ustrf_thor_source_native_id_time_transform_authority_recovery_r1_config",
+  "stage": "THOR_SOURCE_NATIVE_ID_TIME_TRANSFORM_AUTHORITY_RECOVERY_R1",
+  "status": "frozen_before_source_audit",
+  "frozen_on": "2026-07-25",
+  "research_question": "Do THOR official source-native raw QTM, paired bag, calibration and format artifacts close stable person identity recovery, TSV unit and helmet reference point, measured QTM-to-Velodyne clock offset/jitter, and the complete mocap-world to Velodyne-rigid-body to LiDAR-measurement-frame transform with quantified error for the already frozen Exp_2_run_2 whole-file denominator?",
+  "parents": [
+    {
+      "path": "configs/ustrf_independent_person_trajectory_truth_source_authority_and_admission_r0.json",
+      "sha256": "5450961e2255652b9b90ecb6189f989e6c7c03c101f2e99eaaf366a0e3eb3c51"
+    },
+    {
+      "path": "artifacts.local/evidence/independent-person-trajectory-truth-source-authority-and-admission-r0/denominator-ledger.json",
+      "sha256": "68fb9f3e91eb41a919ad04759f120e36ef1a255c14f9f3fa0fb890f0d04642bf"
+    },
+    {
+      "path": "artifacts.local/evidence/independent-person-trajectory-truth-source-authority-and-admission-r0/receipt.json",
+      "sha256": "0eb4716c91d0af7a90ef9b4d829abe06d7d3d73079cb6b24ee125e6570338647"
+    },
+    {
+      "path": "artifacts.local/evidence/independent-person-trajectory-truth-source-authority-and-admission-r0/validation.json",
+      "sha256": "5ec18e3494080224fc79c30af8380ac81f19d9fadc8aaf990be5d029937b2006"
+    },
+    {
+      "path": "artifacts.local/datasets/independent-person-trajectory-truth-source-authority-and-admission-r0/Exp_2_run_2_6D.tsv",
+      "sha256": "f3f25bbfc17fc306e369d873b051949dc53513249e92c51d117bf5f1883bcea8"
+    }
+  ],
+  "official_sources": [
+    {
+      "source_id": "thor_people_tracks_v1",
+      "record_id": 3382145,
+      "record_api": "https://zenodo.org/api/records/3382145",
+      "record_html": "https://zenodo.org/records/3382145",
+      "doi": "10.5281/zenodo.3382145"
+    },
+    {
+      "source_id": "thor_point_clouds_v1",
+      "record_id": 3405915,
+      "record_api": "https://zenodo.org/api/records/3405915",
+      "record_html": "https://zenodo.org/records/3405915",
+      "doi": "10.5281/zenodo.3405915"
+    },
+    {
+      "source_id": "thor_paper",
+      "kind": "pdf",
+      "url": "https://iliad-project.eu/wp-content/uploads/papers/rudenko_ral2020_thor.pdf",
+      "arxiv": "https://arxiv.org/abs/1909.04403"
+    },
+    {
+      "source_id": "qualisys_6dof_tsv_format",
+      "kind": "html",
+      "url": "https://docs.qualisys.com/qtm/content/processing_measurement/6dof_data_format.htm"
+    },
+    {
+      "source_id": "qualisys_motion_tsv_format",
+      "kind": "html",
+      "url": "https://docs.qualisys.com/qtm/content/processing_measurement/motion_data_tsv.htm"
+    },
+    {
+      "source_id": "qualisys_rigid_body_definition",
+      "kind": "html",
+      "url": "https://docs.qualisys.com/qtm/content/processing_measurement/definition_of_6dof_bodies.htm"
+    }
+  ],
+  "frozen_input": {
+    "source": "thor_people_tracks_v1",
+    "member": "Exp_2_run_2_6D.tsv",
+    "scenario": "moving_robot",
+    "run": 2,
+    "window": "entire_file",
+    "person_tracks": [
+      "Helmet_2",
+      "Helmet_3",
+      "Helmet_4",
+      "Helmet_5",
+      "Helmet_6",
+      "Helmet_7",
+      "Helmet_8",
+      "Helmet_9",
+      "Helmet_10"
+    ],
+    "distance_reference": "Citi_1",
+    "distance_bands_m": ["0-5", "5-10", "10-20", "20-40", "40-plus"],
+    "missing_policy": "unchanged_from_parent_r0",
+    "candidate_outputs_read": false
+  },
+  "required_authority": {
+    "identity_recovery": "raw trajectories plus frame-level manual ID repair and lost-track recovery mask/provenance",
+    "metric_reference": "explicit TSV coordinate unit plus source-native definition of the Helmet rigid-body translation reference point",
+    "clock": "measured QTM-to-Velodyne offset and jitter for the frozen run, not an NTP configuration statement alone",
+    "transform": "mocap world to Velodyne rigid body pose plus rigid-body-to-LiDAR-measurement-frame extrinsic, axes/handedness/lever arm and quantified error"
+  },
+  "source_audit_only": {
+    "allowed_artifact_classes": [
+      "official raw QTM",
+      "official paired ROS bags",
+      "official calibration files",
+      "official format descriptions",
+      "official paper"
+    ],
+    "candidate_outputs_read": false,
+    "centroid_comparison_performed": false,
+    "tracker_comparison_performed": false,
+    "deskew_comparison_performed": false
+  },
+  "terminal_states": [
+    "INDEPENDENT_PERSON_TRAJECTORY_TRUTH_SOURCE_ADMITTED",
+    "INDEPENDENT_PERSON_TRAJECTORY_TRUTH_AUTHORITY_ABSENT"
+  ],
+  "outputs": {
+    "source_snapshot_dir": "artifacts.local/evidence/thor-source-native-id-time-transform-authority-recovery-r1/source-snapshots",
+    "acquisition": "artifacts.local/evidence/thor-source-native-id-time-transform-authority-recovery-r1/acquisition.json",
+    "inventory": "artifacts.local/evidence/thor-source-native-id-time-transform-authority-recovery-r1/source-inventory.json",
+    "receipt": "artifacts.local/evidence/thor-source-native-id-time-transform-authority-recovery-r1/receipt.json",
+    "validation": "artifacts.local/evidence/thor-source-native-id-time-transform-authority-recovery-r1/validation.json"
+  }
+}
