@@ -5,6 +5,7 @@
 
 ## 首要入口
 
+- [bbox-route 归因 R1 结果（2026-07-25）](USTRF_BBOX_ROUTE_ATTRIBUTION_R1_RESULT_2026-07-25.md)：matched A 的 q90 `12/1/2` 已逐帧零偏差复现，但相对 uniform/shuffled/bbox-only 的直接 W/T/L 仅 `11/0/4`、`9/1/5`、`9/0/6`，且 dynamics_0 来源中位差 `-0.771457`；终态 `STOP_ROUTE_CONDITIONED_USTRF_DOWNGRADE_TO_DETECTOR_BASELINE / VALID`，不进入 lifecycle、扩样、120 episode 或架构收敛。
 - [THÖR source-native ID / time / transform authority recovery R1 结果（2026-07-25）](USTRF_THOR_SOURCE_NATIVE_ID_TIME_TRANSFORM_AUTHORITY_RECOVERY_R1_RESULT_2026-07-25.md)：Qualisys 官方格式关闭了 `_6D.tsv` 毫米单位，THÖR record 关闭 Helmet marker-centre reference point；但 raw QTM/recovery mask、冻结 run 2 paired offset/jitter、Velodyne marker→LiDAR measurement-frame extrinsic/error 仍缺，终态 `INDEPENDENT_PERSON_TRAJECTORY_TRUTH_AUTHORITY_ABSENT / VALID`。
 - [THÖR source-native ID / time / transform authority recovery R1 目标（2026-07-25）](USTRF_THOR_SOURCE_NATIVE_ID_TIME_TRANSFORM_AUTHORITY_RECOVERY_R1_GOAL_2026-07-25.md)：只审计官方 raw QTM、paired bags、calibration/format，不读候选输出、不比较 centroid/tracker/deskew，冻结 R0 source/member/window/tracks/missing/bands。
 - [Independent person trajectory truth source authority and admission R0 结果（2026-07-25）](USTRF_INDEPENDENT_PERSON_TRAJECTORY_TRUTH_SOURCE_AUTHORITY_AND_ADMISSION_R0_RESULT_2026-07-25.md)：JRDB 因循环论证拒绝；REveL 与 THÖR 虽有独立 mocap，但稳定 ID provenance、metric unit、测得同步误差、sensor-frame transform/uncertainty 与 admitted 分母未同时闭合。THÖR 整文件 `25,912` frame / 9 person tracks 的 provisional 分带已守恒，`40m+` 保留且为空；终态 `INDEPENDENT_PERSON_TRAJECTORY_TRUTH_AUTHORITY_ABSENT / VALID`，候选输出未读且算法比较继续关闭。
