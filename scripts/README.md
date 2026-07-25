@@ -32,6 +32,7 @@
 - [`research/public_video/`](research/public_video/)：已冻结的公开视频 / public-silver 历史 campaign。细粒度语义索引和迁移说明保留在该目录，不再向根目录增加实验轮次脚本。
 - [`research/ustrf_crosscam_codex/`](research/ustrf_crosscam_codex/)：公开头戴视角视频上的 Codex provisional silver / causal comparator，以及显式 route-projection receipt、polygon bottom-center 三档不确定性审计；不产生客观传感器事实、真人用户效果、设备米制几何或 U0/生产授权。
 - [`research/ustrf_route_target_evidence_closure/`](research/ustrf_route_target_evidence_closure/)：route-target 候选盲真值、指标资格、receipt-aware replay、逐指标 L1 profile、observability/JRDB source audit 与单变量 lifecycle 机制诊断。JRDB cross-sequence replication 已冻结 3 个新 sequence × 120 帧并以原 PCD/oriented-box/四类 kernel 复算，pooled object/pair support 为 `83.08% / 80.81%`，但远距仅 1/3 可评，仍无 selection、route/event、shadow/H2 或生产权限。
+- [`research/egomotion_compensated_looming/`](research/egomotion_compensated_looming/)：已停止 Looming R0/R1 的 frozen RCLE precursor；保留来源权威、Bonn mechanics/traces、非权威评价隔离、冻结依赖和 43 项 focused tests。旧 R1 无后继权限，RCLE Phase A 只能在独立 `rcle_minimal` 子模块中使用新 synthetic truth 与门禁。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。
@@ -41,7 +42,7 @@
 - 模型导出/检查：`export_yolo11n_tflite.py`、`inspect_tflite.py`、`export_depth_anything_v2_tflite.py`、`inspect_depth_model.py`。
 - detector/device benchmark：`detector_lab.py`、`benchmark_tflite_detectors.py`、`run_yolo26n_device_benchmark.ps1`、`run_detector_ab_device_benchmark.ps1`、`run_device_regression.ps1`。
 - SANPO 训练与门禁：`train_sanpo_segmentation_keras_torch.py`、`train_export_sanpo_segmentation.py`、`sanpo_training_gate.py`、`sanpo_candidate_quality_gate.py`。
-- USTRF-SC 当前主线必须遵守 [窗口交接](../docs/research/ustrf-sc/USTRF_SC_WINDOW_HANDOFF_2026-07-20.md)：route-conditioned、object-agnostic risk field 优先；真实事件真值与设备米制几何是硬门；detector 只能进入独立 crop-view FP 抑制实验。
+- 当前研究主线以 [RCLE current 入口](../docs/research/rcle/README.md) 为准：R1.0 是长期能力地图，R1.1 是当前执行协议，现阶段只开放 Phase A Synthetic Signal Audit。旧 route-conditioned USTRF 和 Looming R0/R1 均为历史或前序证据。
 
 ## 运行约定
 

@@ -8,11 +8,12 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 
 - 当前版本：`v10.9.0`，`versionCode=37`。
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
+- 当前论文研究主线为 [RCLE-RF](docs/research/rcle/README.md)：R1.0 管长期能力地图，R1.1 管当前最小执行；现阶段只授权 Phase A Synthetic Signal Audit，不改变正式 App、默认模型或安全权限。
 - 可并存安装的 `ustrfExperiment` 实验版已接入 USTRF 二维路线代理，并直接替代旧风险分析入口；它只使用画面中心假设路线与检测框生成保守代理风险，不具备米制深度、稳定姿态或真实路线，因此不可用于独立行走，也不改变正式 App。
 - SANPO 分割路线仍为研究候选：当前离线质量门未通过，未导出正式 INT8、未执行设备晋级门、未替换 App 默认模型。
 - 正式 App 保持本地推理；眼镜设备中心仍是模拟功能，不扫描蓝牙、不连接真实眼镜。
 
-发布变化见 [CHANGELOG.md](CHANGELOG.md)，近期工程过程见 [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。SANPO 的当前研究状态见 [SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md)；日期化审计和实验报告只代表当时快照，不作为当前状态真源。
+发布变化见 [CHANGELOG.md](CHANGELOG.md)，近期工程过程见 [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。当前论文研究入口见 [RCLE 研究主线](docs/research/rcle/README.md)，SANPO 的当前研究状态见 [SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md)；日期化审计和实验报告只代表当时快照，不作为当前状态真源。
 
 研发默认端到端无人化：来源发现/获取、采集编排、标注、复核、裁决、隐私与质量检查、数据准入、实验验收和发布证据复核均由 GPT/Codex、多模态模型或自动 Agent 完成，不建立人工待办；统一 receipt、仲裁和失败关闭规则见 [GPT / Codex 端到端自主工作流治理](docs/AI_REVIEW_GOVERNANCE.md)。
 
