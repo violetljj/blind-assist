@@ -6,6 +6,8 @@
 
 领域外调用只经过 `scripts/` 根目录的稳定 Adapter。U0 实现只接收去标签视频、frame ledger、显式或预注册 control route、hash-bound LOSO artifact 和冻结配置；model-proxy pilot 与 ARCore canary 使用各自独立 schema/validator，不向 U0 candidate runner 传 review、adjudication 或 blind 字段。
 
+`four_arm_signal_probe.py` 是冻结 15 正/15 等长负窗口的研究级连续分数入口。它复验 4594 帧 Android 语义 parity、窗口/route/RGB-D 父哈希，在同一 63×63 metric-depth field 上只改变 matched/uniform/shuffled route interaction，并以独立进程 replay 验证输出；不选择报警阈值。
+
 ## 输出
 
 只写调用者明确指定的 `artifacts.local/` 路径。模型、下载、临时场与设备证据不得写入仓库根目录。当前 model-proxy pilot 输出 10 episode、双模型回执、生成 lineage 与逐帧哈希；ARCore canary 输出原始 JSONL、设备收据和 host audit。
@@ -17,3 +19,5 @@ Depth Anything V2 Small 仅是 Apache-2.0 的离线相对深度辅助 teacher，
 ## 停止条件
 
 若 ARCore canary 达不到 `100 / 0.95 / INTER_FRAME_STABLE`，冻结手机 metric geometry，不重试同一窗口、不扩代理矩阵或开启 U0。只有 geometry gate 通过后，若正式 U0 中 dense route 相对 detector/uniform/shuffled 无预注册增益，或收益依赖 future/blind/同源泄漏、unknown 扩张、事后解释，才停止 teacher 路线且不扫描阈值回救。
+
+四臂探针若 `B_dense_matched_route` 未同时通过报告内固定的 15 对主排序、source 分层与 q50/q95 稳健性条件，终态必须为 `STOP_CURRENT_DENSE_USTRF_EXPRESSION`；不得调 dense、route、窗口汇总或报警阈值回救。通过也只开放 causal lifecycle 的研究问题。
