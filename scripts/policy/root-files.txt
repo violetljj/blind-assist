@@ -70,6 +70,8 @@ run_depth_fusion_benchmark.ps1
 run_detector_ab_device_benchmark.ps1
 run_device_regression.ps1
 run_guarded_revel_yolo_smoke.ps1
+run_host_research.ps1
+monitor_host_research_process.ps1
 run_public_video_campaign_tests.py
 run_public_video_edge_inference.ps1
 run_research_contract_tests.py

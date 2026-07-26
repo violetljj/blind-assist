@@ -1,4 +1,18 @@
 # Development Log
+## 2026-07-27
+- violjjet: Added [host-only 8/12/16-worker scheduling](docs/HOST_RESEARCH_COMPUTE.md) and launcher; Android and scientific parameters remain unchanged.
+- violjjet: Added `scripts/monitor_host_research_process.ps1` for non-invasive
+  phase, CPU/I/O, memory, bottleneck, action, stall and terminal-state
+  telemetry. New long runners must publish completed/total and ETA; compressed
+  tar random member access is prohibited as a repeated sample path. Host work
+  exceeding 3 minutes now requires workload classification, a representative
+  bounded pilot, scheduling comparison and performance qualification before an
+  irreversible claim.
+- violjjet: Adopted [the project-wide engineering learning loop](docs/ENGINEERING_LEARNING_LOOP.md):
+  expensive work now requires explicit runtime/progress/resource expectations;
+  anomalous black-box execution, resource mismatch, I/O amplification and
+  repeated failure trigger diagnosis and must leave a durable prevention
+  mechanism rather than only a conversational postmortem.
 ## 2026-07-26
 - 2026-07-26 violjjet: [R0 review](docs/research/rcle/RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-26.md) PASS; 18 tests; lock `0d833b83…e2387`; formal TUM/RGB not run or authorized.
 - 时间：2026-07-26；执行者：violjjet。完成 [PB-H1 role proxy R0](docs/research/rcle/RCLE_PHASE_B_PB_H1_ROLE_PROXY_R0_RESULT_2026-07-26.md)：实现 `R·X` 对 `R·X+t` 的 pose+depth radial expansion/parallax，受控纯旋转/横移/同速前向接近六项物理检查全部通过；固定 burned `rgbd_bonn_crowd2:0` 的 `294/294` pair 可评价。结论为旧 raw-speed gate 因果错位，同时 absolute radial aggregate 单独也不是 approach 判据；result SHA `50bc54d0…3de7` 且实现/输入哈希复验 `VALID`，下一步仅值得审计 TUM `fr2/rpy` source-native geometry。
@@ -1355,14 +1369,6 @@
 - r8.36 captured and persisted a real pose-linked display frame, predicted the world-up vanishing point through the full camera geometry, and ran a frozen Hough-line comparison. The upward-facing scene was extremely dark and the fixed Canny 60/160 pipeline returned zero candidates, so the result is non-informative rather than a geometry failure.
 - r8.36a froze a disclosed low-light rescreen after visual diagnosis and reused the exact same frame without recapture. CLAHE plus Canny 15/50 found 89 candidates and 10 lines within 10 degrees; the smallest error was `.42°`. Aligned length fraction was `8.782%`, below the frozen 10% gate, so the result is an informative fail and thresholds were not changed afterward.
 - Diagnosis: most long lines belong to horizontal ceiling-plane boundaries, invalidating the gate's assumption that all scene-line length is a useful denominator for the world-vertical family. The next independent test will compare IMU-predicted rotational homography `K R K^-1` with LK optical flow under a short automatic vibration, avoiding semantic line labels.
-
-## 2026-07-20：Corridor-Causal Student benchmark-only 工程可行性与数据真值阻塞
-
-- 执行者：violjjet
-- 新增 YOLO + 外部对齐 IMU 的 `[4,4,8] + [20]` 因果特征契约、8 帧窗口与离线对应生产器；Android 和 Python 定向测试均通过。ADVIO 同步 RGB+IMU 仅完成实际输入传输验证，不能作为风险事件训练或评测真值。
-- 62,689 参数、未训练、全 INT8 的 TCN 组件 P95 为 `.3155ms`；真实 SM-S9280 CameraX + YOLO + 夹具三轮总 P95 为 `69.567/68.829/68.799ms`，后续缓冲区复用复核为 `69.016ms`，均为 0 失败。性能形态可行但最坏余量仅 `.433ms`，不授权 runtime 接入。
-- 三个 ADVIO IMU route/turn probe 均失败（AUROC `.4770/.4746/.3465`）；IMU 不作为行进方向、路线或转向确认器。公开数据、合成数据和未训练头均不补足 `should_alert` 人工事件真值。
-- 96 episode / 48 matched pair 采集计划仍全部 `not_captured`，故训练、校准、blind、Android shadow、提醒与默认模型替换继续关闭。完整证据和下一有效门见 `docs/CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md`。
 
 ## 2026-07-20：USTRF-SC source radial-motion 分层与 V13
 
