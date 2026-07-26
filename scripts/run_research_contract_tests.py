@@ -15,6 +15,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 TEST_FILES = (
+    "scripts/test_validate_research_protocol.py",
     "scripts/test_validate_explicit_route_intent_episode.py",
     "scripts/test_validate_route_conditioned_event_truth.py",
     "scripts/test_generate_sanpo_counterfactual_capture_plan.py",

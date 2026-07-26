@@ -1,0 +1,126 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "governance_policy_id": "PROGRESSIVE_RESEARCH_GOVERNANCE_R1",
+  "governance_policy_sha256": "cd75e3c397a0c569c237c5b5652ded65189ceab6d814cc0079d8b785d54ca9f2",
+  "protocol_id": "RCLE-PHASE-B-PROGRESSIVE-DISCOVERY-R0",
+  "version": "R0",
+  "stage": "DISCOVERY",
+  "question": "Which source-native pose and depth sequences actually instantiate rotation-confound and static-approach roles, and which geometry measures best represent those roles?",
+  "claims_allowed": [
+    "CANDIDATE_FOUND",
+    "CANDIDATE_NOT_FOUND",
+    "DATA_CHARACTERIZED"
+  ],
+  "data_partitions": [
+    {
+      "id": "bonn-b1a-r5-diagnostic",
+      "source_identity": "BONN-R5-FROZEN-6-SEQUENCE-10-WINDOW",
+      "content_identity": "BONN-R5-FROZEN-6-SEQUENCE-10-WINDOW-RUN-CLAIM-9a60a0cbb6c33a28c924645d4634fad12ac5ed677146024db8adbe0347d9e6fb",
+      "identity_basis": "The consumed B1A run claim and its frozen six-sequence, ten-window cohort.",
+      "independence_group": "BONN-R5-BURNED-DIAGNOSTIC-COHORT",
+      "ancestry": [],
+      "role": "DISCOVERY",
+      "outcome_access": "GEOMETRY_ONLY",
+      "reuse_policy": "REGRESSION_CANARY_SOURCE_CHARACTERIZATION_ONLY_NOT_CONFIRMATION"
+    },
+    {
+      "id": "future-source-discovery",
+      "source_identity": "FUTURE-PUBLIC-RGBD-POSE-DISCOVERY-POOL",
+      "content_identity": "UNMATERIALIZED-PUBLIC-SOURCE-DISCOVERY-POOL-R0",
+      "identity_basis": "Prospective pool identity; each materialized source must receive a content hash and child independence group before use.",
+      "independence_group": "FUTURE-PUBLIC-DISCOVERY-POOL-R0",
+      "ancestry": [],
+      "role": "DISCOVERY",
+      "outcome_access": "METADATA_ONLY",
+      "reuse_policy": "UNSEEN_SEQUENCES_MAY_BE_RESERVED_BEFORE_GEOMETRY_OR_ALGORITHM_ACCESS"
+    }
+  ],
+  "constraints": [
+    {
+      "id": "source-provenance",
+      "class": "INVARIANT",
+      "description": "Record source URL, retrieval time, content identity and native coordinate/time authority.",
+      "failure_scope": "ITEM"
+    },
+    {
+      "id": "no-algorithm-outcome-selection",
+      "class": "INVARIANT",
+      "description": "Discovery may not read RCLE candidate output when selecting source-native motion roles.",
+      "failure_scope": "SEQUENCE"
+    },
+    {
+      "id": "raw-translation-speed",
+      "class": "DIAGNOSTIC",
+      "description": "Retain camera translation speed as a continuous diagnostic, not a universal hard rotation gate.",
+      "failure_scope": "WINDOW"
+    },
+    {
+      "id": "approach-reference-rate",
+      "class": "GUARDRAIL",
+      "description": "Use 0.05 per second as the inherited clear-approach reference while preserving the full distribution and a weak-positive exploratory band.",
+      "failure_scope": "WINDOW",
+      "value": 0.05,
+      "unit": "s^-1",
+      "rationale": "Represents an explicit approximately twenty-second inverse closing-rate timescale; it is not used to force discovery failure.",
+      "calibration_source": "Inherited R5 scientific role definition, subject to independent physical and synthetic sensitivity review before confirmation.",
+      "sensitivity_plan": "Report continuous values and the exploratory 0.025 to 0.05 per second band without treating it as confirmation PASS.",
+      "revision_policy": "May change only in a new confirmation version based on physical calibration or independent development data, never to rescue a confirmation result."
+    },
+    {
+      "id": "translation-induced-geometry",
+      "class": "ASSUMPTION",
+      "description": "Pose-plus-depth translation-induced radial expansion and time-normalized parallax may align better with the rotation confound than world translation speed.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    }
+  ],
+  "freeze": {
+    "level": "F0",
+    "outcome_access_started": false,
+    "amendment_mode": "IN_PLACE_BEFORE_OUTCOME"
+  },
+  "result_model": {
+    "execution_validity": "NOT_RUN",
+    "scientific_outcome": "NOT_RUN",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "terminal_scope": "ITEM"
+  },
+  "successor_policy": {
+    "new_version_allowed": true,
+    "preserve_previous_evidence": true
+  },
+  "experiment_design": {
+    "search_strategy": "HYPOTHESIS_DRIVEN_SEQUENTIAL",
+    "minimal_discriminating_experiment": "First compare raw translation speed with pose-plus-depth translation-induced radial expansion and time-normalized parallax on a physically controlled synthetic fixture and one burned Bonn diagnostic window.",
+    "resource_budget": "At most one calibration fixture and one burned diagnostic sequence before deciding whether the challenged proxy merits a canary implementation.",
+    "stop_conditions": "Stop PB-H1 if the direct measures fail physical calibration or do not distinguish proxy rejection from real translation contamination; stop each source scan when its bounded metadata/geometry inventory cannot instantiate a role.",
+    "selection_rule": "Prioritize candidates that distinguish source absence, proxy mismatch and implementation error with the lowest evidence cost."
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "PB-H1-ROLE-PROXY",
+      "theoretical_or_empirical_basis": "Image expansion is caused by projected translation relative to scene depth, not world translation magnitude alone.",
+      "causal_difference": "Uses source-native pose-plus-depth translation-induced radial expansion and time-normalized parallax instead of raw world translation speed as the primary rotation confound measure.",
+      "expected_information_gain": "Distinguishes a genuinely translation-contaminated rotation window from a window rejected only by a poorly aligned proxy.",
+      "minimal_test": "Compare the proxy and direct measures on one controlled pure-rotation fixture plus one burned Bonn diagnostic window.",
+      "evaluation_metric": "Median absolute translation-induced radial expansion and Q90 time-normalized parallax, reported with raw translation speed.",
+      "falsifier": "The geometry-derived measures remain large or unstable on physically controlled pure-rotation calibration and do not improve role separation.",
+      "cost": "MEDIUM",
+      "resource_budget": "One synthetic calibration fixture and one burned Bonn diagnostic sequence.",
+      "stop_condition": "Stop PB-H1 if physical calibration fails or the direct measure adds no causal separation.",
+      "selection_reason": "Directly tests the most consequential challenged constraint from B1 R5."
+    },
+    {
+      "hypothesis_id": "PB-H2-SOURCE-AVAILABILITY",
+      "theoretical_or_empirical_basis": "Bonn was recorded for dynamic RGB-D SLAM rather than this exact RCLE role contrast, so source absence is dataset-specific until a bounded public pool is screened.",
+      "causal_difference": "Screens additional public pose-plus-depth sources before any algorithm output is viewed.",
+      "expected_information_gain": "Separates absence of suitable motion in Bonn from absence of suitable public data in general.",
+      "minimal_test": "Metadata/pose/depth-only screen of the highest-priority public candidate before RGB algorithm access.",
+      "evaluation_metric": "Number and distribution of source-native candidate roles with disclosed coverage and access level.",
+      "falsifier": "A bounded, documented source pool contains no evaluable candidate roles after source-native screening.",
+      "cost": "MEDIUM",
+      "resource_budget": "One candidate source at a time with an explicit stop/go summary before downloading the next large source.",
+      "stop_condition": "Stop each source when its bounded inventory cannot instantiate a role; stop the pool after the predefined candidate list yields no new information.",
+      "selection_reason": "Prevents another confirmation protocol from being frozen before source feasibility is understood."
+    }
+  ]
+}

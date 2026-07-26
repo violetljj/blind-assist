@@ -5,6 +5,7 @@
 ## 稳定入口
 
 - `run_research_contract_tests.py`：CI 与本地共用的无 GPU、无设备研究合同回归。
+- `validate_research_protocol.py`：渐进式研究协议和 closure-scope overlay validator；区分 discovery warning 与 confirmation error，校验 policy 最低诚信内核、可复算的仓库 identity/evidence JSON、可执行 GATE、pending outcome、closure 引用/依赖和 question retirement，并拒绝结果后原地改门、INVALID 扩大关闭科学问题及无理由 Cartesian sweep。
 - `evaluate_ustrf_sc_u0_teacher_upper_bound.py`：USTRF U0 六臂（四个正式比较臂 + uniform/shuffled route 负控）LOSO 事件评价；会重算完整 route-conditioned GPT/Codex 共识真值门并拒绝 blind/future/hash 漂移。
 - `run_ustrf_sc_u0_candidate_bundle.py`：U0 六臂统一 subprocess runner；只向 adapter 暴露去标签 inference manifest，冻结 500ms cadence、真实 route control、逐 fold LOSO artifact/训练收据及 kernel backend，再组装可 admission 的 v2 bundle。
 - `run_ustrf_sc_u0_android_baseline_adapter.py`：`baseline_yolo_geometry` 真实 Android adapter；只搬运 hash-bound 去标签 request/video/ledger/artifact/config，最终 output 由真机 instrumentation 内的 shipped TFLite YOLO + shared Kotlin kernel 生成。需先用稳定 `.android-home` debug key 安装 app 与 `device-benchmark` APK，且只能作 U0 评测 adapter，不授权 App/模型替换。
@@ -32,7 +33,7 @@
 - [`research/public_video/`](research/public_video/)：已冻结的公开视频 / public-silver 历史 campaign。细粒度语义索引和迁移说明保留在该目录，不再向根目录增加实验轮次脚本。
 - [`research/ustrf_crosscam_codex/`](research/ustrf_crosscam_codex/)：公开头戴视角视频上的 Codex provisional silver / causal comparator，以及显式 route-projection receipt、polygon bottom-center 三档不确定性审计；不产生客观传感器事实、真人用户效果、设备米制几何或 U0/生产授权。
 - [`research/ustrf_route_target_evidence_closure/`](research/ustrf_route_target_evidence_closure/)：route-target 候选盲真值、指标资格、receipt-aware replay、逐指标 L1 profile、observability/JRDB source audit 与单变量 lifecycle 机制诊断。JRDB cross-sequence replication 已冻结 3 个新 sequence × 120 帧并以原 PCD/oriented-box/四类 kernel 复算，pooled object/pair support 为 `83.08% / 80.81%`，但远距仅 1/3 可评，仍无 selection、route/event、shadow/H2 或生产权限。
-- [`research/egomotion_compensated_looming/`](research/egomotion_compensated_looming/)：旧 Looming R0/R1 保持 frozen RCLE precursor；Phase A R0 为 `REVISE / VALID`，唯一一次版本化 `rcle_minimal_r1/` coverage revision 保持原 2520 trials/阈值并使 clean `1680/1680`、stress `810/840`，但 partial-occlusion pitch worst cell `0.60 < 0.70`。R1 receipt 为 `VALID / REVISE`，研究层按冻结语义 `STOP_CURRENT_IMPLEMENTATION`；Phase B/Replay/Android 关闭，不得再做第二次 coverage revision。
+- [`research/egomotion_compensated_looming/`](research/egomotion_compensated_looming/)：RCLE canonical Module。旧 Looming/Phase A/B1 R5 证据保持不可回写；B1 R5 evidence version 已关闭但科学问题开放。当前只开放 Phase B progressive Discovery，优先 source characterization、失败学习、约束质疑和 hypothesis-driven source-native geometry；RGB algorithm canary/confirmation/Replay/Android 关闭。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。
@@ -42,7 +43,7 @@
 - 模型导出/检查：`export_yolo11n_tflite.py`、`inspect_tflite.py`、`export_depth_anything_v2_tflite.py`、`inspect_depth_model.py`。
 - detector/device benchmark：`detector_lab.py`、`benchmark_tflite_detectors.py`、`run_yolo26n_device_benchmark.ps1`、`run_detector_ab_device_benchmark.ps1`、`run_device_regression.ps1`。
 - SANPO 训练与门禁：`train_sanpo_segmentation_keras_torch.py`、`train_export_sanpo_segmentation.py`、`sanpo_training_gate.py`、`sanpo_candidate_quality_gate.py`。
-- 当前研究主线以 [RCLE current 入口](../docs/research/rcle/README.md) 为准：R1.0 是长期能力地图，R1.1 是当前执行协议，现阶段只开放 Phase A Synthetic Signal Audit。旧 route-conditioned USTRF 和 Looming R0/R1 均为历史或前序证据。
+- 当前研究主线以 [RCLE current 入口](../docs/research/rcle/README.md) 为准，并服从 [渐进式研究治理](../docs/RESEARCH_GOVERNANCE.md)。旧 route-conditioned USTRF 和已关闭 RCLE 版本均保留为历史、反例、回归或前序证据，不自动产生当前 authority。
 
 ## 运行约定
 

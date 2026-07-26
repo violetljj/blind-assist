@@ -5,7 +5,11 @@
 ```markdown
 # <domain>
 
-状态：proposal | active | frozen | archive
+状态：proposal | discovery | canary | development | confirmation | frozen | archive
+
+## 研究问题与版本
+声明 scientific question、protocol version、evidence instance、当前 stage 和
+允许 claim。遵循 `docs/RESEARCH_GOVERNANCE.md`。
 
 ## 稳定 Interface
 调用方式、输入不变量和失败模式。
@@ -17,7 +21,17 @@
 数据权威、训练、设备、Android 和生产授权边界。
 
 ## 停止条件
-冻结验收指标；连续两轮同一假设失败后停止参数回救，改写假设或关闭路线。
+定义信息增益/资源预算和最小 failure scope。失败必须写 learning record；
+停止具体候选、实现、来源或 evidence version，不因固定次数自动关闭整个问题。
+
+## 假设与规则质疑
+候选写明 causal difference、expected information gain、falsifier、cost 和
+selection reason。允许质疑 AGENTS/current/threshold，但必须版本化修改，不静默绕过。
+
+## 失败资产复用
+声明失败数据/代码能否作为 negative evidence、diagnostic、regression fixture、
+canary、counterexample、stress case 或 source characterization；不得重新包装为
+unseen confirmation。
 ```
 
 领域外调用只能经过 `scripts/` 根目录的稳定 Adapter。共享 Implementation 只有在至少两个调用域证明真实复用后才能进入 `research/common/`；不要预先制造万能框架。

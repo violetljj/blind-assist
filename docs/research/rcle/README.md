@@ -35,14 +35,29 @@ RCLE-Minimal R0 的输出是以 `s^-1` 表示的局部 expansion。它不是碰�
 ## 当前执行状态
 
 R1.1 的 **Phase A：Synthetic Signal Audit** 已执行完毕，并在唯一一次
-implementation-only coverage revision 后按冻结停止语义关闭。当前没有活跃的
-Phase A 修订或 Phase B 后继执行权限。
+implementation-only coverage revision 后按冻结停止语义关闭；随后独立冻结的
+Observable Support Recovery 已通过 development 与 sealed validation。用户随后
+单独激活 **Phase B**；B0 R1 archive/member/CRC/timestamp inventory 已
+`PASS / VALID`。唯一 B1A source-native geometry execution 已消费 claim，但
+独立 replay 因 blank-grid ledger key-set mismatch 判
+`INVALID_EXECUTION_CLOSE_B1`。旧 terminal 保留；按新的
+[closure-scope overlay](RCLE_PHASE_B_BONN_B1A_CLOSURE_SCOPE_2026-07-26.json)，
+它实际关闭 B1A R5 evidence instance、已消费 protocol version 与明确依赖它的
+B1B R5，不关闭 RCLE 科学问题。
+
+项目现已采用[渐进式研究治理](../../RESEARCH_GOVERNANCE.md)，并明确开放
+[Phase B Progressive Discovery](RCLE_PHASE_B_PROGRESSIVE_PROTOCOL_2026-07-26.md)。
+当前只做来源画像、连续几何分布、约束质疑、失败资产复用和高信息增益假设；
+不读取 RCLE RGB algorithm outcome，不产生机制确认或产品结论。
 
 Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固定旋转补偿、Sparse LK、局部仿射拟合和网格汇总，比较纯旋转泄漏与真实闭合保留。trial-level leakage error 和 closing error 是主判据；RSR/CRR 只作诊断比例。
 
-只有 Phase A 完成、报告可复算且 Kill Gate A 通过后，才可另立任务决定是否进入 Phase B。当前不授权：
+只有独立 sealed synthetic validation 通过且 Phase B 被单独激活后，才可进入
+B0。当前 Progressive Discovery 不授权：
 
-- Bonn real-source 审计；
+- B1 R5 同版本重跑、B1B R5 或任何 RCLE RGB algorithm metric；
+- patch、替换或重跑已消费 claim 的 B1A；
+- 把 Bonn B1A diagnostic 或用过的 sequence 重新包装为 unseen confirmation；
 - 单项增强或多算法堆叠；
 - Risk Field 与 token/lifecycle；
 - Android RCLE 集成或主动告警；
@@ -57,7 +72,7 @@ clean yaw/pitch 旋转泄漏抑制、roll 不增噪、scale up/down 与 rotation
 
 [Phase A Coverage Revision R1](RCLE_MINIMAL_PHASE_A_COVERAGE_REVISION_R1_RESULT_2026-07-26.md) 已执行这唯一一次版本化实现修订。它保持 R0 协议、全部 trial/seed/threshold/gate 与输入 hash 不变，使 clean 达到 `1680/1680`、stress 达到 `810/840`，并消除了 affine residual 超门；但 partial-occlusion pitch 四个 cell 仅为 `12/20、12/20、13/20、13/20`，worst `0.60 < 0.70`，coverage 仍失败。R1 receipt `d5edb952…2b15` 独立复算为 `REVISE / VALID`。
 
-由于冻结协议规定单次版本化 REVISE rerun 仍失败即停止，当前研究层终态为 `STOP_CURRENT_IMPLEMENTATION / VALID`。不得再做第二次 coverage revision、降门或改矩阵；Phase B 与 Replay Demo 仍未开放。未来若获明确新授权，只能另立结果前冻结的新信号/观测模型假设，不能继续在本轮 2520 trials 上选择实现。
+由于冻结协议规定单次版本化 REVISE rerun 仍失败即停止，该实现终态为 `STOP_CURRENT_IMPLEMENTATION / VALID`。不得再做第二次 coverage revision、降门或改矩阵。当前 Phase B 权限来自后续 Observable Support Recovery sealed PASS 与用户单独激活，不回写或改写本轮 coverage 失败；不能继续在旧 2520 trials 上选择实现。
 
 ## Observable Support Recovery R0 设计边界
 
@@ -117,6 +132,10 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 8. 经明确授权后，唯一 [Bonn metadata gate R0](RCLE_PHASE_B_BONN_METADATA_GATE_R0_RESULT_2026-07-26.md) 的 26-row 内容与 6 条 cohort 可复算，但独立审查发现 runner override 绕过 one-run/canonical-output 合同，终态为 `CONTENT_VALID / EXECUTION_CONTRACT_FAIL`。R0 receipt 和 cohort 降为 non-authoritative diagnostic，候选关闭；payload、window inventory 和所有 Phase B 指标仍未授权。
 9. R1/R2 继续暴露 preclaim 项目读取，均保留为 diagnostic；最终 [R3 canonical metadata authority](RCLE_PHASE_B_BONN_METADATA_AUTHORITY_R1_R3_RESULT_2026-07-26.md) 以最小 hash-bound bootstrap 在任何项目读取前 exclusive-create claim，唯一正式门和独立复算均 PASS。权威 receipt 为 `05a283b8…489b`，固定 26/9/6 与 cohort `513b770d…ae86e`。
 10. [Phase B Bonn B0 预注册](RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_PREREGISTRATION_2026-07-26.md) 已通过[独立设计审查](RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_DESIGN_REVIEW_RESULT_2026-07-26.md)，design lock `a0b04ac5…c757`，当前 `EXECUTION_AUTHORIZED / NOT_STARTED`。这表示已推进到可进入正式 Phase B B0 acquisition/timestamp-inventory 的边界；本轮没有下载 2.26 GB payload，也没有运行 Phase B 指标。
+11. B0 R0 启动前的数据可行性审计对六个 official URL 做了无 body `HEAD`，违反 network-before-claim 顺序；已按 [R0 合同结果](RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_R0_EXECUTION_CONTRACT_RESULT_2026-07-26.md) 公开关闭，未伪装成 formal run。
+12. [B0 R1 recovery 预注册](RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_R1_PREREGISTRATION_2026-07-26.md) 保持同一 cohort、URL、分母和门；design 与 implementation review 均 PASS 后，唯一 canonical run 已完成并由独立 validator 复算。结果为 [B0 R1 `PASS / VALID`](RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_R1_RESULT_2026-07-26.md)：6/6 archive/timestamp 可评价，固定 `10` 个窗口，receipt `dc0ffe9a…1f86`。当前只允许冻结 B1 metric protocol；image/pose metric 读取与 B1 execution 仍关闭。
+13. B1 R5 protocol 与 B1A implementation review 通过后启动唯一 source-native geometry run。producer 完成十窗输出，但 independent full replay 在 24 个 abstaining pair 的 216 个 grid 上发现 blank-grid key-set mismatch，并连带触发 ledger identity mismatch；[正式结果](RCLE_PHASE_B_BONN_B1A_RESULT_2026-07-26.md)为 `INVALID_EXECUTION_CLOSE_B1`。诊断 receipt 同时显示 rotation/approach 合格 sequence 均为 `0`，但 INVALID 内容不构成正式数据结论。B1B 未运行且关闭。
+14. 用户基于多轮工作明确要求研究治理本身能够学习、质疑并进化。仓库已采用 Discovery/Canary/Development/Confirmation/Deployment 渐进冻结；每次失败必须形成 learning record，候选按因果差异、信息增益、可证伪性和成本排序，失败资产可降级为 regression/canary/counterexample/source characterization。B1A closure overlay 保持科学问题 `OPEN`，新的 [Progressive Discovery R0 contract](RCLE_PHASE_B_PROGRESSIVE_DISCOVERY_R0_CONTRACT_2026-07-26.json) 已成为当前 Phase B 边界。
 
 ## 主线变更规则
 
@@ -124,7 +143,12 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 
 1. 用户最新明确指令；
 2. 本 current 入口和 R1.1 当前执行协议；
-3. R1.0 长期能力地图；
-4. 日期化 USTRF/Looming 目标、结果和历史 handoff。
+3. 仓库级渐进式研究治理；
+4. R1.0 长期能力地图；
+5. 日期化 USTRF/Looming 目标、结果和历史 handoff。
 
 任何旧文档中的“当前主线”“独立新算法入口”或“下一阶段”，若与本页冲突，均降级为历史上下文，不构成执行授权。主线再次变化时，必须同步更新本页、`AGENTS.md`、根 `README.md`、文档索引和 `DEVELOPMENT_LOG.md`。
+
+任何 current、`AGENTS.md`、R1.0/R1.1 或数值门都允许被 evidence-backed
+`RULE_CHALLENGE` 质疑；在版本化 amendment 生效前不得静默绕过。历史结果和
+receipt 不回写，但其数据、实现与失败可按新治理显式降级复用。

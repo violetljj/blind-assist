@@ -1,0 +1,278 @@
+{
+  "schema_version": "blindassist.research_governance.v1",
+  "policy_id": "PROGRESSIVE_RESEARCH_GOVERNANCE_R1",
+  "adopted_on": "2026-07-26",
+  "policy_is_revisable": true,
+  "user_guidance_is_revisable": true,
+  "project_objective_priority": [
+    "THESIS_AND_GRADUATION_SUFFICIENCY",
+    "FALSIFIABLE_RESEARCH_LEARNING",
+    "INFORMATION_GAIN_PER_UNIT_COST",
+    "DEMONSTRABLE_PROTOTYPE_VALUE",
+    "OPTIONAL_DEPLOYMENT_EVIDENCE"
+  ],
+  "rule_necessity_tests": [
+    "INFORMATION_GAIN",
+    "REPRODUCIBILITY",
+    "CLAIM_INTEGRITY",
+    "EXTERNAL_SAFETY_OR_LEGAL_REQUIREMENT"
+  ],
+  "unjustified_rule_default": "DOWNGRADE_TO_GUARDRAIL_OR_REMOVE",
+  "efficiency_policy": {
+    "default": "MINIMUM_SUFFICIENT_RIGOR",
+    "allow_reversible_shortcuts": true,
+    "allow_parallel_independent_work": true,
+    "allow_lightweight_posthoc_recording_in_discovery": true,
+    "forbidden_shortcuts": [
+      "FABRICATE_OR_OVERSTATE_EVIDENCE",
+      "LEAK_CONFIRMATION_OUTCOMES",
+      "SILENTLY_REWRITE_PRIOR_RESULTS",
+      "CREATE_UNDISCLOSED_IRREVERSIBLE_RISK"
+    ],
+    "escalation_rule": "Increase rigor only when claim scope, irreversibility, external risk or evidence contamination risk increases."
+  },
+  "stages": {
+    "DISCOVERY": {
+      "minimum_freeze_level": "F0",
+      "allowed_claims": [
+        "CANDIDATE_FOUND",
+        "CANDIDATE_NOT_FOUND",
+        "DATA_CHARACTERIZED"
+      ],
+      "confirmation_authority": false
+    },
+    "CANARY": {
+      "minimum_freeze_level": "F1",
+      "allowed_claims": [
+        "MECHANISM_DIRECTION_SUPPORTED",
+        "MECHANISM_DIRECTION_NOT_SUPPORTED",
+        "IMPLEMENTATION_DEBUGGED",
+        "NOT_EVALUABLE"
+      ],
+      "confirmation_authority": false
+    },
+    "DEVELOPMENT": {
+      "minimum_freeze_level": "F1",
+      "allowed_claims": [
+        "IMPLEMENTATION_READY_FOR_CONFIRMATION",
+        "IMPLEMENTATION_NOT_READY",
+        "NOT_EVALUABLE"
+      ],
+      "confirmation_authority": false
+    },
+    "CONFIRMATION": {
+      "minimum_freeze_level": "F2",
+      "allowed_claims": [
+        "CONFIRM_PASS",
+        "CONFIRM_FAIL",
+        "NOT_EVALUABLE"
+      ],
+      "confirmation_authority": true
+    },
+    "DEPLOYMENT": {
+      "minimum_freeze_level": "F3",
+      "allowed_claims": [
+        "DEPLOYMENT_GATE_PASS",
+        "DEPLOYMENT_GATE_FAIL",
+        "NOT_EVALUABLE"
+      ],
+      "confirmation_authority": true
+    }
+  },
+  "freeze_levels": [
+    "F0",
+    "F1",
+    "F2",
+    "F3"
+  ],
+  "constraint_classes": [
+    "INVARIANT",
+    "GATE",
+    "GUARDRAIL",
+    "DIAGNOSTIC",
+    "ASSUMPTION"
+  ],
+  "data_roles": [
+    "DISCOVERY",
+    "CANARY",
+    "DEVELOPMENT",
+    "CONFIRMATION",
+    "DEPLOYMENT"
+  ],
+  "outcome_access_levels": [
+    "NONE",
+    "METADATA_ONLY",
+    "GEOMETRY_ONLY",
+    "FULL"
+  ],
+  "failure_scopes": [
+    "ITEM",
+    "WINDOW",
+    "SEQUENCE",
+    "BRANCH",
+    "IMPLEMENTATION_VERSION",
+    "EVIDENCE_VERSION",
+    "RESEARCH_QUESTION",
+    "PRODUCT"
+  ],
+  "amendment_modes": [
+    "IN_PLACE_BEFORE_OUTCOME",
+    "NEW_VERSION_ONLY"
+  ],
+  "execution_validity_values": [
+    "VALID",
+    "INVALID",
+    "NOT_RUN"
+  ],
+  "not_run_scientific_outcome": "NOT_RUN",
+  "invalid_execution_scientific_outcome": "NOT_EVALUABLE_DUE_TO_EXECUTION",
+  "constraint_operators": [
+    "GT",
+    "GTE",
+    "LT",
+    "LTE",
+    "EQ",
+    "NEQ",
+    "RANGE_INCLUSIVE"
+  ],
+  "required_data_partition_fields": [
+    "source_identity",
+    "content_identity",
+    "identity_basis",
+    "independence_group",
+    "ancestry",
+    "reuse_policy"
+  ],
+  "scientific_question_states": [
+    "OPEN",
+    "CLOSED",
+    "RETIRED"
+  ],
+  "protocol_version_states": [
+    "OPEN",
+    "CLOSED_VALID",
+    "CLOSED_INVALID",
+    "SUPERSEDED"
+  ],
+  "artifact_integrity_states": [
+    "VALID",
+    "INVALID"
+  ],
+  "closure_execution_states": [
+    "NOT_RUN",
+    "COMPLETED",
+    "CONSUMED_CLOSED"
+  ],
+  "authority_ceilings": [
+    "NONE",
+    "DIAGNOSTIC",
+    "DISCOVERY",
+    "CANARY",
+    "DEVELOPMENT",
+    "CONFIRMATION",
+    "DEPLOYMENT"
+  ],
+  "closure_target_types": [
+    "scientific_question",
+    "protocol_version",
+    "evidence_instance",
+    "dependency_branch"
+  ],
+  "question_closure_bases": [
+    "independent_confirmatory_failure",
+    "theoretical_refutation",
+    "scope_retired_by_decision"
+  ],
+  "required_evidence_hash_fields": [
+    "run_claim_sha256",
+    "ledger_sha256",
+    "receipt_sha256"
+  ],
+  "failure_asset_roles": [
+    "NEGATIVE_EVIDENCE",
+    "DIAGNOSTIC",
+    "REGRESSION_FIXTURE",
+    "CANARY",
+    "COUNTEREXAMPLE",
+    "STRESS_CASE",
+    "SOURCE_CHARACTERIZATION",
+    "AUXILIARY_FEATURE",
+    "QUALITY_GATE",
+    "UNCERTAINTY_SIGNAL",
+    "NEGATIVE_SAMPLE",
+    "CONTROL_BASELINE",
+    "ABLATION_COMPONENT",
+    "DO_NOT_REUSE"
+  ],
+  "rule_challenge_dispositions": [
+    "ACCEPTED_NEW_VERSION",
+    "REJECTED_WITH_RATIONALE",
+    "TRIAL_AS_GUARDRAIL",
+    "NEEDS_MORE_EVIDENCE"
+  ],
+  "default_invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+  "minimum_numeric_constraint_fields": [
+    "unit",
+    "rationale",
+    "calibration_source",
+    "sensitivity_plan",
+    "revision_policy"
+  ],
+  "hard_rules": {
+    "canary_or_development_data_must_not_be_confirmation_data": true,
+    "post_outcome_amendment_requires_new_version": true,
+    "confirmation_requires_at_least_one_gate": true,
+    "confirmation_numeric_gates_require_full_justification": true,
+    "invalid_execution_does_not_close_research_question_by_default": true,
+    "legacy_evidence_is_immutable": true,
+    "failure_requires_learning_record": true,
+    "blind_cartesian_search_requires_explicit_justification": true,
+    "rules_may_be_challenged_but_not_silently_bypassed": true,
+    "failed_assets_may_be_reused_only_with_explicit_new_role": true
+  },
+  "required_failure_learning_fields": [
+    "failure_class",
+    "observation",
+    "inference",
+    "alternative_explanations",
+    "constraint_challenges",
+    "next_hypotheses",
+    "reuse_candidates",
+    "information_gain"
+  ],
+  "required_hypothesis_fields": [
+    "hypothesis_id",
+    "theoretical_or_empirical_basis",
+    "causal_difference",
+    "expected_information_gain",
+    "minimal_test",
+    "evaluation_metric",
+    "falsifier",
+    "cost",
+    "resource_budget",
+    "stop_condition",
+    "selection_reason"
+  ],
+  "required_experiment_design_fields": [
+    "search_strategy",
+    "minimal_discriminating_experiment",
+    "resource_budget",
+    "stop_conditions"
+  ],
+  "required_round_summary_fields": [
+    "new_facts_and_evidence",
+    "weakened_or_rejected_hypotheses",
+    "unresolved_questions",
+    "reusable_assets",
+    "next_high_information_experiments",
+    "governance_changes_needed"
+  ],
+  "material_change_dimensions": [
+    "DATA",
+    "INPUT_SIGNAL",
+    "COMPENSATION",
+    "SYSTEM_ROLE",
+    "EVALUATION_TARGET",
+    "DEPLOYMENT_CONDITION"
+  ]
+}

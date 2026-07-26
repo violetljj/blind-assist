@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RCLE Phase B Bonn B0 R1 receipt",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "created_at",
+    "design_lock_sha256",
+    "preregistration_sha256",
+    "r0_contract_result_sha256",
+    "metadata_authority_r3_receipt_sha256",
+    "cohort_identity_sha256",
+    "implementation_lock_sha256",
+    "run_claim_sha256",
+    "repo",
+    "environment",
+    "disclosed_pre_r1_head_observations",
+    "claim",
+    "sequence_ids_in_rank_order",
+    "sequence_results",
+    "transport_attempt_count",
+    "transport_attempt_ledger_sha256",
+    "window_denominator",
+    "window_denominator_sha256",
+    "evaluable_sequence_count",
+    "sequences_with_windows_count",
+    "failed_or_zero_window_units_retained",
+    "read_firewall",
+    "gate_pass",
+    "terminal_state",
+    "b1_metric_protocol_may_be_frozen",
+    "phase_b_metrics_authorized",
+    "replay_android_human_safety_production_authorized"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rcle.phase_b.bonn_b0_r1.receipt.v1"
+    },
+    "protocol_id": {
+      "const": "RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_R1"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "design_lock_sha256": {
+      "const": "396444305bae01eb5a8e95a92044cbea9aa7084c605993c789ecb4f47e234e74"
+    },
+    "preregistration_sha256": {
+      "const": "f50cf66c46fe33aa3c1e60fa3c25cb120389eafdbad92f4d0a9df22d7cc68da2"
+    },
+    "r0_contract_result_sha256": {
+      "const": "7c5aa8c66b6d99803b4ae2945dfcf95fe7c7bffc7919423df9b68a03fdf1f734"
+    },
+    "metadata_authority_r3_receipt_sha256": {
+      "const": "05a283b84f62bee000447bb567eadd63b424afaa9d81f5f0d83d36a9ed02489b"
+    },
+    "cohort_identity_sha256": {
+      "const": "513b770d18489fd0caf84874e9fb89456eb3a992fc262b037220b66b5caae86e"
+    },
+    "implementation_lock_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "run_claim_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "repo": {
+      "type": "object"
+    },
+    "environment": {
+      "type": "object"
+    },
+    "disclosed_pre_r1_head_observations": {
+      "type": "object"
+    },
+    "claim": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "protocol_id",
+        "claimed_at",
+        "canonical_archive_root",
+        "canonical_output",
+        "canonical_run_claim",
+        "command",
+        "maximum_run_claims",
+        "exclusive_create",
+        "survives_failure_interrupt_and_success",
+        "network_operations_before_claim",
+        "pre_r1_head_disclosure",
+        "design_lock_sha256",
+        "preregistration_sha256",
+        "metadata_authority_r3_receipt_sha256",
+        "cohort_identity_sha256",
+        "implementation_lock_sha256"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "rcle.phase_b.bonn_b0_r1.run_claim.v1"
+        },
+        "protocol_id": {
+          "const": "RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_R1"
+        },
+        "claimed_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_archive_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_output": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_run_claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "command": {
+          "type": "array",
+          "minItems": 1
+        },
+        "maximum_run_claims": {
+          "const": 1
+        },
+        "exclusive_create": {
+          "const": true
+        },
+        "survives_failure_interrupt_and_success": {
+          "const": true
+        },
+        "network_operations_before_claim": {
+          "const": 0
+        },
+        "pre_r1_head_disclosure": {
+          "type": "object"
+        },
+        "design_lock_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "preregistration_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "metadata_authority_r3_receipt_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "cohort_identity_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "implementation_lock_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sequence_ids_in_rank_order": {
+      "const": [
+        "rgbd_bonn_crowd2",
+        "rgbd_bonn_balloon_tracking",
+        "rgbd_bonn_balloon_tracking2",
+        "rgbd_bonn_moving_obstructing_box2",
+        "rgbd_bonn_balloon2",
+        "rgbd_bonn_moving_nonobstructing_box2"
+      ]
+    },
+    "sequence_results": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "rank",
+          "sequence_id",
+          "status",
+          "window_count"
+        ]
+      }
+    },
+    "transport_attempt_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 18
+    },
+    "transport_attempt_ledger_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "window_denominator": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": [
+          "rank",
+          "sequence_id",
+          "status",
+          "window_count"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "window_denominator_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evaluable_sequence_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 6
+    },
+    "sequences_with_windows_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 6
+    },
+    "failed_or_zero_window_units_retained": {
+      "const": true
+    },
+    "read_firewall": {
+      "const": {
+        "rgb_depth_decode_operations": 0,
+        "pose_tokens_parsed_after_first": 0,
+        "static_map_reads": 0,
+        "legacy_outcome_reads": 0,
+        "phase_b_metric_reads_or_computations": 0
+      }
+    },
+    "gate_pass": {
+      "type": "boolean"
+    },
+    "terminal_state": {
+      "enum": [
+        "PHASE_B_B0_R1_INVENTORY_PASS_B1_METRIC_PROTOCOL_MAY_BE_FROZEN",
+        "HOLD_PHASE_B_B0_R1_NOT_EVALUABLE_NO_REPLACEMENT_NO_RERUN"
+      ]
+    },
+    "b1_metric_protocol_may_be_frozen": {
+      "type": "boolean"
+    },
+    "phase_b_metrics_authorized": {
+      "const": false
+    },
+    "replay_android_human_safety_production_authorized": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "gate_pass": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "terminal_state": {
+            "const": "PHASE_B_B0_R1_INVENTORY_PASS_B1_METRIC_PROTOCOL_MAY_BE_FROZEN"
+          },
+          "b1_metric_protocol_may_be_frozen": {
+            "const": true
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "terminal_state": {
+            "const": "HOLD_PHASE_B_B0_R1_NOT_EVALUABLE_NO_REPLACEMENT_NO_RERUN"
+          },
+          "b1_metric_protocol_may_be_frozen": {
+            "const": false
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

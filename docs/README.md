@@ -13,6 +13,8 @@
 | [CODEX_TASK_HANDOFF_TEMPLATE.md](CODEX_TASK_HANDOFF_TEMPLATE.md) | current | 多任务长任务的断点、边界与换窗口续作模板 |
 | [CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md](CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md) | current | 多任务交接索引模板 |
 | [DOCUMENT_GOVERNANCE.md](DOCUMENT_GOVERNANCE.md) | current | 文档职责、真源、历史保留与维护规则 |
+| [RESEARCH_GOVERNANCE.md](RESEARCH_GOVERNANCE.md) | current | Discovery/Canary/Development/Confirmation/Deployment 渐进冻结、失败学习、规则质疑和证据复用 |
+| [RESEARCH_PROTOCOL_TEMPLATE.md](RESEARCH_PROTOCOL_TEMPLATE.md) | current | 新建或实质修订研究协议的统一模板与机器合同入口 |
 | [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md) | current | 真机功能回归 |
 | [AI_REVIEW_GOVERNANCE.md](AI_REVIEW_GOVERNANCE.md) | current | 端到端无人化：自主采集、标注、复核、裁决、准入、验收与发布证据总规则 |
 
@@ -66,7 +68,7 @@
 
 `research/frontier-upgrade-2026-07/` 按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层。该目录用于研究追溯；生产行为仍以当前协议、代码和门禁为准。
 
-- [RCLE 研究主线](research/rcle/README.md)：`current`；R1.0 长期能力地图、R1.1 Phase A、Observable Support Recovery sealed validation、Bonn metadata authority R3 `PASS`，以及 Phase B B0 `EXECUTION_AUTHORIZED / NOT_STARTED` 的唯一仓库入口。
+- [RCLE 研究主线](research/rcle/README.md)：`current`；B1 R5 evidence version 与依赖 B1B 因 replay mismatch 关闭，但科学问题保持开放；当前进入 [Phase B Progressive Discovery](research/rcle/RCLE_PHASE_B_PROGRESSIVE_PROTOCOL_2026-07-26.md)，不授权 RGB algorithm canary 或 confirmation。
 - [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。
 - [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：历史 route-conditioned 研究和 RCLE 前序 Looming 证据；不再是研究主线，不代表生产授权。
 - 开发日志月度历史：[2026-05](history/development-log/2026-05.md) · [2026-06](history/development-log/2026-06.md) · [2026-07](history/development-log/2026-07.md)。近期记录继续以根 `DEVELOPMENT_LOG.md` 为准。

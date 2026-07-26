@@ -60,7 +60,9 @@ E:\codex-tools\bin\blindassist-python.cmd `
 
 R1 receipt SHA-256:
 `d5edb9528abfa6d79b973bddfed5f4234795262fb303258c9e1a9e2628ca2b15`.
-Phase B and Replay Demo remain closed. No second coverage revision is allowed.
+该 R1 本身不开放后继，且禁止第二次 coverage revision。后续 Observable Support
+Recovery sealed validation 已另行 PASS；当前 Phase B 只开放独立 B0 R1
+archive/member-CRC/timestamp-window inventory，Phase B metric 与 Replay 仍关闭。
 
 ## 冻结环境
 
@@ -206,9 +208,18 @@ R1/R2 是 preclaim-order diagnostic failures。Canonical R3 使用 hash-bound
 minimal bootstrap runner，在任何 project/control/metadata read 前先
 exclusive-create 并 fsync 唯一 claim。正式 R3 receipt
 `05a283b84f62bee000447bb567eadd63b424afaa9d81f5f0d83d36a9ed02489b`
-已独立复算 `VALID`。随后冻结的 Phase B B0 acquisition/timestamp-inventory
-design lock `a0b04ac5…c757` 已通过独立设计审查，当前为
-`EXECUTION_AUTHORIZED / NOT_STARTED`；尚未下载 archive 或运行 Phase B metric。
+已独立复算 `VALID`。原 Phase B B0 R0 因 claim 前六次无 body HEAD 的执行合同
+违规而关闭；没有 formal run 或 payload body。版本化 B0 R1 保持固定 cohort、
+URL、分母和门；design/implementation review PASS 后，唯一 canonical run 与
+independent validator 均通过。B0 receipt `dc0ffe9a…1f86`，6/6 sequence 共固定
+10 个 10 秒窗口。随后冻结的 B1 R5 与 B1A implementation 已完成一次性执行，
+但 independent replay 在 24 个 abstaining pair 的 blank-grid 序列化上发现
+producer/validator key-set mismatch，终态为 `INVALID_EXECUTION_CLOSE_B1`。
+原 artifacts、锁和源必须保留，不得 patch 或重跑；B1B 与其他 Phase B metric
+均关闭。随后项目已采用渐进式研究治理：B1 R5 evidence version 关闭但 RCLE
+科学问题开放，当前只允许新的 Phase B Discovery 做来源画像、约束质疑、失败资产
+回归复用和 hypothesis-driven source-native geometry；算法 canary/confirmation
+仍关闭。
 
 ## 安全边界
 

@@ -25,7 +25,7 @@
 | 反事实采集与生命周期目标 | [SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md](SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md) |
 | Corridor-Causal 候选的本轮结论 | [CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md](CORRIDOR_CAUSAL_PROGRESS_2026-07-20.md)：仅工程可行性，未获得事件效果或晋级授权。 |
 | Route-conditioned USTRF-SC 终态 | [USTRF route-conditioned program 收口 R1](research/ustrf-sc/USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md)：当前路线已停止，无自动算法后继；YOLO/bbox 仅保留为普通 detector baseline，生产路径不变。 |
-| RCLE 当前研究主线 | [RCLE 研究主线](research/rcle/README.md)：当前只执行 R1.1 Phase A Synthetic Signal Audit；R1.0 后续能力和 Phase B–D 均未自动开放。 |
+| RCLE 当前研究主线 | [RCLE 研究主线](research/rcle/README.md)：B1 R5 evidence version 与依赖 B1B 已关闭，科学问题保持开放；当前按渐进式治理进入 Phase B Discovery，未开放 RGB algorithm canary 或 confirmation。 |
 | RCLE 前序 Looming 证据 | [冻结现场](research/rcle/RCLE_PRECURSOR_FREEZE_2026-07-25.md) 与 [非权威执行隔离结果](research/ustrf-sc/USTRF_EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R1_NONAUTHORITATIVE_EXECUTION_QUARANTINE_RESULT_2026-07-25.md)：代码、traces 和失败边界只供复算，不具备执行、Phase A、算法选择、App 或生产权限。 |
 | 公开银标与来源研究 | 仅在对应协议已登记为 `current` 后按其执行；未提交的本地草稿不能作为仓库规则或授权依据。 |
 | 最近研究证据 | 已提交的日期化 snapshot；未提交的研究记录保持任务本地状态，待其所属任务完成后再登记。 |

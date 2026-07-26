@@ -15,6 +15,7 @@
 | 当前产品能力、版本、最短构建入口 | `README.md` | `idea.md`、日期化实验报告 |
 | 已发布或用户可见变化 | `CHANGELOG.md` | 研究实验日志 |
 | 当前 SANPO 状态、硬门、禁止事项、下一步 | `docs/SANPO_CURRENT_STATUS.md` | `idea.md`、`CHANGELOG.md` |
+| 研究阶段、冻结强度、失败学习、规则质疑和证据复用 | `docs/RESEARCH_GOVERNANCE.md` | 单轮 prereg、日期化结果、旧 handoff |
 | 端到端自主工作流与禁止人工前置条件 | `docs/AI_REVIEW_GOVERNANCE.md` | 日期化 snapshot、旧 handoff、历史实验合同 |
 | 当前操作协议与安全门 | `docs/README.md` 标为 `current` 的对应文件 | 日期化 snapshot |
 | 近期工程改动与验证 | `DEVELOPMENT_LOG.md` | README、CHANGELOG |
@@ -22,7 +23,7 @@
 | 日期化实验、审计与研究结论 | `docs/*_YYYY-MM-DD.*` 或 `docs/research/` | current 协议 |
 | 任务断点与工作区现场 | `artifacts.local/work/codex-handoffs/` | Git 提交文档 |
 
-发生冲突时，以可复现的代码/门禁报告为事实基础；再以对应 `current` 协议为规则，以当前状态文档为操作摘要。`AI_REVIEW_GOVERNANCE.md` 覆盖旧 current/snapshot/handoff 中任何人工采集、标注、复核、仲裁或验收步骤；日期化快照只说明当时结论，不具有当前执行 authority。
+发生冲突时，以可复现的代码/门禁报告为事实基础；再以对应 `current` 协议为规则，以当前状态文档为操作摘要。研究阶段和证据传播以 `RESEARCH_GOVERNANCE.md` 为上位规则；领域协议可以更严格，但必须说明阶段、依据和最小 failure scope。`AI_REVIEW_GOVERNANCE.md` 覆盖旧 current/snapshot/handoff 中任何人工采集、标注、复核、仲裁或验收步骤；日期化快照只说明当时结论，不具有当前执行 authority。
 
 ## 更新规则
 
@@ -47,6 +48,7 @@
 | 小范围代码/文档修改 | 相关 current 文档或 `DEVELOPMENT_LOG.md` 二选一，按职责更新 |
 | 发布、演示或用户可见变化 | README + CHANGELOG + 发布验证文档 |
 | 研究实验 | 日期化 snapshot + 简短开发日志链接；不改 README/CHANGELOG，除非结论改变当前状态 |
+| 新建或实质修订研究协议 | 使用 `RESEARCH_PROTOCOL_TEMPLATE.md`，生成机器 contract 并运行 `scripts/validate_research_protocol.py` |
 | 多阶段或跨窗口任务 | 遵循 `AGENTS.md` 的本地 handoff 规则 |
 | 新协议、门禁或不可逆决定 | current 协议；必要时新增 `docs/decisions/ADR-XXXX-*.md` 并链接到 `docs/README.md` |
 
