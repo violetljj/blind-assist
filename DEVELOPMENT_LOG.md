@@ -13,6 +13,13 @@
   anomalous black-box execution, resource mismatch, I/O amplification and
   repeated failure trigger diagnosis and must leave a durable prevention
   mechanism rather than only a conversational postmortem.
+- violjjet: Added a mechanical host long-run gate:
+  `validate_host_research_preflight.py` rejects unbound runner hashes,
+  non-representative or unbounded pilots, missing progress/terminal contracts
+  and incomplete formal one-shot declarations; `run_guarded_host_research.ps1`
+  also checks live RAM/VRAM, injects the receipt-selected worker count, attaches
+  monitoring and refuses to treat exit code 0 without progress/success evidence
+  as completion. Existing claimed R0 remains untouched.
 ## 2026-07-26
 - 2026-07-26 violjjet: [R0 review](docs/research/rcle/RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-26.md) PASS; 18 tests; lock `0d833b83…e2387`; formal TUM/RGB not run or authorized.
 - 时间：2026-07-26；执行者：violjjet。完成 [PB-H1 role proxy R0](docs/research/rcle/RCLE_PHASE_B_PB_H1_ROLE_PROXY_R0_RESULT_2026-07-26.md)：实现 `R·X` 对 `R·X+t` 的 pose+depth radial expansion/parallax，受控纯旋转/横移/同速前向接近六项物理检查全部通过；固定 burned `rgbd_bonn_crowd2:0` 的 `294/294` pair 可评价。结论为旧 raw-speed gate 因果错位，同时 absolute radial aggregate 单独也不是 approach 判据；result SHA `50bc54d0…3de7` 且实现/输入哈希复验 `VALID`，下一步仅值得审计 TUM `fr2/rpy` source-native geometry。
@@ -1379,12 +1386,3 @@
 - V13 为 `15 gate / 14 pass / CONDITIONAL_RESEARCH_GO`，新增 gate 仅获 `source-motion-stratification-only`；`device_metric_geometry_admission` 仍是唯一失败，`production_authority=false`。详细协议、CI、分母和证据见 `docs/research/ustrf-sc/USTRF_SC_RESEARCH_METRICS_2026-07-20.md`。
 - GPU 调度改为风险分级：已稳定的同类 bounded 配置可按显存、温度和系统余量灵活选择 batch/规模；新型重负载或长跑才要求先做可停止 pilot、守护/分片 receipt。曾两次蓝屏的 8,580 帧、`batch=64/imgsz=320/FP16` 旧入口组合仍禁止复用。
 - 验证：22 个 USTRF Python test 文件共 60 tests 通过；46 个 Python 文件 `py_compile` 与 PowerShell guard 语法检查通过；JDK 17 下 `:core:ustrf:test`、`:ustrf-shadow-benchmark` Kotlin/AndroidTest 编译和 `:device-benchmark:compileDebugKotlin` 通过；文档索引与仓库卫生检查通过。
-
-## 2026-07-20：USTRF-SC REveL 8/32 帧 crop/tiling 配对 canary
-
-- 执行者：violjjet
-- 范围：为独立 REveL YOLO11n 公共 RGB detector 增加显式选帧合同、固定全帧 + 四角 crop 推理、跨 view NMS、view 级逐帧收据、前台 GPU 守护参数和 paired reporter；不修改正式 App、默认 YOLO、risk/feedback、模型权重、设备门或生产路径。
-- 合同：8 帧 canary 从 512 r2 的 8 个不同 small-miss segment 冻结；候选每帧为全图 + 四个 60% 角落 crop，共 5 views，映射回原图后固定 NMS IoU `.5`。只有 small 恢复不少于 2、无基线 GT 回退、F1 不降、FP 不超过 6 且系统收据全绿，才允许进入已冻结的 32 帧压力集。
-- 结果：full-frame 精确复现 `TP/FP/FN=6/4/8`、F1 `.5000`、small `0/8`；tiling 为 `10/14/4`、F1 `.5263`、small `4/8`，medium/large 仍 `3/3`。逐 GT 为 recovered `4`、regressed `0`，但 FP `4→14`，违反 canary 上限；决定固定为 `stop_after_8_frame_canary`，32 帧未运行且未放宽门槛。
-- 系统：两臂均以前台 PowerShell 守护完成；full/tiling 最高温度 `47/50°C`、整卡显存 `1276/1508MB`、功耗 `20.18/18.08W`，0 相关 System event、无 stop reason。GPU 恢复路径有效，失败属于检测质量权衡。
-- 验证与证据：benchmark/tiling/contract/comparator 共 15 个 CPU tests 通过，PowerShell guard 解析通过；机器报告位于 `artifacts.local/evidence/ustrf-sc/revel-yolo11n-crop-tiling-pair-20260720-r1/`，paired report SHA-256 `f38cf353f13199ba9fd4f9167083beee26285ecdc7b10c3e392aa8a441ad01f7`。详细边界见 `docs/research/ustrf-sc/USTRF_SC_REVEL_CROP_TILING_PAIRED_2026-07-20.md`。

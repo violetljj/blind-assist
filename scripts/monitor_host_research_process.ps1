@@ -9,6 +9,14 @@ param(
 
     [string]$AttemptBaseName = "formal_run_r0",
 
+    [string]$ClaimPath = "",
+
+    [string]$SuccessPath = "",
+
+    [string]$FailurePath = "",
+
+    [string]$ProgressPath = "",
+
     [string]$MonitorDirectory = (
         "artifacts.local\evidence\host_process_monitors"
     ),
@@ -30,17 +38,17 @@ function Get-Phase {
     param(
         [bool]$ProcessExists,
         [string]$EvidencePath,
-        [string]$BaseName
+        [string]$BaseName,
+        [string]$ObservedClaim,
+        [string]$ObservedSuccess,
+        [string]$ObservedFailure,
+        [string]$RunnerPhase
     )
 
-    if (Test-Path -LiteralPath (
-        Join-Path $EvidencePath $BaseName
-    )) {
+    if (Test-Path -LiteralPath $ObservedSuccess) {
         return "complete"
     }
-    if (Test-Path -LiteralPath (
-        Join-Path $EvidencePath "$BaseName.failure.json"
-    )) {
+    if (Test-Path -LiteralPath $ObservedFailure) {
         return "failed"
     }
     $temporary = Get-ChildItem `
@@ -56,17 +64,54 @@ function Get-Phase {
     if (-not $ProcessExists) {
         return "exited_without_receipt"
     }
-    if (Test-Path -LiteralPath (
-        Join-Path $EvidencePath "$BaseName.claim.json"
-    )) {
+    if (-not [string]::IsNullOrWhiteSpace($RunnerPhase)) {
+        return "runner_$RunnerPhase"
+    }
+    if (Test-Path -LiteralPath $ObservedClaim) {
         return "producer"
     }
     return "pre_claim"
 }
 
-$resolvedEvidence = (
-    Resolve-Path -LiteralPath $EvidenceDirectory
-).Path
+function Get-RunnerProgressValue {
+    param(
+        [object]$Progress,
+        [string]$Name
+    )
+
+    if ($null -eq $Progress) {
+        return $null
+    }
+    $property = $Progress.PSObject.Properties[$Name]
+    if ($null -eq $property) {
+        return $null
+    }
+    return $property.Value
+}
+
+$resolvedEvidence = [IO.Path]::GetFullPath(
+    (Join-Path (Get-Location) $EvidenceDirectory)
+)
+$resolvedClaim = if ([string]::IsNullOrWhiteSpace($ClaimPath)) {
+    Join-Path $resolvedEvidence "$AttemptBaseName.claim.json"
+} else {
+    [IO.Path]::GetFullPath((Join-Path (Get-Location) $ClaimPath))
+}
+$resolvedSuccess = if ([string]::IsNullOrWhiteSpace($SuccessPath)) {
+    Join-Path $resolvedEvidence $AttemptBaseName
+} else {
+    [IO.Path]::GetFullPath((Join-Path (Get-Location) $SuccessPath))
+}
+$resolvedFailure = if ([string]::IsNullOrWhiteSpace($FailurePath)) {
+    Join-Path $resolvedEvidence "$AttemptBaseName.failure.json"
+} else {
+    [IO.Path]::GetFullPath((Join-Path (Get-Location) $FailurePath))
+}
+$resolvedProgress = if ([string]::IsNullOrWhiteSpace($ProgressPath)) {
+    ""
+} else {
+    [IO.Path]::GetFullPath((Join-Path (Get-Location) $ProgressPath))
+}
 $resolvedMonitor = [IO.Path]::GetFullPath(
     (Join-Path (Get-Location) $MonitorDirectory)
 )
@@ -89,10 +134,37 @@ while ($true) {
         -Filter "ProcessId=$ProcessId" `
         -ErrorAction SilentlyContinue
     $exists = $null -ne $process
+    $runnerProgress = $null
+    if (
+        -not [string]::IsNullOrWhiteSpace($resolvedProgress) -and
+        (Test-Path -LiteralPath $resolvedProgress -PathType Leaf)
+    ) {
+        try {
+            $runnerProgress = Get-Content `
+                -LiteralPath $resolvedProgress `
+                -Raw `
+                -Encoding UTF8 |
+                ConvertFrom-Json
+        } catch {
+            $runnerProgress = $null
+        }
+    }
+    $runnerPhaseValue = Get-RunnerProgressValue `
+        -Progress $runnerProgress `
+        -Name "phase"
+    $runnerPhase = if ($null -ne $runnerPhaseValue) {
+        [string]$runnerPhaseValue
+    } else {
+        ""
+    }
     $phase = Get-Phase `
         -ProcessExists $exists `
         -EvidencePath $resolvedEvidence `
-        -BaseName $AttemptBaseName
+        -BaseName $AttemptBaseName `
+        -ObservedClaim $resolvedClaim `
+        -ObservedSuccess $resolvedSuccess `
+        -ObservedFailure $resolvedFailure `
+        -RunnerPhase $runnerPhase
 
     $cpuSeconds = $null
     $readBytes = $null
@@ -112,6 +184,28 @@ while ($true) {
     $cpuCoreEquivalent = $null
     $readMiBPerSecond = $null
     $writeMiBPerSecond = $null
+    $completedValue = Get-RunnerProgressValue `
+        -Progress $runnerProgress `
+        -Name "completed_units"
+    $totalValue = Get-RunnerProgressValue `
+        -Progress $runnerProgress `
+        -Name "total_units"
+    $completedUnits = if ($null -ne $completedValue) {
+        [double]$completedValue
+    } else {
+        $null
+    }
+    $totalUnits = if ($null -ne $totalValue) {
+        [double]$totalValue
+    } else {
+        $null
+    }
+    $unitProgressed = (
+        $null -ne $completedUnits -and
+        $null -ne $previous -and
+        $null -ne $previous.completed_units -and
+        $completedUnits -gt [double]$previous.completed_units
+    )
     if ($exists -and $null -ne $previous) {
         $wallSeconds = (
             $now - [datetime]$previous.timestamp
@@ -142,6 +236,7 @@ while ($true) {
     } elseif ($null -eq $previous) {
         "sampling"
     } elseif (
+        $unitProgressed -or
         $cpuCoreEquivalent -ge 0.05 -or
         $readMiBPerSecond -ge 1.0 -or
         $writeMiBPerSecond -ge 1.0
@@ -252,12 +347,34 @@ while ($true) {
         consecutive_low_activity_windows = $silentWindows
         bottleneck_hint = $bottleneckHint
         action_hint = $actionHint
-        progress_fraction = $null
-        eta_seconds = $null
-        progress_note = (
-            "Exact progress and ETA are unavailable because the observed " +
-            "runner does not publish completed/total units."
-        )
+        completed_units = $completedUnits
+        total_units = $totalUnits
+        progress_fraction = if (
+            $null -ne $completedUnits -and
+            $null -ne $totalUnits -and
+            $totalUnits -gt 0
+        ) {
+            [Math]::Round($completedUnits / $totalUnits, 6)
+        } else {
+            $null
+        }
+        throughput = Get-RunnerProgressValue `
+            -Progress $runnerProgress `
+            -Name "throughput"
+        eta_seconds = Get-RunnerProgressValue `
+            -Progress $runnerProgress `
+            -Name "eta_seconds"
+        last_progress_at = Get-RunnerProgressValue `
+            -Progress $runnerProgress `
+            -Name "last_progress_at"
+        progress_note = if ($null -ne $runnerProgress) {
+            "Runner-published progress is available."
+        } else {
+            (
+                "Exact progress and ETA are unavailable because the observed " +
+                "runner does not publish completed/total units."
+            )
+        }
         evidence_directory = $resolvedEvidence
     }
     $json = $record | ConvertTo-Json -Compress
@@ -291,6 +408,7 @@ while ($true) {
             cpu_seconds = $cpuSeconds
             read_bytes = $readBytes
             write_bytes = $writeBytes
+            completed_units = $completedUnits
         }
     } else {
         $previous = $null

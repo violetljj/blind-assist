@@ -70,6 +70,9 @@
 
 - 新增长任务必须发布 `phase`、`completed/total`、窗口吞吐、ETA、
   `last_progress_at` 和 terminal state。
+- 预计超过 3 分钟或正式 one-shot 的新 host 任务必须通过
+  `scripts/run_guarded_host_research.ps1`；缺少 hash 绑定 pilot receipt、进度
+  合同或启动时 RAM/VRAM 余量时，runner 不得创建。
 - heartbeat 不得泄露被冻结协议禁止提前读取的 outcome。
 - watchdog 结合 heartbeat、CPU 与 I/O 判断疑似停滞；单独依赖 PID 或总时长都
   不够。

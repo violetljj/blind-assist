@@ -70,6 +70,7 @@ run_depth_fusion_benchmark.ps1
 run_detector_ab_device_benchmark.ps1
 run_device_regression.ps1
 run_guarded_revel_yolo_smoke.ps1
+run_guarded_host_research.ps1
 run_host_research.ps1
 monitor_host_research_process.ps1
 run_public_video_campaign_tests.py
@@ -153,6 +154,8 @@ test_screen_sanpo_mask_windows.py
 test_select_sanpo_sequence_by_geometry.py
 test_train_export_sanpo_segmentation.py
 test_train_sanpo_segmentation_protocol.py
+test_run_guarded_host_research.ps1
+test_validate_host_research_preflight.py
 test_validate_explicit_route_intent_episode.py
 test_validate_research_protocol.py
 test_validate_route_conditioned_event_truth.py
@@ -165,6 +168,7 @@ test_validate_ustrf_sc_device_metric_geometry.py
 train_export_sanpo_segmentation.py
 train_sanpo_segmentation_keras_torch.py
 validate_explicit_route_intent_episode.py
+validate_host_research_preflight.py
 validate_research_protocol.py
 validate_sanpo_counterfactual_episodes.py
 validate_ustrf_sc_capture_frame_ledger.py

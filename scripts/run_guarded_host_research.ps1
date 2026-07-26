@@ -1,0 +1,287 @@
+[CmdletBinding()]
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$PreflightReceipt,
+
+    [Parameter(Mandatory = $true)]
+    [string]$Script,
+
+    [string]$RepoRoot = (Get-Location).Path,
+
+    [string]$Python = (
+        "E:\codex-tools\tools\python-3.11-blindassist\python.exe"
+    ),
+
+    [ValidateRange(1, 3600)]
+    [int]$MonitorPollSeconds = 10,
+
+    [Parameter(ValueFromRemainingArguments = $true)]
+    [string[]]$RunnerArguments
+)
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "Stop"
+
+$resolvedRepo = (Resolve-Path -LiteralPath $RepoRoot).Path
+$resolvedReceipt = (Resolve-Path -LiteralPath $PreflightReceipt).Path
+$resolvedScript = (Resolve-Path -LiteralPath $Script).Path
+$resolvedPython = (Resolve-Path -LiteralPath $Python).Path
+$validator = Join-Path `
+    $resolvedRepo `
+    "scripts\validate_host_research_preflight.py"
+$monitor = Join-Path `
+    $resolvedRepo `
+    "scripts\monitor_host_research_process.ps1"
+
+$validationOutput = & $resolvedPython `
+    $validator `
+    --repo-root $resolvedRepo `
+    --receipt $resolvedReceipt `
+    --expected-script $resolvedScript
+$validationExitCode = $LASTEXITCODE
+if ($validationExitCode -ne 0) {
+    throw "PERFORMANCE_NOT_QUALIFIED: $validationOutput"
+}
+
+$receipt = Get-Content `
+    -LiteralPath $resolvedReceipt `
+    -Raw `
+    -Encoding UTF8 |
+    ConvertFrom-Json
+$successPath = Join-Path $resolvedRepo $receipt.terminal.success_path
+$failurePath = Join-Path $resolvedRepo $receipt.terminal.failure_path
+$progressPath = Join-Path $resolvedRepo $receipt.progress.path
+$evidenceDirectory = Split-Path -Parent $successPath
+
+if (
+    (Test-Path -LiteralPath $successPath) -or
+    (Test-Path -LiteralPath $failurePath)
+) {
+    throw (
+        "TERMINAL_PATH_ALREADY_EXISTS: success={0}; failure={1}" -f
+        $successPath,
+        $failurePath
+    )
+}
+if ($receipt.execution_class -eq "formal") {
+    $claimPath = Join-Path $resolvedRepo $receipt.formal.claim_path
+    if (Test-Path -LiteralPath $claimPath) {
+        throw "FORMAL_CLAIM_ALREADY_EXISTS: $claimPath"
+    }
+} else {
+    $claimPath = ""
+}
+
+if (
+    $receipt.scheduler.inject_workers -eq $true -and
+    $RunnerArguments -contains "--workers"
+) {
+    throw (
+        "Pass worker count through the preflight receipt, not RunnerArguments."
+    )
+}
+
+$operatingSystem = Get-CimInstance Win32_OperatingSystem
+$availableMemoryGiB = (
+    [double]$operatingSystem.FreePhysicalMemory / 1MB
+)
+$requiredMemoryGiB = (
+    [double]$receipt.scheduler.reserve_memory_gib +
+    (
+        [int]$receipt.scheduler.workers *
+        [double]$receipt.scheduler.estimated_gib_per_worker
+    )
+)
+if ($availableMemoryGiB -lt $requiredMemoryGiB) {
+    throw (
+        "HOST_CAPACITY_NOT_AVAILABLE: available RAM {0:N2} GiB; " +
+        "receipt requires {1:N2} GiB." -f
+        $availableMemoryGiB,
+        $requiredMemoryGiB
+    )
+}
+
+$battery = Get-CimInstance Win32_Battery -ErrorAction SilentlyContinue
+$onAcPower = (
+    $null -eq $battery -or
+    $battery.BatteryStatus -in 2, 3, 6, 7, 8, 9, 11
+)
+if ($receipt.scheduler.requires_ac_power -eq $true -and -not $onAcPower) {
+    throw "HOST_CAPACITY_NOT_AVAILABLE: AC power is required."
+}
+
+if ($receipt.scheduler.backend -in @("cuda", "mixed")) {
+    $nvidiaSmi = Get-Command nvidia-smi -ErrorAction SilentlyContinue
+    if ($null -eq $nvidiaSmi) {
+        throw "HOST_CAPACITY_NOT_AVAILABLE: nvidia-smi is unavailable."
+    }
+    $freeVramMiB = & $nvidiaSmi.Source `
+        --query-gpu=memory.free `
+        --format=csv,noheader,nounits |
+        Select-Object -First 1
+    if ($LASTEXITCODE -ne 0 -or $null -eq $freeVramMiB) {
+        throw "HOST_CAPACITY_NOT_AVAILABLE: cannot query free VRAM."
+    }
+    $freeVramGiB = [double]$freeVramMiB / 1024.0
+    $minimumVramGiB = [double](
+        $receipt.scheduler.minimum_free_vram_gib
+    )
+    if ($freeVramGiB -lt $minimumVramGiB) {
+        throw (
+            "HOST_CAPACITY_NOT_AVAILABLE: free VRAM {0:N2} GiB; " +
+            "receipt requires {1:N2} GiB." -f
+            $freeVramGiB,
+            $minimumVramGiB
+        )
+    }
+}
+
+$processInfo = [Diagnostics.ProcessStartInfo]::new()
+$processInfo.FileName = $resolvedPython
+$processInfo.WorkingDirectory = $resolvedRepo
+$processInfo.UseShellExecute = $false
+$processInfo.RedirectStandardOutput = $true
+$processInfo.RedirectStandardError = $true
+$processInfo.CreateNoWindow = $true
+$processInfo.ArgumentList.Add($resolvedScript)
+foreach ($argument in $RunnerArguments) {
+    $processInfo.ArgumentList.Add($argument)
+}
+if ($receipt.scheduler.inject_workers -eq $true) {
+    $processInfo.ArgumentList.Add("--workers")
+    $processInfo.ArgumentList.Add(
+        ([int]$receipt.scheduler.workers).ToString()
+    )
+}
+
+if ($receipt.scheduler.backend -eq "cpu_process_pool") {
+    foreach ($name in @(
+        "OMP_NUM_THREADS",
+        "OPENBLAS_NUM_THREADS",
+        "MKL_NUM_THREADS",
+        "NUMEXPR_NUM_THREADS",
+        "VECLIB_MAXIMUM_THREADS",
+        "BLIS_NUM_THREADS"
+    )) {
+        $processInfo.Environment[$name] = "1"
+    }
+}
+
+$process = [Diagnostics.Process]::new()
+$process.StartInfo = $processInfo
+if (-not $process.Start()) {
+    throw "RUNNER_START_FAILED"
+}
+$stdoutTask = $process.StandardOutput.ReadToEndAsync()
+$stderrTask = $process.StandardError.ReadToEndAsync()
+
+$monitorParent = Join-Path `
+    $resolvedRepo `
+    "artifacts.local\evidence\host_guarded_runs"
+$monitorRoot = Join-Path `
+    $monitorParent `
+    ("{0}-pid-{1}" -f $receipt.task_id, $process.Id)
+New-Item -ItemType Directory -Path $monitorRoot -Force |
+    Out-Null
+
+$monitorInfo = [Diagnostics.ProcessStartInfo]::new()
+$monitorInfo.FileName = (Get-Command pwsh).Source
+$monitorInfo.WorkingDirectory = $resolvedRepo
+$monitorInfo.UseShellExecute = $false
+$monitorInfo.CreateNoWindow = $true
+foreach ($argument in @(
+    "-NoProfile",
+    "-File",
+    $monitor,
+    "-ProcessId",
+    $process.Id.ToString(),
+    "-EvidenceDirectory",
+    $evidenceDirectory,
+    "-AttemptBaseName",
+    $receipt.task_id,
+    "-SuccessPath",
+    $successPath,
+    "-FailurePath",
+    $failurePath,
+    "-ProgressPath",
+    $progressPath,
+    "-MonitorDirectory",
+    $monitorParent,
+    "-PollSeconds",
+    $MonitorPollSeconds.ToString()
+)) {
+    $monitorInfo.ArgumentList.Add([string]$argument)
+}
+if (-not [string]::IsNullOrWhiteSpace($claimPath)) {
+    $monitorInfo.ArgumentList.Add("-ClaimPath")
+    $monitorInfo.ArgumentList.Add($claimPath)
+}
+$monitorProcess = [Diagnostics.Process]::Start($monitorInfo)
+
+$process.WaitForExit()
+$stdout = $stdoutTask.GetAwaiter().GetResult()
+$stderr = $stderrTask.GetAwaiter().GetResult()
+Set-Content `
+    -LiteralPath (Join-Path $monitorRoot "runner.stdout.log") `
+    -Value $stdout `
+    -Encoding UTF8
+Set-Content `
+    -LiteralPath (Join-Path $monitorRoot "runner.stderr.log") `
+    -Value $stderr `
+    -Encoding UTF8
+
+if ($null -ne $monitorProcess) {
+    [void]$monitorProcess.WaitForExit(
+        [Math]::Max(5000, ($MonitorPollSeconds + 2) * 1000)
+    )
+    if (-not $monitorProcess.HasExited) {
+        $monitorProcess.Kill()
+        $monitorProcess.WaitForExit()
+    }
+}
+
+$successExists = Test-Path -LiteralPath $successPath
+$failureExists = Test-Path -LiteralPath $failurePath
+$progressExists = Test-Path -LiteralPath $progressPath -PathType Leaf
+$terminalStatus = if (
+    $process.ExitCode -eq 0 -and
+    $successExists -and
+    -not $failureExists -and
+    $progressExists
+) {
+    "COMPLETE"
+} elseif (-not $progressExists) {
+    "PROGRESS_CONTRACT_VIOLATION"
+} elseif ($failureExists) {
+    "FAILED_WITH_RECEIPT"
+} elseif ($process.ExitCode -ne 0) {
+    "FAILED_WITHOUT_RECEIPT"
+} else {
+    "TERMINAL_CONTRACT_VIOLATION"
+}
+
+$summary = [ordered]@{
+    schema_version = "blindassist.host_guarded_run.v1"
+    task_id = $receipt.task_id
+    execution_class = $receipt.execution_class
+    process_id = $process.Id
+    exit_code = $process.ExitCode
+    status = $terminalStatus
+    success_path_exists = $successExists
+    failure_path_exists = $failureExists
+    progress_path_exists = $progressExists
+    preflight_receipt = $resolvedReceipt
+    implementation_sha256 = $receipt.implementation.sha256
+    monitor_directory = $monitorRoot
+}
+$summaryPath = Join-Path $monitorRoot "guarded_run_summary.json"
+Set-Content `
+    -LiteralPath $summaryPath `
+    -Value ($summary | ConvertTo-Json) `
+    -Encoding UTF8
+Write-Output ($summary | ConvertTo-Json -Compress)
+
+if ($terminalStatus -ne "COMPLETE") {
+    exit 3
+}
+exit 0

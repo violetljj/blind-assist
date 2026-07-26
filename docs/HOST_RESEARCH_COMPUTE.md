@@ -95,6 +95,97 @@ pwsh -NoProfile -File scripts/run_host_research.ps1 `
 
 启动器只解析资源并设置线程环境，不改变 seed、batch、阈值、数据、科学协议或输出路径。
 
+## 长任务统一准入
+
+`scripts/run_host_research.ps1` 适合可逆开发循环中的 CPU 进程池任务。预计超过
+3 分钟或属于正式 one-shot 的新任务必须改用：
+
+```powershell
+pwsh -NoProfile -File scripts/run_guarded_host_research.ps1 `
+  -PreflightReceipt artifacts.local/evidence/<task>/preflight.json `
+  -Script scripts/<stable-runner>.py `
+  -- <runner arguments>
+```
+
+guarded launcher 在创建 runner 进程前调用
+`scripts/validate_host_research_preflight.py`。以下任一条件不满足时固定返回
+`PERFORMANCE_NOT_QUALIFIED`，runner 不会启动：
+
+- receipt 绑定当前 runner 相对路径与 SHA-256；
+- pilot 使用与正式输入相同的数据格式和访问机制；
+- 至少有 2 个实际进度样本，且 projected/max wall time 有界；
+- 已比较调度方案并确认科学输出等价；
+- progress 合同包含 phase、completed/total、throughput、ETA、最后推进时间和状态；
+- success/failure/progress 路径均位于 `artifacts.local/`；
+- 当前可用 RAM 满足 `reserve + workers × estimated GiB/worker`；
+- CUDA/mixed 任务的当前空闲显存满足 receipt 下限；
+- formal 任务声明 one-shot、runner-only claim、activation authority 和互异的
+  claim/output/failure 路径。
+
+收据的最小结构为：
+
+```json
+{
+  "schema_version": "blindassist.host_research_preflight.v1",
+  "task_id": "DOMAIN-LONG-R0",
+  "execution_class": "long",
+  "implementation": {
+    "script": "scripts/<stable-runner>.py",
+    "sha256": "<64 lowercase hex>"
+  },
+  "workload": {
+    "class": "cpu_data_parallel",
+    "real_data_mechanics_match": true,
+    "input_identity": "manifest-sha256:<64 lowercase hex>"
+  },
+  "pilot": {
+    "representative_units": 20,
+    "wall_seconds": 4.0,
+    "projected_full_units": 1000,
+    "projected_full_wall_seconds": 200.0,
+    "maximum_expected_wall_seconds": 300.0,
+    "same_access_mechanics": true,
+    "output_equivalence": "PASS",
+    "progress_samples": 2
+  },
+  "scheduler": {
+    "backend": "cpu_process_pool",
+    "workers": 12,
+    "reason": "Measured throughput choice",
+    "comparison_performed": true,
+    "scientific_parameters_unchanged": true,
+    "estimated_gib_per_worker": 0.3,
+    "reserve_memory_gib": 2.5,
+    "requires_ac_power": true,
+    "inject_workers": true
+  },
+  "progress": {
+    "path": "artifacts.local/evidence/task/progress.json",
+    "fields": [
+      "phase",
+      "completed_units",
+      "total_units",
+      "throughput",
+      "eta_seconds",
+      "last_progress_at",
+      "status"
+    ],
+    "update_interval_seconds": 30,
+    "verified_in_pilot": true
+  },
+  "terminal": {
+    "success_path": "artifacts.local/evidence/task/result.json",
+    "failure_path": "artifacts.local/evidence/task/failure.json"
+  }
+}
+```
+
+`formal` 在此基础上增加 `formal.one_shot`、
+`formal.claim_created_by_runner_only`、`formal.claim_path`、
+`formal.output_path`、`formal.failure_receipt_path` 和
+`formal.activation_authority`。门禁验证性能准备度，不自行授予科学或正式执行
+权限；runner 仍必须验证自己的 activation lock 与协议。
+
 ## GPU 实测与调度
 
 当前 90 W ceiling 档位下，MobileNetV3Small + LR-ASPP、mixed FP16、256×256 合成 device tensor 的短测为：
@@ -154,6 +245,11 @@ pwsh -NoProfile -File scripts/monitor_host_research_process.ps1 `
 活性；runner 未发布完成单元数时，百分比和 ETA 必须留空，不能用 CPU 时间冒充
 算法进度。监控器同时给出 `bottleneck_hint` 与 `action_hint`；它们是资源诊断，
 不是算法结果，也不能授权改变已经锁定的正式 attempt。
+
+由 guarded launcher 启动时，监控器还会读取 runner 的 progress sidecar，将
+completed/total、throughput、ETA 和 last-progress 合并到外部 OS 遥测中。runner
+退出但缺少 progress 或 success/failure 契约时，guarded summary 明确返回合同
+违规，不把 exit code 0 单独当作成功。
 
 压缩 tar（尤其 `.tgz`）不得作为逐样本随机访问的数据层。正式 claim 前应把所需
 成员顺序解压到 hash/manifest 绑定的本地缓存，或单次顺序扫描并建立不可变缓存。

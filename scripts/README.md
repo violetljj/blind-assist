@@ -5,7 +5,9 @@
 ## 稳定入口
 
 - `run_host_research.ps1`：电脑端 CPU 进程池研究启动器；按本机实测解析 interactive/balanced/throughput 的 8/12/16 worker，保留内存与系统余量并限制嵌套数值线程。只调度 host research，不改变科学参数，也不适用于 Android/边缘端。
+- `run_guarded_host_research.ps1`：超过 3 分钟或正式 one-shot 的统一电脑端入口；先校验 hash 绑定性能收据和当前 RAM/VRAM，再启动 runner、注入已标定 worker、附加监控并核对 progress/success/failure 终态。
 - `monitor_host_research_process.ps1`：电脑端长任务外部监控器；把阶段、CPU/I/O 推进、内存、瓶颈提示、建议动作、疑似停滞和终态写入独立 JSONL/最新状态文件。若 runner 本身不发布完成单元数，它会明确将百分比与 ETA 留空。
+- `validate_host_research_preflight.py`：校验长任务性能准入收据；缺少真实访问机制 pilot、有界耗时、结果等价、进度字段、资源预算或 formal one-shot 合同时返回 `PERFORMANCE_NOT_QUALIFIED`。
 - `run_research_contract_tests.py`：CI 与本地共用的无 GPU、无设备研究合同回归。
 - `validate_research_protocol.py`：渐进式研究协议和 closure-scope overlay validator；区分 discovery warning 与 confirmation error，校验 policy 最低诚信内核、可复算的仓库 identity/evidence JSON、可执行 GATE、pending outcome、closure 引用/依赖和 question retirement，并拒绝结果后原地改门、INVALID 扩大关闭科学问题及无理由 Cartesian sweep。
 - `evaluate_ustrf_sc_u0_teacher_upper_bound.py`：USTRF U0 六臂（四个正式比较臂 + uniform/shuffled route 负控）LOSO 事件评价；会重算完整 route-conditioned GPT/Codex 共识真值门并拒绝 blind/future/hash 漂移。
@@ -51,6 +53,7 @@
 
 - 从仓库根目录执行；通用 Python 优先使用 `E:\codex-tools\bin\blindassist-python.cmd`。
 - 电脑端多进程算法研究优先通过 `run_host_research.ps1` 选择 `interactive`、`balanced` 或 `throughput`；具体规则见 [HOST_RESEARCH_COMPUTE.md](../docs/HOST_RESEARCH_COMPUTE.md)。
+- 上述直接入口仅用于可逆短开发循环；预计超过 3 分钟或正式 one-shot 的新任务必须通过 `run_guarded_host_research.ps1`。
 - 超过数分钟的电脑端研究任务必须有可独立读取的进度状态；对当前不支持进度协议的冻结 runner，可用 `monitor_host_research_process.ps1` 监测既有 PID，不得用重启来换取可见性。
 - 下载、数据集、benchmark、训练输出和临时文件进入忽略的 `artifacts.local/`。
 - 需要联网、GPU 或 ADB 的脚本必须显式说明；设备脚本运行前确认目标设备与 module。
