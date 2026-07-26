@@ -1,0 +1,98 @@
+{
+  "schema_version": "rcle.real_data_geometry_canary.implementation_lock.v1",
+  "protocol_id": "RCLE-PHASE-B-REAL-DATA-GEOMETRY-CANARY-R0",
+  "implementation_review_status": "PASS",
+  "formal_execution_authorized": false,
+  "canonical_execution_status": "NOT_RUN",
+  "reviewed_at_utc": "2026-07-26T16:50:00Z",
+  "runtime": {
+    "python": "3.11.9",
+    "numpy": "2.1.3",
+    "pillow": "12.2.0",
+    "float_mode": "IEEE-754 float64"
+  },
+  "pair_identity_fields": [
+    "window_index",
+    "pair_index",
+    "previous_rgb_timestamp",
+    "current_rgb_timestamp",
+    "dt_s",
+    "previous_depth_timestamp",
+    "current_depth_timestamp"
+  ],
+  "valid_depth_fraction_semantics": "fraction of the fixed source-depth raster with nonzero registered depth before PB-H1 projection visibility filtering",
+  "canonical_output_files": [
+    "pair_ledger.jsonl",
+    "window_summary.json",
+    "receipt.json",
+    "validation.json"
+  ],
+  "attempt_control": {
+    "activation_lock_required": true,
+    "claim_create_mode": "O_EXCL_BEFORE_ARCHIVE_DECODE",
+    "claim_survives_success_failure_or_interruption": true,
+    "failure_receipt_preserved": true,
+    "same_r0_attempt_reuse_allowed": false
+  },
+  "fixture_review": {
+    "test_count": 18,
+    "result": "PASS",
+    "formal_archive_read": false,
+    "canonical_output_created": false,
+    "rcle_rgb_algorithm_outcome_read": false
+  },
+  "control_files": [
+    {
+      "path": "docs/research/rcle/RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_CONTRACT_2026-07-26.json",
+      "sha256": "48f8b901be16d880f38eabafdfaa8f55f24fdfc6c16e039b3be876649e65453c"
+    },
+    {
+      "path": "docs/research/rcle/RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_PREREGISTRATION_2026-07-26.md",
+      "sha256": "bd6c4446f4f714cd150a6108deea9884701af68434a6def6aacd92cfca9f8156"
+    },
+    {
+      "path": "docs/research/rcle/RCLE_TUM_FR2_RPY_SOURCE_NATIVE_GEOMETRY_AUDIT_R0_CONTRACT_2026-07-26.json",
+      "sha256": "6a019c74261598b3d519bcc3101d82f2b75a7d9e762a21dc8d61b084d58132fe"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/pb_h1_role_proxy/geometry.py",
+      "sha256": "b399228e82e70dfa2e27ca1fe9b9831749f18c0aa87b31e6e60de32b62c12016"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_data_geometry_canary_r0/__init__.py",
+      "sha256": "8ba405d29b9bb8e69d84790aced54d76d476d041b0f4ea42953af4997158a356"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_data_geometry_canary_r0/README.md",
+      "sha256": "502a29c285aa550c9725a398fbe8c60dba4f7bf66ade1250934e6e5a46251bac"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_data_geometry_canary_r0/runtime_config_r0.json",
+      "sha256": "ca7ec9590569be80bdc0a3f9b1c803228d8e7ab2fb26b0e248625417345851b2"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_data_geometry_canary_r0/output_schema_r0.json",
+      "sha256": "e338cca7a4b049cd2a7c710f143450bd592a1d811906d15f10fb729c08650bb2"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_data_geometry_canary_r0/producer.py",
+      "sha256": "7597ca4aa666017028f717f69997b74cc2ca39af04facfc378e244dcc32d5d9b"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_data_geometry_canary_r0/validator.py",
+      "sha256": "e3213c6b02259e150a1b04a6cfd2c1bdcb26a8d96892119be8cdf3b56496d20c"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/run_real_data_geometry_canary_r0.py",
+      "sha256": "d809dab3f06f739e228a641df7d3d99ccaefd3bbecbf46fa86c18dc06898aa6d"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_real_data_geometry_canary_r0/__init__.py",
+      "sha256": "5aef6263d4b7c951a5083d767fa3c9a0aed92a4f1c945db3d05de63913e45530"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_real_data_geometry_canary_r0/test_canary.py",
+      "sha256": "0160e80c631c597ff913275a2a1f72997ae7d26ac8d13295be84daaaa7902a2b"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Egomotion-compensated looming research
 
-状态：`RCLE_PROGRESSIVE_DISCOVERY / PB_H1_SUPPORT_VALID`
+状态：`RCLE_GEOMETRY_CANARY_IMPLEMENTATION_REVIEW_PASS / FORMAL_NOT_AUTHORIZED`
 
 This module is an offline, research-only boundary for
 `EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R0`.
@@ -322,3 +322,11 @@ E:\codex-tools\bin\blindassist-python.cmd `
 
 结果为 `SUPPORT / VALID`；这只支持下一次 TUM `fr2/rpy`
 metadata/pose/depth geometry audit，不开放 algorithm canary 或 confirmation。
+
+## Real-data geometry canary R0
+
+`real_data_geometry_canary_r0/` 已完成版本隔离 producer、独立 validator、严格
+output schema、fixture/mutation tests 与 one-shot runner。实现锁
+`0d833b835d242468fe8c466414882044c3717e8f0b16d6d79a6b5f112e1e2387`
+通过 `13/13` exact hash review；正式 archive、output 与 claim 均未读取或创建。
+状态保持 `IMPLEMENTATION_REVIEW_PASS / FORMAL_EXECUTION_NOT_AUTHORIZED`。
