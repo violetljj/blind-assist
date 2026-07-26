@@ -2,7 +2,7 @@
 
 状态：current
 
-最后核验：2026-07-26
+最后核验：2026-07-27
 
 适用范围：BlindAssist 论文研究、毕业设计、院内演示与创新竞赛。
 
@@ -65,8 +65,12 @@ radial aggregate 单独也不能充当 approach gate。后续单来源
 已完成独立 F1 预注册：固定窗 `0/3/4/6` 和 `1196` 个 pair record，只检验
 producer/independent-validator 的身份、schema、弃权与 float64 parity。版本隔离
 实现及[独立实现审查](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-26.md)
-已 `PASS`，implementation lock `0d833b83…e2387`；正式 activation、TUM 四窗执行
-和 RCLE RGB algorithm 仍未授权。
+已 `PASS`，implementation lock `0d833b83…e2387`。随后绑定该 lock 的
+[唯一正式执行](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_RESULT_2026-07-27.md)
+已完成：producer 与独立 validator 各输出/复算 `1196` pair，全部 identity、
+schema、abstention、branch 与 float64 parity mismatch 为 `0`，终态
+`VALID_IMPLEMENTATION_DEBUGGED_GEOMETRY_INTERFACE_ONLY`。这只调通 geometry
+interface；RCLE RGB algorithm outcome 未读取，algorithm canary 仍未授权。
 
 Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固定旋转补偿、Sparse LK、局部仿射拟合和网格汇总，比较纯旋转泄漏与真实闭合保留。trial-level leakage error 和 closing error 是主判据；RSR/CRR 只作诊断比例。
 
@@ -156,7 +160,7 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 14. 用户基于多轮工作明确要求研究治理本身能够学习、质疑并进化。仓库已采用 Discovery/Canary/Development/Confirmation/Deployment 渐进冻结；每次失败必须形成 learning record，候选按因果差异、信息增益、可证伪性和成本排序，失败资产可降级为 regression/canary/counterexample/source characterization。B1A closure overlay 保持科学问题 `OPEN`，新的 [Progressive Discovery R0 contract](RCLE_PHASE_B_PROGRESSIVE_DISCOVERY_R0_CONTRACT_2026-07-26.json) 已成为当前 Phase B 边界。
 15. [PB-H1 role proxy R0](RCLE_PHASE_B_PB_H1_ROLE_PROXY_R0_RESULT_2026-07-26.md) 已用一个受控 fixture 与 deterministic burned Bonn 首窗完成。公式通过纯旋转零响应和前向解析标定；旧 raw-speed proxy 错位。下一步只审计 TUM `fr2/rpy` 的 source-native geometry，不下载其他来源或读取算法输出。
 16. [TUM `fr2/rpy` source-native geometry audit R0](RCLE_TUM_FR2_RPY_SOURCE_NATIVE_GEOMETRY_AUDIT_R0_RESULT_2026-07-26.md) 已按下载前冻结的 10 s 全窗规则完成：9/10 窗、2852/2990 formula-level pair 可评价；window 4 因 source-depth coverage `<0.50` 弃权，rotation-dominant 窗为 0/3/6，终态 `PASS / VALID`。旧 `0.02 m/s` 在本 source 未出现窗口级错杀；没有换序列或运行 RCLE RGB。下一步可以单独设计小型 geometry canary。
-17. [小型 real-data geometry canary R0](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_PREREGISTRATION_2026-07-26.md) 已冻结为 F1 implementation canary，机器合同 SHA `48f8b901…453c`。版本隔离 producer、独立 validator、18 项 fixture/mutation tests、exact output schema 和 one-shot claim runner 已通过[独立实现审查](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-26.md)，implementation lock 为 `0d833b83…e2387`。本轮未读取正式 TUM archive、未创建 output/claim/failure receipt；`formal_execution_authorized=false`。下一独立任务只有在显式授权并复核哈希/空路径后，才可对窗 0/3/4/6 做唯一一次 geometry interface canary；RGB algorithm canary 仍需另立任务和权限。
+17. [小型 real-data geometry canary R0](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_PREREGISTRATION_2026-07-26.md) 已冻结为 F1 implementation canary，机器合同 SHA `48f8b901…453c`。版本隔离 producer、独立 validator、18 项 fixture/mutation tests、exact output schema 和 one-shot claim runner 已通过[独立实现审查](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-26.md)，implementation lock 为 `0d833b83…e2387`。绑定该 lock 的[唯一正式 R0](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_RESULT_2026-07-27.md) 已消费 claim：窗 0/3/4/6 共 `1196` pair，producer/validator 全量一致，所有 gating mismatch 为 `0`，failure receipt 不存在，终态 `VALID_IMPLEMENTATION_DEBUGGED_GEOMETRY_INTERFACE_ONLY`。正式运行约 2 h 07 min，gzip TGZ 逐 pair 回扫造成约 `2156.646 GiB` 逻辑读取；这不改变 parity PASS，但下一 evidence version 必须做真实 archive mechanics 性能预检。RGB algorithm outcome 未读取，algorithm canary 仍需另立任务和权限。
 
 ## 主线变更规则
 
