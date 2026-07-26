@@ -52,7 +52,17 @@ E:\codex-tools\projects\blindassist\toolchain\
 E:\codex-tools\projects\blindassist\state\
 ```
 
-仓库内 `.jdk`、`.android-sdk`、`.gradle-local` 等旧路径在迁移期是 junction，不是工具的真实存储位置。`.python311` 与 `.venv-export312` 暂保留原位：Windows 对基础 DLL 的占用阻止了安全删除，而 venv 内含绝对解释器路径，需在 `E:\codex-tools` 重建并验证后再切换。旧 `.venv-export` 已迁移为兼容 junction，但它原先依赖已不存在的 `G:\Python`，不作为可用验证环境。
+仓库内 `.jdk`、`.android-sdk` 等旧路径在迁移期是 junction，不是工具的真实存储位置。`.python311` 暂保留原位；导出环境需要时应在 `E:\codex-tools` 重建，不应把虚拟环境重新提交或长期复制到仓库。
+
+## 2026-07-26 可重建 payload 清理记录
+
+因 E 盘容量不足，对 `E:\linnan\linnan` 做了两轮限定清理：
+
+- 第一轮清空 `artifacts.local/tmp`，删除两个导出虚拟环境、仓库内 Gradle 缓存、benchmark/实验构建产物、Python 安装包，以及 `ustrf-r12d` 和旧 `ustrf-sensor-replay-r2` 下载缓存；目标逻辑大小约 `23.38 GiB`。
+- 第二轮只在已结束或已收口的 A/B 级实验目录中删除可重新下载或重建的 archive、bag、视频、图像帧、点云、模型和 APK 等 payload，共 `160,571` 个文件、逻辑大小 `78.718 GiB`，删除失败数为 `0`。
+- 两轮操作后 E 盘可用空间由约 `8.89 GiB` 增至 `91.89 GiB`。
+
+清理保留了 Markdown、JSON/JSONL、CSV、YAML、TXT、SHA/hash、manifest、receipt、ledger、脚本和 handoff。`sanpo-v4-real-canonical-r3-20260713`、Bonn/Looming R1、当前 RCLE 工作及 `artifacts.local/work/codex-handoffs/INDEX.md` 未删除。后续复现必须按保留的 URL、hash、manifest、receipt、ledger 和脚本重新下载或重建 payload，不应假定历史本地路径仍含原始数据。
 
 ## 维护规则
 
