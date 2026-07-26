@@ -111,8 +111,8 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 2. 已按 R0 `REVISE` 只执行一次 implementation-only coverage R1。
 3. R1 coverage 仍失败，当前实现已按冻结语义停止。
 4. Observable Support Recovery R0 的唯一 implementation + development gate 已按明确授权完成；development `2000–2019` 原完整 2520-trial matrix 为 `PASS / VALID`，receipt `93b4c924…214e3c`。
-5. 当前终态为 `DEVELOPMENT_GATE_PASS_VALIDATION_REMAINS_UNAUTHORIZED`。不得物化 sealed validation、接触真实数据或进入 Phase B；详见 [Development Gate 结果](RCLE_OBSERVABLE_SUPPORT_RECOVERY_R0_DEVELOPMENT_GATE_RESULT_2026-07-26.md)。
-6. 不规划 Phase B 或 Replay Demo；未来只有该候选独立 validation 真正全门 `PASS` 后，才可另行讨论是否重开。
+5. 独立 sealed validation `3000–3019` 已一次性完整运行，2520/2520、六组件全 PASS、receipt `d10afb25…6365c` 独立复算 `VALID`；详见 [Sealed Validation 结果](RCLE_OBSERVABLE_SUPPORT_RECOVERY_R0_SEALED_VALIDATION_RESULT_2026-07-26.md)。
+6. 当前终态为 `INDEPENDENT_SYNTHETIC_PASS_ONLY_PHASE_B_REMAINS_CLOSED_PENDING_SEPARATE_DECISION`。真实数据、Phase B、Replay Demo、Android、人体、安全和生产权限仍关闭；任何后继必须另立决策。
 
 ## 主线变更规则
 
