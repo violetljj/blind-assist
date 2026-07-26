@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RCLE Phase B Bonn metadata authority R3 receipt",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "implementation_lock_sha256",
+    "bootstrap_runner_sha256",
+    "run_claim_sha256",
+    "cohort_identity_sha256",
+    "gate_pass",
+    "terminal_state",
+    "formal_phase_b_b0_ready",
+    "payload_reads_authorized",
+    "phase_b_metrics_authorized"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rcle.phase_b.bonn_metadata_authority_r3.receipt.v1"
+    },
+    "candidate_id": {
+      "const": "BONN_MINIMAL_BOOTSTRAP_PRECLAIM_AUTHORITY_R3"
+    },
+    "gate_pass": {
+      "const": true
+    },
+    "formal_phase_b_b0_ready": {
+      "const": true
+    },
+    "payload_reads_authorized": {
+      "const": false
+    },
+    "phase_b_metrics_authorized": {
+      "const": false
+    }
+  }
+}

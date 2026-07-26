@@ -66,7 +66,7 @@
 
 `research/frontier-upgrade-2026-07/` 按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层。该目录用于研究追溯；生产行为仍以当前协议、代码和门禁为准。
 
-- [RCLE 研究主线](research/rcle/README.md)：`current`；R1.0 长期能力地图、R1.1 Phase A、Observable Support Recovery sealed validation、Phase B Bonn metadata R0 `CONTENT_VALID / EXECUTION_CONTRACT_FAIL` 和旧 USTRF/Looming 证据关系的唯一仓库入口。
+- [RCLE 研究主线](research/rcle/README.md)：`current`；R1.0 长期能力地图、R1.1 Phase A、Observable Support Recovery sealed validation、Bonn metadata authority R3 `PASS`，以及 Phase B B0 `EXECUTION_AUTHORIZED / NOT_STARTED` 的唯一仓库入口。
 - [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。
 - [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：历史 route-conditioned 研究和 RCLE 前序 Looming 证据；不再是研究主线，不代表生产授权。
 - 开发日志月度历史：[2026-05](history/development-log/2026-05.md) · [2026-06](history/development-log/2026-06.md) · [2026-07](history/development-log/2026-07.md)。近期记录继续以根 `DEVELOPMENT_LOG.md` 为准。

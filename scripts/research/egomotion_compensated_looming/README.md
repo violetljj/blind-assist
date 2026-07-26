@@ -202,6 +202,14 @@ cohort admission gate。它只读取 hash-bound 官方 metadata HTML，保留全
 `EXECUTION_CONTRACT_FAIL` 关闭；不得重跑或用于 archive 下载、payload decode、
 window inventory、Phase B 指标、Replay、Android、人体、安全或生产工作。
 
+R1/R2 是 preclaim-order diagnostic failures。Canonical R3 使用 hash-bound
+minimal bootstrap runner，在任何 project/control/metadata read 前先
+exclusive-create 并 fsync 唯一 claim。正式 R3 receipt
+`05a283b84f62bee000447bb567eadd63b424afaa9d81f5f0d83d36a9ed02489b`
+已独立复算 `VALID`。随后冻结的 Phase B B0 acquisition/timestamp-inventory
+design lock `a0b04ac5…c757` 已通过独立设计审查，当前为
+`EXECUTION_AUTHORIZED / NOT_STARTED`；尚未下载 archive 或运行 Phase B metric。
+
 ## 安全边界
 
 The old 15 positive / 15 negative LILocBench windows and the later canonical

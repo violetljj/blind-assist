@@ -115,6 +115,8 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 6. 当前终态为 `INDEPENDENT_SYNTHETIC_PASS_ONLY_PHASE_B_REMAINS_CLOSED_PENDING_SEPARATE_DECISION`。真实数据、Phase B、Replay Demo、Android、人体、安全和生产权限仍关闭；任何后继必须另立决策。
 7. 已另立 [Phase B Bonn 入口预注册](RCLE_PHASE_B_BONN_ENTRY_PREREGISTRATION_2026-07-26.md)，唯一下一候选为 `BONN_METADATA_BLIND_AUTHORITY_AND_COHORT_FREEZE_R0`。最终锁 `e49d1f88…31c9e9` 已通过[独立只读审查](RCLE_PHASE_B_BONN_ENTRY_DESIGN_REVIEW_RESULT_2026-07-26.md)，当前 `DESIGN_REVIEW_PASS / EXECUTION_NOT_AUTHORIZED`；旧 Bonn 历史排除 manifest 为 9 条，payload 与正式 Phase B 仍禁止访问或运行。
 8. 经明确授权后，唯一 [Bonn metadata gate R0](RCLE_PHASE_B_BONN_METADATA_GATE_R0_RESULT_2026-07-26.md) 的 26-row 内容与 6 条 cohort 可复算，但独立审查发现 runner override 绕过 one-run/canonical-output 合同，终态为 `CONTENT_VALID / EXECUTION_CONTRACT_FAIL`。R0 receipt 和 cohort 降为 non-authoritative diagnostic，候选关闭；payload、window inventory 和所有 Phase B 指标仍未授权。
+9. R1/R2 继续暴露 preclaim 项目读取，均保留为 diagnostic；最终 [R3 canonical metadata authority](RCLE_PHASE_B_BONN_METADATA_AUTHORITY_R1_R3_RESULT_2026-07-26.md) 以最小 hash-bound bootstrap 在任何项目读取前 exclusive-create claim，唯一正式门和独立复算均 PASS。权威 receipt 为 `05a283b8…489b`，固定 26/9/6 与 cohort `513b770d…ae86e`。
+10. [Phase B Bonn B0 预注册](RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_PREREGISTRATION_2026-07-26.md) 已通过[独立设计审查](RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_DESIGN_REVIEW_RESULT_2026-07-26.md)，design lock `a0b04ac5…c757`，当前 `EXECUTION_AUTHORIZED / NOT_STARTED`。这表示已推进到可进入正式 Phase B B0 acquisition/timestamp-inventory 的边界；本轮没有下载 2.26 GB payload，也没有运行 Phase B 指标。
 
 ## 主线变更规则
 
