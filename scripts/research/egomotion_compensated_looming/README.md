@@ -193,6 +193,15 @@ cannot count toward Bonn C2 confirmation.
 
 完整重放需要 `artifacts.local/datasets/egomotion_compensated_looming_*` 和 `artifacts.local/evidence/ustrf/egomotion_compensated_looming_*` 中的 ignored 输入。单元测试和 validator 通过不代表 fresh clone 已具备这些输入。
 
+## RCLE Phase B Bonn metadata 入口
+
+`run_phase_b_bonn_metadata_gate_r0.py` 是锁定的 metadata-only authority /
+cohort admission gate。它只读取 hash-bound 官方 metadata HTML，保留全部 26 条
+分母，排除 9 条历史 identity，并确定性选择 6 条。R0 receipt 内容可复算，
+但 runner override 未强制 one-run/canonical-output，已按
+`EXECUTION_CONTRACT_FAIL` 关闭；不得重跑或用于 archive 下载、payload decode、
+window inventory、Phase B 指标、Replay、Android、人体、安全或生产工作。
+
 ## 安全边界
 
 The old 15 positive / 15 negative LILocBench windows and the later canonical
