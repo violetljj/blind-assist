@@ -32,7 +32,7 @@
 - [`research/public_video/`](research/public_video/)：已冻结的公开视频 / public-silver 历史 campaign。细粒度语义索引和迁移说明保留在该目录，不再向根目录增加实验轮次脚本。
 - [`research/ustrf_crosscam_codex/`](research/ustrf_crosscam_codex/)：公开头戴视角视频上的 Codex provisional silver / causal comparator，以及显式 route-projection receipt、polygon bottom-center 三档不确定性审计；不产生客观传感器事实、真人用户效果、设备米制几何或 U0/生产授权。
 - [`research/ustrf_route_target_evidence_closure/`](research/ustrf_route_target_evidence_closure/)：route-target 候选盲真值、指标资格、receipt-aware replay、逐指标 L1 profile、observability/JRDB source audit 与单变量 lifecycle 机制诊断。JRDB cross-sequence replication 已冻结 3 个新 sequence × 120 帧并以原 PCD/oriented-box/四类 kernel 复算，pooled object/pair support 为 `83.08% / 80.81%`，但远距仅 1/3 可评，仍无 selection、route/event、shadow/H2 或生产权限。
-- [`research/egomotion_compensated_looming/`](research/egomotion_compensated_looming/)：已停止 Looming R0/R1 的 frozen RCLE precursor；保留来源权威、Bonn mechanics/traces、非权威评价隔离、冻结依赖和 43 项 focused tests。旧 R1 无后继权限，RCLE Phase A 只能在独立 `rcle_minimal` 子模块中使用新 synthetic truth 与门禁。
+- [`research/egomotion_compensated_looming/`](research/egomotion_compensated_looming/)：旧 Looming R0/R1 保持 frozen RCLE precursor；独立 `rcle_minimal/` 与 `run_synthetic_signal_audit_r0.py` 已完成 2520-trial Phase A R0，clean 信号门通过但逐 condition coverage 门失败，终态 `REVISE / VALID`。receipt 可独立复算；Phase B/Replay/Android 仍关闭，只允许保留协议与阈值的一次版本化 coverage revision。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。

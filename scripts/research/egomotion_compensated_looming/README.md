@@ -1,6 +1,6 @@
 # Egomotion-compensated looming research
 
-状态：`FROZEN_RCLE_PRECURSOR / R0_FAIL_CLOSED / R1_NONAUTHORITATIVE_EVALUATION_QUARANTINED`
+状态：`FROZEN_RCLE_PRECURSOR + RCLE_MINIMAL_PHASE_A_R0_REVISE_VALID`
 
 This module is an offline, research-only boundary for
 `EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R0`.
@@ -9,6 +9,39 @@ The original R0/R1 program is stopped. The module is retained as reproducible
 precursor evidence for the current RCLE mainline; it does not authorize an
 R1 successor or count as RCLE-Minimal Phase A. New Phase A work must use a
 separate `rcle_minimal` submodule and its own synthetic truth and gates.
+
+RCLE-Minimal Phase A now exists only in the isolated `rcle_minimal/` submodule
+and `run_synthetic_signal_audit_r0.py`. Its result is `REVISE / VALID`: clean
+rotation suppression and closing retention passed, while preregistered
+per-condition coverage failed. This does not unfreeze or import the precursor
+R0/R1 program.
+
+## RCLE-Minimal Phase A
+
+The machine protocol was locked before the formal run with SHA-256
+`d20e77f3ea5f7ac55376006f1d14feb0ffb5daffd10a42792912fb89cdb1b502`.
+The formal `2520`-trial run and independent receipt validation are under:
+
+```text
+artifacts.local/evidence/rcle_minimal_r0/formal_run_r0/
+artifacts.local/datasets/rcle_minimal_r0/formal_run_r0/
+```
+
+Validate without rerunning candidates:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts\research\egomotion_compensated_looming\run_synthetic_signal_audit_r0.py `
+  --validate-existing `
+  --output-root artifacts.local\evidence\rcle_minimal_r0\formal_run_r0 `
+  --dataset-root artifacts.local\datasets\rcle_minimal_r0\formal_run_r0
+```
+
+Receipt SHA-256:
+`14ed23e38bacc913207aaa56903a7b2cd3bebe52631338c4760f02dc5c2041ca`.
+Phase B and Replay Demo remain closed. The only next research boundary is a
+versioned implementation-side Phase A coverage revision with the R0 protocol,
+trials, thresholds, and negative coverage evidence unchanged.
 
 ## 冻结环境
 

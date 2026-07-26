@@ -1,0 +1,11 @@
+{
+  "schema_version": "rcle.phase_a.protocol_lock.v1",
+  "protocol_id": "RCLE_MINIMAL_PHASE_A_SYNTHETIC_SIGNAL_AUDIT_R0",
+  "locked_at": "2026-07-26T00:43:48+08:00",
+  "protocol_path": "scripts/research/egomotion_compensated_looming/configs/phase_a_synthetic_signal_audit_r0.json",
+  "protocol_sha256": "d20e77f3ea5f7ac55376006f1d14feb0ffb5daffd10a42792912fb89cdb1b502",
+  "execution_plan_sha256": "c6bc9e0d8a1c9665b319cb8141362b098b94b742772e351c24be33445cc3bcd2",
+  "formal_candidate_outputs_existed_when_locked": false,
+  "threshold_changes_after_lock_forbidden": true,
+  "failed_seed_replacement_forbidden": true
+}

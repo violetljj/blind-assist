@@ -2,7 +2,7 @@
 
 状态：current
 
-最后核验：2026-07-25
+最后核验：2026-07-26
 
 适用范围：BlindAssist 论文研究、毕业设计、院内演示与创新竞赛。
 
@@ -46,6 +46,14 @@ Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固
 - Android RCLE 集成或主动告警；
 - 真人试验、独立行走或生产晋级；
 - 为追求“产品完整”而提前解决全数据权威、硬件闭环或安全认证。
+
+## Phase A 当前结果
+
+[Phase A R0 Synthetic Signal Audit](RCLE_MINIMAL_PHASE_A_SYNTHETIC_SIGNAL_AUDIT_R0_RESULT_2026-07-26.md) 已按结果前冻结的 `2520`-trial 协议完整运行并独立复算，终态为 `REVISE / VALID`。
+
+clean yaw/pitch 旋转泄漏抑制、roll 不增噪、scale up/down 与 rotation+scale closing 保留、15/30/60 FPS 一致性及三类 stress 中可评价 trial 的误差门均通过；但逐 condition coverage 硬门失败：clean worst cell 为 `10/20`，partial-occlusion pitch worst cell 为 `0/20`，因此总体 `2419/2520` 可评价不能构成 Kill Gate A PASS。
+
+当前唯一合法下一边界是一次版本化的 Phase A 实现侧 coverage revision：保留 R0 结果、协议 SHA-256 `d20e77f3…1b502`、全部 seed/trial、数值阈值和 gate，不降低门、不换矩阵、不删除不可评价。Phase B 与 Replay Demo 仍未开放。
 
 ## 与既有工作的关系
 

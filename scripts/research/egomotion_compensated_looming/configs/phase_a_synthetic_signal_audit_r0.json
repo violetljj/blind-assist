@@ -1,0 +1,272 @@
+{
+  "schema_version": "rcle.phase_a.protocol.v1",
+  "protocol_id": "RCLE_MINIMAL_PHASE_A_SYNTHETIC_SIGNAL_AUDIT_R0",
+  "status": "PREREGISTERED_BEFORE_FORMAL_RUN",
+  "research_question": "Does source-known rotation compensation suppress pure-rotation local-expansion leakage while retaining true scale-induced expansion?",
+  "authority": {
+    "current_entry": "docs/research/rcle/README.md",
+    "execution_plan": "D:/edge/BlindAssist_RCLE_Minimal-First_R1.1.md",
+    "execution_plan_sha256": "c6bc9e0d8a1c9665b319cb8141362b098b94b742772e351c24be33445cc3bcd2",
+    "maximum_claim": "SYNTHETIC_MECHANISM_AND_IMPLEMENTATION_EVIDENCE_ONLY",
+    "forbidden_successors": [
+      "BONN",
+      "DEPTH",
+      "BEARING",
+      "SHEAR",
+      "DUAL_REGION",
+      "RISK_FIELD",
+      "ANDROID",
+      "NEW_UI",
+      "HUMAN_SAFETY",
+      "PRODUCTION"
+    ]
+  },
+  "rendering": {
+    "width": 480,
+    "height": 360,
+    "grayscale": true,
+    "intrinsics": {
+      "fx_pixels": 420.0,
+      "fy_pixels": 420.0,
+      "cx_pixels": 239.5,
+      "cy_pixels": 179.5
+    },
+    "duration_seconds": 0.6,
+    "fps_groups": [
+      15,
+      30,
+      60
+    ],
+    "border_mode": "CONSTANT_ZERO",
+    "frame_generation": "DIRECT_FROM_BASE_USING_CUMULATIVE_PAIR_HOMOGRAPHY",
+    "pair_homography_order": "H_ROTATION_TIMES_H_SCALE",
+    "rotation_compensation": "WARP_CURRENT_WITH_INVERSE_K_R_CURRENT_FROM_PREVIOUS_K_INV"
+  },
+  "trials": {
+    "seeds": [
+      1000,
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007,
+      1008,
+      1009,
+      1010,
+      1011,
+      1012,
+      1013,
+      1014,
+      1015,
+      1016,
+      1017,
+      1018,
+      1019
+    ],
+    "clean_matrix": {
+      "pure_rotation": {
+        "axes": [
+          "yaw",
+          "pitch",
+          "roll"
+        ],
+        "directions": [
+          -1,
+          1
+        ],
+        "angular_speeds_deg_per_s": [
+          15.0,
+          30.0
+        ],
+        "scale_rates_per_s": [
+          0.0
+        ]
+      },
+      "scale": {
+        "axes": [
+          "none"
+        ],
+        "directions": [
+          -1,
+          1
+        ],
+        "angular_speeds_deg_per_s": [
+          0.0
+        ],
+        "scale_rate_magnitudes_per_s": [
+          0.15,
+          0.3
+        ]
+      },
+      "rotation_plus_scale_up": {
+        "axes": [
+          "yaw",
+          "pitch",
+          "roll"
+        ],
+        "directions": [
+          -1,
+          1
+        ],
+        "angular_speeds_deg_per_s": [
+          15.0,
+          30.0
+        ],
+        "scale_rates_per_s": [
+          0.15
+        ]
+      }
+    },
+    "stress_sentinel": {
+      "fps": 30,
+      "angular_speed_deg_per_s": 30.0,
+      "scale_rate_magnitude_per_s": 0.15,
+      "profiles": [
+        "gaussian_noise",
+        "gaussian_blur",
+        "partial_occlusion"
+      ],
+      "motion_families": [
+        "pure_rotation",
+        "scale",
+        "rotation_plus_scale_up"
+      ]
+    },
+    "expected_clean_trials": 1680,
+    "expected_stress_trials": 840,
+    "expected_total_trials": 2520,
+    "replacement_of_failed_seed_forbidden": true,
+    "translation": {
+      "status": "DEFERRED_NON_GATING",
+      "reason": "R1.1 broader generator list includes translation, but the latest user-authorized minimum matrix and Kill Gate A question are rotation and scale only."
+    }
+  },
+  "degradations": {
+    "clean": {},
+    "gaussian_noise": {
+      "sigma_intensity_0_255": 8.0,
+      "independent_per_frame": true
+    },
+    "gaussian_blur": {
+      "kernel": [
+        5,
+        5
+      ],
+      "sigma_pixels": 1.2
+    },
+    "partial_occlusion": {
+      "area_fraction": 0.2,
+      "horizontal_speed_pixels_per_s": 30.0,
+      "independent_texture": true,
+      "position_and_direction_seeded": true
+    }
+  },
+  "sparse_lk": {
+    "grid_rows": 3,
+    "grid_cols": 3,
+    "max_features_per_cell": 80,
+    "quality_level": 0.01,
+    "min_distance_pixels": 5.0,
+    "block_size": 7,
+    "window_size": [
+      21,
+      21
+    ],
+    "max_pyramid_level": 3,
+    "termination_count": 30,
+    "termination_epsilon": 0.01,
+    "forward_backward_max_error_pixels": 1.0,
+    "shared_initial_features_raw_and_compensated": true,
+    "velocity_unit": "pixels_per_second"
+  },
+  "local_affine": {
+    "grid_rows": 3,
+    "grid_cols": 3,
+    "model": "v_p=A_times_p_minus_cell_center_plus_b",
+    "expansion_definition": "0.5_times_trace_A",
+    "expansion_unit": "per_second",
+    "minimum_tracks_per_cell": 12,
+    "minimum_track_convex_hull_fraction": 0.1,
+    "maximum_design_condition_number": 1000.0,
+    "maximum_median_fit_residual_pixels_per_frame": 0.75,
+    "minimum_common_evaluable_cells_per_pair": 5,
+    "minimum_evaluable_pair_fraction_per_trial": 0.8
+  },
+  "metrics": {
+    "statistical_unit": "trial",
+    "rotation_leakage": "median_over_pairs_of_median_over_evaluable_grid_abs_expansion",
+    "closing_estimate": "median_over_pairs_of_median_over_evaluable_grid_expansion",
+    "closing_error": "abs_closing_estimate_minus_truth_scale_rate",
+    "sign_accuracy_zero_band_per_s": 0.01,
+    "rsr_denominator_floor_per_s": 0.03,
+    "crr_denominator_floor_per_s": 0.03,
+    "ratios_are_diagnostic_only": true,
+    "not_evaluable_is_never_imputed_as_zero": true
+  },
+  "statistics": {
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 20260726,
+    "confidence_level": 0.95,
+    "bootstrap_unit": "seed_cluster_preserving_all_conditions",
+    "bootstrap_interval": "percentile",
+    "proportion_interval": "wilson",
+    "frame_level_resampling_forbidden": true
+  },
+  "kill_gate_a": {
+    "clean_rotation_yaw_pitch": {
+      "informative_raw_leakage_floor_per_s": 0.03,
+      "pooled_compensated_leakage_median_ci_upper_max_per_s": 0.03,
+      "paired_leakage_reduction_median_ci_lower_min_per_s": 0.015,
+      "improved_trial_fraction_ci_lower_min": 0.8,
+      "per_cell_compensated_leakage_median_max_per_s": 0.04,
+      "per_cell_improved_trial_fraction_min": 0.8
+    },
+    "clean_rotation_roll": {
+      "pooled_compensated_leakage_median_ci_upper_max_per_s": 0.03,
+      "paired_compensated_minus_raw_median_ci_upper_max_per_s": 0.01
+    },
+    "clean_closing": {
+      "scale_closing_error_median_ci_upper_max_per_s": 0.03,
+      "mixed_closing_error_median_ci_upper_max_per_s": 0.04,
+      "sign_accuracy_point_min": 0.98,
+      "sign_accuracy_ci_lower_min": 0.95,
+      "compensated_minus_raw_error_median_ci_upper_max_per_s": 0.015,
+      "mixed_minus_matched_scale_compensated_abs_difference_ci_upper_max_per_s": 0.03
+    },
+    "fps_consistency": {
+      "matched_seed_motion_expansion_range_ci_upper_max_per_s": 0.03
+    },
+    "coverage": {
+      "clean_paired_point_min": 0.9,
+      "clean_paired_ci_lower_min": 0.85,
+      "clean_per_cell_point_min": 0.8,
+      "stress_paired_point_min": 0.8,
+      "stress_paired_ci_lower_min": 0.75,
+      "stress_per_cell_point_min": 0.7
+    },
+    "stress": {
+      "per_profile_rotation_compensated_leakage_median_ci_upper_max_per_s": 0.05,
+      "per_profile_closing_error_median_ci_upper_max_per_s": 0.05,
+      "per_profile_sign_accuracy_point_min": 0.95,
+      "per_profile_sign_accuracy_ci_lower_min": 0.9
+    },
+    "runtime_is_not_a_kill_gate": true,
+    "pass_semantics": "PASS only if every clean, fps, coverage, stress, receipt, and analytic invariant component passes.",
+    "revise_semantics": "REVISE if the clean mechanism is not falsified but an informative-challenge, localized implementation, fps, coverage, stress, or receipt component fails; retain the original run and do not change thresholds.",
+    "stop_semantics": "STOP if analytic coordinates and oracle tests are valid, the clean challenge is informative, and rotation suppression or closing retention fails, or if a single versioned REVISE rerun still fails."
+  },
+  "abstention_reason_codes": [
+    "NON_POSITIVE_OR_MISSING_DT",
+    "ROTATION_WARP_VALID_COVERAGE_BELOW_0_75",
+    "LK_TRACK_SUPPORT_BELOW_12",
+    "LK_FORWARD_BACKWARD_ERROR_ABOVE_1PX",
+    "TRACK_HULL_COVERAGE_BELOW_0_10",
+    "AFFINE_DESIGN_CONDITION_ABOVE_1000",
+    "AFFINE_MEDIAN_RESIDUAL_ABOVE_0_75PX_PER_FRAME",
+    "COMMON_GRID_SUPPORT_BELOW_5_OF_9",
+    "EVALUABLE_PAIR_FRACTION_BELOW_0_80",
+    "RATIO_DENOMINATOR_BELOW_0_03_PER_S"
+  ]
+}
