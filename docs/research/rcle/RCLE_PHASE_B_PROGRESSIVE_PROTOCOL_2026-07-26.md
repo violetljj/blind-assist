@@ -81,3 +81,10 @@ Replay、Android、人体、安全或生产晋级。Discovery 发现候选不自
 真实用户有效性、独立行走安全认证和生产级设备闭环不是当前 RCLE 论文主线的前置
 条件；只保留“研究原型、不可作为独立助行工具”的诚实边界。当前研究优先形成可复现
 的机制证据、消融、失败分析和论文/Demo 闭环。
+
+## 动态数据候选池
+
+外部检索得到的 TUM、ETH3D、ICL-NUIM、EVIMO2 等候选已记录在
+[Phase B 动态数据候选池](RCLE_PHASE_B_DYNAMIC_DATA_CANDIDATE_POOL_2026-07-26.md)。
+该清单只提供 Discovery 优先级，不构成 admission 或固定下载队列；当前仍先执行
+PB-H1 几何代理最小实验，再按信息增益和取得成本逐个审计来源。

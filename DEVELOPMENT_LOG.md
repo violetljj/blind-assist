@@ -1,5 +1,6 @@
 # Development Log
 ## 2026-07-26
+- 时间：2026-07-26；执行者：Codex。将外部 GPT 提供的 TUM/ETH3D/ICL-NUIM/EVIMO2 清单降级整理为 [Phase B 动态数据候选池](docs/research/rcle/RCLE_PHASE_B_DYNAMIC_DATA_CANDIDATE_POOL_2026-07-26.md)：候选排序可随 PB-H1、本地缓存与取得成本调整；先做合成+Bonn burned window 的几何代理实验，再逐个 pose-first 审计，禁止批量下载和按 sequence 名称直接授予角色。
 - 时间：2026-07-26；执行者：violjjet。建立[渐进式研究治理](docs/RESEARCH_GOVERNANCE.md)、机器策略和 validator：分离五个研究阶段，要求失败学习、规则质疑、信息增益/成本排序、比例化验证、实质差异重开和失败资产复用；产品认证不再阻塞论文机制研究。20 项含恶意反例的专项测试通过，高权限数据/退役证据必须引用可复算的仓库 JSON。B1 R5 不改写，closure overlay 只关闭 evidence/protocol version 与依赖 B1B，RCLE 问题保持开放并进入 Progressive Discovery。
 - 时间：2026-07-26；执行者：violjjet。B1A 唯一 run 完成 6 sequence / 10 window geometry；independent replay 因 24 个 abstaining pair 的 `216` 个 blank-grid key mismatch 加 ledger identity mismatch 判 INVALID。未运行 RGB/RCLE metric，原 artifacts 保留且同版本不重跑。详见 [B1A 结果](docs/research/rcle/RCLE_PHASE_B_BONN_B1A_RESULT_2026-07-26.md)。
 - 时间：2026-07-26；执行者：violjjet。Bonn B0 R1 首次 GET 完成六包共 `2,262,988,443` bytes，6/6 archive/member/CRC/timestamp 可评价并固定 10 窗；receipt `dc0ffe9a…1f86` 独立复算 `PASS / VALID`。详见 [B0 R1 结果](docs/research/rcle/RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_R1_RESULT_2026-07-26.md)。

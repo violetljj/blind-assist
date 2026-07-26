@@ -49,6 +49,8 @@ B1B R5，不关闭 RCLE 科学问题。
 [Phase B Progressive Discovery](RCLE_PHASE_B_PROGRESSIVE_PROTOCOL_2026-07-26.md)。
 当前只做来源画像、连续几何分布、约束质疑、失败资产复用和高信息增益假设；
 不读取 RCLE RGB algorithm outcome，不产生机制确认或产品结论。
+[动态数据候选池](RCLE_PHASE_B_DYNAMIC_DATA_CANDIDATE_POOL_2026-07-26.md) 已记录
+TUM、ETH3D、ICL-NUIM 与 EVIMO2 的当前证据和成本，但不是硬准入或批量下载队列。
 
 Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固定旋转补偿、Sparse LK、局部仿射拟合和网格汇总，比较纯旋转泄漏与真实闭合保留。trial-level leakage error 和 closing error 是主判据；RSR/CRR 只作诊断比例。
 
