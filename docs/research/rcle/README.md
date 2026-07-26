@@ -57,8 +57,11 @@ TUM、ETH3D、ICL-NUIM 与 EVIMO2 的当前证据和成本，但不是硬准入�
 已完成 `SUPPORT / VALID`：受控 fixture 证明相同 raw speed 的横移与前向接近可由
 signed radial coherence + time-normalized parallax 区分；固定 burned Bonn
 首窗呈横向/混合 translation 结构。旧 raw-speed gate 因果错位，但 absolute
-radial aggregate 单独也不能充当 approach gate。下一边界仅值得审计一个 TUM
-`fr2/rpy` source 的 metadata/pose/depth geometry，不自动开放算法 canary。
+radial aggregate 单独也不能充当 approach gate。后续单来源
+[TUM `fr2/rpy` source-native geometry audit R0](RCLE_TUM_FR2_RPY_SOURCE_NATIVE_GEOMETRY_AUDIT_R0_RESULT_2026-07-26.md)
+已 `PASS / VALID`：9/10 固定窗口可评价，窗 0/3/6 提供 rotation-dominant
+真实几何；但本 source 没有出现旧 `0.02 m/s` 的窗口级错杀。下一边界只允许
+单独预注册一个小型 real-data geometry canary，不自动开放 RCLE RGB algorithm。
 
 Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固定旋转补偿、Sparse LK、局部仿射拟合和网格汇总，比较纯旋转泄漏与真实闭合保留。trial-level leakage error 和 closing error 是主判据；RSR/CRR 只作诊断比例。
 
@@ -147,6 +150,7 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 13. B1 R5 protocol 与 B1A implementation review 通过后启动唯一 source-native geometry run。producer 完成十窗输出，但 independent full replay 在 24 个 abstaining pair 的 216 个 grid 上发现 blank-grid key-set mismatch，并连带触发 ledger identity mismatch；[正式结果](RCLE_PHASE_B_BONN_B1A_RESULT_2026-07-26.md)为 `INVALID_EXECUTION_CLOSE_B1`。诊断 receipt 同时显示 rotation/approach 合格 sequence 均为 `0`，但 INVALID 内容不构成正式数据结论。B1B 未运行且关闭。
 14. 用户基于多轮工作明确要求研究治理本身能够学习、质疑并进化。仓库已采用 Discovery/Canary/Development/Confirmation/Deployment 渐进冻结；每次失败必须形成 learning record，候选按因果差异、信息增益、可证伪性和成本排序，失败资产可降级为 regression/canary/counterexample/source characterization。B1A closure overlay 保持科学问题 `OPEN`，新的 [Progressive Discovery R0 contract](RCLE_PHASE_B_PROGRESSIVE_DISCOVERY_R0_CONTRACT_2026-07-26.json) 已成为当前 Phase B 边界。
 15. [PB-H1 role proxy R0](RCLE_PHASE_B_PB_H1_ROLE_PROXY_R0_RESULT_2026-07-26.md) 已用一个受控 fixture 与 deterministic burned Bonn 首窗完成。公式通过纯旋转零响应和前向解析标定；旧 raw-speed proxy 错位。下一步只审计 TUM `fr2/rpy` 的 source-native geometry，不下载其他来源或读取算法输出。
+16. [TUM `fr2/rpy` source-native geometry audit R0](RCLE_TUM_FR2_RPY_SOURCE_NATIVE_GEOMETRY_AUDIT_R0_RESULT_2026-07-26.md) 已按下载前冻结的 10 s 全窗规则完成：9/10 窗、2852/2990 formula-level pair 可评价；window 4 因 source-depth coverage `<0.50` 弃权，rotation-dominant 窗为 0/3/6，终态 `PASS / VALID`。旧 `0.02 m/s` 在本 source 未出现窗口级错杀；没有换序列或运行 RCLE RGB。下一步可以单独设计小型 geometry canary。
 
 ## 主线变更规则
 
