@@ -52,6 +52,14 @@ B1B R5，不关闭 RCLE 科学问题。
 [动态数据候选池](RCLE_PHASE_B_DYNAMIC_DATA_CANDIDATE_POOL_2026-07-26.md) 已记录
 TUM、ETH3D、ICL-NUIM 与 EVIMO2 的当前证据和成本，但不是硬准入或批量下载队列。
 
+首个 Discovery 假设
+[PB-H1 role proxy R0](RCLE_PHASE_B_PB_H1_ROLE_PROXY_R0_RESULT_2026-07-26.md)
+已完成 `SUPPORT / VALID`：受控 fixture 证明相同 raw speed 的横移与前向接近可由
+signed radial coherence + time-normalized parallax 区分；固定 burned Bonn
+首窗呈横向/混合 translation 结构。旧 raw-speed gate 因果错位，但 absolute
+radial aggregate 单独也不能充当 approach gate。下一边界仅值得审计一个 TUM
+`fr2/rpy` source 的 metadata/pose/depth geometry，不自动开放算法 canary。
+
 Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固定旋转补偿、Sparse LK、局部仿射拟合和网格汇总，比较纯旋转泄漏与真实闭合保留。trial-level leakage error 和 closing error 是主判据；RSR/CRR 只作诊断比例。
 
 只有独立 sealed synthetic validation 通过且 Phase B 被单独激活后，才可进入
@@ -138,6 +146,7 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 12. [B0 R1 recovery 预注册](RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_R1_PREREGISTRATION_2026-07-26.md) 保持同一 cohort、URL、分母和门；design 与 implementation review 均 PASS 后，唯一 canonical run 已完成并由独立 validator 复算。结果为 [B0 R1 `PASS / VALID`](RCLE_PHASE_B_BONN_FORMAL_ENTRY_B0_R1_RESULT_2026-07-26.md)：6/6 archive/timestamp 可评价，固定 `10` 个窗口，receipt `dc0ffe9a…1f86`。当前只允许冻结 B1 metric protocol；image/pose metric 读取与 B1 execution 仍关闭。
 13. B1 R5 protocol 与 B1A implementation review 通过后启动唯一 source-native geometry run。producer 完成十窗输出，但 independent full replay 在 24 个 abstaining pair 的 216 个 grid 上发现 blank-grid key-set mismatch，并连带触发 ledger identity mismatch；[正式结果](RCLE_PHASE_B_BONN_B1A_RESULT_2026-07-26.md)为 `INVALID_EXECUTION_CLOSE_B1`。诊断 receipt 同时显示 rotation/approach 合格 sequence 均为 `0`，但 INVALID 内容不构成正式数据结论。B1B 未运行且关闭。
 14. 用户基于多轮工作明确要求研究治理本身能够学习、质疑并进化。仓库已采用 Discovery/Canary/Development/Confirmation/Deployment 渐进冻结；每次失败必须形成 learning record，候选按因果差异、信息增益、可证伪性和成本排序，失败资产可降级为 regression/canary/counterexample/source characterization。B1A closure overlay 保持科学问题 `OPEN`，新的 [Progressive Discovery R0 contract](RCLE_PHASE_B_PROGRESSIVE_DISCOVERY_R0_CONTRACT_2026-07-26.json) 已成为当前 Phase B 边界。
+15. [PB-H1 role proxy R0](RCLE_PHASE_B_PB_H1_ROLE_PROXY_R0_RESULT_2026-07-26.md) 已用一个受控 fixture 与 deterministic burned Bonn 首窗完成。公式通过纯旋转零响应和前向解析标定；旧 raw-speed proxy 错位。下一步只审计 TUM `fr2/rpy` 的 source-native geometry，不下载其他来源或读取算法输出。
 
 ## 主线变更规则
 

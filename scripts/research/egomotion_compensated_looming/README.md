@@ -1,6 +1,6 @@
 # Egomotion-compensated looming research
 
-状态：`FROZEN_RCLE_PRECURSOR + RCLE_MINIMAL_PHASE_A_STOP_CURRENT_IMPLEMENTATION_VALID`
+状态：`RCLE_PROGRESSIVE_DISCOVERY / PB_H1_SUPPORT_VALID`
 
 This module is an offline, research-only boundary for
 `EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R0`.
@@ -61,8 +61,8 @@ E:\codex-tools\bin\blindassist-python.cmd `
 R1 receipt SHA-256:
 `d5edb9528abfa6d79b973bddfed5f4234795262fb303258c9e1a9e2628ca2b15`.
 该 R1 本身不开放后继，且禁止第二次 coverage revision。后续 Observable Support
-Recovery sealed validation 已另行 PASS；当前 Phase B 只开放独立 B0 R1
-archive/member-CRC/timestamp-window inventory，Phase B metric 与 Replay 仍关闭。
+Recovery sealed validation 已另行 PASS；B0/B1 R5 历史边界见下文。当前只开放
+新的 Phase B Progressive Discovery，RGB algorithm metric 与 Replay 仍关闭。
 
 ## 冻结环境
 
@@ -215,7 +215,7 @@ independent validator 均通过。B0 receipt `dc0ffe9a…1f86`，6/6 sequence �
 10 个 10 秒窗口。随后冻结的 B1 R5 与 B1A implementation 已完成一次性执行，
 但 independent replay 在 24 个 abstaining pair 的 blank-grid 序列化上发现
 producer/validator key-set mismatch，终态为 `INVALID_EXECUTION_CLOSE_B1`。
-原 artifacts、锁和源必须保留，不得 patch 或重跑；B1B 与其他 Phase B metric
+原 artifacts、锁和源必须保留，不得 patch 或重跑；B1B 与其依赖的正式 metrics
 均关闭。随后项目已采用渐进式研究治理：B1 R5 evidence version 关闭但 RCLE
 科学问题开放，当前只允许新的 Phase B Discovery 做来源画像、约束质疑、失败资产
 回归复用和 hypothesis-driven source-native geometry；算法 canary/confirmation
@@ -303,3 +303,22 @@ python scripts/research/egomotion_compensated_looming/run_adt_geometry_cell_pres
   --acquisition artifacts.local/evidence/ustrf/egomotion_compensated_looming_r0/source_audit/adt_groundtruth_prescreen_acquisition_r0.json `
   --output artifacts.local/evidence/ustrf/egomotion_compensated_looming_r0/source_audit/adt_geometry_cell_proposals_r0.json
 ```
+
+## PB-H1 role proxy Discovery
+
+当前 Progressive Discovery 的首个真正几何实验位于
+`pb_h1_role_proxy/`。它比较 raw speed、pose+depth translation-induced radial
+expansion 与 time-normalized parallax，只使用受控 fixture 和 deterministic
+burned Bonn 首窗，不读取 RCLE RGB algorithm outcome。
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts\research\egomotion_compensated_looming\run_pb_h1_role_proxy_r0.py
+
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts\research\egomotion_compensated_looming\run_pb_h1_role_proxy_r0.py `
+  --validate-existing
+```
+
+结果为 `SUPPORT / VALID`；这只支持下一次 TUM `fr2/rpy`
+metadata/pose/depth geometry audit，不开放 algorithm canary 或 confirmation。

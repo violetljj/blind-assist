@@ -79,13 +79,8 @@ payload，或小型 pose 审计快速否定上一候选，可以调整顺序并�
 
 ## 当前后继
 
-唯一立即执行项仍为 `PB-H1-ROLE-PROXY`：
-
-1. 建立一个纯旋转、无真实接近的受控合成 fixture；
-2. 实现 raw translation speed、pose+depth translation-induced radial expansion
-   与 time-normalized parallax；
-3. 先做物理标定，再在一个已烧掉的 Bonn diagnostic window 上比较；
-4. 输出 proxy mismatch、真实平移污染或实现错误三者的区分结论。
-
-只有 PB-H1 形成 round summary 后，才按本候选池选择第一个新来源。默认首选 TUM
-`fr2/rpy`，但若本地缓存与取得成本改变，允许以记录理由的方式调整。
+[PB-H1-ROLE-PROXY R0](RCLE_PHASE_B_PB_H1_ROLE_PROXY_R0_RESULT_2026-07-26.md)
+已完成 `SUPPORT / VALID`：旧 raw-speed gate 因果错位，公式通过受控物理标定；
+burned Bonn 首窗也可评价。下一步只审计 TUM `fr2/rpy` 的
+metadata/pose/depth geometry；不批量下载、不顺带推进其他来源、不读取 RCLE RGB
+algorithm outcome。若 source-native authority 或可评价窗口缺失，局部停止该来源。
