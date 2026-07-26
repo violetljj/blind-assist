@@ -1,0 +1,97 @@
+{
+  "schema_version": "rcle.phase_b.bonn_entry.design_lock.v2",
+  "protocol_id": "RCLE_PHASE_B_BONN_ENTRY_R0",
+  "status": "DESIGN_ONLY_PREREGISTERED_PENDING_INDEPENDENT_REVIEW",
+  "frozen_at": "2026-07-26T16:30:00+08:00",
+  "execution_authorized": false,
+  "payload_access_authorized": false,
+  "phase_b_execution_authorized": false,
+  "single_candidate": {
+    "candidate_id": "BONN_METADATA_BLIND_AUTHORITY_AND_COHORT_FREEZE_R0",
+    "candidate_count": 1,
+    "maximum_metadata_search_workdays": 3,
+    "formal_dataset": "BONN_RGB_D_DYNAMIC_ONLY",
+    "formal_cohort_selected": false,
+    "required_selected_sequence_count": 6,
+    "minimum_evaluable_sequences_per_future_endpoint": 2
+  },
+  "authority": {
+    "current_entry": "docs/research/rcle/README.md",
+    "r1_1_path": "D:/edge/BlindAssist_RCLE_Minimal-First_R1.1.md",
+    "r1_1_sha256": "c6bc9e0d8a1c9665b319cb8141362b098b94b742772e351c24be33445cc3bcd2",
+    "observable_support_design_lock_sha256": "3fcc21e28ba84e18d10b1c236a9a0df167d2a6464ea5ebefcb52ce4395152bac",
+    "observable_support_development_receipt_sha256": "93b4c9244e9ef3bd11e8ab3557bfda0ad6dd6cd324116dbd05898f71b5214e3c",
+    "observable_support_validation_receipt_sha256": "d10afb25cbe6bd8104b842adbd128b229804d5bdda0e8ff03d3954386806365c",
+    "maximum_claim_if_gate_passes": "METADATA_ONLY_SOURCE_AUTHORITY_AND_COHORT_IDENTITY_AVAILABLE",
+    "formal_phase_b_reopens_automatically": false
+  },
+  "historical_exclusion_manifest": {
+    "path": "docs/research/rcle/RCLE_PHASE_B_BONN_HISTORICAL_EXCLUSION_MANIFEST_2026-07-26.json",
+    "sha256": "f02bd9f1313def45cc107d72ace5f7c7803f4ab816bf6e98c5f9173fa3bb1cc6",
+    "excluded_sequence_count": 9,
+    "legacy_truth_status": "CANONICAL_3X3_500MS_18_OF_18_ABSTAIN",
+    "legacy_503_pair_evaluation_role": "QUARANTINED_DIAGNOSTIC_SPATIAL_UNIT_MISMATCH",
+    "may_select_tune_admit_or_validate_formal_cohort": false
+  },
+  "official_universe_and_selection_contract": {
+    "official_page_sha256": "2bd8df16acad79c70e1021f1da039c78510034fd9091fd706f8a3f480ea5c186",
+    "required_unique_sequence_count": 26,
+    "maximum_display_size_mb": 550.0,
+    "selection_salt": "rcle-phase-b-bonn-entry-r1",
+    "selection_hash": "SHA256(selection_salt + TAB + sequence_id)",
+    "algorithm": "EXCLUDE_ALL_9_HISTORICAL_IDENTITIES_THEN_KEEP_DISPLAY_SIZE_AT_MOST_550_MB_THEN_ASCENDING_SELECTION_HASH_THEN_TAKE_FIRST_6",
+    "metadata_selection_denominator": "ALL_26_OFFICIAL_SEQUENCES_WITH_INCLUDED_EXCLUDED_REASON_AND_RANK",
+    "replacement_after_selection": "FORBIDDEN"
+  },
+  "metadata_gate_allowed_reads": [
+    "OFFICIAL_DATASET_AND_SEQUENCE_LEVEL_METADATA",
+    "OFFICIAL_FILE_MANIFESTS_AND_NAMING",
+    "OFFICIAL_FORMAT_AND_COORDINATE_DOCUMENTATION",
+    "OFFICIAL_METADATA_DOCUMENT_HASHES_AND_BYTE_LENGTHS"
+  ],
+  "metadata_gate_forbidden_reads": [
+    "RGB_PAYLOAD",
+    "DEPTH_PAYLOAD",
+    "POSE_NUMERIC_VALUES",
+    "STATIC_MAP_POINTS",
+    "VIDEO_VISUAL_INSPECTION",
+    "LEGACY_BASE_ORACLE_OR_FULL_6DOF_TRACES",
+    "LEGACY_SUPPORT_RESIDUAL_OR_SCORE",
+    "FORMAL_COHORT_SIGNAL_OUTCOMES"
+  ],
+  "required_freeze_before_any_future_payload_read": [
+    "OFFICIAL_SOURCE_IDENTITIES",
+    "FORMAL_SEQUENCE_IDS",
+    "SEQUENCE_EVIDENCE_ROLES",
+    "WINDOW_GENERATION_RULE",
+    "ALL_26_METADATA_SELECTION_DENOMINATOR_ROWS",
+    "CODE_ENVIRONMENT_RECEIPT_SCHEMA_AND_OUTPUT_LOCATION",
+    "PAYLOAD_READ_ORDER_AND_ORACLE_FIREWALL"
+  ],
+  "future_payload_inventory_contract_not_authorized_here": {
+    "sequence_denominator": "EXACTLY_THE_6_METADATA_SELECTED_SEQUENCES_WITH_NO_REPLACEMENT",
+    "common_time_interval": "MAX_OF_FIRST_RGB_DEPTH_POSE_TIMESTAMPS_TO_MIN_OF_LAST_RGB_DEPTH_POSE_TIMESTAMPS",
+    "window_rule": "CONTIGUOUS_NONOVERLAPPING_10_SECOND_HALF_OPEN_WINDOWS_FROM_COMMON_INTERVAL_START_DISCARD_FINAL_REMAINDER",
+    "materialization_runs": 1,
+    "zero_window_sequence": "RETAIN_AS_NOT_EVALUABLE_NO_REPLACEMENT",
+    "complete_window_denominator": "ALL_WINDOWS_MATERIALIZED_BY_THIS_RULE_ON_THE_FIRST_AUTHORIZED_READ_ONLY_INVENTORY",
+    "minimum_sequences_with_any_complete_window": 2,
+    "failure_terminal": "HOLD_NOT_EVALUABLE_NO_REPLACEMENT"
+  },
+  "fail_closed_semantics": {
+    "design_review_fail": "REVISE_ON_PAPER_WITHOUT_METADATA_OR_PAYLOAD_ACCESS",
+    "official_universe_hash_or_count_drift": "HOLD_NOT_EVALUABLE",
+    "historical_exclusion_manifest_mismatch": "HOLD_NOT_EVALUABLE",
+    "metadata_authority_or_identity_fail": "HOLD_NOT_EVALUABLE",
+    "fewer_than_6_eligible_unseen_sequences": "CLOSE_BONN_METADATA_BLIND_AUTHORITY_AND_COHORT_FREEZE_R0",
+    "metadata_gate_pass": "METADATA_ONLY_PASS_FORMAL_PHASE_B_REMAINS_CLOSED_PENDING_SEPARATE_AUTHORIZATION"
+  },
+  "forbidden_successors": [
+    "BONN_PAYLOAD_DOWNLOAD_OR_DECODE",
+    "PHASE_B_METRIC_EXECUTION",
+    "KILL_GATE_B_DECISION",
+    "REVEL_JRDB_THOR_MAGNI_OR_SELF_COLLECTION",
+    "REPLAY_DEMO",
+    "ANDROID_HUMAN_SAFETY_OR_PRODUCTION"
+  ]
+}
