@@ -1,6 +1,6 @@
 # Egomotion-compensated looming research
 
-状态：`FROZEN_RCLE_PRECURSOR + RCLE_MINIMAL_PHASE_A_R0_REVISE_VALID`
+状态：`FROZEN_RCLE_PRECURSOR + RCLE_MINIMAL_PHASE_A_STOP_CURRENT_IMPLEMENTATION_VALID`
 
 This module is an offline, research-only boundary for
 `EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R0`.
@@ -10,11 +10,12 @@ precursor evidence for the current RCLE mainline; it does not authorize an
 R1 successor or count as RCLE-Minimal Phase A. New Phase A work must use a
 separate `rcle_minimal` submodule and its own synthetic truth and gates.
 
-RCLE-Minimal Phase A now exists only in the isolated `rcle_minimal/` submodule
-and `run_synthetic_signal_audit_r0.py`. Its result is `REVISE / VALID`: clean
-rotation suppression and closing retention passed, while preregistered
-per-condition coverage failed. This does not unfreeze or import the precursor
-R0/R1 program.
+RCLE-Minimal Phase A is version-isolated in `rcle_minimal/` (R0) and
+`rcle_minimal_r1/` (the single permitted coverage revision). R1 retained the
+R0 protocol and complete trial inventory, but partial-occlusion pitch worst-cell
+coverage remained `0.60 < 0.70`. The machine result is `REVISE / VALID`; the
+frozen one-revision stop semantics make the research terminal
+`STOP_CURRENT_IMPLEMENTATION / VALID`.
 
 ## RCLE-Minimal Phase A
 
@@ -39,15 +40,33 @@ E:\codex-tools\bin\blindassist-python.cmd `
 
 Receipt SHA-256:
 `14ed23e38bacc913207aaa56903a7b2cd3bebe52631338c4760f02dc5c2041ca`.
-Phase B and Replay Demo remain closed. The only next research boundary is a
-versioned implementation-side Phase A coverage revision with the R0 protocol,
-trials, thresholds, and negative coverage evidence unchanged.
+
+The single R1 revision is under:
+
+```text
+artifacts.local/evidence/rcle_minimal_r1/formal_run_r1/
+artifacts.local/datasets/rcle_minimal_r1/formal_run_r1/
+```
+
+Validate it without rerunning:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts\research\egomotion_compensated_looming\run_synthetic_signal_audit_r1.py `
+  --validate-existing `
+  --output-root artifacts.local\evidence\rcle_minimal_r1\formal_run_r1 `
+  --dataset-root artifacts.local\datasets\rcle_minimal_r1\formal_run_r1
+```
+
+R1 receipt SHA-256:
+`d5edb9528abfa6d79b973bddfed5f4234795262fb303258c9e1a9e2628ca2b15`.
+Phase B and Replay Demo remain closed. No second coverage revision is allowed.
 
 ## 冻结环境
 
 从仓库根目录使用 `E:\codex-tools\bin\blindassist-python.cmd`。本次完整验证实际使用 Python 3.11.9、NumPy 2.1.3、OpenCV 4.13.0.92 和 Pillow 12.2.0；第三方包冻结在 `requirements-frozen.txt`。
 
-默认 Python 3.14 环境可能缺少 OpenCV、NumPy 或 Pillow，并让部分测试跳过但仍返回成功，不能作为完整验证。完整测试必须显示 `Ran 43 tests` 和 `OK`。
+默认 Python 3.14 环境可能缺少 OpenCV、NumPy 或 Pillow，并让部分测试跳过但仍返回成功，不能作为完整验证。本轮完整 Module 测试必须显示 `Ran 67 tests` 和 `OK`。
 
 ## 稳定 Interface
 

@@ -34,7 +34,9 @@ RCLE-Minimal R0 的输出是以 `s^-1` 表示的局部 expansion。它不是碰�
 
 ## 当前执行状态
 
-当前只授权 R1.1 的 **Phase A：Synthetic Signal Audit**。
+R1.1 的 **Phase A：Synthetic Signal Audit** 已执行完毕，并在唯一一次
+implementation-only coverage revision 后按冻结停止语义关闭。当前没有活跃的
+Phase A 修订或 Phase B 后继执行权限。
 
 Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固定旋转补偿、Sparse LK、局部仿射拟合和网格汇总，比较纯旋转泄漏与真实闭合保留。trial-level leakage error 和 closing error 是主判据；RSR/CRR 只作诊断比例。
 
@@ -53,7 +55,9 @@ Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固
 
 clean yaw/pitch 旋转泄漏抑制、roll 不增噪、scale up/down 与 rotation+scale closing 保留、15/30/60 FPS 一致性及三类 stress 中可评价 trial 的误差门均通过；但逐 condition coverage 硬门失败：clean worst cell 为 `10/20`，partial-occlusion pitch worst cell 为 `0/20`，因此总体 `2419/2520` 可评价不能构成 Kill Gate A PASS。
 
-当前唯一合法下一边界是一次版本化的 Phase A 实现侧 coverage revision：保留 R0 结果、协议 SHA-256 `d20e77f3…1b502`、全部 seed/trial、数值阈值和 gate，不降低门、不换矩阵、不删除不可评价。Phase B 与 Replay Demo 仍未开放。
+[Phase A Coverage Revision R1](RCLE_MINIMAL_PHASE_A_COVERAGE_REVISION_R1_RESULT_2026-07-26.md) 已执行这唯一一次版本化实现修订。它保持 R0 协议、全部 trial/seed/threshold/gate 与输入 hash 不变，使 clean 达到 `1680/1680`、stress 达到 `810/840`，并消除了 affine residual 超门；但 partial-occlusion pitch 四个 cell 仅为 `12/20、12/20、13/20、13/20`，worst `0.60 < 0.70`，coverage 仍失败。R1 receipt `d5edb952…2b15` 独立复算为 `REVISE / VALID`。
+
+由于冻结协议规定单次版本化 REVISE rerun 仍失败即停止，当前研究层终态为 `STOP_CURRENT_IMPLEMENTATION / VALID`。不得再做第二次 coverage revision、降门或改矩阵；Phase B 与 Replay Demo 仍未开放。未来若获明确新授权，只能另立结果前冻结的新信号/观测模型假设，不能继续在本轮 2520 trials 上选择实现。
 
 ## 与既有工作的关系
 
@@ -72,9 +76,9 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 | 类型 | Canonical 位置 |
 | --- | --- |
 | 研究代码 | `scripts/research/egomotion_compensated_looming/` |
-| Phase A 最小实现 | 上述 Module 内的独立 `rcle_minimal` 子模块和 runner |
-| 程序生成数据 | `artifacts.local/datasets/rcle_minimal_r0/` |
-| 报告、表格、图与 receipts | `artifacts.local/evidence/rcle_minimal_r0/` |
+| Phase A R0 / coverage R1 实现 | 上述 Module 内版本隔离的 `rcle_minimal/`、`rcle_minimal_r1/` 与对应 runner |
+| 程序生成数据 | `artifacts.local/datasets/rcle_minimal_{r0,r1}/` |
+| 报告、表格、图与 receipts | `artifacts.local/evidence/rcle_minimal_{r0,r1}/` |
 | 当前主线与权限 | `docs/research/rcle/README.md` |
 | 历史 USTRF/Looming 证据 | `docs/research/ustrf-sc/` |
 
@@ -82,11 +86,10 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 
 ## 近期交付顺序
 
-1. 冻结并记录当前未提交的 looming 前序现场，不再执行原 Looming R1 的后继任务。
-2. 在同一个 canonical Module 内直接预注册并实现 Phase A Synthetic Signal Audit。
-3. 生成主结果表、对照图、失败案例和可复算 receipt。
-4. 按 Kill Gate A 作继续、修正或停止决定。
-5. 只有通过且获得单独授权，才规划 Phase B 或最小 Replay Demo。
+1. 已冻结 looming 前序现场并完成 Phase A R0。
+2. 已按 R0 `REVISE` 只执行一次 implementation-only coverage R1。
+3. R1 coverage 仍失败，当前实现已按冻结语义停止。
+4. 不规划 Phase B 或 Replay Demo；未来只有明确授权的新预注册假设可另立任务。
 
 ## 主线变更规则
 

@@ -8,7 +8,7 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 
 - 当前版本：`v10.9.0`，`versionCode=37`。
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
-- 当前论文研究主线为 [RCLE-RF](docs/research/rcle/README.md)：R1.0 管长期能力地图，R1.1 管当前最小执行；现阶段只授权 Phase A Synthetic Signal Audit，不改变正式 App、默认模型或安全权限。
+- 当前论文研究主线为 [RCLE-RF](docs/research/rcle/README.md)：R1.0 管长期能力地图，R1.1 的 Phase A R0 与唯一 coverage revision R1 已完成；R1 worst-cell coverage 仍失败，当前实现 `STOP_CURRENT_IMPLEMENTATION / VALID`，Phase B/Replay 未开放，也不改变正式 App、默认模型或安全权限。
 - 可并存安装的 `ustrfExperiment` 实验版已接入 USTRF 二维路线代理，并直接替代旧风险分析入口；它只使用画面中心假设路线与检测框生成保守代理风险，不具备米制深度、稳定姿态或真实路线，因此不可用于独立行走，也不改变正式 App。
 - SANPO 分割路线仍为研究候选：当前离线质量门未通过，未导出正式 INT8、未执行设备晋级门、未替换 App 默认模型。
 - 正式 App 保持本地推理；眼镜设备中心仍是模拟功能，不扫描蓝牙、不连接真实眼镜。
