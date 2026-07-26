@@ -59,6 +59,27 @@ clean yaw/pitch 旋转泄漏抑制、roll 不增噪、scale up/down 与 rotation
 
 由于冻结协议规定单次版本化 REVISE rerun 仍失败即停止，当前研究层终态为 `STOP_CURRENT_IMPLEMENTATION / VALID`。不得再做第二次 coverage revision、降门或改矩阵；Phase B 与 Replay Demo 仍未开放。未来若获明确新授权，只能另立结果前冻结的新信号/观测模型假设，不能继续在本轮 2520 trials 上选择实现。
 
+## Observable Support Recovery R0 设计边界
+
+[Observable Support Recovery R0 设计预注册](RCLE_OBSERVABLE_SUPPORT_RECOVERY_R0_PREREGISTRATION_2026-07-26.md)
+已冻结一个、且仅一个新观测模型候选：
+`OBSERVABLE_THREE_FRAME_SUPPORT_MANAGER_R0`。它只研究如何用连续三帧中的
+forward-backward consistency、photometric consistency 和 track lifecycle
+识别可观测遮挡，并在原 3×3 cell 内做确定性空间补点；不得读取 generator
+occlusion mask，不得降低或绕过任何原门。
+
+本边界当前状态为
+`DESIGN_FROZEN / DESIGN_REVIEW_PASS / EXECUTION_NOT_AUTHORIZED`。最终
+设计锁 `3fcc21e2…52bac` 已通过
+[独立只读审查](RCLE_OBSERVABLE_SUPPORT_RECOVERY_R0_DESIGN_REVIEW_RESULT_2026-07-26.md)，
+但审查 PASS 不构成实现授权。旧 seeds
+`1000–1019` 与 R0/R1 结果永久只作 discovery；新的 development
+`2000–2019` 和 sealed validation `3000–3019` 已在机器设计锁中结果前固定，
+但当前禁止实现、物化 formal trials、运行结果或抓取真实数据。只有设计锁
+通过后续独立任务另获明确权限，才可“只实现一个候选”；未来 development 或
+validation 任一原 clean、error、FPS、stress、coverage 门失败即关闭候选。
+即使独立 validation 全门 `PASS`，Phase B 也仍需另行决定，不自动开放。
+
 ## 与既有工作的关系
 
 ### Route-conditioned USTRF
@@ -89,7 +110,8 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 1. 已冻结 looming 前序现场并完成 Phase A R0。
 2. 已按 R0 `REVISE` 只执行一次 implementation-only coverage R1。
 3. R1 coverage 仍失败，当前实现已按冻结语义停止。
-4. 不规划 Phase B 或 Replay Demo；未来只有明确授权的新预注册假设可另立任务。
+4. Observable Support Recovery R0 的 design-only 预注册已通过独立审查，但仍不授权实现或结果。
+5. 不规划 Phase B 或 Replay Demo；未来只有该候选独立 validation 真正全门 `PASS` 后，才可另行讨论是否重开。
 
 ## 主线变更规则
 

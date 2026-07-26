@@ -1,0 +1,243 @@
+{
+  "schema_version": "rcle.observable_support_recovery.design_lock.v3",
+  "protocol_id": "RCLE_OBSERVABLE_SUPPORT_RECOVERY_R0",
+  "status": "DESIGN_ONLY_PREREGISTERED_PENDING_INDEPENDENT_REVIEW",
+  "frozen_at": "2026-07-26T12:43:48+08:00",
+  "paper_revision": {
+    "revision": "R2",
+    "reason": "Independent rereview found one remaining cross-document baseline-photometric conflict and an impossible pre-run development-receipt lock order.",
+    "supersedes_review_failed_design_sha256": "2cf39ed78936c7f8992495f4558c45e8f4ccb5242e293420ca83c9ad74bc4f80",
+    "review_failed_predecessors": [
+      "5cb297ebbb4167778fa75dd62968134771aacfc933cb3bc9e23bee2785c08207",
+      "2cf39ed78936c7f8992495f4558c45e8f4ccb5242e293420ca83c9ad74bc4f80"
+    ],
+    "code_or_result_used_for_revision": false
+  },
+  "execution_authorized": false,
+  "result_available": false,
+  "research_question": "Can one observable three-frame support manager recover sufficient spatial support for partial-occlusion pitch without oracle occlusion masks and without changing any RCLE-Minimal expansion, affine, common-cell, pair, error, or coverage gate?",
+  "authority": {
+    "current_entry": "docs/research/rcle/README.md",
+    "baseline_protocol": "scripts/research/egomotion_compensated_looming/configs/phase_a_synthetic_signal_audit_r0.json",
+    "baseline_protocol_sha256": "d20e77f3ea5f7ac55376006f1d14feb0ffb5daffd10a42792912fb89cdb1b502",
+    "r0_receipt_sha256": "14ed23e38bacc913207aaa56903a7b2cd3bebe52631338c4760f02dc5c2041ca",
+    "r1_receipt_sha256": "d5edb9528abfa6d79b973bddfed5f4234795262fb303258c9e1a9e2628ca2b15",
+    "maximum_claim_if_validated": "SYNTHETIC_OBSERVABLE_SUPPORT_RECOVERY_EVIDENCE_ONLY",
+    "phase_b_reopens_automatically": false
+  },
+  "evidence_roles": {
+    "discovery_only": {
+      "seeds": [
+        1000,
+        1001,
+        1002,
+        1003,
+        1004,
+        1005,
+        1006,
+        1007,
+        1008,
+        1009,
+        1010,
+        1011,
+        1012,
+        1013,
+        1014,
+        1015,
+        1016,
+        1017,
+        1018,
+        1019
+      ],
+      "includes": [
+        "RCLE_MINIMAL_PHASE_A_SYNTHETIC_SIGNAL_AUDIT_R0",
+        "RCLE_MINIMAL_PHASE_A_COVERAGE_REVISION_R1"
+      ],
+      "may_select_or_validate_candidate": false,
+      "permanent_role": "DISCOVERY_EVIDENCE"
+    },
+    "development": {
+      "seeds": [
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019
+      ],
+      "matrix": "EXACT_BASELINE_2520_TRIAL_MATRIX_WITH_SEED_SUBSTITUTION_ONLY",
+      "planned_trials": 2520,
+      "failed_seed_replacement_forbidden": true
+    },
+    "sealed_validation": {
+      "seeds": [
+        3000,
+        3001,
+        3002,
+        3003,
+        3004,
+        3005,
+        3006,
+        3007,
+        3008,
+        3009,
+        3010,
+        3011,
+        3012,
+        3013,
+        3014,
+        3015,
+        3016,
+        3017,
+        3018,
+        3019
+      ],
+      "matrix": "EXACT_BASELINE_2520_TRIAL_MATRIX_WITH_SEED_SUBSTITUTION_ONLY",
+      "planned_trials": 2520,
+      "failed_seed_replacement_forbidden": true,
+      "may_materialize_before_candidate_and_development_receipts_are_hash_locked": false,
+      "maximum_runs": 1,
+      "post_validation_patch_or_rerun_forbidden": true
+    }
+  },
+  "single_candidate": {
+    "candidate_id": "OBSERVABLE_THREE_FRAME_SUPPORT_MANAGER_R0",
+    "candidate_count": 1,
+    "input_window": [
+      "t_minus_1",
+      "t",
+      "t_plus_1"
+    ],
+    "estimation_pair": "t_to_t_plus_1_ONLY",
+    "first_pair_without_history": "RUN_UNCHANGED_R1_BASELINE_AND_KEEP_IN_THE_ORIGINAL_PAIR_DENOMINATOR",
+    "prior_leg_role": "OBSERVABLE_TRACK_LIFECYCLE_AND_OCCLUSION_EVIDENCE_ONLY",
+    "prior_leg_coordinate_path": "RAW_OBSERVED_T_MINUS_1_TO_T",
+    "temporal_expansion_pooling": false,
+    "shared_initial_support_for_raw_and_compensated_paths": true,
+    "baseline_first": true,
+    "activation": "ONLY_IN_A_3X3_CELL_WHERE_BASELINE_R1_SUPPORT_IS_BELOW_12_OR_HULL_IS_BELOW_0_10_IN_EITHER_RAW_OR_COMPENSATED_PATH",
+    "observable_occlusion_rule": {
+      "oracle_occlusion_mask_access": "FORBIDDEN",
+      "generator_occlusion_metadata_access": "FORBIDDEN",
+      "signals": [
+        "FORWARD_BACKWARD_CONSISTENCY",
+        "PHOTOMETRIC_CONSISTENCY",
+        "THREE_FRAME_TRACK_LIFECYCLE"
+      ],
+      "prior_survivor_definition": "A_RAW_T_MINUS_1_TO_T_TRACK_WITH_FINITE_FORWARD_SOLUTION_FORWARD_BACKWARD_ERROR_AT_MOST_1_0PX_AND_A_FULL_VALID_7X7_PHOTOMETRIC_PATCH_ERROR_AT_MOST_20_INTENSITY_IN_BOTH_OBSERVED_FRAMES",
+      "prior_cell_consensus_membership_required": false,
+      "forward_backward_threshold_pixels": 1.0,
+      "photometric_measure": "MEDIAN_CENTERED_7X7_PATCH_MEAN_ABSOLUTE_ERROR_ON_8BIT_GRAYSCALE",
+      "photometric_threshold_intensity": 20.0,
+      "patch_sampling": {
+        "sample_coordinates": "7X7_INTEGER_OFFSETS_MINUS_3_TO_PLUS_3_AROUND_THE_SUBPIXEL_TRACK_CENTER",
+        "interpolation": "BILINEAR",
+        "median_center_each_patch_separately": true,
+        "valid_sample_requirement": "ALL_49_SAMPLES_MUST_LIE_INSIDE_THE_IMAGE_AND_THE_PATH_SPECIFIC_OBSERVABLE_GEOMETRIC_VALIDITY_REGION",
+        "clipping_padding_or_partial_patch": "FORBIDDEN",
+        "raw_path_validity_region": "IMAGE_BOUNDS_ONLY",
+        "compensated_path_validity_region": "IMAGE_BOUNDS_INTERSECT_SOURCE_KNOWN_ROTATION_WARP_VALIDITY",
+        "generator_occlusion_mask_or_metadata": "FORBIDDEN"
+      },
+      "field_exit_prediction": "CONSTANT_VELOCITY_FROM_THE_OBSERVED_T_MINUS_1_TO_T_TRACK_SCALED_BY_CURRENT_DT_OVER_PRIOR_DT",
+      "field_exit_definition": "GEOMETRIC_FIELD_EXIT_IF_THE_FINITE_FORWARD_CENTER_OR_IF_FORWARD_IS_UNAVAILABLE_THE_OBSERVABLE_CONSTANT_VELOCITY_PREDICTION_CANNOT_SUPPORT_A_FULL_7X7_PATCH_IN_THE_PATH_SPECIFIC_VALIDITY_REGION",
+      "classification_precedence": [
+        "GEOMETRIC_FIELD_EXIT",
+        "OBSERVABLE_OCCLUSION",
+        "ORDINARY_NEW_TRACK_FAILURE"
+      ],
+      "occlusion_classification": "A_TRACK_THAT_SURVIVED_T_MINUS_1_TO_T_IS_OBSERVABLY_OCCLUDED_AT_T_TO_T_PLUS_1_WHEN_IT_IS_NOT_A_GEOMETRIC_FIELD_EXIT_AND_CURRENT_LEG_FORWARD_BACKWARD_OR_PHOTOMETRIC_CONSISTENCY_FAILS",
+      "new_track_failure_is_occlusion": false,
+      "geometric_field_exit_source": "OBSERVED_TRACK_COORDINATES_OBSERVABLE_CONSTANT_VELOCITY_PREDICTION_IMAGE_BOUNDS_AND_SOURCE_KNOWN_ROTATION_WARP_BOUNDS_ONLY",
+      "observed_occlusion_exclusion_center": "THE_PRIOR_SURVIVOR_ENDPOINT_AT_T",
+      "observed_occlusion_exclusion_radius_pixels": 10.0
+    },
+    "deterministic_spatial_supplementation": {
+      "synthetic_correspondence_or_flow_imputation": "FORBIDDEN",
+      "source_frame": "t",
+      "target_cells": "ACTIVATED_3X3_CELLS_ONLY",
+      "subdivision_per_target_cell": [
+        4,
+        4
+      ],
+      "selection_order": "ROW_MAJOR_SUBCELL_ORDER_THEN_HIGHEST_SHI_TOMASI_RESPONSE_THEN_Y_THEN_X",
+      "maximum_new_seed_per_subcell": 1,
+      "minimum_distance_pixels": 5.0,
+      "maximum_total_features_per_3X3_cell": 80,
+      "candidate_pool_order": "BASELINE_T_FEATURES_THEN_SURVIVING_T_MINUS_1_TO_T_TRACK_ENDPOINTS_THEN_SPATIAL_SUPPLEMENTS",
+      "duplicate_suppression_radius_pixels": 5.0,
+      "exclude_observed_occlusion_neighborhoods": true,
+      "all_supplemented_points_must_be_observably_tracked": true,
+      "point_class_acceptance": {
+        "baseline_t_feature": "UNCHANGED_R1_PATH_SPECIFIC_ACCEPTANCE_WITH_NO_NEW_PHOTOMETRIC_GATE; THESE_POINTS_ALONE_DEFINE_THE_BASELINE_SUPPORT_AND_ACTIVATION_DECISION",
+        "carried_survivor_endpoint": "PRIOR_RAW_LEG_MUST_MEET_PRIOR_SURVIVOR_DEFINITION; CURRENT_RAW_AND_COMPENSATED_PATHS_EACH_REQUIRE_FINITE_FORWARD_FORWARD_BACKWARD_ERROR_AT_MOST_1_0PX_AND_A_FULL_PATH_VALID_7X7_PHOTOMETRIC_ERROR_AT_MOST_20_INTENSITY",
+        "spatial_supplement": "CURRENT_RAW_AND_COMPENSATED_PATHS_EACH_REQUIRE_FINITE_FORWARD_FORWARD_BACKWARD_ERROR_AT_MOST_1_0PX_AND_A_FULL_PATH_VALID_7X7_PHOTOMETRIC_ERROR_AT_MOST_20_INTENSITY",
+        "path_specific_counting": "A_NON_BASELINE_POINT_COUNTS_TOWARD_SUPPORT_AND_HULL_ONLY_IN_EACH_PATH_WHERE_ITS_OWN_CURRENT_LEG_ACCEPTANCE_PASSES",
+        "post_merge_consensus": "THE_UNCHANGED_R1_CONSENSUS_AND_ALL_ORIGINAL_LOCAL_AFFINE_GATES_APPLY_TO_THE_MERGED_PATH_SPECIFIC_CORRESPONDENCES"
+      },
+      "no_accepted_correspondence_means": "NO_SUPPORT_RECOVERY"
+    }
+  },
+  "unchanged_contract": {
+    "expansion_definition": "0.5_times_trace_A",
+    "grid_rows": 3,
+    "grid_cols": 3,
+    "minimum_tracks_per_cell": 12,
+    "minimum_track_convex_hull_fraction": 0.1,
+    "maximum_design_condition_number": 1000.0,
+    "maximum_median_fit_residual_pixels_per_frame": 0.75,
+    "minimum_common_evaluable_cells_per_pair": 5,
+    "minimum_evaluable_pair_fraction_per_trial": 0.8,
+    "kill_gate_a": "EXACT_BASELINE_PROTOCOL",
+    "clean_error_fps_stress_and_coverage_gates": "EXACT_BASELINE_PROTOCOL",
+    "not_evaluable_is_never_imputed_as_zero": true
+  },
+  "execution_sequence_if_later_authorized": [
+    "INDEPENDENT_DESIGN_REVIEW_PASS",
+    "IMPLEMENT_EXACTLY_ONE_SUPPORT_MANAGER_CANDIDATE",
+    "LOCK_CODE_TEST_ENVIRONMENT_RECEIPT_SCHEMA_AND_DEVELOPMENT_OUTPUT_LOCATION",
+    "RUN_FULL_DEVELOPMENT_MATRIX_ONCE",
+    "CLOSE_CANDIDATE_IF_ANY_ORIGINAL_GATE_FAILS",
+    "IF_DEVELOPMENT_PASSES_LOCK_CANDIDATE_HASHES_BEFORE_VALIDATION_MATERIALIZATION",
+    "RUN_FULL_SEALED_VALIDATION_MATRIX_ONCE_IN_AN_INDEPENDENT_CONTEXT",
+    "CLOSE_CANDIDATE_IF_ANY_ORIGINAL_GATE_FAILS",
+    "IF_AND_ONLY_IF_VALIDATION_PASSES_DISCUSS_PHASE_B_IN_A_SEPARATE_AUTHORIZATION"
+  ],
+  "forbidden_directions": [
+    "LOWER_SUPPORT_GATE",
+    "LOWER_HULL_GATE",
+    "LOWER_RESIDUAL_GATE",
+    "LOWER_COMMON_CELL_GATE",
+    "LOWER_PAIR_FRACTION_GATE",
+    "LOWER_COVERAGE_GATE",
+    "READ_SYNTHETIC_GENERATOR_OCCLUSION_MASK",
+    "READ_SYNTHETIC_GENERATOR_OCCLUSION_METADATA",
+    "EXPAND_SYNTHETIC_CANVAS_TO_REMOVE_FIELD_EXIT",
+    "CONTINUE_RANSAC_FEATURE_COUNT_OR_LK_PARAMETER_SEARCH_ON_SEEDS_1000_TO_1019",
+    "SEARCH_MULTIPLE_SUPPORT_MANAGER_VARIANTS",
+    "DENSE_FLOW_REPLACEMENT_OR_BEST_OF_SELECTION",
+    "REAL_DATA_ACQUISITION",
+    "PHASE_B_OR_REPLAY_EXECUTION",
+    "ANDROID_HUMAN_SAFETY_OR_PRODUCTION_SUCCESSOR"
+  ],
+  "fail_closed_semantics": {
+    "design_review_fail": "REVISE_DESIGN_ON_PAPER_WITHOUT_CODE_OR_RESULTS",
+    "development_fail": "CLOSE_OBSERVABLE_THREE_FRAME_SUPPORT_MANAGER_R0",
+    "validation_fail": "CLOSE_OBSERVABLE_THREE_FRAME_SUPPORT_MANAGER_R0_WITH_NO_PATCH_OR_RERUN",
+    "validation_pass": "INDEPENDENT_SYNTHETIC_PASS_ONLY_PHASE_B_REMAINS_CLOSED_PENDING_SEPARATE_DECISION"
+  }
+}
