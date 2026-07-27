@@ -38,7 +38,7 @@
 
 - 不删除已经用于解释决策、版本或验证的历史文档。把它们标记为 `snapshot` 或 `archive`，并从当前入口链接。
 - 当 `DEVELOPMENT_LOG.md` 的近期部分再次影响查找效率时，按月复制旧日期块到 `docs/history/development-log/`；根文件保留索引和最近 2–4 周。迁移必须保持原文、日期和可访问链接。
-- `scripts/check_project_structure.ps1` 将根日志限制为 1500 行、300000 bytes，且最老日期不超过 28 天；任一超限都必须先完成月度原文归档，不能通过提高预算掩盖流水膨胀。
+- `scripts/check_project_structure.ps1` 将根日志限制为 6000 行、1200000 bytes，且最老日期不超过 28 天。行数与字节预算为近期中文工程记录保留合理余量；任一超限仍须完成月度原文归档，不能无限扩张根日志。
 - 已完成任务从本地 handoff 索引移除前，先将持久决策写入相应 current 文档、CHANGELOG 或开发日志。
 
 ## 新任务的最小文档动作

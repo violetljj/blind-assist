@@ -1390,3 +1390,9 @@
 - V13 为 `15 gate / 14 pass / CONDITIONAL_RESEARCH_GO`，新增 gate 仅获 `source-motion-stratification-only`；`device_metric_geometry_admission` 仍是唯一失败，`production_authority=false`。详细协议、CI、分母和证据见 `docs/research/ustrf-sc/USTRF_SC_RESEARCH_METRICS_2026-07-20.md`。
 - GPU 调度改为风险分级：已稳定的同类 bounded 配置可按显存、温度和系统余量灵活选择 batch/规模；新型重负载或长跑才要求先做可停止 pilot、守护/分片 receipt。曾两次蓝屏的 8,580 帧、`batch=64/imgsz=320/FP16` 旧入口组合仍禁止复用。
 - 验证：22 个 USTRF Python test 文件共 60 tests 通过；46 个 Python 文件 `py_compile` 与 PowerShell guard 语法检查通过；JDK 17 下 `:core:ustrf:test`、`:ustrf-shadow-benchmark` Kotlin/AndroidTest 编译和 `:device-benchmark:compileDebugKotlin` 通过；文档索引与仓库卫生检查通过。
+
+## 2026-07-27：放宽近期开发日志容量预算
+
+- 执行者：violjjet
+- 将根 `DEVELOPMENT_LOG.md` 的结构门禁从 1500 行 / 300000 bytes 调整为 6000 行 / 1200000 bytes，解决中文研究记录在行数仍合理时过早触发字节上限的问题。
+- 继续保留最老日期不超过 28 天的近期窗口和月度原文归档要求；本次不改变日志职责、历史归档路径或其他项目结构门禁。

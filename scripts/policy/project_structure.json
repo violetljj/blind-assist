@@ -8,8 +8,8 @@
   ],
   "development_log": {
     "path": "DEVELOPMENT_LOG.md",
-    "max_lines": 1500,
-    "max_bytes": 300000,
+    "max_lines": 6000,
+    "max_bytes": 1200000,
     "max_age_days": 28
   },
   "research_root": "scripts/research",

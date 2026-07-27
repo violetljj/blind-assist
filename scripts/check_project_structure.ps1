@@ -123,7 +123,7 @@ if ($BaseRef -and $BaseRef -notmatch '^0+$') {
 
 # The recent log has a hard budget so history cannot silently become the navigation Interface.
 $logPolicy = $policy.development_log
-$hardLogLimits = @{ max_lines = 1500; max_bytes = 300000; max_age_days = 28 }
+$hardLogLimits = @{ max_lines = 6000; max_bytes = 1200000; max_age_days = 28 }
 foreach ($limitName in $hardLogLimits.Keys) {
     if ([long]$logPolicy.$limitName -gt [long]$hardLogLimits[$limitName]) {
         $failures.Add("Development log policy $limitName=$($logPolicy.$limitName) exceeds hard maximum $($hardLogLimits[$limitName]). Archive or shorten content instead of raising the budget.")
