@@ -5,6 +5,15 @@
 This module is an offline, research-only boundary for
 `EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R0`.
 
+The `rgb_algorithm_cid_sims_floor3_2_cross_sequence_holdout_r0/` module is a
+separate 8-worker geometry-first development holdout for the different
+official `floor3_2` run. Its frozen selection found 17 positive, zero
+below-reference and one ambiguous window, so no RGB member bytes were read and
+the unchanged RGB algorithm was not run. The formal validator terminal remains
+INVALID because of an exact Decimal/float median representation check; the
+bounded post-hoc R1 audit validates the immutable evidence but does not rewrite
+that terminal.
+
 The original R0/R1 program is stopped. The module is retained as reproducible
 precursor evidence for the current RCLE mainline; it does not authorize an
 R1 successor or count as RCLE-Minimal Phase A. New Phase A work must use a

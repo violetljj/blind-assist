@@ -70,7 +70,7 @@
 
 `research/frontier-upgrade-2026-07/` 按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层。该目录用于研究追溯；生产行为仍以当前协议、代码和门禁为准。
 
-- [RCLE 研究主线](research/rcle/README.md)：`current`；B1 R5 evidence version 与依赖 B1B 因 replay mismatch 关闭，但科学问题保持开放；当前进入 [Phase B Progressive Discovery](research/rcle/RCLE_PHASE_B_PROGRESSIVE_PROTOCOL_2026-07-26.md)，不授权 RGB algorithm canary 或 confirmation。
+- [RCLE 研究主线](research/rcle/README.md)：`current`；CID-SIMS `floor3_1` 同序列 holdout 为 `7 positive / 0 below-reference`，不同 official run 的 `floor3_2` development holdout 仍为 `17 positive / 0 below-reference / 1 ambiguous`，两者均在 RGB 前 `NOT_EVALUABLE`。`floor3_2` formal validator 的数值表示错误永久保留 `INVALID`，bounded post-hoc evidence audit 为 `errors=[] / VALID`；无自动 `floor3_3` 救场、confirmation、performance、Replay、Android 或产品权限。
 - [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。
 - [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：历史 route-conditioned 研究和 RCLE 前序 Looming 证据；不再是研究主线，不代表生产授权。
 - 开发日志月度历史：[2026-05](history/development-log/2026-05.md) · [2026-06](history/development-log/2026-06.md) · [2026-07](history/development-log/2026-07.md)。近期记录继续以根 `DEVELOPMENT_LOG.md` 为准。

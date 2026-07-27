@@ -1,0 +1,56 @@
+{
+  "schema_version": "rcle.rgb_algorithm.cross_sequence_holdout.posthoc_validator.v1",
+  "protocol_id": "RCLE_RGB_ALGORITHM_CID_SIMS_FLOOR3_2_CROSS_SEQUENCE_HOLDOUT_R0_POSTHOC_VALIDATOR_R1",
+  "created_on": "2026-07-27",
+  "status": "POSTHOC_DIAGNOSTIC_CONTRACT_AFTER_FORMAL_INVALID_TERMINAL",
+  "authority": {
+    "may_overwrite_formal_terminal": false,
+    "may_rerun_geometry_or_rgb_algorithm": false,
+    "may_change_selection_rules_or_thresholds": false,
+    "maximum_claim": "POSTHOC_VALIDATION_OF_FROZEN_R0_EVIDENCE_ONLY"
+  },
+  "formal_terminal": "CROSS_SEQUENCE_HOLDOUT_INVALID / INVALID",
+  "formal_failure": "The frozen independent validator compared the producer float median with a Decimal-recomputed median by exact float.hex equality and rejected W3; all other checks completed without error.",
+  "repair_scope": {
+    "only_change": "For numeric aggregate equivalence, accept finite values when math.isclose(rel_tol=1e-12, abs_tol=1e-15); keep None exact and keep every identity, hash, ordering, role, selection, trigger, abstention, authority and terminal check unchanged.",
+    "rel_tol": 1e-12,
+    "abs_tol": 1e-15,
+    "reason": "Even-cardinality median averaging in binary float versus Decimal can differ by one or a few representational rounding units without changing the underlying ledger values or any frozen scientific threshold."
+  },
+  "frozen_inputs": [
+    {
+      "path": "artifacts.local/evidence/rcle_rgb_algorithm_cid_sims_floor3_2_cross_sequence_holdout_r0/run_r0/claim.json",
+      "sha256": "51a0ee8de28c90e02c53de61331c3b570bf9417d115be55891fc28bee2cf817d"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_rgb_algorithm_cid_sims_floor3_2_cross_sequence_holdout_r0/run_r0/FAILURE.json",
+      "sha256": "bbf0437455ca712577d306cc7fbdd61690cf721db6e0e56a5f8857bb649a98da"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_rgb_algorithm_cid_sims_floor3_2_cross_sequence_holdout_r0/run_r0/geometry_pair_ledger.jsonl",
+      "sha256": "6cc2678df38d91b3be301b8239acc71daaf0138e24b01d7a4ec84c6de6705196"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_rgb_algorithm_cid_sims_floor3_2_cross_sequence_holdout_r0/run_r0/geometry_selection.json",
+      "sha256": "b07b59ed551af7f23f87fbb2d421d8536f7679d23502b41a71a295b6a72f6cac"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_rgb_algorithm_cid_sims_floor3_2_cross_sequence_holdout_r0/run_r0/result.json",
+      "sha256": "668d7a02babcdb5b157dad56698753de59a31b8ef27e0813dd55707eeb780a5c"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_cid_sims_floor3_2_cross_sequence_holdout_r0/validator.py",
+      "sha256": "e98f4fe346e9032f3ae8c3594dc5d2192467caa8e08d4bc540a9ff64eabb14c7"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_cid_sims_floor3_2_cross_sequence_holdout_r0/IMPLEMENTATION_LOCK_R0.json",
+      "sha256": "be2735352f4800d3f7e88bb396e74134f1c4b0bc92989267b258a6b2c7a3cf94"
+    }
+  ],
+  "required_reporting": [
+    "Preserve the formal INVALID terminal",
+    "Report whether the frozen geometry evidence independently recomputes under the bounded numeric repair",
+    "Report exact positive, below-reference and ambiguous window counts",
+    "Confirm whether RGB identity, bytes, cache, ledger or algorithm execution occurred"
+  ]
+}

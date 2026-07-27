@@ -1,5 +1,6 @@
 # Development Log
 ## 2026-07-27
+- 时间：2026-07-27；执行者：violjjet。完成 [CID-SIMS `floor3_1` disjoint geometry-stratified holdout R0](docs/research/rcle/RCLE_RGB_ALGORITHM_CID_SIMS_FLOOR3_1_DISJOINT_GEOMETRY_STRATIFIED_HOLDOUT_R0_RESULT_2026-07-27.md)：先冻结 W3–W11、W2 guard、20 秒选中间隔、full-pair geometry roles 与精确 `2 positive + 2 below-reference`；七个身份合格窗均 `299/299` 可评价、positive fraction `1.0`，W5/W9 因帧数不符身份门不评价，低参考窗为 `0`，终态 `GEOMETRY_STRATIFIED_WINDOWS_NOT_EVALUABLE / VALID`。selected RGB identity/cache/ledger 均未创建，RGB bytes `0`、算法未运行；独立 validator 复算 geometry ledger identity/aggregate/selection 为 `errors=[] / VALID`。新增专用 frozen runner/validator、11 项规则与 firewall 测试、8-worker guarded preflight；首个 launcher 因默认裸 Python 缺 `cv2` 在 claim 前退出，随后显式使用项目 venv 完成唯一 claim，防止将 preclaim 环境错误冒充科学运行。结果只否定 floor3_1 剩余固定网格同时提供两类角色的假设，不构成 RGB 失败、跨序列泛化或性能资格。
 - violjjet: CID-RGB R0.
 - 2026-07-27 violjjet: [approach-role R0](docs/research/rcle/RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R0_RESULT_2026-07-27.md)：EVIMO2 `sanity_ll` 13 窗/3895 pair，0 准入、replay mismatch 0，`HOLD / VALID`；无 RGB、替补或算法权限。
 - 2026-07-27 violjjet: [RGB algorithm canary R0 F1 design](docs/research/rcle/RCLE_PHASE_B_RGB_ALGORITHM_CANARY_R0_DESIGN_REVIEW_RESULT_2026-07-27.md) 第三轮独立审查 `PASS`，30 tests；真实 approach role 缺失，保持 `HOLD / VALID / EXECUTION_NOT_AUTHORIZED`。
@@ -1396,3 +1397,10 @@
 - 执行者：violjjet
 - 将根 `DEVELOPMENT_LOG.md` 的结构门禁从 1500 行 / 300000 bytes 调整为 6000 行 / 1200000 bytes，解决中文研究记录在行数仍合理时过早触发字节上限的问题。
 - 继续保留最老日期不超过 28 天的近期窗口和月度原文归档要求；本次不改变日志职责、历史归档路径或其他项目结构门禁。
+
+## 2026-07-27：CID-SIMS floor3_2 cross-sequence development holdout
+
+- 在首次 ZIP open 前冻结官方 transport、科学合同、新 runner/独立 validator 与 implementation lock；官方 `floor3_2.zip` 的 exact bytes、MD5 和本地 SHA-256 全部通过，geometry 固定使用 8 workers。
+- 全部 18 个完整 10 秒窗的 geometry coverage 均为 1.0；角色为 `17 positive / 0 below-reference / 1 ambiguous`，无法形成精确 2+2，故 selected RGB identity/cache/ledger 未创建，RGB bytes 为 0，冻结 RGB algorithm 未运行。
+- Formal validator 因 W3 偶数样本 median 的 Decimal/float 表示级精确比较保留 `CROSS_SEQUENCE_HOLDOUT_INVALID / INVALID`。Post-hoc R1 不重跑算法，只以 `rel_tol=1e-12, abs_tol=1e-15` 修复聚合数值等价，其余 identity/hash/ledger/role/selection 检查不变，结果 `errors=[] / VALID`；不回写 formal terminal。
+- 最大权限仍为同源、同场景、不同 run 的 development holdout，不是 confirmation、cross-source generalization 或性能资格。Floor3 两个 run 都缺冻结低参考角色，后继只能另立 outcome-blind source discovery，不能自动用 floor3_3 或改门。

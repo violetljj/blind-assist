@@ -1,0 +1,207 @@
+{
+  "schema_version": "rcle.rgb_algorithm.disjoint_geometry_stratified_holdout.v1",
+  "protocol_id": "RCLE_RGB_ALGORITHM_CID_SIMS_FLOOR3_1_DISJOINT_GEOMETRY_STRATIFIED_HOLDOUT_R0",
+  "created_on": "2026-07-27",
+  "status": "PREREGISTERED_BEFORE_CANDIDATE_GEOMETRY_OR_RGB_OUTCOME_ACCESS",
+  "question": "Does the unchanged RGB algorithm reproduce window-level direction separation in geometry-selected, temporally disjoint, previously uninspected windows from the same CID-SIMS floor3_1 sequence?",
+  "authority": {
+    "maximum_claim": "SAME_SEQUENCE_DISJOINT_WINDOW_DEVELOPMENT_HOLDOUT_ONLY",
+    "cross_source_confirmation_authorized": false,
+    "performance_qualification_authorized": false,
+    "threshold_tuning_authorized": false,
+    "algorithm_change_authorized": false,
+    "product_or_safety_claim_authorized": false
+  },
+  "source": {
+    "archive_path": "artifacts.local/datasets/cid_sims_v6/office_building/floor3/floor3_1.zip",
+    "archive_bytes": 2211008069,
+    "archive_md5": "585d38855ad7d04817991cdbbb72016b",
+    "archive_sha256": "b622be7918d0003c97f0e33cc30071c9995f49c59726240e7475f2cde8572984",
+    "sequence_id": "floor3_1",
+    "pose_member": "floor3_1/groundtruth.txt",
+    "intrinsics": {
+      "fx": 386.52199190267083,
+      "fy": 387.32300428823663,
+      "cx": 326.5103569741365,
+      "cy": 237.40293732598795
+    },
+    "depth_units_per_meter": 1000.0,
+    "depth_sample_stride_px": 8,
+    "minimum_radius_px": 8.0,
+    "network_access_forbidden": true,
+    "download_forbidden": true
+  },
+  "immutable_algorithm_bindings": [
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0/producer.py",
+      "sha256": "23211b1acec517b3c487d183742035887ff250bf51019b0cd1e1dea1d809bec5"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0/IMPLEMENTATION_LOCK_R0.json",
+      "sha256": "3ca629e70ed0d349b01b3c0de9f05c659a8f7f09da77948ce7899ca4eb8b858d"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/configs/phase_a_synthetic_signal_audit_r0.json",
+      "sha256": "d20e77f3ea5f7ac55376006f1d14feb0ffb5daffd10a42792912fb89cdb1b502"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_minimal/rotation_compensation.py",
+      "sha256": "ab964ebaf09456dffe6fe57248bc0501dbe8547113a1cab931f1953598e3ff24"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_minimal/evaluation.py",
+      "sha256": "068cca009db7dbad33d54cfde7c5ac12e9a0d2fac445d849c9fc0b73e91d2f8c"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_minimal/__init__.py",
+      "sha256": "6f05a86b61d947fdbc58ef600fedd75e152b5d9aeb2c995e208da7fd835ab0ea"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_minimal_r1/sparse_flow.py",
+      "sha256": "36401e8335266896cd91f153b0772ef0718004ff03f527af965b63add70973ca"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_minimal_r1/local_expansion.py",
+      "sha256": "41e67c0f30b85a9a67449d96df14188093560e581aa415c8957cc0377cc8dbd6"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_minimal_r1/__init__.py",
+      "sha256": "d9d9f701b60ab0ccdd5accc8adc200c2354fce8fcfa9fb847a159d29bb3d4849"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_observable_support_r0/support_manager.py",
+      "sha256": "83ac2ef3cce3fce625b46574aa67b38ed96679a9579e6d844066da709cfc7d08"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_observable_support_r0/evaluation.py",
+      "sha256": "00b6cf601bf3073e9c261b04bbca9a8cb2b01de4c4b9bfed0bab62a5576a27b1"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rcle_observable_support_r0/__init__.py",
+      "sha256": "18c8890efd95a3ad4c5b73b5bf9bf6db327787934b662cfb40eae407aed255e6"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/producer.py",
+      "sha256": "0ce6256e12dd4536f284c7047f1e63faf955fa7bcf87f28fcb93c3e5d9de1add"
+    }
+  ],
+  "geometry_only_selection": {
+    "timestamp_source": "depth PNG member names only",
+    "pose_source": "bound groundtruth.txt only",
+    "depth_source": "previous-frame depth PNG only",
+    "rgb_member_bytes_forbidden_until_selection_and_identity_lock_fsync": true,
+    "anchor_timestamp_s": "1673419222.281298",
+    "window_duration_s": "10.000000",
+    "inspected_interval": {
+      "start_timestamp_s": "1673419222.281298",
+      "end_timestamp_s": "1673419242.281298"
+    },
+    "guard_band_before_s": "10.000000",
+    "guard_band_after_s": "10.000000",
+    "candidate_window_indices": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "expected_frames_per_window": 300,
+    "expected_pairs_per_window": 299,
+    "maximum_pair_dt_s": "0.100",
+    "minimum_pair_geometry_coverage": 0.8,
+    "bands": {
+      "below_trigger_reference": "signed_radial_expansion_per_s < 0.01",
+      "weak_positive_radial": "0.01 <= signed_radial_expansion_per_s < 0.05",
+      "positive_approach_geometry": "signed_radial_expansion_per_s >= 0.05"
+    },
+    "role_eligibility": {
+      "positive_approach_window": {
+        "minimum_fixed_denominator_positive_fraction": 0.8,
+        "minimum_longest_positive_run_duration_s": 5.0
+      },
+      "below_trigger_reference_window": {
+        "minimum_fixed_denominator_below_fraction": 0.8,
+        "minimum_longest_below_run_duration_s": 5.0
+      }
+    },
+    "selection": {
+      "required_positive_windows": 2,
+      "required_below_reference_windows": 2,
+      "minimum_selected_start_separation_s": "20.000000",
+      "tie_break": "lexicographically earliest sorted global window-index tuple among exact 2-positive plus 2-below feasible sets",
+      "partial_selection_replacement_forbidden": true,
+      "insufficient_terminal": "GEOMETRY_STRATIFIED_WINDOWS_NOT_EVALUABLE / VALID"
+    },
+    "abstention_imputation_forbidden": true
+  },
+  "frozen_rgb_holdout": {
+    "candidate_id": "POSE_ROTATION_COMPENSATED_OBSERVABLE_THREE_FRAME_LOCAL_EXPANSION_R0",
+    "implementation": "Call the immutable development-canary evaluate_window implementation without modification",
+    "rgb_decode": "Pillow RGB uint8 followed by cv2.COLOR_RGB2GRAY; no resize, crop, enhancement, denoise, or gamma change",
+    "trigger_metric": "compensated_expansion_median_per_s",
+    "trigger_operator": "GT",
+    "trigger_threshold_per_s": 0.01,
+    "minimum_window_pair_coverage": 0.8,
+    "threshold_tuning_forbidden": true,
+    "selected_rgb_identity": "ZIP central-directory member name, CRC32, uncompressed bytes, compressed bytes and canonical identity-manifest SHA-256 frozen after geometry selection and before any selected RGB member bytes are read"
+  },
+  "runtime_identity": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.9",
+    "opencv": "4.13.0",
+    "numpy": "2.1.3",
+    "pillow": "12.2.0"
+  },
+  "reported_metrics": [
+    "geometry candidate ledger, coverage, bands, role eligibility, spacing feasibility and selected identity",
+    "per-window RGB evaluable pairs, abstentions, median compensated expansion, trigger coverage, first trigger and longest trigger run",
+    "strict all-positive-versus-all-below window direction ordering in both median expansion and fixed-denominator trigger coverage",
+    "positive-window sustained trigger coverage and run duration",
+    "below-reference-window sustained false-trigger coverage and run duration",
+    "geometry-positive first onset, RGB first trigger onset and RGB-minus-geometry onset delta",
+    "independent selected-cache, ledger identity and aggregate recomputation"
+  ],
+  "decision_semantics": {
+    "not_evaluable": "If exact 2-positive plus 2-below geometry windows cannot be selected under all frozen coverage, role and spacing rules, stop before RGB member-byte access. If any selected RGB window has pair coverage below 0.80, return NOT_EVALUABLE without imputation.",
+    "direction_replicated": "Every selected positive window must strictly exceed every selected below-reference window in both median compensated expansion and fixed-denominator trigger coverage.",
+    "positive_sustained_coverage_and_low_false_trigger": "Report exact values descriptively; do not add a post-selection pass threshold.",
+    "replicated_terminal": "DISJOINT_WINDOW_DIRECTION_REPLICATED / VALID",
+    "not_replicated_terminal": "DISJOINT_WINDOW_DIRECTION_NOT_REPLICATED / VALID",
+    "rgb_not_evaluable_terminal": "RGB_HOLDOUT_NOT_EVALUABLE / VALID",
+    "invalid_terminal": "DISJOINT_HOLDOUT_INVALID / INVALID"
+  },
+  "interpretation": {
+    "maximum_answer": "Whether the unchanged RGB result direction recurs in previously uninspected, geometry-selected, disjoint windows of the same floor3_1 sequence",
+    "forbidden_claims": [
+      "cross-sequence or cross-source generalization",
+      "independent confirmation",
+      "independent RGB algorithm implementation confirmation",
+      "performance qualification",
+      "Android, human, product or safety efficacy"
+    ],
+    "temporal_pairs_are_independent_trials": false
+  },
+  "validation": {
+    "validator_imports_formal_runner": false,
+    "validator_recomputes_selected_member_identity": true,
+    "validator_recomputes_ledger_identity_and_trigger": true,
+    "validator_recomputes_all_reported_rgb_aggregates": true,
+    "validator_reexecutes_rgb_algorithm": false,
+    "required_mutations": [
+      "contract or implementation-lock drift",
+      "immutable algorithm binding drift",
+      "guard-band or candidate-grid drift",
+      "selection role or spacing forgery",
+      "RGB byte access before selection identity lock",
+      "selected member identity drift",
+      "ledger row or order drift",
+      "trigger or abstention drift",
+      "aggregate or onset forgery",
+      "authority escalation"
+    ]
+  }
+}
