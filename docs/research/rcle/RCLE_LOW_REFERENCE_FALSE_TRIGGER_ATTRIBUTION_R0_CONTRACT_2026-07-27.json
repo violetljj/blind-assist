@@ -1,0 +1,158 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "governance_policy_id": "PROGRESSIVE_RESEARCH_GOVERNANCE_R1",
+  "governance_policy_sha256": "cd75e3c397a0c569c237c5b5652ded65189ceab6d814cc0079d8b785d54ca9f2",
+  "protocol_id": "RCLE_LOW_REFERENCE_FALSE_TRIGGER_ATTRIBUTION_R0",
+  "version": "R0",
+  "stage": "DEVELOPMENT",
+  "question": "Which mechanism best explains threshold triggers on the two frozen below-reference windows: rotation compensation, local-flow estimation, or the observable support manager?",
+  "claims_allowed": [
+    "IMPLEMENTATION_NOT_READY",
+    "NOT_EVALUABLE"
+  ],
+  "non_goals": [
+    "changing the four frozen windows",
+    "adding data",
+    "tuning the 0.01 per-second threshold",
+    "testing more than one algorithm revision",
+    "confirmation, Android, product, or safety authority"
+  ],
+  "data_partitions": [
+    {
+      "id": "frozen-four-window-development-cohort",
+      "source_identity": "RCLE_MOTION_DIVERSE_RGBD_SOURCE_SEARCH_R1_FROZEN_FOUR_WINDOWS",
+      "content_identity": "ff1764ffa4c41202302b11be28858177817274b9d30f2b06f22b5d706478aaa7",
+      "identity_basis": "Frozen RGB input manifest plus the immutable 967-pair A4 ledger and source-native TUM geometry audit.",
+      "independence_group": "RCLE_MOTION_DIVERSE_RGBD_SOURCE_SEARCH_R1_DEVELOPMENT",
+      "ancestry": [
+        "ETH3D_SLAM_DESK_CHANGING_1",
+        "TARTANAIR_JAPANESEALLEY_HARD",
+        "TUM_RGBD_FR2_RPY"
+      ],
+      "role": "DEVELOPMENT",
+      "outcome_access": "FULL",
+      "reuse_policy": "BURNED_FOR_THIS_CLAIM_AND_NEVER_CONFIRMATION"
+    }
+  ],
+  "inputs": {
+    "rgb_manifest": {
+      "path": "artifacts.local/evidence/rcle_motion_diverse_rgbd_source_search_r1/final_rgb_input_manifest_r1.json",
+      "sha256": "ff1764ffa4c41202302b11be28858177817274b9d30f2b06f22b5d706478aaa7"
+    },
+    "old_result": {
+      "path": "artifacts.local/evidence/rcle_motion_diverse_rgbd_source_search_r1/formal_rgb_canary_a4_2/result.json",
+      "sha256": "74222a5e47d30f02b6240e744ccb1d3874c73be0992dd8a187710b0cfa78de42"
+    },
+    "old_pair_ledger": {
+      "path": "artifacts.local/evidence/rcle_motion_diverse_rgbd_source_search_r1/formal_rgb_canary_a4_2/rgb_pair_ledger.jsonl",
+      "sha256": "278f9bccb27654d4fec213661fd634334dbd474fccb9168042521d1a5d396a13"
+    },
+    "tum_geometry_audit": {
+      "path": "artifacts.local/evidence/rcle_tum_fr2_rpy_geometry_audit_r0/result.json",
+      "sha256": "ae388f8e2f7decec8fadbd0a461ae50e2fe77da3d30bff72e3fa3d26f6c578b1"
+    },
+    "algorithm_protocol": {
+      "path": "scripts/research/egomotion_compensated_looming/configs/phase_a_synthetic_signal_audit_r0.json",
+      "sha256": "d20e77f3ea5f7ac55376006f1d14feb0ffb5daffd10a42792912fb89cdb1b502"
+    },
+    "old_algorithm_source": {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0/producer.py",
+      "sha256": "23211b1acec517b3c487d183742035887ff250bf51019b0cd1e1dea1d809bec5"
+    }
+  },
+  "constraints": [
+    {
+      "id": "immutable-old-evidence",
+      "class": "INVARIANT",
+      "description": "The old result, ledger, algorithm source, threshold, and frozen window identities are read-only and hash-bound.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "exact-denominator",
+      "class": "INVARIANT",
+      "description": "Attribution covers exactly 967 old pairs and the support-manager counterfactual covers exactly 598 pairs from TUM windows 2 and 7.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "support-manager-counterfactual",
+      "class": "DIAGNOSTIC",
+      "description": "Replay each below-reference pair with identical rotation compensation, Sparse LK, and local affine fitting while resetting PairState and forcing the baseline-only path.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "trigger-threshold",
+      "class": "INVARIANT",
+      "description": "The old 0.01 per-second threshold is unchanged.",
+      "unit": "s^-1",
+      "threshold": 0.01,
+      "rationale": "Separates mechanism attribution from threshold tuning.",
+      "calibration_source": "Existing frozen Phase A protocol and A4 development canary.",
+      "sensitivity_plan": "No neighboring threshold is evaluated in this round.",
+      "revision_policy": "Any threshold change requires a separate version and is forbidden for the single revision selected from this attribution.",
+      "failure_scope": "EVIDENCE_VERSION"
+    }
+  ],
+  "attribution_order": [
+    "GEOMETRY_AT_OR_ABOVE_THRESHOLD",
+    "SUPPORT_MANAGER_ENABLED_EVALUABILITY",
+    "SUPPORT_MANAGER_INDUCED_TRIGGER",
+    "ROTATION_COMPENSATION_THRESHOLD_CROSSING",
+    "BASELINE_LOCAL_FLOW_THRESHOLD_CROSSING"
+  ],
+  "freeze": {
+    "level": "F1",
+    "outcome_access_started": true,
+    "amendment_mode": "NEW_VERSION_ONLY"
+  },
+  "result_model": {
+    "execution_validity": "NOT_RUN",
+    "scientific_outcome": "NOT_RUN",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "terminal_scope": "EVIDENCE_VERSION"
+  },
+  "successor_policy": {
+    "new_version_allowed": true,
+    "preserve_previous_evidence": true,
+    "pass_successor": "Freeze exactly one targeted algorithm revision on the same four development windows.",
+    "invalid_successor": "Repair only the attribution evidence version; do not infer an algorithm cause.",
+    "automatic_confirmation_authority": false
+  },
+  "experiment_design": {
+    "search_strategy": "SINGLE_VARIABLE_COUNTERFACTUAL",
+    "minimal_discriminating_experiment": "Disable only support-manager carry and supplementation on the two below-reference windows, then partition old false triggers using baseline raw and compensated threshold transitions.",
+    "resource_budget": "Two cached 10-second TUM windows, 598 pairs, two host processes, no network and no new data.",
+    "stop_conditions": "Stop after one complete counterfactual and one independently recomputed attribution ledger; do not test algorithm revisions in this round.",
+    "efficiency_strategy": "Reuse immutable A4 and source-native geometry ledgers; decode only the two below-reference RGB windows."
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1_LOCAL_FLOW_VOLATILITY",
+      "theoretical_or_empirical_basis": "Most below-reference triggers already exceed threshold in uncompensated RGB flow, window 7 triggers without any support-manager activation, and false runs are short.",
+      "causal_difference": "Separates baseline per-pair local-flow threshold crossings from crossings introduced by compensation or support recovery.",
+      "expected_information_gain": "Identifies whether a temporal local-flow confirmation is the uniquely targeted next revision.",
+      "minimal_test": "One baseline-only replay of the two frozen below-reference windows.",
+      "evaluation_metric": "Disjoint count of geometry-below old triggers by attribution category.",
+      "falsifier": "Support-manager-induced or rotation-compensation-induced categories account for a majority of geometry-below old triggers.",
+      "cost": "LOW",
+      "resource_budget": "598 cached pairs with two CPU workers.",
+      "stop_condition": "Stop attribution after the fixed replay and do not compare alternative revisions.",
+      "selection_reason": "It directly distinguishes all three named mechanisms with the smallest reversible counterfactual."
+    }
+  ],
+  "failure_learning": {
+    "failure_class": "NOT_RUN",
+    "observation": "No counterfactual execution has run under this contract.",
+    "inference": "None.",
+    "alternative_explanations": [
+      "source texture or rolling-shutter effects",
+      "pose interpolation residual",
+      "local affine estimator variance"
+    ],
+    "constraint_challenges": [],
+    "next_hypotheses": [],
+    "reuse_candidates": [
+      "The frozen A4 ledger remains a development regression fixture."
+    ],
+    "information_gain": "None before execution."
+  }
+}

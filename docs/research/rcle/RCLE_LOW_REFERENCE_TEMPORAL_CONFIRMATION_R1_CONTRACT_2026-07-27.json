@@ -1,0 +1,192 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "governance_policy_id": "PROGRESSIVE_RESEARCH_GOVERNANCE_R1",
+  "governance_policy_sha256": "cd75e3c397a0c569c237c5b5652ded65189ceab6d814cc0079d8b785d54ca9f2",
+  "protocol_id": "RCLE_LOW_REFERENCE_TEMPORAL_CONFIRMATION_R1",
+  "version": "R1",
+  "stage": "DEVELOPMENT",
+  "question": "Does one causal three-pair confirmation layer reduce local-flow-driven below-reference triggers while retaining the frozen positive-window response?",
+  "claims_allowed": [
+    "IMPLEMENTATION_READY_FOR_CONFIRMATION",
+    "IMPLEMENTATION_NOT_READY",
+    "NOT_EVALUABLE"
+  ],
+  "non_goals": [
+    "testing any second revision",
+    "changing the 0.01 per-second threshold",
+    "changing rotation compensation, Sparse LK, local affine fitting, or support-manager behavior",
+    "replacing or adding windows",
+    "confirmation, Android, product, or safety authority"
+  ],
+  "data_partitions": [
+    {
+      "id": "frozen-four-window-development-cohort",
+      "source_identity": "RCLE_MOTION_DIVERSE_RGBD_SOURCE_SEARCH_R1_FROZEN_FOUR_WINDOWS",
+      "content_identity": "278f9bccb27654d4fec213661fd634334dbd474fccb9168042521d1a5d396a13",
+      "identity_basis": "Immutable 967-pair A4 ledger already used for development and the validated R0 attribution result.",
+      "independence_group": "RCLE_MOTION_DIVERSE_RGBD_SOURCE_SEARCH_R1_DEVELOPMENT",
+      "ancestry": [
+        "ETH3D_SLAM_DESK_CHANGING_1",
+        "TARTANAIR_JAPANESEALLEY_HARD",
+        "TUM_RGBD_FR2_RPY"
+      ],
+      "role": "DEVELOPMENT",
+      "outcome_access": "FULL",
+      "reuse_policy": "BURNED_FOR_THIS_CLAIM_AND_NEVER_CONFIRMATION"
+    }
+  ],
+  "inputs": {
+    "old_result": {
+      "path": "artifacts.local/evidence/rcle_motion_diverse_rgbd_source_search_r1/formal_rgb_canary_a4_2/result.json",
+      "sha256": "74222a5e47d30f02b6240e744ccb1d3874c73be0992dd8a187710b0cfa78de42"
+    },
+    "old_pair_ledger": {
+      "path": "artifacts.local/evidence/rcle_motion_diverse_rgbd_source_search_r1/formal_rgb_canary_a4_2/rgb_pair_ledger.jsonl",
+      "sha256": "278f9bccb27654d4fec213661fd634334dbd474fccb9168042521d1a5d396a13"
+    },
+    "attribution_result": {
+      "path": "artifacts.local/evidence/rcle_low_reference_false_trigger_r1/attribution_r0/result.json",
+      "sha256": "fb0f2d39fa6418da51759b5a0cdb7d01b621eece01c3a9440eeca31ed817942f"
+    },
+    "attribution_validation": {
+      "path": "artifacts.local/evidence/rcle_low_reference_false_trigger_r1/attribution_r0/independent_validation.json",
+      "sha256": "a81f532ba3b1e51deabb2cbcec5343a25a737dcc68f87fc0a67a14b27cc7b828"
+    }
+  },
+  "single_revision": {
+    "id": "CAUSAL_THREE_PAIR_CONFIRMATION_R1",
+    "candidate_count": 1,
+    "input_signal": "compensated_expansion_median_per_s",
+    "threshold_per_s": 0.01,
+    "confirmation_rule": "revised_trigger is true only when the current pair and the two immediately preceding pairs in the same window are evaluable and each exceeds 0.01/s",
+    "reset_rule": "Any abstention, window boundary, or pair at or below threshold resets the consecutive-pair count to zero.",
+    "causal": true,
+    "lookahead_pairs": 0
+  },
+  "constraints": [
+    {
+      "id": "exact-pair-identity",
+      "class": "INVARIANT",
+      "description": "Old and revised ledgers contain the same ordered 967 pair identities, roles, timestamps, evaluability, and continuous compensated-expansion values.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "single-revision-only",
+      "class": "INVARIANT",
+      "description": "Exactly one fixed confirmation rule is evaluated; no alternative length, majority rule, threshold, or estimator is computed.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "below-relative-trigger-reduction",
+      "class": "GATE",
+      "description": "The median fixed-denominator below-reference trigger coverage is reduced by at least 30 percent relative to old.",
+      "metric": "below_relative_trigger_reduction",
+      "operator": "GTE",
+      "threshold": 0.3,
+      "unit": "fraction",
+      "rationale": "A development revision should materially affect the diagnosed 34.78 percent false-trigger burden rather than produce a cosmetic change.",
+      "calibration_source": "The old frozen below-reference aggregate and the R0 attribution showing short local-flow bursts.",
+      "sensitivity_plan": "No neighboring confirmation length is run on these development windows; any sensitivity study requires a new version or new external data.",
+      "revision_policy": "Fixed for R1 and never changed after R1 outcome access.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "positive-trigger-retention",
+      "class": "GATE",
+      "description": "The revised positive role aggregate retains at least 90 percent of old fixed-denominator trigger coverage.",
+      "metric": "positive_trigger_retention",
+      "operator": "GTE",
+      "threshold": 0.9,
+      "unit": "fraction",
+      "rationale": "The targeted false-trigger fix must preserve the already supported positive direction.",
+      "calibration_source": "The old frozen positive aggregate; 90 percent limits the loss to a small temporal-onset cost.",
+      "sensitivity_plan": "Report both positive windows separately; do not tune the rule if one misses.",
+      "revision_policy": "Fixed for R1 and never changed after R1 outcome access.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "positive-onset-delay",
+      "class": "GATE",
+      "description": "Each positive window adds no more than 0.25 seconds from the old first trigger to the revised first trigger.",
+      "metric": "maximum_positive_first_trigger_delay_s",
+      "operator": "LTE",
+      "threshold": 0.25,
+      "unit": "s",
+      "rationale": "Three consecutive pairs imply about 0.07 seconds at ETH3D cadence and 0.20 seconds at TartanAir 10 Hz; 0.25 seconds is the deterministic cadence-bound allowance.",
+      "calibration_source": "Frozen source-native pair timestamps, not outcome optimization.",
+      "sensitivity_plan": "Report exact per-window delay and do not test a second temporal length.",
+      "revision_policy": "Fixed for R1 and never changed after R1 outcome access.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "role-direction",
+      "class": "GATE",
+      "description": "Revised positive aggregate trigger coverage remains strictly greater than revised below-reference coverage.",
+      "metric": "positive_direction_pass",
+      "operator": "EQ",
+      "threshold": 1,
+      "unit": "boolean",
+      "rationale": "The revision cannot invert the only direction supported by A4.",
+      "calibration_source": "A4 development direction contract.",
+      "sensitivity_plan": "Report both role aggregates and all four windows; no pooled-only rescue.",
+      "revision_policy": "Fixed for R1 and never changed after R1 outcome access.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    }
+  ],
+  "freeze": {
+    "level": "F1",
+    "outcome_access_started": true,
+    "amendment_mode": "NEW_VERSION_ONLY"
+  },
+  "result_model": {
+    "execution_validity": "NOT_RUN",
+    "scientific_outcome": "NOT_RUN",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "terminal_scope": "IMPLEMENTATION_VERSION"
+  },
+  "successor_policy": {
+    "new_version_allowed": true,
+    "preserve_previous_evidence": true,
+    "pass_successor": "Decide whether the single revised implementation merits a separately frozen external confirmation dataset.",
+    "fail_successor": "Stop this revision on the frozen development cohort; do not test another revision automatically.",
+    "automatic_confirmation_authority": false
+  },
+  "experiment_design": {
+    "search_strategy": "SINGLE_HYPOTHESIS_SINGLE_REVISION",
+    "minimal_discriminating_experiment": "Apply one causal three-pair confirmation rule to the immutable 967-pair ledger and compare old versus revised outcomes on all four frozen windows.",
+    "resource_budget": "One deterministic ledger pass, one independent aggregate replay, no RGB decode, no network, and no additional candidate.",
+    "stop_conditions": "Stop after the R1 result and validator; PASS permits only an external-validation decision, while any gate miss closes this implementation version.",
+    "efficiency_strategy": "Reuse the exact continuous pair outputs because the revision changes only causal trigger confirmation."
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1_CAUSAL_THREE_PAIR_CONFIRMATION",
+      "theoretical_or_empirical_basis": "R0 attribution assigns 160 of 198 geometry-below old triggers to baseline local-flow threshold crossings, while below trigger runs last at most eight pairs and positive runs are sustained.",
+      "causal_difference": "Adds only a causal persistence requirement after the unchanged pair estimator.",
+      "expected_information_gain": "Tests whether short local-flow excursions, rather than the continuous expansion direction, explain the development false-trigger burden.",
+      "minimal_test": "One old-versus-revised replay over the same ordered 967 pairs.",
+      "evaluation_metric": "Below relative trigger reduction, positive trigger retention, positive onset delay, and role direction.",
+      "falsifier": "Any frozen success gate fails.",
+      "cost": "VERY_LOW",
+      "resource_budget": "One deterministic CPU pass over 967 JSONL rows.",
+      "stop_condition": "Do not alter or replace the candidate after reading its result.",
+      "selection_reason": "It directly targets the dominant diagnosed mechanism without changing data, thresholds, compensation, flow, affine fitting, or support recovery."
+    }
+  ],
+  "failure_learning": {
+    "failure_class": "NOT_RUN",
+    "observation": "The single R1 candidate has not been evaluated.",
+    "inference": "None.",
+    "alternative_explanations": [
+      "positive and below windows may share similar short-run structure",
+      "three-pair confirmation may reduce positive coverage too much",
+      "pairwise expansion may require a different estimator in a future version"
+    ],
+    "constraint_challenges": [],
+    "next_hypotheses": [],
+    "reuse_candidates": [
+      "R1 can remain a deterministic regression fixture even if not ready."
+    ],
+    "information_gain": "None before execution."
+  }
+}
