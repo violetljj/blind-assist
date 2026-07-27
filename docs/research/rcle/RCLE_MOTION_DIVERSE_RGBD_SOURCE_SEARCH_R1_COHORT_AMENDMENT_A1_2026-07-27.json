@@ -1,0 +1,38 @@
+{
+  "schema": "rcle.motion_diverse_rgbd.source_search.cohort_amendment.v1",
+  "protocol_id": "RCLE_MOTION_DIVERSE_RGBD_SOURCE_SEARCH_R1",
+  "amendment_id": "USE_BURNED_TUM_BELOW_ANCHORS_CONTINUE_FRESH_ETH3D_POSITIVE_SEARCH",
+  "created_on": "2026-07-27",
+  "status": "FROZEN_BEFORE_NEXT_ETH3D_GEOMETRY_BATCH",
+  "reason": "Two ETH3D batches established that strict natural-motion positive windows exist but strict below windows are scarce. A prior source-native TUM fr2/rpy audit already contains two strict below-reference windows under the unchanged gates. Reusing them avoids redundant downloads while the search continues only for a second fresh ETH3D positive window.",
+  "unchanged_gates": {
+    "window_duration_s": "10",
+    "minimum_pair_geometry_coverage": "0.8",
+    "below_trigger_reference": "signed_radial_expansion_per_s < 0.01",
+    "positive_approach_geometry": "signed_radial_expansion_per_s >= 0.05",
+    "minimum_fixed_denominator_role_fraction": "0.8",
+    "minimum_longest_role_run_duration_s": "5.0"
+  },
+  "burned_below_anchor_source": {
+    "source_id": "TUM_RGBD_FR2_RPY",
+    "audit_result": "artifacts.local/evidence/rcle_tum_fr2_rpy_geometry_audit_r0/result.json",
+    "required_window_indices": [2, 7],
+    "required_revalidation": "Recompute band, fixed-denominator fraction, longest consecutive duration, and coverage from the burned audit pair rows.",
+    "rgb_cached": true,
+    "new_holdout_authority": false,
+    "role": "DEVELOPMENT_BELOW_REFERENCE_ANCHOR"
+  },
+  "fresh_positive_search": {
+    "source_family": "ETH3D_SLAM_TRAINING_MOTION_DIVERSE_R1",
+    "already_admitted_window": "desk_changing_1@4065.364250422",
+    "required_additional_positive_windows": 1,
+    "next_queue_offset": 4,
+    "consume_frozen_positive_queue_in_order": true
+  },
+  "boundaries": {
+    "algorithm_change_allowed": false,
+    "gate_change_allowed": false,
+    "rgb_download_before_complete_2_plus_2": false,
+    "cross_source_holdout_claim": false
+  }
+}

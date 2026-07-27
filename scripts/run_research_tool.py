@@ -12,6 +12,7 @@ from pathlib import Path
 SCRIPTS_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPTS_DIR.parent
 DOMAINS = {
+    "egomotion-compensated-looming": SCRIPTS_DIR / "research" / "egomotion_compensated_looming",
     "public-video": SCRIPTS_DIR / "research" / "public_video",
     "ustrf-crosscam-codex": SCRIPTS_DIR / "research" / "ustrf_crosscam_codex",
     "ustrf-route-target-evidence-closure": SCRIPTS_DIR / "research" / "ustrf_route_target_evidence_closure",

@@ -1,0 +1,134 @@
+{
+  "schema": "rcle.motion_diverse_rgbd.source_search.v1",
+  "protocol_id": "RCLE_MOTION_DIVERSE_RGBD_SOURCE_SEARCH_R1",
+  "created_on": "2026-07-27",
+  "objective": "Find the first source-family cohort that supplies two positive-approach and two below-reference 10-second windows, using metadata and pose first, depth second, and RGB only after geometry admission.",
+  "search_policy": {
+    "candidate_replacement_between_predeclared_sources": true,
+    "replacement_reason": "The new round explicitly searches sequentially until usable; a terminal failure for one source does not rewrite that source and does not prevent advancing to the next predeclared source.",
+    "trajectory_role_authority": false,
+    "geometry_role_authority": true,
+    "stop_at_first_geometry_usable_cohort": true,
+    "post_geometry_window_invention": false,
+    "algorithm_change_allowed": false
+  },
+  "window_policy": {
+    "duration_s": "10",
+    "within_sequence_overlap_allowed": false,
+    "cross_sequence_windows_allowed": true,
+    "minimum_start_separation_within_sequence_s": "10",
+    "required_positive_windows": 2,
+    "required_below_reference_windows": 2,
+    "selection": "Consume the pose-ranked positive and below queues in frozen order. A geometry result may determine which queue still needs evidence, but may not reorder or invent windows."
+  },
+  "geometry_gates": {
+    "maximum_pair_dt_s": "0.100",
+    "maximum_pose_bracket_s": "0.100",
+    "minimum_pair_geometry_coverage": "0.8",
+    "depth_sample_stride_px": 8,
+    "minimum_radius_px": "8.0",
+    "depth_units_per_meter": "5000",
+    "below_trigger_reference": "signed_radial_expansion_per_s < 0.01",
+    "positive_approach_geometry": "signed_radial_expansion_per_s >= 0.05",
+    "minimum_fixed_denominator_role_fraction": "0.8",
+    "minimum_longest_role_run_duration_s": "5.0"
+  },
+  "execution": {
+    "default_workers": 8,
+    "numeric_relative_tolerance": "1e-12",
+    "numeric_absolute_tolerance": "1e-15",
+    "rgb_before_geometry_admission": false
+  },
+  "source_family": {
+    "family_id": "ETH3D_SLAM_TRAINING_MOTION_DIVERSE_R1",
+    "license": "CC BY-NC-SA 4.0",
+    "native_synchronized_rgbd": true,
+    "timestamped_camera_to_world_groundtruth": true,
+    "official_cryptographic_checksums": null,
+    "transport": "HTTP Range ZIP member extraction through scripts/fetch_remote_zip_members.py",
+    "predeclared_sequence_order": [
+      {
+        "sequence_id": "desk_changing_1",
+        "frame_count": 3931,
+        "metadata_reason": "Longest training sequence; camera moves through the scene.",
+        "mono": {
+          "url": "https://www.eth3d.net/data/slam/datasets/desk_changing_1_mono.zip",
+          "bytes": 1407393406,
+          "etag": "5cf57ebf-53e31e7e"
+        },
+        "rgbd": {
+          "url": "https://www.eth3d.net/data/slam/datasets/desk_changing_1_rgbd.zip",
+          "bytes": 560742153,
+          "etag": "5cf580fb-216c3f09"
+        }
+      },
+      {
+        "sequence_id": "table_7",
+        "frame_count": 1675,
+        "metadata_reason": "Long orbiting-table sequence with varied camera motion.",
+        "mono": {
+          "url": "https://www.eth3d.net/data/slam/datasets/table_7_mono.zip",
+          "bytes": 591966781,
+          "etag": "5cf540cd-2348b23d"
+        },
+        "rgbd": {
+          "url": "https://www.eth3d.net/data/slam/datasets/table_7_rgbd.zip",
+          "bytes": 243671387,
+          "etag": "5cf541be-e86215b"
+        }
+      },
+      {
+        "sequence_id": "sofa_1",
+        "frame_count": 976,
+        "metadata_reason": "Slow motion around a dominant sofa surface.",
+        "mono": {
+          "url": "https://www.eth3d.net/data/slam/datasets/sofa_1_mono.zip",
+          "bytes": 339881034,
+          "etag": "5cf536fc-14422c4a"
+        },
+        "rgbd": {
+          "url": "https://www.eth3d.net/data/slam/datasets/sofa_1_rgbd.zip",
+          "bytes": 166335267,
+          "etag": "5cf53709-9ea1323"
+        }
+      },
+      {
+        "sequence_id": "cables_1",
+        "frame_count": 1180,
+        "metadata_reason": "Cached metadata identity and a distinct table-scale camera path.",
+        "mono": {
+          "url": "https://www.eth3d.net/data/slam/datasets/cables_1_mono.zip",
+          "bytes": 448816030,
+          "etag": "5cf54968-1ac0639e"
+        },
+        "rgbd": {
+          "url": "https://www.eth3d.net/data/slam/datasets/cables_1_rgbd.zip",
+          "bytes": 123165209,
+          "etag": "5cf54a1e-7575a19"
+        }
+      },
+      {
+        "sequence_id": "planar_3",
+        "frame_count": 901,
+        "metadata_reason": "Dominant textured plane may yield cleaner radial motion.",
+        "mono": {
+          "url": "https://www.eth3d.net/data/slam/datasets/planar_3_mono.zip",
+          "bytes": 405229364,
+          "etag": "5cf543ef-18274f34"
+        },
+        "rgbd": {
+          "url": "https://www.eth3d.net/data/slam/datasets/planar_3_rgbd.zip",
+          "bytes": 79330452,
+          "etag": "5cf54491-4ba7c94"
+        }
+      }
+    ]
+  },
+  "forbidden": [
+    "floor3_3",
+    "lowering geometry role gates after viewing outcomes",
+    "using trajectory or metadata as a role label",
+    "downloading RGB before four geometry roles are frozen",
+    "reordering a frozen queue after geometry outcomes"
+  ]
+}

@@ -16,9 +16,11 @@ import io
 import json
 import os
 import stat
+import struct
 import sys
 import urllib.request
 import zipfile
+import zlib
 from pathlib import Path, PurePosixPath
 
 
@@ -128,10 +130,114 @@ def matches(name: str, includes: list[str], excludes: list[str]) -> bool:
     )
 
 
+def extract_coalesced(
+    reader: HttpRangeReader,
+    archive: zipfile.ZipFile,
+    selected: list[zipfile.ZipInfo],
+    output_root: Path,
+    maximum_gap_bytes: int,
+) -> list[dict[str, object]]:
+    """Extract selected members with a few contiguous HTTP range requests."""
+    if maximum_gap_bytes < 0:
+        raise ValueError("coalesce gap must be non-negative")
+    all_files = sorted(
+        (info for info in archive.infolist() if not info.is_dir()),
+        key=lambda item: item.header_offset,
+    )
+    next_offset: dict[int, int] = {}
+    for index, info in enumerate(all_files):
+        next_offset[info.header_offset] = (
+            all_files[index + 1].header_offset
+            if index + 1 < len(all_files)
+            else archive.start_dir
+        )
+    spans = [
+        (info.header_offset, next_offset[info.header_offset], info)
+        for info in sorted(
+            (item for item in selected if not item.is_dir()),
+            key=lambda item: item.header_offset,
+        )
+    ]
+    runs: list[tuple[int, int, list[zipfile.ZipInfo]]] = []
+    for start, end, info in spans:
+        if runs and start - runs[-1][1] <= maximum_gap_bytes:
+            previous_start, _, previous_infos = runs[-1]
+            runs[-1] = (previous_start, end, [*previous_infos, info])
+        else:
+            runs.append((start, end, [info]))
+
+    receipts: list[dict[str, object]] = []
+    for run_start, run_end, infos in runs:
+        payload, _ = reader._range(run_start, run_end - 1)
+        for info in infos:
+            relative = info.header_offset - run_start
+            header = payload[relative : relative + 30]
+            if len(header) != 30:
+                raise RuntimeError(f"truncated local ZIP header: {info.filename!r}")
+            (
+                signature,
+                _version,
+                flags,
+                compression,
+                _mtime,
+                _mdate,
+                _crc32,
+                _compressed_size,
+                _file_size,
+                name_length,
+                extra_length,
+            ) = struct.unpack("<IHHHHHIIIHH", header)
+            if signature != 0x04034B50 or flags & 0x1:
+                raise RuntimeError(f"unsupported local ZIP header: {info.filename!r}")
+            data_start = relative + 30 + name_length + extra_length
+            compressed = payload[data_start : data_start + info.compress_size]
+            if len(compressed) != info.compress_size:
+                raise RuntimeError(f"truncated ZIP member: {info.filename!r}")
+            if compression == zipfile.ZIP_STORED:
+                data = compressed
+            elif compression == zipfile.ZIP_DEFLATED:
+                data = zlib.decompress(compressed, -15)
+            else:
+                raise RuntimeError(
+                    f"coalesced extraction compression unsupported: {compression}"
+                )
+            if len(data) != info.file_size or (zlib.crc32(data) & 0xFFFFFFFF) != info.CRC:
+                raise RuntimeError(f"ZIP member CRC/size mismatch: {info.filename!r}")
+            destination = safe_destination(output_root, info.filename)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(data)
+            receipts.append(
+                {
+                    "path": info.filename,
+                    "sha256": hashlib.sha256(data).hexdigest(),
+                    "bytes": len(data),
+                }
+            )
+    for info in selected:
+        if info.is_dir():
+            safe_destination(output_root, info.filename).mkdir(
+                parents=True, exist_ok=True
+            )
+    return [
+        {
+            "range_start": start,
+            "range_end_exclusive": end,
+            "member_count": len(infos),
+            "bytes": end - start,
+        }
+        for start, end, infos in runs
+    ]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", required=True)
     parser.add_argument("--include", action="append", default=[], help="case-sensitive glob; repeatable")
+    parser.add_argument(
+        "--include-from",
+        type=Path,
+        help="UTF-8 file with one case-sensitive glob per line; blank and # lines ignored",
+    )
     parser.add_argument("--exclude", action="append", default=[], help="case-sensitive glob; repeatable")
     parser.add_argument("--list", action="store_true", help="print matching members as JSON Lines")
     parser.add_argument("--output", type=Path, help="extract matching members under this directory")
@@ -140,7 +246,21 @@ def main() -> int:
     parser.add_argument("--expect-etag")
     parser.add_argument("--expect-md5-base64")
     parser.add_argument("--timeout", type=float, default=60.0)
+    parser.add_argument(
+        "--coalesce-gap-bytes",
+        type=int,
+        help="extract selected members in contiguous range runs; avoids one request per member",
+    )
     args = parser.parse_args()
+    include_file_sha256 = None
+    if args.include_from is not None:
+        include_payload = args.include_from.read_bytes()
+        include_file_sha256 = hashlib.sha256(include_payload).hexdigest()
+        args.include.extend(
+            line.strip()
+            for line in include_payload.decode("utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        )
     if not args.list and args.output is None and args.inventory is None:
         parser.error("at least one of --list, --output, or --inventory is required")
 
@@ -161,7 +281,16 @@ def main() -> int:
                         "compressed_size": info.compress_size,
                         "crc32": f"{info.CRC:08x}",
                     }, ensure_ascii=False))
-        if args.output is not None:
+        coalesced_runs: list[dict[str, object]] = []
+        if args.output is not None and args.coalesce_gap_bytes is not None:
+            coalesced_runs = extract_coalesced(
+                reader,
+                archive,
+                selected,
+                args.output,
+                args.coalesce_gap_bytes,
+            )
+        elif args.output is not None:
             for info in selected:
                 destination = safe_destination(args.output, info.filename)
                 if info.is_dir():
@@ -178,7 +307,18 @@ def main() -> int:
     inventory = {
         "schema": "blindassist.remote_zip_inventory.v1",
         "source": metadata,
-        "selection": {"include": args.include, "exclude": args.exclude},
+        "selection": {
+            "include": args.include,
+            "include_from": (
+                {
+                    "path": str(args.include_from),
+                    "sha256": include_file_sha256,
+                }
+                if args.include_from is not None
+                else None
+            ),
+            "exclude": args.exclude,
+        },
         "members": [{
             "path": item.filename,
             "size": item.file_size,
@@ -187,6 +327,7 @@ def main() -> int:
         } for item in selected],
         "http_range_requests": reader.requests,
         "http_bytes_transferred": reader.transferred,
+        "coalesced_runs": coalesced_runs,
     }
     if args.inventory is not None:
         args.inventory.parent.mkdir(parents=True, exist_ok=True)

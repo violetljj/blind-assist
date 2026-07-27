@@ -1,0 +1,39 @@
+{
+  "schema": "rcle.motion_diverse_rgbd.source_search.rgb_adapter_amendment.v1",
+  "protocol_id": "RCLE_MOTION_DIVERSE_RGBD_SOURCE_SEARCH_R1",
+  "amendment_id": "RGB_SOURCE_ADAPTER_PAIR_ABSTENTION_A4_1",
+  "created_on": "2026-07-27",
+  "status": "FROZEN_BEFORE_REEXECUTED_RGB_ALGORITHM_OUTCOME",
+  "original_canary": {
+    "path": "docs/research/rcle/RCLE_MOTION_DIVERSE_RGBD_SOURCE_SEARCH_R1_RGB_DEVELOPMENT_CANARY_A4_2026-07-27.json",
+    "sha256": "b6fcf8ddcef92057d36a134376f9ed22c87d2a872b9ec6a19895e0d664229a2e"
+  },
+  "failure_receipt": {
+    "path": "artifacts.local/evidence/rcle_motion_diverse_rgbd_source_search_r1/rgb_canary_a4_implementation_failure.json",
+    "sha256": "efc512033aff3f5791cfc2435b93f0b489f08a99165fcec690db382a83afe953"
+  },
+  "allowed_fix": {
+    "scope": "source adapter only",
+    "rule": "When source-native pose interpolation raises R2_POSE_NOT_BRACKETED or R2_POSE_BRACKET_TOO_WIDE for one RGB pair, record that pair as non-evaluable with trigger false, reset the sequential support-manager state, and continue the frozen window.",
+    "fixed_denominator_preserved": true,
+    "minimum_window_pair_coverage": "0.8",
+    "abstention_imputed_as_zero_metric": false
+  },
+  "unchanged": [
+    "four window identities and roles",
+    "RGB member identities",
+    "pose bracket limit",
+    "RGB algorithm core",
+    "trigger threshold",
+    "coverage gate",
+    "role aggregation",
+    "8-worker schedule",
+    "authority boundaries"
+  ],
+  "forbidden": [
+    "widening pose interpolation",
+    "window replacement",
+    "post-outcome window addition",
+    "threshold or algorithm change"
+  ]
+}
