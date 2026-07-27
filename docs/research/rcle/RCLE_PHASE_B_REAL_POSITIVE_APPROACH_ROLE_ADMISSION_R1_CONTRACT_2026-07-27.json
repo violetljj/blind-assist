@@ -1,0 +1,177 @@
+{
+  "schema_version": "rcle.real_positive_approach_role_admission.v2",
+  "protocol_id": "RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1",
+  "created_on": "2026-07-27",
+  "stage": "DATA_ROLE_ADMISSION_ONLY",
+  "status": "PREREGISTERED_BEFORE_CANDIDATE_PAYLOAD_ACCESS",
+  "legal_terminals": [
+    "REAL_POSITIVE_APPROACH_ROLE_ADMITTED / VALID",
+    "HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID",
+    "INVALID_R1_EVIDENCE / INVALID"
+  ],
+  "authority_ceiling": "DATA_ROLE_ONLY / PERFORMANCE_QUALIFICATION_NOT_CREATED_OR_AUTHORIZED",
+  "frozen_authority_bindings": {
+    "burned_and_exclusion_manifest": {
+      "path": "docs/research/rcle/RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1_BURNED_AND_EXCLUSION_MANIFEST_2026-07-27.json",
+      "sha256": "0b54cecc1f3908264f3d4bd06a37b7c27b6f149c05e92e5b3949c0a6ef201593"
+    },
+    "source_authority_and_candidate_lock": {
+      "path": "docs/research/rcle/RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1_SOURCE_AUTHORITY_AND_CANDIDATE_LOCK_2026-07-27.json",
+      "sha256": "7fc127f42ab50516d198b36938c396d9a1d3bcbbf219c02a72b991853ed7eccf"
+    }
+  },
+  "source_selection": {
+    "candidate_id": "ETH3D_SLAM_SOFA_3_RGBD",
+    "candidate_count": 1,
+    "source_native_sequence_id": "sofa_3",
+    "official_payload_url": "https://www.eth3d.net/data/slam/datasets/sofa_3_rgbd.zip",
+    "source_descriptor_canonical_json": "{\"candidate_id\":\"ETH3D_SLAM_SOFA_3_RGBD\",\"dataset_page_sha256\":\"e66b2664b64c13bed891e9c43f7cf142686f84ab4aa902b6551eac3df7bdcea9\",\"license\":\"CC_BY_NC_SA_4_0\",\"official_dataset_page\":\"https://www.eth3d.net/slam_datasets\",\"official_format_documentation\":\"https://www.eth3d.net/slam_documentation\",\"official_payload_url\":\"https://www.eth3d.net/data/slam/datasets/sofa_3_rgbd.zip\",\"selection\":\"single frozen real RGB-D training sequence; no sofa_4, alternate ETH3D sequence, mirror, archive variant, retry, or replacement after claim\"}",
+    "source_descriptor_sha256": "11ac41e221ec6bdc16f12e071a9befdb55a2466e00bc8a78ee7fe67185b04756",
+    "preaccess_source_hash": "11ac41e221ec6bdc16f12e071a9befdb55a2466e00bc8a78ee7fe67185b04756",
+    "preaccess_source_hash_semantics": "SHA-256 of the canonical source descriptor, which itself binds the official dataset-page SHA-256 and exact official payload URL. ETH3D publishes no archive checksum on the authority pages; no payload hash is invented before access.",
+    "first_payload_hash_rule": "The SHA-256 of the first complete response body from the exact official payload URL is final for R1, regardless of size, format, or outcome.",
+    "selection_rule": "Use only ETH3D SLAM training sequence sofa_3 RGB-D. The deterministic choice was the lowest numeric sequence ID in the frozen sofa_3/sofa_4 eligible pair; no geometry or RGB outcome participated.",
+    "no_replacement": true,
+    "terminal_on_source_failure": "HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID",
+    "source_failure_scope": "Official transport failure, HTTP failure within the frozen official URL policy, unreadable ZIP, or a single-root sofa_3 container missing published required members.",
+    "invalid_exception_scope": "Unsafe/encrypted/drive-relative members, normalized duplicates, multi-sequence roots, forbidden access, or post-download control-text parse and cross-index identity failures are INVALID_R1_EVIDENCE / INVALID because the consumed payload cannot support a valid replayable R1."
+  },
+  "license_contract": {
+    "license": "CC-BY-NC-SA-4.0",
+    "project_use": "NONCOMMERCIAL_RESEARCH_ONLY",
+    "attribution_required": true,
+    "share_alike_for_distributed_adaptations": true,
+    "commercial_or_production_use": false,
+    "license_failure_terminal": "HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID"
+  },
+  "pre_access_order": [
+    "Verify the burned/exclusion manifest, source-authority lock, this contract, and their SHA-256 bindings without probing a candidate payload path.",
+    "Freeze an implementation lock containing SHA-256 for bootstrap, acquisition, producer, validator, and tests.",
+    "Exclusively create and fsync one claim binding this contract SHA-256, source descriptor SHA-256, burned manifest SHA-256, source-authority lock SHA-256, and implementation-lock SHA-256.",
+    "Only after the claim exists may the exact official payload URL or any sofa_3 candidate path be requested, resolved, statted, listed, opened, or created.",
+    "Perform at most one payload GET to the exact official URL. Hash the complete response while writing it once. Do not use HEAD, range prescreen, retry, mirror, alternate archive, sofa_4, or replacement.",
+    "Freeze the first complete payload hash and archive-member identity before geometry evaluation."
+  ],
+  "access_contract": {
+    "allowed_network_after_claim": [
+      "One GET to https://www.eth3d.net/data/slam/datasets/sofa_3_rgbd.zip.",
+      "Ordinary HTTPS redirects originating from that exact GET, recorded in the source receipt."
+    ],
+    "forbidden_network": [
+      "HEAD, range prescreen, DNS or API feasibility probes, search engines, mirrors, repacks, retries, alternate archives, sofa_4, and any replacement source.",
+      "Any URL or retry selected using archive contents, geometry, RGB appearance, or algorithm outcome."
+    ],
+    "allowed_payload_reads": [
+      "ZIP central-directory metadata and CRC needed for integrity.",
+      "calibration.txt, groundtruth.txt, associated.txt, rgb.txt, and depth.txt.",
+      "Depth PNG pixels referenced by the frozen first window."
+    ],
+    "forbidden_payload_reads": [
+      "RGB PNG pixels or thumbnails.",
+      "Stereo images, IMU, raw rosbag, calibration video, or another ETH3D archive.",
+      "RCLE RGB algorithm code, output, failure receipt, activation, implementation lock, score, or performance result."
+    ],
+    "algorithm_outcome_access": false
+  },
+  "archive_identity_contract": {
+    "container": "ZIP",
+    "required_text_members": [
+      "calibration.txt",
+      "groundtruth.txt",
+      "associated.txt",
+      "rgb.txt",
+      "depth.txt"
+    ],
+    "required_directories": [
+      "rgb/",
+      "depth/"
+    ],
+    "single_source_native_sequence": "sofa_3",
+    "member_freeze": "The first complete archive's exact normalized member names, uncompressed sizes, CRC32 values, and member count become immutable R1 identity.",
+    "unsafe_member_policy": "Any absolute path, drive prefix, parent traversal, duplicate normalized path, encrypted member, or multi-sequence root yields INVALID_R1_EVIDENCE / INVALID.",
+    "rgb_decode_allowed": false
+  },
+  "geometry_rule": {
+    "source_unit": "ETH3D source-native sofa_3 sequence",
+    "window_seconds": "10.000",
+    "window_partition": "Use exactly the first complete half-open 10.000 s window beginning at the first timestamp jointly covered by associated RGB-D rows and bracketing ground-truth pose. Do not evaluate a second window, slide, rank, recenter, trim, reverse, or replace the window.",
+    "pair_rule": "Use consecutive source-native associated rows with 0 < dt <= 0.100 s. Both timestamps require bracketing poses no wider than 0.100 s and the previous row's indexed depth member. Missing or invalid pose/depth abstains; the candidate-pair denominator is never reduced.",
+    "point_rule": "Decode only the previous depth PNG; divide uint16 values by 5000 for meters; sample a deterministic 8 px raster; require positive finite depth, calibrated pinhole projection, radius >= 8 px from principal point, in-bounds rotation-only and full-pose projections, and nearest-depth retention for duplicate projected pixels.",
+    "formula": {
+      "rotation_only_point": "X_r = R * X",
+      "full_pose_point": "X_f = R * X + t",
+      "signed_radial_expansion_per_s": "log(rho(project(X_f)) / rho(project(X_r))) / dt",
+      "time_normalized_parallax_rad_per_s": "angle(unit(X_r), unit(X_f)) / dt"
+    },
+    "pair_summaries": [
+      "median_signed_radial_expansion_per_s",
+      "radial_expansion_positive_fraction",
+      "q90_time_normalized_parallax_rad_per_s",
+      "valid_sample_fraction"
+    ],
+    "window_summaries": "Median of each pair summary over evaluable pairs.",
+    "gates": {
+      "candidate_pair_coverage_min": "0.80",
+      "median_signed_radial_expansion_per_s_min": "0.05",
+      "median_radial_expansion_positive_fraction_min": "0.75",
+      "minimum_evaluable_pairs": 8
+    },
+    "admission_rule": "Admission succeeds iff the single frozen window satisfies every gate. Otherwise R1 is HOLD. There is no alternate source, second window, best-window rescue, threshold revision, denominator revision, pose-direction flip, or RGB inspection.",
+    "threshold_provenance": "Unchanged from R0: 0.05 s^-1 preserves the prior static-approach gate and PB-H1 physical calibration; 0.75 requires signed radial coherence beyond lateral 50/50 behavior; 0.80 preserves the paired-denominator guardrail."
+  },
+  "identity_ancestry_reuse_and_confirmation": {
+    "content_identity": "First complete official payload SHA-256 plus sofa_3 plus exact half-open timestamp bounds.",
+    "ancestry": [
+      "ETH3D_OFFICIAL",
+      "ETH3D_SLAM_TRAINING",
+      "ETH3D_SLAM_SOFA_SCENE",
+      "ETH3D_SLAM_SOFA_3",
+      "ETH3D_SLAM_SOFA_3_RGBD",
+      "RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1"
+    ],
+    "independence_group": "ETH3D_SLAM_SOFA_SCENE_CAPTURE_FAMILY",
+    "required_non_overlap": [
+      "TUM_ALL_RCLE_ACCESSED_AND_DERIVED_FAMILIES",
+      "BONN_ALL_RCLE_COHORTS_WINDOWS_AND_DERIVATIVES",
+      "RCLE_PHASE_A_ALL_SYNTHETIC_GENERATOR_AND_SUPPORT_FAMILIES",
+      "EVIMO2_V2_FLEA3_SANITY_LL_CAPTURE_FAMILY",
+      "ETH3D_SLAM_CABLES_1_CAPTURE_FAMILY",
+      "ICL_NUIM_AND_TARTANAIR_SYNTHETIC_FAMILIES",
+      "ALL_PREEXISTING_ARTIFACTS_LOCAL_PAYLOADS"
+    ],
+    "future_confirmation_exclusion": "ETH3D_SLAM_SOFA_SCENE_CAPTURE_FAMILY",
+    "future_confirmation_policy": "Any sofa_3 payload or geometry access permanently excludes sofa_1, sofa_2, sofa_3, sofa_4, sofa_dark_1-3, sofa_shake, all archive variants, and all derivatives from confirmation for this claim.",
+    "reuse_policy": "GEOMETRY_SELECTED_REAL_APPROACH_CANARY_ONLY; NEVER_CONFIRMATION; MAY_REMAIN_SOURCE_CHARACTERIZATION_COUNTEREXAMPLE_OR_REGRESSION"
+  },
+  "validation": {
+    "independent_recomputation_required": true,
+    "validator_must_not_import_producer": true,
+    "producer_summary_not_trusted": true,
+    "required_zero_counts": [
+      "contract_binding_mismatch",
+      "source_identity_mismatch",
+      "archive_member_identity_mismatch",
+      "pair_replay_mismatch",
+      "window_replay_mismatch",
+      "ancestry_overlap_violation",
+      "forbidden_access",
+      "rgb_pixels_read",
+      "algorithm_outcome_read",
+      "gate_drift",
+      "replacement_source_count"
+    ]
+  },
+  "performance_qualification_gate": {
+    "created_in_r1": false,
+    "authorized_in_r1": false,
+    "only_unlock_terminal": "REAL_POSITIVE_APPROACH_ROLE_ADMITTED / VALID",
+    "hold_or_invalid_effect": "Performance qualification remains nonexistent and closed.",
+    "success_effect": "A separate new task may be created; R1 itself still does not implement or run performance qualification."
+  },
+  "forbidden_scope": [
+    "RGB algorithm import, implementation, or outcome access",
+    "algorithm parameter selection or tuning",
+    "performance qualification or benchmark execution",
+    "confirmation, Kill Gate B, Replay, Android, human, safety, or production claims"
+  ]
+}

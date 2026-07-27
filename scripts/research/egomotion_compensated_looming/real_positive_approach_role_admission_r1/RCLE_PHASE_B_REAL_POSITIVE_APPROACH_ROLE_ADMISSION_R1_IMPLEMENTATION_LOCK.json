@@ -1,0 +1,82 @@
+{
+  "schema_version": "rcle.real_positive_approach_role_admission.implementation_lock.v1",
+  "protocol_id": "RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1",
+  "created_on": "2026-07-27",
+  "status": "FROZEN_BEFORE_CLAIM_AND_CANDIDATE_PAYLOAD_ACCESS",
+  "contract_sha256": "e2a3dfdecfbfb660a6c708e8f1146e7c3652c3192c34fdb19b9f13c47f92dc38",
+  "source_descriptor_sha256": "11ac41e221ec6bdc16f12e071a9befdb55a2466e00bc8a78ee7fe67185b04756",
+  "source_authority_sha256": "7fc127f42ab50516d198b36938c396d9a1d3bcbbf219c02a72b991853ed7eccf",
+  "burned_manifest_sha256": "0b54cecc1f3908264f3d4bd06a37b7c27b6f149c05e92e5b3949c0a6ef201593",
+  "files": [
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r1/__init__.py",
+      "sha256": "e96ea2daf9fdae42dd01f9ce1f6e78f32b1db83481f30abd444d027e2fb27fd9"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r1/bootstrap_claim.py",
+      "sha256": "e5e1e4740418d96239fe8f76fc3cf5b575b34abd1ab9f9b6fb32775472a9b973"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r1/acquire.py",
+      "sha256": "62e97727f910d740cf00af5e654408e2725faa2c4aae10b257ba54da3b90bd20"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r1/producer.py",
+      "sha256": "b05dea1720418a8caa41c50daea58ced21a73c2f9d9764d9651091c2f6da94ab"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r1/validator.py",
+      "sha256": "ff63be4842f5e7dda274b5beab57722b80aa05f7de6afcb0bf63454240e36edf"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r1/formal_runner.py",
+      "sha256": "cd3b09411462aa517476440178e6e240b9ef50057490e5dafaa33051afbbe64a"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r1/pilot.py",
+      "sha256": "da44d6c7a7fd3292b7e920b8b5fba9662f7bba5cda0c28344ed46477f040d8f7"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/pb_h1_role_proxy/geometry.py",
+      "sha256": "b399228e82e70dfa2e27ca1fe9b9831749f18c0aa87b31e6e60de32b62c12016"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tum_fr2_rpy_geometry_audit/audit.py",
+      "sha256": "03a05a66667ee25badaa02f3a5bd25101e5f79e7112bcc1e83acd96f6c7525cf"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_real_positive_approach_role_admission_r1/__init__.py",
+      "sha256": "de6046299609f9441d6c7e7ca622d0b03ef74fd329a60d188e01dee8433a2f48"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_real_positive_approach_role_admission_r1/test_r1.py",
+      "sha256": "055190c859566e7bbd87c97f4f3acea5ff7d9a01cf91eedb3d6d405642a5ddc3"
+    }
+  ],
+  "runtime_contract": {
+    "formal_runner_is_sole_claim_creator": true,
+    "candidate_get_count_max": 1,
+    "retry_authorized": false,
+    "replacement_authorized": false,
+    "rgb_decode_allowed": false,
+    "validator_imports_producer": false,
+    "workers_injected_by_guarded_launcher": true,
+    "progress_contract": [
+      "phase",
+      "completed_units",
+      "total_units",
+      "throughput",
+      "eta_seconds",
+      "last_progress_at",
+      "status"
+    ]
+  },
+  "focused_verification": {
+    "command": "E:/codex-tools/bin/blindassist-python.cmd -m unittest scripts.research.egomotion_compensated_looming.tests_real_positive_approach_role_admission_r1.test_r1 -v",
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "synthetic_fixture_only": true,
+    "candidate_payload_accessed": false
+  }
+}

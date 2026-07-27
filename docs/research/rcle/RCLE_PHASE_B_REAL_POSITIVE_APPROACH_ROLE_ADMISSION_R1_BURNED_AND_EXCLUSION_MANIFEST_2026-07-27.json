@@ -1,0 +1,195 @@
+{
+  "schema_version": "rcle.real_positive_approach_role_admission.burned_exclusion.v1",
+  "protocol_id": "RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1",
+  "created_on": "2026-07-27",
+  "status": "FROZEN_BEFORE_CANDIDATE_PAYLOAD_ACCESS",
+  "scope_rule": "Every source or capture family listed here is unavailable as the R1 candidate. BURNED means outcome or geometry access has occurred; EXCLUDED means the source cannot satisfy the real-positive role or is not the single selected candidate. No entry may be rescued by a new window, derivative, mirror, relabeling, or changed project role.",
+  "entries": [
+    {
+      "id": "TUM_ALL_RCLE_ACCESSED_AND_DERIVED_FAMILIES",
+      "class": "BURNED",
+      "includes": [
+        "TUM rgbd_dataset_freiburg2_rpy complete source-native sequence; archive SHA-256 3a35b799...2b51f",
+        "TUM real-data geometry canary windows 0, 3, 4, and 6",
+        "TUM tum_freiburg1_xyz complete metadata/pose/depth geometry prescreen; archive SHA-256 a0236d97...ef98",
+        "TUM tum_freiburg3_sitting_xyz complete metadata/pose/depth geometry prescreen; archive SHA-256 05c07167...e205",
+        "all same-sequence windows, extracted members, derivatives, and mirrors"
+      ],
+      "scope_breakdown": {
+        "outcome_burned_exact_sequences": [
+          "rgbd_dataset_freiburg2_rpy",
+          "tum_freiburg1_xyz",
+          "tum_freiburg3_sitting_xyz"
+        ],
+        "family_level_excluded_not_claimed_outcome_burned": [
+          "all other TUM sequences and derivatives"
+        ]
+      },
+      "reason": "Source-native geometry and prescreen outcomes have already been accessed. The TUM family cannot be relabeled as an unseen R1 role source or future confirmation.",
+      "evidence": [
+        {
+          "path": "docs/research/rcle/RCLE_TUM_FR2_RPY_SOURCE_NATIVE_GEOMETRY_AUDIT_R0_RESULT_2026-07-26.md",
+          "sha256": "d4c060a2e9f45753ddbc8efc10dc73ca48d7cdb52fdabb051c62891b831141f2"
+        },
+        {
+          "path": "docs/research/rcle/RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_RESULT_2026-07-27.md",
+          "sha256": "9f068ec046ffdea23257ac0f3aa4663ecc531b0354e3a822c31e86266e4ef0cf"
+        },
+        {
+          "path": "docs/research/rcle/RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R0_CONTRACT_2026-07-27.json",
+          "sha256": "048e53baf51c26032ef86c3012bdecaa84b72f1e72ff5a6d04a1ba1090de0bed"
+        }
+      ],
+      "allowed_reuse": "SOURCE_CHARACTERIZATION_OR_REGRESSION_ONLY",
+      "confirmation_eligible": false
+    },
+    {
+      "id": "BONN_ALL_RCLE_COHORTS_WINDOWS_AND_DERIVATIVES",
+      "class": "BURNED",
+      "includes": [
+        "historical hard exclusions: rgbd_bonn_crowd, rgbd_bonn_moving_obstructing_box, rgbd_bonn_person_tracking, rgbd_bonn_balloon, rgbd_bonn_person_tracking2, rgbd_bonn_placing_nonobstructing_box3, rgbd_bonn_removing_nonobstructing_box2, rgbd_bonn_crowd3, rgbd_bonn_moving_nonobstructing_box",
+        "consumed frozen cohort 513b770d: rgbd_bonn_crowd2, rgbd_bonn_balloon_tracking, rgbd_bonn_balloon_tracking2, rgbd_bonn_moving_obstructing_box2, rgbd_bonn_balloon2, rgbd_bonn_moving_nonobstructing_box2",
+        "all ten fixed B1/B1A windows and all B0, B1, B1A, R1-R5 instances for those sequences",
+        "all extracted frames, flow traces, static-surface truth, diagnostics, derivatives, and mirrors"
+      ],
+      "reason": "Fifteen named sequences are outcome-burned or historical hard exclusions. The remaining official Bonn metadata rows are family-level R1 candidate exclusions, not falsely labeled outcome-burned. No Bonn source may be the different-family R1 candidate.",
+      "scope_breakdown": {
+        "historical_hard_exclusion_exact_count": 9,
+        "outcome_burned_formal_cohort_exact_count": 6,
+        "family_level_excluded_not_claimed_outcome_burned": "the remaining 11 rows of the frozen 26-sequence official Bonn universe"
+      },
+      "evidence": [
+        {
+          "path": "docs/research/rcle/RCLE_PHASE_B_BONN_HISTORICAL_EXCLUSION_MANIFEST_2026-07-26.json",
+          "sha256": "f02bd9f1313def45cc107d72ace5f7c7803f4ab816bf6e98c5f9173fa3bb1cc6"
+        },
+        {
+          "path": "docs/research/rcle/RCLE_PHASE_B_BONN_B1A_RESULT_2026-07-26.md",
+          "sha256": "ec3dc64d320a48b3039b37d6be5791419a2ab4a46c943968e22ebbf73e7e3556"
+        }
+      ],
+      "allowed_reuse": "SOURCE_CHARACTERIZATION_COUNTEREXAMPLE_OR_REGRESSION_ONLY",
+      "confirmation_eligible": false
+    },
+    {
+      "id": "RCLE_PHASE_A_ALL_SYNTHETIC_GENERATOR_AND_SUPPORT_FAMILIES",
+      "class": "BURNED_AND_NOT_REAL",
+      "includes": [
+        "RCLE Minimal-First Phase A synthetic trials",
+        "coverage revision R1",
+        "observable support recovery fixtures and derivatives"
+      ],
+      "reason": "The family is synthetic, fully accessed, and cannot satisfy a REAL positive approach role.",
+      "evidence": [
+        {
+          "path": "docs/research/rcle/RCLE_MINIMAL_PHASE_A_COVERAGE_REVISION_R1_RESULT_2026-07-26.md",
+          "sha256": "d95555c5f57e81f3e6555db0f5a10b7ddb5492af052822ee6f57655e7e208d71"
+        }
+      ],
+      "allowed_reuse": "SYNTHETIC_DEVELOPMENT_OR_REGRESSION_ONLY",
+      "confirmation_eligible": false
+    },
+    {
+      "id": "EVIMO2_V2_FLEA3_SANITY_LL_CAPTURE_FAMILY",
+      "class": "BURNED",
+      "includes": [
+        "all 13 EVIMO2 v2 Flea3 sanity_ll sequences",
+        "all source-native windows",
+        "all extracted metadata, pose, depth, derivatives, archive variants, and mirrors"
+      ],
+      "reason": "R0 accessed geometry for the complete frozen capture family and admitted 0 of 13 windows. The no-replacement terminal was HOLD.",
+      "evidence": [
+        {
+          "path": "docs/research/rcle/RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R0_RESULT_2026-07-27.md",
+          "sha256": "c89103aa190f46b0c5c9daea236067134b14543c7f134f893f87b2be51539f8a"
+        }
+      ],
+      "allowed_reuse": "SOURCE_CHARACTERIZATION_COUNTEREXAMPLE_OR_REGRESSION_ONLY",
+      "confirmation_eligible": false
+    },
+    {
+      "id": "ETH3D_SLAM_CABLES_1_CAPTURE_FAMILY",
+      "class": "BURNED_IN_OTHER_PROGRAM",
+      "includes": [
+        "ETH3D cables_1 mono and RGB-D payloads",
+        "the normalized 120-frame USTRF sensor-replay subset",
+        "same-capture derivatives"
+      ],
+      "reason": "A different program already acquired and inspected this ETH3D capture. Shared publisher and rig do not make it the same capture as sofa_3, but cables_1 is unavailable to R1 and confirmation.",
+      "evidence": [
+        {
+          "path": "docs/research/ustrf-sc/USTRF_SENSOR_REPLAY_R2_RESULT_2026-07-22.md",
+          "sha256": "0a3a2c90767849d9668d174917c82f1f600b3d6a4d08620c40f9f5716237547d"
+        }
+      ],
+      "allowed_reuse": "USTRF_REGRESSION_ONLY",
+      "confirmation_eligible": false
+    },
+    {
+      "id": "ICL_NUIM_AND_TARTANAIR_SYNTHETIC_FAMILIES",
+      "class": "EXCLUDED_NOT_REAL",
+      "includes": [
+        "ICL-NUIM living-room kt0-kt3 including previously accessed traj0",
+        "TartanAir synthetic captures and derivatives"
+      ],
+      "reason": "Synthetic sources cannot fill the required REAL positive approach role. Prior access further prevents treating accessed captures as unseen.",
+      "evidence": [
+        {
+          "path": "docs/research/rcle/RCLE_PHASE_B_DYNAMIC_DATA_CANDIDATE_POOL_2026-07-26.md",
+          "sha256": "53e800cbcd8049a22b42b971fdf3e4f846e1694b2cfccc484da2f8dc18786670"
+        },
+        {
+          "path": "docs/research/ustrf-sc/USTRF_SENSOR_REPLAY_R2_RESULT_2026-07-22.md",
+          "sha256": "0a3a2c90767849d9668d174917c82f1f600b3d6a4d08620c40f9f5716237547d"
+        }
+      ],
+      "allowed_reuse": "SYNTHETIC_CALIBRATION_OR_REGRESSION_ONLY",
+      "confirmation_eligible": false
+    },
+    {
+      "id": "ALL_PREEXISTING_ARTIFACTS_LOCAL_PAYLOADS",
+      "class": "EXCLUDED_DUE_TO_PRELOCK_PROCESS_CONTAMINATION",
+      "includes": [
+        "every payload present under artifacts.local before the R1 claim",
+        "the existing public-video or BlindAssist data JSON accidentally scanned by a broad prelock text search",
+        "all same-payload derivatives"
+      ],
+      "reason": "A prelock repository search unintentionally read part of an existing local data JSON. No geometry or candidate decision was taken from it, but fail-closed isolation excludes every preexisting local payload from R1 selection and confirmation.",
+      "evidence": [
+        {
+          "process_event": "2026-07-27 prelock rg search included artifacts.local and echoed existing data content",
+          "candidate_influence": false
+        }
+      ],
+      "allowed_reuse": "OUTSIDE_R1_ONLY",
+      "confirmation_eligible": false
+    },
+    {
+      "id": "NONSELECTED_R1_ALTERNATES",
+      "class": "EXCLUDED_FOR_R1_NOT_YET_BURNED_BY_THIS_PROTOCOL",
+      "includes": [
+        "ETH3D sofa_4 and every other ETH3D sequence except the locked sofa_3 RGB-D archive",
+        "other EVIMO2 groups or cameras",
+        "mirrors, repacks, archive variants, and replacement sources"
+      ],
+      "reason": "R1 is a one-candidate protocol. These sources are not replacements if sofa_3 is inaccessible, malformed, negative, or otherwise inconvenient.",
+      "evidence": [
+        {
+          "path": "docs/research/rcle/RCLE_PHASE_B_DYNAMIC_DATA_CANDIDATE_POOL_2026-07-26.md",
+          "sha256": "53e800cbcd8049a22b42b971fdf3e4f846e1694b2cfccc484da2f8dc18786670"
+        }
+      ],
+      "allowed_reuse": "REQUIRES_A_NEW_PREACCESS_PROTOCOL_AND_FRESH_AUTHORITY_AUDIT",
+      "confirmation_eligible": "NOT_DECIDED_HERE"
+    }
+  ],
+  "r1_candidate_must_not_descend_from": [
+    "TUM_ALL_RCLE_ACCESSED_AND_DERIVED_FAMILIES",
+    "BONN_ALL_RCLE_COHORTS_WINDOWS_AND_DERIVATIVES",
+    "RCLE_PHASE_A_ALL_SYNTHETIC_GENERATOR_AND_SUPPORT_FAMILIES",
+    "EVIMO2_V2_FLEA3_SANITY_LL_CAPTURE_FAMILY",
+    "ETH3D_SLAM_CABLES_1_CAPTURE_FAMILY",
+    "ICL_NUIM_AND_TARTANAIR_SYNTHETIC_FAMILIES",
+    "ALL_PREEXISTING_ARTIFACTS_LOCAL_PAYLOADS"
+  ]
+}

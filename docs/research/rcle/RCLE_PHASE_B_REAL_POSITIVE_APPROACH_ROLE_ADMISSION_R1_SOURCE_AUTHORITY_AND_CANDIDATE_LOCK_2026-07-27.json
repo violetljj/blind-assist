@@ -1,0 +1,112 @@
+{
+  "schema_version": "rcle.real_positive_approach_role_admission.source_authority_lock.v1",
+  "protocol_id": "RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1",
+  "created_on": "2026-07-27",
+  "status": "LOCKED_BEFORE_CANDIDATE_PAYLOAD_ACCESS",
+  "candidate_count": 1,
+  "candidate": {
+    "candidate_id": "ETH3D_SLAM_SOFA_3_RGBD",
+    "publisher": "ETH3D",
+    "benchmark": "ETH3D SLAM training datasets",
+    "source_native_sequence_id": "sofa_3",
+    "modality_archive": "RGB-D",
+    "official_frame_count": 533,
+    "official_description": "The camera moves in front of a sofa.",
+    "official_dataset_page": "https://www.eth3d.net/slam_datasets",
+    "official_payload_url": "https://www.eth3d.net/data/slam/datasets/sofa_3_rgbd.zip",
+    "official_format_documentation": "https://www.eth3d.net/slam_documentation",
+    "official_license_page": "https://www.eth3d.net/",
+    "license": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International",
+    "license_spdx_like": "CC-BY-NC-SA-4.0"
+  },
+  "official_metadata_receipt": {
+    "access_class": "PUBLIC_WEB_METADATA_ONLY_NOT_CANDIDATE_PAYLOAD",
+    "accessed_on": "2026-07-27",
+    "license_page": {
+      "bytes": 7587,
+      "sha256": "1114c1aff06eea5f63213bf28dea20e14bb1a86f2710c2d19e7fff99302a2363"
+    },
+    "dataset_page": {
+      "bytes": 100602,
+      "sha256": "e66b2664b64c13bed891e9c43f7cf142686f84ab4aa902b6551eac3df7bdcea9"
+    },
+    "format_documentation": {
+      "bytes": 25281,
+      "sha256": "39c7be780b33c0cfed864242cd52588adcc33ecab28fb8071f802b08736ddfee"
+    },
+    "payload_requests": 0,
+    "payload_bytes_read": 0
+  },
+  "selection_authority": {
+    "eligible_set": [
+      "ETH3D sofa_3",
+      "ETH3D sofa_4"
+    ],
+    "eligibility_basis": "The frozen candidate pool identifies sofa_3 and sofa_4 as real-domain approach-discovery candidates with synchronized RGB-D and pose. ICL-NUIM is synthetic; TUM, Bonn, Phase A, and EVIMO2 sanity_ll are burned or excluded.",
+    "deterministic_selection_rule": "Choose the lowest numeric source-native sequence ID from the eligible ETH3D sofa_3/sofa_4 pair; frame count is used only as a cost tie-break description, never as outcome evidence.",
+    "selected": "ETH3D sofa_3",
+    "no_geometry_or_rgb_outcome_used": true,
+    "no_replacement_after_claim": true,
+    "nonselected_alternate": "ETH3D sofa_4"
+  },
+  "license_authority": {
+    "permission_closed": true,
+    "permitted_use": "Non-commercial thesis, paper, reproducible research, and research-prototype evaluation with attribution.",
+    "conditions": [
+      "Credit ETH3D and cite the BAD SLAM dataset publication.",
+      "Do not use the data or adaptations for commercial or production deployment.",
+      "If adapted data is shared, apply the same CC BY-NC-SA 4.0 license.",
+      "Do not imply that the license grants safety, product, or user-study authority."
+    ],
+    "payload_redistribution_required": false,
+    "project_use_class": "NONCOMMERCIAL_RESEARCH_ONLY",
+    "commercial_or_production_reuse": false
+  },
+  "identity": {
+    "source_descriptor_canonical_json": "{\"candidate_id\":\"ETH3D_SLAM_SOFA_3_RGBD\",\"dataset_page_sha256\":\"e66b2664b64c13bed891e9c43f7cf142686f84ab4aa902b6551eac3df7bdcea9\",\"license\":\"CC_BY_NC_SA_4_0\",\"official_dataset_page\":\"https://www.eth3d.net/slam_datasets\",\"official_format_documentation\":\"https://www.eth3d.net/slam_documentation\",\"official_payload_url\":\"https://www.eth3d.net/data/slam/datasets/sofa_3_rgbd.zip\",\"selection\":\"single frozen real RGB-D training sequence; no sofa_4, alternate ETH3D sequence, mirror, archive variant, retry, or replacement after claim\"}",
+    "source_descriptor_sha256": "11ac41e221ec6bdc16f12e071a9befdb55a2466e00bc8a78ee7fe67185b04756",
+    "preaccess_source_hash_definition": "SHA-256 of the frozen canonical source descriptor plus the already captured official dataset-page SHA-256.",
+    "payload_identity_rule": "The SHA-256 of the first complete response body from the exact official payload URL becomes the immutable content identity. The official site does not publish a preaccess archive checksum; no checksum is invented.",
+    "archive_member_identity_rule": "After the claim and first complete payload, require exactly one top-level sofa_3 dataset with calibration.txt, groundtruth.txt, associated.txt, rgb.txt, depth.txt, rgb/, and depth/. Exact archive-member names and CRC values are frozen from that first payload and may not be replaced."
+  },
+  "ancestry_and_independence": {
+    "ancestry": [
+      "ETH3D_OFFICIAL",
+      "ETH3D_SLAM_TRAINING",
+      "ETH3D_SLAM_SOFA_SCENE",
+      "ETH3D_SLAM_SOFA_3",
+      "ETH3D_SLAM_SOFA_3_RGBD",
+      "RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1"
+    ],
+    "independence_group": "ETH3D_SLAM_SOFA_SCENE_CAPTURE_FAMILY",
+    "required_non_overlap": [
+      "TUM_ALL_RCLE_ACCESSED_AND_DERIVED_FAMILIES",
+      "BONN_ALL_RCLE_COHORTS_WINDOWS_AND_DERIVATIVES",
+      "RCLE_PHASE_A_ALL_SYNTHETIC_GENERATOR_AND_SUPPORT_FAMILIES",
+      "EVIMO2_V2_FLEA3_SANITY_LL_CAPTURE_FAMILY",
+      "ETH3D_SLAM_CABLES_1_CAPTURE_FAMILY",
+      "ICL_NUIM_AND_TARTANAIR_SYNTHETIC_FAMILIES",
+      "ALL_PREEXISTING_ARTIFACTS_LOCAL_PAYLOADS"
+    ],
+    "same_publisher_prior_access": "ETH3D cables_1 was previously accessed by USTRF, but it is a different source-native sequence and capture. Its outcome, frames, thresholds, and derivatives are forbidden inputs to R1.",
+    "confirmation_isolation": "Any access to sofa_3 burns the complete ETH3D sofa-scene capture family, including sofa_1, sofa_2, sofa_3, sofa_4, sofa_dark_1-3, sofa_shake, and all derivatives, for future confirmation of this claim.",
+    "reuse_policy_after_access": "GEOMETRY_SELECTED_REAL_APPROACH_CANARY_ONLY; NEVER_CONFIRMATION; MAY_REMAIN_SOURCE_CHARACTERIZATION_COUNTEREXAMPLE_OR_REGRESSION"
+  },
+  "prior_access_audit": {
+    "authority_universe": "Recorded access in the E:/linnan workspace, tracked research ledgers, retained formal receipts, and Codex project history. Unrecorded private human browsing outside this authority universe is neither claimed nor used.",
+    "no_recorded_candidate_payload_access": true,
+    "basis": [
+      "Tracked RCLE and USTRF records identify prior ETH3D access only for cables_1.",
+      "Tracked references to sofa_3 before this lock are candidate-pool descriptions and reserved-role metadata, not acquisition or geometry results.",
+      "No preexisting artifacts.local payload may be used because all such payloads are excluded by the burned/exclusion manifest."
+    ],
+    "claim_required_before_any candidate payload path probe or payload request": true
+  },
+  "reuse_and_confirmation_contract": {
+    "r1_role_if_admitted": "REAL_POSITIVE_APPROACH_CANARY_DATA_ROLE_ONLY",
+    "r1_role_if_not_admitted": "SOURCE_CHARACTERIZATION_OR_COUNTEREXAMPLE_ONLY",
+    "future_confirmation_eligible": false,
+    "future_performance_qualification_authorized_by_this_lock": false,
+    "performance_qualification_may_be_created_only_if": "R1 terminal is exactly REAL_POSITIVE_APPROACH_ROLE_ADMITTED / VALID"
+  }
+}

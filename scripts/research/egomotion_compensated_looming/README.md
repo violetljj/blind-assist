@@ -359,3 +359,16 @@ algorithm outcome 均未读取。
 mismatch 为 `0`，但没有窗口同时通过冻结门，终态为
 `HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID`。该模块不得改成来源
 搜索器，也不得据此启动 algorithm implementation 或 execution。
+
+## Real positive approach role admission R1
+
+`real_positive_approach_role_admission_r1/` 将候选冻结为唯一 ETH3D `sofa_3`
+RGB-D official URL，并在 claim 前绑定 burned manifest、source authority、
+contract、implementation lock 与 host preflight。正式 run 只发生一次 GET，
+无 HEAD/retry/mirror/replacement；source-access validator 独立复核 response
+artifact hash、claim-before-request 与零替换计数。
+
+终态为 `HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID`，原因是
+`R1_OFFICIAL_CONTAINER_IDENTITY_INCOMPLETE`。geometry producer 未执行，
+RGB pixels 与 algorithm outcome 未读取，performance qualification 不创建。
+本模块与所有 `sofa_3` artifact 不得重跑、续传、换源或升级为 confirmation。
