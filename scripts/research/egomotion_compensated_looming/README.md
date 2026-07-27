@@ -346,3 +346,16 @@ local-expansion paired comparator，window `4` 只作 abstention/interface stres
 真实 positive approach role 仍缺失，因此状态保持
 `HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID /
 EXECUTION_NOT_AUTHORIZED`。
+
+## Real positive approach role admission R0
+
+`real_positive_approach_role_admission_r0/` 只处理 geometry-only 数据角色准入。
+它在任何 EVIMO2 source access 前 exclusive-create/fsync claim，并把唯一来源
+冻结为 `EVIMO2 v2 / Flea3 / sanity_ll`。正式审计只读取
+`dataset_info.npz + dataset_depth.npz`；classical RGB、events、mask 与 RCLE
+algorithm outcome 均未读取。
+
+13 条 sequence 的首个固定非重叠 10 秒窗共 `3895` pair；独立全量 replay
+mismatch 为 `0`，但没有窗口同时通过冻结门，终态为
+`HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID`。该模块不得改成来源
+搜索器，也不得据此启动 algorithm implementation 或 execution。

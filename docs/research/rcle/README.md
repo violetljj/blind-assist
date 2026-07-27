@@ -76,7 +76,15 @@ interface；RCLE RGB algorithm outcome 未读取。[RGB algorithm canary R0
 准入设计，并已通过[独立设计审查](RCLE_PHASE_B_RGB_ALGORITHM_CANARY_R0_DESIGN_REVIEW_RESULT_2026-07-27.md)。
 TUM 没有建立真实 positive approach role，因此当前终态为
 `HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID`；设计审查最多使设计包
-有效，最大权限仍为 `EXECUTION_NOT_AUTHORIZED`。
+有效，最大权限仍为 `EXECUTION_NOT_AUTHORIZED`。随后另立的
+[真实 positive approach 数据角色准入 R0](RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R0_RESULT_2026-07-27.md)
+在 source access 前完成 exclusive claim、source descriptor hash 和几何门冻结，
+只审计唯一 `EVIMO2 v2 / Flea3 / sanity_ll` 的 metadata/pose/depth。13 个固定
+首窗、`3895` pair 经独立全量重算 mismatch 为 `0`，但 `0/13` 窗同时通过
+coverage、signed radial 与 positive-fraction 门，终态仍为
+`HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID`。没有读取 RGB algorithm
+outcome、换源/换窗或降门；algorithm implementation/performance qualification
+与正式 execution 决策继续关闭。
 
 Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固定旋转补偿、Sparse LK、局部仿射拟合和网格汇总，比较纯旋转泄漏与真实闭合保留。trial-level leakage error 和 closing error 是主判据；RSR/CRR 只作诊断比例。
 
