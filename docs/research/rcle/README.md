@@ -70,7 +70,13 @@ producer/independent-validator 的身份、schema、弃权与 float64 parity。�
 已完成：producer 与独立 validator 各输出/复算 `1196` pair，全部 identity、
 schema、abstention、branch 与 float64 parity mismatch 为 `0`，终态
 `VALID_IMPLEMENTATION_DEBUGGED_GEOMETRY_INTERFACE_ONLY`。这只调通 geometry
-interface；RCLE RGB algorithm outcome 未读取，algorithm canary 仍未授权。
+interface；RCLE RGB algorithm outcome 未读取。[RGB algorithm canary R0
+预注册](RCLE_PHASE_B_RGB_ALGORITHM_CANARY_R0_PREREGISTRATION_2026-07-27.md)
+现已冻结最小 rotation-leakage comparator、数据 firewall、独立 validator 与性能
+准入设计，并已通过[独立设计审查](RCLE_PHASE_B_RGB_ALGORITHM_CANARY_R0_DESIGN_REVIEW_RESULT_2026-07-27.md)。
+TUM 没有建立真实 positive approach role，因此当前终态为
+`HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID`；设计审查最多使设计包
+有效，最大权限仍为 `EXECUTION_NOT_AUTHORIZED`。
 
 Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固定旋转补偿、Sparse LK、局部仿射拟合和网格汇总，比较纯旋转泄漏与真实闭合保留。trial-level leakage error 和 closing error 是主判据；RSR/CRR 只作诊断比例。
 
@@ -161,6 +167,7 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 15. [PB-H1 role proxy R0](RCLE_PHASE_B_PB_H1_ROLE_PROXY_R0_RESULT_2026-07-26.md) 已用一个受控 fixture 与 deterministic burned Bonn 首窗完成。公式通过纯旋转零响应和前向解析标定；旧 raw-speed proxy 错位。下一步只审计 TUM `fr2/rpy` 的 source-native geometry，不下载其他来源或读取算法输出。
 16. [TUM `fr2/rpy` source-native geometry audit R0](RCLE_TUM_FR2_RPY_SOURCE_NATIVE_GEOMETRY_AUDIT_R0_RESULT_2026-07-26.md) 已按下载前冻结的 10 s 全窗规则完成：9/10 窗、2852/2990 formula-level pair 可评价；window 4 因 source-depth coverage `<0.50` 弃权，rotation-dominant 窗为 0/3/6，终态 `PASS / VALID`。旧 `0.02 m/s` 在本 source 未出现窗口级错杀；没有换序列或运行 RCLE RGB。下一步可以单独设计小型 geometry canary。
 17. [小型 real-data geometry canary R0](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_PREREGISTRATION_2026-07-26.md) 已冻结为 F1 implementation canary，机器合同 SHA `48f8b901…453c`。版本隔离 producer、独立 validator、18 项 fixture/mutation tests、exact output schema 和 one-shot claim runner 已通过[独立实现审查](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-26.md)，implementation lock 为 `0d833b83…e2387`。绑定该 lock 的[唯一正式 R0](RCLE_PHASE_B_REAL_DATA_GEOMETRY_CANARY_R0_RESULT_2026-07-27.md) 已消费 claim：窗 0/3/4/6 共 `1196` pair，producer/validator 全量一致，所有 gating mismatch 为 `0`，failure receipt 不存在，终态 `VALID_IMPLEMENTATION_DEBUGGED_GEOMETRY_INTERFACE_ONLY`。正式运行约 2 h 07 min，gzip TGZ 逐 pair 回扫造成约 `2156.646 GiB` 逻辑读取；这不改变 parity PASS，但下一 evidence version 必须做真实 archive mechanics 性能预检。RGB algorithm outcome 未读取，algorithm canary 仍需另立任务和权限。
+18. [RGB algorithm canary R0 F1 设计包](RCLE_PHASE_B_RGB_ALGORITHM_CANARY_R0_PREREGISTRATION_2026-07-27.md) 已经三轮独立只读审查，前两轮 `FAIL` 留痕，第三轮 [DESIGN_REVIEW_PASS](RCLE_PHASE_B_RGB_ALGORITHM_CANARY_R0_DESIGN_REVIEW_RESULT_2026-07-27.md)。数据角色、exact pair identity、唯一 algorithm specification、独立 validator 和 performance/preflight 合同已机器闭合；真实 positive approach role 仍为 `0`，performance qualification 为 `NOT_RUN`，终态保持 `HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID / EXECUTION_NOT_AUTHORIZED`。
 
 ## 主线变更规则
 

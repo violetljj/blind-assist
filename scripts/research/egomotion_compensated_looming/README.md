@@ -328,5 +328,21 @@ metadata/pose/depth geometry audit，不开放 algorithm canary 或 confirmation
 `real_data_geometry_canary_r0/` 已完成版本隔离 producer、独立 validator、严格
 output schema、fixture/mutation tests 与 one-shot runner。实现锁
 `0d833b835d242468fe8c466414882044c3717e8f0b16d6d79a6b5f112e1e2387`
-通过 `13/13` exact hash review；正式 archive、output 与 claim 均未读取或创建。
-状态保持 `IMPLEMENTATION_REVIEW_PASS / FORMAL_EXECUTION_NOT_AUTHORIZED`。
+通过 exact hash review；唯一正式执行与独立复算已
+`VALID_IMPLEMENTATION_DEBUGGED_GEOMETRY_INTERFACE_ONLY`。该结果只证明 interface
+readiness，不是 RGB algorithm outcome 或有效性证据。
+
+## RGB algorithm canary R0 design-only tooling
+
+`rgb_algorithm_canary_r0/` 只提供 F1 设计包的 outcome firewall 和 synthetic
+mutation validator；`tests_rgb_algorithm_canary_r0/` 覆盖角色重叠、outcome
+泄漏、source/identity/access/pair-ledger 漂移、缺字段、顺序、数值、summary、
+cache，以及 progress timestamp/phase/status/PID/ETA/freshness/hash 恶意反例。
+第三轮独立只读设计审查已 `PASS`。目录内没有
+producer、formal validator、runner、cache materializer 或 implementation lock。
+
+当前设计冻结 TUM windows `0/3/6` 的 raw-flow versus rotation-compensated
+local-expansion paired comparator，window `4` 只作 abstention/interface stress。
+真实 positive approach role 仍缺失，因此状态保持
+`HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID /
+EXECUTION_NOT_AUTHORIZED`。
