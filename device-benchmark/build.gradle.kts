@@ -143,6 +143,12 @@ android {
         noCompress += "tflite"
     }
 
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
     sourceSets {
         getByName("main") {
             assets.srcDir(detectorBenchmarkAssetsDir)
@@ -179,5 +185,7 @@ dependencies {
     implementation(libs.tflite)
     implementation(libs.tflite.gpu)
     implementation(libs.tflite.gpu.api)
+    implementation("com.qualcomm.qti:qnn-runtime:2.34.0")
+    implementation("com.qualcomm.qti:qnn-litert-delegate:2.34.0")
     implementation("org.opencv:opencv:4.10.0")
 }

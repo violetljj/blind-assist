@@ -26,7 +26,9 @@ class TfliteYoloDetector(
     labelsAssetName: String = LABELS_ASSET,
     private val inputSize: Int = INPUT_SIZE,
     private val confidenceThreshold: Float = CONFIDENCE_THRESHOLD,
-    private val iouThreshold: Float = IOU_THRESHOLD
+    private val iouThreshold: Float = IOU_THRESHOLD,
+    val executionBackend: DetectorExecutionBackend = DetectorBackendPolicy.productionDefault,
+    private val benchmarkInterpreterOptionsFactory: (() -> Interpreter.Options)? = null
 ) : ObjectDetector {
     val labels: List<String>
 
@@ -78,23 +80,14 @@ class TfliteYoloDetector(
 
     private fun createInterpreter(context: Context): Interpreter {
         val model = loadMappedAsset(context, modelAssetName)
-        if (!GPU_DELEGATE_ENABLED) {
-            runtimeWarning = "LiteRT CPU 兼容模式"
-            return Interpreter(model, Interpreter.Options().apply { setNumThreads(4) })
+        benchmarkInterpreterOptionsFactory?.let { optionsFactory ->
+            DetectorBackendPolicy.requireBenchmarkInjectionAuthorized(context.packageName)
+            runtimeWarning = "外部基准后端：${executionBackend.wireName}"
+            return Interpreter(model, optionsFactory())
         }
-        val gpuOptions = Interpreter.Options().apply {
-            setNumThreads(4)
-            maybeAttachGpuDelegate(this)
-        }
-        return try {
-            Interpreter(model, gpuOptions)
-        } catch (gpuError: Throwable) {
-            FatalThrowables.rethrowIfFatal(gpuError)
-            Log.w(TAG, "GPU interpreter failed, falling back to CPU.", gpuError)
-            closeGpuDelegate()
-            runtimeWarning = "GPU 不可用，已回退 CPU"
-            Interpreter(model, Interpreter.Options().apply { setNumThreads(4) })
-        }
+        DetectorBackendPolicy.requireProductionAuthorized(executionBackend)
+        runtimeWarning = "LiteRT CPU 兼容模式"
+        return Interpreter(model, Interpreter.Options().apply { setNumThreads(4) })
     }
 
     override fun detect(bitmap: Bitmap): DetectorFrameResult {
@@ -358,7 +351,6 @@ class TfliteYoloDetector(
     }
 
     companion object {
-        private const val GPU_DELEGATE_ENABLED = false
         const val MODEL_ASSET = "yolo11n_fp16_320.tflite"
         const val LABELS_ASSET = "coco_labels.txt"
         const val INPUT_SIZE = 320
