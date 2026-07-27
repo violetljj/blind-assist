@@ -194,8 +194,24 @@ confirmation gate: rate >= 0.05/s
 
 ## 数据使用和“用过即烧”
 
+- “用过即烧”烧掉的是**与既有访问实际重叠的证据角色和最小身份单元**，不是数据集
+  名称本身。默认传播顺序为
+  `member/modality → frame/pair → window → sequence/capture → independence group`；
+  只有存在可复核的共同采集、派生关系或 claim-relevant 信息传播，才允许扩大范围。
+- 项目名不同不自动产生独立性，项目名相同也不自动构成污染。跨项目访问必须逐项记录
+  `metadata_identity`、`payload_presence`、`geometry_access`、`rgb_visual_access`、
+  `other_algorithm_outcome_access`、`claim_relevant_outcome_access` 和
+  `selection_or_tuning_influence`；资格由实际读取的信息及其对当前 claim 的影响决定。
+- 文件曾下载、缓存或存在于 `artifacts.local`，以及只读取目录、许可、大小、哈希或
+  source-native identity，不足以单独烧掉算法 canary 或 confirmation。若无法证明
+  某 member 未打开，可将该 member 的访问状态记为 `UNKNOWN` 并局部 fail closed，
+  不得无证据扩大为所有既有 payload 或整个 source family。
 - 看过算法输出、用于修实现或调候选参数的数据，角色必须是
   `CANARY` 或 `DEVELOPMENT`，不得再作为同一命题的 `CONFIRMATION` 数据。
+- “其他算法 outcome”只有在 target、输入机制或诊断信息与当前 claim 实质重叠，
+  或实际影响了当前候选、窗口、门槛、实现或停止决策时，才升级为
+  `claim_relevant_outcome_access`。否则必须披露，但可在新协议中承担
+  `DISCLOSED_CROSS_PROGRAM_CANARY`；不得冒充 pristine/unseen confirmation。
 - 只看过 metadata 或 geometry 不等于看过算法 outcome，但必须披露 access level；
   如果 geometry 本身参与角色选择，该 window/sequence 不再具有完全
   outcome-blind 的角色选择权威。
@@ -208,6 +224,12 @@ confirmation gate: rate >= 0.05/s
 - `CONFIRMATION/DEPLOYMENT` 的 identity manifest 必须是仓库内可解析 JSON，并由
   validator 读取、复算 SHA-256 和核对 protocol/source/content/independence 字段；
   只有 64 位字符串或无法解析的外部引用不产生机器 authority。
+- 历史访问的重新分类只能前向改变允许的后继角色，不回写旧 terminal、claim、
+  burned manifest 或 receipt。已经冻结或已消费的协议继续按原合同结束；新规则只能
+  由新版本协议显式采用。
+
+跨项目数据访问的具体字段、角色矩阵和 RCLE 首批重分类见
+[跨项目数据访问与角色重分类标准 R0](research/rcle/RCLE_CROSS_PROGRAM_DATA_ACCESS_AND_ROLE_RECLASSIFICATION_STANDARD_R0_2026-07-27.md)。
 
 ## 两轴结果与最小失败范围
 

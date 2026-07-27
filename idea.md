@@ -911,3 +911,10 @@
 - 前置事实：现有 frozen DINO route-field × patch、真实 marker 距离场和多种全局 head 已经失败或只部分迁移，因此本方案不得直接启动学生训练。首个硬门是非 blind、真实连续事件上的教师上界，并必须包含 uniform/shuffled route 负控。
 - 工程前置：先让生产与 benchmark 共用同一 Assist Decision Module，再建立由至少 YOLO 与 RC-OARF 两个 Adapter 证明的模型无关感知证据 seam，避免密集风险结果被压成 `Detection` 框，也避免 benchmark 与 App 行为漂移。
 - 停止原则：教师上界不优于 detector geometry、显式路线不可获得、增益只来自同源或合成、事件误提醒/清除不改善、INT8 或同机 P95 失败，任一出现即保存负向报告并停止，不转向大规模 backbone、阈值、optimizer 或 SAM/ASAM 搜索。
+
+### 【进行中】RCLE Phase B 真实 positive-approach 数据角色准入与并行隔离
+
+- 正确顺序固定为：`approach-role admission → implementation/performance qualification → formal execution decision`。数据角色准入只允许 metadata、pose、depth 或其他非 RGB-algorithm 几何真值；在 claim、来源哈希和门槛冻结前不得访问候选 payload，也不得读取 RGB algorithm outcome、调参或因失败换源/换窗。
+- 并行工作只在证据角色和任务身份互不重叠时提高效率。同一协议版本不得并行创建两份 claim、选择两个候选或让两个进程写同一路径；若另一进程已经占用 `RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1`，本进程只能做只读独立审查或等待明确交接。
+- 候选必须建立 content identity、ancestry、independence group、access/reuse policy，并证明不与当前协议明确烧掉的 sequence/capture 及未来 confirmation partition 重叠。跨项目访问按实际读取的 metadata、geometry、RGB、其他算法 outcome、claim-relevant outcome 和 selection/tuning influence 分级；不能因换研究名称恢复为 pristine/unseen，但可以在披露后转为 discovery、regression、source characterization 或 `DISCLOSED_CROSS_PROGRAM_APPROACH_CANARY`。文件曾存在于本地或 USTRF 看过不再自动判整个数据族死亡。
+- 当前 R1 已预访问冻结唯一候选 ETH3D `sofa_3`；若候选访问、格式或几何门失败，保持冻结的 HOLD/INVALID 终态，不转向 `sofa_4`、OpenLORIS、镜像或其他窗口。只有 role admission 为 `REAL_POSITIVE_APPROACH_ROLE_ADMITTED / VALID`，才允许另立 performance qualification 任务。
