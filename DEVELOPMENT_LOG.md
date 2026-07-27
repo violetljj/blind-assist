@@ -1406,3 +1406,19 @@
 - 全部 18 个完整 10 秒窗的 geometry coverage 均为 1.0；角色为 `17 positive / 0 below-reference / 1 ambiguous`，无法形成精确 2+2，故 selected RGB identity/cache/ledger 未创建，RGB bytes 为 0，冻结 RGB algorithm 未运行。
 - Formal validator 因 W3 偶数样本 median 的 Decimal/float 表示级精确比较保留 `CROSS_SEQUENCE_HOLDOUT_INVALID / INVALID`。Post-hoc R1 不重跑算法，只以 `rel_tol=1e-12, abs_tol=1e-15` 修复聚合数值等价，其余 identity/hash/ledger/role/selection 检查不变，结果 `errors=[] / VALID`；不回写 formal terminal。
 - 最大权限仍为同源、同场景、不同 run 的 development holdout，不是 confirmation、cross-source generalization 或性能资格。Floor3 两个 run 都缺冻结低参考角色，后继只能另立 outcome-blind source discovery，不能自动用 floor3_3 或改门。
+
+## 2026-07-27：冻结 R1 并启动未见数据外部确认
+
+- 执行者：violjjet
+- 冻结 `CAUSAL_THREE_PAIR_CONFIRMATION_R1`：严格 `> 0.01/s`、连续三 pair、所有
+  abstention/窗边界/不满足门的 pair 均重置；旧版与底层 RGB/geometry 实现不变。
+- 新建 outcome-blind 外部确认预注册和 F0 来源发现合同。正式 cohort 固定为两个
+  ancestry-independent all-real 来源，每个来源各一个 10 秒 positive 与 below-reference
+  窗；四门逐窗口、逐来源取逻辑 AND，pooled aggregate 只作诊断，失败后禁止换窗补救。
+- 新建纯 pair-ledger 指标模块，同一遍历派生 old/R1，拒绝 `dt > 0.1s`、窗口/时间链漂移、
+  角色缺失和非两来源四窗口输入；专项 `17/17` tests 通过。
+- metadata-only 审计终态为 `CANDIDATE_NOT_FOUND / EXTERNAL_COHORT_NOT_EVALUABLE`：
+  Ground-Challenge、MultiScan、ARKitScenes raw 与 SUN3D 均未同时闭合许可、精确
+  payload identity 和 pose/depth/timestamp 绑定；OpenLORIS exact corridor 与 CoRBS
+  authority 修复复核仍为 HOLD。该 discovery version 已按 stop condition 关闭；未下载候选
+  payload、未读 claim-relevant RGB outcome、未消费正式 claim；Android/实时集成继续关闭。

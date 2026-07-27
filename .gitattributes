@@ -31,6 +31,12 @@
 /scripts/research/egomotion_compensated_looming/run_real_data_geometry_canary_r0.py text eol=lf
 /scripts/research/egomotion_compensated_looming/tests_real_data_geometry_canary_r0/** text eol=lf whitespace=-blank-at-eof
 
+# RCLE unseen external confirmation R0 binds protocol and pure-metrics bytes.
+/docs/research/rcle/RCLE_UNSEEN_EXTERNAL_CONFIRMATION_R0_* text eol=lf whitespace=-blank-at-eof
+/docs/research/rcle/RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R0_* text eol=lf whitespace=-blank-at-eof
+/scripts/research/egomotion_compensated_looming/rcle_unseen_external_confirmation_r0/** text eol=lf whitespace=-blank-at-eof
+/scripts/research/egomotion_compensated_looming/tests_rcle_unseen_external_confirmation_r0/** text eol=lf whitespace=-blank-at-eof
+
 # These terminal-bound R2 artifacts retain their frozen trailing blank line byte.
 /device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1ExploratoryProfileR2DeviceTest.kt text eol=lf
 /schemas/ustrf_route_target_l2_fresh_selection_prereg_r1.schema.json text eol=lf

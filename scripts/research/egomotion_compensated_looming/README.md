@@ -1,9 +1,18 @@
 # Egomotion-compensated looming research
 
-状态：`RCLE_GEOMETRY_CANARY_IMPLEMENTATION_REVIEW_PASS / FORMAL_NOT_AUTHORIZED`
+状态：`R1_FROZEN / EXTERNAL_COHORT_NOT_EVALUABLE`
 
 This module is an offline, research-only boundary for
 `EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R0`.
+
+`rcle_unseen_external_confirmation_r0/` is the pure data-layer contract for
+the next cross-source confirmation. It derives the unchanged old trigger and
+causal three-pair R1 trigger from one ordered pair ledger, validates the exact
+two-source/four-window cohort, and evaluates every local gate without pooled
+rescue. Its dedicated 17-test suite passes. It does not select windows, decode
+RGB, execute the estimator, or write a formal claim. Source discovery is
+closed as `EXTERNAL_COHORT_NOT_EVALUABLE`, so no external payload or RGB
+outcome is authorized in that evidence version.
 
 The `rgb_algorithm_cid_sims_floor3_2_cross_sequence_holdout_r0/` module is a
 separate 8-worker geometry-first development holdout for the different

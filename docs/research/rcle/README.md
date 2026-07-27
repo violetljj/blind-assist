@@ -34,6 +34,17 @@ RCLE-Minimal R0 的输出是以 `s^-1` 表示的局部 expansion。它不是碰�
 
 ## 当前执行状态
 
+当前 R1 已冻结，不再调整三 pair 连续确认、严格 `> 0.01/s` 门或任何底层
+RGB/geometry 算法。新的
+[未见数据外部确认 R0 预注册](RCLE_UNSEEN_EXTERNAL_CONFIRMATION_R0_PREREGISTRATION_2026-07-27.md)
+要求先用 geometry-only 在两个 all-real、ancestry-independent 来源内各锁一个正窗和一个
+低参考窗，再一次性并跑旧版与 R1；所有门逐窗口、逐来源取逻辑 AND，pooled aggregate
+只有诊断权。[来源发现 R0](RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R0_RESULT_2026-07-27.md)
+当前为 `CANDIDATE_NOT_FOUND / EXTERNAL_COHORT_NOT_EVALUABLE`：冻结四来源及两项
+authority 修复仍未得到两个同时闭合许可、精确文件 identity 和 pose/depth/timestamp
+绑定的来源。该 discovery version 已关闭；未下载 payload、未读取 claim-relevant RGB
+outcome、未消费正式 old/R1 claim，Android/实时集成继续关闭。
+
 R1.1 的 **Phase A：Synthetic Signal Audit** 已执行完毕，并在唯一一次
 implementation-only coverage revision 后按冻结停止语义关闭；随后独立冻结的
 Observable Support Recovery 已通过 development 与 sealed validation。用户随后
