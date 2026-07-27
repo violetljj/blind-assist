@@ -1,0 +1,70 @@
+{
+  "schema_version": "rcle.real_positive_approach_role_admission.r3.source_transport.v1",
+  "protocol_id": "RCLE_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R3_CID_SIMS",
+  "created_on": "2026-07-27",
+  "status": "FROZEN_BEFORE_R3_PAYLOAD_TRANSFER",
+  "purpose": "Separate recoverable byte transport from one-shot scientific geometry interpretation.",
+  "parent_evidence": {
+    "r2_result_path": "docs/research/rcle/RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R2_CID_SIMS_RESULT_2026-07-27.md",
+    "r2_result_sha256": "bcfb69c8ef32582d08f693cf1ab2d75a9a988f4f97d3d1bdbd145f941860bb3b",
+    "r2_terminal": "INVALID_R2_EVIDENCE / INVALID",
+    "r2_http_request_count": 0,
+    "r2_payload_bytes": 0,
+    "r2_geometry_or_rgb_access": false,
+    "interpretation": "R2 was invalidated by a pre-request schema mismatch. No source or geometry outcome was exposed."
+  },
+  "selection": {
+    "candidate_id": "CID_SIMS_V6_FLOOR3_1",
+    "official_run_id": "floor3_1",
+    "selection_rule": "Retain the already frozen result-blind lexicographic minimum of the fixed official run universe floor3_1, floor3_2, floor3_3.",
+    "selection_influenced_by_payload_or_geometry": false,
+    "alternate_run_or_source_on_failure": false
+  },
+  "official_identity": {
+    "dataset_id": "358179a76abd47bea52f8f5aeecd301b",
+    "version": "V6",
+    "file_id": "c595882daafe788a29d687872cc1fc2a",
+    "canonical_url": "https://china.scidb.cn/download?fileId=c595882daafe788a29d687872cc1fc2a",
+    "filename": "floor3_1.zip",
+    "bytes": 2211008069,
+    "md5": "585d38855ad7d04817991cdbbb72016b",
+    "observed_head": {
+      "status": 200,
+      "content_length": 2211008069,
+      "content_disposition": "attachment;filename=floor3_1.zip",
+      "etag": "\"64acc459-83c94e45\"",
+      "last_modified": "Tue, 11 Jul 2023 02:54:17 GMT",
+      "accept_ranges": "bytes"
+    }
+  },
+  "transport_contract": {
+    "allowed": [
+      "HEAD to the exact canonical URL for transport metadata.",
+      "GET and byte-range continuation requests to the exact canonical URL only.",
+      "Automatic retry or resume after transport interruption, provided the URL, file ID, ETag, Last-Modified, expected bytes, and official MD5 do not change.",
+      "Streaming writes plus byte count, MD5, and SHA-256 calculation."
+    ],
+    "forbidden": [
+      "Opening ZIP central-directory or members before complete byte and official-MD5 verification.",
+      "Mirrors, repacks, floor3_2, floor3_3, CoRBS, KITTI-360, or another source as transport fallback.",
+      "Using retry count, transfer speed, partial bytes, or headers to change candidate selection.",
+      "RGB, depth, pose, geometry, or RCLE algorithm access before the later geometry claim."
+    ],
+    "cache_finalization": "Rename the .part file to the immutable cache name only after exact bytes and official MD5 match. Record local SHA-256 and transport receipt.",
+    "transport_failure_terminal": "TRANSFER_INCOMPLETE / RETRY_SAME_IDENTITY_ALLOWED",
+    "scientific_claim_consumed_by_transport": false
+  },
+  "post_cache_gate": {
+    "required_before_geometry_claim": [
+      "exact official bytes",
+      "exact official MD5",
+      "recorded local SHA-256",
+      "no ZIP or member access",
+      "frozen R3 geometry implementation and independent validator",
+      "empty R3 geometry claim and output paths"
+    ],
+    "geometry_claim_count_max": 1,
+    "rgb_pixels_allowed": false,
+    "algorithm_outcome_allowed": false
+  }
+}

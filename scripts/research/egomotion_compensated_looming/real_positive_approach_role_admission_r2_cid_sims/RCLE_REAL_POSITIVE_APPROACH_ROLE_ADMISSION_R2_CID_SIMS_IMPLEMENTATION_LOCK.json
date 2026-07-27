@@ -1,0 +1,71 @@
+{
+  "schema_version": "rcle.real_positive_approach_role_admission.implementation_lock.v2",
+  "protocol_id": "RCLE_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R2_CID_SIMS",
+  "created_on": "2026-07-27",
+  "status": "FROZEN_BEFORE_CLAIM_AND_CANDIDATE_PAYLOAD_ACCESS",
+  "contract_sha256": "52ceebbe7727952c0fb963dfc855ae9115bfa3a5b2187649665dac49f4c5f6b4",
+  "source_authority_sha256": "49fdf51620aeb5b0c06fe7ce5c8d0944d78768c958153644f9ba64ebb4119659",
+  "burned_manifest_sha256": "0ce9494307c3a872edc8bb7aa00aa061965165cae27a6a6bf34fb47f28c74a26",
+  "source_descriptor_sha256": "54c2f5e207cd94b7ca8e2e6f5e795ee6dd61018b5698ae9ad4f08d48d196dc7f",
+  "files": [
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/__init__.py",
+      "sha256": "042f2eda92c26a956293f71b813dfb7d5d59f2b011544bf98cd7dc65660a5f92"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/bootstrap_claim.py",
+      "sha256": "f70065e6f3aa98dcc811a4d8cd2790418103eede0846b9d5ed46bf6778361142"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/acquire.py",
+      "sha256": "8460291a2f6d8af3db1d24317346aebae85ba412974a4a0783cb22c9bd95f75b"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/producer.py",
+      "sha256": "0ce6256e12dd4536f284c7047f1e63faf955fa7bcf87f28fcb93c3e5d9de1add"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/validator.py",
+      "sha256": "30e177c39db86fc07cacaaf30b0888b89c4c3208d29e1bae9dc0bfbc11db3081"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/formal_runner.py",
+      "sha256": "981ba8e4fd8b97c1da5a658eec5ee17005b963884d9e8562ce04fbde4915ebd8"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/pilot.py",
+      "sha256": "a09d088142231465d18a1a3a82aca88b47149de283fc7b1861fd55af18f96238"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_real_positive_approach_role_admission_r2_cid_sims/__init__.py",
+      "sha256": "577d5f9c47c4e6d02280eeaceff60d8135ad0e775397598b700d86f5a5c1c678"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_real_positive_approach_role_admission_r2_cid_sims/test_geometry.py",
+      "sha256": "892e77b1cf94c31bc40c4cd8af290697d3884c0bba5758afc33527cc4c215b08"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_real_positive_approach_role_admission_r2_cid_sims/test_acquisition_claim.py",
+      "sha256": "a2f971162e8442d1f5a7c3fb50115b4390e81934d0e86d3c7664677317278df2"
+    }
+  ],
+  "runtime_contract": {
+    "formal_runner_is_sole_claim_creator": true,
+    "candidate_get_count_max": 1,
+    "official_bytes": 2211008069,
+    "official_md5": "585d38855ad7d04817991cdbbb72016b",
+    "redirect_authorized": false,
+    "retry_authorized": false,
+    "resume_authorized": false,
+    "replacement_authorized": false,
+    "rgb_decode_allowed": false,
+    "validator_imports_producer": false
+  },
+  "focused_verification": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "synthetic_fixture_only": true,
+    "candidate_payload_accessed": false
+  }
+}
