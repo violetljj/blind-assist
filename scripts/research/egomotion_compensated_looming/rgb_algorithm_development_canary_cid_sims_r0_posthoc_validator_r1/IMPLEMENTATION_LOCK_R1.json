@@ -1,0 +1,37 @@
+{
+  "schema_version": "rcle.rgb_algorithm_development_canary.posthoc_implementation_lock.v1",
+  "protocol_id": "RCLE_RGB_ALGORITHM_DEVELOPMENT_CANARY_R0_POSTHOC_VALIDATOR_R1",
+  "created_on": "2026-07-27",
+  "status": "LOCKED_BEFORE_POSTHOC_VALIDATION",
+  "files": [
+    {
+      "path": "docs/research/rcle/RCLE_RGB_ALGORITHM_DEVELOPMENT_CANARY_R0_POSTHOC_VALIDATOR_R1_CONTRACT_2026-07-27.json",
+      "sha256": "12d883cd8577d7c18f697d23bf1029f91f0c9288a44d217f856afe01c8b6cf5b"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0_posthoc_validator_r1/__init__.py",
+      "sha256": "4107ff916fb9ccdc7a01c7aa086ca438a5dfea3dd4d9bb126ae0712cdbfa4e59"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0_posthoc_validator_r1/validator.py",
+      "sha256": "028be9fcd1a8aee361fb01268e03c42c484d392edb20986d8ea203468832b434"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0_posthoc_validator_r1/run.py",
+      "sha256": "64e4a4a02d4084a62ff1fab5094a970aee4ee541ee9a198eed2c86a20053dce6"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_rgb_algorithm_development_canary_cid_sims_r0_posthoc_validator_r1/test_validator.py",
+      "sha256": "4c89bdbd21b146d960091a2c132edf2fc0fc7c65ded40fae6daa94f346225912"
+    }
+  ],
+  "execution": {
+    "algorithm_reexecution": false,
+    "r0_write": false,
+    "threshold_tuning": false,
+    "network_access": false,
+    "download": false,
+    "exclusive_output": true,
+    "maximum_authority": "POSTHOC_R0_IDENTITY_CACHE_LEDGER_AGGREGATE_AUDIT_ONLY"
+  }
+}

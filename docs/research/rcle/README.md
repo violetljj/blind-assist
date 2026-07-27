@@ -83,8 +83,8 @@ TUM 没有建立真实 positive approach role，因此当前终态为
 首窗、`3895` pair 经独立全量重算 mismatch 为 `0`，但 `0/13` 窗同时通过
 coverage、signed radial 与 positive-fraction 门，终态仍为
 `HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID`。没有读取 RGB algorithm
-outcome、换源/换窗或降门；algorithm implementation/performance qualification
-与正式 execution 决策继续关闭。
+outcome、换源/换窗或降门；在该 evidence version 当时，algorithm
+implementation/performance qualification 与正式 execution 决策继续关闭。
 
 Phase A 必须使用程序生成的、可复算的连续帧与运动真值，固定旋转补偿、Sparse LK、局部仿射拟合和网格汇总，比较纯旋转泄漏与真实闭合保留。trial-level leakage error 和 closing error 是主判据；RSR/CRR 只作诊断比例。
 
@@ -178,6 +178,9 @@ Route-conditioned USTRF 已按 [program closure R1](../ustrf-sc/USTRF_ROUTE_COND
 18. [RGB algorithm canary R0 F1 设计包](RCLE_PHASE_B_RGB_ALGORITHM_CANARY_R0_PREREGISTRATION_2026-07-27.md) 已经三轮独立只读审查，前两轮 `FAIL` 留痕，第三轮 [DESIGN_REVIEW_PASS](RCLE_PHASE_B_RGB_ALGORITHM_CANARY_R0_DESIGN_REVIEW_RESULT_2026-07-27.md)。数据角色、exact pair identity、唯一 algorithm specification、独立 validator 和 performance/preflight 合同已机器闭合；真实 positive approach role 仍为 `0`，performance qualification 为 `NOT_RUN`，终态保持 `HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID / EXECUTION_NOT_AUTHORIZED`。
 19. [Real positive-approach role admission R1](RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1_RESULT_2026-07-27.md) 在 payload 前冻结完整 burned/exclusion manifest、唯一 ETH3D `sofa_3` source authority、contract 与 implementation lock。唯一 claim 后只执行 `1 GET / 0 retry / 0 replacement`；response artifact 为 `84,363,952` bytes、SHA `9ea6fcc8…3c5d1`，但 official container identity 不满足冻结 required-member 合同，独立 source-access validator 为 `VALID`，终态 `HOLD_ALGORITHM_CANARY_APPROACH_ROLE_INCOMPLETE / VALID`。geometry 未运行、role 未准入，performance qualification 不存在且关闭；整个 ETH3D sofa scene family 已烧掉，禁止换 `sofa_4` 或作为 confirmation。
 20. [Real positive-approach source-authority Discovery R0](RCLE_REAL_POSITIVE_APPROACH_SOURCE_AUTHORITY_DISCOVERY_R0_RESULT_2026-07-27.md) 在任何候选 payload 前比较 CID-SIMS、CoRBS 与 KITTI-360。CID-SIMS ScienceDB V6 的 `Floor3` 闭合为固定 `floor3_1/2/3` 三-run family：许可 `CC BY-NC-ND 4.0`，每条 archive 均有 file ID、精确 bytes、官方 MD5 和稳定 HEAD 入口，坐标链闭合；因此唯一下一数据族候选为 CID-SIMS Floor3。CoRBS E3 当前官方对象均 `403` 且缺 bytes/checksum，KITTI-360 只保留车载压力角色。本版未下载 payload、未读 geometry/RGB outcome、未运行算法；独立 R2 必须在 GET 前结果盲选择一个 exact Floor3 archive，失败后禁止换 run 或换源。
+21. [CID-SIMS `floor3_1` RGB development canary R0](RCLE_RGB_ALGORITHM_DEVELOPMENT_CANARY_R0_CID_SIMS_FLOOR3_1_RESULT_2026-07-27.md) 复用本地缓存并绑定相邻两窗；冻结算法输出在 window 1 为 `299/299` 触发、window 0 为 `148/299`。原 validator 因浮点 `dt` 精确比较缺陷将 R0 判 `INVALID_R0_EVIDENCE / INVALID`，该终态永久保留。
+22. [Posthoc validator R1](RCLE_RGB_ALGORITHM_DEVELOPMENT_CANARY_R0_POSTHOC_VALIDATOR_R1_RESULT_2026-07-27.md) 不重跑算法，只对 immutable ledger/cache/result 做 Decimal identity 与 aggregate 复算，终态为 `POSTHOC_OUTPUT_AUDIT_VALID / VALID`；它只证明输出一致性，不回写 R0 或形成独立确认。
+23. [CID-SIMS pairwise geometry alignment R0](RCLE_RGB_ALGORITHM_CID_SIMS_FLOOR3_1_PAIRWISE_GEOMETRY_ALIGNMENT_R0_RESULT_2026-07-27.md) 对 immutable RGB ledger 的 598 对逐对重算 source-native depth+pose geometry，coverage `598/598`、abstention `0`。三档合并触发为 `0/139`、`5/17`、`442/442`；window 0 的 148-pair 触发段覆盖其后 143-pair positive-geometry 段，说明该窗后半段实际进入 approach。独立 validator 重算全部 geometry/aggregate，`errors=[] / VALID`。结论仅为 outcome-aware posthoc mechanism alignment；不调阈值、不构成 performance qualification，下一阶段应使用本地缓存中的互斥窗口做 RGB-outcome-blind geometry-stratified holdout。
 
 ## 主线变更规则
 

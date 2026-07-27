@@ -1,0 +1,47 @@
+{
+  "schema_version": "rcle.rgb_algorithm_development_canary.implementation_lock.v1",
+  "protocol_id": "RCLE_RGB_ALGORITHM_DEVELOPMENT_CANARY_R0_CID_SIMS_FLOOR3_1",
+  "created_on": "2026-07-27",
+  "status": "LOCKED_BEFORE_RGB_OUTCOME_ACCESS",
+  "files": [
+    {
+      "path": "docs/research/rcle/RCLE_RGB_ALGORITHM_DEVELOPMENT_CANARY_R0_CID_SIMS_FLOOR3_1_CONTRACT_2026-07-27.json",
+      "sha256": "63ded6eb829c781713680e1202b23c4457b6d64eaf7186843c6d4d6e23d1d504"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0/__init__.py",
+      "sha256": "5fa6400819f0b24555918ca8a8fe1fb037033bdaeb70609c0e4d598439002b6f"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0/producer.py",
+      "sha256": "23211b1acec517b3c487d183742035887ff250bf51019b0cd1e1dea1d809bec5"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0/run.py",
+      "sha256": "ecf4f0aac7ebca99801ae7f3e100f09fed91454ace97a2090b7ee2537bce2610"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0/validator.py",
+      "sha256": "b45908c60811061164936611340e6c7c121715755268d1eb84a7c92a10a42a78"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_algorithm_development_canary_cid_sims_r0/validate.py",
+      "sha256": "d662723aba9e5aca1b26ebcc802b25e4a06785e3df441f1b4da1395b26c1afc8"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_rgb_algorithm_development_canary_cid_sims_r0/test_canary.py",
+      "sha256": "d905f72df0fdb779b9b14c9d09b553827b116cbc3d3efdda76fbc2bac0dea6d7"
+    }
+  ],
+  "execution": {
+    "network_access": 0,
+    "downloaded_bytes": 0,
+    "windows": [
+      0,
+      1
+    ],
+    "threshold_tuning": false,
+    "claim_scope": "DEVELOPMENT_CANARY_ONLY",
+    "maximum_authority": "REAL_RGB_ALGORITHM_DEVELOPMENT_CANARY_ONLY"
+  }
+}
