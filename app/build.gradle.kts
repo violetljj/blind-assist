@@ -41,6 +41,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "USTRF_EXPERIMENT", "false")
+        buildConfigField("boolean", "NPU_CANDIDATE", "false")
     }
 
     signingConfigs {
@@ -93,10 +94,17 @@ android {
         noCompress += "tflite"
     }
 
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
 }
 
 dependencies {
     implementation(project(":feature:assist"))
+    implementation(project(":core:vision"))
     implementation(project(":core:ui"))
 
     implementation(platform(libs.androidx.compose.bom))
@@ -109,6 +117,9 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.hilt.android)
+    implementation(libs.tflite)
+    implementation("com.qualcomm.qti:qnn-runtime:2.47.0")
+    implementation("com.qualcomm.qti:qnn-litert-delegate:2.47.0")
     kapt(libs.hilt.compiler)
 
     debugImplementation(libs.androidx.compose.ui.test.manifest)

@@ -61,10 +61,12 @@ class MainActivity : ComponentActivity() {
                         fieldTestSummary = uiState.fieldTestSummary,
                         modelStatus = uiState.modelStatus,
                         appVersion = BuildConfig.VERSION_NAME,
-                        editionLabel = if (BuildConfig.USTRF_EXPERIMENT) {
-                            "USTRF二维路线代理实验版 · 不可用于独立行走"
-                        } else {
-                            null
+                        editionLabel = when {
+                            BuildConfig.NPU_CANDIDATE ->
+                                "QNN HTP NPU 候选版 · 验证中 · 不可用于独立行走"
+                            BuildConfig.USTRF_EXPERIMENT ->
+                                "USTRF二维路线代理实验版 · 不可用于独立行走"
+                            else -> null
                         },
                         cameraActive = uiState.cameraActive,
                         activeInputSource = uiState.activeInputSource,

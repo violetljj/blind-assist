@@ -7,9 +7,9 @@ import org.junit.Test
 
 class DetectorBackendPolicyTest {
     @Test
-    fun cpuRemainsTheOnlyProductionAuthorizedBackend() {
+    fun productionRouteAuthorizesQnnAndCpuFallback() {
         assertEquals(
-            DetectorExecutionBackend.CPU_XNNPACK,
+            DetectorExecutionBackend.QUALCOMM_QNN_HTP,
             DetectorBackendPolicy.productionDefault
         )
         assertTrue(
@@ -17,7 +17,7 @@ class DetectorBackendPolicyTest {
                 DetectorExecutionBackend.CPU_XNNPACK
             )
         )
-        assertFalse(
+        assertTrue(
             DetectorBackendPolicy.isProductionAuthorized(
                 DetectorExecutionBackend.QUALCOMM_QNN_HTP
             )
@@ -25,14 +25,15 @@ class DetectorBackendPolicyTest {
     }
 
     @Test
-    fun qnnHtpIsTheSingleNextDefaultCandidate() {
+    fun promotedQnnAndCpuFallbackAreBothProductionRouteMembers() {
+        assertEquals(null, DetectorBackendPolicy.nextDefaultCandidate)
         assertEquals(
-            DetectorExecutionBackend.QUALCOMM_QNN_HTP,
-            DetectorBackendPolicy.nextDefaultCandidate
+            DetectorBackendRole.PRODUCTION_DEFAULT,
+            DetectorBackendPolicy.roleFor(DetectorExecutionBackend.QUALCOMM_QNN_HTP)
         )
         assertEquals(
-            DetectorBackendRole.NEXT_DEFAULT_CANDIDATE,
-            DetectorBackendPolicy.roleFor(DetectorExecutionBackend.QUALCOMM_QNN_HTP)
+            DetectorBackendRole.PRODUCTION_DEFAULT,
+            DetectorBackendPolicy.roleFor(DetectorExecutionBackend.CPU_XNNPACK)
         )
         assertEquals(
             DetectorBackendRole.BENCHMARK_COMPARATOR,
@@ -41,36 +42,91 @@ class DetectorBackendPolicyTest {
     }
 
     @Test
-    fun unresolvedAndUnevaluatedGatesFailPromotionClosed() {
+    fun onlyBlockingGatesControlPromotionReadiness() {
         val gates = DetectorBackendPolicy.decision.candidateGates
         assertEquals(BackendPromotionGate.entries.size, gates.size)
         assertEquals(
             BackendPromotionGate.entries.toSet(),
             gates.map { it.gate }.toSet()
         )
-        assertTrue(gates.any { it.state == BackendPromotionGateState.HOLD })
-        assertTrue(gates.any { it.state == BackendPromotionGateState.NOT_EVALUATED })
-        assertFalse(DetectorBackendPolicy.decision.candidatePromotionReady)
+        assertEquals(
+            emptySet<BackendPromotionGate>(),
+            DetectorBackendPolicy.decision.blockingGates
+                .filter { it.state != BackendPromotionGateState.PASS }
+                .map { it.gate }
+                .toSet()
+        )
+        assertTrue(DetectorBackendPolicy.decision.candidatePromotionReady)
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun candidateCannotEnterProductionSelectionBeforeAllGatesPass() {
+    @Test
+    fun diagnosticsAndUnthresholdedReleaseMeasurementsCannotVetoPromotion() {
+        val synthetic = DetectorBackendDecision(
+            policyId = "test",
+            productionDefault = DetectorExecutionBackend.CPU_XNNPACK,
+            productionFallback = DetectorExecutionBackend.CPU_XNNPACK,
+            nextDefaultCandidate = DetectorExecutionBackend.QUALCOMM_QNN_HTP,
+            candidateGates = listOf(
+                BackendPromotionGateDecision(
+                    BackendPromotionGate.RUNTIME_INTEGRITY,
+                    BackendPromotionGateClass.BLOCKING,
+                    BackendPromotionGateState.PASS,
+                    "verified"
+                ),
+                BackendPromotionGateDecision(
+                    BackendPromotionGate.PACKAGE_FOOTPRINT,
+                    BackendPromotionGateClass.RELEASE_CONSTRAINT,
+                    BackendPromotionGateState.HOLD,
+                    "measured without a frozen veto threshold"
+                ),
+                BackendPromotionGateDecision(
+                    BackendPromotionGate.ENERGY_OBSERVATION,
+                    BackendPromotionGateClass.DIAGNOSTIC,
+                    BackendPromotionGateState.NOT_EVALUATED,
+                    "unknown"
+                )
+            )
+        )
+
+        assertTrue(synthetic.candidatePromotionReady)
+    }
+
+    @Test
+    fun qnnCanEnterProductionSelectionAfterAllBlockingGatesPass() {
         DetectorBackendPolicy.requireProductionAuthorized(
             DetectorExecutionBackend.QUALCOMM_QNN_HTP
         )
     }
 
     @Test
-    fun externalBackendInjectionIsAuthorizedOnlyForBenchmarkPackage() {
-        DetectorBackendPolicy.requireBenchmarkInjectionAuthorized(
-            DetectorBackendPolicy.BENCHMARK_PACKAGE
+    fun benchmarkPackageCanInjectComparatorBackends() {
+        DetectorBackendPolicy.requireExternalBackendInjectionAuthorized(
+            DetectorBackendPolicy.BENCHMARK_PACKAGE,
+            DetectorExecutionBackend.GPU_DELEGATE
+        )
+    }
+
+    @Test
+    fun candidatePackageCanInjectOnlyQnnHtp() {
+        DetectorBackendPolicy.requireExternalBackendInjectionAuthorized(
+            DetectorBackendPolicy.NPU_CANDIDATE_PACKAGE,
+            DetectorExecutionBackend.QUALCOMM_QNN_HTP
+        )
+    }
+
+    @Test
+    fun appPackageCanInjectPromotedQnnBackend() {
+        DetectorBackendPolicy.requireExternalBackendInjectionAuthorized(
+            DetectorBackendPolicy.PRODUCTION_PACKAGE,
+            DetectorExecutionBackend.QUALCOMM_QNN_HTP
         )
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun appPackageCannotInjectExternalBackend() {
-        DetectorBackendPolicy.requireBenchmarkInjectionAuthorized(
-            "com.linnan.blindassist"
+    fun candidatePackageCannotInjectGpuComparator() {
+        DetectorBackendPolicy.requireExternalBackendInjectionAuthorized(
+            DetectorBackendPolicy.NPU_CANDIDATE_PACKAGE,
+            DetectorExecutionBackend.GPU_DELEGATE
         )
     }
 }

@@ -11,9 +11,15 @@ val segmentationBenchmarkAssetsDir = layout.buildDirectory.dir("generated/segmen
 val sparseLkBenchmarkAssetsDir = layout.buildDirectory.dir("generated/sparseLkBenchmarkAssets")
 val eventHeadBenchmarkAssetsDir = layout.buildDirectory.dir("generated/eventHeadBenchmarkAssets")
 val ustrfR12DetectorAssetsDir = layout.buildDirectory.dir("generated/ustrfR12DetectorAssets")
+val qnnPreprocessCandidateDir = providers
+    .gradleProperty("qnnPreprocessCandidateDir")
+    .orElse("artifacts.local/experiments/qnn-preprocess-fusion-v1")
 val blindAssistEvalSetDir = providers
     .gradleProperty("blindAssistEvalSetDir")
     .orElse("test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
+val eventLifecycleDatasetDir = providers
+    .gradleProperty("eventLifecycleDatasetDir")
+    .orElse("artifacts.local/evidence/datasets/sanpo-v3-regression-90f")
 val publicVideoInferenceDir = providers
     .gradleProperty("publicVideoInferenceDir")
     .orElse("artifacts.local/evidence/public-video-edge-inference/empty")
@@ -37,6 +43,7 @@ val ustrfR12DetectorLabelsPath = providers.gradleProperty("ustrfR12DetectorLabel
     .orElse("artifacts.local/evidence/ustrf-crosscam-codex/r12-detector-export/marker_labels.txt")
 val ustrfR12DetectorCanaryDir = providers.gradleProperty("ustrfR12DetectorCanaryDir")
     .orElse("artifacts.local/evidence/ustrf-crosscam-codex/r12-detector-export/android-canary")
+val benchmarkTargetProject = providers.gradleProperty("benchmarkTargetProject").orElse(":app")
 
 val prepareDetectorBenchmarkAssets = tasks.register<Sync>("prepareDetectorBenchmarkAssets") {
     from(rootProject.file("app/src/main/assets")) {
@@ -58,11 +65,22 @@ val prepareDetectorBenchmarkAssets = tasks.register<Sync>("prepareDetectorBenchm
         include("source_masks/test/**")
         into("blindassist_evalset")
     }
+    from(eventLifecycleDatasetDir.map { rootProject.file(it) }) {
+        include("manifest.jsonl")
+        include("images/test/**")
+        include("source_masks/test/**")
+        into("sanpo_event_lifecycle")
+    }
     from(publicVideoInferenceDir.map { rootProject.file(it) }) {
         include("dataset_spec.json")
         include("manifest.jsonl")
         include("images/**")
         into("public_video_inference")
+    }
+    from(qnnPreprocessCandidateDir.map { rootProject.file(it) }) {
+        include("rgba640x480_rot90_letterbox320.tflite")
+        include("contract.json")
+        into("qnn_preprocess")
     }
     into(detectorBenchmarkAssetsDir)
 }
@@ -121,7 +139,7 @@ val prepareUstrfR12DetectorAssets = tasks.register<Sync>("prepareUstrfR12Detecto
 android {
     namespace = "com.linnan.blindassist.benchmark"
     compileSdk = libs.versions.compileSdk.get().toInt()
-    targetProjectPath = ":app"
+    targetProjectPath = benchmarkTargetProject.get()
     targetVariant = "debug"
 
     defaultConfig {
@@ -185,7 +203,7 @@ dependencies {
     implementation(libs.tflite)
     implementation(libs.tflite.gpu)
     implementation(libs.tflite.gpu.api)
-    implementation("com.qualcomm.qti:qnn-runtime:2.34.0")
-    implementation("com.qualcomm.qti:qnn-litert-delegate:2.34.0")
+    implementation("com.qualcomm.qti:qnn-runtime:2.47.0")
+    implementation("com.qualcomm.qti:qnn-litert-delegate:2.47.0")
     implementation("org.opencv:opencv:4.10.0")
 }

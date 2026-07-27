@@ -388,6 +388,6 @@ class QnnHtpYoloDeviceBenchmarkTest {
         private const val BOX_CHANNELS = 4
         private const val PREDICTION_COUNT = 2100
         private const val MODEL_TOKEN = "blindassist-yolo11n-fp16-320-qnn-htp-v1"
-        private const val QNN_MAVEN_VERSION = "2.34.0"
+        private const val QNN_MAVEN_VERSION = "2.47.0"
     }
 }

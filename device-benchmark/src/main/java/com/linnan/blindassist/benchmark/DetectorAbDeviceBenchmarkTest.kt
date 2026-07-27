@@ -769,7 +769,8 @@ class DetectorAbDeviceBenchmarkTest {
                 expectedShouldAlert = expected.shouldAlert,
                 actualAlert = item.actualAlert,
                 suppressedDuplicateAttempt = item.feedbackReason == FeedbackReason.EVENT_ALREADY_ALERTED,
-                runtimeEventId = item.riskEvent.eventId
+                runtimeEventId = item.riskEvent.eventId,
+                runtimeEventActive = item.riskEvent.active
             )
         })
         return BlindAssistMetrics(

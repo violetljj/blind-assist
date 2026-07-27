@@ -3,7 +3,8 @@ param(
     [Alias("ApkPath", "AabPath")]
     [string]$ArtifactPath,
     [string]$AndroidSdkRoot,
-    [string]$BundletoolPath
+    [string]$BundletoolPath,
+    [switch]$AllowLegacyExtractedNativeLibraries
 )
 
 $ErrorActionPreference = "Stop"
@@ -102,6 +103,30 @@ function Get-ElfLoadAlignments([byte[]]$Bytes, [string]$EntryName) {
     return $alignments
 }
 
+function Get-ElfMachine([byte[]]$Bytes, [string]$EntryName) {
+    if ($Bytes.Length -lt 20 -or
+        $Bytes[0] -ne 0x7F -or $Bytes[1] -ne 0x45 -or
+        $Bytes[2] -ne 0x4C -or $Bytes[3] -ne 0x46) {
+        throw "$EntryName is not a valid ELF file."
+    }
+    $littleEndian = switch ($Bytes[5]) {
+        1 { $true }
+        2 { $false }
+        default { throw "$EntryName has an unsupported ELF byte order." }
+    }
+    return [int](Read-UInt16 $Bytes 18 $littleEndian)
+}
+
+function Get-ExpectedAndroidElfMachine([string]$Abi) {
+    switch ($Abi) {
+        "armeabi-v7a" { return 40 }  # EM_ARM
+        "arm64-v8a" { return 183 }   # EM_AARCH64
+        "x86" { return 3 }           # EM_386
+        "x86_64" { return 62 }       # EM_X86_64
+        default { return $null }
+    }
+}
+
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 $resolvedArtifact = Resolve-RepoPath $ArtifactPath
 if (-not (Test-Path -LiteralPath $resolvedArtifact)) {
@@ -133,13 +158,30 @@ try {
         $match = [regex]::Match($entry.FullName, '(^|/)lib/([^/]+)/([^/]+\.so)$')
         $alignments = @(Get-ElfLoadAlignments $bytes $entry.FullName)
         $minimumAlignment = ($alignments | Measure-Object -Minimum).Minimum
+        $abi = $match.Groups[2].Value
+        $elfMachine = Get-ElfMachine $bytes $entry.FullName
+        $expectedMachine = Get-ExpectedAndroidElfMachine $abi
+        $androidLoadableElf = $null -ne $expectedMachine -and $elfMachine -eq $expectedMachine
+        $compatible16Kb = if ($androidLoadableElf) {
+            ([uint64]$minimumAlignment -ge 16384)
+        } else {
+            $null
+        }
+        $excludedReason = if ($androidLoadableElf) {
+            $null
+        } else {
+            "NON_ANDROID_ELF_MACHINE"
+        }
         $nativeLibraries += [pscustomobject][ordered]@{
-            abi = $match.Groups[2].Value
+            abi = $abi
             library = $match.Groups[3].Value
             entry = $entry.FullName
+            elfMachine = $elfMachine
+            androidLoadableElf = $androidLoadableElf
             loadAlignments = @($alignments)
             minimumLoadAlignment = [uint64]$minimumAlignment
-            compatible16Kb = ([uint64]$minimumAlignment -ge 16384)
+            compatible16Kb = $compatible16Kb
+            excludedReason = $excludedReason
         }
     }
 } finally {
@@ -149,7 +191,9 @@ try {
 if ($nativeLibraries.Count -eq 0) {
     throw "No native .so libraries found in $resolvedArtifact"
 }
-$incompatible = @($nativeLibraries | Where-Object { -not $_.compatible16Kb })
+$incompatible = @($nativeLibraries | Where-Object {
+    $_.androidLoadableElf -and -not $_.compatible16Kb
+})
 if ($incompatible.Count -gt 0) {
     $details = ($incompatible | ForEach-Object { "$($_.abi)/$($_.library)=$($_.minimumLoadAlignment)" }) -join ", "
     throw "Native libraries are not 16KB ELF-aligned: $details"
@@ -166,10 +210,16 @@ if ($extension -eq ".apk") {
     if (-not (Test-Path -LiteralPath $zipalign)) { throw "zipalign not found in $($buildTools.FullName)" }
     $zipalignOutput = (& $zipalign -c -P 16 -v 4 $resolvedArtifact 2>&1) -join "`n"
     if ($LASTEXITCODE -ne 0) { throw "zipalign 16KB verification failed:`n$zipalignOutput" }
-    if ($zipalignOutput -match 'lib[/\\][^\r\n]+\.so \(OK - compressed\)') {
+    $hasCompressedNativeLibraries =
+        $zipalignOutput -match 'lib[/\\][^\r\n]+\.so \(OK - compressed\)'
+    if ($hasCompressedNativeLibraries -and -not $AllowLegacyExtractedNativeLibraries) {
         throw "Compressed native libraries are not allowed; 16KB compatibility must use uncompressed aligned .so files."
     }
-    $zipAlignment = "PAGE_ALIGNMENT_16K"
+    $zipAlignment = if ($hasCompressedNativeLibraries) {
+        "LEGACY_EXTRACTED_LIBS_ANDROID_ELF_16K"
+    } else {
+        "PAGE_ALIGNMENT_16K"
+    }
 } else {
     if (-not $BundletoolPath) {
         $BundletoolPath = $env:BUNDLETOOL_JAR

@@ -27,8 +27,9 @@ class TfliteYoloDetector(
     private val inputSize: Int = INPUT_SIZE,
     private val confidenceThreshold: Float = CONFIDENCE_THRESHOLD,
     private val iouThreshold: Float = IOU_THRESHOLD,
-    val executionBackend: DetectorExecutionBackend = DetectorBackendPolicy.productionDefault,
-    private val benchmarkInterpreterOptionsFactory: (() -> Interpreter.Options)? = null
+    val executionBackend: DetectorExecutionBackend = DetectorExecutionBackend.CPU_XNNPACK,
+    private val externalInterpreterOptionsFactory: (() -> Interpreter.Options)? = null,
+    private val externalBackendCloser: (() -> Unit)? = null
 ) : ObjectDetector {
     val labels: List<String>
 
@@ -65,10 +66,12 @@ class TfliteYoloDetector(
             validateOutputTensor(candidateInterpreter)
             interpreter = candidateInterpreter
             loadedInterpreter = null
+            Log.i(TAG, "Detector ready backend=${executionBackend.wireName}")
         } catch (error: Throwable) {
             FatalThrowables.rethrowIfFatal(error)
             closeInterpreter(loadedInterpreter)
             closeGpuDelegate()
+            closeExternalBackend()
             Log.w(TAG, "Failed to load TFLite model: $modelAssetName", error)
             loadError = IllegalStateException(
                 "模型初始化失败：请确认 assets/$modelAssetName 和 assets/$labelsAssetName 存在，且输入/输出张量符合 YOLO11n TFLite FP16 约定。",
@@ -80,9 +83,12 @@ class TfliteYoloDetector(
 
     private fun createInterpreter(context: Context): Interpreter {
         val model = loadMappedAsset(context, modelAssetName)
-        benchmarkInterpreterOptionsFactory?.let { optionsFactory ->
-            DetectorBackendPolicy.requireBenchmarkInjectionAuthorized(context.packageName)
-            runtimeWarning = "外部基准后端：${executionBackend.wireName}"
+        externalInterpreterOptionsFactory?.let { optionsFactory ->
+            DetectorBackendPolicy.requireExternalBackendInjectionAuthorized(
+                context.packageName,
+                executionBackend
+            )
+            runtimeWarning = "外部隔离后端：${executionBackend.wireName}"
             return Interpreter(model, optionsFactory())
         }
         DetectorBackendPolicy.requireProductionAuthorized(executionBackend)
@@ -164,6 +170,7 @@ class TfliteYoloDetector(
             closeInterpreter(interpreter)
             interpreter = null
             closeGpuDelegate()
+            closeExternalBackend()
         }
     }
 
@@ -359,5 +366,14 @@ class TfliteYoloDetector(
         private const val MIN_YOLO_CHANNELS = 5
         private const val BOX_CHANNELS = 4
         private const val TAG = "TfliteYoloDetector"
+    }
+
+    private fun closeExternalBackend() {
+        try {
+            externalBackendCloser?.invoke()
+        } catch (error: Throwable) {
+            FatalThrowables.rethrowIfFatal(error)
+            Log.w(TAG, "Failed to close external TFLite backend cleanly.", error)
+        }
     }
 }

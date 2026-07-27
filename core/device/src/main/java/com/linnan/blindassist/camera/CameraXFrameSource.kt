@@ -4,6 +4,7 @@ import android.content.Context
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.SystemClock
+import android.util.Range
 import android.util.Size
 import androidx.camera.camera2.interop.Camera2CameraInfo
 import androidx.camera.camera2.interop.ExperimentalCamera2Interop
@@ -66,7 +67,10 @@ class CameraXFrameSource(
             try {
                 val provider = providerFuture.get()
                 if (!isCurrentSession(generation)) return@addListener
-                val preview = Preview.Builder().build().also {
+                val preview = Preview.Builder()
+                    .setTargetFrameRate(Range(TARGET_FPS, TARGET_FPS))
+                    .build()
+                    .also {
                     it.setSurfaceProvider(previewView.surfaceProvider)
                 }
                 val analysis = ImageAnalysis.Builder()
@@ -226,5 +230,6 @@ class CameraXFrameSource(
         private val NEXT_FRAME_ID = AtomicLong(0L)
         private const val ANALYSIS_WIDTH = 640
         private const val ANALYSIS_HEIGHT = 480
+        private const val TARGET_FPS = 24
     }
 }

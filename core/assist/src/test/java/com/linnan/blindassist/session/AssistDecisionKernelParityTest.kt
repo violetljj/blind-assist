@@ -236,6 +236,54 @@ class AssistDecisionKernelParityTest {
         assertEquals(2, gateway.notifyCalls)
     }
 
+    @Test
+    fun clearedSegmentationEventCannotReplayHeldRiskFeedback() {
+        val kernel = AssistDecisionKernel()
+        val gateway = PlannerGateway()
+        val stairs = Detection(
+            classId = 0,
+            label = "stairs",
+            confidence = 0.95f,
+            boundingBox = BoundingBox(390f, 500f, 610f, 980f),
+            frameSize = frameSize,
+            distanceEvidence = DistanceEvidence(
+                band = ProximityBand.CRITICAL,
+                confidence = 1f,
+                source = DistanceEvidenceSource.ARCORE_DEPTH,
+                relativeDepthScore = 1f
+            ),
+            source = DetectionSource.SEGMENTATION
+        )
+        kernel.startSession(900L)
+        repeat(2) { index ->
+            kernel.processFrame(
+                listOf(stairs),
+                frameSize,
+                AlertProfile.STANDARD,
+                AssistScenario.GENERAL,
+                DetectorMetrics(35L, 5L, 22L, 8L, 0f, "ready"),
+                gateway,
+                1000L + index * 100L
+            )
+        }
+
+        val missingFrames = (0 until 3).map { index ->
+            kernel.processFrame(
+                emptyList(),
+                frameSize,
+                AlertProfile.STANDARD,
+                AssistScenario.GENERAL,
+                DetectorMetrics(35L, 5L, 22L, 8L, 0f, "ready"),
+                gateway,
+                1200L + index * 100L
+            )
+        }
+
+        assertEquals(false, missingFrames.last().evaluation.riskEvent.active)
+        assertEquals(false, missingFrames.last().feedbackDecision.triggered)
+        assertEquals(FeedbackReason.HELD_ALERT, missingFrames.last().feedbackDecision.reason)
+    }
+
     private fun frozenFrame(vararg detections: Detection): DetectorFrameResult = DetectorFrameResult(
         detections = detections.toList(),
         frameSize = frameSize,

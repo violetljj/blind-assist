@@ -75,7 +75,8 @@ class EventLifecycleMetricsTest {
         phase: String? = null,
         actualAlert: Boolean = false,
         suppressed: Boolean = false,
-        runtimeEventId: String? = null
+        runtimeEventId: String? = null,
+        runtimeEventActive: Boolean = runtimeEventId != null
     ) = EventLifecycleSample(
         riskEventId = "stairs-1",
         sequenceId = "stairs-sequence",
@@ -85,6 +86,7 @@ class EventLifecycleMetricsTest {
         expectedShouldAlert = phase != "PASSED",
         actualAlert = actualAlert,
         suppressedDuplicateAttempt = suppressed,
-        runtimeEventId = runtimeEventId
+        runtimeEventId = runtimeEventId,
+        runtimeEventActive = runtimeEventActive
     )
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import com.linnan.blindassist.feedback.FeedbackController
 import com.linnan.blindassist.session.AssistSessionCoordinator
 import com.linnan.blindassist.vision.ObjectDetector
-import com.linnan.blindassist.vision.TfliteYoloDetector
+import com.linnan.blindassist.vision.RuntimeObjectDetectorFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +24,7 @@ object RuntimeActivityModule {
     @Provides
     @ActivityScoped
     fun provideObjectDetector(@ApplicationContext context: Context): ObjectDetector {
-        return TfliteYoloDetector(context)
+        return RuntimeObjectDetectorFactory.create(context)
     }
 
     @Provides

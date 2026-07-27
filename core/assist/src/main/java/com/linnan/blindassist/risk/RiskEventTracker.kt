@@ -23,6 +23,7 @@ enum class RiskEventClearReason {
 data class RiskEventSnapshot(
     val eventId: String? = null,
     val state: RiskEventState? = null,
+    val active: Boolean = false,
     val suppressesFeedback: Boolean = false,
     val clearReason: RiskEventClearReason? = null
 ) {
@@ -71,8 +72,10 @@ class RiskEventTracker(
             return RiskEventSnapshot.none()
         }
 
-        recentlyPassed?.takeIf { it.matches(candidate, config) }?.let { passed ->
-            return passed.snapshot()
+        recentlyPassed?.takeIf { it.matches(candidate, config) }?.let { dormant ->
+            if (dormant.wasAlerted) return dormant.snapshot()
+            active = dormant.restore(candidate)
+            recentlyPassed = null
         }
 
         val current = active
@@ -107,7 +110,11 @@ class RiskEventTracker(
         if (risk.level == RiskLevel.NONE || risk.evidenceState == RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE) {
             return onMissingOrNonCentralCandidate(nowMs)
         }
-        recentlyPassed?.takeIf { it.matchesExternal(eventKey) }?.let { return it.snapshot() }
+        recentlyPassed?.takeIf { it.matchesExternal(eventKey) }?.let { dormant ->
+            if (dormant.wasAlerted) return dormant.snapshot()
+            active = dormant.restoreExternal()
+            recentlyPassed = null
+        }
         val current = active
         if (current == null || !current.matchesExternal(eventKey)) {
             if (current != null) clear(RiskEventClearReason.REPLACED_BY_NEW_TARGET, nowMs)
@@ -163,6 +170,7 @@ class RiskEventTracker(
     private fun snapshot(event: ActiveEvent): RiskEventSnapshot = RiskEventSnapshot(
         eventId = event.id,
         state = event.state,
+        active = true,
         suppressesFeedback = event.wasAlerted,
         clearReason = event.clearReason
     )
@@ -176,14 +184,15 @@ class RiskEventTracker(
     private fun clear(reason: RiskEventClearReason, nowMs: Long) {
         active?.let {
             if (reason == RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES &&
-                it.wasAlerted && config.postPassReappearanceHoldMs > 0L
+                config.postPassReappearanceHoldMs > 0L
             ) {
                 recentlyPassed = PassedEvent(
                     id = it.id,
                     label = it.label,
                     centerXRatio = it.centerXRatio,
                     expiresAtMs = nowMs + config.postPassReappearanceHoldMs,
-                    externalEventKey = it.externalEventKey
+                    externalEventKey = it.externalEventKey,
+                    wasAlerted = it.wasAlerted
                 )
             }
             it.state = RiskEventState.CLEARED
@@ -227,7 +236,8 @@ class RiskEventTracker(
         val label: String,
         val centerXRatio: Float,
         val expiresAtMs: Long,
-        val externalEventKey: String? = null
+        val externalEventKey: String? = null,
+        val wasAlerted: Boolean
     ) {
         fun matches(detection: Detection, config: RiskEventTrackerConfig): Boolean =
             externalEventKey == null && label == detection.label &&
@@ -236,10 +246,26 @@ class RiskEventTracker(
 
         fun matchesExternal(eventKey: String): Boolean = externalEventKey == eventKey
 
+        fun restore(detection: Detection): ActiveEvent = ActiveEvent(
+            id = id,
+            label = label,
+            centerXRatio = detection.boundingBox.centerX / detection.frameSize.width,
+            wasAlerted = false
+        )
+
+        fun restoreExternal(): ActiveEvent = ActiveEvent(
+            id = id,
+            label = label,
+            centerXRatio = centerXRatio,
+            wasAlerted = false,
+            externalEventKey = externalEventKey
+        )
+
         fun snapshot(): RiskEventSnapshot = RiskEventSnapshot(
             eventId = id,
             state = RiskEventState.PASSED_OR_RECEDING,
-            suppressesFeedback = true,
+            active = false,
+            suppressesFeedback = wasAlerted,
             clearReason = RiskEventClearReason.THREE_RECEDING_OR_MISSING_FRAMES
         )
     }

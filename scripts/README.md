@@ -31,6 +31,7 @@
 - `check_project_structure.ps1` / `test_check_project_structure.ps1`：脚本根 allowlist、开发日志预算、研究 Module 合同、内部路径和跨 Module import 门禁；仓库卫生检查会自动调用它。
 - `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档索引与本地链接门禁。
 - `archive_apk.ps1`、`verify_release_apk.ps1`、`verify_apk_16kb.ps1`：APK 校验与归档。
+- `run_npu_candidate_acceptance.ps1`：SM-S9280/SM8650 上的独立 NPU 候选安装、QNN HTP runtime marker、正式包/数据不变式与候选专属卸载回滚门；不清除正式 App 数据。
 
 ## 领域模块
 

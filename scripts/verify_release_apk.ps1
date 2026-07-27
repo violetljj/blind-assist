@@ -5,6 +5,7 @@ param(
     [string]$ExpectedVersionName,
     [string]$ExpectedPackageName = "com.linnan.blindassist",
     [switch]$RequireReleaseEvidence,
+    [switch]$AllowLegacyExtractedNativeLibraries,
     [string]$AndroidSdkRoot
 )
 
@@ -85,6 +86,7 @@ Assert-Contains $signature "Signer #1 certificate SHA-256 digest:" "Missing sign
 
 $alignmentOutput = (& (Join-Path $PSScriptRoot "verify_apk_16kb.ps1") `
     -ArtifactPath $resolvedApk `
+    -AllowLegacyExtractedNativeLibraries:$AllowLegacyExtractedNativeLibraries `
     -AndroidSdkRoot $AndroidSdkRoot) -join "`n"
 if ($LASTEXITCODE -ne 0) {
     throw "16KB APK verification failed."

@@ -6,6 +6,7 @@ import com.linnan.blindassist.feedback.FeedbackDecision
 import com.linnan.blindassist.feedback.FeedbackGateway
 import com.linnan.blindassist.feedback.FeedbackReason
 import com.linnan.blindassist.model.Detection
+import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.RiskEventTracker
 import com.linnan.blindassist.risk.ApproachTrend
@@ -107,9 +108,16 @@ class AssistDecisionKernel(
             sourceFrame = sourceFrame,
             decisionAtNs = decisionAtNs
         )
-        val event = riskEventTracker.update(evaluation.stableRisk, nowMs)
+        // Event identity and exit must observe the current frame. Feedback still uses
+        // stableRisk below so the alert hold cannot conceal raw target disappearance.
+        val event = riskEventTracker.update(evaluation.rawRisk, nowMs)
         val eventEvaluation = evaluation.copy(riskEvent = event)
-        val feedbackDecision = decideFeedback(eventEvaluation, feedbackGateway)
+        val feedbackDecision = decideFeedback(
+            eventEvaluation,
+            feedbackGateway,
+            requiresActiveEvent =
+                eventEvaluation.stableRisk.sourceDetection?.source == DetectionSource.SEGMENTATION
+        )
         val completedEvent = riskEventTracker.recordFeedback(event, feedbackDecision)
         return assistEngine.completeFeedback(
             eventEvaluation.copy(riskEvent = completedEvent),
@@ -151,9 +159,17 @@ class AssistDecisionKernel(
             sourceFrame = sourceFrame,
             decisionAtNs = decisionAtNs
         )
-        val event = riskEventTracker.updateExternalEvidence(evaluation.stableRisk, evidence.eventKey, nowMs)
+        val event = riskEventTracker.updateExternalEvidence(
+            evaluation.rawRisk,
+            evidence.eventKey,
+            nowMs
+        )
         val eventEvaluation = evaluation.copy(riskEvent = event)
-        val feedbackDecision = decideFeedback(eventEvaluation, feedbackGateway)
+        val feedbackDecision = decideFeedback(
+            eventEvaluation,
+            feedbackGateway,
+            requiresActiveEvent = true
+        )
         val completedEvent = riskEventTracker.recordFeedback(event, feedbackDecision)
         return assistEngine.completeFeedback(
             eventEvaluation.copy(riskEvent = completedEvent),
@@ -163,7 +179,8 @@ class AssistDecisionKernel(
 
     private fun decideFeedback(
         evaluation: AssistFrameEvaluation,
-        feedbackGateway: FeedbackGateway
+        feedbackGateway: FeedbackGateway,
+        requiresActiveEvent: Boolean
     ): FeedbackDecision {
         val event = evaluation.riskEvent
         return when {
@@ -171,6 +188,11 @@ class AssistDecisionKernel(
                 plan = null,
                 triggered = false,
                 reason = FeedbackReason.EVENT_ALREADY_ALERTED
+            )
+            requiresActiveEvent && !event.active -> FeedbackDecision(
+                plan = null,
+                triggered = false,
+                reason = FeedbackReason.UNSTABLE_RISK
             )
             !lowConfidenceSidePersonConfirmation.isConfirmed(evaluation.stableRisk) -> FeedbackDecision(
                 plan = null,

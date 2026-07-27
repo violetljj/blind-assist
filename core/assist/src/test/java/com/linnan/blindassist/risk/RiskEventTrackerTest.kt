@@ -37,12 +37,48 @@ class RiskEventTrackerTest {
 
         assertEquals(first.eventId, rebound.eventId)
         assertEquals(RiskEventState.PASSED_OR_RECEDING, rebound.state)
+        assertFalse(rebound.active)
         assertTrue(rebound.suppressesFeedback)
 
         val next = tracker.update(risk(ApproachTrend.APPROACHING), nowMs = 1_301L)
 
         assertEquals(RiskEventState.APPROACHING, next.state)
         assertFalse(next.suppressesFeedback)
+        assertTrue(next.eventId != first.eventId)
+    }
+
+    @Test
+    fun unalertedEventRestoresIdentityAfterShortMissingGap() {
+        val tracker = RiskEventTracker()
+        val first = tracker.update(risk(ApproachTrend.APPROACHING), nowMs = 0L)
+        repeat(3) { index ->
+            tracker.update(
+                RiskResult(RiskLevel.NONE, RiskDirection.NONE, "none"),
+                nowMs = (index + 1) * 100L
+            )
+        }
+
+        val restored = tracker.update(risk(ApproachTrend.APPROACHING), nowMs = 350L)
+
+        assertEquals(first.eventId, restored.eventId)
+        assertTrue(restored.active)
+        assertFalse(restored.suppressesFeedback)
+    }
+
+    @Test
+    fun unalertedTombstoneExpiresBeforeNewIdentityIsAllocated() {
+        val tracker = RiskEventTracker()
+        val first = tracker.update(risk(ApproachTrend.APPROACHING), nowMs = 0L)
+        repeat(3) { index ->
+            tracker.update(
+                RiskResult(RiskLevel.NONE, RiskDirection.NONE, "none"),
+                nowMs = (index + 1) * 100L
+            )
+        }
+
+        val next = tracker.update(risk(ApproachTrend.APPROACHING), nowMs = 1_301L)
+
+        assertTrue(next.active)
         assertTrue(next.eventId != first.eventId)
     }
 

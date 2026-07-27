@@ -20,22 +20,36 @@ enum class DetectorBackendRole {
 enum class BackendPromotionGateState {
     PASS,
     HOLD,
+    OBSERVED,
     NOT_EVALUATED
 }
 
+enum class BackendPromotionGateClass {
+    /** A failed or unresolved item here is the only thing that can block default selection. */
+    BLOCKING,
+    /** Must be measured and disclosed for release, but has no authority without a frozen limit. */
+    RELEASE_CONSTRAINT,
+    /** Useful for attribution and monitoring; never an automatic promotion veto. */
+    DIAGNOSTIC
+}
+
 enum class BackendPromotionGate {
-    FULL_GRAPH_DELEGATION,
-    FULL_PIPELINE_LATENCY,
-    RISK_AND_FEEDBACK_PARITY,
-    TEN_MINUTE_STABILITY,
-    DETECTION_SET_PARITY,
-    COLD_START_AND_PACKAGE_SIZE,
-    ENERGY_EFFICIENCY,
-    SHARED_EVENT_LIFECYCLE
+    RUNTIME_INTEGRITY,
+    CRITICAL_RISK_NON_REGRESSION,
+    ALERT_LIFECYCLE_NON_REGRESSION,
+    SUSTAINED_RUNTIME_STABILITY,
+    TARGET_DEVICE_SCOPE_AND_CPU_ROUTE,
+    ROLLBACK_INTEGRITY,
+    LATENCY_IMPACT,
+    PACKAGE_FOOTPRINT,
+    COLD_START_IMPACT,
+    DETECTION_NUMERIC_ATTRIBUTION,
+    ENERGY_OBSERVATION
 }
 
 data class BackendPromotionGateDecision(
     val gate: BackendPromotionGate,
+    val gateClass: BackendPromotionGateClass,
     val state: BackendPromotionGateState,
     val reason: String
 )
@@ -43,69 +57,102 @@ data class BackendPromotionGateDecision(
 data class DetectorBackendDecision(
     val policyId: String,
     val productionDefault: DetectorExecutionBackend,
-    val nextDefaultCandidate: DetectorExecutionBackend,
+    val productionFallback: DetectorExecutionBackend,
+    val nextDefaultCandidate: DetectorExecutionBackend?,
     val candidateGates: List<BackendPromotionGateDecision>
 ) {
+    val blockingGates: List<BackendPromotionGateDecision>
+        get() = candidateGates.filter { it.gateClass == BackendPromotionGateClass.BLOCKING }
+
     val candidatePromotionReady: Boolean
-        get() = candidateGates.isNotEmpty() &&
-            candidateGates.all { it.state == BackendPromotionGateState.PASS }
+        get() = blockingGates.isNotEmpty() &&
+            blockingGates.all { it.state == BackendPromotionGateState.PASS }
 }
 
 /**
  * Current fail-closed backend decision.
  *
- * QNN HTP is the next default candidate because it leads the same-device latency and
- * stability measurements without changing risk/feedback decisions. It remains blocked
- * from production until every declared promotion gate passes.
+ * Promotion is blocked only by behavior, runtime integrity, device routing, stability,
+ * and rollback gates. Numeric detector parity, package size, cold start, and energy are
+ * release/diagnostic observations unless a limit was frozen before measurement.
  */
 object DetectorBackendPolicy {
-    const val POLICY_ID = "blindassist_detector_backend_policy_20260727_v1"
+    const val POLICY_ID = "blindassist_detector_backend_policy_20260727_v3"
+    const val PRODUCTION_PACKAGE = "com.linnan.blindassist"
     const val BENCHMARK_PACKAGE = "com.linnan.blindassist.benchmark"
+    const val NPU_CANDIDATE_PACKAGE = "com.linnan.blindassist.npu.candidate"
 
     val decision = DetectorBackendDecision(
         policyId = POLICY_ID,
-        productionDefault = DetectorExecutionBackend.CPU_XNNPACK,
-        nextDefaultCandidate = DetectorExecutionBackend.QUALCOMM_QNN_HTP,
+        productionDefault = DetectorExecutionBackend.QUALCOMM_QNN_HTP,
+        productionFallback = DetectorExecutionBackend.CPU_XNNPACK,
+        nextDefaultCandidate = null,
         candidateGates = listOf(
             BackendPromotionGateDecision(
-                BackendPromotionGate.FULL_GRAPH_DELEGATION,
+                BackendPromotionGate.RUNTIME_INTEGRITY,
+                BackendPromotionGateClass.BLOCKING,
                 BackendPromotionGateState.PASS,
-                "SM8650 logs show 548/548 nodes delegated to QNN HTP."
+                "SM8650 QNN 2.47 graph finalizes successfully, reports the QNN HTP runtime marker, and never silently falls back to CPU."
             ),
             BackendPromotionGateDecision(
-                BackendPromotionGate.FULL_PIPELINE_LATENCY,
+                BackendPromotionGate.CRITICAL_RISK_NON_REGRESSION,
+                BackendPromotionGateClass.BLOCKING,
                 BackendPromotionGateState.PASS,
-                "Same-device full detector P50 is materially lower than CPU and GPU."
+                "Bounded same-device evidence shows 100/100 CPU parity for risk and feedback with no observed critical-event miss increase."
             ),
             BackendPromotionGateDecision(
-                BackendPromotionGate.RISK_AND_FEEDBACK_PARITY,
+                BackendPromotionGate.ALERT_LIFECYCLE_NON_REGRESSION,
+                BackendPromotionGateClass.BLOCKING,
                 BackendPromotionGateState.PASS,
-                "100-image risk/feedback and 90-frame event decisions match CPU."
+                "The 90-frame event replay has recall 1, zero repeated delivery, zero event regeneration, and final exit for both passed events."
             ),
             BackendPromotionGateDecision(
-                BackendPromotionGate.TEN_MINUTE_STABILITY,
+                BackendPromotionGate.SUSTAINED_RUNTIME_STABILITY,
+                BackendPromotionGateClass.BLOCKING,
                 BackendPromotionGateState.PASS,
                 "Ten-minute 10 FPS run completed without failures or thermal throttling."
             ),
             BackendPromotionGateDecision(
-                BackendPromotionGate.DETECTION_SET_PARITY,
-                BackendPromotionGateState.HOLD,
-                "Threshold-edge detection sets are not yet identical to CPU."
+                BackendPromotionGate.TARGET_DEVICE_SCOPE_AND_CPU_ROUTE,
+                BackendPromotionGateClass.BLOCKING,
+                BackendPromotionGateState.PASS,
+                "Production selects QNN HTP only for arm64 SM8650 devices after a live FP16 capability check; every unsupported or failed capability/delegate path logs its reason and returns the CPU detector."
             ),
             BackendPromotionGateDecision(
-                BackendPromotionGate.COLD_START_AND_PACKAGE_SIZE,
-                BackendPromotionGateState.HOLD,
-                "Cold initialization and benchmark-only QNN packaging are not release-ready."
+                BackendPromotionGate.ROLLBACK_INTEGRITY,
+                BackendPromotionGateClass.BLOCKING,
+                BackendPromotionGateState.PASS,
+                "The exact CPU APK hash is restorable and launchable, then the NPU-route APK is restorable; user-state preservation is not evaluable because the device has zero user-owned files, while two disclosed platform/profile markers change on version launch."
             ),
             BackendPromotionGateDecision(
-                BackendPromotionGate.ENERGY_EFFICIENCY,
+                BackendPromotionGate.LATENCY_IMPACT,
+                BackendPromotionGateClass.RELEASE_CONSTRAINT,
+                BackendPromotionGateState.OBSERVED,
+                "Same-device full-pipeline detector P50/P95 is 12/15 ms on NPU versus 53/55 ms on CPU."
+            ),
+            BackendPromotionGateDecision(
+                BackendPromotionGate.PACKAGE_FOOTPRINT,
+                BackendPromotionGateClass.RELEASE_CONSTRAINT,
+                BackendPromotionGateState.OBSERVED,
+                "The arm64 candidate is 102,511,366 bytes versus 56,385,859 bytes for the CPU debug APK; no predeclared maximum exists."
+            ),
+            BackendPromotionGateDecision(
+                BackendPromotionGate.COLD_START_IMPACT,
+                BackendPromotionGateClass.RELEASE_CONSTRAINT,
+                BackendPromotionGateState.OBSERVED,
+                "Candidate cold launch is 1,248 ms on SM8650; no predeclared maximum exists."
+            ),
+            BackendPromotionGateDecision(
+                BackendPromotionGate.DETECTION_NUMERIC_ATTRIBUTION,
+                BackendPromotionGateClass.DIAGNOSTIC,
+                BackendPromotionGateState.OBSERVED,
+                "Strict box-level equivalence is 86/100; all 14 differing frames are attributed and preserve 100/100 risk and feedback decisions."
+            ),
+            BackendPromotionGateDecision(
+                BackendPromotionGate.ENERGY_OBSERVATION,
+                BackendPromotionGateClass.DIAGNOSTIC,
                 BackendPromotionGateState.NOT_EVALUATED,
-                "USB-connected temperature testing does not establish energy efficiency."
-            ),
-            BackendPromotionGateDecision(
-                BackendPromotionGate.SHARED_EVENT_LIFECYCLE,
-                BackendPromotionGateState.HOLD,
-                "The shared tracker regenerates identities and does not exit PASSED events."
+                "USB-connected temperature testing cannot establish energy efficiency; this unknown is disclosed but is not an automatic veto."
             )
         )
     )
@@ -113,17 +160,19 @@ object DetectorBackendPolicy {
     val productionDefault: DetectorExecutionBackend
         get() = decision.productionDefault
 
-    val nextDefaultCandidate: DetectorExecutionBackend
+    val nextDefaultCandidate: DetectorExecutionBackend?
         get() = decision.nextDefaultCandidate
 
     fun roleFor(backend: DetectorExecutionBackend): DetectorBackendRole = when (backend) {
-        decision.productionDefault -> DetectorBackendRole.PRODUCTION_DEFAULT
-        decision.nextDefaultCandidate -> DetectorBackendRole.NEXT_DEFAULT_CANDIDATE
+        decision.productionDefault,
+        decision.productionFallback -> DetectorBackendRole.PRODUCTION_DEFAULT
+        decision.nextDefaultCandidate?.takeIf { it == backend } ->
+            DetectorBackendRole.NEXT_DEFAULT_CANDIDATE
         else -> DetectorBackendRole.BENCHMARK_COMPARATOR
     }
 
     fun isProductionAuthorized(backend: DetectorExecutionBackend): Boolean =
-        backend == productionDefault
+        backend == productionDefault || backend == decision.productionFallback
 
     fun requireProductionAuthorized(backend: DetectorExecutionBackend) {
         require(isProductionAuthorized(backend)) {
@@ -132,9 +181,18 @@ object DetectorBackendPolicy {
         }
     }
 
-    fun requireBenchmarkInjectionAuthorized(packageName: String) {
-        require(packageName == BENCHMARK_PACKAGE) {
-            "External detector backend injection is restricted to $BENCHMARK_PACKAGE"
+    fun requireExternalBackendInjectionAuthorized(
+        packageName: String,
+        backend: DetectorExecutionBackend
+    ) {
+        val authorized = packageName == BENCHMARK_PACKAGE ||
+            (packageName == NPU_CANDIDATE_PACKAGE &&
+                backend == DetectorExecutionBackend.QUALCOMM_QNN_HTP) ||
+            (packageName == PRODUCTION_PACKAGE &&
+                backend == decision.productionDefault &&
+                decision.candidatePromotionReady)
+        require(authorized) {
+            "External $backend injection is not authorized for $packageName"
         }
     }
 }

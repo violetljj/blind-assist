@@ -15,7 +15,8 @@ internal data class EventLifecycleSample(
     val expectedShouldAlert: Boolean,
     val actualAlert: Boolean,
     val suppressedDuplicateAttempt: Boolean,
-    val runtimeEventId: String?
+    val runtimeEventId: String?,
+    val runtimeEventActive: Boolean
 )
 
 internal data class EventLifecycleSummary(

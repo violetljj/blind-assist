@@ -26,6 +26,7 @@ import com.linnan.blindassist.session.AssistEngine
 import com.linnan.blindassist.session.DetectorMetrics
 import com.linnan.blindassist.vision.DetectorBackendPolicy
 import com.linnan.blindassist.vision.DetectorExecutionBackend
+import com.linnan.blindassist.vision.RuntimeObjectDetectorFactory
 import com.linnan.blindassist.vision.TfliteYoloDetector
 import com.qualcomm.qti.QnnDelegate
 import org.json.JSONArray
@@ -63,19 +64,19 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
         assertEquals("The requested EvalSet image count must be available", imageLimit, imagePaths.size)
 
         val temperatureBefore = batteryTemperatureC()
-        val backendResults = BackendId.entries.associateWith { backend ->
+        val backendResults = VALIDATION_BACKENDS.associateWith { backend ->
             runBackend(backend, imagePaths)
         }
         val temperatureAfter = batteryTemperatureC()
         val cpu = requireNotNull(backendResults[BackendId.CPU])
         val comparisons = JSONArray()
-        listOf(BackendId.GPU, BackendId.NPU).forEach { backend ->
+        listOf(BackendId.GPU, BackendId.NPU, BackendId.PRODUCTION_ROUTE).forEach { backend ->
             comparisons.put(compareBackendResults(cpu, requireNotNull(backendResults[backend])))
         }
 
         val report = JSONObject()
             .put("schema", FULL_REPORT_SCHEMA)
-            .put("disposition", "BENCHMARK_ONLY_NO_PRODUCTION_BACKEND_CHANGE")
+            .put("disposition", "FORMAL_PRODUCTION_ROUTE_VALIDATION")
             .put("backend_policy", backendPolicyJson())
             .put("device", deviceJson())
             .put("protocol", JSONObject()
@@ -89,7 +90,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
             .put("temperature_c", JSONObject()
                 .put("before", temperatureBefore)
                 .put("after", temperatureAfter))
-            .put("backends", JSONArray(BackendId.entries.map { requireNotNull(backendResults[it]).toJson() }))
+            .put("backends", JSONArray(VALIDATION_BACKENDS.map { requireNotNull(backendResults[it]).toJson() }))
             .put("comparisons_against_cpu", comparisons)
 
         writeArtifact(FULL_REPORT_FILE, report)
@@ -174,7 +175,14 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
         thermalSamples.put(thermalSnapshot(elapsedMs))
         val report = JSONObject()
             .put("schema", SOAK_REPORT_SCHEMA)
-            .put("disposition", "BENCHMARK_ONLY_NO_PRODUCTION_BACKEND_CHANGE")
+            .put(
+                "disposition",
+                if (backend == BackendId.PRODUCTION_ROUTE) {
+                    "FORMAL_PRODUCTION_ROUTE_STABILITY_VALIDATION"
+                } else {
+                    "BENCHMARK_ONLY_NO_PRODUCTION_BACKEND_CHANGE"
+                }
+            )
             .put("backend_policy", backendPolicyJson())
             .put("device", deviceJson())
             .put("backend", backend.name)
@@ -217,16 +225,16 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
         assertEquals("SANPO source masks must cover every frame", EVENT_FRAME_COUNT, frames.count { assetExists(it.maskPath) })
 
         val temperatureBefore = batteryTemperatureC()
-        val results = BackendId.entries.associateWith { backend -> runEventBackend(backend, frames) }
+        val results = VALIDATION_BACKENDS.associateWith { backend -> runEventBackend(backend, frames) }
         val cpu = requireNotNull(results[BackendId.CPU])
         val comparisons = JSONArray(
-            listOf(BackendId.GPU, BackendId.NPU).map { backend ->
+            listOf(BackendId.GPU, BackendId.NPU, BackendId.PRODUCTION_ROUTE).map { backend ->
                 compareEventBackends(cpu, requireNotNull(results[backend]))
             }
         )
         val report = JSONObject()
             .put("schema", EVENT_REPORT_SCHEMA)
-            .put("disposition", "BENCHMARK_ONLY_NO_PRODUCTION_BACKEND_CHANGE")
+            .put("disposition", "FORMAL_PRODUCTION_ROUTE_VALIDATION")
             .put("backend_policy", backendPolicyJson())
             .put("device", deviceJson())
             .put("protocol", JSONObject()
@@ -243,7 +251,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
             .put("temperature_c", JSONObject()
                 .put("before", temperatureBefore)
                 .put("after", batteryTemperatureC()))
-            .put("backends", JSONArray(BackendId.entries.map { requireNotNull(results[it]).toJson() }))
+            .put("backends", JSONArray(VALIDATION_BACKENDS.map { requireNotNull(results[it]).toJson() }))
             .put("comparisons_against_cpu", comparisons)
         writeArtifact(EVENT_REPORT_FILE, report)
         assertTrue("One or more event backends failed", results.values.all { it.failures.isEmpty() })
@@ -298,6 +306,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
                             feedbackReason = decision.feedbackDecision.reason.name,
                             runtimeEventId = decision.evaluation.riskEvent.eventId,
                             runtimeEventState = decision.evaluation.riskEvent.state?.name,
+                            runtimeEventActive = decision.evaluation.riskEvent.active,
                             runtimeEventClearReason = decision.evaluation.riskEvent.clearReason?.name,
                             inferenceMs = detector.lastInferenceMs.toDouble(),
                             totalMs = detector.lastTotalDetectMs.toDouble()
@@ -330,7 +339,8 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
                 expectedShouldAlert = row.expected.expectedShouldAlert,
                 actualAlert = row.actualAlert,
                 suppressedDuplicateAttempt = row.feedbackReason == FeedbackReason.EVENT_ALREADY_ALERTED.name,
-                runtimeEventId = row.runtimeEventId
+                runtimeEventId = row.runtimeEventId,
+                runtimeEventActive = row.runtimeEventActive
             )
         })
         return EventBackendResult(
@@ -360,6 +370,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
             val alertSame = baseline.actualAlert == other.actualAlert &&
                 baseline.feedbackReason == other.feedbackReason
             val stateSame = baseline.runtimeEventState == other.runtimeEventState &&
+                baseline.runtimeEventActive == other.runtimeEventActive &&
                 baseline.runtimeEventClearReason == other.runtimeEventClearReason
             val idSame = baseline.runtimeEventId == other.runtimeEventId
             if (rawEqual) rawRiskEqual += 1
@@ -379,8 +390,8 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
                     .put("candidate_stable_risk", riskKey(other.stableRisk))
                     .put("cpu_feedback", "${baseline.actualAlert}|${baseline.feedbackReason}")
                     .put("candidate_feedback", "${other.actualAlert}|${other.feedbackReason}")
-                    .put("cpu_event", "${baseline.runtimeEventId}|${baseline.runtimeEventState}|${baseline.runtimeEventClearReason}")
-                    .put("candidate_event", "${other.runtimeEventId}|${other.runtimeEventState}|${other.runtimeEventClearReason}"))
+                    .put("cpu_event", "${baseline.runtimeEventId}|${baseline.runtimeEventState}|${baseline.runtimeEventActive}|${baseline.runtimeEventClearReason}")
+                    .put("candidate_event", "${other.runtimeEventId}|${other.runtimeEventState}|${other.runtimeEventActive}|${other.runtimeEventClearReason}"))
             }
         }
         return JSONObject()
@@ -396,15 +407,15 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
     }
 
     private fun loadEventFrames(): List<EventFrame> {
-        return testContext.assets.open(BLINDASSIST_MANIFEST).bufferedReader(Charsets.UTF_8).useLines { lines ->
+        return testContext.assets.open(EVENT_MANIFEST).bufferedReader(Charsets.UTF_8).useLines { lines ->
             lines.filter { it.isNotBlank() }
                 .map { JSONObject(it) }
                 .map { row ->
                     val relativeImage = row.getString("image_path")
                     EventFrame(
                         id = row.getString("id"),
-                        imagePath = "$BLINDASSIST_PREFIX/$relativeImage",
-                        maskPath = "$BLINDASSIST_PREFIX/source_masks/test/${relativeImage.substringAfterLast('/')}",
+                        imagePath = "$EVENT_PREFIX/$relativeImage",
+                        maskPath = "$EVENT_PREFIX/source_masks/test/${relativeImage.substringAfterLast('/')}",
                         sequenceId = row.getString("sequence_id"),
                         frameIndex = row.getInt("frame_index"),
                         riskEventId = row.getString("risk_event_id"),
@@ -523,7 +534,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
             BackendId.CPU -> TfliteYoloDetector(
                 context = testContext,
                 executionBackend = DetectorExecutionBackend.CPU_XNNPACK,
-                benchmarkInterpreterOptionsFactory = {
+                externalInterpreterOptionsFactory = {
                     Interpreter.Options().setNumThreads(CPU_THREADS)
                 }
             )
@@ -535,7 +546,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
                 TfliteYoloDetector(
                     context = testContext,
                     executionBackend = DetectorExecutionBackend.GPU_DELEGATE,
-                    benchmarkInterpreterOptionsFactory = {
+                    externalInterpreterOptionsFactory = {
                         Interpreter.Options()
                             .setNumThreads(CPU_THREADS)
                             .addDelegate(delegate)
@@ -550,7 +561,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
                 )
                 val options = QnnDelegate.Options().apply {
                     setBackendType(QnnDelegate.Options.BackendType.HTP_BACKEND)
-                    setSkelLibraryDir(testContext.applicationInfo.nativeLibraryDir)
+                    setSkelLibraryDir(targetContext.applicationInfo.nativeLibraryDir)
                     setHtpPrecision(QnnDelegate.Options.HtpPrecision.HTP_PRECISION_FP16)
                     setHtpPerformanceMode(
                         QnnDelegate.Options.HtpPerformanceMode.HTP_PERFORMANCE_SUSTAINED_HIGH_PERFORMANCE
@@ -565,12 +576,19 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
                 TfliteYoloDetector(
                     context = testContext,
                     executionBackend = DetectorExecutionBackend.QUALCOMM_QNN_HTP,
-                    benchmarkInterpreterOptionsFactory = {
+                    externalInterpreterOptionsFactory = {
                         Interpreter.Options()
                             .setNumThreads(CPU_THREADS)
                             .addDelegate(delegate)
                     }
                 )
+            }
+            BackendId.PRODUCTION_ROUTE -> {
+                val routed = RuntimeObjectDetectorFactory.create(targetContext)
+                require(routed is TfliteYoloDetector) {
+                    "Production route returned unsupported detector type ${routed.javaClass.name}"
+                }
+                routed
             }
         }
         assertTrue("$backend detector initialization failed: ${detector.statusMessage}", detector.isReady)
@@ -589,6 +607,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
         var stableRiskEqual = 0
         var feedbackEqual = 0
         var eventEqual = 0
+        val attributionCounts = linkedMapOf<String, Int>()
         val differences = JSONArray()
         cpu.frames.zip(candidate.frames).forEach { (baseline, other) ->
             val detectionComparison = compareDetections(baseline.detections, other.detections)
@@ -605,11 +624,16 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
             if (feedbackSame) feedbackEqual += 1
             if (eventSame) eventEqual += 1
             if (!detectionComparison.equivalent || !rawEqual || !stableEqual || !feedbackSame || !eventSame) {
+                detectionComparison.attributions.forEach { attribution ->
+                    attributionCounts[attribution.category] =
+                        (attributionCounts[attribution.category] ?: 0) + 1
+                }
                 differences.put(JSONObject()
                     .put("image_path", baseline.path)
                     .put("cpu_detection_count", baseline.detections.size)
                     .put("candidate_detection_count", other.detections.size)
                     .put("matched_detections", detectionComparison.matched)
+                    .put("detection_attribution", detectionComparison.toJson())
                     .put("cpu_raw_risk", riskKey(baseline.rawRisk))
                     .put("candidate_raw_risk", riskKey(other.rawRisk))
                     .put("cpu_stable_risk", riskKey(baseline.stableRisk))
@@ -630,12 +654,14 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
             .put("feedback_equal_frames", feedbackEqual)
             .put("risk_event_equal_frames", eventEqual)
             .put("different_frames", differences.length())
+            .put("detection_attribution_counts", JSONObject(attributionCounts as Map<*, *>))
             .put("differences", differences)
     }
 
     private fun compareDetections(cpu: List<Detection>, candidate: List<Detection>): DetectionComparison {
         val used = BooleanArray(candidate.size)
         var matched = 0
+        val attributions = mutableListOf<DetectionAttribution>()
         cpu.forEach { expected ->
             var bestIndex = -1
             var bestIou = 0f
@@ -648,18 +674,53 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
                     }
                 }
             }
-            if (bestIndex >= 0 &&
-                bestIou >= DETECTION_EQUIVALENCE_IOU &&
-                kotlin.math.abs(expected.confidence - candidate[bestIndex].confidence) <=
+            if (bestIndex < 0) {
+                attributions += DetectionAttribution(
+                    category = "CANDIDATE_MISSING_CLASS_DETECTION",
+                    cpu = expected,
+                    candidate = null,
+                    iou = null,
+                    confidenceDelta = null
+                )
+            } else if (bestIou < DETECTION_EQUIVALENCE_IOU) {
+                attributions += DetectionAttribution(
+                    category = "BOX_GEOMETRY_DELTA",
+                    cpu = expected,
+                    candidate = candidate[bestIndex],
+                    iou = bestIou,
+                    confidenceDelta = kotlin.math.abs(expected.confidence - candidate[bestIndex].confidence)
+                )
+            } else if (
+                kotlin.math.abs(expected.confidence - candidate[bestIndex].confidence) >
                 DETECTION_EQUIVALENCE_CONFIDENCE_DELTA
             ) {
+                attributions += DetectionAttribution(
+                    category = "CONFIDENCE_DELTA",
+                    cpu = expected,
+                    candidate = candidate[bestIndex],
+                    iou = bestIou,
+                    confidenceDelta = kotlin.math.abs(expected.confidence - candidate[bestIndex].confidence)
+                )
+            } else {
                 used[bestIndex] = true
                 matched += 1
             }
         }
+        candidate.forEachIndexed { index, detection ->
+            if (!used[index] && attributions.none { it.candidate === detection }) {
+                attributions += DetectionAttribution(
+                    category = "CANDIDATE_EXTRA_DETECTION",
+                    cpu = null,
+                    candidate = detection,
+                    iou = null,
+                    confidenceDelta = null
+                )
+            }
+        }
         return DetectionComparison(
             matched = matched,
-            equivalent = matched == cpu.size && matched == candidate.size
+            equivalent = matched == cpu.size && matched == candidate.size,
+            attributions = attributions
         )
     }
 
@@ -728,12 +789,16 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
     private fun backendPolicyJson(): JSONObject = JSONObject()
         .put("policy_id", DetectorBackendPolicy.POLICY_ID)
         .put("production_default", DetectorBackendPolicy.productionDefault.wireName)
-        .put("next_default_candidate", DetectorBackendPolicy.nextDefaultCandidate.wireName)
+        .put(
+            "next_default_candidate",
+            DetectorBackendPolicy.nextDefaultCandidate?.wireName ?: JSONObject.NULL
+        )
         .put("candidate_promotion_ready", DetectorBackendPolicy.decision.candidatePromotionReady)
         .put("candidate_gates", JSONArray(
             DetectorBackendPolicy.decision.candidateGates.map { gate ->
                 JSONObject()
                     .put("gate", gate.gate.name)
+                    .put("gate_class", gate.gateClass.name)
                     .put("state", gate.state.name)
                     .put("reason", gate.reason)
             }
@@ -789,7 +854,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
         }
     }
 
-    private enum class BackendId { CPU, GPU, NPU }
+    private enum class BackendId { CPU, GPU, NPU, PRODUCTION_ROUTE }
 
     private data class BackendRuntime(
         val detector: TfliteYoloDetector,
@@ -839,7 +904,28 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
         val totalMs: Double
     )
 
-    private data class DetectionComparison(val matched: Int, val equivalent: Boolean)
+    private data class DetectionComparison(
+        val matched: Int,
+        val equivalent: Boolean,
+        val attributions: List<DetectionAttribution>
+    ) {
+        fun toJson(): JSONArray = JSONArray(attributions.map { it.toJson() })
+    }
+
+    private data class DetectionAttribution(
+        val category: String,
+        val cpu: Detection?,
+        val candidate: Detection?,
+        val iou: Float?,
+        val confidenceDelta: Float?
+    ) {
+        fun toJson(): JSONObject = JSONObject()
+            .put("category", category)
+            .put("cpu", cpu?.let(::detectionJsonStatic) ?: JSONObject.NULL)
+            .put("candidate", candidate?.let(::detectionJsonStatic) ?: JSONObject.NULL)
+            .put("iou", iou?.toDouble()?.let(::round3Static) ?: JSONObject.NULL)
+            .put("confidence_delta", confidenceDelta?.toDouble()?.let(::round3Static) ?: JSONObject.NULL)
+    }
 
     private data class EventFrame(
         val id: String,
@@ -866,6 +952,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
         val feedbackReason: String,
         val runtimeEventId: String?,
         val runtimeEventState: String?,
+        val runtimeEventActive: Boolean,
         val runtimeEventClearReason: String?,
         val inferenceMs: Double,
         val totalMs: Double
@@ -888,6 +975,7 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
             .put("feedback_reason", feedbackReason)
             .put("runtime_event_id", runtimeEventId ?: JSONObject.NULL)
             .put("runtime_event_state", runtimeEventState ?: JSONObject.NULL)
+            .put("runtime_event_active", runtimeEventActive)
             .put("runtime_event_clear_reason", runtimeEventClearReason ?: JSONObject.NULL)
             .put("inference_ms", inferenceMs)
             .put("total_ms", totalMs)
@@ -909,14 +997,14 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
                 it.expected.expectedEventPhase == "PASSED" && it.actualAlert
             }
             val passedRuntimeActiveFrames = passedEventRows.values.sumOf { event ->
-                event.count { it.runtimeEventId != null }
+                event.count { it.runtimeEventActive }
             }
             val passedRuntimeAlertedFrames = passedEventRows.values.sumOf { event ->
                 event.count { it.runtimeEventState == "ALERTED" }
             }
             val runtimeExitedPassedEvents = passedEventRows.values.count { event ->
                 val last = event.maxByOrNull { it.expected.frameIndex }
-                last?.runtimeEventId == null
+                last?.runtimeEventActive == false
             }
             val runtimeLifecycleClearanceRate = if (passedEventRows.isEmpty()) {
                 0.0
@@ -979,7 +1067,13 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
     }
 
     companion object {
-        private const val FULL_REPORT_SCHEMA = "blindassist_cpu_gpu_npu_full_pipeline_v1"
+        private val VALIDATION_BACKENDS = listOf(
+            BackendId.CPU,
+            BackendId.GPU,
+            BackendId.NPU,
+            BackendId.PRODUCTION_ROUTE
+        )
+        private const val FULL_REPORT_SCHEMA = "blindassist_cpu_gpu_npu_full_pipeline_v2"
         private const val SOAK_REPORT_SCHEMA = "blindassist_cpu_gpu_npu_soak_v1"
         private const val EVENT_REPORT_SCHEMA = "blindassist_cpu_gpu_npu_sanpo_event_lifecycle_v1"
         private const val ARTIFACT_DIR = "cpu_gpu_npu_full_pipeline"
@@ -987,7 +1081,9 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
         private const val EVENT_REPORT_FILE = "sanpo-event-lifecycle.json"
         private const val BLINDASSIST_PREFIX = "blindassist_evalset"
         private const val BLINDASSIST_MANIFEST = "$BLINDASSIST_PREFIX/manifest.jsonl"
-        private const val QNN_MODEL_TOKEN = "blindassist_yolo11n_fp16_320_cpu_gpu_npu_v1"
+        private const val EVENT_PREFIX = "sanpo_event_lifecycle"
+        private const val EVENT_MANIFEST = "$EVENT_PREFIX/manifest.jsonl"
+        private const val QNN_MODEL_TOKEN = "blindassist_yolo11n_fp16_320_cpu_gpu_npu_qnn_2_47_v1"
         private const val ARG_IMAGE_LIMIT = "imageLimit"
         private const val ARG_BACKEND = "backend"
         private const val ARG_DURATION_SECONDS = "durationSeconds"
@@ -1031,5 +1127,15 @@ class CpuGpuNpuFullPipelineDeviceBenchmarkTest {
 
         private fun riskKeyStatic(risk: RiskResult): String =
             "${risk.level}|${risk.direction}|${risk.proximity}|${risk.sourceDetection?.label ?: "none"}"
+
+        private fun detectionJsonStatic(detection: Detection): JSONObject = JSONObject()
+            .put("class_id", detection.classId)
+            .put("label", detection.label)
+            .put("confidence", round3Static(detection.confidence.toDouble()))
+            .put("box", JSONObject()
+                .put("left", round3Static(detection.boundingBox.left.toDouble()))
+                .put("top", round3Static(detection.boundingBox.top.toDouble()))
+                .put("right", round3Static(detection.boundingBox.right.toDouble()))
+                .put("bottom", round3Static(detection.boundingBox.bottom.toDouble())))
     }
 }

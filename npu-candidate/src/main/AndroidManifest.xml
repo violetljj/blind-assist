@@ -10,15 +10,16 @@
 
     <application
         android:name=".BlindAssistApplication"
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:label="@string/app_name"
+        android:allowBackup="false"
+        android:label="BlindAssist NPU Candidate"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
+        <uses-native-library
+            android:name="libcdsprpc.so"
+            android:required="false" />
         <meta-data
             android:name="com.linnan.blindassist.vision.OBJECT_DETECTOR_PROVIDER"
-            android:value="com.linnan.blindassist.vision.ProductionQnnRoutingObjectDetectorProvider" />
+            android:value="com.linnan.blindassist.npu.QnnHtpObjectDetectorProvider" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

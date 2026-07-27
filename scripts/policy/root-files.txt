@@ -69,6 +69,7 @@ review_sanpo_sequence_with_model.py
 run_depth_fusion_benchmark.ps1
 run_detector_ab_device_benchmark.ps1
 run_device_regression.ps1
+run_npu_candidate_acceptance.ps1
 run_guarded_revel_yolo_smoke.ps1
 run_guarded_host_research.ps1
 run_host_research.ps1
