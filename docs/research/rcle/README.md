@@ -1,6 +1,6 @@
 # RCLE 研究主线
 
-状态：`current / COUNTERFACTUAL_R2_P1_GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`
+状态：`current / COUNTERFACTUAL_R2_P2_QUALITY_CALIBRATION_PASS / P3_NOT_AUTHORIZED`
 
 最后核验：2026-07-29（Asia/Hong_Kong）
 
@@ -12,9 +12,9 @@ RCLE-RF 仍是 BlindAssist 的论文研究主线，但研究方法已经从“�
 ```text
 CURRENT STUDY: RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2
 CURRENT TRACK: CONTROLLED_COUNTERFACTUAL_DEVELOPMENT
-SCIENTIFIC STATUS: GEOMETRY_PASS
+SCIENTIFIC STATUS: QUALITY_CALIBRATION_PASS
 PROTOCOL STATUS: VALID
-EXECUTION AUTHORITY: P2_NOT_AUTHORIZED
+EXECUTION AUTHORITY: P3_NOT_AUTHORIZED
 CURRENT CLAIM CEILING: CONTROLLED_GENERATOR_INTERNAL_MECHANISM_DEVELOPMENT_ONLY
 PREDECESSOR RESULT: TEMPORAL_STRUCTURE_R1_HOLD_MIXED_OR_INSUFFICIENT / VALID
 AUDIT HISTORY: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
@@ -24,20 +24,31 @@ FORMAL R2 EXECUTION: NOT_AUTHORIZED
 ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 ```
 
+P2 response-blind quality calibration 的一次性 blur-grid repair R1 已完成。
+复用原 CAL panel，仅运行冻结的 9 个小 sigma 候选，共 `5120` 行 blur ledger；
+`sigma=0.475 px` 是满足总体与全部 8 个 block×motion subgroup 门的最小候选，
+并与 hash-bound R0 `alpha=0.15` 形成全局 strength pair。独立复算
+`errors=[]`，终态为
+`QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED`。未运行 RCLE 或 P3，
+也未重调 low-texture、换 seed、分 block 或自动二次修复。详见
+[P2 R1 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_CALIBRATION_BLUR_GRID_REPAIR_R1_RESULT_2026-07-29.md)；
+[P2 R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_CALIBRATION_R0_RESULT_2026-07-29.md)
+保留为不可变 predecessor。
+
 P1 最新冻结回执为隔离的 `R2_KEYSET_REPAIR_R0`
 `95646437fbe0ef0cf03844f94467303f5d90ca15c3e22fc1785157b037a8c079`：
 G01–G14 为 14/14 PASS，`errors=[]`，终态为
 `GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`。本版只把历史 R0
 evidence key 修正为真实的 `producer_receipt.json`，并加入 generator directory
 与正式 receipt 的独占创建保护；88 条 all-seed record 与 R2 逐字节一致。
-R0、R1、R2 失败回执仍不可覆盖；P2 仍未获授权。详见
+R0、R1、R2 失败回执仍不可覆盖；P1 本身不曾自动授权 P2。详见
 [keyset-repair 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_KEYSET_REPAIR_R0_RESULT_2026-07-29.md)
 与历史 [R2 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R2_RESULT_2026-07-29.md)。
 R1 的不可变 13/14 失败与并发 source-hash 竞态见
 [R1 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_RESULT_2026-07-28.md)。
 
-当前操作只看三轴：P1 科学状态 `GEOMETRY_PASS`、协议状态 `VALID`、执行权限
-`P2_NOT_AUTHORIZED`。历史 R2 的 `INVALID_KEYSET` 不再被表述为几何失败。P1
+当前操作只看三轴：P2 科学状态 `QUALITY_CALIBRATION_PASS`、协议状态
+`VALID`、执行权限 `P3_NOT_AUTHORIZED`。历史 R2 的 `INVALID_KEYSET` 不再被表述为几何失败。P1
 已经关闭；非阻断的 receipt、命名或未来漂移监控只进入 backlog，不再创建 P1
 版本或阻挡算法阶段。
 
@@ -188,8 +199,8 @@ approach-plus-periodic 不保持 pairwise monotonic depth 而失败。终态为
 [P1 keyset repair](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_KEYSET_REPAIR_R0_RESULT_2026-07-29.md)
 已在不改 88 条 scene record、seed、trajectory、gate 或阈值的前提下完成 14/14
 独立验证，终态为 `GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`。
-quality strength、synthetic transport、analysis implementation、runtime
-preflight 和正式序列仍未创建或运行。
+quality calibration 已按冻结 grid 合法关闭；synthetic transport、analysis
+implementation、runtime preflight 和正式序列仍未创建或运行。
 
 ## Discovery 的低成本操作门
 
@@ -231,7 +242,7 @@ preflight 和正式序列仍未创建或运行。
 | natural-session expansion Discovery R0 | `COMPLETE / VALID` |
 | degradation / flow-quality diagnostic R0 | `COMPLETE / HOLD_FLOW_QUALITY_GATE / VALID` |
 | temporal-structure diagnostic R1 | `COMPLETE / HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID` |
-| periodic self-motion counterfactual R2 | `P1: GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED` |
+| periodic self-motion counterfactual R2 | `P2: QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
 | 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |

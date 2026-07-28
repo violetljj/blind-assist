@@ -1482,3 +1482,31 @@
   `A1BD48CBDC41000477183BB8579725A9039818F4489563A9F7DE3643B966FDD5`，
   设备安装哈希一致；候选和 benchmark 包已删除，正式路由包保留。
 - 时间：2026-07-28；执行者：violjjet。完成 `RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R0` 的 P1-only 实现与独立验证：新增 deterministic analytic ray/rectangle z-buffer、MAIN/CAL/GUARD SHA-256 seed 派生、source-native `360×640` K、四条 602-frame endpoint-closed trajectory、80 main + 8 guardrail all-seed manifest、6 个解析 fixture、四 block 各 10,000 projective sample 和独立 validator。G01–G12、G14 PASS；G13 FAIL：冻结的 10 秒 exact 25% inverse-depth endpoint 只能产生约 `0.0223/s` radial expansion，达不到 `>=0.05/s`，且 approach-plus-periodic 的逐 pair depth monotonic fraction 为 `0.0`。按预注册 fail-closed 规则终态写为 `INTERVENTION_NOT_EVALUABLE / HOLD_P1 / EXECUTION_NOT_AUTHORIZED`；未换 seed、降门或进入 P2，也未读取/运行 RCLE output、P3、P4、sequence16、CoTracker、Android 或实时集成。详细证据见 [P1 result](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R0_RESULT_2026-07-28.md)。
+
+## 2026-07-29：R2 response-blind quality calibration P2 R0
+
+- 执行者：violjjet
+- 新增 CAL-only source-known 32-edge plate、linear-RGB Gaussian PSF、pre-render material-albedo contraction，以及冻结 Laplacian variance、local RMS、multiscale gradient density 与 edge-spread 指标；专项实现/独立验证测试 `23/23 PASS`。
+- 完成 `4 block × 4 CAL seed × 2 motion × 16 frame × 12 state = 6144` 行 response-blind ledger。Low-texture 最大可行值为 `alpha=0.15`；全部 blur 候选低于 Laplacian-ratio 下界，最小 `sigma=0.75` 的 overall/subgroup 仅 `0.132784 / 0.128384–0.136307`。
+- 独立 validator 不导入 producer、quality implementation 或 RCLE algorithm，复算全部 ratio、层级、门、选择方向、hash/read allowlist/firewall，`errors=[]`。终态为 `NO_GLOBAL_QUALITY_STRENGTH / VALID / HOLD_P2`；未扩 grid、换 seed、做分 block strength，未运行 RCLE、P3/P4、sequence16、CoTracker、Android 或实时集成。
+- 详细证据见 [P2 result](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_CALIBRATION_R0_RESULT_2026-07-29.md)。
+
+## 2026-07-29：R2 P2 一次性 blur-grid repair R1
+
+- 执行者：violjjet
+- 在任何新增 CAL 访问前冻结 9 点小 sigma grid
+  `[0.35, 0.40, 0.425, 0.45, 0.475, 0.50, 0.55, 0.60, 0.65]`；复用 R0
+  的 512 个帧身份，仅生成 `1 clean + 9 blur` 的 `5120/5120` 行
+  response-blind ledger，未重跑或重调 low-texture。
+- `sigma=0.475 px` 是满足 overall 与全部 8 个 block×motion subgroup 门的最小
+  候选：Laplacian ratio overall `0.525336`、subgroup
+  `0.513451–0.533071`，local RMS overall `0.931832`、subgroup minimum
+  `0.919136`。更小的 `sigma=0.45` 因 Laplacian ratio 高于 `0.55` 上界失败。
+- 与 hash-bound R0 `alpha=0.15` 形成唯一全局 strength lock。独立 validator
+  不导入 R1 producer、quality implementation 或 RCLE algorithm，复算全部
+  5120 行、层级、8 subgroup、最小 sigma、R0 继承、hash/read allowlist/firewall，
+  `errors=[] / validated=true`。
+- 终态为 `QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED`。未运行或读取
+  RCLE，未运行 P3、480+16、sequence16、CoTracker、Android 或实时集成，未换 seed、
+  分 block、修改 R3/阈值/三-pair 或开启第二次修复。
+- 详细证据见 [P2 R1 result](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_CALIBRATION_BLUR_GRID_REPAIR_R1_RESULT_2026-07-29.md)。

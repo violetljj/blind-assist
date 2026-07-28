@@ -1,6 +1,6 @@
 # RCLE periodic self-motion counterfactual R2
 
-状态：`P1 R2_KEYSET_REPAIR_R0 frozen / GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`
+状态：`P2 R1 frozen / QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED`
 
 ## 研究问题与版本
 
@@ -15,8 +15,8 @@ angle/acos 数值判定为 13/14，并保留不可变失败回执。R2 版本化
 G01/G02/G03/G08/G11/G12/G14、固定 source-component G13 判定并增加 8 个
 GUARD 双构建 replay。R2 的 G01–G14 全部 PASS，但正式 receipt 因 R0 evidence
 键名全集误写而 `INVALID / HOLD_P1`，不得覆盖或重跑。这里仍没有 RCLE runner、
-quality calibration、formal sequence runner、analysis producer 或 activation
-lock。隔离的 `R2_KEYSET_REPAIR_R0` 只把历史键名固定为真实的
+formal sequence runner、analysis producer 或 activation lock。隔离的
+`R2_KEYSET_REPAIR_R0` 只把历史键名固定为真实的
 `producer_receipt.json`，并加入 generator directory 与正式 receipt 的独占创建
 保护；88 条 all-seed record 与 R2 逐字节一致。其只读预检和唯一正式验证均为
 14/14、`errors=[]`，P1 终态为
@@ -25,16 +25,19 @@ lock。隔离的 `R2_KEYSET_REPAIR_R0` 只把历史键名固定为真实的
 ## 当前报告与工作方式
 
 ```text
-scientific_status: GEOMETRY_PASS
+scientific_status: QUALITY_CALIBRATION_PASS
 protocol_status: VALID
-execution_authority: P2_NOT_AUTHORIZED
+execution_authority: P3_NOT_AUTHORIZED
 ```
 
-历史 R2 只记录为
+P2 R1 一次性 blur-grid repair 已完成 `5120/5120` 行 response-blind ledger。
+最小全局可行 blur 为 `sigma=0.475 px`；它与 hash-bound R0 low-texture
+`alpha=0.15` 形成全局 strength pair，终态为
+`QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED`。P3 未授权。历史 R2 只记录为
 `OBSERVED_GEOMETRY_GATES_PASS / CLAIM_NOT_SIGNABLE + INVALID_KEYSET + HOLD_P1`，
 不再把 keyset 错误写成几何失败。P1 已关闭：非阻断的命名、receipt 便利或未来漂移
-监控进入 backlog，不再创建 P1 版本。后续获准时直接围绕 P2 的
-response-blind quality calibration 做最小判别实验，不先扩建治理基础设施。
+监控进入 backlog，不再创建 P1 版本。P2 R0 保持不可变；R1 后不得自动二次修复、
+扩 grid、换 seed、降门或改成 per-block strength，且没有自动 P3 后继。
 
 ## 稳定 Interface
 
@@ -85,11 +88,34 @@ artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/p1_geometry
 implementation lock SHA-256 为
 `a7fa41c0406908baf05805904111ba43fdbd8dd93b8c4e496706f1990438adc9`。
 
+P2 R0 只读复核：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.egomotion_compensated_looming.periodic_self_motion_counterfactual_r2.validate_quality_calibration_independent_r0 `
+  --preflight
+```
+
+正式 independent receipt 已 exclusive-create，不得覆盖或创建第二份正式
+receipt。
+
+P2 blur-grid repair R1 只读复核：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.egomotion_compensated_looming.periodic_self_motion_counterfactual_r2.validate_quality_calibration_blur_grid_repair_independent_r1 `
+  --preflight
+```
+
+R1 lock、ledger 与正式 independent receipt 已冻结，不得覆盖或重跑 producer。
+
 权威结果：
 
 - [R1 不可变失败与 source-hash 竞态](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_RESULT_2026-07-28.md)
 - [R2 唯一冻结运行结果](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R2_RESULT_2026-07-29.md)
 - [P1 keyset-repair 通过结果](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_KEYSET_REPAIR_R0_RESULT_2026-07-29.md)
+- [P2 response-blind quality calibration R0](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_CALIBRATION_R0_RESULT_2026-07-29.md)
+- [P2 blur-grid repair R1](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_CALIBRATION_BLUR_GRID_REPAIR_R1_RESULT_2026-07-29.md)
 
 失败模式：
 
@@ -122,8 +148,9 @@ artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/
 ## 停止条件
 
 静态 bundle 或独立设计审查不通过时停在
-`EXECUTION_NOT_AUTHORIZED`。当前隔离 keyset-repair 已关闭 P1 geometry，终态为
-`GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`，但不自动授权 P2。任何
+`EXECUTION_NOT_AUTHORIZED`。当前隔离 keyset-repair 已关闭 P1 geometry；P2 R1
+已把 response-blind quality calibration 关闭为
+`QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED`，但没有授权 P3。任何
 geometry、response-blind calibration、R3 transport equivalence、analysis lock
 或 guarded-host preflight 失败，都不得靠换 seed、降门、减 arm 或继续切 ADVIO
 回救。
