@@ -67,10 +67,10 @@ debug APK 应生成在：
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-检查随包模型资产。Python 工具建议安装到 `E:\codex-tools`；当前机器在迁移期仍保留 `.venv-export312` 兼容入口：
+检查随包模型资产。Python 工具统一使用 `E:\codex-tools\bin\blindassist-python.cmd`；仓库内旧 `.venv-export312` 已不存在：
 
 ```powershell
-python scripts\inspect_tflite.py
+& E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py
 ```
 
 期望模型形状：

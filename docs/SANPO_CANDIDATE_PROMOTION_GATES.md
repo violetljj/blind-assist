@@ -21,8 +21,8 @@
 在导出前可省略 `--tflite`，先生成 Keras 离线质量审计；此时 INT8 与设备门必然保持 `not_evaluated`。只有离线质量全绿后才值得导出 benchmark-only INT8，并带 `--tflite` 重跑完整保真门。
 
 ```powershell
-& .\.venv-export312\Scripts\python.exe scripts\sanpo_candidate_quality_gate.py `
-  --dataset-root test-artifacts.local\datasets\<canonical> `
+& E:\codex-tools\bin\blindassist-python.cmd scripts\sanpo_candidate_quality_gate.py `
+  --dataset-root artifacts.local\evidence\datasets\<canonical> `
   --training-gate-report qa\training_gate_report.json `
   --weights test-artifacts.local\segmentation-candidate\<run>\mobilenetv3_lraspp.weights.h5 `
   --backend-equivalence-report test-artifacts.local\segmentation-candidate\<run>\backend_equivalence.json `

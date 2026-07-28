@@ -33,10 +33,6 @@ tmp/
 *.zip
 *.pptx
 *.npy
-yolo11n.pt
-yolo11n.onnx
-yolo11n_saved_model/
-calibration_image_sample_data_20x128x128x3_float32.npy*
 app/src/main/assets/*.tflite
 !app/src/main/assets/README.md
 !app/src/main/assets/yolo11n_fp16_320.tflite

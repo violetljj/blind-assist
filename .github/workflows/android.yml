@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
 
@@ -28,7 +28,7 @@ jobs:
         run: pwsh -ExecutionPolicy Bypass -File ./scripts/test_check_project_structure.ps1
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
           distribution: temurin
           java-version: "17"
@@ -38,7 +38,29 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run tests, lint, and assemble APKs
-        run: ./gradlew :core:assist:test :core:ustrf:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest :app:bundleDebug :app:mergeReleaseAssets :device-benchmark:assembleDebug
+        run: >-
+          ./gradlew
+          :core:assist:test
+          :core:ustrf:test
+          :core:vision:testDebugUnitTest
+          :core:device:testDebugUnitTest
+          :core:ui:testDebugUnitTest
+          :feature:assist:testDebugUnitTest
+          :app:testDebugUnitTest
+          :app:lintDebug
+          :core:vision:lintDebug
+          :core:device:lintDebug
+          :core:ui:lintDebug
+          :feature:assist:lintDebug
+          :app:assembleDebug
+          :app:assembleDebugAndroidTest
+          :app:assembleUstrfExperiment
+          :app:bundleDebug
+          :app:mergeReleaseAssets
+          :npu-candidate:assembleDebug
+          :device-benchmark:assembleDebug
+          :ustrf-shadow-benchmark:assembleDebug
+          :ustrf-shadow-benchmark:compileDebugAndroidTestKotlin
 
       - name: Reject legacy TensorFlow Lite runtime dependencies
         shell: pwsh
@@ -62,6 +84,14 @@ jobs:
           pwsh -ExecutionPolicy Bypass -File ./scripts/verify_apk_16kb.ps1 -ArtifactPath ./app/build/outputs/apk/debug/app-debug.apk -AndroidSdkRoot $env:ANDROID_SDK_ROOT
           $bundletool = Join-Path $env:RUNNER_TEMP 'bundletool-all-1.17.1.jar'
           Invoke-WebRequest -Uri 'https://github.com/google/bundletool/releases/download/1.17.1/bundletool-all-1.17.1.jar' -OutFile $bundletool
+          $expectedBundletoolSha256 = '45881EAD13388872D82C4255B195488B7FC33F2CAC5A9A977B0AFC5E92367592'
+          $actualBundletoolSha256 = (Get-FileHash -LiteralPath $bundletool -Algorithm SHA256).Hash
+          if (-not $actualBundletoolSha256.Equals(
+              $expectedBundletoolSha256,
+              [System.StringComparison]::OrdinalIgnoreCase
+            )) {
+            throw "bundletool SHA-256 mismatch. Expected $expectedBundletoolSha256, got $actualBundletoolSha256."
+          }
           pwsh -ExecutionPolicy Bypass -File ./scripts/verify_apk_16kb.ps1 -ArtifactPath ./app/build/outputs/bundle/debug/app-debug.aab -BundletoolPath $bundletool
 
       - name: Verify replay assets stay out of release
@@ -73,7 +103,7 @@ jobs:
           }
 
       - name: Set up Python for model checks
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
 
@@ -81,7 +111,26 @@ jobs:
         run: python scripts/run_research_contract_tests.py
 
       - name: Install TFLite inspection runtime
-        run: python -m pip install --upgrade pip ai-edge-litert
+        shell: pwsh
+        run: |
+          # Locked to the Python 3.12 Linux wheels used by this ubuntu-latest job.
+          $requirements = @'
+          ai-edge-litert==2.1.5 --hash=sha256:f1c6d8db4382890881baeb8ed13c0802ada022e0b104b0db8fccf31353899ee0
+          backports.strenum==1.2.8 --hash=sha256:fc297cb26971f7d5e15a478a06a78575197f81daea47975771b1aae996dcccf4
+          colorama==0.4.6 --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6
+          flatbuffers==25.12.19 --hash=sha256:7634f50c427838bb021c2d66a3d1168e9d199b0607e6329399f04846d42e20b4
+          numpy==2.1.3 --hash=sha256:2312b2aa89e1f43ecea6da6ea9a810d06aae08321609d8dc0d0eda6d946a541b
+          protobuf==5.29.6 --hash=sha256:e3387f44798ac1106af0233c04fb8abf543772ff241169946f698b3a9a3d3ab9
+          tqdm==4.67.3 --hash=sha256:ee1e4c0e59148062281c49d80b25b67771a127c85fc9676d3be5f243206826bf
+          typing-extensions==4.15.0 --hash=sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548
+          '@
+          $requirementsPath = Join-Path $env:RUNNER_TEMP 'tflite-inspection-requirements.txt'
+          [System.IO.File]::WriteAllText(
+            $requirementsPath,
+            $requirements + [Environment]::NewLine,
+            [System.Text.UTF8Encoding]::new($false)
+          )
+          python -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r $requirementsPath
 
       - name: Check TFLite model assets
         run: python scripts/inspect_tflite.py

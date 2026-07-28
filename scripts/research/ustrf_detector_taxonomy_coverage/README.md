@@ -10,6 +10,10 @@
 
 历史 taxonomy 输出保留在 `artifacts.local/evidence/ustrf-detector-taxonomy-coverage-v1/`；target attribution R1 输出写入 `artifacts.local/evidence/ustrf-detector-target-attribution-r1/`。逐帧账本绑定 canonical tensor/raw stream、冻结 truth、target attribution 与 association-only 结果。
 
+## 历史 REveL 诊断
+
+`analyze_revel_detector_failures.py` 与 `compare_revel_detector_sensitivity.py` 及其同目录测试只用于复核早期 REveL detector 失败分类和灵敏度。它们属于本已关闭研究 Module 的历史诊断，不是根目录稳定 Interface；保留它们不重开 detector 候选、RCLE、production shadow、H2、App 或生产授权。
+
 ## 安全边界
 
 本 Module 仅为 benchmark-only。R1 已补齐逐帧负窗 all-person/confirmed-absent truth，旧 first-fit 窗口不再冒充 FP truth。baseline target coverage 硬门通过后 detector 候选已停止；T0–T3 虽重开并完成，但 shadow gate 失败，所以 App、production shadow、训练与 H2 均未授权。

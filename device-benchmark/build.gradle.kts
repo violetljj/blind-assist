@@ -1,4 +1,5 @@
 import org.gradle.api.tasks.Sync
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.test)
@@ -140,7 +141,6 @@ android {
     namespace = "com.linnan.blindassist.benchmark"
     compileSdk = libs.versions.compileSdk.get().toInt()
     targetProjectPath = benchmarkTargetProject.get()
-    targetVariant = "debug"
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
@@ -151,10 +151,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
-    }
-
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     androidResources {
@@ -176,6 +172,12 @@ android {
             assets.srcDir(eventHeadBenchmarkAssetsDir)
             assets.srcDir(ustrfR12DetectorAssetsDir)
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
     }
 }
 
@@ -203,7 +205,7 @@ dependencies {
     implementation(libs.tflite)
     implementation(libs.tflite.gpu)
     implementation(libs.tflite.gpu.api)
-    implementation("com.qualcomm.qti:qnn-runtime:2.47.0")
-    implementation("com.qualcomm.qti:qnn-litert-delegate:2.47.0")
+    implementation(libs.qnn.runtime)
+    implementation(libs.qnn.litert.delegate)
     implementation("org.opencv:opencv:4.10.0")
 }

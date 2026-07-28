@@ -40,8 +40,8 @@ SANPO 官方论文给出的端侧分割基线是量化 MobileNetV3、512×512、
 离线 mask 分析：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\benchmark_sanpo_traversability.py `
-  --dataset test-artifacts.local\datasets\blindassist-sanpo-pilot-20260711
+& E:\codex-tools\bin\blindassist-python.cmd scripts\benchmark_sanpo_traversability.py `
+  --dataset artifacts.local\evidence\datasets\blindassist-sanpo-pilot-20260711
 ```
 
 真机风险 A/B（同一 YOLO，区别仅在是否加入 SANPO oracle 区域）：

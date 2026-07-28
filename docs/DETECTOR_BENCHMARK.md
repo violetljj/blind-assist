@@ -48,7 +48,7 @@ powershell -ExecutionPolicy Bypass -File scripts\run_detector_ab_device_benchmar
 
 候选导出入口：
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\export_depth_anything_v2_tflite.py
+& E:\codex-tools\bin\blindassist-python.cmd scripts\export_depth_anything_v2_tflite.py
 ```
 
 当前状态：官方 Small checkpoint 已在 BlindAssist EvalSet 前 20 张图完成 PyTorch smoke，输出非 NaN、非全零，bbox 区域可采样，证据在 `test-artifacts.local/depth-fusion/20260611-depth-anything-v2-small-pytorch-smoke.json`。但 `onnx2tf` 转 TFLite 仍阻塞在 ONNX `wa/model/Reshape` 节点，因此尚未生成 `depth_anything_v2_small_fp32.tflite`，也尚未进入 TFLite 合同检查和真机 DepthFusion A/B。
@@ -73,12 +73,12 @@ test-artifacts.local/depth-fusion-benchmark/20260612-002427
 
 模型合同检查：
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\inspect_depth_model.py
+& E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_depth_model.py
 ```
 
 离线 smoke 会读取 BlindAssist EvalSet 前 20 张图，确认输出深度图不是 NaN 或全零：
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\smoke_depth_model.py --model .downloads\depth-lab\exports\depth_anything_v2_small_fp32.tflite --dataset-root test-artifacts.local\datasets\blindassist-evalset-20260527-impl --image-limit 20
+& E:\codex-tools\bin\blindassist-python.cmd scripts\smoke_depth_model.py --model artifacts.local\downloads\depth-lab\exports\depth_anything_v2_small_fp32.tflite --dataset-root artifacts.local\evidence\datasets\blindassist-evalset-20260527-impl --image-limit 20
 ```
 
 真机同设备评测入口：
@@ -178,13 +178,13 @@ test-artifacts.local/detector-benchmark/<timestamp>/  # benchmark 结果
 默认候选为 `yolo26n.pt`、`yolo12n.pt`、`yolov10n.pt`，输入尺寸为 `320`，导出为 FP16 TFLite：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\detector_lab.py prepare --export
+& E:\codex-tools\bin\blindassist-python.cmd scripts\detector_lab.py prepare --export
 ```
 
 如需只评测指定候选，可重复传入 `--candidate`：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\detector_lab.py prepare --export --candidate yolo26n.pt
+& E:\codex-tools\bin\blindassist-python.cmd scripts\detector_lab.py prepare --export --candidate yolo26n.pt
 ```
 
 脚本会下载官方 COCO8 到 `.downloads/detector-lab/datasets/coco8`。COCO8 是 Ultralytics 提供的 8 图小型检测数据集，只用于确认下载、预处理、推理和结果写入链路可用；它不能代表 BlindAssist 真实助行场景。官方说明见 [COCO8 Dataset](https://docs.ultralytics.com/datasets/detect/coco8/)。
@@ -194,13 +194,13 @@ test-artifacts.local/detector-benchmark/<timestamp>/  # benchmark 结果
 默认模型仍走严格断言，期望输入 `[1,320,320,3] float32`，输出 `[1,84,2100] float32`：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py
+& E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py
 ```
 
 候选模型使用 flexible 检查，不强制默认模型契约，但会输出 shape、dtype 和输出布局：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\inspect_tflite.py --allow-any-shape .downloads\detector-lab\exports\yolo26n_fp16_320.tflite .downloads\detector-lab\exports\yolo12n_fp16_320.tflite .downloads\detector-lab\exports\yolov10n_fp16_320.tflite
+& E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py --allow-any-shape artifacts.local\downloads\detector-lab\exports\yolo26n_fp16_320.tflite artifacts.local\downloads\detector-lab\exports\yolo12n_fp16_320.tflite artifacts.local\downloads\detector-lab\exports\yolov10n_fp16_320.tflite
 ```
 
 ## 运行 Benchmark
@@ -208,7 +208,7 @@ test-artifacts.local/detector-benchmark/<timestamp>/  # benchmark 结果
 默认会评测当前 App 默认 TFLite 加 `.downloads/detector-lab/exports/` 下的候选 TFLite，并生成本地 JSON/Markdown 结果：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\benchmark_tflite_detectors.py --warmup 2 --runs 5
+& E:\codex-tools\bin\blindassist-python.cmd scripts\benchmark_tflite_detectors.py --warmup 2 --runs 5
 ```
 
 当前本机 smoke test 结果如下，证据目录为 `test-artifacts.local/detector-benchmark/20260527-010222`：
@@ -241,7 +241,7 @@ COCO8 覆盖面太小，后续建议自采或整理一组 BlindAssist 专用图�
 准备 COCO val2017 固定抽样：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\prepare_coco100.py --sample-count 100
+& E:\codex-tools\bin\blindassist-python.cmd scripts\prepare_coco100.py --sample-count 100
 ```
 
 脚本会下载官方 `annotations_trainval2017.zip`，按固定 seed `260527` 从 val2017 中抽样 100 张有实例标注的图片，写入：

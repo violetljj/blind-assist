@@ -70,12 +70,93 @@ $paths = @(Get-ChangedPaths | Where-Object { $_ } | Sort-Object -Unique)
 $docsArchiveChanged = $paths -contains 'docs/APK_ARCHIVE.md'
 $failures = New-Object System.Collections.Generic.List[string]
 
+$repoRoot = (& git rev-parse --show-toplevel 2>$null | Select-Object -First 1)
+if ([string]::IsNullOrWhiteSpace($repoRoot)) {
+    throw 'Repository hygiene check must run inside a Git repository.'
+}
+$repoRoot = (Resolve-Path -LiteralPath $repoRoot.Trim()).Path
+$forbiddenRootExtensions = @('.pt', '.onnx', '.npy', '.tflite', '.apk', '.aab', '.zip', '.pptx')
+foreach ($rootItem in Get-ChildItem -LiteralPath $repoRoot -Force) {
+    if (
+        (-not $rootItem.PSIsContainer -and $forbiddenRootExtensions -contains $rootItem.Extension.ToLowerInvariant()) -or
+        ($rootItem.PSIsContainer -and $rootItem.Name -like '*_saved_model')
+    ) {
+        $failures.Add(
+            "Generated/model artifact must not live at the repository root, even when ignored: $($rootItem.Name). " +
+            'Move local payload to artifacts.local/ and keep committed production assets under their owned module.'
+        )
+    }
+}
+
+$dependencyPolicyPaths = @(
+    git ls-files -- '*.gradle' '*.gradle.kts' 'gradle/libs.versions.toml'
+    git ls-files --others --exclude-standard -- '*.gradle' '*.gradle.kts' 'gradle/libs.versions.toml'
+) | ForEach-Object { Normalize-PathForGit $_ } | Where-Object { $_ } | Sort-Object -Unique
+foreach ($dependencyPolicyPath in $dependencyPolicyPaths) {
+    if (Test-DeletedOnly $dependencyPolicyPath) {
+        continue
+    }
+    $absoluteDependencyPolicyPath = Join-Path $repoRoot $dependencyPolicyPath
+    if (-not (Test-Path -LiteralPath $absoluteDependencyPolicyPath -PathType Leaf)) {
+        continue
+    }
+    $lineNumber = 0
+    foreach ($line in Get-Content -LiteralPath $absoluteDependencyPolicyPath -Encoding UTF8) {
+        $lineNumber += 1
+        $nonReproducibleSelector = $null
+        if ($line -match '(?i)\b(latest\.(?:release|integration)|[A-Za-z0-9_.-]+-SNAPSHOT)\b') {
+            $nonReproducibleSelector = $Matches[1]
+        }
+        elseif ($line -match '(?i)\b(?:isChanging|changing)\s*=\s*true\b') {
+            $nonReproducibleSelector = $Matches[0]
+        }
+        elseif ($line -match '[''"][^''"]*:[^''"]*:[^''"]*(\+|\[[^''"]*,[^''"]*[\]\)]|\([^''"]*,[^''"]*[\]\)])[^''"]*[''"]') {
+            $nonReproducibleSelector = $Matches[1]
+        }
+        elseif (
+            $dependencyPolicyPath -eq 'gradle/libs.versions.toml' -and
+            $line -match '^\s*[A-Za-z0-9_.-]+\s*=\s*[''"]([^''"]*(?:\+|latest\.(?:release|integration)|-SNAPSHOT)|[\[\(][^''"]*,[^''"]*[\]\)])[''"]'
+        ) {
+            $nonReproducibleSelector = $Matches[1]
+        }
+        if ($nonReproducibleSelector) {
+            $failures.Add(
+                "Non-reproducible dependency selector is forbidden: " +
+                "$dependencyPolicyPath`:$lineNumber ($nonReproducibleSelector)"
+            )
+        }
+    }
+}
+
 foreach ($path in $paths) {
     # Removing a forbidden local/generated artifact is repository cleanup, not a new violation.
     # This must run before every path-family rule so a PR can delete historical binaries,
     # caches, APKs, or credentials without the cleanup itself making CI permanently red.
     if (Test-DeletedOnly $path) {
         continue
+    }
+
+    if ($path -match '^\.github/workflows/.*\.(yml|yaml)$') {
+        $workflowPath = Join-Path $repoRoot $path
+        if (Test-Path -LiteralPath $workflowPath -PathType Leaf) {
+            $lineNumber = 0
+            foreach ($line in Get-Content -LiteralPath $workflowPath -Encoding UTF8) {
+                $lineNumber += 1
+                if ($line -notmatch '^\s*(?:-\s*)?uses:\s*([^\s#]+)') {
+                    continue
+                }
+                $action = $Matches[1]
+                if ($action.StartsWith('./') -or $action.StartsWith('docker://')) {
+                    continue
+                }
+                if ($action -notmatch '^.+@[0-9a-fA-F]{40}$') {
+                    $failures.Add(
+                        "External GitHub Action must be pinned to a full commit SHA: " +
+                        "$path`:$lineNumber ($action)"
+                    )
+                }
+            }
+        }
     }
 
     if ($path -match '^(\.gradle/|\.gradle-local/|\.android-sdk/|\.android-home/|\.jdk/|\.python311/|\.venv-|\.cache/|\.kotlin/|\.kotlin-home/|work/|app/build/|.*/build/)' -or

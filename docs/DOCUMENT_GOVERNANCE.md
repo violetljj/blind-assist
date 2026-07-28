@@ -15,6 +15,7 @@
 | 当前产品能力、版本、最短构建入口 | `README.md` | `idea.md`、日期化实验报告 |
 | 已发布或用户可见变化 | `CHANGELOG.md` | 研究实验日志 |
 | 当前 SANPO 状态、硬门、禁止事项、下一步 | `docs/SANPO_CURRENT_STATUS.md` | `idea.md`、`CHANGELOG.md` |
+| 当前 RCLE 阶段、终态、权限、禁止事项与下一步 | `docs/research/rcle/README.md` | `AGENTS.md`、根 `README.md`、`docs/SANPO_CURRENT_STATUS.md`、`scripts/README.md` |
 | 研究阶段、冻结强度、失败学习、规则质疑和证据复用 | `docs/RESEARCH_GOVERNANCE.md` | 单轮 prereg、日期化结果、旧 handoff |
 | 端到端自主工作流与禁止人工前置条件 | `docs/AI_REVIEW_GOVERNANCE.md` | 日期化 snapshot、旧 handoff、历史实验合同 |
 | 当前操作协议与安全门 | `docs/README.md` 标为 `current` 的对应文件 | 日期化 snapshot |

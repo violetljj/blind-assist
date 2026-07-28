@@ -24,7 +24,7 @@
 默认使用 COCO 2017 validation 图片和实例标注作为第一版公开真实数据源：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\build_blindassist_evalset.py
+& E:\codex-tools\bin\blindassist-python.cmd scripts\build_blindassist_evalset.py
 ```
 
 脚本会优先复用本机已有缓存：
@@ -76,9 +76,9 @@ test-artifacts.local/datasets/blindassist-evalset-*/
 生成后运行：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\validate_yolo.py --dataset <dataset_dir>
-.\.venv-export312\Scripts\python.exe C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\coco_from_manifest.py --dataset <dataset_dir> --splits test
-.\.venv-export312\Scripts\python.exe C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\make_preview.py --dataset <dataset_dir> --limit 150
+& E:\codex-tools\bin\blindassist-python.cmd C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\validate_yolo.py --dataset <dataset_dir>
+& E:\codex-tools\bin\blindassist-python.cmd C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\coco_from_manifest.py --dataset <dataset_dir> --splits test
+& E:\codex-tools\bin\blindassist-python.cmd C:\Users\26442\.codex\skills\synthetic-vision-dataset\scripts\make_preview.py --dataset <dataset_dir> --limit 150
 ```
 
 当前 Codex/GPT 会话自动读取：

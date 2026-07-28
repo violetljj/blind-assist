@@ -2,7 +2,7 @@
 
 本文档用于课程展示、阶段检查和毕业设计答辩时快速演示 BlindAssist。它描述的是当前仓库真实功能，不把原型能力描述为安全认证产品。
 
-当前推荐演示版本：`v9.9.0` / `versionCode=35`。如果现场使用的是历史 APK，应先说明对应版本和功能差异，避免把旧演示状态误说成当前工程状态。当前本地构建、Compose 真机测试和 90 秒 CameraX 回归均已通过。
+当前仓库版本：`v10.9.0` / `versionCode=37`。演示前必须用下方命令核对实际安装包；如果现场使用历史 APK，应说明对应版本和功能差异。构建或测试是否通过以本次演示前的新鲜输出为准，不沿用旧报告中的通过结论。
 
 ## 1. 演示目标
 
@@ -11,6 +11,8 @@
 - 强调隐私与安全边界：摄像头画面本地处理，不上传、不联网、不保存视频；提醒只作为辅助参考。
 
 ## 2. 演示前准备
+
+以下命令均从仓库根 `E:\linnan\linnan` 执行。
 
 1. 确认 Android 手机已打开 USB 调试或 ADB over Wi-Fi。
 2. 确认当前 APK 已安装：
@@ -29,8 +31,8 @@
 预期当前演示版本为：
 
 ```text
-versionCode=35
-versionName=9.9.0
+versionCode=37
+versionName=10.9.0
 ```
 
 ## 3. 推荐演示顺序
@@ -60,11 +62,11 @@ versionName=9.9.0
 
 如果现场没有连接手机或 ADB 不稳定：
 
-- 使用 `releases/apk/` 展示不同版本 APK 的归档列表。
-- 打开 `CHANGELOG.md` 说明版本演进。
-- 打开 `PROJECT_PROGRESS_REVIEW.md` 说明项目阶段进度。
-- 打开 `README.md` 说明当前功能、模型资产、构建方式和风险提醒策略。
-- 打开 `docs/DEVICE_REGRESSION.md` 说明当前真机回归脚本和本地证据目录规则。
+- 使用 [APK_ARCHIVE.md](APK_ARCHIVE.md) 的收据清单和外部归档说明历史 APK；`releases/apk/` 不保存原始 APK。
+- 打开 [CHANGELOG.md](../CHANGELOG.md) 说明版本演进。
+- 打开 [历史阶段进度说明](history/project-materials/PROJECT_PROGRESS_REVIEW.md) 讲述早期阶段，并明确它不是当前状态。
+- 打开 [README.md](../README.md) 说明当前功能、模型资产、构建方式和风险提醒策略。
+- 打开 [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md) 说明当前真机回归脚本和本地证据目录规则。
 - 可展示 Compose 仪器测试和 Gradle 构建记录，证明 UI 路径和核心逻辑经过验证。
 - debug APK 可用离线回放展示背景图、真实检测框、风险解释和 session 摘要；应说明素材回放不等同于实际场景验证。
 
@@ -83,9 +85,9 @@ versionName=9.9.0
 
 ## 6. 验收材料清单
 
-- `README.md`：当前状态、使用方式、模型和构建说明。
-- `CHANGELOG.md`：真实版本路线和 APK 归档路径。
-- `PROJECT_PROGRESS_REVIEW.md`：阶段进度回顾材料。
-- `DEVELOPMENT_LOG.md`：逐次开发、验证和版本判断记录。
-- `docs/DEVICE_REGRESSION.md`：真机安装、冷启动、截图、UI dump 和性能采样脚本说明。
-- `releases/apk/`：按版本留存的 debug APK。
+- [README.md](../README.md)：当前状态、使用方式、模型和构建说明。
+- [CHANGELOG.md](../CHANGELOG.md)：真实版本路线和 APK 归档路径。
+- [历史阶段进度说明](history/project-materials/PROJECT_PROGRESS_REVIEW.md)：早期阶段回顾，不作为当前状态。
+- [DEVELOPMENT_LOG.md](../DEVELOPMENT_LOG.md)：近期开发、验证和版本判断记录。
+- [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md)：真机安装、冷启动、截图、UI dump 和性能采样脚本说明。
+- [APK_ARCHIVE.md](APK_ARCHIVE.md)：Git 收据与外部 APK 归档位置。

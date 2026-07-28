@@ -1,6 +1,6 @@
 [versions]
 agp = "8.7.3"
-kotlin = "2.0.21"
+kotlin = "2.1.21"
 hilt = "2.55"
 composeBom = "2024.10.00"
 compileSdk = "35"
@@ -14,6 +14,7 @@ coreSplashscreen = "1.0.1"
 lifecycle = "2.8.7"
 navigation = "2.8.5"
 litert = "1.4.2"
+qnn = "2.47.0"
 javaxInject = "1"
 junit4 = "4.13.2"
 androidxTestRunner = "1.6.2"
@@ -56,6 +57,8 @@ junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 tflite = { group = "com.google.ai.edge.litert", name = "litert", version.ref = "litert" }
 tflite-gpu = { group = "com.google.ai.edge.litert", name = "litert-gpu", version.ref = "litert" }
 tflite-gpu-api = { group = "com.google.ai.edge.litert", name = "litert-gpu-api", version.ref = "litert" }
+qnn-runtime = { group = "com.qualcomm.qti", name = "qnn-runtime", version.ref = "qnn" }
+qnn-litert-delegate = { group = "com.qualcomm.qti", name = "qnn-litert-delegate", version.ref = "qnn" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

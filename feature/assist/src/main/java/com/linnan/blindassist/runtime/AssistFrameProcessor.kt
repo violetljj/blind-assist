@@ -17,10 +17,9 @@ internal class AssistFrameProcessor(
     private val runOnUiThread: (() -> Unit) -> Unit,
     private val onCameraFailure: (String) -> Unit,
     private val decisionClockNs: () -> Long = System::nanoTime,
-    private val ustrfShadowAdapter: AssistUstrfShadowAdapter = AssistUstrfShadowAdapter(),
     private val mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE,
-    private val ustrfExperimentalAdapter: AssistUstrfExperimentalAdapter =
-        AssistUstrfExperimentalAdapter(coordinator)
+    private val ustrfAdapters: UstrfRuntimeAdapters =
+        UstrfRuntimeAdapters.forMode(mode, coordinator)
 ) {
     private val isProcessing = AtomicBoolean(false)
 
@@ -87,16 +86,17 @@ internal class AssistFrameProcessor(
                         runtimeConfig.assistScenario,
                         nowMs = eventTimeMs,
                         decisionAtNs = decisionAtNs
-                    ).also {
-                        ustrfShadowAdapter.observe(detectorFrameWithPipelineStats, decisionAtNs)
-                    }
-                    AssistRuntimeMode.USTRF_EXPERIMENT -> ustrfExperimentalAdapter.process(
-                        frame = detectorFrameWithPipelineStats,
-                        profile = runtimeConfig.alertProfile,
-                        scenario = runtimeConfig.assistScenario,
-                        nowMs = eventTimeMs,
-                        decisionAtNs = decisionAtNs
                     )
+                    AssistRuntimeMode.USTRF_EXPERIMENT ->
+                        requireNotNull(ustrfAdapters.experimental) {
+                            "USTRF experiment mode requires its isolated adapter"
+                        }.process(
+                            frame = detectorFrameWithPipelineStats,
+                            profile = runtimeConfig.alertProfile,
+                            scenario = runtimeConfig.assistScenario,
+                            nowMs = eventTimeMs,
+                            decisionAtNs = decisionAtNs
+                        )
                 }
                 CommittedFrame(detectorFrameWithPipelineStats, frameResult)
             }
@@ -129,7 +129,6 @@ internal class AssistFrameProcessor(
 
     fun resetSessionStats() {
         stats.reset()
-        ustrfShadowAdapter.reset()
     }
 
     private data class CommittedFrame(
@@ -147,6 +146,24 @@ internal class AssistFrameProcessor(
             } catch (_: RuntimeException) {
                 // Android Log is not available in local JVM tests.
             }
+        }
+    }
+}
+
+internal data class UstrfRuntimeAdapters(
+    val experimental: AssistUstrfExperimentalAdapter?
+) {
+    companion object {
+        fun forMode(
+            mode: AssistRuntimeMode,
+            coordinator: AssistSessionCoordinator
+        ): UstrfRuntimeAdapters = when (mode) {
+            AssistRuntimeMode.BASELINE -> UstrfRuntimeAdapters(
+                experimental = null
+            )
+            AssistRuntimeMode.USTRF_EXPERIMENT -> UstrfRuntimeAdapters(
+                experimental = AssistUstrfExperimentalAdapter(coordinator)
+            )
         }
     }
 }

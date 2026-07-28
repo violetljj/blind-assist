@@ -34,13 +34,13 @@
 ## 运行
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\build_sanpo_sequence_evalset.py
+& E:\codex-tools\bin\blindassist-python.cmd scripts\build_sanpo_sequence_evalset.py
 ```
 
 默认下载 30 张 RGB 帧及对应分割掩码，约覆盖 3 秒连续场景。可显式调整：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\build_sanpo_sequence_evalset.py `
+& E:\codex-tools\bin\blindassist-python.cmd scripts\build_sanpo_sequence_evalset.py `
   --session-id=-5OCPnbrwJdu3jH70ieU7pUiFsOJQoeG `
   --camera camera_chest `
   --lens left `
@@ -95,7 +95,7 @@ SANPO 掩码的红通道保存类别 ID，后两通道保存实例 ID。脚本�
 GPT/Codex 共识是唯一工程复核入口。全部字段通过两个隔离模型 pass 后，使用 `review_status=accepted_ai_review`、`reviewer_type=ai_model`、非空 reviewer ID、置信度不低于 `0.65` 且 `independent_review_count>=2`，然后生成 canonical `manifest.jsonl`：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\finalize_sanpo_sequence_evalset.py `
+& E:\codex-tools\bin\blindassist-python.cmd scripts\finalize_sanpo_sequence_evalset.py `
   --dataset-root <dataset-root>
 ```
 
@@ -104,11 +104,11 @@ finalize 会重新校验草稿/复核表哈希、图片和掩码 SHA256、路径
 使用独立决策文件写入模型结论：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\apply_sanpo_review_decisions.py `
+& E:\codex-tools\bin\blindassist-python.cmd scripts\apply_sanpo_review_decisions.py `
   --dataset-root <dataset-root> `
   --decisions <review-decisions.json>
 
-.\.venv-export312\Scripts\python.exe scripts\finalize_sanpo_sequence_evalset.py `
+& E:\codex-tools\bin\blindassist-python.cmd scripts\finalize_sanpo_sequence_evalset.py `
   --dataset-root <dataset-root>
 ```
 

@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.BatteryAlert
 import androidx.compose.material.icons.rounded.Bluetooth
 import androidx.compose.material.icons.rounded.LinkOff
@@ -78,7 +78,7 @@ fun GlassesSimulatorScreen(
                     }
                 }
             ) {
-                Icon(Icons.Rounded.ArrowBack, contentDescription = null, tint = BaText)
+                Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null, tint = BaText)
             }
             Text(
                 text = if (english) "Simulated glasses center" else "眼镜设备模拟中心",

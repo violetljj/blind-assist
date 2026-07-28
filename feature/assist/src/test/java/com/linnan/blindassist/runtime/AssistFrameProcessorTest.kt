@@ -22,6 +22,8 @@ import com.linnan.blindassist.vision.FrameStamp
 import com.linnan.blindassist.vision.ObjectDetector
 import com.linnan.blindassist.vision.VisionFrame
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.util.concurrent.CountDownLatch
@@ -226,6 +228,17 @@ class AssistFrameProcessorTest {
         assertEquals(1, frame.closeCalls)
         assertEquals(1, failures.size)
         assertTrue(failures.single().contains("source frame"))
+    }
+
+    @Test
+    fun baselineConstructsNoUstrfAdaptersWhileExperimentConstructsOnlyItsAdapter() {
+        val coordinator = AssistSessionCoordinator(feedbackGateway = FakeFeedbackGateway())
+
+        val baseline = UstrfRuntimeAdapters.forMode(AssistRuntimeMode.BASELINE, coordinator)
+        val experiment = UstrfRuntimeAdapters.forMode(AssistRuntimeMode.USTRF_EXPERIMENT, coordinator)
+
+        assertNull(baseline.experimental)
+        assertNotNull(experiment.experimental)
     }
 
     @Test

@@ -68,6 +68,7 @@ function New-TestRepository([string]$Name) {
         research_root = 'scripts/research'
         research_readme_required_markers = @('状态：', '## 稳定 Interface', '## 输出', '## 安全边界', '## 停止条件', 'artifacts.local/')
         internal_reference_source_allowlist = @()
+        immutable_internal_reference_exceptions = @()
     }
     Write-TestFile $repository 'policy/project_structure.json' ($policy | ConvertTo-Json -Depth 5)
     $authorityPolicy = [ordered]@{
@@ -151,6 +152,71 @@ try {
         param($repo)
         Write-TestFile $repo 'docs/caller.md' 'python scripts/research/demo/tool.py'
     }
+    Assert-Scenario 'immutable-private-reference' $true {
+        param($repo)
+        $relativePath = 'docs/immutable-caller.md'
+        Write-TestFile $repo $relativePath 'python scripts/research/demo/tool.py'
+        $policyPath = Join-Path $repo 'policy/project_structure.json'
+        $policy = Get-Content -LiteralPath $policyPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $policy.immutable_internal_reference_exceptions = @(
+            [ordered]@{
+                path = $relativePath
+                sha256 = (Get-FileHash -LiteralPath (Join-Path $repo $relativePath) -Algorithm SHA256).Hash
+                reason = 'Immutable fixture retains its historical implementation binding.'
+            }
+        )
+        Write-TestFile $repo 'policy/project_structure.json' ($policy | ConvertTo-Json -Depth 6)
+    }
+    Assert-Scenario 'immutable-reference-hash-drift' $false {
+        param($repo)
+        $relativePath = 'docs/immutable-caller.md'
+        Write-TestFile $repo $relativePath 'python scripts/research/demo/tool.py'
+        $policyPath = Join-Path $repo 'policy/project_structure.json'
+        $policy = Get-Content -LiteralPath $policyPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $policy.immutable_internal_reference_exceptions = @(
+            [ordered]@{
+                path = $relativePath
+                sha256 = (Get-FileHash -LiteralPath (Join-Path $repo $relativePath) -Algorithm SHA256).Hash
+                reason = 'Immutable fixture retains its historical implementation binding.'
+            }
+        )
+        Write-TestFile $repo 'policy/project_structure.json' ($policy | ConvertTo-Json -Depth 6)
+        Write-TestFile $repo $relativePath "python scripts/research/demo/tool.py`n# drift"
+    }
+    Assert-Scenario 'immutable-reference-missing-path' $false {
+        param($repo)
+        $policyPath = Join-Path $repo 'policy/project_structure.json'
+        $policy = Get-Content -LiteralPath $policyPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $policy.immutable_internal_reference_exceptions = @(
+            [ordered]@{
+                path = 'docs/missing-immutable-caller.md'
+                sha256 = '0000000000000000000000000000000000000000000000000000000000000000'
+                reason = 'Missing fixture must fail closed.'
+            }
+        )
+        Write-TestFile $repo 'policy/project_structure.json' ($policy | ConvertTo-Json -Depth 6)
+    }
+    Assert-Scenario 'immutable-reference-duplicate-path' $false {
+        param($repo)
+        $relativePath = 'docs/immutable-caller.md'
+        Write-TestFile $repo $relativePath 'python scripts/research/demo/tool.py'
+        $sha256 = (Get-FileHash -LiteralPath (Join-Path $repo $relativePath) -Algorithm SHA256).Hash
+        $policyPath = Join-Path $repo 'policy/project_structure.json'
+        $policy = Get-Content -LiteralPath $policyPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $policy.immutable_internal_reference_exceptions = @(
+            [ordered]@{
+                path = $relativePath
+                sha256 = $sha256
+                reason = 'First immutable fixture declaration.'
+            },
+            [ordered]@{
+                path = $relativePath
+                sha256 = $sha256
+                reason = 'Duplicate immutable fixture declaration.'
+            }
+        )
+        Write-TestFile $repo 'policy/project_structure.json' ($policy | ConvertTo-Json -Depth 6)
+    }
     Assert-Scenario 'cross-module-private-import' $false {
         param($repo)
         Write-TestFile $repo 'scripts/research/other/README.md' (Research-Readme 'other')
@@ -212,6 +278,7 @@ try {
         research_root = 'scripts/research'
         research_readme_required_markers = @('状态：', '## 稳定 Interface', '## 输出', '## 安全边界', '## 停止条件', 'artifacts.local/')
         internal_reference_source_allowlist = @()
+        immutable_internal_reference_exceptions = @()
     }
     Write-TestFile $bootstrapRepository 'policy/project_structure.json' ($bootstrapPolicy | ConvertTo-Json -Depth 5)
     Write-TestFile $bootstrapRepository 'scripts/preexisting_tool.py' 'print("pre-gate")'

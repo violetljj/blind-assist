@@ -8,7 +8,7 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Shield
 import androidx.compose.material.icons.rounded.Vibration
-import androidx.compose.material.icons.rounded.VolumeUp
+import androidx.compose.material.icons.automirrored.rounded.VolumeUp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -80,7 +80,7 @@ fun SettingsScreen(
 
         SettingsSectionHeader(if (language == AppLanguage.EN) "Reminder feedback" else "提醒方式")
         SettingSwitchRow(
-            icon = Icons.Rounded.VolumeUp,
+            icon = Icons.AutoMirrored.Rounded.VolumeUp,
             title = if (language == AppLanguage.EN) "Speech reminders" else "语音提醒",
             body = if (language == AppLanguage.EN) "Speak short risk prompts" else "播报短句式风险提示",
             checked = controls.speechEnabled,

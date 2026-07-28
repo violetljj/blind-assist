@@ -105,12 +105,12 @@ P3 不允许在当前每场景 `2 train + 1 dev` 的 12 个 official-train sessi
 ## 快速验证
 
 ```powershell
-.\.venv-export312\Scripts\python.exe -m py_compile `
+& E:\codex-tools\bin\blindassist-python.cmd -m py_compile `
   scripts\sanpo_segmentation_model.py `
   scripts\train_sanpo_segmentation_keras_torch.py `
   scripts\test_train_sanpo_segmentation_protocol.py
 
-.\.venv-export312\Scripts\python.exe -m unittest `
+& E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts.test_train_sanpo_segmentation_protocol `
   scripts.test_train_export_sanpo_segmentation
 ```

@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | [NEW_COMPUTER_HANDOFF.md](NEW_COMPUTER_HANDOFF.md) | current | 新电脑与开发环境交接 |
 | [RELEASE_AND_VERIFICATION.md](RELEASE_AND_VERIFICATION.md) | current | 发布和验证总流程 |
+| [DEMO_GUIDE.md](DEMO_GUIDE.md) | current | 课程、阶段检查与答辩演示流程；演示前重新核验版本与设备状态 |
 | [APK_ARCHIVE.md](APK_ARCHIVE.md) | current | APK 归档与 Git 里程碑策略 |
 | [LOCAL_ARTIFACTS.md](LOCAL_ARTIFACTS.md) | current | `artifacts.local/` 本地产物契约 |
 | [CODEX_TASK_HANDOFF_TEMPLATE.md](CODEX_TASK_HANDOFF_TEMPLATE.md) | current | 多任务长任务的断点、边界与换窗口续作模板 |
@@ -28,6 +29,7 @@
 | [BLINDASSIST_EVALSET.md](BLINDASSIST_EVALSET.md) | current | 助行图像评测集 |
 | [DETECTOR_BENCHMARK.md](DETECTOR_BENCHMARK.md) | current | 检测器 benchmark 契约 |
 | [NPU_DEFAULT_CANDIDATE.md](NPU_DEFAULT_CANDIDATE.md) | current | CPU 生产默认、QNN HTP 下一默认候选及 fail-closed 晋升门 |
+| [PROJECT_AUDIT_2026-07-28.md](PROJECT_AUDIT_2026-07-28.md) | snapshot | 全项目架构、研究治理、文档、脚本、构建与本地产物审查及优化 |
 | [PROJECT_AUDIT_2026-07-10.md](PROJECT_AUDIT_2026-07-10.md) | snapshot | 2026-07-10 项目综合审计 |
 
 ## SANPO 当前协议与门禁
@@ -69,12 +71,15 @@
 
 ## 研究档案
 
-`research/frontier-upgrade-2026-07/` 按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层。该目录用于研究追溯；生产行为仍以当前协议、代码和门禁为准。
+- [Frontier Upgrade 2026-07 研究档案](research/frontier-upgrade-2026-07/README.md)：按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层，只用于研究追溯。
+- [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
-- [RCLE 研究主线](research/rcle/README.md)：`current`；CID-SIMS `floor3_1` 同序列 holdout 为 `7 positive / 0 below-reference`，不同 official run 的 `floor3_2` development holdout 仍为 `17 positive / 0 below-reference / 1 ambiguous`，两者均在 RGB 前 `NOT_EVALUABLE`。`floor3_2` formal validator 的数值表示错误永久保留 `INVALID`，bounded post-hoc evidence audit 为 `errors=[] / VALID`；无自动 `floor3_3` 救场、confirmation、performance、Replay、Android 或产品权限。
+- [RCLE 研究主线](research/rcle/README.md)：`current`；RCLE 的动态阶段、终态、权限与下一步只在该入口维护。日期化证据不自动产生 Android、产品、安全或生产权限。
 - [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。
 - [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：历史 route-conditioned 研究和 RCLE 前序 Looming 证据；不再是研究主线，不代表生产授权。
 - 开发日志月度历史：[2026-05](history/development-log/2026-05.md) · [2026-06](history/development-log/2026-06.md) · [2026-07](history/development-log/2026-07.md)。近期记录继续以根 `DEVELOPMENT_LOG.md` 为准。
+- [早期项目计划、阶段与真机材料](history/project-materials/README.md)：archive；保留旧版本叙事，不证明当前状态。
+- [想法池历史](history/idea/README.md)：archive；当前待决方向只在根 `idea.md` 维护。
 
 ## 维护规则
 

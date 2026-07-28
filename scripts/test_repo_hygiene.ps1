@@ -16,13 +16,17 @@ function New-TestRepository([string]$Name) {
     return $repository
 }
 
-function Add-TestFile([string]$Repository, [string]$RelativePath) {
+function Add-TestFile(
+    [string]$Repository,
+    [string]$RelativePath,
+    [string]$Content = 'smoke-test'
+) {
     $path = Join-Path $Repository $RelativePath
     $parent = Split-Path -Parent $path
     if (-not (Test-Path -LiteralPath $parent)) {
         New-Item -ItemType Directory -Force -Path $parent | Out-Null
     }
-    [System.IO.File]::WriteAllText($path, 'smoke-test', [System.Text.UTF8Encoding]::new($false))
+    [System.IO.File]::WriteAllText($path, $Content, [System.Text.UTF8Encoding]::new($false))
 }
 
 function Invoke-HygieneCheck([string]$Repository, [string]$BaseRef = '') {
@@ -76,6 +80,86 @@ function Assert-AddedBinaryFromBaseFails {
         throw 'Added binary relative to a base commit was expected to fail.'
     }
     Write-Host 'PASS: added-binary-from-base'
+}
+
+function Assert-IgnoredRootModelFails {
+    $repository = New-TestRepository 'ignored-root-model'
+    [System.IO.File]::WriteAllText(
+        (Join-Path $repository '.gitignore'),
+        "*.pt`n",
+        [System.Text.UTF8Encoding]::new($false)
+    )
+    Commit-TestRepository $repository 'add ignored model rule' | Out-Null
+    Add-TestFile $repository 'yolo11n.pt'
+
+    $exitCode = Invoke-HygieneCheck $repository
+    if ($exitCode -eq 0) {
+        throw 'Ignored model payload at the repository root was expected to fail.'
+    }
+    Write-Host 'PASS: ignored-root-model'
+}
+
+function Assert-UnpinnedGitHubActionFails {
+    $repository = New-TestRepository 'unpinned-github-action'
+    Add-TestFile `
+        -Repository $repository `
+        -RelativePath '.github/workflows/ci.yml' `
+        -Content "jobs:`n  test:`n    steps:`n      - uses: actions/checkout@v4`n"
+
+    $exitCode = Invoke-HygieneCheck $repository
+    if ($exitCode -eq 0) {
+        throw 'GitHub Action pinned only to a movable tag was expected to fail.'
+    }
+    Write-Host 'PASS: unpinned-github-action'
+}
+
+function Assert-PinnedGitHubActionPasses {
+    $repository = New-TestRepository 'pinned-github-action'
+    Add-TestFile `
+        -Repository $repository `
+        -RelativePath '.github/workflows/ci.yml' `
+        -Content (
+            "jobs:`n  test:`n    steps:`n" +
+            "      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262`n" +
+            "      - uses: ./local-action`n"
+        )
+
+    $exitCode = Invoke-HygieneCheck $repository
+    if ($exitCode -ne 0) {
+        throw "Commit-pinned and local GitHub Actions were expected to pass but exited with code $exitCode."
+    }
+    Write-Host 'PASS: pinned-github-action'
+}
+
+function Assert-NonReproducibleDependencyFails(
+    [string]$Name,
+    [string]$BuildScript
+) {
+    $repository = New-TestRepository $Name
+    Add-TestFile `
+        -Repository $repository `
+        -RelativePath 'build.gradle.kts' `
+        -Content $BuildScript
+
+    $exitCode = Invoke-HygieneCheck $repository
+    if ($exitCode -eq 0) {
+        throw "Non-reproducible dependency scenario '$Name' was expected to fail."
+    }
+    Write-Host "PASS: $Name"
+}
+
+function Assert-ExactDependencyPasses {
+    $repository = New-TestRepository 'exact-dependency'
+    Add-TestFile `
+        -Repository $repository `
+        -RelativePath 'build.gradle.kts' `
+        -Content 'dependencies { implementation("com.example:demo:1.2.3") }'
+
+    $exitCode = Invoke-HygieneCheck $repository
+    if ($exitCode -ne 0) {
+        throw "Exact dependency coordinate was expected to pass but exited with code $exitCode."
+    }
+    Write-Host 'PASS: exact-dependency'
 }
 
 function Assert-HygieneResult(
@@ -134,6 +218,25 @@ try {
 
     Assert-DeletedBinaryCleanupPasses
     Assert-AddedBinaryFromBaseFails
+    Assert-IgnoredRootModelFails
+    Assert-UnpinnedGitHubActionFails
+    Assert-PinnedGitHubActionPasses
+    Assert-NonReproducibleDependencyFails `
+        -Name 'dynamic-plus-dependency' `
+        -BuildScript 'dependencies { implementation("com.example:demo:1.+") }'
+    Assert-NonReproducibleDependencyFails `
+        -Name 'latest-release-dependency' `
+        -BuildScript 'dependencies { implementation("com.example:demo:latest.release") }'
+    Assert-NonReproducibleDependencyFails `
+        -Name 'snapshot-dependency' `
+        -BuildScript 'dependencies { implementation("com.example:demo:1.2.3-SNAPSHOT") }'
+    Assert-NonReproducibleDependencyFails `
+        -Name 'version-range-dependency' `
+        -BuildScript 'dependencies { implementation("com.example:demo:[1.0,2.0)") }'
+    Assert-NonReproducibleDependencyFails `
+        -Name 'changing-module-dependency' `
+        -BuildScript 'configurations.all { resolutionStrategy.cacheChangingModulesFor(0, "seconds") }; dependencies { implementation("com.example:demo:1.2.3") { isChanging = true } }'
+    Assert-ExactDependencyPasses
 
     Write-Host 'Repository hygiene smoke tests passed.'
 }

@@ -37,6 +37,25 @@
 /scripts/research/egomotion_compensated_looming/rcle_unseen_external_confirmation_r0/** text eol=lf whitespace=-blank-at-eof
 /scripts/research/egomotion_compensated_looming/tests_rcle_unseen_external_confirmation_r0/** text eol=lf whitespace=-blank-at-eof
 
+# RCLE source-discovery R3/R4 and the current segment-family draft bind exact contract/code bytes.
+/docs/research/rcle/RCLE_SOURCE_DISCOVERY_R3_* text eol=lf
+/docs/research/rcle/RCLE_SOURCE_DISCOVERY_R4_* text eol=lf
+/docs/research/rcle/RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R3_* text eol=lf
+/docs/research/rcle/RCLE_RGB_SEGMENT_CONFIRMATION_R1_* text eol=lf
+/docs/research/rcle/RCLE_RGB_ALGORITHM_CID_SIMS_FLOOR3_2_CROSS_SEQUENCE_HOLDOUT_R0_SOURCE_TRANSPORT_LOCK_2026-07-27.json text eol=lf
+/scripts/research/egomotion_compensated_looming/rgb_segment_confirmation_r1/** text eol=lf
+/scripts/research/egomotion_compensated_looming/tests_rgb_segment_confirmation_r1/** text eol=lf
+
+# Immutable historical-reference exceptions are SHA256-bound and must survive clean checkout byte-for-byte.
+/configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_0327.json text eol=lf
+/configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_transport_safety_amendment.json text eol=lf
+/configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen.json text eol=lf
+/configs/ustrf_route_target_evidence_closure_r1_integrity_audit.json text eol=lf
+/configs/ustrf_route_target_evidence_closure_r1_materialization_amendment.json text eol=lf
+/configs/ustrf_route_target_evidence_closure_r1_navwareset_source_prescreen.json text eol=lf
+/configs/ustrf_route_target_evidence_closure_r1_replacement_holdout.json text eol=lf
+/configs/ustrf_route_target_evidence_closure_r1_scoring_amendment.json text eol=lf
+
 # These terminal-bound R2 artifacts retain their frozen trailing blank line byte.
 /device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1ExploratoryProfileR2DeviceTest.kt text eol=lf
 /schemas/ustrf_route_target_l2_fresh_selection_prereg_r1.schema.json text eol=lf

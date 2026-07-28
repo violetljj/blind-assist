@@ -8,17 +8,40 @@ artifacts.local/
 
 该目录被 `.gitignore` 忽略，默认不提交 Git。
 
-## 当前结构
+## Canonical 结构
 
 ```text
 artifacts.local/
-  downloads/       # 下载缓存、候选模型和外部数据
-  evidence/        # 数据集、benchmark、真机回归和训练证据
-  models/          # ONNX/PT/SavedModel、校准数据和本地导出
+  downloads/       # 可重新获取且具备 URL/hash/receipt 的下载缓存
+  evidence/        # 不可从结论反推的证据、manifest、receipt、ledger 与结果
+  models/          # ONNX/PT/SavedModel、校准数据和本地候选导出
   presentations/   # 本地演示稿备份
   work/            # 可重建的工作目录
-  tmp/             # 短期临时文件
+  tmp/             # 短期文件；只有完成引用/authority 检查后才可按任务清理
 ```
+
+新调用方只能写入上述六个顶层类别，并在其下使用清楚的领域/协议/version 子目录。`tmp/` 不是“随时可清空”的同义词：当前任务可能暂存尚未登记的 lock、audit 或迁移指针；清理必须按精确子目录确认所有者和持久化去向。
+
+## 现存兼容/待迁移顶层目录
+
+2026-07-28 现场还存在以下非 canonical 顶层目录：
+
+```text
+cache/ caches/ calibration/ camera-source-prescreen-r1/
+counterfactual-capture-smoke/ counterfactual-capture-smoke-v1r2/
+crash-diagnosis/ datasets/ experiments/ gradle-home/ logs/
+r2a1/ r2a2/ r2a3/ r2a4/ synthetic/ tests/ tools/
+```
+
+这些目录是历史调用方或在途研究形成的兼容现场，不等于可删除项，也不得继续作为新脚本的默认输出：
+
+- 数据、研究结果和复现材料在确认 manifest、引用、hash、证据角色后，分别迁入 `evidence/<domain>/` 或 `work/<domain>/`。
+- 可重新获取的压缩包/源 payload 只有在 URL、SHA256、receipt 与清理记录齐全时才迁入或清理 `downloads/`。
+- `cache/` 与 `caches/` 先逐调用方合并；名称相似不能证明内容可重建。
+- `gradle-home/` 与 `tools/` 应最终迁往 `E:\codex-tools\projects\blindassist\state\` 或 `toolchain\`，但必须先审计本地及未跟踪调用。
+- `r2a1`–`r2a4`、当前 RCLE/SANPO、Bonn/Looming 和任何被 lock/receipt 引用的目录，在协议所有者完成分类前保持原位。
+
+禁止按文件扩展名做批量“保留 JSON、删除其余”清理：大型 JSON 可能是可重建 payload，小型二进制也可能是唯一证据。清理单位必须是带 authority 与复现信息的命名目录或 manifest 条目。
 
 ## 兼容入口
 
@@ -56,7 +79,7 @@ E:\codex-tools\projects\blindassist\state\
 
 ## 2026-07-26 可重建 payload 清理记录
 
-因 E 盘容量不足，对 `E:\linnan\linnan` 做了两轮限定清理：
+因 E 盘容量不足，对 `E:\linnan\linnan` 做了两轮限定清理。以下是当时的历史收据，不表示这些路径在未来任意时刻仍可按同样方式清理：
 
 - 第一轮清空 `artifacts.local/tmp`，删除两个导出虚拟环境、仓库内 Gradle 缓存、benchmark/实验构建产物、Python 安装包，以及 `ustrf-r12d` 和旧 `ustrf-sensor-replay-r2` 下载缓存；目标逻辑大小约 `23.38 GiB`。
 - 第二轮只在已结束或已收口的 A/B 级实验目录中删除可重新下载或重建的 archive、bag、视频、图像帧、点云、模型和 APK 等 payload，共 `160,571` 个文件、逻辑大小 `78.718 GiB`，删除失败数为 `0`。
@@ -71,3 +94,5 @@ E:\codex-tools\projects\blindassist\state\
 - 文档引用本地证据时使用 `artifacts.local/evidence/...`。
 - 正式 APK 仍按 [APK_ARCHIVE.md](APK_ARCHIVE.md) 归档，不放入本目录充当发布物。
 - 清理前确认不存在唯一验证证据；目录迁移应先核对文件数量和失败数。
+- 删除前再次检查活动进程、任务 handoff、tracked/local 引用、manifest/receipt 与目标绝对路径；只删除明确命名且可恢复的范围。
+- 清理可重新下载的大 payload 时，至少保留来源 URL、SHA256、manifest、receipt、ledger、执行脚本、结果摘要和 cleanup record。

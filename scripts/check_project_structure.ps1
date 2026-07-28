@@ -205,10 +205,56 @@ foreach ($moduleName in $moduleNames) {
 
 # Callers may use stable Adapters, but must not learn a campaign's internal file layout.
 $referenceSourceAllowlist = @($policy.internal_reference_source_allowlist | ForEach-Object { Normalize-RepoPath ([string]$_) })
+$immutableReferenceExceptionPaths = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+$declaredImmutableReferencePaths = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+foreach ($exception in @($policy.immutable_internal_reference_exceptions)) {
+    $rawPath = ([string]$exception.path).Replace('\', '/').Trim()
+    $sha256 = ([string]$exception.sha256).Trim().ToUpperInvariant()
+    $reason = ([string]$exception.reason).Trim()
+
+    if ([string]::IsNullOrWhiteSpace($rawPath)) {
+        $failures.Add('Immutable internal-reference exception has an empty path.')
+        continue
+    }
+    if ([IO.Path]::IsPathRooted($rawPath) -or $rawPath -match '(^|/)\.\.(/|$)') {
+        $failures.Add("Immutable internal-reference exception path must stay repository-relative: $rawPath")
+        continue
+    }
+
+    $path = Normalize-RepoPath $rawPath
+    if (-not $declaredImmutableReferencePaths.Add($path)) {
+        $failures.Add("Duplicate immutable internal-reference exception path: $path")
+        continue
+    }
+    if ([string]::IsNullOrWhiteSpace($reason)) {
+        $failures.Add("Immutable internal-reference exception lacks a reason: $path")
+        continue
+    }
+    if ($sha256 -notmatch '^[0-9A-F]{64}$') {
+        $failures.Add("Immutable internal-reference exception has invalid SHA256: $path")
+        continue
+    }
+    if ($repoFiles -notcontains $path) {
+        $failures.Add("Immutable internal-reference exception path is missing from the repository: $path")
+        continue
+    }
+
+    $absolute = Resolve-FromRepo $path
+    $actualSha256 = (Get-FileHash -LiteralPath $absolute -Algorithm SHA256).Hash.ToUpperInvariant()
+    if ($actualSha256 -ne $sha256) {
+        $failures.Add("Immutable internal-reference exception hash drift in ${path}: expected $sha256, actual $actualSha256")
+        continue
+    }
+    [void]$immutableReferenceExceptionPaths.Add($path)
+}
 $textExtensions = @('.json', '.kt', '.kts', '.md', '.ps1', '.py', '.txt', '.yaml', '.yml')
 $internalPathPattern = 'scripts[\\/]+research[\\/]+[A-Za-z0-9_.-]+[\\/]+[A-Za-z0-9_.-]+\.(?:py|ps1)'
 foreach ($path in $repoFiles) {
-    if ($path.StartsWith($researchPrefix, [StringComparison]::OrdinalIgnoreCase) -or $referenceSourceAllowlist -contains $path) {
+    if (
+        $path.StartsWith($researchPrefix, [StringComparison]::OrdinalIgnoreCase) -or
+        $referenceSourceAllowlist -contains $path -or
+        $immutableReferenceExceptionPaths.Contains($path)
+    ) {
         continue
     }
     if ($textExtensions -notcontains [IO.Path]::GetExtension($path).ToLowerInvariant()) {

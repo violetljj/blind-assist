@@ -1,6 +1,6 @@
 param(
-    [string]$DatasetRoot = "test-artifacts.local\datasets\blindassist-evalset-20260527-impl",
-    [string]$DepthModelPath = ".downloads\depth-lab\exports\depth_anything_v2_small_fp32.tflite",
+    [string]$DatasetRoot = "artifacts.local\evidence\datasets\blindassist-evalset-20260527-impl",
+    [string]$DepthModelPath = "artifacts.local\downloads\depth-lab\exports\depth_anything_v2_small_fp32.tflite",
     [string]$DepthModelAsset = "",
     [ValidateSet("DepthFusion", "DepthFusionSweep")]
     [string]$ComparisonMode = "DepthFusion",
@@ -23,7 +23,9 @@ param(
     [string]$RiskConfig = "current",
     [int]$DefaultRegressionSeconds = 90,
     [switch]$SkipDefaultRegression,
-    [string]$AdbPath
+    [string]$AdbPath,
+    [string]$PythonPath = "E:\codex-tools\bin\blindassist-python.cmd",
+    [string]$GradleUserHome = "E:\codex-tools\projects\blindassist\state\gradle"
 )
 
 $ErrorActionPreference = "Stop"
@@ -102,13 +104,14 @@ function Convert-ToBoolString([string]$Value) {
 
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-$artifactRoot = Join-Path (Join-Path $repoRoot "test-artifacts.local\depth-fusion-benchmark") $timestamp
+$artifactRoot = Join-Path (Join-Path $repoRoot "artifacts.local\evidence\depth-fusion-benchmark") $timestamp
 New-Item -ItemType Directory -Force -Path $artifactRoot | Out-Null
 
-$python = Resolve-RepoPath ".venv-export312\Scripts\python.exe"
+$python = Resolve-RepoPath $PythonPath
 $yolo11n = Resolve-RepoPath "app\src\main\assets\yolo11n_fp16_320.tflite"
 $depthModel = Resolve-RepoPath $DepthModelPath
 $blindAssistEvalSet = Resolve-RepoPath $DatasetRoot
+$resolvedGradleUserHome = Resolve-RepoPath $GradleUserHome
 $apk = Resolve-RepoPath "app\build\outputs\apk\debug\app-debug.apk"
 $aapt = Resolve-RepoPath ".android-sdk\build-tools\35.0.0\aapt.exe"
 $adb = Resolve-Adb $AdbPath
@@ -123,6 +126,9 @@ $depthLowerHalfOnlyValue = Convert-ToBoolString $DepthLowerHalfOnly
 
 if (-not (Test-Path -LiteralPath $python)) {
     throw "Python runtime not found: $python"
+}
+if (-not (Test-Path -LiteralPath $resolvedGradleUserHome -PathType Container)) {
+    throw "Gradle user home not found: $resolvedGradleUserHome"
 }
 if (-not (Test-Path -LiteralPath $yolo11n)) {
     throw "yolo11n TFLite asset not found: $yolo11n"
@@ -141,7 +147,7 @@ Push-Location $repoRoot
 try {
     $env:JAVA_HOME = (Resolve-Path ".\.jdk\jdk17.0.19_10").Path
     $env:PATH = "$env:JAVA_HOME\bin;$((Resolve-Path '.\.android-sdk\platform-tools').Path);$env:PATH"
-    $env:GRADLE_USER_HOME = (Resolve-Path ".\.gradle-local").Path
+    $env:GRADLE_USER_HOME = (Resolve-Path -LiteralPath $resolvedGradleUserHome).Path
     New-Item -ItemType Directory -Force -Path ".\.android-home", ".\.kotlin-home" | Out-Null
     $env:ANDROID_USER_HOME = (Resolve-Path ".\.android-home").Path
     $env:KOTLIN_HOME = (Resolve-Path ".\.kotlin-home").Path

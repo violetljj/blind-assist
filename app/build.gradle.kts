@@ -1,4 +1,5 @@
 import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
@@ -81,10 +82,6 @@ android {
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
 
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-    }
-
     buildFeatures {
         compose = true
         buildConfig = true
@@ -100,6 +97,16 @@ android {
         }
     }
 
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
+    }
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -118,8 +125,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.hilt.android)
     implementation(libs.tflite)
-    implementation("com.qualcomm.qti:qnn-runtime:2.47.0")
-    implementation("com.qualcomm.qti:qnn-litert-delegate:2.47.0")
+    implementation(libs.qnn.runtime)
+    implementation(libs.qnn.litert.delegate)
     kapt(libs.hilt.compiler)
 
     debugImplementation(libs.androidx.compose.ui.test.manifest)

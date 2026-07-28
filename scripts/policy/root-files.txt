@@ -3,7 +3,6 @@
 acquire_sanpo_rgb_timeline_candidate.py
 acquire_sanpo_synthetic_replay.py
 align_revel_detector_failures_with_vicon.py
-analyze_revel_detector_failures.py
 apply_sanpo_review_decisions.py
 archive_apk.ps1
 audit_argoverse_av1_timestamped_ttc.py
@@ -35,7 +34,6 @@ check_project_structure.ps1
 check_repo_hygiene.ps1
 clone_sanpo_event_phase_evalset.py
 clone_sanpo_sequence_evalset.py
-compare_revel_detector_sensitivity.py
 compare_revel_detector_tiling.py
 create_sanpo_v2_review_decisions.py
 detector_lab.py
@@ -45,10 +43,12 @@ evaluate_ustrf_sc_rc_oarf_route_specificity_control.py
 explicit_route_intent_fusion.py
 export_depth_anything_v2_tflite.py
 export_yolo11n_tflite.py
+test_export_yolo11n_tflite.py
 extract_sanpo_device_event_report.py
 fetch_remote_zip_members.py
 finalize_sanpo_sequence_evalset.py
 freeze_sanpo_v3_regression.py
+generate_qnn_preprocess_candidate.py
 generate_sanpo_counterfactual_capture_plan.py
 generate_ustrf_synthetic_corridor_safety_benchmark.py
 generate_ustrf_synthetic_dynamic_ttc_benchmark.py
@@ -101,7 +101,6 @@ smoke_depth_model.py
 test_acquire_sanpo_rgb_timeline_candidate.py
 test_acquire_sanpo_synthetic_replay.py
 test_align_revel_detector_failures_with_vicon.py
-test_analyze_revel_detector_failures.py
 test_audit_argoverse_av1_timestamped_ttc.py
 test_audit_bonn_rgbd_dynamic_reprojection.py
 test_audit_bonn_rgbd_dynamic_source.py
@@ -121,7 +120,6 @@ test_build_public_v3_canonical_dataset.py
 test_build_sanpo_sequence_evalset.py
 test_check_docs_index.ps1
 test_check_project_structure.ps1
-test_compare_revel_detector_sensitivity.py
 test_compare_revel_detector_tiling.py
 test_discover_sanpo_sequence_candidates.py
 test_evaluate_ustrf_sc_rc_oarf_route_specificity_control.py

@@ -8,7 +8,7 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 
 - 当前版本：`v10.9.0`，`versionCode=37`。
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
-- 当前论文研究主线为 [RCLE-RF](docs/research/rcle/README.md)，研究过程遵循[渐进式治理](docs/RESEARCH_GOVERNANCE.md)。Phase B B0 R1 已 `PASS / VALID`；B1 R5 evidence version 因 blank-grid replay mismatch 关闭且不得重跑，但这不关闭 RCLE 科学问题。当前开放新的 Phase B Discovery，用于来源画像、约束质疑和高信息增益假设；RGB algorithm canary、confirmation、Replay、正式 App、默认模型与安全权限均未开放。
+- 当前论文研究主线及其动态阶段、终态、权限与下一步只以 [RCLE-RF current 入口](docs/research/rcle/README.md) 为准，研究过程遵循[渐进式治理](docs/RESEARCH_GOVERNANCE.md)。任何研究证据都不自动改变正式 App、默认模型、Android、人体、安全、产品或生产权限。
 - 可并存安装的 `ustrfExperiment` 实验版已接入 USTRF 二维路线代理，并直接替代旧风险分析入口；它只使用画面中心假设路线与检测框生成保守代理风险，不具备米制深度、稳定姿态或真实路线，因此不可用于独立行走，也不改变正式 App。
 - SANPO 分割路线仍为研究候选：当前离线质量门未通过，未导出正式 INT8、未执行设备晋级门、未替换 App 默认模型。
 - 正式 App 保持本地推理；眼镜设备中心仍是模拟功能，不扫描蓝牙、不连接真实眼镜。
@@ -38,7 +38,7 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - Android SDK Platform 35、Build Tools 和 Platform Tools
 - Python 仅用于模型检查、数据集及研究任务
 
-本机通用工具位于 `E:\codex-tools`。JDK、Android SDK 和构建状态的旧隐藏目录目前是兼容 junction；`.python311` 与 `.venv-export312` 因 Windows DLL 占用和 venv 可迁移性暂保留原位，待重建验证后移除。新电脑安装见 [新电脑交接说明](docs/NEW_COMPUTER_HANDOFF.md)。
+本机通用工具位于 `E:\codex-tools`。`.jdk`、`.android-sdk`、`.android-home` 和 `.kotlin-home` 是指向 canonical toolchain/state 的兼容 junction；`.gradle-local` 是无 tracked 调用方的遗留本地缓存而非 junction，新命令统一使用 `E:\codex-tools\projects\blindassist\state\gradle`。研究 Python 统一通过 `E:\codex-tools\bin\blindassist-python.cmd` 使用 `E:\codex-tools\tools\venvs\blindassist-venv-export312`（Python 3.11.9）。仓库内 `.python311` 仅作遗留兼容，旧 `.venv-export312` 已不存在。新电脑安装见 [新电脑交接说明](docs/NEW_COMPUTER_HANDOFF.md)。
 
 ## 构建与验证
 

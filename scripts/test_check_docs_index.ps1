@@ -35,6 +35,9 @@ try {
     Assert-IndexResult -Name 'indexed-local-link' -IndexText '[current](CURRENT.md)' -OtherFiles @('CURRENT.md') -ShouldPass $true
     Assert-IndexResult -Name 'unindexed-file' -IndexText '# index' -OtherFiles @('ORPHAN.md') -ShouldPass $false
     Assert-IndexResult -Name 'missing-local-link' -IndexText '[missing](MISSING.md)' -OtherFiles @() -ShouldPass $false
+    Assert-IndexResult -Name 'indexed-research-domain' -IndexText '[domain](research/domain/README.md)' -OtherFiles @('research/domain/README.md') -ShouldPass $true
+    Assert-IndexResult -Name 'research-domain-without-readme' -IndexText '# index' -OtherFiles @('research/domain/SNAPSHOT.md') -ShouldPass $false
+    Assert-IndexResult -Name 'research-domain-without-top-index-link' -IndexText '# index' -OtherFiles @('research/domain/README.md') -ShouldPass $false
     Write-Host 'Documentation index smoke tests passed.'
 }
 finally {

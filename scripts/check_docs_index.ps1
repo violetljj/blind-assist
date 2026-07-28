@@ -22,6 +22,22 @@ Get-ChildItem -LiteralPath $docsRootPath -File -Filter *.md |
         }
     }
 
+$researchRoot = Join-Path $docsRootPath 'research'
+if (Test-Path -LiteralPath $researchRoot -PathType Container) {
+    Get-ChildItem -LiteralPath $researchRoot -Directory |
+        Sort-Object Name |
+        ForEach-Object {
+            $domainReadme = Join-Path $_.FullName 'README.md'
+            if (-not (Test-Path -LiteralPath $domainReadme -PathType Leaf)) {
+                $failures.Add("Research documentation domain lacks a README index: research/$($_.Name)/README.md")
+            }
+            $domainIndexTarget = "research/$($_.Name)/README.md"
+            if ($indexText -notmatch [regex]::Escape($domainIndexTarget)) {
+                $failures.Add("Research documentation domain is not linked from docs/README.md: $domainIndexTarget")
+            }
+        }
+}
+
 $linkPattern = '\[[^\]]+\]\(([^)#]+)(?:#[^)]*)?\)'
 foreach ($match in [regex]::Matches($indexText, $linkPattern)) {
     $target = $match.Groups[1].Value
@@ -43,4 +59,10 @@ if ($failures.Count -gt 0) {
     exit 1
 }
 
-Write-Host "Documentation index check passed for $((Get-ChildItem -LiteralPath $docsRootPath -File -Filter *.md).Count - 1) top-level Markdown file(s)."
+$researchDomainCount = if (Test-Path -LiteralPath $researchRoot -PathType Container) {
+    (Get-ChildItem -LiteralPath $researchRoot -Directory).Count
+}
+else {
+    0
+}
+Write-Host "Documentation index check passed for $((Get-ChildItem -LiteralPath $docsRootPath -File -Filter *.md).Count - 1) top-level Markdown file(s) and $researchDomainCount research domain(s)."

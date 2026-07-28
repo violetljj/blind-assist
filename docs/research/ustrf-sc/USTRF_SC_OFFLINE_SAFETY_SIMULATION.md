@@ -39,7 +39,7 @@
 ```powershell
 $env:JAVA_HOME='E:\linnan\linnan\.jdk\jdk17.0.19_10'
 $env:ANDROID_HOME='E:\linnan\linnan\.android-sdk'
-$env:GRADLE_USER_HOME='E:\linnan\linnan\.gradle-local'
+$env:GRADLE_USER_HOME='E:\codex-tools\projects\blindassist\state\gradle'
 .\gradlew.bat :core:ustrf:test --offline --no-daemon --console=plain
 ```
 

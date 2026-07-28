@@ -7,14 +7,14 @@
 冻结前应先把同机 A/B 的命令参数写为 JSON，例如 `runs_per_frame`、设备型号、数据集路径和比较模式。冻结命令复制这 90 个帧/来源掩码，并写入 source/frozen manifest SHA256、每个 RGB/掩码 SHA256、当前 Git revision、配置 SHA256 和同机报告引用。输出目录一旦存在即拒绝覆盖。
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\freeze_sanpo_v3_regression.py `
-  --source-root test-artifacts.local\datasets\blindassist-sanpo-v2-event-labeled-20260711 `
+& E:\codex-tools\bin\blindassist-python.cmd scripts\freeze_sanpo_v3_regression.py `
+  --source-root artifacts.local\evidence\datasets\blindassist-sanpo-v2-event-labeled-20260711 `
   --output-root test-artifacts.local\datasets\sanpo-v3-regression-90f `
   --benchmark-config test-artifacts.local\detector-ab-device-benchmark\<report>\benchmark-config.json `
   --device-report test-artifacts.local\detector-ab-device-benchmark\<report>
 
-.\.venv-export312\Scripts\python.exe scripts\freeze_sanpo_v3_regression.py `
-  --output-root test-artifacts.local\datasets\sanpo-v3-regression-90f --verify
+& E:\codex-tools\bin\blindassist-python.cmd scripts\freeze_sanpo_v3_regression.py `
+  --output-root artifacts.local\evidence\datasets\sanpo-v3-regression-90f --verify
 ```
 
 锁定本身不是候选晋级：现有 oracle 的 90 帧误提醒失败记录保留在同机报告中，继续仅作为语义上限参考；默认 YOLO 几何路径仍是安全下限。
@@ -60,12 +60,12 @@ python scripts\review_sanpo_sequence_with_model.py `
 已复核的源 manifest 必须先以明确 split 写出，然后只生成两个可消费视图：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\prepare_sanpo_v3_dataset_views.py `
+& E:\codex-tools\bin\blindassist-python.cmd scripts\prepare_sanpo_v3_dataset_views.py `
   --source-manifest <reviewed-source-manifest.jsonl> `
   --dataset-root test-artifacts.local\datasets\blindassist-sanpo-v3
 
-.\.venv-export312\Scripts\python.exe scripts\validate_sanpo_v3_dataset.py `
-  --dataset-root test-artifacts.local\datasets\blindassist-sanpo-v3 `
+& E:\codex-tools\bin\blindassist-python.cmd scripts\validate_sanpo_v3_dataset.py `
+  --dataset-root artifacts.local\evidence\datasets\blindassist-sanpo-v3 `
   --require-v3-coverage `
   --report test-artifacts.local\datasets\blindassist-sanpo-v3\qa\v3-gate-report.json
 ```

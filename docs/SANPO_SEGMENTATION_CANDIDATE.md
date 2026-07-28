@@ -53,8 +53,8 @@
 先由数据流水线生成不包含盲测标签的明确 manifest，再运行：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe scripts\train_export_sanpo_segmentation.py `
-  --manifest test-artifacts.local\datasets\sanpo-v3\manifests\train_dev.jsonl `
+& E:\codex-tools\bin\blindassist-python.cmd scripts\train_export_sanpo_segmentation.py `
+  --manifest artifacts.local\evidence\datasets\sanpo-v3\manifests\train_dev.jsonl `
   --epochs 40 --batch-size 8
 ```
 
@@ -66,8 +66,8 @@
 基础 Python 合同测试不要求 TensorFlow：
 
 ```powershell
-.\.venv-export312\Scripts\python.exe -m unittest scripts\test_train_export_sanpo_segmentation.py
-.\.venv-export312\Scripts\python.exe scripts\train_export_sanpo_segmentation.py --help
+& E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts\test_train_export_sanpo_segmentation.py
+& E:\codex-tools\bin\blindassist-python.cmd scripts\train_export_sanpo_segmentation.py --help
 ```
 
 完成训练不表示可进入 shadow mode。只有全量开发集和完全隔离盲测集均通过事件召回、关键漏报、平行路沿零提醒、误提醒和 SM-S9280 P95 门槛，才可另行讨论 shadow mode。

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -449,6 +450,9 @@ class CameraControlPanelStandaloneTest {
         composeRule.onNodeWithTag("camera_debug_toggle").assertStateDescription("Expanded")
         composeRule.onAllNodesWithText("FPS", substring = true).onFirst().performScrollTo().assertIsDisplayed()
         composeRule.onAllNodesWithTag("camera_quiet_shortcut").assertCountEquals(0)
+        composeRule.onNodeWithTag("camera_debug_toggle").performClick()
+        composeRule.onNodeWithTag("camera_debug_toggle").assertStateDescription("Collapsed")
+        composeRule.onAllNodesWithText("FPS", substring = true).assertCountEquals(0)
     }
 
     @Test
@@ -499,18 +503,23 @@ class CameraControlPanelStandaloneTest {
 
     @Test
     fun cameraPermissionDialogUsesEnglishAccessibilityCopy() {
+        val showDialog = mutableStateOf(true)
         composeRule.setContent {
             BlindAssistTheme {
-                CameraPermissionExplanationDialog(
-                    language = AppLanguage.EN,
-                    onContinue = {},
-                    onDismiss = {}
-                )
+                if (showDialog.value) {
+                    CameraPermissionExplanationDialog(
+                        language = AppLanguage.EN,
+                        onContinue = { showDialog.value = false },
+                        onDismiss = { showDialog.value = false }
+                    )
+                }
             }
         }
         composeRule.onNodeWithText("Camera permission needed").assertExists()
         composeRule.onNodeWithText("Continue and allow").assertExists()
         composeRule.onNodeWithText("does not upload images", substring = true).assertExists()
+        composeRule.onNodeWithText("Not now").performClick()
+        composeRule.onNodeWithText("Camera permission needed").assertDoesNotExist()
     }
 
     @Test
