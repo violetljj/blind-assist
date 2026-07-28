@@ -124,6 +124,15 @@ sequence 16 已在修实现前原子预留为 future `SEALED_UNSEEN`，在算法
 因此 standalone rotation 路线已由多个自然 session 正式停止。reference-track
 设计保留为历史 design-only 资产，但不再是当前顺序，也未获得实现权限。
 
+下一步的
+[退化归因与 flow-quality diagnostic R0](RCLE_DEGRADATION_FLOW_QUALITY_DIAGNOSTIC_R0_RESULT_2026-07-28.md)
+也已完成。它在相同 pair 身份上保持 R3、`>0.01/s` 和三 pair 不变，并先从 RGB/pose
+生成不读取 response/风险标签的 blur、texture、gait 与 flow-quality 代理。高响应
+最一致地集中在 gait proxy（`3/4` session），blur 和 low texture 各为 `2/4`；
+fixed flow gate 只有 `1/4` session 富集高响应，所有 session 的 trigger-density
+下降均小于预冻结 20% 门，终态为 `HOLD_FLOW_QUALITY_GATE / VALID`。这不恢复
+rotation-only 路线，也不把 gate 拒绝称为假警。
+
 ## Discovery 的低成本操作门
 
 数据进入 Discovery 只要求：
@@ -162,6 +171,7 @@ sequence 16 已在修实现前原子预留为 future `SEALED_UNSEEN`，在算法
 | 自然视频 Capability Discovery | `AUTHORIZED / ACTIVE` |
 | 已查看数据的失败分析和回归 | `AUTHORIZED` |
 | natural-session expansion Discovery R0 | `COMPLETE / VALID` |
+| degradation / flow-quality diagnostic R0 | `COMPLETE / HOLD_FLOW_QUALITY_GATE / VALID` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
 | 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |
@@ -175,11 +185,12 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 ## 下一步
 
-Natural-session R0 已完成，当前顺序为：
+退化归因与 flow-quality diagnostic R0 已完成，当前顺序为：
 
 1. 正式结束 standalone rotation，不继续修补 rotation-only compensation；
-2. 下一机制诊断只转向步态振荡、运动模糊、低纹理与 flow-quality gate；
-3. 先冻结能区分上述失败源的 metadata/observable 与最小实验，再决定是否需要实现；
+2. 当前 fixed flow-quality gate 保持 `HOLD`，禁止按 response 调门直到通过；
+3. 若继续 Development，只另立能区分“高频但 track-consistent 的 head motion”
+   与“feature collapse / blur”的时间结构诊断，并在输出前冻结；
 4. 不立即实现
    [reference-track failure diagnosis R0](RCLE_REFERENCE_TRACK_FAILURE_DIAGNOSIS_R0_DESIGN_2026-07-28.md)、
    temporal consistency 或 bearing；

@@ -133,3 +133,13 @@ ADVIO office03 sequence 15 的起始连续 600 pair 已作为
 Natural-session R0 已触发 standalone rotation 的停止条件。下一机制诊断转向步态
 振荡、运动模糊、低纹理和 flow-quality gate；不立即实现 reference-track、
 temporal consistency 或 bearing。
+
+随后完成的
+[退化归因与 flow-quality diagnostic R0](RCLE_DEGRADATION_FLOW_QUALITY_DIAGNOSTIC_R0_RESULT_2026-07-28.md)
+在相同四个 session、相同 601-pair 身份上保持 R3、strict `>0.01/s` 和三 pair
+不变。Stage 1 仅从 RGB/pose 生成标签盲代理，Stage 2 才连接既有 response。
+高 absolute response 对 pose-derived 步态振荡代理的 RR 在 `3/4` session
+`>=1.5`，模糊和低纹理各为 `2/4`；固定 flow gate 只有 `1/4` session 达到该
+高响应富集，触发密度相对下降在四个 session 均 `<20%`。终态为
+`HOLD_FLOW_QUALITY_GATE / VALID`：不调 gate 追结果、不恢复 rotation-only，也不
+据此声称 false-trigger 或性能改善。
