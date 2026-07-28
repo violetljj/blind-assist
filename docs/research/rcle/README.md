@@ -1,111 +1,152 @@
 # RCLE 研究主线
 
-状态：`current / PUBLIC_DATA_CONFIRMATION_CLOSED_NOT_EVALUABLE`
+状态：`current / ECOLOGICAL_DISCOVERY_ACTIVE`
 
-最后核验：2026-07-28 18:22（Asia/Hong_Kong）
+最后核验：2026-07-28 19:20（Asia/Hong_Kong）
 
 ## 当前结论
 
-RCLE-RF 仍是 BlindAssist 的论文研究主线。历史公开数据搜索与确认工作已经正式收束：
+RCLE-RF 仍是 BlindAssist 的论文研究主线，但研究方法已经从“理想数据合同驱动”
+改为“数据能力驱动、分阶段提高证据强度”：
 
 ```text
-CURRENT PUBLIC-DATA CONFIRMATION CONTRACT: CLOSED / NOT_EVALUABLE
-ALGORITHM STATUS: DEVELOPMENT_EVIDENCE_PROMISING
-EXTERNAL CONFIRMATION STATUS: PENDING
-NEXT ALLOWED STUDY: RCLE_ECOLOGICAL_RESPONSE_DISCOVERY_R0
-NEXT STUDY EXECUTION: NOT_AUTHORIZED / NOT_SCIENTIFICALLY_ADMITTED
+CURRENT STUDY: RCLE_ECOLOGICAL_RESPONSE_DISCOVERY_R0
+CURRENT TRACK: CAPABILITY_DISCOVERY
+CURRENT RESULT ACCESS: OUTPUT_INSPECTED
+CURRENT CLAIM CEILING: SINGLE_SESSION_DISCOVERY
+SEALED EVALUATION: NOT_YET_ALLOCATED
+ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 ```
 
-最新阶段 `RCLE_RGB_SEGMENT_CONFIRMATION_R1` 已闭合为：
+旧公开数据确认合同仍永久保持：
 
 `RGB_SEGMENT_CONFIRMATION_R1_NOT_EVALUABLE / VALID_FAIL_CLOSED_TERMINAL`
 
-两个冻结真实片段都未在各自已签名、one-shot、预算受限的 opaque identity extraction 内闭合 RGB identity。因此：
+这两个事实同时成立：
 
-- eligible RGB frame 为 `0`；
-- pixel decode 与 RGB algorithm call 都为 `0`；
-- alignment pair denominator 为 `0`，所有指标为 `null`，不是 `0`；
-- 两个 claim 均已消费且禁止重试；
-- 本终态不证明 RGB 算法成功，也不证明 RGB 算法失败。
+1. 旧 R1 的两个冻结片段没有形成 eligible RGB，不能证明算法成功或失败；
+2. 用户已另行授权新的 Ecological Discovery，并在自然连续视频上实际运行算法。
 
-权威结果是 [RGB Segment Confirmation R1 result](RCLE_RGB_SEGMENT_CONFIRMATION_R1_RESULT_2026-07-28.md)，绑定 terminal SHA-256：
+新实验不是旧 R1 的重试、救援或回写。
 
-`03fbac1d815072639b00393cb058f31aacba5de0b0a270c6d440f2e0bab10753`
+## 已采用的研究方法 R2
 
-## 两个冻结片段的终态
+权威方法见：
 
-| 冻结片段 | 原角色 | immutable terminal | RGB frames | 约束 |
-| --- | --- | --- | ---: | --- |
-| OpenLORIS `corridor1-1:w004` | positive approach | `INVALID_IDENTITY_EXTRACTION_CLOSE_ATTEMPT / URLError` | 0 | claim consumed；禁止重试、换 URL 或整源回退 |
-| DLR `extreme_geometry/hexagon_01:w001` | below-trigger reference | `SEGMENT_IDENTITY_NOT_EVALUABLE / DLR_BYTE_BUDGET_EXHAUSTED_OR_RGB_GUARD_ABSENT` | 0 | claim consumed；禁止扩预算、换窗或整源回退 |
+- [数据能力驱动 RCLE 主线 R2](RCLE_DATA_DRIVEN_RESEARCH_MAINLINE_R2_2026-07-28.md)；
+- [全局研究治理](../../RESEARCH_GOVERNANCE.md)；
+- [当前轻量能力表](RCLE_ACTIVE_DATA_CAPABILITY_MAP_R1_2026-07-28.csv)。
 
-OpenLORIS 与 DLR 仍然 source-role confounded；没有执行 positive/below discrimination。R1 终止时 MVSEC 未访问；其后另立的 MVSEC R1/R2 身份 claims 均已消费并以 `MVSEC_RGB_IDENTITY_NOT_EVALUABLE` 结束，不能回写或救援本 R1。
+### 三条数据轨道
 
-## 独立复核
+| 轨道 | 用途 | 当前状态 |
+| --- | --- | --- |
+| `CAPABILITY_DISCOVERY` | 观察真实响应、支持率和失败模式 | `ACTIVE` |
+| `DEVELOPMENT_DIAGNOSTIC` | 在明确污染的数据上修实现、调候选 | `NOT_STARTED_FOR_R2` |
+| `SEALED_EVALUATION` | 在算法与指标冻结后做 session 级独立评估 | `NOT_ALLOCATED` |
 
-- OpenLORIS terminal independent review：`PASS`，SHA-256 `99830376dcba266f607df636fd92e44c5f6164856d0d599b998f171fbe657cd9`
-- DLR terminal independent review：`PASS`，SHA-256 `d56edd0d6dd1afed4e652fd4c0ce4a3ad92f577e9e22628b356ad43e0b58c69f`
-- protocol terminal validation：`37/37 PASS`，SHA-256 `bbab3cd47e88108896503fbf2a8f52184ade5786ca91b0215b63b718c93bd64d`
-- final independent review：`PASS`、无阻断项，SHA-256 `d93267d3cd13d6da4f45a1a0f507339ba32817f3f45d02c365764e7a127b221a`
+跨来源测试单独称为 `EXTERNAL_TRANSFER`，不再和普通同来源 session holdout 混为
+一谈，也不是当前 Discovery 的前置条件。
 
-对应本地 evidence 路径固定在：
+### 四级结果访问
 
-`artifacts.local/evidence/rcle_rgb_segment_confirmation_r1/`
+| 状态 | 允许用途 |
+| --- | --- |
+| `CONTENT_INSPECTED` | 看内容但未看目标算法输出；可在预冻结后进入 evaluation，并披露筛选依据 |
+| `OUTPUT_INSPECTED` | 已看 RCLE 或 baseline 输出；Discovery / Development |
+| `TUNED_ON` | 已用于改算法、阈值、窗口或指标；Development only |
+| `SEALED_UNSEEN` | 未看算法输出，且算法和指标已冻结；Evaluation |
 
-不得通过读取 raw claim、progress、partial transport payload 或未复核中间文件改写上述终态。
+同一来源的新 person、capture session、route 或 sequence 可以构成独立 holdout。
+连续帧随机切分或把同一长视频切成多个 clip 不能构成独立样本。
 
-## 历史数据工作收束
+pair/frame 只是时间序列测量单位，不是独立统计样本。当前 600 pair 仍然只有一个
+capture-session observation unit。未来比较必须按 session/route 聚合或分层，不能
+用 pair 数膨胀样本量。
 
-- [历史数据工作收束报告 R0](RCLE_DATA_WORK_CLOSURE_R0_2026-07-28.md)：冻结所有旧终态、失败原因、资产去向、停止事项和下一阶段边界。
-- [数据能力与访问状态表 R0](RCLE_DATA_CAPABILITY_MAP_R0_2026-07-28.csv)：统一记录 source/capture/window、outcome access、当前证据角色、claim ceiling 与建议处置。
+## 当前 Discovery
 
-后续 transport/identity 失败只作为历史资产：
+`RCLE_ECOLOGICAL_RESPONSE_DISCOVERY_R0` 的宽松观察清单是：
 
-- OpenLORIS R2：`NOT_EVALUABLE_PARTIAL_QUARANTINED`；
-- DLR R2：claim 已占用，worker 已消失且没有合法 terminal，固定为 `ORPHAN/HOLD`，禁止重启或续扫；
-- MVSEC R2：`indoor_flying2:w004` 的 200 个 geometry timestamp 仅 63 个通过冻结 5 ms pairing，137 个超门；`indoor_flying1:w002` 未启动；像素与算法调用均为零。
+```text
+观察接近、正常行走、转头、横穿、模糊、低纹理和步态振荡下，
+bbox growth、raw expansion 与 RCLE 的响应分布、支持率、
+触发密度、时间一致性和失败案例。
+```
+
+Discovery 允许 RCLE 胜出、部分有效、没有优势，或者被更简单 baseline 超过。当前
+不预设分类阈值、AUROC/F1 目标或算法晋级。
+
+第一轮已在 ADVIO office03 sequence 15 的预声明起始连续 `9.999266 s` 上运行：
+
+- 原生约 60 Hz，600 个连续 pair，599/600 可评估；
+- raw 与 rotation-compensated 三连续触发比例均为 `0.4000`；
+- absolute response 对角速度的 Spearman 为 raw `0.3498`、compensated `0.3804`；
+- 未观察到 rotation compensation 在该片段中降低触发或角速度关联；
+- `bbox_growth` 因没有冻结目标框为 `NOT_EVALUABLE`。
+
+详细限制和结果见
+[首轮 Discovery 结果](../../../scripts/research/egomotion_compensated_looming/ecological_response_discovery_r0/RESULT_2026-07-28.md)。
+它是一个已查看输出的单 session、半分辨率、分块执行诊断，不能产生 performance、
+generalization 或 causal confirmation。
+
+## Discovery 的低成本操作门
+
+数据进入 Discovery 只要求：
+
+- 可以取得并解码；
+- 时间顺序可复算；
+- dataset/sequence 身份基本明确；
+- 已知许可或使用限制有记录；
+- 下载和适配成本有界。
+
+固定十秒、同源正负、精确物理闭合率、同时具备 RGB/pose/depth，以及一个来源覆盖
+全部角色，都不再是默认准入条件。缺少某模态只降低可回答问题和 claim ceiling。
+
+能力表只有 10 列 CSV，不是运行许可证，不再开发通用数据管理框架或复杂 adapter
+体系。
+
+## 旧终态与历史资产
+
+[历史数据工作收束报告 R0](RCLE_DATA_WORK_CLOSURE_R0_2026-07-28.md)和
+[历史 19 列能力库存 R0](RCLE_DATA_CAPABILITY_MAP_R0_2026-07-28.csv)继续作为 archive。
+它们不再决定新 Discovery 的数据准入，但所有旧 terminal、claim、失败 receipt 和
+访问事实保持不可变。
+
+旧 R1 仍具有以下事实：
+
+- eligible RGB frame = 0；
+- pixel decode = 0；
+- RGB algorithm call = 0；
+- alignment denominator = 0；
+- 两个旧 claim 已消费，禁止重试、换窗、扩预算或整源回退。
 
 ## 当前权限
 
-| 能力 | 当前 authority |
+| 能力 | authority |
 | --- | --- |
-| 两个 exact segment 的 fail-closed transport terminal | `VALID` |
-| RGB segment mechanism evidence | `NOT_EVALUABLE` |
-| positive/below discrimination | `NOT_AUTHORIZED` |
+| 自然视频 Capability Discovery | `AUTHORIZED / ACTIVE` |
+| 已查看数据的失败分析和回归 | `AUTHORIZED` |
+| 修改算法或阈值 | `NOT_YET_STARTED / MUST_RECLASSIFY_AS_TUNED_ON` |
+| session 级 sealed evaluation | `NOT_ALLOCATED` |
 | performance / generalization | `NOT_AUTHORIZED` |
-| RGB algorithm execution | `NOT_AUTHORIZED` |
-| host replay | `NOT_AUTHORIZED` |
-| Android / App 集成 | `NOT_AUTHORIZED` |
+| Android / host replay /主动告警 | `NOT_AUTHORIZED` |
 | 真人、产品、安全或生产结论 | `NOT_AUTHORIZED` |
 
-BlindAssist 仍是论文、毕业设计、院内演示和竞赛原型，不面向视障人士独立使用，也不形成真实用户有效性或安全认证结论。
-
-## 禁止事项
-
-- 不重试或替换两个已消费 claim；
-- 不扩大 DLR byte budget，不用整源下载、换窗、换源或 MVSEC 回救本 R1；
-- 不把 null 指标当成零，不填补 zero-frame ledger；
-- 不把 transport/identity 失败写成 RGB algorithm failure；
-- 不从历史 synthetic、geometry canary、development RGB 或设计审查推导 confirmation、performance、Android、product 或 safety authority；
-- 不继续公开数据漫游，不以新来源、新窗口、追加下载或新 claim 默认救援旧终态；
-- 不启动新的 formal claim、protected-outcome access、算法执行或 Android。
+BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，不是可独立依赖的助行或
+安全产品。
 
 ## 下一步
 
-当前无自动研究后继。唯一允许被提出、但尚未启动的下一实验是：
+按信息增益顺序执行：
 
-`RCLE_ECOLOGICAL_RESPONSE_DISCOVERY_R0`
+1. 在现有 ADVIO Discovery 上做旋转方向/坐标系、畸变和高低角速度的低成本机制审计；
+2. 选择容易获得的自然行走 session，每个先跑 10–30 秒连续片段，不要求一个来源
+   同时承担全部角色；
+3. 根据真实失败模式决定是否进入 `DEVELOPMENT_DIAGNOSTIC`；
+4. 在任何算法调试前，把未来 evaluation 按 person/session/route/sequence 原子单位
+   写入能力表并标为 `SEALED_UNSEEN`；
+5. 只有冻结算法、标签、指标、缺失处理和 session split 后，才运行
+   `SEALED_EVALUATION`。
 
-它只允许比较 `BBox Growth / Uncompensated Local Expansion / Rotation-Compensated Local Expansion` 在自然第一视角行走中的响应规律与失败模式，不预设 RCLE 获胜。选择来源、下载数据、运行算法、调参、性能资格、host replay 与 Android 均未被本入口授权。
-
-收束审查期间检测并停止了并发本地 pilot 进程；其未授权输出内容未被本收束任务读取，
-只按 `UNAUTHORIZED_EXECUTION_ARTIFACT / NOT_ADMITTED` 归档。这不构成下一研究已启动，
-也不授权续跑、解释或追认。
-
-## 历史入口
-
-- [2026-07-27 原 current 快照](RCLE_CURRENT_SNAPSHOT_2026-07-27.md)：保存 Phase A、Phase B、Progressive Discovery、geometry/RGB canary 与来源准入的完整历史叙事；其中任何“当前”“下一步”均已失效。
-- [渐进式研究治理](../../RESEARCH_GOVERNANCE.md)：定义 Discovery/Canary/Development/Confirmation/Deployment 与 fail-closed 规则。
-- [RCLE 前序历史索引](../ustrf-sc/README.md)：route-conditioned USTRF 与 egomotion-compensated looming 历史证据，不自动产生当前 authority。
-
-本页是 RCLE 动态阶段、终态、权限、禁止事项和下一步的唯一 current 真源。其他 README、报告、日期化结果与 handoff 只能链接本页或保存当时快照，不得复制新的动态结论。
+当前不继续旧公开数据市场漫游，不自动创建 formal claim，不进入 Android。

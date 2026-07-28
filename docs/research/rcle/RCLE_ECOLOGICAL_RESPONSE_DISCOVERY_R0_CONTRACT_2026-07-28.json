@@ -1,0 +1,109 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "governance_policy_id": "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2",
+  "governance_policy_sha256": "e4cd2b01118f36f38cbddebcac6551af782f631e7414e6c90b2f80c0fef33b6e",
+  "protocol_id": "RCLE_ECOLOGICAL_RESPONSE_DISCOVERY_R0",
+  "version": "R0",
+  "stage": "DISCOVERY",
+  "question": "What response patterns, support behavior and failure modes do raw local expansion, source-pose rotation-compensated local expansion and an available simple image-scale proxy exhibit in natural first-person motion?",
+  "claims_allowed": [
+    "DATA_CHARACTERIZED"
+  ],
+  "data_partitions": [
+    {
+      "id": "advio-office03-sequence15-discovery",
+      "source_identity": "ADVIO_OFFICE03_SEQUENCE15_IPHONE",
+      "content_identity": "ADVIO_OFFICE03_SEQUENCE15_IPHONE_LOCAL_HASH_BOUND_R0",
+      "identity_basis": "Local video, frame timestamp and source-pose SHA-256 values recorded in the Discovery summary.",
+      "independence_group": "ADVIO_OFFICE03_SEQUENCE15_CAPTURE_SESSION",
+      "ancestry": [
+        "ADVIO_OFFICE03_CAPTURE"
+      ],
+      "role": "DISCOVERY",
+      "outcome_access": "FULL",
+      "result_access_state": "OUTPUT_INSPECTED",
+      "observation_unit": "CAPTURE_SESSION",
+      "split_basis": "PREDECLARED_SEQUENCE_PREFIX_DISCOVERY_ONLY",
+      "research_track": "CAPABILITY_DISCOVERY",
+      "reuse_policy": "DISCOVERY_DEVELOPMENT_REGRESSION_DEMO_ONLY_NOT_SEALED_EVALUATION"
+    }
+  ],
+  "constraints": [
+    {
+      "id": "old-terminal-immutability",
+      "class": "INVARIANT",
+      "description": "The Discovery cannot rewrite or rescue RGB_SEGMENT_CONFIRMATION_R1_NOT_EVALUABLE.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "native-time-order",
+      "class": "INVARIANT",
+      "description": "Frame timestamps remain ordered and the native pair sequence is preserved.",
+      "failure_scope": "SEQUENCE"
+    },
+    {
+      "id": "broad-observation-checklist",
+      "class": "DIAGNOSTIC",
+      "description": "Observe response distributions, support, trigger density, temporal consistency and failures without requiring RCLE to win.",
+      "failure_scope": "EVIDENCE_VERSION"
+    }
+  ],
+  "freeze": {
+    "level": "F0",
+    "outcome_access_started": true,
+    "amendment_mode": "NEW_VERSION_ONLY"
+  },
+  "result_model": {
+    "execution_validity": "VALID",
+    "scientific_outcome": "DATA_CHARACTERIZED",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "terminal_scope": "EVIDENCE_VERSION"
+  },
+  "successor_policy": {
+    "new_version_allowed": true,
+    "preserve_previous_evidence": true
+  },
+  "experiment_design": {
+    "search_strategy": "SEQUENTIAL_LOW_COST_NATURAL_VIDEO_DISCOVERY",
+    "minimal_discriminating_experiment": "Run the unchanged pair core and temporal trigger on one predeclared continuous natural-motion sequence prefix before selecting a development question.",
+    "resource_budget": "One locally available capture session, bounded pilots and one ten-second continuous pair interval.",
+    "stop_conditions": "Stop this evidence instance after the bounded continuous interval and record negative or ambiguous findings without tuning."
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1_NATURAL_RESPONSE_CHARACTERIZATION",
+      "theoretical_or_empirical_basis": "Rotation compensation is intended to suppress rotational image expansion while retaining translational or object-approach expansion, but natural motion may expose different dominant errors.",
+      "causal_difference": "Compares raw local expansion with source-pose rotation compensation on identical adjacent frame pairs.",
+      "expected_information_gain": "Determines whether rotation remains a plausible dominant confound before further data collection or algorithm changes.",
+      "minimal_test": "Describe fixed-denominator response and trigger distributions together with angular-speed association on the predeclared continuous interval.",
+      "evaluation_metric": "Response distribution, evaluable fraction, three-pair trigger fraction and angular-speed association.",
+      "falsifier": "Compensation does not reduce trigger density or angular-speed association in the observed interval.",
+      "cost": "LOW",
+      "resource_budget": "Existing local ADVIO sequence and bounded host execution.",
+      "stop_condition": "Do not tune on the interval; record the observed direction and move to a separately versioned mechanism audit.",
+      "selection_reason": "Uses already available synchronized natural-motion data and directly tests whether the assumed confound is visible."
+    }
+  ],
+  "round_summary": {
+    "new_facts_and_evidence": [
+      "599 of 600 adjacent pairs were evaluable in the aggregated ten-second Discovery interval.",
+      "Raw and compensated three-pair trigger fractions were both 0.4000.",
+      "Compensated absolute response did not show lower angular-speed association than raw response."
+    ],
+    "weakened_or_rejected_hypotheses": [
+      "The first natural-motion interval weakened the expectation that the current source-pose compensation automatically reduces rotation-linked responses."
+    ],
+    "unresolved_questions": [
+      "Rotation direction and pose convention, lens distortion, motion mixture and chunk state resets remain alternative explanations."
+    ],
+    "reusable_assets": [
+      "ADVIO adapter, pair ledger, response curves, chunk aggregator and focused tests."
+    ],
+    "next_high_information_experiments": [
+      "Audit rotation direction, distortion correction and preselected high-versus-low angular-speed intervals before algorithm tuning."
+    ],
+    "governance_changes_needed": [
+      "Use four result-access states, a ten-column capability map and session-level holdout allocation before development."
+    ]
+  }
+}

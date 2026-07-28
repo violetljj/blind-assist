@@ -49,6 +49,22 @@ def base_protocol(stage: str = "DISCOVERY") -> dict:
         "ancestry": [],
         "role": stage,
         "outcome_access": "NONE",
+        "result_access_state": (
+            "SEALED_UNSEEN"
+            if stage in {"CONFIRMATION", "DEPLOYMENT"}
+            else "CONTENT_INSPECTED"
+        ),
+        "observation_unit": "CAPTURE_SESSION",
+        "split_basis": "SESSION_LEVEL_PREASSIGNMENT",
+        "research_track": (
+            "SEALED_EVALUATION"
+            if stage == "CONFIRMATION"
+            else (
+                "EXTERNAL_TRANSFER"
+                if stage == "DEPLOYMENT"
+                else "CAPABILITY_DISCOVERY"
+            )
+        ),
         "reuse_policy": "ROLE_BOUND",
     }
     if stage in {"CONFIRMATION", "DEPLOYMENT"}:
@@ -149,6 +165,10 @@ class ProgressiveResearchGovernanceTest(unittest.TestCase):
                 "ancestry": [],
                 "role": "DEVELOPMENT",
                 "outcome_access": "FULL",
+                "result_access_state": "TUNED_ON",
+                "observation_unit": "CAPTURE_SESSION",
+                "split_basis": "SESSION_LEVEL_PREASSIGNMENT",
+                "research_track": "DEVELOPMENT_DIAGNOSTIC",
                 "reuse_policy": "CANARY_ONLY",
             }
         )
@@ -161,6 +181,50 @@ class ProgressiveResearchGovernanceTest(unittest.TestCase):
         protocol["freeze"]["outcome_access_started"] = True
         result = target.validate_document(protocol, POLICY)
         self.assertIn("POST_OUTCOME_REQUIRES_NEW_VERSION", result.errors)
+
+    def test_content_inspected_same_source_new_session_can_confirm(self) -> None:
+        protocol = base_protocol("CONFIRMATION")
+        protocol["data_partitions"].append(
+            {
+                "id": "development-session",
+                "source_identity": "source-a",
+                "content_identity": "content-development-session",
+                "identity_basis": "Distinct capture-session manifest.",
+                "independence_group": "session-development",
+                "ancestry": ["source-a-device"],
+                "role": "DEVELOPMENT",
+                "outcome_access": "FULL",
+                "result_access_state": "TUNED_ON",
+                "observation_unit": "CAPTURE_SESSION",
+                "split_basis": "SESSION_LEVEL_PREASSIGNMENT",
+                "research_track": "DEVELOPMENT_DIAGNOSTIC",
+                "reuse_policy": "DEVELOPMENT_ONLY",
+            }
+        )
+        protocol["data_partitions"][0]["source_identity"] = "source-a"
+        protocol["data_partitions"][0][
+            "result_access_state"
+        ] = "CONTENT_INSPECTED"
+        result = target.validate_document(protocol, POLICY)
+        self.assertFalse(result.errors)
+
+    def test_output_inspected_confirmation_is_rejected(self) -> None:
+        protocol = base_protocol("CONFIRMATION")
+        protocol["data_partitions"][0][
+            "result_access_state"
+        ] = "OUTPUT_INSPECTED"
+        result = target.validate_document(protocol, POLICY)
+        self.assertIn(
+            "CONFIRMATION_RESULT_ACCESS_CONTAMINATED:0", result.errors
+        )
+
+    def test_random_clip_split_is_not_independent(self) -> None:
+        protocol = base_protocol("CONFIRMATION")
+        protocol["data_partitions"][0][
+            "split_basis"
+        ] = "RANDOM_CLIP_FROM_SAME_SEQUENCE"
+        result = target.validate_document(protocol, POLICY)
+        self.assertIn("NONINDEPENDENT_SPLIT_BASIS:0", result.errors)
 
     def test_cartesian_sweep_requires_information_rationale(self) -> None:
         protocol = base_protocol()

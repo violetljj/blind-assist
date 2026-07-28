@@ -24,15 +24,28 @@ claims_allowed:
 
 ## 2. 数据分区与访问
 
-| ID | source/content identity | independence group / ancestry | Role | Outcome access | 后续用途 |
+| ID | source/content identity | observation / independence | Role / track | Result access | 后续用途 |
 | --- | --- | --- | --- | --- | --- |
-|  | 稳定来源 ID、内容/manifest 身份与依据 | 独立单元及其父级 |  | `NONE/METADATA_ONLY/GEOMETRY_ONLY/FULL` |  |
+|  | 稳定来源 ID、内容/manifest 身份与依据 | `PERSON/CAPTURE_SESSION/ROUTE/SEQUENCE`、独立组、祖先与 split basis | stage role + `CAPABILITY_DISCOVERY/DEVELOPMENT_DIAGNOSTIC/SEALED_EVALUATION/EXTERNAL_TRANSFER` | `CONTENT_INSPECTED/OUTPUT_INSPECTED/TUNED_ON/SEALED_UNSEEN` |  |
 
 看过算法输出的 canary/development 数据不得再进入同一命题的 confirmation。
 仅换别名不构成独立数据；机器合同必须写 `source_identity`、`content_identity`、
 `identity_basis`、`independence_group` 和 `ancestry`。
 `CONFIRMATION/DEPLOYMENT` 还必须写仓库相对路径 `identity_manifest_ref` 和实际文件
 `identity_sha256`；validator 会读取 JSON 并复算，不接受不可解析的自我声明。
+
+只看 RGB 内容不自动污染算法结果；`CONTENT_INSPECTED` 可进入预先冻结的 evaluation，
+但必须披露筛选依据。普通 holdout 可以来自同一来源的新 session；连续帧随机切分或
+从同一长视频切 clip 不构成独立性。跨来源只在主张 external transfer 时要求。
+
+Discovery 的能力地图只保留一个 10 列 CSV/JSONL：
+
+```text
+dataset_id,sequence_id,scene_motion,available_modalities,observation_unit,
+access_cost,outcome_access_state,assigned_role,claim_ceiling,notes
+```
+
+该表是轻量工作记录，不是运行算法前的审批门。
 
 ## 3. 约束表
 
@@ -161,11 +174,13 @@ governance_changes_needed:
 
 机器合同必须绑定 `governance_policy_id` 与 canonical policy SHA-256。调整策略时应
 显式升级并重绑合同；不能用 `--policy` 临时换一份更宽松的文件取得 `VALID`。
+validator 默认按合同中的 policy ID 选择保留的 R1 或当前 R2；显式 `--policy` 只用于
+审计，不得用来让合同通过另一版本规则。
 
 ```json
 {
   "schema_version": "blindassist.research_protocol.v1",
-  "governance_policy_id": "PROGRESSIVE_RESEARCH_GOVERNANCE_R1",
+  "governance_policy_id": "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2",
   "governance_policy_sha256": "<canonical-policy-sha256>",
   "protocol_id": "EXAMPLE_R0",
   "version": "R0",
@@ -182,6 +197,10 @@ governance_changes_needed:
       "ancestry": [],
       "role": "DISCOVERY",
       "outcome_access": "METADATA_ONLY",
+      "result_access_state": "CONTENT_INSPECTED",
+      "observation_unit": "CAPTURE_SESSION",
+      "split_basis": "SESSION_LEVEL_PREASSIGNMENT",
+      "research_track": "CAPABILITY_DISCOVERY",
       "reuse_policy": "NOT_CONFIRMATION_IF_USED_FOR_SELECTION"
     }
   ],

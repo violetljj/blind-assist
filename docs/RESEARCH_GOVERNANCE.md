@@ -2,7 +2,10 @@
 
 状态：current
 
-策略真源：`configs/research_governance_v1.json`
+当前策略真源：`configs/research_governance_v2.json`
+
+历史 R1 策略保留在 `configs/research_governance_v1.json`，只用于复核绑定该版本的
+旧协议和终态；不得用 R2 规则回写旧 receipt。
 
 适用日期：2026-07-26 起的新建或修订研究协议
 
@@ -142,6 +145,52 @@ verification scope = smallest suite that covers changed behavior and credible bl
 `DISCOVERY`、`CANARY` 和 `DEVELOPMENT` 不是低质量证据，而是不同用途的证据。
 它们不能冒充 confirmation，但可以合法地改进问题定义、数据选择和实现。
 
+## 数据能力驱动的三条工作轨道
+
+五阶段描述证据强度；下面三条主轨道描述数据在实际工作中的用途。它们不要求每个
+数据源独立回答全部问题：
+
+| 轨道 | 主要用途 | 允许的数据状态 |
+| --- | --- | --- |
+| `CAPABILITY_DISCOVERY` | 了解自然数据、响应分布和失败模式 | `CONTENT_INSPECTED`、`OUTPUT_INSPECTED` |
+| `DEVELOPMENT_DIAGNOSTIC` | 修实现、选诊断、调候选参数 | `OUTPUT_INSPECTED`、`TUNED_ON` |
+| `SEALED_EVALUATION` | 在冻结算法和指标后做独立评估 | `SEALED_UNSEEN`；只看过内容时可为 `CONTENT_INSPECTED`，但必须披露筛选依据 |
+
+`EXTERNAL_TRANSFER` 是额外的跨设备、跨场景或跨来源问题，不等同于普通 holdout，
+也不是论文机制结果的默认前置条件。
+
+研究顺序默认改为：
+
+```text
+低成本发现可获得数据
+→ 建立极简能力表
+→ 运行少量连续片段
+→ 根据真实失败模式确定 Development 问题
+→ 在调试前按 session/route/sequence 预留 sealed holdout
+→ 冻结算法与指标后评估
+```
+
+Discovery 运行前只需写宽松观察清单，不预先规定哪种方法必须获胜。合法发现包括
+RCLE 只在部分场景有效、bbox growth 更强、步态/模糊主导误差，或者整条路线不值得
+继续。
+
+## 最小操作门与禁止的理想角色门
+
+Discovery 的默认硬门只保留：
+
+- 数据能够合法取得并解码；
+- 时间顺序可复算；
+- 数据集和 sequence 身份基本明确；
+- 已知许可或使用限制被记录；
+- 下载、解码和适配成本有界。
+
+固定十秒、同源正负、精确物理闭合率、同时具有 RGB/pose/depth，以及一个来源回答
+所有问题，都不是 Discovery 的默认准入条件。它们只有在某个具体命题确实需要时，
+才可作为该命题的局部门或诊断。
+
+能力表只允许使用策略真源声明的 10 列 CSV/JSONL。它是工作记录，不是算法运行
+许可证；不得为它开发通用数据框架、审批状态机或逐来源长篇准入报告。
+
 ## 渐进式冻结
 
 - `F0 EXPLORE`：问题和诊断量可迭代；记录来源、版本和观察，不产生确证结论。
@@ -194,6 +243,15 @@ confirmation gate: rate >= 0.05/s
 
 ## 数据使用和“用过即烧”
 
+结果访问统一使用四个状态：
+
+| 状态 | 含义 | 后续角色 |
+| --- | --- | --- |
+| `CONTENT_INSPECTED` | 只看过 RGB 内容、结构或动作类型，未看目标算法输出 | 可进入预先冻结的 evaluation，但须披露筛选依据 |
+| `OUTPUT_INSPECTED` | 看过 RCLE 或 baseline 输出 | Discovery / Development |
+| `TUNED_ON` | 用于改算法、调阈值、选窗口或决定指标 | Development only |
+| `SEALED_UNSEEN` | 未看目标算法输出，且算法与指标已经冻结 | Evaluation |
+
 - “用过即烧”烧掉的是**与既有访问实际重叠的证据角色和最小身份单元**，不是数据集
   名称本身。默认传播顺序为
   `member/modality → frame/pair → window → sequence/capture → independence group`；
@@ -217,6 +275,9 @@ confirmation gate: rate >= 0.05/s
   outcome-blind 的角色选择权威。
 - 同一数据集内未访问的独立 sequence 可以保留给 confirmation，但协议必须在访问
   前定义隔离方式、身份清单和防泄漏检查。
+- 同一来源的新 person、capture session、route 或 sequence 可以形成普通独立
+  holdout；来源相同不自动污染，来源不同也不自动独立。连续帧随机切分、从同一长
+  视频切出多个 clip，不能伪装成独立样本。
 - 训练、canary、development、confirmation 和 deployment 集合必须记录稳定的
   source/content identity、identity basis、independence group 与 ancestry；仅换别名
   不产生独立性。validator 会同时检查内容身份和祖先独立组，拒绝

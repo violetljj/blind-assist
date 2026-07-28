@@ -19,7 +19,8 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_POLICY = REPO_ROOT / "configs" / "research_governance_v1.json"
+DEFAULT_POLICY = REPO_ROOT / "configs" / "research_governance_v2.json"
+LEGACY_POLICY = REPO_ROOT / "configs" / "research_governance_v1.json"
 PROTOCOL_SCHEMA = "blindassist.research_protocol.v1"
 CLOSURE_SCHEMA = "blindassist.research_closure_scope.v1"
 POLICY_SCHEMA = "blindassist.research_governance.v1"
@@ -45,6 +46,15 @@ REQUIRED_HARD_RULES = {
     "rules_may_be_challenged_but_not_silently_bypassed",
     "failed_assets_may_be_reused_only_with_explicit_new_role",
 }
+DATA_DRIVEN_HARD_RULES = {
+    "content_inspection_does_not_burn_algorithm_outcome",
+    "same_source_independent_session_may_be_confirmation",
+    "random_frame_or_clip_split_is_not_independent",
+    "capability_map_is_not_an_execution_gate",
+    "one_source_need_not_answer_every_question",
+    "external_transfer_is_separate_from_ordinary_holdout",
+}
+DATA_DRIVEN_POLICY_ID = "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2"
 STAGE_KERNEL = {
     "DISCOVERY": (
         "F0",
@@ -395,6 +405,68 @@ def validate_policy(policy: dict[str, Any]) -> ValidationResult:
         for name in REQUIRED_HARD_RULES:
             if hard_rules.get(name) is not True:
                 result.error(f"POLICY_HARD_RULE_DISABLED:{name}")
+        if policy.get("policy_id") == DATA_DRIVEN_POLICY_ID:
+            for name in DATA_DRIVEN_HARD_RULES:
+                if hard_rules.get(name) is not True:
+                    result.error(f"POLICY_HARD_RULE_DISABLED:{name}")
+
+    if policy.get("policy_id") == DATA_DRIVEN_POLICY_ID:
+        exact_lists = {
+            "result_access_states": {
+                "CONTENT_INSPECTED",
+                "OUTPUT_INSPECTED",
+                "TUNED_ON",
+                "SEALED_UNSEEN",
+            },
+            "independence_units": {
+                "PERSON",
+                "CAPTURE_SESSION",
+                "ROUTE",
+                "SEQUENCE",
+            },
+            "capability_map_columns": {
+                "dataset_id",
+                "sequence_id",
+                "scene_motion",
+                "available_modalities",
+                "observation_unit",
+                "access_cost",
+                "outcome_access_state",
+                "assigned_role",
+                "claim_ceiling",
+                "notes",
+            },
+        }
+        for name, expected in exact_lists.items():
+            value = policy.get(name)
+            if (
+                not _nonempty_text_list(value)
+                or len(value) != len(set(value))
+                or set(value) != expected
+            ):
+                result.error(f"POLICY_ENUM:{name}")
+        tracks = _object(policy.get("research_tracks"))
+        expected_tracks = {
+            "CAPABILITY_DISCOVERY",
+            "DEVELOPMENT_DIAGNOSTIC",
+            "SEALED_EVALUATION",
+            "EXTERNAL_TRANSFER",
+        }
+        if tracks is None or set(tracks) != expected_tracks:
+            result.error("POLICY_RESEARCH_TRACKS")
+        else:
+            for name, track in tracks.items():
+                if not isinstance(track, dict):
+                    result.error(f"POLICY_RESEARCH_TRACK:{name}")
+                    continue
+                stages_value = track.get("allowed_stages")
+                if (
+                    not _nonempty_text_list(stages_value)
+                    or not set(stages_value).issubset(REQUIRED_POLICY_STAGES)
+                ):
+                    result.error(f"POLICY_RESEARCH_TRACK_STAGES:{name}")
+                if not _nonempty_text(track.get("purpose")):
+                    result.error(f"POLICY_RESEARCH_TRACK_PURPOSE:{name}")
 
     expected_values = {
         "default_invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
@@ -661,6 +733,40 @@ def validate_protocol(
                 result.error(f"DATA_ROLE:{index}")
             if access not in policy["outcome_access_levels"]:
                 result.error(f"OUTCOME_ACCESS:{index}")
+            if policy.get("policy_id") == DATA_DRIVEN_POLICY_ID:
+                result_access = partition.get("result_access_state")
+                observation_unit = partition.get("observation_unit")
+                split_basis = partition.get("split_basis")
+                if result_access not in policy["result_access_states"]:
+                    result.error(f"RESULT_ACCESS_STATE:{index}")
+                if observation_unit not in policy["independence_units"]:
+                    result.error(f"OBSERVATION_UNIT:{index}")
+                if not _nonempty_text(split_basis):
+                    result.error(f"SPLIT_BASIS:{index}")
+                elif split_basis in {
+                    "RANDOM_FRAME",
+                    "RANDOM_CLIP_FROM_SAME_SEQUENCE",
+                }:
+                    result.error(f"NONINDEPENDENT_SPLIT_BASIS:{index}")
+                if role in {"CONFIRMATION", "DEPLOYMENT"}:
+                    if result_access not in {
+                        "CONTENT_INSPECTED",
+                        "SEALED_UNSEEN",
+                    }:
+                        result.error(
+                            f"CONFIRMATION_RESULT_ACCESS_CONTAMINATED:{index}"
+                        )
+                    if (
+                        role == "CONFIRMATION"
+                        and partition.get("research_track")
+                        not in {"SEALED_EVALUATION", "EXTERNAL_TRANSFER"}
+                    ):
+                        result.error(f"CONFIRMATION_RESEARCH_TRACK:{index}")
+                elif result_access == "SEALED_UNSEEN":
+                    result.warn(f"SEALED_DATA_ASSIGNED_NONCONFIRMATION:{index}")
+                track = partition.get("research_track")
+                if track not in policy["research_tracks"]:
+                    result.error(f"RESEARCH_TRACK:{index}")
             for field_name in policy["required_data_partition_fields"]:
                 value = partition.get(field_name)
                 if field_name == "ancestry":
@@ -1069,11 +1175,20 @@ def validate_document(document: dict[str, Any], policy: dict[str, Any]) -> Valid
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--contract", required=True, type=Path)
-    parser.add_argument("--policy", type=Path, default=DEFAULT_POLICY)
+    parser.add_argument("--policy", type=Path)
     args = parser.parse_args()
     try:
-        policy = _load_object(args.policy.resolve())
         contract = _load_object(args.contract.resolve())
+        if args.policy is not None:
+            policy_path = args.policy.resolve()
+        elif (
+            contract.get("governance_policy_id")
+            == "PROGRESSIVE_RESEARCH_GOVERNANCE_R1"
+        ):
+            policy_path = LEGACY_POLICY
+        else:
+            policy_path = DEFAULT_POLICY
+        policy = _load_object(policy_path.resolve())
         result = validate_document(contract, policy)
         payload = result.payload(str(args.contract))
     except (OSError, ValueError, json.JSONDecodeError) as error:
