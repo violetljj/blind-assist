@@ -3,8 +3,9 @@
 - 时间：2026-07-28；执行者：violjjet。完成 [RCLE rotation-compensation mechanism audit R1](scripts/research/egomotion_compensated_looming/rotation_compensation_mechanism_audit_r1/RESULT_2026-07-28.md)：确认首轮 ADVIO pose 将官方 `wxyz` 错作 `xyzw`，且遗漏官方 `T_cam_imu` 到 OpenCV optical basis；新增 R3（含去畸变有效区域掩膜）、官方标定去畸变 A/B、yaw/pitch/roll 双符号 raw/correct/reverse 审计、source-coordinate LK 对齐和单进程连续 600-pair 执行。最终原始/去畸变高角速度窗三-pair 触发分别 `0.7083→0.9417`、`0.7083→0.8417`，旋转主导自然假响应假设被削弱，独立 rotation-compensation 路线停止并保留论文级负结果。阈值 `0.01/s`、三-pair、AUROC/F1、Android 均未改/未运行；ADVIO sequence 16 在修实现前已原子预留为 `SEALED_UNSEEN` 且未访问。
 - 时间：2026-07-28；执行者：violjjet。采用 [RCLE 数据能力驱动研究主线 R2](docs/research/rcle/RCLE_DATA_DRIVEN_RESEARCH_MAINLINE_R2_2026-07-28.md)：Discovery 默认只保留解码、时间顺序、基本身份、许可限制和成本上界，不再要求固定十秒、同源正负、精确闭合率、RGB/pose/depth 全模态或单来源全角色；数据用途分为 `CAPABILITY_DISCOVERY / DEVELOPMENT_DIAGNOSTIC / SEALED_EVALUATION`，跨来源另作 `EXTERNAL_TRANSFER`，结果访问分为 `CONTENT_INSPECTED / OUTPUT_INSPECTED / TUNED_ON / SEALED_UNSEEN`。同来源新 person/session/route/sequence 可作为独立 holdout，随机 frame/clip 切分不可。新增保留旧 R1 的治理 v2、协议 validator/tests、10 列 active capability map 和 RCLE current；ADVIO 首轮 600-pair 结果归为 `OUTPUT_INSPECTED / SINGLE_SESSION_DISCOVERY`，旧 `RGB_SEGMENT_CONFIRMATION_R1_NOT_EVALUABLE` 不变，sealed evaluation 尚未分配，Android/产品/安全仍关闭。
 ## 2026-07-27
+- 时间：2026-07-27；执行者：violjjet。独立 [RCLE source authority repair R1](docs/research/rcle/RCLE_SOURCE_AUTHORITY_REPAIR_R1_RESULT_2026-07-27.md) 只冻结 OpenLORIS corridor 与 MultiScan。OpenLORIS `corridor1-1/2` 通过 guarded HTTP range 只读 7z header 共 `495,819` bytes，完整列出 `42,601 / 17,408` members；逐文件 path/bytes/CRC32 与发布方 LFS SHA-256 或 hashed outer-TAR exact slice 绑定，member extraction、geometry access、RGB visual access、算法执行均为 0。用户接受 MultiScan `CC BY-NC 4.0` 后，受控浏览器验证 Files tree 解锁；`scene_00000_00/01` 的 exact ZIP bytes、LFS/Xet identity、`5763/7789 @ 60 Hz` 四流同步、`96.05/129.8167 s` 时长、JSONL 行数、严格递增 timestamp 与 pose fields 均闭合，只读 metadata range 共 `2,930,400` bytes。两来源独立 validator 均 `PASS / errors=[]`，authority 达到 `2/2`。随后另立 Source Discovery R1 candidate lock（SHA `c1a0ea53…a3c`），separate review 在 payload `0 bytes` 时 PASS。post-lock transport preflight 发现 OpenLORIS solid 7z 将 depth 与 color 交错共包：`39/39` 固定窗 cadence 合格，但 RGB-free authorized windows 为 `0`；独立复核 `PASS / errors=[]`。按冻结 stop rule 未下载 geometry payload、未继续 MultiScan depth、未运行 geometry/RGB、未启动 Android，[终态](docs/research/rcle/RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R1_RESULT_2026-07-27.md)保持 `EXTERNAL_COHORT_NOT_EVALUABLE / VALID`。
 - 时间：2026-07-27；执行者：violjjet。完成 [RCLE low-reference false-trigger R1](docs/research/rcle/RCLE_LOW_REFERENCE_FALSE_TRIGGER_R1_RESULT_2026-07-27.md)：在冻结四窗/967 pair 上以 baseline-only support-manager 反事实和 source-native geometry 互斥归因，198 次 geometry-below 旧触发中 local flow、rotation compensation、support-manager 分别为 `160/26/12`。只实现 `CAUSAL_THREE_PAIR_CONFIRMATION_R1`，不换窗、不补数据、不改 `0.01/s`、rotation/LK/affine/support-manager；below coverage `0.34783→0.02508`、positive `0.74276→0.70488`、positive 保留 94.90%、最大首触发额外延迟 0.20 s，四项预冻结门与独立 967-row 状态机复算均 `PASS / VALID`。首次 attribution 包装调用因 stdout 超时无产物退出，干净重启后双进程 598-pair 墙钟 84.5 s。终态 `IMPLEMENTATION_READY_FOR_CONFIRMATION / VALID`，只支持另立未见 all-real cross-source 外部验证，不产生 confirmation、Android、产品或安全权限。
-- 时间：2026-07-27；执行者：Codex。将 Qualcomm QNN HTP 正式登记为[下一默认候选后端](docs/NPU_DEFAULT_CANDIDATE.md)，同时保持生产默认 `CPU_XNNPACK`。新增机器可验证的 `DetectorBackendPolicy`：NPU 在 SM-S9280 的100图完整链路、10分钟等负载和90帧 SANPO 连续事件上取得延迟/稳定性优势，风险与反馈相对 CPU 分别 `100/100`、`90/90` 一致；但检测集合严格等价仅 `86/100`、冷启动/包体未闭合、能效未评价、共享事件生命周期仍有2次身份重建且 PASSED 退出 `0/2`。因此 `candidatePromotionReady=false`，QNN 依赖继续只存在于 benchmark，未改变 App 默认后端或生产权限。
+- 时间：2026-07-27；执行者：Codex。交付独立 `com.linnan.blindassist.npu.candidate` arm64 候选 APK，QNN 2.47 依赖未进入正式包，初始化失败禁止 CPU fallback。SM-S9280 上候选 graph finalize 成功；100图 NPU P50/P95 `12/15 ms`，风险/反馈 `100/100` 对齐 CPU，14图检测差异归因为7个阈值附近缺失、6个框几何差异、3个置信度差异。修复共享事件清除后稳定风险重复反馈，三后端90帧均 recall=1、重复提醒=0、身份重建=0、最终退出2/2。102,511,366-byte 候选通过 arm64 Android ELF 16KB检查、独立UID安装/启动/卸载；正式包路径、版本、安装时间及17文件数据指纹前后相同。随后将[NPU晋升策略](docs/NPU_DEFAULT_CANDIDATE.md)重写为 v2：只有 runtime、关键风险、提醒生命周期、持续稳定、设备路由和回滚属于阻断门；无预冻结阈值的包体/冷启动及逐框/能效诊断不得事后否决。当前唯一阻断项是正式选择器尚未实现“受支持 SM8650 走 NPU、其他设备走 CPU”，因此 `candidatePromotionReady=false`，而非因86/100严格逐框等价或能效未知。
 - 时间：2026-07-27；执行者：violjjet。完成 [CID-SIMS `floor3_1` disjoint geometry-stratified holdout R0](docs/research/rcle/RCLE_RGB_ALGORITHM_CID_SIMS_FLOOR3_1_DISJOINT_GEOMETRY_STRATIFIED_HOLDOUT_R0_RESULT_2026-07-27.md)：先冻结 W3–W11、W2 guard、20 秒选中间隔、full-pair geometry roles 与精确 `2 positive + 2 below-reference`；七个身份合格窗均 `299/299` 可评价、positive fraction `1.0`，W5/W9 因帧数不符身份门不评价，低参考窗为 `0`，终态 `GEOMETRY_STRATIFIED_WINDOWS_NOT_EVALUABLE / VALID`。selected RGB identity/cache/ledger 均未创建，RGB bytes `0`、算法未运行；独立 validator 复算 geometry ledger identity/aggregate/selection 为 `errors=[] / VALID`。新增专用 frozen runner/validator、11 项规则与 firewall 测试、8-worker guarded preflight；首个 launcher 因默认裸 Python 缺 `cv2` 在 claim 前退出，随后显式使用项目 venv 完成唯一 claim，防止将 preclaim 环境错误冒充科学运行。结果只否定 floor3_1 剩余固定网格同时提供两类角色的假设，不构成 RGB 失败、跨序列泛化或性能资格。
 - violjjet: CID-RGB R0.
 - 2026-07-27 violjjet: [approach-role R0](docs/research/rcle/RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R0_RESULT_2026-07-27.md)：EVIMO2 `sanity_ll` 13 窗/3895 pair，0 准入、replay mismatch 0，`HOLD / VALID`；无 RGB、替补或算法权限。
@@ -1425,3 +1426,50 @@
   payload identity 和 pose/depth/timestamp 绑定；OpenLORIS exact corridor 与 CoRBS
   authority 修复复核仍为 HOLD。该 discovery version 已按 stop condition 关闭；未下载候选
   payload、未读 claim-relevant RGB outcome、未消费正式 claim；Android/实时集成继续关闭。
+
+## 2026-07-27：RCLE 证据访问与传输规则纠偏
+
+- 用户明确指出“不得运行 RGB”未授权把压缩传输和 solid decoder 的瞬时经过也定义为
+  RGB 使用；该机械禁令由 agent 自行引入，R1 因此产生了人工 transport terminal。
+- 新增风险导向访问标准，将 transport presence、transient decode、内容物化、人工/
+  模型查看、claim algorithm consumption 与 selection influence 分层记录。允许在
+  identity、许可和 `40 GiB` 预算内选择 range/member/solid block/完整 archive，并允许
+  技术上不可分离的 RGB 在内存中经过后立即丢弃。
+- Source Discovery R2 access correction 的独立 stdlib review 为
+  `PASS / errors=[] / EXECUTION_AUTHORIZED`。候选、exact capture、窗口、公式、科学门槛、
+  fixed denominator 和 tie-break 全部未变；RGB 输出、缓存、查看、算法消费和选窗影响
+  仍禁止，Android 仍关闭。后续等价 transport 切换只记 execution ledger，不再反复另立
+  科学协议。
+- 纠偏后科学流程消费的唯一 candidate payload 合计 `19.843352 GiB`。OpenLORIS materialize
+  `8,518 + 3,481` 个 exact geometry 文件，MultiScan 每 capture 只物化 JSON、JSONL、
+  depth；逐项 identity/bytes/CRC/hash 审计均 PASS，RGB 持久化/查看/算法调用为 0。
+- geometry-only 运行完成全部 60 个固定窗：OpenLORIS 为
+  `34 positive / 0 below / 5 ambiguous`，MultiScan 为 `0 / 0 / 21`。独立 validator
+  从完整 pair ledger 重算 coverage、fixed-denominator fractions、连续段和角色，
+  `errors=[] / PASS`。两个来源均缺精确 `1 positive + 1 below` tuple，role-complete
+  source 为 `0/2`，科学终态保持 `EXTERNAL_COHORT_NOT_EVALUABLE`；原因是实际角色
+  不足，不再是 transport firewall。未扩候选、降门、运行 RGB 或启动 Android。
+- 交付复核发现旧 Hugging Face downloader 未随 selective-prefix 路径完成而退出：
+  它重复取得完整 `corridor1-1`，并写入 `15,961,011,157` bytes 的非稀疏
+  `corridor1-2` partial。保守累计 acquisition 为 `47.610525 GiB`，超过冻结
+  `40 GiB` 预算 `7.610525 GiB`；两个冗余进程已停止，partial 保留。该 breach 不改变
+  geometry ledgers 或角色，但 R2 completion audit 的 `PASS / within_budget=true`
+  已撤销为 `FAIL / false`。
+
+## 2026-07-27：正式 NPU 设备能力路由与回滚复验
+
+- 正式 `com.linnan.blindassist` 通过 manifest provider 接入设备能力路由：仅
+  `SM8650 + arm64-v8a + live QNN HTP FP16 capability` 走 QNN 2.47；不支持、
+  API 26–30、能力或 delegate/graph 初始化失败均记录原因并走 CPU，VM 致命错误不吞掉。
+- 最终正式 APK 在 SM-S9280 上命中 `qualcomm_qnn_htp`。100图风险、稳定风险、反馈和
+  事件状态均与 CPU `100/100` 一致，P50/P95 为 `12/15 ms`；90帧事件 recall=1、
+  关键漏报/重复提醒/事件再生均为0，最终退出率1。
+- 正式路由600秒稳定性为5938帧、9.895 FPS、0失败、无安全终止，P50/P95
+  `16/21 ms`，温度 `30.1°C → 30.1°C`，thermal status 最大0。
+- CPU 基线 APK 以精确 SHA-256 回滚并冷启动成功，随后恢复 NPU 正式包。旧“17文件”
+  指纹由错误的 `find -exec` 转义产生，已修复为逐文件枚举与单文件 SHA-256。当前设备
+  用户自有状态文件为0，因此数据保留子项记为 `NOT_EVALUABLE`；两个版本相关的
+  Android/ProfileInstaller 标记单独披露，不再伪装成用户数据。
+- 最终 APK SHA-256 为
+  `A1BD48CBDC41000477183BB8579725A9039818F4489563A9F7DE3643B966FDD5`，
+  设备安装哈希一致；候选和 benchmark 包已删除，正式路由包保留。
