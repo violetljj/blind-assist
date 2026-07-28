@@ -1,0 +1,31 @@
+{
+  "schema_version": "blindassist.research_protocol_amendment.v1",
+  "protocol_id": "RCLE_ROTATION_COMPENSATION_MECHANISM_AUDIT_R1",
+  "amendment_id": "IMPLEMENTATION_AMENDMENT_R2",
+  "stage": "DEVELOPMENT_DIAGNOSTIC",
+  "implementation_version": "ADVIO_WXYZ_TCAMIMU_CONTINUOUS_R2",
+  "trigger": "The frozen source-coordinate audit showed official_wxyz_direct opposed observed LK flow, while T_cam_imu conjugation matched it.",
+  "diagnostic_evidence": {
+    "path": "artifacts.local/evidence/rcle_rotation_compensation_mechanism_audit_r1/source_coordinate_audit_a1.json",
+    "official_wxyz_direct_median_endpoint_error_px": 8.514970539839705,
+    "official_wxyz_direct_median_direction_cosine": -0.7071037617153169,
+    "t_cam_imu_conjugated_median_endpoint_error_px": 1.5504923267423112,
+    "t_cam_imu_conjugated_median_direction_cosine": 0.9926674248846459
+  },
+  "source_pose_conversion": {
+    "quaternion_order": "wxyz",
+    "relative_pose_rotation": "R_current.T @ R_previous",
+    "camera_optical_rotation": "R_cam_imu @ relative_pose_rotation @ R_cam_imu.T",
+    "R_cam_imu_source": "official pinned iphone-03.yaml"
+  },
+  "unchanged": {
+    "source_session": "ADVIO_OFFICE03_SEQUENCE15_IPHONE",
+    "pair_count": 600,
+    "pose_only_strata": "unchanged",
+    "threshold_per_s": 0.01,
+    "required_consecutive_pairs": 3,
+    "single_process_state": true,
+    "future_sealed_session": "ADVIO_OFFICE04_SEQUENCE16_IPHONE"
+  },
+  "authority": "DEVELOPMENT_DIAGNOSTIC_ONLY"
+}

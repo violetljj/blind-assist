@@ -130,16 +130,21 @@ class EcologicalResponseDiscoveryR0Test(unittest.TestCase):
             all(row["outcome_access_state"] in allowed_states for row in rows)
         )
 
-    def test_current_activates_discovery_without_rewriting_old_terminal(
+    def test_current_advances_to_mechanism_audit_without_rewriting_old_terminal(
         self,
     ) -> None:
         repo_root = Path(__file__).resolve().parents[4]
         current = (
             repo_root / "docs/research/rcle/README.md"
         ).read_text(encoding="utf-8")
-        self.assertIn("ECOLOGICAL_DISCOVERY_ACTIVE", current)
+        self.assertIn(
+            "ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE",
+            current,
+        )
         self.assertIn("RGB_SEGMENT_CONFIRMATION_R1_NOT_EVALUABLE", current)
-        self.assertIn("SEALED EVALUATION: NOT_YET_ALLOCATED", current)
+        self.assertIn(
+            "ADVIO_OFFICE04_SEQUENCE16_IPHONE_RESERVED_UNSEEN", current
+        )
 
 
 if __name__ == "__main__":

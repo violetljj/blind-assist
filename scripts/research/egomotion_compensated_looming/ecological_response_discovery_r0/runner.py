@@ -31,12 +31,39 @@ SOURCE_ID = "ADVIO_OFFICE03_SEQUENCE15_IPHONE"
 CALIBRATION_URL = (
     "https://github.com/AaltoVision/ADVIO/blob/master/calibration/iphone-03.yaml"
 )
+CALIBRATION_PINNED_URL = (
+    "https://raw.githubusercontent.com/AaltoVision/ADVIO/"
+    "4db6093d4bc632a8c10ae00f99a98cce0699bd0a/calibration/iphone-03.yaml"
+)
+CALIBRATION_SHA256 = (
+    "725aa78baf117ef150c2c43a1161d51994f812e28b2bbfefb5c0224809f55cf2"
+)
 INTRINSIC = np.asarray(
     ((1082.4, 0.0, 364.6778), (0.0, 1084.4, 643.3080), (0.0, 0.0, 1.0)),
     dtype=np.float64,
 )
 DISTORTION = np.asarray(
     (0.0366, 0.0803, 0.000783, -0.000215), dtype=np.float64
+)
+T_CAM_IMU_ROTATION = np.asarray(
+    (
+        (
+            0.9999763379093255,
+            -0.004079205042965442,
+            -0.005539287650170447,
+        ),
+        (
+            -0.004066386342107199,
+            -0.9999890330121858,
+            0.0023234365646622014,
+        ),
+        (
+            -0.00554870467502187,
+            -0.0023008567036498766,
+            -0.9999819588046867,
+        ),
+    ),
+    dtype=np.float64,
 )
 SEGMENT_SECONDS = 5.0
 
@@ -135,6 +162,40 @@ def quaternion_rotation_xyzw(quaternion: np.ndarray) -> np.ndarray:
     )
 
 
+def quaternion_rotation_wxyz(quaternion: np.ndarray) -> np.ndarray:
+    w, x, y, z = np.asarray(quaternion, dtype=np.float64)
+    return np.asarray(
+        (
+            (
+                1.0 - 2.0 * (y * y + z * z),
+                2.0 * (x * y - z * w),
+                2.0 * (x * z + y * w),
+            ),
+            (
+                2.0 * (x * y + z * w),
+                1.0 - 2.0 * (x * x + z * z),
+                2.0 * (y * z - x * w),
+            ),
+            (
+                2.0 * (x * z - y * w),
+                2.0 * (y * z + x * w),
+                1.0 - 2.0 * (x * x + y * y),
+            ),
+        ),
+        dtype=np.float64,
+    )
+
+
+def quaternion_rotation(
+    quaternion: np.ndarray, component_order: str
+) -> np.ndarray:
+    if component_order == "xyzw":
+        return quaternion_rotation_xyzw(quaternion)
+    if component_order == "wxyz":
+        return quaternion_rotation_wxyz(quaternion)
+    raise ValueError(f"UNSUPPORTED_QUATERNION_COMPONENT_ORDER:{component_order}")
+
+
 def slerp_xyzw(left: np.ndarray, right: np.ndarray, fraction: float) -> np.ndarray:
     q0 = np.asarray(left, dtype=np.float64)
     q1 = np.asarray(right, dtype=np.float64)
@@ -185,12 +246,26 @@ def pair_geometry(
     previous_pose: tuple[np.ndarray, np.ndarray],
     current_pose: tuple[np.ndarray, np.ndarray],
     dt_seconds: float,
+    *,
+    quaternion_component_order: str = "xyzw",
+    pose_to_camera_rotation: np.ndarray | None = None,
 ) -> tuple[np.ndarray, float, float]:
     previous_position, previous_quaternion = previous_pose
     current_position, current_quaternion = current_pose
-    previous_rotation = quaternion_rotation_xyzw(previous_quaternion)
-    current_rotation = quaternion_rotation_xyzw(current_quaternion)
+    previous_rotation = quaternion_rotation(
+        previous_quaternion, quaternion_component_order
+    )
+    current_rotation = quaternion_rotation(
+        current_quaternion, quaternion_component_order
+    )
     current_from_previous = current_rotation.T @ previous_rotation
+    if pose_to_camera_rotation is not None:
+        basis = np.asarray(pose_to_camera_rotation, dtype=np.float64)
+        if basis.shape != (3, 3):
+            raise ValueError("POSE_TO_CAMERA_ROTATION_SHAPE")
+        current_from_previous = (
+            basis @ current_from_previous @ basis.T
+        )
     cosine = min(
         1.0,
         max(-1.0, (float(np.trace(current_from_previous)) - 1.0) / 2.0),
@@ -201,6 +276,76 @@ def pair_geometry(
     )
     homography = INTRINSIC @ current_from_previous @ np.linalg.inv(INTRINSIC)
     return homography, angular_speed, translation_speed
+
+
+def build_undistort_maps(
+    width: int, height: int
+) -> tuple[np.ndarray, np.ndarray]:
+    return cv2.initUndistortRectifyMap(
+        INTRINSIC,
+        DISTORTION,
+        None,
+        INTRINSIC,
+        (width, height),
+        cv2.CV_32FC1,
+    )
+
+
+def preprocess_frame(
+    bgr: np.ndarray,
+    resize_scale: float,
+    undistort_maps: tuple[np.ndarray, np.ndarray] | None,
+) -> np.ndarray:
+    return preprocess_frame_with_mask(
+        bgr, resize_scale, undistort_maps
+    )[0]
+
+
+def preprocess_frame_with_mask(
+    bgr: np.ndarray,
+    resize_scale: float,
+    undistort_maps: tuple[np.ndarray, np.ndarray] | None,
+) -> tuple[np.ndarray, np.ndarray]:
+    prepared = bgr
+    valid = np.full(bgr.shape[:2], 255, dtype=np.uint8)
+    if undistort_maps is not None:
+        prepared = cv2.remap(
+            prepared,
+            undistort_maps[0],
+            undistort_maps[1],
+            interpolation=cv2.INTER_LINEAR,
+            borderMode=cv2.BORDER_CONSTANT,
+            borderValue=0,
+        )
+        map_x, map_y = undistort_maps
+        height, width = bgr.shape[:2]
+        valid = np.where(
+            (map_x >= 0.0)
+            & (map_x < width - 1.0)
+            & (map_y >= 0.0)
+            & (map_y < height - 1.0),
+            255,
+            0,
+        ).astype(np.uint8)
+    if resize_scale != 1.0:
+        prepared = cv2.resize(
+            prepared,
+            None,
+            fx=resize_scale,
+            fy=resize_scale,
+            interpolation=cv2.INTER_AREA,
+        )
+        valid = cv2.resize(
+            valid,
+            None,
+            fx=resize_scale,
+            fy=resize_scale,
+            interpolation=cv2.INTER_NEAREST,
+        )
+    return (
+        cv2.cvtColor(prepared, cv2.COLOR_BGR2GRAY),
+        np.ascontiguousarray(valid),
+    )
 
 
 def global_image_scale_proxy(
@@ -614,11 +759,17 @@ def run(
     duration_s: float | None = None,
     progress_every: int = 100,
     resize_scale: float = 1.0,
+    quaternion_component_order: str = "xyzw",
+    distortion_correction: bool = False,
+    pose_to_camera_rotation: np.ndarray | None = None,
+    evidence_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if output_dir.exists():
         raise FileExistsError("OUTPUT_DIRECTORY_EXISTS")
     if not (0.0 < resize_scale <= 1.0):
         raise ValueError("RESIZE_SCALE_MUST_BE_IN_OPEN_CLOSED_UNIT_INTERVAL")
+    if quaternion_component_order not in {"xyzw", "wxyz"}:
+        raise ValueError("UNSUPPORTED_QUATERNION_COMPONENT_ORDER")
     if start_time_s is not None and start_frame is not None:
         raise ValueError("START_TIME_AND_START_FRAME_ARE_MUTUALLY_EXCLUSIVE")
     if start_frame is not None and start_frame < 0:
@@ -650,6 +801,11 @@ def run(
     if (width, height) != (720, 1280):
         raise ValueError(f"VIDEO_SHAPE:{width}x{height}")
     timestamps = frame_rows[:, 0]
+    undistort_maps = (
+        build_undistort_maps(width, height)
+        if distortion_correction
+        else None
+    )
     first_index = (
         start_frame
         if start_frame is not None
@@ -680,15 +836,9 @@ def run(
     ok, previous_bgr = capture.read()
     if not ok:
         raise ValueError("VIDEO_FIRST_FRAME_DECODE_FAILED")
-    if resize_scale != 1.0:
-        previous_bgr = cv2.resize(
-            previous_bgr,
-            None,
-            fx=resize_scale,
-            fy=resize_scale,
-            interpolation=cv2.INTER_AREA,
-        )
-    previous = cv2.cvtColor(previous_bgr, cv2.COLOR_BGR2GRAY)
+    previous, previous_valid = preprocess_frame_with_mask(
+        previous_bgr, resize_scale, undistort_maps
+    )
     repo_root = Path(__file__).resolve().parents[4]
     protocol = load_protocol(repo_root)
     cv2.setNumThreads(1)
@@ -704,15 +854,9 @@ def run(
         ok, current_bgr = capture.read()
         if not ok:
             raise ValueError(f"VIDEO_FRAME_DECODE_FAILED:{current_index}")
-        if resize_scale != 1.0:
-            current_bgr = cv2.resize(
-                current_bgr,
-                None,
-                fx=resize_scale,
-                fy=resize_scale,
-                interpolation=cv2.INTER_AREA,
-            )
-        current = cv2.cvtColor(current_bgr, cv2.COLOR_BGR2GRAY)
+        current, current_valid = preprocess_frame_with_mask(
+            current_bgr, resize_scale, undistort_maps
+        )
         previous_timestamp = float(timestamps[current_index - 1])
         current_timestamp = float(timestamps[current_index])
         dt_seconds = current_timestamp - previous_timestamp
@@ -721,7 +865,11 @@ def run(
         previous_pose = interpolate_pose(poses, previous_timestamp)
         current_pose = interpolate_pose(poses, current_timestamp)
         homography, angular_speed, translation_speed = pair_geometry(
-            previous_pose, current_pose, dt_seconds
+            previous_pose,
+            current_pose,
+            dt_seconds,
+            quaternion_component_order=quaternion_component_order,
+            pose_to_camera_rotation=pose_to_camera_rotation,
         )
         if resize_scale != 1.0:
             scale_matrix = np.array(
@@ -746,6 +894,8 @@ def run(
             homography,
             protocol,
             state,
+            previous_valid,
+            current_valid,
         )
         image_scale, image_scale_support, image_scale_reason = (
             global_image_scale_proxy(previous, current, dt_seconds)
@@ -781,12 +931,15 @@ def run(
         )
         rows.append(row)
         previous = current
+        previous_valid = current_valid
         completed = pair_offset + 1
         if completed % progress_every == 0 or completed == candidate_pairs:
             elapsed = time.perf_counter() - started
             progress = {
                 "schema": "rcle.ecological_response.discovery.progress.v1",
-                "protocol_id": PROTOCOL_ID,
+                "protocol_id": (
+                    evidence_context or {}
+                ).get("protocol_id", PROTOCOL_ID),
                 "phase": "PAIR_EVALUATION",
                 "completed_units": completed,
                 "total_units": candidate_pairs,
@@ -856,13 +1009,21 @@ def run(
     ]
     result = {
         "schema": "rcle.ecological_response.discovery.summary.v1",
-        "protocol_id": PROTOCOL_ID,
+        "protocol_id": (evidence_context or {}).get(
+            "protocol_id", PROTOCOL_ID
+        ),
         "governance_policy_id": (
             "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2"
         ),
-        "research_track": "CAPABILITY_DISCOVERY",
-        "outcome_access_state": "OUTPUT_INSPECTED",
-        "stage": "CAPABILITY_DISCOVERY",
+        "research_track": (evidence_context or {}).get(
+            "research_track", "CAPABILITY_DISCOVERY"
+        ),
+        "outcome_access_state": (evidence_context or {}).get(
+            "outcome_access_state", "OUTPUT_INSPECTED"
+        ),
+        "stage": (evidence_context or {}).get(
+            "stage", "CAPABILITY_DISCOVERY"
+        ),
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "source": {
             "source_id": SOURCE_ID,
@@ -880,9 +1041,25 @@ def run(
             "pose_path": pose_path.as_posix(),
             "pose_sha256": sha256_file(pose_path),
             "calibration_url": CALIBRATION_URL,
+            "calibration_pinned_url": CALIBRATION_PINNED_URL,
+            "calibration_sha256": CALIBRATION_SHA256,
             "intrinsic": INTRINSIC.tolist(),
             "distortion": DISTORTION.tolist(),
-            "distortion_correction_applied": False,
+            "distortion_model": "radial_tangential_k1_k2_p1_p2",
+            "distortion_correction_applied": distortion_correction,
+            "distortion_correction_recipe": (
+                "initUndistortRectifyMap_same_K_then_remap_with_valid_mask_before_resize"
+                if distortion_correction
+                else "none"
+            ),
+            "pose_quaternion_component_order": (
+                quaternion_component_order
+            ),
+            "pose_to_camera_rotation": (
+                np.asarray(pose_to_camera_rotation).tolist()
+                if pose_to_camera_rotation is not None
+                else None
+            ),
         },
         "execution": {
             "frame_index_start_zero_based": first_index,
@@ -910,6 +1087,11 @@ def run(
             ],
             "threshold_per_s": THRESHOLD,
             "required_consecutive_pairs": REQUIRED_CONSECUTIVE_PAIRS,
+            "single_process_pair_state_continuous": True,
+            "support_manager_baseline_pair_count": sum(
+                bool(row.get("support_manager", {}).get("baseline_only"))
+                for row in rows
+            ),
         },
         "methods": {
             "raw_local_expansion": method_summary(
@@ -989,6 +1171,8 @@ def run(
             "old_rgb_segment_confirmation_r1_terminal_changed": False,
         },
     }
+    if evidence_context:
+        result["evidence_context"] = evidence_context
     ledger_sha = write_jsonl(output_dir / "pair_ledger.jsonl", rows)
     segment_sha = write_jsonl(
         output_dir / "segment_summary.jsonl", segments

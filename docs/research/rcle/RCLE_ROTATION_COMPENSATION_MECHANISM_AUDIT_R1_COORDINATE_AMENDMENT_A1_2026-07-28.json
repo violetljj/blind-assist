@@ -1,0 +1,33 @@
+{
+  "schema_version": "blindassist.research_protocol_amendment.v1",
+  "protocol_id": "RCLE_ROTATION_COMPENSATION_MECHANISM_AUDIT_R1",
+  "amendment_id": "COORDINATE_AMENDMENT_A1",
+  "stage": "DEVELOPMENT_DIAGNOSTIC",
+  "reason": "The official source calls ground truth a camera pose, but its visualization uses a negative-z camera model and calibration exposes T_cam_imu. A fixed candidate comparison is required instead of guessing a basis transform.",
+  "selection": {
+    "window": "pre-frozen high-angular-speed pairs 343..462",
+    "image_arm": "official-calibration undistorted half-resolution",
+    "selection_changed_after_rcle_output": false
+  },
+  "fixed_candidates": [
+    "identity_no_rotation",
+    "official_wxyz_direct",
+    "official_wxyz_reverse",
+    "legacy_xyzw_direct",
+    "negative_z_basis_conjugated",
+    "t_cam_imu_rotation_conjugated"
+  ],
+  "diagnostic": {
+    "observed": "forward-backward checked sparse LK displacement",
+    "predicted": "pose homography displacement at identical previous-frame points",
+    "metrics": ["median endpoint error pixels", "median direction cosine", "per-pair winner count"],
+    "purpose": "coordinate convention diagnosis only"
+  },
+  "forbidden": [
+    "RCLE threshold or temporal-rule changes",
+    "window reselection",
+    "AUROC or F1",
+    "performance or generalization claim",
+    "sealed evaluation access"
+  ]
+}

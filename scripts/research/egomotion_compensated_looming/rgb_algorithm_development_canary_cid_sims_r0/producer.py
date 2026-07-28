@@ -310,6 +310,8 @@ def _evaluate_pair(
     homography: np.ndarray,
     protocol: dict[str, Any],
     state: PairState,
+    previous_valid_mask: np.ndarray | None = None,
+    current_valid_mask: np.ndarray | None = None,
 ) -> dict[str, Any]:
     dt = float(current_timestamp - previous_timestamp)
     lk_parameters = protocol["sparse_lk"]
@@ -317,9 +319,23 @@ def _evaluate_pair(
     minimum_common = int(
         affine_parameters["minimum_common_evaluable_cells_per_pair"]
     )
-    valid = np.full(previous.shape, 255, dtype=np.uint8)
+    previous_valid = (
+        np.full(previous.shape, 255, dtype=np.uint8)
+        if previous_valid_mask is None
+        else np.ascontiguousarray(previous_valid_mask, dtype=np.uint8)
+    )
+    current_valid = (
+        np.full(current.shape, 255, dtype=np.uint8)
+        if current_valid_mask is None
+        else np.ascontiguousarray(current_valid_mask, dtype=np.uint8)
+    )
+    if (
+        previous_valid.shape != previous.shape
+        or current_valid.shape != current.shape
+    ):
+        raise ValueError("PAIR_VALID_MASK_SHAPE_MISMATCH")
     compensation = compensate_current_to_previous(
-        current, valid, valid, homography
+        current, current_valid, previous_valid, homography
     )
     if compensation.overlap_fraction < 0.75:
         state.survivors = None
@@ -335,9 +351,11 @@ def _evaluate_pair(
             "trigger": False,
         }
 
-    initial_points = detect_fixed_grid_features(previous, valid, lk_parameters)
+    initial_points = detect_fixed_grid_features(
+        previous, previous_valid, lk_parameters
+    )
     raw_tracks = track_features(
-        previous, current, initial_points, valid, lk_parameters
+        previous, current, initial_points, current_valid, lk_parameters
     )
     compensated_tracks = track_features(
         previous,
@@ -354,7 +372,12 @@ def _evaluate_pair(
     )
 
     baseline_observable = track_observable_points(
-        previous, current, initial_points, valid, valid, lk_parameters
+        previous,
+        current,
+        initial_points,
+        previous_valid,
+        current_valid,
+        lk_parameters,
     )
     activated: tuple[int, ...] = ()
     raw_carry = observable_evaluation._empty_diagnostics()
@@ -375,15 +398,15 @@ def _evaluate_pair(
                 previous,
                 current,
                 state.survivors.current_points,
-                valid,
-                valid,
+                previous_valid,
+                current_valid,
                 lk_parameters,
             )
             compensated_carry_all = track_observable_points(
                 previous,
                 compensation.image,
                 state.survivors.current_points,
-                valid,
+                previous_valid,
                 compensation.valid_mask,
                 lk_parameters,
             )
@@ -391,7 +414,7 @@ def _evaluate_pair(
                 state.survivors.current_points,
                 state.survivors.current_points - state.survivors.previous_points,
                 raw_carry_all,
-                valid,
+                current_valid,
                 prior_dt_seconds=state.dt_seconds,
                 current_dt_seconds=dt,
             )
@@ -433,7 +456,7 @@ def _evaluate_pair(
             for cell_index in activated:
                 points = select_spatial_supplements(
                     previous,
-                    valid,
+                    previous_valid,
                     raw_cells[cell_index].region,
                     np.vstack((existing, *selected)) if selected else existing,
                     exclusions,
@@ -448,15 +471,15 @@ def _evaluate_pair(
                 previous,
                 current,
                 supplement_points,
-                valid,
-                valid,
+                previous_valid,
+                current_valid,
                 lk_parameters,
             )
             compensated_supplements = track_observable_points(
                 previous,
                 compensation.image,
                 supplement_points,
-                valid,
+                previous_valid,
                 compensation.valid_mask,
                 lk_parameters,
             )
@@ -762,4 +785,3 @@ def run(
         json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
     )
     return result
-

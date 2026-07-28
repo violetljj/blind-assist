@@ -1,8 +1,8 @@
 # RCLE 研究主线
 
-状态：`current / ECOLOGICAL_DISCOVERY_ACTIVE`
+状态：`current / ROTATION_MECHANISM_NEGATIVE / REFERENCE_TRACK_DIAGNOSIS_DESIGN_ONLY`
 
-最后核验：2026-07-28 19:20（Asia/Hong_Kong）
+最后核验：2026-07-28 19:58（Asia/Hong_Kong）
 
 ## 当前结论
 
@@ -10,11 +10,12 @@ RCLE-RF 仍是 BlindAssist 的论文研究主线，但研究方法已经从“�
 改为“数据能力驱动、分阶段提高证据强度”：
 
 ```text
-CURRENT STUDY: RCLE_ECOLOGICAL_RESPONSE_DISCOVERY_R0
-CURRENT TRACK: CAPABILITY_DISCOVERY
-CURRENT RESULT ACCESS: OUTPUT_INSPECTED
-CURRENT CLAIM CEILING: SINGLE_SESSION_DISCOVERY
-SEALED EVALUATION: NOT_YET_ALLOCATED
+CURRENT STUDY: RCLE_REFERENCE_TRACK_FAILURE_DIAGNOSIS_R0
+CURRENT TRACK: DEVELOPMENT_DIAGNOSTIC_DESIGN_ONLY
+CURRENT RESULT ACCESS: NOT_STARTED
+CURRENT CLAIM CEILING: IMPLEMENTATION_AND_SINGLE_SESSION_MECHANISM_DIAGNOSTIC
+AUDIT OUTCOME: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
+SEALED EVALUATION: ADVIO_OFFICE04_SEQUENCE16_IPHONE_RESERVED_UNSEEN
 ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 ```
 
@@ -42,8 +43,8 @@ ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 | 轨道 | 用途 | 当前状态 |
 | --- | --- | --- |
 | `CAPABILITY_DISCOVERY` | 观察真实响应、支持率和失败模式 | `ACTIVE` |
-| `DEVELOPMENT_DIAGNOSTIC` | 在明确污染的数据上修实现、调候选 | `NOT_STARTED_FOR_R2` |
-| `SEALED_EVALUATION` | 在算法与指标冻结后做 session 级独立评估 | `NOT_ALLOCATED` |
+| `DEVELOPMENT_DIAGNOSTIC` | 在明确污染的数据上修实现、调候选 | `ROTATION R1 COMPLETE / REFERENCE TRACK R0 DESIGN ONLY` |
+| `SEALED_EVALUATION` | 在算法与指标冻结后做 session 级独立评估 | `ADVIO sequence 16 RESERVED / NOT EXECUTABLE` |
 
 跨来源测试单独称为 `EXTERNAL_TRANSFER`，不再和普通同来源 session holdout 混为
 一谈，也不是当前 Discovery 的前置条件。
@@ -90,6 +91,21 @@ Discovery 允许 RCLE 胜出、部分有效、没有优势，或者被更简单 
 它是一个已查看输出的单 session、半分辨率、分块执行诊断，不能产生 performance、
 generalization 或 causal confirmation。
 
+机制审计已完成，详见
+[R1 结果](../../../scripts/research/egomotion_compensated_looming/rotation_compensation_mechanism_audit_r1/RESULT_2026-07-28.md)：
+
+- 首轮把官方 `wxyz` 当成 `xyzw`，并遗漏 `T_cam_imu` pose-to-optical basis；
+- `R_current.T @ R_previous` 与 current-to-previous warp 的正负号本身正确；
+- 合成 yaw/pitch/roll 的 correct arm 全部优于 raw/reverse；
+- 最终 R3 在原始/去畸变高角速度窗把三-pair 触发分别从
+  `0.7083→0.9417`、`0.7083→0.8417`；
+- 去畸变影响总体响应，但不救回补偿；七 chunk 状态重置已由单进程连续运行消除。
+
+因此当前独立 rotation-compensation 路线停止，允许形成论文级负结果。受控旋转有效
+只支持把 RCLE 保留为局部机制特征，不能证明其单独足够。未访问的 ADVIO office04
+sequence 16 已在修实现前原子预留为 future `SEALED_UNSEEN`，在算法和指标冻结前
+禁止下载、解码或运行。
+
 ## Discovery 的低成本操作门
 
 数据进入 Discovery 只要求：
@@ -127,8 +143,10 @@ generalization 或 causal confirmation。
 | --- | --- |
 | 自然视频 Capability Discovery | `AUTHORIZED / ACTIVE` |
 | 已查看数据的失败分析和回归 | `AUTHORIZED` |
-| 修改算法或阈值 | `NOT_YET_STARTED / MUST_RECLASSIFY_AS_TUNED_ON` |
-| session 级 sealed evaluation | `NOT_ALLOCATED` |
+| rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP` |
+| reference-track failure diagnosis R0 | `SELECTED / DESIGN_ONLY / NOT_STARTED` |
+| 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |
+| session 级 sealed evaluation | `RESERVED_NOT_EXECUTABLE` |
 | performance / generalization | `NOT_AUTHORIZED` |
 | Android / host replay /主动告警 | `NOT_AUTHORIZED` |
 | 真人、产品、安全或生产结论 | `NOT_AUTHORIZED` |
@@ -138,15 +156,16 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 ## 下一步
 
-按信息增益顺序执行：
+唯一已选择的下一实验见
+[reference-track failure diagnosis R0](RCLE_REFERENCE_TRACK_FAILURE_DIAGNOSIS_R0_DESIGN_2026-07-28.md)：
 
-1. 在现有 ADVIO Discovery 上做旋转方向/坐标系、畸变和高低角速度的低成本机制审计；
-2. 选择容易获得的自然行走 session，每个先跑 10–30 秒连续片段，不要求一个来源
-   同时承担全部角色；
-3. 根据真实失败模式决定是否进入 `DEVELOPMENT_DIAGNOSTIC`；
-4. 在任何算法调试前，把未来 evaluation 按 person/session/route/sequence 原子单位
-   写入能力表并标为 `SEALED_UNSEEN`；
-5. 只有冻结算法、标签、指标、缺失处理和 session split 后，才运行
-   `SEALED_EVALUATION`。
+1. 只使用已 `TUNED_ON` 的 ADVIO sequence15 high/low 冻结窗；
+2. 只允许一个 CoTracker3 offline 参考模型，先冻结代码、权重、query、visibility、
+   缺失处理、资源预算与判读容差；
+3. 区分 tracker-limited、rotation-only-model-limited 与
+   `FAILURE_SOURCE_NOT_EVALUABLE`，不把参考模型当真值；
+4. 本设计不授权下载或执行；预飞闭合后才可另行启动一次 Development Diagnostic；
+5. 不增加 bearing、不扩自然 session、不访问 ADVIO sequence16、不进入路径走廊或
+   Android。
 
 当前不继续旧公开数据市场漫游，不自动创建 formal claim，不进入 Android。
