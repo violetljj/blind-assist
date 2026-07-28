@@ -112,11 +112,24 @@ notes
 
 ADVIO office03 sequence 15 的起始连续 600 pair 已作为
 `CAPABILITY_DISCOVERY / OUTPUT_INSPECTED` 运行。它只支持单 session 响应描述，
-不支持性能或泛化。下一步先审计旋转方向、畸变和运动分层，再扩自然 session。
+不支持性能或泛化。随后 rotation R3 修正了 quaternion、`T_cam_imu`、去畸变有效
+区域与连续状态，并在 metadata-only 冻结的 sequence13、14、15、17 各运行一个
+`10.0159–10.0175 s` 连续片段；sequence16 在修实现前保留为 `SEALED_UNSEEN`，
+未访问。
+
+[Natural-session expansion R0](RCLE_NATURAL_SESSION_EXPANSION_DISCOVERY_R0_RESULT_2026-07-28.md)
+只按四个 capture session 报告响应、支持率、固定分母触发密度、角速度关联和失败
+类型。sequence13、15、17 在各自最高 20% 角速度层中同时出现 compensated 触发密度
+与 absolute response 高于 raw，达到预冻结的多 session 路线停止条件；sequence14
+未恶化。没有 pooled pair 样本量、AUROC/F1 或 sealed session 结果。
 
 ## 停止与升级
 
 - 如果机制审计发现坐标或实现错误：修复后进入新版本 Development；
-- 如果 RCLE 在多个自然场景持续无增益：允许停止 RCLE 主路线并保留负结果；
+- 如果 RCLE 在多个自然场景持续无增益：允许停止相应机制路线并保留负结果；
 - 如果出现稳定、可复现的场景优势：冻结实现并预留 session 级 evaluation；
 - 不因 Discovery 正结果自动进入 Android、产品或安全路径。
+
+Natural-session R0 已触发 standalone rotation 的停止条件。下一机制诊断转向步态
+振荡、运动模糊、低纹理和 flow-quality gate；不立即实现 reference-track、
+temporal consistency 或 bearing。

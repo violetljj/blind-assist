@@ -1,0 +1,157 @@
+{
+  "schema": "rcle.natural_session_expansion.discovery.contract.v1",
+  "protocol_id": "RCLE_NATURAL_SESSION_EXPANSION_DISCOVERY_R0",
+  "frozen_at_local": "2026-07-28",
+  "status": "METADATA_ONLY_FROZEN_EXECUTION_AUTHORIZED_FOR_DISCOVERY_SESSIONS",
+  "research_question": "Across fixed continuous natural first-person capture sessions, what response, support, trigger-density, angular-speed association and failure patterns does the unchanged RCLE R3 exhibit?",
+  "observational_unit": "CAPTURE_SESSION",
+  "longitudinal_unit": "PAIR_WITHIN_SESSION_NOT_AN_INDEPENDENT_SAMPLE",
+  "source": {
+    "dataset_id": "ADVIO",
+    "publisher": "AaltoVision",
+    "record_id": "1476931",
+    "official_repository": "https://github.com/AaltoVision/ADVIO",
+    "record_api": "https://zenodo.org/api/records/1476931",
+    "license": "CC-BY-NC-4.0",
+    "official_metadata_basis": "ADVIO sequences 13-17 are distinct Office capture sessions; iPhone video is nominally 60 Hz and source pose is nominally 100 Hz."
+  },
+  "segment_rule": {
+    "selection_basis": "metadata-only deterministic prefix; no RGB or RCLE outcome used",
+    "frame_start_zero_based": 0,
+    "candidate_pair_count": 601,
+    "frame_end_exclusive_zero_based": 602,
+    "duration_acceptance_s": {
+      "minimum": 10.0,
+      "maximum": 30.0
+    },
+    "continuity": "one uninterrupted frame/timestamp chain; no chunking or pair-state reset",
+    "failure_disposition": "NOT_EVALUABLE; do not replace the segment"
+  },
+  "sessions": [
+    {
+      "session_id": "ADVIO_OFFICE01_SEQUENCE13_IPHONE",
+      "archive": "advio-13.zip",
+      "archive_bytes": 137269248,
+      "archive_md5": "f838f36f4b6aa3c9a2375a39e7a26128",
+      "official_scene_metadata": "Office 01; indoor; stairs; low people",
+      "role": "CAPABILITY_DISCOVERY",
+      "pre_run_access_state": "CONTENT_UNINSPECTED_FOR_THIS_PROTOCOL",
+      "algorithm_execution_authorized": true
+    },
+    {
+      "session_id": "ADVIO_OFFICE02_SEQUENCE14_IPHONE",
+      "archive": "advio-14.zip",
+      "archive_bytes": 139189043,
+      "archive_md5": "04b1a475813d93b7f198945b588350be",
+      "official_scene_metadata": "Office 02; indoor; stairs; elevator; low people",
+      "role": "CAPABILITY_DISCOVERY",
+      "pre_run_access_state": "CONTENT_UNINSPECTED_FOR_THIS_PROTOCOL",
+      "algorithm_execution_authorized": true
+    },
+    {
+      "session_id": "ADVIO_OFFICE03_SEQUENCE15_IPHONE",
+      "archive": "advio-15.zip",
+      "archive_bytes": 54845329,
+      "archive_md5": "f5febcd087acd90531aea98efff71c7c",
+      "official_scene_metadata": "Office 03; indoor; no people",
+      "role": "DEVELOPMENT_DIAGNOSTIC",
+      "pre_run_access_state": "TUNED_ON",
+      "algorithm_execution_authorized": true,
+      "note": "Prior RCLE output exists for the first 600 pairs; this fixed 601-pair session remains Development only."
+    },
+    {
+      "session_id": "ADVIO_OFFICE05_SEQUENCE17_IPHONE",
+      "archive": "advio-17.zip",
+      "archive_bytes": 160543225,
+      "archive_md5": "ed86ea48759576323e50a16a44f6cd85",
+      "official_scene_metadata": "Office 05; indoor; stairs; no people",
+      "role": "CAPABILITY_DISCOVERY",
+      "pre_run_access_state": "CONTENT_UNINSPECTED_FOR_THIS_PROTOCOL",
+      "algorithm_execution_authorized": true
+    },
+    {
+      "session_id": "ADVIO_OFFICE04_SEQUENCE16_IPHONE",
+      "archive": "advio-16.zip",
+      "archive_bytes": 133025378,
+      "archive_md5": "19eb64584a43af468ffabd6b4305ac91",
+      "official_scene_metadata": "Office 04; indoor; stairs; no people",
+      "role": "SEALED_EVALUATION",
+      "pre_run_access_state": "SEALED_UNSEEN",
+      "algorithm_execution_authorized": false,
+      "firewall": "Do not download, extract, resolve a payload path, decode, inspect content, or run any algorithm in R0."
+    }
+  ],
+  "coverage_matrix": {
+    "normal_walking": {
+      "frozen_target_sessions": [13, 14, 15, 17],
+      "pre_run_status": "EXPECTED_FROM_DATASET_CAPTURE_MODE",
+      "missing_rule": "NOT_EVALUABLE_NO_REPLACEMENT"
+    },
+    "head_turn": {
+      "frozen_target_sessions": [13, 14, 15, 17],
+      "pre_run_status": "TO_BE_MEASURED_FROM_SOURCE_POSE_IN_FIXED_SEGMENT",
+      "missing_rule": "NOT_EVALUABLE_NO_REPLACEMENT"
+    },
+    "static_approach": {
+      "frozen_target_sessions": [13, 14, 15, 17],
+      "pre_run_status": "NOT_LABELED_BY_OFFICIAL_METADATA",
+      "missing_rule": "NOT_EVALUABLE_NO_REPLACEMENT"
+    },
+    "crossing": {
+      "frozen_target_sessions": [13, 14],
+      "pre_run_status": "LOW_PEOPLE_AT_SESSION_LEVEL_ONLY",
+      "missing_rule": "NOT_EVALUABLE_NO_REPLACEMENT"
+    },
+    "motion_blur": {
+      "frozen_target_sessions": [13, 14, 15, 17],
+      "pre_run_status": "NOT_LABELED_BY_OFFICIAL_METADATA",
+      "missing_rule": "NOT_EVALUABLE_NO_REPLACEMENT"
+    },
+    "gait_oscillation": {
+      "frozen_target_sessions": [13, 14, 15, 17],
+      "pre_run_status": "EXPECTED_FROM_HANDHELD_PEDESTRIAN_CAPTURE_MODE",
+      "missing_rule": "NOT_EVALUABLE_NO_REPLACEMENT"
+    }
+  },
+  "algorithm_lock": {
+    "implementation_version": "ADVIO_WXYZ_TCAMIMU_VALIDMASK_CONTINUOUS_R3",
+    "core_module": "scripts/research/egomotion_compensated_looming/ecological_response_discovery_r0/runner.py",
+    "threshold_per_s": 0.01,
+    "threshold_comparison": "strictly_greater_than",
+    "required_consecutive_pairs": 3,
+    "pair_state": "one PairState per session, continuous across all 601 pairs",
+    "quaternion_component_order": "wxyz",
+    "pose_to_camera_rotation": "T_CAM_IMU_ROTATION",
+    "distortion_correction": "official iphone-03 calibration with valid mask",
+    "resize_scale": 0.5,
+    "algorithm_adjustment_authorized": false
+  },
+  "reporting_lock": {
+    "allowed": [
+      "response distribution per session",
+      "support rate per session",
+      "fixed-denominator trigger density per session",
+      "within-session angular-speed association",
+      "failure-type counts per session"
+    ],
+    "forbidden": [
+      "pair pooling as sample size",
+      "AUROC",
+      "F1",
+      "classification performance",
+      "sealed session access",
+      "reference-track",
+      "temporal-consistency modification",
+      "bearing",
+      "Android",
+      "product or safety claims"
+    ]
+  },
+  "standalone_rotation_stop_rule": {
+    "high_angular_speed_stratum": "within each fixed session, pairs at or above that session's 80th percentile of source-pose angular speed",
+    "session_deterioration": "within the high-angular-speed stratum, compensated three-pair trigger density is greater than raw trigger density and median absolute compensated response is greater than median absolute raw response",
+    "route_stop": "if at least two Discovery/Development sessions meet session_deterioration, formally stop standalone rotation and move mechanism diagnosis to gait oscillation, motion blur, low texture and a flow-quality gate",
+    "inference_ceiling": "descriptive multi-session mechanism stop; not performance or generalization"
+  },
+  "missing_data": "Any unavailable session, failed fixed segment, absent coverage category or insufficient high-angular support is NOT_EVALUABLE; no replacement session or clip is selected post hoc."
+}

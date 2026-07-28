@@ -1,8 +1,8 @@
 # RCLE 研究主线
 
-状态：`current / ROTATION_MECHANISM_NEGATIVE / REFERENCE_TRACK_DIAGNOSIS_DESIGN_ONLY`
+状态：`current / NATURAL_SESSION_R0_COMPLETE / STANDALONE_ROTATION_ROUTE_STOP`
 
-最后核验：2026-07-28 19:58（Asia/Hong_Kong）
+最后核验：2026-07-28（Asia/Hong_Kong）
 
 ## 当前结论
 
@@ -10,11 +10,12 @@ RCLE-RF 仍是 BlindAssist 的论文研究主线，但研究方法已经从“�
 改为“数据能力驱动、分阶段提高证据强度”：
 
 ```text
-CURRENT STUDY: RCLE_REFERENCE_TRACK_FAILURE_DIAGNOSIS_R0
-CURRENT TRACK: DEVELOPMENT_DIAGNOSTIC_DESIGN_ONLY
-CURRENT RESULT ACCESS: NOT_STARTED
-CURRENT CLAIM CEILING: IMPLEMENTATION_AND_SINGLE_SESSION_MECHANISM_DIAGNOSTIC
-AUDIT OUTCOME: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
+CURRENT STUDY: RCLE_NATURAL_SESSION_EXPANSION_DISCOVERY_R0
+CURRENT TRACK: CAPABILITY_DISCOVERY / DEVELOPMENT_DIAGNOSTIC
+CURRENT RESULT: COMPLETE / VALID_MULTI_SESSION_DESCRIPTION
+CURRENT CLAIM CEILING: MULTI_SESSION_DESCRIPTIVE_DISCOVERY_AND_MECHANISM_ROUTE_STOP
+AUDIT HISTORY: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
+AUDIT OUTCOME: STANDALONE_ROTATION_ROUTE_STOP_CONFIRMED_ACROSS_SESSIONS
 SEALED EVALUATION: ADVIO_OFFICE04_SEQUENCE16_IPHONE_RESERVED_UNSEEN
 ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 ```
@@ -42,8 +43,8 @@ ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 
 | 轨道 | 用途 | 当前状态 |
 | --- | --- | --- |
-| `CAPABILITY_DISCOVERY` | 观察真实响应、支持率和失败模式 | `ACTIVE` |
-| `DEVELOPMENT_DIAGNOSTIC` | 在明确污染的数据上修实现、调候选 | `ROTATION R1 COMPLETE / REFERENCE TRACK R0 DESIGN ONLY` |
+| `CAPABILITY_DISCOVERY` | 观察真实响应、支持率和失败模式 | `NATURAL SESSION R0 COMPLETE` |
+| `DEVELOPMENT_DIAGNOSTIC` | 在明确污染的数据上修实现、调候选 | `ROTATION R1 COMPLETE / REFERENCE TRACK DEFERRED` |
 | `SEALED_EVALUATION` | 在算法与指标冻结后做 session 级独立评估 | `ADVIO sequence 16 RESERVED / NOT EXECUTABLE` |
 
 跨来源测试单独称为 `EXTERNAL_TRANSFER`，不再和普通同来源 session holdout 混为
@@ -61,9 +62,9 @@ ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 同一来源的新 person、capture session、route 或 sequence 可以构成独立 holdout。
 连续帧随机切分或把同一长视频切成多个 clip 不能构成独立样本。
 
-pair/frame 只是时间序列测量单位，不是独立统计样本。当前 600 pair 仍然只有一个
-capture-session observation unit。未来比较必须按 session/route 聚合或分层，不能
-用 pair 数膨胀样本量。
+pair/frame 只是时间序列测量单位，不是独立统计样本。Natural-session R0 的
+`4 × 601` pair 仍然只有四个 capture-session observation units。未来比较必须按
+session/route 聚合或分层，不能用 pair 数膨胀样本量。
 
 ## 当前 Discovery
 
@@ -106,6 +107,23 @@ generalization 或 causal confirmation。
 sequence 16 已在修实现前原子预留为 future `SEALED_UNSEEN`，在算法和指标冻结前
 禁止下载、解码或运行。
 
+随后完成
+[natural-session expansion Discovery R0](RCLE_NATURAL_SESSION_EXPANSION_DISCOVERY_R0_RESULT_2026-07-28.md)：
+
+- metadata-only 固定 ADVIO sequence13、14、15、17 为 Discovery/Development，
+  sequence16 保持 `SEALED_UNSEEN`；
+- 每个 session 只运行一个 `10.0159–10.0175 s`、601-pair 连续片段，不分块、不换片；
+- strict `> 0.01/s`、三连续 pair、单一连续 `PairState` 与 R3 几何实现均未改；
+- support 为 `0.9867–0.9967`，各 session 只分别报告响应、固定分母触发密度、角速度
+  关联和 common-grid support 失败；
+- 在各 session 最高 20% 角速度层中，sequence13、15、17 同时出现 compensated
+  触发密度和 absolute response 高于 raw，达到预冻结 `>=2 sessions` 停止规则；
+- sequence14 未恶化；静态接近、横穿和模糊因无冻结事件标签保持
+  `NOT_EVALUABLE`，没有事后换 clip。
+
+因此 standalone rotation 路线已由多个自然 session 正式停止。reference-track
+设计保留为历史 design-only 资产，但不再是当前顺序，也未获得实现权限。
+
 ## Discovery 的低成本操作门
 
 数据进入 Discovery 只要求：
@@ -143,8 +161,9 @@ sequence 16 已在修实现前原子预留为 future `SEALED_UNSEEN`，在算法
 | --- | --- |
 | 自然视频 Capability Discovery | `AUTHORIZED / ACTIVE` |
 | 已查看数据的失败分析和回归 | `AUTHORIZED` |
-| rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP` |
-| reference-track failure diagnosis R0 | `SELECTED / DESIGN_ONLY / NOT_STARTED` |
+| natural-session expansion Discovery R0 | `COMPLETE / VALID` |
+| rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
+| reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
 | 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |
 | session 级 sealed evaluation | `RESERVED_NOT_EXECUTABLE` |
 | performance / generalization | `NOT_AUTHORIZED` |
@@ -156,16 +175,15 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 ## 下一步
 
-唯一已选择的下一实验见
-[reference-track failure diagnosis R0](RCLE_REFERENCE_TRACK_FAILURE_DIAGNOSIS_R0_DESIGN_2026-07-28.md)：
+Natural-session R0 已完成，当前顺序为：
 
-1. 只使用已 `TUNED_ON` 的 ADVIO sequence15 high/low 冻结窗；
-2. 只允许一个 CoTracker3 offline 参考模型，先冻结代码、权重、query、visibility、
-   缺失处理、资源预算与判读容差；
-3. 区分 tracker-limited、rotation-only-model-limited 与
-   `FAILURE_SOURCE_NOT_EVALUABLE`，不把参考模型当真值；
-4. 本设计不授权下载或执行；预飞闭合后才可另行启动一次 Development Diagnostic；
-5. 不增加 bearing、不扩自然 session、不访问 ADVIO sequence16、不进入路径走廊或
-   Android。
+1. 正式结束 standalone rotation，不继续修补 rotation-only compensation；
+2. 下一机制诊断只转向步态振荡、运动模糊、低纹理与 flow-quality gate；
+3. 先冻结能区分上述失败源的 metadata/observable 与最小实验，再决定是否需要实现；
+4. 不立即实现
+   [reference-track failure diagnosis R0](RCLE_REFERENCE_TRACK_FAILURE_DIAGNOSIS_R0_DESIGN_2026-07-28.md)、
+   temporal consistency 或 bearing；
+5. sequence16 继续 `SEALED_UNSEEN`，不访问、不纳入本轮分析；
+6. 不修改 `0.01/s`、三 pair 规则或 PairState，不进入路径走廊或 Android。
 
 当前不继续旧公开数据市场漫游，不自动创建 formal claim，不进入 Android。
