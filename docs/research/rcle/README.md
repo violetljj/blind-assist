@@ -1,6 +1,6 @@
 # RCLE 研究主线
 
-状态：`current / NATURAL_SESSION_R0_COMPLETE / STANDALONE_ROTATION_ROUTE_STOP`
+状态：`current / TEMPORAL_STRUCTURE_R1_COMPLETE_HOLD / STANDALONE_ROTATION_ROUTE_STOP`
 
 最后核验：2026-07-28（Asia/Hong_Kong）
 
@@ -10,10 +10,10 @@ RCLE-RF 仍是 BlindAssist 的论文研究主线，但研究方法已经从“�
 改为“数据能力驱动、分阶段提高证据强度”：
 
 ```text
-CURRENT STUDY: RCLE_NATURAL_SESSION_EXPANSION_DISCOVERY_R0
-CURRENT TRACK: CAPABILITY_DISCOVERY / DEVELOPMENT_DIAGNOSTIC
-CURRENT RESULT: COMPLETE / VALID_MULTI_SESSION_DESCRIPTION
-CURRENT CLAIM CEILING: MULTI_SESSION_DESCRIPTIVE_DISCOVERY_AND_MECHANISM_ROUTE_STOP
+CURRENT STUDY: RCLE_TEMPORAL_STRUCTURE_DIAGNOSTIC_R1
+CURRENT TRACK: DEVELOPMENT_DIAGNOSTIC
+CURRENT RESULT: HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID
+CURRENT CLAIM CEILING: MULTI_SESSION_DESCRIPTIVE_TEMPORAL_STRUCTURE_AND_DEVELOPMENT_PRIORITY
 AUDIT HISTORY: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
 AUDIT OUTCOME: STANDALONE_ROTATION_ROUTE_STOP_CONFIRMED_ACROSS_SESSIONS
 SEALED EVALUATION: ADVIO_OFFICE04_SEQUENCE16_IPHONE_RESERVED_UNSEEN
@@ -133,6 +133,17 @@ fixed flow gate 只有 `1/4` session 富集高响应，所有 session 的 trigge
 下降均小于预冻结 20% 门，终态为 `HOLD_FLOW_QUALITY_GATE / VALID`。这不恢复
 rotation-only 路线，也不把 gate 拒绝称为假警。
 
+随后完成
+[时间结构诊断 R1](RCLE_TEMPORAL_STRUCTURE_DIAGNOSTIC_R1_RESULT_2026-07-28.md)。
+它在正式输出前冻结 `0.7–3.0 Hz` signed pose、全局/径向 flow 方向、周期、轴向相位
+锁定和 collapse event，并保持同一四 session、同一 pair 身份与两阶段防火墙。
+四 session 的 pose band-energy fraction 为 `0.729–0.924`，flow direction 覆盖
+`75.4%–99.2%`、相邻方向余弦 `0.976–0.993`；但 flow-at-pose-frequency
+`R²` 只有 `0.020–0.035`，高响应与 measurement-failure overlap 只有
+`17.6%–47.1%`。motion routing 与 quality routing 均为 `0/4`，终态
+`HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID`。这既不支持把高响应主要
+归于 collapse，也没有证明与 pose-derived 周期同步。
+
 ## Discovery 的低成本操作门
 
 数据进入 Discovery 只要求：
@@ -172,6 +183,7 @@ rotation-only 路线，也不把 gate 拒绝称为假警。
 | 已查看数据的失败分析和回归 | `AUTHORIZED` |
 | natural-session expansion Discovery R0 | `COMPLETE / VALID` |
 | degradation / flow-quality diagnostic R0 | `COMPLETE / HOLD_FLOW_QUALITY_GATE / VALID` |
+| temporal-structure diagnostic R1 | `COMPLETE / HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
 | 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |
@@ -185,12 +197,12 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 ## 下一步
 
-退化归因与 flow-quality diagnostic R0 已完成，当前顺序为：
+时间结构 diagnostic R1 已完成，当前顺序为：
 
 1. 正式结束 standalone rotation，不继续修补 rotation-only compensation；
 2. 当前 fixed flow-quality gate 保持 `HOLD`，禁止按 response 调门直到通过；
-3. 若继续 Development，只另立能区分“高频但 track-consistent 的 head motion”
-   与“feature collapse / blur”的时间结构诊断，并在输出前冻结；
+3. 保留时间结构 `HOLD`：不把低 feature support 当统一解释，也不把 pose 周期代理
+   当 gait 同步或因果证据；当前没有自动算法后继；
 4. 不立即实现
    [reference-track failure diagnosis R0](RCLE_REFERENCE_TRACK_FAILURE_DIAGNOSIS_R0_DESIGN_2026-07-28.md)、
    temporal consistency 或 bearing；

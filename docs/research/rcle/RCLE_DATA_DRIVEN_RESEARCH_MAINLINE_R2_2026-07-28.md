@@ -143,3 +143,13 @@ temporal consistency 或 bearing。
 高响应富集，触发密度相对下降在四个 session 均 `<20%`。终态为
 `HOLD_FLOW_QUALITY_GATE / VALID`：不调 gate 追结果、不恢复 rotation-only，也不
 据此声称 false-trigger 或性能改善。
+
+其后完成的
+[时间结构诊断 R1](RCLE_TEMPORAL_STRUCTURE_DIAGNOSTIC_R1_RESULT_2026-07-28.md)
+在新 flow-direction 输出前冻结 signed pose 频带、pose-derived cycles、全局/径向
+flow 方向、axial phase locking 与 measurement-failure events。四 session 均有强
+pose 周期能量和较高 flow direction coverage，但 flow-at-pose-frequency
+`R²=0.020–0.035`；高响应与 failure overlap 为 `17.6%–47.1%`。motion 与 quality
+routing 均为 `0/4`，终态
+`HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID`。因此既不将 collapse
+设为主因，也不宣称 pose-derived 周期、正常步态或因果同步。
