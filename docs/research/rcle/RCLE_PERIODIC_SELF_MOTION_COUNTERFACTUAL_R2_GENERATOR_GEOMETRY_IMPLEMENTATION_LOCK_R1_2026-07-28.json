@@ -1,0 +1,85 @@
+{
+  "schema": "rcle.periodic_self_motion_counterfactual.generator_geometry_implementation_lock.v2",
+  "protocol_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2",
+  "implementation_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R1",
+  "date": "2026-07-28",
+  "phase": "P1_GENERATOR_GEOMETRY_ONLY",
+  "status": "R1_IMPLEMENTATION_FROZEN_PENDING_INDEPENDENT_VALIDATION",
+  "repair_scope": "G13 estimand plus eight GUARD persistent rendered-target scene records only",
+  "immutable_r0": {
+    "terminal": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "receipt_sha256": "72e0b8e042be9eb6208389eb8d83e9e9e4ad28e54ec82f7064b5387cc1abd279",
+    "implementation_lock_sha256": "3d45daebf95f190024197b29543989067d86655fd0621038bd96f0104565bcad",
+    "main_record_change_count": 0,
+    "guardrail_numeric_seed_replacement_count": 0,
+    "trajectory_change_count": 0
+  },
+  "renderer": {
+    "name": "deterministic analytic ray/rectangle z-buffer",
+    "version": "1",
+    "numeric_backend": "NumPy float64 CPU",
+    "thread_count": 1,
+    "transport": "unchanged from R0",
+    "homography_or_2d_flow_generation": false
+  },
+  "environment": {
+    "python": "3.11.9",
+    "numpy": "2.1.3",
+    "scipy": "1.17.1",
+    "opencv": "4.13.0"
+  },
+  "identity_lock": {
+    "main_clusters": 80,
+    "guardrail_clusters": 8,
+    "main_scene_records": "byte-identical to R0",
+    "guardrail_numeric_seeds": "identical to R0",
+    "all_trajectory_arrays": "byte-identical to R0",
+    "guardrail_scene_layout": "one frozen layout for all eight seeds; six near meshes, five z=4 target meshes, one far mesh",
+    "designated_target": {
+      "object_id": 9,
+      "world_point_m": [0.2, 0.1, 4.0],
+      "required_persistent_frames_per_arm": 602
+    }
+  },
+  "g13_lock": {
+    "inverse_depth_endpoint_increase_gte": 0.20,
+    "integrated_endpoint_log_radial_expansion_gte": 0.1823215567939546,
+    "radial_gate_derivation": "ln(1.20), derived from the unchanged minimum 20 percent inverse-depth endpoint requirement",
+    "approach_only": "raw source-known target depth non-increasing at all 601 pairs",
+    "approach_plus_periodic": "exact periodic component reconstruction and removal, then source-known target depth non-increasing at all 601 pairs",
+    "translation_reconstruction_tolerance_m": 0.000000000001,
+    "rotation_reconstruction_tolerance_rad": 0.000000000001
+  },
+  "source_sha256": {
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/generator_geometry.py": "e6153f52f89674947f4960faf05ae8d5b90d1e9e69fef627a74c719127d6ca43",
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/validate_geometry_independent.py": "f2fad79e296e18f221fa38d071a7398b72e5fa0d63ef38ae133db0cbd4bd55d6",
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/generator_geometry_r1.py": "a0369df86573aaa0a1d4f707e6bd25c8b5d91b524efcf2ff4953c8778646f38a",
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/validate_geometry_independent_r1.py": "5be754efdcd04e4fcaa3fafc64a6b39ce92a5e36594e4b3fd2e141a62c5b9d8b",
+    "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_2026-07-28.json": "521fd5fe523e9970c437c82e0dd5f3091a283e57de78e953db48b5d0cb0bfe48"
+  },
+  "evidence_sha256": {
+    "all_seed_geometry_manifest.jsonl": "3dcf37496997a1edb2e47871c0dfc5185fd207016a26a86e29514412484e7ac6",
+    "analytic_fixture_ledger.json": "6e9f8afb80ac8cb647d137daf3c8238cfa449dbff528c49d14422aa8c987bb25",
+    "deterministic_replay_ledger.json": "663971f546ba3f28bf29aca8b59e02c43cab944fb737938c050fc6110763a80d",
+    "generator_r1_receipt.json": "c5d0b9d0320764df6584d48f8e2c8a22693b80d2ab59a833d367ec43bfb3c3a8",
+    "projective_sample_ledger.json": "2576a26dcd5ee81ae5058c94c129ca8dcd72a68b1ade4629b5fe8dc53d0ebcaa",
+    "runtime_manifest.json": "06020e73f46b5da0c7219b398940274539c566956877bdbe75ce3097aa3375e2",
+    "trajectory_manifest.json": "c394641b6419c7a58a58c1bc485e2783cd710e8ba2893415dd6687c20b7d2652"
+  },
+  "firewall": {
+    "rcle_output_read_or_run": false,
+    "quality_strength_calibration_p2": false,
+    "eight_sequence_preflight_p3": false,
+    "main_480_and_guardrail_16_execution_p4": false,
+    "r3_threshold_three_pair_modified": false,
+    "sequence16_cotracker_android_realtime": false
+  },
+  "terminal_policy": {
+    "all_g01_g14_pass_and_replay_match": "GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED",
+    "any_geometry_pairing_visibility_hash_or_replay_failure": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "successor": "P2 still requires a separately authorized task."
+  },
+  "formal_execution_authorized": false,
+  "quality_calibration_authorized": false,
+  "automatic_p2_authority": false
+}

@@ -5,14 +5,19 @@
 This module is an offline, research-only boundary for
 `EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R0`.
 
-`periodic_self_motion_counterfactual_r2/` is the current design-only successor
+`periodic_self_motion_counterfactual_r2/` is the current P1 implementation
 after Temporal Structure R1 ended
-`HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID`. It contains only a
-static freeze validator for the paired
+`HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID`. It now contains a
+static freeze validator plus a deterministic analytic non-planar 3D geometry
+generator, fixtures and an independent validator for the paired
 `static/periodic 6DoF × clean/blur/low-texture` contract, non-planar 3D geometry
-spec and bounded run budget. The canonical bundle validates with
-`formal_execution_authorized=false`; the directory has no generator, formal
-runner, RCLE output producer or activation lock. Its 19 focused/mutation tests
+spec and bounded run budget. R0 and R1 remain immutable 13/14 failures. R2
+hardens all trusted-manifest paths and its G01–G14 calculations pass, but the
+frozen formal receipt is `INVALID` because the validator expected the wrong
+R0 producer-receipt key name. The terminal remains
+`INTERVENTION_NOT_EVALUABLE / HOLD_P1`; the R2 receipt cannot be overwritten
+or rerun and P2 is not authorized. The directory has no formal runner, RCLE output producer or
+activation lock. Its focused/mutation tests
 reject threshold/identity/reset/PairState drift, pose-hash or authority-ceiling
 drift, frame-level sample inflation, missing geometry gates, linked-spec drift,
 unguarded launch and premature execution.

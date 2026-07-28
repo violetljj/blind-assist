@@ -1,0 +1,93 @@
+{
+  "schema": "rcle.periodic_self_motion_counterfactual.geometry_spec_repair.v1",
+  "protocol_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2",
+  "repair_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1",
+  "date": "2026-07-28",
+  "stage": "P1_GENERATOR_GEOMETRY_ONLY",
+  "status": "FROZEN_BEFORE_R1_IMPLEMENTATION_VALIDATION",
+  "r0_immutable_terminal": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+  "r0_identity": {
+    "geometry_spec_path": "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_VALIDATION_R0_2026-07-28.json",
+    "geometry_spec_sha256": "3a102636e9b79d0dc7cfca973d76e359455ef3a25fdf9a822be97abc864bea2d",
+    "implementation_lock_path": "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_LOCK_R0_2026-07-28.json",
+    "implementation_lock_sha256": "3d45daebf95f190024197b29543989067d86655fd0621038bd96f0104565bcad",
+    "independent_receipt_path": "artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/p1_geometry_r0/independent_geometry_validation_receipt.json",
+    "independent_receipt_sha256": "72e0b8e042be9eb6208389eb8d83e9e9e4ad28e54ec82f7064b5387cc1abd279",
+    "gate_pass_count": 13,
+    "failed_gate": "G13_MONOTONIC_APPROACH_TRUTH"
+  },
+  "learning_record": {
+    "observation": [
+      "The frozen exactly 25 percent inverse-depth endpoint change over each approximately 10 second block produced endpoint log-radial expansion of about 0.0223 per second, below the frozen 0.05 per second requirement.",
+      "Raw depth in MONOTONIC_APPROACH_PLUS_PERIODIC is not pairwise monotonic because the frozen periodic 6DoF component intentionally oscillates.",
+      "The R0 guard scene template did not retain a rendered middle-depth mesh point as persistently visible for every plus-periodic block, so validating a virtual point would be invalid."
+    ],
+    "supported_inference": "G13 combined mutually incompatible endpoint-rate and raw-monotonic estimands and the guard template lacked its declared persistent rendered target; the failure is not repairable by seed replacement or a warning.",
+    "alternative_explanations_rejected": [
+      "seed-specific bad luck: all 16 R0 guardrail arms failed the endpoint-rate conjunction",
+      "projection convention error: G03, G05, G07, G09 and G10 independently passed",
+      "replay drift: G14 reported zero hash mismatches"
+    ],
+    "reuse_role": "R0 remains immutable negative implementation evidence and a regression counterexample."
+  },
+  "unchanged_from_r0": {
+    "main_scene_numeric_seeds": "all 80 MAIN seeds and scene records byte-identical",
+    "guardrail_numeric_seeds": "all 8 GUARD uint64 seed identities unchanged",
+    "trajectory_blocks": ["ADVIO_13", "ADVIO_14", "ADVIO_15", "ADVIO_17"],
+    "trajectory_bytes": "all main and guardrail trajectory arrays unchanged",
+    "renderer_environment_camera": "unchanged R0 renderer, environment and intrinsic lock",
+    "gates": ["G01", "G02", "G03", "G04", "G05", "G06", "G07", "G08", "G09", "G10", "G11", "G12", "G14"],
+    "quality_strength": "NOT_CALIBRATED",
+    "rcle_output_access": "NONE"
+  },
+  "guardrail_scene_repair": {
+    "scope": "only the 8 GUARD scene records; MAIN 80 records are immutable",
+    "numeric_seed_policy": "reuse each exact R0 GUARD numeric seed; no replacement or selection",
+    "minimum_mesh_objects": 12,
+    "layout": [
+      "six seed-textured near-depth rectangle meshes occupy the two outer image columns in three rows",
+      "five adjacent rectangle meshes at exactly z=4.0 m form one central rendered middle-depth target plate",
+      "one far background rectangle mesh at z=18.0 m"
+    ],
+    "designated_target": {
+      "object_id": 9,
+      "world_point_m": [0.2, 0.1, 4.0],
+      "required_visibility": "same object-id, finite source-known depth and in-frame projection at all 602 frames in both guardrail arms"
+    },
+    "selection_rule": "analytic central target layout is frozen for all blocks and both ordinals; no per-block or per-seed layout selection"
+  },
+  "g13_replacement": {
+    "id": "G13_MONOTONIC_APPROACH_TRUTH",
+    "scope": "all 16 guardrail sequences",
+    "source_known_target": "the exact rendered off-axis object_id=9 world point [0.2,0.1,4] m declared by every R1 GUARD scene; the nonzero radius makes endpoint log-radial expansion defined",
+    "common_gates": {
+      "persistent_visibility": "target object-id, in-frame projection and source-known projected depth agree at every one of 602 frames",
+      "inverse_depth_endpoint_increase": "source-known target inverse depth increases by at least 0.20",
+      "integrated_endpoint_log_radial_expansion": "log(radius_end/radius_start) is at least ln(1.20)=0.1823215567939546; this dimensionless bound is derived before R1 outcome from the unchanged minimum 20 percent inverse-depth gate and is not divided by duration"
+    },
+    "approach_only_gate": "at least 0.95 of the one declared persistent target set has non-increasing source-known depth at every pair; with one declared target this requires the target to pass",
+    "approach_plus_periodic_gate": {
+      "composition": "R_composite(t)=R_periodic(t); t_composite(t)=t_periodic(t)+[0,0,0.8*phase(t)] where phase uses exact source timestamps",
+      "reconstruction_tolerance": "max translation component error<=1e-12 m and max rotation-angle error<=1e-12 rad",
+      "deperiodized_monotonicity": "after exact removal of the source-known periodic component, the declared target depth is non-increasing at every pair",
+      "raw_depth_monotonicity": "not an estimand because retaining periodic oscillation is the intervention"
+    }
+  },
+  "validation_order": [
+    "verify every R0 hash and immutable R0 terminal",
+    "verify all 80 MAIN records are byte-identical to R0",
+    "verify all eight GUARD numeric seeds and all trajectory bytes are unchanged",
+    "validate the repaired rendered target visibility before evaluating its depth truth",
+    "run the independent full G01-G14 validator without importing the generator or RCLE",
+    "write a hash-bound R1 receipt; do not authorize P2 inside this task"
+  ],
+  "terminal_logic": {
+    "all_g01_g14_pass_and_replay_consistent": "GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED",
+    "any_geometry_pairing_visibility_hash_or_replay_failure": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "repair_policy": "No seed replacement, per-block target movement, gate lowering after R1 validation, P2 calibration or formal execution in R1."
+  },
+  "claim_ceiling": "CONTROLLED_GENERATOR_INTERNAL_GEOMETRY_IMPLEMENTATION_ONLY",
+  "formal_execution_authorized": false,
+  "quality_calibration_authorized": false,
+  "automatic_p2_authority": false
+}

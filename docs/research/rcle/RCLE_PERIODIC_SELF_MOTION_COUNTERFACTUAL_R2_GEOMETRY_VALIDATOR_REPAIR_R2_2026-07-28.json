@@ -1,0 +1,66 @@
+{
+  "schema": "rcle.periodic_self_motion_counterfactual.geometry_validator_repair.v1",
+  "protocol_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2",
+  "repair_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_VALIDATOR_REPAIR_R2",
+  "date": "2026-07-28",
+  "stage": "P1_GENERATOR_GEOMETRY_ONLY",
+  "status": "FROZEN_BEFORE_R2_IMPLEMENTATION_VALIDATION",
+  "chronology": {
+    "r0_terminal": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "r0_receipt_sha256": "72e0b8e042be9eb6208389eb8d83e9e9e4ad28e54ec82f7064b5387cc1abd279",
+    "r1_terminal": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "r1_failed_receipt_sha256": "af00df05c115036ea31bb3d05addbebfcebad73122d2b354f7e52170c2277e9a",
+    "r1_failed_gate": "G13_MONOTONIC_APPROACH_TRUTH",
+    "r1_receipt_policy": "immutable; never overwrite or relabel as a dry run",
+    "r1_consumed_validator_semantics_sha256": "5be754efdcd04e4fcaa3fafc64a6b39ce92a5e36594e4b3fd2e141a62c5b9d8b",
+    "r1_receipt_recorded_validator_source_sha256": "fd80e5b2d12f30fe7ba02c37e8311b9af37f52148362fc3b53cc8580a0166539",
+    "r1_source_hash_race": "the running R1 process consumed the 5be754 angle-acos implementation bound by lock b49efb, then hashed the concurrently replaced fd80e5 scipy-magnitude source when writing its receipt; the 3.65e-8 receipt values and reproducible G13 failure prove the consumed 5be754 semantics. R2 preserves the receipt and both identities instead of repairing R1 in place"
+  },
+  "unchanged_from_r1": {
+    "all_88_scene_records": "byte-identical",
+    "all_88_numeric_seeds": "identical; zero replacement",
+    "all_camera_intrinsics": "identical",
+    "all_trajectories": "byte-identical",
+    "renderer_and_environment": "identical",
+    "all_seed_manifest_schema": "identical",
+    "guard_target": "object_id 9 at [0.2,0.1,4.0] m",
+    "g13_thresholds": "0.20 inverse-depth endpoint increase and ln(1.20) integrated endpoint log-radial expansion",
+    "quality_strength": "NOT_CALIBRATED",
+    "rcle_output_access": "NONE"
+  },
+  "r2_repair_scope": {
+    "package_manifest": "freeze the unchanged outer JSONL record envelope plus the explicit MAIN scene v1 and GUARD scene v2 union; classify runtime_manifest.json as byte-identical inherited R0 renderer/environment evidence",
+    "g13_numeric_check": "verify the source-known component decomposition R_composite=R_periodic and t_composite-t_periodic=[0,0,0.8*phase], then evaluate the approach-only component [I,[0,0,0.8*phase]]; use direct max matrix-component equality at 1e-12 and do not describe this as an SE(3) quotient",
+    "g01_g02": "independently raycast all 88 reference scenes and recompute depth bands, grid diversity, and depth/object/visibility hashes",
+    "g03": "compare the frozen projective samples with independent projection and replace the analytic uv1-minus-itself expression with a closed-form pinhole cross-check",
+    "g08": "compare source-known visibility from the frozen ray/rectangle z-buffer with a separately coded explicit occlusion enumeration over all 160 motion identities and exercise a real analytic disocclusion fixture",
+    "g11": "validate the exact six-arm Cartesian pairing, exact arm schema, identities, and permitted field differences",
+    "g12": "derive scene, intrinsic, timestamp, trajectory, and motion geometry identities from frozen source-known geometry instead of trusting equal strings",
+    "g14": "recompute every first-versus-second replay comparison and add two-build replay coverage for all eight repaired GUARD scenes",
+    "hash_completeness": "require exact source, evidence, producer artifact, predecessor evidence, replay identity, and receipt key sets before comparing hashes"
+  },
+  "machine_gate_lock": {
+    "main_cluster_count": 80,
+    "guard_cluster_count": 8,
+    "guard_object_count": 12,
+    "target_object_id": 9,
+    "target_world_point_m": [0.2, 0.1, 4.0],
+    "required_persistent_frames_per_arm": 602,
+    "inverse_depth_endpoint_increase_gte": 0.20,
+    "integrated_endpoint_log_radial_expansion_gte": 0.1823215567939546,
+    "deperiodized_translation_max_error_lte_m": 0.000000000001,
+    "deperiodized_rotation_matrix_component_max_error_lte": 0.000000000001,
+    "visibility_mismatch_fraction_lte": 0.001,
+    "guard_scene_replay_count": 8,
+    "required_gate_count": 14
+  },
+  "terminal_logic": {
+    "all_g01_g14_pass_and_replay_consistent": "GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED",
+    "any_geometry_pairing_visibility_hash_or_replay_failure": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "repair_policy": "No seed replacement, scene selection, threshold reduction, P2 calibration, performance preflight, formal sequence execution, RCLE access, or overwrite of R0/R1 receipts."
+  },
+  "claim_ceiling": "CONTROLLED_GENERATOR_INTERNAL_SOURCE_KNOWN_GEOMETRY_ONLY",
+  "formal_execution_authorized": false,
+  "quality_calibration_authorized": false,
+  "automatic_p2_authority": false
+}

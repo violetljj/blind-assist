@@ -1,0 +1,102 @@
+{
+  "schema": "rcle.periodic_self_motion_counterfactual.generator_geometry_implementation_lock.v3",
+  "protocol_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2",
+  "implementation_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R2",
+  "date": "2026-07-28",
+  "phase": "P1_GENERATOR_GEOMETRY_ONLY",
+  "status": "R2_IMPLEMENTATION_FROZEN_FOR_INDEPENDENT_VALIDATION",
+  "repair_scope": "validator-integrity and replay-coverage repair only; all R1 scene records, numeric seeds, camera intrinsics, trajectories, thresholds, and all-seed manifest bytes unchanged",
+  "immutable_r0": {
+    "terminal": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "receipt_sha256": "72e0b8e042be9eb6208389eb8d83e9e9e4ad28e54ec82f7064b5387cc1abd279",
+    "implementation_lock_sha256": "3d45daebf95f190024197b29543989067d86655fd0621038bd96f0104565bcad"
+  },
+  "immutable_r1_failure": {
+    "terminal": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "receipt_sha256": "af00df05c115036ea31bb3d05addbebfcebad73122d2b354f7e52170c2277e9a",
+    "implementation_lock_sha256": "b49efb5ef2d267dbcb50a3ff85f1890b4026272d77188a914dca2e9a91cc624d",
+    "amendment_sha256": "521fd5fe523e9970c437c82e0dd5f3091a283e57de78e953db48b5d0cb0bfe48",
+    "consumed_validator_semantics_sha256": "5be754efdcd04e4fcaa3fafc64a6b39ce92a5e36594e4b3fd2e141a62c5b9d8b",
+    "receipt_recorded_validator_source_sha256": "fd80e5b2d12f30fe7ba02c37e8311b9af37f52148362fc3b53cc8580a0166539",
+    "source_hash_race_disposition": "preserved as historical failure; never overwritten"
+  },
+  "renderer": {
+    "name": "deterministic analytic ray/rectangle z-buffer",
+    "version": "1",
+    "numeric_backend": "NumPy float64 CPU",
+    "thread_count": 1,
+    "transport": "unchanged inherited R0 runtime evidence",
+    "homography_or_2d_flow_generation": false
+  },
+  "environment": {
+    "python": "3.11.9",
+    "numpy": "2.1.3",
+    "scipy": "1.17.1",
+    "opencv": "4.13.0"
+  },
+  "identity_lock": {
+    "main_clusters": 80,
+    "guardrail_clusters": 8,
+    "all_88_scene_records": "byte-identical to R1",
+    "main_scene_records": "byte-identical to R0",
+    "all_numeric_seeds": "unchanged; zero replacement",
+    "all_camera_intrinsics": "unchanged",
+    "all_trajectory_arrays": "byte-identical to R1 and source R0 trajectory evidence",
+    "all_seed_manifest_sha256": "3dcf37496997a1edb2e47871c0dfc5185fd207016a26a86e29514412484e7ac6",
+    "scene_schema_union": {
+      "main_cluster": "rcle.periodic_self_motion_counterfactual.p1_geometry_manifest.v1",
+      "guardrail_cluster": "rcle.periodic_self_motion_counterfactual.p1_geometry_manifest.v2"
+    },
+    "designated_target": {
+      "object_id": 9,
+      "world_point_m": [0.2, 0.1, 4.0],
+      "required_persistent_frames_per_arm": 602
+    }
+  },
+  "g13_lock": {
+    "inverse_depth_endpoint_increase_gte": 0.20,
+    "integrated_endpoint_log_radial_expansion_gte": 0.1823215567939546,
+    "source_component_decomposition": "verify R_composite=R_periodic and t_composite-t_periodic=[0,0,0.8*phase], then evaluate [I,[0,0,0.8*phase]]; this is not an SE(3) quotient",
+    "translation_component_tolerance_m": 0.000000000001,
+    "rotation_matrix_component_tolerance": 0.000000000001
+  },
+  "source_sha256": {
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/generator_geometry.py": "e6153f52f89674947f4960faf05ae8d5b90d1e9e69fef627a74c719127d6ca43",
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/validate_geometry_independent.py": "f2fad79e296e18f221fa38d071a7398b72e5fa0d63ef38ae133db0cbd4bd55d6",
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/generator_geometry_r1.py": "a0369df86573aaa0a1d4f707e6bd25c8b5d91b524efcf2ff4953c8778646f38a",
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/validate_geometry_independent_r1.py": "5be754efdcd04e4fcaa3fafc64a6b39ce92a5e36594e4b3fd2e141a62c5b9d8b",
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/generator_geometry_r2.py": "5f45ec807b1401e21d471e9b7e951e7858a06c9ac45300a399e9a5bdf4a2c4df",
+    "scripts/research/egomotion_compensated_looming/periodic_self_motion_counterfactual_r2/validate_geometry_independent_r2.py": "76e63a735635f95e767d801813e90500a5c12fc2a09ec1bc91ed31e3056d3cb6",
+    "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_VALIDATOR_REPAIR_R2_2026-07-28.json": "a81c922bca4bfa9b6211515bf16a4d7bae46748197082ec7d2f88ca2481e7283",
+    "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_2026-07-28.json": "521fd5fe523e9970c437c82e0dd5f3091a283e57de78e953db48b5d0cb0bfe48",
+    "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_LOCK_R1_2026-07-28.json": "b49efb5ef2d267dbcb50a3ff85f1890b4026272d77188a914dca2e9a91cc624d",
+    "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_VALIDATION_R0_2026-07-28.json": "3a102636e9b79d0dc7cfca973d76e359455ef3a25fdf9a822be97abc864bea2d"
+  },
+  "evidence_sha256": {
+    "all_seed_geometry_manifest.jsonl": "3dcf37496997a1edb2e47871c0dfc5185fd207016a26a86e29514412484e7ac6",
+    "analytic_fixture_ledger.json": "6e9f8afb80ac8cb647d137daf3c8238cfa449dbff528c49d14422aa8c987bb25",
+    "deterministic_replay_ledger.json": "663971f546ba3f28bf29aca8b59e02c43cab944fb737938c050fc6110763a80d",
+    "generator_r2_receipt.json": "9a3e572828132f71718351c25df511a231b5371b00ccb5e26d647b170d28ea70",
+    "guard_scene_replay_ledger.json": "1d33274c223ea40d9effca3fd1a3ee724f24424c73fc8706d12933a84443e480",
+    "package_manifest.json": "13acb46b28a7419cfba24afd2908c777ee9f24aeed537b64eac80a970d900b33",
+    "projective_sample_ledger.json": "2576a26dcd5ee81ae5058c94c129ca8dcd72a68b1ade4629b5fe8dc53d0ebcaa",
+    "runtime_manifest.json": "06020e73f46b5da0c7219b398940274539c566956877bdbe75ce3097aa3375e2",
+    "trajectory_manifest.json": "c394641b6419c7a58a58c1bc485e2783cd710e8ba2893415dd6687c20b7d2652"
+  },
+  "firewall": {
+    "rcle_output_read_or_run": false,
+    "quality_strength_calibration_p2": false,
+    "eight_sequence_preflight_p3": false,
+    "main_480_and_guardrail_16_execution_p4": false,
+    "r3_threshold_three_pair_modified": false,
+    "sequence16_cotracker_android_realtime": false
+  },
+  "terminal_policy": {
+    "all_g01_g14_pass_and_replay_match": "GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED",
+    "any_geometry_pairing_visibility_hash_or_replay_failure": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "successor": "P2 still requires a separately authorized task."
+  },
+  "formal_execution_authorized": false,
+  "quality_calibration_authorized": false,
+  "automatic_p2_authority": false
+}

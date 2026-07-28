@@ -1,6 +1,6 @@
 # RCLE periodic self-motion counterfactual R2
 
-状态：`frozen design / execution not authorized`
+状态：`P1 R2 frozen / INVALID / INTERVENTION_NOT_EVALUABLE / HOLD_P1`
 
 ## 研究问题与版本
 
@@ -9,8 +9,13 @@
 self-motion 与 clean/blur/low-texture，判断 unchanged R3 高触发密度来自 motion、
 quality 或 interaction。
 
-当前只包含设计合同的静态 validator。这里没有 generator、renderer、RCLE runner、
-formal claim、analysis producer 或 activation lock。
+P1 已实现 deterministic analytic 3D generator、解析 fixture、all-seed geometry
+manifest 与独立 validator。R0 因 G13 estimand 冲突为 13/14；R1 因
+angle/acos 数值判定为 13/14，并保留不可变失败回执。R2 版本化加固
+G01/G02/G03/G08/G11/G12/G14、固定 source-component G13 判定并增加 8 个
+GUARD 双构建 replay。R2 的 G01–G14 全部 PASS，但正式 receipt 因 R0 evidence
+键名全集误写而 `INVALID / HOLD_P1`，不得覆盖或重跑。这里仍没有 RCLE runner、
+quality calibration、formal sequence runner、analysis producer 或 activation lock。
 
 ## 稳定 Interface
 
@@ -20,6 +25,40 @@ formal claim、analysis producer 或 activation lock。
 E:\codex-tools\bin\blindassist-python.cmd `
   scripts\research\egomotion_compensated_looming\periodic_self_motion_counterfactual_r2\validate_freeze.py
 ```
+
+物化 P1 geometry（不运行 RCLE、P2、P3 或 P4）：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts\research\egomotion_compensated_looming\periodic_self_motion_counterfactual_r2\generator_geometry.py
+```
+
+独立复算 G01–G14：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts\research\egomotion_compensated_looming\periodic_self_motion_counterfactual_r2\validate_geometry_independent.py `
+  --receipt artifacts.local\evidence\rcle_periodic_self_motion_counterfactual_r2\p1_geometry_r0\independent_geometry_validation_receipt.json
+```
+
+独立 validator 不导入 producer 或 RCLE。当前预期返回码为 2，并写出合法
+`INTERVENTION_NOT_EVALUABLE / HOLD_P1` 回执；不得把它改写成 warning。
+
+R2 冻结证据仅供只读审计，不得重跑：
+
+```text
+artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/p1_geometry_r2/
+```
+
+正式 R2 receipt SHA-256 为
+`75899978919b67be260bbba1161d69ea09b42384f1730ec866a243f6d0f41a32`；
+14 项门均 PASS，但顶层 `INVALID` error 为
+`R0_RECEIPT_EVIDENCE_HASH_KEYSET`。
+
+权威结果：
+
+- [R1 不可变失败与 source-hash 竞态](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_RESULT_2026-07-28.md)
+- [R2 唯一冻结运行结果](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R2_RESULT_2026-07-29.md)
 
 失败模式：
 
@@ -51,7 +90,8 @@ artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/
 ## 停止条件
 
 静态 bundle 或独立设计审查不通过时停在
-`EXECUTION_NOT_AUTHORIZED`。未来任何 geometry、response-blind calibration、R3
+`EXECUTION_NOT_AUTHORIZED`。当前 R2 hash/keyset validator 已失败，终态为
+`INTERVENTION_NOT_EVALUABLE / HOLD_P1`。任何 geometry、response-blind calibration、R3
 transport equivalence、analysis lock 或 guarded-host preflight 失败，都不得靠换
 seed、降门、减 arm 或继续切 ADVIO 回救。
 
