@@ -1,0 +1,120 @@
+{
+  "schema_version": "rcle.source_discovery.historical_false_negative_audit.v1",
+  "protocol_id": "RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R3",
+  "audit_date": "2026-07-28",
+  "scope": "Reclassify prior source/capture stops as science-evaluated failures, transport/access false negatives, or still-untested candidates. This audit does not change the algorithm, frozen geometry formula, thresholds, RGB boundary, or Android authority.",
+  "frozen_formula_sha256": "0ce6256e12dd4536f284c7047f1e63faf955fa7bcf87f28fcb93c3e5d9de1add",
+  "findings": [
+    {
+      "source_family": "OpenLORIS corridor",
+      "historical_issue": "R1 rejected solid archives because reaching aligned depth required transient traversal of interleaved color members.",
+      "classification": "CONFIRMED_PROCESS_FALSE_NEGATIVE_CORRECTED",
+      "correction": "Evidence Access and Transport Standard R1 allowed compressed transport and transient discard without RGB output, inspection, decoding, selection influence, or algorithm use.",
+      "post_correction_result": {
+        "fixed_windows": 39,
+        "positive": 34,
+        "below_reference": 0,
+        "ambiguous": 5,
+        "role_complete": false
+      },
+      "interpretation": "The early transport stop wasted time but did not hide a passing source under the unchanged scientific gate."
+    },
+    {
+      "source_family": "MultiScan",
+      "classification": "SCIENCE_EVALUATED_NOT_ROLE_COMPLETE",
+      "post_authority_result": {
+        "fixed_windows": 21,
+        "positive": 0,
+        "below_reference": 0,
+        "ambiguous": 21,
+        "role_complete": false
+      },
+      "interpretation": "The accepted-license and source-authority work was necessary; the later geometry result, not the access gate, is the current reason for exclusion."
+    },
+    {
+      "source_family": "VECtor",
+      "evaluated_captures": [
+        "board-slow",
+        "robot-fast"
+      ],
+      "classification": "EVALUATED_CAPTURE_SET_NOT_ROLE_COMPLETE_SOURCE_REMAINDER_UNTESTED",
+      "evaluated_result": {
+        "fixed_windows": 6,
+        "positive_present": false,
+        "below_reference_present": false,
+        "role_complete": false
+      },
+      "false_negative_risk": "The old fixed-small-capture policy did not establish a family-wide scientific failure. Other source-native captures remain eligible only through a separately reviewed future lock."
+    },
+    {
+      "source_family": "MVSEC",
+      "evaluated_captures": [
+        "indoor_flying1",
+        "indoor_flying4"
+      ],
+      "classification": "EVALUATED_CAPTURE_SET_NOT_ROLE_COMPLETE_SOURCE_REMAINDER_UNTESTED",
+      "evaluated_result": {
+        "fixed_windows": 7,
+        "positive_present": false,
+        "below_reference_present": true,
+        "role_complete": false
+      },
+      "near_gate_note": "One indoor_flying1 window reached positive fraction 0.8434343434 but only 4.602005004 s continuous positive duration, below the unchanged 5.0 s requirement.",
+      "false_negative_risk": "The tested captures genuinely fail the tuple, but the result is not family-wide authority against every MVSEC capture."
+    },
+    {
+      "source_family": "DLR sequence family",
+      "classification": "EVALUATED_CAPTURE_SET_NOT_ROLE_COMPLETE_SOURCE_REMAINDER_UNTESTED",
+      "evaluated_result": {
+        "tested_captures": 4,
+        "positive": 0,
+        "below_reference": 6,
+        "ambiguous": 60,
+        "role_complete": false
+      },
+      "false_negative_risk": "Unconsumed registered captures were not scientifically evaluated and must not be described as geometry failures."
+    },
+    {
+      "source_family": "M3ED",
+      "classification": "SOURCE_FAMILY_TIMEGRID_NOT_EVALUABLE",
+      "evaluated_result": {
+        "eligible_non_test_captures": 55,
+        "complete_fixed_windows": 878,
+        "passing_fixed_windows": 0
+      },
+      "interpretation": "After correcting the timestamp-unit bug and independently reviewing all eligible non-test captures, this is a family-wide timegrid failure under the unchanged dt <= 0.1 s gate."
+    },
+    {
+      "source_family": "KITTI Raw",
+      "evaluated_captures": [
+        "2011_09_26_drive_0039"
+      ],
+      "classification": "CAPTURE_LOCAL_TIMEGRID_NOT_EVALUABLE_SOURCE_REMAINDER_UNTESTED",
+      "evaluated_result": {
+        "complete_fixed_windows": 4,
+        "passing_fixed_windows": 0,
+        "observed_pair_dt_s_approx": 0.1034
+      },
+      "false_negative_risk": "This capture cannot pass the unchanged cadence gate, but no family-wide KITTI Raw exclusion is authorized."
+    }
+  ],
+  "governance_correction": {
+    "retired_rules": [
+      "Treating any RGB member byte traversal as RGB scientific access",
+      "Two-smallest-captures-only acquisition",
+      "Promoting a capture-local failure to a source-family failure without official family-wide evidence"
+    ],
+    "retained_scientific_rules": [
+      "Frozen formula and thresholds",
+      "Earliest synchronized non-overlapping 10 s half-open windows with no sliding",
+      "At least 90 source-consecutive pairs and every pair dt <= 0.1 s",
+      "Coverage >= 0.8 with fixed denominator and no imputation",
+      "Each independent source must supply one positive and one below-reference window",
+      "No cross-source pooling",
+      "No RGB algorithm execution and no Android"
+    ]
+  },
+  "decision": "HISTORICAL_PROCESS_FALSE_NEGATIVE_CONFIRMED_AND_CORRECTED_SOME_SOURCE_REMAINDERS_STILL_UNTESTED",
+  "current_terminal": "EXTERNAL_COHORT_NOT_EVALUABLE",
+  "next_action": "Continue only with separately locked exact captures; do not rewrite geometry-tested failures as access failures, and do not rewrite untested captures as geometry failures."
+}

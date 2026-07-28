@@ -1,0 +1,122 @@
+{
+  "schema_version": "blindassist.source_discovery.completion_audit.v2",
+  "protocol_id": "RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R2",
+  "audited_on": "2026-07-27",
+  "status": "FAIL",
+  "terminal": "EXTERNAL_COHORT_NOT_EVALUABLE",
+  "access_correction": {
+    "review_decision": "SOURCE_DISCOVERY_R2_ACCESS_CORRECTION_REVIEW_PASS",
+    "review_receipt_sha256": "bac2ee7da1742fdca1a36b53227e70b4fe9b44119ba5941c3e643d19c1b25a61",
+    "r1_historical_terminal_preserved": true,
+    "r1_terminal_is_current_authority": false
+  },
+  "scientific_bindings": {
+    "candidate_lock_sha256": "c1a0ea53dc698b1f12107db9951f7ecf88def7aa4aed2d2edd0e186093cb5a3c",
+    "geometry_formula_sha256": "0ce6256e12dd4536f284c7047f1e63faf955fa7bcf87f28fcb93c3e5d9de1add",
+    "candidate_identity_changed": false,
+    "window_grid_changed": false,
+    "thresholds_changed": false,
+    "fixed_denominator_changed": false,
+    "tie_break_changed": false
+  },
+  "network": {
+    "scientifically_consumed_unique_payload_bytes": 21306637315,
+    "scientifically_consumed_unique_payload_gib": 19.843352,
+    "cumulative_attributable_acquisition_bytes": 51121412237,
+    "cumulative_attributable_acquisition_gib": 47.610525,
+    "maximum_cumulative_download_bytes": 42949672960,
+    "overage_bytes": 8171739277,
+    "overage_gib": 7.610525,
+    "within_budget": false,
+    "acquisition_audit_status": "FAIL",
+    "acquisition_audit_reason": "REDUNDANT_HF_DOWNLOAD_EXCEEDED_FROZEN_BUDGET",
+    "acquisition_audit_receipt_sha256": "d53debc035bda9f715a77d74145dc351a78079cafef6019a22bae99645e81543",
+    "credentials_logged": false
+  },
+  "materialization_receipts": [
+    {
+      "capture_id": "corridor1-1",
+      "status": "PASS",
+      "receipt_sha256": "f5abb99ad432ed68674ea34ad21eaca5c682ccbadc755856909fd7ced987b652",
+      "geometry_files": 8518,
+      "geometry_bytes": 2339948559
+    },
+    {
+      "capture_id": "corridor1-2",
+      "status": "PASS",
+      "receipt_sha256": "f69f3a270e82693d8fb26dd1d45dfa9437e3cad12f3e2084d95060a6556ce937",
+      "geometry_files": 3481,
+      "geometry_bytes": 949239777
+    },
+    {
+      "capture_id": "scene_00000_00",
+      "status": "PASS",
+      "receipt_sha256": "2feed4cdb9af9a23ce3d030e389d436b5711cd943d15f341ca993aadb5724262",
+      "geometry_members": 3,
+      "geometry_bytes": 237876755
+    },
+    {
+      "capture_id": "scene_00000_01",
+      "status": "PASS",
+      "receipt_sha256": "b3a87a44f4d9c9d6cfadedb97ce7424d8bdfe61a91e9d8f3fa3b57ed4fa553b6",
+      "geometry_members": 3,
+      "geometry_bytes": 329236798
+    }
+  ],
+  "geometry_validation": {
+    "status": "PASS",
+    "errors": [],
+    "receipt_sha256": "655345e06dceb7c058797362aadb1d7867f13f4bcfbafe6199fe5c7f9812dc24",
+    "fixed_window_count": 60,
+    "window_count_reconciliation": {
+      "capture_receipt_sum": 60,
+      "source_role_sum": 60,
+      "status": "PASS",
+      "correction": "EARLY_SUMMARY_TRANSCRIPTION_54_TO_60"
+    },
+    "sources": [
+      {
+        "source_family": "OPENLORIS_CORRIDOR",
+        "positive_windows": 34,
+        "below_reference_windows": 0,
+        "ambiguous_windows": 5,
+        "role_complete": false
+      },
+      {
+        "source_family": "MULTISCAN",
+        "positive_windows": 0,
+        "below_reference_windows": 0,
+        "ambiguous_windows": 21,
+        "role_complete": false
+      }
+    ],
+    "role_complete_independent_source_count": 0,
+    "required_independent_source_count": 2,
+    "selected_windows": []
+  },
+  "access_boundary": {
+    "rgb_compressed_transport_presence": true,
+    "rgb_transient_solid_decode": true,
+    "rgb_materialized_files": 0,
+    "rgb_persistent_bytes": 0,
+    "rgb_visualization_calls": 0,
+    "rgb_algorithm_calls": 0,
+    "rgb_selection_or_tuning_influence": false
+  },
+  "forbidden_actions_observed": {
+    "candidate_expansion_or_replacement": false,
+    "threshold_or_gate_relaxation": false,
+    "post_outcome_window_addition_or_sliding": false,
+    "pooled_role_rescue": false,
+    "android_or_device_execution_by_this_protocol": false,
+    "algorithm_change_by_this_protocol": false,
+    "frozen_cumulative_download_budget_exceeded": true
+  },
+  "implementation_checks": {
+    "artifact_scripts_py_compile": "PASS",
+    "git_diff_check": "PASS",
+    "task_write_set_contains_algorithm_files": false,
+    "task_write_set_contains_android_files": false,
+    "shared_worktree_contains_unrelated_concurrent_changes": true
+  }
+}

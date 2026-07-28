@@ -1,0 +1,223 @@
+{
+  "schema_version": "blindassist.unseen_external_confirmation.source_discovery.successor_candidate_lock.v4",
+  "protocol_id": "RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R3",
+  "lock_id": "MVSEC_SUCCESSOR_CANDIDATE_LOCK_R2",
+  "revision": 2,
+  "created_on": "2026-07-28",
+  "status": "REVIEW_REQUIRED",
+  "scope": "Continue the same MVSEC indoor-flying source family with the two exact captures that remained untested after the retired two-smallest-only rule. Both captures passed outcome-blind ROS bag index and fixed-window time-grid probes before this lock.",
+  "authority": {
+    "candidate_expansion_within_complete_frozen_registry": true,
+    "algorithm_change": false,
+    "threshold_relaxation": false,
+    "rgb_execution": false,
+    "android_execution": false
+  },
+  "bindings": {
+    "acquisition_governance_r1": {
+      "path": "docs/research/rcle/RCLE_SOURCE_DISCOVERY_R3_ACQUISITION_GOVERNANCE_OPTIMIZATION_R1_2026-07-28.json",
+      "sha256": "90aab2994ed7eb544f759ee7c367a98ea2c84f46ec92b034da2f5d6d777ae10a",
+      "review_path": "artifacts.local/evidence/rcle_source_discovery_r3/acquisition_governance_optimization_r1_review.json",
+      "review_sha256": "d9b8efcd2d7553f568eaef3731af5698257bfd1ad6f0d239fc7641eb2dcddfa0"
+    },
+    "preflight_feasibility_optimization_r2": {
+      "path": "docs/research/rcle/RCLE_SOURCE_DISCOVERY_R3_PREFLIGHT_FEASIBILITY_OPTIMIZATION_R2_2026-07-28.json",
+      "sha256": "f14b76871f60f5983333648f7d556b4bc2ed3d280a5b1b7b946638c6a5843ad8",
+      "review_path": "artifacts.local/evidence/rcle_source_discovery_r3/preflight_feasibility_optimization_r2_independent_review_pass_revision3.json",
+      "review_sha256": "c4d191ec7f947eb5589365d0af4e3f64cced5baac1e7dee772184389a789b574"
+    },
+    "formula": {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/producer.py",
+      "sha256": "0ce6256e12dd4536f284c7047f1e63faf955fa7bcf87f28fcb93c3e5d9de1add"
+    },
+    "complete_mvsec_inventory": {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_preflight/mvsec/indoor_flying_gt_bag_inventory.json",
+      "sha256": "620ddd3c71bcc42ee1331a254d17f40e8ec62f24a650e9dc3bf83f87cd1f092d",
+      "capture_ids": [
+        "indoor_flying1",
+        "indoor_flying2",
+        "indoor_flying3",
+        "indoor_flying4"
+      ]
+    },
+    "prior_candidate_lock": {
+      "path": "docs/research/rcle/RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R3_SUCCESSOR_CANDIDATE_LOCK_R1_2026-07-28.json",
+      "sha256": "abe62d67472e5658435599b4c8188f1f272138e306944676f0926203bf98b705",
+      "independent_review_path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_candidate_lock_r1_independent_review_pass_revision2.json",
+      "independent_review_sha256": "1668ef8565e07f2b4f875cba937871884d0b90eef3f1ec327d99c9eefbebdcc3"
+    },
+    "prior_source_audit": {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_geometry/mvsec/source_audit.json",
+      "sha256": "66043bed1e18489654edb9bc6dc5a80a1e414bfcba39d6ceeaad48b305cfc8a6",
+      "decision": "SOURCE_INCOMPLETE_NO_ROLE_TUPLE",
+      "existing_below_reference_window_present": true,
+      "existing_positive_window_present": false
+    },
+    "calibration": {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_preflight/mvsec/camchain-imucam-indoor_flying.yaml",
+      "sha256": "b5a044cbb4c067f3942a6b6b2d2ae2c98791b90603c4ffa394cba61d546aad71",
+      "bytes": 3016
+    },
+    "transport_snapshot": {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r4_preflight/mvsec/transport_ledger_prefix_before_mvsec_lock_r2_revision2.json",
+      "sha256": "fae3772e0820ee310de013e5e19b11fbfcc29b8963eba0bd53e971339c8861cb",
+      "event_count": 8627,
+      "attributed_network_payload_bytes": 24116959242,
+      "remaining_budget_bytes": 18832713718,
+      "active_downloader": false
+    }
+  },
+  "source": {
+    "source_family_id": "MVSEC_INDOOR_FLYING_DEPTH_MOCAP",
+    "ancestry_group": "UPENN_MVSEC_DAVIS_LIDAR_VICON",
+    "publisher": "University of Pennsylvania Daniilidis Group",
+    "license": "CC-BY-SA-4.0",
+    "official_overview": "https://daniilidis-group.github.io/mvsec/",
+    "official_download": "https://daniilidis-group.github.io/mvsec/download/",
+    "existing_below_reference_authority": "The already audited indoor_flying1 below-reference window remains same-family evidence. This successor lock seeks the missing positive role and does not pool roles across source families.",
+    "access_vector_before_execution": {
+      "metadata_identity": "YES",
+      "payload_presence": "NO_FOR_NEW_CAPTURES",
+      "geometry_access": "NO_FOR_NEW_CAPTURES",
+      "rgb_visual_access": "NO",
+      "other_algorithm_outcome_access": "NO_FOR_NEW_CAPTURES",
+      "claim_relevant_outcome_access": "YES_FOR_CONSUMED_MVSEC_CAPTURES_ONLY",
+      "selection_or_tuning_influence": "NO_FOR_REMAINING_QUEUE_SELECTION"
+    }
+  },
+  "capture_queue": [
+    {
+      "queue_rank": 1,
+      "complete_registry_rank_by_bytes_then_capture_id": 3,
+      "capture_id": "indoor_flying2",
+      "selection_basis": {
+        "remaining_unconsumed_capture": true,
+        "complete_10_second_window_slots_in_probe": 3,
+        "object_bytes": 3351836116,
+        "motion_name_or_geometry_outcome_used": false
+      },
+      "object": {
+        "url": "https://visiondata.cis.upenn.edu/mvsec/indoor_flying/indoor_flying2_gt.bag",
+        "bytes": 3351836116,
+        "etag": "\"c7c8f5d4-55c8fb5d24dac\"",
+        "last_modified": "Fri, 27 Oct 2017 23:33:04 GMT"
+      },
+      "timegrid_probe": {
+        "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r4_preflight/mvsec/indoor_flying2_gt_rosbag_index_probe_revision2.json",
+        "sha256": "3045af027626124cf7fdfbe7026240189e94fcc9970e1455b4cb2be1fb5ca6c8",
+        "status": "PASS",
+        "synchronized_overlap_seconds": 30.955852985,
+        "complete_10_second_window_count": 3,
+        "maximum_depth_pair_dt_seconds": 0.052044868,
+        "probe_network_bytes": 3332640
+      }
+    },
+    {
+      "queue_rank": 2,
+      "complete_registry_rank_by_bytes_then_capture_id": 4,
+      "capture_id": "indoor_flying3",
+      "selection_basis": {
+        "remaining_unconsumed_capture": true,
+        "complete_10_second_window_slots_in_probe": 2,
+        "object_bytes": 3714570680,
+        "motion_name_or_geometry_outcome_used": false
+      },
+      "object": {
+        "url": "https://visiondata.cis.upenn.edu/mvsec/indoor_flying/indoor_flying3_gt.bag",
+        "bytes": 3714570680,
+        "etag": "\"dd67d9b8-55c8fbdd4409d\"",
+        "last_modified": "Fri, 27 Oct 2017 23:35:18 GMT"
+      },
+      "timegrid_probe": {
+        "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r4_preflight/mvsec/indoor_flying3_gt_rosbag_index_probe_revision2.json",
+        "sha256": "7b728c66c26859aaa72be727412767bd785f2148a76859d11542969549489512",
+        "status": "PASS",
+        "synchronized_overlap_seconds": 21.010411977,
+        "complete_10_second_window_count": 2,
+        "maximum_depth_pair_dt_seconds": 0.050252915,
+        "probe_network_bytes": 2533919
+      }
+    }
+  ],
+  "queue_selection_rule": {
+    "frozen_registry_count": 4,
+    "already_consumed_capture_ids": [
+      "indoor_flying4",
+      "indoor_flying1"
+    ],
+    "selected_all_remaining_unconsumed_capture_ids": [
+      "indoor_flying2",
+      "indoor_flying3"
+    ],
+    "order": "Process all remaining exact captures in ascending object bytes, then lexicographic capture id. The order is recomputable from the complete pre-outcome inventory.",
+    "reason": "This exhausts the pre-existing four-capture registry without selecting from new-capture outcomes. The retired two-smallest-only rule no longer promotes the prior two-capture result to a family-wide failure.",
+    "post_outcome_append_to_this_lock": "FORBIDDEN",
+    "queue_stop_after_same_family_tuple": "REQUIRED"
+  },
+  "execution": [
+    "Process capture_queue strictly by queue_rank with the protocol-global single downloader.",
+    "Download only the exact ground-truth bag. Verify the bound length and ETag before transfer, then compute full SHA-256 and persist the identity sidecar.",
+    "Open only ROS bag metadata plus /davis/left/depth_image_rect, /davis/left/pose, and /davis/left/camera_info. Every blended or intensity image topic is forbidden.",
+    "Materialize numeric depth geometry, source timestamps, pose coordinates, and camera-info projection only. Do not decode, materialize, render, inspect, or algorithmically consume RGB or blended-image bytes.",
+    "Run the unchanged fixed-window geometry formula for the exact earliest synchronized half-open grid.",
+    "Stop before downloading the next queue item if the audited same-family source tuple is complete.",
+    "If both captures end without a positive, record only MVSEC source incomplete after full four-capture registry exhaustion; do not lower gates or append captures."
+  ],
+  "implementation_bindings": {
+    "metadata_timegrid_probe": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/probe_remote_rosbag_index_r3.py",
+      "sha256": "9ab03cdb47a0d1f6b259ead92718d63c1ffaee21294cc1e227fff526e4ec36a3"
+    },
+    "object_downloader": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/download_object_r3.py",
+      "sha256": "0f9ee64f9bceeaf0c41b66308704676e57b5a48c1e1031da585262bb04697498"
+    },
+    "transfer_guard": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/r3_transfer_guard.py",
+      "sha256": "ede373611505ce5963bf76a01ed8731d196d8ccbb92f38579ab8e32f8fafef9e"
+    },
+    "geometry_extractor": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/extract_mvsec_geometry_r3.py",
+      "sha256": "4a9ee88c54519abd42256bb9f5f11798c7d26d959b7a0ce2d238b36a52a5b70a"
+    },
+    "fixed_window_runner": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/run_successor_geometry_windows_r3.py",
+      "sha256": "b5f3d7bb988004dc124b39e009a51e59394cfb1088465015d448f5fdb188f9fa"
+    }
+  },
+  "unchanged_scientific_gates": {
+    "window_duration_seconds": 10.0,
+    "window_grid": "Per capture, non-overlapping half-open windows anchored at the earliest synchronized source timestamp; incomplete trailing windows are excluded; no sliding.",
+    "same_capture_selected_start_separation_seconds": 20.0,
+    "minimum_source_consecutive_pairs": 90,
+    "maximum_pair_dt_seconds": 0.1,
+    "minimum_geometry_pair_coverage": 0.8,
+    "positive_role": {
+      "minimum_pair_fraction_at_or_above_per_second": 0.8,
+      "signed_radial_threshold_per_second": 0.05,
+      "minimum_continuous_run_seconds": 5.0
+    },
+    "below_reference_role": {
+      "minimum_pair_fraction_below_per_second": 0.8,
+      "signed_radial_threshold_per_second": 0.01,
+      "minimum_continuous_run_seconds": 5.0
+    },
+    "required_selected_windows_per_source": {
+      "positive": 1,
+      "below_reference": 1
+    },
+    "source_pooling": "FORBIDDEN",
+    "abstention_policy": "No imputation. A failed or unevaluable pair remains in the fixed denominator."
+  },
+  "budget": {
+    "locked_queue_object_bytes": 7066406796,
+    "maximum_attributed_bytes_after_locked_queue_before_small_headers": 31183366038,
+    "global_budget_bytes": 42949672960,
+    "remaining_after_locked_queue_before_small_headers": 11766306922,
+    "status": "PASS"
+  },
+  "review": {
+    "decision": "PENDING",
+    "execution_authority": "NOT_AUTHORIZED_UNTIL_MACHINE_AND_INDEPENDENT_REVIEW_PASS"
+  }
+}

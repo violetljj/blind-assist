@@ -1,0 +1,141 @@
+{
+  "schema_version": "blindassist.source_discovery.r4_segment_level_cohort_design.v1",
+  "protocol_id": "RCLE_SOURCE_DISCOVERY_R4_USABILITY_OPTIMIZATION",
+  "created_at_utc": "2026-07-28T00:22:30.952650+00:00",
+  "status": "REVIEW_REQUIRED",
+  "authority": {
+    "trigger": "User directed that prolonged zero-source execution must trigger protocol usability review and that usable segments must not be discarded because other segments in the same capture or source fail.",
+    "r3_history_mutated": false,
+    "algorithm_changed": false,
+    "per_window_scientific_threshold_lowered": false,
+    "rgb_execution": false,
+    "android_execution": false
+  },
+  "bindings": {
+    "r3_protocol_usability_failure_audit": {
+      "path": "docs/research/rcle/RCLE_SOURCE_DISCOVERY_R3_PROTOCOL_USABILITY_FAILURE_AUDIT_R1_2026-07-28.json",
+      "sha256": "8e1a0cefffbb39cbd88aa998e606def5587ddc0b87d8bd6b1012ea00316b0e96"
+    },
+    "geometry_formula": {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/producer.py",
+      "sha256": "0ce6256e12dd4536f284c7047f1e63faf955fa7bcf87f28fcb93c3e5d9de1add"
+    }
+  },
+  "diagnosis": {
+    "old_overconstraint": "Each source family had to contain both a positive and a below-reference passing window before any segment from that source counted as usable.",
+    "observed_consequence": "OpenLORIS contains 34 unchanged positive passing windows; DLR contains 9 unchanged below-reference passing windows; MVSEC contains 1 unchanged below-reference passing window, yet R3 reported zero role-complete sources.",
+    "correct_admission_unit": "EXACT_FIXED_WINDOW",
+    "capture_or_source_wide_failure_propagation": "FORBIDDEN"
+  },
+  "unchanged_window_gates": {
+    "window_duration_seconds": 10.0,
+    "half_open": true,
+    "non_overlapping": true,
+    "sliding": false,
+    "minimum_source_consecutive_pairs": 90,
+    "maximum_pair_dt_seconds": 0.1,
+    "minimum_geometry_pair_coverage": 0.8,
+    "positive": {
+      "signed_radial_threshold_per_second": 0.05,
+      "minimum_fixed_denominator_fraction": 0.8,
+      "minimum_continuous_run_seconds": 5.0
+    },
+    "below_reference": {
+      "signed_radial_threshold_per_second": 0.01,
+      "maximum_relation": "strictly_below",
+      "minimum_fixed_denominator_fraction": 0.8,
+      "minimum_continuous_run_seconds": 5.0
+    },
+    "abstention_imputation": false
+  },
+  "r4_segment_level_cohort_rule": {
+    "minimum_independent_source_families": 2,
+    "minimum_passing_segments_per_selected_source": 1,
+    "cohort_role_coverage": {
+      "positive_segments_minimum": 1,
+      "below_reference_segments_minimum": 1
+    },
+    "same_source_must_supply_both_roles": false,
+    "other_windows_in_selected_capture_must_pass": false,
+    "other_captures_in_selected_source_must_pass": false,
+    "pair_or_window_pooling": false,
+    "selection_rule": "Among retained R3 windows that independently pass all unchanged per-window gates, enumerate positive/below pairs from different source families and select the lexicographic minimum by positive source/capture/start/window then below source/capture/start/window."
+  },
+  "selected_two_source_segment_cohort": {
+    "source_family_count": 2,
+    "source_family_ids": [
+      "DLR_RGBD_VICON",
+      "OPENLORIS_CORRIDOR"
+    ],
+    "segments": [
+      {
+        "role": "positive",
+        "source_family_id": "OPENLORIS_CORRIDOR",
+        "capture_id": "corridor1-1",
+        "window_id": "corridor1-1:w004",
+        "start_timestamp_s": "1560000043.537699",
+        "end_timestamp_s": "1560000053.537699",
+        "pair_count": 299,
+        "geometry_pair_coverage_fixed_denominator": 1.0,
+        "role_fraction_fixed_denominator": 0.9899665551839465,
+        "longest_role_run_duration_s": 9.067142,
+        "result": {
+          "path": "artifacts.local/evidence/rcle_source_authority_repair_r1/geometry-r2/openloris/corridor1-1/result.json",
+          "sha256": "07964d8934c278a305916e49ec0bb61fd4592bba38da8694df2d9913c1db8461"
+        },
+        "geometry_pair_ledger": {
+          "path": "artifacts.local/evidence/rcle_source_authority_repair_r1/geometry-r2/openloris/corridor1-1/geometry_pair_ledger.jsonl",
+          "sha256": "772746c1d4654c2e2b67829d3d5f254a9e9b6be88a7671f10cfac3299e8ab903"
+        },
+        "unchanged_r3_window_role": "POSITIVE_APPROACH_WINDOW"
+      },
+      {
+        "role": "below_reference",
+        "source_family_id": "DLR_RGBD_VICON",
+        "capture_id": "extreme_geometry/hexagon_01",
+        "window_id": "extreme_geometry/hexagon_01:w001",
+        "start_timestamp_s": "1634201323.995618343",
+        "end_timestamp_s": "1634201333.995618343",
+        "pair_count": 298,
+        "geometry_pair_coverage_fixed_denominator": 1.0,
+        "role_fraction_fixed_denominator": 0.9228187919463087,
+        "longest_role_run_duration_s": 8.472872972,
+        "result": {
+          "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_geometry/dlr/extreme_geometry__hexagon_01/geometry_windows/result.json",
+          "sha256": "f08deaed664fc9a22f5a5b50128614c91165fed9e4ab59df49c7aac3336f8883"
+        },
+        "geometry_pair_ledger": {
+          "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_geometry/dlr/extreme_geometry__hexagon_01/geometry_windows/geometry_pair_ledger.jsonl",
+          "sha256": "d94b426cc7342ae3522868d2dc6b3038b3c87ead7df10a41d5b6929b7c740bab"
+        },
+        "unchanged_r3_window_role": "BELOW_TRIGGER_REFERENCE_WINDOW"
+      }
+    ],
+    "collective_positive_present": true,
+    "collective_below_reference_present": true,
+    "all_selected_segments_pass_unchanged_r3_window_gates": true
+  },
+  "claim_ceiling": {
+    "allowed": "Two independent public source families contribute exact geometry-qualified segments and collectively cover the positive and below-reference roles.",
+    "not_allowed": [
+      "Each source independently contains both roles.",
+      "Within-source role contrast is established.",
+      "Source domain and motion role are unconfounded.",
+      "RGB algorithm confirmation, product authority, or Android safety."
+    ],
+    "cross_source_role_confounding": true,
+    "required_reporting": "Any later use must report source family and role jointly; role effects cannot be separated from source-domain effects with this two-segment cohort."
+  },
+  "review": {
+    "decision": "PENDING",
+    "candidate_lock_or_execution_authority": "NOT_AUTHORIZED_UNTIL_INDEPENDENT_REVIEW_PASS"
+  },
+  "terminal_if_review_passes": {
+    "decision": "R4_TWO_SOURCE_SEGMENT_COHORT_AVAILABLE",
+    "new_payload_required": false,
+    "geometry_rerun_required": false,
+    "rgb_execution_authorized": false,
+    "android_execution_authorized": false,
+    "r3_external_cohort_state": "EXTERNAL_COHORT_NOT_EVALUABLE"
+  }
+}

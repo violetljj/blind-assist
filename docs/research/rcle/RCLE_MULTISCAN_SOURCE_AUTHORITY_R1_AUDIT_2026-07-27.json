@@ -1,0 +1,170 @@
+{
+  "schema_version": "blindassist.multiscan_source_authority_audit.v1",
+  "protocol_id": "RCLE_SOURCE_AUTHORITY_REPAIR_R1",
+  "audited_on": "2026-07-27",
+  "status": "PASS",
+  "license_access": {
+    "repository": "3dlg-hcvc/MultiScan",
+    "license": "CC-BY-NC-4.0",
+    "user_reported_acceptance": true,
+    "controlled_browser_verification": {
+      "dataset_page": "https://huggingface.co/datasets/3dlg-hcvc/MultiScan",
+      "acknowledgment_form_absent": true,
+      "files_tree_accessible": true,
+      "verified": true
+    },
+    "redistribution_note": "Non-commercial license applies; acceptance shares the accepting account email and username with the repository authors. No dataset payload is redistributed by this audit."
+  },
+  "repository_identity": {
+    "main_head_observed": "c62c9aad850a8638ac3e42605926a65707600125",
+    "capture_upload_commit": "93674c024ea7371a8ac1ac308e71b6c96093f0f5",
+    "tree": "https://huggingface.co/datasets/3dlg-hcvc/MultiScan/tree/main/scans"
+  },
+  "exact_captures": [
+    {
+      "capture_id": "scene_00000_00",
+      "selection_basis": "pre-result frozen first exact capture; no semantic motion-role inference",
+      "path": "scans/scene_00000_00.zip",
+      "bytes": 594277493,
+      "lfs_oid_sha256": "4f7278e866c301a05bd413e3df40b43c0b97cccd8ee69f3466429bbfdeab31d0",
+      "xet_hash": "5b6a600449fafc0d8b402147b5963c1c08e08d392cf20b43981b973af980b27c",
+      "identity_status": "PASS",
+      "source_native_streams": {
+        "color_camera": {
+          "frequency_hz": 60,
+          "frames": 5763
+        },
+        "depth": {
+          "frequency_hz": 60,
+          "frames": 5763
+        },
+        "confidence": {
+          "frequency_hz": 60,
+          "frames": 5763
+        },
+        "camera_info_pose": {
+          "frequency_hz": 60,
+          "frames": 5763,
+          "per_frame_fields": [
+            "timestamp",
+            "intrinsics",
+            "transform",
+            "quaternion",
+            "euler_angles",
+            "exposure_duration"
+          ]
+        }
+      },
+      "nominal_duration_seconds": 96.05,
+      "duration_rule": "frames / source-native frequency",
+      "camera_info_line_count": 5763,
+      "timestamp_first": 231823024908916,
+      "timestamp_last": 231919098123000,
+      "timestamp_span_raw": 96073214084,
+      "timestamps_strictly_increasing": true,
+      "metadata_members": [
+        {
+          "name": "scene_00000_00/scene_00000_00.json",
+          "compressed_bytes": 473,
+          "uncompressed_bytes": 1504,
+          "crc32": "8af0658b"
+        },
+        {
+          "name": "scene_00000_00/scene_00000_00.jsonl",
+          "compressed_bytes": 1189248,
+          "uncompressed_bytes": 3491444,
+          "crc32": "80065f4e"
+        }
+      ],
+      "sync_status": "PASS_EQUAL_FRAME_COUNT_FREQUENCY_CAMERA_INFO_LINES_AND_MONOTONIC_TIMESTAMPS"
+    },
+    {
+      "capture_id": "scene_00000_01",
+      "selection_basis": "lexicographic paired scan of the same published scene, fixed before member access; no semantic motion-role inference",
+      "path": "scans/scene_00000_01.zip",
+      "bytes": 783429134,
+      "lfs_oid_sha256": "c085b30e2c1eb2737d3220b4f2181e8380a2ad14dc4469de01da96684963450c",
+      "xet_hash": "89a66e4055822057fd67d4b61d2e06fcc80493e348c68e37a222cb869239468f",
+      "identity_status": "PASS",
+      "source_native_streams": {
+        "color_camera": {
+          "frequency_hz": 60,
+          "frames": 7789
+        },
+        "depth": {
+          "frequency_hz": 60,
+          "frames": 7789
+        },
+        "confidence": {
+          "frequency_hz": 60,
+          "frames": 7789
+        },
+        "camera_info_pose": {
+          "frequency_hz": 60,
+          "frames": 7789,
+          "per_frame_fields": [
+            "timestamp",
+            "intrinsics",
+            "transform",
+            "quaternion",
+            "euler_angles",
+            "exposure_duration"
+          ]
+        }
+      },
+      "nominal_duration_seconds": 129.81666666666666,
+      "duration_rule": "frames / source-native frequency",
+      "camera_info_line_count": 7789,
+      "timestamp_first": 231982053120375,
+      "timestamp_last": 232111911117708,
+      "timestamp_span_raw": 129857997333,
+      "timestamps_strictly_increasing": true,
+      "metadata_members": [
+        {
+          "name": "scene_00000_01/scene_00000_01.json",
+          "compressed_bytes": 470,
+          "uncompressed_bytes": 1503,
+          "crc32": "0e39a724"
+        },
+        {
+          "name": "scene_00000_01/scene_00000_01.jsonl",
+          "compressed_bytes": 1603850,
+          "uncompressed_bytes": 4718795,
+          "crc32": "24c08af7"
+        }
+      ],
+      "sync_status": "PASS_EQUAL_FRAME_COUNT_FREQUENCY_CAMERA_INFO_LINES_AND_MONOTONIC_TIMESTAMPS"
+    }
+  ],
+  "official_format_evidence": {
+    "dataset_docs": "https://3dlg-hcvc.github.io/multiscan/read-the-docs/dataset/index.html",
+    "acquired_data_docs": "https://3dlg-hcvc.github.io/multiscan/read-the-docs/dataset/files/acquired.html",
+    "relationship": "Each exact capture archive contains a capture JSON, per-frame camera-info JSONL, RGB MP4, depth stream, and confidence stream. The capture JSON is the source-native frame-count/frequency authority; the JSONL supplies per-frame timestamp and pose."
+  },
+  "access_firewall": {
+    "rgb_visual_access": false,
+    "rgb_algorithm_execution": false,
+    "payload_download": false,
+    "metadata_member_read_only": true,
+    "candidate_payload_member_read": false,
+    "android_execution": false,
+    "candidate_expansion": false,
+    "threshold_change": false
+  },
+  "decision": {
+    "multiscan_source_authority": "PASS",
+    "reason": "Both frozen exact captures have publisher-controlled LFS SHA-256, exact bytes, Xet identity, source-native RGB/depth/confidence/camera-info frame-count and frequency equality, matching camera-info JSONL line counts, strictly increasing timestamps, endpoint pose fields, and at least 30 seconds nominal duration.",
+    "combined_metadata_range_bytes": 2930400,
+    "full_archive_download": false,
+    "independent_validator": {
+      "status": "PASS",
+      "errors": [],
+      "receipt_sha256": "9595aea00fe51b6211e8061c46dce381eba4aad85d2978a5bd2a0ffca37f67fe",
+      "lfs_pointer_replayed": true,
+      "xet_hash_replay": "BROWSER_SESSION_OBSERVATION_ONLY_TOKEN_HTML_RETURNED_401"
+    },
+    "source_discovery_r1_candidate_lock": "ALLOWED_AS_SEPARATE_REVIEWED_ARTIFACT",
+    "geometry_download_or_execution": "FORBIDDEN_UNTIL_CANDIDATE_LOCK_REVIEW_PASS",
+    "external_cohort_terminal": "PENDING_SEPARATE_CANDIDATE_LOCK"
+  }
+}

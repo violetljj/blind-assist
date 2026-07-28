@@ -1,0 +1,221 @@
+{
+  "schema_version": "blindassist.unseen_external_confirmation.source_discovery.candidate_lock.v1",
+  "protocol_id": "RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R1",
+  "created_on": "2026-07-27",
+  "stage": "DISCOVERY",
+  "status": "CANDIDATES_LOCKED_REVIEW_REQUIRED",
+  "parent_protocol": {
+    "path": "docs/research/rcle/RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R0_CONTRACT_2026-07-27.json",
+    "sha256": "56ebb5927bf85a45978cbdb95822976f4694839af1fccb206e8c1816bf599c7a",
+    "gate_policy": "UNCHANGED"
+  },
+  "source_authority_repair": {
+    "contract": {
+      "path": "docs/research/rcle/RCLE_SOURCE_AUTHORITY_REPAIR_R1_CONTRACT_2026-07-27.json",
+      "sha256": "a934f564f2e69999831887b761bd667307c33eb62001170fa6e2bcf7f00e6e72"
+    },
+    "metadata_access_clarification": {
+      "path": "docs/research/rcle/RCLE_SOURCE_AUTHORITY_REPAIR_R1_METADATA_ACCESS_CLARIFICATION_2026-07-27.json",
+      "sha256": "c9e2d5391e518e5f9829468e46c2fd107d12bef94bd6e367d8592f9a2d0e1723"
+    },
+    "openloris_validation": {
+      "path": "artifacts.local/evidence/rcle_source_authority_repair_r1/openloris_authority_validation.json",
+      "sha256": "c18428c3fd47ae3b9fb8ed260b253de6560e4f2d6f7368eb26e12535e5a23856",
+      "status": "PASS"
+    },
+    "multiscan_audit": {
+      "path": "docs/research/rcle/RCLE_MULTISCAN_SOURCE_AUTHORITY_R1_AUDIT_2026-07-27.json",
+      "sha256": "5e9cff4624b4fa64f4ac2eb6a9411d25a6aca003dd171275bf63e8601b0427f8",
+      "status": "PASS"
+    },
+    "multiscan_validation": {
+      "path": "artifacts.local/evidence/rcle_source_authority_repair_r1/multiscan/multiscan_source_authority_validation.json",
+      "sha256": "9595aea00fe51b6211e8061c46dce381eba4aad85d2978a5bd2a0ffca37f67fe",
+      "status": "PASS"
+    },
+    "source_authority_pass_count": 2,
+    "required_source_authority_pass_count": 2
+  },
+  "candidate_order": [
+    "OPENLORIS_CORRIDOR",
+    "MULTISCAN"
+  ],
+  "candidate_count": 2,
+  "candidates": [
+    {
+      "rank": 1,
+      "source_family_id": "OPENLORIS_CORRIDOR",
+      "ancestry_group": "OPENLORIS_SCENE_D435I_WHEELED_ROBOT",
+      "domain": "REAL_INDOOR_WHEELED_ROBOT_RGBD",
+      "license": "CC-BY-ND-4.0",
+      "license_limitations": "No derivative redistribution authority is claimed; acquired source members remain local evidence.",
+      "motion_role_from_metadata": "UNKNOWN",
+      "trajectory_role_authority": false,
+      "exact_captures": [
+        {
+          "capture_id": "corridor1-1",
+          "publisher_object_path": "package/corridor1-1.7z",
+          "object_bytes": 13853763765,
+          "lfs_sha256": "c7ff1a472ca54da82198521eda8c18f2065691075a05e706880f7fb58fda8415",
+          "member_count": 42601,
+          "file_count": 42595,
+          "depth_frame_count": 8514,
+          "required_metadata_members": [
+            "corridor1-1/groundtruth.txt",
+            "corridor1-1/sensors.yaml",
+            "corridor1-1/trans_matrix.yaml",
+            "corridor1-1/aligned_depth.txt"
+          ],
+          "allowed_geometry_member_patterns": [
+            "corridor1-1/groundtruth.txt",
+            "corridor1-1/sensors.yaml",
+            "corridor1-1/trans_matrix.yaml",
+            "corridor1-1/aligned_depth.txt",
+            "corridor1-1/aligned_depth/*.png"
+          ]
+        },
+        {
+          "capture_id": "corridor1-2",
+          "publisher_object_path": "package/corridor1-2_5-package.tar",
+          "object_bytes": 19695083520,
+          "lfs_sha256": "a2de290b85bdefc5388aad27858125206a19b007d9b735de5faff954cc473413",
+          "nested_7z_exact_slice": {
+            "offset": 512,
+            "length": 6075166411
+          },
+          "member_count": 17408,
+          "file_count": 17402,
+          "depth_frame_count": 3477,
+          "required_metadata_members": [
+            "corridor1-2/groundtruth.txt",
+            "corridor1-2/sensors.yaml",
+            "corridor1-2/trans_matrix.yaml",
+            "corridor1-2/aligned_depth.txt"
+          ],
+          "allowed_geometry_member_patterns": [
+            "corridor1-2/groundtruth.txt",
+            "corridor1-2/sensors.yaml",
+            "corridor1-2/trans_matrix.yaml",
+            "corridor1-2/aligned_depth.txt",
+            "corridor1-2/aligned_depth/*.png"
+          ]
+        }
+      ],
+      "selection_rule": "Evaluate captures in listed order on the frozen non-overlapping grid. Select the lexicographically earliest feasible one-positive plus one-below tuple within this source, subject to all local gates and separation.",
+      "disposition": "LOCKED_GEOMETRY_ONLY_CANDIDATE"
+    },
+    {
+      "rank": 2,
+      "source_family_id": "MULTISCAN",
+      "ancestry_group": "MULTISCAN_MOBILE_LIDAR_HANDHELD",
+      "domain": "REAL_INDOOR_HANDHELD_RGBD",
+      "license": "CC-BY-NC-4.0",
+      "license_limitations": "Non-commercial use only; gated access was accepted by the user account; no payload redistribution authority is claimed.",
+      "motion_role_from_metadata": "UNKNOWN",
+      "trajectory_role_authority": false,
+      "exact_captures": [
+        {
+          "capture_id": "scene_00000_00",
+          "publisher_object_path": "scans/scene_00000_00.zip",
+          "object_bytes": 594277493,
+          "lfs_sha256": "4f7278e866c301a05bd413e3df40b43c0b97cccd8ee69f3466429bbfdeab31d0",
+          "xet_hash": "5b6a600449fafc0d8b402147b5963c1c08e08d392cf20b43981b973af980b27c",
+          "frame_count": 5763,
+          "frequency_hz": 60,
+          "nominal_duration_seconds": 96.05,
+          "allowed_geometry_members": [
+            "scene_00000_00/scene_00000_00.json",
+            "scene_00000_00/scene_00000_00.jsonl",
+            "scene_00000_00/scene_00000_00.depth.zlib"
+          ]
+        },
+        {
+          "capture_id": "scene_00000_01",
+          "publisher_object_path": "scans/scene_00000_01.zip",
+          "object_bytes": 783429134,
+          "lfs_sha256": "c085b30e2c1eb2737d3220b4f2181e8380a2ad14dc4469de01da96684963450c",
+          "xet_hash": "89a66e4055822057fd67d4b61d2e06fcc80493e348c68e37a222cb869239468f",
+          "frame_count": 7789,
+          "frequency_hz": 60,
+          "nominal_duration_seconds": 129.81666666666666,
+          "allowed_geometry_members": [
+            "scene_00000_01/scene_00000_01.json",
+            "scene_00000_01/scene_00000_01.jsonl",
+            "scene_00000_01/scene_00000_01.depth.zlib"
+          ]
+        }
+      ],
+      "selection_rule": "Evaluate captures in listed order on the frozen non-overlapping grid. Select the lexicographically earliest feasible one-positive plus one-below tuple within this source, subject to all local gates and separation.",
+      "disposition": "LOCKED_GEOMETRY_ONLY_CANDIDATE"
+    }
+  ],
+  "independence_rule": {
+    "required_independent_source_count": 2,
+    "observed_independent_source_count": 2,
+    "basis": "OpenLORIS is a wheeled-robot Intel RealSense D435i collection and MultiScan is a separate handheld mobile-LiDAR collection with independent publisher, sensor pipeline, capture program, archive ancestry, and license.",
+    "pooled_role_rescue": "FORBIDDEN"
+  },
+  "geometry_protocol": {
+    "formula_binding": {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/producer.py",
+      "sha256": "0ce6256e12dd4536f284c7047f1e63faf955fa7bcf87f28fcb93c3e5d9de1add",
+      "algorithm_change": false
+    },
+    "window_duration_seconds": 10.0,
+    "window_grid": "Per capture, non-overlapping half-open windows anchored at the earliest synchronized source timestamp; incomplete trailing windows are excluded; no sliding.",
+    "same_capture_selected_start_separation_seconds": 20.0,
+    "minimum_source_consecutive_pairs": 90,
+    "maximum_pair_dt_seconds": 0.1,
+    "minimum_geometry_pair_coverage": 0.8,
+    "positive_role": {
+      "minimum_pair_fraction_at_or_above_per_second": 0.8,
+      "signed_radial_threshold_per_second": 0.05,
+      "minimum_continuous_run_seconds": 5.0
+    },
+    "below_reference_role": {
+      "minimum_pair_fraction_below_per_second": 0.8,
+      "signed_radial_threshold_per_second": 0.01,
+      "minimum_continuous_run_seconds": 5.0
+    },
+    "required_selected_windows_per_source": {
+      "positive": 1,
+      "below_reference": 1
+    },
+    "selection_tie_break": "Lexicographically earliest tuple by capture order, positive window start, then below window start.",
+    "abstention_policy": "No imputation. A failed or unevaluable pair remains in the fixed denominator.",
+    "role_authority": "GEOMETRY_ONLY_AFTER_EXECUTION; metadata, path, trajectory description, or source name grants no role."
+  },
+  "acquisition_contract": {
+    "payload_root": "artifacts.local/datasets/rcle_unseen_external_confirmation_source_discovery_r1",
+    "pre_review_payload_bytes": 0,
+    "maximum_cumulative_download_bytes": 42949672960,
+    "maximum_cumulative_download_gib": 40,
+    "locked_outer_object_bytes": 34926553912,
+    "locked_outer_object_gib": 32.527888,
+    "strategy": "Selective archive directory/block/member acquisition for geometry-only allowlists; never fetch RGB or a full archive when bounded member access is possible.",
+    "credentials_logged": false,
+    "full_archive_fallback": "FORBIDDEN",
+    "download_authority": "NOT_AUTHORIZED_UNTIL_SEPARATE_REVIEW_PASS"
+  },
+  "stop_rules": {
+    "success": "Stop when both locked source families each have exactly one selected positive and one selected below-reference window.",
+    "insufficient_roles": "EXTERNAL_COHORT_NOT_EVALUABLE",
+    "transport_or_sync_failure": "EXTERNAL_COHORT_NOT_EVALUABLE",
+    "budget_exhaustion": "EXTERNAL_COHORT_NOT_EVALUABLE",
+    "candidate_extension": "FORBIDDEN",
+    "threshold_relaxation": "FORBIDDEN",
+    "replacement": "FORBIDDEN",
+    "rgb_execution": "FORBIDDEN",
+    "android_execution": "FORBIDDEN"
+  },
+  "forbidden": [
+    "any candidate outside OPENLORIS_CORRIDOR and MULTISCAN",
+    "any RGB MP4, image, preview, color member, or RGB algorithm outcome access",
+    "any geometry payload acquisition before review PASS",
+    "motion role inference from metadata or trajectory description",
+    "sliding, padding, replacing, or adding windows after geometry outcome",
+    "pooling roles across sources",
+    "gate relaxation",
+    "Android or device execution"
+  ]
+}

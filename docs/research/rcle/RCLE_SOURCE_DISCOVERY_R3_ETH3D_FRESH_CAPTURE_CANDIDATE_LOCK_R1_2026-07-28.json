@@ -1,0 +1,239 @@
+{
+  "schema_version": "blindassist.source_discovery.eth3d_candidate_lock.v1",
+  "protocol_id": "RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R3",
+  "lock_id": "ETH3D_FRESH_CAPTURE_CANDIDATE_LOCK_R1",
+  "status": "IMMUTABLE_PENDING_SEPARATE_REVIEW",
+  "purpose": "Lock two previously unaccessed ETH3D SLAM training captures for exact depth-only geometry evaluation. Prior ETH3D capture outcomes do not assign roles to these captures and do not authorize cross-capture or cross-source pooling.",
+  "source_family": {
+    "source_family_id": "ETH3D_SLAM_FRESH_CAPTURE_GEOMETRY",
+    "publisher": "ETH Zurich / ETH3D",
+    "capture_program": "ETH3D SLAM benchmark synchronized active-stereo depth and motion-capture trajectory",
+    "sensor_pipeline": "ETH3D custom synchronized global-shutter rig; active-stereo depth reprojected to the adjacent RGB-camera viewpoint",
+    "archive_ancestry": "Official ETH3D per-capture mono and RGB-D archives",
+    "license": {
+      "name": "CC BY-NC-SA 4.0",
+      "authority_url": "https://www.eth3d.net/",
+      "terms_acceptance_required": false
+    },
+    "independence_unit": "One ETH3D source family jointly evaluated across the two locked exact captures; it may count as at most one of the two required independent sources."
+  },
+  "captures": [
+    {
+      "capture_id": "mannequin_1",
+      "official_description": "The camera moves around a mannequin to create a 3D reconstruction of it.",
+      "official_frame_count": 643,
+      "timegrid_probe_sha256": "b18e1919309e1a7abe647a9dc111f3ebea2711e001027e0ec49601cd997074dc",
+      "complete_fixed_windows": 2,
+      "passing_fixed_windows": 2
+    },
+    {
+      "capture_id": "plant_scene_1",
+      "official_description": "The camera slowly moves around in a scene with a plant, a sofa, a table, and a large checkerboard.",
+      "official_frame_count": 740,
+      "timegrid_probe_sha256": "56fffe4b46dbe50cee12bcc112393c7e28e85fd46feb6ad65063ae071f481653",
+      "complete_fixed_windows": 2,
+      "passing_fixed_windows": 2
+    }
+  ],
+  "archives": {
+    "mannequin_1": {
+      "url": "https://www.eth3d.net/data/slam/datasets/mannequin_1_rgbd.zip",
+      "bytes": 93637657,
+      "etag": "\"5cf54836-594cc19\"",
+      "last_modified": "Mon, 03 Jun 2019 16:17:58 GMT"
+    },
+    "plant_scene_1": {
+      "url": "https://www.eth3d.net/data/slam/datasets/plant_scene_1_rgbd.zip",
+      "bytes": 134000634,
+      "etag": "\"5cf5589f-7fcaffa\"",
+      "last_modified": "Mon, 03 Jun 2019 17:27:59 GMT"
+    }
+  },
+  "control_archives_metadata_only": {
+    "mannequin_1": {
+      "url": "https://www.eth3d.net/data/slam/datasets/mannequin_1_mono.zip",
+      "bytes": 229320033,
+      "etag": "\"5cf547d9-dab2561\"",
+      "last_modified": "Mon, 03 Jun 2019 16:16:25 GMT",
+      "range_extracted_members": [
+        "mannequin_1/calibration.txt",
+        "mannequin_1/groundtruth.txt",
+        "mannequin_1/rgb.txt"
+      ],
+      "rgb_png_payload_bytes": 0
+    },
+    "plant_scene_1": {
+      "url": "https://www.eth3d.net/data/slam/datasets/plant_scene_1_mono.zip",
+      "bytes": 253054000,
+      "etag": "\"5cf55837-f154c30\"",
+      "last_modified": "Mon, 03 Jun 2019 17:26:15 GMT",
+      "range_extracted_members": [
+        "plant_scene_1/calibration.txt",
+        "plant_scene_1/groundtruth.txt",
+        "plant_scene_1/rgb.txt"
+      ],
+      "rgb_png_payload_bytes": 0
+    }
+  },
+  "evidence_bindings": [
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/mannequin_1_remote_zip_directory.json",
+      "sha256": "fe05895f14b159f44667a45fe2ac1028c82d6af525b063e64dc375bf4e5d8a66"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/mannequin_1_mono_remote_zip_directory.json",
+      "sha256": "f1fca79c21c2a73955539147d2687dd483891cd99fbf41832ef22cfe50da4c0c"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/mannequin_1_associated.txt",
+      "sha256": "6b74b59b5edf7b490447a1f4d5c81f678b373f98522185f0c205f502467385f6"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/mannequin_1_depth.txt",
+      "sha256": "9fab92192545de01afbca2b9f779aad559217165bf714458b8862a5d113bb722"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/mannequin_1_calibration.txt",
+      "sha256": "86de7e5ef6125063e8fe1c978399eb76ccc678f78e9b52b570086916cbe30d39"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/mannequin_1_groundtruth.txt",
+      "sha256": "d21ab5dc37feb3d6d55f8e8a4d69737e68324e1298da7d9112c8de36bf3c0d77"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/mannequin_1_rgb.txt",
+      "sha256": "7f1fc51bd7e596d81640e08b454ea46736e15d87b2a9c5b5c358894e5af96008"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/mannequin_1_timegrid_probe.json",
+      "sha256": "b18e1919309e1a7abe647a9dc111f3ebea2711e001027e0ec49601cd997074dc"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/plant_scene_1_remote_zip_directory.json",
+      "sha256": "39b09f6e1f683d9833172cae4c4375b42fbd6bb46bc305a16d12d116803c365c"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/plant_scene_1_mono_remote_zip_directory.json",
+      "sha256": "19788adcdc213b02d2ad14aa035f9c3fc64f524f5699899e050554a1b48e92e7"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/plant_scene_1_associated.txt",
+      "sha256": "ae305331628c3f96ada6746c6ae828033f93f32e0c7756b455559fd4c5dc3b90"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/plant_scene_1_depth.txt",
+      "sha256": "73d786426e32d0c5f10ef17de463b23acac3c72996f3daf0dfd03fe2014fd97d"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/plant_scene_1_calibration.txt",
+      "sha256": "86de7e5ef6125063e8fe1c978399eb76ccc678f78e9b52b570086916cbe30d39"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/plant_scene_1_groundtruth.txt",
+      "sha256": "da0d072a7f8809c3820be500dab17a676fa63f9b6cbf4f486fbbd149121d687c"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/plant_scene_1_rgb.txt",
+      "sha256": "7ff6a7b9a3143c12795c38f4c745f013b54fdbffd4ebaab9d0ba718aaf74751a"
+    },
+    {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/successor_r3_preflight/eth3d/plant_scene_1_timegrid_probe.json",
+      "sha256": "56fffe4b46dbe50cee12bcc112393c7e28e85fd46feb6ad65063ae071f481653"
+    }
+  ],
+  "implementation_bindings": {
+    "archive_downloader": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/download_eth3d_candidate_r3.py",
+      "sha256": "61527fb460674c7d44657784f747f1367c16f0c98f7462699b53f905a9833ede"
+    },
+    "download_object_helper": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/download_object_r3.py",
+      "sha256": "0f9ee64f9bceeaf0c41b66308704676e57b5a48c1e1031da585262bb04697498"
+    },
+    "timegrid_inspector": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/inspect_eth3d_timegrid_r3.py",
+      "sha256": "e16439d8bfef666eec3d20b609f0ccef8498c0d3638bc76e0675f3095d3c83f4"
+    },
+    "geometry_runner": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/run_eth3d_geometry_r3.py",
+      "sha256": "83de618c20626445e71310ffab20581ae71f1beb12d680463af88e1ab5d67d87"
+    },
+    "eth3d_pair_and_summary_helper": {
+      "path": "scripts/research/egomotion_compensated_looming/motion_diverse_rgbd_geometry_admission_r0/run_eth3d_geometry.py",
+      "sha256": "2e6fd3cc442f59cf9e9e26709aa34669ee7add2fc289bc2d95e9f7cf7d3e2b1a"
+    },
+    "eth3d_summary_template_helper": {
+      "path": "scripts/research/egomotion_compensated_looming/motion_diverse_rgbd_geometry_admission_r0/template.py",
+      "sha256": "764d79b33a5b2293d4c20797e9c4f808f71f7be1430af0acdb8d688d6c895f68"
+    },
+    "frozen_geometry_formula": {
+      "path": "scripts/research/egomotion_compensated_looming/real_positive_approach_role_admission_r2_cid_sims/producer.py",
+      "sha256": "0ce6256e12dd4536f284c7047f1e63faf955fa7bcf87f28fcb93c3e5d9de1add"
+    }
+  },
+  "transport": {
+    "guard_root": "E:/linnan/linnan/artifacts.local/datasets/rcle_unseen_external_confirmation_source_discovery_r3/.transport",
+    "ledger_path": "E:/linnan/linnan/artifacts.local/datasets/rcle_unseen_external_confirmation_source_discovery_r3/.transport/download_ledger.json",
+    "ledger_prelock_event_count": 4401,
+    "ledger_prelock_events_sha256": "1fb74f8387f0254d69a182da18544cf5ae009a1298fb8c1dbd3075b76647adf0",
+    "attributed_network_payload_bytes_at_lock": 23871775238,
+    "budget_bytes": 42949672960,
+    "maximum_locked_payload_bytes": 227638291,
+    "remaining_after_full_locked_payload_bytes": 18850259431,
+    "single_payload_writer": true,
+    "resume_same_partial_identity_only": true
+  },
+  "frozen_window_and_role_gate": {
+    "window_seconds": 10.0,
+    "anchor": "earliest synchronized source-native depth timestamp",
+    "interval": "half-open",
+    "non_overlapping": true,
+    "sliding": false,
+    "minimum_source_consecutive_pairs": 90,
+    "maximum_pair_dt_seconds": 0.1,
+    "coverage_minimum": 0.8,
+    "fixed_denominator": true,
+    "imputation": false,
+    "positive_signed_radial_per_second_minimum": 0.05,
+    "positive_fraction_minimum": 0.8,
+    "positive_continuous_seconds_minimum": 5.0,
+    "below_signed_radial_per_second_strict_maximum": 0.01,
+    "below_fraction_minimum": 0.8,
+    "below_continuous_seconds_minimum": 5.0,
+    "same_capture_selected_window_start_separation_seconds_minimum": 20.0,
+    "required_source_tuple": {
+      "positive": 1,
+      "below_reference": 1
+    },
+    "selection_tie_break": "Lexicographically earliest feasible tuple by locked capture order, positive window start, then below-reference window start.",
+    "cross_source_pooling": false
+  },
+  "access_boundary": {
+    "metadata_identity": "YES",
+    "payload_presence": "NO",
+    "geometry_access": "TIMESTAMP_COLUMN_ONLY_BEFORE_REVIEW",
+    "rgb_visual_access": "NO",
+    "other_algorithm_outcome_access": "NO_FOR_LOCKED_CAPTURES",
+    "claim_relevant_outcome_access": "NO_FOR_LOCKED_CAPTURES",
+    "selection_or_tuning_influence": "NO_OUTCOME_INFLUENCE",
+    "rgb_png_download_materialization_decode_render_or_inspection": "FORBIDDEN",
+    "rgb_algorithm": "FORBIDDEN",
+    "android": "FORBIDDEN"
+  },
+  "execution_order_after_signature": [
+    "Download the two exact official RGB-D archives through the hash-bound single-writer transport.",
+    "Compute complete archive SHA-256 and verify exact ZIP member directory/CRC identity.",
+    "Materialize only calibration, groundtruth, associated, depth index and depth PNG members required by the geometry formula.",
+    "Run the unchanged geometry formula on all four frozen fixed windows.",
+    "Select the lexicographically earliest within-source 1 positive + 1 below-reference tuple, or return source-incomplete without rescue."
+  ],
+  "forbidden": [
+    "Adding, replacing or reordering captures after this lock",
+    "Sliding, padding or post-outcome window addition",
+    "Threshold, denominator, continuity or formula changes",
+    "Cross-source role pooling",
+    "RGB image materialization, inspection or algorithm execution",
+    "Android execution"
+  ],
+  "download_authority": "NOT_AUTHORIZED_UNTIL_MACHINE_AND_INDEPENDENT_REVIEW_PASS_AND_SEPARATE_SIGNATURE"
+}

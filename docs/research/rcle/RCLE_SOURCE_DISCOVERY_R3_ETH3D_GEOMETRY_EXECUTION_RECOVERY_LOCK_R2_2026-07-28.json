@@ -1,0 +1,84 @@
+{
+  "schema_version": "blindassist.source_discovery.eth3d_geometry_recovery_lock.v1",
+  "protocol_id": "RCLE_UNSEEN_EXTERNAL_CONFIRMATION_SOURCE_DISCOVERY_R3",
+  "lock_id": "ETH3D_GEOMETRY_EXECUTION_RECOVERY_R2",
+  "status": "IMMUTABLE_PENDING_SEPARATE_REVIEW",
+  "scope": "Repair only the Python module search path before re-entering the already signed, unchanged R1 geometry runner. No candidate, capture, window, formula, threshold, denominator, selection, payload identity, RGB boundary, Android boundary or worker count changes are permitted.",
+  "failure_terminal": {
+    "stage": "PYTHON_IMPORT_BEFORE_ARGUMENT_PARSE_OR_ANY_DEPTH_ACCESS",
+    "error": "ModuleNotFoundError: No module named 'scripts'",
+    "depth_png_members_read": 0,
+    "geometry_pairs_created": 0,
+    "geometry_outcomes_created": 0,
+    "geometry_input_directory_present_after_failure": false,
+    "geometry_output_directory_present_after_failure": false,
+    "rgb_accessed": false,
+    "android_started": false
+  },
+  "bindings": {
+    "parent_candidate_lock": {
+      "path": "docs/research/rcle/RCLE_SOURCE_DISCOVERY_R3_ETH3D_FRESH_CAPTURE_CANDIDATE_LOCK_R1_2026-07-28.json",
+      "sha256": "069c14f7a14efe00f374eccfb6278d690259c5283e4766be8c7d9fbe8b1702ea"
+    },
+    "parent_signature": {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/eth3d_candidate_lock_r1_signature.json",
+      "sha256": "5d968aa15fc8bb46a9076ccb25149f568ba86353376d9b9eae2bd09b455ab332"
+    },
+    "failure_stderr": {
+      "path": "artifacts.local/logs/rcle_source_discovery_r3/eth3d_geometry.stderr.log",
+      "sha256": "e158138d7eb8d5fdd853a72b3080b9a4960e1b3332b38d7a59b48d7b9713e68c"
+    },
+    "mannequin_1_archive": {
+      "path": "artifacts.local/datasets/rcle_unseen_external_confirmation_source_discovery_r3/eth3d/mannequin_1_rgbd.zip",
+      "sha256": "52a5b2086f3627e6f06fbdc2320bb3c4e4ab32eb2676be2331c6eb3b81213ac8"
+    },
+    "mannequin_1_identity": {
+      "path": "artifacts.local/datasets/rcle_unseen_external_confirmation_source_discovery_r3/eth3d/mannequin_1_rgbd.zip.identity.json",
+      "sha256": "790491bfd48f3915424ec306f75974f466f2eb50c045e2fb36fa31c8f2767825"
+    },
+    "plant_scene_1_archive": {
+      "path": "artifacts.local/datasets/rcle_unseen_external_confirmation_source_discovery_r3/eth3d/plant_scene_1_rgbd.zip",
+      "sha256": "f543fc1be70b3df3ec55c1a3c37193921404e426391ac107288b9bc2de2524f1"
+    },
+    "plant_scene_1_identity": {
+      "path": "artifacts.local/datasets/rcle_unseen_external_confirmation_source_discovery_r3/eth3d/plant_scene_1_rgbd.zip.identity.json",
+      "sha256": "96abc3260f60f2f23b5f6f4464164590e9b827b9a67ba2b6f0f6a7271db66317"
+    }
+  },
+  "implementation": {
+    "bootstrap": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/run_eth3d_geometry_recovery_r2.py",
+      "sha256": "bb8209fdc4ca9c0615a927ca08d5ed1f58d12c15ab95d6f536cdd13e23a84d0e",
+      "only_change": "Insert the repository root and the existing R3 work directory into sys.path before runpy executes the unchanged parent runner."
+    },
+    "parent_runner": {
+      "path": "artifacts.local/work/rcle-source-discovery-r3/run_eth3d_geometry_r3.py",
+      "sha256": "83de618c20626445e71310ffab20581ae71f1beb12d680463af88e1ab5d67d87",
+      "changed": false
+    }
+  },
+  "inherited_without_change_from_parent_lock": {
+    "captures": [
+      "mannequin_1",
+      "plant_scene_1"
+    ],
+    "complete_passing_fixed_windows": 4,
+    "window_grid": "two exact 10 s half-open non-sliding windows per locked capture",
+    "frozen_formula_sha256": "0ce6256e12dd4536f284c7047f1e63faf955fa7bcf87f28fcb93c3e5d9de1add",
+    "minimum_source_consecutive_pairs": 90,
+    "maximum_pair_dt_seconds": 0.1,
+    "coverage_minimum": 0.8,
+    "fixed_denominator": true,
+    "imputation": false,
+    "positive_gate": "signed radial >=0.05/s fraction >=0.8 and continuous >=5.0s",
+    "below_gate": "signed radial <0.01/s fraction >=0.8 and continuous >=5.0s",
+    "required_source_tuple": "one positive plus one below-reference within the ETH3D source",
+    "same_capture_selected_start_separation_seconds_minimum": 20.0,
+    "cross_source_pooling": false,
+    "workers": 8,
+    "rgb": "FORBIDDEN",
+    "android": "FORBIDDEN"
+  },
+  "network_payload_download_authority": "NONE_REQUIRED_ALREADY_HASH_BOUND",
+  "geometry_execution_authority": "NOT_AUTHORIZED_UNTIL_MACHINE_AND_INDEPENDENT_RECOVERY_REVIEW_PASS_AND_SEPARATE_SIGNATURE"
+}
