@@ -1,0 +1,215 @@
+{
+  "schema": "rcle.periodic_self_motion_counterfactual.run_budget.v1",
+  "protocol_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2",
+  "budget_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_RUN_BUDGET_R0",
+  "date": "2026-07-28",
+  "status": "BUDGET_FROZEN_PERFORMANCE_NOT_QUALIFIED",
+  "formal_execution_authorized": false,
+  "count_budget": {
+    "motion_blocks": 4,
+    "main_scene_seeds_per_block": 20,
+    "main_arms_per_cluster": 6,
+    "main_analysis_clusters": 80,
+    "main_sequences": 480,
+    "frames_per_main_sequence": 602,
+    "pairs_per_main_sequence": 601,
+    "main_rendered_frames": 288960,
+    "main_scheduled_pairs": 288480,
+    "guardrail_scene_seeds_per_block": 2,
+    "guardrail_arms_per_cluster": 2,
+    "guardrail_analysis_clusters": 8,
+    "guardrail_sequences": 16,
+    "guardrail_rendered_frames": 9632,
+    "guardrail_scheduled_pairs": 9616,
+    "formal_total_sequences": 496,
+    "formal_total_rendered_frames": 298592,
+    "formal_total_scheduled_pairs": 298096,
+    "quality_calibration_blocks": 4,
+    "quality_calibration_seeds_per_block": 4,
+    "quality_calibration_motion_levels": 2,
+    "quality_calibration_candidate_states_per_motion": 12,
+    "quality_calibration_frames_per_arm": 16,
+    "quality_calibration_candidate_image_evaluations": 6144,
+    "quality_calibration_final_six_arm_panel_images": 1536,
+    "runtime_preflight_factorial_clusters": 1,
+    "runtime_preflight_factorial_sequences": 6,
+    "runtime_preflight_guardrail_clusters": 1,
+    "runtime_preflight_guardrail_sequences": 2,
+    "runtime_preflight_total_sequences": 8,
+    "runtime_preflight_frames": 4816,
+    "runtime_preflight_pairs": 4808,
+    "all_planned_sequences_including_preflight": 504,
+    "all_planned_frames_including_preflight": 303408,
+    "all_planned_pairs_including_preflight": 302904
+  },
+  "observed_reference_runtime": {
+    "source": "Existing unchanged-R3 natural-session 601-pair runs on this host; not an R2 renderer or transport pilot.",
+    "runtime_s_per_601_pair_sequence": [
+      210.75761969998712,
+      246.42936189996544,
+      284.48908079997636,
+      212.09140249999473
+    ],
+    "algorithm_only_serial_range_hours_for_480_main_sequences": [
+      28.101015959998282,
+      37.93187743999685
+    ],
+    "algorithm_only_serial_range_hours_for_496_total_sequences": [
+      29.038827603331558,
+      39.19627555733008
+    ],
+    "interpretation": "Lower-bound planning reference only. Renderer, deterministic materialization, hashing, geometry truth, independent validation and contention are unmeasured.",
+    "performance_claim": "PERFORMANCE_NOT_QUALIFIED"
+  },
+  "host_policy": {
+    "launcher_required": "scripts/run_guarded_host_research.ps1",
+    "preflight_validator_required": "scripts/validate_host_research_preflight.py",
+    "opencv_threads_per_process": 1,
+    "blas_threads_per_process": 1,
+    "candidate_profiles": {
+      "interactive": 4,
+      "balanced": 8
+    },
+    "default_before_pilot": "NONE",
+    "selection_rule": "Use the faster of the measured 4-worker and 8-worker profiles that preserves byte/numeric equivalence, leaves at least 8 GiB available RAM, avoids sustained paging, and meets the wall-time ceiling. The 12-worker and 16-worker profiles are outside this frozen revision and cannot be selected.",
+    "gpu_policy": "No GPU requirement is assumed. Renderer GPU use must be benchmarked and hash-equivalent before selection; RCLE R3 remains CPU."
+  },
+  "required_preflight": {
+    "formal_seed_access": "FORBIDDEN",
+    "input": "on fixed ADVIO_14, one disjoint PREFLIGHT factorial seed complete six-arm cluster (6x602 frames) plus one disjoint PREFLIGHT guardrail seed pair (2x602 frames), all using final access mechanics; neither namespace is reused by CAL, main or formal guardrail identities",
+    "allowed_observability": [
+      "wall time",
+      "CPU, RAM, GPU and VRAM utilization",
+      "logical and physical read/write bytes",
+      "render and R3 throughput",
+      "hash and numeric equivalence",
+      "progress heartbeat and terminal receipt"
+    ],
+    "forbidden_observability": [
+      "main-seed RCLE response",
+      "main-seed trigger density",
+      "calibration-seed scientific interpretation",
+      "quality strength tuning from any RCLE output"
+    ],
+    "scheduling_comparison": "Compare 4 and 8 workers on the same eight disjoint full-length preflight sequence identities. Each profile must run all eight identities; 12 and 16 workers are prohibited in this frozen revision because eight sequence-level atomic units cannot exercise those concurrency levels.",
+    "projection_rule": "Project render, R3, validation, retry reserve and receipt time separately to all 496 formal sequences.",
+    "wall_time_ceiling_hours": 12.0,
+    "failure": "PERFORMANCE_NOT_QUALIFIED; optimize transport, staging or scheduler and repeat only the disjoint preflight. Do not reduce main seeds, pairs or arms."
+  },
+  "storage_budget": {
+    "canonical_root": "artifacts.local/",
+    "dataset_staging": "artifacts.local/datasets/rcle_periodic_self_motion_counterfactual_r2/staging/",
+    "evidence_root": "artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/",
+    "raw_rgb_bytes_per_uncompressed_sequence": 416102400,
+    "all_formal_raw_rgb_bytes_if_retained": 206386790400,
+    "retention_policy": "Do not retain all uncompressed frames. Deterministically render bounded arm batches, hash every transport frame, run R3, validate the arm receipt, then release only that task-owned staging batch after a cleanup receipt. Retain generator/runtime locks, scene/trajectory/frame-hash manifests, ledgers, summaries and receipts.",
+    "maximum_concurrent_staged_sequences": 8,
+    "hard_staging_ceiling_gib": 8.0,
+    "hard_retained_evidence_ceiling_gib": 5.0,
+    "minimum_free_space_before_each_batch_gib": 40.0,
+    "cleanup_safety": "Cleanup may target only receipt-listed task staging files after hash-bound regeneration proof. It must never delete manifests, hashes, ledgers, scripts, locks, receipts or handoffs."
+  },
+  "memory_and_process_budget": {
+    "minimum_available_ram_before_launch_gib": 8.0,
+    "minimum_available_ram_during_run_gib": 4.0,
+    "paging_policy": "Sustained paging or decreasing available RAM below the floor stops new arm launches and closes the guarded run as resource failure; completed atomic arms remain resumable.",
+    "child_process_policy": "One RCLE process per active sequence, nested native threads fixed at one, no orphan workers accepted at terminal."
+  },
+  "progress_contract": {
+    "machine_readable_fields": [
+      "protocol_id",
+      "phase",
+      "completed_units",
+      "total_units",
+      "throughput",
+      "eta_seconds",
+      "last_progress_at",
+      "status",
+      "completed_clusters",
+      "total_clusters",
+      "completed_arms",
+      "total_arms",
+      "completed_pairs",
+      "total_pairs",
+      "throughput_pairs_per_s",
+      "eta_s",
+      "worker_count",
+      "resident_memory_bytes",
+      "read_bytes",
+      "write_bytes",
+      "last_heartbeat_utc",
+      "terminal_state"
+    ],
+    "canonical_host_schema_mapping": {
+      "completed_units": "completed atomic sequence-arm receipts",
+      "total_units": "496 formal sequence arms",
+      "throughput": "completed scheduled pairs per second",
+      "eta_seconds": "projected seconds to all formal units",
+      "last_progress_at": "UTC timestamp of last completed pair or atomic receipt",
+      "status": "RUNNING, SUCCESS or FAILURE"
+    },
+    "heartbeat_max_interval_s": 30,
+    "atomic_unit": "one sequence arm with 602 frame hashes, 601 ordered pair identities, ledger, summary and success receipt",
+    "monitoring_firewall": "Progress and resource telemetry must not expose arm-level RCLE response or trigger outcomes before the full formal bundle closes."
+  },
+  "resume_and_failure": {
+    "resume_allowed": true,
+    "resume_identity": "Only exact completed arm receipts under the same generator, trajectory, strength, R3 transport, analysis and runtime locks may be reused.",
+    "partial_arm_policy": "Delete or quarantine only the task-owned incomplete arm staging directory after resolving its absolute path and recording a failure receipt; restart that same arm from frame zero.",
+    "seed_replacement": "FORBIDDEN",
+    "arm_or_pair_reduction": "FORBIDDEN",
+    "outcome_driven_retry": "FORBIDDEN",
+    "formal_completion": "496 of 496 atomic arm receipts valid, all frozen identities present, zero duplicates, then one independent bundle validator.",
+    "execution_incomplete": "No scientific terminal until exact deterministic resume completes or the evidence version is explicitly closed incomplete."
+  },
+  "phase_budget": [
+    {
+      "phase": "P0_STATIC_DESIGN_VALIDATION",
+      "allowed_now": true,
+      "outputs": "protocol, geometry spec, run budget, static validator and independent review",
+      "rcle_output": false
+    },
+    {
+      "phase": "P1_GENERATOR_AND_GEOMETRY_IMPLEMENTATION",
+      "allowed_now": false,
+      "prerequisites": "P0 independent review pass",
+      "outputs": "implementation lock, analytic fixtures and all-seed geometry manifest",
+      "rcle_output": false
+    },
+    {
+      "phase": "P2_RESPONSE_BLIND_QUALITY_CALIBRATION",
+      "allowed_now": false,
+      "prerequisites": "P1 geometry validation pass",
+      "outputs": "single global blur and low-texture strength lock",
+      "rcle_output": false
+    },
+    {
+      "phase": "P3_TRANSPORT_ANALYSIS_AND_RUNTIME_PREFLIGHT",
+      "allowed_now": false,
+      "prerequisites": "P2 independent strength-lock validation",
+      "outputs": "R3 equivalence lock, statistics implementation lock and guarded-host preflight receipt over eight full-length PREFLIGHT sequences",
+      "rcle_output": "disjoint PREFLIGHT runtime telemetry only; scientific outcomes hidden"
+    },
+    {
+      "phase": "P4_FORMAL_496_SEQUENCE_EXECUTION",
+      "allowed_now": false,
+      "prerequisites": "separate reviewed activation lock binding P0-P3 hashes",
+      "outputs": "formal main and guardrail ledgers, terminal and independent validation",
+      "rcle_output": true
+    }
+  ],
+  "activation_requirements": [
+    "protocol validator VALID",
+    "static bundle validator VALID",
+    "isolated independent design review PASS",
+    "generator implementation lock VALID",
+    "all required geometry gates PASS",
+    "response-blind quality-strength lock VALID",
+    "synthetic R3 transport numeric-equivalence lock VALID",
+    "analysis implementation and mutation tests VALID",
+    "guarded-host preflight PERFORMANCE_QUALIFIED",
+    "formal output paths absent and no residual worker",
+    "separate activation lock with formal_execution_authorized=true"
+  ],
+  "current_terminal": "EXECUTION_NOT_AUTHORIZED"
+}

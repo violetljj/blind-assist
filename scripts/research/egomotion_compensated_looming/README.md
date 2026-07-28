@@ -5,6 +5,18 @@
 This module is an offline, research-only boundary for
 `EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R0`.
 
+`periodic_self_motion_counterfactual_r2/` is the current design-only successor
+after Temporal Structure R1 ended
+`HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID`. It contains only a
+static freeze validator for the paired
+`static/periodic 6DoF × clean/blur/low-texture` contract, non-planar 3D geometry
+spec and bounded run budget. The canonical bundle validates with
+`formal_execution_authorized=false`; the directory has no generator, formal
+runner, RCLE output producer or activation lock. Its 19 focused/mutation tests
+reject threshold/identity/reset/PairState drift, pose-hash or authority-ceiling
+drift, frame-level sample inflation, missing geometry gates, linked-spec drift,
+unguarded launch and premature execution.
+
 `rcle_unseen_external_confirmation_r0/` is the pure data-layer contract for
 the next cross-source confirmation. It derives the unchanged old trigger and
 causal three-pair R1 trigger from one ordered pair ledger, validates the exact

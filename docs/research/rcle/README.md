@@ -1,6 +1,6 @@
 # RCLE 研究主线
 
-状态：`current / TEMPORAL_STRUCTURE_R1_COMPLETE_HOLD / STANDALONE_ROTATION_ROUTE_STOP`
+状态：`current / COUNTERFACTUAL_R2_DESIGN_REVIEW_PASS / EXECUTION_NOT_AUTHORIZED`
 
 最后核验：2026-07-28（Asia/Hong_Kong）
 
@@ -10,13 +10,15 @@ RCLE-RF 仍是 BlindAssist 的论文研究主线，但研究方法已经从“�
 改为“数据能力驱动、分阶段提高证据强度”：
 
 ```text
-CURRENT STUDY: RCLE_TEMPORAL_STRUCTURE_DIAGNOSTIC_R1
-CURRENT TRACK: DEVELOPMENT_DIAGNOSTIC
-CURRENT RESULT: HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID
-CURRENT CLAIM CEILING: MULTI_SESSION_DESCRIPTIVE_TEMPORAL_STRUCTURE_AND_DEVELOPMENT_PRIORITY
+CURRENT STUDY: RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2
+CURRENT TRACK: CONTROLLED_COUNTERFACTUAL_DEVELOPMENT
+CURRENT STATE: DESIGN_REVIEW_PASS / NOT_RUN
+CURRENT CLAIM CEILING: CONTROLLED_GENERATOR_INTERNAL_MECHANISM_DEVELOPMENT_ONLY
+PREDECESSOR RESULT: TEMPORAL_STRUCTURE_R1_HOLD_MIXED_OR_INSUFFICIENT / VALID
 AUDIT HISTORY: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
 AUDIT OUTCOME: STANDALONE_ROTATION_ROUTE_STOP_CONFIRMED_ACROSS_SESSIONS
 SEALED EVALUATION: ADVIO_OFFICE04_SEQUENCE16_IPHONE_RESERVED_UNSEEN
+FORMAL R2 EXECUTION: NOT_AUTHORIZED
 ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 ```
 
@@ -144,6 +146,22 @@ rotation-only 路线，也不把 gate 拒绝称为假警。
 `HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID`。这既不支持把高响应主要
 归于 collapse，也没有证明与 pose-derived 周期同步。
 
+当前后继已冻结并通过两路隔离设计审查：
+[周期性自运动反事实 R2](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_PREREGISTRATION_2026-07-28.md)
+的核心设计：四个 ADVIO pose 波形只作为 response-blind motion block，20 个
+block-specific 新 3D scene seed 在
+`static/periodic 6DoF × clean/blur/low-texture` 六臂内严格配对。480 条序列只是
+运行规模，统计单位为 80 个 `scene_seed × motion_block` cluster；五个主要对比使用
+block-stratified paired bootstrap 与 familywise simultaneous interval。机器
+[合同](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_CONTRACT_2026-07-28.json)、
+[3D geometry spec](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_VALIDATION_R0_2026-07-28.json)
+和
+[run budget](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_RUN_BUDGET_R0_2026-07-28.json)
+及
+[design review result](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_DESIGN_REVIEW_RESULT_2026-07-28.md)
+均保持 `formal_execution_authorized=false`。生成器、quality strength、synthetic
+transport、analysis implementation、runtime preflight 和正式输出都尚未创建。
+
 ## Discovery 的低成本操作门
 
 数据进入 Discovery 只要求：
@@ -184,6 +202,7 @@ rotation-only 路线，也不把 gate 拒绝称为假警。
 | natural-session expansion Discovery R0 | `COMPLETE / VALID` |
 | degradation / flow-quality diagnostic R0 | `COMPLETE / HOLD_FLOW_QUALITY_GATE / VALID` |
 | temporal-structure diagnostic R1 | `COMPLETE / HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID` |
+| periodic self-motion counterfactual R2 | `DESIGN_REVIEW_PASS / NOT_RUN / EXECUTION_NOT_AUTHORIZED` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
 | 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |
@@ -197,16 +216,16 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 ## 下一步
 
-时间结构 diagnostic R1 已完成，当前顺序为：
+当前顺序为：
 
-1. 正式结束 standalone rotation，不继续修补 rotation-only compensation；
-2. 当前 fixed flow-quality gate 保持 `HOLD`，禁止按 response 调门直到通过；
-3. 保留时间结构 `HOLD`：不把低 feature support 当统一解释，也不把 pose 周期代理
-   当 gait 同步或因果证据；当前没有自动算法后继；
-4. 不立即实现
-   [reference-track failure diagnosis R0](RCLE_REFERENCE_TRACK_FAILURE_DIAGNOSIS_R0_DESIGN_2026-07-28.md)、
-   temporal consistency 或 bearing；
-5. sequence16 继续 `SEALED_UNSEEN`，不访问、不纳入本轮分析；
-6. 不修改 `0.01/s`、三 pair 规则或 PairState，不进入路径走廊或 Android。
+1. R2 core contract、3D geometry validation spec、response-blind quality
+   calibration plan、真实 run budget 与隔离设计审查已经完成；
+2. 当前保持 `EXECUTION_NOT_AUTHORIZED`，本任务不实现 generator 或 formal runner；
+3. 后续必须另立 generator/geometry implementation lock；geometry 全门通过后
+   才可生成全局 blur/low-texture strength lock；
+4. synthetic R3 transport equivalence、analysis lock 与 guarded-host preflight
+   全部独立通过后，仍需单独 activation lock 才能运行 480 主序列和 16 guardrail；
+5. 不继续切 sequence13/14/15/17，sequence16 保持 `SEALED_UNSEEN`；
+6. 不修改 R3、`0.01/s`、三 pair 或 PairState，不先跑 CoTracker，不进入 Android。
 
 当前不继续旧公开数据市场漫游，不自动创建 formal claim，不进入 Android。
