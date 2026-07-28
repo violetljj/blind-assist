@@ -2,6 +2,17 @@
 
 终态：`INTERVENTION_NOT_EVALUABLE / HOLD_P1 / EXECUTION_NOT_AUTHORIZED`
 
+分轴阅读：
+
+- 科学状态：`OBSERVED_GEOMETRY_GATES_PASS / CLAIM_NOT_SIGNABLE`
+  （G01–G14 为 14/14）；
+- 协议状态：`INVALID_KEYSET`；
+- 当时执行权限：`HOLD_P1`。
+
+这里的 `INVALID` 只表示 R2 receipt 不能签署，不表示几何实现失败。后续隔离
+keyset repair 已在不改科学证据字节的条件下关闭协议错误；不得用新结果覆盖本文件
+记录的历史回执。
+
 哈希冻结后的唯一 R2 全门运行没有获得可签署 PASS：
 
 ```text
@@ -31,7 +42,8 @@ R2 implementation lock SHA-256：
 - G14 从 `first`/`second` 实算 base replay 和 8 个 GUARD 双构建 replay，
   mismatch 均为 0。
 
-这些通过项不能越过 receipt 的 `INVALID` 顶层终态。
+这些通过项在科学轴上仍然成立，但当时不能越过 receipt 的 `INVALID` 协议状态取得
+后继执行权限。
 
 ## 阻断原因
 

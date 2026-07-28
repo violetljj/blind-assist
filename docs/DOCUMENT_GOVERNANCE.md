@@ -48,10 +48,15 @@
 | --- | --- |
 | 小范围代码/文档修改 | 相关 current 文档或 `DEVELOPMENT_LOG.md` 二选一，按职责更新 |
 | 发布、演示或用户可见变化 | README + CHANGELOG + 发布验证文档 |
-| 研究实验 | 日期化 snapshot + 简短开发日志链接；不改 README/CHANGELOG，除非结论改变当前状态 |
-| 新建或实质修订研究协议 | 使用 `RESEARCH_PROTOCOL_TEMPLATE.md`，生成机器 contract 并运行 `scripts/validate_research_protocol.py` |
+| Discovery/Canary 研究 | 优先在现有 current 或单个 LITE round 记录中写问题、来源、最小实验、结果和下一步；不默认新增 contract/lock/receipt |
+| Development 研究 | 一个结果 snapshot + 简短开发日志；仅在身份、冻结或重放风险需要时增加机器 contract |
+| Confirmation/Deployment 或不可逆研究决定 | 使用 `RESEARCH_PROTOCOL_TEMPLATE.md` 的 STRICT profile，生成机器 contract 并运行 `scripts/validate_research_protocol.py` |
 | 多阶段或跨窗口任务 | 遵循 `AGENTS.md` 的本地 handoff 规则 |
 | 新协议、门禁或不可逆决定 | current 协议；必要时新增 `docs/decisions/ADR-XXXX-*.md` 并链接到 `docs/README.md` |
+
+同一结论不得同时新增多份职责重叠的 snapshot、amendment、receipt 总结和 handoff。
+优先更新一个 current 入口，并让详细机器证据留在 artifact。非阻断文案、命名和未来
+审计便利不单独立项，不得成为算法研究 blocker。
 
 ## 验证
 

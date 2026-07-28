@@ -1,6 +1,6 @@
 # RCLE periodic self-motion counterfactual R2
 
-状态：`P1 R2 frozen / INVALID / INTERVENTION_NOT_EVALUABLE / HOLD_P1`
+状态：`P1 R2_KEYSET_REPAIR_R0 frozen / GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`
 
 ## 研究问题与版本
 
@@ -15,7 +15,26 @@ angle/acos 数值判定为 13/14，并保留不可变失败回执。R2 版本化
 G01/G02/G03/G08/G11/G12/G14、固定 source-component G13 判定并增加 8 个
 GUARD 双构建 replay。R2 的 G01–G14 全部 PASS，但正式 receipt 因 R0 evidence
 键名全集误写而 `INVALID / HOLD_P1`，不得覆盖或重跑。这里仍没有 RCLE runner、
-quality calibration、formal sequence runner、analysis producer 或 activation lock。
+quality calibration、formal sequence runner、analysis producer 或 activation
+lock。隔离的 `R2_KEYSET_REPAIR_R0` 只把历史键名固定为真实的
+`producer_receipt.json`，并加入 generator directory 与正式 receipt 的独占创建
+保护；88 条 all-seed record 与 R2 逐字节一致。其只读预检和唯一正式验证均为
+14/14、`errors=[]`，P1 终态为
+`GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`。
+
+## 当前报告与工作方式
+
+```text
+scientific_status: GEOMETRY_PASS
+protocol_status: VALID
+execution_authority: P2_NOT_AUTHORIZED
+```
+
+历史 R2 只记录为
+`OBSERVED_GEOMETRY_GATES_PASS / CLAIM_NOT_SIGNABLE + INVALID_KEYSET + HOLD_P1`，
+不再把 keyset 错误写成几何失败。P1 已关闭：非阻断的命名、receipt 便利或未来漂移
+监控进入 backlog，不再创建 P1 版本。后续获准时直接围绕 P2 的
+response-blind quality calibration 做最小判别实验，不先扩建治理基础设施。
 
 ## 稳定 Interface
 
@@ -55,10 +74,22 @@ artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/p1_geometry
 14 项门均 PASS，但顶层 `INVALID` error 为
 `R0_RECEIPT_EVIDENCE_HASH_KEYSET`。
 
+当前 P1 通过版本也只供只读审计，不得重跑或覆盖：
+
+```text
+artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/p1_geometry_r2_keyset_repair_r0/
+```
+
+正式 receipt SHA-256 为
+`95646437fbe0ef0cf03844f94467303f5d90ca15c3e22fc1785157b037a8c079`；
+implementation lock SHA-256 为
+`a7fa41c0406908baf05805904111ba43fdbd8dd93b8c4e496706f1990438adc9`。
+
 权威结果：
 
 - [R1 不可变失败与 source-hash 竞态](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_RESULT_2026-07-28.md)
 - [R2 唯一冻结运行结果](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R2_RESULT_2026-07-29.md)
+- [P1 keyset-repair 通过结果](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_KEYSET_REPAIR_R0_RESULT_2026-07-29.md)
 
 失败模式：
 
@@ -70,8 +101,9 @@ artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/p1_geometry
 
 ## 输出
 
-validator 只向 stdout 输出一个 compact JSON，并且不写文件。未来生成器和正式证据
-只能位于：
+validator 默认只向 stdout 输出 compact JSON。keyset-repair 的正式 receipt 只允许
+在只读预检通过后以 exclusive-create 写入一次；现有 evidence 和 receipt 均不得
+重跑或覆盖。未来生成器和正式证据只能位于：
 
 ```text
 artifacts.local/datasets/rcle_periodic_self_motion_counterfactual_r2/
@@ -90,10 +122,11 @@ artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/
 ## 停止条件
 
 静态 bundle 或独立设计审查不通过时停在
-`EXECUTION_NOT_AUTHORIZED`。当前 R2 hash/keyset validator 已失败，终态为
-`INTERVENTION_NOT_EVALUABLE / HOLD_P1`。任何 geometry、response-blind calibration、R3
-transport equivalence、analysis lock 或 guarded-host preflight 失败，都不得靠换
-seed、降门、减 arm 或继续切 ADVIO 回救。
+`EXECUTION_NOT_AUTHORIZED`。当前隔离 keyset-repair 已关闭 P1 geometry，终态为
+`GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`，但不自动授权 P2。任何
+geometry、response-blind calibration、R3 transport equivalence、analysis lock
+或 guarded-host preflight 失败，都不得靠换 seed、降门、减 arm 或继续切 ADVIO
+回救。
 
 ## 假设与规则质疑
 

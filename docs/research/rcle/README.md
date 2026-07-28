@@ -1,8 +1,8 @@
 # RCLE 研究主线
 
-状态：`current / COUNTERFACTUAL_R2_P1_HOLD / EXECUTION_NOT_AUTHORIZED`
+状态：`current / COUNTERFACTUAL_R2_P1_GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`
 
-最后核验：2026-07-28（Asia/Hong_Kong）
+最后核验：2026-07-29（Asia/Hong_Kong）
 
 ## 当前结论
 
@@ -12,7 +12,9 @@ RCLE-RF 仍是 BlindAssist 的论文研究主线，但研究方法已经从“�
 ```text
 CURRENT STUDY: RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2
 CURRENT TRACK: CONTROLLED_COUNTERFACTUAL_DEVELOPMENT
-CURRENT STATE: INTERVENTION_NOT_EVALUABLE / HOLD_P1 (R2 INVALID)
+SCIENTIFIC STATUS: GEOMETRY_PASS
+PROTOCOL STATUS: VALID
+EXECUTION AUTHORITY: P2_NOT_AUTHORIZED
 CURRENT CLAIM CEILING: CONTROLLED_GENERATOR_INTERNAL_MECHANISM_DEVELOPMENT_ONLY
 PREDECESSOR RESULT: TEMPORAL_STRUCTURE_R1_HOLD_MIXED_OR_INSUFFICIENT / VALID
 AUDIT HISTORY: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
@@ -22,14 +24,22 @@ FORMAL R2 EXECUTION: NOT_AUTHORIZED
 ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 ```
 
-P1 最新冻结回执为 R2
-`75899978919b67be260bbba1161d69ea09b42384f1730ec866a243f6d0f41a32`。
-14 项 geometry gate 均 PASS，但 predecessor R0 evidence keyset 校验把真实
-`producer_receipt.json` 错写为 `generator_receipt.json`，所以顶层是
-`INVALID / HOLD_P1`。R0、R1、R2 失败回执均不可覆盖；P2 未获授权。详见
-[R2 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R2_RESULT_2026-07-29.md)。
+P1 最新冻结回执为隔离的 `R2_KEYSET_REPAIR_R0`
+`95646437fbe0ef0cf03844f94467303f5d90ca15c3e22fc1785157b037a8c079`：
+G01–G14 为 14/14 PASS，`errors=[]`，终态为
+`GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`。本版只把历史 R0
+evidence key 修正为真实的 `producer_receipt.json`，并加入 generator directory
+与正式 receipt 的独占创建保护；88 条 all-seed record 与 R2 逐字节一致。
+R0、R1、R2 失败回执仍不可覆盖；P2 仍未获授权。详见
+[keyset-repair 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_KEYSET_REPAIR_R0_RESULT_2026-07-29.md)
+与历史 [R2 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R2_RESULT_2026-07-29.md)。
 R1 的不可变 13/14 失败与并发 source-hash 竞态见
 [R1 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_RESULT_2026-07-28.md)。
+
+当前操作只看三轴：P1 科学状态 `GEOMETRY_PASS`、协议状态 `VALID`、执行权限
+`P2_NOT_AUTHORIZED`。历史 R2 的 `INVALID_KEYSET` 不再被表述为几何失败。P1
+已经关闭；非阻断的 receipt、命名或未来漂移监控只进入 backlog，不再创建 P1
+版本或阻挡算法阶段。
 
 旧公开数据确认合同仍永久保持：
 
@@ -174,8 +184,12 @@ block-stratified paired bootstrap 与 familywise simultaneous interval。机器
 与独立 validator。G01–G12、G14 通过；G13 因 frozen exact 25% inverse-depth
 endpoint 只对应约 `0.0223/s` radial expansion（低于 `0.05/s`），且
 approach-plus-periodic 不保持 pairwise monotonic depth 而失败。终态为
-`INTERVENTION_NOT_EVALUABLE / HOLD_P1`，所以 quality strength、synthetic
-transport、analysis implementation、runtime preflight 和正式输出仍未创建。
+`INTERVENTION_NOT_EVALUABLE / HOLD_P1`。后续 R1/R2 失败身份保持不可变；隔离的
+[P1 keyset repair](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_KEYSET_REPAIR_R0_RESULT_2026-07-29.md)
+已在不改 88 条 scene record、seed、trajectory、gate 或阈值的前提下完成 14/14
+独立验证，终态为 `GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`。
+quality strength、synthetic transport、analysis implementation、runtime
+preflight 和正式序列仍未创建或运行。
 
 ## Discovery 的低成本操作门
 
@@ -217,7 +231,7 @@ transport、analysis implementation、runtime preflight 和正式输出仍未创
 | natural-session expansion Discovery R0 | `COMPLETE / VALID` |
 | degradation / flow-quality diagnostic R0 | `COMPLETE / HOLD_FLOW_QUALITY_GATE / VALID` |
 | temporal-structure diagnostic R1 | `COMPLETE / HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID` |
-| periodic self-motion counterfactual R2 | `P1: INTERVENTION_NOT_EVALUABLE / HOLD_P1 / EXECUTION_NOT_AUTHORIZED` |
+| periodic self-motion counterfactual R2 | `P1: GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
 | 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |
@@ -235,10 +249,10 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 1. R2 core contract、3D geometry validation spec、response-blind quality
    calibration plan、真实 run budget 与隔离设计审查已经完成；
-2. generator/geometry P1 已实现并独立验证，G13 失败，保持
-   `INTERVENTION_NOT_EVALUABLE / HOLD_P1 / EXECUTION_NOT_AUTHORIZED`；
-3. 不得进入 P2。若继续，必须先另立并审查 geometry spec 新版本，解决 frozen
-   endpoint-rate 与 monotonic-plus-periodic 冲突；不得在 R0 换 seed 或降门；
+2. generator/geometry P1 已在隔离 keyset-repair 版本完成 14/14 独立验证，
+   `GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`；R0/R1/R2 失败回执不覆盖；
+3. 当前不得自动进入 P2。若继续，必须另立 P2 任务，保持 P1 lock、all-seed
+   manifest 与正式 receipt 身份；不得换 seed、降门或修改 geometry；
 4. synthetic R3 transport equivalence、analysis lock 与 guarded-host preflight
    全部独立通过后，仍需单独 activation lock 才能运行 480 主序列和 16 guardrail；
 5. 不继续切 sequence13/14/15/17，sequence16 保持 `SEALED_UNSEEN`；

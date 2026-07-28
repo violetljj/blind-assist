@@ -14,10 +14,10 @@
 | [CODEX_TASK_HANDOFF_TEMPLATE.md](CODEX_TASK_HANDOFF_TEMPLATE.md) | current | 多任务长任务的断点、边界与换窗口续作模板 |
 | [CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md](CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md) | current | 多任务交接索引模板 |
 | [DOCUMENT_GOVERNANCE.md](DOCUMENT_GOVERNANCE.md) | current | 文档职责、真源、历史保留与维护规则 |
-| [RESEARCH_GOVERNANCE.md](RESEARCH_GOVERNANCE.md) | current | Discovery/Canary/Development/Confirmation/Deployment 渐进冻结、失败学习、规则质疑和证据复用 |
+| [RESEARCH_GOVERNANCE.md](RESEARCH_GOVERNANCE.md) | current | 分阶段最小证据包、科学/协议/权限三轴报告、薄修订、失败学习和反官僚约束 |
 | [ENGINEERING_LEARNING_LOOP.md](ENGINEERING_LEARNING_LOOP.md) | current | 项目级异常识别、自我迭代、防复发与黑盒长任务规则 |
 | [HOST_RESEARCH_COMPUTE.md](HOST_RESEARCH_COMPUTE.md) | current | 本机电脑端算法开发、CPU/GPU 并发、内存与长任务调度；不适用于 Android/边缘端 |
-| [RESEARCH_PROTOCOL_TEMPLATE.md](RESEARCH_PROTOCOL_TEMPLATE.md) | current | 新建或实质修订研究协议的统一模板与机器合同入口 |
+| [RESEARCH_PROTOCOL_TEMPLATE.md](RESEARCH_PROTOCOL_TEMPLATE.md) | current | LITE/STANDARD/STRICT 分级协议模板；机器合同默认留给高风险或确认性阶段 |
 | [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md) | current | 真机功能回归 |
 | [AI_REVIEW_GOVERNANCE.md](AI_REVIEW_GOVERNANCE.md) | current | 端到端无人化：自主采集、标注、复核、裁决、准入、验收与发布证据总规则 |
 

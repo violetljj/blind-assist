@@ -4,9 +4,22 @@
 
 上位规则：[BlindAssist 渐进式研究治理](RESEARCH_GOVERNANCE.md)
 
-新研究协议或旧协议的实质修订至少包含以下内容。日期化结果文档不需要反向套用。
+新研究协议或旧协议的实质修订按所选 profile 包含相关内容；不是每个阶段都填写全部
+章节。日期化结果文档不需要反向套用。
 模板和上位规则也允许被 challenge；若字段本身造成低信息增益负担，应提出精简版本，
 而不是为了填表而填表。
+
+先选择与阶段和风险相称的 profile：
+
+| Profile | 默认阶段 | 必需内容 |
+| --- | --- | --- |
+| `LITE` | Discovery / Canary | 问题、数据/访问、最小实验、结果、限制和下一步 |
+| `STANDARD` | Development | LITE 加实现身份、专项测试、可复现输入输出和停止条件 |
+| `STRICT` | Confirmation / Deployment | STANDARD 加冻结机器合同、独立 validator、receipt 和完整 authority |
+
+低阶段可以因真实污染、权利或不可逆风险升级 profile；不得仅因为模板存在而升级。
+LITE/STANDARD 不要求为空字段生成占位文件。领域已有机器合同的，继续遵守其 current
+规则，但新工作默认选择能够覆盖实际风险的最小 profile。
 
 ## 1. 问题与阶段
 
@@ -68,17 +81,32 @@ amendment_mode: IN_PLACE_BEFORE_OUTCOME | NEW_VERSION_ONLY
 
 写明哪些字段当前冻结、哪些仍可迭代。outcome access 后只能新建版本。
 
-## 5. 两轴结果
+## 5. 三轴结果
+
+```text
+scientific_status: OBSERVED_* | PASS | FAIL | NOT_EVALUABLE | NOT_RUN
+claim_eligibility: SIGNABLE | CLAIM_NOT_SIGNABLE | NOT_APPLICABLE
+protocol_status: VALID | INVALID | NOT_RUN
+execution_authority: <明确后继阶段> | NOT_AUTHORIZED
+failure_scope: ITEM | WINDOW | SEQUENCE | BRANCH |
+  IMPLEMENTATION_VERSION | EVIDENCE_VERSION | RESEARCH_QUESTION | PRODUCT
+```
+
+面向人的结果入口使用上述三轴。机器合同继续使用兼容字段：
 
 ```text
 execution_validity: VALID | INVALID | NOT_RUN
-scientific_outcome: NOT_RUN | NOT_EVALUABLE_DUE_TO_EXECUTION | 按 stage 的允许值
+scientific_outcome: NOT_RUN | NOT_EVALUABLE_DUE_TO_EXECUTION |
+  按 stage 的可签署值
 invalid_execution_effect: CLOSE_EVIDENCE_VERSION_ONLY
 terminal_scope: ITEM | WINDOW | SEQUENCE | BRANCH |
   IMPLEMENTATION_VERSION | EVIDENCE_VERSION | RESEARCH_QUESTION | PRODUCT
 ```
 
-INVALID 与科学结果分开。terminal 采用能解释错误的最小范围。
+`protocol_status=INVALID` 时，可以报告已经观察到的数值或 gate calculation，但必须
+标为 `CLAIM_NOT_SIGNABLE`；机器 `scientific_outcome` 保持
+`NOT_EVALUABLE_DUE_TO_EXECUTION`。协议错误不得被写成算法失败，科学观察也不得越过
+协议错误取得执行 authority。terminal 采用能解释错误的最小范围。
 `NOT_RUN` 只能配 `scientific_outcome=NOT_RUN`，不得在执行前预写结果。
 若关闭/退役科学问题，独立证据 registry 的每项必须绑定仓库 JSON `evidence_ref`、
 实际内容哈希及与引用对象一致的 protocol/source/independence identity。
@@ -166,11 +194,17 @@ next_high_information_experiments:
 governance_changes_needed:
 ```
 
-同时判断低价值算法/治理模块是否应继续、合并、降级或删除。
+只填写本轮实际改变判断的字段；没有治理变更时写 `NONE`，不得为了完整表格新增
+review、receipt 或状态文件。同时判断低价值算法/治理模块是否应继续、合并、降级
+或删除。
 
-## 9. 机器合同
+## 9. STRICT profile 机器合同
 
-为协议准备 JSON contract，字段结构可参考：
+Confirmation、Deployment，或具有真实 outcome 污染、不可逆发布、权利/安全风险的
+任务，准备 JSON contract。普通 LITE Discovery/Canary 不为“可能以后有用”提前建立
+机器状态机；STANDARD Development 仅在身份、冻结或重放风险需要时使用。
+
+字段结构可参考：
 
 机器合同必须绑定 `governance_policy_id` 与 canonical policy SHA-256。调整策略时应
 显式升级并重绑合同；不能用 `--policy` 临时换一份更宽松的文件取得 `VALID`。
@@ -261,7 +295,7 @@ validator 默认按合同中的 policy ID 选择保留的 R1 或当前 R2；显�
 }
 ```
 
-验证：
+生成机器 contract 时验证：
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd `

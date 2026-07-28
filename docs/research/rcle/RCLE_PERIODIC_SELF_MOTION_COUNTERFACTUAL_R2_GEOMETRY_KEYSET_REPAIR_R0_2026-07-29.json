@@ -1,0 +1,61 @@
+{
+  "schema": "rcle.periodic_self_motion_counterfactual.p1_geometry_keyset_repair_r0.v1",
+  "protocol_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2",
+  "implementation_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R2_KEYSET_REPAIR_R0",
+  "status": "FROZEN_BEFORE_R2_KEYSET_REPAIR_R0_MATERIALIZATION",
+  "reason": "The immutable R2 formal receipt consumed a validator-only historical evidence-key typo: generator_receipt.json was asserted although the immutable R0 receipt and evidence use producer_receipt.json.",
+  "immutable_predecessors": {
+    "r0_receipt_sha256": "72e0b8e042be9eb6208389eb8d83e9e9e4ad28e54ec82f7064b5387cc1abd279",
+    "r1_failed_receipt_sha256": "af00df05c115036ea31bb3d05addbebfcebad73122d2b354f7e52170c2277e9a",
+    "r2_failed_receipt_sha256": "75899978919b67be260bbba1161d69ea09b42384f1730ec866a243f6d0f41a32",
+    "r2_lock_sha256": "2a1921201c8215efbc0f05f5007908674e247325885d7640a592e731537d719f",
+    "r2_validator_sha256": "76e63a735635f95e767d801813e90500a5c12fc2a09ec1bc91ed31e3056d3cb6",
+    "r2_amendment_sha256": "a81c922bca4bfa9b6211515bf16a4d7bae46748197082ec7d2f88ca2481e7283",
+    "r2_terminal": "INTERVENTION_NOT_EVALUABLE / HOLD_P1",
+    "r2_gate_pass_count": 14,
+    "r2_error": "R0_RECEIPT_EVIDENCE_HASH_KEYSET"
+  },
+  "repair_scope": {
+    "historical_r0_evidence_key": {
+      "incorrect_consumed_literal": "generator_receipt.json",
+      "frozen_actual_literal": "producer_receipt.json"
+    },
+    "new_evidence_directory": "artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/p1_geometry_r2_keyset_repair_r0",
+    "generator_output_policy": "CREATE_NEW_DIRECTORY_OR_FAIL",
+    "formal_receipt_policy": "EXCLUSIVE_CREATE_OR_FAIL",
+    "all_seed_manifest_bytes_changed_from_r2": false,
+    "seed_changed": false,
+    "scene_changed": false,
+    "camera_changed": false,
+    "trajectory_changed": false,
+    "gate_changed": false,
+    "threshold_changed": false,
+    "manifest_schema_changed": false
+  },
+  "machine_gate_lock": {
+    "main_cluster_count": 80,
+    "guard_cluster_count": 8,
+    "guard_object_count": 12,
+    "target_object_id": 9,
+    "target_world_point_m": [
+      0.2,
+      0.1,
+      4.0
+    ],
+    "required_persistent_frames_per_arm": 602,
+    "inverse_depth_endpoint_increase_gte": 0.2,
+    "integrated_endpoint_log_radial_expansion_gte": 0.1823215567939546,
+    "deperiodized_translation_max_error_lte_m": 1e-12,
+    "deperiodized_rotation_matrix_component_max_error_lte": 1e-12,
+    "visibility_mismatch_fraction_lte": 0.001,
+    "guard_scene_replay_count": 8,
+    "required_gate_count": 14
+  },
+  "formal_execution_authorized": false,
+  "quality_calibration_authorized": false,
+  "automatic_p2_authority": false,
+  "rcle_output_access_authorized": false,
+  "performance_preflight_authorized": false,
+  "formal_sequence_execution_authorized": false,
+  "android_or_realtime_authorized": false
+}

@@ -132,6 +132,29 @@ verification scope = smallest suite that covers changed behavior and credible bl
 
 “不确定影响面”是扩大验证的理由；“以前一直全量跑”不是。
 
+治理工作本身也必须遵守最小影响面：
+
+- 不因命名、文案、receipt key 或未来漂移监控等控制面问题，重复未受影响的算法
+  计算、数据生成或科学门；
+- 不把非阻断改进升级成下一科学阶段的前置任务；
+- 一个阶段只维护一个 current 入口。历史 spec、lock、receipt 和结果用于追溯，
+  不再同时充当日常操作面；
+- 新增 gate、receipt、lock、状态或文档前，必须说明它提高
+  `INFORMATION_GAIN / REPRODUCIBILITY / CLAIM_INTEGRITY /
+  EXTERNAL_SAFETY_OR_LEGAL_REQUIREMENT` 中的哪一项；
+- 若不能说明，默认进入 backlog、降级为 diagnostic，或删除。
+
+阶段级最小证据包按风险递增，而不是所有研究一律采用 confirmation 配置：
+
+| 阶段 | 默认最小证据包 |
+| --- | --- |
+| `DISCOVERY` | 问题、来源/访问说明、可复现命令或 notebook、简短结果 |
+| `CANARY/DEVELOPMENT` | 问题、实现身份、最小判别实验、专项测试、结果与限制 |
+| `CONFIRMATION` | 冻结协议、数据身份、实现/统计 lock、独立 validator、receipt |
+| `DEPLOYMENT` | confirmation 包加设备、生命周期、回归、风险和回滚证据 |
+
+领域协议可以增加材料，但必须说明增加它的具体风险；“更严谨”本身不是充分理由。
+
 ## 五阶段证据梯度
 
 | 阶段 | 主要问题 | 允许做什么 | 允许声明什么 | 冻结强度 |
@@ -292,20 +315,28 @@ confirmation gate: rate >= 0.05/s
 跨项目数据访问的具体字段、角色矩阵和 RCLE 首批重分类见
 [跨项目数据访问与角色重分类标准 R0](research/rcle/RCLE_CROSS_PROGRAM_DATA_ACCESS_AND_ROLE_RECLASSIFICATION_STANDARD_R0_2026-07-27.md)。
 
-## 两轴结果与最小失败范围
+## 三轴报告与最小失败范围
 
-每次结果必须分别报告：
+面向人的 current 状态和结果摘要必须分别报告：
 
-1. `execution_validity`：`VALID / INVALID / NOT_RUN`；
-2. `scientific_outcome`：由当前阶段决定，例如 candidate、mechanism 或
-   confirmation 结论。
+1. `scientific_status`：实际科学计算或观察到了什么，以及它是否具备 claim
+   eligibility；
+2. `protocol_status`：证据身份、执行和可审计性是否为 `VALID / INVALID / NOT_RUN`；
+3. `execution_authority`：允许进入哪个后继阶段；未授权不等于科学失败。
+
+现有机器合同保持兼容：`protocol_status` 映射到 `execution_validity`，
+claim-grade 科学结论仍写入 `scientific_outcome`。当协议无效但科学计算已经完成时，
+可以保留描述性 `scientific_status=OBSERVED_* / CLAIM_NOT_SIGNABLE`；机器
+`scientific_outcome` 仍为 `NOT_EVALUABLE_DUE_TO_EXECUTION`。这项报告澄清不改变
+`configs/research_governance_v2.json`、既有 policy hash 或 validator 行为。
 
 `NOT_RUN` 只能配 `scientific_outcome=NOT_RUN`；未执行的 contract 只声明允许回答的
 问题，不能预写 `DATA_CHARACTERIZED` 等结果。`INVALID` 只能配
 `NOT_EVALUABLE_DUE_TO_EXECUTION`，不得暗示科学成败。
 
 `INVALID` 表示这次证据不能被验证，不等于算法失败，也不等于数据不适合，更不等于
-科学问题被否定。默认影响为：
+科学问题被否定。它也不得删除或隐藏已经观察到的计算值；这些值只能作为不可签署的
+描述性 finding，直到有效证据版本确认。默认影响为：
 
 ```text
 INVALID -> CLOSE_EVIDENCE_VERSION_ONLY
@@ -350,6 +381,24 @@ evidence reference，并实际复算哈希；外部证据在建立受支持的 r
 修复 serialization、runner、atomic publication 等执行错误可以形成新的 evidence
 version，但旧 INVALID 仍然存在。修复版本是否值得重跑，应根据科学信息增益和成本
 决定，不再因“流程必须闭环”而自动重跑。
+
+### 变更分级与薄修订
+
+先判断错误是否传播到科学输入、计算或结论，再决定版本和重算范围：
+
+| 等级 | 典型变化 | 默认处理 |
+| --- | --- | --- |
+| `SCIENTIFIC` | 数据、seed、场景、输入信号、算法、阈值、统计或科学 gate | 新科学版本，只重算受影响的科学路径 |
+| `PROTOCOL_ONLY` | manifest/receipt 身份、序列化、路径或 keyset 错误，且科学证据字节可独立证明未变 | 保留旧 INVALID，建立薄 evidence 修订，只重验受影响协议门和必要的确定性等价 |
+| `NON_BLOCKING` | 文案、命名、未来漂移监控、额外审计便利或低风险防御性加固 | 进入 backlog，不阻断阶段、不创建新版本 |
+
+`PROTOCOL_ONLY` 修订不得顺带改 seed、阈值、算法或数据；若无法证明科学证据未变，
+自动升级为 `SCIENTIFIC`。反过来，已经证明字节等价时，不得仅因治理错误重复昂贵且
+无信息增益的生成、训练、推理或统计。
+
+完成阶段后默认停止治理加固。只有已发现的缺口会改变当前 claim、污染独立性、造成
+不可恢复覆盖，或违反安全/权利/法律边界时，才允许重新打开阻断项。其他改进随下一
+科学阶段的自然触点处理，不单独建立“治理里程碑”。
 
 ## 研究循环和停止规则
 
@@ -480,7 +529,8 @@ governance_changes_needed
 - current 状态可以重新解释其合法后继范围，但不能把 INVALID 改成 VALID，
   不能把 discovery 升格为 confirmation；
 - 新建或实质修订的协议必须使用
-  [研究协议模板](RESEARCH_PROTOCOL_TEMPLATE.md)，并运行
+  [研究协议模板](RESEARCH_PROTOCOL_TEMPLATE.md) 选择最小适用 profile；
+  只有生成机器 contract 的 STRICT 或高风险 STANDARD 任务运行
   `scripts/validate_research_protocol.py`。
 
 项目、RCLE、SANPO、USTRF 和后续研究 Module 均服从本治理；领域协议可以更严格，
