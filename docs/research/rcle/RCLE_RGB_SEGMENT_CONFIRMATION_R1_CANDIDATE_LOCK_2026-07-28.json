@@ -1,0 +1,164 @@
+{
+  "schema_version": "rcle.rgb_segment_confirmation.candidate_lock.v1",
+  "protocol_id": "RCLE_RGB_SEGMENT_CONFIRMATION_R1",
+  "created_on": "2026-07-28",
+  "status": "PREACCESS_IDENTITY_LOCK_REVIEW_REQUIRED",
+  "objective": "Freeze only the two exact R4-selected segments, close their RGB identity and synchronization without decoding pixels, and permit no RGB algorithm execution until a second final lock is independently reviewed and signed.",
+  "non_goals": [
+    "No new source discovery or whole-source review.",
+    "No replacement or additional OpenLORIS or DLR window.",
+    "No MVSEC RGB execution before exact RGB capture semantics and synchronization close.",
+    "No threshold, optical-flow, rotation-compensation, support-manager, or temporal-confirmation change.",
+    "No performance, generalization, replay, Android, product, or safety authority."
+  ],
+  "r4_geometry_cohort": {
+    "design": {
+      "path": "docs/research/rcle/RCLE_SOURCE_DISCOVERY_R4_SEGMENT_LEVEL_COHORT_DESIGN_R1_2026-07-28.json",
+      "sha256": "98428718c4be6a25d5a3c08d3264d20521f290a5b11b57765df362d13de7ed14"
+    },
+    "independent_review": {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/r4_segment_level_cohort_design_r1_independent_review.json",
+      "sha256": "6c3bf4174929acead912237390bf96d30521717e9526698f9c23a92e87d891c1"
+    },
+    "signature": {
+      "path": "artifacts.local/evidence/rcle_source_discovery_r3/r4_segment_level_cohort_design_r1_signature.json",
+      "sha256": "5aa92970662ed9e5eb9bed2d648af771b67c1c92a5c4abc2706be4bf3e34247e"
+    },
+    "rgb_execution_authorized_by_r4": false
+  },
+  "selected_segments": [
+    {
+      "source_family_id": "OPENLORIS_CORRIDOR",
+      "role": "POSITIVE_APPROACH_WINDOW",
+      "capture_id": "corridor1-1",
+      "window_id": "corridor1-1:w004",
+      "half_open_window_s": [
+        "1560000043.537699",
+        "1560000053.537699"
+      ],
+      "geometry_frames": 300,
+      "geometry_pairs": 299,
+      "rgb_frames": 300,
+      "identity_rule": "The ordered 300 color PNG members in the half-open window plus exactly one immediate source-order guard member before and after; bind outer SHA-256, member path, uncompressed bytes, CRC32, and after opaque extraction each member payload SHA-256.",
+      "pairing_rule": "Unique nearest color timestamp to each ordered geometry timestamp; no reuse; maximum absolute delta 0.005 s.",
+      "observed_preaccess_maximum_abs_delta_s": "0.002993",
+      "container_sha256": "c7ff1a472ca54da82198521eda8c18f2065691075a05e706880f7fb58fda8415",
+      "solid_transport": true
+    },
+    {
+      "source_family_id": "DLR_RGBD_VICON",
+      "role": "BELOW_TRIGGER_REFERENCE_WINDOW",
+      "capture_id": "extreme_geometry/hexagon_01",
+      "window_id": "extreme_geometry/hexagon_01:w001",
+      "half_open_window_s": [
+        "1634201323.995618343",
+        "1634201333.995618343"
+      ],
+      "geometry_frames": 299,
+      "geometry_pairs": 298,
+      "zip_member": "extreme_geometry/hexagon_01.bag",
+      "zip_member_compressed_bytes": 3633353215,
+      "zip_member_uncompressed_bytes": 3655946650,
+      "zip_member_crc32": "bb79b456",
+      "bag_sha256": "c70984b06766e553d84703b3da62bdb210b9e8bb997542a260f26ddca03e2a99",
+      "required_rgb_guard_frame_count": 2,
+      "closed_rgb_guard_frame_count": 0,
+      "identity_rule": "Opaque sequentially parse only the selected window and one immediate RGB message guard before and after; bind exact color topic, frame_id, encoding, timestamp, serialized message SHA-256, payload SHA-256, and source-order identity.",
+      "pairing_rule": "Freeze only after a monotonic unique RGB-to-aligned-depth timestamp audit identifies a single rule and bound tolerance; no inference from the aligned-depth topic name."
+    }
+  ],
+  "preaccess_evidence": {
+    "lock": {
+      "path": "artifacts.local/evidence/rcle_rgb_segment_confirmation_r1/preaccess_lock.v11.json",
+      "sha256": "3ffb18d7604815433ef85ce9c7b9213c7b1cd9d2d735211506e12e5ae0c14443"
+    },
+    "machine_validation": {
+      "path": "artifacts.local/evidence/rcle_rgb_segment_confirmation_r1/preaccess_validation.v11.json",
+      "sha256": "7d4248b2b26d24335348e87c99223c95ea42b6fd306edd58e568b1bcc3de4d2b",
+      "decision": "PREACCESS_LOCK_MACHINE_VALIDATION_PASS"
+    }
+  },
+  "implementation_bindings": [
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_segment_confirmation_r1/build_preaccess_lock.py",
+      "sha256": "863c451e011500a53bf38cf356a86c234c2fbc2374946a2301300e8c0cb5bf2b"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_segment_confirmation_r1/validate_preaccess_lock.py",
+      "sha256": "7507c54f11b8b7415b99feda186600b6c2dcd7e3b017ef9463a1fb052a329fe5"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/rgb_segment_confirmation_r1/opaque_transport.py",
+      "sha256": "bc507980baa2ee6bffb9ffa515c2d79c8847aadd9387e537fad4e30bb41ee78f"
+    },
+    {
+      "path": "scripts/research/egomotion_compensated_looming/tests_rgb_segment_confirmation_r1/test_preaccess_lock.py",
+      "sha256": "b1af1e33403db380b824159c5127be95b9078c694f7874b8848e42f7a2d3826f"
+    }
+  ],
+  "runtime_binding": {
+    "path": "artifacts.local/evidence/rcle_rgb_segment_confirmation_r1/opaque_transport_runtime_lock.v1.json",
+    "sha256": "c579184c538ddc83c2fb528adf1bd2617a71e12fcfe9dece085541151d08fd0f",
+    "python_version": "3.11.9",
+    "py7zr_version": "1.0.0",
+    "exact_wheel_hashes_required": true
+  },
+  "transport_identity_budget": {
+    "openloris_bound_solid_folder_index": 2,
+    "openloris_bound_solid_folder_pack_bytes": 3946335545,
+    "openloris_max_remote_bytes": 3947000000,
+    "openloris_full_object_bytes": 13853763765,
+    "dlr_max_remote_compressed_bytes": 1073741824,
+    "dlr_full_member_compressed_bytes": 3633353215,
+    "full_source_fallback": false,
+    "budget_exhaustion_terminal": "SEGMENT_IDENTITY_NOT_EVALUABLE"
+  },
+  "frozen_rgb_algorithm": {
+    "continuous_estimator": "POSE_ROTATION_COMPENSATED_OBSERVABLE_THREE_FRAME_LOCAL_EXPANSION_R0",
+    "old_trigger": "evaluable AND compensated_expansion_median_per_s > 0.01",
+    "revision": "CAUSAL_THREE_PAIR_CONFIRMATION_R1",
+    "revision_rule": "current and immediately previous two within-window pairs are evaluable and strictly above 0.01/s",
+    "reset_rule": "window boundary, abstention, or at-or-below threshold resets the streak",
+    "guard_frames_never_cross_window_state": true,
+    "tuning_or_candidate_substitution": false
+  },
+  "preaccess_authority_after_review_pass": {
+    "allowed": [
+      "Opaque compressed-range acquisition within each source budget.",
+      "Member/message timestamp, topic, frame, encoding, CRC32, and SHA-256 audit.",
+      "One selected window plus exactly one source-order RGB guard before and after.",
+      "A final frame/pair identity lock and independent review artifact."
+    ],
+    "forbidden": [
+      "Pixel decode, image visualization, optical flow, or any RGB algorithm output.",
+      "Downloading a full source or exceeding the frozen per-source budget.",
+      "Changing windows, sources, pairing tolerance, algorithm, threshold, or abstention.",
+      "Treating this review as RGB algorithm activation."
+    ]
+  },
+  "final_execution_gate": {
+    "all_frame_payload_sha256_present": true,
+    "ordered_rgb_timestamps_complete": true,
+    "camera_relation_and_encoding_closed": true,
+    "monotonic_unique_pairing_within_frozen_tolerance": true,
+    "source_specific_adapter_and_independent_validator_hash_locked": true,
+    "independent_final_review_pass": true,
+    "separate_activation_signature": true,
+    "current_state": "NOT_SATISFIED"
+  },
+  "claim_ceiling": {
+    "source_role_confounding": true,
+    "maximum_allowed": "Per-segment descriptive real RGB-versus-source-native-geometry mechanism evidence, or NOT_EVALUABLE.",
+    "forbidden": [
+      "The algorithm distinguishes positive from below-reference motion.",
+      "A role effect separable from source domain.",
+      "Generalization or performance qualification.",
+      "Replay, Android, product, or safety authority."
+    ]
+  },
+  "review": {
+    "decision": "PENDING",
+    "maximum_signature_if_pass": "OPAQUE_IDENTITY_EXTRACTION_ONLY",
+    "rgb_algorithm_execution": false
+  }
+}
