@@ -31,6 +31,14 @@
 
 ## Change hygiene and documentation
 
+Every implementation task that changes files MUST end with a git commit before the final response.
+
+- Inspect `git status` before editing and treat pre-existing or concurrent changes as user-owned.
+- Review the final diff and run proportionate verification before committing.
+- Stage only files or hunks that belong to the current task. Never bundle unrelated changes unless the user explicitly asks.
+- Use a concise descriptive commit message on `master`, report the commit hash, and automatically push the commit to `origin/master` after committing. Do not amend or rewrite history unless asked.
+- Read-only tasks and tasks with no file changes do not create empty commits.
+
 - Before editing, run `git status --short`; preserve unrelated changes and do not revert code you do not understand.
 - Update `DEVELOPMENT_LOG.md` for code, configuration, model, test, or adopted technical-decision changes. Record a concise scope, rationale, verification, and remaining risk; link detailed evidence or dated snapshots instead of duplicating them. Pure read-only investigation, review, or conversation does not require a log entry.
 - Use `violjjet` as the executor name in new development-log entries.
