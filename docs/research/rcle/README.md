@@ -34,6 +34,13 @@ development identities 上 `160/160`、全新 disjoint CAL 上 `32/32` 通过，
 仍未激活。详见
 [QMS-R1 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_MANIPULATION_SUCCESSOR_R1_RESULT_2026-07-29.md)。
 
+后续默认算法研究顺序已另立为
+[RCLE 新算法研究推进路线 R0](RCLE_ALGORITHM_RESEARCH_ROADMAP_R0_2026-07-29.md)：
+先做 clean 四臂运动分量定位，再按门进入平移—深度 oracle、最小 RCLE 内生特征
+合同与独立标签数据上的融合增量价值。新路线不改写旧结果，也不自动消费、撤销或
+重定义任何既有 QMS formal authority；其实际权限仍由最新有效 lock 和 receipt
+决定。当前只允许 A 的合同、identity、静态验证与独立审查，不授权 Stage 1 执行。
+
 轻量 P3 R0 已完成 R3 transport equivalence、analysis implementation/mutation
 tests，以及固定 8 个 PREFLIGHT identities 的 guarded-host qualification。
 初始 `8 -> 496` 均匀外推错误放大 guardrail 比例，已由不可覆盖的 scheduler
@@ -264,6 +271,9 @@ implementation、runtime preflight 和正式序列仍未创建或运行。
 | degradation / flow-quality diagnostic R0 | `COMPLETE / HOLD_FLOW_QUALITY_GATE / VALID` |
 | temporal-structure diagnostic R1 | `COMPLETE / HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID` |
 | periodic self-motion counterfactual R2 | `P4: INTERVENTION_NOT_EVALUABLE / VALID / COMPLETE_PRE_R3_TERMINAL` |
+| 新 A–D 算法研究路线 | `ADOPTED / A_PREPARATION_ONLY` |
+| A Stage 1 / Stage 2 | `NOT_YET_AUTHORIZED / SEALED_NOT_EXECUTABLE` |
+| B / C / D | `DESIGN_ONLY / DEFERRED / DATA_DEPENDENT` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
 | 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |
@@ -277,19 +287,19 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 ## 下一步
 
-当前顺序为：
+当前默认顺序为：
 
-1. R2 core contract、3D geometry validation spec、response-blind quality
-   calibration plan、真实 run budget 与隔离设计审查已经完成；
-2. generator/geometry P1 已在隔离 keyset-repair 版本完成 14/14 独立验证，
-   `GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`；R0/R1/R2 失败回执不覆盖；
-3. 当前不得自动进入 P2。若继续，必须另立 P2 任务，保持 P1 lock、all-seed
-   manifest 与正式 receipt 身份；不得换 seed、降门或修改 geometry；
-4. synthetic R3 transport equivalence、analysis lock 与 guarded-host preflight
-   已独立通过，P4 one-shot activation 也已消费；正式 response-blind manipulation
-   gate 因 low-texture 四个 subgroup 未达 `18/20`，在零次正式 R3 pair-core call
-   处关闭为 `INTERVENTION_NOT_EVALUABLE / VALID`，不得越门补跑 480+16；
-5. 不继续切 sequence13/14/15/17，sequence16 保持 `SEALED_UNSEEN`；
-6. 不修改 R3、`0.01/s`、三 pair 或 PairState，不先跑 CoTracker，不进入 Android。
+1. 保留既有 QMS formal locks、identities 和 receipts，不因本路线自动执行、撤销或
+   改造成新路线的四臂样本；
+2. 完成 A 阶段 clean 四臂 `static / rotation-only / translation-only / full 6DoF`
+   的合同、全部 `16+16` identities、formal firewall、静态测试和独立 validator；
+3. A Stage 1 当前不运行；未来若单独授权，只运行首批 16 sequences，由独立 receipt
+   决定是否打开仍 sealed 的第二批 16；
+4. 只有 A 完整终态满足进入条件，才另立 B 的平移—深度 oracle 几何合同；C 只冻结
+   A/B 实测有用的 RCLE 内生字段；D 先过独立标签与 session/route/scene 划分门；
+5. 任一阶段 `HOLD / INCONCLUSIVE / NOT_EVALUABLE` 都是合法终态，不通过加 depth、
+   pose、YOLO、分类器或大接口体系救援；
+6. 不继续切 sequence13/14/15/17，sequence16 保持 `SEALED_UNSEEN`；不修改 R3、
+   `0.01/s`、三 pair 或 PairState，不先跑 CoTracker，不进入 Android。
 
 当前不继续旧公开数据市场漫游，不自动创建 formal claim，不进入 Android。
