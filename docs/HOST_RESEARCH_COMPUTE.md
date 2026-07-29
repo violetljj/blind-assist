@@ -8,26 +8,53 @@
 
 ## 本机能力基线
 
-当前电脑为 Lenovo Legion Y7000X IAX11（83VK）：
+2026-07-29 现场复核的电脑为 Lenovo Legion Y7000X IAX11（83VK），
+BIOS `UFCN26WW`（2026-04-09），Windows 11 build 26200：
 
 - Intel Core Ultra 7 251HX：6 P-core + 12 E-core，18 核 18 线程，无超线程，最高 5.1 GHz；
-- NVIDIA GeForce RTX 5060 Laptop GPU：8 GB GDDR7，本机 OEM 最大 TGP 115 W；
-- 单条 16 GB DDR5-6400；
-- 两块 1 TB NVMe；仓库和研究产物位于第二块盘的 `E:` / `F:`；
-- 当前 Windows 电源方案为“平衡”，短测时 GPU ceiling power limit 为 90 W。
+- NVIDIA GeForce RTX 5060 Laptop GPU：8,151 MiB GDDR7、Blackwell、
+  compute capability 12.0，驱动 610.62；本机 OEM 最大 TGP 115 W；
+- Intel AI Boost NPU：设备与驱动已启动，纸面 INT8 峰值 13 TOPS；
+- 单条 Samsung `M435R2GA3PB1-CCPSG` 16 GB DDR5-6400；
+- 两块 1 TB NVMe：UMIS `UPJYJ1TBMNV1QWY` 承载 `C:` / `D:`，
+  ZHITAI `TiPlus7100` 承载 `E:` / `F:`；
+- 当前为 AC 供电、Windows“平衡”方案；CPU Boost 为 Aggressive，异构调度
+  由 Windows / Intel Thread Director 自动管理；
+- Secure Boot、Hypervisor、VBS 与 HVCI 均开启；为 Android 模拟器和系统安全
+  保留，不为了不可复现的小幅跑分关闭。
 
 CPU 和 GPU 均属于高性能移动研究平台。当前主要限制是单条 16 GB 内存：容量容易限制多进程、数据解码和 GPU feeder，并且没有利用第二个 SODIMM 形成双通道。最有价值的硬件升级是补一条匹配的 16 GB 内存，形成 32 GB 双通道；升级后必须重新标定 worker 和数据加载并发。
+
+本轮 `nvidia-smi` 观察到 GPU 动态功耗 ceiling 约 102–110 W，硬件上限
+115 W；它会随 Lenovo 热模式、CPU/GPU 共享功耗和温度变化，不能把 115 W 当作
+持续固定功耗。当前枚举状态为 NVIDIA 直接承担显示，约 0.9–1.1 GiB 显存被桌面
+与虚拟显示占用；GPU 任务的可用显存必须现场查询。
 
 纸面规格来源：
 
 - [Intel Core Ultra 7 251HX](https://www.intel.com/content/www/us/en/products/sku/245959/intel-core-ultra-7-processor-251hx-30m-cache-up-to-5-10-ghz/specifications.html)
 - [Lenovo Legion 5 15IAX11 / Y7000X IAX11 PSREF](https://psref.lenovo.com/syspool/Sys/PDF/Legion/Legion_5_15IAX11/Legion_5_15IAX11_Spec.pdf)
 - [NVIDIA RTX 50 Laptop GPU](https://www.nvidia.com/en-me/geforce/laptops/compare/)
+- [Windows NPU / Windows ML](https://learn.microsoft.com/windows/ai/npu-devices/)
 
 本机易漂移的详细硬件、驱动和短测结果只保存在忽略目录：
-`artifacts.local/evidence/host_compute_profile_v1/profile.json`。
+`artifacts.local/evidence/host_compute_profile_v2/profile.json`。旧 R1 基线仍在
+`artifacts.local/evidence/host_compute_profile_v1/profile.json`，只用于同机趋势
+比较。
 
 ## CPU 实测结论
+
+2026-07-29 在 AC / Windows 平衡方案下的短测：
+
+| Workload | Result | Boundary |
+| --- | ---: | --- |
+| WinSAT AES, 1 thread | 1,531.9 MB/s | 约 3.13 秒的短测 |
+| WinSAT AES, 18 threads | 25,148.5–25,173.4 MB/s | 相对单线程约 16.4× |
+| WinSAT memory copy | 60,850–63,105 MB/s | 短时复制带宽，不是应用端到端吞吐 |
+
+18 线程 AES 未达到理想 18×，符合 6P+12E 混合核、调度和并行开销。不要给
+worker 手工绑定固定 P/E 核：当前 Windows 异构调度和 Thread Director 已启用，
+项目型 RCLE 实测比纸面核数更能决定并发。
 
 RCLE Phase A R1 固定 trial 短测使用“多进程 trial + 每 worker 单 OpenCV 线程”。第一轮相对单进程：
 
@@ -48,7 +75,9 @@ RCLE Phase A R1 固定 trial 短测使用“多进程 trial + 每 worker 单 Ope
 | `balanced` | 12 | 用户不密集操作电脑时的正式离线研究；项目默认 |
 | `throughput` | 16 | 独占电脑的长矩阵或复算；保留 2 核给系统 |
 
-不得默认使用 18 worker。内存密集任务必须按单 worker RSS 下调；可用内存不足时由启动器自动降低并发。
+不得默认使用 18 worker。内存密集任务必须按单 worker RSS 下调；可用内存不足时由启动器自动降低并发。当前 16 GB 主机的普通启动器默认保留
+4 GiB 系统内存；正式/长任务应按真实 pilot 使用 4–6 GiB 或更高 reserve，而不是
+机械复用旧收据中的 2.5 GiB。
 
 进程池任务必须在 NumPy/OpenCV 导入前把 `OMP_NUM_THREADS`、`OPENBLAS_NUM_THREADS`、`MKL_NUM_THREADS`、`NUMEXPR_NUM_THREADS` 等设为 1，避免外层多进程与内层数值线程相乘。单进程大矩阵任务不自动套用本规则，应单独标定 BLAS 线程数。
 
@@ -188,7 +217,17 @@ guarded launcher 在创建 runner 进程前调用
 
 ## GPU 实测与调度
 
-当前 90 W ceiling 档位下，MobileNetV3Small + LR-ASPP、mixed FP16、256×256 合成 device tensor 的短测为：
+2026-07-29 的 PyTorch 2.11.0+cu128、TF32 关闭、6144² 方阵短测：
+
+| Dtype | Measured throughput | Mean time |
+| --- | ---: | ---: |
+| FP32 | 9.71 TFLOPS | 47.77 ms |
+| FP16 | 34.57 TFLOPS | 13.416 ms |
+
+这是纯 device matrix 短测，不含图像解码、PCIe 传输、CPU feeder 或持续温控，
+不能替代真实模型吞吐。
+
+旧 R1 在当时约 90 W ceiling 档位下，MobileNetV3Small + LR-ASPP、mixed FP16、256×256 合成 device tensor 的短测为：
 
 | Batch | Throughput | Peak CUDA allocation |
 | ---: | ---: | ---: |
@@ -208,13 +247,55 @@ guarded launcher 在创建 runner 进程前调用
 5. 不全局开启 TF32、CuDNN benchmark 或非确定性算法；数值模式属于具体科学协议。
 6. 历史上出过问题的 8,580 帧、batch 64、320 px、FP16 detector 长跑组合继续禁止复用。新型长 GPU 任务先做短、可停止 pilot，并记录温度、功耗、显存和输出。
 
+## NPU、iGPU 与专用媒体单元
+
+- Intel AI Boost NPU 当前驱动正常，但 BlindAssist 的电脑端 RCLE 是
+  CPU/OpenCV 路径，SANPO 是 PyTorch CUDA 路径；项目尚无 Windows ML、
+  OpenVINO 或 ONNX Runtime NPU runner。因此 NPU 当前是
+  `AVAILABLE_BUT_NOT_QUALIFIED`，不能自动计入项目吞吐。
+- 只有代表性 ONNX/INT8 图能被 NPU execution provider 完整接收，并通过输出
+  等价、加载、端到端延迟、功耗和算子 fallback 审计后，才可新增 `npu` backend。
+  Android 手机上的 Qualcomm QNN HTP 证据不能迁移成电脑 Intel NPU 证据。
+- 251HX 的 Intel Graphics 提供 Quick Sync 和 H.264/H.265/AV1 编解码能力；
+  可在视频物化/转码任务中另做 canary，但当前 iGPU 枚举为 phantom、显示由
+  NVIDIA 承担，项目不得假设 Quick Sync 已可用。
+- Lenovo LA1、Gaming AI 与 Dynamic Tuning 是整机热/功耗管理，不是可供
+  Python/Gradle 直接调度的通用 NPU。
+
+## Gradle / Android 构建调度
+
+当前项目固定使用 Gradle 8.10.2 与 Temurin JDK 17；系统默认 JDK 26 不兼容本
+仓库。16 GB 内存下 `gradle.properties` 的 `-Xmx2048m` 先保持不变。2026-07-29
+未得到可比较的 Gradle 4/6/8 worker 冷/热矩阵，因此全局最优 worker 数为
+`NOT_EVALUABLE`，不得把未经测量的值写入 `gradle.properties`。
+
+执行规则：
+
+1. 正常构建显式使用项目 JDK 17 与 canonical Gradle state。
+2. CPU/GPU 长任务同时运行时，Gradle 显式加 `--max-workers=4`，避免与 feeder、
+   进程池和 16 GB RAM 争用；这是一条共存上限，不是 Gradle 单独最快的声明。
+3. 不全局开启 parallel 或 configuration cache；先按同一 compile/test/lint 场景
+   比较 4/6/8 worker、首次/复用配置缓存和峰值 RAM。
+4. 不用 `clean` 制造“可复现”跑分；分别报告 no-change、warm incremental 和
+   必要时的 cold 场景。
+
 ## 存储和等待时间
 
 - 代码、小型元数据和工具保留在仓库路径。
 - 数据集、解压缓存、中间结果和 benchmark 输出进入 `artifacts.local/`。
-- 两块 NVMe 可把系统/工具 I/O 与研究 payload 分开；不要把大数据重新复制到系统盘。
+- `E:` 与 `F:` 是同一块 ZHITAI TiPlus7100 的两个分区，不是两条物理 I/O
+  通道；仓库、`E:\codex-tools` 和 `artifacts.local/` 也都在这块盘上。不得通过
+  E/F 跨分区复制或同时解压来假装 I/O 并行。
+- 系统盘 UMIS 与项目盘 ZHITAI 才是两块物理 NVMe；除非另有明确授权和空间/
+  生命周期策略，不把大型研究 payload 迁回系统盘。
 - 对重复解码或训练数据，优先建立可复算缓存、manifest 和 hash，而不是每轮重新下载或解压。
 - 并行下载属于 I/O workload，worker 数与 CPU profile 分开标定。
+
+2026-07-29 项目盘短测为：64 KiB 顺序读约 5,186 MB/s；仅 62 MB 临时文件的
+顺序写约 5,814 MB/s；16 KiB 随机读约 746.6–760.2 MB/s（约 45.6–46.4k
+IOPS）。顺序写受缓存影响，不能外推到数据集持续写入或 SLC 用尽后性能。
+两盘健康状态为 `Healthy/OK`，但 SMART 温度、磨损和持续降速因权限/工具缺失为
+`NOT_EVALUABLE`。
 
 ## 长任务可观测性
 

@@ -1,5 +1,17 @@
 # Development Log
 ## 2026-07-29
+- 时间：2026-07-29（Asia/Hong_Kong）；执行者：violjjet。现场复核 Lenovo
+  Y7000X IAX11（Core Ultra 7 251HX / RTX 5060 Laptop 8GB / Intel AI Boost /
+  单条 16GB DDR5-6400 / 双 1TB NVMe）并完成短时 CPU、内存、项目盘与 CUDA
+  基准；保留 RCLE 实测 `interactive=8 / balanced=12 / throughput=16`，普通
+  host 启动器的系统内存 reserve 从 2.5 GiB 收紧至 4 GiB。修复 guarded
+  launcher 对 stale、缺字段、非 complete 和 completed/total 未闭合 progress
+  的误接纳；外部监控改为递归汇总进程树，并增加可选 NVIDIA 利用率、显存、
+  温度、功耗。同步纠正 E/F 同属一块 ZHITAI 盘、PC NPU 尚未项目准入、Gradle
+  worker 尚不可评等边界。`test_run_guarded_host_research.ps1`、新增
+  `test_monitor_host_research_process.ps1`、preflight 单测、脚本语法、docs/index、
+  repo hygiene 与 diff checks 通过；未触碰并行 RCLE R3 文件，未改 BIOS、驱动、
+  Windows 电源计划、科学参数或 Android 端路径。
 - 时间：2026-07-29（Asia/Hong_Kong）；执行者：Codex。保持旧 R2 P4
   `INTERVENTION_NOT_EVALUABLE / VALID / COMPLETE_PRE_R3_TERMINAL` 不变，
   完成 response-blind [quality manipulation successor R1](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_MANIPULATION_SUCCESSOR_R1_RESULT_2026-07-29.md)。

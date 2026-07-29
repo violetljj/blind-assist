@@ -154,6 +154,7 @@ test_screen_sanpo_mask_windows.py
 test_select_sanpo_sequence_by_geometry.py
 test_train_export_sanpo_segmentation.py
 test_train_sanpo_segmentation_protocol.py
+test_monitor_host_research_process.ps1
 test_run_guarded_host_research.ps1
 test_validate_host_research_preflight.py
 test_validate_explicit_route_intent_episode.py

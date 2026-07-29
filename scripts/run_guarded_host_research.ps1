@@ -63,6 +63,9 @@ if (
         $failurePath
     )
 }
+if (Test-Path -LiteralPath $progressPath) {
+    throw "PROGRESS_PATH_ALREADY_EXISTS: $progressPath"
+}
 if ($receipt.execution_class -eq "formal") {
     $claimPath = Join-Path $resolvedRepo $receipt.formal.claim_path
     if (Test-Path -LiteralPath $claimPath) {
@@ -169,6 +172,7 @@ if ($receipt.scheduler.backend -eq "cpu_process_pool") {
 
 $process = [Diagnostics.Process]::new()
 $process.StartInfo = $processInfo
+$runnerStartedAtUtc = [DateTime]::UtcNow
 if (-not $process.Start()) {
     throw "RUNNER_START_FAILED"
 }
@@ -243,14 +247,101 @@ if ($null -ne $monitorProcess) {
 $successExists = Test-Path -LiteralPath $successPath
 $failureExists = Test-Path -LiteralPath $failurePath
 $progressExists = Test-Path -LiteralPath $progressPath -PathType Leaf
+$progressContractErrors = [System.Collections.Generic.List[string]]::new()
+$progressRecord = $null
+if ($progressExists) {
+    try {
+        $progressRecord = Get-Content `
+            -LiteralPath $progressPath `
+            -Raw `
+            -Encoding UTF8 |
+            ConvertFrom-Json
+    } catch {
+        $progressContractErrors.Add("progress is not valid JSON")
+    }
+}
+if ($null -ne $progressRecord) {
+    $progressProperties = @($progressRecord.PSObject.Properties.Name)
+    foreach ($field in @($receipt.progress.fields)) {
+        if ($field -notin $progressProperties) {
+            $progressContractErrors.Add("missing field: $field")
+        }
+    }
+
+    if (
+        "status" -in $progressProperties -and
+        [string]$progressRecord.status -ne "complete"
+    ) {
+        $progressContractErrors.Add(
+            "progress.status must be complete"
+        )
+    }
+
+    $completedUnits = $null
+    $totalUnits = $null
+    if (
+        "completed_units" -in $progressProperties -and
+        "total_units" -in $progressProperties
+    ) {
+        try {
+            $completedUnits = [double]$progressRecord.completed_units
+            $totalUnits = [double]$progressRecord.total_units
+            if (
+                $completedUnits -lt 0 -or
+                $totalUnits -lt 0 -or
+                $completedUnits -ne $totalUnits
+            ) {
+                $progressContractErrors.Add(
+                    "completed_units must equal total_units at completion"
+                )
+            }
+        } catch {
+            $progressContractErrors.Add(
+                "completed_units and total_units must be numeric"
+            )
+        }
+    }
+
+    if ("last_progress_at" -in $progressProperties) {
+        $lastProgressAt = [DateTimeOffset]::MinValue
+        if (-not [DateTimeOffset]::TryParse(
+            [string]$progressRecord.last_progress_at,
+            [ref]$lastProgressAt
+        )) {
+            $progressContractErrors.Add(
+                "last_progress_at must be an ISO-8601 timestamp"
+            )
+        } elseif (
+            $lastProgressAt.UtcDateTime -lt
+            $runnerStartedAtUtc.AddSeconds(-2)
+        ) {
+            $progressContractErrors.Add(
+                "last_progress_at predates this runner invocation"
+            )
+        }
+    }
+
+    $progressWriteUtc = (
+        Get-Item -LiteralPath $progressPath
+    ).LastWriteTimeUtc
+    if ($progressWriteUtc -lt $runnerStartedAtUtc.AddSeconds(-2)) {
+        $progressContractErrors.Add(
+            "progress file predates this runner invocation"
+        )
+    }
+}
+$progressContractValid = (
+    $progressExists -and
+    $progressContractErrors.Count -eq 0
+)
 $terminalStatus = if (
     $process.ExitCode -eq 0 -and
     $successExists -and
     -not $failureExists -and
-    $progressExists
+    $progressContractValid
 ) {
     "COMPLETE"
-} elseif (-not $progressExists) {
+} elseif (-not $progressContractValid) {
     "PROGRESS_CONTRACT_VIOLATION"
 } elseif ($failureExists) {
     "FAILED_WITH_RECEIPT"
@@ -270,6 +361,8 @@ $summary = [ordered]@{
     success_path_exists = $successExists
     failure_path_exists = $failureExists
     progress_path_exists = $progressExists
+    progress_contract_valid = $progressContractValid
+    progress_contract_errors = @($progressContractErrors)
     preflight_receipt = $resolvedReceipt
     implementation_sha256 = $receipt.implementation.sha256
     monitor_directory = $monitorRoot

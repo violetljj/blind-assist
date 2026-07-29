@@ -14,7 +14,7 @@ $caseRelative = "artifacts.local/tmp/$caseId"
 $caseDirectory = Join-Path $repoRoot $caseRelative
 New-Item -ItemType Directory -Path $caseDirectory -Force |
     Out-Null
-$monitorDirectory = $null
+$monitorDirectories = [System.Collections.Generic.List[string]]::new()
 
 try {
     $runner = Join-Path $caseDirectory "runner.py"
@@ -27,6 +27,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--progress", type=Path, required=True)
 parser.add_argument("--success", type=Path, required=True)
 parser.add_argument("--workers", type=int, required=True)
+parser.add_argument("--progress-status", default="complete")
 args = parser.parse_args()
 args.progress.parent.mkdir(parents=True, exist_ok=True)
 args.progress.write_text(
@@ -37,8 +38,12 @@ args.progress.write_text(
             "total_units": 2,
             "throughput": 10.0,
             "eta_seconds": 0,
-            "last_progress_at": "2026-01-01T00:00:00Z",
-            "status": "running",
+            "last_progress_at": (
+                __import__("datetime").datetime.now(
+                    __import__("datetime").timezone.utc
+                ).isoformat()
+            ),
+            "status": args.progress_status,
         }
     ),
     encoding="utf-8",
@@ -132,7 +137,7 @@ args.success.write_text(
     $guardResult = $guardOutput |
         Select-Object -Last 1 |
         ConvertFrom-Json
-    $monitorDirectory = [string]$guardResult.monitor_directory
+    $monitorDirectories.Add([string]$guardResult.monitor_directory)
     Write-Output ($guardResult | ConvertTo-Json -Compress)
     if ($LASTEXITCODE -ne 0) {
         throw "Guarded launcher returned $LASTEXITCODE"
@@ -146,6 +151,68 @@ args.success.write_text(
         throw "Guarded launcher did not preserve success/worker contract."
     }
 
+    Remove-Item `
+        -LiteralPath (Join-Path $repoRoot $successRelative) `
+        -Force
+    Remove-Item `
+        -LiteralPath (Join-Path $repoRoot $progressRelative) `
+        -Force
+    $runningOutput = & $guard `
+        -PreflightReceipt $receiptPath `
+        -Script $runner `
+        -RepoRoot $repoRoot `
+        -Python $python `
+        -MonitorPollSeconds 1 `
+        -RunnerArguments @(
+            "--progress",
+            (Join-Path $repoRoot $progressRelative),
+            "--success",
+            (Join-Path $repoRoot $successRelative),
+            "--progress-status",
+            "running"
+        )
+    $runningExitCode = $LASTEXITCODE
+    $runningResult = $runningOutput |
+        Select-Object -Last 1 |
+        ConvertFrom-Json
+    $monitorDirectories.Add([string]$runningResult.monitor_directory)
+    if (
+        $runningExitCode -ne 3 -or
+        $runningResult.status -ne "PROGRESS_CONTRACT_VIOLATION" -or
+        $runningResult.progress_contract_valid -ne $false
+    ) {
+        throw "Incomplete progress was not rejected."
+    }
+
+    Remove-Item `
+        -LiteralPath (Join-Path $repoRoot $successRelative) `
+        -Force
+    $staleRejected = $false
+    try {
+        & $guard `
+            -PreflightReceipt $receiptPath `
+            -Script $runner `
+            -RepoRoot $repoRoot `
+            -Python $python `
+            -MonitorPollSeconds 1 `
+            -RunnerArguments @(
+                "--progress",
+                (Join-Path $repoRoot $progressRelative),
+                "--success",
+                (Join-Path $repoRoot $successRelative)
+            )
+    } catch {
+        $staleRejected = $_.Exception.Message -like (
+            "PROGRESS_PATH_ALREADY_EXISTS*"
+        )
+    }
+    if (-not $staleRejected) {
+        throw "Pre-existing progress was not rejected."
+    }
+    Remove-Item `
+        -LiteralPath (Join-Path $repoRoot $progressRelative) `
+        -Force
+
     $invalidReceipt = $receipt.PSObject.Copy()
     $invalidReceipt.progress = $receipt.progress.PSObject.Copy()
     $invalidReceipt.progress.verified_in_pilot = $false
@@ -154,9 +221,6 @@ args.success.write_text(
         -LiteralPath $invalidPath `
         -Value ($invalidReceipt | ConvertTo-Json -Depth 8) `
         -Encoding UTF8
-    Remove-Item `
-        -LiteralPath (Join-Path $repoRoot $successRelative) `
-        -Force
     $rejected = $false
     try {
         & $guard `
@@ -193,7 +257,10 @@ args.success.write_text(
     )) {
         Remove-Item -LiteralPath $resolvedCase -Recurse -Force
     }
-    if (-not [string]::IsNullOrWhiteSpace($monitorDirectory)) {
+    foreach ($monitorDirectory in $monitorDirectories) {
+        if ([string]::IsNullOrWhiteSpace($monitorDirectory)) {
+            continue
+        }
         $resolvedMonitor = [IO.Path]::GetFullPath($monitorDirectory)
         $monitorRoot = [IO.Path]::GetFullPath(
             (

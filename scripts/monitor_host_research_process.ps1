@@ -89,6 +89,108 @@ function Get-RunnerProgressValue {
     return $property.Value
 }
 
+function Get-ProcessTreeSnapshot {
+    param(
+        [int]$RootProcessId
+    )
+
+    $allProcesses = @(
+        Get-CimInstance `
+            -ClassName Win32_Process `
+            -ErrorAction SilentlyContinue
+    )
+    $byProcessId = @{}
+    $childrenByParent = @{}
+    foreach ($item in $allProcesses) {
+        $itemProcessId = [int]$item.ProcessId
+        $parentProcessId = [int]$item.ParentProcessId
+        $byProcessId[$itemProcessId] = $item
+        if (-not $childrenByParent.ContainsKey($parentProcessId)) {
+            $childrenByParent[$parentProcessId] = [Collections.Generic.List[int]]::new()
+        }
+        $childrenByParent[$parentProcessId].Add($itemProcessId)
+    }
+
+    if (-not $byProcessId.ContainsKey($RootProcessId)) {
+        return @()
+    }
+
+    $pending = [Collections.Generic.Queue[int]]::new()
+    $pending.Enqueue($RootProcessId)
+    $visited = [Collections.Generic.HashSet[int]]::new()
+    $result = [Collections.Generic.List[object]]::new()
+    while ($pending.Count -gt 0) {
+        $currentProcessId = $pending.Dequeue()
+        if (-not $visited.Add($currentProcessId)) {
+            continue
+        }
+        if (-not $byProcessId.ContainsKey($currentProcessId)) {
+            continue
+        }
+        $result.Add($byProcessId[$currentProcessId])
+        if ($childrenByParent.ContainsKey($currentProcessId)) {
+            foreach ($childProcessId in $childrenByParent[$currentProcessId]) {
+                $pending.Enqueue($childProcessId)
+            }
+        }
+    }
+    return @($result)
+}
+
+function Get-NvidiaGpuSnapshot {
+    $empty = [ordered]@{
+        gpu_utilization_percent = $null
+        gpu_memory_used_mib = $null
+        gpu_temperature_c = $null
+        gpu_power_draw_w = $null
+    }
+    $nvidiaSmi = Get-Command nvidia-smi -ErrorAction SilentlyContinue
+    if ($null -eq $nvidiaSmi) {
+        return [pscustomobject]$empty
+    }
+
+    try {
+        $output = @(& $nvidiaSmi.Source `
+            --query-gpu=utilization.gpu,memory.used,temperature.gpu,power.draw `
+            --format=csv,noheader,nounits `
+            2>$null)
+        $nativeExitCode = $LASTEXITCODE
+        $line = $output | Select-Object -First 1
+        if (
+            ($null -ne $nativeExitCode -and $nativeExitCode -ne 0) -or
+            [string]::IsNullOrWhiteSpace($line)
+        ) {
+            return [pscustomobject]$empty
+        }
+        $values = @([string]$line -split ",")
+        if ($values.Count -ne 4) {
+            return [pscustomobject]$empty
+        }
+        $parsed = @()
+        foreach ($value in $values) {
+            $number = 0.0
+            $ok = [double]::TryParse(
+                $value.Trim(),
+                [Globalization.NumberStyles]::Float,
+                [Globalization.CultureInfo]::InvariantCulture,
+                [ref]$number
+            )
+            if (-not $ok) {
+                return [pscustomobject]$empty
+            }
+            $parsed += $number
+        }
+        return [pscustomobject][ordered]@{
+            gpu_utilization_percent = $parsed[0]
+            gpu_memory_used_mib = $parsed[1]
+            gpu_temperature_c = $parsed[2]
+            gpu_power_draw_w = $parsed[3]
+        }
+    } catch {
+        return [pscustomobject]$empty
+    }
+}
+
 $resolvedEvidence = [IO.Path]::GetFullPath(
     (Join-Path (Get-Location) $EvidenceDirectory)
 )
@@ -129,11 +231,9 @@ $sampleCount = 0
 
 while ($true) {
     $now = Get-Date
-    $process = Get-CimInstance `
-        -ClassName Win32_Process `
-        -Filter "ProcessId=$ProcessId" `
-        -ErrorAction SilentlyContinue
-    $exists = $null -ne $process
+    $processTree = @(Get-ProcessTreeSnapshot -RootProcessId $ProcessId)
+    $exists = $processTree.Count -gt 0
+    $childCount = [Math]::Max(0, $processTree.Count - 1)
     $runnerProgress = $null
     if (
         -not [string]::IsNullOrWhiteSpace($resolvedProgress) -and
@@ -171,14 +271,21 @@ while ($true) {
     $writeBytes = $null
     $privateBytes = $null
     if ($exists) {
-        $cpuSeconds = (
-            [double]$process.KernelModeTime +
-            [double]$process.UserModeTime
-        ) / 1e7
-        $readBytes = [double]$process.ReadTransferCount
-        $writeBytes = [double]$process.WriteTransferCount
-        $privateBytes = [double]$process.PrivatePageCount
+        $cpuSeconds = 0.0
+        $readBytes = 0.0
+        $writeBytes = 0.0
+        $privateBytes = 0.0
+        foreach ($process in $processTree) {
+            $cpuSeconds += (
+                [double]$process.KernelModeTime +
+                [double]$process.UserModeTime
+            ) / 1e7
+            $readBytes += [double]$process.ReadTransferCount
+            $writeBytes += [double]$process.WriteTransferCount
+            $privateBytes += [double]$process.PrivatePageCount
+        }
     }
+    $gpu = Get-NvidiaGpuSnapshot
 
     $wallSeconds = $null
     $cpuCoreEquivalent = $null
@@ -312,6 +419,7 @@ while ($true) {
         timestamp = $now.ToUniversalTime().ToString("o")
         process_id = $ProcessId
         process_exists = $exists
+        child_count = $childCount
         phase = $phase
         health = $health
         cpu_seconds = if ($null -eq $cpuSeconds) {
@@ -344,6 +452,10 @@ while ($true) {
         } else {
             [Math]::Round($privateBytes / 1MB, 1)
         }
+        gpu_utilization_percent = $gpu.gpu_utilization_percent
+        gpu_memory_used_mib = $gpu.gpu_memory_used_mib
+        gpu_temperature_c = $gpu.gpu_temperature_c
+        gpu_power_draw_w = $gpu.gpu_power_draw_w
         consecutive_low_activity_windows = $silentWindows
         bottleneck_hint = $bottleneckHint
         action_hint = $actionHint

@@ -15,7 +15,7 @@ param(
     [double]$EstimatedGiBPerWorker = 0.30,
 
     [ValidateRange(0.5, 128.0)]
-    [double]$ReserveMemoryGiB = 2.5,
+    [double]$ReserveMemoryGiB = 4.0,
 
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$RunnerArguments
@@ -45,6 +45,10 @@ $requestedWorkers = if ($Workers -gt 0) { $Workers } else { $profileTarget }
 
 $os = Get-CimInstance Win32_OperatingSystem
 $availableGiB = [double]$os.FreePhysicalMemory / 1MB
+$installedGiB = [double]$os.TotalVisibleMemorySize / 1MB
+$memoryModules = @(
+    Get-CimInstance Win32_PhysicalMemory -ErrorAction SilentlyContinue
+)
 $memoryBudgetGiB = [Math]::Max(0.0, $availableGiB - $ReserveMemoryGiB)
 $memoryCap = [Math]::Max(
     1,
@@ -63,6 +67,8 @@ $summary = [ordered]@{
     requested_workers = $requestedWorkers
     resolved_workers = $resolvedWorkers
     logical_processors = $logicalProcessors
+    installed_memory_gib = [Math]::Round($installedGiB, 2)
+    memory_modules = $memoryModules.Count
     available_memory_gib = [Math]::Round($availableGiB, 2)
     reserve_memory_gib = $ReserveMemoryGiB
     estimated_gib_per_worker = $EstimatedGiBPerWorker
@@ -79,6 +85,15 @@ if ($resolvedWorkers -lt $requestedWorkers) {
         "Workers reduced from {0} to {1} by CPU/memory guard." -f
         $requestedWorkers,
         $resolvedWorkers
+    )
+}
+if (
+    $Profile -eq "throughput" -and
+    $installedGiB -lt 24.0
+) {
+    Write-Warning (
+        "Throughput mode on this 16 GiB host is capacity-sensitive; " +
+        "EstimatedGiBPerWorker must come from a representative pilot."
     )
 }
 
