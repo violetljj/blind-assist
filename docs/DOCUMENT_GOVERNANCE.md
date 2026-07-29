@@ -1,7 +1,7 @@
 # BlindAssist 文档治理
 
 状态：current
-最后核验：2026-07-19
+最后核验：2026-07-30
 适用范围：仓库内所有协作者、自动化代理与长期任务。
 
 ## 目标
@@ -15,7 +15,8 @@
 | 当前产品能力、版本、最短构建入口 | `README.md` | `idea.md`、日期化实验报告 |
 | 已发布或用户可见变化 | `CHANGELOG.md` | 研究实验日志 |
 | 当前 SANPO 状态、硬门、禁止事项、下一步 | `docs/SANPO_CURRENT_STATUS.md` | `idea.md`、`CHANGELOG.md` |
-| 当前 RCLE 阶段、终态、权限、禁止事项与下一步 | `docs/research/rcle/README.md` | `AGENTS.md`、根 `README.md`、`docs/SANPO_CURRENT_STATUS.md`、`scripts/README.md` |
+| 当前双环论文系统路线、阶段−1门、权限与下一步 | `docs/research/dual-loop/README.md` | `idea.md`、日期化讨论或实验报告 |
+| 暂停的 RCLE 科学/协议终态、保留权限与禁止事项 | `docs/research/rcle/README.md` | `AGENTS.md`、根 `README.md`、`docs/SANPO_CURRENT_STATUS.md`、`scripts/README.md` |
 | 研究阶段、冻结强度、失败学习、规则质疑和证据复用 | `docs/RESEARCH_GOVERNANCE.md` | 单轮 prereg、日期化结果、旧 handoff |
 | 端到端自主工作流与禁止人工前置条件 | `docs/AI_REVIEW_GOVERNANCE.md` | 日期化 snapshot、旧 handoff、历史实验合同 |
 | 当前操作协议与安全门 | `docs/README.md` 标为 `current` 的对应文件 | 日期化 snapshot |

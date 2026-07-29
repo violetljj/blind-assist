@@ -46,6 +46,14 @@
 /scripts/research/egomotion_compensated_looming/rgb_segment_confirmation_r1/** text eol=lf
 /scripts/research/egomotion_compensated_looming/tests_rgb_segment_confirmation_r1/** text eol=lf
 
+# RCLE mechanism audits bind raw protocol, implementation, validator and launcher bytes.
+# Keep the whole owned research domain stable across Windows autocrlf checkouts so
+# transitive SHA-256 bindings remain reproducible.
+/docs/research/rcle/** text eol=lf
+/scripts/research/egomotion_compensated_looming/** text eol=lf
+/scripts/run_guarded_host_research.ps1 text eol=lf
+/scripts/test_run_guarded_host_research.ps1 text eol=lf
+
 # Immutable historical-reference exceptions are SHA256-bound and must survive clean checkout byte-for-byte.
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_0327.json text eol=lf
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_transport_safety_amendment.json text eol=lf

@@ -1,5 +1,22 @@
 # Development Log
 ## 2026-07-29
+- 时间：2026-07-29（Asia/Hong_Kong）；执行者：Codex。完成
+  [R3 rotation-leakage source-localization formal closeout](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_EXECUTION_RESULT_R0_2026-07-29.md)：
+  唯一一次 runner formal authority 已消费，4 workers 完成 `8/8` 冻结
+  rotation-only clusters、每条 `601` pairs，wall `1344.6163 s`，minimum
+  coordinator-observed available RAM minimum `6,226,071,552 bytes`、swap delta
+  `0/0`、residual worker
+  `0`，R3/阈值/三 pair/PairState/abstention 均未修改。强制独立 validator 在
+  `2/8` 后以 `PAIR:519:LOCAL_CELL_EXPANSION:COMPENSATED_FINAL:6`
+  fail-closed；无 analysis、独立 receipt 或 execution decision。只读单-cell
+  复算确认该 cell 已因 support `3<12` 弃权，ledger/recomputed OLS 差
+  `1.0231815394945443e-11/s`，相对误差约 `6.14e-14`，但超过纯绝对
+  `1e-12/s` 容差；分类为 audit-only numeric-representation protocol defect，
+  不是算法成败。终态
+  `NO_VALIDATED_SCIENTIFIC_RESULT / INDEPENDENT_VALIDATION_INVALID /
+  ONE_SHOT_CONSUMED / NO_RERUN`；不修改或重跑 validator，不进入 R3 repair、
+  C/D、正式 `480+16`、Android、产品或安全结论。机器记录见
+  [execution closeout R0](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_EXECUTION_CLOSEOUT_R0_2026-07-29.json)。
 - 时间：2026-07-29（Asia/Hong_Kong）；执行者：violjjet。现场复核 Lenovo
   Y7000X IAX11（Core Ultra 7 251HX / RTX 5060 Laptop 8GB / Intel AI Boost /
   单条 16GB DDR5-6400 / 双 1TB NVMe）并完成短时 CPU、内存、项目盘与 CUDA

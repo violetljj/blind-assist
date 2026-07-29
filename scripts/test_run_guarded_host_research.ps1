@@ -26,15 +26,19 @@ from pathlib import Path
 parser = argparse.ArgumentParser()
 parser.add_argument("--progress", type=Path, required=True)
 parser.add_argument("--success", type=Path, required=True)
+parser.add_argument("--failure", type=Path)
 parser.add_argument("--workers", type=int, required=True)
 parser.add_argument("--progress-status", default="complete")
+parser.add_argument("--fail", action="store_true")
 args = parser.parse_args()
 args.progress.parent.mkdir(parents=True, exist_ok=True)
+completed_units = 1 if args.fail else 2
+progress_status = "failed" if args.fail else args.progress_status
 args.progress.write_text(
     json.dumps(
         {
             "phase": "producer",
-            "completed_units": 2,
+            "completed_units": completed_units,
             "total_units": 2,
             "throughput": 10.0,
             "eta_seconds": 0,
@@ -43,11 +47,19 @@ args.progress.write_text(
                     __import__("datetime").timezone.utc
                 ).isoformat()
             ),
-            "status": args.progress_status,
+            "status": progress_status,
         }
     ),
     encoding="utf-8",
 )
+if args.fail:
+    if args.failure is None:
+        raise SystemExit("failure path required")
+    args.failure.write_text(
+        json.dumps({"status": "failed", "workers": args.workers}),
+        encoding="utf-8",
+    )
+    raise SystemExit(1)
 args.success.write_text(
     json.dumps({"status": "complete", "workers": args.workers}),
     encoding="utf-8",
@@ -209,6 +221,42 @@ args.success.write_text(
     if (-not $staleRejected) {
         throw "Pre-existing progress was not rejected."
     }
+    Remove-Item `
+        -LiteralPath (Join-Path $repoRoot $progressRelative) `
+        -Force
+
+    $failureOutput = & $guard `
+        -PreflightReceipt $receiptPath `
+        -Script $runner `
+        -RepoRoot $repoRoot `
+        -Python $python `
+        -MonitorPollSeconds 1 `
+        -RunnerArguments @(
+            "--progress",
+            (Join-Path $repoRoot $progressRelative),
+            "--success",
+            (Join-Path $repoRoot $successRelative),
+            "--failure",
+            (Join-Path $repoRoot $failureRelative),
+            "--fail"
+        )
+    $failureExitCode = $LASTEXITCODE
+    $failureResult = $failureOutput |
+        Select-Object -Last 1 |
+        ConvertFrom-Json
+    $monitorDirectories.Add([string]$failureResult.monitor_directory)
+    if (
+        $failureExitCode -ne 3 -or
+        $failureResult.status -ne "FAILED_WITH_RECEIPT" -or
+        $failureResult.progress_contract_valid -ne $true -or
+        $failureResult.failure_path_exists -ne $true -or
+        $failureResult.success_path_exists -ne $false
+    ) {
+        throw "Owned failure receipt was not classified correctly."
+    }
+    Remove-Item `
+        -LiteralPath (Join-Path $repoRoot $failureRelative) `
+        -Force
     Remove-Item `
         -LiteralPath (Join-Path $repoRoot $progressRelative) `
         -Force

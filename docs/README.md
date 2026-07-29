@@ -28,8 +28,9 @@
 | [GLASSES_HARDWARE_ROUTE.md](GLASSES_HARDWARE_ROUTE.md) | current | 眼镜硬件路线 |
 | [BLINDASSIST_EVALSET.md](BLINDASSIST_EVALSET.md) | current | 助行图像评测集 |
 | [DETECTOR_BENCHMARK.md](DETECTOR_BENCHMARK.md) | current | 检测器 benchmark 契约 |
-| [NPU_DEFAULT_CANDIDATE.md](NPU_DEFAULT_CANDIDATE.md) | current | CPU 生产默认、QNN HTP 下一默认候选及 fail-closed 晋升门 |
+| [NPU_DEFAULT_CANDIDATE.md](NPU_DEFAULT_CANDIDATE.md) | current | SM8650 QNN HTP 生产首选、CPU fallback 与新增 SoC 的 fail-closed 准入门 |
 | [PROJECT_AUDIT_2026-07-28.md](PROJECT_AUDIT_2026-07-28.md) | snapshot | 全项目架构、研究治理、文档、脚本、构建与本地产物审查及优化 |
+| [PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md](PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md) | snapshot | Project Guideline 八项组件的复用、适配、参考、暂缓与放弃边界 |
 | [PROJECT_AUDIT_2026-07-10.md](PROJECT_AUDIT_2026-07-10.md) | snapshot | 2026-07-10 项目综合审计 |
 
 ## SANPO 当前协议与门禁
@@ -74,7 +75,10 @@
 - [Frontier Upgrade 2026-07 研究档案](research/frontier-upgrade-2026-07/README.md)：按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层，只用于研究追溯。
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
-- [RCLE 研究主线](research/rcle/README.md)：`current`；RCLE 的动态阶段、终态、权限与下一步只在该入口维护。日期化证据不自动产生 Android、产品、安全或生产权限。
+- [神经—几何双环研究主线](research/dual-loop/README.md)：`current / PROPOSAL_ONLY`；
+  当前论文系统路线、阶段−1顺序门、权限与下一步的唯一入口。
+- [RCLE 研究状态](research/rcle/README.md)：`paused / current truth`；保留 RCLE 的
+  历史科学终态、协议终态、权限与禁止事项，不再是默认执行主线。
 - [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。
 - [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：历史 route-conditioned 研究和 RCLE 前序 Looming 证据；不再是研究主线，不代表生产授权。
 - 开发日志月度历史：[2026-05](history/development-log/2026-05.md) · [2026-06](history/development-log/2026-06.md) · [2026-07](history/development-log/2026-07.md)。近期记录继续以根 `DEVELOPMENT_LOG.md` 为准。

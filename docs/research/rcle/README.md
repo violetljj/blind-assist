@@ -1,26 +1,48 @@
 # RCLE 研究主线
 
-状态：`current / STAGE_B_COMPLETE_B_ORACLE_NOT_EVALUABLE / R3_LEAKAGE_LOCALIZATION_AUTHORIZED_ONE_SHOT_RUNNER_NOT_IMPLEMENTED_NOT_RUN / C_D_CLOSED / SUCCESSOR_FORMAL_NOT_CONSUMED`
+状态：`paused / USER_PAUSED_2026-07-30 / STAGE_B_COMPLETE_B_ORACLE_NOT_EVALUABLE / R3_LEAKAGE_LOCALIZATION_FORMAL_COMPLETE_INDEPENDENT_VALIDATION_INVALID_ONE_SHOT_CONSUMED_NO_RERUN / C_D_CLOSED / SUCCESSOR_FORMAL_NOT_CONSUMED`
 
-最后核验：2026-07-29（Asia/Hong_Kong）
+最后核验：2026-07-30（Asia/Hong_Kong）
+
+## 暂停决定
+
+用户于 2026-07-30 明确暂停 RCLE。暂停只改变默认执行队列，不改写任何既有科学结果、
+协议结果、one-shot 消费状态、未消费的 `480+16` 或 sealed identity：
+
+```text
+PROGRAM STATE: PAUSED
+DEFAULT NEXT RCLE ACTION: NONE
+NEW RCLE EXECUTION AUTHORITY: NONE
+RESUME CONDITION: EXPLICIT USER AUTHORIZATION + NEW SCOPED CONTRACT
+```
+
+当前论文系统路线入口改为
+[BlindAssist 神经—几何双环阶段−1准入](../dual-loop/README.md)。双环默认使用已有
+Sparse LK 做候选，不把 RCLE 写成已准入的 fast loop，也不构成 RCLE retry、repair、
+formal consumption 或 USTRF 重启。
 
 ## 当前结论
 
-RCLE-RF 仍是 BlindAssist 的论文研究主线，但研究方法已经从“理想数据合同驱动”
-改为“数据能力驱动、分阶段提高证据强度”：
+RCLE-RF 当前是暂停的论文算法研究记录，不再是 BlindAssist 的默认论文系统执行主线。
+暂停前，研究方法已经从“理想数据合同驱动”改为“数据能力驱动、分阶段提高证据
+强度”；下列科学与协议状态原样冻结：
 
 ```text
 CURRENT STUDY: RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2
 CURRENT TRACK: CONTROLLED_COUNTERFACTUAL_DEVELOPMENT
+PROGRAM STATE: PAUSED / USER_PAUSED_2026-07-30
 SCIENTIFIC STATUS: QUALITY_CALIBRATION_PASS
 PROTOCOL STATUS: VALID
-EXECUTION AUTHORITY: QMS_R1_SUCCESSOR_FORMAL_AUTHORIZED_ONE_SHOT / NOT_RUN
+EXECUTION AUTHORITY WHILE PAUSED: NONE
+PRESERVED PRE-PAUSE AUTHORITY: QMS_R1_SUCCESSOR_FORMAL_AUTHORIZED_ONE_SHOT / NOT_RUN
 DEV DIAGNOSTIC: PERIODIC_SELF_MOTION_SENSITIVITY_OBSERVED / 8_OF_8_CLUSTERS
 MOTION COMPONENT STAGE A: COMPLETE / VALID
 STAGE B: COMPLETE / INDEPENDENT VALID / B_ORACLE_NOT_EVALUABLE
 STAGE B ROTATION BOUNDARY: 0_OF_8_PASS
 STAGE B REQUIRED COVERAGE FAILURES: 18_ARM_CLUSTERS
-R3 LEAKAGE SOURCE LOCALIZATION: EXECUTION_AUTHORIZED / ONE_SHOT / RUNNER_NOT_IMPLEMENTED / NOT_RUN
+R3 LEAKAGE LOCALIZATION SCIENCE: NO_VALIDATED_SCIENTIFIC_RESULT / NOT_EVALUABLE_DUE_TO_EXECUTION
+R3 LEAKAGE LOCALIZATION PROTOCOL: INDEPENDENT_VALIDATION_INVALID
+R3 LEAKAGE LOCALIZATION AUTHORITY: ONE_SHOT_CONSUMED / NO_RERUN / FUTURE_REPAIR_NOT_AUTHORIZED
 FEATURE CONTRACT C / FUSION D: CLOSED
 CURRENT CLAIM CEILING: CONTROLLED_GENERATOR_INTERNAL_MECHANISM_DEVELOPMENT_ONLY
 PREDECESSOR RESULT: TEMPORAL_STRUCTURE_R1_HOLD_MIXED_OR_INSUFFICIENT / VALID
@@ -70,18 +92,25 @@ R3 rotation absolute P90 为 `0.0940–0.1806/s`，冻结的 `<=0.01/s` 必过�
 [Stage B result R1](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_RESULT_R1_2026-07-29.md)
 与历史
 [Stage B contract preflight R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0_RESULT_2026-07-29.md)。
-Stage B 收口后只新增了 observation-only R3 rotation-leakage
-source-localization successor preflight：绑定原 8 个 rotation-only clusters，
-冻结 input geometry → warp → mask boundary → Sparse LK/track filtering →
+Stage B 收口后新增了 observation-only R3 rotation-leakage
+source-localization successor：绑定原 8 个 rotation-only clusters，冻结 input
+geometry → warp → mask boundary → Sparse LK/track filtering →
 local affine/final aggregation 的逐层 primitives、cluster-level 路由、6 GiB 门和
-fail-closed 停止规则。独立 validator `10/10 PASS`。preflight 的历史 HOLD 保持
-不变；用户随后显式授权一轮完整 observation-only execution，当前为
-`EXECUTION_AUTHORIZED / ONE_SHOT / RUNNER_NOT_IMPLEMENTED / NOT_RUN`；当前仓库
-只有 contract preflight validator，没有 localization runner 或独立 execution
-validator。详见
+fail-closed 停止规则。contract preflight 独立 validator `10/10 PASS`，随后完成
+专用 runner、独立 execution validator、47 项定向测试和冻结实现链，并消费唯一
+一次 formal authority。Runner 完成 `8/8` clusters、每条 `601` pairs；但独立
+validator 在 `2/8` 后因
+`PAIR:519:LOCAL_CELL_EXPANSION:COMPENSATED_FINAL:6` fail-closed。只读单-cell
+复算显示这是已因 support `3<12` 弃权的 audit-only OLS 值被纯绝对 `1e-12`
+比较触发的 numeric-representation protocol defect；它不是 R3 科学成败。
+`analysis_result`、独立 receipt 和 execution decision 均未生成，所以没有
+validated cluster route 或 first-visible-layer 结论。终态固定为
+`FORMAL_EXECUTION_COMPLETE / INDEPENDENT_VALIDATION_INVALID /
+ONE_SHOT_CONSUMED / NO_RERUN`。详见
 [R3 leakage-localization preflight R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_CONTRACT_PREFLIGHT_R0_RESULT_2026-07-29.md)
+、[execution activation R1](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_EXECUTION_ACTIVATION_DECISION_R1_2026-07-29.json)
 与
-[execution activation R1](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_EXECUTION_ACTIVATION_DECISION_R1_2026-07-29.json)。
+[execution result R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_EXECUTION_RESULT_R0_2026-07-29.md)。
 `480+16` 仍 `NOT_CONSUMED / NOT_RUN`。详见
 [motion-component Stage A](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_CLEAN_MOTION_COMPONENT_LOCALIZATION_R0_STAGE_A_RESULT_2026-07-29.md)。
 
@@ -92,7 +121,9 @@ diagnostic：`8 clusters / 48 sequences / 28,848 pairs`，完整保留每条
 `VALID / DEV_DIAGNOSTIC_COMPLETE`。`MOTION_CLEAN` trigger-density contrast
 在 8/8 clusters 为正，均值 `0.25`、范围 `0.18–0.29`；质量 interactions
 方向混合。该结果只说明受控 generator 内部的周期自运动敏感性，不是正式推断。
-successor formal 一次性授权仍未消费，正式 480+16 仍为零。详见
+该 DEV 运行当时 successor formal 一次性授权仍未消费；当前正式 480+16 仍为零，
+且后续已消费的 localization authority 是另一条仅含 8 个 rotation-only clusters
+的独立权限。详见
 [four-block DEV diagnostic R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_FOUR_BLOCK_DEV_DIAGNOSTIC_R0_RESULT_2026-07-29.md)。
 
 轻量 P3 R0 已完成 R3 transport equivalence、analysis implementation/mutation
@@ -128,9 +159,10 @@ R0、R1、R2 失败回执仍不可覆盖；P1 本身不曾自动授权 P2。详�
 R1 的不可变 13/14 失败与并发 source-hash 竞态见
 [R1 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_RESULT_2026-07-28.md)。
 
-当前操作只看三轴：科学状态仍为 `QUALITY_CALIBRATION_PASS`、successor
-activation preflight 为 `VALID / FORMAL_NOT_RUN`、执行权限为
-`QMS_R1_SUCCESSOR_FORMAL_AUTHORIZED_ONE_SHOT`。历史 predecessor P3 的
+暂停前最后保留的三轴状态为：科学状态 `QUALITY_CALIBRATION_PASS`、successor
+activation preflight `VALID / FORMAL_NOT_RUN`、当时执行权限
+`QMS_R1_SUCCESSOR_FORMAL_AUTHORIZED_ONE_SHOT`。这些是历史事实，不是暂停后的当前
+执行权限；当前执行权限仍为 `NONE`。历史 predecessor P3 的
 `P4_NOT_ACTIVATED` 与旧 P4 的 consumed terminal 继续保留。历史 R2 的
 `INVALID_KEYSET` 不再被表述为几何失败。P1
 已经关闭；非阻断的 receipt、命名或未来漂移监控只进入 backlog，不再创建 P1
@@ -319,8 +351,12 @@ implementation、runtime preflight 和正式序列仍未创建或运行。
 
 ## 当前权限
 
+表中各研究项保留暂停前的科学/协议/权限事实；首行程序级暂停覆盖其执行解释。在暂停
+解除前，任何 `AUTHORIZED / ACTIVE / NOT_RUN` 都不是当前运行许可。
+
 | 能力 | authority |
 | --- | --- |
+| RCLE 总体程序 | `PAUSED / NO_DEFAULT_NEXT_ACTION / RESUME_REQUIRES_EXPLICIT_AUTHORIZATION` |
 | 自然视频 Capability Discovery | `AUTHORIZED / ACTIVE` |
 | 已查看数据的失败分析和回归 | `AUTHORIZED` |
 | natural-session expansion Discovery R0 | `COMPLETE / VALID` |
@@ -332,7 +368,7 @@ implementation、runtime preflight 和正式序列仍未创建或运行。
 | A Stage 1 / Stage 2 | `VALID_COMPLETE / VALID_COMPLETE` |
 | B translation-depth oracle | `COMPLETE / INDEPENDENT_VALID / B_ORACLE_NOT_EVALUABLE` |
 | B 后升级决策 | `CLOSED / ROTATION_BOUNDARY_0_OF_8 / COVERAGE_FAILURES_18` |
-| R3 rotation-leakage source localization | `EXECUTION_AUTHORIZED / ONE_SHOT / RUNNER_NOT_IMPLEMENTED / NOT_RUN` |
+| R3 rotation-leakage source localization | `FORMAL_EXECUTION_COMPLETE / INDEPENDENT_VALIDATION_INVALID / ONE_SHOT_CONSUMED / NO_RERUN` |
 | 单项升级 / C / D | `NOT_AUTHORIZED / CLOSED / CLOSED` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
@@ -347,22 +383,27 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 ## 下一步
 
-当前默认顺序为：
+RCLE 当前没有默认下一执行项。以下顺序只在未来解除暂停并另获明确、局部授权后继续约束
+任何 RCLE 后继，不是当前待办队列：
 
 1. A 已完成并独立收口；Stage B 也已完整执行和独立重建；
 2. Stage B 的 must-pass rotation boundary 为 `0/8`，required coverage failures
    为 `18`，终态固定为 `B_ORACLE_NOT_EVALUABLE`；
 3. 不重跑、不替换 identity、不改 R3/阈值/三 pair/abstention，也不把边界失败后的
    translation 或 positive-control 描述量用于购买升级；
-4. R3 rotation-leakage source-localization 已显式激活为一次性完整执行；先按冻结
-   contract 实现专用 runner 与独立 execution validator，完成实现锁后，运行前
-   仍须复验绑定、write-once 输出根、4 workers、6 GiB launch/refill 门与 4 GiB
-   in-flight floor；
-5. 本轮只能输出每 cluster 的 first-visible-layer、multiple 或 not-evaluable
-   路由；该结果本身仍不授权改 R3、重跑或修复；
-6. single targeted candidate 必须另立合同、独立 calibration 并进入新的 Stage B
-   successor；feature contract C 与 fusion experiment D 继续关闭；
-7. successor formal `480+16` 仍为 `NOT_CONSUMED / NOT_RUN`，sequence16、Android
+4. R3 rotation-leakage source-localization runner 已完成 `8/8`，但唯一一次独立
+   validation 在 `2/8` 后 `INVALID`；不重跑 validator、runner，不 resume、
+   replacement、reseed 或删除 output；
+5. producer 的 `PENDING_INDEPENDENT_VALIDATION` route 和 validator 的部分进度都
+   不是科学结果；本轮不得输出 first-visible-layer、multiple 或 not-evaluable
+   cluster route，也不授权改 R3；
+6. 单-cell 事后诊断只定位了 audit-only 纯绝对容差的 protocol defect；它不能事后
+   修复本轮。若继续，必须另获显式授权并另立薄 successor protocol，保留当前
+   `INVALID`、使用独立命名和 fail-closed 输出；
+7. single targeted candidate 仍必须另立合同、独立 calibration 并进入新的
+   Stage B successor；feature contract C 与 fusion experiment D 继续关闭；
+8. successor formal `480+16` 仍为 `NOT_CONSUMED / NOT_RUN`，sequence16、Android
    和产品权限继续关闭。
 
-当前不继续旧公开数据市场漫游，不自动创建 formal claim，不进入 Android。
+当前不继续旧公开数据市场漫游，不自动创建 formal claim，不进入 Android。项目级下一步
+以[双环 current 入口](../dual-loop/README.md)为准。
