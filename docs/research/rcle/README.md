@@ -1,6 +1,6 @@
 # RCLE 研究主线
 
-状态：`current / STAGE_B_COMPLETE_B_ORACLE_NOT_EVALUABLE / R3_LEAKAGE_LOCALIZATION_PREFLIGHT_VALID_NOT_ACTIVATED / C_D_CLOSED / SUCCESSOR_FORMAL_NOT_CONSUMED`
+状态：`current / STAGE_B_COMPLETE_B_ORACLE_NOT_EVALUABLE / R3_LEAKAGE_LOCALIZATION_AUTHORIZED_ONE_SHOT_RUNNER_NOT_IMPLEMENTED_NOT_RUN / C_D_CLOSED / SUCCESSOR_FORMAL_NOT_CONSUMED`
 
 最后核验：2026-07-29（Asia/Hong_Kong）
 
@@ -20,7 +20,7 @@ MOTION COMPONENT STAGE A: COMPLETE / VALID
 STAGE B: COMPLETE / INDEPENDENT VALID / B_ORACLE_NOT_EVALUABLE
 STAGE B ROTATION BOUNDARY: 0_OF_8_PASS
 STAGE B REQUIRED COVERAGE FAILURES: 18_ARM_CLUSTERS
-R3 LEAKAGE SOURCE LOCALIZATION: CONTRACT_PREFLIGHT_VALID / EXECUTION_NOT_ACTIVATED
+R3 LEAKAGE SOURCE LOCALIZATION: EXECUTION_AUTHORIZED / ONE_SHOT / RUNNER_NOT_IMPLEMENTED / NOT_RUN
 FEATURE CONTRACT C / FUSION D: CLOSED
 CURRENT CLAIM CEILING: CONTROLLED_GENERATOR_INTERNAL_MECHANISM_DEVELOPMENT_ONLY
 PREDECESSOR RESULT: TEMPORAL_STRUCTURE_R1_HOLD_MIXED_OR_INSUFFICIENT / VALID
@@ -74,8 +74,14 @@ Stage B 收口后只新增了 observation-only R3 rotation-leakage
 source-localization successor preflight：绑定原 8 个 rotation-only clusters，
 冻结 input geometry → warp → mask boundary → Sparse LK/track filtering →
 local affine/final aggregation 的逐层 primitives、cluster-level 路由、6 GiB 门和
-fail-closed 停止规则。独立 validator `10/10 PASS`，但 execution 未激活，详见
-[R3 leakage-localization preflight R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_CONTRACT_PREFLIGHT_R0_RESULT_2026-07-29.md)。
+fail-closed 停止规则。独立 validator `10/10 PASS`。preflight 的历史 HOLD 保持
+不变；用户随后显式授权一轮完整 observation-only execution，当前为
+`EXECUTION_AUTHORIZED / ONE_SHOT / RUNNER_NOT_IMPLEMENTED / NOT_RUN`；当前仓库
+只有 contract preflight validator，没有 localization runner 或独立 execution
+validator。详见
+[R3 leakage-localization preflight R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_CONTRACT_PREFLIGHT_R0_RESULT_2026-07-29.md)
+与
+[execution activation R1](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_EXECUTION_ACTIVATION_DECISION_R1_2026-07-29.json)。
 `480+16` 仍 `NOT_CONSUMED / NOT_RUN`。详见
 [motion-component Stage A](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_CLEAN_MOTION_COMPONENT_LOCALIZATION_R0_STAGE_A_RESULT_2026-07-29.md)。
 
@@ -326,7 +332,7 @@ implementation、runtime preflight 和正式序列仍未创建或运行。
 | A Stage 1 / Stage 2 | `VALID_COMPLETE / VALID_COMPLETE` |
 | B translation-depth oracle | `COMPLETE / INDEPENDENT_VALID / B_ORACLE_NOT_EVALUABLE` |
 | B 后升级决策 | `CLOSED / ROTATION_BOUNDARY_0_OF_8 / COVERAGE_FAILURES_18` |
-| R3 rotation-leakage source localization | `CONTRACT_PREFLIGHT_VALID / EXECUTION_NOT_ACTIVATED` |
+| R3 rotation-leakage source localization | `EXECUTION_AUTHORIZED / ONE_SHOT / RUNNER_NOT_IMPLEMENTED / NOT_RUN` |
 | 单项升级 / C / D | `NOT_AUTHORIZED / CLOSED / CLOSED` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
@@ -348,10 +354,12 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
    为 `18`，终态固定为 `B_ORACLE_NOT_EVALUABLE`；
 3. 不重跑、不替换 identity、不改 R3/阈值/三 pair/abstention，也不把边界失败后的
    translation 或 positive-control 描述量用于购买升级；
-4. 只冻结了 R3 rotation-leakage source-localization contract preflight；当前为
-   `VALID / EXECUTION_NOT_ACTIVATED`，不自动读取或运行 localization response；
-5. 未来若另行激活，只能输出每 cluster 的 first-visible-layer、multiple 或
-   not-evaluable 路由；该结果本身仍不授权改 R3；
+4. R3 rotation-leakage source-localization 已显式激活为一次性完整执行；先按冻结
+   contract 实现专用 runner 与独立 execution validator，完成实现锁后，运行前
+   仍须复验绑定、write-once 输出根、4 workers、6 GiB launch/refill 门与 4 GiB
+   in-flight floor；
+5. 本轮只能输出每 cluster 的 first-visible-layer、multiple 或 not-evaluable
+   路由；该结果本身仍不授权改 R3、重跑或修复；
 6. single targeted candidate 必须另立合同、独立 calibration 并进入新的 Stage B
    successor；feature contract C 与 fusion experiment D 继续关闭；
 7. successor formal `480+16` 仍为 `NOT_CONSUMED / NOT_RUN`，sequence16、Android
