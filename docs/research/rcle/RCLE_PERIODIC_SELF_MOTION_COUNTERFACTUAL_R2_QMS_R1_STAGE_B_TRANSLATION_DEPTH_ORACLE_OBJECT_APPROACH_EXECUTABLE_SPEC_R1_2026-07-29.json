@@ -1,0 +1,136 @@
+{
+  "schema": "rcle.periodic_self_motion_counterfactual.qms_r1.stage_b_executable_spec.v1",
+  "protocol_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2",
+  "task_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0",
+  "spec_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_EXECUTABLE_SPEC_R1",
+  "date": "2026-07-29",
+  "authority": "USER_DIRECT_ACTIVATION_WITH_SAME_TASK_PRE_RESPONSE_GEOMETRY_GATE",
+  "historical_r0_artifacts_are_immutable": true,
+  "bindings": {
+    "contract": {
+      "path": "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0_CONTRACT_2026-07-29.json",
+      "sha256": "0d93643ccf9cc102d82a31ac55e355905b333399b4ddf11a0e18413a867b9324"
+    },
+    "identity_lock": {
+      "path": "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0_IDENTITY_LOCK_2026-07-29.json",
+      "sha256": "541221514c3399882bac707be6f22a177e527a865d67fbd4b5353367563c6982"
+    },
+    "preflight_receipt": {
+      "path": "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0_INDEPENDENT_RECEIPT_2026-07-29.json",
+      "sha256": "a862b8052f5ba02c8523884997a9770bd466a5f04007e1d5e19eaafcd67974a6"
+    },
+    "historical_hold_decision": {
+      "path": "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0_EXECUTION_ACTIVATION_DECISION_2026-07-29.json",
+      "sha256": "7750a923baac875f57bc209003d05509a2dbd70d7c0508d156e68ba6976f0e66"
+    },
+    "memory_gate_amendment": {
+      "path": "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_MEMORY_GATE_6GIB_SUCCESSOR_AMENDMENT_R0_2026-07-29.json",
+      "sha256": "36d3cfe9923456e5e6e7e98fa074079926166903dd81869b21acf02ed96b8e40"
+    },
+    "trajectory_manifest": {
+      "path": "artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/p1_geometry_r2_keyset_repair_r0/trajectory_manifest.json",
+      "sha256": "c394641b6419c7a58a58c1bc485e2783cd710e8ba2893415dd6687c20b7d2652"
+    },
+    "frozen_sources": {
+      "generator_geometry.py": "e6153f52f89674947f4960faf05ae8d5b90d1e9e69fef627a74c719127d6ca43",
+      "p3_transport_r0.py": "184229d767ac89570382d64a5db2aab76ec951bc886b83e297a8c2d7a3a9a83d",
+      "material_residual_contraction_r1.py": "5e66d270c1267d36e927cf47808337e6c1c0da68566e039c9a6ad35eb7c7e8c6",
+      "producer.py": "9ecb0af288294058e439049711e651d995dee8070358d5063beab98edeaa46e4",
+      "local_expansion.py": "0a85ad7a293c0d89302d44d8b31e25cc994ae880e95d8dd67ab031411543b17c",
+      "evaluation.py": "068cca009db7dbad33d54cfde7c5ac12e9a0d2fac445d849c9fc0b73e91d2f8c"
+    }
+  },
+  "execution_shape": {
+    "cluster_count": 8,
+    "arms_per_cluster": 5,
+    "sequence_count": 40,
+    "frames_per_sequence": 602,
+    "pairs_per_sequence": 601,
+    "workers": 4,
+    "response_root_creation": "exclusive creation only after independent geometry PASS and successor activation",
+    "replacement_retry_or_reseed": false
+  },
+  "memory_gate": {
+    "launch_and_refill_available_ram_bytes": 6442450944,
+    "scheduler_heartbeat_available_ram_bytes": 6442450944,
+    "exactly_6_gib_passes": true,
+    "in_flight_emergency_runtime_floor_bytes": 4294967296,
+    "sustained_paging_stop": true,
+    "interpretation_after_memory_stop": false
+  },
+  "geometry_materialization": {
+    "background": "nine deterministic non-planar fronto-parallel rectangle meshes behind the target plus a far fill plane; no other moving object",
+    "target_object_id": 1001,
+    "target_mesh": "fronto-parallel rectangle mesh with two triangles and fixed material coordinates",
+    "target_initial_center_world_m": [0.2, 0.1, 6.0],
+    "target_size_m": [1.2, 1.6],
+    "target_z_at_frame_i": "6.0-2.0*(0.5-0.5*cos(pi*i/601)), i=0..601",
+    "render_input_identity": "cluster seed, background mesh, target mesh at frame, camera world_from_camera pose, intrinsic and CLEAN operator",
+    "persistent_audit_points": "fixed 5x5 target material grid excluding rectangle boundary, audited for all 602 frames in every arm",
+    "pre_response_gate": "independent control-only geometry receipt must PASS before any response directory exists"
+  },
+  "full_scene_pair_reduction": {
+    "candidate": "the final unchanged R3 rotation-compensated track collection after unchanged support-manager splicing",
+    "geometry_filter": "same source material point is finite, bilinear-safe, same object and z-buffer-visible at current actual endpoint; baseline and oracle use the exact intersection",
+    "cell_membership": "fixed by previous/source point in unchanged 3x3 grid",
+    "per_channel_fit": "independent unchanged R3 local affine refit with unchanged minimum 12 tracks, hull, condition and residual rules",
+    "pair_evaluable": "unchanged R3 pair is evaluable and at least 5 of 9 cells are jointly evaluable after the geometry-valid paired refits",
+    "signed_pair_value": "median of signed expansion over jointly evaluable cells",
+    "absolute_pair_value": "median of abs(cell expansion) over jointly evaluable cells; never abs(median(cell expansion))"
+  },
+  "target_mask_pair_reduction": {
+    "admission": "source object_id=1001 and the identical source-known target material point is visible as object_id=1001 at its actual current endpoint",
+    "support": "baseline and oracle use the identical target-track intersection; background tracks and cells are forbidden",
+    "cell_membership": "fixed by previous/source target point in the unchanged 3x3 grid",
+    "per_channel_fit": "independent unchanged local affine fit with the same minimum 12 tracks and all unchanged fit parameters",
+    "pair_evaluable": "the corresponding full-scene pair is evaluable and at least 1 target-supported cell is jointly evaluable in baseline and oracle",
+    "signed_pair_value": "median of signed expansion over the jointly evaluable target-supported cells",
+    "absolute_pair_value": "median of abs(cell expansion) over the jointly evaluable target-supported cells",
+    "minimum_target_common_cells": 1,
+    "reason_for_separate_cell_count": "the frozen target occupies only a bounded subset of the full 3x3 grid; this is a mask reduction, not a change to R3 full-scene evaluability"
+  },
+  "sequence_reduction": {
+    "quantile": "Hyndman-Fan type 7",
+    "signed_p50_p90": "type-7 over evaluable signed pair values",
+    "absolute_p50_p90": "type-7 over evaluable absolute pair values",
+    "coverage_numerator": "paired evaluable pairs for the arm and required channel",
+    "coverage_denominator": 601,
+    "minimum_coverage_fraction": 0.75,
+    "iid_unit": "cluster only",
+    "pair_cell_track_pooling_across_clusters": false
+  },
+  "arm_roles": {
+    "STATIC_SCENE": "required coverage and reported negative-control diagnostic; no additional routing threshold",
+    "EGO_ROTATION_STATIC_SCENE": "required coverage and must-pass rotation boundary",
+    "EGO_TRANSLATION_STATIC_SCENE": "required coverage and translation signed plus absolute estimands",
+    "OBJECT_APPROACH_STATIC_CAMERA": "required target-mask coverage and positive-control retention",
+    "OBJECT_APPROACH_PLUS_EGO_6DOF": "required target-mask coverage and positive-control retention"
+  },
+  "trigger": {
+    "operator": "strict_greater_than",
+    "threshold_per_s": 0.01,
+    "consecutive_pairs": 3,
+    "abstention_resets_streak": true,
+    "density_denominator": 601
+  },
+  "routing_precedence": [
+    "Any geometry, identity, binding, firewall, schema, required coverage, local-fit or rotation-boundary failure => B_ORACLE_NOT_EVALUABLE",
+    "Otherwise either positive-control arm passes fewer than 6 of 8 clusters, or signed suppression is positive in fewer than 4 of 8 clusters => STOP_OR_DOWNGRADE_RCLE",
+    "Otherwise both positive controls pass and signed suppression is positive in at least 4 of 8, but any GO condition misses => FREEZE_AS_CONDITIONAL_RESIDUAL_FEATURE",
+    "Otherwise signed suppression is positive in at least 6 of 8, its cluster median is strictly positive, absolute suppression is at least 0.5 in at least 6 of 8, and both positive arms pass at least 6 of 8 => GO_SINGLE_TARGETED_UPGRADE"
+  ],
+  "positive_control_boundary": {
+    "baseline_signed_p90_strictly_above_per_s": 0.01,
+    "oracle_signed_p90_strictly_above_per_s": 0.01,
+    "retention_ratio_minimum_inclusive": 0.8,
+    "baseline_at_or_below_0_01": "evaluable scientific nonpass with null ratio; not missingness"
+  },
+  "firewall": {
+    "r3_modified": false,
+    "threshold_or_three_pair_or_pairstate_or_abstention_modified": false,
+    "formal_480_plus_16_paths_may_be_read": false,
+    "feature_contract_c_or_fusion_d_entry": false,
+    "automatic_upgrade_execution": false
+  },
+  "terminal": "EXECUTABLE_SPEC_FROZEN / RESPONSE_NOT_ACCESSED"
+}
