@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`current / PHASE_MINUS1_ADMISSION / PROPOSAL_ONLY / EXECUTION_NOT_AUTHORIZED`
+状态：`current / F-1A_COMPLETE / HOLD_DATA / EXECUTION_NOT_AUTHORIZED`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -9,12 +9,12 @@
 BlindAssist 当前论文系统路线切换为“先准入、后实现”的神经—几何双环候选：
 
 ```text
-DATA_STATUS: NOT_RUN
+DATA_STATUS: HOLD_DATA
 TIMING_STATUS: NOT_RUN
 SCIENCE_STATUS: NOT_RUN
 RUNTIME_STATUS: NOT_RUN
 ROUTE_CONTRACT_STATUS: DESIGN_FROZEN
-DATA_PROTOCOL_STATUS: NOT_RUN
+DATA_PROTOCOL_STATUS: VALID
 TIMING_PROTOCOL_STATUS: NOT_RUN
 SCIENCE_PROTOCOL_STATUS: NOT_RUN
 RUNTIME_PROTOCOL_STATUS: NOT_RUN
@@ -35,6 +35,12 @@ F-1C 指定手机是否承载得住
   ↓
 才决定是否实现正式双环
 ```
+
+2026-07-30 的
+[DUAL_LOOP_DATA_READINESS_R0](DUAL_LOOP_DATA_READINESS_R0_2026-07-30.md)
+已按 `F-1A_DATA_AUDIT_ONLY` 完成，终点为 `HOLD_DATA`。现有 RGB 数量并非主要短板；
+严格合规的事件/负窗真值、版本一致性、区域/时间区间与角色隔离不足。F-1B0 不具备
+申请资格，也没有自动后继。
 
 详细输入、状态、判定和停止门以
 [双环阶段−1准入合同 R0](BLINDASSIST_DUAL_LOOP_PHASE_MINUS1_ADMISSION_CONTRACT_R0_2026-07-30.md)
@@ -88,7 +94,7 @@ F-1C 指定手机是否承载得住
 | 能力 | authority |
 | --- | --- |
 | 编写和维护阶段−1准入合同 | `AUTHORIZED` |
-| F-1A 数据审计 | `NOT_AUTHORIZED` |
+| F-1A 数据审计 | `COMPLETED / HOLD_DATA` |
 | F-1B0 双源时间基线补测 | `NOT_AUTHORIZED` |
 | F-1B 离线几何增量评价 | `NOT_AUTHORIZED` |
 | F-1C 手机双环 A/B | `NOT_AUTHORIZED` |
@@ -100,5 +106,6 @@ F-1C 指定手机是否承载得住
 
 ## 下一步
 
-下一项可单独授权的动作只有 `F-1A_DATA_AUDIT_ONLY`。在用户明确授权前，不读取候选
-输出、不补标、不采集、不运行设备实验，也不修改 Android 正式链。
+当前没有自动下一步。只有用户另行授权时，才可考虑结果中固定输入宇宙的一次
+`F-1A_EXISTING_RGB_LABEL_REPAIR_ONLY`；此前不得读取候选输出、补标、采集、运行设备
+实验或修改 Android 正式链。`F-1B0` 仍关闭。
