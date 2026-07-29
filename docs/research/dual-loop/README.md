@@ -1,25 +1,25 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`current / F-1A_COMPLETE / HOLD_DATA / EXECUTION_NOT_AUTHORIZED`
+状态：`closed / F-1B_COMPLETE / NO_INCREMENT / MAINLINE_STOPPED`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
 ## 当前决定
 
-BlindAssist 当前论文系统路线切换为“先准入、后实现”的神经—几何双环候选：
+BlindAssist 已按“先准入、后实现”顺序走完神经—几何双环阶段−1，并在科学生死门停止：
 
 ```text
-DATA_STATUS: HOLD_DATA
-TIMING_STATUS: NOT_RUN
-SCIENCE_STATUS: NOT_RUN
+DATA_STATUS: READY
+TIMING_STATUS: READY
+SCIENCE_STATUS: NO_INCREMENT
 RUNTIME_STATUS: NOT_RUN
-ROUTE_CONTRACT_STATUS: DESIGN_FROZEN
+ROUTE_CONTRACT_STATUS: MAINLINE_STOPPED
 DATA_PROTOCOL_STATUS: VALID
-TIMING_PROTOCOL_STATUS: NOT_RUN
-SCIENCE_PROTOCOL_STATUS: NOT_RUN
+TIMING_PROTOCOL_STATUS: VALID
+SCIENCE_PROTOCOL_STATUS: VALID
 RUNTIME_PROTOCOL_STATUS: NOT_RUN
 EXECUTION_AUTHORITY: NONE
-CLAIM_CEILING: THESIS_ROUTE_PROPOSAL_ONLY
+CLAIM_CEILING: DEVELOPMENT_ROUTE_REJECTION_ONLY
 ```
 
 顺序固定为：
@@ -36,15 +36,35 @@ F-1C 指定手机是否承载得住
 才决定是否实现正式双环
 ```
 
-2026-07-30 的
+2026-07-30 的初始
 [DUAL_LOOP_DATA_READINESS_R0](DUAL_LOOP_DATA_READINESS_R0_2026-07-30.md)
-已按 `F-1A_DATA_AUDIT_ONLY` 完成，终点为 `HOLD_DATA`。现有 RGB 数量并非主要短板；
-严格合规的事件/负窗真值、版本一致性、区域/时间区间与角色隔离不足。F-1B0 不具备
-申请资格，也没有自动后继。
+终点为 `HOLD_DATA`。经用户授权的固定既有 RGB 标签修复 R0 保持一次性终点不变；
+独立后继 R1 只补缺失负类，最终达到
+[F-1A `READY / VALID`](DUAL_LOOP_F1A_NEGATIVE_CATEGORY_SUPPLEMENT_R1_RESULT_2026-07-30.md)。
+
+随后 [F-1B0 真机时序基线](DUAL_LOOP_F1B0_TIMING_BASELINE_R0_RESULT_2026-07-30.md)
+在 `SM-S9280 / SM8650` 上形成生产 QNN 与隔离 Sparse LK 的完整
+capture→available→consume 因果账本，终点为 `READY / VALID`。
+
+F-1B 在 decision 候选输出仍为零访问时，对 hash-bound 的现有几何接口与生产提醒
+状态机完成结构可达性检查。现有 Sparse LK 五通道只有全局中心走廊残差和质量，没有
+目标身份、LEFT/CENTER/RIGHT 区域、接近方向、径向扩张或 TTC。在不伪造这些语义的
+最薄融合下：
+
+- 中心 `NEAR/CRITICAL` 在 A 分支已是 `HIGH`，一帧立即确认；
+- 唯一有两帧确认延迟的可提醒分支是侧向 `NEAR/MEDIUM`，但全局中心走廊几何不能归因
+  到 LEFT/RIGHT，必须 abstain；
+- `MID/FAR/NO_CANDIDATE` 不得由残差升级距离、风险或创建提醒；
+- 几何不得绕过既有 cooldown、fatigue 或实际交付语义。
+
+因此 B 相对 A 的 `PAIRED_FIRST_DELIVERABLE_ALERT_LEAD` 理论上界为 `0 frame`。
+[F-1B 结果](DUAL_LOOP_F1B_STRUCTURAL_REACHABILITY_PROTOCOL_REPAIR_R2_RESULT_2026-07-30.md) 为
+`NO_INCREMENT / VALID`，按冻结合同停止论文双环主张，不消费 decision 集，也不进入
+F-1C。
 
 详细输入、状态、判定和停止门以
 [双环阶段−1准入合同 R0](BLINDASSIST_DUAL_LOOP_PHASE_MINUS1_ADMISSION_CONTRACT_R0_2026-07-30.md)
-为准。合同已经进入项目主线，但**合同存在不等于任何实验已获授权**。
+为准。本轮执行来自用户连续推进授权；合同本身仍不构成未来新实验权限。
 
 ## 研究候选
 
@@ -75,7 +95,7 @@ F-1C 指定手机是否承载得住
 
 ## 当前证据边界
 
-已有仓库证据只说明候选具有继续做准入检查的基础：
+本轮最终证据边界如下：
 
 - 正式 CameraX 把 ImageAnalysis 配置为 `640×480 / KEEP_ONLY_LATEST`，Preview 请求
   `24 FPS`；该请求不等于真实 analysis 或结果频率。
@@ -85,20 +105,23 @@ F-1C 指定手机是否承载得住
   结果拒绝，但不包含视觉算法、风险或提醒语义。
 - 旧 CPU-era Sparse LK 回放与真机 shadow 结果相互提示：并发形态可能可承载，但真实
   CameraX 组合路径曾超过旧 `70 ms` 门，且没有 matched live YOLO-only 因果对照。
-- 当前没有足以证明双环事件增量的独立事件级结果。
+- 当前不仅没有双环事件增量证据；在既有五通道 Sparse LK 与不改变提醒语义的约束下，
+  还不存在能改变实际可交付提醒的合法作用路径。
 
-因此当前只允许把这些内容写成 `OBSERVED / CANDIDATE / HOLD`，不得写成双环已经有效。
+因此当前只允许写成 `DEVELOPMENT_ROUTE_REJECTED / NO_INCREMENT`。不得写成双环有效、
+早提醒已实现、运行时可行、产品改善或安全结论。
 
 ## 当前权限
 
 | 能力 | authority |
 | --- | --- |
 | 编写和维护阶段−1准入合同 | `AUTHORIZED` |
-| F-1A 数据审计 | `COMPLETED / HOLD_DATA` |
-| F-1B0 双源时间基线补测 | `NOT_AUTHORIZED` |
-| F-1B 离线几何增量评价 | `NOT_AUTHORIZED` |
-| F-1C 手机双环 A/B | `NOT_AUTHORIZED` |
-| 一次有限修复 | `NOT_AUTHORIZED / CONDITIONAL_ONLY` |
+| F-1A 数据审计与既有 RGB 标签修复 | `COMPLETED / READY / VALID` |
+| F-1B0 双源时间基线补测 | `COMPLETED / READY / VALID` |
+| F-1B 几何增量评价 | `COMPLETED / NO_INCREMENT / VALID` |
+| F-1B decision 输出执行 | `NOT_RUN / NOT_NEEDED / SEALED` |
+| F-1C 手机双环 A/B | `STOPPED_BY_F-1B / NOT_AUTHORIZED` |
+| 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
 | 正式融合器或生产 CameraX 接线 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、分割、ARCore | `NOT_AUTHORIZED` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
@@ -106,6 +129,7 @@ F-1C 指定手机是否承载得住
 
 ## 下一步
 
-当前没有自动下一步。只有用户另行授权时，才可考虑结果中固定输入宇宙的一次
-`F-1A_EXISTING_RGB_LABEL_REPAIR_ONLY`；此前不得读取候选输出、补标、采集、运行设备
-实验或修改 Android 正式链。`F-1B0` 仍关闭。
+当前双环主线已经到达合同规定终点，没有自动下一步。增加数据、调 residual 阈值或
+优化调度都不能补回现有接口缺失的目标、区域和接近语义。若未来重新提出双环，只能
+先作为新路线冻结一个确实输出可归因区域级接近证据的几何源与全新确认合同；不得复用
+本轮 sealed decision 集回调规则，也不得把本轮真机 timing-only 凭据改写成效果证据。

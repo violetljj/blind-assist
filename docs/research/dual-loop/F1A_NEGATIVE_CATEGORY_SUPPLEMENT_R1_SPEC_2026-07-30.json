@@ -1,0 +1,79 @@
+{
+  "schema": "blindassist_dual_loop_f1a_negative_category_supplement_spec_v1",
+  "protocol_id": "F-1A_NEGATIVE_CATEGORY_SUPPLEMENT_R1",
+  "stage": "DEVELOPMENT_DATA_SUPPLEMENT",
+  "authority": "EXISTING_RGB_NEGATIVE_CATEGORY_LABEL_ONLY",
+  "created_at": "2026-07-30T05:20:00+08:00",
+  "contract": {
+    "path": "docs/research/dual-loop/BLINDASSIST_DUAL_LOOP_PHASE_MINUS1_ADMISSION_CONTRACT_R0_2026-07-30.md",
+    "sha256": "e63f291acbaec72d9864e0f092bdae9ae5f7c21321f1ebb3cac13f9048b89d11"
+  },
+  "predecessor_result": {
+    "path": "artifacts.local/evidence/dual-loop/f1a-existing-rgb-label-repair-r0/validation.json",
+    "sha256": "bd9dd02880a5cbff5cc7693bb7f1c9b6d3d2090d8639053cd980829159a8f12e",
+    "terminal": "HOLD_DATA",
+    "frozen_gap": "Only three negative categories have at least two accepted natural windows; STATIC_SCENE has one and LOW_TEXTURE_BLUR_OR_OCCLUSION has zero."
+  },
+  "candidate_output_visibility": false,
+  "candidate_outputs_forbidden": [
+    "YOLO",
+    "Sparse LK",
+    "RCLE",
+    "risk score",
+    "alert",
+    "dual-loop candidate output",
+    "prior USTRF feature or route output"
+  ],
+  "fixed_input_universe": [
+    {
+      "input_id": "ulm_walk_2020_negative_supplement",
+      "role": "DEVELOPMENT_SUPPLEMENT",
+      "kind": "video",
+      "source_id": "wikimedia_commons_poptravel_ulm_germany",
+      "session_id": "commons_ulm_walk_2020_full",
+      "parent_capture_id": "commons_ulm_walk_2020_full",
+      "video_path": "artifacts.local/evidence/public-video-r752-negative-source-search-20260719/commons_ulm_240p.webm",
+      "video_sha256": "67efb35b1e0bbb15bc5be1b5289ec02b1d88a3a8a895a51e16b6de5ac49caa48",
+      "expected_duration_seconds": 2176.974,
+      "review_sample_period_seconds": 5.0,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Walking_in_ULM_-_Germany_-_4K_60fps_(UHD).webm",
+      "license": "CC BY 3.0",
+      "outcome_access_state_before_repair": "OUTPUT_INSPECTED_PRIOR_UNRELATED_USTRF_DEVELOPMENT_ONLY",
+      "candidate_outputs_executed": true
+    }
+  ],
+  "label_contract": {
+    "positive_event_types": [
+      "CAMERA_APPROACH_STATIC_OBSTACLE",
+      "DYNAMIC_TARGET_APPROACH"
+    ],
+    "negative_window_types": [
+      "STATIC_SCENE",
+      "LOW_TEXTURE_BLUR_OR_OCCLUSION"
+    ],
+    "regions": [
+      "LEFT",
+      "CENTER",
+      "RIGHT"
+    ],
+    "minimum_natural_negative_window_seconds": 2.0,
+    "negative_window_separation_rule": "A new window requires a distinct behavior episode or at least one second outside both windows; adjacent fragments of one behavior count once.",
+    "scope_rule": "Label only unambiguous should_alert=false STATIC_SCENE or LOW_TEXTURE_BLUR_OR_OCCLUSION windows. Do not add positives or any already-satisfied negative category.",
+    "truth_provenance": "two fresh isolated AI visual reviews with fresh-context adjudication only for disagreements",
+    "abstention_policy": "quarantine affected item; do not impute or lower the gate"
+  },
+  "supplement_gate": {
+    "accepted_new_negative_windows_min": 1,
+    "combined_negative_categories_with_two_windows_min": 4,
+    "preserve_r0_ledger_unchanged": true,
+    "development_only": true
+  },
+  "terminal_rule": {
+    "pass": "READY",
+    "insufficient_labels": "HOLD_DATA",
+    "identity_or_protocol_failure": "INVALID",
+    "r0_terminal_is_immutable": true,
+    "no_relabel_or_recovery_of_r0_quarantines": true
+  },
+  "review_prompt": "Inspect only the frozen Ulm RGB review bundle. Do not use or infer from YOLO, Sparse LK, RCLE, prior USTRF outputs, risk, alert, or dual-loop candidate outputs. Review the complete sampled timeline, then inspect denser source RGB frames around every proposed boundary. Label only natural, non-overlapping, should_alert=false windows of exactly STATIC_SCENE or LOW_TEXTURE_BLUR_OR_OCCLUSION. STATIC_SCENE requires a genuine camera hold with no approach or collision-path target. LOW_TEXTURE_BLUR_OR_OCCLUSION requires a naturally occurring low-information, blurred, or substantially occluded interval where no alertable hazard is visible; do not manufacture blur and do not count ordinary gait shake. Each window must last at least 2.0 seconds. Do not add positives or any other negative category. Quarantine ambiguous, censored, montage, or overlapping windows. Return all qualifying items, all quarantines, full-timeline coverage, reviewer/model identity, independent-context statement, input and prompt SHA-256, confidence, and abstention."
+}

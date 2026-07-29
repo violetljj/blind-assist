@@ -1,0 +1,75 @@
+{
+  "schema": "blindassist_dual_loop_f1b_structural_reachability_protocol_repair_spec_v2",
+  "protocol_id": "F-1B_STRUCTURAL_REACHABILITY_PROTOCOL_REPAIR_R2",
+  "stage": "F-1B_SCIENCE_PROTOCOL_ONLY_REPAIR",
+  "authority": "CONTINUOUS_DUAL_LOOP_MAINLINE_USER_AUTHORIZATION",
+  "created_at": "2026-07-30T08:55:00+08:00",
+  "repair_scope": "Correct side-near temporal state and prove internal transition equality by making confirmation substitution reachable only for planner-eligible pairs. Do not execute or inspect decision candidate outputs.",
+  "predecessor": {
+    "spec_path": "docs/research/dual-loop/F1B_STRUCTURAL_REACHABILITY_PROTOCOL_REPAIR_R1_SPEC_2026-07-30.json",
+    "spec_sha256": "d30af4f73882675555c895347f4e8493313433a4b212d342548dc64a7a1c6b68",
+    "validation_path": "artifacts.local/evidence/dual-loop/f1b-structural-reachability-protocol-repair-r1/validation.json",
+    "validation_sha256": "607534f6a1ead5d25eaa5f12621b6ac76bc95a9b4264963af7f9d859d17fae1f",
+    "scientific_calculation_status": "UNCHANGED_PENDING_RECALCULATION",
+    "protocol_status": "INVALID",
+    "defects": [
+      "R1 modeled temporal side NEAR/MEDIUM as HIGH even though ConservativeRiskFusionPolicy caps side HIGH back to MEDIUM.",
+      "R1 did not count a confirmation substitution on non-planner-eligible CENTER/MID/MEDIUM as an internal state transition, so its history induction was incomplete."
+    ]
+  },
+  "inherited_bindings": {
+    "contract_prerequisites_and_13_implementation_identities": "EXACTLY_INHERITED_FROM_HASH_BOUND_R1_SPEC",
+    "decision_output_declaration": "EXACTLY_INHERITED_FROM_HASH_BOUND_R1_SPEC",
+    "geometry_information_semantics": "EXACTLY_INHERITED_FROM_HASH_BOUND_R1_SPEC",
+    "production_semantics_except_repaired_side_temporal_state": "EXACTLY_INHERITED_FROM_HASH_BOUND_R1_SPEC",
+    "admissible_fusion_except_repaired_action_precondition": "EXACTLY_INHERITED_FROM_HASH_BOUND_R1_SPEC"
+  },
+  "repairs": {
+    "side_near_temporal_level": "MEDIUM",
+    "confirmation_substitution_requires_planner_eligible_pair": true,
+    "fusion_action_reachability_definition": [
+      "candidate_present",
+      "level_is_MEDIUM",
+      "confirmation_frames_gt_1",
+      "geometry_attributable_to_same_region",
+      "planner_pair_is_alertable"
+    ],
+    "per_step_transition_equal_definition": "No fusion action, alert suppression, missing-candidate hold, source/label/direction/proximity/level change, downstream-gate bypass, cooldown/fatigue bypass, or effect-acceptance change is reachable in any fresh state.",
+    "history_induction_definition": "Identical initial state plus identical internal and delivered transition at every step implies identical temporal, stabilizer, side-person, event, hold, cooldown, fatigue and effect-delivery history."
+  },
+  "required_fresh_state_ids": [
+    "NO_CANDIDATE",
+    "FAR_NONE_CENTER",
+    "FAR_NONE_LEFT",
+    "FAR_NONE_RIGHT",
+    "FAR_LOW_TEMPORAL_CENTER",
+    "FAR_LOW_TEMPORAL_LEFT",
+    "FAR_LOW_TEMPORAL_RIGHT",
+    "MID_LOW_CENTER",
+    "MID_LOW_LEFT",
+    "MID_LOW_RIGHT",
+    "MID_MEDIUM_TEMPORAL_CENTER",
+    "MID_MEDIUM_TEMPORAL_LEFT",
+    "MID_MEDIUM_TEMPORAL_RIGHT",
+    "NEAR_HIGH_CENTER",
+    "NEAR_MEDIUM_LEFT",
+    "NEAR_MEDIUM_RIGHT",
+    "NEAR_MEDIUM_TEMPORAL_LEFT",
+    "NEAR_MEDIUM_TEMPORAL_RIGHT",
+    "CRITICAL_HIGH_CENTER"
+  ],
+  "required_endpoint_proofs": [
+    "EARLY_RESPONSE",
+    "RISK_DISCRIMINATION",
+    "RISK_CONTINUITY",
+    "MULTIPLE_INCREMENT"
+  ],
+  "terminal_rule": {
+    "no_internal_or_delivered_transition_and_history_equivalent": "NO_INCREMENT",
+    "any_reachable_internal_or_delivered_difference": "REQUIRES_EMPIRICAL_AB",
+    "identity_or_semantic_drift": "INVALID",
+    "f1c_authorized_on_no_increment": false,
+    "paper_claim_stops_on_no_increment": true
+  },
+  "output_path": "artifacts.local/evidence/dual-loop/f1b-structural-reachability-protocol-repair-r2/validation.json"
+}

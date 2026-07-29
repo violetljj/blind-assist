@@ -1594,3 +1594,32 @@
   `0`、pair-core call `0`、outcome analysis `false`；未调 strength、换 seed、
   修改 R3/阈值/三-pair，也未访问 sequence16、Android 或 realtime。
 - 详细证据见 [P4 formal result](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_P4_FORMAL_RESULT_2026-07-29.md)。
+
+## 2026-07-30：神经—几何双环 F-1A 至 F-1B 主线终结
+
+- 执行者：violjjet
+- 按用户 `F-1A_EXISTING_RGB_LABEL_REPAIR_ONLY` 与后续连续推进授权，固定既有 RGB
+  修复 R0 保持 `HOLD_DATA` 不变；独立 R1 只从 development-only Ulm 既有 RGB
+  补入 1 个双复核一致的静态负窗，合并账本达到 `17 positive / 20 negative /
+  4 categories >=2 / 4 sessions`，F-1A 为 `READY / VALID`。两条单方低纹理候选经
+  第三复核全部隔离，未降低门或回收 R0 项。
+- F-1B0 在 `SM-S9280 / SM8650` 上补做 baseline-only 因果时序：24 条生产 QNN
+  (`qualcomm_qnn_htp`) 与 24 条隔离 Sparse LK 记录均具完整 publish/available/consume
+  顺序、同一 `ANDROID_ELAPSED_REALTIME_NANOS` 时钟与零未来读取。语义 available-age
+  P50/P95 `86.017/107.773 ms`，几何 `9.397/11.309 ms`；终态 `READY / VALID`，
+  未访问风险或提醒效果。
+- F-1B 在 decision 候选输出零消费时完成现有 Sparse LK 与生产提醒状态机的结构可达性
+  审计。R0 validator 因相信自报 truth-table boolean、漏绑下游状态和未证明 secondary
+  endpoint，被独立复核判 `INVALID`；R0 凭据原样保留。
+- protocol-only R1 虽绑定 13 个实现 identity，但独立复核发现侧向 temporal NEAR
+  被错列为 HIGH，且非 planner-eligible CENTER/MID confirmation substitution 可能
+  改变 stabilizer history，因此同样 fail-closed 为 `INVALID`。最终 R2 正确保持侧向
+  `MEDIUM / 2-frame`，只允许 planner-eligible pair 触发确认替代，从规则派生 19 个
+  fresh states，并以历史归纳覆盖 temporal promotion、stabilizer hold、side-person
+  gate、event、cooldown、fatigue 与 effect acceptance。`fusion action reachable=0`，
+  `EARLY_RESPONSE / RISK_DISCRIMINATION / RISK_CONTINUITY / MULTIPLE_INCREMENT`
+  均零可达，首次实际提醒提前上界 `0 frame`；两条独立复核 PASS，终态
+  `NO_INCREMENT / VALID`。
+- 按冻结合同，双环论文主张在 F-1B 停止，F-1C、正式融合器、生产 CameraX 接线均未
+  运行且不授权。decision 非访问只作为协议声明，不伪装成机器可证明事实；当前 claim
+  ceiling 为 `DEVELOPMENT_ROUTE_REJECTION_ONLY`。

@@ -1,0 +1,183 @@
+{
+  "schema": "blindassist_dual_loop_f1b_structural_reachability_spec_v1",
+  "protocol_id": "F-1B_STRUCTURAL_REACHABILITY_R0",
+  "stage": "F-1B_SCIENCE_GATE",
+  "authority": "CONTINUOUS_DUAL_LOOP_MAINLINE_USER_AUTHORIZATION",
+  "created_at": "2026-07-30T07:45:00+08:00",
+  "contract": {
+    "path": "docs/research/dual-loop/BLINDASSIST_DUAL_LOOP_PHASE_MINUS1_ADMISSION_CONTRACT_R0_2026-07-30.md",
+    "sha256": "e63f291acbaec72d9864e0f092bdae9ae5f7c21321f1ebb3cac13f9048b89d11"
+  },
+  "prerequisites": [
+    {
+      "path": "artifacts.local/evidence/dual-loop/f1a-negative-category-supplement-r1/validation.json",
+      "sha256": "256121ee38c0390c1817993c81f52ceae11aea9c8fddf848ad1b5a3e18e822fe",
+      "required_terminal": "READY",
+      "required_protocol_status": "VALID"
+    },
+    {
+      "path": "artifacts.local/evidence/dual-loop/f1b0-timing-baseline-r0/validation.json",
+      "sha256": "6b0ebe06c8ba4c64027128c5a48b1f167d4cfd5662f72b9cf2401788ac75bd6d",
+      "required_terminal": "READY",
+      "required_protocol_status": "VALID"
+    }
+  ],
+  "implementation_identities": [
+    {
+      "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/SparseLkGeometryProbe.kt",
+      "sha256": "b88ac4f0805ac19e07fe2fed615048767ead7a45db7122a58991235bfff4044f"
+    },
+    {
+      "path": "core/assist/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt",
+      "sha256": "9fa3115620626835b1b108a3c3ac2de4aaab0b4a2f5cc1de9e1332347fbe3329"
+    },
+    {
+      "path": "core/assist/src/main/java/com/linnan/blindassist/risk/RiskStabilizer.kt",
+      "sha256": "fd4183a8656d6e334bee905daf3a129595a9d584262977cf8ec8cfb41f96398d"
+    },
+    {
+      "path": "core/assist/src/main/java/com/linnan/blindassist/feedback/FeedbackPlanner.kt",
+      "sha256": "80bc2ad84af09415c534c7e0ddfc5b3cc11e5110e483a8696c1df54656493a0e"
+    },
+    {
+      "path": "core/assist/src/main/java/com/linnan/blindassist/alert/AlertProfile.kt",
+      "sha256": "94818c5bd8a68edfbb5d5f8f751e116852edf9383bdf13a79dba4da4c48defb1"
+    },
+    {
+      "path": "core/assist/src/main/java/com/linnan/blindassist/session/AssistDecisionKernel.kt",
+      "sha256": "4d0c92e309072a812b32b590a53005c1e40ae00d7902441fa59cbf8c0205ad13"
+    },
+    {
+      "path": "core/device/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt",
+      "sha256": "5a6299bd20d364cb173e0ea693e1c4ceab4ff9637ed659f297aa0c52d9002ad7"
+    },
+    {
+      "path": "core/device/src/main/java/com/linnan/blindassist/feedback/FeedbackFatigueController.kt",
+      "sha256": "f9493ca6d34e9c73d02998e7898f6cdbe3e1a64d10c52669d88edac2078d2e57"
+    }
+  ],
+  "decision_output_access": {
+    "yolo_executed_on_decision_sessions": false,
+    "sparse_lk_executed_on_decision_sessions": false,
+    "ab_output_viewed_on_decision_sessions": false,
+    "decision_set_must_remain_unconsumed_if_structural_upper_bound_is_zero": true
+  },
+  "fixed_primary_endpoint": {
+    "name": "PAIRED_FIRST_DELIVERABLE_ALERT_LEAD",
+    "definition": "For positive events with a delivered alert in both branches, delta_i = first_delivered_alert_A - first_delivered_alert_B; positive values favor B.",
+    "minimum_meaningful_difference": "one observed source camera frame interval",
+    "positive_rule": "majority paired events delta_i > 0 and paired median reaches one observed source frame interval",
+    "guards": [
+      "critical miss count does not increase",
+      "event recall does not decrease",
+      "evaluable coverage does not decrease",
+      "positive direction occurs in both decision sessions",
+      "no single event contributes all positive direction",
+      "fixed negative-window false alerts per minute are noninferior",
+      "only actually deliverable alert receipts count"
+    ]
+  },
+  "frozen_semantics": {
+    "profile": "STANDARD",
+    "scenario": "GENERAL",
+    "geometry_vector_fields": [
+      "success",
+      "inlierRatio",
+      "validCorridorFraction",
+      "corridorResidual",
+      "lowerCorridorResidual"
+    ],
+    "geometry_has_target_identity": false,
+    "geometry_has_left_center_right_region": false,
+    "geometry_has_approach_direction": false,
+    "geometry_has_radial_expansion": false,
+    "geometry_has_ttc": false,
+    "only_defensible_geometry_region": "CENTER_CORRIDOR_GLOBAL",
+    "center_near_level": "HIGH",
+    "center_critical_level": "HIGH",
+    "side_near_level": "MEDIUM",
+    "mid_level": "LOW",
+    "far_level": "NONE",
+    "high_confirm_frames": 1,
+    "medium_confirm_frames": 2,
+    "planner_alertable_pairs": [
+      "CRITICAL_HIGH",
+      "NEAR_HIGH",
+      "NEAR_MEDIUM"
+    ],
+    "near_cooldown_ms": 1500,
+    "critical_cooldown_ms": 850
+  },
+  "maximally_thin_admissible_fusion": {
+    "semantic_candidate_required": true,
+    "semantic_candidate_must_be_current_and_fresh": true,
+    "may_change_label": false,
+    "may_change_direction": false,
+    "may_change_proximity": false,
+    "may_change_risk_level": false,
+    "may_create_alert_from_no_semantic_candidate": false,
+    "may_hold_missing_semantic_candidate": false,
+    "may_bypass_production_cooldown_or_fatigue": false,
+    "only_permitted_action": "substitute one MEDIUM temporal confirmation when geometry is causally available and attributable to the same region",
+    "region_attribution_rule": "CENTER only; LEFT and RIGHT abstain because the existing vector is global center-corridor evidence",
+    "abstention_falls_back_to_a": true
+  },
+  "structural_truth_table": [
+    {
+      "semantic_state": "NO_CANDIDATE",
+      "direction": "NONE",
+      "a_deliverable": false,
+      "b_permitted_difference": false,
+      "reason": "geometry may not create an alert"
+    },
+    {
+      "semantic_state": "FAR_NONE",
+      "direction": "ANY",
+      "a_deliverable": false,
+      "b_permitted_difference": false,
+      "reason": "fusion may not change proximity or risk level"
+    },
+    {
+      "semantic_state": "MID_LOW",
+      "direction": "ANY",
+      "a_deliverable": false,
+      "b_permitted_difference": false,
+      "reason": "default planner does not alert MID and fusion may not promote it"
+    },
+    {
+      "semantic_state": "NEAR_HIGH",
+      "direction": "CENTER",
+      "a_deliverable": true,
+      "a_confirmation_frames": 1,
+      "b_permitted_difference": false,
+      "reason": "A already confirms HIGH immediately"
+    },
+    {
+      "semantic_state": "CRITICAL_HIGH",
+      "direction": "CENTER",
+      "a_deliverable": true,
+      "a_confirmation_frames": 1,
+      "b_permitted_difference": false,
+      "reason": "A already confirms HIGH immediately"
+    },
+    {
+      "semantic_state": "NEAR_MEDIUM",
+      "direction": "LEFT_OR_RIGHT",
+      "a_deliverable": true,
+      "a_confirmation_frames": 2,
+      "b_permitted_difference": false,
+      "reason": "the only lagged alertable branch is outside the geometry region and must abstain"
+    }
+  ],
+  "dominance_stop_rule": {
+    "condition": "No truth-table row permits B to produce an earlier actually deliverable alert than A under the frozen admissible fusion.",
+    "lead_upper_bound_frames": 0,
+    "terminal": "NO_INCREMENT",
+    "science_protocol_status": "VALID",
+    "decision_execution_required": false,
+    "f1c_authorized": false,
+    "paper_claim_stops": true,
+    "no_threshold_or_data_search_can_repair_missing_information_semantics": true
+  },
+  "output_path": "artifacts.local/evidence/dual-loop/f1b-structural-reachability-r0/validation.json"
+}

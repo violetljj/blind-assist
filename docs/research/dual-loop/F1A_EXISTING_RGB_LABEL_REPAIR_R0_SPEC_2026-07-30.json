@@ -1,0 +1,118 @@
+{
+  "schema": "blindassist_dual_loop_f1a_existing_rgb_label_repair_spec_v1",
+  "protocol_id": "F-1A_EXISTING_RGB_LABEL_REPAIR_R0",
+  "stage": "DEVELOPMENT_DATA_REPAIR",
+  "authority": "EXISTING_RGB_LABEL_REPAIR_ONLY",
+  "created_at": "2026-07-30T03:35:00+08:00",
+  "contract": {
+    "path": "docs/research/dual-loop/BLINDASSIST_DUAL_LOOP_PHASE_MINUS1_ADMISSION_CONTRACT_R0_2026-07-30.md",
+    "sha256": "e63f291acbaec72d9864e0f092bdae9ae5f7c21321f1ebb3cac13f9048b89d11"
+  },
+  "predecessor_result": {
+    "path": "docs/research/dual-loop/DUAL_LOOP_DATA_READINESS_R0_2026-07-30.md",
+    "sha256": "858c113c76f13a09029b5cab5c5b31cd7e045f7fc56635e8459a59fd0297b6b4",
+    "terminal": "HOLD_DATA"
+  },
+  "candidate_output_visibility": false,
+  "candidate_outputs_forbidden": [
+    "YOLO",
+    "Sparse LK",
+    "RCLE",
+    "risk score",
+    "alert",
+    "dual-loop candidate output"
+  ],
+  "fixed_input_universe": [
+    {
+      "input_id": "crowdbot_0327_115118",
+      "role": "DECISION",
+      "kind": "frame_ledger",
+      "source_id": "crowdbot_0327_shared_control",
+      "session_id": "defaced_2021-03-27-11-51-18_filtered_lidar_odom",
+      "parent_capture_id": "defaced_2021-03-27-11-51-18_filtered_lidar_odom",
+      "frames_path": "artifacts.local/camera-source-prescreen-r1/dataset/crowdbot_0327_shared_control/sequences/defaced_2021-03-27-11-51-18_filtered_lidar_odom/frames.jsonl",
+      "frames_sha256": "5b99e32b4d2ccbb75089cf1b1796c2e1d0a29c3ca0164feb3844e051051cc748",
+      "bundle_path": "artifacts.local/camera-source-prescreen-r1/dataset/crowdbot_0327_shared_control/sequences/defaced_2021-03-27-11-51-18_filtered_lidar_odom/bundle.json",
+      "bundle_sha256": "a7bd2698b1eff1b85697f42d06cc2d585a86885d4d72b750b74f83df12035728",
+      "expected_frame_count": 2239,
+      "review_sample_period_seconds": 1.0,
+      "outcome_access_state_before_repair": "CONTENT_INSPECTED_FOR_F1A",
+      "candidate_outputs_executed": false
+    },
+    {
+      "input_id": "crowdbot_0327_115500",
+      "role": "DECISION",
+      "kind": "frame_ledger",
+      "source_id": "crowdbot_0327_shared_control",
+      "session_id": "defaced_2021-03-27-11-55-00_filtered_lidar_odom",
+      "parent_capture_id": "defaced_2021-03-27-11-55-00_filtered_lidar_odom",
+      "frames_path": "artifacts.local/camera-source-prescreen-r1/dataset/crowdbot_0327_shared_control/sequences/defaced_2021-03-27-11-55-00_filtered_lidar_odom/frames.jsonl",
+      "frames_sha256": "88115772b70e0498875925aa909302e5662e0e0edd614f64b68ce1c433a39073",
+      "bundle_path": "artifacts.local/camera-source-prescreen-r1/dataset/crowdbot_0327_shared_control/sequences/defaced_2021-03-27-11-55-00_filtered_lidar_odom/bundle.json",
+      "bundle_sha256": "fa3349edb8076384867682b05f3d4d08fae1a292dc369577c6b5f1182d5a63f0",
+      "expected_frame_count": 2183,
+      "review_sample_period_seconds": 1.0,
+      "outcome_access_state_before_repair": "CONTENT_INSPECTED_FOR_F1A",
+      "candidate_outputs_executed": false
+    },
+    {
+      "input_id": "matoaka_walk_2019",
+      "role": "DEVELOPMENT",
+      "kind": "video",
+      "source_id": "wikimedia_commons_matoaka_west_virginia_walk_2019",
+      "session_id": "commons_matoaka_walk_2019_full",
+      "parent_capture_id": "commons_matoaka_walk_2019_full",
+      "video_path": "artifacts.local/evidence/public-video-r724-prospective-20260719/source-videos/commons-matoaka-walk-480p.webm",
+      "video_sha256": "017f860e002c75d093206772800bd68cb1c19f226b74e4d5a933798916347821",
+      "expected_duration_seconds": 1072.456,
+      "review_sample_period_seconds": 5.0,
+      "source_page_url": "https://commons.wikimedia.org/wiki/File:Walking_in_Matoaka,_West_Virginia-h1YOHswXNqo.webm",
+      "license": "CC BY 3.0",
+      "outcome_access_state_before_repair": "TUNED_ON_PRIOR_PUBLIC_VIDEO_DEVELOPMENT_ONLY",
+      "candidate_outputs_executed": true
+    }
+  ],
+  "label_contract": {
+    "positive_event_types": [
+      "CAMERA_APPROACH_STATIC_OBSTACLE",
+      "DYNAMIC_TARGET_APPROACH"
+    ],
+    "negative_window_types": [
+      "TURN_OR_NEAR_IN_PLACE_ROTATION",
+      "NORMAL_WALKING_SHAKE",
+      "LATERAL_PASS_OR_RECEDING",
+      "STATIC_SCENE",
+      "LOW_TEXTURE_BLUR_OR_OCCLUSION"
+    ],
+    "regions": [
+      "LEFT",
+      "CENTER",
+      "RIGHT"
+    ],
+    "minimum_natural_negative_window_seconds": 2.0,
+    "negative_window_separation_rule": "A new window requires a distinct behavior episode or at least one second outside both windows; adjacent fragments of one behavior count once.",
+    "positive_interval_rule": "Record bounded onset, alertable-start, and end-or-clear intervals from RGB only; left- or right-censored events are quarantined.",
+    "region_rule": "Use the hazard center at the first alertable frame and fixed horizontal thirds.",
+    "truth_provenance": "two isolated AI visual reviews with fresh-context adjudication only for disagreements",
+    "abstention_policy": "quarantine affected item; do not impute or lower the gate"
+  },
+  "ready_gate": {
+    "independent_capture_sessions_min": 3,
+    "positive_events_min": 6,
+    "positive_sessions_min": 2,
+    "negative_windows_min": 12,
+    "negative_categories_min": 4,
+    "negative_windows_per_category_min": 2,
+    "development_sessions": 1,
+    "decision_sessions": 2,
+    "each_decision_session_requires_positive_and_negative": true
+  },
+  "terminal_rule": {
+    "pass": "READY",
+    "insufficient_labels": "HOLD_DATA",
+    "identity_or_protocol_failure": "INVALID",
+    "no_source_replacement_within_r0": true,
+    "no_transition_to_f1b0_on_hold_or_invalid": true
+  },
+  "review_prompt": "Inspect only the frozen RGB review bundle. Do not use or infer from YOLO, Sparse LK, RCLE, risk, alert, or dual-loop outputs. Review the complete sampled timeline for every input, then inspect denser source frames around every proposed boundary. Label only natural, non-overlapping events/windows. A positive event is either clear camera/user approach toward a static obstacle or a dynamic target approaching the camera on a plausible collision path. Record bounded onset_interval, alertable_start_interval, end_or_clear_interval, LEFT/CENTER/RIGHT at alertable start, event_type, and confidence. Quarantine left-censored, right-censored, ambiguous, or merely nearby motion. Negative windows must be should_alert=false and exactly one of TURN_OR_NEAR_IN_PLACE_ROTATION, NORMAL_WALKING_SHAKE, LATERAL_PASS_OR_RECEDING, STATIC_SCENE, LOW_TEXTURE_BLUR_OR_OCCLUSION. Each negative window must be a natural episode at least 2.0 seconds long; do not split one behavior to inflate counts. Return all qualifying items, all quarantines, full-timeline coverage, reviewer/model identity, independent-context statement, input and prompt SHA-256, confidence, and abstention."
+}
