@@ -36,10 +36,14 @@ development identities 上 `160/160`、全新 disjoint CAL 上 `32/32` 通过，
 
 后续默认算法研究顺序已另立为
 [RCLE 新算法研究推进路线 R0](RCLE_ALGORITHM_RESEARCH_ROADMAP_R0_2026-07-29.md)：
-先做 clean 四臂运动分量定位，再按门进入平移—深度 oracle、最小 RCLE 内生特征
-合同与独立标签数据上的融合增量价值。新路线不改写旧结果，也不自动消费、撤销或
-重定义任何既有 QMS formal authority；其实际权限仍由最新有效 lock 和 receipt
-决定。当前只允许 A 的合同、identity、静态验证与独立审查，不授权 Stage 1 执行。
+先做 clean 四臂运动分量定位，由 A 决定 B 的诊断重点；B 后必须在
+`go single-upgrade / freeze residual feature / stop-or-downgrade / not-evaluable`
+之间形成正式决定。只有前序证据购买复杂度时，才允许一个 base-vs-upgrade 候选；
+C 只冻结最终保留版本，D 仅在独立标签和 session/route 划分成立时进入。新路线不
+改写旧结果或既有 QMS 权限；当前是过程落地。并行启动的 A Stage 1 已在
+`0/4 clusters、0/16 sequences` 时停止，没有 run receipt 或 scientific result，
+终态为 `INCOMPLETE / NOT_INTERPRETABLE / HOLD`；既有 `480+16` 继续
+`HOLD / NOT_CONSUMED`。
 
 轻量 P3 R0 已完成 R3 transport equivalence、analysis implementation/mutation
 tests，以及固定 8 个 PREFLIGHT identities 的 guarded-host qualification。
@@ -271,9 +275,10 @@ implementation、runtime preflight 和正式序列仍未创建或运行。
 | degradation / flow-quality diagnostic R0 | `COMPLETE / HOLD_FLOW_QUALITY_GATE / VALID` |
 | temporal-structure diagnostic R1 | `COMPLETE / HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID` |
 | periodic self-motion counterfactual R2 | `P4: INTERVENTION_NOT_EVALUABLE / VALID / COMPLETE_PRE_R3_TERMINAL` |
-| 新 A–D 算法研究路线 | `ADOPTED / A_PREPARATION_ONLY` |
-| A Stage 1 / Stage 2 | `NOT_YET_AUTHORIZED / SEALED_NOT_EXECUTABLE` |
-| B / C / D | `DESIGN_ONLY / DEFERRED / DATA_DEPENDENT` |
+| 新算法关卡路线 | `ADOPTED / GATED_PROCESS / EXECUTION_HOLD` |
+| A Stage 1 / Stage 2 | `OPERATOR_STOPPED_ZERO_COMPLETE_INCOMPLETE_HOLD / SEALED_NOT_EXECUTABLE` |
+| B 后升级决策 | `MANDATORY / GO_OR_FREEZE_OR_STOP_OR_NOT_EVALUABLE` |
+| 单项升级 / C / D | `OPTIONAL_B_EVIDENCE_REQUIRED / CONDITIONAL_CLOSEOUT / OPTIONAL_DATA_DEPENDENT` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
 | 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |
@@ -289,17 +294,17 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 当前默认顺序为：
 
-1. 保留既有 QMS formal locks、identities 和 receipts，不因本路线自动执行、撤销或
-   改造成新路线的四臂样本；
-2. 完成 A 阶段 clean 四臂 `static / rotation-only / translation-only / full 6DoF`
-   的合同、全部 `16+16` identities、formal firewall、静态测试和独立 validator；
-3. A Stage 1 当前不运行；未来若单独授权，只运行首批 16 sequences，由独立 receipt
-   决定是否打开仍 sealed 的第二批 16；
-4. 只有 A 完整终态满足进入条件，才另立 B 的平移—深度 oracle 几何合同；C 只冻结
-   A/B 实测有用的 RCLE 内生字段；D 先过独立标签与 session/route/scene 划分门；
-5. 任一阶段 `HOLD / INCONCLUSIVE / NOT_EVALUABLE` 都是合法终态，不通过加 depth、
-   pose、YOLO、分类器或大接口体系救援；
-6. 不继续切 sequence13/14/15/17，sequence16 保持 `SEALED_UNSEEN`；不修改 R3、
-   `0.01/s`、三 pair 或 PairState，不先跑 CoTracker，不进入 Android。
+1. 本轮只落实关卡过程；A Stage 1 的并行启动已在零 cluster/sequence 完成时停止，
+   不形成结果且不授权恢复；既有 `480+16` 保持 `HOLD / NOT_CONSUMED`；
+2. 未来明确授权 A 后，先运行首批 16 sequences，由冻结 routing 决定是否打开
+   sealed 的第二批 16；A 结果分别导向 translation-depth、rotation-audit、
+   interaction 或 generator/implementation `HOLD`；
+3. B 完成后强制做一次 `go / freeze / stop / not-evaluable` 决策，不自动进入 C；
+4. 只有 `go` 才做一个由 B 购买的单项升级，并只比较原始 RCLE 与单项候选；没有
+   明确收益即丢弃，不继续叠加模块；
+5. `freeze` 或保留的单项候选才进入 C；`stop` 可以关闭 C/D；D 只有在最终合同冻结、
+   RCLE 边界明确且独立标签与 session/route 划分成立时才进入；
+6. 任一阶段 `HOLD / INCONCLUSIVE / NOT_EVALUABLE` 都是合法终态，不通过加 depth、
+   pose、YOLO、分类器或大接口体系救援；sequence16、Android 和产品权限保持关闭。
 
 当前不继续旧公开数据市场漫游，不自动创建 formal claim，不进入 Android。
