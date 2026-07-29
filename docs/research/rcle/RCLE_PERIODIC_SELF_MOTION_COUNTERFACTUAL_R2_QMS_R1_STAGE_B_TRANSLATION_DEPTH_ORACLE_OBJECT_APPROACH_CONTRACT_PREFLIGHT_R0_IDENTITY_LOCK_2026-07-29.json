@@ -1,0 +1,208 @@
+{
+  "schema": "rcle.periodic_self_motion_counterfactual.qms_r1.stage_b_translation_depth_oracle_identity_lock.v1",
+  "protocol_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2",
+  "task_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0",
+  "date": "2026-07-29",
+  "contract": {
+    "path": "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0_CONTRACT_2026-07-29.json",
+    "sha256": "0d93643ccf9cc102d82a31ac55e355905b333399b4ddf11a0e18413a867b9324"
+  },
+  "exclusion_authority": {
+    "path": "docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_CLEAN_MOTION_COMPONENT_LOCALIZATION_R0_IDENTITY_LOCK_2026-07-29.json",
+    "sha256": "88d32767a7aec86a7eaa933fc336ae62bbff9797e6b935f4f2ecd01111a2c0ce",
+    "coverage": "Stage A identities plus its frozen exclusion sources for formal, predecessor DEV, QMS-R1 DEV/CAL/PREFLIGHT and four-block DEV"
+  },
+  "derivation": {
+    "scene_token": "<task_id>|SCENE|<block>|<ordinal_two_digits>",
+    "object_token": "<task_id>|OBJECT|<block>|<ordinal_two_digits>|TARGET_1001",
+    "numeric_seed": "uint64_big_endian(first_8_bytes(SHA256(UTF8 scene_token)))",
+    "sequence_id": "<cluster_id>__<arm>__CLEAN",
+    "replacement_after_response": false
+  },
+  "counts": {
+    "blocks": 4,
+    "ordinals_per_block": 2,
+    "clusters": 8,
+    "target_identities": 8,
+    "arms_per_cluster": 5,
+    "sequences": 40,
+    "frames": 24080,
+    "pairs": 24040
+  },
+  "arms": [
+    "STATIC_SCENE",
+    "EGO_ROTATION_STATIC_SCENE",
+    "EGO_TRANSLATION_STATIC_SCENE",
+    "OBJECT_APPROACH_STATIC_CAMERA",
+    "OBJECT_APPROACH_PLUS_EGO_6DOF"
+  ],
+  "clusters": [
+    {
+      "block": "ADVIO_13",
+      "ordinal": 0,
+      "cluster_id": "B_TDO_OA_R0_ADVIO_13_S1",
+      "token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|SCENE|ADVIO_13|00",
+      "token_sha256": "65c140ff193c22a228badabee6dc037ceeb8b958c9b7956dd139ce3926b1bec1",
+      "numeric_seed_uint64": 7332213132720087714,
+      "source_periodic_pose_sha256": "ec6ac2dedf8a767755d0388aa2100287dbf245f1ea02016b003a7398441a60ae",
+      "target_object_id": 1001,
+      "object_token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|OBJECT|ADVIO_13|00|TARGET_1001",
+      "object_token_sha256": "58a36a3020cc70f1ec7e74f6786d8b13e7325f2c89449837c5ae1e74859444dc",
+      "sequence_ids": [
+        "B_TDO_OA_R0_ADVIO_13_S1__STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_13_S1__EGO_ROTATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_13_S1__EGO_TRANSLATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_13_S1__OBJECT_APPROACH_STATIC_CAMERA__CLEAN",
+        "B_TDO_OA_R0_ADVIO_13_S1__OBJECT_APPROACH_PLUS_EGO_6DOF__CLEAN"
+      ],
+      "state": "FROZEN_NOT_EXECUTABLE"
+    },
+    {
+      "block": "ADVIO_13",
+      "ordinal": 1,
+      "cluster_id": "B_TDO_OA_R0_ADVIO_13_S2",
+      "token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|SCENE|ADVIO_13|01",
+      "token_sha256": "df4e74c494e537e754793534631733e9d24ac013eb4d931751cab215789e5657",
+      "numeric_seed_uint64": 16090926906301822951,
+      "source_periodic_pose_sha256": "ec6ac2dedf8a767755d0388aa2100287dbf245f1ea02016b003a7398441a60ae",
+      "target_object_id": 1001,
+      "object_token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|OBJECT|ADVIO_13|01|TARGET_1001",
+      "object_token_sha256": "2daab30b381bdeebdc19ab18829caa411edcd9b92eeb8dd88ef7e718c795dd7e",
+      "sequence_ids": [
+        "B_TDO_OA_R0_ADVIO_13_S2__STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_13_S2__EGO_ROTATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_13_S2__EGO_TRANSLATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_13_S2__OBJECT_APPROACH_STATIC_CAMERA__CLEAN",
+        "B_TDO_OA_R0_ADVIO_13_S2__OBJECT_APPROACH_PLUS_EGO_6DOF__CLEAN"
+      ],
+      "state": "FROZEN_NOT_EXECUTABLE"
+    },
+    {
+      "block": "ADVIO_14",
+      "ordinal": 0,
+      "cluster_id": "B_TDO_OA_R0_ADVIO_14_S1",
+      "token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|SCENE|ADVIO_14|00",
+      "token_sha256": "5eaec6bf79a55855a050c452c47c120b0d03b691b2ce7fcc757a4ea1c80ea453",
+      "numeric_seed_uint64": 6822609011194812501,
+      "source_periodic_pose_sha256": "2f093d63b1dfb5b51f08be3dd01ab2ed3479a5d31f89cef564f5b297ddc7dadb",
+      "target_object_id": 1001,
+      "object_token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|OBJECT|ADVIO_14|00|TARGET_1001",
+      "object_token_sha256": "cbf281acce7b26f1fbe98ed94e30179737ef77f1fee78bf00978d185bdd0ed1a",
+      "sequence_ids": [
+        "B_TDO_OA_R0_ADVIO_14_S1__STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_14_S1__EGO_ROTATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_14_S1__EGO_TRANSLATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_14_S1__OBJECT_APPROACH_STATIC_CAMERA__CLEAN",
+        "B_TDO_OA_R0_ADVIO_14_S1__OBJECT_APPROACH_PLUS_EGO_6DOF__CLEAN"
+      ],
+      "state": "FROZEN_NOT_EXECUTABLE"
+    },
+    {
+      "block": "ADVIO_14",
+      "ordinal": 1,
+      "cluster_id": "B_TDO_OA_R0_ADVIO_14_S2",
+      "token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|SCENE|ADVIO_14|01",
+      "token_sha256": "3787634caa807297a393a9c8fdcc8b530bf3050ca6599ad8135a9075ef22f8b9",
+      "numeric_seed_uint64": 4001275974871184023,
+      "source_periodic_pose_sha256": "2f093d63b1dfb5b51f08be3dd01ab2ed3479a5d31f89cef564f5b297ddc7dadb",
+      "target_object_id": 1001,
+      "object_token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|OBJECT|ADVIO_14|01|TARGET_1001",
+      "object_token_sha256": "75026224ae4c4539a79311e241483fbaff6442dac66414fa253693d5694130e2",
+      "sequence_ids": [
+        "B_TDO_OA_R0_ADVIO_14_S2__STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_14_S2__EGO_ROTATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_14_S2__EGO_TRANSLATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_14_S2__OBJECT_APPROACH_STATIC_CAMERA__CLEAN",
+        "B_TDO_OA_R0_ADVIO_14_S2__OBJECT_APPROACH_PLUS_EGO_6DOF__CLEAN"
+      ],
+      "state": "FROZEN_NOT_EXECUTABLE"
+    },
+    {
+      "block": "ADVIO_15",
+      "ordinal": 0,
+      "cluster_id": "B_TDO_OA_R0_ADVIO_15_S1",
+      "token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|SCENE|ADVIO_15|00",
+      "token_sha256": "36f90ed56bb82db362684aff0088f0b8b5a06c8873c1ff606a9b4d83f07dd8b0",
+      "numeric_seed_uint64": 3961213657047117235,
+      "source_periodic_pose_sha256": "4f7e0f79303b91b2aa56a915a56cd8b23b4393d68b1314908b2ade5c5e2b90f1",
+      "target_object_id": 1001,
+      "object_token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|OBJECT|ADVIO_15|00|TARGET_1001",
+      "object_token_sha256": "3af4c003e9a22666e1d6021d1f6d04c2a3786143bf26bea24745bd299e14f62e",
+      "sequence_ids": [
+        "B_TDO_OA_R0_ADVIO_15_S1__STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_15_S1__EGO_ROTATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_15_S1__EGO_TRANSLATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_15_S1__OBJECT_APPROACH_STATIC_CAMERA__CLEAN",
+        "B_TDO_OA_R0_ADVIO_15_S1__OBJECT_APPROACH_PLUS_EGO_6DOF__CLEAN"
+      ],
+      "state": "FROZEN_NOT_EXECUTABLE"
+    },
+    {
+      "block": "ADVIO_15",
+      "ordinal": 1,
+      "cluster_id": "B_TDO_OA_R0_ADVIO_15_S2",
+      "token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|SCENE|ADVIO_15|01",
+      "token_sha256": "f7fbad22ddce652939a5ede565995fc63bd36c34388be27fe4a153c57b073b63",
+      "numeric_seed_uint64": 17869066311784359209,
+      "source_periodic_pose_sha256": "4f7e0f79303b91b2aa56a915a56cd8b23b4393d68b1314908b2ade5c5e2b90f1",
+      "target_object_id": 1001,
+      "object_token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|OBJECT|ADVIO_15|01|TARGET_1001",
+      "object_token_sha256": "329a1142edebc4a1b3ec0574bd72b5dca8c3df33ee0752ceb44fc70acccaf0bd",
+      "sequence_ids": [
+        "B_TDO_OA_R0_ADVIO_15_S2__STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_15_S2__EGO_ROTATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_15_S2__EGO_TRANSLATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_15_S2__OBJECT_APPROACH_STATIC_CAMERA__CLEAN",
+        "B_TDO_OA_R0_ADVIO_15_S2__OBJECT_APPROACH_PLUS_EGO_6DOF__CLEAN"
+      ],
+      "state": "FROZEN_NOT_EXECUTABLE"
+    },
+    {
+      "block": "ADVIO_17",
+      "ordinal": 0,
+      "cluster_id": "B_TDO_OA_R0_ADVIO_17_S1",
+      "token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|SCENE|ADVIO_17|00",
+      "token_sha256": "9254ab816a9617c55aa33c77c79b02a5c84340dfa4f48842e44865b7e4ec8003",
+      "numeric_seed_uint64": 10544241199908526021,
+      "source_periodic_pose_sha256": "a3b44d5c17d0899747b9cbd3ffb35e68d458d889f148f7c469a3d0e99140b7ac",
+      "target_object_id": 1001,
+      "object_token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|OBJECT|ADVIO_17|00|TARGET_1001",
+      "object_token_sha256": "ace5fdeaf05da5e50ac29a096f15bdbf46c7cfed5c8a9a57e6b3e621e02f6e38",
+      "sequence_ids": [
+        "B_TDO_OA_R0_ADVIO_17_S1__STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_17_S1__EGO_ROTATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_17_S1__EGO_TRANSLATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_17_S1__OBJECT_APPROACH_STATIC_CAMERA__CLEAN",
+        "B_TDO_OA_R0_ADVIO_17_S1__OBJECT_APPROACH_PLUS_EGO_6DOF__CLEAN"
+      ],
+      "state": "FROZEN_NOT_EXECUTABLE"
+    },
+    {
+      "block": "ADVIO_17",
+      "ordinal": 1,
+      "cluster_id": "B_TDO_OA_R0_ADVIO_17_S2",
+      "token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|SCENE|ADVIO_17|01",
+      "token_sha256": "fc614c2b885ab6e9adaba17c0f36742e0d42eaa149ae6cbc09915047dde6c555",
+      "numeric_seed_uint64": 18185900520153724649,
+      "source_periodic_pose_sha256": "a3b44d5c17d0899747b9cbd3ffb35e68d458d889f148f7c469a3d0e99140b7ac",
+      "target_object_id": 1001,
+      "object_token": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0|OBJECT|ADVIO_17|01|TARGET_1001",
+      "object_token_sha256": "282357d84b7accb28695baf7ff5bca408a2bae1adc724ebc2979abb9d75c8d99",
+      "sequence_ids": [
+        "B_TDO_OA_R0_ADVIO_17_S2__STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_17_S2__EGO_ROTATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_17_S2__EGO_TRANSLATION_STATIC_SCENE__CLEAN",
+        "B_TDO_OA_R0_ADVIO_17_S2__OBJECT_APPROACH_STATIC_CAMERA__CLEAN",
+        "B_TDO_OA_R0_ADVIO_17_S2__OBJECT_APPROACH_PLUS_EGO_6DOF__CLEAN"
+      ],
+      "state": "FROZEN_NOT_EXECUTABLE"
+    }
+  ],
+  "identity_set_sha256": "430e55c95f27ba294b19ce8ab629a21f2365ca67353422c8643286de2b60bfbe",
+  "scene_geometry_materialized": false,
+  "stage_b_response_read": false,
+  "stage_b_workload_run": false,
+  "formal_authority_consumed": false,
+  "execution_authorized": false,
+  "terminal": "STAGE_B_IDENTITIES_FROZEN / GEOMETRY_NOT_MATERIALIZED / NOT_EXECUTABLE"
+}

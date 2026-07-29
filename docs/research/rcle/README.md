@@ -1,6 +1,6 @@
 # RCLE 研究主线
 
-状态：`current / MOTION_COMPONENT_STAGE_A_COMPLETE_VALID / STAGE_B_CONTRACT_ONLY / SUCCESSOR_FORMAL_NOT_CONSUMED`
+状态：`current / MOTION_COMPONENT_STAGE_A_COMPLETE_VALID / STAGE_B_CONTRACT_PREFLIGHT_VALID / EXECUTION_NOT_ACTIVATED / SUCCESSOR_FORMAL_NOT_CONSUMED`
 
 最后核验：2026-07-29（Asia/Hong_Kong）
 
@@ -16,7 +16,8 @@ SCIENTIFIC STATUS: QUALITY_CALIBRATION_PASS
 PROTOCOL STATUS: VALID
 EXECUTION AUTHORITY: QMS_R1_SUCCESSOR_FORMAL_AUTHORIZED_ONE_SHOT / NOT_RUN
 DEV DIAGNOSTIC: PERIODIC_SELF_MOTION_SENSITIVITY_OBSERVED / 8_OF_8_CLUSTERS
-MOTION COMPONENT STAGE A: COMPLETE / VALID / STAGE_B_CONTRACT_ONLY
+MOTION COMPONENT STAGE A: COMPLETE / VALID / STAGE_B_CONTRACT_PREFLIGHT_VALID
+STAGE B CONTRACT PREFLIGHT: VALID / EXECUTION_NOT_ACTIVATED / NOT_RUN
 CURRENT CLAIM CEILING: CONTROLLED_GENERATOR_INTERNAL_MECHANISM_DEVELOPMENT_ONLY
 PREDECESSOR RESULT: TEMPORAL_STRUCTURE_R1_HOLD_MIXED_OR_INSUFFICIENT / VALID
 AUDIT HISTORY: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
@@ -53,8 +54,15 @@ C 只冻结最终保留版本，D 仅在独立标签和 session/route 划分成�
 9,616 pairs`，独立 validator 从 cell primitives 重建 pair 指标：
 rotation absolute leakage 与 translation signed response 均为
 `4/4 → 4/4` 正方向，full interaction 为 `2/4 → 3/4` 且跨批不稳定。第三个
-独立 closeout validator 已给出 `VALID / STAGE_A_COMPLETE`；当前只授权 Stage B
-的 translation-depth oracle + object-approach control 合同准备，不授权执行。
+独立 closeout validator 已给出 `VALID / STAGE_A_COMPLETE`。随后 Stage B
+translation-depth oracle + object-approach control 已完成 contract preflight：
+冻结 8 个独立 clusters、40 个 sequence identities、五臂角色、source-known
+坐标/warp/visibility/valid-mask/local-fit、signed/absolute 分离与必须 8/8 通过的
+rotation-leakage boundary。独立 validator 为 `12/12 PASS`、identity collision
+为零；但 scene geometry 尚未物化，activation decision 为
+`HOLD_STAGE_B_EXECUTION_PENDING_SEPARATE_ACTIVATION`。Stage B response 与
+workload 仍为零。详见
+[Stage B contract preflight R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0_RESULT_2026-07-29.md)。
 `480+16` 仍 `NOT_CONSUMED / NOT_RUN`。详见
 [motion-component Stage A](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_CLEAN_MOTION_COMPONENT_LOCALIZATION_R0_STAGE_A_RESULT_2026-07-29.md)。
 
@@ -303,6 +311,7 @@ implementation、runtime preflight 和正式序列仍未创建或运行。
 | QMS-R1 successor formal | `AUTHORIZED / ONE_SHOT / NOT_RUN / OPERATOR_HOLD_NOT_CONSUMED` |
 | 新算法关卡路线 | `ADOPTED / GATED_PROCESS / STAGE_A_COMPLETE` |
 | A Stage 1 / Stage 2 | `VALID_COMPLETE / VALID_COMPLETE` |
+| B translation-depth oracle contract preflight | `VALID / EXECUTION_NOT_ACTIVATED / NOT_RUN` |
 | B 后升级决策 | `MANDATORY / GO_OR_FREEZE_OR_STOP_OR_NOT_EVALUABLE` |
 | 单项升级 / C / D | `OPTIONAL_B_EVIDENCE_REQUIRED / CONDITIONAL_CLOSEOUT / OPTIONAL_DATA_DEPENDENT` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
@@ -322,9 +331,9 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 1. A 已完成并独立收口；rotation leakage 和 translation response 两批稳定，
    full interaction 不稳定；
-2. 当前仅准备并冻结 Stage B 的 translation-depth oracle +
-   object-approach positive-control 合同，同时绑定 rotation
-   compensation/warp/valid-mask/local-fit 限界审计；尚不读取 B response 或执行；
+2. Stage B 的 translation-depth oracle + object-approach positive-control
+   合同、独立 identities 与 rotation compensation/warp/valid-mask/local-fit
+   限界审计已冻结并通过 preflight；execution 仍未激活，尚不读取 B response；
 3. B 获得单独执行授权且完成后，强制做一次
    `go / freeze / stop / not-evaluable` 决策，不自动进入 C；
 4. 只有 `go` 才做一个由 B 购买的单项升级，并只比较原始 RCLE 与单项候选；没有

@@ -1,6 +1,6 @@
 # RCLE periodic self-motion counterfactual R2
 
-状态：`motion-component Stage A complete valid / Stage B contract only / successor formal not consumed`
+状态：`motion-component Stage A complete valid / Stage B contract preflight valid / execution not activated / successor formal not consumed`
 
 ## 研究问题与版本
 
@@ -214,14 +214,19 @@ Stage A 已运行两批 frozen clean 四臂
 - translation-only 相对 rotation-only 的 signed P90：`4/4 → 4/4` 正；
 - full-6DoF 相对较大 single arm 的 signed P90：`2/4 → 3/4` 正，跨批不稳定。
 
-第三个独立 closeout validator 已给出 `VALID / STAGE_A_COMPLETE`。下一步只授权
-准备和冻结 `translation-depth oracle + object-approach control` 的 Stage B
-合同；不授权 B 执行、算法修改、interaction 分支、C/D 或 formal。rotation
-absolute leakage 作为必须携带的机制审计边界。正式 480+16 仍为零，一次性
-authority 未消费。
+第三个独立 closeout validator 已给出 `VALID / STAGE_A_COMPLETE`。其后 Stage B
+已完成 `translation-depth oracle + object-approach control` contract preflight：
+冻结 8 个新 clusters、40 个 sequence identities、五臂角色、source-known
+坐标/warp/visibility/valid-mask/local-fit 与 cluster-level stopping/routing。
+纯旋转静态场景是必须 8/8 通过的 boundary，不是修改 rotation algorithm 的入口。
+独立 validator 为 `12/12 PASS`，但 geometry 尚未物化，execution decision 保持
+`HOLD_STAGE_B_EXECUTION_PENDING_SEPARATE_ACTIVATION`。不授权 B response、
+workload、算法修改、interaction 分支、C/D 或 formal。正式 480+16 仍为零，
+一次性 authority 未消费。
 
 - [Stage 1 result](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_CLEAN_MOTION_COMPONENT_LOCALIZATION_R0_STAGE_1_RESULT_2026-07-29.md)
 - [Stage A result](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_CLEAN_MOTION_COMPONENT_LOCALIZATION_R0_STAGE_A_RESULT_2026-07-29.md)
+- [Stage B contract preflight R0](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_STAGE_B_TRANSLATION_DEPTH_ORACLE_OBJECT_APPROACH_CONTRACT_PREFLIGHT_R0_RESULT_2026-07-29.md)
 
 ## 假设与规则质疑
 
