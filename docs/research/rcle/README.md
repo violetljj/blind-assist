@@ -1,6 +1,6 @@
 # RCLE 研究主线
 
-状态：`current / PREDECESSOR_P4_COMPLETE_PRE_R3_TERMINAL / QMS_R1_QUALIFIED / SUCCESSOR_FORMAL_NOT_ACTIVATED`
+状态：`current / MOTION_COMPONENT_STAGE_A_COMPLETE_VALID / STAGE_B_CONTRACT_ONLY / SUCCESSOR_FORMAL_NOT_CONSUMED`
 
 最后核验：2026-07-29（Asia/Hong_Kong）
 
@@ -14,7 +14,9 @@ CURRENT STUDY: RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2
 CURRENT TRACK: CONTROLLED_COUNTERFACTUAL_DEVELOPMENT
 SCIENTIFIC STATUS: QUALITY_CALIBRATION_PASS
 PROTOCOL STATUS: VALID
-EXECUTION AUTHORITY: P4_NOT_ACTIVATED
+EXECUTION AUTHORITY: QMS_R1_SUCCESSOR_FORMAL_AUTHORIZED_ONE_SHOT / NOT_RUN
+DEV DIAGNOSTIC: PERIODIC_SELF_MOTION_SENSITIVITY_OBSERVED / 8_OF_8_CLUSTERS
+MOTION COMPONENT STAGE A: COMPLETE / VALID / STAGE_B_CONTRACT_ONLY
 CURRENT CLAIM CEILING: CONTROLLED_GENERATOR_INTERNAL_MECHANISM_DEVELOPMENT_ONLY
 PREDECESSOR RESULT: TEMPORAL_STRUCTURE_R1_HOLD_MIXED_OR_INSUFFICIENT / VALID
 AUDIT HISTORY: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
@@ -30,8 +32,15 @@ ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 quality manipulation estimand：固定材质内部 residual contraction，在旧
 development identities 上 `160/160`、全新 disjoint CAL 上 `32/32` 通过，
 八个 subgroup 均为 `4/4`，512 个 frame state 的 prequantization relation
-误差均为零。独立 validator 与 11 个 mutation tests 通过，但 successor formal
-仍未激活。详见
+误差均为零。独立 validator 与 11 个 mutation tests 通过。随后 activation
+preflight 冻结了全域不相交的新 480+16 和固定 8 条 PREFLIGHT identities，
+复验 all-seed geometry、R3 transport 与 analysis lock 均未漂移；W8 完整实测
+`1099.9671 s`，按 QMS-R1 shared-render scheduler 含 10% reserve 的保守投影为
+`11.3375 h`。独立终态为
+`ACTIVATION_PREFLIGHT_PASS / VALID / FORMAL_NOT_RUN`，已签发一次性 successor
+formal authority，但正式 496 条仍为零。详见
+[activation preflight R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_FORMAL_ACTIVATION_PREFLIGHT_R0_RESULT_2026-07-29.md)
+与
 [QMS-R1 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_MANIPULATION_SUCCESSOR_R1_RESULT_2026-07-29.md)。
 
 后续默认算法研究顺序已另立为
@@ -40,10 +49,24 @@ development identities 上 `160/160`、全新 disjoint CAL 上 `32/32` 通过，
 `go single-upgrade / freeze residual feature / stop-or-downgrade / not-evaluable`
 之间形成正式决定。只有前序证据购买复杂度时，才允许一个 base-vs-upgrade 候选；
 C 只冻结最终保留版本，D 仅在独立标签和 session/route 划分成立时进入。新路线不
-改写旧结果或既有 QMS 权限；当前是过程落地。并行启动的 A Stage 1 已在
-`0/4 clusters、0/16 sequences` 时停止，没有 run receipt 或 scientific result，
-终态为 `INCOMPLETE / NOT_INTERPRETABLE / HOLD`；既有 `480+16` 继续
-`HOLD / NOT_CONSUMED`。
+改写旧结果或既有 QMS 权限。A 的两批各完成 `4 clusters / 16 sequences /
+9,616 pairs`，独立 validator 从 cell primitives 重建 pair 指标：
+rotation absolute leakage 与 translation signed response 均为
+`4/4 → 4/4` 正方向，full interaction 为 `2/4 → 3/4` 且跨批不稳定。第三个
+独立 closeout validator 已给出 `VALID / STAGE_A_COMPLETE`；当前只授权 Stage B
+的 translation-depth oracle + object-approach control 合同准备，不授权执行。
+`480+16` 仍 `NOT_CONSUMED / NOT_RUN`。详见
+[motion-component Stage A](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_CLEAN_MOTION_COMPONENT_LOCALIZATION_R0_STAGE_A_RESULT_2026-07-29.md)。
+
+为避免直接支付约 11 小时正式预算，随后冻结并运行了与所有旧 formal、DEV、
+CAL、PREFLIGHT 及 successor formal identities 全域不相交的四-block DEV
+diagnostic：`8 clusters / 48 sequences / 28,848 pairs`，完整保留每条
+`601-pair` 时间结构。W8 在约 `37.8 min` 完成，独立 validator 终态为
+`VALID / DEV_DIAGNOSTIC_COMPLETE`。`MOTION_CLEAN` trigger-density contrast
+在 8/8 clusters 为正，均值 `0.25`、范围 `0.18–0.29`；质量 interactions
+方向混合。该结果只说明受控 generator 内部的周期自运动敏感性，不是正式推断。
+successor formal 一次性授权仍未消费，正式 480+16 仍为零。详见
+[four-block DEV diagnostic R0](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_FOUR_BLOCK_DEV_DIAGNOSTIC_R0_RESULT_2026-07-29.md)。
 
 轻量 P3 R0 已完成 R3 transport equivalence、analysis implementation/mutation
 tests，以及固定 8 个 PREFLIGHT identities 的 guarded-host qualification。
@@ -78,8 +101,10 @@ R0、R1、R2 失败回执仍不可覆盖；P1 本身不曾自动授权 P2。详�
 R1 的不可变 13/14 失败与并发 source-hash 竞态见
 [R1 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_RESULT_2026-07-28.md)。
 
-当前操作只看三轴：科学状态仍为 `QUALITY_CALIBRATION_PASS`、P3 runtime 状态
-`PERFORMANCE_QUALIFIED / VALID`、执行权限 `P4_NOT_ACTIVATED`。历史 R2 的
+当前操作只看三轴：科学状态仍为 `QUALITY_CALIBRATION_PASS`、successor
+activation preflight 为 `VALID / FORMAL_NOT_RUN`、执行权限为
+`QMS_R1_SUCCESSOR_FORMAL_AUTHORIZED_ONE_SHOT`。历史 predecessor P3 的
+`P4_NOT_ACTIVATED` 与旧 P4 的 consumed terminal 继续保留。历史 R2 的
 `INVALID_KEYSET` 不再被表述为几何失败。P1
 已经关闭；非阻断的 receipt、命名或未来漂移监控只进入 backlog，不再创建 P1
 版本或阻挡算法阶段。
@@ -274,9 +299,10 @@ implementation、runtime preflight 和正式序列仍未创建或运行。
 | natural-session expansion Discovery R0 | `COMPLETE / VALID` |
 | degradation / flow-quality diagnostic R0 | `COMPLETE / HOLD_FLOW_QUALITY_GATE / VALID` |
 | temporal-structure diagnostic R1 | `COMPLETE / HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID` |
-| periodic self-motion counterfactual R2 | `P4: INTERVENTION_NOT_EVALUABLE / VALID / COMPLETE_PRE_R3_TERMINAL` |
-| 新算法关卡路线 | `ADOPTED / GATED_PROCESS / EXECUTION_HOLD` |
-| A Stage 1 / Stage 2 | `OPERATOR_STOPPED_ZERO_COMPLETE_INCOMPLETE_HOLD / SEALED_NOT_EXECUTABLE` |
+| periodic self-motion counterfactual R2 predecessor | `P4: INTERVENTION_NOT_EVALUABLE / VALID / COMPLETE_PRE_R3_TERMINAL` |
+| QMS-R1 successor formal | `AUTHORIZED / ONE_SHOT / NOT_RUN / OPERATOR_HOLD_NOT_CONSUMED` |
+| 新算法关卡路线 | `ADOPTED / GATED_PROCESS / STAGE_A_COMPLETE` |
+| A Stage 1 / Stage 2 | `VALID_COMPLETE / VALID_COMPLETE` |
 | B 后升级决策 | `MANDATORY / GO_OR_FREEZE_OR_STOP_OR_NOT_EVALUABLE` |
 | 单项升级 / C / D | `OPTIONAL_B_EVIDENCE_REQUIRED / CONDITIONAL_CLOSEOUT / OPTIONAL_DATA_DEPENDENT` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
@@ -294,12 +320,13 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 
 当前默认顺序为：
 
-1. 本轮只落实关卡过程；A Stage 1 的并行启动已在零 cluster/sequence 完成时停止，
-   不形成结果且不授权恢复；既有 `480+16` 保持 `HOLD / NOT_CONSUMED`；
-2. 未来明确授权 A 后，先运行首批 16 sequences，由冻结 routing 决定是否打开
-   sealed 的第二批 16；A 结果分别导向 translation-depth、rotation-audit、
-   interaction 或 generator/implementation `HOLD`；
-3. B 完成后强制做一次 `go / freeze / stop / not-evaluable` 决策，不自动进入 C；
+1. A 已完成并独立收口；rotation leakage 和 translation response 两批稳定，
+   full interaction 不稳定；
+2. 当前仅准备并冻结 Stage B 的 translation-depth oracle +
+   object-approach positive-control 合同，同时绑定 rotation
+   compensation/warp/valid-mask/local-fit 限界审计；尚不读取 B response 或执行；
+3. B 获得单独执行授权且完成后，强制做一次
+   `go / freeze / stop / not-evaluable` 决策，不自动进入 C；
 4. 只有 `go` 才做一个由 B 购买的单项升级，并只比较原始 RCLE 与单项候选；没有
    明确收益即丢弃，不继续叠加模块；
 5. `freeze` 或保留的单项候选才进入 C；`stop` 可以关闭 C/D；D 只有在最终合同冻结、

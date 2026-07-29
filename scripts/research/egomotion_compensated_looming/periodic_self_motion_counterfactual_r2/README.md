@@ -1,6 +1,6 @@
 # RCLE periodic self-motion counterfactual R2
 
-状态：`predecessor P4 pre-R3 terminal preserved / QMS-R1 qualified / successor formal not activated`
+状态：`motion-component Stage A complete valid / Stage B contract only / successor formal not consumed`
 
 ## 研究问题与版本
 
@@ -27,7 +27,7 @@ runner 或 activation lock。隔离的
 ```text
 scientific_status: QUALITY_CALIBRATION_PASS
 protocol_status: VALID
-execution_authority: P4_NOT_ACTIVATED
+execution_authority: QMS_R1_SUCCESSOR_FORMAL_AUTHORIZED_ONE_SHOT / NOT_RUN
 ```
 
 P2 R1 一次性 blur-grid repair 已完成 `5120/5120` 行 response-blind ledger。
@@ -161,7 +161,9 @@ artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/
 `EXECUTION_NOT_AUTHORIZED`。当前隔离 keyset-repair 已关闭 P1 geometry；P2 R1
 已把 response-blind quality calibration 关闭为
 `QUALITY_CALIBRATION_PASS / VALID`；P3 R0 scheduler successor 已关闭为
-`PERFORMANCE_QUALIFIED / VALID / P4_NOT_ACTIVATED`。任何
+`PERFORMANCE_QUALIFIED / VALID / P4_NOT_ACTIVATED`。其后旧 P4 pre-R3 terminal
+已消费；QMS-R1 successor activation preflight 现为
+`VALID / FORMAL_NOT_RUN / AUTHORIZED_ONE_SHOT`。任何
 geometry、response-blind calibration、R3 transport equivalence、analysis lock
 或 guarded-host preflight 失败，都不得靠换 seed、降门、减 arm 或继续切 ADVIO
 回救。
@@ -179,10 +181,47 @@ raycast 后在 prequantization linear RGB 域收缩材质内部 residual；hard 
 只度量该 frozen estimand，全帧梯度改为描述项。它在旧 development
 identities 上 `160/160`、全新 disjoint CAL 上 `32/32` 通过，独立 validator
 复算 `32 sequences / 512 frames / 8 subgroups` 为 `VALID`，mutation tests
-`11/11 PASS`。这只关闭 quality-manipulation qualification，不授权 successor
-formal 或 R3。
+`11/11 PASS`。随后独立 activation preflight R0 已冻结 QMS-R1 operator、新且
+全域不相交的 480+16 identity lock，并用全新固定 8 条完成 W8。G01–G14、R3
+transport 和 analysis lock 复验均未漂移，按 shared-render cluster scheduler
+含 10% reserve 投影为 `11.3375 h`。终态为
+`ACTIVATION_PREFLIGHT_PASS / VALID / FORMAL_NOT_RUN`，已授权 exact-lock 一次性
+successor formal execution；本阶段正式 sequence 与 R3 formal call 仍为零。
 
 - [QMS-R1 qualification result](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_MANIPULATION_SUCCESSOR_R1_RESULT_2026-07-29.md)
+- [QMS-R1 activation preflight R0](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_FORMAL_ACTIVATION_PREFLIGHT_R0_RESULT_2026-07-29.md)
+- [QMS-R1 four-block DEV diagnostic R0](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_FOUR_BLOCK_DEV_DIAGNOSTIC_R0_RESULT_2026-07-29.md)
+
+activation 后没有直接运行正式 480+16。隔离的 four-block DEV diagnostic
+另冻 8 个全新 scene clusters，每个 cluster 完整运行六臂和 601 pairs，共
+48 sequences。W8 约 `37.8 min` 完成；独立 validator 从 ledgers 重算后为
+`VALID / DEV_DIAGNOSTIC_COMPLETE`。clean 周期自运动相对静态的 trigger-density
+contrast 在 8/8 clusters 为正，均值 `0.25`、范围 `0.18–0.29`。这只形成
+controlled-generator DEV 诊断，不形成 max-t、总体效应或产品/安全结论。
+正式一次性授权保持 `UNCHANGED_NOT_CONSUMED`。
+
+## Clean motion-component localization R0
+
+Stage A 已运行两批 frozen clean 四臂
+`STATIC / ROTATION_ONLY / TRANSLATION_ONLY / FULL_6DOF`。全部 32 identities
+在执行前冻结；ordinal `0` 与 ordinal `1` 各为
+`4 clusters / 16 sequences / 9,616 pairs`。
+
+独立 validator 从每 pair 的 raw/compensated 九格 cell primitives 重建 signed
+与 absolute 指标；两批结果为：
+
+- rotation-only 相对 static 的 absolute P90：`4/4 → 4/4` 正；
+- translation-only 相对 rotation-only 的 signed P90：`4/4 → 4/4` 正；
+- full-6DoF 相对较大 single arm 的 signed P90：`2/4 → 3/4` 正，跨批不稳定。
+
+第三个独立 closeout validator 已给出 `VALID / STAGE_A_COMPLETE`。下一步只授权
+准备和冻结 `translation-depth oracle + object-approach control` 的 Stage B
+合同；不授权 B 执行、算法修改、interaction 分支、C/D 或 formal。rotation
+absolute leakage 作为必须携带的机制审计边界。正式 480+16 仍为零，一次性
+authority 未消费。
+
+- [Stage 1 result](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_CLEAN_MOTION_COMPONENT_LOCALIZATION_R0_STAGE_1_RESULT_2026-07-29.md)
+- [Stage A result](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_CLEAN_MOTION_COMPONENT_LOCALIZATION_R0_STAGE_A_RESULT_2026-07-29.md)
 
 ## 假设与规则质疑
 
