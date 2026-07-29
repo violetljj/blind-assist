@@ -1,6 +1,6 @@
 # RCLE periodic self-motion counterfactual R2
 
-状态：`P2 R1 frozen / QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED`
+状态：`predecessor P4 pre-R3 terminal preserved / QMS-R1 qualified / successor formal not activated`
 
 ## 研究问题与版本
 
@@ -14,8 +14,8 @@ manifest 与独立 validator。R0 因 G13 estimand 冲突为 13/14；R1 因
 angle/acos 数值判定为 13/14，并保留不可变失败回执。R2 版本化加固
 G01/G02/G03/G08/G11/G12/G14、固定 source-component G13 判定并增加 8 个
 GUARD 双构建 replay。R2 的 G01–G14 全部 PASS，但正式 receipt 因 R0 evidence
-键名全集误写而 `INVALID / HOLD_P1`，不得覆盖或重跑。这里仍没有 RCLE runner、
-formal sequence runner、analysis producer 或 activation lock。隔离的
+键名全集误写而 `INVALID / HOLD_P1`，不得覆盖或重跑。这里仍没有 formal sequence
+runner 或 activation lock。隔离的
 `R2_KEYSET_REPAIR_R0` 只把历史键名固定为真实的
 `producer_receipt.json`，并加入 generator directory 与正式 receipt 的独占创建
 保护；88 条 all-seed record 与 R2 逐字节一致。其只读预检和唯一正式验证均为
@@ -27,13 +27,19 @@ formal sequence runner、analysis producer 或 activation lock。隔离的
 ```text
 scientific_status: QUALITY_CALIBRATION_PASS
 protocol_status: VALID
-execution_authority: P3_NOT_AUTHORIZED
+execution_authority: P4_NOT_ACTIVATED
 ```
 
 P2 R1 一次性 blur-grid repair 已完成 `5120/5120` 行 response-blind ledger。
 最小全局可行 blur 为 `sigma=0.475 px`；它与 hash-bound R0 low-texture
 `alpha=0.15` 形成全局 strength pair，终态为
-`QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED`。P3 未授权。历史 R2 只记录为
+`QUALITY_CALIBRATION_PASS / VALID`。随后轻量 P3 R0 已完成 R3 transport
+equivalence、analysis implementation/mutation tests，以及同一 8 个完整
+PREFLIGHT identities 的 guarded-host 比较。初始均匀比例外推有误；scheduler
+successor 复用静态相同 pose frame、仍逐一运行 601 个冻结 R3 pair，并按真实
+formal 组成外推。successor W8 实测 `677.5074 s`、投影 `7.1575 h`，选择 W8；
+独立终态为
+`PERFORMANCE_QUALIFIED / VALID / P4_NOT_ACTIVATED`。历史 R2 只记录为
 `OBSERVED_GEOMETRY_GATES_PASS / CLAIM_NOT_SIGNABLE + INVALID_KEYSET + HOLD_P1`，
 不再把 keyset 错误写成几何失败。P1 已关闭：非阻断的命名、receipt 便利或未来漂移
 监控进入 backlog，不再创建 P1 版本。P2 R0 保持不可变；R1 后不得自动二次修复、
@@ -116,6 +122,8 @@ R1 lock、ledger 与正式 independent receipt 已冻结，不得覆盖或重跑
 - [P1 keyset-repair 通过结果](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_KEYSET_REPAIR_R0_RESULT_2026-07-29.md)
 - [P2 response-blind quality calibration R0](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_CALIBRATION_R0_RESULT_2026-07-29.md)
 - [P2 blur-grid repair R1](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_CALIBRATION_BLUR_GRID_REPAIR_R1_RESULT_2026-07-29.md)
+- [P3 transport/analysis/runtime preflight R0](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_TRANSPORT_ANALYSIS_RUNTIME_PREFLIGHT_R0_RESULT_2026-07-29.md)
+- [P4 formal pre-R3 terminal](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_P4_FORMAL_RESULT_2026-07-29.md)
 
 失败模式：
 
@@ -123,7 +131,9 @@ R1 lock、ledger 与正式 independent receipt 已冻结，不得覆盖或重跑
 - 2×3 arm、四 block、20 seed/block、480 sequence 或 80 cluster 漂移；
 - R3 `0.01/s`、三 pair、reset 或 implementation identity 漂移；
 - geometry required gate、统计支持/排除规则、terminal precedence 或 budget 漂移；
-- 任一当前文档把 `formal_execution_authorized` 设为 true。
+- P4 activation 之前任一当前文档把 `formal_execution_authorized` 设为 true；已签发并
+  消费的一次性 activation lock 是唯一例外，且 manipulation failure 后不得再启动
+  formal R3。
 
 ## 输出
 
@@ -150,10 +160,29 @@ artifacts.local/evidence/rcle_periodic_self_motion_counterfactual_r2/
 静态 bundle 或独立设计审查不通过时停在
 `EXECUTION_NOT_AUTHORIZED`。当前隔离 keyset-repair 已关闭 P1 geometry；P2 R1
 已把 response-blind quality calibration 关闭为
-`QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED`，但没有授权 P3。任何
+`QUALITY_CALIBRATION_PASS / VALID`；P3 R0 scheduler successor 已关闭为
+`PERFORMANCE_QUALIFIED / VALID / P4_NOT_ACTIVATED`。任何
 geometry、response-blind calibration、R3 transport equivalence、analysis lock
 或 guarded-host preflight 失败，都不得靠换 seed、降门、减 arm 或继续切 ADVIO
 回救。
+
+P4 one-shot activation 后，正式 main manipulation check 已完成
+`160` 个 cluster×motion sequence check。blur 为八个 subgroup 全部 `20/20`；
+low-texture 在 `ADVIO_13 periodic=17/20`、`ADVIO_15 periodic=14/20`、
+`ADVIO_17 static=17/20`、`ADVIO_17 periodic=17/20` 失败。因此当前最终终态为
+`INTERVENTION_NOT_EVALUABLE / VALID / COMPLETE_PRE_R3_TERMINAL`，正式 R3
+arm、pair-core call 和 outcome analysis 均为零。
+
+在不改 R3、也不读取 response 的独立后继中，固定 bilateral `QMS-R0` 已先在
+旧 scenes 上实测并淘汰（八个 subgroup 均 `0/20`）。`QMS-R1` 改为一次共享
+raycast 后在 prequantization linear RGB 域收缩材质内部 residual；hard gate
+只度量该 frozen estimand，全帧梯度改为描述项。它在旧 development
+identities 上 `160/160`、全新 disjoint CAL 上 `32/32` 通过，独立 validator
+复算 `32 sequences / 512 frames / 8 subgroups` 为 `VALID`，mutation tests
+`11/11 PASS`。这只关闭 quality-manipulation qualification，不授权 successor
+formal 或 R3。
+
+- [QMS-R1 qualification result](../../../../docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_MANIPULATION_SUCCESSOR_R1_RESULT_2026-07-29.md)
 
 ## 假设与规则质疑
 

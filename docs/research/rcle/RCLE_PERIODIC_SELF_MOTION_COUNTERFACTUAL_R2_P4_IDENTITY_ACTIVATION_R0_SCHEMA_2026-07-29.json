@@ -1,0 +1,57 @@
+{
+  "schema": "rcle.periodic_self_motion_counterfactual.p4_identity_activation_schema.v1",
+  "protocol_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2",
+  "p4_id": "RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_FORMAL_IDENTITY_AND_ACTIVATION_R0",
+  "date": "2026-07-29",
+  "scope": [
+    "versioned W8 OpenBLAS18 scheduler amendment",
+    "formal 480 main plus 16 guardrail identity lock",
+    "exclusive-create one-shot P4 activation lock"
+  ],
+  "scheduler_authority": {
+    "profile": "W8",
+    "workers": 8,
+    "opencv_threads_per_worker": 1,
+    "openblas_threads_per_worker": 18,
+    "source": "direct user authorization plus validated P3 scheduler successor",
+    "scientific_lock_change": false
+  },
+  "formal_identity": {
+    "source": "P1 all-seed geometry manifest",
+    "main_clusters": 80,
+    "main_arms_per_cluster": 6,
+    "guardrail_clusters": 8,
+    "guardrail_arms_per_cluster": 2,
+    "total_sequences": 496,
+    "frames_per_sequence": 602,
+    "pairs_per_sequence": 601,
+    "canonicalization": "UTF8 JSON, sort_keys=true, separators comma-colon, ensure_ascii=false, allow_nan=false",
+    "identity_set_sha256_input": "canonical JSON bytes of the identities array only",
+    "p1_guard_to_canonical": {
+      "MONOTONIC_APPROACH": "MONOTONIC_APPROACH_ONLY__CLEAN",
+      "MONOTONIC_APPROACH_PLUS_PERIODIC": "MONOTONIC_APPROACH_PLUS_PERIODIC_6DOF__CLEAN"
+    }
+  },
+  "activation_requirements": [
+    "all P0-P3 phase bindings exist and match their current SHA-256",
+    "P1 generator geometry passed with no failed gates or errors",
+    "P2 response-blind strength lock is validated",
+    "P3 W8 OpenBLAS18 scheduler successor is performance qualified",
+    "formal output paths are absent",
+    "no matching residual P3 or P4 worker is live",
+    "identity and activation implementation, focused test, and schema SHA-256 are bound",
+    "manipulation producer, independent validator, and focused test SHA-256 are bound",
+    "formal runner and focused test SHA-256 are bound",
+    "formal analysis, independent validator, and both focused test SHA-256 are bound",
+    "activation is written with O_CREAT plus O_EXCL and fsync"
+  ],
+  "forbidden": [
+    "formal seed or identity replacement",
+    "R3, threshold, three-pair, reset, analysis, or manipulation change",
+    "sequence16",
+    "Android",
+    "realtime integration",
+    "scientific result interpretation before independent bundle validation"
+  ],
+  "activation_is_not_issued_by_this_schema": true
+}

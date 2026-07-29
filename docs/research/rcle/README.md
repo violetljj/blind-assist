@@ -1,6 +1,6 @@
 # RCLE 研究主线
 
-状态：`current / COUNTERFACTUAL_R2_P2_QUALITY_CALIBRATION_PASS / P3_NOT_AUTHORIZED`
+状态：`current / PREDECESSOR_P4_COMPLETE_PRE_R3_TERMINAL / QMS_R1_QUALIFIED / SUCCESSOR_FORMAL_NOT_ACTIVATED`
 
 最后核验：2026-07-29（Asia/Hong_Kong）
 
@@ -14,7 +14,7 @@ CURRENT STUDY: RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2
 CURRENT TRACK: CONTROLLED_COUNTERFACTUAL_DEVELOPMENT
 SCIENTIFIC STATUS: QUALITY_CALIBRATION_PASS
 PROTOCOL STATUS: VALID
-EXECUTION AUTHORITY: P3_NOT_AUTHORIZED
+EXECUTION AUTHORITY: P4_NOT_ACTIVATED
 CURRENT CLAIM CEILING: CONTROLLED_GENERATOR_INTERNAL_MECHANISM_DEVELOPMENT_ONLY
 PREDECESSOR RESULT: TEMPORAL_STRUCTURE_R1_HOLD_MIXED_OR_INSUFFICIENT / VALID
 AUDIT HISTORY: ROTATION_COMPENSATION_MECHANISM_AUDIT_R1_COMPLETE_NEGATIVE
@@ -23,6 +23,26 @@ SEALED EVALUATION: ADVIO_OFFICE04_SEQUENCE16_IPHONE_RESERVED_UNSEEN
 FORMAL R2 EXECUTION: NOT_AUTHORIZED
 ANDROID / PRODUCT / SAFETY: NOT_AUTHORIZED
 ```
+
+旧 R2 P4 已以
+`INTERVENTION_NOT_EVALUABLE / VALID / COMPLETE_PRE_R3_TERMINAL` 永久关闭，
+且正式 R3 pair-core call 为零；这不是 RCLE 算法 outcome。后继 QMS-R1 只修复
+quality manipulation estimand：固定材质内部 residual contraction，在旧
+development identities 上 `160/160`、全新 disjoint CAL 上 `32/32` 通过，
+八个 subgroup 均为 `4/4`，512 个 frame state 的 prequantization relation
+误差均为零。独立 validator 与 11 个 mutation tests 通过，但 successor formal
+仍未激活。详见
+[QMS-R1 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_MANIPULATION_SUCCESSOR_R1_RESULT_2026-07-29.md)。
+
+轻量 P3 R0 已完成 R3 transport equivalence、analysis implementation/mutation
+tests，以及固定 8 个 PREFLIGHT identities 的 guarded-host qualification。
+初始 `8 -> 496` 均匀外推错误放大 guardrail 比例，已由不可覆盖的 scheduler
+successor 修正。优化后 W8 完整实测 `677.5074 s`，全量 transport hashes 与
+predecessor 精确一致；按 `480 factorial + 16 guardrail` 分项外推并计入 10%
+retry reserve 后为 `7.1575 h`。独立终态为
+`PERFORMANCE_QUALIFIED / VALID / P4_NOT_ACTIVATED`，选择 W8。
+详见
+[P3 R0 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_TRANSPORT_ANALYSIS_RUNTIME_PREFLIGHT_R0_RESULT_2026-07-29.md)。
 
 P2 response-blind quality calibration 的一次性 blur-grid repair R1 已完成。
 复用原 CAL panel，仅运行冻结的 9 个小 sigma 候选，共 `5120` 行 blur ledger；
@@ -47,8 +67,9 @@ R0、R1、R2 失败回执仍不可覆盖；P1 本身不曾自动授权 P2。详�
 R1 的不可变 13/14 失败与并发 source-hash 竞态见
 [R1 结果](RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GEOMETRY_SPEC_REPAIR_R1_RESULT_2026-07-28.md)。
 
-当前操作只看三轴：P2 科学状态 `QUALITY_CALIBRATION_PASS`、协议状态
-`VALID`、执行权限 `P3_NOT_AUTHORIZED`。历史 R2 的 `INVALID_KEYSET` 不再被表述为几何失败。P1
+当前操作只看三轴：科学状态仍为 `QUALITY_CALIBRATION_PASS`、P3 runtime 状态
+`PERFORMANCE_QUALIFIED / VALID`、执行权限 `P4_NOT_ACTIVATED`。历史 R2 的
+`INVALID_KEYSET` 不再被表述为几何失败。P1
 已经关闭；非阻断的 receipt、命名或未来漂移监控只进入 backlog，不再创建 P1
 版本或阻挡算法阶段。
 
@@ -242,7 +263,7 @@ implementation、runtime preflight 和正式序列仍未创建或运行。
 | natural-session expansion Discovery R0 | `COMPLETE / VALID` |
 | degradation / flow-quality diagnostic R0 | `COMPLETE / HOLD_FLOW_QUALITY_GATE / VALID` |
 | temporal-structure diagnostic R1 | `COMPLETE / HOLD_MIXED_OR_INSUFFICIENT_TEMPORAL_EVIDENCE / VALID` |
-| periodic self-motion counterfactual R2 | `P2: QUALITY_CALIBRATION_PASS / VALID / P3_NOT_AUTHORIZED` |
+| periodic self-motion counterfactual R2 | `P4: INTERVENTION_NOT_EVALUABLE / VALID / COMPLETE_PRE_R3_TERMINAL` |
 | rotation compensation R3 机制审计 | `COMPLETE / STANDALONE ROUTE STOP CONFIRMED ACROSS SESSIONS` |
 | reference-track failure diagnosis R0 | `DEFERRED / DESIGN_ONLY / NOT_AUTHORIZED_TO_EXECUTE` |
 | 修改 `0.01/s` 或三 pair 规则 | `NOT_AUTHORIZED` |
@@ -265,7 +286,9 @@ BlindAssist 仍是论文、毕业设计、院内演示和竞赛研究原型，�
 3. 当前不得自动进入 P2。若继续，必须另立 P2 任务，保持 P1 lock、all-seed
    manifest 与正式 receipt 身份；不得换 seed、降门或修改 geometry；
 4. synthetic R3 transport equivalence、analysis lock 与 guarded-host preflight
-   全部独立通过后，仍需单独 activation lock 才能运行 480 主序列和 16 guardrail；
+   已独立通过，P4 one-shot activation 也已消费；正式 response-blind manipulation
+   gate 因 low-texture 四个 subgroup 未达 `18/20`，在零次正式 R3 pair-core call
+   处关闭为 `INTERVENTION_NOT_EVALUABLE / VALID`，不得越门补跑 480+16；
 5. 不继续切 sequence13/14/15/17，sequence16 保持 `SEALED_UNSEEN`；
 6. 不修改 R3、`0.01/s`、三 pair 或 PairState，不先跑 CoTracker，不进入 Android。
 

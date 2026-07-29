@@ -1,5 +1,38 @@
 # Development Log
 ## 2026-07-29
+- 时间：2026-07-29（Asia/Hong_Kong）；执行者：Codex。保持旧 R2 P4
+  `INTERVENTION_NOT_EVALUABLE / VALID / COMPLETE_PRE_R3_TERMINAL` 不变，
+  完成 response-blind [quality manipulation successor R1](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_MANIPULATION_SUCCESSOR_R1_RESULT_2026-07-29.md)。
+  诊断确认旧 low-texture gate 把不受 alpha 控制的物体/遮挡/材质边界混入全帧
+  梯度剂量；先实现的固定 linear-RGB bilateral 在真实旧 scenes 上八个 subgroup
+  均 `0/20`，因此淘汰而未调参。QMS-R1 固定为一次共享 raycast 后的材质内部
+  prequantization residual contraction；旧 development identities `160/160`
+  通过，全新 disjoint CAL `32/32` 通过，八 subgroup 均 `4/4`，512 frame-state
+  exact residual error 为零。独立标准库 validator 与 11 个 mutation tests
+  通过，receipt 为 `VALID / QMS_R1_INDEPENDENT_VALIDATION_VALID`。未运行或读取
+  R3/outcome，未建立新 formal identities，未激活 successor formal，也未修改
+  R3、阈值、三-pair、sequence16、Android 或 realtime。
+- 时间：2026-07-29（Asia/Hong_Kong）；执行者：Codex。完成并修订
+  [RCLE periodic self-motion counterfactual R2 轻量 P3 R0](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_TRANSPORT_ANALYSIS_RUNTIME_PREFLIGHT_R0_RESULT_2026-07-29.md)：
+  新增 generator-native RGB/valid-mask/K/timestamp/pose transport adapter，并以
+  Pillow PNG reference transport 对冻结 R3 pair core 做 4-pair row/state 精确等价；
+  新增 80-cluster、六-arm、九-member shared-resample max-t analysis implementation
+  与 mutation tests。运行前冻结 uppercase `FACTORIAL/GUARDRAIL` seed literal 和
+  8 个 ADVIO_14 PREFLIGHT identities；W4/W8 均完成 4816 frames / 4808 pairs，
+  四类 transport hashes 逐 identity 相同。W4/W8 wall 为
+  `1277.166 / 1064.115 s`，launch/minimum available RAM 分别为
+  `9.80/7.58 GiB` 与 `9.38/8.28 GiB`，heartbeat 最大
+  `20.065/20.094 s`，swap delta 与 residual worker 均为 0。独立 validator 不导入
+  producer/adapter/analysis/runner。初始 `24.1952 / 20.1591 h` 来自错误的均匀
+  guardrail 比例外推，保留为 predecessor evidence、不再作为当前结论。用户授权
+  scheduler successor 后，静态相同 pose 由每 identity 重复渲染 602 次改为渲染
+  1 次并复用 601 次，仍逐 pair 调用冻结 R3；W8 复现 predecessor 的实际
+  `OpenCV=1 / OpenBLAS observed=18` 调度，完整实测 `677.5074 s`，四类 transport
+  hash 与 predecessor 差异 0。按 `480 factorial + 16 guardrail` 分项外推并含
+  10% retry reserve 为 `7.1575 h`，终态修订为
+  `PERFORMANCE_QUALIFIED / VALID / P4_NOT_ACTIVATED`，选择 W8。
+  未运行 480+16、未访问 formal seed、未解释科学 outcome、未调 strength、未改
+  R3/阈值/三-pair，未访问 sequence16/Android/realtime，也未激活 P4。
 - 时间：2026-07-29（Asia/Hong_Kong）；执行者：violjjet。将 RCLE P1 暴露的“治理压过科学问题”风险落实为全项目研究风格优化：更新 [研究治理](docs/RESEARCH_GOVERNANCE.md)、[协议模板](docs/RESEARCH_PROTOCOL_TEMPLATE.md) 与 [文档治理](docs/DOCUMENT_GOVERNANCE.md)，统一采用 scientific status / protocol status / execution authority 三轴报告；INVALID 不再抹去已观察的计算，但不能产生可签署 claim 或后继权限。新增 `SCIENTIFIC / PROTOCOL_ONLY / NON_BLOCKING` 变更分级、LITE/STANDARD/STRICT profile、按阶段最小证据包和单一 current 入口；协议错误只做薄修订并只重验受影响门，非阻断命名/文案/未来监控进入 backlog，不得创建版本或阻塞算法。该调整是现有 R2 policy 的工作与报告澄清，不修改 policy hash、既有机器合同、冻结 receipt 或历史 terminal。
 - 时间：2026-07-29（Asia/Hong_Kong）；执行者：violjjet。完成 [RCLE periodic self-motion counterfactual R2 P1 keyset repair](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_KEYSET_REPAIR_R0_RESULT_2026-07-29.md)：保留 R0/R1/R2 已消费失败 receipt 与 source/lock 身份，另立 `R2_KEYSET_REPAIR_R0`，仅把 R0 historical evidence key 从错误别名 `generator_receipt.json` 修正为真实 `producer_receipt.json`，并为 generator evidence directory 与正式 receipt 加入独占创建保护。新 all-seed manifest SHA `3dcf3749…7ac6`，88 条 record 与 R2 逐字节一致；只读预检为 `VALID` 后唯一写入正式 receipt `95646437…c079`，G01–G14 为 14/14 PASS、`failed_gates=[]`、`errors=[]`，终态 `GENERATOR_GEOMETRY_PASS / EXECUTION_NOT_AUTHORIZED`。定向 20 tests 与模块 76 tests 均 PASS；未读取/运行 RCLE output，未进行 P2 blur/low-texture 校准、P3 八序列预检、P4 480+16 正式运行，未改 R3/阈值/三-pair，也未进入 sequence16/CoTracker/Android/realtime。P2 仍须另立授权。
 - 时间：2026-07-29 00:03（Asia/Hong_Kong）；执行者：violjjet。完成 [RCLE periodic self-motion counterfactual R2 P1 geometry R2](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_GENERATOR_GEOMETRY_IMPLEMENTATION_R2_RESULT_2026-07-29.md) 的版本链恢复、validator 加固与唯一冻结运行：R1 恢复为实际消费的 angle/acos validator `5be754…`、lock `b49efb…`、amendment `521fd5…` 和失败 receipt `af00df…`，不覆盖历史；R2 保持 88 条 scene record 与 R1 逐字节一致、80 MAIN 与 R0 逐字节一致、numeric seed/trajectory change 均为 0，并显式冻结 MAIN v1 + GUARD v2 schema union。R2 独立重算 G01–G14 均 PASS，其中 G08 为 160 sequence identity / 865,440 samples / 1,053 disocclusion、G13 16/16 且 602/602 可见、G14 base/guard replay mismatch 0；但正式 receipt 因把 R0 真实 `producer_receipt.json` key 误期望为 `generator_receipt.json` 而 `INVALID / INTERVENTION_NOT_EVALUABLE / HOLD_P1`。按 one-shot fail-closed 规则不修改、不覆盖、不重跑 R2，不进入 P2/P3/P4，不读取 RCLE output，不修改 R3/阈值/三-pair，也不进入 sequence16/CoTracker/Android/realtime。
@@ -1510,3 +1543,25 @@
   RCLE，未运行 P3、480+16、sequence16、CoTracker、Android 或实时集成，未换 seed、
   分 block、修改 R3/阈值/三-pair 或开启第二次修复。
 - 详细证据见 [P2 R1 result](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QUALITY_CALIBRATION_BLUR_GRID_REPAIR_R1_RESULT_2026-07-29.md)。
+
+## 2026-07-29：R2 P3 qualified 与 P4 formal pre-R3 terminal
+
+- 执行者：violjjet
+- P3 已完成 R3 transport equivalence、analysis implementation/mutation、
+  8 个固定 PREFLIGHT identity 的 W4/W8 guarded-host qualification；W8 successor
+  实测 `677.507 s / 8 arms`，OpenBLAS 18、OpenCV 1，正式 496-arm 投影含
+  10% reserve 为 `7.1575 h`，终态
+  `PERFORMANCE_QUALIFIED / VALID / P4_NOT_ACTIVATED`。
+- 随后按用户正式授权冻结 W8 scheduler amendment、精确
+  `480+16=496` identity lock、formal runner/bundle closure/独立 validator，
+  activation 前 P4 集成与 mutation tests `33/33 PASS`。
+- 一次性 P4 activation 后，response-blind formal manipulation check 完成
+  `80 cluster × 2 motion × 16 frame = 2560` frame-state evaluations。blur 八个
+  subgroup 均 `20/20`；low-texture 在 ADVIO_13 periodic `17/20`、
+  ADVIO_15 periodic `14/20`、ADVIO_17 static `17/20`、ADVIO_17 periodic
+  `17/20`，未达到冻结的 `18/20`。
+- 独立重算为 `VALID / INTERVENTION_NOT_EVALUABLE`，正式终态 receipt
+  `validated=true / errors=[]`。按合同在任何正式 R3 之前停止：formal arm
+  `0`、pair-core call `0`、outcome analysis `false`；未调 strength、换 seed、
+  修改 R3/阈值/三-pair，也未访问 sequence16、Android 或 realtime。
+- 详细证据见 [P4 formal result](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_P4_FORMAL_RESULT_2026-07-29.md)。
