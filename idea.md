@@ -2,7 +2,7 @@
 
 状态：current（只记录尚未决定的方向，不授予研究或产品权限）
 
-本页是待决想法的短入口，不复制动态实验数字、执行计划或历史流水。旧记录完整保留在 [想法池历史归档](docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md)；当前产品事实以 [README.md](README.md) 为准，SANPO 与 RCLE 状态以各自 current 文档为准。
+本页是待决想法的短入口，不复制动态实验数字、执行计划或历史流水。旧记录完整保留在 [想法池历史归档](docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md)；当前产品事实以 [README.md](README.md) 为准，当前双环、SANPO 与暂停的 RCLE 状态以各自 current 文档为准。
 
 ## 维护规则
 

@@ -268,13 +268,20 @@ if ($null -ne $progressRecord) {
         }
     }
 
-    if (
-        "status" -in $progressProperties -and
-        [string]$progressRecord.status -ne "complete"
-    ) {
-        $progressContractErrors.Add(
-            "progress.status must be complete"
-        )
+    if ("status" -in $progressProperties) {
+        $expectedProgressStatus = if ($failureExists) {
+            "failed"
+        } else {
+            "complete"
+        }
+        if (
+            [string]$progressRecord.status -ne
+            $expectedProgressStatus
+        ) {
+            $progressContractErrors.Add(
+                "progress.status must be $expectedProgressStatus"
+            )
+        }
     }
 
     $completedUnits = $null
@@ -286,7 +293,17 @@ if ($null -ne $progressRecord) {
         try {
             $completedUnits = [double]$progressRecord.completed_units
             $totalUnits = [double]$progressRecord.total_units
-            if (
+            if ($failureExists) {
+                if (
+                    $completedUnits -lt 0 -or
+                    $totalUnits -lt 0 -or
+                    $completedUnits -gt $totalUnits
+                ) {
+                    $progressContractErrors.Add(
+                        "failed progress requires 0 <= completed_units <= total_units"
+                    )
+                }
+            } elseif (
                 $completedUnits -lt 0 -or
                 $totalUnits -lt 0 -or
                 $completedUnits -ne $totalUnits
@@ -341,10 +358,10 @@ $terminalStatus = if (
     $progressContractValid
 ) {
     "COMPLETE"
+} elseif ($failureExists -and $progressContractValid) {
+    "FAILED_WITH_RECEIPT"
 } elseif (-not $progressContractValid) {
     "PROGRESS_CONTRACT_VIOLATION"
-} elseif ($failureExists) {
-    "FAILED_WITH_RECEIPT"
 } elseif ($process.ExitCode -ne 0) {
     "FAILED_WITHOUT_RECEIPT"
 } else {
