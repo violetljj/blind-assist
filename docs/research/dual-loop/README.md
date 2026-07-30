@@ -338,3 +338,10 @@ raw/stable risk 不变。详见
 “已使用”从此只限制同一候选的 unseen/independent claim，不对数据集作全局封存。
 旧数据仍可作为 Development、回归或新问题来源；缺原生提醒标签的数据可在算法输出
 打开前由隔离多模型复核补齐，但不能虚增独立 session。
+
+rank-2 设备评价随后完成：baseline 和 candidate 都命中 7/7 正例，timely retention
+为 7/7；但 5 个 baseline-false 负窗全部保留，`corrected=0`。全序列反馈行只从
+508 降到 494。当前终点为
+[`FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_EFFECT_RESULT_2026-07-31.md)。
+这关闭 active R1 的事件效果主张；默认生产保持关闭，shadow、机制结果和隔离 Android
+工程保留。

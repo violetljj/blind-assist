@@ -109,3 +109,14 @@ pwsh -NoProfile -File scripts/research/dual_loop_unseen_natural_event_r0/run_dev
 
 只有 `baseline-evaluation-r1/candidate_authorization.json` 存在且有效，才继续
 `StageAuthorization / RunCandidate / CollectCandidate / EvaluateCandidate`。
+
+## rank-2 终点
+
+SM-S9280 上的固定 baseline/candidate 已完成。7/7 正例均保留，三项新增时延为
+100 ms、其余为 0；5 个 baseline-false 负窗全部仍为 false，`corrected=0`。
+全序列 accepted-feedback rows 为 `508 -> 494`，只构成密度信号。正式终点：
+
+`FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`
+
+因此 active R1 关闭并保持默认 off；不在 Shiraz 上调参或增加 hold/latch。详见
+`DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_EFFECT_RESULT_2026-07-31.md`。

@@ -1966,6 +1966,16 @@
   放行，candidate 保持 unopened。根因是 Windows `Path.write_text()` 默认换行转换。
   evaluator 改为显式 `newline="\n"` 并新增字节级回归；旧 baseline/evaluation 标记
   为 serialization-invalid 后保留，更新 evaluator/APK identity 再原样重跑。
+- 修复后在同一 4,891 帧输入上完成 strict QNN HTP baseline 与 hash-authorized
+  candidate replay。baseline/candidate 正例均为 `7/7`，exact/timely retention
+  均为 `1.0`；3 个事件新增 100 ms，其余 0，risk mutation 与 event-mutation
+  permission 均为 0。
+- 5 个 baseline-false 负窗全部 retained，`corrected=0 / induced=0`；全序列反馈行
+  `508 -> 494`。终点为 `FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT /
+  DENSITY_SIGNAL_ONLY`，active R1 默认关闭，不在该来源上增加 latch 或调参。
+- producer receipt 的旧字段 `vetoed_feedback_opportunity_count=633` 实为
+  `DUAL_LOOP_CONTRADICTED` reason rows。trace 重算的同帧实际 veto 为 89，净反馈
+  减少为 14；详细结果明确纠正命名，避免把内部 reason row 当用户少收提醒。
 - 明确数据复用规则：“已使用”只取消 exact session 对同一候选的 unseen claim，
   不全局封存数据集。缺原生提醒标签的数据允许在输出盲条件下由多模型复核补齐，
   但 capture/session 独立单位不得用帧或滑窗扩张。
