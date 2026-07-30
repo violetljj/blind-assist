@@ -187,6 +187,35 @@ class RuntimeEnvironmentTest(unittest.TestCase):
                 activation_path,
                 lock_path,
             )
+        base_entrypoint = [*exact]
+        base_entrypoint[0] = str(
+            Path(
+                getattr(
+                    runner.sys,
+                    "_base_executable",
+                    runner.sys.executable,
+                )
+            ).resolve()
+        )
+        with mock.patch.object(runner.sys, "orig_argv", base_entrypoint):
+            runner._validate_runtime_invocation(
+                activation,
+                REPO_ROOT,
+                activation_path,
+                lock_path,
+            )
+        wrong_entrypoint = [*exact]
+        wrong_entrypoint[0] = str(REPO_ROOT / "wrong-python.exe")
+        with (
+            mock.patch.object(runner.sys, "orig_argv", wrong_entrypoint),
+            self.assertRaisesRegex(runner.RunnerError, "argv identity drift"),
+        ):
+            runner._validate_runtime_invocation(
+                activation,
+                REPO_ROOT,
+                activation_path,
+                lock_path,
+            )
         mutated = [*exact]
         mutated[4] = "validate-execution"
         with (

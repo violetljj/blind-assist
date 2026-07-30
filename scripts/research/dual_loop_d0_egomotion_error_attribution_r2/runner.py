@@ -184,8 +184,12 @@ def _validate_runtime_invocation(
     original = list(sys.orig_argv)
     if len(original) != 9:
         raise RunnerError("formal argv length/order drift")
+    accepted_python_entrypoints = {
+        Path(sys.executable).resolve(),
+        Path(getattr(sys, "_base_executable", sys.executable)).resolve(),
+    }
     if (
-        Path(original[0]).resolve() != Path(sys.executable).resolve()
+        Path(original[0]).resolve() not in accepted_python_entrypoints
         or original[1:3] != ["-I", "-B"]
         or Path(original[3]).resolve() != expected_adapter
         or original[4] != contract.get("command")
