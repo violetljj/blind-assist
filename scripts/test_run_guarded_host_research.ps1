@@ -45,7 +45,7 @@ args.progress.write_text(
             "last_progress_at": (
                 __import__("datetime").datetime.now(
                     __import__("datetime").timezone.utc
-                ).isoformat()
+                ).isoformat().replace("+00:00", "Z")
             ),
             "status": progress_status,
         }

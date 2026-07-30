@@ -320,16 +320,35 @@ if ($null -ne $progressRecord) {
     }
 
     if ("last_progress_at" -in $progressProperties) {
-        $lastProgressAt = [DateTimeOffset]::MinValue
-        if (-not [DateTimeOffset]::TryParse(
-            [string]$progressRecord.last_progress_at,
-            [ref]$lastProgressAt
-        )) {
+        $lastProgressValue = $progressRecord.last_progress_at
+        $lastProgressUtc = [DateTime]::MinValue
+        $lastProgressParsed = $false
+        if ($lastProgressValue -is [DateTime]) {
+            $lastProgressUtc = (
+                [DateTime]$lastProgressValue
+            ).ToUniversalTime()
+            $lastProgressParsed = $true
+        } elseif ($lastProgressValue -is [DateTimeOffset]) {
+            $lastProgressUtc = (
+                [DateTimeOffset]$lastProgressValue
+            ).UtcDateTime
+            $lastProgressParsed = $true
+        } else {
+            $lastProgressAt = [DateTimeOffset]::MinValue
+            $lastProgressParsed = [DateTimeOffset]::TryParse(
+                [string]$lastProgressValue,
+                [ref]$lastProgressAt
+            )
+            if ($lastProgressParsed) {
+                $lastProgressUtc = $lastProgressAt.UtcDateTime
+            }
+        }
+        if (-not $lastProgressParsed) {
             $progressContractErrors.Add(
                 "last_progress_at must be an ISO-8601 timestamp"
             )
         } elseif (
-            $lastProgressAt.UtcDateTime -lt
+            $lastProgressUtc -lt
             $runnerStartedAtUtc.AddSeconds(-2)
         ) {
             $progressContractErrors.Add(
