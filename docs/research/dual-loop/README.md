@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`production temporal A/B R0 / IMPLEMENTATION_BUILT / DEVICE_PRESTART_VALID / FORMAL_NOT_ACTIVATED`
+状态：`production temporal A/B R0 / IMPLEMENTATION_REVIEW_PASS / DEVICE_PRESTART_VALID / FORMAL_NOT_ACTIVATED`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -19,9 +19,11 @@ QNN 只推理一次，两臂使用相同 detections 和完全隔离的决策/反
 两个零有效帧正例。A/B factorization、truth-blind device producer、独立
 validator/evaluator 已实现；核心回归、合成 mutation tests、Android build 均通过。
 真机 prestart 在 `SM-S9280 / SM8650` 上复核 `4422/4422` 帧身份，并以 strict
-QNN HTP 完成 synthetic probe，未解码 decision RGB、未写候选输出。当前仍须先做
-hash-bound implementation lock 与独立 activation review；正式 A/B、truth join 与
-Confirmation 尚未执行。
+QNN HTP 完成 synthetic probe，未解码 decision RGB、未写候选输出。hash-bound
+implementation lock 与
+[独立实现复核](DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-30.md)
+均已完成且为 `PASS`；当前尚未 activation，正式 A/B、truth join 与 Confirmation
+均未执行。
 
 实现审计发现并已修复逐帧 timestamp 未绑定、truth receipt 未硬绑定、缺 post-validator
 seal、review 未绑定当前 lock、host 并发启动窗口、producer marker 可覆盖、外部复制
@@ -205,7 +207,7 @@ successor 只允许写成
 | successor 几何真值源 Discovery | `COMPLETED / SOURCE_FOUND_FOR_DEVELOPMENT` |
 | successor causal runtime geometry | `OFFLINE_IMPLEMENTED / ONE_SHOT_EVALUATED` |
 | successor Development round | `BOTH_NOT_READY_FOR_CONFIRMATION / IMPLEMENTATION_NOT_READY` |
-| production temporal geometry factorial A/B R0 | `CONTRACT_FROZEN / DESIGN_REVIEW_PASS / IMPLEMENTATION_AUTHORIZED / NOT_RUN` |
+| production temporal geometry factorial A/B R0 | `CONTRACT_FROZEN / IMPLEMENTATION_REVIEW_PASS / FORMAL_AUTHORIZED_NOT_ACTIVATED / NOT_RUN` |
 | D0 ego-motion error attribution | `CONTRACT_FROZEN / STATISTICAL_REVIEW_REPAIR_NEEDED / NOT_RUN` |
 | successor 独立 Confirmation | `NOT_AUTHORIZED` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
