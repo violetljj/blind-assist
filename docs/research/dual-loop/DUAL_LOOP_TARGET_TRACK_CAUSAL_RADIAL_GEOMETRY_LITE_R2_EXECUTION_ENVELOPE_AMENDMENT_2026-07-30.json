@@ -1,0 +1,115 @@
+{
+  "schema": "blindassist_dual_loop_radial_geometry_lite_r2_execution_envelope_amendment_v1",
+  "protocol_id": "DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R2",
+  "date": "2026-07-30",
+  "stage": "DEVELOPMENT",
+  "status": "DESIGN_FROZEN_PENDING_INDEPENDENT_REVIEW",
+  "formal_execution_authorized": false,
+  "parent_design": {
+    "path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R1_DESIGN_LOCK_2026-07-30.json",
+    "sha256": "a4418a298e534b84e63003c598b7df3a17db0b15b84d7c35cb3288685d6780be",
+    "inheritance": "All scientific, data, causal, output, evaluation and claim contracts are unchanged."
+  },
+  "predecessor_terminal": {
+    "path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R1_EXECUTION_RESULT_2026-07-30.md",
+    "sha256": "8c7da477105248ad6296f04bdb516560d27041f03741fcad433ec0d0b04e5821",
+    "terminal": "EXECUTION_INVALID_STOP_NO_RERUN / NOT_EVALUABLE",
+    "immutable": true,
+    "r1_rerun_authorized": false,
+    "r1_producer_output_reuse_authorized": false
+  },
+  "single_change": {
+    "dimension": "EXECUTION_ENVELOPE_TIMESTAMP_TYPE_HANDLING",
+    "r1_failure": "Guard cast a deserialized UTC DateTime to a culture string, lost the Z designator and reparsed it as Hong Kong local time.",
+    "repair": "Guard preserves DateTime/DateTimeOffset objects and converts them directly to UTC before freshness comparison.",
+    "guard_path": "scripts/run_guarded_host_research.ps1",
+    "guard_sha256": "4cdf474cfdc58bd2fc76a1451dc6587369f2eaaa72b285703616cba9422199e7",
+    "regression_test_path": "scripts/test_run_guarded_host_research.ps1",
+    "regression_test_sha256": "b24ea313ba2d20ca378cf09a9cd5913abba0523f53684e034bde0936a970ec1a",
+    "regression_terminal": "PASS",
+    "fixture_timestamp_representation": "UTC trailing Z",
+    "algorithm_change": false,
+    "scientific_gate_change": false,
+    "data_change": false
+  },
+  "inherited_exactly": {
+    "inputs": "R0 frozen replay, RGB, Development truth and natural-event identities",
+    "causality": "current plus immediate previous frame only; no future frame",
+    "arms": [
+      "BBOX_LOG_AREA_GROWTH",
+      "ROI_SPARSE_RADIAL_FLOW"
+    ],
+    "shape_guard": "Native decoded (H,W) mismatch gives both arms FRAME_SHAPE_CHANGE; current becomes next history; no resize/pad/crop/bridge.",
+    "output_fields": [
+      "target_id",
+      "region",
+      "signed_approach_rate_per_s",
+      "quality",
+      "ttl_ns",
+      "abstention_reason"
+    ],
+    "ttl_ns": 100000000,
+    "replay_rows": 13014,
+    "output_rows": 26028,
+    "shape_change_opportunities": 32,
+    "shape_change_arm_rows": 64,
+    "primary_natural_events": 469,
+    "candidate_deadband_per_s": 0.02,
+    "event_evaluable": "At least 3 finite rows and coverage >= 0.50; abstentions remain in denominator.",
+    "readiness_floor": "correct >= 0.60; wrong-signed <= 0.20; evaluable >= 0.80; each truth-state correct >= 0.50",
+    "flow_over_bbox": "correct gain >=2; wrong-sign not increase; evaluable loss <=23; positive both targets; positive at least two regions; at least two improved events",
+    "claim_ceiling": "SINGLE_CAPTURE_ORACLE_ROI_CONDITIONED_DEVELOPMENT_ONLY"
+  },
+  "outcome_firewall": {
+    "outcome_access_started": false,
+    "r1_evaluator_invoked": false,
+    "r2_producer_allowlist": [
+      "R0 frozen replay_input.jsonl",
+      "R0 frozen REveL RGB image root"
+    ],
+    "r2_producer_forbidden": [
+      "R1 producer output or receipt",
+      "truth.jsonl",
+      "natural_events.jsonl",
+      "Vicon",
+      "old F-1B decision output",
+      "future frames"
+    ],
+    "truth_join_order": "Only after a new R2 guarded producer exits COMPLETE and its exact identity/keyset/shape contract passes.",
+    "old_f1b_decision_status": "SEALED_DECLARED_ZERO_ACCESS"
+  },
+  "new_identity_and_namespace": {
+    "protocol_id": "DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R2",
+    "implementation_id_required": "DUAL_LOOP_RADIAL_GEOMETRY_LITE_R2_IMPL_R0",
+    "new_module_required": true,
+    "new_stable_adapter_required": true,
+    "output_directory": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r2/run-r2",
+    "all_paths_absent_before_activation": true
+  },
+  "required_order": [
+    "Independently pass this amendment.",
+    "Implement only R2 identity wrappers, adapter, bindings and regression fixtures.",
+    "Freeze and independently pass R2 implementation identity.",
+    "Commit and push exact implementation.",
+    "Run two post-lock no-truth 2,000-row pilots and require output equivalence plus progress complete.",
+    "Validate a new guarded-host preflight bound to repaired guard and R2 adapter.",
+    "Independently pass one-shot activation.",
+    "Run one new R2 guarded producer in the new namespace.",
+    "Only after COMPLETE run one conditional Development evaluator."
+  ],
+  "failure_and_stop": {
+    "prestart_failure": "ACTIVATION_HOLD_NOT_RUN",
+    "producer_started_failure": "R2_EXECUTION_INVALID_STOP_NO_RERUN",
+    "pretruth_failure": "R2_EXECUTION_INVALID_STOP_NO_TRUTH_JOIN",
+    "evaluator_failure": "R2_EVALUATION_INVALID_STOP_NO_RERUN",
+    "valid_terminal": "Accept the unchanged frozen scientific terminal without tuning or rerun."
+  },
+  "authority": {
+    "design_review_pass_effect": "Implementation, fixtures, no-truth pilot and preflight preparation only.",
+    "formal_producer_authorized": false,
+    "truth_join_authorized": false,
+    "confirmation_authorized": false,
+    "android_or_product_authorized": false,
+    "runtime_or_safety_claim_authorized": false
+  }
+}

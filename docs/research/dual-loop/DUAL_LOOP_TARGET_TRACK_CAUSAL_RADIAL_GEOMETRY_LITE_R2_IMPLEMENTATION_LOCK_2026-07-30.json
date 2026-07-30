@@ -1,0 +1,131 @@
+{
+  "schema": "blindassist_dual_loop_radial_geometry_implementation_lock_v1",
+  "protocol_id": "DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R2",
+  "implementation_id": "DUAL_LOOP_RADIAL_GEOMETRY_LITE_R2_IMPL_R0",
+  "date": "2026-07-30",
+  "status": "IMPLEMENTATION_CANDIDATE_FROZEN_PENDING_INDEPENDENT_REVIEW",
+  "execution_state": "NOT_RUN",
+  "formal_execution_authorized": false,
+  "truth_join_authorized": false,
+  "parameter_sha256": "e933daa3717fd82e88f896f26537c4d4a9dafc6f276fb7907d76b1ae79318f03",
+  "scientific_gate_contract_sha256": "bfcb3f009dec726055e762857b3e7e0159190d9e21f583d959f477055e82d4b0",
+  "bindings": {
+    "amendment": {
+      "path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R2_EXECUTION_ENVELOPE_AMENDMENT_2026-07-30.json",
+      "sha256": "6c571c13de49d152301d0d58343437043fdaa9f6b40fc6becd7588c864b156ec"
+    },
+    "r1_implementation_lock": {
+      "path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R1_IMPLEMENTATION_LOCK_2026-07-30.json",
+      "sha256": "20faa22021fc144b07883190d3034e8e020a1729648350861f3a93a9e985c80e"
+    },
+    "source_shape_audit": {
+      "path": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r1/source-shape-audit/shape_audit.json",
+      "sha256": "38802bacd9ec08de95556986445fe59c2c8ea815745f0f8a89147ffd2ec704bd"
+    },
+    "replay_input": {
+      "path": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/replay_input.jsonl",
+      "sha256": "14f1f7f0f330d8b01146e37c31505240f3f0e8d301846ebcad44a628948e6440"
+    }
+  },
+  "module_file_hashes": {
+    "README.md": "519649136bab16afd57802b14cb14243b8c2f0e637f2375dce1b059a3db3e0d0",
+    "evaluate_replay.py": "b0ee87240758794bc6f1376be5bdb43f8385ac4bce02b95ef7ced70e2d1f9432",
+    "radial_geometry.py": "d1c688ac45985dd9ee1144915ec20e3b4311109f043c9c6f9cac5c4276e5d3ba",
+    "run_replay.py": "8026bb275e1c0a051210789981bb391d1b346be0ab27bea79713263827737769",
+    "test_r2_identity.py": "7b66ac0ab9c5106b07a141d26d62be5dd23c8bb8ffe707bd4e4a2b46fac05817",
+    "validate_implementation_lock.py": "b0a5e2a1c253ca89a6a72c3174ee9c7f9de451c5a339d1054f9785d6b13c6a91"
+  },
+  "dependency_hashes": {
+    "stable_adapter": {
+      "path": "scripts/run_dual_loop_radial_geometry_lite_r2.py",
+      "sha256": "0b47f23192da3b910bf6404e33c35c9550d73086be206d718014fcde587a1b1e"
+    },
+    "guarded_host": {
+      "path": "scripts/run_guarded_host_research.ps1",
+      "sha256": "4cdf474cfdc58bd2fc76a1451dc6587369f2eaaa72b285703616cba9422199e7"
+    },
+    "guarded_host_regression": {
+      "path": "scripts/test_run_guarded_host_research.ps1",
+      "sha256": "b24ea313ba2d20ca378cf09a9cd5913abba0523f53684e034bde0936a970ec1a"
+    },
+    "r1_geometry": {
+      "module_id": "dual_loop_radial_geometry_lite_r1",
+      "file": "radial_geometry.py",
+      "sha256": "47aa442690fed47cb3ba88a4f178d26689e7b8976b191d8b2a7c2492e86810e1"
+    },
+    "r1_producer": {
+      "module_id": "dual_loop_radial_geometry_lite_r1",
+      "file": "run_replay.py",
+      "sha256": "7f4f03aa09c01eea52954fe315478f59b7e115c3167bbb4c494741a79feba5f3"
+    },
+    "r1_evaluator": {
+      "module_id": "dual_loop_radial_geometry_lite_r1",
+      "file": "evaluate_replay.py",
+      "sha256": "97cae86b5fb3dab49f6a8140a37cdb50b141d8a9f55355bf8189ce2a5d75cd41"
+    }
+  },
+  "scientific_inheritance": {
+    "parameter_identity_equal_r1": true,
+    "scientific_gate_identity_equal_r1": true,
+    "only_new_fields": [
+      "protocol_id",
+      "implementation_id"
+    ],
+    "guard_change_is_outside_candidate": true
+  },
+  "producer_contract": {
+    "input_allowlist": {
+      "replay_input": {
+        "rows": 13014,
+        "sha256": "14f1f7f0f330d8b01146e37c31505240f3f0e8d301846ebcad44a628948e6440"
+      },
+      "image_root": "artifacts.local/evidence/datasets/revel-dynamic-images-labels-v1-20260720/extracted/images/images"
+    },
+    "forbidden": [
+      "R1 producer output and receipt",
+      "truth",
+      "natural events",
+      "Vicon",
+      "old F-1B decision",
+      "future frames"
+    ],
+    "expected_output_rows": 26028,
+    "expected_shape_change_opportunities": 32,
+    "expected_shape_change_arm_rows": 64,
+    "success_progress_status": "complete",
+    "failure_progress_status": "failed",
+    "receipt_binds_exact_r2_lock": true
+  },
+  "evaluator_contract": {
+    "pretruth_checks": "Exact R2 lock and identity, formal receipt, replay/output hashes and keyset, source-audit 32 keys and identical two-arm components.",
+    "truth": {
+      "rows": 17160,
+      "sha256": "dfe53a8be2a18c38f9b2bc2d715290296433f15302ea64911e21ee956423003f"
+    },
+    "natural_events": {
+      "rows": 1660,
+      "primary_rows": 469,
+      "sha256": "078881620709efe17f74b8b01a5a76f4e861bfb6363143b9a9e0a589a87a030a"
+    }
+  },
+  "tests": {
+    "r2_identity_tests": "3 passed / 0 failed",
+    "r1_full_suite": "17 passed / 0 failed",
+    "guarded_host_trailing_z_integration": "PASS",
+    "project_structure": "PASS"
+  },
+  "review": {
+    "required_terminal": "IMPLEMENTATION_REVIEW_PASS or IMPLEMENTATION_REVIEW_HOLD",
+    "result_path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R2_IMPLEMENTATION_REVIEW_RESULT_2026-07-30.md"
+  },
+  "authority": {
+    "implementation_review_pass_effect": "No-truth pilot, preflight preparation, commit and activation preparation only.",
+    "formal_execution_authorized": false,
+    "truth_join_authorized": false,
+    "old_f1b_decision_access_authorized": false,
+    "confirmation_authorized": false,
+    "android_or_product_authorized": false,
+    "runtime_or_safety_claim_authorized": false
+  },
+  "claim_ceiling": "SINGLE_CAPTURE_ORACLE_ROI_CONDITIONED_DEVELOPMENT_ONLY"
+}
