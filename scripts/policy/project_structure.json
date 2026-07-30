@@ -31,6 +31,7 @@
     "configs/ustrf_route_target_l1e_materialization_recovery_r3_continuation_a3.json",
     "configs/ustrf_jrdb_person_3d_trajectory_sensor_support_and_bias_cross_sequence_replication_r0.json",
     "configs/ustrf_jrdb_person_3d_trajectory_far_range_denominator_adequacy_metadata_blind_replication_r0.json",
+    "scripts/run_dual_loop_radial_geometry_lite_r1.py",
     "scripts/run_public_video_edge_inference.ps1",
     "scripts/test_check_project_structure.ps1"
   ],
@@ -79,6 +80,16 @@
       "path": "docs/research/rcle/RCLE_RGB_ALGORITHM_CID_SIMS_FLOOR3_2_CROSS_SEQUENCE_HOLDOUT_R0_SOURCE_TRANSPORT_LOCK_2026-07-27.json",
       "sha256": "9EB00F1DDF401A19BE6A371C15E4F8B80DECEA1BB111D8420CEF86F08BE29ED4",
       "reason": "Immutable RCLE source transport lock retains its historical private implementation binding."
+    },
+    {
+      "path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_IMPLEMENTATION_LOCK_2026-07-30.json",
+      "sha256": "9E2173D0B0CEA2959FA35D2E52C7F13378AAE0E5C62642A13C1524CBD5971807",
+      "reason": "Immutable consumed dual-loop R0 implementation lock retains its historical private implementation binding."
+    },
+    {
+      "path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_ONE_SHOT_ACTIVATION_2026-07-30.json",
+      "sha256": "605FB2C7299BCD65EB53873224B17DFC966C930713932A7B54F3E6E9BC890CD3",
+      "reason": "Immutable consumed dual-loop R0 activation retains its historical private implementation command binding."
     }
   ]
 }

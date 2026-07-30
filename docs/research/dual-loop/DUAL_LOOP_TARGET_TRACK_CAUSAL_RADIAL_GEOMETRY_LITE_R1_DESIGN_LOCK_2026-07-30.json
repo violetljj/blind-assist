@@ -1,0 +1,329 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "profile": "STANDARD_LITE_SCOPE",
+  "governance_policy_id": "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2",
+  "governance_policy_sha256": "e4cd2b01118f36f38cbddebcac6551af782f631e7414e6c90b2f80c0fef33b6e",
+  "protocol_id": "DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R1",
+  "version": "R1",
+  "date": "2026-07-30",
+  "stage": "DEVELOPMENT",
+  "design_status": "F1_SHAPE_GUARD_FROZEN_FOR_INDEPENDENT_REVIEW",
+  "formal_execution_authorized": false,
+  "question": "On the same burned single-capture REveL Development source, can a minimal causal common shape-change abstention/reset close the R0 producer defect and permit the frozen bbox-growth versus sparse-radial-flow parent-event comparison without manufacturing image scale?",
+  "claims_allowed": [
+    "IMPLEMENTATION_READY_FOR_CONFIRMATION",
+    "IMPLEMENTATION_NOT_READY",
+    "NOT_EVALUABLE"
+  ],
+  "claim_ceiling": "SINGLE_CAPTURE_ORACLE_ROI_CONDITIONED_DEVELOPMENT_ONLY",
+  "reopens_prior_failure": true,
+  "prior_failure_id": "DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_EXECUTION_INVALID_STOP_NO_RERUN",
+  "difference_from_previous": "R1 adds one pre-geometry native decoded-shape guard shared by both arms. A mismatched immediate pair emits FRAME_SHAPE_CHANGE abstention rows and uses the current frame as the next pair's only history. R0 remains immutable.",
+  "material_change_dimensions": [
+    "INPUT_SIGNAL"
+  ],
+  "predecessor_bindings": {
+    "r0_design_lock": {
+      "path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_DESIGN_LOCK_2026-07-30.json",
+      "sha256": "ada0bfb22d84b0600354e438555c6a603456a302ffba6d0d3d418fe4e2cd6a2a"
+    },
+    "r0_execution_result": {
+      "path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_EXECUTION_RESULT_2026-07-30.md",
+      "sha256": "a216628c8a04fefcfcd85595fddf5b4a3c6da27e0d6f237a5e399424d42224aa"
+    },
+    "r0_failure_receipt": {
+      "path": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/run-r0/execution_failure_receipt.json",
+      "sha256": "e00c6a5d8a7eb2db239fbf3a26ff950d0e02bb326ca255c4ac1222797ec92696"
+    }
+  },
+  "source_shape_audit": {
+    "path": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r1/source-shape-audit/shape_audit.json",
+    "sha256": "38802bacd9ec08de95556986445fe59c2c8ea815745f0f8a89147ffd2ec704bd",
+    "replay_rows": 13014,
+    "unique_replay_images": 8363,
+    "same_target_immediate_pairs": 13012,
+    "same_target_same_epoch_pairs": 12876,
+    "shape_mismatch_pairs": 32,
+    "shape_mismatch_arm_rows": 64,
+    "noncanonical_source_segments": 11,
+    "candidate_output_accessed": false,
+    "truth_or_event_accessed": false
+  },
+  "data_partitions": [
+    {
+      "id": "revel-dynamic-full-continuous-development-r1-reuse",
+      "source_identity": "REVEL_DYNAMIC_V1_RGB_LABELS_VICON",
+      "content_identity": "REVEL_DYNAMIC_8580_FRAME_INPUT_FREEZE_EE7073C3",
+      "identity_basis": "Exact R0 hash-bound 8,580-frame input freeze reused as burned Development data; no new Confirmation identity is claimed.",
+      "identity_manifest_ref": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/manifest.json",
+      "identity_sha256": "ee7073c311832c1866addd6440c917fdcd45fb46a41c7f9c8072413a60f9b642",
+      "independence_group": "REVEL_DYNAMIC_SINGLE_CAPTURE",
+      "ancestry": [
+        "REVEL_DYNAMIC_IMAGES_ZIP_7D7EC260",
+        "REVEL_DYNAMIC_LABELS_ZIP_EFD08F3F",
+        "REVEL_DYNAMIC_BAG_6B10752B",
+        "DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0"
+      ],
+      "role": "DEVELOPMENT",
+      "outcome_access": "FULL",
+      "result_access_state": "OUTPUT_INSPECTED",
+      "observation_unit": "CAPTURE_SESSION",
+      "split_basis": "ENTIRE_SINGLE_CAPTURE_REUSED_AS_BURNED_DEVELOPMENT; NO CONFIRMATION CLAIM",
+      "research_track": "DEVELOPMENT_DIAGNOSTIC",
+      "reuse_policy": "R1 DEVELOPMENT ONLY; R0 FAILURE AND ALL PRIOR ACCESS DISCLOSED; NEVER SAME-CLAIM CONFIRMATION"
+    }
+  ],
+  "independence_and_estimand": {
+    "highest_independence_unit": "REVEL_DYNAMIC_SINGLE_CAPTURE",
+    "nested_units": [
+      "TARGET",
+      "PARENT_NATURAL_EVENT",
+      "FRAME_PAIR"
+    ],
+    "primary_evaluation_unit": "PARENT_NATURAL_EVENT",
+    "region_role": "ANCHOR STRATUM ONLY",
+    "frame_role": "LONGITUDINAL REPEATED MEASUREMENT",
+    "estimand": "Fixed-denominator correct parent-event count and wrong-signed count for each frozen arm, plus the frozen flow-over-bbox advancement rule."
+  },
+  "outcome_firewall": {
+    "producer_allowlist": [
+      "R0 frozen replay_input.jsonl",
+      "R0 frozen replay RGB image root"
+    ],
+    "producer_forbidden": [
+      "truth.jsonl",
+      "natural_events.jsonl",
+      "Vicon",
+      "future RGB/ROI/target/epoch",
+      "R0 candidate output, which does not exist",
+      "old F-1B decision output"
+    ],
+    "required_order": [
+      "Run candidate-free source audit.",
+      "Freeze and independently pass R1 design.",
+      "Implement guard, atomic producer, evaluator bindings and fixtures.",
+      "Freeze and independently pass implementation identity.",
+      "Run representative no-truth pilot and guarded-host preflight.",
+      "Record a separately reviewed one-shot activation.",
+      "Run producer exactly once through guarded host.",
+      "Only after producer terminal, receipt and exact keyset pass may evaluator read truth and events."
+    ],
+    "old_f1b_decision_status": "SEALED_DECLARED_ZERO_ACCESS",
+    "old_f1b_decision_access_authorized": false
+  },
+  "shape_guard_contract": {
+    "comparison": "Exact native decoded grayscale ndarray shape tuple (H,W) of the current and immediate previous frame for the same target.",
+    "trigger": "previous.gray.shape != current.gray.shape",
+    "position": "After causal history/epoch and delta-t validation, before bbox area difference, ROI conversion, feature detection or LK.",
+    "reason_precedence": [
+      "INSUFFICIENT_HISTORY",
+      "HISTORY_GAP",
+      "FRAME_SHAPE_CHANGE",
+      "arm-specific ROI/feature/support/nonfinite reasons"
+    ],
+    "common_arm_behavior": {
+      "arm_rows": 2,
+      "signed_approach_rate_per_s": null,
+      "quality_score": 0.0,
+      "quality_components": [
+        "previous_frame_shape_hw",
+        "current_frame_shape_hw"
+      ],
+      "ttl_ns": 100000000,
+      "abstention_reason": "FRAME_SHAPE_CHANGE"
+    },
+    "history_after_trigger": "The current observation replaces the previous observation for that target. No feature, ROI, quality or earlier frame state crosses the mismatch. A following pair becomes evaluable only when its immediate previous and current decoded shapes match.",
+    "forbidden_repairs": [
+      "resize",
+      "letterbox",
+      "pad",
+      "crop",
+      "bridge across the mismatch",
+      "drop either arm row",
+      "drop the opportunity from an event denominator"
+    ]
+  },
+  "inherited_without_change": {
+    "source_input_and_truth_ledgers": "R0 exact hashes and row identities",
+    "causality": "current plus immediate previous only; lookahead zero",
+    "arms": [
+      "BBOX_LOG_AREA_GROWTH",
+      "ROI_SPARSE_RADIAL_FLOW"
+    ],
+    "arm_parameters": "R0 parameter identity except the common pre-arm FRAME_SHAPE_CHANGE behavior",
+    "output_fields": "target_id, region, signed approach, quality, TTL, abstention and all R0 provenance fields",
+    "event_definition": "R0 truth-only maximal same-target/same-truth-state parent event",
+    "fixed_primary_event_count": 469,
+    "candidate_deadband_per_s": 0.02,
+    "event_evaluable": "At least 3 finite rows and coverage >=0.50; all abstained rows remain in the denominator.",
+    "wrong_signed_definition": "approaching predicted receding or receding predicted approaching; quasi-direction errors are incorrect but not wrong-signed",
+    "readiness_and_relative_gates": "All R0 overall, truth-state, target, region, coverage-loss and wrong-sign gates unchanged",
+    "claim_ceiling": "SINGLE_CAPTURE_ORACLE_ROI_CONDITIONED_DEVELOPMENT_ONLY"
+  },
+  "constraints": [
+    {
+      "id": "C01_CAUSAL_LOOKAHEAD",
+      "class": "GATE",
+      "description": "Candidate lookahead remains zero.",
+      "metric": "lookahead_frames",
+      "operator": "EQ",
+      "threshold": 0,
+      "unit": "frames",
+      "rationale": "Preserves the requested causal interface.",
+      "calibration_source": "R0 frozen causal contract.",
+      "sensitivity_plan": "None; nonzero lookahead invalidates R1.",
+      "revision_policy": "New version only.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "C02_SHAPE_MISMATCH_OPPORTUNITIES",
+      "class": "GATE",
+      "description": "Frozen source preflight must reproduce all same-target same-epoch decoded-shape mismatches.",
+      "metric": "shape_mismatch_pair_count",
+      "operator": "EQ",
+      "threshold": 32,
+      "unit": "target-conditioned frame pairs",
+      "rationale": "Binds the source defect denominator before candidate execution.",
+      "calibration_source": "Hash-bound R1 source shape audit.",
+      "sensitivity_plan": "No alternate count; drift stops before producer.",
+      "revision_policy": "New source identity or evidence version only.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "C03_COMMON_SHAPE_ABSTENTION_ROWS",
+      "class": "GATE",
+      "description": "Every one of 32 mismatch opportunities emits one row for each of two arms.",
+      "metric": "FRAME_SHAPE_CHANGE_arm_rows",
+      "operator": "EQ",
+      "threshold": 64,
+      "unit": "arm rows",
+      "rationale": "Prevents asymmetric support and hidden deletion.",
+      "calibration_source": "32 frozen opportunities times two frozen arms.",
+      "sensitivity_plan": "None; any other count invalidates producer.",
+      "revision_policy": "New version only.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "C04_EXACT_PRODUCER_ROWS",
+      "class": "GATE",
+      "description": "Producer preserves one row per arm for every replay opportunity.",
+      "metric": "producer_output_rows",
+      "operator": "EQ",
+      "threshold": 26028,
+      "unit": "arm rows",
+      "rationale": "Maintains the full fixed replay denominator.",
+      "calibration_source": "13,014 frozen replay opportunities times two arms.",
+      "sensitivity_plan": "No row dropping or common-success subset.",
+      "revision_policy": "New version only.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "C05_PRIMARY_EVENT_DENOMINATOR",
+      "class": "GATE",
+      "description": "Evaluator keeps every frozen primary parent event for both arms.",
+      "metric": "primary_parent_event_count",
+      "operator": "EQ",
+      "threshold": 469,
+      "unit": "events per arm",
+      "rationale": "Prevents abstention-driven event selection.",
+      "calibration_source": "R0 truth-only event manifest.",
+      "sensitivity_plan": "Three/eight-frame counts remain diagnostic only as in R0.",
+      "revision_policy": "New version only.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "C06_ONE_SHOT_GUARDED_EXECUTION",
+      "class": "INVARIANT",
+      "description": "Formal producer requires a representative real-mechanics pilot, independently validated guarded-host preflight, exclusive atomic outputs and a separately reviewed one-shot activation.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "C07_TRUTH_FIREWALL",
+      "class": "INVARIANT",
+      "description": "Producer cannot import, read, overwrite or derive truth/event/Vicon/old-decision content; evaluator touches truth only after producer identity and exact keyset validation.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "C08_NO_IMAGE_NORMALIZATION",
+      "class": "INVARIANT",
+      "description": "R1 cannot resize, pad, crop or letterbox decoded frames because apparent scale is the estimand signal.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    }
+  ],
+  "freeze": {
+    "level": "F1",
+    "amendment_mode": "NEW_VERSION_ONLY",
+    "outcome_access_started": false,
+    "locked": [
+      "R0 input/truth/event identities and scientific gates",
+      "native shape comparison and reason precedence",
+      "common two-arm FRAME_SHAPE_CHANGE output",
+      "current-frame replacement history semantics",
+      "32 opportunity and 64 arm-row source preflight",
+      "26,028 producer rows and 469-event fixed denominator",
+      "guarded one-shot execution and no old F-1B decision access"
+    ]
+  },
+  "result_model": {
+    "execution_validity": "NOT_RUN",
+    "scientific_outcome": "NOT_RUN",
+    "terminal_scope": "EVIDENCE_VERSION",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "valid_terminals": [
+      "FLOW_CANDIDATE_READY_FOR_FUTURE_CONFIRMATION_DESIGN",
+      "BBOX_BASELINE_PREFERRED_FOR_FUTURE_CONFIRMATION_DESIGN",
+      "BOTH_NOT_READY_FOR_CONFIRMATION"
+    ],
+    "not_evaluable_terminal": "NOT_EVALUABLE"
+  },
+  "successor_policy": {
+    "preserve_previous_evidence": true,
+    "new_version_allowed": true,
+    "design_review_pass_effect": "Authorize implementation, fixtures, stable root adapter, pilot and implementation identity only; formal producer still requires separate guarded-host preflight and activation review.",
+    "automatic_confirmation_authority": false,
+    "automatic_android_or_product_authority": false
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1_COMMON_NATIVE_SHAPE_GUARD_CLOSES_R0_WITHOUT_SCALE_NORMALIZATION",
+      "theoretical_or_empirical_basis": "R0 failed at the first of 32 exact native shape mismatches; resize or pad would alter scale-sensitive bbox and radial-flow signals.",
+      "causal_difference": "Only pairs with unequal immediate decoded shapes change behavior, and both arms receive the identical abstention/reset.",
+      "expected_information_gain": "Determines whether the original scientific comparison is executable after removing the known interface discontinuity without manufacturing apparent scale.",
+      "minimal_test": "Synthetic enter/stay/exit shape segment fixture, exact source preflight, representative no-truth pilot and one full guarded producer.",
+      "evaluation_metric": "Exact 64 common shape abstention rows, 26,028 total rows, complete producer receipt, then unchanged 469-event evaluation.",
+      "falsifier": "Any shape mismatch reaches bbox/LK, counts drift, rows drop, atomic/progress contract fails, or fixed-event evaluation remains unavailable.",
+      "cost": "LOW",
+      "resource_budget": "One source audit, one implementation, bounded synthetic fixtures, two equivalent 2,000-row pilots, one full producer and one conditional evaluator.",
+      "stop_condition": "Stop R1 on design/identity/preflight failure or the first formal producer/evaluator failure; do not tune or rerun.",
+      "selection_reason": "A common abstention is the narrowest repair that protects the scale estimand and addresses every observed crash boundary."
+    }
+  ],
+  "experiment_design": {
+    "search_strategy": "SINGLE_SEQUENTIAL_REPAIR_WITHOUT_PARAMETER_SWEEP",
+    "minimal_discriminating_experiment": "Prove the shared guard on analytic shape transitions, reproduce 32 source mismatches, then run exactly one fixed full replay.",
+    "resource_budget": "13,014 replay rows, 8,363 decoded images, two frozen arms, one 2,000-row scheduling/equivalence pilot per compared thread setting, one guarded full producer and one post-keyset evaluator.",
+    "stop_conditions": "Stop before truth on any identity, shape count, output completeness, progress, atomic publication or firewall failure; after valid join accept the unchanged R0 scientific terminal."
+  },
+  "predecessor_failure_learning": {
+    "failure_class": "IMPLEMENTATION_INPUT_SHAPE_CONTRACT",
+    "observation": "R0 crashed before publication at a same-target same-epoch pair whose decoded shapes were 260x346 and 258x346.",
+    "inference": "The evidence version lacked a pre-geometry decoded-shape contract; no arm effectiveness inference is supported.",
+    "alternative_explanations": [
+      "Some same-size frames may still contain unobserved crop or rescale changes.",
+      "A later unrelated OpenCV or source defect may appear after the first guard is fixed."
+    ],
+    "constraint_challenges": [
+      "A blanket no-repair terminal was appropriate for R0 identity but must not close the research question.",
+      "Global normalization is rejected because it would change the scale signal."
+    ],
+    "next_hypotheses": [
+      "The common shape guard is sufficient for complete producer execution.",
+      "The 64 abstention rows do not make fixed parent-event evaluation unavailable."
+    ],
+    "reuse_candidates": [
+      "R0 failure receipt as regression fixture.",
+      "The 32 mismatch pairs as source-boundary canaries."
+    ],
+    "information_gain": "The failure was localized to 0.2485 percent of eligible pairs in 11 short source segments, making a narrow common guard higher-value than global image normalization."
+  }
+}
