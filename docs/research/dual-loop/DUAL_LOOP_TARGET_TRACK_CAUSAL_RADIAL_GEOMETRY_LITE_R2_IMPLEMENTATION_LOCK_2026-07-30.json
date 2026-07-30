@@ -33,7 +33,7 @@
     "radial_geometry.py": "d1c688ac45985dd9ee1144915ec20e3b4311109f043c9c6f9cac5c4276e5d3ba",
     "run_replay.py": "8026bb275e1c0a051210789981bb391d1b346be0ab27bea79713263827737769",
     "test_r2_identity.py": "7b66ac0ab9c5106b07a141d26d62be5dd23c8bb8ffe707bd4e4a2b46fac05817",
-    "validate_implementation_lock.py": "b0a5e2a1c253ca89a6a72c3174ee9c7f9de451c5a339d1054f9785d6b13c6a91"
+    "validate_implementation_lock.py": "47fe2fc7eebc69d2f1090d9f7e2a95a44a12684552c1f920fd2310ba28a6aa4f"
   },
   "dependency_hashes": {
     "stable_adapter": {
@@ -90,6 +90,7 @@
       "future frames"
     ],
     "expected_output_rows": 26028,
+    "output_rows_expected": 26028,
     "expected_shape_change_opportunities": 32,
     "expected_shape_change_arm_rows": 64,
     "success_progress_status": "complete",

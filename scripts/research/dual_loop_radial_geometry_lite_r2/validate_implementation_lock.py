@@ -119,6 +119,29 @@ def validate(lock_path: Path) -> dict[str, Any]:
             "gates": evaluator.SCIENTIFIC_GATE_CONTRACT_SHA256,
         },
     )
+    producer_contract = lock.get("producer_contract", {})
+    replay_contract = (
+        producer_contract.get("input_allowlist", {})
+        .get("replay_input", {})
+    )
+    evaluator_contract = lock.get("evaluator_contract", {})
+    check(
+        "inherited_evaluator_lock_shape",
+        producer_contract.get("output_rows_expected") == 26_028
+        and replay_contract.get("rows") == 13_014
+        and evaluator_contract.get("truth", {}).get("rows") == 17_160
+        and evaluator_contract.get("natural_events", {}).get("rows") == 1_660,
+        {
+            "output_rows_expected": producer_contract.get(
+                "output_rows_expected"
+            ),
+            "replay_rows": replay_contract.get("rows"),
+            "truth_rows": evaluator_contract.get("truth", {}).get("rows"),
+            "event_rows": evaluator_contract.get(
+                "natural_events", {}
+            ).get("rows"),
+        },
+    )
     failures = [item["name"] for item in checks if not item["passed"]]
     return {
         "status": "VALID" if not failures else "INVALID",

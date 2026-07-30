@@ -5,7 +5,7 @@
 `IMPLEMENTATION_REVIEW_PASS`
 
 Implementation lock SHA-256:
-`7c3b323d6a231b1989527007578f343c77caf0dd2a66504243641f6e6aaa9d73`
+`c2ba9a2733fd4e6c8529421240348e6b0593d65dd1b44a154cfbb15deb60f7fe`
 
 The R2 module changes only protocol/implementation identity and uses the repaired,
 hash-bound guarded execution envelope. Parameter SHA-256 and scientific-gate
@@ -26,3 +26,10 @@ Verification:
 
 Formal execution and truth access remain unauthorized. This PASS permits commit,
 post-lock no-truth pilot, host preflight and activation preparation only.
+
+A pre-activation lock-shape audit added the exact legacy-compatible
+`output_rows_expected=26028` key consumed by the inherited evaluator and validator
+checks for the 13,014 / 26,028 / 17,160 / 1,660 ledgers. No scientific
+implementation file changed. Independent narrow re-review passed against lock
+SHA-256
+`c2ba9a2733fd4e6c8529421240348e6b0593d65dd1b44a154cfbb15deb60f7fe`.
