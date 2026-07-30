@@ -41,6 +41,7 @@
 - [`research/ustrf_detector_taxonomy_coverage/`](research/ustrf_detector_taxonomy_coverage/)：已关闭的 detector taxonomy / target-attribution campaign，以及历史 REveL detector 失败分类与灵敏度诊断；仅保留 benchmark 复核价值，不重开 detector、shadow、H2 或生产授权。
 - [`research/ustrf_route_target_evidence_closure/`](research/ustrf_route_target_evidence_closure/)：route-target 候选盲真值、指标资格、receipt-aware replay、逐指标 L1 profile、observability/JRDB source audit 与单变量 lifecycle 机制诊断。JRDB cross-sequence replication 已冻结 3 个新 sequence × 120 帧并以原 PCD/oriented-box/四类 kernel 复算，pooled object/pair support 为 `83.08% / 80.81%`，但远距仅 1/3 可评，仍无 selection、route/event、shadow/H2 或生产权限。
 - [`research/egomotion_compensated_looming/`](research/egomotion_compensated_looming/)：RCLE canonical Module；当前阶段、终态、执行权限与下一步只以 [RCLE current 入口](../docs/research/rcle/README.md) 为准，本索引不复制动态结论。
+- [`research/dual_loop_radial_geometry_lite_r0/`](research/dual_loop_radial_geometry_lite_r0/)：双环 successor 的 REveL Development 输入冻结、truth-only natural-event ledger 与后续 causal replay Module；旧 F-1B decision 输出不在输入面。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。

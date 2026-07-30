@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`successor discovery / SOURCE_FOUND_FOR_DEVELOPMENT / RUNTIME_NOT_EVALUATED`
+状态：`successor Development / DESIGN_REVIEW_PASS / IMPLEMENTATION_NOT_RUN`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -12,16 +12,19 @@
 
 本地只读连接复算确认，REveL Dynamic 的 RGB 人框、green/yellow 目标身份与
 person/sensor Vicon 径向轨迹能在 LEFT/CENTER/RIGHT 全部区域输出目标可归因的
-approaching/quasi-static/receding 开发真值。因此来源搜索已经成功，但手机端 causal
-geometry 仍只是设计候选：
+approaching/quasi-static/receding 开发真值。随后
+[LITE R0 设计评审](DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)
+冻结完整连续 capture、两条最小 arm、输出/TTL/abstention、parent-event 分母与
+停止规则并通过独立评审；候选实现和 replay 仍未运行：
 
 ```text
 PREDECESSOR_F1B: COMPLETE / NO_INCREMENT / VALID
 SUCCESSOR_SOURCE_DISCOVERY: COMPLETE / SOURCE_FOUND_FOR_DEVELOPMENT
-RUNTIME_GEOMETRY_SOURCE: DESIGN_CANDIDATE_ONLY / NOT_EVALUATED
+SUCCESSOR_LITE_DESIGN: DESIGN_REVIEW_PASS / F1_INTERFACE_FROZEN
+RUNTIME_GEOMETRY_SOURCE: IMPLEMENTATION_NOT_RUN / NOT_EVALUATED
 CONFIRMATION: NOT_AUTHORIZED
-EXECUTION_AUTHORITY: NONE
-CLAIM_CEILING: DISCOVERY_SOURCE_SUITABILITY_ONLY
+EXECUTION_AUTHORITY: IMPLEMENTATION_FIXTURES_AND_IDENTITY_LOCK_ONLY
+CLAIM_CEILING: SINGLE_CAPTURE_ORACLE_ROI_CONDITIONED_DEVELOPMENT_ONLY
 ```
 
 BlindAssist 的 predecessor 路线已按“先准入、后实现”顺序走完神经—几何双环
@@ -132,8 +135,8 @@ F-1C。
 
 因此 predecessor 只允许写成 `DEVELOPMENT_ROUTE_REJECTED / NO_INCREMENT`；
 successor 只允许写成
-`SOURCE_FOUND_FOR_DEVELOPMENT / RUNTIME_SOURCE_NOT_EVALUATED`。不得写成双环有效、
-早提醒已实现、运行时可行、产品改善或安全结论。
+`DESIGN_REVIEW_PASS / IMPLEMENTATION_NOT_RUN / RUNTIME_SOURCE_NOT_EVALUATED`。
+不得写成算法有效、双环有效、早提醒已实现、运行时可行、产品改善或安全结论。
 
 ## 当前权限
 
@@ -146,8 +149,8 @@ successor 只允许写成
 | F-1B decision 输出执行 | `NOT_RUN / NOT_NEEDED / SEALED` |
 | F-1C 手机双环 A/B | `STOPPED_BY_F-1B / NOT_AUTHORIZED` |
 | successor 几何真值源 Discovery | `COMPLETED / SOURCE_FOUND_FOR_DEVELOPMENT` |
-| successor causal runtime geometry | `DESIGN_CANDIDATE_ONLY / NOT_EVALUATED` |
-| successor Development round | `NOT_FROZEN / NOT_ACTIVATED` |
+| successor causal runtime geometry | `F1_INTERFACE_FROZEN / IMPLEMENTATION_NOT_RUN` |
+| successor Development round | `DESIGN_REVIEW_PASS / REPLAY_NOT_AUTHORIZED` |
 | successor 独立 Confirmation | `NOT_AUTHORIZED` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
 | 正式融合器或生产 CameraX 接线 | `NOT_AUTHORIZED` |
@@ -157,11 +160,11 @@ successor 只允许写成
 
 ## 下一步
 
-来源 Discovery 已完成，下一步不再是增加旧数据、调 residual 阈值或优化旧 Sparse LK
-调度。唯一建议动作是冻结一个 LITE Development round：定义
-`target/track-conditioned causal radial geometry` 的最小接口、REveL 开发子集、
-按目标/区域的评价单位、abstention 与 falsifier；设计检查通过后，才另行激活最小
-实现和离线 replay。
+LITE R0 设计已冻结并通过独立评审。唯一授权动作是按设计锁实现
+`BBOX_LOG_AREA_GROWTH`、`ROI_SPARSE_RADIAL_FLOW`、evaluator 与 pre-truth
+deterministic fixtures，再冻结 implementation identity 并独立评审。当前不得执行
+全量 producer replay 或 truth join；implementation review PASS 后才可另行激活一次
+全量 replay。
 
 旧 F-1B sealed decision 集不得用于回调规则，旧真机 timing-only 凭据也不得改写成
 效果证据。新的独立 Confirmation 必须在候选输出访问前另行冻结，当前没有自动执行

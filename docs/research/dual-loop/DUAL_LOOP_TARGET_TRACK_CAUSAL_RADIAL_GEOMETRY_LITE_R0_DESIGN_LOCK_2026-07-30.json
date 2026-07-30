@@ -1,0 +1,484 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "profile": "STANDARD_LITE_SCOPE",
+  "governance_policy_id": "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2",
+  "governance_policy_sha256": "e4cd2b01118f36f38cbddebcac6551af782f631e7414e6c90b2f80c0fef33b6e",
+  "protocol_id": "DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0",
+  "version": "R0",
+  "date": "2026-07-30",
+  "stage": "DEVELOPMENT",
+  "design_status": "F1_INTERFACE_FROZEN_FOR_INDEPENDENT_REVIEW",
+  "formal_execution_authorized": false,
+  "question": "Within one REveL Dynamic Development capture and source-GT target/ROI tracks, does a causal ROI sparse-radial-flow arm provide a reproducible parent-natural-event advantage over a causal box log-area-growth baseline without future frames, Vicon runtime input, or hidden abstention deletion?",
+  "claims_allowed": [
+    "IMPLEMENTATION_READY_FOR_CONFIRMATION",
+    "IMPLEMENTATION_NOT_READY",
+    "NOT_EVALUABLE"
+  ],
+  "claim_ceiling": "SINGLE_CAPTURE_ORACLE_ROI_CONDITIONED_DEVELOPMENT_ONLY",
+  "development_terminals_and_claim_mapping": {
+    "FLOW_CANDIDATE_READY_FOR_FUTURE_CONFIRMATION_DESIGN": "IMPLEMENTATION_READY_FOR_CONFIRMATION",
+    "BBOX_BASELINE_PREFERRED_FOR_FUTURE_CONFIRMATION_DESIGN": "IMPLEMENTATION_READY_FOR_CONFIRMATION",
+    "BOTH_NOT_READY_FOR_CONFIRMATION": "IMPLEMENTATION_NOT_READY",
+    "NOT_EVALUABLE": "NOT_EVALUABLE",
+    "interpretation": "IMPLEMENTATION_READY_FOR_CONFIRMATION means eligible to design a new source-disjoint F2 protocol only. It does not authorize Confirmation execution and does not exceed the single-capture Development claim ceiling."
+  },
+  "non_goals": [
+    "accessing or consuming old F-1B decision outputs",
+    "claiming detector, tracker, fusion, alert, Android, realtime, product or safety effectiveness",
+    "using REveL Vicon, future boxes, future track states or future RGB in a candidate producer",
+    "physical TTC, closest approach, body-envelope distance or assistive-event truth",
+    "global-motion compensation, rotation compensation, depth, segmentation, ARCore or a new risk field",
+    "confirmation inference, cross-capture generalization, p-values or confidence intervals that treat nested frames or events as independent captures",
+    "changing production YOLO, CameraX, risk, cooldown, fatigue, planner, effects or feedback behavior"
+  ],
+  "data_partitions": [
+    {
+      "id": "revel-dynamic-full-continuous-development-r0",
+      "source_identity": "REVEL_DYNAMIC_V1_RGB_LABELS_VICON",
+      "content_identity": "REVEL_DYNAMIC_8580_FRAME_INPUT_FREEZE_EE7073C3",
+      "identity_basis": "Hash-bound full 8,580-frame RGB/label capture, verified REveL dynamic bag, producer allowlist, evaluator truth ledger and truth-only natural-event ledger.",
+      "identity_manifest_ref": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/manifest.json",
+      "identity_sha256": "ee7073c311832c1866addd6440c917fdcd45fb46a41c7f9c8072413a60f9b642",
+      "independence_group": "REVEL_DYNAMIC_SINGLE_CAPTURE",
+      "ancestry": [
+        "REVEL_DYNAMIC_IMAGES_ZIP_7D7EC260",
+        "REVEL_DYNAMIC_LABELS_ZIP_EFD08F3F",
+        "REVEL_DYNAMIC_BAG_6B10752B"
+      ],
+      "role": "DEVELOPMENT",
+      "outcome_access": "FULL",
+      "result_access_state": "OUTPUT_INSPECTED",
+      "observation_unit": "CAPTURE_SESSION",
+      "nested_units": [
+        "TARGET",
+        "PARENT_NATURAL_EVENT",
+        "FRAME_PAIR"
+      ],
+      "split_basis": "ENTIRE_SINGLE_CAPTURE_FIXED_BEFORE_NEW_CANDIDATE_OUTPUT; NO CONFIRMATION SPLIT CLAIM",
+      "research_track": "DEVELOPMENT_DIAGNOSTIC",
+      "reuse_policy": "DEVELOPMENT_ONLY_FOR_THIS_CLAIM; NEVER SAME-CLAIM CONFIRMATION"
+    }
+  ],
+  "frozen_source_denominators": {
+    "source_frame_count": 8580,
+    "target_frame_rows": 17160,
+    "unique_roi_replay_opportunities": 13014,
+    "raw_truth_event_count": 1660,
+    "primary_parent_event_count": 469,
+    "target_ids": [
+      "track-000",
+      "track-001"
+    ],
+    "regions": [
+      "LEFT",
+      "CENTER",
+      "RIGHT"
+    ],
+    "truth_states": [
+      "approaching",
+      "quasi_static",
+      "receding"
+    ],
+    "minimum_primary_events_in_any_target_x_anchor_region_x_truth_state_cell": 9,
+    "independence_interpretation": "All targets and events are nested in one capture. Region is a stratum, not an independent unit."
+  },
+  "outcome_firewall": {
+    "producer_allowlist": [
+      "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/replay_input.jsonl",
+      "artifacts.local/evidence/datasets/revel-dynamic-images-labels-v1-20260720/extracted/images/images/"
+    ],
+    "producer_forbidden_inputs": [
+      "truth.jsonl",
+      "natural_events.jsonl",
+      "dynamic.bag",
+      "Vicon pose or range-rate",
+      "source oracle target labels",
+      "future RGB, future ROI, future target ID or future track epoch",
+      "any old F-1B decision YOLO, Sparse LK, A/B or alert output"
+    ],
+    "required_order": [
+      "Run producer from the allowlist only.",
+      "Write complete output rows and SHA-256 receipt.",
+      "Exit producer.",
+      "Only then run a separate evaluator that joins truth and natural events."
+    ],
+    "old_f1b_decision_status": "DECLARED_NOT_ACCESSED_NOT_MACHINE_VERIFIED",
+    "old_f1b_decision_sessions_consumed": 0,
+    "old_f1b_decision_reuse": "FORBIDDEN_IN_R0"
+  },
+  "causal_input_contract": {
+    "frame_access": "CURRENT_AND_IMMEDIATELY_PREVIOUS_FRAME_ONLY",
+    "maximum_lookback_frames": 1,
+    "lookahead_frames": 0,
+    "target_id_semantics": "Opaque replay ID supplied by the frozen source-GT track ledger; the producer cannot see green/yellow oracle labels.",
+    "track_epoch": "A missing or ambiguous source ROI closes the epoch. The next unique ROI starts a new epoch and has no usable history.",
+    "roi_source": "REveL source GT 2D box, normalized xywh, conditional geometry oracle input.",
+    "region_rule": {
+      "basis": "current ROI center x",
+      "LEFT": "x < 1/3",
+      "CENTER": "1/3 <= x <= 2/3",
+      "RIGHT": "x > 2/3"
+    },
+    "timestamp_basis": "rosbag image record timestamp",
+    "history_gap_rule": "A non-positive delta or delta greater than 100,000,000 ns is unusable history and emits abstention.",
+    "shared_preprocessing": "Decode source JPEG to native-size uint8 grayscale. Do not resize, crop outside the current/previous target ROI, or use source truth.",
+    "global_motion_policy": "NO_GLOBAL_MOTION_COMPENSATION_IN_EITHER_ARM",
+    "fairness_rule": "Both arms consume the exact same replay-input rows, target IDs, epochs, frame pairs, timestamps, regions, TTL and evaluator denominators."
+  },
+  "comparison_arms": [
+    {
+      "arm_id": "BBOX_LOG_AREA_GROWTH",
+      "role": "STRONG_MINIMAL_BASELINE",
+      "formula": "signed_approach_rate_per_s = 0.5 * (ln(current_box_area_px2) - ln(previous_box_area_px2)) / delta_t_s",
+      "sign": "positive=approaching or image expansion; negative=receding or contraction",
+      "history": "immediately previous unique ROI in the same track epoch",
+      "quality": {
+        "score": "1.0 when both finite positive-area boxes and valid delta_t exist; otherwise 0.0",
+        "components": [
+          "box_pair_valid",
+          "delta_t_ns"
+        ]
+      },
+      "abstention": [
+        "INSUFFICIENT_HISTORY",
+        "HISTORY_GAP",
+        "INVALID_ROI",
+        "NONFINITE_ESTIMATE"
+      ]
+    },
+    {
+      "arm_id": "ROI_SPARSE_RADIAL_FLOW",
+      "role": "TARGET_TRACK_CONDITIONED_CANDIDATE",
+      "feature_detection": {
+        "domain": "previous clipped ROI",
+        "opencv": "goodFeaturesToTrack",
+        "max_corners": 80,
+        "quality_level": 0.01,
+        "min_distance_px": 5,
+        "block_size_px": 5
+      },
+      "tracking": {
+        "opencv": "calcOpticalFlowPyrLK",
+        "window_px": [
+          15,
+          15
+        ],
+        "max_level": 2,
+        "termination_count": 20,
+        "termination_epsilon": 0.03,
+        "forward_backward_error_max_px": 1.5,
+        "current_point_domain": "current ROI expanded by 10 percent and clipped to image"
+      },
+      "radial_formula": "For every surviving track, use previous and current pixel radii about their respective ROI centers. If both radii are at least 2 px, track_rate = ln(current_radius / previous_radius) / delta_t_s. The arm estimate is the median track_rate.",
+      "sign": "positive=approaching or image expansion; negative=receding or contraction",
+      "support_gates": {
+        "minimum_surviving_tracks": 8,
+        "minimum_previous_roi_quadrants": 2,
+        "quadrant_definition": "four quadrants around previous ROI center"
+      },
+      "quality": {
+        "score": "clip01(min(1, surviving_tracks/24) * min(1, occupied_quadrants/4) * max(0, 1 - median_fb_error_px/1.5) * 1/(1 + score_mad_per_s/0.10))",
+        "components": [
+          "detected_features",
+          "surviving_tracks",
+          "occupied_quadrants",
+          "median_fb_error_px",
+          "score_mad_per_s"
+        ]
+      },
+      "abstention": [
+        "INSUFFICIENT_HISTORY",
+        "HISTORY_GAP",
+        "INVALID_ROI",
+        "FEATURES_LT_8",
+        "SURVIVING_TRACKS_LT_8",
+        "SPATIAL_SUPPORT_LT_2_QUADRANTS",
+        "NONFINITE_ESTIMATE"
+      ]
+    }
+  ],
+  "output_contract": {
+    "one_row_per_arm_per_replay_opportunity": true,
+    "required_fields": [
+      "protocol_id",
+      "implementation_id",
+      "parameter_sha256",
+      "arm_id",
+      "capture_id",
+      "source_frame_id",
+      "captured_at_ns",
+      "available_at_ns",
+      "target_id",
+      "track_epoch",
+      "region",
+      "signed_approach_rate_per_s",
+      "quality",
+      "ttl_ns",
+      "valid_until_ns",
+      "abstention_reason"
+    ],
+    "signed_approach_rate_unit": "relative linear image scale per second",
+    "signed_approach_sign": "positive=approaching",
+    "abstention_value_rule": "signed_approach_rate_per_s must be null when abstention_reason is non-null",
+    "non_abstention_value_rule": "signed_approach_rate_per_s must be finite and abstention_reason must be null",
+    "ttl_ns": 100000000,
+    "valid_until_formula": "captured_at_ns + ttl_ns",
+    "available_at_semantics": "Equal to captured_at_ns in deterministic source-time replay; this is not measured wall-clock or device latency.",
+    "stale_rule": "A consumer timestamp later than valid_until_ns must treat the row as abstained STALE_RESULT and must not renew TTL.",
+    "ttc": "EXCLUDED"
+  },
+  "truth_and_event_contract": {
+    "truth_source": "REveL helmet-person and event/LiDAR sensor Vicon range-rate joined only by evaluator",
+    "truth_signed_approach": "negative source radial range-rate",
+    "truth_state": {
+      "approaching": "signed truth approach >= 0.10 m/s",
+      "quasi_static": "-0.10 m/s < signed truth approach < 0.10 m/s",
+      "receding": "signed truth approach <= -0.10 m/s"
+    },
+    "parent_natural_event": "Maximal same-target, same-truth-state run over consecutive RGB indices with unique ROI, valid truth and inter-frame gap <=100 ms.",
+    "region_change": "Does not split the parent event.",
+    "event_anchor_region": "Region of the first truth-eligible event frame.",
+    "primary_event_min_frames": 5,
+    "short_runs": "Preserved in the ledger but excluded from the primary parent-event denominator.",
+    "censoring": "Missing/ambiguous ROI, missing truth, non-monotonic time or gap >100 ms closes the current event; it is never imputed or bridged."
+  },
+  "evaluation_plan": {
+    "primary_unit": "PARENT_NATURAL_EVENT",
+    "hierarchy": "capture -> target -> parent natural event -> frame pair",
+    "region_role": "ANCHOR STRATUM ONLY, NOT INDEPENDENT UNIT",
+    "candidate_state_deadband_per_s": 0.02,
+    "candidate_state_rule": {
+      "approaching": "event median signed approach > +0.02/s",
+      "quasi_static": "-0.02/s <= event median signed approach <= +0.02/s",
+      "receding": "event median signed approach < -0.02/s"
+    },
+    "event_score": "Median non-abstained signed_approach_rate_per_s within the fixed parent event.",
+    "event_coverage_denominator": "All truth-eligible frame rows assigned to that parent event, including the first row. The first row is classified by its current truth state even when its causal pair begins in the preceding truth state; an epoch reset may abstain and remains in the denominator.",
+    "event_coverage_numerator": "Rows in the parent event with a finite arm score and null abstention_reason.",
+    "event_evaluable": "At least 3 numerator rows and numerator/denominator >= 0.50.",
+    "wrong_signed_definition": "Truth approaching predicted receding, or truth receding predicted approaching. Directional versus quasi-static errors are incorrect but not wrong-signed.",
+    "abstained_event_definition": "A primary event that is not event-evaluable; it remains an incorrect event in the fixed denominator.",
+    "fixed_denominator_rule": "Every one of the 469 primary events remains in each arm denominator. Non-evaluable or fully abstained events score incorrect; they are not deleted.",
+    "primary_metrics": [
+      "correct parent-event count and fraction",
+      "wrong-signed parent-event count",
+      "evaluable and abstained parent-event counts",
+      "median event coverage",
+      "correct-count difference ROI_SPARSE_RADIAL_FLOW minus BBOX_LOG_AREA_GROWTH"
+    ],
+    "required_strata": [
+      "target_id",
+      "event anchor region",
+      "truth state"
+    ],
+    "secondary_diagnostics": [
+      "frame-level signed score distribution as longitudinal repeats",
+      "quality components and abstention reasons",
+      "event coverage by target x anchor region x truth state",
+      "candidate deadband sensitivity at 0.01/s and 0.05/s without changing the R0 terminal"
+    ],
+    "inference": "Descriptive Development counts only. No p-values, capture-generalization confidence intervals, AUROC/F1 pooling over frames, or claim of independent event sampling."
+  },
+  "advancement_rules": {
+    "arm_readiness_floor": {
+      "correct_primary_event_fraction_min": 0.6,
+      "wrong_signed_primary_event_fraction_max": 0.2,
+      "evaluable_primary_event_fraction_min": 0.8,
+      "correct_primary_event_fraction_min_in_each_truth_state": 0.5
+    },
+    "flow_over_bbox_gate": {
+      "correct_event_count_gain_min": 2,
+      "wrong_signed_event_count_increase_max": 0,
+      "evaluable_event_count_loss_max": 23,
+      "target_replication": "flow correct-count gain must be positive for both target IDs",
+      "region_replication": "flow correct-count gain must be positive in at least two event anchor regions",
+      "single_event_dominance": "at least two distinct parent events must account for the total correct-count gain"
+    },
+    "terminal_precedence": [
+      "Any firewall, causality, identity, schema or fixed-denominator violation -> INVALID_EXECUTION.",
+      "Missing required target/region/state event coverage or untraceable truth join -> NOT_EVALUABLE.",
+      "Flow readiness floor plus every flow-over-bbox gate -> FLOW_CANDIDATE_READY_FOR_FUTURE_CONFIRMATION_DESIGN.",
+      "Otherwise, if bbox meets the readiness floor -> BBOX_BASELINE_PREFERRED_FOR_FUTURE_CONFIRMATION_DESIGN.",
+      "Otherwise -> BOTH_NOT_READY_FOR_CONFIRMATION."
+    ],
+    "rationale": "The two-event gain is the smallest non-single-event advantage. Five-percent event coverage loss (23 of 469) is the maximum allowed cost of quality abstention. Absolute floors prevent advancing a relative winner that is unusable on most fixed events.",
+    "confirmation_effect": "No terminal automatically authorizes Confirmation execution; a new capture/session/source-disjoint F2 protocol is required."
+  },
+  "constraints": [
+    {
+      "id": "causal-only-input",
+      "class": "INVARIANT",
+      "description": "Candidate producer uses only current and immediately previous RGB/ROI rows in one track epoch.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "truth-firewall",
+      "class": "INVARIANT",
+      "description": "Vicon, event truth, oracle labels and old F-1B decision outputs are invisible to the producer.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "primary-event-min-frames",
+      "class": "GATE",
+      "description": "A primary truth-only parent event has at least five consecutive eligible frames.",
+      "metric": "eligible_frame_count",
+      "operator": "GTE",
+      "threshold": 5,
+      "unit": "RGB frames at source cadence",
+      "rationale": "Provides at least four causal transitions and rejects one-frame truth-state flicker without smoothing candidate outcomes.",
+      "calibration_source": "REveL median source cadence 23.07 Hz and two-frame candidate interface.",
+      "sensitivity_plan": "Report 3-frame and 8-frame event counts as source-only diagnostics; R0 terminal remains on five.",
+      "revision_policy": "New version only after producer output access.",
+      "failure_scope": "ITEM"
+    },
+    {
+      "id": "logical-ttl",
+      "class": "GUARDRAIL",
+      "description": "Every output expires 100 ms after capture time.",
+      "metric": "ttl_ns",
+      "operator": "EQ",
+      "threshold": 100000000,
+      "unit": "nanoseconds",
+      "rationale": "Bounds evidence to slightly more than two REveL frame periods and prevents stale results from being silently renewed.",
+      "calibration_source": "REveL p95 frame interval 43.342 ms.",
+      "sensitivity_plan": "50/100/150 ms may be reported as delivery diagnostics only and cannot change the R0 scientific terminal.",
+      "revision_policy": "New version only after producer output access.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "event-state-deadband",
+      "class": "GATE",
+      "description": "Map event median apparent scale rate to approach/quasi-static/recede with a fixed symmetric deadband.",
+      "metric": "absolute event median signed approach",
+      "operator": "LTE",
+      "threshold": 0.02,
+      "unit": "relative linear image scale per second",
+      "rationale": "Represents a two-percent-per-second apparent scale floor and avoids treating numerical jitter as direction.",
+      "calibration_source": "Analytic scale fixtures and source range 1-6 m relative to the 0.10 m/s Vicon truth deadband; it is not a physical unit conversion.",
+      "sensitivity_plan": "0.01/s and 0.05/s are diagnostic only.",
+      "revision_policy": "New version only after producer output access.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "authority-ceiling",
+      "class": "INVARIANT",
+      "description": "No result exceeds single-capture oracle-ROI-conditioned Development evidence.",
+      "failure_scope": "PRODUCT"
+    }
+  ],
+  "implementation_and_search_budget": {
+    "candidate_arms": 2,
+    "configurations_per_arm": 1,
+    "parameter_sweep": "FORBIDDEN",
+    "pre_truth_fixture_requirements": [
+      "static texture -> near-zero sign",
+      "pure isotropic enlargement -> positive sign in both arms",
+      "pure isotropic shrinkage -> negative sign in both arms",
+      "pure translation without scale -> flow near zero and bbox zero",
+      "history gap -> abstention and reset",
+      "track epoch switch -> abstention and reset",
+      "TTL expiry -> stale abstention",
+      "no producer import or read of truth/event paths"
+    ],
+    "repair_budget": "At most one implementation-only R0 repair before the first truth join. It may not change inputs, event boundaries, arm formulas, quality gates, TTL, evaluation metrics or terminals.",
+    "after_truth_access": "No in-place repair or tuning. Preserve R0 outputs and create a new reviewed version if a materially different hypothesis is justified."
+  },
+  "invalid_and_stop_rules": {
+    "hard_invalid": [
+      "future frame, future ROI, future track state or Vicon truth enters a producer",
+      "old F-1B decision output is accessed",
+      "input, manifest, ancestry, time order, arm fairness, output schema or fixed denominator drifts",
+      "abstention or failed rows are omitted",
+      "contract, event boundaries or scientific gates change after producer outcome access"
+    ],
+    "hold_or_not_evaluable": [
+      "truth-only natural events cannot be reproduced from the frozen continuous capture",
+      "either target, any anchor region or any truth state has no primary event",
+      "truth/ROI join, track epoch, censoring or timestamp provenance is untraceable",
+      "apparent improvement exists only after deleting abstentions or using common-success support"
+    ],
+    "implementation_stop": "Any required fixture failure stops replay implementation. One implementation-only repair is allowed before truth join; a second failure closes R0.",
+    "scientific_stop": "Accept exactly one terminal after one complete valid replay. Do not rescue R0 by tuning TTL, event boundaries, deadband, support thresholds or target/region-specific parameters."
+  },
+  "freeze": {
+    "level": "F1",
+    "outcome_access_started": false,
+    "amendment_mode": "IN_PLACE_BEFORE_OUTCOME",
+    "frozen_now": [
+      "data identity and single-capture role",
+      "producer/evaluator firewall",
+      "causal input and reset semantics",
+      "two comparison arms and parameters",
+      "output schema, sign, quality, TTL and abstention",
+      "truth/event definition and fixed denominator",
+      "evaluation hierarchy, advancement and stop rules"
+    ],
+    "implementation_identity_status": "NOT_CREATED",
+    "offline_replay_status": "NOT_RUN"
+  },
+  "result_model": {
+    "execution_validity": "NOT_RUN",
+    "scientific_outcome": "NOT_RUN",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "terminal_scope": "EVIDENCE_VERSION"
+  },
+  "successor_policy": {
+    "new_version_allowed": true,
+    "preserve_previous_evidence": true,
+    "design_review_pass": "Authorizes only implementation, fixture tests and a separately recorded implementation lock before the producer runs.",
+    "flow_ready": "Freeze a new capture/session/source-disjoint F2 Confirmation protocol before any confirmation output access.",
+    "bbox_preferred": "Stop the sparse-flow branch in R0; bbox may be considered only under a new Confirmation design and is not promoted by this Development result alone.",
+    "both_not_ready": "Stop this minimal geometry route; retain fixtures, source manifest and failure learning.",
+    "not_evaluable": "Repair only the failed source, truth or execution dependency in a new reviewed evidence version.",
+    "automatic_confirmation_authority": false,
+    "automatic_android_authority": false,
+    "automatic_production_authority": false
+  },
+  "experiment_design": {
+    "search_strategy": "TWO_ARM_MINIMAL_CAUSAL_COMPARISON_WITHOUT_PARAMETER_SWEEP",
+    "minimal_discriminating_experiment": "One full fixed REveL Development capture, source-GT target/ROI conditioned, comparing two-frame bbox log-area growth against two-frame ROI sparse radial flow on the same 469 parent natural events.",
+    "resource_budget": "8,580 RGB frames, 13,014 target/ROI replay opportunities, exactly two frozen arms, one producer pass and one post-hash evaluator join.",
+    "stop_conditions": "Stop before truth join if fixtures, causality, firewall, output completeness or hash binding fail. After a valid join, accept one frozen terminal and do not tune R0.",
+    "efficiency_strategy": "Reuse the full existing REveL capture and source audits; isolate the smallest missing target-conditioned geometry comparison; retain only ledgers and hashes under artifacts.local.",
+    "cartesian_justification": "There is no grid: one strong box baseline and one sparse radial-flow candidate are the minimum arms requested."
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "H1_TARGET_CONDITIONED_RADIAL_FLOW_ADDS_EVENT_DIRECTION_INFORMATION",
+      "theoretical_or_empirical_basis": "The predecessor global corridor residual lacked target, region and signed approach semantics; REveL supplies target-conditioned Development truth.",
+      "causal_difference": "Both arms see the same target track and frame pair. The candidate measures within-ROI radial feature expansion while the baseline measures only source-box log-area growth.",
+      "expected_information_gain": "Determines whether sparse within-ROI radial geometry adds parent-event direction accuracy after accounting for quality abstention.",
+      "minimal_test": "One fixed two-arm replay and post-hash event evaluator over the 469 truth-only parent events.",
+      "evaluation_metric": "Correct parent-event count gain with wrong-sign, coverage, target and anchor-region replication gates.",
+      "falsifier": "Flow fails the frozen relative gate, loses coverage beyond 23 events, increases wrong-signed events, or fails to replicate across both targets and two regions.",
+      "cost": "LOW_TO_MEDIUM",
+      "resource_budget": "8,580 native-resolution frames, CPU OpenCV, no model inference.",
+      "stop_condition": "No parameter sweep or target/region-specific rescue after output access.",
+      "selection_reason": "It is the smallest candidate that directly supplies the missing target-conditioned signed radial quantity."
+    }
+  ],
+  "failure_learning": {
+    "failure_class": "NOT_RUN",
+    "observation": "The continuous input and truth-only event manifest are frozen, but neither candidate arm has been implemented or run.",
+    "inference": "The source is evaluable for this Development design; no algorithm conclusion exists.",
+    "alternative_explanations": [
+      "source GT box jitter may make the bbox baseline noisy",
+      "ROI sparse flow may be confounded by target articulation or camera motion",
+      "quality abstention may remove too many events",
+      "a single capture may not represent target clothing, texture, range or camera diversity"
+    ],
+    "constraint_challenges": [
+      "The five-frame event floor and 0.02/s candidate deadband are Development operating choices, not physical safety thresholds.",
+      "The absence of global-motion compensation is an intentional LITE falsifier, not a claim that camera motion is irrelevant."
+    ],
+    "next_hypotheses": [],
+    "reuse_candidates": [
+      "truth-only REveL event manifest",
+      "causality and TTL fixtures",
+      "bbox log-area baseline",
+      "ROI radial-flow implementation if it passes"
+    ],
+    "information_gain": "The former sparse 512-frame source connection has been replaced by a fixed continuous 8,580-frame, 469-parent-event Development denominator."
+  }
+}

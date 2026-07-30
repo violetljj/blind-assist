@@ -76,9 +76,10 @@
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
 - [神经—几何双环研究主线](research/dual-loop/README.md)：
-  `closed / F-1B_COMPLETE / NO_INCREMENT / MAINLINE_STOPPED`；F-1A 数据与 F-1B0
-  时序均 `READY / VALID`，既有五通道 Sparse LK 在不伪造区域/接近语义时没有可改变
-  实际提醒的合法路径，F-1C 按合同关闭。
+  predecessor 为 `F-1B_COMPLETE / NO_INCREMENT / MAINLINE_STOPPED`；successor
+  target/track-conditioned causal radial geometry 已
+  `DESIGN_REVIEW_PASS / IMPLEMENTATION_NOT_RUN`，只授权实现、fixtures 与
+  implementation identity lock，不授权全量 replay、Confirmation 或产品集成。
 - [RCLE 研究状态](research/rcle/README.md)：`paused / current truth`；保留 RCLE 的
   历史科学终态、协议终态、权限与禁止事项，不再是默认执行主线。
 - [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。
