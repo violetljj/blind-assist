@@ -8,6 +8,7 @@
 - `run_guarded_host_research.ps1`：超过 3 分钟或正式 one-shot 的统一电脑端入口；先校验 hash 绑定性能收据和当前 RAM/VRAM，再启动 runner、注入已标定 worker、附加监控，并拒绝既存、缺字段、非完成或计数未闭合的 progress 终态。
 - `run_dual_loop_d0_egomotion_error_attribution_r1.py`：burned single-capture D0-R1 的稳定 Adapter；只暴露依赖冻结、无权限 implementation lock、独立复核绑定的 activation、一次性 producer/analysis 与完全独立 execution validator，禁止读取 production A/B trace、旧 F-1B、Confirmation 或自动启动任何后继 canary。
 - `run_dual_loop_d0_egomotion_error_attribution_r2.py`：D0-R1 consumed runtime failure 的新身份恢复 Adapter；固定 isolated Python、完整 dependency tree 与单消息 operational probe，只写全新 `run-r2`，科学算法、统计出口和 claim ceiling 不变。
+- `run_dual_loop_d0_egomotion_error_attribution_r3.py`：D0-R2 consumed PyYAML failure 的最终 runtime-recovery Adapter；绑定独立 8-package environment、AST import closure、合成 producer/validator calibration parser smoke 与新 `run-r3`，科学算法、统计出口和 claim ceiling 不变。
 - `run_dual_loop_radial_geometry_lite_r1.py`：target/track-conditioned causal radial geometry LITE Development R1 的稳定 Adapter；只暴露尺寸审计、无真值生产、实现锁校验及生产成功后的条件评估，旧 F-1B decision、Confirmation、Android 与产品路径不在输入或授权面。
 - `run_dual_loop_radial_geometry_lite_r2.py`：R1 guarded-progress UTC 类型失败后的前向 R2 Adapter；科学实现与 R1 相同，但使用新 protocol/implementation/output identity，R1 output 不在输入面。
 - `run_dual_loop_production_temporal_ab_input_preflight.ps1`：生产 `TemporalRiskTracker` 因子 A/B R0 的 outcome-blind 输入身份入口；逐一复核两个冻结 CrowdBot session 的 `4422` 个 PNG 哈希、时间顺序、尺寸与 canonical inventory，不读取 truth、不运行 detector 或候选 A/B。

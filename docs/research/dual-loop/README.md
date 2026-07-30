@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`production temporal A/B R0 / VALID_NO_INCREMENT / D0_R2_EXECUTION_INVALID / R3_RECOVERY_PREFLIGHT`
+状态：`production temporal A/B R0 / VALID_NO_INCREMENT / D0_R2_EXECUTION_INVALID / D0_R3_REVIEW_PASS_NOT_RUN`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -225,15 +225,20 @@ authority 也已消费。R2 是有效的 Development 负结果，不得调阈值
 
 production temporal geometry factorial A/B R0 已有效得到 `NO_INCREMENT`。D0 R1 与
 R2 的正式 authority 均已消费并以执行无效关闭；两者都没有 D0 科学出口，也不得
-重跑。当前前瞻工作转为 R3 runtime-recovery preflight：
+重跑。R3 runtime-recovery 合同、实现与路由现已完成
+[独立复审](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R3_DESIGN_REVIEW_RESULT_2026-07-30.md)，
+终点为 `DESIGN_PASS / IMPLEMENTATION_PASS / ROUTE_PASS / NOT_RUN`：
 
-1. 新建独立环境并显式加入 PyYAML，不修改 R2 已冻结环境或正式目录；
-2. 枚举所有正式 reachable imports，并对真实 calibration 做 output-blind parser
-   smoke，先证明运行时闭合；
-3. 只有新的 R3 协议、实现锁与独立复核全部通过，才可另立新的 activation；
-4. R3 若有效，仍只以 469 个 parent events、310 个 overlap components 与六个固定
+1. 独立环境已显式加入 PyYAML；R1/R2 环境、归档与正式目录保持不可变；
+2. 正式 reachable imports、八项 distribution tree、module provenance 与两个
+   synthetic calibration parser smoke 已闭合；
+3. marker 前不打开 predecessor/current scientific inputs；完整输入校验和真实
+   calibration 读取只允许发生在 marker 与初始 progress 之后；
+4. R3 实现提交推送后，只有 clean `HEAD == origin/master`、实现锁、独立 review
+   与 activation 全部精确匹配，才可执行唯一 formal one-shot；
+5. R3 若有效，仍只以 469 个 parent events、310 个 overlap components 与六个固定
    60 秒块复算三个互斥 operational priority exits；
-5. 仅当有效出口为 `EGO_CANARY_PRIORITY`，再另立单变化、新数据的背景运动补偿
+6. 仅当有效出口为 `EGO_CANARY_PRIORITY`，再另立单变化、新数据的背景运动补偿
    canary；其他终点不得继续同一图像尺度/径向光流路线。
 
 D0 不允许作因果机制结论，也不自动授权 EVIMO2v2/JRDB 下载、Confirmation、
@@ -254,7 +259,8 @@ activation。正式运行通过首条 Vicon message probe 后，在冻结 calibr
 同样为 `EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_SCIENTIFIC_EXIT`：
 `0 / 469` event 完成、没有 event table、没有 D0 指标、没有科学出口。
 
-R2 不能补包重跑。当前只允许评估新的 R3 runtime-recovery 合同：它必须使用新的
-独立环境与 namespace，显式绑定 PyYAML，并在 activation 前完成正式 reachable
-imports 与真实 calibration 的 output-blind parser smoke；科学合同、469-event
-分母、统计规则和三个互斥出口不得改变。
+R2 不能补包重跑。当前 R3 使用新的独立环境与 namespace，显式绑定 PyYAML；
+activation 前只允许正式 reachable imports 与 synthetic calibration parser smoke，
+真实 calibration 与全部科学输入均留到 marker 后。科学合同、469-event 分母、
+统计规则和三个互斥出口没有改变。协议仍为
+`CONTRACT_FROZEN / execution_authorized=false`，实现锁与 activation 尚未生成。

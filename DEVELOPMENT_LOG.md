@@ -1796,3 +1796,26 @@
   authorization 的 formal-entry 失败注入在首帧 decode 和 marker 前被拒绝，随后复核
   marker、temporary trace 与 output namespace 均不存在。正式 A/B 尚未 activation，
   truth join 与 Confirmation 尚未执行，不能据此形成增量、产品或安全结论。
+
+## 2026-07-30：D0 ego-motion error attribution R3 最终恢复实现
+
+- 执行者：violjjet
+- R1 在 marker 后因冻结环境缺少 `rosbags`、R2 在 marker 后因缺少 `PyYAML`
+  分别关闭为 `EXECUTION_INVALID / CONSUMED / NO_RERUN /
+  NO_SCIENTIFIC_EXIT`；两次均为 `0/469`，没有 event table、analysis 或科学出口。
+- R3 只恢复运行时和控制面，不改变科学合同；`analysis.py`、`bindings.py`、
+  `producer.py` 在 R1/R2/R3 byte-identical，23 个科学字段类型和值精确一致。
+- 为防止再次消耗 one-shot，冻结独立 R3 venv、八项 distribution tree、AST import
+  closure、PyYAML module provenance、继承的 R2 operational probe，以及 producer
+  与独立 validator 双 parser synthetic calibration smoke。
+- Marker 防火墙改为强制显式 scope：review、activation、CLI 与 runner premarker
+  不得打开 predecessor/current scientific inputs；`formal_start` 与初始 progress
+  持久化后才运行完整 scientific-input validation、bundle、calibration 与 tracks。
+- R1/R2 current/archive 和 exact inventory 均纳入两个 validator；VALID progress
+  与 receipt 同一失败闭包，已有 terminal receipt 时零写拒绝重入。冻结解释器
+  `54/54 PASS`，runtime、项目结构、live R1/R2 gate 与三路独立复审均通过。
+- 当前仅为 `DESIGN_PASS / IMPLEMENTATION_PASS / ROUTE_PASS / NOT_RUN`；协议 SHA
+  为 `4412390fcfb4b4588600c368d3cb36a6ece875ec3f97ea7ef8bd051886f11064`，
+  `run-r3/` 不存在。实现提交推送并生成 exact lock/review/activation 前不授权正式
+  执行；marker 后失败永久 `NO_R4`。详见
+  [R3 review](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R3_DESIGN_REVIEW_RESULT_2026-07-30.md)。
