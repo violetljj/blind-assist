@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`production temporal A/B R0 / VALID_NO_INCREMENT / D0_R1_DESIGN_PASS / IMPLEMENTATION_AUTHORIZED`
+状态：`production temporal A/B R0 / VALID_NO_INCREMENT / D0_R2_EXECUTION_INVALID / R3_RECOVERY_PREFLIGHT`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -210,7 +210,7 @@ successor 只允许写成
 | successor causal runtime geometry | `OFFLINE_IMPLEMENTED / ONE_SHOT_EVALUATED` |
 | successor Development round | `BOTH_NOT_READY_FOR_CONFIRMATION / IMPLEMENTATION_NOT_READY` |
 | production temporal geometry factorial A/B R0 | `COMPLETE / VALID / NO_INCREMENT / ONE_SHOT_CONSUMED` |
-| D0 ego-motion error attribution | `R0_REPAIR_NEEDED / R1_DESIGN_REVIEW_PASS / IMPLEMENTATION_AUTHORIZED / NOT_RUN` |
+| D0 ego-motion error attribution | `R0_REPAIR_NEEDED / R1_EXECUTION_INVALID / R2_EXECUTION_INVALID / R3_RECOVERY_PREFLIGHT` |
 | successor 独立 Confirmation | `NOT_AUTHORIZED` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
 | 正式融合器或生产 CameraX 接线 | `NOT_AUTHORIZED` |
@@ -223,19 +223,38 @@ successor 只允许写成
 LITE R0 与 R1 的失败 evidence version 保持关闭；R2 的一次性 producer/evaluator
 authority 也已消费。R2 是有效的 Development 负结果，不得调阈值救援或重跑。
 
-production temporal geometry factorial A/B R0 已有效得到 `NO_INCREMENT`。统计修复后的
-[D0 R1 协议](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_PROTOCOL_2026-07-30.json)
-与[独立设计复核](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_DESIGN_REVIEW_RESULT_2026-07-30.md)
-已经 `PASS`；当前前瞻工作转为实现与独立验证：
+production temporal geometry factorial A/B R0 已有效得到 `NO_INCREMENT`。D0 R1 与
+R2 的正式 authority 均已消费并以执行无效关闭；两者都没有 D0 科学出口，也不得
+重跑。当前前瞻工作转为 R3 runtime-recovery preflight：
 
-1. 只在已烧毁的 REveL LITE R2 evidence 上实现只读 producer、analysis 与独立
-   validator，不修改或重跑 R2；
-2. 以 469 个 parent events、310 个 overlap components 与六个固定 60 秒块复算
-   三个互斥 operational priority exits；
-3. implementation lock 与独立实现复核通过后，才可另立 activation；当前不得运行；
-4. 仅当新的 D0 R1 结果为 `EGO_CANARY_PRIORITY`，再另立一个单变化、
-   新数据的背景运动补偿 canary；其他终点不得继续同一图像尺度/径向光流路线。
+1. 新建独立环境并显式加入 PyYAML，不修改 R2 已冻结环境或正式目录；
+2. 枚举所有正式 reachable imports，并对真实 calibration 做 output-blind parser
+   smoke，先证明运行时闭合；
+3. 只有新的 R3 协议、实现锁与独立复核全部通过，才可另立新的 activation；
+4. R3 若有效，仍只以 469 个 parent events、310 个 overlap components 与六个固定
+   60 秒块复算三个互斥 operational priority exits；
+5. 仅当有效出口为 `EGO_CANARY_PRIORITY`，再另立单变化、新数据的背景运动补偿
+   canary；其他终点不得继续同一图像尺度/径向光流路线。
 
 D0 不允许作因果机制结论，也不自动授权 EVIMO2v2/JRDB 下载、Confirmation、
 Android 产品接线或安全主张。任何路径都不得把旧 timing-only 凭据改写成效果、
 产品或安全证据。
+
+### D0 R1/R2 执行终态
+
+[D0 R1 执行](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_EXECUTION_RESULT_2026-07-30.md)
+因冻结解释器缺少 `rosbags`，在读取任何 bag message 前以
+`EXECUTION_INVALID / CONSUMED / NO_SCIENTIFIC_EXIT` 关闭。
+
+[D0 R2](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R2_PROTOCOL_2026-07-30.json)
+随后只修复运行时包络，并通过设计复核、40 项测试、实现锁、独立实现复核与
+activation。正式运行通过首条 Vicon message probe 后，在冻结 calibration parser
+动态导入 `yaml` 时发现环境只有 `ruamel.yaml`。因此
+[R2 执行结果](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R2_EXECUTION_RESULT_2026-07-30.md)
+同样为 `EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_SCIENTIFIC_EXIT`：
+`0 / 469` event 完成、没有 event table、没有 D0 指标、没有科学出口。
+
+R2 不能补包重跑。当前只允许评估新的 R3 runtime-recovery 合同：它必须使用新的
+独立环境与 namespace，显式绑定 PyYAML，并在 activation 前完成正式 reachable
+imports 与真实 calibration 的 output-blind parser smoke；科学合同、469-event
+分母、统计规则和三个互斥出口不得改变。

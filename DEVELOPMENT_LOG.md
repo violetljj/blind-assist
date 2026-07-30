@@ -1,5 +1,13 @@
 # Development Log
 ## 2026-07-30
+- 时间：2026-07-30（Asia/Hong_Kong）；执行者：Codex。封存
+  [D0 ego-motion error attribution R2 正式执行](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R2_EXECUTION_RESULT_2026-07-30.md)：
+  R2 已修复 R1 的 `rosbags` 缺失，并通过冻结首条 Vicon message probe；正式 marker
+  后在 calibration parser 的动态 `import yaml` 处失败。终态为
+  `EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_SCIENTIFIC_EXIT`，进度
+  `0 / 469`，无 event table、analysis 或科学出口。R2 不补包重跑；只有新的 R3
+  runtime-recovery identity 可在显式 PyYAML、全 reachable-import smoke、真实
+  calibration output-blind parser smoke 与独立复核后继续，科学合同不变。
 - 时间：2026-07-30（Asia/Hong_Kong）；执行者：Codex。冻结并通过
   [D0 ego-motion error attribution R1 设计复核](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_DESIGN_REVIEW_RESULT_2026-07-30.md)。
   R1 将 R0 不可识别的 `*_DOMINANT` 改为
