@@ -1,13 +1,14 @@
 # Dual-loop causal radial geometry LITE R0
 
-状态：development design input preparation
+状态：implementation review pass；full replay 尚未激活
 
 ## 研究问题与版本
 
 本 Module 服务于 `DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0`：
 在 source-GT target/ROI 条件下，比较 causal box log-area growth 与 ROI sparse
-radial flow，判断它们是否值得进入新的独立 Confirmation。当前只准备 REveL
-Development 输入和 truth-only natural-event ledger。
+radial flow，判断它们是否值得进入新的独立 Confirmation。Development 输入、
+truth-only natural-event ledger、两臂 producer、post-hash evaluator 与 synthetic
+fixtures 已实现并通过独立实现检查；全量 replay 尚未激活。
 
 ## 稳定 Interface
 
@@ -29,6 +30,9 @@ E:\codex-tools\bin\blindassist-python.cmd `
 ## 输出
 
 只写入传入的 `artifacts.local/` 目录。所有 JSON 使用 UTF-8 和确定性排序。
+
+实现入口为 `run_replay.py` 和 `evaluate_replay.py`。两者只能按已评审的一次性
+activation decision 执行；本 README 不构成执行权限。
 
 ## 安全边界
 

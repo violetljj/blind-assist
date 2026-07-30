@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`successor Development / DESIGN_REVIEW_PASS / IMPLEMENTATION_NOT_RUN`
+状态：`successor Development / IMPLEMENTATION_REVIEW_PASS / REPLAY_NOT_RUN`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -15,15 +15,18 @@ person/sensor Vicon 径向轨迹能在 LEFT/CENTER/RIGHT 全部区域输出目�
 approaching/quasi-static/receding 开发真值。随后
 [LITE R0 设计评审](DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)
 冻结完整连续 capture、两条最小 arm、输出/TTL/abstention、parent-event 分母与
-停止规则并通过独立评审；候选实现和 replay 仍未运行：
+停止规则并通过独立评审。两臂 producer、post-hash evaluator 和 24 个 synthetic
+fixtures 随后完成并通过
+[implementation review](DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-30.md)；
+全量 replay 仍未运行：
 
 ```text
 PREDECESSOR_F1B: COMPLETE / NO_INCREMENT / VALID
 SUCCESSOR_SOURCE_DISCOVERY: COMPLETE / SOURCE_FOUND_FOR_DEVELOPMENT
 SUCCESSOR_LITE_DESIGN: DESIGN_REVIEW_PASS / F1_INTERFACE_FROZEN
-RUNTIME_GEOMETRY_SOURCE: IMPLEMENTATION_NOT_RUN / NOT_EVALUATED
+RUNTIME_GEOMETRY_SOURCE: IMPLEMENTATION_REVIEW_PASS / REPLAY_NOT_RUN
 CONFIRMATION: NOT_AUTHORIZED
-EXECUTION_AUTHORITY: IMPLEMENTATION_FIXTURES_AND_IDENTITY_LOCK_ONLY
+EXECUTION_AUTHORITY: SEPARATE_ONE_SHOT_ACTIVATION_DECISION_REQUIRED
 CLAIM_CEILING: SINGLE_CAPTURE_ORACLE_ROI_CONDITIONED_DEVELOPMENT_ONLY
 ```
 
@@ -135,7 +138,7 @@ F-1C。
 
 因此 predecessor 只允许写成 `DEVELOPMENT_ROUTE_REJECTED / NO_INCREMENT`；
 successor 只允许写成
-`DESIGN_REVIEW_PASS / IMPLEMENTATION_NOT_RUN / RUNTIME_SOURCE_NOT_EVALUATED`。
+`IMPLEMENTATION_REVIEW_PASS / REPLAY_NOT_RUN / RUNTIME_SOURCE_NOT_EVALUATED`。
 不得写成算法有效、双环有效、早提醒已实现、运行时可行、产品改善或安全结论。
 
 ## 当前权限
@@ -149,8 +152,8 @@ successor 只允许写成
 | F-1B decision 输出执行 | `NOT_RUN / NOT_NEEDED / SEALED` |
 | F-1C 手机双环 A/B | `STOPPED_BY_F-1B / NOT_AUTHORIZED` |
 | successor 几何真值源 Discovery | `COMPLETED / SOURCE_FOUND_FOR_DEVELOPMENT` |
-| successor causal runtime geometry | `F1_INTERFACE_FROZEN / IMPLEMENTATION_NOT_RUN` |
-| successor Development round | `DESIGN_REVIEW_PASS / REPLAY_NOT_AUTHORIZED` |
+| successor causal runtime geometry | `IMPLEMENTATION_REVIEW_PASS / REPLAY_NOT_RUN` |
+| successor Development round | `IMPLEMENTATION_REVIEW_PASS / ACTIVATION_DECISION_REQUIRED` |
 | successor 独立 Confirmation | `NOT_AUTHORIZED` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
 | 正式融合器或生产 CameraX 接线 | `NOT_AUTHORIZED` |
@@ -160,11 +163,9 @@ successor 只允许写成
 
 ## 下一步
 
-LITE R0 设计已冻结并通过独立评审。唯一授权动作是按设计锁实现
-`BBOX_LOG_AREA_GROWTH`、`ROI_SPARSE_RADIAL_FLOW`、evaluator 与 pre-truth
-deterministic fixtures，再冻结 implementation identity 并独立评审。当前不得执行
-全量 producer replay 或 truth join；implementation review PASS 后才可另行激活一次
-全量 replay。
+LITE R0 implementation identity 已冻结并通过独立评审。当前唯一后继动作是另立、
+绑定当前 implementation commit/lock/input/environment/output 的一次性 activation
+decision 并独立复核；该 decision 通过前不得执行全量 producer replay 或 truth join。
 
 旧 F-1B sealed decision 集不得用于回调规则，旧真机 timing-only 凭据也不得改写成
 效果证据。新的独立 Confirmation 必须在候选输出访问前另行冻结，当前没有自动执行
