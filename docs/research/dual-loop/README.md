@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`production temporal A/B R0 / IMPLEMENTATION_REVIEW_PASS / DEVICE_PRESTART_VALID / FORMAL_NOT_ACTIVATED`
+状态：`production temporal A/B R0 / COMPLETE / VALID / NO_INCREMENT / D0_R1_REPAIR_IN_PROGRESS`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -22,8 +22,10 @@ validator/evaluator 已实现；核心回归、合成 mutation tests、Android b
 QNN HTP 完成 synthetic probe，未解码 decision RGB、未写候选输出。hash-bound
 implementation lock 与
 [独立实现复核](DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-30.md)
-均已完成且为 `PASS`；当前尚未 activation，正式 A/B、truth join 与 Confirmation
-均未执行。
+均已完成且为 `PASS`。唯一正式 producer、truth-blind validation/seal 与后续
+truth evaluator 已完成；[执行结果](DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_EXECUTION_RESULT_2026-07-30.md)
+为 `VALID / NO_INCREMENT`。两臂在 8 个可评分正例、7 个负窗和两个 session 上的
+实际提醒完全相同；正式 authority 已消费，Confirmation 不授权。
 
 实现审计发现并已修复逐帧 timestamp 未绑定、truth receipt 未硬绑定、缺 post-validator
 seal、review 未绑定当前 lock、host 并发启动窗口、producer marker 可覆盖、外部复制
@@ -207,8 +209,8 @@ successor 只允许写成
 | successor 几何真值源 Discovery | `COMPLETED / SOURCE_FOUND_FOR_DEVELOPMENT` |
 | successor causal runtime geometry | `OFFLINE_IMPLEMENTED / ONE_SHOT_EVALUATED` |
 | successor Development round | `BOTH_NOT_READY_FOR_CONFIRMATION / IMPLEMENTATION_NOT_READY` |
-| production temporal geometry factorial A/B R0 | `CONTRACT_FROZEN / IMPLEMENTATION_REVIEW_PASS / FORMAL_AUTHORIZED_NOT_ACTIVATED / NOT_RUN` |
-| D0 ego-motion error attribution | `CONTRACT_FROZEN / STATISTICAL_REVIEW_REPAIR_NEEDED / NOT_RUN` |
+| production temporal geometry factorial A/B R0 | `COMPLETE / VALID / NO_INCREMENT / ONE_SHOT_CONSUMED` |
+| D0 ego-motion error attribution | `R0_REPAIR_NEEDED / R1_PROTOCOL_IN_PROGRESS / NOT_RUN` |
 | successor 独立 Confirmation | `NOT_AUTHORIZED` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
 | 正式融合器或生产 CameraX 接线 | `NOT_AUTHORIZED` |
@@ -221,15 +223,18 @@ successor 只允许写成
 LITE R0 与 R1 的失败 evidence version 保持关闭；R2 的一次性 producer/evaluator
 authority 也已消费。R2 是有效的 Development 负结果，不得调阈值救援或重跑。
 
-当前前瞻工作是实现已冻结的 production temporal geometry factorial A/B R0：
+production temporal geometry factorial A/B R0 已有效得到 `NO_INCREMENT`，因此
+当前前瞻工作转为修订并独立复核 D0 R1：
 
-1. 为 `TemporalRiskTracker` 增加默认保持生产等价的 factorization seam；
-2. 通过 segmentation parity、object-motion mutation、A/B 调用顺序不变性和既有
-   production regression；
-3. 建立 strict QNN truth-blind producer、独立 validator、实现锁与一次性 activation；
-4. activation 通过后，才允许在两个冻结 decision session 上产生一次 `8844` 行 trace。
+1. 把 R0 的 `*_DOMINANT` 改成仅用于后继选择的
+   `EGO_CANARY_PRIORITY / TEMPORAL_TREND_PRIORITY / NO_PRIORITY_IDENTIFIED`；
+2. 闭合单 capture 最高独立单位、跨 target 时间重叠组件、missingness/coverage、
+   固定时间块敏感性、person competing explanation 与候选指标冲突；
+3. 只在已烧毁的 REveL LITE R2 evidence 上实现只读 producer、analysis 与独立
+   validator，不修改或重跑 R2；
+4. 仅当新的 D0 R1 结果为 `EGO_CANARY_PRIORITY`，再另立一个单变化、
+   新数据的背景运动补偿 canary；其他终点不得继续同一图像尺度/径向光流路线。
 
-若 A/B 为正，只能进入未参与选择或调参的独立 session/source Confirmation 与
-CameraX/QNN live parity；若得到有效 `NO_INCREMENT`，才修订 D0 R1 作为 operational
-canary routing。D0 不再允许以 `*_DOMINANT` 直接作因果机制结论。任何路径都不得把
-旧 timing-only 凭据改写成效果、产品或安全证据。
+D0 不允许作因果机制结论，也不自动授权 EVIMO2v2/JRDB 下载、Confirmation、
+Android 产品接线或安全主张。任何路径都不得把旧 timing-only 凭据改写成效果、
+产品或安全证据。

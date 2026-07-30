@@ -1,6 +1,6 @@
 # dual_loop_production_temporal_ab
 
-状态：implementation review pass / device prestart valid / formal not activated
+状态：formal complete / independently sealed / valid no increment / no rerun
 
 ## 研究问题与版本
 
@@ -9,7 +9,8 @@
 neutralized 分支是否改善冻结 CrowdBot decision session 上的 replay alert decision。
 当前已完成 outcome-blind 输入身份、A/B factorization、truth-blind device producer、
 独立 validator/evaluator、真机 strict-QNN prestart、hash-bound implementation lock
-与实现复核。候选输出、truth join 与 Confirmation 尚未执行。
+与实现复核。唯一正式 producer/evaluator 终点为 `VALID / NO_INCREMENT`；
+正式 authority 已消费，Confirmation 未授权。
 
 ## 稳定 Interface
 

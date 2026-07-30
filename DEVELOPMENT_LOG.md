@@ -1,6 +1,18 @@
 # Development Log
 ## 2026-07-30
 - 时间：2026-07-30（Asia/Hong_Kong）；执行者：Codex。完成
+  [production temporal geometry factorial A/B R0 正式执行](docs/research/dual-loop/DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_EXECUTION_RESULT_2026-07-30.md)：
+  指定 `SM-S9280 / SM8650` 以 strict QNN HTP 对 4,422 帧逐帧一次 detector，
+  生成 8,844 行隔离 A/B trace，producer `COMPLETE`、failure `0`。truth-blind
+  validator 逐帧核对后发布 `SEALED`，随后 evaluator 才连接冻结的 17 项 truth。
+  两臂在 8/8 可评分正例、7/7 负窗与两个 session 上的实际提醒完全一致：
+  首次提醒增益全部为 0、paired correctness delta 为 0，且共同出现 6/8
+  premature events 与 7/7 false-alert windows；终点为 `VALID / NO_INCREMENT`，
+  one-shot authority 已消费，Confirmation 不授权。seal 后描述性定位发现 temporal
+  geometry 改变 3,285 帧 approach trend 和 973 帧 risk score，却从未改变 level、
+  proximity、feedback 或 event；后继转入统计修复后的 D0 R1 operational routing，
+  不再继续同构 score-boost A/B。
+- 时间：2026-07-30（Asia/Hong_Kong）；执行者：Codex。完成
   [production temporal geometry factorial A/B R0 实现复核](docs/research/dual-loop/DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-30.md)：
   生产 `TemporalRiskTracker` 中和因子、共享单次 QNN detections 的双臂隔离决策链、
   truth-blind device producer、implementation lock、activation gate、逐帧独立
