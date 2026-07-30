@@ -1,10 +1,15 @@
 # 双环 R1 未见自然来源事件评价 R0：rank-1 结果
 
-日期：2026-07-31（Asia/Hong_Kong）  
-阶段：`DEVELOPMENT`  
-终点：`FIRST_UNSEEN_SOURCE_NOT_EVALUABLE`  
-执行有效性：`VALID`  
-baseline：`UNOPENED`  
+日期：2026-07-31（Asia/Hong_Kong）
+
+阶段：`DEVELOPMENT`
+
+终点：`FIRST_UNSEEN_SOURCE_NOT_EVALUABLE`
+
+执行有效性：`VALID`
+
+baseline：`UNOPENED`
+
 candidate `039757b`：`UNOPENED / NOT_RETUNED`
 
 ## 结论
@@ -52,14 +57,19 @@ research evidence，不是客观传感器事实或真实用户效果。
 ## 失败学习
 
 观察：长自然步行视频可以包含大量运动与人流，却仍没有满足“持续闭合＋路径占用＋
-提醒价值”的正例。  
-支持的推断：只以“自然、连续、有人流”筛来源，不足以保证事件评价机会。  
+提醒价值”的正例。
+
+支持的推断：只以“自然、连续、有人流”筛来源，不足以保证事件评价机会。
+
 替代解释：1 Hz 接触表可能漏掉极短事件；但正式两路均检查完整时序范围，且争议段
-经更细复核仍不满足路径占用。  
+经更细复核仍不满足路径占用。
+
 被挑战的约束：不降低正例定义，也不把普通迎面人流强行标成危险；应改进来源的
-outcome-blind opportunity proxy，而不是降低真值门。  
+outcome-blind opportunity proxy，而不是降低真值门。
+
 下一可证伪假设：已冻结排序中的 rank-2 市集步行视频能提供至少 3 个路径占用正例，
-同时保留至少 6 个多类负窗。  
+同时保留至少 6 个多类负窗。
+
 信息增益：证明了 truth-first 门能在任何算法输出打开前阻止一个无正例来源消耗
 baseline/candidate，并暴露“自然步行”metadata 对任务机会的弱代理性。
 
@@ -68,4 +78,3 @@ baseline/candidate，并暴露“自然步行”metadata 对任务机会的弱�
 本 rank-1 终点公开后，可按原 registry 的预冻结 Unicode title 顺序，把 rank-2
 `Iran Shiraz City Tour 2021 -5` 作为新的 evidence instance。不得回改 rank-1
 窗口、阈值或正例定义，也不得利用 rank-1 的算法输出筛选后继来源。
-
