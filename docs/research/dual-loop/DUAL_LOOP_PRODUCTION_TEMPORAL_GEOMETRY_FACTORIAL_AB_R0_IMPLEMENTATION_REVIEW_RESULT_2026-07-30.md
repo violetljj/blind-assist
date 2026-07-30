@@ -79,4 +79,3 @@ device/QNN 漂移窗口，以及 marker 创建与 detector inference 之间的�
 activation 若不能重新证明 clean `HEAD == origin/master`、implementation commit 为
 当前提交祖先、锁定源码/APK/prestart/review 哈希一致、已安装 APK 一致、远端及 host
 正式 namespace 为空，则不得启动。正式 marker 创建后，无论成功或失败均不得重跑。
-
