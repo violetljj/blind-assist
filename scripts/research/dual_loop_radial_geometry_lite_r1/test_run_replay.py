@@ -76,7 +76,7 @@ class RunReplayTest(unittest.TestCase):
             progress = json.loads(
                 (root / "producer.jsonl.progress.json").read_text(encoding="utf-8")
             )
-            self.assertEqual(progress["status"], "completed")
+            self.assertEqual(progress["status"], "complete")
 
     def test_decode_failure_publishes_only_failure_terminal(self) -> None:
         with tempfile.TemporaryDirectory(prefix="radial-r1-producer-") as directory:

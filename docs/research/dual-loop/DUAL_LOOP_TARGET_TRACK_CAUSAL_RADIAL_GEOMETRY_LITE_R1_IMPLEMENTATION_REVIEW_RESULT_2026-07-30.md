@@ -7,7 +7,7 @@
 Review date: 2026-07-30  
 Review role: independent implementation reviewer  
 Implementation lock SHA-256:
-`901f27d2db47097d63ff7ac9eb9a7bbf0c1ea9cb66329118fa2c3f28241159a3`
+`20faa22021fc144b07883190d3034e8e020a1729648350861f3a93a9e985c80e`
 
 This terminal authorizes only the post-lock no-truth qualification pilot,
 guarded-host preflight preparation and a separately reviewed one-shot activation.
@@ -53,3 +53,10 @@ reused R0 evaluator was not hash-bound, the evaluator did not itself enforce exa
 lock/formal-receipt identity before truth, and shape abstentions were not tied to the
 source-audit keyset. The candidate was not executed. Those three issues were repaired,
 negative-tested, re-hashed and independently re-reviewed before this PASS.
+
+A later activation review found that the producer success progress value
+`completed` did not match the guarded-host contract's exact `complete` value. No
+formal process was started. The value and its test were changed, all affected hashes
+were refreshed, and a narrow independent implementation re-review passed against
+implementation lock SHA-256
+`20faa22021fc144b07883190d3034e8e020a1729648350861f3a93a9e985c80e`.

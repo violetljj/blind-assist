@@ -304,7 +304,7 @@ def run(
             completed=input_rows,
             total=total,
             started=started,
-            status="completed",
+            status="complete",
         )
         return receipt
     except Exception as exc:
