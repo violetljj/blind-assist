@@ -131,6 +131,7 @@ object LocalizedText {
             FeedbackReason.UNSTABLE_RISK -> if (language == AppLanguage.EN) "Risk not stable" else "风险未稳定"
             FeedbackReason.COOLDOWN -> if (language == AppLanguage.EN) "Cooling down" else "冷却中"
             FeedbackReason.EVENT_ALREADY_ALERTED -> if (language == AppLanguage.EN) "Same risk already alerted" else "同一风险已提醒"
+            FeedbackReason.DUAL_LOOP_CONTRADICTED -> if (language == AppLanguage.EN) "Geometry contradicted this reminder" else "几何反证，本帧不提醒"
             FeedbackReason.SPEECH_DISABLED -> if (language == AppLanguage.EN) "Speech off" else "语音关闭"
             FeedbackReason.VIBRATION_DISABLED -> if (language == AppLanguage.EN) "Vibration off" else "震动关闭"
             FeedbackReason.FEEDBACK_UNAVAILABLE -> if (language == AppLanguage.EN) "Feedback unavailable" else "反馈不可用"

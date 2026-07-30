@@ -1,0 +1,38 @@
+{
+  "schema_version": "blindassist.dual_loop_scene_scale_cross_source_protocol.v1",
+  "protocol_id": "DUAL_LOOP_SCENE_SCALE_VETO_R1_CROSS_SOURCE_MATOAKA",
+  "stage": "DEVELOPMENT",
+  "status": "FROZEN_BEFORE_DETECTOR_INFERENCE",
+  "relationship_to_r1": "No source rule, threshold, association, active policy, risk logic, event logic, or feedback logic may change.",
+  "source": {
+    "source_id": "wikimedia_commons_matoaka_west_virginia_walk_2019",
+    "video_sha256": "017f860e002c75d093206772800bd68cb1c19f226b74e4d5a933798916347821",
+    "registry_sha256": "1f1c4e55d8a7a61126f5fb3b98faa17c90182c3f445478cbc7acece94044a77c",
+    "license": "CC BY 3.0",
+    "sampling": "full video at deterministic 10 Hz from t=0, aspect-preserving 640x480 black letterbox, JPEG quality 4",
+    "clock_domain": "REPLAY_TIMELINE",
+    "truth_in_device_input": false
+  },
+  "evaluation": {
+    "ledger_sha256": "4f514b1277449d754d2ca45469d655610c55d4b56d2e2c1031efbf7c8b9d23c5",
+    "matoaka_items": "F1A-N-008..F1A-N-019 and F1A-P-011..F1A-P-017",
+    "negative_score_interval": "window_interval_seconds",
+    "positive_score_interval": "alertable_start_interval_seconds",
+    "positive_delay_origin": "baseline first trigger in the same positive interval",
+    "primary_guardrail": "candidate positive event recall must not be lower than baseline",
+    "benefit_signal": "candidate must reduce either alerted negative windows or negative-window trigger rows",
+    "no_tuning_after_run": true
+  },
+  "known_dependence": {
+    "label_role": "DEVELOPMENT",
+    "outcome_access_state": "TUNED_ON_PRIOR_PUBLIC_VIDEO_DEVELOPMENT_ONLY",
+    "interpretation": "cross-source locked Development replication, not independent Confirmation"
+  },
+  "terminals": {
+    "advance": "CROSS_SOURCE_DEVELOPMENT_SIGNAL_REPLICATED",
+    "hold": "CROSS_SOURCE_NO_EVENT_EFFECT",
+    "reject": "CROSS_SOURCE_POSITIVE_GUARDRAIL_FAILED",
+    "not_evaluable": "DETECTOR_OR_INPUT_EXECUTION_NOT_EVALUABLE"
+  },
+  "claim_ceiling": "LOCKED_CROSS_SOURCE_DEVELOPMENT_ONLY"
+}

@@ -331,6 +331,11 @@ object CameraGuidanceMapper {
                 detail = "This centre-path risk has already received feedback. It will be evaluated again after passing, receding, or clearing.",
                 accessibilityText = "The same risk was already alerted. Waiting for it to pass or clear before evaluating another reminder."
             )
+            com.linnan.blindassist.feedback.FeedbackReason.DUAL_LOOP_CONTRADICTED -> RiskExplanation(
+                headline = "No reminder this frame: geometry contradicts approach",
+                detail = "Multiple matched boxes shrink together. Motion responsibility is not inferred, and the next frame will be evaluated again.",
+                accessibilityText = "No reminder this frame because multiple matched boxes shrink together. The next frame will be evaluated again."
+            )
             com.linnan.blindassist.feedback.FeedbackReason.HELD_ALERT -> RiskExplanation(
                 headline = "Holding the previous reminder briefly",
                 detail = "The current frame did not confirm the object again, but the stabilizer is briefly keeping $stableText.",

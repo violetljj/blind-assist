@@ -85,16 +85,19 @@ internal class AssistFrameProcessor(
                 )
                 val frameResult = when (mode) {
                     AssistRuntimeMode.BASELINE,
-                    AssistRuntimeMode.DUAL_LOOP_SHADOW -> coordinator.processFrame(
+                    AssistRuntimeMode.DUAL_LOOP_SHADOW,
+                    AssistRuntimeMode.DUAL_LOOP_ACTIVE -> coordinator.processFrame(
                         detectorFrameWithPipelineStats,
                         runtimeConfig.alertProfile,
                         runtimeConfig.assistScenario,
                         nowMs = eventTimeMs,
                         decisionAtNs = decisionAtNs,
-                        dualLoopMode = if (mode == AssistRuntimeMode.DUAL_LOOP_SHADOW) {
-                            DualLoopRuntimeMode.SHADOW_ABSTAIN_ONLY
-                        } else {
-                            DualLoopRuntimeMode.OFF
+                        dualLoopMode = when (mode) {
+                            AssistRuntimeMode.DUAL_LOOP_SHADOW ->
+                                DualLoopRuntimeMode.SHADOW_ABSTAIN_ONLY
+                            AssistRuntimeMode.DUAL_LOOP_ACTIVE ->
+                                DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY
+                            else -> DualLoopRuntimeMode.OFF
                         },
                         dualLoopGeometryEvidence = null,
                         dualLoopDecisionClockDomain = FrameClockDomain.ANDROID_ELAPSED_REALTIME
@@ -110,7 +113,9 @@ internal class AssistFrameProcessor(
                             decisionAtNs = decisionAtNs
                         )
                 }
-                if (mode == AssistRuntimeMode.DUAL_LOOP_SHADOW) {
+                if (mode == AssistRuntimeMode.DUAL_LOOP_SHADOW ||
+                    mode == AssistRuntimeMode.DUAL_LOOP_ACTIVE
+                ) {
                     try {
                         onDualLoopShadowObservation(frameResult.evaluation.dualLoopShadow)
                     } catch (observerError: RuntimeException) {
@@ -178,7 +183,8 @@ internal data class UstrfRuntimeAdapters(
             coordinator: AssistSessionCoordinator
         ): UstrfRuntimeAdapters = when (mode) {
             AssistRuntimeMode.BASELINE,
-            AssistRuntimeMode.DUAL_LOOP_SHADOW -> UstrfRuntimeAdapters(
+            AssistRuntimeMode.DUAL_LOOP_SHADOW,
+            AssistRuntimeMode.DUAL_LOOP_ACTIVE -> UstrfRuntimeAdapters(
                 experimental = null
             )
             AssistRuntimeMode.USTRF_EXPERIMENT -> UstrfRuntimeAdapters(

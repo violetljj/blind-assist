@@ -20,6 +20,7 @@ interface AssistSession {
 enum class AssistRuntimeMode {
     BASELINE,
     DUAL_LOOP_SHADOW,
+    DUAL_LOOP_ACTIVE,
     USTRF_EXPERIMENT
 }
 

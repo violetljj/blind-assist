@@ -28,6 +28,7 @@ enum class FeedbackReason(val displayText: String) {
     UNSTABLE_RISK("风险未稳定"),
     COOLDOWN("冷却中"),
     EVENT_ALREADY_ALERTED("同一风险已提醒"),
+    DUAL_LOOP_CONTRADICTED("几何反证，本帧不提醒"),
     SPEECH_DISABLED("语音关闭"),
     VIBRATION_DISABLED("震动关闭"),
     FEEDBACK_UNAVAILABLE("反馈不可用"),

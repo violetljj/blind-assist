@@ -4,6 +4,7 @@ import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.FeedbackDecision
 import com.linnan.blindassist.feedback.FeedbackGateway
+import com.linnan.blindassist.feedback.FeedbackPlanner
 import com.linnan.blindassist.feedback.FeedbackReason
 import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.DetectionSource
@@ -76,13 +77,16 @@ class AssistDecisionKernel(
     private val dualLoopShadowAdmitter: DualLoopShadowAdmitter =
         DualLoopShadowAdmitter.liveTristateSource(),
     private val dualLoopGeometryProducer: CausalTrackTristateGeometryProducer =
-        CausalTrackTristateGeometryProducer()
+        CausalTrackTristateGeometryProducer(),
+    private val dualLoopSceneScaleProducer: CausalSceneScaleTristateGeometryProducer =
+        CausalSceneScaleTristateGeometryProducer()
 ) {
     fun startSession(nowMs: Long = monotonicNowMs()) {
         assistEngine.startSession(nowMs)
         riskEventTracker.reset()
         lowConfidenceSidePersonConfirmation.reset()
         dualLoopGeometryProducer.reset()
+        dualLoopSceneScaleProducer.reset()
     }
 
     fun reset() {
@@ -90,6 +94,7 @@ class AssistDecisionKernel(
         riskEventTracker.reset()
         lowConfidenceSidePersonConfirmation.reset()
         dualLoopGeometryProducer.reset()
+        dualLoopSceneScaleProducer.reset()
     }
 
     fun sessionSummary(): SessionSummary = assistEngine.sessionSummary()
@@ -118,17 +123,21 @@ class AssistDecisionKernel(
             sourceFrame = sourceFrame,
             decisionAtNs = decisionAtNs
         )
-        val shadowEvidence = if (
-            dualLoopMode == DualLoopRuntimeMode.SHADOW_ABSTAIN_ONLY &&
-            dualLoopGeometryEvidence == null
-        ) {
-            dualLoopGeometryProducer.produce(
-                sourceFrame = sourceFrame,
-                selectedTarget = evaluation.rawRisk.sourceDetection,
-                decisionAtNs = decisionAtNs
-            )
-        } else {
-            dualLoopGeometryEvidence
+        val shadowEvidence = dualLoopGeometryEvidence ?: when (dualLoopMode) {
+            DualLoopRuntimeMode.OFF -> null
+            DualLoopRuntimeMode.SHADOW_ABSTAIN_ONLY ->
+                dualLoopGeometryProducer.produce(
+                    sourceFrame = sourceFrame,
+                    selectedTarget = evaluation.rawRisk.sourceDetection,
+                    decisionAtNs = decisionAtNs
+                )
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY ->
+                dualLoopSceneScaleProducer.produce(
+                    sourceFrame = sourceFrame,
+                    detections = detections,
+                    selectedTarget = evaluation.rawRisk.sourceDetection,
+                    decisionAtNs = decisionAtNs
+                )
         }
         val admittedShadow = dualLoopShadowAdmitter.evaluate(
             mode = dualLoopMode,
@@ -156,7 +165,11 @@ class AssistDecisionKernel(
             eventEvaluation,
             feedbackGateway,
             requiresActiveEvent =
-                eventEvaluation.stableRisk.sourceDetection?.source == DetectionSource.SEGMENTATION
+                eventEvaluation.stableRisk.sourceDetection?.source == DetectionSource.SEGMENTATION,
+            dualLoopContradicts = dualLoopMode == DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY &&
+                dualLoopShadow.admitted &&
+                dualLoopShadow.correctionDecision ==
+                    DualLoopCorrectionDecision.CONTRADICT_APPROACH
         )
         val completedEvent = riskEventTracker.recordFeedback(event, feedbackDecision)
         return assistEngine.completeFeedback(
@@ -220,7 +233,8 @@ class AssistDecisionKernel(
     private fun decideFeedback(
         evaluation: AssistFrameEvaluation,
         feedbackGateway: FeedbackGateway,
-        requiresActiveEvent: Boolean
+        requiresActiveEvent: Boolean,
+        dualLoopContradicts: Boolean = false
     ): FeedbackDecision {
         val event = evaluation.riskEvent
         return when {
@@ -238,6 +252,16 @@ class AssistDecisionKernel(
                 plan = null,
                 triggered = false,
                 reason = FeedbackReason.UNSTABLE_RISK
+            )
+            dualLoopContradicts &&
+                FeedbackPlanner.planFor(
+                    risk = evaluation.stableRisk,
+                    profile = evaluation.profile,
+                    scenario = evaluation.scenario
+                ) != null -> FeedbackDecision(
+                plan = null,
+                triggered = false,
+                reason = FeedbackReason.DUAL_LOOP_CONTRADICTED
             )
             else -> feedbackGateway.notify(
                 evaluation.stableRisk,

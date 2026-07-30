@@ -43,11 +43,18 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        check(!(BuildConfig.USTRF_EXPERIMENT && BuildConfig.DUAL_LOOP_SHADOW)) {
+        check(
+            listOf(
+                BuildConfig.USTRF_EXPERIMENT,
+                BuildConfig.DUAL_LOOP_SHADOW,
+                BuildConfig.DUAL_LOOP_ACTIVE
+            ).count { it } <= 1
+        ) {
             "isolated experimental modes cannot be enabled together"
         }
         val runtimeMode = when {
             BuildConfig.USTRF_EXPERIMENT -> AssistRuntimeMode.USTRF_EXPERIMENT
+            BuildConfig.DUAL_LOOP_ACTIVE -> AssistRuntimeMode.DUAL_LOOP_ACTIVE
             BuildConfig.DUAL_LOOP_SHADOW -> AssistRuntimeMode.DUAL_LOOP_SHADOW
             else -> AssistRuntimeMode.BASELINE
         }
@@ -71,6 +78,8 @@ class MainActivity : ComponentActivity() {
                                 "USTRF二维路线代理实验版 · 不可用于独立行走"
                             BuildConfig.DUAL_LOOP_SHADOW ->
                                 "神经—几何双环影子接线版 · 不改变提醒 · 不可用于独立行走"
+                            BuildConfig.DUAL_LOOP_ACTIVE ->
+                                "神经—几何双环隔离纠错版 · 开发验证中 · 不可用于独立行走"
                             else -> null
                         },
                         cameraActive = uiState.cameraActive,

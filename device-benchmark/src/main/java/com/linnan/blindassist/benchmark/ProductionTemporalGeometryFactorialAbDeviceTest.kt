@@ -17,6 +17,7 @@ import com.linnan.blindassist.feedback.SpeechOutput
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
+import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.ObjectDetectorTemporalGeometryMode
 import com.linnan.blindassist.risk.RiskAnalyzer
@@ -26,6 +27,7 @@ import com.linnan.blindassist.risk.TemporalRiskTrackerConfig
 import com.linnan.blindassist.session.AssistDecisionKernel
 import com.linnan.blindassist.session.AssistEngine
 import com.linnan.blindassist.session.DetectorMetrics
+import com.linnan.blindassist.session.DualLoopRuntimeMode
 import com.linnan.blindassist.vision.DetectorExecutionBackend
 import com.linnan.blindassist.vision.FrameClockDomain
 import com.linnan.blindassist.vision.FrameStamp
@@ -170,6 +172,495 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
                     "completed=$frameCount total=$EXPECTED_FRAME_COUNT"
             )
         } finally {
+            detector.close()
+        }
+    }
+
+    /**
+     * Replays the immutable Development detector dump through the real decision kernel.
+     *
+     * Baseline and candidate receive byte-identical detections. The candidate may suppress only
+     * an otherwise-eligible feedback opportunity when the frozen scene-scale source emits an
+     * admitted contradiction. Risk values are required to remain identical on every frame.
+     */
+    @Test
+    fun runDevelopmentSceneScaleActiveReplay() {
+        val dumpRoot = File(baseRoot(), DEVELOPMENT_DUMP_DIRECTORY)
+        val dumpTrace = File(dumpRoot, TRACE_FILE)
+        val dumpReceiptFile = File(dumpRoot, PRODUCER_RECEIPT)
+        assertTrue("development detector dump is missing", dumpTrace.isFile)
+        assertTrue("development detector dump receipt is missing", dumpReceiptFile.isFile)
+        val dumpReceipt = JSONObject(dumpReceiptFile.readText(Charsets.UTF_8))
+        assertEquals("COMPLETE", dumpReceipt.getString("status"))
+        assertEquals(false, dumpReceipt.getBoolean("truth_read"))
+        assertEquals(false, dumpReceipt.getBoolean("formal_output_modified"))
+        assertEquals(EXPECTED_FRAME_COUNT, dumpReceipt.getInt("frame_count"))
+        assertEquals(EXPECTED_INVENTORY_SHA256, dumpReceipt.getString("input_inventory_sha256"))
+        assertEquals(dumpReceipt.getString("trace_sha256"), sha256File(dumpTrace))
+
+        val outputRoot = File(baseRoot(), DEVELOPMENT_ACTIVE_REPLAY_DIRECTORY)
+        val temporaryRoot = File(baseRoot(), "$DEVELOPMENT_ACTIVE_REPLAY_DIRECTORY.tmp")
+        assertTrue("development active replay output already exists", !outputRoot.exists())
+        assertTrue("stale development active replay temporary output exists", !temporaryRoot.exists())
+        assertTrue("development active replay temporary output could not be created", temporaryRoot.mkdirs())
+
+        val baseline = branch(ObjectDetectorTemporalGeometryMode.APPLY)
+        val candidate = branch(ObjectDetectorTemporalGeometryMode.APPLY)
+        val metrics = DetectorMetrics(
+            totalMs = 0L,
+            preprocessMs = 0L,
+            inferenceMs = 0L,
+            postprocessMs = 0L,
+            fps = 0f,
+            modelStatus = "DEVELOPMENT_IMMUTABLE_DETECTION_REPLAY"
+        )
+        var currentSession: String? = null
+        var sessionOriginNs = 0L
+        var frameCount = 0
+        var baselineTriggerCount = 0
+        var candidateTriggerCount = 0
+        var contradictionCount = 0
+        var vetoedOpportunityCount = 0
+        val startedAtNs = System.nanoTime()
+        try {
+            File(temporaryRoot, TRACE_FILE).bufferedWriter(Charsets.UTF_8).use { writer ->
+                dumpTrace.forEachLine(Charsets.UTF_8) { line ->
+                    if (line.isBlank()) return@forEachLine
+                    val input = JSONObject(line)
+                    val session = input.getString("session_id")
+                    val capturedAtNs = input.getLong("source_capture_timestamp_ns")
+                    if (session != currentSession) {
+                        currentSession = session
+                        sessionOriginNs = capturedAtNs
+                        baseline.startSession(0L)
+                        candidate.startSession(0L)
+                    }
+                    val nowMs = (capturedAtNs - sessionOriginNs) / NANOS_PER_MILLISECOND
+                    baseline.clock.nowMs = nowMs
+                    candidate.clock.nowMs = nowMs
+                    val detectionsJson = input.getJSONArray("detections")
+                    val detections = buildList {
+                        repeat(detectionsJson.length()) { index ->
+                            val detection = detectionsJson.getJSONObject(index)
+                            add(
+                                Detection(
+                                    classId = detection.getInt("class_id"),
+                                    label = detection.getString("label"),
+                                    confidence = detection.getDouble("confidence").toFloat(),
+                                    boundingBox = BoundingBox(
+                                        detection.getDouble("left").toFloat(),
+                                        detection.getDouble("top").toFloat(),
+                                        detection.getDouble("right").toFloat(),
+                                        detection.getDouble("bottom").toFloat()
+                                    ),
+                                    frameSize = FrameSize(
+                                        detection.getInt("frame_width"),
+                                        detection.getInt("frame_height")
+                                    ),
+                                    source = DetectionSource.valueOf(detection.getString("source")),
+                                    temporalPromotionEligible =
+                                        detection.getBoolean("temporal_promotion_eligible")
+                                )
+                            )
+                        }
+                    }
+                    val detectionHash = canonicalDetectionsSha256(detections)
+                    check(detectionHash == input.getString("detector_output_sha256")) {
+                        "development detector dump drift: $session/${input.getString("frame_id")}"
+                    }
+                    val frameId = input.getString("frame_id")
+                    val stamp = FrameStamp(
+                        frameId = frameId.toLong(),
+                        capturedAtNs = capturedAtNs,
+                        receivedAtNs = capturedAtNs,
+                        sourceId = session,
+                        coordinateFrame = "CROWDBOT_RGB_STORED_PIXELS",
+                        clockDomain = FrameClockDomain.REPLAY_TIMELINE
+                    )
+                    val baselineResult = baseline.kernel.processFrame(
+                        detections = detections,
+                        frameSize = FrameSize(EXPECTED_WIDTH, EXPECTED_HEIGHT),
+                        profile = AlertProfile.STANDARD,
+                        scenario = AssistScenario.GENERAL,
+                        metrics = metrics,
+                        feedbackGateway = baseline.feedback,
+                        nowMs = nowMs,
+                        sourceFrame = stamp,
+                        decisionAtNs = capturedAtNs,
+                        dualLoopMode = DualLoopRuntimeMode.OFF
+                    )
+                    val candidateResult = candidate.kernel.processFrame(
+                        detections = detections,
+                        frameSize = FrameSize(EXPECTED_WIDTH, EXPECTED_HEIGHT),
+                        profile = AlertProfile.STANDARD,
+                        scenario = AssistScenario.GENERAL,
+                        metrics = metrics,
+                        feedbackGateway = candidate.feedback,
+                        nowMs = nowMs,
+                        sourceFrame = stamp,
+                        decisionAtNs = capturedAtNs,
+                        dualLoopMode = DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY
+                    )
+                    val baselineRawHash = canonicalRiskSha256(baselineResult.evaluation.rawRisk)
+                    val candidateRawHash = canonicalRiskSha256(candidateResult.evaluation.rawRisk)
+                    val baselineStableHash =
+                        canonicalRiskSha256(baselineResult.evaluation.stableRisk)
+                    val candidateStableHash =
+                        canonicalRiskSha256(candidateResult.evaluation.stableRisk)
+                    check(baselineRawHash == candidateRawHash) {
+                        "active replay raw-risk mutation: $session/$frameId"
+                    }
+                    check(baselineStableHash == candidateStableHash) {
+                        "active replay stable-risk mutation: $session/$frameId"
+                    }
+                    val observation = candidateResult.evaluation.dualLoopShadow
+                    val contradicted =
+                        observation.correctionDecision?.name == "CONTRADICT_APPROACH"
+                    if (baselineResult.feedbackDecision.triggered) baselineTriggerCount += 1
+                    if (candidateResult.feedbackDecision.triggered) candidateTriggerCount += 1
+                    if (contradicted) contradictionCount += 1
+                    if (candidateResult.feedbackDecision.reason.name == "DUAL_LOOP_CONTRADICTED") {
+                        vetoedOpportunityCount += 1
+                    }
+                    writer.write(
+                        JSONObject()
+                            .put(
+                                "schema_version",
+                                "blindassist.dual_loop_scene_scale_active_replay.v1"
+                            )
+                            .put("protocol_id", DEVELOPMENT_ACTIVE_PROTOCOL_ID)
+                            .put("authority", "DEVELOPMENT_ONLY_BURNED_RGB")
+                            .put("session_id", session)
+                            .put("frame_id", frameId)
+                            .put("source_capture_timestamp_ns", capturedAtNs)
+                            .put("detector_output_sha256", detectionHash)
+                            .put("raw_risk_sha256", baselineRawHash)
+                            .put("stable_risk_sha256", baselineStableHash)
+                            .put(
+                                "baseline_feedback_triggered",
+                                baselineResult.feedbackDecision.triggered
+                            )
+                            .put(
+                                "baseline_feedback_reason",
+                                baselineResult.feedbackDecision.reason.name
+                            )
+                            .put(
+                                "candidate_feedback_triggered",
+                                candidateResult.feedbackDecision.triggered
+                            )
+                            .put(
+                                "candidate_feedback_reason",
+                                candidateResult.feedbackDecision.reason.name
+                            )
+                            .put(
+                                "dual_loop",
+                                JSONObject()
+                                    .put("mode", observation.mode.name)
+                                    .put("disposition", observation.disposition.name)
+                                    .put(
+                                        "correction_decision",
+                                        observation.correctionDecision?.name ?: JSONObject.NULL
+                                    )
+                                    .put(
+                                        "signed_approach_rate_per_s",
+                                        observation.signedApproachRatePerS
+                                            ?.toDouble()
+                                            ?: JSONObject.NULL
+                                    )
+                                    .put(
+                                        "feedback_mutation_allowed",
+                                        observation.feedbackMutationAllowed
+                                    )
+                                    .put(
+                                        "event_mutation_allowed",
+                                        observation.eventMutationAllowed
+                                    )
+                            )
+                            .toString()
+                    )
+                    writer.newLine()
+                    frameCount += 1
+                }
+            }
+            check(frameCount == EXPECTED_FRAME_COUNT)
+            check(baselineTriggerCount == EXPECTED_BASELINE_TRIGGER_COUNT) {
+                "baseline replay drift: $baselineTriggerCount"
+            }
+            check(candidateTriggerCount == EXPECTED_ACTIVE_TRIGGER_COUNT) {
+                "candidate implementation drift: $candidateTriggerCount"
+            }
+            val trace = File(temporaryRoot, TRACE_FILE)
+            val receipt = JSONObject()
+                .put(
+                    "schema_version",
+                    "blindassist.dual_loop_scene_scale_active_replay_receipt.v1"
+                )
+                .put("protocol_id", DEVELOPMENT_ACTIVE_PROTOCOL_ID)
+                .put("status", "COMPLETE")
+                .put("authority", "DEVELOPMENT_ONLY_BURNED_RGB")
+                .put("truth_read", false)
+                .put("formal_output_modified", false)
+                .put("frame_count", frameCount)
+                .put("baseline_feedback_trigger_count", baselineTriggerCount)
+                .put("candidate_feedback_trigger_count", candidateTriggerCount)
+                .put("scene_contradict_frame_count", contradictionCount)
+                .put("vetoed_feedback_opportunity_count", vetoedOpportunityCount)
+                .put("risk_mutation_count", 0)
+                .put("trace_sha256", sha256File(trace))
+                .put("input_dump_sha256", sha256File(dumpTrace))
+                .put("elapsed_ms", (System.nanoTime() - startedAtNs) / NANOS_PER_MILLISECOND)
+                .put("device", deviceJson())
+            atomicWrite(File(temporaryRoot, PRODUCER_RECEIPT), receipt.toString(2))
+            check(temporaryRoot.renameTo(outputRoot)) {
+                "development active replay publication failed"
+            }
+            Log.i(
+                TAG,
+                "stage=DEVELOPMENT_SCENE_SCALE_ACTIVE state=COMPLETE " +
+                    "completed=$frameCount baseline_triggers=$baselineTriggerCount " +
+                    "candidate_triggers=$candidateTriggerCount vetoed=$vetoedOpportunityCount"
+            )
+        } finally {
+            baseline.close()
+            candidate.close()
+        }
+    }
+
+    /**
+     * Locked cross-source Development run on the full 10 Hz Matoaka replay.
+     *
+     * The device input contains RGB plus timestamps only. Labels and event windows remain host-side
+     * and are joined only after this producer has atomically published its truth-blind trace.
+     */
+    @Test
+    fun runDevelopmentSceneScaleMatoakaCrossSource() {
+        val runRoot = File(baseRoot(), DEVELOPMENT_MATOAKA_DIRECTORY)
+        val inputRoot = File(runRoot, "input")
+        val inputReceiptFile = File(inputRoot, "input_receipt.json")
+        val manifestFile = File(inputRoot, "manifest.jsonl")
+        assertTrue("Matoaka input receipt is missing", inputReceiptFile.isFile)
+        assertTrue("Matoaka input manifest is missing", manifestFile.isFile)
+        val inputReceipt = JSONObject(inputReceiptFile.readText(Charsets.UTF_8))
+        assertEquals(DEVELOPMENT_MATOAKA_PROTOCOL_ID, inputReceipt.getString("protocol_id"))
+        assertEquals("COMPLETE", inputReceipt.getString("status"))
+        assertEquals(false, inputReceipt.getBoolean("truth_read"))
+        assertEquals(MATOAKA_VIDEO_SHA256, inputReceipt.getString("video_sha256"))
+        assertEquals(MATOAKA_FRAME_COUNT, inputReceipt.getInt("frame_count"))
+        assertEquals(MATOAKA_MANIFEST_SHA256, inputReceipt.getString("manifest_sha256"))
+        assertEquals(MATOAKA_MANIFEST_SHA256, sha256File(manifestFile))
+
+        val outputRoot = File(runRoot, "output")
+        val temporaryRoot = File(runRoot, "output.tmp")
+        assertTrue("Matoaka output already exists", !outputRoot.exists())
+        assertTrue("stale Matoaka temporary output exists", !temporaryRoot.exists())
+        assertTrue("Matoaka temporary output could not be created", temporaryRoot.mkdirs())
+
+        val detector = strictQnnDetector()
+        val baseline = branch(ObjectDetectorTemporalGeometryMode.APPLY)
+        val candidate = branch(ObjectDetectorTemporalGeometryMode.APPLY)
+        baseline.startSession(0L)
+        candidate.startSession(0L)
+        var frameCount = 0
+        var baselineTriggerCount = 0
+        var candidateTriggerCount = 0
+        var riskMutationCount = 0
+        val startedAtNs = System.nanoTime()
+        try {
+            File(temporaryRoot, TRACE_FILE).bufferedWriter(Charsets.UTF_8).use { writer ->
+                manifestFile.forEachLine(Charsets.UTF_8) { line ->
+                    if (line.isBlank()) return@forEachLine
+                    val frame = JSONObject(line)
+                    val frameId = frame.getLong("frame_id")
+                    check(frameId == frameCount.toLong()) {
+                        "Matoaka frame sequence drift at $frameId"
+                    }
+                    val capturedAtNs = frame.getLong("source_capture_timestamp_ns")
+                    check(capturedAtNs == frameId * MATOAKA_FRAME_STEP_NS) {
+                        "Matoaka timestamp schedule drift at $frameId"
+                    }
+                    val image = File(inputRoot, frame.getString("image_path"))
+                    check(sha256File(image) == frame.getString("image_sha256")) {
+                        "Matoaka image identity drift at $frameId"
+                    }
+                    val bitmap = BitmapFactory.decodeFile(image.absolutePath)
+                        ?: error("Matoaka image decode failed at $frameId")
+                    try {
+                        check(bitmap.width == EXPECTED_WIDTH && bitmap.height == EXPECTED_HEIGHT)
+                        val detectorResult = detector.detect(bitmap)
+                        val detections = detectorResult.detections.toList()
+                        val detectionHash = canonicalDetectionsSha256(detections)
+                        val nowMs = capturedAtNs / NANOS_PER_MILLISECOND
+                        baseline.clock.nowMs = nowMs
+                        candidate.clock.nowMs = nowMs
+                        val stamp = FrameStamp(
+                            frameId = frameId,
+                            capturedAtNs = capturedAtNs,
+                            receivedAtNs = capturedAtNs,
+                            sourceId = MATOAKA_SOURCE_ID,
+                            coordinateFrame = "MATOAKA_LETTERBOX_640X480",
+                            clockDomain = FrameClockDomain.REPLAY_TIMELINE
+                        )
+                        val baselineResult = baseline.kernel.processFrame(
+                            detections = detections,
+                            frameSize = detectorResult.frameSize,
+                            profile = AlertProfile.STANDARD,
+                            scenario = AssistScenario.GENERAL,
+                            metrics = detectorResult.metrics,
+                            feedbackGateway = baseline.feedback,
+                            nowMs = nowMs,
+                            sourceFrame = stamp,
+                            decisionAtNs = capturedAtNs,
+                            dualLoopMode = DualLoopRuntimeMode.OFF
+                        )
+                        val candidateResult = candidate.kernel.processFrame(
+                            detections = detections,
+                            frameSize = detectorResult.frameSize,
+                            profile = AlertProfile.STANDARD,
+                            scenario = AssistScenario.GENERAL,
+                            metrics = detectorResult.metrics,
+                            feedbackGateway = candidate.feedback,
+                            nowMs = nowMs,
+                            sourceFrame = stamp,
+                            decisionAtNs = capturedAtNs,
+                            dualLoopMode = DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY
+                        )
+                        val baselineRawHash =
+                            canonicalRiskSha256(baselineResult.evaluation.rawRisk)
+                        val candidateRawHash =
+                            canonicalRiskSha256(candidateResult.evaluation.rawRisk)
+                        val baselineStableHash =
+                            canonicalRiskSha256(baselineResult.evaluation.stableRisk)
+                        val candidateStableHash =
+                            canonicalRiskSha256(candidateResult.evaluation.stableRisk)
+                        if (baselineRawHash != candidateRawHash ||
+                            baselineStableHash != candidateStableHash
+                        ) {
+                            riskMutationCount += 1
+                        }
+                        check(riskMutationCount == 0) {
+                            "Matoaka active branch mutated risk at $frameId"
+                        }
+                        if (baselineResult.feedbackDecision.triggered) {
+                            baselineTriggerCount += 1
+                        }
+                        if (candidateResult.feedbackDecision.triggered) {
+                            candidateTriggerCount += 1
+                        }
+                        val observation = candidateResult.evaluation.dualLoopShadow
+                        writer.write(
+                            JSONObject()
+                                .put(
+                                    "schema_version",
+                                    "blindassist.dual_loop_scene_scale_cross_source_trace.v1"
+                                )
+                                .put("protocol_id", DEVELOPMENT_MATOAKA_PROTOCOL_ID)
+                                .put("authority", "LOCKED_CROSS_SOURCE_DEVELOPMENT")
+                                .put("source_id", MATOAKA_SOURCE_ID)
+                                .put("frame_id", frameId)
+                                .put("source_capture_timestamp_ns", capturedAtNs)
+                                .put("image_sha256", frame.getString("image_sha256"))
+                                .put("detector_output_sha256", detectionHash)
+                                .put("detection_count", detections.size)
+                                .put("raw_risk", riskJson(baselineResult.evaluation.rawRisk))
+                                .put(
+                                    "stable_risk",
+                                    riskJson(baselineResult.evaluation.stableRisk)
+                                )
+                                .put(
+                                    "baseline_feedback_triggered",
+                                    baselineResult.feedbackDecision.triggered
+                                )
+                                .put(
+                                    "baseline_feedback_reason",
+                                    baselineResult.feedbackDecision.reason.name
+                                )
+                                .put(
+                                    "candidate_feedback_triggered",
+                                    candidateResult.feedbackDecision.triggered
+                                )
+                                .put(
+                                    "candidate_feedback_reason",
+                                    candidateResult.feedbackDecision.reason.name
+                                )
+                                .put(
+                                    "dual_loop",
+                                    JSONObject()
+                                        .put("mode", observation.mode.name)
+                                        .put("disposition", observation.disposition.name)
+                                        .put(
+                                            "correction_decision",
+                                            observation.correctionDecision?.name
+                                                ?: JSONObject.NULL
+                                        )
+                                        .put(
+                                            "signed_approach_rate_per_s",
+                                            observation.signedApproachRatePerS
+                                                ?.toDouble()
+                                                ?: JSONObject.NULL
+                                        )
+                                        .put(
+                                            "feedback_mutation_allowed",
+                                            observation.feedbackMutationAllowed
+                                        )
+                                        .put(
+                                            "event_mutation_allowed",
+                                            observation.eventMutationAllowed
+                                        )
+                                )
+                                .toString()
+                        )
+                        writer.newLine()
+                        frameCount += 1
+                        if (frameCount % MATOAKA_PROGRESS_INTERVAL == 0) {
+                            val elapsedSeconds =
+                                (System.nanoTime() - startedAtNs).toDouble() /
+                                    NANOS_PER_SECOND
+                            Log.i(
+                                TAG,
+                                "stage=DEVELOPMENT_MATOAKA_CROSS_SOURCE state=RUNNING " +
+                                    "completed=$frameCount total=$MATOAKA_FRAME_COUNT " +
+                                    "throughput_fps=${frameCount / elapsedSeconds}"
+                            )
+                        }
+                    } finally {
+                        bitmap.recycle()
+                    }
+                }
+            }
+            check(frameCount == MATOAKA_FRAME_COUNT)
+            val trace = File(temporaryRoot, TRACE_FILE)
+            val receipt = JSONObject()
+                .put(
+                    "schema_version",
+                    "blindassist.dual_loop_scene_scale_cross_source_receipt.v1"
+                )
+                .put("protocol_id", DEVELOPMENT_MATOAKA_PROTOCOL_ID)
+                .put("status", "COMPLETE")
+                .put("authority", "LOCKED_CROSS_SOURCE_DEVELOPMENT")
+                .put("truth_read", false)
+                .put("frame_count", frameCount)
+                .put("baseline_feedback_trigger_count", baselineTriggerCount)
+                .put("candidate_feedback_trigger_count", candidateTriggerCount)
+                .put("risk_mutation_count", riskMutationCount)
+                .put("trace_sha256", sha256File(trace))
+                .put("input_manifest_sha256", MATOAKA_MANIFEST_SHA256)
+                .put("backend", DetectorExecutionBackend.QUALCOMM_QNN_HTP.wireName)
+                .put("model_sha256", sha256Asset(TfliteYoloDetector.MODEL_ASSET))
+                .put("elapsed_ms", (System.nanoTime() - startedAtNs) / NANOS_PER_MILLISECOND)
+                .put("device", deviceJson())
+            atomicWrite(File(temporaryRoot, PRODUCER_RECEIPT), receipt.toString(2))
+            check(temporaryRoot.renameTo(outputRoot)) {
+                "Matoaka cross-source output publication failed"
+            }
+            Log.i(
+                TAG,
+                "stage=DEVELOPMENT_MATOAKA_CROSS_SOURCE state=COMPLETE " +
+                    "completed=$frameCount baseline_triggers=$baselineTriggerCount " +
+                    "candidate_triggers=$candidateTriggerCount"
+            )
+        } finally {
+            baseline.close()
+            candidate.close()
             detector.close()
         }
     }
@@ -1024,6 +1515,20 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
         private const val IMPLEMENTATION_ID = "PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_IMPL_R0"
         private const val BASE_DIRECTORY = "dual_loop_production_temporal_ab_r0"
         private const val DEVELOPMENT_DUMP_DIRECTORY = "development-multitrack-dump-r0"
+        private const val DEVELOPMENT_ACTIVE_REPLAY_DIRECTORY =
+            "development-scene-scale-active-r1"
+        private const val DEVELOPMENT_ACTIVE_PROTOCOL_ID =
+            "DUAL_LOOP_SCENE_SCALE_VETO_R1"
+        private const val DEVELOPMENT_MATOAKA_DIRECTORY =
+            "development-matoaka-cross-source-r1"
+        private const val DEVELOPMENT_MATOAKA_PROTOCOL_ID =
+            "DUAL_LOOP_SCENE_SCALE_VETO_R1_CROSS_SOURCE_MATOAKA"
+        private const val MATOAKA_SOURCE_ID =
+            "wikimedia_commons_matoaka_west_virginia_walk_2019"
+        private const val MATOAKA_VIDEO_SHA256 =
+            "017f860e002c75d093206772800bd68cb1c19f226b74e4d5a933798916347821"
+        private const val MATOAKA_MANIFEST_SHA256 =
+            "97cb1c1ee68ab0b9a401f085c6819e696cbd951e01cb2c576c2c4615247be5f2"
         private const val PRESTART_RECEIPT = "prestart_receipt.json"
         private const val AUTHORIZATION_DIRECTORY = "authorization"
         private const val ACTIVATION_RECEIPT = "activation.json"
@@ -1039,6 +1544,11 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
         private const val QNN_MODEL_TOKEN = "blindassist_yolo11n_fp16_320_qnn_2_47_production_v1"
         private const val CPU_THREADS = 4
         private const val EXPECTED_FRAME_COUNT = 4422
+        private const val EXPECTED_BASELINE_TRIGGER_COUNT = 373
+        private const val EXPECTED_ACTIVE_TRIGGER_COUNT = 357
+        private const val MATOAKA_FRAME_COUNT = 10724
+        private const val MATOAKA_FRAME_STEP_NS = 100_000_000L
+        private const val MATOAKA_PROGRESS_INTERVAL = 250
         private const val EXPECTED_TRACE_ROWS = 8844
         private const val EXPECTED_WIDTH = 640
         private const val EXPECTED_HEIGHT = 480

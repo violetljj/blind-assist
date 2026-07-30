@@ -228,6 +228,29 @@ class DualLoopShadowAdmitterTest {
         assertFalse(result.feedbackMutationAllowed)
     }
 
+    @Test
+    fun activeModeAllowsFeedbackMutationOnlyForAdmittedContradiction() {
+        val admitter = admitted()
+        val confirm = evaluate(
+            admitter,
+            mode = DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY
+        )
+        val contradict = evaluate(
+            admitter,
+            mode = DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY,
+            candidate = evidence().copy(
+                correctionDecision = DualLoopCorrectionDecision.CONTRADICT_APPROACH,
+                signedApproachRatePerS = -0.25f
+            )
+        )
+
+        assertTrue(confirm.admitted)
+        assertFalse(confirm.feedbackMutationAllowed)
+        assertTrue(contradict.admitted)
+        assertTrue(contradict.feedbackMutationAllowed)
+        assertFalse(contradict.eventMutationAllowed)
+    }
+
     private fun admitted() = DualLoopShadowAdmitter(
         admittedSourceIdentities = setOf(sourceIdentity())
     )

@@ -9,14 +9,13 @@ import com.linnan.blindassist.vision.FrameClockDomain
 import com.linnan.blindassist.vision.FrameStamp
 
 /**
- * The only dual-loop runtime modes currently implemented.
- *
- * There is intentionally no active/actuating mode. The second loop may be
- * observed in an isolated build, but it cannot alter risk, event, or feedback.
+ * Dual-loop runtime modes. Active correction is deliberately limited to an
+ * isolated contradict-only build and cannot promote or create an alert.
  */
 enum class DualLoopRuntimeMode {
     OFF,
-    SHADOW_ABSTAIN_ONLY
+    SHADOW_ABSTAIN_ONLY,
+    ACTIVE_CONTRADICT_ONLY
 }
 
 enum class DualLoopShadowDisposition {
@@ -99,7 +98,9 @@ data class DualLoopShadowObservation(
     val eventMutationAllowed: Boolean
         get() = false
     val feedbackMutationAllowed: Boolean
-        get() = false
+        get() = mode == DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY &&
+            admitted &&
+            correctionDecision == DualLoopCorrectionDecision.CONTRADICT_APPROACH
     val admitted: Boolean
         get() = disposition == DualLoopShadowDisposition.ADMITTED_SHADOW
 
@@ -138,62 +139,62 @@ class DualLoopShadowAdmitter(
         decisionClockDomain: FrameClockDomain?
     ): DualLoopShadowObservation {
         if (mode == DualLoopRuntimeMode.OFF) return DualLoopShadowObservation.off()
-        if (evidence == null) return abstain(DualLoopShadowDisposition.EVIDENCE_ABSENT)
+        if (evidence == null) return abstain(mode, DualLoopShadowDisposition.EVIDENCE_ABSENT)
         if (evidence.sourceContractId.isBlank() || evidence.sourceId.isBlank()) {
-            return abstain(DualLoopShadowDisposition.SOURCE_ID_INVALID, evidence)
+            return abstain(mode, DualLoopShadowDisposition.SOURCE_ID_INVALID, evidence)
         }
         if (evidence.identity() !in admittedSourceIdentities) {
-            return abstain(DualLoopShadowDisposition.SOURCE_NOT_ADMITTED, evidence)
+            return abstain(mode, DualLoopShadowDisposition.SOURCE_NOT_ADMITTED, evidence)
         }
         if (!evidence.sourceAbstentionReason.isNullOrBlank()) {
-            return abstain(DualLoopShadowDisposition.SOURCE_ABSTAINED, evidence)
+            return abstain(mode, DualLoopShadowDisposition.SOURCE_ABSTAINED, evidence)
         }
         if (sourceFrame == null) {
-            return abstain(DualLoopShadowDisposition.SOURCE_FRAME_MISSING, evidence)
+            return abstain(mode, DualLoopShadowDisposition.SOURCE_FRAME_MISSING, evidence)
         }
         if (evidence.currentFrame != sourceFrame) {
-            return abstain(DualLoopShadowDisposition.CURRENT_FRAME_MISMATCH, evidence)
+            return abstain(mode, DualLoopShadowDisposition.CURRENT_FRAME_MISMATCH, evidence)
         }
         if (!validFramePair(evidence.previousFrame, evidence.currentFrame, evidence.trackEpoch)) {
-            return abstain(DualLoopShadowDisposition.PREVIOUS_FRAME_INVALID, evidence)
+            return abstain(mode, DualLoopShadowDisposition.PREVIOUS_FRAME_INVALID, evidence)
         }
         if (decisionClockDomain == null ||
             evidence.availabilityClockDomain != decisionClockDomain ||
             evidence.currentFrame.clockDomain != decisionClockDomain ||
             decisionClockDomain == FrameClockDomain.CAMERA_HARDWARE_UNMAPPED
         ) {
-            return abstain(DualLoopShadowDisposition.CLOCK_DOMAIN_MISMATCH, evidence)
+            return abstain(mode, DualLoopShadowDisposition.CLOCK_DOMAIN_MISMATCH, evidence)
         }
         if (evidence.availableAtNs < evidence.currentFrame.capturedAtNs ||
             decisionAtNs < evidence.availableAtNs
         ) {
-            return abstain(DualLoopShadowDisposition.EVIDENCE_NOT_AVAILABLE, evidence)
+            return abstain(mode, DualLoopShadowDisposition.EVIDENCE_NOT_AVAILABLE, evidence)
         }
         if (evidence.validUntilNs < evidence.availableAtNs || decisionAtNs > evidence.validUntilNs) {
-            return abstain(DualLoopShadowDisposition.EVIDENCE_STALE, evidence)
+            return abstain(mode, DualLoopShadowDisposition.EVIDENCE_STALE, evidence)
         }
 
         val matchingTargets = detections.filter { detection -> evidence.matches(detection) }
         if (matchingTargets.size > 1) {
-            return abstain(DualLoopShadowDisposition.TARGET_AMBIGUOUS, evidence)
+            return abstain(mode, DualLoopShadowDisposition.TARGET_AMBIGUOUS, evidence)
         }
         val selected = baselineRisk.sourceDetection
         if (matchingTargets.singleOrNull() == null || selected == null || !evidence.matches(selected)) {
-            return abstain(DualLoopShadowDisposition.TARGET_NOT_SELECTED, evidence)
+            return abstain(mode, DualLoopShadowDisposition.TARGET_NOT_SELECTED, evidence)
         }
         val rate = evidence.signedApproachRatePerS
         if (rate == null || !rate.isFinite()) {
-            return abstain(DualLoopShadowDisposition.NONFINITE_RATE, evidence)
+            return abstain(mode, DualLoopShadowDisposition.NONFINITE_RATE, evidence)
         }
         if (evidence.correctionDecision == DualLoopCorrectionDecision.ABSTAIN ||
             (evidence.correctionDecision == DualLoopCorrectionDecision.CONFIRM_APPROACH && rate <= 0f) ||
             (evidence.correctionDecision == DualLoopCorrectionDecision.CONTRADICT_APPROACH && rate >= 0f)
         ) {
-            return abstain(DualLoopShadowDisposition.DECISION_RATE_MISMATCH, evidence)
+            return abstain(mode, DualLoopShadowDisposition.DECISION_RATE_MISMATCH, evidence)
         }
         val quality = evidence.quality
         if (quality == null || !quality.isFinite() || quality < minimumQuality || quality > 1f) {
-            return abstain(DualLoopShadowDisposition.LOW_QUALITY, evidence)
+            return abstain(mode, DualLoopShadowDisposition.LOW_QUALITY, evidence)
         }
         return DualLoopShadowObservation(
             mode = mode,
@@ -208,10 +209,11 @@ class DualLoopShadowAdmitter(
     }
 
     private fun abstain(
+        mode: DualLoopRuntimeMode,
         disposition: DualLoopShadowDisposition,
         evidence: DualLoopGeometryEvidence? = null
     ): DualLoopShadowObservation = DualLoopShadowObservation(
-        mode = DualLoopRuntimeMode.SHADOW_ABSTAIN_ONLY,
+        mode = mode,
         disposition = disposition,
         sourceId = evidence?.sourceId,
         currentFrameId = evidence?.currentFrame?.frameId,
@@ -255,6 +257,10 @@ class DualLoopShadowAdmitter(
                 DualLoopSourceIdentity(
                     CONTRACT_ID,
                     CausalTrackTristateGeometryProducer.SOURCE_ID
+                ),
+                DualLoopSourceIdentity(
+                    CONTRACT_ID,
+                    CausalSceneScaleTristateGeometryProducer.SOURCE_ID
                 )
             )
         )

@@ -179,6 +179,11 @@ class AssistEngine(
                 detail = "该中心路径风险已完成一次反馈，等待通过、远离或清除后才会再次提醒。",
                 accessibilityText = "同一风险已提醒，等待通过或清除后再判断是否需要提醒。"
             )
+            FeedbackReason.DUAL_LOOP_CONTRADICTED -> RiskExplanation(
+                headline = "本帧暂缓：多个检测框共同缩小",
+                detail = "第二环只否决当前提醒机会；不解释运动责任，下一帧会重新判断。",
+                accessibilityText = "本帧多个检测框共同缩小，与接近提醒矛盾，暂不提醒，下一帧重新判断。"
+            )
             FeedbackReason.HELD_ALERT -> RiskExplanation(
                 headline = "短暂保持上一条提醒",
                 detail = "当前帧未重新确认目标，但稳定层仍在短时间内保留${riskText(stableRisk)}。",

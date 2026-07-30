@@ -1,5 +1,19 @@
 # Development Log
 ## 2026-07-30
+- 时间：2026-07-30（Asia/Hong_Kong）；执行者：violjjet。完成
+  [双环隔离主动纠错 R1](docs/research/dual-loop/DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)：
+  先以 4,422 帧完整 production detections 否决没有负例反证命中的 multitrack R0，
+  再落地最小 scene-scale `ACTIVE_CONTRADICT_ONLY`。设备 Kotlin 回放与 host
+  evaluator 达到 `4422/4422` 逐帧一致；CrowdBot 全序列触发行 `373 -> 357`、
+  可评分负例行 `27 -> 25`，Matoaka 10,724 帧 strict QNN HTP 回放为
+  `255 -> 247`、可评分负例行 `51 -> 49`，两者负例提醒窗口均 `7 -> 7`，已命中
+  正例无新增延迟。100 ms hold 没有事件收益，200 ms 起损害 CrowdBot 正例召回，
+  因而拒绝 latch/新状态机。独立 `dualLoopActive` APK 已安装冷启动并显示开发禁用
+  警示；普通构建默认关闭，raw/stable risk 与事件规则不变。Python 合同测试
+  `4/4`、`core:assist` `161/161`、普通/影子/主动 APK 与 device-benchmark 构建、
+  repository hygiene 和 docs index 均通过。终点为
+  `ISOLATED_ACTIVE_MECHANISM_LANDED / CROSS_SOURCE_ROW_SIGNAL_REPLICATED /
+  NO_EVENT_LEVEL_EFFECT`，不构成默认生产、产品或安全主张。
 - 时间：2026-07-30（Asia/Hong_Kong）；执行者：Codex。封存
   [D0 ego-motion error attribution R2 正式执行](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R2_EXECUTION_RESULT_2026-07-30.md)：
   R2 已修复 R1 的 `rosbags` 缺失，并通过冻结首条 Vicon message probe；正式 marker

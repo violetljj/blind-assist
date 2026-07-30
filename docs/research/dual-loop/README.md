@@ -1,12 +1,21 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`TRISTATE_SOURCE_CONFIRMATION_PASS / ANDROID_SHADOW_LANDED / DEFAULT_OFF / NO_EFFECT_CLAIM`
+状态：`ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / CROSS_SOURCE_ROW_SIGNAL_REPLICATED / NO_EVENT_LEVEL_EFFECT`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
 ## 当前决定
 
 2026-07-30 已完成
+[隔离主动纠错 R1](DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)。
+双环现已从真实 shadow 推进到独立 application id 的
+`ACTIVE_CONTRADICT_ONLY`：几何环只在至少两个唯一关联框共同明显缩小时否决当前帧
+提醒，其余全部弃权；raw/stable risk 与事件身份/生命周期规则不变，普通 debug、
+release 和 shadow 仍默认不干预。CrowdBot 与 Matoaka 均复现了触发行小幅下降且
+已命中正例无新增延迟，但两个来源的负例提醒窗口均为 `7 -> 7`，所以当前终点是
+`CROSS_SOURCE_ROW_SIGNAL_REPLICATED / NO_EVENT_LEVEL_EFFECT`，不是误提醒下降结论。
+
+此前已完成
 [因果框尺度三态源 R0](DUAL_LOOP_CAUSAL_TRACK_TRISTATE_R0_RESULT_2026-07-30.md)。
 主线不再把 ego/target 运动责任归因、精确米制 TTC、pose、IMU、depth 或完整三维
 恢复作为基础提醒的前置条件。当前第二环只对 production semantic loop 选中的目标，
@@ -25,10 +34,7 @@ metadata-only hash 冻结 3 个全新 JRDB 会话、每个 360 帧。2D source �
 `DUAL_LOOP_SHADOW` 路径：不再传入恒定 null，而是使用当前 production-selected
 detection 与轻量 track continuity 生成三态 evidence，再由 frame/time/target/TTL
 绑定的 admitter 准入。逐帧回归确认 risk、event、feedback、session 与 gateway
-调用保持 baseline 完全一致。因此当前是
-`END_TO_END_ANDROID_SHADOW_LANDED / DEFAULT_OFF / NON_ACTUATING`，不是 active
-提醒效果结论。下一步不增加新算法模块，只收集真机 live track、三态分布、延迟和
-baseline parity；通过后才允许讨论窄范围 active correction。
+调用保持 baseline 完全一致。该 shadow 结果仍是主动纠错的工程前序，不被后继改写。
 
 此前的
 [真实几何 shadow cycle R0](DUAL_LOOP_REAL_GEOMETRY_SHADOW_CYCLE_R0_RESULT_2026-07-30.md)
@@ -181,16 +187,17 @@ F-1C。
   QNN 路由。
 - predecessor 几何证据：Sparse LK 五通道已经证实不具备目标、区域和接近语义，
   保留为负结果与 regression fixture，不再作为 successor 的主候选。
-- successor 几何证据：已冻结为 `causal track tri-state`，只使用当前目标连续 7 帧
-  的框高变化；满足严格选择门才确认/否定接近，否则弃权。JRDB 3D annotation
-  只提供离线 Confirmation truth，不是运行时输入。
+- successor 几何证据：annotation-track `causal track tri-state` 保留为机制
+  Confirmation；主动 R1 使用近期帧至少两个唯一关联检测框的共同缩小作为场景级
+  `CONTRADICT`，否则弃权。两者均不使用运行时 truth、pose、IMU、depth 或米制 TTC。
 - 汇合位置：同一事件/区域、真实时间戳、质量、时效和失效原因进入既有统一决策接缝；
   两个环不得分别提醒。
 - 论文候选贡献：不是“双环”这个框图本身，而是双环相对 YOLO-only 是否产生可重复的
   首次有效提醒提前、风险判别改善或风险连续性改善。
 
-运行时三态 source 已实现并只接入非干预 shadow。当前不实现 active fusion、
-自适应调度、深度、分割、ARCore、新风险场、新状态机或第二套反馈系统。
+运行时三态 source 已接入非干预 shadow；最小 scene-scale contradiction 已接入隔离
+`dualLoopActive` 构建。当前不实现自适应调度、深度、分割、ARCore、新风险场、
+latch、新状态机或第二套反馈系统。
 
 ## 与 RCLE、USTRF 和 Project Guideline 的关系
 
@@ -217,13 +224,14 @@ F-1C。
   结果拒绝，但不包含视觉算法、风险或提醒语义。
 - 旧 CPU-era Sparse LK 回放与真机 shadow 结果相互提示：并发形态可能可承载，但真实
   CameraX 组合路径曾超过旧 `70 ms` 门，且没有 matched live YOLO-only 因果对照。
-- 当前已有独立 annotation-track 三态方向证据与真实 Android shadow source，但尚无
-  live detector-track、双环事件增量或 harm gate 证据，因此不能改变实际提醒。
+- 当前已有独立 annotation-track 三态方向证据、真实 Android shadow source、设备端
+  4,422 + 10,724 帧 active replay 和隔离 APK smoke。两个 Development 来源都只出现
+  触发行小幅下降，没有负例提醒窗口减少；普通生产行为因此保持不变。
 
 因此 predecessor 只允许写成 `DEVELOPMENT_ROUTE_REJECTED / NO_INCREMENT`；
 successor 只允许写成 `ANNOTATION_TRACK_SOURCE_CONFIRMATION_PASS /
-ANDROID_SHADOW_INTEGRATED / NON_ACTUATING`。不得写成 live 算法有效、早提醒已实现、
-误提醒已下降、产品改善或安全结论。
+ISOLATED_ACTIVE_MECHANISM_LANDED / CROSS_SOURCE_DEVELOPMENT_ROW_SIGNAL_ONLY`。
+不得写成 live 算法有效、误提醒事件已下降、默认生产改善或安全结论。
 
 ## 当前权限
 
@@ -236,14 +244,15 @@ ANDROID_SHADOW_INTEGRATED / NON_ACTUATING`。不得写成 live 算法有效、�
 | F-1B decision 输出执行 | `NOT_RUN / NOT_NEEDED / SEALED` |
 | F-1C 手机双环 A/B | `STOPPED_BY_F-1B / NOT_AUTHORIZED` |
 | successor 几何真值源 Discovery | `COMPLETED / SOURCE_FOUND_FOR_DEVELOPMENT` |
-| successor causal runtime geometry | `ANDROID_SHADOW_IMPLEMENTED / NON_ACTUATING` |
+| successor causal runtime geometry | `ANDROID_SHADOW_IMPLEMENTED / ISOLATED_ACTIVE_IMPLEMENTED` |
 | successor selective tri-state Development | `COMPLETE / CROSS_SESSION_REPLICATED` |
 | production temporal geometry factorial A/B R0 | `COMPLETE / VALID / NO_INCREMENT / ONE_SHOT_CONSUMED` |
 | D0 ego-motion error attribution | `R0_REPAIR_NEEDED / R1-R3_EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_R4` |
 | successor 独立 Confirmation | `COMPLETE / ANNOTATION_TRACK_SOURCE_CONFIRMATION_PASS` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
-| 第二环输入合同、准入门与生产影子接线 | `IMPLEMENTED / DEFAULT_OFF / SHADOW_ABSTAIN_ONLY` |
-| active/actuating 融合或默认生产行为变更 | `NOT_IMPLEMENTED / NOT_AUTHORIZED` |
+| 第二环输入合同、准入门与生产影子接线 | `IMPLEMENTED / DEFAULT_OFF / SHADOW_NON_ACTUATING` |
+| 隔离 active contradiction-only 构建 | `IMPLEMENTED / DEVELOPMENT_ONLY / NO_EVENT_EFFECT_CLAIM` |
+| 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、分割、ARCore | `NOT_AUTHORIZED` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
 | 真人、独立助行、安全、产品或跨设备结论 | `NOT_AUTHORIZED` |
@@ -262,23 +271,26 @@ R1/R2/R3 的正式 authority 均已消费并以执行无效关闭；三者都没
 闭合，所有有限非零行系统性相差两倍；不是环境、数据损坏或容差问题。
 
 因此主线不再把 D0 三选一作为工程落地前置条件，也不从该失败选择 ego 或 temporal。
-用户授权的正交路线已按
+用户授权的正交路线先按
 [shadow wiring 合同](DUAL_LOOP_SHADOW_WIRING_R0_CONTRACT_2026-07-30.json)
-落地：
+落地，随后由
+[隔离主动纠错 R1](DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)
+完成最小 active 后继：
 
 1. `core:assist` 增加 target/frame/TTL/quality 绑定的第二环输入合同；
 2. 缺失、未准入、来源弃权、帧/时间/目标/质量异常全部显式 fail closed；
 3. 普通 admitter 的 allowlist 为空；隔离 shadow kernel 仅准入冻结三态 source；
-4. 模式只有 `OFF` 与 `SHADOW_ABSTAIN_ONLY`，不存在 active/actuate；
-5. `AssistDecisionKernel` 仍是唯一事件与反馈接缝，shadow 无 risk/event/feedback
-   写权限；
-6. 默认、debug、release 均关闭；只有独立 application id 的
-   `dualLoopShadow` 构建类型开启影子观察。
+4. 新增的 `ACTIVE_CONTRADICT_ONLY` 只在隔离 `dualLoopActive` 构建启用；
+5. `AssistDecisionKernel` 仍是唯一反馈接缝，第二环没有 risk/event 写权限；
+6. 默认、debug、release 均关闭；`dualLoopShadow` 只观察，`dualLoopActive`
+   才允许本帧否决。
 
 [旧接缝实现结果](DUAL_LOOP_SHADOW_WIRING_R0_IMPLEMENTATION_RESULT_2026-07-30.md)
 保留其当时终点。当前后继已把 `CAUSAL_TRACK_TRISTATE_R0` 准入 kernel 的隔离
-shadow，并通过真实七帧 admission 与 baseline parity 回归；最新终点以
-[三态源结果](DUAL_LOOP_CAUSAL_TRACK_TRISTATE_R0_RESULT_2026-07-30.md) 为准。
+shadow，并通过真实七帧 admission 与 baseline parity 回归。主动后继在两个已锁定
+Development 来源上只降低触发行、没有降低事件窗口；当前不再在已烧毁来源上调阈值
+或增加 latch。最新终点以
+[主动纠错 R1 结果](DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md) 为准。
 
 ### D0 R1/R2/R3 执行终态
 

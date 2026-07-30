@@ -44,6 +44,7 @@ android {
         buildConfigField("boolean", "USTRF_EXPERIMENT", "false")
         buildConfigField("boolean", "NPU_CANDIDATE", "false")
         buildConfigField("boolean", "DUAL_LOOP_SHADOW", "false")
+        buildConfigField("boolean", "DUAL_LOOP_ACTIVE", "false")
     }
 
     signingConfigs {
@@ -82,6 +83,13 @@ android {
             versionNameSuffix = "-dual-loop-shadow"
             matchingFallbacks += listOf("debug")
             buildConfigField("boolean", "DUAL_LOOP_SHADOW", "true")
+        }
+        create("dualLoopActive") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".dualloop.active"
+            versionNameSuffix = "-dual-loop-active"
+            matchingFallbacks += listOf("debug")
+            buildConfigField("boolean", "DUAL_LOOP_ACTIVE", "true")
         }
     }
 
