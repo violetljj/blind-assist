@@ -1,6 +1,20 @@
 # Development Log
 ## 2026-07-31
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  [DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0](docs/research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)：
+  只读消费已关闭的 CrowdBot、Matoaka、Shiraz Development trace、truth ledger 与
+  receipt，覆盖 49 个 ledger 窗口（24 个正例、25 个负窗；47 个 closed-scored，2 个
+  CrowdBot 正例为 `TEMPORAL_SCORING_NOT_EVALUABLE`）。逐窗口评分范围内的
+  baseline/candidate feedback rows 为 `206/202`，负窗分别为 `7/7`、`7/7`、`5/5`；
+  retained-false 分类为
+  `A=1/B=2/C=10/D=4/E=2/MIXED=0`。顶层终点为
+  `POLICY_GRANULARITY_MISMATCH_SUPPORTED`：只在内存 upper-bound audit 中发现
+  CrowdBot `49.241 ms`、Matoaka `900 ms` 的有限 hold witness，均保留 baseline-hit
+  正例、induced negative window 为 0、正例新增首反馈时延为 `0 ms`；Shiraz 在预冻结
+  `250 ms` 上限内无 witness。该 witness 需要新 runtime state，不是新的 R1 效果主张；
+  不设计或实现 R2，建议关闭 scene-scale active 路线。逐窗口 CSV/JSON/Markdown、
+  upper-bound JSON、确定性测试与 LF 字节测试已交付。
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
   [双环 R1 未见事件 R0 rank-1](docs/research/dual-loop/DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK1_RESULT_2026-07-31.md)
   的 truth-first 终点。下载的 480p payload SHA-256 为 `589711...f49`，生成
   566 帧 1 Hz review bundle 与 5,662 帧 10 Hz 固定 replay input。两路隔离、

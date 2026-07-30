@@ -75,11 +75,11 @@
 - [Frontier Upgrade 2026-07 研究档案](research/frontier-upgrade-2026-07/README.md)：按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层，只用于研究追溯。
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
-- [神经—几何双环研究主线](research/dual-loop/README.md)：
-  predecessor 为 `F-1B_COMPLETE / NO_INCREMENT / MAINLINE_STOPPED`；successor
-  target/track-conditioned causal radial geometry 已
-  `DESIGN_REVIEW_PASS / IMPLEMENTATION_NOT_RUN`，只授权实现、fixtures 与
-  implementation identity lock，不授权全量 replay、Confirmation 或产品集成。
+- [神经—几何双环研究主线](research/dual-loop/README.md)：当前冻结为
+  `ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`；
+  active R1 只保留 Development mechanism、row-density diagnostic 与
+  [事件失败分解](research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)，
+  不授权默认生产、产品、安全或自动 R2。
 - [RCLE 研究状态](research/rcle/README.md)：`paused / current truth`；保留 RCLE 的
   历史科学终态、协议终态、权限与禁止事项，不再是默认执行主线。
 - [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。

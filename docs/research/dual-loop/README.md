@@ -1,29 +1,34 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / UNSEEN_EVENT_R0_RANK1_NOT_EVALUABLE`
+状态：`ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
 
 ## 当前决定
 
-2026-07-31 已按“效果线优先”执行
-[未见自然来源事件评价 R0](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_PROTOCOL_2026-07-31.json)。
-metadata-only selector 预先固定的 rank-1 是 566.228 秒上海夜间步行 session。
-[rank-1 结果](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK1_RESULT_2026-07-31.md)
-为 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE / VALID`：两路 hash-bound、输出盲 RGB
-复核均得到 `0` 个正例，低于预冻结最低 3 个，因此 baseline 与 `039757b`
-candidate 均保持未打开。这不是算法负结果；它证明 truth-first 门避免了在无正例
-来源上消费候选，并授权按原固定顺序启动 rank-2 新 evidence instance。普通生产
-行为仍不变。
+2026-07-31 的 rank-2 Shiraz 设备评价已完成：baseline/candidate 均命中 `7/7`
+正例，5 个 baseline-false 负窗全部保留，反馈行由 `508 -> 494`；终点为
+`FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`，不是事件级
+误提醒改善。随后完成
+[R1 事件失败分解](DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)：
+只消费三来源已关闭 Development trace、truth ledger 与 receipt，输出逐窗口字段、
+retained-false 分类和不写 candidate trace 的 upper-bound audit。该 post-terminal
+分析的唯一 top-level terminal 为 `POLICY_GRANULARITY_MISMATCH_SUPPORTED`；它不重写
+R1 evidence、不改阈值、不授权或实现 R2。普通生产行为仍不变。
+
+rank-1 仍按其自身终点 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE / VALID` 封存；它说明
+truth-first 门在无足够正例时停止，不与 rank-2 的结果混为一谈。
 
 2026-07-30 已完成
 [隔离主动纠错 R1](DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)。
 双环现已从真实 shadow 推进到独立 application id 的
 `ACTIVE_CONTRADICT_ONLY`：几何环只在至少两个唯一关联框共同明显缩小时否决当前帧
 提醒，其余全部弃权；raw/stable risk 与事件身份/生命周期规则不变，普通 debug、
-release 和 shadow 仍默认不干预。CrowdBot 与 Matoaka 均复现了触发行小幅下降且
-已命中正例无新增延迟，但两个来源的负例提醒窗口均为 `7 -> 7`，所以当前终点是
-`CROSS_SOURCE_ROW_SIGNAL_REPLICATED / NO_EVENT_LEVEL_EFFECT`，不是误提醒下降结论。
+release 和 shadow 仍默认不干预。该日的 CrowdBot/Matoaka 结果复现了触发行小幅下降
+且已命中正例无新增延迟，但两个来源的负例提醒窗口均为 `7 -> 7`；当日 R1 终点是
+`CROSS_SOURCE_ROW_SIGNAL_REPLICATED / NO_EVENT_LEVEL_EFFECT`。随后 Shiraz rank-2
+与本次 failure decomposition 已将当前状态收口为顶部所列 frozen conclusion，均不构成
+误提醒下降结论。
 
 此前已完成
 [因果框尺度三态源 R0](DUAL_LOOP_CAUSAL_TRACK_TRISTATE_R0_RESULT_2026-07-30.md)。
@@ -235,12 +240,14 @@ latch、新状态机或第二套反馈系统。
 - 旧 CPU-era Sparse LK 回放与真机 shadow 结果相互提示：并发形态可能可承载，但真实
   CameraX 组合路径曾超过旧 `70 ms` 门，且没有 matched live YOLO-only 因果对照。
 - 当前已有独立 annotation-track 三态方向证据、真实 Android shadow source、设备端
-  4,422 + 10,724 帧 active replay 和隔离 APK smoke。两个 Development 来源都只出现
-  触发行小幅下降，没有负例提醒窗口减少；普通生产行为因此保持不变。
+  4,422 + 10,724 + 4,891 帧 active replay 和隔离 APK smoke。CrowdBot、Matoaka 与
+  Shiraz 三个 Development 来源只出现行级下降或持平，没有负例提醒窗口减少；普通
+  生产行为因此保持不变。
 
 因此 predecessor 只允许写成 `DEVELOPMENT_ROUTE_REJECTED / NO_INCREMENT`；
-successor 只允许写成 `ANNOTATION_TRACK_SOURCE_CONFIRMATION_PASS /
-ISOLATED_ACTIVE_MECHANISM_LANDED / CROSS_SOURCE_DEVELOPMENT_ROW_SIGNAL_ONLY`。
+successor 当前只允许写成 `ANNOTATION_TRACK_SOURCE_CONFIRMATION_PASS /
+ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF /
+FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 不得写成 live 算法有效、误提醒事件已下降、默认生产改善或安全结论。
 
 ## 当前权限
@@ -262,6 +269,8 @@ ISOLATED_ACTIVE_MECHANISM_LANDED / CROSS_SOURCE_DEVELOPMENT_ROW_SIGNAL_ONLY`。
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
 | 第二环输入合同、准入门与生产影子接线 | `IMPLEMENTED / DEFAULT_OFF / SHADOW_NON_ACTUATING` |
 | 隔离 active contradiction-only 构建 | `IMPLEMENTED / DEVELOPMENT_ONLY / NO_EVENT_EFFECT_CLAIM` |
+| R1 event failure decomposition | `COMPLETE / POLICY_GRANULARITY_MISMATCH_SUPPORTED / DEVELOPMENT_ONLY` |
+| scene-scale active successor / single-variable R2 | `CLOSED / NOT_WORTH_DESIGNING / NOT_IMPLEMENTED` |
 | 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、分割、ARCore | `NOT_AUTHORIZED` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
@@ -269,38 +278,19 @@ ISOLATED_ACTIVE_MECHANISM_LANDED / CROSS_SOURCE_DEVELOPMENT_ROW_SIGNAL_ONLY`。
 
 ## 下一步
 
-LITE R0 与 R1 的失败 evidence version 保持关闭；R2 的一次性 producer/evaluator
-authority 也已消费。R2 是有效的 Development 负结果，不得调阈值救援或重跑。
+LITE R0/R1/R2、production temporal geometry factorial A/B R0 与 D0 R1/R2/R3
+保持各自已消费的关闭终态，不重跑、不调阈值救援。隔离 active R1 已完成
+[事件失败分解](DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)：
+row-density 仍可作为 Development diagnostic，但 25 个负窗中没有一个被完整消除。
 
-production temporal geometry factorial A/B R0 已有效得到 `NO_INCREMENT`。D0
-R1/R2/R3 的正式 authority 均已消费并以执行无效关闭；三者都没有 D0 科学出口，
-也不得重跑。R3 唯一正式 producer 在 `0/469` 时触发
-`BBOX log-area closure mismatch`，终点为
-[`EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_R4 / NO_SCIENTIFIC_EXIT`](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R3_EXECUTION_RESULT_2026-07-30.md)。
-静态根因是上游 BBOX 使用半 log-area scale rate，而 D0 误按完整 log-area rate
-闭合，所有有限非零行系统性相差两倍；不是环境、数据损坏或容差问题。
+upper-bound audit 只在内存中使用已记录的 R1 candidate opportunities：CrowdBot 与
+Matoaka 各有一个满足既有正例命中、零 induced negative window 和预冻结新增时延上限的
+有限 hold witness；它们都需要新的 runtime state，Shiraz 在 `250 ms` 上限内没有
+witness。因此该 terminal 只支持解释 policy granularity，不授权任何 R2。
 
-因此主线不再把 D0 三选一作为工程落地前置条件，也不从该失败选择 ego 或 temporal。
-用户授权的正交路线先按
-[shadow wiring 合同](DUAL_LOOP_SHADOW_WIRING_R0_CONTRACT_2026-07-30.json)
-落地，随后由
-[隔离主动纠错 R1](DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)
-完成最小 active 后继：
-
-1. `core:assist` 增加 target/frame/TTL/quality 绑定的第二环输入合同；
-2. 缺失、未准入、来源弃权、帧/时间/目标/质量异常全部显式 fail closed；
-3. 普通 admitter 的 allowlist 为空；隔离 shadow kernel 仅准入冻结三态 source；
-4. 新增的 `ACTIVE_CONTRADICT_ONLY` 只在隔离 `dualLoopActive` 构建启用；
-5. `AssistDecisionKernel` 仍是唯一反馈接缝，第二环没有 risk/event 写权限；
-6. 默认、debug、release 均关闭；`dualLoopShadow` 只观察，`dualLoopActive`
-   才允许本帧否决。
-
-[旧接缝实现结果](DUAL_LOOP_SHADOW_WIRING_R0_IMPLEMENTATION_RESULT_2026-07-30.md)
-保留其当时终点。当前后继已把 `CAUSAL_TRACK_TRISTATE_R0` 准入 kernel 的隔离
-shadow，并通过真实七帧 admission 与 baseline parity 回归。主动后继在两个已锁定
-Development 来源上只降低触发行、没有降低事件窗口；当前不再在已烧毁来源上调阈值
-或增加 latch。最新终点以
-[主动纠错 R1 结果](DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md) 为准。
+当前推荐关闭 scene-scale active 路线；不实现 hold、latch、事件状态、阈值调整或
+单变量 R2。保留默认关闭的机制、receipt、回归夹具、逐窗口分解和失败分类；默认、
+debug、release、产品、真人助行与安全行为均不改变。
 
 ### D0 R1/R2/R3 执行终态
 
@@ -320,12 +310,12 @@ R2 不能补包重跑。R3 以新的独立环境与 namespace 补齐 PyYAML 后�
 越过 runtime 问题，却暴露了冻结 D0 合同与上游 BBOX 字段之间的二倍语义冲突。
 该 authority 已消费，协议与失败回执保持不可变；不生成 R4，不修补或重跑 R3。
 
-## 2026-07-31：未见自然来源 rank-2 真值门
+## 2026-07-31：未见自然来源 rank-2 结果与 R1 收口
 
 上海 rank-1 因 0 个正例在 baseline 前以 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE`
 关闭后，按预冻结顺序启动 Shiraz rank-2。两路输出盲 RGB review 与第三路分歧裁决
-冻结 7 个正例、6 个负窗，状态为 `TRUTH_FROZEN_ADEQUATE`。当前只授权固定
-4,891 帧 10 Hz 输入的 baseline-only adequacy；candidate 仍未打开。
+冻结 7 个正例、6 个负窗，状态为 `TRUTH_FROZEN_ADEQUATE`。固定 4,891 帧 10 Hz
+输入的 baseline-only adequacy 已通过，candidate 随后按一次性授权完成同一输入回放。
 
 设备入口已拆为物理独立的 baseline-only 与 candidate-only。host 必须先确认
 baseline 至少命中一个正例且误触发一个负窗，才生成绑定 input/truth/baseline SHA
@@ -343,5 +333,7 @@ rank-2 设备评价随后完成：baseline 和 candidate 都命中 7/7 正例，
 为 7/7；但 5 个 baseline-false 负窗全部保留，`corrected=0`。全序列反馈行只从
 508 降到 494。当前终点为
 [`FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_EFFECT_RESULT_2026-07-31.md)。
-这关闭 active R1 的事件效果主张；默认生产保持关闭，shadow、机制结果和隔离 Android
-工程保留。
+这关闭 active R1 的事件效果主张；默认生产保持关闭，shadow、机制结果、隔离 Android
+工程和
+[post-terminal failure decomposition](DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)
+保留。后续不自动实现或设计 scene-scale active R2。
