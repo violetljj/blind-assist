@@ -8,6 +8,7 @@
 - `run_guarded_host_research.ps1`：超过 3 分钟或正式 one-shot 的统一电脑端入口；先校验 hash 绑定性能收据和当前 RAM/VRAM，再启动 runner、注入已标定 worker、附加监控，并拒绝既存、缺字段、非完成或计数未闭合的 progress 终态。
 - `run_dual_loop_radial_geometry_lite_r1.py`：target/track-conditioned causal radial geometry LITE Development R1 的稳定 Adapter；只暴露尺寸审计、无真值生产、实现锁校验及生产成功后的条件评估，旧 F-1B decision、Confirmation、Android 与产品路径不在输入或授权面。
 - `run_dual_loop_radial_geometry_lite_r2.py`：R1 guarded-progress UTC 类型失败后的前向 R2 Adapter；科学实现与 R1 相同，但使用新 protocol/implementation/output identity，R1 output 不在输入面。
+- `run_dual_loop_production_temporal_ab_input_preflight.ps1`：生产 `TemporalRiskTracker` 因子 A/B R0 的 outcome-blind 输入身份入口；逐一复核两个冻结 CrowdBot session 的 `4422` 个 PNG 哈希、时间顺序、尺寸与 canonical inventory，不读取 truth、不运行 detector 或候选 A/B。
 - `monitor_host_research_process.ps1`：电脑端长任务外部监控器；汇总根进程及递归子进程的 CPU/I/O/RSS、子进程数和可用的 NVIDIA GPU 利用率/显存/温度/功耗，把阶段、瓶颈提示、建议动作、疑似停滞和终态写入独立 JSONL/最新状态文件。若 runner 本身不发布完成单元数，它会明确将百分比与 ETA 留空。
 - `validate_host_research_preflight.py`：校验长任务性能准入收据；缺少真实访问机制 pilot、有界耗时、结果等价、进度字段、资源预算或 formal one-shot 合同时返回 `PERFORMANCE_NOT_QUALIFIED`。
 - `run_research_contract_tests.py`：CI 与本地共用的无 GPU、无设备研究合同回归。
@@ -46,6 +47,7 @@
 - [`research/dual_loop_radial_geometry_lite_r0/`](research/dual_loop_radial_geometry_lite_r0/)：双环 successor 的 REveL Development 输入冻结、truth-only natural-event ledger 与后续 causal replay Module；旧 F-1B decision 输出不在输入面。
 - [`research/dual_loop_radial_geometry_lite_r1/`](research/dual_loop_radial_geometry_lite_r1/)：R0 首次尺寸漂移失败后的单变量 Development 修复；原生解码尺寸不同时两臂统一 `FRAME_SHAPE_CHANGE` 弃权，不进行任何重采样或跨帧桥接。
 - [`research/dual_loop_radial_geometry_lite_r2/`](research/dual_loop_radial_geometry_lite_r2/)：R1 guarded-progress UTC `Z` 解析失败后的 execution-envelope successor；只重置 evidence identity/namespace，不改变双臂或科学门。
+- [`research/dual_loop_production_temporal_ab/`](research/dual_loop_production_temporal_ab/)：既有生产 object-detector temporal geometry 的因子 A/B Module；当前只完成 outcome-blind 设备输入身份预检，候选 producer/evaluator、正式执行和 Confirmation 仍由冻结合同逐级授权。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。

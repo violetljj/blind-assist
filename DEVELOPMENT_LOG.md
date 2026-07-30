@@ -1,5 +1,19 @@
 # Development Log
 ## 2026-07-30
+- 时间：2026-07-30（Asia/Hong_Kong）；执行者：Codex。将神经—几何双环主线从
+  LITE R2 负结果后的 D0 单一路线，改为优先验证既有生产 `TemporalRiskTracker` 的
+  object-detector temporal geometry contribution。冻结并通过
+  [production temporal geometry factorial A/B R0 设计复核](docs/research/dual-loop/DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)：
+  A 只中和 object-detector temporal output，B 保持当前生产行为；两臂共享一次 QNN
+  detections 但隔离全部有状态链。新增 outcome-blind input preflight，复算
+  `4422/4422` PNG 哈希/尺寸/时序；独立 truth-membership preflight 冻结 17 项原始
+  truth 为 8 positive + 7 negative，候选输出前排除 `P007/P009` 两个零帧正例。
+  两项独立复核均为 `PASS`，当前仅授权 factorization 实现、合成 mutation tests、
+  implementation lock 和 activation review；正式 A/B、truth join、Confirmation、
+  生产行为、产品与安全结论仍未授权。另补
+  [D0 独立统计复核](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_STATISTICAL_REVIEW_RESULT_2026-07-30.md)，
+  将单 capture 下的 `*_DOMINANT` 因果解释判为 `REPAIR_NEEDED`，D0 转为 A/B
+  `NO_INCREMENT` 后的后备 operational routing。
 - 时间：2026-07-30（Asia/Hong_Kong）；执行者：violjjet。冻结并通过
   [target/track-conditioned causal radial geometry LITE R0 设计评审](docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)。
   第一轮独立评审先因既有 512-frame 稀疏账本不具连续因果窗口和自然事件分母而
