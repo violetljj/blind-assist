@@ -499,12 +499,23 @@ def validate(
                     "exact_overlap_component_count",
                 ):
                     if key in specification:
+                        actual_value = payload.get(key)
+                        if (
+                            name == "dependency_receipt"
+                            and key == "primary_event_count"
+                        ):
+                            event_bindings = payload.get("event_bindings")
+                            actual_value = (
+                                len(event_bindings)
+                                if isinstance(event_bindings, list)
+                                else None
+                            )
                         check(
                             f"input_{name}_{key}",
-                            payload.get(key) == specification[key],
+                            actual_value == specification[key],
                             {
                                 "expected": specification[key],
-                                "actual": payload.get(key),
+                                "actual": actual_value,
                             },
                         )
 

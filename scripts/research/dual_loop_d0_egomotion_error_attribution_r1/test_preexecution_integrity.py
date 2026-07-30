@@ -159,6 +159,27 @@ class PreexecutionIntegrityTest(unittest.TestCase):
             )
             self.assertIn("frozen_input_binding_set", result["failures"])
 
+    def test_dependency_primary_count_is_derived_from_event_bindings(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            lock_path, protocol_path, protocol_hash = self.build_fixture(root)
+            dependency_path = root / "inputs" / "dependency.json"
+            dependency = json.loads(
+                dependency_path.read_text(encoding="utf-8")
+            )
+            dependency["event_bindings"] = []
+            dependency_path.write_bytes(canonical_json_bytes(dependency))
+            result = validate(
+                lock_path,
+                root,
+                expected_protocol_path=protocol_path.as_posix(),
+                expected_protocol_sha256=protocol_hash,
+            )
+            self.assertIn(
+                "input_dependency_receipt_primary_event_count",
+                result["failures"],
+            )
+
     def test_input_lock_rejects_repository_escape(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -276,7 +297,8 @@ class PreexecutionIntegrityTest(unittest.TestCase):
         dependency_payload = {
             "schema_version": "blindassist.d0_dependency_receipt.v1",
             "status": "VALID",
-            "primary_event_count": 1,
+            "event_bindings": [{"event_id": "e1"}],
+            "natural_events": {"primary_event_count": 1},
             "cross_target_overlap_pair_count": 0,
             "same_target_overlap_pair_count": 0,
             "exact_overlap_component_count": 1,
@@ -309,7 +331,12 @@ class PreexecutionIntegrityTest(unittest.TestCase):
             "dependency_receipt": {
                 "path": dependency.relative_to(root).as_posix(),
                 "sha256": sha256_file(dependency),
-                **dependency_payload,
+                "schema_version": dependency_payload["schema_version"],
+                "status": dependency_payload["status"],
+                "primary_event_count": 1,
+                "cross_target_overlap_pair_count": 0,
+                "same_target_overlap_pair_count": 0,
+                "exact_overlap_component_count": 1,
             },
             "natural_events": {
                 "path": events.relative_to(root).as_posix(),
