@@ -38,6 +38,11 @@ enum class DualLoopShadowDisposition {
     ADMITTED_SHADOW
 }
 
+enum class DualLoopTargetProvenance {
+    RUNTIME_DETECTION,
+    REPLAY_ANNOTATION
+}
+
 /**
  * Frame- and target-bound geometry evidence for the non-actuating second loop.
  *
@@ -60,7 +65,9 @@ data class DualLoopGeometryEvidence(
     val targetSource: DetectionSource,
     val signedApproachRatePerS: Float?,
     val quality: Float?,
-    val sourceAbstentionReason: String? = null
+    val sourceAbstentionReason: String? = null,
+    val targetProvenance: DualLoopTargetProvenance =
+        DualLoopTargetProvenance.RUNTIME_DETECTION
 )
 
 data class DualLoopSourceIdentity(

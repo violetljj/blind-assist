@@ -1870,3 +1870,33 @@
   NO_GEOMETRY_SOURCE_ADMITTED / NO_EFFECT_CLAIM`。
   它不证明双环准确、有效、提前提醒、产品改善、安全或独立助行。详见
   [implementation result](docs/research/dual-loop/DUAL_LOOP_SHADOW_WIRING_R0_IMPLEMENTATION_RESULT_2026-07-30.md)。
+
+## 2026-07-30：真实几何双环工程闭环与算法后继诊断
+
+- 执行者：violjjet
+- 新增独立的 `DualLoopTargetProvenance.REPLAY_ANNOTATION` 留痕并只接受
+  `REPLAY_TIMELINE` 的 `DualLoopJrdbReplayAdapter`；回放 detection 行为源保持
+  `OBJECT_DETECTOR`，生产 allowlist 仍为空。host-only JavaExec 先硬校验 producer
+  receipt 的 identity、精确 implementation/input SHA 和 outcome firewall，再从
+  实际 TSV 重算逐 sequence 的 10,786 行、476 个决策帧与 8,836 个 eligible rows，
+  然后对 4 个 JRDB 真实场景调用真实 `AssistDecisionKernel`，其中 474 个
+  `ADMITTED_SHADOW`、2 个 `EVIDENCE_ABSENT`、0 adapter abstention，risk/event/
+  feedback/explanation/session/gateway call count 逐帧差异为 0。
+- JRDB producer 从不可变 packet/ledger 得到 10,786 个 exact joined target rows，
+  其中 8,836 个两端真实 LiDAR sensor-supported；全景越界框确定性 clamp 并留痕。
+  工程终点为 `ENGINEERING_SHADOW_CYCLE_VALID / DIAGNOSTIC_ONLY /
+  NO_EFFECT_CLAIM`。
+- Depth Anything V2 Small 在 REveL 512-frame/770 ROI Discovery 上，target depth
+  与物理 range 的 Spearman 约 `-0.75`，但 temporal direction 仅 `49.0%` 正确、
+  `29.4%` wrong-signed；关闭直接 depth derivative 候选。
+- 新增 background homography residual target-flow：truth-blind producer
+  `13,014/13,014`，11,381 行通过 0.50 质量门；469-event evaluator 得到
+  `233/469` 正确、`91/469` wrong-signed、`452/469` evaluable。相对 LITE R2
+  描述性减少反号，但总正确率 `49.7%`、quasi-static `25.0%`，且同一 burned
+  capture 的 469 个事件含 159 个跨 target overlap pairs / 310 个 components，
+  未做 dependence-aware inference；终点为 `SOURCE_READINESS_NOT_MET /
+  INDEPENDENT_INFORMATION_NOT_EVALUATED / DEVELOPMENT_ONLY`。
+- 不开放 active mode、不接 Android、不事后搜索 deadband。下一候选只允许在新
+  source/session 上组合显式旋转补偿、静态 depth layer 与多帧同号 abstention，
+  再进入 harm=0 的独立信息 screen。详见
+  [result](docs/research/dual-loop/DUAL_LOOP_REAL_GEOMETRY_SHADOW_CYCLE_R0_RESULT_2026-07-30.md)。

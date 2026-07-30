@@ -53,6 +53,9 @@
 - [`research/dual_loop_radial_geometry_lite_r1/`](research/dual_loop_radial_geometry_lite_r1/)：R0 首次尺寸漂移失败后的单变量 Development 修复；原生解码尺寸不同时两臂统一 `FRAME_SHAPE_CHANGE` 弃权，不进行任何重采样或跨帧桥接。
 - [`research/dual_loop_radial_geometry_lite_r2/`](research/dual_loop_radial_geometry_lite_r2/)：R1 guarded-progress UTC `Z` 解析失败后的 execution-envelope successor；只重置 evidence identity/namespace，不改变双臂或科学门。
 - [`research/dual_loop_production_temporal_ab/`](research/dual_loop_production_temporal_ab/)：既有生产 object-detector temporal geometry 的因子 A/B Module；当前只完成 outcome-blind 设备输入身份预检，候选 producer/evaluator、正式执行和 Confirmation 仍由冻结合同逐级授权。
+- [`research/dual_loop_jrdb_shadow_r0/`](research/dual_loop_jrdb_shadow_r0/)：标注条件化真实 LiDAR 质心到现有 `DualLoopShadowAdmitter`/`AssistDecisionKernel` 的 host-only 工程闭环；行为源保持 `OBJECT_DETECTOR`，标注条件化仅由 `REPLAY_TIMELINE + DualLoopTargetProvenance.REPLAY_ANNOTATION` 留痕，生产 allowlist 保持为空。
+- [`research/dual_loop_depth_geometry_r0/`](research/dual_loop_depth_geometry_r0/)：burned REveL 固定子集上的 Depth Anything V2 target-depth Discovery；静态距离排序与 temporal direction 分开评价，不授权 runtime/Android。
+- [`research/dual_loop_global_motion_compensated_flow_r0/`](research/dual_loop_global_motion_compensated_flow_r0/)：LITE R2 后的 background-homography residual target-flow Development；固定质量门和原 469-event readiness，不做结果后阈值搜索。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。

@@ -1,10 +1,28 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`production temporal A/B R0 / VALID_NO_INCREMENT / D0_R3_EXECUTION_INVALID / SHADOW_WIRING_IMPLEMENTED_DEFAULT_OFF`
+状态：`ENGINEERING_SHADOW_CYCLE_VALID / ALGORITHM_SOURCE_NOT_READY / DEFAULT_OFF / NO_EFFECT_CLAIM`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
 ## 当前决定
+
+2026-07-30 已完成
+[真实几何 shadow cycle R0](DUAL_LOOP_REAL_GEOMETRY_SHADOW_CYCLE_R0_RESULT_2026-07-30.md)。
+JRDB 标注条件化真实 LiDAR 质心回放在 4 个真实场景、476 个决策帧中得到
+474 个 actual kernel admission，2 个 `EVIDENCE_ABSENT`，且 risk/event/feedback
+逐帧非干预差异为 0；生产 allowlist 仍为空。工程环因此从“空 source 接缝”推进为
+`ENGINEERING_SHADOW_CYCLE_VALID / DIAGNOSTIC_ONLY / NO_EFFECT_CLAIM`。
+
+算法环没有被工程闭环替代。Depth Anything V2 target depth 的静态 range 排序
+Spearman 约 `-0.75`，但时间方向仅 `49.0%` 正确；全局背景 homography 补偿后的
+target flow 将 LITE R2 的正确事件从 `188/469` 提升到 `233/469`，wrong-signed
+从 `161/469` 降到 `91/469`，仍因总正确率 `49.7%` 和 quasi-static `25.0%`
+未过原 readiness floor。该比较来自同一已打开 truth 的 burned capture，且事件
+存在重叠依赖，只能作 descriptive retrospective Development；终点是
+`SOURCE_READINESS_NOT_MET / INDEPENDENT_INFORMATION_NOT_EVALUATED /
+DEVELOPMENT_ONLY`。当前不接入 Android、不开放 active mode、不做事后
+deadband 搜索；下一候选必须显式使用旋转补偿、静态 depth 层与多帧同号 abstention，
+并在独立 source/session 先通过 source-level 门。
 
 旧 Sparse LK F-1B 路线仍以 `NO_INCREMENT / VALID` 关闭；该结论没有被重写。
 LITE R2 两臂均不达 readiness floor 后，主线不再优先把失败的 radial-flow 候选

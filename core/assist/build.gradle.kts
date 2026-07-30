@@ -18,3 +18,11 @@ kotlin {
 dependencies {
     testImplementation(libs.junit4)
 }
+
+tasks.register<JavaExec>("runDualLoopJrdbShadowReplay") {
+    group = "verification"
+    description = "Runs the explicit diagnostic-only JRDB dual-loop shadow replay."
+    dependsOn(tasks.named("testClasses"))
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.linnan.blindassist.session.DualLoopJrdbShadowReplayMain")
+}
