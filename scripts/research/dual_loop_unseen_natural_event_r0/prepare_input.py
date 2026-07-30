@@ -24,10 +24,18 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def prepare(video: Path, output: Path, ffmpeg: Path) -> dict:
+def prepare(
+    video: Path,
+    output: Path,
+    ffmpeg: Path,
+    *,
+    expected_video_sha256: str = EXPECTED_VIDEO_SHA256,
+    protocol_id: str = PROTOCOL_ID,
+    source_id: str = SOURCE_ID,
+) -> dict:
     if output.exists():
         raise FileExistsError(f"refusing to overwrite {output}")
-    if sha256_file(video) != EXPECTED_VIDEO_SHA256:
+    if sha256_file(video) != expected_video_sha256:
         raise ValueError("selected source video identity mismatch")
     temporary = output.with_name(f"{output.name}.tmp")
     if temporary.exists():
@@ -67,7 +75,7 @@ def prepare(video: Path, output: Path, ffmpeg: Path) -> dict:
                 raise ValueError(f"non-contiguous frame sequence at {image.name}")
             row = {
                 "schema_version": "blindassist.replay_rgb_frame.v1",
-                "source_id": SOURCE_ID,
+                "source_id": source_id,
                 "frame_id": index,
                 "source_capture_timestamp_ns": index * FRAME_STEP_NS,
                 "image_path": f"frames/{image.name}",
@@ -86,13 +94,13 @@ def prepare(video: Path, output: Path, ffmpeg: Path) -> dict:
             )
     receipt = {
         "schema_version": "blindassist.dual_loop_unseen_input_receipt.v1",
-        "protocol_id": PROTOCOL_ID,
+        "protocol_id": protocol_id,
         "status": "COMPLETE",
-        "source_id": SOURCE_ID,
+        "source_id": source_id,
         "truth_read": False,
         "baseline_output_read": False,
         "candidate_output_read": False,
-        "video_sha256": EXPECTED_VIDEO_SHA256,
+        "video_sha256": expected_video_sha256,
         "sampling_hz": FRAME_RATE_HZ,
         "frame_step_ns": FRAME_STEP_NS,
         "frame_count": len(images),
@@ -113,10 +121,23 @@ def main() -> int:
     parser.add_argument("--video", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--ffmpeg", type=Path, required=True)
+    parser.add_argument(
+        "--expected-video-sha256",
+        default=EXPECTED_VIDEO_SHA256,
+    )
+    parser.add_argument("--protocol-id", default=PROTOCOL_ID)
+    parser.add_argument("--source-id", default=SOURCE_ID)
     args = parser.parse_args()
     print(
         json.dumps(
-            prepare(args.video, args.output, args.ffmpeg),
+            prepare(
+                args.video,
+                args.output,
+                args.ffmpeg,
+                expected_video_sha256=args.expected_video_sha256,
+                protocol_id=args.protocol_id,
+                source_id=args.source_id,
+            ),
             ensure_ascii=False,
             sort_keys=True,
             indent=2,

@@ -23,14 +23,20 @@ class PrepareInputTest(unittest.TestCase):
                 (pattern.parent / "frame_000001.jpg").write_bytes(b"frame-1")
 
             expected = hashlib.sha256(video.read_bytes()).hexdigest()
-            with (
-                patch.object(module, "EXPECTED_VIDEO_SHA256", expected),
-                patch.object(module.subprocess, "run", side_effect=fake_ffmpeg),
-            ):
-                receipt = module.prepare(video, output, root / "ffmpeg")
+            with patch.object(module.subprocess, "run", side_effect=fake_ffmpeg):
+                receipt = module.prepare(
+                    video,
+                    output,
+                    root / "ffmpeg",
+                    expected_video_sha256=expected,
+                    protocol_id="TEST_RANK_2",
+                    source_id="test_source",
+                )
 
             self.assertEqual(2, receipt["frame_count"])
             self.assertEqual(expected, receipt["video_sha256"])
+            self.assertEqual("TEST_RANK_2", receipt["protocol_id"])
+            self.assertEqual("test_source", receipt["source_id"])
             self.assertTrue((output / "manifest.jsonl").is_file())
             self.assertTrue((output / "input_receipt.json").is_file())
 
@@ -48,12 +54,14 @@ class PrepareInputTest(unittest.TestCase):
                 (pattern.parent / "frame_000002.jpg").write_bytes(b"frame-2")
 
             expected = hashlib.sha256(video.read_bytes()).hexdigest()
-            with (
-                patch.object(module, "EXPECTED_VIDEO_SHA256", expected),
-                patch.object(module.subprocess, "run", side_effect=fake_ffmpeg),
-            ):
+            with patch.object(module.subprocess, "run", side_effect=fake_ffmpeg):
                 with self.assertRaisesRegex(ValueError, "non-contiguous"):
-                    module.prepare(video, root / "input", root / "ffmpeg")
+                    module.prepare(
+                        video,
+                        root / "input",
+                        root / "ffmpeg",
+                        expected_video_sha256=expected,
+                    )
 
 
 if __name__ == "__main__":

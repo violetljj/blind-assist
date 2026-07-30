@@ -319,3 +319,22 @@ activation。正式运行通过首条 Vicon message probe 后，在冻结 calibr
 R2 不能补包重跑。R3 以新的独立环境与 namespace 补齐 PyYAML 后，唯一正式运行
 越过 runtime 问题，却暴露了冻结 D0 合同与上游 BBOX 字段之间的二倍语义冲突。
 该 authority 已消费，协议与失败回执保持不可变；不生成 R4，不修补或重跑 R3。
+
+## 2026-07-31：未见自然来源 rank-2 真值门
+
+上海 rank-1 因 0 个正例在 baseline 前以 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE`
+关闭后，按预冻结顺序启动 Shiraz rank-2。两路输出盲 RGB review 与第三路分歧裁决
+冻结 7 个正例、6 个负窗，状态为 `TRUTH_FROZEN_ADEQUATE`。当前只授权固定
+4,891 帧 10 Hz 输入的 baseline-only adequacy；candidate 仍未打开。
+
+设备入口已拆为物理独立的 baseline-only 与 candidate-only。host 必须先确认
+baseline 至少命中一个正例且误触发一个负窗，才生成绑定 input/truth/baseline SHA
+的 candidate authorization；candidate 只重放同一 detections/metrics 并逐帧校验
+raw/stable risk 不变。详见
+[rank-2 protocol](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_PROTOCOL_2026-07-31.json)
+和
+[rank-2 truth result](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_TRUTH_RESULT_2026-07-31.md)。
+
+“已使用”从此只限制同一候选的 unseen/independent claim，不对数据集作全局封存。
+旧数据仍可作为 Development、回归或新问题来源；缺原生提醒标签的数据可在算法输出
+打开前由隔离多模型复核补齐，但不能虚增独立 session。

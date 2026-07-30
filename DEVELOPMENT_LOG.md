@@ -1937,6 +1937,34 @@
   再进入 harm=0 的独立信息 screen。详见
   [result](docs/research/dual-loop/DUAL_LOOP_REAL_GEOMETRY_SHADOW_CYCLE_R0_RESULT_2026-07-30.md)。
 
+## 2026-07-31：未见自然 rank-2 真值冻结与顺序设备门禁
+
+- 执行者：violjjet
+- 按 rank-1 正式关闭后的固定 fallback 顺序启动 Shiraz rank-2；冻结 480p payload、
+  1 Hz review bundle 与 4,891 帧 10 Hz replay 输入，baseline/candidate 输出保持
+  unopened。
+- 两路隔离 AI reviewer 对正负事件集合存在分歧，第三路 fresh adjudicator 读取两份
+  哈希绑定 review 后裁决 7 个正例和 6 个负窗；`finalize_rank2_truth.py` 验证
+  prompt/input/身份/可见性与最低真值门，终点为 `TRUTH_FROZEN_ADEQUATE`。
+- 新增 baseline-only 与 candidate-only Android 入口。baseline 使用 strict QNN HTP
+  生成完整 detections/metrics/risk/feedback trace；host 至少观察到 1 个正例命中与
+  1 个负窗误触发后才生成 candidate authorization。
+- candidate 不重跑 QNN，只重放 baseline 的 byte-equivalent detections/metrics，
+  并逐帧要求 raw/stable risk hash 相等；最终 evaluator 预冻结 250 ms 延迟门、
+  exact baseline-hit retention、absolute recall 与四类负窗 pairing。
+- 两路独立实现复核在提交前拦截了可伪造 authorization 与 baseline/candidate APK
+  未绑定问题；修复后 candidate 同时验证 baseline assessment、evaluator SHA、
+  rank-2 protocol/source activation SHA 及 app/test APK SHA，host 也从当前 truth
+  与 baseline trace 重新计算 adequacy。合法 veto 派生的 `wasAlerted/cooldown/event
+  snapshot` 可分叉，但第二环 event mutation permission 必须始终为 false。
+- 第二轮复核又要求 truth producer 自身在发布前执行结构门；因此在 baseline 尚未
+  打开时，以同一 review/adjudication 生成 canonical `truth-freeze-r2`。r1/r2 ledger
+  字节一致，r2 receipt 额外绑定发布前的有限 confidence、视频边界、唯一 ID 与闭区间
+  互斥校验；后继只消费 r2。
+- 明确数据复用规则：“已使用”只取消 exact session 对同一候选的 unseen claim，
+  不全局封存数据集。缺原生提醒标签的数据允许在输出盲条件下由多模型复核补齐，
+  但 capture/session 独立单位不得用帧或滑窗扩张。
+
 ## 2026-07-30：最小因果三态双环来源确认与 Android 影子落地
 
 - 执行者：violjjet

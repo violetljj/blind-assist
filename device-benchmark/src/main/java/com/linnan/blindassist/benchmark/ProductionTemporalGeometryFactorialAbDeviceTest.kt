@@ -20,6 +20,9 @@ import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.ObjectDetectorTemporalGeometryMode
+import com.linnan.blindassist.risk.DistanceEvidence
+import com.linnan.blindassist.risk.DistanceEvidenceSource
+import com.linnan.blindassist.risk.ProximityBand
 import com.linnan.blindassist.risk.RiskAnalyzer
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.risk.TemporalRiskTracker
@@ -665,6 +668,532 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
         }
     }
 
+    /**
+     * Truth-blind baseline-only producer for the frozen rank-2 unseen natural source.
+     *
+     * Candidate execution is deliberately unavailable from this entry point. The host must first
+     * join this immutable output to the frozen truth ledger and issue a hash-bound authorization.
+     */
+    @Test
+    fun runUnseenNaturalRank2BaselineOnly() {
+        val runRoot = File(baseRoot(), UNSEEN_RANK2_DIRECTORY)
+        val inputRoot = File(runRoot, "input")
+        val inputReceiptFile = File(inputRoot, "input_receipt.json")
+        val manifestFile = File(inputRoot, "manifest.jsonl")
+        assertTrue("rank-2 input receipt is missing", inputReceiptFile.isFile)
+        assertTrue("rank-2 input manifest is missing", manifestFile.isFile)
+        val inputReceipt = JSONObject(inputReceiptFile.readText(Charsets.UTF_8))
+        verifyUnseenRank2InputReceipt(inputReceipt, manifestFile)
+
+        val outputRoot = File(runRoot, UNSEEN_RANK2_BASELINE_DIRECTORY)
+        val temporaryRoot = File(runRoot, "$UNSEEN_RANK2_BASELINE_DIRECTORY.tmp")
+        assertTrue("rank-2 baseline output already exists", !outputRoot.exists())
+        assertTrue("stale rank-2 baseline temporary output exists", !temporaryRoot.exists())
+        assertTrue("rank-2 baseline temporary output could not be created", temporaryRoot.mkdirs())
+
+        val detector = strictQnnDetector()
+        val baseline = branch(ObjectDetectorTemporalGeometryMode.APPLY)
+        baseline.startSession(0L)
+        var frameCount = 0
+        var triggerCount = 0
+        val startedAtNs = System.nanoTime()
+        try {
+            File(temporaryRoot, TRACE_FILE).bufferedWriter(Charsets.UTF_8).use { writer ->
+                manifestFile.forEachLine(Charsets.UTF_8) { line ->
+                    if (line.isBlank()) return@forEachLine
+                    val frame = JSONObject(line)
+                    val frameId = frame.getLong("frame_id")
+                    check(frameId == frameCount.toLong()) {
+                        "rank-2 baseline frame sequence drift at $frameId"
+                    }
+                    val capturedAtNs = frame.getLong("source_capture_timestamp_ns")
+                    check(capturedAtNs == frameId * UNSEEN_RANK2_FRAME_STEP_NS) {
+                        "rank-2 baseline timestamp schedule drift at $frameId"
+                    }
+                    val image = File(inputRoot, frame.getString("image_path"))
+                    check(sha256File(image) == frame.getString("image_sha256")) {
+                        "rank-2 baseline image identity drift at $frameId"
+                    }
+                    val bitmap = BitmapFactory.decodeFile(image.absolutePath)
+                        ?: error("rank-2 baseline image decode failed at $frameId")
+                    try {
+                        check(bitmap.width == EXPECTED_WIDTH && bitmap.height == EXPECTED_HEIGHT)
+                        val detectorResult = detector.detect(bitmap)
+                        check(
+                            detectorResult.frameSize ==
+                                FrameSize(EXPECTED_WIDTH, EXPECTED_HEIGHT)
+                        )
+                        val detections = detectorResult.detections.toList()
+                        val detectionHash = canonicalDetectionsSha256(detections)
+                        val nowMs = capturedAtNs / NANOS_PER_MILLISECOND
+                        baseline.clock.nowMs = nowMs
+                        val stamp = FrameStamp(
+                            frameId = frameId,
+                            capturedAtNs = capturedAtNs,
+                            receivedAtNs = capturedAtNs,
+                            sourceId = UNSEEN_RANK2_SOURCE_ID,
+                            coordinateFrame = "SHIRAZ_LETTERBOX_640X480",
+                            clockDomain = FrameClockDomain.REPLAY_TIMELINE
+                        )
+                        val result = baseline.kernel.processFrame(
+                            detections = detections,
+                            frameSize = detectorResult.frameSize,
+                            profile = AlertProfile.STANDARD,
+                            scenario = AssistScenario.GENERAL,
+                            metrics = detectorResult.metrics,
+                            feedbackGateway = baseline.feedback,
+                            nowMs = nowMs,
+                            sourceFrame = stamp,
+                            decisionAtNs = capturedAtNs,
+                            dualLoopMode = DualLoopRuntimeMode.OFF
+                        )
+                        if (result.feedbackDecision.triggered) triggerCount += 1
+                        writer.write(
+                            JSONObject()
+                                .put(
+                                    "schema_version",
+                                    "blindassist.dual_loop_unseen_rank2_baseline_trace.v1"
+                                )
+                                .put("protocol_id", UNSEEN_RANK2_PROTOCOL_ID)
+                                .put("authority", "FROZEN_UNSEEN_BASELINE_ONLY")
+                                .put("source_id", UNSEEN_RANK2_SOURCE_ID)
+                                .put("frame_id", frameId)
+                                .put("source_capture_timestamp_ns", capturedAtNs)
+                                .put("image_sha256", frame.getString("image_sha256"))
+                                .put("detector_output_sha256", detectionHash)
+                                .put("detection_count", detections.size)
+                                .put(
+                                    "detections",
+                                    JSONArray().apply {
+                                        detections.forEach { put(detectionJson(it)) }
+                                    }
+                                )
+                                .put("detector_metrics", detectorMetricsJson(detectorResult.metrics))
+                                .put(
+                                    "raw_risk_sha256",
+                                    canonicalRiskSha256(result.evaluation.rawRisk)
+                                )
+                                .put(
+                                    "stable_risk_sha256",
+                                    canonicalRiskSha256(result.evaluation.stableRisk)
+                                )
+                                .put("raw_risk", riskJson(result.evaluation.rawRisk))
+                                .put("stable_risk", riskJson(result.evaluation.stableRisk))
+                                .put(
+                                    "feedback_triggered",
+                                    result.feedbackDecision.triggered
+                                )
+                                .put(
+                                    "feedback_reason",
+                                    result.feedbackDecision.reason.name
+                                )
+                                .put(
+                                    "speech_triggered",
+                                    result.feedbackDecision.speechTriggered
+                                )
+                                .put(
+                                    "vibration_triggered",
+                                    result.feedbackDecision.vibrationTriggered
+                                )
+                                .put("risk_event", riskEventJson(result))
+                                .toString()
+                        )
+                        writer.newLine()
+                        frameCount += 1
+                        if (frameCount % UNSEEN_RANK2_PROGRESS_INTERVAL == 0) {
+                            val elapsedSeconds =
+                                (System.nanoTime() - startedAtNs).toDouble() /
+                                    NANOS_PER_SECOND
+                            Log.i(
+                                TAG,
+                                "stage=UNSEEN_RANK2_BASELINE state=RUNNING " +
+                                    "completed=$frameCount total=$UNSEEN_RANK2_FRAME_COUNT " +
+                                    "throughput_fps=${frameCount / elapsedSeconds}"
+                            )
+                        }
+                    } finally {
+                        bitmap.recycle()
+                    }
+                }
+            }
+            check(frameCount == UNSEEN_RANK2_FRAME_COUNT)
+            val trace = File(temporaryRoot, TRACE_FILE)
+            val receipt = JSONObject()
+                .put(
+                    "schema_version",
+                    "blindassist.dual_loop_unseen_rank2_baseline_receipt.v1"
+                )
+                .put("protocol_id", UNSEEN_RANK2_PROTOCOL_ID)
+                .put("status", "COMPLETE")
+                .put("authority", "FROZEN_UNSEEN_BASELINE_ONLY")
+                .put("truth_read", false)
+                .put("candidate_output_read", false)
+                .put("frame_count", frameCount)
+                .put("feedback_trigger_count", triggerCount)
+                .put("trace_sha256", sha256File(trace))
+                .put("input_manifest_sha256", UNSEEN_RANK2_MANIFEST_SHA256)
+                .put("rank2_protocol_sha256", UNSEEN_RANK2_PROTOCOL_SHA256)
+                .put(
+                    "installed_app_apk_sha256",
+                    sha256File(File(targetContext.applicationInfo.sourceDir))
+                )
+                .put(
+                    "installed_test_apk_sha256",
+                    sha256File(File(testContext.applicationInfo.sourceDir))
+                )
+                .put("backend", DetectorExecutionBackend.QUALCOMM_QNN_HTP.wireName)
+                .put("model_sha256", sha256Asset(TfliteYoloDetector.MODEL_ASSET))
+                .put(
+                    "elapsed_ms",
+                    (System.nanoTime() - startedAtNs) / NANOS_PER_MILLISECOND
+                )
+                .put("device", deviceJson())
+            atomicWrite(File(temporaryRoot, PRODUCER_RECEIPT), receipt.toString(2))
+            check(temporaryRoot.renameTo(outputRoot)) {
+                "rank-2 baseline output publication failed"
+            }
+            Log.i(
+                TAG,
+                "stage=UNSEEN_RANK2_BASELINE state=COMPLETE " +
+                    "completed=$frameCount triggers=$triggerCount"
+            )
+        } finally {
+            detector.close()
+            baseline.close()
+        }
+    }
+
+    /**
+     * Candidate-only replay for the frozen rank-2 unseen natural source.
+     *
+     * The candidate cannot run until the host has established baseline adequacy and staged the
+     * resulting hash-bound authorization. It consumes the baseline detector trace rather than
+     * invoking QNN again, so both arms receive byte-identical detections and detector metrics.
+     */
+    @Test
+    fun runUnseenNaturalRank2CandidateOnly() {
+        val runRoot = File(baseRoot(), UNSEEN_RANK2_DIRECTORY)
+        val inputRoot = File(runRoot, "input")
+        val manifestFile = File(inputRoot, "manifest.jsonl")
+        val inputReceiptFile = File(inputRoot, "input_receipt.json")
+        assertTrue("rank-2 input receipt is missing", inputReceiptFile.isFile)
+        assertTrue("rank-2 input manifest is missing", manifestFile.isFile)
+        verifyUnseenRank2InputReceipt(
+            JSONObject(inputReceiptFile.readText(Charsets.UTF_8)),
+            manifestFile
+        )
+
+        val baselineRoot = File(runRoot, UNSEEN_RANK2_BASELINE_DIRECTORY)
+        val baselineTrace = File(baselineRoot, TRACE_FILE)
+        val baselineReceiptFile = File(baselineRoot, PRODUCER_RECEIPT)
+        assertTrue("rank-2 baseline trace is missing", baselineTrace.isFile)
+        assertTrue("rank-2 baseline receipt is missing", baselineReceiptFile.isFile)
+        val baselineReceipt = JSONObject(baselineReceiptFile.readText(Charsets.UTF_8))
+        assertEquals("COMPLETE", baselineReceipt.getString("status"))
+        assertEquals(false, baselineReceipt.getBoolean("truth_read"))
+        assertEquals(UNSEEN_RANK2_FRAME_COUNT, baselineReceipt.getInt("frame_count"))
+        assertEquals(
+            UNSEEN_RANK2_PROTOCOL_SHA256,
+            baselineReceipt.getString("rank2_protocol_sha256")
+        )
+        assertEquals(
+            baselineReceipt.getString("trace_sha256"),
+            sha256File(baselineTrace)
+        )
+
+        val authorizationFile = File(runRoot, UNSEEN_RANK2_CANDIDATE_AUTHORIZATION)
+        assertTrue("rank-2 candidate authorization is missing", authorizationFile.isFile)
+        val authorization = JSONObject(authorizationFile.readText(Charsets.UTF_8))
+        assertEquals(
+            "blindassist.dual_loop_unseen_rank2_candidate_authorization.v1",
+            authorization.getString("schema_version")
+        )
+        assertEquals(UNSEEN_RANK2_PROTOCOL_ID, authorization.getString("protocol_id"))
+        assertEquals("AUTHORIZED", authorization.getString("status"))
+        assertEquals(true, authorization.getBoolean("baseline_adequacy"))
+        assertEquals(false, authorization.getBoolean("candidate_output_opened"))
+        assertEquals(
+            UNSEEN_RANK2_CANDIDATE_COMMIT,
+            authorization.getString("candidate_commit")
+        )
+        assertEquals(
+            UNSEEN_RANK2_MANIFEST_SHA256,
+            authorization.getString("input_manifest_sha256")
+        )
+        assertEquals(
+            UNSEEN_RANK2_TRUTH_LEDGER_SHA256,
+            authorization.getString("truth_ledger_sha256")
+        )
+        assertEquals(
+            sha256File(baselineTrace),
+            authorization.getString("baseline_trace_sha256")
+        )
+        assertEquals(
+            sha256File(baselineReceiptFile),
+            authorization.getString("baseline_receipt_sha256")
+        )
+        assertEquals(
+            UNSEEN_RANK2_PROTOCOL_SHA256,
+            authorization.getString("rank2_protocol_sha256")
+        )
+        assertEquals(
+            UNSEEN_RANK2_SOURCE_ACTIVATION_SHA256,
+            authorization.getString("source_activation_receipt_sha256")
+        )
+        assertEquals(
+            UNSEEN_RANK2_EVALUATOR_SHA256,
+            authorization.getString("evaluator_implementation_sha256")
+        )
+        val assessmentFile = File(runRoot, UNSEEN_RANK2_BASELINE_ASSESSMENT)
+        assertTrue("rank-2 baseline assessment is missing", assessmentFile.isFile)
+        assertEquals(
+            sha256File(assessmentFile),
+            authorization.getString("baseline_assessment_sha256")
+        )
+        val assessment = JSONObject(assessmentFile.readText(Charsets.UTF_8))
+        assertEquals(
+            "blindassist.dual_loop_unseen_rank2_baseline_assessment.v1",
+            assessment.getString("schema_version")
+        )
+        assertEquals("BASELINE_ADEQUATE", assessment.getString("status"))
+        assertEquals(true, assessment.getBoolean("candidate_authorized"))
+        assertTrue(
+            "rank-2 baseline has no positive opportunity",
+            assessment.getInt("baseline_hit_positive_count") >= 1
+        )
+        assertTrue(
+            "rank-2 baseline has no negative opportunity",
+            assessment.getInt("baseline_alerted_negative_count") >= 1
+        )
+        assertEquals(
+            sha256File(baselineTrace),
+            assessment.getString("baseline_trace_sha256")
+        )
+        assertEquals(
+            sha256File(baselineReceiptFile),
+            assessment.getString("baseline_receipt_sha256")
+        )
+        assertEquals(
+            UNSEEN_RANK2_EVALUATOR_SHA256,
+            assessment.getString("implementation_sha256")
+        )
+        val installedAppApkSha =
+            sha256File(File(targetContext.applicationInfo.sourceDir))
+        val installedTestApkSha =
+            sha256File(File(testContext.applicationInfo.sourceDir))
+        assertEquals(
+            baselineReceipt.getString("installed_app_apk_sha256"),
+            installedAppApkSha
+        )
+        assertEquals(
+            baselineReceipt.getString("installed_test_apk_sha256"),
+            installedTestApkSha
+        )
+        assertEquals(
+            authorization.getString("installed_app_apk_sha256"),
+            installedAppApkSha
+        )
+        assertEquals(
+            authorization.getString("installed_test_apk_sha256"),
+            installedTestApkSha
+        )
+
+        val outputRoot = File(runRoot, UNSEEN_RANK2_CANDIDATE_DIRECTORY)
+        val temporaryRoot = File(runRoot, "$UNSEEN_RANK2_CANDIDATE_DIRECTORY.tmp")
+        assertTrue("rank-2 candidate output already exists", !outputRoot.exists())
+        assertTrue("stale rank-2 candidate temporary output exists", !temporaryRoot.exists())
+        assertTrue("rank-2 candidate temporary output could not be created", temporaryRoot.mkdirs())
+
+        val candidate = branch(ObjectDetectorTemporalGeometryMode.APPLY)
+        candidate.startSession(0L)
+        var frameCount = 0
+        var triggerCount = 0
+        var contradictionCount = 0
+        var vetoedOpportunityCount = 0
+        var riskMutationCount = 0
+        var eventMutationAllowedCount = 0
+        val startedAtNs = System.nanoTime()
+        try {
+            File(temporaryRoot, TRACE_FILE).bufferedWriter(Charsets.UTF_8).use { writer ->
+                baselineTrace.forEachLine(Charsets.UTF_8) { line ->
+                    if (line.isBlank()) return@forEachLine
+                    val baselineRow = JSONObject(line)
+                    val frameId = baselineRow.getLong("frame_id")
+                    check(frameId == frameCount.toLong()) {
+                        "rank-2 candidate frame sequence drift at $frameId"
+                    }
+                    val capturedAtNs = baselineRow.getLong("source_capture_timestamp_ns")
+                    check(capturedAtNs == frameId * UNSEEN_RANK2_FRAME_STEP_NS)
+                    val detections = detectionsFromJson(
+                        baselineRow.getJSONArray("detections")
+                    )
+                    val detectionHash = canonicalDetectionsSha256(detections)
+                    check(detectionHash == baselineRow.getString("detector_output_sha256")) {
+                        "rank-2 candidate detection drift at $frameId"
+                    }
+                    val metrics = detectorMetricsFromJson(
+                        baselineRow.getJSONObject("detector_metrics")
+                    )
+                    val nowMs = capturedAtNs / NANOS_PER_MILLISECOND
+                    candidate.clock.nowMs = nowMs
+                    val stamp = FrameStamp(
+                        frameId = frameId,
+                        capturedAtNs = capturedAtNs,
+                        receivedAtNs = capturedAtNs,
+                        sourceId = UNSEEN_RANK2_SOURCE_ID,
+                        coordinateFrame = "SHIRAZ_LETTERBOX_640X480",
+                        clockDomain = FrameClockDomain.REPLAY_TIMELINE
+                    )
+                    val result = candidate.kernel.processFrame(
+                        detections = detections,
+                        frameSize = FrameSize(EXPECTED_WIDTH, EXPECTED_HEIGHT),
+                        profile = AlertProfile.STANDARD,
+                        scenario = AssistScenario.GENERAL,
+                        metrics = metrics,
+                        feedbackGateway = candidate.feedback,
+                        nowMs = nowMs,
+                        sourceFrame = stamp,
+                        decisionAtNs = capturedAtNs,
+                        dualLoopMode = DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY
+                    )
+                    val rawHash = canonicalRiskSha256(result.evaluation.rawRisk)
+                    val stableHash = canonicalRiskSha256(result.evaluation.stableRisk)
+                    if (
+                        rawHash != baselineRow.getString("raw_risk_sha256") ||
+                        stableHash != baselineRow.getString("stable_risk_sha256")
+                    ) {
+                        riskMutationCount += 1
+                    }
+                    check(riskMutationCount == 0) {
+                        "rank-2 candidate risk mutation at $frameId"
+                    }
+                    val observation = result.evaluation.dualLoopShadow
+                    if (observation.eventMutationAllowed) {
+                        eventMutationAllowedCount += 1
+                    }
+                    check(eventMutationAllowedCount == 0) {
+                        "rank-2 candidate obtained event mutation permission at $frameId"
+                    }
+                    if (result.feedbackDecision.triggered) triggerCount += 1
+                    if (
+                        observation.correctionDecision?.name ==
+                        "CONTRADICT_APPROACH"
+                    ) {
+                        contradictionCount += 1
+                    }
+                    if (result.feedbackDecision.reason.name == "DUAL_LOOP_CONTRADICTED") {
+                        vetoedOpportunityCount += 1
+                    }
+                    writer.write(
+                        JSONObject()
+                            .put(
+                                "schema_version",
+                                "blindassist.dual_loop_unseen_rank2_candidate_trace.v1"
+                            )
+                            .put("protocol_id", UNSEEN_RANK2_PROTOCOL_ID)
+                            .put("authority", "FROZEN_UNSEEN_CANDIDATE_ONLY")
+                            .put("source_id", UNSEEN_RANK2_SOURCE_ID)
+                            .put("frame_id", frameId)
+                            .put("source_capture_timestamp_ns", capturedAtNs)
+                            .put("image_sha256", baselineRow.getString("image_sha256"))
+                            .put("detector_output_sha256", detectionHash)
+                            .put(
+                                "baseline_raw_risk_sha256",
+                                baselineRow.getString("raw_risk_sha256")
+                            )
+                            .put(
+                                "baseline_stable_risk_sha256",
+                                baselineRow.getString("stable_risk_sha256")
+                            )
+                            .put("candidate_raw_risk_sha256", rawHash)
+                            .put("candidate_stable_risk_sha256", stableHash)
+                            .put(
+                                "baseline_feedback_triggered",
+                                baselineRow.getBoolean("feedback_triggered")
+                            )
+                            .put(
+                                "baseline_feedback_reason",
+                                baselineRow.getString("feedback_reason")
+                            )
+                            .put(
+                                "candidate_feedback_triggered",
+                                result.feedbackDecision.triggered
+                            )
+                            .put(
+                                "candidate_feedback_reason",
+                                result.feedbackDecision.reason.name
+                            )
+                            .put(
+                                "candidate_speech_triggered",
+                                result.feedbackDecision.speechTriggered
+                            )
+                            .put(
+                                "candidate_vibration_triggered",
+                                result.feedbackDecision.vibrationTriggered
+                            )
+                            .put("candidate_risk_event", riskEventJson(result))
+                            .put("dual_loop", dualLoopJson(result))
+                            .toString()
+                    )
+                    writer.newLine()
+                    frameCount += 1
+                    if (frameCount % UNSEEN_RANK2_PROGRESS_INTERVAL == 0) {
+                        val elapsedSeconds =
+                            (System.nanoTime() - startedAtNs).toDouble() /
+                                NANOS_PER_SECOND
+                        Log.i(
+                            TAG,
+                            "stage=UNSEEN_RANK2_CANDIDATE state=RUNNING " +
+                                "completed=$frameCount total=$UNSEEN_RANK2_FRAME_COUNT " +
+                                "throughput_fps=${frameCount / elapsedSeconds}"
+                        )
+                    }
+                }
+            }
+            check(frameCount == UNSEEN_RANK2_FRAME_COUNT)
+            val trace = File(temporaryRoot, TRACE_FILE)
+            val receipt = JSONObject()
+                .put(
+                    "schema_version",
+                    "blindassist.dual_loop_unseen_rank2_candidate_receipt.v1"
+                )
+                .put("protocol_id", UNSEEN_RANK2_PROTOCOL_ID)
+                .put("status", "COMPLETE")
+                .put("authority", "FROZEN_UNSEEN_CANDIDATE_ONLY")
+                .put("truth_read", false)
+                .put("baseline_trace_read", true)
+                .put("frame_count", frameCount)
+                .put("feedback_trigger_count", triggerCount)
+                .put("scene_contradict_frame_count", contradictionCount)
+                .put("vetoed_feedback_opportunity_count", vetoedOpportunityCount)
+                .put("risk_mutation_count", riskMutationCount)
+                .put("event_mutation_allowed_count", eventMutationAllowedCount)
+                .put("trace_sha256", sha256File(trace))
+                .put("baseline_trace_sha256", sha256File(baselineTrace))
+                .put("authorization_sha256", sha256File(authorizationFile))
+                .put("input_manifest_sha256", UNSEEN_RANK2_MANIFEST_SHA256)
+                .put("rank2_protocol_sha256", UNSEEN_RANK2_PROTOCOL_SHA256)
+                .put("installed_app_apk_sha256", installedAppApkSha)
+                .put("installed_test_apk_sha256", installedTestApkSha)
+                .put(
+                    "elapsed_ms",
+                    (System.nanoTime() - startedAtNs) / NANOS_PER_MILLISECOND
+                )
+                .put("device", deviceJson())
+            atomicWrite(File(temporaryRoot, PRODUCER_RECEIPT), receipt.toString(2))
+            check(temporaryRoot.renameTo(outputRoot)) {
+                "rank-2 candidate output publication failed"
+            }
+            Log.i(
+                TAG,
+                "stage=UNSEEN_RANK2_CANDIDATE state=COMPLETE " +
+                    "completed=$frameCount triggers=$triggerCount vetoed=$vetoedOpportunityCount"
+            )
+        } finally {
+            candidate.close()
+        }
+    }
+
     @Test
     fun verifyFormalInputAndQnnPrestart() {
         val inputRoot = inputRoot()
@@ -1306,6 +1835,137 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
         .put("frame_height", detection.frameSize.height)
         .put("source", detection.source.name)
         .put("temporal_promotion_eligible", detection.temporalPromotionEligible)
+        .put(
+            "distance_evidence",
+            detection.distanceEvidence?.let {
+                JSONObject()
+                    .put("band", it.band.name)
+                    .put("confidence", it.confidence.toDouble())
+                    .put("source", it.source.name)
+                    .put("relative_depth_score", it.relativeDepthScore.toDouble())
+            } ?: JSONObject.NULL
+        )
+
+    private fun detectionsFromJson(value: JSONArray): List<Detection> = buildList {
+        repeat(value.length()) { index ->
+            val item = value.getJSONObject(index)
+            val distance = if (item.isNull("distance_evidence")) {
+                null
+            } else {
+                val encoded = item.getJSONObject("distance_evidence")
+                DistanceEvidence(
+                    band = ProximityBand.valueOf(encoded.getString("band")),
+                    confidence = encoded.getDouble("confidence").toFloat(),
+                    source = DistanceEvidenceSource.valueOf(encoded.getString("source")),
+                    relativeDepthScore =
+                        encoded.getDouble("relative_depth_score").toFloat()
+                )
+            }
+            add(
+                Detection(
+                    classId = item.getInt("class_id"),
+                    label = item.getString("label"),
+                    confidence = item.getDouble("confidence").toFloat(),
+                    boundingBox = BoundingBox(
+                        item.getDouble("left").toFloat(),
+                        item.getDouble("top").toFloat(),
+                        item.getDouble("right").toFloat(),
+                        item.getDouble("bottom").toFloat()
+                    ),
+                    frameSize = FrameSize(
+                        item.getInt("frame_width"),
+                        item.getInt("frame_height")
+                    ),
+                    distanceEvidence = distance,
+                    source = DetectionSource.valueOf(item.getString("source")),
+                    temporalPromotionEligible =
+                        item.getBoolean("temporal_promotion_eligible")
+                )
+            )
+        }
+    }
+
+    private fun detectorMetricsJson(metrics: DetectorMetrics): JSONObject = JSONObject()
+        .put("total_ms", metrics.totalMs)
+        .put("preprocess_ms", metrics.preprocessMs)
+        .put("inference_ms", metrics.inferenceMs)
+        .put("postprocess_ms", metrics.postprocessMs)
+        .put("fps", metrics.fps.toDouble())
+        .put("model_status", metrics.modelStatus)
+        .put("dropped_frame_rate", metrics.droppedFrameRate.toDouble())
+        .put("inference_p50_ms", metrics.inferenceP50Ms)
+        .put("inference_p95_ms", metrics.inferenceP95Ms)
+
+    private fun detectorMetricsFromJson(value: JSONObject): DetectorMetrics = DetectorMetrics(
+        totalMs = value.getLong("total_ms"),
+        preprocessMs = value.getLong("preprocess_ms"),
+        inferenceMs = value.getLong("inference_ms"),
+        postprocessMs = value.getLong("postprocess_ms"),
+        fps = value.getDouble("fps").toFloat(),
+        modelStatus = value.getString("model_status"),
+        droppedFrameRate = value.getDouble("dropped_frame_rate").toFloat(),
+        inferenceP50Ms = value.getLong("inference_p50_ms"),
+        inferenceP95Ms = value.getLong("inference_p95_ms")
+    )
+
+    private fun riskEventJson(
+        result: com.linnan.blindassist.session.AssistFrameResult
+    ): JSONObject = JSONObject()
+        .put("event_id", result.evaluation.riskEvent.eventId ?: JSONObject.NULL)
+        .put("state", result.evaluation.riskEvent.state?.name ?: JSONObject.NULL)
+        .put("active", result.evaluation.riskEvent.active)
+        .put("suppresses_feedback", result.evaluation.riskEvent.suppressesFeedback)
+        .put(
+            "clear_reason",
+            result.evaluation.riskEvent.clearReason?.name ?: JSONObject.NULL
+        )
+
+    private fun dualLoopJson(
+        result: com.linnan.blindassist.session.AssistFrameResult
+    ): JSONObject {
+        val observation = result.evaluation.dualLoopShadow
+        return JSONObject()
+            .put("mode", observation.mode.name)
+            .put("disposition", observation.disposition.name)
+            .put(
+                "correction_decision",
+                observation.correctionDecision?.name ?: JSONObject.NULL
+            )
+            .put(
+                "signed_approach_rate_per_s",
+                observation.signedApproachRatePerS?.toDouble() ?: JSONObject.NULL
+            )
+            .put("quality", observation.quality?.toDouble() ?: JSONObject.NULL)
+            .put(
+                "source_abstention_reason",
+                observation.sourceAbstentionReason ?: JSONObject.NULL
+            )
+            .put("feedback_mutation_allowed", observation.feedbackMutationAllowed)
+            .put("event_mutation_allowed", observation.eventMutationAllowed)
+    }
+
+    private fun verifyUnseenRank2InputReceipt(
+        inputReceipt: JSONObject,
+        manifestFile: File
+    ) {
+        assertEquals(UNSEEN_RANK2_PROTOCOL_ID, inputReceipt.getString("protocol_id"))
+        assertEquals("COMPLETE", inputReceipt.getString("status"))
+        assertEquals(false, inputReceipt.getBoolean("truth_read"))
+        assertEquals(false, inputReceipt.getBoolean("baseline_output_read"))
+        assertEquals(false, inputReceipt.getBoolean("candidate_output_read"))
+        assertEquals(UNSEEN_RANK2_SOURCE_ID, inputReceipt.getString("source_id"))
+        assertEquals(UNSEEN_RANK2_VIDEO_SHA256, inputReceipt.getString("video_sha256"))
+        assertEquals(UNSEEN_RANK2_FRAME_COUNT, inputReceipt.getInt("frame_count"))
+        assertEquals(
+            UNSEEN_RANK2_FRAME_STEP_NS,
+            inputReceipt.getLong("frame_step_ns")
+        )
+        assertEquals(
+            UNSEEN_RANK2_MANIFEST_SHA256,
+            inputReceipt.getString("manifest_sha256")
+        )
+        assertEquals(UNSEEN_RANK2_MANIFEST_SHA256, sha256File(manifestFile))
+    }
 
     private fun canonicalDetectionsSha256(detections: List<Detection>): String {
         val text = buildString {
@@ -1529,6 +2189,34 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
             "017f860e002c75d093206772800bd68cb1c19f226b74e4d5a933798916347821"
         private const val MATOAKA_MANIFEST_SHA256 =
             "97cb1c1ee68ab0b9a401f085c6819e696cbd951e01cb2c576c2c4615247be5f2"
+        private const val UNSEEN_RANK2_DIRECTORY =
+            "unseen-natural-rank2-shiraz"
+        private const val UNSEEN_RANK2_BASELINE_DIRECTORY =
+            "baseline-output"
+        private const val UNSEEN_RANK2_CANDIDATE_DIRECTORY =
+            "candidate-output"
+        private const val UNSEEN_RANK2_CANDIDATE_AUTHORIZATION =
+            "candidate_authorization.json"
+        private const val UNSEEN_RANK2_BASELINE_ASSESSMENT =
+            "baseline_assessment.json"
+        private const val UNSEEN_RANK2_PROTOCOL_ID =
+            "DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_SHIRAZ"
+        private const val UNSEEN_RANK2_SOURCE_ID =
+            "commons_iran_shiraz_city_tour_2021_5"
+        private const val UNSEEN_RANK2_VIDEO_SHA256 =
+            "63e5b32d9b08e6a2c17b1e3d0b20b6bde03e64d88da0c844579d424051a65b2e"
+        private const val UNSEEN_RANK2_MANIFEST_SHA256 =
+            "af0ab3c735d96737f451a6e64d1784681966345c7849131ad51bd46c9d7e6571"
+        private const val UNSEEN_RANK2_TRUTH_LEDGER_SHA256 =
+            "b2865cbeeb955fab62f02123031fe0f29af0a48a18443cf4581e6572e267a26c"
+        private const val UNSEEN_RANK2_PROTOCOL_SHA256 =
+            "fe5862afce85c6d4e0f90891d61293f0c482c176b1d70f702c7f1da0e75098d9"
+        private const val UNSEEN_RANK2_SOURCE_ACTIVATION_SHA256 =
+            "5208305d0e2f1f02b3ad340b8a51f165f5d71291621eb25c820107b908b9a2e0"
+        private const val UNSEEN_RANK2_EVALUATOR_SHA256 =
+            "9b1f8fcf1d2b087d33c34de86f2e2f2f93413062a75ff2818c39077bf1ad87e2"
+        private const val UNSEEN_RANK2_CANDIDATE_COMMIT =
+            "039757b2da41c051373f8ee3189c4b06028f5295"
         private const val PRESTART_RECEIPT = "prestart_receipt.json"
         private const val AUTHORIZATION_DIRECTORY = "authorization"
         private const val ACTIVATION_RECEIPT = "activation.json"
@@ -1549,6 +2237,9 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
         private const val MATOAKA_FRAME_COUNT = 10724
         private const val MATOAKA_FRAME_STEP_NS = 100_000_000L
         private const val MATOAKA_PROGRESS_INTERVAL = 250
+        private const val UNSEEN_RANK2_FRAME_COUNT = 4891
+        private const val UNSEEN_RANK2_FRAME_STEP_NS = 100_000_000L
+        private const val UNSEEN_RANK2_PROGRESS_INTERVAL = 250
         private const val EXPECTED_TRACE_ROWS = 8844
         private const val EXPECTED_WIDTH = 640
         private const val EXPECTED_HEIGHT = 480

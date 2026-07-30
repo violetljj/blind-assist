@@ -28,11 +28,18 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def prepare(video: Path, output: Path, ffmpeg: Path) -> dict:
+def prepare(
+    video: Path,
+    output: Path,
+    ffmpeg: Path,
+    *,
+    expected_video_sha256: str = EXPECTED_VIDEO_SHA256,
+    source_id: str = SOURCE_ID,
+) -> dict:
     if output.exists():
         raise FileExistsError(f"refusing to overwrite {output}")
     actual_sha256 = sha256_file(video)
-    if actual_sha256 != EXPECTED_VIDEO_SHA256:
+    if actual_sha256 != expected_video_sha256:
         raise ValueError("selected 480p source identity mismatch")
 
     temporary = output.with_name(f"{output.name}.tmp")
@@ -74,7 +81,7 @@ def prepare(video: Path, output: Path, ffmpeg: Path) -> dict:
                 raise ValueError(f"non-contiguous frame sequence at {image_path.name}")
             row = {
                 "schema_version": "blindassist.model_review_frame.v1",
-                "source_id": SOURCE_ID,
+                "source_id": source_id,
                 "frame_id": index,
                 "source_capture_timestamp_ns": index * 1_000_000_000,
                 "image_path": f"frames_1hz/{image_path.name}",
@@ -123,7 +130,7 @@ def prepare(video: Path, output: Path, ffmpeg: Path) -> dict:
         "schema_version": "blindassist.model_review_bundle_receipt.v1",
         "protocol_id": "DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0",
         "status": "COMPLETE",
-        "source_id": SOURCE_ID,
+        "source_id": source_id,
         "video_sha256": actual_sha256,
         "video_size_bytes": video.stat().st_size,
         "sample_hz": SAMPLE_HZ,
@@ -147,10 +154,21 @@ def main() -> int:
     parser.add_argument("--video", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--ffmpeg", type=Path, required=True)
+    parser.add_argument(
+        "--expected-video-sha256",
+        default=EXPECTED_VIDEO_SHA256,
+    )
+    parser.add_argument("--source-id", default=SOURCE_ID)
     args = parser.parse_args()
     print(
         json.dumps(
-            prepare(args.video, args.output, args.ffmpeg),
+            prepare(
+                args.video,
+                args.output,
+                args.ffmpeg,
+                expected_video_sha256=args.expected_video_sha256,
+                source_id=args.source_id,
+            ),
             ensure_ascii=False,
             sort_keys=True,
             indent=2,

@@ -76,9 +76,36 @@ causal difference 是多框共同缩小对当前反馈的保守反证；expected
 无事件效果 trace 保留为 regression fixture。它们均不得重新包装成 unseen
 Confirmation，也不得用于回调 R1。
 
+“已使用”只限制同一候选、同一独立确认主张，不是对数据集的全局封存。旧 session
+仍可用于机制开发、失败归因、回归测试或另一项预先冻结的问题；只需明确其
+Development 身份。数据集缺少原生提醒事件标签也不是排除条件：允许在任何算法输出
+打开前，从冻结 RGB 由两路隔离大模型复核并在分歧时裁决，形成 model-reviewed event
+truth。不得把帧、滑窗或同一 capture 中的重复事件伪装成独立 session。
+
 ## 当前 rank-1 终点
 
 上海 rank-1 的两路 canonical-prompt RGB 复核均为 0 个正例，已在 baseline 前以
 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE / VALID` 关闭。`finalize_rank1_truth.py`
 复核两份 AI receipt 的输入、prompt、身份、隔离与候选不可见性，发布 6 个一致负窗
 及 terminal receipt。完成公开披露后，后继只可按原 registry 固定顺序启动 rank-2。
+
+## 当前 rank-2 真值与执行入口
+
+Shiraz rank-2 已在 baseline/candidate 均未打开时完成两路独立 RGB 复核与第三路
+分歧裁决，冻结 7 个正例事件和 6 个负窗，状态为
+`TRUTH_FROZEN_ADEQUATE`。模块内 `run_device.ps1` 将设备执行拆为
+baseline-only 与 candidate-only；candidate 只有在 host evaluator 确认 baseline
+至少命中 1 个正例且误触发 1 个负窗后，才接受哈希绑定的授权。candidate 重放
+baseline trace 的同一 detections/metrics，并逐帧硬校验 raw/stable risk 不变。
+
+```powershell
+pwsh -NoProfile -File scripts/research/dual_loop_unseen_natural_event_r0/run_device.ps1 -Action Build
+pwsh -NoProfile -File scripts/research/dual_loop_unseen_natural_event_r0/run_device.ps1 -Action Install
+pwsh -NoProfile -File scripts/research/dual_loop_unseen_natural_event_r0/run_device.ps1 -Action PrepareInput
+pwsh -NoProfile -File scripts/research/dual_loop_unseen_natural_event_r0/run_device.ps1 -Action RunBaseline
+pwsh -NoProfile -File scripts/research/dual_loop_unseen_natural_event_r0/run_device.ps1 -Action CollectBaseline
+pwsh -NoProfile -File scripts/research/dual_loop_unseen_natural_event_r0/run_device.ps1 -Action EvaluateBaseline
+```
+
+只有 `baseline-evaluation-r1/candidate_authorization.json` 存在且有效，才继续
+`StageAuthorization / RunCandidate / CollectCandidate / EvaluateCandidate`。
