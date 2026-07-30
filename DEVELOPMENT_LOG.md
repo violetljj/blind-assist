@@ -1,5 +1,19 @@
 # Development Log
 ## 2026-07-30
+- 时间：2026-07-30（Asia/Hong_Kong）；执行者：Codex。冻结并通过
+  [D0 ego-motion error attribution R1 设计复核](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_DESIGN_REVIEW_RESULT_2026-07-30.md)。
+  R1 将 R0 不可识别的 `*_DOMINANT` 改为
+  `EGO_CANARY_PRIORITY / TEMPORAL_TREND_PRIORITY / NO_PRIORITY_IDENTIFIED`，
+  只作 burned single-capture operational routing。dependency preflight 复算
+  469 个 primary events、159 个跨 target overlap pairs、310 个 transitive
+  components 与六个固定 60 秒块；真实 golden 与 mutation tests `6/6 PASS`。
+  经三轮独立统计/实现复核，闭合 A/B trace firewall、exact join、Vicon/ROI 时间基、
+  source/share/quality support、component/block weighted Cliff、missingness、
+  person competing、互斥出口、one-shot、canonical receipt 与独立 validator。
+  协议 SHA-256 为
+  `87931369f912fdd054783db9decb2a1813080d0a961c3526b83ce686d1a48183`；
+  当前只授权实现和测试，正式 D0、后继 canary、Confirmation、Android、产品与安全
+  仍未授权。
 - 时间：2026-07-30（Asia/Hong_Kong）；执行者：Codex。完成
   [production temporal geometry factorial A/B R0 正式执行](docs/research/dual-loop/DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_EXECUTION_RESULT_2026-07-30.md)：
   指定 `SM-S9280 / SM8650` 以 strict QNN HTP 对 4,422 帧逐帧一次 detector，

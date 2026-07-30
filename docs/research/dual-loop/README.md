@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`production temporal A/B R0 / COMPLETE / VALID / NO_INCREMENT / D0_R1_REPAIR_IN_PROGRESS`
+状态：`production temporal A/B R0 / VALID_NO_INCREMENT / D0_R1_DESIGN_PASS / IMPLEMENTATION_AUTHORIZED`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -210,7 +210,7 @@ successor 只允许写成
 | successor causal runtime geometry | `OFFLINE_IMPLEMENTED / ONE_SHOT_EVALUATED` |
 | successor Development round | `BOTH_NOT_READY_FOR_CONFIRMATION / IMPLEMENTATION_NOT_READY` |
 | production temporal geometry factorial A/B R0 | `COMPLETE / VALID / NO_INCREMENT / ONE_SHOT_CONSUMED` |
-| D0 ego-motion error attribution | `R0_REPAIR_NEEDED / R1_PROTOCOL_IN_PROGRESS / NOT_RUN` |
+| D0 ego-motion error attribution | `R0_REPAIR_NEEDED / R1_DESIGN_REVIEW_PASS / IMPLEMENTATION_AUTHORIZED / NOT_RUN` |
 | successor 独立 Confirmation | `NOT_AUTHORIZED` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
 | 正式融合器或生产 CameraX 接线 | `NOT_AUTHORIZED` |
@@ -223,15 +223,16 @@ successor 只允许写成
 LITE R0 与 R1 的失败 evidence version 保持关闭；R2 的一次性 producer/evaluator
 authority 也已消费。R2 是有效的 Development 负结果，不得调阈值救援或重跑。
 
-production temporal geometry factorial A/B R0 已有效得到 `NO_INCREMENT`，因此
-当前前瞻工作转为修订并独立复核 D0 R1：
+production temporal geometry factorial A/B R0 已有效得到 `NO_INCREMENT`。统计修复后的
+[D0 R1 协议](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_PROTOCOL_2026-07-30.json)
+与[独立设计复核](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_DESIGN_REVIEW_RESULT_2026-07-30.md)
+已经 `PASS`；当前前瞻工作转为实现与独立验证：
 
-1. 把 R0 的 `*_DOMINANT` 改成仅用于后继选择的
-   `EGO_CANARY_PRIORITY / TEMPORAL_TREND_PRIORITY / NO_PRIORITY_IDENTIFIED`；
-2. 闭合单 capture 最高独立单位、跨 target 时间重叠组件、missingness/coverage、
-   固定时间块敏感性、person competing explanation 与候选指标冲突；
-3. 只在已烧毁的 REveL LITE R2 evidence 上实现只读 producer、analysis 与独立
+1. 只在已烧毁的 REveL LITE R2 evidence 上实现只读 producer、analysis 与独立
    validator，不修改或重跑 R2；
+2. 以 469 个 parent events、310 个 overlap components 与六个固定 60 秒块复算
+   三个互斥 operational priority exits；
+3. implementation lock 与独立实现复核通过后，才可另立 activation；当前不得运行；
 4. 仅当新的 D0 R1 结果为 `EGO_CANARY_PRIORITY`，再另立一个单变化、
    新数据的背景运动补偿 canary；其他终点不得继续同一图像尺度/径向光流路线。
 
