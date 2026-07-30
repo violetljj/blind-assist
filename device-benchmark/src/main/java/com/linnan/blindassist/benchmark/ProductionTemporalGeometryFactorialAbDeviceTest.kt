@@ -61,6 +61,119 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
     private val testContext = instrumentation.context
     private val targetContext = instrumentation.targetContext
 
+    /**
+     * Reuses the already-burned RGB universe to expose the full production detector output for a
+     * Development-only multi-track falsification screen. This writes to a separate namespace and
+     * neither reads truth nor modifies/replaces the completed formal A/B output.
+     */
+    @Test
+    fun runDevelopmentAllDetectionDump() {
+        val inventory = verifyInputInventory(inputRoot())
+        val outputRoot = File(baseRoot(), DEVELOPMENT_DUMP_DIRECTORY)
+        val temporaryRoot = File(baseRoot(), "$DEVELOPMENT_DUMP_DIRECTORY.tmp")
+        assertTrue("development output already exists", !outputRoot.exists())
+        assertTrue("stale development temporary output exists", !temporaryRoot.exists())
+
+        val detector = strictQnnDetector()
+        assertTrue("development temporary output could not be created", temporaryRoot.mkdirs())
+        var frameCount = 0
+        val startedAtNs = System.nanoTime()
+        try {
+            File(temporaryRoot, TRACE_FILE).bufferedWriter(Charsets.UTF_8).use { writer ->
+                SESSIONS.forEach { session ->
+                    readFrameLedger(File(inputRoot(), "$session/frames.jsonl")).forEach { frame ->
+                        val imageFile = File(inputRoot(), "$session/${frame.rgbPath}")
+                        check(sha256File(imageFile) == frame.rgbSha256) {
+                            "development RGB identity drift: $session/${frame.frameId}"
+                        }
+                        val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+                            ?: error("decode failed: $session/${frame.frameId}")
+                        try {
+                            check(bitmap.width == EXPECTED_WIDTH && bitmap.height == EXPECTED_HEIGHT)
+                            val detectorResult = detector.detect(bitmap)
+                            check(
+                                detectorResult.frameSize ==
+                                    FrameSize(EXPECTED_WIDTH, EXPECTED_HEIGHT)
+                            )
+                            val detections = detectorResult.detections.toList()
+                            val row = JSONObject()
+                                .put(
+                                    "schema_version",
+                                    "blindassist.dual_loop_all_detection_dump.v1"
+                                )
+                                .put("authority", "DEVELOPMENT_ONLY_BURNED_RGB")
+                                .put("session_id", session)
+                                .put("frame_id", frame.frameId)
+                                .put(
+                                    "source_capture_timestamp_ns",
+                                    frame.sourceCaptureTimestampNs
+                                )
+                                .put(
+                                    "detector_output_sha256",
+                                    canonicalDetectionsSha256(detections)
+                                )
+                                .put("detection_count", detections.size)
+                                .put(
+                                    "detections",
+                                    JSONArray().apply {
+                                        detections.forEach { put(detectionJson(it)) }
+                                    }
+                                )
+                            writer.write(row.toString())
+                            writer.newLine()
+                            frameCount += 1
+                            if (frameCount % PROGRESS_INTERVAL == 0) {
+                                val elapsedSeconds =
+                                    (System.nanoTime() - startedAtNs).toDouble() /
+                                        NANOS_PER_SECOND
+                                Log.i(
+                                    TAG,
+                                    "stage=DEVELOPMENT_ALL_DETECTIONS state=RUNNING " +
+                                        "completed=$frameCount total=$EXPECTED_FRAME_COUNT " +
+                                        "throughput_fps=${frameCount / elapsedSeconds}"
+                                )
+                            }
+                        } finally {
+                            bitmap.recycle()
+                        }
+                    }
+                }
+            }
+            check(frameCount == EXPECTED_FRAME_COUNT)
+            val trace = File(temporaryRoot, TRACE_FILE)
+            val receipt = JSONObject()
+                .put(
+                    "schema_version",
+                    "blindassist.dual_loop_all_detection_dump_receipt.v1"
+                )
+                .put("status", "COMPLETE")
+                .put("authority", "DEVELOPMENT_ONLY_BURNED_RGB")
+                .put("truth_read", false)
+                .put("formal_output_modified", false)
+                .put("frame_count", frameCount)
+                .put("trace_sha256", sha256File(trace))
+                .put(
+                    "input_inventory_sha256",
+                    inventory.getString("canonical_rgb_inventory_sha256")
+                )
+                .put("backend", DetectorExecutionBackend.QUALCOMM_QNN_HTP.wireName)
+                .put("qnn_runtime_version", JSONArray(QnnDelegate.getVersion().toList()))
+                .put("elapsed_ms", (System.nanoTime() - startedAtNs) / NANOS_PER_MILLISECOND)
+                .put("device", deviceJson())
+            atomicWrite(File(temporaryRoot, PRODUCER_RECEIPT), receipt.toString(2))
+            check(temporaryRoot.renameTo(outputRoot)) {
+                "development output publication failed"
+            }
+            Log.i(
+                TAG,
+                "stage=DEVELOPMENT_ALL_DETECTIONS state=COMPLETE " +
+                    "completed=$frameCount total=$EXPECTED_FRAME_COUNT"
+            )
+        } finally {
+            detector.close()
+        }
+    }
+
     @Test
     fun verifyFormalInputAndQnnPrestart() {
         val inputRoot = inputRoot()
@@ -910,6 +1023,7 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
         private const val PROTOCOL_ID = "DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0"
         private const val IMPLEMENTATION_ID = "PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_IMPL_R0"
         private const val BASE_DIRECTORY = "dual_loop_production_temporal_ab_r0"
+        private const val DEVELOPMENT_DUMP_DIRECTORY = "development-multitrack-dump-r0"
         private const val PRESTART_RECEIPT = "prestart_receipt.json"
         private const val AUTHORIZATION_DIRECTORY = "authorization"
         private const val ACTIVATION_RECEIPT = "activation.json"

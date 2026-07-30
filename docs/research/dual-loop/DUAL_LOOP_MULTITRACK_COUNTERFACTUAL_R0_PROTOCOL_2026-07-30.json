@@ -1,0 +1,48 @@
+{
+  "schema_version": "blindassist.dual_loop_multitrack_counterfactual_protocol.v1",
+  "protocol_id": "DUAL_LOOP_MULTITRACK_COUNTERFACTUAL_R0",
+  "stage": "DEVELOPMENT",
+  "status": "FROZEN_BEFORE_FULL_DETECTION_DUMP",
+  "purpose": "Falsify whether preserving production detector tracks across semantic target switches can safely support a narrow contradict-only correction.",
+  "inputs": {
+    "rgb_universe": "the already-burned 4422-frame CrowdBot production temporal A/B universe",
+    "detector": "the same production YOLO11n FP16 model on strict Qualcomm QNN HTP",
+    "baseline": "the immutable completed production temporal A/B R0 trace",
+    "truth": "the immutable F1A table previously reduced to 8 scorable positive events and 7 negative windows"
+  },
+  "candidate": {
+    "tracking": "deterministic class/source-compatible greedy association using only current and past detector boxes",
+    "geometry": "unchanged seven-observation unanimous log-box-height trend with absolute OLS slope >= 0.2 per second",
+    "runtime_output": [
+      "CONFIRM_APPROACH",
+      "CONTRADICT_APPROACH",
+      "ABSTAIN"
+    ],
+    "proposed_intervention": "only CONTRADICT_APPROACH may suppress a baseline feedback trigger; CONFIRM_APPROACH never creates or promotes an alert",
+    "forbidden_inputs": [
+      "truth",
+      "future frames",
+      "pose",
+      "IMU",
+      "depth",
+      "metric TTC",
+      "motion-responsibility attribution"
+    ]
+  },
+  "predeclared_screen": {
+    "benefit_gate": "at least 2 of 7 negative windows lose all feedback triggers",
+    "harm_gate": "all 8 scorable positive events retain at least one valid-window trigger",
+    "timing_gate": "no retained positive event is delayed by more than one source frame",
+    "decision": {
+      "all_gates_pass": "IMPLEMENT_NARROW_ACTIVE_ISOLATED_BUILD",
+      "otherwise": "REJECT_MULTITRACK_ACTIVE_ROUTE_AND_PIVOT"
+    }
+  },
+  "evidence_boundary": {
+    "development_only": true,
+    "adaptive_burned_data": true,
+    "formal_confirmation": false,
+    "product_or_safety_claim": false,
+    "completed_formal_ab_output_must_remain_immutable": true
+  }
+}

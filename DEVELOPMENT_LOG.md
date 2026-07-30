@@ -1935,3 +1935,19 @@
   当时镜头 `count=0`，故全部 `EVIDENCE_ABSENT`，没有伪造 live 非弃权样本。
   隔离包因 `libcdsprpc.so` 不可见回退 `cpu_xnnpack`，不形成 NPU/性能结论；smoke
   后 force-stop 隔离进程，APK 保留安装，正式包和数据未动。
+
+## 2026-07-30：多目标连续性反事实筛选入口
+
+- 执行者：violjjet
+- 现有 production-selected 单目标轨迹在冻结的 CrowdBot 基线中，27 个负窗触发帧
+  只有 1 个 `CONFIRM`、0 个 `CONTRADICT`；若直接启用反证抑制，收益为零，若强制
+  `CONFIRM` 则会破坏正例召回。因此不开放 active mode。
+- 新增 Development-only 真机完整 detection dump 入口，复用既有 4,422 帧与同一
+  strict QNN HTP detector，但写入独立命名空间，既不读取 truth，也不覆盖已完成的
+  production temporal A/B 正式输出。
+- 冻结
+  [多目标连续性反事实 R0 协议](docs/research/dual-loop/DUAL_LOOP_MULTITRACK_COUNTERFACTUAL_R0_PROTOCOL_2026-07-30.json)：
+  只有 `CONTRADICT_APPROACH` 可提议抑制已有提醒；必须至少消除 7 个负窗中的 2 个，
+  同时保留 8/8 正例且单事件延迟不超过一帧，否则拒绝该 active 路线并换路。
+- 当前只完成 outcome-blind 数据出口；尚未运行真机 dump 或 truth join，不形成效果
+  结论，也不改变默认、风险、事件或反馈行为。
