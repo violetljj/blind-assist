@@ -2214,7 +2214,7 @@ class ProductionTemporalGeometryFactorialAbDeviceTest {
         private const val UNSEEN_RANK2_SOURCE_ACTIVATION_SHA256 =
             "5208305d0e2f1f02b3ad340b8a51f165f5d71291621eb25c820107b908b9a2e0"
         private const val UNSEEN_RANK2_EVALUATOR_SHA256 =
-            "9b1f8fcf1d2b087d33c34de86f2e2f2f93413062a75ff2818c39077bf1ad87e2"
+            "56ca4a01a60a1935a3891225c01ce3c45bd533ff71a62d4afd242d41249ec748"
         private const val UNSEEN_RANK2_CANDIDATE_COMMIT =
             "039757b2da41c051373f8ee3189c4b06028f5295"
         private const val PRESTART_RECEIPT = "prestart_receipt.json"

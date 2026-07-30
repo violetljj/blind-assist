@@ -12,6 +12,7 @@ from scripts.research.dual_loop_unseen_natural_event_r0.evaluate_rank2_effect im
     RANK2_PROTOCOL_PATH,
     RANK2_PROTOCOL_SHA256,
     REPO_ROOT,
+    atomic_publish_json_directory,
     classify_terminal,
     first_or_none,
     sha256_file,
@@ -114,6 +115,17 @@ class Rank2EffectEvaluatorTest(unittest.TestCase):
             )
             with self.assertRaisesRegex(ValueError, "overlap"):
                 validate_emitted_ledger(ledger)
+
+    def test_atomic_json_publication_is_lf_deterministic(self) -> None:
+        with TemporaryDirectory() as directory:
+            output = Path(directory) / "published"
+            atomic_publish_json_directory(
+                output,
+                {"value.json": {"status": "COMPLETE", "count": 1}},
+            )
+            payload = (output / "value.json").read_bytes()
+            self.assertNotIn(b"\r\n", payload)
+            self.assertTrue(payload.endswith(b"\n"))
 
 
 if __name__ == "__main__":

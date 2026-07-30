@@ -1961,6 +1961,11 @@
   打开时，以同一 review/adjudication 生成 canonical `truth-freeze-r2`。r1/r2 ledger
   字节一致，r2 receipt 额外绑定发布前的有限 confidence、视频边界、唯一 ID 与闭区间
   互斥校验；后继只消费 r2。
+- 首次 baseline 设备运行本身完成 `4,891/4,891`，但 candidate 前的只读授权复算
+  发现 assessment 实际 CRLF 字节与 evaluator 预计算 LF hash 不一致；门禁正确拒绝
+  放行，candidate 保持 unopened。根因是 Windows `Path.write_text()` 默认换行转换。
+  evaluator 改为显式 `newline="\n"` 并新增字节级回归；旧 baseline/evaluation 标记
+  为 serialization-invalid 后保留，更新 evaluator/APK identity 再原样重跑。
 - 明确数据复用规则：“已使用”只取消 exact session 对同一候选的 unseen claim，
   不全局封存数据集。缺原生提醒标签的数据允许在输出盲条件下由多模型复核补齐，
   但 capture/session 独立单位不得用帧或滑窗扩张。

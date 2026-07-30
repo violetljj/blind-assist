@@ -427,6 +427,7 @@ def atomic_publish_json_directory(output: Path, files: dict[str, dict[str, Any]]
             (temporary / name).write_text(
                 json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
                 encoding="utf-8",
+                newline="\n",
             )
         temporary.replace(output)
     except Exception:

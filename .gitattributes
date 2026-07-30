@@ -54,6 +54,10 @@
 /scripts/run_guarded_host_research.ps1 text eol=lf
 /scripts/test_run_guarded_host_research.ps1 text eol=lf
 
+# Dual-loop unseen natural event R0 binds protocol, finalizer and evaluator bytes.
+/docs/research/dual-loop/DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_* text eol=lf
+/scripts/research/dual_loop_unseen_natural_event_r0/** text eol=lf
+
 # Immutable historical-reference exceptions are SHA256-bound and must survive clean checkout byte-for-byte.
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_0327.json text eol=lf
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_transport_safety_amendment.json text eol=lf
