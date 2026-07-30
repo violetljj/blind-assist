@@ -1,18 +1,20 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / UNSEEN_EVENT_R0_SOURCE_FROZEN`
+状态：`ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / UNSEEN_EVENT_R0_RANK1_NOT_EVALUABLE`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
 
 ## 当前决定
 
-2026-07-31 已按“效果线优先”冻结
+2026-07-31 已按“效果线优先”执行
 [未见自然来源事件评价 R0](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_PROTOCOL_2026-07-31.json)。
-在视频 payload、baseline 与 candidate 输出访问前，metadata-only selector 从 Commons
-固定 registry 选中一个 566.228 秒的新步行 session。后继顺序固定为：先从 RGB
-冻结事件/负窗，再做 baseline-only 可评价门，最后才允许原样运行 `039757b`；
-行级下降不能购买事件效果，单来源正信号也只到 Development canary。当前尚未产生
-该来源的算法结果，普通生产行为仍不变。
+metadata-only selector 预先固定的 rank-1 是 566.228 秒上海夜间步行 session。
+[rank-1 结果](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK1_RESULT_2026-07-31.md)
+为 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE / VALID`：两路 hash-bound、输出盲 RGB
+复核均得到 `0` 个正例，低于预冻结最低 3 个，因此 baseline 与 `039757b`
+candidate 均保持未打开。这不是算法负结果；它证明 truth-first 门避免了在无正例
+来源上消费候选，并授权按原固定顺序启动 rank-2 新 evidence instance。普通生产
+行为仍不变。
 
 2026-07-30 已完成
 [隔离主动纠错 R1](DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)。

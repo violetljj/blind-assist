@@ -23,6 +23,22 @@ selector 只读取 Wikimedia Commons category/API metadata，按协议固定的 
 拒绝覆盖。后继 truth ledger、baseline adequacy、candidate replay 和 evaluator 必须
 绑定该 receipt、source bytes SHA-256 与各自实现哈希。
 
+payload 下载并核对 SHA-256 后，使用下列两个独立入口形成盲审 bundle 和固定 10Hz
+replay 输入。审阅 bundle 需要 Pillow；两个入口均拒绝覆盖已有目录或复用残留 `.tmp`
+目录：
+
+```powershell
+python -m scripts.research.dual_loop_unseen_natural_event_r0.prepare_review_bundle `
+  --video artifacts.local/downloads/dual-loop-r1-unseen-natural-event-r0/shanghai-shopping-street-480p.webm `
+  --output artifacts.local/evidence/dual-loop-r1-unseen-natural-event-r0/review-bundle-r1 `
+  --ffmpeg E:\codex-tools\media\ffmpeg\ffmpeg-8.1.2-essentials_build\bin\ffmpeg.exe
+
+python -m scripts.research.dual_loop_unseen_natural_event_r0.prepare_input `
+  --video artifacts.local/downloads/dual-loop-r1-unseen-natural-event-r0/shanghai-shopping-street-480p.webm `
+  --output artifacts.local/evidence/dual-loop-r1-unseen-natural-event-r0/input-10hz-r1 `
+  --ffmpeg E:\codex-tools\media\ffmpeg\ffmpeg-8.1.2-essentials_build\bin\ffmpeg.exe
+```
+
 ## 输出
 
 只写入显式 `artifacts.local/` 目录：
@@ -59,3 +75,10 @@ causal difference 是多框共同缩小对当前反馈的保守反证；expected
 不可评价来源保留为 source-characterization；guardrail 失败保留为 counterexample；
 无事件效果 trace 保留为 regression fixture。它们均不得重新包装成 unseen
 Confirmation，也不得用于回调 R1。
+
+## 当前 rank-1 终点
+
+上海 rank-1 的两路 canonical-prompt RGB 复核均为 0 个正例，已在 baseline 前以
+`FIRST_UNSEEN_SOURCE_NOT_EVALUABLE / VALID` 关闭。`finalize_rank1_truth.py`
+复核两份 AI receipt 的输入、prompt、身份、隔离与候选不可见性，发布 6 个一致负窗
+及 terminal receipt。完成公开披露后，后继只可按原 registry 固定顺序启动 rank-2。

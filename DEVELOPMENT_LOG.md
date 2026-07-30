@@ -1,5 +1,15 @@
 # Development Log
 ## 2026-07-31
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  [双环 R1 未见事件 R0 rank-1](docs/research/dual-loop/DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK1_RESULT_2026-07-31.md)
+  的 truth-first 终点。下载的 480p payload SHA-256 为 `589711...f49`，生成
+  566 帧 1 Hz review bundle 与 5,662 帧 10 Hz 固定 replay input。两路隔离、
+  hash-bound canonical-prompt RGB 复核均得到 `0` 个高置信正例；另有新上下文
+  对早期 `0 vs 7` 分歧逐段裁决，同样拒绝全部争议段。预冻结最低正例为 3，
+  因此在 baseline 前有效终止为 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE`；
+  `039757b` candidate 未打开、未调参，不声称算法失败。保留 6 个两路一致负窗为
+  source-characterization/regression。输入准备与 selector 专项测试 `4/4 PASS`；
+  下一步只允许按原 registry 排序启动 rank-2 新 evidence instance。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户确认的
   “效果线优先”路线冻结
   [双环 R1 未见自然来源事件评价 R0](docs/research/dual-loop/DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_PROTOCOL_2026-07-31.json)。
