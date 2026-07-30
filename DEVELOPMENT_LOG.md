@@ -1900,3 +1900,38 @@
   source/session 上组合显式旋转补偿、静态 depth layer 与多帧同号 abstention，
   再进入 harm=0 的独立信息 screen。详见
   [result](docs/research/dual-loop/DUAL_LOOP_REAL_GEOMETRY_SHADOW_CYCLE_R0_RESULT_2026-07-30.md)。
+
+## 2026-07-30：最小因果三态双环来源确认与 Android 影子落地
+
+- 执行者：violjjet
+- 方法论纠偏：不再把 ego/target 责任归因、精确 TTC、pose、IMU、depth 或完整三维
+  恢复作为基础提醒前置；第二环只输出
+  `CONFIRM_APPROACH / CONTRADICT_APPROACH / ABSTAIN`。
+- 冻结候选仅用同一 track 连续 7 帧 `log(bbox height)`：6 次相邻变化严格同号且
+  OLS slope 绝对值 `>=0.2/s` 才表态，否则弃权。8 个 burned Development 会话先
+  复现后，不再改规则。
+- 独立 Confirmation 在任何选中 payload 打开前排除 13 个 outcome-open sequence，
+  metadata-only hash 冻结 3 个新 JRDB sequence × 360 帧；先取得 2D source 并封存
+  43,429 行输出，producer 明确记录 truth 不存在/未打开，之后才取得 3D truth。
+- 非弃权 1,017 行中 1,008 正确，总精度 `99.12%`；confirm
+  `377/385=97.92%`，contradict `631/632=99.84%`，coverage `2.391%`，
+  43 个 distinct tracks，三个 session 均过预声明门。终点为
+  `ANNOTATION_TRACK_SOURCE_CONFIRMATION_PASS`。
+- `core:assist` 新增 `CausalTrackTristateGeometryProducer`，在
+  `DUAL_LOOP_SHADOW` 内使用 production-selected detection、capture timestamp 与
+  轻量 track continuity 生成同一三态证据。kernel 显式准入该 source；普通
+  admitter 仍 fail closed。
+- 新 source 仍完全 observational。Kotlin 回归覆盖增长/缩小/混合趋势、target/gap
+  reset 与七帧 kernel admission，并逐帧验证 baseline/shadow 的 risk、event、
+  feedback、session 和 gateway 调用完全相同。
+- 当前终点：
+  `TRISTATE_SOURCE_CONFIRMATION_PASS / END_TO_END_ANDROID_SHADOW_LANDED /
+  DEFAULT_OFF / NON_ACTUATING / NO_EFFECT_CLAIM`。JRDB 使用 annotation track，
+  Android 使用轻量 detection continuity；下一门只收集真机 live parity、三态分布、
+  reset 与延迟，不增加算法复杂度。详见
+  [result](docs/research/dual-loop/DUAL_LOOP_CAUSAL_TRACK_TRISTATE_R0_RESULT_2026-07-30.md)。
+- SM-S9280 真机安装独立 `com.linnan.blindassist.dualloop.shadow` 后冷启动与
+  CameraX smoke 成功；连续 frame ID 进入 `BlindAssistDualLoop`，短观测约 24 FPS。
+  当时镜头 `count=0`，故全部 `EVIDENCE_ABSENT`，没有伪造 live 非弃权样本。
+  隔离包因 `libcdsprpc.so` 不可见回退 `cpu_xnnpack`，不形成 NPU/性能结论；smoke
+  后 force-stop 隔离进程，APK 保留安装，正式包和数据未动。

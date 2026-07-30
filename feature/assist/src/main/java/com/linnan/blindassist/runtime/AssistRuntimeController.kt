@@ -2,6 +2,7 @@ package com.linnan.blindassist.runtime
 
 import android.Manifest
 import android.os.SystemClock
+import android.util.Log
 import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity
 import androidx.camera.view.PreviewView
@@ -65,6 +66,18 @@ internal class AssistRuntimeSession(
         runOnUiThread = { block -> activity.runOnUiThread(Runnable(block)) },
         onCameraFailure = ::handleCameraFailure,
         decisionClockNs = decisionClockNs,
+        onDualLoopShadowObservation = { observation ->
+            Log.i(
+                DUAL_LOOP_LOG_TAG,
+                "frame=${observation.currentFrameId} " +
+                    "track=${observation.trackEpoch} " +
+                    "disposition=${observation.disposition} " +
+                    "decision=${observation.correctionDecision} " +
+                    "rate=${observation.signedApproachRatePerS} " +
+                    "quality=${observation.quality} " +
+                    "reason=${observation.sourceAbstentionReason}"
+            )
+        },
         mode = mode
     )
     private val cameraLifecycleAdapter = AssistCameraLifecycleAdapter(
@@ -290,5 +303,9 @@ internal class AssistRuntimeSession(
             activity,
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private companion object {
+        const val DUAL_LOOP_LOG_TAG = "BlindAssistDualLoop"
     }
 }

@@ -76,6 +76,12 @@ object DualLoopJrdbReplayAdapter {
                 targetBoundingBox = input.target.boundingBox,
                 targetFrameSize = input.target.frameSize,
                 targetSource = input.target.source,
+                correctionDecision =
+                    if (input.signedApproachRatePerS > 0f) {
+                        DualLoopCorrectionDecision.CONFIRM_APPROACH
+                    } else {
+                        DualLoopCorrectionDecision.CONTRADICT_APPROACH
+                    },
                 signedApproachRatePerS = input.signedApproachRatePerS,
                 quality = input.quality,
                 targetProvenance = DualLoopTargetProvenance.REPLAY_ANNOTATION

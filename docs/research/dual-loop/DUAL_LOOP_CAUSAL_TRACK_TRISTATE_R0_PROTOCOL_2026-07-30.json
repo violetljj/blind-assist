@@ -1,0 +1,48 @@
+{
+  "schema": "blindassist.dual_loop_causal_track_tristate_protocol.v1",
+  "protocol_id": "DUAL_LOOP_CAUSAL_TRACK_TRISTATE_R0",
+  "status": "EXECUTED",
+  "question": "Can a causal, selective 2D track-box trend provide reliable approach confirmation or contradiction without ego-motion attribution, metric TTC, depth, pose, IMU, or RGB decoding?",
+  "source_rule": {
+    "input": "same annotation track over seven contiguous frames",
+    "feature": "log_bbox_height",
+    "fit": "causal ordinary least squares",
+    "confirm": "slope >= 0.2/s and all six adjacent changes are positive",
+    "contradict": "slope <= -0.2/s and all six adjacent changes are negative",
+    "otherwise": "ABSTAIN"
+  },
+  "confirmation_instance": {
+    "selection": "metadata-only sha256 rank after excluding every outcome-open sequence",
+    "sequences": [
+      "gates-159-group-meeting-2019-04-03_0",
+      "huang-lane-2019-02-12_0",
+      "packard-poster-session-2019-03-20_2"
+    ],
+    "frames_per_sequence": 360,
+    "source": "JRDB stitched 2D annotation box and track identity",
+    "truth": "JRDB 3D annotation-center relative range change",
+    "truth_deadband_mps": 0.1,
+    "firewall": "freeze before selected payload access; seal 2D source output before acquiring 3D truth"
+  },
+  "gates": {
+    "minimum_total_evidence": 100,
+    "minimum_session_evidence": 20,
+    "minimum_session_coverage": 0.005,
+    "minimum_session_precision": 0.9,
+    "minimum_pooled_confirm_precision": 0.9,
+    "minimum_pooled_contradict_precision": 0.9,
+    "minimum_distinct_tracks": 10
+  },
+  "terminals": {
+    "pass": "ANNOTATION_TRACK_SOURCE_CONFIRMATION_PASS",
+    "fail": "ANNOTATION_TRACK_SOURCE_CONFIRMATION_NOT_MET"
+  },
+  "claim_ceiling": "ANNOTATION_TRACK_MECHANISM_CONFIRMATION_ONLY",
+  "forbidden_claims": [
+    "live detector-track accuracy",
+    "alert benefit",
+    "Android runtime performance",
+    "product effectiveness",
+    "human safety"
+  ]
+}

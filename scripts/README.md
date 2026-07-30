@@ -56,6 +56,7 @@
 - [`research/dual_loop_jrdb_shadow_r0/`](research/dual_loop_jrdb_shadow_r0/)：标注条件化真实 LiDAR 质心到现有 `DualLoopShadowAdmitter`/`AssistDecisionKernel` 的 host-only 工程闭环；行为源保持 `OBJECT_DETECTOR`，标注条件化仅由 `REPLAY_TIMELINE + DualLoopTargetProvenance.REPLAY_ANNOTATION` 留痕，生产 allowlist 保持为空。
 - [`research/dual_loop_depth_geometry_r0/`](research/dual_loop_depth_geometry_r0/)：burned REveL 固定子集上的 Depth Anything V2 target-depth Discovery；静态距离排序与 temporal direction 分开评价，不授权 runtime/Android。
 - [`research/dual_loop_global_motion_compensated_flow_r0/`](research/dual_loop_global_motion_compensated_flow_r0/)：LITE R2 后的 background-homography residual target-flow Development；固定质量门和原 469-event readiness，不做结果后阈值搜索。
+- [`research/dual_loop_causal_track_tristate_r0/`](research/dual_loop_causal_track_tristate_r0/)：最小因果框尺度三态 source；7 帧 log-box-height 严格同号才确认/否定接近，否则弃权。独立 JRDB annotation-track Confirmation 已通过，并移植到 Android 非干预 shadow；不授权 active 提醒。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。

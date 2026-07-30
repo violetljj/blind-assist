@@ -17,6 +17,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlin.math.exp
 
 class DualLoopShadowIntegrationTest {
     private val frameSize = FrameSize(1000, 1000)
@@ -85,6 +86,64 @@ class DualLoopShadowIntegrationTest {
         assertEquals(baselineGateway.notifyCalls, shadowGateway.notifyCalls)
     }
 
+    @Test
+    fun liveTristateSourceReachesShadowAdmissionWithoutMutatingBaseline() {
+        val baselineGateway = PlannerGateway()
+        val shadowGateway = PlannerGateway()
+        val baseline = AssistDecisionKernel()
+        val shadow = AssistDecisionKernel()
+        baseline.startSession(900L)
+        shadow.startSession(900L)
+        var finalBaseline: AssistFrameResult? = null
+        var finalShadow: AssistFrameResult? = null
+
+        repeat(7) { index ->
+            val height = 500f * exp(0.30f * index * 0.1f)
+            val frameDetection = detection.copy(
+                boundingBox = BoundingBox(350f, 200f, 650f, 200f + height)
+            )
+            val frame = stamp(index.toLong(), 1_000_000_000L + index * 100_000_000L)
+            finalBaseline = baseline.processFrame(
+                detections = listOf(frameDetection),
+                frameSize = frameSize,
+                profile = AlertProfile.STANDARD,
+                scenario = AssistScenario.GENERAL,
+                metrics = metrics(),
+                feedbackGateway = baselineGateway,
+                nowMs = 1_000L + index * 100L,
+                sourceFrame = frame,
+                decisionAtNs = frame.capturedAtNs + 10_000_000L
+            )
+            finalShadow = shadow.processFrame(
+                detections = listOf(frameDetection),
+                frameSize = frameSize,
+                profile = AlertProfile.STANDARD,
+                scenario = AssistScenario.GENERAL,
+                metrics = metrics(),
+                feedbackGateway = shadowGateway,
+                nowMs = 1_000L + index * 100L,
+                sourceFrame = frame,
+                decisionAtNs = frame.capturedAtNs + 10_000_000L,
+                dualLoopMode = DualLoopRuntimeMode.SHADOW_ABSTAIN_ONLY
+            )
+            assertEquals(finalBaseline!!.evaluation.rawRisk, finalShadow!!.evaluation.rawRisk)
+            assertEquals(finalBaseline!!.evaluation.stableRisk, finalShadow!!.evaluation.stableRisk)
+            assertEquals(finalBaseline!!.evaluation.riskEvent, finalShadow!!.evaluation.riskEvent)
+            assertEquals(finalBaseline!!.feedbackDecision, finalShadow!!.feedbackDecision)
+        }
+
+        assertEquals(
+            DualLoopShadowDisposition.ADMITTED_SHADOW,
+            finalShadow!!.evaluation.dualLoopShadow.disposition
+        )
+        assertEquals(
+            DualLoopCorrectionDecision.CONFIRM_APPROACH,
+            finalShadow!!.evaluation.dualLoopShadow.correctionDecision
+        )
+        assertEquals(finalBaseline!!.sessionSummary, finalShadow!!.sessionSummary)
+        assertEquals(baselineGateway.notifyCalls, shadowGateway.notifyCalls)
+    }
+
     private fun evidence() = DualLoopGeometryEvidence(
         sourceContractId = DualLoopShadowAdmitter.CONTRACT_ID,
         sourceId = "synthetic-shadow-fixture",
@@ -99,6 +158,7 @@ class DualLoopShadowIntegrationTest {
         targetBoundingBox = detection.boundingBox,
         targetFrameSize = detection.frameSize,
         targetSource = DetectionSource.OBJECT_DETECTOR,
+        correctionDecision = DualLoopCorrectionDecision.CONFIRM_APPROACH,
         signedApproachRatePerS = 0.30f,
         quality = 0.80f
     )

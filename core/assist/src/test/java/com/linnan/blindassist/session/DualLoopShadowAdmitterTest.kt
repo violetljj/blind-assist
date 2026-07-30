@@ -176,6 +176,31 @@ class DualLoopShadowAdmitterTest {
     }
 
     @Test
+    fun triStateDecisionMustAgreeWithSignedDiagnosticRate() {
+        val contradictWithPositiveRate = evaluate(
+            admitted(),
+            candidate = evidence().copy(
+                correctionDecision = DualLoopCorrectionDecision.CONTRADICT_APPROACH
+            )
+        )
+        val explicitAbstainWithRate = evaluate(
+            admitted(),
+            candidate = evidence().copy(
+                correctionDecision = DualLoopCorrectionDecision.ABSTAIN
+            )
+        )
+
+        assertEquals(
+            DualLoopShadowDisposition.DECISION_RATE_MISMATCH,
+            contradictWithPositiveRate.disposition
+        )
+        assertEquals(
+            DualLoopShadowDisposition.DECISION_RATE_MISMATCH,
+            explicitAbstainWithRate.disposition
+        )
+    }
+
+    @Test
     fun explicitSourceAbstentionPrecedesDownstreamFrameFailures() {
         val result = evaluate(
             admitted(),
@@ -237,6 +262,7 @@ class DualLoopShadowAdmitterTest {
         targetBoundingBox = detection.boundingBox,
         targetFrameSize = detection.frameSize,
         targetSource = DetectionSource.OBJECT_DETECTOR,
+        correctionDecision = DualLoopCorrectionDecision.CONFIRM_APPROACH,
         signedApproachRatePerS = 0.25f,
         quality = 0.75f
     )

@@ -73,18 +73,23 @@ class AssistDecisionKernel(
     private val riskEventTracker: RiskEventTracker = RiskEventTracker(),
     private val lowConfidenceSidePersonConfirmation: LowConfidenceSidePersonConfirmation =
         LowConfidenceSidePersonConfirmation(),
-    private val dualLoopShadowAdmitter: DualLoopShadowAdmitter = DualLoopShadowAdmitter()
+    private val dualLoopShadowAdmitter: DualLoopShadowAdmitter =
+        DualLoopShadowAdmitter.liveTristateSource(),
+    private val dualLoopGeometryProducer: CausalTrackTristateGeometryProducer =
+        CausalTrackTristateGeometryProducer()
 ) {
     fun startSession(nowMs: Long = monotonicNowMs()) {
         assistEngine.startSession(nowMs)
         riskEventTracker.reset()
         lowConfidenceSidePersonConfirmation.reset()
+        dualLoopGeometryProducer.reset()
     }
 
     fun reset() {
         assistEngine.reset()
         riskEventTracker.reset()
         lowConfidenceSidePersonConfirmation.reset()
+        dualLoopGeometryProducer.reset()
     }
 
     fun sessionSummary(): SessionSummary = assistEngine.sessionSummary()
@@ -113,15 +118,35 @@ class AssistDecisionKernel(
             sourceFrame = sourceFrame,
             decisionAtNs = decisionAtNs
         )
-        val dualLoopShadow = dualLoopShadowAdmitter.evaluate(
+        val shadowEvidence = if (
+            dualLoopMode == DualLoopRuntimeMode.SHADOW_ABSTAIN_ONLY &&
+            dualLoopGeometryEvidence == null
+        ) {
+            dualLoopGeometryProducer.produce(
+                sourceFrame = sourceFrame,
+                selectedTarget = evaluation.rawRisk.sourceDetection,
+                decisionAtNs = decisionAtNs
+            )
+        } else {
+            dualLoopGeometryEvidence
+        }
+        val admittedShadow = dualLoopShadowAdmitter.evaluate(
             mode = dualLoopMode,
-            evidence = dualLoopGeometryEvidence,
+            evidence = shadowEvidence,
             sourceFrame = sourceFrame,
             detections = detections,
             baselineRisk = evaluation.rawRisk,
             decisionAtNs = decisionAtNs,
             decisionClockDomain = dualLoopDecisionClockDomain
         )
+        val dualLoopShadow = if (
+            admittedShadow.disposition == DualLoopShadowDisposition.EVIDENCE_ABSENT &&
+            sourceFrame != null
+        ) {
+            admittedShadow.copy(currentFrameId = sourceFrame.frameId)
+        } else {
+            admittedShadow
+        }
         val shadowEvaluation = evaluation.copy(dualLoopShadow = dualLoopShadow)
         // Event identity and exit must observe the current frame. Feedback still uses
         // stableRisk below so the alert hold cannot conceal raw target disappearance.

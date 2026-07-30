@@ -34,6 +34,7 @@ enum class DualLoopShadowDisposition {
     TARGET_NOT_SELECTED,
     TARGET_AMBIGUOUS,
     NONFINITE_RATE,
+    DECISION_RATE_MISMATCH,
     LOW_QUALITY,
     ADMITTED_SHADOW
 }
@@ -41,6 +42,12 @@ enum class DualLoopShadowDisposition {
 enum class DualLoopTargetProvenance {
     RUNTIME_DETECTION,
     REPLAY_ANNOTATION
+}
+
+enum class DualLoopCorrectionDecision {
+    CONFIRM_APPROACH,
+    CONTRADICT_APPROACH,
+    ABSTAIN
 }
 
 /**
@@ -63,6 +70,7 @@ data class DualLoopGeometryEvidence(
     val targetBoundingBox: BoundingBox,
     val targetFrameSize: FrameSize,
     val targetSource: DetectionSource,
+    val correctionDecision: DualLoopCorrectionDecision,
     val signedApproachRatePerS: Float?,
     val quality: Float?,
     val sourceAbstentionReason: String? = null,
@@ -79,8 +87,12 @@ data class DualLoopShadowObservation(
     val mode: DualLoopRuntimeMode,
     val disposition: DualLoopShadowDisposition,
     val sourceId: String? = null,
+    val currentFrameId: Long? = null,
+    val trackEpoch: String? = null,
+    val correctionDecision: DualLoopCorrectionDecision? = null,
     val signedApproachRatePerS: Float? = null,
-    val quality: Float? = null
+    val quality: Float? = null,
+    val sourceAbstentionReason: String? = null
 ) {
     val productionRiskUnchanged: Boolean
         get() = true
@@ -102,8 +114,8 @@ data class DualLoopShadowObservation(
 /**
  * Fail-closed admission for shadow-only geometry evidence.
  *
- * The production allowlist is empty. Tests or a separately isolated caller may
- * inject an explicit allowlist to verify the contract, but even admitted
+ * The ordinary constructor remains fail-closed. The isolated dual-loop shadow
+ * path may explicitly admit the frozen causal tri-state source, but admitted
  * evidence remains observational and cannot reach the event/feedback seam.
  */
 class DualLoopShadowAdmitter(
@@ -173,6 +185,12 @@ class DualLoopShadowAdmitter(
         if (rate == null || !rate.isFinite()) {
             return abstain(DualLoopShadowDisposition.NONFINITE_RATE, evidence)
         }
+        if (evidence.correctionDecision == DualLoopCorrectionDecision.ABSTAIN ||
+            (evidence.correctionDecision == DualLoopCorrectionDecision.CONFIRM_APPROACH && rate <= 0f) ||
+            (evidence.correctionDecision == DualLoopCorrectionDecision.CONTRADICT_APPROACH && rate >= 0f)
+        ) {
+            return abstain(DualLoopShadowDisposition.DECISION_RATE_MISMATCH, evidence)
+        }
         val quality = evidence.quality
         if (quality == null || !quality.isFinite() || quality < minimumQuality || quality > 1f) {
             return abstain(DualLoopShadowDisposition.LOW_QUALITY, evidence)
@@ -181,6 +199,9 @@ class DualLoopShadowAdmitter(
             mode = mode,
             disposition = DualLoopShadowDisposition.ADMITTED_SHADOW,
             sourceId = evidence.sourceId,
+            currentFrameId = evidence.currentFrame.frameId,
+            trackEpoch = evidence.trackEpoch,
+            correctionDecision = evidence.correctionDecision,
             signedApproachRatePerS = rate,
             quality = quality
         )
@@ -192,7 +213,13 @@ class DualLoopShadowAdmitter(
     ): DualLoopShadowObservation = DualLoopShadowObservation(
         mode = DualLoopRuntimeMode.SHADOW_ABSTAIN_ONLY,
         disposition = disposition,
-        sourceId = evidence?.sourceId
+        sourceId = evidence?.sourceId,
+        currentFrameId = evidence?.currentFrame?.frameId,
+        trackEpoch = evidence?.trackEpoch,
+        correctionDecision = evidence?.correctionDecision,
+        signedApproachRatePerS = evidence?.signedApproachRatePerS,
+        quality = evidence?.quality,
+        sourceAbstentionReason = evidence?.sourceAbstentionReason
     )
 
     private fun validFramePair(
@@ -222,5 +249,14 @@ class DualLoopShadowAdmitter(
     companion object {
         const val CONTRACT_ID = "blindassist_dual_loop_geometry_shadow_input_v1"
         const val DEFAULT_MINIMUM_QUALITY = 0.50f
+
+        fun liveTristateSource(): DualLoopShadowAdmitter = DualLoopShadowAdmitter(
+            admittedSourceIdentities = setOf(
+                DualLoopSourceIdentity(
+                    CONTRACT_ID,
+                    CausalTrackTristateGeometryProducer.SOURCE_ID
+                )
+            )
+        )
     }
 }
