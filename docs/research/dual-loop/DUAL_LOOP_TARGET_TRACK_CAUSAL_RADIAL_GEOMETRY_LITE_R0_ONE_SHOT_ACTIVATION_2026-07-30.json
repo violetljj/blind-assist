@@ -1,0 +1,92 @@
+{
+  "schema": "blindassist_dual_loop_radial_geometry_lite_r0_one_shot_activation_v1",
+  "protocol_id": "DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0",
+  "created_at": "2026-07-30T13:10:00+08:00",
+  "status": "AUTHORIZED_ONE_SHOT_IF_INDEPENDENT_REVIEW_PASS_IS_RECORDED",
+  "implementation_identity": {
+    "repository_commit": "64fbc5aa546faa3d787ce014df55a7dd8ee8ab9f",
+    "branch": "master",
+    "remote_ref": "origin/master",
+    "implementation_lock_path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_IMPLEMENTATION_LOCK_2026-07-30.json",
+    "implementation_lock_sha256": "9e2173d0b0cea2959fa35d2e52c7f13378aae0e5c62642a13c1524cbd5971807",
+    "parameter_sha256": "a7529f94b5a40e240d07f3cc4202d8471d0e387dabdeef866cffbfb3786c0ab4",
+    "implementation_review_terminal": "IMPLEMENTATION_REVIEW_PASS"
+  },
+  "independent_activation_review": {
+    "required_before_any_execution": true,
+    "required_terminal": "ACTIVATION_REVIEW_PASS",
+    "result_path": "docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_ACTIVATION_REVIEW_RESULT_2026-07-30.md",
+    "required_binding": "The review result must state the exact SHA-256 of this activation file.",
+    "drift_rule": "Any activation, implementation, lock, fixture, environment, input, command or output-path drift invalidates the review and stops execution."
+  },
+  "environment": {
+    "python_executable": "E:/codex-tools/venvs/dual-loop-radial-geometry-lite-r0/Scripts/python.exe",
+    "python": "3.11.9",
+    "numpy": "2.4.2",
+    "opencv": "4.13.0",
+    "platform_role": "OFFLINE_DEVELOPMENT_ONLY"
+  },
+  "frozen_inputs": {
+    "manifest": {
+      "path": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/manifest.json",
+      "sha256": "ee7073c311832c1866addd6440c917fdcd45fb46a41c7f9c8072413a60f9b642"
+    },
+    "replay_input": {
+      "path": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/replay_input.jsonl",
+      "rows": 13014,
+      "sha256": "14f1f7f0f330d8b01146e37c31505240f3f0e8d301846ebcad44a628948e6440"
+    },
+    "image_root": {
+      "path": "artifacts.local/evidence/datasets/revel-dynamic-images-labels-v1-20260720/extracted/images/images",
+      "source_frames": 8580
+    },
+    "truth": {
+      "path": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/truth.jsonl",
+      "rows": 17160,
+      "sha256": "dfe53a8be2a18c38f9b2bc2d715290296433f15302ea64911e21ee956423003f",
+      "role": "EVALUATOR_ONLY_AFTER_PRETRUTH_KEYSET_VALIDATION"
+    },
+    "natural_events": {
+      "path": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/natural_events.jsonl",
+      "rows": 1660,
+      "primary_rows": 469,
+      "sha256": "078881620709efe17f74b8b01a5a76f4e861bfb6363143b9a9e0a589a87a030a",
+      "role": "EVALUATOR_ONLY_AFTER_PRETRUTH_KEYSET_VALIDATION"
+    }
+  },
+  "outputs": {
+    "isolated_directory": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/run-r0",
+    "producer_output": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/run-r0/producer_output.jsonl",
+    "producer_receipt": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/run-r0/producer_output.jsonl.receipt.json",
+    "evaluation": "artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/run-r0/evaluation.json",
+    "precondition": "All three output paths must be absent before the one authorized producer attempt.",
+    "overwrite": "FORBIDDEN",
+    "retention": "Retain ledgers, receipts and hashes under artifacts.local; publish only bounded result summaries and provenance."
+  },
+  "execution": {
+    "producer_attempt_limit": 1,
+    "evaluator_attempt_limit": 1,
+    "implementation_repairs_remaining": 0,
+    "producer_command": "E:/codex-tools/venvs/dual-loop-radial-geometry-lite-r0/Scripts/python.exe scripts/research/dual_loop_radial_geometry_lite_r0/run_replay.py --replay-input artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/replay_input.jsonl --image-root artifacts.local/evidence/datasets/revel-dynamic-images-labels-v1-20260720/extracted/images/images --output artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/run-r0/producer_output.jsonl --expected-replay-input-sha256 14f1f7f0f330d8b01146e37c31505240f3f0e8d301846ebcad44a628948e6440",
+    "producer_success_condition": "Exit 0; PRODUCER_COMPLETE; 26028 rows; truth_joined=false; receipt replay/output hashes match actual files.",
+    "evaluator_command": "E:/codex-tools/venvs/dual-loop-radial-geometry-lite-r0/Scripts/python.exe scripts/research/dual_loop_radial_geometry_lite_r0/evaluate_replay.py --implementation-lock docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_IMPLEMENTATION_LOCK_2026-07-30.json --producer-output artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/run-r0/producer_output.jsonl --producer-receipt artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/run-r0/producer_output.jsonl.receipt.json --replay-input artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/replay_input.jsonl --truth artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/truth.jsonl --events artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/input-freeze/natural_events.jsonl --output artifacts.local/evidence/dual-loop/target-track-causal-radial-geometry-lite-r0/run-r0/evaluation.json",
+    "evaluator_precondition": "Producer success condition passes exactly; evaluator itself must validate exact replay x arm keyset before first truth/event ledger access.",
+    "accepted_scientific_execution": "Exactly one valid evaluation terminal; no parameter, TTL, deadband, event, support, quality, target or region tuning afterward."
+  },
+  "failure_and_stop": {
+    "preflight_failure": "ACTIVATION_HOLD_NOT_RUN",
+    "producer_failure_or_partial_output": "EXECUTION_INVALID_STOP_NO_RERUN",
+    "pretruth_identity_or_keyset_failure": "EXECUTION_INVALID_STOP_NO_TRUTH_JOIN",
+    "truth_event_identity_or_denominator_failure": "EVALUATION_INVALID_STOP_NO_RERUN",
+    "valid_terminal_rule": "Accept the frozen evaluator terminal even when unfavorable; do not rescue R0."
+  },
+  "authority": {
+    "full_producer_replay_authorized_after_activation_review_pass": true,
+    "truth_join_authorized_only_after_producer_success": true,
+    "old_f1b_decision_access_authorized": false,
+    "confirmation_authorized": false,
+    "android_or_product_authorized": false,
+    "runtime_or_safety_claim_authorized": false
+  },
+  "claim_ceiling": "SINGLE_CAPTURE_ORACLE_ROI_CONDITIONED_DEVELOPMENT_ONLY"
+}
