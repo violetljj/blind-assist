@@ -290,7 +290,9 @@ data class AssistFrameEvaluation(
     val sourceFrame: FrameStamp? = null,
     val decisionAtNs: Long = evaluatedAtMs * 1_000_000L,
     /** Exact analyzer output before temporal tracking, exposed for paired replay audit. */
-    val preTemporalRisk: RiskResult = rawRisk
+    val preTemporalRisk: RiskResult = rawRisk,
+    /** Non-actuating second-loop admission result; never changes the delivered risk path. */
+    val dualLoopShadow: DualLoopShadowObservation = DualLoopShadowObservation.off()
 )
 
 data class AssistFrameResult(

@@ -10,6 +10,7 @@ import com.linnan.blindassist.risk.RiskEventTracker
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskResult
 import com.linnan.blindassist.vision.DetectorFrameResult
+import com.linnan.blindassist.vision.FrameClockDomain
 import com.linnan.blindassist.vision.FrameStamp
 import kotlin.math.abs
 import kotlin.math.max
@@ -47,7 +48,11 @@ class AssistSessionCoordinator(
         scenario: AssistScenario,
         nowMs: Long = detectorFrame.sourceFrame?.capturedAtNs?.div(NANOS_PER_MILLISECOND)
             ?: monotonicNowMs(),
-        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
+        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND,
+        dualLoopMode: DualLoopRuntimeMode = DualLoopRuntimeMode.OFF,
+        dualLoopGeometryEvidence: DualLoopGeometryEvidence? = null,
+        dualLoopDecisionClockDomain: FrameClockDomain? =
+            detectorFrame.sourceFrame?.clockDomain
     ): AssistFrameResult {
         val fps = fpsTracker.onFrame()
         return decisionKernel.processFrame(
@@ -59,7 +64,10 @@ class AssistSessionCoordinator(
             feedbackGateway = feedbackGateway,
             nowMs = nowMs,
             sourceFrame = detectorFrame.sourceFrame,
-            decisionAtNs = decisionAtNs
+            decisionAtNs = decisionAtNs,
+            dualLoopMode = dualLoopMode,
+            dualLoopGeometryEvidence = dualLoopGeometryEvidence,
+            dualLoopDecisionClockDomain = dualLoopDecisionClockDomain
         )
     }
 

@@ -1,0 +1,94 @@
+{
+  "schema_version": "blindassist.dual_loop_shadow_wiring_contract.v1",
+  "contract_id": "DUAL_LOOP_SHADOW_WIRING_R0",
+  "date": "2026-07-30",
+  "authority": {
+    "source": "User direction to complete the dual-loop mainline while allowing a route change",
+    "engineering_wiring": true,
+    "d0_rerun_or_r4": false,
+    "scientific_priority_selection": false,
+    "confirmation": false,
+    "default_product_behavior_change": false,
+    "product_or_safety_claim": false
+  },
+  "predecessor_terminals": {
+    "production_temporal_factorial": "VALID / NO_INCREMENT / ONE_SHOT_CONSUMED",
+    "target_track_geometry_lite_r2": "BOTH_NOT_READY_FOR_CONFIRMATION / DEVELOPMENT_ONLY",
+    "d0_r3": "EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_R4 / NO_SCIENTIFIC_EXIT"
+  },
+  "scope": {
+    "goal": "Implement the target/frame-bound second-loop input seam, fail-closed admission, and a single non-actuating production shadow path.",
+    "allowed_modes": [
+      "OFF",
+      "SHADOW_ABSTAIN_ONLY"
+    ],
+    "forbidden_modes": [
+      "ACTIVE",
+      "ACTUATE"
+    ],
+    "production_source_allowlist": [],
+    "formal_scientific_inputs_opened": false,
+    "burned_d0_rows_reused": false
+  },
+  "evidence_contract": {
+    "required_identity": [
+      "allowlisted source contract and source id pair",
+      "previous and current FrameStamp",
+      "track epoch",
+      "class, label, box, frame size and detection source"
+    ],
+    "required_time": [
+      "current frame exactly equals the decision source frame",
+      "previous frame precedes current frame in the same source, coordinate frame and clock domain",
+      "availability, current frame and decision timestamps share an explicitly bound comparable clock domain",
+      "available_at is not in the future",
+      "valid_until is not stale"
+    ],
+    "required_measurement": [
+      "finite signed approach rate",
+      "finite quality at or above the frozen 0.50 engineering gate",
+      "no source abstention"
+    ],
+    "fail_closed": [
+      "missing evidence",
+      "source not admitted",
+      "blank source identity",
+      "source abstention",
+      "missing or mismatched frame",
+      "invalid prior frame",
+      "clock-domain mismatch or unmapped camera clock",
+      "future or stale evidence",
+      "target mismatch or ambiguity",
+      "nonfinite rate",
+      "low or invalid quality"
+    ]
+  },
+  "effect_boundary": {
+    "baseline_risk_unchanged": true,
+    "event_mutation_allowed": false,
+    "feedback_mutation_allowed": false,
+    "second_feedback_path_allowed": false,
+    "geometry_history_retained_after_abstention": false
+  },
+  "build_isolation": {
+    "default_flag": false,
+    "debug_flag": false,
+    "release_flag": false,
+    "isolated_build_type": "dualLoopShadow",
+    "isolated_application_id_suffix": ".dualloop.shadow",
+    "user_switchable_production_toggle": false
+  },
+  "verification": {
+    "synthetic_contract_tests_only": true,
+    "required": [
+      "all fail-closed dispositions are tested",
+      "admitted shadow evidence cannot mutate risk, event, feedback or trace",
+      "baseline and shadow decisions remain frame-exact",
+      "core, feature and app unit tests pass",
+      "debug baseline and isolated shadow builds assemble"
+    ],
+    "valid_terminal": "MECHANISM_SEAM_IMPLEMENTED / DEFAULT_OFF / SHADOW_ABSTAIN_ONLY / SYNTHETIC_BASELINE_NONINTERFERENCE_VERIFIED / NO_GEOMETRY_SOURCE_ADMITTED / NO_EFFECT_CLAIM",
+    "invalid_terminal": "ENGINEERING_WIRING_INVALID"
+  },
+  "claim_ceiling": "Engineering wiring, identity, time, abstention and non-actuation behavior only. No D0 priority, geometry accuracy, alert improvement, effectiveness, confirmation, product or safety claim."
+}

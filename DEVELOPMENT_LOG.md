@@ -1823,3 +1823,50 @@
   `run-r3/` 不存在。实现提交推送并生成 exact lock/review/activation 前不授权正式
   执行；marker 后失败永久 `NO_R4`。详见
   [R3 review](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R3_DESIGN_REVIEW_RESULT_2026-07-30.md)。
+
+## 2026-07-30：D0 R3 唯一正式执行与不可变关闭
+
+- 执行者：violjjet
+- R3 exact lock/review/activation 与 guarded host preflight 完成；初始 8 GiB 门被
+  证明是 `4 GiB worker estimate + 4 GiB host reserve` 的过度估算。基于 R2 同机
+  完整顺序解码、约 86,033 条 Vicon pose、约 35 MiB 其余冻结 JSON、流式 bag/hash
+  读取，将 worker 工程预算独立复核为 1.5 GiB，4 GiB host reserve 不变。
+- 唯一 formal producer 创建 `formal_start` 后，调用侧前台工具超时中断外层
+  monitor，但未终止 exact `python -I -B ... produce` 子进程；该既有进程被只读
+  跟踪到原子 failure receipt，没有重启或重跑。
+- 终点为
+  `EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_R4 / NO_SCIENTIFIC_EXIT`：
+  `0/469`，错误 `BBOX log-area closure mismatch`，没有 event table、analysis、
+  producer/execution receipt 或 D0 三出口。
+- 静态根因确认：LITE 冻结 BBOX 字段是
+  `0.5 * delta(log(area)) / dt`，D0 R1/R2/R3 却按
+  `delta(log(area)) / dt` 闭合并要求 `1e-12/s` 一致，有限非零行必然系统性相差
+  两倍。独立 validator 复制了同一错误语义，synthetic tests 只验证 D0 内部自洽。
+- R3 保持不可变，不生成 R4，不据此选择 ego/temporal。详见
+  [R3 execution result](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R3_EXECUTION_RESULT_2026-07-30.md)。
+
+## 2026-07-30：双环正交 shadow-only 工程落地
+
+- 执行者：violjjet
+- 在不重跑 D0、不选择科学优先级且不改变默认提醒的边界下，冻结
+  [shadow wiring contract](docs/research/dual-loop/DUAL_LOOP_SHADOW_WIRING_R0_CONTRACT_2026-07-30.json)。
+- `core:assist` 新增 target/frame/track-epoch/availability/TTL/quality 绑定的
+  `DualLoopGeometryEvidence` 与 `DualLoopShadowAdmitter`；缺失、未准入、来源弃权、
+  帧/时间/目标/质量异常全部显式 abstain。生产 source allowlist 为空。
+- 模式仅有 `OFF` 与 `SHADOW_ABSTAIN_ONLY`，没有 active/actuate。
+  `AssistDecisionKernel` 仍是唯一 event/feedback seam；即使 synthetic source
+  通过准入，risk、event、feedback、trace 与 gateway call count 都必须保持 baseline
+  frame-exact。
+- `feature:assist` 只透传无 source 的 shadow observer；`app` 新增隔离
+  `dualLoopShadow` build type（独立 application id suffix），默认/debug/release
+  flag 均为 false，隔离变体为 true，USTRF flag 为 false。
+- Temurin JDK 17.0.19 验证：`:core:assist:test` 146/146、
+  `:feature:assist:testDebugUnitTest` 66/66；`:app:testDebugUnitTest` 为
+  NO-SOURCE 且成功；`:app:assembleDebug` 与
+  `:app:assembleDualLoopShadow` 均成功。
+- 工程终点为
+  `MECHANISM_SEAM_IMPLEMENTED / DEFAULT_OFF / SHADOW_ABSTAIN_ONLY /
+  SYNTHETIC_BASELINE_NONINTERFERENCE_VERIFIED /
+  NO_GEOMETRY_SOURCE_ADMITTED / NO_EFFECT_CLAIM`。
+  它不证明双环准确、有效、提前提醒、产品改善、安全或独立助行。详见
+  [implementation result](docs/research/dual-loop/DUAL_LOOP_SHADOW_WIRING_R0_IMPLEMENTATION_RESULT_2026-07-30.md)。

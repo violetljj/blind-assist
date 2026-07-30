@@ -15,6 +15,8 @@ import com.linnan.blindassist.preferences.PreferenceStore
 import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.session.AssistSessionCoordinator
 import com.linnan.blindassist.session.DetectorMetrics
+import com.linnan.blindassist.session.DualLoopShadowDisposition
+import com.linnan.blindassist.session.DualLoopShadowObservation
 import com.linnan.blindassist.ui.BlindAssistViewModel
 import com.linnan.blindassist.vision.DetectorFrameResult
 import com.linnan.blindassist.vision.FrameClockDomain
@@ -231,14 +233,55 @@ class AssistFrameProcessorTest {
     }
 
     @Test
-    fun baselineConstructsNoUstrfAdaptersWhileExperimentConstructsOnlyItsAdapter() {
+    fun baselineAndDualLoopShadowConstructNoUstrfAdaptersWhileExperimentConstructsItsAdapter() {
         val coordinator = AssistSessionCoordinator(feedbackGateway = FakeFeedbackGateway())
 
         val baseline = UstrfRuntimeAdapters.forMode(AssistRuntimeMode.BASELINE, coordinator)
+        val dualLoopShadow = UstrfRuntimeAdapters.forMode(
+            AssistRuntimeMode.DUAL_LOOP_SHADOW,
+            coordinator
+        )
         val experiment = UstrfRuntimeAdapters.forMode(AssistRuntimeMode.USTRF_EXPERIMENT, coordinator)
 
         assertNull(baseline.experimental)
+        assertNull(dualLoopShadow.experimental)
         assertNotNull(experiment.experimental)
+    }
+
+    @Test
+    fun dualLoopShadowWithoutAdmittedSourceKeepsBaselineFeedbackFrameExact() {
+        val baselineGateway = FakeFeedbackGateway()
+        val shadowGateway = FakeFeedbackGateway()
+        var observed: DualLoopShadowObservation? = null
+        val baseline = processor(feedbackGateway = baselineGateway)
+        val shadow = processor(
+            feedbackGateway = shadowGateway,
+            mode = AssistRuntimeMode.DUAL_LOOP_SHADOW,
+            onDualLoopShadowObservation = { observed = it }
+        )
+
+        baseline.process(FakeVisionFrame())
+        shadow.process(FakeVisionFrame())
+
+        assertEquals(baselineGateway.lastRisk, shadowGateway.lastRisk)
+        assertEquals(baselineGateway.notifyCalls, shadowGateway.notifyCalls)
+        assertEquals(DualLoopShadowDisposition.EVIDENCE_ABSENT, observed?.disposition)
+    }
+
+    @Test
+    fun dualLoopShadowObserverFailureCannotBreakBaselineFrame() {
+        val gateway = FakeFeedbackGateway()
+        val frame = FakeVisionFrame()
+        val shadow = processor(
+            feedbackGateway = gateway,
+            mode = AssistRuntimeMode.DUAL_LOOP_SHADOW,
+            onDualLoopShadowObservation = { error("observer fixture failure") }
+        )
+
+        shadow.process(frame)
+
+        assertEquals(1, frame.closeCalls)
+        assertNotNull(gateway.lastRisk)
     }
 
     @Test
@@ -274,7 +317,8 @@ class AssistFrameProcessorTest {
         appViewModel: BlindAssistViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore())),
         runOnUiThread: ((() -> Unit) -> Unit) = { it() },
         decisionClockNs: () -> Long = { 2_000_000_000L },
-        mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE
+        mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE,
+        onDualLoopShadowObservation: (DualLoopShadowObservation) -> Unit = {}
     ): AssistFrameProcessor {
         val coordinator = AssistSessionCoordinator(feedbackGateway = feedbackGateway)
         if (startLifecycleGate) {
@@ -301,6 +345,7 @@ class AssistFrameProcessorTest {
             runOnUiThread = runOnUiThread,
             onCameraFailure = onCameraFailure,
             decisionClockNs = decisionClockNs,
+            onDualLoopShadowObservation = onDualLoopShadowObservation,
             mode = mode
         )
     }

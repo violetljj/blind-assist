@@ -2,6 +2,9 @@ package com.linnan.blindassist.runtime
 
 import android.util.Log
 import com.linnan.blindassist.session.AssistSessionCoordinator
+import com.linnan.blindassist.session.DualLoopRuntimeMode
+import com.linnan.blindassist.session.DualLoopShadowObservation
+import com.linnan.blindassist.vision.FrameClockDomain
 import com.linnan.blindassist.vision.ObjectDetector
 import com.linnan.blindassist.vision.VisionFrame
 import java.util.concurrent.atomic.AtomicBoolean
@@ -17,6 +20,7 @@ internal class AssistFrameProcessor(
     private val runOnUiThread: (() -> Unit) -> Unit,
     private val onCameraFailure: (String) -> Unit,
     private val decisionClockNs: () -> Long = System::nanoTime,
+    private val onDualLoopShadowObservation: (DualLoopShadowObservation) -> Unit = {},
     private val mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE,
     private val ustrfAdapters: UstrfRuntimeAdapters =
         UstrfRuntimeAdapters.forMode(mode, coordinator)
@@ -80,12 +84,20 @@ internal class AssistFrameProcessor(
                     )
                 )
                 val frameResult = when (mode) {
-                    AssistRuntimeMode.BASELINE -> coordinator.processFrame(
+                    AssistRuntimeMode.BASELINE,
+                    AssistRuntimeMode.DUAL_LOOP_SHADOW -> coordinator.processFrame(
                         detectorFrameWithPipelineStats,
                         runtimeConfig.alertProfile,
                         runtimeConfig.assistScenario,
                         nowMs = eventTimeMs,
-                        decisionAtNs = decisionAtNs
+                        decisionAtNs = decisionAtNs,
+                        dualLoopMode = if (mode == AssistRuntimeMode.DUAL_LOOP_SHADOW) {
+                            DualLoopRuntimeMode.SHADOW_ABSTAIN_ONLY
+                        } else {
+                            DualLoopRuntimeMode.OFF
+                        },
+                        dualLoopGeometryEvidence = null,
+                        dualLoopDecisionClockDomain = FrameClockDomain.ANDROID_ELAPSED_REALTIME
                     )
                     AssistRuntimeMode.USTRF_EXPERIMENT ->
                         requireNotNull(ustrfAdapters.experimental) {
@@ -97,6 +109,13 @@ internal class AssistFrameProcessor(
                             nowMs = eventTimeMs,
                             decisionAtNs = decisionAtNs
                         )
+                }
+                if (mode == AssistRuntimeMode.DUAL_LOOP_SHADOW) {
+                    try {
+                        onDualLoopShadowObservation(frameResult.evaluation.dualLoopShadow)
+                    } catch (observerError: RuntimeException) {
+                        logError("Dual-loop shadow observer failed", observerError)
+                    }
                 }
                 CommittedFrame(detectorFrameWithPipelineStats, frameResult)
             }
@@ -158,7 +177,8 @@ internal data class UstrfRuntimeAdapters(
             mode: AssistRuntimeMode,
             coordinator: AssistSessionCoordinator
         ): UstrfRuntimeAdapters = when (mode) {
-            AssistRuntimeMode.BASELINE -> UstrfRuntimeAdapters(
+            AssistRuntimeMode.BASELINE,
+            AssistRuntimeMode.DUAL_LOOP_SHADOW -> UstrfRuntimeAdapters(
                 experimental = null
             )
             AssistRuntimeMode.USTRF_EXPERIMENT -> UstrfRuntimeAdapters(

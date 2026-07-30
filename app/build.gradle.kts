@@ -43,6 +43,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "USTRF_EXPERIMENT", "false")
         buildConfigField("boolean", "NPU_CANDIDATE", "false")
+        buildConfigField("boolean", "DUAL_LOOP_SHADOW", "false")
     }
 
     signingConfigs {
@@ -74,6 +75,13 @@ android {
             versionNameSuffix = "-ustrf-exp"
             matchingFallbacks += listOf("debug")
             buildConfigField("boolean", "USTRF_EXPERIMENT", "true")
+        }
+        create("dualLoopShadow") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".dualloop.shadow"
+            versionNameSuffix = "-dual-loop-shadow"
+            matchingFallbacks += listOf("debug")
+            buildConfigField("boolean", "DUAL_LOOP_SHADOW", "true")
         }
     }
 

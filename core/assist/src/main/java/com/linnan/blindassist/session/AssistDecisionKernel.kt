@@ -14,6 +14,7 @@ import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskEvidenceState
 import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
+import com.linnan.blindassist.vision.FrameClockDomain
 import com.linnan.blindassist.vision.FrameStamp
 
 data class AssistRiskEvidenceFrame(
@@ -71,7 +72,8 @@ class AssistDecisionKernel(
     private val assistEngine: AssistEngine = AssistEngine(),
     private val riskEventTracker: RiskEventTracker = RiskEventTracker(),
     private val lowConfidenceSidePersonConfirmation: LowConfidenceSidePersonConfirmation =
-        LowConfidenceSidePersonConfirmation()
+        LowConfidenceSidePersonConfirmation(),
+    private val dualLoopShadowAdmitter: DualLoopShadowAdmitter = DualLoopShadowAdmitter()
 ) {
     fun startSession(nowMs: Long = monotonicNowMs()) {
         assistEngine.startSession(nowMs)
@@ -96,7 +98,10 @@ class AssistDecisionKernel(
         feedbackGateway: FeedbackGateway,
         nowMs: Long = monotonicNowMs(),
         sourceFrame: FrameStamp? = null,
-        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
+        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND,
+        dualLoopMode: DualLoopRuntimeMode = DualLoopRuntimeMode.OFF,
+        dualLoopGeometryEvidence: DualLoopGeometryEvidence? = null,
+        dualLoopDecisionClockDomain: FrameClockDomain? = sourceFrame?.clockDomain
     ): AssistFrameResult {
         val evaluation = assistEngine.evaluate(
             detections = detections,
@@ -108,10 +113,20 @@ class AssistDecisionKernel(
             sourceFrame = sourceFrame,
             decisionAtNs = decisionAtNs
         )
+        val dualLoopShadow = dualLoopShadowAdmitter.evaluate(
+            mode = dualLoopMode,
+            evidence = dualLoopGeometryEvidence,
+            sourceFrame = sourceFrame,
+            detections = detections,
+            baselineRisk = evaluation.rawRisk,
+            decisionAtNs = decisionAtNs,
+            decisionClockDomain = dualLoopDecisionClockDomain
+        )
+        val shadowEvaluation = evaluation.copy(dualLoopShadow = dualLoopShadow)
         // Event identity and exit must observe the current frame. Feedback still uses
         // stableRisk below so the alert hold cannot conceal raw target disappearance.
-        val event = riskEventTracker.update(evaluation.rawRisk, nowMs)
-        val eventEvaluation = evaluation.copy(riskEvent = event)
+        val event = riskEventTracker.update(shadowEvaluation.rawRisk, nowMs)
+        val eventEvaluation = shadowEvaluation.copy(riskEvent = event)
         val feedbackDecision = decideFeedback(
             eventEvaluation,
             feedbackGateway,

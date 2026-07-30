@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`production temporal A/B R0 / VALID_NO_INCREMENT / D0_R2_EXECUTION_INVALID / D0_R3_REVIEW_PASS_NOT_RUN`
+状态：`production temporal A/B R0 / VALID_NO_INCREMENT / D0_R3_EXECUTION_INVALID / SHADOW_WIRING_IMPLEMENTED_DEFAULT_OFF`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -210,10 +210,11 @@ successor 只允许写成
 | successor causal runtime geometry | `OFFLINE_IMPLEMENTED / ONE_SHOT_EVALUATED` |
 | successor Development round | `BOTH_NOT_READY_FOR_CONFIRMATION / IMPLEMENTATION_NOT_READY` |
 | production temporal geometry factorial A/B R0 | `COMPLETE / VALID / NO_INCREMENT / ONE_SHOT_CONSUMED` |
-| D0 ego-motion error attribution | `R0_REPAIR_NEEDED / R1_EXECUTION_INVALID / R2_EXECUTION_INVALID / R3_RECOVERY_PREFLIGHT` |
+| D0 ego-motion error attribution | `R0_REPAIR_NEEDED / R1-R3_EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_R4` |
 | successor 独立 Confirmation | `NOT_AUTHORIZED` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
-| 正式融合器或生产 CameraX 接线 | `NOT_AUTHORIZED` |
+| 第二环输入合同、准入门与生产影子接线 | `IMPLEMENTED / DEFAULT_OFF / SHADOW_ABSTAIN_ONLY` |
+| active/actuating 融合或默认生产行为变更 | `NOT_IMPLEMENTED / NOT_AUTHORIZED` |
 | 自适应调度、深度、分割、ARCore | `NOT_AUTHORIZED` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
 | 真人、独立助行、安全、产品或跨设备结论 | `NOT_AUTHORIZED` |
@@ -223,30 +224,35 @@ successor 只允许写成
 LITE R0 与 R1 的失败 evidence version 保持关闭；R2 的一次性 producer/evaluator
 authority 也已消费。R2 是有效的 Development 负结果，不得调阈值救援或重跑。
 
-production temporal geometry factorial A/B R0 已有效得到 `NO_INCREMENT`。D0 R1 与
-R2 的正式 authority 均已消费并以执行无效关闭；两者都没有 D0 科学出口，也不得
-重跑。R3 runtime-recovery 合同、实现与路由现已完成
-[独立复审](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R3_DESIGN_REVIEW_RESULT_2026-07-30.md)，
-终点为 `DESIGN_PASS / IMPLEMENTATION_PASS / ROUTE_PASS / NOT_RUN`：
+production temporal geometry factorial A/B R0 已有效得到 `NO_INCREMENT`。D0
+R1/R2/R3 的正式 authority 均已消费并以执行无效关闭；三者都没有 D0 科学出口，
+也不得重跑。R3 唯一正式 producer 在 `0/469` 时触发
+`BBOX log-area closure mismatch`，终点为
+[`EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_R4 / NO_SCIENTIFIC_EXIT`](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R3_EXECUTION_RESULT_2026-07-30.md)。
+静态根因是上游 BBOX 使用半 log-area scale rate，而 D0 误按完整 log-area rate
+闭合，所有有限非零行系统性相差两倍；不是环境、数据损坏或容差问题。
 
-1. 独立环境已显式加入 PyYAML；R1/R2 环境、归档与正式目录保持不可变；
-2. 正式 reachable imports、八项 distribution tree、module provenance 与两个
-   synthetic calibration parser smoke 已闭合；
-3. marker 前不打开 predecessor/current scientific inputs；完整输入校验和真实
-   calibration 读取只允许发生在 marker 与初始 progress 之后；
-4. R3 实现提交推送后，只有 clean `HEAD == origin/master`、实现锁、独立 review
-   与 activation 全部精确匹配，才可由 guarded host launcher 在 `-I -B` 下执行
-   唯一 formal one-shot；
-5. R3 若有效，仍只以 469 个 parent events、310 个 overlap components 与六个固定
-   60 秒块复算三个互斥 operational priority exits；
-6. 仅当有效出口为 `EGO_CANARY_PRIORITY`，再另立单变化、新数据的背景运动补偿
-   canary；其他终点不得继续同一图像尺度/径向光流路线。
+因此主线不再把 D0 三选一作为工程落地前置条件，也不从该失败选择 ego 或 temporal。
+用户授权的正交路线已按
+[shadow wiring 合同](DUAL_LOOP_SHADOW_WIRING_R0_CONTRACT_2026-07-30.json)
+落地：
 
-D0 不允许作因果机制结论，也不自动授权 EVIMO2v2/JRDB 下载、Confirmation、
-Android 产品接线或安全主张。任何路径都不得把旧 timing-only 凭据改写成效果、
-产品或安全证据。
+1. `core:assist` 增加 target/frame/TTL/quality 绑定的第二环输入合同；
+2. 缺失、未准入、来源弃权、帧/时间/目标/质量异常全部显式 fail closed；
+3. production source allowlist 初始为空；
+4. 模式只有 `OFF` 与 `SHADOW_ABSTAIN_ONLY`，不存在 active/actuate；
+5. `AssistDecisionKernel` 仍是唯一事件与反馈接缝，shadow 无 risk/event/feedback
+   写权限；
+6. 默认、debug、release 均关闭；只有独立 application id 的
+   `dualLoopShadow` 构建类型开启影子观察。
 
-### D0 R1/R2 执行终态
+[实现结果](DUAL_LOOP_SHADOW_WIRING_R0_IMPLEMENTATION_RESULT_2026-07-30.md) 为
+`MECHANISM_SEAM_IMPLEMENTED / DEFAULT_OFF / SHADOW_ABSTAIN_ONLY /
+SYNTHETIC_BASELINE_NONINTERFERENCE_VERIFIED / NO_GEOMETRY_SOURCE_ADMITTED /
+NO_EFFECT_CLAIM`。
+这完成的是工程接缝、弃权与不作用机制，不是双环效果、产品或安全证明。
+
+### D0 R1/R2/R3 执行终态
 
 [D0 R1 执行](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_EXECUTION_RESULT_2026-07-30.md)
 因冻结解释器缺少 `rosbags`，在读取任何 bag message 前以
@@ -260,8 +266,6 @@ activation。正式运行通过首条 Vicon message probe 后，在冻结 calibr
 同样为 `EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_SCIENTIFIC_EXIT`：
 `0 / 469` event 完成、没有 event table、没有 D0 指标、没有科学出口。
 
-R2 不能补包重跑。当前 R3 使用新的独立环境与 namespace，显式绑定 PyYAML；
-activation 前只允许正式 reachable imports 与 synthetic calibration parser smoke，
-真实 calibration 与全部科学输入均留到 marker 后。科学合同、469-event 分母、
-统计规则和三个互斥出口没有改变。协议仍为
-`CONTRACT_FROZEN / execution_authorized=false`，实现锁与 activation 尚未生成。
+R2 不能补包重跑。R3 以新的独立环境与 namespace 补齐 PyYAML 后，唯一正式运行
+越过 runtime 问题，却暴露了冻结 D0 合同与上游 BBOX 字段之间的二倍语义冲突。
+该 authority 已消费，协议与失败回执保持不可变；不生成 R4，不修补或重跑 R3。
