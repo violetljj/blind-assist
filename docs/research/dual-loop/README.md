@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`successor Development / BOTH_NOT_READY_FOR_CONFIRMATION / IMPLEMENTATION_NOT_READY`
+状态：`successor Development / D0_CONTRACT_FROZEN / NOT_RUN / BOTH_NOT_READY_FOR_CONFIRMATION / IMPLEMENTATION_NOT_READY`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -9,6 +9,14 @@
 旧 Sparse LK F-1B 路线仍以 `NO_INCREMENT / VALID` 关闭；该结论没有被重写。
 用户将双环设为新的研究主线后，2026-07-30 完成了独立 successor Discovery：
 [可归因区域级接近证据源 Discovery R0](DUAL_LOOP_ATTRIBUTABLE_REGIONAL_APPROACH_SOURCE_DISCOVERY_R0_2026-07-30.md)。
+
+LITE R2 负结果之后，用户已授权第一步冻结
+[D0 ego-motion error attribution R0](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_PROTOCOL_2026-07-30.json)。
+它只允许使用已经烧毁的 R2/REveL evidence，以 469 个 parent natural event 为
+分析单位，描述性检查 person/sensor 径向分量、相机运动、ROI 抖动、事件长度、
+flow MAD 与轨迹支持度。设计审查为
+[`PASS / NOT_RUN`](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)；
+当前没有 D0 实现或执行权限，旧 F-1B decision 继续密封。
 
 本地只读连接复算确认，REveL Dynamic 的 RGB 人框、green/yellow 目标身份与
 person/sensor Vicon 径向轨迹能在 LEFT/CENTER/RIGHT 全部区域输出目标可归因的
@@ -171,6 +179,7 @@ successor 只允许写成
 | successor 几何真值源 Discovery | `COMPLETED / SOURCE_FOUND_FOR_DEVELOPMENT` |
 | successor causal runtime geometry | `OFFLINE_IMPLEMENTED / ONE_SHOT_EVALUATED` |
 | successor Development round | `BOTH_NOT_READY_FOR_CONFIRMATION / IMPLEMENTATION_NOT_READY` |
+| D0 ego-motion error attribution | `CONTRACT_FROZEN / DESIGN_REVIEW_PASS / NOT_RUN` |
 | successor 独立 Confirmation | `NOT_AUTHORIZED` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
 | 正式融合器或生产 CameraX 接线 | `NOT_AUTHORIZED` |
@@ -181,15 +190,17 @@ successor 只允许写成
 ## 下一步
 
 LITE R0 与 R1 的失败 evidence version 保持关闭；R2 的一次性 producer/evaluator
-authority 也已消费。R2 是有效的 Development 负结果：两臂均不具备 Confirmation
-就绪性，且稀疏径向光流没有超过面积增长基线。当前停止，不得调阈值救援、重跑 R2、
-自动推进 Confirmation 或接入运行时。
+authority 也已消费。R2 是有效的 Development 负结果，不得调阈值救援或重跑。
 
-若未来继续，只能另立新的、前瞻冻结的 Development 问题；它需要独立输入或实质不同
-的预注册机制，且必须在访问相关候选输出前重新冻结假设、比较臂、失败门、identity、
-activation 和独立评审。R2 结果只能用于形成新假设，不能作为新一轮调参和评价的同一
-份数据。
+当前唯一前瞻工作是已冻结、尚未运行的
+`D0_EGOMOTION_ERROR_ATTRIBUTION_R0`。其科学出口严格只有：
 
-旧 F-1B sealed decision 集不得用于回调规则，旧真机 timing-only 凭据也不得改写成
-效果证据。新的独立 Confirmation 必须在候选输出访问前另行冻结，当前没有自动执行
-权限。
+1. `EGO_MOTION_DOMINANT`：才可另立最后一次 EVIMO2v2 背景 affine 补偿机制 canary；
+2. `TEMPORAL_NOISE_DOMINANT`：只可在新数据、新版本上研究 causal multi-frame
+   robust trend，禁止 REveL 调优后自评；
+3. `MECHANISM_NOT_IDENTIFIABLE`：停止图像尺度/径向光流路线。
+
+D0 合同不授权实现或执行。任何执行都需新的 implementation identity、独立审查和
+一次性 activation。旧 F-1B sealed decision 集不得用于回调规则，旧真机 timing-only
+凭据也不得改写成效果证据；Confirmation 必须使用未参与选择或调参的独立
+session/source。

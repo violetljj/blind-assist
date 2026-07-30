@@ -1689,3 +1689,24 @@
   封存复核 PASS；R2 不重跑、不调阈值救援，旧 F-1B decision 继续密封，Confirmation、
   Android、产品、运行时与安全均不授权。详细证据见
   [R2 execution result](docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R2_EXECUTION_RESULT_2026-07-30.md)。
+
+## 2026-07-30：D0 ego-motion error attribution R0 协议冻结
+
+- 执行者：violjjet
+- 将 LITE R2 后继冻结为 burned REveL single-capture Development 诊断：469 个
+  primary parent natural events 是分析单位；frame、pair 与 flow track 只作事件内
+  重复测量。按 target 与 anchor region 做描述性检查，不做泛化 p 值。
+- 冻结 person/sensor 径向分量闭合、相机光心角速度与平移、ROI 面积/中心抖动、
+  事件长度、flow MAD、sign flip、features、surviving tracks、quadrants、FB error
+  与 coverage 的 event-level 表；有限差分 chord range gradient 保证分量求和闭合，
+  相机光心派生不改写既有 sensor-marker truth。
+- 独立设计审查要求 temporal 路由必须包含直接时间不稳定指标加独立
+  support/persistence 指标，并加入 approaching/receding composition guard 和
+  可评价反向 region 禁止救援；低支持相关指标不能机械叠加为 temporal dominance。
+- 科学出口只允许 `EGO_MOTION_DOMINANT`、`TEMPORAL_NOISE_DOMINANT`、
+  `MECHANISM_NOT_IDENTIFIABLE`。只有首个出口可另立一次 EVIMO2v2 背景 affine
+  补偿 canary；canary 再失败即停止路线。JRDB 仅在 canary 通过后承担人员域
+  Development，Confirmation 仍需独立未调参 source/session。
+- 本轮仅合同与设计审查 `PASS / NOT_RUN`；未实现、未执行、未下载新数据、未改算法，
+  R2 不重跑，旧 F-1B decision 继续密封。详见
+  [D0 protocol](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_PROTOCOL_2026-07-30.json)。
