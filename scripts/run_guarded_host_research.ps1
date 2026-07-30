@@ -12,6 +12,8 @@ param(
         "E:\codex-tools\tools\python-3.11-blindassist\python.exe"
     ),
 
+    [string[]]$PythonArguments = @(),
+
     [ValidateRange(1, 3600)]
     [int]$MonitorPollSeconds = 10,
 
@@ -33,11 +35,17 @@ $monitor = Join-Path `
     $resolvedRepo `
     "scripts\monitor_host_research_process.ps1"
 
-$validationOutput = & $resolvedPython `
-    $validator `
-    --repo-root $resolvedRepo `
-    --receipt $resolvedReceipt `
-    --expected-script $resolvedScript
+$validationArguments = @(
+    $PythonArguments
+    $validator
+    "--repo-root"
+    $resolvedRepo
+    "--receipt"
+    $resolvedReceipt
+    "--expected-script"
+    $resolvedScript
+)
+$validationOutput = & $resolvedPython @validationArguments
 $validationExitCode = $LASTEXITCODE
 if ($validationExitCode -ne 0) {
     throw "PERFORMANCE_NOT_QUALIFIED: $validationOutput"
@@ -146,6 +154,10 @@ $processInfo.UseShellExecute = $false
 $processInfo.RedirectStandardOutput = $true
 $processInfo.RedirectStandardError = $true
 $processInfo.CreateNoWindow = $true
+$processInfo.ArgumentList.Clear()
+foreach ($argument in $PythonArguments) {
+    $processInfo.ArgumentList.Add([string]$argument)
+}
 $processInfo.ArgumentList.Add($resolvedScript)
 foreach ($argument in $RunnerArguments) {
     $processInfo.ArgumentList.Add($argument)
@@ -401,6 +413,7 @@ $summary = [ordered]@{
     progress_contract_errors = @($progressContractErrors)
     preflight_receipt = $resolvedReceipt
     implementation_sha256 = $receipt.implementation.sha256
+    python_arguments = @($PythonArguments)
     monitor_directory = $monitorRoot
 }
 $summaryPath = Join-Path $monitorRoot "guarded_run_summary.json"

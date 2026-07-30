@@ -30,7 +30,13 @@ parser.add_argument("--failure", type=Path)
 parser.add_argument("--workers", type=int, required=True)
 parser.add_argument("--progress-status", default="complete")
 parser.add_argument("--fail", action="store_true")
+parser.add_argument("--require-isolated", action="store_true")
 args = parser.parse_args()
+if args.require_isolated and (
+    __import__("sys").flags.isolated != 1
+    or __import__("sys").flags.dont_write_bytecode != 1
+):
+    raise SystemExit("isolated no-bytecode interpreter required")
 args.progress.parent.mkdir(parents=True, exist_ok=True)
 completed_units = 1 if args.fail else 2
 progress_status = "failed" if args.fail else args.progress_status
@@ -139,12 +145,14 @@ args.success.write_text(
         -Script $runner `
         -RepoRoot $repoRoot `
         -Python $python `
+        -PythonArguments @("-I", "-B") `
         -MonitorPollSeconds 1 `
         -RunnerArguments @(
             "--progress",
             (Join-Path $repoRoot $progressRelative),
             "--success",
-            (Join-Path $repoRoot $successRelative)
+            (Join-Path $repoRoot $successRelative),
+            "--require-isolated"
         )
     $guardResult = $guardOutput |
         Select-Object -Last 1 |
@@ -161,6 +169,13 @@ args.success.write_text(
         ConvertFrom-Json
     if ($success.status -ne "complete" -or $success.workers -ne 2) {
         throw "Guarded launcher did not preserve success/worker contract."
+    }
+    if (
+        @($guardResult.python_arguments).Count -ne 2 -or
+        $guardResult.python_arguments[0] -ne "-I" -or
+        $guardResult.python_arguments[1] -ne "-B"
+    ) {
+        throw "Guarded launcher did not preserve Python prefix arguments."
     }
 
     Remove-Item `

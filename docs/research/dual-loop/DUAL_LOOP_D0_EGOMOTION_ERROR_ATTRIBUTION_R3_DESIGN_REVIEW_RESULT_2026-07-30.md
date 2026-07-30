@@ -40,10 +40,13 @@ Confirmation、Android、产品或安全结论。
 5. VALID progress 与 execution receipt 位于同一失败闭包；已有 terminal
    receipt 时 validator 零写拒绝重入。
 6. 三个科学出口互斥，且都只产生有界 operational priority；不自动执行后继。
+7. Formal producer 只能通过 guarded host launcher 启动；launcher 可在 Python
+   script 前注入冻结的 `-I -B`，R3 progress 同时满足 guarded-host 完整性合同。
 
 ## 验证
 
-- 冻结 R3 解释器：`54/54 PASS`。
+- 冻结 R3 解释器：`56/56 PASS`。
+- Guarded host launcher 集成测试：PASS。
 - Python AST：16 个正式/测试文件有效。
 - 项目结构检查：PASS。
 - R3 正式命名空间：不存在。

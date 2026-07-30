@@ -136,6 +136,18 @@ pwsh -NoProfile -File scripts/run_guarded_host_research.ps1 `
   -- <runner arguments>
 ```
 
+若 formal runner 冻结了解释器前置参数，必须通过 `-PythonArguments` 放在 script
+之前，而不是混入 runner arguments，例如：
+
+```powershell
+pwsh -NoProfile -File scripts/run_guarded_host_research.ps1 `
+  -PreflightReceipt artifacts.local/evidence/<task>/preflight.json `
+  -Script scripts/<stable-runner>.py `
+  -Python <frozen-python.exe> `
+  -PythonArguments @("-I", "-B") `
+  -RunnerArguments @("produce", "--activation", "<activation.json>")
+```
+
 guarded launcher 在创建 runner 进程前调用
 `scripts/validate_host_research_preflight.py`。以下任一条件不满足时固定返回
 `PERFORMANCE_NOT_QUALIFIED`，runner 不会启动：

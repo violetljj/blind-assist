@@ -5,6 +5,8 @@ import json
 import os
 import subprocess
 import sys
+import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -84,6 +86,77 @@ def _atomic_write(path: Path, payload: bytes) -> None:
 
 def _atomic_json(path: Path, value: Any) -> None:
     _atomic_write(path, canonical_json_bytes(value) + b"\n")
+
+
+def _atomic_replace_json(path: Path, value: Any) -> None:
+    payload = canonical_json_bytes(value) + b"\n"
+    temporary = path.with_name(f".{path.name}.replace-{os.getpid()}")
+    try:
+        descriptor = os.open(
+            temporary,
+            os.O_WRONLY
+            | os.O_CREAT
+            | os.O_EXCL
+            | getattr(os, "O_BINARY", 0),
+            0o644,
+        )
+        try:
+            view = memoryview(payload)
+            while view:
+                written = os.write(descriptor, view)
+                if written <= 0:
+                    raise OSError("atomic replacement made no progress")
+                view = view[written:]
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+        os.replace(temporary, path)
+        _fsync_directory(path.parent)
+    except BaseException:
+        try:
+            temporary.unlink()
+        except OSError:
+            pass
+        raise
+
+
+def _progress_record(
+    *,
+    state: str,
+    phase: str,
+    completed_event_count: int,
+    status: str,
+    started_monotonic: float,
+    error: str | None = None,
+) -> dict[str, Any]:
+    elapsed = max(time.monotonic() - started_monotonic, 1e-9)
+    throughput = (
+        float(completed_event_count) / elapsed
+        if completed_event_count > 0
+        else 0.0
+    )
+    remaining = max(0, EVENT_COUNT - completed_event_count)
+    eta_seconds = (
+        float(remaining) / throughput if throughput > 0.0 else None
+    )
+    record: dict[str, Any] = {
+        "protocol_id": PROTOCOL_ID,
+        "state": state,
+        "phase": phase,
+        "completed_event_count": completed_event_count,
+        "expected_event_count": EVENT_COUNT,
+        "completed_units": completed_event_count,
+        "total_units": EVENT_COUNT,
+        "throughput": throughput,
+        "eta_seconds": eta_seconds,
+        "last_progress_at": datetime.now(timezone.utc)
+        .isoformat()
+        .replace("+00:00", "Z"),
+        "status": status,
+    }
+    if error is not None:
+        record["error"] = error
+    return record
 
 
 def _git_clean_and_at_origin(repo_root: Path) -> dict[str, str]:
@@ -357,16 +430,19 @@ def run_producer(
         },
     }
     formal_start_path = output_root / "formal_start.json"
+    started_monotonic = time.monotonic()
+    completed_event_count = 0
     try:
         create_formal_start_marker(formal_start_path, formal_start)
         _atomic_json(
             output_root / "progress.json",
-            {
-                "protocol_id": PROTOCOL_ID,
-                "state": "FORMAL_STARTED",
-                "completed_event_count": 0,
-                "expected_event_count": EVENT_COUNT,
-            },
+            _progress_record(
+                state="FORMAL_STARTED",
+                phase="formal_started",
+                completed_event_count=0,
+                status="running",
+                started_monotonic=started_monotonic,
+            ),
         )
         full_implementation_validation = validate_implementation_lock(
             implementation_lock_path,
@@ -388,6 +464,7 @@ def run_producer(
         event_rows = science["build_event_table"](bundle, tracks, calibration)
         if len(event_rows) != EVENT_COUNT:
             raise RunnerError("event-table row-count drift")
+        completed_event_count = len(event_rows)
         event_path = output_root / "event_table.jsonl"
         _atomic_write(
             event_path,
@@ -427,20 +504,16 @@ def run_producer(
         }
         receipt_path = output_root / "producer_receipt.json"
         _atomic_json(receipt_path, receipt)
-        os.replace(
+        _atomic_replace_json(
             output_root / "progress.json",
-            output_root / ".progress.previous.json",
+            _progress_record(
+                state="PRODUCER_COMPLETE_NOT_YET_VALID",
+                phase="producer_complete",
+                completed_event_count=len(event_rows),
+                status="complete",
+                started_monotonic=started_monotonic,
+            ),
         )
-        _atomic_json(
-            output_root / "progress.json",
-            {
-                "protocol_id": PROTOCOL_ID,
-                "state": "PRODUCER_COMPLETE_NOT_YET_VALID",
-                "completed_event_count": len(event_rows),
-                "expected_event_count": EVENT_COUNT,
-            },
-        )
-        (output_root / ".progress.previous.json").unlink()
         return receipt
     except BaseException as error:
         if formal_start_path.exists():
@@ -461,6 +534,20 @@ def run_producer(
                         "formal_start_sha256": sha256_file(formal_start_path),
                     },
                 )
+            try:
+                _atomic_replace_json(
+                    output_root / "progress.json",
+                    _progress_record(
+                        state="EXECUTION_INVALID",
+                        phase="failed",
+                        completed_event_count=completed_event_count,
+                        status="failed",
+                        started_monotonic=started_monotonic,
+                        error=f"{type(error).__name__}: {error}",
+                    ),
+                )
+            except BaseException:
+                pass
         else:
             try:
                 output_root.rmdir()

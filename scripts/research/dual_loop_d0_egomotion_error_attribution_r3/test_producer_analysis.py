@@ -24,6 +24,48 @@ from validate_execution_independent import (
 
 
 class ContractAndProducerTest(unittest.TestCase):
+    def test_progress_record_satisfies_guarded_host_contract(self) -> None:
+        record = runner._progress_record(
+            state="FORMAL_STARTED",
+            phase="formal_started",
+            completed_event_count=0,
+            status="running",
+            started_monotonic=__import__("time").monotonic(),
+        )
+        required = {
+            "phase",
+            "completed_units",
+            "total_units",
+            "throughput",
+            "eta_seconds",
+            "last_progress_at",
+            "status",
+        }
+        self.assertTrue(required.issubset(record))
+        self.assertEqual(record["completed_units"], 0)
+        self.assertEqual(record["total_units"], runner.EVENT_COUNT)
+        self.assertEqual(record["status"], "running")
+        self.assertTrue(str(record["last_progress_at"]).endswith("Z"))
+
+    def test_atomic_progress_replace_failure_preserves_original(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "progress.json"
+            original = runner.canonical_json_bytes({"state": "original"}) + b"\n"
+            path.write_bytes(original)
+            with mock.patch.object(
+                runner.os,
+                "replace",
+                side_effect=OSError("synthetic replace failure"),
+            ):
+                with self.assertRaisesRegex(
+                    OSError, "synthetic replace failure"
+                ):
+                    runner._atomic_replace_json(path, {"state": "new"})
+            self.assertEqual(path.read_bytes(), original)
+            self.assertEqual(
+                list(path.parent.glob(".progress.json.replace-*")), []
+            )
+
     def test_type7_and_raw_mad_match_frozen_math(self) -> None:
         values = [0.0, 10.0, 20.0, 30.0]
         self.assertEqual(type7_quantile(values, 0.25), 7.5)

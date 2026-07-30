@@ -235,7 +235,8 @@ R2 的正式 authority 均已消费并以执行无效关闭；两者都没有 D0
 3. marker 前不打开 predecessor/current scientific inputs；完整输入校验和真实
    calibration 读取只允许发生在 marker 与初始 progress 之后；
 4. R3 实现提交推送后，只有 clean `HEAD == origin/master`、实现锁、独立 review
-   与 activation 全部精确匹配，才可执行唯一 formal one-shot；
+   与 activation 全部精确匹配，才可由 guarded host launcher 在 `-I -B` 下执行
+   唯一 formal one-shot；
 5. R3 若有效，仍只以 469 个 parent events、310 个 overlap components 与六个固定
    60 秒块复算三个互斥 operational priority exits；
 6. 仅当有效出口为 `EGO_CANARY_PRIORITY`，再另立单变化、新数据的背景运动补偿

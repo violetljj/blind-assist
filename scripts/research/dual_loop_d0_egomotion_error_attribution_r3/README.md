@@ -39,8 +39,15 @@ $py = 'E:\codex-tools\venvs\dual-loop-d0-egomotion-r3\Scripts\python.exe'
 只有 exact lock、独立 review 与 activation 完成后，才允许：
 
 ```powershell
-& $py -I -B scripts/run_dual_loop_d0_egomotion_error_attribution_r3.py `
-  produce --activation <activation.json> --implementation-lock <lock.json>
+$runnerArguments = @(
+  'produce', '--activation', '<activation.json>',
+  '--implementation-lock', '<lock.json>'
+)
+pwsh -NoProfile -File scripts/run_guarded_host_research.ps1 `
+  -PreflightReceipt <preflight.json> `
+  -Script scripts/run_dual_loop_d0_egomotion_error_attribution_r3.py `
+  -Python $py -PythonArguments @('-I', '-B') `
+  -RunnerArguments $runnerArguments
 
 & $py -I -B scripts/run_dual_loop_d0_egomotion_error_attribution_r3.py `
   validate-execution --run-root <run-r3> --protocol <protocol.json> `

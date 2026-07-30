@@ -1813,7 +1813,11 @@
   持久化后才运行完整 scientific-input validation、bundle、calibration 与 tracks。
 - R1/R2 current/archive 和 exact inventory 均纳入两个 validator；VALID progress
   与 receipt 同一失败闭包，已有 terminal receipt 时零写拒绝重入。冻结解释器
-  `54/54 PASS`，runtime、项目结构、live R1/R2 gate 与三路独立复审均通过。
+  `56/56 PASS`，runtime、项目结构、live R1/R2 gate 与三路独立复审均通过。
+- 共享 guarded host launcher 新增显式 Python 前置参数，使 formal child 与
+  preflight validator 都能在 `-I -B` 下运行；R3 progress 同时满足既有科学状态和
+  host guard 的 phase/units/throughput/ETA/time/status 合同。集成测试验证前置参数、
+  worker 注入、成功、失败、stale progress 与 invalid preflight 均 fail-closed。
 - 当前仅为 `DESIGN_PASS / IMPLEMENTATION_PASS / ROUTE_PASS / NOT_RUN`；协议 SHA
   为 `4412390fcfb4b4588600c368d3cb36a6ece875ec3f97ea7ef8bd051886f11064`，
   `run-r3/` 不存在。实现提交推送并生成 exact lock/review/activation 前不授权正式
