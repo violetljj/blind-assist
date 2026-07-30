@@ -1,6 +1,6 @@
 # Dual-loop causal radial geometry LITE R0
 
-状态：implementation review pass；full replay 尚未激活
+状态：`EXECUTION_INVALID_STOP_NO_RERUN / NOT_EVALUABLE`
 
 ## 研究问题与版本
 
@@ -8,7 +8,8 @@
 在 source-GT target/ROI 条件下，比较 causal box log-area growth 与 ROI sparse
 radial flow，判断它们是否值得进入新的独立 Confirmation。Development 输入、
 truth-only natural-event ledger、两臂 producer、post-hash evaluator 与 synthetic
-fixtures 已实现并通过独立实现检查；全量 replay 尚未激活。
+fixtures 已实现并通过独立实现检查。唯一 full producer attempt 因同目标相邻 RGB
+尺寸变化触发 OpenCV LK 前提失败，按冻结停止规则不重跑且不进入 truth join。
 
 ## 稳定 Interface
 
@@ -31,8 +32,8 @@ E:\codex-tools\bin\blindassist-python.cmd `
 
 只写入传入的 `artifacts.local/` 目录。所有 JSON 使用 UTF-8 和确定性排序。
 
-实现入口为 `run_replay.py` 和 `evaluate_replay.py`。两者只能按已评审的一次性
-activation decision 执行；本 README 不构成执行权限。
+实现入口为 `run_replay.py` 和 `evaluate_replay.py`。R0 的一次性 activation 已消费：
+producer 失败，evaluator 未调用。当前不得再次执行；本 README 不构成新权限。
 
 ## 安全边界
 

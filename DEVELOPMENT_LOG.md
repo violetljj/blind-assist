@@ -1648,3 +1648,21 @@
 - 按冻结合同，双环论文主张在 F-1B 停止，F-1C、正式融合器、生产 CameraX 接线均未
   运行且不授权。decision 非访问只作为协议声明，不伪装成机器可证明事实；当前 claim
   ceiling 为 `DEVELOPMENT_ROUTE_REJECTION_ONLY`。
+
+## 2026-07-30：target/track-conditioned causal radial geometry LITE R0
+
+- 冻结 REveL single-capture Development-only 输入、13,014 个 target/ROI replay
+  opportunities、469 个 primary parent natural events、两条最小 arm、target/region/
+  truth-state 评价、100 ms TTL、abstention、失败与停止门；design review PASS。
+- 实现 causal bbox log-area baseline、ROI sparse radial flow、pre-truth producer、
+  post-keyset truth evaluator 与 24 个 synthetic fixtures；implementation review PASS。
+  旧 F-1B decision 输出继续密封。
+- 一次性 activation review PASS 后，唯一 full producer attempt 在 replay line 1,728
+  的同目标同 epoch 相邻 RGB 尺寸 `260×346 → 258×346` 处触发
+  `cv2.calcOpticalFlowPyrLK` size assertion。失败发生在任何 candidate ledger 写盘前；
+  producer output/receipt/evaluation 均不存在，evaluator 和 truth join 未运行。
+- 按预注册 one-shot/no-repair 规则终点为
+  `EXECUTION_INVALID_STOP_NO_RERUN / NOT_EVALUABLE`。不得 resize/pad、增加 shape-change
+  reset/abstention、修补或重跑 R0；若未来另行授权，只能新建并重新评审 evidence
+  version。详细证据见
+  [execution result](docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_EXECUTION_RESULT_2026-07-30.md)。
