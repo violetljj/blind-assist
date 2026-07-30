@@ -1,10 +1,18 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / CROSS_SOURCE_ROW_SIGNAL_REPLICATED / NO_EVENT_LEVEL_EFFECT`
+状态：`ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / UNSEEN_EVENT_R0_SOURCE_FROZEN`
 
-最后核验：2026-07-30（Asia/Hong_Kong）
+最后核验：2026-07-31（Asia/Hong_Kong）
 
 ## 当前决定
+
+2026-07-31 已按“效果线优先”冻结
+[未见自然来源事件评价 R0](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_PROTOCOL_2026-07-31.json)。
+在视频 payload、baseline 与 candidate 输出访问前，metadata-only selector 从 Commons
+固定 registry 选中一个 566.228 秒的新步行 session。后继顺序固定为：先从 RGB
+冻结事件/负窗，再做 baseline-only 可评价门，最后才允许原样运行 `039757b`；
+行级下降不能购买事件效果，单来源正信号也只到 Development canary。当前尚未产生
+该来源的算法结果，普通生产行为仍不变。
 
 2026-07-30 已完成
 [隔离主动纠错 R1](DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)。

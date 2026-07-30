@@ -1,4 +1,16 @@
 # Development Log
+## 2026-07-31
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户确认的
+  “效果线优先”路线冻结
+  [双环 R1 未见自然来源事件评价 R0](docs/research/dual-loop/DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_PROTOCOL_2026-07-31.json)。
+  在任何视频 payload、baseline 或 candidate 输出访问前，以 Commons
+  `First-person videos on foot` 的 57 项 metadata snapshot、固定 eligibility 和
+  Unicode title 顺序选中 566.228 秒上海夜间步行视频；registry SHA-256 为
+  `0a34051f...ca8d`。评价单位固定为预冻结正例事件/负例窗口，baseline adequacy
+  只决定可评价性；同 ID retention、逐事件 250 ms 时延、induced-negative 与
+  absolute recall 是 guardrail，反馈证据层级仅为设备回放的 simulated controller
+  acceptance。单来源最高只到 event-level Development canary，不调 R1、不把 row
+  下降当 event effect。selector 专项测试 `2/2 PASS`；视频尚未下载或查看。
 ## 2026-07-30
 - 时间：2026-07-30（Asia/Hong_Kong）；执行者：violjjet。完成
   [双环隔离主动纠错 R1](docs/research/dual-loop/DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)：

@@ -59,6 +59,7 @@
 - [`research/dual_loop_causal_track_tristate_r0/`](research/dual_loop_causal_track_tristate_r0/)：最小因果框尺度三态 source；7 帧 log-box-height 严格同号才确认/否定接近，否则弃权。独立 JRDB annotation-track Confirmation 已通过，并移植到 Android 非干预 shadow；不授权 active 提醒。
 - [`research/dual_loop_multitrack_counterfactual_r0/`](research/dual_loop_multitrack_counterfactual_r0/)：使用完整 production detections 检验多目标历史能否为误提醒提供反证；R0 已被零负例触发点命中否决，并产出最小 scene-scale R1 与设备逐帧 parity evaluator。
 - [`research/dual_loop_scene_scale_cross_source_r1/`](research/dual_loop_scene_scale_cross_source_r1/)：冻结 scene-scale contradiction 在 Matoaka 10,724 帧上的 truth-late 跨来源 Development 回放；只复现行级抑制，不产生事件级、Confirmation、默认生产或安全结论。
+- [`research/dual_loop_unseen_natural_event_r0/`](research/dual_loop_unseen_natural_event_r0/)：按输出盲 metadata registry、冻结事件窗、baseline adequacy 与同事件延迟门，评价固定 `039757b` 在全新自然视频上的事件级 canary；单来源不作总体外推。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。
