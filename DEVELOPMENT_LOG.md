@@ -1,4 +1,17 @@
 # Development Log
+## 2026-07-30
+- 时间：2026-07-30（Asia/Hong_Kong）；执行者：violjjet。完成
+  [双环可归因区域级接近证据源 Discovery R0](docs/research/dual-loop/DUAL_LOOP_ATTRIBUTABLE_REGIONAL_APPROACH_SOURCE_DISCOVERY_R0_2026-07-30.md)：
+  保持旧 Sparse LK F-1B `NO_INCREMENT / VALID / decision SEALED` 不变，只读连接
+  REveL 既有 770 个 GT 框与 Vicon 径向运动账本，得到 `770/770` 精确连接、
+  `488` 个 motion-aligned 框；approaching 在 LEFT/CENTER/RIGHT 为
+  `79/79/46`，每区均覆盖 green/yellow 来源身份。REveL 因而准入为
+  `SOURCE_FOUND_FOR_DEVELOPMENT`，但其严格包围 Vicon pose 是 offline
+  noncausal oracle，helmet/sensor marker 也不是人体包络或手机 body frame。
+  successor runtime 仅保留
+  `target/track-conditioned causal radial geometry / NOT_EVALUATED` 设计候选；
+  未实现算法、未运行候选输出、未打开确认集，也不产生 Android、融合器、提醒、
+  产品或安全权限。下一步仅建议先冻结 LITE Development round。
 ## 2026-07-29
 - 时间：2026-07-29（Asia/Hong_Kong）；执行者：Codex。完成
   [R3 rotation-leakage source-localization formal closeout](docs/research/rcle/RCLE_PERIODIC_SELF_MOTION_COUNTERFACTUAL_R2_QMS_R1_R3_ROTATION_LEAKAGE_SOURCE_LOCALIZATION_EXECUTION_RESULT_R0_2026-07-29.md)：

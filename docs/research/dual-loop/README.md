@@ -1,12 +1,31 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`closed / F-1B_COMPLETE / NO_INCREMENT / MAINLINE_STOPPED`
+状态：`successor discovery / SOURCE_FOUND_FOR_DEVELOPMENT / RUNTIME_NOT_EVALUATED`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
 ## 当前决定
 
-BlindAssist 已按“先准入、后实现”顺序走完神经—几何双环阶段−1，并在科学生死门停止：
+旧 Sparse LK F-1B 路线仍以 `NO_INCREMENT / VALID` 关闭；该结论没有被重写。
+用户将双环设为新的研究主线后，2026-07-30 完成了独立 successor Discovery：
+[可归因区域级接近证据源 Discovery R0](DUAL_LOOP_ATTRIBUTABLE_REGIONAL_APPROACH_SOURCE_DISCOVERY_R0_2026-07-30.md)。
+
+本地只读连接复算确认，REveL Dynamic 的 RGB 人框、green/yellow 目标身份与
+person/sensor Vicon 径向轨迹能在 LEFT/CENTER/RIGHT 全部区域输出目标可归因的
+approaching/quasi-static/receding 开发真值。因此来源搜索已经成功，但手机端 causal
+geometry 仍只是设计候选：
+
+```text
+PREDECESSOR_F1B: COMPLETE / NO_INCREMENT / VALID
+SUCCESSOR_SOURCE_DISCOVERY: COMPLETE / SOURCE_FOUND_FOR_DEVELOPMENT
+RUNTIME_GEOMETRY_SOURCE: DESIGN_CANDIDATE_ONLY / NOT_EVALUATED
+CONFIRMATION: NOT_AUTHORIZED
+EXECUTION_AUTHORITY: NONE
+CLAIM_CEILING: DISCOVERY_SOURCE_SUITABILITY_ONLY
+```
+
+BlindAssist 的 predecessor 路线已按“先准入、后实现”顺序走完神经—几何双环
+阶段−1，并在科学生死门停止：
 
 ```text
 DATA_STATUS: READY
@@ -70,15 +89,18 @@ F-1C。
 
 - 语义证据：现有 YOLO11n 与现有生产检测/风险接口；目标设备若已准入，可使用其真实
   QNN 路由。
-- 几何证据：阶段−1默认只评估已有 Sparse LK 候选输出能否形成区域级几何/接近候选
-  证据；它是可替换证据源，不是已经成立的接近判断或独立告警系统。
+- predecessor 几何证据：Sparse LK 五通道已经证实不具备目标、区域和接近语义，
+  保留为负结果与 regression fixture，不再作为 successor 的主候选。
+- successor 几何证据：候选为 `target/track-conditioned causal radial geometry`，
+  仅使用过去帧，在同一目标 ROI 内计算框面积增长和/或稀疏径向光流；REveL Vicon
+  只提供离线开发真值，不是已实现的运行时输入。
 - 汇合位置：同一事件/区域、真实时间戳、质量、时效和失效原因进入既有统一决策接缝；
   两个环不得分别提醒。
 - 论文候选贡献：不是“双环”这个框图本身，而是双环相对 YOLO-only 是否产生可重复的
   首次有效提醒提前、风险判别改善或风险连续性改善。
 
-当前不实现正式融合器、自适应调度、深度、分割、ARCore、新风险场、新状态机或第二套
-反馈系统。
+当前不自动实现运行时几何源、正式融合器、自适应调度、深度、分割、ARCore、新风险
+场、新状态机或第二套反馈系统。
 
 ## 与 RCLE、USTRF 和 Project Guideline 的关系
 
@@ -108,7 +130,9 @@ F-1C。
 - 当前不仅没有双环事件增量证据；在既有五通道 Sparse LK 与不改变提醒语义的约束下，
   还不存在能改变实际可交付提醒的合法作用路径。
 
-因此当前只允许写成 `DEVELOPMENT_ROUTE_REJECTED / NO_INCREMENT`。不得写成双环有效、
+因此 predecessor 只允许写成 `DEVELOPMENT_ROUTE_REJECTED / NO_INCREMENT`；
+successor 只允许写成
+`SOURCE_FOUND_FOR_DEVELOPMENT / RUNTIME_SOURCE_NOT_EVALUATED`。不得写成双环有效、
 早提醒已实现、运行时可行、产品改善或安全结论。
 
 ## 当前权限
@@ -121,6 +145,10 @@ F-1C。
 | F-1B 几何增量评价 | `COMPLETED / NO_INCREMENT / VALID` |
 | F-1B decision 输出执行 | `NOT_RUN / NOT_NEEDED / SEALED` |
 | F-1C 手机双环 A/B | `STOPPED_BY_F-1B / NOT_AUTHORIZED` |
+| successor 几何真值源 Discovery | `COMPLETED / SOURCE_FOUND_FOR_DEVELOPMENT` |
+| successor causal runtime geometry | `DESIGN_CANDIDATE_ONLY / NOT_EVALUATED` |
+| successor Development round | `NOT_FROZEN / NOT_ACTIVATED` |
+| successor 独立 Confirmation | `NOT_AUTHORIZED` |
 | 一次有限修复 | `NOT_APPLICABLE_TO_MISSING_INFORMATION_SEMANTICS` |
 | 正式融合器或生产 CameraX 接线 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、分割、ARCore | `NOT_AUTHORIZED` |
@@ -129,7 +157,12 @@ F-1C。
 
 ## 下一步
 
-当前双环主线已经到达合同规定终点，没有自动下一步。增加数据、调 residual 阈值或
-优化调度都不能补回现有接口缺失的目标、区域和接近语义。若未来重新提出双环，只能
-先作为新路线冻结一个确实输出可归因区域级接近证据的几何源与全新确认合同；不得复用
-本轮 sealed decision 集回调规则，也不得把本轮真机 timing-only 凭据改写成效果证据。
+来源 Discovery 已完成，下一步不再是增加旧数据、调 residual 阈值或优化旧 Sparse LK
+调度。唯一建议动作是冻结一个 LITE Development round：定义
+`target/track-conditioned causal radial geometry` 的最小接口、REveL 开发子集、
+按目标/区域的评价单位、abstention 与 falsifier；设计检查通过后，才另行激活最小
+实现和离线 replay。
+
+旧 F-1B sealed decision 集不得用于回调规则，旧真机 timing-only 凭据也不得改写成
+效果证据。新的独立 Confirmation 必须在候选输出访问前另行冻结，当前没有自动执行
+权限。
