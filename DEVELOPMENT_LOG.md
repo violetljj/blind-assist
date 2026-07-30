@@ -1666,3 +1666,26 @@
   reset/abstention、修补或重跑 R0；若未来另行授权，只能新建并重新评审 evidence
   version。详细证据见
   [execution result](docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_EXECUTION_RESULT_2026-07-30.md)。
+
+## 2026-07-30：causal radial geometry LITE R1/R2 Development 封存
+
+- 执行者：violjjet
+- 独立 R1 冻结跨尺寸 reset/abstention 后，formal producer 完成 13,014 输入与
+  26,028 双臂输出，但共享 host guard 将 JSON UTC `Z` 时间戳误解释为本地时间。
+  R1 按执行包络门关闭为 `EXECUTION_INVALID_STOP_NO_RERUN / NOT_EVALUABLE`；
+  evaluator 未运行，完整 producer 输出不作科学救援。
+- 修复 shared guard 的 DateTime/DateTimeOffset UTC 处理并加入 trailing-`Z` integration
+  regression。独立 R2 仅继承冻结科学合同、绑定新 identity/namespace 与修复后的
+  execution envelope；design、implementation、双线程等价 pilot、host preflight 和
+  one-shot activation 均通过独立复核。
+- R2 唯一 guarded producer 为 `COMPLETE`：13,014 输入、26,028 输出、32/64
+  shape-change 账本、`truth_joined=false`。全部 pre-truth 门通过后，唯一 evaluator
+  在冻结的 469 个 primary 自然事件上完成 Development join。
+- box 面积增长为 204/469 correct、153/469 wrong-signed；ROI sparse radial flow
+  为 188/469 correct、161/469 wrong-signed。flow 的 correct-event gain 为 `-16`，
+  两个 target 与 LEFT/CENTER/RIGHT 三个区域增量均为负；两臂均未达到 readiness
+  floor。
+- 终点为 `BOTH_NOT_READY_FOR_CONFIRMATION / IMPLEMENTATION_NOT_READY`。独立执行
+  封存复核 PASS；R2 不重跑、不调阈值救援，旧 F-1B decision 继续密封，Confirmation、
+  Android、产品、运行时与安全均不授权。详细证据见
+  [R2 execution result](docs/research/dual-loop/DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R2_EXECUTION_RESULT_2026-07-30.md)。
