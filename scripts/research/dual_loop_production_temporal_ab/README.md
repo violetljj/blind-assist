@@ -1,13 +1,15 @@
 # dual_loop_production_temporal_ab
 
-状态：development contract preflight
+状态：implementation built / device prestart valid / formal not activated
 
 ## 研究问题与版本
 
 `DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0` 检查既有生产
 `TemporalRiskTracker` 的 object-detector temporal geometry contribution，相对同构的
 neutralized 分支是否改善冻结 CrowdBot decision session 上的 replay alert decision。
-当前只建立 outcome-blind 输入身份；候选输出、truth join 与 Confirmation 尚未执行。
+当前已完成 outcome-blind 输入身份、A/B factorization、truth-blind device producer、
+独立 validator/evaluator 与真机 strict-QNN prestart。候选输出、truth join 与
+Confirmation 尚未执行。
 
 ## 稳定 Interface
 
@@ -19,6 +21,36 @@ pwsh -File scripts/run_dual_loop_production_temporal_ab_input_preflight.ps1
 
 内部 Python 实现只接受 repo root 与 receipt 输出路径。它没有 truth ledger 或候选
 output 参数。
+
+实现锁、activation、验证与评价的稳定入口：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_dual_loop_production_temporal_ab.py validate-producer `
+  --trace ... --producer-receipt ... --implementation-lock ... --activation ... `
+  --formal-start-marker ... `
+  --output ... --seal-output ...
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_dual_loop_production_temporal_ab.py evaluate `
+  --seal ... --truth-membership ... --output ...
+```
+
+`validate-producer` 不接受 truth；它逐帧对照冻结 frame ledger，并原子发布绑定 trace、
+producer receipt、implementation lock、activation 与 validation 全部哈希的 seal。
+`evaluate` 不再接受裸 trace/自报 validation，只接受该 seal 与被 implementation lock
+硬绑定的冻结 truth-membership receipt。
+
+真机稳定入口为：
+
+```powershell
+pwsh -File scripts/run_dual_loop_production_temporal_ab_device.ps1 -Action Build
+pwsh -File scripts/run_dual_loop_production_temporal_ab_device.ps1 -Action Prestart
+```
+
+`Prestart` 只做完整输入 identity、PNG header 与 synthetic QNN HTP probe，不解码
+decision RGB。`StartFormal` 必须先取得 hash-bound implementation lock、独立
+implementation review 与 activation receipt；远端正式 marker 或 output namespace
+已存在时拒绝重跑。host 会将 lock 与 activation 放入设备 authorization namespace；
+producer 自身也会复核两者、prestart receipt 与当前已安装 APK，缺任一项均在
+formal marker 和 decision decode 前停止。
 
 ## 输出
 

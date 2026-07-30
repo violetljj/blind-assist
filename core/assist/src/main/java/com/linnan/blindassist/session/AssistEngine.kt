@@ -19,10 +19,9 @@ import com.linnan.blindassist.vision.FrameStamp
 class AssistEngine(
     private val riskAnalyzer: RiskAnalyzer = RiskAnalyzer(),
     private val riskStabilizer: RiskStabilizer = RiskStabilizer(),
-    private val trace: SessionTrace = SessionTrace()
+    private val trace: SessionTrace = SessionTrace(),
+    private val temporalRiskTracker: TemporalRiskTracker = TemporalRiskTracker()
 ) {
-    private val temporalRiskTracker = TemporalRiskTracker()
-
     fun evaluate(
         detections: List<Detection>,
         frameSize: FrameSize,
@@ -33,10 +32,8 @@ class AssistEngine(
         sourceFrame: FrameStamp? = null,
         decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
     ): AssistFrameEvaluation {
-        val rawRisk = temporalRiskTracker.update(
-            riskAnalyzer.analyze(detections, frameSize),
-            nowMs
-        )
+        val preTemporalRisk = riskAnalyzer.analyze(detections, frameSize)
+        val rawRisk = temporalRiskTracker.update(preTemporalRisk, nowMs)
         val stableRisk = riskStabilizer.update(rawRisk, profile, scenario, nowMs)
         return AssistFrameEvaluation(
             rawRisk = rawRisk,
@@ -49,7 +46,8 @@ class AssistEngine(
             preliminaryReason = displayReasonFor(rawRisk, stableRisk, null),
             evaluatedAtMs = nowMs,
             sourceFrame = sourceFrame,
-            decisionAtNs = decisionAtNs
+            decisionAtNs = decisionAtNs,
+            preTemporalRisk = preTemporalRisk
         )
     }
 
@@ -82,7 +80,8 @@ class AssistEngine(
             evaluatedAtMs = nowMs,
             riskEvidenceCount = evidenceCount,
             sourceFrame = sourceFrame,
-            decisionAtNs = decisionAtNs
+            decisionAtNs = decisionAtNs,
+            preTemporalRisk = rawRisk
         )
     }
 
@@ -289,7 +288,9 @@ data class AssistFrameEvaluation(
     val riskEvent: RiskEventSnapshot = RiskEventSnapshot.none(),
     val riskEvidenceCount: Int = 0,
     val sourceFrame: FrameStamp? = null,
-    val decisionAtNs: Long = evaluatedAtMs * 1_000_000L
+    val decisionAtNs: Long = evaluatedAtMs * 1_000_000L,
+    /** Exact analyzer output before temporal tracking, exposed for paired replay audit. */
+    val preTemporalRisk: RiskResult = rawRisk
 )
 
 data class AssistFrameResult(

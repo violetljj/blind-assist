@@ -9,6 +9,7 @@ import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.ApproachTrend
 import com.linnan.blindassist.risk.ProximityBand
+import com.linnan.blindassist.risk.RiskAnalyzer
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskLevel
 import org.junit.Assert.assertEquals
@@ -242,6 +243,34 @@ class AssistEngineTest {
 
         assertEquals(ApproachTrend.UNKNOWN, evaluation.rawRisk.approachTrend)
         assertEquals(RiskLevel.NONE, evaluation.rawRisk.level)
+    }
+
+    @Test
+    fun exposesExactAnalyzerOutputBeforeTemporalPromotion() {
+        val engine = AssistEngine()
+        val detections = listOf(
+            detection("person", BoundingBox(450f, 120f, 520f, 280f)),
+            detection("person", BoundingBox(445f, 130f, 525f, 310f)),
+            detection("person", BoundingBox(440f, 140f, 530f, 340f))
+        )
+        var evaluation: AssistFrameEvaluation? = null
+        detections.forEachIndexed { index, detection ->
+            evaluation = engine.evaluate(
+                detections = listOf(detection),
+                frameSize = frame,
+                profile = AlertProfile.STANDARD,
+                metrics = metrics(),
+                nowMs = 1000L + index * 100L
+            )
+        }
+
+        val finalEvaluation = requireNotNull(evaluation)
+        assertEquals(ApproachTrend.APPROACHING, finalEvaluation.rawRisk.approachTrend)
+        assertEquals(ApproachTrend.UNKNOWN, finalEvaluation.preTemporalRisk.approachTrend)
+        assertEquals(
+            RiskAnalyzer().analyze(listOf(detections.last()), frame),
+            finalEvaluation.preTemporalRisk
+        )
     }
 
     @Test

@@ -194,6 +194,7 @@ tasks.matching {
 
 dependencies {
     implementation(project(":core:assist"))
+    implementation(project(":core:device"))
     implementation(project(":core:ustrf"))
     implementation(project(":core:vision"))
     implementation(libs.androidx.camera.camera2)

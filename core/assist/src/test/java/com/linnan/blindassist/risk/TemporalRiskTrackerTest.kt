@@ -196,6 +196,90 @@ class TemporalRiskTrackerTest {
         assertEquals(RiskFusionReason.GEOMETRY_ONLY.name, shallow.scoreBreakdown.fusionSummary)
     }
 
+    @Test
+    fun neutralizedModeUpdatesObjectHistoryButReturnsPreTemporalRisk() {
+        val full = TemporalRiskTracker()
+        val neutralized = TemporalRiskTracker(
+            TemporalRiskTrackerConfig(
+                objectDetectorTemporalGeometryMode =
+                    ObjectDetectorTemporalGeometryMode.NEUTRALIZE_OUTPUT
+            )
+        )
+        val boxes = listOf(
+            BoundingBox(450f, 120f, 520f, 280f),
+            BoundingBox(445f, 130f, 525f, 310f),
+            BoundingBox(440f, 140f, 530f, 340f)
+        )
+        var fullResult: RiskResult? = null
+        var neutralizedResult: RiskResult? = null
+        boxes.forEachIndexed { index, box ->
+            val preTemporal = raw("person", box)
+            fullResult = full.update(preTemporal, nowMs = 100L + index * 100L)
+            neutralizedResult = neutralized.update(preTemporal, nowMs = 100L + index * 100L)
+            assertEquals(preTemporal, neutralizedResult)
+        }
+
+        assertEquals(ApproachTrend.APPROACHING, requireNotNull(fullResult).approachTrend)
+        assertEquals(RiskFusionReason.MOTION_PROMOTED.name, requireNotNull(fullResult).scoreBreakdown.fusionSummary)
+        assertEquals(ApproachTrend.UNKNOWN, requireNotNull(neutralizedResult).approachTrend)
+    }
+
+    @Test
+    fun neutralizedObjectModePreservesStableSegmentationProductionBehavior() {
+        val full = TemporalRiskTracker()
+        val neutralized = TemporalRiskTracker(
+            TemporalRiskTrackerConfig(
+                objectDetectorTemporalGeometryMode =
+                    ObjectDetectorTemporalGeometryMode.NEUTRALIZE_OUTPUT
+            )
+        )
+        val box = BoundingBox(400f, 400f, 600f, 720f)
+        val fullResults = listOf(100L, 200L, 300L).map { nowMs ->
+            full.update(segmentationRaw(box), nowMs)
+        }
+        val neutralizedResults = listOf(100L, 200L, 300L).map { nowMs ->
+            neutralized.update(segmentationRaw(box), nowMs)
+        }
+
+        assertEquals(fullResults, neutralizedResults)
+        assertEquals(RiskFusionReason.STABILITY_PROMOTED.name, fullResults.last().scoreBreakdown.fusionSummary)
+    }
+
+    @Test
+    fun independentBranchResultsDoNotDependOnInvocationOrder() {
+        fun replay(aFirst: Boolean): Pair<List<RiskResult>, List<RiskResult>> {
+            val full = TemporalRiskTracker()
+            val neutralized = TemporalRiskTracker(
+                TemporalRiskTrackerConfig(
+                    objectDetectorTemporalGeometryMode =
+                        ObjectDetectorTemporalGeometryMode.NEUTRALIZE_OUTPUT
+                )
+            )
+            val fullRows = mutableListOf<RiskResult>()
+            val neutralizedRows = mutableListOf<RiskResult>()
+            val boxes = listOf(
+                BoundingBox(450f, 120f, 520f, 280f),
+                BoundingBox(445f, 130f, 525f, 310f),
+                BoundingBox(440f, 140f, 530f, 340f),
+                BoundingBox(445f, 130f, 525f, 310f)
+            )
+            boxes.forEachIndexed { index, box ->
+                val preTemporal = raw("person", box)
+                val nowMs = 100L + index * 100L
+                if (aFirst) {
+                    neutralizedRows += neutralized.update(preTemporal, nowMs)
+                    fullRows += full.update(preTemporal, nowMs)
+                } else {
+                    fullRows += full.update(preTemporal, nowMs)
+                    neutralizedRows += neutralized.update(preTemporal, nowMs)
+                }
+            }
+            return neutralizedRows to fullRows
+        }
+
+        assertEquals(replay(aFirst = true), replay(aFirst = false))
+    }
+
     private fun raw(label: String, box: BoundingBox): RiskResult {
         return analyzer.analyze(listOf(detection(label, box)), frame)
     }

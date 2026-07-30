@@ -1,6 +1,6 @@
 # BlindAssist 神经—几何双环研究主线
 
-状态：`production temporal A/B R0 / CONTRACT_FROZEN / IMPLEMENTATION_AUTHORIZED / NOT_RUN`
+状态：`production temporal A/B R0 / IMPLEMENTATION_BUILT / DEVICE_PRESTART_VALID / FORMAL_NOT_ACTIVATED`
 
 最后核验：2026-07-30（Asia/Hong_Kong）
 
@@ -16,8 +16,18 @@ QNN 只推理一次，两臂使用相同 detections 和完全隔离的决策/反
 [独立设计复核](DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)
 为 `PASS`。outcome-blind 预检已验证 `4422/4422` 个冻结 RGB；truth-membership
 预检将 17 项原始 truth 冻结为 8 个可评分正例 + 7 个负窗，并在候选输出前排除
-两个零有效帧正例。当前只授权实现、合成 mutation tests、implementation lock 和
-后续 activation review；正式 A/B、truth join 与 Confirmation 尚未授权。
+两个零有效帧正例。A/B factorization、truth-blind device producer、独立
+validator/evaluator 已实现；核心回归、合成 mutation tests、Android build 均通过。
+真机 prestart 在 `SM-S9280 / SM8650` 上复核 `4422/4422` 帧身份，并以 strict
+QNN HTP 完成 synthetic probe，未解码 decision RGB、未写候选输出。当前仍须先做
+hash-bound implementation lock 与独立 activation review；正式 A/B、truth join 与
+Confirmation 尚未执行。
+
+实现审计发现并已修复逐帧 timestamp 未绑定、truth receipt 未硬绑定、缺 post-validator
+seal、review 未绑定当前 lock、host 并发启动窗口、producer marker 可覆盖、外部复制
+pre-temporal hash 等正式前缺口。现在设备 producer 自身要求 lock + activation
+authorization；validator 逐帧对照冻结 ledger 并发布哈希闭合 seal，evaluator 只接受
+该 seal。修复后的独立 implementation 复审仍是 activation 的前置条件。
 
 用户将双环设为新的研究主线后，2026-07-30 完成了独立 successor Discovery：
 [可归因区域级接近证据源 Discovery R0](DUAL_LOOP_ATTRIBUTABLE_REGIONAL_APPROACH_SOURCE_DISCOVERY_R0_2026-07-30.md)。

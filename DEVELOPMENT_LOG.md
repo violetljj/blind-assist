@@ -1724,3 +1724,28 @@
 - 本轮仅合同与设计审查 `PASS / NOT_RUN`；未实现、未执行、未下载新数据、未改算法，
   R2 不重跑，旧 F-1B decision 继续密封。详见
   [D0 protocol](docs/research/dual-loop/DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_PROTOCOL_2026-07-30.json)。
+
+## 2026-07-30：生产 TemporalRiskTracker 因子 A/B R0 实现与真机预启动
+
+- 执行者：violjjet
+- 在默认生产行为不变的前提下，为 `TemporalRiskTracker` 增加仅中和
+  `DetectionSource.OBJECT_DETECTOR` temporal output 的显式模式；A/B 各自持有隔离的
+  tracker、stabilizer、event、feedback、cooldown 与 fatigue 状态，单帧 QNN detector
+  输出只生成一次并以 canonical hash 绑定两臂。
+- 新增 truth-blind Android producer、正式 one-shot marker、逐帧冻结 RGB SHA
+  再校验、独立 producer validator、post-seal truth evaluator、implementation lock
+  与 activation gate。validator 不接受 truth，逐帧对照冻结 frame ledger 的 ID 与
+  timestamp，并原子发布绑定 trace/producer/lock/activation/validation 全部哈希的
+  seal；evaluator 不接受裸 trace 或自报 validation，只接受该 seal 与 lock-bound
+  truth-membership receipt。
+- 核心 tracker mutation/order/segmentation parity tests、Python evaluator/validator
+  fixtures 与 Android debug build 通过。生产 app 与 instrumentation APK 已装入指定
+  `SM-S9280 / SM8650`；prestart 复核 `4422/4422` 帧、`2,612,679,375` bytes、
+  canonical inventory SHA
+  `45621b226b4f6286962ec39c548234f92c3a34331cc4a1b2c413ef0bd3f7dd3b`，并以
+  `qualcomm_qnn_htp / QNN 2.47.0` 完成 synthetic live probe。
+- prestart 明确记录 `decision_rgb_decoded=false / candidate_output_written=false`；
+  完整 kernel + feedback 链的 A/B 调用顺序 mutation 也通过。一次缺少设备端
+  authorization 的 formal-entry 失败注入在首帧 decode 和 marker 前被拒绝，随后复核
+  marker、temporary trace 与 output namespace 均不存在。正式 A/B 尚未 activation，
+  truth join 与 Confirmation 尚未执行，不能据此形成增量、产品或安全结论。

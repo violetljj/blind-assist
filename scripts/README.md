@@ -9,6 +9,8 @@
 - `run_dual_loop_radial_geometry_lite_r1.py`：target/track-conditioned causal radial geometry LITE Development R1 的稳定 Adapter；只暴露尺寸审计、无真值生产、实现锁校验及生产成功后的条件评估，旧 F-1B decision、Confirmation、Android 与产品路径不在输入或授权面。
 - `run_dual_loop_radial_geometry_lite_r2.py`：R1 guarded-progress UTC 类型失败后的前向 R2 Adapter；科学实现与 R1 相同，但使用新 protocol/implementation/output identity，R1 output 不在输入面。
 - `run_dual_loop_production_temporal_ab_input_preflight.ps1`：生产 `TemporalRiskTracker` 因子 A/B R0 的 outcome-blind 输入身份入口；逐一复核两个冻结 CrowdBot session 的 `4422` 个 PNG 哈希、时间顺序、尺寸与 canonical inventory，不读取 truth、不运行 detector 或候选 A/B。
+- `run_dual_loop_production_temporal_ab.py`：同一路线的稳定 truth-blind producer validator 与条件 evaluator 入口；validator 逐帧绑定冻结 frame ledger，并发布包含 trace/producer/lock/activation/validation 哈希的 seal；`evaluate` 只接受该 seal 与 lock-bound truth-membership receipt。
+- `run_dual_loop_production_temporal_ab_device.ps1`：指定 `SM-S9280 / SM8650` 的 build/install/input/prestart/formal/collect 真机入口；formal 需要 `ACTIVATED` receipt，候选 namespace 或远端 one-shot marker 已存在时 fail closed。
 - `monitor_host_research_process.ps1`：电脑端长任务外部监控器；汇总根进程及递归子进程的 CPU/I/O/RSS、子进程数和可用的 NVIDIA GPU 利用率/显存/温度/功耗，把阶段、瓶颈提示、建议动作、疑似停滞和终态写入独立 JSONL/最新状态文件。若 runner 本身不发布完成单元数，它会明确将百分比与 ETA 留空。
 - `validate_host_research_preflight.py`：校验长任务性能准入收据；缺少真实访问机制 pilot、有界耗时、结果等价、进度字段、资源预算或 formal one-shot 合同时返回 `PERFORMANCE_NOT_QUALIFIED`。
 - `run_research_contract_tests.py`：CI 与本地共用的无 GPU、无设备研究合同回归。

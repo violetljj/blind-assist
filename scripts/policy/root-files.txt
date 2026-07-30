@@ -75,6 +75,8 @@ run_guarded_host_research.ps1
 run_dual_loop_radial_geometry_lite_r1.py
 run_dual_loop_radial_geometry_lite_r2.py
 run_dual_loop_production_temporal_ab_input_preflight.ps1
+run_dual_loop_production_temporal_ab.py
+run_dual_loop_production_temporal_ab_device.ps1
 run_host_research.ps1
 monitor_host_research_process.ps1
 run_public_video_campaign_tests.py

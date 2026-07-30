@@ -6,6 +6,11 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
+enum class ObjectDetectorTemporalGeometryMode {
+    APPLY,
+    NEUTRALIZE_OUTPUT
+}
+
 data class TemporalRiskTrackerConfig(
     val maxFrames: Int = TemporalRiskTracker.DEFAULT_MAX_FRAMES,
     val maxWindowMs: Long = TemporalRiskTracker.DEFAULT_MAX_WINDOW_MS,
@@ -19,7 +24,9 @@ data class TemporalRiskTrackerConfig(
     val minStableSegmentationFrames: Int = TemporalRiskTracker.DEFAULT_MIN_STABLE_SEGMENTATION_FRAMES,
     val minStableSegmentationBottomRatio: Float = TemporalRiskTracker.DEFAULT_MIN_STABLE_SEGMENTATION_BOTTOM_RATIO,
     val minExternalEvidenceTrendFrames: Int = TemporalRiskTracker.DEFAULT_MIN_EXTERNAL_EVIDENCE_TREND_FRAMES,
-    val minExternalEvidenceScoreDelta: Float = TemporalRiskTracker.DEFAULT_MIN_EXTERNAL_EVIDENCE_SCORE_DELTA
+    val minExternalEvidenceScoreDelta: Float = TemporalRiskTracker.DEFAULT_MIN_EXTERNAL_EVIDENCE_SCORE_DELTA,
+    val objectDetectorTemporalGeometryMode: ObjectDetectorTemporalGeometryMode =
+        ObjectDetectorTemporalGeometryMode.APPLY
 ) {
     init {
         require(maxFrames >= minApproachFrames) { "maxFrames must be >= minApproachFrames" }
@@ -63,6 +70,13 @@ class TemporalRiskTracker(
         }
 
         val trend = trendFor(observations.toList())
+        if (
+            detection.source == DetectionSource.OBJECT_DETECTOR &&
+            config.objectDetectorTemporalGeometryMode ==
+            ObjectDetectorTemporalGeometryMode.NEUTRALIZE_OUTPUT
+        ) {
+            return raw.copy(approachTrend = ApproachTrend.UNKNOWN)
+        }
         return applyTrend(raw, trend, observations.size)
     }
 
