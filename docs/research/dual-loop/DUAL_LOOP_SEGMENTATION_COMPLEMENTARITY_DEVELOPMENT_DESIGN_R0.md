@@ -26,8 +26,7 @@
 也不增加 D0-A2/A3/A4 或第三 Agent 裁决层。用户授权后已按本设计执行 R1；执行结果另见
 [R1 result](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1_RESULT_2026-07-31.md)。
 
-若获得独立执行授权，第一份机制 diagnostic 使用一套已存在的 matched Development
-输入：
+R1 机制 diagnostic 使用一套已存在的 matched Development 输入：
 
 | 项目 | 值 |
 | --- | --- |

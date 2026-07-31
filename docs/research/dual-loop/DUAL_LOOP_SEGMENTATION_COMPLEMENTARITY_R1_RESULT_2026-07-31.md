@@ -41,6 +41,8 @@ YOLO box union 上，固定 semantic-segmentation reference 是否产生未被 Y
 
 本地产物：
 
+目录：`artifacts.local/evidence/dual-loop-segmentation-complementarity-r1/`
+
 | 产物 | SHA256 |
 | --- | --- |
 | `report.json` | `af62b5ff727ce807efb7ece6e79691966d6b4837a1c37c931d2496d6993749cf` |
