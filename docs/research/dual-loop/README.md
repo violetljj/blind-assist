@@ -8,7 +8,7 @@ SEGMENTATION_COMPLEMENTARITY_CROSS_SOURCE_R2_COMPLETE /
 SEGMENTATION_CANDIDATE_UTILITY_R0_COMPLETE / VALID /
 CURRENT_SEGMENTATION_REFERENCE_REJECTED /
 SEGMENTATION_MODEL_SELECTION_R1_PROTOCOL_FROZEN /
-FRESH_FORMAL_HOLDOUT_IDENTITY_FROZEN /
+FRESH_FORMAL_HOLDOUT_FROZEN /
 MODEL_TRAINING_NOT_STARTED / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
@@ -120,6 +120,12 @@ source-native fresh formal identity：`GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT`、
 `eHxtA669WpN381O4ZjVAmG3-3ZUewuXr`。在 dev checkpoint 与全部设置冻结前，不读取
 这些 session 的像素真值或模型输出；若最终无法形成 hash-closed fresh manifest，R1
 只能报告 `DEVELOPMENT_RANKING_ONLY`，不产生 formal model-selection terminal。
+
+该 fresh holdout 已完成字节级冻结：200 行、4 sessions × 50 frames，manifest SHA256
+为 `eaad2a32640dfa1a64c30fc53a6c10818a99c74b7eacc4c8718bd50515ff879d`，freezer receipt
+为 `90214d93c2eaa02a1355bf341bf890358c442219535c51939290e957a52ece3e`。RGB 与 source
+mask 均通过 GCS MD5/SHA256 和 header 尺寸核验；在此阶段仍未读取 mask 像素值或任何
+truth-derived class/component 统计。
 
 ## 已关闭前序与保留证据
 

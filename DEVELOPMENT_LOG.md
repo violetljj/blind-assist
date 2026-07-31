@@ -8,6 +8,11 @@
   当前仅完成 protocol、dataset role ledger 和训练 configs；尚未读取 fresh mask 像素、
   训练候选或授权 Android/QNN/风险事件/主动提醒。详细合同见
   `docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_PROTOCOL_2026-07-31.json`。
+- 后续核验：按冻结 identity 从 SANPO official-test 下载 4 sessions × 50 frames；freezer
+  只做 object metadata、GCS MD5、文件 SHA256 与图像 header 尺寸检查，不解析 semantic
+  mask 像素。fresh manifest SHA256 为 `eaad2a32640dfa1a64c30fc53a6c10818a99c74b7eacc4c8718bd50515ff879d`，
+  receipt SHA256 为 `90214d93c2eaa02a1355bf341bf890358c442219535c51939290e957a52ece3e`，
+  200 行/4 session 已冻结为 fresh formal role。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。冻结并执行
   `DUAL_LOOP_SEGMENTATION_CANDIDATE_UTILITY_R0`：以 SANPO-Real v0 canonical R3
   source-native pixel truth 完成 dev calibration 与 120-frame blind formal；实现

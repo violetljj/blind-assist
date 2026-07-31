@@ -1,7 +1,7 @@
 {
   "schema_version": "blindassist.dual_loop_segmentation_model_selection_r1.dataset_role_ledger.v1",
   "protocol_id": "DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1",
-  "status": "FROZEN_IDENTITY_PIXEL_TRUTH_NOT_ACCESSED",
+  "status": "FRESH_FORMAL_HOLDOUT_FROZEN / DOWNLOADED_HASHED_NOT_INTERPRETED",
   "executor": "violjjet",
   "created_at_local": "2026-07-31",
   "roles": [
@@ -36,19 +36,27 @@
       "role": "fresh_formal_model_selection_holdout",
       "official_split": "test",
       "selection_status": "FROZEN_BEFORE_CANDIDATE_TRAINING",
-      "pixel_truth_status": "NOT_ACCESSED",
+      "pixel_truth_status": "DOWNLOADED_HASHED_NOT_INTERPRETED",
       "camera": "camera_chest",
       "lens": "left",
       "target_fps": 10.0,
       "start_frame": 0,
       "frames_per_session": 50,
       "session_ids": ["sanpo_real_v0:GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT", "sanpo_real_v0:972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl", "sanpo_real_v0:ic_BpoiSOIW-7_mffGenT6yissRNiPzT", "sanpo_real_v0:eHxtA669WpN381O4ZjVAmG3-3ZUewuXr"],
+      "official_test_positions_zero_based": [2, 3, 4, 8],
       "selection_rule": "Official test split order after excluding consumed old-blind sessions; first four sessions with metadata-confirmed >=50 aligned chest/left RGB and segmentation-mask objects.",
       "planned_manifest": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/manifest.jsonl",
       "required_label_authority": "source_ground_truth",
       "formal_truth_read": "one-shot after dev checkpoint/config freeze",
       "source_wise_metrics_required": true,
-      "sha256_receipt": null
+      "sha256_receipt": {
+        "freeze_receipt": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/freeze_receipt.json",
+        "freeze_receipt_sha256": "90214d93c2eaa02a1355bf341bf890358c442219535c51939290e957a52ece3e",
+        "manifest": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/manifest.jsonl",
+        "manifest_sha256": "eaad2a32640dfa1a64c30fc53a6c10818a99c74b7eacc4c8718bd50515ff879d",
+        "row_count": 200,
+        "session_count": 4
+      }
     }
   ],
   "role_invariants": [
