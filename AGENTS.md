@@ -10,7 +10,18 @@
 ## Research priority and evidence
 
 - All new or materially revised research follows [progressive research governance](docs/RESEARCH_GOVERNANCE.md): `DISCOVERY -> CANARY -> DEVELOPMENT -> CONFIRMATION -> DEPLOYMENT`. Freeze and evidence strictness increase with stage. Do not impose confirmation-grade one-shot execution or fully justified numeric gates on discovery by default, and never present discovery/canary/development evidence as confirmation.
-- RCLE-RF is the current BlindAssist research mainline. Read [the RCLE current entry](docs/research/rcle/README.md) before starting algorithm, thesis, or demo research; that entry alone owns RCLE's changing stage, terminals, authority and next action, which must not be duplicated here. If the canonical current entry contains contradictory current conclusions, links untracked material as authority, or its active handoff is under governance review, fail closed: do not begin a new formal execution, create or consume a claim, access protected outcomes, or infer successor authority. The current owner must atomically reconcile the tracked current entry, contracts, receipts and handoff before formal work resumes.
+- The current BlindAssist paper-system research mainline is owned by
+  [the dual-loop current entry](docs/research/dual-loop/README.md). Read that
+  entry before starting algorithm, thesis, demo, annotation, or evaluation
+  work; it alone owns the changing stage, terminals, authority and next action.
+  RCLE is paused, and its historical scientific/protocol terminals and retained
+  authority remain owned by [the RCLE current entry](docs/research/rcle/README.md).
+  If either canonical current entry contains contradictory current conclusions,
+  links untracked material as authority, or its active handoff is under
+  governance review, fail closed: do not begin a new formal execution, create
+  or consume a claim, access protected outcomes, or infer successor authority.
+  The current owner must atomically reconcile the tracked current entry,
+  contracts, receipts and handoff before formal work resumes.
 - Route-conditioned USTRF is historical and closed. Read [the route-conditioned program closure R1](docs/research/ustrf-sc/USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md) when touching its evidence. The former [observability-first continuous research goal](docs/research/ustrf-sc/USTRF_SC_OBSERVABILITY_FIRST_CONTINUOUS_RESEARCH_GOAL_2026-07-25.md) has no active, conditional, or automatic successor authority. Existing `egomotion_compensated_looming` code, documents, and receipts are RCLE precursor evidence, not proof that an RCLE phase or gate has completed.
 - Treat SANPO and other candidate-model work as research by default unless a task explicitly targets a release or runtime integration. Prioritize theoretical progress, larger valid datasets, controlled ablations, and reproducible quantitative evidence over immediate engineering delivery.
 - Do not reject or delay a research hypothesis solely because it exceeds the current Android latency, model-size, default-model, release, or deployment constraints. Keep such experiments isolated from production assets and report deployment metrics separately when they are measured.

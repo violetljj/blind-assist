@@ -76,9 +76,11 @@
 - [Frontier Upgrade 2026-07 研究档案](research/frontier-upgrade-2026-07/README.md)：按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层，只用于研究追溯。
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
-- [神经—几何双环研究主线](research/dual-loop/README.md)：当前冻结为
-  `ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`；
-  active R1 只保留 Development mechanism、row-density diagnostic 与
+- [中央图像阻塞互补性研究主线](research/dual-loop/README.md)：当前为
+  `CENTRAL_OBSTRUCTION_D0_A_AUTHORIZED / AGENT_LABEL_CANARY /
+  MODEL_B_OUTPUT_CLOSED / DEFAULT_APP_UNCHANGED`；当前唯一下一动作是
+  [D0-A Agent 标签可用性协议](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)。
+  旧 active R1 只保留 Development mechanism、row-density diagnostic 与
   [事件失败分解](research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)，
   不授权默认生产、产品、安全或自动 R2。
 - [RCLE 研究状态](research/rcle/README.md)：`paused / current truth`；保留 RCLE 的

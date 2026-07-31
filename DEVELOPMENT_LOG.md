@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。采用
+  `CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A` 为当前论文系统研究主线：
+  D0-A 按 `CANARY` 只冻结连续 RGB 输入宇宙，并以两路隔离 Agent、分歧时 fresh
+  第三 Agent 建立不可覆盖的中央图像阻塞 parent-event 账本；不设置人工队列。
+  合同、AI workflow、项目/文档索引和权限表已同步，模型 B、拓扑算子、融合、调度、
+  Android、A568、可通行性与安全结论保持关闭。验证使用 research protocol
+  validator、JSON parse、文档索引、项目结构、repo hygiene 与差异检查。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
   `CI_RESOURCE_ISOLATION_R1` 的第一轮资源与门禁修复：CI run
   [30609736963](https://github.com/violetljj/blind-assist/actions/runs/30609736963)

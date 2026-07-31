@@ -1,0 +1,294 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "profile": "STANDARD_CANARY_AGENT_LABEL_READINESS",
+  "governance_policy_id": "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2",
+  "governance_policy_sha256": "e4cd2b01118f36f38cbddebcac6551af782f631e7414e6c90b2f80c0fef33b6e",
+  "protocol_id": "CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A",
+  "version": "D0-A",
+  "date": "2026-07-31",
+  "stage": "CANARY",
+  "status": "AUTHORIZED_NOT_RUN",
+  "execution_authorized": true,
+  "question": "Can isolated AI reviewers, without access to YOLO, segmentation, fusion, scheduler, or prior event-effect outputs, produce a stable and exhaustive parent-natural-event ledger for visible central-image obstruction from a frozen continuous-RGB universe?",
+  "claims_allowed": [
+    "IMPLEMENTATION_DEBUGGED",
+    "NOT_EVALUABLE"
+  ],
+  "non_goals": [
+    "running YOLO, SegFormer, DDRNet, depth, anomaly segmentation, or any other candidate model",
+    "selecting a topology operator, free-space threshold, category remapping, or fusion rule",
+    "estimating intended route, user motion intent, real traversability, collision risk, or safety",
+    "changing Android, A568, the default model, risk, event, feedback, or production behavior",
+    "granting D0-B execution, Confirmation, Deployment, product, or real-user authority"
+  ],
+  "data_partitions": [
+    {
+      "id": "d0a-continuous-rgb-input-universe",
+      "source_identity": "EXISTING_CONTINUOUS_RGB_UNIVERSE_TO_BE_ENUMERATED_BY_D0_A0",
+      "content_identity": "PENDING_D0_A0_IMMUTABLE_MANIFEST_BEFORE_ANY_PRODUCTION_LABEL_PASS",
+      "identity_basis": "D0-A0 must enumerate complete source/session identities, continuous frame ranges, timestamps, ancestry, frame hashes, and session groups before D0-A2.",
+      "independence_group": "CAPTURE_SESSION_AND_SOURCE_ANCESTRY",
+      "ancestry": [
+        "EXISTING_BLINDASSIST_CONTINUOUS_RGB_SOURCES"
+      ],
+      "reuse_policy": "CANARY_AGENT_LABEL_READINESS_ONLY; disclose prior content or algorithm-output access per session; never infer unseen Confirmation status.",
+      "role": "CANARY",
+      "outcome_access": "NONE",
+      "result_access_state": "CONTENT_INSPECTED",
+      "observation_unit": "CAPTURE_SESSION",
+      "split_basis": "FULL_CONTINUOUS_SESSION_ENUMERATION_WITH_PARENT_EVENT_GROUPING",
+      "research_track": "CAPABILITY_DISCOVERY"
+    }
+  ],
+  "observation_contract": {
+    "roi_name": "CENTRAL_IMAGE_ATTENTION_REGION",
+    "roi_semantics": "A frozen image-space region only; not intended route, body heading, future trajectory, free space, or a safety corridor.",
+    "label_vocabulary": [
+      "VISIBLE_CENTRAL_OBSTRUCTION_PRESENT",
+      "NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE",
+      "NOT_EVALUABLE"
+    ],
+    "mandatory_claim_fields": {
+      "safe_to_traverse": "NOT_CLAIMED",
+      "intended_route": "NOT_AVAILABLE",
+      "user_motion_intent": "NOT_EVALUATED",
+      "real_world_collision_risk": "NOT_EVALUATED"
+    },
+    "required_quality_states": [
+      "STABLE",
+      "TURNING",
+      "BLURRED",
+      "DARK",
+      "OCCLUDED",
+      "OTHER_NOT_EVALUABLE"
+    ],
+    "parent_event_rule": "Consecutive observations belonging to one natural obstruction or one continuous not-evaluable episode form one parent event. Frames and derived windows are longitudinal repeats, never independent event samples.",
+    "event_fields": [
+      "parent_event_id",
+      "source_id",
+      "session_id",
+      "start_frame",
+      "end_frame",
+      "start_timestamp",
+      "end_timestamp",
+      "observation_label",
+      "camera_quality",
+      "event_generation_reason",
+      "overlap_with_other_event",
+      "group_id",
+      "claim_boundary"
+    ]
+  },
+  "agent_review_workflow": {
+    "workflow_id": "central_obstruction_agent_label_readiness_d0a_v1",
+    "policy_ref": "configs/ai_review_workflows_v1.json",
+    "validator_ref": "scripts/validate_ai_review_receipt.py",
+    "primary_passes": 2,
+    "fresh_context_per_pass": true,
+    "other_review_hidden_before_submission": true,
+    "candidate_output_visible": false,
+    "human_queue_required": false,
+    "agreement_route": "Matching labels and event boundaries form model consensus under the frozen matching rule.",
+    "disagreement_route": "A third fresh Agent first labels the same frozen evidence independently, then receives the two hash-bound reviews for adjudication.",
+    "unresolved_route": "Quarantine only the affected item as NOT_EVALUABLE; do not create or wait on a human task.",
+    "authority": "MODEL_ADJUDICATED_OBSERVATION_LABELS / CANARY_ONLY"
+  },
+  "phase_plan": [
+    {
+      "phase": "D0-A0",
+      "name": "INPUT_UNIVERSE_FREEZE",
+      "output": "Immutable source/session/frame/timestamp/ancestry manifest and SHA-256 receipt.",
+      "candidate_output_access": false
+    },
+    {
+      "phase": "D0-A1",
+      "name": "EXCLUDED_CALIBRATION_PILOT",
+      "output": "Excluded calibration bundle, frozen prompt, ROI, event-boundary/matching rule, readiness thresholds, and prompt/input hashes.",
+      "candidate_output_access": false
+    },
+    {
+      "phase": "D0-A2",
+      "name": "INDEPENDENT_AGENT_LABEL_PASSES",
+      "output": "Two immutable isolated review ledgers over the full admitted continuous-RGB universe.",
+      "candidate_output_access": false
+    },
+    {
+      "phase": "D0-A3",
+      "name": "CONSENSUS_AND_ADJUDICATION",
+      "output": "Hash-bound consensus/adjudication receipts plus a derived canonical ledger that never overwrites raw reviews.",
+      "candidate_output_access": false
+    },
+    {
+      "phase": "D0-A4",
+      "name": "EVENT_LEVEL_READINESS_AUDIT",
+      "output": "Parent-event agreement, source/session coverage, label distribution, adjudication burden, NOT_EVALUABLE burden, limitations, and one terminal.",
+      "candidate_output_access": false
+    }
+  ],
+  "artifact_contract": {
+    "root": "artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a/",
+    "required_before_d0a2": [
+      "input-universe-manifest.json",
+      "input-universe-receipt.json",
+      "review-prompt.md",
+      "review-policy-lock.json"
+    ],
+    "required_after_d0a3": [
+      "review-a.jsonl",
+      "review-b.jsonl",
+      "adjudication.jsonl",
+      "canonical-parent-events.jsonl",
+      "ai-review-validation-receipt.json"
+    ],
+    "immutability": "Raw reviewer and adjudicator outputs are append-only evidence. The canonical ledger is derived and cannot overwrite them."
+  },
+  "constraints": [
+    {
+      "id": "candidate-output-firewall",
+      "class": "INVARIANT",
+      "description": "No reviewer, adjudicator, event generator, readiness evaluator, or calibration pass may read YOLO, segmentation, depth, fusion, scheduler, risk, feedback, or prior candidate-effect output.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "input-universe-before-labels",
+      "class": "INVARIANT",
+      "description": "Complete source/session/frame ranges and their hashes must be frozen before any production label pass; easy segments cannot be added and difficult segments cannot be shortened or removed after inspection.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "agent-only-no-human-queue",
+      "class": "INVARIANT",
+      "description": "Annotation, review, adjudication, and readiness acceptance are autonomous. No human-required queue, fallback, or pending gate may be created.",
+      "failure_scope": "BRANCH"
+    },
+    {
+      "id": "raw-ledger-preservation",
+      "class": "INVARIANT",
+      "description": "Every isolated review and adjudication is hash-bound and retained; consensus derivation cannot overwrite or silently repair raw labels or boundaries.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "parent-event-analysis-unit",
+      "class": "INVARIANT",
+      "description": "Parent natural events are the analysis units. Frames, overlapping windows, and multiple observations from one parent event remain grouped longitudinal repeats.",
+      "failure_scope": "BRANCH"
+    },
+    {
+      "id": "no-clear-or-traversability-label",
+      "class": "INVARIANT",
+      "description": "The protocol may state only no visible central obstruction evidence; it cannot emit CLEAR, SAFE, FREE_SPACE, TRAVERSABLE, UNKNOWN_OBSTACLE, or equivalent real-world claims.",
+      "failure_scope": "BRANCH"
+    },
+    {
+      "id": "calibration-excluded-from-readiness",
+      "class": "INVARIANT",
+      "description": "D0-A1 calibration items cannot contribute to D0-A4 readiness counts or agreement. The final matching rule and numeric readiness thresholds must be frozen before D0-A2.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "unresolved-disagreement-abstains",
+      "class": "INVARIANT",
+      "description": "Unresolved review or event-boundary disagreement becomes NOT_EVALUABLE for the affected item; it cannot be converted into a forced positive or negative label.",
+      "failure_scope": "ITEM"
+    }
+  ],
+  "freeze": {
+    "level": "F1",
+    "outcome_access_started": false,
+    "amendment_mode": "IN_PLACE_BEFORE_OUTCOME",
+    "lock_transition": "After D0-A1 freezes the admitted manifest, prompts, matching rule, and numeric readiness thresholds, any production-label change requires a new protocol version."
+  },
+  "result_model": {
+    "execution_validity": "NOT_RUN",
+    "scientific_outcome": "NOT_RUN",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "terminal_scope": "EVIDENCE_VERSION"
+  },
+  "terminal_mapping": {
+    "READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT": {
+      "governance_outcome": "IMPLEMENTATION_DEBUGGED",
+      "meaning": "The frozen Agent workflow produced a sufficiently stable and covered model-adjudicated observation ledger under the D0-A1 lock.",
+      "authority": "D0-B DESIGN ONLY"
+    },
+    "HOLD_DATA": {
+      "governance_outcome": "NOT_EVALUABLE",
+      "meaning": "The admitted continuous-RGB universe lacks sufficient scoreable parent events, source/session coverage, or required scene/quality coverage.",
+      "authority": "NO D0-B EXECUTION"
+    },
+    "AGENT_LABEL_PROTOCOL_NOT_RELIABLE": {
+      "governance_outcome": "NOT_EVALUABLE",
+      "meaning": "The observable, event-boundary, matching, agreement, adjudication, or abstention process is not stable enough for D0-B.",
+      "authority": "NO D0-B EXECUTION"
+    }
+  },
+  "successor_policy": {
+    "new_version_allowed": true,
+    "preserve_previous_evidence": true,
+    "pass_successor": "A separate reviewed D0-B design may freeze one model B, one category mapping, one primary obstruction operator, and the A versus C event-level estimand.",
+    "hold_successor": "Retain the immutable inventory and labelability diagnosis; acquire or reclassify evidence only under a new bounded source plan.",
+    "unreliable_successor": "Revise the observation definition or Agent workflow in a new version; do not run model B against unstable labels.",
+    "automatic_d0b_execution_authority": false,
+    "automatic_confirmation_authority": false,
+    "automatic_android_or_deployment_authority": false
+  },
+  "experiment_design": {
+    "search_strategy": "SEQUENTIAL_AGENT_LABELABILITY_CANARY",
+    "minimal_discriminating_experiment": "Freeze one continuous-RGB universe and one excluded calibration set, then run two isolated full-universe label passes with fresh third-Agent adjudication only where the frozen agreement rule requires it.",
+    "resource_budget": "Existing continuous RGB only; bounded Agent review and local hash/receipt validation; no detector, segmentation, Android, device, network-model, or training execution.",
+    "stop_conditions": "Stop at the first valid D0-A terminal. Do not run model B, select a topology feature, or extend the admitted input universe after production review starts.",
+    "efficiency_strategy": "Reuse the project AI-review interface and validator; quarantine only disputed items; preserve all raw ledgers while keeping the canonical current conclusion in one entry."
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "H_D0A_AGENT_LABELABILITY",
+      "theoretical_or_empirical_basis": "Central-image visible obstruction is a narrower observable than intended-route traversability and can be reviewed from frozen RGB without candidate-model output.",
+      "causal_difference": "Separates whether the observation can be defined reliably from whether any segmentation model later adds event-level information to YOLO.",
+      "expected_information_gain": "Determines whether a D0-B model-increment experiment has a stable Agent-adjudicated event denominator or should stop before model search.",
+      "minimal_test": "Two isolated Agent passes plus hash-bound third-Agent adjudication under one frozen event matching rule.",
+      "evaluation_metric": "Parent-event agreement, source/session and event-type coverage, adjudication burden, and NOT_EVALUABLE burden under D0-A1 thresholds.",
+      "falsifier": "The frozen workflow cannot produce stable parent-event labels/boundaries or adequate cross-session scoreable coverage without candidate-output access.",
+      "cost": "LOW_TO_MEDIUM",
+      "resource_budget": "Existing continuous RGB, three isolated Agent roles when needed, and local validation only.",
+      "stop_condition": "Return HOLD_DATA or AGENT_LABEL_PROTOCOL_NOT_RELIABLE and do not run D0-B.",
+      "selection_reason": "It is the cheapest direct test of whether the proposed heterogeneous double-loop question is answerable before selecting or deploying a second model."
+    }
+  ],
+  "failure_learning": {
+    "failure_class": "NOT_RUN",
+    "observation": "No D0-A input manifest, calibration, production review, adjudication, or readiness audit has run under this protocol.",
+    "inference": "None before execution.",
+    "alternative_explanations": [
+      "The current source universe may lack visible central-obstruction diversity.",
+      "The ROI or event-boundary definition may be intrinsically ambiguous under head turns, blur, darkness, or occlusion.",
+      "Agent reviewers may share correlated visual priors despite context isolation."
+    ],
+    "constraint_challenges": [],
+    "next_hypotheses": [],
+    "reuse_candidates": [
+      "The frozen input inventory can remain a source-characterization asset.",
+      "Disagreement and NOT_EVALUABLE episodes can become future stress cases.",
+      "The review prompts and receipts can remain regression fixtures."
+    ],
+    "information_gain": "None before execution."
+  },
+  "authority": {
+    "d0a_input_universe_freeze": true,
+    "d0a_excluded_calibration": true,
+    "d0a_agent_labeling": true,
+    "d0a_agent_adjudication": true,
+    "d0a_readiness_audit": true,
+    "human_review_gate": false,
+    "model_b_execution": false,
+    "topology_operator_selection": false,
+    "fusion": false,
+    "scheduler": false,
+    "android": false,
+    "a568": false,
+    "shared_backbone": false,
+    "unknown_obstacle_claim": false,
+    "traversability_route_safety_product_claim": false,
+    "confirmation": false,
+    "deployment": false
+  },
+  "claim_ceiling": "MODEL_ADJUDICATED_OBSERVATION_LABELS / CANARY_ONLY. A READY terminal means only that a D0-B Development design is answerable. It is not human ground truth, objective sensor truth, model increment, traversability, real-user effect, safety, product, or deployment evidence."
+}

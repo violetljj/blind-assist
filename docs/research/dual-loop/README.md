@@ -1,10 +1,30 @@
-# BlindAssist 神经—几何双环研究主线
+# BlindAssist 中央图像阻塞互补性研究主线
 
-状态：`ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`
+状态：`CENTRAL_OBSTRUCTION_D0_A_AUTHORIZED / AGENT_LABEL_CANARY / MODEL_B_OUTPUT_CLOSED / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
 
 ## 当前决定
+
+2026-07-31，用户明确采用 Agent-only 标注并将“中央图像阻塞互补性”设为新的论文系统
+研究主线。当前唯一获授权阶段是
+[CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)：
+先冻结完整 source/session/连续帧输入宇宙，再使用两个互不可见的新上下文进行全量
+观察标注；分歧时由第三个 fresh Agent 先独立标注、再绑定两份原始 receipt 裁决。
+本路线不设人工队列；标注、复核、裁决与验收均由隔离 Agent 自主完成。
+
+D0-A 只回答中央图像可观察阻塞能否形成稳定的 Agent-adjudicated parent-natural-event
+账本。标签固定为 `VISIBLE_CENTRAL_OBSTRUCTION_PRESENT`、
+`NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE` 与 `NOT_EVALUABLE`；第二项不表示画面无
+障碍、可以通行或安全。D0-A 属于 `CANARY / CAPABILITY_DISCOVERY`，当前不运行 YOLO、
+SegFormer、DDRNet、深度或任何模型 B，不选择拓扑算子、不做融合、调度、Android 或
+A568。只有 `READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT` 才允许另行设计 D0-B，且不
+自动授权 D0-B 执行。
+
+旧神经—几何双环、Q0 语义刷新与 target-local warp residual 的终态均保持不可变，
+作为已关闭前序、Development 诊断或旁路线保留；它们不自动进入新主线。
+
+## 已关闭前序与保留证据
 
 2026-07-31 的 rank-2 Shiraz 设备评价已完成：baseline/candidate 均命中 `7/7`
 正例，5 个 baseline-false 负窗全部保留，反馈行由 `508 -> 494`；终点为
@@ -280,6 +300,10 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 
 | 能力 | authority |
 | --- | --- |
+| D0-A 输入宇宙冻结、排除式校准、Agent 标注/裁决与 readiness 审计 | `AUTHORIZED / NOT_RUN / CANARY_ONLY` |
+| D0-A 人工标注、人工复核或人工验收队列 | `NOT_REQUIRED / MUST_NOT_BLOCK` |
+| D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `LOCKED_UNTIL_D0_A_READY / DESIGN_REQUIRES_SEPARATE_REVIEW` |
+| D0-B 模型执行、融合或事件增量评价 | `NOT_AUTHORIZED` |
 | 编写和维护阶段−1准入合同 | `AUTHORIZED` |
 | F-1A 数据审计与既有 RGB 标签修复 | `COMPLETED / READY / VALID` |
 | F-1B0 双源时间基线补测 | `COMPLETED / READY / VALID` |
@@ -305,6 +329,32 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 真人、独立助行、安全、产品或跨设备结论 | `NOT_AUTHORIZED` |
 
 ## 下一步
+
+D0-A 固定顺序为：
+
+```text
+D0-A0 冻结输入宇宙与哈希清单
+  ↓
+D0-A1 在排除于正式计数的 calibration bundle 上冻结 ROI、prompt、
+      parent-event 边界/匹配规则与数值 readiness 门
+  ↓
+D0-A2 两路隔离 Agent 全量盲标
+  ↓
+D0-A3 共识与 fresh 第三 Agent 分歧裁决；原始账本不可覆盖
+  ↓
+D0-A4 parent-event 一致性、跨 session 覆盖与 NOT_EVALUABLE burden 审计
+  ↓
+READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT
+| HOLD_DATA
+| AGENT_LABEL_PROTOCOL_NOT_RELIABLE
+```
+
+当前唯一下一动作是 D0-A0；在 D0-A1 lock 完成前不得启动正式标注，在 D0-A 返回
+READY 前不得运行模型 B。D0-B 若以后获准，只能预注册一个模型 B、一个类别映射、
+一个主阻塞算子，并以 `C = A + B` 相对当前 `A = YOLO-only` 的 parent-event 增量
+作为主比较；不得在结果后从多个模型或拓扑指标中挑选胜者。
+
+### 已关闭几何与调度路线的保留规则
 
 LITE R0/R1/R2、production temporal geometry factorial A/B R0 与 D0 R1/R2/R3
 保持各自已消费的关闭终态，不重跑、不调阈值救援。隔离 active R1 已完成

@@ -43,6 +43,7 @@ closure scope 以 [渐进式研究治理](RESEARCH_GOVERNANCE.md) 为准。
 | `evalset_visual_semantics_v1` | 场景/风险/PII | manifest 与跨帧一致性 | benchmark 数据准入 |
 | `sanpo_p3_intake_v1` | scene/mask/PII | consent/hash/taxonomy/session | research 数据准入 |
 | `ustrf_event_review_v1` | 因果多帧事件和锚点 | 路线关系与协议证据 | model-consensus event truth |
+| `central_obstruction_agent_label_readiness_d0a_v1` | 冻结连续 RGB 中的中央阻塞可观察状态与事件边界 | 输入/候选输出防火墙、session/parent-event 身份与 receipt | `MODEL_ADJUDICATED_OBSERVATION_LABELS / CANARY_ONLY` |
 | `metric_geometry_review_v1` | 图表、覆盖、失败样本 | 原始测量 receipt 与阈值 | isolated geometry shadow |
 | `sanpo_release_review_v1` | 最差事件与用户风险 | 全门禁、哈希和回归 | 模型替换授权 |
 

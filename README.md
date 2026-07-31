@@ -9,10 +9,13 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - 当前版本：`v10.9.0`，`versionCode=37`。
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
 - 当前论文系统研究主线为
-  [神经—几何双环阶段−1准入](docs/research/dual-loop/README.md)，当前冻结状态为
-  `ISOLATED_ACTIVE_MECHANISM_LANDED / DEFAULT_OFF / FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
-  active R1 只保留 Development mechanism 与 row-density diagnostic；事件级路线已关闭，
-  不授权默认生产、产品或安全结论。详见
+  [中央图像阻塞互补性](docs/research/dual-loop/README.md)，当前状态为
+  `CENTRAL_OBSTRUCTION_D0_A_AUTHORIZED / AGENT_LABEL_CANARY /
+  MODEL_B_OUTPUT_CLOSED / DEFAULT_APP_UNCHANGED`。D0-A 只允许冻结输入宇宙并由隔离
+  Agent 建立中央图像可观察阻塞账本；它不运行分割模型，不形成互补性、真实可通行性、
+  产品或安全结论。旧神经—几何 active R1 以
+  `FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY` 保留为已关闭前序，
+  详见
   [R1 事件失败分解](docs/research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)。RCLE 已暂停，历史终态与权限由
   [RCLE current 入口](docs/research/rcle/README.md) 保留。研究过程遵循
   [渐进式治理](docs/RESEARCH_GOVERNANCE.md)，任何研究证据都不自动改变正式 App、
