@@ -1,7 +1,7 @@
 # Conditional Segmentation Gating R0.1 Post-primary Shadow Protocol
 
-状态：`PROTOCOL_FROZEN / IMPLEMENTATION_RECOVERY_V2_FROZEN_NOT_RUN /
-RESULT_NOT_RUN /
+状态：`PROTOCOL_FROZEN / EXECUTION_COMPLETE /
+VALIDATOR_SUMMARY_SCHEMA_RECOVERY_V2_FROZEN_NOT_RUN / RESULT_NOT_YET_VALID /
 POST_PRIMARY_SHADOW_ABLATION_ONLY / NO_SELECTION_AUTHORITY /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
@@ -13,6 +13,14 @@ binding list 传给了 single-binding loader，触发 `TypeError`；没有创建
 没有计算 mask、component decision 或任何 shadow 指标。V2 只把两组 input list 路由到
 既有 multi-file bound loader，并让 preflight 先完整验证 520/11,757 membership。
 科学定义、阈值、角色、material/heterogeneity 规则和 output contract 均不变。
+
+V2 implementation 已在 Git `827dcda976394cd4d2a0c6f5bc29993ada9d9d5d` 完成一次
+shadow execution，并写出 520 行 frame 与 23,514 行 component decision。初始独立
+validator 在任何 aggregation 检查前以 `reported primary binding drifted` 停止：
+runner 的 primary 摘要包含 `reference_only/terminal_unchanged`，validator 却期待
+不存在的 `protocol_id` 字段。validation recovery 只让 validator 精确匹配 runner 已
+冻结的 primary-summary schema；不改 result、frame/component 输出、算法或解释规则。
+在 recovery validator 通过前，本 evidence 仍为 `RESULT_NOT_YET_VALID`。
 
 ## 纠正与研究问题
 

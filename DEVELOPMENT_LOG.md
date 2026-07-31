@@ -1,4 +1,12 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。R0.1 V2 implementation
+  Git `827dcda976394cd4d2a0c6f5bc29993ada9d9d5d` 已完成一次 520-frame、23,514
+  shadow component-decision 执行。初始独立 validator 在 0 项 aggregation checks 后以
+  `reported primary binding drifted` 停止：runner 摘要包含
+  `reference_only/terminal_unchanged`，validator 却期待不存在的 `protocol_id`。
+  validation recovery 只修 primary-summary exact schema，不修改既有 result、
+  frame/component 输出、candidate、阈值、material/heterogeneity 或 authority；
+  当前 `EXECUTION_COMPLETE / RESULT_NOT_YET_VALID`。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。R0.1 初始冻结 Git
   `6ef3014dbea24b24ca31fadd1c9c9eda829d2481` 的首次 activation 在读取 raw shadow
   frame/component 文件前因 input binding list 被传给 single-binding loader 而

@@ -588,7 +588,7 @@ def validate(
         ):
             raise ValueError("bound primary validation identity drifted")
         expected_primary_binding = {
-            "protocol_id": primary_binding["protocol_id"],
+            "reference_only": True,
             "result_sha256": primary_binding["result"]["sha256"],
             "frame_metrics_sha256": primary_binding["frame_metrics"]["sha256"],
             "component_decisions_sha256": primary_binding[
@@ -602,6 +602,7 @@ def validate(
             ],
             "terminal": primary_binding["terminal"],
             "next_boundary": primary_binding["next_boundary"],
+            "terminal_unchanged": True,
         }
         if result.get("primary_r0") != expected_primary_binding:
             raise ValueError("reported primary binding drifted")

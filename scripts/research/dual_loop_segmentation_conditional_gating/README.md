@@ -1,7 +1,7 @@
 # dual_loop_segmentation_conditional_gating
 
 状态：development；`R0_PRIMARY_COMPLETE_VALID_NOT_SUPPORTED /
-R0_1_SHADOW_IMPLEMENTATION_RECOVERY_V2_FROZEN_NOT_RUN /
+R0_1_SHADOW_EXECUTION_COMPLETE / VALIDATOR_RECOVERY_PENDING /
 FAMILY_TERMINAL_PENDING`
 
 ## 研究问题与版本
@@ -58,6 +58,10 @@ R0.1 只输出 `shadow_frame_metrics.jsonl`、`shadow_component_decisions.jsonl`
 shadow input 前因 input-list loader 类型错误停止；没有创建 output 或计算指标。V2
 只修复 multi-file binding 路由，并在 preflight 中先验证完整 520-frame/11,757-component
 membership；候选与解释合同不变。
+
+V2 已生成一次 shadow evidence；初始 validator 因 primary-summary schema 与 runner
+不一致而在 0 项 aggregation checks 后停止。当前 recovery 只修摘要字段匹配，不修改
+既有 result/frame/component evidence；恢复校验通过前结果不获得 `VALID` 身份。
 
 输入 SHA、520 帧、11,757 个 raw component、十个 session 分母、单一候选与全部阈值
 均由 config 绑定。runner 先复现 pilot/expansion 的 baseline、union causal 2-of-3 与
