@@ -7,6 +7,7 @@ R0_1_SHADOW_VALID_NO_MATERIAL_NO_HETEROGENEITY /
 BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP /
 FP_WEIGHTED_SAMPLING_NOT_SUPPORTED /
 SINGLE_FP_AWARE_SUCCESSOR_STOP /
+LEARNED_COMPONENT_VALIDATOR_R0_FROZEN_NOT_RUN /
 VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
 THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
@@ -231,6 +232,16 @@ checkpoints、逐像素核对 1,920 个 prediction masks，并通过 28,861 项�
 `FP_WEIGHTED_SAMPLING_NOT_SUPPORTED`。这只关闭按 train-only baseline FP pixels
 重加权 30% full-frame 抽样的单一候选，不扩大为所有 residual-aware/FP-aware training
 失败；不在已消费 outcome 上换 seed、改 crop、loss 或 target 救援。
+
+[Failure-Aware Causal Component Validator R0 protocol](DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0_PROTOCOL_2026-08-01.md)
+现已冻结但尚未执行。它只用 current/past runtime component 特征、唯一
+`StandardScaler + L2 Logistic Regression`、10 个 source-session 的 nested LOSO
+cross-fit 与训练上下文内阈值选择，比较 raw、causal 2-of-3、confidence `>=.65`、历史
+primary conditional gate 和 learned validator。全部 520 帧/11,757 components 已烧为
+Development；每个 scored session 从自身 fold 的 scaler、weight、模型和阈值中排除，
+但结果仍只可称 consumed Development robustness，不能称 fresh、unseen、independent
+validation 或 Confirmation。协议冻结九项 utility 门、host P95 `<3 ms` 与有界内存门；
+失败后不换分类器或 feature subset 救援。
 
 独立的 host-only visual sidecar R0 已可用，只显示 YOLO boxes、
 raw heatmap、候选、gate pass/reject/abstain 与原因，固定水印且

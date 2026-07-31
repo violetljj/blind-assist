@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。冻结
+  `DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0` 协议与实现，当前
+  `RESULT_NOT_RUN`。输入绑定为 520 帧、11,757 raw components、10 个已消费
+  Development source-session；前向角色限定为
+  `CONSUMED_DEVELOPMENT_CROSSFIT_CONTEXT_ONLY`，不修改历史 R1 amendment，也不恢复
+  fresh/unseen/independent/Confirmation 身份。模型唯一固定为 21 列 current/past
+  因果特征的 `StandardScaler + L2 Logistic Regression`；外层/内层均按 source-session
+  LOSO，outer-heldout session 不进入 scaler、weight、模型或阈值。预检重建全部组件表
+  并通过 6 项 causality/leakage/threshold focused tests；entropy、future persistence、
+  truth/mechanism、session/scene routing 与伪造 YOLO same-class/overlap 均不进入模型。
+  九项 utility 门、host P95 `<3 ms`、64 KiB model/scaler、1 MiB bounded state/buffer
+  及三态 terminal 均已在 outcome 前数值冻结；未访问 fresh、未拟合正式 fold、未改
+  Android、risk/feedback、提醒或默认 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
   `DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0` 单一 successor。冻结 commit
   `e98b3efb7d556351c6536923553f46302b3ac47e` 上完成三 seed × 1200 steps；
