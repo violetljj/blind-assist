@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。前向采用
+  `RISK_TIERED_RESEARCH_GOVERNANCE_R3`，建立 `CANARY_LITE /
+  DEVELOPMENT_STANDARD / CONFIRMATION_STRICT` 三档执行配置；R1/R2 policy 与历史
+  receipt 保持不可变。Canary 默认不再要求穷尽数据、全量双 Agent、完整 hash chain
+  或 one-shot；Development 允许在 burned 数据上按固定预算比较至多 3 个有因果差异
+  的候选并在 held-out 前冻结一个；Confirmation 保留完整冻结、独立 validator 和
+  禁止结果后救援。Agent review 改为确定性校验、低风险单 Agent 加冻结抽样审计、
+  关键/歧义双 pass、材料分歧才第三 Agent；单次控制面错误可用轻量 incident receipt。
+  guarded host preflight 改为正式 one-shot/不可逆 claim、预计超过 15 分钟或高资源
+  风险触发，3–15 分钟可逆任务采用轻量运行合同。D0-A 已继承 `CANARY_LITE`：按适配度
+  排序现有 RGB 并满足充分性即停止，先做标签 pilot；允许在排除数据上运行一个不产生
+  效果证据、对标签 Agent 隐藏的 reference model-B 技术 smoke；正式标注采用风险分层
+  Agent 审计，后继 D0-B 改为 bounded Development shortlist 后再冻结 held-out 候选。
+  未运行标注、模型效果、融合、Android 或设备实验，默认 App 与历史终态不变。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。小范围修订
   `CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A`：将
   `REUSE_FIRST / FITNESS_FIRST` 固化为 D0-A0 准入原则，禁止仅因数据集曾被其他

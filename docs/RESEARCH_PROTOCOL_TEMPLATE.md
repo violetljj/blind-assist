@@ -13,13 +13,13 @@
 
 | Profile | 默认阶段 | 必需内容 |
 | --- | --- | --- |
-| `LITE` | Discovery / Canary | 问题、数据/访问、最小实验、结果、限制和下一步 |
-| `STANDARD` | Development | LITE 加实现身份、专项测试、可复现输入输出和停止条件 |
-| `STRICT` | Confirmation / Deployment | STANDARD 加冻结机器合同、独立 validator、receipt 和完整 authority |
+| `CANARY_LITE` | Discovery / Canary | 问题、数据/访问、最小实验、结果、限制和下一步；按适配度排序并在充分时停止 |
+| `DEVELOPMENT_STANDARD` | Development | CANARY_LITE 加实现身份、专项测试、可复现输入输出和停止条件；允许 bounded candidate shortlist |
+| `CONFIRMATION_STRICT` | Confirmation / Deployment | DEVELOPMENT_STANDARD 加冻结机器合同、独立 validator、receipt 和完整 authority |
 
 低阶段可以因真实污染、权利或不可逆风险升级 profile；不得仅因为模板存在而升级。
-LITE/STANDARD 不要求为空字段生成占位文件。领域已有机器合同的，继续遵守其 current
-规则，但新工作默认选择能够覆盖实际风险的最小 profile。
+`CANARY_LITE/DEVELOPMENT_STANDARD` 不要求为空字段生成占位文件。领域已有机器合同
+的，继续遵守其 current 规则，但新工作默认选择能够覆盖实际风险的最小 profile。
 
 ## 1. 问题与阶段
 
@@ -198,23 +198,24 @@ governance_changes_needed:
 review、receipt 或状态文件。同时判断低价值算法/治理模块是否应继续、合并、降级
 或删除。
 
-## 9. STRICT profile 机器合同
+## 9. CONFIRMATION_STRICT profile 机器合同
 
 Confirmation、Deployment，或具有真实 outcome 污染、不可逆发布、权利/安全风险的
-任务，准备 JSON contract。普通 LITE Discovery/Canary 不为“可能以后有用”提前建立
-机器状态机；STANDARD Development 仅在身份、冻结或重放风险需要时使用。
+任务，准备 JSON contract。普通 `CANARY_LITE` Discovery/Canary 不为“可能以后有用”
+提前建立机器状态机；`DEVELOPMENT_STANDARD` 仅在身份、冻结或重放风险需要时使用。
 
 字段结构可参考：
 
 机器合同必须绑定 `governance_policy_id` 与 canonical policy SHA-256。调整策略时应
 显式升级并重绑合同；不能用 `--policy` 临时换一份更宽松的文件取得 `VALID`。
-validator 默认按合同中的 policy ID 选择保留的 R1 或当前 R2；显式 `--policy` 只用于
-审计，不得用来让合同通过另一版本规则。
+validator 默认按合同中的 policy ID 选择保留的 R1/R2 或当前 R3；显式 `--policy`
+只用于审计，不得用来让合同通过另一版本规则。
 
 ```json
 {
   "schema_version": "blindassist.research_protocol.v1",
-  "governance_policy_id": "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2",
+  "profile": "CANARY_LITE",
+  "governance_policy_id": "RISK_TIERED_RESEARCH_GOVERNANCE_R3",
   "governance_policy_sha256": "<canonical-policy-sha256>",
   "protocol_id": "EXAMPLE_R0",
   "version": "R0",

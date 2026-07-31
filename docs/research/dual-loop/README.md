@@ -1,6 +1,7 @@
 # BlindAssist 中央图像阻塞互补性研究主线
 
-状态：`CENTRAL_OBSTRUCTION_D0_A_AUTHORIZED / AGENT_LABEL_CANARY / MODEL_B_OUTPUT_CLOSED / DEFAULT_APP_UNCHANGED`
+状态：`CENTRAL_OBSTRUCTION_D0_A_AUTHORIZED / CANARY_LITE_AGENT_LABEL /
+EXCLUDED_MODEL_B_TECHNICAL_SMOKE_ONLY / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
 
@@ -9,24 +10,31 @@
 2026-07-31，用户明确采用 Agent-only 标注并将“中央图像阻塞互补性”设为新的论文系统
 研究主线。当前唯一获授权阶段是
 [CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)：
-先冻结完整 source/session/连续帧输入宇宙，再使用两个互不可见的新上下文进行全量
-观察标注；分歧时由第三个 fresh Agent 先独立标注、再绑定两份原始 receipt 裁决。
-本路线不设人工队列；标注、复核、裁决与验收均由隔离 Agent 自主完成。
+按 `CANARY_LITE` 先对现有连续 RGB 做适配度排序，以冻结充分性规则选出最小 admitted
+bundle；在排除式 calibration 上完成标签 pilot 和抽样审计规则，再用一个 primary
+Agent 标注 admitted bundle。正例、`NOT_EVALUABLE`、歧义/terminal-changing item 和
+冻结抽样进入第二路隔离 Agent；只有材料分歧才由 fresh 第三 Agent 裁决。本路线不设
+人工队列；标注、抽样复核、裁决与验收均由隔离 Agent 自主完成。
 
-D0-A0 采用 `REUSE_FIRST / FITNESS_FIRST`：先审计全部现有可访问连续 RGB，再按当前
-中央阻塞问题的可观察性、身份完整性、实际历史访问和 claim overlap 逐 session 分配
-角色。数据曾被其他算法、主线或实验使用，不构成按数据集名称排除的理由；相关历史
+D0-A0 采用 `REUSE_FIRST / FITNESS_FIRST / STOP_ON_ADEQUACY`：先按当前中央阻塞
+问题的可观察性、身份完整性、事件多样性、实际历史访问、claim overlap 和处理成本
+排序现有可访问连续 RGB；满足冻结充分性规则后停止扩充，不要求为完整性遍历全部存量。
+数据曾被其他算法、主线或实验使用，不构成按数据集名称排除的理由；相关历史
 访问最多使受影响的最小身份单元降级为 calibration、Canary、Development、诊断、
 回归或压力样本。只有当前问题所需信息确实缺失时才局部记为
 `NOT_EVALUABLE_FOR_CURRENT_QUESTION`，不得全局封存优秀数据。
 
-D0-A 只回答中央图像可观察阻塞能否形成稳定的 Agent-adjudicated parent-natural-event
+D0-A 只回答中央图像可观察阻塞能否形成稳定的、带风险分层独立审计的 Agent-labeled
+parent-natural-event
 账本。标签固定为 `VISIBLE_CENTRAL_OBSTRUCTION_PRESENT`、
 `NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE` 与 `NOT_EVALUABLE`；第二项不表示画面无
-障碍、可以通行或安全。D0-A 属于 `CANARY / CAPABILITY_DISCOVERY`，当前不运行 YOLO、
-SegFormer、DDRNet、深度或任何模型 B，不选择拓扑算子、不做融合、调度、Android 或
-A568。只有 `READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT` 才允许另行设计 D0-B，且不
-自动授权 D0-B 执行。
+障碍、可以通行或安全。D0-A 属于 `CANARY_LITE / CAPABILITY_DISCOVERY`。唯一允许的
+模型 B 工作是 `D0-AT`：在排除于 readiness 和后续效果评价的数据上，用一个声明的
+reference implementation 检查加载、输出 schema、空间分辨率、有限值和有界运行；
+它不选择或调优模型/类别/拓扑，不计算事件效果，且输出对标签 Agent 保持关闭。
+D0-A 不做融合、调度、Android 或 A568。只有
+`READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT` 才允许另行设计
+`DEVELOPMENT_STANDARD` D0-B，且不自动授权 D0-B 执行。
 
 旧神经—几何双环、Q0 语义刷新与 target-local warp residual 的终态均保持不可变，
 作为已关闭前序、Development 诊断或旁路线保留；它们不自动进入新主线。
@@ -307,7 +315,8 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 
 | 能力 | authority |
 | --- | --- |
-| D0-A 输入宇宙冻结、排除式校准、Agent 标注/裁决与 readiness 审计 | `AUTHORIZED / NOT_RUN / CANARY_ONLY` |
+| D0-A 适配度排序、最小 admitted bundle、排除式校准、风险分层 Agent 标注/裁决与 readiness 审计 | `AUTHORIZED / NOT_RUN / CANARY_LITE_ONLY` |
+| D0-AT 排除数据 reference model-B 接口 smoke | `AUTHORIZED / TECHNICAL_FEASIBILITY_ONLY / NO_EFFECT_EVIDENCE` |
 | D0-A 人工标注、人工复核或人工验收队列 | `NOT_REQUIRED / MUST_NOT_BLOCK` |
 | D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `LOCKED_UNTIL_D0_A_READY / DESIGN_REQUIRES_SEPARATE_REVIEW` |
 | D0-B 模型执行、融合或事件增量评价 | `NOT_AUTHORIZED` |
@@ -340,26 +349,33 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 D0-A 固定顺序为：
 
 ```text
-D0-A0 复用优先审计现有数据，冻结输入宇宙、逐 session 适配/历史访问角色账本与哈希清单
+D0-A0 复用优先排序现有数据，冻结充分性/停止规则与最小 admitted bundle
   ↓
-D0-A1 在排除于正式计数的 calibration bundle 上冻结 ROI、prompt、
-      parent-event 边界/匹配规则与数值 readiness 门
+D0-A1 在排除式 calibration bundle 上完成标签 pilot，冻结 ROI、prompt、
+      parent-event 边界/匹配、歧义分层、抽样审计与 readiness 门
   ↓
-D0-A2 两路隔离 Agent 全量盲标
+D0-AT 在独立排除数据上运行一个 reference model-B 技术 smoke；
+      输出不进入标签或效果评价
   ↓
-D0-A3 共识与 fresh 第三 Agent 分歧裁决；原始账本不可覆盖
+D0-A2 primary Agent 标注 admitted bundle；关键/歧义 item 与冻结样本进入第二路
   ↓
-D0-A4 parent-event 一致性、跨 session 覆盖与 NOT_EVALUABLE burden 审计
+D0-A3 只对材料分歧运行 fresh 第三 Agent；原始账本与审计状态不可覆盖
+  ↓
+D0-A4 sampled/关键 parent-event 一致性、跨 session 覆盖、NOT_EVALUABLE burden
+      与技术 smoke 审计
   ↓
 READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT
 | HOLD_DATA
 | AGENT_LABEL_PROTOCOL_NOT_RELIABLE
+| HOLD_MODEL_B_TECHNICAL_FEASIBILITY
 ```
 
 当前唯一下一动作是 D0-A0；在 D0-A1 lock 完成前不得启动正式标注，在 D0-A 返回
-READY 前不得运行模型 B。D0-B 若以后获准，只能预注册一个模型 B、一个类别映射、
-一个主阻塞算子，并以 `C = A + B` 相对当前 `A = YOLO-only` 的 parent-event 增量
-作为主比较；不得在结果后从多个模型或拓扑指标中挑选胜者。
+READY 前除 D0-AT 外不得运行模型 B 效果评价。D0-B 若以后获准，可在 burned
+Development 数据上预注册至多 3 个具有明确因果差异的模型 B/类别映射/阻塞算子
+候选、固定预算和选择规则；必须在 held-out outcome access 前冻结一个候选，再以
+`C = A + B` 相对当前 `A = YOLO-only` 的 parent-event 增量作为主比较；不得在
+held-out 结果后挑选胜者。
 
 ### 已关闭几何与调度路线的保留规则
 

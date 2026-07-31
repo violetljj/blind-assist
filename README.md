@@ -10,10 +10,11 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
 - 当前论文系统研究主线为
   [中央图像阻塞互补性](docs/research/dual-loop/README.md)，当前状态为
-  `CENTRAL_OBSTRUCTION_D0_A_AUTHORIZED / AGENT_LABEL_CANARY /
-  MODEL_B_OUTPUT_CLOSED / DEFAULT_APP_UNCHANGED`。D0-A 只允许冻结输入宇宙并由隔离
-  Agent 建立中央图像可观察阻塞账本；它不运行分割模型，不形成互补性、真实可通行性、
-  产品或安全结论。旧神经—几何 active R1 以
+  `CENTRAL_OBSTRUCTION_D0_A_AUTHORIZED / CANARY_LITE_AGENT_LABEL /
+  EXCLUDED_MODEL_B_TECHNICAL_SMOKE_ONLY / DEFAULT_APP_UNCHANGED`。D0-A 按适配度
+  排序现有连续 RGB、满足充分性即停止，并由隔离 Agent 建立中央图像可观察阻塞账本；
+  仅允许在排除数据上运行不产生效果证据的模型 B 接口 smoke，不形成互补性、真实
+  可通行性、产品或安全结论。旧神经—几何 active R1 以
   `FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY` 保留为已关闭前序，
   详见
   [R1 事件失败分解](docs/research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)。RCLE 已暂停，历史终态与权限由

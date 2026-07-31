@@ -126,8 +126,9 @@ pwsh -NoProfile -File scripts/run_host_research.ps1 `
 
 ## 长任务统一准入
 
-`scripts/run_host_research.ps1` 适合可逆开发循环中的 CPU 进程池任务。预计超过
-3 分钟或属于正式 one-shot 的新任务必须改用：
+`scripts/run_host_research.ps1` 适合可逆开发循环中的 CPU 进程池任务。以下新任务
+必须改用 guarded launcher：正式 one-shot 或不可逆 claim、预计超过 15 分钟、
+高 I/O/内存/设备风险，或轻量 pilot 无法给出运行上界：
 
 ```powershell
 pwsh -NoProfile -File scripts/run_guarded_host_research.ps1 `
@@ -162,6 +163,11 @@ guarded launcher 在创建 runner 进程前调用
 - CUDA/mixed 任务的当前空闲显存满足 receipt 下限；
 - formal 任务声明 one-shot、runner-only claim、activation authority 和互异的
   claim/output/failure 路径。
+
+预计 3–15 分钟且可逆的 `CANARY_LITE/DEVELOPMENT_STANDARD` 工作不需要完整 preflight
+receipt，只需在启动参数或轻量 run note 中给出 timeout、可观察进度和 scoped output；
+短小可逆 Canary 可直接运行。无论时长，只要出现反复解压、交换、明显资源闲置或
+进度不透明，就升级为性能诊断；这项豁免不能用于正式 one-shot。
 
 收据的最小结构为：
 

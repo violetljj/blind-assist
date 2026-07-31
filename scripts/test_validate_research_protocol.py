@@ -81,6 +81,7 @@ def base_protocol(stage: str = "DISCOVERY") -> dict:
         )
     return {
         "schema_version": target.PROTOCOL_SCHEMA,
+        "profile": POLICY["profile_selection_rules"]["default_by_stage"][stage],
         "governance_policy_id": POLICY["policy_id"],
         "governance_policy_sha256": target._policy_digest(POLICY),
         "protocol_id": f"TEST_{stage}",
@@ -130,6 +131,73 @@ def base_protocol(stage: str = "DISCOVERY") -> dict:
 
 
 class ProgressiveResearchGovernanceTest(unittest.TestCase):
+    def test_current_policy_requires_stage_appropriate_profile(self) -> None:
+        protocol = base_protocol("DEVELOPMENT")
+        protocol["profile"] = "CANARY_LITE"
+        result = target.validate_document(protocol, POLICY)
+        self.assertIn("EXECUTION_PROFILE_BELOW_STAGE", result.errors)
+
+    def test_lower_stage_may_escalate_profile_with_rationale(self) -> None:
+        protocol = base_protocol("CANARY")
+        protocol["profile"] = "DEVELOPMENT_STANDARD"
+        protocol["profile_escalation_rationale"] = (
+            "Claim-critical identity risk requires implementation-level replay."
+        )
+        result = target.validate_document(protocol, POLICY)
+        self.assertFalse(result.errors)
+
+    def test_lower_stage_profile_escalation_needs_named_risk(self) -> None:
+        protocol = base_protocol("CANARY")
+        protocol["profile"] = "DEVELOPMENT_STANDARD"
+        result = target.validate_document(protocol, POLICY)
+        self.assertIn("EXECUTION_PROFILE_ESCALATION_RATIONALE", result.errors)
+
+    def test_operational_invalid_may_use_lightweight_incident(self) -> None:
+        protocol = base_protocol("CANARY")
+        protocol["result_model"] = {
+            "execution_validity": "INVALID",
+            "scientific_outcome": "NOT_EVALUABLE_DUE_TO_EXECUTION",
+            "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+            "terminal_scope": "EVIDENCE_VERSION",
+        }
+        protocol["failure_record_mode"] = "LIGHTWEIGHT_OPERATIONAL_INCIDENT"
+        protocol["operational_incident"] = {
+            "failure_class": "DEPENDENCY_OR_ENVIRONMENT",
+            "observation": "The runner stopped before outcome access.",
+            "impact_scope": "EVIDENCE_VERSION",
+            "scientific_outcome_accessed": False,
+            "prevention_or_existing_guard": "Add a dependency preflight.",
+        }
+        protocol["round_summary"] = {
+            key: "NONE" for key in POLICY["required_round_summary_fields"]
+        }
+        result = target.validate_document(protocol, POLICY)
+        self.assertFalse(result.errors)
+
+    def test_scientific_failure_cannot_use_lightweight_incident(self) -> None:
+        protocol = base_protocol("CANARY")
+        protocol["result_model"] = {
+            "execution_validity": "VALID",
+            "scientific_outcome": "MECHANISM_DIRECTION_NOT_SUPPORTED",
+            "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+            "terminal_scope": "IMPLEMENTATION_VERSION",
+        }
+        protocol["failure_record_mode"] = "LIGHTWEIGHT_OPERATIONAL_INCIDENT"
+        protocol["operational_incident"] = {
+            "failure_class": "SCIENTIFIC_RESULT",
+            "observation": "The mechanism was not supported.",
+            "impact_scope": "IMPLEMENTATION_VERSION",
+            "scientific_outcome_accessed": False,
+            "prevention_or_existing_guard": "NONE",
+        }
+        protocol["round_summary"] = {
+            key: "NONE" for key in POLICY["required_round_summary_fields"]
+        }
+        result = target.validate_document(protocol, POLICY)
+        self.assertIn(
+            "LIGHTWEIGHT_INCIDENT_REQUIRES_OPERATIONAL_INVALID", result.errors
+        )
+
     def test_discovery_numeric_gap_is_warning_not_blocker(self) -> None:
         protocol = base_protocol()
         protocol["constraints"].append(

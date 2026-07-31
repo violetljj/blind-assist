@@ -79,7 +79,10 @@
 
 - 从仓库根目录执行；通用 Python 优先使用 `E:\codex-tools\bin\blindassist-python.cmd`。
 - 电脑端多进程算法研究优先通过 `run_host_research.ps1` 选择 `interactive`、`balanced` 或 `throughput`；具体规则见 [HOST_RESEARCH_COMPUTE.md](../docs/HOST_RESEARCH_COMPUTE.md)。
-- 上述直接入口仅用于可逆短开发循环；预计超过 3 分钟或正式 one-shot 的新任务必须通过 `run_guarded_host_research.ps1`。
+- 上述直接入口用于可逆短开发循环；正式 one-shot/不可逆 claim、预计超过 15 分钟、
+  高 I/O/内存/设备风险，或轻量 pilot 无法给出运行上界的新任务必须通过
+  `run_guarded_host_research.ps1`。3–15 分钟的可逆任务只需轻量 timeout、进度和
+  scoped-output 合同。
 - 超过数分钟的电脑端研究任务必须有可独立读取的进度状态；对当前不支持进度协议的冻结 runner，可用 `monitor_host_research_process.ps1` 监测既有 PID，不得用重启来换取可见性。
 - 下载、数据集、benchmark、训练输出和临时文件进入忽略的 `artifacts.local/`。
 - 需要联网、GPU 或 ADB 的脚本必须显式说明；设备脚本运行前确认目标设备与 module。

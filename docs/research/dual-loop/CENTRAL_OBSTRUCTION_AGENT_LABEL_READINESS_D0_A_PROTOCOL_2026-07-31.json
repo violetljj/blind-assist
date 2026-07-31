@@ -1,21 +1,21 @@
 {
   "schema_version": "blindassist.research_protocol.v1",
-  "profile": "STANDARD_CANARY_AGENT_LABEL_READINESS",
-  "governance_policy_id": "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2",
-  "governance_policy_sha256": "e4cd2b01118f36f38cbddebcac6551af782f631e7414e6c90b2f80c0fef33b6e",
+  "profile": "CANARY_LITE",
+  "governance_policy_id": "RISK_TIERED_RESEARCH_GOVERNANCE_R3",
+  "governance_policy_sha256": "0a5bf036105c3c5343293029e8e3887c666df70f643cfc238833befcfb353a71",
   "protocol_id": "CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A",
   "version": "D0-A",
   "date": "2026-07-31",
   "stage": "CANARY",
   "status": "AUTHORIZED_NOT_RUN",
   "execution_authorized": true,
-  "question": "Can isolated AI reviewers, without access to YOLO, segmentation, fusion, scheduler, or prior event-effect outputs, produce a stable and exhaustive parent-natural-event ledger for visible central-image obstruction from a frozen continuous-RGB universe?",
+  "question": "Can a CANARY_LITE Agent workflow produce a sufficiently stable, coverage-bounded parent-natural-event ledger for visible central-image obstruction from a fitness-ranked admitted RGB set, while an excluded technical smoke confirms that a reference model-B interface is usable before labeling scales?",
   "claims_allowed": [
     "IMPLEMENTATION_DEBUGGED",
     "NOT_EVALUABLE"
   ],
   "non_goals": [
-    "running YOLO, SegFormer, DDRNet, depth, anomaly segmentation, or any other candidate model",
+    "evaluating event-level effect, selecting, tuning, or comparing YOLO, SegFormer, DDRNet, depth, anomaly segmentation, or any other model-B candidate",
     "selecting a topology operator, free-space threshold, category remapping, or fusion rule",
     "estimating intended route, user motion intent, real traversability, collision risk, or safety",
     "changing Android, A568, the default model, risk, event, feedback, or production behavior",
@@ -24,9 +24,9 @@
   "data_partitions": [
     {
       "id": "d0a-continuous-rgb-input-universe",
-      "source_identity": "EXISTING_CONTINUOUS_RGB_UNIVERSE_TO_BE_ENUMERATED_BY_D0_A0",
-      "content_identity": "PENDING_D0_A0_IMMUTABLE_MANIFEST_BEFORE_ANY_PRODUCTION_LABEL_PASS",
-      "identity_basis": "D0-A0 must enumerate complete source/session identities, continuous frame ranges, timestamps, ancestry, frame hashes, and session groups before D0-A2.",
+      "source_identity": "FITNESS_RANKED_EXISTING_CONTINUOUS_RGB_SHORTLIST_TO_BE_BUILT_BY_D0_A0",
+      "content_identity": "PENDING_D0_A0_ADMITTED_BUNDLE_MANIFEST_BEFORE_PRODUCTION_LABELING",
+      "identity_basis": "D0-A0 ranks existing accessible source/session candidates by current-question fitness and cost, admits the smallest adequate bundle, and records considered-but-not-admitted sessions without requiring byte-level inventory of every accessible asset.",
       "independence_group": "CAPTURE_SESSION_AND_SOURCE_ANCESTRY",
       "ancestry": [
         "EXISTING_BLINDASSIST_CONTINUOUS_RGB_SOURCES"
@@ -36,12 +36,12 @@
       "outcome_access": "NONE",
       "result_access_state": "CONTENT_INSPECTED",
       "observation_unit": "CAPTURE_SESSION",
-      "split_basis": "FULL_CONTINUOUS_SESSION_ENUMERATION_WITH_PARENT_EVENT_GROUPING",
+      "split_basis": "FITNESS_RANKED_SESSION_ADMISSION_WITH_PARENT_EVENT_GROUPING_AND_STOP_ON_ADEQUACY",
       "research_track": "CAPABILITY_DISCOVERY"
     }
   ],
   "reuse_first_admission_policy": {
-    "principle": "Existing high-value data are evaluated for the current question before any new acquisition. Historical use changes the honest evidence role only when the accessed information overlaps the current claim; it does not globally seal a dataset name or source family.",
+    "principle": "Existing high-value data are ranked for the current question before any new acquisition. Admission stops once the frozen sufficiency rule is met; the workflow does not inventory every accessible archive merely for completeness. Historical use changes the honest evidence role only when accessed information overlaps the current claim and never globally seals a dataset name or source family.",
     "dataset_name_only_exclusion_forbidden": true,
     "prior_algorithm_use_only_exclusion_forbidden": true,
     "fitness_dimensions": [
@@ -70,22 +70,24 @@
       "exclusion_reason",
       "reuse_candidates"
     ],
+    "ranking_and_stop_rule": "Rank by current-task observability, identity integrity, event diversity, access cost, and claim overlap. Freeze the ranked shortlist and an adequacy rule before labelability pilot; stop admitting sessions when the rule is satisfied, and record later candidates as NOT_NEEDED_FOR_CURRENT_CANARY rather than excluded or unusable.",
     "admission_dispositions": [
       "ADMIT_D0_A_PRODUCTION_LABELING",
       "ADMIT_D0_A_CALIBRATION_ONLY",
       "ADMIT_DIAGNOSTIC_OR_REGRESSION_ONLY",
       "RESERVE_UNINSPECTED_SESSION_FOR_FUTURE_EVALUATION",
+      "NOT_NEEDED_FOR_CURRENT_CANARY",
       "NOT_EVALUABLE_FOR_CURRENT_QUESTION"
     ],
     "role_rules": [
-      "CONTENT_INSPECTED data remain eligible for D0-A when the full admitted universe and selection basis are disclosed.",
+      "CONTENT_INSPECTED data remain eligible for D0-A when the admitted bundle and selection basis are disclosed.",
       "Prior algorithm output that is unrelated to the central-obstruction claim is disclosed but does not automatically reduce the current role.",
       "Prior output, selection, or tuning that overlaps the current claim limits the affected minimum identity unit to Canary or Development for that claim; it does not discard the data.",
       "Uninspected independent sessions from a previously used dataset may be reserved for a future frozen evaluation when their identity and leakage boundary are established before access.",
       "Frames, clips, or windows from one parent event or capture session never create artificial independence."
     ],
     "downgrade_before_discard": "If a source cannot support the strongest desired role, first assign a truthful lower role such as calibration, Canary, Development diagnostic, regression fixture, stress case, negative sample, or source characterization. Exclude it from the current question only when current-task observability, identity, integrity, or bounded processing requirements are genuinely absent.",
-    "no_new_data_implication": "A D0-A0 reuse audit does not authorize new collection or download. It ranks and assigns roles to existing accessible assets first; any later source expansion requires its own bounded decision."
+    "no_new_data_implication": "A D0-A0 reuse audit does not authorize new collection or download. It ranks and assigns roles to existing accessible assets first and stops on adequacy; any later source expansion requires its own bounded decision."
   },
   "observation_contract": {
     "roi_name": "CENTRAL_IMAGE_ATTENTION_REGION",
@@ -130,63 +132,75 @@
     "workflow_id": "central_obstruction_agent_label_readiness_d0a_v1",
     "policy_ref": "configs/ai_review_workflows_v1.json",
     "validator_ref": "scripts/validate_ai_review_receipt.py",
-    "primary_passes": 2,
+    "review_strategy": "CANARY_LITE_RISK_TIERED",
+    "primary_passes_for_claim_critical_or_ambiguous_items": 2,
+    "low_risk_route": "One isolated Agent label plus a frozen sampled independent audit. The sampling rule and audit rate are fixed after D0-A1 calibration and before production labeling.",
+    "claim_critical_route": "Positive events, NOT_EVALUABLE episodes, ambiguous boundaries, terminal-changing items, and any calibration-defined high-risk stratum receive two isolated passes.",
     "fresh_context_per_pass": true,
     "other_review_hidden_before_submission": true,
     "candidate_output_visible": false,
     "human_queue_required": false,
-    "agreement_route": "Matching labels and event boundaries form model consensus under the frozen matching rule.",
-    "disagreement_route": "A third fresh Agent first labels the same frozen evidence independently, then receives the two hash-bound reviews for adjudication.",
+    "agreement_route": "Only items with two matching isolated labels and boundaries form model consensus. Unreviewed low-risk items remain single-Agent labels with sampled-audit status.",
+    "disagreement_route": "A third fresh Agent adjudicates only material disagreement in audited or claim-critical items after first labeling the same frozen evidence independently.",
     "unresolved_route": "Quarantine only the affected item as NOT_EVALUABLE; do not create or wait on a human task.",
-    "authority": "MODEL_ADJUDICATED_OBSERVATION_LABELS / CANARY_ONLY"
+    "authority": "AGENT_LABELED_WITH_RISK_TIERED_INDEPENDENT_AUDIT / CANARY_ONLY"
   },
   "phase_plan": [
     {
       "phase": "D0-A0",
-      "name": "INPUT_UNIVERSE_FREEZE",
-      "output": "Reuse-first immutable source/session/frame/timestamp/ancestry manifest, per-session current-task fitness and prior-access role ledger, plus SHA-256 receipt.",
+      "name": "RANKED_REUSE_ADMISSION",
+      "output": "Reuse-first ranked candidate ledger, frozen adequacy/stop rule, and the smallest admitted source/session bundle with identity, ancestry and role disclosure.",
       "candidate_output_access": false
     },
     {
       "phase": "D0-A1",
-      "name": "EXCLUDED_CALIBRATION_PILOT",
-      "output": "Excluded calibration bundle, frozen prompt, ROI, event-boundary/matching rule, readiness thresholds, and prompt/input hashes.",
+      "name": "LABELABILITY_AND_AUDIT_PILOT",
+      "output": "Excluded calibration bundle, frozen prompt and ROI, event-boundary/matching rule, ambiguity strata, sampled-audit rule, readiness thresholds, and prompt/input identities.",
       "candidate_output_access": false
     },
     {
+      "phase": "D0-AT",
+      "name": "EXCLUDED_MODEL_B_TECHNICAL_SMOKE",
+      "output": "On calibration-only RGB excluded from readiness and later effect evaluation, one declared reference model-B implementation is checked only for loadability, output schema, spatial resolution, finite values, and bounded runtime. No event metric, category selection, tuning, comparison, or topology choice is allowed.",
+      "candidate_output_access": true,
+      "candidate_output_visibility": "TECHNICAL_SMOKE_EXECUTOR_ONLY; hidden from all label reviewers and readiness labels"
+    },
+    {
       "phase": "D0-A2",
-      "name": "INDEPENDENT_AGENT_LABEL_PASSES",
-      "output": "Two immutable isolated review ledgers over the full admitted continuous-RGB universe.",
+      "name": "RISK_TIERED_PRODUCTION_LABELING",
+      "output": "One complete primary Agent ledger over the admitted bundle, plus two-pass ledgers for frozen claim-critical/ambiguous strata and the frozen independent audit sample.",
       "candidate_output_access": false
     },
     {
       "phase": "D0-A3",
       "name": "CONSENSUS_AND_ADJUDICATION",
-      "output": "Hash-bound consensus/adjudication receipts plus a derived canonical ledger that never overwrites raw reviews.",
+      "output": "Audit and material-disagreement receipts plus a derived canonical ledger that preserves whether each item is single-Agent, audited agreement, adjudicated, or NOT_EVALUABLE.",
       "candidate_output_access": false
     },
     {
       "phase": "D0-A4",
       "name": "EVENT_LEVEL_READINESS_AUDIT",
-      "output": "Parent-event agreement, source/session coverage, label distribution, adjudication burden, NOT_EVALUABLE burden, limitations, and one terminal.",
+      "output": "Parent-event sampled agreement, claim-critical agreement, source/session coverage, label distribution, audit/adjudication burden, NOT_EVALUABLE burden, technical-smoke status, limitations, and one terminal.",
       "candidate_output_access": false
     }
   ],
   "artifact_contract": {
     "root": "artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a/",
     "required_before_d0a2": [
-      "input-universe-manifest.json",
-      "input-universe-receipt.json",
+      "ranked-reuse-ledger.jsonl",
+      "admitted-bundle-manifest.json",
       "reuse-role-ledger.jsonl",
       "review-prompt.md",
-      "review-policy-lock.json"
+      "review-policy-lock.json",
+      "model-b-technical-smoke-spec.json"
     ],
     "required_after_d0a3": [
-      "review-a.jsonl",
-      "review-b.jsonl",
+      "primary-labels.jsonl",
+      "independent-audit-labels.jsonl",
       "adjudication.jsonl",
       "canonical-parent-events.jsonl",
-      "ai-review-validation-receipt.json"
+      "ai-review-validation-receipt.json",
+      "model-b-technical-smoke-receipt.json"
     ],
     "immutability": "Raw reviewer and adjudicator outputs are append-only evidence. The canonical ledger is derived and cannot overwrite them."
   },
@@ -194,13 +208,13 @@
     {
       "id": "candidate-output-firewall",
       "class": "INVARIANT",
-      "description": "No reviewer, adjudicator, event generator, readiness evaluator, or calibration pass may read YOLO, segmentation, depth, fusion, scheduler, risk, feedback, or prior candidate-effect output.",
+      "description": "No label reviewer, adjudicator, event generator, or readiness evaluator may read model-B technical-smoke output, YOLO, segmentation, depth, fusion, scheduler, risk, feedback, or prior candidate-effect output. The isolated D0-AT executor may read only its excluded calibration input and reference model output.",
       "failure_scope": "EVIDENCE_VERSION"
     },
     {
-      "id": "input-universe-before-labels",
+      "id": "admitted-bundle-before-production-labels",
       "class": "INVARIANT",
-      "description": "Complete source/session/frame ranges and their hashes must be frozen before any production label pass; easy segments cannot be added and difficult segments cannot be shortened or removed after inspection.",
+      "description": "The ranked shortlist, adequacy rule, admitted source/session frame ranges, and identities must be frozen before production labeling; easy segments cannot be added and difficult segments cannot be shortened or removed after inspection. Exhaustive inventory of assets outside the admitted bundle is not required.",
       "failure_scope": "EVIDENCE_VERSION"
     },
     {
@@ -230,7 +244,7 @@
     {
       "id": "raw-ledger-preservation",
       "class": "INVARIANT",
-      "description": "Every isolated review and adjudication is hash-bound and retained; consensus derivation cannot overwrite or silently repair raw labels or boundaries.",
+      "description": "Every produced primary label, independent audit, claim-critical second pass, and adjudication is retained with its input identity; canonical derivation cannot overwrite or silently repair raw labels or boundaries. Full hash-bound consensus applies only where two-pass authority is claimed.",
       "failure_scope": "EVIDENCE_VERSION"
     },
     {
@@ -248,7 +262,7 @@
     {
       "id": "calibration-excluded-from-readiness",
       "class": "INVARIANT",
-      "description": "D0-A1 calibration items cannot contribute to D0-A4 readiness counts or agreement. The final matching rule and numeric readiness thresholds must be frozen before D0-A2.",
+      "description": "D0-A1 calibration and D0-AT technical-smoke items cannot contribute to D0-A4 readiness counts or later event-effect evaluation. The matching rule, ambiguity strata, audit sampling rule, and numeric readiness thresholds must be frozen before D0-A2.",
       "failure_scope": "EVIDENCE_VERSION"
     },
     {
@@ -256,13 +270,19 @@
       "class": "INVARIANT",
       "description": "Unresolved review or event-boundary disagreement becomes NOT_EVALUABLE for the affected item; it cannot be converted into a forced positive or negative label.",
       "failure_scope": "ITEM"
+    },
+    {
+      "id": "technical-smoke-is-not-effect-evidence",
+      "class": "INVARIANT",
+      "description": "D0-AT may establish only model load/output/interface plausibility on excluded data. It cannot select or tune a model, category mapping, topology operator, threshold, or claim event-level increment.",
+      "failure_scope": "BRANCH"
     }
   ],
   "freeze": {
     "level": "F1",
     "outcome_access_started": false,
     "amendment_mode": "IN_PLACE_BEFORE_OUTCOME",
-    "lock_transition": "After D0-A1 freezes the admitted manifest, prompts, matching rule, and numeric readiness thresholds, any production-label change requires a new protocol version."
+    "lock_transition": "After D0-A1 freezes the admitted manifest, prompts, ambiguity/audit rules, matching rule, and readiness thresholds, any production-label change creates a new evidence instance; a material question, label, or estimand change requires a new protocol version."
   },
   "result_model": {
     "execution_validity": "NOT_RUN",
@@ -273,7 +293,7 @@
   "terminal_mapping": {
     "READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT": {
       "governance_outcome": "IMPLEMENTATION_DEBUGGED",
-      "meaning": "The frozen Agent workflow produced a sufficiently stable and covered model-adjudicated observation ledger under the D0-A1 lock.",
+      "meaning": "The frozen Agent workflow produced a sufficiently stable and covered risk-tiered Agent label ledger under the D0-A1 lock, and the excluded reference model-B interface smoke was valid.",
       "authority": "D0-B DESIGN ONLY"
     },
     "HOLD_DATA": {
@@ -285,12 +305,17 @@
       "governance_outcome": "NOT_EVALUABLE",
       "meaning": "The observable, event-boundary, matching, agreement, adjudication, or abstention process is not stable enough for D0-B.",
       "authority": "NO D0-B EXECUTION"
+    },
+    "HOLD_MODEL_B_TECHNICAL_FEASIBILITY": {
+      "governance_outcome": "NOT_EVALUABLE",
+      "meaning": "The isolated reference model-B smoke could not establish a usable load/output interface under the declared calibration-only conditions.",
+      "authority": "NO D0-B EFFECT EXECUTION"
     }
   },
   "successor_policy": {
     "new_version_allowed": true,
     "preserve_previous_evidence": true,
-    "pass_successor": "A separate reviewed D0-B design may freeze one model B, one category mapping, one primary obstruction operator, and the A versus C event-level estimand.",
+    "pass_successor": "A separate DEVELOPMENT_STANDARD D0-B design may predeclare a bounded shortlist of at most three causally distinct model-B/operator candidates on burned development data, a fixed selection budget and rule, then freeze one candidate before held-out A versus C event-level evaluation.",
     "hold_successor": "Retain the immutable inventory and labelability diagnosis; acquire or reclassify evidence only under a new bounded source plan.",
     "unreliable_successor": "Revise the observation definition or Agent workflow in a new version; do not run model B against unstable labels.",
     "automatic_d0b_execution_authority": false,
@@ -299,23 +324,23 @@
   },
   "experiment_design": {
     "search_strategy": "SEQUENTIAL_AGENT_LABELABILITY_CANARY",
-    "minimal_discriminating_experiment": "Freeze one continuous-RGB universe and one excluded calibration set, then run two isolated full-universe label passes with fresh third-Agent adjudication only where the frozen agreement rule requires it.",
-    "resource_budget": "Existing continuous RGB only; bounded Agent review and local hash/receipt validation; no detector, segmentation, Android, device, network-model, or training execution.",
-    "stop_conditions": "Stop at the first valid D0-A terminal. Do not run model B, select a topology feature, or extend the admitted input universe after production review starts.",
-    "efficiency_strategy": "Reuse the project AI-review interface and validator; quarantine only disputed items; preserve all raw ledgers while keeping the canonical current conclusion in one entry."
+    "minimal_discriminating_experiment": "Rank existing sessions and stop on frozen adequacy; calibrate labelability and a sampled-audit rule on excluded data; run one excluded model-B interface smoke; scale to one full primary label ledger with two-pass review only for claim-critical, ambiguous, and sampled-audit items.",
+    "resource_budget": "Existing continuous RGB only; one declared reference model-B technical smoke on excluded calibration data; bounded Agent review and local validation; no model comparison, event-effect evaluation, topology selection, Android, device, network training, or production execution.",
+    "stop_conditions": "Stop when the frozen adequacy rule is met or at the first valid D0-A terminal. Do not add sessions after production labeling starts, evaluate model-B event effect, select a topology feature, or tune the smoke implementation.",
+    "efficiency_strategy": "Use fitness-ranked reuse, stop-on-adequacy, a small labelability pilot, risk-tiered review, and an isolated technical smoke before scaling; preserve raw labels and audit status without manufacturing full-universe duplicate reviews."
   },
   "hypotheses": [
     {
       "hypothesis_id": "H_D0A_AGENT_LABELABILITY",
       "theoretical_or_empirical_basis": "Central-image visible obstruction is a narrower observable than intended-route traversability and can be reviewed from frozen RGB without candidate-model output.",
       "causal_difference": "Separates whether the observation can be defined reliably from whether any segmentation model later adds event-level information to YOLO.",
-      "expected_information_gain": "Determines whether a D0-B model-increment experiment has a stable Agent-adjudicated event denominator or should stop before model search.",
-      "minimal_test": "Two isolated Agent passes plus hash-bound third-Agent adjudication under one frozen event matching rule.",
-      "evaluation_metric": "Parent-event agreement, source/session and event-type coverage, adjudication burden, and NOT_EVALUABLE burden under D0-A1 thresholds.",
+      "expected_information_gain": "Determines whether a D0-B model-increment experiment has a stable risk-tiered Agent-labeled event denominator with measured independent-audit reliability, or should stop before model search.",
+      "minimal_test": "A calibration labelability pilot, frozen sampled independent audit, claim-critical two-pass review, material-disagreement adjudication, and one excluded model-B interface smoke.",
+      "evaluation_metric": "Sampled parent-event agreement, claim-critical agreement, source/session and event-type coverage, audit/adjudication burden, NOT_EVALUABLE burden, and technical-smoke validity under D0-A1 thresholds.",
       "falsifier": "The frozen workflow cannot produce stable parent-event labels/boundaries or adequate cross-session scoreable coverage without candidate-output access.",
       "cost": "LOW_TO_MEDIUM",
-      "resource_budget": "Existing continuous RGB, three isolated Agent roles when needed, and local validation only.",
-      "stop_condition": "Return HOLD_DATA or AGENT_LABEL_PROTOCOL_NOT_RELIABLE and do not run D0-B.",
+      "resource_budget": "Fitness-ranked existing continuous RGB, one primary Agent pass, bounded independent audit and adjudication, one excluded reference model-B technical smoke, and local validation.",
+      "stop_condition": "Return HOLD_DATA, AGENT_LABEL_PROTOCOL_NOT_RELIABLE, or HOLD_MODEL_B_TECHNICAL_FEASIBILITY and do not run D0-B effect evaluation.",
       "selection_reason": "It is the cheapest direct test of whether the proposed heterogeneous double-loop question is answerable before selecting or deploying a second model."
     }
   ],
@@ -343,6 +368,7 @@
     "d0a_agent_labeling": true,
     "d0a_agent_adjudication": true,
     "d0a_readiness_audit": true,
+    "d0a_excluded_model_b_technical_smoke": true,
     "human_review_gate": false,
     "model_b_execution": false,
     "topology_operator_selection": false,
@@ -356,5 +382,5 @@
     "confirmation": false,
     "deployment": false
   },
-  "claim_ceiling": "MODEL_ADJUDICATED_OBSERVATION_LABELS / CANARY_ONLY. A READY terminal means only that a D0-B Development design is answerable. It is not human ground truth, objective sensor truth, model increment, traversability, real-user effect, safety, product, or deployment evidence."
+  "claim_ceiling": "AGENT_LABELED_WITH_RISK_TIERED_INDEPENDENT_AUDIT / CANARY_ONLY. Only actually double-reviewed items may be called model consensus. A READY terminal means only that a D0-B DEVELOPMENT_STANDARD design is answerable and a reference interface was technically plausible on excluded calibration data. It is not human ground truth, objective sensor truth, model increment, traversability, real-user effect, safety, product, or deployment evidence."
 }

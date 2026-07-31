@@ -19,7 +19,8 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_POLICY = REPO_ROOT / "configs" / "research_governance_v2.json"
+DEFAULT_POLICY = REPO_ROOT / "configs" / "research_governance_v3.json"
+R2_POLICY = REPO_ROOT / "configs" / "research_governance_v2.json"
 LEGACY_POLICY = REPO_ROOT / "configs" / "research_governance_v1.json"
 PROTOCOL_SCHEMA = "blindassist.research_protocol.v1"
 CLOSURE_SCHEMA = "blindassist.research_closure_scope.v1"
@@ -54,7 +55,11 @@ DATA_DRIVEN_HARD_RULES = {
     "one_source_need_not_answer_every_question",
     "external_transfer_is_separate_from_ordinary_holdout",
 }
-DATA_DRIVEN_POLICY_ID = "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2"
+DATA_DRIVEN_POLICY_IDS = {
+    "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2",
+    "RISK_TIERED_RESEARCH_GOVERNANCE_R3",
+}
+RISK_TIERED_POLICY_ID = "RISK_TIERED_RESEARCH_GOVERNANCE_R3"
 STAGE_KERNEL = {
     "DISCOVERY": (
         "F0",
@@ -405,12 +410,12 @@ def validate_policy(policy: dict[str, Any]) -> ValidationResult:
         for name in REQUIRED_HARD_RULES:
             if hard_rules.get(name) is not True:
                 result.error(f"POLICY_HARD_RULE_DISABLED:{name}")
-        if policy.get("policy_id") == DATA_DRIVEN_POLICY_ID:
+        if policy.get("policy_id") in DATA_DRIVEN_POLICY_IDS:
             for name in DATA_DRIVEN_HARD_RULES:
                 if hard_rules.get(name) is not True:
                     result.error(f"POLICY_HARD_RULE_DISABLED:{name}")
 
-    if policy.get("policy_id") == DATA_DRIVEN_POLICY_ID:
+    if policy.get("policy_id") in DATA_DRIVEN_POLICY_IDS:
         exact_lists = {
             "result_access_states": {
                 "CONTENT_INSPECTED",
@@ -467,6 +472,40 @@ def validate_policy(policy: dict[str, Any]) -> ValidationResult:
                     result.error(f"POLICY_RESEARCH_TRACK_STAGES:{name}")
                 if not _nonempty_text(track.get("purpose")):
                     result.error(f"POLICY_RESEARCH_TRACK_PURPOSE:{name}")
+
+    if policy.get("policy_id") == RISK_TIERED_POLICY_ID:
+        profiles = _object(policy.get("execution_profiles"))
+        expected_profiles = {
+            "CANARY_LITE",
+            "DEVELOPMENT_STANDARD",
+            "CONFIRMATION_STRICT",
+        }
+        if profiles is None or set(profiles) != expected_profiles:
+            result.error("POLICY_EXECUTION_PROFILES")
+        else:
+            for profile_name, profile in profiles.items():
+                if not isinstance(profile, dict):
+                    result.error(f"POLICY_EXECUTION_PROFILE:{profile_name}")
+                    continue
+                if not _nonempty_text_list(profile.get("default_stages")):
+                    result.error(f"POLICY_EXECUTION_PROFILE_STAGES:{profile_name}")
+                if not _nonempty_text_list(profile.get("allowed_freeze_levels")):
+                    result.error(f"POLICY_EXECUTION_PROFILE_FREEZE:{profile_name}")
+                if not _nonempty_text(profile.get("review_mode")):
+                    result.error(f"POLICY_EXECUTION_PROFILE_REVIEW:{profile_name}")
+                if not _nonempty_text_list(profile.get("minimum_artifacts")):
+                    result.error(f"POLICY_EXECUTION_PROFILE_ARTIFACTS:{profile_name}")
+        selection = _object(policy.get("profile_selection_rules"))
+        defaults = _object(selection.get("default_by_stage")) if selection else None
+        if defaults is None or set(defaults) != REQUIRED_POLICY_STAGES:
+            result.error("POLICY_PROFILE_STAGE_DEFAULTS")
+        elif any(value not in expected_profiles for value in defaults.values()):
+            result.error("POLICY_PROFILE_STAGE_DEFAULT_VALUE")
+        if set(policy.get("failure_record_modes", [])) != {
+            "FULL_FAILURE_LEARNING",
+            "LIGHTWEIGHT_OPERATIONAL_INCIDENT",
+        }:
+            result.error("POLICY_FAILURE_RECORD_MODES")
 
     expected_values = {
         "default_invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
@@ -545,6 +584,29 @@ def _validate_failure_learning(
     if execution != "NOT_RUN":
         _validate_round_summary(contract, policy, result)
     if not failureish:
+        return
+    if (
+        policy.get("policy_id") == RISK_TIERED_POLICY_ID
+        and contract.get("failure_record_mode")
+        == "LIGHTWEIGHT_OPERATIONAL_INCIDENT"
+    ):
+        if execution != "INVALID" or outcome != "NOT_EVALUABLE_DUE_TO_EXECUTION":
+            result.error("LIGHTWEIGHT_INCIDENT_REQUIRES_OPERATIONAL_INVALID")
+            return
+        incident = _object(contract.get("operational_incident"))
+        if incident is None:
+            result.error("OPERATIONAL_INCIDENT_REQUIRED")
+            return
+        for field_name in (
+            "failure_class",
+            "observation",
+            "impact_scope",
+            "prevention_or_existing_guard",
+        ):
+            if not _nonempty_text(incident.get(field_name)):
+                result.error(f"OPERATIONAL_INCIDENT_FIELD:{field_name}")
+        if incident.get("scientific_outcome_accessed") is not False:
+            result.error("OPERATIONAL_INCIDENT_SCIENTIFIC_OUTCOME_ACCESSED")
         return
     learning = _object(contract.get("failure_learning"))
     if learning is None:
@@ -684,6 +746,28 @@ def validate_protocol(
         return result
     stage_policy = stages[stage]
 
+    selected_profile: dict[str, Any] | None = None
+    if policy.get("policy_id") == RISK_TIERED_POLICY_ID:
+        profile_name = contract.get("profile")
+        profiles = policy["execution_profiles"]
+        profile = _object(profiles.get(profile_name))
+        if profile is None:
+            result.error("EXECUTION_PROFILE")
+        else:
+            selected_profile = profile
+            default_profile = policy["profile_selection_rules"]["default_by_stage"][stage]
+            profile_rank = {
+                "CANARY_LITE": 0,
+                "DEVELOPMENT_STANDARD": 1,
+                "CONFIRMATION_STRICT": 2,
+            }
+            if profile_rank[profile_name] < profile_rank[default_profile]:
+                result.error("EXECUTION_PROFILE_BELOW_STAGE")
+            if stage not in profile["default_stages"] and not _nonempty_text(
+                contract.get("profile_escalation_rationale")
+            ):
+                result.error("EXECUTION_PROFILE_ESCALATION_RATIONALE")
+
     claims = contract.get("claims_allowed")
     if not isinstance(claims, list) or not claims:
         result.error("CLAIMS_ALLOWED")
@@ -703,6 +787,11 @@ def validate_protocol(
             result.error("FREEZE_LEVEL")
         elif levels.index(level) < levels.index(stage_policy["minimum_freeze_level"]):
             result.error("FREEZE_LEVEL_BELOW_STAGE")
+        elif (
+            selected_profile is not None
+            and level not in selected_profile["allowed_freeze_levels"]
+        ):
+            result.error("FREEZE_LEVEL_OUTSIDE_PROFILE")
         amendment = freeze.get("amendment_mode")
         if amendment not in policy["amendment_modes"]:
             result.error("AMENDMENT_MODE")
@@ -733,7 +822,7 @@ def validate_protocol(
                 result.error(f"DATA_ROLE:{index}")
             if access not in policy["outcome_access_levels"]:
                 result.error(f"OUTCOME_ACCESS:{index}")
-            if policy.get("policy_id") == DATA_DRIVEN_POLICY_ID:
+            if policy.get("policy_id") in DATA_DRIVEN_POLICY_IDS:
                 result_access = partition.get("result_access_state")
                 observation_unit = partition.get("observation_unit")
                 split_basis = partition.get("split_basis")
@@ -1181,11 +1270,13 @@ def main() -> int:
         contract = _load_object(args.contract.resolve())
         if args.policy is not None:
             policy_path = args.policy.resolve()
+        elif contract.get("governance_policy_id") == "PROGRESSIVE_RESEARCH_GOVERNANCE_R1":
+            policy_path = LEGACY_POLICY
         elif (
             contract.get("governance_policy_id")
-            == "PROGRESSIVE_RESEARCH_GOVERNANCE_R1"
+            == "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2"
         ):
-            policy_path = LEGACY_POLICY
+            policy_path = R2_POLICY
         else:
             policy_path = DEFAULT_POLICY
         policy = _load_object(policy_path.resolve())

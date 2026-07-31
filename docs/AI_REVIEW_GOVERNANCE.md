@@ -16,7 +16,17 @@ closure scope 以 [渐进式研究治理](RESEARCH_GOVERNANCE.md) 为准。
 审查与验证深度必须匹配变更的 claim 和可信影响面。纯文字修改不要求运行无关全量
 测试；validator、协议、公共接口、算法、构建或发布变更再按风险逐级扩大专项检查。
 
-需要判断的环节先冻结输入与 prompt 哈希，再由两个互不可见的模型角色生成结构化 JSON receipt；一致时自动形成共识，分歧时启动第三个全新上下文仲裁。仍然不确定或主动 `abstain` 时，相关样本隔离/拒收，或仅让对应晋级分支失败关闭；代理继续执行其他不依赖该结论的自主工作。禁止把证据缺口重新表述为“等待人工采集、标注、审核、仲裁或验收”。
+需要判断的环节按 `CANARY_LITE / DEVELOPMENT_STANDARD /
+CONFIRMATION_STRICT` 和实际 claim 风险路由。确定性元数据优先由程序验证；低风险观察
+可由一个 Agent 处理并接受冻结抽样审计；主分母、terminal、关键边界或歧义观察使用
+两个互不可见的模型角色。只有影响结论的分歧才启动第三个全新上下文仲裁。仍然不确定
+或主动 `abstain` 时，相关样本隔离/拒收，或仅让对应晋级分支失败关闭；代理继续执行
+其他不依赖该结论的自主工作。禁止把证据缺口重新表述为“等待人工采集、标注、审核、
+仲裁或验收”。
+
+同一模型或模型家族的 fresh context 只证明 operational isolation，不构成人工真值、
+独立现实测量或统计独立性。只有实际完成两路审查的 item 才能称 model consensus；
+单路加抽样审计的账本必须如实报告抽样规则、覆盖率、分歧和裁决负担。
 
 ## 自主采集与数据生成
 
@@ -27,7 +37,13 @@ closure scope 以 [渐进式研究治理](RESEARCH_GOVERNANCE.md) 为准。
 
 ## 统一 Interface
 
-每次模型 pass 至少绑定：`reviewer_id`、`reviewer_type=ai_model`、`reviewer_role`、provider/model/version、`review_run_id`、`workflow_id`、`prompt_sha256`、`input_sha256`、独立上下文声明、置信度、abstain 和 verdict。共识 receipt 还要绑定 subject、两次 pass、仲裁方法与最终 disposition；分歧时 method 必须为 `independent_ai_adjudicator`，且仲裁 run 不能复用前两路上下文或身份。
+Claim-critical 或被抽中审计的模型 pass 至少绑定：`reviewer_id`、
+`reviewer_type=ai_model`、`reviewer_role`、provider/model/version、`review_run_id`、
+`workflow_id`、`prompt_sha256`、`input_sha256`、独立上下文声明、置信度、abstain 和
+verdict。共识 receipt 还要绑定 subject、两次 pass、仲裁方法与最终 disposition；
+分歧时 method 必须为 `independent_ai_adjudicator`，且仲裁 run 不能复用前两路上下文
+或身份。未被抽中的低风险单路 item 保留最小来源、输入和 reviewer 身份，不生成虚假的
+第二 pass 占位文件。
 
 - GPT 多模态 Adapter：图像、视频、多帧时序、场景、残余 PII、风险语义和失败样本。
 - Codex Adapter：文件、哈希、许可/同意 receipt 的存在性、schema、数据隔离、指标、测试、实现差异和发布证据。
@@ -43,16 +59,16 @@ closure scope 以 [渐进式研究治理](RESEARCH_GOVERNANCE.md) 为准。
 | `evalset_visual_semantics_v1` | 场景/风险/PII | manifest 与跨帧一致性 | benchmark 数据准入 |
 | `sanpo_p3_intake_v1` | scene/mask/PII | consent/hash/taxonomy/session | research 数据准入 |
 | `ustrf_event_review_v1` | 因果多帧事件和锚点 | 路线关系与协议证据 | model-consensus event truth |
-| `central_obstruction_agent_label_readiness_d0a_v1` | 冻结连续 RGB 中的中央阻塞可观察状态与事件边界 | 输入/候选输出防火墙、session/parent-event 身份与 receipt | `MODEL_ADJUDICATED_OBSERVATION_LABELS / CANARY_ONLY` |
+| `central_obstruction_agent_label_readiness_d0a_v1` | admitted 连续 RGB 中的中央阻塞可观察状态与事件边界 | 风险分层 Agent 标注、冻结抽样审计、输入/候选输出防火墙、session/parent-event 身份 | `AGENT_LABELED_WITH_RISK_TIERED_INDEPENDENT_AUDIT / CANARY_ONLY` |
 | `metric_geometry_review_v1` | 图表、覆盖、失败样本 | 原始测量 receipt 与阈值 | isolated geometry shadow |
 | `sanpo_release_review_v1` | 最差事件与用户风险 | 全门禁、哈希和回归 | 模型替换授权 |
 
 ## 自动执行规则
 
-1. 先冻结最小输入 bundle、问题、允许字段、候选输出可见性与 SHA-256。
-2. 用两个新上下文分别执行 GPT 和 Codex 角色，不向任一方展示另一份答案。
-3. 把结果保存到 `artifacts.local/evidence/`，运行本地 validator；采集/标注模型只能产出候选和 receipt，不得绕过准入器直接改 canonical manifest。
-4. 一致则自动继续；分歧则自动运行第三模型；仍无结论则写明确 blocker 并停止该晋级分支。
+1. 先冻结最小输入 bundle、问题、允许字段、候选输出可见性、风险层级与审计抽样规则。
+2. 确定性项目用 validator；低风险观察单路执行并按冻结规则抽样；claim-critical、歧义或 terminal-changing 项目使用两个新上下文，不向任一方展示另一份答案。
+3. Claim-critical 和抽中审计的结果保存到 `artifacts.local/evidence/` 并运行本地 validator；采集/标注模型只能产出候选和 receipt，不得绕过准入器直接改 canonical manifest。
+4. 双路一致则自动继续；只有材料分歧才运行第三模型；仍无结论则写明确 blocker 并停止受影响的最小晋级分支。
 5. 不把“请人工采集/复核/标注/验收”作为 fallback，不因单个分支证据不足而停止其他独立工作。
 6. 防止自评：候选模型、训练输出或 detector 不能充当自己的真值；review 输入与候选输出可见性必须由 workflow 约束。
 

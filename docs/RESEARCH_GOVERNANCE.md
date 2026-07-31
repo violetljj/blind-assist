@@ -2,12 +2,13 @@
 
 状态：current
 
-当前策略真源：`configs/research_governance_v2.json`
+当前策略真源：`configs/research_governance_v3.json`
 
-历史 R1 策略保留在 `configs/research_governance_v1.json`，只用于复核绑定该版本的
-旧协议和终态；不得用 R2 规则回写旧 receipt。
+历史 R1/R2 策略分别保留在 `configs/research_governance_v1.json` 和
+`configs/research_governance_v2.json`，只用于复核绑定对应版本的旧协议和终态；
+不得用 R3 规则回写旧 receipt。
 
-适用日期：2026-07-26 起的新建或修订研究协议
+R3 适用日期：2026-07-31 起的新建或实质修订研究协议
 
 ## 目的
 
@@ -154,6 +155,63 @@ verification scope = smallest suite that covers changed behavior and credible bl
 | `DEPLOYMENT` | confirmation 包加设备、生命周期、回归、风险和回滚证据 |
 
 领域协议可以增加材料，但必须说明增加它的具体风险；“更严谨”本身不是充分理由。
+
+## 三档执行配置
+
+新建或实质修订的研究必须选择一个与声明等级和实际风险相称的 profile。profile
+决定默认流程负担，不改变阶段能够签署的结论：
+
+| Profile | 默认阶段 | 默认执行方式 | 不默认要求 |
+| --- | --- | --- | --- |
+| `CANARY_LITE` | Discovery / Canary | 可重复的最小判别实验；按适配度排序数据，满足充分性即停止；确定性元数据自动校验，低风险观察单 Agent 加冻结抽样审计 | one-shot、全量双 Agent、完整 hash chain、穷尽全部可访问数据 |
+| `DEVELOPMENT_STANDARD` | Development | 允许在 burned development 数据上比较至多 3 个预先说明差异的候选；版本化调试和重跑；进入 held-out 前冻结一个候选 | 第一个候选即永久选择、把调试失败当科学否定、Confirmation 级全量 receipt |
+| `CONFIRMATION_STRICT` | Confirmation / Deployment | 结果访问前冻结问题、数据、实现、统计和缺失处理；独立 validator、完整 receipt；有依据时使用 one-shot | 结果后补门、换算子、缩分母、把 Development 数据包装成独立确认 |
+
+阶段给出的默认映射是：
+
+```text
+DISCOVERY/CANARY -> CANARY_LITE
+DEVELOPMENT      -> DEVELOPMENT_STANDARD
+CONFIRMATION/
+DEPLOYMENT       -> CONFIRMATION_STRICT
+```
+
+低阶段因真实 outcome 污染、不可逆发布、权利、安全或高成本设备风险，可以升级 profile，
+但必须写明具体风险；不能仅因为模板或 validator 已存在就升级。高阶段不得使用更弱
+profile。历史协议继续按其绑定 policy 复核，不反向套用 R3。
+
+`CANARY_LITE` 可以建立机器合同，但合同只保留当前问题真正需要的字段和 artifact。
+可重跑不表示可改写历史：每个已报告版本仍保留，调试重跑产生新 evidence instance；
+只有 `CONFIRMATION_STRICT` 的 outcome access 才默认触发不可回退的新版本边界。
+
+### 风险分层的 Agent 审查
+
+Agent-only 不等于所有 item 都必须双 pass：
+
+- 哈希、路径、schema、帧序和确定性元数据由程序校验；
+- 低风险、明显观察由一个 Agent 标注，并按冻结规则抽样给第二 Agent；
+- 会改变 terminal、主分母或关键边界的观察，以及 calibration 判定为歧义的观察，
+  使用两个互不可见的新上下文；
+- 只有影响结论的分歧才启动 fresh 第三 Agent；不确定项局部 `NOT_EVALUABLE`。
+
+同一模型家族的隔离会话只能称 operational isolation，不能称独立人工真值或独立现实
+测量。协议必须报告实际抽样比例、分歧率和裁决负担，不能把未复核 item 写成
+model consensus。
+
+### 操作故障与科学失败分开
+
+路径、JSON、依赖、runner、网络或设备连接等单次控制面错误，默认只需要轻量
+`operational incident receipt`：现象、影响范围、科学 outcome 是否访问、修复或防复发
+动作。科学假设失败、重复的重大操作故障，或改变主线判断的事件，才要求完整 failure
+learning record。操作 INVALID 关闭受影响 evidence version，不自动消费或否定科学
+假设。
+
+### Host 预检按风险触发
+
+以下任务必须使用 guarded host preflight：正式 one-shot 或不可逆 claim、预计超过
+15 分钟、高 I/O/内存/设备风险，或轻量 pilot 无法给出运行上界。预计 3–15 分钟的
+可逆任务只需轻量 timeout、进度和 scoped output 合同；短小可逆 Canary 可以直接运行。
+任何时长一旦出现反复解压、交换、GPU/CPU 明显闲置或无进度，仍须暂停诊断。
 
 ## 五阶段证据梯度
 
@@ -327,8 +385,8 @@ confirmation gate: rate >= 0.05/s
 现有机器合同保持兼容：`protocol_status` 映射到 `execution_validity`，
 claim-grade 科学结论仍写入 `scientific_outcome`。当协议无效但科学计算已经完成时，
 可以保留描述性 `scientific_status=OBSERVED_* / CLAIM_NOT_SIGNABLE`；机器
-`scientific_outcome` 仍为 `NOT_EVALUABLE_DUE_TO_EXECUTION`。这项报告澄清不改变
-`configs/research_governance_v2.json`、既有 policy hash 或 validator 行为。
+`scientific_outcome` 仍为 `NOT_EVALUABLE_DUE_TO_EXECUTION`。R3 保留这项三轴澄清；
+它不改变任何既有 R1/R2 policy hash 或历史 validator 结论。
 
 `NOT_RUN` 只能配 `scientific_outcome=NOT_RUN`；未执行的 contract 只声明允许回答的
 问题，不能预写 `DATA_CHARACTERIZED` 等结果。`INVALID` 只能配
@@ -530,7 +588,8 @@ governance_changes_needed
   不能把 discovery 升格为 confirmation；
 - 新建或实质修订的协议必须使用
   [研究协议模板](RESEARCH_PROTOCOL_TEMPLATE.md) 选择最小适用 profile；
-  只有生成机器 contract 的 STRICT 或高风险 STANDARD 任务运行
+- 只有生成机器 contract 的 `CONFIRMATION_STRICT`、高风险
+  `DEVELOPMENT_STANDARD`，或领域确有机器身份绑定需要的 `CANARY_LITE` 任务运行
   `scripts/validate_research_protocol.py`。
 
 项目、RCLE、SANPO、USTRF 和后续研究 Module 均服从本治理；领域协议可以更严格，
