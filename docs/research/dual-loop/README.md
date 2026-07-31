@@ -3,7 +3,9 @@
 状态：`CENTRAL_OBSTRUCTION_D0_A_SUCCESSOR_R0_COMPLETE / VALID /
 AUXILIARY_FEATURE_ONLY / D0_A2_NOT_AUTHORIZED / D0_A3_A4_STOPPED /
 D0_AT_NOT_RUN / SEGMENTATION_TECHNICAL_SMOKE_R0_COMPLETE /
-SEGMENTATION_COMPLEMENTARITY_R1_COMPLETE / DEFAULT_APP_UNCHANGED`
+SEGMENTATION_COMPLEMENTARITY_R1_COMPLETE /
+SEGMENTATION_COMPLEMENTARITY_CROSS_SOURCE_R2_COMPLETE /
+DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
 
@@ -83,6 +85,14 @@ risk、feedback 或事件真值，也不把非零区域解释为可通行性或�
 已完成用户授权的 4,891-frame Development mechanism diagnostic：配对、finite output 和
 独立 validator 均通过；class-wise image-space 增量可观察，但 temporal stability 按 class
 混合，且只有一个 burned source。因此 R1 不授权融合、事件效果、Android 或生产结论。
+
+[Segmentation complementarity cross-source R2 result](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R2_CROSS_SOURCE_RESULT_2026-07-31.md)
+随后在 Shiraz 与 Shanghai 两个 source 上，用同一 YOLO11n 资产、同一 host 解码合同和
+同一 segmentation reference 完成 `4,891 + 5,662` 个配对 frame；两份独立 validator
+均为 `VALID`。class-wise image-space signal 在两个 source 上重复出现，但量级随来源和
+YOLO coverage 改变，`obstacle`/`boundary_step_curb` 稳定性仍偏低。因此只升级为
+`CROSS_SOURCE_IMAGE_SPACE_SIGNAL_REPLICATED / CLASS_STABILITY_MIXED`，仍不授权风险
+融合、事件效果、QNN/device parity、Android 或生产结论。
 
 ## 已关闭前序与保留证据
 
@@ -419,9 +429,12 @@ D0-A successor R0 已经回答了本轮唯一允许的问题：固定 clip 转�
    `YOLO + segmentation` 的区域/像素增量、稳定性与成本；
 4. 只有在互补信息可重复后，才讨论融合算子或 Android；否则关闭具体候选而不扩大关闭范围。
 
-R1 已完成第 3 项的单一 burned-source image-space 诊断；结果显示 class-wise 增量存在但
-稳定性混合，不能直接推进第 4 项。下一步只允许使用新的匹配 RGB + YOLO source 做跨来源
-复现，或在无法获得复现时关闭具体 reference candidate；不再把本轮输出升级为风险真值。
+R1 已完成第 3 项的单一 burned-source image-space 诊断；R2 又完成了同 host backend 的
+第二 source 复现。现在可以继续设计一个独立、客观的 image-space fusion operator，比较
+`YOLO-only`、`segmentation-only` 和 `YOLO + segmentation` 的区域增量、误激活、稳定性
+和成本；但不得把当前 `obstacle` 类名、uncovered fraction 或 union increment 直接
+包装成现实障碍、风险事件或提醒真值。若下一步没有明确的客观评价单位和固定融合规则，
+则保留本轮机制证据并停止，不接 Android 或主动提醒。
 
 ### 后续资源纪律
 

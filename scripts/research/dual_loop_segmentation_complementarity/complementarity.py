@@ -24,7 +24,10 @@ CLASS_NAMES = (
 )
 SCHEMA_VERSION = "blindassist.dual_loop_segmentation_complementarity_r1.v1"
 EVIDENCE_INSTANCE = "DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1"
-EXPECTED_TRACE_SCHEMAS = {"blindassist.dual_loop_unseen_rank2_baseline_trace.v1"}
+EXPECTED_TRACE_SCHEMAS = {
+    "blindassist.dual_loop_unseen_rank2_baseline_trace.v1",
+    "blindassist.dual_loop_segmentation_yolo_host_trace.v1",
+}
 REQUIRED_MANIFEST_FIELDS = {
     "source_id",
     "frame_id",

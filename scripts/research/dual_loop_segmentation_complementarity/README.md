@@ -1,15 +1,18 @@
 # YOLO + semantic segmentation image-space complementarity
 
-状态：`development` / `DEVELOPMENT_ONLY` / `NO_EFFECT_AUTHORITY`
+状态：`development` / `CROSS_SOURCE_IMAGE_SPACE_SIGNAL_REPLICATED` /
+`CLASS_STABILITY_MIXED` / `NO_EFFECT_AUTHORITY`
 
 ## 研究问题与版本
 
 `DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1` 只回答：在同一 RGB frame 和同一
 YOLO box union 上，固定 semantic-segmentation reference 是否产生可计算的、未被
-YOLO 覆盖的 image-space class regions，以及这些区域的时间稳定性和主机成本。
+YOLO 覆盖的 image-space class regions，以及这些区域的时间稳定性和主机成本。该
+设计已在 Shiraz 与 Shanghai 两个 source 上以同一 host YOLO 合同复现；跨来源结果
+仍是 Development image-space evidence，不是风险或融合效果。
 
-本轮使用用户明确授权的固定 Development 诊断，不把 burned Shiraz source 当作
-held-out、Confirmation 或泛化证据。它不读取中央阻塞 Agent 标签、risk、feedback
+本轮使用用户明确授权的固定 Development 诊断；两个 source 都是机制诊断输入，
+不作 held-out Confirmation 或总体外推。它不读取中央阻塞 Agent 标签、risk、feedback
 或 event 字段，不产生可通行性、风险、提醒、安全、Android 或生产结论。
 
 ## 稳定 Interface
@@ -33,6 +36,23 @@ with clipped normalized coordinates, and uses raw segmentation argmax class mask
 duplicate, reordered, or mismatched identities fail closed; no interpolation or nearest-frame
 repair is allowed.
 
+若已有 RGB manifest 但没有匹配的 YOLO trace，可先用固定模型资产生成 Development-only
+host reference trace：
+
+```powershell
+& E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts\research\dual_loop_segmentation_complementarity\produce_host_trace.py `
+  --manifest artifacts.local\evidence\dual-loop-r1-unseen-natural-event-r0\input-10hz-r1\manifest.jsonl `
+  --model app\src\main\assets\yolo11n_fp16_320.tflite `
+  --labels app\src\main\assets\coco_labels.txt `
+  --output artifacts.local\evidence\dual-loop-segmentation-complementarity-r2-shanghai-host-yolo\trace.jsonl `
+  --receipt artifacts.local\evidence\dual-loop-segmentation-complementarity-r2-shanghai-host-yolo\receipt.json `
+  --progress artifacts.local\evidence\dual-loop-segmentation-complementarity-r2-shanghai-host-yolo\progress.json
+```
+
+该 trace 的 authority 是 `DEVELOPMENT_HOST_REFERENCE_ONLY`，必须披露 host LiteRT 与
+QNN/device backend 的差异；它不能冒充手机输出或生产 parity。
+
 ## 输出
 
 All outputs stay under `artifacts.local/`:
@@ -43,6 +63,9 @@ All outputs stay under `artifacts.local/`:
 - `progress.json`: bounded progress receipt for long host execution.
 - `validation.json`: independent recomputation receipt for frame count, ordering, class partition,
   union arithmetic, forbidden fields, and input hashes.
+- Host detector preparation additionally writes `trace.jsonl` and `receipt.json`; the receipt
+  binds the RGB manifest, YOLO asset/labels, backend, tensor shapes, thresholds and decoder
+  contract. These are Development-only inputs to the complementarity runner.
 
 The four argmax classes remain separate: `walkable`, `boundary_step_curb`, `obstacle`, and
 `unknown_nonwalkable`. Because the union of all four argmax masks covers the analysis grid by
@@ -54,7 +77,7 @@ quantity and is not called obstacle or risk discovery.
 
 - Observation unit is `source_id + frame_id + image_sha256`; frames are repeated observations,
   not independent samples.
-- The current input is one previously consumed Development session (`burned`), so all results
+- The current inputs are previously consumed Development sessions (`burned`), so all results
   are mechanism diagnostics only.
 - No Android assets, production model, feedback path, default behavior, or safety authority is
   modified.
@@ -76,6 +99,8 @@ needed, source/session clustering must be retained.
 
 ## 失败资产复用
 
-Reports and frame rows may be reused as Development diagnostics, regression fixtures, or
-candidate failure records. They must not be relabeled as held-out confirmation, risk truth,
-or production evidence.
+Reports, frame rows and host trace receipts may be reused as Development diagnostics,
+regression fixtures, or candidate failure records. They must not be relabeled as held-out
+confirmation, risk truth, device parity, or production evidence. Cross-source qualitative
+replication does not authorize a fusion operator; a later fusion design must freeze its own
+objective image-space unit and comparison rule.

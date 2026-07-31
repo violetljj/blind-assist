@@ -2245,3 +2245,26 @@
   同时保留 8/8 正例且单事件延迟不超过一帧，否则拒绝该 active 路线并换路。
 - 当前只完成 outcome-blind 数据出口；尚未运行真机 dump 或 truth join，不形成效果
   结论，也不改变默认、风险、事件或反馈行为。
+
+## 2026-07-31：YOLO + 语义分割图像空间互补性跨来源 Development 诊断
+
+- 执行者：violjjet
+- 用户明确授权后，沿用已冻结的 image-space estimand，不重开中央阻塞 Agent 标签、
+  不增加第三 Agent/提示词/slot readiness 层。先实现固定 YOLO11n host trace adapter：
+  同一 `yolo11n_fp16_320.tflite`、80 类标签、320 输入、`0.35` confidence、
+  `0.45` class-wise NMS；trace 明确标记为 `DEVELOPMENT_HOST_REFERENCE_ONLY`，不冒充
+  QNN/device parity。
+- Shiraz 与 Shanghai 两个 RGB source 分别完成 `4,891/4,891` 与 `5,662/5,662`
+  host detector frame，模型 SHA 为
+  `00edb41a528b0a7e709c4af8ce3e685491492c4539274804e5cfc17a1a867cd2`；随后使用同一
+  segmentation reference 运行 A/B/C image-space diagnostic。两个 source 的独立
+  validator 均返回 `VALID`，`NOT_EVALUABLE=0`，风险/反馈/事件字段均未读入。
+- 同 host backend 下，两个 source 都观察到非零的 class-wise YOLO-uncovered mask；
+  `walkable`/`unknown_nonwalkable` 相邻 IoU 相对较高，`boundary_step_curb`/
+  `obstacle` 稳定性偏低。YOLO coverage 与 obstacle uncovered magnitude 随 source
+  改变，不能包装成来源不变的障碍增量。
+- 终点为
+  `CROSS_SOURCE_IMAGE_SPACE_SIGNAL_REPLICATED / CLASS_STABILITY_MIXED_AND_SOURCE_DEPENDENT /
+  NO_OBJECTIVE_OBSTACLE_TRUTH / NO_FUSION_EFFECT_AUTHORITY`。保留 host/QNN 差异说明；
+  不进入 Android、主动提醒、风险真值或生产路径。详见
+  [cross-source result](docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R2_CROSS_SOURCE_RESULT_2026-07-31.md)。

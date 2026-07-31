@@ -1,6 +1,7 @@
 # YOLO + 语义分割图像空间互补性 Development 设计 R0
 
-状态：`DEVELOPMENT_STANDARD / DESIGN_FROZEN / EXECUTED_AS_R1 / NO_EFFECT_AUTHORITY`
+状态：`DEVELOPMENT_STANDARD / DESIGN_FROZEN /
+EXECUTED_AS_R1_AND_CROSS_SOURCE_R2 / NO_EFFECT_AUTHORITY`
 
 日期：2026-07-31（Asia/Hong_Kong）
 执行者：`violjjet`
@@ -23,8 +24,10 @@
 ## 2. 设计状态、数据角色和候选身份
 
 这是一个新的、一次性的 `DEVELOPMENT_STANDARD` 设计，不是 D0-A readiness successor，
-也不增加 D0-A2/A3/A4 或第三 Agent 裁决层。用户授权后已按本设计执行 R1；执行结果另见
-[R1 result](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1_RESULT_2026-07-31.md)。
+也不增加 D0-A2/A3/A4 或第三 Agent 裁决层。用户授权后已按本设计执行单源 R1，并在
+控制 detector backend 后完成跨来源 R2；结果分别见
+[R1 result](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1_RESULT_2026-07-31.md) 和
+[cross-source R2 result](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R2_CROSS_SOURCE_RESULT_2026-07-31.md)。
 
 R1 机制 diagnostic 使用一套已存在的 matched Development 输入：
 
@@ -50,6 +53,11 @@ R1 机制 diagnostic 使用一套已存在的 matched Development 输入：
 `unknown_nonwalkable=53.43%`；这只证明输出没有像初始 artifact 那样完全塌缩，仍不构成
 目标来源上的分割质量、类别选择或互补性结论。
 
+跨来源 R2 另外为 Shiraz 与 Shanghai 生成了同一 host LiteRT detector 合同的
+`DEVELOPMENT_HOST_REFERENCE_ONLY` trace，再运行同一 segmentation reference。该 host
+trace 只用于控制来源比较，不能代替 QNN/device trace；原 Shiraz QNN R1 结果保持独立
+封存，不与 host source 混合成 device parity 结论。
+
 ## 3. 配对、观测单位与缺失处理
 
 - 基本观测单位是一个 `source_id + frame_id + image_sha256` 配对 frame；不是独立
@@ -60,8 +68,8 @@ R1 机制 diagnostic 使用一套已存在的 matched Development 输入：
   是二者的几何 union。三组不重新选择 detector 阈值、NMS、风险阈值或类别映射。
 - 主要汇总按 session 先聚合再等权汇总；frame-level 数字只作为描述，避免长序列
   通过帧数支配结果。
-- 该 Shiraz session 曾用于既有 Development route，因此只可作为 burned mechanism
-  diagnostic，不能作为新来源 Confirmation 或泛化效果证据。
+- Shiraz 与 Shanghai 均只可作为 burned Development mechanism diagnostic，不能作为
+  Confirmation、总体外推或设备效果证据。
 
 ## 4. 冻结的图像空间 estimand
 
@@ -112,19 +120,23 @@ candidate/evidence version，不关闭语义分割问题本身。
 
 即使 `U_t,k` 非零且稳定，也只能进入下一次明确授权的融合设计；不能把非零增量
 直接写成“分割发现了有效障碍”。如果 held-out source 上无法复现同一 image-space
-增量，则关闭该 candidate 的互补性主张。
+增量，则关闭该 candidate 的跨来源互补性主张；当前 R2 已观察到跨来源的定性
+image-space signal，但量级 source-dependent 且 class-wise stability mixed。即使定性
+信号重复，也不把 class-wise uncovered region 包装成风险真值。
 
 ## 6. 当前终点
 
-当前设计已执行为 `R1 / DEVELOPMENT_COMPLETE / IMAGE_SPACE_ONLY`：
+当前设计已执行为 `R1 + cross-source R2 / DEVELOPMENT_COMPLETE / IMAGE_SPACE_ONLY`：
 
 - 4,891 个 matched Development frame 完成 A/B/C image-space mechanism diagnostic；
 - 初始 `gpu-smoke` artifact 的 `walkable` 塌缩仍作为独立负诊断保留；本轮 pretrained
   reference 未发生单类塌缩，但 class-wise temporal stability mixed；
 - matched YOLO trace 的 risk/feedback/event 字段不在本设计输入面；
 - 本轮不产生 risk、event、fusion effect、Android 或生产结论；
-- 结果不具备 cross-source reproducibility authority，需另有匹配 source 才能继续验证。
+- 两个 host source 都通过独立 validator；跨来源定性 image-space signal 可复现，但
+  quantitative invariance 尚未成立，且结果不具备 risk、fusion effect、device parity
+  或 production authority。
 
-下一条合理动作不是重开标签协议，而是取得第二个匹配的 RGB + YOLO Development source
-进行跨来源复现；若无法获得或复现，则关闭该具体 candidate 的互补性主张。无论哪种情况，
-都不把本轮 class-wise uncovered region 包装成风险真值。
+下一条合理动作不是重开标签协议，而是另行冻结客观 image-space fusion operator 和
+区域/像素评价单位；若该规则无法固定，保留当前机制证据并停止，不把本轮 class-wise
+uncovered region 包装成风险真值，也不接 Android 或主动提醒。
