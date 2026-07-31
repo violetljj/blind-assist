@@ -1,10 +1,14 @@
 # Causal Event-Preserving Semantic Refresh Scheduling Q0
 
-状态：`IMPLEMENTED_OFFLINE_R0 / DEVELOPMENT_ONLY / HOLD_LAST_SEMANTIC_SNAPSHOT / NO_ANDROID_AUTHORITY`
+状态：`IMPLEMENTED_OFFLINE_R0_1 / DEVELOPMENT_ONLY / ZERO_ORDER_HOLD / NO_ANDROID_AUTHORITY`
 
-本模块把第二环重定义为语义刷新调度器，而不是危险判断器。R0 只验证一个严格的离线反事实骨架：每个策略拥有独立 cache、feedback/cooldown state 和 event-state counter；刷新时读取该帧的全频固定模型参考，跳过时只保持该 arm 自己最近一次语义 snapshot。
+本模块把第二环重定义为语义刷新调度器，而不是危险判断器。R0 建立严格的离线反事实骨架；
+R0.1 只消费 R0 已生成的 trace，补齐 risk-episode 对齐、独立事件 ID、signed feedback delay、
+约束型 operating point 和 stale-duration 评测，不重新执行 detector。
 
-R0 的传播模式不是生产 tracker，也不是光流实现。它的作用是先验证反事实状态隔离、真实时间周期 baseline、三级 divergence 和 event-level Pareto 输出是否正确。
+传播模式是 zero-order hold，不是生产 tracker、光流实现或有理论保证的 lower bound。每个策略拥有
+独立 cache、feedback/cooldown state 和 event-state counter；刷新时读取该帧的全频固定模型参考，
+跳过时只保持该 arm 自己最近一次语义 snapshot。
 
 ## 稳定 Interface
 
@@ -24,16 +28,16 @@ python -m scripts.research.dual_loop_semantic_refresh_q0.cli `
   --dump-receipt artifacts.local/evidence/dual-loop/multitrack-counterfactual-r0/device-dump/producer_receipt.json `
   --baseline artifacts.local/evidence/dual-loop/production-temporal-geometry-factorial-ab-r0/device-producer/trace.jsonl `
   --baseline-evaluation artifacts.local/evidence/dual-loop/production-temporal-geometry-factorial-ab-r0/evaluation/result.json `
-  --output-dir artifacts.local/evidence/dual-loop/semantic-refresh-q0-r0
+  --output-dir artifacts.local/evidence/dual-loop/semantic-refresh-q0-r0-1
 ```
 
 默认 fixed-time arms 为 `33/66/100/167/267 ms`。策略按 `source_capture_timestamp_ns` 决定刷新，不把请求 FPS 当成实际输入频率。
 
 ## 输出
 
-- `result.json`：输入 hash、各 arm 指标、三级 divergence、truth-item metrics、session metrics 与 Pareto front；
+- `result.json`：输入 hash、各 arm 指标、三级 divergence、risk-episode alignment、signed delay statistics、truth-item metrics、session metrics、raw nondominated set 与 constrained operating point；
 - `report.md`：人可读摘要；
-- `traces/*.jsonl`：每个可运行 arm 的逐帧调度、cache age、candidate feedback 和 divergence。
+- `traces/*.jsonl`：每个可运行 arm 的逐帧调度、cache age、candidate feedback、独立 active event ID 和 divergence。
 
 所有输出只写入 `artifacts.local/evidence/dual-loop/` 下由调用方明确指定且不存在的目录。
 
@@ -69,6 +73,11 @@ A568、默认生产路径或设备运行时，不把 event-window 保持当作�
 
 ## 证据边界
 
-当前 4,422 帧、两 session 的输入只能支撑 Development-only 的固定模型参考保持筛查；不能训练或验证跨来源 learned scheduler，也不能支持真实语义正确率、能效、热量、助行或安全结论。正式协议见 [`DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json`](../../../docs/research/dual-loop/DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json)。
+当前 4,422 帧、两 session 的输入只能支撑 Development-only 的固定模型参考保持与 risk-episode
+对齐筛查；R0.1 的 admission gate 只是预声明的 Development 分析约束，不是部署推荐。不能训练
+或验证跨来源 learned scheduler，也不能支持真实语义正确率、能效、热量、助行或安全结论。
+原始 R0 协议见 [`DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json`](../../../docs/research/dual-loop/DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json)，
+R0.1 评测协议见 [`DUAL_LOOP_SEMANTIC_REFRESH_Q0_R0_1_EVALUATION_PROTOCOL_2026-07-31.json`](../../../docs/research/dual-loop/DUAL_LOOP_SEMANTIC_REFRESH_Q0_R0_1_EVALUATION_PROTOCOL_2026-07-31.json)。
 
-本模块不改 Android、不接 A568、不修改默认生产行为，也不重跑或修复旧 R2/R3。
+本模块不改 Android、不接 A568、不修改默认生产行为，也不重跑或修复旧 R2/R3；R0 v3
+结果保持 immutable，R0.1 结果写入独立的 `semantic-refresh-q0-r0-1/` 目录。

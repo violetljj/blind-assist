@@ -68,6 +68,15 @@
   因缺少独立 current-frame-only fast-feature trace 保持 `NOT_EVALUABLE`；本轮只支持
   Development-only reference-preservation 筛查，不授权 Android、能效、产品或安全结论。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  [DUAL_LOOP_SEMANTIC_REFRESH_Q0_R0_1](docs/research/dual-loop/DUAL_LOOP_SEMANTIC_REFRESH_Q0_R0_1_EVALUATION_PROTOCOL_2026-07-31.json)：
+  不重跑 detector，消费既有 Q0 trace 补齐 risk-episode segmentation/matching、独立
+  active event ID、signed feedback delay、P50/P90/P95、feedback count delta 和
+  zero-order-hold stale duration。8/8 Q0 单元测试、真实 4,422 帧 replay 与 parity 通过；
+  raw nondominated set 为 6 个 VALID arms，预声明门下 admissible 为
+  `FULL_RATE_REFERENCE / FIXED_TIME_33MS`，constrained best 为 `FIXED_TIME_33MS`。
+  该 operating point 仅是两 session Development 评测诊断，不授权 learned scheduler、
+  Android、能效、产品或安全结论。
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
   [双环 R1 未见事件 R0 rank-1](docs/research/dual-loop/DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK1_RESULT_2026-07-31.md)
   的 truth-first 终点。下载的 480p payload SHA-256 为 `589711...f49`，生成
   566 帧 1 Hz review bundle 与 5,662 帧 10 Hz 固定 replay input。两路隔离、

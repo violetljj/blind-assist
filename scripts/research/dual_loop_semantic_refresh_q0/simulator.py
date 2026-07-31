@@ -13,9 +13,21 @@ from typing import Any, Mapping, Protocol
 
 REFERENCE_BRANCH = "CURRENT_FULL_PRODUCTION_TEMPORAL_GEOMETRY"
 DETECTION_DUMP_SCHEMA = "blindassist.dual_loop_all_detection_dump.v1"
-Q0_SCHEMA = "blindassist.dual_loop_semantic_refresh_q0_result.v1"
+Q0_R01_SCHEMA = "blindassist.dual_loop_semantic_refresh_q0_r0_1_result.v1"
+PROPAGATION_MODE = "ZERO_ORDER_HOLD_SEMANTIC_PROPAGATION_R0"
 NANOS_PER_MILLISECOND = 1_000_000
 NANOS_PER_SECOND = 1_000_000_000
+EPISODE_FEEDBACK_MATCH_TOLERANCE_MS = 100.0
+EPISODE_FEEDBACK_MATCH_TOLERANCE_NS = int(
+    EPISODE_FEEDBACK_MATCH_TOLERANCE_MS * NANOS_PER_MILLISECOND
+)
+EPISODE_ADMISSION_CONSTRAINTS = {
+    "reference_event_missed_count_max": 0,
+    "reference_episode_match_recall_min": 0.95,
+    "episode_temporal_iou_mean_min": 0.80,
+    "episode_abs_onset_delay_p95_ms_max": 150.0,
+    "risk_signature_match_rate_min": 0.95,
+}
 
 
 class Q0InputError(ValueError):
@@ -168,7 +180,8 @@ class ArmState:
     last_refresh_frame_id: str | None = None
     cached_risk: dict[str, Any] | None = None
     refresh_count: int = 0
-    event_counter: int = 0
+    active_event_id: str | None = None
+    next_event_sequence_number: int = 1
 
     def reset_for_session(self, session_id: str) -> None:
         self.session_id = session_id
@@ -176,7 +189,8 @@ class ArmState:
         self.last_refresh_frame_id = None
         self.cached_risk = None
         self.refresh_count = 0
-        self.event_counter = 0
+        self.active_event_id = None
+        self.next_event_sequence_number = 1
 
 
 class RefreshPolicy(Protocol):
@@ -674,10 +688,17 @@ def _event_snapshot(
     event_active: bool,
     feedback_triggered: bool,
 ) -> dict[str, Any]:
-    if event_active and not state.event_counter:
-        state.event_counter = 1
+    if event_active and state.active_event_id is None:
+        state.active_event_id = (
+            f"Q0-{state.session_id}-event-{state.next_event_sequence_number:04d}"
+        )
+        state.next_event_sequence_number += 1
+    elif not event_active:
+        state.active_event_id = None
     return {
-        "event_id": f"Q0-{state.session_id}-{state.event_counter}" if event_active else None,
+        "event_id": state.active_event_id,
+        "active_event_id": state.active_event_id,
+        "next_event_sequence_number": state.next_event_sequence_number,
         "state": "ACTIVE" if event_active else "CLEAR",
         "active": event_active,
         "feedback_count": 1 if feedback_triggered else 0,
@@ -721,10 +742,6 @@ def simulate_arm(
         )
         candidate_feedback = feedback_state.update(candidate_risk, frame.timestamp_ns)
         event_active = candidate_risk is not None and candidate_risk.get("level") != "NONE"
-        if event_active and state.event_counter == 0:
-            state.event_counter = 1
-        elif not event_active:
-            state.event_counter = 0
         divergence = divergence_levels(
             candidate_risk,
             frame.stable_risk,
@@ -754,7 +771,7 @@ def simulate_arm(
     return ArmResult(
         name=policy.name,
         status="VALID",
-        propagation_mode="HOLD_LAST_SEMANTIC_SNAPSHOT_R0",
+        propagation_mode=PROPAGATION_MODE,
         outputs=outputs,
         metrics={},
     )
@@ -782,6 +799,414 @@ def _window_outputs(
     ]
 
 
+@dataclass(frozen=True)
+class RiskEpisode:
+    episode_id: str
+    session_id: str
+    start_timestamp_ns: int
+    end_timestamp_ns_exclusive: int
+    start_frame_id: str
+    end_frame_id: str
+    risk_signature: tuple[Any, Any, Any]
+    feedback_timestamps_ns: tuple[int, ...]
+    frame_count: int
+    max_stale_duration_ms: float
+
+    @property
+    def duration_ms(self) -> float:
+        return (
+            self.end_timestamp_ns_exclusive - self.start_timestamp_ns
+        ) / NANOS_PER_MILLISECOND
+
+
+def _active_risk_signature(
+    risk: Mapping[str, Any] | None,
+) -> tuple[Any, Any, Any] | None:
+    if not isinstance(risk, Mapping) or risk.get("level") == "NONE":
+        return None
+    return tuple(risk.get(field) for field in ("level", "direction", "proximity"))
+
+
+def _session_step_ns(rows: list[Mapping[str, Any]]) -> int:
+    timestamps = [int(row["source_capture_timestamp_ns"]) for row in rows]
+    differences = [
+        right - left for left, right in zip(timestamps, timestamps[1:]) if right > left
+    ]
+    if not differences:
+        return NANOS_PER_MILLISECOND
+    ordered = sorted(differences)
+    return ordered[(len(ordered) - 1) // 2]
+
+
+def segment_risk_episodes(
+    rows: list[Mapping[str, Any]],
+    source_label: str,
+) -> list[RiskEpisode]:
+    """Segment active risk-signature runs without smoothing or future reads.
+
+    A new episode starts at an active transition or when level/direction/proximity
+    changes. This is an evaluation unit, not a claim that the runtime's event
+    lifecycle has been independently validated.
+    """
+
+    episodes: list[RiskEpisode] = []
+    session_ids = sorted({str(row["session_id"]) for row in rows})
+    for session_id in session_ids:
+        session_rows = [
+            row for row in rows if str(row["session_id"]) == session_id
+        ]
+        step_ns = _session_step_ns(session_rows)
+        current: dict[str, Any] | None = None
+
+        def finish(end_timestamp_ns: int) -> None:
+            nonlocal current
+            if current is None:
+                return
+            sequence = sum(
+                1
+                for episode in episodes
+                if episode.session_id == session_id
+            ) + 1
+            episodes.append(
+                RiskEpisode(
+                    episode_id=(
+                        f"Q0-R0.1-{source_label}-{session_id}-episode-"
+                        f"{sequence:04d}"
+                    ),
+                    session_id=session_id,
+                    start_timestamp_ns=int(current["start_timestamp_ns"]),
+                    end_timestamp_ns_exclusive=int(end_timestamp_ns),
+                    start_frame_id=str(current["start_frame_id"]),
+                    end_frame_id=str(current["end_frame_id"]),
+                    risk_signature=tuple(current["risk_signature"]),
+                    feedback_timestamps_ns=tuple(current["feedback_timestamps_ns"]),
+                    frame_count=int(current["frame_count"]),
+                    max_stale_duration_ms=max(
+                        [float(value) for value in current["stale_duration_ms"]],
+                        default=0.0,
+                    ),
+                )
+            )
+            current = None
+
+        for index, row in enumerate(session_rows):
+            timestamp_ns = int(row["source_capture_timestamp_ns"])
+            signature = _active_risk_signature(row.get("risk"))
+            if signature is None:
+                finish(timestamp_ns)
+                continue
+            if current is None or tuple(current["risk_signature"]) != signature:
+                finish(timestamp_ns)
+                current = {
+                    "start_timestamp_ns": timestamp_ns,
+                    "start_frame_id": str(row["frame_id"]),
+                    "end_frame_id": str(row["frame_id"]),
+                    "risk_signature": signature,
+                    "feedback_timestamps_ns": [],
+                    "stale_duration_ms": [],
+                    "frame_count": 0,
+                }
+            if index + 1 < len(session_rows):
+                end_timestamp_ns = int(
+                    session_rows[index + 1]["source_capture_timestamp_ns"]
+                )
+            else:
+                end_timestamp_ns = timestamp_ns + step_ns
+            current["end_frame_id"] = str(row["frame_id"])
+            current["frame_count"] += 1
+            if bool(row.get("feedback_triggered", False)):
+                current["feedback_timestamps_ns"].append(timestamp_ns)
+            cache_age_ns = row.get("cache_age_ns")
+            if cache_age_ns is not None:
+                current["stale_duration_ms"].append(
+                    max(0.0, float(cache_age_ns) / NANOS_PER_MILLISECOND)
+                )
+            current["end_timestamp_ns_exclusive"] = end_timestamp_ns
+        if current is not None:
+            finish(int(current["end_timestamp_ns_exclusive"]))
+    return episodes
+
+
+def _episode_record(episode: RiskEpisode) -> dict[str, Any]:
+    return {
+        "episode_id": episode.episode_id,
+        "session_id": episode.session_id,
+        "start_timestamp_ns": episode.start_timestamp_ns,
+        "end_timestamp_ns_exclusive": episode.end_timestamp_ns_exclusive,
+        "start_frame_id": episode.start_frame_id,
+        "end_frame_id": episode.end_frame_id,
+        "duration_ms": episode.duration_ms,
+        "risk_level": episode.risk_signature[0],
+        "direction": episode.risk_signature[1],
+        "proximity": episode.risk_signature[2],
+        "feedback_count": len(episode.feedback_timestamps_ns),
+        "frame_count": episode.frame_count,
+        "max_stale_duration_ms": episode.max_stale_duration_ms,
+    }
+
+
+def _interval_overlap_ns(first: RiskEpisode, second: RiskEpisode) -> int:
+    return max(
+        0,
+        min(first.end_timestamp_ns_exclusive, second.end_timestamp_ns_exclusive)
+        - max(first.start_timestamp_ns, second.start_timestamp_ns),
+    )
+
+
+def _interval_iou(first: RiskEpisode, second: RiskEpisode) -> float:
+    overlap = _interval_overlap_ns(first, second)
+    union = max(
+        first.end_timestamp_ns_exclusive,
+        second.end_timestamp_ns_exclusive,
+    ) - min(first.start_timestamp_ns, second.start_timestamp_ns)
+    return overlap / union if union > 0 else 0.0
+
+
+def _match_episode_indices(
+    candidate: list[RiskEpisode], reference: list[RiskEpisode]
+) -> list[tuple[int, int]]:
+    candidates: list[tuple[int, float, int, int]] = []
+    for candidate_index, candidate_episode in enumerate(candidate):
+        for reference_index, reference_episode in enumerate(reference):
+            if candidate_episode.session_id != reference_episode.session_id:
+                continue
+            overlap = _interval_overlap_ns(candidate_episode, reference_episode)
+            if overlap > 0:
+                candidates.append(
+                    (
+                        -overlap,
+                        -_interval_iou(candidate_episode, reference_episode),
+                        candidate_index,
+                        reference_index,
+                    )
+                )
+    matched_candidate: set[int] = set()
+    matched_reference: set[int] = set()
+    matches: list[tuple[int, int]] = []
+    for _, _, candidate_index, reference_index in sorted(candidates):
+        if candidate_index in matched_candidate or reference_index in matched_reference:
+            continue
+        matched_candidate.add(candidate_index)
+        matched_reference.add(reference_index)
+        matches.append((candidate_index, reference_index))
+    return sorted(matches)
+
+
+def _match_feedback_timestamps(
+    candidate: tuple[int, ...],
+    reference: tuple[int, ...],
+    tolerance_ns: int = EPISODE_FEEDBACK_MATCH_TOLERANCE_NS,
+) -> tuple[int, int, int]:
+    possible: list[tuple[int, int, int]] = []
+    for candidate_index, candidate_timestamp_ns in enumerate(candidate):
+        for reference_index, reference_timestamp_ns in enumerate(reference):
+            difference = abs(candidate_timestamp_ns - reference_timestamp_ns)
+            if difference <= tolerance_ns:
+                possible.append((difference, candidate_index, reference_index))
+    used_candidate: set[int] = set()
+    used_reference: set[int] = set()
+    matched = 0
+    for _, candidate_index, reference_index in sorted(possible):
+        if candidate_index in used_candidate or reference_index in used_reference:
+            continue
+        used_candidate.add(candidate_index)
+        used_reference.add(reference_index)
+        matched += 1
+    return matched, len(candidate) - matched, len(reference) - matched
+
+
+def _percentile(values: list[float], probability: float) -> float | None:
+    if not values:
+        return None
+    ordered = sorted(values)
+    position = (len(ordered) - 1) * probability
+    lower = math.floor(position)
+    upper = math.ceil(position)
+    if lower == upper:
+        return ordered[lower]
+    fraction = position - lower
+    return ordered[lower] + (ordered[upper] - ordered[lower]) * fraction
+
+
+def _summary_stats(values: list[float]) -> dict[str, Any]:
+    if not values:
+        return {
+            "count": 0,
+            "min": None,
+            "max": None,
+            "mean": None,
+            "p50": None,
+            "p90": None,
+            "p95": None,
+        }
+    return {
+        "count": len(values),
+        "min": min(values),
+        "max": max(values),
+        "mean": sum(values) / len(values),
+        "p50": _percentile(values, 0.50),
+        "p90": _percentile(values, 0.90),
+        "p95": _percentile(values, 0.95),
+    }
+
+
+def evaluate_episode_alignment(
+    candidate_rows: list[Mapping[str, Any]],
+    reference_rows: list[Mapping[str, Any]],
+    feedback_tolerance_ms: float = EPISODE_FEEDBACK_MATCH_TOLERANCE_MS,
+) -> dict[str, Any]:
+    tolerance_ns = int(feedback_tolerance_ms * NANOS_PER_MILLISECOND)
+    candidate_episodes = segment_risk_episodes(candidate_rows, "candidate")
+    reference_episodes = segment_risk_episodes(reference_rows, "reference")
+    matches = _match_episode_indices(candidate_episodes, reference_episodes)
+    matched_candidate = {candidate_index for candidate_index, _ in matches}
+    matched_reference = {reference_index for _, reference_index in matches}
+
+    matched_records: list[dict[str, Any]] = []
+    onset_delays: list[float] = []
+    absolute_onset_delays: list[float] = []
+    offset_delays: list[float] = []
+    temporal_ious: list[float] = []
+    risk_signature_matches: list[bool] = []
+    feedback_matches = 0
+    candidate_unmatched_feedback = 0
+    reference_unmatched_feedback = 0
+    for match_index, (candidate_index, reference_index) in enumerate(matches, start=1):
+        candidate_episode = candidate_episodes[candidate_index]
+        reference_episode = reference_episodes[reference_index]
+        onset_delay_ms = (
+            candidate_episode.start_timestamp_ns
+            - reference_episode.start_timestamp_ns
+        ) / NANOS_PER_MILLISECOND
+        offset_delay_ms = (
+            candidate_episode.end_timestamp_ns_exclusive
+            - reference_episode.end_timestamp_ns_exclusive
+        ) / NANOS_PER_MILLISECOND
+        temporal_iou = _interval_iou(candidate_episode, reference_episode)
+        signature_match = (
+            candidate_episode.risk_signature == reference_episode.risk_signature
+        )
+        matched, candidate_unmatched, reference_unmatched = _match_feedback_timestamps(
+            candidate_episode.feedback_timestamps_ns,
+            reference_episode.feedback_timestamps_ns,
+            tolerance_ns,
+        )
+        feedback_matches += matched
+        candidate_unmatched_feedback += candidate_unmatched
+        reference_unmatched_feedback += reference_unmatched
+        onset_delays.append(onset_delay_ms)
+        absolute_onset_delays.append(abs(onset_delay_ms))
+        offset_delays.append(offset_delay_ms)
+        temporal_ious.append(temporal_iou)
+        risk_signature_matches.append(signature_match)
+        matched_records.append(
+            {
+                "match_id": f"Q0-R0.1-episode-match-{match_index:04d}",
+                "candidate": _episode_record(candidate_episode),
+                "reference": _episode_record(reference_episode),
+                "onset_delay_ms": onset_delay_ms,
+                "offset_delay_ms": offset_delay_ms,
+                "temporal_iou": temporal_iou,
+                "risk_level_match": candidate_episode.risk_signature[0]
+                == reference_episode.risk_signature[0],
+                "direction_match": candidate_episode.risk_signature[1]
+                == reference_episode.risk_signature[1],
+                "proximity_match": candidate_episode.risk_signature[2]
+                == reference_episode.risk_signature[2],
+                "risk_signature_match": signature_match,
+                "feedback_match_tolerance_ms": feedback_tolerance_ms,
+                "feedback_matched_count": matched,
+                "candidate_unmatched_feedback_count": candidate_unmatched,
+                "reference_unmatched_feedback_count": reference_unmatched,
+                "feedback_count_delta": len(
+                    candidate_episode.feedback_timestamps_ns
+                ) - len(reference_episode.feedback_timestamps_ns),
+            }
+        )
+
+    reference_count = len(reference_episodes)
+    candidate_count = len(candidate_episodes)
+    return {
+        "status": "VALID",
+        "segmentation_unit": "contiguous active risk-signature run",
+        "active_definition": "risk.level != NONE",
+        "matching_rule": "one-to-one same-session positive-overlap greedy by overlap then IoU",
+        "feedback_match_tolerance_ms": feedback_tolerance_ms,
+        "candidate_episode_count": candidate_count,
+        "reference_episode_count": reference_count,
+        "matched_episode_count": len(matches),
+        "reference_episode_unmatched_count": reference_count - len(matches),
+        "candidate_episode_unmatched_count": candidate_count - len(matches),
+        "reference_episode_match_recall": (
+            len(matches) / reference_count if reference_count else 1.0
+        ),
+        "candidate_episode_match_precision": (
+            len(matches) / candidate_count if candidate_count else 1.0
+        ),
+        "onset_delay_ms": _summary_stats(onset_delays),
+        "absolute_onset_delay_ms": _summary_stats(absolute_onset_delays),
+        "offset_delay_ms": _summary_stats(offset_delays),
+        "temporal_iou": _summary_stats(temporal_ious),
+        "risk_level_match_rate": (
+            sum(
+                record["risk_level_match"] for record in matched_records
+            )
+            / len(matched_records)
+            if matched_records
+            else 1.0
+        ),
+        "direction_match_rate": (
+            sum(record["direction_match"] for record in matched_records)
+            / len(matched_records)
+            if matched_records
+            else 1.0
+        ),
+        "proximity_match_rate": (
+            sum(record["proximity_match"] for record in matched_records)
+            / len(matched_records)
+            if matched_records
+            else 1.0
+        ),
+        "risk_signature_match_rate": (
+            sum(risk_signature_matches) / len(risk_signature_matches)
+            if risk_signature_matches
+            else 1.0
+        ),
+        "feedback": {
+            "matched_count": feedback_matches,
+            "candidate_unmatched_count": candidate_unmatched_feedback,
+            "reference_unmatched_count": reference_unmatched_feedback,
+            "count_delta": sum(
+                len(episode.feedback_timestamps_ns)
+                for episode in candidate_episodes
+            )
+            - sum(
+                len(episode.feedback_timestamps_ns)
+                for episode in reference_episodes
+            ),
+        },
+        "candidate_longest_stale_duration_ms": max(
+            [episode.max_stale_duration_ms for episode in candidate_episodes],
+            default=0.0,
+        ),
+        "reference_longest_stale_duration_ms": max(
+            [episode.max_stale_duration_ms for episode in reference_episodes],
+            default=0.0,
+        ),
+        "matched_episodes": matched_records,
+        "unmatched_candidate_episodes": [
+            _episode_record(episode)
+            for index, episode in enumerate(candidate_episodes)
+            if index not in matched_candidate
+        ],
+        "unmatched_reference_episodes": [
+            _episode_record(episode)
+            for index, episode in enumerate(reference_episodes)
+            if index not in matched_reference
+        ],
+    }
+
+
 def evaluate_arm(
     arm: ArmResult,
     frames: list[Frame],
@@ -794,6 +1219,32 @@ def evaluate_arm(
         (row["session_id"], row["frame_id"]): bool(row["candidate_feedback_triggered"])
         for row in outputs
     }
+    candidate_episode_rows = [
+        {
+            "session_id": row["session_id"],
+            "frame_id": row["frame_id"],
+            "source_capture_timestamp_ns": row["source_capture_timestamp_ns"],
+            "risk": row["candidate_risk"],
+            "feedback_triggered": row["candidate_feedback_triggered"],
+            "cache_age_ns": row["cache_age_ns"],
+        }
+        for row in outputs
+    ]
+    reference_episode_rows = [
+        {
+            "session_id": frame.session_id,
+            "frame_id": frame.frame_id,
+            "source_capture_timestamp_ns": frame.timestamp_ns,
+            "risk": frame.stable_risk,
+            "feedback_triggered": frame.reference_feedback_triggered,
+            "cache_age_ns": 0,
+        }
+        for frame in frames
+    ]
+    episode_alignment = evaluate_episode_alignment(
+        candidate_episode_rows,
+        reference_episode_rows,
+    )
     positive_items = [item for item in truth_items if item.item_kind == "positive_event"]
     negative_items = [item for item in truth_items if item.item_kind == "negative_window"]
     item_results: list[dict[str, Any]] = []
@@ -826,9 +1277,12 @@ def evaluate_arm(
                 "candidate_hit": bool(candidate_rows),
                 "reference_event_missed": bool(reference_rows) and not candidate_rows,
                 "candidate_added_reference_event": bool(candidate_rows) and not reference_rows,
+                "feedback_count_delta": len(candidate_rows) - len(reference_rows),
                 "first_feedback_delay_ms": (
                     None
-                    if reference_first is None or candidate_first is None
+                    if item.item_kind != "positive_event"
+                    or reference_first is None
+                    or candidate_first is None
                     else (candidate_first - reference_first) / NANOS_PER_MILLISECOND
                 ),
             }
@@ -859,9 +1313,30 @@ def evaluate_arm(
         for row in positive_results
         if row["first_feedback_delay_ms"] is not None
     ]
+    delay_tolerance_ms = EPISODE_FEEDBACK_MATCH_TOLERANCE_MS
+    delay_stats = _summary_stats(delays)
+    absolute_delay_stats = _summary_stats([abs(value) for value in delays])
+    first_feedback_delay = {
+        "tolerance_ms": delay_tolerance_ms,
+        "eligible_positive_event_count": len(positive_results),
+        "matched_positive_event_count": len(delays),
+        "missing_candidate_feedback_count": len(positive_results) - len(delays),
+        "early_count": sum(value < -delay_tolerance_ms for value in delays),
+        "within_tolerance_count": sum(
+            abs(value) <= delay_tolerance_ms for value in delays
+        ),
+        "late_count": sum(value > delay_tolerance_ms for value in delays),
+        "signed_ms": delay_stats,
+        "absolute_ms": absolute_delay_stats,
+    }
     session_metrics: dict[str, Any] = {}
     for session_id in sorted({frame.session_id for frame in frames}):
         rows = [row for row in item_results if row["session_id"] == session_id]
+        session_delays = [
+            float(row["first_feedback_delay_ms"])
+            for row in rows
+            if row["first_feedback_delay_ms"] is not None
+        ]
         session_metrics[session_id] = {
             "truth_item_count": len(rows),
             "positive_count": sum(row["item_kind"] == "positive_event" for row in rows),
@@ -873,6 +1348,13 @@ def evaluate_arm(
             "candidate_negative_hits": count(
                 [row for row in rows if row["item_kind"] == "negative_window"],
                 "candidate_hit",
+            ),
+            "feedback_count_delta": sum(
+                int(row["feedback_count_delta"]) for row in rows
+            ),
+            "first_feedback_delay_ms": _summary_stats(session_delays),
+            "first_feedback_delay_absolute_ms": _summary_stats(
+                [abs(value) for value in session_delays]
             ),
         }
     return {
@@ -911,35 +1393,58 @@ def evaluate_arm(
             "candidate_added_reference_event_count": count(
                 item_results, "candidate_added_reference_event"
             ),
-            "first_feedback_delay_max_ms": max(delays, default=None),
+            "feedback_count_delta": sum(
+                int(row["feedback_count_delta"]) for row in item_results
+            ),
+            "feedback_count_absolute_delta": sum(
+                abs(int(row["feedback_count_delta"])) for row in item_results
+            ),
+            "first_feedback_delay": first_feedback_delay,
+            "first_feedback_delay_max_ms": delay_stats["max"],
+            "first_feedback_delay_min_ms": delay_stats["min"],
+            "first_feedback_delay_p50_ms": delay_stats["p50"],
+            "first_feedback_delay_p90_ms": delay_stats["p90"],
+            "first_feedback_delay_p95_ms": delay_stats["p95"],
             "first_feedback_delay_values_ms": delays,
             "items": item_results,
         },
+        "episode_alignment": episode_alignment,
         "session_metrics": session_metrics,
         "reference_frame_count": sum(reference_by_key.values()),
         "candidate_frame_count": sum(candidate_by_key.values()),
     }
 
 
-def _metric_value(metrics: Mapping[str, Any], key: str) -> float:
-    value = metrics.get(key)
+def _nested_metric_value(
+    metrics: Mapping[str, Any], section: str, key: str
+) -> float:
+    section_value = metrics.get(section)
+    if not isinstance(section_value, Mapping):
+        return math.inf
+    value = section_value.get(key)
     if value is None:
         return math.inf
     return float(value)
 
 
-def pareto_front(arm_metrics: list[dict[str, Any]]) -> list[str]:
+def _raw_pareto_objectives(metrics: Mapping[str, Any]) -> tuple[float, ...]:
+    return (
+        float(metrics["detector_call_count"]),
+        float(metrics["divergence"]["level3_event_or_feedback_frame_count"]),
+        float(metrics["truth_item_metrics"]["reference_event_missed_count"]),
+        float(metrics["episode_alignment"]["reference_episode_unmatched_count"]),
+        _nested_metric_value(
+            metrics["episode_alignment"], "absolute_onset_delay_ms", "p95"
+        ),
+        1.0
+        - _nested_metric_value(metrics["episode_alignment"], "temporal_iou", "mean"),
+    )
+
+
+def raw_nondominated_set(arm_metrics: list[dict[str, Any]]) -> list[str]:
     usable = [metrics for metrics in arm_metrics if metrics.get("status") == "VALID"]
     objectives = {
-        metrics["policy"]: (
-            float(metrics["detector_call_count"]),
-            float(metrics["divergence"]["level3_event_or_feedback_frame_count"]),
-            float(metrics["truth_item_metrics"]["reference_event_missed_count"]),
-            _metric_value(
-                metrics["truth_item_metrics"], "first_feedback_delay_max_ms"
-            ),
-        )
-        for metrics in usable
+        metrics["policy"]: _raw_pareto_objectives(metrics) for metrics in usable
     }
     front: list[str] = []
     for name, values in objectives.items():
@@ -955,6 +1460,75 @@ def pareto_front(arm_metrics: list[dict[str, Any]]) -> list[str]:
         if not dominated:
             front.append(name)
     return sorted(front)
+
+
+def _admission_failures(metrics: Mapping[str, Any]) -> list[str]:
+    if metrics.get("status") != "VALID":
+        return ["STATUS_NOT_VALID"]
+    truth = metrics["truth_item_metrics"]
+    episodes = metrics["episode_alignment"]
+    failures: list[str] = []
+    if (
+        int(truth["reference_event_missed_count"])
+        > EPISODE_ADMISSION_CONSTRAINTS["reference_event_missed_count_max"]
+    ):
+        failures.append("REFERENCE_EVENT_MISS")
+    if (
+        float(episodes["reference_episode_match_recall"])
+        < EPISODE_ADMISSION_CONSTRAINTS["reference_episode_match_recall_min"]
+    ):
+        failures.append("REFERENCE_EPISODE_COVERAGE")
+    if (
+        _nested_metric_value(episodes, "temporal_iou", "mean")
+        < EPISODE_ADMISSION_CONSTRAINTS["episode_temporal_iou_mean_min"]
+    ):
+        failures.append("EPISODE_TEMPORAL_IOU")
+    if (
+        _nested_metric_value(episodes, "absolute_onset_delay_ms", "p95")
+        > EPISODE_ADMISSION_CONSTRAINTS["episode_abs_onset_delay_p95_ms_max"]
+    ):
+        failures.append("EPISODE_ONSET_DELAY")
+    if (
+        float(episodes["risk_signature_match_rate"])
+        < EPISODE_ADMISSION_CONSTRAINTS["risk_signature_match_rate_min"]
+    ):
+        failures.append("RISK_SIGNATURE_MISMATCH")
+    return failures
+
+
+def constrained_operating_point(
+    arm_metrics: list[dict[str, Any]],
+) -> dict[str, Any]:
+    failures = {
+        metrics["policy"]: _admission_failures(metrics) for metrics in arm_metrics
+    }
+    admissible = sorted(
+        name for name, reasons in failures.items() if not reasons
+    )
+    valid_admissible = [
+        metrics for metrics in arm_metrics if metrics["policy"] in admissible
+    ]
+    valid_admissible.sort(
+        key=lambda metrics: (
+            int(metrics["detector_call_count"]),
+            _nested_metric_value(
+                metrics["episode_alignment"], "absolute_onset_delay_ms", "p95"
+            ),
+            int(metrics["divergence"]["level3_event_or_feedback_frame_count"]),
+            metrics["policy"],
+        )
+    )
+    best = valid_admissible[0]["policy"] if valid_admissible else None
+    return {
+        "constraints": EPISODE_ADMISSION_CONSTRAINTS,
+        "admissible_set": admissible,
+        "best_operating_point": best,
+        "decision_rule": (
+            "Among admissible VALID policies, minimize detector_call_count; "
+            "break ties by absolute episode onset-delay p95, then Level-3 divergence."
+        ),
+        "rejection_reasons": failures,
+    }
 
 
 def run_q0(
@@ -1038,24 +1612,32 @@ def run_q0(
             )
 
     valid_metrics = [metrics for metrics in arm_metrics if metrics["status"] == "VALID"]
+    raw_nondominated = raw_nondominated_set(arm_metrics)
+    constrained = constrained_operating_point(arm_metrics)
     result = {
-        "schema_version": Q0_SCHEMA,
-        "protocol_id": "DUAL_LOOP_SEMANTIC_REFRESH_Q0",
+        "schema_version": Q0_R01_SCHEMA,
+        "protocol_id": "DUAL_LOOP_SEMANTIC_REFRESH_Q0_R0_1",
         "status": "COMPLETE" if valid_metrics else "NOT_EVALUABLE",
-        "stage": "DEVELOPMENT_OFFLINE_COUNTERFACTUAL",
+        "stage": "DEVELOPMENT_OFFLINE_EVALUATION_REPAIR",
         "authority": "DEVELOPMENT_ONLY_BURNED_RGB",
         "claim_ceiling": (
-            "FIXED_MODEL_FULL_RATE_REFERENCE_PRESERVATION_SCREEN_ONLY; "
+            "FIXED_MODEL_FULL_RATE_REFERENCE_PRESERVATION_WITH_RISK_EPISODE_ALIGNMENT; "
             "NO_REAL_WORLD_SEMANTIC_OR_SAFETY_TRUTH"
         ),
-        "propagation_mode": "HOLD_LAST_SEMANTIC_SNAPSHOT_R0",
+        "propagation_mode": PROPAGATION_MODE,
         "analysis_design": {
             "frame_unit": "one source capture frame for causal state transitions",
-            "primary_unit": "scored truth item / existing event-window membership",
+            "primary_unit": (
+                "source-session risk episode alignment plus scored truth-item guardrails"
+            ),
             "source_count": len({frame.session_id for frame in frames}),
             "frame_count": len(frames),
             "uncertainty": "DESCRIPTIVE_ONLY_TWO_SESSION_CLUSTER_COUNT; NO_P_VALUES",
             "feature_leakage_guard": "fast features are optional and must be independently declared current-frame-only",
+            "episode_segmentation": "contiguous active risk-signature run; risk.level != NONE",
+            "episode_matching": "one-to-one same-session positive-overlap greedy by overlap then IoU",
+            "feedback_matching_tolerance_ms": EPISODE_FEEDBACK_MATCH_TOLERANCE_MS,
+            "delay_summary": "signed and absolute P50/P90/P95; missing positive events remain separate failures",
         },
         "inputs": {
             "detection_dump": {
@@ -1082,10 +1664,14 @@ def run_q0(
         },
         "policies": arm_metrics,
         "not_evaluable_policies": not_evaluable,
-        "pareto_front": pareto_front(arm_metrics),
+        "raw_nondominated_set": raw_nondominated,
+        "constrained_operating_point": constrained,
         "stop_gate": {
             "status": "NOT_APPLIED_TO_LEARNED_POLICY",
-            "reason": "Q0 R0 uses the hold-last semantic propagation baseline; no independent fast-feature stream was supplied",
+            "reason": (
+                "R0.1 only repairs offline episode-level evaluation; no learned policy, "
+                "fast-feature stream, Android, energy or safety claim is authorized"
+            ),
         },
     }
     return result, traces

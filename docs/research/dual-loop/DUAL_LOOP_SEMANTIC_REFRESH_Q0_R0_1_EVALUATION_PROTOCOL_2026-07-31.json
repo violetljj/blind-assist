@@ -1,0 +1,109 @@
+{
+  "schema_version": "blindassist.dual_loop_semantic_refresh_q0_r0_1_evaluation_protocol.v1",
+  "protocol_id": "DUAL_LOOP_SEMANTIC_REFRESH_Q0_R0_1",
+  "parent_protocol_id": "DUAL_LOOP_SEMANTIC_REFRESH_Q0",
+  "stage": "DEVELOPMENT",
+  "status": "OFFLINE_EVALUATION_REPAIR_ONLY",
+  "title": "Causal Event-Preserving Semantic Refresh Scheduling Q0 R0.1",
+  "research_question": "Can the existing Q0 fixed-period counterfactual traces be evaluated at risk-episode and signed-feedback-delay granularity without rerunning detector input or training a scheduler?",
+  "scope": {
+    "allowed_inputs": [
+      "Existing Q0 R0 detector dump",
+      "Existing Q0 R0 full-rate reference trace",
+      "Existing Q0 R0 scored truth-item table",
+      "Existing Q0 R0 candidate traces"
+    ],
+    "new_detector_execution": false,
+    "new_fast_feature_collection": false,
+    "old_r2_r3_rerun": false,
+    "learned_policy_training": false,
+    "android_or_device_execution": false,
+    "output_namespace": "artifacts.local/evidence/dual-loop/semantic-refresh-q0-r0-1"
+  },
+  "estimand": {
+    "primary": "Risk-episode alignment and signed feedback timing difference between each fixed-period arm and the full-rate reference",
+    "secondary": [
+      "Reference positive-event miss count",
+      "Truth-window feedback count delta",
+      "Longest zero-order-hold stale duration",
+      "Raw nondominated operating points",
+      "Constrained best operating point under predeclared Development gates"
+    ],
+    "frame_unit": "One source capture frame for causal state transitions",
+    "episode_unit": "One contiguous active risk-signature run within one source session",
+    "cluster_unit": "Source session; frames and episodes are repeated observations and are not independent samples",
+    "uncertainty": "Descriptive counts and quantiles only; no frame-level p-values or generalization claims"
+  },
+  "episode_definition": {
+    "active_rule": "risk.level != NONE",
+    "signature": [
+      "risk.level",
+      "risk.direction",
+      "risk.proximity"
+    ],
+    "new_episode_when": [
+      "Active state changes from clear to active",
+      "Active state changes from active to clear",
+      "Any risk signature field changes while active"
+    ],
+    "interval_convention": "Start at the first active frame timestamp; end immediately before the first subsequent frame outside the episode, or one median within-session frame step after the final frame",
+    "no_smoothing": true,
+    "event_id_rule": "active_event_id increments on each clear-to-active transition and remains stable through active signature changes; next_event_sequence_number is independent state"
+  },
+  "episode_matching": {
+    "rule": "One-to-one same-session positive-overlap greedy matching, ordered by overlap duration then temporal IoU",
+    "reported": [
+      "Episode onset delay",
+      "Episode offset delay",
+      "Temporal IoU",
+      "Risk level match",
+      "Direction match",
+      "Proximity match",
+      "Risk signature match",
+      "Matched and unmatched episode counts",
+      "Feedback count delta per matched episode",
+      "Longest candidate stale duration"
+    ],
+    "feedback_match_tolerance_ms": 100.0,
+    "feedback_match_rule": "One-to-one timestamp matching within the fixed tolerance, ordered by absolute time difference"
+  },
+  "truth_item_delay": {
+    "eligible_items": "Scored positive_event items only",
+    "signed_definition": "candidate first feedback timestamp minus reference first feedback timestamp within the same positive-event interval",
+    "reported": [
+      "Signed min/max/mean/P50/P90/P95",
+      "Absolute min/max/mean/P50/P90/P95",
+      "Early, within-tolerance and late counts",
+      "Missing candidate feedback count",
+      "Feedback count delta for every truth item"
+    ],
+    "negative_window_delay": "Not applicable; negative windows retain hit and feedback-count metrics without onset-delay interpretation"
+  },
+  "operating_point_selection": {
+    "raw_nondominated_objectives": [
+      "Minimize detector calls",
+      "Minimize Level-3 event-or-feedback frame divergence",
+      "Minimize reference event misses",
+      "Minimize unmatched reference episodes",
+      "Minimize absolute episode onset-delay P95",
+      "Maximize episode temporal IoU"
+    ],
+    "admission_constraints": {
+      "reference_event_missed_count_max": 0,
+      "reference_episode_match_recall_min": 0.95,
+      "episode_temporal_iou_mean_min": 0.8,
+      "episode_abs_onset_delay_p95_ms_max": 150.0,
+      "risk_signature_match_rate_min": 0.95
+    },
+    "decision_rule": "Among admissible VALID policies, minimize detector call count; break ties by absolute episode onset-delay P95, then Level-3 divergence",
+    "learned_policy_comparison": "Not applicable until an independent current-frame-only fast-feature stream and session-held-out split exist"
+  },
+  "claim_ceiling": "This repair establishes only a reproducible Development-only episode-alignment diagnostic over already-consumed Q0 traces. It does not establish semantic truth, tracker quality, energy, thermal behavior, Android behavior, product equivalence, safety or learned-policy superiority.",
+  "stop_rules": [
+    "Do not overwrite or reinterpret the Q0 R0 protocol or result",
+    "Fail closed on input identity, frame timestamp or reference parity mismatch",
+    "Do not treat an admissible operating point as a deployment recommendation",
+    "Do not train or evaluate Logistic without an independent current-frame-only fast-feature trace",
+    "Do not rerun old R2/R3, detector collection or Android execution"
+  ]
+}

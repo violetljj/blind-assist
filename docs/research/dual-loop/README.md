@@ -23,13 +23,23 @@ R1 evidence、不改阈值、不授权或实现 R2。普通生产行为仍不变
 同日将“事件保持型语义刷新调度”作为独立后继路线建立了
 [Q0 协议](DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json)。它不修复或升级
 旧几何双环，而是只在固定模型全频参考下审计“何时需要刷新语义结果”。Q0 R0 使用
-独立 arm 状态与 `HOLD_LAST_SEMANTIC_SNAPSHOT_R0`，完成 4,422 帧、两 session 的
+独立 arm 状态与 `ZERO_ORDER_HOLD_SEMANTIC_PROPAGATION_R0`，完成 4,422 帧、两 session 的
 固定时间 baseline：33/66/100/167/267 ms 分别调用 3,309/2,793/2,430/1,560/1,077
 次，Level-3 event-or-feedback divergence 为 122/201/262/404/533 帧，其中纯
 feedback decision divergence 为 121/200/261/403/527 帧；当前 8 个正例与 7 个
 负窗的 event-window 命中数均未改变。该结果只是 Development-only reference-preservation
 筛查，说明 event-window 粒度尚不足以替代逐帧 divergence；没有 learned scheduler、
 真实 tracker、能效、Android、产品或安全结论。
+
+随后在不重跑 detector、不读取旧 R2/R3 的前提下完成了
+[Q0 R0.1 评测修订](DUAL_LOOP_SEMANTIC_REFRESH_Q0_R0_1_EVALUATION_PROTOCOL_2026-07-31.json)：
+将风险 episode 定义为连续 active risk-signature run，补齐独立 active event ID、
+episode onset/offset、temporal IoU、风险字段一致率、episode feedback count delta、
+最长 stale duration 与 signed feedback delay 的 P50/P90/P95。原始 nondominated set
+仍包含所有 6 个 VALID operating points；在预声明的零 reference miss、episode coverage
+≥0.95、平均 IoU ≥0.80、onset-delay P95 ≤150 ms、risk-signature match ≥0.95 门下，
+admissible set 为 `FULL_RATE_REFERENCE / FIXED_TIME_33MS`，约束型最低调用点为
+`FIXED_TIME_33MS`。这只是两 session 的 Development 评测诊断，不代表自适应策略优于固定周期。
 
 rank-1 仍按其自身终点 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE / VALID` 封存；它说明
 truth-first 门在无足够正例时停止，不与 rank-2 的结果混为一谈。
@@ -286,7 +296,8 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 第二环输入合同、准入门与生产影子接线 | `IMPLEMENTED / DEFAULT_OFF / SHADOW_NON_ACTUATING` |
 | 隔离 active contradiction-only 构建 | `IMPLEMENTED / DEVELOPMENT_ONLY / NO_EVENT_EFFECT_CLAIM` |
 | R1 event failure decomposition | `COMPLETE / POLICY_GRANULARITY_MISMATCH_SUPPORTED / DEVELOPMENT_ONLY` |
-| 事件保持型语义刷新调度 Q0 离线 R0 | `COMPLETE / DEVELOPMENT_ONLY / HOLD_LAST_SEMANTIC_SNAPSHOT / NO_ANDROID_AUTHORITY` |
+| 事件保持型语义刷新调度 Q0 离线 R0 | `COMPLETE / DEVELOPMENT_ONLY / ZERO_ORDER_HOLD / NO_ANDROID_AUTHORITY` |
+| 事件保持型语义刷新调度 Q0 离线 R0.1 评测修订 | `COMPLETE / DEVELOPMENT_ONLY / EPISODE_ALIGNMENT / NO_ANDROID_AUTHORITY` |
 | scene-scale active successor / single-variable R2 | `CLOSED / NOT_WORTH_DESIGNING / NOT_IMPLEMENTED` |
 | 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、分割、ARCore | `NOT_AUTHORIZED` |
@@ -306,10 +317,16 @@ Matoaka 各有一个满足既有正例命中、零 induced negative window 和�
 witness。因此该 terminal 只支持解释 policy granularity，不授权任何 R2。
 
 当前推荐关闭 scene-scale active 路线；不实现该路线的 hold、latch、事件状态、阈值
-调整或单变量 R2。Q0 的 hold/cache/event state 仅用于独立离线模拟，且 feature-rule
+调整或单变量 R2。Q0 的 zero-order-hold/cache/event state 仅用于独立离线模拟，且 feature-rule
 与 Logistic arms 因没有独立 current-frame-only fast-feature trace 而为
 `NOT_EVALUABLE`。保留默认关闭的机制、receipt、回归夹具、逐窗口分解和失败分类；
 默认、debug、release、产品、真人助行与安全行为均不改变。
+
+Q0 R0.1 评测修订现已封存；若继续推进，只允许先冻结独立的 Q1A fast-feature trace
+合同（当前 RGB/IMU、该 arm 自己的历史状态、session 身份和 feature provenance），再在
+相同调用预算下比较 `FIXED_TIME_66MS / 100MS / 167MS` 与 `MAX_AGE + TRACK_FAILURE +
+SCENE_CHANGE` 规则。没有跨 session 的独立 fast-feature evidence 前，不训练 Logistic；
+没有离线规则增量前，不进入 Snapdragon、Android shadow、能效或热量测量。
 
 ### D0 R1/R2/R3 执行终态
 
