@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。小范围修订
+  `CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A`：将
+  `REUSE_FIRST / FITNESS_FIRST` 固化为 D0-A0 准入原则，禁止仅因数据集曾被其他
+  算法、主线或实验使用而整体排除；逐 session 记录当前适配度、实际历史访问、
+  claim overlap、当前角色和局部排除原因。受污染单元优先降级为 calibration、
+  Canary、Development、诊断、回归或压力样本，而不是丢弃；未增加数据、模型 B、
+  融合、调度、Android、Confirmation 或产品权限。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户澄清将
   `HETEROGENEOUS_PLATFORM_P0A_R0` 的评估对象从未连接的 A568 收窄为当前真实连接的
   手机 `SM-S9280 / SM8650`（serial `R5CX10M8Y8X`）。完成手机 P0A 预检并达到

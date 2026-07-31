@@ -31,7 +31,7 @@
       "ancestry": [
         "EXISTING_BLINDASSIST_CONTINUOUS_RGB_SOURCES"
       ],
-      "reuse_policy": "CANARY_AGENT_LABEL_READINESS_ONLY; disclose prior content or algorithm-output access per session; never infer unseen Confirmation status.",
+      "reuse_policy": "REUSE_FIRST_AND_FITNESS_FIRST. Prior use by another algorithm, mainline, or experiment is never a dataset-level exclusion by itself. Disclose actual prior access and claim overlap per session, assign the strongest honest current role, and never infer unseen Confirmation status.",
       "role": "CANARY",
       "outcome_access": "NONE",
       "result_access_state": "CONTENT_INSPECTED",
@@ -40,6 +40,53 @@
       "research_track": "CAPABILITY_DISCOVERY"
     }
   ],
+  "reuse_first_admission_policy": {
+    "principle": "Existing high-value data are evaluated for the current question before any new acquisition. Historical use changes the honest evidence role only when the accessed information overlaps the current claim; it does not globally seal a dataset name or source family.",
+    "dataset_name_only_exclusion_forbidden": true,
+    "prior_algorithm_use_only_exclusion_forbidden": true,
+    "fitness_dimensions": [
+      "continuous RGB payload is present and decodable",
+      "frame order and source/session identity are reconstructable",
+      "the frozen central image attention region is visible often enough to review",
+      "parent-event grouping is possible without candidate-model output",
+      "camera quality and NOT_EVALUABLE causes can be recorded",
+      "session ancestry and independence group can be disclosed"
+    ],
+    "required_session_manifest_fields": [
+      "source_id",
+      "session_id",
+      "dataset_name",
+      "content_identity",
+      "independence_group",
+      "ancestry",
+      "current_task_fitness",
+      "missing_current_task_requirements",
+      "prior_content_access",
+      "prior_algorithm_output_access",
+      "claim_relevant_outcome_overlap",
+      "selection_or_tuning_influence",
+      "assigned_current_role",
+      "admission_disposition",
+      "exclusion_reason",
+      "reuse_candidates"
+    ],
+    "admission_dispositions": [
+      "ADMIT_D0_A_PRODUCTION_LABELING",
+      "ADMIT_D0_A_CALIBRATION_ONLY",
+      "ADMIT_DIAGNOSTIC_OR_REGRESSION_ONLY",
+      "RESERVE_UNINSPECTED_SESSION_FOR_FUTURE_EVALUATION",
+      "NOT_EVALUABLE_FOR_CURRENT_QUESTION"
+    ],
+    "role_rules": [
+      "CONTENT_INSPECTED data remain eligible for D0-A when the full admitted universe and selection basis are disclosed.",
+      "Prior algorithm output that is unrelated to the central-obstruction claim is disclosed but does not automatically reduce the current role.",
+      "Prior output, selection, or tuning that overlaps the current claim limits the affected minimum identity unit to Canary or Development for that claim; it does not discard the data.",
+      "Uninspected independent sessions from a previously used dataset may be reserved for a future frozen evaluation when their identity and leakage boundary are established before access.",
+      "Frames, clips, or windows from one parent event or capture session never create artificial independence."
+    ],
+    "downgrade_before_discard": "If a source cannot support the strongest desired role, first assign a truthful lower role such as calibration, Canary, Development diagnostic, regression fixture, stress case, negative sample, or source characterization. Exclude it from the current question only when current-task observability, identity, integrity, or bounded processing requirements are genuinely absent.",
+    "no_new_data_implication": "A D0-A0 reuse audit does not authorize new collection or download. It ranks and assigns roles to existing accessible assets first; any later source expansion requires its own bounded decision."
+  },
   "observation_contract": {
     "roi_name": "CENTRAL_IMAGE_ATTENTION_REGION",
     "roi_semantics": "A frozen image-space region only; not intended route, body heading, future trajectory, free space, or a safety corridor.",
@@ -97,7 +144,7 @@
     {
       "phase": "D0-A0",
       "name": "INPUT_UNIVERSE_FREEZE",
-      "output": "Immutable source/session/frame/timestamp/ancestry manifest and SHA-256 receipt.",
+      "output": "Reuse-first immutable source/session/frame/timestamp/ancestry manifest, per-session current-task fitness and prior-access role ledger, plus SHA-256 receipt.",
       "candidate_output_access": false
     },
     {
@@ -130,6 +177,7 @@
     "required_before_d0a2": [
       "input-universe-manifest.json",
       "input-universe-receipt.json",
+      "reuse-role-ledger.jsonl",
       "review-prompt.md",
       "review-policy-lock.json"
     ],
@@ -154,6 +202,24 @@
       "class": "INVARIANT",
       "description": "Complete source/session/frame ranges and their hashes must be frozen before any production label pass; easy segments cannot be added and difficult segments cannot be shortened or removed after inspection.",
       "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "dataset-name-is-not-an-exclusion",
+      "class": "INVARIANT",
+      "description": "A dataset, source family, or session cannot be excluded solely because another algorithm, mainline, or experiment used data with the same name. Exclusion must cite a current-task fitness, identity, integrity, or claim-overlap reason at the minimum affected identity unit.",
+      "failure_scope": "BRANCH"
+    },
+    {
+      "id": "fitness-first-role-assignment",
+      "class": "INVARIANT",
+      "description": "D0-A0 evaluates current-question observability and actual prior information access per session before assigning the present evidence role. Dataset prestige, novelty, or historical project ownership cannot substitute for this audit.",
+      "failure_scope": "BRANCH"
+    },
+    {
+      "id": "downgrade-before-discard",
+      "class": "INVARIANT",
+      "description": "Prior claim-relevant access normally downgrades the affected unit to calibration, Canary, Development, diagnostic, regression, or stress-case use. It does not justify deleting or globally sealing otherwise useful evidence.",
+      "failure_scope": "ITEM"
     },
     {
       "id": "agent-only-no-human-queue",

@@ -13,6 +13,13 @@
 观察标注；分歧时由第三个 fresh Agent 先独立标注、再绑定两份原始 receipt 裁决。
 本路线不设人工队列；标注、复核、裁决与验收均由隔离 Agent 自主完成。
 
+D0-A0 采用 `REUSE_FIRST / FITNESS_FIRST`：先审计全部现有可访问连续 RGB，再按当前
+中央阻塞问题的可观察性、身份完整性、实际历史访问和 claim overlap 逐 session 分配
+角色。数据曾被其他算法、主线或实验使用，不构成按数据集名称排除的理由；相关历史
+访问最多使受影响的最小身份单元降级为 calibration、Canary、Development、诊断、
+回归或压力样本。只有当前问题所需信息确实缺失时才局部记为
+`NOT_EVALUABLE_FOR_CURRENT_QUESTION`，不得全局封存优秀数据。
+
 D0-A 只回答中央图像可观察阻塞能否形成稳定的 Agent-adjudicated parent-natural-event
 账本。标签固定为 `VISIBLE_CENTRAL_OBSTRUCTION_PRESENT`、
 `NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE` 与 `NOT_EVALUABLE`；第二项不表示画面无
@@ -333,7 +340,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 D0-A 固定顺序为：
 
 ```text
-D0-A0 冻结输入宇宙与哈希清单
+D0-A0 复用优先审计现有数据，冻结输入宇宙、逐 session 适配/历史访问角色账本与哈希清单
   ↓
 D0-A1 在排除于正式计数的 calibration bundle 上冻结 ROI、prompt、
       parent-event 边界/匹配规则与数值 readiness 门
