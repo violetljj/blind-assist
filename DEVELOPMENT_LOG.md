@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。落实新科学主线
+  `DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_AND_RESIDUAL_LABELABILITY_R0`：新增冻结 pilot
+  配置、可复算 Atlas runner 与 5 项单元契约，只读消费已降级的 200-frame R1 rehearsal、
+  5,043 个组件、canonical pixel truth 和冻结 YOLO trace。pilot 识别 3,062 个同类
+  residual false activation component；错误由上部视场背景 proxy、YOLO 归因歧义、
+  temporal flicker、稳定高置信错误与小碎片等非互斥机制共同构成。4 个空间、3 个因果
+  时序和 2 个置信 probe 均未达到预声明 recall-retention 门，gating 终态为
+  `INSUFFICIENT`；pixel residual 可复算，但缺少 instance correspondence、depth 和 pose，
+  三态 attribution 仅为 `WEAKLY_LABELABLE`。五种机制满足跨 4 session 的定向扩展规则，
+  只列出 6 个 dev/consumed candidate session，未执行扩展推理。未训练模型、访问 fresh
+  holdout、实现可视化平台、运行 Android/QNN/A568 或修改 risk/feedback/TTS/振动/默认
+  App。验证：5 项 module unit tests、完整 pilot identity/geometry/truth pairing 与后续
+  仓库检查通过；Confirmation、产品与安全 authority 均未激活。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成全项目 current 权威面的
   R4 收口：SANPO 拆分为默认论文 `THESIS_DEVELOPMENT` 与显式
   `PRODUCTION_PROMOTION`，普通训练/utility/算法选模 benchmark 不再要求 fresh

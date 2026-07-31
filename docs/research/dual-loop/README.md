@@ -1,9 +1,8 @@
 # BlindAssist YOLO + 语义分割双环研究主线
 
-状态：`SEGMENTATION_MODEL_SELECTION_R1_BLOCKED /
-MODEL_SELECTION_NOT_EVALUABLE / THESIS_DEVELOPMENT_DEFAULT /
-DEVELOPMENT_REPAIR_AND_RERUN_ALLOWED /
-DEVELOPMENT_DEVICE_BENCHMARK_ALLOWED / NEXT_ROUTE_NOT_SELECTED /
+状态：`SEGMENTATION_FAILURE_ATLAS_R0_PILOT_COMPLETE /
+GATING_INSUFFICIENT / RESIDUAL_WEAKLY_LABELABLE /
+TARGETED_EXPANSION_WARRANTED / THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-08-01（Asia/Hong_Kong）
@@ -29,15 +28,15 @@ R1 的 one-shot、fresh holdout、逐项 SHA 和全量独立复算要求复制�
 - 可在最终选模前提前做 host/device runtime benchmark，但必须区分可参与候选排序的
   `ALGORITHM_SELECTION_BENCHMARK` 与只验证 backend/build/operator/memory/thermal 的
   `PLATFORM_ENGINEERING_BENCHMARK`；后者不得反向排序算法；
-- 每轮至多推进一条主路线：A 为 DDRNet-23-Slim、SegFormer-B0 与 SANPO baseline 的
-  小规模模型比较；B 为面积、空间位置、地面边界、高置信度和 YOLO 去重约束下的小候选算子；
+- 每轮至多推进一条主路线；本轮已选择 segmentation failure atlas、有限 gating probe
+  与 residual labelability，模型比较、可视化平台和设备 sidecar 均不并行推进；
 - 每轮最多 3 个候选，并必须交付新增召回、false components/frame、mask 碎片、
   组件稳定性、P95 推理/总链路成本中的适用指标，以及表、图、失败案例或 demo；
 - 不接提醒、不改默认 App，不把 Development 结果写成安全、产品或最终确认结论。
 
-本次只改变默认执行制度，没有自动选择路线 A/B，也没有运行模型、真机 benchmark 或
-融合实验。最终 Confirmation 尚未激活；届时才单独冻结确认问题、独立数据、实现和
-统计，并按实际风险决定是否需要 one-shot 与完整复算。
+当前已在上述制度下完成一次 consumed Development pilot，但没有训练模型、运行真机
+benchmark 或融合实验。最终 Confirmation 尚未激活；届时才单独冻结确认问题、独立数据、
+实现和统计，并按实际风险决定是否需要 one-shot 与完整复算。
 
 2026-07-31，用户明确要求以 Agent-only 标注检验“中央图像阻塞互补性”的可行边界；该
 探索路线现已完成 successor calibration 并关闭。唯一获授权阶段曾是
@@ -160,6 +159,16 @@ DEVICE_BENCHMARK_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`。新增的
 只定义未来单候选 qualification 问题，状态仍为 `DRAFT_NOT_AUTHORIZED_FOR_FORMAL`。
 这里的 device 禁令是 R2-P0 formal 协议的历史边界，不再禁止新
 `DEVELOPMENT_STANDARD` 在最终选模前采集明确标注的工程 runtime 证据。
+
+[Segmentation Failure Atlas 与 residual 可标注性 R0](DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_AND_RESIDUAL_LABELABILITY_R0_RESULT_2026-08-01.md)
+现为唯一科学主线。200-frame consumed pilot 已对 5,043 个组件完成同类 residual truth、
+dominant truth class、空间、因果时序、置信度、YOLO 归因和输入 availability 诊断：
+3,062 个 false activation component 呈多机制混合，且跨 4 个 session 重复。
+4 个空间、3 个因果时序和 2 个置信 probe 均按预声明非组合式运行；全部未保留足够召回，
+故 gating 为 `INSUFFICIENT`。pixel residual 可复算，但没有 instance correspondence，
+三态归因只能为 `WEAKLY_LABELABLE`。五种机制达到跨 session 定向扩展门，下一步只允许
+对清单中的 6 个 dev/consumed session 做一次扩展复现；本轮未执行该推理。可视化平台、
+Android、QNN/A568、risk/feedback、TTS、振动和默认 App 均未进入本主线。
 
 ## 已关闭前序与保留证据
 
