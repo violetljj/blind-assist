@@ -1,4 +1,27 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  `CI_RESOURCE_ISOLATION_R1` 的第一轮资源与门禁修复：CI run
+  [30609736963](https://github.com/violetljj/blind-assist/actions/runs/30609736963)
+  在同一 Gradle 大调用中让 `:app:packageUstrfExperiment` 与
+  `:npu-candidate:mergeExtDexDebug` 同时触发 D8 `Java heap space`；现将原有
+  结构/卫生、单测/lint、正式 App、USTRF、NPU/benchmark、研究合同/模型检查拆为
+  独立 job，所有原有任务和失败门禁保留。Gradle job 固定使用现有 `2 GiB` heap、
+  `--max-workers=2`，NPU 与 device benchmark 在同一 job 内顺序执行，未使用
+  allow-failure 或无限增大 heap。
+- 分组本地 warm/incremental 验证使用 Temurin 17.0.19、Gradle 8.10.2：
+  unit/lint `236 actionable tasks` 成功；正式 App debug APK、androidTest、bundle
+  与 release assets 成功；USTRF、shadow benchmark、NPU candidate、device benchmark
+  均成功。NPU candidate 另补齐共享 `MainActivity` 所需的两个恒 false
+  `BuildConfig` 字段；这是隔离后暴露的编译阻塞，不改变 candidate 行为。
+- 原有研究合同套件首次暴露 U0 合同的 official config、truth-validator 和 runner
+  implementation SHA 漂移；仅刷新当前文件的身份绑定，依赖清单、门槛和 U0/训练/生产
+  authority 不变，完整 `13/13` contract files、`failure_count=0` 通过。
+- 正式 App 的严格 16KB 门禁还证明 `useLegacyPackaging=true` 会产生压缩 native
+  libraries；将 App 改为不压缩 JNI，APK 与 AAB 分别通过 `PAGE_ALIGNMENT_16K`。
+  这会增加本地 debug 包体并留下 runtime/package-size parity 风险，NPU candidate
+  仍保持其独立 legacy packaging，后续不能把静态门禁当作真机兼容性证明。
+- 本轮不运行研究实验、不改变默认模型或研究结论；当前终点为本地分组通过、远程
+  同一提交连续两次完整 CI 仍待验证。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户明确授权完成
   [TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 B Development 实现与单次执行](docs/research/dual-loop/TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-31.md)：
   在隔离 offline Module 中完成 truth-blind producer、独立 truth-late evaluator、
@@ -23,6 +46,14 @@
   `250 ms` 上限内无 witness。该 witness 需要新 runtime state，不是新的 R1 效果主张；
   不设计或实现 R2，建议关闭 scene-scale active 路线。逐窗口 CSV/JSON/Markdown、
   upper-bound JSON、确定性测试与 LF 字节测试已交付。
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  [DUAL_LOOP_SEMANTIC_REFRESH_Q0](docs/research/dual-loop/DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json)
+  的独立离线 R0 实现与单次 Development 回放：固定模型全频参考在 4,422 帧、两
+  session 上通过逐帧 parity；33/66/100/167/267 ms fixed-time arms 的 detector
+  calls 为 `3309/2793/2430/1560/1077`，Level-3 divergence 为
+  `122/201/262/404/533`，event-window 命中未改变。feature-rule 与 Logistic arms
+  因缺少独立 current-frame-only fast-feature trace 保持 `NOT_EVALUABLE`；本轮只支持
+  Development-only reference-preservation 筛查，不授权 Android、能效、产品或安全结论。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
   [双环 R1 未见事件 R0 rank-1](docs/research/dual-loop/DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK1_RESULT_2026-07-31.md)
   的 truth-first 终点。下载的 480p payload SHA-256 为 `589711...f49`，生成

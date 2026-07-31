@@ -7,7 +7,7 @@
   "prediction_evidence_contract": {
     "schema": "blindassist_ustrf_sc_u0_prediction_evidence_contract_v2",
     "validator_implementation_sha256": "733478420c6dccc9bffd00b5d40d23f842b2464269f3dad98044e3cb8f682c9a",
-    "runner_implementation_sha256": "f2b05de2ea5c49417f7f8ca27258476c3d9fe4662fb50dccfa40f81837a3207f",
+    "runner_implementation_sha256": "c1220270a44ebde98145415e21f92025f89608ca909a0539b7afa30cbd7c336e",
     "adapter_registry_schema": "blindassist_ustrf_sc_u0_candidate_adapter_registry_v1",
     "adapter_request_schema": "blindassist_ustrf_sc_u0_candidate_adapter_request_v1",
     "adapter_output_schema": "blindassist_ustrf_sc_u0_candidate_adapter_output_v1",
@@ -138,8 +138,8 @@
       "json": "utf8_canonical_sorted_keys_compact",
       "validator_text": "utf8_lf_normalized"
     },
-    "official_truth_config_sha256": "e6e1a4f45b0197b331425541d80a598328ad2eca387039069feff5ed40360614",
-    "truth_validator_implementation_sha256": "5b9ce60a85854ded6e5a9ec824575a6a7bb9a44d124d5b14608ed85972a93b83",
+    "official_truth_config_sha256": "481b4baa3220ac3ca228561a555cbb4e891641c8242e7210b1fdf124562308e2",
+    "truth_validator_implementation_sha256": "d2deb65fca5c66e0948faa9a0e8800da7aa1ea7a59e8986efe41171774694bdd",
     "truth_validator_dependency_sha256": {
       "validate_explicit_route_intent_episode.py": "4974a2ea5d10d897ea1ec38b889116167e34c882cc9ae748a798147f9be86144",
       "validate_ustrf_sc_capture_frame_ledger.py": "f69063619ace3152738fc1de33de7501546d6a0197fd0e4ce4de98318a149dde",

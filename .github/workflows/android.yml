@@ -6,8 +6,11 @@ on:
   pull_request:
     branches: ["**"]
 
+permissions:
+  contents: read
+
 jobs:
-  build:
+  repository-gates:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,6 +30,15 @@ jobs:
       - name: Smoke-test project structure rules
         run: pwsh -ExecutionPolicy Bypass -File ./scripts/test_check_project_structure.ps1
 
+  unit-tests-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
       - name: Set up JDK 17
         uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
@@ -37,9 +49,11 @@ jobs:
       - name: Grant Gradle execute permission
         run: chmod +x ./gradlew
 
-      - name: Run tests, lint, and assemble APKs
+      - name: Run unit tests and lint
         run: >-
           ./gradlew
+          --max-workers=2
+          "-Dorg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8"
           :core:assist:test
           :core:ustrf:test
           :core:vision:testDebugUnitTest
@@ -52,24 +66,58 @@ jobs:
           :core:device:lintDebug
           :core:ui:lintDebug
           :feature:assist:lintDebug
+
+      - name: Ensure generated files are ignored
+        shell: pwsh
+        run: |
+          $status = git status --short
+          if ($status) {
+            Write-Host "Tracked or unignored files changed during CI:"
+            Write-Host $status
+            exit 1
+          }
+
+  formal-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Grant Gradle execute permission
+        run: chmod +x ./gradlew
+
+      - name: Assemble formal App artifacts
+        run: >-
+          ./gradlew
+          --max-workers=2
+          "-Dorg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8"
           :app:assembleDebug
           :app:assembleDebugAndroidTest
-          :app:assembleUstrfExperiment
           :app:bundleDebug
           :app:mergeReleaseAssets
-          :npu-candidate:assembleDebug
-          :device-benchmark:assembleDebug
-          :ustrf-shadow-benchmark:assembleDebug
-          :ustrf-shadow-benchmark:compileDebugAndroidTestKotlin
 
       - name: Reject legacy TensorFlow Lite runtime dependencies
         shell: pwsh
         run: |
-          $appDependencies = (& ./gradlew :app:dependencies --configuration debugRuntimeClasspath) -join "`n"
+          $gradleArgs = @(
+            '--max-workers=2',
+            '-Dorg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8'
+          )
+          $appDependencies = (& ./gradlew @gradleArgs :app:dependencies --configuration debugRuntimeClasspath) -join "`n"
           if ($LASTEXITCODE -ne 0) {
             throw "Could not inspect the app runtime dependency tree."
           }
-          $benchmarkDependencies = (& ./gradlew :device-benchmark:dependencies --configuration debugRuntimeClasspath) -join "`n"
+          $benchmarkDependencies = (& ./gradlew @gradleArgs :device-benchmark:dependencies --configuration debugRuntimeClasspath) -join "`n"
           if ($LASTEXITCODE -ne 0) {
             throw "Could not inspect the benchmark runtime dependency tree."
           }
@@ -101,6 +149,106 @@ jobs:
           if (Test-Path (Join-Path $releaseAssets 'replay')) {
             throw 'Debug-only replay assets leaked into the release asset set.'
           }
+
+      - name: Ensure generated files are ignored
+        shell: pwsh
+        run: |
+          $status = git status --short
+          if ($status) {
+            Write-Host "Tracked or unignored files changed during CI:"
+            Write-Host $status
+            exit 1
+          }
+
+  ustrf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Grant Gradle execute permission
+        run: chmod +x ./gradlew
+
+      - name: Assemble USTRF artifacts
+        run: >-
+          ./gradlew
+          --max-workers=2
+          "-Dorg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8"
+          :app:assembleUstrfExperiment
+          :ustrf-shadow-benchmark:assembleDebug
+          :ustrf-shadow-benchmark:compileDebugAndroidTestKotlin
+
+      - name: Ensure generated files are ignored
+        shell: pwsh
+        run: |
+          $status = git status --short
+          if ($status) {
+            Write-Host "Tracked or unignored files changed during CI:"
+            Write-Host $status
+            exit 1
+          }
+
+  npu-benchmark:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Grant Gradle execute permission
+        run: chmod +x ./gradlew
+
+      - name: Assemble NPU candidate
+        run: >-
+          ./gradlew
+          --max-workers=2
+          "-Dorg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8"
+          :npu-candidate:assembleDebug
+
+      - name: Assemble device benchmark
+        run: >-
+          ./gradlew
+          --max-workers=2
+          "-Dorg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8"
+          :device-benchmark:assembleDebug
+
+      - name: Ensure generated files are ignored
+        shell: pwsh
+        run: |
+          $status = git status --short
+          if ($status) {
+            Write-Host "Tracked or unignored files changed during CI:"
+            Write-Host $status
+            exit 1
+          }
+
+  research-contracts-and-models:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
 
       - name: Set up Python for model checks
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0

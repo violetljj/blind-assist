@@ -21,6 +21,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "USTRF_EXPERIMENT", "false")
         buildConfigField("boolean", "NPU_CANDIDATE", "true")
+        buildConfigField("boolean", "DUAL_LOOP_SHADOW", "false")
+        buildConfigField("boolean", "DUAL_LOOP_ACTIVE", "false")
         ndk {
             abiFilters += "arm64-v8a"
         }
