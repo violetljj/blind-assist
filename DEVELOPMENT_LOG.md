@@ -1,4 +1,7 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。修正双环研究入口标题，明确当前
+  主线为 `YOLO + 语义分割 + 融合 C`；中央图像阻塞仅作为已经关闭的辅助观测审计，Q0
+  semantic-refresh 仅作为独立封存旁路线保留。未改变任何历史结果、研究授权或实验状态。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。冻结
   [segmentation complementarity Development design R0](docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_DEVELOPMENT_DESIGN_R0.md)：
   基本单位为同一 `source/frame/image_sha256` 的 YOLO box 与 segmentation mask 配对，
