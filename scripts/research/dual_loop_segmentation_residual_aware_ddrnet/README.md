@@ -1,7 +1,7 @@
 # dual_loop_segmentation_residual_aware_ddrnet
 
-状态：development；`FP_AWARE_DDRNET_R0_FROZEN_PREFLIGHT_VALID_NOT_EXECUTED /
-SINGLE_VARIABLE / THREE_PAIRED_SEEDS / CONSUMED_DEVELOPMENT_ONLY`
+状态：development；`COMPLETE / VALID / FP_WEIGHTED_SAMPLING_NOT_SUPPORTED /
+SINGLE_SUCCESSOR_STOP / THREE_PAIRED_SEEDS / CONSUMED_DEVELOPMENT_ONLY`
 
 ## 研究问题与版本
 
@@ -52,3 +52,9 @@ artifacts.local/evidence/dual-loop-segmentation-fp-aware-ddrnet-r0/
 
 完整协议见
 [FP-aware DDRNet R0 protocol](../../../docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0_PROTOCOL_2026-08-01.md)。
+
+正式结果见
+[FP-aware DDRNet R0 result](../../../docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0_RESULT_2026-08-01.md)。
+三个 same-seed pair 均未通过全部九门；正式终态为
+`FP_WEIGHTED_SAMPLING_NOT_SUPPORTED`。不得在相同 consumed outcome 上选择 seed、
+改 sampler/crop、加 loss 或调 target 救援。

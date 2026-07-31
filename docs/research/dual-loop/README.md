@@ -5,7 +5,8 @@ MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
 CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
 R0_1_SHADOW_VALID_NO_MATERIAL_NO_HETEROGENEITY /
 BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP /
-FP_AWARE_DDRNET_R0_FROZEN_PREFLIGHT_VALID_NOT_EXECUTED /
+FP_WEIGHTED_SAMPLING_NOT_SUPPORTED /
+SINGLE_FP_AWARE_SUCCESSOR_STOP /
 VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
 THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
@@ -218,17 +219,18 @@ recovery 只修摘要字段匹配，不修改既有 result/frame/component evide
 `0.284667 / 0.781123`，`MULTI_NEGATIVE` 为 `0.109286 / 0.922445`；两者最低
 session retention 仅 `0.612024 / 0.629324`，后者 boundary retention 也只有
 `0.612015`。两个 shadow 均无 material，`H_min/H_cross` 均为 false。因此停止这三个
-精确定义的静态手工门家族，下一主边界是 residual-aware DDRNet Development；不得扩大
+精确定义的静态手工门家族，并把下一主边界转入 FP-aware DDRNet Development；不得扩大
 为所有 conditional/learned gating、postprocess 或分割路线失败。
 
-[FP-aware DDRNet R0 protocol](DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0_PROTOCOL_2026-08-01.md)
-现已冻结唯一 successor `FP_WEIGHTED_UNGUIDED_FULL_FRAME`。它保持 DDRNet、四类真值、
-loss、70% hazard-guided crop、三 seed 与 1200-step 预算不变，只把原 30% unguided
-full-frame 分支在已选 train session 内的 uniform frame draw 改为按同 seed baseline
-FP pixel count 加权；full-frame transform 不变。因未把 train YOLO union 纳入权重，本轮
-诚实名为 FP-aware，不冒称 residual-aware。outcome-blind preflight 已验证三个 seed 的
-400 train frames 和 8 sessions 均有正 FP 权重；candidate 尚未训练，320 帧 consumed
-terminal outcome 尚未读取。
+[FP-aware DDRNet R0 result](DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0_RESULT_2026-08-01.md)
+已完成唯一 successor `FP_WEIGHTED_UNGUIDED_FULL_FRAME`。validator 重新推理六个
+checkpoints、逐像素核对 1,920 个 prediction masks，并通过 28,861 项检查、错误数 0。
+三个 same-seed pair 均未通过全部九门：FP reduction 为
+`.198713 / -.138991 / -.043984`，false components/frame 为
+`4.41875 / 7.81875 / 5.61875`。正式终态为
+`FP_WEIGHTED_SAMPLING_NOT_SUPPORTED`。这只关闭按 train-only baseline FP pixels
+重加权 30% full-frame 抽样的单一候选，不扩大为所有 residual-aware/FP-aware training
+失败；不在已消费 outcome 上换 seed、改 crop、loss 或 target 救援。
 
 独立的 host-only visual sidecar R0 已可用，只显示 YOLO boxes、
 raw heatmap、候选、gate pass/reject/abstain 与原因，固定水印且
@@ -547,7 +549,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 分割模型正式选型、风险融合与 A-vs-C 效果评价 | `NOT_AUTHORIZED / NOT_STARTED` |
 | DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0 | `PRIMARY COMPLETE / VALID / NOT_SUPPORTED / HISTORICAL TERMINAL IMMUTABLE / DEVELOPMENT_ONLY` |
 | DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0.1 SHADOW | `COMPLETE / VALID / NO_MATERIAL / NO_HETEROGENEITY / BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP / POST_PRIMARY_DIAGNOSTIC_ONLY` |
-| DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0 | `DESIGN_AND_IMPLEMENTATION_FROZEN / PREFLIGHT_VALID / SINGLE_VARIABLE / THREE_PAIRED_SEEDS / NOT_EXECUTED / DEVELOPMENT_ONLY` |
+| DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0 | `COMPLETE / VALID / FP_WEIGHTED_SAMPLING_NOT_SUPPORTED / SINGLE_SUCCESSOR_STOP / THREE_PAIRED_SEEDS / DEVELOPMENT_ONLY` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
 | 真人、独立助行、安全、产品或跨设备结论 | `NOT_AUTHORIZED` |
 
@@ -590,11 +592,12 @@ minimum-session-only 或跨 session winner inversion。由此关闭的是这个�
 手工阈值、latch、类别规则或 oracle session routing；仍不启动 Android、Confirmation、
 提醒或产品路径。
 
-该训练边界现已具体化为 FP-aware R0 单候选。下一动作是在提交后的冻结 implementation
-上训练三个 candidate seeds，并只在未参与 checkpoint selection 的
-`consumed_old_blind 120 + r1_consumed_fresh 200` 上与同 seed R1 baseline 配对。
-三个 seed 必须各自通过冻结的 relative 五门与 absolute 四门；不得挑最好 seed，dev
-200 只保留原 checkpoint rule，不进入 terminal。
+该训练边界现已到达有效负终态。三个 seed 都没有通过冻结的 relative 五门与 absolute
+四门；其中两个 seed 的 FP 反而增加，三个 seed 的 absolute FP-area 和 false-component
+门全部失败。因此停止这个单一 FP-weighted sampler，不挑最好 seed，也不在相同
+consumed outcome 上改成 crop、加 loss 或调 weight。若未来继续训练研究，必须另立具有
+不同因果变量和明确数据角色的新 Development 协议；当前没有 INT8、runtime 或 Android
+后继授权。
 
 ### 后续资源纪律
 

@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
+  `DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0` 单一 successor。冻结 commit
+  `e98b3efb7d556351c6536923553f46302b3ac47e` 上完成三 seed × 1200 steps；
+  第一次前台启动在 seed 20260711 step 100 后被外部 60 秒进程组清理中断，未读取
+  terminal truth，部分进度原样保留且未用于评价；同 config/seed/预算的
+  `training-recovery-v2` 完整完成，cross-seed selection 明确未执行。
+- consumed 320 帧 same-seed 评估产生 1,920 行；validator 重新装载六个 checkpoints、
+  逐像素复核 prediction masks 并通过 28,861 项检查、错误数 0。三个 seed 的 FP
+  reduction 为 `.198713 / -.138991 / -.043984`，false components/frame 为
+  `4.41875 / 7.81875 / 5.61875`，均未通过全部 relative 五门与 absolute 四门。
+  正式终态为 `FP_WEIGHTED_SAMPLING_NOT_SUPPORTED`，只关闭这个 FP-weighted
+  full-frame sampler；不选择少数 seed，不在相同 outcome 上改 crop/loss/target 救援，
+  不授权 INT8、runtime、Android、risk/feedback、提醒或默认 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 conditional gating
   精确三臂静态手工门家族关闭后，冻结单一
   `DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0` successor
