@@ -1,6 +1,12 @@
 # dual_loop_segmentation_learned_component_validator
 
-状态：development；`PROTOCOL_AND_IMPLEMENTATION_FROZEN / RESULT_NOT_RUN`
+状态：development；`COMPLETE / VALID / NOT_SUPPORTED_AND_GATING_STOP`
+
+正式结果见
+[`DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0_RESULT_2026-08-01.md`](../../../docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0_RESULT_2026-08-01.md)。
+10-session nested LOSO 只通过 4/9 utility 门；host P95 为 `9.376145 ms`，因此关闭
+当前 reference 上的 active learned component gating，不授权训练、设备或 Android
+后继。下文保留冻结协议与可复算入口。
 
 ## 研究问题与版本
 

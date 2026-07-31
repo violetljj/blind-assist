@@ -7,7 +7,7 @@ R0_1_SHADOW_VALID_NO_MATERIAL_NO_HETEROGENEITY /
 BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP /
 FP_WEIGHTED_SAMPLING_NOT_SUPPORTED /
 SINGLE_FP_AWARE_SUCCESSOR_STOP /
-LEARNED_COMPONENT_VALIDATOR_R0_FROZEN_NOT_RUN /
+LEARNED_COMPONENT_VALIDATOR_R0_NOT_SUPPORTED_AND_GATING_STOP /
 VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
 THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
@@ -41,10 +41,12 @@ R1 的 one-shot、fresh holdout、逐项 SHA 和全量独立复算要求复制�
   组件稳定性、P95 推理/总链路成本中的适用指标，以及表、图、失败案例或 demo；
 - 不接提醒、不改默认 App，不把 Development 结果写成安全、产品或最终确认结论。
 
-当前已在上述制度下完成 200-frame consumed Development pilot 与固定 320-frame
-定向扩展，但没有训练模型、运行真机 benchmark 或融合实验。最终 Confirmation 尚未
-激活；届时才单独冻结确认问题、独立数据、实现和统计，并按实际风险决定是否需要
-one-shot 与完整复算。
+该 Atlas 轮次本身完成了 200-frame consumed Development pilot 与固定 320-frame
+定向扩展，没有训练模型、运行真机 benchmark 或融合实验。其后的 FP-aware DDRNet
+单候选和本次轻量 Logistic component validator 均已按各自协议执行并到达负终态，详见
+下文；二者都没有授权真机、融合或 Confirmation。最终 Confirmation 仍未激活；只有
+Development 候选先通过冻结 utility/engineering 门时，才可另行冻结确认问题、独立数据、
+实现和统计。
 
 2026-07-31，用户明确要求以 Agent-only 标注检验“中央图像阻塞互补性”的可行边界；该
 探索路线现已完成 successor calibration 并关闭。唯一获授权阶段曾是
@@ -233,15 +235,21 @@ checkpoints、逐像素核对 1,920 个 prediction masks，并通过 28,861 项�
 重加权 30% full-frame 抽样的单一候选，不扩大为所有 residual-aware/FP-aware training
 失败；不在已消费 outcome 上换 seed、改 crop、loss 或 target 救援。
 
-[Failure-Aware Causal Component Validator R0 protocol](DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0_PROTOCOL_2026-08-01.md)
-现已冻结但尚未执行。它只用 current/past runtime component 特征、唯一
+[Failure-Aware Causal Component Validator R0](DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0_RESULT_2026-08-01.md)
+现已完成并由独立 validator 判为 `VALID`。它只用 current/past runtime component 特征、唯一
 `StandardScaler + L2 Logistic Regression`、10 个 source-session 的 nested LOSO
 cross-fit 与训练上下文内阈值选择，比较 raw、causal 2-of-3、confidence `>=.65`、历史
 primary conditional gate 和 learned validator。全部 520 帧/11,757 components 已烧为
 Development；每个 scored session 从自身 fold 的 scaler、weight、模型和阈值中排除，
 但结果仍只可称 consumed Development robustness，不能称 fresh、unseen、independent
 validation 或 Confirmation。协议冻结九项 utility 门、host P95 `<3 ms` 与有界内存门；
-失败后不换分类器或 feature subset 救援。
+失败后不换分类器或 feature subset 救援。实际只通过 4/9 utility 门：FP reduction /
+overall / minimum-session / boundary retention 为
+`.177920 / .855661 / .466375 / .207740`，`C-A` FP area 为 `.087407`；host P95
+`9.376145 ms` 也未过 `<3 ms`。终态
+`NOT_SUPPORTED_AND_GATING_STOP`：关闭当前 reference 上的 active learned gating，
+不授权 component-aware loss、设备 benchmark、Android 或 Confirmation；visual
+sidecar / coverage diagnostic 保留。
 
 独立的 host-only visual sidecar R0 已可用，只显示 YOLO boxes、
 raw heatmap、候选、gate pass/reject/abstain 与原因，固定水印且

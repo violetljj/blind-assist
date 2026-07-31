@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
+  `DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0` 的 10-session nested
+  LOSO grouped execution、host benchmark 与独立复算，终态
+  `NOT_SUPPORTED_AND_GATING_STOP`。11,757 held-out component predictions 只通过
+  4/9 utility 门；FP reduction / overall / minimum-session / boundary retention 为
+  `.177920 / .855661 / .466375 / .207740`，`C-A` FP-area 为 `.087407`。模型/scaler
+  `1,847 B`、bounded state/buffer `1,000,023 B` 过门，但 host P95
+  `9.376145 ms >= 3 ms` 失败。validator 重建 11,757-row causal table，复核 10 outer /
+  90 inner folds、纯 NumPy probabilities、520-frame ledger、九门、工程门和 terminal，
+  9/9 top-level checks 均通过。near-miss 因 5 项 utility 门失败、latency 失败且
+  stable-high-confidence retained-false area share 仅 `.373382 < .50` 而不成立；
+  不授权 component-aware loss 或其他 classifier 救援，关闭当前 reference 上的 active
+  learned segmentation gating，只保留 visual sidecar / coverage diagnostic。未访问
+  fresh、未启动 Confirmation、设备/Android、risk/feedback、提醒或默认 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。冻结
   `DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0` 协议与实现，当前
   `RESULT_NOT_RUN`。输入绑定为 520 帧、11,757 raw components、10 个已消费
