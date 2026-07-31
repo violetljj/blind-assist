@@ -16,6 +16,17 @@ retained-false 分类和不写 candidate trace 的 upper-bound audit。该 post-
 分析的唯一 top-level terminal 为 `POLICY_GRANULARITY_MISMATCH_SUPPORTED`；它不重写
 R1 evidence、不改阈值、不授权或实现 R2。普通生产行为仍不变。
 
+同日将“事件保持型语义刷新调度”作为独立后继路线建立了
+[Q0 协议](DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json)。它不修复或升级
+旧几何双环，而是只在固定模型全频参考下审计“何时需要刷新语义结果”。Q0 R0 使用
+独立 arm 状态与 `HOLD_LAST_SEMANTIC_SNAPSHOT_R0`，完成 4,422 帧、两 session 的
+固定时间 baseline：33/66/100/167/267 ms 分别调用 3,309/2,793/2,430/1,560/1,077
+次，Level-3 event-or-feedback divergence 为 122/201/262/404/533 帧，其中纯
+feedback decision divergence 为 121/200/261/403/527 帧；当前 8 个正例与 7 个
+负窗的 event-window 命中数均未改变。该结果只是 Development-only reference-preservation
+筛查，说明 event-window 粒度尚不足以替代逐帧 divergence；没有 learned scheduler、
+真实 tracker、能效、Android、产品或安全结论。
+
 rank-1 仍按其自身终点 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE / VALID` 封存；它说明
 truth-first 门在无足够正例时停止，不与 rank-2 的结果混为一谈。
 
@@ -211,8 +222,9 @@ F-1C。
   首次有效提醒提前、风险判别改善或风险连续性改善。
 
 运行时三态 source 已接入非干预 shadow；最小 scene-scale contradiction 已接入隔离
-`dualLoopActive` 构建。当前不实现自适应调度、深度、分割、ARCore、新风险场、
-latch、新状态机或第二套反馈系统。
+`dualLoopActive` 构建。当前不实现生产自适应调度、深度、分割、ARCore、新风险场、
+latch、新状态机或第二套反馈系统；Q0 的 hold/cache/event state 只存在于独立离线
+反事实模拟器中。
 
 ## 与 RCLE、USTRF 和 Project Guideline 的关系
 
@@ -270,6 +282,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 第二环输入合同、准入门与生产影子接线 | `IMPLEMENTED / DEFAULT_OFF / SHADOW_NON_ACTUATING` |
 | 隔离 active contradiction-only 构建 | `IMPLEMENTED / DEVELOPMENT_ONLY / NO_EVENT_EFFECT_CLAIM` |
 | R1 event failure decomposition | `COMPLETE / POLICY_GRANULARITY_MISMATCH_SUPPORTED / DEVELOPMENT_ONLY` |
+| 事件保持型语义刷新调度 Q0 离线 R0 | `COMPLETE / DEVELOPMENT_ONLY / HOLD_LAST_SEMANTIC_SNAPSHOT / NO_ANDROID_AUTHORITY` |
 | scene-scale active successor / single-variable R2 | `CLOSED / NOT_WORTH_DESIGNING / NOT_IMPLEMENTED` |
 | 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、分割、ARCore | `NOT_AUTHORIZED` |
@@ -288,9 +301,11 @@ Matoaka 各有一个满足既有正例命中、零 induced negative window 和�
 有限 hold witness；它们都需要新的 runtime state，Shiraz 在 `250 ms` 上限内没有
 witness。因此该 terminal 只支持解释 policy granularity，不授权任何 R2。
 
-当前推荐关闭 scene-scale active 路线；不实现 hold、latch、事件状态、阈值调整或
-单变量 R2。保留默认关闭的机制、receipt、回归夹具、逐窗口分解和失败分类；默认、
-debug、release、产品、真人助行与安全行为均不改变。
+当前推荐关闭 scene-scale active 路线；不实现该路线的 hold、latch、事件状态、阈值
+调整或单变量 R2。Q0 的 hold/cache/event state 仅用于独立离线模拟，且 feature-rule
+与 Logistic arms 因没有独立 current-frame-only fast-feature trace 而为
+`NOT_EVALUABLE`。保留默认关闭的机制、receipt、回归夹具、逐窗口分解和失败分类；
+默认、debug、release、产品、真人助行与安全行为均不改变。
 
 ### D0 R1/R2/R3 执行终态
 
