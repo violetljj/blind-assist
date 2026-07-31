@@ -1,0 +1,42 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_r2_p0.rehearsal_sources.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_R2_P0",
+  "sources": [
+    {
+      "role": "train",
+      "manifest": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713/training_manifest.jsonl",
+      "manifest_sha256": "1524b74d7369fc58b7c00da3a0bfa998b4ae8caad4f3d2212d08a5888c0f8675",
+      "dataset_root": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713",
+      "split": "train",
+      "decoder": "canonical_passthrough",
+      "expected_rows": 400
+    },
+    {
+      "role": "dev",
+      "manifest": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713/training_manifest.jsonl",
+      "manifest_sha256": "1524b74d7369fc58b7c00da3a0bfa998b4ae8caad4f3d2212d08a5888c0f8675",
+      "dataset_root": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713",
+      "split": "dev",
+      "decoder": "canonical_passthrough",
+      "expected_rows": 200
+    },
+    {
+      "role": "consumed_old_blind",
+      "manifest": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713/blind_holdout/manifest.jsonl",
+      "manifest_sha256": "b6ed5735ee3b26018c251613085fa910355f45397f8b010f6fadfd95eecba6da",
+      "dataset_root": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713",
+      "split": "blind",
+      "decoder": "canonical_passthrough",
+      "expected_rows": 120
+    },
+    {
+      "role": "r1_consumed_fresh",
+      "manifest": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/manifest.jsonl",
+      "manifest_sha256": "eaad2a32640dfa1a64c30fc53a6c10818a99c74b7eacc4c8718bd50515ff879d",
+      "dataset_root": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout",
+      "split": "fresh_formal",
+      "decoder": "source_native",
+      "expected_rows": 200
+    }
+  ]
+}

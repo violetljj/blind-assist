@@ -1,0 +1,86 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_r2_p0.dataset_role_ledger.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_R2_P0",
+  "status": "DEVELOPMENT_AND_CONSUMED_ROLES_ONLY",
+  "executor": "violjjet",
+  "roles": [
+    {
+      "role_id": "TRAIN",
+      "role": "training_and_rehearsal",
+      "manifest": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713/training_manifest.jsonl",
+      "manifest_sha256": "1524b74d7369fc58b7c00da3a0bfa998b4ae8caad4f3d2212d08a5888c0f8675",
+      "split": "train",
+      "row_count": 400,
+      "formal_status": "DEVELOPMENT_ONLY"
+    },
+    {
+      "role_id": "DEV",
+      "role": "bounded_refinement_selection_and_rehearsal",
+      "manifest": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713/training_manifest.jsonl",
+      "manifest_sha256": "1524b74d7369fc58b7c00da3a0bfa998b4ae8caad4f3d2212d08a5888c0f8675",
+      "split": "dev",
+      "row_count": 200,
+      "formal_status": "DEVELOPMENT_ONLY"
+    },
+    {
+      "role_id": "CONSUMED_OLD_BLIND",
+      "role": "regression_rehearsal_validator_only",
+      "manifest": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713/blind_holdout/manifest.jsonl",
+      "manifest_sha256": "b6ed5735ee3b26018c251613085fa910355f45397f8b010f6fadfd95eecba6da",
+      "row_count": 120,
+      "session_ids": [
+        "sanpo_real_v0:5LlqRK-hWoDLSW5MmoLjKj6uQtZMKjb9",
+        "sanpo_real_v0:i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3"
+      ],
+      "formal_status": "CONSUMED_NOT_BLIND",
+      "fresh_recovery_forbidden": true
+    },
+    {
+      "role_id": "R1_CONSUMED_FRESH",
+      "role": "regression_rehearsal_validator_only",
+      "manifest": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/manifest.jsonl",
+      "manifest_sha256": "eaad2a32640dfa1a64c30fc53a6c10818a99c74b7eacc4c8718bd50515ff879d",
+      "row_count": 200,
+      "session_ids": [
+        "sanpo_real_v0:GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT",
+        "sanpo_real_v0:972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl",
+        "sanpo_real_v0:ic_BpoiSOIW-7_mffGenT6yissRNiPzT",
+        "sanpo_real_v0:eHxtA669WpN381O4ZjVAmG3-3ZUewuXr"
+      ],
+      "formal_status": "R1_CONSUMED_INPUT_CONTRACT_FAILURE",
+      "permanent_downgrade": true,
+      "allowed_uses": [
+        "regression",
+        "rehearsal",
+        "validator",
+        "canonicalizer_canary"
+      ],
+      "forbidden_recovery_mechanisms": [
+        "copy",
+        "rename",
+        "remap",
+        "repackage",
+        "manifest_alias"
+      ]
+    },
+    {
+      "role_id": "SYNTHETIC_CANARY",
+      "role": "decoder_mapping_resize_failure_canary_only",
+      "formal_status": "SYNTHETIC_NO_SOURCE_CLAIM"
+    },
+    {
+      "role_id": "UNCONSUMED_OFFICIAL_TEST",
+      "role": "metadata_only_availability",
+      "mask_truth_access": false,
+      "candidate_output_access": false,
+      "selection_status": "NOT_SELECTED",
+      "formal_status": "R2_NOT_AUTHORIZED"
+    }
+  ],
+  "global_invariants": [
+    "R1 result, failure receipt, closeout validator and identity receipts remain byte-identical.",
+    "No consumed session can regain unseen or fresh status through any transformation.",
+    "No new official-test mask object may be downloaded or decoded during R2-P0.",
+    "A future formal evaluator may consume only a materialized canonical-view manifest."
+  ]
+}

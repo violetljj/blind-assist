@@ -1,0 +1,42 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_model_selection_r1.consumed_role_amendment.v1",
+  "status": "PERMANENTLY_CONSUMED_REGRESSION_REHEARSAL_VALIDATOR_ONLY",
+  "effective_date": "2026-08-01",
+  "r1_dataset_role_ledger": {
+    "relative_path": "docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_DATASET_ROLE_LEDGER_2026-07-31.json",
+    "sha256": "ba090a7c81a8866a370465c7b0198cf33f4691d294f9cbef44c668e391324a83",
+    "modified_by_this_amendment": false
+  },
+  "consumed_sessions": [
+    "GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT",
+    "972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl",
+    "ic_BpoiSOIW-7_mffGenT6yissRNiPzT",
+    "eHxtA669WpN381O4ZjVAmG3-3ZUewuXr"
+  ],
+  "consumed_manifest": {
+    "relative_path": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/manifest.jsonl",
+    "sha256": "eaad2a32640dfa1a64c30fc53a6c10818a99c74b7eacc4c8718bd50515ff879d",
+    "row_count": 200
+  },
+  "allowed_roles": [
+    "regression",
+    "rehearsal",
+    "validator",
+    "canonicalizer_canary"
+  ],
+  "forbidden_roles": [
+    "fresh",
+    "unseen",
+    "formal_holdout",
+    "confirmation"
+  ],
+  "anti_recovery_invariant": {
+    "copy": "DOES_NOT_RESTORE_FRESHNESS",
+    "rename": "DOES_NOT_RESTORE_FRESHNESS",
+    "remap": "DOES_NOT_RESTORE_FRESHNESS",
+    "repackage": "DOES_NOT_RESTORE_FRESHNESS",
+    "manifest_alias": "DOES_NOT_RESTORE_FRESHNESS",
+    "identity_basis": "SOURCE_SESSION_ID_AND_PIXEL_ANCESTRY"
+  },
+  "authority": "ROLE_DOWNGRADE_ONLY_NO_R1_REPAIR_OR_RERUN"
+}

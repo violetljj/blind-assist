@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
+  `DUAL_LOOP_SEGMENTATION_R2_P0` candidate-qualification readiness：在不选择、下载或
+  读取新 fresh mask truth 的前提下，冻结 SANPO native `0..30` 到 canonical `0..3`
+  decoder/mapping、SHA-closed materialized canonical view、synthetic/consumed rehearsal、
+  逐帧逐阶段 runtime rows、独立全量 validators 与一次预冻结 36 点 DDRNet
+  postprocess refinement。924-row canonical view、200-frame/5,043-component rehearsal 和
+  200-row runtime validators 均为 `VALID`；DDRNet baseline false activation
+  `7.885/frame`，SegFormer total P95 `74.139 ms`，最接近 refinement 仍以 delta FP area
+  `0.072513` 失败，qualified candidate 为 `0`。终态为
+  `R2_NOT_WORTH_BURNING_FRESH_HOLDOUT`；R2/device/Android/risk/event/主动提醒均未授权，
+  默认 App 不变。R1 四个 consumed session 永久降级为
+  regression/rehearsal/validator-only，R1 result/failure/closeout/formal-freeze identities
+  保持不可变。验证：17 项 module unit tests、3 个 independent validators、22 项 R1
+  frozen identities 重算和 14/14 closeout requirement audit 通过；最终仓库/文档/Git
+  parity 见本次提交交付。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。为 R1 建立候选模型训练入口：
   `models.py` 固定 raw-RGB `256x256`、ImageNet normalization、四类输出和 NHWC export wrapper；
   统一 PyTorch runner 固定 400/200 train/dev、session-balanced guided crop、Adam 1200 steps、

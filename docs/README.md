@@ -77,9 +77,14 @@
 - [Frontier Upgrade 2026-07 研究档案](research/frontier-upgrade-2026-07/README.md)：按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层，只用于研究追溯。
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
-- [中央图像阻塞互补性研究主线](research/dual-loop/README.md)：当前为
-  `CENTRAL_OBSTRUCTION_D0_A_SUCCESSOR_R0_COMPLETE / VALID /
-  AUXILIARY_FEATURE_ONLY / D0_A3_A4_STOPPED`；当前结论为
+- [YOLO + 语义分割双环研究主线](research/dual-loop/README.md)：当前为
+  `SEGMENTATION_MODEL_SELECTION_R1_BLOCKED / MODEL_SELECTION_NOT_EVALUABLE /
+  R2_NOT_AUTHORIZED / DEVICE_BENCHMARK_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`；
+  R2-P0 readiness 终态见
+  [R2-P0 result](research/dual-loop/DUAL_LOOP_SEGMENTATION_R2_P0_RESULT_2026-08-01.md)，
+  R1 consumed fresh 的永久角色修订见
+  [consumed-role amendment](research/dual-loop/DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_CONSUMED_ROLE_AMENDMENT_2026-08-01.json)。
+  中央图像阻塞前序结论保留为
   [D0-A successor R0 result](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_RESULT_2026-07-31.md)，
   [D0-A1 result](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_RESULT_2026-07-31.md)，
   进入快照为

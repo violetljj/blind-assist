@@ -1,17 +1,10 @@
 # BlindAssist YOLO + 语义分割双环研究主线
 
-状态：`CENTRAL_OBSTRUCTION_D0_A_SUCCESSOR_R0_COMPLETE / VALID /
-AUXILIARY_FEATURE_ONLY / D0_A2_NOT_AUTHORIZED / D0_A3_A4_STOPPED /
-D0_AT_NOT_RUN / SEGMENTATION_TECHNICAL_SMOKE_R0_COMPLETE /
-SEGMENTATION_COMPLEMENTARITY_R1_COMPLETE /
-SEGMENTATION_COMPLEMENTARITY_CROSS_SOURCE_R2_COMPLETE /
-SEGMENTATION_CANDIDATE_UTILITY_R0_COMPLETE / VALID /
-CURRENT_SEGMENTATION_REFERENCE_REJECTED /
-SEGMENTATION_MODEL_SELECTION_R1_PROTOCOL_FROZEN /
-FRESH_FORMAL_HOLDOUT_FROZEN /
-MODEL_TRAINING_NOT_STARTED / DEFAULT_APP_UNCHANGED`
+状态：`SEGMENTATION_MODEL_SELECTION_R1_BLOCKED /
+MODEL_SELECTION_NOT_EVALUABLE / R2_NOT_AUTHORIZED /
+DEVICE_BENCHMARK_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
-最后核验：2026-07-31（Asia/Hong_Kong）
+最后核验：2026-08-01（Asia/Hong_Kong）
 
 ## 当前决定
 
@@ -107,33 +100,33 @@ false activation 为 `13.833/帧`、total incremental host P95 为
 `CURRENT_SEGMENTATION_REFERENCE_REJECTED`。因此关闭当前 segmentation
 reference，不接 Android、QNN、风险事件或主动提醒。
 
-当前后继主线已切换为
-[DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1 protocol](DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_PROTOCOL_2026-07-31.json)。
-它只比较 DDRNet-23-Slim 与 SegFormer-B0；当前 SANPO INT8 reference 保留为
-`CURRENT_SEGMENTATION_REFERENCE_REJECTED` 的冻结 baseline，不重新调阈值。训练和
-dev 使用同一 SANPO split、同一四类输出合同、同一增强/损失/optimizer-step 预算、同一
-YOLO trace 与 fusion operator。原 120-frame blind holdout 已消费，只能做 regression。
+[Segmentation model selection R1](DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_RESULT_2026-07-31.md)
+已进入不可恢复终态 `SEGMENTATION_MODEL_SELECTION_R1_BLOCKED /
+MODEL_SELECTION_NOT_EVALUABLE`。R1 formal 在首次 source-native mask decode contract
+不匹配时 fail closed，正式报告为零行；不得修复、重跑或从已消费 fresh holdout 恢复
+model-selection 结论。原 R1 result、failure receipt、closeout validator、formal freeze
+receipt 和全部身份收据保持不可变。
 
-R1 已按 official-test session order 冻结四条尚未消费的 chest/left session 作为
-source-native fresh formal identity：`GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT`、
-`972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl`、`ic_BpoiSOIW-7_mffGenT6yissRNiPzT`、
-`eHxtA669WpN381O4ZjVAmG3-3ZUewuXr`。在 dev checkpoint 与全部设置冻结前，不读取
-这些 session 的像素真值或模型输出；若最终无法形成 hash-closed fresh manifest，R1
-只能报告 `DEVELOPMENT_RANKING_ONLY`，不产生 formal model-selection terminal。
+R1 四个已消费 session
+`GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT`、
+`972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl`、
+`ic_BpoiSOIW-7_mffGenT6yissRNiPzT`、
+`eHxtA669WpN381O4ZjVAmG3-3ZUewuXr`
+现按
+[consumed-role amendment](DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_CONSUMED_ROLE_AMENDMENT_2026-08-01.json)
+永久降级为 regression/rehearsal/validator/canonicalizer-canary only；复制、重命名、
+重新映射、重新打包或 manifest alias 均不能恢复 fresh/unseen 身份。
 
-R1 的候选训练实现位于
-`scripts/research/dual_loop_segmentation_model_selection/`：模型适配器绑定官方来源权重，
-统一 runner 固定 raw-RGB 输入、四类输出、同一 train/dev sampler/loss/step budget；共享
-OBJECT_DETECTOR trace 已对 fresh manifest 完成 200/200 identity pairing，trace SHA256 为
-`036b15a26793ab360aa2f7052c55e1e244ea8e17c4ddc43127eff942e7371084`。当前实现仅完成训练
-准备和 smoke 验证；FP32 checkpoint、INT8 conversion、dev calibration 与 formal 结果
-尚未产生，默认 App 模型保持不变。
-
-该 fresh holdout 已完成字节级冻结：200 行、4 sessions × 50 frames，manifest SHA256
-为 `eaad2a32640dfa1a64c30fc53a6c10818a99c74b7eacc4c8718bd50515ff879d`，freezer receipt
-为 `90214d93c2eaa02a1355bf341bf890358c442219535c51939290e957a52ece3e`。RGB 与 source
-mask 均通过 GCS MD5/SHA256 和 header 尺寸核验；在此阶段仍未读取 mask 像素值或任何
-truth-derived class/component 统计。
+[R2-P0 readiness result](DUAL_LOOP_SEGMENTATION_R2_P0_RESULT_2026-08-01.md)
+已在不选择、下载或读取任何新 fresh mask truth 的条件下完成。独立 canonical view、
+synthetic/consumed rehearsal 和逐帧逐阶段 runtime validators 均为 `VALID`；一次冻结的
+36 点 DDRNet 后处理搜索没有候选通过全部 readiness margin。DDRNet baseline 的 false
+activation 为 `7.885/frame`，SegFormer baseline 的 total incremental P95 为
+`74.139 ms`，最接近 DDRNet refinement 仍以 delta FP area `0.072513` 失败。唯一终态为
+`R2_NOT_WORTH_BURNING_FRESH_HOLDOUT`，因此 `R2_NOT_AUTHORIZED /
+DEVICE_BENCHMARK_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`。新增的
+[R2 protocol draft](DUAL_LOOP_SEGMENTATION_R2_P0_PROTOCOL_DRAFT_2026-07-31.json)
+只定义未来单候选 qualification 问题，状态仍为 `DRAFT_NOT_AUTHORIZED_FOR_FORMAL`。
 
 ## 已关闭前序与保留证据
 

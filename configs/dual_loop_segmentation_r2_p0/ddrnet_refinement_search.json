@@ -1,0 +1,33 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_r2_p0.ddrnet_refinement_search.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_R2_P0",
+  "status": "SEARCH_SPACE_FROZEN_BEFORE_EXECUTION",
+  "base_model": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/ddrnet23_slim/int8/model_int8.tflite",
+  "base_model_sha256": "f76e280e8a6e89577e1972b0fd5d1f1c6167a534f4dcfb1de36e1b001faa7a0f",
+  "selection_split": "dev",
+  "parameters": {
+    "minimum_component_area_pixels": [8, 24, 64],
+    "minimum_component_confidence_median": [0.5, 0.65, 0.8],
+    "minimum_component_margin_median": [0.05, 0.15],
+    "minimum_component_bottom_fraction": [0.35, 0.5]
+  },
+  "combination_count": 36,
+  "fixed_rules": {
+    "hazard_classes": ["boundary_step_curb", "obstacle"],
+    "connectivity": 8,
+    "remove_yolo_overlap_before_components": true,
+    "unknown_nonwalkable_excluded": true,
+    "component_confidence_statistic": "median",
+    "component_margin_statistic": "median",
+    "spatial_statistic": "bbox_bottom_y_divided_by_256"
+  },
+  "selection_rule": [
+    "retain only candidates satisfying every readiness margin gate",
+    "maximize minimum normalized readiness margin across non-runtime utility gates",
+    "break ties by lower false activations per frame",
+    "then higher delta recall",
+    "then lexicographic candidate identity"
+  ],
+  "if_none_qualify": "NO_DDRNET_REFINEMENT_CANDIDATE",
+  "one_search_only": true
+}

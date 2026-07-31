@@ -1,0 +1,14 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_r2_p0.postprocess.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_R2_P0",
+  "candidate_id": "DDRNET23_SLIM_R1_INT8_UNFILTERED_REHEARSAL",
+  "minimum_component_area_pixels": 1,
+  "minimum_component_confidence_median": 0.0,
+  "minimum_component_margin_median": 0.0,
+  "minimum_component_bottom_fraction": 0.0,
+  "connectivity": 8,
+  "remove_yolo_overlap_before_components": true,
+  "hazard_classes": ["boundary_step_curb", "obstacle"],
+  "unknown_nonwalkable_excluded": true,
+  "authority": "REHEARSAL_BASELINE_ONLY"
+}
