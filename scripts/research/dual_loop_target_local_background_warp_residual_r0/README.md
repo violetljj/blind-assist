@@ -27,7 +27,8 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
 ```
 
 实现锁通过 `create-lock` 和 `validate-implementation` 子命令生成/校验；`test` 只运行
-本 Module 的 synthetic fixtures。
+本 Module 的 synthetic fixtures。`prepare-burned input` 只冻结 burned REveL frame/track/image
+身份；`prepare-burned truth` 是独立的 truth-late join，必须在 producer receipt 完成后再执行。
 
 ## 输入
 

@@ -11,8 +11,9 @@ REPOSITORY_ROOT = Path(__file__).resolve().parent.parent
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from scripts.research.dual_loop_target_local_background_warp_residual_r0 import evaluate, produce, test_evaluate, test_pipeline, test_produce
+from scripts.research.dual_loop_target_local_background_warp_residual_r0 import evaluate, produce, test_evaluate, test_pipeline, test_prepare_burned_revel, test_produce
 from scripts.research.dual_loop_target_local_background_warp_residual_r0.create_implementation_lock import main as create_lock
+from scripts.research.dual_loop_target_local_background_warp_residual_r0.prepare_burned_revel import main as prepare_burned
 from scripts.research.dual_loop_target_local_background_warp_residual_r0.validate_implementation_lock import main as validate_lock
 
 
@@ -36,6 +37,9 @@ def main(argv: list[str] | None = None) -> int:
     validate_parser = subparsers.add_parser("validate-implementation")
     validate_parser.add_argument("--lock", required=True)
     validate_parser.add_argument("--repo-root")
+    prepare_parser = subparsers.add_parser("prepare-burned")
+    prepare_parser.add_argument("prepare_command", choices=["input", "truth"])
+    prepare_parser.add_argument("args", nargs=argparse.REMAINDER)
     subparsers.add_parser("test")
     args = parser.parse_args(argv)
     if args.command == "produce":
@@ -46,9 +50,12 @@ def main(argv: list[str] | None = None) -> int:
         return create_lock(["--output", args.output] + (["--repo-root", args.repo_root] if args.repo_root else []))
     if args.command == "validate-implementation":
         return validate_lock(["--lock", args.lock] + (["--repo-root", args.repo_root] if args.repo_root else []))
+    if args.command == "prepare-burned":
+        return prepare_burned([args.prepare_command] + args.args)
     suite = unittest.TestSuite(
         [
             unittest.defaultTestLoader.loadTestsFromModule(test_produce),
+            unittest.defaultTestLoader.loadTestsFromModule(test_prepare_burned_revel),
             unittest.defaultTestLoader.loadTestsFromModule(test_evaluate),
             unittest.defaultTestLoader.loadTestsFromModule(test_pipeline),
         ]

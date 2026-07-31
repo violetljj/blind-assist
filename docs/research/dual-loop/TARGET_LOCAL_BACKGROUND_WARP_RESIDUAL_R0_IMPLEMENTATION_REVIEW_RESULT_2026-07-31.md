@@ -1,6 +1,6 @@
 # TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 B Development 实现复核结果
 
-状态：`PASS / B_IMPLEMENTATION_READY / SYNTHETIC_ONLY / C1_C2_NOT_AUTHORIZED`
+状态：`PASS / B_INPUT_FROZEN / PRODUCER_NOT_STARTED / C1_C2_NOT_AUTHORIZED`
 
 日期：2026-07-31（Asia/Hong_Kong）
 
@@ -13,7 +13,7 @@
 
 ## 结论
 
-B Development 的离线实现复核通过。producer、truth-late evaluator、R1–R4 选择、
+B Development 的离线实现复核通过，且 burned REveL 输入已冻结。producer、truth-late evaluator、R1–R4 选择、
 固定事件中位数/分母、弃权优先级、truth firewall、输出 hash 和 implementation lock
 已经形成可运行的隔离接口。
 
@@ -33,19 +33,22 @@ Shiraz 或任何真实候选 output，没有生成 C1/C2 结果，也没有 Andr
   wrong-signed 和 paired gain；
 - implementation lock 绑定当前合同 SHA、Module `.py` 文件 SHA、Python/OpenCV/NumPy
   版本、模型身份和 B Development 边界。lock artifact SHA-256：
-  `8e5b417e0a86a2f25543142b12e9cf1426e8bcfcf323d1dc4fc37aa49d86f9b4`
-  （`artifacts.local/evidence/dual-loop/target-local-background-warp-residual-r0/b-implementation-lock-v2.json`）。
+  `3511da1178af9acd90fbe2ad84c1e93bf208ca4b33cca713a2f4973e735689a2`
+  （`artifacts.local/evidence/dual-loop/target-local-background-warp-residual-r0/b-implementation-lock-v3.json`）。
 
 ## 验证证据
 
-- root adapter synthetic suite：`14/14 OK`；覆盖 zero-motion、RANSAC determinism、
+- root adapter synthetic suite：`15/15 OK`；覆盖 zero-motion、RANSAC determinism、
   dynamic mask、输入 gate priority、truth firewall、event median/coverage/deadband、
   ring tie-break 和 truth-late end-to-end；
+- burned REveL input freeze：`FROZEN`，`12,876` 个固定 pair、`8,363` 个图像、`32`
+  个原生 shape mismatch pair 均保留在分母；receipt 明确 `truth_read=false`、
+  `candidate_output_read=false`；
 - `py_compile` 通过；implementation lock create/validate 均为 `VALID`；
 - output/evaluator 均拒绝覆盖已有文件；生产行为与 Android 文件未修改。
 
 ## 后继边界
 
-下一步若继续，只能先冻结 B Development 的 burned-source metadata/input manifest，
-再在候选输出访问前执行一次 producer。C1 metadata-only admission、C2 复现、Android、
+下一步是使用已冻结的 B input manifest，在候选 truth 访问前执行一次 producer；producer
+receipt 完成后才能生成 truth-late join 并运行 evaluator。C1 metadata-only admission、C2 复现、Android、
 active policy、Confirmation、产品和安全结论仍需另外明确授权。
