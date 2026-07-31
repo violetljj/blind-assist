@@ -18,7 +18,7 @@
 - `monitor_host_research_process.ps1`：电脑端长任务外部监控器；汇总根进程及递归子进程的 CPU/I/O/RSS、子进程数和可用的 NVIDIA GPU 利用率/显存/温度/功耗，把阶段、瓶颈提示、建议动作、疑似停滞和终态写入独立 JSONL/最新状态文件。若 runner 本身不发布完成单元数，它会明确将百分比与 ETA 留空。
 - `validate_host_research_preflight.py`：校验长任务性能准入收据；缺少真实访问机制 pilot、有界耗时、结果等价、进度字段、资源预算或 formal one-shot 合同时返回 `PERFORMANCE_NOT_QUALIFIED`。
 - `run_research_contract_tests.py`：CI 与本地共用的无 GPU、无设备研究合同回归。
-- `validate_research_protocol.py`：渐进式研究协议和 closure-scope overlay validator；当前默认 R4 采用论文优先的可修复/可重跑 Development，只有显式激活才进入最终 Confirmation，并按合同 ID 保留 R1/R2/R3 历史解析；同时校验 policy 最低诚信内核、可复算 identity/evidence、GATE、pending outcome、closure 引用/依赖和 question retirement。
+- `validate_research_protocol.py`：渐进式研究协议和 closure-scope overlay validator；当前默认 R4 采用论文优先的可修复/可重跑 Development、synthetic mapping/decoder canary 和算法选模/平台工程双类 benchmark，只有显式激活才进入最终 Confirmation，并按合同 ID 保留 R1/R2/R3 历史解析；同时校验 policy 最低诚信内核、identity/evidence、GATE、pending outcome、closure 引用/依赖和 question retirement。
 - `evaluate_ustrf_sc_u0_teacher_upper_bound.py`：USTRF U0 六臂（四个正式比较臂 + uniform/shuffled route 负控）LOSO 事件评价；会重算完整 route-conditioned GPT/Codex 共识真值门并拒绝 blind/future/hash 漂移。
 - `run_ustrf_sc_u0_candidate_bundle.py`：U0 六臂统一 subprocess runner；只向 adapter 暴露去标签 inference manifest，冻结 500ms cadence、真实 route control、逐 fold LOSO artifact/训练收据及 kernel backend，再组装可 admission 的 v2 bundle。
 - `run_ustrf_sc_u0_android_baseline_adapter.py`：`baseline_yolo_geometry` 真实 Android adapter；只搬运 hash-bound 去标签 request/video/ledger/artifact/config，最终 output 由真机 instrumentation 内的 shipped TFLite YOLO + shared Kotlin kernel 生成。需先用稳定 `.android-home` debug key 安装 app 与 `device-benchmark` APK，且只能作 U0 评测 adapter，不授权 App/模型替换。

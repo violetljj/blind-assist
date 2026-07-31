@@ -83,7 +83,9 @@
   DEVELOPMENT_DEVICE_BENCHMARK_ALLOWED / NEXT_ROUTE_NOT_SELECTED /
   FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`；历史 R1/R2-P0
   保持不可变，新 Development 可版本化修复重跑并提前采集工程 runtime，但不自动
-  选择路线、接提醒或升级为最终确认。
+  选择路线、接提醒或升级为最终确认。Discovery 默认不消费 fresh holdout；小型
+  mapping/decoder 先过 synthetic canary，设备证据分为算法选模 benchmark 与平台工程
+  benchmark。
   R2-P0 readiness 终态见
   [R2-P0 result](research/dual-loop/DUAL_LOOP_SEGMENTATION_R2_P0_RESULT_2026-08-01.md)，
   R1 consumed fresh 的永久角色修订见

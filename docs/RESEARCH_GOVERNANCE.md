@@ -163,6 +163,14 @@ verification scope = smallest suite that covers changed behavior and credible bl
 自动升级成最终 Confirmation。只有用户明确启动最终确认问题、确认数据和结论用途后，
 才进入 `CONFIRMATION_STRICT`。
 
+Discovery 默认不分配或消费 fresh holdout。算法早期优先使用已声明的 Development、
+consumed、synthetic 或公开可重复数据来找接口错误、验证方向和缩小候选；只有一个
+成熟候选确实需要更高等级结论时，才为最终 Confirmation 单独分配独立数据。
+
+小型 label mapping、mask decoder、tensor layout、坐标变换和 schema adapter 必须先在
+合成 canary 上覆盖全部合法值、边界值、未知值和预期失败路径。这个 canary 是低成本
+实现防线，不是 scientific utility evidence；通过后再进入真实数据候选 utility。
+
 Development 默认允许：
 
 - 在明确标为 Development、burned 或 consumed 的数据上修复、调试和重跑；
@@ -170,6 +178,17 @@ Development 默认允许：
 - 一次比较至多 3 个有明确差异和停止条件的候选；
 - 在最终选模前做 host 或 device runtime benchmark，作为工程取舍证据；
 - 每轮至少形成一个老师可读的结果表、图、失败案例或可运行 demo。
+
+设备 benchmark 分成两个互不替代的角色：
+
+| 类型 | 用途 | 可否参与候选排序 | 默认时点 |
+| --- | --- | --- | --- |
+| `ALGORITHM_SELECTION_BENCHMARK` | 在固定代表性 harness 中比较候选延迟、内存和总链路成本 | 可以，但只形成 Development 选模证据 | 候选 utility 基本可解释后，可在 formal 选模前执行 |
+| `PLATFORM_ENGINEERING_BENCHMARK` | 检查 backend、build、operator、内存、thermal 和测量链可行性 | 不可以；可使用 proxy/synthetic workload | 可与算法早期工作独立、提前执行 |
+
+两类 benchmark 都不产生 Confirmation、产品安全或默认 App 集成 authority。平台工程
+失败只阻塞相应 backend/设备路径，不自动否定算法；算法选模 benchmark 也不能替代
+效果指标。
 
 Development 的最小交付为：问题、baseline 与 claim ceiling；代码/模型/主配置/数据
 manifest 的版本身份；覆盖实际变更的专项 sanity check；结果表/图/demo；限制和下一步。

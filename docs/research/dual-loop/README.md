@@ -17,7 +17,11 @@ R1 的 one-shot、fresh holdout、逐项 SHA 和全量独立复算要求复制�
 - R1 的 `BLOCKED / NOT_EVALUABLE`、R2-P0 的 readiness 终态和全部旧 receipt 保持不可变；
 - 新 Development 可在明确标注的 development/consumed 数据上修复输入映射、decoder、
   schema 或 runner，并以新 evidence version 重跑；
-- 可在最终选模前提前做 host/device runtime benchmark，但只作为工程取舍证据；
+- Discovery 和算法早期默认使用 Development/consumed 数据，不再为每次小试验消费
+  fresh holdout；mapping、decoder 与 tensor/schema 适配先用 synthetic canary 全覆盖；
+- 可在最终选模前提前做 host/device runtime benchmark，但必须区分可参与候选排序的
+  `ALGORITHM_SELECTION_BENCHMARK` 与只验证 backend/build/operator/memory/thermal 的
+  `PLATFORM_ENGINEERING_BENCHMARK`；后者不得反向排序算法；
 - 每轮至多推进一条主路线：A 为 DDRNet-23-Slim、SegFormer-B0 与 SANPO baseline 的
   小规模模型比较；B 为面积、空间位置、地面边界、高置信度和 YOLO 去重约束下的小候选算子；
 - 每轮最多 3 个候选，并必须交付新增召回、false components/frame、mask 碎片、

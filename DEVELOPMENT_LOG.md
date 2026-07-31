@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。进一步落实 R4 的轻量实验
+  流程：Discovery 默认不分配或消费 fresh holdout，算法早期优先使用
+  Development/consumed/synthetic 数据；小型 label mapping、mask decoder、tensor
+  layout 和 schema adapter 必须先在 synthetic canary 覆盖合法、未知、边界与预期失败
+  路径。设备证据拆分为可参与 Development 候选排序的
+  `ALGORITHM_SELECTION_BENCHMARK`，以及只验证 backend/build/operator/memory/thermal、
+  不参与算法排序的 `PLATFORM_ENGINEERING_BENCHMARK`；两者都可在 formal 选模前进行，
+  且都不产生 Confirmation、产品安全或默认 App authority。同步更新机器策略、validator、
+  tests、治理模板和双环 current；历史协议、终态和证据不变。验证：34 项 governance
+  unit tests、13-file research contract suite、历史 R3 contract CLI、JSON/py_compile、
+  repo hygiene、docs index 和 diff whitespace 全部通过；R3 policy 与 R1 result、
+  closeout validator、failure receipt、formal freeze 的既有 SHA-256 保持一致。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。按硕士论文、毕业设计和
   演示原型目标，前向采用 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`：新工作默认进入
   可逆 `DEVELOPMENT_STANDARD`，允许在声明的 Development/consumed 数据上做版本化

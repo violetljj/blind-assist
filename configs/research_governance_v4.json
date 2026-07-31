@@ -22,10 +22,13 @@
     "default": "MINIMUM_SUFFICIENT_RIGOR",
     "default_research_mode": "REVERSIBLE_DEVELOPMENT_UNLESS_FINAL_CONFIRMATION_IS_EXPLICITLY_ACTIVATED",
     "final_confirmation_requires_explicit_user_activation": true,
+    "discovery_fresh_holdout_required": false,
+    "early_algorithm_work_prefers_development_or_consumed_data": true,
     "allow_reversible_shortcuts": true,
     "allow_parallel_independent_work": true,
     "allow_lightweight_posthoc_recording_in_discovery": true,
     "allow_early_runtime_and_device_benchmark_in_development": true,
+    "thesis_prototype_uses_product_safety_certification_by_default": false,
     "forbidden_shortcuts": [
       "FABRICATE_OR_OVERSTATE_EVIDENCE",
       "LEAK_CONFIRMATION_OUTCOMES",
@@ -41,6 +44,8 @@
       "rerunnable_before_terminal": true,
       "one_shot_default": false,
       "full_hash_chain_default": false,
+      "fresh_holdout_required": false,
+      "small_mapping_and_decoder_require_complete_synthetic_canary_first": true,
       "review_mode": "RISK_TIERED",
       "data_scope": "RANK_BY_FITNESS_AND_STOP_ON_ADEQUACY",
       "minimum_artifacts": [
@@ -57,6 +62,7 @@
       "versioned_operational_repair_allowed": true,
       "development_truth_may_be_reused": true,
       "early_runtime_and_device_benchmark_allowed": true,
+      "formal_candidate_utility_required_before_device_benchmark": false,
       "one_shot_default": false,
       "full_hash_chain_default": false,
       "full_independent_recompute_default": false,
@@ -123,6 +129,27 @@
     "operational_invalidity_does_not_consume_scientific_hypothesis": true,
     "pre_metric_technical_failure_may_rerun_same_data_as_new_evidence_version": true,
     "outcome_informed_repair_downgrades_same_data_to_development": true
+  },
+  "device_benchmark_policy": {
+    "benchmark_types": [
+      "ALGORITHM_SELECTION_BENCHMARK",
+      "PLATFORM_ENGINEERING_BENCHMARK"
+    ],
+    "formal_model_selection_must_precede_all_device_benchmarks": false,
+    "benchmarks_create_confirmation_authority": false,
+    "algorithm_selection_benchmark": {
+      "purpose": "Compare candidate latency, memory and end-to-end cost in a fixed representative harness.",
+      "allowed_stage": "DEVELOPMENT",
+      "candidate_ranking_authority": true,
+      "product_safety_authority": false
+    },
+    "platform_engineering_benchmark": {
+      "purpose": "Validate backend, build, operator, memory, thermal and instrumentation feasibility independently of final model selection.",
+      "allowed_stage": "DEVELOPMENT",
+      "candidate_ranking_authority": false,
+      "proxy_or_synthetic_workload_allowed": true,
+      "product_safety_authority": false
+    }
   },
   "failure_record_modes": [
     "FULL_FAILURE_LEARNING",
@@ -307,6 +334,10 @@
     "external_transfer_is_separate_from_ordinary_holdout": true,
     "development_repair_and_rerun_allowed": true,
     "device_benchmark_may_precede_model_selection": true,
+    "discovery_does_not_consume_fresh_holdout_by_default": true,
+    "small_mapping_and_decoder_require_synthetic_canary_first": true,
+    "algorithm_selection_and_platform_engineering_benchmarks_are_separate": true,
+    "thesis_prototype_experiments_do_not_default_to_product_safety_certification": true,
     "confirmation_only_after_explicit_user_activation": true,
     "operational_failure_does_not_close_candidate_or_research_question": true
   },

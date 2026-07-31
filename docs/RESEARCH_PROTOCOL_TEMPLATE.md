@@ -24,6 +24,22 @@ Development 默认不要求 one-shot、逐文件 SHA、完整 hash chain 或底�
 主张指标产出前的操作故障可在轻量 incident 后以新 evidence version 修复重跑；若结果
 已影响算法或阈值，同一数据只能继续作 Development。
 
+Discovery 默认使用 Development、consumed、synthetic 或公开可重复数据，不分配 fresh
+holdout。小型 mapping、decoder、tensor layout、坐标变换和 schema adapter 在真实 utility
+前先完成 synthetic canary，覆盖全部合法/未知/边界值和预期失败路径。
+
+涉及设备时选择并记录一种 benchmark role：
+
+```text
+device_benchmark_role:
+  ALGORITHM_SELECTION_BENCHMARK |
+  PLATFORM_ENGINEERING_BENCHMARK
+```
+
+前者可在固定 harness 中比较候选；后者只验证 backend/build/operator/memory/thermal
+可行性，可使用 proxy/synthetic workload，不得参与算法排序。两者都属于 Development，
+不要求等待 formal 选模，也不产生 Confirmation、产品安全或默认 App authority。
+
 ## 1. 问题与阶段
 
 ```text

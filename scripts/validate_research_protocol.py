@@ -520,11 +520,28 @@ def validate_policy(policy: dict[str, Any]) -> ValidationResult:
             != "REVERSIBLE_DEVELOPMENT_UNLESS_FINAL_CONFIRMATION_IS_EXPLICITLY_ACTIVATED"
             or efficiency.get("final_confirmation_requires_explicit_user_activation")
             is not True
+            or efficiency.get("discovery_fresh_holdout_required") is not False
+            or efficiency.get("early_algorithm_work_prefers_development_or_consumed_data")
+            is not True
             or efficiency.get("allow_early_runtime_and_device_benchmark_in_development")
             is not True
+            or efficiency.get(
+                "thesis_prototype_uses_product_safety_certification_by_default"
+            )
+            is not False
         ):
             result.error("POLICY_THESIS_FIRST_EFFICIENCY")
         profiles = _object(policy.get("execution_profiles"))
+        canary = _object(profiles.get("CANARY_LITE")) if profiles else None
+        if (
+            canary is None
+            or canary.get("fresh_holdout_required") is not False
+            or canary.get(
+                "small_mapping_and_decoder_require_complete_synthetic_canary_first"
+            )
+            is not True
+        ):
+            result.error("POLICY_THESIS_FIRST_CANARY")
         development = _object(profiles.get("DEVELOPMENT_STANDARD")) if profiles else None
         if (
             development is None
@@ -532,6 +549,10 @@ def validate_policy(policy: dict[str, Any]) -> ValidationResult:
             or development.get("versioned_operational_repair_allowed") is not True
             or development.get("development_truth_may_be_reused") is not True
             or development.get("early_runtime_and_device_benchmark_allowed") is not True
+            or development.get(
+                "formal_candidate_utility_required_before_device_benchmark"
+            )
+            is not False
             or development.get("full_hash_chain_default") is not False
             or development.get("full_independent_recompute_default") is not False
             or development.get("per_file_sha_freeze_default") is not False
@@ -563,10 +584,50 @@ def validate_policy(policy: dict[str, Any]) -> ValidationResult:
             is not True
         ):
             result.error("POLICY_THESIS_FIRST_SELECTION")
+        device_benchmarks = _object(policy.get("device_benchmark_policy"))
+        algorithm_benchmark = (
+            _object(device_benchmarks.get("algorithm_selection_benchmark"))
+            if device_benchmarks
+            else None
+        )
+        platform_benchmark = (
+            _object(device_benchmarks.get("platform_engineering_benchmark"))
+            if device_benchmarks
+            else None
+        )
+        if (
+            device_benchmarks is None
+            or device_benchmarks.get("benchmark_types")
+            != [
+                "ALGORITHM_SELECTION_BENCHMARK",
+                "PLATFORM_ENGINEERING_BENCHMARK",
+            ]
+            or device_benchmarks.get(
+                "formal_model_selection_must_precede_all_device_benchmarks"
+            )
+            is not False
+            or device_benchmarks.get("benchmarks_create_confirmation_authority")
+            is not False
+            or algorithm_benchmark is None
+            or algorithm_benchmark.get("allowed_stage") != "DEVELOPMENT"
+            or algorithm_benchmark.get("candidate_ranking_authority") is not True
+            or algorithm_benchmark.get("product_safety_authority") is not False
+            or platform_benchmark is None
+            or platform_benchmark.get("allowed_stage") != "DEVELOPMENT"
+            or platform_benchmark.get("candidate_ranking_authority") is not False
+            or platform_benchmark.get("proxy_or_synthetic_workload_allowed")
+            is not True
+            or platform_benchmark.get("product_safety_authority") is not False
+        ):
+            result.error("POLICY_THESIS_FIRST_DEVICE_BENCHMARKS")
         hard_rules = _object(policy.get("hard_rules"))
         for name in (
             "development_repair_and_rerun_allowed",
             "device_benchmark_may_precede_model_selection",
+            "discovery_does_not_consume_fresh_holdout_by_default",
+            "small_mapping_and_decoder_require_synthetic_canary_first",
+            "algorithm_selection_and_platform_engineering_benchmarks_are_separate",
+            "thesis_prototype_experiments_do_not_default_to_product_safety_certification",
             "confirmation_only_after_explicit_user_activation",
             "operational_failure_does_not_close_candidate_or_research_question",
         ):

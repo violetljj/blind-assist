@@ -143,16 +143,59 @@ class ProgressiveResearchGovernanceTest(unittest.TestCase):
         self.assertEqual([], target.validate_policy(POLICY).errors)
 
     def test_development_defaults_are_reversible_and_lightweight(self) -> None:
+        efficiency = POLICY["efficiency_policy"]
+        canary = POLICY["execution_profiles"]["CANARY_LITE"]
         development = POLICY["execution_profiles"]["DEVELOPMENT_STANDARD"]
+        self.assertFalse(efficiency["discovery_fresh_holdout_required"])
+        self.assertTrue(
+            efficiency["early_algorithm_work_prefers_development_or_consumed_data"]
+        )
+        self.assertFalse(
+            efficiency["thesis_prototype_uses_product_safety_certification_by_default"]
+        )
+        self.assertFalse(canary["fresh_holdout_required"])
+        self.assertTrue(
+            canary[
+                "small_mapping_and_decoder_require_complete_synthetic_canary_first"
+            ]
+        )
         self.assertTrue(development["rerunnable"])
         self.assertTrue(development["versioned_operational_repair_allowed"])
         self.assertTrue(development["development_truth_may_be_reused"])
         self.assertTrue(development["early_runtime_and_device_benchmark_allowed"])
+        self.assertFalse(
+            development["formal_candidate_utility_required_before_device_benchmark"]
+        )
         self.assertFalse(development["one_shot_default"])
         self.assertFalse(development["full_hash_chain_default"])
         self.assertFalse(development["full_independent_recompute_default"])
         self.assertFalse(development["per_file_sha_freeze_default"])
         self.assertTrue(development["teacher_visible_output_each_round"])
+
+    def test_device_benchmarks_are_split_by_decision_role(self) -> None:
+        policy = POLICY["device_benchmark_policy"]
+        self.assertEqual(
+            [
+                "ALGORITHM_SELECTION_BENCHMARK",
+                "PLATFORM_ENGINEERING_BENCHMARK",
+            ],
+            policy["benchmark_types"],
+        )
+        self.assertFalse(
+            policy["formal_model_selection_must_precede_all_device_benchmarks"]
+        )
+        self.assertFalse(policy["benchmarks_create_confirmation_authority"])
+        self.assertTrue(
+            policy["algorithm_selection_benchmark"]["candidate_ranking_authority"]
+        )
+        self.assertFalse(
+            policy["platform_engineering_benchmark"]["candidate_ranking_authority"]
+        )
+        self.assertTrue(
+            policy["platform_engineering_benchmark"][
+                "proxy_or_synthetic_workload_allowed"
+            ]
+        )
 
     def test_confirmation_requires_explicit_activation(self) -> None:
         confirmation = POLICY["execution_profiles"]["CONFIRMATION_STRICT"]
@@ -179,6 +222,13 @@ class ProgressiveResearchGovernanceTest(unittest.TestCase):
         ] = False
         result = target.validate_policy(weakened)
         self.assertIn("POLICY_THESIS_FIRST_CONFIRMATION", result.errors)
+
+        weakened = copy.deepcopy(POLICY)
+        weakened["device_benchmark_policy"][
+            "formal_model_selection_must_precede_all_device_benchmarks"
+        ] = True
+        result = target.validate_policy(weakened)
+        self.assertIn("POLICY_THESIS_FIRST_DEVICE_BENCHMARKS", result.errors)
 
     def test_historical_r3_policy_remains_immutable_and_resolvable(self) -> None:
         self.assertEqual(
