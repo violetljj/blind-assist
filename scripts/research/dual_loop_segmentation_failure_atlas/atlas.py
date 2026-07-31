@@ -11,10 +11,10 @@ import sys
 import uuid
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Sequence
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from scripts.research.dual_loop_segmentation_candidate_utility.component_metrics import (
     aggregate_confusion,
@@ -44,6 +44,14 @@ _ACTIONABLE_MECHANISMS = (
     "UPPER_FIELD_BACKGROUND_ACTIVATION_PROXY",
 )
 
+_EXPANSION_MECHANISMS = (
+    "SMALL_FRAGMENT_NOISE",
+    "YOLO_ATTRIBUTION_AMBIGUITY",
+    "TEMPORAL_FLICKER",
+    "STABLE_HIGH_CONFIDENCE_ERROR",
+    "UPPER_FIELD_BACKGROUND_ACTIVATION_PROXY",
+)
+
 
 def read_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
@@ -64,6 +72,14 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
                 raise ValueError(f"expected a JSON object at {path}:{line_number}")
             rows.append(value)
     return rows
+
+
+def _as_paths(value: Path | Sequence[Path]) -> list[Path]:
+    return [value] if isinstance(value, Path) else list(value)
+
+
+def _read_jsonls(paths: Sequence[Path]) -> list[dict[str, Any]]:
+    return [row for path in paths for row in read_jsonl(path)]
 
 
 def sha256_file(path: Path) -> str:
@@ -162,6 +178,70 @@ def causal_temporal_probe(
 
 def _safe_ratio(numerator: float, denominator: float) -> float | None:
     return float(numerator / denominator) if denominator else None
+
+
+def _average_ranks(values: Sequence[float]) -> np.ndarray:
+    order = sorted(range(len(values)), key=lambda index: (values[index], index))
+    ranks = np.zeros(len(values), dtype=np.float64)
+    cursor = 0
+    while cursor < len(order):
+        end = cursor + 1
+        while end < len(order) and values[order[end]] == values[order[cursor]]:
+            end += 1
+        average = (cursor + 1 + end) / 2.0
+        for position in range(cursor, end):
+            ranks[order[position]] = average
+        cursor = end
+    return ranks
+
+
+def spearman_rank_correlation(
+    left: Sequence[float],
+    right: Sequence[float],
+) -> float | None:
+    if len(left) != len(right) or len(left) < 2:
+        raise ValueError("Spearman inputs must have equal length >= 2")
+    left_ranks = _average_ranks(left)
+    right_ranks = _average_ranks(right)
+    left_centered = left_ranks - float(np.mean(left_ranks))
+    right_centered = right_ranks - float(np.mean(right_ranks))
+    denominator = float(
+        np.sqrt(np.sum(left_centered**2) * np.sum(right_centered**2))
+    )
+    if denominator == 0.0:
+        return None
+    return float(np.sum(left_centered * right_centered) / denominator)
+
+
+def expansion_decision(
+    *,
+    mechanisms_reproduced: bool,
+    aggregate_rank_correlation: float | None,
+    minimum_rank_correlation: float,
+    gating_axis: str,
+    source_dependent: bool,
+    terminals: dict[str, str] | None = None,
+) -> str:
+    names = terminals or {
+        "mechanism_not_reproduced": "PILOT_NOT_GENERALIZABLE",
+        "gating_sufficient": "GATING_SUFFICIENT",
+        "gating_partial": "GATING_PARTIAL",
+        "source_dependent": "SOURCE_DEPENDENT_FAILURE_STRUCTURE",
+        "replicated": "RESIDUAL_TASK_REFORMULATION_JUSTIFIED",
+    }
+    if (
+        not mechanisms_reproduced
+        or aggregate_rank_correlation is None
+        or aggregate_rank_correlation < minimum_rank_correlation
+    ):
+        return names["mechanism_not_reproduced"]
+    if gating_axis == "SUFFICIENT":
+        return names["gating_sufficient"]
+    if gating_axis == "PARTIAL":
+        return names["gating_partial"]
+    if source_dependent:
+        return names["source_dependent"]
+    return names["replicated"]
 
 
 def _json_ready(value: Any) -> Any:
@@ -467,6 +547,218 @@ def _public_component(record: dict[str, Any]) -> dict[str, Any]:
     return {key: value for key, value in record.items() if not key.startswith("_")}
 
 
+def _input_provenance(
+    repo_root: Path,
+    paths: Sequence[Path],
+) -> dict[str, str] | list[dict[str, str]]:
+    rows = [
+        {
+            "path": str(path.relative_to(repo_root)),
+            "sha256": sha256_file(path),
+        }
+        for path in paths
+    ]
+    return rows[0] if len(rows) == 1 else rows
+
+
+def _validate_input_contract(
+    *,
+    config: dict[str, Any],
+    frame_rows: list[dict[str, Any]],
+    component_rows: list[dict[str, Any]],
+) -> tuple[set[str], dict[str, int]]:
+    contract = config.get("input_contract")
+    if contract is None:
+        if len(frame_rows) != 200:
+            raise ValueError(f"pilot requires exactly 200 frame rows, got {len(frame_rows)}")
+        if len(component_rows) != 5043:
+            raise ValueError(
+                f"pilot requires exactly 5043 component rows, got {len(component_rows)}"
+            )
+        expected_roles = {FRAME_ROLE}
+        expected_sessions: dict[str, int] = {}
+    else:
+        expected_roles = {str(value) for value in contract["allowed_roles"]}
+        expected_frames = int(contract["expected_frame_count"])
+        if len(frame_rows) != expected_frames:
+            raise ValueError(
+                f"input contract requires exactly {expected_frames} frame rows, "
+                f"got {len(frame_rows)}"
+            )
+        expected_sessions = {
+            str(session_id): int(count)
+            for session_id, count in contract["expected_session_frame_counts"].items()
+        }
+        observed_sessions = Counter(str(row.get("session_id")) for row in frame_rows)
+        if observed_sessions != Counter(expected_sessions):
+            raise ValueError(
+                "frame session/count contract mismatch: "
+                f"expected={dict(sorted(expected_sessions.items()))}, "
+                f"observed={dict(sorted(observed_sessions.items()))}"
+            )
+    if any(row.get("rehearsal_role") not in expected_roles for row in frame_rows):
+        raise ValueError("frame input contains a role outside the input contract")
+    if any(row.get("rehearsal_role") not in expected_roles for row in component_rows):
+        raise ValueError("component input contains a role outside the input contract")
+    view_row_ids = [str(row.get("view_row_id")) for row in frame_rows]
+    if len(view_row_ids) != len(set(view_row_ids)):
+        raise ValueError("frame input contains duplicate view_row_id")
+    source_frame_keys = [
+        (str(row.get("source_id")), int(row.get("frame_id"))) for row in frame_rows
+    ]
+    if len(source_frame_keys) != len(set(source_frame_keys)):
+        raise ValueError("frame input contains duplicate source_id/frame_id")
+    return expected_roles, expected_sessions
+
+
+def _read_bound_json(
+    *,
+    repo_root: Path,
+    binding: dict[str, str],
+) -> tuple[Path, dict[str, Any]]:
+    path = _resolve_input(repo_root, binding["path"])
+    observed = sha256_file(path)
+    if observed != binding["sha256"]:
+        raise ValueError(
+            f"bound reference hash mismatch for {binding['path']}: {observed}"
+        )
+    return path, read_json(path)
+
+
+def _frame_case_metrics(
+    frame: dict[str, Any],
+    baseline_mask: np.ndarray,
+    probe_mask: np.ndarray,
+) -> dict[str, Any]:
+    truth = frame["residual_truth"]
+    baseline_tp = int(np.count_nonzero(baseline_mask & truth))
+    baseline_fp = int(np.count_nonzero(baseline_mask & ~truth))
+    probe_tp = int(np.count_nonzero(probe_mask & truth))
+    probe_fp = int(np.count_nonzero(probe_mask & ~truth))
+    return {
+        "view_row_id": frame["view_row_id"],
+        "session_id": frame["session_id"],
+        "role": frame["role"],
+        "scene_bucket": frame["scene_bucket"],
+        "frame_id": frame["frame_id"],
+        "baseline_true_positive_pixels": baseline_tp,
+        "baseline_false_positive_pixels": baseline_fp,
+        "probe_true_positive_pixels": probe_tp,
+        "probe_false_positive_pixels": probe_fp,
+        "true_positive_pixels_lost": baseline_tp - probe_tp,
+        "false_positive_pixels_removed": baseline_fp - probe_fp,
+        "recall_retention": _safe_ratio(probe_tp, baseline_tp),
+        "false_positive_reduction": _safe_ratio(baseline_fp - probe_fp, baseline_fp),
+    }
+
+
+def select_gate_cases(
+    *,
+    frame_data: list[dict[str, Any]],
+    baseline_masks: list[np.ndarray],
+    probe_masks: list[np.ndarray],
+    success_minimum_recall_retention: float,
+) -> dict[str, dict[str, Any] | None]:
+    rows = [
+        _frame_case_metrics(frame, baseline, probe)
+        for frame, baseline, probe in zip(frame_data, baseline_masks, probe_masks)
+    ]
+    success_candidates = [
+        row
+        for row in rows
+        if row["baseline_true_positive_pixels"] > 0
+        and row["false_positive_pixels_removed"] > 0
+        and row["recall_retention"] is not None
+        and row["recall_retention"] >= success_minimum_recall_retention
+    ]
+    failure_candidates = [
+        row for row in rows if row["baseline_true_positive_pixels"] > 0
+    ]
+    success = (
+        sorted(
+            success_candidates,
+            key=lambda row: (
+                -row["false_positive_pixels_removed"],
+                -row["recall_retention"],
+                row["view_row_id"],
+            ),
+        )[0]
+        if success_candidates
+        else None
+    )
+    failure = (
+        sorted(
+            failure_candidates,
+            key=lambda row: (
+                row["recall_retention"],
+                -row["true_positive_pixels_lost"],
+                row["view_row_id"],
+            ),
+        )[0]
+        if failure_candidates
+        else None
+    )
+    return {"success": success, "failure": failure}
+
+
+def _tinted_panel(
+    source: Image.Image,
+    layers: Sequence[tuple[np.ndarray, tuple[int, int, int]]],
+) -> Image.Image:
+    array = np.asarray(source.convert("RGB"), dtype=np.float32).copy()
+    for mask, color in layers:
+        value = np.asarray(mask, dtype=bool)
+        array[value] = array[value] * 0.42 + np.asarray(color, dtype=np.float32) * 0.58
+    return Image.fromarray(np.clip(array, 0, 255).astype(np.uint8), mode="RGB")
+
+
+def _render_gate_case(
+    *,
+    repo_root: Path,
+    frame: dict[str, Any],
+    baseline_mask: np.ndarray,
+    probe_mask: np.ndarray,
+    probe_id: str,
+    case_kind: str,
+    metrics: dict[str, Any],
+    output_path: Path,
+) -> None:
+    with Image.open(repo_root / frame["image_repo_relative_path"]) as handle:
+        source = handle.convert("RGB").resize((256, 256), Image.Resampling.BILINEAR)
+    truth = frame["residual_truth"]
+    baseline_fp = baseline_mask & ~truth
+    kept_tp = probe_mask & truth
+    kept_fp = probe_mask & ~truth
+    rejected = baseline_mask & ~probe_mask
+    panels = [
+        ("source", source),
+        ("residual truth / baseline FP", _tinted_panel(source, [(truth, (0, 210, 70)), (baseline_fp, (235, 45, 45))])),
+        ("gate kept TP / FP", _tinted_panel(source, [(kept_tp, (0, 210, 70)), (kept_fp, (235, 45, 45))])),
+        ("gate rejected", _tinted_panel(source, [(rejected, (255, 165, 0))])),
+    ]
+    canvas = Image.new("RGB", (512, 580), (20, 20, 20))
+    draw = ImageDraw.Draw(canvas)
+    draw.text((8, 6), "DEVELOPMENT DIAGNOSTIC ONLY", fill=(255, 220, 70))
+    draw.text((8, 22), f"{probe_id} / {case_kind.upper()}", fill=(255, 255, 255))
+    draw.text(
+        (8, 38),
+        (
+            f"session={frame['session_id']} frame={frame['frame_id']} "
+            f"retention={metrics['recall_retention']} "
+            f"fp_removed={metrics['false_positive_pixels_removed']}"
+        ),
+        fill=(210, 210, 210),
+    )
+    for index, (label, panel) in enumerate(panels):
+        x = (index % 2) * 256
+        y = 68 + (index // 2) * 256
+        canvas.paste(panel, (x, y))
+        draw.rectangle((x, y, x + 255, y + 17), fill=(0, 0, 0))
+        draw.text((x + 4, y + 3), label, fill=(255, 255, 255))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    canvas.save(output_path, format="PNG", optimize=True)
+
+
 def _resolve_input(repo_root: Path, value: str) -> Path:
     path = Path(value)
     return path.resolve() if path.is_absolute() else (repo_root / path).resolve()
@@ -486,10 +778,10 @@ def run_atlas(
     *,
     repo_root: Path,
     config_path: Path,
-    frames_path: Path,
-    components_path: Path,
+    frames_path: Path | Sequence[Path],
+    components_path: Path | Sequence[Path],
     view_root: Path,
-    yolo_trace_path: Path,
+    yolo_trace_path: Path | Sequence[Path],
     output_root: Path,
 ) -> dict[str, Any]:
     config = read_json(config_path)
@@ -502,25 +794,50 @@ def run_atlas(
         raise ValueError("analysis_shape must contain height and width")
     _verify_output_scope(repo_root, output_root)
 
-    frame_rows = read_jsonl(frames_path)
-    component_rows = read_jsonl(components_path)
+    frames_paths = _as_paths(frames_path)
+    components_paths = _as_paths(components_path)
+    yolo_trace_paths = _as_paths(yolo_trace_path)
+    frame_rows = _read_jsonls(frames_paths)
+    component_rows = _read_jsonls(components_paths)
     manifest_rows = read_jsonl(view_root / "manifest.jsonl")
-    yolo_rows = read_jsonl(yolo_trace_path)
-    if len(frame_rows) != 200:
-        raise ValueError(f"pilot requires exactly 200 frame rows, got {len(frame_rows)}")
-    if len(component_rows) != 5043:
-        raise ValueError(f"pilot requires exactly 5043 component rows, got {len(component_rows)}")
-    if any(row.get("rehearsal_role") != FRAME_ROLE for row in frame_rows):
-        raise ValueError("frame input contains a non-consumed role")
-    if any(row.get("rehearsal_role") != FRAME_ROLE for row in component_rows):
-        raise ValueError("component input contains a non-consumed role")
+    yolo_rows = _read_jsonls(yolo_trace_paths)
+    expected_roles, expected_session_counts = _validate_input_contract(
+        config=config,
+        frame_rows=frame_rows,
+        component_rows=component_rows,
+    )
 
     manifest_by_id = {
-        row["id"]: row for row in manifest_rows if row.get("role") == FRAME_ROLE
+        row["id"]: row for row in manifest_rows if row.get("role") in expected_roles
     }
+    if expected_session_counts:
+        expected_manifest_rows = [
+            row
+            for row in manifest_rows
+            if row.get("role") in expected_roles
+            and row.get("session_id") in expected_session_counts
+        ]
+        manifest_session_counts = Counter(
+            str(row["session_id"]) for row in expected_manifest_rows
+        )
+        if manifest_session_counts != Counter(expected_session_counts):
+            raise ValueError(
+                "input contract session counts do not exhaust the canonical manifest"
+            )
+        expected_view_row_ids = {str(row["id"]) for row in expected_manifest_rows}
+        observed_view_row_ids = {str(row["view_row_id"]) for row in frame_rows}
+        if observed_view_row_ids != expected_view_row_ids:
+            missing = sorted(expected_view_row_ids - observed_view_row_ids)
+            extra = sorted(observed_view_row_ids - expected_view_row_ids)
+            raise ValueError(
+                "frame membership does not match the frozen canonical session set: "
+                f"missing={missing[:3]}, extra={extra[:3]}"
+            )
     yolo_by_key = {
         (row["source_id"], int(row["frame_id"])): row for row in yolo_rows
     }
+    if len(yolo_by_key) != len(yolo_rows):
+        raise ValueError("YOLO trace input contains duplicate source_id/frame_id")
     ledger_by_id = {row["component_id"]: row for row in component_rows}
     if len(ledger_by_id) != len(component_rows):
         raise ValueError("duplicate component_id in component ledger")
@@ -545,6 +862,8 @@ def run_atlas(
         for field in ("source_id", "session_id", "frame_id", "image_sha256", "canonical_mask_sha256"):
             if frame_row[field] != manifest[field]:
                 raise ValueError(f"frame/manifest mismatch for {field}: {view_row_id}")
+        if frame_row["rehearsal_role"] != manifest["role"]:
+            raise ValueError(f"frame/manifest role mismatch: {view_row_id}")
         yolo = yolo_by_key.get((frame_row["source_id"], int(frame_row["frame_id"])))
         if yolo is None or yolo.get("image_sha256") != frame_row["image_sha256"]:
             raise ValueError(f"missing or mismatched frozen YOLO row: {view_row_id}")
@@ -680,7 +999,10 @@ def run_atlas(
                 "view_row_id": view_row_id,
                 "source_id": frame_row["source_id"],
                 "session_id": frame_row["session_id"],
+                "role": manifest["role"],
                 "sequence_id": manifest["sequence_id"],
+                "scene_bucket": manifest["scene_bucket"],
+                "image_repo_relative_path": manifest["image_repo_relative_path"],
                 "frame_id": int(frame_row["frame_id"]),
                 "source_capture_timestamp_ns": int(manifest["source_capture_timestamp_ns"]),
                 "a_mask": a_mask,
@@ -715,8 +1037,10 @@ def run_atlas(
     baseline_masks = [frame["b_mask"] for frame in frame_data]
     baseline = _evaluate_masks(frame_data, baseline_masks)
     probes: list[dict[str, Any]] = []
+    probe_masks_by_id: dict[str, list[np.ndarray]] = {}
     for name in config["gating_probes"]["spatial"]:
         masks = [frame["b_mask"] & spatial_masks[name] for frame in frame_data]
+        probe_masks_by_id[f"SPATIAL:{name}"] = masks
         evaluation = _evaluate_masks(frame_data, masks)
         probes.append(
             {
@@ -746,6 +1070,7 @@ def run_atlas(
                 )
     for name in config["gating_probes"]["temporal"]:
         masks = [temporal_masks[name][frame["view_row_id"]] for frame in frame_data]
+        probe_masks_by_id[f"TEMPORAL:{name}"] = masks
         evaluation = _evaluate_masks(frame_data, masks)
         probes.append(
             {
@@ -766,6 +1091,7 @@ def run_atlas(
             masks = [frame["confidence_gate"] for frame in frame_data]
         else:
             raise ValueError(f"unknown confidence probe: {name}")
+        probe_masks_by_id[f"CONFIDENCE:{name}"] = masks
         evaluation = _evaluate_masks(frame_data, masks)
         probes.append(
             {
@@ -981,11 +1307,28 @@ def run_atlas(
             row for row in session_components if row["false_activation"]
         ]
         session_summaries[session_id] = {
+            "role": next(
+                frame["role"] for frame in frame_data if frame["session_id"] == session_id
+            ),
+            "scene_buckets": sorted(
+                {
+                    frame["scene_bucket"]
+                    for frame in frame_data
+                    if frame["session_id"] == session_id
+                }
+            ),
             "frame_count": len(session_frames),
             "component_count": len(session_components),
             "false_activation_component_count": len(false_session_components),
             "false_activation_area_pixels": sum(
                 int(row["area_pixels"]) for row in false_session_components
+            ),
+            "false_positive_pixels": sum(
+                int(row["false_positive_pixels"]) for row in session_frames
+            ),
+            "false_positive_area_fraction": _safe_ratio(
+                sum(int(row["false_positive_pixels"]) for row in session_frames),
+                len(session_frames) * int(np.prod(shape)),
             ),
             "primary_mechanism_component_counts": dict(
                 sorted(
@@ -994,11 +1337,278 @@ def run_atlas(
                     ).items()
                 )
             ),
+            "mechanism_false_area_pixels_nonexclusive": {
+                mechanism: sum(
+                    int(row["area_pixels"])
+                    for row in false_session_components
+                    if mechanism in row["mechanism_tags"]
+                )
+                for mechanism in (*_ACTIONABLE_MECHANISMS, "OTHER_FALSE_ACTIVATION")
+            },
         }
 
+    analysis_round = str(config.get("analysis_round", "PILOT_200"))
+    replication: dict[str, Any] | None = None
+    gate_cases: dict[str, Any] | None = None
+    if analysis_round == "TARGETED_EXPANSION_320":
+        references = config["pilot_reference"]
+        pilot_result_path, pilot_result = _read_bound_json(
+            repo_root=repo_root,
+            binding=references["result"],
+        )
+        pilot_gating_path, pilot_gating = _read_bound_json(
+            repo_root=repo_root,
+            binding=references["gating"],
+        )
+        pilot_residual_path, pilot_residual = _read_bound_json(
+            repo_root=repo_root,
+            binding=references["residual"],
+        )
+        replication_rules = config["replication_decision_rules"]
+        mechanisms = list(replication_rules["mechanisms"])
+        if mechanisms != list(_EXPANSION_MECHANISMS):
+            raise ValueError("expansion mechanism list must match the frozen five")
+        pilot_profile = [
+            float(
+                pilot_result["false_activation"]["mechanisms"][mechanism][
+                    "false_area_share_nonexclusive"
+                ]
+                or 0.0
+            )
+            for mechanism in mechanisms
+        ]
+        expansion_profile = [
+            float(mechanism_stats[mechanism]["false_area_share_nonexclusive"] or 0.0)
+            for mechanism in mechanisms
+        ]
+        aggregate_rank_correlation = spearman_rank_correlation(
+            pilot_profile,
+            expansion_profile,
+        )
+        mechanism_coverage: dict[str, dict[str, Any]] = {}
+        for mechanism in mechanisms:
+            matching = [
+                row
+                for row in false_components
+                if mechanism in row["mechanism_tags"]
+            ]
+            sessions = sorted({row["session_id"] for row in matching})
+            roles = sorted(
+                {
+                    frame["role"]
+                    for frame in frame_data
+                    if frame["session_id"] in sessions
+                }
+            )
+            mechanism_coverage[mechanism] = {
+                "component_count": len(matching),
+                "false_area_pixels_nonexclusive": sum(
+                    int(row["area_pixels"]) for row in matching
+                ),
+                "false_area_share_nonexclusive": mechanism_stats[mechanism][
+                    "false_area_share_nonexclusive"
+                ],
+                "session_count": len(sessions),
+                "session_coverage_rate": _safe_ratio(
+                    len(sessions), len(session_summaries)
+                ),
+                "sessions": sessions,
+                "role_count": len(roles),
+                "roles": roles,
+            }
+        minimum_session_count = int(
+            replication_rules["minimum_session_count_per_mechanism"]
+        )
+        minimum_role_count = int(
+            replication_rules["minimum_role_count_per_mechanism"]
+        )
+        mechanisms_reproduced = all(
+            row["session_count"] >= minimum_session_count
+            and row["role_count"] >= minimum_role_count
+            for row in mechanism_coverage.values()
+        )
+        session_rank_correlations: dict[str, float | None] = {}
+        for session_id, summary in session_summaries.items():
+            denominator = int(summary["false_activation_area_pixels"])
+            session_profile = [
+                float(
+                    _safe_ratio(
+                        summary["mechanism_false_area_pixels_nonexclusive"][mechanism],
+                        denominator,
+                    )
+                    or 0.0
+                )
+                for mechanism in mechanisms
+            ]
+            session_rank_correlations[session_id] = spearman_rank_correlation(
+                pilot_profile,
+                session_profile,
+            )
+        divergence_threshold = float(
+            replication_rules[
+                "source_dependent_session_rank_correlation_below"
+            ]
+        )
+        divergent_sessions = sorted(
+            session_id
+            for session_id, correlation in session_rank_correlations.items()
+            if correlation is None or correlation < divergence_threshold
+        )
+        source_dependent = len(divergent_sessions) >= int(
+            replication_rules["source_dependent_minimum_session_count"]
+        )
+        minimum_aggregate_correlation = float(
+            replication_rules["minimum_aggregate_rank_correlation"]
+        )
+        decision_tree = config["decision_tree"]
+        expected_branch_order = [
+            "mechanism_not_reproduced",
+            "gating_sufficient",
+            "gating_partial",
+            "source_dependent",
+            "replicated",
+        ]
+        if decision_tree["branch_order"] != expected_branch_order:
+            raise ValueError(
+                "expansion decision_tree branch order does not match the frozen evaluator"
+            )
+        decision_terminals = {
+            key: str(decision_tree["terminals"][key])
+            for key in expected_branch_order
+        }
+        decision = expansion_decision(
+            mechanisms_reproduced=mechanisms_reproduced,
+            aggregate_rank_correlation=aggregate_rank_correlation,
+            minimum_rank_correlation=minimum_aggregate_correlation,
+            gating_axis=gating_axis,
+            source_dependent=source_dependent,
+            terminals=decision_terminals,
+        )
+        pilot_residual_share = pilot_residual["pixel_level_residual"][
+            "share_of_truth_hazard"
+        ]
+        expansion_residual_share = residual_result["pixel_level_residual"][
+            "share_of_truth_hazard"
+        ]
+        residual_change = {
+            "pilot_residual_labelability_axis": pilot_residual[
+                "residual_labelability_axis"
+            ],
+            "expansion_residual_labelability_axis": residual_result[
+                "residual_labelability_axis"
+            ],
+            "pilot_pixel_level_residual_status": pilot_residual[
+                "pixel_level_residual"
+            ]["status"],
+            "expansion_pixel_level_residual_status": residual_result[
+                "pixel_level_residual"
+            ]["status"],
+            "pilot_residual_share_of_truth_hazard": pilot_residual_share,
+            "expansion_residual_share_of_truth_hazard": expansion_residual_share,
+            "residual_share_delta": (
+                float(expansion_residual_share) - float(pilot_residual_share)
+                if pilot_residual_share is not None
+                and expansion_residual_share is not None
+                else None
+            ),
+        }
+        residual_change["labelability_status_changed"] = (
+            residual_change["pilot_residual_labelability_axis"]
+            != residual_change["expansion_residual_labelability_axis"]
+            or residual_change["pilot_pixel_level_residual_status"]
+            != residual_change["expansion_pixel_level_residual_status"]
+        )
+        replication = {
+            "schema_version": (
+                "blindassist.dual_loop_segmentation_failure_atlas.expansion.v1"
+            ),
+            "decision": decision,
+            "questions": {
+                "mechanisms_reproduced": mechanisms_reproduced,
+                "aggregate_ranking_stable": (
+                    aggregate_rank_correlation is not None
+                    and aggregate_rank_correlation >= minimum_aggregate_correlation
+                ),
+                "simple_gating_failure_reproduced": gating_axis == "INSUFFICIENT",
+            },
+            "mechanism_order": {
+                "mechanisms": mechanisms,
+                "pilot_false_area_shares": dict(zip(mechanisms, pilot_profile)),
+                "expansion_false_area_shares": dict(
+                    zip(mechanisms, expansion_profile)
+                ),
+                "pilot_ranked": sorted(
+                    mechanisms,
+                    key=lambda mechanism: (
+                        -pilot_profile[mechanisms.index(mechanism)],
+                        mechanism,
+                    ),
+                ),
+                "expansion_ranked": sorted(
+                    mechanisms,
+                    key=lambda mechanism: (
+                        -expansion_profile[mechanisms.index(mechanism)],
+                        mechanism,
+                    ),
+                ),
+                "spearman_rank_correlation": aggregate_rank_correlation,
+                "minimum_required": minimum_aggregate_correlation,
+            },
+            "mechanism_session_coverage": mechanism_coverage,
+            "session_rank_correlations_vs_pilot": session_rank_correlations,
+            "source_dependence": {
+                "threshold": divergence_threshold,
+                "minimum_divergent_session_count": int(
+                    replication_rules["source_dependent_minimum_session_count"]
+                ),
+                "divergent_sessions": divergent_sessions,
+                "source_dependent": source_dependent,
+            },
+            "decision_tree": {
+                "branch_order": expected_branch_order,
+                "terminals": decision_terminals,
+            },
+            "gating": {
+                "pilot_gating_axis": pilot_gating["gating_axis"],
+                "expansion_gating_axis": gating_axis,
+                "failure_reproduced": gating_axis == "INSUFFICIENT",
+            },
+            "residual_labelability_change": residual_change,
+            "pilot_reference_paths": {
+                "result": str(pilot_result_path.relative_to(repo_root)),
+                "gating": str(pilot_gating_path.relative_to(repo_root)),
+                "residual": str(pilot_residual_path.relative_to(repo_root)),
+            },
+        }
+        expansion = {
+            "decision": decision,
+            "selection_status": "FIXED_320_FRAME_EXPANSION_COMPLETE",
+            "selected_candidate_sessions": [],
+            "excluded_roles": ["train", "synthetic_canary", "r1_consumed_fresh"],
+            "maximum_target_sessions": len(session_summaries),
+        }
+
+        gate_cases = {}
+        success_minimum = float(
+            config["case_selection"]["success_minimum_recall_retention"]
+        )
+        for probe in non_baseline:
+            probe_id = probe["probe_id"]
+            gate_cases[probe_id] = select_gate_cases(
+                frame_data=frame_data,
+                baseline_masks=baseline_masks,
+                probe_masks=probe_masks_by_id[probe_id],
+                success_minimum_recall_retention=success_minimum,
+            )
+
     result = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": (
+            "blindassist.dual_loop_segmentation_failure_atlas.expansion_result.v1"
+            if analysis_round == "TARGETED_EXPANSION_320"
+            else SCHEMA_VERSION
+        ),
         "protocol_id": PROTOCOL_ID,
+        "analysis_round": analysis_round,
         "stage": config["stage"],
         "evidence_instance": config["evidence_instance"],
         "claim_ceiling": config["claim_ceiling"],
@@ -1015,10 +1625,16 @@ def run_atlas(
         "gating_axis": gating_axis,
         "residual_labelability_axis": residual_result["residual_labelability_axis"],
         "expansion": expansion,
+        "replication": replication,
         "terminals": {
-            "atlas": "PILOT_COMPLETE",
+            "atlas": (
+                "TARGETED_EXPANSION_COMPLETE"
+                if analysis_round == "TARGETED_EXPANSION_320"
+                else "PILOT_COMPLETE"
+            ),
             "gating": gating_axis,
             "residual": residual_result["residual_labelability_axis"],
+            "decision": replication["decision"] if replication else None,
             "confirmation": "NOT_ACTIVATED",
             "product_or_safety": "NOT_EVALUABLE",
         },
@@ -1027,22 +1643,13 @@ def run_atlas(
                 "path": str(config_path.relative_to(repo_root)),
                 "sha256": sha256_file(config_path),
             },
-            "frames": {
-                "path": str(frames_path.relative_to(repo_root)),
-                "sha256": sha256_file(frames_path),
-            },
-            "components": {
-                "path": str(components_path.relative_to(repo_root)),
-                "sha256": sha256_file(components_path),
-            },
+            "frames": _input_provenance(repo_root, frames_paths),
+            "components": _input_provenance(repo_root, components_paths),
             "canonical_manifest": {
                 "path": str((view_root / "manifest.jsonl").relative_to(repo_root)),
                 "sha256": sha256_file(view_root / "manifest.jsonl"),
             },
-            "yolo_trace": {
-                "path": str(yolo_trace_path.relative_to(repo_root)),
-                "sha256": sha256_file(yolo_trace_path),
-            },
+            "yolo_trace": _input_provenance(repo_root, yolo_trace_paths),
             "implementation": {
                 "path": str(Path(__file__).resolve().relative_to(repo_root)),
                 "sha256": sha256_file(Path(__file__).resolve()),
@@ -1068,6 +1675,48 @@ def run_atlas(
         )
         _write_json(temporary / "gating_probes.json", gating_result)
         _write_json(temporary / "residual_labelability.json", residual_result)
+        if replication is not None:
+            _write_json(temporary / "replication.json", replication)
+        if gate_cases is not None:
+            frame_index = {
+                frame["view_row_id"]: index for index, frame in enumerate(frame_data)
+            }
+            for probe_id, cases in gate_cases.items():
+                safe_probe_id = probe_id.lower().replace(":", "-").replace("_", "-")
+                for case_kind, metrics in cases.items():
+                    if metrics is None:
+                        continue
+                    index = frame_index[metrics["view_row_id"]]
+                    relative_figure = (
+                        Path("case_figures")
+                        / f"{safe_probe_id}-{case_kind}.png"
+                    )
+                    _render_gate_case(
+                        repo_root=repo_root,
+                        frame=frame_data[index],
+                        baseline_mask=baseline_masks[index],
+                        probe_mask=probe_masks_by_id[probe_id][index],
+                        probe_id=probe_id,
+                        case_kind=case_kind,
+                        metrics=metrics,
+                        output_path=temporary / relative_figure,
+                    )
+                    metrics["figure_path"] = relative_figure.as_posix()
+            _write_json(
+                temporary / "gate_cases.json",
+                {
+                    "schema_version": (
+                        "blindassist.dual_loop_segmentation_failure_atlas.gate_cases.v1"
+                    ),
+                    "protocol_id": PROTOCOL_ID,
+                    "selection_rule": config["case_selection"],
+                    "cases": gate_cases,
+                },
+            )
+            result["case_figures"] = {
+                "manifest": "gate_cases.json",
+                "directory": "case_figures",
+            }
         _write_json(temporary / "result.json", result)
         temporary.replace(output_root)
     except Exception:
@@ -1081,10 +1730,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", required=True)
     parser.add_argument("--config", required=True)
-    parser.add_argument("--frames", required=True)
-    parser.add_argument("--components", required=True)
+    parser.add_argument("--frames", required=True, action="append")
+    parser.add_argument("--components", required=True, action="append")
     parser.add_argument("--view-root", required=True)
-    parser.add_argument("--yolo-trace", required=True)
+    parser.add_argument("--yolo-trace", required=True, action="append")
     parser.add_argument("--output-root", required=True)
     return parser
 
@@ -1095,10 +1744,12 @@ def main(argv: list[str] | None = None) -> int:
     result = run_atlas(
         repo_root=repo_root,
         config_path=_resolve_input(repo_root, args.config),
-        frames_path=_resolve_input(repo_root, args.frames),
-        components_path=_resolve_input(repo_root, args.components),
+        frames_path=[_resolve_input(repo_root, value) for value in args.frames],
+        components_path=[_resolve_input(repo_root, value) for value in args.components],
         view_root=_resolve_input(repo_root, args.view_root),
-        yolo_trace_path=_resolve_input(repo_root, args.yolo_trace),
+        yolo_trace_path=[
+            _resolve_input(repo_root, value) for value in args.yolo_trace
+        ],
         output_root=_resolve_input(repo_root, args.output_root),
     )
     json.dump(_json_ready(result), sys.stdout, ensure_ascii=False, indent=2, sort_keys=True)

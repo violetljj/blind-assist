@@ -1,6 +1,6 @@
 # dual_loop_segmentation_failure_atlas
 
-状态：development
+状态：development；320-frame targeted expansion 已完成为 `GATING_PARTIAL`
 
 ## 研究问题与版本
 
@@ -28,6 +28,28 @@ python -m scripts.research.dual_loop_segmentation_failure_atlas.atlas `
   --output-root artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/pilot-200
 ```
 
+320-frame expansion 先分别以
+`scripts.research.dual_loop_segmentation_r2_p0.run_rehearsal` 对 `dev` 与
+`consumed_old_blind` 生成同协议 rehearsal，再通过重复参数一次聚合：
+
+```powershell
+python -m scripts.research.dual_loop_segmentation_failure_atlas.atlas `
+  --repo-root . `
+  --config configs/dual_loop_segmentation_failure_atlas_r0/expansion_320.json `
+  --frames artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-dev-rehearsal/frames.jsonl `
+  --frames artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-consumed-old-blind-rehearsal/frames.jsonl `
+  --components artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-dev-rehearsal/components.jsonl `
+  --components artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-consumed-old-blind-rehearsal/components.jsonl `
+  --view-root artifacts.local/evidence/dual-loop-segmentation-r2-p0/canonical-view `
+  --yolo-trace artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/dev/yolo_trace.jsonl `
+  --yolo-trace artifacts.local/evidence/dual-loop-segmentation-candidate-utility-r0/formal/yolo_trace.jsonl `
+  --output-root artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-v4
+```
+
+expansion config 固定 6 个 session/320 帧、五类机制、pilot reference hashes、排序与
+source-dependence 判据、原 gating thresholds 及案例选择规则。不得借重复参数加入第七个
+session；input contract 会拒绝额外或缺失 frame。
+
 输入必须是 200-frame `r1_consumed_fresh` rehearsal、对应 canonical view 和冻结 YOLO
 trace。packed mask、component ledger、truth identity 或 source/frame pairing 不一致时停止。
 
@@ -41,6 +63,13 @@ trace。packed mask、component ledger、truth identity 或 source/frame pairing
 - `residual_labelability.json`：三态 residual 可标性与输入 availability；
 - `result.json`：二维结论与是否值得定向扩展。
 
+expansion 另写：
+
+- `replication.json`：五类机制的 session/role 覆盖、pilot-vs-expansion Spearman、
+  逐 session profile 与冻结决策树终态；
+- `gate_cases.json`、`case_figures/`：每个非 baseline gate 的固定成功/失败案例选择与
+  `DEVELOPMENT DIAGNOSTIC ONLY` 图。
+
 ## 安全边界
 
 只读使用 consumed Development 数据。当前没有 instance-level attribution truth，故
@@ -50,9 +79,11 @@ YOLO-overlapped hazard 像素记为 `ATTRIBUTION_UNCERTAIN`，不得伪装为
 
 ## 停止条件
 
-完成一次 200-frame pilot 即停止。只允许配置中的 4 个空间、3 个因果时序和 2 个置信
-probe，禁止笛卡尔积搜索。只有至少一种可行动错误机制达到预声明面积占比并跨至少两个
-session，才建议选择最多 12 个高信息 session 扩展；否则停止扩展。
+pilot 完成一次 200-frame 即停止；expansion 完成固定 320-frame 即停止。只允许配置中的
+4 个空间、3 个因果时序和 2 个置信 probe，禁止笛卡尔积搜索。pilot 只有至少一种可行动
+错误机制达到预声明面积占比并跨至少两个 session，才允许定向扩展；expansion 不再继续
+补满 920 帧。当前终态为 `GATING_PARTIAL`，本 Module 不在同一结果上选择或组合 gate，
+也不启动 residual-aware training。
 
 ## 假设与规则质疑
 

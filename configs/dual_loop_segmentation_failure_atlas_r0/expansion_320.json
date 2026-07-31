@@ -1,0 +1,135 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_failure_atlas.config.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_AND_RESIDUAL_LABELABILITY_R0",
+  "analysis_round": "TARGETED_EXPANSION_320",
+  "stage": "DEVELOPMENT_STANDARD",
+  "evidence_instance": "TARGETED_EXPANSION_320_DEV_AND_CONSUMED_V1",
+  "analysis_shape": [256, 256],
+  "truth_classes": {
+    "0": "walkable",
+    "1": "boundary_step_curb",
+    "2": "obstacle",
+    "3": "unknown_nonwalkable"
+  },
+  "hazard_truth_ids": [1, 2],
+  "candidate_classes": ["boundary_step_curb", "obstacle"],
+  "component_rules": {
+    "connectivity": 8,
+    "small_fragment_max_area_pixels": 63,
+    "large_component_min_area_pixels": 512,
+    "boundary_probe_radius_pixels": 3,
+    "boundary_dilation_min_fraction": 0.5,
+    "high_confidence_minimum": 0.65,
+    "stable_minimum_frames": 3,
+    "temporal_match_iou": 0.1,
+    "yolo_attribution_gap_pixels": 3.0
+  },
+  "spatial_bands": {
+    "lower_field_y_fraction": 0.5,
+    "central_body_x_fraction": [0.25, 0.75],
+    "central_body_y_min_fraction": 0.35,
+    "upper_head_y_max_fraction": 0.35
+  },
+  "gating_probes": {
+    "spatial": [
+      "FULL_FRAME",
+      "LOWER_FIELD",
+      "CENTRAL_BODY_CORRIDOR",
+      "UPPER_HEAD_BAND"
+    ],
+    "temporal": [
+      "CURRENT_FRAME",
+      "CAUSAL_2_OF_3",
+      "CAUSAL_3_CONSECUTIVE"
+    ],
+    "confidence": [
+      "ALL_COMPONENTS",
+      "COMPONENT_MEDIAN_CONFIDENCE_GE_0_65"
+    ]
+  },
+  "gating_decision_rules": {
+    "sufficient_min_fp_reduction": 0.3,
+    "sufficient_min_recall_retention": 0.9,
+    "sufficient_min_session_recall_retention": 0.8,
+    "partial_min_fp_reduction": 0.1,
+    "partial_min_recall_retention": 0.75
+  },
+  "input_contract": {
+    "allowed_roles": ["dev", "consumed_old_blind"],
+    "expected_frame_count": 320,
+    "expected_session_frame_counts": {
+      "sanpo_real_v0:5LlqRK-hWoDLSW5MmoLjKj6uQtZMKjb9": 60,
+      "sanpo_real_v0:CCG-oMqgJf90LzEhlqj0WkP3xN0dHlXk": 50,
+      "sanpo_real_v0:LRWTaGC62fB3NflMQaOPXf0HJR1m5Ypp": 50,
+      "sanpo_real_v0:i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3": 60,
+      "sanpo_real_v0:lmkIchCJ1RIKsZvbb4HjCDl85B2nOicv": 50,
+      "sanpo_real_v0:yQ5Ij3w49RMUxxIai6ZVsvPHssZJ13FO": 50
+    }
+  },
+  "pilot_reference": {
+    "result": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/pilot-200/result.json",
+      "sha256": "8e047d173afb85a9f239b3ff139279c0e0e5974b921b052184a096247a9afedd"
+    },
+    "gating": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/pilot-200/gating_probes.json",
+      "sha256": "3460c1c08966216a38a38748dbe31f020ac6c8b5b441789b7dc6e5b44034a386"
+    },
+    "residual": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/pilot-200/residual_labelability.json",
+      "sha256": "a9f55ec3a0016e27bbf115484fd2fcab55f8292c063a2f3417e3a57a7eeb53d0"
+    }
+  },
+  "replication_decision_rules": {
+    "mechanisms": [
+      "SMALL_FRAGMENT_NOISE",
+      "YOLO_ATTRIBUTION_AMBIGUITY",
+      "TEMPORAL_FLICKER",
+      "STABLE_HIGH_CONFIDENCE_ERROR",
+      "UPPER_FIELD_BACKGROUND_ACTIVATION_PROXY"
+    ],
+    "minimum_session_count_per_mechanism": 2,
+    "minimum_role_count_per_mechanism": 2,
+    "minimum_aggregate_rank_correlation": 0.6,
+    "source_dependent_session_rank_correlation_below": 0.3,
+    "source_dependent_minimum_session_count": 2
+  },
+  "decision_tree": {
+    "branch_order": [
+      "mechanism_not_reproduced",
+      "gating_sufficient",
+      "gating_partial",
+      "source_dependent",
+      "replicated"
+    ],
+    "terminals": {
+      "mechanism_not_reproduced": "PILOT_NOT_GENERALIZABLE",
+      "gating_sufficient": "GATING_SUFFICIENT",
+      "gating_partial": "GATING_PARTIAL",
+      "source_dependent": "SOURCE_DEPENDENT_FAILURE_STRUCTURE",
+      "replicated": "RESIDUAL_TASK_REFORMULATION_JUSTIFIED"
+    }
+  },
+  "case_selection": {
+    "success_minimum_recall_retention": 0.9,
+    "success_order": "maximum false-positive pixels removed, then recall retention, then view_row_id",
+    "failure_order": "minimum recall retention, then maximum true-positive pixels lost, then view_row_id"
+  },
+  "expansion_rule": {
+    "minimum_false_area_share": 0.1,
+    "minimum_session_count": 2,
+    "maximum_target_sessions": 6
+  },
+  "claim_ceiling": "DEVELOPMENT_MECHANISM_DIAGNOSTIC_ONLY",
+  "forbidden": [
+    "fresh_holdout_access",
+    "new_gate_or_gate_composition",
+    "gate_threshold_reselection",
+    "active_risk_fusion",
+    "risk_or_feedback_mutation",
+    "tts_or_vibration",
+    "default_model_replacement",
+    "confirmation_or_product_claim",
+    "expansion_beyond_fixed_320_frames"
+  ]
+}

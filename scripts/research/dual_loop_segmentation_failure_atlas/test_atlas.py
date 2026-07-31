@@ -8,11 +8,15 @@ import numpy as np
 
 from scripts.research.dual_loop_segmentation_failure_atlas.atlas import (
     _mechanism_tags,
+    _validate_input_contract,
     assign_temporal_tracks,
     causal_temporal_probe,
     decode_packed_mask,
     encode_packed_mask,
+    expansion_decision,
     primary_mechanism,
+    select_gate_cases,
+    spearman_rank_correlation,
     spatial_probe_mask,
 )
 
@@ -137,6 +141,107 @@ class MechanismTest(unittest.TestCase):
         self.assertIn("BOUNDARY_DILATION", tags)
         self.assertIn("TEMPORAL_FLICKER", tags)
         self.assertEqual(primary_mechanism(tags), "BOUNDARY_DILATION")
+
+
+class ExpansionDecisionTest(unittest.TestCase):
+    def test_spearman_supports_ties(self) -> None:
+        self.assertAlmostEqual(
+            spearman_rank_correlation([1.0, 2.0, 2.0, 4.0], [1.0, 3.0, 3.0, 4.0]),
+            1.0,
+        )
+
+    def test_decision_tree_stops_before_gate_or_source_branches(self) -> None:
+        self.assertEqual(
+            expansion_decision(
+                mechanisms_reproduced=False,
+                aggregate_rank_correlation=0.9,
+                minimum_rank_correlation=0.6,
+                gating_axis="PARTIAL",
+                source_dependent=True,
+            ),
+            "PILOT_NOT_GENERALIZABLE",
+        )
+        self.assertEqual(
+            expansion_decision(
+                mechanisms_reproduced=True,
+                aggregate_rank_correlation=0.9,
+                minimum_rank_correlation=0.6,
+                gating_axis="PARTIAL",
+                source_dependent=True,
+            ),
+            "GATING_PARTIAL",
+        )
+        self.assertEqual(
+            expansion_decision(
+                mechanisms_reproduced=True,
+                aggregate_rank_correlation=0.9,
+                minimum_rank_correlation=0.6,
+                gating_axis="SUFFICIENT",
+                source_dependent=False,
+            ),
+            "GATING_SUFFICIENT",
+        )
+
+    def test_input_contract_rejects_duplicate_frozen_frame(self) -> None:
+        frame = {
+            "view_row_id": "dev:one",
+            "source_id": "source",
+            "session_id": "session",
+            "frame_id": 0,
+            "rehearsal_role": "dev",
+        }
+        config = {
+            "input_contract": {
+                "allowed_roles": ["dev"],
+                "expected_frame_count": 2,
+                "expected_session_frame_counts": {"session": 2},
+            }
+        }
+        with self.assertRaisesRegex(ValueError, "duplicate view_row_id"):
+            _validate_input_contract(
+                config=config,
+                frame_rows=[frame, dict(frame)],
+                component_rows=[],
+            )
+
+    def test_case_selection_is_deterministic(self) -> None:
+        truth = np.array([[True, True, False, False]])
+        frames = [
+            {
+                "view_row_id": "a",
+                "session_id": "s",
+                "role": "dev",
+                "scene_bucket": "scene",
+                "frame_id": 0,
+                "residual_truth": truth,
+            },
+            {
+                "view_row_id": "b",
+                "session_id": "s",
+                "role": "dev",
+                "scene_bucket": "scene",
+                "frame_id": 1,
+                "residual_truth": truth,
+            },
+        ]
+        baseline = [
+            np.array([[True, True, True, True]]),
+            np.array([[True, True, True, True]]),
+        ]
+        probes = [
+            np.array([[True, True, False, False]]),
+            np.array([[False, False, False, False]]),
+        ]
+
+        cases = select_gate_cases(
+            frame_data=frames,
+            baseline_masks=baseline,
+            probe_masks=probes,
+            success_minimum_recall_retention=0.9,
+        )
+
+        self.assertEqual(cases["success"]["view_row_id"], "a")
+        self.assertEqual(cases["failure"]["view_row_id"], "b")
 
 
 if __name__ == "__main__":

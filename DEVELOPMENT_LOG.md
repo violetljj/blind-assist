@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 Atlas 固定
+  320-frame 定向扩展：以同一 DDRNet INT8、未过滤 postprocess、canonical evaluator
+  和冻结 YOLO trace 分别重放 4 个 dev session（200 帧）与 2 个 consumed old blind
+  session（120 帧），两组 rehearsal 独立全量复算均为 `VALID`。扩展共分析 6,714 个
+  components；五类 pilot 机制均跨两角色复现，aggregate 排序 Spearman `0.90`，三态
+  residual 仍为 `WEAKLY_LABELABLE`。原样运行的 causal 2-of-3 与 median confidence
+  `>=0.65` 分别以 `0.7930 / 0.8528` overall recall retention 达到既有 `PARTIAL`，
+  但最低 session retention 只有 `0.4729 / 0.4087`，没有 `SUFFICIENT` gate；按冻结
+  决策树终态为 `GATING_PARTIAL`，因此未训练 residual-aware DDRNet、未选择或组合 gate。
+  runner 新增唯一帧/完整 membership 多输入合同、五机制覆盖/排序复算、session FP
+  汇总与固定成功/失败案例图；9 项单元测试通过，完整 Atlas 与 10 张案例图确定性复跑
+  逐文件一致。未访问 fresh
+  holdout，未修改 Android、risk/feedback、TTS、振动或默认 App；Confirmation、产品与
+  安全 authority 均未激活。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。落实新科学主线
   `DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_AND_RESIDUAL_LABELABILITY_R0`：新增冻结 pilot
   配置、可复算 Atlas runner 与 5 项单元契约，只读消费已降级的 200-frame R1 rehearsal、

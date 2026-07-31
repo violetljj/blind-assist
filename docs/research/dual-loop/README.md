@@ -1,8 +1,8 @@
 # BlindAssist YOLO + 语义分割双环研究主线
 
-状态：`SEGMENTATION_FAILURE_ATLAS_R0_PILOT_COMPLETE /
-GATING_INSUFFICIENT / RESIDUAL_WEAKLY_LABELABLE /
-TARGETED_EXPANSION_WARRANTED / THESIS_DEVELOPMENT_DEFAULT /
+状态：`SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
+MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
+RESIDUAL_AWARE_TRAINING_DEFERRED / THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-08-01（Asia/Hong_Kong）
@@ -34,9 +34,10 @@ R1 的 one-shot、fresh holdout、逐项 SHA 和全量独立复算要求复制�
   组件稳定性、P95 推理/总链路成本中的适用指标，以及表、图、失败案例或 demo；
 - 不接提醒、不改默认 App，不把 Development 结果写成安全、产品或最终确认结论。
 
-当前已在上述制度下完成一次 consumed Development pilot，但没有训练模型、运行真机
-benchmark 或融合实验。最终 Confirmation 尚未激活；届时才单独冻结确认问题、独立数据、
-实现和统计，并按实际风险决定是否需要 one-shot 与完整复算。
+当前已在上述制度下完成 200-frame consumed Development pilot 与固定 320-frame
+定向扩展，但没有训练模型、运行真机 benchmark 或融合实验。最终 Confirmation 尚未
+激活；届时才单独冻结确认问题、独立数据、实现和统计，并按实际风险决定是否需要
+one-shot 与完整复算。
 
 2026-07-31，用户明确要求以 Agent-only 标注检验“中央图像阻塞互补性”的可行边界；该
 探索路线现已完成 successor calibration 并关闭。唯一获授权阶段曾是
@@ -160,15 +161,20 @@ DEVICE_BENCHMARK_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`。新增的
 这里的 device 禁令是 R2-P0 formal 协议的历史边界，不再禁止新
 `DEVELOPMENT_STANDARD` 在最终选模前采集明确标注的工程 runtime 证据。
 
-[Segmentation Failure Atlas 与 residual 可标注性 R0](DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_AND_RESIDUAL_LABELABILITY_R0_RESULT_2026-08-01.md)
-现为唯一科学主线。200-frame consumed pilot 已对 5,043 个组件完成同类 residual truth、
-dominant truth class、空间、因果时序、置信度、YOLO 归因和输入 availability 诊断：
-3,062 个 false activation component 呈多机制混合，且跨 4 个 session 重复。
-4 个空间、3 个因果时序和 2 个置信 probe 均按预声明非组合式运行；全部未保留足够召回，
-故 gating 为 `INSUFFICIENT`。pixel residual 可复算，但没有 instance correspondence，
-三态归因只能为 `WEAKLY_LABELABLE`。五种机制达到跨 session 定向扩展门，下一步只允许
-对清单中的 6 个 dev/consumed session 做一次扩展复现；本轮未执行该推理。可视化平台、
-Android、QNN/A568、risk/feedback、TTS、振动和默认 App 均未进入本主线。
+[Segmentation Failure Atlas 与 residual 可标注性 R0 pilot](DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_AND_RESIDUAL_LABELABILITY_R0_RESULT_2026-08-01.md)
+及其
+[固定 320-frame 定向扩展](DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_TARGETED_EXPANSION_R1_RESULT_2026-08-01.md)
+现为唯一科学主线。扩展严格复用 6 个既有 dev/consumed session、同一 DDRNet INT8、
+同一未过滤 postprocess 与原 9 个非组合 probe。五类机制均跨两种角色复现，pilot 与
+expansion 的 aggregate 排序 Spearman 为 `0.90`；residual pixel proxy 仍为
+`LABELABLE`，三态归因仍为 `WEAKLY_LABELABLE`。
+
+简单 gating 失败没有完整复现：causal 2-of-3 与 median confidence ≥ `0.65` 达到既有
+`PARTIAL` overall 门，但最低 session recall retention 只有 `47.29% / 40.87%`，没有
+`SUFFICIENT` gate。当前冻结终态为 `GATING_PARTIAL`，所以不启动 residual-aware DDRNet
+训练，也不在同一轮组合或选择 gate。下一主线若继续，只允许先冻结一个有限组合门并保留
+visual/candidate 权限；可视化 sidecar、Android、QNN/A568、risk/feedback、TTS、振动和
+默认 App 均未由本结果获得权限。
 
 ## 已关闭前序与保留证据
 
