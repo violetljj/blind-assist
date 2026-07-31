@@ -170,6 +170,10 @@ Omega_bg = dilate(B_(t-1), r_outer) - dilate(B_(t-1), r_inner)
 - 记录有效环面积、候选点数量和空间分布；
 - 点不足或空间退化时整体弃权，不缩小成更小环带补救。
 
+对每个 `ring_config_id`，动态检测框的膨胀半径固定为该配置的 `r_inner`（按同一
+`ceil` 像素规则、分别在上一/当前帧坐标中裁切）；不得使用检测分数、类别置信度或
+后验策略再调整掩码。
+
 YOLO/检测框在此只作为主环目标和动态区域掩码来源，不构成独立第二感知源。
 
 ### 5.3 预注册有限背景环候选集
@@ -200,6 +204,7 @@ min distance: 5 px
 block size: 5 px
 LK window: 15 x 15 px
 LK pyramid max level: 2
+LK termination: COUNT=20, EPS=0.03
 forward-backward error: <= 1.5 px
 ```
 

@@ -33,6 +33,7 @@
     "configs/ustrf_jrdb_person_3d_trajectory_far_range_denominator_adequacy_metadata_blind_replication_r0.json",
     "scripts/run_dual_loop_radial_geometry_lite_r1.py",
     "scripts/run_dual_loop_radial_geometry_lite_r2.py",
+    "scripts/run_dual_loop_target_local_background_warp_residual_r0.py",
     "scripts/run_public_video_edge_inference.ps1",
     "scripts/test_check_project_structure.ps1"
   ],

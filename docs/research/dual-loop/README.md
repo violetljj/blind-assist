@@ -343,7 +343,8 @@ rank-2 设备评价随后完成：baseline 和 candidate 都命中 7/7 正例，
 [TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 设计合同](TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_DESIGN_CONTRACT.md)
 是一个不继承 R1 或 D0 权限的独立目标局部背景 warp residual 假设；经
 [独立设计复核](TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_DESIGN_REVIEW_RESULT_2026-07-31.md)
-修订后，当前状态为 `DESIGN_REVIEW_PASS / PROPOSAL_ONLY / EXECUTION_NOT_AUTHORIZED`。
-它只规定未来可审查的 B Development、
-C1 新 session canary 与 C2 独立复现边界；不实现、不运行、不读取候选输出、不接 Android，
-也不改变本 README 已冻结的 scene-scale active 关闭终点。
+修订后，用户已明确授权 B Development；[B 实现复核](TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-31.md)
+现为 `B_IMPLEMENTATION_READY / SYNTHETIC_ONLY / C1_C2_NOT_AUTHORIZED`。
+设计合同仍只规定 B Development、C1 新 session canary 与 C2 独立复现边界；当前 Module
+仅完成 synthetic/fixture 验证，不读取真实候选输出、不接 Android，也不改变本 README
+已冻结的 scene-scale active 关闭终点。

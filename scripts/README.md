@@ -9,6 +9,7 @@
 - `run_dual_loop_d0_egomotion_error_attribution_r1.py`：burned single-capture D0-R1 的稳定 Adapter；只暴露依赖冻结、无权限 implementation lock、独立复核绑定的 activation、一次性 producer/analysis 与完全独立 execution validator，禁止读取 production A/B trace、旧 F-1B、Confirmation 或自动启动任何后继 canary。
 - `run_dual_loop_d0_egomotion_error_attribution_r2.py`：D0-R1 consumed runtime failure 的新身份恢复 Adapter；固定 isolated Python、完整 dependency tree 与单消息 operational probe，只写全新 `run-r2`，科学算法、统计出口和 claim ceiling 不变。
 - `run_dual_loop_d0_egomotion_error_attribution_r3.py`：D0-R2 consumed PyYAML failure 的最终 runtime-recovery Adapter；绑定独立 8-package environment、AST import closure、合成 producer/validator calibration parser smoke 与新 `run-r3`，科学算法、统计出口和 claim ceiling 不变。
+- `run_dual_loop_target_local_background_warp_residual_r0.py`：目标局部背景 warp residual R0 的 B Development 离线入口；只暴露 truth-blind producer、truth-late evaluator、实现锁与合成回归测试，不接 C1/C2、Android 或产品路径。
 - `run_dual_loop_radial_geometry_lite_r1.py`：target/track-conditioned causal radial geometry LITE Development R1 的稳定 Adapter；只暴露尺寸审计、无真值生产、实现锁校验及生产成功后的条件评估，旧 F-1B decision、Confirmation、Android 与产品路径不在输入或授权面。
 - `run_dual_loop_radial_geometry_lite_r2.py`：R1 guarded-progress UTC 类型失败后的前向 R2 Adapter；科学实现与 R1 相同，但使用新 protocol/implementation/output identity，R1 output 不在输入面。
 - `run_dual_loop_production_temporal_ab_input_preflight.ps1`：生产 `TemporalRiskTracker` 因子 A/B R0 的 outcome-blind 输入身份入口；逐一复核两个冻结 CrowdBot session 的 `4422` 个 PNG 哈希、时间顺序、尺寸与 canonical inventory，不读取 truth、不运行 detector 或候选 A/B。
@@ -56,6 +57,7 @@
 - [`research/dual_loop_jrdb_shadow_r0/`](research/dual_loop_jrdb_shadow_r0/)：标注条件化真实 LiDAR 质心到现有 `DualLoopShadowAdmitter`/`AssistDecisionKernel` 的 host-only 工程闭环；行为源保持 `OBJECT_DETECTOR`，标注条件化仅由 `REPLAY_TIMELINE + DualLoopTargetProvenance.REPLAY_ANNOTATION` 留痕，生产 allowlist 保持为空。
 - [`research/dual_loop_depth_geometry_r0/`](research/dual_loop_depth_geometry_r0/)：burned REveL 固定子集上的 Depth Anything V2 target-depth Discovery；静态距离排序与 temporal direction 分开评价，不授权 runtime/Android。
 - [`research/dual_loop_global_motion_compensated_flow_r0/`](research/dual_loop_global_motion_compensated_flow_r0/)：LITE R2 后的 background-homography residual target-flow Development；固定质量门和原 469-event readiness，不做结果后阈值搜索。
+- [`research/dual_loop_target_local_background_warp_residual_r0/`](research/dual_loop_target_local_background_warp_residual_r0/)：目标局部背景环 similarity warp residual 的 B Development offline producer/evaluator；固定 R1–R4 选择、truth-late join 和实现锁，不接 Android 或产品路径。
 - [`research/dual_loop_causal_track_tristate_r0/`](research/dual_loop_causal_track_tristate_r0/)：最小因果框尺度三态 source；7 帧 log-box-height 严格同号才确认/否定接近，否则弃权。独立 JRDB annotation-track Confirmation 已通过，并移植到 Android 非干预 shadow；不授权 active 提醒。
 - [`research/dual_loop_multitrack_counterfactual_r0/`](research/dual_loop_multitrack_counterfactual_r0/)：使用完整 production detections 检验多目标历史能否为误提醒提供反证；R0 已被零负例触发点命中否决，并产出最小 scene-scale R1 与设备逐帧 parity evaluator。
 - [`research/dual_loop_scene_scale_cross_source_r1/`](research/dual_loop_scene_scale_cross_source_r1/)：冻结 scene-scale contradiction 在 Matoaka 10,724 帧上的 truth-late 跨来源 Development 回放；只复现行级抑制，不产生事件级、Confirmation、默认生产或安全结论。
