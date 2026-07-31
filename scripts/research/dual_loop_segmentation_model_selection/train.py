@@ -280,6 +280,7 @@ def train_one_seed(
     device: torch.device,
     output_dir: Path,
     weights: Tensor,
+    progress_path: Path,
 ) -> dict[str, Any]:
     set_seed(seed)
     sampler = SessionBalancedSampler(train_images, train_masks, train_records, batch_size=BATCH_SIZE, seed=seed)
@@ -342,6 +343,23 @@ def train_one_seed(
                 "dev_boundary_iou": float(metrics["per_class"]["boundary_step_curb"]["iou"]),
                 "checkpoint_saved": improved,
             })
+            write_json(progress_path, {
+                "schema_version": "blindassist.dual_loop_segmentation_model_selection_r1.training_progress.v1",
+                "status": "RUNNING",
+                "model_id": model.build_receipt.model_id,
+                "seed": seed,
+                "completed_steps": completed_steps,
+                "total_steps": TOTAL_STEPS,
+                "last_selection_score": key[0],
+                "last_dev_mean_iou": float(metrics["mean_iou"]),
+                "last_dev_boundary_iou": float(metrics["per_class"]["boundary_step_curb"]["iou"]),
+                "updated_at_utc": datetime.now(timezone.utc).isoformat(),
+            })
+            print(
+                f"[{model.build_receipt.model_id}] seed={seed} step={completed_steps}/{TOTAL_STEPS} "
+                f"selection={key[0]:.6f} boundary_iou={key[1]:.6f}",
+                flush=True,
+            )
             train_mode(model)
         stage_reports.append({
             "name": stage_name,
@@ -429,6 +447,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     weights = torch.from_numpy(numpy_weights).to(device=device, dtype=torch.float32)
     seed_reports: list[dict[str, Any]] = []
     started = time.perf_counter()
+    progress_path = output_dir / "training_progress.json"
+    write_json(progress_path, {
+        "schema_version": "blindassist.dual_loop_segmentation_model_selection_r1.training_progress.v1",
+        "status": "RUNNING",
+        "model_id": args.model_id,
+        "completed_steps": 0,
+        "total_steps": TOTAL_STEPS * len(DEFAULT_SEEDS),
+        "updated_at_utc": datetime.now(timezone.utc).isoformat(),
+    })
     for seed in DEFAULT_SEEDS:
         set_seed(seed)
         seed_model = build_model(args.model_id, **model_kwargs).to(device)
@@ -445,6 +472,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 device=device,
                 output_dir=output_dir,
                 weights=weights,
+                progress_path=progress_path,
             )
         )
         del seed_model
@@ -502,6 +530,16 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     report_path = output_dir / "training_report.json"
     write_json(report_path, final_report)
     write_json(report_path.with_suffix(".sha256.json"), {"sha256": sha256_file(report_path)})
+    write_json(progress_path, {
+        "schema_version": "blindassist.dual_loop_segmentation_model_selection_r1.training_progress.v1",
+        "status": "COMPLETE",
+        "model_id": args.model_id,
+        "completed_steps": TOTAL_STEPS * len(DEFAULT_SEEDS),
+        "total_steps": TOTAL_STEPS * len(DEFAULT_SEEDS),
+        "selected_seed": selected["seed"],
+        "selected_checkpoint_sha256": sha256_file(final_checkpoint),
+        "updated_at_utc": datetime.now(timezone.utc).isoformat(),
+    })
     return final_report
 
 
