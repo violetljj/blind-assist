@@ -380,7 +380,7 @@ def train_one_seed(
     torch.save({
         "state_dict": best_state,
         "model_id": model.build_receipt.model_id,
-        "implementation_identity": model.build_receipt.implementation_identity,
+        "implementation_identity": initialization_receipt["implementation_identity"],
         "seed": seed,
         "optimizer_step": best_step,
         "selection_key": list(best_key),

@@ -258,6 +258,17 @@ class ExportableRawRgbSegmenter(nn.Module):
         return logits_nchw.permute(0, 2, 3, 1).contiguous()
 
 
+class ExportableNchwRawRgbSegmenter(nn.Module):
+    """NCHW export variant for converters that canonicalize layout themselves."""
+
+    def __init__(self, model: RawRgbSegmenter) -> None:
+        super().__init__()
+        self.model = model
+
+    def forward(self, raw_rgb_nchw: Tensor) -> Tensor:
+        return self.model(raw_rgb_nchw)
+
+
 def build_model(
     model_id: str,
     *,
