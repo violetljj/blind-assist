@@ -50,6 +50,17 @@ class _NhwcBoundary(tf.Module):
         spec = inputs["rgb"]
         if tuple(spec.shape) != (1, 3, INPUT_SIZE, INPUT_SIZE) or spec.dtype != tf.float32:
             raise ValueError(f"source SavedModel input contract mismatch: {spec}")
+        outputs = self.source_fn.structured_outputs
+        if set(outputs) != {"logits"}:
+            raise ValueError(f"source SavedModel output names are not frozen: {sorted(outputs)}")
+        output_spec = outputs["logits"]
+        output_shape = tuple(output_spec.shape)
+        if output_shape == (1, CLASS_COUNT, INPUT_SIZE, INPUT_SIZE):
+            self.output_layout = "NCHW"
+        elif output_shape == (1, INPUT_SIZE, INPUT_SIZE, CLASS_COUNT):
+            self.output_layout = "NHWC"
+        else:
+            raise ValueError(f"source SavedModel output contract mismatch: {output_spec}")
 
     @tf.function(input_signature=[tf.TensorSpec((1, INPUT_SIZE, INPUT_SIZE, 3), tf.float32, name="rgb")])
     def serve(self, rgb: tf.Tensor) -> dict[str, tf.Tensor]:
@@ -58,6 +69,8 @@ class _NhwcBoundary(tf.Module):
         if len(outputs) != 1:
             raise ValueError(f"source SavedModel must have one output, got {list(outputs)}")
         logits = next(iter(outputs.values()))
+        if self.output_layout == "NCHW":
+            logits = tf.transpose(logits, (0, 2, 3, 1))
         return {"logits": logits}
 
 
