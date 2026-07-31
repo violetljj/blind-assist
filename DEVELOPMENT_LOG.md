@@ -20,8 +20,21 @@
   libraries；将 App 改为不压缩 JNI，APK 与 AAB 分别通过 `PAGE_ALIGNMENT_16K`。
   这会增加本地 debug 包体并留下 runtime/package-size parity 风险，NPU candidate
   仍保持其独立 legacy packaging，后续不能把静态门禁当作真机兼容性证明。
-- 本轮不运行研究实验、不改变默认模型或研究结论；当前终点为本地分组通过、远程
-  同一提交连续两次完整 CI 仍待验证。
+- 本轮不运行研究实验、不改变默认模型或研究结论。提交
+  `63ea3bcfc72d3f483c1039ee17614b277048e540` 的完整 workflow 首轮与 rerun attempt 2
+  均通过（run `30613616160`），USTRF/NPU 无 D8/package OOM；随后主线由并发研究
+  提交推进至 `3b8c52ce9a56e8bf9f28872872cea5270ff23e26`，其 CI run `30613683882`
+  亦通过。
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  `STACKED_PR_CLOSEOUT_R0`：相对当前 master，PR #3 与 #1 的 head 均为
+  `ahead_by=0`（分别落后 173/62 commits），没有独有提交或文件需要迁移。已在
+  两个 stacked PR 留下 obsolete 原因并关闭，`mergedAt=null`；未合并旧分支，未带入
+  历史研究结论。
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  [DUAL_LOOP_STAGE_CLOSURE_R0](docs/research/dual-loop/DUAL_LOOP_STAGE_CLOSURE_R0_2026-07-31.md)：
+  只整理既有机制、工程和事件级证据，并从 dual-loop README 链接；报告包含
+  baseline/shadow/isolated-active/default-off、三来源事件结果和 retained-false
+  五类分解三张教师可见 Mermaid 图，不运行新实验、不授权调度或 active R2。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户明确授权完成
   [TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 B Development 实现与单次执行](docs/research/dual-loop/TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-31.md)：
   在隔离 offline Module 中完成 truth-blind producer、独立 truth-late evaluator、

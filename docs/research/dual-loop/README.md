@@ -16,6 +16,10 @@ retained-false 分类和不写 candidate trace 的 upper-bound audit。该 post-
 分析的唯一 top-level terminal 为 `POLICY_GRANULARITY_MISMATCH_SUPPORTED`；它不重写
 R1 evidence、不改阈值、不授权或实现 R2。普通生产行为仍不变。
 
+教师可读的阶段收口见
+[DUAL_LOOP_STAGE_CLOSURE_R0_2026-07-31](DUAL_LOOP_STAGE_CLOSURE_R0_2026-07-31.md)。
+该报告只整理既有证据，不授权新实验或调度实现。
+
 同日将“事件保持型语义刷新调度”作为独立后继路线建立了
 [Q0 协议](DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json)。它不修复或升级
 旧几何双环，而是只在固定模型全频参考下审计“何时需要刷新语义结果”。Q0 R0 使用
