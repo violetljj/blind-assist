@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。为 R1 建立候选模型训练入口：
+  `models.py` 固定 raw-RGB `256x256`、ImageNet normalization、四类输出和 NHWC export wrapper；
+  统一 PyTorch runner 固定 400/200 train/dev、session-balanced guided crop、Adam 1200 steps、
+  三 seeds、两阶段学习率、同一 weighted CE/soft Dice/focal loss 与 dev harmonic checkpoint
+  规则。DDRNet-23-Slim 使用官方仓库架构与 ImageNet checkpoint 的兼容张量加载，SegFormer-B0
+  使用 NVIDIA `nvidia/mit-b0` backbone 与新四类 decoder；两者均记录 source/checkpoint/config
+  SHA256，且未打开 fresh holdout。当前仍仅授权 Development 训练与后续 FP32/INT8 工具链验证，
+  不授权 Android/QNN/风险事件/主动提醒。验证：模型 forward/backward smoke、Python compile、
+  配置 JSON 与 `git diff --check` 通过；正式训练和转换尚未完成。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。优化研究执行治理的最低充分流程：在
   `AGENTS.md` 和 `docs/HOST_RESEARCH_COMPUTE.md` 中统一为
   `ROUTINE_ENGINEERING`、`REVERSIBLE_EXPLORATION`、`FORMAL_CONFIRMATION` 三档；普通工程和

@@ -121,6 +121,14 @@ source-native fresh formal identity：`GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT`、
 这些 session 的像素真值或模型输出；若最终无法形成 hash-closed fresh manifest，R1
 只能报告 `DEVELOPMENT_RANKING_ONLY`，不产生 formal model-selection terminal。
 
+R1 的候选训练实现位于
+`scripts/research/dual_loop_segmentation_model_selection/`：模型适配器绑定官方来源权重，
+统一 runner 固定 raw-RGB 输入、四类输出、同一 train/dev sampler/loss/step budget；共享
+OBJECT_DETECTOR trace 已对 fresh manifest 完成 200/200 identity pairing，trace SHA256 为
+`036b15a26793ab360aa2f7052c55e1e244ea8e17c4ddc43127eff942e7371084`。当前实现仅完成训练
+准备和 smoke 验证；FP32 checkpoint、INT8 conversion、dev calibration 与 formal 结果
+尚未产生，默认 App 模型保持不变。
+
 该 fresh holdout 已完成字节级冻结：200 行、4 sessions × 50 frames，manifest SHA256
 为 `eaad2a32640dfa1a64c30fc53a6c10818a99c74b7eacc4c8718bd50515ff879d`，freezer receipt
 为 `90214d93c2eaa02a1355bf341bf890358c442219535c51939290e957a52ece3e`。RGB 与 source

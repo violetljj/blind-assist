@@ -5,6 +5,7 @@
   "implementation_identity": "segformer_b0",
   "dataset_root": "test-artifacts.local/datasets/sanpo-v4-real-canonical-r3-20260713",
   "training_manifest": "training_manifest.jsonl",
+  "dataset_manifest_sha256": "1524b74d7369fc58b7c00da3a0bfa998b4ae8caad4f3d2212d08a5888c0f8675",
   "input_size": 256,
   "class_order": ["walkable", "boundary_step_curb", "obstacle", "unknown_nonwalkable"],
   "optimizer": "Adam",
