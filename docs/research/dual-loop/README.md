@@ -2,7 +2,8 @@
 
 状态：`SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
-RESIDUAL_AWARE_TRAINING_DEFERRED / THESIS_DEVELOPMENT_DEFAULT /
+RESIDUAL_AWARE_TRAINING_DEFERRED / VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
+THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-08-01（Asia/Hong_Kong）
@@ -173,8 +174,10 @@ expansion 的 aggregate 排序 Spearman 为 `0.90`；residual pixel proxy 仍为
 `PARTIAL` overall 门，但最低 session recall retention 只有 `47.29% / 40.87%`，没有
 `SUFFICIENT` gate。当前冻结终态为 `GATING_PARTIAL`，所以不启动 residual-aware DDRNet
 训练，也不在同一轮组合或选择 gate。下一主线若继续，只允许先冻结一个有限组合门并保留
-visual/candidate 权限；可视化 sidecar、Android、QNN/A568、risk/feedback、TTS、振动和
-默认 App 均未由本结果获得权限。
+visual/candidate 权限。独立的 host-only visual sidecar R0 已可用，只显示 YOLO boxes、
+raw heatmap、候选、gate pass/reject/abstain 与原因，固定水印且
+`drives_alerts=false`；它不获得 Android、QNN/A568、risk/feedback、TTS、振动或默认
+App 权限。
 
 ## 已关闭前序与保留证据
 

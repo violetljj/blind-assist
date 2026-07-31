@@ -142,7 +142,8 @@ rejected pixels，并标注 `DEVELOPMENT DIAGNOSTIC ONLY`。
 
 本轮停止于结果解释，不从观察到的两个 partial gate 选择“最佳门”，也不立即组合。下一
 条科学主线若继续，应先冻结一个有限组合门，检验是否能改善最差 session retention；
-visual-only sidecar 可作为独立 Development 工程工作启动，但不得驱动 alerts。
+visual-only sidecar 已在主线暂停点以独立 host Development renderer 启动，固定
+`VISUAL_CANDIDATE_ONLY / drives_alerts=false`，不得驱动 alerts。
 
 机器结果位于
 `artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-v4/`。

@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 Atlas
+  `GATING_PARTIAL` 主线暂停点启动 host-only visual sidecar R0。新增绑定 DDRNet INT8
+  SHA 的 Development renderer：逐帧展示 YOLO known-object boxes、重新推理的 raw
+  segmentation heatmap、rehearsal visual candidates、指定原有 probe 的 gate-passed、
+  rejected/abstained pixels 与原因，固定
+  `DEVELOPMENT VISUALIZATION ONLY / DOES NOT DRIVE ALERTS` 水印。输出 manifest 固定
+  `VISUAL_CANDIDATE_ONLY / drives_alerts=false`，显式禁止 confirmed-danger、
+  safe-route 与 verified-obstacle 文案。以 causal 2-of-3 的 success/failure 两帧完成
+  smoke render，3 项 sidecar 单元测试通过并人工检查布局；未新增/选择 gate，未接
+  Android、risk/feedback、TTS、振动、默认 App 或任何提醒路径。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 Atlas 固定
   320-frame 定向扩展：以同一 DDRNet INT8、未过滤 postprocess、canonical evaluator
   和冻结 YOLO trace 分别重放 4 个 dev session（200 帧）与 2 个 consumed old blind
