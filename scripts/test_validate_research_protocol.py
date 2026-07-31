@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import copy
+import hashlib
 import json
 import tempfile
 import unittest
@@ -10,6 +12,8 @@ import validate_research_protocol as target
 
 
 POLICY = json.loads(target.DEFAULT_POLICY.read_text(encoding="utf-8"))
+V3_POLICY = json.loads(target.V3_POLICY.read_text(encoding="utf-8"))
+V3_FILE_SHA256 = "6b82e2b131da41763311a62730300dc7936006090c9bcf712142de98faba9613"
 
 
 def base_protocol(stage: str = "DISCOVERY") -> dict:
@@ -131,6 +135,66 @@ def base_protocol(stage: str = "DISCOVERY") -> dict:
 
 
 class ProgressiveResearchGovernanceTest(unittest.TestCase):
+    def test_current_policy_is_thesis_first_r4(self) -> None:
+        self.assertEqual(
+            "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+            POLICY["policy_id"],
+        )
+        self.assertEqual([], target.validate_policy(POLICY).errors)
+
+    def test_development_defaults_are_reversible_and_lightweight(self) -> None:
+        development = POLICY["execution_profiles"]["DEVELOPMENT_STANDARD"]
+        self.assertTrue(development["rerunnable"])
+        self.assertTrue(development["versioned_operational_repair_allowed"])
+        self.assertTrue(development["development_truth_may_be_reused"])
+        self.assertTrue(development["early_runtime_and_device_benchmark_allowed"])
+        self.assertFalse(development["one_shot_default"])
+        self.assertFalse(development["full_hash_chain_default"])
+        self.assertFalse(development["full_independent_recompute_default"])
+        self.assertFalse(development["per_file_sha_freeze_default"])
+        self.assertTrue(development["teacher_visible_output_each_round"])
+
+    def test_confirmation_requires_explicit_activation(self) -> None:
+        confirmation = POLICY["execution_profiles"]["CONFIRMATION_STRICT"]
+        self.assertTrue(confirmation["explicit_user_activation_required"])
+        self.assertFalse(
+            confirmation["same_evidence_version_rerunnable_after_outcome_access"]
+        )
+        self.assertEqual(
+            "FIX_AND_RERUN_NEW_EVIDENCE_VERSION_SAME_DATA_ALLOWED_WITH_INCIDENT_LOG",
+            confirmation["technical_failure_before_claim_metrics"],
+        )
+
+    def test_thesis_first_requirements_cannot_be_silently_reversed(self) -> None:
+        weakened = copy.deepcopy(POLICY)
+        weakened["execution_profiles"]["DEVELOPMENT_STANDARD"][
+            "full_hash_chain_default"
+        ] = True
+        result = target.validate_policy(weakened)
+        self.assertIn("POLICY_THESIS_FIRST_DEVELOPMENT", result.errors)
+
+        weakened = copy.deepcopy(POLICY)
+        weakened["execution_profiles"]["CONFIRMATION_STRICT"][
+            "explicit_user_activation_required"
+        ] = False
+        result = target.validate_policy(weakened)
+        self.assertIn("POLICY_THESIS_FIRST_CONFIRMATION", result.errors)
+
+    def test_historical_r3_policy_remains_immutable_and_resolvable(self) -> None:
+        self.assertEqual(
+            V3_FILE_SHA256,
+            hashlib.sha256(target.V3_POLICY.read_bytes()).hexdigest(),
+        )
+        self.assertEqual([], target.validate_policy(V3_POLICY).errors)
+        self.assertEqual(
+            target.V3_POLICY,
+            target.canonical_policy_path("RISK_TIERED_RESEARCH_GOVERNANCE_R3"),
+        )
+        self.assertEqual(
+            target.DEFAULT_POLICY,
+            target.canonical_policy_path("THESIS_FIRST_RESEARCH_GOVERNANCE_R4"),
+        )
+
     def test_current_policy_requires_stage_appropriate_profile(self) -> None:
         protocol = base_protocol("DEVELOPMENT")
         protocol["profile"] = "CANARY_LITE"

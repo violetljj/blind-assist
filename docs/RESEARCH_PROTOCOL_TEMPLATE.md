@@ -14,12 +14,15 @@
 | Profile | 默认阶段 | 必需内容 |
 | --- | --- | --- |
 | `CANARY_LITE` | Discovery / Canary | 问题、数据/访问、最小实验、结果、限制和下一步；按适配度排序并在充分时停止 |
-| `DEVELOPMENT_STANDARD` | Development | CANARY_LITE 加实现身份、专项测试、可复现输入输出和停止条件；允许 bounded candidate shortlist |
-| `CONFIRMATION_STRICT` | Confirmation / Deployment | DEVELOPMENT_STANDARD 加冻结机器合同、独立 validator、receipt 和完整 authority |
+| `DEVELOPMENT_STANDARD` | Development | CANARY_LITE 加版本化实现身份、专项测试、可复现输入输出和停止条件；允许至多 3 个候选、修复重跑和提前设备 benchmark；每轮输出表、图或 demo |
+| `CONFIRMATION_STRICT` | Confirmation / Deployment | 仅在用户明确激活最终确认后，增加冻结机器合同、独立 validator、receipt 和完整 authority |
 
 低阶段可以因真实污染、权利或不可逆风险升级 profile；不得仅因为模板存在而升级。
 `CANARY_LITE/DEVELOPMENT_STANDARD` 不要求为空字段生成占位文件。领域已有机器合同
 的，继续遵守其 current 规则，但新工作默认选择能够覆盖实际风险的最小 profile。
+Development 默认不要求 one-shot、逐文件 SHA、完整 hash chain 或底层逐行独立复算。
+主张指标产出前的操作故障可在轻量 incident 后以新 evidence version 修复重跑；若结果
+已影响算法或阈值，同一数据只能继续作 Development。
 
 ## 1. 问题与阶段
 
@@ -208,14 +211,14 @@ Confirmation、Deployment，或具有真实 outcome 污染、不可逆发布、�
 
 机器合同必须绑定 `governance_policy_id` 与 canonical policy SHA-256。调整策略时应
 显式升级并重绑合同；不能用 `--policy` 临时换一份更宽松的文件取得 `VALID`。
-validator 默认按合同中的 policy ID 选择保留的 R1/R2 或当前 R3；显式 `--policy`
+validator 默认按合同中的 policy ID 选择保留的 R1/R2/R3 或当前 R4；显式 `--policy`
 只用于审计，不得用来让合同通过另一版本规则。
 
 ```json
 {
   "schema_version": "blindassist.research_protocol.v1",
   "profile": "CANARY_LITE",
-  "governance_policy_id": "RISK_TIERED_RESEARCH_GOVERNANCE_R3",
+  "governance_policy_id": "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
   "governance_policy_sha256": "<canonical-policy-sha256>",
   "protocol_id": "EXAMPLE_R0",
   "version": "R0",

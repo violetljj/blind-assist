@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。按硕士论文、毕业设计和
+  演示原型目标，前向采用 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`：新工作默认进入
+  可逆 `DEVELOPMENT_STANDARD`，允许在声明的 Development/consumed 数据上做版本化
+  操作修复和重跑、最多比较 3 个候选，并允许最终选模前采集 host/device runtime
+  工程证据；默认取消 one-shot、逐文件 SHA、完整 hash chain 和底层全量独立复算。
+  只有用户明确激活最终 Confirmation，才恢复冻结协议、独立数据、严格 validator 和
+  receipt。技术故障在主张指标产出前只关闭 evidence version；结果驱动的算法修改会把
+  同一数据限制为 Development。新增
+  `configs/research_governance_v4.json`，validator 默认解析 R4 且按 policy ID 保留
+  R1/R2/R3 历史兼容；双环 current 更新为 Development 可修复/重跑、可提前 device
+  benchmark、路线 A/B 尚未选择、最终 Confirmation 未激活。历史 R1/R2-P0 文件与终态
+  未修改，本次未运行模型、真机 benchmark、融合或提醒链路。验证：33 项 governance
+  unit tests、13-file research contract suite、历史 R3 contract CLI、JSON/py_compile、
+  repo hygiene、docs index、diff whitespace 均通过；R3 policy 与 R1 result、closeout
+  validator、failure receipt、formal freeze 的既有 SHA-256 逐项保持一致。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
   `DUAL_LOOP_SEGMENTATION_R2_P0` candidate-qualification readiness：在不选择、下载或
   读取新 fresh mask truth 的前提下，冻结 SANPO native `0..30` 到 canonical `0..3`

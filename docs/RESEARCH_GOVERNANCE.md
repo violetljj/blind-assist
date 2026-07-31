@@ -2,13 +2,13 @@
 
 状态：current
 
-当前策略真源：`configs/research_governance_v3.json`
+当前策略真源：`configs/research_governance_v4.json`
 
-历史 R1/R2 策略分别保留在 `configs/research_governance_v1.json` 和
-`configs/research_governance_v2.json`，只用于复核绑定对应版本的旧协议和终态；
-不得用 R3 规则回写旧 receipt。
+历史 R1/R2/R3 策略分别保留在 `configs/research_governance_v1.json`、
+`configs/research_governance_v2.json` 和 `configs/research_governance_v3.json`，
+只用于复核绑定对应版本的旧协议和终态；不得用 R4 规则回写旧 receipt。
 
-R3 适用日期：2026-07-31 起的新建或实质修订研究协议
+R4 适用日期：2026-08-01 起的新建或实质修订研究协议
 
 ## 目的
 
@@ -156,6 +156,37 @@ verification scope = smallest suite that covers changed behavior and credible bl
 
 领域协议可以增加材料，但必须说明增加它的具体风险；“更严谨”本身不是充分理由。
 
+## 论文优先的默认降级
+
+对硕士论文、毕业设计、演示和比赛原型，新工作默认是可逆
+`DEVELOPMENT_STANDARD`；不得仅因存在 formal 模板、旧 one-shot 终态或未来可能投稿，
+自动升级成最终 Confirmation。只有用户明确启动最终确认问题、确认数据和结论用途后，
+才进入 `CONFIRMATION_STRICT`。
+
+Development 默认允许：
+
+- 在明确标为 Development、burned 或 consumed 的数据上修复、调试和重跑；
+- 为每次修复建立新的 run/evidence version，保留旧结果但不把小工程错误扩大为路线终止；
+- 一次比较至多 3 个有明确差异和停止条件的候选；
+- 在最终选模前做 host 或 device runtime benchmark，作为工程取舍证据；
+- 每轮至少形成一个老师可读的结果表、图、失败案例或可运行 demo。
+
+Development 的最小交付为：问题、baseline 与 claim ceiling；代码/模型/主配置/数据
+manifest 的版本身份；覆盖实际变更的专项 sanity check；结果表/图/demo；限制和下一步。
+默认不要求逐文件 SHA、完整 hash chain、一次性 holdout、底层逐行独立全量复算、
+activation/freeze/closeout receipt 链。若某个身份、重放或污染风险确实需要其中一项，
+只局部增加并写明风险。
+
+路径、schema、decoder、依赖、runner、网络或设备控制在主张指标产出前失败时，记录
+轻量 incident，修复后可用同一 Development 数据建立新 evidence version 重跑。若已经
+看到主张指标，并据此改算法、阈值、候选或分母，则同一数据只可继续用于 Development；
+最终 Confirmation 必须另行明确激活，并使用适当独立的数据。一个输入映射或操作故障
+不再默认永久关闭候选、路线或研究问题。
+
+本规则只向前生效。已关闭的 R1、R2-P0、旧 one-shot 证据、receipt 和 consumed 数据
+角色保持不可变；可以把它们用于明确标注的 Development regression、rehearsal、
+validator 或错误分析，但不能追溯恢复其 fresh/unseen 身份。
+
 ## 三档执行配置
 
 新建或实质修订的研究必须选择一个与声明等级和实际风险相称的 profile。profile
@@ -164,8 +195,8 @@ verification scope = smallest suite that covers changed behavior and credible bl
 | Profile | 默认阶段 | 默认执行方式 | 不默认要求 |
 | --- | --- | --- | --- |
 | `CANARY_LITE` | Discovery / Canary | 可重复的最小判别实验；按适配度排序数据，满足充分性即停止；确定性元数据自动校验，低风险观察单 Agent 加冻结抽样审计 | one-shot、全量双 Agent、完整 hash chain、穷尽全部可访问数据 |
-| `DEVELOPMENT_STANDARD` | Development | 允许在 burned development 数据上比较至多 3 个预先说明差异的候选；版本化调试和重跑；进入 held-out 前冻结一个候选 | 第一个候选即永久选择、把调试失败当科学否定、Confirmation 级全量 receipt |
-| `CONFIRMATION_STRICT` | Confirmation / Deployment | 结果访问前冻结问题、数据、实现、统计和缺失处理；独立 validator、完整 receipt；有依据时使用 one-shot | 结果后补门、换算子、缩分母、把 Development 数据包装成独立确认 |
+| `DEVELOPMENT_STANDARD` | Development | 允许在 burned/consumed Development 数据上比较至多 3 个预先说明差异的候选；版本化修复和重跑；可提前做 host/device benchmark；每轮交付表、图或 demo | one-shot、逐文件 SHA、完整 hash chain、底层全量独立复算、把调试失败当科学否定 |
+| `CONFIRMATION_STRICT` | Confirmation / Deployment | 仅由用户明确激活；结果访问前冻结问题、数据、实现、统计和缺失处理；独立 validator、完整 receipt；有依据时使用 one-shot | 结果后补门、换算子、缩分母、把 Development 数据包装成独立确认 |
 
 阶段给出的默认映射是：
 
@@ -178,7 +209,7 @@ DEPLOYMENT       -> CONFIRMATION_STRICT
 
 低阶段因真实 outcome 污染、不可逆发布、权利、安全或高成本设备风险，可以升级 profile，
 但必须写明具体风险；不能仅因为模板或 validator 已存在就升级。高阶段不得使用更弱
-profile。历史协议继续按其绑定 policy 复核，不反向套用 R3。
+profile。历史协议继续按其绑定 policy 复核，不反向套用 R4。
 
 `CANARY_LITE` 可以建立机器合同，但合同只保留当前问题真正需要的字段和 artifact。
 可重跑不表示可改写历史：每个已报告版本仍保留，调试重跑产生新 evidence instance；

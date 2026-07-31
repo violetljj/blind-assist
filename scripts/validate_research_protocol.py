@@ -19,7 +19,8 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_POLICY = REPO_ROOT / "configs" / "research_governance_v3.json"
+DEFAULT_POLICY = REPO_ROOT / "configs" / "research_governance_v4.json"
+V3_POLICY = REPO_ROOT / "configs" / "research_governance_v3.json"
 R2_POLICY = REPO_ROOT / "configs" / "research_governance_v2.json"
 LEGACY_POLICY = REPO_ROOT / "configs" / "research_governance_v1.json"
 PROTOCOL_SCHEMA = "blindassist.research_protocol.v1"
@@ -58,8 +59,13 @@ DATA_DRIVEN_HARD_RULES = {
 DATA_DRIVEN_POLICY_IDS = {
     "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2",
     "RISK_TIERED_RESEARCH_GOVERNANCE_R3",
+    "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
 }
-RISK_TIERED_POLICY_ID = "RISK_TIERED_RESEARCH_GOVERNANCE_R3"
+PROFILE_POLICY_IDS = {
+    "RISK_TIERED_RESEARCH_GOVERNANCE_R3",
+    "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+}
+THESIS_FIRST_POLICY_ID = "THESIS_FIRST_RESEARCH_GOVERNANCE_R4"
 STAGE_KERNEL = {
     "DISCOVERY": (
         "F0",
@@ -473,7 +479,7 @@ def validate_policy(policy: dict[str, Any]) -> ValidationResult:
                 if not _nonempty_text(track.get("purpose")):
                     result.error(f"POLICY_RESEARCH_TRACK_PURPOSE:{name}")
 
-    if policy.get("policy_id") == RISK_TIERED_POLICY_ID:
+    if policy.get("policy_id") in PROFILE_POLICY_IDS:
         profiles = _object(policy.get("execution_profiles"))
         expected_profiles = {
             "CANARY_LITE",
@@ -506,6 +512,66 @@ def validate_policy(policy: dict[str, Any]) -> ValidationResult:
             "LIGHTWEIGHT_OPERATIONAL_INCIDENT",
         }:
             result.error("POLICY_FAILURE_RECORD_MODES")
+    if policy.get("policy_id") == THESIS_FIRST_POLICY_ID:
+        efficiency = _object(policy.get("efficiency_policy"))
+        if (
+            efficiency is None
+            or efficiency.get("default_research_mode")
+            != "REVERSIBLE_DEVELOPMENT_UNLESS_FINAL_CONFIRMATION_IS_EXPLICITLY_ACTIVATED"
+            or efficiency.get("final_confirmation_requires_explicit_user_activation")
+            is not True
+            or efficiency.get("allow_early_runtime_and_device_benchmark_in_development")
+            is not True
+        ):
+            result.error("POLICY_THESIS_FIRST_EFFICIENCY")
+        profiles = _object(policy.get("execution_profiles"))
+        development = _object(profiles.get("DEVELOPMENT_STANDARD")) if profiles else None
+        if (
+            development is None
+            or development.get("rerunnable") is not True
+            or development.get("versioned_operational_repair_allowed") is not True
+            or development.get("development_truth_may_be_reused") is not True
+            or development.get("early_runtime_and_device_benchmark_allowed") is not True
+            or development.get("full_hash_chain_default") is not False
+            or development.get("full_independent_recompute_default") is not False
+            or development.get("per_file_sha_freeze_default") is not False
+            or development.get("teacher_visible_output_each_round") is not True
+        ):
+            result.error("POLICY_THESIS_FIRST_DEVELOPMENT")
+        confirmation = _object(profiles.get("CONFIRMATION_STRICT")) if profiles else None
+        if (
+            confirmation is None
+            or confirmation.get("explicit_user_activation_required") is not True
+            or confirmation.get("same_evidence_version_rerunnable_after_outcome_access")
+            is not False
+            or confirmation.get("technical_failure_before_claim_metrics")
+            != "FIX_AND_RERUN_NEW_EVIDENCE_VERSION_SAME_DATA_ALLOWED_WITH_INCIDENT_LOG"
+            or confirmation.get("outcome_informed_algorithm_change")
+            != "SAME_DATA_DEVELOPMENT_ONLY_NEW_CONFIRMATION_DATA_REQUIRED"
+        ):
+            result.error("POLICY_THESIS_FIRST_CONFIRMATION")
+        selection = _object(policy.get("profile_selection_rules"))
+        if (
+            selection is None
+            or selection.get("final_confirmation_requires_explicit_user_activation")
+            is not True
+            or selection.get("development_escalation_to_confirmation_is_never_automatic")
+            is not True
+            or selection.get(
+                "device_benchmark_is_development_engineering_evidence_not_confirmation"
+            )
+            is not True
+        ):
+            result.error("POLICY_THESIS_FIRST_SELECTION")
+        hard_rules = _object(policy.get("hard_rules"))
+        for name in (
+            "development_repair_and_rerun_allowed",
+            "device_benchmark_may_precede_model_selection",
+            "confirmation_only_after_explicit_user_activation",
+            "operational_failure_does_not_close_candidate_or_research_question",
+        ):
+            if hard_rules is None or hard_rules.get(name) is not True:
+                result.error(f"POLICY_THESIS_FIRST_HARD_RULE:{name}")
 
     expected_values = {
         "default_invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
@@ -586,7 +652,7 @@ def _validate_failure_learning(
     if not failureish:
         return
     if (
-        policy.get("policy_id") == RISK_TIERED_POLICY_ID
+        policy.get("policy_id") in PROFILE_POLICY_IDS
         and contract.get("failure_record_mode")
         == "LIGHTWEIGHT_OPERATIONAL_INCIDENT"
     ):
@@ -747,7 +813,7 @@ def validate_protocol(
     stage_policy = stages[stage]
 
     selected_profile: dict[str, Any] | None = None
-    if policy.get("policy_id") == RISK_TIERED_POLICY_ID:
+    if policy.get("policy_id") in PROFILE_POLICY_IDS:
         profile_name = contract.get("profile")
         profiles = policy["execution_profiles"]
         profile = _object(profiles.get(profile_name))
@@ -1261,6 +1327,16 @@ def validate_document(document: dict[str, Any], policy: dict[str, Any]) -> Valid
     return result
 
 
+def canonical_policy_path(governance_policy_id: Any) -> Path:
+    if governance_policy_id == "PROGRESSIVE_RESEARCH_GOVERNANCE_R1":
+        return LEGACY_POLICY
+    if governance_policy_id == "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2":
+        return R2_POLICY
+    if governance_policy_id == "RISK_TIERED_RESEARCH_GOVERNANCE_R3":
+        return V3_POLICY
+    return DEFAULT_POLICY
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--contract", required=True, type=Path)
@@ -1270,15 +1346,8 @@ def main() -> int:
         contract = _load_object(args.contract.resolve())
         if args.policy is not None:
             policy_path = args.policy.resolve()
-        elif contract.get("governance_policy_id") == "PROGRESSIVE_RESEARCH_GOVERNANCE_R1":
-            policy_path = LEGACY_POLICY
-        elif (
-            contract.get("governance_policy_id")
-            == "DATA_CAPABILITY_DRIVEN_RESEARCH_GOVERNANCE_R2"
-        ):
-            policy_path = R2_POLICY
         else:
-            policy_path = DEFAULT_POLICY
+            policy_path = canonical_policy_path(contract.get("governance_policy_id"))
         policy = _load_object(policy_path.resolve())
         result = validate_document(contract, policy)
         payload = result.payload(str(args.contract))

@@ -1,12 +1,32 @@
 # BlindAssist YOLO + 语义分割双环研究主线
 
 状态：`SEGMENTATION_MODEL_SELECTION_R1_BLOCKED /
-MODEL_SELECTION_NOT_EVALUABLE / R2_NOT_AUTHORIZED /
-DEVICE_BENCHMARK_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+MODEL_SELECTION_NOT_EVALUABLE / THESIS_DEVELOPMENT_DEFAULT /
+DEVELOPMENT_REPAIR_AND_RERUN_ALLOWED /
+DEVELOPMENT_DEVICE_BENCHMARK_ALLOWED / NEXT_ROUTE_NOT_SELECTED /
+FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-08-01（Asia/Hong_Kong）
 
 ## 当前决定
+
+2026-08-01 起，后续双环工作采用论文优先的 `DEVELOPMENT_STANDARD`，不再把旧 formal
+R1 的 one-shot、fresh holdout、逐项 SHA 和全量独立复算要求复制到新的 Development。
+这是一项只向前生效的执行降级：
+
+- R1 的 `BLOCKED / NOT_EVALUABLE`、R2-P0 的 readiness 终态和全部旧 receipt 保持不可变；
+- 新 Development 可在明确标注的 development/consumed 数据上修复输入映射、decoder、
+  schema 或 runner，并以新 evidence version 重跑；
+- 可在最终选模前提前做 host/device runtime benchmark，但只作为工程取舍证据；
+- 每轮至多推进一条主路线：A 为 DDRNet-23-Slim、SegFormer-B0 与 SANPO baseline 的
+  小规模模型比较；B 为面积、空间位置、地面边界、高置信度和 YOLO 去重约束下的小候选算子；
+- 每轮最多 3 个候选，并必须交付新增召回、false components/frame、mask 碎片、
+  组件稳定性、P95 推理/总链路成本中的适用指标，以及表、图、失败案例或 demo；
+- 不接提醒、不改默认 App，不把 Development 结果写成安全、产品或最终确认结论。
+
+本次只改变默认执行制度，没有自动选择路线 A/B，也没有运行模型、真机 benchmark 或
+融合实验。最终 Confirmation 尚未激活；届时才单独冻结确认问题、独立数据、实现和
+统计，并按实际风险决定是否需要 one-shot 与完整复算。
 
 2026-07-31，用户明确要求以 Agent-only 标注检验“中央图像阻塞互补性”的可行边界；该
 探索路线现已完成 successor calibration 并关闭。唯一获授权阶段曾是
@@ -127,6 +147,8 @@ activation 为 `7.885/frame`，SegFormer baseline 的 total incremental P95 为
 DEVICE_BENCHMARK_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`。新增的
 [R2 protocol draft](DUAL_LOOP_SEGMENTATION_R2_P0_PROTOCOL_DRAFT_2026-07-31.json)
 只定义未来单候选 qualification 问题，状态仍为 `DRAFT_NOT_AUTHORIZED_FOR_FORMAL`。
+这里的 device 禁令是 R2-P0 formal 协议的历史边界，不再禁止新
+`DEVELOPMENT_STANDARD` 在最终选模前采集明确标注的工程 runtime 证据。
 
 ## 已关闭前序与保留证据
 
