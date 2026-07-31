@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。冻结并执行
+  `DUAL_LOOP_SEGMENTATION_CANDIDATE_UTILITY_R0`：以 SANPO-Real v0 canonical R3
+  source-native pixel truth 完成 dev calibration 与 120-frame blind formal；实现
+  YOLO-only、segmentation-only、union 三臂的 pixel/component、candidate outside-box、
+  raw/motion-warped temporal 字段、runtime P50/P95、独立 validator 与 fail-closed
+  输入/身份/SHA 回归。formal validator 为 `VALID`，唯一终态为
+  `CURRENT_SEGMENTATION_REFERENCE_REJECTED`：C-minus-A recall `0.073670`、
+  candidate component recall `0.688129`，但 false activation `13.833/帧 > 3.0`
+  且 total incremental host P95 `138.444 ms > 30 ms`。当前 reference 关闭；不接
+  Android、QNN、风险事件或主动提醒。新增 module、protocol、结果快照与证据路径见
+  `scripts/research/dual_loop_segmentation_candidate_utility/`、
+  `docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_CANDIDATE_UTILITY_R0_RESULT.md`。
+  同时将 host trace manifest 的 timestamp 检查修正为 per-source，并补齐 Kotlin
+  fixed-tensor parity、numpy scalar JSON、finalize-existing、manifest duplicate/
+  descending/SHA fail-closed 回归。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。用户授权后执行并独立复核
   `DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1`：4,891 个 matched Shiraz Development frame，
   固定 INT8 segmentation reference，A/B/C 只输出 image-space class-wise uncovered fraction、

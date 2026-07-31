@@ -92,7 +92,7 @@ def load_manifest(manifest_path: Path) -> list[dict[str, Any]]:
     rows = _read_jsonl(manifest_path)
     observations: list[dict[str, Any]] = []
     seen: set[tuple[str, int, str]] = set()
-    previous_timestamp: int | None = None
+    previous_timestamp_by_source: dict[str, int] = {}
     for row_number, row in enumerate(rows, start=1):
         missing = REQUIRED_MANIFEST_FIELDS - row.keys()
         if missing:
@@ -109,8 +109,11 @@ def load_manifest(manifest_path: Path) -> list[dict[str, Any]]:
         key = (source_id, frame_id, image_sha)
         if key in seen:
             raise HostTraceInputError(f"manifest row {row_number}: duplicate identity {key}")
+        previous_timestamp = previous_timestamp_by_source.get(source_id)
         if previous_timestamp is not None and timestamp <= previous_timestamp:
-            raise HostTraceInputError(f"manifest row {row_number}: timestamp is not increasing")
+            raise HostTraceInputError(
+                f"manifest row {row_number}: timestamp is not increasing for source {source_id}"
+            )
         if width <= 0 or height <= 0 or len(image_sha) != 64:
             raise HostTraceInputError(f"manifest row {row_number}: invalid dimensions or SHA")
         image_path = _resolve_image(manifest_path, str(row["image_path"]))
@@ -137,7 +140,7 @@ def load_manifest(manifest_path: Path) -> list[dict[str, Any]]:
             }
         )
         seen.add(key)
-        previous_timestamp = timestamp
+        previous_timestamp_by_source[source_id] = timestamp
     return observations
 
 

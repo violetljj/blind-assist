@@ -5,6 +5,8 @@ AUXILIARY_FEATURE_ONLY / D0_A2_NOT_AUTHORIZED / D0_A3_A4_STOPPED /
 D0_AT_NOT_RUN / SEGMENTATION_TECHNICAL_SMOKE_R0_COMPLETE /
 SEGMENTATION_COMPLEMENTARITY_R1_COMPLETE /
 SEGMENTATION_COMPLEMENTARITY_CROSS_SOURCE_R2_COMPLETE /
+SEGMENTATION_CANDIDATE_UTILITY_R0_COMPLETE / VALID /
+CURRENT_SEGMENTATION_REFERENCE_REJECTED /
 DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
@@ -93,6 +95,15 @@ risk、feedback 或事件真值，也不把非零区域解释为可通行性或�
 YOLO coverage 改变，`obstacle`/`boundary_step_curb` 稳定性仍偏低。因此只升级为
 `CROSS_SOURCE_IMAGE_SPACE_SIGNAL_REPLICATED / CLASS_STABILITY_MIXED`，仍不授权风险
 融合、事件效果、QNN/device parity、Android 或生产结论。
+
+[Segmentation candidate utility R0 result](DUAL_LOOP_SEGMENTATION_CANDIDATE_UTILITY_R0_RESULT.md)
+已在 SANPO-Real v0 source-native pixel truth 上完成 calibration 与 120-frame blind
+formal。A/B/C 三臂的 pixel 增量和 candidate component recall 达到部分门，但
+false activation 为 `13.833/帧`、total incremental host P95 为
+`138.444 ms`，分别超过冻结的 `3.0/帧` 与 `30 ms` 门；
+独立 validator 为 `VALID`，唯一终态
+`CURRENT_SEGMENTATION_REFERENCE_REJECTED`。因此关闭当前 segmentation
+reference，不接 Android、QNN、风险事件或主动提醒。
 
 ## 已关闭前序与保留证据
 
@@ -380,6 +391,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | D0-A 人工标注、人工复核或人工验收队列 | `NOT_REQUIRED / MUST_NOT_BLOCK` |
 | D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `R1_IMAGE_SPACE_DESIGN_EXECUTED / NO_RISK_OPERATOR` |
 | D0-B image-space A/B/C mechanism diagnostic R1 | `COMPLETE / DEVELOPMENT_ONLY / IMAGE_SPACE_ONLY / NO_EFFECT_AUTHORITY` |
+| DUAL_LOOP_SEGMENTATION_CANDIDATE_UTILITY_R0 | `COMPLETE / VALID / CURRENT_SEGMENTATION_REFERENCE_REJECTED` |
 | D0-B 风险融合、事件增量、Android 或生产评价 | `NOT_AUTHORIZED / NOT_EVALUATED` |
 | 编写和维护阶段−1准入合同 | `AUTHORIZED` |
 | F-1A 数据审计与既有 RGB 标签修复 | `COMPLETED / READY / VALID` |
@@ -430,11 +442,11 @@ D0-A successor R0 已经回答了本轮唯一允许的问题：固定 clip 转�
 4. 只有在互补信息可重复后，才讨论融合算子或 Android；否则关闭具体候选而不扩大关闭范围。
 
 R1 已完成第 3 项的单一 burned-source image-space 诊断；R2 又完成了同 host backend 的
-第二 source 复现。现在可以继续设计一个独立、客观的 image-space fusion operator，比较
-`YOLO-only`、`segmentation-only` 和 `YOLO + segmentation` 的区域增量、误激活、稳定性
-和成本；但不得把当前 `obstacle` 类名、uncovered fraction 或 union increment 直接
-包装成现实障碍、风险事件或提醒真值。若下一步没有明确的客观评价单位和固定融合规则，
-则保留本轮机制证据并停止，不接 Android 或主动提醒。
+第二 source 复现；R0 已进一步用 source-native pixel truth 执行了固定 A/B/C、candidate
+component、raw/motion-warped temporal 字段与 host cost 评价。当前 reference 因误激活
+和增量成本门失败而关闭；不得把 `obstacle` 类名、uncovered fraction 或 union increment
+包装成现实障碍、风险事件或提醒真值。任何新 segmentation reference 或 fusion operator
+都必须另行冻结 protocol、calibration 和 formal gate，不自动继承本轮权限。
 
 ### 后续资源纪律
 
