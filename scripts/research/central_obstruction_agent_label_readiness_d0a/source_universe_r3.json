@@ -1,0 +1,27 @@
+{
+  "schema_version": "blindassist.central_obstruction_d0a0_source_universe.v4",
+  "inherits_path": "scripts/research/central_obstruction_agent_label_readiness_d0a/source_universe_r2.json",
+  "protocol_id": "CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A",
+  "phase": "D0-A0",
+  "evidence_instance": "CENTRAL_OBSTRUCTION_D0_A0_INPUT_UNIVERSE_R3",
+  "output_root": "artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a-r3",
+  "candidate_output_access": false,
+  "fitness_review": {
+    "prompt_path": "scripts/research/central_obstruction_agent_label_readiness_d0a/fitness_review_prompt.md",
+    "reviewer_id": "codex-d0a0-current-task-fitness-r3",
+    "reviewer_type": "ai_model",
+    "reviewer_role": "codex_multimodal_source_fitness_reviewer",
+    "provider": "openai",
+    "model": "codex",
+    "model_version": "current-session-2026-07-31",
+    "review_run_id": "CENTRAL-OBSTRUCTION-D0-A0-FITNESS-R3",
+    "isolated_context": false,
+    "source_only_view": true,
+    "candidate_output_visible": false,
+    "truth_or_review_label_visible": false,
+    "sample_rule": "8 evenly spaced frames including both endpoints per admitted session",
+    "confidence": 0.88,
+    "abstained": false,
+    "abstain_reasons": []
+  }
+}

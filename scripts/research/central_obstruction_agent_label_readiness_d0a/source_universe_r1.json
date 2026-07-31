@@ -1,0 +1,227 @@
+{
+  "schema_version": "blindassist.central_obstruction_d0a0_source_universe.v2",
+  "inherits_path": "scripts/research/central_obstruction_agent_label_readiness_d0a/source_universe_r0.json",
+  "protocol_id": "CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A",
+  "phase": "D0-A0",
+  "evidence_instance": "CENTRAL_OBSTRUCTION_D0_A0_INPUT_UNIVERSE_R1",
+  "output_root": "artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a",
+  "candidate_output_access": false,
+  "eligibility_rule": {
+    "id": "REUSE_FIRST_FITNESS_FIRST_CONTINUOUS_RGB_R1",
+    "include": [
+      "audit all locally accessible continuous-RGB assets under the frozen discovery roots before considering new data",
+      "admit a full production-labeling session only when complete frame order, timestamps, payload identity, ancestry, current-task observability, and bounded processing are present",
+      "preserve the complete admitted source/session frame range without outcome-based shortening",
+      "downgrade useful but incomplete or claim-overlapping assets to calibration, Canary, Development, diagnostic, regression, stress-case, or source-characterization roles before exclusion"
+    ],
+    "exclude": [
+      "candidate, detector, segmentation, depth, risk, feedback, review-label, truth-label, or effect outputs as D0-A observation input",
+      "derived review bundles, thumbnails, sampled windows, and crops from D0-A production-labeling counts",
+      "an asset only when current RGB payload, identity, integrity, reconstructable order, or bounded current-task processing is genuinely absent",
+      "duplicate content identities as independent sessions"
+    ]
+  },
+  "fitness_review": {
+    "prompt_path": "scripts/research/central_obstruction_agent_label_readiness_d0a/fitness_review_prompt.md",
+    "reviewer_id": "codex-d0a0-current-task-fitness-r1",
+    "reviewer_type": "ai_model",
+    "reviewer_role": "codex_multimodal_source_fitness_reviewer",
+    "provider": "openai",
+    "model": "codex",
+    "model_version": "current-session-2026-07-31",
+    "review_run_id": "CENTRAL-OBSTRUCTION-D0-A0-FITNESS-R1",
+    "isolated_context": true,
+    "candidate_output_visible": false,
+    "truth_or_review_label_visible": false,
+    "sample_rule": "8 evenly spaced frames including both endpoints per admitted session",
+    "confidence": 0.88,
+    "abstained": false,
+    "abstain_reasons": []
+  },
+  "session_role_overrides": [
+    {
+      "session_id": "defaced_2021-03-27-11-51-18_filtered_lidar_odom",
+      "dataset_name": "CrowdBot",
+      "independence_group": "CROWDBOT_2021_0327_SHARED_CONTROL",
+      "ancestry": ["CrowdBot", "2021-03-27 shared-control collection", "official defaced ROS bag", "left RGB camera"],
+      "current_task_fitness": "PASS_BOUNDED_VISUAL_CANARY; central image content is visible across the session; ordered full RGB and native timestamps are present.",
+      "missing_current_task_requirements": ["D0-A1 ROI, prompt, event-boundary/matching rule, and readiness thresholds are not yet frozen."],
+      "prior_algorithm_output_access": true,
+      "claim_relevant_outcome_overlap": "PARTIAL_CONTEXT_OVERLAP_ONLY; prior alert/geometry outputs exist, but no prior central-obstruction observation ledger exists.",
+      "selection_or_tuning_influence": "USED_IN_PRIOR_DUAL_LOOP_DEVELOPMENT_AND_EVENT_ANALYSIS",
+      "assigned_current_role": "CANARY_AGENT_LABEL_READINESS_PRODUCTION_UNIVERSE",
+      "admission_disposition": "ADMIT_D0_A_PRODUCTION_LABELING",
+      "exclusion_reason": null,
+      "reuse_candidates": ["D0-A production labeling", "D0-A1 excluded calibration candidate only if separately excluded before lock", "stress and regression source"]
+    },
+    {
+      "session_id": "defaced_2021-03-27-11-55-00_filtered_lidar_odom",
+      "dataset_name": "CrowdBot",
+      "independence_group": "CROWDBOT_2021_0327_SHARED_CONTROL",
+      "ancestry": ["CrowdBot", "2021-03-27 shared-control collection", "official defaced ROS bag", "left RGB camera"],
+      "current_task_fitness": "PASS_BOUNDED_VISUAL_CANARY; central image content is visible across the session; ordered full RGB and native timestamps are present.",
+      "missing_current_task_requirements": ["D0-A1 ROI, prompt, event-boundary/matching rule, and readiness thresholds are not yet frozen."],
+      "prior_algorithm_output_access": true,
+      "claim_relevant_outcome_overlap": "PARTIAL_CONTEXT_OVERLAP_ONLY; prior alert/geometry outputs exist, but no prior central-obstruction observation ledger exists.",
+      "selection_or_tuning_influence": "USED_IN_PRIOR_DUAL_LOOP_DEVELOPMENT_AND_EVENT_ANALYSIS",
+      "assigned_current_role": "CANARY_AGENT_LABEL_READINESS_PRODUCTION_UNIVERSE",
+      "admission_disposition": "ADMIT_D0_A_PRODUCTION_LABELING",
+      "exclusion_reason": null,
+      "reuse_candidates": ["D0-A production labeling", "D0-A1 excluded calibration candidate only if separately excluded before lock", "stress and regression source"]
+    },
+    {
+      "session_id": "commons_file_walking_in_matoaka_west_virginia_h1yohswxnqo",
+      "dataset_name": "Wikimedia Commons / Walking in Matoaka",
+      "independence_group": "JAMES_EAST_MATOAKA_2019",
+      "ancestry": ["Wikimedia Commons", "James East", "Walking in Matoaka West Virginia", "480p VP9 derivative", "10 Hz RGB materialization"],
+      "current_task_fitness": "PASS_BOUNDED_VISUAL_CANARY; central image is visible and the mostly open rural walk supplies useful low-obstruction exposure with ordered full-session RGB.",
+      "missing_current_task_requirements": ["Timestamps are derived fixed 10 Hz rather than source-native.", "D0-A1 observation lock is not yet frozen."],
+      "prior_algorithm_output_access": true,
+      "claim_relevant_outcome_overlap": "PARTIAL_CONTEXT_OVERLAP_ONLY; prior dual-loop outputs exist, but no central-obstruction observation labels were produced.",
+      "selection_or_tuning_influence": "USED_AS_PRIOR_DUAL_LOOP_DEVELOPMENT_TRANSFER_SOURCE",
+      "assigned_current_role": "CANARY_AGENT_LABEL_READINESS_PRODUCTION_UNIVERSE",
+      "admission_disposition": "ADMIT_D0_A_PRODUCTION_LABELING",
+      "exclusion_reason": null,
+      "reuse_candidates": ["D0-A production labeling", "low-obstruction exposure", "quality and negative stress cases"],
+      "source_payload_paths": [
+        {
+          "path": "artifacts.local/evidence/public-video-r724-prospective-20260719/source-videos/commons-matoaka-walk-480p.webm",
+          "sha256": "017f860e002c75d093206772800bd68cb1c19f226b74e4d5a933798916347821"
+        }
+      ]
+    },
+    {
+      "session_id": "commons_page_153983964_capture_2024-10-10",
+      "dataset_name": "Wikimedia Commons / Shanghai shopping street night walk",
+      "independence_group": "AMBIENCEX_CHINA_2024",
+      "ancestry": ["Wikimedia Commons", "AmbienceX", "Shanghai shopping street night walk", "480p VP9 derivative", "10 Hz RGB materialization"],
+      "current_task_fitness": "PASS_BOUNDED_VISUAL_CANARY; the central image remains visible under night, blur, and letterbox variation, supporting explicit quality/NOT_EVALUABLE states.",
+      "missing_current_task_requirements": ["Timestamps are derived fixed 10 Hz rather than source-native.", "D0-A1 observation lock is not yet frozen."],
+      "prior_algorithm_output_access": false,
+      "claim_relevant_outcome_overlap": "CONTENT_AND_PRIOR_TRUTH_REVIEW_ONLY; no candidate output or central-obstruction ledger was opened.",
+      "selection_or_tuning_influence": "SOURCE_SELECTED_BY_PRE_FROZEN_TITLE_ORDER; NOT_TUNED_ON_CANDIDATE_OUTPUT",
+      "assigned_current_role": "CANARY_AGENT_LABEL_READINESS_PRODUCTION_UNIVERSE",
+      "admission_disposition": "ADMIT_D0_A_PRODUCTION_LABELING",
+      "exclusion_reason": null,
+      "reuse_candidates": ["D0-A production labeling", "dark and blur stress cases", "source characterization"],
+      "source_payload_paths": [
+        {
+          "path": "artifacts.local/downloads/dual-loop-r1-unseen-natural-event-r0/shanghai-shopping-street-480p.webm",
+          "sha256": "58971199576c01d675080f8592b0ca69870054108418fefe5bdff73e199e0f49"
+        }
+      ]
+    },
+    {
+      "session_id": "commons_page_143041813_capture_2021-11-20",
+      "dataset_name": "Wikimedia Commons / Shiraz city tour",
+      "independence_group": "4KTOURTV_IRAN_2021",
+      "ancestry": ["Wikimedia Commons", "4KTourtv", "Shiraz city tour 2021-5", "480p VP9 derivative", "10 Hz RGB materialization"],
+      "current_task_fitness": "PASS_BOUNDED_VISUAL_CANARY; central image is visible through indoor/outdoor market and crowd transitions with ordered full-session RGB.",
+      "missing_current_task_requirements": ["Timestamps are derived fixed 10 Hz rather than source-native.", "D0-A1 observation lock is not yet frozen."],
+      "prior_algorithm_output_access": true,
+      "claim_relevant_outcome_overlap": "PARTIAL_CONTEXT_OVERLAP_ONLY; prior event-effect outputs exist, but no central-obstruction observation ledger exists.",
+      "selection_or_tuning_influence": "PRE_FROZEN_RANK2_SOURCE_THEN_PRIOR_DUAL_LOOP_EVALUATION",
+      "assigned_current_role": "CANARY_AGENT_LABEL_READINESS_PRODUCTION_UNIVERSE",
+      "admission_disposition": "ADMIT_D0_A_PRODUCTION_LABELING",
+      "exclusion_reason": null,
+      "reuse_candidates": ["D0-A production labeling", "crowd/occlusion/indoor-outdoor stress cases", "source characterization"],
+      "source_payload_paths": [
+        {
+          "path": "artifacts.local/downloads/dual-loop-r1-unseen-natural-event-r0/rank2-shiraz/shiraz-city-tour-480p.webm",
+          "sha256": "63e5b32d9b08e6a2c17b1e3d0b20b6bde03e64d88da0c844579d424051a65b2e"
+        }
+      ]
+    }
+  ],
+  "additional_sessions": [
+    {
+      "source_id": "revel_dynamic",
+      "session_id": "revel_dynamic_full_capture_2024-02-21",
+      "dataset_name": "REveL Dynamic",
+      "source_ancestry_group": "REVEL_DYNAMIC_SINGLE_CAPTURE",
+      "independence_group": "REVEL_DYNAMIC_SINGLE_CAPTURE",
+      "source_kind": "PUBLIC_RGB_IMAGE_SEQUENCE",
+      "source_uri": "REveL Dynamic public images.zip asset",
+      "license_or_rights_metadata": "Public research dataset asset; redistribution/commercial authority not inferred by D0-A0.",
+      "ledger_adapter": "IMAGE_DIRECTORY_TIMESTAMP_STEM_V1",
+      "ledger_path": "artifacts.local/evidence/datasets/revel-dynamic-images-labels-v1-20260720/images.zip",
+      "ledger_sha256": "7d7ec2600dc3c6495e1c2056bd885cae59272bb89eecf3d04983046dee2467ca",
+      "payload_root": "artifacts.local/evidence/datasets/revel-dynamic-images-labels-v1-20260720/extracted/images/images",
+      "payload_glob": "*.jpg",
+      "expected_frame_count": 8580,
+      "expected_width": null,
+      "expected_height": null,
+      "allowed_dimensions": ["12x260", "259x260", "344x260", "346x13", "346x250", "346x258", "346x260"],
+      "timestamp_semantics": "SOURCE_FILENAME_TIMESTAMP_NS",
+      "expected_frame_step_ns": null,
+      "materialization": "source RGB JPEG images extracted from hash-bound images.zip; native shapes preserved",
+      "prior_access_state": "TUNED_ON_DEVELOPMENT",
+      "prior_content_access": true,
+      "prior_candidate_output_access": true,
+      "prior_algorithm_output_access": true,
+      "claim_relevant_outcome_overlap": "PARTIAL_CONTENT_OVERLAP_ONLY; geometry/YOLO outputs were inspected, but central-obstruction labels were not produced.",
+      "selection_or_tuning_influence": "USED_IN_PRIOR_GEOMETRY_AND_TARGET_ANALYSIS_DEVELOPMENT",
+      "assigned_current_role": "CANARY_AGENT_LABEL_READINESS_PRODUCTION_UNIVERSE",
+      "admission_disposition": "ADMIT_D0_A_PRODUCTION_LABELING",
+      "exclusion_reason": null,
+      "ancestry": ["REveL Dynamic", "images.zip", "full 8580-image sequence", "filename nanosecond timestamps"],
+      "current_task_fitness": "PASS_WITH_EXPLICIT_SHAPE_BURDEN; central content is visible in the bounded canary and 8534/8580 frames are 346x260. All 46 noncanonical native shapes are retained, including 6 frames at 12x260 and 3 at 346x13; D0-A1 must fail closed on unusable shapes rather than delete or pad them.",
+      "missing_current_task_requirements": ["Single-capture ancestry limits independence.", "D0-A1 normalized ROI and shape-specific NOT_EVALUABLE rules are not yet frozen.", "Rare severe native-shape anomalies were found by full enumeration rather than the 8-frame visual canary."],
+      "reuse_candidates": ["D0-A production labeling", "native-shape and indoor stress cases", "geometry regression source"],
+      "ancestry_receipt_paths": [
+        "artifacts.local/evidence/datasets/revel-dynamic-images-labels-v1-20260720/qa/revel_dynamic_rgb_labels_audit.json",
+        "artifacts.local/evidence/datasets/revel-dynamic-bag-v1-20260720/download_manifest.json"
+      ],
+      "source_payload_paths": [
+        {
+          "path": "artifacts.local/evidence/datasets/revel-dynamic-images-labels-v1-20260720/images.zip",
+          "sha256": "7d7ec2600dc3c6495e1c2056bd885cae59272bb89eecf3d04983046dee2467ca"
+        }
+      ]
+    }
+  ],
+  "reuse_discovery": {
+    "as_of_local_date": "2026-07-31",
+    "video_roots": ["artifacts.local/evidence", "artifacts.local/downloads"],
+    "video_extensions": [".avi", ".mkv", ".mov", ".mp4", ".webm"],
+    "device_manifest_glob": "artifacts.local/evidence/ustrf-l1e-materialization-recovery-r3/materialization/*/attempt-001/device-manifest.json",
+    "additional_assets": [
+      {
+        "asset_type": "PARTIAL_IMAGE_SEQUENCE",
+        "source_id": "jrdb_rgb_continuity_canary",
+        "session_id": "jrdb_32_frame_global_affine_window",
+        "dataset_name": "JRDB",
+        "independence_group": "JRDB_PARTIAL_WINDOW_ONLY",
+        "paths": ["artifacts.local/evidence/ustrf-jrdb-rgb-continuity-egomotion-availability-r0/frames"],
+        "current_task_fitness": "RGB is present and reviewable, but only a frozen 32-frame diagnostic window is retained rather than a complete capture session.",
+        "missing_current_task_requirements": ["complete continuous capture-session RGB universe", "full session frame/timestamp ancestry ledger"],
+        "prior_content_access": true,
+        "prior_algorithm_output_access": true,
+        "claim_relevant_outcome_overlap": "UNRELATED_EGOMOTION_DIAGNOSTIC",
+        "selection_or_tuning_influence": "PRESELECTED_32_FRAME_DIAGNOSTIC_WINDOW",
+        "assigned_current_role": "D0_A_CALIBRATION_OR_STRESS_CANDIDATE",
+        "admission_disposition": "ADMIT_D0_A_CALIBRATION_ONLY",
+        "exclusion_reason": null,
+        "reuse_candidates": ["D0-A1 excluded calibration", "image-quality stress case", "regression fixture"]
+      },
+      {
+        "asset_type": "NON_RGB_SESSION_METADATA",
+        "source_id": "jrdb_annotation_track_source",
+        "session_id": "jrdb_annotation_track_three_session_bundle",
+        "dataset_name": "JRDB",
+        "independence_group": "JRDB_ANNOTATION_TRACK_THREE_SESSION_BUNDLE",
+        "paths": ["artifacts.local/evidence/dual-loop/causal-track-tristate-r0/confirmation/payload/source_2d"],
+        "current_task_fitness": "Local payload contains annotation-track JSON but no renderable RGB frames.",
+        "missing_current_task_requirements": ["continuous RGB payload"],
+        "prior_content_access": true,
+        "prior_algorithm_output_access": true,
+        "claim_relevant_outcome_overlap": "UNRELATED_CAUSAL_TRACK_DIRECTION_MECHANISM",
+        "selection_or_tuning_influence": "USED_IN_PRIOR_TRACK_GEOMETRY_CONFIRMATION",
+        "assigned_current_role": "SOURCE_CHARACTERIZATION_ONLY",
+        "admission_disposition": "NOT_EVALUABLE_FOR_CURRENT_QUESTION",
+        "exclusion_reason": "Current local bundle has no renderable RGB payload; dataset name and prior use are not the exclusion reason.",
+        "reuse_candidates": ["source/session identity", "track regression", "future RGB recovery audit"]
+      }
+    ]
+  }
+}

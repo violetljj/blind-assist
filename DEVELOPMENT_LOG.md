@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  [中央图像阻塞 D0-A0 输入宇宙冻结](docs/research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A0_RESULT_2026-07-31.md)：
+  reuse-first 审计后冻结 6 个完整 production-labeling session、34,279 帧、5 个
+  ancestry group，逐帧 payload 独立复算为 `VALID`；107 行角色账本另记录 61 个
+  calibration-only 与 40 个当前问题不可评价单元。保留 REveL 46 帧非主尺寸和其中
+  9 帧极窄边 burden，D0-A1 必须 fail closed/`NOT_EVALUABLE`，不得删帧救援。
+  R0 因遗漏 mandatory role ledger 封存为 implementation-incomplete；R1 因 producer
+  后协议哈希并发漂移封存为 invalid predecessor；R2 因把 primary task 的 source-only
+  review 错写成 isolated context 而封存。write-once 输出均未覆盖；R3 如实披露
+  `isolated_context=false / source_only_view=true` 后通过独立 validator。7 项
+  focused mutation/regression tests 通过。
+  本阶段未生成标签、未读 candidate/truth/review 输出、未启动 D0-A2 或 D0-B；当前
+  唯一下一动作是 D0-A1 排除式 calibration 与标签合同锁。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。前向采用
   `RISK_TIERED_RESEARCH_GOVERNANCE_R3`，建立 `CANARY_LITE /
   DEVELOPMENT_STANDARD / CONFIRMATION_STRICT` 三档执行配置；R1/R2 policy 与历史

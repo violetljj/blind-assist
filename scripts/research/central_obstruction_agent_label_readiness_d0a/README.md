@@ -1,0 +1,59 @@
+# Central obstruction Agent label readiness D0-A
+
+状态：canary / D0-A0 complete valid
+
+## 研究问题与版本
+
+本 Module 执行 `CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A` 的
+`D0-A0 / INPUT_UNIVERSE_FREEZE`。当前 evidence instance 为
+`CENTRAL_OBSTRUCTION_D0_A0_INPUT_UNIVERSE_R3`，只允许形成现有连续 RGB
+source/session/frame/timestamp/ancestry 清单与 SHA-256 回执。
+
+## 稳定 Interface
+
+从仓库根目录运行：
+
+```powershell
+python -m scripts.research.central_obstruction_agent_label_readiness_d0a.freeze_input_universe
+python -m scripts.research.central_obstruction_agent_label_readiness_d0a.validate_input_universe
+```
+
+输入由 `source_universe_r3.json` 继承 R2/R1/R0 source inventory，并冻结当前 evidence
+identity。Producer 和 validator 都要求源账本、逐帧 payload、协议、workflow、
+reuse-role ledger 与 fitness review 哈希闭合；正式输出已存在时拒绝覆盖。
+
+## 输出
+
+只写入：
+
+```text
+artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a-r3/
+```
+
+正式文件为 `input-universe-manifest.json`、`input-universe-receipt.json`、
+`reuse-role-ledger.jsonl`、`reuse-fitness-review.json` 和
+`input-universe-validation.json`。逐帧图像不复制。
+
+## 安全边界
+
+本阶段只读取 RGB source ledger、逐帧 payload 和 provenance receipt。禁止读取
+YOLO、分割、深度、融合、scheduler、risk、feedback、truth、review 或旧 candidate
+effect 输出；不生成 observation label。所有来源均披露既有 content/output access，
+因此本清单不具有 unseen Confirmation authority。
+
+## 停止条件
+
+任一源账本漂移、payload 缺失/哈希不符、frame index 不连续、timestamp 非严格递增、
+路径越界、重复 session 或正式输出已存在时 fail closed；不缩短困难片段、不替换来源。
+D0-A0 完成后只允许进入单独的 D0-A1 calibration/lock，不自动启动正式标注或 D0-B。
+
+## 假设与规则质疑
+
+本阶段不检验中央阻塞标签本身，只检验一个更窄的前置假设：当前 dual-loop natural-event
+连续 RGB 来源能否被完整、可复算地冻结。若该输入身份无法闭合，应先修 source
+inventory，而不是通过抽帧、裁剪或删除不便片段降低门槛。
+
+## 失败资产复用
+
+成功清单可作为 source characterization 与后续 D0-A 输入锁；失败 ledger、缺失 payload
+或 timestamp 异常只作为数据完整性诊断/回归 fixture，不得包装为标签或模型效果证据。

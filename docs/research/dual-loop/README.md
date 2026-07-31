@@ -1,6 +1,6 @@
 # BlindAssist 中央图像阻塞互补性研究主线
 
-状态：`CENTRAL_OBSTRUCTION_D0_A_AUTHORIZED / CANARY_LITE_AGENT_LABEL /
+状态：`CENTRAL_OBSTRUCTION_D0_A0_COMPLETE_VALID / D0_A1_NEXT / CANARY_LITE_AGENT_LABEL /
 EXCLUDED_MODEL_B_TECHNICAL_SMOKE_ONLY / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
@@ -23,6 +23,12 @@ D0-A0 采用 `REUSE_FIRST / FITNESS_FIRST / STOP_ON_ADEQUACY`：先按当前中�
 访问最多使受影响的最小身份单元降级为 calibration、Canary、Development、诊断、
 回归或压力样本。只有当前问题所需信息确实缺失时才局部记为
 `NOT_EVALUABLE_FOR_CURRENT_QUESTION`，不得全局封存优秀数据。
+
+[D0-A0 输入宇宙冻结](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A0_RESULT_2026-07-31.md)
+现已 `COMPLETE / VALID`：6 个完整 production session、34,279 帧、5 个 ancestry
+group 已冻结；107 行 reuse-role ledger 将其余本地资产分别降级为 calibration-only
+或当前问题不可评价。D0-A0 不再扩数据，尚未生成 observation label；当前唯一下一
+动作是 D0-A1 排除式 calibration 与标签合同锁。
 
 D0-A 只回答中央图像可观察阻塞能否形成稳定的、带风险分层独立审计的 Agent-labeled
 parent-natural-event
@@ -315,7 +321,9 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 
 | 能力 | authority |
 | --- | --- |
-| D0-A 适配度排序、最小 admitted bundle、排除式校准、风险分层 Agent 标注/裁决与 readiness 审计 | `AUTHORIZED / NOT_RUN / CANARY_LITE_ONLY` |
+| D0-A0 适配度排序、最小 admitted bundle 与 reuse-role freeze | `COMPLETE / VALID / CANARY_LITE_ONLY` |
+| D0-A1 排除式 calibration、标签 pilot 与 readiness lock | `AUTHORIZED / NOT_RUN / UNIQUE_NEXT_ACTION` |
+| D0-A2–A4 Agent 标注、裁决与 readiness 审计 | `AUTHORIZED_AFTER_D0_A1_LOCK / NOT_RUN` |
 | D0-AT 排除数据 reference model-B 接口 smoke | `AUTHORIZED / TECHNICAL_FEASIBILITY_ONLY / NO_EFFECT_EVIDENCE` |
 | D0-A 人工标注、人工复核或人工验收队列 | `NOT_REQUIRED / MUST_NOT_BLOCK` |
 | D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `LOCKED_UNTIL_D0_A_READY / DESIGN_REQUIRES_SEPARATE_REVIEW` |
@@ -370,7 +378,7 @@ READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT
 | HOLD_MODEL_B_TECHNICAL_FEASIBILITY
 ```
 
-当前唯一下一动作是 D0-A0；在 D0-A1 lock 完成前不得启动正式标注，在 D0-A 返回
+当前唯一下一动作是 D0-A1；D0-A0 已完成且不再扩数据。在 D0-A1 lock 完成前不得启动正式标注，在 D0-A 返回
 READY 前除 D0-AT 外不得运行模型 B 效果评价。D0-B 若以后获准，可在 burned
 Development 数据上预注册至多 3 个具有明确因果差异的模型 B/类别映射/阻塞算子
 候选、固定预算和选择规则；必须在 held-out outcome access 前冻结一个候选，再以

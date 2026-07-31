@@ -1,0 +1,9 @@
+{
+  "schema_version": "blindassist.central_obstruction_d0a0_source_universe.v3",
+  "inherits_path": "scripts/research/central_obstruction_agent_label_readiness_d0a/source_universe_r1.json",
+  "protocol_id": "CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A",
+  "phase": "D0-A0",
+  "evidence_instance": "CENTRAL_OBSTRUCTION_D0_A0_INPUT_UNIVERSE_R2",
+  "output_root": "artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a-r2",
+  "candidate_output_access": false
+}

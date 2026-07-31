@@ -64,6 +64,7 @@
 - [`research/dual_loop_r1_event_failure_decomposition_r0/`](research/dual_loop_r1_event_failure_decomposition_r0/)：只消费已关闭 Development trace、truth ledger 与 receipt 的 R1 post-terminal 逐窗口失败分解和 Development-only upper-bound audit；不重跑、不调阈值、不实现 R2。
 - [`research/dual_loop_unseen_natural_event_r0/`](research/dual_loop_unseen_natural_event_r0/)：按输出盲 metadata registry、冻结事件窗、baseline adequacy 与同事件延迟门，评价固定 `039757b` 在全新自然视频上的事件级 canary；单来源不作总体外推。
 - [`research/dual_loop_semantic_refresh_q0/`](research/dual_loop_semantic_refresh_q0/)：固定模型全频参考下的事件保持型语义刷新调度 Q0 R0/R0.1 离线评测；R0.1 补齐 risk-episode 对齐、signed delay 和约束型 operating point，每个 arm 隔离 cache/feedback/event state，不接 Android、能效、产品或安全路径。
+- [`research/central_obstruction_agent_label_readiness_d0a/`](research/central_obstruction_agent_label_readiness_d0a/)：中央图像阻塞 D0-A0 reuse-first 连续 RGB 输入宇宙、逐 session 角色披露、write-once producer 与独立 payload validator；不生成标签或模型效果。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。
