@@ -81,10 +81,23 @@ RCLE Phase A R1 固定 trial 短测使用“多进程 trial + 每 worker 单 Ope
 
 进程池任务必须在 NumPy/OpenCV 导入前把 `OMP_NUM_THREADS`、`OPENBLAS_NUM_THREADS`、`MKL_NUM_THREADS`、`NUMEXPR_NUM_THREADS` 等设为 1，避免外层多进程与内层数值线程相乘。单进程大矩阵任务不自动套用本规则，应单独标定 BLAS 线程数。
 
+## 三档执行路由
+
+Host 研究先按任务风险选择最低充分流程，不因运行时长单独升级为正式治理：
+
+- `ROUTINE_ENGINEERING`：普通开发、测试、短脚本和无研究 claim 的诊断。使用 scoped
+  output 与正常验证，不要求研究 preflight 或 receipt。
+- `REVERSIBLE_EXPLORATION`：可停止、可重跑的 Discovery/Canary/Development。轻量
+  run note 记录输入/来源身份、实现与命令、运行边界、timeout/progress、scoped output、
+  终态、失败原因和限制；需要时使用普通 launcher，但不要求完整 preflight receipt。
+  只有资源风险、进度不透明或访问路径不确定时，才升级到性能诊断。
+- `FORMAL_CONFIRMATION`：正式 one-shot、不可逆 claim、受保护 outcome、设备/高资源
+  风险或无法由轻量 pilot 给出运行上界的任务。使用下面的完整性能闭环，并按长任务准入
+  规则使用 guarded launcher。
+
 ## 效率优先的执行闭环
 
-电脑端研究任务不得把“代码能运行”当作“执行方案合格”。预计超过 3 分钟、会
-消费正式 claim、或需要大数据/训练的任务，必须依次完成：
+正式确认和风险触发的 host 任务不得把“代码能运行”当作“执行方案合格”。这类任务必须依次完成：
 
 1. **分类**：先判断主负载属于 Python 串行、可分 pair/sample 的 CPU、原生数值
    线程、GPU 张量、解码/I/O、内存容量或混合流水线。
@@ -164,10 +177,10 @@ guarded launcher 在创建 runner 进程前调用
 - formal 任务声明 one-shot、runner-only claim、activation authority 和互异的
   claim/output/failure 路径。
 
-预计 3–15 分钟且可逆的 `CANARY_LITE/DEVELOPMENT_STANDARD` 工作不需要完整 preflight
-receipt，只需在启动参数或轻量 run note 中给出 timeout、可观察进度和 scoped output；
-短小可逆 Canary 可直接运行。无论时长，只要出现反复解压、交换、明显资源闲置或
-进度不透明，就升级为性能诊断；这项豁免不能用于正式 one-shot。
+可逆的 `CANARY_LITE/DEVELOPMENT_STANDARD` 工作不需要完整 preflight receipt，只需
+遵守三档路由中的轻量 run note；短小可逆 Canary 可直接运行。无论时长，只要出现反复
+解压、交换、明显资源闲置或进度不透明，就升级为性能诊断；这项豁免不能用于正式
+one-shot。
 
 收据的最小结构为：
 
@@ -317,9 +330,9 @@ IOPS）。顺序写受缓存影响，不能外推到数据集持续写入或 SLC
 
 ## 长任务可观测性
 
-预计超过 3 分钟的 host research 不得只在结尾打印结果。新 runner 在正式
-claim 前必须完成有上限的小样本预检，并在实现锁中包含不影响科学结果的进度
-协议。进度 sidecar 至少应原子发布：
+正式 claim、不可逆执行或明确需要主动监控的 host research 不得只在结尾打印结果。
+新 runner 在正式 claim 前必须完成有上限的小样本预检，并在实现锁中包含不影响科学
+结果的进度协议。进度 sidecar 至少应原子发布：
 
 - `phase`、`completed_units`、`total_units`；
 - 最近窗口吞吐、基于同阶段吞吐计算的 ETA；
@@ -327,7 +340,8 @@ claim 前必须完成有上限的小样本预检，并在实现锁中包含不�
 - `running`、`possible_stall`、`complete` 或 `failed` 状态。
 
 进度 sidecar 不得包含被协议禁止提前读取的算法 outcome。producer 与 validator
-应分别报告阶段。连续三个观测窗口既无 CPU 推进也无 I/O 推进时才标记
+应分别报告阶段。可逆探索只需满足其轻量 timeout/progress 合同，不强制完整 sidecar。
+连续三个观测窗口既无 CPU 推进也无 I/O 推进时才标记
 `possible_stall`，不能仅凭运行时长判定挂死。
 
 对已经 claim、不能修改或重启的冻结 runner，使用独立外部监控：

@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。优化研究执行治理的最低充分流程：在
+  `AGENTS.md` 和 `docs/HOST_RESEARCH_COMPUTE.md` 中统一为
+  `ROUTINE_ENGINEERING`、`REVERSIBLE_EXPLORATION`、`FORMAL_CONFIRMATION` 三档；普通工程和
+  可重复探索不再默认触发阶段判定、双 Agent/第三方仲裁、hash-bound receipt、one-shot 或
+  guarded host preflight，正式确认、受保护 outcome、不可逆或高风险任务仍保留冻结、validator、
+  receipt/hash、风险分层审查和性能预检。handoff 明确为连续性工具而非研究门禁。验证：`git diff --check` 和
+  文档索引检查通过；仓库卫生检查已执行，但因基线缺少
+  `scripts/research/dual_loop_segmentation_model_selection/README.md` 仍失败，非本次变更引入；剩余风险：新任务仍需正确判断模式，边界不确定时按较高风险
+  路由并记录升级理由。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。切换主线至
   `DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1`：冻结 DDRNet-23-Slim 与 SegFormer-B0
   的同 split、同输入、同增强/损失/optimizer-step、同 YOLO trace/fusion operator
