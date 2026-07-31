@@ -10,12 +10,12 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
 - 当前论文系统研究主线为
   [中央图像阻塞互补性](docs/research/dual-loop/README.md)，当前状态为
-  `CENTRAL_OBSTRUCTION_D0_A1_ACTIVE / R2_LOCK_FROZEN /
-  PRIMARY_CALIBRATION_COMPLETE / FRESH_ISOLATED_PASS_REQUIRED /
-  EXCLUDED_MODEL_B_TECHNICAL_SMOKE_ONLY / DEFAULT_APP_UNCHANGED`。D0-A 按适配度
-  排序现有连续 RGB、满足充分性即停止；当前已在排除式 calibration 上冻结标签合同并
-  完成非隔离 primary pass，等待 fresh isolated second pass 后才能评价 readiness；
-  仅允许在排除数据上运行不产生效果证据的模型 B 接口 smoke，不形成互补性、真实
+  `CENTRAL_OBSTRUCTION_D0_A1_COMPLETE / R2_VALID /
+  AGENT_LABEL_PROTOCOL_NOT_RELIABLE / D0_A2_NOT_AUTHORIZED /
+  DEFAULT_APP_UNCHANGED`。D0-A 按适配度排序现有连续 RGB、满足充分性即停止；排除式
+  calibration 的 observation agreement 过门，但 parent-event match 仅 `0.6316`，低于
+  冻结的 `0.75`，所以 D0-A2/D0-AT/D0-B 均未运行或获授权。下一边界只能在新的 D0-A
+  版本中用已烧毁 calibration stress cases 重设计 observation/event workflow，不形成互补性、真实
   可通行性、产品或安全结论。旧神经—几何 active R1 以
   `FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY` 保留为已关闭前序，
   详见

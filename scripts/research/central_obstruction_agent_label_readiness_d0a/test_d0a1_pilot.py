@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import datetime as dt
 import tempfile
 import unittest
 from pathlib import Path
@@ -19,6 +20,16 @@ from .validate_d0a1_primary_review import (
     PrimaryReviewValidationError,
     validate_primary_review,
 )
+from .validate_d0a1_isolated_review import (
+    IsolatedReviewValidationError,
+    validate_isolated_review,
+)
+from .finalize_d0a1_adjudication import (
+    AdjudicationValidationError,
+    finalize_adjudication,
+    write_finalization,
+)
+from .validate_d0a1_final_readiness import validate_final
 
 
 class D0A1PilotTest(unittest.TestCase):
@@ -145,6 +156,12 @@ class D0A1PilotTest(unittest.TestCase):
                 "definition": "maximal run",
                 "always_close_on": ["label_change"],
                 "bridge_rule": "NO_BRIDGING",
+                "reviewer_event_match": {
+                    "same_source_and_clip": True,
+                    "same_label": True,
+                    "minimum_temporal_iou": 0.5,
+                    "maximum_start_or_end_delta_observations": 1,
+                },
             },
             "ambiguity_and_risk_strata": {
                 "claim_critical": ["positive", "not evaluable"],
@@ -353,6 +370,273 @@ class D0A1PilotTest(unittest.TestCase):
                 lock_path=self.lock_path,
                 output_root=self.output_root,
             )
+
+    def _write_isolated_fixture(
+        self,
+        *,
+        disagreement: bool = False,
+        isolated_context: bool = True,
+    ) -> Path:
+        primary_result, _ = validate_primary_review(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+        )
+        self._write_json(self.output_root / "primary-review-validation.json", primary_result)
+        labels = [
+            "VISIBLE_CENTRAL_OBSTRUCTION_PRESENT",
+            "NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE",
+            "NOT_EVALUABLE",
+        ]
+        qualities = ["OCCLUDED", "STABLE", "TURNING"]
+        clip_reviews = []
+        for source_number in range(3):
+            clip_labels = [labels[source_number]] * 3
+            if disagreement and source_number == 0:
+                clip_labels[0] = "NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE"
+            clip_reviews.append(
+                {
+                    "clip_id": f"clip-{source_number}",
+                    "observations": [
+                        {
+                            "clip_observation_ordinal": ordinal,
+                            "source_frame_index": ordinal,
+                            "label": clip_labels[ordinal],
+                            "quality_state": qualities[source_number],
+                            "rationale": f"fixture {source_number} {ordinal}",
+                        }
+                        for ordinal in range(3)
+                    ],
+                }
+            )
+        review = {
+            "schema_version": "blindassist.central_obstruction_d0a1_isolated_review.v1",
+            "protocol_id": self.lock["protocol_id"],
+            "phase": "D0-A1",
+            "evidence_instance": self.lock["evidence_instance"],
+            "review_id": "0d91ed10-6ea3-4e0b-aac9-b625e47c28c1",
+            "reviewer_id": "fixture-isolated-reviewer",
+            "reviewer_type": "CODEX_AGENT",
+            "review_context": "FRESH_ISOLATED_SECOND_PASS",
+            "isolated_context": isolated_context,
+            "source_only_view": True,
+            "candidate_output_visible": False,
+            "prior_review_visible": False,
+            "other_review_visible_before_submission": False,
+            "pilot_input_manifest_sha256": sha256_file(
+                self.output_root / "pilot-input-manifest.json"
+            ),
+            "prompt_sha256": sha256_file(self.repo / "prompt.md"),
+            "submitted_at_utc": "2026-07-31T00:00:03Z",
+            "clip_reviews": clip_reviews,
+            "attestation": {"prohibited_content_read": False, "coverage": "9/9"},
+        }
+        review_path = self.repo / "isolated-review.json"
+        self._write_json(review_path, review)
+        return review_path
+
+    def test_perfect_isolated_review_authorizes_d0a2_design(self) -> None:
+        write_bundle(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            frozen_at_utc="2026-07-31T00:00:00Z",
+        )
+        self._write_primary_fixture()
+        review_path = self._write_isolated_fixture()
+        result, events, packet = validate_isolated_review(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            review_path=review_path,
+        )
+        self.assertEqual("READY_FOR_D0_A2_PRIMARY_AGENT_LABELING", result["decision"])
+        self.assertTrue(result["d0a2_production_labeling_authorized"])
+        self.assertEqual(1.0, result["overall_observation_label_agreement"])
+        self.assertEqual(3, len(events))
+        self.assertIsNone(packet)
+
+    def test_material_disagreement_freezes_adjudication_packet(self) -> None:
+        write_bundle(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            frozen_at_utc="2026-07-31T00:00:00Z",
+        )
+        self._write_primary_fixture()
+        review_path = self._write_isolated_fixture(disagreement=True)
+        result, _, packet = validate_isolated_review(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            review_path=review_path,
+        )
+        self.assertEqual("MATERIAL_DISAGREEMENT_ADJUDICATION_REQUIRED", result["decision"])
+        self.assertFalse(result["d0a2_production_labeling_authorized"])
+        self.assertEqual(1, result["material_disagreement_count"])
+        self.assertIsNotNone(packet)
+        self.assertEqual(1, packet["material_disagreement_count"])
+
+    def test_isolated_context_overclaim_is_rejected(self) -> None:
+        write_bundle(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            frozen_at_utc="2026-07-31T00:00:00Z",
+        )
+        self._write_primary_fixture()
+        review_path = self._write_isolated_fixture(isolated_context=False)
+        with self.assertRaises(IsolatedReviewValidationError):
+            validate_isolated_review(
+                repo_root=self.repo,
+                lock_path=self.lock_path,
+                output_root=self.output_root,
+                review_path=review_path,
+            )
+
+    def test_isolated_review_prompt_hash_alias_is_accepted(self) -> None:
+        write_bundle(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            frozen_at_utc="2026-07-31T00:00:00Z",
+        )
+        self._write_primary_fixture()
+        review_path = self._write_isolated_fixture()
+        review = json.loads(review_path.read_text(encoding="utf-8"))
+        review["review_prompt_sha256"] = review.pop("prompt_sha256")
+        self._write_json(review_path, review)
+        result, _, _ = validate_isolated_review(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            review_path=review_path,
+        )
+        self.assertEqual("VALID", result["status"])
+
+    def _prepare_adjudication_fixture(self) -> Path:
+        write_bundle(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            frozen_at_utc="2026-07-31T00:00:00Z",
+        )
+        self._write_primary_fixture()
+        isolated_source = self._write_isolated_fixture(disagreement=True)
+        isolated_review = json.loads(isolated_source.read_text(encoding="utf-8"))
+        isolated_review["clip_reviews"][0]["observations"][1][
+            "label"
+        ] = "NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE"
+        self._write_json(isolated_source, isolated_review)
+        agreement, events, packet = validate_isolated_review(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            review_path=isolated_source,
+        )
+        self.assertIsNotNone(packet)
+        (self.output_root / "isolated-second-review.json").write_bytes(
+            isolated_source.read_bytes()
+        )
+        (self.output_root / "isolated-second-parent-events.jsonl").write_bytes(
+            b"".join(canonical_bytes(row) for row in events)
+        )
+        self._write_json(self.output_root / "d0a1-initial-agreement.json", agreement)
+        self._write_json(self.output_root / "d0a1-adjudication-packet.json", packet)
+        review = {
+            "schema_version": "blindassist.central_obstruction_d0a1_adjudication_review.v1",
+            "protocol_id": self.lock["protocol_id"],
+            "phase": "D0-A1",
+            "evidence_instance": self.lock["evidence_instance"],
+            "review_id": "92db7361-bd9f-493f-8532-0c769ca0d89c",
+            "reviewer_id": "fixture-third-adjudicator",
+            "reviewer_type": "CODEX_AGENT",
+            "review_context": "FRESH_THIRD_AGENT_MATERIAL_DISAGREEMENT_ADJUDICATION",
+            "source_only_view": True,
+            "candidate_output_visible": False,
+            "pair_labels_visible": True,
+            "aggregate_metrics_visible": False,
+            "adjudication_packet_sha256": sha256_file(
+                self.output_root / "d0a1-adjudication-packet.json"
+            ),
+            "prompt_sha256": sha256_file(self.repo / "prompt.md"),
+            "submitted_at_utc": dt.datetime.now(dt.timezone.utc)
+            .isoformat()
+            .replace("+00:00", "Z"),
+            "items": [
+                {
+                    "item_id": item["item_id"],
+                    "clip_id": item["clip_id"],
+                    "clip_observation_ordinal": item["clip_observation_ordinal"],
+                    "source_frame_index": item["source_frame_index"],
+                    "final_label": item["primary_label"],
+                    "final_quality_state": item["primary_quality_state"],
+                    "disposition": "ADJUDICATED_LABEL",
+                    "rationale": "fixture adjudication",
+                }
+                for item in packet["items"]
+            ],
+            "attestation": {"coverage": "complete", "prohibited_content_read": False},
+        }
+        review_path = self.repo / "adjudication-review.json"
+        self._write_json(review_path, review)
+        return review_path
+
+    def test_adjudication_preserves_raw_failed_threshold(self) -> None:
+        review_path = self._prepare_adjudication_fixture()
+        result, labels, events = finalize_adjudication(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            review_path=review_path,
+        )
+        self.assertEqual("AGENT_LABEL_PROTOCOL_NOT_RELIABLE", result["terminal"])
+        self.assertFalse(result["d0a2_production_labeling_authorized"])
+        self.assertEqual(9, len(labels))
+        self.assertGreater(len(events), 0)
+        self.assertTrue(result["threshold_checks"]["adjudication_complete"])
+
+    def test_incomplete_adjudication_is_rejected(self) -> None:
+        review_path = self._prepare_adjudication_fixture()
+        review = json.loads(review_path.read_text(encoding="utf-8"))
+        review["items"] = []
+        self._write_json(review_path, review)
+        with self.assertRaises(AdjudicationValidationError):
+            finalize_adjudication(
+                repo_root=self.repo,
+                lock_path=self.lock_path,
+                output_root=self.output_root,
+                review_path=review_path,
+            )
+
+    def test_adjudication_packet_hash_alias_is_accepted(self) -> None:
+        review_path = self._prepare_adjudication_fixture()
+        review = json.loads(review_path.read_text(encoding="utf-8"))
+        review["packet_sha256"] = review.pop("adjudication_packet_sha256")
+        self._write_json(review_path, review)
+        result, _, _ = finalize_adjudication(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            review_path=review_path,
+        )
+        self.assertEqual("VALID", result["status"])
+
+    def test_stored_final_readiness_recomputes_exactly(self) -> None:
+        review_path = self._prepare_adjudication_fixture()
+        write_finalization(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+            review_path=review_path,
+        )
+        result = validate_final(
+            repo_root=self.repo,
+            lock_path=self.lock_path,
+            output_root=self.output_root,
+        )
+        self.assertEqual("VALID", result["status"])
+        self.assertEqual("AGENT_LABEL_PROTOCOL_NOT_RELIABLE", result["terminal"])
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # Central obstruction Agent label readiness D0-A
 
-状态：canary / D0-A0 complete valid / D0-A1 active
+状态：canary / D0-A0 complete valid / D0-A1 complete not reliable
 
 ## 研究问题与版本
 
@@ -22,6 +22,9 @@ python -m scripts.research.central_obstruction_agent_label_readiness_d0a.freeze_
 python -m scripts.research.central_obstruction_agent_label_readiness_d0a.validate_d0a1_pilot
 python -m scripts.research.central_obstruction_agent_label_readiness_d0a.transcribe_d0a1_primary_review
 python -m scripts.research.central_obstruction_agent_label_readiness_d0a.validate_d0a1_primary_review
+python -m scripts.research.central_obstruction_agent_label_readiness_d0a.validate_d0a1_isolated_review --review-path <fresh-isolated-review.json>
+python -m scripts.research.central_obstruction_agent_label_readiness_d0a.finalize_d0a1_adjudication --review-path <fresh-adjudication-review.json>
+python -m scripts.research.central_obstruction_agent_label_readiness_d0a.validate_d0a1_final_readiness
 ```
 
 输入由 `source_universe_r3.json` 继承 R2/R1/R0 source inventory，并冻结当前 evidence
@@ -46,8 +49,10 @@ D0-A1 只写入：
 artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a1-r2/
 ```
 
-它保存 pilot input/receipt/validation、raw primary review、派生 parent-event 与
-primary validation；当前不生成 consensus 或 readiness terminal。
+它保存 pilot input/receipt/validation、三份不可覆盖 raw review、各自 parent-event、
+初始 agreement、冻结 adjudication packet、canonical calibration ledger 与最终 readiness。
+R2 终态为 `AGENT_LABEL_PROTOCOL_NOT_RELIABLE`：observation agreement 过门，但 raw
+parent-event match `0.6316 < 0.75`，D0-A2 不授权。
 
 ## 安全边界
 
@@ -62,7 +67,8 @@ Confirmation authority。
 任一源账本漂移、payload 缺失/哈希不符、frame index 不连续、timestamp 非严格递增、
 路径越界、重复 session 或正式输出已存在时 fail closed；不缩短困难片段、不替换来源。
 D0-A1 缺 fresh isolated pass、任一 denominator 为空或任一冻结门失败时不得启动
-D0-A2；绝不把 primary-only pass 当 agreement=1。
+D0-A2；绝不把 primary-only pass 当 agreement=1，也不以第三方裁决覆盖 raw reviewer
+agreement 或 event-match failure。
 
 ## 假设与规则质疑
 

@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  [中央图像阻塞 D0-A1 R2](docs/research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_RESULT_2026-07-31.md)
+  的 fresh isolated second pass、8 项 third-Agent adjudication 与最终 readiness：fork-none
+  second Agent 在 primary/aggregate/model output 不可见时覆盖 11/11 clip、55/55
+  observation，raw SHA `47049587...d930`；两遍 observation/claim-critical agreement
+  `0.8545/0.8298` 与 boundary P95 `1` 过门，但 parent-event match
+  `12/19=0.6316 < 0.75`。8 个分歧全部裁决，7 个 adjudicated、1 个隔离为
+  `NOT_EVALUABLE`；裁决未覆盖 raw review/event，最终 canonical `34/9/12`、19 event，
+  终态 `AGENT_LABEL_PROTOCOL_NOT_RELIABLE / VALID`。新增 isolated/agreement 与
+  adjudication/final readiness 与 post-output recomputation validator，D0-A1 15 项
+  focused tests、模块合计 22 项测试及 compile/protocol/docs/structure/hygiene 门通过。D0-A2、D0-AT、
+  D0-B、模型效果与 Android 均未授权；下一边界只能另立 D0-A 版本，在 burned
+  calibration stress cases 上重设计 observation/event workflow，不得调 R2 门救援。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。正式进入
   [中央图像阻塞 D0-A1](docs/research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_ENTRY_2026-07-31.md)：
   从 D0-A0 的 calibration-only 角色中冻结 JRDB/Ulm/Alicante/Burwell 4 source、
