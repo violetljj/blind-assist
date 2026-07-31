@@ -281,6 +281,7 @@ def train_one_seed(
     output_dir: Path,
     weights: Tensor,
     progress_path: Path,
+    implementation_identity: str,
 ) -> dict[str, Any]:
     set_seed(seed)
     sampler = SessionBalancedSampler(train_images, train_masks, train_records, batch_size=BATCH_SIZE, seed=seed)
@@ -380,7 +381,7 @@ def train_one_seed(
     torch.save({
         "state_dict": best_state,
         "model_id": model.build_receipt.model_id,
-        "implementation_identity": initialization_receipt["implementation_identity"],
+        "implementation_identity": implementation_identity,
         "seed": seed,
         "optimizer_step": best_step,
         "selection_key": list(best_key),
@@ -473,6 +474,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 output_dir=output_dir,
                 weights=weights,
                 progress_path=progress_path,
+                implementation_identity=initialization_receipt["implementation_identity"],
             )
         )
         del seed_model
@@ -487,7 +489,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "schema_version": "blindassist.dual_loop_segmentation_model_selection_r1_training_report.v1",
         "protocol_id": "DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1",
         "model_id": args.model_id,
-        "implementation_identity": model.build_receipt.implementation_identity,
+        "implementation_identity": initialization_receipt["implementation_identity"],
         "config_path": str(config_path.resolve()),
         "config_sha256": sha256_file(config_path),
         "dataset_root": str(dataset_root),
