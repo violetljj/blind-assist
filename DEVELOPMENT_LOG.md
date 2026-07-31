@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。正式进入
+  [中央图像阻塞 D0-A1](docs/research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_ENTRY_2026-07-31.md)：
+  从 D0-A0 的 calibration-only 角色中冻结 JRDB/Ulm/Alicante/Burwell 4 source、
+  11 clip、55 observation，production overlap 与 candidate-output access 均为 0；
+  ROI、三态 prompt、parent-event/matching、claim-critical 双 pass、low-risk 20%
+  audit 与 readiness 数值门均已锁定。R0 source-only inspection 发现“任意 scene
+  element 占 ROI”会把背景建筑误当阻塞，故在任何 raw label 前立 R1，将 positive
+  收紧为前/中景实体实际遮挡后景或终止中央视线，并修正连续
+  `NOT_EVALUABLE` event 合并。R1 输入 producer/独立 validator 为 `VALID`，但原始
+  primary 的 submission time 晚于 validator，已按
+  `INVALID_REVIEW_TIMESTAMP_ORDER` 保留。R2 只修复 evidence identity/output root
+  与时间戳，显式披露前序访问并原样转录 55 个标签；当前三态为 `28/12/15`、
+  18 parent event，coverage precondition 全过，但仍是非隔离 context，
+  agreement/readiness 未评价，D0-A2/D0-B 均未授权。D0-A1 7 项 focused tests、
+  模块合计 14 项测试及 Python compile、协议/文档/structure/hygiene 门通过后提交。
+  下一动作只允许 fresh isolated second pass，不得读取 primary label 或修改 R2 lock。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
   [中央图像阻塞 D0-A0 输入宇宙冻结](docs/research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A0_RESULT_2026-07-31.md)：
   reuse-first 审计后冻结 6 个完整 production-labeling session、34,279 帧、5 个

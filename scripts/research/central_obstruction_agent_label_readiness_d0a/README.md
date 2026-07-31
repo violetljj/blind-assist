@@ -1,13 +1,15 @@
 # Central obstruction Agent label readiness D0-A
 
-状态：canary / D0-A0 complete valid
+状态：canary / D0-A0 complete valid / D0-A1 active
 
 ## 研究问题与版本
 
-本 Module 执行 `CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A` 的
-`D0-A0 / INPUT_UNIVERSE_FREEZE`。当前 evidence instance 为
+本 Module 执行 `CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A` 的 D0-A0 与
+D0-A1。D0-A0 当前 evidence instance 为
 `CENTRAL_OBSTRUCTION_D0_A0_INPUT_UNIVERSE_R3`，只允许形成现有连续 RGB
-source/session/frame/timestamp/ancestry 清单与 SHA-256 回执。
+source/session/frame/timestamp/ancestry 清单与 SHA-256 回执。D0-A1 当前为
+`CENTRAL_OBSTRUCTION_D0_A1_LABELABILITY_PILOT_R2`，只使用 calibration-only
+source 冻结 ROI、prompt、parent-event、audit 与 readiness 合同。
 
 ## 稳定 Interface
 
@@ -16,6 +18,10 @@ source/session/frame/timestamp/ancestry 清单与 SHA-256 回执。
 ```powershell
 python -m scripts.research.central_obstruction_agent_label_readiness_d0a.freeze_input_universe
 python -m scripts.research.central_obstruction_agent_label_readiness_d0a.validate_input_universe
+python -m scripts.research.central_obstruction_agent_label_readiness_d0a.freeze_d0a1_pilot
+python -m scripts.research.central_obstruction_agent_label_readiness_d0a.validate_d0a1_pilot
+python -m scripts.research.central_obstruction_agent_label_readiness_d0a.transcribe_d0a1_primary_review
+python -m scripts.research.central_obstruction_agent_label_readiness_d0a.validate_d0a1_primary_review
 ```
 
 输入由 `source_universe_r3.json` 继承 R2/R1/R0 source inventory，并冻结当前 evidence
@@ -34,18 +40,29 @@ artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a-r3/
 `reuse-role-ledger.jsonl`、`reuse-fitness-review.json` 和
 `input-universe-validation.json`。逐帧图像不复制。
 
+D0-A1 只写入：
+
+```text
+artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a1-r2/
+```
+
+它保存 pilot input/receipt/validation、raw primary review、派生 parent-event 与
+primary validation；当前不生成 consensus 或 readiness terminal。
+
 ## 安全边界
 
-本阶段只读取 RGB source ledger、逐帧 payload 和 provenance receipt。禁止读取
+两个阶段只读取 RGB source ledger、逐帧 payload 和 provenance receipt。禁止读取
 YOLO、分割、深度、融合、scheduler、risk、feedback、truth、review 或旧 candidate
-effect 输出；不生成 observation label。所有来源均披露既有 content/output access，
-因此本清单不具有 unseen Confirmation authority。
+effect 输出。D0-A1 raw primary label 只来自 source-only calibration view，并明确为
+非隔离 pass；所有来源均披露既有 content/output access，因此不具有 unseen
+Confirmation authority。
 
 ## 停止条件
 
 任一源账本漂移、payload 缺失/哈希不符、frame index 不连续、timestamp 非严格递增、
 路径越界、重复 session 或正式输出已存在时 fail closed；不缩短困难片段、不替换来源。
-D0-A0 完成后只允许进入单独的 D0-A1 calibration/lock，不自动启动正式标注或 D0-B。
+D0-A1 缺 fresh isolated pass、任一 denominator 为空或任一冻结门失败时不得启动
+D0-A2；绝不把 primary-only pass 当 agreement=1。
 
 ## 假设与规则质疑
 

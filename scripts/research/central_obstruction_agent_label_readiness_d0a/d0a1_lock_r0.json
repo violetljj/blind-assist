@@ -1,0 +1,163 @@
+{
+  "schema_version": "blindassist.central_obstruction_d0a1_lock.v1",
+  "protocol_id": "CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A",
+  "phase": "D0-A1",
+  "evidence_instance": "CENTRAL_OBSTRUCTION_D0_A1_LABELABILITY_PILOT_R0",
+  "status": "LOCKED_INPUTS_NOT_YET_REVIEWED",
+  "output_root": "artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a1-r0",
+  "candidate_output_access": false,
+  "bindings": {
+    "protocol": {
+      "path": "docs/research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json",
+      "sha256": "6b1ae640dc45479cab55a2ca31b20458fb8fb63da5be4da27665003cd2519443"
+    },
+    "ai_workflow": {
+      "path": "configs/ai_review_workflows_v1.json",
+      "sha256": "69c43be97e7a0c7e2b6cb0c9c9d4c06b12151010c36bb3b604caf17172cabf4e"
+    },
+    "d0a0_manifest": {
+      "path": "artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a-r3/input-universe-manifest.json",
+      "sha256": "3d860a827f988e29c4a2ed08524b1fb40c3706301bde75361c6bf5fbe7a43fbe"
+    },
+    "d0a0_reuse_role_ledger": {
+      "path": "artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a-r3/reuse-role-ledger.jsonl",
+      "sha256": "2fcc96be1a4c74fb6ff19c727c8323d8997e37718a9e6de59d8e537bf6001d2e"
+    },
+    "review_prompt": {
+      "path": "scripts/research/central_obstruction_agent_label_readiness_d0a/d0a1_review_prompt.md"
+    }
+  },
+  "roi": {
+    "name": "CENTRAL_IMAGE_ATTENTION_REGION",
+    "normalized_xyxy": [0.25, 0.15, 0.75, 0.95],
+    "minimum_native_roi_width_px": 64,
+    "minimum_native_roi_height_px": 64,
+    "semantics": "Image-space observation region only; not intended route, future trajectory, free space, traversability, collision risk, or safety corridor."
+  },
+  "observation_contract": {
+    "labels": [
+      "VISIBLE_CENTRAL_OBSTRUCTION_PRESENT",
+      "NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE",
+      "NOT_EVALUABLE"
+    ],
+    "quality_states": [
+      "STABLE",
+      "TURNING",
+      "BLURRED",
+      "DARK",
+      "OCCLUDED",
+      "OTHER_NOT_EVALUABLE"
+    ],
+    "forbidden_claims": [
+      "CLEAR",
+      "SAFE",
+      "FREE_SPACE",
+      "TRAVERSABLE",
+      "INTENDED_ROUTE",
+      "COLLISION_RISK"
+    ]
+  },
+  "parent_event_rule": {
+    "unit": "FROZEN_CLIP_PARENT_EVENT",
+    "definition": "Maximal consecutive observations with the same label inside one frozen clip.",
+    "always_close_on": [
+      "clip_or_session_boundary",
+      "hard_scene_cut",
+      "non_consecutive_frozen_observation",
+      "label_change",
+      "not_evaluable_observation"
+    ],
+    "bridge_rule": "NO_BRIDGING",
+    "reviewer_event_match": {
+      "same_source_and_clip": true,
+      "same_label": true,
+      "minimum_temporal_iou": 0.5,
+      "maximum_start_or_end_delta_observations": 1
+    }
+  },
+  "ambiguity_and_risk_strata": {
+    "claim_critical": [
+      "every VISIBLE_CENTRAL_OBSTRUCTION_PRESENT observation or event",
+      "every NOT_EVALUABLE observation or event",
+      "every TURNING, BLURRED, DARK, OCCLUDED, or OTHER_NOT_EVALUABLE observation",
+      "every label or event boundary adjacent to a hard scene cut",
+      "every item capable of changing a D0-A readiness terminal"
+    ],
+    "low_risk": [
+      "stable NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE observations away from event boundaries"
+    ],
+    "unresolved_rule": "Quarantine only the affected observation/event as NOT_EVALUABLE."
+  },
+  "audit_rule": {
+    "claim_critical_review_passes": 2,
+    "low_risk_primary_passes": 1,
+    "low_risk_independent_audit_fraction": 0.2,
+    "low_risk_minimum_audit_per_source": 1,
+    "sample_selector": "ascending SHA256(evidence_instance|source_id|clip_id|parent_event_id), take the first ceil(0.20*n) per source after D0-A2 primary labels",
+    "fresh_context_per_independent_pass": true,
+    "other_review_hidden_before_submission": true,
+    "material_disagreement_adjudicator_passes": 1,
+    "human_queue_required": false
+  },
+  "readiness_thresholds": {
+    "minimum_calibration_sources": 3,
+    "minimum_pilot_clips": 9,
+    "minimum_pilot_observations": 45,
+    "required_observed_labels": [
+      "VISIBLE_CENTRAL_OBSTRUCTION_PRESENT",
+      "NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE",
+      "NOT_EVALUABLE"
+    ],
+    "minimum_observed_quality_states": 3,
+    "overall_observation_label_agreement": 0.8,
+    "claim_critical_observation_label_agreement": 0.8,
+    "parent_event_match_rate": 0.75,
+    "boundary_delta_p95_max_observations": 1,
+    "maximum_unresolved_fraction": 0.1,
+    "maximum_not_evaluable_fraction": 0.4,
+    "decision_rule": "All denominators must be non-zero and every threshold must pass. Empty or missing isolated-review evidence is NOT_READY, never zero disagreement."
+  },
+  "calibration_sources": [
+    {
+      "source_id": "jrdb_rgb_continuity_canary",
+      "session_id": "jrdb_32_frame_global_affine_window",
+      "kind": "image_sequence",
+      "path": "artifacts.local/evidence/ustrf-jrdb-rgb-continuity-egomotion-availability-r0/frames",
+      "content_identity": "ordered_asset_sha256:564b70346947467736f13f50d18be93501de5bdad9e25296c86d190fdf6f36c4;files:32;images:32;bytes:11432728"
+    },
+    {
+      "source_id": "local_video_asset_67efb35b1e0bbb15",
+      "session_id": "video_content_67efb35b1e0bbb15",
+      "kind": "video",
+      "path": "artifacts.local/evidence/public-video-r752-negative-source-search-20260719/commons_ulm_240p.webm",
+      "sha256": "67efb35b1e0bbb15bc5be1b5289ec02b1d88a3a8a895a51e16b6de5ac49caa48"
+    },
+    {
+      "source_id": "local_video_asset_fb325c920fa6677c",
+      "session_id": "video_content_fb325c920fa6677c",
+      "kind": "video",
+      "path": "artifacts.local/evidence/public-video-r766-prospective-alicante-20260719/alicante_240p.webm",
+      "sha256": "fb325c920fa6677c342560d3f9489b5161e9d2e37c48715ee25b0229dd05445a"
+    },
+    {
+      "source_id": "local_video_asset_d63eb43d5d4f10f9",
+      "session_id": "video_content_d63eb43d5d4f10f9",
+      "kind": "video",
+      "path": "artifacts.local/evidence/public-video-r808-directional-obstruction-discovery-20260719/source-videos/vimeo-burwell-pedestrian-tunnel-273357684.mp4",
+      "sha256": "d63eb43d5d4f10f9451f762fef2cb3392301707e9f92994d5e0dd627ed4b5c5c"
+    }
+  ],
+  "pilot_clips": [
+    {"clip_id": "jrdb_corridor_full", "source_id": "jrdb_rgb_continuity_canary", "frame_indices": [0, 8, 16, 24, 31]},
+    {"clip_id": "ulm_street_walk", "source_id": "local_video_asset_67efb35b1e0bbb15", "frame_indices": [11600, 11720, 11840, 11960, 12080]},
+    {"clip_id": "ulm_upward_cathedral", "source_id": "local_video_asset_67efb35b1e0bbb15", "frame_indices": [23300, 23500, 23700, 23900, 24100]},
+    {"clip_id": "ulm_crossroad", "source_id": "local_video_asset_67efb35b1e0bbb15", "frame_indices": [70800, 71050, 71300, 71550, 71800]},
+    {"clip_id": "alicante_pedestrian", "source_id": "local_video_asset_fb325c920fa6677c", "frame_indices": [40000, 40400, 40800, 41200, 41600]},
+    {"clip_id": "alicante_pillar", "source_id": "local_video_asset_fb325c920fa6677c", "frame_indices": [60200, 60800, 61400, 62000, 62600]},
+    {"clip_id": "alicante_marina", "source_id": "local_video_asset_fb325c920fa6677c", "frame_indices": [101500, 102200, 102900, 103600, 104300]},
+    {"clip_id": "alicante_upward_dome", "source_id": "local_video_asset_fb325c920fa6677c", "frame_indices": [224500, 225000, 225500, 226000, 226500]},
+    {"clip_id": "burwell_title_card", "source_id": "local_video_asset_d63eb43d5d4f10f9", "frame_indices": [0, 30, 60, 90, 120]},
+    {"clip_id": "burwell_road_closed", "source_id": "local_video_asset_d63eb43d5d4f10f9", "frame_indices": [2320, 2380, 2440, 2500, 2560]},
+    {"clip_id": "burwell_open_street", "source_id": "local_video_asset_d63eb43d5d4f10f9", "frame_indices": [2820, 2880, 2940, 3000, 3060]}
+  ]
+}

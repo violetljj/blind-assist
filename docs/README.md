@@ -78,8 +78,10 @@
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
 - [中央图像阻塞互补性研究主线](research/dual-loop/README.md)：当前为
-  `CENTRAL_OBSTRUCTION_D0_A_AUTHORIZED / CANARY_LITE_AGENT_LABEL /
-  EXCLUDED_MODEL_B_TECHNICAL_SMOKE_ONLY / DEFAULT_APP_UNCHANGED`；当前唯一下一动作是
+  `CENTRAL_OBSTRUCTION_D0_A1_ACTIVE / R2_LOCK_FROZEN /
+  PRIMARY_CALIBRATION_COMPLETE / FRESH_ISOLATED_PASS_REQUIRED`；当前入口为
+  [D0-A1 entry](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_ENTRY_2026-07-31.md)，
+  协议为
   [D0-A Agent 标签可用性协议](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)。
   旧 active R1 只保留 Development mechanism、row-density diagnostic 与
   [事件失败分解](research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)，

@@ -1,0 +1,50 @@
+{
+  "schema_version": "blindassist.central_obstruction_d0a1_lock.v2",
+  "inherits_path": "scripts/research/central_obstruction_agent_label_readiness_d0a/d0a1_lock_r0.json",
+  "protocol_id": "CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A",
+  "phase": "D0-A1",
+  "evidence_instance": "CENTRAL_OBSTRUCTION_D0_A1_LABELABILITY_PILOT_R1",
+  "status": "PROMPT_REFINED_INPUTS_NOT_YET_REVIEWED",
+  "output_root": "artifacts.local/evidence/central-obstruction-agent-label-readiness-d0-a1-r1",
+  "candidate_output_access": false,
+  "bindings": {
+    "review_prompt": {
+      "path": "scripts/research/central_obstruction_agent_label_readiness_d0a/d0a1_review_prompt_r1.md"
+    }
+  },
+  "observation_contract": {
+    "positive_semantics": "Foreground or midground physical entity overlaps the ROI and visibly occludes scene behind it or terminates a central line of sight.",
+    "positive_exclusions": [
+      "background buildings",
+      "ground",
+      "sky",
+      "water",
+      "distant architecture",
+      "texture or shadow",
+      "object merely visible without material central occlusion"
+    ],
+    "negative_semantics": "Forward-looking ROI is reviewable and the positive observation is unsupported; never CLEAR, SAFE, FREE_SPACE, or TRAVERSABLE.",
+    "not_evaluable_semantics": "Forward-looking ROI unavailable or unreliable because of quality, non-scene content, hard cut, unusable dimensions, near-total occlusion, or camera orientation."
+  },
+  "parent_event_rule": {
+    "definition": "Maximal consecutive frozen observations with the same label inside one frozen clip; a continuous NOT_EVALUABLE episode remains one event.",
+    "always_close_on": [
+      "clip_or_session_boundary",
+      "hard_scene_cut",
+      "non_consecutive_frozen_observation",
+      "label_transition"
+    ],
+    "bridge_rule": "NO_BRIDGING_ACROSS_ANOTHER_LABEL_OR_SCENE_CUT"
+  },
+  "calibration_learning": {
+    "predecessor_observation": "R0 source-only calibration inspection showed that saying any scene element materially occupies the ROI would classify ordinary background architecture as obstruction.",
+    "supported_inference": "The positive label needs an occlusion or line-of-sight termination condition, not mere visibility inside the ROI.",
+    "alternative_explanations": [
+      "Some close surfaces remain genuinely ambiguous at the ROI boundary.",
+      "Camera turns and edited scene cuts can mimic rapid obstruction transitions."
+    ],
+    "information_gained": "Foreground/midground occlusion is a better image-observation proxy than generic ROI occupancy.",
+    "candidate_output_access": false,
+    "labels_generated_before_r1_lock": false
+  }
+}

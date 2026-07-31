@@ -1,6 +1,7 @@
 # BlindAssist 中央图像阻塞互补性研究主线
 
-状态：`CENTRAL_OBSTRUCTION_D0_A0_COMPLETE_VALID / D0_A1_NEXT / CANARY_LITE_AGENT_LABEL /
+状态：`CENTRAL_OBSTRUCTION_D0_A1_ACTIVE / R2_LOCK_FROZEN /
+PRIMARY_CALIBRATION_COMPLETE / FRESH_ISOLATED_PASS_REQUIRED / CANARY_LITE_AGENT_LABEL /
 EXCLUDED_MODEL_B_TECHNICAL_SMOKE_ONLY / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
@@ -27,8 +28,14 @@ D0-A0 采用 `REUSE_FIRST / FITNESS_FIRST / STOP_ON_ADEQUACY`：先按当前中�
 [D0-A0 输入宇宙冻结](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A0_RESULT_2026-07-31.md)
 现已 `COMPLETE / VALID`：6 个完整 production session、34,279 帧、5 个 ancestry
 group 已冻结；107 行 reuse-role ledger 将其余本地资产分别降级为 calibration-only
-或当前问题不可评价。D0-A0 不再扩数据，尚未生成 observation label；当前唯一下一
-动作是 D0-A1 排除式 calibration 与标签合同锁。
+或当前问题不可评价。D0-A0 不再扩数据。
+
+[D0-A1 已正式进入](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_ENTRY_2026-07-31.md)：
+R2 在 4 个 calibration-only source 上冻结 11 clip / 55 observation、ROI、收紧后的
+前/中景遮挡 prompt、parent-event/matching、风险分层 audit 与 readiness 门；
+production overlap 和 candidate-output access 均为 0。非隔离 source-only primary
+pass 已完成 55/55 observation，但 agreement/readiness 尚未评价，D0-A2 仍关闭。
+当前唯一下一动作是 fresh isolated second pass，不得读取 primary labels 或修改 R2 lock。
 
 D0-A 只回答中央图像可观察阻塞能否形成稳定的、带风险分层独立审计的 Agent-labeled
 parent-natural-event
@@ -322,8 +329,8 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 能力 | authority |
 | --- | --- |
 | D0-A0 适配度排序、最小 admitted bundle 与 reuse-role freeze | `COMPLETE / VALID / CANARY_LITE_ONLY` |
-| D0-A1 排除式 calibration、标签 pilot 与 readiness lock | `AUTHORIZED / NOT_RUN / UNIQUE_NEXT_ACTION` |
-| D0-A2–A4 Agent 标注、裁决与 readiness 审计 | `AUTHORIZED_AFTER_D0_A1_LOCK / NOT_RUN` |
+| D0-A1 排除式 calibration、标签 pilot 与 readiness lock | `ACTIVE / R2_LOCK_FROZEN / PRIMARY_COMPLETE / INDEPENDENT_PASS_REQUIRED` |
+| D0-A2–A4 Agent 标注、裁决与 readiness 审计 | `NOT_AUTHORIZED_UNTIL_D0_A1_READINESS_PASS / NOT_RUN` |
 | D0-AT 排除数据 reference model-B 接口 smoke | `AUTHORIZED / TECHNICAL_FEASIBILITY_ONLY / NO_EFFECT_EVIDENCE` |
 | D0-A 人工标注、人工复核或人工验收队列 | `NOT_REQUIRED / MUST_NOT_BLOCK` |
 | D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `LOCKED_UNTIL_D0_A_READY / DESIGN_REQUIRES_SEPARATE_REVIEW` |
@@ -378,7 +385,9 @@ READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT
 | HOLD_MODEL_B_TECHNICAL_FEASIBILITY
 ```
 
-当前唯一下一动作是 D0-A1；D0-A0 已完成且不再扩数据。在 D0-A1 lock 完成前不得启动正式标注，在 D0-A 返回
+当前唯一下一动作是对同一 R2 pilot 运行不知道 primary label 的 fresh isolated
+second pass，再按冻结门评价 observation/event agreement。不得修改 R2 prompt、ROI、
+输入、事件规则或门槛；D0-A1 readiness 通过前不得启动正式标注，在 D0-A 返回
 READY 前除 D0-AT 外不得运行模型 B 效果评价。D0-B 若以后获准，可在 burned
 Development 数据上预注册至多 3 个具有明确因果差异的模型 B/类别映射/阻塞算子
 候选、固定预算和选择规则；必须在 held-out outcome access 前冻结一个候选，再以
