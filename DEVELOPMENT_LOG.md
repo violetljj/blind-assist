@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 Atlas `GATING_PARTIAL`
+  之后，于任何 conditional-gating outcome 前冻结
+  `DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0`。两路隔离审计发现 Atlas
+  `UPPER_FIELD_BACKGROUND_ACTIVATION_PROXY` 读取 truth-derived
+  `dominant_truth_class`，且固定候选的 LOSO 只是 burned Development session 重排；
+  第三路独立裁决因此选择单一 `CLASS_CONDITIONED_MULTI_NEGATIVE`，将 upper 输入改为
+  纯几何 any-intersection、temporal history 按 predicted class 隔离并仅来自 raw mask，
+  对 obstacle 保留 pixel-level causal 语义、对 boundary/step/curb 只整组件拒绝低置信
+  小碎片。新增绑定 520 帧、11,757 components、10 source sessions、输入 SHA、五项
+  停止门的 config、独立 Module、truth-firewall/component/fragment/held-out 账本、
+  aggregation validator 与 19 项 synthetic/unit checks；结果尚未运行，当前仅为
+  `PROTOCOL_AND_IMPLEMENTATION_FROZEN / RESULT_NOT_RUN`。未训练模型、访问 fresh
+  holdout、修改旧 Atlas/sidecar、Android、risk/feedback、TTS、振动、提醒或默认 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 Atlas
   `GATING_PARTIAL` 主线暂停点启动 host-only visual sidecar R0。新增绑定 DDRNet INT8
   SHA 的 Development renderer：逐帧展示 YOLO known-object boxes、重新推理的 raw

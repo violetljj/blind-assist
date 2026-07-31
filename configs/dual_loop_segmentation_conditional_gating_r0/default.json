@@ -1,0 +1,155 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_conditional_gating.config.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0",
+  "stage": "DEVELOPMENT_STANDARD",
+  "evidence_instance": "ATLAS_PILOT_200_PLUS_EXPANSION_320_CONSUMED_DEVELOPMENT_V1",
+  "analysis_shape": [256, 256],
+  "truth_classes": {
+    "0": "walkable",
+    "1": "boundary_step_curb",
+    "2": "obstacle",
+    "3": "unknown_nonwalkable"
+  },
+  "hazard_truth_ids": [1, 2],
+  "candidate_classes": ["boundary_step_curb", "obstacle"],
+  "thresholds": {
+    "confidence_minimum": 0.65,
+    "small_fragment_max_area_pixels": 63,
+    "upper_head_y_max_fraction": 0.35,
+    "connectivity": 8
+  },
+  "candidate_order": [
+    "CLASS_CONDITIONED_MULTI_NEGATIVE"
+  ],
+  "candidate_definitions": {
+    "CLASS_CONDITIONED_MULTI_NEGATIVE": {
+      "obstacle": "reject only raw-component pixels that lack same-class causal support while the raw component is known below confidence 0.65 and is either at most 63 pixels or intersects the frozen upper head band",
+      "boundary_step_curb": "reject the whole raw component only when confidence is known below 0.65 and raw area is at most 63 pixels; temporal insufficiency and upper-band position alone never reject boundary pixels"
+    }
+  },
+  "implementation_contract": {
+    "temporal_unit": "PIXEL",
+    "history_source": "RAW_CLASS_MASK",
+    "history_scope": "SEQUENCE_WITH_SESSION_DISJOINTNESS",
+    "class_isolation": true,
+    "component_evidence_source": "RAW_CURRENT_COMPONENT",
+    "upper_membership": "ANY_PIXEL_INTERSECTION",
+    "first_observation_history": "EMPTY",
+    "second_observation_history": "ONE_PRECEDING_OBSERVATION_ONLY",
+    "missing_confidence": "INSUFFICIENT_NEGATIVE_EVIDENCE_KEEP",
+    "post_filter_feature_recomputation": false,
+    "candidate_selection_during_execution": false,
+    "candidate_fit_count": 0
+  },
+  "forbidden_candidate_inputs": [
+    "truth_mask",
+    "residual_truth",
+    "false_activation",
+    "mechanism_tags",
+    "dominant_truth_class",
+    "session_id",
+    "scene_bucket",
+    "role",
+    "yolo_attribution_state"
+  ],
+  "input_contract": {
+    "expected_frame_count": 520,
+    "expected_component_count": 11757,
+    "expected_session_frame_counts": {
+      "sanpo_real_v0:972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl": 50,
+      "sanpo_real_v0:GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT": 50,
+      "sanpo_real_v0:eHxtA669WpN381O4ZjVAmG3-3ZUewuXr": 50,
+      "sanpo_real_v0:ic_BpoiSOIW-7_mffGenT6yissRNiPzT": 50,
+      "sanpo_real_v0:5LlqRK-hWoDLSW5MmoLjKj6uQtZMKjb9": 60,
+      "sanpo_real_v0:CCG-oMqgJf90LzEhlqj0WkP3xN0dHlXk": 50,
+      "sanpo_real_v0:LRWTaGC62fB3NflMQaOPXf0HJR1m5Ypp": 50,
+      "sanpo_real_v0:i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3": 60,
+      "sanpo_real_v0:lmkIchCJ1RIKsZvbb4HjCDl85B2nOicv": 50,
+      "sanpo_real_v0:yQ5Ij3w49RMUxxIai6ZVsvPHssZJ13FO": 50
+    },
+    "expected_role_session_counts": {
+      "r1_consumed_fresh": 4,
+      "dev": 4,
+      "consumed_old_blind": 2
+    },
+    "frames": [
+      {
+        "path": "artifacts.local/evidence/dual-loop-segmentation-r2-p0/rehearsal-ddrnet-baseline-v2/frames.jsonl",
+        "sha256": "8a129c244b3de2ae0de83cfd8595b063f1219c5446d3797328645237f88fd6d3",
+        "row_count": 200
+      },
+      {
+        "path": "artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-dev-rehearsal/frames.jsonl",
+        "sha256": "7110351112b3120092c46f96133564f229699b290441aeca91ab1c9ed8e86bb3",
+        "row_count": 200
+      },
+      {
+        "path": "artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-consumed-old-blind-rehearsal/frames.jsonl",
+        "sha256": "1135ef08d44206b8bccf900bab1b121b78db22fa61735934efbd6320e9448ec5",
+        "row_count": 120
+      }
+    ],
+    "components": [
+      {
+        "path": "artifacts.local/evidence/dual-loop-segmentation-r2-p0/rehearsal-ddrnet-baseline-v2/components.jsonl",
+        "sha256": "c7ea16c58a21a7b3e24d7d06d86c29fe0e2582edf3663cf91e46811f623c4de3",
+        "row_count": 5043
+      },
+      {
+        "path": "artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-dev-rehearsal/components.jsonl",
+        "sha256": "0d06538f89acd9233833030ee764ab7001ab0b8c44d661313ec1a31392cfd063",
+        "row_count": 4089
+      },
+      {
+        "path": "artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-consumed-old-blind-rehearsal/components.jsonl",
+        "sha256": "78dfa42b78d9194ce63cc282f813216d0221b31e91fa708244b23987871d7e2c",
+        "row_count": 2625
+      }
+    ],
+    "canonical_manifest": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-r2-p0/canonical-view/manifest.jsonl",
+      "sha256": "7e8eb7de6eb74f57e35a9666a48ceb83bd817455557ee8ed32f56320dbb11d61"
+    },
+    "canonical_view_root": "artifacts.local/evidence/dual-loop-segmentation-r2-p0/canonical-view"
+  },
+  "predecessor_references": {
+    "pilot": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/pilot-200/gating_probes.json",
+      "sha256": "3460c1c08966216a38a38748dbe31f020ac6c8b5b441789b7dc6e5b44034a386",
+      "roles": ["r1_consumed_fresh"]
+    },
+    "expansion": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-failure-atlas-r0/expansion-320-v4/gating_probes.json",
+      "sha256": "4a2191d3b5d679918e1665c95e38b3d7e896eb33e91f249bf3f8ef125a7e19cf",
+      "roles": ["dev", "consumed_old_blind"]
+    }
+  },
+  "decision_rules": {
+    "minimum_false_positive_reduction": 0.3,
+    "minimum_overall_recall_retention": 0.9,
+    "minimum_session_recall_retention": 0.8,
+    "minimum_boundary_step_curb_recall_retention": 0.8,
+    "minimum_obstacle_recall_retention": 0.8,
+    "supported_terminal": "CONDITIONAL_GATING_ROBUST_INCREMENT_DEVELOPMENT_ONLY",
+    "unsupported_terminal": "CONDITIONAL_GATING_NO_ROBUST_INCREMENT_STOP_GATING_ROUTE"
+  },
+  "held_out_reporting": {
+    "method": "SOURCE_SESSION_HELD_OUT_STRESS_REPORTING",
+    "fold_count": 10,
+    "candidate_fit_count": 0,
+    "candidate_selection_per_fold": false,
+    "claim": "DEVELOPMENT_ROBUSTNESS_ONLY_NOT_INDEPENDENT_VALIDATION"
+  },
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_CONDITIONAL_GATING_DIAGNOSTIC_ONLY",
+  "forbidden": [
+    "fresh_holdout_access",
+    "candidate_or_threshold_search",
+    "independent_validation_claim",
+    "active_risk_fusion",
+    "risk_or_feedback_mutation",
+    "android_or_qnn_integration",
+    "tts_or_vibration",
+    "default_model_replacement",
+    "product_or_safety_claim"
+  ]
+}
