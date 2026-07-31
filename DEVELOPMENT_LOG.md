@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户纠正后的主线，把
+  YOLO + semantic segmentation 与 Q0 semantic-refresh 分开；保留中央阻塞 D0-A successor
+  的不可变终态 `CENTRAL_OBSTRUCTION_AUXILIARY_FEATURE_ONLY`。新增独立
+  `dual_loop_segmentation_technical_smoke` Module、contract tests 与
+  `DUAL_LOOP_SEGMENTATION_TECHNICAL_SMOKE_R0` 结果快照。runner 只接受一个已声明
+  reference model、隐藏 candidate/prior-review 的 fixed RGB slot，不读取中央阻塞标签、
+  YOLO、风险、反馈或融合，不提供模型比较/阈值/拓扑接口。
+  在 24 slot / 6 fixed clip / 3 source 上完成 smoke：tensor 合同和有限值通过；argmax
+  像素 `walkable=100%`，其余三类为 `0%`。主机端 TFLite P50/P95/MAX 为
+  `5.2386/8.1098/12.2758 ms`，未作手机/Snapdragon 结论；contact sheet 与 JSON 报告
+  保存在 `artifacts.local/evidence/dual-loop-segmentation-technical-smoke-r0/`。
+  终点为 `TECHNICAL_ONLY / NO_EFFECT_AUTHORITY`：不授权 D0-B、融合、Android 或生产；
+  语义分割正式选型、客观互补单位和 A/B/C 仍未完成。验证：5 项 focused tests、Python
+  compile、runner smoke 和可视化检查通过；详细结果见
+  [technical smoke R0 result](docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_TECHNICAL_SMOKE_R0_RESULT_2026-07-31.md)。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
   [中央图像阻塞 D0-A successor R0](docs/research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_RESULT_2026-07-31.md)：
   保留 observation-level Agent 标签，新增冻结的 1 秒 fixed-clip/四 slot 转换函数、

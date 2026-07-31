@@ -2,7 +2,7 @@
 
 状态：`CENTRAL_OBSTRUCTION_D0_A_SUCCESSOR_R0_COMPLETE / VALID /
 AUXILIARY_FEATURE_ONLY / D0_A2_NOT_AUTHORIZED / D0_A3_A4_STOPPED /
-D0_AT_NOT_RUN / DEFAULT_APP_UNCHANGED`
+D0_AT_NOT_RUN / SEGMENTATION_TECHNICAL_SMOKE_R0_COMPLETE / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
 
@@ -60,6 +60,18 @@ D0-A 不做融合、调度、Android 或 A568。只有
 
 旧神经—几何双环、Q0 语义刷新与 target-local warp residual 的终态均保持不可变，
 作为已关闭前序、Development 诊断或旁路线保留；它们不自动进入新主线。
+
+## 用户纠正后的检测 + 语义分割双环主线
+
+本页的 D0-A 终态没有改变，但“下一条主线”不再指向 Q0 semantic-refresh。当前新
+双环的概念边界是：环 A 使用 YOLO/QNN 输出已知类别目标，环 B 使用语义分割输出像素级
+区域，融合 C 再检验 B 是否为 A 提供可重复的互补信息。D0-A 的中央阻塞 Agent 标签
+只用于审计并已关闭，不能作为 B 的主真值或 C 的主要效果指标。
+
+独立的 [segmentation technical smoke R0 result](DUAL_LOOP_SEGMENTATION_TECHNICAL_SMOKE_R0_RESULT_2026-07-31.md)
+已完成：接口与有限值通过，但当前 reference 在 24 个 RGB slot 上 argmax 全部塌缩为
+`walkable`。该结果只保留为 `TECHNICAL_ONLY / NO_EFFECT_AUTHORITY` 诊断，不代表分割
+方向或其他模型候选已被否定。
 
 ## 已关闭前序与保留证据
 
@@ -342,6 +354,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | D0-A successor R0 fixed-clip calibration | `COMPLETE / VALID / AUXILIARY_FEATURE_ONLY` |
 | D0-A2–A4 Agent 标注、裁决与 readiness 审计 | `NOT_AUTHORIZED / STOPPED_BY_D0_A_SUCCESSOR_R0` |
 | D0-AT 排除数据 reference model-B 接口 smoke | `NOT_RUN / STOPPED_BY_LABELABILITY_TERMINAL` |
+| 独立 segmentation technical smoke R0 | `COMPLETE / VALID / TECHNICAL_ONLY / NO_EFFECT_AUTHORITY` |
 | D0-A 人工标注、人工复核或人工验收队列 | `NOT_REQUIRED / MUST_NOT_BLOCK` |
 | D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `LOCKED_UNTIL_D0_A_READY / DESIGN_REQUIRES_SEPARATE_REVIEW` |
 | D0-B 模型执行、融合或事件增量评价 | `NOT_AUTHORIZED` |
@@ -365,7 +378,8 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 事件保持型语义刷新调度 Q0 离线 R0.1 评测修订 | `COMPLETE / DEVELOPMENT_ONLY / EPISODE_ALIGNMENT / NO_ANDROID_AUTHORITY` |
 | scene-scale active successor / single-variable R2 | `CLOSED / NOT_WORTH_DESIGNING / NOT_IMPLEMENTED` |
 | 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
-| 自适应调度、深度、分割、ARCore | `NOT_AUTHORIZED` |
+| 自适应调度、深度、ARCore | `NOT_AUTHORIZED` |
+| 分割模型正式选型、融合与 A-vs-C 效果评价 | `NOT_AUTHORIZED / NOT_STARTED` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
 | 真人、独立助行、安全、产品或跨设备结论 | `NOT_AUTHORIZED` |
 
@@ -379,9 +393,18 @@ D0-A successor R0 已经回答了本轮唯一允许的问题：固定 clip 转�
    重跑、不重切 burned 11 clips。
 2. 中央阻塞只保留为 `AUXILIARY_FEATURE_ONLY` 的 observation-level、非生产候选；不将
    `MIXED_OBSERVATION` 或 `NOT_EVALUABLE` 重标为事件。
-3. 停止 D0-A3/A4，不启动 D0-A2、D0-AT、D0-B、模型效果、Android、默认生产或安全工作。
+3. 停止 D0-A3/A4，不启动 D0-A2、D0-AT、D0-B 效果、Android、默认生产或安全工作；
+   独立 technical smoke R0 仅用于接口诊断，不改变上述权限。
 4. 如未来重新提出中央阻塞研究，必须另立独立问题、证据版本和评审，不得把它称为本
    successor 的自动延续。
+
+### 新双环的下一条短链
+
+1. 不再修改中央阻塞提示词或增加 Agent 裁决；
+2. 冻结客观的图像空间互补单位，明确它不是现实可通行性真值；
+3. 在独立 Development 设计中比较 `YOLO-only`、`segmentation-only` 和
+   `YOLO + segmentation` 的区域/像素增量、稳定性与成本；
+4. 只有在互补信息可重复后，才讨论融合算子或 Android；否则关闭具体候选而不扩大关闭范围。
 
 ### 已关闭几何与调度路线的保留规则
 
