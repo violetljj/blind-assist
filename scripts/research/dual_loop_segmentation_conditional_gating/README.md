@@ -1,8 +1,8 @@
 # dual_loop_segmentation_conditional_gating
 
 状态：development；`R0_PRIMARY_COMPLETE_VALID_NOT_SUPPORTED /
-R0_1_SHADOW_EXECUTION_COMPLETE / VALIDATOR_RECOVERY_PENDING /
-FAMILY_TERMINAL_PENDING`
+R0_1_SHADOW_COMPLETE_VALID_NO_MATERIAL_NO_HETEROGENEITY /
+BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP`
 
 ## 研究问题与版本
 
@@ -60,8 +60,9 @@ shadow input 前因 input-list loader 类型错误停止；没有创建 output �
 membership；候选与解释合同不变。
 
 V2 已生成一次 shadow evidence；初始 validator 因 primary-summary schema 与 runner
-不一致而在 0 项 aggregation checks 后停止。当前 recovery 只修摘要字段匹配，不修改
-既有 result/frame/component evidence；恢复校验通过前结果不获得 `VALID` 身份。
+不一致而在 0 项 aggregation checks 后停止。recovery 只修摘要字段匹配，不修改既有
+result/frame/component evidence；恢复 validator 现已通过 `167,327` 项检查、错误数
+`0`，独立复算的 frame/component 输出逐字节一致。
 
 输入 SHA、520 帧、11,757 个 raw component、十个 session 分母、单一候选与全部阈值
 均由 config 绑定。runner 先复现 pilot/expansion 的 baseline、union causal 2-of-3 与
@@ -144,5 +145,8 @@ overall recall retention 为 `0.942399`，但 false-positive reduction 为
 
 R0 machine terminal 与证据保持不可变，但用户纠正后其 scope 只覆盖 primary。新增
 [R0.1 shadow protocol](../../../docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_PROTOCOL_2026-08-01.md)
-冻结两个 diagnostic-only shadows；它们不救援 primary、不产生选择权限。有限三臂家族
-与 residual-aware DDRNet 的排序等 shadow closeout 后再定，训练尚未授权或执行。
+冻结两个 diagnostic-only shadows；它们不救援 primary、不产生选择权限。R0.1 已
+`VALID`：两臂均无 material，且 `H_min/H_cross` 均为 false，故停止这个精确三臂
+静态手工门家族。详见
+[R0.1 结果](../../../docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_RESULT_2026-08-01.md)。
+下一主边界为 residual-aware DDRNet Development；本 Module 不再增加手工门。

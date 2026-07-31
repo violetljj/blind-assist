@@ -3,9 +3,9 @@
 状态：`SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
 CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
-R0_1_SHADOW_EXECUTION_COMPLETE_VALIDATOR_RECOVERY_PENDING /
-BOUNDED_FAMILY_TERMINAL_PENDING /
-RESIDUAL_AWARE_DDRNET_DESIGN_ELIGIBLE_SEQUENCED_AFTER_R0_1 /
+R0_1_SHADOW_VALID_NO_MATERIAL_NO_HETEROGENEITY /
+BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP /
+RESIDUAL_AWARE_DDRNET_DEVELOPMENT_DESIGN_AUTHORIZED_NOT_EXECUTED /
 VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
 THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
@@ -208,11 +208,18 @@ R0 machine terminal 与全部 evidence 保持不可变，但 `STOP_GATING_ROUTE`
 
 R0.1 初始 implementation activation 在读取 raw shadow input 前因 list/single-binding
 loader 类型错误停止；没有 output、mask 或指标。V2 仅修复 input-list 路由并把完整
-membership 检查前移到 preflight，科学合同不变。
+membership 检查前移到 preflight，科学合同不变。V2 随后完成一次 shadow execution；
+初始 validator 又因 primary 摘要 schema 不一致而在 0 项 aggregation checks 后停止。
+recovery 只修摘要字段匹配，不修改既有 result/frame/component evidence，最终通过
+`167,327` 项检查、错误数 `0`，独立复算的两个核心 JSONL 逐字节一致。
 
-V2 随后完成一次 shadow execution。初始 validator 因 runner/validator 的 primary
-摘要 schema 不一致而在 0 项 aggregation checks 后停止；现只冻结 validator 摘要
-匹配修复。现有 result/frame/component evidence 不改，在恢复校验通过前不作科学终态。
+[R0.1 shadow result](DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_RESULT_2026-08-01.md)
+显示：`CLASS_CONDITIONAL_TEMPORAL` 的 FP reduction / overall recall retention 为
+`0.284667 / 0.781123`，`MULTI_NEGATIVE` 为 `0.109286 / 0.922445`；两者最低
+session retention 仅 `0.612024 / 0.629324`，后者 boundary retention 也只有
+`0.612015`。两个 shadow 均无 material，`H_min/H_cross` 均为 false。因此停止这三个
+精确定义的静态手工门家族，下一主边界是 residual-aware DDRNet Development；不得扩大
+为所有 conditional/learned gating、postprocess 或分割路线失败。
 
 独立的 host-only visual sidecar R0 已可用，只显示 YOLO boxes、
 raw heatmap、候选、gate pass/reject/abstain 与原因，固定水印且
@@ -530,7 +537,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 自适应调度、深度、ARCore | `NOT_AUTHORIZED` |
 | 分割模型正式选型、风险融合与 A-vs-C 效果评价 | `NOT_AUTHORIZED / NOT_STARTED` |
 | DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0 | `PRIMARY COMPLETE / VALID / NOT_SUPPORTED / HISTORICAL TERMINAL IMMUTABLE / DEVELOPMENT_ONLY` |
-| DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0.1 SHADOW | `EXECUTION_COMPLETE / VALIDATOR_RECOVERY_PENDING / POST_PRIMARY_DIAGNOSTIC_ONLY / FAMILY_TERMINAL_PENDING` |
+| DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0.1 SHADOW | `COMPLETE / VALID / NO_MATERIAL / NO_HETEROGENEITY / BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP / POST_PRIMARY_DIAGNOSTIC_ONLY` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
 | 真人、独立助行、安全、产品或跨设备结论 | `NOT_AUTHORIZED` |
 
@@ -566,11 +573,12 @@ component、raw/motion-warped temporal 字段与 host cost 评价。当前 refer
 
 conditional gating R0 已完成 520 帧执行、逐帧/逐组件独立复算与 held-out/direct
 等价检查；五项门中的 false-positive reduction 和 minimum-session recall retention
-失败，只能判定 primary 不受支持。下一动作改为先完成 R0.1 的两个 diagnostic-only
-shadow：执行前冻结、一次全量计算、全部公开且无选择权限。若 shadow 形成 family
-counterexample 或 alternative signal，只能另立新单候选或转模型训练；若均无稳健信号，
-才关闭这个精确三臂家族并把 residual-aware DDRNet Development 设计设为下一主边界。
-本轮不训练、不启动 Android、Confirmation、提醒或产品路径。
+失败，只能判定 primary 不受支持。R0.1 又以前向冻结、一次全量、全部公开且无选择权限
+的方式执行两个 diagnostic-only shadows；两臂均无 material signal，且没有冻结定义的
+minimum-session-only 或跨 session winner inversion。由此关闭的是这个精确三臂、
+固定阈值、静态手工门家族。下一主边界为 residual-aware DDRNet Development：不再增加
+手工阈值、latch、类别规则或 oracle session routing；仍不启动 Android、Confirmation、
+提醒或产品路径。
 
 ### 后续资源纪律
 

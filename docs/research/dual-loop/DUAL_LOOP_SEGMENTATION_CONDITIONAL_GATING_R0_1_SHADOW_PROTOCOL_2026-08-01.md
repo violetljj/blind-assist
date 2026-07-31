@@ -1,7 +1,7 @@
 # Conditional Segmentation Gating R0.1 Post-primary Shadow Protocol
 
-状态：`PROTOCOL_FROZEN / EXECUTION_COMPLETE /
-VALIDATOR_SUMMARY_SCHEMA_RECOVERY_V2_FROZEN_NOT_RUN / RESULT_NOT_YET_VALID /
+状态：`PROTOCOL_FROZEN / EXECUTION_COMPLETE / VALID /
+POST_TERMINAL_SHADOW_ABLATION_COMPLETE_DIAGNOSTIC_ONLY /
 POST_PRIMARY_SHADOW_ABLATION_ONLY / NO_SELECTION_AUTHORITY /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
@@ -20,7 +20,10 @@ validator 在任何 aggregation 检查前以 `reported primary binding drifted` 
 runner 的 primary 摘要包含 `reference_only/terminal_unchanged`，validator 却期待
 不存在的 `protocol_id` 字段。validation recovery 只让 validator 精确匹配 runner 已
 冻结的 primary-summary schema；不改 result、frame/component 输出、算法或解释规则。
-在 recovery validator 通过前，本 evidence 仍为 `RESULT_NOT_YET_VALID`。
+recovery validator 现已通过 167,327 项检查、错误数 0。详见
+[R0.1 result](DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_RESULT_2026-08-01.md)；
+两条 shadow 均无 material，且 `H_min/H_cross` 全部为 false。有限三臂静态手工门
+家族终态为 `TWO_SHADOWS_WEAK_FIXED_HANDCRAFTED_GATING_FAMILY_STOP`。
 
 ## 纠正与研究问题
 
@@ -162,5 +165,6 @@ R0.1 绑定 R0 frozen Git、primary definition hash、result/frame/component/val
 不得读取 shadow outcome。
 
 本协议不训练模型、不访问 fresh holdout，不接 Android、QNN/A568、risk/feedback、
-TTS、振动、提醒或默认 App。residual-aware DDRNet 仍为 eligible 方向，但排在 R0.1
-closeout 之后，且当前未授权训练。
+TTS、振动、提醒或默认 App。协议冻结时 residual-aware DDRNet 只为 eligible 方向；
+R0.1 的 `VALID` 负结果现已使其 Development 设计成为下一主边界，但不由本协议自动
+授权训练或扩大证据范围。

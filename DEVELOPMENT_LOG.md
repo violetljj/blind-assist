@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
+  `DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1` post-primary shadow closeout。
+  冻结的 `CLASS_CONDITIONAL_TEMPORAL` 与 `MULTI_NEGATIVE` 在 Git
+  `827dcda976394cd4d2a0c6f5bc29993ada9d9d5d` 上一次性处理 520 帧、11,757 raw
+  components、10 个 consumed Development sessions；两臂 FP reduction / overall
+  recall retention 分别为 `0.284667 / 0.781123` 与 `0.109286 / 0.922445`，最低
+  session retention 为 `0.612024 / 0.629324`。前者失败 overall、minimum-session
+  与 obstacle recall，后者失败 FP、minimum-session 与 boundary recall。两臂均无
+  material signal，`H_min/H_cross` 均为 false。validator recovery Git
+  `dd0daacc3d847e94fae1e0000179ffbb796ce33d` 只修 primary-summary schema，未修改
+  已有 evidence；独立 validator 通过 `167,327` 项检查、错误数 0，第二次复算的
+  frame/component JSONL 逐字节一致。R0 primary terminal 与全部 evidence 不变；
+  family terminal 为 `TWO_SHADOWS_WEAK_FIXED_HANDCRAFTED_GATING_FAMILY_STOP`，只关闭
+  这三个精确定义的固定阈值静态手工门，不扩大到 learned gating、postprocess 或语义
+  分割。下一主边界为 residual-aware DDRNet Development；未修改模型、Android、
+  risk/feedback、提醒或默认 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。R0.1 V2 implementation
   Git `827dcda976394cd4d2a0c6f5bc29993ada9d9d5d` 已完成一次 520-frame、23,514
   shadow component-decision 执行。初始独立 validator 在 0 项 aggregation checks 后以
