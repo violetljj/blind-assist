@@ -58,6 +58,9 @@
 /docs/research/dual-loop/DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_* text eol=lf
 /scripts/research/dual_loop_unseen_natural_event_r0/** text eol=lf
 
+# FP-aware DDRNet R0 binds the frozen machine-readable config SHA-256.
+/configs/dual_loop_segmentation_fp_aware_ddrnet_r0/default.json text eol=lf
+
 # Target-local background warp residual R0 design and review bind the frozen contract bytes.
 /docs/research/dual-loop/TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_* text eol=lf whitespace=-blank-at-eof
 

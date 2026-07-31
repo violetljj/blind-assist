@@ -1,0 +1,183 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_fp_aware_ddrnet_r0.config.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0",
+  "candidate_id": "FP_WEIGHTED_UNGUIDED_FULL_FRAME",
+  "stage": "DEVELOPMENT",
+  "status": "FROZEN_NOT_EXECUTED",
+  "single_variable": {
+    "baseline": "After uniform session selection, the R1 30% unguided branch draws a frame uniformly within that session and uses the complete frame.",
+    "candidate": "After the same uniform session selection, the same 30% unguided branch draws a complete frame with probability proportional to same-seed frozen-baseline hazard false-positive pixel count within that session.",
+    "false_positive_pixel": "same-seed frozen R1 baseline argmax in {boundary_step_curb, obstacle} AND canonical train truth in {walkable, unknown_nonwalkable}",
+    "unchanged": [
+      "DDRNet-23-Slim architecture and official ImageNet initialization",
+      "four-class full-image truth",
+      "400 train and 200 dev membership",
+      "70% positive-guided crop branch",
+      "65% boundary versus 35% obstacle choice within the positive branch",
+      "crop range and horizontal flip",
+      "weighted CE plus weighted Dice plus weighted focal loss",
+      "class weights",
+      "Adam optimizer and learning-rate schedule",
+      "three seeds and 1200 optimizer steps per seed",
+      "dev harmonic mean IoU plus boundary IoU checkpoint rule"
+    ],
+    "not_part_of_r0": [
+      "residual proxy relabeling",
+      "YOLO-conditioned train weights",
+      "uncertainty or ignore labels",
+      "new false-positive loss",
+      "component-balanced sampling",
+      "hard-negative crop",
+      "confidence threshold",
+      "new model family"
+    ]
+  },
+  "inputs": {
+    "ddrnet_architecture": {
+      "path": "artifacts.local/vendor/DDRNet/segmentation/DDRNet_23_slim.py",
+      "sha256": "aaebccbc2b2cbea7e153165fe71848879a18e305c82fa3f1bd3dc7f7bea0637f"
+    },
+    "ddrnet_source_checkpoint": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/source_pretrained/ddrnet23_slim_imagenet.pth",
+      "sha256": "f6d03fa29b80e2e648f89a7639eb0c6d6c088e8f70f2cba1b2872b314a5c54b6"
+    },
+    "r1_baseline_training_report": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/ddrnet23_slim/fp32/training_report.json",
+      "sha256": "043662a7f3e7a95e2ee1eab910f62ea3e208dab559c8945f263e19719578995f"
+    },
+    "r1_baseline_seed_20260711": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/ddrnet23_slim/fp32/seed-20260711/best_fp32.pt",
+      "sha256": "4fae9db42161bb5a545b07f15ea51ac3de7f3c2f72a9e286c0372c14cdd87e5a"
+    },
+    "r1_baseline_seed_20260712": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/ddrnet23_slim/fp32/seed-20260712/best_fp32.pt",
+      "sha256": "8442427a0c4596f519a55fcd784fc39f0813f418b512785e2415f9625f06f5f1"
+    },
+    "r1_baseline_seed_20260713": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/ddrnet23_slim/fp32/seed-20260713/best_fp32.pt",
+      "sha256": "a2e696a5ab9110ae9eb9a622104656d529c6a609b98baaf135efb2739e0d34eb"
+    }
+  },
+  "data": {
+    "dataset_root": "test-artifacts.local/datasets/sanpo-v4-real-canonical-r3-20260713",
+    "training_manifest": "training_manifest.jsonl",
+    "training_manifest_sha256": "1524b74d7369fc58b7c00da3a0bfa998b4ae8caad4f3d2212d08a5888c0f8675",
+    "train": {
+      "rows": 400,
+      "sessions": 8,
+      "allowed": [
+        "same-seed baseline false-positive weight construction",
+        "candidate training"
+      ]
+    },
+    "dev": {
+      "rows": 200,
+      "sessions": 4,
+      "allowed": [
+        "unchanged per-seed checkpoint selection"
+      ],
+      "forbidden": [
+        "terminal evaluation",
+        "sampling-policy tuning"
+      ]
+    }
+  },
+  "training": {
+    "optimizer": "Adam",
+    "optimizer_steps": 1200,
+    "head_warmup_steps": 100,
+    "eval_every_steps": 50,
+    "batch_size": 12,
+    "seeds": [
+      20260711,
+      20260712,
+      20260713
+    ],
+    "head_learning_rate": 0.0003,
+    "finetune_learning_rate": 0.00005,
+    "finetune_final_lr_ratio": 0.1,
+    "freeze_batchnorm_statistics": true,
+    "sampling": {
+      "session_selection": "uniform",
+      "positive_guided_fraction": 0.7,
+      "fp_weighted_full_frame_fraction": 0.3,
+      "boundary_probability_within_positive_branch": 0.65,
+      "crop_min_fraction": 0.55,
+      "crop_max_fraction": 0.85,
+      "horizontal_flip_probability": 0.5,
+      "zero_session_fp_weight": "NOT_EVALUABLE_BEFORE_TRAINING",
+      "full_frame_transform_unchanged": true
+    },
+    "loss": {
+      "weighted_cross_entropy": 0.5,
+      "weighted_soft_dice": 0.4,
+      "weighted_focal": 0.1,
+      "focal_gamma": 2.0,
+      "maximum_class_weight": 4.0,
+      "class_weight_source": "train_only"
+    },
+    "checkpoint_rule": "Within each seed, choose dev checkpoint by harmonic mean of dev mean IoU and boundary_step_curb IoU, then boundary IoU and mean IoU."
+  },
+  "evaluation": {
+    "authority": "CONSUMED_DEVELOPMENT_STRESS_ONLY",
+    "canonical_view_manifest": {
+      "path": "artifacts.local/evidence/dual-loop-segmentation-r2-p0/canonical-view/manifest.jsonl",
+      "sha256": "7e8eb7de6eb74f57e35a9666a48ceb83bd817455557ee8ed32f56320dbb11d61"
+    },
+    "roles": [
+      "consumed_old_blind",
+      "r1_consumed_fresh"
+    ],
+    "role_counts": {
+      "consumed_old_blind": 120,
+      "r1_consumed_fresh": 200
+    },
+    "yolo_traces": {
+      "consumed_old_blind": {
+        "path": "artifacts.local/evidence/dual-loop-segmentation-candidate-utility-r0/formal/yolo_trace.jsonl",
+        "sha256": "25701f07182b615cf458ddb3d4d5af9583bdfd9e3c5479e8b197100de631af54"
+      },
+      "r1_consumed_fresh": {
+        "path": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/yolo_trace.jsonl",
+        "sha256": "036b15a26793ab360aa2f7052c55e1e244ea8e17c4ddc43127eff942e7371084"
+      }
+    },
+    "batch_size": 12,
+    "connectivity": 8,
+    "component_hit_rule": "positive_intersection",
+    "same_seed_pairing": true,
+    "all_three_seeds_required": true,
+    "best_seed_selection_forbidden": true,
+    "gates": {
+      "min_fp_pixel_reduction": 0.3,
+      "min_overall_recall_retention": 0.9,
+      "min_session_recall_retention": 0.8,
+      "min_boundary_recall_retention": 0.8,
+      "min_obstacle_recall_retention": 0.8,
+      "min_delta_recall_C_minus_A": 0.05,
+      "max_delta_false_positive_area_fraction_C_minus_A": 0.05,
+      "min_candidate_component_recall": 0.5,
+      "max_false_activation_components_per_frame": 3.0
+    }
+  },
+  "terminals": {
+    "supported": "FP_WEIGHTED_SAMPLING_SUPPORTED_DEVELOPMENT_ONLY",
+    "not_supported": "FP_WEIGHTED_SAMPLING_NOT_SUPPORTED",
+    "not_evaluable": "FP_WEIGHTED_SAMPLING_NOT_EVALUABLE"
+  },
+  "output": {
+    "training_root": "artifacts.local/evidence/dual-loop-segmentation-fp-aware-ddrnet-r0/training",
+    "training_report": "artifacts.local/evidence/dual-loop-segmentation-fp-aware-ddrnet-r0/training/training_report.json",
+    "evaluation_root": "artifacts.local/evidence/dual-loop-segmentation-fp-aware-ddrnet-r0/evaluation",
+    "validation": "artifacts.local/evidence/dual-loop-segmentation-fp-aware-ddrnet-r0/validation.json"
+  },
+  "authority": {
+    "fresh_or_confirmation_outcome_access": "FORBIDDEN",
+    "int8_or_tflite": "NOT_IN_R0",
+    "runtime_or_device": "NOT_IN_R0",
+    "android_qnn_a568": "NOT_AUTHORIZED",
+    "risk_feedback_alerts": "NOT_AUTHORIZED",
+    "default_app": "UNCHANGED",
+    "claim_ceiling": "same_seed_fp32_consumed_development_pixel_component_sampling_ablation_only"
+  }
+}

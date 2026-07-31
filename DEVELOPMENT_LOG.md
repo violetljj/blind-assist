@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 conditional gating
+  精确三臂静态手工门家族关闭后，冻结单一
+  `DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0` successor
+  `FP_WEIGHTED_UNGUIDED_FULL_FRAME`。相对历史 R1 DDRNet 只改变原 30% unguided
+  full-frame branch 的 session 内 frame probability：按同 seed baseline 在 train
+  truth 上的 hazard FP pixel count 加权，但仍输入完整帧；backbone、官方初始化、四类
+  target、loss、70% guided crop、三 seed、1200-step 预算和 dev checkpoint rule 均不变。
+  新 config、独立 trainer/evaluator/validator 与 8 项 focused tests 已就绪；outcome-
+  blind preflight 通过，三个 seed 分别有 `818,645 / 1,088,041 / 2,089,096` train FP
+  pixels，均覆盖 400 frames 和 8 sessions。终态只允许 consumed old-blind 120 +
+  R1-consumed 200，与同 seed baseline 配对且三 seed 各自通过 relative 五门和 absolute
+  四门；不得选择最好 seed。validator 将重新装载六个 same-seed checkpoints、复推 320
+  帧并逐像素核对 prediction mask，任何执行或合同异常都写
+  `FP_WEIGHTED_SAMPLING_NOT_EVALUABLE`。候选尚未训练，320-frame terminal outcome
+  未读取；不访问 fresh/Confirmation，不运行 INT8/runtime，不修改 Android、
+  risk/feedback、提醒或默认 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
   `DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1` post-primary shadow closeout。
   冻结的 `CLASS_CONDITIONAL_TEMPORAL` 与 `MULTI_NEGATIVE` 在 Git
