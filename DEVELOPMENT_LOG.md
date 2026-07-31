@@ -35,6 +35,10 @@
   只整理既有机制、工程和事件级证据，并从 dual-loop README 链接；报告包含
   baseline/shadow/isolated-active/default-off、三来源事件结果和 retained-false
   五类分解三张教师可见 Mermaid 图，不运行新实验、不授权调度或 active R2。
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  `HETEROGENEOUS_PLATFORM_P0A_R0` 设备准入预检：ADB 健康检查为 ready，但唯一可访问
+  设备为 `SM-S9280 / SM8650`，不是 A568；A568 硬件、runtime、模型加载、固定帧结果、
+  温度/功耗/可复算日志均缺失。按门禁直接终止为 `HOLD_NOT_EVALUABLE`，不进入 T4/T5。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户明确授权完成
   [TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 B Development 实现与单次执行](docs/research/dual-loop/TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-31.md)：
   在隔离 offline Module 中完成 truth-blind producer、独立 truth-late evaluator、

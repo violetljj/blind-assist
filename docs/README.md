@@ -29,6 +29,7 @@
 | [BLINDASSIST_EVALSET.md](BLINDASSIST_EVALSET.md) | current | 助行图像评测集 |
 | [DETECTOR_BENCHMARK.md](DETECTOR_BENCHMARK.md) | current | 检测器 benchmark 契约 |
 | [NPU_DEFAULT_CANDIDATE.md](NPU_DEFAULT_CANDIDATE.md) | current | SM8650 QNN HTP 生产首选、CPU fallback 与新增 SoC 的 fail-closed 准入门 |
+| [HETEROGENEOUS_PLATFORM_P0A_R0_2026-07-31.md](HETEROGENEOUS_PLATFORM_P0A_R0_2026-07-31.md) | snapshot | A568 异构平台准入预检；当前终点为 `HOLD_NOT_EVALUABLE` |
 | [PROJECT_AUDIT_2026-07-28.md](PROJECT_AUDIT_2026-07-28.md) | snapshot | 全项目架构、研究治理、文档、脚本、构建与本地产物审查及优化 |
 | [PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md](PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md) | snapshot | Project Guideline 八项组件的复用、适配、参考、暂缓与放弃边界 |
 | [PROJECT_AUDIT_2026-07-10.md](PROJECT_AUDIT_2026-07-10.md) | snapshot | 2026-07-10 项目综合审计 |
