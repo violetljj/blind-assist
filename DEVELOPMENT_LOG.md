@@ -1,5 +1,16 @@
 # Development Log
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
+  [中央图像阻塞 D0-A successor R0](docs/research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_RESULT_2026-07-31.md)：
+  保留 observation-level Agent 标签，新增冻结的 1 秒 fixed-clip/四 slot 转换函数、
+  content-blind input freezer、双 isolated-review validator 与 4 项 unit tests；fresh
+  calibration 使用 3 个未进入 burned 11 clips 的 session、6 个 clip、24 个 slot。
+  固定边界复现 `1.0`，但两路 Agent observation agreement `16/24=0.6667`、unresolved
+  `8/24=0.3333`、unit-state match `4/6=0.6667`，正式终态为
+  `CENTRAL_OBSTRUCTION_AUXILIARY_FEATURE_ONLY / D0_A3_A4_STOPPED`。D0-A1 的
+  `0.8545/0.8298` 保持不变；D0-A2/D0-AT/D0-B、模型效果、Android 与默认行为均未授权。
+  冻结、validator、JSON schema、单测与文档索引/卫生检查见 successor evidence root 和
+  结果快照。
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
   [中央图像阻塞 D0-A1 R2](docs/research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_RESULT_2026-07-31.md)
   的 fresh isolated second pass、8 项 third-Agent adjudication 与最终 readiness：fork-none
   second Agent 在 primary/aggregate/model output 不可见时覆盖 11/11 clip、55/55

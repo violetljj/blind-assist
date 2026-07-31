@@ -78,13 +78,15 @@
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
 - [中央图像阻塞互补性研究主线](research/dual-loop/README.md)：当前为
-  `CENTRAL_OBSTRUCTION_D0_A1_COMPLETE / R2_VALID /
-  AGENT_LABEL_PROTOCOL_NOT_RELIABLE / D0_A2_NOT_AUTHORIZED`；当前结论为
+  `CENTRAL_OBSTRUCTION_D0_A_SUCCESSOR_R0_COMPLETE / VALID /
+  AUXILIARY_FEATURE_ONLY / D0_A3_A4_STOPPED`；当前结论为
+  [D0-A successor R0 result](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_RESULT_2026-07-31.md)，
   [D0-A1 result](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_RESULT_2026-07-31.md)，
   进入快照为
   [D0-A1 entry](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_ENTRY_2026-07-31.md)，
   协议为
-  [D0-A Agent 标签可用性协议](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)。
+  [D0-A Agent 标签可用性协议](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)和
+  [successor fixed-clip protocol](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_PROTOCOL_2026-07-31.json)。
   旧 active R1 只保留 Development mechanism、row-density diagnostic 与
   [事件失败分解](research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)，
   不授权默认生产、产品、安全或自动 R2。

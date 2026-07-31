@@ -64,7 +64,7 @@
 - [`research/dual_loop_r1_event_failure_decomposition_r0/`](research/dual_loop_r1_event_failure_decomposition_r0/)：只消费已关闭 Development trace、truth ledger 与 receipt 的 R1 post-terminal 逐窗口失败分解和 Development-only upper-bound audit；不重跑、不调阈值、不实现 R2。
 - [`research/dual_loop_unseen_natural_event_r0/`](research/dual_loop_unseen_natural_event_r0/)：按输出盲 metadata registry、冻结事件窗、baseline adequacy 与同事件延迟门，评价固定 `039757b` 在全新自然视频上的事件级 canary；单来源不作总体外推。
 - [`research/dual_loop_semantic_refresh_q0/`](research/dual_loop_semantic_refresh_q0/)：固定模型全频参考下的事件保持型语义刷新调度 Q0 R0/R0.1 离线评测；R0.1 补齐 risk-episode 对齐、signed delay 和约束型 operating point，每个 arm 隔离 cache/feedback/event state，不接 Android、能效、产品或安全路径。
-- [`research/central_obstruction_agent_label_readiness_d0a/`](research/central_obstruction_agent_label_readiness_d0a/)：中央图像阻塞 D0-A0 reuse-first 输入宇宙，以及 D0-A1 排除式 calibration lock、write-once primary/isolated/adjudication review、agreement/readiness validator 与 canonical failure ledger；终态 `AGENT_LABEL_PROTOCOL_NOT_RELIABLE`，D0-A2/模型效果关闭。
+- [`research/central_obstruction_agent_label_readiness_d0a/`](research/central_obstruction_agent_label_readiness_d0a/)：中央图像阻塞 D0-A0 reuse-first 输入宇宙、D0-A1 排除式 calibration lock，以及 D0-A successor 的 observation-only 双 pass fixed-clip 转换与 validator；successor 终态 `CENTRAL_OBSTRUCTION_AUXILIARY_FEATURE_ONLY`，D0-A2/D0-A3/A4/模型效果关闭。
 - [`research/common/`](research/common/)：至少两个研究域真实复用的共享 Implementation；领域规则和授权不得进入该 Module。
 - [研究 Module 模板](research/README.md)：新路线必须声明稳定 Interface、输出、安全边界与停止条件。
 - 根目录 USTRF-SC、SANPO 数据治理、训练与 benchmark 脚本：当前仍共享少量 SANPO 模型/证据 helper，待形成独立稳定 Interface 后再按域下沉，禁止为追求目录外观一次性拆断依赖网。

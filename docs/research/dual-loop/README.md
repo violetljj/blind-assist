@@ -1,15 +1,15 @@
 # BlindAssist 中央图像阻塞互补性研究主线
 
-状态：`CENTRAL_OBSTRUCTION_D0_A1_COMPLETE / R2_VALID /
-AGENT_LABEL_PROTOCOL_NOT_RELIABLE / D0_A2_NOT_AUTHORIZED /
-D0_AT_NOT_RUN_STOPPED_BY_LABELABILITY / DEFAULT_APP_UNCHANGED`
+状态：`CENTRAL_OBSTRUCTION_D0_A_SUCCESSOR_R0_COMPLETE / VALID /
+AUXILIARY_FEATURE_ONLY / D0_A2_NOT_AUTHORIZED / D0_A3_A4_STOPPED /
+D0_AT_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
 
 ## 当前决定
 
-2026-07-31，用户明确采用 Agent-only 标注并将“中央图像阻塞互补性”设为新的论文系统
-研究主线。当前唯一获授权阶段是
+2026-07-31，用户明确要求以 Agent-only 标注检验“中央图像阻塞互补性”的可行边界；该
+探索路线现已完成 successor calibration 并关闭。唯一获授权阶段曾是
 [CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)：
 按 `CANARY_LITE` 先对现有连续 RGB 做适配度排序，以冻结充分性规则选出最小 admitted
 bundle；在排除式 calibration 上完成标签 pilot 和抽样审计规则，再用一个 primary
@@ -17,7 +17,7 @@ Agent 标注 admitted bundle。正例、`NOT_EVALUABLE`、歧义/terminal-changi
 冻结抽样进入第二路隔离 Agent；只有材料分歧才由 fresh 第三 Agent 裁决。本路线不设
 人工队列；标注、抽样复核、裁决与验收均由隔离 Agent 自主完成。
 
-D0-A0 采用 `REUSE_FIRST / FITNESS_FIRST / STOP_ON_ADEQUACY`：先按当前中央阻塞
+D0-A0 采用 `REUSE_FIRST / FITNESS_FIRST / STOP_ON_ADEQUACY`：先按当时的中央阻塞
 问题的可观察性、身份完整性、事件多样性、实际历史访问、claim overlap 和处理成本
 排序现有可访问连续 RGB；满足冻结充分性规则后停止扩充，不要求为完整性遍历全部存量。
 数据曾被其他算法、主线或实验使用，不构成按数据集名称排除的理由；相关历史
@@ -38,9 +38,17 @@ agreement 为 `0.8545/0.8298`，但 parent-event match `0.6316 < 0.75`，终态
 successor boundary 是在新的 D0-A 版本中用 burned calibration stress cases 重设计
 observation/event workflow，不能调 R2 门或覆盖 raw review。
 
-D0-A 只回答中央图像可观察阻塞能否形成稳定的、带风险分层独立审计的 Agent-labeled
-parent-natural-event
-账本。标签固定为 `VISIBLE_CENTRAL_OBSTRUCTION_PRESENT`、
+[D0-A successor R0 已完成](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_RESULT_2026-07-31.md)：
+保留 observation-level Agent 标签，把分析单位改为程序生成的 1 秒 fixed clip，3 个
+新 session、6 个 clip、24 个 slot 只做 fresh calibration。固定边界复现率为 `1.0`，
+但两路 Agent observation agreement 为 `0.6667`、unresolved 为 `0.3333`，终态为
+`CENTRAL_OBSTRUCTION_AUXILIARY_FEATURE_ONLY`。因此不启动 D0-A3/A4，不扩展中央阻塞
+主线；D0-A1 的 `0.8545/0.8298` 有效信息保持不变。
+
+D0-A 的 predecessor 只回答中央图像可观察阻塞能否形成稳定的、带风险分层独立审计的
+Agent-labeled parent-natural-event 账本；successor R0 改为固定 clip unit，边界由冻结
+时间窗和 slot 程序生成，不再从 label 推断 event。标签仍固定为
+`VISIBLE_CENTRAL_OBSTRUCTION_PRESENT`、
 `NO_VISIBLE_CENTRAL_OBSTRUCTION_EVIDENCE` 与 `NOT_EVALUABLE`；第二项不表示画面无
 障碍、可以通行或安全。D0-A 属于 `CANARY_LITE / CAPABILITY_DISCOVERY`。唯一允许的
 模型 B 工作是 `D0-AT`：在排除于 readiness 和后续效果评价的数据上，用一个声明的
@@ -331,7 +339,8 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | --- | --- |
 | D0-A0 适配度排序、最小 admitted bundle 与 reuse-role freeze | `COMPLETE / VALID / CANARY_LITE_ONLY` |
 | D0-A1 排除式 calibration、标签 pilot 与 readiness lock | `COMPLETE / VALID / AGENT_LABEL_PROTOCOL_NOT_RELIABLE` |
-| D0-A2–A4 Agent 标注、裁决与 readiness 审计 | `NOT_AUTHORIZED / NOT_RUN` |
+| D0-A successor R0 fixed-clip calibration | `COMPLETE / VALID / AUXILIARY_FEATURE_ONLY` |
+| D0-A2–A4 Agent 标注、裁决与 readiness 审计 | `NOT_AUTHORIZED / STOPPED_BY_D0_A_SUCCESSOR_R0` |
 | D0-AT 排除数据 reference model-B 接口 smoke | `NOT_RUN / STOPPED_BY_LABELABILITY_TERMINAL` |
 | D0-A 人工标注、人工复核或人工验收队列 | `NOT_REQUIRED / MUST_NOT_BLOCK` |
 | D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `LOCKED_UNTIL_D0_A_READY / DESIGN_REQUIRES_SEPARATE_REVIEW` |
@@ -362,39 +371,17 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 
 ## 下一步
 
-D0-A 固定顺序为：
+D0-A successor R0 已经回答了本轮唯一允许的问题：固定 clip 转换函数能够把事件边界
+变成确定性、可单测的程序规则，但 fresh observation semantics 仍未过门。当前动作
+固定为：
 
-```text
-D0-A0 复用优先排序现有数据，冻结充分性/停止规则与最小 admitted bundle
-  ↓
-D0-A1 在排除式 calibration bundle 上完成标签 pilot，冻结 ROI、prompt、
-      parent-event 边界/匹配、歧义分层、抽样审计与 readiness 门
-  ↓
-D0-AT 在独立排除数据上运行一个 reference model-B 技术 smoke；
-      输出不进入标签或效果评价
-  ↓
-D0-A2 primary Agent 标注 admitted bundle；关键/歧义 item 与冻结样本进入第二路
-  ↓
-D0-A3 只对材料分歧运行 fresh 第三 Agent；原始账本与审计状态不可覆盖
-  ↓
-D0-A4 sampled/关键 parent-event 一致性、跨 session 覆盖、NOT_EVALUABLE burden
-      与技术 smoke 审计
-  ↓
-READY_FOR_D0_B_AGENT_LABELED_DEVELOPMENT
-| HOLD_DATA
-| AGENT_LABEL_PROTOCOL_NOT_RELIABLE
-| HOLD_MODEL_B_TECHNICAL_FEASIBILITY
-```
-
-R2 已返回 `AGENT_LABEL_PROTOCOL_NOT_RELIABLE`：observation agreement 过门，但 raw
-parent-event match 失败。当前唯一 successor boundary 是另立新的 D0-A 版本，只在
-burned calibration/disagreement stress cases 上重设计 observation definition 或 event
-workflow；不得修改 R2 prompt、ROI、输入、raw review、事件规则或门槛救援，不得启动
-D0-A2、D0-AT 或 D0-B。D0-B 若以后在新证据版本获准，可在 burned
-Development 数据上预注册至多 3 个具有明确因果差异的模型 B/类别映射/阻塞算子
-候选、固定预算和选择规则；必须在 held-out outcome access 前冻结一个候选，再以
-`C = A + B` 相对当前 `A = YOLO-only` 的 parent-event 增量作为主比较；不得在
-held-out 结果后挑选胜者。
+1. 保留 D0-A1 的 `0.8545/0.8298` observation evidence 与全部 raw review，不覆盖、不
+   重跑、不重切 burned 11 clips。
+2. 中央阻塞只保留为 `AUXILIARY_FEATURE_ONLY` 的 observation-level、非生产候选；不将
+   `MIXED_OBSERVATION` 或 `NOT_EVALUABLE` 重标为事件。
+3. 停止 D0-A3/A4，不启动 D0-A2、D0-AT、D0-B、模型效果、Android、默认生产或安全工作。
+4. 如未来重新提出中央阻塞研究，必须另立独立问题、证据版本和评审，不得把它称为本
+   successor 的自动延续。
 
 ### 已关闭几何与调度路线的保留规则
 
