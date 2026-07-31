@@ -2,8 +2,9 @@
 
 状态：`SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
-CONDITIONAL_GATING_R0_VALID_NO_ROBUST_INCREMENT / GATING_ROUTE_STOPPED /
-RESIDUAL_AWARE_DDRNET_DEVELOPMENT_DESIGN_AUTHORIZED_NOT_EXECUTED /
+CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
+R0_1_SHADOW_ABLATION_FROZEN_NOT_RUN / BOUNDED_FAMILY_TERMINAL_PENDING /
+RESIDUAL_AWARE_DDRNET_DESIGN_ELIGIBLE_SEQUENCED_AFTER_R0_1 /
 VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
 THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
@@ -193,7 +194,16 @@ false-positive reduction 只有 `0.092572 < 0.30`，最低 source-session recall
 retention 为 `0.774580 < 0.80`；它不支配任何 predecessor reference，也不是新的
 Pareto improvement。终态为
 `CONDITIONAL_GATING_NO_ROBUST_INCREMENT_STOP_GATING_ROUTE`。本轮停止 gating，下一
-边界只允许另立 residual-aware DDRNet Development 设计，尚未授权或执行训练。
+边界原记为 residual-aware DDRNet Development 设计，尚未授权或执行训练。
+
+用户随后纠正了这个 terminal 的解释范围：一个 primary 失败不能证明全部条件门失败。
+R0 machine terminal 与全部 evidence 保持不可变，但 `STOP_GATING_ROUTE` 只表示 R0
+不以未执行候选救援 primary。前向
+[R0.1 post-primary shadow protocol](DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_PROTOCOL_2026-08-01.md)
+现冻结 `CLASS_CONDITIONAL_TEMPORAL` 与 `MULTI_NEGATIVE` 为 diagnostic-only shadows；
+两者在 R0 outcome 前已被概念性提出，但当时未进入 repo hash 或执行授权。R0.1 一次
+全量报告、不选优、不改 primary terminal；bounded family terminal 与 residual-aware
+训练顺序等 shadow closeout 后再定。
 
 独立的 host-only visual sidecar R0 已可用，只显示 YOLO boxes、
 raw heatmap、候选、gate pass/reject/abstain 与原因，固定水印且
@@ -510,7 +520,8 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、ARCore | `NOT_AUTHORIZED` |
 | 分割模型正式选型、风险融合与 A-vs-C 效果评价 | `NOT_AUTHORIZED / NOT_STARTED` |
-| DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0 | `COMPLETE / VALID / NO_ROBUST_INCREMENT / GATING_ROUTE_STOPPED / DEVELOPMENT_ONLY` |
+| DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0 | `PRIMARY COMPLETE / VALID / NOT_SUPPORTED / HISTORICAL TERMINAL IMMUTABLE / DEVELOPMENT_ONLY` |
+| DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0.1 SHADOW | `FROZEN_NOT_RUN / POST_PRIMARY_DIAGNOSTIC_ONLY / FAMILY_TERMINAL_PENDING` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
 | 真人、独立助行、安全、产品或跨设备结论 | `NOT_AUTHORIZED` |
 
@@ -546,9 +557,11 @@ component、raw/motion-warped temporal 字段与 host cost 评价。当前 refer
 
 conditional gating R0 已完成 520 帧执行、逐帧/逐组件独立复算与 held-out/direct
 等价检查；五项门中的 false-positive reduction 和 minimum-session recall retention
-失败，gating 路线已经停止。下一动作只能是先另立 residual-aware DDRNet Development
-设计，冻结 residual target、单变量训练比较和停止门；本轮不训练、不启动 Android、
-Confirmation、提醒或产品路径。
+失败，只能判定 primary 不受支持。下一动作改为先完成 R0.1 的两个 diagnostic-only
+shadow：执行前冻结、一次全量计算、全部公开且无选择权限。若 shadow 形成 family
+counterexample 或 alternative signal，只能另立新单候选或转模型训练；若均无稳健信号，
+才关闭这个精确三臂家族并把 residual-aware DDRNet Development 设计设为下一主边界。
+本轮不训练、不启动 Android、Confirmation、提醒或产品路径。
 
 ### 后续资源纪律
 

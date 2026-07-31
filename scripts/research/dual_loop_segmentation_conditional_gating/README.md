@@ -1,7 +1,7 @@
 # dual_loop_segmentation_conditional_gating
 
-状态：development；`COMPLETE / VALID /
-CONDITIONAL_GATING_NO_ROBUST_INCREMENT_STOP_GATING_ROUTE`
+状态：development；`R0_PRIMARY_COMPLETE_VALID_NOT_SUPPORTED /
+R0_1_SHADOW_ABLATION_FROZEN_NOT_RUN / FAMILY_TERMINAL_PENDING`
 
 ## 研究问题与版本
 
@@ -29,6 +29,29 @@ python -m scripts.research.dual_loop_segmentation_conditional_gating.validate_co
   --evidence-root artifacts.local/evidence/dual-loop-segmentation-conditional-gating-r0/result `
   --output artifacts.local/evidence/dual-loop-segmentation-conditional-gating-r0/validation.json
 ```
+
+R0.1 post-primary shadow 采用独立入口和 output root；冻结阶段先运行只读 preflight：
+
+```powershell
+python -m scripts.research.dual_loop_segmentation_conditional_gating.shadow_ablation `
+  --repo-root . `
+  --config configs/dual_loop_segmentation_conditional_gating_r0_1/shadow.json `
+  --output-root artifacts.local/evidence/dual-loop-segmentation-conditional-gating-r0-1-shadow/result `
+  --preflight-only
+```
+
+冻结提交后才允许去掉 `--preflight-only` 一次执行。执行后使用：
+
+```powershell
+python -m scripts.research.dual_loop_segmentation_conditional_gating.validate_shadow_ablation `
+  --repo-root . `
+  --config configs/dual_loop_segmentation_conditional_gating_r0_1/shadow.json `
+  --evidence-root artifacts.local/evidence/dual-loop-segmentation-conditional-gating-r0-1-shadow/result `
+  --output artifacts.local/evidence/dual-loop-segmentation-conditional-gating-r0-1-shadow/validation.json
+```
+
+R0.1 只输出 `shadow_frame_metrics.jsonl`、`shadow_component_decisions.jsonl` 与
+`result.json`。R0 primary evidence root 是只读绑定，禁止覆盖。
 
 输入 SHA、520 帧、11,757 个 raw component、十个 session 分母、单一候选与全部阈值
 均由 config 绑定。runner 先复现 pilot/expansion 的 baseline、union causal 2-of-3 与
@@ -78,7 +101,7 @@ mechanism tag、session、scene、role 或 YOLO attribution。
 本 Module 只读使用已查看/已消费 Development evidence。不训练，不访问 fresh holdout，
 不接 Android、QNN、risk、feedback、TTS、振动或默认 App。visual-only sidecar 的
 `drives_alerts=false` 保持不变。任何正结果最多支持未来另立 Confirmation 设计；
-任何负结果只关闭当前 gating 路线并允许另立 residual-aware DDRNet Development。
+任何负结果只关闭其预冻结 candidate scope，不得自动扩大到全部 gating 家族。
 
 ## 停止条件
 
@@ -109,5 +132,7 @@ overall recall retention 为 `0.942399`，但 false-positive reduction 为
 `0.774580 < 0.80`，故没有 sufficient candidate。详见
 [结果文档](../../../docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_RESULT_2026-08-01.md)。
 
-当前 gating 路线已停止；下一边界只允许另立 residual-aware DDRNet Development
-设计，训练尚未授权或执行。
+R0 machine terminal 与证据保持不可变，但用户纠正后其 scope 只覆盖 primary。新增
+[R0.1 shadow protocol](../../../docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_PROTOCOL_2026-08-01.md)
+冻结两个 diagnostic-only shadows；它们不救援 primary、不产生选择权限。有限三臂家族
+与 residual-aware DDRNet 的排序等 shadow closeout 后再定，训练尚未授权或执行。

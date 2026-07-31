@@ -1,8 +1,9 @@
 # Conditional Segmentation Gating R0 Development Result
 
-状态：`EXECUTION_COMPLETE / VALID /
+状态：`R0_PRIMARY_EXECUTION_COMPLETE / VALID /
 CONDITIONAL_GATING_NO_ROBUST_INCREMENT_STOP_GATING_ROUTE /
-RESIDUAL_AWARE_DDRNET_DEVELOPMENT_DESIGN_AUTHORIZED_NOT_EXECUTED /
+PRIMARY_CANDIDATE_ONLY_AFTER_SCOPE_CORRECTION /
+R0_1_SHADOW_FAMILY_TERMINAL_PENDING /
 DEVELOPMENT_ONLY / FINAL_CONFIRMATION_NOT_ACTIVATED /
 DEFAULT_APP_UNCHANGED`
 
@@ -10,8 +11,8 @@ DEFAULT_APP_UNCHANGED`
 
 ## 结论
 
-冻结的单一 `CLASS_CONDITIONED_MULTI_NEGATIVE` 候选没有形成稳健增量，conditional
-gating 路线到此停止。候选通过 overall、`boundary_step_curb` 和 `obstacle` 三项
+冻结的单一 `CLASS_CONDITIONED_MULTI_NEGATIVE` 候选没有形成稳健增量，该 primary
+在 R0 内到此停止。候选通过 overall、`boundary_step_curb` 和 `obstacle` 三项
 recall-retention 门，但 false-positive reduction 只有 `0.092572 < 0.30`，且最低
 source-session recall retention 为 `0.774580 < 0.80`。五项冻结门没有全部通过，
 终态只能是：
@@ -20,10 +21,18 @@ source-session recall retention 为 `0.774580 < 0.80`。五项冻结门没有全
 CONDITIONAL_GATING_NO_ROBUST_INCREMENT_STOP_GATING_ROUTE
 ```
 
-这不是模型、语义分割方向或双环概念的总体否定。它只否定当前 DDRNet 输出之上的这一个
-预冻结组合门。下一边界为
-`RESIDUAL_AWARE_DDRNET_DEVELOPMENT_DESIGN_AUTHORIZED_NOT_EXECUTED`：可另立一个改变训练
-任务、而不是继续叠加阈值的 Development 设计；本轮没有训练模型，也没有授权执行该后继。
+这不是模型、语义分割方向、双环概念或所有条件门的总体否定。它只否定当前 DDRNet
+输出之上的这一个预冻结组合门。
+
+### 2026-08-01 post-result scope correction
+
+用户指出，只执行一个 primary 会降低选优风险，却可能因主候选刚好较差而错杀整个门控
+家族。该纠正成立。R0 的 machine result、指标、哈希和 terminal 均保持不可变，但
+`STOP_GATING_ROUTE` 的科学范围收窄为：不在 R0 内以未执行候选救援 primary；它不表示
+候选 1、2 已被评价。前向
+[R0.1 shadow protocol](DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_PROTOCOL_2026-08-01.md)
+将两个 pre-R0 conceptual、但当时未 hash-bound 的方案冻结为 diagnostic-only shadows。
+在 R0.1 收口前，bounded family terminal 与 residual-aware 训练顺序保持 pending。
 
 ## 冻结、执行与证据身份
 
@@ -140,10 +149,10 @@ held-out/direct 等价与 terminal，共通过 `85,235` 项检查，错误数为
 
 ## 后继边界
 
-本轮不运行未冻结候选、不改门、不按 session 选 gate，也不再以 latch、阈值或额外
-后处理救援当前路线。若继续推进，只允许先另立 residual-aware DDRNet Development
-设计，明确 residual target、损失、训练/开发划分、与现有 baseline 的单变量比较以及
-停止门；设计授权不等于训练授权。
+R0 本身不运行未冻结候选、不改门、不按 session 选 gate，也不以 shadow 覆盖 primary
+失败。两个概念方案只能在新的 R0.1 协议、definition hash、runner、validator 和独立
+output root 下作 post-primary shadow ablation。R0.1 不选择候选；其结果只决定有限三臂
+家族是否存在反例，以及 residual-aware DDRNet 是否成为唯一下一主边界。
 
 本结果没有改变模型、Android、QNN/A568、risk/feedback、TTS、振动、提醒或默认 App。
 `drives_alerts=false`、`FINAL_CONFIRMATION_NOT_ACTIVATED` 与所有产品/安全禁令保持不变。

@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。接受用户对单 primary
+  假阴性风险的纠正：R0 的 result、hash、`CONDITIONAL_GATING_NO_ROBUST_INCREMENT_
+  STOP_GATING_ROUTE` machine terminal 均保持不可变，但其科学 scope 收窄为
+  `PRIMARY_CANDIDATE_ONLY`，不再表述为全部 conditional gating 已失败。前向建立
+  `DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1`，mode
+  `POST_R0_FORWARD_SHADOW_DIAGNOSTIC`：
+  `CLASS_CONDITIONAL_TEMPORAL` 与 `MULTI_NEGATIVE` 在 R0 outcome 前曾被概念性提出，
+  但当时未 repo-freeze，现以新 config/hash/runner/validator 冻结为 diagnostic-only。
+  两者一次全量报告、不选优、不救援 primary；execution terminal 固定为
+  `POST_TERMINAL_SHADOW_ABLATION_COMPLETE_DIAGNOSTIC_ONLY`，family counterexample、
+  alternative signal 和 bounded-family negative 的解释规则在结果前写死。当前
+  `RESULT_NOT_RUN`；residual-aware DDRNet 训练排在 R0.1 closeout 后，未获授权或执行。
+  未访问 fresh holdout，未修改模型、Android、risk/feedback、TTS、振动、提醒或默认 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在已推送的冻结 implementation
   Git `2e46d76057becb1f85c22bf0c9ea4e8b59d26c31` 上一次性执行
   `DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0` 的 520 帧、11,757 components、

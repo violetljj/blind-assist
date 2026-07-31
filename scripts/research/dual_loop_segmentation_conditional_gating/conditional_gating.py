@@ -26,11 +26,16 @@ from scripts.research.dual_loop_segmentation_candidate_utility.component_metrics
 
 
 PROTOCOL_ID = "DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0"
+SHADOW_PROTOCOL_ID = "DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1"
 SCHEMA_VERSION = "blindassist.dual_loop_segmentation_conditional_gating.result.v1"
 BASELINE_ID = "BASELINE_UNFILTERED"
 REFERENCE_CAUSAL_ID = "REFERENCE_CAUSAL_2_OF_3_UNION"
 REFERENCE_CONFIDENCE_ID = "REFERENCE_CONFIDENCE_GE_0_65"
 REFERENCE_IDS = (REFERENCE_CAUSAL_ID, REFERENCE_CONFIDENCE_ID)
+PRIMARY_CANDIDATE_ID = "CLASS_CONDITIONED_MULTI_NEGATIVE"
+SHADOW_CLASS_TEMPORAL_ID = "CLASS_CONDITIONAL_TEMPORAL"
+SHADOW_MULTI_NEGATIVE_ID = "MULTI_NEGATIVE"
+SHADOW_CANDIDATE_IDS = (SHADOW_CLASS_TEMPORAL_ID, SHADOW_MULTI_NEGATIVE_ID)
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -141,7 +146,7 @@ def apply_frozen_candidate_to_component(
     intersects_upper = bool(np.count_nonzero(raw & upper_band_mask))
     noncausal = raw & ~causal
 
-    if candidate_id == "CLASS_CONDITIONED_MULTI_NEGATIVE":
+    if candidate_id == PRIMARY_CANDIDATE_ID:
         if predicted_class == "obstacle":
             proxy = small_fragment or intersects_upper
             reject_pixels = noncausal if low_confidence and proxy else np.zeros_like(raw)
@@ -159,6 +164,31 @@ def apply_frozen_candidate_to_component(
                 if reject
                 else ["BOUNDARY_PROTECTED_FROM_TEMPORAL_AND_UPPER_REJECTION"]
             )
+    elif candidate_id == SHADOW_CLASS_TEMPORAL_ID:
+        if predicted_class == "obstacle":
+            kept = causal.copy()
+            reason_bits = [
+                "OBSTACLE_SAME_CLASS_CAUSAL_2_OF_3_PIXEL_GATE"
+                if np.count_nonzero(noncausal)
+                else "OBSTACLE_FULLY_SAME_CLASS_CAUSAL_SUPPORTED"
+            ]
+        else:
+            reject = low_confidence and small_fragment
+            kept = np.zeros_like(raw) if reject else raw.copy()
+            reason_bits = (
+                ["BOUNDARY_LOW_CONFIDENCE_SMALL_FRAGMENT_REJECT"]
+                if reject
+                else ["BOUNDARY_PROTECTED_FROM_TEMPORAL_AND_UPPER_REJECTION"]
+            )
+    elif candidate_id == SHADOW_MULTI_NEGATIVE_ID:
+        proxy = small_fragment or intersects_upper
+        reject_pixels = noncausal if low_confidence and proxy else np.zeros_like(raw)
+        kept = raw & ~reject_pixels
+        reason_bits = [
+            "MULTI_NEGATIVE_PIXEL_REJECTION"
+            if np.count_nonzero(reject_pixels)
+            else "INSUFFICIENT_COMBINED_NEGATIVE_EVIDENCE"
+        ]
     else:
         raise ValueError(f"unknown frozen candidate: {candidate_id}")
 
