@@ -341,7 +341,9 @@ rank-2 设备评价随后完成：baseline 和 candidate 都命中 7/7 正例，
 ## 独立 successor 提案（proposal-only）
 
 [TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 设计合同](TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_DESIGN_CONTRACT.md)
-是一个不继承 R1 或 D0 权限的独立目标局部背景 warp residual 假设，当前状态为
-`PROPOSAL_ONLY / EXECUTION_NOT_AUTHORIZED`。它只规定未来可审查的 B Development、
+是一个不继承 R1 或 D0 权限的独立目标局部背景 warp residual 假设；经
+[独立设计复核](TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_DESIGN_REVIEW_RESULT_2026-07-31.md)
+修订后，当前状态为 `DESIGN_REVIEW_PASS / PROPOSAL_ONLY / EXECUTION_NOT_AUTHORIZED`。
+它只规定未来可审查的 B Development、
 C1 新 session canary 与 C2 独立复现边界；不实现、不运行、不读取候选输出、不接 Android，
 也不改变本 README 已冻结的 scene-scale active 关闭终点。
