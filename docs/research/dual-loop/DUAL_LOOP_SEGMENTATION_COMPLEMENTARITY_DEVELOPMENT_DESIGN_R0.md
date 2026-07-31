@@ -1,6 +1,6 @@
 # YOLO + 语义分割图像空间互补性 Development 设计 R0
 
-状态：`DEVELOPMENT_STANDARD / DESIGN_ONLY / NOT_EXECUTED / NO_EFFECT_AUTHORITY`
+状态：`DEVELOPMENT_STANDARD / DESIGN_FROZEN / EXECUTED_AS_R1 / NO_EFFECT_AUTHORITY`
 
 日期：2026-07-31（Asia/Hong_Kong）
 执行者：`violjjet`
@@ -23,8 +23,8 @@
 ## 2. 设计状态、数据角色和候选身份
 
 这是一个新的、一次性的 `DEVELOPMENT_STANDARD` 设计，不是 D0-A readiness successor，
-也不增加 D0-A2/A3/A4 或第三 Agent 裁决层。当前仅冻结设计，未执行效果对照，因为
-current entry 仍把 D0-B 模型执行、融合和事件增量评价标为 `NOT_AUTHORIZED`。
+也不增加 D0-A2/A3/A4 或第三 Agent 裁决层。用户授权后已按本设计执行 R1；执行结果另见
+[R1 result](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1_RESULT_2026-07-31.md)。
 
 若获得独立执行授权，第一份机制 diagnostic 使用一套已存在的 matched Development
 输入：
@@ -117,14 +117,15 @@ candidate/evidence version，不关闭语义分割问题本身。
 
 ## 6. 当前终点
 
-当前为 `DESIGN_ONLY / NOT_EXECUTED`：
+当前设计已执行为 `R1 / DEVELOPMENT_COMPLETE / IMAGE_SPACE_ONLY`：
 
-- technical smoke 已证明一个 reference 接口可运行，但初始 artifact 在 smoke input
-  上发生 `walkable` 塌缩；
-- pretrained reference 只完成了非持久的类别可用性诊断，尚未形成 A/B/C 结果；
+- 4,891 个 matched Development frame 完成 A/B/C image-space mechanism diagnostic；
+- 初始 `gpu-smoke` artifact 的 `walkable` 塌缩仍作为独立负诊断保留；本轮 pretrained
+  reference 未发生单类塌缩，但 class-wise temporal stability mixed；
 - matched YOLO trace 的 risk/feedback/event 字段不在本设计输入面；
-- D0-B 效果、融合、Android 和生产权限保持关闭。
+- 本轮不产生 risk、event、fusion effect、Android 或生产结论；
+- 结果不具备 cross-source reproducibility authority，需另有匹配 source 才能继续验证。
 
-下一条唯一合理动作是：在 current entry 另行批准后，运行这一份固定设计的 image-space
-mechanism diagnostic；不再增加 Agent 标签、中央阻塞 prompt、第三 Agent 或 readiness
-子阶段。
+下一条合理动作不是重开标签协议，而是取得第二个匹配的 RGB + YOLO Development source
+进行跨来源复现；若无法获得或复现，则关闭该具体 candidate 的互补性主张。无论哪种情况，
+都不把本轮 class-wise uncovered region 包装成风险真值。

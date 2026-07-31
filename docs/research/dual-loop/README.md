@@ -2,7 +2,8 @@
 
 状态：`CENTRAL_OBSTRUCTION_D0_A_SUCCESSOR_R0_COMPLETE / VALID /
 AUXILIARY_FEATURE_ONLY / D0_A2_NOT_AUTHORIZED / D0_A3_A4_STOPPED /
-D0_AT_NOT_RUN / SEGMENTATION_TECHNICAL_SMOKE_R0_COMPLETE / DEFAULT_APP_UNCHANGED`
+D0_AT_NOT_RUN / SEGMENTATION_TECHNICAL_SMOKE_R0_COMPLETE /
+SEGMENTATION_COMPLEMENTARITY_R1_COMPLETE / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
 
@@ -74,9 +75,14 @@ D0-A 不做融合、调度、Android 或 A568。只有
 方向或其他模型候选已被否定。
 
 [Segmentation complementarity Development design R0](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_DEVELOPMENT_DESIGN_R0.md)
-已冻结为 `DESIGN_ONLY / NOT_EXECUTED`：主量是 `segmentation mask − YOLO box union`
+已冻结并执行为 R1：主量是 `segmentation mask − YOLO box union`
 的 image-space uncovered fraction，按 session 聚合并保留时间相关性；它不使用中央阻塞、
 risk、feedback 或事件真值，也不把非零区域解释为可通行性或风险。
+
+[Segmentation complementarity R1 result](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1_RESULT_2026-07-31.md)
+已完成用户授权的 4,891-frame Development mechanism diagnostic：配对、finite output 和
+独立 validator 均通过；class-wise image-space 增量可观察，但 temporal stability 按 class
+混合，且只有一个 burned source。因此 R1 不授权融合、事件效果、Android 或生产结论。
 
 ## 已关闭前序与保留证据
 
@@ -360,10 +366,11 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | D0-A2–A4 Agent 标注、裁决与 readiness 审计 | `NOT_AUTHORIZED / STOPPED_BY_D0_A_SUCCESSOR_R0` |
 | D0-AT 排除数据 reference model-B 接口 smoke | `NOT_RUN / STOPPED_BY_LABELABILITY_TERMINAL` |
 | 独立 segmentation technical smoke R0 | `COMPLETE / VALID / TECHNICAL_ONLY / NO_EFFECT_AUTHORITY` |
-| image-space segmentation complementarity R0 design | `COMPLETE / DESIGN_ONLY / NOT_EXECUTED` |
+| image-space segmentation complementarity R0 design | `COMPLETE / DESIGN_FROZEN / EXECUTED_AS_R1` |
 | D0-A 人工标注、人工复核或人工验收队列 | `NOT_REQUIRED / MUST_NOT_BLOCK` |
-| D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `LOCKED_UNTIL_D0_A_READY / DESIGN_REQUIRES_SEPARATE_REVIEW` |
-| D0-B 模型执行、融合或事件增量评价 | `NOT_AUTHORIZED` |
+| D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `R1_IMAGE_SPACE_DESIGN_EXECUTED / NO_RISK_OPERATOR` |
+| D0-B image-space A/B/C mechanism diagnostic R1 | `COMPLETE / DEVELOPMENT_ONLY / IMAGE_SPACE_ONLY / NO_EFFECT_AUTHORITY` |
+| D0-B 风险融合、事件增量、Android 或生产评价 | `NOT_AUTHORIZED / NOT_EVALUATED` |
 | 编写和维护阶段−1准入合同 | `AUTHORIZED` |
 | F-1A 数据审计与既有 RGB 标签修复 | `COMPLETED / READY / VALID` |
 | F-1B0 双源时间基线补测 | `COMPLETED / READY / VALID` |
@@ -385,7 +392,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | scene-scale active successor / single-variable R2 | `CLOSED / NOT_WORTH_DESIGNING / NOT_IMPLEMENTED` |
 | 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、ARCore | `NOT_AUTHORIZED` |
-| 分割模型正式选型、融合与 A-vs-C 效果评价 | `NOT_AUTHORIZED / NOT_STARTED` |
+| 分割模型正式选型、风险融合与 A-vs-C 效果评价 | `NOT_AUTHORIZED / NOT_STARTED` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
 | 真人、独立助行、安全、产品或跨设备结论 | `NOT_AUTHORIZED` |
 
@@ -399,8 +406,8 @@ D0-A successor R0 已经回答了本轮唯一允许的问题：固定 clip 转�
    重跑、不重切 burned 11 clips。
 2. 中央阻塞只保留为 `AUXILIARY_FEATURE_ONLY` 的 observation-level、非生产候选；不将
    `MIXED_OBSERVATION` 或 `NOT_EVALUABLE` 重标为事件。
-3. 停止 D0-A3/A4，不启动 D0-A2、D0-AT、D0-B 效果、Android、默认生产或安全工作；
-   独立 technical smoke R0 仅用于接口诊断，不改变上述权限。
+3. 停止 D0-A3/A4，不启动 D0-A2、中央阻塞标签续作、默认生产或安全工作；独立
+   technical smoke R0 与 R1 image-space diagnostic 均不产生风险/Android 权限。
 4. 如未来重新提出中央阻塞研究，必须另立独立问题、证据版本和评审，不得把它称为本
    successor 的自动延续。
 
@@ -411,6 +418,10 @@ D0-A successor R0 已经回答了本轮唯一允许的问题：固定 clip 转�
 3. 在独立 Development 设计中比较 `YOLO-only`、`segmentation-only` 和
    `YOLO + segmentation` 的区域/像素增量、稳定性与成本；
 4. 只有在互补信息可重复后，才讨论融合算子或 Android；否则关闭具体候选而不扩大关闭范围。
+
+R1 已完成第 3 项的单一 burned-source image-space 诊断；结果显示 class-wise 增量存在但
+稳定性混合，不能直接推进第 4 项。下一步只允许使用新的匹配 RGB + YOLO source 做跨来源
+复现，或在无法获得复现时关闭具体 reference candidate；不再把本轮输出升级为风险真值。
 
 ### 后续资源纪律
 

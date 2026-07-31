@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。用户授权后执行并独立复核
+  `DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1`：4,891 个 matched Shiraz Development frame，
+  固定 INT8 segmentation reference，A/B/C 只输出 image-space class-wise uncovered fraction、
+  temporal IoU、component count 与 host cost。pairing/finite/hash/union validator 为 `VALID`；
+  `unknown_nonwalkable` temporal IoU median `0.725020`、`obstacle` `0.249790`、
+  `boundary_step_curb` `0.080014`，稳定性按 class 混合。终态为
+  `IMAGE_SPACE_SIGNAL_OBSERVED / STABILITY_MIXED_BY_CLASS / NO_FUSION_EFFECT_AUTHORITY`；
+  不产生风险、事件、Android 或生产结论。结果快照见
+  `docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1_RESULT_2026-07-31.md`。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。将用户提出的后续资源纪律固化到
   双环研究入口：失败路线最多一个 successor；fresh 双路语义失败后不再用第三 Agent、
   prompt、slot 或数据选择制造一致；下一阶段必须直接产生算法对照、端侧性能或路线关闭，
