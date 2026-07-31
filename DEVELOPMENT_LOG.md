@@ -1,4 +1,8 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。将用户提出的后续资源纪律固化到
+  双环研究入口：失败路线最多一个 successor；fresh 双路语义失败后不再用第三 Agent、
+  prompt、slot 或数据选择制造一致；下一阶段必须直接产生算法对照、端侧性能或路线关闭，
+  不再增加只有 readiness 名称变化的多层阶段。该规则不改变已消费的 D0-A 结果。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。修正双环研究入口标题，明确当前
   主线为 `YOLO + 语义分割 + 融合 C`；中央图像阻塞仅作为已经关闭的辅助观测审计，Q0
   semantic-refresh 仅作为独立封存旁路线保留。未改变任何历史结果、研究授权或实验状态。
