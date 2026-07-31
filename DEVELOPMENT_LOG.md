@@ -1,12 +1,13 @@
 # Development Log
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户明确授权完成
-  [TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 B Development 实现复核](docs/research/dual-loop/TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-31.md)：
-  在隔离 offline Module 中落地 truth-blind producer、独立 truth-late evaluator、
-  synthetic fixtures、burned-input 准备器、实现锁及 root adapter；固定 R1-R4 selection、
-  动态目标 mask、receipt/hash/schema firewall 与停止边界。合同测试 `15/15 PASS`，
-  `12,876` 个 REveL burned pair 已冻结（含 `32` 个 shape mismatch pair），输入 receipt
-  保持 `truth_read=false`、`candidate_output_read=false`，implementation lock 为 `VALID`。
-  尚未读取新 producer output，不启动 C1/C2、Android 或产品行为；当前仅为 Development diagnostic。
+  [TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 B Development 实现与单次执行](docs/research/dual-loop/TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-31.md)：
+  在隔离 offline Module 中完成 truth-blind producer、独立 truth-late evaluator、
+  synthetic fixtures、burned-input 准备器、实现锁及 root adapter；合同测试 `15/15 PASS`，
+  `12,876` 个 REveL burned pair 已冻结（含 `32` 个 shape mismatch pair），producer 输出
+  `51,504` 行且 receipt/hash 校验一致，truth-late join 为 `6,538` 行。R1 唯一选择的
+  paired event gain 为 `-34/960`，覆盖率下降，终点为
+  `NO_DEVELOPMENT_INCREMENT / CLOSE_CANDIDATE`；不重跑、不调参，不启动 C1/C2、Android
+  或产品行为。
 ## 2026-07-31
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。完成
   [DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0](docs/research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)：

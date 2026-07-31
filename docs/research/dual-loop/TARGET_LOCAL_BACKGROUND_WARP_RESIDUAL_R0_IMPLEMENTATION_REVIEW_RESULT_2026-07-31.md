@@ -1,6 +1,6 @@
 # TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 B Development 实现复核结果
 
-状态：`PASS / B_INPUT_FROZEN / PRODUCER_NOT_STARTED / C1_C2_NOT_AUTHORIZED`
+状态：`PASS / B_TERMINAL_CLOSED / C1_C2_NOT_AUTHORIZED`
 
 日期：2026-07-31（Asia/Hong_Kong）
 
@@ -13,13 +13,12 @@
 
 ## 结论
 
-B Development 的离线实现复核通过，且 burned REveL 输入已冻结。producer、truth-late evaluator、R1–R4 选择、
-固定事件中位数/分母、弃权优先级、truth firewall、输出 hash 和 implementation lock
-已经形成可运行的隔离接口。
+B Development 的离线实现复核通过，burned REveL 输入已冻结，且唯一一次 producer 与 truth-late
+evaluator 已完成。R1–R4 选择、固定事件中位数/分母、弃权优先级、truth firewall、输出 hash 和
+implementation lock 均通过校验；按合同终点关闭本候选。
 
-本 PASS 只表示实现可进入 B 的下一步输入/输出审计；当前没有读取 CrowdBot、Matoaka、
-Shiraz 或任何真实候选 output，没有生成 C1/C2 结果，也没有 Android、shadow、active、
-产品或安全权限。
+本结果仍只表示 B Development 诊断；不读取 CrowdBot、Matoaka、Shiraz 或任何其他候选
+source，不生成 C1/C2 结果，也没有 Android、shadow、active、产品或安全权限。
 
 ## 复核范围
 
@@ -44,11 +43,24 @@ Shiraz 或任何真实候选 output，没有生成 C1/C2 结果，也没有 Andr
 - burned REveL input freeze：`FROZEN`，`12,876` 个固定 pair、`8,363` 个图像、`32`
   个原生 shape mismatch pair 均保留在分母；receipt 明确 `truth_read=false`、
   `candidate_output_read=false`；
+- B producer receipt：`COMPLETE`，固定输入 `12,876` rows，四个 ring 共 `51,504` rows；
+  `truth_read=false`、`forbidden_outcome_fields_rejected=true`，producer output SHA-256 为
+  `65e72dcd136249057302facc7232a1194a331cdd43a8e2a981ca865429066fbb`；按
+  `(session_id,target_id,current_source_frame_id,previous_source_frame_id,ring_config_id)`
+  检查无重复 pair identity；
+- truth-late join：`FROZEN_TRUTH_LATE`，`6,538` rows、`960` 个 parent events、两个 target；
+  truth-late SHA-256 为 `b109b72e8a5938c33c57683892a1ca077871185035b43b09b41743c4c97116f1`；
+  producer receipt 完成前未读取 truth；
+- evaluator：`VALID / UNIQUE_SELECTION`，唯一选择 `R1`；唯一 session
+  `REVEL_DYNAMIC_SINGLE_CAPTURE` 的 raw coverage 为 `0.4947917`、residual coverage 为
+  `0.4020833`，paired event gain 为 `-34/960 = -0.0354167`，positive contribution
+  fraction 为 `0.0385417`，因此 `development_gate_passed=false`，合同终点为
+  `NO_DEVELOPMENT_INCREMENT / CLOSE_CANDIDATE`；
 - `py_compile` 通过；implementation lock create/validate 均为 `VALID`；
 - output/evaluator 均拒绝覆盖已有文件；生产行为与 Android 文件未修改。
 
 ## 后继边界
 
-下一步是使用已冻结的 B input manifest，在候选 truth 访问前执行一次 producer；producer
-receipt 完成后才能生成 truth-late join 并运行 evaluator。C1 metadata-only admission、C2 复现、Android、
-active policy、Confirmation、产品和安全结论仍需另外明确授权。
+B 候选已按唯一终点关闭；不得重跑、调参、缩小分母或事后修复 burned output。C1
+metadata-only admission、C2 复现、Android、active policy、Confirmation、产品和安全结论仍需另外
+明确授权；本终点不提供任何自动升级路径。
