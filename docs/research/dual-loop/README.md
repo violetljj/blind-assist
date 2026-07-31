@@ -73,6 +73,11 @@ D0-A 不做融合、调度、Android 或 A568。只有
 `walkable`。该结果只保留为 `TECHNICAL_ONLY / NO_EFFECT_AUTHORITY` 诊断，不代表分割
 方向或其他模型候选已被否定。
 
+[Segmentation complementarity Development design R0](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_DEVELOPMENT_DESIGN_R0.md)
+已冻结为 `DESIGN_ONLY / NOT_EXECUTED`：主量是 `segmentation mask − YOLO box union`
+的 image-space uncovered fraction，按 session 聚合并保留时间相关性；它不使用中央阻塞、
+risk、feedback 或事件真值，也不把非零区域解释为可通行性或风险。
+
 ## 已关闭前序与保留证据
 
 2026-07-31 的 rank-2 Shiraz 设备评价已完成：baseline/candidate 均命中 `7/7`
@@ -355,6 +360,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | D0-A2–A4 Agent 标注、裁决与 readiness 审计 | `NOT_AUTHORIZED / STOPPED_BY_D0_A_SUCCESSOR_R0` |
 | D0-AT 排除数据 reference model-B 接口 smoke | `NOT_RUN / STOPPED_BY_LABELABILITY_TERMINAL` |
 | 独立 segmentation technical smoke R0 | `COMPLETE / VALID / TECHNICAL_ONLY / NO_EFFECT_AUTHORITY` |
+| image-space segmentation complementarity R0 design | `COMPLETE / DESIGN_ONLY / NOT_EXECUTED` |
 | D0-A 人工标注、人工复核或人工验收队列 | `NOT_REQUIRED / MUST_NOT_BLOCK` |
 | D0-B 模型 B、主阻塞算子与 A-vs-C 设计 | `LOCKED_UNTIL_D0_A_READY / DESIGN_REQUIRES_SEPARATE_REVIEW` |
 | D0-B 模型执行、融合或事件增量评价 | `NOT_AUTHORIZED` |

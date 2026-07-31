@@ -1,4 +1,12 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。冻结
+  [segmentation complementarity Development design R0](docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_DEVELOPMENT_DESIGN_R0.md)：
+  基本单位为同一 `source/frame/image_sha256` 的 YOLO box 与 segmentation mask 配对，
+  主 estimand 为 `segmentation mask - YOLO box union` 的 per-class uncovered fraction，
+  session 先聚合，显式处理时间依赖、缺失配对和 burned Development 角色。A/B/C 只定义
+  image-space coverage/union 输出，不读取 risk、feedback、event 或中央阻塞标签，也不
+  产生可通行性、风险或融合效果主张。当前仅 `DESIGN_ONLY / NOT_EXECUTED`，因为 D0-B
+  效果与融合仍未授权；没有把 4,891 frame matched Shiraz trace 冒充 held-out evidence。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户纠正后的主线，把
   YOLO + semantic segmentation 与 Q0 semantic-refresh 分开；保留中央阻塞 D0-A successor
   的不可变终态 `CENTRAL_OBSTRUCTION_AUXILIARY_FEATURE_ONLY`。新增独立
