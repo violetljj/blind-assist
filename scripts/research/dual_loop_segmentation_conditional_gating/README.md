@@ -1,6 +1,7 @@
 # dual_loop_segmentation_conditional_gating
 
-状态：development；单一候选与阈值已冻结，尚未读取本协议结果
+状态：development；`COMPLETE / VALID /
+CONDITIONAL_GATING_NO_ROBUST_INCREMENT_STOP_GATING_ROUTE`
 
 ## 研究问题与版本
 
@@ -98,3 +99,15 @@ fold 只是逐 session 结果重排，必须满足 held-out result 与 direct se
 
 失败结果可作为 residual-aware training task 设计、回归、counterexample 与
 visual-only demo 依据；不得恢复十个 session 的 unseen/Confirmation 身份。
+
+## 已执行结果
+
+冻结 implementation Git `2e46d76057becb1f85c22bf0c9ea4e8b59d26c31` 上的一次
+520-frame 执行已完成，独立 validator 通过 `85,235` 项检查、错误数为 `0`。候选
+overall recall retention 为 `0.942399`，但 false-positive reduction 为
+`0.092572 < 0.30`，最低 source-session recall retention 为
+`0.774580 < 0.80`，故没有 sufficient candidate。详见
+[结果文档](../../../docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_RESULT_2026-08-01.md)。
+
+当前 gating 路线已停止；下一边界只允许另立 residual-aware DDRNet Development
+设计，训练尚未授权或执行。

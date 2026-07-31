@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在已推送的冻结 implementation
+  Git `2e46d76057becb1f85c22bf0c9ea4e8b59d26c31` 上一次性执行
+  `DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0` 的 520 帧、11,757 components、
+  10 source sessions。单一 `CLASS_CONDITIONED_MULTI_NEGATIVE` 保持 overall、
+  boundary/step/curb 和 obstacle recall（`0.942399 / 0.945451 / 0.946764`），但
+  false-positive reduction 只有 `0.092572 < 0.30`，最弱 session recall retention
+  为 `0.774580 < 0.80`；候选不支配既有参考点且不是新的 Pareto improvement。独立
+  validator 从逐帧/逐组件账本复算 85,235 项检查、错误数 0，held-out/direct session
+  metrics 全部一致；写入独立目录的第二次确定性复算再次 `VALID`，result/frame/component
+  三个核心输出逐字节一致。终态为
+  `CONDITIONAL_GATING_NO_ROBUST_INCREMENT_STOP_GATING_ROUTE`，gating 路线停止；只授权
+  另立 residual-aware DDRNet Development 设计，未执行训练。未访问 fresh holdout，
+  未改变模型、Android、QNN/A568、risk/feedback、TTS、振动、提醒或默认 App，
+  Confirmation、产品与安全 authority 均未激活。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 Atlas `GATING_PARTIAL`
   之后，于任何 conditional-gating outcome 前冻结
   `DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0`。两路隔离审计发现 Atlas

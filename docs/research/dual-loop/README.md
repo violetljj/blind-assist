@@ -2,8 +2,9 @@
 
 状态：`SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
-CONDITIONAL_GATING_R0_FROZEN_NOT_RUN /
-RESIDUAL_AWARE_TRAINING_DEFERRED / VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
+CONDITIONAL_GATING_R0_VALID_NO_ROBUST_INCREMENT / GATING_ROUTE_STOPPED /
+RESIDUAL_AWARE_DDRNET_DEVELOPMENT_DESIGN_AUTHORIZED_NOT_EXECUTED /
+VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
 THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
@@ -183,7 +184,16 @@ expansion 的 aggregate 排序 Spearman 为 `0.90`；residual pixel proxy 仍为
 pixels；boundary/step/curb 只整组件删除低置信小碎片。Atlas 中依赖
 `dominant_truth_class` 的 background proxy 明确禁止进入 gate。固定 520-frame、10 个
 burned Development source session 只做 fit-free held-out stress，不称 LOSO
-cross-validation 或独立确认。当前为 `FROZEN_NOT_RUN`；先提交实现 freeze，再运行一次。
+cross-validation 或独立确认。
+
+[Conditional gating R0 result](DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_RESULT_2026-08-01.md)
+现已在冻结 Git `2e46d76057becb1f85c22bf0c9ea4e8b59d26c31` 上完成一次执行并由独立
+validator 复算为 `VALID`。候选 overall recall retention 为 `0.942399`，但
+false-positive reduction 只有 `0.092572 < 0.30`，最低 source-session recall
+retention 为 `0.774580 < 0.80`；它不支配任何 predecessor reference，也不是新的
+Pareto improvement。终态为
+`CONDITIONAL_GATING_NO_ROBUST_INCREMENT_STOP_GATING_ROUTE`。本轮停止 gating，下一
+边界只允许另立 residual-aware DDRNet Development 设计，尚未授权或执行训练。
 
 独立的 host-only visual sidecar R0 已可用，只显示 YOLO boxes、
 raw heatmap、候选、gate pass/reject/abstain 与原因，固定水印且
@@ -500,7 +510,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、ARCore | `NOT_AUTHORIZED` |
 | 分割模型正式选型、风险融合与 A-vs-C 效果评价 | `NOT_AUTHORIZED / NOT_STARTED` |
-| DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0 | `PROTOCOL_AND_IMPLEMENTATION_FROZEN / RESULT_NOT_RUN / DEVELOPMENT_ONLY` |
+| DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0 | `COMPLETE / VALID / NO_ROBUST_INCREMENT / GATING_ROUTE_STOPPED / DEVELOPMENT_ONLY` |
 | 默认模型、提醒、反馈或产品行为变更 | `NOT_AUTHORIZED` |
 | 真人、独立助行、安全、产品或跨设备结论 | `NOT_AUTHORIZED` |
 
@@ -534,11 +544,11 @@ component、raw/motion-warped temporal 字段与 host cost 评价。当前 refer
 包装成现实障碍、风险事件或提醒真值。任何新 segmentation reference 或 fusion operator
 都必须另行冻结 protocol、calibration 和 formal gate，不自动继承本轮权限。
 
-conditional gating R0 的下一动作仅为在已冻结 Git implementation 上运行绑定的 520 帧，
-再由独立 validator 重算逐帧、逐 session、逐 class、false components/frame、
-fragmentation 与 held-out/direct 等价。若五项门任一失败，则停止 gating 路线，只允许
-另立 residual-aware DDRNet Development 设计；若全部通过，也只形成 Development-only
-候选，不产生提醒、Android、Confirmation 或产品权限。
+conditional gating R0 已完成 520 帧执行、逐帧/逐组件独立复算与 held-out/direct
+等价检查；五项门中的 false-positive reduction 和 minimum-session recall retention
+失败，gating 路线已经停止。下一动作只能是先另立 residual-aware DDRNet Development
+设计，冻结 residual target、单变量训练比较和停止门；本轮不训练、不启动 Android、
+Confirmation、提醒或产品路径。
 
 ### 后续资源纪律
 
