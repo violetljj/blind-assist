@@ -7,7 +7,9 @@ SEGMENTATION_COMPLEMENTARITY_R1_COMPLETE /
 SEGMENTATION_COMPLEMENTARITY_CROSS_SOURCE_R2_COMPLETE /
 SEGMENTATION_CANDIDATE_UTILITY_R0_COMPLETE / VALID /
 CURRENT_SEGMENTATION_REFERENCE_REJECTED /
-DEFAULT_APP_UNCHANGED`
+SEGMENTATION_MODEL_SELECTION_R1_PROTOCOL_FROZEN /
+FRESH_FORMAL_HOLDOUT_IDENTITY_FROZEN /
+MODEL_TRAINING_NOT_STARTED / DEFAULT_APP_UNCHANGED`
 
 最后核验：2026-07-31（Asia/Hong_Kong）
 
@@ -104,6 +106,20 @@ false activation 为 `13.833/帧`、total incremental host P95 为
 独立 validator 为 `VALID`，唯一终态
 `CURRENT_SEGMENTATION_REFERENCE_REJECTED`。因此关闭当前 segmentation
 reference，不接 Android、QNN、风险事件或主动提醒。
+
+当前后继主线已切换为
+[DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1 protocol](DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_PROTOCOL_2026-07-31.json)。
+它只比较 DDRNet-23-Slim 与 SegFormer-B0；当前 SANPO INT8 reference 保留为
+`CURRENT_SEGMENTATION_REFERENCE_REJECTED` 的冻结 baseline，不重新调阈值。训练和
+dev 使用同一 SANPO split、同一四类输出合同、同一增强/损失/optimizer-step 预算、同一
+YOLO trace 与 fusion operator。原 120-frame blind holdout 已消费，只能做 regression。
+
+R1 已按 official-test session order 冻结四条尚未消费的 chest/left session 作为
+source-native fresh formal identity：`GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT`、
+`972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl`、`ic_BpoiSOIW-7_mffGenT6yissRNiPzT`、
+`eHxtA669WpN381O4ZjVAmG3-3ZUewuXr`。在 dev checkpoint 与全部设置冻结前，不读取
+这些 session 的像素真值或模型输出；若最终无法形成 hash-closed fresh manifest，R1
+只能报告 `DEVELOPMENT_RANKING_ONLY`，不产生 formal model-selection terminal。
 
 ## 已关闭前序与保留证据
 

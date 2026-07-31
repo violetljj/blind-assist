@@ -1,0 +1,181 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_model_selection_r1.protocol.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1",
+  "status": "DESIGN_FROZEN",
+  "stage": "DEVELOPMENT_STANDARD_WITH_FRESH_FORMAL",
+  "executor": "violjjet",
+  "question": "Which of DDRNet-23-Slim and SegFormer-B0 provides the most useful four-class segmentation increment over the frozen YOLO trace under the already-approved utility and host-runtime gates?",
+  "hypothesis": "A model-family change can preserve the observed segmentation increment while reducing false activation and total incremental host cost; the prior SANPO reference is not retuned.",
+  "claim_ceiling": "source_native_pixel_component_model_selection_development_only",
+  "forbidden_claims": [
+    "real_world_traversability",
+    "risk_event_or_alert_effect",
+    "Android_or_device_parity",
+    "QNN_latency_or_energy",
+    "production_model_promotion",
+    "safety_or_independent_walking",
+    "recovery_of_the_rejected_SANPO_REFERENCE"
+  ],
+  "frozen_rejected_baseline": {
+    "name": "current SANPO INT8 reference",
+    "role": "frozen_rejected_baseline_only",
+    "formal_terminal": "CURRENT_SEGMENTATION_REFERENCE_REJECTED",
+    "false_activation_components_per_frame": 13.833333,
+    "false_activation_gate": 3.0,
+    "total_incremental_host_p95_ms": 138.443840,
+    "total_incremental_host_p95_gate_ms": 30.0,
+    "delta_recall_c_minus_a": 0.073670,
+    "candidate_component_recall": 0.688129,
+    "allowed_uses": ["historical comparison", "development regression"],
+    "forbidden_uses": ["threshold tuning", "checkpoint selection", "formal holdout calibration", "production integration"]
+  },
+  "candidate_models": [
+    {
+      "model_id": "DDRNet-23-Slim",
+      "family": "dual_resolution_real_time_segmentation",
+      "implementation_identity": "ddrnet23_slim",
+      "initialization": "official_source_attested_FP32_pretrained_checkpoint_with_four_class_head_reset",
+      "source_reference": "https://github.com/ydhongHIT/DDRNet",
+      "required_receipts": ["source_url", "retrieval_timestamp", "checkpoint_sha256", "architecture_config_sha256"]
+    },
+    {
+      "model_id": "SegFormer-B0",
+      "family": "MiT_B0_hierarchical_transformer_with_MLP_decoder",
+      "implementation_identity": "segformer_b0",
+      "initialization": "official_source_attested_FP32_pretrained_checkpoint_with_four_class_head_reset",
+      "source_reference": "https://github.com/NVLabs/SegFormer",
+      "required_receipts": ["source_url", "retrieval_timestamp", "checkpoint_sha256", "architecture_config_sha256"]
+    }
+  ],
+  "data_roles": {
+    "training_and_dev": {
+      "role": "training_and_dev_calibration_only",
+      "dataset_root": "test-artifacts.local/datasets/sanpo-v4-real-canonical-r3-20260713",
+      "manifest": "training_manifest.jsonl",
+      "manifest_sha256": "1524b74d7369fc58b7c00da3a0bfa998b4ae8caad4f3d2212d08a5888c0f8675",
+      "rows": {"train": 400, "dev": 200},
+      "sessions": {"train": 8, "dev": 4},
+      "label_authority": "source_ground_truth",
+      "classes": ["walkable", "boundary_step_curb", "obstacle", "unknown_nonwalkable"],
+      "allowed_for": ["candidate fine-tuning", "dev checkpoint calibration", "runtime corpus without truth metrics"],
+      "forbidden_for": ["fresh formal scoring", "claim-critical checkpoint choice after formal access"]
+    },
+    "consumed_old_blind": {
+      "role": "development_regression_only",
+      "dataset_root": "test-artifacts.local/datasets/sanpo-v4-real-canonical-r3-20260713",
+      "manifest": "blind_holdout/manifest.jsonl",
+      "rows": 120,
+      "sessions": [
+        "sanpo_real_v0:5LlqRK-hWoDLSW5MmoLjKj6uQtZMKjb9",
+        "sanpo_real_v0:i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3"
+      ],
+      "formal_status": "CONSUMED_NOT_BLIND",
+      "allowed_for": ["regression after dev checkpoint freeze"],
+      "forbidden_for": ["training", "threshold selection", "checkpoint selection", "fresh formal terminal"]
+    },
+    "fresh_source_native_pixel_truth": {
+      "role": "formal_model_selection_holdout",
+      "status_before_acquisition": "FROZEN_IDENTITY_PIXEL_TRUTH_NOT_ACCESSED",
+      "official_split": "test",
+      "selection_rule": "After excluding both consumed old-blind sessions, choose the first four official-test session IDs in official split order that expose at least 50 aligned camera_chest/left RGB and source segmentation-mask objects; inspect object inventory only, not mask pixels, before formal access.",
+      "camera": "camera_chest",
+      "lens": "left",
+      "target_fps": 10.0,
+      "start_frame": 0,
+      "frame_count_per_session": 50,
+      "session_ids": [
+        "GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT",
+        "972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl",
+        "ic_BpoiSOIW-7_mffGenT6yissRNiPzT",
+        "eHxtA669WpN381O4ZjVAmG3-3ZUewuXr"
+      ],
+      "pixel_truth_authority": "source_ground_truth",
+      "planned_manifest": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/manifest.jsonl",
+      "required_status_after_freeze": "FRESH_FORMAL_HOLDOUT_FROZEN",
+      "truth_access_policy": "No semantic mask pixel read, derived class count, component statistic, or model output may be consumed before dev checkpoint/config freeze. Hashing and byte-level integrity verification are allowed."
+    }
+  },
+  "model_contract": {
+    "input": {"height": 256, "width": 256, "channels": 3, "color_order": "RGB", "range": "0..255"},
+    "output": {"height": 256, "width": 256, "channels": 4, "dtype_before_quantization": "float32", "class_order": ["walkable", "boundary_step_curb", "obstacle", "unknown_nonwalkable"], "argmax_semantics": "class_id"},
+    "export": {"fp32_checkpoint_required": true, "conversion_required": true, "quantization": "full_int8", "input_dtype": "int8", "output_dtype": "int8", "android_or_qnn_export": false},
+    "operator": {"hazard_classes": ["boundary_step_curb", "obstacle"], "unknown_nonwalkable": "reported_as_separate_ablation_only", "candidate_mask": "segmentation_hazard_minus_frozen_YOLO_box_union"}
+  },
+  "training_contract": {
+    "same_for_both_candidates": true,
+    "optimizer": "Adam",
+    "budget_unit": "optimizer_step",
+    "optimizer_steps_per_seed": 1200,
+    "minimum_optimizer_steps": 300,
+    "evaluation_every_steps": 50,
+    "batch_size": 12,
+    "seeds": [20260711, 20260712, 20260713],
+    "two_stage": {"head_warmup_steps": 100, "head_learning_rate": 0.0003, "finetune_learning_rate": 0.00005, "finetune_final_lr_ratio": 0.1, "freeze_batchnorm_statistics": true},
+    "augmentation": {"session_balanced_sampling": true, "guided_crop_fraction": 0.70, "boundary_guided_probability": 0.65, "crop_min_fraction": 0.55, "crop_max_fraction": 0.85, "horizontal_flip_probability": 0.50},
+    "loss": {"weighted_cross_entropy": 0.50, "weighted_soft_dice": 0.40, "weighted_focal": 0.10, "focal_gamma": 2.0, "maximum_class_weight": 4.0, "class_weight_source": "train_pixel_counts_only"},
+    "checkpoint_rule": "Within each candidate, choose the dev checkpoint by harmonic mean of dev mean IoU and boundary_step_curb IoU, then boundary IoU and mean IoU; retain all seed reports and worst seed.",
+    "formal_freeze": "Checkpoint, architecture config, initialization receipt, augmentation, loss, class weights, YOLO trace, fusion operator and evaluation code hashes must be frozen before any fresh formal truth or output is consumed."
+  },
+  "evaluation_contract": {
+    "yolo_trace": "one identity-bound frozen OBJECT_DETECTOR trace shared by both candidates",
+    "fusion_operator": "fixed R0 A/B/C operator: A=YOLO-only, B=segmentation hazard, C=A union B, candidate=B minus A",
+    "analysis_grid": {"width": 256, "height": 256, "projection": "nearest for source-native truth; clipped normalized boxes"},
+    "unit": "frame metrics plus source/session aggregation; frames are repeated observations and source session is the minimum independence unit",
+    "required_metrics": ["C_minus_A_delta_recall", "C_minus_A_delta_false_positive_area_fraction", "candidate_component_recall", "false_activation_components_per_frame", "mask_fragmentation", "component_stability", "source_wise_metrics", "consistent_sessions", "critical_miss_guardrail"],
+    "frame_recall_role": "diagnostic_only; event or alert claims are forbidden",
+    "independent_validator": "must recompute identities, SHA, source-wise metrics, aggregate metrics, component counts and runtime summaries from immutable rows"
+  },
+  "decision_gates": {
+    "min_delta_recall": 0.05,
+    "max_delta_false_positive_area_fraction": 0.05,
+    "min_candidate_component_recall": 0.50,
+    "max_false_activation_components_per_frame": 3.0,
+    "max_segmentation_host_p95_ms": 25.0,
+    "max_total_incremental_host_p95_ms": 30.0,
+    "min_consistent_sessions": 2,
+    "consistent_session_delta_recall_minimum": 0.0,
+    "all_gates_are_hard": true,
+    "no_gate_relaxation_after_formal_access": true
+  },
+  "runtime_contract": {
+    "purpose": "decompose the prior 138.444 ms host increment before selection",
+    "device_class": "fixed_host_benchmark_machine",
+    "tflite_threads": 4,
+    "warmup_frames": 20,
+    "measured_frames": 200,
+    "preload_inputs": true,
+    "timed_stages_ms": ["preprocess", "tflite_inference", "output_dequantize_argmax", "component_extraction", "fusion_operator", "total_increment"],
+    "production_equivalent_total": "preprocess + inference + output decode + candidate component extraction + fusion; excludes truth metrics, file IO, JSON logging, validator and report serialization",
+    "excluded_from_timing": ["source truth read", "truth metrics", "file IO", "JSON logging", "validator", "Python report writing", "cold interpreter construction"],
+    "same_corpus_and_settings_for_both": true
+  },
+  "phase_order": [
+    "freeze_protocol",
+    "freeze_dataset_role_ledger_and_fresh_holdout_identity",
+    "acquire_and_hash_fresh_holdout_without_pixel_truth_interpretation",
+    "freeze_shared_YOLO_trace_and_fusion_operator",
+    "train_both_candidates_on_same_train_dev_split",
+    "complete_FP32_checkpoint_receipts",
+    "dev_calibration_and_checkpoint_setting_freeze",
+    "unified_conversion_and_full_INT8_receipts",
+    "runtime_breakdown_without_truth_metrics",
+    "one_shot_fresh_formal_evaluation",
+    "independent_validation",
+    "model_selection_terminal"
+  ],
+  "terminals": {
+    "supported": "NEW_SEGMENTATION_REFERENCE_SELECTED_DEVELOPMENT_ONLY",
+    "rejected": "NO_SEGMENTATION_CANDIDATE_PASSES_HARD_GATES",
+    "not_evaluable": "MODEL_SELECTION_NOT_EVALUABLE",
+    "development_only": "DEVELOPMENT_RANKING_ONLY_NO_FRESH_FORMAL_HOLDOUT",
+    "post_terminal_authority": "No Android, QNN, risk-event or active-reminder authority is created. A separate device benchmark protocol is required after a selected candidate and valid independent validation."
+  },
+  "implementation": {
+    "protocol_path": "docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_PROTOCOL_2026-07-31.json",
+    "role_ledger_path": "docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_DATASET_ROLE_LEDGER_2026-07-31.json",
+    "module": "scripts/research/dual_loop_segmentation_model_selection",
+    "evidence_root": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1",
+    "production_assets_forbidden": true,
+    "default_app_model_unchanged": true
+  }
+}

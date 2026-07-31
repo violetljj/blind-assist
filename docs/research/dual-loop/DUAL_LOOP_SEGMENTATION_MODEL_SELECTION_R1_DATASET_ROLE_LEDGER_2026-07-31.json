@@ -1,0 +1,60 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_model_selection_r1.dataset_role_ledger.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1",
+  "status": "FROZEN_IDENTITY_PIXEL_TRUTH_NOT_ACCESSED",
+  "executor": "violjjet",
+  "created_at_local": "2026-07-31",
+  "roles": [
+    {
+      "role_id": "TRAIN_DEV_CANONICAL",
+      "role": "training_and_dev_calibration_only",
+      "root": "test-artifacts.local/datasets/sanpo-v4-real-canonical-r3-20260713",
+      "manifest": "training_manifest.jsonl",
+      "manifest_sha256": "1524b74d7369fc58b7c00da3a0bfa998b4ae8caad4f3d2212d08a5888c0f8675",
+      "row_counts": {"train": 400, "dev": 200},
+      "session_counts": {"train": 8, "dev": 4},
+      "label_authority": "source_ground_truth",
+      "allowed_access": ["training", "dev calibration", "runtime-only corpus"],
+      "formal_access": false
+    },
+    {
+      "role_id": "CONSUMED_OLD_BLIND",
+      "role": "development_regression_only",
+      "root": "test-artifacts.local/datasets/sanpo-v4-real-canonical-r3-20260713",
+      "manifest": "blind_holdout/manifest.jsonl",
+      "manifest_sha256": null,
+      "row_count": 120,
+      "session_ids": ["sanpo_real_v0:5LlqRK-hWoDLSW5MmoLjKj6uQtZMKjb9", "sanpo_real_v0:i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3"],
+      "formal_status": "CONSUMED_NOT_BLIND",
+      "allowed_access": ["post-freeze regression only"],
+      "training_access": false,
+      "checkpoint_selection_access": false,
+      "fresh_formal_access": false
+    },
+    {
+      "role_id": "FRESH_FORMAL_SOURCE_NATIVE_PIXEL_TRUTH",
+      "role": "fresh_formal_model_selection_holdout",
+      "official_split": "test",
+      "selection_status": "FROZEN_BEFORE_CANDIDATE_TRAINING",
+      "pixel_truth_status": "NOT_ACCESSED",
+      "camera": "camera_chest",
+      "lens": "left",
+      "target_fps": 10.0,
+      "start_frame": 0,
+      "frames_per_session": 50,
+      "session_ids": ["sanpo_real_v0:GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT", "sanpo_real_v0:972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl", "sanpo_real_v0:ic_BpoiSOIW-7_mffGenT6yissRNiPzT", "sanpo_real_v0:eHxtA669WpN381O4ZjVAmG3-3ZUewuXr"],
+      "selection_rule": "Official test split order after excluding consumed old-blind sessions; first four sessions with metadata-confirmed >=50 aligned chest/left RGB and segmentation-mask objects.",
+      "planned_manifest": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/manifest.jsonl",
+      "required_label_authority": "source_ground_truth",
+      "formal_truth_read": "one-shot after dev checkpoint/config freeze",
+      "source_wise_metrics_required": true,
+      "sha256_receipt": null
+    }
+  ],
+  "role_invariants": [
+    "No session may occur in more than one role.",
+    "The consumed old blind role cannot become fresh formal by renaming or copying.",
+    "Fresh formal session identity is frozen before candidate outputs or semantic mask pixels are read.",
+    "Missing fresh manifest, mask hash, or source-native authority yields DEVELOPMENT_RANKING_ONLY rather than a formal terminal."
+  ]
+}

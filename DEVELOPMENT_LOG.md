@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。切换主线至
+  `DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1`：冻结 DDRNet-23-Slim 与 SegFormer-B0
+  的同 split、同输入、同增强/损失/optimizer-step、同 YOLO trace/fusion operator
+  比较协议；保留 SANPO INT8 reference 为 rejected baseline，不重新调参。原 120-frame
+  blind holdout 降级为 Development/regression-only，并按官方 test split 顺序冻结四条
+  未消费 chest/left session 作为 fresh source-native pixel-truth formal identity。
+  当前仅完成 protocol、dataset role ledger 和训练 configs；尚未读取 fresh mask 像素、
+  训练候选或授权 Android/QNN/风险事件/主动提醒。详细合同见
+  `docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_PROTOCOL_2026-07-31.json`。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。冻结并执行
   `DUAL_LOOP_SEGMENTATION_CANDIDATE_UTILITY_R0`：以 SANPO-Real v0 canonical R3
   source-native pixel truth 完成 dev calibration 与 120-frame blind formal；实现
