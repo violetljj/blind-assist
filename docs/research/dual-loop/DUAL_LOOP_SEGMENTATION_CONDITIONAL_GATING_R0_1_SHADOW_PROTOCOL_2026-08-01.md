@@ -1,10 +1,18 @@
 # Conditional Segmentation Gating R0.1 Post-primary Shadow Protocol
 
-状态：`PROTOCOL_AND_IMPLEMENTATION_FROZEN / RESULT_NOT_RUN /
+状态：`PROTOCOL_FROZEN / IMPLEMENTATION_RECOVERY_V2_FROZEN_NOT_RUN /
+RESULT_NOT_RUN /
 POST_PRIMARY_SHADOW_ABLATION_ONLY / NO_SELECTION_AUTHORITY /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
 日期：2026-08-01（Asia/Hong_Kong）
+
+实现记录：初始冻结 Git `6ef3014dbea24b24ca31fadd1c9c9eda829d2481` 的首次
+activation 在 raw shadow frame/component 文件读取前停止。原因是 runner 将 input
+binding list 传给了 single-binding loader，触发 `TypeError`；没有创建 output root，
+没有计算 mask、component decision 或任何 shadow 指标。V2 只把两组 input list 路由到
+既有 multi-file bound loader，并让 preflight 先完整验证 520/11,757 membership。
+科学定义、阈值、角色、material/heterogeneity 规则和 output contract 均不变。
 
 ## 纠正与研究问题
 

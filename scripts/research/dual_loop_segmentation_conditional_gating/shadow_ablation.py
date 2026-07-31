@@ -28,7 +28,7 @@ from scripts.research.dual_loop_segmentation_conditional_gating.conditional_gati
     _current_git_head,
     _decision_checks,
     _frame_arm_metrics,
-    _load_bound_jsonl,
+    _load_bound_jsonl as _load_bound_jsonl_files,
     _validate_membership,
     _verify_output_scope,
     _write_json,
@@ -228,6 +228,13 @@ def preflight(
         path = _resolve(repo_root, binding["path"])
         if sha256_file(path) != binding["sha256"]:
             raise ValueError(f"bound primary {field} SHA drifted")
+    frame_rows, _ = _load_bound_jsonl_files(
+        repo_root, base_config["input_contract"]["frames"]
+    )
+    component_rows, _ = _load_bound_jsonl_files(
+        repo_root, base_config["input_contract"]["components"]
+    )
+    _validate_membership(base_config, frame_rows, component_rows)
     _verify_output_scope(repo_root, output_root)
     primary_root = _resolve(
         repo_root, config["primary_r0"]["result"]["path"]
@@ -249,6 +256,8 @@ def preflight(
         "primary_result_sha256": config["primary_r0"]["result"]["sha256"],
         "primary_terminal": config["primary_r0"]["terminal"],
         "fixed_shadow_terminal": FIXED_TERMINAL,
+        "bound_frame_count": len(frame_rows),
+        "bound_component_count": len(component_rows),
         "output_root": str(output_root),
         "outcomes_accessed": False,
     }
@@ -399,10 +408,10 @@ def run_shadow_ablation(
     primary_decisions = _load_bound_jsonl(
         repo_root, config["primary_r0"]["component_decisions"]
     )
-    frame_rows, frame_provenance = _load_bound_jsonl(
+    frame_rows, frame_provenance = _load_bound_jsonl_files(
         repo_root, base_config["input_contract"]["frames"]
     )
-    component_rows, component_provenance = _load_bound_jsonl(
+    component_rows, component_provenance = _load_bound_jsonl_files(
         repo_root, base_config["input_contract"]["components"]
     )
     _validate_membership(base_config, frame_rows, component_rows)

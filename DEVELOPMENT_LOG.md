@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。R0.1 初始冻结 Git
+  `6ef3014dbea24b24ca31fadd1c9c9eda829d2481` 的首次 activation 在读取 raw shadow
+  frame/component 文件前因 input binding list 被传给 single-binding loader 而
+  `TypeError` 停止；未创建 output root，未计算 shadow mask、component decision 或
+  指标。前向 V2 只把两组 input list 路由到既有 multi-file bound loader，并让
+  `--preflight-only` 先加载并验证 520 帧、11,757 components 的完整 membership；
+  candidate、阈值、角色、material/heterogeneity、terminal 与 authority 均不变。
+  35 项 synthetic/legacy tests 与旧 R0 85,235 项 validator 将在 V2 freeze 前重跑；
+  当前 `IMPLEMENTATION_RECOVERY_V2_FROZEN_NOT_RUN`。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。接受用户对单 primary
   假阴性风险的纠正：R0 的 result、hash、`CONDITIONAL_GATING_NO_ROBUST_INCREMENT_
   STOP_GATING_ROUTE` machine terminal 均保持不可变，但其科学 scope 收窄为
