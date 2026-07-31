@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成全项目 current 权威面的
+  R4 收口：SANPO 拆分为默认论文 `THESIS_DEVELOPMENT` 与显式
+  `PRODUCTION_PROMOTION`，普通训练/utility/算法选模 benchmark 不再要求 fresh
+  holdout、INT8、设备事件或发布门；生产默认模型晋级继续保留完整链条。双环、暂停
+  RCLE 和历史 USTRF current/index 均加入前向 R4 marker：新 Development 不继承旧
+  one-shot/formal 门，历史终态与数据角色保持不可变。同步修正根 README、docs/scripts
+  索引中的旧主线口径，并在 governance unit tests 中检查六个 current/操作入口及三个
+  导航入口的 lane markers；SANPO sequence、segmentation candidate、traversability
+  baseline、v3 regression、counterfactual collection 和 public-video silver 六份
+  workflow 也明确为“选择后生效”，防止产品门再次倒灌普通论文实验。未修改算法、模型、
+  数据、历史协议、receipt、App 或提醒链路。验证：35 项 governance unit tests、
+  13-file research contract suite、历史 R3 contract CLI、JSON/py_compile、repo
+  hygiene、docs index 和 diff whitespace 全部通过；12 份 legacy-bound machine
+  contract 数量不变，R3 policy 与 R1 result、closeout validator、failure receipt、
+  formal freeze 的既有 SHA-256 保持一致。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。进一步落实 R4 的轻量实验
   流程：Discovery 默认不分配或消费 fresh holdout，算法早期优先使用
   Development/consumed/synthetic 数据；小型 label mapping、mask decoder、tensor

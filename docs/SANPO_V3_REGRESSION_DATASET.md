@@ -1,5 +1,10 @@
 # SANPO v3 回归基线与分割数据门禁
 
+执行范围：不可变 `sanpo-v3-regression-90f` 继续用于回归和
+`PRODUCTION_PROMOTION`，但不是新 Discovery/Development 的唯一数据入口。普通 R4
+Development 可使用版本化的 Development/consumed manifest，不要求复制本页全套冻结与
+逐文件 SHA；这些较重身份门只在复用该不可变基线或申请生产晋级时生效。
+
 这套契约把现有三条已复核的 30 帧 SANPO 连续序列冻结为 `sanpo-v3-regression-90f`，并规定后续四类轻量分割候选的数据边界。所有 RGB、来源掩码、四类语义掩码和设备报告仍只留在 Git 忽略的 `test-artifacts.local/`；仓库只保存脚本、schema 和门禁规则。
 
 ## 90 帧不可变基线

@@ -1,5 +1,9 @@
 # SANPO 四类分割候选（benchmark-only）
 
+执行范围：本页定义一个具体 benchmark-only implementation，不是论文 Development 的
+唯一候选或强制晋级链。默认 R4 Development 可先用其他模型、host 输出或 synthetic
+decoder canary 比较 utility；只有默认模型替换/生产晋级才必须进入完整 INT8 与同机事件门。
+
 `scripts/train_export_sanpo_segmentation.py` 是 MobileNetV3Small + Lite R-ASPP 的训练与全 INT8 TFLite 导出工具。它是 benchmark-only 工具：默认模型只写入 Git 忽略的 `device-benchmark/benchmark-assets.local/segmentation/`，并且脚本明确拒绝 `app/src/main/assets/` 下的任何输出路径。生产 APK 继续只使用 `yolo11n_fp16_320.tflite`。
 
 ## 固定模型契约
@@ -9,7 +13,10 @@
 - 类别顺序固定：`0 walkable`、`1 boundary_step_curb`、`2 obstacle`、`3 unknown_nonwalkable`。
 - 导出强制 `TFLITE_BUILTINS_INT8`、INT8 输入/输出和代表性数据集；导出后重新打开模型验证 shape、dtype、quantization scale 和 size。
 
-`boundary_step_curb` 只是边界证据，`unknown_nonwalkable` 只是诊断证据；模型或离线 mIoU 不构成上线条件。其结果必须经过现有 `DetectionSource.SEGMENTATION` 规则和同机 A/B 门禁，且不得替换生产 YOLO 路径。
+`boundary_step_curb` 只是边界证据，`unknown_nonwalkable` 只是诊断证据；模型或离线
+mIoU 不构成上线条件。只有进入 `PRODUCTION_PROMOTION` 时，其结果才必须经过现有
+`DetectionSource.SEGMENTATION` 规则和同机 A/B 门禁；普通 Development 可以在不接入
+App 的前提下先报告 utility 和 runtime。
 
 ## 训练数据访问契约
 

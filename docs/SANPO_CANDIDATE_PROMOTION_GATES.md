@@ -2,6 +2,20 @@
 
 本流程把“模型在离线 dev 上是否学到了正确语义”“Keras 转 full-INT8 后是否保持语义”和“真机连续场景是否安全”拆成三个独立门。任何单门变绿都不能授权替换 App 生产模型。
 
+```text
+FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4
+SCOPE: PRODUCTION_PROMOTION_ONLY
+DEVELOPMENT_REQUIRES_THIS_GATE_CHAIN: false
+ALGORITHM_SELECTION_BENCHMARK_IS_DEVICE_EVENT_GATE: false
+PLATFORM_ENGINEERING_BENCHMARK_IS_DEVICE_EVENT_GATE: false
+```
+
+本文件只约束明确启动的 `PRODUCTION_PROMOTION`，不约束普通论文
+`THESIS_DEVELOPMENT`。Development 可以先做候选 utility、host/device
+`ALGORITHM_SELECTION_BENCHMARK`，或独立做 backend/build/operator/memory/thermal
+`PLATFORM_ENGINEERING_BENCHMARK`；二者都不需要先通过本页三段门，也不能因此获得默认
+模型替换或产品安全 authority。只有需要生产晋级的最终候选才进入下列门链。
+
 ## 三段门禁
 
 | 门 | 输入 | 核心指标 | 通过后的权限 |

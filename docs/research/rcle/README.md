@@ -2,7 +2,21 @@
 
 状态：`paused / USER_PAUSED_2026-07-30 / STAGE_B_COMPLETE_B_ORACLE_NOT_EVALUABLE / R3_LEAKAGE_LOCALIZATION_FORMAL_COMPLETE_INDEPENDENT_VALIDATION_INVALID_ONE_SHOT_CONSUMED_NO_RERUN / C_D_CLOSED / SUCCESSOR_FORMAL_NOT_CONSUMED`
 
-最后核验：2026-07-30（Asia/Hong_Kong）
+最后核验：2026-08-01（Asia/Hong_Kong）
+
+```text
+FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4
+DEFAULT_NEW_WORK_LANE_IF_RESUMED: THESIS_DEVELOPMENT
+NEW_DEVELOPMENT_REQUIRES_LEGACY_ONE_SHOT_AUTHORITY: false
+HISTORICAL_TERMINALS_IMMUTABLE: true
+```
+
+上述前向规则不解除暂停，也不重写 RCLE 的历史 formal 终态。若以后恢复新的
+Discovery/Canary/Development，默认可使用声明的 Development/consumed 数据、版本化修复
+重跑、synthetic mapping/decoder canary 和提前的算法选模/平台工程 benchmark，不需要
+消费旧 `480+16` 或继承旧 one-shot authority。只有用户明确选择执行保留的旧
+Confirmation，或另行激活最终 Confirmation，才适用对应的 sealed、one-shot 和完整
+validator 约束。
 
 ## 暂停决定
 

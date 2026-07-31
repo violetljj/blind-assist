@@ -1,5 +1,9 @@
 # SANPO 交叉反事实事件采集协议 v1
 
+执行范围：本页是需要 episode/matched-pair 证据时可选择的数据采集 workflow，不是普通
+Discovery、映射/decoder canary 或早期候选 utility 的默认前置门。R4 Development 可以
+先使用现有 Development/consumed 数据；只有实验明确采用本协议时才要求闭合其完整矩阵。
+
 ## 目的与边界
 
 本协议把数据单位定义为连续 `episode` 和物理 `risk_event`，而不是相互高度相关的独立帧。首轮冻结为 **6 个 session × 4 个 scene × 每格 2 个 positive + 2 个 matched negative**，合计 96 个 episode、48 个正负 matched pair。

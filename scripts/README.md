@@ -79,7 +79,9 @@
 - 模型导出/检查：`export_yolo11n_tflite.py`、`inspect_tflite.py`、`export_depth_anything_v2_tflite.py`、`inspect_depth_model.py`。
 - detector/device benchmark：`detector_lab.py`、`benchmark_tflite_detectors.py`、`run_yolo26n_device_benchmark.ps1`、`run_detector_ab_device_benchmark.ps1`、`run_device_regression.ps1`。
 - SANPO 训练与门禁：`train_sanpo_segmentation_keras_torch.py`、`train_export_sanpo_segmentation.py`、`sanpo_training_gate.py`、`sanpo_candidate_quality_gate.py`。
-- 当前研究主线以 [RCLE current 入口](../docs/research/rcle/README.md) 为准，并服从 [渐进式研究治理](../docs/RESEARCH_GOVERNANCE.md)。旧 route-conditioned USTRF 和已关闭 RCLE 版本均保留为历史、反例、回归或前序证据，不自动产生当前 authority。
+- 当前论文研究主线以 [双环 current 入口](../docs/research/dual-loop/README.md) 为准，并
+  前向服从 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`；暂停的 RCLE 与已关闭 USTRF 保留
+  历史终态，但未来新 Development 不自动继承旧 one-shot/formal 门。
 
 ## 运行约定
 
@@ -95,5 +97,7 @@
 - 新增 runnable script 必须归入明确领域 Module，并同时更新本索引或该领域 README；不要重新把研究轮次平铺回根目录。
 - `scripts/policy/root-files.txt` 是根目录精确清单；只有真正稳定的 Interface 或跨域共享 Implementation 才能经评审加入。
 - `DEVELOPMENT_LOG.md` 上限为 6000 行、1200000 bytes、最老条目 28 天；超限时按月原文归档并在根日志保留链接。
-- 改变 canonical 数据、冻结回归集或读取 blind 数据时遵守 [SANPO 训练协议](../docs/SANPO_TRAINING_PROTOCOL.md)。
+- SANPO 普通论文训练先按 [SANPO 训练协议](../docs/SANPO_TRAINING_PROTOCOL.md)选择
+  `THESIS_DEVELOPMENT`；只有改变 production canonical 数据、读取 blind 或启动默认模型
+  晋级时，才进入 `PRODUCTION_PROMOTION` 的完整隔离与门禁。
 - 文档变更完成前运行 `scripts/check_docs_index.ps1`。

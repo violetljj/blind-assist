@@ -2,6 +2,28 @@
 
 本协议解决旧训练中“200 帧 + batch 64 = 每轮仅 4 次更新”、类别极不平衡、只按 `val_loss` 选模以及单 seed 偶然性的问题。它只改变候选训练与审计方法，不读取 benchmark-only blind，不授权导出或替换 App 模型。
 
+```text
+FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4
+DEFAULT_NEW_WORK_LANE: THESIS_DEVELOPMENT
+DEVELOPMENT_REQUIRES_FRESH_HOLDOUT: false
+DEVELOPMENT_REQUIRES_INT8_OR_DEVICE_EVENT_GATE: false
+PRODUCTION_PROMOTION_REQUIRES_EXPLICIT_SCOPE: true
+```
+
+## 两条使用通道
+
+- `THESIS_DEVELOPMENT`：默认通道。可以使用声明的 Development、consumed、synthetic
+  或公开可重复数据，按问题需要缩减 seed、step、分辨率和审计字段；保留版本化实现身份、
+  最小 sanity check、结果、限制和下一步。它不读取或消耗 fresh holdout，也不要求先后
+  完成 INT8、设备事件或发布门。
+- `PRODUCTION_PROMOTION`：只有任务明确以默认模型替换或发布为目标时启用。本文件后续
+  固定训练比较、三 seed 和完整报告要求才构成晋级证据，并继续服从 blind 隔离及
+  [候选晋级门](SANPO_CANDIDATE_PROMOTION_GATES.md)。
+
+小型 label mapping、mask decoder、tensor layout、坐标变换和 schema adapter 在两条
+通道中都先用 synthetic canary 覆盖全部合法、未知、边界和预期失败路径；canary 通过
+只证明接口实现，不证明候选 utility。
+
 ## 固定比较单位
 
 - 训练预算按 **optimizer step** 计算，不按 epoch；默认每个 seed 最多 `1200` step，至少 `300` step 后才允许早停。
@@ -71,9 +93,19 @@ $dataset = 'test-artifacts.local\datasets\sanpo-v3-canonical-evidence-v4-2026071
 
 ## 结果边界
 
-- trainer 仍只消费 SHA256 绑定的 green 授权和 canonical `training_manifest.jsonl`；报告固定写入 `blind_holdout_access=not_accessed_by_trainer`。
+- `THESIS_DEVELOPMENT` trainer 消费版本化 Development/consumed manifest，并明确记录
+  `blind_holdout_access=not_accessed_by_trainer`；不要求 production green 授权或逐文件
+  SHA chain。
+- `PRODUCTION_PROMOTION` trainer 仍只消费 SHA256 绑定的 green 授权和 canonical
+  `training_manifest.jsonl`，报告固定写入
+  `blind_holdout_access=not_accessed_by_trainer`。
 - 三 seed dev 改善只代表优化协议更稳定，不是 blind 结果，更不是生产晋级证据。
-- 训练后仍需跨后端等价、INT8 量化保真、独立 blind 事件指标和同机连续场景门。跨后端、导出与质量门命令必须原样传递本轮 `--backbone-alpha` / `--decoder-channels` / `--input-size`；v2 等价报告会哈希绑定配置与固定输入尺寸并拒绝错配。官方 SANPO 512 路线只能作为同协议消融，384/512 不改变既有数值或质量阈值。任何一项失败都保持 `do_not_replace_default_model`。
+- 只有 `PRODUCTION_PROMOTION` 在训练后仍需跨后端等价、INT8 量化保真、独立 blind
+  事件指标和同机连续场景门。跨后端、导出与质量门命令必须原样传递本轮
+  `--backbone-alpha` / `--decoder-channels` / `--input-size`；v2 等价报告会哈希绑定
+  配置与固定输入尺寸并拒绝错配。官方 SANPO 512 路线只能作为同协议消融，384/512
+  不改变既有晋级阈值。任何一项失败都保持 `do_not_replace_default_model`，但不否定
+  已诚实报告的 Development 结果。
 - 2026-07-13 已在新的 real-only canonical v4 上完成预注册三 seed 审计。384×384、alpha 1.0、decoder 96 的 seed `20260711` 达到 dev mIoU `0.4344`、boundary IoU `0.4506`，但 seed `20260712/20260713` 只有 `0.1804/0.1734` 与 `0.2498/0.1548`（mIoU/boundary IoU）。因此协议成功暴露了旧单 seed 报告隐藏的高方差；正式结论仍是 `do_not_replace_default_model`，下一步必须提升跨 session 泛化和 seed 最差值，而不是继续挑最好 checkpoint。
 
 ## P0 seed 因子审计

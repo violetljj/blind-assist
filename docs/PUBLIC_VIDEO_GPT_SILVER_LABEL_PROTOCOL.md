@@ -1,5 +1,9 @@
 # 公开视频 GPT 银标、暂定训练与端侧对照协议 v2
 
+执行范围：本页只约束选择公开视频银标 workflow 的实验，不是所有论文 Development 的
+数据准入前置门。默认 R4 允许其他 Development/consumed/synthetic 来源；公开视频银标
+可用于声明清楚的 Development，但不能绕过最终 Confirmation 或生产晋级的独立证据。
+
 ## 目的
 
 本项目默认由 GPT/VLM 在普通公开渠道可下载的连续第一视角视频上完成候选筛选、风险判断和生命周期草案，并将其与 BlindAssist 端侧输出逐 episode 对照；不建立人工复核 fallback。素材可先下载并直接进入隔离内部研究，许可、同意和隐私元数据与自动脱敏可并行补记。

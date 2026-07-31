@@ -3,9 +3,25 @@
 状态：research index
 当前生产授权：无；正式 App 状态仍以 `docs/SANPO_CURRENT_STATUS.md`、当前协议和可复现门禁报告为准。
 
+```text
+FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4
+DEFAULT_NEW_WORK_LANE_IF_REOPENED: THESIS_DEVELOPMENT
+NEW_DEVELOPMENT_REQUIRES_LEGACY_FORMAL_GATES: false
+HISTORICAL_TERMINALS_IMMUTABLE: true
+```
+
+本目录中的 one-shot、fresh split、full validator 和 no-rerun 均只描述各自历史协议。
+若未来以实质不同的新问题重开 USTRF Development，默认采用 R4，可使用声明的
+Development/consumed 数据、synthetic canary 和提前的算法选模/平台工程 benchmark；
+不得把历史门禁自动复制成新探索的前置条件。历史结果、数据角色和 route-conditioned
+收口仍不可追溯改写。
+
 ## 首要入口
 
-- 当前 BlindAssist 研究主线已切换到 [RCLE](../rcle/README.md)。本目录保留 route-conditioned USTRF 历史证据和 RCLE 前序 Looming 探索；下列日期化目标、结果或“下一步”均不得越过 RCLE current 入口自动生成任务。
+- 当前 BlindAssist 论文研究主线是 [YOLO + 语义分割双环](../dual-loop/README.md)；
+  [RCLE](../rcle/README.md) 已暂停。本目录只保留 route-conditioned USTRF 历史证据和
+  RCLE 前序 Looming 探索；下列日期化目标、结果或“下一步”均不得越过双环 current
+  入口或 R4 前向治理自动生成任务。
 - [RCLE 前序 Looming 现场冻结（2026-07-25）](../rcle/RCLE_PRECURSOR_FREEZE_2026-07-25.md)：保留 40 个 Module 文件和 12 份日期化文档，原 R0/R1 全部停止；记录测试、终态、复用边界与根目录模型清理。
 - [Looming R1 非权威执行隔离结果（2026-07-25）](USTRF_EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R1_NONAUTHORITATIVE_EXECUTION_QUARANTINE_RESULT_2026-07-25.md)：实际生成 `596` 个 base、`594` 个 oracle/full-6DoF trace，并发生一次 `503` 对评分；但评分 truth 已被隔离为 diagnostic-only，故自报 stop 无接受/停止权限。权威终态为 `R1_CLAIM_SCOPED_SOURCE_PROGRAM_NONAUTHORITATIVE_EVALUATION_QUARANTINED_INPUT_AUTHORITY_BLOCKED / VALID`，没有权威算法结果。
 - [Looming R1 Bonn 静态表面 truth 结果（2026-07-25）](USTRF_EGOMOTION_COMPENSATED_LOOMING_SIGNAL_R1_BONN_STATIC_SURFACE_TRUTH_RESULT_2026-07-25.md)：官方变换在 3 个可用 depth canary 上中位绝对/相对误差约 `5.5cm / 2.1%`，但冻结 quorum 要求 `4` 帧，故终态 `BONN_C2_STATIC_SURFACE_TRANSFORM_CANARY_FAILED / VALID`；18 个网格轨迹全部显式 abstain。该 truth endpoint 内未运行 RGB signal；后续非权威执行另见上项。

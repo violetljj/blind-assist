@@ -135,6 +135,99 @@ def base_protocol(stage: str = "DISCOVERY") -> dict:
 
 
 class ProgressiveResearchGovernanceTest(unittest.TestCase):
+    def test_current_research_entries_share_forward_r4_scope(self) -> None:
+        expected_markers = {
+            "docs/SANPO_CURRENT_STATUS.md": (
+                "FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+                "DEFAULT_NEW_WORK_LANE: THESIS_DEVELOPMENT",
+                "DEVELOPMENT_REQUIRES_PRODUCTION_PROMOTION_GATES: false",
+                "PRODUCTION_PROMOTION_REQUIRES_EXPLICIT_SCOPE: true",
+                "HISTORICAL_TERMINALS_IMMUTABLE: true",
+            ),
+            "docs/SANPO_TRAINING_PROTOCOL.md": (
+                "FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+                "DEFAULT_NEW_WORK_LANE: THESIS_DEVELOPMENT",
+                "DEVELOPMENT_REQUIRES_FRESH_HOLDOUT: false",
+                "DEVELOPMENT_REQUIRES_INT8_OR_DEVICE_EVENT_GATE: false",
+                "PRODUCTION_PROMOTION_REQUIRES_EXPLICIT_SCOPE: true",
+            ),
+            "docs/SANPO_CANDIDATE_PROMOTION_GATES.md": (
+                "FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+                "SCOPE: PRODUCTION_PROMOTION_ONLY",
+                "DEVELOPMENT_REQUIRES_THIS_GATE_CHAIN: false",
+                "ALGORITHM_SELECTION_BENCHMARK_IS_DEVICE_EVENT_GATE: false",
+                "PLATFORM_ENGINEERING_BENCHMARK_IS_DEVICE_EVENT_GATE: false",
+            ),
+            "docs/research/dual-loop/README.md": (
+                "FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+                "DEFAULT_NEW_WORK_LANE: THESIS_DEVELOPMENT",
+                "DEVELOPMENT_REQUIRES_LEGACY_FORMAL_GATES: false",
+                "HISTORICAL_TERMINALS_IMMUTABLE: true",
+            ),
+            "docs/research/rcle/README.md": (
+                "FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+                "DEFAULT_NEW_WORK_LANE_IF_RESUMED: THESIS_DEVELOPMENT",
+                "NEW_DEVELOPMENT_REQUIRES_LEGACY_ONE_SHOT_AUTHORITY: false",
+                "HISTORICAL_TERMINALS_IMMUTABLE: true",
+            ),
+            "docs/research/ustrf-sc/README.md": (
+                "FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+                "DEFAULT_NEW_WORK_LANE_IF_REOPENED: THESIS_DEVELOPMENT",
+                "NEW_DEVELOPMENT_REQUIRES_LEGACY_FORMAL_GATES: false",
+                "HISTORICAL_TERMINALS_IMMUTABLE: true",
+            ),
+        }
+        for relative_path, markers in expected_markers.items():
+            with self.subTest(path=relative_path):
+                text = (target.REPO_ROOT / relative_path).read_text(encoding="utf-8")
+                for marker in markers:
+                    self.assertIn(marker, text)
+        navigation_markers = {
+            "README.md": (
+                "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+                "THESIS_DEVELOPMENT",
+                "PRODUCTION_PROMOTION",
+                "docs/research/dual-loop/README.md",
+            ),
+            "docs/README.md": (
+                "THESIS_DEVELOPMENT / PRODUCTION_PROMOTION",
+                "PRODUCTION_PROMOTION",
+                "默认采用 R4",
+            ),
+            "scripts/README.md": (
+                "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+                "双环 current 入口",
+                "THESIS_DEVELOPMENT",
+                "PRODUCTION_PROMOTION",
+            ),
+        }
+        for relative_path, markers in navigation_markers.items():
+            with self.subTest(path=relative_path):
+                text = (target.REPO_ROOT / relative_path).read_text(encoding="utf-8")
+                for marker in markers:
+                    self.assertIn(marker, text)
+        sanpo_scoped_workflows = (
+            "docs/SANPO_SEQUENCE_EVALSET.md",
+            "docs/SANPO_SEGMENTATION_CANDIDATE.md",
+            "docs/SANPO_TRAVERSABILITY_BASELINE.md",
+            "docs/SANPO_V3_REGRESSION_DATASET.md",
+            "docs/SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md",
+            "docs/PUBLIC_VIDEO_GPT_SILVER_LABEL_PROTOCOL.md",
+        )
+        for relative_path in sanpo_scoped_workflows:
+            with self.subTest(path=relative_path):
+                text = (target.REPO_ROOT / relative_path).read_text(encoding="utf-8")
+                self.assertIn("执行范围：", text)
+                self.assertIn("R4", text)
+        sanpo_current = (
+            target.REPO_ROOT / "docs/SANPO_CURRENT_STATUS.md"
+        ).read_text(encoding="utf-8")
+        ustrf_current = (
+            target.REPO_ROOT / "docs/research/ustrf-sc/README.md"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("RCLE 当前研究主线", sanpo_current)
+        self.assertNotIn("当前 BlindAssist 研究主线已切换到 [RCLE]", ustrf_current)
+
     def test_current_policy_is_thesis_first_r4(self) -> None:
         self.assertEqual(
             "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",

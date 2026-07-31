@@ -1,5 +1,10 @@
 # BlindAssist SANPO 连续场景试验集
 
+执行范围：本页是可选的连续场景 Development/评价 workflow，不是每个 SANPO
+Discovery 或早期候选的前置门。默认遵循
+`THESIS_FIRST_RESEARCH_GOVERNANCE_R4`；只有任务显式选择本 workflow 或进入
+`PRODUCTION_PROMOTION` 时，才要求完成本页对应的 review/finalize 和连续场景合同。
+
 本流程从官方 SANPO-Real 公开存储桶选择少量真实步行序列，生成 BlindAssist 连续场景候选集。它用于补足静态 COCO 图片无法覆盖的连续运动、可通行区域、低矮障碍和场景变化证据。
 
 ## v2 公开序列扩展工具

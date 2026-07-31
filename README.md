@@ -9,22 +9,21 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - 当前版本：`v10.9.0`，`versionCode=37`。
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
 - 当前论文系统研究主线为
-  [中央图像阻塞互补性](docs/research/dual-loop/README.md)，当前状态为
-  `CENTRAL_OBSTRUCTION_D0_A1_COMPLETE / R2_VALID /
-  AGENT_LABEL_PROTOCOL_NOT_RELIABLE / D0_A2_NOT_AUTHORIZED /
-  DEFAULT_APP_UNCHANGED`。D0-A 按适配度排序现有连续 RGB、满足充分性即停止；排除式
-  calibration 的 observation agreement 过门，但 parent-event match 仅 `0.6316`，低于
-  冻结的 `0.75`，所以 D0-A2/D0-AT/D0-B 均未运行或获授权。下一边界只能在新的 D0-A
-  版本中用已烧毁 calibration stress cases 重设计 observation/event workflow，不形成互补性、真实
-  可通行性、产品或安全结论。旧神经—几何 active R1 以
-  `FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY` 保留为已关闭前序，
-  详见
-  [R1 事件失败分解](docs/research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)。RCLE 已暂停，历史终态与权限由
-  [RCLE current 入口](docs/research/rcle/README.md) 保留。研究过程遵循
-  [渐进式治理](docs/RESEARCH_GOVERNANCE.md)，任何研究证据都不自动改变正式 App、
-  默认模型、Android、人体、安全、产品或生产权限。
+  [YOLO + 语义分割双环](docs/research/dual-loop/README.md)，当前为
+  `THESIS_DEVELOPMENT_DEFAULT / DEVELOPMENT_REPAIR_AND_RERUN_ALLOWED /
+  DEVELOPMENT_DEVICE_BENCHMARK_ALLOWED / NEXT_ROUTE_NOT_SELECTED /
+  FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`。历史 segmentation
+  model-selection R1 仍为 `BLOCKED / NOT_EVALUABLE`，R2-P0 终态和 consumed 数据角色
+  不变；它们不再把新的论文 Development 锁成 one-shot formal。RCLE 已暂停，USTRF 已
+  收口，历史状态分别由各 current/index 入口保留。
+- 全项目前向采用 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`：Discovery 默认不消费 fresh
+  holdout，mapping/decoder 先过 synthetic canary，普通论文 Development 可版本化修复
+  重跑，并可在正式选模前分别做算法选模 benchmark 与平台工程 benchmark。只有显式启动
+  最终 Confirmation、默认模型替换或生产晋级时，才启用对应 blind、INT8、设备事件、
+  one-shot、完整 validator 和发布门；任何研究证据都不自动改变正式 App 或安全权限。
 - 可并存安装的 `ustrfExperiment` 实验版已接入 USTRF 二维路线代理，并直接替代旧风险分析入口；它只使用画面中心假设路线与检测框生成保守代理风险，不具备米制深度、稳定姿态或真实路线，因此不可用于独立行走，也不改变正式 App。
-- SANPO 分割路线仍为研究候选：当前离线质量门未通过，未导出正式 INT8、未执行设备晋级门、未替换 App 默认模型。
+- SANPO 分割路线采用双通道：论文 `THESIS_DEVELOPMENT` 不要求先通过 INT8、blind 或
+  设备事件门；显式 `PRODUCTION_PROMOTION` 才使用完整晋级链。当前未替换 App 默认模型。
 - 正式 App 保持本地推理；眼镜设备中心仍是模拟功能，不扫描蓝牙、不连接真实眼镜。
 
 发布变化见 [CHANGELOG.md](CHANGELOG.md)，近期工程过程见

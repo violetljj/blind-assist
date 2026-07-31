@@ -37,12 +37,20 @@
 
 ## SANPO 当前协议与门禁
 
-以下文件是 SANPO 路线的当前真源：
+SANPO 的顶层 current truth 是 `RESEARCH_GOVERNANCE.md`、
+`SANPO_CURRENT_STATUS.md` 和 `AI_REVIEW_GOVERNANCE.md`。其余文件是选择对应
+workflow 后才生效的实施合同、回归基线或日期化证据，不得反向成为所有
+`THESIS_DEVELOPMENT` 的共同前置门：
 
+- [RESEARCH_GOVERNANCE.md](RESEARCH_GOVERNANCE.md)：全项目前向 R4；普通论文
+  Development 与最终 Confirmation/生产晋级分层
 - [AI_REVIEW_GOVERNANCE.md](AI_REVIEW_GOVERNANCE.md)
-- [SANPO_CURRENT_STATUS.md](SANPO_CURRENT_STATUS.md)
-- [SANPO_TRAINING_PROTOCOL.md](SANPO_TRAINING_PROTOCOL.md)
-- [SANPO_CANDIDATE_PROMOTION_GATES.md](SANPO_CANDIDATE_PROMOTION_GATES.md)
+- [SANPO_CURRENT_STATUS.md](SANPO_CURRENT_STATUS.md)：SANPO
+  `THESIS_DEVELOPMENT / PRODUCTION_PROMOTION` 双通道
+- [SANPO_TRAINING_PROTOCOL.md](SANPO_TRAINING_PROTOCOL.md)：Development 训练与
+  production-promotion 训练范围
+- [SANPO_CANDIDATE_PROMOTION_GATES.md](SANPO_CANDIDATE_PROMOTION_GATES.md)：只约束
+  显式 `PRODUCTION_PROMOTION`
 - [SANPO_SEQUENCE_EVALSET.md](SANPO_SEQUENCE_EVALSET.md)
 - [SANPO_SEGMENTATION_CANDIDATE.md](SANPO_SEGMENTATION_CANDIDATE.md)
 - [SANPO_TRAVERSABILITY_BASELINE.md](SANPO_TRAVERSABILITY_BASELINE.md)
@@ -102,9 +110,12 @@
   [事件失败分解](research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)，
   不授权默认生产、产品、安全或自动 R2。
 - [RCLE 研究状态](research/rcle/README.md)：`paused / current truth`；保留 RCLE 的
-  历史科学终态、协议终态、权限与禁止事项，不再是默认执行主线。
+  历史科学终态、协议终态、权限与禁止事项，不再是默认执行主线；未来新
+  Development 默认采用 R4，不继承旧 one-shot 门。
 - [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。
-- [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：历史 route-conditioned 研究和 RCLE 前序 Looming 证据；不再是研究主线，不代表生产授权。
+- [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：历史 route-conditioned
+  研究和 RCLE 前序 Looming 证据；不再是研究主线，不代表生产授权；未来实质不同的新
+  Development 默认采用 R4，历史 formal 门不自动继承。
 - 开发日志月度历史：[2026-05](history/development-log/2026-05.md) · [2026-06](history/development-log/2026-06.md) · [2026-07](history/development-log/2026-07.md)。近期记录继续以根 `DEVELOPMENT_LOG.md` 为准。
 - [早期项目计划、阶段与真机材料](history/project-materials/README.md)：archive；保留旧版本叙事，不证明当前状态。
 - [想法池历史](history/idea/README.md)：archive；当前待决方向只在根 `idea.md` 维护。
