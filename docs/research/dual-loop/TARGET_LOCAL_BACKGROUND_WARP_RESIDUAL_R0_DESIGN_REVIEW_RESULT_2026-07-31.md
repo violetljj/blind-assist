@@ -7,7 +7,7 @@
 复核对象：[TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 设计合同](TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_DESIGN_CONTRACT.md)
 
 合同 SHA-256（本复核绑定版本）：
-`fbef2f5646cf55a11c4500ec510f9de171cdce6d213b15af128d7912a83c12ef`
+`cd80680aef5306588f1e972308e2c3be76c5d6d9341f25371713e2fe043db816`
 
 ## 结论
 
@@ -23,6 +23,8 @@ Android/shadow/active 接线或产品/安全主张。
 
 - 补齐半开 bbox、像素坐标、原生 frame shape、严格相邻 frame index、无隐式 resize 和
   dynamic-mask detection 输入边界；
+- 要求 C1/C2 在候选输出访问前分别冻结 metadata-only identity/ancestry manifest，
+  不足时以 `NOT_EVALUABLE` 关闭；
 - 固定 luma/LK/similarity 的实现身份、RANSAC 采样/阈值/seed/tie-break、reflection
   禁止规则和 condition number 定义；
 - 固定四角 warp 后轴对齐 bbox、越界不裁剪、raw 无效条件和事件 truth state 映射；

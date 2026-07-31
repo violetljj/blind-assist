@@ -106,6 +106,11 @@ C1 只回答首个新 session 是否出现信号级增量；C1 失败立即关�
 只有 C1 按本合同通过，才可另行授权 C2。C2 必须与 B、C1 使用独立 session，且在
 C1 结束后不得修改任何算法、参数、质量门、汇总器、阈值、评价单位或停止规则。
 
+C2 在任何候选输出打开前，也必须以 metadata-only manifest 冻结 session、sequence、
+frame、truth/event identity、source/session ancestry 和不重叠证明；其 truth state
+构成与至少 `2` 个 parent event、`2` 个 `target_id` 的最低分母门沿用 C1。manifest
+不足或 ancestry 无法复核时，C2 只能终止为 `NOT_EVALUABLE`。
+
 若 C2 方向不复现，终点为 `NO_CROSS_SESSION_REPLICATION`，候选关闭。
 
 ## 5. 因果输入与目标条件
