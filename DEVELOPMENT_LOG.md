@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。按用户澄清将
+  `HETEROGENEOUS_PLATFORM_P0A_R0` 的评估对象从未连接的 A568 收窄为当前真实连接的
+  手机 `SM-S9280 / SM8650`（serial `R5CX10M8Y8X`）。完成手机 P0A 预检并达到
+  `PLATFORM_ADMITTED_FOR_CANARY`，范围仅为 LiteRT/TFLite CPU 4-thread 与 GPU
+  delegate；A568 历史报告仍保持 `HOLD_NOT_EVALUABLE`，没有用手机替代 A568。
+  固定 10 帧/30 次 detector run 的 CPU 路径为 `53/53 ms` P50/P95、失败 `0`；
+  `PRODUCTION_ROUTE -> CPU_XNNPACK` 60 秒为 `587` 帧、`9.776 FPS`、`54/57 ms`
+  total P50/P95，GPU 60 秒为 `590` 帧、`9.820 FPS`、`47/65 ms`，两者失败均为 `0`，
+  thermal status 均为 `0`。QNN 2.47.0 虽通过 HTP capability probe，但实际初始化因
+  设备端缺少 `libQnnHtpV75Skel.so` 失败；生产路由已记录原因并回退 CPU，QNN 子路径
+  保持 HOLD。仅给 device benchmark 增加 `BaselineOnly` 和无候选报告的安全默认值，
+  未改变默认模型、生产路由或任何研究结论。证据见
+  [手机准入报告](docs/HETEROGENEOUS_PLATFORM_PHONE_P0A_R0_2026-07-31.md) 与
+  `artifacts.local/evidence/phone-admission/20260731-161634/`。没有外部功率仪表，
+  功耗/能耗不作结论；T4 因缺少第二平台未开始，T5 继续关闭。
 - 时间：2026-07-31（Asia/Hong_Kong）；执行者：violjjet。采用
   `CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A` 为当前论文系统研究主线：
   D0-A 按 `CANARY` 只冻结连续 RGB 输入宇宙，并以两路隔离 Agent、分歧时 fresh

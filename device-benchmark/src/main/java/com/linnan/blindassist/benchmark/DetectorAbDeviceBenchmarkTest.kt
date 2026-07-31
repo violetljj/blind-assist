@@ -1110,7 +1110,7 @@ class DetectorAbDeviceBenchmarkTest {
         val recommendation = payload.getJSONObject("recommendation")
         val models = payload.getJSONArray("models")
         return buildString {
-            appendLine("# Detector A/B Device Benchmark")
+            appendLine("# Detector Device Benchmark")
             appendLine()
             appendLine("- Dataset: `${payload.getString("dataset_name")}`")
             appendLine("- Dataset kind: `${payload.getString("dataset_kind")}`")
@@ -1127,7 +1127,7 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine("- Match IoU threshold: `${payload.getDouble("match_iou_threshold")}`")
             appendLine("- Default app model remains: `${payload.getString("default_model_asset")}`")
             appendLine("- Recommendation: `${recommendation.getString("decision")}`")
-            appendLine("- Replace default model now: `${recommendation.getBoolean("replace_default_model_now")}`")
+            appendLine("- Replace default model now: `${recommendation.optBoolean("replace_default_model_now", false)}`")
             appendLine()
             appendLine("| Model | Depth fusion | AP50 | Precision | Recall | F1 | FP/img | FN/img | Center risk recall (diagnostic) | Frame alert recall (diagnostic) | Event alert recall | Alert FP rate | Passed-window alerts | Passed clearance rate | Delivered repeats / delivered alerts | Suppressed attempts | Regenerated events | Parallel-curb alerts / labeled frames | Distance acc | Risk level acc | Primary hit | SANPO primary hit | Critical frame miss (diagnostic) | Critical event miss | Approach recall | Approach FP | Approach dir acc | Approach critical miss | Mean alert frames | Approach sequences | Fusion summary counts | Depth P50 ms | Total P50 ms | Total P95 ms |")
             appendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |")
@@ -1159,7 +1159,7 @@ class DetectorAbDeviceBenchmarkTest {
             appendLine("Decision note: ${recommendation.getString("reason")}")
             appendLine()
             appendLine("Notes:")
-            appendLine("- This A/B run compares both models on the same connected device and the same image assets.")
+            appendLine("- Each listed model is evaluated on the same connected device and the same image assets; candidate comparison is only present when the selected mode supplies a candidate.")
             appendLine("- Detection matching uses same-class IoU at the configured threshold.")
             appendLine("- BlindAssist risk labels are project-specific eval labels and are not a standalone safety guarantee.")
             appendLine("- Risk/alert aggregates use shared production stable-risk semantics and are not directly comparable with reports generated before `${payload.getString("schema")}`.")
@@ -2110,6 +2110,7 @@ class DetectorAbDeviceBenchmarkTest {
         private const val BLINDASSIST_EVALSET_SPEC_ASSET = "$BLINDASSIST_EVALSET_ASSET_PREFIX/dataset_spec.json"
         private const val DATASET_KIND_COCO100 = "Coco100"
         private const val DATASET_KIND_BLINDASSIST_EVALSET = "BlindAssistEvalSet"
+        private const val COMPARISON_MODE_BASELINE_ONLY = "BaselineOnly"
         private const val COMPARISON_MODE_DETECTOR_AB = "DetectorAb"
         private const val COMPARISON_MODE_DEPTH_FUSION = "DepthFusion"
         private const val COMPARISON_MODE_DEPTH_FUSION_SWEEP = "DepthFusionSweep"
@@ -2161,6 +2162,14 @@ class DetectorAbDeviceBenchmarkTest {
         ): List<ModelSpec> {
             val conservativeDepthRiskConfig = baseRiskAnalyzerConfig.copy(distanceEvidenceMaxPromotionSteps = 1)
             return when (comparisonMode) {
+                COMPARISON_MODE_BASELINE_ONLY -> listOf(
+                    ModelSpec(
+                        "yolo11n",
+                        YOLO11N_ASSET,
+                        "app/src/main/assets/yolo11n_fp16_320.tflite",
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    )
+                )
                 COMPARISON_MODE_DETECTOR_AB -> listOf(
                     ModelSpec(
                         "yolo11n",
