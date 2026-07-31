@@ -15,7 +15,7 @@
 - canonical dev 上共享 YOLO trace 的比较：
   - DDRNet：`C-A delta recall=0.248641`、candidate component recall `0.776559`、false components/frame `7.885`。
   - SegFormer：`C-A delta recall=0.198221`、candidate component recall `0.625086`、false components/frame `3.645`。
-- 独立 host runtime benchmark（不含 truth 和 file I/O）：DDRNet 总增量 P95 `20.504 ms`；SegFormer `74.139 ms`。这些是 Development 结果，不是 device/QNN 结果。
+- 独立 host runtime benchmark（不含 truth 和 file I/O）：DDRNet 总增量 P95 `20.504 ms`；SegFormer `74.139 ms`。这些是 Development 结果，不是 device/QNN 结果。冻结收据未保存逐帧 timing rows，因此 closeout validator 只能验证 runtime 收据及模型身份的哈希完整性，不能从不可变原始行独立重算 P95。
 
 开发结果只说明两候选都能补到 YOLO 漏检像素，但当前固定候选算子仍有误组件/误报和成本问题；不能据此授权提醒或生产模型升级。
 
@@ -30,4 +30,4 @@ canonical 数据构建器使用仓库内固定的 `SANPO_MAP` 将 SANPO 原生�
 3. 不同时推进路线 B，也不接入 Android、QNN、risk/event 或主动提醒；
 4. 若要继续，先另立 R2：显式冻结完整 SANPO 映射、生成映射后 mask 的哈希闭合视图、重新选择未消费 official-test holdout，再重复一次完整 formal/independent-validation 链路。
 
-相关身份收据保存在 `artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/`，包括 formal freeze receipt、两候选训练/转换/runtime receipts、共享 dev/fresh YOLO traces 以及失败前未写入正式报告的状态。
+相关身份收据保存在 `artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/`，包括 formal freeze receipt、两候选训练/转换/runtime receipts、共享 dev/fresh YOLO traces、formal failure receipt，以及权威 closeout 收据 `independent_closeout_validation_v2.json` 和 SHA256 sidecar。v2 的状态为 `PARTIAL_VALIDATION`：它核验 22 个冻结文件身份、检查当前 Development 行的内部自洽性与 frozen YOLO trace 身份，并按冻结 evaluator 的解码路径复现第一张已消费 fresh mask 含 canonical `0..3` 之外的值；正式报告行数仍为 `0`。Development 输出未在 formal truth access 前被哈希锚定，组件召回和 runtime P95 也缺少可独立重算的底层行，因此不能称为完整 independent validation。
