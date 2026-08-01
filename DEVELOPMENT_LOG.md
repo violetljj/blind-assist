@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。E0 teacher-opportunity
+  正式双运行在 student 前停止为
+  `E0_FRESH_TEACHER_MECHANICS_NOT_EVALUABLE`。train/dev/heldout opportunity
+  全过，risk cells `27/8/36`、物理 risk anchors `22/4/19`；plane known 与
+  history-speed gates 全过。唯一 blocker 是 `.8 s` candidate known fraction：
+  仅 2/6 source 达到 `.70`，另四条 `.6015–.6857`；`.4 s` 为 6/6 通过。
+  report SHA-256
+  `770928a2e44776703f23185e2152326147e580256c25d2a76b92bdfbe3277e6b`。
+  不降低 E0 门、不训练；只允许另冻 `.4 s`-only E0.1 并换全新 dev/heldout。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。获取并永久 burned E0
   六条 exact fresh media；18 个 pose/RGB/depth files 合计 956,183,459 bytes，
   size/SHA 全部匹配，acquisition SHA-256

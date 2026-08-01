@@ -15,6 +15,7 @@ D1_CAUSAL_FUTURE_LABEL_MECHANICS_SUPPORTED /
 STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_FROZEN /
 E0_FRESH_SOURCE_LOCK_VALIDATED /
 E0_FRESH_MEDIA_TRANSPORT_SUPPORTED /
+E0_FRESH_TEACHER_MECHANICS_NOT_EVALUABLE /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -213,6 +214,13 @@ pose/RGB/depth count 均逐 source 相等，全部 parquet physical rate 为 5.0
 `a2a0c3e739d93c79afb613727a4946fb7967c087cfdeb49c9539ecb5e66c9ac7`。
 当前只新增 teacher mechanics + role-opportunity audit 权限，尚不授权 corpus/training。
 
+E0 teacher-opportunity 正式双运行已在训练前停止为
+`E0_FRESH_TEACHER_MECHANICS_NOT_EVALUABLE`。三角色 risk/no-risk opportunity 全过：
+train/dev/heldout 分别有 `27/8/36` 个 risk cells 与 `22/4/19` 个物理 risk anchors；
+但 `.8 s` candidate known fraction 仅 2/6 source 达到冻结 `.70` 门，另外四条为
+`.6015–.6857`。`.4 s` 则 6/6 通过。不得降低 E0 门或在 burned dev/heldout 上训练；
+唯一 successor 是另冻 `.4 s`-only E0.1，并使用全新 dev/heldout。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -265,6 +273,7 @@ pose/RGB/depth count 均逐 source 相等，全部 parquet physical rate 为 5.0
 - [Stage C causal future-label mechanics D1 result](HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_RESULT_D1_2026-08-01.md)
 - [Stage C fresh foot-ground student canary E0](HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.md)
 - [Stage C machine-readable fresh student canary E0](HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.json)
+- [Stage C fresh foot-ground student canary E0 result](HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_RESULT_E0_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
