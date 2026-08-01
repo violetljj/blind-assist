@@ -1,6 +1,12 @@
 # riskseg_r0_event_eval
 
-状态：development，`EVENT_EVAL_NOT_YET_FROZEN`
+状态：`COMPLETE / CONSUMED_DEVELOPMENT_COHORT`
+
+本包已完成 `30 parent events / 30 source sessions / 8-8-7-7 buckets` 的
+output-blind 冻结与设备评价视图物化。该 cohort 已被三 seed 正式事件评价消费，禁止再用于
+调参、挑 seed、修改 adapter/规则或重新包装成新确认集。当前权威终局见
+[`RISKSEG_R0_FINAL_RESULT_2026-08-01.md`](../../../docs/research/dual-loop/RISKSEG_R0_FINAL_RESULT_2026-08-01.md)：
+`RISKSEG_R0_TRAINED_NOT_PROMOTABLE_KEEP_YOLO`。
 
 ## 研究问题与版本
 
