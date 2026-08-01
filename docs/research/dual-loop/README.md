@@ -418,6 +418,14 @@ raw heatmap、候选、gate pass/reject/abstain 与原因，固定水印且
 `drives_alerts=false`；它不获得 Android、QNN/A568、risk/feedback、TTS、振动或默认
 App 权限。
 
+Failure Atlas 的批量失败案例图册维护入口见
+[`scripts/research/failure_case_atlas/`](../../../scripts/research/failure_case_atlas/)。
+运行 `batch_album.py` 可按当前输入批量生成原图、YOLO 框、segmentation/truth mask、
+depth、可选 risk heatmap、前后帧、错误类型、置信度、事件阶段、来源信息、分类
+contact sheet 与 `index.html`。类别规则由同目录的 `category_rules.json` 管理，
+也可用 `--category-config` 注入另一份版本化规则；该图册仍是 Development-only、
+host-side visual diagnostic，不改变 alert authority。
+
 ## 已关闭前序与保留证据
 
 2026-07-31 的 rank-2 Shiraz 设备评价已完成：baseline/candidate 均命中 `7/7`
