@@ -51,6 +51,10 @@ E:\codex-tools\bin\blindassist-python.cmd `
 稀疏包只决定“是否值得物化完整连续窗口”，不得产生 event truth、进入训练或查看
 PIDNet/YOLO/oracle 输出。
 
+若旧版 acquisition 已生成 v3 event-eval spec、但逐帧 manifest 仍残留
+`model_assisted_candidate_screening_only`，使用
+`repair_sparse_role_metadata` 做一次显式迁移，然后重新生成 review bundle 以刷新 hash。
+
 ## 输出
 
 全部输出只写入显式的 `artifacts.local/`：

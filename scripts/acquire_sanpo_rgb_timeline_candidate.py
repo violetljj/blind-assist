@@ -138,7 +138,7 @@ def main() -> int:
             path = images / f"{timeline_index:04d}_{source_index:06d}.png"
             download(media_url(str(item["name"]), item.get("generation")), path, retries=args.retries)
             verify_gcs_md5(path, item)
-            rows.append({
+            row = {
                 "timeline_index": timeline_index,
                 "source_frame_index": source_index,
                 "timeline_timestamp_ms": int(round(timeline_index * 1000 / args.target_fps)),
@@ -146,8 +146,16 @@ def main() -> int:
                 "image_sha256": sha256_file(path),
                 "source": object_inventory(item),
                 "event_truth": None,
-                "model_assisted_candidate_screening_only": True,
-            })
+            }
+            if args.purpose == "event-eval-screening":
+                row.update({
+                    "role": "output_blind_rgb_cost_control_screen_only",
+                    "model_output_accessed": False,
+                    "training_authorized": False,
+                })
+            else:
+                row["model_assisted_candidate_screening_only"] = True
+            rows.append(row)
         args.output_root.mkdir(parents=True, exist_ok=True)
         (args.output_root / "manifest.rgb_timeline.jsonl").write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows), encoding="utf-8")
         spec = build_candidate_spec(
