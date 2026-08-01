@@ -461,6 +461,20 @@ E:\codex-tools\bin\blindassist-python.cmd `
 acquisition allow-list 只含新 dev/heldout 与公共 metadata。首次打开后两条永久 burned；
 仍不计算 label 或 student。
 
+E0.1 fresh transport audit：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/audit_stage_c_e0_1_fresh_transport.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.json `
+  --acquisition-manifest artifacts.local/evidence/hftf/stage-c-e0-1-fresh-evaluation-media-20260801/acquisition_manifest.json `
+  --media-root artifacts.local/evidence/hftf/stage-c-e0-1-fresh-evaluation-media-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/transport.json
+```
+
+transport 只完整 decode 与核对 timebase；通过后只授权 `.4 s` teacher opportunity，
+不重开 `.8 s`。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
