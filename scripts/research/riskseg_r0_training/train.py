@@ -96,6 +96,10 @@ def load_rows(
     for row in rows:
         if not row.image_path.is_file() or not row.mask_path.is_file():
             raise FileNotFoundError(f"missing image/mask for {row.row_id}")
+        if sha256_file(row.image_path) != row.image_sha256:
+            raise ValueError(f"source image hash drift for {row.row_id}")
+        if sha256_file(row.mask_path) != row.mask_sha256:
+            raise ValueError(f"re-encoded mask hash drift for {row.row_id}")
     return rows
 
 
