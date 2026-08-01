@@ -14,6 +14,7 @@ D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED /
 D1_CAUSAL_FUTURE_LABEL_MECHANICS_SUPPORTED /
 STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_FROZEN /
 E0_FRESH_SOURCE_LOCK_VALIDATED /
+E0_FRESH_MEDIA_TRANSPORT_SUPPORTED /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -202,6 +203,15 @@ parent/inventory/metadata/预训练权重 hashes、六条选择、角色、日�
 `9e3ce8793597907dbe87e6a9c57d9f3f9ffcfb1510f078ea31e01148eab046dc`。
 当前只授权获取合同精确绑定的六条媒体；teacher corpus 与 student training 仍需后续
 transport/teacher/opportunity 门。
+
+六条 exact media 已获取并 burned，18 个 source files 合计 956,183,459 bytes，
+acquisition manifest SHA-256 为
+`8b19ff024ed6eb8d1ed0afdeeffad78025af9a3c623c6df9c598b5a8161ffdc3`。
+transport 正式双运行达到 `E0_FRESH_MEDIA_TRANSPORT_SUPPORTED`：六条
+pose/RGB/depth count 均逐 source 相等，全部 parquet physical rate 为 5.0 Hz，PTS
+严格递增，payload byte-exact；report SHA-256 为
+`a2a0c3e739d93c79afb613727a4946fb7967c087cfdeb49c9539ecb5e66c9ac7`。
+当前只新增 teacher mechanics + role-opportunity audit 权限，尚不授权 corpus/training。
 
 ## 当前真源
 

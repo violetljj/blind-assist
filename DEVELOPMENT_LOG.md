@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。获取并永久 burned E0
+  六条 exact fresh media；18 个 pose/RGB/depth files 合计 956,183,459 bytes，
+  size/SHA 全部匹配，acquisition SHA-256
+  `8b19ff024ed6eb8d1ed0afdeeffad78025af9a3c623c6df9c598b5a8161ffdc3`。
+  transport 正式双运行达到 `E0_FRESH_MEDIA_TRANSPORT_SUPPORTED`：六条
+  pose/RGB/depth counts 分别为 `530/657/703/705/1251/609`，全部物理 5.0 Hz、
+  PTS 严格递增并 byte-exact；report SHA-256
+  `a2a0c3e739d93c79afb613727a4946fb7967c087cfdeb49c9539ecb5e66c9ac7`。
+  只授权 teacher mechanics/role-opportunity audit，尚不授权 corpus/training。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。Stage C E0 source-lock
   validator 正式双运行达到 `E0_FRESH_SOURCE_LOCK_VALIDATED`。D0/D1 parent、
   C0 inventory/metadata、MobileNetV3 权重 hashes，以及 6 条 source、4/1/1
