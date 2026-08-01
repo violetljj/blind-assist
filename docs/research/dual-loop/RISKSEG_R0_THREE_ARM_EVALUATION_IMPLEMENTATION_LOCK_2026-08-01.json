@@ -10,7 +10,8 @@
   },
   "implementation_commits": {
     "trained_export_and_three_arm_evaluation": "a39ea43a80108c80dbe3756ea5e6feb1cf67db59",
-    "trained_device_performance_cache_isolation": "bb26a3cdc53e94511e2d8c03f58351601f1ffd4d"
+    "trained_device_performance_cache_isolation": "bb26a3cdc53e94511e2d8c03f58351601f1ffd4d",
+    "trained_device_taxonomy_alignment": "ecf854833e7b7e1bea6e95a8a805a34e85e46a10"
   },
   "implementations": {
     "device_view_materializer": {
@@ -27,7 +28,7 @@
     },
     "trained_device_runner": {
       "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/RisksegPidnetQnnPreflightDeviceTest.kt",
-      "sha256": "1fe0849540e6c64c7455826aa853b294d6f99b11f8b041367f37f82622176f31"
+      "sha256": "61360add0748d8bb582efcf2e8b2a82a6adb62469efd90223688ec09300c13e7"
     },
     "trained_device_validator": {
       "path": "scripts/research/riskseg_r0_pidnet_preflight/validate_device_preflight.py",
@@ -115,6 +116,12 @@
     "failure_count": 0,
     "severe_or_critical_thermal_forbidden": true,
     "full_qnn_htp_delegation_required": true
+  },
+  "pre_output_lock_amendment": {
+    "event_outputs_opened_before_amendment": false,
+    "change": "The trained final QNN timing runner now uses the same predeclared generic obstacle and curb vocabulary binding as the three-arm runner.",
+    "scientific_variables_changed": false,
+    "reason": "The technical-preflight-only placeholder labels were not accepted by the frozen RiskAnalyzer. Aligning the final timing runner before event access makes its adapter and decision-chain work identical to the already locked quality runner; no threshold, gate, model, data, or scoring rule changed."
   },
   "forbidden_after_lock": [
     "adapter_threshold_change",
