@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：Codex。`RISKSEG-R0` 已按完整授权
+  顺序执行到负终态
+  `RISKSEG_R0_TRAINED_NOT_PROMOTABLE_KEEP_YOLO`。三个固定 PIDNet-S seed 均完成
+  `512x288 / four-class / full W8A8` 训练与导出；30 parent events / 30 source
+  sessions / 1,920 frames 的 output-blind 三臂评价每 seed 产生 5,760 条 trace，并由
+  主机独立复算。YOLO recall/false-alert 为 `13/16、6/14`；learned 三 seed 为
+  `13/16、14/16、13/16` 与 `13/14、13/14、14/14`，质量门 `0/3` 通过，决策 seed
+  失败。决策 seed trained INT8 在 SM-S9280 上最终 600 秒 QNN/HTP 门通过：7,727
+  样本、173/173 nodes / 1 partition、total P95 `77.374 ms`、inference P95
+  `5.198 ms`、末/初比 `1.07624x`、thermal/failure 均为 0。性能 PASS 不覆盖事件
+  质量否决；不改默认 App，不调已消费 event-eval，不增加规则。最终结果见
+  `docs/research/dual-loop/RISKSEG_R0_FINAL_RESULT_2026-08-01.md`。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。F0.1 cross-split
   metadata plan 与 exact source lock 正式双运行 byte-exact，固定
   `6 train / 3 dev / 3 official-test heldout`，12 个 parent sessions 全互斥。

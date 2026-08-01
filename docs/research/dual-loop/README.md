@@ -7,6 +7,10 @@ RISKSEG_R0_TASK_AND_DATA_CONTRACT_FROZEN /
 FULL_SEQUENTIAL_EXECUTION_AUTHORIZED /
 EVENT_EVAL_FROZEN_ADEQUATE /
 PIDNET_S_TECHNICAL_PREFLIGHT_PASS / TRAINING_IMPLEMENTATION_LOCKED /
+RISKSEG_R0_COMPLETE / VALID_NEGATIVE_DEVELOPMENT_RESULT /
+RISKSEG_R0_EVENT_QUALITY_OR_STABILITY_FAIL /
+PIDNET_S_TRAINED_FINAL_DEVICE_PASS /
+RISKSEG_R0_TRAINED_NOT_PROMOTABLE_KEEP_YOLO /
 YOLO_RULE_PATCHING_STOPPED /
 SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
@@ -54,10 +58,17 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 `163/163` 节点；7,619 次全链路 P95 `75.739 ms`，末/初 2 分钟 P95 比
 `1.00255x`，failure 和 thermal status 均为 0。训练 recipe 已由
 [implementation lock](RISKSEG_R0_PIDNET_S_TRAINING_IMPLEMENTATION_LOCK_2026-08-01.json)
-绑定。下一步执行官方结构/预训练权重的三 seed 训练和
-`YOLO-only / learned segmentation-only / truth-mask oracle` 事件评价；任一 recall、
-critical miss、false-alert event、clearance、共同命中时序或性能门出现合同定义的
-trade-off，都保持 YOLO 默认。
+绑定。完整执行结果现已由
+[RISKSEG-R0 最终结果](RISKSEG_R0_FINAL_RESULT_2026-08-01.md)
+关闭为 `RISKSEG_R0_TRAINED_NOT_PROMOTABLE_KEEP_YOLO`。三个固定 seed 均完成训练、
+full W8A8 导出和 SM-S9280 三臂事件评价，但事件质量门 `0/3` 通过：YOLO 的正事件召回
+为 `13/16`、false-alert event 为 `6/14`；learned 三 seed 分别为
+`13/16、14/16、13/16` 和 `13/14、13/14、14/14`，共同命中中位延迟为
+`+3/+5/+3` 帧。固定决策 seed 的最终 10 分钟 QNN/HTP 性能门本身通过：
+7,727 样本、total P95 `77.374 ms`、inference P95 `5.198 ms`、末/初 P95 比
+`1.07624x`、thermal/failure 均为 0，并两次完整委派 `173/173` 节点到 1 partition。
+性能 PASS 不覆盖事件质量否决；不改默认 App，不接 learned segmentation，不在已消费
+30-event cohort 上调参或增加规则。
 
 此前 2026-08-01 的候选算法主线曾切换为
 [DG-SRF image-space structural complementarity F0](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
@@ -631,10 +642,11 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、ARCore | `NOT_AUTHORIZED` |
 | RISKSEG-R0 任务/数据/顺序执行合同 | `FROZEN / FULL_SEQUENTIAL_EXECUTION_AUTHORIZED` |
-| RISKSEG-R0 新 event-eval | `COMPLETE / HOLD_EVENT_EVAL_DATA / 14_OF_30 / BUCKETS_7_2_1_4 / TRUTH_NOT_FROZEN` |
-| PIDNet-S TFLite/QNN/SM-S9280 技术预检 | `NOT_STARTED / BLOCKED_BY_EVENT_DATA_GATE` |
-| PIDNet-S 三 seed 训练与三臂事件评价 | `NOT_STARTED / BLOCKED_BY_EVENT_DATA_GATE` |
-| RISKSEG-R0 默认 App 替换 | `AUTHORIZED_ONLY_AFTER_ALL_PROMOTION_AND_RELEASE_GATES` |
+| RISKSEG-R0 新 event-eval | `FROZEN_ADEQUATE / 30_EVENTS / 30_SESSIONS / BUCKETS_8_8_7_7` |
+| PIDNet-S TFLite/QNN/SM-S9280 技术预检 | `COMPLETE / PASS / 163_OF_163 / P95_75.739_MS` |
+| PIDNet-S 三 seed 训练与三臂事件评价 | `COMPLETE / VALID / EVENT_QUALITY_OR_STABILITY_FAIL / 0_OF_3_PASS` |
+| PIDNet-S trained-final SM-S9280 性能门 | `PASS / 173_OF_173 / P95_77.374_MS / 1.07624X / THERMAL_0` |
+| RISKSEG-R0 默认 App 替换 | `NOT_RUN / NOT_PROMOTABLE / KEEP_YOLO` |
 | DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0 | `PRIMARY COMPLETE / VALID / NOT_SUPPORTED / HISTORICAL TERMINAL IMMUTABLE / DEVELOPMENT_ONLY` |
 | DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0.1 SHADOW | `COMPLETE / VALID / NO_MATERIAL / NO_HETEROGENEITY / BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP / POST_PRIMARY_DIAGNOSTIC_ONLY` |
 | DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0 | `COMPLETE / VALID / FP_WEIGHTED_SAMPLING_NOT_SUPPORTED / SINGLE_SUCCESSOR_STOP / THREE_PAIRED_SEEDS / DEVELOPMENT_ONLY` |
@@ -658,13 +670,18 @@ D0-A successor R0 已经回答了本轮唯一允许的问题：固定 clip 转�
 
 ### 新双环的下一条短链
 
-1. 物化并验证至少 30 个 parent events 的新 session-disjoint event-eval；不足则
-   `HOLD_EVENT_EVAL_DATA`；
-2. 对唯一候选 PIDNet-S 执行 `512x288 / W8A8 / four-class` TFLite、QNN、输出健康、
-   SM-S9280 P95 与 10 分钟持续运行预检；失败即关闭候选；
-3. 预检通过后执行官方结构与预训练权重的三 seed 训练，不加 gate、FP sampler 或组件分类器；
-4. 在冻结链上比较 `YOLO-only / learned segmentation-only / truth-mask oracle`；
-5. 事件质量、稳定性和设备门全部通过才替换默认 App；任一明显 trade-off 保留 YOLO。
+该短链已全部执行并到达负终态：
+
+1. 30 parent events / 30 source sessions 的 session-disjoint event-eval 已冻结；
+2. PIDNet-S `512x288 / W8A8 / four-class` 技术预检通过；
+3. 官方结构/预训练权重的三个固定 seed 已训练并导出，不含 gate、FP sampler 或组件分类器；
+4. `YOLO-only / learned segmentation-only / truth-mask oracle` 三臂评价已完成并独立复算；
+5. trained-final SM-S9280 10 分钟性能门通过，但事件质量和跨 seed 稳定性失败，因此
+   `RISKSEG_R0_TRAINED_NOT_PROMOTABLE_KEEP_YOLO`。
+
+RISKSEG-R0 不再有自动下一阶段。禁止用已消费 event-eval 调参、挑 seed、改 taxonomy、
+增加规则或重开默认 App 集成。若未来提出 successor，必须具有新的因果假设、独立冻结
+合同和新的 session-disjoint parent-event cohort。
 
 conditional gating R0 已完成 520 帧执行、逐帧/逐组件独立复算与 held-out/direct
 等价检查；五项门中的 false-positive reduction 和 minimum-session recall retention
