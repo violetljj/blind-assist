@@ -645,6 +645,29 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/validate_stage_c
   --output-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-terminal-validation-20260801
 ```
 
+T0 short-path transport 只允许在合同固定的 outcome-open Development source 上执行。
+合同及实现必须先提交推送并确认远端一致；不得用该 CLI 打开 fresh/reserved source：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/acquire_stage_c_t0_sanpo_short_path_transport.py `
+  --execution-contract docs/research/hftf/HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_CONTRACT_2026-08-01.json `
+  --transport-root artifacts.local/evidence/hftf/t0-short-path-transport-20260801 `
+  --session-id 12b65d2c76d7ad0c17d7ac791089b8cae0bb059c9b02a6f23129044192bc93bb `
+  --official-split train --start-frame 0 --target-fps 10 --frame-count 25 `
+  --report-output artifacts.local/evidence/hftf/stage-c-t0-short-path-acquisition-20260801/acquisition.json
+
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/validate_stage_c_t0_sanpo_short_path_equivalence.py `
+  --execution-contract docs/research/hftf/HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_CONTRACT_2026-08-01.json `
+  --candidate-root artifacts.local/evidence/hftf/t0-short-path-transport-20260801/r/50bce40f5469ad75 `
+  --output artifacts.local/evidence/hftf/stage-c-t0-short-path-equivalence-20260801/equivalence.json
+```
+
+acquirer 在首个网络请求前验证 exact contract/source/root/config、自身 hash、G0
+outcome-open role 与 canonical consumed package。validator 完全离线，逐帧验证 remote
+object identity、本地 SHA/MD5、metadata、transport receipt 以及 final/`.tmp` 路径
+`<240`。candidate manifest/spec hash 是 post-open transport receipt，不允许在合同中
+预填。失败不重跑、不补 partial、不换源。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

@@ -3464,3 +3464,48 @@
   failure evidence，不删除、不恢复 fresh 身份。任何 HFTF successor 必须是新问题、
   新合同和新数据角色边界，并在打开新 fresh source 前先通过 synthetic path-length
   transport canary；不得写成 D1 同 cohort 的路径修补或救援。
+
+## 2026-08-01：HFTF successor D2 科学边界与 T0 短路径合同冻结
+
+- 执行者：violjjet
+- D2 明确不救援 G0-D1。新问题是：仅用 history pose 的恒速 causal SE(2)，运输已经
+  冻结的 current G0 signed-clearance point-field 到 `+.4/+.8 s`，能否胜过
+  current-field persistence。它不使用 D1 checkpoints/loss/predictions 或完整三条
+  fresh cohort，也不补 partial root、换源或解释 D1 传输失败为模型证据。
+- D2 在任何新 source outcome 前冻结：全部 source 统一 5 Hz/13 frames，7 个 anchors，
+  history `t-.4,t`，future offsets `+2/+4`；平移与 yaw-rate 都只由历史 pose 决定。
+  current-only preprocessor 在 future truth 前为 persistence current-grid 与 advected
+  predicted-grid 封存 exact G0 obstacle points、9-probe counts 与 known masks；两臂
+  输出 `{known, clearance_m}`，UNKNOWN 必须 null。truth、common-known、24 个
+  opportunity strata、MAE/F1 macro、zero-denominator、`1e-12` tolerance 与全部 effect
+  gates 均机器可判。D2 JSON SHA-256 为
+  `06a8ff9cbe9c4c9b98cceeb7a36c69ba098f6f7d53ab980adb747b987a1728d9`；
+  独立科学复核最终 CLEAR。
+- 既有计划内可直接用于 D2 的新 official-train parent 为 0；这不证明池耗尽。后续
+  必须另冻 metadata-only scan，排除所有 burned/consumed、完整 D1 cohort 与
+  official-test reservation，按绑定 split 顺序锁定 6 条全新 parent；不足即
+  `STOP_NO_ELIGIBLE_NEW_DEVELOPMENT_COHORT`。本节点尚不授权 scan 或新媒体打开。
+- 新 T0 acquirer 使用短 token root 和 `00..18` timeline aliases，在任何 GCS 请求前
+  枚举 final/staging/downloader `.tmp` 的全部 340 条路径并要求 `<240`；每个对象必须
+  generation/size/MD5 完整。network acquire 必须绑定 exact tracked contract、自身
+  hash、outcome-open Development source、canonical consumed package 与 G0 source
+  plan；任意 train/test/source/root/config 漂移均 fail closed。
+- source-blind filesystem canary 用 537 字符 synthetic identity 得到最大路径 174；
+  exact source/root preflight 最大 150。两者均未联网、未打开 source；当前实现复跑
+  preflight 与原 evidence byte-exact。离线 equivalence validator 将逐帧核对 canonical
+  与 candidate 的 remote identities、本地 SHA/MD5、metadata、transport receipt 和
+  实际/`.tmp` 路径。candidate manifest/spec hash 只能是 post-open receipt，合同拒绝
+  预填。
+- T0 exact source 固定为已消费 Development session `12b65d2c…c93bb`；canonical
+  manifest/spec SHA-256 为 `476b4e5f…9bdc8 / 04d0bc12…d38b3`。T0 contract
+  SHA-256 为
+  `bcf38a45b3d48cb8b82ed9ecd833de9db3ba25f8007ea4f5710b5d08e44152c6`。
+  两个失败出口统一为
+  `T0_SANPO_SHORT_PATH_TRANSPORT_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT`，不重跑、
+  不补 partial、不换源；成功终态为
+  `T0_SANPO_SHORT_PATH_CONSUMED_PACKAGE_EQUIVALENT`。
+- 定向 T0 测试 17/17、HFTF 全集 298/298 通过；独立 T0 审计重算 12 项
+  parent/implementation/test/evidence/canonical hashes 全匹配并最终 CLEAR。本节点只
+  授权合同提交推送并确认 `HEAD == origin/master` 后，执行一次 consumed Development
+  acquisition → offline equivalence。fresh/reserved、D2 scan/media/mechanics、
+  teacher/student、主线、App、Android、生产与安全权限继续关闭。

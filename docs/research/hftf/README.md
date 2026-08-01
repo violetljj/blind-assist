@@ -289,6 +289,22 @@ source-lock SHA-256 为
 当前只授权 exact media acquisition；teacher label/corpus 与 student training 仍未
 授权。
 
+G0-D1 current signed-clearance student 已在 9 条 outcome-open Development sources
+上冻结六个 checkpoints；但 one-shot fresh execution 在第一条固定 source 的 frame-0
+depth 下载处因 263 字符 `.tmp` 路径失败。按预冻 no-retry/no-rematerialization/
+no-source-replacement 规则，完整三条 D1 cohort 关闭为
+`G0_D1_FRESH_EVALUATION_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT`；未打开其余两条，
+未碰 reserved official-test，也没有 prediction/truth/effect。该终态不是模型负证据。
+
+后继 D2 不救援 D1。新问题是：history-only constant-velocity causal transport of the
+current G0 signed-clearance point-field，能否在 `+.4/+.8 s` 胜过 current-field
+persistence。科学设计已在任何新 source outcome 前冻结，精确包含 5 Hz timebase、
+7 anchors、SE(2) transport、G0 known/UNKNOWN、truth firewall、macro metrics 与
+effect gates。当前没有可直接打开的新合格 parent；在任何新媒体前，必须先通过 T0
+短路径 transport，并另冻 official-train metadata-only scan，锁定 6 条全新 parent。
+T0 只允许在一条已经 consumed 的 Development source 上执行，不产生 fresh 或模型效果
+证据。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -371,6 +387,14 @@ source-lock SHA-256 为
 - [Stage C machine-readable G0-D0 result](HFTF_STAGE_C_SIGNED_CLEARANCE_MECHANICS_RESULT_G0_D0_2026-08-01.json)
 - [Stage C G0-D1 current clearance learnability](HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
 - [Stage C machine-readable G0-D1 design](HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.json)
+- [Stage C G0-D1 fresh execution contract](HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_CONTRACT_D1_2026-08-01.md)
+- [Stage C machine-readable G0-D1 fresh execution contract](HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_CONTRACT_D1_2026-08-01.json)
+- [Stage C G0-D1 fresh execution result](HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_RESULT_D1_2026-08-01.md)
+- [Stage C machine-readable G0-D1 fresh execution result](HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_RESULT_D1_2026-08-01.json)
+- [Stage C D2 causal signed-clearance transport design](HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_D2_2026-08-01.md)
+- [Stage C machine-readable D2 design](HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_D2_2026-08-01.json)
+- [Stage C T0 consumed-Development short-path contract](HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_CONTRACT_2026-08-01.md)
+- [Stage C machine-readable T0 contract](HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_CONTRACT_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

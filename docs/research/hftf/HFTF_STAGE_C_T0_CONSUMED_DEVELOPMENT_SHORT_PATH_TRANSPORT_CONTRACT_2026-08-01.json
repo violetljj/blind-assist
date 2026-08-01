@@ -1,0 +1,152 @@
+{
+  "schema": "blindassist_hftf_stage_c_t0_consumed_development_transport_contract",
+  "status": "FROZEN_BEFORE_T0_CONSUMED_DEVELOPMENT_SOURCE_OPEN",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "purpose": "prove_future_short_path_sanpo_transport_on_one_already_outcome_open_development_source_without_creating_fresh_or_model_effect_evidence",
+  "parents": {
+    "g0_source_plan": {
+      "path": "artifacts.local/evidence/hftf/stage-c-g0-signed-clearance-source-plan-20260801/source_plan.json",
+      "sha256": "886271cd1546e2f3f4cd91991f39725ed39b12907e0d4294b980404d132648a4",
+      "required_terminal": "G0_SIGNED_CLEARANCE_SOURCE_PLAN_READY"
+    },
+    "g0_d1_closed_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_RESULT_D1_2026-08-01.json",
+      "sha256": "8fae114c9208a823fc305c19b2776f0fd29f4e51b4d84422621b0400fafc477e",
+      "required_terminal": "G0_D1_FRESH_EVALUATION_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT"
+    },
+    "d2_design": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_D2_2026-08-01.json",
+      "sha256": "06a8ff9cbe9c4c9b98cceeb7a36c69ba098f6f7d53ab980adb747b987a1728d9"
+    }
+  },
+  "source": {
+    "session_id": "12b65d2c76d7ad0c17d7ac791089b8cae0bb059c9b02a6f23129044192bc93bb",
+    "official_split": "train",
+    "role": "outcome_open_development_transport_canary",
+    "g0_source_role": "development_reuse_outcome_open_train",
+    "outcome_open_before_t0": true,
+    "fresh_evidence_credit": false,
+    "reserved_source": false,
+    "canonical_consumed_package": {
+      "root": "artifacts.local/evidence/datasets/hftf-f0-1-train-train-12b65d2c-25frames-20260801",
+      "role": "consumed_development",
+      "manifest_sha256": "476b4e5f3db8aa5018c5f17027bca42b644a801af9c2c97675c8b87d6979bdc8",
+      "dataset_spec_sha256": "04d0bc120bc45b195eb964318b075f943d2225de92536f4c08f2bc8ca96d38b3"
+    }
+  },
+  "acquisition_config": {
+    "session_id": "12b65d2c76d7ad0c17d7ac791089b8cae0bb059c9b02a6f23129044192bc93bb",
+    "camera": "camera_chest",
+    "lens": "left",
+    "official_split": "train",
+    "start_frame": 0,
+    "target_fps": 10.0,
+    "frame_count": 25,
+    "selected_source_frames_expected": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26,
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44,
+      46,
+      48
+    ]
+  },
+  "transport_root": "artifacts.local/evidence/hftf/t0-short-path-transport-20260801",
+  "short_path_package": {
+    "root": "artifacts.local/evidence/hftf/t0-short-path-transport-20260801/r/50bce40f5469ad75",
+    "post_open_local_hashes_are_transport_receipts_only": true
+  },
+  "implementations": {
+    "acquirer": {
+      "path": "scripts/research/hftf/acquire_stage_c_t0_sanpo_short_path_transport.py",
+      "sha256": "e41a2b8e3273dcbb314b76813c0526b9c81ed44603423950d02c5f563b1c7636",
+      "network_execution_authorized": true
+    },
+    "filesystem_canary": {
+      "path": "scripts/research/hftf/run_stage_c_t0_sanpo_short_path_canary.py",
+      "sha256": "25865613170a3544022805a4202b2f91a01039da6754790d998940666812cbf7",
+      "network_capable": false
+    },
+    "equivalence_validator": {
+      "path": "scripts/research/hftf/validate_stage_c_t0_sanpo_short_path_equivalence.py",
+      "sha256": "2dd49ff3e2f01b654a60ba2929b53925179ad37166809f05d652b3a2a360a8c6",
+      "network_capable": false
+    }
+  },
+  "implementation_tests": {
+    "acquirer_test": {
+      "path": "scripts/research/hftf/test_acquire_stage_c_t0_sanpo_short_path_transport.py",
+      "sha256": "bfee8e0fda055b42f1a6d9cbb82981bfcb3d9e9f11cb98e12aeaa5c68d639eef"
+    },
+    "equivalence_validator_test": {
+      "path": "scripts/research/hftf/test_validate_stage_c_t0_sanpo_short_path_equivalence.py",
+      "sha256": "cadbf60f96f7ee92782fcbb7776c198a9e8dac9ba95289349453a959e525c619"
+    },
+    "combined_test_count": 17,
+    "combined_tests_passed": 17
+  },
+  "evidence": {
+    "filesystem_canary": {
+      "path": "artifacts.local/evidence/hftf/stage-c-t0-short-path-filesystem-canary-20260801/canary.json",
+      "sha256": "2d3a6a2c3cac9b3b34a6dad6e2f70651075de9b18083100854913d0b82f45b30",
+      "required_terminal": "T0_SANPO_SHORT_PATH_FILESYSTEM_CANARY_READY",
+      "network_opened": false,
+      "source_opened": false
+    },
+    "path_preflight": {
+      "path": "artifacts.local/evidence/hftf/stage-c-t0-short-path-preflight-20260801/preflight.json",
+      "sha256": "2c5e5be186eca41b8798023a217be7a67257b0595b1ae708dc0ffc4a74325de3",
+      "required_terminal": "T0_SANPO_SHORT_PATH_PREFLIGHT_READY",
+      "maximum_content_path_length": 150,
+      "network_opened": false,
+      "source_opened": false
+    }
+  },
+  "execution_order": [
+    "commit_and_push_this_exact_contract_and_all_implementation_hashes",
+    "confirm_head_equals_origin_master",
+    "run_exact_consumed_development_acquisition_once",
+    "run_offline_equivalence_validator_once",
+    "record_t0_terminal"
+  ],
+  "failure_policy": {
+    "do_not_delete_or_fill_partial_stage": true,
+    "do_not_rerun_same_acquisition": true,
+    "do_not_switch_source": true,
+    "do_not_open_any_fresh_or_reserved_source": true,
+    "terminal": "T0_SANPO_SHORT_PATH_TRANSPORT_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT"
+  },
+  "success_terminal": "T0_SANPO_SHORT_PATH_CONSUMED_PACKAGE_EQUIVALENT",
+  "authorization": {
+    "consumed_development_transport_execution": true,
+    "fresh_or_reserved_source_open": false,
+    "teacher_or_student_execution": false,
+    "d2_metadata_scan_execution": false,
+    "d2_media_open": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}
