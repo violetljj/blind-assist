@@ -3950,3 +3950,23 @@
   roster/order/budget/gates 未形成 effect cohort；不支持或否定 transport/HFTF，
   不授权任何 D2 effect metric、preprocessor/effect、RGB student、主线/App/Android、
   生产或 safety。后继只能另建独立 protocol/data-role 边界，不得救援本 cohort。
+
+## 2026-08-02：HFTF D3-Q0.1 consumed-selector Failure Atlas R0
+
+- 执行者：violjjet
+- 对 37 个已消费合法 selector receipts 做只读描述性归因，不打开 sealed payload、
+  媒体或 formal artifact。148 个 strata 中 93 个失败；89/93 包含 risk-count
+  failure，68/93 仅 risk 不足，coverage/safe 分别失败 24/148、25/148，
+  UNKNOWN→SAFE 为 0。head × `.8 s` 只有 7/37 通过，30/37 risk 少于 5。
+- 该 Atlas 只形成
+  `D3_Q0_1_CURRENT_REFERENCE_TRUTH_RISK_OPPORTUNITY_SCARCITY_DOMINANT_HYPOTHESIS_ONLY`：
+  当前 reference/qualification 表示下 risk opportunity 是主导瓶颈，但不能区分
+  自然稀有、teacher/reference blind spot 或 sampling mismatch。slots 4/7 的近失
+  数值是 outcome 后诊断，不授权把 risk 门从 5 降到 3、追认样本或扩预算。
+- 独立科学审计为 `CLEAR`，同时强调 37 个 parent 才是独立单位、2 个 failure source
+  存在 selector 选择性缺失。首选后继改为
+  `D4_OPPORTUNITY_ECOLOGY_AND_RECRUITABILITY`：在 fresh prospective source
+  population 中先估计 source-level all-four opportunity 率与 pre-truth metadata
+  招募成本；成功也只能授权另一批独立 sealed-effect cohort。受控 paired geometry
+  intervention 降为第二候选。Atlas 只授权冻结设计，不授权执行；Q0/Q0.1、student、
+  主线/App/Android、生产与 safety 均保持关闭。
