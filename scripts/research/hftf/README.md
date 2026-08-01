@@ -447,6 +447,20 @@ validator 先复核 E0 负终态与八条 consumed exclusion，再从原 invento
 dev/heldout。它不打开新媒体；只有
 `E0_1_FRESH_EVALUATION_SOURCE_LOCK_VALIDATED` 才授权 exact acquisition。
 
+E0.1 exact fresh evaluation media acquisition：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/acquire_stage_c_e0_1_fresh_evaluation_media.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.json `
+  --source-lock artifacts.local/evidence/hftf/stage-c-e0-1-source-lock-20260801/source_lock.json `
+  --output-root artifacts.local/evidence/hftf/stage-c-e0-1-fresh-evaluation-media-20260801 `
+  --manifest artifacts.local/evidence/hftf/stage-c-e0-1-fresh-evaluation-media-20260801/acquisition_manifest.json
+```
+
+acquisition allow-list 只含新 dev/heldout 与公共 metadata。首次打开后两条永久 burned；
+仍不计算 label 或 student。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
