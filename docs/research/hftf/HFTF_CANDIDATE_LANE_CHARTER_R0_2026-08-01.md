@@ -112,9 +112,12 @@ current-only 的表示增量，并把 action policy 后置。
 - R1 以四个全新 sessions、相同 UNKNOWN/denominator/gates 冻结 6-bin
   camera-forward sector；4/4 current coverage 过门，但一个快速前移 session 的
   near/far coverage 失败，终态仍为 `H1_GEOMETRY_TEACHER_NOT_EVALUABLE`；
-- R0/R1 sessions 均已消费；下一版本必须使用新 sessions，并在 outcome 前冻结
-  ego-motion-aware/temporal-fusion support 与 dynamic-opportunity eligibility，不在
-  burned 数据上调 sector、horizon、known/coverage 门；
+- R2 以 history-causal ground-tangent rolling origin 在又四个 fresh sessions 上让
+  4/4 current/near/far coverage 全过，但 multi-height 只 3/4 过门，终态为
+  `H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP`；
+- R0/R1/R2 sessions 均已消费；multi-height 降为 auxiliary。下一版本若继续，只能在
+  fresh sessions 上冻结 single-height rolling-future field，不在 burned 数据上改
+  height bands、sector、horizon、known/coverage/future 门；
 - 比较：current single-height、current multi-height、future multi-height；
 - 独立单元：parent source-session，不把 frames 当独立样本；
 - 必须报告：reprojection/pose validity、unknown coverage、各高度层冲突一致性、

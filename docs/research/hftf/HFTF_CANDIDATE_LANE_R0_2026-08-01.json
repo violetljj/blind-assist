@@ -66,11 +66,12 @@
     {
       "id": "H1",
       "name": "geometry_teacher_canary",
-      "current_terminal": "H1_GEOMETRY_TEACHER_NOT_EVALUABLE",
-      "protocol": "HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1_2026-08-01.json",
-      "result": "HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_RESULT_R1_2026-08-01.md",
+      "current_terminal": "H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP",
+      "protocol": "HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2_2026-08-01.json",
+      "result": "HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_RESULT_R2_2026-08-01.md",
       "r0_burned": true,
       "r1_burned": true,
+      "r2_burned": true,
       "attempts": [
         {
           "version": "R0",
@@ -82,9 +83,16 @@
           "terminal": "H1_GEOMETRY_TEACHER_NOT_EVALUABLE",
           "current_support_repair": "four_of_four_sessions_clear_current_known_coverage_gate",
           "blocker": "one_fast_egomotion_session_fails_near_and_far_anchor_centric_future_known_coverage"
+        },
+        {
+          "version": "R2",
+          "terminal": "H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP",
+          "mechanics_valid": "four_of_four_sessions_clear_current_near_far_known_coverage_and_consistency",
+          "blocker": "one_of_four_sessions_fails_multi_height_nonredundancy",
+          "decision": "demote_multi_height_to_auxiliary"
         }
       ],
-      "allowed_next_step": "freeze_ego_motion_aware_temporal_fusion_h1_reformulation_on_new_source_sessions_with_separate_dynamic_opportunity_eligibility"
+      "allowed_next_step": "freeze_single_height_causal_advected_future_h1_canary_on_new_source_sessions"
     },
     {
       "id": "H2",

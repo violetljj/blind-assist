@@ -3,8 +3,8 @@
 当前状态：
 
 `CANDIDATE_SIDE_LANE_ACTIVE / DEVELOPMENT_STANDARD /
-H1_GEOMETRY_TEACHER_NOT_EVALUABLE /
-R1_BURNED_FUTURE_SUPPORT_REFORMULATION_REQUIRED / INNOVATION_NOT_EVALUABLE /
+H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP /
+R2_BURNED_SINGLE_HEIGHT_REFORMULATION_REQUIRED / INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 当前结论
@@ -71,13 +71,20 @@ R2 的 source-preparation 合同已在新 teacher outcome 前冻结：future fie
 anchor 前 `400 ms` 的历史位姿速度在 local-ground plane 上外推，future pose 不选择
 origin/方向；其余 R1 bins、UNKNOWN、denominator 与所有数值门保持不变。新 cohort
 按排除 R0/R1 后的 official train ID 字典序冻结为
-`03694304/03b6dc99/03c87279/03d70593`。当前只授权获取与 source authority，尚未绑定
-完整 hashes 或运行 R2 teacher。
+`03694304/03b6dc99/03c87279/03d70593`。该阶段只授权获取与 source authority，没有
+提前运行 teacher。
 
-四个 R2 source authority 现已全部通过，完整 report/manifest/spec/pose hashes 已绑定
-到正式 `FROZEN_RESULT_NOT_RUN` protocol。R2 teacher 与 runner outcome 仍未运行；
-下一步仅允许实现 history selection、ground-tangent velocity 与 horizon-origin
-advection，并在实现提交后执行一次。
+随后四个 R2 source authority 全部通过，完整 report/manifest/spec/pose hashes 绑定
+到正式 protocol；history selection、ground-tangent velocity 与 horizon-origin
+advection runner 先提交推送，才执行以下一次性结果。
+
+R2 已一次性执行并关闭为 `H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP`。4/4
+source/mechanics validity 全过，worst current/near/far coverage 为
+`20.42%/18.47%/11.91%`，因此 future-view support 不再是该 evidence version 的
+blocker。`03c87279` 的 height disagreement 仅 `2/684=0.292%`，低于 2%；future
+diagnostic 也只有 3/4 过门，不能越过 height 顺序门解释。R2 sources 已 burned。
+multi-height 从 mandatory core 降为 auxiliary；只允许在 fresh sources 上冻结
+single-height causal rolling-future R3，不再调 height bands 或门。
 
 ## 当前真源
 
@@ -95,6 +102,7 @@ advection，并在实现提交后执行一次。
 - [H1 R2 machine-readable source preparation](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_SOURCE_PREPARATION_R2_2026-08-01.json)
 - [H1 R2 causal-advected teacher protocol](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2_2026-08-01.md)
 - [H1 R2 machine-readable teacher protocol](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2_2026-08-01.json)
+- [H1 R2 result](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_RESULT_R2_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。一次性完成
+  `HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_R2`，终态
+  `H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP`。4/4 authority、prep hash、
+  independence/exact set、usable anchors `15/15/19/15`、consistency `0` 与
+  current/near/far coverage 全过；worst coverage
+  `.204191/.184698/.119136`。multi-height disagreement 为
+  `.072222/.020370/.002924/.031481`，`03c87279` 低于 `.02`，故在第二顺序门停止；
+  future `.079012/.087654/.013645/.069136` 只作 diagnostic。报告 SHA-256
+  `600f37dea7940af5a4e2d09eb798547f3a8694b2dc4d04ce611e68f186023949`。
+  R2 sources burned；不改 height bands/gates。multi-height 降为 auxiliary，只允许
+  fresh-session single-height rolling-future R3。H2、主线、Android、提醒、默认 App、
+  生产与安全均未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未正式运行 R2
   causal-advection runner。实现新增严格过去 history selection（等距时取更高 source
   frame）、history-to-anchor ground-tangent velocity、每 horizon 独立 rolling
