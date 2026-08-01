@@ -43,6 +43,7 @@ DATASET_NAME = "SANPO-Synthetic v0"
 DEFAULT_SESSION_ID = "e1ae36e040a53837dbe40879ddca1fbc47d47752a563e1117629cde73e7de856"
 DEFAULT_CAMERA = "camera_chest"
 DEFAULT_LENS = "left"
+OFFICIAL_SPLITS = ("train", "test")
 
 
 class ReplayError(ValueError):
@@ -127,11 +128,39 @@ def require_fresh_output(path: Path) -> None:
         raise ReplayError(f"refusing to overwrite existing replay output: {path}")
 
 
+def split_contract(official_split: str) -> dict[str, Any]:
+    if official_split not in OFFICIAL_SPLITS:
+        raise ReplayError(
+            f"official_split must be one of {OFFICIAL_SPLITS}: "
+            f"{official_split!r}"
+        )
+    is_train = official_split == "train"
+    return {
+        "official_split": official_split,
+        "split_object_name": (
+            f"{GCS_PREFIX}/sanpo-synthetic/splits/"
+            f"{official_split}_session_ids.txt"
+        ),
+        "label_authority": (
+            "official_panoptic_ground_truth_pretraining_only"
+            if is_train
+            else "official_panoptic_heldout_geometry_proxy_only"
+        ),
+        "pretraining_candidate": is_train,
+        "synthetic_heldout_evaluation_candidate": not is_train,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--session-id", default=DEFAULT_SESSION_ID)
     parser.add_argument("--camera", choices=(DEFAULT_CAMERA,), default=DEFAULT_CAMERA)
     parser.add_argument("--lens", choices=(DEFAULT_LENS,), default=DEFAULT_LENS)
+    parser.add_argument(
+        "--official-split",
+        choices=OFFICIAL_SPLITS,
+        default="train",
+    )
     parser.add_argument("--start-frame", type=int, default=0)
     parser.add_argument("--target-fps", type=float, default=10.0)
     parser.add_argument("--frame-count", type=int, default=3)
@@ -144,6 +173,7 @@ def main() -> int:
             raise ReplayError("retries must be positive")
         output_root = args.output_root.resolve()
         require_fresh_output(output_root)
+        split = split_contract(args.official_split)
         session_prefix = f"{GCS_PREFIX}/sanpo-synthetic/{args.session_id}"
         description_name = f"{session_prefix}/description.json"
         labelmap_name = f"{GCS_PREFIX}/labelmap.json"
@@ -160,15 +190,18 @@ def main() -> int:
             raise ReplayError("official session description does not identify as synthetic")
         source_fps, dimensions = camera_metadata(description, args.camera, args.lens)
 
-        split_name = f"{GCS_PREFIX}/sanpo-synthetic/splits/train_session_ids.txt"
+        split_name = str(split["split_object_name"])
         split_object = get_gcs_object(split_name, args.retries)
-        train_ids = {
+        split_ids = {
             line.strip()
             for line in fetch_text(media_url(split_name, split_object.get("generation")), args.retries).splitlines()
             if line.strip()
         }
-        if args.session_id not in train_ids:
-            raise ReplayError("SANPO-Synthetic replay accepts only official train sessions")
+        if args.session_id not in split_ids:
+            raise ReplayError(
+                "SANPO-Synthetic replay session is not in the requested "
+                f"official {args.official_split} split"
+            )
 
         frame_prefix = f"{session_prefix}/{args.camera}/{args.lens}/video_frames/"
         mask_prefix = f"{session_prefix}/{args.camera}/{args.lens}/segmentation_masks/"
@@ -181,7 +214,13 @@ def main() -> int:
             start_frame=args.start_frame, frame_count=args.frame_count,
         )
 
-        for relative in ("images/train", "source_masks/train", "source_depth/train", "source_metadata", "qa"):
+        for relative in (
+            f"images/{args.official_split}",
+            f"source_masks/{args.official_split}",
+            f"source_depth/{args.official_split}",
+            "source_metadata",
+            "qa",
+        ):
             (output_root / relative).mkdir(parents=True, exist_ok=True)
         for local_name, object_name in (
             ("source_metadata/source_session_description.json", description_name),
@@ -199,9 +238,9 @@ def main() -> int:
         rows: list[dict[str, Any]] = []
         for timeline_index, source_index in enumerate(selected):
             sample_id = f"{sequence_id}_{timeline_index:06d}"
-            image_rel = Path("images/train") / f"{sample_id}.png"
-            mask_rel = Path("source_masks/train") / f"{sample_id}.png"
-            depth_rel = Path("source_depth/train") / f"{sample_id}.float16.gz"
+            image_rel = Path("images") / args.official_split / f"{sample_id}.png"
+            mask_rel = Path("source_masks") / args.official_split / f"{sample_id}.png"
+            depth_rel = Path("source_depth") / args.official_split / f"{sample_id}.float16.gz"
             image_path, mask_path, depth_path = output_root / image_rel, output_root / mask_rel, output_root / depth_rel
             for item, path in ((rgb[source_index], image_path), (masks[source_index], mask_path), (depth[source_index], depth_path)):
                 download(media_url(str(item["name"]), item.get("generation")), path, args.retries)
@@ -223,7 +262,7 @@ def main() -> int:
                 "source_frame_index": source_index,
                 "source_timestamp_ms": int(round(source_index * 1000.0 / source_fps)),
                 "source_annotation_quality": str(annotation_types.get(str(source_index), "UNKNOWN")),
-                "label_authority": "official_panoptic_ground_truth_pretraining_only",
+                "label_authority": split["label_authority"],
                 "event_truth": None,
                 "source": {
                     "source_id": SOURCE_ID,
@@ -232,7 +271,7 @@ def main() -> int:
                     "repository": DATASET_REPO,
                     "license": LICENSE_NAME,
                     "license_url": LICENSE_URL,
-                    "official_split": "train",
+                    "official_split": args.official_split,
                     "session_id": args.session_id,
                     "camera": args.camera,
                     "lens": args.lens,
@@ -247,7 +286,12 @@ def main() -> int:
                 },
                 "authorization": {
                     "offline_replay": True,
-                    "pretraining_candidate": True,
+                    "pretraining_candidate": split[
+                        "pretraining_candidate"
+                    ],
+                    "synthetic_heldout_evaluation_candidate": split[
+                        "synthetic_heldout_evaluation_candidate"
+                    ],
                     "real_finetune_or_eval": False,
                     "human_event_truth": False,
                     "calibration": False,
@@ -262,17 +306,28 @@ def main() -> int:
         )
         spec = {
             "schema": "blindassist_sanpo_synthetic_replay_v1",
-            "purpose": "official SANPO-Synthetic source-contract replay and pretraining candidate intake",
-            "source": {"source_id": SOURCE_ID, "dataset": DATASET_NAME, "official_split": "train", "session_id": args.session_id},
+            "purpose": (
+                "official SANPO-Synthetic source-contract replay and "
+                + (
+                    "pretraining candidate intake"
+                    if args.official_split == "train"
+                    else "synthetic heldout geometry-proxy evaluation intake"
+                )
+            ),
+            "source": {"source_id": SOURCE_ID, "dataset": DATASET_NAME, "official_split": args.official_split, "session_id": args.session_id},
             "sampling": {"source_fps": source_fps, "target_fps": args.target_fps, "selected_source_frames": selected},
             "camera": dimensions,
-            "source_inventory": {**{name: object_inventory(item) for name, item in objects.items()}, "train_split": object_inventory(split_object), "rgb": [object_inventory(rgb[i]) for i in selected], "masks": [object_inventory(masks[i]) for i in selected], "depth": [object_inventory(depth[i]) for i in selected]},
-            "required_downstream_order": ["SANPO-Synthetic pretraining candidate", "separately gated SANPO-Real finetune", "independent offline/INT8/device gates"],
+            "source_inventory": {**{name: object_inventory(item) for name, item in objects.items()}, "official_split_receipt": object_inventory(split_object), "rgb": [object_inventory(rgb[i]) for i in selected], "masks": [object_inventory(masks[i]) for i in selected], "depth": [object_inventory(depth[i]) for i in selected]},
+            "required_downstream_order": (
+                ["SANPO-Synthetic pretraining candidate", "separately gated SANPO-Real finetune", "independent offline/INT8/device gates"]
+                if args.official_split == "train"
+                else ["frozen synthetic heldout geometry-proxy evaluation only"]
+            ),
             "prohibited_claims": ["independent GPT/Codex consensus event truth", "calibration evidence", "blind evaluation", "Android runtime authorization", "production model replacement", "user safety proof"],
         }
         (output_root / "dataset_spec.json").write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (output_root / "source_licenses.md").write_text(
-            f"# SANPO-Synthetic source and license\n\n- Dataset: {DATASET_NAME}\n- Dataset page: {DATASET_PAGE}\n- Repository: {DATASET_REPO}\n- License: [{LICENSE_NAME}]({LICENSE_URL})\n- Session: `{args.session_id}` / official train split\n- Attribution: {SANPO_CITATION}\n- Local policy: original source assets remain local-only under test-artifacts.local and are not committed.\n- Boundary: this package is source-contract replay/pretraining intake only; it carries no human assistive-event truth and cannot authorize calibration, blind evaluation, Android runtime, or default-model replacement.\n",
+            f"# SANPO-Synthetic source and license\n\n- Dataset: {DATASET_NAME}\n- Dataset page: {DATASET_PAGE}\n- Repository: {DATASET_REPO}\n- License: [{LICENSE_NAME}]({LICENSE_URL})\n- Session: `{args.session_id}` / official {args.official_split} split\n- Attribution: {SANPO_CITATION}\n- Local policy: original source assets remain local-only under test-artifacts.local and are not committed.\n- Boundary: this package is source-contract replay intake only; it carries no human assistive-event truth and cannot authorize calibration, blind evaluation, Android runtime, or default-model replacement. Official-test packages are synthetic heldout-only and may not be used for training or development selection.\n",
             encoding="utf-8",
         )
         validation = {
@@ -280,7 +335,15 @@ def main() -> int:
             "frame_count": len(rows),
             "required_modalities_hash_bound": True,
             "all_rgb_mask_dimensions_match": True,
-            "all_frames_official_train_split": True,
+            "official_split": args.official_split,
+            "all_frames_official_split_match": True,
+            "all_frames_official_train_split": (
+                args.official_split == "train"
+            ),
+            "pretraining_candidate": split["pretraining_candidate"],
+            "synthetic_heldout_evaluation_candidate": split[
+                "synthetic_heldout_evaluation_candidate"
+            ],
             "imu_status": "absent_in_published_session_inventory_not_synthesized",
             "production_authorized": False,
         }

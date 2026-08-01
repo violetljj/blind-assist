@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import sys
 import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import acquire_sanpo_synthetic_replay as replay
 
@@ -29,6 +33,25 @@ class SanpoSyntheticReplayTest(unittest.TestCase):
         del description["session_camera_details"][0]["left_camera_params"]["fx"]
         with self.assertRaisesRegex(replay.ReplayError, "missing fx"):
             replay.camera_metadata(description, "camera_chest", "left")
+
+    def test_split_contract_is_explicit_and_heldout_is_not_training(self) -> None:
+        train = replay.split_contract("train")
+        test = replay.split_contract("test")
+        self.assertTrue(train["pretraining_candidate"])
+        self.assertFalse(
+            train["synthetic_heldout_evaluation_candidate"]
+        )
+        self.assertFalse(test["pretraining_candidate"])
+        self.assertTrue(
+            test["synthetic_heldout_evaluation_candidate"]
+        )
+        self.assertTrue(
+            test["split_object_name"].endswith(
+                "/test_session_ids.txt"
+            )
+        )
+        with self.assertRaisesRegex(replay.ReplayError, "one of"):
+            replay.split_contract("dev")
 
 
 if __name__ == "__main__":
