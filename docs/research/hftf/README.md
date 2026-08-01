@@ -151,6 +151,9 @@ Development support，不形成自然 prevalence、人类事件、student utilit
 - [R3.1 source-pool burn ledger](HFTF_R3_1_SOURCE_POOL_BURN_LEDGER_2026-08-01.json)
 - [R3.1 inventory candidate plan result](HFTF_R3_1_INVENTORY_CANDIDATE_PLAN_RESULT_2026-08-01.md)
 - [Stage B R3.1 qualification result](HFTF_STAGE_B_REFERENCE_ONLY_OPPORTUNITY_QUALIFICATION_RESULT_R3_1_2026-08-01.md)
+- [Stage B split-source validation R4](HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.md)
+- [Stage B machine-readable R4 protocol](HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.json)
+- [R4 source-pool burn ledger](HFTF_R4_SOURCE_POOL_BURN_LEDGER_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

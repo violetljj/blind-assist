@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何 R4 outcome 前冻结
+  split-source Stage B successor。obstacle role 排除 R0–R3.1 共 56 个
+  outcome-open SANPO sessions，字典序最多 reference-only screen 12 个、目标 4 个，
+  保持 R3 的全部 obstacle effect gates；ground role 使用 42 个解析 metric height
+  profiles，覆盖 16 no-risk、20 rise/drop/localized risk 与 6 occluded UNKNOWN，
+  对照 semantic-safe 和 endpoint-delta 两基线。joint success 也只允许冻结 Stage C
+  source-feasibility contract，不授权执行、student、主线、Android、提醒或安全 claim。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 R3.1 冻结的
   40-session reference-only opportunity screen 与 cohort 聚合，终态
   `R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE`：预算 `40/40`、qualified
