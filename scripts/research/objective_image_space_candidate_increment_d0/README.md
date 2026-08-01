@@ -1,6 +1,12 @@
 # Objective image-space candidate increment D0
 
-状态：`FROZEN_PRE_OUTPUT`
+状态：
+`COMPLETE / VALID / STOP_FIXED_PIDNET_OBJECTIVE_CANDIDATE_NO_ROBUST_INCREMENT`
+
+权威结果见
+[`OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_RESULT_2026-08-02.md`](../../../docs/research/dual-loop/OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_RESULT_2026-08-02.md)。
+固定 raw PIDNet candidate operator 已关闭；以下命令仅保留为可复算接口，不得在已消费
+cohort 上改门、换 seed 或重跑以选择结果。
 
 本包实现
 `OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0` 的 objective-only 数据视图、固定

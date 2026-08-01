@@ -18,7 +18,8 @@ RISKSEG_R1_P1_NOT_AUTHORIZED /
 RISKSEG_ACT_A0_COMPLETE_VALID_NEGATIVE /
 STOP_ACTIONABILITY_REFERENCE_CONSTRUCT_UNSTABLE /
 ACTIONABILITY_FULL_FRAME_AND_TRAINING_NOT_AUTHORIZED /
-OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_FROZEN_PRE_OUTPUT /
+OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_COMPLETE_VALID_NEGATIVE /
+STOP_FIXED_PIDNET_OBJECTIVE_CANDIDATE_NO_ROBUST_INCREMENT /
 CONSUMED_SESSION_DISJOINT_THESIS_DEVELOPMENT /
 TIMING_NOT_EVALUABLE_ONSET_INCOMPLETE /
 SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
@@ -146,7 +147,14 @@ train/dev session-disjoint，但 cohort 已被前序研究消费，因此只提�
 `THESIS_DEVELOPMENT` 机制证据。主集只有 4 个 onset-complete sessions，低于冻结的
 12-session timing 门；本 D0 无论结果如何都不得声称“更早覆盖”，也不修改默认 App。
 协议、门、exact model/data/implementation hashes 与负终态已在任何新 YOLO box trace
-或 PIDNet pixel output 前冻结。
+或 PIDNet pixel output 前冻结。当前
+[D0 result](OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_RESULT_2026-08-02.md)
+已独立复算为有效负终态
+`STOP_FIXED_PIDNET_OBJECTIVE_CANDIDATE_NO_ROBUST_INCREMENT`：`C-A` recall
+`+.069380` 和固定预算通过，但 residual component recall 仅 `.285436`，
+false components/frame `7.867188`，session P90 added FP `.127410`，boundary
+recall gain 仅 `+.004039`。因此关闭 exact raw PIDNet candidate operator，不换 seed、
+不加 gate/latch/组件分类器、不修改默认 App。
 
 此前 2026-08-01 的候选算法主线曾切换为
 [DG-SRF image-space structural complementarity F0](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。

@@ -1,0 +1,155 @@
+{
+  "schema_version": "blindassist.objective_image_space_candidate_increment_d0.final_result.v1",
+  "protocol_id": "OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0",
+  "date": "2026-08-02",
+  "status": "STOP_FIXED_PIDNET_OBJECTIVE_CANDIDATE_NO_ROBUST_INCREMENT",
+  "validity": "VALID_NEGATIVE_CONSUMED_DEVELOPMENT_RESULT",
+  "decision": {
+    "fixed_pidnet_candidate_operator": "CLOSED",
+    "default_app": "KEEP_CURRENT_YOLO",
+    "new_rule_or_adapter_rescue": false,
+    "new_training_or_seed_selection": false,
+    "reason": "Coverage gain existed, but residual component recall, false component burden, event P90 false area, and boundary-class recall gain did not jointly pass the frozen gates."
+  },
+  "pre_output_lock": {
+    "commit": "5e943dd",
+    "protocol_status": "FROZEN_PRE_OUTPUT",
+    "outputs_absent_at_lock": true
+  },
+  "data": {
+    "role": "CONSUMED_SESSION_DISJOINT_THESIS_DEVELOPMENT",
+    "frame_count": 1920,
+    "source_session_count": 30,
+    "independent_unit": "source_session",
+    "objective_manifest_sha256": "7f6c663b70e0cbd15a2b622917183dee8c2e65e8eba928d06354bffc396cec14",
+    "event_or_action_fields_consumed": false,
+    "fresh_or_confirmation": false
+  },
+  "models": {
+    "yolo_model_sha256": "00edb41a528b0a7e709c4af8ce3e685491492c4539274804e5cfc17a1a867cd2",
+    "pidnet_seed": 20260801,
+    "pidnet_model_sha256": "cf7a4d11ec72b281fe62381d32601af106871215a5e0cc286bc04c2027cec0dc"
+  },
+  "coverage": {
+    "a_yolo_only_recall": 0.21906129163016846,
+    "b_pidnet_only_recall": 0.08984912816753708,
+    "c_yolo_plus_pidnet_recall": 0.288441283121852,
+    "c_minus_a_recall_gain": 0.06937999149168356,
+    "residual_candidate_precision": 0.2783978460221467,
+    "residual_candidate_recall": 0.08884178841193655,
+    "residual_truth_component_recall": 0.28543633762517884,
+    "candidate_component_precision": 0.4267334623704884,
+    "truth_component_count": 17475,
+    "predicted_component_count": 26349,
+    "hit_truth_component_count": 4988,
+    "blocking_obstacle_recall_gain": 0.05932972927805155,
+    "boundary_level_change_recall_gain": 0.004038620815923731,
+    "frozen_corridor_recall_gain": 0.13662898579010238
+  },
+  "false_activation": {
+    "added_false_positive_area_fraction": 0.04658583799997965,
+    "false_activation_component_count": 15105,
+    "false_activation_components_per_frame": 7.8671875,
+    "event_added_false_positive_area_p90": 0.12740985107421876,
+    "sessions_added_fp_at_or_below_0_05": 21,
+    "sessions_total": 30
+  },
+  "session_distribution": {
+    "recall_gain_p10": 0.009879698593734118,
+    "recall_gain_p50": 0.05184849270349119,
+    "recall_gain_p90": 0.14187998698798343,
+    "sessions_positive_gain": 30,
+    "sessions_gain_at_or_above_0_05": 16,
+    "sessions_passing_gain_and_fp_together": 8
+  },
+  "continuous_geometry_descriptive": {
+    "candidate_area_fraction_valid": {
+      "p10": 0.0059425474229667765,
+      "p50": 0.05322885680272955,
+      "p90": 0.22972558127267706
+    },
+    "candidate_middle_third_fraction_valid": {
+      "p10": 0.0007184850783146881,
+      "p50": 0.01805473982949592,
+      "p90": 0.09237528504735872
+    },
+    "candidate_corridor_fraction_valid": {
+      "p10": 0.0017815033517583716,
+      "p50": 0.03092538988690429,
+      "p90": 0.1282114600602752
+    },
+    "candidate_adjacent_iou": {
+      "p10": 0.019928068956679507,
+      "p50": 0.27823384622411546,
+      "p90": 0.5607912065803627
+    },
+    "candidate_area_delta_pixels": {
+      "p10": -1371.8,
+      "p50": 1.0,
+      "p90": 1436.2000000000003,
+      "positive_pairs": 946,
+      "zero_pairs": 25,
+      "negative_pairs": 919
+    },
+    "nonzero_candidate_frame_fraction_by_session": {
+      "p10": 0.975,
+      "p50": 1.0,
+      "p90": 1.0
+    },
+    "maximum_nonzero_run_frames_by_session": {
+      "p10": 46.2,
+      "p50": 50.0,
+      "p90": 102.00000000000003,
+      "minimum": 13,
+      "maximum": 120
+    },
+    "interpretation": "The raw candidate was persistent in nearly every sequence, but persistence did not distinguish correct recovery from persistent false activation. No component-track persistence threshold was added after output."
+  },
+  "runtime": {
+    "objective_operator_host_p95_ms": 3.7294549925718457,
+    "pidnet_host_inference_descriptive_p95_ms": 11.675084999296814,
+    "sm_s9280_total_p95_ms": 77.374375,
+    "sm_s9280_inference_p95_ms": 5.198125,
+    "sm_s9280_final_over_initial_p95_ratio": 1.0762393811503335,
+    "sm_s9280_maximum_thermal_status": 0,
+    "sm_s9280_failure_count": 0,
+    "fixed_budget_pass": true
+  },
+  "gates": {
+    "whole_recall_gain": true,
+    "residual_component_recall": false,
+    "added_fp_area": true,
+    "false_activation_components": false,
+    "event_median_gain": true,
+    "event_p90_added_fp": false,
+    "blocking_obstacle_recall_gain": true,
+    "boundary_level_change_recall_gain": false,
+    "corridor_no_direction_reversal": true,
+    "host_operator_budget": true,
+    "all_device_budget_gates": true
+  },
+  "timing": {
+    "status": "NOT_EVALUABLE_ONSET_INCOMPLETE",
+    "observed_onset_complete_source_sessions": 4,
+    "required_onset_complete_source_sessions": 12,
+    "earlier_coverage_claim": false
+  },
+  "evidence": {
+    "yolo_trace_sha256": "60a48f4aeb7f56a70051a423def97d796ab21e015cec2e69343cd31ec3a84372",
+    "yolo_receipt_sha256": "778942463f91b5fb23720d8043672c650497804d5ad0d307ce55f2f73a545c9b",
+    "report_sha256": "88eb79434fb346febca70354ca8527c70d42146aa8beab8a80cae8d4c70e6c94",
+    "validation_sha256": "1395988e183f8043033feba6c5ecff866820f0ba55b828254b7c298808f8611c",
+    "mask_ledger_sha256": "1d0ca17f7b7a2a7dd17351a626aa696c9efcfee46cb656a45eb4b13a0256bf66",
+    "frame_features_sha256": "94b8f01f726aa88639072a4cbd2a60718fa84ab2a4fb768b93250f1c2736895a",
+    "validator_status": "VALID",
+    "independent_recomputation": true
+  },
+  "claim_ceiling": [
+    "Consumed session-disjoint Thesis Development mechanism evidence only",
+    "No fresh, Confirmation, product, route-obstruction, alert-utility, or safety claim",
+    "No earlier-coverage claim because onset eligibility failed",
+    "No default App change",
+    "No permission to tune this exact seed and operator on the consumed cohort"
+  ],
+  "next_allowed_action": "Do not continue this exact raw PIDNet candidate operator. A future successor requires a different causal representation and a newly frozen onset-complete, session-disjoint natural cohort before any earlier-coverage test."
+}
