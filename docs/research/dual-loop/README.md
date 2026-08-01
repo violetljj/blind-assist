@@ -50,7 +50,13 @@ outcome-open 来源固定为 6 train + 3 model selection；三条 one-shot fresh
 reserved official-test 尚未打开。[Development training result](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_TRAINING_RESULT_D1_2026-08-01.md)
 现已通过独立 authority/label 重推、12 个 Phase A/B runs 与六个最终 checkpoint
 hash freeze，终态为 `G0_D1_SIX_FINAL_CHECKPOINTS_FROZEN`。这只允许另立 fresh
-一次性评估合同；主线、默认 App、Android、生产与安全权限均未改变。
+一次性评估合同。该
+[fresh execution contract](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_CONTRACT_D1_2026-08-01.md)
+现已在任何 fresh 媒体、teacher outcome 或 student prediction 打开前冻结：三条
+session、75 个 current samples、六个 checkpoint、450 条 prediction、truth-free
+prediction authorization、先 receipt 后单次 truth read、全部效果 gate 与失败后
+不换源/不重跑均固定。当前仍只是合同冻结，尚未打开 fresh source；主线、默认 App、
+Android、reserved official-test、生产与安全权限均未改变。
 
 ## 当前决定
 

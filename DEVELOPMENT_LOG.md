@@ -3404,3 +3404,38 @@
 - 该终态只授权冻结 one-shot fresh execution contract；fresh acquisition、
   prediction 与 truth 均未执行。reserved official-test、future/temporal、主线、
   App、Android、生产与安全权限继续关闭。
+
+## 2026-08-01：HFTF-G0-D1 one-shot fresh 执行合同冻结
+
+- 执行者：violjjet
+- 在三条预声明 fresh SANPO-Synthetic source 的任何本地媒体、geometry teacher
+  outcome 或 student prediction 打开前，冻结
+  `HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_CONTRACT_D1_2026-08-01`。
+  来源固定为 G0 source-plan ranks 10–12、每源 `0,2,...,48` 共 25 个 current
+  frames；六个 Phase-B checkpoint hashes、三 seed、两个 arms、450 条 prediction
+  的精确顺序和全部 D1 gates 均不可更改。
+- source 未打开时不存在可诚实预填的本地 manifest/spec/pose/media/authority
+  hashes，因此选择权威由既有 hash-bound G0 source plan 的 session/frame/remote
+  metadata identity 固定；acquirer 与 authority verifier 实现同时 hash-freeze。
+  打开后产生的本地 hashes 只可作为传输与权威收据封存，不得改变来源、checkpoint、
+  阈值、gate 或执行顺序。
+- package validator 原子发布完整 truth-aware validation 和独立 truth-free
+  prediction authorization。predictor 对授权对象使用精确字段白名单，禁止间接读取
+  truth path/hash、teacher receipts 或 opportunity counts。全局 predictions
+  completion 落盘后，evaluator 必须先耐久写 truth-consumption receipt，再只读取
+  truth bytes 一次并同时核验 hash 与解析内容。
+- package materializer 也必须在首次读取本地 fresh package source/media 前写入
+  独立 execution receipt；任一后续异常会写 consumed failure，禁止第二次
+  materialization 或换源。package validator 必须绑定该 receipt、completion 与
+  package manifest。
+- opportunity 要求每 source×height cell 的 known coverage `>=0.10`、positive
+  `>=5`、negative `>=20`、UNKNOWN→SAFE `=0`；不足即 `NOT_EVALUABLE` 且不换源。
+  clearance MAE 按六个 source×height 等权 macro，并要求每个 seed 均通过，即使用
+  三 seed 最大 MAE 对 frozen 阈值；这项解释在 fresh outcome 前冻结。
+- 定向 fresh 实现测试当前 39/39、HFTF 全集 281/281 通过；合同父证据与 12 个
+  实现 receipts 均逐项 hash 复核通过；fresh execution contract SHA-256 为
+  `b13b27d0fd882ec7a9904c6e2dd595629e0b3ca093f9e238549e32fc3f655ae2`。
+  此节点只授权提交推送后按固定顺序执行 source acquisition →
+  authority → package/opportunity → truth-blind prediction → single truth join →
+  independent terminal validation。reserved official-test、future/temporal、
+  主线、App、Android、生产与安全权限继续关闭。
