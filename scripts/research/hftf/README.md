@@ -343,6 +343,21 @@ E:\codex-tools\bin\blindassist-python.cmd `
 runner 要求 predecessor 的唯一 failures 精确为 RGB/depth nominal-rate mismatch；
 若存在任何其他 C0 failure，禁止用 C0.1 越过。
 
+Stage C D0 在 consumed calibration sources 上运行冻结的 depth-only ground-plane /
+horizontal-support reader、七个 structural canaries 与第二遍 determinism：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/run_stage_c_d0_semantic_independent_label_readiness.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_2026-08-01.json `
+  --media-root artifacts.local/evidence/hftf/stage-c-c0-egowalk-inventory-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/label_readiness.json
+```
+
+formal runner 不读取 semantic class、annotation 或 RGB outcome。`<1.2 m` 与缺失
+support 永远 UNKNOWN；即使 D0 full pass，也只允许冻结 fresh-source label/student
+canary protocol。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
