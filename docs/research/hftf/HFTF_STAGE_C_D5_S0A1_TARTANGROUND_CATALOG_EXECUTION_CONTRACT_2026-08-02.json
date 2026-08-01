@@ -1,0 +1,150 @@
+{
+  "schema": "blindassist_hftf_stage_c_d5_s0a1_tartanground_catalog_execution_contract",
+  "status": "FROZEN_AFTER_S0A1_DESIGN_BEFORE_NEW_EXACT_COMMIT_FETCH_OR_MANIFEST_READ",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "purpose": "one_shot_new_protocol_exact_commit_catalog_inventory_using_only_manifest_path_tokens_and_never_reading_failed_s0a_root",
+  "parents": {
+    "s0a1_design": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0A1_OPAQUE_SUFFIX_CATALOG_REPAIR_DESIGN_2026-08-02.json",
+      "sha256": "10d1ed5085ea1978973fa6afd57a1cb4a737a8bec8b88f1c74806be93a90d0ee",
+      "required_status": "FROZEN_AFTER_D5_S0A_INVALID_BEFORE_S0A1_EXECUTION_CONTRACT_OR_NEW_FETCH"
+    },
+    "s0a_invalid_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0A_TARTANGROUND_CATALOG_INVALID_RESULT_2026-08-02.json",
+      "sha256": "f86153427117ed8542cb892204a693805b80b0f4eac87cdf18c26e9d2aad4961",
+      "required_terminal": "D5_S0A_TARTANGROUND_DIFF_CATALOG_INVALID_STOP"
+    }
+  },
+  "source_lock": {
+    "toolkit_repository": "https://github.com/castacks/tartanairpy.git",
+    "toolkit_commit": "158a6844d782942110967325ca3082f50ab2bfc7",
+    "manifest_path": "tartanair/download_ground_files.txt",
+    "gitmodules_path": ".gitmodules",
+    "submodule_gitlinks": [
+      {
+        "path": "tartanair/image_resampling/image_sampler",
+        "url": "https://github.com/castacks/image_sampler.git",
+        "commit": "620f75b06b83a43a426e01fa7922fb14a4ccd584"
+      },
+      {
+        "path": "tartanair/image_resampling/mvs_utils",
+        "url": "https://github.com/castacks/mvs_utils.git",
+        "commit": "e5dc0f1f88d2657bdb5f3e8059eecb9a53a53d0c"
+      },
+      {
+        "path": "tartanair/data_cacher",
+        "url": "https://github.com/Amigoshan/data_cacher.git",
+        "commit": "50d89654c5a5bd76d341b6c7e60afe740b435a39"
+      }
+    ]
+  },
+  "implementations": {
+    "s0a1_catalog_planner": {
+      "path": "scripts/research/hftf/plan_stage_c_d5_s0a1_tartanground_catalog.py",
+      "sha256": "31757aaec4d0c24ea6567e204c0e086ddf6f35c7419bb8731587144356b657a3"
+    },
+    "durability_and_git_object_helper": {
+      "path": "scripts/research/hftf/plan_stage_c_d5_s0a_tartanground_catalog.py",
+      "sha256": "1c84bb5ed680e7f36cdb1f7f81913e3e3bd906b082c4a8950946500a6b044f71"
+    },
+    "narrative_mirror": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0A1_TARTANGROUND_CATALOG_EXECUTION_CONTRACT_2026-08-02.md",
+      "sha256": "f4cc65e28026cd471e6bf4672fdacbf34131517f7d39022e23ebe4ccf82598c2"
+    }
+  },
+  "implementation_tests": {
+    "planner_test": {
+      "path": "scripts/research/hftf/test_plan_stage_c_d5_s0a1_tartanground_catalog.py",
+      "sha256": "dc3dddda49481c214e769188751bdd8d2f9f12a98c02114669a7aeef409b8416"
+    },
+    "test_count": 24,
+    "tests_passed": 24,
+    "hftf_full_test_count": 459,
+    "hftf_full_tests_passed": 459
+  },
+  "network": {
+    "git_fetch_attempts": 1,
+    "new_fetch_is_distinct_s0a1_protocol_not_s0a_retry": true,
+    "fetch_arguments_include_no_tags_depth_one_and_recurse_submodules_no": true,
+    "dataset_host_requests": 0,
+    "attempt_and_preflight_durable_before_first_new_git_network_request": true,
+    "transport_retry_or_second_fetch_authorized": false
+  },
+  "failed_s0a_isolation": {
+    "failed_root": "artifacts.local/evidence/hftf/stage-c-d5-s0a-tartanground-catalog-20260802",
+    "failed_root_toolkit_manifest_preflight_or_other_artifact_read_copy_or_reuse": false,
+    "lineage_is_bound_only_through_tracked_immutable_invalid_result_json": true
+  },
+  "manifest_parser": {
+    "encoding": "utf_8",
+    "ascii_horizontal_whitespace_split": true,
+    "first_token_only_is_path_identity": true,
+    "all_suffix_tokens_discarded": true,
+    "suffix_presence_value_shape_unit_sign_or_semantics_validated": false,
+    "suffix_retained_or_used": false,
+    "suffix_derived_metrics": false,
+    "full_manifest_byte_count_or_hash_retained": false,
+    "row_978_or_observed_suffix_special_case": false,
+    "blank_only_manifest_is_invalid": true,
+    "duplicate_or_unsafe_path_token_is_invalid": true,
+    "membership_regex": "^[^/]+/Data_diff/P1[0-9]{3}/[^/]+\\.zip$",
+    "regex_must_not_generate_unlisted_parents": true
+  },
+  "catalog_gate": {
+    "required_archives": [
+      "image_lcam_front.zip",
+      "depth_lcam_front.zip",
+      "seg_lcam_front.zip",
+      "metadata.zip"
+    ],
+    "minimum_distinct_diff_trajectory_parents": 64,
+    "minimum_distinct_environments": 8,
+    "capacity_and_coverage_only_not_structural_authority_or_source_feasibility": true,
+    "same_environment_trajectories_are_clustered_not_independent": true
+  },
+  "allowed_commit_object_reads": [
+    ".gitmodules",
+    "tartanair/download_ground_files.txt",
+    "root_tree_entries_for_three_exact_submodule_gitlinks"
+  ],
+  "canonical_artifacts": {
+    "root": "artifacts.local/evidence/hftf/stage-c-d5-s0a1-tartanground-catalog-20260802",
+    "toolkit": "toolkit",
+    "attempt": "attempt.json",
+    "preflight": "preflight.json",
+    "catalog": "catalog.json",
+    "result": "result.json",
+    "failure": "failure.json",
+    "unknown_or_partial_root_is_invalid": true,
+    "existing_terminal_requires_schema_hash_chain_source_identity_and_fetch_head_validation": true
+  },
+  "planned_terminals": {
+    "catalog_locked": "D5_S0A1_TARTANGROUND_DIFF_CATALOG_LOCKED_REQUIRES_S0B_STRUCTURAL_AUTHORITY",
+    "capacity_insufficient": "D5_S0A1_TARTANGROUND_DIFF_CATALOG_CAPACITY_INSUFFICIENT_STOP",
+    "invalid": "D5_S0A1_TARTANGROUND_DIFF_CATALOG_INVALID_STOP"
+  },
+  "failure_policy": {
+    "normal_exception_writes_invalid_if_possible": true,
+    "partial_root_later_invocation_only_freezes_invalid_without_network": true,
+    "same_root_resume_or_rerun": false,
+    "parser_patch_or_transport_retry_under_this_contract": false
+  },
+  "authorization": {
+    "commit_and_push_contract_implementation_and_tests": true,
+    "execute_once_only_after_push_git_gate_and_double_audit": true,
+    "new_exact_commit_fetch_authorized_after_all_gates": true,
+    "read_failed_s0a_root_authorized": false,
+    "dataset_host_request_authorized": false,
+    "dataset_zip_or_member_read_authorized": false,
+    "submodule_checkout_or_content_read_authorized": false,
+    "structural_authority_or_source_feasibility_claim_authorized": false,
+    "s0b_execution_authorized_automatically": false,
+    "payload_ecology_effect_or_student_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

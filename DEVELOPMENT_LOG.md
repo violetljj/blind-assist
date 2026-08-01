@@ -4144,3 +4144,23 @@
   manifest read、S0A.1/S0B、dataset ZIP、payload、ecology/effect/student 或任何
   主线/App/Android/生产/safety 变更。机器设计 SHA-256 为
   `10d1ed5085ea1978973fa6afd57a1cb4a737a8bec8b88f1c74806be93a90d0ee`。
+
+## 2026-08-02：HFTF D5-S0A.1 execution contract 实现
+
+- 执行者：violjjet。新增独立 S0A.1 planner/test/机器合同；旧 S0A root 只作为
+  禁止使用的 path 常量参与 canonical-root 排除，没有 load/open/copy/git I/O。
+  lineage 只绑定 tracked immutable invalid-result JSON。新 root 必须在 attempt 与
+  preflight durable 后才单次 exact-commit fetch；fetch 固定 no-tags/depth-1/
+  recurse-submodules=no，只读两个 root-repo blobs 与三个 gitlinks。
+- parser 只以 LF/CRLF 分行，并把 TAB/FF/VT 保留为同行 ASCII whitespace；每行只取
+  首 token path，suffix 不要求、不验证、不保留、不生成 manifest byte/hash/metric。
+  执行级测试证明不同 suffix 形状及 LF/CRLF 得到完全相同 catalog observation。
+- terminal validator 从 hash-bound catalog rows 机械重算 eligible parent/environment、
+  64/8 passes、terminal、完整 gate 与 next authority，并强制 catalog/result 的旧-root、
+  suffix、structural/source、S0B/payload/effect、主线/App/safety firewall 全 false。
+  failure terminal 同时校验 attempt/preflight schema/status/hash chain 与可观察
+  `FETCH_HEAD`；任何非空 commit 必须等于冻结提交。
+- focused tests `24/24`、项目标准 HFTF full suite `459/459`。独立科学和工程终审均
+  `CLEAR`、0 blocker。机器合同 SHA-256 为
+  `84b9a2efbd9363ccf1fb2231a332dc96d63cfdd1d78219802f3e7a91397ee4d4`。
+  当前只授权精确提交推送；formal 新 root 仍必须不存在。
