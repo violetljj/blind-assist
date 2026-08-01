@@ -41,7 +41,7 @@
     {
       "id": "H0",
       "name": "source_teacher_feasibility",
-      "current_terminal": "HFTF_H0_SOURCE_FEASIBILITY_PARTIAL",
+      "current_terminal": "HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED",
       "generic_auditor_can_admit": [
         "static_metric_geometry_projection_canary"
       ],
@@ -50,15 +50,23 @@
         "short_horizon_future_teacher_canary",
         "student_effect_evaluation"
       ],
-      "source_specific_admission_required": [
-        "independently_verified_body_calibration_receipt",
-        "independently_verified_pose_frame_time_mapping"
+      "source_specific_admission_completed": [
+        "official_loader_and_gcs_authenticated_pose_frame_mapping",
+        "metric_depth_reprojection_identified_frozen_transform",
+        "three_independent_session_frozen_transform_replications",
+        "per_frame_source_derived_local_ground_plane_proxy"
+      ],
+      "source_specific_claims_still_not_evaluable": [
+        "physical_camera_to_person_calibration",
+        "participant_specific_body_dimensions",
+        "exact_capture_timestamp",
+        "human_event_or_collision_truth"
       ]
     },
     {
       "id": "H1",
       "name": "geometry_teacher_canary",
-      "current_terminal": "NOT_AUTHORIZED_BY_CURRENT_SOURCE"
+      "current_terminal": "GEOMETRY_TEACHER_CANARY_AUTHORIZED_NOT_RUN"
     },
     {
       "id": "H2",

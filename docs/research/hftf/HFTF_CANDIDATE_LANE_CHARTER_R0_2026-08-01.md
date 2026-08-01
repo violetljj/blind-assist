@@ -93,16 +93,21 @@ current-only 的表示增量，并把 action policy 后置。
 
 - 输入：hash-bound RGB、metric depth、intrinsics、pose、body/ground contract；
 - 输出：静态投影、多高度 teacher、future teacher、effect-evaluation 四级裁决；
-- 当前终态：`HFTF_H0_SOURCE_FEASIBILITY_PARTIAL`；
+- 当前终态：`HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED`；
 - 通用 H0 只可准入静态投影；pose/body sidecar 即使结构与 hash 全部通过，也不能自行
   认证 source-native frame/time mapping 或物理标定；
-- H1 前置：source-specific verifier 必须从一手格式/采集 receipt 独立复算
-  pose-frame/time mapping 与 camera-to-body/ground calibration；
+- H1 前置已完成：source-specific verifier 从 official loader/GCS receipt 复算
+  pose-frame mapping，并在一个 discovery + 三个独立 replication sessions 上冻结并
+  复现 metric-depth transform 与 per-frame local-ground proxy；
+- H1 body center 只可使用 camera world position 到 source-derived local ground plane
+  的正交投影；它不是 physical camera-to-person calibration。若 H1/H2/H3 要提出真实
+  人体碰撞或 participant claim，缺失物理标定仍必须 `NOT_EVALUABLE`；
 - 停止：任何绑定或权威缺失即在相应层 `NOT_EVALUABLE`，不靠默认索引或自报 provenance
   补齐。
 
 ### H1 — Geometry teacher canary
 
+- 当前授权：`H1_GEOMETRY_TEACHER_CANARY`，尚未执行；
 - 比较：current single-height、current multi-height、future multi-height；
 - 独立单元：parent source-session，不把 frames 当独立样本；
 - 必须报告：reprojection/pose validity、unknown coverage、各高度层冲突一致性、

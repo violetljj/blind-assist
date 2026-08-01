@@ -3,7 +3,8 @@
 当前状态：
 
 `CANDIDATE_SIDE_LANE_ACTIVE / DEVELOPMENT_STANDARD /
-HFTF_H0_SOURCE_FEASIBILITY_PARTIAL / INNOVATION_NOT_EVALUABLE /
+HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED /
+H1_GEOMETRY_TEACHER_CANARY_AUTHORIZED / INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 当前结论
@@ -24,24 +25,32 @@ future。教师可以在训练时使用 metric depth、pose 与 future frames；
 真正待检验的新信号假设是：一个 **action-agnostic、history-RGB、显式短期未来** 的
 分层 cell predictor，能否产生 current-only/历史 USTRF 没有证明的表示增量。
 
-第一轮来源审计已产生有效终态
-`HFTF_H0_SOURCE_FEASIBILITY_PARTIAL`：现有 25-frame、单 session
-SANPO-Synthetic replay 可支持静态 metric geometry projection canary，但没有显式
-HFTF pose-frame/time binding sidecar、结构化 camera-to-body/ground contract 或独立
-parent-event ledger，因此
-multi-height teacher、future teacher 与 student-effect evaluation 均为
-`NOT_EVALUABLE`。
+通用 H0 最初只准入静态 metric projection。随后 source-specific verifier 固定官方
+SANPO loader Git commit 与 `common.py` hash、在线 GCS object generation/MD5/CRC32C
+和本地 source bytes，复算出 pose row `frame_num` 与同编号 RGB/depth/mask 的绑定。
+metric-depth reprojection 在发现会话上从 48 个轴/方向假设中唯一选择
+`p_world = R_xyzw @ p_opencv_camera + translation_m`。
 
-这里的 `SANPO-Synthetic` 是 replay manifest 的声明身份，不是 H0 已完成的密码学来源
-认证。即使补齐 hash-bound pose/body sidecar，通用 H0 也只检查结构，不会给 sidecar
-自签 multi-height/future 权威；进入 H1 前仍需 source-specific mapping/calibration
-verifier。
+H0.2 又在 outcome-blind 规则选出的三个独立 official train sessions 上冻结并复现该
+公式；三会话均 rank 1，median relative depth error 为
+`0.000369–0.000763`。每帧 semantic-ground + metric-depth 的确定性局部平面拟合均得到
+`+Z` source-derived vertical，三会话 camera-to-local-ground proxy 中位数为
+`1.229–1.307 m`。cohort 终态为
+`HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED`，只授权 H1 geometry teacher
+canary。
+
+这不是官方或物理 camera-to-person calibration。SANPO feature label 的
+`right_handed_y_up` 与这四个回放 source-derived `+Z` vertical 有局部冲突；当前只对
+这些 evidence versions 使用 source-derived frame，不外推到其他 SANPO 版本，更不声称
+官方标签整体错误。精确 capture timestamp、真实人体尺寸、participant event truth 与
+student/effect 仍为 `NOT_EVALUABLE`。
 
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
 - [R0 机器可读合同](HFTF_CANDIDATE_LANE_R0_2026-08-01.json)
 - [H0 来源可行性结果](HFTF_H0_SOURCE_FEASIBILITY_RESULT_2026-08-01.md)
+- [H0.1/H0.2 SANPO source-specific 结果](HFTF_H0_1_H0_2_SANPO_PROXY_AUTHORITY_RESULT_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF
+  source-specific H0.1 discovery 与 H0.2 三独立 SANPO-Synthetic session replication，
+  终态 `HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED`，只授权
+  `H1_GEOMETRY_TEACHER_CANARY`。verifier 固定 official SANPO commit
+  `11faca999b5c223b804cd3196541a1427834918b`、`common.py` hash、GCS
+  generation/MD5/CRC32C 与本地 bytes，复算 official pose-row ↔ 同编号 RGB/depth/mask
+  绑定；48 假设 discovery 唯一选择
+  `p_world=R_xyzw@p_opencv_camera+translation_m`。三个 outcome-blind 字典序 sessions
+  的 frozen transform 均 rank 1，median relative depth error
+  `.000369–.000763`。改用确定性 per-frame semantic-ground RANSAC/PCA plane，而非把
+  坡地高程变化误当相机高度；三会话均导出 `+Z` vertical，camera-to-plane proxy
+  median `1.229–1.307 m`。新增 source verifier/6 tests 与 cohort
+  aggregator/3 tests。物理 camera-to-person 标定、精确 capture timestamp、真实人体/
+  event truth、student/effect、Android、提醒、安全、主线和默认 App 均未获准；official
+  `right_handed_y_up` 与当前四回放 source-derived `+Z` 的冲突只按 evidence-version
+  局部处理。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。执行 `RISKSEG-R0`
   session-disjoint event-eval 数据门并以 `HOLD_EVENT_EVAL_DATA` 关闭当前尝试。
   排除 520 train/dev 与固定 90-frame regression 的 11 个 native sessions 后，本地盘点

@@ -86,10 +86,11 @@ workflow 后才生效的实施合同、回归基线或日期化证据，不得�
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
 - [HFTF 候选未来可通行场支线](research/hftf/README.md)：独立于双环主线的
-  `DEVELOPMENT_STANDARD` 候选；当前 H0 为
-  `SOURCE_FEASIBILITY_PARTIAL / INNOVATION_NOT_EVALUABLE`，现有单 session
-  SANPO-Synthetic 只授权静态 metric projection canary，不授权多高度/future
-  teacher、student 效果、Android 或默认 App。未来只有在同 ledger、canonical decision
+    `DEVELOPMENT_STANDARD` 候选；source-specific H0.1/H0.2 已在一个 discovery 与三个
+    独立 SANPO-Synthetic sessions 上复现 pose/depth/local-ground proxy，终态
+    `H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED / INNOVATION_NOT_EVALUABLE`，
+    只授权 H1 geometry teacher canary，不授权 student 效果、Android 或默认 App。未来
+    只有在同 ledger、canonical decision
   kernel 与设备预算下通过 source-held-out parent-event challenger gate，才可晋级研究
   主线。
 - [YOLO + 语义分割双环研究主线](research/dual-loop/README.md)：当前为

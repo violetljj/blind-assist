@@ -1,6 +1,6 @@
 # hftf
 
-状态：`development / candidate-side-lane / H0-source-feasibility`
+状态：`development / candidate-side-lane / H0.2-admitted / H1-authorized`
 
 ## 研究问题与版本
 
@@ -9,7 +9,8 @@
 `HFTF_H0_SOURCE_FEASIBILITY_R0`，允许的 claim 是来源与教师接口可行性，不是模型效果、
 创新性、用户效果或安全性。
 
-当前章程与终态见 `docs/research/hftf/README.md`。
+当前章程与终态见 `docs/research/hftf/README.md`。通用 H0 的 partial terminal 仍保留；
+source-specific H0.1/H0.2 已准入下一阶段的 geometry proxy canary。
 
 ## 稳定 Interface
 
@@ -47,6 +48,50 @@ H0 可检查下列精确合同：
 真实准入还必须由 source-specific verifier 分别复算标定 receipt 与原始
 pose-frame/time mapping；hash-bound sidecar 不能给自己签发权威。
 
+### SANPO source-specific H0.1/H0.2
+
+H0.1 discovery：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/verify_sanpo_pose_geometry_authority.py `
+  --evaluation-mode discovery `
+  --replay-root <single-session-replay-root> `
+  --official-repo artifacts.local/downloads/sanpo_dataset_official_repo `
+  --output artifacts.local/evidence/hftf/<run-id>/authority.json
+```
+
+H0.2 replication 对 H0.1 已冻结的
+`p_world = R_xyzw @ p_opencv_camera + translation_m` 做跨 session 检验：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/verify_sanpo_pose_geometry_authority.py `
+  --evaluation-mode frozen_canonical_replication `
+  --replay-root <independent-single-session-replay-root> `
+  --official-repo artifacts.local/downloads/sanpo_dataset_official_repo `
+  --output artifacts.local/evidence/hftf/<run-id>/authority.json
+```
+
+verifier 固定 official repository commit/common.py hash，在线复核 GCS object
+generation/size/MD5/CRC32C，再验证本地 MD5、official pose-row/frame-index 规则、48 个
+pose/basis hypothesis、metric-depth reprojection 和 semantic-ground local plane。
+`frame_num / session fps` 只表示 nominal relative time。
+
+三个或更多独立 frozen-replication reports 用以下命令聚合：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/aggregate_sanpo_proxy_replication.py `
+  --report <session-a-authority.json> `
+  --report <session-b-authority.json> `
+  --report <session-c-authority.json> `
+  --output artifacts.local/evidence/hftf/<run-id>/cohort.json
+```
+
+聚合器拒绝重复 source session，并保持 physical calibration、student/effect、主线和
+产品层为 `NOT_EVALUABLE`。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
@@ -67,6 +112,13 @@ Android、提醒或默认 App。合成深度/位姿派生结果只能叫 geometr
 
 - `HFTF_H0_SOURCE_INTEGRITY_NOT_EVALUABLE`
 - `HFTF_H0_SOURCE_FEASIBILITY_PARTIAL`
+- `HFTF_H0_1_SOURCE_AUTHORITY_NOT_EVALUABLE`
+- `HFTF_H0_1_POSE_MAPPING_ONLY`
+- `HFTF_H0_1_SANPO_PROXY_FRAME_ADMITTED`
+- `HFTF_H0_2_CANONICAL_PROXY_NOT_REPLICATED`
+- `HFTF_H0_2_SANPO_CANONICAL_PROXY_REPLICATED`
+- `HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_NOT_EVALUABLE`
+- `HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED`
 
 任何 blocker 只关闭相应 evidence instance。修复来源合同必须生成新输出路径，不覆盖
 旧报告；不得靠默认行号、跨 session 时间差、自报事件数量或 session 改名补出
