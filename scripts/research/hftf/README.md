@@ -388,6 +388,21 @@ validator 只读已消费的 metadata inventory、parent hashes 与通用预训�
 fresh RGB/depth。只有 `E0_FRESH_SOURCE_LOCK_VALIDATED` 才授权获取机器合同中精确
 绑定的六条媒体；仍不授权 teacher corpus 或 student training。
 
+正式 source lock 通过后，只允许按协议 exact allow-list 获取 E0 媒体：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/acquire_stage_c_e0_fresh_media.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.json `
+  --source-lock artifacts.local/evidence/hftf/stage-c-e0-fresh-source-lock-20260801/source_lock.json `
+  --output-root artifacts.local/evidence/hftf/stage-c-e0-fresh-media-20260801 `
+  --manifest artifacts.local/evidence/hftf/stage-c-e0-fresh-media-20260801/acquisition_manifest.json
+```
+
+首次打开 RGB/depth 后六条 source 全部 burned。acquisition 只验证 exact bytes 并授权
+transport decode audit；它不读取 geometry label outcome，也不授权 teacher corpus 或
+student training。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
