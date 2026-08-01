@@ -8,7 +8,8 @@ R2_POINT_SUPPORT_PROXY_BURNED /
 STAGE_B_R3_SOURCE_OR_REFERENCE_NOT_EVALUABLE /
 R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE /
 R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED /
-STAGE_C_C0_SOURCE_FEASIBILITY_FROZEN_MEDIA_UNOPENED /
+C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE /
+C0_1_FRAME_INDEX_TIMEBASE_REPAIR_FROZEN /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -137,6 +138,15 @@ canary。EgoWalk 239 条 pose metadata 中按完整性、5 Hz timeline、无回�
 C0 即使成功，也只授权冻结 Stage C label-and-student canary protocol；不授权正式
 label execution、student training/effect、切换研究主线或修改 App。
 
+C0 现已按冻结门关闭为 `C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE`。两条 source 的
+pose/RGB/depth 文件 hash、`647/664` 帧完整 decode、ordinal PTS 与全部 natural depth
+support 门均通过，但 RGB/depth container nominal rate 均为 100 Hz，不满足原协议的
+5 Hz reported-rate 门。dataset meta 与 parquet timestamp 仍一致指向 5 Hz。
+
+该失败保留不覆盖；最小 C0.1 successor 已冻结，只在同一 consumed cohort 上把物理
+timeline authority 改为 parquet frame/timestamp + `meta/info.json`，container nominal
+rate 仅记录。其余 gate 与权限全部不变。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -177,6 +187,9 @@ label execution、student training/effect、切换研究主线或修改 App。
 - [Stage B split-source validation R4 result](HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_RESULT_R4_2026-08-01.md)
 - [Stage C source-feasibility C0](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_2026-08-01.md)
 - [Stage C machine-readable C0 protocol](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_2026-08-01.json)
+- [Stage C C0 result](HFTF_STAGE_C_SOURCE_FEASIBILITY_RESULT_C0_2026-08-01.md)
+- [Stage C source-feasibility C0.1](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_1_2026-08-01.md)
+- [Stage C machine-readable C0.1 protocol](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_1_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

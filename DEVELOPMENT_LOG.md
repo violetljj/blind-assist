@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。C0 media audit 按冻结门
+  关闭为 `C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE`。两条 source 的 file SHA、
+  `647/664` pose/RGB/depth rows、完整 decode、ordinal PTS 和 depth support
+  `32/32`、adjacent common support `31/31` 均通过；唯一 blocker 是 RGB/depth
+  container nominal rate 均为 `100 Hz`，不满足原合同 reported `5 Hz`。
+  dataset `info.json=5` 且 parquet delta 约 `200 ms`。audit SHA-256
+  `3dafbef91d09f13f63826d6f004be28da9d9af1ad8a680a5df83f26ad7887057`。
+  保留 C0 负终态后冻结 C0.1：同一 consumed media、不得换样，物理 timeline 改由
+  parquet frame/timestamp + meta fps 定义；container nominal rate 只记录，其余门与
+  权限不变。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。C0 metadata inventory
   正式复算 `239/239`，严格健康 `95`，精确锁定冻结 cohort；report SHA-256
   `5ff6a4270f2319bd8d3e30b5d10e24cdee47c0025d22c8e12a9642e5f089b82b`。
