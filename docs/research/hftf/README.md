@@ -369,6 +369,8 @@ source-lock SHA-256 为
 - [Stage C machine-readable G0 clearance bridge](HFTF_STAGE_C_SIGNED_CLEARANCE_CURRENT_BRIDGE_G0_2026-08-01.json)
 - [Stage C G0-D0 clearance mechanics result](HFTF_STAGE_C_SIGNED_CLEARANCE_MECHANICS_RESULT_G0_D0_2026-08-01.md)
 - [Stage C machine-readable G0-D0 result](HFTF_STAGE_C_SIGNED_CLEARANCE_MECHANICS_RESULT_G0_D0_2026-08-01.json)
+- [Stage C G0-D1 current clearance learnability](HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
+- [Stage C machine-readable G0-D1 design](HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

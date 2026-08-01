@@ -3317,3 +3317,30 @@
 - D0 只授权冻结 D1 current learnability 合同，不证明 RGB student learnability，
   不授权打开 reserved heldout、future/temporal 实验、主线、App、Android、生产或
   安全主张。
+
+## 2026-08-01：HFTF-G0-D1 current learnability scientific design 冻结
+
+- 执行者：violjjet
+- D1 只比较同一 F0.1 SF_CURRENT MobileNetV3/输入/temporal fusion/known head 下的
+  `DIRECT_RISK_CURRENT` 与 `SIGNED_CLEARANCE_CURRENT`；clearance arm 唯一机制变化
+  是每 cell 输出无 activation、无 clamp 的线性 meter value，并以 `<0 m` 导出 risk。
+- D0 显示 6 train 到 3 model-selection sources 的 body/head positive 比例从
+  `24.17%/12.21%` 降至 `6.12%/4.33%`，safe `+1 m` saturation 从
+  `46.47%/54.54%` 升至 `68.61%/76.52%`。因此禁用 pooled-MAE 选择与 bounded
+  activation；clearance loss 固定为 risk/safe + near-boundary 加权 SmoothL1
+  `beta=.1 m`、`0.1 ×` fixed-temperature sign BCE、`0.25 ×` known BCE。
+- Phase A 用 6 train 完成 30 epochs，旧 3 selection 仅按 source-macro F1、
+  worst-source F1、micro F1、严格 tie-break 选 epoch；Phase B reset 后用全部 9
+  outcome-open sources 仍完成 30 epochs，只冻结预选 epoch。六 checkpoint 与
+  prediction contract 冻结前，不得获取三条 fixed fresh sessions。
+- Fresh 机会门逐 `source × height` 固定为 25 frames、coverage `>=.1`、
+  positive/negative `>=5/20`、UNKNOWN→SAFE `0`；不足即
+  `NOT_EVALUABLE` 且不得换 source。机会充分后 prediction-only 先冻结并消费输出，
+  truth join 只执行一次。
+- 预声明 effect/MAE/firewall 全部门；raw prediction out-of-range 仅强制报告、
+  不用 clamp 隐藏，但不另设 outcome 后的新 gate。任何预声明门失败都永久停止同
+  cohort rescue。
+  即使支持，也只允许另冻 causal-transport 合同，不打开 reserved official-test，
+  不改变主线、App、Android、生产或安全权限。
+- 当前只冻结 scientific design；implementations、corpus、训练与 fresh acquisition
+  均未授权。

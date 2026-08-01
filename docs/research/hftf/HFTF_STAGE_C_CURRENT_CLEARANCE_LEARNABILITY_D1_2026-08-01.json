@@ -1,0 +1,304 @@
+{
+  "schema": "blindassist_hftf_stage_c_current_clearance_learnability_d1",
+  "status": "FROZEN_SCIENTIFIC_DESIGN_AFTER_G0_D0_BEFORE_D1_IMPLEMENTATION_CORPUS_OR_STUDENT_OUTCOME",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "evidence_role": "MECHANISM_DISTINCT_CURRENT_LEARNABILITY_CANARY",
+  "parents": {
+    "g0_protocol": {
+      "path": "HFTF_STAGE_C_SIGNED_CLEARANCE_CURRENT_BRIDGE_G0_2026-08-01.json",
+      "sha256": "0aa8e5828665a869837a1aa9027601d45610c0f66696da737351c9ec361da383"
+    },
+    "g0_d0_result": {
+      "path": "HFTF_STAGE_C_SIGNED_CLEARANCE_MECHANICS_RESULT_G0_D0_2026-08-01.json",
+      "sha256": "f56089f5d9710266b11d75b06d767ee0a6c4942ddaf8b9dd4b5ceff4c22943d5",
+      "required_terminal": "G0_SIGNED_CLEARANCE_SOURCE_AND_MECHANICS_TERMINAL_VALIDATED",
+      "required_mechanics_terminal": "G0_SIGNED_CLEARANCE_MECHANICS_SUPPORTED_FOR_FRESH_LEARNABILITY_CANARY"
+    },
+    "g0_source_plan": {
+      "path": "artifacts.local/evidence/hftf/stage-c-g0-signed-clearance-source-plan-20260801/source_plan.json",
+      "sha256": "886271cd1546e2f3f4cd91991f39725ed39b12907e0d4294b980404d132648a4"
+    },
+    "f0_1_student_training_contract": {
+      "path": "HFTF_STAGE_C_SANPO_STUDENT_TRAINING_EXECUTION_CONTRACT_F0_1_2026-08-01.json",
+      "sha256": "6466d20da8b6972241eff84dbcdc70bff2eebe546ff00503d97c74888fd26a60"
+    }
+  },
+  "scientific_question": "DOES_REPLACING_DIRECT_BINARY_RISK_OUTPUT_WITH_A_LINEAR_METER_CLEARANCE_PROXY_IMPROVE_CURRENT_RGB_CROSS_SOURCE_RISK_LEARNABILITY_UNDER_THE_SAME_ENCODER_INPUT_AND_INFERENCE_BUDGET",
+  "only_intended_mechanism_change": {
+    "direct_arm_output": "BINARY_RISK_LOGIT",
+    "clearance_arm_output": "UNBOUNDED_LINEAR_METER_CLEARANCE_SCALAR",
+    "clearance_derived_risk": "RAW_CLEARANCE_STRICTLY_LESS_THAN_ZERO",
+    "encoder_input_temporal_fusion_known_head_and_output_shape_unchanged": true,
+    "future_or_temporal_information_added": false
+  },
+  "source_contract": {
+    "parent_session_is_independent_unit": true,
+    "development_train": {
+      "count": 6,
+      "origin": "G0_SOURCE_PLAN_DEVELOPMENT_REUSE_PRIOR_ROLE_TRAIN",
+      "outcome_open": true,
+      "current_samples_per_source": 25
+    },
+    "development_model_selection": {
+      "count": 3,
+      "origin": "G0_SOURCE_PLAN_DEVELOPMENT_REUSE_PRIOR_ROLE_DEV",
+      "outcome_open": true,
+      "current_samples_per_source": 25,
+      "may_select": [
+        "CHECKPOINT_EPOCH_BY_FROZEN_LEXICOGRAPHIC_RULE"
+      ],
+      "may_not_select": [
+        "MODEL",
+        "ACTIVATION",
+        "LOSS",
+        "LOSS_COEFFICIENT",
+        "CLASS_WEIGHT_FORMULA",
+        "THRESHOLD",
+        "MARGIN",
+        "SUCCESS_GATE"
+      ]
+    },
+    "one_shot_fresh_evaluation": {
+      "count": 3,
+      "session_ids": [
+        "15bc9dde1b9b54b6c109cb2ac4433f210fee71f800e1ae7bde9626913c3e02bf",
+        "15d83b42fa73c1282c2d02fbaa486258216f59b66dea1eb490a1b1ea4cc9200f",
+        "16401349eec7f73fecf3811da750a00821a899dcea6671fbe4fd3562a1f98de9"
+      ],
+      "current_samples_per_source": 25,
+      "media_outcome_and_fresh_evidence_opened": false,
+      "opening_authorized_only_after_six_final_checkpoint_hashes_and_prediction_contract_are_frozen": true,
+      "after_outcome_source_replacement_or_rescue": false
+    },
+    "reserved_official_test_heldout": {
+      "count": 3,
+      "session_ids": [
+        "596f4258f9ae00a4b2b93feff786ecb018d0b75276322cef09b8c2d2a6c38029",
+        "4112f4cd16e7b2caf104e190abb92a60a05b166794b6d54ba534d22dd9cae915",
+        "dc3d8979cf68c5123d67d46d554f55bcd6b38ef8556df0c8d8b857f6f1863481"
+      ],
+      "role": "FUTURE_CONFIRMATION_ONLY",
+      "acquisition_or_opening_authorized_in_d1": false
+    }
+  },
+  "development_corpus_contract": {
+    "teacher_view": "REFERENCE_STRIDE4_OFFSET2",
+    "target_timeline": "ALL_25_CURRENT_10FPS_FRAMES",
+    "theta_distance_height_shape": [
+      6,
+      6,
+      2
+    ],
+    "known_rule": "AT_LEAST_5_OF_9_REFERENCE_PRISM_PROBES_PASS",
+    "risk_rule": "SUPPORT_COUNT_AT_LEAST_2",
+    "clearance_rule": "G0_SUPPORT_EQUIVALENT_SECOND_ORDER_PROXY_CLIPPED_TO_MINUS_0_5_PLUS_1_0_METERS",
+    "unknown_risk_and_clearance_targets": null,
+    "train_record_count": 150,
+    "model_selection_record_count": 75,
+    "future_rgb_or_target_included": false,
+    "teacher_receipt_visible_to_student_loader": false
+  },
+  "runtime_and_model_contract": {
+    "runtime": {
+      "python_wrapper": "E:/codex-tools/bin/blindassist-python.cmd",
+      "torch_version": "2.11.0+cu128",
+      "torchvision_version": "0.26.0+cu128",
+      "device": "cuda",
+      "precision": "float32_no_amp",
+      "deterministic_algorithms": true,
+      "cudnn_benchmark": false,
+      "dataloader_workers": 0
+    },
+    "pretrained_checkpoint_path": "C:/Users/26442/.cache/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth",
+    "pretrained_checkpoint_sha256": "047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f",
+    "input": {
+      "anchor_rgb_repeated_five_times": true,
+      "resize_width_height": [
+        320,
+        192
+      ],
+      "normalization_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "normalization_std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "augmentation_exactly_f0_1": true,
+      "no_positive_frame_oversampling": true
+    },
+    "architecture": "EXACT_F0_1_SF_CURRENT_TEMPORAL_STUDENT",
+    "encoder": "TORCHVISION_MOBILENET_V3_SMALL_FEATURES",
+    "encoder_batchnorm_running_statistics": "FROZEN_EVAL_MODE",
+    "linear_output_count": 144,
+    "parameter_count": 1022448,
+    "same_seed_same_initial_parameter_arrays_between_arms": true,
+    "head_bias_initialization": 0.0,
+    "direct_task_output": "72_RISK_LOGITS",
+    "clearance_task_output": "72_UNBOUNDED_LINEAR_METER_VALUES_NO_ACTIVATION_NO_TRAINING_CLAMP",
+    "shared_known_output": "72_KNOWN_LOGITS"
+  },
+  "optimization_contract": {
+    "seeds": [
+      17,
+      29,
+      43
+    ],
+    "execution_order": "PHASE_A_SEED_MAJOR_DIRECT_THEN_CLEARANCE_THEN_PHASE_B_SAME_ORDER",
+    "reset_all_rng_and_model_initialization_before_each_arm_seed_phase": true,
+    "epochs_each_phase_arm_seed": 30,
+    "batch_size": 8,
+    "optimizer": "AdamW",
+    "encoder_learning_rate": 3e-05,
+    "fusion_and_head_learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "scheduler": "NONE",
+    "gradient_global_norm_clip": 5.0,
+    "known_loss": {
+      "type": "BCE_WITH_LOGITS",
+      "scope": "ALL_CELLS",
+      "coefficient": 0.25,
+      "identical_between_arms": true
+    },
+    "direct_risk_loss": {
+      "type": "BCE_WITH_LOGITS",
+      "scope": "TEACHER_KNOWN_ONLY",
+      "positive_weight_by_height": "DEVELOPMENT_TRAIN_NEGATIVE_KNOWN_DIVIDED_BY_POSITIVE_KNOWN",
+      "positive_weight_floor_ceiling": [
+        0.25,
+        20.0
+      ]
+    },
+    "clearance_loss": {
+      "regression": {
+        "type": "SMOOTH_L1",
+        "beta_m": 0.1,
+        "scope": "TEACHER_KNOWN_ONLY",
+        "risk_safe_base_weight_by_height": "N_KNOWN_DIVIDED_BY_2_TIMES_N_CLASS_FROM_DEVELOPMENT_TRAIN_ONLY",
+        "near_boundary_definition_abs_target_m_maximum": 0.2,
+        "near_boundary_multiplier": 2.0,
+        "normalization": "EACH_HEIGHT_WEIGHTED_KNOWN_MEAN_EQUALS_1"
+      },
+      "sign_anchor": {
+        "type": "BCE_WITH_LOGITS",
+        "logit": "NEGATIVE_RAW_CLEARANCE_DIVIDED_BY_0_1_METER",
+        "target": "RISK",
+        "positive_weight_by_height": "SAME_DEVELOPMENT_TRAIN_NEGATIVE_KNOWN_DIVIDED_BY_POSITIVE_KNOWN_AS_DIRECT_ARM",
+        "positive_weight_floor_ceiling": [
+          0.25,
+          20.0
+        ],
+        "coefficient": 0.1,
+        "uses_same_clearance_scalar_no_extra_head": true
+      },
+      "known_loss_coefficient": 0.25
+    }
+  },
+  "checkpoint_contract": {
+    "phase_a": {
+      "train_sources": 6,
+      "model_selection_sources": 3,
+      "all_30_epochs_complete": true,
+      "evaluation_after_each_epoch": true,
+      "teacher_known_cells_only": true,
+      "direct_threshold": "SIGMOID_GREATER_THAN_OR_EQUAL_TO_0_5",
+      "clearance_threshold": "RAW_CLEARANCE_STRICTLY_LESS_THAN_ZERO",
+      "lexicographic_selection": [
+        "HIGHEST_THREE_SOURCE_MACRO_RISK_F1",
+        "HIGHEST_WORST_SOURCE_RISK_F1",
+        "HIGHEST_MICRO_RISK_F1",
+        "CLEARANCE_ONLY_IF_ALL_RISK_METRICS_EXACTLY_TIED_LOWER_SOURCE_MACRO_RAW_PREDICTION_TO_CLIPPED_TARGET_MAE",
+        "EARLIEST_EPOCH"
+      ]
+    },
+    "phase_b": {
+      "train_sources": 9,
+      "all_30_epochs_complete_for_equal_maximum_training_budget": true,
+      "no_model_selection_or_early_stop": true,
+      "frozen_checkpoint_epoch": "EXACT_PHASE_A_SELECTED_EPOCH_FOR_SAME_ARM_AND_SEED",
+      "six_checkpoint_hashes_required_before_any_fresh_media_open": true
+    },
+    "no_activation_loss_weight_threshold_margin_gate_or_source_search": true
+  },
+  "fresh_opportunity_gate": {
+    "evaluated_only_after_six_checkpoints_and_fresh_execution_contract_frozen": true,
+    "each_source_height": {
+      "current_frame_count": 25,
+      "known_coverage_minimum": 0.1,
+      "positive_known_cells_minimum": 5,
+      "negative_known_cells_minimum": 20,
+      "unknown_to_safe_violations": 0
+    },
+    "failure_terminal": "G0_D1_FRESH_EVALUATION_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT"
+  },
+  "one_shot_fresh_execution": {
+    "prediction_only_process_reads": [
+      "FRESH_RGB",
+      "SIX_FROZEN_CHECKPOINTS"
+    ],
+    "prediction_only_process_must_not_read": [
+      "FRESH_DEPTH",
+      "FRESH_MASK",
+      "FRESH_POSE",
+      "FRESH_TEACHER_TARGET",
+      "FRESH_TRUTH_RECEIPT"
+    ],
+    "predictions_frozen_and_globally_consumed_before_truth_join": true,
+    "truth_join_exactly_once": true,
+    "second_model_forward_checkpoint_substitution_threshold_or_source_change": false,
+    "teacher_known_cells_only_for_risk_and_clearance_effect_metrics": true,
+    "known_head_is_diagnostic_only": true,
+    "parent_session_is_independent_unit": true
+  },
+  "fresh_success_gates": {
+    "clearance_median_seed_micro_risk_f1_minimum": 0.6,
+    "median_seed_micro_risk_f1_delta_over_direct_minimum": 0.05,
+    "each_seed_micro_risk_f1_delta_strictly_positive": true,
+    "body_median_seed_f1_delta_minimum": 0.0,
+    "head_median_seed_f1_delta_minimum": 0.0,
+    "worst_fresh_parent_median_seed_f1_delta_minimum": 0.0,
+    "worst_fresh_parent_absolute_median_seed_f1_minimum": 0.4,
+    "median_seed_recall_delta_minimum": -0.02,
+    "median_seed_false_positive_rate_delta_maximum": 0.02,
+    "source_height_macro_raw_prediction_to_clipped_target_mae_m_maximum": 0.1,
+    "risk_class_source_height_macro_mae_m_maximum": 0.15,
+    "safe_class_source_height_macro_mae_m_maximum": 0.15,
+    "near_boundary_abs_target_m_maximum": 0.2,
+    "near_boundary_source_height_macro_mae_m_maximum": 0.1,
+    "raw_clearance_prediction_out_of_target_range_fraction": "REQUIRED_DIAGNOSTIC_NOT_A_SUCCESS_GATE",
+    "target_unknown_to_safe_violations": 0,
+    "all_gates_required": true,
+    "pooled_cell_mae_may_select_checkpoint_or_success": false
+  },
+  "terminals": {
+    "supported": "SIGNED_CLEARANCE_CURRENT_BRIDGE_SUPPORTED_FOR_CAUSAL_TRANSPORT_CONTRACT_ONLY",
+    "not_supported_stop": "SIGNED_CLEARANCE_CURRENT_CROSS_SOURCE_LEARNABILITY_NOT_SUPPORTED_STOP",
+    "not_evaluable": "G0_D1_FRESH_EVALUATION_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT"
+  },
+  "implementations": {
+    "status": "NOT_YET_FROZEN",
+    "execution_authorized": false
+  },
+  "ordered_authorization": {
+    "d1_implementation_development_authorized": true,
+    "development_corpus_materialization_authorized_before_implementation_receipts_frozen": false,
+    "student_training_authorized_before_development_corpus_validation": false,
+    "fresh_media_acquisition_authorized_before_six_checkpoint_gate": false,
+    "reserved_official_test_acquisition_authorized": false,
+    "future_or_temporal_experiment_authorized": false,
+    "mainline_promotion_authorized": false
+  },
+  "claim_boundary": {
+    "clearance_target_is_synthetic_geometry_proxy_not_human_or_safety_truth": true,
+    "d1_support_would_only_establish_fresh_current_proxy_risk_learnability_relative_to_direct_risk": true,
+    "d1_support_would_not_establish_future_or_temporal_value": true,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_execution_authorized": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}
