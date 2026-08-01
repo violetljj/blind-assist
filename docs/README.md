@@ -86,15 +86,15 @@ workflow 后才生效的实施合同、回归基线或日期化证据，不得�
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 
 - [YOLO + 语义分割双环研究主线](research/dual-loop/README.md)：当前为
-  `DG_SRF_F0_PROTOCOL_AND_IMPLEMENTATION_FROZEN / RESULT_NOT_RUN /
+  `DG_SRF_F0_COMPLETE / VALID / STRUCTURAL_SIGNAL_NOT_SUPPORTED_STOP /
   THESIS_DEVELOPMENT_DEFAULT /
   FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`；历史 R1/R2-P0
   及 segmentation gating 负终态保持不可变。当前唯一候选算法主线是固定
   Depth Anything V2 Small 的 520-frame consumed Development image-space structural
-  complementarity F0；只授权这一次 F0，F1-F5、Android/QNN/A568、risk/feedback、
-  提醒与默认 App 均未授权。
-  冻结协议见
-  [DG-SRF F0 protocol](research/dual-loop/DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
+  complementarity F0，现已由 29,031 项独立复算确认负终态并关闭；F1-F5、
+  Android/QNN/A568、risk/feedback、提醒与默认 App 均未授权。
+  见 [DG-SRF F0 result](research/dual-loop/DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_RESULT_2026-08-01.md)
+  与 [protocol](research/dual-loop/DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
   R2-P0 readiness 终态见
   [R2-P0 result](research/dual-loop/DUAL_LOOP_SEGMENTATION_R2_P0_RESULT_2026-08-01.md)，
   R1 consumed fresh 的永久角色修订见

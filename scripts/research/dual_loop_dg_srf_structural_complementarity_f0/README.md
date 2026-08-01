@@ -1,10 +1,17 @@
 # dual_loop_dg_srf_structural_complementarity_f0
 
-状态：Development；`PROTOCOL_AND_IMPLEMENTATION_FROZEN /
-RESULT_NOT_RUN`
+状态：Development；`COMPLETE / VALID /
+STRUCTURAL_SIGNAL_NOT_SUPPORTED_STOP`
 
 协议：
 [`DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md`](../../../docs/research/dual-loop/DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)
+
+正式结果：
+[`DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_RESULT_2026-08-01.md`](../../../docs/research/dual-loop/DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_RESULT_2026-08-01.md)
+
+520-frame 执行与 29,031 项独立复算已完成。D1-D4 均未形成跨组 stable signal，D4
+只在 1/10 组优于最佳单信号，九门只过 4/9；当前精确定义的 F0 已关闭。下文保留冻结
+接口与可复算入口。
 
 ## 研究问题
 

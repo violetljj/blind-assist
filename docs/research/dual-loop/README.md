@@ -1,6 +1,7 @@
 # BlindAssist YOLO + 语义分割双环研究主线
 
-状态：`DG_SRF_F0_PROTOCOL_AND_IMPLEMENTATION_FROZEN / RESULT_NOT_RUN /
+状态：`DG_SRF_F0_COMPLETE / VALID /
+STRUCTURAL_SIGNAL_NOT_SUPPORTED_STOP /
 SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
 CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
@@ -31,11 +32,15 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 DDRNet residual 的假激活代价，对 `boundary_step_curb / obstacle` canonical pixels
 提供跨 source-session 稳定互补。
 
-当前仅冻结并授权一次 520-frame consumed Development F0；正式结果尚未运行。深度方向、
-逐帧尺度、surface trend、q coverage、D4 `1:1:1:1`、D5 proxy、19 点 LOSO
-maximin 阈值、九门、8/10 group 规则和四终态均已在 outcome 前冻结。F1-F5、Video
-Depth、Android/QNN/A568、risk/feedback、提醒和默认 App 均关闭；即使正结果也只授权
-另立 F1 设计，不自动授权执行。
+该 [F0 result](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_RESULT_2026-08-01.md)
+现已 `COMPLETE / VALID / STRUCTURAL_SIGNAL_NOT_SUPPORTED_STOP`：520/520 q 健康，
+但 D1-D4 均未形成跨组 stable signal；D4 macro AUPRC `.309456` 低于 frozen binary
+DDRNet B 的 `.362109`，只在 1/10 组优于最佳单信号。LOSO 九门只通过 4/9，
+overall/minimum-group/obstacle recall retention 为
+`.254913 / .000019 / .139797`，false components/frame 为 `6.823077`。独立
+validator 通过 29,031 项检查。当前精确定义的 DG-SRF F0 已关闭，不用同一 520 帧调参
+或引入 Video Depth/时序救援；F1-F5、Android/QNN/A568、risk/feedback、提醒和默认
+App 均未授权。
 
 2026-08-01 起，后续双环工作采用论文优先的 `DEVELOPMENT_STANDARD`，不再把旧 formal
 R1 的 one-shot、fresh holdout、逐项 SHA 和全量独立复算要求复制到新的 Development。

@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
+  `DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0` 的冻结 520-frame consumed
+  Development 执行，终态 `STRUCTURAL_SIGNAL_NOT_SUPPORTED_STOP`。Depth Anything V2
+  Small producer 在 Git `32650abe1c0bb974626c61adcc31a8a47fa4a793` 上完成，520/520
+  q 健康，方向 canary 4/4 同向且 transform gate 通过。macro AUPRC
+  `B/D1/D2/D3/D4/D5=.362109/.278070/.359603/.311101/.309456/.281121`；
+  D1-D4 无一满足跨组 stable signal，D4 只在 1/10 组优于最佳单信号。10 个 LOSO inner
+  context 均无九门全过 operating point；cross-fitted D4 只过 4/9 门，FP reduction
+  `.556665`，但 overall/minimum-group/obstacle recall retention 仅
+  `.254913/.000019/.139797`，component recall `.252938`，false components/frame
+  `6.823077`。独立 validator 不导入候选算子或 evaluator，从 raw depth、truth 和 A/B
+  复算 29,031 项并 `VALID`。关闭当前精确定义的 F0；不在同一 520 帧调权、改尺度/
+  trend/morphology/lambda 或引入 Video Depth/时序救援，不授权 F1-F5、Android/QNN/
+  A568、risk/feedback、提醒、TTS、振动或默认 App。结果只是否定该 consumed
+  Development image-space 方法，不外推为相对深度对所有类别无关障碍无效。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。冻结
   `DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0` 协议与 host-only 实现，当前
   `RESULT_NOT_RUN`。唯一问题是在 520 帧、10 个已消费 SANPO-Real source-session 上，
