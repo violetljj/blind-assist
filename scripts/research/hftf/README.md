@@ -594,6 +594,57 @@ runner 内部仍严格按 acquisition → transport → `.4 s` teacher → role 
 顺序执行；前门失败不运行后门。它不计算 `.8 s` 或 student。固定 batch 无 successor
 expansion。
 
+F0.1 SANPO official-test heldout one-shot 必须按下列顺序、canonical 路径逐步执行；
+任一步失败即停止，尤其 consumption ledger、truth-join receipt 或 terminal-validation
+receipt 出现后不得重跑对应阶段：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/materialize_stage_c_f0_1_heldout_package.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_SANPO_HELDOUT_EXECUTION_CONTRACT_F0_1_2026-08-01.json `
+  --f0 docs/research/hftf/HFTF_STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_2026-08-01.json `
+  --mechanics docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json `
+  --source-lock artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-source-lock-20260801/source_lock.json `
+  --authority-cohort artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-authority-cohort-20260801/authority_cohort.json `
+  --opportunity artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-teacher-opportunity-20260801/teacher_opportunity.json `
+  --training-validation artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-student-training-validation-20260801/validation.json `
+  --datasets-root artifacts.local/evidence/datasets `
+  --authority-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-authority-20260801 `
+  --output-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-20260801
+
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/validate_stage_c_f0_1_heldout_package.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_SANPO_HELDOUT_EXECUTION_CONTRACT_F0_1_2026-08-01.json `
+  --source-lock artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-source-lock-20260801/source_lock.json `
+  --opportunity artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-teacher-opportunity-20260801/teacher_opportunity.json `
+  --datasets-root artifacts.local/evidence/datasets `
+  --package-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-20260801 `
+  --output-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-validation-20260801
+
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/predict_stage_c_f0_1_heldout.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_SANPO_HELDOUT_EXECUTION_CONTRACT_F0_1_2026-08-01.json `
+  --package-validation artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-validation-20260801/validation.json `
+  --inference-inputs artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-20260801/inference_inputs.jsonl `
+  --source-lock artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-source-lock-20260801/source_lock.json `
+  --opportunity artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-teacher-opportunity-20260801/teacher_opportunity.json `
+  --datasets-root artifacts.local/evidence/datasets `
+  --checkpoints-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-student-training-20260801 `
+  --output-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-predictions-20260801
+
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/evaluate_stage_c_f0_1_heldout.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_SANPO_HELDOUT_EXECUTION_CONTRACT_F0_1_2026-08-01.json `
+  --package-validation artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-validation-20260801/validation.json `
+  --truth artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-20260801/heldout_truth.jsonl `
+  --prediction-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-predictions-20260801 `
+  --output-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-effect-result-20260801
+
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/validate_stage_c_f0_1_heldout_result.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_SANPO_HELDOUT_EXECUTION_CONTRACT_F0_1_2026-08-01.json `
+  --package-validation artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-validation-20260801/validation.json `
+  --truth artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-20260801/heldout_truth.jsonl `
+  --prediction-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-predictions-20260801 `
+  --result artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-effect-result-20260801/result.json `
+  --output-root artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-terminal-validation-20260801
+```
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

@@ -64,6 +64,11 @@
 # Target-local background warp residual R0 design and review bind the frozen contract bytes.
 /docs/research/dual-loop/TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_* text eol=lf whitespace=-blank-at-eof
 
+# HFTF contracts, implementations, validators, and receipts bind raw SHA-256 bytes.
+# Keep the full research domain stable across Windows autocrlf checkouts.
+/docs/research/hftf/** text eol=lf
+/scripts/research/hftf/** text eol=lf
+
 # Immutable historical-reference exceptions are SHA256-bound and must survive clean checkout byte-for-byte.
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_0327.json text eol=lf
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_transport_safety_amendment.json text eol=lf

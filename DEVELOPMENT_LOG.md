@@ -3200,3 +3200,34 @@
   将在实现提交后运行。
 - 当前仍不授权 heldout target 物化或推理；九 checkpoint gate 通过后只允许先冻结
   heldout 执行合同。主线、默认 App、Android、生产与安全主张均不变。
+
+## 2026-08-01：HFTF F0.1 九 checkpoint gate 与 heldout 合同冻结
+
+- 执行者：violjjet
+- 已提交的独立 validator 对九个 run 复核 exact 目录集合、30 epochs、
+  earliest-best dev checkpoint、唯一 SHA、1,022,448 参数、模型/optimizer
+  keys/shapes/dtypes/完整 state、所有 finite 值、class weights、父哈希、实现 receipt
+  和 exact heldout firewall，正式终态为 `F0_1_SANPO_NINE_CHECKPOINTS_FROZEN`；
+  validation SHA-256 为
+  `5a3c73968213d046f7e48ba82e356f08d46468bc90798be077600152e1e8d824`。
+- 在任何 heldout target 物化或 student forward 前冻结 official-test 一次性执行合同：
+  3 个固定 parent sessions × 13 reference anchors、九 checkpoint seed-major、
+  threshold 0.5、39 条 inference inputs 与隔离 truth/teacher receipts、351 条
+  truth-free predictions 先冻结 SHA 后才允许 join。
+- effect gates 原样继承 F0：median micro-F1 delta 至少 0.03、每 seed 为正、recall/FPR、
+  body/head、worst-source 和 `SF_CURRENT` median-seed learnability 0.6 全部门同时通过；
+  任一失败即 no-gain stop，不允许 after-outcome rescue。
+- 合同把 materializer、package validator、prediction-only runner、truth join 与独立
+  terminal validator 的最终实现 SHA-256 全部 byte-bound；machine contract SHA-256
+  为 `cdc05f52f3d10ce8479025a0a0137f6d8c8a4d5d6faf320245dd0295c3b39462`。
+  HFTF 全域新增 LF checkout 约束，避免 Windows `autocrlf` 使实现 receipt 漂移。
+- prediction 在首次 forward 前写固定全局 consumption ledger；truth join 与 terminal
+  validation 分别在首次开 truth 前独占创建 canonical root、原子写入并 fsync receipt。
+  任一异常都原子持久化 `NOT_EVALUABLE` 且不得重试。两种 truth 进程不导入 predictor、
+  `torch` 或模型代码，并独立核验 351 条输出的 ordered join-key SHA。
+- 定向 heldout execution 测试 10/10、HFTF 全集 184/184，五个 implementation
+  receipt 均与磁盘字节 exact match；未物化 heldout package、未创建 consumption
+  ledger、未运行 student heldout forward。
+- 当前仅合同冻结；heldout materialization、student output 与 effect terminal 尚未产生。
+  即使未来 signal-supported，也只形成 synthetic geometry-proxy 支线证据，不直接授权
+  替换主线、Android、生产或安全主张。

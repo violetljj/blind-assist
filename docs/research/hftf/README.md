@@ -357,6 +357,12 @@ source-lock SHA-256 为
 - [Stage C SANPO F0.1 teacher execution contract](HFTF_STAGE_C_SANPO_TEACHER_OPPORTUNITY_EXECUTION_CONTRACT_F0_1_2026-08-01.md)
 - [Stage C machine-readable SANPO F0.1 teacher execution contract](HFTF_STAGE_C_SANPO_TEACHER_OPPORTUNITY_EXECUTION_CONTRACT_F0_1_2026-08-01.json)
 - [Stage C SANPO F0.1 teacher-opportunity result](HFTF_STAGE_C_SANPO_TEACHER_OPPORTUNITY_RESULT_F0_1_2026-08-01.md)
+- [Stage C SANPO F0.1 corpus materialization contract](HFTF_STAGE_C_SANPO_CORPUS_MATERIALIZATION_CONTRACT_F0_1_2026-08-01.md)
+- [Stage C machine-readable SANPO F0.1 corpus contract](HFTF_STAGE_C_SANPO_CORPUS_MATERIALIZATION_CONTRACT_F0_1_2026-08-01.json)
+- [Stage C SANPO F0.1 student training contract](HFTF_STAGE_C_SANPO_STUDENT_TRAINING_EXECUTION_CONTRACT_F0_1_2026-08-01.md)
+- [Stage C machine-readable SANPO F0.1 student training contract](HFTF_STAGE_C_SANPO_STUDENT_TRAINING_EXECUTION_CONTRACT_F0_1_2026-08-01.json)
+- [Stage C SANPO F0.1 official-test heldout execution contract](HFTF_STAGE_C_SANPO_HELDOUT_EXECUTION_CONTRACT_F0_1_2026-08-01.md)
+- [Stage C machine-readable SANPO F0.1 heldout execution contract](HFTF_STAGE_C_SANPO_HELDOUT_EXECUTION_CONTRACT_F0_1_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
