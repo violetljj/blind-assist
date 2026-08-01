@@ -1,11 +1,13 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。将候选事件自动挖掘从接口骨架推进到一条真实 `THESIS_DEVELOPMENT` host 链：4 个已登记公开视频 source/session 的 byte-verified 副本位于 `F:\ba-data\blindassist-candidate-event-mining\`，实际运行 2 Hz、YOLO11n 与 Depth Anything V2 Small，产出 2,566 帧 canonical trace。全量发现为 `715` raw windows、`571` 同 session 去重候选、`15` cluster；HFTF 无 sidecar，保持 `0`，segmentation 只以 manifest 明确标注的 `image_space_risk_proxy_not_a_segmentation_model` 参与，不冒充分割模型。新增确定性 review-budget queue：覆盖 source×taxonomy/cluster 选 `64` 条，另 `507` 条保留为 `not_reviewed_and_excluded_from_candidate_pool`。Luna 在 candidate-blind、hash-bound、独立上下文中复核 64 条，`24 keep / 27 reject / 13 quarantine`；candidate pool 只收 `24` 条，`40` 条进入 quarantine，未复核分母保持 `507`。完整 source/run 索引位于 `F:\ba-data\blindassist-candidate-event-mining\project_index.json` 与 `run_index.json`；探针 Norrköping run 也保留为 `0 keep / 26 quarantine`。代码、contract tests（5/5；完整 suite 14/14）、docs index 和权限边界均复验通过；结果仅用于候选发现与后续复核，不授权事件真值、训练、Confirmation、Android、默认 App、生产或安全结论。详见 `scripts/research/candidate_event_mining/README.md`。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。新增独立
   `candidate_event_mining` discovery Module，冻结 `CANDIDATE_EVENT_MINING_DISCOVERY_R0`
   的 canonical frame trace、12 类候选触发、同 session 去重、跨 session 聚类、candidate-blind
   Luna review bundle、fail-closed review receipt 和 discovery candidate pool。明确数据下载
   目录为 `F:\ba-data\blindassist-candidate-event-mining\`，并提供 source/session/url/time/hash
-  项目索引模板。当前只完成标准库合成回归与接口骨架，不下载媒体、不读取 fresh/confirmation
-  outcome，不授权事件真值、训练、Android、默认 App、生产或安全结论；详见
+  项目索引模板。该初始提交阶段只完成标准库合成回归与接口骨架，不下载媒体、不读取
+  fresh/confirmation outcome，不授权事件真值、训练、Android、默认 App、生产或安全结论；
+  后续真实 run 见上方条目；详见
   `scripts/research/candidate_event_mining/README.md`。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：Codex。`RISKSEG-R0` 已按完整授权
   顺序执行到负终态

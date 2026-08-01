@@ -54,6 +54,39 @@ $index = 'F:\ba-data\blindassist-candidate-event-mining\project_index.json'
   --output artifacts.local/evidence/candidate-event-mining/<run-id>/candidate_pool.json
 ```
 
+当全量报告大于一次独立视觉 review 的合理预算时，先保留完整 `candidate_report.json`，再生成一个有父报告 hash 的 review queue；未进入 queue 的候选不是 reject，也不进入本次 pool：
+
+```powershell
+& $py $tool candidate-event-mining select_review_queue.py `
+  --contract $contract `
+  --candidate-report artifacts.local/evidence/candidate-event-mining/<run-id>/candidate_report.json `
+  --max-candidates 64 `
+  --output artifacts.local/evidence/candidate-event-mining/<run-id>/review_queue_report.json
+```
+
+随后将 `build_review_bundle.py` 和 `finalize_luna_reviews.py` 的 `candidate-report` 指向 `review_queue_report.json`；全量报告仍是完整发现库存，queue 的 `review_queue.unreviewed_candidate_count` 保留未复核分母。
+
+### 真实公开视频 batch adapter
+
+`run_real_video_batch.py` 是本 Module 的一个 bounded host adapter，不是候选核心的替代实现。它从已登记的 `F:\ba-data` media path 顺序解码，按不超过约 500ms 的 cadence 抽取 JPEG review frames，实际运行 YOLO11n 与 Depth Anything V2，并写出 canonical frame JSONL 与独立 adapter manifest：
+
+```powershell
+$py = 'E:\codex-tools\bin\blindassist-python.cmd'
+$tool = 'scripts/run_research_tool.py'
+
+& $py $tool candidate-event-mining run_real_video_batch.py `
+  --project-index F:\ba-data\blindassist-candidate-event-mining\project_index.json `
+  --run-id <run-id> `
+  --output artifacts.local/evidence/candidate-event-mining/<run-id>/adapter_trace.jsonl `
+  --sample-fps 2 `
+  --device cuda `
+  --yolo-model artifacts.local/models/yolo11n.pt `
+  --depth-checkpoint artifacts.local/models/dg-srf-f0/depth_anything_v2_vits.pth `
+  --depth-source-root artifacts.local/models/dg-srf-f0/source-a561b849/Depth-Anything-V2-a561b849ebae10a6f5ef49e26c83cbbcd36c71bf
+```
+
+`--enable-segmentation-proxy` 只启用一个低级图像空间风险 proxy，manifest 会明确记录 `image_space_risk_proxy_not_a_segmentation_model`；不启用时 segmentation 信号保持缺失。`--segmentation-sidecar` 与 `--hftf-sidecar` 必须按 `source_id/session_id/frame_index` 精确绑定，缺失的通道不补零、不生成负证据。完整 chain 仍由 `ingest_batch_inference.py`、`mine_candidates.py`、`build_review_bundle.py` 和 `finalize_luna_reviews.py` 依次完成。
+
 `ingest_batch_inference.py` 是 adapter hand-off，不是假装替代模型推理的黑盒 runner。YOLO、segmentation、depth 和 HFTF 的具体推理器可以独立批量运行，但必须各自写出同一份 canonical frame JSONL，再由 ingest 绑定 source index、run ID 和输入 hash。
 
 每一行 canonical frame 至少包含：
@@ -70,13 +103,15 @@ $index = 'F:\ba-data\blindassist-candidate-event-mining\project_index.json'
     "yolo.coverage": 0.10,
     "segmentation.risk": 0.82,
     "depth.approach": 0.77,
-    "motion.crossing": 0.00,
-    "hftf.future_field_change": 0.00
+    "motion.crossing": 0.00
   }
 }
 ```
 
 `signals` 必须是 `[0,1]` 的有限归一化分数；单位距离、原始 mask、bbox、depth field 或模型私有 tensor 不进入这个公共接口。具体 adapter 负责在自己的 receipt 中保存原始模型/版本/实现 hash，并把转换后的 canonical trace 交给本 Module。
+缺失的 HFTF 或 segmentation 通道必须保持缺失；不能用 `0.0` 伪造“未响应”的负证据。只有实际 sidecar 或明确标注的 proxy 才能写入相应 key。
+
+每个完成的 run 还应在 `F:\ba-data\blindassist-candidate-event-mining\run_index.json` 中登记，绑定 source project index、adapter manifest/trace、全量候选报告、review queue、bundle、Luna receipts 和 candidate pool 的 SHA-256；这只是可追溯索引，不提升任何 evidence authority。
 
 ## 输出
 

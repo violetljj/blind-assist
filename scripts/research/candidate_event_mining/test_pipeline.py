@@ -25,6 +25,7 @@ from scripts.research.candidate_event_mining.pipeline import (
     write_json,
     write_jsonl,
 )
+from scripts.research.candidate_event_mining.select_review_queue import _select
 
 CONTRACT_PATH = REPO_ROOT / "configs" / "candidate_event_mining_contract_v1.json"
 
@@ -233,6 +234,40 @@ class CandidateMiningPipelineTest(unittest.TestCase):
                     reviews_path,
                     self.contract,
                 )
+
+    def test_review_queue_selection_preserves_coverage_and_leaves_budget_explicit(self) -> None:
+        candidates = []
+        for source_id in ("source-a", "source-b"):
+            for trigger_type in ("front_obstacle_approach", "normal_passage_negative"):
+                candidates.append(
+                    {
+                        "candidate_id": f"{source_id}-{trigger_type}",
+                        "source_id": source_id,
+                        "trigger_type": trigger_type,
+                        "cluster_id": f"cluster-{source_id}-{trigger_type}",
+                        "trigger_score_peak": 0.8,
+                        "active_frame_count": 2,
+                        "start_timestamp_ms": 0,
+                    }
+                )
+        candidates.append(
+            {
+                "candidate_id": "extra",
+                "source_id": "source-a",
+                "trigger_type": "front_obstacle_approach",
+                "cluster_id": "cluster-extra",
+                "trigger_score_peak": 0.99,
+                "active_frame_count": 3,
+                "start_timestamp_ms": 100,
+            }
+        )
+        selected = _select(candidates, 4)
+        self.assertEqual(len(selected), 4)
+        self.assertEqual(len({item["candidate_id"] for item in selected}), 4)
+        self.assertEqual(
+            {(item["source_id"], item["trigger_type"]) for item in selected},
+            {(source, trigger) for source in ("source-a", "source-b") for trigger in ("front_obstacle_approach", "normal_passage_negative")},
+        )
 
 
 if __name__ == "__main__":

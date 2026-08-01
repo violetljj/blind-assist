@@ -37,6 +37,9 @@
 - `validate_ustrf_sc_device_metric_geometry.py`：同设备米制几何总门；完整包要求五类 typed artifact 与设备/mount/calibration/metrics 精确绑定并继续 hash-bind raw/gate source，`blocked/in_progress` 包也会审计已有收据；通过只授权 isolated geometry shadow。
 - `run_research_tool.py <domain> <tool.py> [args...]`：统一研究 Adapter；当前支持 `egomotion-compensated-looming` RCLE 几何准入/transport、`public-video` 历史归档、`ustrf-crosscam-codex` 代理评测、`ustrf-sensor-replay` 多来源 RGB-D+pose 回放和 `ustrf-route-target-evidence-closure` route-target 证据闭环域。RCLE 外部合同只绑定这个 root adapter，不直接绑定研究内部脚本路径。
 - `run_research_tool.py candidate-event-mining <tool.py> [args...]`：长视频/公开数据候选事件自动挖掘的稳定 Adapter；只做 canonical frame trace、窗口发现、去重/聚类、candidate-blind Luna review bundle 和 discovery candidate pool，不产生事件真值或生产权限。
+- `run_research_tool.py candidate-event-mining run_real_video_batch.py`：真实公开视频的 bounded host batch adapter；按固定 cadence 物化 review frames，运行 YOLO11n + Depth Anything V2，并把 segmentation/HFTF 的可选 sidecar 或明确标注的 image-space proxy 接到 canonical trace。它只产生 `THESIS_DEVELOPMENT` discovery 输入，不把 proxy 当作 segmentation 模型，也不授予事件/安全/生产权限。
+- `run_research_tool.py candidate-event-mining select_review_queue.py`：全量候选报告的确定性 review-budget 选择器；按 source×taxonomy 与 cluster 覆盖选取有限窗口，未选候选保持 `not_reviewed`，不会被静默当作负例。
+- `run_research_tool.py candidate-event-mining register_run_index.py`：把 adapter、全量候选报告、review queue、bundle、Luna receipts 和 candidate pool 的路径/hash 追加到 `F:\ba-data\blindassist-candidate-event-mining\run_index.json`。
 - `run_public_video_campaign_tests.py`：发现并运行 `scripts/research/public_video/` 的完整测试集。
 - `run_public_video_edge_inference.ps1`：已冻结 campaign 真机闭环的稳定 Adapter；调用方不依赖研究目录内部路径。
 - `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试。

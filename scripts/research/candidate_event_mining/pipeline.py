@@ -838,7 +838,7 @@ def finalize_candidate_pool(
                 "confidence": review["confidence"],
                 "observed_types": sorted(review["observed_types"]),
             })
-    return {
+    result = {
         "schema": POOL_SCHEMA,
         "pool_version": "r0",
         "candidate_report_path": str(candidate_report_path.resolve()),
@@ -866,3 +866,10 @@ def finalize_candidate_pool(
             "default_app": False,
         },
     }
+    review_queue = candidate_report.get("review_queue")
+    if isinstance(review_queue, dict):
+        result["review_queue"] = dict(review_queue)
+        result["summary"]["unreviewed_candidate_count"] = int(
+            review_queue.get("unreviewed_candidate_count", 0)
+        )
+    return result
