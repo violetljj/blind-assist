@@ -67,6 +67,13 @@ translation 中位数约 `3.60/7.14 m`，明显高于另三者的
 `0.74–0.93/1.49–1.87 m`。这只形成 ego-motion/future-view support 的下一机制假设，
 不构成因果确认；四个 R1 sessions 也已永久 burned。
 
+R2 的 source-preparation 合同已在新 teacher outcome 前冻结：future field origin 只由
+anchor 前 `400 ms` 的历史位姿速度在 local-ground plane 上外推，future pose 不选择
+origin/方向；其余 R1 bins、UNKNOWN、denominator 与所有数值门保持不变。新 cohort
+按排除 R0/R1 后的 official train ID 字典序冻结为
+`03694304/03b6dc99/03c87279/03d70593`。当前只授权获取与 source authority，尚未绑定
+完整 hashes 或运行 R2 teacher。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -79,6 +86,8 @@ translation 中位数约 `3.60/7.14 m`，明显高于另三者的
 - [H1 R1 forward-sector protocol](HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1_2026-08-01.md)
 - [H1 R1 machine-readable protocol](HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1_2026-08-01.json)
 - [H1 R1 result](HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_RESULT_R1_2026-08-01.md)
+- [H1 R2 causal-advected source preparation](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_SOURCE_PREPARATION_R2_2026-08-01.md)
+- [H1 R2 machine-readable source preparation](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_SOURCE_PREPARATION_R2_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

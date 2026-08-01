@@ -1,0 +1,71 @@
+{
+  "schema": "blindassist_hftf_h1_causal_advected_origin_source_preparation_r2",
+  "status": "FROZEN_SOURCE_PREPARATION_ONLY_TEACHER_NOT_AUTHORIZED",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "reformulates_terminal": "H1_GEOMETRY_TEACHER_NOT_EVALUABLE",
+  "mechanism_hypothesis": "future observation support should be measured around a history-causal constant-velocity rolling origin rather than the now-behind fixed anchor origin",
+  "source_selection": {
+    "rule": "next_four_lexicographically_smallest_eligible_official_sanpo_synthetic_train_session_ids_after_excluding_h1_r0_and_r1_burned_sessions",
+    "eligibility": [
+      "camera_chest_left_available",
+      "at_least_25_aligned_rgb_mask_depth_frames_from_start_frame_zero",
+      "official_source_authority_passes_frozen_canonical_replication"
+    ],
+    "start_frame": 0,
+    "frame_count": 25,
+    "target_fps_rule": "min(10, source_fps)",
+    "outcome_blind": true,
+    "selected_session_ids": [
+      "036943049ded9e1a6356de88a2b80b27938dd4386bcad341c57e1145b198e34a",
+      "03b6dc99c1ac44b77d6c3ac36c17a5db748eca862e0008ac7928d7a82a5de68c",
+      "03c8727961f01047f54c3c4e38c48f4128738d100c00bb54145454bc4df9e3b0",
+      "03d7059322ffd8300f2eb85fd612e635242cbe08363e85e0ff74124e916b39e1"
+    ],
+    "burned_session_ids": [
+      "e1ae36e040a53837dbe40879ddca1fbc47d47752a563e1117629cde73e7de856",
+      "001217c6b6794feefcb7590b6c962812f4d07deb3f5ef77b8cffe620b076910a",
+      "0099b54c6eb912ec2c647d3bee85fb2a94bd535ce01a55962bae5872f1d5864c",
+      "00bdf8cef5922a984676274b768bf1e5ec7924fe5396c10896c9d6290fc25896",
+      "00c2a1cdf37ebffc2c52b0bbe056bea98127a543cff402bffeb41eeef9a5d4e3",
+      "013e2db52cccd744542b04e75e10c7015591b2a97d678556853a21b92bba9d3a",
+      "01c00b13a2b67d479e2245c5467b44c64a1eda814a2ed566ebd43b8b7b581a70",
+      "026d78f9987d2a12e03133bfa35e266a93c9eb51660cef97f6249892ae9ce610"
+    ]
+  },
+  "rolling_origin": {
+    "history_lookback_ms": 400,
+    "history_tolerance_ms": 100,
+    "history_binding": "closest_strictly_earlier_source_frame_to_anchor_minus_400ms_ties_choose_higher_source_frame",
+    "velocity": "(anchor_camera_position-history_camera_position)/(anchor_nominal_time-history_nominal_time)",
+    "tangent_velocity": "velocity_projected_onto_anchor_local_ground_plane",
+    "horizon_origin": "anchor_ground_origin+tangent_velocity*horizon_seconds",
+    "orientation": "anchor_forward_right_up_for_all_horizons",
+    "future_pose_may_define_origin": false,
+    "future_route_or_action_label_used": false,
+    "missing_history_anchor_is_usable": false
+  },
+  "frozen_unchanged_from_r1": {
+    "theta_bin_count": 6,
+    "theta_range_degrees": [-45.0, 45.0],
+    "distance_edges_m": [0.0, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0],
+    "horizons_ms": [0, 400, 800],
+    "height_bands_m": [[0.05, 0.35], [0.35, 1.35], [1.35, 2.05]],
+    "known_probe_count": 9,
+    "minimum_passing_known_probes": 5,
+    "minimum_current_near_far_known_coverage": [0.15, 0.1, 0.1],
+    "minimum_height_and_future_nonredundancy": [0.02, 0.02],
+    "unknown_remains_in_denominator": true,
+    "required_passing_sessions": 4
+  },
+  "dynamic_interpretation": {
+    "overall_future_change_includes_rolling_through_static_space": true,
+    "overall_future_change_is_environmental_dynamics_claim": false,
+    "dynamic_support_must_be_reported_separately": true,
+    "dynamic_motion_claim_requires_separate_future_protocol": true
+  },
+  "teacher_outcome_may_be_computed": false,
+  "full_r2_protocol_requires_exact_authority_manifest_spec_pose_hashes": true,
+  "mainline_changed": false,
+  "default_app_changed": false,
+  "h2_authorized": false
+}

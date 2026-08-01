@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何 R2 teacher outcome
+  前冻结 `HFTF_H1_CAUSAL_ADVECTED_ORIGIN_SOURCE_PREPARATION_R2`。R2 使用
+  `anchor-400ms` 严格历史 pose 到 anchor 的 causal velocity，经 anchor local-ground
+  plane 投影后把 origin 外推到 `.4/.8s`；future pose 不参与 origin/方向选择。
+  6-bin sector、distance/height/horizon、9 probes、UNKNOWN、固定 denominator 与
+  `.15/.10/.10/.02/.02`、4/4 门保持 R1 不变。排除 R0/R1 八个 burned sessions 后，
+  official train 中 chest-left 且 25 帧可获取的字典序前四个冻结为
+  `03694304/03b6dc99/03c87279/03d70593`，target fps=`min(10,source fps)`。当前只授权
+  source acquisition/authority；完整 hashes 未绑定，R2 teacher 未授权、未运行。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。一次性完成
   `HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_R1`，终态
   `H1_GEOMETRY_TEACHER_NOT_EVALUABLE`。4/4 authority、unique/exact fresh session
