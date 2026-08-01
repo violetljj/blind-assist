@@ -16,6 +16,7 @@ STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_FROZEN /
 E0_FRESH_SOURCE_LOCK_VALIDATED /
 E0_FRESH_MEDIA_TRANSPORT_SUPPORTED /
 E0_FRESH_TEACHER_MECHANICS_NOT_EVALUABLE /
+STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_FROZEN /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -221,6 +222,13 @@ train/dev/heldout 分别有 `27/8/36` 个 risk cells 与 `22/4/19` 个物理 ris
 `.6015–.6857`。`.4 s` 则 6/6 通过。不得降低 E0 门或在 burned dev/heldout 上训练；
 唯一 successor 是另冻 `.4 s`-only E0.1，并使用全新 dev/heldout。
 
+E0.1 已在新评价媒体前冻结：原四条 E0 train 只作为 consumed training data，原
+dev/heldout 不再使用；从排除全部八条 consumed 后的 healthy inventory 按相同
+outcome-independent 规则锁定 `2024_12_01__15_29_33` 为 dev、
+`2024_07_10__11_01_46` 为 heldout。三臂只输出 `[current,.4 s]`，模型、训练、
+阈值与 `.03` superiority margin 已冻结。新 source transport/teacher/opportunity
+全过前不生成 corpus 或训练。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -274,6 +282,8 @@ train/dev/heldout 分别有 `27/8/36` 个 risk cells 与 `22/4/19` 个物理 ris
 - [Stage C fresh foot-ground student canary E0](HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.md)
 - [Stage C machine-readable fresh student canary E0](HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.json)
 - [Stage C fresh foot-ground student canary E0 result](HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_RESULT_E0_2026-08-01.md)
+- [Stage C foot-ground student canary E0.1](HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.md)
+- [Stage C machine-readable foot-ground student canary E0.1](HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

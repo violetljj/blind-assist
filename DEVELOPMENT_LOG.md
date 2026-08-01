@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在新评价媒体前冻结
+  `.4 s`-only E0.1 successor。原四条 E0 train 仅作 consumed training data，原
+  dev/heldout 永久排除；从排除全部八条 consumed 后的 healthy inventory 按总字节
+  升序、日期互斥锁定 `2024_12_01__15_29_33` dev 与
+  `2024_07_10__11_01_46` heldout。三臂相同 MobileNetV3/head，只输出
+  `[current,.4 s]`；训练、阈值与 `.03` margin 均冻结。新 transport/teacher/
+  opportunity 全过前不生成 corpus 或训练，任何失败不得换样。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。E0 teacher-opportunity
   正式双运行在 student 前停止为
   `E0_FRESH_TEACHER_MECHANICS_NOT_EVALUABLE`。train/dev/heldout opportunity
