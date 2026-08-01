@@ -1,0 +1,183 @@
+{
+  "schema": "blindassist_hftf_stage_c_causal_future_label_mechanics_d1",
+  "status": "FROZEN_AFTER_CONSUMED_CALIBRATION_BEFORE_FORMAL_D1_REPORT",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "execution_authority": "USER_PERSISTENT_SIDE_LANE_AUTHORIZATION_2026-08-01",
+  "parent_terminal": "D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED",
+  "parent_result_path": "HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_RESULT_D0_2026-08-01.md",
+  "parent_result_sha256": "6222e77f5c378c966b455cba50de45bedd3027313a0d7f781afc3d7c17f3aa8a",
+  "estimand": "whether_future_depth_observations_add_phone_causal_anchor_grid_label_support_beyond_current_observation_only_without_using_future_path_to_select_origin_or_direction",
+  "calibration_disclosure": {
+    "sources_are_same_consumed_d0_calibration_sources": true,
+    "formal_freshness_claim": false,
+    "odometry_motion_yaw_alignment_examined_before_freeze": true,
+    "future_reprojection_coverage_examined_before_freeze": true,
+    "observed_calibration": {
+      "outdoor": {
+        "0_4s_motion_yaw_resultant": 0.8986,
+        "0_4s_median_abs_direction_error_degrees": 6.41,
+        "0_8s_motion_yaw_resultant": 0.8404,
+        "0_8s_median_abs_direction_error_degrees": 6.95,
+        "future_added_known_cells_0_4s": 186,
+        "future_added_known_cells_0_8s": 280
+      },
+      "indoor": {
+        "0_4s_motion_yaw_resultant": 0.9691,
+        "0_4s_median_abs_direction_error_degrees": 4.54,
+        "0_8s_motion_yaw_resultant": 0.9619,
+        "0_8s_median_abs_direction_error_degrees": 4.6,
+        "future_added_known_cells_0_4s": 303,
+        "future_added_known_cells_0_8s": 490
+      }
+    }
+  },
+  "frozen_inputs": {
+    "d0_report_path": "artifacts.local/evidence/hftf/stage-c-d0-label-readiness-20260801/label_readiness.json",
+    "d0_report_sha256": "8a267e07e48f70abbfe9e2d184e53ca5464331fd848e256aebd9b1cb2239952b",
+    "d0_protocol_path": "docs/research/hftf/HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_2026-08-01.json",
+    "d0_protocol_sha256": "e9abb66b36d2bfdd6db13143a9c70c53df0f6c37dbce10b589c0625685df63b5",
+    "d0_runner_path": "scripts/research/hftf/run_stage_c_d0_semantic_independent_label_readiness.py",
+    "d0_runner_sha256": "d40412924d5f5093ed30b12e056146656d0e4168377fee9292264e27640829dc",
+    "trajectory_ids": [
+      "2024_08_15__19_45_11",
+      "2024_07_11__12_33_57"
+    ],
+    "media_root": "artifacts.local/evidence/hftf/stage-c-c0-egowalk-inventory-20260801",
+    "replacement_or_additional_source_allowed": false
+  },
+  "pose2d_contract": {
+    "position_columns": ["cart_x", "cart_y"],
+    "quaternion_columns_xyzw": [
+      "quat_x",
+      "quat_y",
+      "quat_z",
+      "quat_w"
+    ],
+    "yaw_formula": "atan2(2*(qw*qz+qx*qy),1-2*(qy*qy+qz*qz))",
+    "local_forward_world": "[cos(yaw),sin(yaw)]",
+    "local_lateral_world": "[-sin(yaw),cos(yaw)]",
+    "pose_is_source_odometry_not_human_truth": true
+  },
+  "formal_anchor_selection": {
+    "anchor_indices": "5_10_15_and_so_on_while_anchor_plus_4_is_less_than_row_count",
+    "history_velocity_frames": ["anchor_minus_2", "anchor"],
+    "history_velocity_interval_s": 0.4,
+    "maximum_history_speed_mps": 3.0,
+    "speed_above_limit_policy": "ALL_HORIZONS_UNKNOWN_FOR_ANCHOR",
+    "future_offsets": {
+      "0_4s": 2,
+      "0_8s": 4
+    }
+  },
+  "causal_origin_contract": {
+    "orientation": "anchor_current_yaw_for_all_horizons",
+    "origin_0s": "anchor_current_position",
+    "origin_tau": "anchor_current_position_plus_history_velocity_times_tau",
+    "future_position_or_yaw_may_select_origin": false,
+    "future_position_or_yaw_may_select_output_direction": false,
+    "future_pose_may_only_transform_future_observation_into_world": true
+  },
+  "teacher_observation_contract": {
+    "horizon_0s": ["anchor_current_depth_profile"],
+    "horizon_0_4s": [
+      "anchor_current_depth_profile",
+      "future_plus_2_depth_profile"
+    ],
+    "horizon_0_8s": [
+      "anchor_current_depth_profile",
+      "future_plus_4_depth_profile"
+    ],
+    "depth_profile_reader": "exact_frozen_D0_implementation",
+    "semantic_class_annotation_or_rgb_outcome_forbidden": true,
+    "actual_walked_path_is_not_safe_or_hazard_truth": true
+  },
+  "reprojection_and_rebin": {
+    "source_section_world_position": "source_pose_position_plus_R(source_yaw)*[forward,lateral]",
+    "target_relative_position": "R(-anchor_yaw)*(world_position-causal_origin_tau)",
+    "target_direction_degrees": [-30, -15, 0, 15, 30],
+    "target_distance_m": [1.4, 1.8, 2.2, 2.6, 3.0],
+    "maximum_direction_error_degrees": 7.5,
+    "maximum_distance_error_m": 0.2,
+    "multiple_observation_height_merge": "median",
+    "minimum_known_sections_per_direction": 4,
+    "rise_and_drop_thresholds_inherited_from_d0": true,
+    "unmatched_or_missing_cell_policy": "UNKNOWN_NEVER_SAFE"
+  },
+  "baselines": {
+    "future_current_observation_only": "reproject_only_anchor_current_depth_profile_to_causal_origin_tau",
+    "candidate": "union_current_observation_and_corresponding_future_depth_observation_before_median_merge",
+    "candidate_may_not_delete_baseline_observations": true
+  },
+  "structural_canaries": [
+    "future_pose_change_does_not_change_causal_origin",
+    "future_pose_change_does_not_change_target_grid_orientation",
+    "known_future_observation_can_fill_unknown_baseline_cell",
+    "unmatched_future_observation_remains_unknown",
+    "candidate_never_deletes_baseline_known_cell",
+    "missing_future_depth_never_becomes_safe",
+    "identical_input_is_byte_deterministic"
+  ],
+  "ordered_gates": {
+    "source_and_implementation_binding": {
+      "all_frozen_hashes_and_exact_sources_required": true,
+      "all_structural_canaries_required": true
+    },
+    "odometry_mapping_each_source_each_horizon": {
+      "minimum_moving_interval_count": 100,
+      "moving_distance_threshold_m": 0.05,
+      "minimum_motion_yaw_circular_resultant": 0.8,
+      "maximum_median_abs_motion_yaw_error_degrees": 15.0
+    },
+    "anchor_eligibility_each_source": {
+      "minimum_history_speed_eligible_fraction": 0.95
+    },
+    "label_support_each_source_each_future_horizon": {
+      "minimum_candidate_known_direction_fraction": 0.7,
+      "minimum_future_added_known_cells": 100,
+      "maximum_candidate_known_cells_lost_vs_baseline": 0,
+      "maximum_unknown_to_safe_violations": 0
+    },
+    "cohort_future_opportunity": {
+      "minimum_future_risk_proxy_cells": 2,
+      "minimum_distinct_future_risk_proxy_frames": 2,
+      "minimum_distinct_future_risk_proxy_directions": 2,
+      "risk_proxy_is_not_hazard_truth": true
+    },
+    "determinism": {
+      "exact_second_run_report_payload_match_excluding_paths_and_created_time": true
+    }
+  },
+  "ordered_terminals": [
+    {
+      "when": "binding_causality_or_structural_canary_fails",
+      "terminal": "D1_CAUSAL_FUTURE_LABEL_MECHANICS_NOT_EVALUABLE"
+    },
+    {
+      "when": "odometry_mapping_or_anchor_eligibility_fails",
+      "terminal": "D1_EGOWALK_FUTURE_REPROJECTION_NOT_EVALUABLE"
+    },
+    {
+      "when": "future_label_support_increment_fails",
+      "terminal": "D1_FUTURE_OBSERVATION_LABEL_INCREMENT_NOT_SUPPORTED"
+    },
+    {
+      "when": "future_risk_proxy_opportunity_fails",
+      "terminal": "D1_FUTURE_LABEL_OPPORTUNITY_NOT_EVALUABLE"
+    },
+    {
+      "when": "all_ordered_gates_pass",
+      "terminal": "D1_CAUSAL_FUTURE_LABEL_MECHANICS_SUPPORTED"
+    }
+  ],
+  "success_authority": {
+    "freeze_fresh_session_disjoint_teacher_corpus_and_student_canary_protocol_only": true,
+    "fresh_source_acquisition_execution_authorized": false,
+    "teacher_corpus_generation_authorized": false,
+    "student_training_authorized": false,
+    "student_effect_evaluation_authorized": false,
+    "research_mainline_switch_authorized": false,
+    "android_or_app_change_authorized": false,
+    "safety_or_product_claim_authorized": false
+  },
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_CAUSAL_FUTURE_GEOMETRY_PROXY_LABEL_MECHANICS_ONLY"
+}

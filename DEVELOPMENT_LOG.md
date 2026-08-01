@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 D0 support 后冻结
+  Stage C causal future-label mechanics D1。history `anchor-2 -> anchor` 速度只用来
+  外推 `.4/.8 s` origin，orientation 固定 current yaw；future pose 只转换 future
+  depth observation，禁止选择 origin/direction。consumed calibration 的 motion-yaw
+  resultant 为 outdoor `.899/.840`、indoor `.969/.962`；candidate 相对
+  current-only 新增 known cells `186/280` 与 `303/490`，known loss 0。formal D1
+  尚未运行；通过也不直接 acquisition 或训练。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。Stage C D0 达到
   `D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED`。两条 consumed source 共
   265 个 formal frames，plane known `265/265`；direction known fraction

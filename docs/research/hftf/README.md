@@ -11,7 +11,7 @@ R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED /
 C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE /
 C0_1_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED /
 D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED /
-FUTURE_LABEL_MECHANICS_FREEZE_AUTHORIZED_ONLY /
+STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_D1_FROZEN /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -170,6 +170,12 @@ canaries 与第二遍 byte-determinism 全过。claim 仍只到 consumed geometr
 readiness。下一步必须先冻结/验证 phone-causal future-label mechanics，再设计 fresh
 train/dev/held-out student canary。
 
+Stage C D1 causal future-label mechanics 已在 formal report 前冻结。history-only pose
+决定 `.4/.8 s` advected origin，grid orientation 固定 current yaw；future pose 只可
+重投影 future depth observation。consumed calibration 中 future observation 相对
+current-only 新增 known cells 为 outdoor `186/280`、indoor `303/490`，known loss 0。
+formal D1 尚未执行；通过也只允许冻结 fresh session-disjoint teacher/student canary。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -217,6 +223,8 @@ train/dev/held-out student canary。
 - [Stage C semantic-independent label readiness D0](HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_2026-08-01.md)
 - [Stage C machine-readable label readiness D0](HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_2026-08-01.json)
 - [Stage C label readiness D0 result](HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_RESULT_D0_2026-08-01.md)
+- [Stage C causal future-label mechanics D1](HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_D1_2026-08-01.md)
+- [Stage C machine-readable future-label D1](HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_D1_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
