@@ -1,7 +1,7 @@
 {
   "schema_version": "blindassist.riskseg_act_a0.contract.v1",
   "protocol_id": "RISKSEG_ACT_A0",
-  "status": "IMPLEMENTATION_DRAFT_PENDING_PRE_OUTPUT_LOCK",
+  "status": "PRE_OUTPUT_LOCKED",
   "stage": "LABEL_DESIGN_AND_READINESS_AUDIT",
   "research_question": "Can two isolated source-only reviewers stably label route intrusion, boundary relation, alertability, passed-clear state and epistemic abstention under current-only or causal-history RGB?",
   "claim_ceiling": [
@@ -363,7 +363,16 @@
   ],
   "output_root": "artifacts.local/evidence/riskseg-act-a0/actionability-readiness-v1",
   "implementation_lock": {
-    "baseline_commit": null,
-    "files": {}
+    "baseline_commit": "a18bcb48da3a1bd48e95a1102311c9c40b563321",
+    "contract_prelock_sha256": "d335312fdda6a52fda899d399a37283d93f548e73bd34350d8550a4837322758",
+    "files": {
+      "docs/research/dual-loop/RISKSEG_ACT_A0_ACTIONABILITY_LABEL_READINESS_CONTRACT_2026-08-01.md": "e650e4c3d4b95d3ce6a92555d44a71b81c878016bbb2c6cad93e2e9433d2f25d",
+      "scripts/research/riskseg_act_a0/__init__.py": "903a5729993e9ee698076e47af22160c88b537bc65390b1ef6d66302ad904151",
+      "scripts/research/riskseg_act_a0/common.py": "e5b5ead00bf43198061da3623ad29309338ef430928fbd5125c277b75eb2d52e",
+      "scripts/research/riskseg_act_a0/build_review_bundle.py": "85ddd91623f698a3a94bac5be6e6e30dc87e0acefdc03513f899439a99acdaab",
+      "scripts/research/riskseg_act_a0/score_reviews.py": "b625d408bb284e27f3f609391adde5d8fed9dd9ff3f270d9edc93ce317242476",
+      "scripts/research/riskseg_act_a0/validate_result.py": "2992d30a925cb48997d98d9b8f340a05f0e2cd195c20a1e71a5e090e8933faa9",
+      "scripts/research/riskseg_act_a0/test_riskseg_act_a0.py": "b9a13e0780db298148bcf947e4730715728ecc70475f28ed19a6988b44164742"
+    }
   }
 }
