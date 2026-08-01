@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未正式运行
+  HFTF H1 R0 geometry-teacher runner 与 9 项 outcome-free unit tests，状态
+  `PROTOCOL_AND_IMPLEMENTATION_FROZEN_RESULT_NOT_RUN`。runner 重算 protocol、
+  authority、manifest/spec/pose 与全部消费 depth/mask bytes hash；future field 使用
+  anchor origin/normal/forward/right，nominal horizon 从 source frame/fps 复算；
+  class 0、behind/out-of-image/invalid depth probe 保持 UNKNOWN，固定 denominator
+  不因 unknown 缩小。独立实现审查发现并在运行前修复非冻结 `.1/80m` depth cutoff、
+  manifest-time horizon、frame-byte 未绑定、zero-U 除零和 atlas unknown index。
+  实现与 tests 将先提交，再执行一次正式四 session H1。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。根据 independent
   outcome-blind implementation review，在 H1 正式运行前完成最后一次 denominator 与
   authority 消歧。冻结 usable anchor 集 `U=current+near+far all bound`；之后

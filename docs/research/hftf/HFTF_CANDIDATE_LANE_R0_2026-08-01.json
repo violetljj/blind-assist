@@ -66,7 +66,7 @@
     {
       "id": "H1",
       "name": "geometry_teacher_canary",
-      "current_terminal": "GEOMETRY_TEACHER_CANARY_PROTOCOL_FROZEN_RESULT_NOT_RUN",
+      "current_terminal": "GEOMETRY_TEACHER_CANARY_PROTOCOL_AND_IMPLEMENTATION_FROZEN_RESULT_NOT_RUN",
       "protocol": "HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.json"
     },
     {

@@ -46,7 +46,8 @@ canary。
 student/effect 仍为 `NOT_EVALUABLE`。
 
 H1 R0 数值协议现已 outcome 前冻结，状态
-`H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_FROZEN / RESULT_NOT_RUN`。它固定 24 个 theta
+`H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_AND_IMPLEMENTATION_FROZEN /
+RESULT_NOT_RUN`。它固定 24 个 theta
 bins、6 个 distance bins、`0/0.4/0.8 s` horizons、`foot/body/head` proxy ranges、
 known/risk 规则、4/4 source-session 门与失败终点；尚未读取 H1 field outcome。
 

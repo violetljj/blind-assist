@@ -92,6 +92,26 @@ E:\codex-tools\bin\blindassist-python.cmd `
 聚合器拒绝重复 source session，并保持 physical calibration、student/effect、主线和
 产品层为 `NOT_EVALUABLE`。
 
+### H1 geometry teacher canary
+
+H1 必须使用已提交的 frozen R0 protocol 和其中四个精确 authority/report hashes：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/run_geometry_teacher_canary.py `
+  --protocol docs/research/hftf/HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.json `
+  --session <discovery-replay> <discovery-authority.json> `
+  --session <replication-a-replay> <replication-a-authority.json> `
+  --session <replication-b-replay> <replication-b-authority.json> `
+  --session <replication-c-replay> <replication-c-authority.json> `
+  --output artifacts.local/evidence/hftf/<run-id>/teacher_canary.json
+```
+
+runner 会重算 protocol、authority、manifest、dataset spec、pose 与每个实际消费
+depth/mask 文件 hash；future field 保持 anchor-centric，UNKNOWN 留在冻结 denominator。
+输出终点只可能是 H1 的 `NOT_EVALUABLE`、multi-height/future stop 或
+`GEOMETRY_PROXY_MECHANISM_SUPPORTED`，后者也不会自动授权 H2。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
