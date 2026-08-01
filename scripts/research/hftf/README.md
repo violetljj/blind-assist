@@ -502,6 +502,21 @@ E:\codex-tools\bin\blindassist-python.cmd `
 validator 同时排除 consumed trajectory 与 recording date，复算唯一固定的 3 dev +
 3 heldout；只有 `E0_2_FIXED_BATCH_SOURCE_LOCK_VALIDATED` 才允许获取该 batch。
 
+E0.2 fixed-batch ordered qualification：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/run_stage_c_e0_2_fixed_batch_qualification.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_2026-08-01.json `
+  --source-lock artifacts.local/evidence/hftf/stage-c-e0-2-source-lock-20260801/source_lock.json `
+  --media-root artifacts.local/evidence/hftf/stage-c-e0-2-fixed-batch-media-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/qualification.json
+```
+
+runner 内部仍严格按 acquisition → transport → `.4 s` teacher → role opportunity
+顺序执行；前门失败不运行后门。它不计算 `.8 s` 或 student。固定 batch 无 successor
+expansion。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
