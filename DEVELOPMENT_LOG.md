@@ -1,4 +1,12 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未正式运行 HFTF
+  H1 R1 forward-sector runner。实现现在从冻结 protocol 读取 theta range/edges；
+  full-circle R0 保留 `[-pi,pi)` wrap，partial-sector R1 的边界外 obstacle points 不
+  wrap，`+45°` 上界按协议进入最后 bin，9-probe geometry 使用相同 edges。result schema
+  与 claim ceiling 由 protocol version 显式选择，R0/R1 都能 fail closed。新增
+  forward-sector exclusion、probe bounds、full-circle compatibility 三项测试，HFTF
+  suite 共 38 项通过。状态仍为
+  `PROTOCOL_AND_IMPLEMENTATION_FROZEN_RESULT_NOT_RUN`，尚未计算正式 R1 outcome。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在读取任何 R1 teacher
   outcome 前冻结
   `HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1`，状态

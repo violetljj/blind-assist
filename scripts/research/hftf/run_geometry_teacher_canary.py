@@ -23,8 +23,22 @@ from verify_sanpo_pose_geometry_authority import (
 )
 
 
-SCHEMA = "blindassist_hftf_h1_geometry_teacher_canary_result_r0"
-PROTOCOL_SCHEMA = "blindassist_hftf_h1_geometry_teacher_canary_protocol_r0"
+PROTOCOL_RESULT_CONTRACTS = {
+    "blindassist_hftf_h1_geometry_teacher_canary_protocol_r0": {
+        "result_schema": (
+            "blindassist_hftf_h1_geometry_teacher_canary_result_r0"
+        ),
+        "claim_ceiling": "SYNTHETIC_GEOMETRY_PROXY_MECHANICS_ONLY",
+    },
+    "blindassist_hftf_h1_forward_sector_geometry_teacher_canary_protocol_r1": {
+        "result_schema": (
+            "blindassist_hftf_h1_forward_sector_geometry_teacher_canary_result_r1"
+        ),
+        "claim_ceiling": (
+            "SYNTHETIC_FORWARD_SECTOR_GEOMETRY_PROXY_MECHANICS_ONLY"
+        ),
+    },
+}
 EXPECTED_TRANSFORM = (
     "p_world = R_xyzw @ p_opencv_camera + camera_translation_m"
 )
@@ -107,6 +121,27 @@ def _required_denominators(
 
 def _coverage_fraction(numerator: int, denominator: int) -> float:
     return numerator / denominator if denominator > 0 else 0.0
+
+
+def _theta_edges(field_contract: dict[str, Any]) -> np.ndarray:
+    theta_count = int(field_contract["theta_bin_count"])
+    theta_range = np.asarray(
+        field_contract["theta_range_degrees"], dtype=np.float64
+    )
+    if (
+        theta_count <= 0
+        or theta_range.shape != (2,)
+        or not np.all(np.isfinite(theta_range))
+        or not theta_range[0] < theta_range[1]
+        or theta_range[0] < -180.0
+        or theta_range[1] > 180.0
+    ):
+        raise ValueError("Invalid frozen theta field contract")
+    return np.linspace(
+        math.radians(float(theta_range[0])),
+        math.radians(float(theta_range[1])),
+        theta_count + 1,
+    )
 
 
 def _anchor_basis(
@@ -196,10 +231,13 @@ def _bin_obstacle_support(
     points_world: np.ndarray,
     dynamic: np.ndarray,
     basis: tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-    theta_count: int,
+    theta_edges: np.ndarray,
     distance_edges: np.ndarray,
     height_bands: list[tuple[float, float]],
 ) -> tuple[np.ndarray, np.ndarray]:
+    theta_count = len(theta_edges) - 1
+    if theta_count <= 0 or not np.all(np.diff(theta_edges) > 0.0):
+        raise ValueError("Theta edges must be finite and increasing")
     origin, forward, right, up = basis
     relative = points_world - origin[:, None]
     height = up @ relative
@@ -207,10 +245,37 @@ def _bin_obstacle_support(
     right_coordinate = right @ relative
     radial = np.hypot(forward_coordinate, right_coordinate)
     theta = np.arctan2(right_coordinate, forward_coordinate)
-    theta_index = np.floor(
-        (theta + math.pi) / (2.0 * math.pi) * theta_count
-    ).astype(np.int64)
-    theta_index = np.mod(theta_index, theta_count)
+    full_circle = math.isclose(
+        float(theta_edges[-1] - theta_edges[0]),
+        2.0 * math.pi,
+        abs_tol=1e-12,
+        rel_tol=0.0,
+    )
+    if full_circle:
+        theta_for_bin = (
+            (theta - theta_edges[0]) % (2.0 * math.pi)
+        ) + theta_edges[0]
+    else:
+        theta_for_bin = theta
+    theta_index = np.searchsorted(
+        theta_edges, theta_for_bin, side="right"
+    ) - 1
+    if not full_circle:
+        theta_index = np.where(
+            np.isclose(
+                theta_for_bin,
+                theta_edges[-1],
+                atol=1e-12,
+                rtol=0.0,
+            ),
+            theta_count - 1,
+            theta_index,
+        )
+    theta_valid = (
+        (theta_index >= 0)
+        & (theta_index < theta_count)
+        & np.isfinite(theta_for_bin)
+    )
     distance_index = np.searchsorted(
         distance_edges, radial, side="right"
     ) - 1
@@ -230,6 +295,8 @@ def _bin_obstacle_support(
             height_bands
         ) - 1 else height < upper
         valid = (
+            theta_valid
+            &
             (distance_index >= 0)
             & (distance_index < distance_count)
             & (height >= lower)
@@ -259,12 +326,12 @@ def _bin_obstacle_support(
 
 def _cell_probes_world(
     basis: tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
-    theta_count: int,
+    theta_edges: np.ndarray,
     distance_edges: np.ndarray,
     height_bands: list[tuple[float, float]],
 ) -> np.ndarray:
     origin, forward, right, up = basis
-    theta_edges = np.linspace(-math.pi, math.pi, theta_count + 1)
+    theta_count = len(theta_edges) - 1
     probes: list[np.ndarray] = []
     for theta_index in range(theta_count):
         theta_lower = theta_edges[theta_index]
@@ -410,6 +477,7 @@ def _field(
     teacher = protocol["teacher"]
     field_contract = protocol["field"]
     theta_count = int(field_contract["theta_bin_count"])
+    theta_edges = _theta_edges(field_contract)
     distance_edges = np.asarray(
         field_contract["distance_edges_m"], dtype=np.float64
     )
@@ -463,7 +531,7 @@ def _field(
         points,
         dynamic,
         basis,
-        theta_count,
+        theta_edges,
         distance_edges,
         height_bands,
     )
@@ -657,7 +725,8 @@ def _session_result(
         if near is not None and far is not None
     ]
 
-    theta_count = int(protocol["field"]["theta_bin_count"])
+    theta_edges = _theta_edges(protocol["field"])
+    theta_count = len(theta_edges) - 1
     distance_edges = np.asarray(
         protocol["field"]["distance_edges_m"], dtype=np.float64
     )
@@ -714,7 +783,7 @@ def _session_result(
         )
         probes = _cell_probes_world(
             basis,
-            theta_count,
+            theta_edges,
             distance_edges,
             height_bands,
         )
@@ -1007,11 +1076,15 @@ def run(
     session_inputs: list[tuple[Path, Path]],
 ) -> dict[str, Any]:
     protocol = _load_json(protocol_path)
+    protocol_contract = PROTOCOL_RESULT_CONTRACTS.get(
+        str(protocol.get("schema"))
+    )
     if (
-        protocol.get("schema") != PROTOCOL_SCHEMA
+        protocol_contract is None
         or protocol.get("status") != "FROZEN_RESULT_NOT_RUN"
     ):
-        raise ValueError("H1 protocol is not the frozen R0 contract")
+        raise ValueError("H1 protocol is not a supported frozen contract")
+    _theta_edges(protocol["field"])
     required_count = int(protocol["required_session_count"])
     if len(session_inputs) != required_count:
         raise ValueError(
@@ -1067,10 +1140,10 @@ def run(
         else "H1_GEOMETRY_TEACHER_NOT_EVALUABLE"
     )
     return {
-        "schema": SCHEMA,
+        "schema": protocol_contract["result_schema"],
         "terminal": terminal,
         "workflow_profile": "DEVELOPMENT_STANDARD",
-        "claim_ceiling": "SYNTHETIC_GEOMETRY_PROXY_MECHANICS_ONLY",
+        "claim_ceiling": protocol_contract["claim_ceiling"],
         "protocol_path": str(protocol_path.resolve()),
         "protocol_sha256": _sha256(protocol_path),
         "implementation_sha256": _sha256(Path(__file__).resolve()),

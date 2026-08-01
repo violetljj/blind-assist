@@ -94,21 +94,24 @@ E:\codex-tools\bin\blindassist-python.cmd `
 
 ### H1 geometry teacher canary
 
-H1 必须使用已提交的 frozen R0 protocol 和其中四个精确 authority/report hashes：
+H1 必须使用已提交的 frozen protocol 和其中四个精确 authority/report hashes。R0
+360° evidence version 已执行并 burned；后续正式运行使用 R1 forward-sector protocol
+与四个全新 sessions：
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd `
   scripts/research/hftf/run_geometry_teacher_canary.py `
-  --protocol docs/research/hftf/HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.json `
-  --session <discovery-replay> <discovery-authority.json> `
-  --session <replication-a-replay> <replication-a-authority.json> `
-  --session <replication-b-replay> <replication-b-authority.json> `
-  --session <replication-c-replay> <replication-c-authority.json> `
+  --protocol docs/research/hftf/HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1_2026-08-01.json `
+  --session <fresh-replay-a> <fresh-authority-a.json> `
+  --session <fresh-replay-b> <fresh-authority-b.json> `
+  --session <fresh-replay-c> <fresh-authority-c.json> `
+  --session <fresh-replay-d> <fresh-authority-d.json> `
   --output artifacts.local/evidence/hftf/<run-id>/teacher_canary.json
 ```
 
 runner 会重算 protocol、authority、manifest、dataset spec、pose 与每个实际消费
-depth/mask 文件 hash；future field 保持 anchor-centric，UNKNOWN 留在冻结 denominator。
+depth/mask 文件 hash；theta edges 同时约束 cell probes 与 obstacle binning，partial
+sector 外 points 不 wrap；future field 保持 anchor-centric，UNKNOWN 留在冻结 denominator。
 输出终点只可能是 H1 的 `NOT_EVALUABLE`、multi-height/future stop 或
 `GEOMETRY_PROXY_MECHANISM_SUPPORTED`，后者也不会自动授权 H2。
 

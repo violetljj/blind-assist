@@ -13,11 +13,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from run_geometry_teacher_canary import (
     _bin_obstacle_support,
+    _cell_probes_world,
     _coverage_fraction,
     _decide_terminal,
     _known_field,
     _required_denominators,
     _select_horizon_indices,
+    _theta_edges,
 )
 
 
@@ -63,12 +65,88 @@ class GeometryTeacherCanaryTest(unittest.TestCase):
             points,
             np.asarray([False, True, False]),
             basis,
-            24,
+            np.linspace(-np.pi, np.pi, 25),
             np.asarray([0.0, 1.0]),
             [(0.05, 0.35), (0.35, 1.35), (1.35, 2.05)],
         )
         self.assertEqual([1, 1, 1], counts.sum(axis=(0, 1)).tolist())
         self.assertEqual([0, 1, 0], dynamic.sum(axis=(0, 1)).tolist())
+
+    def test_forward_sector_excludes_points_outside_frozen_angles(self) -> None:
+        points = np.asarray(
+            [
+                [1.0, 1.0, 1.0, 1.0, -1.0],
+                [-1.0, 0.0, 1.0, 2.0, 0.0],
+                [0.1, 0.1, 0.1, 0.1, 0.1],
+            ]
+        )
+        basis = (
+            np.zeros(3),
+            np.asarray([1.0, 0.0, 0.0]),
+            np.asarray([0.0, 1.0, 0.0]),
+            np.asarray([0.0, 0.0, 1.0]),
+        )
+        theta_edges = _theta_edges(
+            {
+                "theta_bin_count": 6,
+                "theta_range_degrees": [-45.0, 45.0],
+            }
+        )
+        counts, _ = _bin_obstacle_support(
+            points,
+            np.zeros(points.shape[1], dtype=bool),
+            basis,
+            theta_edges,
+            np.asarray([0.0, 3.0]),
+            [(0.05, 0.35)],
+        )
+        self.assertEqual(3, int(counts.sum()))
+        self.assertEqual(1, int(counts[0].sum()))
+        self.assertEqual(1, int(counts[-1].sum()))
+
+    def test_probe_geometry_uses_frozen_forward_sector_edges(self) -> None:
+        basis = (
+            np.zeros(3),
+            np.asarray([1.0, 0.0, 0.0]),
+            np.asarray([0.0, 1.0, 0.0]),
+            np.asarray([0.0, 0.0, 1.0]),
+        )
+        theta_edges = _theta_edges(
+            {
+                "theta_bin_count": 6,
+                "theta_range_degrees": [-45.0, 45.0],
+            }
+        )
+        probes = _cell_probes_world(
+            basis,
+            theta_edges,
+            np.asarray([0.0, 1.0]),
+            [(0.05, 0.35)],
+        )
+        self.assertEqual((6, 3, 9), probes.shape)
+        self.assertGreaterEqual(float(probes[:, 0, :].min()), -1e-12)
+        angles = np.arctan2(probes[:, 1, :], probes[:, 0, :])
+        self.assertGreaterEqual(float(angles.min()), -np.pi / 4 - 1e-12)
+        self.assertLessEqual(float(angles.max()), np.pi / 4 + 1e-12)
+
+    def test_full_circle_keeps_positive_pi_in_first_wrapped_bin(self) -> None:
+        points = np.asarray([[-1.0], [0.0], [0.1]])
+        basis = (
+            np.zeros(3),
+            np.asarray([1.0, 0.0, 0.0]),
+            np.asarray([0.0, 1.0, 0.0]),
+            np.asarray([0.0, 0.0, 1.0]),
+        )
+        counts, _ = _bin_obstacle_support(
+            points,
+            np.asarray([False]),
+            basis,
+            np.linspace(-np.pi, np.pi, 25),
+            np.asarray([0.0, 2.0]),
+            [(0.05, 0.35)],
+        )
+        self.assertEqual(1, int(counts[0].sum()))
+        self.assertEqual(1, int(counts.sum()))
 
     def test_unknown_cells_never_shrink_frozen_denominators(self) -> None:
         self.assertEqual(
