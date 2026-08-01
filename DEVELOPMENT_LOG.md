@@ -3170,3 +3170,21 @@
   绑定 torch/torchvision、预训练权重、语料、执行合同及所有父协议哈希；单元测试
   9/9、HFTF 全集 168/168。此提交只冻结可执行实现，尚未产生任何训练或 heldout
   outcome；主线、默认 App、Android、生产与安全主张均不变。
+
+## 2026-08-01：HFTF F0.1 九个 train/dev checkpoint 完成
+
+- 执行者：violjjet
+- 严格按 seed-major 顺序完成 seeds 17/29/43 ×
+  `SF_CURRENT / SF_FUTURE / HIST_FUTURE` 九个 run；全部 30/30 epochs、参数量
+  1,022,448、loss/gradient/parameter 有限，且各自产生唯一 checkpoint SHA-256。
+- checkpoint 只由固定阈值 0.5 下的 dev teacher-known cell micro risk F1 选择；未读取
+  heldout RGB、teacher target 或 student output。三个 seed 的
+  `HIST_FUTURE - SF_FUTURE` dev F1 差分别为
+  `-0.007279 / -0.017149 / -0.010633`，一致为负，但 dev 仅选择 checkpoint，
+  不能据此调参、停掉 frozen heldout 或作 student effect 结论。
+- 新增独立九产物 validator：重算每个 earliest-best epoch，核验目录全集、报告与
+  checkpoint 哈希、父协议/实现哈希、模型 strict load、优化器、有限性、参数量一致
+  和 heldout 防火墙。定向测试 6/6、HFTF 全集 174/174；正式 validator outcome
+  将在实现提交后运行。
+- 当前仍不授权 heldout target 物化或推理；九 checkpoint gate 通过后只允许先冻结
+  heldout 执行合同。主线、默认 App、Android、生产与安全主张均不变。
