@@ -11,7 +11,7 @@ R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED /
 C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE /
 C0_1_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED /
 D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED /
-STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_D1_FROZEN /
+D1_CAUSAL_FUTURE_LABEL_MECHANICS_SUPPORTED /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -174,7 +174,17 @@ Stage C D1 causal future-label mechanics 已在 formal report 前冻结。histor
 决定 `.4/.8 s` advected origin，grid orientation 固定 current yaw；future pose 只可
 重投影 future depth observation。consumed calibration 中 future observation 相对
 current-only 新增 known cells 为 outdoor `186/280`、indoor `303/490`，known loss 0。
-formal D1 尚未执行；通过也只允许冻结 fresh session-disjoint teacher/student canary。
+
+D1 正式双运行现已达到 `D1_CAUSAL_FUTURE_LABEL_MECHANICS_SUPPORTED`。两条 source
+的 history-speed eligibility 均为 1.0；outdoor candidate known fraction 为
+`.9266/.8766`，indoor 为 `.7954/.7588`，future 新增 known cells 与校准披露一致，
+known loss 和 UNKNOWN→SAFE violation 均为 0。24 个 future risk-proxy cells 覆盖
+5 个方向，全部 structural canaries 与第二遍 byte-determinism 通过。
+
+这只支持 consumed source 上的 causal future teacher-label mechanics。唯一新权限是
+冻结 fresh session-disjoint teacher corpus + student canary protocol；不得把 proxy
+解释为 hazard/safe truth，也不授权 acquisition、corpus generation、student training/
+effect、主线、Android/App 或安全 claim。
 
 ## 当前真源
 
@@ -225,6 +235,7 @@ formal D1 尚未执行；通过也只允许冻结 fresh session-disjoint teacher
 - [Stage C label readiness D0 result](HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_RESULT_D0_2026-08-01.md)
 - [Stage C causal future-label mechanics D1](HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_D1_2026-08-01.md)
 - [Stage C machine-readable future-label D1](HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_D1_2026-08-01.json)
+- [Stage C causal future-label mechanics D1 result](HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_RESULT_D1_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

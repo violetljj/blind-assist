@@ -1,4 +1,15 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。Stage C causal
+  future-label mechanics D1 正式双运行达到
+  `D1_CAUSAL_FUTURE_LABEL_MECHANICS_SUPPORTED`。两条 consumed EgoWalk source 的
+  history-speed eligibility 均为 1.0；outdoor `.4/.8 s` candidate known fraction
+  `.9266/.8766`、future-added known `186/280`，indoor `.7954/.7588`、
+  `303/490`；全部 known loss 与 UNKNOWN→SAFE violation 为 0。24 个
+  risk-proxy cells 覆盖 5 方向，七个 structural canaries 和第二遍 payload
+  byte-determinism 全过。report SHA-256
+  `e0c86898539602d6323958edc0ac01935f3fbc74375c85575db187e3948fc8c3`。
+  只授权冻结 fresh session-disjoint teacher corpus + student canary protocol；
+  不授权 acquisition、corpus generation、training/effect、主线或 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 D0 support 后冻结
   Stage C causal future-label mechanics D1。history `anchor-2 -> anchor` 速度只用来
   外推 `.4/.8 s` origin，orientation 固定 current yaw；future pose 只转换 future
