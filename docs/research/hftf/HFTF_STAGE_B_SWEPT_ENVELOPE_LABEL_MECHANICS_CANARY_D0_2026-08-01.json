@@ -1,0 +1,94 @@
+{
+  "schema": "blindassist_hftf_stage_b_swept_envelope_label_mechanics_canary_d0",
+  "status": "FROZEN_DEVELOPMENT_CANARY_RESULT_NOT_RUN",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "evidence_role": "CONSUMED_MECHANICS_AUDIT_ONLY",
+  "objective_alignment_source": "HFTF_OBJECTIVE_ALIGNMENT_AND_SWEPT_ENVELOPE_REPAIR_2026-08-01.md",
+  "parent_sessions": [
+    "036943049ded9e1a6356de88a2b80b27938dd4386bcad341c57e1145b198e34a",
+    "03b6dc99c1ac44b77d6c3ac36c17a5db748eca862e0008ac7928d7a82a5de68c",
+    "03c8727961f01047f54c3c4e38c48f4128738d100c00bb54145454bc4df9e3b0",
+    "03d7059322ffd8300f2eb85fd612e635242cbe08363e85e0ff74124e916b39e1"
+  ],
+  "parent_sessions_are_fresh_evidence": false,
+  "field": {
+    "theta_bin_count": 6,
+    "theta_range_degrees": [-45.0, 45.0],
+    "theta_semantics": "candidate_path_direction_at_bin_center",
+    "distance_edges_m": [0.0, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0],
+    "height_bands_m": {
+      "foot": [0.05, 0.35],
+      "body": [0.35, 1.35],
+      "head": [1.35, 2.05]
+    }
+  },
+  "standard_synthetic_envelope": {
+    "physical_participant_calibration_claimed": false,
+    "safety_margin_m": 0.1,
+    "anatomical_half_width_before_margin_m": {
+      "foot": 0.2,
+      "body": 0.3,
+      "head": 0.18
+    },
+    "effective_lateral_half_width_m": {
+      "foot": 0.3,
+      "body": 0.4,
+      "head": 0.28
+    },
+    "segment_longitudinal_interval_rule": "distance_bin_left_closed_right_open_except_8m_upper_closed",
+    "lateral_interval_rule": "absolute_cross_track_less_than_or_equal_to_effective_half_width"
+  },
+  "obstacle_support": {
+    "point_sample_stride_xy": 8,
+    "point_sample_offset_xy": 4,
+    "ground_semantic_class_ids": [1, 3, 5, 6, 17, 30],
+    "excluded_semantic_class_ids": [0, 1, 3, 5, 6, 17, 27, 30],
+    "dynamic_provenance_class_ids": [10, 11, 12, 13, 14, 21],
+    "risk_support_saturation_point_count": 8,
+    "risk_formula": "min(1, swept_prism_obstacle_point_count / 8)"
+  },
+  "known_support": {
+    "prism_probe_count": 9,
+    "minimum_passing_prism_probes": 5,
+    "prism_probe_geometry": "segment_center_plus_longitudinal_lateral_height_eight_corners",
+    "depth_front_tolerance_m": 0.2,
+    "semantic_zero_is_unknown": true,
+    "unknown_never_defaults_to_safe": true
+  },
+  "foot_ground_support": {
+    "longitudinal_section_count": 5,
+    "section_half_length_m": 0.2,
+    "minimum_ground_points_per_section": 3,
+    "minimum_supported_sections_for_known": 4,
+    "maximum_step_rise_m": 0.18,
+    "maximum_drop_m": 0.15,
+    "missing_ground_support": "UNKNOWN_NOT_SAFE"
+  },
+  "structural_requirements": [
+    "wider_envelope_collision_is_monotone_superset",
+    "height_specific_obstacle_changes_only_intersected_height_layer",
+    "lateral_dilation_catches_obstacle_inside_body_width",
+    "candidate_directions_remain_separable",
+    "step_or_drop_affects_foot_layer",
+    "missing_ground_support_cannot_be_safe",
+    "zero_obstacle_support_is_safe_only_when_known"
+  ],
+  "consumed_audit_outputs": [
+    "known_coverage_by_height_and_session",
+    "height_disagreement_by_session",
+    "unique_swept_collision_vs_angular_point_support",
+    "foot_ground_risk_and_unknown_counts",
+    "dynamic_provenance_counts",
+    "failure_atlas"
+  ],
+  "admission_to_formal_r3": {
+    "all_structural_tests_pass": true,
+    "all_four_consumed_sources_decode_and_bind": true,
+    "no_unknown_to_safe_violation": true,
+    "nondegenerate_known_and_height_specific_outputs_exist": true,
+    "formal_r3_still_requires_fresh_sources_and_separate_frozen_protocol": true
+  },
+  "student_training_authorized": false,
+  "research_mainline_changed": false,
+  "default_app_changed": false
+}

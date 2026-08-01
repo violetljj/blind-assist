@@ -1,4 +1,15 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。重新读取 HFTF 原始构想并
+  完成 objective-alignment audit，发现 R0–R2 teacher 只实现
+  `theta*distance*height` angular-cell point counts，缺少原 Stage B 要求的 body-width
+  dilation、swept candidate trajectory collision 与 foot ground/step/drop。故撤回
+  “直接降为 single-height R3”的当前决策；R2 正式终点保持不变，但只关闭 point-support
+  proxy，不能外推为 human envelope failure。outcome 前冻结 Development-only
+  `HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0`：标准代理 effective
+  half-width `foot/body/head=.30/.40/.28m`，9 prism probes，5 个 ground sections，
+  rise/drop `.18/.15m`，并修正 dynamic provenance IDs 为
+  `10/11/12/13/14/21`。先在 R2 burned sources 上验证标签 mechanics；fresh R3、H2、
+  主线、Android、提醒、默认 App、生产与安全均未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。一次性完成
   `HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_R2`，终态
   `H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP`。4/4 authority、prep hash、
@@ -8,8 +19,8 @@
   `.072222/.020370/.002924/.031481`，`03c87279` 低于 `.02`，故在第二顺序门停止；
   future `.079012/.087654/.013645/.069136` 只作 diagnostic。报告 SHA-256
   `600f37dea7940af5a4e2d09eb798547f3a8694b2dc4d04ce611e68f186023949`。
-  R2 sources burned；不改 height bands/gates。multi-height 降为 auxiliary，只允许
-  fresh-session single-height rolling-future R3。H2、主线、Android、提醒、默认 App、
+  R2 sources burned；不改该 evidence version 的 height bands/gates。后续
+  objective-alignment audit 对下一步作了补正；H2、主线、Android、提醒、默认 App、
   生产与安全均未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未正式运行 R2
   causal-advection runner。实现新增严格过去 history selection（等距时取更高 source

@@ -4,7 +4,8 @@
 
 `CANDIDATE_SIDE_LANE_ACTIVE / DEVELOPMENT_STANDARD /
 H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP /
-R2_BURNED_SINGLE_HEIGHT_REFORMULATION_REQUIRED / INNOVATION_NOT_EVALUABLE /
+R2_POINT_SUPPORT_PROXY_BURNED /
+STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_ACTIVE / INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 当前结论
@@ -83,8 +84,13 @@ source/mechanics validity 全过，worst current/near/far coverage 为
 `20.42%/18.47%/11.91%`，因此 future-view support 不再是该 evidence version 的
 blocker。`03c87279` 的 height disagreement 仅 `2/684=0.292%`，低于 2%；future
 diagnostic 也只有 3/4 过门，不能越过 height 顺序门解释。R2 sources 已 burned。
-multi-height 从 mandatory core 降为 auxiliary；只允许在 fresh sources 上冻结
-single-height causal rolling-future R3，不再调 height bands 或门。
+
+重新对照最初 HFTF 构想后，确认 R0–R2 teacher 只做 angular-cell point counts，没有
+人体横向宽度/安全余量膨胀、swept candidate trajectories 或 foot step/drop。因此 R2
+只关闭当前 point-support proxy，不能据此删除 multi-height 并直接进入更容易的
+single-height future。当前回到原始 Stage B：已冻结 Development-only swept-envelope
+label-mechanics canary，在 burned R2 sources 上先把人体包络监督做对；通过后才允许
+fresh-source formal R3。
 
 ## 当前真源
 
@@ -103,6 +109,9 @@ single-height causal rolling-future R3，不再调 height bands 或门。
 - [H1 R2 causal-advected teacher protocol](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2_2026-08-01.md)
 - [H1 R2 machine-readable teacher protocol](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2_2026-08-01.json)
 - [H1 R2 result](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_RESULT_R2_2026-08-01.md)
+- [目标一致性与 swept-envelope 修复](HFTF_OBJECTIVE_ALIGNMENT_AND_SWEPT_ENVELOPE_REPAIR_2026-08-01.md)
+- [Stage B swept-envelope mechanics protocol](HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.md)
+- [Stage B machine-readable protocol](HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

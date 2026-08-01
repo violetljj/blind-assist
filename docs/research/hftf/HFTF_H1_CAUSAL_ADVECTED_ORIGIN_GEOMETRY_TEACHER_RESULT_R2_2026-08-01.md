@@ -66,16 +66,18 @@ burned。
 source 的 future change 较高，就把 overall change 解释为环境主体运动预测；rolling
 origin 穿过静态空间本身也会产生差异。
 
-## 5. 研究决策
+## 5. 研究决策补正
 
-R2 关闭的是“multi-height 必须作为 HFTF 核心输出”的 evidence version，不关闭
-action-agnostic causal rolling-future field：
+目标一致性复核发现，R0–R2 只实现了 angular-cell point support，没有原始构想要求的
+body-width dilation、swept candidate trajectory collision 或 foot step/drop。
+因此 R2 关闭的是当前 three-height point-support teacher，不足以关闭真正的
+human-envelope-conditioned representation。
 
-- `foot/body/head` 从 mandatory core 降为 auxiliary diagnostic；
-- 下一 H1 若继续，只允许在 fresh sessions 上预冻结 single-height
-  `[0.05,2.05] m` rolling-future canary；
-- R3 不得修改 R2 的 origin、theta、distance、horizon、known、UNKNOWN、coverage 或
-  future-change 数值门；
-- R3 成功也只授权另行冻结 single-height H2 student，不恢复 multi-height claim。
+- 不直接删除 height 进入更容易的 single-height R3；
+- 先在 burned R2 sources 上完成 Development-only swept-envelope label-mechanics
+  canary；
+- 只有包络单调性、高度特异性、ground UNKNOWN 与真实 source 非退化性均通过，才允许
+  在 fresh sources 上冻结 formal R3；
+- R2 比例不用于选择新的 body widths、step/drop threshold 或 formal gate。
 
 当前 H2、主线、Android、提醒、默认 App、生产与安全均未授权。

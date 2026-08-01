@@ -115,9 +115,11 @@ current-only 的表示增量，并把 action policy 后置。
 - R2 以 history-causal ground-tangent rolling origin 在又四个 fresh sessions 上让
   4/4 current/near/far coverage 全过，但 multi-height 只 3/4 过门，终态为
   `H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP`；
-- R0/R1/R2 sessions 均已消费；multi-height 降为 auxiliary。下一版本若继续，只能在
-  fresh sessions 上冻结 single-height rolling-future field，不在 burned 数据上改
-  height bands、sector、horizon、known/coverage/future 门；
+- 目标一致性复核发现 R0–R2 只实现 angular-cell point support，缺少原构想的
+  body-width swept envelope 与 foot ground mechanics；因此该终点不外推为真正人体
+  包络失败，也不通过删除 height 进入缩水 single-height R3；
+- R0/R1/R2 sessions 均已消费；下一步只允许在 burned R2 上做 Development label
+  mechanics audit。只有 faithful swept-envelope teacher 通过结构门，才冻结 fresh R3；
 - 比较：current single-height、current multi-height、future multi-height；
 - 独立单元：parent source-session，不把 frames 当独立样本；
 - 必须报告：reprojection/pose validity、unknown coverage、各高度层冲突一致性、

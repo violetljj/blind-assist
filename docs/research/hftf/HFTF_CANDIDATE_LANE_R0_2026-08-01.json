@@ -89,10 +89,10 @@
           "terminal": "H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP",
           "mechanics_valid": "four_of_four_sessions_clear_current_near_far_known_coverage_and_consistency",
           "blocker": "one_of_four_sessions_fails_multi_height_nonredundancy",
-          "decision": "demote_multi_height_to_auxiliary"
+          "decision": "point_support_proxy_closed_but_swept_human_envelope_not_yet_evaluated"
         }
       ],
-      "allowed_next_step": "freeze_single_height_causal_advected_future_h1_canary_on_new_source_sessions"
+      "allowed_next_step": "run_consumed_development_swept_envelope_label_mechanics_canary_before_any_fresh_r3"
     },
     {
       "id": "H2",
