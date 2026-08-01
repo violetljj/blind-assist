@@ -4,7 +4,7 @@
 
 `CANDIDATE_SIDE_LANE_ACTIVE / DEVELOPMENT_STANDARD /
 H1_GEOMETRY_TEACHER_NOT_EVALUABLE /
-R0_BURNED_REFORMULATION_REQUIRED / INNOVATION_NOT_EVALUABLE /
+R1_BURNED_FUTURE_SUPPORT_REFORMULATION_REQUIRED / INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 当前结论
@@ -56,8 +56,16 @@ H1 R1 已在任何新 teacher outcome 计算前冻结。它不改 R0 的 known�
 denominator 或数值门，只把不可由单目 observation 支持的 360° 输出合同改写为
 camera-forward `[-45°, +45°]` 的 6-bin locomotion sector。R1 使用排除 R0 burned
 sessions 后按 official train session ID 字典序选择的四个全新 source sessions；四者
-source authority 已通过并绑定精确 report/manifest/spec/pose hashes。状态仍是
-`FROZEN_RESULT_NOT_RUN`，尚无 R1 teacher 结果。
+source authority 已通过并绑定精确 report/manifest/spec/pose hashes。
+
+R1 正式一次性结果仍为 `H1_GEOMETRY_TEACHER_NOT_EVALUABLE`，但定位发生了变化：
+4/4 current known coverage 达到 `22.07%–36.77%`，全部越过 `.15`，说明 R1
+evidence version 的 current support 可评价；由于 cohort 同时改变，不能把与 R0 的
+差异单独归因于 sector。`00c2a1cd` 的 near/far 仅 `3.34%/0%`，在
+future coverage 顺序门停止。burn 后诊断显示该 source 的 `0.4/0.8 s` camera
+translation 中位数约 `3.60/7.14 m`，明显高于另三者的
+`0.74–0.93/1.49–1.87 m`。这只形成 ego-motion/future-view support 的下一机制假设，
+不构成因果确认；四个 R1 sessions 也已永久 burned。
 
 ## 当前真源
 
@@ -70,6 +78,7 @@ source authority 已通过并绑定精确 report/manifest/spec/pose hashes。状
 - [H1 R0 result](HFTF_H1_GEOMETRY_TEACHER_CANARY_RESULT_R0_2026-08-01.md)
 - [H1 R1 forward-sector protocol](HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1_2026-08-01.md)
 - [H1 R1 machine-readable protocol](HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1_2026-08-01.json)
+- [H1 R1 result](HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_RESULT_R1_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

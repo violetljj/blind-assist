@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。一次性完成
+  `HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_R1`，终态
+  `H1_GEOMETRY_TEACHER_NOT_EVALUABLE`。4/4 authority、unique/exact fresh session
+  set、usable anchors `18/21/21/21`、consistency `0` 通过；6-bin forward sector
+  current coverage 为 `.220679/.277778/.297178/.367725`，4/4 越过 `.15`，R0 的
+  current coverage blocker 在新 evidence version 未复现；cohort 同时改变，不能将
+  差异单独归因于 sector。但 `00c2a1cd` near/far 仅 `.033436/0`，低于
+  `.10/.10`，故在 future observation coverage 顺序门停止；height/future fractions
+  只作 diagnostic。正式报告 SHA-256
+  `49b8a39119983b6c84187fc97b40365b4403e12c420d73a7f31bf73a194ab939`。
+  burn 后 pose localization 显示该 source 的 `.4/.8 s` translation 中位数约
+  `3.60/7.14 m`，形成 ego-motion-aware temporal support 假设但不是因果确认。
+  R1 四 sessions 永久 burned；不改 sector/horizon/gates/UNKNOWN。H2、主线、Android、
+  提醒、默认 App、生产与安全均未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未正式运行 HFTF
   H1 R1 forward-sector runner。实现现在从冻结 protocol 读取 theta range/edges；
   full-circle R0 保留 `[-pi,pi)` wrap，partial-sector R1 的边界外 obstacle points 不

@@ -109,8 +109,12 @@ current-only 的表示增量，并把 action policy 后置。
 
 - R0 终态：`H1_GEOMETRY_TEACHER_NOT_EVALUABLE`；四个 source/anchor 通过，但冻结
   360°/9-probe field 的 known coverage 失败，故 multi-height/future claim 未评价；
-- R0 sessions 已消费；任何 R1 必须冻结不同 field-support hypothesis 并使用新的
-  source sessions，不在 R0 数据上调低 known/coverage 门；
+- R1 以四个全新 sessions、相同 UNKNOWN/denominator/gates 冻结 6-bin
+  camera-forward sector；4/4 current coverage 过门，但一个快速前移 session 的
+  near/far coverage 失败，终态仍为 `H1_GEOMETRY_TEACHER_NOT_EVALUABLE`；
+- R0/R1 sessions 均已消费；下一版本必须使用新 sessions，并在 outcome 前冻结
+  ego-motion-aware/temporal-fusion support 与 dynamic-opportunity eligibility，不在
+  burned 数据上调 sector、horizon、known/coverage 门；
 - 比较：current single-height、current multi-height、future multi-height；
 - 独立单元：parent source-session，不把 frames 当独立样本；
 - 必须报告：reprojection/pose validity、unknown coverage、各高度层冲突一致性、
