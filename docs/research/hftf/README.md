@@ -440,6 +440,8 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C machine-readable D3-Q0.1 Failure Atlas R0](HFTF_STAGE_C_D3_Q0_1_CONSUMED_SELECTOR_FAILURE_ATLAS_R0_RESULT_2026-08-02.json)
 - [Stage C D4 opportunity ecology and recruitability R0](HFTF_STAGE_C_D4_OPPORTUNITY_ECOLOGY_AND_RECRUITABILITY_R0_2026-08-02.md)
 - [Stage C machine-readable D4 opportunity ecology design](HFTF_STAGE_C_D4_OPPORTUNITY_ECOLOGY_AND_RECRUITABILITY_R0_2026-08-02.json)
+- [Stage C D4-M0 metadata census execution contract](HFTF_STAGE_C_D4_M0_METADATA_CENSUS_EXECUTION_CONTRACT_2026-08-02.md)
+- [Stage C machine-readable D4-M0 metadata census contract](HFTF_STAGE_C_D4_M0_METADATA_CENSUS_EXECUTION_CONTRACT_2026-08-02.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

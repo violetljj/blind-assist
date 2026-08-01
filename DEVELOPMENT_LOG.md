@@ -4011,3 +4011,25 @@
   并将由 M0 execution contract 绑定。
 - 当前仅授权冻结/审计 M0 execution contract，不授权执行 metadata census、ecology、
   effect、student、主线/App/Android、生产或 safety。
+
+## 2026-08-02：HFTF D4-M0 metadata census execution contract 实现
+
+- 执行者：violjjet。新增 D4 专用 M0 planner、15 项 focused tests 与机器合同；不修改
+  已关闭的 Q0/Q0.1 实现。正式 ledger 固定为 1560 rows = 118 train exclusions（零
+  candidate 请求）+ 1442 candidate attempts，保留 global 124 exclusion authority
+  及其中 6 个 official-test IDs 的精确身份。
+- M0 eligibility 只读 description bytes、pose object metadata 与 exact-13
+  mask/depth listings；RGB listing、pose/media bytes、support、truth、clearance、
+  effect、sealed payload 全部 fail closed。5 Hz pool 持久化后才写 allocation attempt，
+  再 one-shot 调用 `secrets.token_bytes(32)`；rank、`C/n/B` 和三组分配完全机械化。
+- Windows durable barrier 明确为 exclusive create + file fsync + close + exact-byte
+  reopen verify，不虚构不受支持的 directory fsync。任何 partial/unknown root 后续
+  只冻结 INVALID，不联网、续跑或重抽 seed。
+- 审计后将 local drift 检查收紧为只读 exact `1+39` 个 slot `attempt.json`，完全不
+  遍历 sealed payload/selector/truth；attempt 后、首网前另写 preflight。仅 HTTP 404
+  或确定 schema failure 可记 ineligible，timeout/DNS/5xx 使 one-shot INVALID；已有
+  terminal 必须通过 exact closed set、schema、terminal 与 hash chain。
+- focused tests `21/21`、HFTF full suite `413/413`。valid locked/insufficient
+  terminals 均覆盖全上游 hash chain，任一 preflight/attempt tamper 会被拒绝。当前仍只授权提交推送与独立审计；
+  正式 M0 尚未执行，canonical root 必须保持不存在。机器合同 SHA-256 为
+  `e7d3e02f6669486368a17915bc67e6755edbfd319d1c0d30474b2b8027867985`。

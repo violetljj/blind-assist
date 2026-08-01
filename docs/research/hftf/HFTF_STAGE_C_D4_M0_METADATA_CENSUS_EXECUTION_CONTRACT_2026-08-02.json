@@ -1,0 +1,174 @@
+{
+  "schema": "blindassist_hftf_stage_c_d4_m0_metadata_census_execution_contract",
+  "status": "FROZEN_AFTER_D4_COUNT_CORRECTION_BEFORE_M0_METADATA_CENSUS",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "purpose": "one_shot_complete_official_train_metadata_census_and_mechanical_random_allocation_without_fresh_pose_media_support_truth_or_effect",
+  "parents": {
+    "d4_design": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D4_OPPORTUNITY_ECOLOGY_AND_RECRUITABILITY_R0_2026-08-02.json",
+      "sha256": "d7d26ac2267fe43c2a80d36cfe164a5544e34034c3b80509544be1591e3f0a68",
+      "required_status": "FROZEN_AFTER_D3_Q0_1_ATLAS_BEFORE_D4_METADATA_CENSUS_OR_FRESH_SOURCE_CONTENT"
+    },
+    "d2_metadata_qualification": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d2-official-train-metadata-qualification-20260802/qualification.json",
+      "sha256": "63a217c3e658bbe4fee9e351c5c9abf68379ec2ccb89a6c3449f1581e385ee47",
+      "required_terminal": "D2_OFFICIAL_TRAIN_METADATA_COHORT_QUALIFIED"
+    },
+    "q0_metadata_roster": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-metadata-roster-20260802/roster.json",
+      "sha256": "8720a68855e0ddcbee9ae174de69383dd6d596329d76f83d0798197e333ba7db",
+      "required_terminal": "D3_Q0_METADATA_ROSTER_40_SLOTS_LOCKED"
+    }
+  },
+  "official_train_split": {
+    "dataset": "SANPO-Synthetic",
+    "split": "train",
+    "generation": "1692794964120907",
+    "text_sha256": "f9c5dc4c289fa87342abc0d2cc49f112fcc78c7e02e0b6b081e296a99344173c",
+    "session_count": 1560,
+    "order": "source_file_order_preserved"
+  },
+  "exclusion_authority": {
+    "global_count": 124,
+    "global_manifest_bytes": 8060,
+    "global_manifest_sha256": "156bf17c54ecfba41f181a12df209aecc56b3c9a6a85f27b2db2f340737252f2",
+    "official_train_projection_count": 118,
+    "outside_official_train_count": 6,
+    "candidate_attempt_count": 1442,
+    "excluded_rows_receive_zero_candidate_metadata_requests": true
+  },
+  "pre_network_local_evidence_audit": {
+    "roots": [
+      {
+        "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-screening-20260802",
+        "expected_attempt_count": 1,
+        "allowed_attempt_schemas": [
+          "blindassist_hftf_stage_c_d3_q0_slot_attempt"
+        ]
+      },
+      {
+        "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-1-screening-20260802",
+        "expected_attempt_count": 39,
+        "allowed_attempt_schemas": [
+          "blindassist_hftf_stage_c_d3_q0_1_slot_attempt"
+        ]
+      }
+    ],
+    "read_allowlist": "direct_slot_directory_attempt_json_only",
+    "sealed_payload_selector_failure_truth_frame_and_other_json_must_not_be_opened": true,
+    "all_allowlisted_attempt_session_ids_must_be_subset_of_global_124": true,
+    "outside_parent_terminal": "D4_M0_FRESH_METADATA_RECRUITABILITY_POOL_INVALID_STOP"
+  },
+  "metadata_eligibility": {
+    "candidate_attempts": "every_nonexcluded_official_train_session_exactly_once_in_source_file_order",
+    "source_fps_allowed": [
+      5,
+      20
+    ],
+    "description_bytes_required": true,
+    "camera_chest_left_intrinsics_required": true,
+    "camera_pose_object_receipt_required_without_content": true,
+    "exact_13_normalized_mask_receipts_required_without_bytes": true,
+    "exact_13_normalized_depth_receipts_required_without_bytes": true,
+    "rgb_listing_or_receipt_is_not_an_eligibility_condition_and_is_forbidden_in_m0": true,
+    "http_404_or_deterministic_schema_failure_is_closed_ineligible_without_replacement": true,
+    "timeout_dns_http_5xx_and_other_transport_exhaustion_invalidates_the_entire_one_shot_census": true
+  },
+  "implementations": {
+    "metadata_census_planner": {
+      "path": "scripts/research/hftf/plan_stage_c_d4_m0_metadata_census.py",
+      "sha256": "c4b5f87b45a1809113560d2a024ca25c29dd2706758cc768ca8b0d8730acae00"
+    },
+    "d2_metadata_helper": {
+      "path": "scripts/research/hftf/plan_stage_c_d2_official_train_metadata.py",
+      "sha256": "4d8b206c887352d92c15cb3fe375d357551861c5e0a6113073a7426f332da58a"
+    },
+    "d3_receipt_helper": {
+      "path": "scripts/research/hftf/plan_stage_c_d3_q0_metadata_roster.py",
+      "sha256": "d23d335e07b474b6a2f1edbd21df3377f033676f8f4e907f0bcb6ebe359b910d"
+    }
+  },
+  "implementation_tests": {
+    "planner_test": {
+      "path": "scripts/research/hftf/test_plan_stage_c_d4_m0_metadata_census.py",
+      "sha256": "ba3c18702813976ab1dc602314c99900a7a5c2940b02bc1e8aad18c17bfe997a"
+    },
+    "test_count": 21,
+    "tests_passed": 21,
+    "hftf_full_test_count": 413,
+    "hftf_full_tests_passed": 413
+  },
+  "network": {
+    "retries": 3,
+    "scan_attempt_file_fsync_close_and_reopen_byte_verification_before_first_network_request": true,
+    "windows_directory_fsync_available": false,
+    "windows_durability_barrier": "exclusive_create_file_fsync_close_reopen_exact_byte_verification",
+    "retry_count_is_internal_transport_resilience_not_census_rerun": true
+  },
+  "durable_state_sequence": [
+    "exclusive_create_canonical_root",
+    "exclusive_write_file_fsync_close_and_reopen_verify_attempt_before_first_network_request",
+    "complete_1560_row_ledger_with_118_zero_request_exclusions_and_1442_candidate_attempts",
+    "exclusive_write_file_fsync_close_and_reopen_verify_complete_census",
+    "exclusive_write_file_fsync_close_and_reopen_verify_five_hz_pool_manifest",
+    "if_N_below_64_write_insufficient_terminal_without_allocation_attempt_or_seed",
+    "exclusive_write_file_fsync_close_and_reopen_verify_allocation_attempt_bound_to_pool",
+    "call_python_secrets_token_bytes_32_exactly_once",
+    "exclusive_write_file_fsync_close_and_reopen_verify_seed_receipt_bound_to_pool_and_allocation_attempt",
+    "rank_by_frozen_domain_hash_and_reject_any_digest_collision",
+    "exclusive_write_file_fsync_close_and_reopen_verify_locked_result"
+  ],
+  "allocation": {
+    "minimum_N_five_hz": 64,
+    "C": "min(N_five_hz,128)",
+    "n_ecology": "floor(3*C/8)",
+    "B_effect_reserve": "C-n_ecology",
+    "rank_input": "sha256(raw_utf8_HFTF_D4_R0_ALLOC_vertical_bar_plus_raw_32_seed_bytes_plus_raw_utf8_vertical_bar_plus_lowercase_session_id)",
+    "rank_order": "unique_digest_ascending",
+    "digest_collision_terminal": "D4_M0_FRESH_METADATA_RECRUITABILITY_POOL_INVALID_STOP",
+    "human_choice_or_seed_override_authorized": false
+  },
+  "canonical_artifacts": {
+    "root": "artifacts.local/evidence/hftf/stage-c-d4-m0-metadata-census-20260802",
+    "attempt": "attempt.json",
+    "preflight": "preflight.json",
+    "census": "census.json",
+    "pool": "pool.json",
+    "allocation_attempt": "alloc-attempt.json",
+    "seed": "seed.json",
+    "result": "result.json",
+    "failure": "failure.json",
+    "unknown_file_or_partial_root_is_invalid": true,
+    "existing_result_or_failure_is_accepted_as_terminal_only_after_exact_artifact_closed_set_schema_terminal_and_hash_chain_validation": true,
+    "all_final_tmp_and_orphan_paths_must_be_below_240_characters": true
+  },
+  "failure_policy": {
+    "normal_exception_writes_invalid_failure_if_possible": true,
+    "later_invocation_on_partial_root_only_freezes_invalid_without_network_or_seed": true,
+    "partial_census_resume_authorized": false,
+    "pool_only_allocation_resume_authorized": false,
+    "orphan_allocation_attempt_or_seed_resume_authorized": false,
+    "seed_regeneration_authorized": false,
+    "census_rerun_authorized": false,
+    "terminal": "D4_M0_FRESH_METADATA_RECRUITABILITY_POOL_INVALID_STOP"
+  },
+  "authorization": {
+    "metadata_census_authorized": true,
+    "description_bytes_authorized": true,
+    "pose_object_metadata_authorized": true,
+    "mask_depth_object_listing_metadata_authorized": true,
+    "os_csprng_seed_authorized_after_pool_fsync": true,
+    "pose_content_authorized": false,
+    "rgb_listing_or_bytes_authorized": false,
+    "mask_depth_bytes_authorized": false,
+    "support_truth_clearance_effect_or_sealed_payload_authorized": false,
+    "ecology_or_effect_execution_authorized": false,
+    "rgb_student_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

@@ -879,6 +879,26 @@ not-qualified selector。只有 5 个 qualified，未达到冻结的 first-six�
 transport/HFTF 获支持或被否定。该 cohort 禁止重跑、补槽、替换、扩容或同 outcome
 调门；后续只能在新的独立 protocol/data-role 边界下提出候选。
 
+D4 改问 fresh source population 的 opportunity ecology/recruitability。M0 planner
+不复用 Q0 的 first-40 控制流，而完整保序 ledger official-train 1560 IDs：全局 124
+exclusion 中 118 个在 train 且零请求跳过，另 6 个属于 official test；剩余 1442 个
+candidate 各做一次 description/pose-receipt/mask-depth-listing metadata 判定。RGB
+listing、pose/media bytes、support/truth/effect 均关闭。
+
+正式 one-shot 命令只可在 contract/planner/tests 提交推送、独立审计 `CLEAR` 且
+canonical root 不存在后运行：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/plan_stage_c_d4_m0_metadata_census.py `
+  --execution-contract docs/research/hftf/HFTF_STAGE_C_D4_M0_METADATA_CENSUS_EXECUTION_CONTRACT_2026-08-02.json `
+  --output-root artifacts.local/evidence/hftf/stage-c-d4-m0-metadata-census-20260802 `
+  --retries 3
+```
+
+5 Hz pool manifest durable 后才允许 allocation attempt；其后只生成一次 32-byte OS
+CSPRNG seed。`N<64` 在 seed 前停止；否则按冻结 rank 机械分配 ecology/effect/
+unassigned。任何 partial root 后续只冻结 INVALID，不联网、不 resume、不重抽。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
