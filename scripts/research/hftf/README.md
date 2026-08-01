@@ -329,6 +329,20 @@ audit 会完整解码全部 RGB/depth 帧并核对 LFS/local SHA、帧数、5 Hz
 32-frame canary 只检查正有限 depth 和 bottom-half/common support，不读取 semantic
 class、annotation 或 hazard/safe truth。
 
+C0 的 container nominal-rate 门失败后，C0.1 只允许在 hash-bound consumed replay 上
+用 parquet frame/timestamp + meta fps 修复 timebase authority：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/audit_stage_c_c0_1_egowalk_timebase_repair.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_1_2026-08-01.json `
+  --media-root artifacts.local/evidence/hftf/stage-c-c0-egowalk-inventory-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/timebase_repair.json
+```
+
+runner 要求 predecessor 的唯一 failures 精确为 RGB/depth nominal-rate mismatch；
+若存在任何其他 C0 failure，禁止用 C0.1 越过。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
