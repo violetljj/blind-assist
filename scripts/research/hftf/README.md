@@ -843,6 +843,16 @@ selector/failure 必须反向绑定 durable slot attempt；aggregator 在首个 
 前写 attempt。global screening、slot、aggregator、preprocessor 或 effect 的孤儿
 `.tmp/.orphan/attempt` 只允许直接封存 no-rerun failure，不得重开已消费输入。
 
+原 D3-Q0 正式 slot 1 已封存为 `D3_QUALIFICATION_INVALID_STOP`。runner 写出的
+selector 把 `slot_attempt_sha256` 同时放在允许的 authority hashes 与禁止的顶层，
+closed-schema 自检因此拒绝 admission。没有改 validator、重写 receipt 或重启媒体；
+slot 1 永久 burned，forensic qualification terminal 不得进入 cohort。
+
+当前所有上述 D3-Q0 命令均已终止授权。唯一后继是先冻结并推送全新的 schema-only
+Q0.1 contract：只删除重复顶层字段，从原 slot 2 开始，最多使用剩余 39 slots；所有
+资格门、effect gates、顺序、no-replacement/no-expansion 与 UNKNOWN 规则不变。新
+contract、canonical root、tests 与独立审计完成前不得运行 slot 2。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

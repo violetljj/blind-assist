@@ -3866,3 +3866,35 @@
   `verify_git=True` 与最终工程审计通过后，执行唯一 next slot。它不授权 effect
   提前执行、RGB student、reserved official-test、研究主线、默认 App、Android、
   生产或 safety。
+
+## 2026-08-02：HFTF D3-Q0 slot 1 closed-schema invalid stop
+
+- 执行者：violjjet
+- screening/effect contract 由 commit
+  `306477105db033dbb805fc78bd8567c2afb29b34` 精确提交推送；执行前
+  `HEAD == origin/master`、formal `verify_git=True`、35/35 targeted、387/387 HFTF
+  与最终独立工程审计均通过。canonical root 原先不存在，只启动一次冻结 slot 1
+  媒体/qualification 进程。
+- global/slot attempt 均在首网前 durable。进程下载 1 pose CSV、11 mask、11 depth，
+  RGB 为 0，并 durable 写出 content index、sealed payload 与 selector；随后
+  state scanner 拒绝 selector：runner 把 `slot_attempt_sha256` 同时写在允许的
+  `source_authority_and_content_hashes` 与禁止的 selector 顶层，closed schema 报
+  `extra=['slot_attempt_sha256']`。
+- 没有通过放宽 validator、修改 receipt 或重启媒体进程来救援。恢复调用只重读
+  selector receipt 并写出 `D3_QUALIFICATION_INVALID_STOP`，没有重开 media 或
+  sealed payload。selector 的 forensic terminal 为 not-qualified，但因 schema
+  非法不得进入 screening state、统计或后继选源依据；slot 1 永久 burned。
+- screening attempt / slot attempt / content index / sealed payload / invalid
+  selector / invalid terminal SHA-256 分别为
+  `137d0fa065c2eabd61fdc2ba158b12d9f586c1021fe2b0e64a292faf5492f364` /
+  `bff9cc469a1b9571fa9e858eafe853e646fba8a935476bf9e2e225b7c08e44f8` /
+  `7df2d5fbeab7483235f38b8fd9f2fa50007eab8c909ba55fa529a620b2610f6a` /
+  `7a1271ffa876df453df38ea52ba3db4c14044631ef9dc70e44023ea5433d55ed` /
+  `cbad78e83d3b3aca80a2a9faaa6d14bde2151ae08e10fc9e2f922d99a1814865` /
+  `e1975e896b5d6a26f8a28ee7ee29b5a9d1d3f4cc53b0a183c3dd0aec658e962d`。
+  selection、budget terminal、aggregate attempt 与 slot failure 均不存在。
+- 同一 Q0 contract 已关闭，禁止 rerun、reopen、replacement 或 expansion。唯一
+  新权限是冻结独立 Q0.1 schema-only successor：只删除重复顶层字段，slot 1 保持
+  burned，从原 slot 2 开始最多 39 slots；`.10/5/20`、252 denominator、四 strata、
+  UNKNOWN、effect gates、roster order 与 no-replacement/no-expansion 全部不变。
+  新 contract/root 提交推送和独立审计前不得打开 slot 2。
