@@ -107,7 +107,10 @@ current-only 的表示增量，并把 action policy 后置。
 
 ### H1 — Geometry teacher canary
 
-- 当前授权：`H1_GEOMETRY_TEACHER_CANARY`，尚未执行；
+- R0 终态：`H1_GEOMETRY_TEACHER_NOT_EVALUABLE`；四个 source/anchor 通过，但冻结
+  360°/9-probe field 的 known coverage 失败，故 multi-height/future claim 未评价；
+- R0 sessions 已消费；任何 R1 必须冻结不同 field-support hypothesis 并使用新的
+  source sessions，不在 R0 数据上调低 known/coverage 门；
 - 比较：current single-height、current multi-height、future multi-height；
 - 独立单元：parent source-session，不把 frames 当独立样本；
 - 必须报告：reprojection/pose validity、unknown coverage、各高度层冲突一致性、

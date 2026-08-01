@@ -3,8 +3,8 @@
 当前状态：
 
 `CANDIDATE_SIDE_LANE_ACTIVE / DEVELOPMENT_STANDARD /
-HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED /
-H1_GEOMETRY_TEACHER_CANARY_AUTHORIZED / INNOVATION_NOT_EVALUABLE /
+H1_GEOMETRY_TEACHER_NOT_EVALUABLE /
+R0_BURNED_REFORMULATION_REQUIRED / INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 当前结论
@@ -45,11 +45,12 @@ canary。
 官方标签整体错误。精确 capture timestamp、真实人体尺寸、participant event truth 与
 student/effect 仍为 `NOT_EVALUABLE`。
 
-H1 R0 数值协议现已 outcome 前冻结，状态
-`H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_AND_IMPLEMENTATION_FROZEN /
-RESULT_NOT_RUN`。它固定 24 个 theta
-bins、6 个 distance bins、`0/0.4/0.8 s` horizons、`foot/body/head` proxy ranges、
-known/risk 规则、4/4 source-session 门与失败终点；尚未读取 H1 field outcome。
+H1 R0 已按 outcome 前冻结的数值协议一次执行并关闭为
+`H1_GEOMETRY_TEACHER_NOT_EVALUABLE`。四个 source sessions 与 usable anchors 过门，
+但 360° anchor-centric field 的 current/near/far required-cell known coverage
+只有 `5.62%–9.68% / 0.54%–6.13% / 0%–4.25%`，低于冻结的
+`.15/.10/.10`。因此 multi-height/future 非冗余不能评价；R0 sessions 已烧毁，不在
+同一数据上调 known/coverage 门救援。
 
 ## 当前真源
 
@@ -59,6 +60,7 @@ known/risk 规则、4/4 source-session 门与失败终点；尚未读取 H1 fiel
 - [H0.1/H0.2 SANPO source-specific 结果](HFTF_H0_1_H0_2_SANPO_PROXY_AUTHORITY_RESULT_2026-08-01.md)
 - [H1 geometry teacher canary R0 protocol](HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.md)
 - [H1 R0 machine-readable protocol](HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.json)
+- [H1 R0 result](HFTF_H1_GEOMETRY_TEACHER_CANARY_RESULT_R0_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

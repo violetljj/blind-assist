@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。一次性完成
+  `HFTF_H1_GEOMETRY_TEACHER_CANARY_R0` 正式四 session 执行，终态
+  `H1_GEOMETRY_TEACHER_NOT_EVALUABLE`。4/4 authority、exact frozen session set、
+  usable anchors `18/20/18/18` 与 single/multi consistency error `0` 通过；但冻结
+  360° anchor-centric 9-probe field 的 current known coverage 仅
+  `.056199–.096836 < .15`，near `.005401–.061343 < .10`，far
+  `.000000–.042477 < .10`，故在第一顺序门停止。height/future fractions 只作
+  diagnostic，不能形成支持或否定。报告
+  `h1-geometry-teacher-canary-r0-20260801/teacher_canary.json` SHA-256
+  `53261fd930c9a1ffc1de03468d974a1e16624383fb12e241da8b26df0cf7809e`。
+  不调低 R0 门、不删 UNKNOWN、不挑最好 session；四 sessions 永久 burned。只允许在
+  新 sessions 上 outcome 前冻结不同 field-support hypothesis 的 R1。H2、主线、
+  Android、提醒、默认 App、生产与安全均未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未正式运行
   HFTF H1 R0 geometry-teacher runner 与 9 项 outcome-free unit tests，状态
   `PROTOCOL_AND_IMPLEMENTATION_FROZEN_RESULT_NOT_RUN`。runner 重算 protocol、

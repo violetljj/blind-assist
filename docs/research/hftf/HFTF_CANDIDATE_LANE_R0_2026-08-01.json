@@ -66,8 +66,12 @@
     {
       "id": "H1",
       "name": "geometry_teacher_canary",
-      "current_terminal": "GEOMETRY_TEACHER_CANARY_PROTOCOL_AND_IMPLEMENTATION_FROZEN_RESULT_NOT_RUN",
-      "protocol": "HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.json"
+      "current_terminal": "H1_GEOMETRY_TEACHER_NOT_EVALUABLE",
+      "protocol": "HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.json",
+      "result": "HFTF_H1_GEOMETRY_TEACHER_CANARY_RESULT_R0_2026-08-01.md",
+      "r0_burned": true,
+      "blocker": "frozen_360_degree_anchor_centric_required_cell_known_coverage_below_gate",
+      "allowed_next_step": "freeze_new_h1_reformulation_on_new_source_sessions"
     },
     {
       "id": "H2",
