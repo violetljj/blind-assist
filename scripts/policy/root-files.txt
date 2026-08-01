@@ -84,6 +84,7 @@ run_dual_loop_production_temporal_ab.py
 run_dual_loop_production_temporal_ab_device.ps1
 run_host_research.ps1
 monitor_host_research_process.ps1
+run_model_matrix.py
 run_public_video_campaign_tests.py
 run_public_video_edge_inference.ps1
 run_research_contract_tests.py

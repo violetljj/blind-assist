@@ -1,0 +1,37 @@
+{
+  "schema_version": "blindassist.model_matrix.dataset_registry.v1",
+  "registry_id": "BLINDASSIST_MODEL_MATRIX_DATASETS_R0",
+  "datasets": [
+    {
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "display_name": "RISKSEG-R0 frozen 30-event device view v2",
+      "status": "frozen_development_view",
+      "root": "artifacts.local/evidence/riskseg-r0/event-eval/device-view-v2",
+      "manifest_path": "manifest.json",
+      "format": "nested_event_json",
+      "source_type": "SANPO-Real v0 materialized RGB plus oracle mask view",
+      "identity_fields": [
+        "source_session_id",
+        "sequence_id",
+        "frame_index",
+        "source_frame_index",
+        "image_sha256"
+      ],
+      "truth_fields": [
+        "oracle_mask_path",
+        "oracle_mask_sha256",
+        "source_mask_sha256",
+        "bucket",
+        "positive",
+        "alertable_interval_frames",
+        "passed_interval_frames"
+      ],
+      "input_contract": {
+        "color_space": "RGB",
+        "sampling": "frozen 10fps event view",
+        "source_frame_order": "manifest order",
+        "truth_access_default": "deny"
+      }
+    }
+  ]
+}

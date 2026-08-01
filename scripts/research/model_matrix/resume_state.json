@@ -1,0 +1,12 @@
+{
+  "schema_version": "blindassist.model_matrix.resume_state.v1",
+  "template": true,
+  "status": "EMPTY_TEMPLATE",
+  "run_id": null,
+  "manifest_sha256": null,
+  "model_registry_sha256": null,
+  "dataset_registry_sha256": null,
+  "trace_schema_sha256": null,
+  "jobs": {},
+  "notes": "Tracked template only. Runtime state is written to output_root/resume_state.json."
+}

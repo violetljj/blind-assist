@@ -1,0 +1,134 @@
+{
+  "schema_version": "blindassist.model_matrix.manifest.v1",
+  "run_id": "MODEL_MATRIX_R0_DEVELOPMENT",
+  "model_registry": "model_registry.json",
+  "dataset_registry": "dataset_registry.json",
+  "trace_schema": "trace_schema.json",
+  "output_root": "artifacts.local/evidence/model-matrix-r0",
+  "default_resolution": {
+    "width": 512,
+    "height": 288
+  },
+  "jobs": [
+    {
+      "job_id": "yolo11n_riskseg_r0_replay",
+      "model_id": "yolo11n",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "resolution": {
+        "width": 320,
+        "height": 320
+      },
+      "mode": "run"
+    },
+    {
+      "job_id": "pidnet_s_seed_20260801_riskseg_r0_replay",
+      "model_id": "pidnet_s_seed_20260801",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "resolution": {
+        "width": 512,
+        "height": 288
+      },
+      "mode": "run"
+    },
+    {
+      "job_id": "pidnet_s_seed_20260802_riskseg_r0_replay",
+      "model_id": "pidnet_s_seed_20260802",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "resolution": {
+        "width": 512,
+        "height": 288
+      },
+      "mode": "run"
+    },
+    {
+      "job_id": "pidnet_s_seed_20260803_riskseg_r0_replay",
+      "model_id": "pidnet_s_seed_20260803",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "resolution": {
+        "width": 512,
+        "height": 288
+      },
+      "mode": "run"
+    },
+    {
+      "job_id": "truth_mask_adapter_riskseg_r0",
+      "model_id": "truth_mask_adapter",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "resolution": {
+        "width": 512,
+        "height": 288
+      },
+      "mode": "run"
+    },
+    {
+      "job_id": "depth_anything_v2_riskseg_r0",
+      "model_id": "depth_anything_v2_vits",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "resolution": {
+        "width": 512,
+        "height": 288
+      },
+      "mode": "run"
+    },
+    {
+      "job_id": "rcle_historical_riskseg_r0",
+      "model_id": "rcle_historical",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "mode": "preflight_only",
+      "reason": "historical RCLE has no frozen frame-wise adapter contract on this dataset"
+    },
+    {
+      "job_id": "ustrf_historical_riskseg_r0",
+      "model_id": "ustrf_historical",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "mode": "preflight_only",
+      "reason": "historical USTRF adapters require their route/geometry request contract"
+    },
+    {
+      "job_id": "hftf_teacher_riskseg_r0",
+      "model_id": "hftf_teacher",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "mode": "preflight_only",
+      "reason": "HFTF teacher is currently a geometry canary, not a frame-wise risk adapter"
+    },
+    {
+      "job_id": "hftf_student_seed_17_riskseg_r0",
+      "model_id": "hftf_student_seed_17_sf_current",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "mode": "preflight_only",
+      "reason": "HFTF student checkpoint needs its frozen history-input contract"
+    },
+    {
+      "job_id": "hftf_student_seed_29_riskseg_r0",
+      "model_id": "hftf_student_seed_29_sf_current",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "mode": "preflight_only",
+      "reason": "HFTF student checkpoint needs its frozen history-input contract"
+    },
+    {
+      "job_id": "hftf_student_seed_43_riskseg_r0",
+      "model_id": "hftf_student_seed_43_sf_current",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "mode": "preflight_only",
+      "reason": "HFTF student checkpoint needs its frozen history-input contract"
+    },
+    {
+      "job_id": "baseline_no_alert_riskseg_r0",
+      "model_id": "baseline_no_alert",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "mode": "run"
+    },
+    {
+      "job_id": "baseline_always_unknown_riskseg_r0",
+      "model_id": "baseline_always_unknown",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "mode": "run"
+    },
+    {
+      "job_id": "baseline_yolo_geometry_riskseg_r0_replay",
+      "model_id": "baseline_yolo_geometry_replay",
+      "dataset_id": "riskseg_r0_device_view_v2",
+      "mode": "run"
+    }
+  ]
+}
