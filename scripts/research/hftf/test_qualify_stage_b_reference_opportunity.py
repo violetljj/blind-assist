@@ -66,6 +66,15 @@ class StageBReferenceOpportunityQualificationTest(unittest.TestCase):
         banned_helper = "_" + "bin_obstacle_support"
         self.assertNotIn(banned_helper, source)
 
+    def test_missing_ground_plane_is_an_explicit_binding_gap(
+        self,
+    ) -> None:
+        missing = qualifier._missing_geometry_bindings(
+            {"a", "b"}, {"a", "b"}, {"a"}
+        )
+        self.assertEqual([], missing["pose_bindings"])
+        self.assertEqual(["b"], missing["local_ground_planes"])
+
 
 if __name__ == "__main__":
     unittest.main()

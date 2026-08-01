@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。R3.1 ranks 5–8
+  qualification 中，5–7 完整拒绝且 ground risk 均为 0；rank 8 authority 总体准入但
+  缺一个 manifest frame 的 local-ground-plane，旧 qualifier 产生 KeyError 且未写
+  报告。修复为在任何 reference 计算前比较 manifest、pose binding 与 ground-plane
+  IDs；缺口生成显式 source rejection 与 missing-ID atlas，不消失、不默认 safe。
+  ranks 5–7 已有报告保持不重跑，只允许补完 rank 8。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 R3.1 bounded
   inventory plan：official split 1,560 sessions 中按字典序记录 109 个 scanned
   entries，固定前 40 个 inventory-eligible candidates；不读取 reference/candidate/

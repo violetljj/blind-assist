@@ -128,6 +128,19 @@ def _expected_from_current_source(
     }
 
 
+def _missing_geometry_bindings(
+    manifest_ids: set[str],
+    pose_binding_ids: set[str],
+    ground_plane_ids: set[str],
+) -> dict[str, list[str]]:
+    return {
+        "pose_bindings": sorted(manifest_ids - pose_binding_ids),
+        "local_ground_planes": sorted(
+            manifest_ids - ground_plane_ids
+        ),
+    }
+
+
 def run(
     protocol_path: Path,
     ledger_path: Path,
@@ -243,6 +256,29 @@ def run(
         for item in authority["ground_and_body_proxy_canary"]["per_frame"]
         if item.get("local_ground_plane") is not None
     }
+    missing_geometry = _missing_geometry_bindings(
+        {str(row["id"]) for row in rows},
+        set(binding_by_id),
+        set(plane_by_id),
+    )
+    if any(missing_geometry.values()):
+        result.update(
+            {
+                "terminal": REJECTED,
+                "qualified": False,
+                "checks": {
+                    "authority": authority_validation["ok"],
+                    "complete_pose_and_local_ground_bindings": False,
+                },
+                "missing_geometry_bindings": missing_geometry,
+                "arm_outcome_authorized": False,
+                "future_stage_c_authorized": False,
+                "student_training_authorized": False,
+                "research_mainline_changed": False,
+                "default_app_changed": False,
+            }
+        )
+        return result
     field = mechanics["field"]
     theta_edges = _theta_edges(field)
     distance_edges = np.asarray(
