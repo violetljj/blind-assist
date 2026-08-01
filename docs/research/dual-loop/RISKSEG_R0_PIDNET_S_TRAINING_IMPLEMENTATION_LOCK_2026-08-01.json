@@ -1,0 +1,159 @@
+{
+  "schema_version": "blindassist.riskseg_r0.training_implementation_lock.v1",
+  "protocol_id": "RISKSEG_R0",
+  "status": "TRAINING_IMPLEMENTATION_LOCKED_TECHNICAL_PREFLIGHT_PASS",
+  "locked_at": "2026-08-01",
+  "implementation_source_commit": "943fae9171829ab7c38868a16342a6fb77051a3b",
+  "training_implementation": {
+    "path": "scripts/research/riskseg_r0_training/train.py",
+    "sha256": "dde9dcb5ae34870de1adabc354dad03aec6dc8bf42234775526c310b9ef2222c",
+    "architecture": "official_PIDNet-S",
+    "official_repo": "https://github.com/XuJiacong/PIDNet",
+    "official_repo_commit": "4c158cf24ce432f0a8cb43364fae38d93cee0dc3",
+    "official_license": "MIT",
+    "official_license_sha256": "2ad04a8129b4e7bede15ea8636c25a0f60afe3e0366ee823265f935ced479cba",
+    "official_model_source_sha256": "3fe087730d4a754d7570f61809d7fc6228a72d17289bdd53fbbc5efa2376cf4",
+    "official_model_utils_sha256": "233134dc3a07c5de43a3902214eaf5cea4355ffa8b89003d2db5587a057a8728"
+  },
+  "pretrained": {
+    "filename": "PIDNet_S_ImageNet.pth.tar",
+    "sha256": "f96e2c96b1aca1400a6f54ac41093d98b4817f6008a5d869abe6248551a5f359",
+    "md5": "0d25ff46681c795d3c7bc8eb6aa62e76",
+    "size_bytes": 38061375,
+    "source_note": "The official repository names this ImageNet checkpoint, but its original Google Drive URL was unavailable. The byte artifact was recovered from Zenodo record 14606189 and matched that record's exact filename, size, and MD5."
+  },
+  "data": {
+    "view_root": "artifacts.local/evidence/riskseg-r0/training-reencoded-view-v1",
+    "manifest_sha256": "cebe98855368fe25895d7b2e2cfc6aa3d22826765eae0ef9c3bfbfad622cd879",
+    "receipt_sha256": "fbfdbecf6ccd6b9957581b24ffced6b99b8f8c058fef0de645675aa422a36512",
+    "train_frames": 320,
+    "train_sessions": 6,
+    "dev_frames": 200,
+    "dev_sessions": 4,
+    "session_overlap": [],
+    "source_and_mask_hash_check_before_training": true,
+    "event_eval_outcome_access_forbidden": true
+  },
+  "event_eval_firewall": {
+    "cohort_status": "EVENT_EVAL_FROZEN_ADEQUATE",
+    "parent_event_count": 30,
+    "source_session_count": 30,
+    "bucket_counts": {
+      "blocking_obstacle_positive": 8,
+      "boundary_level_change_positive": 8,
+      "parallel_curb_negative": 7,
+      "normal_walkable_negative": 7
+    },
+    "cohort_freeze_receipt_sha256": "2da321dfc56498baac2989c9ee751a612615376984d55743d83d530c53643345",
+    "truth_ledger_sha256": "d9c6a1881096ddcb1a312b7a3f04497350c5f1034e04c2344d2211686e935012",
+    "candidate_output_visible_before_freeze": false,
+    "model_outcomes_opened_before_lock": false
+  },
+  "recipe": {
+    "input_width": 512,
+    "input_height": 288,
+    "class_order": [
+      "walkable",
+      "blocking_obstacle",
+      "boundary_level_change",
+      "unknown_nonwalkable"
+    ],
+    "seeds": [
+      20260801,
+      20260802,
+      20260803
+    ],
+    "decision_seed": 20260801,
+    "batch_size": 4,
+    "maximum_epochs": 200,
+    "minimum_epochs": 40,
+    "early_stopping_patience": 30,
+    "checkpoint_rule": "maximum_dev_mean_iou_then_earliest_epoch",
+    "optimizer": "SGD",
+    "base_learning_rate": 0.005,
+    "schedule": "poly_power_0.9",
+    "momentum": 0.9,
+    "weight_decay": 0.0005,
+    "nesterov": false,
+    "automatic_mixed_precision": false,
+    "deterministic_algorithms": true,
+    "augmentation": {
+      "official_random_scale": "0.5_to_2.1_in_0.1_steps",
+      "base_size": 512,
+      "random_crop_height": 288,
+      "random_crop_width": 512,
+      "horizontal_flip_probability": 0.5,
+      "color_jitter": false,
+      "rotation": false
+    },
+    "loss": {
+      "official_outputs": [
+        "auxiliary_semantic",
+        "final_semantic",
+        "boundary"
+      ],
+      "semantic_balance_weights": [
+        0.4,
+        1.0
+      ],
+      "final_ohem_threshold": 0.9,
+      "final_ohem_min_kept": 131072,
+      "boundary_bce_coefficient": 20.0,
+      "semantic_boundary_threshold": 0.8,
+      "class_balance": false
+    },
+    "dev_metrics": [
+      "mean_iou",
+      "per_class_iou",
+      "boundary_f1_tolerance_1px",
+      "worst_session_mean_iou"
+    ]
+  },
+  "forbidden": [
+    "fp_sampler",
+    "class_weight_tuning",
+    "manual_gate",
+    "component_classifier",
+    "event_eval_feedback",
+    "event_eval_seed_selection",
+    "architecture_search",
+    "input_size_change",
+    "precision_change"
+  ],
+  "technical_preflight": {
+    "status": "PIDNET_S_TECHNICAL_PREFLIGHT_PASS",
+    "host_export_receipt_sha256": "f6ca2bb7f1815d674d3c12efe0ec7fa506e26e45a7bb37a23ee4653cd187c266",
+    "host_tflite_validation_sha256": "105392c909f5a9a709e8101141c9524a27cbe23fb368943bc2c8c79fb19b1eae",
+    "tflite_sha256": "d492d05012dd750cd6e5e642ea7d56682fa2fd1fba2bb3052b10ab1ebb0c2ddb",
+    "device_receipt_sha256": "02c9495a43a4e4c6d42b8f6cc4ac483f7ec2218ff3d5c8864a30c5a29756dff9",
+    "device_logcat_sha256": "f8f61cc0b7e69d0583c5a7f93c52a537a8aea92979878328f764e853d86c15d6",
+    "device_validation_sha256": "2c1fd1bade2467530e05016ced350107da141c8bf9a9d3d17c8123d177ecdfc0",
+    "device": "SM-S9280",
+    "soc": "SM8650",
+    "qnn_delegate_version": [
+      0,
+      24,
+      0
+    ],
+    "qnn_nodes_delegated": 163,
+    "tflite_nodes_total": 163,
+    "qnn_partitions": 1,
+    "qnn_cached_context_size_bytes": 7962624,
+    "sample_count": 7619,
+    "failure_count": 0,
+    "total_p95_ms": 75.738594,
+    "initial_window_p95_ms": 75.811511,
+    "final_window_p95_ms": 76.004479,
+    "final_over_initial_p95_ratio": 1.0025453654392933,
+    "maximum_thermal_status": 0
+  },
+  "frozen_chain_sha256": {
+    "TraversabilitySegmentation.kt": "729d4c7ed0651dbdbd0f8eede6024fd1cfe9c7afd7dc03be06d7e4cb45977f9a",
+    "RiskAnalyzer.kt": "9fa3115620626835b1b108a3c3ac2de4aaab0b4a2f5cc1de9e1332347fbe3329",
+    "TemporalRiskTracker.kt": "62428714ea2d0f43e025a538d638c415c2247381efcfa6c91299741f007badba",
+    "RiskEventTracker.kt": "6bacd02539437a7960d317184770332a0d7c2155dca2375cdc55109c30e82dd0",
+    "FeedbackPlanner.kt": "80bc2ad84af09415c534c7e0ddfc5b3cc11e5110e483a8696c1df54656493a0e",
+    "AssistDecisionKernel.kt": "19d7d820b32fddacd89377233e79f86f3bf257bfd85f1adb9a69f2d54a3a3f07"
+  },
+  "next_action": "TRAIN_SEED_20260801_THEN_20260802_THEN_20260803"
+}

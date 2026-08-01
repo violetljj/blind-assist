@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：Codex。`RISKSEG-R0`
+  successor 已冻结 30 parent events / 30 source sessions 的 output-blind event-eval，
+  四桶为 `8/8/7/7`；520-frame train/dev 重编码视图为 `320/200` 且 session
+  零重叠。唯一候选 PIDNet-S 完成 `512x288 / four-class / full W8A8` 技术预检：
+  TFLite 7,911,768 bytes，SM-S9280 上 QNN HTP `163/163` nodes / 1 partition，
+  7,619 次冻结全链路 total P95 `75.739 ms`，末/初 2 分钟 P95 比
+  `1.00255x`，failure 与 thermal status 均为 0。训练实现 commit
+  `943fae9...` 和三 seed recipe 已写入 implementation lock；未读取 event-eval
+  模型 outcome，默认 App 仍为 YOLO。下一步按 `20260801/2/3` 依次训练。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在两条明确 consumed
   EgoWalk calibration source 上完成 depth-only reader 校准并冻结 Stage C label
   readiness D0。64/64 preview frames 可恢复 height-constrained ground plane；相机

@@ -5,7 +5,8 @@ STRUCTURAL_SIGNAL_NOT_SUPPORTED_STOP /
 INFORMATION_CEILING_THREE_ARM_D0_VALID_MIXED_GAPS /
 RISKSEG_R0_TASK_AND_DATA_CONTRACT_FROZEN /
 FULL_SEQUENTIAL_EXECUTION_AUTHORIZED /
-HOLD_EVENT_EVAL_DATA / EVENT_TRUTH_NOT_FROZEN /
+EVENT_EVAL_FROZEN_ADEQUATE /
+PIDNET_S_TECHNICAL_PREFLIGHT_PASS / TRAINING_IMPLEMENTATION_LOCKED /
 YOLO_RULE_PATCHING_STOPPED /
 SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
@@ -39,15 +40,21 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 320-frame train / 200-frame dev；既有 90-frame / 3-event 集因两个 source-session
 重叠且含 22 张相同 RGB，只做 contaminated non-gating regression smoke。
 新 event-eval 必须与二者 session-disjoint，至少 30 个 parent events 并覆盖障碍、
-台阶/落差、平行路沿和正常通行负例。当前
-[数据门结果](RISKSEG_R0_EVENT_EVAL_DATA_GATE_RESULT_2026-08-01.md) 为
-`HOLD_EVENT_EVAL_DATA`：两路 RGB 盲审只有 14 个同桶一致 shortlist，
-`blocking/boundary/parallel/normal=7/2/1/4`，低于 `8/8/7/7`。完整顺序执行虽已授权，
-但 fail-closed 数据门已经触发，所以不预检、不训练。
+台阶/落差、平行路沿和正常通行负例。历史
+[数据门结果](RISKSEG_R0_EVENT_EVAL_DATA_GATE_RESULT_2026-08-01.md) 的
+`HOLD_EVENT_EVAL_DATA` 保持不可变；随后新增 output-blind review bundle 与裁决，
+已冻结 30 parent events / 30 source sessions，四桶精确为 `8/8/7/7`，successor
+数据门为 `EVENT_EVAL_FROZEN_ADEQUATE`。
 
 唯一模型候选是 PIDNet-S，技术预检固定 `512x288 / W8A8 / four-class`，要求 TFLite
 和 QNN 都能编译、输出有限且尺寸正确、SM-S9280 冻结链 total P95 `<=100 ms`，并通过
-10 分钟持续运行退化门。通过后才执行官方结构/预训练权重的三 seed 训练和
+10 分钟持续运行退化门。当前
+[技术预检结果](RISKSEG_R0_PIDNET_S_TECHNICAL_PREFLIGHT_RESULT_2026-08-01.md)
+已经 `PIDNET_S_TECHNICAL_PREFLIGHT_PASS`：SM-S9280 上 QNN HTP 完整接管
+`163/163` 节点；7,619 次全链路 P95 `75.739 ms`，末/初 2 分钟 P95 比
+`1.00255x`，failure 和 thermal status 均为 0。训练 recipe 已由
+[implementation lock](RISKSEG_R0_PIDNET_S_TRAINING_IMPLEMENTATION_LOCK_2026-08-01.json)
+绑定。下一步执行官方结构/预训练权重的三 seed 训练和
 `YOLO-only / learned segmentation-only / truth-mask oracle` 事件评价；任一 recall、
 critical miss、false-alert event、clearance、共同命中时序或性能门出现合同定义的
 trade-off，都保持 YOLO 默认。
