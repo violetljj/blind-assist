@@ -1,6 +1,6 @@
 # hftf
 
-状态：`development / candidate-side-lane / R2-point-support-burned / Stage-B-swept-envelope-mechanics-active`
+状态：`development / candidate-side-lane / Stage-B-D0-admitted / fresh-R3-authorized`
 
 ## 研究问题与版本
 

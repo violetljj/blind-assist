@@ -1,4 +1,15 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 Development-only
+  `HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0`，终态
+  `STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_ADMITTED_FOR_FRESH_R3`。7/7 structural
+  canaries、4/4 burned R2 source binding、三态 UNKNOWN 防火墙和非退化门全过；
+  height disagreement 共 111 cells，相对旧 angular point-support 新增 209 个
+  swept-collision cells，报告 SHA-256
+  `52114e9fbf500f703188de14f41f0f88e6a0cc3a081421d1011bc9192554e57f`。但真实
+  sources 的 ground risk 为 0，3,600 个 foot cells 有 2,905 个 ground-UNKNOWN；
+  故只授权另行冻结 fresh-source formal R3，以独立高密度 geometry reference 比较
+  candidate 与 baseline，不支持 Stage B 增益、future、H2、主线、Android、提醒、
+  默认 App、生产或安全 claim。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。实现但尚未执行
   `HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0` runner：按 6 个候选方向、
   6 个距离区间及 foot/body/head effective half-width 对障碍点作 swept-prism

@@ -5,7 +5,8 @@
 `CANDIDATE_SIDE_LANE_ACTIVE / DEVELOPMENT_STANDARD /
 H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP /
 R2_POINT_SUPPORT_PROXY_BURNED /
-STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_ACTIVE / INNOVATION_NOT_EVALUABLE /
+STAGE_B_SWEPT_ENVELOPE_MECHANICS_D0_ADMITTED / FRESH_R3_AUTHORIZED /
+INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 当前结论
@@ -92,6 +93,14 @@ single-height future。当前回到原始 Stage B：已冻结 Development-only s
 label-mechanics canary，在 burned R2 sources 上先把人体包络监督做对；通过后才允许
 fresh-source formal R3。
 
+D0 已在四个 burned R2 sessions 上完成并准入 fresh R3。7/7 structural canaries、
+4/4 source binding 与 UNKNOWN→SAFE 防火墙全部通过；四个 sessions 均有三高度 known
+与 height-specific outputs，相对旧 point-support 新增 209 个 swept-collision
+cells。该结果仍只是 mechanics audit。真实来源没有检出 ground step/drop risk，
+3,600 个 foot cells 中 2,905 个为 ground-UNKNOWN；因此下一 formal R3 必须以全新
+sources 和独立冻结的高密度 geometry reference 评价 reference-relative 增益，不能把
+“输出更多 collision”本身当成 Stage B 成功。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -112,6 +121,7 @@ fresh-source formal R3。
 - [目标一致性与 swept-envelope 修复](HFTF_OBJECTIVE_ALIGNMENT_AND_SWEPT_ENVELOPE_REPAIR_2026-08-01.md)
 - [Stage B swept-envelope mechanics protocol](HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.md)
 - [Stage B machine-readable protocol](HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json)
+- [Stage B swept-envelope mechanics D0 result](HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_RESULT_D0_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
