@@ -4164,3 +4164,25 @@
   `CLEAR`、0 blocker。机器合同 SHA-256 为
   `84b9a2efbd9363ccf1fb2231a332dc96d63cfdd1d78219802f3e7a91397ee4d4`。
   当前只授权精确提交推送；formal 新 root 仍必须不存在。
+
+## 2026-08-02：HFTF D5-S0A.1 catalog locked
+
+- 执行者：violjjet。合同提交 `de088fb6be115769aaaaabeb1aed73d7ebc19002`
+  推送、formal Git/hash gate 通过且新 canonical root 不存在后，只调用一次 S0A.1
+  CLI。终态为
+  `D5_S0A1_TARTANGROUND_DIFF_CATALOG_LOCKED_REQUIRES_S0B_STRUCTURAL_AUTHORITY`；
+  canonical terminal validator 通过，failure 不存在。
+- exact-commit manifest 有 34671 个非空且 unique path tokens，其中 7722 个
+  `Data_diff/P1xxx` archive paths，形成 198 个 target parents / 42 environments；
+  198/198 parents 全部列出 front image/depth/seg 与 metadata 四 archive，超过
+  64/8 catalog capacity/coverage 门。suffix 未验证、保留或用于门，也未保留完整
+  manifest byte/hash。
+- attempt/preflight/catalog/result SHA-256 分别为
+  `5f6b2fe547b43df54e87da4c675df7bc3e02c0177f79b657cbbcfd94f33daf0c`、
+  `4a2d5fb59021df43f82ab71ab965db7febee603ffaf6520c435b9faf4186126d`、
+  `a8a4c33aa4f57cc6ffdf882f030cac3374e6b381c4aea2d36fd32bfba92c46f4`、
+  `10ab1e74d44753296c5dee58a3bd4bcdaa0c9f4e27cbe96ef59d59200f76cd73`。
+- 本结果没有请求数据托管端或 ZIP，没有检验 pose、height、extrinsic 或共同时间线；
+  不是 structural authority/source feasibility/opportunity/effect 证据。只允许另冻
+  D5-S0B contract，不自动授权 S0B 或 payload。机器结果 SHA-256 为
+  `8b2aeb086dcdfd18a675d281a887dbea3cc63a23b2f3b7cac1bd375e613a4a2f`。
