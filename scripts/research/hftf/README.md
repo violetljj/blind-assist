@@ -198,6 +198,19 @@ E:\codex-tools\bin\blindassist-python.cmd `
 runner 固定 D0 mechanics hash，复核实际消费的 depth/mask 与 authority bindings，并拒绝
 16 个 burned sessions。报告不包含 candidate、baseline、confusion 或 arm delta。
 
+40-session bounded inventory plan：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/plan_r3_1_inventory_candidates.py `
+  --protocol docs/research/hftf/HFTF_STAGE_B_REFERENCE_ONLY_OPPORTUNITY_QUALIFICATION_R3_1_2026-08-01.json `
+  --burn-ledger docs/research/hftf/HFTF_R3_1_SOURCE_POOL_BURN_LEDGER_2026-08-01.json `
+  --output artifacts.local/evidence/hftf/<run-id>/inventory_plan.json
+```
+
+planner 验证 official split generation/hash，只读 description 与 RGB/mask/depth 对象清单，
+记录 burned/ineligible 跳过原因及前 40 个 eligible sessions 的确定性 frame indices。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

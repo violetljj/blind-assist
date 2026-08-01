@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。实现但尚未执行 R3.1
+  bounded inventory planner。planner 复核 official split generation/text hash 与
+  16-session burn ledger，按完整 session ID 字典序只读 description 和三模态对象清单，
+  固定前 40 个 inventory-eligible sessions、target fps 与 25 个 source frame indices，
+  同时保留 burned/ineligible 跳过原因。它不下载 pixels，不读取 reference/candidate/
+  baseline outcome。新增 split drift 与 burn uniqueness tests；HFTF suite 61 项通过。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。实现但尚未消费新 source 的
   R3.1 single-source reference-only qualifier，并冻结 16-session burn ledger。
   runner 固定 D0 mechanics SHA，重算 authority/manifest/spec/pose 与实际消费
