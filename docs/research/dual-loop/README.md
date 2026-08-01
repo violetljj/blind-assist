@@ -18,6 +18,9 @@ RISKSEG_R1_P1_NOT_AUTHORIZED /
 RISKSEG_ACT_A0_COMPLETE_VALID_NEGATIVE /
 STOP_ACTIONABILITY_REFERENCE_CONSTRUCT_UNSTABLE /
 ACTIONABILITY_FULL_FRAME_AND_TRAINING_NOT_AUTHORIZED /
+OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_FROZEN_PRE_OUTPUT /
+CONSUMED_SESSION_DISJOINT_THESIS_DEVELOPMENT /
+TIMING_NOT_EVALUABLE_ONSET_INCOMPLETE /
 SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
 CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
@@ -132,6 +135,18 @@ intrusion F1 `.553`、sequence match `.400`。因此不是只缺历史信息，�
 A0-P1，不授权新 matched-pair cohort 合同或 actionability-aware 模型训练，不通过
 prompt、第三 Agent、UNKNOWN 转负类、网格调优或专用 parallel-curb 规则修补结果。
 默认 App 与 YOLO baseline 保持不变。
+
+行动标签路线关闭后，当前主线转为
+[Objective image-space candidate increment D0](OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_PROTOCOL_2026-08-02.md)。
+它不训练新模型，而把固定 PIDNet-S seed-20260801 仅作为 YOLO 框外客观区域候选
+生成器，在剥离所有 `positive/bucket/alertable/passed/event` 字段的
+30-session / 1,920-frame objective-only view 上评价 source-mask 像素/组件覆盖、
+false area、碎片、面积变化、持续性和低成本图像空间算子。该 view 与 PIDNet
+train/dev session-disjoint，但 cohort 已被前序研究消费，因此只提供
+`THESIS_DEVELOPMENT` 机制证据。主集只有 4 个 onset-complete sessions，低于冻结的
+12-session timing 门；本 D0 无论结果如何都不得声称“更早覆盖”，也不修改默认 App。
+协议、门、exact model/data/implementation hashes 与负终态已在任何新 YOLO box trace
+或 PIDNet pixel output 前冻结。
 
 此前 2026-08-01 的候选算法主线曾切换为
 [DG-SRF image-space structural complementarity F0](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
