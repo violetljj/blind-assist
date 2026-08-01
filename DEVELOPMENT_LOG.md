@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。C0 metadata inventory
+  正式复算 `239/239`，严格健康 `95`，精确锁定冻结 cohort；report SHA-256
+  `5ff6a4270f2319bd8d3e30b5d10e24cdee47c0025d22c8e12a9642e5f089b82b`。
+  媒体仍未下载时，把 surface observability 的“相邻 sample 共同有限深度支持”
+  消歧为共同正有限像素比例 `>=.25`、至少 20 个相邻 pair；随后才允许实现/运行
+  media audit。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。Stage C C0 首次正式
   inventory planner 在任何 RGB/depth 下载或报告写入前 fail closed：机器合同中的
   `trajectories.json` SHA-256 漏写末尾 `b`、仅 63 位。本地 source 与冻结前 shell

@@ -98,3 +98,7 @@ C0 成功只允许冻结下一份 Stage C label-and-student canary protocol。�
 shell 核验值均为
 `e9a4dad8e77b60e0d6bfb9b4ae764900ed81dcf58d72d19b279f1b558807037b`。
 本修正只恢复该 exact metadata binding；source、cohort、选择规则、数值门和权限均不变。
+
+在 inventory lock 通过、媒体仍未下载时，又把原文“相邻 sample 有共同有限深度支持”
+消歧为：同位置均为正有限深度的像素比例至少 `.25`，至少 20 个相邻 sample pair
+满足。该数值在媒体 outcome 前冻结。

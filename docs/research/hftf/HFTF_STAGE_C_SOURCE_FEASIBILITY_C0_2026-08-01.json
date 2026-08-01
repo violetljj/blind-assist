@@ -138,6 +138,7 @@
     "sample_indices": "same_32_deterministic_indices_as_media_transport",
     "minimum_frames_with_finite_depth_fraction_gate": 28,
     "minimum_frames_with_bottom_half_depth_support_fraction_at_least_0_25": 24,
+    "common_finite_depth_support_fraction_at_least": 0.25,
     "minimum_adjacent_sample_pairs_with_common_finite_depth_support": 20,
     "unknown_policy": "missing_or_invalid_depth_is_UNKNOWN_never_SAFE",
     "claim_ceiling": "NATURAL_DEPTH_SURFACE_OBSERVABILITY_ONLY",
