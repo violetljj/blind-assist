@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。实现但尚未消费新 source 的
+  R3.1 single-source reference-only qualifier，并冻结 16-session burn ledger。
+  runner 固定 D0 mechanics SHA，重算 authority/manifest/spec/pose 与实际消费
+  depth/mask hashes，只生成 stride-4 obstacle/ground reference opportunity；不导入
+  angular baseline helper，不计算 stride-8 candidate、confusion、F1 或 arm delta。
+  qualification gate 覆盖每高度正负 opportunity、known coverage 与 ground risk 的
+  cells/frames/directions persistence。新增 reference gate、ground persistence 和
+  forbidden-helper tests；HFTF suite 59 项通过。状态为
+  `R3_1_QUALIFIER_IMPLEMENTED_NO_NEW_SOURCE_CONSUMED`。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何 R3.1 arm outcome
   前冻结 `HFTF_STAGE_B_REFERENCE_ONLY_OPPORTUNITY_QUALIFICATION_R3_1`。排除
   R0–R3 16 个 burned sessions 后按 official train 字典序最多筛 40 个 inventory-
