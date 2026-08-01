@@ -313,6 +313,22 @@ planner 必须排除 effective 60-session burn union，按完整 ID 字典序固
 并按 rank 固定 `6 train / 3 dev / 3 heldout`。任何 geometry outcome 打开后不得重新
 规划或替换。
 
+F0.1 在任何 media/geometry/student outcome 前把 heldout 加强为 official test
+split。它复用 F0 metadata plan 的前九个 train/dev candidates，只对 official test
+文件顺序做 heldout metadata scan：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/plan_stage_c_f0_1_sanpo_cross_split_inventory.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_2026-08-01.json `
+  --burn-ledger docs/research/hftf/HFTF_STAGE_C_SANPO_BODY_HEAD_SOURCE_POOL_BURN_LEDGER_F0_2026-08-01.json `
+  --f0-plan artifacts.local/evidence/hftf/<f0-run-id>/inventory_plan.json `
+  --output artifacts.local/evidence/hftf/<f0-1-run-id>/inventory_plan.json
+```
+
+输出必须固定 `6 train / 3 dev / 3 official-test heldout`，且所有 outcome firewall
+保持 false，才授权 exact media acquisition。
+
 `aggregate_r4_split_source_result.py` 是唯一可签发 joint R4 terminal 的工具；单个
 component 不得提前开放 Stage C。
 
