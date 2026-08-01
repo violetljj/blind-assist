@@ -11,7 +11,8 @@
   "report_path": "artifacts.local/evidence/riskseg-r1/p0-soft-dense-v1/report.json",
   "report_sha256": "697975b7468141c0d2e34af365b1732b06ed89a25084584808d2ad1b574c018d",
   "schema_version": "blindassist.riskseg_r1.p0_validation_amendment.v1",
-  "status": "PENDING_WRAPPER_LOCK",
+  "status": "LOCKED",
+  "wrapper_baseline_commit": "df5a2b394e1bb66e9aad18daabacbed5a677af75",
   "wrapper_path": "scripts/research/riskseg_r1_p0/validate_audit_metadata_amendment.py",
-  "wrapper_sha256": null
+  "wrapper_sha256": "30e44e8f004dbbc514fad26ff15566776ec4dc7b3d813f0ad15324b4ed5a7060"
 }
