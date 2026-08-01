@@ -10,7 +10,7 @@ R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE /
 R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED /
 C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE /
 C0_1_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED /
-STAGE_C_LABEL_STUDENT_CANARY_FREEZE_AUTHORIZED_ONLY /
+STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_FROZEN /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -155,6 +155,13 @@ natural depth support。唯一新权限是冻结 Stage C label-and-student canar
 在 semantic-independent depth reader 产生 known/UNKNOWN 与 natural opportunity
 之前，不能训练 student。
 
+Stage C D0 semantic-independent label-readiness 现已在 formal report 前冻结。两条
+EgoWalk 都明确为 consumed calibration；近于 `1.2 m` 的未观测区域保持 UNKNOWN，
+可评价断面固定为 `1.4–3.0 m`。reader 以 depth-only ground-plane RANSAC 和 horizontal
+support modes 输出 ground-continuity proxy；semantic class、annotation 与 RGB outcome
+均不参与 formal mechanics。D0 通过也只允许冻结 fresh-source label/student canary，
+不直接训练。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -199,6 +206,8 @@ natural depth support。唯一新权限是冻结 Stage C label-and-student canar
 - [Stage C source-feasibility C0.1](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_1_2026-08-01.md)
 - [Stage C machine-readable C0.1 protocol](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_1_2026-08-01.json)
 - [Stage C C0.1 result](HFTF_STAGE_C_SOURCE_FEASIBILITY_RESULT_C0_1_2026-08-01.md)
+- [Stage C semantic-independent label readiness D0](HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_2026-08-01.md)
+- [Stage C machine-readable label readiness D0](HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

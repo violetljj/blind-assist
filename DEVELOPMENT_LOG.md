@@ -1,4 +1,12 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在两条明确 consumed
+  EgoWalk calibration source 上完成 depth-only reader 校准并冻结 Stage C label
+  readiness D0。64/64 preview frames 可恢复 height-constrained ground plane；相机
+  近场约 `<1.2 m` 不可观测，固定 UNKNOWN，可评价 sections 改为
+  `1.4/1.8/2.2/2.6/3.0 m`。support-mode local normal gate 消除室内 4 个
+  wall-derived 假台阶；室外保留 2 个与花坛/路缘方向一致的 foot-risk proxy。
+  formal D0 尚未运行；通过也只允许冻结 fresh-source label/student canary，不授权
+  acquisition、teacher dataset、student、主线或 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。C0.1 同一 consumed
   replay 达到 `C0_1_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED`。两条 parquet
   delta 均为 `198/200/201 ms`、有效 `5.0 Hz`；pose/RGB/depth frame count 为
