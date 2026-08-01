@@ -1,6 +1,7 @@
 # BlindAssist YOLO + 语义分割双环研究主线
 
-状态：`SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
+状态：`DG_SRF_F0_PROTOCOL_AND_IMPLEMENTATION_FROZEN / RESULT_NOT_RUN /
+SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
 CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
 R0_1_SHADOW_VALID_NO_MATERIAL_NO_HETEROGENEITY /
@@ -22,6 +23,19 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 ```
 
 ## 当前决定
+
+2026-08-01，当前唯一候选算法主线已切换为
+[DG-SRF image-space structural complementarity F0](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
+它不继续救援已关闭的 segmentation gating，而是检验固定 Depth Anything V2 Small
+相对逆深度中的 `N/E/R+/R-` 结构信号，能否在实际 YOLO coverage 外，以低于冻结 raw
+DDRNet residual 的假激活代价，对 `boundary_step_curb / obstacle` canonical pixels
+提供跨 source-session 稳定互补。
+
+当前仅冻结并授权一次 520-frame consumed Development F0；正式结果尚未运行。深度方向、
+逐帧尺度、surface trend、q coverage、D4 `1:1:1:1`、D5 proxy、19 点 LOSO
+maximin 阈值、九门、8/10 group 规则和四终态均已在 outcome 前冻结。F1-F5、Video
+Depth、Android/QNN/A568、risk/feedback、提醒和默认 App 均关闭；即使正结果也只授权
+另立 F1 设计，不自动授权执行。
 
 2026-08-01 起，后续双环工作采用论文优先的 `DEVELOPMENT_STANDARD`，不再把旧 formal
 R1 的 one-shot、fresh holdout、逐项 SHA 和全量独立复算要求复制到新的 Development。

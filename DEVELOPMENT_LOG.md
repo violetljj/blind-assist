@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。冻结
+  `DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0` 协议与 host-only 实现，当前
+  `RESULT_NOT_RUN`。唯一问题是在 520 帧、10 个已消费 SANPO-Real source-session 上，
+  固定 Depth Anything V2 Small 的图像空间结构信号能否在实际 YOLO coverage 外，以
+  低于 frozen binary raw DDRNet residual 的假激活代价，对
+  `boundary_step_curb / obstacle` canonical pixels 提供稳定互补。模型 source、
+  checkpoint、official preprocess、`RAW_LARGER_IS_NEARER`、逐帧尺度、q 与
+  `.95/.90` coverage、`N/E/R+/R-`、二阶 lower-image surface trend、D4
+  `1:1:1:1`、D5 `lambda=.25`、19 点 LOSO maximin、九门、8/10 组合优势与四终态均已
+  outcome 前冻结。10/10 focused tests、520/520 truth-minimized identity preflight 和
+  8-frame GPU pilot 通过；pilot 未读取 canonical truth 或 A/B，方向 canary 4/4 同向、
+  median margin `.707553`，8/8 depth output 健康。正式 520-frame terminal 尚未读取。
+  所有数据均为 consumed Development；缺 participant/route/parent-capture identity，
+  两套 YOLO detector 与 source role 完全混杂。F1-F5、Video Depth、Android/QNN/A568、
+  risk/feedback、提醒、TTS、振动和默认 App 均未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
   `DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0` 的 10-session nested
   LOSO grouped execution、host benchmark 与独立复算，终态
