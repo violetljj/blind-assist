@@ -21,6 +21,10 @@
       "required_terminal": "D3_Q0_METADATA_ROSTER_40_SLOTS_LOCKED"
     }
   },
+  "git_and_artifact_boundary": {
+    "contract_design_implementations_helpers_and_tests_must_be_tracked_clean_and_at_origin_master": true,
+    "artifacts_local_parents_are_intentionally_ignored_and_must_be_validated_by_exact_path_sha256_schema_and_terminal_not_git_tracking": true
+  },
   "official_train_split": {
     "dataset": "SANPO-Synthetic",
     "split": "train",
@@ -78,7 +82,7 @@
   "implementations": {
     "metadata_census_planner": {
       "path": "scripts/research/hftf/plan_stage_c_d4_m0_metadata_census.py",
-      "sha256": "c4b5f87b45a1809113560d2a024ca25c29dd2706758cc768ca8b0d8730acae00"
+      "sha256": "a8b93eb72d56f29fa33c1d3cb53df0b4b7fc746c61a741137cb6949f491c9bef"
     },
     "d2_metadata_helper": {
       "path": "scripts/research/hftf/plan_stage_c_d2_official_train_metadata.py",

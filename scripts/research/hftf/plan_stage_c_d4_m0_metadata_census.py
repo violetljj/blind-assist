@@ -315,8 +315,6 @@ def validate_contract(
             [
                 (contract_path, "contract"),
                 (design_path, "design"),
-                (d2_path, "D2 qualification"),
-                (q0_path, "Q0 roster"),
                 *implementation_paths,
                 (test_path, "planner test"),
             ]

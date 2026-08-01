@@ -4032,4 +4032,8 @@
 - focused tests `21/21`、HFTF full suite `413/413`。valid locked/insufficient
   terminals 均覆盖全上游 hash chain，任一 preflight/attempt tamper 会被拒绝。当前仍只授权提交推送与独立审计；
   正式 M0 尚未执行，canonical root 必须保持不存在。机器合同 SHA-256 为
-  `e7d3e02f6669486368a17915bc67e6755edbfd319d1c0d30474b2b8027867985`。
+  `21a6de0e16e65998318aa83b549c3467eb9fe2b59193faa1fa44d72d1d891759`。
+- 提交后 formal preflight 暴露 Git 门范围错误：ignored `artifacts.local` parents 被
+  错要求 `ls-files`。修订为合同/设计/implementations/helpers/tests 必须
+  tracked-clean-pushed；ignored evidence parents 仍由 exact path/SHA/schema/terminal
+  约束，不改变任何数据或实验规则。

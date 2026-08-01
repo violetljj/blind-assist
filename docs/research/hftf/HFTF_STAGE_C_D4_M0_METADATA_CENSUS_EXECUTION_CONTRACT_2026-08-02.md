@@ -55,7 +55,8 @@ focused tests 为 `21/21`，HFTF full suite 为 `413/413`。其中回归证明 l
 审计不会打开 sealed payload、drift 会在首网前 durable INVALID、transport exhaustion
 不会伪装为 metadata ineligible，且 corrupt/unknown result 不会被承认为终态。正式 CLI 还要求合同、设计、
 planner、test 与绑定 parents 全部 tracked、clean、hash 精确，并满足
-`HEAD == origin/master`。通过 M0 也只授权另冻 ecology execution contract；不自动
+`HEAD == origin/master`；其中 `artifacts.local` parents 按项目规则不进 Git，
+以 exact path/SHA/schema/terminal 校验。通过 M0 也只授权另冻 ecology execution contract；不自动
 授权 fresh content、ecology、effect、student、研究主线、App/Android、生产或 safety。
 机器合同 SHA-256 为
-`e7d3e02f6669486368a17915bc67e6755edbfd319d1c0d30474b2b8027867985`。
+`21a6de0e16e65998318aa83b549c3467eb9fe2b59193faa1fa44d72d1d891759`。
