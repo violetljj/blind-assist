@@ -4108,3 +4108,24 @@
   均为 `CLEAR`、0 blocker。机器合同 SHA-256 为
   `49c104bec55324dd42454f8db88042216be30d9e796ea36db276eca18238a66f`。
   当前只授权提交推送；正式 canonical root 在提交推送与 formal git gate 前必须不存在。
+
+## 2026-08-02：HFTF D5-S0A catalog invalid stop
+
+- 执行者：violjjet。合同提交 `b65c0d916c7359a91e6854c6ffe7697728fdef6e`
+  推送、formal Git/hash gate 通过且 canonical root 不存在后，只调用一次 S0A CLI。
+  attempt/preflight 在首个 Git 网络请求前 durable；随后 manifest parser 在第 978 行
+  以 `ValueError: Unexpected declared size format at row 978` 关闭为
+  `D5_S0A_TARTANGROUND_DIFF_CATALOG_INVALID_STOP`。
+- attempt/preflight/failure SHA-256 分别为
+  `4a5b65a2a53ecfb343c50bff4929f03e8c0f109695df509098d3b2d499cf3ac8`、
+  `0a5b9514e9a7332249c44169757551f051f79d128fe5cd4a392abbe4c6ed9652`、
+  `28f4c0337935a0778d1a9ea58c89de559779d85d59d919347a948140d6dd7fd5`。
+  `catalog.json` 与 `result.json` 均不存在；没有数据托管端请求、ZIP、submodule
+  checkout/read、scene payload、pose value、structural authority、opportunity 或 effect。
+- 终态后只做本地控制面核对：`FETCH_HEAD` 是冻结提交，`.git/modules` 与工作树
+  `.gitmodules` 不存在；没有重开失败行或 manifest。该观察不在 canonical failure
+  哈希链中，不参与 claim。本终态既不是目录容量不足，也不是 source/HFTF 负结果。
+- 同一 root、同一合同、原合同内 parser patch/retry 全部关闭。若继续，只能另冻新版本
+  控制面协议、新 canonical root，并在执行前独立审计；不会自动授权 S0B 或 payload。
+  机器 invalid result SHA-256 为
+  `f86153427117ed8542cb892204a693805b80b0f4eac87cdf18c26e9d2aad4961`。
