@@ -3509,3 +3509,27 @@
   授权合同提交推送并确认 `HEAD == origin/master` 后，执行一次 consumed Development
   acquisition → offline equivalence。fresh/reserved、D2 scan/media/mechanics、
   teacher/student、主线、App、Android、生产与安全权限继续关闭。
+
+## 2026-08-01：HFTF T0 consumed-Development 短路径等价通过
+
+- 执行者：violjjet
+- T0 contract 与实现由 commit `f38dd5c2bec75e307d6d5a1cf9c314f171710f72`
+  提交推送、确认 `HEAD == origin/master` 后，只执行一次合同固定的 already
+  outcome-open Development source `12b65d2c…c93bb`。25 个 selected frames 的
+  RGB/mask/depth 与 5 个 metadata/split objects 全部通过 generation、size、MD5；
+  acquisition terminal 为 `T0_SANPO_SHORT_PATH_TRANSPORT_READY`，report SHA-256
+  为 `a69e68f5362fef34bce10daa0932682ddd150a850b575bdc78dd451196d8aa27`。
+- short-path package 共 85 files，manifest/spec SHA-256 为
+  `a47ffe44…273d / b39f494d…06e7`。离线 validator 重算 25 rows、75 个本地
+  SHA+MD5/size、75 个 remote generation/size/MD5 identities、5 个 metadata/split
+  identities，全部 7 gates 为 true；final 与模拟 `.tmp` 最大路径为 146/150，无
+  `.tmp` 残留，`network_opened=false`。
+- 终态为 `T0_SANPO_SHORT_PATH_CONSUMED_PACKAGE_EQUIVALENT`，equivalence report
+  SHA-256 为
+  `9f4fb76b6637027e92ecad62c5b52792f2aeb08d63bcc445e4cfdbbd9238cc28`。
+  tracked result JSON SHA-256 为
+  `82c5bed9dc9210dadd615c36176174ad1043ed4860c54b04941f78083075ac7b`；
+  独立结果审计重算全部声明 receipts、package contents 与权限边界后 CLEAR。
+- 本结果只授权冻结 D2 metadata qualification implementation contract。D1 关闭终态
+  不变；这不是 D1 补跑、换源或模型证据。D2 scan/new media/mechanics、fresh/reserved、
+  teacher/student、主线、App、Android、生产与安全权限继续关闭。

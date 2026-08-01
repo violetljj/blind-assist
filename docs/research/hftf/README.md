@@ -302,8 +302,11 @@ persistence。科学设计已在任何新 source outcome 前冻结，精确包�
 7 anchors、SE(2) transport、G0 known/UNKNOWN、truth firewall、macro metrics 与
 effect gates。当前没有可直接打开的新合格 parent；在任何新媒体前，必须先通过 T0
 短路径 transport，并另冻 official-train metadata-only scan，锁定 6 条全新 parent。
-T0 只允许在一条已经 consumed 的 Development source 上执行，不产生 fresh 或模型效果
-证据。
+T0 已在一条已经 consumed 的 Development source 上一次执行并通过
+`T0_SANPO_SHORT_PATH_CONSUMED_PACKAGE_EQUIVALENT`：25 帧与 canonical package 的
+remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路径为 146/150。
+这只证明未来 short-path transport 可用，不产生 fresh 或模型效果证据；当前新权限仅为
+冻结 D2 metadata qualification 的实现合同。
 
 ## 当前真源
 
@@ -395,6 +398,8 @@ T0 只允许在一条已经 consumed 的 Development source 上执行，不产�
 - [Stage C machine-readable D2 design](HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_D2_2026-08-01.json)
 - [Stage C T0 consumed-Development short-path contract](HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_CONTRACT_2026-08-01.md)
 - [Stage C machine-readable T0 contract](HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_CONTRACT_2026-08-01.json)
+- [Stage C T0 consumed-Development short-path result](HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_RESULT_2026-08-01.md)
+- [Stage C machine-readable T0 result](HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_RESULT_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
