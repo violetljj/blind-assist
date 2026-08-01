@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未运行 R4
+  obstacle arm 与 joint aggregator。cohort lock 要求 qualification reports 为字典序
+  contiguous prefix、精确停在第 4 个 qualified source，并绑定 authority/manifest/
+  spec/pose/qualification hashes。formal runner 复用 D1 candidate/baseline/disjoint
+  reference metrics，但完全不导入 ground component，保持 R3 全部 obstacle effect
+  gates。joint aggregator 才可把 obstacle 与 analytic-terrain terminals 合并。
+  HFTF suite 83 项通过；实现须先提交，之后才允许第一次 arm outcome。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未执行 R4
   split-source 工具第一段：obstacle inventory planner 验证冻结 parent/56-session
   burn ledger 与 official split，只读 inventory；obstacle qualifier 只计算 stride-4

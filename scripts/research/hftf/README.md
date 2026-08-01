@@ -269,6 +269,35 @@ E:\codex-tools\bin\blindassist-python.cmd `
 terrain pass 只代表 controlled mechanics component 通过，不能独自签发 joint R4
 terminal 或 Stage C 权限。
 
+前四个 qualification 通过后，先锁定 source hashes，再运行 obstacle arm 和 joint
+aggregation：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/lock_r4_obstacle_opportunity_cohort.py `
+  --protocol docs/research/hftf/HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.json `
+  --burn-ledger docs/research/hftf/HFTF_R4_SOURCE_POOL_BURN_LEDGER_2026-08-01.json `
+  --inventory-plan <inventory-plan.json> `
+  --report <contiguous-rank-qualification.json> `
+  --output artifacts.local/evidence/hftf/<run-id>/cohort_lock.json
+
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/run_r4_obstacle_reference_comparison.py `
+  --protocol docs/research/hftf/HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.json `
+  --burn-ledger docs/research/hftf/HFTF_R4_SOURCE_POOL_BURN_LEDGER_2026-08-01.json `
+  --inventory-plan <inventory-plan.json> `
+  --cohort-lock <cohort-lock.json> `
+  --mechanics-protocol docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json `
+  --session <replay-a> <authority-a.json> `
+  --session <replay-b> <authority-b.json> `
+  --session <replay-c> <authority-c.json> `
+  --session <replay-d> <authority-d.json> `
+  --output artifacts.local/evidence/hftf/<run-id>/obstacle_result.json
+```
+
+`aggregate_r4_split_source_result.py` 是唯一可签发 joint R4 terminal 的工具；单个
+component 不得提前开放 Stage C。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
