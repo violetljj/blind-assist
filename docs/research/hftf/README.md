@@ -24,6 +24,8 @@ EGOWALK_FOOT_GROUND_STUDENT_SOURCE_ROUTE_CLOSED /
 STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_FROZEN /
 F0_SAME_SPLIT_EVALUATION_SUPERSEDED_BEFORE_MEDIA_OR_OUTCOME /
 STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_FROZEN /
+F0_1_SANPO_CROSS_SPLIT_SOURCE_INVENTORY_READY /
+F0_1_SANPO_CROSS_SPLIT_SOURCE_LOCK_VALIDATED /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -277,6 +279,16 @@ test split generation 为 `1692794964058506`，split SHA-256 为
 `0f701db54d2cc26b32bf2c636537a1353beb5d7e09f8914279cde2e7c06400df`。
 F0 的 field、teacher、UNKNOWN、模型、训练与 effect margins 全部不变。
 
+F0.1 metadata plan 与 exact source lock 已双运行 byte-exact。当前固定
+`6 official-train train / 3 official-train dev / 3 official-test heldout`，12 条
+source 均 parent-session-disjoint，均有 50 个连续 aligned RGB/mask/depth source
+frames、intrinsics 与 pose object receipt。cross-split plan SHA-256 为
+`edaa63a86ff0254b0887d437086be9bda6f3c1b0aa3c3c9cbfc72bc05d5d0f55`，
+source-lock SHA-256 为
+`f7353779315757b8b4ca5ba13b3544c4348c25f2ac4daa4befe47ad80fc79f62`。
+当前只授权 exact media acquisition；teacher label/corpus 与 student training 仍未
+授权。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -341,6 +353,7 @@ F0 的 field、teacher、UNKNOWN、模型、训练与 effect margins 全部不�
 - [Stage C SANPO body/head F0 burn ledger](HFTF_STAGE_C_SANPO_BODY_HEAD_SOURCE_POOL_BURN_LEDGER_F0_2026-08-01.json)
 - [Stage C SANPO cross-split body/head temporal-student F0.1](HFTF_STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_2026-08-01.md)
 - [Stage C machine-readable cross-split body/head F0.1](HFTF_STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_2026-08-01.json)
+- [Stage C SANPO cross-split source-lock result F0.1](HFTF_STAGE_C_SANPO_CROSS_SPLIT_SOURCE_LOCK_RESULT_F0_1_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

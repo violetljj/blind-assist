@@ -1,4 +1,15 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。F0.1 cross-split
+  metadata plan 与 exact source lock 正式双运行 byte-exact，固定
+  `6 train / 3 dev / 3 official-test heldout`，12 个 parent sessions 全互斥。
+  每条 source 均有 50 个连续 aligned RGB/mask/depth source frames、intrinsics 与
+  pose receipt；5 FPS 固定 `0..24`，20→10 FPS 固定 `0,2,...,48`。
+  cross-split plan SHA-256
+  `edaa63a86ff0254b0887d437086be9bda6f3c1b0aa3c3c9cbfc72bc05d5d0f55`，
+  source-lock SHA-256
+  `f7353779315757b8b4ca5ba13b3544c4348c25f2ac4daa4befe47ad80fc79f62`。
+  geometry/teacher/student outcome firewall 全为 false；只授权 exact media
+  acquisition，尚不授权 teacher corpus 或 student training。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 F0 media、geometry、
   corpus 与 student outcome 全部未打开时，用独立 metadata-only source 审计把
   same-train-split heldout design 加强为 cross-split F0.1。train/dev 仍从排除
