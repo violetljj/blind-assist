@@ -329,6 +329,19 @@ E:\codex-tools\bin\blindassist-python.cmd `
 输出必须固定 `6 train / 3 dev / 3 official-test heldout`，且所有 outcome firewall
 保持 false，才授权 exact media acquisition。
 
+在下载前用 source-lock validator 固化 exact sessions、split、物理 timeline 与
+description/pose GCS receipts：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/lock_stage_c_f0_1_sanpo_sources.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_2026-08-01.json `
+  --burn-ledger docs/research/hftf/HFTF_STAGE_C_SANPO_BODY_HEAD_SOURCE_POOL_BURN_LEDGER_F0_2026-08-01.json `
+  --f0-plan artifacts.local/evidence/hftf/<f0-run-id>/inventory_plan.json `
+  --cross-split-plan artifacts.local/evidence/hftf/<f0-1-run-id>/inventory_plan.json `
+  --output artifacts.local/evidence/hftf/<lock-run-id>/source_lock.json
+```
+
 `aggregate_r4_split_source_result.py` 是唯一可签发 joint R4 terminal 的工具；单个
 component 不得提前开放 Stage C。
 
