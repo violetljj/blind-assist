@@ -1,0 +1,369 @@
+{
+  "schema_version": "blindassist.riskseg_act_a0.contract.v1",
+  "protocol_id": "RISKSEG_ACT_A0",
+  "status": "IMPLEMENTATION_DRAFT_PENDING_PRE_OUTPUT_LOCK",
+  "stage": "LABEL_DESIGN_AND_READINESS_AUDIT",
+  "research_question": "Can two isolated source-only reviewers stably label route intrusion, boundary relation, alertability, passed-clear state and epistemic abstention under current-only or causal-history RGB?",
+  "claim_ceiling": [
+    "consumed Development-only label mechanism and observability evidence",
+    "fixed-anchor observation agreement, not population label accuracy",
+    "no fresh, held-out, confirmation, training, model-effect, App, product or safety claim"
+  ],
+  "predecessor_boundary": {
+    "riskseg_r1_p0_terminal": "TRUTH_MASK_SOFT_ADAPTER_FAIL_CHANGE_ACTIONABILITY_LABELS",
+    "riskseg_r1_p1_authorized": false,
+    "central_obstruction_terminal": "CENTRAL_OBSTRUCTION_AUXILIARY_FEATURE_ONLY",
+    "central_obstruction_reopened": false,
+    "distinction": "A0 labels route-envelope relation and current lifecycle evidence. It does not reuse VISIBLE_CENTRAL_OBSTRUCTION, STABLE_PRESENT, the one-second central-obstruction prompt, or central line-of-sight occupancy.",
+    "third_agent_adjudication_forbidden": true
+  },
+  "data": {
+    "role": "CONSUMED_LABEL_DESIGN_CALIBRATION_AND_FAILURE_ANALYSIS_ONLY",
+    "manifest": {
+      "path": "artifacts.local/evidence/riskseg-r0/event-eval/device-view-v2/manifest.json",
+      "sha256": "6fe64391a9557fd9d80ad8f861cd4b043293955e2ff3e5979ffe7fb33d33b7ff"
+    },
+    "receipt": {
+      "path": "artifacts.local/evidence/riskseg-r0/event-eval/device-view-v2/receipt.json",
+      "sha256": "b02ba7cf5863f3d920c07d0d9ed6d95fdc51bf0e7e10b0c008ac93167ce3b9fc"
+    },
+    "cardinality": {
+      "parent_event_count": 30,
+      "source_session_count": 30,
+      "frame_count": 1920,
+      "bucket_counts": {
+        "blocking_obstacle_positive": 8,
+        "boundary_level_change_positive": 8,
+        "parallel_curb_negative": 7,
+        "normal_walkable_negative": 7
+      }
+    },
+    "known_limitations": {
+      "positive_event_count": 16,
+      "alertable_left_truncated_event_count": 14,
+      "passed_interval_starts_at_frame_7_event_count": 1,
+      "true_onset_recoverable_from_this_window": false,
+      "effect": "This cohort cannot pass full onset readiness or authorize training even if fixed-anchor observation agreement passes."
+    },
+    "forbidden_reviewer_fields": [
+      "parent_event_id",
+      "source_session_id",
+      "bucket",
+      "positive",
+      "alertable_interval_frames",
+      "passed_interval_frames",
+      "oracle_mask",
+      "truth ledger",
+      "YOLO or segmentation output",
+      "P0 scores or results",
+      "another review"
+    ]
+  },
+  "observation_units": {
+    "kind": "CONTENT_BLIND_FIXED_ANCHOR",
+    "role": "FAIL_FAST_READINESS_SCREEN_BEFORE_FULL_FRAME_ANNOTATION",
+    "anchors_per_parent_event": 4,
+    "total_anchor_count": 120,
+    "anchor_formula": "t_k = round_half_up(10 + k * (N - 21) / 3), k=0..3",
+    "minimum_event_frames": 30,
+    "history_frames_including_current": 11,
+    "history_span_ms": 1000,
+    "future_reference_frames": 10,
+    "future_reference_span_ms": 1000,
+    "required_history_frame_indices": "[t-10, ..., t]",
+    "required_hindsight_frame_indices": "[t-10, ..., t+10]",
+    "slot_is_independent_sample": false,
+    "independent_unit": "parent natural event/source session",
+    "per_frame_materialization": "For design inspection only, a fixed anchor label may be held over [anchor, next_anchor); every expanded row must retain source_anchor_id and interpolated=true. Agreement gates use only the 120 raw anchors, never expanded frames."
+  },
+  "stage_progression": {
+    "A0_P0_fixed_anchor_screen": {
+      "scope": "120 content-blind anchors, six isolated passes",
+      "purpose": "Fail fast on an unstable or future-dependent ontology before spending review effort on every frame.",
+      "pass_effect": "Authorizes A0_P1 full-frame observation labeling only. It does not authorize a new cohort, training, model work or App changes.",
+      "fail_effect": "Close A0 with the applicable STOP terminal; do not manufacture 1,920-frame labels from an unreliable screen."
+    },
+    "A0_P1_full_frame_annotation": {
+      "required_if": "A0_P0 reaches a current-only or causal-history observation pass",
+      "scope": "Produce primitive and derived labels for every one of the 1,920 frames under CURRENT_ONLY. For CAUSAL_HISTORY and HINDSIGHT_REFERENCE, label every frame with a complete frozen information window; frames without the required history/future context remain explicitly NOT_EVALUABLE and are never silently dropped or copied from an anchor.",
+      "review": "Two new isolated reviews per retained runtime condition; no P0 reviewer reuse, no cross-condition item exposure and no third-Agent adjudication.",
+      "forbidden_shortcut": "Anchor hold/interpolation is inspection-only and can never satisfy frame-by-frame labeling.",
+      "pass_effect": "May authorize design and collection of the new onset-complete session-disjoint matched-pair cohort. It still cannot authorize training."
+    },
+    "A0_P2_new_cohort_contract": {
+      "required_if": "A0_P1 full-frame observation labels pass the frozen agreement gates",
+      "scope": "Freeze the session-disjoint, onset-complete matched-pair collection and evaluation contract before collecting or training.",
+      "training_authority": false
+    }
+  },
+  "information_conditions": {
+    "CURRENT_ONLY": {
+      "visible": "RGB at t plus frozen image-space corridor grid and timestamp-relative current marker",
+      "past_visible": false,
+      "future_visible": false
+    },
+    "CAUSAL_HISTORY": {
+      "visible": "RGB frames [t-10, ..., t] in timestamp order plus corridor grid on t",
+      "past_visible": true,
+      "future_visible": false
+    },
+    "HINDSIGHT_REFERENCE": {
+      "visible": "RGB frames [t-10, ..., t+10] plus corridor grid on t",
+      "past_visible": true,
+      "future_visible": true,
+      "role": "REFERENCE_DIAGNOSTIC_ONLY_NOT_RUNTIME_OR_TRAINING_TRUTH"
+    }
+  },
+  "isolation": {
+    "passes": 6,
+    "reviewers_per_condition": 2,
+    "reviewer_ids": [
+      "CURRENT_A",
+      "CURRENT_B",
+      "CAUSAL_A",
+      "CAUSAL_B",
+      "HINDSIGHT_A",
+      "HINDSIGHT_B"
+    ],
+    "fresh_agent_per_pass": true,
+    "same_agent_cross_condition_forbidden": true,
+    "opaque_item_id_per_pass": true,
+    "item_order_independently_permuted": true,
+    "other_review_visible_before_submission": false,
+    "third_agent_adjudication": false,
+    "unresolved_policy": "Retain disagreement and abstention. Never repair agreement by majority vote, third review, or UNKNOWN to negative conversion."
+  },
+  "spatial_unit": {
+    "kind": "FIXED_IMAGE_SPACE_CORRIDOR_GRID_2_BY_3",
+    "corridor_top_ratio": 0.42,
+    "corridor_top_half_width_ratio": 0.16,
+    "corridor_bottom_half_width_ratio": 0.42,
+    "rows": [
+      "FAR",
+      "NEAR"
+    ],
+    "columns": [
+      "LEFT",
+      "CENTER",
+      "RIGHT"
+    ],
+    "cell_ids": [
+      "FAR_LEFT",
+      "FAR_CENTER",
+      "FAR_RIGHT",
+      "NEAR_LEFT",
+      "NEAR_CENTER",
+      "NEAR_RIGHT"
+    ],
+    "claim": "Coarse spatial-unit readiness only; not a pixel mask, physical collision envelope or final model target."
+  },
+  "ontology": {
+    "intrusion_cell": [
+      "INTRUDING",
+      "NON_INTRUDING",
+      "UNKNOWN"
+    ],
+    "intruding_definition": "Visible evidence in this cell occupies, crosses or cuts the apparent forward corridor at the current time. Object presence, semantic hazard type or corridor occupancy alone is insufficient.",
+    "non_intruding_definition": "The cell is reviewable and visible evidence is lateral, parallel, already behind/cleared, or does not cut the apparent forward corridor. This is not a safety claim.",
+    "boundary_relation": [
+      "TRANSVERSE_CROSSING",
+      "PARALLEL_BOUNDARY",
+      "AMBIGUOUS",
+      "NOT_APPLICABLE"
+    ],
+    "alertable": [
+      "YES",
+      "NO",
+      "UNKNOWN"
+    ],
+    "passed": [
+      "YES",
+      "NO",
+      "UNKNOWN"
+    ],
+    "knownness": [
+      "KNOWN",
+      "UNKNOWN"
+    ],
+    "hazard_aux": [
+      "BLOCKING_OBSTACLE",
+      "BOUNDARY_LEVEL_CHANGE",
+      "NONE_IN_SCOPE",
+      "UNRESOLVED"
+    ],
+    "epistemic_unknown_rule": "Agent UNKNOWN is abstention due to insufficient evidence. It is not the RISKSEG unknown_nonwalkable semantic class and never means NON_ACTIONABLE or SAFE.",
+    "pre_alert": "Not a causal A0 target. It may be derived only inside HINDSIGHT_REFERENCE and may not supervise CURRENT_ONLY or CAUSAL_HISTORY."
+  },
+  "derived_actionability": {
+    "labels": [
+      "ACTIONABLE_NOW",
+      "NON_ACTIONABLE_NOW",
+      "ABSTAIN_NOT_EVALUABLE"
+    ],
+    "abstain_if": [
+      "knownness == UNKNOWN",
+      "alertable == UNKNOWN",
+      "passed == UNKNOWN",
+      "all six intrusion cells == UNKNOWN",
+      "hazard_aux == UNRESOLVED"
+    ],
+    "actionable_if": "knownness == KNOWN AND alertable == YES AND passed == NO AND at least one intrusion cell == INTRUDING",
+    "non_actionable_if": "all required fields are evaluable and actionable_if is false",
+    "non_actionable_reason_required": [
+      "CLEAR_FORWARD",
+      "LATERAL_OR_PARALLEL",
+      "TOO_EARLY_OR_NOT_CURRENTLY_ALERTABLE",
+      "PASSED_CLEAR",
+      "NO_HAZARD_IN_SCOPE"
+    ],
+    "unknown_to_non_actionable_violation_allowed": 0
+  },
+  "review_output": {
+    "format": "JSONL, one object per opaque review item",
+    "required_fields": [
+      "review_item_id",
+      "hazard_aux",
+      "intrusion_cells",
+      "boundary_relation",
+      "alertable",
+      "passed",
+      "knownness",
+      "non_actionable_reason",
+      "quality_state",
+      "rationale_code"
+    ],
+    "quality_states": [
+      "STABLE",
+      "TURNING",
+      "BLURRED",
+      "DARK",
+      "OCCLUDED",
+      "MULTIPLE_PLAUSIBLE_ROUTES",
+      "OTHER_NOT_EVALUABLE"
+    ]
+  },
+  "metrics": {
+    "per_condition": [
+      "completion rate",
+      "alertable three-state exact agreement",
+      "passed three-state exact agreement",
+      "knownness exact agreement",
+      "boundary relation exact agreement on union-applicable anchors",
+      "intrusion-cell micro F1 with UNKNOWN excluded and disclosed",
+      "derived three-class confusion and exact agreement",
+      "derived classwise and macro Jaccard",
+      "ACTIONABLE union agreement",
+      "parent-event four-anchor sequence exact-match rate",
+      "first ACTIONABLE anchor delta when both routes contain ACTIONABLE",
+      "union abstain burden",
+      "per hidden source stratum agreement"
+    ],
+    "cross_condition": [
+      "CURRENT_ONLY to CAUSAL_HISTORY transition matrix",
+      "CAUSAL_HISTORY to HINDSIGHT_REFERENCE transition matrix",
+      "causal-versus-hindsight agreement and future-dependent fraction"
+    ],
+    "onset": {
+      "within_three_frames_rate": "NOT_EVALUABLE_ON_CURRENT_LEFT_TRUNCATED_COHORT",
+      "required_for_training_readiness": true,
+      "minimum_evaluable_positive_event_fraction": 0.85,
+      "minimum_within_three_frames_rate": 0.85
+    }
+  },
+  "gates": {
+    "all_conditions_completion_rate": 1.0,
+    "current_and_causal": {
+      "minimum_alertable_exact_agreement": 0.85,
+      "minimum_passed_exact_agreement": 0.85,
+      "minimum_knownness_exact_agreement": 0.85,
+      "minimum_boundary_relation_exact_agreement": 0.85,
+      "minimum_intrusion_spatial_f1": 0.8,
+      "minimum_derived_exact_agreement": 0.8,
+      "minimum_derived_macro_jaccard": 0.7,
+      "minimum_actionable_union_agreement": 0.75,
+      "minimum_parent_event_sequence_match": 0.8,
+      "maximum_union_abstain_burden": 0.3,
+      "minimum_each_hidden_stratum_derived_agreement": 0.6
+    },
+    "hindsight": {
+      "minimum_alertable_exact_agreement": 0.9,
+      "minimum_passed_exact_agreement": 0.9,
+      "minimum_boundary_relation_exact_agreement": 0.9,
+      "minimum_intrusion_spatial_f1": 0.85,
+      "minimum_derived_exact_agreement": 0.9,
+      "minimum_parent_event_sequence_match": 0.9
+    },
+    "causal_improvement_if_current_fails": {
+      "minimum_macro_jaccard_gain": 0.1,
+      "maximum_any_stratum_agreement_drop": 0.05
+    },
+    "unknown_to_non_actionable_violation_count": 0,
+    "zero_denominator": "FAIL_CLOSED"
+  },
+  "decision": {
+    "integrity_fail": "HOLD_ACT_A0_CONTRACT_NOT_READY",
+    "current_observation_pass": "A0_CURRENT_OBSERVATION_LABELS_READY_BUT_ONSET_COHORT_REQUIRED",
+    "causal_only_pass": "A0_CAUSAL_OBSERVATION_LABELS_READY_BUT_ONSET_COHORT_REQUIRED",
+    "hindsight_only_pass": "STOP_RUNTIME_LABEL_NOT_RELIABLE_HINDSIGHT_ONLY",
+    "hindsight_fail": "STOP_ACTIONABILITY_REFERENCE_CONSTRUCT_UNSTABLE",
+    "runtime_conditions_fail": "STOP_ACTIONABILITY_RUNTIME_LABEL_PROTOCOL_NOT_RELIABLE",
+    "training_authority": false,
+    "new_cohort_design_authority": "Only an A0_P1 full-frame observation pass may authorize a new matched-pair cohort contract. An A0_P0 fixed-anchor pass authorizes only A0_P1. The current cohort can never authorize model training because onset readiness is not evaluable."
+  },
+  "new_cohort_requirements_if_observation_passes": {
+    "minimum_new_parent_events": 30,
+    "session_disjoint_from": [
+      "RISKSEG-R0 train/dev",
+      "RISKSEG-R0 90-frame regression",
+      "consumed 30-event event-eval"
+    ],
+    "required_strata": [
+      "central entity intrudes apparent path",
+      "transverse step or curb crossing",
+      "parallel boundary non-intruding",
+      "distant visible but non-intruding hazard",
+      "upper background or wall activation",
+      "same obstacle before alertable versus after passed-clear",
+      "temporary occlusion and reappearance",
+      "normal walkable route"
+    ],
+    "matched_pairs": [
+      "same boundary semantics: transverse actionable versus parallel non-actionable",
+      "same obstacle identity: ahead alertable versus passed-clear while still visible"
+    ],
+    "onset_complete_requirement": "Positive windows must include sufficient pre-alert frames and passed-clear frames; no left-truncated positive is eligible for onset confirmation."
+  },
+  "model_design_boundary": {
+    "training_in_a0": false,
+    "architecture_in_a0": "proposal only",
+    "future_total_loss_if_authorized": "L = lambda_i*L_intrusion + lambda_b*L_boundary_relation + lambda_a*L_alertable + lambda_p*L_passed + lambda_k*L_knownness + lambda_s*L_semantic_aux, with every lambda >= 0",
+    "abstain_training_rule": "Epistemic UNKNOWN is masked from actionability positives/negatives and handled by a separate knownness/abstention target.",
+    "hindsight_leakage_rule": "HINDSIGHT_REFERENCE labels may not directly supervise a current-only or causal-history runtime head."
+  },
+  "forbidden": [
+    "PIDNet-M, SegFormer or other larger-model rescue",
+    "four-class P1 training",
+    "adapter-grid or soft-threshold tuning",
+    "temporal confirmation rule",
+    "component classifier",
+    "parallel-curb special-case rule",
+    "mask to bbox to RiskAnalyzer integration",
+    "App or default-model change"
+  ],
+  "pre_output_checks": [
+    "all bound input hashes and 30/30/1920/8-8-7-7 cardinality match",
+    "all 120 anchors have complete t-10..t+10 source frames",
+    "CURRENT packets contain no past or future frame",
+    "CAUSAL packets contain no frame greater than t",
+    "HINDSIGHT packets and IDs are isolated from runtime passes",
+    "all six passes have distinct opaque item IDs and independently permuted order",
+    "no reviewer packet contains semantic paths, event/session identity, bucket, interval, oracle, truth or model output",
+    "UNKNOWN derivation cannot produce NON_ACTIONABLE",
+    "tests, implementation hash lock and output new-directory checks pass"
+  ],
+  "output_root": "artifacts.local/evidence/riskseg-act-a0/actionability-readiness-v1",
+  "implementation_lock": {
+    "baseline_commit": null,
+    "files": {}
+  }
+}
