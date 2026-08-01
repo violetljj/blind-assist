@@ -36,6 +36,21 @@ DEVELOPMENT_REQUIRES_LEGACY_FORMAL_GATES: false
 HISTORICAL_TERMINALS_IMMUTABLE: true
 ```
 
+## 独立未来潜力支线：HFTF
+
+HFTF 是独立于当前 RISKSEG/YOLO 主线的未来潜力支线；只有同口径证据持续超过主线，
+才另立主线切换合同。当前进行到
+[G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
+之后的
+[timeline amendment](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_TIMELINE_AMENDMENT_2026-08-01.md)
+与
+[Development execution contract](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_EXECUTION_CONTRACT_D1_2026-08-01.md)：
+只比较 current RGB 下 direct-risk 与 signed-clearance 两种输出机制。9 个已
+outcome-open 来源固定为 6 train + 3 model selection；三条 one-shot fresh 与三条
+reserved official-test 尚未打开。只有 Development corpus 经独立 authority/label
+重推验证、12 个 Phase A/B runs 完成且六个最终 checkpoint hashes 冻结后，才允许
+另立 fresh 一次性评估合同。主线、默认 App、Android、生产与安全权限均未改变。
+
 ## 当前决定
 
 2026-08-01，当前唯一算法主线切换为

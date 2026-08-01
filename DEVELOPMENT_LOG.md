@@ -3344,3 +3344,37 @@
   不改变主线、App、Android、生产或安全权限。
 - 当前只冻结 scientific design；implementations、corpus、训练与 fresh acquisition
   均未授权。
+
+## 2026-08-01：HFTF-G0-D1 Development execution contract 冻结
+
+- 执行者：violjjet
+- 执行前独立复核发现原 scientific design 的
+  `ALL_25_CURRENT_10FPS_FRAMES` 与冻结 source plan 不完全一致：9 个 Development
+  来源中 7 个 target FPS 为 10、2 个为 5。由于 D1 corpus/student outcome 尚未
+  打开，新增 metadata-only timeline amendment，将语义修订为
+  `ALL_25_CURRENT_FRAMES_AT_EACH_SOURCE_PLAN_FROZEN_TARGET_FPS`；source identity、
+  model、target、loss、selection 与 gates 均不改变。amendment SHA-256 为
+  `3029dc7622cefa5491415e619f23bd7e0f080bef4c9b09407b019ac66938030c`。
+- Development corpus 固定为 6 train + 3 model-selection sources、每源 25 个
+  source-plan current frames。student loader 只可打开 current RGB；UNKNOWN 的
+  risk/clearance 保持 null。独立 validator 重新绑定真实 manifest、RGB/depth/mask、
+  pose/authority receipts，并从 authority inputs 重推全部 labels，拒绝 self-consistent
+  forgery、fresh/reserved masquerade、role overlap 与任意额外 teacher/future 字段。
+- 训练分 Phase A/B：两个 arms × 三 seeds 均完整训练 30 epochs；Phase A 用 6/3
+  split 冻结 epoch，Phase B reset 后用全部 9 个来源且只冻结对应 epoch。Phase B
+  开始前重新计算 Phase A selection 并 strict-load finite checkpoint；最终独立
+  validator 要求完整 12-run tree 与六个 final checkpoint hashes。
+- corpus materializer / validator / trainer / training validator SHA-256 分别为
+  `da0523fe7a01064540b788d9e92f889c0a7e331ae6e71ba5683023c96a70c153`、
+  `bdfb8eb15cee7232d681e96c30e4b3186331ddec4e68d5226f2b311ca743e39c`、
+  `d0d668b509015f5c18e6e40f5cd4ccac17f1523ac8744c5f6c78e60c287ec716`、
+  `68713284875550ee7c31d335ae6025333b21571d4092937bcd62b0b2da4749b5`。
+  execution contract SHA-256 为
+  `fa7cce1e634d535bb8ff57a658befc8daa17d15e0d482580140a1675d9d88df7`。
+- 两路独立复核最终均为 CLEAR；定向测试 35/35、HFTF 全集 242/242。
+  独立 authority/label 重推预检成功绑定 225 records / 9 sessions，耗时约
+  `147.5 s`，未写正式 corpus。
+- 本节点只冻结并授权提交后执行 Development corpus → validation → Phase A →
+  Phase B → training validation。fresh acquisition/prediction/truth、reserved
+  official-test、future/temporal、研究主线、默认 App、Android、生产与安全权限均
+  继续关闭。
