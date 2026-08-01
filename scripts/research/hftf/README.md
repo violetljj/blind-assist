@@ -475,6 +475,21 @@ E:\codex-tools\bin\blindassist-python.cmd `
 transport 只完整 decode 与核对 timebase；通过后只授权 `.4 s` teacher opportunity，
 不重开 `.8 s`。
 
+E0.1 `.4 s` fresh teacher/opportunity audit：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/audit_stage_c_e0_1_teacher_opportunity.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.json `
+  --transport artifacts.local/evidence/hftf/stage-c-e0-1-fresh-transport-20260801/transport.json `
+  --media-root artifacts.local/evidence/hftf/stage-c-e0-1-fresh-evaluation-media-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/teacher_opportunity.json
+```
+
+runner 只解码 anchor 与 `anchor+2` teacher depth，报告中明确
+`zero_point_eight_second_output_computed=false`。新 dev/heldout mechanics 与 opportunity
+全过后才授权 corpus/training。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
