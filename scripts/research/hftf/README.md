@@ -1,0 +1,87 @@
+# hftf
+
+状态：`development / candidate-side-lane / H0-source-feasibility`
+
+## 研究问题与版本
+
+本 Module 服务 `HFTF_CANDIDATE_LANE_R0`：检验历史 RGB 能否预测面向行人身体包络的
+短时未来可通行/碰撞风险场，而不是继续给 YOLO 增加后处理规则。当前只执行
+`HFTF_H0_SOURCE_FEASIBILITY_R0`，允许的 claim 是来源与教师接口可行性，不是模型效果、
+创新性、用户效果或安全性。
+
+当前章程与终态见 `docs/research/hftf/README.md`。
+
+## 稳定 Interface
+
+从仓库根目录运行：
+
+```powershell
+$runId = 'h0-source-feasibility-r0-REPLACE_WITH_NEW_RUN_ID'
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/audit_source_feasibility.py `
+  --replay-root artifacts.local/evidence/datasets/sanpo-synthetic-replay-25frames-20260720 `
+  --output "artifacts.local/evidence/hftf/$runId/source_feasibility.json"
+```
+
+输入必须包含 hash-bound RGB、panoptic mask、metric depth、相机内参、pose CSV、
+`dataset_spec.json`、`manifest.replay.jsonl` 和既有 source-integrity QA。相对路径必须
+保持在 replay root 内；报告路径必须位于 `artifacts.local/` 且已存在时拒绝覆盖。
+静态 projection 资格由脚本独立复算全部文件 hash、完整 PNG decode/dimensions、depth
+header/shape 与 finite-positive samples；QA 还必须以 schema、`ok`、frame count 和逐
+depth path 与 manifest 一致。输入中的 `SANPO-Synthetic`/official split 字段只作为
+内部一致性声明；本 H0 不把本地 manifest 自报内容当作来源身份的密码学认证。
+重复 canonical asset path 或完整 RGB/mask/depth hash triplet 会 fail closed；QA
+布尔字段必须是精确 JSON boolean，字符串 `"false"` 不视为 false declaration；
+frame count、fraction 与相机内参拒绝 bool 或字符串伪数值。
+
+multi-height/future 的**结构准备度**不能由普通 CSV 列名或非空占位字段获得。通用
+H0 可检查下列精确合同：
+
+- `hftf_body_frame_contract`：精确 schema、frame/axis/unit/direction、有限且归一化
+  SE(3)、ground reference 和 provenance；
+- `hftf_pose_binding`：hash-bound JSONL，把每个 manifest row 一一映射到唯一 raw pose
+  row，并核对 session/sequence/frame/time、admitted tracking state、有限 position 与
+  归一化 quaternion。
+
+即使上述结构检查全部通过，本工具仍把 multi-height/future 判为 `NOT_EVALUABLE`。
+真实准入还必须由 source-specific verifier 分别复算标定 receipt 与原始
+pose-frame/time mapping；hash-bound sidecar 不能给自己签发权威。
+
+## 输出
+
+只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
+裁决静态 metric projection、多高度身体包络教师、短时未来教师和独立 student-effect
+评价，不把上一级可用性自动传递给下一级。本通用 H0 只可能准入静态 projection；
+multi-height/future 需要后续 source-specific admission，student-effect 必须由 H2/H3
+的独立 hash-bound parent-event ledger validator 裁决。
+
+## 安全边界
+
+这是 host-only `DEVELOPMENT_STANDARD` 审计。不训练模型，不读取 fresh/blind，不修改
+Android、提醒或默认 App。合成深度/位姿派生结果只能叫 geometry-derived proxy；
+没有独立人类事件真值时不得称为风险真值。
+
+## 停止条件
+
+报告产生下列一个终态即停止：
+
+- `HFTF_H0_SOURCE_INTEGRITY_NOT_EVALUABLE`
+- `HFTF_H0_SOURCE_FEASIBILITY_PARTIAL`
+
+任何 blocker 只关闭相应 evidence instance。修复来源合同必须生成新输出路径，不覆盖
+旧报告；不得靠默认行号、跨 session 时间差、自报事件数量或 session 改名补出
+pose-frame binding、future span 或 effect eligibility。
+
+## 假设与规则质疑
+
+方向、距离、高度、人体包络、dynamic 与 uncertainty 都是历史 USTRF 的继承
+primitive；不构成新颖性。唯一待证表示增量是 action-agnostic、history-only RGB 对
+显式 short-future layered cells 的预测。falsifier 是：多高度或未来轴相对
+single-height/current-field 没有独立增量，或 student 在相同事件账本与算力约束下不能
+优于 incumbent。
+
+## 失败资产复用
+
+失败报告可作为数据来源缺口、pose/body-frame 合同、teacher leakage 与 evaluation
+readiness 的 regression fixture；不能重包装为 HFTF 模型负结果、创新性结论或
+unseen Confirmation。

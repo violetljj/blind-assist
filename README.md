@@ -19,6 +19,12 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
   model-selection R1 仍为 `BLOCKED / NOT_EVALUABLE`，R2-P0 终态和 consumed 数据角色
   不变；它们不再把新的论文 Development 锁成 one-shot formal。RCLE 已暂停，USTRF 已
   收口，历史状态分别由各 current/index 入口保留。
+- [HFTF 候选未来可通行场](docs/research/hftf/README.md)已作为独立
+  `DEVELOPMENT_STANDARD` 支线建立；当前
+  `HFTF_H0_SOURCE_FEASIBILITY_PARTIAL / INNOVATION_NOT_EVALUABLE`，只授权静态
+  metric projection canary。它不改变双环研究主线、正式 YOLO 默认模型或 App 行为；
+  未来须在同一事件账本、canonical decision kernel 与设备预算下胜过届时 incumbent，
+  才可晋级研究主线，且研究晋级不自动等于生产替换。
 - 全项目前向采用 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`：Discovery 默认不消费 fresh
   holdout，mapping/decoder 先过 synthetic canary，普通论文 Development 可版本化修复
   重跑，并可在正式选模前分别做算法选模 benchmark 与平台工程 benchmark。只有显式启动

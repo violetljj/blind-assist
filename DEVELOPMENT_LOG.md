@@ -12,6 +12,28 @@
   重叠，其中 `i2jg` 含 22 张相同 RGB，故仅保留为 contaminated non-gating smoke，
   不支持泛化主张。当前停在
   `EVENT_EVAL_DATA_GATE_PENDING / DEFAULT_APP_UNCHANGED`，不是等待新授权。
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。建立独立
+  `HFTF_CANDIDATE_LANE_R0`，状态为
+  `CANDIDATE_SIDE_LANE_ACTIVE / DEVELOPMENT_STANDARD /
+  INNOVATION_NOT_EVALUABLE / MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`。文献核验确认
+  AgniNav 已覆盖身体碰撞包络、几何/深度标签、极坐标 student 与边缘部署，故不再主张
+  这些组件首次出现；HFTF 只保留 action-agnostic、history-RGB、显式 short-future
+  layered cells 的助盲组合假设。新增 source-feasibility audit 和 17 项 focused
+  tests；在本地声明为 SANPO-Synthetic 的单 session、25-frame、2.4 s replay 上核验
+  75/75 RGB/mask/depth 文件与 hash、完整 PNG decode、depth
+  header/shape/finite-positive 以及全部 row 的 session/sequence 归属，终态为
+  `HFTF_H0_SOURCE_FEASIBILITY_PARTIAL`。静态 metric projection canary 可执行；通用
+  H0 不认证本地 source identity，也永久禁止 pose/body sidecar 自签 multi-height、
+  future 或 effect eligibility；它们仍因缺 source-specific mapping/calibration
+  verifier、独立 session/event ledger 而 `NOT_EVALUABLE`。截断 PNG、伪造 QA、缺失
+  group、重复 observation、字符串 false QA、荒谬 body geometry、无效 pose 与自报
+  effect、bool 冒充 metric count/fraction/intrinsics 均有失败关闭测试。最终报告
+  `h0-source-feasibility-r0-20260801-final-v3/source_feasibility.json` SHA-256
+  `43e72db3395b698a6b0ee9753e5aa6088c64e85e3cbe396b53a5a732df13d8be`，独立重跑逐
+  字节一致；此前输出只保留为非权威 implementation diagnostics。冻结 source-native
+  raw-capture/event ancestry 去重、positive/negative/critical 分层最小分母、逐
+  guardrail missing/censoring 记分、置信界、miss lead-time 与设备预算约束的 challenger
+  晋级原则；当前不训练模型，不改 Android、提醒、双环主线或默认 App。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
   `INFORMATION_CEILING_THREE_ARM_D0` 的无训练设备审计，冻结同一 90-frame /
   3-parent-event SANPO consumed Development cohort、`riskConfig=current`、
