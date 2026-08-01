@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何 R3.1 arm outcome
+  前冻结 `HFTF_STAGE_B_REFERENCE_ONLY_OPPORTUNITY_QUALIFICATION_R3_1`。排除
+  R0–R3 16 个 burned sessions 后按 official train 字典序最多筛 40 个 inventory-
+  eligible sessions，目标 4 个。qualification 代码只可读 disjoint stride-4 reference，
+  禁止计算 stride-8 candidate、angular baseline 或 arm delta。obstacle 要求每高度
+  5 positive/20 negative、known `.10`；ground 要求 known `.10` 且至少 5 risk cells
+  分布于 3 frames/2 directions。若预算不足 4 个即 NOT_EVALUABLE，不降资格门、不
+  无限扫描。后续 formal R3.1 保持 R3 全部 effect gates，claim 只限 opportunity-
+  qualified challenge cohort；Stage C、H2、主线、Android、提醒、默认 App、生产与
+  安全未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 formal
   `HFTF_STAGE_B_SWEPT_ENVELOPE_REFERENCE_COMPARISON_R3`，终态
   `R3_SOURCE_OR_REFERENCE_NOT_EVALUABLE`。authority/exact set、obstacle known 与
