@@ -588,8 +588,8 @@ class RisksegPidnetQnnPreflightDeviceTest {
             classId == BLOCKING_OBSTACLE || classId == BOUNDARY_LEVEL_CHANGE
 
         override fun riskLabelFor(classId: Int): String? = when (classId) {
-            BLOCKING_OBSTACLE -> "segmentation obstacle"
-            BOUNDARY_LEVEL_CHANGE -> "boundary step curb"
+            BLOCKING_OBSTACLE -> "generic obstacle"
+            BOUNDARY_LEVEL_CHANGE -> "curb"
             else -> null
         }
 
