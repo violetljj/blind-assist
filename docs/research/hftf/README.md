@@ -122,6 +122,8 @@ sources 和独立冻结的高密度 geometry reference 评价 reference-relative
 - [Stage B swept-envelope mechanics protocol](HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.md)
 - [Stage B machine-readable protocol](HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json)
 - [Stage B swept-envelope mechanics D0 result](HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_RESULT_D0_2026-08-01.md)
+- [Stage B reference metric pilot D1](HFTF_STAGE_B_REFERENCE_METRIC_PILOT_D1_2026-08-01.md)
+- [Stage B machine-readable D1 pilot](HFTF_STAGE_B_REFERENCE_METRIC_PILOT_D1_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在读取任何 fresh R3
+  outcome 前冻结 Development-only
+  `HFTF_STAGE_B_REFERENCE_METRIC_PILOT_D1`。candidate 为 stride-8/offset-4
+  swept envelope，baseline 使用完全相同 points 的 angular bins；reference 为与
+  candidate pixel lattice 不相交的 stride-4/offset-2 dense swept geometry proxy。
+  四个 burned R2 sessions 将同时报告 reference count threshold `1/2/4/8` 的
+  precision/recall/F1、confusion 与 paired correctness；不允许只挑最好 threshold。
+  D1 仅设计 formal R3 gate，不授权 fresh outcome、future Stage C、H2、主线、Android、
+  提醒、默认 App、生产或安全 claim。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 Development-only
   `HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0`，终态
   `STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_ADMITTED_FOR_FRESH_R3`。7/7 structural
