@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未执行 R4
+  split-source 工具第一段：obstacle inventory planner 验证冻结 parent/56-session
+  burn ledger 与 official split，只读 inventory；obstacle qualifier 只计算 stride-4
+  dense reference，显式禁止 ground、candidate、baseline 和 arm delta；analytic
+  terrain runner 在采样前由 42 个 exact profiles 导出真值，执行 five-section
+  candidate、semantic-safe/endpoint-delta baselines 与 UNKNOWN 防火墙。HFTF suite
+  76 项通过。任何 R4 outcome 均须在本实现提交后另行执行。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何 R4 outcome 前冻结
   split-source Stage B successor。obstacle role 排除 R0–R3.1 共 56 个
   outcome-open SANPO sessions，字典序最多 reference-only screen 12 个、目标 4 个，

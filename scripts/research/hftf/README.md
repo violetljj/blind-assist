@@ -231,6 +231,44 @@ E:\codex-tools\bin\blindassist-python.cmd `
 个，则必须提供全部 40 个报告才能得到 budget-exhausted terminal。R3.1 实际终态为
 `R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE`，不得在同一队列继续扫描或降门。
 
+### Stage B split-source R4
+
+R4 obstacle source 先按 56-session burn ledger 生成最多 12 个的新 inventory plan：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/plan_r4_obstacle_inventory_candidates.py `
+  --protocol docs/research/hftf/HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.json `
+  --burn-ledger docs/research/hftf/HFTF_R4_SOURCE_POOL_BURN_LEDGER_2026-08-01.json `
+  --output artifacts.local/evidence/hftf/<run-id>/inventory_plan.json
+```
+
+每个 source 的 qualification 只可计算 obstacle dense reference：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/qualify_r4_obstacle_reference_opportunity.py `
+  --protocol docs/research/hftf/HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.json `
+  --burn-ledger docs/research/hftf/HFTF_R4_SOURCE_POOL_BURN_LEDGER_2026-08-01.json `
+  --inventory-plan <inventory-plan.json> `
+  --mechanics-protocol docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json `
+  --replay-root <candidate-replay> `
+  --authority <candidate-authority.json> `
+  --output artifacts.local/evidence/hftf/<run-id>/qualification.json
+```
+
+terrain component 完全由冻结解析 profiles 生成，不读取 SANPO outcome：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/run_r4_analytic_terrain.py `
+  --protocol docs/research/hftf/HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.json `
+  --output artifacts.local/evidence/hftf/<run-id>/terrain_result.json
+```
+
+terrain pass 只代表 controlled mechanics component 通过，不能独自签发 joint R4
+terminal 或 Stage C 权限。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
