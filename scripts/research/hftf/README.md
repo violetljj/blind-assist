@@ -163,6 +163,25 @@ E:\codex-tools\bin\blindassist-python.cmd `
 candidate/reference pixel grids 不相交；四个 reference count thresholds 必须全部报告。
 D1 只设计 R3 gate，不选择 fresh outcome。
 
+formal R3 必须使用已绑定四 source hashes 的 protocol：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/run_stage_b_reference_comparison.py `
+  --protocol docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_REFERENCE_COMPARISON_PROTOCOL_R3_2026-08-01.json `
+  --mechanics-protocol docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json `
+  --source-preparation docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_REFERENCE_COMPARISON_SOURCE_PREPARATION_R3_2026-08-01.json `
+  --session <fresh-r3-replay-a> <authority-a.json> `
+  --session <fresh-r3-replay-b> <authority-b.json> `
+  --session <fresh-r3-replay-c> <authority-c.json> `
+  --session <fresh-r3-replay-d> <authority-d.json> `
+  --output artifacts.local/evidence/hftf/<run-id>/stage_b_r3.json
+```
+
+runner 先裁决 source/reference/known readiness，再裁决 obstacle 增益，最后单列 ground
+opportunity 与 agreement。full terminal 也只允许冻结下一 Stage C protocol，不直接授权
+future execution 或 student。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

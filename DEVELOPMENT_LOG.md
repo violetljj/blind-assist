@@ -1,4 +1,12 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。实现但尚未运行 formal
+  `HFTF_STAGE_B_SWEPT_ENVELOPE_REFERENCE_COMPARISON_R3` runner。实现复用 D1 的
+  candidate/baseline/disjoint-reference obstacle confusion，并新增 disjoint ground
+  sampling、candidate/reference/shared known coverage、step/drop opportunity 与
+  ground precision/recall；五个 ordered-terminal tests 保证 source→obstacle→ground
+  顺序停止。HFTF 全套 55 tests 通过。即使 full terminal，也只把下一 Stage C
+  protocol freeze 标记为可授权，Stage C execution 与 student 仍为 false。当前为
+  `R3_IMPLEMENTATION_READY_RESULT_NOT_RUN`。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 R3 四个 fresh
   source acquisition 与 frozen-canonical authority，并在任何 field outcome 前冻结
   `HFTF_STAGE_B_SWEPT_ENVELOPE_REFERENCE_COMPARISON_PROTOCOL_R3`。`043db91a/
