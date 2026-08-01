@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何新 SANPO
+  geometry/student outcome 前冻结 Stage C F0 body/head temporal-student canary。
+  source pool 排除 R4 前 56 个 burned sessions 与 R4 四个 outcome-open sessions；
+  official train 中按完整 ID 字典序固定前 12 个 metadata-eligible source，
+  rank `1–6/7–9/10–12` 为 train/dev/heldout。混合 5/20 FPS 全部按物理时间取
+  `[-.8,-.6,-.4,-.2,0] s` history 与 `.4 s` future；三个同参数 arm 为
+  `SF_CURRENT/SF_FUTURE/HIST_FUTURE`。12/12 source 的 authority、transport、
+  body/head opportunity 与 teacher byte-determinism 全过前禁止 corpus/training。
+  foot-ground、完整 HFTF、主线、Android/App 与安全 claim 均保持未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。固定 E0.2 关闭为
   `E0_2_FIXED_BATCH_TEACHER_MECHANICS_NOT_EVALUABLE`。1,232,000,737 bytes 与
   transport 全过；dev/heldout role opportunity 为 `35/37 risk cells`、

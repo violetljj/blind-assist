@@ -1,0 +1,23 @@
+{
+  "schema": "blindassist_hftf_stage_c_sanpo_body_head_source_pool_burn_ledger_f0",
+  "status": "FROZEN_BEFORE_F0_SOURCE_OUTCOME",
+  "parent_r4_burn_ledger": {
+    "path": "HFTF_R4_SOURCE_POOL_BURN_LEDGER_2026-08-01.json",
+    "sha256": "54f5a48db7a6bb512c6a136733d98b6aa1eab1c882172e54b3cd488cc08676d3",
+    "burned_session_count": 56
+  },
+  "r4_obstacle_cohort_lock": {
+    "path": "artifacts.local/evidence/hftf/r4-obstacle-cohort-lock-20260801/cohort_lock.json",
+    "sha256": "1e25b06256279d065af072c760b660f148bac6a70298600a4ee5c463ab75c48e"
+  },
+  "additional_r4_outcome_open_session_ids": [
+    "1136309386c3b5014f2d36169c01df20f941fa59482e872942da4d2c4ea352ee",
+    "11838cbb05927d464d4743f1f3dc478cc791a4567116de1a336fa087d07c79b6",
+    "11c4b307b27d6e2f750fb51f48365f44dcc1207cfa05a406a02f69926750fd66",
+    "1278aa622e1491be32788913ab8b7d617108ecf6eb4588485d95617910f5dcd8"
+  ],
+  "effective_burned_session_count": 60,
+  "effective_burned_session_ids_are_union_of_parent_and_additional": true,
+  "duplicates_allowed": false,
+  "f0_must_reject_any_effectively_burned_session": true
+}

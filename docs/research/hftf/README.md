@@ -21,6 +21,7 @@ E0_1_FOOT_GROUND_STUDENT_CANARY_NOT_EVALUABLE /
 STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_FROZEN /
 E0_2_FIXED_BATCH_TEACHER_MECHANICS_NOT_EVALUABLE /
 EGOWALK_FOOT_GROUND_STUDENT_SOURCE_ROUTE_CLOSED /
+STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_FROZEN /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -253,6 +254,18 @@ anchors、5 directions；但 3/6 source 的 `.4 s` known fraction 为
 扩源。HFTF 本身保留，下一路线转向 R4 已有 reference 支持的 SANPO body/head
 obstacle temporal student；foot-ground 不得混入该结论。
 
+F0 现已在任何新 SANPO geometry/student outcome 前冻结。source pool 排除 R4 前
+56 个 burned sessions 与 R4 已打开 obstacle outcome 的四个 sessions，共 60 个；
+随后按 official train 完整 session ID 字典序固定前 12 个 metadata-eligible source，
+rank 1–6/7–9/10–12 分配为 train/dev/heldout。SANPO 的 5/20 FPS 差异按物理时间
+处理：student 只读 `[-.8,-.6,-.4,-.2,0] s` 的五张 RGB，future teacher 只做
+`.4 s`。三个同参数 arm 为 `SF_CURRENT/SF_FUTURE/HIST_FUTURE`。
+
+12/12 source 的 authority、transport、body/head current/future known coverage、
+positive/negative opportunity 与 byte-determinism 全过前，不生成 corpus、不训练。
+F0 成功也只支持 SANPO-Synthetic body/head temporal geometry-proxy signal；foot-ground、
+完整 HFTF、自然/人类事件、主线、Android/App 与安全 claim 均不授权。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -312,6 +325,9 @@ obstacle temporal student；foot-ground 不得混入该结论。
 - [Stage C multi-source evaluation qualification E0.2](HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_2026-08-01.md)
 - [Stage C machine-readable multi-source qualification E0.2](HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_2026-08-01.json)
 - [Stage C multi-source qualification E0.2 result](HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_RESULT_E0_2_2026-08-01.md)
+- [Stage C SANPO body/head temporal-student canary F0](HFTF_STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_2026-08-01.md)
+- [Stage C machine-readable SANPO body/head canary F0](HFTF_STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_2026-08-01.json)
+- [Stage C SANPO body/head F0 burn ledger](HFTF_STAGE_C_SANPO_BODY_HEAD_SOURCE_POOL_BURN_LEDGER_F0_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
