@@ -150,7 +150,7 @@ class DetectorAbDeviceBenchmarkTest {
             .put("confidence_threshold", TfliteYoloDetector.CONFIDENCE_THRESHOLD.toDouble())
             .put("detector_iou_threshold", TfliteYoloDetector.IOU_THRESHOLD.toDouble())
             .put("models", JSONArray(modelResults.map { it.toJson() }))
-            .put("recommendation", recommendation(modelResults))
+            .put("recommendation", recommendation(modelResults, comparisonMode))
             .put("asset_sources", JSONObject()
                 .put("yolo11n", "app/src/main/assets/yolo11n_fp16_320.tflite")
                 .put("yolo26n", ".downloads/detector-lab/exports/yolo26n_fp16_320.tflite")
@@ -331,13 +331,26 @@ class DetectorAbDeviceBenchmarkTest {
                             } else {
                                 emptyList()
                             }
+                            val oracleBoxDetections = if (spec.sourceRegionBoxOracle) {
+                                image.sourceRegions.map { it.toDetection(frameSize) }
+                            } else {
+                                emptyList()
+                            }
                             val oracleMs = if (spec.traversabilityOracle) elapsedMs(oracleStart) else 0.0
                             val segmentationStart = System.nanoTime()
                             val learnedSegmentationDetections = segmentationSegmenter?.let { segmenter ->
                                 learnedTraversabilityAnalyzer.analyze(segmenter.segment(bitmap), frameSize).riskDetections
                             } ?: emptyList()
                             val segmentationMs = if (spec.segmentationCandidate) elapsedMs(segmentationStart) else 0.0
-                            val riskInputs = detections + oracleDetections + learnedSegmentationDetections
+                            val yoloRiskInputs = if (spec.includeYoloRiskInputs) detections else emptyList()
+                            val riskInputs =
+                                yoloRiskInputs + oracleBoxDetections + oracleDetections + learnedSegmentationDetections
+                            val perceptionDetections = when {
+                                spec.sourceRegionBoxOracle -> oracleBoxDetections
+                                spec.traversabilityOracle && !spec.includeYoloRiskInputs -> oracleDetections
+                                spec.segmentationCandidate && !spec.includeYoloRiskInputs -> learnedSegmentationDetections
+                                else -> detections
+                            }
                             val risk = riskAnalyzer.analyze(riskInputs, frameSize)
                             preprocess += detector.lastPreprocessMs.toDouble()
                             inference += detector.lastInferenceMs.toDouble()
@@ -347,7 +360,7 @@ class DetectorAbDeviceBenchmarkTest {
                             depth += depthMs
                             total += totalMs
                             runs += FrameRun(
-                                detections = detections,
+                                detections = perceptionDetections,
                                 riskInputs = riskInputs,
                                 frameSize = frameSize,
                                 risk = risk,
@@ -421,6 +434,7 @@ class DetectorAbDeviceBenchmarkTest {
                 perImage += PerImageModelResult(
                     image = image,
                     evaluation = evaluation,
+                    riskInputs = firstRun.riskInputs,
                     groundTruthRisk = gtRisk,
                     rawModelRisk = rawModelRisk,
                     modelRisk = modelRisk,
@@ -974,7 +988,16 @@ class DetectorAbDeviceBenchmarkTest {
         return area
     }
 
-    private fun recommendation(modelResults: List<ModelBenchmarkResult>): JSONObject {
+    private fun recommendation(modelResults: List<ModelBenchmarkResult>, comparisonMode: String): JSONObject {
+        if (comparisonMode == COMPARISON_MODE_INFORMATION_CEILING_THREE_ARM) {
+            return JSONObject()
+                .put("decision", "independent_information_ceiling_validation_required")
+                .put(
+                    "reason",
+                    "Oracle arms are truth-information probes with non-comparable runtime; " +
+                        "derive the terminal from the paired parent-event ledger."
+                )
+        }
         val baseline = modelResults.firstOrNull { it.spec.id == "baseline_geometry" }
             ?: modelResults.firstOrNull { it.spec.id == "baseline_yolo_geometry" }
             ?: modelResults.firstOrNull { it.spec.id == "yolo11n" }
@@ -1471,6 +1494,8 @@ class DetectorAbDeviceBenchmarkTest {
         val depthCloserIsLarger: Boolean = true,
         val depthSamplingConfig: DepthEvidenceSamplingConfig = DepthEvidenceSamplingConfig(),
         val traversabilityOracle: Boolean = false,
+        val sourceRegionBoxOracle: Boolean = false,
+        val includeYoloRiskInputs: Boolean = true,
         val segmentationCandidate: Boolean = false,
         val segmentationModelAssetName: String = "",
         val riskAnalyzerConfig: RiskAnalyzerConfig = RiskAnalyzerConfig.Default
@@ -1515,6 +1540,16 @@ class DetectorAbDeviceBenchmarkTest {
         val label: String,
         val box: BoundingBox
     ) {
+        fun toDetection(frameSize: FrameSize): Detection {
+            return Detection(
+                classId = SANPO_BOX_ORACLE_CLASS_ID_OFFSET + classId,
+                label = label,
+                confidence = 1f,
+                boundingBox = box,
+                frameSize = frameSize,
+                source = DetectionSource.OBJECT_DETECTOR
+            )
+        }
     }
 
     private data class GroundTruthBox(
@@ -1609,6 +1644,12 @@ class DetectorAbDeviceBenchmarkTest {
                 )
                 .put("depth_closer_is_larger", spec.depthCloserIsLarger)
                 .put("traversability_oracle", spec.traversabilityOracle)
+                .put("source_region_box_oracle", spec.sourceRegionBoxOracle)
+                .put("include_yolo_risk_inputs", spec.includeYoloRiskInputs)
+                .put(
+                    "runtime_comparable",
+                    !spec.sourceRegionBoxOracle && (!spec.traversabilityOracle || spec.includeYoloRiskInputs)
+                )
                 .put(
                     "depth_sampling_config",
                     JSONObject()
@@ -1693,6 +1734,7 @@ class DetectorAbDeviceBenchmarkTest {
     private data class PerImageModelResult(
         val image: BenchmarkImage,
         val evaluation: DetectionEvaluation,
+        val riskInputs: List<Detection>,
         val groundTruthRisk: RiskResult,
         val rawModelRisk: RiskResult,
         val modelRisk: RiskResult,
@@ -1707,6 +1749,7 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("gt_count", evaluation.gtCount)
                 .put("detection_count", evaluation.detectionCount)
                 .put("quality", evaluation.toJson())
+                .put("risk_inputs", JSONArray(riskInputs.map { detectionToJson(it) }))
                 .put("ground_truth_risk", riskToJson(groundTruthRisk))
                 .put("raw_model_risk", riskToJson(rawModelRisk))
                 .put("stable_model_risk", riskToJson(modelRisk))
@@ -2116,6 +2159,7 @@ class DetectorAbDeviceBenchmarkTest {
         private const val COMPARISON_MODE_DEPTH_FUSION_SWEEP = "DepthFusionSweep"
         private const val COMPARISON_MODE_SANPO_TRAVERSABILITY_ORACLE = "SanpoTraversabilityOracle"
         private const val COMPARISON_MODE_SEGMENTATION_CANDIDATE = "SegmentationCandidate"
+        private const val COMPARISON_MODE_INFORMATION_CEILING_THREE_ARM = "InformationCeilingThreeArm"
         private const val SEGMENTATION_INT8_ASSET = "mobilenetv3_lraspp_int8_256.tflite"
         private const val SEGMENTATION_MAX_P95_MS = 70.0
         private const val SEGMENTATION_MAX_P95_DELTA_MS = 15.0
@@ -2127,6 +2171,7 @@ class DetectorAbDeviceBenchmarkTest {
         private const val TEMPORAL_FRAME_STEP_MS = 100L
         private const val DEFAULT_HASH_BUFFER_BYTES = 16 * 1024
         private const val TRAVERSABILITY_MASK_SIZE = 256
+        private const val SANPO_BOX_ORACLE_CLASS_ID_OFFSET = 20_000
         private const val ARG_DATASET_KIND = "datasetKind"
         private const val ARG_RISK_CONFIG = "riskConfig"
         private const val ARG_COMPARISON_MODE = "comparisonMode"
@@ -2223,6 +2268,30 @@ class DetectorAbDeviceBenchmarkTest {
                         assetName = YOLO11N_ASSET,
                         source = "YOLO11n + SANPO source_regions oracle (benchmark only)",
                         traversabilityOracle = true,
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    )
+                )
+                COMPARISON_MODE_INFORMATION_CEILING_THREE_ARM -> listOf(
+                    ModelSpec(
+                        id = "A_CURRENT_YOLO",
+                        assetName = YOLO11N_ASSET,
+                        source = "app/src/main/assets/yolo11n_fp16_320.tflite",
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    ),
+                    ModelSpec(
+                        id = "B_ORACLE_RISK_BOX",
+                        assetName = YOLO11N_ASSET,
+                        source = "SANPO source_regions boxified risk oracle (benchmark only)",
+                        sourceRegionBoxOracle = true,
+                        includeYoloRiskInputs = false,
+                        riskAnalyzerConfig = baseRiskAnalyzerConfig
+                    ),
+                    ModelSpec(
+                        id = "C_ORACLE_RISK_MASK",
+                        assetName = YOLO11N_ASSET,
+                        source = "SANPO source mask through production TraversabilitySegmentationAnalyzer (benchmark only)",
+                        traversabilityOracle = true,
+                        includeYoloRiskInputs = false,
                         riskAnalyzerConfig = baseRiskAnalyzerConfig
                     )
                 )
@@ -2345,6 +2414,16 @@ class DetectorAbDeviceBenchmarkTest {
         private fun riskKey(risk: RiskResult): String {
             val label = risk.sourceDetection?.label ?: "none"
             return "${risk.level}|${risk.direction}|${risk.proximity}|$label"
+        }
+
+        private fun detectionToJson(detection: Detection): JSONObject {
+            return JSONObject()
+                .put("class_id", detection.classId)
+                .put("label", detection.label)
+                .put("confidence", round3(detection.confidence))
+                .put("source", detection.source.name)
+                .put("bbox_xyxy", boxToJson(detection.boundingBox))
+                .put("temporal_promotion_eligible", detection.temporalPromotionEligible)
         }
 
         private fun riskToJson(risk: RiskResult): JSONObject {

@@ -1,7 +1,7 @@
 param(
     [ValidateSet("Coco100", "BlindAssistEvalSet")]
     [string]$DatasetKind = "Coco100",
-    [ValidateSet("DetectorAb", "DepthFusion", "DepthFusionSweep", "SanpoTraversabilityOracle", "SegmentationCandidate")]
+    [ValidateSet("DetectorAb", "DepthFusion", "DepthFusionSweep", "SanpoTraversabilityOracle", "SegmentationCandidate", "InformationCeilingThreeArm")]
     [string]$ComparisonMode = "DetectorAb",
     [string]$DatasetRoot,
     [int]$ImageLimit = 100,

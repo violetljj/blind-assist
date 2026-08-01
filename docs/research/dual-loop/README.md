@@ -2,6 +2,7 @@
 
 状态：`DG_SRF_F0_COMPLETE / VALID /
 STRUCTURAL_SIGNAL_NOT_SUPPORTED_STOP /
+INFORMATION_CEILING_THREE_ARM_D0_VALID_MIXED_GAPS /
 SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
 CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
@@ -25,7 +26,7 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 
 ## 当前决定
 
-2026-08-01，当前唯一候选算法主线已切换为
+2026-08-01，当时的唯一候选算法主线切换为
 [DG-SRF image-space structural complementarity F0](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
 它不继续救援已关闭的 segmentation gating，而是检验固定 Depth Anything V2 Small
 相对逆深度中的 `N/E/R+/R-` 结构信号，能否在实际 YOLO coverage 外，以低于冻结 raw
@@ -41,6 +42,18 @@ overall/minimum-group/obstacle recall retention 为
 validator 通过 29,031 项检查。当前精确定义的 DG-SRF F0 已关闭，不用同一 520 帧调参
 或引入 Video Depth/时序救援；F1-F5、Android/QNN/A568、risk/feedback、提醒和默认
 App 均未授权。
+
+随后完成的
+[信息上限三臂审计 D0](INFORMATION_CEILING_THREE_ARM_D0_RESULT_2026-08-01.md)
+在同一 90-frame / 3-parent-event SANPO consumed Development cohort 与当前
+`AssistDecisionKernel` 上得到有效混合终态：当前 YOLO 正事件 `0/2`、关键漏报 1；
+mask-derived 真值风险框恢复为 `2/2`、漏报 0，但产生 53 个误提醒帧、负事件误报和
+`0/2` passed 清除；source-native mask 经当前 adapter/source policy 后为 `2/2`、
+0 漏报、0 误提醒、`2/2` 清除。独立 validator 从原始 mask/manifest 与逐帧输入账本
+复算并 `PASS`。这支持停止继续为同一 YOLO 失败模式增加后规则，并在“只推进一个主模型
+候选”时把下一 Development 候选设为轻量风险/可通行性分割；YOLO 仍冻结为 baseline，
+默认 App 不变。由于 mask adapter 最终只转发一个框且 B/C source policy 不同，该结果
+不单独证明 bbox 几何上限或 learned segmentation 效果。
 
 2026-08-01 起，后续双环工作采用论文优先的 `DEVELOPMENT_STANDARD`，不再把旧 formal
 R1 的 one-shot、fresh holdout、逐项 SHA 和全量独立复算要求复制到新的 Development。

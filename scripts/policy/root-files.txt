@@ -180,6 +180,7 @@ train_export_sanpo_segmentation.py
 train_sanpo_segmentation_keras_torch.py
 validate_explicit_route_intent_episode.py
 validate_host_research_preflight.py
+validate_information_ceiling_three_arm_d0.py
 validate_research_protocol.py
 validate_sanpo_counterfactual_episodes.py
 validate_ustrf_sc_capture_frame_ledger.py

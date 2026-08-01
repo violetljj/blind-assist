@@ -104,11 +104,13 @@ validator 的 `VALID` 只证明保存的 depth output 之后的结构算子、�
 复算；checkpoint 到 depth map 由固定 source/checkpoint/preprocess hash 和 canary
 约束，不伪装成第二次 520 帧推理。
 
-## 安全边界与停止条件
+## 安全边界
 
 10 个组全部来自 SANPO-Real，缺 participant、route、parent-capture identity；两套
 YOLO detector 又与 source role 完全混杂。grouped consistency 不是独立人群、路线或
 跨数据集泛化证据。
+
+## 停止条件
 
 唯一科学终态：
 
