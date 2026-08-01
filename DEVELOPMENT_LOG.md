@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。formal R3 首次调用读取并
+  完成 fresh field metrics 后，在 gate 汇总阶段因某分层 arm 无 predicted positive、
+  helper 将 F1 写为 undefined 而 fail closed；未创建报告，四 sessions 已视为 consumed，
+  不换样本、不改门。修复按标准 `2TP/(2TP+FP+FN)` 定义 F1：reference 有正例而无预测
+  正例时为 0，双方均无正例才为 undefined；同时把每 height reference opportunity
+  纳入 readiness，并在报告绑定 D1/helper 两个 dependency hashes。新增定向测试后
+  HFTF suite 56 项通过；只允许用相同 consumed inputs 完成本 evidence instance。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。实现但尚未运行 formal
   `HFTF_STAGE_B_SWEPT_ENVELOPE_REFERENCE_COMPARISON_R3` runner。实现复用 D1 的
   candidate/baseline/disjoint-reference obstacle confusion，并新增 disjoint ground

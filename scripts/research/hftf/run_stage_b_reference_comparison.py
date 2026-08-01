@@ -272,11 +272,11 @@ def _metric_delta(
     candidate: dict[str, Any],
     baseline: dict[str, Any],
     metric: str,
-) -> float:
+) -> float | None:
     candidate_value = candidate[metric]
     baseline_value = baseline[metric]
     if candidate_value is None or baseline_value is None:
-        raise ValueError(f"Metric {metric} is undefined")
+        return None
     return float(candidate_value - baseline_value)
 
 
@@ -450,17 +450,33 @@ def run(
         )
         for item in obstacle_sessions
     ]
-    height_primary_supported = all(
-        _metric_delta(
+    height_primary_deltas = {
+        layer: _metric_delta(
             cohort[primary]["candidate"][layer],
             cohort[primary]["baseline"][layer],
             "f1",
         )
-        > 0.0
+        for layer in LAYERS
+    }
+    height_primary_evaluable = all(
+        cohort[primary]["candidate"][layer][
+            "positive_reference_cells"
+        ]
+        > 0
+        and cohort[primary]["candidate"][layer][
+            "negative_reference_cells"
+        ]
+        > 0
         for layer in LAYERS
     )
+    source_ready = source_ready and height_primary_evaluable
+    height_primary_supported = all(
+        delta is not None and delta > 0.0
+        for delta in height_primary_deltas.values()
+    )
     sensitivity_f1_supported = all(
-        _metric_delta(
+        (
+            _metric_delta(
             cohort[str(threshold)]["candidate"][
                 "micro_all_layers"
             ],
@@ -468,6 +484,8 @@ def run(
                 "micro_all_layers"
             ],
             "f1",
+            )
+            or 0.0
         )
         > 0.0
         for threshold in thresholds
@@ -483,18 +501,21 @@ def run(
     )
     obstacle_supported = (
         source_ready
+        and cohort_f1_delta is not None
         and cohort_f1_delta
         >= float(
             obstacle_gates[
                 "primary_minimum_cohort_micro_f1_delta"
             ]
         )
+        and cohort_precision_delta is not None
         and cohort_precision_delta
         >= float(
             obstacle_gates[
                 "primary_minimum_cohort_precision_delta"
             ]
         )
+        and cohort_recall_delta is not None
         and cohort_recall_delta
         >= float(
             obstacle_gates[
@@ -502,7 +523,8 @@ def run(
             ]
         )
         and all(
-            delta
+            delta is not None
+            and delta
             >= float(
                 obstacle_gates[
                     "primary_minimum_session_micro_f1_delta"
@@ -563,6 +585,18 @@ def run(
             source_preparation_path
         ),
         "implementation_sha256": _sha256(Path(__file__).resolve()),
+        "dependency_implementation_sha256": {
+            "pilot_swept_envelope_reference_metrics.py": _sha256(
+                Path(__file__).with_name(
+                    "pilot_swept_envelope_reference_metrics.py"
+                )
+            ),
+            "audit_swept_envelope_label_mechanics.py": _sha256(
+                Path(__file__).with_name(
+                    "audit_swept_envelope_label_mechanics.py"
+                )
+            ),
+        },
         "exact_fresh_session_set": exact,
         "candidate_reference_pixel_lattices_disjoint": (
             lattice_disjoint
@@ -577,6 +611,9 @@ def run(
             "source_authority_and_exact_set": source_authority_ready,
             "obstacle_known_coverage": obstacle_known_ready,
             "reference_opportunity": opportunity_ready,
+            "primary_height_reference_opportunity": (
+                height_primary_evaluable
+            ),
             "ground_known_coverage": ground_known_ready,
             "source_and_reference_ready": source_ready,
             "primary_cohort_micro_f1_delta": cohort_f1_delta,
@@ -586,6 +623,7 @@ def run(
             "primary_height_f1_direction_supported": (
                 height_primary_supported
             ),
+            "primary_height_f1_deltas": height_primary_deltas,
             "all_sensitivity_f1_directions_supported": (
                 sensitivity_f1_supported
             ),

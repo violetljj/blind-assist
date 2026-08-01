@@ -61,6 +61,23 @@ class SweptEnvelopeReferenceMetricsTest(unittest.TestCase):
         self.assertAlmostEqual(0.8, summary["accuracy"])
         json.dumps(summary)
 
+    def test_no_predicted_positive_with_reference_positive_has_zero_f1(
+        self,
+    ) -> None:
+        summary = _summarize_counts(
+            {
+                "tp": 0,
+                "fp": 0,
+                "fn": 3,
+                "tn": 5,
+                "candidate_only_correct": 0,
+                "baseline_only_correct": 0,
+            }
+        )
+        self.assertIsNone(summary["precision"])
+        self.assertEqual(0.0, summary["recall"])
+        self.assertEqual(0.0, summary["f1"])
+
 
 if __name__ == "__main__":
     unittest.main()

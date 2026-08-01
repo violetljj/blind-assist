@@ -117,11 +117,10 @@ def _summarize_counts(counts: dict[str, int]) -> dict[str, Any]:
     tn = counts["tn"]
     precision = _safe_ratio(tp, tp + fp)
     recall = _safe_ratio(tp, tp + fn)
+    f1_denominator = 2 * tp + fp + fn
     f1 = (
-        float(2.0 * precision * recall / (precision + recall))
-        if precision is not None
-        and recall is not None
-        and precision + recall > 0.0
+        float(2 * tp / f1_denominator)
+        if f1_denominator
         else None
     )
     return {
