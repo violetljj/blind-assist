@@ -3732,3 +3732,28 @@
   official-test、研究主线、默认 App、Android、生产与 safety 权限全部关闭。任何继续
   必须建立新的 protocol/data-role 边界，并在新 mechanics outcome 前独立冻结
   opportunity-adequate cohort 规则。
+
+## 2026-08-02：HFTF D3-Q0 条件机会挑战集主协议冻结
+
+- 执行者：violjjet
+- D2 六源 cohort 与其 `NOT_EVALUABLE` 终态保持不可变。新 D3-Q0 只把数据角色改为
+  `REFERENCE_AND_SUPPORT_ONLY` opportunity-qualified conditional challenge cohort；
+  D2 signed-clearance field、SE(2) mechanics、estimand、5/20/.10 opportunity gates
+  和全部 effect gates均不改，因此不是 D2 source replacement 或同 cohort 救援。
+- 后续 implementation contract 必须在任何 D3 media/support/truth 前同时锁定
+  metadata roster、qualifier、exact D2 primitives、effect skeleton、tests 与 transport
+  dependencies。source pool 固定为排除全部历史 burned/consumed/closed/reserved 后的
+  SANPO-Synthetic official train，按 session ID 字典序；最多 40 个 truth-screened
+  slots，首 6 个四 strata 全合格即停。slot failure 也消耗预算，不得第 41 个、替换、
+  跳序或依据 D2 parent/fps/scene/motion/risk deficit 选源。
+- qualifier 只能使用三方 9-probe support/known 与 future truth sign 形成 exact
+  common-known coverage/risk/safe counts；禁止计算或落盘两臂 clearance values、
+  MAE、F1、confusion、delta 或 improvement。selector receipt 与 effect-only sealed
+  truth payload 必须隔离；所有打开 support/truth 的 source 立即 burned。
+- Q0 JSON SHA-256 为
+  `42773cc9b0f27c187e97b7a03dfd96570e9178dbd742ee2b41759cce973d9b5f`。
+  独立只读审计复算 6 个 parent hashes、JSON/MD、40-slot/first-6、sealed-truth
+  firewall、effect skeleton 前置与所有授权后 `CLEAR`，未修改文件。
+- 当前只授权另冻 hash-bound implementation execution contract。D3 metadata scan、
+  media/pose、support/truth qualification、effect、RGB student、reserved official-test、
+  研究主线、默认 App、Android、生产与 safety 权限全部仍为 false。

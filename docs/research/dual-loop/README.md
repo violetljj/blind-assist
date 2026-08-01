@@ -34,7 +34,7 @@ VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
 THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
-最后核验：2026-08-01（Asia/Hong_Kong）
+最后核验：2026-08-02（Asia/Hong_Kong）
 
 ```text
 FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4
@@ -72,6 +72,20 @@ prediction authorization、先 receipt 后单次 truth read、全部效果 gate 
 失败；此前 metadata、首帧 RGB/mask 已打开，因此不允许改短路径重跑、补全 partial
 root、继续另两条 source 或换源。该终态没有产生完整 package、opportunity、
 prediction 或 truth join，既不支持也不拒绝 signed-clearance；主线与 App 仍不变。
+
+其后的独立 D2 mechanics 问题没有救援 D1，而是比较 history-only 恒速因果 transport
+与 current-field persistence。六源 one-shot 已由
+[D2 result](../hftf/HFTF_STAGE_C_D2_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_RESULT_2026-08-02.md)
+封存为 `D2_NOT_EVALUABLE_OPPORTUNITY_INADEQUATE_NO_SOURCE_REPLACEMENT`：24 个
+`parent × height × horizon` strata 仅 8 个通过，effect gates 未获判定，因此既不支持
+也不否定 transport。D2 cohort 不重跑、不换源、不调参。
+
+唯一新后继是
+[D3-Q0](../hftf/HFTF_STAGE_C_D3_REFERENCE_AND_SUPPORT_ONLY_CHALLENGE_QUALIFICATION_Q0_2026-08-02.md)
+条件机会挑战集设计：保留 D2 mechanics、opportunity/effect gates 全部不变，只允许
+另冻 reference-and-support-only qualifier 与 outcome 前 effect skeleton。当前尚未
+授权 D3 metadata scan、媒体、truth、effect 或 RGB student；研究主线与默认 App
+继续不变。
 
 ## 当前决定
 

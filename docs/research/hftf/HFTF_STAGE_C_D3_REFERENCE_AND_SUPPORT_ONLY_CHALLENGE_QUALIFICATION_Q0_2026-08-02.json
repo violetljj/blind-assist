@@ -1,0 +1,235 @@
+{
+  "schema": "blindassist_hftf_stage_c_d3_reference_and_support_only_challenge_qualification_q0",
+  "status": "FROZEN_AFTER_D2_NOT_EVALUABLE_BEFORE_ANY_D3_SOURCE_MEDIA_SUPPORT_OR_TRUTH_OUTCOME",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "research_question": "on_a_prospectively_locked_reference_and_support_opportunity_qualified_challenge_cohort_does_the_exact_d2_history_causal_transport_beat_current_field_persistence_under_all_unchanged_d2_effect_gates",
+  "claim_population": "reference_and_support_opportunity_qualified_conditional_challenge_cohort_only",
+  "not_a_d2_rerun_or_source_replacement": true,
+  "parents": {
+    "d2_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D2_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_RESULT_2026-08-02.json",
+      "sha256": "cadb8e72087e698323fb7e50394b903932d5e139a277bd5dc5143e918bb4c2f0",
+      "required_terminal": "D2_NOT_EVALUABLE_OPPORTUNITY_INADEQUATE_NO_SOURCE_REPLACEMENT"
+    },
+    "d2_mechanics_execution_contract": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D2_MECHANICS_EXECUTION_CONTRACT_2026-08-02.json",
+      "sha256": "2afb530400b157990474523f4157630f9bf1bc225f15e32bfe9a0ffd4f034c56",
+      "required_status": "FROZEN_AFTER_D2_MEDIA_ACQUISITION_BEFORE_PREPROCESSOR_OR_TRUTH_OUTCOME"
+    },
+    "d2_design": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_D2_2026-08-01.json",
+      "sha256": "06a8ff9cbe9c4c9b98cceeb7a36c69ba098f6f7d53ab980adb747b987a1728d9",
+      "required_status": "FROZEN_BEFORE_D2_METADATA_SCAN_OR_SOURCE_OUTCOME"
+    },
+    "d2_1_definition_clarification": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_CLARIFICATION_D2_1_2026-08-02.json",
+      "sha256": "51ed1c0bc2a98481b4991f237d44979cf0c455624031c2c0ee41715ec0d6a8f0",
+      "required_status": "FROZEN_AFTER_METADATA_ONLY_COHORT_LOCK_BEFORE_ANY_D2_MEDIA_POSE_CONTENT_OR_MECHANICS_OUTCOME"
+    },
+    "g0_signed_clearance_definition": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_SIGNED_CLEARANCE_CURRENT_BRIDGE_G0_2026-08-01.json",
+      "sha256": "0aa8e5828665a869837a1aa9027601d45610c0f66696da737351c9ec361da383",
+      "required_status": "FROZEN_AFTER_F0_1_STOP_BEFORE_G0_CLEARANCE_OR_SOURCE_SCAN_OUTCOME"
+    },
+    "governance_precedent_r3_1": {
+      "path": "docs/research/hftf/HFTF_STAGE_B_REFERENCE_ONLY_OPPORTUNITY_QUALIFICATION_R3_1_2026-08-01.json",
+      "sha256": "4f53bb18e563a5cbd8f0420618177abbea18509432f288d5d7f42ee54698fb0e",
+      "required_status": "FROZEN_QUALIFICATION_ONLY_ARM_OUTCOME_PROHIBITED"
+    }
+  },
+  "scientific_boundary": {
+    "d2_effect_was_evaluated": false,
+    "d2_transport_supported": null,
+    "d2_transport_rejected": null,
+    "d3_changes_only_the_data_role_and_claim_population": true,
+    "d2_field_definition_unchanged": true,
+    "d2_mechanics_unchanged": true,
+    "d2_estimand_unchanged": true,
+    "d2_opportunity_gates_unchanged": true,
+    "d2_effect_gates_unchanged": true,
+    "natural_prevalence_claim_authorized": false,
+    "fresh_generalization_claim_authorized": false,
+    "geometry_teacher_is_synthetic_proxy_only": true,
+    "human_event_or_safety_truth_established": false
+  },
+  "source_pool": {
+    "dataset": "SANPO-Synthetic",
+    "official_split": "train",
+    "split_generation_and_sha_must_be_bound_before_metadata_scan": true,
+    "order": "lexicographic_session_id",
+    "camera": "chest_left",
+    "source_fps_allowed": [
+      5,
+      20
+    ],
+    "normalized_target_fps": 5,
+    "normalized_frame_count": 13,
+    "normalized_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "exclude_all_historical_hftf_burned_consumed_closed_and_reserved_parents": true,
+    "exclude_complete_d1_closed_cohort": true,
+    "exclude_d2_six_parent_cohort": true,
+    "exclude_reserved_official_test": true,
+    "exclude_by_d2_parent_pass_fail_fps_scene_motion_or_risk_deficit": false,
+    "metadata_only_roster_must_be_locked_before_media_or_truth": true,
+    "maximum_truth_screened_slots": 40,
+    "required_qualified_sources": 6,
+    "screening_stops_immediately_after_sixth_qualified_source": true,
+    "authority_or_acquisition_failure_after_slot_lock_consumes_slot": true,
+    "slot_replacement_authorized": false,
+    "budget_expansion_authorized": false,
+    "manual_skip_or_reorder_authorized": false,
+    "unused_roster_media_or_truth_must_remain_unopened": true
+  },
+  "inventory_eligibility_before_slot_lock": {
+    "description_and_pose_receipts_exist": true,
+    "rgb_mask_depth_object_receipts_exist_for_exact_timeline": true,
+    "pose_timebase_and_camera_binding_schema_eligible": true,
+    "media_pose_content_may_be_opened": false,
+    "candidate_support_or_truth_may_be_computed": false,
+    "arm_outcome_may_be_computed": false
+  },
+  "qualification_reader": {
+    "name": "REFERENCE_AND_SUPPORT_ONLY",
+    "allowed_inputs_after_slot_is_durably_opened": [
+      "authority_bound_current_and_history_pose",
+      "authority_bound_current_depth_and_panoptic_mask",
+      "authority_bound_future_pose_depth_and_panoptic_mask",
+      "camera_intrinsics",
+      "exact_d2_ground_aligned_predicted_basis",
+      "exact_d2_three_way_9_probe_known_support_masks",
+      "future_truth_signed_clearance_sign_only"
+    ],
+    "must_hash_bind_exact_d2_se2_probe_g0_and_d2_1_primitives": true,
+    "persistence_clearance_values_may_be_computed": false,
+    "advected_clearance_values_may_be_computed": false,
+    "candidate_or_baseline_clearance_values_may_be_written": false,
+    "mae_f1_confusion_delta_or_improvement_may_be_computed": false,
+    "source_ranking_by_margin_or_distance_to_gate_authorized": false,
+    "qualification_receipt_allowed_fields": [
+      "source_authority_and_content_hashes",
+      "slot_index_and_session_id",
+      "each_stratum_denominator",
+      "each_stratum_common_known_count_and_coverage",
+      "each_stratum_truth_risk_and_safe_counts_on_common_known",
+      "unknown_to_safe_violation_count",
+      "each_gate_boolean",
+      "qualified_boolean"
+    ],
+    "per_cell_truth_magnitude_in_selector_receipt_authorized": false,
+    "motion_yaw_scene_or_semantic_ranking_fields_authorized": false,
+    "sealed_truth_payload_for_later_effect": {
+      "required": true,
+      "must_be_hash_bound_and_separate_from_selector_receipt": true,
+      "selector_or_roster_builder_may_read_payload": false,
+      "effect_evaluator_may_read_only_after_six_source_selection_is_durable": true,
+      "future_media_may_be_opened_a_second_time": false
+    }
+  },
+  "qualification_gates_each_source_height_horizon_all_required": {
+    "heights": [
+      "body",
+      "head"
+    ],
+    "horizons_seconds": [
+      0.4,
+      0.8
+    ],
+    "anchors_per_source": 7,
+    "theta_bins": 6,
+    "distance_bins": 6,
+    "exact_denominator": 252,
+    "common_known_definition": "truth_known_and_persistence_support_known_and_advected_support_known",
+    "minimum_common_known_coverage": 0.1,
+    "minimum_truth_risk_cells_on_common_known": 5,
+    "minimum_truth_safe_cells_on_common_known": 20,
+    "risk_definition": "future_truth_signed_clearance_strictly_less_than_zero",
+    "safe_definition": "future_truth_signed_clearance_greater_than_or_equal_to_zero",
+    "unknown_to_safe_violations_required": 0,
+    "all_four_strata_must_pass_per_source": true,
+    "threshold_or_axis_changes_after_any_d3_source_opened_authorized": false
+  },
+  "burn_and_firewall": {
+    "slot_burns_when_media_pose_support_or_truth_is_opened": true,
+    "ineligible_slot_remains_burned": true,
+    "qualified_slot_may_only_enter_predeclared_d3_conditional_effect": true,
+    "screening_outputs_may_not_train_or_tune_any_model": true,
+    "d2_consumed_artifacts_may_not_select_d3_source_ids_or_attributes": true,
+    "effect_metrics_hidden_until_roster_terminal_is_durable": true,
+    "qualifier_implementation_and_effect_skeleton_must_be_frozen_hash_bound_tested_tracked_clean_and_pushed_before_first_d3_media_or_truth": true
+  },
+  "d3_effect_skeleton_that_must_be_frozen_before_qualification": {
+    "source_count": 6,
+    "parent_session_is_independent_unit": true,
+    "anchors_per_parent": 7,
+    "horizons_seconds": [
+      0.4,
+      0.8
+    ],
+    "arms": [
+      "CURRENT_FIELD_PERSISTENCE",
+      "HISTORY_CAUSAL_ADVECTED_CURRENT_FIELD"
+    ],
+    "future_blind_prediction_must_use_only_current_history_inputs": true,
+    "selected_source_predictions_must_be_durable_before_effect_evaluator_reads_sealed_truth_payload": true,
+    "qualification_support_masks_must_exactly_match_formal_prediction_support_masks": true,
+    "opportunity_gates_must_be_recomputed_before_effect": true,
+    "opportunity_mismatch_terminal": "D3_NOT_EVALUABLE_QUALIFICATION_RECOMPUTE_MISMATCH_NO_REPLACEMENT",
+    "effect_aggregation_and_all_numeric_gates_exactly_equal_d2": true,
+    "macro_clearance_mae_minimum_relative_reduction": 0.1,
+    "macro_clearance_mae_minimum_absolute_reduction_m": 0.03,
+    "each_height_noninferior": true,
+    "each_horizon_noninferior": true,
+    "minimum_strictly_improved_parents": 5,
+    "parent_macro_risk_sign_f1_minimum_delta": 0.03,
+    "unknown_to_safe_violations_required": 0,
+    "not_supported_terminal": "CAUSAL_SIGNED_CLEARANCE_TRANSPORT_NOT_SUPPORTED_STOP",
+    "supported_terminal": "CAUSAL_SIGNED_CLEARANCE_TRANSPORT_SUPPORTED_FOR_RGB_STUDENT_PROTOCOL"
+  },
+  "terminals": {
+    "qualification_success": "D3_Q0_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_QUALIFIED",
+    "budget_exhausted": "D3_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_NOT_EVALUABLE_BUDGET_EXHAUSTED_NO_EXPANSION",
+    "freeze_hash_order_or_firewall_drift": "D3_QUALIFICATION_INVALID_STOP",
+    "slot_execution_failure": "D3_QUALIFICATION_SLOT_NOT_EVALUABLE_CONSUME_SLOT_CONTINUE_FROZEN_ORDER",
+    "formal_opportunity_recompute_mismatch": "D3_NOT_EVALUABLE_QUALIFICATION_RECOMPUTE_MISMATCH_NO_REPLACEMENT"
+  },
+  "execution_authority_at_this_freeze": {
+    "freeze_metadata_roster_qualifier_and_effect_skeleton_execution_contract_authorized": true,
+    "metadata_scan_authorized_now": false,
+    "media_or_pose_content_open_authorized_now": false,
+    "support_or_truth_qualification_authorized_now": false,
+    "d3_effect_authorized_now": false,
+    "rgb_student_protocol_authorized_now": false,
+    "rgb_student_training_authorized": false,
+    "rgb_student_execution_authorized": false,
+    "reserved_official_test_open_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  },
+  "outcome_firewall_at_freeze": {
+    "d3_roster_locked": false,
+    "d3_media_or_pose_content_opened": false,
+    "d3_support_masks_computed": false,
+    "d3_future_truth_opened": false,
+    "d3_qualified_source_known": false,
+    "d3_effect_computed": false,
+    "d3_student_executed": false
+  }
+}
