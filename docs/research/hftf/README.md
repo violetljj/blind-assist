@@ -444,6 +444,8 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C machine-readable D4-M0 metadata census contract](HFTF_STAGE_C_D4_M0_METADATA_CENSUS_EXECUTION_CONTRACT_2026-08-02.json)
 - [Stage C D4-M0 metadata census invalid result](HFTF_STAGE_C_D4_M0_METADATA_CENSUS_INVALID_RESULT_2026-08-02.md)
 - [Stage C machine-readable D4-M0 invalid result](HFTF_STAGE_C_D4_M0_METADATA_CENSUS_INVALID_RESULT_2026-08-02.json)
+- [Stage C D5 TartanGround differential-drive source authority S0](HFTF_STAGE_C_D5_TARTANGROUND_DIFF_SOURCE_AUTHORITY_AND_RECRUITABILITY_S0_2026-08-02.md)
+- [Stage C machine-readable D5 TartanGround S0](HFTF_STAGE_C_D5_TARTANGROUND_DIFF_SOURCE_AUTHORITY_AND_RECRUITABILITY_S0_2026-08-02.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

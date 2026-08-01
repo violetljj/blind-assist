@@ -1,0 +1,157 @@
+{
+  "schema": "blindassist_hftf_stage_c_d5_tartanground_diff_source_authority_and_recruitability_s0",
+  "status": "FROZEN_DESIGN_AFTER_D4_M0_INVALID_BEFORE_D5_S0_EXECUTION_CONTRACT_TOOLKIT_CLONE_METADATA_LIST_OR_PAYLOAD",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "research_question": "does_tartanground_differential_drive_define_a_large_enough_metadata_authoritative_clustered_recruitable_inventory_for_a_new_hftf_opportunity_ecology_protocol",
+  "new_source_population": "TartanGround_Data_diff_trajectory_parents",
+  "not_a_d4_r0_transport_fix_resume_or_same_parent_rerun": true,
+  "parents": {
+    "d4_m0_invalid_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D4_M0_METADATA_CENSUS_INVALID_RESULT_2026-08-02.json",
+      "sha256": "bba56892cd579b2e278705070ad6f42cbb6db1bc1264ec99de3132f9d888c993",
+      "required_terminal": "D4_M0_FRESH_METADATA_RECRUITABILITY_POOL_INVALID_STOP"
+    }
+  },
+  "official_source_authority": {
+    "dataset_page": "https://tartanair.org/tartanground/",
+    "documentation": "https://tartanair.org/tartanground.html",
+    "toolkit_repository": "https://github.com/castacks/tartanairpy",
+    "paper": "https://arxiv.org/abs/2505.10696",
+    "license": "CC_BY_4_0",
+    "toolkit_license": "MIT",
+    "publisher_claimed_total_environments": 63,
+    "publisher_claimed_total_trajectories_all_robot_types": 878,
+    "publisher_claimed_total_samples": 1440000,
+    "publisher_claimed_modalities": [
+      "multi_view_rgb",
+      "metric_depth",
+      "semantic_segmentation",
+      "ground_truth_6dof_pose",
+      "imu",
+      "lidar",
+      "semantic_occupancy"
+    ],
+    "publisher_claims_are_not_yet_local_inventory_evidence": true
+  },
+  "target_population": {
+    "dataset": "TartanGround",
+    "robot_version": "diff",
+    "directory_role": "Data_diff",
+    "trajectory_id_pattern": "^P1[0-9]{3}$",
+    "identity_must_be_exactly_enumerated_by_the_bound_official_manifest_and_regex_must_not_generate_parents": true,
+    "camera": "lcam_front",
+    "natural_parent_identity": "environment_plus_robot_version_plus_trajectory_id",
+    "environment_robot_camera_or_file_alias_does_not_create_new_parent": true,
+    "tartanair_v1_japanesealley_p000_p002_are_a_different_previously_consumed_dataset_and_not_members": true,
+    "sanpo_train_test_or_derived_parents_are_not_members": true
+  },
+  "s0_execution_contract_requirements": {
+    "this_design_does_not_authorize_toolkit_clone_catalog_inspection_or_remote_requests": true,
+    "a_separate_execution_contract_must_first_bind": [
+      "exact_official_toolkit_commit_and_recursive_submodule_commits",
+      "exact_implementation_and_tests",
+      "exact_remote_manifest_path_size_and_hash_or_immutable_identity",
+      "allowed_list_dry_run_and_http_range_calls",
+      "canonical_attempt_catalog_failure_and_payload_sentinel_receipts",
+      "attempt_fsync_before_first_remote_request",
+      "negative_closure_and_no_payload_write_validator"
+    ],
+    "future_execution_contract_may_authorize_only": [
+      "clone_or_fetch_the_bound_official_toolkit_commit_into_artifacts_local",
+      "read_the_bound_download_ground_manifest",
+      "bounded_http_range_reads_of_zip_central_directories_without_member_payload",
+      "extract_only_the_exact_trajectory_metadata_json_member_for_robot_height_and_camera_extrinsic_authority",
+      "stream_the_exact_lcam_front_pose_member_only_to_sha256_and_line_count_without_parsing_or_retaining_pose_values",
+      "record_environment_diff_trajectory_modality_camera_frame_identity_and_authority_rows"
+    ],
+    "future_execution_contract_must_forbid": [
+      "download_rgb_depth_segmentation_lidar_imu_or_occupancy_payload_or_full_pose_archive",
+      "extract_or_decode_any_image_depth_segmentation_lidar_imu_or_occupancy_member",
+      "parse_rank_or_retain_pose_values_or_motion",
+      "open_any_tartanground_scene_modality_or_pose_values_beyond_the_exact_structural_authority_reads",
+      "compute_support_truth_opportunity_clearance_effect_or_student_output",
+      "use_sanpo_d4_attempted_parents",
+      "use_reserved_sanpo_official_test",
+      "train_or_select_a_model"
+    ],
+    "bounded_authority_queries_may_be_repeated_only_as_defined_by_the_future_transport_contract_because_no_scene_outcome_is_opened": true,
+    "metadata_catalog_must_bind_exact_toolkit_commit_and_remote_manifest_receipts": true
+  },
+  "pre_frozen_recruitability_gate": {
+    "minimum_distinct_diff_trajectory_parents": 64,
+    "minimum_distinct_environments": 8,
+    "required_robot_height_metadata_and_exact_robot_camera_extrinsic_authority": true,
+    "required_lcam_front_modalities": [
+      "image",
+      "depth",
+      "seg",
+      "pose"
+    ],
+    "trajectory_static_metadata_json_is_not_a_substitute_for_dynamic_pose_timeline": true,
+    "source_sampling_hz": 10,
+    "normalized_target_hz": 5,
+    "trajectory_parent_must_have_a_common_contiguous_25_raw_frame_timeline_for_image_depth_seg_and_pose": true,
+    "normalized_frame_indices": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24
+    ],
+    "normalized_frame_count": 13,
+    "normalized_span_seconds": 2.4,
+    "minimum_raw_frames_per_parent": 25,
+    "unknown_modality_identity_or_count_is_ineligible_not_assumed_present": true,
+    "if_the_bound_manifest_and_bounded_authority_reads_cannot_observe_height_extrinsic_or_common_timeline_the_whole_s0_terminal_is_source_authority_not_evaluable_not_pool_insufficient": true,
+    "human_scene_opportunity_or_body_height_is_not_a_metadata_gate": true,
+    "gate_may_not_rank_by_scene_content_semantic_class_or_future_opportunity": true
+  },
+  "planned_terminals": {
+    "authority_and_pool_feasible": "D5_S0_TARTANGROUND_DIFF_METADATA_PARENT_POPULATION_FEASIBLE",
+    "authority_inadequate": "D5_S0_TARTANGROUND_DIFF_SOURCE_AUTHORITY_NOT_EVALUABLE",
+    "pool_inadequate": "D5_S0_TARTANGROUND_DIFF_METADATA_PARENT_POPULATION_INSUFFICIENT_STOP"
+  },
+  "success_authority": {
+    "freeze_new_d5_m0_parent_allocation_and_payload_acquisition_contract": true,
+    "payload_download_authorized_automatically": false,
+    "opportunity_ecology_authorized_automatically": false,
+    "effect_authorized_automatically": false
+  },
+  "cluster_and_inference_boundary": {
+    "trajectory_is_a_recruitable_parent_but_not_assumed_statistically_independent_from_other_trajectories_in_the_same_environment": true,
+    "minimum_64_trajectories_and_8_environments_is_only_a_capacity_and_coverage_gate": true,
+    "future_ecology_and_effect_groups_must_be_disjoint_by_environment": true,
+    "no_environment_may_contribute_to_both_ecology_and_effect": true,
+    "future_inference_must_use_environment_as_the_independent_unit_or_freeze_an_explicit_cluster_estimand_and_cluster_aware_method_before_payload": true
+  },
+  "scientific_boundary": {
+    "tartanground_is_synthetic_ground_robot_proxy_only": true,
+    "differential_drive_motion_is_not_human_gait_or_blind_user_route_truth": true,
+    "semantic_labels_are_not_human_safety_truth": true,
+    "robot_height_or_camera_extrinsic_does_not_establish_human_body_envelope": true,
+    "source_feasibility_is_not_opportunity_prevalence_or_hftf_effect": true,
+    "future_payload_study_must_predefine_body_height_mapping_and_all_four_opportunity_without_using_content": true,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  },
+  "execution_authority_at_freeze": {
+    "commit_and_push_this_s0_design": true,
+    "freeze_hash_bound_s0_execution_contract_after_push": true,
+    "metadata_toolkit_or_catalog_inspection_after_this_design_push": false,
+    "dataset_payload_download": false,
+    "ecology_or_effect_execution": false,
+    "student_training_or_execution": false
+  }
+}

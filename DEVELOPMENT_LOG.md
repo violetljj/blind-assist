@@ -4059,3 +4059,27 @@
   后继必须是新 protocol 与新 source population。
 - 机器结果 SHA-256 为
   `bba56892cd579b2e278705070ad6f42cbb6db1bc1264ec99de3132f9d888c993`。
+
+## 2026-08-02：HFTF D5 TartanGround differential-drive S0 冻结
+
+- 执行者：violjjet。D4-R0 invalid 后不修 transport、不复用 SANPO 1442 parents；
+  新 source population 改为 TartanGround `Data_diff/P1xxx` natural trajectories。
+  官方候选资料称全数据有 63 environments、878 trajectories、1.44M samples，并提供
+  front RGB、metric depth、semantic segmentation、6-DoF pose、robot-height metadata
+  与 semantic occupancy；这些只是 publisher claim，尚不是本地 inventory evidence。
+- S0 提交推送后只允许 exact-commit toolkit clone 与 metadata catalog/list/dry-run，
+  的原表述经审计收紧：本文件提交后仍不授权 clone/list，必须另冻 exact-commit
+  execution contract、call allowlist、attempt-first、payload sentinel 与 failure closure。
+  该合同最多允许 ZIP central-directory、exact metadata JSON，以及只作 SHA/行数的
+  pose member stream；禁止解析 pose 值或任何 scene payload。
+- feasible 门为至少 64 个 diff trajectories、8 environments、每 parent 同时绑定 robot
+  height + extrinsic、`lcam_front` image/depth/seg/pose 共同至少 25 个 10 Hz raw
+  frames，再以 `0,2,…,24` 规范成 13×5 Hz / 2.4 s；不可观察 authority 时整体
+  NOT_EVALUABLE，不能伪装 pool insufficient。64/8 只表示容量/覆盖，同环境是 cluster；
+  未来 ecology/effect 必须 environment-disjoint 且使用 environment 独立单位或预冻
+  cluster-aware inference。
+- 成功也只授权另冻 D5-M0 allocation/acquisition contract。TartanGround 始终是 synthetic
+  ground-robot proxy，不是人体步态、盲人路线或 safety truth；主线/App/Android/生产
+  权限保持关闭。
+- D5-S0 机器设计 SHA-256 为
+  `122eccb74d0eb83e231c4e1fa02a36284bab9e6b5df7d251845a7284eeff6b2d`。
