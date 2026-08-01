@@ -94,15 +94,16 @@ workflow 后才生效的实施合同、回归基线或日期化证据，不得�
   主线。
 - [YOLO + 语义分割双环研究主线](research/dual-loop/README.md)：当前为
   `RISKSEG_R0_TASK_AND_DATA_CONTRACT_FROZEN /
-  FULL_SEQUENTIAL_EXECUTION_AUTHORIZED / EVENT_EVAL_DATA_GATE_PENDING /
+  FULL_SEQUENTIAL_EXECUTION_AUTHORIZED / HOLD_EVENT_EVAL_DATA /
+  EVENT_TRUTH_NOT_FROZEN /
   DEFAULT_APP_UNCHANGED`。历史 R1/R2-P0、segmentation gating、FP-aware DDRNet 与
   DG-SRF F0 负终态保持不可变。当前唯一候选是四类 PIDNet-S 风险/可通行性分割：
-  先物化至少 30 个 session-disjoint parent events，再依次执行
-  `512x288 / W8A8` TFLite+QNN/SM-S9280 预检、三 seed 训练和
-  `YOLO-only / learned segmentation-only / truth-mask oracle` 事件评价；任一事件质量
-  或性能 trade-off 都保留 YOLO 默认。见
+  event-eval 数据门只得到 14 个两路 RGB 盲审同桶一致事件，
+  `blocking/boundary/parallel/normal=7/2/1/4`，未达到 `8/8/7/7`，故没有冻结 truth，
+  也没有启动 `512x288 / W8A8` TFLite+QNN/SM-S9280 预检或训练。见
   [RISKSEG-R0 task/data/execution contract](research/dual-loop/RISKSEG_R0_TASK_DATA_AND_EXECUTION_CONTRACT_2026-08-01.md)
-  与 [data role ledger](research/dual-loop/RISKSEG_R0_DATA_ROLE_LEDGER_2026-08-01.json)。
+  、[data role ledger](research/dual-loop/RISKSEG_R0_DATA_ROLE_LEDGER_2026-08-01.json)
+  与 [event-eval data gate result](research/dual-loop/RISKSEG_R0_EVENT_EVAL_DATA_GATE_RESULT_2026-08-01.md)。
   R2-P0 readiness 终态见
   [R2-P0 result](research/dual-loop/DUAL_LOOP_SEGMENTATION_R2_P0_RESULT_2026-08-01.md)，
   R1 consumed fresh 的永久角色修订见

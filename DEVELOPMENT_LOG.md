@@ -1,4 +1,15 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。执行 `RISKSEG-R0`
+  session-disjoint event-eval 数据门并以 `HOLD_EVENT_EVAL_DATA` 关闭当前尝试。
+  排除 520 train/dev 与固定 90-frame regression 的 11 个 native sessions 后，本地盘点
+  27 个完整 RGB/source-mask sessions；另扫描 SANPO official test 的 48 个 sessions，
+  得到 44 个合格 sparse candidates / 26 sessions。14 个 boundary broad windows 完成
+  精确 source-mask 门，13 个通过；新物化 9 个完整 drafts、750 RGB + 750 masks，
+  全部 `manifest_validation.ok=true`。两路互不可见的 RGB-only review 最终只有 14 个
+  同桶一致 shortlist，`blocking/boundary/parallel/normal=7/2/1/4`，低于
+  `8/8/7/7` 与总数 30；event truth 未冻结。新增
+  `scripts/research/riskseg_r0_event_eval/` review-bundle/cohort validator 与 5 项 focused
+  tests。PIDNet-S 预检、训练、YOLO/PIDNet/oracle 三臂均未启动，默认 App 保持 YOLO。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。启动当前唯一算法主线
   `RISKSEG-R0`，冻结四类风险/可通行性任务、520-frame session-disjoint train/dev、
   90-frame consumed regression、新 `>=30` parent-event session-disjoint 评价集、
