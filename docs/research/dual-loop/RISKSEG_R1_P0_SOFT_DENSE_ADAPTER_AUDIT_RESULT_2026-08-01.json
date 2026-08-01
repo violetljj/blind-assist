@@ -1,0 +1,122 @@
+{
+  "artifacts": {
+    "feature_trace": {
+      "path": "artifacts.local/evidence/riskseg-r1/p0-soft-dense-v1/frame_features.jsonl",
+      "row_count": 7680,
+      "sha256": "a817b4b63fe61fe91864bc060ea1cc8007059cda4c983c11b0678ee466465260"
+    },
+    "report": {
+      "path": "artifacts.local/evidence/riskseg-r1/p0-soft-dense-v1/report.json",
+      "sha256": "697975b7468141c0d2e34af365b1732b06ed89a25084584808d2ad1b574c018d"
+    },
+    "validation": {
+      "feature_canary_count": 120,
+      "path": "artifacts.local/evidence/riskseg-r1/p0-soft-dense-v1/validation.json",
+      "sha256": "5ec2130fb4ff19e9af3b98d33ce1c14602933424551c5af1cd4364f658a8db37",
+      "status": "PASS"
+    }
+  },
+  "claim_ceiling": "POST_CONSUMPTION_NESTED_DEVELOPMENT_DIAGNOSTIC_ONLY",
+  "cohort": {
+    "bucket_counts": {
+      "blocking_obstacle_positive": 8,
+      "boundary_level_change_positive": 8,
+      "normal_walkable_negative": 7,
+      "parallel_curb_negative": 7
+    },
+    "event_count": 30,
+    "frame_count": 1920,
+    "manifest_sha256": "6fe64391a9557fd9d80ad8f861cd4b043293955e2ff3e5979ffe7fb33d33b7ff",
+    "role": "CONSUMED_DEVELOPMENT_ONLY",
+    "source_session_count": 30
+  },
+  "contract": {
+    "path": "docs/research/dual-loop/RISKSEG_R1_P0_SOFT_DENSE_ADAPTER_AUDIT_CONTRACT_2026-08-01.json",
+    "sha256": "1b72032383c0d674d7db67b5c031f7987e370276e154e2ea820b6b520773ef43"
+  },
+  "learned_oof": {
+    "seed-20260801": {
+      "boundary_hit_count": 5,
+      "blocking_hit_count": 6,
+      "cleared_event_count": 8,
+      "false_alert_event_count": 9,
+      "guardrails_pass": false,
+      "hit_event_count": 11,
+      "median_delay_vs_yolo_frames": 8.0,
+      "old_adapter": {
+        "cleared_event_count": 14,
+        "false_alert_event_count": 13,
+        "hit_event_count": 13
+      }
+    },
+    "seed-20260802": {
+      "boundary_hit_count": 8,
+      "blocking_hit_count": 4,
+      "cleared_event_count": 9,
+      "false_alert_event_count": 7,
+      "guardrails_pass": false,
+      "hit_event_count": 12,
+      "median_delay_vs_yolo_frames": 0.0,
+      "old_adapter": {
+        "cleared_event_count": 10,
+        "false_alert_event_count": 13,
+        "hit_event_count": 14
+      }
+    },
+    "seed-20260803": {
+      "boundary_hit_count": 4,
+      "blocking_hit_count": 3,
+      "cleared_event_count": 11,
+      "false_alert_event_count": 8,
+      "guardrails_pass": false,
+      "hit_event_count": 7,
+      "median_delay_vs_yolo_frames": 0.5,
+      "old_adapter": {
+        "cleared_event_count": 6,
+        "false_alert_event_count": 14,
+        "hit_event_count": 13
+      }
+    }
+  },
+  "next_action": {
+    "allowed": "redesign actionability labels and collect a new session-disjoint event cohort under a new frozen contract",
+    "forbidden": [
+      "R1 P1 training with the current four-class target",
+      "larger segmentation model rescue",
+      "post-outcome adapter-grid expansion or rule patching",
+      "App integration or default switch"
+    ]
+  },
+  "p1_design_authorized": false,
+  "protocol_id": "RISKSEG_R1_P0_SOFT_DENSE_V1",
+  "schema_version": "blindassist.riskseg_r1.p0_result.v1",
+  "status": "COMPLETE_VALID_NEGATIVE",
+  "terminal": "TRUTH_MASK_SOFT_ADAPTER_FAIL_CHANGE_ACTIONABILITY_LABELS",
+  "truth_mask_oof": {
+    "boundary_hit_count": 6,
+    "blocking_hit_count": 8,
+    "cleared_event_count": 4,
+    "false_alert_event_count": 12,
+    "gate": {
+      "cleared_at_least_5": false,
+      "false_alert_at_most_6": false,
+      "hits_at_least_13": true,
+      "pass": false
+    },
+    "hit_event_count": 14,
+    "median_delay_vs_yolo_frames": -1.0,
+    "selected_config_all_folds": "bw0.25_top0.0025_center_dominant",
+    "selected_threshold_all_folds": 0.525
+  },
+  "validation_amendment": {
+    "path": "docs/research/dual-loop/RISKSEG_R1_P0_VALIDATION_ONLY_AMENDMENT_2026-08-01.json",
+    "sha256": "8241f53b32caecb46a99c1b43b45eed93189e8bd84fcbaf1adc7ec4dc4d52904",
+    "scope": "non-computational selected_config metadata only"
+  },
+  "yolo_reference": {
+    "cleared_event_count": 5,
+    "false_alert_event_count": 6,
+    "hit_event_count": 13
+  }
+}
+

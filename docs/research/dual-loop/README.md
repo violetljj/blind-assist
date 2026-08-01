@@ -12,6 +12,9 @@ RISKSEG_R0_EVENT_QUALITY_OR_STABILITY_FAIL /
 PIDNET_S_TRAINED_FINAL_DEVICE_PASS /
 RISKSEG_R0_TRAINED_NOT_PROMOTABLE_KEEP_YOLO /
 YOLO_RULE_PATCHING_STOPPED /
+RISKSEG_R1_P0_COMPLETE_VALID_NEGATIVE /
+TRUTH_MASK_SOFT_ADAPTER_FAIL_CHANGE_ACTIONABILITY_LABELS /
+RISKSEG_R1_P1_NOT_AUTHORIZED /
 SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
 CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
@@ -69,6 +72,18 @@ full W8A8 导出和 SM-S9280 三臂事件评价，但事件质量门 `0/3` 通�
 `1.07624x`、thermal/failure 均为 0，并两次完整委派 `173/173` 节点到 1 partition。
 性能 PASS 不覆盖事件质量否决；不改默认 App，不接 learned segmentation，不在已消费
 30-event cohort 上调参或增加规则。
+
+其后显式冻结的
+[RISKSEG-R1 P0 soft dense adapter audit](RISKSEG_R1_P0_SOFT_DENSE_ADAPTER_AUDIT_CONTRACT_2026-08-01.md)
+只把该已消费 cohort 作为 post-consumption nested Development diagnostic，不恢复
+fresh/held-out 身份。P0 已由
+[结果](RISKSEG_R1_P0_SOFT_DENSE_ADAPTER_AUDIT_RESULT_2026-08-01.md)
+关闭为 `TRUTH_MASK_SOFT_ADAPTER_FAIL_CHANGE_ACTIONABILITY_LABELS`：保留完整四通道
+INT8 soft evidence 后，truth-mask family reference 为 `14/16` hits、`12/14`
+false alerts、`4/16` cleared，未守住 YOLO 的 `13/16、6/14、5/16`。learned 三
+seed 分别只有 `11/16、12/16、7/16` hits，完整相对 guardrails 为 `0/3`。因此
+不进入当前四类目标的 P1 训练；下一步必须先改变 actionability/event supervision，
+再建立新的 session-disjoint cohort。默认 App 继续保持 YOLO。
 
 此前 2026-08-01 的候选算法主线曾切换为
 [DG-SRF image-space structural complementarity F0](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
@@ -647,6 +662,7 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | PIDNet-S 三 seed 训练与三臂事件评价 | `COMPLETE / VALID / EVENT_QUALITY_OR_STABILITY_FAIL / 0_OF_3_PASS` |
 | PIDNet-S trained-final SM-S9280 性能门 | `PASS / 173_OF_173 / P95_77.374_MS / 1.07624X / THERMAL_0` |
 | RISKSEG-R0 默认 App 替换 | `NOT_RUN / NOT_PROMOTABLE / KEEP_YOLO` |
+| RISKSEG-R1 P0 soft dense adapter audit | `COMPLETE / VALID_NEGATIVE / TRUTH_MASK_SOFT_ADAPTER_FAIL_CHANGE_ACTIONABILITY_LABELS / P1_NOT_AUTHORIZED` |
 | DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0 | `PRIMARY COMPLETE / VALID / NOT_SUPPORTED / HISTORICAL TERMINAL IMMUTABLE / DEVELOPMENT_ONLY` |
 | DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0.1 SHADOW | `COMPLETE / VALID / NO_MATERIAL / NO_HETEROGENEITY / BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP / POST_PRIMARY_DIAGNOSTIC_ONLY` |
 | DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0 | `COMPLETE / VALID / FP_WEIGHTED_SAMPLING_NOT_SUPPORTED / SINGLE_SUCCESSOR_STOP / THREE_PAIRED_SEEDS / DEVELOPMENT_ONLY` |
@@ -682,6 +698,11 @@ D0-A successor R0 已经回答了本轮唯一允许的问题：固定 clip 转�
 RISKSEG-R0 不再有自动下一阶段。禁止用已消费 event-eval 调参、挑 seed、改 taxonomy、
 增加规则或重开默认 App 集成。若未来提出 successor，必须具有新的因果假设、独立冻结
 合同和新的 session-disjoint parent-event cohort。
+
+显式授权并独立冻结的 RISKSEG-R1 P0 已作为该 successor 的机制诊断执行，但它没有把
+已消费 cohort 重新称为确认集。truth-mask soft adapter 的误报与清除门失败，learned
+seed 稳定性为 `0/3`，所以当前四类目标的 P1 训练不获准。新的 successor 必须先重建
+actionability/event supervision；不能继续扩 adapter grid、增加规则或换更大分割模型。
 
 conditional gating R0 已完成 520 帧执行、逐帧/逐组件独立复算与 held-out/direct
 等价检查；五项门中的 false-positive reduction 和 minimum-session recall retention
