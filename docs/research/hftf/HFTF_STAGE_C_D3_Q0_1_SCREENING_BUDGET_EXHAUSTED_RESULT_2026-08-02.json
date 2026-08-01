@@ -1,0 +1,130 @@
+{
+  "schema": "blindassist_hftf_stage_c_d3_q0_1_screening_budget_exhausted_result",
+  "terminal": "D3_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_NOT_EVALUABLE_BUDGET_EXHAUSTED_NO_EXPANSION",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "execution_contract": {
+    "path": "docs/research/hftf/HFTF_STAGE_C_D3_Q0_1_SCHEMA_REPAIR_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json",
+    "sha256": "268f1491835fb8b4d365a24064eac94edc5046633fa7861b7fbd1588ded7225a",
+    "commit": "ef248690e60a77ba5ab4f98443fefaa64fbc1b50",
+    "head_equal_origin_master_before_execution": true,
+    "formal_verify_git_passed": true
+  },
+  "execution": {
+    "control_plane_initialization_started_once": true,
+    "control_plane_initialization_media_pose_support_or_truth_opened": false,
+    "slot_1_carry_forward_burned": true,
+    "original_slot_indices_newly_opened": {
+      "first": 2,
+      "last": 40,
+      "count": 39
+    },
+    "new_slot_invocation_log_count": 39,
+    "all_new_slots_consumed_in_original_order": true,
+    "rerun_performed": false,
+    "slot_reopened": false,
+    "source_replacement_performed": false,
+    "source_reorder_performed": false,
+    "budget_expansion_performed": false,
+    "same_cohort_gate_retuning_performed": false,
+    "aggregator_started_once": true,
+    "aggregator_read_selector_or_failure_before_attempt": false,
+    "aggregator_read_sealed_payload": false,
+    "preprocessor_started": false,
+    "effect_evaluator_started": false
+  },
+  "screening_summary": {
+    "required_qualified_source_count": 6,
+    "consumed_slot_count": 40,
+    "newly_opened_slot_count": 39,
+    "carry_forward_burned_slot_count": 1,
+    "qualified_source_count": 5,
+    "not_qualified_selector_count": 32,
+    "slot_failure_count": 2,
+    "qualified_slot_indices": [
+      3,
+      14,
+      20,
+      29,
+      37
+    ],
+    "qualified_selector_sha256_by_slot": {
+      "3": "17b0ed07a3951fd4e7abfd4a3adea39c4f682876c17b0401b78ea7fa3d553c09",
+      "14": "809c02b8430e6330065a10b75b91bbaa2c168c17e2abd1a3aee7807e9b0032f1",
+      "20": "5b35b637e36a52f7ff3902563e42146f653af9ac6a07817dc7976ec51d0bb06c",
+      "29": "c1f1931c7c6b4b2e3d169e7a2b0da56424f0ca1a6a1d55bdd1132fba1a1c7dee",
+      "37": "d49a359d1993357993766fccef1066bc5de64912b5a5247731729e366f98c99d"
+    },
+    "failure_slot_indices": [
+      2,
+      28
+    ],
+    "failure_terminal": "D3_QUALIFICATION_SLOT_NOT_EVALUABLE_CONSUME_SLOT_CONTINUE_FROZEN_ORDER",
+    "failure_reason": "D2 current ground sample is inadequate",
+    "first_six_cohort_assembled": false
+  },
+  "durable_evidence": {
+    "screening_attempt": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-1-screening-20260802/screening_attempt.json",
+      "sha256": "eb3c035f850a3c527e4f6079aec2ee356db62c7b506088af81cb09edd4d7551a",
+      "bytes": 517
+    },
+    "slot_1_carry_forward": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-1-screening-20260802/slot-01-99c22155bf50/carry_forward.json",
+      "sha256": "19ef0745d254009677b8100b1c0e39270ae0ab85b3b32b000fea5ce43f6e4503",
+      "bytes": 1655,
+      "invalid_selector_read": false,
+      "outcome_fields_imported": false
+    },
+    "aggregate_attempt": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-1-screening-20260802/aggregate_attempt.json",
+      "sha256": "409aee3dd51e3aee483a888e1a21a1024c8b8fa64717b88e5ec4da1b69d5242c",
+      "bytes": 509
+    },
+    "budget_exhausted_terminal": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-1-screening-20260802/budget_exhausted.json",
+      "sha256": "e992a8117184b2f97dbfd4ac81805cc665a003fbf6f85167fec1d213d2b9e89b",
+      "bytes": 7430
+    },
+    "selection_exists": false,
+    "screening_invalid_exists": false,
+    "formal_artifact_root_exists": false
+  },
+  "offline_validation_summary": {
+    "frozen_scanner_reconstruction_matches_terminal_exactly": true,
+    "all_40_slot_directories_present": true,
+    "slot_category_arithmetic_closes_exactly": true,
+    "independent_scientific_result_audit_clear": true,
+    "independent_engineering_result_audit_clear": true,
+    "runner_preprocessor_or_effect_process_remaining": false
+  },
+  "scientific_boundary": {
+    "valid_conclusion": "the_frozen_roster_order_budget_and_qualification_gates_did_not_assemble_the_required_six_source_formal_effect_cohort",
+    "causal_signed_clearance_transport_supported": null,
+    "causal_signed_clearance_transport_rejected": null,
+    "d2_effect_metrics_or_gates_evaluated": false,
+    "hftf_hypothesis_supported_or_rejected": null,
+    "geometry_teacher_is_synthetic_proxy_only": true,
+    "human_event_truth_established": false,
+    "safety_effect_established": false
+  },
+  "authorization": {
+    "screening_rerun_authorized": false,
+    "slot_reopen_authorized": false,
+    "source_replacement_authorized": false,
+    "source_reorder_authorized": false,
+    "budget_expansion_authorized": false,
+    "same_cohort_gate_retuning_authorized": false,
+    "future_blind_preprocessor_authorized": false,
+    "sealed_effect_evaluator_authorized": false,
+    "rgb_student_contract_authorized": false,
+    "rgb_student_training_or_execution_authorized": false,
+    "reserved_official_test_open_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false,
+    "new_independent_protocol_or_data_role_design_may_be_considered": true
+  }
+}

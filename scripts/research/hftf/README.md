@@ -867,6 +867,18 @@ carry-forward receipt 只绑定 Q0 protocol/roster/contract、invalid result 和
 screening-invalid 的 opaque SHA-256；不得包含或读取旧 sealed payload/selector
 outcome。后续 aggregator/preprocessor/evaluator 也必须使用同一 Q0.1 合同。
 
+Q0.1 已按原顺序各一次消费完原 40-slot 预算：slot 1 仅 carry-forward burned，
+slots 2–40 新开 39 个来源；qualified 为原 slots `3/14/20/29/37`，原 slots
+`2/28` 因 current ground sample 不足封存为 execution failure，其余 32 个为合法
+not-qualified selector。只有 5 个 qualified，未达到冻结的 first-six，aggregator
+因此一次性关闭为
+`D3_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_NOT_EVALUABLE_BUDGET_EXHAUSTED_NO_EXPANSION`。
+`selection.json` 与 `formal/` 不存在；preprocessor/effect 未获授权、未运行。
+
+这只表示当前冻结 roster/order/budget/gates 未形成 formal effect cohort，不表示
+transport/HFTF 获支持或被否定。该 cohort 禁止重跑、补槽、替换、扩容或同 outcome
+调门；后续只能在新的独立 protocol/data-role 边界下提出候选。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

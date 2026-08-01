@@ -3926,3 +3926,27 @@
   392/392 通过。冻结 contract SHA-256 为
   `268f1491835fb8b4d365a24064eac94edc5046633fa7861b7fbd1588ded7225a`，
   审计时 canonical root 不存在。
+
+## 2026-08-02：HFTF D3-Q0.1 screening 预算耗尽终点
+
+- 执行者：violjjet
+- Q0.1 contract 由 commit `ef248690e60a77ba5ab4f98443fefaa64fbc1b50`
+  精确提交推送；执行前 `HEAD == origin/master`、formal `verify_git=True` 与
+  双终审均通过。首次调用只创建控制面与 slot-1 outcome-free carry receipt，没有
+  打开新媒体；随后原 slots 2–40 严格按原顺序各执行一次，没有重跑、重开、替换、
+  重排、扩预算或同 cohort 调门。
+- 40 个 consumed slots 闭合为 1 carry + 5 qualified + 32 not-qualified + 2
+  execution failures。qualified 为原 slots `3/14/20/29/37`；原 slots `2/28`
+  因 `D2 current ground sample is inadequate` 消耗槽位。只形成 5 个 qualified，
+  未达到冻结的 first-six / 6-source formal cohort。
+- aggregator 在首个 receipt read 前 durable 写 attempt，只运行一次且不读 sealed
+  payload，终态为
+  `D3_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_NOT_EVALUABLE_BUDGET_EXHAUSTED_NO_EXPANSION`。
+  budget terminal SHA-256 为
+  `e992a8117184b2f97dbfd4ac81805cc665a003fbf6f85167fec1d213d2b9e89b`；
+  `selection.json`、`screening_invalid.json` 与 `formal/` 均不存在。
+- 独立科学审计用冻结 scanner 重建 terminal 逐字段一致；独立工程审计复核 40-slot
+  receipts/hash/log/process 闭集，均为 `CLEAR`、0 blocker。该结果只说明当前冻结
+  roster/order/budget/gates 未形成 effect cohort；不支持或否定 transport/HFTF，
+  不授权任何 D2 effect metric、preprocessor/effect、RGB student、主线/App/Android、
+  生产或 safety。后继只能另建独立 protocol/data-role 边界，不得救援本 cohort。
