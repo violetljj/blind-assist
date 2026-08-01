@@ -313,6 +313,7 @@ def run_preprocessor(contract_path: Path) -> dict[str, Any]:
         context["slots"],
         sha256(context["contract_path"]),
         context["roster_sha256"],
+        context["carry_forward_authority"],
     )
     selected = selection["selected_sources"]
     if len(selected) != 6:

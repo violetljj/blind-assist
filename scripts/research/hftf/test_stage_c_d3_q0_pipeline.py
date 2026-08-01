@@ -21,7 +21,7 @@ CONTRACT_PATH = (
     / "docs"
     / "research"
     / "hftf"
-    / "HFTF_STAGE_C_D3_Q0_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json"
+    / "HFTF_STAGE_C_D3_Q0_1_SCHEMA_REPAIR_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json"
 )
 
 
@@ -42,8 +42,9 @@ def source() -> dict[str, object]:
     frames = list(range(13))
     return {
         "session_id": session_id,
-        "d3_roster_slot_index": 1,
-        "metadata_eligible_rank": 1,
+        "d3_roster_slot_index": 2,
+        "metadata_eligible_rank": 2,
+        "description_object": {"session": "synthetic"},
         "source_fps": 5.0,
         "selected_source_frames": frames,
         "camera_pose_object_receipt": receipt("pose.csv"),
@@ -189,6 +190,48 @@ class StageCD3Q0PipelineTest(unittest.TestCase):
                 builder_receipts,
                 [common.durable_json_sha256(payload)],
             )
+
+    def test_selector_builder_removes_only_duplicate_top_level_attempt(
+        self,
+    ) -> None:
+        src = source()
+        summary = runner.summarize_qualification(
+            [
+                observation(anchor, horizon)
+                for anchor in range(2, 9)
+                for horizon in (0.4, 0.8)
+            ]
+        )
+        context = {
+            "contract_path": Path("contract.json"),
+            "roster_sha256": "c" * 64,
+        }
+        layout = {
+            "attempt": Path("attempt.json"),
+            "content_index": Path("content_index.json"),
+        }
+        with mock.patch.object(runner, "sha256", return_value="f" * 64):
+            selector = runner._selector(
+                src,
+                context,
+                layout,
+                {"synthetic": True},
+                "e" * 64,
+                summary,
+            )
+        self.assertNotIn("slot_attempt_sha256", selector)
+        self.assertEqual(
+            "f" * 64,
+            selector["source_authority_and_content_hashes"][
+                "slot_attempt_sha256"
+            ],
+        )
+        common.validate_selector(
+            selector,
+            src,
+            "f" * 64,
+            "c" * 64,
+        )
 
     def test_qualifier_computes_truth_field_14_times_and_no_arm_field(
         self,
@@ -487,7 +530,7 @@ class StageCD3Q0PipelineTest(unittest.TestCase):
             self.assertIsNone(failure["selection_sha256"])
             self.assertFalse(failure["preprocessor_rerun_authorized"])
 
-    def test_orphan_global_screening_attempt_freezes_before_slot_open(
+    def test_first_q0_1_call_only_initializes_control_plane(
         self,
     ) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -495,17 +538,27 @@ class StageCD3Q0PipelineTest(unittest.TestCase):
             contract = Path(temp) / "contract.json"
             common.write_json_exclusive_fsync(contract, {"contract": True})
             paths = common.aggregate_paths(root)
-            temporary = paths["screening_attempt"].with_name(
-                paths["screening_attempt"].name + ".tmp"
-            )
-            temporary.parent.mkdir(parents=True)
-            temporary.write_text("interrupted-attempt", encoding="utf-8")
+            slots = [
+                {
+                    "session_id": f"{index:064x}",
+                    "d3_roster_slot_index": index,
+                }
+                for index in range(1, 41)
+            ]
+            authority = {
+                "q0_protocol_sha256": "1" * 64,
+                "metadata_roster_sha256": "c" * 64,
+                "q0_execution_contract_sha256": "2" * 64,
+                "q0_invalid_result_sha256": "3" * 64,
+                "q0_screening_invalid_sha256": "4" * 64,
+            }
             context = {
                 "root": root,
                 "contract_path": contract,
                 "roster_sha256": "c" * 64,
-                "slots": [],
+                "slots": slots,
                 "retries": 3,
+                "carry_forward_authority": authority,
             }
             with (
                 mock.patch.object(
@@ -520,29 +573,101 @@ class StageCD3Q0PipelineTest(unittest.TestCase):
                 ),
                 mock.patch.object(
                     runner,
-                    "scan_screening_state",
-                    side_effect=AssertionError(
-                        "global-attempt recovery must precede slot scan"
-                    ),
+                    "materialize_content",
+                    side_effect=AssertionError("media must stay closed"),
+                ),
+                mock.patch.object(
+                    runner,
+                    "qualify_content",
+                    side_effect=AssertionError("truth must stay closed"),
+                ),
+            ):
+                result = runner.run_next_slot(contract, retries=3)
+            self.assertTrue(result["screening_initialized"])
+            self.assertFalse(result["media_pose_support_truth_opened"])
+            self.assertEqual(1, result["consumed_slot_count"])
+            self.assertEqual(0, result["newly_opened_slot_count"])
+            self.assertEqual(2, result["next_slot_index"])
+            self.assertTrue(paths["screening_attempt"].is_file())
+            carry = common.slot_layout(root, slots[0])["carry_forward"]
+            self.assertTrue(carry.is_file())
+            receipt = common.load_json(carry)
+            self.assertFalse(receipt["sealed_payload_read"])
+            self.assertFalse(receipt["invalid_selector_read"])
+            self.assertFalse(receipt["outcome_fields_imported"])
+            self.assertEqual(
+                set(common.slot_layout(root, slots[0])["slot_root"].iterdir()),
+                {carry},
+            )
+
+    def test_second_q0_1_call_targets_only_original_slot_2(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "screening"
+            contract = Path(temp) / "contract.json"
+            common.write_json_exclusive_fsync(contract, {"contract": True})
+            slots = [
+                {
+                    "session_id": f"{index:064x}",
+                    "d3_roster_slot_index": index,
+                }
+                for index in range(1, 41)
+            ]
+            authority = {
+                "q0_protocol_sha256": "1" * 64,
+                "metadata_roster_sha256": "c" * 64,
+                "q0_execution_contract_sha256": "2" * 64,
+                "q0_invalid_result_sha256": "3" * 64,
+                "q0_screening_invalid_sha256": "4" * 64,
+            }
+            context = {
+                "root": root,
+                "contract_path": contract,
+                "roster_sha256": "c" * 64,
+                "slots": slots,
+                "retries": 3,
+                "carry_forward_authority": authority,
+                "g0": {},
+                "mechanics": {},
+            }
+            runner.initialize_q0_1_control_plane(context)
+            opened: list[int] = []
+
+            def stop_at_media(
+                selected: dict[str, object],
+                _layout: dict[str, Path],
+                _retries: int,
+            ) -> dict[str, object]:
+                opened.append(int(selected["d3_roster_slot_index"]))
+                raise runner.SlotExecutionError("synthetic stop")
+
+            with (
+                mock.patch.object(
+                    runner,
+                    "validate_execution_contract",
+                    return_value=context,
+                ),
+                mock.patch.object(
+                    runner,
+                    "SCREENING_ROOT_RELATIVE",
+                    root.resolve(),
+                ),
+                mock.patch.object(
+                    runner,
+                    "materialize_content",
+                    side_effect=stop_at_media,
                 ),
                 self.assertRaisesRegex(
-                    runner.SlotExecutionError,
-                    "interrupted before publication",
+                    runner.SlotExecutionError, "synthetic stop"
                 ),
             ):
                 runner.run_next_slot(contract, retries=3)
-            self.assertFalse(temporary.exists())
+            self.assertEqual([2], opened)
+            self.assertFalse(
+                common.slot_layout(root, slots[0])["attempt"].exists()
+            )
             self.assertTrue(
-                paths["screening_attempt"]
-                .with_name(paths["screening_attempt"].name + ".orphan")
-                .is_file()
+                common.slot_layout(root, slots[1])["attempt"].is_file()
             )
-            invalid = common.load_json(paths["invalid"])
-            self.assertEqual(
-                invalid["terminal"],
-                "D3_QUALIFICATION_INVALID_STOP",
-            )
-            self.assertFalse(invalid["screening_rerun_authorized"])
 
     def test_orphan_effect_attempt_freezes_without_truth_reopen(
         self,

@@ -853,6 +853,20 @@ Q0.1 contract：只删除重复顶层字段，从原 slot 2 开始，最多使�
 资格门、effect gates、顺序、no-replacement/no-expansion 与 UNKNOWN 规则不变。新
 contract、canonical root、tests 与独立审计完成前不得运行 slot 2。
 
+Q0.1 冻结后使用同一受审计入口但必须传入新合同。第一次调用只写新 root 的 global
+attempt 与 slot-1 carry-forward burn receipt，返回 `screening_initialized=true`，
+不得访问媒体；第二次调用才执行原 slot 2：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/run_stage_c_d3_q0_next_slot.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_D3_Q0_1_SCHEMA_REPAIR_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json `
+  --retries 3
+```
+
+carry-forward receipt 只绑定 Q0 protocol/roster/contract、invalid result 和
+screening-invalid 的 opaque SHA-256；不得包含或读取旧 sealed payload/selector
+outcome。后续 aggregator/preprocessor/evaluator 也必须使用同一 Q0.1 合同。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

@@ -327,6 +327,7 @@ def _prepare_effect_inputs(
         context["slots"],
         sha256(context["contract_path"]),
         context["roster_sha256"],
+        context["carry_forward_authority"],
     )
     selected = selection["selected_sources"]
     selected_ids = [str(item["session_id"]) for item in selected]

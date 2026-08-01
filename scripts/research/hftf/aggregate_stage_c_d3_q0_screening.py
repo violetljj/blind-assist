@@ -13,6 +13,7 @@ from stage_c_d3_q0_common import (
     AGGREGATE_ATTEMPT_STATUS,
     BUDGET_TERMINAL,
     QUALIFICATION_TERMINAL,
+    SELECTION_SCHEMA,
     aggregate_paths,
     load_json,
     preserve_temporary_artifact,
@@ -25,13 +26,12 @@ from stage_c_d3_q0_common import (
 
 
 IMPLEMENTATION_KEY = "screening_aggregator"
-SELECTION_SCHEMA = (
-    "blindassist_hftf_stage_c_d3_q0_screening_selection"
-)
 EXHAUSTED_SCHEMA = (
-    "blindassist_hftf_stage_c_d3_q0_screening_budget_exhausted"
+    "blindassist_hftf_stage_c_d3_q0_1_screening_budget_exhausted"
 )
-INVALID_SCHEMA = "blindassist_hftf_stage_c_d3_q0_screening_invalid"
+INVALID_SCHEMA = "blindassist_hftf_stage_c_d3_q0_1_screening_invalid"
+
+
 def _selected_sources(state: dict[str, Any]) -> list[dict[str, Any]]:
     return [
         {
@@ -63,6 +63,7 @@ def _terminal_payload(
         terminal == BUDGET_TERMINAL
         and (
             state["consumed_count"] != 40
+            or state["newly_opened_count"] != 39
             or len(selected) >= 6
         )
     ):
@@ -79,10 +80,15 @@ def _terminal_payload(
         "metadata_roster_sha256": context["roster_sha256"],
         "aggregate_attempt_sha256": aggregate_attempt_sha256,
         "consumed_slot_count": state["consumed_count"],
+        "newly_opened_slot_count": state["newly_opened_count"],
+        "carry_forward_burned_slot_count": len(
+            state["carry_forward_rows"]
+        ),
+        "carry_forward_burn_receipt": state["carry_forward_rows"][0],
         "qualified_source_count": len(selected),
         "selected_sources": selected,
         "failure_receipt_count": len(state["failure_rows"]),
-        "selector_or_failure_receipts_only_read": True,
+        "screening_receipts_only_read": True,
         "sealed_payload_read": False,
         "source_replacement_authorized": False,
         "budget_expansion_authorized": False,
@@ -185,6 +191,7 @@ def aggregate_screening(
             context["slots"],
             context["contract_sha256"],
             context["roster_sha256"],
+            context["carry_forward_authority"],
         )
         if state["terminal"] is None:
             if state["interrupted_slot"] is not None:

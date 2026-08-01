@@ -3898,3 +3898,31 @@
   burned，从原 slot 2 开始最多 39 slots；`.10/5/20`、252 denominator、四 strata、
   UNKNOWN、effect gates、roster order 与 no-replacement/no-expansion 全部不变。
   新 contract/root 提交推送和独立审计前不得打开 slot 2。
+
+## 2026-08-02：HFTF D3-Q0.1 schema-only successor 冻结
+
+- 执行者：violjjet
+- 以已封存的 Q0 execution contract 和
+  `D3_QUALIFICATION_INVALID_STOP` result 为双重法源，冻结独立 Q0.1
+  contract 与新 canonical root。Q0.1 不是新科学协议或新 cohort，只删除
+  selector 顶层重复且被禁止的 `slot_attempt_sha256`；authority object 内合法
+  attempt receipt 保留。
+- 新 root 的 slot 1 只允许 outcome-free carry-forward burn receipt：原 slot 1
+  计入 40-slot 总预算，但不计 qualified、not-qualified 或 execution failure；
+  旧 content、sealed payload、selector 和日志不得重开或导入。原 index/order
+  保持，首个 active slot 为 2，最多新开 39 个。
+- 四 strata、252 denominator、`.10/5/20`、UNKNOWN、首六即停、failure consumes、
+  no-replacement/no-expansion、future-blind 输入集合、42-prediction 前置、D2
+  estimand 与 effect gates 全部保持不变。首个 runner 调用被实现为纯控制面
+  初始化，第二个调用才可能触碰原 slot 2。
+- 专属 state/pipeline tests 当前为 23/23 与 17/17；其中显式覆盖 synthetic
+  duplicate-field regression、slot-1 任意非 carry artifact 拒绝、slot-2 起始、
+  burn+39 budget、首调用零媒体和第二调用只指向原 slot 2。合同提交推送、
+  `HEAD == origin/master`、formal `verify_git=True` 与最终独立审计前，slot 2
+  仍不得打开。
+- 最终独立科学审计与工程审计均为 `CLEAR`、0 blocker。工程复核全部 parent /
+  implementation / test hashes、8319 个 canonical final/tmp/orphan paths（最长
+  142 < 240）、py_compile 与 40/40 专属 tests；项目标准环境的 HFTF 全集
+  392/392 通过。冻结 contract SHA-256 为
+  `268f1491835fb8b4d365a24064eac94edc5046633fa7861b7fbd1588ded7225a`，
+  审计时 canonical root 不存在。

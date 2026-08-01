@@ -1,0 +1,296 @@
+{
+  "schema": "blindassist_hftf_stage_c_d3_q0_1_screening_execution_contract",
+  "status": "FROZEN_AFTER_Q0_INVALID_BEFORE_ANY_Q0_1_SLOT_2_MEDIA_SUPPORT_OR_TRUTH",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "title": "HFTF Stage C D3-Q0.1 schema-repair screening and sealed-effect execution contract",
+  "parents": {
+    "d3_q0_protocol": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D3_REFERENCE_AND_SUPPORT_ONLY_CHALLENGE_QUALIFICATION_Q0_2026-08-02.json",
+      "sha256": "42773cc9b0f27c187e97b7a03dfd96570e9178dbd742ee2b41759cce973d9b5f"
+    },
+    "metadata_roster": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-metadata-roster-20260802/roster.json",
+      "sha256": "8720a68855e0ddcbee9ae174de69383dd6d596329d76f83d0798197e333ba7db"
+    },
+    "metadata_roster_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D3_Q0_METADATA_ROSTER_RESULT_2026-08-02.json",
+      "sha256": "082319bfbd654a23f9e101129a9fce51bc0298021c79d906de129e60c291110d"
+    },
+    "q0_execution_contract": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D3_Q0_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json",
+      "sha256": "84f24a72c4640ca3ba66388ed9ec75a68aa55270c5e369b2b072a7b4d65354eb"
+    },
+    "q0_invalid_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D3_Q0_SCREENING_INVALID_RESULT_2026-08-02.json",
+      "sha256": "b8530a0edd7c802d138d9edf70702a14273c90ca932747673d786424322f00b8"
+    },
+    "d2_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D2_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_RESULT_2026-08-02.json",
+      "sha256": "cadb8e72087e698323fb7e50394b903932d5e139a277bd5dc5143e918bb4c2f0"
+    },
+    "d2_mechanics_contract": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D2_MECHANICS_EXECUTION_CONTRACT_2026-08-02.json",
+      "sha256": "2afb530400b157990474523f4157630f9bf1bc225f15e32bfe9a0ffd4f034c56"
+    },
+    "d2_design": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_D2_2026-08-01.json",
+      "sha256": "06a8ff9cbe9c4c9b98cceeb7a36c69ba098f6f7d53ab980adb747b987a1728d9"
+    },
+    "d2_1_clarification": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_CLARIFICATION_D2_1_2026-08-02.json",
+      "sha256": "51ed1c0bc2a98481b4991f237d44979cf0c455624031c2c0ee41715ec0d6a8f0"
+    },
+    "g0_signed_clearance_definition": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_SIGNED_CLEARANCE_CURRENT_BRIDGE_G0_2026-08-01.json",
+      "sha256": "0aa8e5828665a869837a1aa9027601d45610c0f66696da737351c9ec361da383"
+    },
+    "swept_envelope_mechanics": {
+      "path": "docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json",
+      "sha256": "a69d25d77f1e2b72f407980f005c758b965517fd032562a009f91746ea1e0e6a"
+    }
+  },
+  "implementations": {
+    "d3_common": {
+      "path": "scripts/research/hftf/stage_c_d3_q0_common.py",
+      "sha256": "ee945d43c32db947ef98c6aba2221ab505faee51324f1ff95ee747998469a2cc"
+    },
+    "next_slot_runner": {
+      "path": "scripts/research/hftf/run_stage_c_d3_q0_next_slot.py",
+      "sha256": "b77a1faf56e1a69356fc3a53b40dc390477c56b3aa40a2fa4bdc298ff7134e24"
+    },
+    "screening_aggregator": {
+      "path": "scripts/research/hftf/aggregate_stage_c_d3_q0_screening.py",
+      "sha256": "9691b7bb8d2d6ccdf8b9b567f4d148489331e00a9f53307a5af0202834c63dbc"
+    },
+    "selected_future_blind_preprocessor": {
+      "path": "scripts/research/hftf/preprocess_stage_c_d3_q0_selected_future_blind.py",
+      "sha256": "7d373c86e13e3402bfa25c1385a9b44b8a8ba6b853cf6cb12e795f077fdea1dc"
+    },
+    "sealed_effect_evaluator": {
+      "path": "scripts/research/hftf/evaluate_stage_c_d3_q0_sealed_effect.py",
+      "sha256": "2ae6fd87fcd89f334abee30b46e5efc6d90200d1ac7621313a624147e2ffdbaf"
+    },
+    "d2_transport_acquirer": {
+      "path": "scripts/research/hftf/acquire_stage_c_d2_six_source_media.py",
+      "sha256": "31802d25db633265988c989136fc4d1a4ebbb4a0007ab7ecf1ff1cb7531b8668"
+    },
+    "transport_dependency": {
+      "path": "scripts/build_sanpo_sequence_evalset.py",
+      "sha256": "9e8694f0474adc20ea65068e70e6b28e49a0431daff2ad4cdb868ad5332a8854"
+    },
+    "d2_mechanics_common": {
+      "path": "scripts/research/hftf/stage_c_d2_mechanics_common.py",
+      "sha256": "7f2a4041c7275c94e27cb8a30b5107f6e0ed15a9b54193e5ec3409461ba62071"
+    },
+    "d2_future_blind_preprocessor": {
+      "path": "scripts/research/hftf/preprocess_stage_c_d2_future_blind.py",
+      "sha256": "aec88988188f027878fb7951d696a4789b59f8478ddfb52cd5d0c0579557078f"
+    },
+    "d2_effect_evaluator": {
+      "path": "scripts/research/hftf/evaluate_stage_c_d2_transport_effect.py",
+      "sha256": "166641e2b277d476628908d6c9d0d56f0f18df41970922cdf22f0918a7c0ab2e"
+    },
+    "swept_probe_mechanics": {
+      "path": "scripts/research/hftf/audit_swept_envelope_label_mechanics.py",
+      "sha256": "a41395ae0eafaa5d4a35b65236f25cbf269293c7c1e82a891b99b9e8e4a94735"
+    },
+    "probe_visibility_mechanics": {
+      "path": "scripts/research/hftf/audit_stage_c_f0_1_teacher_opportunity.py",
+      "sha256": "8827c209e8077a74f5e8eb98bf575b71386a2c14fd11994add2b02aa9604f3ff"
+    },
+    "exact_g0_signed_clearance_runner": {
+      "path": "scripts/research/hftf/run_stage_c_g0_signed_clearance_mechanics.py",
+      "sha256": "0a5f39bd71ab6a28a214cd30f8e15262288f4b17e916fd302c84289902aa9d38"
+    },
+    "exact_g0_geometry_primitives": {
+      "path": "scripts/research/hftf/run_geometry_teacher_canary.py",
+      "sha256": "5fb0248d99584198f879c2cc953232d77394a3fdaf3927d48e9d81b09e91cd57"
+    },
+    "frozen_sanpo_pose_and_ground_authority": {
+      "path": "scripts/research/hftf/verify_sanpo_pose_geometry_authority.py",
+      "sha256": "5405c6b7ea236c88262d9f5731e50772e2713ec43ef9b36aba7f579e7623035a"
+    }
+  },
+  "implementation_tests": {
+    "state_test": {
+      "path": "scripts/research/hftf/test_stage_c_d3_q0_state.py",
+      "sha256": "08a9a6479101cc8dfab35219bda853a463a3d62b8a2b07382f9cc6945e235125",
+      "test_count": 23,
+      "tests_passed": 23
+    },
+    "pipeline_test": {
+      "path": "scripts/research/hftf/test_stage_c_d3_q0_pipeline.py",
+      "sha256": "e1b50932078e9132838799e01c9773e3c6bcbe3d860e0a936601c42a439f570f",
+      "test_count": 17,
+      "tests_passed": 17
+    }
+  },
+  "screening": {
+    "slot_count": 40,
+    "first_active_slot_index": 2,
+    "carry_forward_burned_slot_count": 1,
+    "maximum_newly_opened_slots": 39,
+    "required_qualified_sources": 6,
+    "maximum_path_chars_exclusive": 240,
+    "order": "lexicographic_session_id",
+    "slot_failure_consumes_slot": true,
+    "stop_immediately_after_sixth_qualified": true,
+    "slot_replacement_authorized": false,
+    "budget_expansion_authorized": false,
+    "manual_skip_or_reorder_authorized": false
+  },
+  "prior_invalid_carry_forward": {
+    "burned_slot_index": 1,
+    "first_new_media_slot_index": 2,
+    "remaining_new_media_slot_count": 39,
+    "slot_1_counts_toward_original_budget": true,
+    "slot_1_counts_as_qualified": false,
+    "slot_1_counts_as_not_qualified": false,
+    "slot_1_counts_as_slot_failure": false,
+    "prior_selector_outcome_admitted": false,
+    "prior_artifact_bytes_may_be_reopened": false,
+    "prior_outcome_fields_may_be_imported": false,
+    "preserve_original_indices_and_order": true,
+    "slot_replacement_authorized": false,
+    "budget_expansion_authorized": false
+  },
+  "qualification_gates_each_source_height_horizon_all_required": {
+    "heights": [
+      "body",
+      "head"
+    ],
+    "horizons_seconds": [
+      0.4,
+      0.8
+    ],
+    "anchors_per_source": 7,
+    "theta_bins": 6,
+    "distance_bins": 6,
+    "exact_denominator": 252,
+    "common_known_definition": "truth_known_and_persistence_support_known_and_advected_support_known",
+    "minimum_common_known_coverage": 0.1,
+    "minimum_truth_risk_cells_on_common_known": 5,
+    "minimum_truth_safe_cells_on_common_known": 20,
+    "risk_definition": "future_truth_signed_clearance_strictly_less_than_zero",
+    "safe_definition": "future_truth_signed_clearance_greater_than_or_equal_to_zero",
+    "unknown_to_safe_violations_required": 0,
+    "all_four_strata_must_pass_per_source": true,
+    "threshold_or_axis_changes_after_any_d3_source_opened_authorized": false
+  },
+  "d3_effect_skeleton": {
+    "source_count": 6,
+    "parent_session_is_independent_unit": true,
+    "anchors_per_parent": 7,
+    "horizons_seconds": [
+      0.4,
+      0.8
+    ],
+    "arms": [
+      "CURRENT_FIELD_PERSISTENCE",
+      "HISTORY_CAUSAL_ADVECTED_CURRENT_FIELD"
+    ],
+    "future_blind_prediction_must_use_only_current_history_inputs": true,
+    "selected_source_predictions_must_be_durable_before_effect_evaluator_reads_sealed_truth_payload": true,
+    "qualification_support_masks_must_exactly_match_formal_prediction_support_masks": true,
+    "opportunity_gates_must_be_recomputed_before_effect": true,
+    "opportunity_mismatch_terminal": "D3_NOT_EVALUABLE_QUALIFICATION_RECOMPUTE_MISMATCH_NO_REPLACEMENT",
+    "effect_aggregation_and_all_numeric_gates_exactly_equal_d2": true,
+    "macro_clearance_mae_minimum_relative_reduction": 0.1,
+    "macro_clearance_mae_minimum_absolute_reduction_m": 0.03,
+    "each_height_noninferior": true,
+    "each_horizon_noninferior": true,
+    "minimum_strictly_improved_parents": 5,
+    "parent_macro_risk_sign_f1_minimum_delta": 0.03,
+    "unknown_to_safe_violations_required": 0,
+    "not_supported_terminal": "CAUSAL_SIGNED_CLEARANCE_TRANSPORT_NOT_SUPPORTED_STOP",
+    "supported_terminal": "CAUSAL_SIGNED_CLEARANCE_TRANSPORT_SUPPORTED_FOR_RGB_STUDENT_PROTOCOL"
+  },
+  "effect_gates_all_required": {
+    "six_source_macro_clearance_mae_relative_reduction_min": 0.1,
+    "six_source_macro_clearance_mae_absolute_reduction_m_min": 0.03,
+    "each_height_persistence_mae_minus_advected_mae_min": -1e-12,
+    "each_horizon_persistence_mae_minus_advected_mae_min": -1e-12,
+    "parent_sessions_with_mae_improvement_min": 5,
+    "parent_sessions_total": 6,
+    "parent_macro_risk_sign_f1_delta_min": 0.03,
+    "unknown_to_safe_violations_max": 0,
+    "failure_terminal": "CAUSAL_SIGNED_CLEARANCE_TRANSPORT_NOT_SUPPORTED_STOP",
+    "success_terminal": "CAUSAL_SIGNED_CLEARANCE_TRANSPORT_SUPPORTED_FOR_RGB_STUDENT_PROTOCOL"
+  },
+  "estimand": "parent_session_macro_increment_of_causal_field_transport_over_current_field_persistence_on_the_same_common_known_future_signed_clearance_cells",
+  "selector_allowed_fields": [
+    "source_authority_and_content_hashes",
+    "slot_index_and_session_id",
+    "each_stratum_denominator",
+    "each_stratum_common_known_count_and_coverage",
+    "each_stratum_truth_risk_and_safe_counts_on_common_known",
+    "unknown_to_safe_violation_count",
+    "each_gate_boolean",
+    "qualified_boolean"
+  ],
+  "sealed_payload_firewall": {
+    "payload_required": true,
+    "payload_fsync_before_selector": true,
+    "selector_or_aggregator_may_read_payload": false,
+    "effect_may_read_only_after_selected_six_and_predictions": true,
+    "future_media_second_open_authorized": false,
+    "candidate_arm_clearance_in_payload_authorized": false,
+    "effect_metrics_in_payload_authorized": false
+  },
+  "canonical_artifacts": {
+    "screening_root": "artifacts.local/evidence/hftf/stage-c-d3-q0-1-screening-20260802"
+  },
+  "authorization": {
+    "reference_support_screening_authorized": true,
+    "future_blind_preprocessor_after_selection_authorized": true,
+    "sealed_effect_after_predictions_authorized": true,
+    "effect_before_six_source_selection_authorized": false,
+    "future_blind_before_six_source_selection_authorized": false,
+    "sealed_payload_open_before_predictions_authorized": false,
+    "roster_rerun_authorized": false,
+    "slot_replacement_authorized": false,
+    "budget_expansion_authorized": false,
+    "rgb_student_training_authorized": false,
+    "rgb_student_execution_authorized": false,
+    "reserved_official_test_open_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  },
+  "failure_policy": {
+    "slot_execution_failure_terminal": "D3_QUALIFICATION_SLOT_NOT_EVALUABLE_CONSUME_SLOT_CONTINUE_FROZEN_ORDER",
+    "qualification_budget_terminal": "D3_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_NOT_EVALUABLE_BUDGET_EXHAUSTED_NO_EXPANSION",
+    "qualification_invalid_terminal": "D3_QUALIFICATION_INVALID_STOP",
+    "effect_recompute_mismatch_terminal": "D3_NOT_EVALUABLE_QUALIFICATION_RECOMPUTE_MISMATCH_NO_REPLACEMENT",
+    "effect_pretruth_failure_terminal": "D3_Q0_EFFECT_PRETRUTH_VALIDATION_FAILED_NO_RERUN_NO_REPLACEMENT",
+    "effect_truth_interrupted_terminal": "D3_Q0_SEALED_PAYLOAD_EFFECT_INTERRUPTED_NO_SECOND_OPEN_NO_REPLACEMENT",
+    "preprocessor_interrupted_terminal": "D3_Q0_FUTURE_BLIND_PREPROCESSOR_FAILED_NO_RERUN_NO_REPLACEMENT",
+    "orphan_attempt_consumes_slot": true,
+    "slot_receipt_must_bind_attempt": true,
+    "aggregate_attempt_before_receipt_read": true,
+    "hard_interruption_recovery_without_input_reopen": true,
+    "temporary_artifacts_preserved_as_orphan": true,
+    "preserve_partial_artifacts": true,
+    "slot_rerun_authorized": false,
+    "preprocessor_rerun_authorized": false,
+    "second_sealed_payload_open_authorized": false,
+    "effect_rerun_authorized": false,
+    "premature_effect_invocation_consumes_attempt": false
+  },
+  "network": {
+    "retries": 3
+  },
+  "outcome_firewall_at_freeze": {
+    "q0_1_slot_2_pose_opened": false,
+    "q0_1_slot_2_depth_opened": false,
+    "q0_1_slot_2_mask_opened": false,
+    "q0_1_slot_2_support_computed": false,
+    "q0_1_slot_2_future_truth_computed": false,
+    "q0_1_slot_2_qualification_known": false,
+    "q0_1_prediction_known": false,
+    "q0_1_effect_known": false,
+    "q0_slot_1_selector_outcome_imported": false
+  }
+}

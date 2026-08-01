@@ -429,6 +429,8 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C machine-readable D3-Q0 screening/effect contract](HFTF_STAGE_C_D3_Q0_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json)
 - [Stage C D3-Q0 screening invalid result](HFTF_STAGE_C_D3_Q0_SCREENING_INVALID_RESULT_2026-08-02.md)
 - [Stage C machine-readable D3-Q0 invalid result](HFTF_STAGE_C_D3_Q0_SCREENING_INVALID_RESULT_2026-08-02.json)
+- [Stage C D3-Q0.1 schema-repair screening/effect contract](HFTF_STAGE_C_D3_Q0_1_SCHEMA_REPAIR_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.md)
+- [Stage C machine-readable D3-Q0.1 schema-repair contract](HFTF_STAGE_C_D3_Q0_1_SCHEMA_REPAIR_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

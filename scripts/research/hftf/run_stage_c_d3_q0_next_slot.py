@@ -44,7 +44,11 @@ from stage_c_d2_mechanics_common import (  # noqa: E402
 )
 from stage_c_d3_q0_common import (  # noqa: E402
     BUDGET_TERMINAL,
+    CARRY_FORWARD_SCHEMA,
+    CARRY_FORWARD_TERMINAL,
     FAILURE_SCHEMA,
+    FIRST_ACTIVE_SLOT_INDEX,
+    MAXIMUM_NEWLY_OPENED_SLOTS,
     QUALIFICATION_TERMINAL,
     SCREENING_ROOT_RELATIVE,
     SCREENING_ATTEMPT_SCHEMA,
@@ -63,6 +67,7 @@ from stage_c_d3_q0_common import (  # noqa: E402
     sha256,
     slot_layout,
     validate_execution_contract,
+    validate_carry_forward,
     validate_screening_attempt,
     write_json_exclusive_fsync,
 )
@@ -766,9 +771,6 @@ def _selector(
         "workflow_profile": "THESIS_DEVELOPMENT",
         "execution_contract_sha256": sha256(context["contract_path"]),
         "metadata_roster_sha256": context["roster_sha256"],
-        "slot_attempt_sha256": sha256(
-            _layout_path(layout, "attempt")
-        ),
         "slot_index": int(source["d3_roster_slot_index"]),
         "session_id": str(source["session_id"]),
         "source_authority_and_content_hashes": authority_hashes,
@@ -807,6 +809,9 @@ def _failure_receipt(
         "workflow_profile": "THESIS_DEVELOPMENT",
         "execution_contract_sha256": sha256(context["contract_path"]),
         "metadata_roster_sha256": context["roster_sha256"],
+        "slot_attempt_sha256": sha256(
+            _layout_path(layout, "attempt")
+        ),
         "slot_index": int(source["d3_roster_slot_index"]),
         "session_id": str(source["session_id"]),
         "error": {
@@ -857,7 +862,7 @@ def _open_global_and_slot_attempt(
                 "workflow_profile": "THESIS_DEVELOPMENT",
                 "contract_sha256": sha256(context["contract_path"]),
                 "roster_sha256": context["roster_sha256"],
-                "first_slot_index": 1,
+                "first_slot_index": FIRST_ACTIVE_SLOT_INDEX,
                 "first_network_request_started": False,
                 "slot_replacement_authorized": False,
                 "budget_expansion_authorized": False,
@@ -889,6 +894,98 @@ def _open_global_and_slot_attempt(
     )
 
 
+def _carry_forward_receipt(context: dict[str, Any]) -> dict[str, Any]:
+    slot = context["slots"][0]
+    authority = context["carry_forward_authority"]
+    return {
+        "schema": CARRY_FORWARD_SCHEMA,
+        "terminal": CARRY_FORWARD_TERMINAL,
+        "workflow_profile": "THESIS_DEVELOPMENT",
+        "q0_1_execution_contract_sha256": sha256(
+            context["contract_path"]
+        ),
+        **authority,
+        "original_slot_index": 1,
+        "session_id": slot["session_id"],
+        "burn_reason": "SCHEMA_INVALID_AFTER_MEDIA_SUPPORT_TRUTH_OPEN",
+        "original_attempt_durable": True,
+        "media_support_truth_opened": True,
+        "selector_schema_valid": False,
+        "selector_admitted": False,
+        "permanently_burned": True,
+        "counts_toward_original_40_budget": True,
+        "counts_as_qualified": False,
+        "counts_as_not_qualified": False,
+        "counts_as_slot_failure": False,
+        "reopen_authorized": False,
+        "recompute_authorized": False,
+        "rerun_authorized": False,
+        "replacement_authorized": False,
+        "first_remaining_original_slot": FIRST_ACTIVE_SLOT_INDEX,
+        "maximum_remaining_original_slots": MAXIMUM_NEWLY_OPENED_SLOTS,
+        "preserve_original_indices": True,
+        "preserve_original_order": True,
+        "sealed_payload_read": False,
+        "invalid_selector_read": False,
+        "outcome_fields_imported": False,
+    }
+
+
+def initialize_q0_1_control_plane(
+    context: dict[str, Any],
+) -> bool:
+    root = Path(context["root"]).resolve()
+    paths = aggregate_paths(root)
+    screening_attempt = Path(paths["screening_attempt"]).resolve()
+    root.mkdir(parents=True, exist_ok=True)
+    created = False
+    if not screening_attempt.exists():
+        preserve_temporary_artifact(screening_attempt)
+        write_json_exclusive_fsync(
+            screening_attempt,
+            {
+                "schema": SCREENING_ATTEMPT_SCHEMA,
+                "status": SCREENING_ATTEMPT_STATUS,
+                "workflow_profile": "THESIS_DEVELOPMENT",
+                "contract_sha256": sha256(context["contract_path"]),
+                "roster_sha256": context["roster_sha256"],
+                "first_slot_index": FIRST_ACTIVE_SLOT_INDEX,
+                "first_network_request_started": False,
+                "slot_replacement_authorized": False,
+                "budget_expansion_authorized": False,
+            },
+        )
+        created = True
+    else:
+        validate_screening_attempt(
+            load_json(screening_attempt),
+            sha256(context["contract_path"]),
+            context["roster_sha256"],
+        )
+    slot = context["slots"][0]
+    layout = slot_layout(root, slot)
+    carry_path = _layout_path(layout, "carry_forward")
+    if not carry_path.exists():
+        if (
+            layout["slot_root"].exists()
+            and any(layout["slot_root"].iterdir())
+        ):
+            raise SlotExecutionError(
+                "Q0.1 slot 1 contains non-carry-forward artifacts"
+            )
+        receipt = _carry_forward_receipt(context)
+        write_json_exclusive_fsync(carry_path, receipt)
+        created = True
+    else:
+        validate_carry_forward(
+            load_json(carry_path),
+            slot,
+            sha256(context["contract_path"]),
+            context["carry_forward_authority"],
+        )
+    return created
+
+
 def _freeze_screening_invalid(
     context: dict[str, Any],
     error: BaseException,
@@ -902,7 +999,7 @@ def _freeze_screening_invalid(
     write_json_exclusive_fsync(
         invalid,
         {
-            "schema": "blindassist_hftf_stage_c_d3_q0_screening_invalid",
+            "schema": "blindassist_hftf_stage_c_d3_q0_1_screening_invalid",
             "terminal": "D3_QUALIFICATION_INVALID_STOP",
             "workflow_profile": "THESIS_DEVELOPMENT",
             "execution_contract_sha256": sha256(
@@ -946,33 +1043,36 @@ def run_next_slot(
         raise SlotExecutionError(
             "D3 screening is terminal: D3_QUALIFICATION_INVALID_STOP"
         )
-    global_attempt = screening_paths["screening_attempt"]
-    global_attempt_temporary = global_attempt.with_name(
-        global_attempt.name + ".tmp"
-    )
-    global_attempt_orphan = global_attempt.with_name(
-        global_attempt.name + ".orphan"
-    )
-    if (
-        not global_attempt.exists()
-        and (
-            global_attempt_temporary.exists()
-            or global_attempt_orphan.exists()
-        )
-    ):
-        preserve_temporary_artifact(global_attempt)
-        error = SlotExecutionError(
-            "screening attempt was interrupted before publication; "
-            "screening frozen invalid before any slot content request"
-        )
+    try:
+        initialized = initialize_q0_1_control_plane(context)
+    except (KeyError, OSError, TypeError, ValueError) as error:
         _freeze_screening_invalid(context, error)
-        raise error
+        raise
+    if initialized:
+        state = scan_screening_state(
+            root,
+            context["slots"],
+            sha256(context["contract_path"]),
+            context["roster_sha256"],
+            context["carry_forward_authority"],
+        )
+        return {
+            "control_terminal": CARRY_FORWARD_TERMINAL,
+            "screening_initialized": True,
+            "media_pose_support_truth_opened": False,
+            "consumed_slot_count": state["consumed_count"],
+            "newly_opened_slot_count": state["newly_opened_count"],
+            "next_slot_index": state["next_slot"][
+                "d3_roster_slot_index"
+            ],
+        }
     try:
         state = scan_screening_state(
             root,
             context["slots"],
             sha256(context["contract_path"]),
             context["roster_sha256"],
+            context["carry_forward_authority"],
         )
     except (KeyError, OSError, TypeError, ValueError) as error:
         _freeze_screening_invalid(context, error)
@@ -991,6 +1091,7 @@ def run_next_slot(
             context["slots"],
             sha256(context["contract_path"]),
             context["roster_sha256"],
+            context["carry_forward_authority"],
         )
         return {
             "slot_terminal": failure["terminal"],
@@ -1044,6 +1145,7 @@ def run_next_slot(
             context["slots"],
             sha256(context["contract_path"]),
             context["roster_sha256"],
+            context["carry_forward_authority"],
         )
         return {
             "slot_terminal": selector["terminal"],

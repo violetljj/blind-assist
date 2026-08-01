@@ -15,10 +15,10 @@ from typing import Any
 
 
 CONTRACT_SCHEMA = (
-    "blindassist_hftf_stage_c_d3_q0_screening_execution_contract"
+    "blindassist_hftf_stage_c_d3_q0_1_screening_execution_contract"
 )
 CONTRACT_STATUS = (
-    "FROZEN_AFTER_D3_Q0_ROSTER_BEFORE_ANY_D3_MEDIA_SUPPORT_OR_TRUTH"
+    "FROZEN_AFTER_Q0_INVALID_BEFORE_ANY_Q0_1_SLOT_2_MEDIA_SUPPORT_OR_TRUTH"
 )
 PROTOCOL_SCHEMA = (
     "blindassist_hftf_stage_c_d3_reference_and_support_only_"
@@ -31,30 +31,30 @@ PROTOCOL_STATUS = (
 ROSTER_SCHEMA = "blindassist_hftf_stage_c_d3_q0_metadata_roster"
 ROSTER_TERMINAL = "D3_Q0_METADATA_ROSTER_40_SLOTS_LOCKED"
 SCREENING_ATTEMPT_SCHEMA = (
-    "blindassist_hftf_stage_c_d3_q0_screening_attempt"
+    "blindassist_hftf_stage_c_d3_q0_1_screening_attempt"
 )
 SCREENING_ATTEMPT_STATUS = (
     "D3_Q0_SCREENING_ATTEMPT_FSYNCED_BEFORE_FIRST_"
     "SLOT_CONTENT_REQUEST"
 )
-SLOT_ATTEMPT_SCHEMA = "blindassist_hftf_stage_c_d3_q0_slot_attempt"
+SLOT_ATTEMPT_SCHEMA = "blindassist_hftf_stage_c_d3_q0_1_slot_attempt"
 SLOT_ATTEMPT_STATUS = (
     "D3_Q0_SLOT_ATTEMPT_FSYNCED_BEFORE_FIRST_POSE_OR_MEDIA_REQUEST"
 )
 AGGREGATE_ATTEMPT_SCHEMA = (
-    "blindassist_hftf_stage_c_d3_q0_aggregate_attempt"
+    "blindassist_hftf_stage_c_d3_q0_1_aggregate_attempt"
 )
 AGGREGATE_ATTEMPT_STATUS = (
     "AGGREGATE_ATTEMPT_FSYNCED_BEFORE_FIRST_SELECTOR_OR_FAILURE_READ"
 )
-SELECTOR_SCHEMA = "blindassist_hftf_stage_c_d3_q0_slot_selector"
+SELECTOR_SCHEMA = "blindassist_hftf_stage_c_d3_q0_1_slot_selector"
 SELECTOR_QUALIFIED = (
     "D3_Q0_SLOT_REFERENCE_SUPPORT_OPPORTUNITY_QUALIFIED"
 )
 SELECTOR_NOT_QUALIFIED = (
     "D3_Q0_SLOT_REFERENCE_SUPPORT_OPPORTUNITY_NOT_QUALIFIED"
 )
-FAILURE_SCHEMA = "blindassist_hftf_stage_c_d3_q0_slot_failure"
+FAILURE_SCHEMA = "blindassist_hftf_stage_c_d3_q0_1_slot_failure"
 SLOT_FAILURE_TERMINAL = (
     "D3_QUALIFICATION_SLOT_NOT_EVALUABLE_CONSUME_SLOT_"
     "CONTINUE_FROZEN_ORDER"
@@ -63,7 +63,7 @@ QUALIFICATION_TERMINAL = (
     "D3_Q0_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_QUALIFIED"
 )
 SELECTION_SCHEMA = (
-    "blindassist_hftf_stage_c_d3_q0_screening_selection"
+    "blindassist_hftf_stage_c_d3_q0_1_screening_selection"
 )
 BUDGET_TERMINAL = (
     "D3_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_NOT_EVALUABLE_"
@@ -71,10 +71,12 @@ BUDGET_TERMINAL = (
 )
 CANONICAL_RELATIVE_ROOT = Path(
     "artifacts.local/evidence/hftf/"
-    "stage-c-d3-q0-screening-20260802"
+    "stage-c-d3-q0-1-screening-20260802"
 )
 SCREENING_ROOT_RELATIVE = CANONICAL_RELATIVE_ROOT
 SLOT_COUNT = 40
+FIRST_ACTIVE_SLOT_INDEX = 2
+MAXIMUM_NEWLY_OPENED_SLOTS = 39
 REQUIRED_QUALIFIED = 6
 MAX_PATH_CHARS_EXCLUSIVE = 240
 SESSION_ID_RE = re.compile(r"[0-9a-f]{64}")
@@ -97,6 +99,22 @@ AUTHORITY_HASH_KEYS = {
 }
 ROSTER_RESULT_SCHEMA = (
     "blindassist_hftf_stage_c_d3_q0_metadata_roster_result"
+)
+Q0_INVALID_RESULT_SCHEMA = (
+    "blindassist_hftf_stage_c_d3_q0_screening_invalid_result"
+)
+Q0_INVALID_TERMINAL = "D3_QUALIFICATION_INVALID_STOP"
+Q0_EXECUTION_CONTRACT_SCHEMA = (
+    "blindassist_hftf_stage_c_d3_q0_screening_execution_contract"
+)
+Q0_EXECUTION_CONTRACT_STATUS = (
+    "FROZEN_AFTER_D3_Q0_ROSTER_BEFORE_ANY_D3_MEDIA_SUPPORT_OR_TRUTH"
+)
+CARRY_FORWARD_SCHEMA = (
+    "blindassist_hftf_stage_c_d3_q0_1_prior_invalid_slot_burn"
+)
+CARRY_FORWARD_TERMINAL = (
+    "D3_Q0_1_SLOT_1_CARRY_FORWARD_BURNED_FROM_Q0_INVALID"
 )
 D2_RESULT_SCHEMA = (
     "blindassist_hftf_stage_c_d2_causal_signed_clearance_transport_result"
@@ -474,6 +492,16 @@ def validate_execution_contract(
         contract_path,
         "metadata_roster_result",
     )
+    q0_invalid_result_path, q0_invalid_result = _bound_json(
+        contract,
+        contract_path,
+        "q0_invalid_result",
+    )
+    q0_execution_contract_path, q0_execution_contract = _bound_json(
+        contract,
+        contract_path,
+        "q0_execution_contract",
+    )
     d2_result_path, d2_result = _bound_json(
         contract,
         contract_path,
@@ -534,6 +562,32 @@ def validate_execution_contract(
             "freeze_qualifier_and_effect_execution_contract"
         )
         is not True
+        or q0_invalid_result.get("schema") != Q0_INVALID_RESULT_SCHEMA
+        or q0_invalid_result.get("terminal") != Q0_INVALID_TERMINAL
+        or q0_invalid_result.get("invalidity", {}).get(
+            "slot_1_permanently_burned"
+        )
+        is not True
+        or q0_invalid_result.get("successor_boundary", {}).get(
+            "maximum_remaining_slots"
+        )
+        != MAXIMUM_NEWLY_OPENED_SLOTS
+        or q0_invalid_result.get("authorization", {}).get(
+            "freeze_schema_only_q0_1_successor_contract"
+        )
+        is not True
+        or q0_execution_contract.get("schema")
+        != Q0_EXECUTION_CONTRACT_SCHEMA
+        or q0_execution_contract.get("status")
+        != Q0_EXECUTION_CONTRACT_STATUS
+        or q0_invalid_result.get("execution_contract", {}).get("sha256")
+        != sha256(q0_execution_contract_path)
+        or q0_invalid_result.get("execution_contract", {}).get("path")
+        != str(
+            q0_execution_contract_path.relative_to(
+                contract_path.parents[3]
+            )
+        ).replace("\\", "/")
         or d2_result.get("schema") != D2_RESULT_SCHEMA
         or d2_result.get("terminal") != D2_RESULT_TERMINAL
         or d2_result.get("offline_validation_summary", {}).get(
@@ -633,6 +687,11 @@ def validate_execution_contract(
     screening = contract.get("screening", {})
     if (
         screening.get("slot_count") != SLOT_COUNT
+        or screening.get("first_active_slot_index")
+        != FIRST_ACTIVE_SLOT_INDEX
+        or screening.get("carry_forward_burned_slot_count") != 1
+        or screening.get("maximum_newly_opened_slots")
+        != MAXIMUM_NEWLY_OPENED_SLOTS
         or screening.get("required_qualified_sources")
         != REQUIRED_QUALIFIED
         or screening.get("maximum_path_chars_exclusive")
@@ -646,6 +705,44 @@ def validate_execution_contract(
         or screening.get("manual_skip_or_reorder_authorized") is not False
     ):
         raise ValueError("D3-Q0 screening constants mismatch")
+    carry_policy = contract.get("prior_invalid_carry_forward", {})
+    if not isinstance(carry_policy, dict):
+        raise ValueError("Q0.1 carry-forward policy must be an object")
+    _closed_keys(
+        carry_policy,
+        {
+            "burned_slot_index",
+            "first_new_media_slot_index",
+            "remaining_new_media_slot_count",
+            "slot_1_counts_toward_original_budget",
+            "slot_1_counts_as_qualified",
+            "slot_1_counts_as_not_qualified",
+            "slot_1_counts_as_slot_failure",
+            "prior_selector_outcome_admitted",
+            "prior_artifact_bytes_may_be_reopened",
+            "prior_outcome_fields_may_be_imported",
+            "preserve_original_indices_and_order",
+            "slot_replacement_authorized",
+            "budget_expansion_authorized",
+        },
+        "Q0.1 carry-forward policy",
+    )
+    if carry_policy != {
+        "burned_slot_index": 1,
+        "first_new_media_slot_index": FIRST_ACTIVE_SLOT_INDEX,
+        "remaining_new_media_slot_count": MAXIMUM_NEWLY_OPENED_SLOTS,
+        "slot_1_counts_toward_original_budget": True,
+        "slot_1_counts_as_qualified": False,
+        "slot_1_counts_as_not_qualified": False,
+        "slot_1_counts_as_slot_failure": False,
+        "prior_selector_outcome_admitted": False,
+        "prior_artifact_bytes_may_be_reopened": False,
+        "prior_outcome_fields_may_be_imported": False,
+        "preserve_original_indices_and_order": True,
+        "slot_replacement_authorized": False,
+        "budget_expansion_authorized": False,
+    }:
+        raise ValueError("Q0.1 carry-forward policy mismatch")
     if (
         contract.get(
             "qualification_gates_each_source_height_horizon_all_required"
@@ -785,7 +882,18 @@ def validate_execution_contract(
         raise ValueError("D3-Q0 network retries must be exactly three")
     outcome_firewall = contract.get("outcome_firewall_at_freeze", {})
     if (
-        len(outcome_firewall) != 8
+        set(outcome_firewall)
+        != {
+            "q0_1_slot_2_pose_opened",
+            "q0_1_slot_2_depth_opened",
+            "q0_1_slot_2_mask_opened",
+            "q0_1_slot_2_support_computed",
+            "q0_1_slot_2_future_truth_computed",
+            "q0_1_slot_2_qualification_known",
+            "q0_1_prediction_known",
+            "q0_1_effect_known",
+            "q0_slot_1_selector_outcome_imported",
+        }
         or any(value is not False for value in outcome_firewall.values())
     ):
         raise ValueError("D3-Q0 outcome firewall was not frozen closed")
@@ -795,6 +903,8 @@ def validate_execution_contract(
             contract_path,
             protocol_path,
             roster_result_path,
+            q0_invalid_result_path,
+            q0_execution_contract_path,
             d2_result_path,
             d2_contract_path,
             d2_design_path,
@@ -818,6 +928,21 @@ def validate_execution_contract(
         "protocol_path": protocol_path,
         "roster_result": roster_result,
         "roster_result_path": roster_result_path,
+        "q0_invalid_result": q0_invalid_result,
+        "q0_invalid_result_path": q0_invalid_result_path,
+        "q0_execution_contract": q0_execution_contract,
+        "q0_execution_contract_path": q0_execution_contract_path,
+        "carry_forward_authority": {
+            "q0_protocol_sha256": sha256(protocol_path),
+            "metadata_roster_sha256": sha256(roster_path),
+            "q0_execution_contract_sha256": sha256(
+                q0_execution_contract_path
+            ),
+            "q0_invalid_result_sha256": sha256(q0_invalid_result_path),
+            "q0_screening_invalid_sha256": q0_invalid_result[
+                "durable_evidence"
+            ]["screening_invalid"]["sha256"],
+        },
         "roster": roster,
         "roster_path": roster_path,
         "roster_sha256": sha256(roster_path),
@@ -854,6 +979,7 @@ def slot_layout(
         "sealed_payload": slot_root / "sealed_payload.json",
         "selector": slot_root / "selector.json",
         "failure": slot_root / "failure.json",
+        "carry_forward": slot_root / "carry_forward.json",
     }
 
 
@@ -894,12 +1020,112 @@ def validate_screening_attempt(
         or value["workflow_profile"] != "THESIS_DEVELOPMENT"
         or value["contract_sha256"] != contract_sha256
         or value["roster_sha256"] != roster_sha256
-        or value["first_slot_index"] != 1
+        or value["first_slot_index"] != FIRST_ACTIVE_SLOT_INDEX
         or value["first_network_request_started"] is not False
         or value["slot_replacement_authorized"] is not False
         or value["budget_expansion_authorized"] is not False
     ):
         raise ValueError("Screening attempt identity or policy mismatch")
+    return value
+
+
+def validate_carry_forward(
+    value: dict[str, Any],
+    slot: dict[str, Any],
+    q0_1_contract_sha256: str,
+    authority: dict[str, str],
+) -> dict[str, Any]:
+    _closed_keys(
+        value,
+        {
+            "schema",
+            "terminal",
+            "workflow_profile",
+            "q0_1_execution_contract_sha256",
+            "q0_protocol_sha256",
+            "metadata_roster_sha256",
+            "q0_execution_contract_sha256",
+            "q0_invalid_result_sha256",
+            "q0_screening_invalid_sha256",
+            "original_slot_index",
+            "session_id",
+            "burn_reason",
+            "original_attempt_durable",
+            "media_support_truth_opened",
+            "selector_schema_valid",
+            "selector_admitted",
+            "permanently_burned",
+            "counts_toward_original_40_budget",
+            "counts_as_qualified",
+            "counts_as_not_qualified",
+            "counts_as_slot_failure",
+            "reopen_authorized",
+            "recompute_authorized",
+            "rerun_authorized",
+            "replacement_authorized",
+            "first_remaining_original_slot",
+            "maximum_remaining_original_slots",
+            "preserve_original_indices",
+            "preserve_original_order",
+            "sealed_payload_read",
+            "invalid_selector_read",
+            "outcome_fields_imported",
+        },
+        "Q0.1 carry-forward burn receipt",
+    )
+    expected_authority_keys = {
+        "q0_protocol_sha256",
+        "metadata_roster_sha256",
+        "q0_execution_contract_sha256",
+        "q0_invalid_result_sha256",
+        "q0_screening_invalid_sha256",
+    }
+    _closed_keys(
+        authority,
+        expected_authority_keys,
+        "Q0.1 carry-forward authority",
+    )
+    if any(
+        not isinstance(authority[key], str)
+        or SHA256_RE.fullmatch(authority[key]) is None
+        or value[key] != authority[key]
+        for key in expected_authority_keys
+    ):
+        raise ValueError("Q0.1 carry-forward authority mismatch")
+    if (
+        slot.get("d3_roster_slot_index") != 1
+        or value["schema"] != CARRY_FORWARD_SCHEMA
+        or value["terminal"] != CARRY_FORWARD_TERMINAL
+        or value["workflow_profile"] != "THESIS_DEVELOPMENT"
+        or value["q0_1_execution_contract_sha256"]
+        != q0_1_contract_sha256
+        or value["original_slot_index"] != 1
+        or value["session_id"] != slot.get("session_id")
+        or value["burn_reason"]
+        != "SCHEMA_INVALID_AFTER_MEDIA_SUPPORT_TRUTH_OPEN"
+        or value["original_attempt_durable"] is not True
+        or value["media_support_truth_opened"] is not True
+        or value["selector_schema_valid"] is not False
+        or value["selector_admitted"] is not False
+        or value["permanently_burned"] is not True
+        or value["counts_toward_original_40_budget"] is not True
+        or value["counts_as_qualified"] is not False
+        or value["counts_as_not_qualified"] is not False
+        or value["counts_as_slot_failure"] is not False
+        or value["reopen_authorized"] is not False
+        or value["recompute_authorized"] is not False
+        or value["rerun_authorized"] is not False
+        or value["replacement_authorized"] is not False
+        or value["first_remaining_original_slot"] != FIRST_ACTIVE_SLOT_INDEX
+        or value["maximum_remaining_original_slots"]
+        != MAXIMUM_NEWLY_OPENED_SLOTS
+        or value["preserve_original_indices"] is not True
+        or value["preserve_original_order"] is not True
+        or value["sealed_payload_read"] is not False
+        or value["invalid_selector_read"] is not False
+        or value["outcome_fields_imported"] is not False
+    ):
+        raise ValueError("Q0.1 carry-forward burn policy mismatch")
     return value
 
 
@@ -1173,6 +1399,7 @@ def validate_selection(
     slots: list[dict[str, Any]],
     contract_sha256: str,
     roster_sha256: str,
+    carry_forward_authority: dict[str, str],
 ) -> dict[str, Any]:
     if isinstance(path_or_value, dict):
         value = path_or_value
@@ -1192,10 +1419,13 @@ def validate_selection(
             "metadata_roster_sha256",
             "aggregate_attempt_sha256",
             "consumed_slot_count",
+            "newly_opened_slot_count",
+            "carry_forward_burned_slot_count",
+            "carry_forward_burn_receipt",
             "qualified_source_count",
             "selected_sources",
             "failure_receipt_count",
-            "selector_or_failure_receipts_only_read",
+            "screening_receipts_only_read",
             "sealed_payload_read",
             "source_replacement_authorized",
             "budget_expansion_authorized",
@@ -1205,6 +1435,8 @@ def validate_selection(
     )
     integer_keys = (
         "consumed_slot_count",
+        "newly_opened_slot_count",
+        "carry_forward_burned_slot_count",
         "qualified_source_count",
         "failure_receipt_count",
     )
@@ -1224,7 +1456,12 @@ def validate_selection(
             for key in integer_keys
         )
         or value["qualified_source_count"] != REQUIRED_QUALIFIED
-        or value["selector_or_failure_receipts_only_read"] is not True
+        or value["carry_forward_burned_slot_count"] != 1
+        or value["consumed_slot_count"]
+        != value["newly_opened_slot_count"] + 1
+        or value["newly_opened_slot_count"]
+        > MAXIMUM_NEWLY_OPENED_SLOTS
+        or value["screening_receipts_only_read"] is not True
         or value["sealed_payload_read"] is not False
         or value["source_replacement_authorized"] is not False
         or value["budget_expansion_authorized"] is not False
@@ -1289,6 +1526,8 @@ def validate_selection(
         set(selected_indices)
     ) != REQUIRED_QUALIFIED:
         raise ValueError("Selected sources are not in frozen slot order")
+    if any(index < FIRST_ACTIVE_SLOT_INDEX for index in selected_indices):
+        raise ValueError("Q0.1 selection contains permanently burned slot 1")
     root = selector_paths[0].parent.parent
     if (
         selection_path is not None
@@ -1337,12 +1576,30 @@ def validate_selection(
         slots,
         contract_sha256,
         roster_sha256,
+        carry_forward_authority,
+    )
+    carry_receipt = value["carry_forward_burn_receipt"]
+    if not isinstance(carry_receipt, dict):
+        raise ValueError("Selection carry-forward receipt must be an object")
+    _closed_keys(
+        carry_receipt,
+        {
+            "slot_index",
+            "session_id",
+            "carry_forward_path",
+            "carry_forward_sha256",
+            "terminal",
+        },
+        "selection carry-forward receipt",
     )
     if (
         state["terminal"] != QUALIFICATION_TERMINAL
         or state["qualified_rows"] != selected
         or value["consumed_slot_count"] != state["consumed_count"]
+        or value["newly_opened_slot_count"]
+        != state["newly_opened_count"]
         or value["failure_receipt_count"] != len(state["failure_rows"])
+        or state["carry_forward_rows"] != [carry_receipt]
     ):
         raise ValueError("Selection is not the exact first-six terminal")
     return value
@@ -1353,6 +1610,7 @@ def scan_screening_state(
     slots: list[dict[str, Any]],
     contract_sha256: str,
     roster_sha256: str,
+    carry_forward_authority: dict[str, str],
 ) -> dict[str, Any]:
     if len(slots) != SLOT_COUNT:
         raise ValueError("Screening state requires exactly 40 slots")
@@ -1361,19 +1619,63 @@ def scan_screening_state(
         slot_layout(root, slot)["slot_root"].exists()
         for slot in slots
     )
-    if screening_attempt.exists() or any_slot_root:
-        if not screening_attempt.is_file():
-            raise ValueError("Screening attempt is absent or non-file")
-        validate_screening_attempt(
-            load_json(screening_attempt),
-            contract_sha256,
-            roster_sha256,
+    if not screening_attempt.exists() and not any_slot_root:
+        return {
+            "consumed_count": 0,
+            "newly_opened_count": 0,
+            "carry_forward_rows": [],
+            "qualified_rows": [],
+            "failure_rows": [],
+            "next_slot": None,
+            "interrupted_slot": None,
+            "control_plane_uninitialized": True,
+            "terminal": None,
+        }
+    if not screening_attempt.is_file():
+        raise ValueError("Screening attempt is absent or non-file")
+    validate_screening_attempt(
+        load_json(screening_attempt),
+        contract_sha256,
+        roster_sha256,
+    )
+    burned_slot = slots[0]
+    burned_layout = slot_layout(root, burned_slot)
+    carry_path = burned_layout["carry_forward"]
+    if not carry_path.is_file():
+        raise ValueError("Q0.1 slot 1 carry-forward burn receipt is absent")
+    slot_one_children = {
+        child.name
+        for child in burned_layout["slot_root"].iterdir()
+    }
+    if slot_one_children != {carry_path.name}:
+        raise ValueError(
+            "Q0.1 slot 1 contains artifacts beyond the carry-forward receipt"
         )
+    carry = validate_carry_forward(
+        load_json(carry_path),
+        burned_slot,
+        contract_sha256,
+        carry_forward_authority,
+    )
+    carry_forward_rows = [
+        {
+            "slot_index": 1,
+            "session_id": burned_slot["session_id"],
+            "carry_forward_path": str(carry_path.resolve()),
+            "carry_forward_sha256": sha256(carry_path),
+            "terminal": carry["terminal"],
+        }
+    ]
     qualified_rows: list[dict[str, Any]] = []
     failure_rows: list[dict[str, Any]] = []
-    consumed_count = 0
-    for offset, slot in enumerate(slots):
+    consumed_count = 1
+    newly_opened_count = 0
+    for offset, slot in enumerate(slots[1:], start=1):
         layout = slot_layout(root, slot)
+        if layout["carry_forward"].exists():
+            raise ValueError(
+                "Q0.1 carry-forward receipt is allowed only for original slot 1"
+            )
         selector_exists = layout["selector"].exists()
         failure_exists = layout["failure"].exists()
         if selector_exists and failure_exists:
@@ -1408,13 +1710,17 @@ def scan_screening_state(
                 )
             return {
                 "consumed_count": consumed_count,
+                "newly_opened_count": newly_opened_count,
+                "carry_forward_rows": carry_forward_rows,
                 "qualified_rows": qualified_rows,
                 "failure_rows": failure_rows,
                 "next_slot": None if interrupted else slot,
                 "interrupted_slot": slot if interrupted else None,
+                "control_plane_uninitialized": False,
                 "terminal": None,
             }
         consumed_count += 1
+        newly_opened_count += 1
         if not layout["attempt"].is_file():
             raise ValueError(
                 f"Consumed slot {offset + 1} lacks a durable attempt"
@@ -1479,17 +1785,23 @@ def scan_screening_state(
                     )
             return {
                 "consumed_count": consumed_count,
+                "newly_opened_count": newly_opened_count,
+                "carry_forward_rows": carry_forward_rows,
                 "qualified_rows": qualified_rows,
                 "failure_rows": failure_rows,
                 "next_slot": None,
                 "interrupted_slot": None,
+                "control_plane_uninitialized": False,
                 "terminal": QUALIFICATION_TERMINAL,
             }
     return {
         "consumed_count": consumed_count,
+        "newly_opened_count": newly_opened_count,
+        "carry_forward_rows": carry_forward_rows,
         "qualified_rows": qualified_rows,
         "failure_rows": failure_rows,
         "next_slot": None,
         "interrupted_slot": None,
+        "control_plane_uninitialized": False,
         "terminal": BUDGET_TERMINAL,
     }
