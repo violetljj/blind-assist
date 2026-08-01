@@ -12,6 +12,7 @@ C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE /
 C0_1_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED /
 D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED /
 D1_CAUSAL_FUTURE_LABEL_MECHANICS_SUPPORTED /
+STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_FROZEN /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -186,6 +187,14 @@ known loss 和 UNKNOWN→SAFE violation 均为 0。24 个 future risk-proxy cell
 解释为 hazard/safe truth，也不授权 acquisition、corpus generation、student training/
 effect、主线、Android/App 或安全 claim。
 
+Stage C E0 现已在任何 fresh RGB/depth 或 geometry-label outcome 前冻结。从 95 条
+healthy inventory 排除两条 consumed source 后，按总字节升序与 recording-date
+互斥规则锁定 6 条 fresh trajectory，角色固定为 `4 train / 1 dev / 1 heldout`。
+E0 只检验 5 方向、`[0,.4,.8] s` 的 foot-ground known/risk proxy；三个等参数
+MobileNetV3-Small arms 分别是 single-frame future、history current-only 与 history
+future。source/transport/teacher/opportunity 门全部通过前不训练，heldout 不足也不得
+换样。body/head、完整距离场、事件效果与主线仍未授权。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -236,6 +245,8 @@ effect、主线、Android/App 或安全 claim。
 - [Stage C causal future-label mechanics D1](HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_D1_2026-08-01.md)
 - [Stage C machine-readable future-label D1](HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_D1_2026-08-01.json)
 - [Stage C causal future-label mechanics D1 result](HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_RESULT_D1_2026-08-01.md)
+- [Stage C fresh foot-ground student canary E0](HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.md)
+- [Stage C machine-readable fresh student canary E0](HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

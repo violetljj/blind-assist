@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何 fresh RGB/depth
+  或 geometry-label outcome 前冻结 Stage C fresh foot-ground student canary E0。
+  从 95 条 healthy EgoWalk inventory 排除两条 consumed source，按总字节升序、
+  recording-date 互斥锁定 6 条，固定 `4 train / 1 dev / 1 heldout`。三臂共用相同
+  frozen MobileNetV3-Small encoder 与同参数 head：single-frame future、history
+  current-only、history future；ImageNet 权重 SHA-256 为
+  `047dcff4addef86ea5bc2eff13c9614dc11f47ab1160d0a71a25e7db994f4e1f`。
+  source/transport/teacher/role-opportunity 顺序门全过前不训练，heldout opportunity
+  不足不得换样。该 E0 只检验 foot-ground temporal geometry-proxy agreement，
+  body/head、完整 HFTF、主线和 App 均未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。Stage C causal
   future-label mechanics D1 正式双运行达到
   `D1_CAUSAL_FUTURE_LABEL_MECHANICS_SUPPORTED`。两条 consumed EgoWalk source 的
