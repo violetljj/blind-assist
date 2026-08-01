@@ -3152,3 +3152,21 @@
 - 该结果只是 synthetic body/head geometry-proxy opportunity，不是 student effect、
   完整 HFTF、人体/事件/安全证据；研究主线、默认 App、Android 与生产均不变。详见
   [result](docs/research/hftf/HFTF_STAGE_C_SANPO_TEACHER_OPPORTUNITY_RESULT_F0_1_2026-08-01.md)。
+
+## 2026-08-01：HFTF F0.1 train/dev corpus 与学生训练执行冻结
+
+- 执行者：violjjet
+- 按 outcome 前冻结的 corpus contract 物化 90 个 train candidate 与 39 个 dev
+  reference student records；official-test heldout 为 0。student record 只含精确
+  五帧历史 RGB、哈希和 nullable current/future labels，future teacher modalities
+  保持在隔离 receipt 中。
+- 两次独立物化的 student samples、teacher receipts 和 dataset spec 分别 byte exact；
+  独立磁盘 validator 复核 129/129 records、129/129 receipts 与 645/645 历史 RGB
+  引用，终态为 `F0_1_SANPO_TRAIN_DEV_CORPUS_VALIDATED`。
+- 首个学生优化步前冻结 3 arms × 3 seeds 的 MobileNetV3-Small 时序学生训练合同：
+  30 epochs、固定增强/损失/优化器、dev known-cell micro risk F1 选择且阈值固定
+  0.5，九个 checkpoint 冻结前不得物化 heldout target。
+- 新训练器逐臂在 CUDA/模型初始化前校验所有实际使用 RGB 的当前文件 SHA-256，
+  绑定 torch/torchvision、预训练权重、语料、执行合同及所有父协议哈希；单元测试
+  9/9、HFTF 全集 168/168。此提交只冻结可执行实现，尚未产生任何训练或 heldout
+  outcome；主线、默认 App、Android、生产与安全主张均不变。
