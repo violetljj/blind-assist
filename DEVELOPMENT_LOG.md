@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未运行
+  `HFTF_STAGE_B_REFERENCE_METRIC_PILOT_D1` runner。实现对 candidate/baseline 使用
+  相同 stride-8 points，对 reference 使用不相交的 stride-4 grid；所有 arm 共享
+  swept-prism known mask，并按 foot/body/head/micro 与 threshold `1/2/4/8` 输出
+  confusion、precision/recall/F1/accuracy 和 paired correctness。新增 lattice、
+  UNKNOWN mask、confusion、paired direction 与 JSON tests；HFTF 全套 50 tests
+  通过。当前仍为 `D1_IMPLEMENTATION_READY_RESULT_NOT_RUN`，不授权 fresh source
+  acquisition 或 outcome、future Stage C、H2、主线、Android、提醒、默认 App、生产或
+  安全 claim。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在读取任何 fresh R3
   outcome 前冻结 Development-only
   `HFTF_STAGE_B_REFERENCE_METRIC_PILOT_D1`。candidate 为 stride-8/offset-4

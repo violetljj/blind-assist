@@ -145,6 +145,24 @@ ground support；只有 known 且数值 risk 为零的 cell 才编码为 SAFE，
 support 保持 UNKNOWN。输出准入 fresh R3 也只代表 mechanics 可执行且非退化，不代表
 风险真值、Stage B 增益、H2 或主线替换。
 
+D1 在同一 burned cohort 上比较 candidate、baseline 与 disjoint dense reference：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/pilot_swept_envelope_reference_metrics.py `
+  --pilot docs/research/hftf/HFTF_STAGE_B_REFERENCE_METRIC_PILOT_D1_2026-08-01.json `
+  --mechanics-protocol docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json `
+  --r2-protocol docs/research/hftf/HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2_2026-08-01.json `
+  --session <burned-r2-replay-a> <authority-a.json> `
+  --session <burned-r2-replay-b> <authority-b.json> `
+  --session <burned-r2-replay-c> <authority-c.json> `
+  --session <burned-r2-replay-d> <authority-d.json> `
+  --output artifacts.local/evidence/hftf/<run-id>/reference_metrics.json
+```
+
+candidate/reference pixel grids 不相交；四个 reference count thresholds 必须全部报告。
+D1 只设计 R3 gate，不选择 fresh outcome。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
