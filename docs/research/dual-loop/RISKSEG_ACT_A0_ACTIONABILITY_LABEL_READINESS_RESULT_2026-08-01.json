@@ -1,0 +1,149 @@
+{
+  "schema_version": "blindassist.riskseg_act_a0.result.v1",
+  "protocol_id": "RISKSEG_ACT_A0",
+  "date": "2026-08-01",
+  "status": "STOP_ACTIONABILITY_REFERENCE_CONSTRUCT_UNSTABLE",
+  "decision": {
+    "fixed_anchor_screen_pass": false,
+    "a0_p1_full_frame_annotation_authorized": false,
+    "new_session_disjoint_cohort_contract_authorized": false,
+    "model_training_authorized": false,
+    "app_change_authorized": false,
+    "default_app": "YOLO_BASELINE_UNCHANGED"
+  },
+  "claim_ceiling": [
+    "consumed Development-only label-readiness evidence",
+    "120 fixed observations from 30 consumed parent events",
+    "no population label-accuracy, held-out, confirmation, model-effect, product or safety claim"
+  ],
+  "contract": {
+    "path": "docs/research/dual-loop/RISKSEG_ACT_A0_ACTIONABILITY_LABEL_READINESS_CONTRACT_2026-08-01.json",
+    "sha256": "a8c66a83664c3f4e3c8dee406832b1a27ca18b0659fa2eb3d7b520119bc06326",
+    "pre_output_lock_commit": "b1f66c22e59217b64aabb43ea3c82879f77102b0"
+  },
+  "evidence": {
+    "root": "artifacts.local/evidence/riskseg-act-a0/actionability-readiness-v1",
+    "bundle_receipt": {
+      "path": "bundle_receipt.json",
+      "sha256": "7fac856c6cfa6b021573e73c85782e16c07388897370b9ea45d7127b8bbdc9b2"
+    },
+    "score": {
+      "path": "_private/score.json",
+      "sha256": "0658c2c670cc450e1946ac52de0225bdb824c00125f06ee6e47ac9a2d61bb3e3"
+    },
+    "independent_validation": {
+      "path": "_private/independent_validation.json",
+      "sha256": "a014be259e99d6b2225f9d67e1100a85987319d1e1acb6f1295fc7137bb59dd9",
+      "status": "VALID",
+      "six_fresh_isolated_passes": true,
+      "key_metrics_independently_recomputed": true,
+      "cross_condition_transitions_independently_recomputed": true
+    },
+    "source_manifest_sha256": "6fe64391a9557fd9d80ad8f861cd4b043293955e2ff3e5979ffe7fb33d33b7ff",
+    "scoring_key_sha256": "88d63e42fd5ed7f0792b5036eb118bad845d7684c75f370b81d2408de89dd7ed",
+    "review_item_count": 720,
+    "anchor_count_per_pass": 120,
+    "parent_event_count": 30,
+    "review_submissions": {
+      "CURRENT_A": {
+        "review_sha256": "506f3878e9263bf56d9728743df6dec6667bc01e96aa3ef5b499093aaf9f1522",
+        "receipt_sha256": "4bd4975ca2f30db00c76fe5089193cd025345ba489b7b66898eb09e5a8404e19"
+      },
+      "CURRENT_B": {
+        "review_sha256": "5c823b3f67925d44fabbbefec9e920cdb7e1d1cd72f26d858f6f064b9f3906c1",
+        "receipt_sha256": "ddbe5810545e9077d2d4cc640c7e0e85de217d39dc8287d4c6d02186f539e5e9"
+      },
+      "CAUSAL_A": {
+        "review_sha256": "5ff8ae086f46b0e9e44716e9ca2c888cc0fe60cdf4f3c0bc1a2fd72dd50eeeb2",
+        "receipt_sha256": "02f0e39cbf5426a331212729deb67d997f7b97ce755b91391fb752cad10bf52f"
+      },
+      "CAUSAL_B": {
+        "review_sha256": "39d772b7f2f33a7311213dea54cb2940f99229b4632f4967b9132873b2a3e0e5",
+        "receipt_sha256": "31bffa7ffcc7ae8a0acaf01919b14f1540f11dc0f30edc7c6d1891edb662f452"
+      },
+      "HINDSIGHT_A": {
+        "review_sha256": "7a81784d6069559fd523c030b99db1455a2ab7c2ac9a7d2a150b2d3db3967b98",
+        "receipt_sha256": "f6b758fb32705a3986797c887b7c05c2701f76e9d5501b4bb71c836ed7937a55"
+      },
+      "HINDSIGHT_B": {
+        "review_sha256": "28d908416ed5bea4144c07ad00ff23aade35f0c45961468632c1a5a26fc9cfef",
+        "receipt_sha256": "ca49e9ae4c544e414c1e0d20e4f50d288527702fcda4228f6b59ecfb01b8a2a7"
+      }
+    }
+  },
+  "condition_metrics": {
+    "CURRENT_ONLY": {
+      "gate_pass": false,
+      "alertable_exact_agreement": 0.85,
+      "passed_exact_agreement": 0.9416666666666667,
+      "knownness_exact_agreement": 0.9583333333333334,
+      "boundary_relation_exact_agreement": 0.17346938775510204,
+      "intrusion_spatial_f1": 0.631578947368421,
+      "derived_exact_agreement": 0.85,
+      "derived_macro_jaccard": 0.543915343915344,
+      "actionable_union_agreement": 0.6428571428571429,
+      "parent_event_sequence_match": 0.5333333333333333,
+      "union_abstain_burden": 0.05,
+      "unknown_to_non_actionable_violation_count": 0
+    },
+    "CAUSAL_HISTORY": {
+      "gate_pass": false,
+      "alertable_exact_agreement": 0.85,
+      "passed_exact_agreement": 0.925,
+      "knownness_exact_agreement": 1.0,
+      "boundary_relation_exact_agreement": 0.24050632911392406,
+      "intrusion_spatial_f1": 0.6491228070175439,
+      "derived_exact_agreement": 0.85,
+      "derived_macro_jaccard": 0.8165997322623828,
+      "actionable_union_agreement": 0.6666666666666666,
+      "parent_event_sequence_match": 0.6,
+      "union_abstain_burden": 0.008333333333333333,
+      "unknown_to_non_actionable_violation_count": 0
+    },
+    "HINDSIGHT_REFERENCE": {
+      "gate_pass": false,
+      "alertable_exact_agreement": 0.6583333333333333,
+      "passed_exact_agreement": 0.8666666666666667,
+      "knownness_exact_agreement": 0.9333333333333333,
+      "boundary_relation_exact_agreement": 0.24074074074074073,
+      "intrusion_spatial_f1": 0.5529411764705883,
+      "derived_exact_agreement": 0.6583333333333333,
+      "derived_macro_jaccard": 0.33811188811188814,
+      "actionable_union_agreement": 0.4461538461538462,
+      "parent_event_sequence_match": 0.4,
+      "union_abstain_burden": 0.06666666666666667,
+      "unknown_to_non_actionable_violation_count": 0
+    }
+  },
+  "cross_condition": {
+    "current_to_causal_changed_fraction": 0.3333333333333333,
+    "causal_to_hindsight_changed_fraction": 0.43333333333333335,
+    "causal_hindsight_exact_consensus_agreement": 0.5666666666666667
+  },
+  "onset_readiness": {
+    "status": "NOT_EVALUABLE_ON_CURRENT_LEFT_TRUNCATED_COHORT",
+    "training_readiness_pass": false,
+    "left_truncated_positive_event_count": 14,
+    "positive_event_count": 16
+  },
+  "interpretation": {
+    "supported": [
+      "The current protocol can preserve epistemic UNKNOWN without converting it to NON_ACTIONABLE.",
+      "Alertable and passed three-state agreement can reach the runtime marginal thresholds in current or causal views.",
+      "The frozen route-relation construct is not stable enough for spatial or event-sequence supervision.",
+      "Additional future context does not rescue the construct and instead reveals substantial interpretation dependence."
+    ],
+    "not_supported": [
+      "full-frame actionability annotation on the consumed 30-event cohort",
+      "new matched-pair cohort collection under this ontology",
+      "actionability-aware model training",
+      "any default App or YOLO baseline replacement"
+    ],
+    "false_signal_checks": [
+      "Low abstain burden is not treated as readiness because reviewers can disagree confidently.",
+      "Overall derived exact agreement is not treated as sufficient when classwise, spatial and parent-event gates fail.",
+      "No third-Agent adjudication, majority repair, prompt retuning or UNKNOWN-to-negative conversion was used.",
+      "Hindsight labels remain diagnostic and cannot leak into runtime or training truth."
+    ]
+  }
+}

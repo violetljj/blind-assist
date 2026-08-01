@@ -15,6 +15,9 @@ YOLO_RULE_PATCHING_STOPPED /
 RISKSEG_R1_P0_COMPLETE_VALID_NEGATIVE /
 TRUTH_MASK_SOFT_ADAPTER_FAIL_CHANGE_ACTIONABILITY_LABELS /
 RISKSEG_R1_P1_NOT_AUTHORIZED /
+RISKSEG_ACT_A0_COMPLETE_VALID_NEGATIVE /
+STOP_ACTIONABILITY_REFERENCE_CONSTRUCT_UNSTABLE /
+ACTIONABILITY_FULL_FRAME_AND_TRAINING_NOT_AUTHORIZED /
 SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
 CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
@@ -114,6 +117,21 @@ false alerts、`4/16` cleared，未守住 YOLO 的 `13/16、6/14、5/16`。learn
 seed 分别只有 `11/16、12/16、7/16` hits，完整相对 guardrails 为 `0/3`。因此
 不进入当前四类目标的 P1 训练；下一步必须先改变 actionability/event supervision，
 再建立新的 session-disjoint cohort。默认 App 继续保持 YOLO。
+
+该后继已由
+[RISKSEG-ACT A0 标签可行性审计](RISKSEG_ACT_A0_ACTIONABILITY_LABEL_READINESS_RESULT_2026-08-01.md)
+关闭为有效负终态 `STOP_ACTIONABILITY_REFERENCE_CONSTRUCT_UNSTABLE`。A0 在已消费
+30-event cohort 上冻结 120 个 content-blind anchors，并完成
+`CURRENT_ONLY / CAUSAL_HISTORY / HINDSIGHT_REFERENCE` 三种信息条件各两路、共六路
+fresh 隔离审阅；独立 validator 从六份原始 review 复算为 `VALID`。CURRENT/CAUSAL
+的 alertable exact 均为 `.85`，但 boundary relation exact 只有
+`.173/.241`、intrusion F1 `.632/.649`、parent-event sequence match
+`.533/.600`；HINDSIGHT 也未形成稳定 reference，derived exact `.658`、
+intrusion F1 `.553`、sequence match `.400`。因此不是只缺历史信息，而是当前路线
+关系/空间侵入/事件相位合同本身不稳定。按预冻结 fail-fast 顺序，不进入 1,920-frame
+A0-P1，不授权新 matched-pair cohort 合同或 actionability-aware 模型训练，不通过
+prompt、第三 Agent、UNKNOWN 转负类、网格调优或专用 parallel-curb 规则修补结果。
+默认 App 与 YOLO baseline 保持不变。
 
 此前 2026-08-01 的候选算法主线曾切换为
 [DG-SRF image-space structural complementarity F0](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
