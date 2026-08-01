@@ -1,0 +1,128 @@
+{
+  "schema": "blindassist_hftf_stage_c_d3_q0_metadata_roster_execution_contract",
+  "status": "FROZEN_AFTER_D3_Q0_BEFORE_METADATA_ROSTER_OR_D3_MEDIA_TRUTH",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "purpose": "lock_the_first_40_metadata_eligible_fresh_official_train_slots_in_lexicographic_order_without_opening_media_pose_content_support_truth_or_effect",
+  "parents": {
+    "d3_q0_protocol": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D3_REFERENCE_AND_SUPPORT_ONLY_CHALLENGE_QUALIFICATION_Q0_2026-08-02.json",
+      "sha256": "42773cc9b0f27c187e97b7a03dfd96570e9178dbd742ee2b41759cce973d9b5f",
+      "required_status": "FROZEN_AFTER_D2_NOT_EVALUABLE_BEFORE_ANY_D3_SOURCE_MEDIA_SUPPORT_OR_TRUTH_OUTCOME"
+    },
+    "d2_metadata_qualification_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D2_OFFICIAL_TRAIN_METADATA_QUALIFICATION_RESULT_2026-08-02.json",
+      "sha256": "fae85191e9e7c77f4206c37b722899afacb539f30dc129a9f1fae32252858096",
+      "required_terminal": "D2_OFFICIAL_TRAIN_METADATA_COHORT_QUALIFIED"
+    },
+    "d2_metadata_qualification": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d2-official-train-metadata-qualification-20260802/qualification.json",
+      "sha256": "63a217c3e658bbe4fee9e351c5c9abf68379ec2ccb89a6c3449f1581e385ee47",
+      "required_terminal": "D2_OFFICIAL_TRAIN_METADATA_COHORT_QUALIFIED"
+    }
+  },
+  "official_train_split": {
+    "dataset": "SANPO-Synthetic",
+    "split": "train",
+    "generation": "1692794964120907",
+    "text_sha256": "f9c5dc4c289fa87342abc0d2cc49f112fcc78c7e02e0b6b081e296a99344173c",
+    "selection_order": "ascending_session_id"
+  },
+  "expected_excluded_parent_count": 84,
+  "exclusion_derivation": {
+    "inherit_all_78_d2_frozen_exclusion_parents": true,
+    "add_complete_d2_consumed_six_parent_cohort": true,
+    "categories_must_be_disjoint": true,
+    "manual_add_remove_or_source_attribute_filter_authorized": false
+  },
+  "selection": {
+    "roster_slot_count": 40,
+    "order": "ascending_session_id",
+    "stop_after_roster_slots": true,
+    "metadata_eligibility": [
+      "synthetic_session_description",
+      "camera_chest_left_intrinsics",
+      "source_fps_exactly_5_or_20",
+      "pose_object_receipt_exists",
+      "exact_13_frame_rgb_mask_depth_object_receipts_exist"
+    ],
+    "metadata_ineligible_before_slot_lock_does_not_consume_slot": true,
+    "authority_or_acquisition_failure_after_slot_lock_will_consume_slot_in_later_qualification": true,
+    "manual_skip_or_reorder_authorized": false,
+    "source_attribute_ranking_authorized": false,
+    "media_or_truth_open_authorized": false
+  },
+  "implementations": {
+    "metadata_roster_planner": {
+      "path": "scripts/research/hftf/plan_stage_c_d3_q0_metadata_roster.py",
+      "sha256": "d23d335e07b474b6a2f1edbd21df3377f033676f8f4e907f0bcb6ebe359b910d"
+    },
+    "d2_metadata_helper": {
+      "path": "scripts/research/hftf/plan_stage_c_d2_official_train_metadata.py",
+      "sha256": "4d8b206c887352d92c15cb3fe375d357551861c5e0a6113073a7426f332da58a"
+    }
+  },
+  "implementation_tests": {
+    "planner_test": {
+      "path": "scripts/research/hftf/test_plan_stage_c_d3_q0_metadata_roster.py",
+      "sha256": "8c4fafc2c8e2595628bb7a58242fa87130aab14617905a014b22f6107ddb7642"
+    },
+    "test_count": 15,
+    "tests_passed": 15,
+    "hftf_full_test_count": 352,
+    "hftf_full_tests_passed": 352
+  },
+  "network": {
+    "retries": 3,
+    "durable_attempt_must_be_fsynced_before_first_network_request": true,
+    "retry_count_is_internal_transport_resilience_not_scan_rerun": true
+  },
+  "canonical_artifacts": {
+    "attempt": "artifacts.local/evidence/hftf/stage-c-d3-q0-metadata-roster-20260802/attempt.json",
+    "roster_result": "artifacts.local/evidence/hftf/stage-c-d3-q0-metadata-roster-20260802/roster.json",
+    "failure": "artifacts.local/evidence/hftf/stage-c-d3-q0-metadata-roster-20260802/failure.json"
+  },
+  "execution_order": [
+    "validate_exact_contract_parents_implementations_tests_and_authorization",
+    "require_all_execution_files_tracked_clean_and_head_equal_origin_master",
+    "require_canonical_output_root_absent",
+    "exclusive_create_flush_and_fsync_attempt_before_first_network_request",
+    "read_bound_official_train_split_and_metadata_receipts_only",
+    "derive_exact_84_parent_exclusion_union",
+    "lock_first_40_metadata_eligible_slots_in_ascending_session_id_order",
+    "write_and_fsync_roster_result",
+    "stop_without_opening_media_pose_content_support_truth_or_effect"
+  ],
+  "failure_policy": {
+    "execution_failure_terminal": "D3_Q0_METADATA_ROSTER_EXECUTION_FAILED_NO_RERUN",
+    "insufficient_eligible_slots_terminal": "D3_Q0_METADATA_ROSTER_NOT_EVALUABLE_INSUFFICIENT_ELIGIBLE_SLOTS",
+    "rerun_authorized": false,
+    "append_or_replace_roster_slots_authorized": false,
+    "preserve_attempt_and_failure_artifacts": true,
+    "media_pose_support_truth_or_effect_must_remain_unopened": true
+  },
+  "authorization": {
+    "metadata_roster_scan_authorized": true,
+    "freeze_qualifier_effect_execution_contract_on_success": true,
+    "media_or_pose_content_open_authorized": false,
+    "support_or_truth_qualification_authorized": false,
+    "d3_effect_authorized": false,
+    "rgb_student_training_authorized": false,
+    "rgb_student_execution_authorized": false,
+    "reserved_official_test_open_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  },
+  "outcome_firewall_at_freeze": {
+    "metadata_roster_result_created": false,
+    "d3_media_or_pose_content_opened": false,
+    "d3_support_masks_computed": false,
+    "d3_future_truth_opened": false,
+    "d3_qualification_outcome_known": false,
+    "d3_effect_computed": false,
+    "d3_student_executed": false
+  }
+}

@@ -784,6 +784,24 @@ future-blind predictions 在 truth receipt 前全部 durable，truth join 精确
 result 声称 transport 支持或不支持。该 cohort 不重跑、不换源、不追加、不调参；
 RGB student 与全部主线/App/生产/safety 权限保持关闭。
 
+D3-Q0 不重跑或替换 D2，而先构造 conditional challenge cohort。第一执行级仅允许
+metadata-only roster：从 exact D2 exclusion union 继承 78 个 parents，再排除完整 D2
+六源 cohort，按 official-train session ID 升序锁定前 40 个 metadata-eligible slots。
+它不读取 RGB/mask/depth bytes、pose 内容、support 或 truth：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/plan_stage_c_d3_q0_metadata_roster.py `
+  --execution-contract docs/research/hftf/HFTF_STAGE_C_D3_Q0_METADATA_ROSTER_EXECUTION_CONTRACT_2026-08-02.json `
+  --retries 3 `
+  --output artifacts.local/evidence/hftf/stage-c-d3-q0-metadata-roster-20260802/roster.json
+```
+
+contract/planner/test/D2 metadata helper 必须先 tracked、clean、hash-bound、推送并确认
+`HEAD == origin/master`。durable attempt 在首网前 exclusive create + `fsync`；失败、
+中断或 roster 不足均不重跑、不追加。成功也只允许另冻完整
+reference-and-support qualifier、sealed-truth firewall 与 effect skeleton，不能直接
+打开 40-slot media/truth。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

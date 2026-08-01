@@ -1,4 +1,12 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。新增独立
+  `candidate_event_mining` discovery Module，冻结 `CANDIDATE_EVENT_MINING_DISCOVERY_R0`
+  的 canonical frame trace、12 类候选触发、同 session 去重、跨 session 聚类、candidate-blind
+  Luna review bundle、fail-closed review receipt 和 discovery candidate pool。明确数据下载
+  目录为 `F:\ba-data\blindassist-candidate-event-mining\`，并提供 source/session/url/time/hash
+  项目索引模板。当前只完成标准库合成回归与接口骨架，不下载媒体、不读取 fresh/confirmation
+  outcome，不授权事件真值、训练、Android、默认 App、生产或安全结论；详见
+  `scripts/research/candidate_event_mining/README.md`。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：Codex。`RISKSEG-R0` 已按完整授权
   顺序执行到负终态
   `RISKSEG_R0_TRAINED_NOT_PROMOTABLE_KEEP_YOLO`。三个固定 PIDNet-S seed 均完成
@@ -3757,3 +3765,31 @@
 - 当前只授权另冻 hash-bound implementation execution contract。D3 metadata scan、
   media/pose、support/truth qualification、effect、RGB student、reserved official-test、
   研究主线、默认 App、Android、生产与 safety 权限全部仍为 false。
+
+## 2026-08-02：HFTF D3-Q0 metadata-only 40-slot roster 合同冻结
+
+- 执行者：violjjet
+- 为避免在 qualifier 完成前打开任何新媒体或 truth，D3 实现拆成两级。第一级只从
+  official train metadata 锁定 40-slot roster；成功后仍需另冻完整
+  reference-and-support qualifier、sealed-truth firewall 与 outcome 前 effect skeleton，
+  才能开始逐 slot screening。
+- exclusion 从已封存 D2 qualification 机械派生：原 78 个互斥 parents 加完整 D2
+  consumed six，共 84 个且禁止手工增删。剩余 source 按 session ID 升序；metadata
+  eligibility 只检查 synthetic/chest-left/5或20 Hz/pose receipt 与 exact selected
+  13-frame RGB/mask/depth receipts，不读取媒体或 pose 内容。
+- 独立首轮审计发现 planner 误复用 D2 的 50-frame helper，会把“所需 13 帧完整但
+  非选中帧缺失”的合法 D3 source 错误排除并改变 first-40 roster。正式执行前已改成
+  D3-specific exact-13 qualifier：5 Hz 为 `0..12`，20 Hz 为 `0,4,...,48`；新增
+  selected-only 13-frame canary，明确允许非选中帧不存在。没有通过修改合同来迎合旧
+  实现。
+- planner/test/contract SHA-256 分别为
+  `d23d335e07b474b6a2f1edbd21df3377f033676f8f4e907f0bcb6ebe359b910d` /
+  `8c4fafc2c8e2595628bb7a58242fa87130aab14617905a014b22f6107ddb7642` /
+  `efc95ee82fa5bb31b4d26744841ef4a45df5ca56d3da88f944af3cc1a7991614`。
+  targeted tests 15/15、HFTF 全集 352/352 通过；最终独立 hash-after 审计复算
+  exact-13、84 exclusions、first-40、首网前 `fsync`、no-rerun 与全部 firewall 后
+  `CLEAR`。
+- 当前三个 canonical paths 均不存在。本节点只授权 exact files 提交推送、确认远端
+  一致后执行一次 metadata-only scan。成功不授权媒体、pose content、support、truth、
+  effect、student、reserved official-test、研究主线、默认 App、Android、生产或
+  safety。
