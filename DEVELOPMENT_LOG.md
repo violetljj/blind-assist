@@ -3584,3 +3584,30 @@
 - 本结果只授权冻结下一份 D2 media/mechanics implementation contract。RGB/mask/depth
   bytes、pose 内容、teacher/student、D2 effect、reserved official-test、研究主线、
   App、Android、生产与安全权限继续关闭。
+
+## 2026-08-02：HFTF D2.1 result-changing 定义冲突在媒体前澄清
+
+- 执行者：violjjet
+- mechanics 实现审查发现原 D2 同时要求 exact G0 field，又写了 predicted field-domain
+  外点排除；两者会产生不同 clearance。exact G0 runner 实际让全部 finite、semantic
+  admitted stride4/offset2 points 对每个 cell 产生 proxy，nonmember 是正
+  closed-box SDF，仍参与 second-smallest。另一个 blocker 是 yaw 未冻结投影轴、
+  `atan2` 符号与 predicted basis 公式。实现因此暂停，未新增 mechanics 文件。
+- 新 D2.1 不回写旧协议，只在两个冲突上取得优先级：忠实 exact G0、不做全局
+  theta/distance prefilter；history/current forward 都投影到 current ground tangent
+  plane，以 `atan2(up·cross(history,current), dot)` 得到 `[-pi,pi)` 最短角，再用
+  Rodrigues 绕 current up 延拓。predicted right 固定为
+  `cross(predicted_forward,up)`，origin 使用 current ground projection 加 tangent
+  translation velocity。
+- current ground plane 精确绑定既有 verifier：stride16、下部 45% 像素、
+  depth `[0.5,8.0]`、classes `{1,3,5,6,17,30}`、source-frame seed。每个 anchor
+  只读自身 history/current pose 与 current mask/depth，并在后续 anchor 前 durable
+  写出；全部 84 anchor-horizon records 后才允许 truth join。
+- D2.1 JSON SHA-256 为
+  `51ed1c0bc2a98481b4991f237d44979cf0c455624031c2c0ee41715ec0d6a8f0`。
+  独立只读审计重算 3 个 parents 与 3 个 implementation receipts，并核对 exact
+  G0、pose/ground authority、角度符号、per-anchor firewall 及 outcome 边界后
+  `CLEAR`。冻结时仍只有 metadata outcome；媒体、pose 内容与 geometry/effect
+  outcome 均未打开，因此这不是同 cohort outcome-driven retuning。
+- 本节点仍不授权媒体、preprocessor、truth/effect 或 RGB student；只允许继续冻结
+  hash-bound one-shot media/mechanics implementation contract。

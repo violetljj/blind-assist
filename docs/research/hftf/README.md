@@ -396,6 +396,8 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C machine-readable G0-D1 fresh execution result](HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_RESULT_D1_2026-08-01.json)
 - [Stage C D2 causal signed-clearance transport design](HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_D2_2026-08-01.md)
 - [Stage C machine-readable D2 design](HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_D2_2026-08-01.json)
+- [Stage C D2.1 signed-clearance transport definition clarification](HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_CLARIFICATION_D2_1_2026-08-02.md)
+- [Stage C machine-readable D2.1 clarification](HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_CLARIFICATION_D2_1_2026-08-02.json)
 - [Stage C T0 consumed-Development short-path contract](HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_CONTRACT_2026-08-01.md)
 - [Stage C machine-readable T0 contract](HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_CONTRACT_2026-08-01.json)
 - [Stage C T0 consumed-Development short-path result](HFTF_STAGE_C_T0_CONSUMED_DEVELOPMENT_SHORT_PATH_TRANSPORT_RESULT_2026-08-01.md)

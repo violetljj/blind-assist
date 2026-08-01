@@ -699,6 +699,15 @@ hashes 后 `CLEAR`。这些 source 只在 metadata 层被打开并锁定；媒�
 读取。不得重扫、追加或替换，下一步必须先冻结另一个 hash-bound one-shot
 media/mechanics contract。
 
+D2 mechanics 实现还必须绑定 D2.1 definition clarification。exact G0 不允许预先
+过滤全局 theta/distance domain 外点；全部 admitted obstacle points 都对每个 cell
+产生 signed proxy，nonmember 以正 closed-box SDF 参与 second-smallest。ground-aligned
+rotation 使用 history/current forward 在 current ground tangent plane 上的最短有符号
+角，并以 Rodrigues 绕 current up 延拓；predicted right 固定为
+`cross(predicted_forward,current_up)`。每个 anchor 只读自身 history/current inputs，
+其 0.4/0.8 s records 必须在处理后续 anchor 前 durable 写入。D2.1 JSON SHA-256 为
+`51ed1c0bc2a98481b4991f237d44979cf0c455624031c2c0ee41715ec0d6a8f0`。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
