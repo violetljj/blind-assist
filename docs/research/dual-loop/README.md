@@ -47,9 +47,10 @@ HFTF 是独立于当前 RISKSEG/YOLO 主线的未来潜力支线；只有同口�
 [Development execution contract](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_EXECUTION_CONTRACT_D1_2026-08-01.md)：
 只比较 current RGB 下 direct-risk 与 signed-clearance 两种输出机制。9 个已
 outcome-open 来源固定为 6 train + 3 model selection；三条 one-shot fresh 与三条
-reserved official-test 尚未打开。只有 Development corpus 经独立 authority/label
-重推验证、12 个 Phase A/B runs 完成且六个最终 checkpoint hashes 冻结后，才允许
-另立 fresh 一次性评估合同。主线、默认 App、Android、生产与安全权限均未改变。
+reserved official-test 尚未打开。[Development training result](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_TRAINING_RESULT_D1_2026-08-01.md)
+现已通过独立 authority/label 重推、12 个 Phase A/B runs 与六个最终 checkpoint
+hash freeze，终态为 `G0_D1_SIX_FINAL_CHECKPOINTS_FROZEN`。这只允许另立 fresh
+一次性评估合同；主线、默认 App、Android、生产与安全权限均未改变。
 
 ## 当前决定
 

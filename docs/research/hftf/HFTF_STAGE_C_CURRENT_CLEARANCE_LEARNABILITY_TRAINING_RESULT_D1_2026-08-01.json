@@ -1,0 +1,109 @@
+{
+  "schema": "blindassist_hftf_stage_c_current_clearance_learnability_training_result_d1",
+  "terminal": "G0_D1_SIX_FINAL_CHECKPOINTS_FROZEN",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "evidence_role": "DEVELOPMENT_CHECKPOINT_FREEZE_ONLY",
+  "parents": {
+    "execution_contract": {
+      "path": "HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_EXECUTION_CONTRACT_D1_2026-08-01.json",
+      "sha256": "fa7cce1e634d535bb8ff57a658befc8daa17d15e0d482580140a1675d9d88df7"
+    },
+    "development_corpus_validation": {
+      "path": "artifacts.local/evidence/hftf/stage-c-g0-d1-development-corpus-validation-20260801/validation.json",
+      "sha256": "d20b6afa10625ef5edbfb7823be2aaa32a0ef1847ce43ae9e3531c0071f8eb0b",
+      "required_terminal": "G0_D1_DEVELOPMENT_CORPUS_VALIDATED"
+    },
+    "training_validation": {
+      "path": "artifacts.local/evidence/hftf/stage-c-g0-d1-training-validation-20260801/validation.json",
+      "sha256": "b1ed88a7f7a889035b2e47b5e4d0f38349505b1349ab16d6bdf3b44f52e62156",
+      "required_terminal": "G0_D1_SIX_FINAL_CHECKPOINTS_FROZEN"
+    }
+  },
+  "development_corpus": {
+    "source_count": 9,
+    "role_source_counts": {
+      "train": 6,
+      "model_selection": 3
+    },
+    "record_counts": {
+      "train": 150,
+      "model_selection": 75
+    },
+    "student_samples_sha256": "d707613109878ed11e573429e39124b819264b3939a7989e3f22189379c7372f",
+    "teacher_receipts_sha256": "86d04cc10f7f30b151e9eac508c5e4b7708bdbfaadbc343fa49d4fcd37b11f89",
+    "authoritative_manifest_teacher_and_label_rederived": true,
+    "unknown_to_safe_violation_count": 0
+  },
+  "training": {
+    "run_count": 12,
+    "phase_a_run_count": 6,
+    "phase_b_run_count": 6,
+    "all_runs_30_epochs": true,
+    "same_seed_initial_arrays_match_between_arms_and_phases": true,
+    "phase_a_selection_recomputed": true,
+    "phase_b_selected_epochs_match_phase_a": true,
+    "final_checkpoint_count": 6
+  },
+  "final_checkpoints": [
+    {
+      "seed": 17,
+      "arm": "DIRECT_RISK_CURRENT",
+      "selected_epoch": 24,
+      "checkpoint_sha256": "c6256d5d5f557be5cfd605abf1d76a8e756ff6848955fae19d76df3b3cd63cf3",
+      "initial_state_sha256": "02fd0cfe5593318be6374878d9f86d5a74797089ed4c364008bb46b63aa47b3c"
+    },
+    {
+      "seed": 17,
+      "arm": "SIGNED_CLEARANCE_CURRENT",
+      "selected_epoch": 13,
+      "checkpoint_sha256": "b5e9dbe49a18ff45c6d79ea58a4674da9e3bc08890ff8cfb84ae9763a8e4eed2",
+      "initial_state_sha256": "02fd0cfe5593318be6374878d9f86d5a74797089ed4c364008bb46b63aa47b3c"
+    },
+    {
+      "seed": 29,
+      "arm": "DIRECT_RISK_CURRENT",
+      "selected_epoch": 22,
+      "checkpoint_sha256": "735146438f08068e2bc68d3dad7bc345ee17e6469af66e236e8244467430f560",
+      "initial_state_sha256": "42abc99881f14906614146017119291529a66fc1bf36e8c6b192510c64773deb"
+    },
+    {
+      "seed": 29,
+      "arm": "SIGNED_CLEARANCE_CURRENT",
+      "selected_epoch": 11,
+      "checkpoint_sha256": "248b9a32702be159208ac01df72101f5d9bf2637f60ab7171d49026a2bf2e415",
+      "initial_state_sha256": "42abc99881f14906614146017119291529a66fc1bf36e8c6b192510c64773deb"
+    },
+    {
+      "seed": 43,
+      "arm": "DIRECT_RISK_CURRENT",
+      "selected_epoch": 21,
+      "checkpoint_sha256": "ce65905dbb4778fa4d4f44b00020c0a571f61a342a4f24fdeeb8efed9f9b6323",
+      "initial_state_sha256": "c46848a195a345d2d388c335d3d5189b95ad3da39487aa47b7816c10efdf87d1"
+    },
+    {
+      "seed": 43,
+      "arm": "SIGNED_CLEARANCE_CURRENT",
+      "selected_epoch": 20,
+      "checkpoint_sha256": "d252f96ffaaef282eee5d7ed569645a3d6cfe1224bb01e6bffae042ea13a320a",
+      "initial_state_sha256": "c46848a195a345d2d388c335d3d5189b95ad3da39487aa47b7816c10efdf87d1"
+    }
+  ],
+  "authorization": {
+    "freeze_fresh_execution_contract": true,
+    "fresh_media_acquisition_executed": false,
+    "fresh_student_forward_executed": false,
+    "reserved_heldout_acquisition_authorized": false,
+    "future_or_temporal_experiment_authorized": false,
+    "mainline_promotion_authorized": false
+  },
+  "claim_boundary": {
+    "clearance_target_is_synthetic_geometry_proxy_not_human_or_safety_truth": true,
+    "development_metrics_are_not_fresh_effect_evidence": true,
+    "six_frozen_checkpoints_do_not_prove_signed_clearance_advantage": true,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_execution_authorized": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

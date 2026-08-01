@@ -3378,3 +3378,29 @@
   Phase B → training validation。fresh acquisition/prediction/truth、reserved
   official-test、future/temporal、研究主线、默认 App、Android、生产与安全权限均
   继续关闭。
+
+## 2026-08-01：HFTF-G0-D1 六个 Development checkpoints 冻结
+
+- 执行者：violjjet
+- 正式 corpus materializer 返回
+  `G0_D1_CURRENT_CLEARANCE_DEVELOPMENT_CORPUS_READY`；9 来源、225 student records
+  与 225 teacher receipts 精确一一对应。student/teacher SHA-256 分别为
+  `d707613109878ed11e573429e39124b819264b3939a7989e3f22189379c7372f` /
+  `86d04cc10f7f30b151e9eac508c5e4b7708bdbfaadbc343fa49d4fcd37b11f89`。
+- 独立 corpus validator 重新读取 manifest、RGB/depth/mask、pose/authority 并重推
+  全部 labels，返回 `G0_D1_DEVELOPMENT_CORPUS_VALIDATED`；11 项 checks 全 true，
+  UNKNOWN→SAFE 为 0，validation SHA-256 为
+  `d20b6afa10625ef5edbfb7823be2aaa32a0ef1847ce43ae9e3531c0071f8eb0b`。
+- 12 个冻结 runs 全部完成 30 epochs。Phase A 选择的 direct epochs 为
+  `24/22/21`，clearance epochs 为 `13/11/20`（seeds `17/29/43`）；Phase B
+  reset 后在全部 9 个 Development 来源上冻结同一 epochs。
+- 独立 training validator 重算 Phase A selection、核对 Phase B parents、相同 seed
+  的 initial arrays/loss 参数，并 strict-load/finite-check 全部 checkpoints，返回
+  `G0_D1_SIX_FINAL_CHECKPOINTS_FROZEN`。六个 final checkpoint SHA-256 为
+  `c6256d5d…63cf3 / b5e9dbe4…4eed2 / 73514643…0f560 /
+  248b9a32…2e415 / ce65905d…b6323 / d252f96f…320a`；training validation
+  SHA-256 为
+  `b1ed88a7f7a889035b2e47b5e4d0f38349505b1349ab16d6bdf3b44f52e62156`。
+- 该终态只授权冻结 one-shot fresh execution contract；fresh acquisition、
+  prediction 与 truth 均未执行。reserved official-test、future/temporal、主线、
+  App、Android、生产与安全权限继续关闭。
