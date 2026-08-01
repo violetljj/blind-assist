@@ -490,6 +490,18 @@ runner 只解码 anchor 与 `anchor+2` teacher depth，报告中明确
 `zero_point_eight_second_output_computed=false`。新 dev/heldout mechanics 与 opportunity
 全过后才授权 corpus/training。
 
+E0.2 fixed multi-source batch lock：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/lock_stage_c_e0_2_fixed_batch.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_2026-08-01.json `
+  --output artifacts.local/evidence/hftf/<run-id>/source_lock.json
+```
+
+validator 同时排除 consumed trajectory 与 recording date，复算唯一固定的 3 dev +
+3 heldout；只有 `E0_2_FIXED_BATCH_SOURCE_LOCK_VALIDATED` 才允许获取该 batch。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
