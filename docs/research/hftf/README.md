@@ -7,7 +7,8 @@ H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP /
 R2_POINT_SUPPORT_PROXY_BURNED /
 STAGE_B_R3_SOURCE_OR_REFERENCE_NOT_EVALUABLE /
 R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE /
-SPLIT_SOURCE_STAGE_B_SUCCESSOR_ONLY /
+R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED /
+STAGE_C_SOURCE_FEASIBILITY_FREEZE_AUTHORIZED_ONLY /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -117,6 +118,17 @@ reference-only obstacle qualification 与原 R3 effect gates；foot-ground 则�
 source role 都通过前不授权 Stage C；通过也只形成 split-source teacher mechanics
 Development support，不形成自然 prevalence、人类事件、student utility 或安全结论。
 
+R4 已按该 split-source 合同执行并达到
+`R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED`。新 SANPO challenge cohort 的
+obstacle candidate/baseline primary F1 为 `.98756/.76000`，delta `+.22756`；
+4/4 session 和 foot/body/head 均为正，precision delta `+.37792`、recall delta
+`-.00493`。解析 terrain 的 20 risk、16 safe、6 UNKNOWN 全部正确/弃权，candidate
+F1 `1.0`，比最佳 endpoint baseline 高 `+.25`。前者只外推到 reference-qualified
+challenge cohort，后者只属于 controlled mechanics。
+
+当前只新授权冻结 Stage C source-feasibility contract；尚未授权执行 Stage C、训练
+student、切换研究主线或修改 App。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -154,6 +166,7 @@ Development support，不形成自然 prevalence、人类事件、student utilit
 - [Stage B split-source validation R4](HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.md)
 - [Stage B machine-readable R4 protocol](HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.json)
 - [R4 source-pool burn ledger](HFTF_R4_SOURCE_POOL_BURN_LEDGER_2026-08-01.json)
+- [Stage B split-source validation R4 result](HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_RESULT_R4_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

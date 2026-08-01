@@ -1,4 +1,15 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成正式 R4 split-source
+  Stage B，joint 终态
+  `R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED`。SANPO obstacle role
+  前四个字典序 candidates 全部 reference-only qualified 并立即停止；primary
+  candidate/baseline F1 `.98756/.76000`，delta `+.22756`，precision/recall delta
+  `+.37792/-.00493`，4/4 session 与三高度均通过。analytic terrain role 的 20 risk、
+  16 safe、6 UNKNOWN 全部正确/弃权，candidate F1 `1.0`，高于最佳 baseline `+.25`。
+  joint report SHA-256
+  `cc7adb2b08ceb1ef4542a0c0c86957e4bb20fc6f50f1d01e31b22f66f1177453`。
+  claim ceiling 仍是 split-source Development teacher mechanics；只授权冻结 Stage C
+  source-feasibility contract，不授权执行、student、主线、Android、提醒或安全 claim。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未运行 R4
   obstacle arm 与 joint aggregator。cohort lock 要求 qualification reports 为字典序
   contiguous prefix、精确停在第 4 个 qualified source，并绑定 authority/manifest/
