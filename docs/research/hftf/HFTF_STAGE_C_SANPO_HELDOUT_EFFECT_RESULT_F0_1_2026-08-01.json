@@ -1,0 +1,126 @@
+{
+  "schema": "blindassist_hftf_stage_c_sanpo_heldout_effect_result_f0_1",
+  "terminal": "F0_1_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_SIGNAL_NOT_SUPPORTED_STOP",
+  "independent_validation_terminal": "F0_1_SANPO_HELDOUT_EFFECT_TERMINAL_VALIDATED",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "evidence_role": "ONE_SHOT_OFFICIAL_TEST_STUDENT_EFFECT_CANARY",
+  "claim_ceiling": "SYNTHETIC_BODY_HEAD_GEOMETRY_PROXY_SIGNAL_ONLY",
+  "parents": {
+    "heldout_execution_contract": {
+      "path": "HFTF_STAGE_C_SANPO_HELDOUT_EXECUTION_CONTRACT_F0_1_2026-08-01.json",
+      "sha256": "cdc05f52f3d10ce8479025a0a0137f6d8c8a4d5d6faf320245dd0295c3b39462"
+    },
+    "heldout_package_manifest": {
+      "path": "artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-20260801/package.json",
+      "sha256": "2053911c74df735b9efef2d514d7d3d952f0cccb87bddb1000abcb9eda9e349c"
+    },
+    "heldout_package_validation": {
+      "path": "artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-validation-20260801/validation.json",
+      "sha256": "864504876a28ed16bce6a6f2a9ac525b61d84af3103e9298db8a6309c8b54a8e"
+    },
+    "one_shot_consumption_ledger": {
+      "path": "artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-one-shot-consumption-20260801.json",
+      "sha256": "fd2260d5a50117006510f56c29f168d1e3abef7228955d380c3ef9796d6cdfb5"
+    },
+    "prediction_completion": {
+      "path": "artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-predictions-20260801/completion.json",
+      "sha256": "cb2787e5c8be3fac63d7581508827a35220fa9aa4ecdaff9502a44815031945c"
+    },
+    "predictions": {
+      "path": "artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-predictions-20260801/predictions.jsonl",
+      "sha256": "1a62a45412caf9582fb6d92fc037c84f8e3cef78069c200d32575e8eb83c3d1e"
+    },
+    "heldout_truth": {
+      "path": "artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-package-20260801/heldout_truth.jsonl",
+      "sha256": "1a26f954abd4a720169cc92562ff0d925730c48813945a1a0f97156d032e6c73"
+    },
+    "effect_result": {
+      "path": "artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-effect-result-20260801/result.json",
+      "sha256": "fad451876e87d24160cee8fe9dc4f8f8fdc9917b69a175ad825f42a144e57336"
+    },
+    "independent_terminal_validation": {
+      "path": "artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-heldout-terminal-validation-20260801/validation.json",
+      "sha256": "32d9d956cd162644696d96ed4476719bfa49e0f4156b41f6d7b66a5f5029bb33"
+    }
+  },
+  "heldout_execution": {
+    "source_count": 3,
+    "sample_count": 39,
+    "checkpoint_count": 9,
+    "prediction_record_count": 351,
+    "one_shot_consumed": true,
+    "second_prediction_run_authorized": false,
+    "truth_join_completed": true,
+    "independent_terminal_recomputation_completed": true,
+    "not_evaluable_failure": false
+  },
+  "primary_comparison": {
+    "micro_f1_delta_by_seed": {
+      "17": -0.007233006125913349,
+      "29": 0.015576716056985032,
+      "43": -0.02539253405427888
+    },
+    "median_micro_f1_delta": -0.007233006125913349,
+    "median_recall_delta": -0.018126888217522646,
+    "median_false_positive_rate_delta": -0.021402550091074668,
+    "median_f1_delta_by_height": {
+      "body": 0.0005505980634137042,
+      "head": -0.008473015288266716
+    },
+    "median_f1_delta_by_source": {
+      "2d9fa74adbe115a5ad715b05515b33cb55eb69b1b168684c40106861e36c317b": 0.030893389534285998,
+      "9bee9c839dfd2855bfe4f45e1b39996095a64437262ea8366d438de898e69b9a": 0.018691588785046728,
+      "081eb747d3d529e01b367c5d950b3fa1ccda9903246f5435293caf46badae4c2": -0.014909189482244511
+    },
+    "worst_source_median_seed_f1_delta": -0.014909189482244511,
+    "sf_current_micro_f1_by_seed": {
+      "17": 0.15422885572139303,
+      "29": 0.17326732673267325,
+      "43": 0.17578125
+    },
+    "sf_current_median_seed_micro_f1": 0.17326732673267325
+  },
+  "effect_gates": {
+    "median_micro_f1_delta": false,
+    "each_seed_micro_f1_delta_positive": false,
+    "median_recall_delta": true,
+    "median_false_positive_rate_delta": true,
+    "median_body_f1_delta": true,
+    "median_head_f1_delta": false,
+    "worst_source_median_seed_f1_delta": true,
+    "sf_current_learnability": false
+  },
+  "diagnostic_interpretation": {
+    "temporal_delta_replication": "ONE_OF_THREE_SEEDS_POSITIVE",
+    "absolute_current_label_learnability": "FAILED_BY_LARGE_MARGIN",
+    "head_height_temporal_increment": "FAILED",
+    "body_height_temporal_increment": "MARGINALLY_NONNEGATIVE",
+    "known_head_accuracy_range": [
+      0.87037037037037,
+      0.928774928774929
+    ],
+    "risk_micro_f1_range": [
+      0.0932515337423313,
+      0.17578125
+    ],
+    "bounded_inference": "DIRECT_CROSS_SPLIT_RGB_TO_GEOMETRY_PROXY_LEARNABILITY_IS_THE_DOMINANT_OBSERVED_BLOCKER; THIS_DOES_NOT_PROVE_THAT_TEMPORAL_HISTORY_HAS_NO_VALUE_IN_OTHER_FACTORIZATIONS"
+  },
+  "burn_and_authorization": {
+    "official_test_parent_sessions_consumed_for_f0_1_effect": [
+      "2d9fa74adbe115a5ad715b05515b33cb55eb69b1b168684c40106861e36c317b",
+      "9bee9c839dfd2855bfe4f45e1b39996095a64437262ea8366d438de898e69b9a",
+      "081eb747d3d529e01b367c5d950b3fa1ccda9903246f5435293caf46badae4c2"
+    ],
+    "f0_1_model_checkpoint_threshold_source_metric_or_gate_change_authorized": false,
+    "f0_1_after_outcome_rescue_authorized": false,
+    "f0_1_second_prediction_or_truth_join_authorized": false,
+    "new_mechanistically_distinct_successor_protocol_may_be_proposed": true,
+    "successor_execution_authorized_by_this_result": false,
+    "consumed_sources_may_serve_as_fresh_successor_validation": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_execution_authorized": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

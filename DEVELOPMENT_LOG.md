@@ -3231,3 +3231,30 @@
 - 当前仅合同冻结；heldout materialization、student output 与 effect terminal 尚未产生。
   即使未来 signal-supported，也只形成 synthetic geometry-proxy 支线证据，不直接授权
   替换主线、Android、生产或安全主张。
+
+## 2026-08-01：HFTF F0.1 official-test heldout 负终态
+
+- 执行者：violjjet
+- 按冻结顺序一次性物化并验证 3 个 official-test parent sessions × 13 anchors：
+  package validation 为 `F0_1_SANPO_HELDOUT_PACKAGE_VALIDATED`，SHA-256
+  `864504876a28ed16bce6a6f2a9ac525b61d84af3103e9298db8a6309c8b54a8e`。
+- 唯一 prediction-only 进程在固定 RTX 5060 Laptop GPU、torch 2.11.0+cu128 /
+  torchvision 0.26.0+cu128 上完成 9 × 39 = 351 条输出；predictions SHA-256 为
+  `1a62a45412caf9582fb6d92fc037c84f8e3cef78069c200d32575e8eb83c3d1e`。
+  全局 ledger 已永久消费，任何第二次 model forward 均不授权。
+- truth join 得到
+  `F0_1_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_SIGNAL_NOT_SUPPORTED_STOP`；
+  独立 validator 从冻结文件完整复算后返回
+  `F0_1_SANPO_HELDOUT_EFFECT_TERMINAL_VALIDATED`，validation SHA-256 为
+  `32d9d956cd162644696d96ed4476719bfa49e0f4156b41f6d7b66a5f5029bb33`。
+- temporal micro-F1 delta 按 seed 17/29/43 为
+  `-0.007233 / +0.015577 / -0.025393`，median `-0.007233`；head median delta
+  `-0.008473`。更强的 blocker 是 `SF_CURRENT` median-seed F1 仅 `0.173267`
+  （门 `0.6`），说明直接 RGB→geometry-proxy risk 的跨 split learnability 本身不足。
+- F0.1 永久关闭，不允许换 checkpoint、阈值、来源、指标、gate 或 rerun rescue。
+  三个 official-test sessions 已 burned，不能充当 successor 的 fresh validation。
+  研究主线、默认 App、Android、生产与安全主张均未改变。
+- 该负结果不证明所有 temporal factorization 都无效。若继续支线，只能新立机制不同、
+  outcome-before 冻结且使用 fresh parent sources 的 successor；其首要 falsifier
+  应先验证可跨来源迁移的物理中间表示能否解决 current learnability，再检验显式
+  causal transport 的 future 增量。
