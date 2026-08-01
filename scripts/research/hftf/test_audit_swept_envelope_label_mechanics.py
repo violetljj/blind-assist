@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -41,6 +42,7 @@ class SweptEnvelopeLabelMechanicsTest(unittest.TestCase):
     def test_all_frozen_structural_canaries_pass(self) -> None:
         checks = _structural_canaries()
         self.assertTrue(all(checks.values()), checks)
+        json.dumps(checks)
 
     def test_swept_counts_are_height_specific_and_monotone(self) -> None:
         points = np.asarray(

@@ -362,8 +362,10 @@ def _structural_canaries() -> dict[str, bool]:
             np.all(wide >= narrow) and wide.sum() > narrow.sum()
         ),
         "height_specific_obstacle_changes_only_intersected_height_layer": (
-            head_counts[:, :, 2].sum() > 0
-            and head_counts[:, :, :2].sum() == 0
+            bool(
+                head_counts[:, :, 2].sum() > 0
+                and head_counts[:, :, :2].sum() == 0
+            )
         ),
         "lateral_dilation_catches_obstacle_inside_body_width": bool(
             wide[:, :, 1].sum() > narrow[:, :, 1].sum()
@@ -749,10 +751,10 @@ def main() -> int:
                 for replay, authority in args.session
             ],
         )
+        payload = json.dumps(report, indent=2, ensure_ascii=False) + "\n"
         output.parent.mkdir(parents=True, exist_ok=True)
         with output.open("x", encoding="utf-8", newline="\n") as handle:
-            json.dump(report, handle, indent=2, ensure_ascii=False)
-            handle.write("\n")
+            handle.write(payload)
         print(
             json.dumps(
                 {
@@ -763,7 +765,7 @@ def main() -> int:
             )
         )
         return 0
-    except (OSError, ValueError, KeyError) as error:
+    except (OSError, TypeError, ValueError, KeyError) as error:
         print(json.dumps({"ok": False, "error": str(error)}))
         return 2
 

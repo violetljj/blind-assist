@@ -5,7 +5,10 @@
   collision，使用 9 probes 裁决可观测性，并以 5-section ground continuity 检出
   `.18m` rise/`.15m` drop。新增显式 `UNKNOWN/SAFE/RISK` 三态编码，数值 risk=0
   不会在 unknown cell 上变成 SAFE；修复三维 `np.add.at` 必须直接索引原张量的
-  实现错误。结构 canary 与 HFTF 全套 46 tests 通过。当前仍为
+  实现错误。结构 canary 与 HFTF 全套 46 tests 通过。首次 D0 调用在报告对象完成后
+  因 NumPy boolean
+  JSON 序列化失败，未形成可读取终态；runner 已改为原生 boolean 且先完整序列化、再
+  独占创建输出，防止编码失败留下貌似有效的部分报告。当前仍为
   `IMPLEMENTATION_READY_RESULT_NOT_RUN`；仅可消费 burned R2 sources，不授权 fresh
   R3、H2、主线、Android、提醒、默认 App、生产或安全 claim。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。重新读取 HFTF 原始构想并
