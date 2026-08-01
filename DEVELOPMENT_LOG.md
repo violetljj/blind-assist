@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。启动当前唯一算法主线
+  `RISKSEG-R0`，冻结四类风险/可通行性任务、520-frame session-disjoint train/dev、
+  90-frame consumed regression、新 `>=30` parent-event session-disjoint 评价集、
+  PIDNet-S 单候选 `512x288 / W8A8` 技术预检、三 seed 训练与事件/设备晋级合同。
+  用户已授权按数据门 -> TFLite/QNN/SM-S9280 预检 -> 训练 -> 三臂事件评价 -> 条件默认
+  App 替换的完整顺序执行；前置门失败仍 fail closed。旧 canonical ID
+  `1=boundary_step_curb / 2=obstacle` 必须重编码为新
+  `1=blocking_obstacle / 2=boundary_level_change`，禁止 mask passthrough。冻结现有
+  mask adapter、risk/temporal/event/feedback chain 与 YOLO baseline，不再以规则、gate、
+  FP sampler 或 component classifier 救结果。90-frame 集与 train 有两个 source-session
+  重叠，其中 `i2jg` 含 22 张相同 RGB，故仅保留为 contaminated non-gating smoke，
+  不支持泛化主张。当前停在
+  `EVENT_EVAL_DATA_GATE_PENDING / DEFAULT_APP_UNCHANGED`，不是等待新授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
   `INFORMATION_CEILING_THREE_ARM_D0` 的无训练设备审计，冻结同一 90-frame /
   3-parent-event SANPO consumed Development cohort、`riskConfig=current`、

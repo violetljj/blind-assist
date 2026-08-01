@@ -3,6 +3,10 @@
 状态：`DG_SRF_F0_COMPLETE / VALID /
 STRUCTURAL_SIGNAL_NOT_SUPPORTED_STOP /
 INFORMATION_CEILING_THREE_ARM_D0_VALID_MIXED_GAPS /
+RISKSEG_R0_TASK_AND_DATA_CONTRACT_FROZEN /
+FULL_SEQUENTIAL_EXECUTION_AUTHORIZED /
+EVENT_EVAL_DATA_GATE_PENDING /
+YOLO_RULE_PATCHING_STOPPED /
 SEGMENTATION_FAILURE_ATLAS_R1_TARGETED_EXPANSION_COMPLETE /
 MECHANISMS_REPRODUCED / GATING_PARTIAL / RESIDUAL_WEAKLY_LABELABLE /
 CONDITIONAL_GATING_R0_PRIMARY_VALID_NOT_SUPPORTED /
@@ -26,7 +30,26 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 
 ## 当前决定
 
-2026-08-01，当时的唯一候选算法主线切换为
+2026-08-01，当前唯一算法主线切换为
+[RISKSEG-R0](RISKSEG_R0_TASK_DATA_AND_EXECUTION_CONTRACT_2026-08-01.md)：停止继续修补
+当前 YOLO 决策规则，训练一个四类轻量风险/可通行性分割模型。任务 ID 固定为
+`0 walkable / 1 blocking_obstacle / 2 boundary_level_change /
+3 unknown_nonwalkable`；旧 520-frame canonical mask 的 ID 1/2 含义相反，必须先按
+`0->0,1->2,2->1,3->3` 物化带 hash 的重编码视图。520 帧按 source session 固定为
+320-frame train / 200-frame dev；既有 90-frame / 3-event 集因两个 source-session
+重叠且含 22 张相同 RGB，只做 contaminated non-gating regression smoke。
+新 event-eval 必须与二者 session-disjoint，至少 30 个 parent events 并覆盖障碍、
+台阶/落差、平行路沿和正常通行负例。当前状态为 `EVENT_EVAL_DATA_GATE_PENDING`：
+完整顺序执行已经授权，但 event-eval 未物化前不预检、不训练。
+
+唯一模型候选是 PIDNet-S，技术预检固定 `512x288 / W8A8 / four-class`，要求 TFLite
+和 QNN 都能编译、输出有限且尺寸正确、SM-S9280 冻结链 total P95 `<=100 ms`，并通过
+10 分钟持续运行退化门。通过后才执行官方结构/预训练权重的三 seed 训练和
+`YOLO-only / learned segmentation-only / truth-mask oracle` 事件评价；任一 recall、
+critical miss、false-alert event、clearance、共同命中时序或性能门出现合同定义的
+trade-off，都保持 YOLO 默认。
+
+此前 2026-08-01 的候选算法主线曾切换为
 [DG-SRF image-space structural complementarity F0](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
 它不继续救援已关闭的 segmentation gating，而是检验固定 Depth Anything V2 Small
 相对逆深度中的 `N/E/R+/R-` 结构信号，能否在实际 YOLO coverage 外，以低于冻结 raw
@@ -597,7 +620,11 @@ FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`。
 | scene-scale active successor / single-variable R2 | `CLOSED / NOT_WORTH_DESIGNING / NOT_IMPLEMENTED` |
 | 默认生产 active/actuating 行为变更 | `NOT_AUTHORIZED` |
 | 自适应调度、深度、ARCore | `NOT_AUTHORIZED` |
-| 分割模型正式选型、风险融合与 A-vs-C 效果评价 | `NOT_AUTHORIZED / NOT_STARTED` |
+| RISKSEG-R0 任务/数据/顺序执行合同 | `FROZEN / FULL_SEQUENTIAL_EXECUTION_AUTHORIZED` |
+| RISKSEG-R0 新 event-eval | `AUTHORIZED / DATA_GATE_PENDING / >=30_PARENT_EVENTS / SESSION_DISJOINT` |
+| PIDNet-S TFLite/QNN/SM-S9280 技术预检 | `AUTHORIZED_AFTER_EVENT_DATA_GATE` |
+| PIDNet-S 三 seed 训练与三臂事件评价 | `AUTHORIZED_AFTER_PREFLIGHT_PASS` |
+| RISKSEG-R0 默认 App 替换 | `AUTHORIZED_ONLY_AFTER_ALL_PROMOTION_AND_RELEASE_GATES` |
 | DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0 | `PRIMARY COMPLETE / VALID / NOT_SUPPORTED / HISTORICAL TERMINAL IMMUTABLE / DEVELOPMENT_ONLY` |
 | DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0.1 SHADOW | `COMPLETE / VALID / NO_MATERIAL / NO_HETEROGENEITY / BOUNDED_STATIC_HANDCRAFTED_GATING_FAMILY_STOP / POST_PRIMARY_DIAGNOSTIC_ONLY` |
 | DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0 | `COMPLETE / VALID / FP_WEIGHTED_SAMPLING_NOT_SUPPORTED / SINGLE_SUCCESSOR_STOP / THREE_PAIRED_SEEDS / DEVELOPMENT_ONLY` |
@@ -621,34 +648,30 @@ D0-A successor R0 已经回答了本轮唯一允许的问题：固定 clip 转�
 
 ### 新双环的下一条短链
 
-1. 不再修改中央阻塞提示词或增加 Agent 裁决；
-2. 冻结客观的图像空间互补单位，明确它不是现实可通行性真值；
-3. 在独立 Development 设计中比较 `YOLO-only`、`segmentation-only` 和
-   `YOLO + segmentation` 的区域/像素增量、稳定性与成本；
-4. 只有在互补信息可重复后，才讨论融合算子或 Android；否则关闭具体候选而不扩大关闭范围。
-
-R1 已完成第 3 项的单一 burned-source image-space 诊断；R2 又完成了同 host backend 的
-第二 source 复现；R0 已进一步用 source-native pixel truth 执行了固定 A/B/C、candidate
-component、raw/motion-warped temporal 字段与 host cost 评价。当前 reference 因误激活
-和增量成本门失败而关闭；不得把 `obstacle` 类名、uncovered fraction 或 union increment
-包装成现实障碍、风险事件或提醒真值。任何新 segmentation reference 或 fusion operator
-都必须另行冻结 protocol、calibration 和 formal gate，不自动继承本轮权限。
+1. 物化并验证至少 30 个 parent events 的新 session-disjoint event-eval；不足则
+   `HOLD_EVENT_EVAL_DATA`；
+2. 对唯一候选 PIDNet-S 执行 `512x288 / W8A8 / four-class` TFLite、QNN、输出健康、
+   SM-S9280 P95 与 10 分钟持续运行预检；失败即关闭候选；
+3. 预检通过后执行官方结构与预训练权重的三 seed 训练，不加 gate、FP sampler 或组件分类器；
+4. 在冻结链上比较 `YOLO-only / learned segmentation-only / truth-mask oracle`；
+5. 事件质量、稳定性和设备门全部通过才替换默认 App；任一明显 trade-off 保留 YOLO。
 
 conditional gating R0 已完成 520 帧执行、逐帧/逐组件独立复算与 held-out/direct
 等价检查；五项门中的 false-positive reduction 和 minimum-session recall retention
 失败，只能判定 primary 不受支持。R0.1 又以前向冻结、一次全量、全部公开且无选择权限
 的方式执行两个 diagnostic-only shadows；两臂均无 material signal，且没有冻结定义的
 minimum-session-only 或跨 session winner inversion。由此关闭的是这个精确三臂、
-固定阈值、静态手工门家族。下一主边界为 residual-aware DDRNet Development：不再增加
-手工阈值、latch、类别规则或 oracle session routing；仍不启动 Android、Confirmation、
-提醒或产品路径。
+固定阈值、静态手工门家族。后继 FP-aware DDRNet 也已经到达负终态；它们现在只作为
+历史 comparator，不再是下一主边界。RISKSEG-R0 不增加手工阈值、latch、类别规则或
+oracle session routing。
 
 该训练边界现已到达有效负终态。三个 seed 都没有通过冻结的 relative 五门与 absolute
 四门；其中两个 seed 的 FP 反而增加，三个 seed 的 absolute FP-area 和 false-component
 门全部失败。因此停止这个单一 FP-weighted sampler，不挑最好 seed，也不在相同
 consumed outcome 上改成 crop、加 loss 或调 weight。若未来继续训练研究，必须另立具有
-不同因果变量和明确数据角色的新 Development 协议；当前没有 INT8、runtime 或 Android
-后继授权。
+不同因果变量和明确数据角色的新 Development 协议；该后继现已由 RISKSEG-R0 独立合同
+给出新的四类任务、数据角色、INT8/runtime/device 路径与顺序授权，不恢复旧 DDRNet
+candidate identity。
 
 ### 后续资源纪律
 

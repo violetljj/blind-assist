@@ -1,0 +1,212 @@
+{
+  "schema_version": "blindassist.riskseg_r0.data_role_ledger.v1",
+  "protocol_id": "RISKSEG_R0",
+  "status": "TASK_AND_DATA_CONTRACT_FROZEN_EVENT_EVAL_NOT_YET_MATERIALIZED",
+  "effective_date": "2026-08-01",
+  "executor": "violjjet",
+  "execution_authority": {
+    "scope": "FULL_SEQUENTIAL_PIPELINE",
+    "stages": [
+      "event_eval_materialization",
+      "pidnet_s_tflite_qnn_technical_preflight",
+      "pidnet_s_three_seed_training",
+      "three_arm_event_evaluation",
+      "sm_s9280_sustained_performance",
+      "conditional_default_app_replacement_and_release_verification"
+    ],
+    "reapproval_between_stages_required": false,
+    "precondition_gates_may_be_bypassed": false
+  },
+  "class_contract": {
+    "input_width": 512,
+    "input_height": 288,
+    "new_class_order": {
+      "0": "walkable",
+      "1": "blocking_obstacle",
+      "2": "boundary_level_change",
+      "3": "unknown_nonwalkable"
+    },
+    "legacy_class_order": {
+      "0": "walkable",
+      "1": "boundary_step_curb",
+      "2": "obstacle",
+      "3": "unknown_nonwalkable"
+    },
+    "legacy_to_riskseg_r0_id": {
+      "0": 0,
+      "1": 2,
+      "2": 1,
+      "3": 3
+    },
+    "materialized_reencoded_view_required": true,
+    "legacy_mask_passthrough_forbidden": true
+  },
+  "roles": {
+    "train": {
+      "role": "TRAIN_ONLY_CONSUMED_DEVELOPMENT",
+      "frame_count": 320,
+      "session_count": 6,
+      "sessions": {
+        "sanpo_real_v0:972O8sd5HpUbGeEE_UAb1g0z1OZUtfHl": 50,
+        "sanpo_real_v0:GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT": 50,
+        "sanpo_real_v0:eHxtA669WpN381O4ZjVAmG3-3ZUewuXr": 50,
+        "sanpo_real_v0:ic_BpoiSOIW-7_mffGenT6yissRNiPzT": 50,
+        "sanpo_real_v0:5LlqRK-hWoDLSW5MmoLjKj6uQtZMKjb9": 60,
+        "sanpo_real_v0:i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3": 60
+      },
+      "allowed": [
+        "training",
+        "augmentation_fit",
+        "quantization_calibration"
+      ],
+      "forbidden": [
+        "event_promotion_claim",
+        "fresh_or_unseen_claim"
+      ]
+    },
+    "dev": {
+      "role": "DEV_SELECTION_ONLY_CONSUMED_DEVELOPMENT",
+      "frame_count": 200,
+      "session_count": 4,
+      "sessions": {
+        "sanpo_real_v0:CCG-oMqgJf90LzEhlqj0WkP3xN0dHlXk": 50,
+        "sanpo_real_v0:LRWTaGC62fB3NflMQaOPXf0HJR1m5Ypp": 50,
+        "sanpo_real_v0:lmkIchCJ1RIKsZvbb4HjCDl85B2nOicv": 50,
+        "sanpo_real_v0:yQ5Ij3w49RMUxxIai6ZVsvPHssZJ13FO": 50
+      },
+      "allowed": [
+        "checkpoint_selection",
+        "early_stopping",
+        "training_recipe_diagnostics",
+        "quantization_drift_diagnostics"
+      ],
+      "forbidden": [
+        "training_gradient_updates",
+        "event_promotion_claim",
+        "fresh_or_unseen_claim"
+      ]
+    },
+    "fixed_regression": {
+      "role": "CONTAMINATED_NON_GATING_REGRESSION_SMOKE",
+      "root": "artifacts.local/evidence/datasets/blindassist-sanpo-v2-event-labeled-20260711",
+      "manifest": "manifest.jsonl",
+      "manifest_sha256": "3d7168ac975aed57ac6b437ecfa0e668c13dc5d509c7b6584353383eed19d217",
+      "frame_count": 90,
+      "session_count": 3,
+      "parent_event_count": 3,
+      "events": [
+        {
+          "parent_event_id": "sanpo_-5OCPnbrwJdu3jH70ieU7pUiFsOJQoeG_camera_chest_left_000000_10fps",
+          "source_session_id": "-5OCPnbrwJdu3jH70ieU7pUiFsOJQoeG",
+          "scene_bucket": "parallel_curb",
+          "positive": false,
+          "frame_count": 30
+        },
+        {
+          "parent_event_id": "sanpo_GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT_camera_chest_left_000466_10fps",
+          "source_session_id": "GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT",
+          "scene_bucket": "center_obstacle",
+          "positive": true,
+          "frame_count": 30
+        },
+        {
+          "parent_event_id": "sanpo_i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3_camera_chest_left_000520_10fps",
+          "source_session_id": "i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3",
+          "scene_bucket": "front_stairs",
+          "positive": true,
+          "frame_count": 30
+        }
+      ],
+      "allowed": [
+        "compatibility_regression",
+        "behavior_regression",
+        "non_gating_diagnostics"
+      ],
+      "forbidden": [
+        "training",
+        "checkpoint_selection",
+        "seed_selection",
+        "threshold_selection",
+        "adapter_or_rule_selection",
+        "promotion_denominator",
+        "fresh_or_session_disjoint_claim"
+      ],
+      "known_overlap_with_train": {
+        "source_session_overlap": [
+          "GxMb4zhAvoM5jbF54kfcs8wxTL4fqNnT",
+          "i2jglnBfoIqIIA7ojQGe-4vK07hUm4T3"
+        ],
+        "i2jg_exact_rgb_hash_overlap_count": 22,
+        "generalization_or_independent_regression_claim": false
+      }
+    },
+    "event_eval": {
+      "role": "SESSION_DISJOINT_EVENT_LEVEL_EVALUATION",
+      "status": "NOT_YET_MATERIALIZED",
+      "minimum_parent_events": 30,
+      "minimum_source_sessions": 8,
+      "minimum_bucket_parent_events": {
+        "blocking_obstacle_positive": 8,
+        "boundary_level_change_positive": 8,
+        "parallel_curb_negative": 7,
+        "normal_walkable_negative": 7
+      },
+      "minimum_sessions_per_bucket": 2,
+      "maximum_total_event_fraction_from_one_session": 0.25,
+      "maximum_bucket_event_fraction_from_one_session": 0.5,
+      "must_be_source_session_disjoint_from": [
+        "train",
+        "dev",
+        "fixed_regression"
+      ],
+      "output_blind_freeze_required": true,
+      "candidate_output_may_influence_membership_or_truth": false,
+      "terminal_when_inadequate": "HOLD_EVENT_EVAL_DATA"
+    }
+  },
+  "source_manifests": [
+    {
+      "role_slice": "dev_200",
+      "path": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713/training_manifest.jsonl",
+      "whole_manifest_row_count": 600,
+      "selected_row_count": 200,
+      "sha256": "1524b74d7369fc58b7c00da3a0bfa998b4ae8caad4f3d2212d08a5888c0f8675"
+    },
+    {
+      "role_slice": "train_consumed_old_blind_120",
+      "path": "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713/blind_holdout/manifest.jsonl",
+      "selected_row_count": 120,
+      "sha256": "b6ed5735ee3b26018c251613085fa910355f45397f8b010f6fadfd95eecba6da"
+    },
+    {
+      "role_slice": "train_r1_consumed_fresh_200",
+      "path": "artifacts.local/evidence/dual-loop-segmentation-model-selection-r1/fresh_holdout/manifest.jsonl",
+      "selected_row_count": 200,
+      "sha256": "eaad2a32640dfa1a64c30fc53a6c10818a99c74b7eacc4c8718bd50515ff879d"
+    }
+  ],
+  "independence_invariants": [
+    "Train, dev, and event-eval are partitioned by source session, never by random frame.",
+    "Frames, crops, adjacent pairs, tracks, and windows from one source session are repeated observations, not independent samples.",
+    "The 90-frame regression role is non-gating and cannot become event-eval by copying, renaming, remapping, or repackaging.",
+    "Source-session ancestry overlap between the 90-frame regression set and train is disclosed and forbids session-disjoint claims for regression.",
+    "Event-eval identities and truth are frozen before candidate, YOLO baseline, or truth-oracle outcomes are viewed."
+  ],
+  "riskseg_r0_forward_only_overlay": {
+    "applies_to": [
+      "train",
+      "dev"
+    ],
+    "historical_r1_role_amendment_modified": false,
+    "fresh_unseen_or_formal_status_restored": false,
+    "minimum_nonzero_class_coverage_sessions": {
+      "train_blocking_obstacle": 2,
+      "train_boundary_level_change": 2,
+      "dev_blocking_obstacle": 2,
+      "dev_boundary_level_change": 2
+    },
+    "coverage_must_be_validated_on_reencoded_view": true,
+    "terminal_when_coverage_fails": "DATA_SPLIT_NOT_READY"
+  },
+  "next_gate": "MATERIALIZE_AND_VALIDATE_SESSION_DISJOINT_EVENT_EVAL_BEFORE_TECHNICAL_PREFLIGHT_OR_TRAINING"
+}
