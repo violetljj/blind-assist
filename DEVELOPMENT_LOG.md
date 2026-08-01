@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成
+  `HFTF_STAGE_B_REFERENCE_METRIC_PILOT_D1`，终态
+  `D1_REFERENCE_METRICS_READY_FOR_R3_GATE_FREEZE`。四个 disjoint-reference count
+  thresholds 上 candidate cohort micro-F1 `.9849–.9917`，baseline
+  `.8129–.8306`，delta `+.1587–+.1720`；4/4 sessions 与 foot/body/head 均稳定为正。
+  报告 SHA-256
+  `d4eb37137f0c2502a7f860e29d7d2148c9dafb89dea261f1e31ca12b1c31e6cf`。
+  随后在任何 fresh field outcome 前冻结 R3：primary threshold=2，cohort F1/precision
+  delta `>=+.10`，recall delta `>=-.02`，4/4 session F1 delta `>=+.05`，并要求四
+  sensitivity thresholds 方向一致。outcome-blind inventory preflight 在排除 12 个
+  burned sessions 后拒绝 19 个无 chest-camera sessions，固定
+  `043db91a/0460c41f/047a3307/04bfa5b7`；当前只授权 acquisition/source authority，
+  不授权 R3 outcome、future Stage C、H2、主线、Android、提醒、默认 App、生产或安全。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未运行
   `HFTF_STAGE_B_REFERENCE_METRIC_PILOT_D1` runner。实现对 candidate/baseline 使用
   相同 stride-8 points，对 reference 使用不相交的 stride-4 grid；所有 arm 共享
