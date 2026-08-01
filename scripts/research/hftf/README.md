@@ -295,6 +295,24 @@ E:\codex-tools\bin\blindassist-python.cmd `
   --output artifacts.local/evidence/hftf/<run-id>/obstacle_result.json
 ```
 
+### Stage C SANPO body/head temporal-student F0
+
+F0 的 source planner 只读取 official split、description、intrinsics、pose object
+receipt 与 RGB/mask/depth object inventory；不下载媒体，不计算 geometry/student
+outcome：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/plan_stage_c_f0_sanpo_inventory.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_2026-08-01.json `
+  --burn-ledger docs/research/hftf/HFTF_STAGE_C_SANPO_BODY_HEAD_SOURCE_POOL_BURN_LEDGER_F0_2026-08-01.json `
+  --output artifacts.local/evidence/hftf/<run-id>/inventory_plan.json
+```
+
+planner 必须排除 effective 60-session burn union，按完整 ID 字典序固定 12 个 source，
+并按 rank 固定 `6 train / 3 dev / 3 heldout`。任何 geometry outcome 打开后不得重新
+规划或替换。
+
 `aggregate_r4_split_source_result.py` 是唯一可签发 joint R4 terminal 的工具；单个
 component 不得提前开放 Stage C。
 
