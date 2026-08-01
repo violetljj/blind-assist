@@ -1,0 +1,133 @@
+{
+  "schema_version": "blindassist.riskseg_r0.three_arm_evaluation_implementation_lock.v1",
+  "protocol_id": "RISKSEG_R0_EVENT_EVAL_V1",
+  "status": "EVALUATION_IMPLEMENTATION_LOCKED_BEFORE_EVENT_OUTPUT_ACCESS",
+  "locked_at": "2026-08-01",
+  "event_output_access_at_lock": {
+    "yolo_event_outcomes_opened": false,
+    "pidnet_event_outcomes_opened": false,
+    "oracle_event_outcomes_opened": false
+  },
+  "implementation_commits": {
+    "trained_export_and_three_arm_evaluation": "a39ea43a80108c80dbe3756ea5e6feb1cf67db59",
+    "trained_device_performance_cache_isolation": "bb26a3cdc53e94511e2d8c03f58351601f1ffd4d"
+  },
+  "implementations": {
+    "device_view_materializer": {
+      "path": "scripts/research/riskseg_r0_evaluation/materialize_device_view.py",
+      "sha256": "8c3dab11159e6ce8a2e2964cfed9fab96f3c946c4e798b9cea22f85bb4c0dd2e"
+    },
+    "three_arm_device_runner": {
+      "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/RisksegR0ThreeArmEventDeviceTest.kt",
+      "sha256": "6340899a5b688ce57025ef59b0e4d01ea88db883a60e931ba200cd8ef6129c46"
+    },
+    "host_validator": {
+      "path": "scripts/research/riskseg_r0_evaluation/validate_three_arm.py",
+      "sha256": "12174701d684219ea529339b6f4acb2e60a8c45e5324ac532f95544d62d2e10c"
+    },
+    "trained_device_runner": {
+      "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/RisksegPidnetQnnPreflightDeviceTest.kt",
+      "sha256": "1fe0849540e6c64c7455826aa853b294d6f99b11f8b041367f37f82622176f31"
+    },
+    "trained_device_validator": {
+      "path": "scripts/research/riskseg_r0_pidnet_preflight/validate_device_preflight.py",
+      "sha256": "1448ee211ebc1e06ec40cdb3f584f30755c105a15c8b8b2b5de483c20a9dccb6"
+    }
+  },
+  "frozen_device_view": {
+    "root": "artifacts.local/evidence/riskseg-r0/event-eval/device-view-v2",
+    "receipt_sha256": "b02ba7cf5863f3d920c07d0d9ed6d95fdc51bf0e7e10b0c008ac93167ce3b9fc",
+    "manifest_sha256": "6fe64391a9557fd9d80ad8f861cd4b043293955e2ff3e5979ffe7fb33d33b7ff",
+    "truth_ledger_sha256": "d9c6a1881096ddcb1a312b7a3f04497350c5f1034e04c2344d2211686e935012",
+    "cohort_receipt_sha256": "2da321dfc56498baac2989c9ee751a612615376984d55743d83d530c53643345",
+    "candidate_index_sha256": "99157f256d4c6555dc1593700823cc5211acf15b190a2a1e4329ec95853190fb",
+    "event_count": 30,
+    "source_session_count": 30,
+    "frame_count": 1920,
+    "bucket_counts": {
+      "blocking_obstacle_positive": 8,
+      "boundary_level_change_positive": 8,
+      "parallel_curb_negative": 7,
+      "normal_walkable_negative": 7
+    },
+    "rgb_transform": "source RGB -> PIL bilinear 512x288 RGB PNG",
+    "oracle_transform": "SANPO native -> frozen canonical 256x256 -> legacy IDs [0,1,2,3] to RISKSEG IDs [0,2,1,3]"
+  },
+  "arms": {
+    "A_CURRENT_YOLO_ONLY": "frozen yolo11n_fp16_320 detections only",
+    "B_LEARNED_SEGMENTATION_ONLY": "one seed's full-integer PIDNet-S mask only",
+    "C_TRUTH_MASK_ORACLE_REFERENCE": "four-class oracle mask only"
+  },
+  "shared_execution": {
+    "profile": "STANDARD",
+    "scenario": "frozen per-event manifest value",
+    "clock": "frozen per-frame event timestamp",
+    "reset": "each arm resets once at each parent-event start",
+    "decision_kernel_contract_id": "blindassist_shared_decision_kernel_v1",
+    "model_class_order": [
+      "walkable",
+      "blocking_obstacle",
+      "boundary_level_change",
+      "unknown_nonwalkable"
+    ],
+    "benchmark_only_taxonomy_binding": {
+      "walkable": "safe_to_walk_no_risk_label",
+      "blocking_obstacle": "obstacle_with_existing_RiskAnalyzer_label_generic_obstacle",
+      "boundary_level_change": "not_safe_boundary_with_existing_RiskAnalyzer_label_curb",
+      "unknown_nonwalkable": "not_safe_to_walk_no_risk_label"
+    },
+    "taxonomy_binding_rationale": "The new four-class head requires an isolated ID-to-existing-risk-vocabulary interface. It adds no class, threshold, component rule, sampler, temporal gate, or event exception and is locked before any event outcome is opened."
+  },
+  "parent_event_scoring": {
+    "positive_event_hit": "at least one delivered feedback alert inside the frozen alertable interval",
+    "critical_miss": "positive parent event with no delivered feedback alert inside the frozen alertable interval",
+    "false_alert_event": "negative parent event with at least one delivered feedback alert anywhere in its frozen window",
+    "passed_cleared": "positive parent event with zero delivered feedback alerts inside the frozen passed interval",
+    "clearance_rate": "passed_cleared / positive parent events",
+    "first_valid_reminder_frame": "first delivered feedback alert inside the frozen alertable interval",
+    "runtime_exited_by_passed_end": "separate diagnostic; not substituted for the frozen clearance gate"
+  },
+  "quality_gates_per_seed": {
+    "recall": "learned minus YOLO >= 0.15 absolute and learned hits at least 3 additional parent events",
+    "critical_miss": "learned reduces at least 2 misses and neither positive bucket increases",
+    "false_alert": "learned false-alert event count <= YOLO",
+    "clearance": "learned cleared event count and clearance rate >= YOLO",
+    "timing_if_common_hits_at_least_4": "median learned-minus-YOLO first-alert delay <= 1 frame and delay > 2 frame rate <= 0.25",
+    "timing_if_common_hits_1_to_3": "no common-hit event delay > 2 frames",
+    "timing_if_zero_common_hits": "NOT_APPLICABLE, no timing gain"
+  },
+  "stability_gate": {
+    "decision_seed": 20260801,
+    "seeds": [
+      20260801,
+      20260802,
+      20260803
+    ],
+    "rule": "decision seed passes every quality gate; at least 2/3 seeds pass every quality gate; all seeds satisfy false-alert and clearance guardrails",
+    "event_eval_seed_selection_forbidden": true
+  },
+  "trained_device_gate": {
+    "decision_seed_only": 20260801,
+    "model_cache_key": "derived from exact trained TFLite SHA-256 to prevent preflight-context reuse",
+    "duration_ms": 600000,
+    "total_pipeline_p95_max_ms": 100,
+    "final_over_initial_p95_max_ratio": 1.2,
+    "failure_count": 0,
+    "severe_or_critical_thermal_forbidden": true,
+    "full_qnn_htp_delegation_required": true
+  },
+  "forbidden_after_lock": [
+    "adapter_threshold_change",
+    "taxonomy_change",
+    "risk_rule_change",
+    "temporal_or_event_rule_change",
+    "feedback_rule_change",
+    "seed_selection_by_event_outcome",
+    "event_membership_or_interval_change",
+    "manual_gate",
+    "fp_sampler",
+    "component_classifier",
+    "model_retraining_from_event_feedback"
+  ],
+  "next_action": "COMPLETE_ALL_THREE_TRAINING_SEEDS_AND_FREEZE_CHECKPOINTS_BEFORE_OPENING_EVENT_OUTPUTS"
+}
