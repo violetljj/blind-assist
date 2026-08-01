@@ -117,6 +117,71 @@ def load_imagenet_backbone(
     }
 
 
+def load_trained_deployment_checkpoint(
+    *,
+    model: nn.Module,
+    checkpoint_path: Path,
+) -> dict[str, Any]:
+    """Load the exact deployment subset from a frozen RISKSEG training checkpoint."""
+
+    payload = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    if not isinstance(payload, dict):
+        raise ValueError("training checkpoint must be an object")
+    if payload.get("schema_version") != "blindassist.riskseg_r0.pidnet_checkpoint.v1":
+        raise ValueError(
+            f"unexpected training checkpoint schema: {payload.get('schema_version')}"
+        )
+    if payload.get("protocol_id") != "RISKSEG-R0":
+        raise ValueError(f"unexpected protocol_id: {payload.get('protocol_id')}")
+    if tuple(payload.get("class_order", ())) != CLASS_ORDER:
+        raise ValueError(f"unexpected class_order: {payload.get('class_order')}")
+    trained_state = payload.get("model_state_dict")
+    if not isinstance(trained_state, dict):
+        raise ValueError("training checkpoint must contain model_state_dict")
+
+    deployment_state = model.state_dict()
+    missing = sorted(set(deployment_state) - set(trained_state))
+    shape_mismatches = sorted(
+        key
+        for key in deployment_state.keys() & trained_state.keys()
+        if deployment_state[key].shape != trained_state[key].shape
+    )
+    if missing or shape_mismatches:
+        raise ValueError(
+            "training checkpoint cannot populate deployment model: "
+            f"missing={missing}, shape_mismatches={shape_mismatches}"
+        )
+    selected = {key: trained_state[key] for key in deployment_state}
+    model.load_state_dict(selected, strict=True)
+    auxiliary_keys = sorted(set(trained_state) - set(deployment_state))
+    allowed_auxiliary_prefixes = ("seghead_d.", "seghead_p.")
+    disallowed_auxiliary_keys = [
+        key
+        for key in auxiliary_keys
+        if not key.startswith(allowed_auxiliary_prefixes)
+    ]
+    if disallowed_auxiliary_keys:
+        raise ValueError(
+            "unexpected non-deployment checkpoint tensors: "
+            + ", ".join(disallowed_auxiliary_keys)
+        )
+    return {
+        "schema_version": payload["schema_version"],
+        "protocol_id": payload["protocol_id"],
+        "seed": int(payload["seed"]),
+        "epoch": int(payload["epoch"]),
+        "class_order": list(payload["class_order"]),
+        "checkpoint_tensor_count": len(trained_state),
+        "deployment_tensor_count": len(deployment_state),
+        "deployment_parameter_count": sum(
+            int(value.numel()) for value in selected.values()
+        ),
+        "auxiliary_tensor_count": len(auxiliary_keys),
+        "auxiliary_keys": auxiliary_keys,
+        "dev_metrics": payload.get("dev_metrics"),
+    }
+
+
 class DeploymentWrapper(nn.Module):
     """Frozen deployment surface: normalized NCHW RGB to full-size NCHW logits."""
 

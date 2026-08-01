@@ -12,6 +12,7 @@ from scripts.research.riskseg_r0_pidnet_preflight.modeling import (
     INPUT_WIDTH,
     build_pidnet_s,
     load_imagenet_backbone,
+    load_trained_deployment_checkpoint,
     set_deterministic_seed,
 )
 
@@ -25,6 +26,15 @@ PRETRAINED = (
     / "riskseg-r0"
     / "pretrained"
     / "PIDNet_S_ImageNet.pth.tar"
+)
+TRAINED_CHECKPOINT = (
+    REPO_ROOT
+    / "artifacts.local"
+    / "evidence"
+    / "riskseg-r0"
+    / "training-v1"
+    / "seed-20260801"
+    / "best_checkpoint.pt"
 )
 
 
@@ -56,7 +66,30 @@ class PreflightModelTest(unittest.TestCase):
         for key in states[0]:
             self.assertTrue(torch.equal(states[0][key], states[1][key]), key)
 
+    def test_training_checkpoint_populates_exact_deployment_subset(self) -> None:
+        if not OFFICIAL_REPO.is_dir() or not TRAINED_CHECKPOINT.is_file():
+            self.skipTest("local ignored official source/training artifact unavailable")
+        model = build_pidnet_s(official_repo=OFFICIAL_REPO, augment=False)
+        report = load_trained_deployment_checkpoint(
+            model=model,
+            checkpoint_path=TRAINED_CHECKPOINT,
+        )
+        self.assertEqual(report["seed"], 20260801)
+        self.assertEqual(report["epoch"], 16)
+        self.assertEqual(report["deployment_tensor_count"], 453)
+        self.assertEqual(report["auxiliary_tensor_count"], 26)
+        self.assertTrue(
+            all(
+                key.startswith(("seghead_d.", "seghead_p."))
+                for key in report["auxiliary_keys"]
+            )
+        )
+        output = DeploymentWrapper(model).eval()(
+            torch.zeros(1, 3, INPUT_HEIGHT, INPUT_WIDTH)
+        )
+        self.assertEqual(tuple(output.shape), (1, 4, INPUT_HEIGHT, INPUT_WIDTH))
+        self.assertTrue(bool(torch.isfinite(output).all()))
+
 
 if __name__ == "__main__":
     unittest.main()
-
