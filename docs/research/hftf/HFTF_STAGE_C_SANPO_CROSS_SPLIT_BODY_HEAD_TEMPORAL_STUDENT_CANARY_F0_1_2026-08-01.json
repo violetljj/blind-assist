@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist_hftf_stage_c_sanpo_cross_split_body_head_temporal_student_canary_f0_1",
+  "status": "FROZEN_BEFORE_F0_1_SOURCE_OUTCOME",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "supersedes_execution_of": "HFTF_STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_2026-08-01.json",
+  "supersession_reason": "strengthen_heldout_from_same_official_train_split_to_official_test_split_before_media_geometry_or_student_outcome",
+  "parent_f0_protocol": {
+    "path": "HFTF_STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_2026-08-01.json",
+    "sha256": "0ba70780352534a79c420f46821b139aceafb67d10f769ced8fd57b8bfeb986d"
+  },
+  "source_pool_burn_ledger": {
+    "path": "HFTF_STAGE_C_SANPO_BODY_HEAD_SOURCE_POOL_BURN_LEDGER_F0_2026-08-01.json",
+    "sha256": "3663ca3240d181544815bff2313ddf5f5b248201edfe2d4ee76b96454688e049",
+    "effective_train_burned_session_count": 60
+  },
+  "train_dev_selection": {
+    "source": "SANPO-Synthetic v0 official train split",
+    "split_object_generation": "1692794964120907",
+    "split_text_sha256": "f9c5dc4c289fa87342abc0d2cc49f112fcc78c7e02e0b6b081e296a99344173c",
+    "exclude_effective_train_burned_session_count": 60,
+    "order": "lexicographic_full_session_id",
+    "fixed_inventory_eligible_count": 9,
+    "role_assignment_by_inventory_eligible_rank": {
+      "train": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "dev": [
+        7,
+        8,
+        9
+      ]
+    }
+  },
+  "heldout_selection": {
+    "source": "SANPO-Synthetic v0 official test split",
+    "split_object_generation": "1692794964058506",
+    "split_text_sha256": "0f701db54d2cc26b32bf2c636537a1353beb5d7e09f8914279cde2e7c06400df",
+    "split_session_count": 401,
+    "order": "official_split_file_order",
+    "exclude_effective_train_burn_set": true,
+    "exclude_selected_train_and_dev_sessions": true,
+    "fixed_inventory_eligible_count": 3,
+    "role": "heldout",
+    "heldout_media_depth_mask_pose_geometry_and_student_outcomes_remain_unopened_until_ordered_gate": true
+  },
+  "inventory_eligibility_inherited_exactly_from_f0": true,
+  "media_contract_override": {
+    "manifest_and_dataset_spec_must_record_actual_official_split": true,
+    "acquisition_must_bind_the_matching_train_or_test_split_object_receipt": true,
+    "images_masks_and_depth_paths_may_use_actual_split_directory": true,
+    "test_split_is_evaluation_only_not_pretraining": true
+  },
+  "all_field_causal_teacher_unknown_student_training_and_effect_contracts_inherited_exactly_from_f0": true,
+  "fixed_role_counts": {
+    "train": 6,
+    "dev": 3,
+    "heldout": 3
+  },
+  "parent_session_disjoint_across_all_roles": true,
+  "no_replacement_after_any_geometry_or_student_outcome": true,
+  "f0_same_split_planner_output_may_only_seed_the_first_nine_train_dev_metadata_candidates": true,
+  "f0_same_split_heldout_ranks_are_not_evaluation_sources": true,
+  "failure_terminal": "F0_1_SANPO_CROSS_SPLIT_BODY_HEAD_STUDENT_CANARY_NOT_EVALUABLE",
+  "success_terminal": "F0_1_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_SIGNAL_SUPPORTED",
+  "no_gain_terminal": "F0_1_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_SIGNAL_NOT_SUPPORTED_STOP",
+  "research_mainline_changed": false,
+  "default_app_changed": false,
+  "android_execution_authorized": false,
+  "production_authorized": false,
+  "safety_claim_authorized": false
+}

@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在 F0 media、geometry、
+  corpus 与 student outcome 全部未打开时，用独立 metadata-only source 审计把
+  same-train-split heldout design 加强为 cross-split F0.1。train/dev 仍从排除
+  60 个 burned sessions 的 official train 按字典序固定 `6/3` 个 source；
+  heldout 改为 official test split 文件顺序前 3 个 metadata-eligible source。
+  test split generation `1692794964058506`、SHA-256
+  `0f701db54d2cc26b32bf2c636537a1353beb5d7e09f8914279cde2e7c06400df`、
+  401 sessions 已只读复核。F0 的 field/teacher/UNKNOWN/三臂/训练/margins 全部
+  继承；split-aware importer 必须 hash-bind actual train/test，test 只准一次性
+  heldout evaluation。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何新 SANPO
   geometry/student outcome 前冻结 Stage C F0 body/head temporal-student canary。
   source pool 排除 R4 前 56 个 burned sessions 与 R4 四个 outcome-open sessions；

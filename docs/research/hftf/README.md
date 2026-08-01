@@ -22,6 +22,8 @@ STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_FROZEN /
 E0_2_FIXED_BATCH_TEACHER_MECHANICS_NOT_EVALUABLE /
 EGOWALK_FOOT_GROUND_STUDENT_SOURCE_ROUTE_CLOSED /
 STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_FROZEN /
+F0_SAME_SPLIT_EVALUATION_SUPERSEDED_BEFORE_MEDIA_OR_OUTCOME /
+STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_FROZEN /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -266,6 +268,15 @@ positive/negative opportunity 与 byte-determinism 全过前，不生成 corpus�
 F0 成功也只支持 SANPO-Synthetic body/head temporal geometry-proxy signal；foot-ground、
 完整 HFTF、自然/人类事件、主线、Android/App 与安全 claim 均不授权。
 
+在 F0 media、geometry 与 student outcome 全部未打开时，独立 source-metadata 审计
+确认 official SANPO-Synthetic test split 具有同类 RGB/mask/depth/pose schema。
+因此 F0 的 same-train-split heldout design 在执行前被 F0.1 替代：train/dev 仍从
+排除 60 个 burned sessions 后的 official train 按字典序固定前 `6/3` 个 eligible
+sessions；heldout 改为 official test split 文件顺序前 3 个 eligible sessions。
+test split generation 为 `1692794964058506`，split SHA-256 为
+`0f701db54d2cc26b32bf2c636537a1353beb5d7e09f8914279cde2e7c06400df`。
+F0 的 field、teacher、UNKNOWN、模型、训练与 effect margins 全部不变。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -328,6 +339,8 @@ F0 成功也只支持 SANPO-Synthetic body/head temporal geometry-proxy signal�
 - [Stage C SANPO body/head temporal-student canary F0](HFTF_STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_2026-08-01.md)
 - [Stage C machine-readable SANPO body/head canary F0](HFTF_STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_2026-08-01.json)
 - [Stage C SANPO body/head F0 burn ledger](HFTF_STAGE_C_SANPO_BODY_HEAD_SOURCE_POOL_BURN_LEDGER_F0_2026-08-01.json)
+- [Stage C SANPO cross-split body/head temporal-student F0.1](HFTF_STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_2026-08-01.md)
+- [Stage C machine-readable cross-split body/head F0.1](HFTF_STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
