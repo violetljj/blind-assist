@@ -82,3 +82,7 @@ Terminals are frozen:
 Any identity, determinism, finite-value, test, or independent-validation failure
 closes before interpretation as `HOLD_P0_CONTRACT_NOT_READY`.
 
+The executable implementation is frozen at baseline commit
+`0ac48b67dbc009ff1d1bfb0b214e80b057309eee`; the JSON contract binds the
+producer, scorer, validator, and test SHA-256 values. The first soft output may
+be opened only after the follow-up contract-lock commit.

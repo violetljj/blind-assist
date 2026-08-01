@@ -92,6 +92,13 @@
       "purpose": "eliminate the four-class soft-adapter family if even hard oracle input cannot match current YOLO guardrails"
     }
   },
+  "implementation_lock": {
+    "baseline_commit": "0ac48b67dbc009ff1d1bfb0b214e80b057309eee",
+    "core_py_sha256": "e2dafd9ca0ba3de5f4afa7d7d1cadf030fd02043e954382b41e649e1e3edbaff",
+    "run_audit_py_sha256": "2677d0a6aeb5ef121ff02af8ed6550c580f3f5873fdb959198c34cecd22217c8",
+    "test_core_py_sha256": "d97c3b1b203192585da7541d191106c007f93c82046ae5cba5d189e583f997a2",
+    "validate_audit_py_sha256": "8ff56edab459255d021a0ea79cf21d436bff356a517afbc9b66d48b65d9e96a0"
+  },
   "models": {
     "seed-20260801": {
       "path": "artifacts.local/evidence/riskseg-r0/trained-export-v1/seed-20260801/tflite_export_locked_v2/pidnet_s_512x288_4class_seed_20260801_simplified_full_integer_quant.tflite",
@@ -152,4 +159,3 @@
     "sha256": "d5d6262ae1f14b75db3dcbf10890ed966f59774b450ac7cd8c1caf73416deb3d"
   }
 }
-
