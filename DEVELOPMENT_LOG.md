@@ -3127,3 +3127,28 @@
   NO_OBJECTIVE_OBSTACLE_TRUTH / NO_FUSION_EFFECT_AUTHORITY`。保留 host/QNN 差异说明；
   不进入 Android、主动提醒、风险真值或生产路径。详见
   [cross-source result](docs/research/dual-loop/DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R2_CROSS_SOURCE_RESULT_2026-07-31.md)。
+
+## 2026-08-01：HFTF F0.1 SANPO body/head teacher opportunity
+
+- 执行者：violjjet
+- 在首个 F0.1 teacher geometry outcome 前，先把 same-train-split heldout 加强为
+  official-test heldout，固定 6 train / 3 dev / 3 heldout parent sessions；完成
+  300 RGB、300 masks、300 metric depths 的统一 transport/hash/split 审计，以及
+  12/12 source-specific pose/canonical-transform/local-ground proxy authority。
+- outcome 前另行冻结 future observation union：obstacle support 逐 cell 取两帧
+  最大值，known 对同一 world probes 做跨观测 OR 后应用 5/9；future origin 只由
+  history-to-anchor tangent velocity 推进，future pose 不得选择 origin、方向、
+  anchor 或 sample。
+- 专用 opportunity runner 在 12/12 source 上通过全部门。最弱 known coverage
+  约 0.23（门 0.10），最弱 future positive-known=6（门 5），最弱 future
+  negative-known=182（门 20）；每个 role 的 body/head positive-source count
+  分别为 train 6、dev 3、heldout 3。
+- 两次独立进程完整报告 SHA-256 均为
+  `9db97892ae93267856e1388bccf808deb8947311e25cc5b39a1c362b4bb348b5`，
+  且每个进程内部两遍 canonical payload byte exact。HFTF 单元测试为 151/151。
+- 终态为 `F0_1_SANPO_TEACHER_OPPORTUNITY_READY_FOR_CORPUS`。只开放 train
+  candidate corpus 与 dev reference targets 的下一步物化；official-test heldout
+  targets 继续封闭到 checkpoint 冻结后，heldout training corpus 永不授权。
+- 该结果只是 synthetic body/head geometry-proxy opportunity，不是 student effect、
+  完整 HFTF、人体/事件/安全证据；研究主线、默认 App、Android 与生产均不变。详见
+  [result](docs/research/hftf/HFTF_STAGE_C_SANPO_TEACHER_OPPORTUNITY_RESULT_F0_1_2026-08-01.md)。

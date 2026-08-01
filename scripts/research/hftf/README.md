@@ -345,6 +345,36 @@ E:\codex-tools\bin\blindassist-python.cmd `
 `aggregate_r4_split_source_result.py` 是唯一可签发 joint R4 terminal 的工具；单个
 component 不得提前开放 Stage C。
 
+F0.1 exact media 获取后，先用
+`audit_stage_c_f0_1_sanpo_acquisition.py` 对 12 个包的 300 组 RGB/mask/depth、
+split、物理索引、GCS/local hash 与 pose 文件做统一审计；再逐 source 运行
+`verify_sanpo_pose_geometry_authority.py --evaluation-mode
+frozen_canonical_replication`，最后由
+`aggregate_stage_c_f0_1_sanpo_authority.py` 封口 exact authority cohort。
+
+teacher opportunity 必须使用 outcome 前冻结的
+`HFTF_STAGE_C_SANPO_TEACHER_OPPORTUNITY_EXECUTION_CONTRACT_F0_1_2026-08-01.json`：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/audit_stage_c_f0_1_teacher_opportunity.py `
+  --execution-contract docs/research/hftf/HFTF_STAGE_C_SANPO_TEACHER_OPPORTUNITY_EXECUTION_CONTRACT_F0_1_2026-08-01.json `
+  --f0-protocol docs/research/hftf/HFTF_STAGE_C_SANPO_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_2026-08-01.json `
+  --f0-1-protocol docs/research/hftf/HFTF_STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_2026-08-01.json `
+  --mechanics-protocol docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json `
+  --source-lock <source_lock.json> `
+  --acquisition-audit <acquisition_audit.json> `
+  --authority-cohort <authority_cohort.json> `
+  --datasets-root artifacts.local/evidence/datasets `
+  --authority-root artifacts.local/evidence/hftf/<authority-run-id> `
+  --output artifacts.local/evidence/hftf/<run-id>/teacher_opportunity.json
+```
+
+该工具只输出 source/role/horizon/height 汇总，不物化 cell corpus。只有终态
+`F0_1_SANPO_TEACHER_OPPORTUNITY_READY_FOR_CORPUS` 才可物化 train candidate
+corpus 与 dev reference targets；official-test heldout targets 必须继续封闭到
+checkpoint 冻结后的 ordered evaluation。
+
 Stage C C0 在任何 EgoWalk RGB/depth media 内容打开前，先用 exact dataset revision
 和四个 metadata hashes 复算 239 条 trajectory 的健康门与冻结 cohort：
 
