@@ -45,12 +45,19 @@ canary。
 官方标签整体错误。精确 capture timestamp、真实人体尺寸、participant event truth 与
 student/effect 仍为 `NOT_EVALUABLE`。
 
+H1 R0 数值协议现已 outcome 前冻结，状态
+`H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_FROZEN / RESULT_NOT_RUN`。它固定 24 个 theta
+bins、6 个 distance bins、`0/0.4/0.8 s` horizons、`foot/body/head` proxy ranges、
+known/risk 规则、4/4 source-session 门与失败终点；尚未读取 H1 field outcome。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
 - [R0 机器可读合同](HFTF_CANDIDATE_LANE_R0_2026-08-01.json)
 - [H0 来源可行性结果](HFTF_H0_SOURCE_FEASIBILITY_RESULT_2026-08-01.md)
 - [H0.1/H0.2 SANPO source-specific 结果](HFTF_H0_1_H0_2_SANPO_PROXY_AUTHORITY_RESULT_2026-08-01.md)
+- [H1 geometry teacher canary R0 protocol](HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.md)
+- [H1 R0 machine-readable protocol](HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

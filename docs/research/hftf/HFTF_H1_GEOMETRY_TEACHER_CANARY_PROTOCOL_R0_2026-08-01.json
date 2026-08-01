@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist_hftf_h1_geometry_teacher_canary_protocol_r0",
+  "status": "FROZEN_RESULT_NOT_RUN",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "upstream_terminal": "HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED",
+  "parent_unit": "source_session",
+  "required_session_count": 4,
+  "field": {
+    "theta_bin_count": 24,
+    "theta_range_degrees": [-180.0, 180.0],
+    "distance_edges_m": [0.0, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0],
+    "horizons_ms": {
+      "current": 0,
+      "near": 400,
+      "far": 800
+    },
+    "horizon_tolerance_ms": 100,
+    "height_bands_m": {
+      "foot": [0.05, 0.35],
+      "body": [0.35, 1.35],
+      "head": [1.35, 2.05],
+      "single_height": [0.05, 2.05]
+    }
+  },
+  "teacher": {
+    "world_transform": "p_world = R_xyzw @ p_opencv_camera + camera_translation_m",
+    "origin": "anchor_camera_position_projected_onto_anchor_local_ground_plane",
+    "vertical": "anchor_local_ground_plane_normal_toward_camera",
+    "theta_zero": "anchor_camera_forward_projected_onto_anchor_local_ground_plane",
+    "known_probe_count": 9,
+    "minimum_passing_known_probes": 5,
+    "depth_front_tolerance_m": 0.2,
+    "risk_support_saturation_point_count": 8,
+    "risk_formula": "min(1, obstacle_point_count / 8)",
+    "unknown_never_defaults_to_safe": true
+  },
+  "gates": {
+    "minimum_usable_anchors_per_session": 12,
+    "maximum_single_multi_consistency_error": 1e-12,
+    "minimum_current_known_coverage_per_session": 0.15,
+    "minimum_near_known_coverage_per_session": 0.1,
+    "minimum_far_known_coverage_per_session": 0.1,
+    "height_disagreement_delta": 0.25,
+    "minimum_height_disagreement_fraction_per_session": 0.02,
+    "future_change_delta": 0.25,
+    "minimum_future_union_change_fraction_per_session": 0.02,
+    "required_passing_sessions": 4
+  },
+  "terminals_in_order": [
+    "H1_GEOMETRY_TEACHER_NOT_EVALUABLE",
+    "H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP",
+    "H1_FUTURE_PROXY_NOT_SUPPORTED_STOP",
+    "GEOMETRY_PROXY_MECHANISM_SUPPORTED"
+  ],
+  "success_claim_ceiling": "SYNTHETIC_GEOMETRY_PROXY_MECHANICS_ONLY",
+  "h2_automatically_authorized": false,
+  "mainline_changed": false,
+  "default_app_changed": false,
+  "prohibited_claims": [
+    "physical camera-to-person calibration",
+    "participant body dimensions",
+    "exact capture-time dynamics",
+    "human collision event or safety truth",
+    "causal RGB student predictability",
+    "research mainline promotion",
+    "Android alert default-app production or safety authorization"
+  ]
+}
