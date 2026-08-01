@@ -6,7 +6,8 @@
 H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP /
 R2_POINT_SUPPORT_PROXY_BURNED /
 STAGE_B_R3_SOURCE_OR_REFERENCE_NOT_EVALUABLE /
-OPPORTUNITY_QUALIFIED_R3_1_SUCCESSOR_ONLY /
+R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE /
+SPLIT_SOURCE_STAGE_B_SUCCESSOR_ONLY /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -102,6 +103,20 @@ cells。该结果仍只是 mechanics audit。真实来源没有检出 ground ste
 sources 和独立冻结的高密度 geometry reference 评价 reference-relative 增益，不能把
 “输出更多 collision”本身当成 Stage B 成功。
 
+R3.1 随后按冻结规则用完 40-session SANPO-Synthetic train screening budget，终态为
+`R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE`：`0/4` source 同时满足 obstacle
+与 ground opportunity。34 个完成 dense reference ground 计算的 source 合计
+ground-risk cells 为 0；与此同时 29/34 通过全部 obstacle opportunity checks。这把
+blocker 定位为当前 semantic-ground-only source representation 无法提供台阶/落差机会，
+而不是 swept-envelope obstacle effect 的负结果。不得扩大同一队列、降低门槛或用
+零 ground opportunity 冒充 agreement。
+
+唯一 successor 是 split-source Stage B：在新的 SANPO sessions 上做
+reference-only obstacle qualification 与原 R3 effect gates；foot-ground 则改用带
+解析或 source-native surface elevation truth 的独立 metric terrain source。两个
+source role 都通过前不授权 Stage C；通过也只形成 split-source teacher mechanics
+Development support，不形成自然 prevalence、人类事件、student utility 或安全结论。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -135,6 +150,7 @@ sources 和独立冻结的高密度 geometry reference 评价 reference-relative
 - [Stage B machine-readable R3.1 qualification](HFTF_STAGE_B_REFERENCE_ONLY_OPPORTUNITY_QUALIFICATION_R3_1_2026-08-01.json)
 - [R3.1 source-pool burn ledger](HFTF_R3_1_SOURCE_POOL_BURN_LEDGER_2026-08-01.json)
 - [R3.1 inventory candidate plan result](HFTF_R3_1_INVENTORY_CANDIDATE_PLAN_RESULT_2026-08-01.md)
+- [Stage B R3.1 qualification result](HFTF_STAGE_B_REFERENCE_ONLY_OPPORTUNITY_QUALIFICATION_RESULT_R3_1_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

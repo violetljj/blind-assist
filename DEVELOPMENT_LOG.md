@@ -1,4 +1,15 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 R3.1 冻结的
+  40-session reference-only opportunity screen 与 cohort 聚合，终态
+  `R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE`：预算 `40/40`、qualified
+  `0/4`。3 个 authority 失败、3 个缺完整 geometry binding；其余 34 个 dense
+  reference ground reports 合计 0 risk cells、0 个非零会话，而 29/34 通过全部
+  obstacle opportunity checks。cohort report SHA-256
+  `6c61d8c333cc6bad59f37e2f0c3bc34c8baabfa138958ec14a484d56510979e7`。
+  新增聚合器校验 protocol/ledger/plan/report hashes、rank/session 连续映射与
+  reference-only firewall；HFTF suite 65 项通过。不得扩大或降低同一 R3.1 门；
+  successor 只能把 obstacle 与 ground source role 拆分，保留 ground 任务与 Stage C
+  禁令。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。R3.1 ranks 5–8
   qualification 中，5–7 完整拒绝且 ground risk 均为 0；rank 8 authority 总体准入但
   缺一个 manifest frame 的 local-ground-plane，旧 qualifier 产生 KeyError 且未写

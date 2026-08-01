@@ -1,6 +1,7 @@
 # hftf
 
-状态：`development / candidate-side-lane / Stage-B-D0-admitted / fresh-R3-authorized`
+状态：`development / candidate-side-lane /
+R3.1-reference-opportunity-not-evaluable / split-source-successor-only`
 
 ## 研究问题与版本
 
@@ -211,6 +212,24 @@ E:\codex-tools\bin\blindassist-python.cmd `
 
 planner 验证 official split generation/hash，只读 description 与 RGB/mask/depth 对象清单，
 记录 burned/ineligible 跳过原因及前 40 个 eligible sessions 的确定性 frame indices。
+
+完成全部 source reports 后，使用 cohort aggregator 验证冻结顺序与 reference-only
+firewall：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/aggregate_r3_1_reference_opportunity.py `
+  --protocol docs/research/hftf/HFTF_STAGE_B_REFERENCE_ONLY_OPPORTUNITY_QUALIFICATION_R3_1_2026-08-01.json `
+  --burn-ledger docs/research/hftf/HFTF_R3_1_SOURCE_POOL_BURN_LEDGER_2026-08-01.json `
+  --inventory-plan artifacts.local/evidence/hftf/r3-1-inventory-plan-20260801/inventory_plan.json `
+  --report <rank-001-qualification.json> `
+  --report <...in exact contiguous inventory order...> `
+  --output artifacts.local/evidence/hftf/<run-id>/cohort_result.json
+```
+
+若先得到 4 个 qualified source，报告数必须精确停在第 4 个 qualified rank；若不足 4
+个，则必须提供全部 40 个报告才能得到 budget-exhausted terminal。R3.1 实际终态为
+`R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE`，不得在同一队列继续扫描或降门。
 
 ## 输出
 
