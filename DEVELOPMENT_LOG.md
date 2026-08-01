@@ -3970,3 +3970,39 @@
   招募成本；成功也只能授权另一批独立 sealed-effect cohort。受控 paired geometry
   intervention 降为第二候选。Atlas 只授权冻结设计，不授权执行；Q0/Q0.1、student、
   主线/App/Android、生产与 safety 均保持关闭。
+
+## 2026-08-02：HFTF D4 opportunity ecology/recruitability R0 冻结
+
+- 执行者：violjjet
+- 设计与机器合同见
+  [D4 R0](docs/research/hftf/HFTF_STAGE_C_D4_OPPORTUNITY_ECOLOGY_AND_RECRUITABILITY_R0_2026-08-02.md)
+  和
+  [D4 R0 JSON](docs/research/hftf/HFTF_STAGE_C_D4_OPPORTUNITY_ECOLOGY_AND_RECRUITABILITY_R0_2026-08-02.json)。
+- 将后继问题从 effect 改为 fresh source recruitability：先估计前瞻 target
+  subpopulation 的 all-four opportunity rate 与 pre-truth metadata 招募成本，再决定
+  是否值得消耗另一批独立 effect pool。Q0.1 的 5/37 及 post-hoc 5 Hz `3/15`、
+  20 Hz `2/22` 仅生成假设，不进入 fresh interval 或 effect。
+- 第一执行级 M0 只允许为后续 metadata census 冻结合同：在 SANPO-Synthetic
+  official train 1560 IDs 中排除原 84 + Q0 40 = 124 个互斥 consumed/reserved
+  parents，对剩余 1436 IDs 完整枚举 5/20 Hz metadata eligibility。M0 禁止读 pose
+  content、RGB/mask/depth bytes、support、truth、clearance/effect 或 sealed payload。
+- 首轮独立科学审计以 `NOT CLEAR` 拒绝“M0 后再人工决定 target/allocation/p_min”。
+  修订后 target 固定为 fresh 5 Hz metadata-eligible parents，source-content 外生上限
+  128；M0 只把 `N` 机械代入 `C=min(N,128)`、`n=floor(3C/8)`、`B=C-n`，单一
+  hash rank 前 n/后 B 分给 ecology/effect。`N<64` 即停止，20 Hz 不 fallback。
+- 推断预冻为有限总体无放回 exact hypergeometric：反演 ecology 的 source-level
+  `x/n` 得到 `K_L/K_U`，并以 effect reserve 中获得至少 6 个 qualified 的概率
+  `>=.90` 推出 `R_min`。lower bound 过门才 GO，upper bound 不足则 STOP，中间只能
+  NOT_EVALUABLE；不得扩样、改 allocation、换频率或互相补位。
+- 第二轮独立科学审计仍以 `NOT CLEAR` 指出无 seed hash 不等于 uniform random
+  permutation，且 exact CI 未锁 alpha/离散尾。修订后 M0 必须在 eligible manifest
+  fsync 后 one-shot 用 OS CSPRNG 生成 32-byte seed 并绑定 attempt/manifest；
+  orphan/重抽直接 invalid。CI 固定 one-sided 95%、`alpha=.05` inclusive exact tail，
+  ecology 跑满 n，所有 acquisition/execution/orphan failure 的 operational indicator
+  为 0；`R_L/R_U` 三分终点与未分配 parent 禁用规则闭合。
+- 最终独立科学与工程终审均为 `CLEAR`、0 blocker。工程复算 parent bindings、
+  exact 124-parent exclusion union、单一 seeded rank、allocation/CI/failure 闭集与
+  README/log 链接；D4 JSON SHA-256 为
+  `7892b778a8c0a6ea34fb0b8fe1709716ee1d04e4ef1877fb8861971de50dfc19`。
+- 当前仅授权冻结/审计 M0 execution contract，不授权执行 metadata census、ecology、
+  effect、student、主线/App/Android、生产或 safety。
