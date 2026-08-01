@@ -1,0 +1,155 @@
+{
+  "adapter_equation": {
+    "derived_knownness": "1 - p_unknown_nonwalkable",
+    "entropy": "-sum(p_k * ln(p_k)) / ln(4), diagnostic only",
+    "frame_score": "max_z(lateral_weight_z * top_fraction_mean(pixel_evidence in z))",
+    "margin": "largest_probability - second_largest_probability, diagnostic only",
+    "pixel_evidence": "derived_knownness * (p_blocking_obstacle + boundary_weight * p_boundary_level_change)",
+    "probabilities": "stable softmax of all four dequantized INT8 logits",
+    "unknown_handling": "retained as class mean, p90, derived knownness, margin and entropy; no hidden alert contribution"
+  },
+  "adapter_grid": {
+    "boundary_weights": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "lateral_profiles": {
+      "center_dominant": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "center_only": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    "top_fractions": [
+      0.0025,
+      0.01
+    ]
+  },
+  "class_order": [
+    "walkable",
+    "blocking_obstacle",
+    "boundary_level_change",
+    "unknown_nonwalkable"
+  ],
+  "claim_ceiling": {
+    "allowed": [
+      "post-consumption nested Development mechanism evidence",
+      "whether a pre-locked soft dense adapter family exposes event-level separation",
+      "whether a later R1 P1 design is warranted"
+    ],
+    "forbidden": [
+      "fresh",
+      "held-out",
+      "independent confirmation",
+      "model or App promotion",
+      "production or safety evidence",
+      "global mathematical upper bound"
+    ],
+    "oracle_name": "CROSSFITTED_CONSUMED_ORACLE_INPUT_FAMILY_REFERENCE",
+    "oracle_limitation": "256x256 hard class IDs converted to one-hot values; no oracle logits, calibration or confidence"
+  },
+  "corridor_geometry": {
+    "bottom_half_width_ratio": 0.42,
+    "lateral_zones": "equal thirds of each trapezoid scanline: left, center, right",
+    "source": "frozen TraversabilityAnalyzerConfig geometry only",
+    "top_half_width_ratio": 0.16,
+    "top_ratio": 0.42
+  },
+  "forbidden_after_lock": [
+    "expand or edit adapter or threshold grids",
+    "change fold assignment or candidate tie break",
+    "select a seed using event outcomes",
+    "add temporal confirmation, connected-component rules, fake Detection confidence, gates, FP sampler or component classifier",
+    "modify the R0 adapter, decision chain, risk rules or default App",
+    "reuse this cohort as fresh P1/P3 confirmation"
+  ],
+  "frozen_manifest": {
+    "event_count": 30,
+    "frame_count": 1920,
+    "path": "artifacts.local/evidence/riskseg-r0/event-eval/device-view-v2/manifest.json",
+    "receipt_sha256": "b02ba7cf5863f3d920c07d0d9ed6d95fdc51bf0e7e10b0c008ac93167ce3b9fc",
+    "role": "CONSUMED_DEVELOPMENT_ONLY",
+    "sha256": "6fe64391a9557fd9d80ad8f861cd4b043293955e2ff3e5979ffe7fb33d33b7ff",
+    "source_session_count": 30
+  },
+  "gates": {
+    "learned_route": {
+      "decision_seed": 20260801,
+      "per_seed": "OOF hits >= that seed old-adapter hits; false alerts <= old adapter; cleared >= old adapter; at least one strict improvement",
+      "stability": "decision seed passes and at least 2 of 3 seeds pass",
+      "purpose": "authorize or reject R1 P1 design only; not promotion"
+    },
+    "truth_mask": {
+      "maximum_false_alert_event_count": 6,
+      "minimum_cleared_event_count": 5,
+      "minimum_hit_event_count": 13,
+      "purpose": "eliminate the four-class soft-adapter family if even hard oracle input cannot match current YOLO guardrails"
+    }
+  },
+  "models": {
+    "seed-20260801": {
+      "path": "artifacts.local/evidence/riskseg-r0/trained-export-v1/seed-20260801/tflite_export_locked_v2/pidnet_s_512x288_4class_seed_20260801_simplified_full_integer_quant.tflite",
+      "sha256": "cf7a4d11ec72b281fe62381d32601af106871215a5e0cc286bc04c2027cec0dc"
+    },
+    "seed-20260802": {
+      "path": "artifacts.local/evidence/riskseg-r0/trained-export-v1/seed-20260802/tflite_export_locked_v2/pidnet_s_512x288_4class_seed_20260802_simplified_full_integer_quant.tflite",
+      "sha256": "ba3cd804d0da0f5bb06081884a09c65f9b238331c8b2f117cf160a9c3918c601"
+    },
+    "seed-20260803": {
+      "path": "artifacts.local/evidence/riskseg-r0/trained-export-v1/seed-20260803/tflite_export_locked_v2/pidnet_s_512x288_4class_seed_20260803_simplified_full_integer_quant.tflite",
+      "sha256": "68ac01ce8d1926e2d3e0a06a4be7179bef1f5868c5b1d538e8b6f7aa79e4b1c7"
+    }
+  },
+  "nested_development": {
+    "candidate_selection": "minimize total YOLO inner guardrail violation, then hit deficit, false-alert excess, clearance deficit, maximize hits, minimize false alerts, maximize cleared, then config_id and threshold ascending",
+    "event_contribution": "exactly one outer-fold score per parent event",
+    "fold_assignment": "within each exact bucket sort parent_event_id ascending and assign zero-based position modulo 5",
+    "fold_assignment_sha256": "3c22464722a1c08a50efa7c56889ea46e22aa7dbb4015607a0508cbc3fc2a3f9",
+    "group_unit": "source session / parent event; manifest has one event per session",
+    "outer_fold_count": 5,
+    "selection_scope": "each arm selects independently on the 24 inner events; seed 20260801 remains the fixed decision seed",
+    "warning": "nesting reduces direct item-level tuning leakage but does not restore freshness"
+  },
+  "old_adapter_reports": {
+    "seed-20260801": {
+      "path": "artifacts.local/evidence/riskseg-r0/event-eval/device-runs/seed-20260801/results/event_report.json",
+      "sha256": "d5d6262ae1f14b75db3dcbf10890ed966f59774b450ac7cd8c1caf73416deb3d"
+    },
+    "seed-20260802": {
+      "path": "artifacts.local/evidence/riskseg-r0/event-eval/device-runs/seed-20260802/results/event_report.json",
+      "sha256": "175cd0660277f9290d095794a8a1f496ed33540074c60a1e4343b6713bea990f"
+    },
+    "seed-20260803": {
+      "path": "artifacts.local/evidence/riskseg-r0/event-eval/device-runs/seed-20260803/results/event_report.json",
+      "sha256": "0054eb3dac4a3ed8d2c2b191be5ddffdecc2d7b47f16a8679768b4c04282173f"
+    }
+  },
+  "pre_output_stop_conditions": [
+    "any bound file SHA or cohort cardinality drifts",
+    "tensor is not one INT8 NHWC input [1,288,512,3] and one INT8 NHWC output [1,288,512,4]",
+    "same-backend first-frame replay raw output SHA is unstable",
+    "softmax, pooling or diagnostics are non-finite",
+    "corridor or any lateral zone is empty",
+    "unit tests or independent validator fail"
+  ],
+  "protocol_id": "RISKSEG_R1_P0_SOFT_DENSE_V1",
+  "schema_version": "blindassist.riskseg_r1.p0_contract.v1",
+  "status": "PRE_OUTPUT_LOCKED",
+  "threshold_grid": {
+    "start_milli": 50,
+    "step_milli": 25,
+    "stop_milli": 950
+  },
+  "yolo_reference_report": {
+    "arm": "A_CURRENT_YOLO_ONLY",
+    "path": "artifacts.local/evidence/riskseg-r0/event-eval/device-runs/seed-20260801/results/event_report.json",
+    "sha256": "d5d6262ae1f14b75db3dcbf10890ed966f59774b450ac7cd8c1caf73416deb3d"
+  }
+}
+
