@@ -1,0 +1,17 @@
+{
+  "amendment_scope": "VALIDATION_METADATA_ONLY",
+  "contract_path": "docs/research/dual-loop/RISKSEG_R1_P0_SOFT_DENSE_ADAPTER_AUDIT_CONTRACT_2026-08-01.json",
+  "contract_sha256": "1b72032383c0d674d7db67b5c031f7987e370276e154e2ea820b6b520773ef43",
+  "event_outcomes_changed": false,
+  "feature_trace_path": "artifacts.local/evidence/riskseg-r1/p0-soft-dense-v1/frame_features.jsonl",
+  "feature_trace_sha256": "a817b4b63fe61fe91864bc060ea1cc8007059cda4c983c11b0678ee466465260",
+  "locked_validator_path": "scripts/research/riskseg_r1_p0/validate_audit.py",
+  "locked_validator_sha256": "706ee7c0ac671bd472bfcbf5cc2c4600b5217d32f1a18ce721bc9387eca179b8",
+  "reason": "Independent numerical scoring reached strict report comparison but selected_config omitted the non-computational lateral_profile name. The wrapper recovers that name uniquely from frozen lateral weights; equations, candidate order, scores, thresholds, folds, metrics, gates, report and trace are unchanged.",
+  "report_path": "artifacts.local/evidence/riskseg-r1/p0-soft-dense-v1/report.json",
+  "report_sha256": "697975b7468141c0d2e34af365b1732b06ed89a25084584808d2ad1b574c018d",
+  "schema_version": "blindassist.riskseg_r1.p0_validation_amendment.v1",
+  "status": "PENDING_WRAPPER_LOCK",
+  "wrapper_path": "scripts/research/riskseg_r1_p0/validate_audit_metadata_amendment.py",
+  "wrapper_sha256": null
+}
