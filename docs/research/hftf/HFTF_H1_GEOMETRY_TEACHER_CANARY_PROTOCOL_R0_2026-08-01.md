@@ -68,15 +68,20 @@ nominal time 来自 `source_frame_num / session description fps`，不是实测 
    normal；theta zero 是 anchor camera forward 在 local plane 上的投影；
 4. obstacle points 排除 ground proxy classes、sky 和无效深度；dynamic semantic classes
    保留并在 atlas 单列；
+   - point cloud 固定从原分辨率每 8 pixels 在 x/y 各采样一次，起点为 `(4,4)`；
+   - 排除 class IDs `0,1,3,5,6,17,27,30`；dynamic 单列 IDs
+     `12,13,14,15,16,21`；
 5. 每个 cell 的 `known_score`：
-   - cell 中心和八个边界 probe 至少 5 个投影在 observation image 内；
+   - 9 probes 精确定义为 cell 中心，以及
+     `theta lower/upper × distance lower/upper × height lower/upper` 的八个角点；
+   - cell 中心和八个角点至少 5 个投影在 observation image 内；
    - 对在图像内的 probe，metric depth 必须到达该 probe 前缘，容差 `0.20 m`；
    - `known_score = passing probes / 9`；
 6. cell `known_score >= 5/9` 才可评价 risk，否则 tri-state 为 `UNKNOWN`；
 7. `risk_score` 为该 cell 体积内 obstacle points 的 clipped support：
    `min(1, point_count / 8)`；无 obstacle points 只有在 known 过门时才可为 `SAFE`；
-8. single-height current 使用 `[0.05, 2.05] m`，同一 cell 的 risk 必须等于三个
-   multi-height risk 的 max，容差 `1e-12`；
+8. single-height current 使用 `[0.05, 2.05] m`，其 risk 明确定义为三个
+   multi-height risk 的 max；执行器仍必须复核差值 `<=1e-12`；
 9. 不使用 RGB 类别预测、路线意图、future teacher 信息选择 anchor/阈值或任何事件
    标签。
 

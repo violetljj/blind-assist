@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在读取任何 H1 outcome 前，
+  补齐 H1 R0 的纯实现消歧：point cloud 固定 x/y stride 8、offset 4；排除 semantic
+  IDs `0/1/3/5/6/17/27/30`，dynamic 单列 `12/13/14/15/16/21`；9 probes 固定为
+  cell center 加 `theta/distance/height` 八角点；single-height risk 明确定义为
+  `max(foot,body,head)` 并复核 `1e-12` consistency。状态仍为
+  `FROZEN_RESULT_NOT_RUN`，门槛与终点未改变。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。outcome 前冻结
   `HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0`，状态 `FROZEN_RESULT_NOT_RUN`。
   parent unit 为 4 个 source sessions；field 固定 24 theta × 6 distance ×
