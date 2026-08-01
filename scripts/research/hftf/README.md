@@ -668,6 +668,28 @@ object identity、本地 SHA/MD5、metadata、transport receipt 以及 final/`.t
 `<240`。candidate manifest/spec hash 是 post-open transport receipt，不允许在合同中
 预填。失败不重跑、不补 partial、不换源。
 
+D2 metadata qualification 只读取 generation/SHA 绑定的 official-train split、
+candidate `description.json` 与对象 receipts/listings；不读取 RGB/mask/depth bytes，
+也不读取 `camera_poses.csv` 内容。合同、planner 与 planner test 必须先提交推送，且
+CLI 在首个网络请求前验证三者 tracked、clean、hash-bound，并确认
+`HEAD == origin/master`：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/plan_stage_c_d2_official_train_metadata.py `
+  --execution-contract docs/research/hftf/HFTF_STAGE_C_D2_OFFICIAL_TRAIN_METADATA_QUALIFICATION_EXECUTION_CONTRACT_2026-08-02.json `
+  --retries 3 `
+  --output artifacts.local/evidence/hftf/stage-c-d2-official-train-metadata-qualification-20260802/qualification.json
+```
+
+planner 固定排除 78 个 burned/consumed/closed/reserved parents，按 official-train
+`session_id` 升序选择前 6 个 metadata-eligible 新 parents。candidate 级请求经三次
+内部 retry 后仍 404 或 metadata 不合法时写入 ineligible ledger 并继续；完整 split
+不足 6 个即 `STOP_NO_ELIGIBLE_NEW_DEVELOPMENT_COHORT`。扫描只执行一次，不追加或
+替换 sources。合同、planner 与 planner test 必须来自同一 clean remote HEAD，
+`--retries` 必须精确为 3；CLI 在首个网络请求前写入不可覆盖的 durable attempt
+marker，失败或中断后也不允许重扫。成功只允许冻结下一份 media/mechanics 合同，
+不直接授权媒体、pose 内容、teacher、student 或 D2 mechanics。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

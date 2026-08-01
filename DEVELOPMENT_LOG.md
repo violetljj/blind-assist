@@ -3533,3 +3533,29 @@
 - 本结果只授权冻结 D2 metadata qualification implementation contract。D1 关闭终态
   不变；这不是 D1 补跑、换源或模型证据。D2 scan/new media/mechanics、fresh/reserved、
   teacher/student、主线、App、Android、生产与安全权限继续关闭。
+
+## 2026-08-02：HFTF D2 metadata-only qualification 执行合同冻结
+
+- 执行者：violjjet
+- 新 planner 沿 D2 design → G0 source plan/protocol → F0 inventory 与
+  F0/R4/R3.1 burn ledgers → F0.1 consumed official-test result 的 hash-bound 父链，
+  构造 78 个互斥 parent exclusion union。它只允许 generation/SHA 绑定的
+  official-train split、candidate description JSON 以及 description/pose/media
+  对象 receipts/listings；RGB、mask、depth bytes 与 pose 内容均不读取。
+- 选择规则在 outcome 前固定为 official-train `session_id` 升序的前 6 个
+  metadata-eligible 新 parents。candidate 经 3 次内部 retry 后仍 404 或 metadata
+  不合法，记为 ineligible 并继续固定顺序；完整 split 不足 6 个即
+  `STOP_NO_ELIGIBLE_NEW_DEVELOPMENT_COHORT`。扫描完成后不重跑、不追加、不替换。
+- 主审补严授权 blocker：network CLI 不接受 caller-supplied 裸 implementation hash，
+  只能接受正式 execution contract；在首个网络请求前必须验证合同与 planner 均为
+  tracked、staged/unstaged clean，并确认 `HEAD == origin/master`。独立预执行审计
+  发现后，进一步把 planner test 纳入同一门禁、把 retries 锁死为合同值 3，并要求在
+  首个网络请求前写入不可覆盖的 durable attempt marker。planner SHA-256 为
+  `4d8b206c887352d92c15cb3fe375d357551861c5e0a6113073a7426f332da58a`；
+  targeted tests 14/14、HFTF 全集 312/312 通过；第二轮独立只读复审重算 12 项
+  parents/derived/implementation/test receipts 并核对首网前门禁后最终 CLEAR。
+- execution contract SHA-256 为
+  `b9cb978027cb9f7d02b88753b43fbb9511a4e0766a11c08821842dd7e2c0a085`。
+  本节点只授权在合同与实现提交推送、再次确认远端一致后执行一次 metadata scan。
+  media/pose content、teacher、student、D2 mechanics、reserved official-test、研究
+  主线、App、Android、生产与安全权限继续关闭。
