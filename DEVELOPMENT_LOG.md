@@ -3258,3 +3258,38 @@
   outcome-before 冻结且使用 fresh parent sources 的 successor；其首要 falsifier
   应先验证可跨来源迁移的物理中间表示能否解决 current learnability，再检验显式
   causal transport 的 future 增量。
+
+## 2026-08-01：HFTF-G0 support-equivalent clearance 机制合同冻结
+
+- 执行者：violjjet
+- F0.1 负终态保持永久关闭。新 successor 不换 temporal backbone，而先检验
+  `current RGB -> continuous clearance proxy -> frozen envelope risk` 是否能解决
+  直接 binary-risk student 的跨来源 learnability blocker；G0-D0 只审计 consumed
+  synthetic geometry-proxy mechanics，不计算 student output，也不给 fresh evidence。
+- 半开 prism 不再误称真正连续 SDF。实现逐项复用原 teacher 的 reference
+  stride-4/offset-2 obstacle point set、anchor basis、semantic filter、
+  `searchsorted(side=right)`、末端 `8 m isclose(atol=1e-12, rtol=0)` 与 height
+  membership；closed-box SDF 只提供距离大小，membership 强制符号，精确零值用
+  float64 `nextafter` 打破平局。第二小 proxy 严格 `<0` 与 support count `>=2`
+  完全等价；少于两个点先为 `+inf`，再 clip 至 `+1 m`。
+- D0 对全部 12 个已 consumed F0.1 parent sessions × 25 current frames，逐
+  `source × height` 要求二值等价、UNKNOWN null/never-safe、正负 known、
+  clipped 毫米 bins、近边界数量及 risk/safe 非全饱和；支持终态仅为
+  `G0_SIGNED_CLEARANCE_MECHANICS_SUPPORTED_FOR_FRESH_LEARNABILITY_CANARY`，不声称
+  student 已可学。
+- 来源规划器闭合验证 11 个 parent 的 path/hash/status/terminal，以及 F0/F0.1
+  metadata firewalls、acquisition、authority、teacher-opportunity、effect burn 和
+  历史 burn。9 个 outcome-open 来源内部固定为 6 train + 3 model selection；F0
+  ranks 10–12 的三个来源仅可在模型、loss、checkpoint、threshold 和 gates 全部冻结后
+  做 one-shot fresh evaluation。另从 official-test 仅 metadata 预留三个 future
+  heldout；本合同不授权获取或打开任一 fresh outcome。
+- source planner SHA-256 为
+  `ee5e84accf8a58370faf3d1813a8a0170f0331ed3a3c3914ce77145ca98ac244`；
+  mechanics runner SHA-256 为
+  `0a5f39bd71ab6a28a214cd30f8e15262288f4b17e916fd302c84289902aa9d38`；
+  machine contract SHA-256 为
+  `0aa8e5828665a869837a1aa9027601d45610c0f66696da737351c9ec361da383`。
+  定向测试 18/18、HFTF 全集 202/202。canonical source-plan 与 mechanics result
+  roots 在冻结时均不存在，尚未运行 metadata scan 或 D0 outcome。
+- 只有 source plan READY 且 D0 支持，才允许另行冻结 fresh-evaluation acquisition
+  与 D1 训练/one-shot 合同。主线、默认 App、Android、生产与安全主张均不变。
