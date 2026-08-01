@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何新 EgoWalk
+  RGB/depth media 内容或 geometry outcome 前冻结 Stage C source-feasibility C0。
+  SANPO 固定为 causal obstacle/future teacher role；EgoWalk exact dataset revision
+  `8a167f27...` 固定为 natural RGB/depth/pose transport 与 semantic-independent
+  surface observability canary。239 条 pose metadata 中有 91 条含 null；严格健康门
+  后有 95 条，按 pose+RGB+depth 总体积升序并要求不同录制日期，冻结
+  `2024_08_15__19_45_11 / 2024_07_11__12_33_57`。两条 media 此时未下载/打开。
+  C0 成功也只允许冻结 label-and-student canary protocol，不授权 student training、
+  effect、主线、Android/App 或安全 claim。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成正式 R4 split-source
   Stage B，joint 终态
   `R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED`。SANPO obstacle role

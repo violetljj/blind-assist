@@ -1,0 +1,184 @@
+{
+  "schema": "blindassist_hftf_stage_c_source_feasibility_c0",
+  "status": "FROZEN_BEFORE_C0_MEDIA_CONTENT_OR_GEOMETRY_OUTCOME",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "execution_authority": "USER_PERSISTENT_SIDE_LANE_AUTHORIZATION_2026-08-01",
+  "parent_terminal": "R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED",
+  "parent_result_path": "HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_RESULT_R4_2026-08-01.md",
+  "parent_result_sha256": "61a46716bff394fa3e970b267b8eef5d751e65bd2e8a4356a6d2b47493d02ebf",
+  "estimand": "whether_exact_source_transports_can_support_a_later_session_disjoint_history_rgb_student_canary_with_causal_current_and_short_future_layered_geometry_proxy_labels",
+  "freeze_boundary": {
+    "metadata_examined_before_freeze": true,
+    "rgb_or_depth_media_downloaded_or_opened_before_freeze": false,
+    "teacher_label_outcome_computed_before_freeze": false,
+    "student_training_or_model_output_computed_before_freeze": false
+  },
+  "canonical_temporal_contract": {
+    "timeline_hz": 5,
+    "history_rgb_offsets_s": [-0.6, -0.4, -0.2, 0.0],
+    "teacher_horizons_s": [0.0, 0.4, 0.8],
+    "teacher_future_frame_offsets_at_5hz": [0, 2, 4],
+    "student_may_read": [
+      "current_and_history_rgb_at_or_before_anchor"
+    ],
+    "student_must_not_read": [
+      "future_rgb",
+      "metric_depth",
+      "pose",
+      "future_pose",
+      "semantic_mask"
+    ],
+    "teacher_future_use": "future_depth_and_pose_may_only_construct_geometry_proxy_labels_in_the_anchor_coordinate_frame",
+    "future_path_truth_boundary": "recorded_motion_is_not_hazard_or_safe_truth"
+  },
+  "source_roles": {
+    "sanpo_synthetic": {
+      "role": "causal_obstacle_and_layered_future_teacher_source",
+      "source": "official_SANPO-Synthetic_train",
+      "required_modalities": [
+        "egocentric_rgb",
+        "metric_depth",
+        "camera_pose",
+        "temporally_consistent_segmentation"
+      ],
+      "authority_basis": "existing_H0_2_and_R4_frozen_canonical_source_verifier",
+      "r4_consumed_sessions_are_canary_or_regression_only": true,
+      "new_stage_c_partition_must_exclude_all_r0_through_r4_outcome_open_sessions": true,
+      "partition_unit": "full_parent_session",
+      "selection_must_not_read": [
+        "teacher_label_outcome",
+        "candidate_or_baseline_metric",
+        "student_output",
+        "event_truth"
+      ]
+    },
+    "egowalk": {
+      "role": "natural_rgb_depth_pose_transport_and_semantic_independent_surface_observability_canary",
+      "dataset_repo": "EgoWalk/trajectories",
+      "repo_type": "dataset",
+      "revision": "8a167f27e7cf1018c24de1b3fee5265425d145d2",
+      "official_api_repo": "https://github.com/egowalk/egowalk-dataset",
+      "official_api_commit": "37016060b91cae42c0633b0add9fc985ca11e945",
+      "official_depth_decoder_path": "egowalk_dataset/util/video.py",
+      "official_depth_decoder_sha256": "104657b60a42f9f444bd41f2ad192fda34f262dad6d7e3f137ca97c86538ef32",
+      "depth_decode_rule": "gray16le_millimeters_divide_by_1000_to_meters_zero_becomes_UNKNOWN",
+      "metadata_bindings": {
+        "trajectory_count": 239,
+        "info_json_sha256": "b4d8b69694ae7c420396bad3d339d14ea129785080de396f32341e747e520209",
+        "camera_rgb_json_sha256": "b8336fad5bbfde3718a28dcfa9d352a0fa4cdd34f2429134b14e528b1da1bbcc",
+        "heights_json_sha256": "d0c0650950663590a03e29aab83716621fb05a63cf296b14067e62517032e7e8",
+        "trajectories_json_sha256": "e9a4dad8e77b60e0d6bfb9b4ae764900ed81dcf58d72d19b279f1b558807037"
+      },
+      "metadata_health_gates": {
+        "minimum_rows": 320,
+        "trajectory_column_must_equal_filename_id": true,
+        "frame_column_must_equal_zero_through_n_minus_one": true,
+        "all_timestamps_strictly_increasing": true,
+        "median_timestamp_delta_ms_inclusive": [195, 205],
+        "every_timestamp_delta_ms_inclusive": [150, 250],
+        "pose_columns_must_have_zero_null_frames": [
+          "cart_x",
+          "cart_y",
+          "cart_z",
+          "quat_x",
+          "quat_y",
+          "quat_z",
+          "quat_w"
+        ],
+        "maximum_quaternion_abs_norm_error": 0.001,
+        "minimum_max_distance_from_start_m": 5.0,
+        "maximum_single_step_translation_m": 1.5,
+        "reinitialization_rule": "after_distance_from_start_exceeds_3m_reject_any_later_transition_to_below_0.25m_with_single_step_translation_above_0.5m",
+        "rgb_depth_pose_file_triplet_and_lfs_sha256_required": true,
+        "camera_height_metadata_required": true
+      },
+      "selection_rule": {
+        "order": "ascending_total_bytes_pose_plus_rgb_plus_depth_then_trajectory_id",
+        "required_trajectories": 2,
+        "recording_date": "first_10_characters_YYYY_MM_DD",
+        "recording_dates_must_be_distinct": true,
+        "stop_after_required_trajectories": true,
+        "media_content_or_annotation_outcome_may_be_read_for_selection": false
+      },
+      "expected_metadata_only_selected_cohort": [
+        "2024_08_15__19_45_11",
+        "2024_07_11__12_33_57"
+      ],
+      "selected_cohort_role_after_c0": "consumed_development_source_transport_canary_not_fresh_student_train_dev_or_heldout_effect_data"
+    }
+  },
+  "c0_execution_order": [
+    "independently_recompute_full_239_trajectory_metadata_inventory_and_exact_selected_cohort",
+    "bind_selected_pose_rgb_depth_lfs_sizes_and_sha256",
+    "download_only_the_two_frozen_selected_rgb_and_depth_files",
+    "verify_local_sha256_and_full_stream_decode",
+    "verify_frame_count_rate_pts_and_pose_index_alignment",
+    "run_bounded_semantic_independent_depth_surface_observability_canary",
+    "aggregate_ordered_terminal"
+  ],
+  "media_transport_gates_each_selected_trajectory": {
+    "local_sha256_must_equal_lfs_sha256": true,
+    "exactly_one_video_stream_each_rgb_and_depth": true,
+    "rgb_and_depth_reported_rate_hz": 5,
+    "rgb_and_depth_decoded_frame_count_must_equal_pose_rows": true,
+    "rgb_and_depth_pts_must_be_strict_and_frame_index_seekable": true,
+    "rgb_decode_format": "rgb24",
+    "depth_decode_format": "gray16le",
+    "depth_unit": "millimeter_source_integer_to_meter_float",
+    "minimum_positive_finite_depth_fraction_per_sampled_frame": 0.25,
+    "sample_indices": "sorted_unique_floor(k*(n-1)/31)_for_k_0_through_31",
+    "all_32_sampled_rgb_and_depth_frames_must_decode": true
+  },
+  "surface_observability_canary": {
+    "purpose": "test_natural_depth_support_for_a_later_ground_continuity_reader_not_generate_risk_truth",
+    "semantic_class_input_forbidden": true,
+    "annotation_input_forbidden": true,
+    "camera_height_may_be_used": true,
+    "pose_may_be_used_only_for_temporal_alignment_and_local_consistency": true,
+    "sample_indices": "same_32_deterministic_indices_as_media_transport",
+    "minimum_frames_with_finite_depth_fraction_gate": 28,
+    "minimum_frames_with_bottom_half_depth_support_fraction_at_least_0_25": 24,
+    "minimum_adjacent_sample_pairs_with_common_finite_depth_support": 20,
+    "unknown_policy": "missing_or_invalid_depth_is_UNKNOWN_never_SAFE",
+    "claim_ceiling": "NATURAL_DEPTH_SURFACE_OBSERVABILITY_ONLY",
+    "explicit_non_claims": [
+      "no_step_drop_or_obstacle_truth",
+      "no_human_event_truth",
+      "no_student_effect",
+      "no_safety_or_product_effect"
+    ]
+  },
+  "ordered_terminals": [
+    {
+      "when": "inventory_or_exact_selection_binding_fails",
+      "terminal": "C0_EGOWALK_METADATA_SELECTION_NOT_EVALUABLE"
+    },
+    {
+      "when": "any_selected_media_transport_gate_fails",
+      "terminal": "C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE"
+    },
+    {
+      "when": "surface_observability_canary_fails",
+      "terminal": "C0_NATURAL_SURFACE_OBSERVABILITY_NOT_EVALUABLE"
+    },
+    {
+      "when": "all_gates_pass",
+      "terminal": "C0_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED"
+    }
+  ],
+  "success_authority": {
+    "freeze_stage_c_label_and_student_canary_protocol_only": true,
+    "stage_c_label_generation_execution_authorized": false,
+    "student_training_authorized": false,
+    "student_effect_evaluation_authorized": false,
+    "research_mainline_switch_authorized": false,
+    "android_or_app_change_authorized": false,
+    "safety_or_product_claim_authorized": false
+  },
+  "failure_policy": {
+    "do_not_replace_selected_trajectory_after_media_or_geometry_outcome": true,
+    "do_not_lower_gates_on_same_consumed_media": true,
+    "decoder_or_schema_repairs_require_new_evidence_version": true,
+    "preserve_unknown_not_safe_firewall": true
+  }
+}

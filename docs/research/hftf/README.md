@@ -8,7 +8,7 @@ R2_POINT_SUPPORT_PROXY_BURNED /
 STAGE_B_R3_SOURCE_OR_REFERENCE_NOT_EVALUABLE /
 R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE /
 R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED /
-STAGE_C_SOURCE_FEASIBILITY_FREEZE_AUTHORIZED_ONLY /
+STAGE_C_C0_SOURCE_FEASIBILITY_FROZEN_MEDIA_UNOPENED /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -126,8 +126,16 @@ obstacle candidate/baseline primary F1 为 `.98756/.76000`，delta `+.22756`；
 F1 `1.0`，比最佳 endpoint baseline 高 `+.25`。前者只外推到 reference-qualified
 challenge cohort，后者只属于 controlled mechanics。
 
-当前只新授权冻结 Stage C source-feasibility contract；尚未授权执行 Stage C、训练
-student、切换研究主线或修改 App。
+Stage C C0 source-feasibility contract 现已在任何新媒体内容或 geometry outcome 前
+冻结。SANPO 继续承担 causal obstacle/future teacher source role；EgoWalk 只承担
+natural RGB/depth/pose transport 与 semantic-independent surface observability
+canary。EgoWalk 239 条 pose metadata 中按完整性、5 Hz timeline、无回零重定位、
+文件绑定与体积的结果无关规则，冻结两个不同录制日期的最小 cohort：
+`2024_08_15__19_45_11 / 2024_07_11__12_33_57`。冻结时 RGB/depth media 尚未下载或
+打开。
+
+C0 即使成功，也只授权冻结 Stage C label-and-student canary protocol；不授权正式
+label execution、student training/effect、切换研究主线或修改 App。
 
 ## 当前真源
 
@@ -167,6 +175,8 @@ student、切换研究主线或修改 App。
 - [Stage B machine-readable R4 protocol](HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_R4_2026-08-01.json)
 - [R4 source-pool burn ledger](HFTF_R4_SOURCE_POOL_BURN_LEDGER_2026-08-01.json)
 - [Stage B split-source validation R4 result](HFTF_STAGE_B_SPLIT_SOURCE_VALIDATION_RESULT_R4_2026-08-01.md)
+- [Stage C source-feasibility C0](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_2026-08-01.md)
+- [Stage C machine-readable C0 protocol](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
