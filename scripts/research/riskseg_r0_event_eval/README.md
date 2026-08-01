@@ -51,6 +51,11 @@ E:\codex-tools\bin\blindassist-python.cmd `
 稀疏包只决定“是否值得物化完整连续窗口”，不得产生 event truth、进入训练或查看
 PIDNet/YOLO/oracle 输出。
 
+当一轮双审证明正例配额不足时，`extend_review_bundle` 会保留原 candidate IDs、
+逐项绑定和 contact-sheet hash，只追加新的完整窗口。两位原 reviewer 仍需各自隔离
+审阅新增项，并把自己的旧 review 与新增项重绑定到扩展 index；不得把一方判断透露给
+另一方。
+
 若旧版 acquisition 已生成 v3 event-eval spec、但逐帧 manifest 仍残留
 `model_assisted_candidate_screening_only`，使用
 `repair_sparse_role_metadata` 做一次显式迁移，然后重新生成 review bundle 以刷新 hash。

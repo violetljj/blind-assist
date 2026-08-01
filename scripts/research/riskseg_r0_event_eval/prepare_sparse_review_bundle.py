@@ -12,6 +12,7 @@ from PIL import Image, ImageDraw
 SCHEMA = "blindassist.riskseg_r0.sparse_rgb_review_bundle.v1"
 THUMBNAIL = (320, 180)
 COLUMNS = 5
+MINIMUM_FRAME_COUNT = 5
 
 
 def sha256_file(path: Path) -> str:
@@ -39,7 +40,7 @@ def load_timeline(root: Path) -> dict[str, Any]:
         raise ValueError(f"{root.name}: wrong screening role")
     if spec.get("training_authorized") is not False:
         raise ValueError(f"{root.name}: training must be forbidden")
-    if len(rows) < 6:
+    if len(rows) < MINIMUM_FRAME_COUNT:
         raise ValueError(f"{root.name}: sparse timeline has too few frames")
     frames: list[Path] = []
     source_indices: list[int] = []
