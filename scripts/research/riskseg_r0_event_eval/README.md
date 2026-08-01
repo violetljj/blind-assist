@@ -32,6 +32,25 @@ E:\codex-tools\bin\blindassist-python.cmd -m scripts.research.riskseg_r0_event_e
   --output artifacts.local/evidence/riskseg-r0/event-eval/frozen-v1
 ```
 
+已通过 output-blind mask 几何筛选、但尚未值得下载完整窗口的 session，可以先生成
+稀疏 RGB 成本控制审阅包：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/acquire_sanpo_rgb_timeline_candidate.py `
+  --session-id=<session> --start-frame 120 --target-fps 1 --frame-count 10 `
+  --purpose event-eval-screening `
+  --output-root artifacts.local/evidence/riskseg-r0/event-eval/sparse/<session>
+
+E:\codex-tools\bin\blindassist-python.cmd `
+  -m scripts.research.riskseg_r0_event_eval.prepare_sparse_review_bundle `
+  --input-root artifacts.local/evidence/riskseg-r0/event-eval/sparse `
+  --output-root artifacts.local/evidence/riskseg-r0/event-eval/sparse-review
+```
+
+稀疏包只决定“是否值得物化完整连续窗口”，不得产生 event truth、进入训练或查看
+PIDNet/YOLO/oracle 输出。
+
 ## 输出
 
 全部输出只写入显式的 `artifacts.local/`：

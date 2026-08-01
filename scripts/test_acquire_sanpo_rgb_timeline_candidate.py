@@ -34,6 +34,39 @@ class SanpoRgbTimelineTest(unittest.TestCase):
             with self.assertRaisesRegex(rgb_timeline.CandidateError, "completed"):
                 rgb_timeline.assert_output_can_resume(root)
 
+    def test_event_eval_screening_spec_forbids_training_and_truth_claims(self) -> None:
+        spec = rgb_timeline.build_candidate_spec(
+            session_id="fresh-session",
+            start_frame=120,
+            target_fps=1.0,
+            frame_count=10,
+            purpose="event-eval-screening",
+        )
+        self.assertEqual(
+            "output_blind_event_eval_rgb_screening_only",
+            spec["status"],
+        )
+        self.assertFalse(spec["training_authorized"])
+        self.assertFalse(spec["human_event_truth_present"])
+        self.assertFalse(spec["candidate_output_accessed"])
+
+    def test_spec_preserves_requested_camera_and_lens(self) -> None:
+        spec = rgb_timeline.build_candidate_spec(
+            session_id="fresh-session",
+            start_frame=120,
+            target_fps=1.0,
+            frame_count=10,
+            purpose="event-eval-screening",
+            camera="camera_head",
+            lens="right",
+            official_split="test",
+            source_fps=30.0,
+        )
+        self.assertEqual("camera_head", spec["source"]["camera"])
+        self.assertEqual("right", spec["source"]["lens"])
+        self.assertEqual("test", spec["source"]["official_split"])
+        self.assertEqual(30.0, spec["sampling"]["source_fps"])
+
 
 if __name__ == "__main__":
     unittest.main()
