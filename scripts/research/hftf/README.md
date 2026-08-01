@@ -690,6 +690,15 @@ planner 固定排除 78 个 burned/consumed/closed/reserved parents，按 offici
 marker，失败或中断后也不允许重扫。成功只允许冻结下一份 media/mechanics 合同，
 不直接授权媒体、pose 内容、teacher、student 或 D2 mechanics。
 
+2026-08-02 的唯一 metadata scan 已以
+`D2_OFFICIAL_TRAIN_METADATA_COHORT_QUALIFIED` 锁定 6 条升序 official-train
+parents。durable qualification SHA-256 为
+`63a217c3e658bbe4fee9e351c5c9abf68379ec2ccb89a6c3449f1581e385ee47`；
+独立审计重算 13 项 bindings、900 个媒体对象 receipts 与 18 个 modality receipt
+hashes 后 `CLEAR`。这些 source 只在 metadata 层被打开并锁定；媒体与 pose 内容仍未
+读取。不得重扫、追加或替换，下一步必须先冻结另一个 hash-bound one-shot
+media/mechanics contract。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

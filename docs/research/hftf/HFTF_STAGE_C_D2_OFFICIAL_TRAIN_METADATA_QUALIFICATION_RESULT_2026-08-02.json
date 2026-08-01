@@ -1,0 +1,229 @@
+{
+  "schema": "blindassist_hftf_stage_c_d2_official_train_metadata_qualification_result",
+  "terminal": "D2_OFFICIAL_TRAIN_METADATA_COHORT_QUALIFIED",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "execution_contract": {
+    "path": "docs/research/hftf/HFTF_STAGE_C_D2_OFFICIAL_TRAIN_METADATA_QUALIFICATION_EXECUTION_CONTRACT_2026-08-02.json",
+    "sha256": "b9cb978027cb9f7d02b88753b43fbb9511a4e0766a11c08821842dd7e2c0a085",
+    "commit": "335eb2630b3debac07cea9c38448f0b1cb3a8f3d",
+    "head_equal_origin_master_before_execution": true
+  },
+  "durable_evidence": {
+    "attempt": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d2-official-train-metadata-qualification-20260802/attempt.json",
+      "sha256": "b3547bc02c2f1a8e4633596681200ccc652a8cef0fe872ad4f0f8b5cafac0dc7",
+      "status": "ATTEMPT_OPENED_BEFORE_FIRST_NETWORK_REQUEST",
+      "rerun_authorized": false
+    },
+    "qualification": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d2-official-train-metadata-qualification-20260802/qualification.json",
+      "sha256": "63a217c3e658bbe4fee9e351c5c9abf68379ec2ccb89a6c3449f1581e385ee47",
+      "required_terminal": "D2_OFFICIAL_TRAIN_METADATA_COHORT_QUALIFIED",
+      "byte_count": 725476
+    }
+  },
+  "execution_observation": {
+    "metadata_scan_cli_started_once": true,
+    "second_execution_started": false,
+    "outer_command_wrapper_timed_out_after_seconds": 124,
+    "original_child_process_continued_after_outer_timeout": true,
+    "original_child_process_was_monitored_not_restarted": true,
+    "durable_qualification_written_by_original_process": true,
+    "original_child_process_exited_after_writing_result": true
+  },
+  "official_train_split": {
+    "object_generation": "1692794964120907",
+    "text_sha256": "f9c5dc4c289fa87342abc0d2cc49f112fcc78c7e02e0b6b081e296a99344173c",
+    "session_count": 1560,
+    "selection_order": "ascending_session_id"
+  },
+  "selection": {
+    "frozen_exclusion_union_parent_count": 78,
+    "scan_ledger_entry_count": 149,
+    "encountered_frozen_exclusion_count": 71,
+    "candidate_metadata_404_count": 69,
+    "candidate_metadata_invalid_argument_count": 2,
+    "candidate_fps_ineligible_count": 1,
+    "qualified_parent_count": 6,
+    "requested_parent_count": 6,
+    "source_replacement_after_scan": false
+  },
+  "qualified_parents": [
+    {
+      "session_id": "170afcede1bdc6eb955c432d15196db82f93b3c3ec136137ecf070c58eb61135",
+      "metadata_eligible_rank": 1,
+      "source_fps": 5.0,
+      "selected_source_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "session_id": "171469174b78aba85b3f52bca1547d3fe72b43140c550032e6a710640f943a00",
+      "metadata_eligible_rank": 2,
+      "source_fps": 5.0,
+      "selected_source_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "session_id": "17395cf62ccff67fd40fb885460e964beb971bb91d9d6311201f30813a66bd5c",
+      "metadata_eligible_rank": 3,
+      "source_fps": 5.0,
+      "selected_source_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "session_id": "17397b0026c4b8fb0cb271404f0b90865c47a7c2f2b887f7a5a3bfd272aeb6ee",
+      "metadata_eligible_rank": 4,
+      "source_fps": 20.0,
+      "selected_source_frames": [
+        0,
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        44,
+        48
+      ]
+    },
+    {
+      "session_id": "1757cef62fc33b8571307c4873a0f82091cb6f047af8c3f21176348921f1f4da",
+      "metadata_eligible_rank": 5,
+      "source_fps": 5.0,
+      "selected_source_frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "session_id": "17a9ed0a63fb28f97009e5ccc50547a188f1ee03c359cf9b05409854d8e7be7e",
+      "metadata_eligible_rank": 6,
+      "source_fps": 20.0,
+      "selected_source_frames": [
+        0,
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        44,
+        48
+      ]
+    }
+  ],
+  "offline_validation": {
+    "terminal_and_counts_match": true,
+    "qualified_ids_are_sorted_and_unique": true,
+    "qualified_ids_are_disjoint_from_all_78_exclusions": true,
+    "scan_ledger_is_strictly_ascending": true,
+    "scan_ledger_selects_exactly_first_six_eligible_parents": true,
+    "all_18_modality_receipt_hashes_recomputed": true,
+    "all_modalities_cover_source_frames_0_through_49": true,
+    "all_timelines_match_frozen_5_or_20_fps_normalization": true,
+    "all_intrinsics_are_finite_and_positive": true,
+    "all_description_pose_and_media_receipts_have_generation_positive_size_and_md5": true,
+    "attempt_and_qualification_bindings_are_identical": true,
+    "contract_hash_recomputed": true,
+    "all_gates": true
+  },
+  "independent_audit": {
+    "status": "CLEAR",
+    "blocker_count": 0,
+    "binding_receipts_recomputed": 13,
+    "media_object_receipts_recomputed": 900,
+    "canonical_modality_receipt_hashes_recomputed": 18,
+    "attempt_and_qualification_hashes_recomputed": true,
+    "selection_and_firewall_rechecked": true
+  },
+  "firewall": {
+    "rgb_bytes_read": false,
+    "panoptic_mask_bytes_read": false,
+    "metric_depth_bytes_read": false,
+    "camera_pose_content_read": false,
+    "geometry_teacher_outcome_read": false,
+    "student_outcome_read": false,
+    "reserved_official_test_opened": false
+  },
+  "evidence_boundary": {
+    "metadata_only_source_qualification": true,
+    "media_or_pose_content_evidence": false,
+    "d2_mechanics_or_effect_evidence": false,
+    "model_evidence": false,
+    "safety_evidence": false,
+    "mainline_promotion_evidence": false
+  },
+  "authorization": {
+    "rerun_d2_metadata_scan": false,
+    "replace_or_append_qualified_parents": false,
+    "freeze_d2_media_and_mechanics_implementation_contract": true,
+    "execute_d2_media_acquisition_now": false,
+    "execute_d2_mechanics_now": false,
+    "geometry_teacher_execution_authorized": false,
+    "student_execution_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

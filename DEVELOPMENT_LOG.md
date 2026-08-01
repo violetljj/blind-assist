@@ -3559,3 +3559,28 @@
   本节点只授权在合同与实现提交推送、再次确认远端一致后执行一次 metadata scan。
   media/pose content、teacher、student、D2 mechanics、reserved official-test、研究
   主线、App、Android、生产与安全权限继续关闭。
+
+## 2026-08-02：HFTF D2 metadata-only cohort 锁定通过
+
+- 执行者：violjjet
+- exact metadata contract 由 commit `335eb2630b3debac07cea9c38448f0b1cb3a8f3d`
+  提交推送并确认 `HEAD == origin/master` 后，只启动一次 CLI。首网前 durable
+  attempt SHA-256 为
+  `b3547bc02c2f1a8e4633596681200ccc652a8cef0fe872ad4f0f8b5cafac0dc7`。
+  外层命令在 124 秒超时，但原 child process 未被终止；后续只监控该原 PID，没有
+  启动第二次执行。原进程最终写出 qualification 并自然退出。
+- 终态为 `D2_OFFICIAL_TRAIN_METADATA_COHORT_QUALIFIED`。1560 条 official-train
+  split 中，按 ID 升序扫描 149 条后锁定前 6 个 eligible parents：4 条 5 Hz、2 条
+  20 Hz。它们全部与 78-parent exclusion union 不相交，并从现在起固定为 D2
+  one-shot Development mechanics cohort，不得重扫、追加或换源。
+- ledger 的其余 143 条为：71 条已遇到的冻结 exclusions、69 条 candidate metadata
+  三次 retry 后 404、2 条 invalid argument、1 条 fps 不合格。qualification JSON
+  SHA-256 为
+  `63a217c3e658bbe4fee9e351c5c9abf68379ec2ccb89a6c3449f1581e385ee47`。
+- 主审全部离线 gates 通过；独立审计重算 13 项 bindings、900 个媒体对象 receipts、
+  18 个 canonical modality receipt hashes、选择序列与权限防火墙后 `CLEAR`。
+  tracked result JSON SHA-256 为
+  `fae85191e9e7c77f4206c37b722899afacb539f30dc129a9f1fae32252858096`。
+- 本结果只授权冻结下一份 D2 media/mechanics implementation contract。RGB/mask/depth
+  bytes、pose 内容、teacher/student、D2 effect、reserved official-test、研究主线、
+  App、Android、生产与安全权限继续关闭。
