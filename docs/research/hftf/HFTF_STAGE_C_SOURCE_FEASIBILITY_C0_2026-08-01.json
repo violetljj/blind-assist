@@ -67,7 +67,7 @@
         "info_json_sha256": "b4d8b69694ae7c420396bad3d339d14ea129785080de396f32341e747e520209",
         "camera_rgb_json_sha256": "b8336fad5bbfde3718a28dcfa9d352a0fa4cdd34f2429134b14e528b1da1bbcc",
         "heights_json_sha256": "d0c0650950663590a03e29aab83716621fb05a63cf296b14067e62517032e7e8",
-        "trajectories_json_sha256": "e9a4dad8e77b60e0d6bfb9b4ae764900ed81dcf58d72d19b279f1b558807037"
+        "trajectories_json_sha256": "e9a4dad8e77b60e0d6bfb9b4ae764900ed81dcf58d72d19b279f1b558807037b"
       },
       "metadata_health_gates": {
         "minimum_rows": 320,

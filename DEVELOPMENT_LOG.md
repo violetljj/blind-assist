@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。Stage C C0 首次正式
+  inventory planner 在任何 RGB/depth 下载或报告写入前 fail closed：机器合同中的
+  `trajectories.json` SHA-256 漏写末尾 `b`、仅 63 位。本地 source 与冻结前 shell
+  核验均保持 64 位
+  `e9a4dad8e77b60e0d6bfb9b4ae764900ed81dcf58d72d19b279f1b558807037b`。
+  只修正该转录绑定；source、cohort、选择规则、数值门和权限不变。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何新 EgoWalk
   RGB/depth media 内容或 geometry outcome 前冻结 Stage C source-feasibility C0。
   SANPO 固定为 causal obstacle/future teacher role；EgoWalk exact dataset revision

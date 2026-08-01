@@ -90,3 +90,11 @@ C0 成功只允许冻结下一份 Stage C label-and-student canary protocol。�
 
 机器可读真源：
 [HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_2026-08-01.json](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_2026-08-01.json)
+
+## 7. 冻结后绑定转录修正
+
+首次正式 inventory planner 在任何 RGB/depth 下载或报告写入前，发现
+`trajectories.json` SHA-256 在机器合同中漏写末尾 `b`、只有 63 位。原始文件与冻结前
+shell 核验值均为
+`e9a4dad8e77b60e0d6bfb9b4ae764900ed81dcf58d72d19b279f1b558807037b`。
+本修正只恢复该 exact metadata binding；source、cohort、选择规则、数值门和权限均不变。
