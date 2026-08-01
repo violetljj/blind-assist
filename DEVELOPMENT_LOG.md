@@ -3643,3 +3643,33 @@
   六源获取。成功只允许另冻 future-blind mechanics execution contract；teacher、
   truth/effect、student、reserved official-test、研究主线、App、Android、生产与
   safety 权限继续关闭。
+
+## 2026-08-02：HFTF D2 六源短路径媒体获取成功并离线封存
+
+- 执行者：violjjet
+- exact contract/acquirer/test 由 commit
+  `1f04af5bb77acee45ce3432c5d5ce0d5784f8c92` 提交推送并再次确认
+  `HEAD == origin/master` 后，只启动一次正式 CLI。durable attempt 在首网前完成
+  exclusive write、`flush + fsync`；原进程自然退出，没有重启。
+- 终态为 `D2_SIX_SOURCE_SHORT_PATH_MEDIA_COHORT_ACQUIRED`。254/254 下载请求均在
+  attempt 1 成功，retry line 为 0、stderr 为 0 bytes；6/6 sources 全部完成后，
+  整个 staging 才原子发布为 cohort。没有 failure terminal、换源、追加或 partial
+  fill。
+- 独立离线审计闭合 378/378 files、0 missing、0 extra，共 300,811,962 bytes。
+  234 个媒体对象共 299,513,891 bytes，全部 SHA、size、MD5、name、generation
+  匹配；6 个 pose CSV 与 78 个 pose slices 的 selected row、READY、finite、
+  xyzw quaternion、CSV SHA 和 index SHA 全部一致。final/假设 `.tmp` 最大路径
+  168/172，无 `.tmp`、staging 或 failure 残留。
+- attempt/acquisition receipt/cohort manifest/per-frame index SHA-256 分别为
+  `8153156da811807e927c600ce12342b640eee8ae8f481587f4b08cc292cc3117` /
+  `59c9677393b06809b160163b81c918c6635c0fe6db2e6c12ba13b027e39667a6` /
+  `07b968e97c1a010c7d49beff6d09dc2fb8677826680be6ea4efc235aedd355c4` /
+  `60e63e2df8b2813519e90a287b841dbcfa2b2c9a9b0765b1f10ebcf7c9c8b2a8`。
+  offline validation SHA-256 为
+  `62abd95c32926417b04986b1872c45951a64a307cb74f0549ac1f0f43ac186c4`；
+  tracked result JSON SHA-256 为
+  `dd877a90d7198445f32dc33c9310bbfdf1c3d5bf11ad7c6881bd623045add50e`。
+- RGB/mask/depth 只做流式 hash，未解码或视觉打开；future pose/depth/mask truth、
+  candidate、geometry teacher 与 effect 均未执行。本节点只授权冻结另一个
+  hash-bound mechanics execution contract；student、reserved official-test、
+  研究主线、App、Android、生产与 safety 权限继续关闭。

@@ -738,6 +738,15 @@ rows 写成独立 hash-bound pose slices，供后续 future-blind preprocessor �
 追加或 partial fill；成功也只允许另冻 mechanics execution contract，不直接授权
 preprocessor、future truth、effect 或 student。
 
+唯一一次正式获取已达到
+`D2_SIX_SOURCE_SHORT_PATH_MEDIA_COHORT_ACQUIRED`：254/254 下载请求均在 attempt 1
+成功，6/6 source 原子发布。独立离线复算闭合 378 个 files、234 个媒体对象、
+6 个 pose CSV 与 78 个 pose slices；媒体只做 hash/size/MD5，未解码，future truth
+未打开。per-frame acquisition index SHA-256 为
+`60e63e2df8b2813519e90a287b841dbcfa2b2c9a9b0765b1f10ebcf7c9c8b2a8`。
+下一步只能先冻结并推送 mechanics execution contract，再运行 future-blind
+preprocessor；不得直接打开 future truth。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
