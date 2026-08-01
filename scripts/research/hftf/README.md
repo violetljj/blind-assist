@@ -775,6 +775,15 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/evaluate_stage_c
 student protocol，不授权训练或执行；研究主线、默认 App、Android、生产与 safety
 权限保持关闭。
 
+唯一一次 D2 mechanics 已以
+`D2_NOT_EVALUABLE_OPPORTUNITY_INADEQUATE_NO_SOURCE_REPLACEMENT` 封存。42 个
+future-blind predictions 在 truth receipt 前全部 durable，truth join 精确执行一次并
+产生 84 个 records；24 个 opportunity strata 只有 8 个通过，16 个失败 strata 全部
+缺少冻结门要求的 5 个 known-risk cells，其中 3 个还同时低于 coverage 与 known-safe
+门。UNKNOWN→SAFE 为 0。effect gates 因 opportunity 不足未获判定权限，不能从该
+result 声称 transport 支持或不支持。该 cohort 不重跑、不换源、不追加、不调参；
+RGB student 与全部主线/App/生产/safety 权限保持关闭。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

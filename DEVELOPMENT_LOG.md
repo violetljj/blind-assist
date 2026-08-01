@@ -3702,3 +3702,33 @@
   一次 future-blind preprocessor 与 truth/effect evaluator。即使正终态也只授权另冻
   RGB student protocol，不授权 student training/execution；研究主线、默认 App、
   Android、reserved official-test、生产与 safety 权限继续关闭。
+
+## 2026-08-02：HFTF D2 mechanics 因 opportunity 不足而 NOT_EVALUABLE
+
+- 执行者：violjjet
+- exact mechanics contract/implementation/tests 由 commit
+  `ed56242178538cb2c83ee465615cf9073e78caad` 提交推送并确认
+  `HEAD == origin/master` 后，preprocessor 与 evaluator 严格依序各启动一次并自然
+  退出。preprocessor 先 durable attempt，再完成 42 个 points/prediction 对与 84 个
+  horizon records；全部 prediction 的 `future_depth_mask_or_pose_read=false`。
+- completion 离线闭合后，evaluator 在首个 future pose/depth/mask read 前排他写入并
+  `fsync` truth-join receipt，然后精确产生 84 个 synthetic geometry-proxy truth
+  records。没有 failure artifact、stderr、重跑、换源、追加、partial fill 或同 cohort
+  retuning。
+- attempt/completion/truth-receipt/result SHA-256 分别为
+  `5203515259ac66fb63529efe24073d2f5304c484531364cb553ba73a0136ece0` /
+  `da01d2abe5ba3f07e87f2f68d0862abbddd7a119cc67e76e00c91e231a158ca3` /
+  `b6186923b1fdc051ae9af6984d973a07475c14c3e2ae1bba642d00661a15ef99` /
+  `a6c34d28876c46b09b3507ab46468530c04ea9b409d5fdd3e0d0701b91356276`。
+- 24 个 frozen `parent × height × horizon` opportunity strata 只有 8 个通过、16 个
+  失败。16 个失败 strata 全部 known-risk cells 少于 5；其中 3 个还同时低于 0.10
+  common-known coverage 与 20 个 known-safe cells。UNKNOWN→SAFE 为 0。独立只读
+  审计重算 42 prediction hashes、84 truth keys/future offsets、24 strata 与完整
+  hash chain，全部 0 mismatch，最终 `CLEAR`。
+- 终态为
+  `D2_NOT_EVALUABLE_OPPORTUNITY_INADEQUATE_NO_SOURCE_REPLACEMENT`。effect gates、
+  MAE、F1 与 parent improvement 均未获得判定权限，所以既不能支持也不能否定
+  transport 假设。该六源 cohort 已消费且不得定向救援；RGB student、reserved
+  official-test、研究主线、默认 App、Android、生产与 safety 权限全部关闭。任何继续
+  必须建立新的 protocol/data-role 边界，并在新 mechanics outcome 前独立冻结
+  opportunity-adequate cohort 规则。
