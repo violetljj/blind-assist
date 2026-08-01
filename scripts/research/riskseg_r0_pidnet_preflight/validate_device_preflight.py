@@ -9,10 +9,13 @@ from pathlib import Path
 from scripts.research.riskseg_r0_pidnet_preflight.modeling import sha256_file
 
 
-FULL_DELEGATION_MARKER = (
-    "TfLiteQnnDelegate delegate: 163 nodes delegated out of 163 nodes with 1 partitions."
+FULL_DELEGATION_PATTERN = re.compile(
+    r"TfLiteQnnDelegate delegate: "
+    r"(?P<delegated>\d+) nodes delegated out of (?P<total>\d+) nodes "
+    r"with (?P<partitions>\d+) partitions\."
 )
 RESTORE_MARKER = "caching in RESTORE MODE."
+SAVE_MARKER = "caching in SAVE MODE."
 QNN_ERROR_PATTERN = re.compile(
     r"(?:\sE\s+tflite\s+:.*\[(?:Qnn|QNN)\])|"
     r"(?:\[(?:Qnn|QNN)[^\]]*\].*(?:ERROR|Failed|failure))"
@@ -45,6 +48,23 @@ def validate(
     )
     receipt_run_role = receipt.get("run_role", RUN_ROLE_TECHNICAL_PREFLIGHT)
     gates = receipt["gates"]
+    delegation_matches = list(FULL_DELEGATION_PATTERN.finditer(logcat))
+    full_delegation_marker_count = sum(
+        int(match.group("delegated")) == int(match.group("total"))
+        and int(match.group("partitions")) == 1
+        for match in delegation_matches
+    )
+    restore_mode_marker_count = logcat.count(RESTORE_MARKER)
+    save_mode_marker_count = logcat.count(SAVE_MARKER)
+    cache_before = receipt["qnn_cached_context"]["before"]
+    if cache_before:
+        expected_cache_log_lifecycle = "PREEXISTING_CACHE_RESTORED_TWICE"
+        cache_log_lifecycle_pass = restore_mode_marker_count >= 2
+    else:
+        expected_cache_log_lifecycle = "CLEAN_CACHE_SAVE_THEN_RESTORE"
+        cache_log_lifecycle_pass = (
+            save_mode_marker_count >= 1 and restore_mode_marker_count >= 1
+        )
     expected_gates = {
         "failure_count_zero",
         "total_p95_at_most_100_ms",
@@ -71,8 +91,8 @@ def validate(
             and receipt["delegate"]["precision"] == "HTP_PRECISION_QUANTIZED"
             and receipt["delegate"]["capability"] == "HTP_RUNTIME_QUANTIZED"
         ),
-        "full_graph_delegated_twice": logcat.count(FULL_DELEGATION_MARKER) >= 2,
-        "cached_context_restored_twice": logcat.count(RESTORE_MARKER) >= 2,
+        "full_graph_delegated_twice": full_delegation_marker_count >= 2,
+        "cache_log_lifecycle_matches_receipt": cache_log_lifecycle_pass,
         "no_qnn_error_log": not QNN_ERROR_PATTERN.search(logcat),
         "model_sha_bound": receipt["model"]["sha256"] == expected_model_sha256,
         "class_order_exact": receipt["model"]["class_order"]
@@ -101,8 +121,18 @@ def validate(
         "receipt_sha256": sha256_file(receipt_path),
         "logcat_path": str(logcat_path),
         "logcat_sha256": sha256_file(logcat_path),
-        "full_delegation_marker_count": logcat.count(FULL_DELEGATION_MARKER),
-        "restore_mode_marker_count": logcat.count(RESTORE_MARKER),
+        "full_delegation_marker_count": full_delegation_marker_count,
+        "delegation_marker_node_counts": [
+            {
+                "delegated": int(match.group("delegated")),
+                "total": int(match.group("total")),
+                "partitions": int(match.group("partitions")),
+            }
+            for match in delegation_matches
+        ],
+        "expected_cache_log_lifecycle": expected_cache_log_lifecycle,
+        "save_mode_marker_count": save_mode_marker_count,
+        "restore_mode_marker_count": restore_mode_marker_count,
         "checks": checks,
         "metrics": {
             "sample_count": receipt["sample_count"],
