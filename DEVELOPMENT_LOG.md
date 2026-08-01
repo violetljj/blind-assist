@@ -4083,3 +4083,28 @@
   权限保持关闭。
 - D5-S0 机器设计 SHA-256 为
   `122eccb74d0eb83e231c4e1fa02a36284bab9e6b5df7d251845a7284eeff6b2d`。
+
+## 2026-08-02：HFTF D5-S0A TartanGround exact-commit catalog 合同
+
+- 执行者：violjjet。将 D5-S0 拆为不接触数据托管端的 S0A：只允许一次 fetch
+  官方 `castacks/tartanairpy` 精确提交
+  `158a6844d782942110967325ca3082f50ab2bfc7`，读取该提交中的
+  `.gitmodules` 与 `tartanair/download_ground_files.txt` 两个 Git blob，并核对
+  三个冻结 gitlink。fetch 显式使用 `--recurse-submodules=no`；禁止
+  submodule checkout/read、数据 ZIP 请求、central-directory/member、pose、metadata、
+  scene payload、opportunity/effect 或 student 输出。
+- 清单正则只验证实际列出的 `environment/Data_diff/P1xxx`，不生成父体。目录完整
+  父体必须列出 front image/depth/seg 与 metadata 四个 ZIP，清单行必须是
+  `<path> <positive-decimal> G`；至少 64 trajectories / 8 environments 仍只是
+  capacity/coverage 门，同环境轨迹保持 clustered。达标终点只能是
+  `D5_S0A_TARTANGROUND_DIFF_CATALOG_LOCKED_REQUIRES_S0B_STRUCTURAL_AUTHORITY`，
+  不能宣称 source feasibility。
+- attempt 与 preflight 均在首个 Git 网络请求前用 exclusive-create + file fsync +
+  close + exact-byte reopen 验证。任何 transport/object/format/gitlink/local-binding
+  异常只写 INVALID；partial root 后续只冻结，不续跑或重试。已有 terminal 必须把
+  frozen contract、attempt、preflight、catalog、result 与本地 `FETCH_HEAD` 的
+  schema、hash chain、repository/commit/manifest/gitmodules identity 全部交叉核验。
+- focused tests `22/22`、项目标准 HFTF full suite `435/435`。独立科学与工程终审
+  均为 `CLEAR`、0 blocker。机器合同 SHA-256 为
+  `49c104bec55324dd42454f8db88042216be30d9e796ea36db276eca18238a66f`。
+  当前只授权提交推送；正式 canonical root 在提交推送与 formal git gate 前必须不存在。
