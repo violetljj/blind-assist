@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。E0.1 在 student 前停止为
+  `E0_1_FOOT_GROUND_STUDENT_CANARY_NOT_EVALUABLE`。新 dev/heldout transport、
+  plane/speed、`.4 s` known `.9329/.8312`、known loss/UNKNOWN gates 均通过；
+  dev risk `4 cells/4 anchors`，heldout 仅 `1/1`，低于冻结 `2/2`。report
+  SHA-256 `44240751e577dff8ae1ad55cc4263e143cf6d2762a68f61430c5226837d22e99`。
+  未生成 corpus/训练。只允许一次性固定 3 dev + 3 heldout、与全部 consumed dates
+  互斥的 E0.2；若仍不够则关闭 source route，不再逐条扩张。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在新评价媒体前冻结
   `.4 s`-only E0.1 successor。原四条 E0 train 仅作 consumed training data，原
   dev/heldout 永久排除；从排除全部八条 consumed 后的 healthy inventory 按总字节

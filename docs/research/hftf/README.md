@@ -17,6 +17,7 @@ E0_FRESH_SOURCE_LOCK_VALIDATED /
 E0_FRESH_MEDIA_TRANSPORT_SUPPORTED /
 E0_FRESH_TEACHER_MECHANICS_NOT_EVALUABLE /
 STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_FROZEN /
+E0_1_FOOT_GROUND_STUDENT_CANARY_NOT_EVALUABLE /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -229,6 +230,12 @@ outcome-independent 规则锁定 `2024_12_01__15_29_33` 为 dev、
 阈值与 `.03` superiority margin 已冻结。新 source transport/teacher/opportunity
 全过前不生成 corpus 或训练。
 
+E0.1 已在训练前停止为 `E0_1_FOOT_GROUND_STUDENT_CANARY_NOT_EVALUABLE`。
+新 dev/heldout 的 `.4 s` known fraction 为 `.9329/.8312`，全部 mechanics 通过；
+dev 有 4 risk cells/4 anchors，但 heldout 只有 1/1，低于冻结 2/2。不得降门或换一条
+已知更有利的单 source。唯一 successor 是一次性固定 3 dev + 3 heldout、与全部
+consumed dates 互斥的 E0.2；若仍无 role opportunity 就关闭该 source route。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -284,6 +291,7 @@ outcome-independent 规则锁定 `2024_12_01__15_29_33` 为 dev、
 - [Stage C fresh foot-ground student canary E0 result](HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_RESULT_E0_2026-08-01.md)
 - [Stage C foot-ground student canary E0.1](HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.md)
 - [Stage C machine-readable foot-ground student canary E0.1](HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.json)
+- [Stage C foot-ground student canary E0.1 result](HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_RESULT_E0_1_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
