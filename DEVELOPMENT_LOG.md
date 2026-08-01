@@ -4037,3 +4037,25 @@
   错要求 `ls-files`。修订为合同/设计/implementations/helpers/tests 必须
   tracked-clean-pushed；ignored evidence parents 仍由 exact path/SHA/schema/terminal
   约束，不改变任何数据或实验规则。
+
+## 2026-08-02：HFTF D4-M0 metadata census invalid stop
+
+- 执行者：violjjet。Git 门修复提交 `72af4c7` 推送且 formal preflight 通过后，只启动
+  一次 D4-M0 CLI。`05:48:33 +08:00` durable 写入 attempt/preflight；preflight 仅读
+  exact 40 个历史 slot attempts，全部 IDs 位于 frozen global-124 union。
+- 外层 wrapper 一小时 timeout 后原 Python PID 仍存活，随后只监控原进程，没有重启、
+  resume 或新 seed。原进程在 `06:51:30` 因
+  `OSError: [Errno 22] Invalid argument` 自行写入 failure 并退出，终态
+  `D4_M0_FRESH_METADATA_RECRUITABILITY_POOL_INVALID_STOP`。上述时间/PID 过程是未绑定
+  process receipt 的 operator observation，不进入 canonical terminal 或 claim。
+- attempt/preflight/failure SHA-256 分别为
+  `7ba7f6a6bc9404fbe43dfee2955ad853929b32a7d7a310dcba4a38ccf404feb8`、
+  `52735837a65f52603c31c4a3e6a2d76986d63e4cebb322904aadea34182efeb4`、
+  `b9fb61cd33cd820113b246aaf9cf36ac58379dc37a916b5a03ff47fbafba96f5`。
+  census/pool/allocation-attempt/seed/result 全部不存在；fresh pose/media/support/truth/
+  effect 均未打开。
+- 该终态不支持 5 Hz pool 不足、opportunity prevalence 或 HFTF effect 结论。同一
+  canonical root、同一 1442-candidate census、transport patch 后重跑均关闭；任何
+  后继必须是新 protocol 与新 source population。
+- 机器结果 SHA-256 为
+  `bba56892cd579b2e278705070ad6f42cbb6db1bc1264ec99de3132f9d888c993`。

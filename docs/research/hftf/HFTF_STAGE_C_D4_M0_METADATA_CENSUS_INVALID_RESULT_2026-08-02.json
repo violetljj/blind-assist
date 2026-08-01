@@ -1,0 +1,91 @@
+{
+  "schema": "blindassist_hftf_stage_c_d4_m0_metadata_census_invalid_result",
+  "terminal": "D4_M0_FRESH_METADATA_RECRUITABILITY_POOL_INVALID_STOP",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "evidence_role": "M0_EXECUTION_FAILURE_RECEIPT_NOT_METADATA_POOL_OPPORTUNITY_EFFECT_OR_SAFETY_EVIDENCE",
+  "bindings": {
+    "execution_commit": "72af4c770a5eb772ce7875a5ceadd32642c4a527",
+    "execution_contract": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D4_M0_METADATA_CENSUS_EXECUTION_CONTRACT_2026-08-02.json",
+      "sha256": "21a6de0e16e65998318aa83b549c3467eb9fe2b59193faa1fa44d72d1d891759"
+    },
+    "attempt": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d4-m0-metadata-census-20260802/attempt.json",
+      "bytes": 602,
+      "sha256": "7ba7f6a6bc9404fbe43dfee2955ad853929b32a7d7a310dcba4a38ccf404feb8"
+    },
+    "preflight": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d4-m0-metadata-census-20260802/preflight.json",
+      "bytes": 821,
+      "sha256": "52735837a65f52603c31c4a3e6a2d76986d63e4cebb322904aadea34182efeb4"
+    },
+    "failure": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d4-m0-metadata-census-20260802/failure.json",
+      "bytes": 289,
+      "sha256": "b9fb61cd33cd820113b246aaf9cf36ac58379dc37a916b5a03ff47fbafba96f5"
+    }
+  },
+  "execution": {
+    "formal_preflight_passed": true,
+    "head_equal_origin_master_at_start": true,
+    "canonical_root_absent_at_start": true,
+    "attempt_and_preflight_fsynced_before_first_network_request": true,
+    "preflight_observed_slot_attempt_count": 40,
+    "preflight_observed_session_id_count": 40,
+    "preflight_all_ids_within_frozen_124": true,
+    "failure_reason": "OSError: [Errno 22] Invalid argument"
+  },
+  "unbound_operator_observation_not_canonical_evidence": {
+    "attempt_filesystem_timestamp_local": "2026-08-02T05:48:33+08:00",
+    "failure_filesystem_timestamp_local": "2026-08-02T06:51:30+08:00",
+    "outer_wrapper_timeout_did_not_terminate_original_python_process": true,
+    "original_python_process_was_monitored_until_it_wrote_failure_and_exited": true,
+    "process_log_or_pid_monitor_receipt_bound": false,
+    "not_used_for_terminal_or_claim": true
+  },
+  "artifact_closed_set": {
+    "present": [
+      "attempt.json",
+      "preflight.json",
+      "failure.json"
+    ],
+    "absent": [
+      "census.json",
+      "pool.json",
+      "alloc-attempt.json",
+      "seed.json",
+      "result.json"
+    ],
+    "unknown_artifacts_present": false
+  },
+  "firewall": {
+    "complete_1560_row_census_available": false,
+    "five_hz_pool_available": false,
+    "allocation_attempt_created": false,
+    "seed_generated": false,
+    "ecology_or_effect_parent_ids_allocated": false,
+    "fresh_pose_content_read": false,
+    "fresh_rgb_mask_depth_bytes_read": false,
+    "fresh_support_truth_clearance_effect_or_sealed_payload_read": false
+  },
+  "decision": {
+    "same_canonical_root_resume_authorized": false,
+    "same_1442_candidate_census_rerun_authorized": false,
+    "transport_fix_and_retry_under_r0_authorized": false,
+    "five_or_twenty_hz_pool_claim_authorized": false,
+    "ecology_execution_authorized": false,
+    "effect_execution_authorized": false,
+    "only_new_protocol_and_new_source_population_may_be_considered": true
+  },
+  "claim_ceiling": {
+    "metadata_recruitability_established": false,
+    "opportunity_rate_established": false,
+    "hftf_effect_established": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}
