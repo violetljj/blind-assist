@@ -18,6 +18,7 @@ E0_FRESH_MEDIA_TRANSPORT_SUPPORTED /
 E0_FRESH_TEACHER_MECHANICS_NOT_EVALUABLE /
 STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_FROZEN /
 E0_1_FOOT_GROUND_STUDENT_CANARY_NOT_EVALUABLE /
+STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_FROZEN /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -236,6 +237,12 @@ dev 有 4 risk cells/4 anchors，但 heldout 只有 1/1，低于冻结 2/2。不
 已知更有利的单 source。唯一 successor 是一次性固定 3 dev + 3 heldout、与全部
 consumed dates 互斥的 E0.2；若仍无 role opportunity 就关闭该 source route。
 
+E0.2 现已在任何新媒体前一次性冻结 3 dev + 3 heldout；六个 recording dates 与全部
+十个 consumed dates 互斥，角色按 metadata 排序位置交替分配，总媒体
+1,232,000,737 bytes。每角色必须覆盖至少 4 risk cells/4 anchors/2 sources/2
+directions；学生合同完全复用 E0.1。固定 batch 任一门失败即关闭该 EgoWalk
+foot-ground student source route，不再扩大。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -292,6 +299,8 @@ consumed dates 互斥的 E0.2；若仍无 role opportunity 就关闭该 source r
 - [Stage C foot-ground student canary E0.1](HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.md)
 - [Stage C machine-readable foot-ground student canary E0.1](HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.json)
 - [Stage C foot-ground student canary E0.1 result](HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_RESULT_E0_1_2026-08-01.md)
+- [Stage C multi-source evaluation qualification E0.2](HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_2026-08-01.md)
+- [Stage C machine-readable multi-source qualification E0.2](HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

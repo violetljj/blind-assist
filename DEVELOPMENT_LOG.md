@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何新媒体前冻结一次性
+  multi-source E0.2。排除前十条 consumed trajectories 及其 recording dates 后，
+  按总字节升序、日期互斥固定 6 条，排序位置交替为 `3 dev / 3 heldout`，总计
+  1,232,000,737 bytes。E0.1 模型/训练/阈值/margins 全部不变；每角色预要求
+  `4 risk cells / 4 anchors / 2 sources / 2 directions / 300 no-risk`。固定 batch
+  任一门失败即关闭该 EgoWalk foot-ground student source route，不再扩大。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。E0.1 在 student 前停止为
   `E0_1_FOOT_GROUND_STUDENT_CANARY_NOT_EVALUABLE`。新 dev/heldout transport、
   plane/speed、`.4 s` known `.9329/.8312`、known loss/UNKNOWN gates 均通过；
