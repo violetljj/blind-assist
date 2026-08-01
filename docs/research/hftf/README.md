@@ -19,6 +19,8 @@ E0_FRESH_TEACHER_MECHANICS_NOT_EVALUABLE /
 STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_FROZEN /
 E0_1_FOOT_GROUND_STUDENT_CANARY_NOT_EVALUABLE /
 STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_FROZEN /
+E0_2_FIXED_BATCH_TEACHER_MECHANICS_NOT_EVALUABLE /
+EGOWALK_FOOT_GROUND_STUDENT_SOURCE_ROUTE_CLOSED /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -243,6 +245,14 @@ E0.2 现已在任何新媒体前一次性冻结 3 dev + 3 heldout；六个 recor
 directions；学生合同完全复用 E0.1。固定 batch 任一门失败即关闭该 EgoWalk
 foot-ground student source route，不再扩大。
 
+E0.2 固定 batch 已关闭为 `E0_2_FIXED_BATCH_TEACHER_MECHANICS_NOT_EVALUABLE`。
+role opportunity 大幅通过：dev/heldout 各 `35/37` risk cells、`32/32` physical
+anchors、5 directions；但 3/6 source 的 `.4 s` known fraction 为
+`.3257/.6515/.5000`，低于 `.70`，其中一条 plane known 也低于 `.95`。因此
+`EgoWalk + D0/D1 foot-ground reader + RGB student` source route 关闭，不训练、不再
+扩源。HFTF 本身保留，下一路线转向 R4 已有 reference 支持的 SANPO body/head
+obstacle temporal student；foot-ground 不得混入该结论。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -301,6 +311,7 @@ foot-ground student source route，不再扩大。
 - [Stage C foot-ground student canary E0.1 result](HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_RESULT_E0_1_2026-08-01.md)
 - [Stage C multi-source evaluation qualification E0.2](HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_2026-08-01.md)
 - [Stage C machine-readable multi-source qualification E0.2](HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_E0_2_2026-08-01.json)
+- [Stage C multi-source qualification E0.2 result](HFTF_STAGE_C_MULTI_SOURCE_EVALUATION_QUALIFICATION_RESULT_E0_2_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。固定 E0.2 关闭为
+  `E0_2_FIXED_BATCH_TEACHER_MECHANICS_NOT_EVALUABLE`。1,232,000,737 bytes 与
+  transport 全过；dev/heldout role opportunity 为 `35/37 risk cells`、
+  `32/32 anchors`、5 directions，但 3/6 source `.4 s` known fraction
+  `.3257/.6515/.5000 < .70`，其中首条 plane known `.9088 < .95`。report
+  SHA-256 `a58aff72e0207871ef80d9aa6f94bc9ef7db21ba08d15e7405436b0a60558eee`。
+  按 stop rule 关闭 EgoWalk foot-ground student source route，不训练、不再扩源。
+  HFTF 下一候选转向 R4 已支持的 SANPO body/head obstacle temporal student；
+  foot-ground 保持未评价，不能混称完整 HFTF。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何新媒体前冻结一次性
   multi-source E0.2。排除前十条 consumed trajectories 及其 recording dates 后，
   按总字节升序、日期互斥固定 6 条，排序位置交替为 `3 dev / 3 heldout`，总计
