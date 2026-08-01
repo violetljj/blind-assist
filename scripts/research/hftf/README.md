@@ -1,6 +1,6 @@
 # hftf
 
-状态：`development / candidate-side-lane / H0.2-admitted / H1-authorized`
+状态：`development / candidate-side-lane / R2-point-support-burned / Stage-B-swept-envelope-mechanics-active`
 
 ## 研究问题与版本
 
@@ -121,6 +121,29 @@ lookback/tolerance 下的严格历史 frame，仅用 history-to-anchor pose 计�
 ground-tangent velocity，并为 `.4/.8 s` 分别生成 horizon-specific rolling origin、
 probes 与 obstacle bins。future pose 只作为 observation，不定义 origin；predicted 与
 observed ground-origin error 仅作 diagnostic，不进入 gate。
+
+### Stage B swept-envelope label mechanics D0
+
+R2 只关闭 angular-cell point-support proxy；它没有实现原始 Stage B 所需的人体横向
+包络、候选轨迹 swept collision 与足部 ground continuity。D0 因而只在已烧毁的 R2
+sources 上检查这套标签 mechanics，不是 fresh evidence，也不评价未来轴或 student：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/audit_swept_envelope_label_mechanics.py `
+  --protocol docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json `
+  --r2-protocol docs/research/hftf/HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2_2026-08-01.json `
+  --session <burned-r2-replay-a> <authority-a.json> `
+  --session <burned-r2-replay-b> <authority-b.json> `
+  --session <burned-r2-replay-c> <authority-c.json> `
+  --session <burned-r2-replay-d> <authority-d.json> `
+  --output artifacts.local/evidence/hftf/<run-id>/mechanics.json
+```
+
+实现使用冻结的 synthetic effective half-width、9 个 swept-prism probes 和 5-section
+ground support；只有 known 且数值 risk 为零的 cell 才编码为 SAFE，缺失 ground
+support 保持 UNKNOWN。输出准入 fresh R3 也只代表 mechanics 可执行且非退化，不代表
+风险真值、Stage B 增益、H2 或主线替换。
 
 ## 输出
 
