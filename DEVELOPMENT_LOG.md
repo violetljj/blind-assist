@@ -3984,7 +3984,9 @@
   20 Hz `2/22` 仅生成假设，不进入 fresh interval 或 effect。
 - 第一执行级 M0 只允许为后续 metadata census 冻结合同：在 SANPO-Synthetic
   official train 1560 IDs 中排除原 84 + Q0 40 = 124 个互斥 consumed/reserved
-  parents，对剩余 1436 IDs 完整枚举 5/20 Hz metadata eligibility。M0 禁止读 pose
+  parents。实现前复核确认其中 6 个是 official-test parent、不在 train，因此保留
+  global 124 exclusion authority，但 train 投影为 118 exclusions + 1442 个必须
+  各尝试一次的 metadata candidates；完整账本仍覆盖 1560 IDs。M0 禁止读 pose
   content、RGB/mask/depth bytes、support、truth、clearance/effect 或 sealed payload。
 - 首轮独立科学审计以 `NOT CLEAR` 拒绝“M0 后再人工决定 target/allocation/p_min”。
   修订后 target 固定为 fresh 5 Hz metadata-eligible parents，source-content 外生上限
@@ -4002,7 +4004,10 @@
   为 0；`R_L/R_U` 三分终点与未分配 parent 禁用规则闭合。
 - 最终独立科学与工程终审均为 `CLEAR`、0 blocker。工程复算 parent bindings、
   exact 124-parent exclusion union、单一 seeded rank、allocation/CI/failure 闭集与
-  README/log 链接；D4 JSON SHA-256 为
-  `7892b778a8c0a6ea34fb0b8fe1709716ee1d04e4ef1877fb8861971de50dfc19`。
+  README/log 链接。后续实现前审计修正了 `1560-124=1436` 的错误使用：global
+  124 中有 6 个 official-test IDs，故 official-train M0 的正确 candidate count
+  是 `1560-118=1442`；修正后的 D4 JSON SHA-256 为
+  `d7d26ac2267fe43c2a80d36cfe164a5544e34034c3b80509544be1591e3f0a68`，
+  并将由 M0 execution contract 绑定。
 - 当前仅授权冻结/审计 M0 execution contract，不授权执行 metadata census、ecology、
   effect、student、主线/App/Android、生产或 safety。

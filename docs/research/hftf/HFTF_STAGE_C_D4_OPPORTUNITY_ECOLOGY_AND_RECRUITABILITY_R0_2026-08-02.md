@@ -29,7 +29,11 @@ Q0.1 的 37 个合法 selectors 只作 consumed pilot。整体 qualified 为 5/3
 
 official SANPO-Synthetic train split 固定 1560 sessions。原完整 HFTF exclusion 为
 84 个，Q0 roster 40 个与其零重叠；D4 必须排除全部 124 个，不论 Q0 slot 是 carry、
-failure、not-qualified 或 qualified。M0 对剩余 1436 IDs 做完整 metadata census：
+failure、not-qualified 或 qualified。实现前复核发现，这个 124-parent global union
+包含 6 个 official-test parents，并不属于 train；因此 train 内投影是 118 个排除项，
+而不是 124 个。M0 必须保留全局 124 权威，同时对完整 1560-row train ledger 中的
+118 个 in-split exclusions 零请求跳过，并对剩余 1442 IDs 各做且只做一次 metadata
+census：
 
 - 允许验证 description、camera schema、5/20 Hz、pose object receipt，以及 exact
   normalized 13-frame mask/depth object receipts；
@@ -124,8 +128,12 @@ cohort。它不是目标人群自然风险 prevalence、人类事件或 safety e
 Q0/Q0.1、fresh effect、RGB student、研究主线、默认 App/Android、生产与 safety
 权限全部保持关闭。
 
-冻结前独立科学与工程终审均为 `CLEAR`、0 blocker。工程终审复算四个 parent
+冻结前独立科学与工程终审均为 `CLEAR`、0 blocker。实现前工程复核随后识别并修正
+了一个计数错误：124 个全局排除 parent 中只有 118 个在 official train，另 6 个是
+已消费/保留的 official test；所以候选是 1442，不是 1436。该修正没有改变全局
+124-parent exclusion authority、hash、target、cost cap 或任何 outcome gate。工程终审复算四个 parent
 bindings、124-parent exclusion union（8060 bytes，
 `156bf17c54ecfba41f181a12df209aecc56b3c9a6a85f27b2db2f340737252f2`）、
 seed/allocation/CI/failure 闭集和全部链接；机器合同 SHA-256 为
-`7892b778a8c0a6ea34fb0b8fe1709716ee1d04e4ef1877fb8861971de50dfc19`。
+`d7d26ac2267fe43c2a80d36cfe164a5544e34034c3b80509544be1591e3f0a68`，
+并由 M0 execution contract 重新绑定。

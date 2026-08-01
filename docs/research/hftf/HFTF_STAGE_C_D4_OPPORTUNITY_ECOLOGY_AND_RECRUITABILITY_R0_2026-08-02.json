@@ -56,7 +56,22 @@
     "complete_exclusion_union_format": "sorted_unique_canonical_session_id_newline_utf8_no_bom",
     "complete_exclusion_union_bytes": 8060,
     "complete_exclusion_union_sha256": "156bf17c54ecfba41f181a12df209aecc56b3c9a6a85f27b2db2f340737252f2",
-    "remaining_session_id_count_before_metadata_eligibility": 1436,
+    "official_train_projection_of_complete_exclusion_union_count": 118,
+    "complete_exclusion_union_outside_official_train_count": 6,
+    "outside_official_train_exclusions": {
+      "consumed_f0_1_official_test": [
+        "081eb747d3d529e01b367c5d950b3fa1ccda9903246f5435293caf46badae4c2",
+        "2d9fa74adbe115a5ad715b05515b33cb55eb69b1b168684c40106861e36c317b",
+        "9bee9c839dfd2855bfe4f45e1b39996095a64437262ea8366d438de898e69b9a"
+      ],
+      "g0_reserved_official_test": [
+        "4112f4cd16e7b2caf104e190abb92a60a05b166794b6d54ba534d22dd9cae915",
+        "596f4258f9ae00a4b2b93feff786ecb018d0b75276322cef09b8c2d2a6c38029",
+        "dc3d8979cf68c5123d67d46d554f55bcd6b38ef8556df0c8d8b857f6f1863481"
+      ]
+    },
+    "remaining_official_train_session_id_count_before_metadata_eligibility": 1442,
+    "counting_correction": "global_124_exclusion_authority_is_unchanged_but_only_118_are_members_of_the_1560_id_official_train_split_so_the_candidate_count_is_1442_not_1436",
     "exclude_all_q0_slots_regardless_of_qualified_not_qualified_failure_or_carry": true,
     "exclude_reserved_official_test": true,
     "exclude_by_q0_outcome_margin_scene_motion_or_failure_signature": false,
@@ -67,7 +82,9 @@
   },
   "d4_m0_metadata_census": {
     "purpose": "enumerate_the_complete_remaining_metadata_eligible_5hz_and_20hz_pool_before_any_d4_source_content_or_opportunity_outcome",
-    "all_1436_remaining_session_ids_must_be_attempted_in_official_split_order": true,
+    "complete_1560_session_ledger_must_preserve_official_split_order": true,
+    "all_1442_nonexcluded_official_train_session_ids_must_be_attempted_once": true,
+    "all_118_in_split_exclusions_must_be_ledgered_without_candidate_metadata_requests": true,
     "internal_retries_per_metadata_request": 3,
     "not_found_or_schema_ineligible_session_is_a_closed_ineligible_row_not_a_replacement_trigger": true,
     "allowed_reads": [
@@ -99,7 +116,7 @@
     },
     "required_outputs": [
       "attempt_first_receipt",
-      "complete_1436_session_scan_ledger",
+      "complete_1560_official_train_session_scan_ledger_with_118_excluded_and_1442_candidate_attempts",
       "metadata_eligible_5hz_ids_and_authority_receipts",
       "metadata_eligible_20hz_ids_and_authority_receipts",
       "ineligible_ids_and_closed_reason",
