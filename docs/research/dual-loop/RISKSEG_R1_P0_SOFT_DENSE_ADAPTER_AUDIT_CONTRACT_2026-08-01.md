@@ -54,7 +54,9 @@ not silently added to the alert score; it remains visible in the output
 diagnostics.
 
 Within each bucket, parent-event IDs are sorted and assigned round-robin to five
-outer folds. For each arm and outer fold, the 24 inner events select one
+outer folds with frozen offsets `0,0,3,3` for blocker, boundary, normal, and
+parallel-curb buckets. Every outer fold therefore has exactly six events and
+every inner set has 24. For each arm and outer fold, the 24 inner events select one
 configuration and threshold by the exact deterministic rank in the JSON
 contract; the six outer events are then scored once. Seed `20260801` remains the
 decision seed. No event outcome may be used to expand the grid, change the
@@ -86,3 +88,23 @@ The executable implementation is frozen at baseline commit
 `0ac48b67dbc009ff1d1bfb0b214e80b057309eee`; the JSON contract binds the
 producer, scorer, validator, and test SHA-256 values. The first soft output may
 be opened only after the follow-up contract-lock commit.
+
+### Pre-output technical amendment
+
+The first locked execution reached the end of the first model's in-memory
+feature extraction, then failed because the `ai-edge-litert` Python
+`Interpreter` has no public `close()` method. No feature trace, event report, or
+event outcome was written or opened. The unsupported resource-release call was
+removed; equations, grids, folds, inputs, gates, and all scientific variables
+remain unchanged. A new producer SHA and lock commit are required before retry.
+
+Pre-output review then found that the original per-bucket modulo assignment
+would have produced outer-fold sizes `8,8,6,4,4`, contradicting the stated
+24/6 contract. No trace or event outcome had been written or opened. The split
+was amended to frozen bucket offsets that produce `6,6,6,6,6`; this is recorded
+as a scientific split amendment, not hidden as a code fix. The same review also
+added runtime implementation/receipt checks, explicit per-tensor quantization
+checks, fail-closed atomic publication into a new evidence directory, stronger
+interval/fold tests, and an independently implemented 120-frame feature-canary
+plus full event rescoring validator. Adapter equations, parameter grid, cohort,
+YOLO reference, and outcome gates did not change.

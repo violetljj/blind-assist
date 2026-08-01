@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -49,6 +50,52 @@ def verify_bound_file(root: Path, item: dict[str, Any]) -> Path:
     return path
 
 
+def verify_implementation_lock(root: Path, contract: dict[str, Any]) -> None:
+    lock = contract["implementation_lock"]
+    paths = {
+        "core_py_sha256": root / "scripts/research/riskseg_r1_p0/core.py",
+        "run_audit_py_sha256": root
+        / "scripts/research/riskseg_r1_p0/run_audit.py",
+        "validate_audit_py_sha256": root
+        / "scripts/research/riskseg_r1_p0/validate_audit.py",
+        "test_core_py_sha256": root
+        / "scripts/research/riskseg_r1_p0/test_core.py",
+    }
+    for key, path in paths.items():
+        if sha256_file(path) != str(lock[key]).lower():
+            raise ValueError(f"{path}: implementation lock drift")
+
+
+def bounded_new_output(root: Path, requested: Path) -> tuple[Path, Path]:
+    evidence_root = (root / "artifacts.local/evidence/riskseg-r1").resolve()
+    output = requested.resolve()
+    try:
+        output.relative_to(evidence_root)
+    except ValueError as exc:
+        raise ValueError(f"output must stay below {evidence_root}") from exc
+    if output == evidence_root or output.exists():
+        raise ValueError(f"output must be a new child directory: {output}")
+    temporary = output.with_name(f".{output.name}.tmp-{os.getpid()}")
+    if temporary.exists():
+        raise ValueError(f"temporary output already exists: {temporary}")
+    return output, temporary
+
+
+def require_per_tensor_quantization(
+    detail: dict[str, Any], label: str
+) -> tuple[float, int]:
+    parameters = detail["quantization_parameters"]
+    scales = np.asarray(parameters["scales"])
+    zero_points = np.asarray(parameters["zero_points"])
+    if scales.size != 1 or zero_points.size != 1:
+        raise ValueError(f"{label}: per-tensor quantization required")
+    scale = float(scales[0])
+    zero_point = int(zero_points[0])
+    if not np.isfinite(scale) or scale <= 0:
+        raise ValueError(f"{label}: invalid quantization scale")
+    return scale, zero_point
+
+
 def quantize_input(
     image_path: Path,
     detail: dict[str, Any],
@@ -57,7 +104,7 @@ def quantize_input(
     if image.shape != (288, 512, 3):
         raise ValueError(f"{image_path}: image shape {image.shape} != (288, 512, 3)")
     normalized = (image / 255.0 - IMAGENET_MEAN) / IMAGENET_STD
-    scale, zero_point = detail["quantization"]
+    scale, zero_point = require_per_tensor_quantization(detail, "input")
     # Match Kotlin roundToInt / java.lang.Math.round.
     quantized = np.floor(normalized / float(scale) + int(zero_point) + 0.5)
     return np.clip(quantized, -128, 127).astype(np.int8)[None, ...]
@@ -87,9 +134,10 @@ def model_trace(
         or output_detail["dtype"] != np.int8
     ):
         raise ValueError(f"{arm}: tensor contract mismatch")
-    output_scale, output_zero = output_detail["quantization"]
-    if not np.isfinite(output_scale) or output_scale <= 0:
-        raise ValueError(f"{arm}: invalid output scale")
+    require_per_tensor_quantization(input_detail, f"{arm} input")
+    output_scale, output_zero = require_per_tensor_quantization(
+        output_detail, f"{arm} output"
+    )
     configs = adapter_configs(contract)
     rows: list[dict[str, Any]] = []
     replay_checked = False
@@ -144,7 +192,9 @@ def model_trace(
                     "diagnostics": diagnostics,
                 }
             )
-    interpreter.close()
+    # ai-edge-litert releases native resources when the interpreter is
+    # dereferenced; unlike TensorFlow's wrapper it has no public close().
+    del interpreter
     return rows
 
 
@@ -307,7 +357,9 @@ def main() -> None:
     ):
         raise ValueError("contract identity/status mismatch")
     root = contract_path.parents[3]
+    verify_implementation_lock(root, contract)
     manifest_path = verify_bound_file(root, contract["frozen_manifest"])
+    verify_bound_file(root, contract["frozen_manifest_receipt"])
     manifest = read_object(manifest_path)
     if (
         manifest["event_count"] != 30
@@ -348,9 +400,9 @@ def main() -> None:
         )
     )
 
-    output = args.output.resolve()
-    output.mkdir(parents=True, exist_ok=True)
-    trace_path = output / "frame_features.jsonl"
+    output, temporary = bounded_new_output(root, args.output)
+    temporary.mkdir(parents=True, exist_ok=False)
+    trace_path = temporary / "frame_features.jsonl"
     with trace_path.open("w", encoding="utf-8", newline="\n") as stream:
         for row in rows:
             stream.write(
@@ -388,7 +440,8 @@ def main() -> None:
         "nested_oof": nested,
         "decision": decide(nested, old, contract),
     }
-    write_object(output / "report.json", report)
+    write_object(temporary / "report.json", report)
+    temporary.replace(output)
     print(json.dumps(report["decision"], indent=2, sort_keys=True))
 
 

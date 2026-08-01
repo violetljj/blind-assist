@@ -73,10 +73,13 @@
     "event_count": 30,
     "frame_count": 1920,
     "path": "artifacts.local/evidence/riskseg-r0/event-eval/device-view-v2/manifest.json",
-    "receipt_sha256": "b02ba7cf5863f3d920c07d0d9ed6d95fdc51bf0e7e10b0c008ac93167ce3b9fc",
     "role": "CONSUMED_DEVELOPMENT_ONLY",
     "sha256": "6fe64391a9557fd9d80ad8f861cd4b043293955e2ff3e5979ffe7fb33d33b7ff",
     "source_session_count": 30
+  },
+  "frozen_manifest_receipt": {
+    "path": "artifacts.local/evidence/riskseg-r0/event-eval/device-view-v2/receipt.json",
+    "sha256": "b02ba7cf5863f3d920c07d0d9ed6d95fdc51bf0e7e10b0c008ac93167ce3b9fc"
   },
   "gates": {
     "learned_route": {
@@ -114,10 +117,16 @@
     }
   },
   "nested_development": {
+    "bucket_fold_offsets": {
+      "blocking_obstacle_positive": 0,
+      "boundary_level_change_positive": 0,
+      "normal_walkable_negative": 3,
+      "parallel_curb_negative": 3
+    },
     "candidate_selection": "minimize total YOLO inner guardrail violation, then hit deficit, false-alert excess, clearance deficit, maximize hits, minimize false alerts, maximize cleared, then config_id and threshold ascending",
     "event_contribution": "exactly one outer-fold score per parent event",
-    "fold_assignment": "within each exact bucket sort parent_event_id ascending and assign zero-based position modulo 5",
-    "fold_assignment_sha256": "3c22464722a1c08a50efa7c56889ea46e22aa7dbb4015607a0508cbc3fc2a3f9",
+    "fold_assignment": "within each exact bucket sort parent_event_id ascending and assign (zero-based position + frozen bucket offset) modulo 5; every outer fold has exactly 6 events",
+    "fold_assignment_sha256": "09147047917b2f3f52ed10723cd8a243c5185912b22c91953344be28f9d895d1",
     "group_unit": "source session / parent event; manifest has one event per session",
     "outer_fold_count": 5,
     "selection_scope": "each arm selects independently on the 24 inner events; seed 20260801 remains the fixed decision seed",
@@ -145,9 +154,21 @@
     "corridor or any lateral zone is empty",
     "unit tests or independent validator fail"
   ],
+  "pre_output_technical_amendments": [
+    {
+      "event_report_or_trace_written": false,
+      "scientific_variables_changed": false,
+      "summary": "Removed an unsupported ai-edge-litert Interpreter.close call after the first locked execution failed at resource release. Adapter equations, grids, folds, inputs and gates are unchanged."
+    },
+    {
+      "event_report_or_trace_written": false,
+      "scientific_variables_changed": true,
+      "summary": "Pre-outcome review found unequal 8/8/6/4 outer folds. Added frozen bucket offsets yielding exactly 6 events per fold, runtime implementation-hash and receipt checks, per-tensor quantization checks, atomic new-output publication, stronger tests, and an independent 120-frame feature-canary/event rescoring validator. No feature trace or event outcome had been written or opened; adapter equation, grid, input cohort and outcome gates are unchanged."
+    }
+  ],
   "protocol_id": "RISKSEG_R1_P0_SOFT_DENSE_V1",
   "schema_version": "blindassist.riskseg_r1.p0_contract.v1",
-  "status": "PRE_OUTPUT_LOCKED",
+  "status": "PRE_OUTPUT_AMENDMENT_PENDING_RELOCK",
   "threshold_grid": {
     "start_milli": 50,
     "step_milli": 25,

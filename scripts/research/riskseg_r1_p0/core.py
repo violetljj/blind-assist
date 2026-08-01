@@ -93,14 +93,30 @@ def fold_assignments(
     manifest: dict[str, Any], contract: dict[str, Any]
 ) -> dict[str, int]:
     fold_count = int(contract["nested_development"]["outer_fold_count"])
+    offsets = {
+        str(bucket): int(offset)
+        for bucket, offset in contract["nested_development"][
+            "bucket_fold_offsets"
+        ].items()
+    }
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for event in manifest["events"]:
         grouped[str(event["bucket"])].append(event)
     assignments: dict[str, int] = {}
     for bucket in sorted(grouped):
+        if bucket not in offsets:
+            raise ValueError(f"missing fold offset for bucket {bucket}")
         events = sorted(grouped[bucket], key=lambda item: item["parent_event_id"])
         for position, event in enumerate(events):
-            assignments[str(event["parent_event_id"])] = position % fold_count
+            assignments[str(event["parent_event_id"])] = (
+                position + offsets[bucket]
+            ) % fold_count
+    fold_sizes = [
+        sum(fold == value for fold in assignments.values())
+        for value in range(fold_count)
+    ]
+    if fold_sizes != [6] * fold_count:
+        raise ValueError(f"outer fold sizes {fold_sizes} != {[6] * fold_count}")
     return assignments
 
 
@@ -432,4 +448,3 @@ def timing_against_yolo(
         ),
         "delays": delays,
     }
-
