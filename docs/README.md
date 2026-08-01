@@ -82,6 +82,8 @@ workflow 后才生效的实施合同、回归基线或日期化证据，不得�
 
 ## 研究档案
 
+- [候选事件自动挖掘](research/candidate-event-mining/README.md)：当前 `THESIS_DEVELOPMENT / discovery-only` 的长视频与公开数据候选事件流水线；只输出 candidate-blind review bundle、Luna 复核收据和候选池，不授予事件真值、训练、Android、默认 App 或生产权限。
+
 - [Frontier Upgrade 2026-07 研究档案](research/frontier-upgrade-2026-07/README.md)：按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层，只用于研究追溯。
 - [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
 

@@ -36,6 +36,7 @@
 - `validate_ustrf_sc_capture_frame_ledger.py`、`validate_ai_review_receipt.py`：正式 full-matrix truth 与 pilot 共用的帧证据和 GPT/Codex receipt 验证 Implementation；由上述稳定入口调用。
 - `validate_ustrf_sc_device_metric_geometry.py`：同设备米制几何总门；完整包要求五类 typed artifact 与设备/mount/calibration/metrics 精确绑定并继续 hash-bind raw/gate source，`blocked/in_progress` 包也会审计已有收据；通过只授权 isolated geometry shadow。
 - `run_research_tool.py <domain> <tool.py> [args...]`：统一研究 Adapter；当前支持 `egomotion-compensated-looming` RCLE 几何准入/transport、`public-video` 历史归档、`ustrf-crosscam-codex` 代理评测、`ustrf-sensor-replay` 多来源 RGB-D+pose 回放和 `ustrf-route-target-evidence-closure` route-target 证据闭环域。RCLE 外部合同只绑定这个 root adapter，不直接绑定研究内部脚本路径。
+- `run_research_tool.py candidate-event-mining <tool.py> [args...]`：长视频/公开数据候选事件自动挖掘的稳定 Adapter；只做 canonical frame trace、窗口发现、去重/聚类、candidate-blind Luna review bundle 和 discovery candidate pool，不产生事件真值或生产权限。
 - `run_public_video_campaign_tests.py`：发现并运行 `scripts/research/public_video/` 的完整测试集。
 - `run_public_video_edge_inference.ps1`：已冻结 campaign 真机闭环的稳定 Adapter；调用方不依赖研究目录内部路径。
 - `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试。
@@ -48,6 +49,7 @@
 ## 领域模块
 
 - [`research/public_video/`](research/public_video/)：已冻结的公开视频 / public-silver 历史 campaign。细粒度语义索引和迁移说明保留在该目录，不再向根目录增加实验轮次脚本。
+- [`research/candidate_event_mining/`](research/candidate_event_mining/)：长视频/公开数据的模型无关候选事件发现 Module；输出 candidate pool/quarantine 和可复核的 hash-bound bundle，不接事件真值、训练、Android 或生产路径。
 - [`research/ustrf_crosscam_codex/`](research/ustrf_crosscam_codex/)：公开头戴视角视频上的 Codex provisional silver / causal comparator，以及显式 route-projection receipt、polygon bottom-center 三档不确定性审计；不产生客观传感器事实、真人用户效果、设备米制几何或 U0/生产授权。
 - [`research/ustrf_detector_taxonomy_coverage/`](research/ustrf_detector_taxonomy_coverage/)：已关闭的 detector taxonomy / target-attribution campaign，以及历史 REveL detector 失败分类与灵敏度诊断；仅保留 benchmark 复核价值，不重开 detector、shadow、H2 或生产授权。
 - [`research/ustrf_route_target_evidence_closure/`](research/ustrf_route_target_evidence_closure/)：route-target 候选盲真值、指标资格、receipt-aware replay、逐指标 L1 profile、observability/JRDB source audit 与单变量 lifecycle 机制诊断。JRDB cross-sequence replication 已冻结 3 个新 sequence × 120 帧并以原 PCD/oriented-box/四类 kernel 复算，pooled object/pair support 为 `83.08% / 80.81%`，但远距仅 1/3 可评，仍无 selection、route/event、shadow/H2 或生产权限。

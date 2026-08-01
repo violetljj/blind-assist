@@ -1,0 +1,28 @@
+{
+  "schema": "blindassist_candidate_event_mining_project_index_v1",
+  "index_version": "r0",
+  "project_id": "blindassist-candidate-event-mining",
+  "data_root": "F:\\ba-data",
+  "project_root": "F:\\ba-data\\blindassist-candidate-event-mining",
+  "sources": [],
+  "index_rules": {
+    "source_id_unique": true,
+    "session_id_required": true,
+    "source_url_required": true,
+    "retrieved_at_utc_required": true,
+    "content_sha256_required": true,
+    "media_must_remain_under_data_root": true,
+    "public_download_only": true,
+    "authentication_bypass": false,
+    "payment_bypass": false,
+    "access_control_evasion": false
+  },
+  "authority": {
+    "isolated_internal_research": true,
+    "event_truth": false,
+    "training": false,
+    "confirmation": false,
+    "production": false,
+    "redistribution": false
+  }
+}
