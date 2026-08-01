@@ -17,11 +17,33 @@ QNN_ERROR_PATTERN = re.compile(
     r"(?:\sE\s+tflite\s+:.*\[(?:Qnn|QNN)\])|"
     r"(?:\[(?:Qnn|QNN)[^\]]*\].*(?:ERROR|Failed|failure))"
 )
+PREFLIGHT_MODEL_SHA256 = (
+    "d492d05012dd750cd6e5e642ea7d56682fa2fd1fba2bb3052b10ab1ebb0c2ddb"
+)
+RUN_ROLE_TECHNICAL_PREFLIGHT = "TECHNICAL_PREFLIGHT"
+RUN_ROLE_TRAINED_FINAL = "TRAINED_FINAL"
 
 
-def validate(receipt_path: Path, logcat_path: Path) -> dict:
+def validate(
+    receipt_path: Path,
+    logcat_path: Path,
+    *,
+    expected_model_sha256: str = PREFLIGHT_MODEL_SHA256,
+    expected_run_role: str = RUN_ROLE_TECHNICAL_PREFLIGHT,
+) -> dict:
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     logcat = logcat_path.read_text(encoding="utf-8", errors="replace")
+    if expected_run_role not in {
+        RUN_ROLE_TECHNICAL_PREFLIGHT,
+        RUN_ROLE_TRAINED_FINAL,
+    }:
+        raise ValueError(f"unsupported expected run role: {expected_run_role}")
+    expected_status = (
+        "QNN_HTP_FORMAL_SUSTAINED_TRAINED_FINAL_PASS"
+        if expected_run_role == RUN_ROLE_TRAINED_FINAL
+        else "QNN_HTP_FORMAL_SUSTAINED_PREFLIGHT_PASS"
+    )
+    receipt_run_role = receipt.get("run_role", RUN_ROLE_TECHNICAL_PREFLIGHT)
     gates = receipt["gates"]
     expected_gates = {
         "failure_count_zero",
@@ -34,7 +56,8 @@ def validate(receipt_path: Path, logcat_path: Path) -> dict:
     }
     checks = {
         "formal_status": (
-            receipt["status"] == "QNN_HTP_FORMAL_SUSTAINED_PREFLIGHT_PASS"
+            receipt["status"] == expected_status
+            and receipt_run_role == expected_run_role
             and receipt["formal_sustained_run"] is True
         ),
         "duration_at_least_600000_ms": receipt["duration_observed_ms"] >= 600_000,
@@ -51,10 +74,7 @@ def validate(receipt_path: Path, logcat_path: Path) -> dict:
         "full_graph_delegated_twice": logcat.count(FULL_DELEGATION_MARKER) >= 2,
         "cached_context_restored_twice": logcat.count(RESTORE_MARKER) >= 2,
         "no_qnn_error_log": not QNN_ERROR_PATTERN.search(logcat),
-        "model_sha_bound": (
-            receipt["model"]["sha256"]
-            == "d492d05012dd750cd6e5e642ea7d56682fa2fd1fba2bb3052b10ab1ebb0c2ddb"
-        ),
+        "model_sha_bound": receipt["model"]["sha256"] == expected_model_sha256,
         "class_order_exact": receipt["model"]["class_order"]
         == [
             "walkable",
@@ -63,16 +83,20 @@ def validate(receipt_path: Path, logcat_path: Path) -> dict:
             "unknown_nonwalkable",
         ],
     }
-    status = (
-        "PIDNET_S_TECHNICAL_PREFLIGHT_PASS"
-        if all(checks.values())
-        else "PIDNET_S_TECHNICAL_PREFLIGHT_INVALID"
-    )
+    if expected_run_role == RUN_ROLE_TRAINED_FINAL:
+        pass_status = "PIDNET_S_TRAINED_FINAL_DEVICE_PASS"
+        invalid_status = "PIDNET_S_TRAINED_FINAL_DEVICE_INVALID"
+    else:
+        pass_status = "PIDNET_S_TECHNICAL_PREFLIGHT_PASS"
+        invalid_status = "PIDNET_S_TECHNICAL_PREFLIGHT_INVALID"
+    status = pass_status if all(checks.values()) else invalid_status
     return {
         "schema_version": "blindassist.riskseg_r0.device_preflight_validation.v1",
         "protocol_id": "RISKSEG-R0",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "status": status,
+        "expected_run_role": expected_run_role,
+        "expected_model_sha256": expected_model_sha256,
         "receipt_path": str(receipt_path),
         "receipt_sha256": sha256_file(receipt_path),
         "logcat_path": str(logcat_path),
@@ -99,14 +123,35 @@ def main() -> None:
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--logcat", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--expected-model-sha256",
+        default=PREFLIGHT_MODEL_SHA256,
+    )
+    parser.add_argument(
+        "--expected-run-role",
+        choices=[RUN_ROLE_TECHNICAL_PREFLIGHT, RUN_ROLE_TRAINED_FINAL],
+        default=RUN_ROLE_TECHNICAL_PREFLIGHT,
+    )
     args = parser.parse_args()
-    result = validate(args.receipt.resolve(), args.logcat.resolve())
+    if not re.fullmatch(r"[0-9a-f]{64}", args.expected_model_sha256):
+        raise ValueError("--expected-model-sha256 must be lowercase SHA-256")
+    result = validate(
+        args.receipt.resolve(),
+        args.logcat.resolve(),
+        expected_model_sha256=args.expected_model_sha256,
+        expected_run_role=args.expected_run_role,
+    )
     args.output.resolve().write_text(
         json.dumps(result, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     print(json.dumps(result, indent=2, sort_keys=True))
-    if result["status"] != "PIDNET_S_TECHNICAL_PREFLIGHT_PASS":
+    expected_pass_status = (
+        "PIDNET_S_TRAINED_FINAL_DEVICE_PASS"
+        if args.expected_run_role == RUN_ROLE_TRAINED_FINAL
+        else "PIDNET_S_TECHNICAL_PREFLIGHT_PASS"
+    )
+    if result["status"] != expected_pass_status:
         raise SystemExit(1)
 
 

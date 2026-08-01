@@ -60,10 +60,18 @@ class RisksegPidnetQnnPreflightDeviceTest {
         require(durationMs in MIN_DURATION_MS..MAX_DURATION_MS) {
             "$ARG_DURATION_MS must be in $MIN_DURATION_MS..$MAX_DURATION_MS"
         }
+        val runRole = arguments.getString(ARG_RUN_ROLE) ?: RUN_ROLE_TECHNICAL_PREFLIGHT
+        require(runRole == RUN_ROLE_TECHNICAL_PREFLIGHT || runRole == RUN_ROLE_TRAINED_FINAL) {
+            "$ARG_RUN_ROLE must be $RUN_ROLE_TECHNICAL_PREFLIGHT or $RUN_ROLE_TRAINED_FINAL"
+        }
         val formalSustainedRun = durationMs >= FORMAL_DURATION_MS
-        val cacheDir = File(targetContext.codeCacheDir, CACHE_DIR_NAME).apply { mkdirs() }
-        val cacheBefore = cacheInventory(cacheDir)
         val modelSha256 = sha256Asset(MODEL_ASSET)
+        val modelToken = "${MODEL_TOKEN_PREFIX}_${modelSha256.take(16)}"
+        val cacheDir = File(
+            targetContext.codeCacheDir,
+            "${CACHE_DIR_PREFIX}-${modelSha256.take(16)}"
+        ).apply { mkdirs() }
+        val cacheBefore = cacheInventory(cacheDir)
         val canarySha256 = sha256Asset(CANARY_ASSET)
         val natural = decodeBitmap(CANARY_ASSET)
         val synthetic = Bitmap.createBitmap(INPUT_WIDTH, INPUT_HEIGHT, Bitmap.Config.ARGB_8888)
@@ -75,7 +83,7 @@ class RisksegPidnetQnnPreflightDeviceTest {
         var firstRuntime: QnnRuntime? = null
         var sustainedRuntime: QnnRuntime? = null
         try {
-            firstRuntime = openRuntime(cacheDir)
+            firstRuntime = openRuntime(cacheDir, modelToken)
             val syntheticCanary = firstRuntime.runPipeline(
                 source = synthetic,
                 analyzer = analyzer,
@@ -102,7 +110,7 @@ class RisksegPidnetQnnPreflightDeviceTest {
                 cacheAfterCompile.isNotEmpty()
             )
 
-            sustainedRuntime = openRuntime(cacheDir)
+            sustainedRuntime = openRuntime(cacheDir, modelToken)
             repeat(WARMUP_RUNS) { index ->
                 sustainedRuntime.runPipeline(
                     source = natural,
@@ -176,11 +184,20 @@ class RisksegPidnetQnnPreflightDeviceTest {
                 .put(
                     "status",
                     if (formalSustainedRun) {
-                        "QNN_HTP_FORMAL_SUSTAINED_PREFLIGHT_PASS"
+                        if (runRole == RUN_ROLE_TRAINED_FINAL) {
+                            "QNN_HTP_FORMAL_SUSTAINED_TRAINED_FINAL_PASS"
+                        } else {
+                            "QNN_HTP_FORMAL_SUSTAINED_PREFLIGHT_PASS"
+                        }
                     } else {
-                        "QNN_HTP_SMOKE_PASS"
+                        if (runRole == RUN_ROLE_TRAINED_FINAL) {
+                            "QNN_HTP_TRAINED_FINAL_SMOKE_PASS"
+                        } else {
+                            "QNN_HTP_SMOKE_PASS"
+                        }
                     }
                 )
+                .put("run_role", runRole)
                 .put("formal_sustained_run", formalSustainedRun)
                 .put("duration_requested_ms", durationMs)
                 .put("duration_observed_ms", samples.last().elapsedSinceStartMs)
@@ -238,6 +255,7 @@ class RisksegPidnetQnnPreflightDeviceTest {
                 .put("argmax_unique_classes", JSONArray(allClasses))
                 .put("qnn_cached_context", JSONObject()
                     .put("cache_dir", cacheDir.absolutePath)
+                    .put("model_token", modelToken)
                     .put("before", JSONArray(cacheBefore.map { it.toJson() }))
                     .put("after_first_compile", JSONArray(cacheAfterCompile.map { it.toJson() }))
                     .put("after_reuse", JSONArray(cacheAfterReuse.map { it.toJson() })))
@@ -253,7 +271,11 @@ class RisksegPidnetQnnPreflightDeviceTest {
 
             val artifactDir = File(
                 requireNotNull(targetContext.getExternalFilesDir(null)),
-                "riskseg-r0-pidnet-qnn-preflight"
+                if (runRole == RUN_ROLE_TRAINED_FINAL) {
+                    "riskseg-r0-pidnet-qnn-trained-final"
+                } else {
+                    "riskseg-r0-pidnet-qnn-preflight"
+                }
             ).apply { mkdirs() }
             File(artifactDir, REPORT_FILE).writeText(report.toString(2), Charsets.UTF_8)
             instrumentation.sendStatus(
@@ -271,7 +293,7 @@ class RisksegPidnetQnnPreflightDeviceTest {
         }
     }
 
-    private fun openRuntime(cacheDir: File): QnnRuntime {
+    private fun openRuntime(cacheDir: File, modelToken: String): QnnRuntime {
         System.loadLibrary("cdsprpc")
         assertTrue(
             "QNN HTP quantized capability is unavailable",
@@ -288,7 +310,7 @@ class RisksegPidnetQnnPreflightDeviceTest {
             setLogLevel(QnnDelegate.Options.LogLevel.LOG_LEVEL_INFO)
             setProfiling(QnnDelegate.Options.ProfilingOptions.BASIC_PROFILING)
             setCacheDir(cacheDir.absolutePath)
-            setModelToken(MODEL_TOKEN)
+            setModelToken(modelToken)
         }
         val initStart = System.nanoTime()
         val delegate = QnnDelegate(options)
@@ -650,11 +672,14 @@ class RisksegPidnetQnnPreflightDeviceTest {
         const val MODEL_ASSET =
             "riskseg_pidnet/pidnet_s_512x288_4class_preflight_full_integer_quant.tflite"
         const val CANARY_ASSET = "riskseg_pidnet/train_rgb_non_eval.png"
-        const val MODEL_TOKEN = "riskseg_pidnet_s_512x288_int8_preflight_v1"
-        const val CACHE_DIR_NAME = "riskseg-pidnet-qnn-preflight-v1"
+        const val MODEL_TOKEN_PREFIX = "riskseg_pidnet_s_512x288_int8"
+        const val CACHE_DIR_PREFIX = "riskseg-pidnet-qnn"
         const val SKEL_DIR_NAME = "riskseg-qnn-skel-v2-47"
         const val REPORT_FILE = "preflight.json"
         const val ARG_DURATION_MS = "risksegDurationMs"
+        const val ARG_RUN_ROLE = "risksegRunRole"
+        const val RUN_ROLE_TECHNICAL_PREFLIGHT = "TECHNICAL_PREFLIGHT"
+        const val RUN_ROLE_TRAINED_FINAL = "TRAINED_FINAL"
         const val DEFAULT_SMOKE_DURATION_MS = 15_000L
         const val MIN_DURATION_MS = 1_000L
         const val MAX_DURATION_MS = 900_000L
