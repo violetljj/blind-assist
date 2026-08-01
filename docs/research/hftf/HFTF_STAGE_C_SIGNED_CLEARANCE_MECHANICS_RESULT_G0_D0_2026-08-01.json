@@ -1,0 +1,131 @@
+{
+  "schema": "blindassist_hftf_stage_c_signed_clearance_mechanics_result_g0_d0",
+  "terminal": "G0_SIGNED_CLEARANCE_SOURCE_AND_MECHANICS_TERMINAL_VALIDATED",
+  "mechanics_terminal": "G0_SIGNED_CLEARANCE_MECHANICS_SUPPORTED_FOR_FRESH_LEARNABILITY_CANARY",
+  "source_plan_terminal": "G0_SIGNED_CLEARANCE_SOURCE_PLAN_READY",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "evidence_role": "CONSUMED_SOURCE_MECHANICS_AND_METADATA_SOURCE_PLAN_RESULT",
+  "claim_ceiling": "SYNTHETIC_SUPPORT_EQUIVALENT_CLEARANCE_PROXY_MECHANICS_ONLY",
+  "parents": {
+    "g0_protocol": {
+      "path": "HFTF_STAGE_C_SIGNED_CLEARANCE_CURRENT_BRIDGE_G0_2026-08-01.json",
+      "sha256": "0aa8e5828665a869837a1aa9027601d45610c0f66696da737351c9ec361da383"
+    },
+    "source_plan": {
+      "path": "artifacts.local/evidence/hftf/stage-c-g0-signed-clearance-source-plan-20260801/source_plan.json",
+      "sha256": "886271cd1546e2f3f4cd91991f39725ed39b12907e0d4294b980404d132648a4"
+    },
+    "mechanics_result": {
+      "path": "artifacts.local/evidence/hftf/stage-c-g0-signed-clearance-mechanics-20260801/result.json",
+      "sha256": "050670764e15a8b9059dc893edb71534d6112ab8931a4fb118668653f8b577bf"
+    },
+    "independent_validation": {
+      "path": "artifacts.local/evidence/hftf/stage-c-g0-signed-clearance-validation-20260801/validation.json",
+      "sha256": "4659e1fbb7938a637c157c6ceaad1186bc2b9ec919951fca6cb252b61acacd62"
+    }
+  },
+  "validator": {
+    "path": "scripts/research/hftf/validate_stage_c_g0_signed_clearance_outputs.py",
+    "sha256": "3e9dcbe7f78f9b3a1ad00d940187fee4bd75c8a74b65981962cda2dbbc28e5ec"
+  },
+  "source_roles": {
+    "development_reuse_count": 9,
+    "development_internal_roles": {
+      "outcome_open_train": 6,
+      "outcome_open_model_selection": 3
+    },
+    "one_shot_fresh_evaluation": {
+      "count": 3,
+      "session_ids": [
+        "15bc9dde1b9b54b6c109cb2ac4433f210fee71f800e1ae7bde9626913c3e02bf",
+        "15d83b42fa73c1282c2d02fbaa486258216f59b66dea1eb490a1b1ea4cc9200f",
+        "16401349eec7f73fecf3811da750a00821a899dcea6671fbe4fd3562a1f98de9"
+      ],
+      "media_or_outcome_opened": false
+    },
+    "reserved_official_test_heldout": {
+      "count": 3,
+      "session_ids": [
+        "596f4258f9ae00a4b2b93feff786ecb018d0b75276322cef09b8c2d2a6c38029",
+        "4112f4cd16e7b2caf104e190abb92a60a05b166794b6d54ba534d22dd9cae915",
+        "dc3d8979cf68c5123d67d46d554f55bcd6b38ef8556df0c8d8b857f6f1863481"
+      ],
+      "media_or_outcome_opened": false,
+      "official_test_split_generation": "1692794964058506",
+      "official_test_split_text_sha256": "0f701db54d2cc26b32bf2c636537a1353beb5d7e09f8914279cde2e7c06400df",
+      "official_test_split_session_count": 401
+    },
+    "excluded_parent_session_count": 75,
+    "test_scan_ledger_count": 6,
+    "test_scan_sequence": [
+      "2d9fa74adbe115a5ad715b05515b33cb55eb69b1b168684c40106861e36c317b",
+      "9bee9c839dfd2855bfe4f45e1b39996095a64437262ea8366d438de898e69b9a",
+      "081eb747d3d529e01b367c5d950b3fa1ccda9903246f5435293caf46badae4c2",
+      "596f4258f9ae00a4b2b93feff786ecb018d0b75276322cef09b8c2d2a6c38029",
+      "4112f4cd16e7b2caf104e190abb92a60a05b166794b6d54ba534d22dd9cae915",
+      "dc3d8979cf68c5123d67d46d554f55bcd6b38ef8556df0c8d8b857f6f1863481"
+    ]
+  },
+  "mechanics_coverage": {
+    "consumed_parent_source_count": 12,
+    "current_frame_count": 300,
+    "source_height_units": 24,
+    "all_structural_canaries_passed": true,
+    "all_source_height_gates_passed": true
+  },
+  "mechanics_summary": {
+    "known_cells_range_per_source_height": [
+      240,
+      450
+    ],
+    "known_cells_total": 8926,
+    "minimum_positive_known_cells_per_source_height": 5,
+    "maximum_positive_known_cells_per_source_height": 139,
+    "positive_known_cells_total": 1117,
+    "minimum_negative_known_cells_per_source_height": 148,
+    "maximum_negative_known_cells_per_source_height": 445,
+    "negative_known_cells_total": 7809,
+    "unknown_cells_range_per_source_height": [
+      450,
+      660
+    ],
+    "unknown_cells_total": 12674,
+    "minimum_distinct_clipped_millimeter_bins_per_source_height": 55,
+    "minimum_known_near_boundary_cells_per_source_height": 10,
+    "maximum_known_near_boundary_cells_per_source_height": 110,
+    "known_near_boundary_cells_total": 1183,
+    "minimum_risk_non_clip_min_cells_per_source_height": 5,
+    "minimum_safe_non_clip_max_cells_per_source_height": 47,
+    "maximum_risk_clip_min_fraction": 0.0,
+    "maximum_safe_clip_max_fraction": 0.8888888888888888,
+    "binary_equivalence_violations": 0,
+    "known_nonfinite_clipped_target_violations": 0,
+    "known_preclip_infinite_count": 0,
+    "known_exact_tie_value_count": 0,
+    "unknown_nonnull_target_violations": 0,
+    "unknown_to_safe_violations": 0
+  },
+  "bounded_interpretation": {
+    "supported": "THE_FROZEN_REFERENCE_LATTICE_PROXY_IS_NONDEGENERATE_AND_EXACTLY_REDERIVES_THE_F0_1_BINARY_SUPPORT_RULE_ON_CONSUMED_SOURCES",
+    "not_supported_yet": [
+      "RGB_STUDENT_CAN_LEARN_THE_PROXY",
+      "CROSS_SOURCE_FRESH_EVALUATION_GAIN",
+      "FUTURE_OR_TEMPORAL_VALUE",
+      "HUMAN_COLLISION_OR_SAFETY_TRUTH",
+      "MAINLINE_OR_APP_PROMOTION"
+    ]
+  },
+  "authorization": {
+    "freeze_d1_current_learnability_contract": true,
+    "fresh_evaluation_acquisition_executed": false,
+    "fresh_evaluation_outcome_opened": false,
+    "student_training_executed": false,
+    "reserved_heldout_acquisition_authorized": false,
+    "future_or_temporal_experiment_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_execution_authorized": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

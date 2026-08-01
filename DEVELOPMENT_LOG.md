@@ -3293,3 +3293,27 @@
   roots 在冻结时均不存在，尚未运行 metadata scan 或 D0 outcome。
 - 只有 source plan READY 且 D0 支持，才允许另行冻结 fresh-evaluation acquisition
   与 D1 训练/one-shot 合同。主线、默认 App、Android、生产与安全主张均不变。
+
+## 2026-08-01：HFTF-G0-D0 mechanics 支持并独立验证
+
+- 执行者：violjjet
+- metadata-only source planner 正式返回 `G0_SIGNED_CLEARANCE_SOURCE_PLAN_READY`，
+  固定 9 development reuse、3 one-shot fresh evaluation 和 3 个仅预留的
+  official-test future heldout；source-plan SHA-256 为
+  `886271cd1546e2f3f4cd91991f39725ed39b12907e0d4294b980404d132648a4`。
+  新 RGB/depth/mask/pose、geometry teacher 与 student outcome 均未打开。
+- D0 在全部 12 个已 consumed sources × 25 current frames 上返回
+  `G0_SIGNED_CLEARANCE_MECHANICS_SUPPORTED_FOR_FRESH_LEARNABILITY_CANARY`；
+  result SHA-256 为
+  `050670764e15a8b9059dc893edb71534d6112ab8931a4fb118668653f8b577bf`。
+- 24 个 `source × height` 单元中，positive/negative known 最小值为 `5/148`，
+  clipped 1 mm bins 最小 `55`，近边界 known 最小 `10`；最大 risk-min/safe-max
+  clip saturation 为 `0/0.888889`，且每类每单元均有非饱和 target。binary
+  equivalence、unknown-nonnull 与 unknown→safe 违规全为 `0`。
+- 独立 validator 在实现先提交并推送后正式重算 source roles、firewalls、全部 D0
+  gates 与终态，返回
+  `G0_SIGNED_CLEARANCE_SOURCE_AND_MECHANICS_TERMINAL_VALIDATED`；validation SHA-256
+  为 `4659e1fbb7938a637c157c6ceaad1186bc2b9ec919951fca6cb252b61acacd62`。
+- D0 只授权冻结 D1 current learnability 合同，不证明 RGB student learnability，
+  不授权打开 reserved heldout、future/temporal 实验、主线、App、Android、生产或
+  安全主张。
