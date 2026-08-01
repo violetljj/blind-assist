@@ -298,6 +298,21 @@ E:\codex-tools\bin\blindassist-python.cmd `
 `aggregate_r4_split_source_result.py` 是唯一可签发 joint R4 terminal 的工具；单个
 component 不得提前开放 Stage C。
 
+Stage C C0 在任何 EgoWalk RGB/depth media 内容打开前，先用 exact dataset revision
+和四个 metadata hashes 复算 239 条 trajectory 的健康门与冻结 cohort：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/plan_stage_c_c0_egowalk_inventory.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_2026-08-01.json `
+  --metadata-root artifacts.local/evidence/hftf/stage-c-c0-egowalk-inventory-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/inventory.json
+```
+
+planner 只读 parquet/meta 与远端 LFS size/hash，不下载或打开 RGB/depth，也不读取
+annotation、teacher label 或 student output。必须精确复现冻结的两个不同日期 source，
+否则在 media acquisition 前 fail closed。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
