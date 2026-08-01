@@ -9,6 +9,7 @@ plugins {
 val detectorBenchmarkAssetsDir = layout.buildDirectory.dir("generated/detectorBenchmarkAssets")
 val depthBenchmarkAssetsDir = layout.buildDirectory.dir("generated/depthBenchmarkAssets")
 val segmentationBenchmarkAssetsDir = layout.buildDirectory.dir("generated/segmentationBenchmarkAssets")
+val risksegPidnetPreflightAssetsDir = layout.buildDirectory.dir("generated/risksegPidnetPreflightAssets")
 val sparseLkBenchmarkAssetsDir = layout.buildDirectory.dir("generated/sparseLkBenchmarkAssets")
 val eventHeadBenchmarkAssetsDir = layout.buildDirectory.dir("generated/eventHeadBenchmarkAssets")
 val ustrfR12DetectorAssetsDir = layout.buildDirectory.dir("generated/ustrfR12DetectorAssets")
@@ -36,6 +37,18 @@ val segmentationBenchmarkModelPath = providers
 val segmentationBenchmarkModelAssetName = providers
     .gradleProperty("segmentationBenchmarkModelAssetName")
     .orElse("mobilenetv3_lraspp_int8_256.tflite")
+val risksegPidnetPreflightModelPath = providers
+    .gradleProperty("risksegPidnetPreflightModelPath")
+    .orElse(
+        "artifacts.local/evidence/riskseg-r0/pidnet-preflight-v1/host/" +
+            "tflite_export_v3/pidnet_s_512x288_4class_preflight_full_integer_quant.tflite"
+    )
+val risksegPidnetPreflightCanaryPath = providers
+    .gradleProperty("risksegPidnetPreflightCanaryPath")
+    .orElse(
+        "artifacts.local/evidence/datasets/sanpo-v4-real-canonical-r3-20260713/" +
+            "images/blind/sanpo_real_v0_5LlqRK-hWoDLSW5MmoLjKj6uQtZMKjb9_000000.png"
+    )
 val ustrfR12DetectorModelPath = providers.gradleProperty("ustrfR12DetectorModelPath")
     .orElse("artifacts.local/evidence/ustrf-crosscam-codex/r12-detector-export/yoloe11s_marker_static3_fp16_640.tflite")
 val ustrfR12DetectorModelAssetName = providers.gradleProperty("ustrfR12DetectorModelAssetName")
@@ -101,6 +114,19 @@ val prepareSegmentationBenchmarkAssets = tasks.register<Sync>("prepareSegmentati
     }
     into(segmentationBenchmarkAssetsDir)
 }
+
+val prepareRisksegPidnetPreflightAssets =
+    tasks.register<Sync>("prepareRisksegPidnetPreflightAssets") {
+        from(risksegPidnetPreflightModelPath.map { rootProject.file(it) }) {
+            rename { "pidnet_s_512x288_4class_preflight_full_integer_quant.tflite" }
+            into("riskseg_pidnet")
+        }
+        from(risksegPidnetPreflightCanaryPath.map { rootProject.file(it) }) {
+            rename { "train_rgb_non_eval.png" }
+            into("riskseg_pidnet")
+        }
+        into(risksegPidnetPreflightAssetsDir)
+    }
 
 val prepareSparseLkBenchmarkAssets = tasks.register<Sync>("prepareSparseLkBenchmarkAssets") {
     from(rootProject.file("artifacts.local/evidence/datasets/sanpo-boundary-aux-wbp-20260715/whole_object_redacted_rgb")) {
@@ -168,6 +194,7 @@ android {
             assets.srcDir(detectorBenchmarkAssetsDir)
             assets.srcDir(depthBenchmarkAssetsDir)
             assets.srcDir(segmentationBenchmarkAssetsDir)
+            assets.srcDir(risksegPidnetPreflightAssetsDir)
             assets.srcDir(sparseLkBenchmarkAssetsDir)
             assets.srcDir(eventHeadBenchmarkAssetsDir)
             assets.srcDir(ustrfR12DetectorAssetsDir)
@@ -187,6 +214,7 @@ tasks.matching {
     dependsOn(prepareDetectorBenchmarkAssets)
     dependsOn(prepareDepthBenchmarkAssets)
     dependsOn(prepareSegmentationBenchmarkAssets)
+    dependsOn(prepareRisksegPidnetPreflightAssets)
     dependsOn(prepareSparseLkBenchmarkAssets)
     dependsOn(prepareEventHeadBenchmarkAssets)
     dependsOn(prepareUstrfR12DetectorAssets)

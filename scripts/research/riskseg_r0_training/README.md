@@ -63,3 +63,14 @@ can be reproducibly remapped to the frozen four-class contract with closed
 source ancestry. Pixel coverage is a data-readiness check, not event-level
 model evidence, deployment evidence, or safety evidence. Previously consumed
 assets remain Development-only.
+
+## PIDNet-S formal training
+
+`train.py` is the implementation-locked, single-architecture training path for
+the three frozen seeds. It consumes only the 320-frame train and 200-frame dev
+roles, uses the official PIDNet auxiliary/final/boundary training structure,
+and never reads event-eval model outcomes.
+
+The recipe is defined as constants in `train.py`; formal runs accept only the
+three predeclared seeds and write checkpoints plus complete dev/session metrics
+under ignored `artifacts.local/` evidence directories.
