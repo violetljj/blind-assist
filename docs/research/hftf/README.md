@@ -10,7 +10,8 @@ R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE /
 R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED /
 C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE /
 C0_1_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED /
-STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_FROZEN /
+D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED /
+FUTURE_LABEL_MECHANICS_FREEZE_AUTHORIZED_ONLY /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -162,6 +163,13 @@ support modes 输出 ground-continuity proxy；semantic class、annotation 与 R
 均不参与 formal mechanics。D0 通过也只允许冻结 fresh-source label/student canary，
 不直接训练。
 
+D0 已达到 `D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED`：265/265 formal
+frames 有 ground plane，outdoor/indoor direction known fraction 为 `.918/.782`；
+7 个 risk proxies 分布于 7 frames/4 directions，UNKNOWN→SAFE 为 0，七个 structural
+canaries 与第二遍 byte-determinism 全过。claim 仍只到 consumed geometry-label
+readiness。下一步必须先冻结/验证 phone-causal future-label mechanics，再设计 fresh
+train/dev/held-out student canary。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -208,6 +216,7 @@ support modes 输出 ground-continuity proxy；semantic class、annotation 与 R
 - [Stage C C0.1 result](HFTF_STAGE_C_SOURCE_FEASIBILITY_RESULT_C0_1_2026-08-01.md)
 - [Stage C semantic-independent label readiness D0](HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_2026-08-01.md)
 - [Stage C machine-readable label readiness D0](HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_D0_2026-08-01.json)
+- [Stage C label readiness D0 result](HFTF_STAGE_C_SEMANTIC_INDEPENDENT_LABEL_READINESS_RESULT_D0_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

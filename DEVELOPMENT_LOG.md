@@ -1,4 +1,12 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。Stage C D0 达到
+  `D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED`。两条 consumed source 共
+  265 个 formal frames，plane known `265/265`；direction known fraction
+  `.9176/.7821`，known no-risk `594/524`。outdoor 7 个 risk proxies 分布于 7 帧、
+  4 方向，indoor 0；UNKNOWN→SAFE 为 0。七个 structural canaries 和第二遍 payload
+  byte-determinism 全过。report SHA-256
+  `8a267e07e48f70abbfe9e2d184e53ca5464331fd848e256aebd9b1cb2239952b`。
+  只授权冻结 causal future-label + fresh student canary；不授权 acquisition/training。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：Codex。`RISKSEG-R0`
   successor 已冻结 30 parent events / 30 source sessions 的 output-blind event-eval，
   四桶为 `8/8/7/7`；520-frame train/dev 重编码视图为 `320/200` 且 session
