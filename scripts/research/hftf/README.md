@@ -403,6 +403,21 @@ E:\codex-tools\bin\blindassist-python.cmd `
 transport decode audit；它不读取 geometry label outcome，也不授权 teacher corpus 或
 student training。
 
+E0 fresh transport audit：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/audit_stage_c_e0_fresh_media_transport.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.json `
+  --acquisition-manifest artifacts.local/evidence/hftf/stage-c-e0-fresh-media-20260801/acquisition_manifest.json `
+  --media-root artifacts.local/evidence/hftf/stage-c-e0-fresh-media-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/transport.json
+```
+
+audit 完整 decode pose/RGB/depth、核对 PTS 与 parquet 物理 timebase，但不计算
+geometry labels。只有 `E0_FRESH_MEDIA_TRANSPORT_SUPPORTED` 才授权 teacher mechanics
+和 role-opportunity audit。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
