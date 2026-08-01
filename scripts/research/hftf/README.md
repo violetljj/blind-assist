@@ -418,6 +418,21 @@ audit 完整 decode pose/RGB/depth、核对 PTS 与 parquet 物理 timebase，�
 geometry labels。只有 `E0_FRESH_MEDIA_TRANSPORT_SUPPORTED` 才授权 teacher mechanics
 和 role-opportunity audit。
 
+E0 teacher mechanics + role opportunity audit：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/audit_stage_c_e0_teacher_opportunity.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.json `
+  --transport artifacts.local/evidence/hftf/stage-c-e0-fresh-transport-20260801/transport.json `
+  --media-root artifacts.local/evidence/hftf/stage-c-e0-fresh-media-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/teacher_opportunity.json
+```
+
+audit 复用 hash-bound D0/D1 mechanics，输出 source/role aggregates 而不持久化完整
+teacher corpus。只有 `E0_FRESH_TEACHER_AND_ROLE_OPPORTUNITY_SUPPORTED` 才授权后续
+corpus generation；任何 dev/heldout opportunity failure 都不得换样。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
