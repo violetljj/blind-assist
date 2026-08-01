@@ -313,6 +313,22 @@ planner 只读 parquet/meta 与远端 LFS size/hash，不下载或打开 RGB/dep
 annotation、teacher label 或 student output。必须精确复现冻结的两个不同日期 source，
 否则在 media acquisition 前 fail closed。
 
+cohort lock 后只下载其绑定的两组 media，再以官方 `gray16le mm -> m / zero ->
+UNKNOWN` 规则完整解码，并运行冻结的 32-frame transport/surface-support audit：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/audit_stage_c_c0_egowalk_transport.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_2026-08-01.json `
+  --inventory <locked-inventory.json> `
+  --media-root artifacts.local/evidence/hftf/stage-c-c0-egowalk-inventory-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/transport_audit.json
+```
+
+audit 会完整解码全部 RGB/depth 帧并核对 LFS/local SHA、帧数、5 Hz rate 与 PTS；
+32-frame canary 只检查正有限 depth 和 bottom-half/common support，不读取 semantic
+class、annotation 或 hazard/safe truth。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
