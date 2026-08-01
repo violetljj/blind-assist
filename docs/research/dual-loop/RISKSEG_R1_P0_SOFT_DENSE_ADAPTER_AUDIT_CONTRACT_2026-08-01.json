@@ -96,11 +96,11 @@
     }
   },
   "implementation_lock": {
-    "baseline_commit": "0ac48b67dbc009ff1d1bfb0b214e80b057309eee",
-    "core_py_sha256": "e2dafd9ca0ba3de5f4afa7d7d1cadf030fd02043e954382b41e649e1e3edbaff",
-    "run_audit_py_sha256": "2677d0a6aeb5ef121ff02af8ed6550c580f3f5873fdb959198c34cecd22217c8",
-    "test_core_py_sha256": "d97c3b1b203192585da7541d191106c007f93c82046ae5cba5d189e583f997a2",
-    "validate_audit_py_sha256": "8ff56edab459255d021a0ea79cf21d436bff356a517afbc9b66d48b65d9e96a0"
+    "baseline_commit": "4546bcbcc031e9c6250e9145efd404ebbed56f88",
+    "core_py_sha256": "b424260665ea3c247dcdeda7d20ef543f54c2ad95941f9cc4c78fd1f7081c089",
+    "run_audit_py_sha256": "eba7bbad2236925f6b63daa8a8df5d35ea91b521d373313e879828c4ea663000",
+    "test_core_py_sha256": "ec09374273467a8110b1d63b2e3000c9d329dc08c380f1f7b1b57e36ad89ab67",
+    "validate_audit_py_sha256": "706ee7c0ac671bd472bfcbf5cc2c4600b5217d32f1a18ce721bc9387eca179b8"
   },
   "models": {
     "seed-20260801": {
@@ -168,7 +168,7 @@
   ],
   "protocol_id": "RISKSEG_R1_P0_SOFT_DENSE_V1",
   "schema_version": "blindassist.riskseg_r1.p0_contract.v1",
-  "status": "PRE_OUTPUT_AMENDMENT_PENDING_RELOCK",
+  "status": "PRE_OUTPUT_LOCKED",
   "threshold_grid": {
     "start_milli": 50,
     "step_milli": 25,
