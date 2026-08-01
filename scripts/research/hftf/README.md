@@ -373,6 +373,21 @@ runner 同时计算 current-observation-only baseline 与 current+future candida
 pose 只能重投影 observation，不能决定 causal origin/grid orientation。D1 不训练
 student。
 
+Stage C E0 source lock 必须在读取六条 fresh RGB/depth 前复算：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/lock_stage_c_e0_fresh_student_sources.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_2026-08-01.json `
+  --inventory artifacts.local/evidence/hftf/stage-c-c0-egowalk-inventory-lock-r1-20260801/inventory.json `
+  --pretrained-weight artifacts.local/models/hftf/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth `
+  --output artifacts.local/evidence/hftf/<run-id>/source_lock.json
+```
+
+validator 只读已消费的 metadata inventory、parent hashes 与通用预训练权重，不打开
+fresh RGB/depth。只有 `E0_FRESH_SOURCE_LOCK_VALIDATED` 才授权获取机器合同中精确
+绑定的六条媒体；仍不授权 teacher corpus 或 student training。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
