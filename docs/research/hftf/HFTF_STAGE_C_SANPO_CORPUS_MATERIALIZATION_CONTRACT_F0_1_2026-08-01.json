@@ -1,0 +1,132 @@
+{
+  "schema": "blindassist_hftf_stage_c_sanpo_corpus_materialization_contract_f0_1",
+  "status": "FROZEN_BEFORE_FIRST_F0_1_CELL_CORPUS_MATERIALIZATION",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "evidence_role": "TRAIN_CANDIDATE_AND_DEV_REFERENCE_BODY_HEAD_TARGETS_ONLY",
+  "parents": {
+    "f0_1_protocol": {
+      "path": "HFTF_STAGE_C_SANPO_CROSS_SPLIT_BODY_HEAD_TEMPORAL_STUDENT_CANARY_F0_1_2026-08-01.json",
+      "sha256": "9bfcd253c70320c398923eec18561443b90f969417631a42748584d684b1b21e"
+    },
+    "teacher_execution_contract": {
+      "path": "HFTF_STAGE_C_SANPO_TEACHER_OPPORTUNITY_EXECUTION_CONTRACT_F0_1_2026-08-01.json",
+      "sha256": "29e449f729942bfea8919d93bb404360829c42681cdc7d8f8fc86559c99b79b6"
+    },
+    "teacher_opportunity_report": {
+      "path": "artifacts.local/evidence/hftf/stage-c-f0-1-sanpo-teacher-opportunity-20260801/teacher_opportunity.json",
+      "sha256": "9db97892ae93267856e1388bccf808deb8947311e25cc5b39a1c362b4bb348b5",
+      "required_terminal": "F0_1_SANPO_TEACHER_OPPORTUNITY_READY_FOR_CORPUS"
+    }
+  },
+  "materialized_roles": {
+    "train": {
+      "source_count": 6,
+      "teacher_view": "candidate",
+      "expected_anchor_record_count": 90,
+      "student_training_role": true
+    },
+    "dev": {
+      "source_count": 3,
+      "teacher_view": "reference",
+      "expected_anchor_record_count": 39,
+      "student_training_role": false,
+      "checkpoint_selection_role": true
+    },
+    "heldout": {
+      "source_count": 0,
+      "teacher_view": "unmaterialized_until_frozen_checkpoint_evaluation",
+      "expected_anchor_record_count": 0,
+      "student_training_role": false,
+      "checkpoint_selection_role": false
+    }
+  },
+  "student_sample_contract": {
+    "file": "student_samples.jsonl",
+    "record_count": 129,
+    "one_record_per_parent_session_anchor": true,
+    "history_rgb_count": 5,
+    "history_times_s": [
+      -0.8,
+      -0.6,
+      -0.4,
+      -0.2,
+      0.0
+    ],
+    "history_rgb_paths_and_sha256_only": true,
+    "anchor_rgb_is_last_history_item": true,
+    "sf_arms_repeat_anchor_in_loader_not_in_corpus": true,
+    "field_shape_per_horizon": [
+      2,
+      6,
+      6
+    ],
+    "height_order": [
+      "body",
+      "head"
+    ],
+    "theta_order": "negative_45_to_positive_45_six_bins",
+    "distance_edges_m": [
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      6.0,
+      8.0
+    ],
+    "horizons": [
+      "current",
+      "future"
+    ],
+    "known_target_values": [
+      0,
+      1
+    ],
+    "risk_target_values_when_known": [
+      0,
+      1
+    ],
+    "risk_target_when_unknown": null,
+    "unknown_may_not_be_serialized_as_numeric_safe": true,
+    "future_rgb_depth_mask_pose_path_or_value_allowed": false,
+    "history_or_anchor_pose_allowed_as_student_feature": false,
+    "teacher_known_score_allowed_as_student_feature": false
+  },
+  "teacher_receipt_contract": {
+    "file": "teacher_receipts.jsonl",
+    "record_count": 129,
+    "quarantined_from_student_loader": true,
+    "may_bind_anchor_and_future_manifest_depth_mask_pose_hashes": true,
+    "may_bind_causal_origin_and_teacher_view": true,
+    "training_feature_authorized": false,
+    "student_loader_must_not_open_file": true
+  },
+  "materialization_validation": {
+    "source_order_and_anchor_counts_exact": true,
+    "student_and_teacher_receipt_ids_one_to_one": true,
+    "all_history_rgb_files_and_sha256_match": true,
+    "all_label_counts_reaggregate_exactly_to_teacher_opportunity_report_role_gate_view": true,
+    "zero_unknown_numeric_safe_targets": true,
+    "zero_heldout_records": true,
+    "second_run_all_payload_files_byte_exact": true,
+    "success_terminal": "F0_1_SANPO_TRAIN_DEV_CORPUS_READY",
+    "failure_terminal": "F0_1_SANPO_TRAIN_DEV_CORPUS_NOT_EVALUABLE"
+  },
+  "authorization_after_success": {
+    "train_candidate_samples_available_to_training_loader": true,
+    "dev_reference_samples_available_to_evaluation_loader": true,
+    "student_training_authorized_only_after_separate_corpus_validator": false,
+    "heldout_target_materialization_authorized": false,
+    "heldout_student_output_authorized": false
+  },
+  "claim_boundary": {
+    "geometry_targets_are_synthetic_proxies": true,
+    "foot_layer_included": false,
+    "student_effect_established": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_execution_authorized": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}
