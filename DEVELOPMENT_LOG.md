@@ -4186,3 +4186,31 @@
   不是 structural authority/source feasibility/opportunity/effect 证据。只允许另冻
   D5-S0B contract，不自动授权 S0B 或 payload。机器结果 SHA-256 为
   `8b2aeb086dcdfd18a675d281a887dbea3cc63a23b2f3b7cac1bd375e613a4a2f`。
+
+## 2026-08-02：HFTF D5-S0B structural authority 设计
+
+- S0B 将问题从 catalog capacity 提升为受限结构权威。先把 catalog 字典序首 parent
+  机械保留为永久退出 pool/payload/effect 的 schema sentinel，再对其余 197 parents
+  完整 census，逐个建立 finite positive metric robot height、带方向/frame/convention/unit
+  的 robot→front-camera rigid extrinsic、至少 25 行的 exact dynamic front pose，
+  以及 image/depth/seg/pose 共同连续 25 个 10 Hz raw frames；仍固定规范化为
+  数值最早共同窗口内相对 offsets `0,2,…,24` 的 13×5 Hz / 2.4 s。
+- 在任何数据托管端请求前，P0 source-only contract 必须从 exact toolkit commit
+  解析并锁定 provider URL derivation/198-parent mapping，不得猜 URL；P1 再仅用永久
+  排除的 sentinel 冻结 image/depth/seg member/index、metadata/extrinsic/pose 与 ZIP
+  schema；R0 绑定 P0/P1、catalog hash/198 order 和 exact 197 census order。
+- ZIP 闭集补齐为 EOCD/ZIP64/central-directory，以及仅 metadata/pose 的 bounded local
+  header + compressed range；只允许 stored/deflate，并冻结 encryption/data-descriptor/
+  ZIP64-extra/CRC/size/decompression-ratio budgets 与 fail-closed fixtures。
+  允许的 member payload 只有 exact metadata JSON 和仅作 SHA/bytes/line-count 的
+  front pose；image/depth/seg bytes、pose values 和其他 scene payload 均禁止。
+- 若 provider/schema/field/unit/frame/index/member 的全局 authority 缺失或歧义，
+  整体必须 `SOURCE_AUTHORITY_NOT_EVALUABLE`；transport/range/budget/hash/implementation/
+  protocol-parser/partial failure 才是 INVALID；只有 authority/parser 全局有效且读取成功，
+  但单 parent 缺项、malformed、height/extrinsic/pose/timeline 确定违规时才 ineligible。
+  197 全部完成后，至少 64 parents / 8 environments 只过
+  structural capacity/coverage 门；同环境仍 clustered。
+- 本设计当前只授权提交及后续冻结 provider-resolution/S0B execution contract，不授权
+  toolkit/provider read、dataset host/ZIP、S0B、payload、ecology/effect/student 或
+  主线/App/Android/生产/safety。机器设计 SHA-256 为
+  `87641ff8585dc5fe112d77cfacd3e5ce8c23b402b1396768473733f1c716aef1`。
