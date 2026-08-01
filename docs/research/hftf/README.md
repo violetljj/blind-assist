@@ -13,6 +13,7 @@ C0_1_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED /
 D0_SEMANTIC_INDEPENDENT_LABEL_READINESS_SUPPORTED /
 D1_CAUSAL_FUTURE_LABEL_MECHANICS_SUPPORTED /
 STAGE_C_FRESH_FOOT_GROUND_STUDENT_CANARY_E0_FROZEN /
+E0_FRESH_SOURCE_LOCK_VALIDATED /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -194,6 +195,13 @@ E0 只检验 5 方向、`[0,.4,.8] s` 的 foot-ground known/risk proxy；三个�
 MobileNetV3-Small arms 分别是 single-frame future、history current-only 与 history
 future。source/transport/teacher/opportunity 门全部通过前不训练，heldout 不足也不得
 换样。body/head、完整距离场、事件效果与主线仍未授权。
+
+E0 source-lock validator 已正式双运行并达到 `E0_FRESH_SOURCE_LOCK_VALIDATED`：
+parent/inventory/metadata/预训练权重 hashes、六条选择、角色、日期与 18 个文件绑定
+全部复算一致，payload byte-exact。报告 SHA-256 为
+`9e3ce8793597907dbe87e6a9c57d9f3f9ffcfb1510f078ea31e01148eab046dc`。
+当前只授权获取合同精确绑定的六条媒体；teacher corpus 与 student training 仍需后续
+transport/teacher/opportunity 门。
 
 ## 当前真源
 

@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。Stage C E0 source-lock
+  validator 正式双运行达到 `E0_FRESH_SOURCE_LOCK_VALIDATED`。D0/D1 parent、
+  C0 inventory/metadata、MobileNetV3 权重 hashes，以及 6 条 source、4/1/1
+  role、unique recording dates 和 18 个 pose/RGB/depth file bindings 全部复算
+  一致；payload byte-exact。report SHA-256
+  `9e3ce8793597907dbe87e6a9c57d9f3f9ffcfb1510f078ea31e01148eab046dc`。
+  只授权获取精确选择媒体；teacher corpus 和 student training 尚未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何 fresh RGB/depth
   或 geometry-label outcome 前冻结 Stage C fresh foot-ground student canary E0。
   从 95 条 healthy EgoWalk inventory 排除两条 consumed source，按总字节升序、
