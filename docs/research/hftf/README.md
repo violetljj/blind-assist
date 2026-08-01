@@ -52,6 +52,13 @@ H1 R0 已按 outcome 前冻结的数值协议一次执行并关闭为
 `.15/.10/.10`。因此 multi-height/future 非冗余不能评价；R0 sessions 已烧毁，不在
 同一数据上调 known/coverage 门救援。
 
+H1 R1 已在任何新 teacher outcome 计算前冻结。它不改 R0 的 known、UNKNOWN、
+denominator 或数值门，只把不可由单目 observation 支持的 360° 输出合同改写为
+camera-forward `[-45°, +45°]` 的 6-bin locomotion sector。R1 使用排除 R0 burned
+sessions 后按 official train session ID 字典序选择的四个全新 source sessions；四者
+source authority 已通过并绑定精确 report/manifest/spec/pose hashes。状态仍是
+`FROZEN_RESULT_NOT_RUN`，尚无 R1 teacher 结果。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -61,6 +68,8 @@ H1 R0 已按 outcome 前冻结的数值协议一次执行并关闭为
 - [H1 geometry teacher canary R0 protocol](HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.md)
 - [H1 R0 machine-readable protocol](HFTF_H1_GEOMETRY_TEACHER_CANARY_PROTOCOL_R0_2026-08-01.json)
 - [H1 R0 result](HFTF_H1_GEOMETRY_TEACHER_CANARY_RESULT_R0_2026-08-01.md)
+- [H1 R1 forward-sector protocol](HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1_2026-08-01.md)
+- [H1 R1 machine-readable protocol](HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

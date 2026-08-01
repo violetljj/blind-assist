@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在读取任何 R1 teacher
+  outcome 前冻结
+  `HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_PROTOCOL_R1`，状态
+  `FROZEN_RESULT_NOT_RUN`。R0 的 360° 单目 observation support 已在 known coverage
+  门失败且四 sessions 永久 burned；R1 不是降门救援，而是预先定义 camera-forward
+  `[-45°,45°]`、6 个 15° bins 的 action-agnostic locomotion sector。其余
+  distance/height/horizon、9 probes、UNKNOWN、固定 denominator 与
+  `.15/.10/.10/.02/.02` 门全部保持 R0 不变。fresh sources 按排除 R0 后 official
+  train session ID 字典序前四个固定为 `00c2a1cd/013e2db5/01c00b13/026d78f9`；
+  4/4 source authority 已通过，完整 IDs 与 authority/manifest/spec/pose hashes 已
+  绑定。尚未计算 R1 field outcome；H2、主线、Android、提醒、默认 App、生产与安全均
+  未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。一次性完成
   `HFTF_H1_GEOMETRY_TEACHER_CANARY_R0` 正式四 session 执行，终态
   `H1_GEOMETRY_TEACHER_NOT_EVALUABLE`。4/4 authority、exact frozen session set、
