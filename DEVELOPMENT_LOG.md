@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 formal
+  `HFTF_STAGE_B_SWEPT_ENVELOPE_REFERENCE_COMPARISON_R3`，终态
+  `R3_SOURCE_OR_REFERENCE_NOT_EVALUABLE`。authority/exact set、obstacle known 与
+  ground known 均过门，但 `043db91a` 在 primary 下为 0 positive / 883 negative，
+  违反预冻结 4/4 reference opportunity gate；ground shared-known 651 cells 也无
+  step/drop opportunity。后序 diagnostic 的 cohort F1/precision/recall delta 为
+  `+.1915/+.3273/-.0038`，其余三 session F1 delta `+.1670/+.2831/+.1455`，但
+  不越过前序门。报告 SHA-256
+  `512a5dda7e84148820e398af39eab4d5841f4a2ac6c94871cfb6754b374cb5af`。
+  四 sessions burned；只允许 outcome 前冻结 reference-only opportunity-qualified
+  R3.1，保持原 effect gates 并限制 claim ceiling。Stage C、H2、主线、Android、
+  提醒、默认 App、生产与安全仍未授权。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。formal R3 首次调用读取并
   完成 fresh field metrics 后，在 gate 汇总阶段因某分层 arm 无 predicted positive、
   helper 将 F1 写为 undefined 而 fail closed；未创建报告，四 sessions 已视为 consumed，
