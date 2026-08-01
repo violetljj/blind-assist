@@ -1,0 +1,192 @@
+{
+  "schema": "blindassist_hftf_stage_c_d2_mechanics_execution_contract",
+  "status": "FROZEN_AFTER_D2_MEDIA_ACQUISITION_BEFORE_PREPROCESSOR_OR_TRUTH_OUTCOME",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "research_question": "does_history_only_constant_velocity_transport_of_the_current_signed_clearance_field_predict_plus_0_4_and_plus_0_8_second_geometry_proxy_clearance_more_accurately_than_unmoved_current_field_persistence",
+  "parents": {
+    "d2_design": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_D2_2026-08-01.json",
+      "sha256": "06a8ff9cbe9c4c9b98cceeb7a36c69ba098f6f7d53ab980adb747b987a1728d9",
+      "required_status": "FROZEN_BEFORE_D2_METADATA_SCAN_OR_SOURCE_OUTCOME"
+    },
+    "d2_1_clarification": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_CLARIFICATION_D2_1_2026-08-02.json",
+      "sha256": "51ed1c0bc2a98481b4991f237d44979cf0c455624031c2c0ee41715ec0d6a8f0",
+      "required_status": "FROZEN_AFTER_METADATA_ONLY_COHORT_LOCK_BEFORE_ANY_D2_MEDIA_POSE_CONTENT_OR_MECHANICS_OUTCOME"
+    },
+    "metadata_qualification_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D2_OFFICIAL_TRAIN_METADATA_QUALIFICATION_RESULT_2026-08-02.json",
+      "sha256": "fae85191e9e7c77f4206c37b722899afacb539f30dc129a9f1fae32252858096",
+      "required_terminal": "D2_OFFICIAL_TRAIN_METADATA_COHORT_QUALIFIED"
+    },
+    "metadata_qualification": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d2-official-train-metadata-qualification-20260802/qualification.json",
+      "sha256": "63a217c3e658bbe4fee9e351c5c9abf68379ec2ccb89a6c3449f1581e385ee47",
+      "required_terminal": "D2_OFFICIAL_TRAIN_METADATA_COHORT_QUALIFIED"
+    },
+    "media_acquisition_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D2_SIX_SOURCE_MEDIA_ACQUISITION_RESULT_2026-08-02.json",
+      "sha256": "dd877a90d7198445f32dc33c9310bbfdf1c3d5bf11ad7c6881bd623045add50e",
+      "required_terminal": "D2_SIX_SOURCE_SHORT_PATH_MEDIA_COHORT_ACQUIRED"
+    },
+    "g0_signed_clearance_definition": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_SIGNED_CLEARANCE_CURRENT_BRIDGE_G0_2026-08-01.json",
+      "sha256": "0aa8e5828665a869837a1aa9027601d45610c0f66696da737351c9ec361da383",
+      "required_status": "FROZEN_AFTER_F0_1_STOP_BEFORE_G0_CLEARANCE_OR_SOURCE_SCAN_OUTCOME"
+    },
+    "swept_envelope_mechanics": {
+      "path": "docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json",
+      "sha256": "a69d25d77f1e2b72f407980f005c758b965517fd032562a009f91746ea1e0e6a",
+      "required_status": "FROZEN_DEVELOPMENT_CANARY_RESULT_NOT_RUN"
+    },
+    "per_frame_acquisition_index": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d2-six-source-media-acquisition-20260802/cohort/per_frame_acquisition_index.json",
+      "sha256": "60e63e2df8b2813519e90a287b841dbcfa2b2c9a9b0765b1f10ebcf7c9c8b2a8",
+      "required_terminal": "D2_SIX_SOURCE_PER_FRAME_MEDIA_POSE_SLICES_READY"
+    }
+  },
+  "implementations": {
+    "mechanics_common": {
+      "path": "scripts/research/hftf/stage_c_d2_mechanics_common.py",
+      "sha256": "7f2a4041c7275c94e27cb8a30b5107f6e0ed15a9b54193e5ec3409461ba62071"
+    },
+    "future_blind_preprocessor": {
+      "path": "scripts/research/hftf/preprocess_stage_c_d2_future_blind.py",
+      "sha256": "aec88988188f027878fb7951d696a4789b59f8478ddfb52cd5d0c0579557078f"
+    },
+    "truth_effect_evaluator": {
+      "path": "scripts/research/hftf/evaluate_stage_c_d2_transport_effect.py",
+      "sha256": "166641e2b277d476628908d6c9d0d56f0f18df41970922cdf22f0918a7c0ab2e"
+    },
+    "swept_probe_mechanics": {
+      "path": "scripts/research/hftf/audit_swept_envelope_label_mechanics.py",
+      "sha256": "a41395ae0eafaa5d4a35b65236f25cbf269293c7c1e82a891b99b9e8e4a94735"
+    },
+    "probe_visibility_mechanics": {
+      "path": "scripts/research/hftf/audit_stage_c_f0_1_teacher_opportunity.py",
+      "sha256": "8827c209e8077a74f5e8eb98bf575b71386a2c14fd11994add2b02aa9604f3ff"
+    }
+  },
+  "implementation_tests": {
+    "mechanics_test": {
+      "path": "scripts/research/hftf/test_stage_c_d2_mechanics.py",
+      "sha256": "1d8393be7e99626285263ce96aef2c9dc4ac24ca9872d13d30b73650b8b7c97e"
+    },
+    "test_count": 13,
+    "tests_passed": 13,
+    "hftf_full_test_count": 337,
+    "hftf_full_tests_passed": 337
+  },
+  "cohort_and_mechanics": {
+    "parent_count": 6,
+    "anchors_per_parent": 7,
+    "anchor_normalized_indices": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "horizons_seconds": [
+      0.4,
+      0.8
+    ],
+    "height_bands": [
+      "body",
+      "head"
+    ],
+    "field_shape_height_theta_distance": [
+      2,
+      6,
+      6
+    ],
+    "prediction_anchor_count": 42,
+    "prediction_anchor_horizon_record_count": 84,
+    "arms": [
+      "CURRENT_FIELD_PERSISTENCE",
+      "HISTORY_CAUSAL_ADVECTED_CURRENT_FIELD"
+    ],
+    "parent_session_is_independent_unit": true,
+    "exact_g0_all_admitted_points_per_cell_proxy_rule": true,
+    "unknown_never_becomes_numeric_safe": true
+  },
+  "execution_order": [
+    "commit_and_push_this_exact_contract_all_three_mechanics_implementations_common_test_and_dependencies",
+    "confirm_head_equals_origin_master_and_every_bound_execution_file_is_tracked_and_clean",
+    "confirm_all_three_canonical_artifacts_do_not_exist",
+    "run_future_blind_preprocessor_once",
+    "write_and_fsync_preprocessor_attempt_before_first_pose_or_current_media_read",
+    "durably_write_each_anchor_points_and_two_horizon_predictions_before_reading_the_next_anchor",
+    "verify_exactly_42_anchor_predictions_and_84_horizon_records_plus_completion_without_opening_future_truth",
+    "run_truth_effect_evaluator_once",
+    "write_and_fsync_exclusive_truth_join_receipt_before_first_future_pose_depth_or_mask_read",
+    "produce_exactly_84_truth_records_and_one_frozen_terminal",
+    "seal_result_without_rerun_source_replacement_or_same_cohort_retuning"
+  ],
+  "canonical_artifacts": {
+    "future_blind_prediction_root": "artifacts.local/evidence/hftf/stage-c-d2-future-blind-predictions-20260802",
+    "truth_join_once_receipt": "artifacts.local/evidence/hftf/stage-c-d2-truth-join-once-20260802.json",
+    "effect_result": "artifacts.local/evidence/hftf/stage-c-d2-transport-effect-result-20260802/result.json",
+    "preprocessor_failure": "artifacts.local/evidence/hftf/stage-c-d2-future-blind-predictions-20260802/failure.json",
+    "truth_effect_failure": "artifacts.local/evidence/hftf/stage-c-d2-transport-effect-result-20260802/failure.json"
+  },
+  "opportunity_gates_each_source_height_horizon": {
+    "stratum_count": 24,
+    "common_known_coverage_min": 0.1,
+    "known_risk_cells_min": 5,
+    "known_safe_cells_min": 20,
+    "unknown_to_safe_violations_max": 0,
+    "all_24_strata_required": true,
+    "failure_terminal": "D2_NOT_EVALUABLE_OPPORTUNITY_INADEQUATE_NO_SOURCE_REPLACEMENT"
+  },
+  "effect_gates_all_required": {
+    "six_source_macro_clearance_mae_relative_reduction_min": 0.1,
+    "six_source_macro_clearance_mae_absolute_reduction_m_min": 0.03,
+    "each_height_persistence_mae_minus_advected_mae_min": -1e-12,
+    "each_horizon_persistence_mae_minus_advected_mae_min": -1e-12,
+    "parent_sessions_with_mae_improvement_min": 5,
+    "parent_sessions_total": 6,
+    "parent_macro_risk_sign_f1_delta_min": 0.03,
+    "unknown_to_safe_violations_max": 0,
+    "failure_terminal": "CAUSAL_SIGNED_CLEARANCE_TRANSPORT_NOT_SUPPORTED_STOP",
+    "success_terminal": "CAUSAL_SIGNED_CLEARANCE_TRANSPORT_SUPPORTED_FOR_RGB_STUDENT_PROTOCOL"
+  },
+  "failure_policy": {
+    "preprocessor_failure_terminal": "D2_NOT_EVALUABLE_PREPROCESSOR_EXECUTION_FAILED_NO_RERUN_NO_SOURCE_REPLACEMENT",
+    "evaluator_pretruth_failure_terminal": "D2_NOT_EVALUABLE_EVALUATOR_PRETRUTH_VALIDATION_FAILED_NO_RERUN_NO_SOURCE_REPLACEMENT",
+    "truth_join_interruption_terminal": "D2_NOT_EVALUABLE_TRUTH_JOIN_INTERRUPTED_NO_SECOND_JOIN_NO_SOURCE_REPLACEMENT",
+    "preprocessor_rerun_authorized": false,
+    "second_truth_join_authorized": false,
+    "source_replacement_authorized": false,
+    "same_cohort_retuning_authorized": false,
+    "preserve_partial_artifacts_on_failure": true
+  },
+  "outcome_firewall_at_freeze": {
+    "future_blind_prediction_created": false,
+    "future_pose_depth_or_mask_truth_opened": false,
+    "truth_join_receipt_created": false,
+    "effect_result_created": false,
+    "preprocessor_failure_created": false,
+    "truth_effect_failure_created": false,
+    "student_executed": false
+  },
+  "authorization": {
+    "future_blind_preprocessor_execution_authorized": true,
+    "future_truth_open_authorized_before_completion": false,
+    "truth_effect_execution_after_completion_authorized": true,
+    "second_truth_join_authorized": false,
+    "source_replacement_authorized": false,
+    "same_cohort_retuning_authorized": false,
+    "geometry_teacher_is_synthetic_proxy_only": true,
+    "rgb_student_execution_authorized": false,
+    "reserved_official_test_open_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

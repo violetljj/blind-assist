@@ -747,6 +747,34 @@ preprocessor、future truth、effect 或 student。
 下一步只能先冻结并推送 mechanics execution contract，再运行 future-blind
 preprocessor；不得直接打开 future truth。
 
+D2 mechanics execution contract 绑定 D2/D2.1、完整 metadata qualification、已封存
+六源媒体结果、per-frame acquisition index、G0/swept mechanics，以及 exact
+common/preprocessor/evaluator/tests bytes。preprocessor 的 prediction root 必须原先
+不存在，并在首次 current pose/media read 前写入 durable attempt；每个 anchor 的
+points/prediction 必须在处理下一 anchor 前落盘。它只读 history/current pose 与 current
+depth/mask，不读取 future truth：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/preprocess_stage_c_d2_future_blind.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_D2_MECHANICS_EXECUTION_CONTRACT_2026-08-02.json `
+  --output-root artifacts.local/evidence/hftf/stage-c-d2-future-blind-predictions-20260802
+```
+
+只有 completion 闭合 exact 42 anchor predictions、42 points 与 84 horizon records 后，
+才允许启动一次 evaluator。evaluator 必须在首个 future pose/depth/mask read 前以
+exclusive create + `flush + fsync` 写出 truth-join receipt；receipt 或既有 canonical
+failure 任一存在都禁止第二次 truth join：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/evaluate_stage_c_d2_transport_effect.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_D2_MECHANICS_EXECUTION_CONTRACT_2026-08-02.json `
+  --output artifacts.local/evidence/hftf/stage-c-d2-transport-effect-result-20260802/result.json
+```
+
+任何 failure/中断均不重跑、不换源、不追加或同 cohort 调参。正终态也只授权另冻 RGB
+student protocol，不授权训练或执行；研究主线、默认 App、Android、生产与 safety
+权限保持关闭。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

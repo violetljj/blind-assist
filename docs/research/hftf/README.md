@@ -410,6 +410,8 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C machine-readable D2 six-source media acquisition contract](HFTF_STAGE_C_D2_SIX_SOURCE_MEDIA_ACQUISITION_EXECUTION_CONTRACT_2026-08-02.json)
 - [Stage C D2 six-source media acquisition result](HFTF_STAGE_C_D2_SIX_SOURCE_MEDIA_ACQUISITION_RESULT_2026-08-02.md)
 - [Stage C machine-readable D2 six-source media result](HFTF_STAGE_C_D2_SIX_SOURCE_MEDIA_ACQUISITION_RESULT_2026-08-02.json)
+- [Stage C D2 future-blind mechanics execution contract](HFTF_STAGE_C_D2_MECHANICS_EXECUTION_CONTRACT_2026-08-02.md)
+- [Stage C machine-readable D2 mechanics execution contract](HFTF_STAGE_C_D2_MECHANICS_EXECUTION_CONTRACT_2026-08-02.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

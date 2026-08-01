@@ -3673,3 +3673,32 @@
   candidate、geometry teacher 与 effect 均未执行。本节点只授权冻结另一个
   hash-bound mechanics execution contract；student、reserved official-test、
   研究主线、App、Android、生产与 safety 权限继续关闭。
+
+## 2026-08-02：HFTF D2 future-blind mechanics 执行合同冻结
+
+- 执行者：violjjet
+- 在六源媒体 acquisition outcome 已封存、但 candidate prediction 与 future truth
+  均未打开时，冻结 D2 mechanics execution contract。合同精确绑定 D2/D2.1、
+  tracked metadata/media results、完整 qualification 与 per-frame index、G0/swept
+  mechanics，以及 common/preprocessor/evaluator/tests 的 exact bytes。6 parents ×
+  7 anchors 固定生成 42 个 predictions 与 84 个 horizon records，不得换源、追加或
+  同 cohort 调参。
+- preprocessor 只读每个 anchor 的 history/current pose slices 与 current
+  depth/mask；在首次输入读取前独占写入并 `fsync` attempt，每个 anchor 的 points 与
+  prediction 在读取下一 anchor 前 durable。evaluator 只有在 completion 闭合 exact
+  order/count/hashes 后才能启动，并在首个 future pose/depth/mask read 前独占写入并
+  `fsync` truth-join receipt。既有 pretruth failure、truth receipt 或 effect failure
+  都在任何第二次 completion/future read 前 fail-closed。
+- common/preprocessor/evaluator/test SHA-256 分别为
+  `7f2a4041c7275c94e27cb8a30b5107f6e0ed15a9b54193e5ec3409461ba62071` /
+  `aec88988188f027878fb7951d696a4789b59f8478ddfb52cd5d0c0579557078f` /
+  `166641e2b277d476628908d6c9d0d56f0f18df41970922cdf22f0918a7c0ab2e` /
+  `1d8393be7e99626285263ce96aef2c9dc4ac24ca9872d13d30b73650b8b7c97e`。
+  targeted tests 13/13、HFTF 全集 337/337 通过；合同 JSON SHA-256 为
+  `2afb530400b157990474523f4157630f9bf1bc225f15e32bfe9a0ffd4f034c56`。
+  独立最终 hash-after 审计核对两个入口、prior-failure rerun guard、全部 canonical
+  outputs 仍不存在及权限布尔值后 `CLEAR`，且未打开或解码 D2 media/future truth。
+- 本节点只授权 exact files 提交推送并确认 `HEAD == origin/master` 后，依次各执行
+  一次 future-blind preprocessor 与 truth/effect evaluator。即使正终态也只授权另冻
+  RGB student protocol，不授权 student training/execution；研究主线、默认 App、
+  Android、reserved official-test、生产与 safety 权限继续关闭。
