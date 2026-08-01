@@ -708,6 +708,36 @@ rotation 使用 history/current forward 在 current ground tangent plane 上的�
 其 0.4/0.8 s records 必须在处理后续 anchor 前 durable 写入。D2.1 JSON SHA-256 为
 `51ed1c0bc2a98481b4991f237d44979cf0c455624031c2c0ee41715ec0d6a8f0`。
 
+D2 六源媒体获取合同只物化 metadata scan 已锁定的 6 个 official-train Development
+parents。正式 CLI 必须从 tracked、clean、pushed 的 exact contract/acquirer/test
+及 SANPO network transport dependency 启动，并在首网前再次确认
+`HEAD == origin/master`、固定 `--retries 3`、canonical root 不存在且 durable
+attempt 可独占创建、完成 `flush + fsync`。source-blind 路径预检命令为：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/acquire_stage_c_d2_six_source_media.py `
+  --execution-contract docs/research/hftf/HFTF_STAGE_C_D2_SIX_SOURCE_MEDIA_ACQUISITION_EXECUTION_CONTRACT_2026-08-02.json `
+  --retries 3 `
+  --preflight-only `
+  --preflight-output artifacts.local/evidence/hftf/stage-c-d2-six-source-media-path-preflight-20260802/preflight.json
+```
+
+已封存的 preflight 覆盖 1510 个 final/staging/downloader `.tmp` 内容路径，最大长度
+173；它不联网、不读取媒体，也不创建 acquisition root。正式一次性命令为：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/acquire_stage_c_d2_six_source_media.py `
+  --execution-contract docs/research/hftf/HFTF_STAGE_C_D2_SIX_SOURCE_MEDIA_ACQUISITION_EXECUTION_CONTRACT_2026-08-02.json `
+  --retries 3
+```
+
+acquirer 逐项绑定 frozen generation/size/MD5；完整 pose CSV 校验后只把 13 个 selected
+rows 写成独立 hash-bound pose slices，供后续 future-blind preprocessor 按 anchor
+最小读取。RGB/mask/depth 不在获取阶段解码。任何 source 失败都只产生
+`D2_MEDIA_ACQUISITION_NOT_EVALUABLE_NO_RETRY_NO_SOURCE_REPLACEMENT`，不得重跑、换源、
+追加或 partial fill；成功也只允许另冻 mechanics execution contract，不直接授权
+preprocessor、future truth、effect 或 student。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别

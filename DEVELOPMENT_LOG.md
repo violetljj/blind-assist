@@ -3611,3 +3611,35 @@
   outcome 均未打开，因此这不是同 cohort outcome-driven retuning。
 - 本节点仍不授权媒体、preprocessor、truth/effect 或 RGB student；只允许继续冻结
   hash-bound one-shot media/mechanics implementation contract。
+
+## 2026-08-02：HFTF D2 六源短路径媒体获取执行合同冻结
+
+- 执行者：violjjet
+- 在 6 条 official-train Development parents 仅有 metadata outcome、尚未读取其
+  RGB/mask/depth bytes 或 pose 内容时，冻结独立的一次性媒体获取合同。合同精确继承
+  D2、D2.1、tracked metadata result、完整 qualification artifact 与 T0 short-path
+  equivalence；6 个 source、fps、13-frame timeline 及全部 generation/size/MD5
+  receipts 均不可替换。
+- acquirer 在首网前验证 exact contract/acquirer/test 为 tracked、clean、hash-bound，
+  实际 GCS metadata/download/retry/`.tmp` dependency 也必须为 exact
+  hash、tracked/clean。随后确认 `HEAD == origin/master`、`--retries 3`、
+  canonical root 不存在，并在首网回调前用 exclusive create + `flush + fsync`
+  固化 durable attempt。任一 source 失败即
+  `D2_MEDIA_ACQUISITION_NOT_EVALUABLE_NO_RETRY_NO_SOURCE_REPLACEMENT`；不得重跑、
+  换源、追加或 partial fill。
+- acquisition 只下载并校验固定对象；RGB/mask/depth 不解码。完整 pose CSV 校验后，
+  仅把 13 个 selected READY rows 物化为独立 hash-bound pose slices，作为后续
+  future-blind preprocessor 的最小读取接口，不计算 candidate、truth 或 effect。
+- source-blind preflight 未联网、未打开媒体、未创建 acquisition root；覆盖 1510 个
+  final/staging/downloader `.tmp` 内容路径，最大长度 173，receipt SHA-256 为
+  `c41ee24cb13978ea8bf50b7df26063967bf651a508f9b715504505254e81fb95`。
+  acquirer/test/network dependency SHA-256 为
+  `31802d25db633265988c989136fc4d1a4ebbb4a0007ab7ecf1ff1cb7531b8668` /
+  `aafdf107a3d4422836a850a21ca3124c3bd6058416ef019d9a214da423667322` /
+  `9e8694f0474adc20ea65068e70e6b28e49a0431daff2ad4cdb868ad5332a8854`；
+  targeted tests 12/12 通过。合同 JSON SHA-256 为
+  `e4e457cfac3d1009866dc0832d22757744707a86938ff2eddc1f2771bbdc147f`。
+- 本节点只授权在 exact files 提交推送、远端一致和独立首网前审计 CLEAR 后执行一次
+  六源获取。成功只允许另冻 future-blind mechanics execution contract；teacher、
+  truth/effect、student、reserved official-test、研究主线、App、Android、生产与
+  safety 权限继续关闭。
