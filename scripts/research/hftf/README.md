@@ -1,7 +1,8 @@
 # hftf
 
 状态：`development / candidate-side-lane /
-R3.1-reference-opportunity-not-evaluable / split-source-successor-only`
+R3.1-reference-opportunity-not-evaluable /
+D3-Q0-screening-effect-contract-frozen`
 
 ## 研究问题与版本
 
@@ -801,6 +802,46 @@ contract/planner/test/D2 metadata helper 必须先 tracked、clean、hash-bound�
 中断或 roster 不足均不重跑、不追加。成功也只允许另冻完整
 reference-and-support qualifier、sealed-truth firewall 与 effect skeleton，不能直接
 打开 40-slot media/truth。
+
+metadata-only roster 已一次锁定为
+`D3_Q0_METADATA_ROSTER_40_SLOTS_LOCKED`。后续筛选与 effect execution contract 现已在
+任何 D3 slot media/support/truth 前冻结：40 slots 按原顺序逐个消费，failure 也消耗
+slot，首 6 个四 strata 合格 source 立即停止；不允许 replacement、reorder、budget
+expansion 或同 outcome 调门。
+
+每次只执行唯一 next slot；runner 在首网前 durable 写入 attempt，只下载 1 个 pose
+CSV 与 normalized `2..12` 的 depth/mask，RGB 为 0。它只计算两臂 support known 与
+future truth，不计算两臂 clearance/effect。`aggregate_required=false` 时继续唯一
+next slot；只有变为 true 时才运行 aggregator：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/run_stage_c_d3_q0_next_slot.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_D3_Q0_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json `
+  --retries 3
+
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/aggregate_stage_c_d3_q0_screening.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_D3_Q0_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json
+```
+
+aggregator 只读 closed selector/failure receipts，不读 sealed payload。只有 exact
+first-six selection durable 后，才允许先生成 future-blind predictions，再一次性打开
+selected-six sealed truth：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/preprocess_stage_c_d3_q0_selected_future_blind.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_D3_Q0_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json
+
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/evaluate_stage_c_d3_q0_sealed_effect.py `
+  --contract docs/research/hftf/HFTF_STAGE_C_D3_Q0_SCREENING_EFFECT_EXECUTION_CONTRACT_2026-08-02.json
+```
+
+preprocessor 只读 pose `0..8` 与 current/history depth/mask `2..8`，不读
+future-only `9..12` 或 sealed payload。evaluator 必须在全部 42 predictions durable
+后写入 open-once receipt，重算资格与 exact support equality，再复用未改变的 D2 effect
+estimand/gates。任何 failure/interruption 均保留 partial artifacts，禁止 rerun 或换源。
+selector/failure 必须反向绑定 durable slot attempt；aggregator 在首个 receipt read
+前写 attempt。global screening、slot、aggregator、preprocessor 或 effect 的孤儿
+`.tmp/.orphan/attempt` 只允许直接封存 no-rerun failure，不得重开已消费输入。
 
 ## 输出
 

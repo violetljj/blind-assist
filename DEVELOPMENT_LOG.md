@@ -3820,3 +3820,49 @@
   qualifier/sealed-truth/effect-skeleton execution contract；roster 不可重跑、替换、
   追加或重排，逐 slot 媒体/pose、support/truth、effect、RGB student、reserved
   official-test、研究主线、默认 App、Android、生产与 safety 权限全部仍关闭。
+
+## 2026-08-02：HFTF D3-Q0 screening/sealed-effect 执行合同冻结
+
+- 执行者：violjjet
+- 在已封存 40-slot metadata roster 后、任何 D3 slot pose/media/support/truth 前，
+  同时冻结 next-slot qualifier、selector-only aggregator、selected-six future-blind
+  preprocessor、sealed-effect evaluator、D2/G0/mechanics dependencies 与 29 个专属
+  tests；hard-interruption 回归补强后专属 tests 增至 35。canonical screening root
+  在冻结与验证时不存在。
+- 40 slots 保持原字典序，failure/interruption 也消耗 slot；首 6 个四 strata 合格
+  source 立即停止，禁止 replacement、reorder、manual skip、budget expansion 与
+  outcome 后改门。每个 body/head × `.4/.8 s` stratum 的 denominator 固定 252，
+  common-known coverage/risk/safe 门为 `.10/5/20`，UNKNOWN→SAFE 必须为 0。
+- qualifier 只下载 1 个 pose CSV 与 normalized `2..12` 的 11 depth/11 mask，RGB 为
+  0；只计算 persistence/advected support known 与 future truth，不计算候选臂
+  clearance 或任何 effect metric。sealed payload 先 durable，再从同一待写确定性
+  bytes 直接传递 SHA-256 给 selector；selector/aggregator 不接收或重读 payload。
+- future-blind preprocessor 只读 pose `0..8` 与 current/history depth/mask `2..8`。
+  effect 只在 exact first-six selection 与 42 predictions durable 后创建 attempt 和
+  open-once receipt，再各读 selected payload 一次。pretruth failure、truth-open 后
+  interruption、qualification/support recompute mismatch 都有冻结 no-rerun/no-
+  replacement terminal；过早调用 evaluator 不消费 attempt。
+- 首轮独立科学审计先以 `NOT CLEAR` 发现 selector 为取 hash 重读 sealed payload，
+  以及 effect pretruth/interruption 终点未完全闭合；没有绕过。修复 deterministic
+  bytes digest handoff、durable failure writer 与 contract validator 后，第二轮独立
+  只读审计复核原问题及授权边界为 `CLEAR`，未发现新科学 blocker。
+- 独立工程审计随后以 `NOT CLEAR` 发现 slot receipt 未强制绑定 durable attempt、
+  aggregator/preprocessor/effect 的 hard-interruption 孤儿状态、aggregate attempt
+  顺序与 sealed-open count 缺口。修复后 state scanner 逐 receipt 重验 slot/global
+  attempt hash，aggregator 在首个 receipt read 前 durable 写 attempt，所有 `.tmp` /
+  `.orphan` 恢复只封存 failure 而不重开输入，opened payload receipt 在首次 read 后
+  立即计数。最终独立工程审计结论 `CLEAR`，Windows final/tmp/orphan 最大路径实测
+  140 字符，小于冻结的 240 上限。
+- common/next-slot/aggregator/preprocessor/evaluator SHA-256 分别为
+  `26bf520b7646b8f331c0fcd15fead1666b37370889adf150ab9444d402745356` /
+  `3e4dbac02359261f5339c786935552941bdd3c143a912194faa34a61f238c4c2` /
+  `2cd26d235a8bf3779dafbcb05622e6393d055ea48b2bc551d4931760461fae4c` /
+  `9226bbe9cb1088890e4d24ec2e2bcc604ddb8476582f302ba0bc05736244fe8f` /
+  `d98b0bea9555a40add2887917fae5b1360a91a14a8a5c9b16ef82a1c958a3bb2`；
+  execution-contract JSON SHA-256 为
+  `84f24a72c4640ca3ba66388ed9ec75a68aa55270c5e369b2b072a7b4d65354eb`。
+  targeted 35/35、HFTF 全集 387/387 通过。
+- 本节点只授权 exact files 提交推送、确认 `HEAD == origin/master`、formal
+  `verify_git=True` 与最终工程审计通过后，执行唯一 next slot。它不授权 effect
+  提前执行、RGB student、reserved official-test、研究主线、默认 App、Android、
+  生产或 safety。
