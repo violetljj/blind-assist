@@ -89,3 +89,8 @@
 /scripts/research/ustrf_route_target_evidence_closure/test_r2_l1x_l2p.py whitespace=-blank-at-eof
 /scripts/research/ustrf_route_target_evidence_closure/validate_r2_l1x_l2p.py whitespace=-blank-at-eof
 /scripts/research/ustrf_route_target_evidence_closure/candidate_replay_r2_continuation_a2.py whitespace=-blank-at-eof
+
+# The full-project dataset ledger is a generated 400+ MB index; keep its
+# byte-stable snapshot in Git LFS while retaining the CSV/Markdown summaries
+# and reproducible scanners in ordinary Git.
+/DATASET_MASTER_LEDGER.json filter=lfs diff=lfs merge=lfs -text
