@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。根据 independent
+  outcome-blind implementation review，在 H1 正式运行前完成最后一次 denominator 与
+  authority 消歧。冻结 usable anchor 集 `U=current+near+far all bound`；之后
+  current/near/far coverage 分母均为 `|U|*432`，height disagreement 为
+  `|U|*144`，future union 为 `|U|*432`，UNKNOWN/invalid 不能缩小分母。冻结
+  anchor-centric future、`n/f/right/theta` basis、`floor(x+.5)` depth lookup、
+  camera-z、semantic 0 probe 为 unknown、闭开区间规则，并绑定 4 个完整 session ID
+  及 authority/manifest/spec/pose SHA-256。尚未计算 H1 outcome，既有数值门与顺序终点
+  未改变。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在读取任何 H1 outcome 前，
   补齐 H1 R0 的纯实现消歧：point cloud 固定 x/y stride 8、offset 4；排除 semantic
   IDs `0/1/3/5/6/17/27/30`，dynamic 单列 `12/13/14/15/16/21`；9 probes 固定为

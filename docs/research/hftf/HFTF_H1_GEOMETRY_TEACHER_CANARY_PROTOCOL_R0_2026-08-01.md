@@ -33,6 +33,9 @@ parent independent unit 是 source session，不是 frame/cell：
 任何 source authority、canonical transform、`+Z` local-ground proxy 或 report hash
 不通过即整体 `H1_SOURCE_AUTHORITY_NOT_EVALUABLE`。
 
+机器协议同时绑定四个完整 session ID、authority report SHA-256、manifest SHA-256、
+dataset-spec SHA-256 与 pose SHA-256；替换、重复或增加 session 均 fail closed。
+
 ## 3. 冻结 field
 
 ### 3.1 轴
@@ -56,6 +59,8 @@ parent independent unit 是 source session，不是 frame/cell：
 - 一个 anchor 缺任一 future observation 时不进入可用 anchor 数，但仍记录为
   missing，不得计为 known/safe；
 - 每 session 至少需要 12 个同时具有 current/near/far 的 anchors。
+- `U` 精确定义为 current/near/far 都绑定成功的 anchors；后续 required-cell
+  denominator 只以冻结的 `U` 构造，`U` 内 UNKNOWN/invalid 不得再缩小分母。
 
 nominal time 来自 `source_frame_num / session description fps`，不是实测 capture time。
 
@@ -64,8 +69,11 @@ nominal time 来自 `source_frame_num / session description fps`，不是实测 
 1. 使用 H0 冻结的 `p_world = R_xyzw @ p_opencv_camera + translation_m`；
 2. 每个 observation 用 semantic-ground + metric-depth 的 H0 确定性 local-plane
    fitter；camera ground proxy 为 camera position 到该 plane 的正交投影；
-3. field 坐标原点固定为 anchor 的 ground proxy，vertical 使用 anchor local-plane
-   normal；theta zero 是 anchor camera forward 在 local plane 上的投影；
+3. field 坐标原点固定为 anchor 的 ground proxy，vertical 使用朝向 anchor camera 的
+   local-plane normal `n`；`f=normalize(project(R[:,2], plane))`，
+   `right=normalize(cross(f,n))`，`theta=atan2(dot(d,right),dot(d,f))` 并 wrap
+   `[-pi,pi)`；future points/probes 始终使用同一 anchor basis，不在 future camera
+   重置原点；
 4. obstacle points 排除 ground proxy classes、sky 和无效深度；dynamic semantic classes
    保留并在 atlas 单列；
    - point cloud 固定从原分辨率每 8 pixels 在 x/y 各采样一次，起点为 `(4,4)`；
@@ -76,6 +84,9 @@ nominal time 来自 `source_frame_num / session description fps`，不是实测 
      `theta lower/upper × distance lower/upper × height lower/upper` 的八个角点；
    - cell 中心和八个角点至少 5 个投影在 observation image 内；
    - 对在图像内的 probe，metric depth 必须到达该 probe 前缘，容差 `0.20 m`；
+   - probe 必须有 camera-z `>0`，投影像素使用 `floor(value+0.5)` nearest pixel；
+     behind/out-of-frame/non-finite/non-positive depth 或 semantic class `0` 都 fail；
+     depth 沿用 camera-z，不改成 Euclidean ray distance；
    - `known_score = passing probes / 9`；
 6. cell `known_score >= 5/9` 才可评价 risk，否则 tri-state 为 `UNKNOWN`；
 7. `risk_score` 为该 cell 体积内 obstacle points 的 clipped support：
@@ -85,10 +96,19 @@ nominal time 来自 `source_frame_num / session description fps`，不是实测 
 9. 不使用 RGB 类别预测、路线意图、future teacher 信息选择 anchor/阈值或任何事件
    标签。
 
+height bins 左闭右开，仅 `head` 上界 `2.05 m` 右闭；radial bins 左闭右开，仅最后
+`8 m` 右闭。basis 退化或非有限时整体 `NOT_EVALUABLE`，不得运行后换轴补救。
+
 ## 5. 固定指标与门
 
-所有比例以预定义 denominator 计算；missing/invalid/UNKNOWN 不移出 required cell
-denominator。
+所有比例以预定义 denominator 计算；`U` 冻结后 missing/invalid/UNKNOWN 不移出
+required cell denominator：
+
+- 每 horizon known coverage denominator：`|U| × 24 × 6 × 3`；
+- height disagreement denominator：`|U| × 24 × 6`；
+- future near-or-far union denominator：`|U| × 24 × 6 × 3`；
+- UNKNOWN 只不能进入 numerator，不能缩小 denominator；
+- near/far union 每 required height cell 最多计一次。
 
 ### 5.1 source/mechanics validity
 
@@ -100,17 +120,20 @@ denominator。
 
 ### 5.2 multi-height 非冗余
 
-对 current 中三个 height cells 都 known 的同一 `anchor × theta × distance`：
+对 `U` 中每个 `anchor × theta × distance`：
 
 - `height_disagreement`：`max(risk)-min(risk) >=0.25`；
+- numerator 还要求三个 height cells 全部 known；UNKNOWN 留在固定 denominator；
 - 每 session disagreement fraction `>=0.02`；
 - 4/4 sessions 均须通过。
 
 ### 5.3 future 非冗余
 
-对 current 与对应 future height cell 都 known 的 required cells：
+对 `U` 中每个 required height cell：
 
 - `future_change`：`abs(risk_future-risk_current) >=0.25`；
+- numerator 要求 current 与对应 near/far 至少一组 jointly known；UNKNOWN 留在固定
+  denominator；
 - near 或 far 的 union change fraction每 session `>=0.02`；
 - 4/4 sessions 均须通过。
 
