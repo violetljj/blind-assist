@@ -12,13 +12,16 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from run_geometry_teacher_canary import (
+    _advected_basis,
     _bin_obstacle_support,
+    _causal_tangent_velocity,
     _cell_probes_world,
     _coverage_fraction,
     _decide_terminal,
     _known_field,
     _required_denominators,
     _select_horizon_indices,
+    _select_history_indices,
     _theta_edges,
 )
 
@@ -46,6 +49,53 @@ class GeometryTeacherCanaryTest(unittest.TestCase):
             ),
             [1, None, None],
         )
+
+    def test_history_tie_prefers_higher_source_frame(self) -> None:
+        self.assertEqual(
+            _select_history_indices(
+                [100, 300, 500],
+                [1, 3, 5],
+                300,
+                100,
+            ),
+            [None, 0, 1],
+        )
+
+    def test_history_binding_respects_strict_past_and_tolerance(self) -> None:
+        self.assertEqual(
+            _select_history_indices(
+                [0, 200, 400, 600, 800],
+                [0, 2, 4, 6, 8],
+                400,
+                50,
+            ),
+            [None, None, 0, 1, 2],
+        )
+
+    def test_advected_origin_uses_only_ground_tangent_velocity(self) -> None:
+        basis = (
+            np.asarray([1.0, 2.0, 0.0]),
+            np.asarray([1.0, 0.0, 0.0]),
+            np.asarray([0.0, 1.0, 0.0]),
+            np.asarray([0.0, 0.0, 1.0]),
+        )
+        history = {
+            "position_m": [0.0, 0.0, 0.0],
+            "quaternion_xyzw": [0.0, 0.0, 0.0, 1.0],
+        }
+        anchor = {
+            "position_m": [1.0, 2.0, 1.0],
+            "quaternion_xyzw": [0.0, 0.0, 0.0, 1.0],
+        }
+        velocity = _causal_tangent_velocity(
+            history, anchor, 0.4, basis[3]
+        )
+        np.testing.assert_allclose(velocity, [2.5, 5.0, 0.0])
+        shifted = _advected_basis(basis, velocity, 800)
+        np.testing.assert_allclose(shifted[0], [3.0, 6.0, 0.0])
+        np.testing.assert_array_equal(shifted[1], basis[1])
+        np.testing.assert_array_equal(shifted[2], basis[2])
+        np.testing.assert_array_equal(shifted[3], basis[3])
 
     def test_height_layers_are_binned_independently(self) -> None:
         points = np.asarray(

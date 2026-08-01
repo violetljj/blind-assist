@@ -111,9 +111,16 @@ E:\codex-tools\bin\blindassist-python.cmd `
 
 runner 会重算 protocol、authority、manifest、dataset spec、pose 与每个实际消费
 depth/mask 文件 hash；theta edges 同时约束 cell probes 与 obstacle binning，partial
-sector 外 points 不 wrap；future field 保持 anchor-centric，UNKNOWN 留在冻结 denominator。
+sector 外 points 不 wrap；R0/R1 future field 保持 anchor-centric，所有版本的 UNKNOWN
+都留在冻结 denominator。
 输出终点只可能是 H1 的 `NOT_EVALUABLE`、multi-height/future stop 或
 `GEOMETRY_PROXY_MECHANISM_SUPPORTED`，后者也不会自动授权 H2。
+
+R2 protocol 额外绑定 source-preparation contract。runner 对每个 anchor 选择冻结
+lookback/tolerance 下的严格历史 frame，仅用 history-to-anchor pose 计算
+ground-tangent velocity，并为 `.4/.8 s` 分别生成 horizon-specific rolling origin、
+probes 与 obstacle bins。future pose 只作为 observation，不定义 origin；predicted 与
+observed ground-origin error 仅作 diagnostic，不进入 gate。
 
 ## 输出
 

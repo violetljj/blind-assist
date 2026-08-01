@@ -38,6 +38,14 @@ PROTOCOL_RESULT_CONTRACTS = {
             "SYNTHETIC_FORWARD_SECTOR_GEOMETRY_PROXY_MECHANICS_ONLY"
         ),
     },
+    "blindassist_hftf_h1_causal_advected_origin_geometry_teacher_protocol_r2": {
+        "result_schema": (
+            "blindassist_hftf_h1_causal_advected_origin_geometry_teacher_result_r2"
+        ),
+        "claim_ceiling": (
+            "SYNTHETIC_CAUSAL_ADVECTED_GEOMETRY_PROXY_MECHANICS_ONLY"
+        ),
+    },
 }
 EXPECTED_TRANSFORM = (
     "p_world = R_xyzw @ p_opencv_camera + camera_translation_m"
@@ -85,6 +93,42 @@ def _select_horizon_indices(
             key=lambda candidate_index: (
                 abs(int(values[candidate_index]) - target),
                 source_frame_indices[candidate_index],
+            ),
+        )
+        error = abs(int(values[candidate]) - target)
+        selected.append(
+            candidate if error <= tolerance_ms else None
+        )
+    return selected
+
+
+def _select_history_indices(
+    timestamps_ms: list[int],
+    source_frame_indices: list[int],
+    lookback_ms: int,
+    tolerance_ms: int,
+) -> list[int | None]:
+    selected: list[int | None] = []
+    values = np.asarray(timestamps_ms, dtype=np.int64)
+    for timestamp, source_frame in zip(
+        timestamps_ms, source_frame_indices
+    ):
+        target = timestamp - lookback_ms
+        candidates = [
+            candidate
+            for candidate, candidate_source_frame in enumerate(
+                source_frame_indices
+            )
+            if candidate_source_frame < source_frame
+        ]
+        if not candidates:
+            selected.append(None)
+            continue
+        candidate = min(
+            candidates,
+            key=lambda candidate_index: (
+                abs(int(values[candidate_index]) - target),
+                -source_frame_indices[candidate_index],
             ),
         )
         error = abs(int(values[candidate]) - target)
@@ -165,6 +209,52 @@ def _anchor_basis(
     if float((camera_position - origin) @ up) <= 0:
         raise ValueError("Local ground normal does not point toward camera")
     return origin, forward, right, up
+
+
+def _causal_tangent_velocity(
+    history_binding: dict[str, Any],
+    anchor_binding: dict[str, Any],
+    history_to_anchor_seconds: float,
+    anchor_up: np.ndarray,
+) -> np.ndarray:
+    if (
+        not math.isfinite(history_to_anchor_seconds)
+        or history_to_anchor_seconds <= 0.0
+    ):
+        raise ValueError("History-to-anchor duration must be positive")
+    history_position, _ = _pose(history_binding)
+    anchor_position, _ = _pose(anchor_binding)
+    velocity = (
+        anchor_position - history_position
+    ) / history_to_anchor_seconds
+    tangent = velocity - float(velocity @ anchor_up) * anchor_up
+    if not np.all(np.isfinite(tangent)):
+        raise ValueError("Causal tangent velocity is non-finite")
+    return tangent
+
+
+def _advected_basis(
+    basis: tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
+    tangent_velocity: np.ndarray,
+    horizon_ms: int,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    origin, forward, right, up = basis
+    shifted_origin = origin + tangent_velocity * (horizon_ms / 1000.0)
+    if not np.all(np.isfinite(shifted_origin)):
+        raise ValueError("Advected field origin is non-finite")
+    return shifted_origin, forward, right, up
+
+
+def _distribution_summary(values: list[float]) -> dict[str, float | int]:
+    if not values:
+        return {"count": 0, "median": 0.0, "p90": 0.0, "maximum": 0.0}
+    array = np.asarray(values, dtype=np.float64)
+    return {
+        "count": len(values),
+        "median": float(np.median(array)),
+        "p90": float(np.percentile(array, 90)),
+        "maximum": float(np.max(array)),
+    }
 
 
 def _obstacle_points_world(
@@ -717,12 +807,22 @@ def _session_result(
         int(horizon_contract["far"]),
         tolerance_ms,
     )
+    rolling_contract = protocol.get("rolling_origin")
+    if rolling_contract is not None:
+        history_indices = _select_history_indices(
+            timestamps,
+            source_frame_indices,
+            int(rolling_contract["history_lookback_ms"]),
+            int(rolling_contract["history_tolerance_ms"]),
+        )
+    else:
+        history_indices = [index for index in range(len(rows))]
     usable = [
         index
-        for index, (near, far) in enumerate(
-            zip(near_indices, far_indices)
+        for index, (history, near, far) in enumerate(
+            zip(history_indices, near_indices, far_indices)
         )
-        if near is not None and far is not None
+        if history is not None and near is not None and far is not None
     ]
 
     theta_edges = _theta_edges(protocol["field"])
@@ -755,12 +855,20 @@ def _session_result(
     unknown_cell_atlas: list[dict[str, Any]] = []
     dynamic_cell_atlas: list[dict[str, Any]] = []
     observation_cache: dict[str, dict[str, Any]] = {}
+    causal_tangent_speeds: list[float] = []
+    advection_errors = {"near": [], "far": []}
 
     for anchor_index, anchor_row in enumerate(rows):
         if anchor_index not in usable:
             atlas.append(
                 {
                     "anchor_manifest_id": anchor_row["id"],
+                    "history_manifest_id": (
+                        rows[history_indices[anchor_index]]["id"]
+                        if rolling_contract is not None
+                        and history_indices[anchor_index] is not None
+                        else None
+                    ),
                     "near_manifest_id": (
                         rows[near_indices[anchor_index]]["id"]
                         if near_indices[anchor_index] is not None
@@ -781,12 +889,25 @@ def _session_result(
         basis = _anchor_basis(
             anchor_binding, plane_by_id[anchor_row["id"]]
         )
-        probes = _cell_probes_world(
-            basis,
-            theta_edges,
-            distance_edges,
-            height_bands,
-        )
+        tangent_velocity = np.zeros(3, dtype=np.float64)
+        history_index = history_indices[anchor_index]
+        if rolling_contract is not None:
+            if history_index is None:
+                raise ValueError("Usable rolling anchor has no history")
+            history_row = rows[history_index]
+            tangent_velocity = _causal_tangent_velocity(
+                binding_by_id[history_row["id"]],
+                anchor_binding,
+                (
+                    source_frame_indices[anchor_index]
+                    - source_frame_indices[history_index]
+                )
+                / source_fps,
+                basis[3],
+            )
+            causal_tangent_speeds.append(
+                float(np.linalg.norm(tangent_velocity))
+            )
         targets = {
             "current": anchor_index,
             "near": near_indices[anchor_index],
@@ -797,12 +918,27 @@ def _session_result(
             if target_index is None:
                 continue
             target_row = rows[target_index]
+            target_basis = (
+                _advected_basis(
+                    basis,
+                    tangent_velocity,
+                    int(horizon_contract[horizon_name]),
+                )
+                if rolling_contract is not None
+                else basis
+            )
+            probes = _cell_probes_world(
+                target_basis,
+                theta_edges,
+                distance_edges,
+                height_bands,
+            )
             value = _field(
                 replay_root,
                 target_row,
                 binding_by_id[target_row["id"]],
                 spec["camera"],
-                basis,
+                target_basis,
                 probes,
                 protocol,
                 observation_cache,
@@ -822,10 +958,30 @@ def _session_result(
                     )
                 ),
             )
+            if rolling_contract is not None and horizon_name != "current":
+                observed_ground_origin = np.asarray(
+                    plane_by_id[target_row["id"]][
+                        "camera_ground_projection_m"
+                    ],
+                    dtype=np.float64,
+                )
+                advection_errors[horizon_name].append(
+                    float(
+                        np.linalg.norm(
+                            target_basis[0] - observed_ground_origin
+                        )
+                    )
+                )
         current_value = anchor_fields["current"]
         atlas.append(
             {
                 "anchor_manifest_id": anchor_row["id"],
+                "history_manifest_id": (
+                    rows[history_index]["id"]
+                    if rolling_contract is not None
+                    and history_index is not None
+                    else None
+                ),
                 "near_manifest_id": (
                     rows[near_indices[anchor_index]]["id"]
                     if near_indices[anchor_index] is not None
@@ -844,6 +1000,23 @@ def _session_result(
                         int(value["dynamic_counts"].sum())
                         for value in anchor_fields.values()
                     )
+                ),
+                "causal_tangent_speed_mps": (
+                    float(np.linalg.norm(tangent_velocity))
+                    if rolling_contract is not None
+                    else None
+                ),
+                "predicted_origin_displacement_m": (
+                    {
+                        name: float(
+                            np.linalg.norm(tangent_velocity)
+                            * int(horizon_contract[name])
+                            / 1000.0
+                        )
+                        for name in ("near", "far")
+                    }
+                    if rolling_contract is not None
+                    else None
                 ),
                 "excluded_from_usable_anchor_set": False,
             }
@@ -991,6 +1164,11 @@ def _session_result(
         {
             "frame_count": len(rows),
             "usable_anchor_count": len(usable),
+            "missing_history_anchor_count": (
+                sum(index is None for index in history_indices)
+                if rolling_contract is not None
+                else 0
+            ),
             "missing_near_anchor_count": sum(
                 index is None for index in near_indices
             ),
@@ -1017,6 +1195,17 @@ def _session_result(
                 "fraction": future_fraction,
             },
             "dynamic_support_point_count": dynamic_support,
+            "causal_advection": {
+                "enabled": rolling_contract is not None,
+                "tangent_speed_mps": _distribution_summary(
+                    causal_tangent_speeds
+                ),
+                "predicted_to_observed_ground_origin_error_m": {
+                    name: _distribution_summary(advection_errors[name])
+                    for name in ("near", "far")
+                },
+                "diagnostic_only_not_a_gate": True,
+            },
             "occlusion_unknown_atlas": atlas,
             "unknown_cell_atlas": unknown_cell_atlas[:30],
             "dynamic_cell_atlas": sorted(
@@ -1085,6 +1274,29 @@ def run(
     ):
         raise ValueError("H1 protocol is not a supported frozen contract")
     _theta_edges(protocol["field"])
+    preparation_validation = None
+    if protocol.get("source_preparation_contract") is not None:
+        preparation = protocol["source_preparation_contract"]
+        relative_path = Path(str(preparation["path"]))
+        if relative_path.is_absolute():
+            raise ValueError("Source preparation path must be relative")
+        preparation_path = (
+            protocol_path.resolve().parent / relative_path
+        ).resolve()
+        try:
+            preparation_path.relative_to(protocol_path.resolve().parent)
+        except ValueError as error:
+            raise ValueError(
+                "Source preparation path escapes protocol directory"
+            ) from error
+        observed_hash = _sha256(preparation_path)
+        if observed_hash != preparation["sha256"]:
+            raise ValueError("Source preparation contract hash mismatch")
+        preparation_validation = {
+            "path": str(preparation_path),
+            "sha256": observed_hash,
+            "ok": True,
+        }
     required_count = int(protocol["required_session_count"])
     if len(session_inputs) != required_count:
         raise ValueError(
@@ -1153,6 +1365,7 @@ def run(
                 / "verify_sanpo_pose_geometry_authority.py"
             )
         },
+        "source_preparation_contract_validation": preparation_validation,
         "source_session_count": len(sessions),
         "unique_source_session_count": len(set(ids)),
         "parent_units_are_independent": independent,

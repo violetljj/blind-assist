@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成但尚未正式运行 R2
+  causal-advection runner。实现新增严格过去 history selection（等距时取更高 source
+  frame）、history-to-anchor ground-tangent velocity、每 horizon 独立 rolling
+  origin/probes/binning、predicted-vs-observed ground-origin diagnostic，以及
+  source-preparation contract hash validation；future pose 不参与 origin 或方向。
+  R0/R1 无 rolling contract 时保持原行为。新增 history tolerance/tie 与 tangent
+  advection 三项测试，HFTF suite 共 41 项通过。独立只读审查逐项复核 causality、
+  horizon wiring、U/denominator、hash fail-closed 与 diagnostic/gate 隔离，无 blocking
+  finding。状态仍为
+  `PROTOCOL_AND_IMPLEMENTATION_FROZEN_RESULT_NOT_RUN`，未计算正式 R2 outcome。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 R2 四个 fresh source
   authority 并冻结
   `HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2`，状态
