@@ -3439,3 +3439,28 @@
   authority → package/opportunity → truth-blind prediction → single truth join →
   independent terminal validation。reserved official-test、future/temporal、
   主线、App、Android、生产与安全权限继续关闭。
+
+## 2026-08-01：HFTF-G0-D1 fresh 执行不可评价关闭
+
+- 执行者：violjjet
+- fresh 合同已由 commit `ab9a6cc5257bf20477a097d5aec6fe9cf2703874`
+  推送并确认 `HEAD == origin/master` 后，才按 source order 启动第一次正式
+  acquisition。第一个固定 session 为 `15bc9dde…e02bf`，只执行一次 CLI；脚本的
+  frame-0 depth 下载内部三次 retry 均失败，最终返回 `ok=false`。
+- 失败目标 `.float16.gz.tmp` 路径长度为 263 字符；同一输出根内较短的 metadata、
+  frame-0 RGB 与 mask 已成功写入。该组合支持
+  `WINDOWS_PATH_LENGTH_TRANSPORT_FAILURE` 强推断，但没有完整 dataset manifest，
+  也没有 authority、teacher opportunity、student prediction 或 truth join。
+  stdout SHA-256 为
+  `4b738c7cfd9e81058d7021210a49d1ad7a69db1099522182140f3eb9564cc7ee`。
+- 因 fresh 内容已经打开，严格执行预先冻结的 no-retry/no-rematerialization/
+  no-source-replacement 条款：不改短路径重跑，不补全 partial root，不打开剩余两条
+  D1 fresh source，不碰 reserved official-test。终态为
+  `G0_D1_FRESH_EVALUATION_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT`。
+- tracked fresh execution result JSON SHA-256 为
+  `8fae114c9208a823fc305c19b2776f0fd29f4e51b4d84422621b0400fafc477e`。
+- 该终态既不支持也不拒绝 signed-clearance，不产生模型负证据，不改变主线、App、
+  Android、生产或安全权限。partial 文件与 acquisition logs 保留为 consumed
+  failure evidence，不删除、不恢复 fresh 身份。任何 HFTF successor 必须是新问题、
+  新合同和新数据角色边界，并在打开新 fresh source 前先通过 synthetic path-length
+  transport canary；不得写成 D1 同 cohort 的路径修补或救援。

@@ -1,0 +1,106 @@
+{
+  "schema": "blindassist_hftf_stage_c_current_clearance_fresh_execution_result_d1",
+  "terminal": "G0_D1_FRESH_EVALUATION_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "evidence_role": "CONSUMED_FRESH_EXECUTION_TRANSPORT_FAILURE_ONLY",
+  "parents": {
+    "fresh_execution_contract": {
+      "path": "HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_CONTRACT_D1_2026-08-01.json",
+      "sha256": "b13b27d0fd882ec7a9904c6e2dd595629e0b3ca093f9e238549e32fc3f655ae2"
+    },
+    "pre_open_commit": {
+      "commit": "ab9a6cc5257bf20477a097d5aec6fe9cf2703874",
+      "origin_master_equal_before_execution": true
+    }
+  },
+  "attempt": {
+    "source_index": 0,
+    "session_id": "15bc9dde1b9b54b6c109cb2ac4433f210fee71f800e1ae7bde9626913c3e02bf",
+    "source_role": "one_shot_fresh_evaluation",
+    "acquisition_attempt_count": 1,
+    "internal_depth_download_attempt_count": 3,
+    "stdout_path": "artifacts.local/evidence/hftf/stage-c-g0-d1-fresh-acquisition-logs-20260801/15bc9dde.stdout.log",
+    "stdout_sha256": "4b738c7cfd9e81058d7021210a49d1ad7a69db1099522182140f3eb9564cc7ee",
+    "stderr_path": "artifacts.local/evidence/hftf/stage-c-g0-d1-fresh-acquisition-logs-20260801/15bc9dde.stderr.log",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reported_result": {
+      "ok": false,
+      "error_type": "FileNotFoundError",
+      "error": "No such file or directory for the frame-0 depth .float16.gz.tmp path"
+    },
+    "failed_target_path_length": 263,
+    "cause_assessment": {
+      "classification": "WINDOWS_PATH_LENGTH_TRANSPORT_FAILURE",
+      "strength": "STRONG_INFERENCE_FROM_EXACT_263_CHARACTER_FAILURE_PATH_AND_SUCCESSFUL_SHORTER_SIBLING_DOWNLOADS",
+      "scientific_outcome_observed": false
+    }
+  },
+  "partial_local_evidence": {
+    "root": "artifacts.local/evidence/datasets/hftf-f0-1-fresh_evaluation-train-15bc9dde-25frames-20260801",
+    "complete_dataset_manifest_written": false,
+    "file_count": 6,
+    "files": [
+      {
+        "path": "images/train/sanpo_synthetic_15bc9dde1b9b54b6c109cb2ac4433f210fee71f800e1ae7bde9626913c3e02bf_camera_chest_left_000000_10fps_000000.png",
+        "bytes": 2409293,
+        "sha256": "9b8738ee8bba6dacf7a1717bddaa2bce0bf48903f29032cc2cfffa69fea7a07e"
+      },
+      {
+        "path": "source_masks/train/sanpo_synthetic_15bc9dde1b9b54b6c109cb2ac4433f210fee71f800e1ae7bde9626913c3e02bf_camera_chest_left_000000_10fps_000000.png",
+        "bytes": 50906,
+        "sha256": "757c7408e25013dcd58c1d7b73fcfb1df7560d8700b2f5f338efda973f52057b"
+      },
+      {
+        "path": "source_metadata/camera_poses.csv",
+        "bytes": 7883,
+        "sha256": "0528eeedfb788d793b59e7ce677a3d8185cd7dbd93a443a819abc01fc9e366fd"
+      },
+      {
+        "path": "source_metadata/source_annotation_types.json",
+        "bytes": 940,
+        "sha256": "9c3b1638486996e899d4aa7303f9edebb76fce46fe46cb458c1b813bab68ceed"
+      },
+      {
+        "path": "source_metadata/source_labelmap.json",
+        "bytes": 599,
+        "sha256": "e616b4365c0fe7edc1bcf663368f252330591e1c503ef82ba1369bd49c744c76"
+      },
+      {
+        "path": "source_metadata/source_session_description.json",
+        "bytes": 280,
+        "sha256": "028d20dd9f4eab129ed29c646d0f940e305b091123082c84def0613bb9217454"
+      }
+    ],
+    "must_not_be_completed_or_reused_as_fresh_d1": true
+  },
+  "execution_stop_receipts": {
+    "fresh_content_opened": true,
+    "first_source_rgb_and_mask_frame_opened": true,
+    "first_source_depth_frame_materialized": false,
+    "remaining_two_fresh_sources_opened": false,
+    "authority_executed": false,
+    "package_materialization_executed": false,
+    "opportunity_evaluated": false,
+    "student_prediction_executed": false,
+    "truth_join_executed": false,
+    "reserved_heldout_opened": false
+  },
+  "scientific_interpretation": {
+    "signed_clearance_effect_supported": false,
+    "signed_clearance_effect_rejected": false,
+    "learnability_question_answered": false,
+    "reason": "FRESH_ACQUISITION_TRANSPORT_FAILED_BEFORE_A_COMPLETE_SOURCE_PACKAGE_OR_ANY_STUDENT_PREDICTION",
+    "negative_model_evidence_created": false
+  },
+  "authorization": {
+    "same_d1_acquisition_retry": false,
+    "same_d1_partial_root_completion": false,
+    "same_d1_source_replacement": false,
+    "remaining_d1_fresh_source_opening": false,
+    "reserved_official_test_opening": false,
+    "threshold_checkpoint_gate_or_path_rescue": false,
+    "mainline_or_app_change": false,
+    "safety_or_production_claim": false,
+    "independent_successor_contract_automatically_authorized": false
+  }
+}

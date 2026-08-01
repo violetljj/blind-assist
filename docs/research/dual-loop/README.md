@@ -55,8 +55,16 @@ hash freeze，终态为 `G0_D1_SIX_FINAL_CHECKPOINTS_FROZEN`。这只允许另�
 现已在任何 fresh 媒体、teacher outcome 或 student prediction 打开前冻结：三条
 session、75 个 current samples、六个 checkpoint、450 条 prediction、truth-free
 prediction authorization、先 receipt 后单次 truth read、全部效果 gate 与失败后
-不换源/不重跑均固定。当前仍只是合同冻结，尚未打开 fresh source；主线、默认 App、
-Android、reserved official-test、生产与安全权限均未改变。
+不换源/不重跑均固定。该提交节点仍只是合同冻结，fresh source 当时尚未打开；
+主线、默认 App、Android、reserved official-test、生产与安全权限均未改变。
+
+合同推送后的一次性执行已由
+[fresh execution result](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_RESULT_D1_2026-08-01.md)
+关闭为 `G0_D1_FRESH_EVALUATION_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT`。第一个
+固定 source 在 frame-0 depth 临时文件创建时因 263 字符 Windows 路径触发传输
+失败；此前 metadata、首帧 RGB/mask 已打开，因此不允许改短路径重跑、补全 partial
+root、继续另两条 source 或换源。该终态没有产生完整 package、opportunity、
+prediction 或 truth join，既不支持也不拒绝 signed-clearance；主线与 App 仍不变。
 
 ## 当前决定
 
