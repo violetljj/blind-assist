@@ -189,6 +189,7 @@ E:\codex-tools\bin\blindassist-python.cmd `
   scripts/research/hftf/qualify_stage_b_reference_opportunity.py `
   --protocol docs/research/hftf/HFTF_STAGE_B_REFERENCE_ONLY_OPPORTUNITY_QUALIFICATION_R3_1_2026-08-01.json `
   --burn-ledger docs/research/hftf/HFTF_R3_1_SOURCE_POOL_BURN_LEDGER_2026-08-01.json `
+  --inventory-plan artifacts.local/evidence/hftf/r3-1-inventory-plan-20260801/inventory_plan.json `
   --mechanics-protocol docs/research/hftf/HFTF_STAGE_B_SWEPT_ENVELOPE_LABEL_MECHANICS_CANARY_D0_2026-08-01.json `
   --replay-root <candidate-replay> `
   --authority <candidate-authority.json> `

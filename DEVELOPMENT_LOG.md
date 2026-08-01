@@ -1,4 +1,12 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 R3.1 bounded
+  inventory plan：official split 1,560 sessions 中按字典序记录 109 个 scanned
+  entries，固定前 40 个 inventory-eligible candidates；不读取 reference/candidate/
+  baseline outcome，报告 SHA-256
+  `de42952c99236f7d1775732055076042ea2ca4986bb667ece47bd7f92cb3a599`。
+  首次命令在 120 秒 wrapper 边界返回 124，但独占报告随后完整落盘并通过 JSON、
+  40/40 count 与 outcome-read=false 检查，故保留而不重跑。qualifier 现强制绑定该
+  plan hash 与 inventory rank，拒绝名单外 session；新 source 尚未下载或消费。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。实现但尚未执行 R3.1
   bounded inventory planner。planner 复核 official split generation/text hash 与
   16-session burn ledger，按完整 session ID 字典序只读 description 和三模态对象清单，

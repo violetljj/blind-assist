@@ -31,6 +31,7 @@ PROTOCOL_SCHEMA = (
     "blindassist_hftf_stage_b_reference_only_opportunity_qualification_r3_1"
 )
 LEDGER_SCHEMA = "blindassist_hftf_r3_1_source_pool_burn_ledger"
+INVENTORY_PLAN_SCHEMA = "blindassist_hftf_r3_1_inventory_candidate_plan"
 QUALIFIED = "R3_1_SOURCE_REFERENCE_OPPORTUNITY_QUALIFIED"
 REJECTED = "R3_1_SOURCE_REFERENCE_OPPORTUNITY_REJECTED"
 LAYERS = ("foot", "body", "head")
@@ -130,12 +131,14 @@ def _expected_from_current_source(
 def run(
     protocol_path: Path,
     ledger_path: Path,
+    inventory_plan_path: Path,
     mechanics_path: Path,
     replay_root: Path,
     authority_path: Path,
 ) -> dict[str, Any]:
     protocol = _load_json(protocol_path)
     ledger = _load_json(ledger_path)
+    inventory_plan = _load_json(inventory_plan_path)
     mechanics = _load_json(mechanics_path)
     if (
         protocol.get("schema") != PROTOCOL_SCHEMA
@@ -146,6 +149,16 @@ def run(
     if _sha256(mechanics_path) != EXPECTED_MECHANICS_SHA256:
         raise ValueError("R3.1 mechanics protocol hash mismatch")
     burned = _validate_burn_ledger(ledger, ledger_path)
+    if (
+        inventory_plan.get("schema") != INVENTORY_PLAN_SCHEMA
+        or inventory_plan.get("terminal")
+        != "R3_1_INVENTORY_CANDIDATE_PLAN_READY"
+        or inventory_plan.get("protocol_sha256")
+        != _sha256(protocol_path)
+        or inventory_plan.get("burn_ledger_sha256")
+        != _sha256(ledger_path)
+    ):
+        raise ValueError("R3.1 inventory plan binding mismatch")
     replay_root = replay_root.resolve()
     rows = _load_jsonl(replay_root / "manifest.replay.jsonl")
     if not rows:
@@ -156,6 +169,14 @@ def run(
     session_id = next(iter(session_ids))
     if session_id in burned:
         raise ValueError(f"Burned source cannot enter R3.1: {session_id}")
+    inventory_by_id = {
+        str(item["session_id"]): item
+        for item in inventory_plan["inventory_candidates"]
+    }
+    if session_id not in inventory_by_id:
+        raise ValueError(
+            f"Source is outside frozen R3.1 inventory plan: {session_id}"
+        )
     if len(rows) != int(protocol["replay_and_authority"]["frame_count"]):
         raise ValueError("Qualification replay frame count mismatch")
     authority, authority_validation = _validate_authority(
@@ -175,6 +196,11 @@ def run(
         "protocol_sha256": _sha256(protocol_path),
         "burn_ledger_path": str(ledger_path.resolve()),
         "burn_ledger_sha256": _sha256(ledger_path),
+        "inventory_plan_path": str(inventory_plan_path.resolve()),
+        "inventory_plan_sha256": _sha256(inventory_plan_path),
+        "inventory_eligible_rank": int(
+            inventory_by_id[session_id]["inventory_eligible_rank"]
+        ),
         "mechanics_protocol_path": str(mechanics_path.resolve()),
         "mechanics_protocol_sha256": _sha256(mechanics_path),
         "authority_report_path": str(authority_path.resolve()),
@@ -484,6 +510,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--burn-ledger", type=Path, required=True)
+    parser.add_argument("--inventory-plan", type=Path, required=True)
     parser.add_argument("--mechanics-protocol", type=Path, required=True)
     parser.add_argument("--replay-root", type=Path, required=True)
     parser.add_argument("--authority", type=Path, required=True)
@@ -496,6 +523,7 @@ def main() -> int:
         report = run(
             args.protocol.resolve(),
             args.burn_ledger.resolve(),
+            args.inventory_plan.resolve(),
             args.mechanics_protocol.resolve(),
             args.replay_root.resolve(),
             args.authority.resolve(),
