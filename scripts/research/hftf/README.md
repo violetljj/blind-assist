@@ -433,6 +433,20 @@ audit 复用 hash-bound D0/D1 mechanics，输出 source/role aggregates 而不�
 teacher corpus。只有 `E0_FRESH_TEACHER_AND_ROLE_OPPORTUNITY_SUPPORTED` 才授权后续
 corpus generation；任何 dev/heldout opportunity failure 都不得换样。
 
+E0.1 fresh evaluation source lock：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/lock_stage_c_e0_1_fresh_evaluation_sources.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_FOOT_GROUND_STUDENT_CANARY_E0_1_2026-08-01.json `
+  --pretrained-weight artifacts.local/models/hftf/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth `
+  --output artifacts.local/evidence/hftf/<run-id>/source_lock.json
+```
+
+validator 先复核 E0 负终态与八条 consumed exclusion，再从原 inventory 重算新的
+dev/heldout。它不打开新媒体；只有
+`E0_1_FRESH_EVALUATION_SOURCE_LOCK_VALIDATED` 才授权 exact acquisition。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
