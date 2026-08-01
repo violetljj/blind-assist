@@ -1,0 +1,86 @@
+{
+  "schema": "blindassist_hftf_stage_c_d5_s0a1_opaque_suffix_catalog_repair_design",
+  "status": "FROZEN_AFTER_D5_S0A_INVALID_BEFORE_S0A1_EXECUTION_CONTRACT_OR_NEW_FETCH",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "purpose": "new_versioned_control_plane_protocol_that_uses_only_the_first_manifest_path_token_and_discards_all_suffix_tokens_without_scientific_gate_tuning",
+  "parents": {
+    "d5_s0a_invalid_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0A_TARTANGROUND_CATALOG_INVALID_RESULT_2026-08-02.json",
+      "sha256": "f86153427117ed8542cb892204a693805b80b0f4eac87cdf18c26e9d2aad4961",
+      "required_terminal": "D5_S0A_TARTANGROUND_DIFF_CATALOG_INVALID_STOP"
+    },
+    "d5_s0_design": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_TARTANGROUND_DIFF_SOURCE_AUTHORITY_AND_RECRUITABILITY_S0_2026-08-02.json",
+      "sha256": "122eccb74d0eb83e231c4e1fa02a36284bab9e6b5df7d251845a7284eeff6b2d"
+    }
+  },
+  "why_same_source_population_remains_admissible": {
+    "s0a_opened_control_plane_manifest_syntax_only": true,
+    "catalog_json_or_parent_environment_counts_produced": false,
+    "scene_payload_pose_value_structural_authority_opportunity_truth_or_effect_opened": false,
+    "scientific_gate_or_selection_was_not_tuned_to_an_observed_count_or_outcome": true,
+    "s0a1_is_not_a_resume_retry_or_patch_under_the_failed_contract": true
+  },
+  "source_lock_to_be_repeated_independently": {
+    "toolkit_repository": "https://github.com/castacks/tartanairpy.git",
+    "toolkit_commit": "158a6844d782942110967325ca3082f50ab2bfc7",
+    "manifest_path": "tartanair/download_ground_files.txt",
+    "gitmodules_path": ".gitmodules",
+    "same_three_gitlinks_as_s0a_must_be_rebound_exactly": true,
+    "old_s0a_toolkit_or_manifest_must_not_be_copied_reused_or_read": true
+  },
+  "new_protocol_requirements": {
+    "new_execution_contract_required_before_any_action": true,
+    "new_canonical_root": "artifacts.local/evidence/hftf/stage-c-d5-s0a1-tartanground-catalog-20260802",
+    "new_attempt_and_preflight_before_first_new_git_network_request": true,
+    "single_new_exact_commit_fetch_with_no_tags_and_recurse_submodules_no": true,
+    "the_new_fetch_is_a_distinct_protocol_execution_not_an_s0a_retry": true,
+    "independent_scientific_and_engineering_audit_required_before_execution": true
+  },
+  "manifest_parser_contract": {
+    "encoding": "utf_8",
+    "blank_only_manifest_is_invalid": true,
+    "each_nonempty_line_is_split_on_ascii_whitespace": true,
+    "first_token_only_is_the_path_identity": true,
+    "all_remaining_tokens_are_discarded_uninterpreted_opaque_and_non_gating": true,
+    "suffix_presence_value_unit_numeric_shape_positivity_and_derived_metrics_are_not_read_validated_retained_or_used": true,
+    "no_rule_may_be_special_cased_to_row_978_or_any_observed_suffix": true,
+    "path_must_be_relative_parent_traversal_free_and_duplicate_free": true,
+    "membership_is_only_manifest_listed_environment_Data_diff_P1xxx_archive_paths": true,
+    "trajectory_regex": "^P1[0-9]{3}$",
+    "regex_must_not_generate_unlisted_parents": true
+  },
+  "unchanged_catalog_gate": {
+    "required_archives": [
+      "image_lcam_front.zip",
+      "depth_lcam_front.zip",
+      "seg_lcam_front.zip",
+      "metadata.zip"
+    ],
+    "minimum_distinct_diff_trajectory_parents": 64,
+    "minimum_distinct_environments": 8,
+    "capacity_and_coverage_only": true,
+    "same_environment_trajectories_are_clustered_not_independent": true
+  },
+  "planned_terminals": {
+    "catalog_locked": "D5_S0A1_TARTANGROUND_DIFF_CATALOG_LOCKED_REQUIRES_S0B_STRUCTURAL_AUTHORITY",
+    "catalog_capacity_insufficient": "D5_S0A1_TARTANGROUND_DIFF_CATALOG_CAPACITY_INSUFFICIENT_STOP",
+    "execution_invalid": "D5_S0A1_TARTANGROUND_DIFF_CATALOG_INVALID_STOP"
+  },
+  "authorization_at_design_freeze": {
+    "commit_and_push_this_design": true,
+    "freeze_hash_bound_s0a1_execution_contract_after_push": true,
+    "read_old_s0a_manifest_or_toolkit": false,
+    "new_toolkit_fetch_or_manifest_read": false,
+    "s0a1_execution": false,
+    "s0b_execution": false,
+    "dataset_host_or_zip_request": false,
+    "payload_ecology_effect_or_student_execution": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

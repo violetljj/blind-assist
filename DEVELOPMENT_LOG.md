@@ -4129,3 +4129,18 @@
   控制面协议、新 canonical root，并在执行前独立审计；不会自动授权 S0B 或 payload。
   机器 invalid result SHA-256 为
   `f86153427117ed8542cb892204a693805b80b0f4eac87cdf18c26e9d2aad4961`。
+
+## 2026-08-02：HFTF D5-S0A.1 opaque-suffix repair 设计
+
+- 双审确认 S0A invalid 只消费控制面清单语法，没有产生 catalog/count，也没有打开
+  scene/payload/outcome；因此不必换 source population，但禁止原 root/contract 内
+  patch/retry。S0A.1 必须是新版本合同、新 canonical root、新 attempt/preflight 与
+  新的一次 exact-commit fetch，且旧 toolkit/manifest 不复制、不复用、不读取。
+- 唯一 parser 修订是：每个非空行只取首个 whitespace token 作为 path，余下 suffix
+  全部丢弃且 opaque/non-gating；不要求 suffix 存在，不解释或验证 size/数字/单位/
+  正负，不保留衍生指标，也不得针对第 978 行写特殊规则。path safety、manifest-only
+  identity、四 archive、64 trajectories / 8 environments 与 cluster 边界不变。
+- 本设计只授权提交推送及后续冻结 hash-bound execution contract；当前不授权新 fetch、
+  manifest read、S0A.1/S0B、dataset ZIP、payload、ecology/effect/student 或任何
+  主线/App/Android/生产/safety 变更。机器设计 SHA-256 为
+  `10d1ed5085ea1978973fa6afd57a1cb4a737a8bec8b88f1c74806be93a90d0ee`。
