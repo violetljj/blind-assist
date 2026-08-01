@@ -1,0 +1,76 @@
+{
+  "schema_version": "blindassist.dual_loop_segmentation_instance_correspondence.config.v1",
+  "protocol_id": "DUAL_LOOP_SEGMENTATION_INSTANCE_CORRESPONDENCE_CANDIDATE_R0",
+  "stage": "THESIS_DEVELOPMENT",
+  "authority": "CANDIDATE_ANNOTATION_ONLY",
+  "analysis_shape": [256, 256],
+  "component_connectivity": 8,
+  "thresholds": {
+    "minimum_pair_score": 0.58,
+    "minimum_score_margin": 0.08,
+    "minimum_present_evidence": 2,
+    "minimum_mask_iou": 0.03,
+    "minimum_component_coverage": 0.20,
+    "minimum_box_coverage": 0.05,
+    "maximum_foot_point_distance_pixels": 28.0,
+    "strong_no_match_foot_point_distance_pixels": 72.0,
+    "minimum_temporal_iou": 0.10,
+    "minimum_flow_iou": 0.10,
+    "depth_relative_tolerance": 0.20,
+    "depth_absolute_tolerance": 0.25,
+    "detection_track_iou": 0.10,
+    "maximum_track_frame_gap": 1
+  },
+  "weights": {
+    "mask_iou": 0.22,
+    "component_coverage": 0.18,
+    "box_coverage": 0.10,
+    "foot_point": 0.18,
+    "depth_consistency": 0.10,
+    "temporal_continuity": 0.08,
+    "optical_flow": 0.06,
+    "class_compatibility": 0.08
+  },
+  "class_compatibility": {
+    "segmentation_aliases": {
+      "boundary_step_curb": ["boundary_step_curb", "curb", "step", "stairs", "stair", "dropoff", "edge"],
+      "obstacle": ["obstacle", "person", "bicycle", "car", "motorcycle", "bus", "train", "truck", "bench", "chair", "traffic light", "stop sign", "fire hydrant", "parking meter"]
+    },
+    "yolo_label_to_semantic": {
+      "person": "obstacle",
+      "bicycle": "obstacle",
+      "car": "obstacle",
+      "motorcycle": "obstacle",
+      "bus": "obstacle",
+      "train": "obstacle",
+      "truck": "obstacle",
+      "bench": "obstacle",
+      "chair": "obstacle",
+      "traffic light": "obstacle",
+      "stop sign": "obstacle",
+      "fire hydrant": "obstacle",
+      "parking meter": "obstacle",
+      "curb": "boundary_step_curb",
+      "step": "boundary_step_curb",
+      "stairs": "boundary_step_curb",
+      "stair": "boundary_step_curb",
+      "dropoff": "boundary_step_curb",
+      "edge": "boundary_step_curb",
+      "obstacle": "obstacle",
+      "boundary_step_curb": "boundary_step_curb"
+    }
+  },
+  "optional_inputs": {
+    "depth_clusters": "rows keyed by source_id/frame_id with cluster_id, bbox_xyxy or mask_packed, and median_depth",
+    "optical_flow": "rows keyed by source_id/frame_id with previous_frame_id and matrix_previous_to_current 2x3 affine",
+    "external_detection_tracks": "optional detection track_id or temporal_track_id fields; otherwise deterministic box tracks are derived"
+  },
+  "claim_ceiling": "DEVELOPMENT_CANDIDATE_ANNOTATION_ONLY",
+  "forbidden": [
+    "safety_or_product_claim",
+    "default_app_mutation",
+    "alert_or_feedback_consumption",
+    "truth_relabeling",
+    "threshold_search_on_output"
+  ]
+}
