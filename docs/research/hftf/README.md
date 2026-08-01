@@ -9,7 +9,8 @@ STAGE_B_R3_SOURCE_OR_REFERENCE_NOT_EVALUABLE /
 R3_1_REFERENCE_OPPORTUNITY_COHORT_NOT_EVALUABLE /
 R4_STAGE_B_SPLIT_SOURCE_TEACHER_MECHANICS_SUPPORTED /
 C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE /
-C0_1_FRAME_INDEX_TIMEBASE_REPAIR_FROZEN /
+C0_1_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED /
+STAGE_C_LABEL_STUDENT_CANARY_FREEZE_AUTHORIZED_ONLY /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -147,6 +148,13 @@ support 门均通过，但 RGB/depth container nominal rate 均为 100 Hz，不�
 timeline authority 改为 parquet frame/timestamp + `meta/info.json`，container nominal
 rate 仅记录。其余 gate 与权限全部不变。
 
+C0.1 现已通过：两条 source 的 parquet delta 均为 `198/200/201 ms`，有效 rate
+`5.0 Hz`，pose/RGB/depth 为 `647/647/647` 与 `664/664/664`；原 surface
+observability 继续全过。当前 claim ceiling 只是 consumed source schema repair 与
+natural depth support。唯一新权限是冻结 Stage C label-and-student canary protocol；
+在 semantic-independent depth reader 产生 known/UNKNOWN 与 natural opportunity
+之前，不能训练 student。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -190,6 +198,7 @@ rate 仅记录。其余 gate 与权限全部不变。
 - [Stage C C0 result](HFTF_STAGE_C_SOURCE_FEASIBILITY_RESULT_C0_2026-08-01.md)
 - [Stage C source-feasibility C0.1](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_1_2026-08-01.md)
 - [Stage C machine-readable C0.1 protocol](HFTF_STAGE_C_SOURCE_FEASIBILITY_C0_1_2026-08-01.json)
+- [Stage C C0.1 result](HFTF_STAGE_C_SOURCE_FEASIBILITY_RESULT_C0_1_2026-08-01.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

@@ -1,4 +1,12 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。C0.1 同一 consumed
+  replay 达到 `C0_1_STAGE_C_SOURCE_TRANSPORT_FEASIBILITY_SUPPORTED`。两条 parquet
+  delta 均为 `198/200/201 ms`、有效 `5.0 Hz`；pose/RGB/depth frame count 为
+  `647/647/647` 与 `664/664/664`，PTS 与原 surface gates 保持通过，container
+  `100/100 Hz` 仅记录。report SHA-256
+  `071c8e9aa7fd36ee6682ef836f7dfed09120f2db24e5779b0c109cc55bc72024`。
+  claim 只到 consumed schema repair/natural depth observability；唯一新权限是冻结
+  Stage C label-and-student canary protocol，不授权执行或训练。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。C0 media audit 按冻结门
   关闭为 `C0_EGOWALK_MEDIA_TRANSPORT_NOT_EVALUABLE`。两条 source 的 file SHA、
   `647/664` pose/RGB/depth rows、完整 decode、ordinal PTS 和 depth support
