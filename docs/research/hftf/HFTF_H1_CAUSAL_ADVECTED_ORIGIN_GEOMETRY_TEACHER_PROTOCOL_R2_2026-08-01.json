@@ -1,0 +1,143 @@
+{
+  "schema": "blindassist_hftf_h1_causal_advected_origin_geometry_teacher_protocol_r2",
+  "status": "FROZEN_RESULT_NOT_RUN",
+  "workflow_profile": "DEVELOPMENT_STANDARD",
+  "upstream_terminal": "HFTF_H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED",
+  "reformulates_terminal": "H1_GEOMETRY_TEACHER_NOT_EVALUABLE",
+  "source_preparation_contract": {
+    "path": "HFTF_H1_CAUSAL_ADVECTED_ORIGIN_SOURCE_PREPARATION_R2_2026-08-01.json",
+    "sha256": "92de422f091666fe5f659c4a33b7e70e1c96e04c26e45e93dadefc2653d611cc"
+  },
+  "parent_unit": "source_session",
+  "required_session_count": 4,
+  "required_sessions": [
+    {
+      "source_session_id": "036943049ded9e1a6356de88a2b80b27938dd4386bcad341c57e1145b198e34a",
+      "authority_report_sha256": "fdc6c69beeb9b22c9ec9208668a6c9a187ee830e231b3d6f8a9ec24f4b79dbbb",
+      "manifest_sha256": "e19c497dba0f395385ed04ee89f75fdfa0b2e8ac21d36b37a73b5e05ae570a4a",
+      "dataset_spec_sha256": "379c0e9c08f0f7179481f5318560ef149fbb2398c8922f5830d795f78bd38ffd",
+      "camera_poses_sha256": "aebfec6c640cbfb5cbcef1da4c74d1da9ca337e4fa932294a8733fd6e83761e7"
+    },
+    {
+      "source_session_id": "03b6dc99c1ac44b77d6c3ac36c17a5db748eca862e0008ac7928d7a82a5de68c",
+      "authority_report_sha256": "8de62aa0c6eaafcee1060b594655788abb82f440967832cc64962d0702973168",
+      "manifest_sha256": "04779bdb28e1d89dd82679d00520a80b612c4158bb0bbe0110a792405068ef1a",
+      "dataset_spec_sha256": "72bcef0b9d433c027d05adf1d2085feb3803a4aef6dcb241dff66a0691106c0c",
+      "camera_poses_sha256": "c47c83c8242ad2bf14c491931071b85f4bf5a315ad92618aacce232c7e58597c"
+    },
+    {
+      "source_session_id": "03c8727961f01047f54c3c4e38c48f4128738d100c00bb54145454bc4df9e3b0",
+      "authority_report_sha256": "45924f1967932b0075e5f519ad2d93b8202710acd7e06744915a7c0975f56248",
+      "manifest_sha256": "966dc568a4f418ac2bd3344ce61dc902c6fee7835f50f2ea4b16ded2054f9f90",
+      "dataset_spec_sha256": "c1a389d181e20d142348844a38929f1faad479603bc171dfa1746e64833e7ce0",
+      "camera_poses_sha256": "222cce7c9f956919ed9d3ec7b07da00ad8d11295e6fdaf9fcb6aed157bf8cb40"
+    },
+    {
+      "source_session_id": "03d7059322ffd8300f2eb85fd612e635242cbe08363e85e0ff74124e916b39e1",
+      "authority_report_sha256": "32cb3c7097c0a11866a386c6bb5b2ec504d06ed0435a8158707d3e490e819b20",
+      "manifest_sha256": "1f249caf2cf978a929bf8c1d3d122370854cd37bb7f0e6f8f941c427c533fb73",
+      "dataset_spec_sha256": "5dc805f3effcd25ecf1f2f583bcf262c17f4486ec2c35df9ce7315dbeb9b593e",
+      "camera_poses_sha256": "727f4078d802af50d918a493d462fe5b820ddce36e2e967fe3e086408a6dea7d"
+    }
+  ],
+  "field": {
+    "theta_bin_count": 6,
+    "theta_range_degrees": [-45.0, 45.0],
+    "theta_interval_rule": "left_closed_right_open_except_positive_45_degree_upper_closed",
+    "distance_edges_m": [0.0, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0],
+    "horizons_ms": {
+      "current": 0,
+      "near": 400,
+      "far": 800
+    },
+    "horizon_tolerance_ms": 100,
+    "height_bands_m": {
+      "foot": [0.05, 0.35],
+      "body": [0.35, 1.35],
+      "head": [1.35, 2.05],
+      "single_height": [0.05, 2.05]
+    }
+  },
+  "rolling_origin": {
+    "mode": "history_causal_constant_velocity_ground_tangent",
+    "history_lookback_ms": 400,
+    "history_tolerance_ms": 100,
+    "history_binding": "closest_strictly_earlier_source_frame_to_anchor_minus_400ms_ties_choose_higher_source_frame",
+    "nominal_time": "source_frame_num_divided_by_source_description_fps",
+    "velocity": "(anchor_camera_position-history_camera_position)/(anchor_nominal_time-history_nominal_time)",
+    "tangent_velocity": "velocity-(velocity_dot_anchor_up)*anchor_up",
+    "horizon_origin": "anchor_ground_origin+tangent_velocity*horizon_seconds",
+    "orientation": "anchor_forward_right_up_for_all_horizons",
+    "future_pose_may_define_origin": false,
+    "future_route_or_action_label_used": false,
+    "missing_history_anchor_is_usable": false
+  },
+  "teacher": {
+    "world_transform": "p_world = R_xyzw @ p_opencv_camera + camera_translation_m",
+    "current_origin": "anchor_camera_position_projected_onto_anchor_local_ground_plane",
+    "future_origin": "history_causal_advected_anchor_ground_origin",
+    "vertical": "anchor_local_ground_plane_normal_toward_camera",
+    "theta_zero": "anchor_camera_forward_projected_onto_anchor_local_ground_plane",
+    "known_probe_count": 9,
+    "minimum_passing_known_probes": 5,
+    "depth_front_tolerance_m": 0.2,
+    "risk_support_saturation_point_count": 8,
+    "risk_formula": "min(1, obstacle_point_count / 8)",
+    "point_sample_stride_xy": 8,
+    "point_sample_offset_xy": 4,
+    "excluded_semantic_class_ids": [0, 1, 3, 5, 6, 17, 27, 30],
+    "dynamic_semantic_class_ids": [12, 13, 14, 15, 16, 21],
+    "known_probe_geometry": "cell_center_plus_eight_theta_distance_height_corners",
+    "known_projection_pixel_rule": "floor(value_plus_0_5)_nearest",
+    "known_probe_requires_camera_z_positive": true,
+    "known_probe_semantic_zero_is_unknown": true,
+    "depth_semantics": "camera_z",
+    "anchor_basis": "n_toward_camera; f=project(R[:,2]); right=cross(f,n); theta=atan2(right,forward)",
+    "height_interval_rule": "left_closed_right_open_except_head_upper_closed",
+    "distance_interval_rule": "left_closed_right_open_except_8m_upper_closed",
+    "single_height_rule": "max_of_foot_body_head_risk",
+    "unknown_never_defaults_to_safe": true,
+    "dynamic_support_reported_separately": true
+  },
+  "gates": {
+    "minimum_usable_anchors_per_session": 12,
+    "maximum_single_multi_consistency_error": 1e-12,
+    "minimum_current_known_coverage_per_session": 0.15,
+    "minimum_near_known_coverage_per_session": 0.1,
+    "minimum_far_known_coverage_per_session": 0.1,
+    "height_disagreement_delta": 0.25,
+    "minimum_height_disagreement_fraction_per_session": 0.02,
+    "future_change_delta": 0.25,
+    "minimum_future_union_change_fraction_per_session": 0.02,
+    "required_passing_sessions": 4
+  },
+  "denominators": {
+    "usable_anchor_set": "anchors_with_history_current_near_far_all_bound",
+    "known_coverage_per_horizon": "usable_anchors * 6 * 6 * 3",
+    "height_disagreement": "usable_anchors * 6 * 6",
+    "future_near_or_far_union": "usable_anchors * 6 * 6 * 3",
+    "unknown_or_invalid_remains_in_denominator": true
+  },
+  "terminals_in_order": [
+    "H1_GEOMETRY_TEACHER_NOT_EVALUABLE",
+    "H1_MULTI_HEIGHT_PROXY_NOT_SUPPORTED_STOP",
+    "H1_FUTURE_PROXY_NOT_SUPPORTED_STOP",
+    "GEOMETRY_PROXY_MECHANISM_SUPPORTED"
+  ],
+  "success_claim_ceiling": "SYNTHETIC_CAUSAL_ADVECTED_GEOMETRY_PROXY_MECHANICS_ONLY",
+  "h2_automatically_authorized": false,
+  "mainline_changed": false,
+  "default_app_changed": false,
+  "prohibited_claims": [
+    "R0 or R1 threshold rescue or burned-session fresh evidence reuse",
+    "future pose or route intent is causal input",
+    "overall rolling-field change proves environmental object dynamics",
+    "physical camera-to-person calibration",
+    "participant body dimensions",
+    "exact capture-time dynamics",
+    "human collision event or safety truth",
+    "causal RGB student predictability",
+    "research mainline promotion",
+    "Android alert default-app production or safety authorization"
+  ]
+}

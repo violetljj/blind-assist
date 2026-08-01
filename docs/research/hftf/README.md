@@ -74,6 +74,11 @@ origin/方向；其余 R1 bins、UNKNOWN、denominator 与所有数值门保持�
 `03694304/03b6dc99/03c87279/03d70593`。当前只授权获取与 source authority，尚未绑定
 完整 hashes 或运行 R2 teacher。
 
+四个 R2 source authority 现已全部通过，完整 report/manifest/spec/pose hashes 已绑定
+到正式 `FROZEN_RESULT_NOT_RUN` protocol。R2 teacher 与 runner outcome 仍未运行；
+下一步仅允许实现 history selection、ground-tangent velocity 与 horizon-origin
+advection，并在实现提交后执行一次。
+
 ## 当前真源
 
 - [R0 候选支线章程](HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md)
@@ -88,6 +93,8 @@ origin/方向；其余 R1 bins、UNKNOWN、denominator 与所有数值门保持�
 - [H1 R1 result](HFTF_H1_FORWARD_SECTOR_GEOMETRY_TEACHER_CANARY_RESULT_R1_2026-08-01.md)
 - [H1 R2 causal-advected source preparation](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_SOURCE_PREPARATION_R2_2026-08-01.md)
 - [H1 R2 machine-readable source preparation](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_SOURCE_PREPARATION_R2_2026-08-01.json)
+- [H1 R2 causal-advected teacher protocol](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2_2026-08-01.md)
+- [H1 R2 machine-readable teacher protocol](HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2_2026-08-01.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

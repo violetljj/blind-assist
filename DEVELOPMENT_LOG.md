@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。完成 R2 四个 fresh source
+  authority 并冻结
+  `HFTF_H1_CAUSAL_ADVECTED_ORIGIN_GEOMETRY_TEACHER_PROTOCOL_R2`，状态
+  `FROZEN_RESULT_NOT_RUN`。`03694304/03b6dc99/03c87279/03d70593` 均为
+  `HFTF_H0_2_SANPO_CANONICAL_PROXY_REPLICATED`、canonical rank 1、`+Z` local
+  ground 25/25、standard-body proxy admitted；完整 authority/manifest/spec/pose
+  hashes 与 source-preparation contract hash 已绑定。R2 仅新增
+  `anchor-400ms -> anchor` causal ground-tangent velocity 和
+  `origin(h)=origin0+v*h`；anchor orientation、R1 field/UNKNOWN/denominators/gates
+  不变。正式 runner 尚未实现/提交，teacher outcome 未运行。
 - 时间：2026-08-01（Asia/Hong_Kong）；执行者：violjjet。在任何 R2 teacher outcome
   前冻结 `HFTF_H1_CAUSAL_ADVECTED_ORIGIN_SOURCE_PREPARATION_R2`。R2 使用
   `anchor-400ms` 严格历史 pose 到 anchor 的 causal velocity，经 anchor local-ground
