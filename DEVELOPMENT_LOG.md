@@ -3793,3 +3793,28 @@
   一致后执行一次 metadata-only scan。成功不授权媒体、pose content、support、truth、
   effect、student、reserved official-test、研究主线、默认 App、Android、生产或
   safety。
+
+## 2026-08-02：HFTF D3-Q0 metadata-only 40-slot roster 锁定
+
+- 执行者：violjjet
+- exact contract 由 commit
+  `f4b5b2581f6b56d6847148bc1ce5e829a3a0ef1f` 推送，执行前
+  `HEAD == origin/master`。只启动一次 metadata CLI；首网前 exclusive
+  `attempt.json` 已 flush/fsync，原进程被监控且未重启，约 928 秒后自然写出
+  `D3_Q0_METADATA_ROSTER_40_SLOTS_LOCKED`。stderr 为 0，failure artifact 不存在。
+- attempt/roster SHA-256 分别为
+  `a2f1764b7af0f5a9f50d28e7e489be38f98a88947e606bda0712ef7dce409800` /
+  `8720a68855e0ddcbee9ae174de69383dd6d596329d76f83d0798197e333ba7db`。
+  official train 1560 个 session 中按 ID 升序检查到第 236 个账本条目时锁定前 40
+  个 metadata-eligible slots：77 个 frozen exclusions、115 个三次重试后 404、
+  4 个非 5/20 Hz，另有 16 个 5 Hz 与 24 个 20 Hz 合格 slots。
+- 主审确认 40 IDs 升序、唯一、与完整 84-parent exclusion union 零重叠；复算
+  120 个 modality receipt-list hashes、1560 个 selected-frame receipts、5/20 Hz
+  exact-13 timelines、split/contract/attempt bindings 和全部 firewall，0 mismatch。
+- 独立只读审计重新派生 78+6 的互斥 exclusion categories、前 40 个 eligible
+  选择序列、120 组 modality hashes、1560 个对象 receipt 与完整 binding chain，
+  结论 `CLEAR`，0 mismatch、0 blocker，未打开媒体或运行下游流程。
+- 这只是 metadata roster terminal，不是 HFTF effect。当前只授权冻结独立的
+  qualifier/sealed-truth/effect-skeleton execution contract；roster 不可重跑、替换、
+  追加或重排，逐 slot 媒体/pose、support/truth、effect、RGB student、reserved
+  official-test、研究主线、默认 App、Android、生产与 safety 权限全部仍关闭。

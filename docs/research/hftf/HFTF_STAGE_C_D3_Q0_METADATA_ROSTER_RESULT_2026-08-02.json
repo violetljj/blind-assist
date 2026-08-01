@@ -1,0 +1,358 @@
+{
+  "schema": "blindassist_hftf_stage_c_d3_q0_metadata_roster_result",
+  "terminal": "D3_Q0_METADATA_ROSTER_40_SLOTS_LOCKED",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "execution_contract": {
+    "path": "docs/research/hftf/HFTF_STAGE_C_D3_Q0_METADATA_ROSTER_EXECUTION_CONTRACT_2026-08-02.json",
+    "sha256": "efc95ee82fa5bb31b4d26744841ef4a45df5ca56d3da88f944af3cc1a7991614",
+    "commit": "f4b5b2581f6b56d6847148bc1ce5e829a3a0ef1f",
+    "head_equal_origin_master_before_execution": true
+  },
+  "durable_evidence": {
+    "attempt": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-metadata-roster-20260802/attempt.json",
+      "sha256": "a2f1764b7af0f5a9f50d28e7e489be38f98a88947e606bda0712ef7dce409800",
+      "byte_count": 541,
+      "status": "ATTEMPT_OPENED_AND_FSYNCED_BEFORE_FIRST_NETWORK_REQUEST",
+      "rerun_authorized": false
+    },
+    "roster": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d3-q0-metadata-roster-20260802/roster.json",
+      "sha256": "8720a68855e0ddcbee9ae174de69383dd6d596329d76f83d0798197e333ba7db",
+      "byte_count": 1442033,
+      "required_terminal": "D3_Q0_METADATA_ROSTER_40_SLOTS_LOCKED"
+    },
+    "failure_artifact_absent": true
+  },
+  "execution_observation": {
+    "metadata_roster_cli_started_once": true,
+    "second_execution_started": false,
+    "attempt_was_durable_before_network": true,
+    "original_process_chain_was_monitored_not_restarted": true,
+    "original_process_exited_after_writing_roster": true,
+    "stderr_byte_count": 0,
+    "observed_elapsed_seconds": 928
+  },
+  "official_train_split": {
+    "object_generation": "1692794964120907",
+    "text_sha256": "f9c5dc4c289fa87342abc0d2cc49f112fcc78c7e02e0b6b081e296a99344173c",
+    "session_count": 1560,
+    "selection_order": "ascending_session_id",
+    "input_split_order_used_for_selection": false
+  },
+  "selection": {
+    "frozen_exclusion_union_parent_count": 84,
+    "scan_ledger_entry_count": 236,
+    "encountered_frozen_exclusion_count": 77,
+    "candidate_metadata_404_count": 115,
+    "candidate_fps_ineligible_count": 4,
+    "locked_roster_slot_count": 40,
+    "requested_roster_slot_count": 40,
+    "source_fps_counts": {
+      "5": 16,
+      "20": 24
+    },
+    "ordered_session_ids_sha256": "9e65ab09f19728fed5cabb3f3fc56f88cc75766a7d8c2d9d0f0ed34cb1398b75",
+    "slot_summary_sha256": "4f8185428330b8257b8f37773f74d8802c42cc2da0c906d86d0992974f2d86cb",
+    "source_replacement_or_reordering_after_scan": false
+  },
+  "timeline_rule": {
+    "5_hz_selected_source_frames": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "20_hz_selected_source_frames": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36,
+      40,
+      44,
+      48
+    ]
+  },
+  "locked_slots": [
+    {
+      "slot": 1,
+      "session_id": "1839645812f8fd05942a2b1f3d612674ef23155a3b090ea19f5042ab771547c6",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 2,
+      "session_id": "18a07d7dabfb49538e2b2fa9aec087bf8b4bb27710f3da4d2556ab47c92bf7c1",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 3,
+      "session_id": "196079c5263ab06472ca8ba546eaa45cd817847b9d46eae407043c1fd2c12c4e",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 4,
+      "session_id": "1ab73d070cfad9866541499dd3bf2dbb634b055824a5b5c709f34ace50aa0fb9",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 5,
+      "session_id": "1bafb748941da7d3fc67fe5d86d8a2822e87ee87425be7a8cea239a353d194fc",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 6,
+      "session_id": "1bdc963ba954212a480d6e6f3f6438d3d2be1ca1748c8915bc09b0094acc1a48",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 7,
+      "session_id": "1bf57552d81f6521f52d17449dbe5cf6e1467cf8cd8e0d795645880db1da6f47",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 8,
+      "session_id": "1c64bbe49a793c72c5ac32401d97b5145ba1ec57a713d6b6930123202957ad4c",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 9,
+      "session_id": "1d228d2c7268464a658756e0e9f449adfcd88ccfa812b39765f0893e62de3621",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 10,
+      "session_id": "1d8117e785950d98f289e55042f0b6ae33a334ab559b5662dc61654c2c49704b",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 11,
+      "session_id": "1da5f81fd7a08f8ef9b9805ad4532979d9746e970729742b2b55e9a8c7437bb4",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 12,
+      "session_id": "1dc57922f6abe46eb0c9459474ec4b50fd38a1a304e2f92876d54c8b02215b43",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 13,
+      "session_id": "1e06b1e8c592c35b798d401bb7b8f87cde280b7d01b47ce983654dbe2201c241",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 14,
+      "session_id": "1ea2ff2a00277034ab19af20453dd1510b376f5d27987034197e93afc58d8750",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 15,
+      "session_id": "1efbbd93a7c794bdff6509167190433c618a6aa397628a6f10dd21f55287d234",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 16,
+      "session_id": "1f4ea39804e78ff0447a2996cdb20e89afd9b19b5b729d917665de37d6f0ad04",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 17,
+      "session_id": "1fb1cb38c3723db8d119887d02094ef914933ae0b4489c474f2d86e1b1fa4480",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 18,
+      "session_id": "1fb2aee3376d33e59f4a38e118e201e5ae787793dfc76b105bf00a737d4fe336",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 19,
+      "session_id": "1fb387b997f1143ee3779330c28b330163e04cb5883638748452b2dc047decd9",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 20,
+      "session_id": "1fc2b229a5a41650b88946ca45646f81cb6c8d878e64db478869e325dc3ce62c",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 21,
+      "session_id": "1fc803b94038fdf29431ad6c2280f1127b9b1021b351aaf74611fccf5897667f",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 22,
+      "session_id": "200ae0ea4ffa438d4afecdc9e5948917c36bb667e4fc8ae2f06fc1b992090ed3",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 23,
+      "session_id": "206018c881c7a1786c05f374fb580d53524aa12af6e11990cbdcdab4b3c98686",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 24,
+      "session_id": "2066a4b42ce32cb1d9234558691a580e80c0093f7d5cd79bdad0518f8e0d2359",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 25,
+      "session_id": "20921417fc3718c38d8f1e48bec95f2aa9683f63708be0ee7ec53bf981f24091",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 26,
+      "session_id": "20f1a5324be46fcfda7c518340a95a0008b3e0e41dc204201bb88ca264e2a509",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 27,
+      "session_id": "214d128aa7ff7c95a77ce656fe20edbfc17214ddb170f0cdc49f765d176f8097",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 28,
+      "session_id": "2165b856d3ff1e633f25262e323e3a656ae00823d5ff4ff3a76e4fc2016afece",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 29,
+      "session_id": "22b6f6619259f298353eba89a29b0f37ff344b49302085ab2ee9c1892554ae9b",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 30,
+      "session_id": "22b89933fe4ab04f70da702f879413d8e6598908cc15e82c3439b1e38aad2df1",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 31,
+      "session_id": "2318f7bf3f4ac418505276cece848f2142eeec8aabf5c16ab36778dbbf6066f2",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 32,
+      "session_id": "24408009492f2b0452ca71094567d437b4f82917b970b8ce93b6c55b5b981ed6",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 33,
+      "session_id": "2492ea0fae926116925dafadf623318f234f236d53051d768cb8e7208fdf1219",
+      "source_fps": 5.0
+    },
+    {
+      "slot": 34,
+      "session_id": "24a3d73409dc6c27c906c983b85443076ee8633fef0135d98037de3f23fa5286",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 35,
+      "session_id": "256f6886dc0032b2741cbd653ca596d2a8954d5f6a5ed42948f54f870e1afc3d",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 36,
+      "session_id": "25e0dc5f9d466ace42cc5232a6b0de1d4c160a2d64719bbb3c58cd61acbd3cb6",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 37,
+      "session_id": "262faff71614c1bc7fdea7d8d7ad1f944d78d871b3b9ba89585b4f3289ee532c",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 38,
+      "session_id": "265225fafa821967c7b5ff8bcf8641320cfeebb0fd9a4aa6072c682f8ceb33e9",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 39,
+      "session_id": "26905f7e1a1b7ed9129fd373d8ce3bc696e56c22ddfaaaf4e4f03ec186d3d237",
+      "source_fps": 20.0
+    },
+    {
+      "slot": 40,
+      "session_id": "26aec7ce13338007233419ea2d9389ffdc7bbc2e101f40cf00c6e5bcc83fd8ae",
+      "source_fps": 20.0
+    }
+  ],
+  "offline_validation": {
+    "terminal_and_counts_match": true,
+    "locked_ids_are_sorted_unique_and_exactly_first_40_eligible": true,
+    "locked_ids_are_disjoint_from_all_84_exclusions": true,
+    "scan_ledger_is_strictly_ascending_and_unique": true,
+    "all_120_modality_receipt_hashes_recomputed": true,
+    "all_1560_selected_frame_receipts_match_frozen_timelines": true,
+    "all_slot_local_and_global_firewalls_are_false": true,
+    "attempt_status_and_contract_hash_recomputed": true,
+    "failure_artifact_absent": true,
+    "all_gates": true
+  },
+  "independent_audit": {
+    "status": "CLEAR",
+    "blocker_count": 0,
+    "attempt_and_roster_hashes_recomputed": true,
+    "exclusion_category_counts": {
+      "historical_burned_or_consumed": 60,
+      "g0_d1_development": 9,
+      "closed_g0_d1_fresh_cohort": 3,
+      "consumed_f0_1_official_test": 3,
+      "g0_reserved_official_test": 3,
+      "d2_consumed_six_parent_cohort": 6
+    },
+    "locked_selection_sequence_recomputed": true,
+    "modality_group_hashes_recomputed": 120,
+    "selected_object_receipts_checked": 1560,
+    "mismatch_count": 0,
+    "selection_and_firewall_rechecked": true
+  },
+  "firewall": {
+    "rgb_bytes_read": false,
+    "panoptic_mask_bytes_read": false,
+    "metric_depth_bytes_read": false,
+    "camera_pose_content_read": false,
+    "support_masks_computed": false,
+    "future_truth_opened": false,
+    "effect_computed": false,
+    "reserved_official_test_opened": false
+  },
+  "evidence_boundary": {
+    "metadata_only_roster_evidence": true,
+    "media_or_pose_content_evidence": false,
+    "reference_or_support_qualification_evidence": false,
+    "future_truth_or_effect_evidence": false,
+    "model_evidence": false,
+    "safety_evidence": false,
+    "mainline_promotion_evidence": false
+  },
+  "authorization": {
+    "rerun_metadata_roster_scan": false,
+    "replace_append_or_reorder_roster_slots": false,
+    "freeze_qualifier_and_effect_execution_contract": true,
+    "execute_media_or_pose_content_now": false,
+    "execute_support_or_truth_qualification_now": false,
+    "execute_d3_effect_now": false,
+    "rgb_student_training_authorized": false,
+    "rgb_student_execution_authorized": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "android_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

@@ -420,6 +420,8 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C machine-readable D3-Q0 qualification design](HFTF_STAGE_C_D3_REFERENCE_AND_SUPPORT_ONLY_CHALLENGE_QUALIFICATION_Q0_2026-08-02.json)
 - [Stage C D3-Q0 metadata roster execution contract](HFTF_STAGE_C_D3_Q0_METADATA_ROSTER_EXECUTION_CONTRACT_2026-08-02.md)
 - [Stage C machine-readable D3-Q0 metadata roster contract](HFTF_STAGE_C_D3_Q0_METADATA_ROSTER_EXECUTION_CONTRACT_2026-08-02.json)
+- [Stage C D3-Q0 metadata roster result](HFTF_STAGE_C_D3_Q0_METADATA_ROSTER_RESULT_2026-08-02.md)
+- [Stage C machine-readable D3-Q0 metadata roster result](HFTF_STAGE_C_D3_Q0_METADATA_ROSTER_RESULT_2026-08-02.json)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
