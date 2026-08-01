@@ -358,6 +358,21 @@ formal runner 不读取 semantic class、annotation 或 RGB outcome。`<1.2 m` �
 support 永远 UNKNOWN；即使 D0 full pass，也只允许冻结 fresh-source label/student
 canary protocol。
 
+Stage C D1 在同一 consumed cohort 上检验 history-origin-causal 的 future observation
+label increment：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd `
+  scripts/research/hftf/run_stage_c_d1_causal_future_label_mechanics.py `
+  --protocol docs/research/hftf/HFTF_STAGE_C_CAUSAL_FUTURE_LABEL_MECHANICS_D1_2026-08-01.json `
+  --media-root artifacts.local/evidence/hftf/stage-c-c0-egowalk-inventory-20260801 `
+  --output artifacts.local/evidence/hftf/<run-id>/future_label_mechanics.json
+```
+
+runner 同时计算 current-observation-only baseline 与 current+future candidate；future
+pose 只能重投影 observation，不能决定 causal origin/grid orientation。D1 不训练
+student。
+
 ## 输出
 
 只写入显式的 `artifacts.local/evidence/hftf/<run-id>/source_feasibility.json`。报告分别
