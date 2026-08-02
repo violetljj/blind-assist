@@ -2,7 +2,7 @@
 
 ## 结论
 
-TartanGround 已从“目录看起来足够大”推进到五个可执行结果：
+TartanGround 已从“目录看起来足够大”推进到六个可执行结果：
 
 1. 官方 Hugging Face revision
    `388faf9c800568cfc6828fa47e063f8369397eb3` 完整覆盖锁定 catalog 的
@@ -18,13 +18,17 @@ TartanGround 已从“目录看起来足够大”推进到五个可执行结果�
    未对齐 history fusion 都没有建立跨折增量。
 5. predicted-known 的完全与平方根逆频率重加权能提高部分 body/event recall，
    但不能同时守住 negative false-active；该标量损失修补路线停止。
+6. 将 observability 与 alert permission 解耦，并加入高度分层的因果时间确认后，
+   事件召回与误激活在多数 paired Development 单元同时改善，但 clearance 和
+   false-alert fragmentation 仍未解决。
 
 当前终态为：
 
 `DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT /
 UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
 UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
-KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED`
+KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED /
+HEIGHT_TEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -344,6 +348,52 @@ seed29/43，也不继续搜索标量权重：
 这是有效的算法权衡负结果，不是 protocol INVALID。它只关闭当前 known 正类
 reweighting；directional 的 representation 正结果仍成立。
 
+## Height-temporal selective decision kernel
+
+known-loss 结果表明问题不是“known 正类权重不够大”，而是把可观测性估计直接当成
+提醒许可。先在同一 outcome-open Development 数据上比较最小 kernel family：
+
+- `risk-only`、概率和、概率积与 high-risk override 等静态放宽规则；
+- 2/3 个连续 anchor 确认和 causal 2-of-3；
+- body/head 分别使用不同的门控和确认长度。
+
+静态放宽规则均提高召回，但同时增加误激活。最初 v0 用 body risk-only 连续 3 帧、
+head 0.9 override 连续 2 帧；总体 recall/false-active 分别
+`+0.1302/-0.0537`，但 head recall mean `-0.0708`。因此 v1 将高置信 head
+override 改为立即响应：
+
+| height | base activation | 因果确认 | 高置信 override |
+|---|---|---:|---|
+| body | risk ≥0.5，不使用 known 硬门 | 3 anchors（0.6 s） | 无 |
+| head | known ≥0.5 且 risk ≥0.5 | 2 anchors（0.4 s） | risk ≥0.8 立即响应 |
+
+v1 相对同一 directional checkpoint 的 hard-known-and-risk kernel：
+
+| 指标 delta（v1 - hard） | mean | median | paired 方向 |
+|---|---:|---:|---:|
+| event recall | +0.1705 | +0.1852 | 8 正 / 1 负 |
+| false-active lane-frame rate | -0.0245 | -0.0351 | 7 改善 / 2 恶化 |
+| response-delay median | 0 | 0 | 9 不变 |
+| body event recall | +0.3569 | +0.3158 | 9 正 |
+| head event recall | +0.0038 | +0.0133 | 5 正 / 4 负 |
+| head false-active rate | -0.2286 | -0.0182 | 6 改善 / 2 恶化 / 1 零 |
+| clearance rate | -0.0503 | -0.0238 | 1 改善 / 5 恶化 / 3 零 |
+
+因此正结果按实际层级保留为：
+
+`HEIGHT_TEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+它表明已训练 risk field 中存在能被因果选择性 kernel 利用的连续信号；不是人类事件
+效用或系统安全结论。false-alert event count mean 仍增加 `+0.78`，说明更少的
+false-active frames 可能碎成更多短 alert，clearance 也尚未守住。
+
+为区分 kernel 与 representation 的贡献，又把 v1 同时应用于 pooled 与 directional。
+directional - pooled 的 event recall mean 只有 `+0.0144`（5 正/4 负），
+false-active mean `-0.0006`（4 改善/3 恶化/2 零）；body recall 甚至 mean
+`-0.0438`。因此 v1 的正信号主要来自 decision kernel，本轮仍不建立 directional
+representation 穿过事件层的稳健增量。原
+`UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED` 不被偷偷改写。
+
 ## History mechanism repair
 
 原 single 训练把当前帧重复五次。对 5-tap、1×1 temporal convolution 来说，这只
@@ -374,23 +424,25 @@ compensation 或新的时序表征后，才值得重开 history；不再继续�
 
 当前正结果只支持：
 
-`teacher feasible + RGB learnable + multi-seed directional spatial-structure increment`
+`teacher feasible + RGB learnable + multi-seed directional spatial-structure increment
++ height-temporal selective decision-kernel signal`
 
 尚未支持：
 
 - history 对独立环境具有稳定增量；
 - directional 的 threshold calibration 能跨 seed 稳定；
-- directional 增量能穿过 synthetic event proxy；
+- directional representation 增量能稳定穿过 selective event proxy；
 - known 正类标量重加权能同时改善召回与 false-active；
+- selective kernel 能守住 clearance 并减少 false-alert event fragmentation；
 - synthetic proxy 能迁移到真实视障步行；
 - 事件级 critical-hazard recall、false alerts 或 warning lead time 改善；
 - HFTF 超过当前主线或进入 App。
 
-下一步不再调阈值或 known 正类标量权重；以 directional single 为 reference，
-把 observability/known 与 alert decision 显式解耦，使 body critical recall 与
-head false-active 成为分开的可控量，再运行同一个 synthetic event proxy。事件代理
-稳定改善后才接入真实 parent-event decision kernel；之后才使用未参与迭代的
-held-out environments 做一次偏差敏感评价。history 在出现显式对齐机制前停止。
+下一步保留 v1 为 Development decision-kernel candidate，不再搜索静态阈值或
+known loss 权重。直接诊断 false-alert fragmentation 与 clearance：使用风险—覆盖率
+曲线和事件级 onset/clear objective，而不是增加更多 protocol。只有这两个 guardrail
+在 Development 上得到修复，才接入未参与 kernel 选择的真实 parent-event cohort。
+history 在出现显式对齐机制前停止。
 
 ## 复现
 
@@ -426,6 +478,13 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   --model pooled artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/pooled-single-seed17/checkpoint.pt `
   --model directional artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --reference pooled
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/evaluate_stage_c_d5_tartanground_decision_kernels.py `
+  --samples artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/fold-0/samples.jsonl `
+  --pretrained artifacts.local/models/hftf/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --output artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/decision-kernel/height-temporal-selective-v1/seed-17/fold-0.json
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored

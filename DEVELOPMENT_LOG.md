@@ -4532,3 +4532,24 @@
   修复重跑，不能关闭科学问题或烧毁 cohort。teacher、representation、
   decision-kernel、research-mainline、App/safety 是逐层证据；后一层未完成只限制
   主张，不把前一层正结果改写成失败。
+
+## 2026-08-02：HFTF D5 height-temporal selective decision kernel
+
+- 静态移除/放宽 predicted-known 硬门在 9/9 paired 单元提高召回，却一致增加
+  false-active，说明 observability/alert 解耦还需要因果时间选择性。
+- 新增可审计 decision-kernel evaluator。v1 的 body 使用 risk≥0.5 连续 3 个
+  anchor，不让 predicted-known 单帧否决风险；head 使用 known-and-risk 连续 2 个
+  anchor，但 risk≥0.8 可立即高置信 override。
+- directional checkpoint 上，v1 相对 hard-known-and-risk 的 event recall mean
+  delta `+0.1705`，8/9 改善；false-active rate `-0.0245`，7/9 改善；
+  response-delay median 9/9 不变。body recall 9/9 提高、mean `+0.3569`；
+  head recall mean `+0.0038`，head false-active mean `-0.2286`。Development
+  正结果为
+  `HEIGHT_TEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`。
+- 边界：clearance mean delta `-0.0503`，false-alert event count mean
+  `+0.78`，负 exposure 每折仅 `55/114/187` 且 seed 不增加 truth exposure。
+  v1 是候选，不是 human-event 或系统效用证据。
+- 同一 v1 下 directional 相对 pooled 的 event recall/false-active mean delta
+  只有 `+0.0144/-0.0006`，分别 5/4 与 4/3/2；表示增量仍未稳健穿过事件层。
+  当前保留 directional 为 representation reference、v1 为 decision-kernel
+  candidate，下一步只处理 risk-coverage、clearance 和 false-alert fragmentation。

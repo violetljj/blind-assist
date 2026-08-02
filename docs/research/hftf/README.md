@@ -39,6 +39,7 @@ D5_DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTE
 D5_UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
 D5_UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
 D5_KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED /
+D5_HEIGHT_TEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -166,6 +167,27 @@ false-active lane-frame rate mean 同时恶化 `+0.0435`；body event recall
 这只关闭 plain、inverse-frequency balanced 与 sqrt-balanced 这一条 known
 正类标量重加权路线，不否定 directional representation 正结果，也不关闭显式
 observability/alert 解耦、选择性预测或新的 decision objective。
+
+随后在相同 3 seeds × 3 folds 上直接比较 decision kernel，不重训模型。静态放松
+known 硬门虽然 9/9 提高召回，却一致增加误激活；加入高度分层的因果时间确认后，
+`height_temporal_selective_v1` 使用：
+
+- body：不以 predicted-known 硬门否决风险，但要求 risk≥0.5 连续 3 个 anchor；
+- head：known-and-risk 连续 2 个 anchor，risk≥0.8 时允许立即高置信 override。
+
+相对 directional 的原 hard-known-and-risk kernel，v1 的 event recall mean delta
+为 `+0.1705`（8/9 改善），false-active lane-frame rate 为 `-0.0245`
+（7/9 改善），response-delay median 9/9 不变。body recall 9/9 提高，mean
+`+0.3569`；head recall mean `+0.0038`，head false-active mean `-0.2286`。
+这支持一个新的 Development 层正结果：
+
+`HEIGHT_TEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+边界仍然明确：clearance mean delta 为 `-0.0503`，false-alert event count mean
+增加 `+0.78`，且每折完整 negative exposures 只有 `55/114/187`。同一 v1 kernel
+下 directional 相对 pooled 的 event recall/false-active mean delta 只有
+`+0.0144/-0.0006`，分别为 5/4 与 4/3/2；所以 v1 是模型通用的决策层信号，
+还没有把 directional representation 增量稳定转化为端到端支配。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

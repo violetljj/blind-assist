@@ -23,6 +23,143 @@ from train_stage_c_d5_tartanground_development_student import (
 
 HORIZONS = ("near", "far")
 HEIGHTS = ("body", "head")
+DECISION_POLICIES = (
+    "hard_known_and_risk",
+    "height_temporal_selective_v0",
+    "height_temporal_selective_v1",
+)
+
+
+def decision_policy_spec(policy: str) -> dict[str, dict[str, Any]]:
+    if policy == "hard_known_and_risk":
+        return {
+            height: {
+                "risk_threshold": 0.5,
+                "base_mode": "known_and_risk",
+                "known_threshold": 0.5,
+                "risk_override_threshold": None,
+                "causal_confirmation_steps": 1,
+                "confirm_override": True,
+            }
+            for height in HEIGHTS
+        }
+    if policy == "height_temporal_selective_v0":
+        return {
+            "body": {
+                "risk_threshold": 0.5,
+                "base_mode": "risk_only",
+                "known_threshold": None,
+                "risk_override_threshold": None,
+                "causal_confirmation_steps": 3,
+                "confirm_override": True,
+            },
+            "head": {
+                "risk_threshold": 0.5,
+                "base_mode": "known_and_risk",
+                "known_threshold": 0.5,
+                "risk_override_threshold": 0.9,
+                "causal_confirmation_steps": 2,
+                "confirm_override": True,
+            },
+        }
+    if policy == "height_temporal_selective_v1":
+        return {
+            "body": {
+                "risk_threshold": 0.5,
+                "base_mode": "risk_only",
+                "known_threshold": None,
+                "risk_override_threshold": None,
+                "causal_confirmation_steps": 3,
+                "confirm_override": True,
+            },
+            "head": {
+                "risk_threshold": 0.5,
+                "base_mode": "known_and_risk",
+                "known_threshold": 0.5,
+                "risk_override_threshold": 0.8,
+                "causal_confirmation_steps": 2,
+                "confirm_override": False,
+            },
+        }
+    raise ValueError(f"Unknown decision policy: {policy}")
+
+
+def raw_lane_signals(
+    risk_probability: np.ndarray,
+    known_probability: np.ndarray,
+    height: str,
+    decision_policy: str,
+) -> tuple[bool, bool]:
+    spec = decision_policy_spec(decision_policy)[height]
+    base = risk_probability >= spec["risk_threshold"]
+    if spec["base_mode"] == "known_and_risk":
+        base &= known_probability >= spec["known_threshold"]
+    elif spec["base_mode"] != "risk_only":
+        raise ValueError(f"Unknown base mode: {spec['base_mode']}")
+    override = spec["risk_override_threshold"]
+    return (
+        bool(np.any(base)),
+        bool(np.any(risk_probability >= override))
+        if override is not None
+        else False,
+    )
+
+
+def raw_lane_active(
+    risk_probability: np.ndarray,
+    known_probability: np.ndarray,
+    height: str,
+    decision_policy: str,
+) -> bool:
+    base, override = raw_lane_signals(
+        risk_probability,
+        known_probability,
+        height,
+        decision_policy,
+    )
+    return base or override
+
+
+def causal_confirmation(
+    values: list[bool],
+    steps: int,
+) -> list[bool]:
+    if steps < 1:
+        raise ValueError("Confirmation steps must be positive")
+    return [
+        index >= steps - 1
+        and all(values[index - steps + 1 : index + 1])
+        for index in range(len(values))
+    ]
+
+
+def apply_decision_confirmation(
+    base_values: list[bool],
+    override_values: list[bool],
+    spec: dict[str, Any],
+) -> list[bool]:
+    steps = spec["causal_confirmation_steps"]
+    if spec["confirm_override"]:
+        return causal_confirmation(
+            [
+                base or override
+                for base, override in zip(
+                    base_values,
+                    override_values,
+                    strict=True,
+                )
+            ],
+            steps,
+        )
+    confirmed_base = causal_confirmation(base_values, steps)
+    return [
+        base or override
+        for base, override in zip(
+            confirmed_base,
+            override_values,
+            strict=True,
+        )
+    ]
 
 
 def lane_truth_state(
@@ -242,7 +379,9 @@ def build_traces(
     records: list[dict[str, Any]],
     risk_probability: np.ndarray,
     known_probability: np.ndarray,
+    decision_policy: str = "hard_known_and_risk",
 ) -> dict[tuple[str, str, str, int], list[dict[str, Any]]]:
+    policy_spec = decision_policy_spec(decision_policy)
     traces: dict[
         tuple[str, str, str, int],
         list[dict[str, Any]],
@@ -260,14 +399,21 @@ def build_traces(
                         height,
                         direction,
                     )
-                    candidate = (
-                        (risk_probability[index, horizon_index, height_index]
-                         >= 0.5)
-                        & (known_probability[
+                    base_active, override_active = raw_lane_signals(
+                        risk_probability[
                             index,
                             horizon_index,
                             height_index,
-                        ] >= 0.5)
+                            direction,
+                        ],
+                        known_probability[
+                            index,
+                            horizon_index,
+                            height_index,
+                            direction,
+                        ],
+                        height,
+                        decision_policy,
                     )
                     traces.setdefault(key, []).append(
                         {
@@ -284,11 +430,22 @@ def build_traces(
                                     direction,
                                 ],
                             ),
-                            "active": bool(candidate[direction].any()),
+                            "active": base_active or override_active,
+                            "_base_active": base_active,
+                            "_override_active": override_active,
                         }
                     )
-    for rows in traces.values():
+    for key, rows in traces.items():
         rows.sort(key=lambda row: row["anchor_frame_id"])
+        confirmed = apply_decision_confirmation(
+            [bool(row["_base_active"]) for row in rows],
+            [bool(row["_override_active"]) for row in rows],
+            policy_spec[key[2]],
+        )
+        for row, active in zip(rows, confirmed, strict=True):
+            row["active"] = active
+            del row["_base_active"]
+            del row["_override_active"]
     return traces
 
 
@@ -296,8 +453,14 @@ def model_metrics(
     records: list[dict[str, Any]],
     risk_probability: np.ndarray,
     known_probability: np.ndarray,
+    decision_policy: str = "hard_known_and_risk",
 ) -> dict[str, Any]:
-    traces = build_traces(records, risk_probability, known_probability)
+    traces = build_traces(
+        records,
+        risk_probability,
+        known_probability,
+        decision_policy=decision_policy,
+    )
     overall = aggregate_trace_metrics(list(traces.values()))
     by_environment = {
         environment: aggregate_trace_metrics(
@@ -365,6 +528,11 @@ def main() -> int:
     )
     parser.add_argument("--reference", required=True)
     parser.add_argument("--role", default="dev")
+    parser.add_argument(
+        "--decision-policy",
+        choices=DECISION_POLICIES,
+        default="hard_known_and_risk",
+    )
     args = parser.parse_args()
 
     names = [name for name, _ in args.model]
@@ -398,7 +566,12 @@ def main() -> int:
         models[name] = {
             "checkpoint_path": str(checkpoint_path.resolve()),
             "checkpoint_sha256": sha256(checkpoint_path),
-            **model_metrics(records, risk, known),
+            **model_metrics(
+                records,
+                risk,
+                known,
+                decision_policy=args.decision_policy,
+            ),
         }
         print(
             json.dumps(
@@ -438,8 +611,9 @@ def main() -> int:
             ),
             "unknown": "otherwise",
             "candidate_active": (
-                "any distance cell with predicted known and risk >= 0.5"
+                decision_policy_spec(args.decision_policy)
             ),
+            "decision_policy": args.decision_policy,
             "anchor_period_s": 0.2,
         },
         "samples_path": str(args.samples.resolve()),

@@ -8,7 +8,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from evaluate_stage_c_d5_tartanground_event_proxy import (
     aggregate_trace_metrics,
+    apply_decision_confirmation,
+    causal_confirmation,
+    decision_policy_spec,
     lane_truth_state,
+    raw_lane_active,
     trace_metrics,
 )
 
@@ -72,6 +76,61 @@ class TartanGroundEventProxyTest(unittest.TestCase):
         self.assertEqual(result["event_recall"], 0.5)
         self.assertEqual(result["false_active_lane_frame_rate"], 0.5)
         self.assertEqual(result["clearance_rate"], 0.5)
+
+    def test_causal_confirmation_requires_consecutive_observations(self):
+        values = [True, True, False, True, True, True]
+
+        self.assertEqual(
+            causal_confirmation(values, 2),
+            [False, True, False, False, True, True],
+        )
+        self.assertEqual(
+            causal_confirmation(values, 3),
+            [False, False, False, False, False, True],
+        )
+
+    def test_height_selective_policy_separates_observability(self):
+        risk = np.asarray([0.6, 0.2])
+        unknown = np.asarray([0.1, 0.1])
+
+        self.assertTrue(
+            raw_lane_active(
+                risk,
+                unknown,
+                "body",
+                "height_temporal_selective_v0",
+            )
+        )
+        self.assertFalse(
+            raw_lane_active(
+                risk,
+                unknown,
+                "head",
+                "height_temporal_selective_v0",
+            )
+        )
+        self.assertTrue(
+            raw_lane_active(
+                np.asarray([0.95, 0.2]),
+                unknown,
+                "head",
+                "height_temporal_selective_v0",
+            )
+        )
+
+    def test_v1_high_confidence_head_override_is_immediate(self):
+        spec = decision_policy_spec("height_temporal_selective_v1")[
+            "head"
+        ]
+
+        self.assertEqual(
+            apply_decision_confirmation(
+                [False, True, True],
+                [True, False, False],
+                spec,
+            ),
+            [True, False, True],
+        )
 
 
 if __name__ == "__main__":
