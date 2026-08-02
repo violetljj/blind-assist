@@ -38,6 +38,10 @@ TartanGround 已从“目录看起来足够大”推进到九个可执行结果�
 11. 事件配对显示 HFTF 平均补回 YOLO `2.56/3` 个漏检，建立互补性正信号；但
     rank-2 spatial canary、9-checkpoint 静态 YOLO-HFTF fusion 和 1 秒 causal
     transition canary 都未形成 Pareto。当前瓶颈转为真实关系监督规模，不再堆 head。
+12. 使用与 SANPO 隔离的 14 个外部 provisional episodes 训练 relation head 后，
+    output-field 版本保留了高召回跨源信号；加入经复核 normal-passage negatives
+    并前移到固定 spatial feature 后，误报相对 output-field 9/9 降低，但召回也下降，
+    仍未超过 YOLO。低置信 parallel-curb canary 同样只移动 trade-off。
 
 当前终态为：
 
@@ -59,7 +63,11 @@ FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
 YOLO_HFTF_EVENT_COMPLEMENTARITY_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
 LOW_RANK_SPATIAL_RELATION_HEAD_CANARY_INCREMENT_NOT_SUPPORTED /
 STATIC_YOLO_HFTF_FUSION_PARETO_INCREMENT_NOT_SUPPORTED /
-CAUSAL_TRANSITION_FUSION_CANARY_INCREMENT_NOT_SUPPORTED`
+CAUSAL_TRANSITION_FUSION_CANARY_INCREMENT_NOT_SUPPORTED /
+CROSS_SOURCE_PROVISIONAL_RELATION_RECALL_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
+CROSS_SOURCE_SPATIAL_RELATION_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_IN_DEVELOPMENT /
+CROSS_SOURCE_SPATIAL_RELATION_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
+QUARANTINED_PARALLEL_CURB_WEAK_NEGATIVE_CANARY_INCREMENT_NOT_SUPPORTED`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -957,6 +965,13 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --name directional-seed17-fold0 `
   --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-causal-transition-fusion-head-v0/seed-17/fold-0.json
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_provisional_relation_transfer.py `
+  --feature-family spatial_grid_3x6 `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --name directional-seed17-fold0 `
+  --output artifacts.local/evidence/hftf/stage-c-d6-provisional-relation-spatial-normal-negative-v0/seed-17/fold-0.json
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored

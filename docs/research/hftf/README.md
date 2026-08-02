@@ -54,6 +54,10 @@ D6_YOLO_HFTF_EVENT_COMPLEMENTARITY_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
 D6_LOW_RANK_SPATIAL_RELATION_HEAD_CANARY_INCREMENT_NOT_SUPPORTED /
 D6_STATIC_YOLO_HFTF_FUSION_PARETO_INCREMENT_NOT_SUPPORTED /
 D6_CAUSAL_TRANSITION_FUSION_CANARY_INCREMENT_NOT_SUPPORTED /
+D6_CROSS_SOURCE_PROVISIONAL_RELATION_RECALL_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
+D6_CROSS_SOURCE_SPATIAL_RELATION_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY /
+D6_CROSS_SOURCE_SPATIAL_RELATION_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
+D6_QUARANTINED_PARALLEL_CURB_WEAK_NEGATIVE_CANARY_INCREMENT_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -338,6 +342,41 @@ CAUSAL_TRANSITION_FUSION_CANARY_INCREMENT_NOT_SUPPORTED`
 这些失败不否定互补性，而是说明 30-event cohort 已不足以区分更多 head 结构。
 停止同 cohort 的 rank、history、fusion-feature、L2 与 threshold 变化；下一步扩充
 source-isolated 的真实关系监督，再回到固定空间头/融合头比较。
+
+该跨源监督现已完成。训练只使用与 SANPO 30 sessions 隔离的 14 个外部 provisional
+episodes（7 sources、49 evidence frames，8 alert / 6 no-alert），SANPO labels
+没有参与标准化或拟合。30-feature output-field head 在 9 个 checkpoints 上得到
+`13–16 hits`、`12–14 false alerts`、`2–5 cleared`，mean 为
+`14.44/13.33/3.78`；相对 YOLO 的 13 hits，7/9 更高、2/9 相同。因此保留：
+
+`CROSS_SOURCE_PROVISIONAL_RELATION_RECALL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+这只是跨源弱监督的真实事件 recall signal。其 false alerts 9/9 更差，不产生系统
+效用结论。加入 2 个经复核的外部 normal-passage source episodes 后，训练集为
+16 episodes、9 sources、611 frames、8/8 类平衡；output-field canary 从同
+checkpoint 的 `15/14/3` 变为 `13/14/5`，没有解决 specificity。
+
+相同 16-episode 训练集改用固定 encoder `128×3×6` spatial feature 后，9 个
+checkpoints 的 hits 为 `10–14`、mean `12.33`；false alerts 为 `6–10`、mean
+`8.78`；cleared 为 `5–11`、mean `7.22`。相对外部 output-field head，
+false alerts 9/9 改善、mean `-4.56`，cleared 8/9 改善、mean `+3.44`，
+但 hits mean `-2.11`。因此表示位置的跨源正结果为：
+
+`CROSS_SOURCE_SPATIAL_RELATION_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_IN_DEVELOPMENT`
+
+统一 threshold `0.30–0.80` sweep 没有稳健穿过 YOLO；0.35 虽把 mean hits
+恢复到 `13.00`，mean false alerts 仍为 `9.22`。9 个 checkpoints 仍为 0/9
+YOLO Pareto，故同时保留：
+
+`CROSS_SOURCE_SPATIAL_RELATION_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+
+最后只做一次低置信难负例 canary：加入 AI review 已识别为 parallel-curb、但
+abstain/quarantine 的 82 个新增去重帧后，seed17/fold0 从 `14/10/7` 变为
+`12/8/7`；threshold 0.30 为 `14/9/7`。误报下降伴随召回下降，终态为
+`QUARANTINED_PARALLEL_CURB_WEAK_NEGATIVE_CANARY_INCREMENT_NOT_SUPPORTED`。
+这些 quarantine 帧不是真值，不进入正式训练 reference。下一科学需求是获得
+source-isolated、人工确认的 parallel-curb / obstacle-approach 成对关系监督，
+而不是继续搜索阈值、L2、集成或使用更多低置信负例。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

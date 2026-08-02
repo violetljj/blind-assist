@@ -4706,3 +4706,32 @@
 - 当前 30-event cohort 对更多 head 结构已 information-limited。停止 rank/history/
   fusion-feature/L2/threshold 变化；下一步扩充与这 30 sessions 隔离的真实关系监督，
   未新增监督前不解冻 backbone。
+
+## 2026-08-02：HFTF D6 cross-source provisional relation transfer
+
+- 训练只使用与 SANPO evaluation sessions 隔离的外部 provisional supervision：
+  初始为 14 episodes、7 sources、49 frames（8 alert / 6 no-alert）；SANPO labels
+  不参与 fit。30-feature output-field head 的 9-checkpoint mean 为
+  `14.44 hits / 13.33 false alerts / 3.78 cleared`，7/9 hits 高于 YOLO、2/9
+  相同；保留
+  `CROSS_SOURCE_PROVISIONAL_RELATION_RECALL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`，
+  但 specificity/clearance 不成立。
+- 加入两个经复核 normal-passage source episodes 后，训练 inventory 为
+  16 episodes、9 sources、611 frames、8/8 类平衡。output-field canary
+  `15/14/3→13/14/5`，未改善误报。
+- 相同外部训练集改用固定 encoder `128×3×6` spatial feature，9-checkpoint
+  mean 为 `12.33 hits / 8.78 false alerts / 7.22 cleared`。相对外部
+  output-field head，false alerts 9/9 改善、mean `-4.56`；cleared 8/9 改善、
+  mean `+3.44`；hits mean `-2.11`。终态为
+  `CROSS_SOURCE_SPATIAL_RELATION_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_IN_DEVELOPMENT`。
+- consumed Development threshold sweep `0.30–0.80` 没有稳健 YOLO Pareto；
+  threshold 0.35 的 mean 为 `13.00/9.22/6.44`。0/9 checkpoints 超过 YOLO，
+  系统终态为
+  `CROSS_SOURCE_SPATIAL_RELATION_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`。
+- 只执行一次 AI-abstained/quarantined parallel-curb weak-negative canary。加入
+  82 个新增去重帧后 seed17/fold0 为 `12/8/7`，相对 normal-negative spatial
+  `14/10/7` 用召回换误报；threshold 0.30 为 `14/9/7`。终态
+  `QUARANTINED_PARALLEL_CURB_WEAK_NEGATIVE_CANARY_INCREMENT_NOT_SUPPORTED`。
+  quarantine 不升级为真值或训练 reference。下一步需要新的、人工确认且 source
+  isolated 的 parallel-curb / obstacle-approach 关系监督，不再搜索当前 cohort 的
+  threshold、L2、集成或更多低置信负例。

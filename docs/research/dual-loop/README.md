@@ -69,7 +69,14 @@ event-level OR hits 达 `15.56/16`，建立了
 YOLO-HFTF 互补性正信号；但 9-checkpoint 静态 fusion mean 只有
 `12.89 hits / 9.78 false alerts / 6.89 cleared`，rank-2 与 1 秒 causal
 canaries 也未改善 Pareto。当前 30-event cohort 的 head search 停止；下一步先扩充
-隔离的真实 relation supervision，未新增监督前不解冻 backbone。
+隔离的真实 relation supervision，未新增监督前不解冻 backbone。该跨源实验现已
+使用 14 个外部 provisional episodes 建立高召回信号：output-field 9-checkpoint
+mean 为 `14.44 hits / 13.33 false alerts / 3.78 cleared`。加入经复核 normal
+passage negatives 并改用固定 spatial feature 后，mean 为
+`12.33/8.78/7.22`；相对外部 output-field head 的 false alerts 9/9 改善，
+但召回下降且 0/9 超过 YOLO。统一阈值和低置信 parallel-curb canary 都只移动
+trade-off。跨源空间关系正结果保留在 representation/guardrail 层，研究主线和
+默认 App 继续不变；下一步需要人工确认、source-isolated 的成对难例监督。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
