@@ -5203,3 +5203,23 @@
   下一步转入原生 2D/3D identity-bound person trajectories。boxes/report SHA-256：
   `ecc30d0106372245c26cae6e5bece1b051036a2037ddb8e5908a4d75ff27701f` /
   `bb8f68214cb617729ca289fc4762ab700b4e452e04fa386403e442dc4c0bb860`。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D32
+  JRDB causal-track future-range canary。直接复用四个既有 native multisensor
+  observation packets，不重新下载或扫描 metadata；source 原样继承冻结的同一
+  identity 七帧 `log(box_height)` OLS tri-state，truth 改为同一 identity 在
+  `+15 frames`（约一秒）的 `center_base_link_m` range change。8,766 个 future
+  opportunities 中产生 480 条 non-abstain evidence、25 条 sequence-bound tracks，
+  coverage `5.48%`。pooled precision `97.50%`；confirm `209/216=96.76%`，
+  contradict `259/264=98.11%`，相对对应 prevalence lift
+  `+45.24/+49.62 pp`。Clark/Gates/STLC 三条证据充分序列分别
+  `97.00%/100.00%/96.60%`；Meyer 仅 9 rows，保留 9/9 正观察但不计正式
+  sequence pass。全部可判定与 effect gates 通过，终态
+  `D32_JRDB_CAUSAL_TRACK_FUTURE_RANGE_SUPPORTED`。首次执行在读取任何 packet
+  前因 cwd-relative path 触发 `FileNotFoundError`；仅修复 repo-root resolution
+  后按同一协议重跑，归类为 engineering failure，不烧毁 cohort。该结果建立
+  `JRDB_ANNOTATION_TRACK_SHORT_FUTURE_MECHANISM_SUPPORTED`，证明
+  same-identity causal trajectory state 是有效的短未来变量；不升级为 live
+  detector/tracker、事件效用、App 或安全主张。下一步只替换 source measurement
+  为冻结 detector + causal tracker。report SHA-256
+  `81761e24b2098d9f585d8c8fd9a786eea0e21fff22c9b99b55dfb017dd07c2ec`；
+  删除 wall-clock 字段后连续两次重建 SHA 一致。

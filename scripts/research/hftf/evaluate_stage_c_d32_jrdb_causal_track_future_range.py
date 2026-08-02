@@ -9,7 +9,6 @@ import json
 import math
 import os
 from collections import defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -455,7 +454,6 @@ def build_report(packet_paths: tuple[Path, ...]) -> dict[str, Any]:
     )
     return {
         "schema": SCHEMA,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
         "status": terminal,
         "evaluable": evaluable,
         "supported": supported,
