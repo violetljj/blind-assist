@@ -2,7 +2,8 @@
 
 日期：2026-08-03
 
-执行状态：`D45_SOURCE_AND_AFFINE_REGISTRATION_CANARY_READY_FOR_DEVICE_EXECUTION`
+执行状态：
+`D45_SOURCE_REGISTRATION_AND_PERSON_MEASUREMENT_RUNNER_READY_FOR_DEVICE_EXECUTION`
 
 科学终态：`D45_NOT_EVALUATED_NO_READY_DEVICE`
 
@@ -14,7 +15,7 @@
   - coverage/confidence/IQR/staleness fail-closed receipts；
   - camera-relative x/y/z metric measurement；
   - exact same-target/source/registration 7-point OLS `+1.0 s` forecast；
-- 18 个 focused JVM tests 全部通过：
+- 24 个 focused JVM tests 全部通过：
   - accepted person measurement；
   - insufficient coverage rejection；
   - stale receipt rejection；
@@ -33,6 +34,9 @@
   - native sparse depth pixels 不经 upsampling 重复计入 coverage；
   - detector region 落在 depth crop 外时报告 `NO_REGISTERED_PIXELS`，不混入
     depth-quality failure；
+  - padded/interleaved YUV_420_888 到 RGBA 解码；
+  - truncated YUV plane 在 partial image 逸出前 fail closed；
+  - 1/2/3/5 m error median/P90 与 relative-error summary；
 - ARCore 1.33.0 仅加入现有 `:hftf-device-canary` test APK；
 - locked API semantic receipt 确认只有 raw depth 暴露对应 confidence image，因此
   R0.1 在任何 device outcome 前把 raw+confidence 设为唯一 measurement-ready
@@ -84,6 +88,33 @@ ARCore 官方坐标合同明确：
 `AFFINE_REGISTRATION_OBSERVED_DEVICE_ONLY` 只表示 ARCore 内部 coordinate mapping
 可被一致地恢复；`external_alignment_verified=false` 与
 `person_registration_verified=false` 保持不变。它不能替代 1/2/3/5 m 人工量测。
+
+## R0.4 person measurement runner readiness
+
+在没有 device/person outcome 前，首个物理 canary 已从“需要再开发”推进到
+“设备接入即可执行”：
+
+- `:ustrf-shadow-benchmark` 只读复用
+  `app/src/main/assets/yolo11n_fp16_320.tflite` 与 `coco_labels.txt`，不依赖或启动
+  default App runtime；
+- exact production detector asset：
+  - bytes：`5359428`
+  - SHA-256：
+    `00edb41a528b0a7e709c4af8ce3e685491492c4539274804e5cfc17a1a867cd2`
+- 同一 ARCore frame 中依次取得 fresh raw depth/confidence、affine registration
+  与 CPU camera image；
+- stride-safe `YUV_420_888 -> RGBA` 后调用既有 CPU YOLO；
+- controlled scene 固定要求 exactly one `person` detection，target key 固定为
+  `manual-single-person`，不在多人场景做 post-outcome target selection；
+- measurement `producedAtNs` 现在是 detector+sampling 完成时间，P95 不再漏算
+  YUV conversion 与 detector latency；
+- 每个距离输出 error、coverage、latency、7-point history availability 和失败类型；
+- 不保存 camera image、depth raster 或 person box；只保留至多 1,800 个 depth/
+  latency 标量供四距离精确合并，receipt 仍限制 `256 KiB`；
+- 缺参数时该 instrumentation class `SKIP`，不会被通用 connected-test 意外烧毁；
+  source/detector/registration 不可用仍为 `NOT_EVALUABLE_*`。
+
+R0.4 没有增加支持门；它只实现已冻结的 1/2/3/5 m contract。
 
 ## 既有物理机 source-class prior，不是 D45 outcome
 
@@ -140,18 +171,18 @@ default debug App merged manifests 中也没有 `com.google.ar.core` 或
   - bytes：`1385159`
   - SHA-256：
     `1b0142c94abd19a5b0702f67c3c7a38115251f51bd04a25411d6867a570a64ca`
-- source-decoder benchmark APK：
+- source/registration/person benchmark APK：
   - path：
     `ustrf-shadow-benchmark/build/outputs/apk/debug/ustrf-shadow-benchmark-debug.apk`
-  - bytes：`33650193`
+  - bytes：`38966599`
   - SHA-256：
-    `3e99937243b7014a8cdaf27dfa00343d0f4a5666d41d295dadd1ab82e15639b4`
+    `e9129cd71704f93ff9f8834821f8126b916a286a94db3ed999e4bb369753e195`
 - source-decoder instrumentation APK：
   - path：
     `ustrf-shadow-benchmark/build/outputs/apk/androidTest/debug/ustrf-shadow-benchmark-debug-androidTest.apk`
-  - bytes：`479355`
+  - bytes：`506033`
   - SHA-256：
-    `bd364997988853474d71d6825bfa40787698da5f04cee521f1b2857e6c27ad6b`
+    `19dfbb940ae1186ff61305d89ed7ab5298af1693d13fdf6cf3c02976feb64e23`
 
 新增 source-decoder build 命令：
 
@@ -162,7 +193,7 @@ default debug App merged manifests 中也没有 `com.google.ar.core` 或
   --no-daemon --max-workers=2 -Dorg.gradle.jvmargs=-Xmx2048m
 ```
 
-结果为 `BUILD SUCCESSFUL`；JVM tests 为 `18/18`。
+结果为 `BUILD SUCCESSFUL`；JVM tests 为 `24/24`。
 
 ## 剩余 device actions
 
@@ -204,3 +235,23 @@ hftf-d45/raw-source-registration-r0/<run-id>/summary.json
 均成立后才进入 1/2/3/5 m person measurement，仍不授权 event 或 App。
 `AUTOMATIC_ONLY_*_CONFIDENCE_UNAVAILABLE` 与所有 `NOT_EVALUABLE_*` 都不是
 depth 精度负结果；无设备也不是 source 负结果，不关闭 D45。
+
+source+registration receipt 成立后，每个距离单独执行：
+
+```text
+.\gradlew.bat :ustrf-shadow-benchmark:connectedDebugAndroidTest
+  -Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.ustrfbenchmark.D45ArCorePersonMeasurementCanaryTest
+  -Pandroid.testInstrumentationRunnerArguments.hftfD45ReferenceDistanceMeters=<1|2|3|5>
+  -Pandroid.testInstrumentationRunnerArguments.hftfD45PersonFrameAttempts=900
+  --no-daemon --max-workers=2 -Dorg.gradle.jvmargs=-Xmx2048m
+```
+
+operator contract：人物 torso plane 到 camera optical center 保持声明距离，并轻微
+平移手机以维持 ARCore depth；画面中只保留一个 person。receipt path：
+
+```text
+/sdcard/Android/data/com.linnan.blindassist.ustrfbenchmark/files/
+hftf-d45/person-measurement-r0/<distance>m/<run-id>/summary.json
+```
+
+四个距离未全部执行前不产生 D45 支持/不支持总终态。

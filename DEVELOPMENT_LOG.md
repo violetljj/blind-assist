@@ -5537,3 +5537,17 @@
   device receipt 即使得到 `AFFINE_REGISTRATION_OBSERVED_DEVICE_ONLY`，仍固定
   `external_alignment_verified=false`、`person_registration_verified=false`；
   当前无 ADB 设备，科学终态不变，主线、默认 App 与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D45
+  physical person measurement runner readiness R0.4，不读取人物测量 outcome、
+  不新增 gate。isolated `:ustrf-shadow-benchmark` 只读复用 exact production
+  YOLO asset（5,359,428 bytes，SHA-256
+  `00edb41a528b0a7e709c4af8ce3e685491492c4539274804e5cfc17a1a867cd2`），
+  在同一 ARCore frame 内串联 fresh raw depth/confidence、frame-bound
+  registration、stride-safe YUV_420_888→RGBA、CPU person detector 与 native
+  depth sampler。controlled scene 固定 exactly one person，1/2/3/5 m 分别运行；
+  measurement latency 包含 conversion、detector 和 sampling。24/24 focused JVM
+  tests 通过，benchmark/test APK 编译成功；不保存 camera/depth/box，只写至多
+  1,800 个 depth/latency 标量和 aggregate metrics 的 `<=256 KiB` AtomicFile
+  receipt。缺 reference 参数时 test SKIP；source/detector/registration 不可用
+  仍为 `NOT_EVALUABLE_*`，四距离完成前不产生总终态。默认 App 与主线均不接
+  ARCore/D45，当前无 ADB 设备，D35 不变。

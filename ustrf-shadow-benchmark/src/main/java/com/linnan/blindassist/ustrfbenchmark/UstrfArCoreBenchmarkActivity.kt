@@ -60,7 +60,10 @@ class UstrfArCoreBenchmarkActivity : Activity() {
                 setTextColor(Color.WHITE)
                 setShadowLayer(4f, 1f, 1f, Color.BLACK)
                 textSize = 16f
-                text = "USTRF ARCore benchmark capture active\\nAutonomous stationary canary; no user action is requested.\\nNo navigation command will be issued."
+                text = intent.getStringExtra(EXTRA_STATUS_TEXT)
+                    ?: "USTRF ARCore benchmark capture active\\n" +
+                    "Autonomous stationary canary; no user action is requested.\\n" +
+                    "No navigation command will be issued."
                 gravity = Gravity.CENTER
             }, FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
@@ -98,5 +101,9 @@ class UstrfArCoreBenchmarkActivity : Activity() {
         }
         check(done.await(timeoutSeconds, TimeUnit.SECONDS)) { "GL action timed out" }
         failure.get()?.let { throw AssertionError("GL action failed", it) }
+    }
+
+    companion object {
+        const val EXTRA_STATUS_TEXT = "ustrf_benchmark_status_text"
     }
 }

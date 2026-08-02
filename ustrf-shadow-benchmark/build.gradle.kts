@@ -23,6 +23,10 @@ android {
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
 
+    sourceSets["main"].assets.srcDir("../app/src/main/assets")
+    androidResources {
+        noCompress += "tflite"
+    }
 }
 
 kotlin {
@@ -40,6 +44,7 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.arcore)
+    implementation(libs.tflite)
 
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)

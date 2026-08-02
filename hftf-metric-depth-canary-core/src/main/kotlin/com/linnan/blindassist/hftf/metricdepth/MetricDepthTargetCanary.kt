@@ -301,7 +301,7 @@ class MetricDepthTargetSampler(
                 positionCameraMeters = position,
                 qualityScore = quality,
                 diagnostics = diagnostics,
-                producedAtNs = frame.producedAtNs
+                producedAtNs = observedAtNs
             )
         )
     }

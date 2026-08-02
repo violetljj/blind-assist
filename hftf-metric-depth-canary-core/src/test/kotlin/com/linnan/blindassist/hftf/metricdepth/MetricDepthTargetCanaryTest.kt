@@ -28,6 +28,7 @@ class MetricDepthTargetCanaryTest {
         assertEquals(36, measurement.diagnostics.candidateSampleCount)
         assertEquals(36, measurement.diagnostics.validSampleCount)
         assertEquals(1f, measurement.diagnostics.coverage, 0.0001f)
+        assertEquals(BASE_NS + 80_000_000L, measurement.producedAtNs)
         assertEquals(null, person().distanceEvidence)
     }
 

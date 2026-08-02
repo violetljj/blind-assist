@@ -167,7 +167,7 @@ availability。sampler、OLS horizon 与支持门已固定；不把 depth 写入
 `Detection.distanceEvidence`，不调用 risk/feedback seam。
 
 source contract、person-box sampler、7 点 OLS solver 已在独立 JVM module 中实现，
-18 个 focused tests 通过；ARCore capability receipt 仅进入专用
+24 个 focused tests 通过；ARCore capability receipt 仅进入专用
 `hftf-device-canary` APK。default App runtime classpath/manifest 均不含 ARCore
 或 D45 module。R0.1 在任何 device outcome 前修复 locked API 语义：只有 raw
 depth 有对应 confidence image，因此 raw+confidence 是唯一 measurement-ready
@@ -190,6 +190,13 @@ receipt；sampler inverse-map native raw-depth pixel center，不 upsample spars
 depth。registration 必须与 exact source frame 绑定，设备 receipt 仍明确
 `external_alignment_verified=false`。这使下一次物理机执行真正回答 source/
 registration，而不是把坐标实现错误误判为 depth 算法失败。
+
+R0.4 已把 1/2/3/5 m person measurement runner 做到 device-ready：isolated
+benchmark 只读复用 exact production YOLO asset，在同一 ARCore frame 内完成
+fresh depth/confidence、registration、YUV→RGBA、CPU person detection 和 native
+depth sampling。controlled scene 只接受 exactly one person；不保存图像、depth
+raster 或 box，只写小型 scalar receipt。measurement latency 包含 conversion 和
+detector；四距离未全部执行前不生成总终态。default App runtime 仍不接 ARCore/D45。
 
 ## 2026-08-03 D44：causal relative metric track 几乎达到完整 world teacher
 
