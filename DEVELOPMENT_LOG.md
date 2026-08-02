@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D19
+  geometry-dynamics pretraining canary。在 D18 flow-aligned encoder 上固定总
+  30 epochs：15 epochs 预测 current/near/far body/head fields，复制四个
+  future head channels 后再 15 epochs fine-tune onset。head transfer 把三折
+  current onset 首轮 loss 降至 `.6437/.5166/.5816`，但 history-minus-current
+  的 environment-macro cell AUROC/AP mean 为 `-.00219/-.00321`，pooled cell
+  `-.00246/+.00118`，sample AP `-.00679`；完整 gate 失败。终态
+  `D19_GEOMETRY_DYNAMICS_PRETRAINING_CANARY_NOT_SUPPORTED` 与
+  `D19_GENERIC_GEOMETRY_FIELD_PRETRAINING_SCHEDULE_STOP`。这表明通用 geometry
+  pretraining 同时强化了 current-static predictor，没有增加 history 独立增量。
+  保留 D18 alignment 正结果；下一候选显式编码 dense flow dynamics，不调
+  pretrain 比例、loss、seed 或 gate，主线与默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D18
   flow-aligned true-onset canary。固定 RAFT-small 物化 495×4 current→history
   backward flows；99-sample 方向检查的 valid fraction `.8798`，photometric L1
