@@ -4345,3 +4345,21 @@
   JSON/MD SHA-256 分别为
   `6b2523091a967b2a64e2062c9314d1cc4d6eaf37b99de204f4fd9ccf953f5d9d`、
   `363bba692465f0cf7c7fed6b35cf14c43fd4312ec1a52bfa576d01e1f18b4408`。
+
+## 2026-08-02：HFTF D5-S0B-P0B.1 fail-closed draft checkpoint
+
+- 新增明确 `DRAFT_NOT_EXECUTABLE` 的 execution-contract schema/MD、planner skeleton
+  与 tests。CLI 只读指定 contract，丢弃 output-root 参数，不访问 source、Git、
+  network 或 canonical root；implementation/test receipts 必须保持 exact nested
+  `UNBOUND_TODO`，关键 authorization 全 false，随后无条件拒绝执行。
+- draft 固定 18 个 `shard_000..017.json`、node/expression/call/assignment/keyword
+  schemas、LOCKED/NE/INVALID closed sets、NE durable receipts/prefix caps、18 项 cap
+  manifest 与 failure partial binding。loader 递归拒绝 top-level/nested duplicate
+  JSON keys，并核对 design/auth/caps/schemas/closed sets。
+- focused tests `7/7`、HFTF full suite `509/509`。科学与工程复审均确认
+  `CHECKPOINT CLEAR`，明确非 execution CLEAR；new formal root 不存在。planner/
+  test/JSON/MD SHA-256 分别为
+  `51cd7b7ee6678204e47e83377fef9b9f2024e527dbdf2fb655b29b5bf8788fda`、
+  `05921dd875576a13397e8eb7ac55df1920c5347be69863c1eee8e1c634a66449`、
+  `acf8b1239d12091870e940c3403d9e69fa945f63bc666f3fd39a59d949b6e70b`、
+  `487c31c5f3121e5e1c8ac89baba1342c53dd500d85f96a59ec13fbfcfe9963c7`。
