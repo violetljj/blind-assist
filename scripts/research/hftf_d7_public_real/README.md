@@ -147,6 +147,18 @@ Run `audit_role_isolation.py` before any split materialization. An ancestry grou
 crossing prior roles is a `HOLD_ROLE_REVIEW`, even when source-session identities
 are unique.
 
+For THOR-MAGNI, use the receipt-bound `merge_thor_magni_candidate_intake.py`
+adapter after `materialize_thor_magni_windows.py`. Pass exactly one canonical
+window artifact per source-session; alternate reruns of the same session are
+metadata alternatives, not independent events. The adapter binds the window
+manifest to its window receipt, selected-member receipt, archive checksum,
+source license, candidate/frame hashes, and local member hashes. It allows
+same-session QTM-to-SceneFNr frame reference reuse, but rejects overlapping
+source-time windows, candidate/frame/session/ancestry/event collisions, and
+partial post-merge surfaces. Run it once with `--dry-run` before the append.
+All resulting THOR rows remain assignment-only `NOT_EVALUABLE` until the same
+five-role review and final-adjudication chain below completes.
+
 For a lawful RGB/geometry pilot, first materialize a fresh, role-isolated input
 bundle. The extractor is currently limited to EgoWalk's public extracted RGB
 and source-native pose pilot; it fails closed on missing local media and never

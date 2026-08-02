@@ -187,7 +187,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         or "REVIEW_REQUIRED" in str(row.get("access_status", ""))
     ]
     validation_checks = validation.get("completion_checks", {})
-    source_table = [["Dataset", "Access/status", "Receipt kind", "Top-level candidates", "Intake candidates", "RGB media"]]
+    source_table = [["Dataset", "Access/status", "Receipt kind", "Top-level candidates", "Source-stat candidates", "RGB media"]]
     for row in sorted(receipts, key=lambda value: str(value.get("dataset_id"))):
         dataset_id = str(row.get("dataset_id"))
         source_table.append([
@@ -195,7 +195,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             str(row.get("access_status", "UNKNOWN")),
             str(row.get("source_hash_kind", "UNSPECIFIED")),
             str(candidate_by_dataset.get(dataset_id, 0)),
-            str(intake_candidate_latest.get(dataset_id, ("", 0))[1]),
+            str(int(source_stats.get(dataset_id, {}).get("candidate_windows", 0) or intake_candidate_latest.get(dataset_id, ("", 0))[1])),
             str(max(int(row.get("rgb_media_count", 0) or 0), intake_rgb_counts.get(dataset_id, 0))),
         ])
 
@@ -218,7 +218,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "",
         f"- Receipt rows with local evidence or retrieval timestamps: `{len(actual_sources)}` / `{len(receipts)}`.",
         f"- Sources explicitly blocked or requiring credentials/terms: `{len(inaccessible_sources)}`.",
-        "- Public extracted EgoWalk trajectories/RGB, SANPO public media canary, open THOR tracks/LiDAR, and a bounded THOR-MAGNI member canary were handled through source receipts; raw/gated sources were not bypassed.",
+        "- Public extracted EgoWalk trajectories/RGB, SANPO public media canary, open THOR tracks/LiDAR, and bounded selected-member THOR-MAGNI media were handled through source receipts; raw/gated sources were not bypassed.",
         "",
         "## 2. Download and parse statistics",
         "",

@@ -74,10 +74,10 @@
       "official_url": "https://arxiv.org/abs/2403.09285",
       "download_url": "https://zenodo.org/records/13865754",
       "license": "Creative Commons Attribution 4.0 (main v2 archive); selected video/eye-tracking components restricted",
-      "access_status": "PUBLIC_MAIN_ZIP_NOT_MATERIALIZED_VIDEO_EYE_PARTIAL_REQUEST",
-      "local_evidence_paths": ["artifacts.local/datasets/thor-source-native-id-time-transform-authority-recovery-r1"],
+      "access_status": "PUBLIC_ARCHIVE_METADATA_AND_SELECTED_MEMBER_MEDIA_MATERIALIZED_ARCHIVE_WIDE_MEDIA_PARTIAL",
+      "local_evidence_paths": ["artifacts.local/datasets/thor-source-native-id-time-transform-authority-recovery-r1", "F:/ba-data/hftf-d7-public-real/manifests/thor_magni_archive_manifest_d7-r1-thor-magni-range-metadata-offsets-20260802.jsonl", "F:/ba-data/hftf-d7-public-real/receipts/thor_magni_member_receipt_d7-r1-thor-magni-pupil-19-members-20260802.json", "F:/ba-data/hftf-d7-public-real/raw/thor-magni-pupil-19-v1-20260802"],
       "native_fields": ["motion_capture", "robot_interaction", "human_trajectories", "scene_context"],
-      "notes": "Main v2 archive is publicly listed but not materialized locally; download and schema/hash audit are still required. Do not treat v1/v2 or derived restoration outputs as independent parent events."
+      "notes": "Central-directory metadata plus 19 paired Pupil video/scenario members are materialized and CRC/SHA verified under the Zenodo archive checksum. The archive remains partial; no archive-wide media or event truth is claimed. Do not treat v1/v2, rerun windows, or derived restoration outputs as independent parent events."
     },
     {
       "dataset_id": "Ego4D",
