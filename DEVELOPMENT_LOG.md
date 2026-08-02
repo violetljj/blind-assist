@@ -1,5 +1,19 @@
 # Development Log
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6
+  real-phase-supervised early-pair representation canary。沿用相同 5-fold
+  source-session split，固定 `seed17/model-fold0/heldout-fold0`；23 train sessions /
+  1,016 scored windows，7 held-out sessions / 286 windows。candidate 仅在 frozen
+  directional-single inverse-risk comparator 上新增 zero-initialized early-pair
+  field residual，以 class/source-session-phase balanced human-reviewed phase labels
+  训练 20 个固定 epochs，不使用 held-out 选模。loss 从 `.7772` 降至 `.1111`，
+  但 held-out event-phase p95 AUROC 从 baseline `.7500` 降至 `.4167`
+  （delta `-.3333`），AP 从 `.6389` 降至 `.4444`（delta `-.1944`），positive
+  passed-vs-alertable direction 从 `4/4` 降至 `1/4`。终态为
+  `D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP`；不扩展
+  seed/fold，不继续调 head/loss/threshold。首次 launcher 5 秒超时发生在输出写入前，
+  按完全相同配置修复重跑；工程中断不消耗科学结论。下一变量必须改变
+  motion-alignment/correspondence representation。
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6
   source-session-held-out real-domain calibration ablation。30 个 SANPO source
   sessions 按正/负 strata 内稳定分为 5 folds（`7/6/6/6/5`），同一正事件的
   alertable/passed phases 不跨 fold。固定 `StandardScaler + L2 LogisticRegression`

@@ -69,6 +69,7 @@ D6_EARLY_PAIR_STRUCTURED_FIELD_EVENT_UTILITY_INCREMENT_NOT_SUPPORTED /
 D6_CONSERVATIVE_REAL_HARD_NEGATIVE_EXECUTION_NOT_SUPPORTED /
 D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED /
 D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED /
+D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -427,7 +428,13 @@ passed-minus-alertable direction 也都仅 `3/9` 为正。因此终态为
 `D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED`。停止当前
 candidate-score 的 threshold/output calibration；下一 canary 只改变 representation，
 把 real-phase actionability supervision 放回 early-pair RGB interaction/structured
-field task。
+field task。该固定 `seed17/model-fold0/heldout-fold0` canary 已完成：训练 loss 从
+`.7772` 降至 `.1111`，但 7-session held-out event-phase p95 AUROC 从 baseline
+`.7500` 降至 `.4167`，AP 从 `.6389` 降至 `.4444`；positive paired direction
+从 `4/4` 降至 `1/4`。终态为
+`D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP`，不扩展
+seed/fold。下一科学变量必须是 motion alignment/correspondence representation，
+不再调整当前 head/loss/threshold。
 
 ## 当前结论
 

@@ -134,7 +134,12 @@ calibration 的 AUROC delta mean 虽为 `+0.01704`，但 median `-0.00833`、仅
 `3/9` 为正，AP 与 paired direction 也仅 `3/9` 为正，终态为
 `D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED`。不再校准当前
 candidate score；下一步只允许一个表示级 canary，把 real-phase supervision 放回
-early-pair RGB interaction/structured field。
+early-pair RGB interaction/structured field。该 canary 训练拟合成功，但在 7 个
+held-out sessions 上 AUROC/AP 从 baseline `.7500/.6389` 降到
+`.4167/.4444`，positive paired direction 从 `4/4` 降到 `1/4`，终态为
+`D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP`。不扩展
+seed/fold；下一变量必须改成 motion-aligned correspondence/flow representation，
+不再改当前 head/loss/threshold。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

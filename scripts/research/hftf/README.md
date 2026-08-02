@@ -4,7 +4,8 @@
 R3.1-reference-opportunity-not-evaluable /
 D3-Q0-screening-effect-contract-frozen /
 D6-real-veto-transfer-not-supported /
-D6-real-calibration-increment-not-supported`
+D6-real-calibration-increment-not-supported /
+D6-real-phase-early-pair-not-supported`
 
 ## 研究问题与版本
 
@@ -45,6 +46,10 @@ E:\codex-tools\projects\blindassist\toolchain\venvs\learned-component-validator-
   scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_real_veto_calibration.py `
   --ranking-report artifacts.local/evidence/hftf/<real-ranking-run>/report.json `
   --output artifacts.local/evidence/hftf/<real-calibration-run>/report.json
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf run_stage_c_d6_sanpo_real_phase_early_pair_canary.py `
+  --output-root artifacts.local/evidence/hftf/<real-phase-early-pair-run>
 ```
 
 物化器逐帧验证 review-bundle SHA，重叠 observation 必须 byte-identical，且每个输出
@@ -56,6 +61,9 @@ threshold，不搜索 threshold。30-event evaluator 固定比较 candidate 与
 source-session-held-out split、`StandardScaler + L2 LogisticRegression(C=1,
 liblinear, class_weight=balanced)`，只比较 baseline-only 与增加 candidate
 mean/p95/max 的 candidate-aware arm；不搜索 feature、C、model、fold 或 threshold。
+real-phase early-pair runner 固定 `seed17/model-fold0/heldout-fold0`、20 epochs 和
+final-epoch evaluation；训练/held-out source sessions 隔离，只有 event-phase p95
+AUROC 与 AP delta 同时为正才允许扩展。
 
 ## 稳定 Interface
 

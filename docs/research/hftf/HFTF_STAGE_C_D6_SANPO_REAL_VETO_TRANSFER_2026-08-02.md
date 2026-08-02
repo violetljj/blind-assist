@@ -11,6 +11,8 @@
 > `D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED`
 >
 > `D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED`
+>
+> `D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP`
 
 此前 confidence-anchored pair residual 在 TartanGround
 Development/outcome-unseen 上建立的 false-alert ranking signal 保留，不因本轮撤销。
@@ -18,9 +20,12 @@ Development/outcome-unseen 上建立的 false-alert ranking signal 保留，不�
 
 1. “零训练真警 veto”阈值能在真实困难负例上产生有意义的清除；
 2. synthetic-trained veto score 能在 SANPO 真实人审正负事件上继续优于简单的
-   `1 - baseline risk` 排序。
+   `1 - baseline risk` 排序；
+3. 当前 candidate score 经固定低容量真实域校准后能提供稳定增量；
+4. raw RGB early-pair field residual 经真实 phase 监督后能 source-session-heldout
+   泛化。
 
-三者都不支持。当前问题主要在 real-domain representation/transfer，不只是阈值过严。
+四者都不支持。当前问题主要在 real-domain representation/transfer，不只是阈值过严。
 
 ## 模式与问题
 
@@ -181,6 +186,46 @@ stage-c-d6-sanpo-real-veto-calibration-v0/report.json
 87681af73f56987e3ceb83d74d461591cfb9b0a51f7f41e6033dd960a017dc2a
 ```
 
+## Real-phase-supervised early-pair canary
+
+校准失败后按预声明只改变 representation/training signal，不再拟合旧 candidate score。
+固定 `seed17/model-fold0/heldout-fold0`：
+
+- 30 source sessions 仍使用相同 hash-stratified 5-fold split；
+- 23 train sessions / 1,016 scored windows，7 held-out sessions / 286 windows；
+- frozen directional-single inverse-risk comparator；
+- candidate 为 `EarlyPairStem` 加 zero-initialized direction-preserving field residual；
+- 只在 central baseline-active cells 上，以人审 `negative_event /
+  positive_alertable / positive_passed` phase label 训练；
+- class 与 source-session-phase group 平衡；
+- 固定 20 epochs、AdamW `3e-4`，只评价 final epoch；held-out 不用于选模；
+- AUROC 与 AP delta 必须同时大于 0 才扩展 seed/fold。
+
+初始 residual 的 maximum absolute value 为精确 `0`。训练 loss 从 `0.777228` 降到
+`0.111119`，所以优化确实工作；结果失败在 source-session-held-out 泛化：
+
+| held-out event-phase p95 | baseline | candidate | delta |
+|---|---:|---:|---:|
+| AUROC | 0.750000 | 0.416667 | -0.333333 |
+| average precision | 0.638889 | 0.444444 | -0.194444 |
+
+四个 held-out positive sessions 中，baseline 的 passed score 均高于 alertable
+(`4/4`)；candidate 仅 `1/4`，paired delta mean 为 `-0.093330`。因此不扩展剩余
+seed/fold：
+
+> `D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP`
+
+第一次 launcher 因 5 秒命令超时在写入输出前中断，随后按完全相同配置重跑。该工程
+中断没有被当成科学负结果，也没有关闭 cohort。
+
+输出与 SHA-256：
+
+```text
+artifacts.local/evidence/hftf/
+stage-c-d6-sanpo-real-phase-early-pair-canary-v0/report.json
+ec611e75d57c9c0f9e28c53db449aae4c1a9964602677f85e6dadb45984f072d
+```
+
 ## 保留与关闭
 
 保留：
@@ -195,6 +240,7 @@ stage-c-d6-sanpo-real-veto-calibration-v0/report.json
 - 当前 zero-training-true-alert conservative threshold 的 real hard-negative utility；
 - 当前 synthetic-trained confidence-residual veto representation 的 SANPO real transfer；
 - 当前 candidate score 经固定低容量真实域校准后的稳定增量；
+- 当前 global phase label 直接监督的 exact early-pair field residual recipe；
 - 在同一表示上继续搜索 threshold、top-k、vote count 或确认长度。
 
 未评价：
@@ -206,17 +252,13 @@ stage-c-d6-sanpo-real-veto-calibration-v0/report.json
 
 ## 下一可证伪候选
 
-停止 exact pair-residual output calibration。下一实验只改变一个科学变量：
-把 real-domain actionability supervision 放回 early-pair RGB interaction/structured
-field task，而不是再拟合当前 candidate score。
-
-先运行单一 `seed17/fold0` source-session-held-out canary；训练只读训练 sessions 的
-人审 phase labels，验证 sessions 完全隔离。baseline 为 frozen directional-single，
-candidate 只增加 zero-initialized early-pair residual。primary 是 held-out
-event-phase AUROC/AP 相对 baseline 的增量，secondary 是 positive
-passed-minus-alertable direction；不搜索结构、seed、fold、threshold 或 operating
-point。若该 canary 无增量，立即停止这条 real-phase-supervised early-pair 表示；
-若有增量，才扩展其余预定 seed/fold。工程异常允许原配置修复重跑，不消耗科学结论。
+当前结果说明“给 raw RGB early-pair 更直接的 event phase supervision”仍不足以
+source-heldout 泛化。下一候选不得再改 loss/head/threshold；必须改变输入表示本身。
+优先检验单一低成本 motion-alignment variable：冻结 baseline 与 phase split，只把
+raw frame difference 替换为 ego-motion-compensated correspondence/flow residual。
+先做无训练 representation separability audit；只有 train-only 固定投影在 held-out
+AUROC/AP 同时优于 raw-pair reference，才允许训练新的 field residual。缺少可靠
+alignment 时记为 `NOT_EVALUABLE`，不把工程缺失写成算法负结果。
 
 ## 复现
 
@@ -245,4 +287,8 @@ E:\codex-tools\projects\blindassist\toolchain\venvs\learned-component-validator-
   scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_real_veto_calibration.py `
   --ranking-report artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-veto-ranking-v1/report.json `
   --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-veto-calibration-v0/report.json
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf run_stage_c_d6_sanpo_real_phase_early_pair_canary.py `
+  --output-root artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-phase-early-pair-canary-v0
 ```
