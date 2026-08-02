@@ -1,5 +1,20 @@
 # Development Log
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6
+  motion-alignment separability audit。只将 raw adjacent-frame residual 替换为
+  sparse-LK + RANSAC partial-affine aligned residual；两臂共享 54 维 `3×6`
+  grid summary、train-only weighted standardization、L2 projection 和同一 5-fold
+  source split。初版 affine consensus `>=.50` 在监督投影前因 held-out coverage
+  `.8951` 终止为 `NOT_EVALUABLE`；只根据 correspondence diagnostics 将机械门修复为
+  `.40`，未读取 outcome 或改成功门，整体 coverage 升至 `.9685`。fold0 raw/aligned
+  AUROC/AP 为 `.6667/.5889` 对 `1.0/1.0`，fold1 为 `.5556/.7222` 对
+  `.7778/.8056`；fold4 为 `.5000/.7000` 对 `.3333/.4500`；fold2/3 各因一个
+  short phase coverage `.64/.667` 保持不评价。终态为
+  `D6_MOTION_ALIGNED_PAIR_SEPARABILITY_SIGNAL_MIXED_NOT_READY_TO_TRAIN`：保留
+  folds0/1 的 real-domain representation 正信号，不让 fold4 或 claim ceiling
+  覆盖它；但 `2 positive / 1 negative / 2 not evaluable` 不足以让当前 classical
+  alignment 进入 field training。下一变量转向更可靠的 pretrained dense flow/
+  correspondence representation，不再放松当前 coverage/feature 门。
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6
   real-phase-supervised early-pair representation canary。沿用相同 5-fold
   source-session split，固定 `seed17/model-fold0/heldout-fold0`；23 train sessions /
   1,016 scored windows，7 held-out sessions / 286 windows。candidate 仅在 frozen

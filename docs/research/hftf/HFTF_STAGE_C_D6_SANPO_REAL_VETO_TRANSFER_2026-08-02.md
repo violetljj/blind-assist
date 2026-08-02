@@ -4,7 +4,7 @@
 
 ## 结论
 
-本轮及其预声明校准后继得到三个有效但窄的科学负结果：
+本轮及其后继得到四个有效但窄的科学负结果，并保留一个混合表示正信号：
 
 > `D6_CONSERVATIVE_REAL_HARD_NEGATIVE_EXECUTION_NOT_SUPPORTED`
 >
@@ -13,6 +13,8 @@
 > `D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED`
 >
 > `D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP`
+>
+> `D6_MOTION_ALIGNED_PAIR_SEPARABILITY_SIGNAL_MIXED_NOT_READY_TO_TRAIN`
 
 此前 confidence-anchored pair residual 在 TartanGround
 Development/outcome-unseen 上建立的 false-alert ranking signal 保留，不因本轮撤销。
@@ -25,7 +27,9 @@ Development/outcome-unseen 上建立的 false-alert ranking signal 保留，不�
 4. raw RGB early-pair field residual 经真实 phase 监督后能 source-session-heldout
    泛化。
 
-四者都不支持。当前问题主要在 real-domain representation/transfer，不只是阈值过严。
+前四者都不支持。motion-aligned residual 在两个 folds 为正、一个为负、两个因局部
+配准覆盖不足未评价；它值得保留，但尚不稳定到可训练 field residual。当前问题主要在
+real-domain representation/transfer，不只是阈值过严。
 
 ## 模式与问题
 
@@ -226,12 +230,51 @@ stage-c-d6-sanpo-real-phase-early-pair-canary-v0/report.json
 ec611e75d57c9c0f9e28c53db449aae4c1a9964602677f85e6dadb45984f072d
 ```
 
+## Motion-aligned pair separability
+
+下一实验只改变输入表示。raw arm 使用相邻帧绝对灰度残差；aligned arm 先以 sparse
+Lucas-Kanade correspondences + RANSAC partial affine 去除主导相机运动，再计算相同
+残差。两臂都使用相同 `3×6 × (mean, p90, fraction>0.10)` 54 维特征、train-only
+weighted standardization 和固定 L2 Logistic projection。
+
+初版要求 affine inlier fraction `>=0.50`，整体覆盖 `92.40%`，但 held-out 只有
+`89.51%`，因此在监督投影前终止为 `NOT_EVALUABLE`。只看 correspondence diagnostics
+后，将最低共识机械修复为 `0.40`；没有读取 phase outcome、改特征或改成功门。修复后
+整体 alignment coverage 为 `96.85%`。
+
+五个 source-heldout folds：
+
+| fold | 状态 | raw AUROC/AP | aligned AUROC/AP | delta |
+|---:|---|---:|---:|---:|
+| 0 | supported | 0.6667 / 0.5889 | 1.0000 / 1.0000 | +0.3333 / +0.4111 |
+| 1 | supported | 0.5556 / 0.7222 | 0.7778 / 0.8056 | +0.2222 / +0.0833 |
+| 2 | not evaluable | — | — | one phase coverage 0.64 |
+| 3 | not evaluable | — | — | one phase coverage 0.667 |
+| 4 | not supported | 0.5000 / 0.7000 | 0.3333 / 0.4500 | -0.1667 / -0.2500 |
+
+因此不能把 fold0 的完美排序升级为稳定模型效应，也不能让 fold4 抹掉 fold0/1 的真实
+representation signal。精确终态为：
+
+> `D6_MOTION_ALIGNED_PAIR_SEPARABILITY_SIGNAL_MIXED_NOT_READY_TO_TRAIN`
+
+它支持“显式去除 ego motion 可能是缺失变量”，但不支持当前 classical partial-affine
+residual 进入 field training。五个报告 SHA-256：
+
+```text
+fold0 dd35797ea4fe246f3187eb4855e2e24689772b91bdf45f12e155571e45d9354e
+fold1 3d317b822985df8c89d88f14caa65304070190271a12955c320586525806e0a8
+fold2 4e3c1e86dfcae40adaf8c103748213ae29fa1738f38718861045a619d76fd3c0
+fold3 b1273299075edf6a47397a763f6a44b26c5dac3cce7bb09da7007fdf9a1f866c
+fold4 773a835f47f2f00af360ee7d612ec35a270a76b0971e1d5e03029b6c5237a78e
+```
+
 ## 保留与关闭
 
 保留：
 
 - synthetic Development/outcome-unseen false-alert ranking signal；
 - early pair interaction 在 synthetic structured field 上的 ranking/specificity signal；
+- motion-aligned residual 在 SANPO folds 0/1 的 held-out separability signal；
 - D7 三人盲审 clip-level negative evidence；
 - 本轮 150-frame hard-negative corpus 作为 real-domain regression asset。
 
@@ -241,24 +284,23 @@ ec611e75d57c9c0f9e28c53db449aae4c1a9964602677f85e6dadb45984f072d
 - 当前 synthetic-trained confidence-residual veto representation 的 SANPO real transfer；
 - 当前 candidate score 经固定低容量真实域校准后的稳定增量；
 - 当前 global phase label 直接监督的 exact early-pair field residual recipe；
+- 当前 sparse-LK partial-affine residual 直接进入 field training；
 - 在同一表示上继续搜索 threshold、top-k、vote count 或确认长度。
 
 未评价：
 
-- 新表示是否可用；
+- 更可靠 learned flow/correspondence representation 是否可用；
 - positive-event recall 下的任何新执行阈值；
 - source-general real transfer；
 - 主线、App、设备、生产或安全效用。
 
 ## 下一可证伪候选
 
-当前结果说明“给 raw RGB early-pair 更直接的 event phase supervision”仍不足以
-source-heldout 泛化。下一候选不得再改 loss/head/threshold；必须改变输入表示本身。
-优先检验单一低成本 motion-alignment variable：冻结 baseline 与 phase split，只把
-raw frame difference 替换为 ego-motion-compensated correspondence/flow residual。
-先做无训练 representation separability audit；只有 train-only 固定投影在 held-out
-AUROC/AP 同时优于 raw-pair reference，才允许训练新的 field residual。缺少可靠
-alignment 时记为 `NOT_EVALUABLE`，不把工程缺失写成算法负结果。
+下一候选继续只改变 motion representation，但不再放松 classical alignment coverage
+或重试其 feature thresholds。使用现有公开预训练的 dense optical-flow/
+correspondence encoder，先 outcome-blind 地验证所有 folds 的 flow coverage 与数值
+稳定性；达标后复用完全相同的 54 维 grid summary、fold split、L2 projection 与
+AUROC/AP 联合门。只有跨可评价 folds 稳定增量，才进入 field residual training。
 
 ## 复现
 
@@ -291,4 +333,11 @@ E:\codex-tools\projects\blindassist\toolchain\venvs\learned-component-validator-
 E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   scripts/run_research_tool.py hftf run_stage_c_d6_sanpo_real_phase_early_pair_canary.py `
   --output-root artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-phase-early-pair-canary-v0
+
+foreach ($fold in 0..4) {
+  E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+    scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_motion_alignment_separability.py `
+    --heldout-fold $fold `
+    --output "artifacts.local/evidence/hftf/stage-c-d6-sanpo-motion-alignment-separability-v1-fold-$fold/report.json"
+}
 ```

@@ -139,7 +139,11 @@ held-out sessions 上 AUROC/AP 从 baseline `.7500/.6389` 降到
 `.4167/.4444`，positive paired direction 从 `4/4` 降到 `1/4`，终态为
 `D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP`。不扩展
 seed/fold；下一变量必须改成 motion-aligned correspondence/flow representation，
-不再改当前 head/loss/threshold。
+不再改当前 head/loss/threshold。后续相同 54 维/L2 projection 的 sparse-LK
+partial-affine residual 在 folds 0/1 双增量、fold4 双负，fold2/3 因局部 phase
+alignment coverage 不足保持 `NOT_EVALUABLE`。终态为
+`D6_MOTION_ALIGNED_PAIR_SEPARABILITY_SIGNAL_MIXED_NOT_READY_TO_TRAIN`；显式
+ego-motion removal 信号保留，但当前 classical alignment 不进入 field training。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

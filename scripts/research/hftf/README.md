@@ -5,7 +5,8 @@ R3.1-reference-opportunity-not-evaluable /
 D3-Q0-screening-effect-contract-frozen /
 D6-real-veto-transfer-not-supported /
 D6-real-calibration-increment-not-supported /
-D6-real-phase-early-pair-not-supported`
+D6-real-phase-early-pair-not-supported /
+D6-motion-alignment-separability-mixed`
 
 ## 研究问题与版本
 
@@ -50,6 +51,11 @@ E:\codex-tools\projects\blindassist\toolchain\venvs\learned-component-validator-
 E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   scripts/run_research_tool.py hftf run_stage_c_d6_sanpo_real_phase_early_pair_canary.py `
   --output-root artifacts.local/evidence/hftf/<real-phase-early-pair-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_motion_alignment_separability.py `
+  --heldout-fold 0 `
+  --output artifacts.local/evidence/hftf/<motion-alignment-run>/report.json
 ```
 
 物化器逐帧验证 review-bundle SHA，重叠 observation 必须 byte-identical，且每个输出
@@ -64,6 +70,9 @@ mean/p95/max 的 candidate-aware arm；不搜索 feature、C、model、fold 或 
 real-phase early-pair runner 固定 `seed17/model-fold0/heldout-fold0`、20 epochs 和
 final-epoch evaluation；训练/held-out source sessions 隔离，只有 event-phase p95
 AUROC 与 AP delta 同时为正才允许扩展。
+motion-alignment evaluator 用 sparse-LK + RANSAC partial affine 比较 raw/aligned
+相邻帧残差；两臂固定相同 54 维 grid features 与 L2 projection。配准 coverage 在
+监督投影前判定，失败只产生 `NOT_EVALUABLE`。
 
 ## 稳定 Interface
 
