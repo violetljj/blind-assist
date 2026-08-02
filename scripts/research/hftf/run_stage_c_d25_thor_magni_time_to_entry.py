@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import gc
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -657,7 +658,12 @@ def main() -> int:
         for seed in SEEDS:
             arm_metrics = {}
             arm_diagnostics = {}
-            arm_models = {}
+            heldout_sources = sorted(
+                {
+                    str(record["source_session_id"])
+                    for record in test_records
+                }
+            )
             for arm in ARMS:
                 metrics, diagnostics, model = train_arm(
                     train_records,
@@ -671,7 +677,40 @@ def main() -> int:
                 )
                 arm_metrics[arm] = metrics
                 arm_diagnostics[arm] = diagnostics
-                arm_models[arm] = model
+                checkpoint_path = (
+                    args.output.parent
+                    / "checkpoints"
+                    / f"fold-{fold}"
+                    / f"seed-{seed}-{arm}.pt"
+                )
+                checkpoint_path.parent.mkdir(
+                    parents=True,
+                    exist_ok=True,
+                )
+                model.cpu()
+                torch.save(
+                    {
+                        "schema": SCHEMA,
+                        "fold": fold,
+                        "seed": seed,
+                        "arm": arm,
+                        "heldout_source_sessions": heldout_sources,
+                        "model_state_dict": model.state_dict(),
+                    },
+                    checkpoint_path,
+                )
+                checkpoints.append(
+                    {
+                        "fold": fold,
+                        "seed": seed,
+                        "arm": arm,
+                        "path": str(checkpoint_path.resolve()),
+                        "sha256": sha256(checkpoint_path),
+                    }
+                )
+                del model
+                gc.collect()
+                torch.cuda.empty_cache()
             if (
                 arm_diagnostics["current"]["initial_model_sha256"]
                 != arm_diagnostics["history"]["initial_model_sha256"]
@@ -692,12 +731,6 @@ def main() -> int:
                     nested(arm_metrics["history"], path)
                     - nested(arm_metrics["current"], path)
                 )
-            heldout_sources = sorted(
-                {
-                    str(record["source_session_id"])
-                    for record in test_records
-                }
-            )
             units.append(
                 {
                     "fold": fold,
@@ -709,42 +742,6 @@ def main() -> int:
                     "training": arm_diagnostics,
                 }
             )
-            for arm in ARMS:
-                checkpoint_path = (
-                    args.output.parent
-                    / "checkpoints"
-                    / f"fold-{fold}"
-                    / f"seed-{seed}-{arm}.pt"
-                )
-                checkpoint_path.parent.mkdir(
-                    parents=True,
-                    exist_ok=True,
-                )
-                torch.save(
-                    {
-                        "schema": SCHEMA,
-                        "fold": fold,
-                        "seed": seed,
-                        "arm": arm,
-                        "heldout_source_sessions": heldout_sources,
-                        "model_state_dict": {
-                            name: value.detach().cpu()
-                            for name, value in arm_models[
-                                arm
-                            ].state_dict().items()
-                        },
-                    },
-                    checkpoint_path,
-                )
-                checkpoints.append(
-                    {
-                        "fold": fold,
-                        "seed": seed,
-                        "arm": arm,
-                        "path": str(checkpoint_path.resolve()),
-                        "sha256": sha256(checkpoint_path),
-                    }
-                )
             print(
                 json.dumps(
                     {
@@ -760,9 +757,6 @@ def main() -> int:
                 ),
                 flush=True,
             )
-            del arm_models
-            torch.cuda.empty_cache()
-
     aggregate = {
         path: summarize_delta(units, path) for path in paths
     }
