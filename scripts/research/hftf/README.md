@@ -11,6 +11,8 @@ D6-raft-residual-flow-not-stable /
 D8-thor-magni-local-route-supervision-materialized /
 D8-high-dimensional-coarse-actionability-signal-observed /
 D8-equal-capacity-temporal-actionability-increment-not-stable /
+D8-temporal-spatial-corridor-signal-weak /
+D8-equal-capacity-temporal-spatial-increment-not-stable /
 D8-full-local-field-history-increment-not-supported`
 
 ## 研究问题与版本
@@ -106,6 +108,19 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   --samples artifacts.local/evidence/hftf/<local-route-run>/samples.jsonl `
   --features artifacts.local/evidence/hftf/<rgb-history-run>/features.npz `
   --output artifacts.local/evidence/hftf/<temporal-head-run>/report.json
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  extract_stage_c_d8_thor_magni_spatial_features.py `
+  --samples artifacts.local/evidence/hftf/<local-route-run>/samples.jsonl `
+  --output artifacts.local/evidence/hftf/<spatial-run>/features.npz
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d8_thor_magni_equal_capacity_temporal_head.py `
+  --samples artifacts.local/evidence/hftf/<local-route-run>/samples.jsonl `
+  --features artifacts.local/evidence/hftf/<spatial-run>/features.npz `
+  --output artifacts.local/evidence/hftf/<spatial-head-run>/report.json
 ```
 
 物化器从 19 个 THOR-MAGNI Pupil/QTM sessions 派生 wearer-motion-relative
@@ -115,7 +130,10 @@ MobileNetV3-small 和五折 source-session isolation，比较 current-only 与
 history-residual linear readout。D8 结果只在近距/走廊 coarse actionability 层支持
 较高维 history separability signal；完整 48-cell field 与连续距离排序不支持继续
 扩展。相同 4,610 参数、相同训练预算的 current/history temporal head 随后没有复制
-coarse 增量，因此不把前述 signal 升级为 history 独立增量。
+coarse 增量，因此不把前述 signal 升级为 history 独立增量。最后的 13,586 参数
+spatial-map 对照只在 corridor AUROC/AP 上得到 5/5 fold 的小增量
+(`+.0040/+.0038`)，近距不支持，AP 也只有 9/15 units 为正；记录 weak signal 后
+停止当前 THOR frozen-backbone 模型搜索。
 
 ## 稳定 Interface
 

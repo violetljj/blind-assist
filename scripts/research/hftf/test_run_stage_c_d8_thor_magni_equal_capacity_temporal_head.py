@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from run_stage_c_d8_thor_magni_equal_capacity_temporal_head import (
     TemporalActionabilityHead,
+    TemporalSpatialActionabilityHead,
     source_balanced_weights,
 )
 
@@ -43,6 +44,21 @@ class EqualCapacityTemporalHeadTests(unittest.TestCase):
             float(model(history).item()),
             float(model(repeated).item()),
         )
+
+    def test_spatial_repeated_current_is_temporally_invariant(self) -> None:
+        model = TemporalSpatialActionabilityHead(32, 2, 2)
+        current = torch.arange(32 * 2 * 2, dtype=torch.float32).reshape(
+            1,
+            32,
+            2,
+            2,
+        )
+        repeated = current[:, None].repeat(1, 5, 1, 1, 1)
+        first = model(repeated)
+        with torch.no_grad():
+            model.temporal_residual_weight.fill_(2.0)
+        second = model(repeated)
+        torch.testing.assert_close(first, second)
 
     def test_each_source_has_equal_total_training_weight(self) -> None:
         sources = np.asarray(["a", "a", "a", "b", "c", "c"])

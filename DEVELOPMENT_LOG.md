@@ -1,5 +1,15 @@
 # Development Log
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D8
+  equal-capacity temporal-spatial actionability head。冻结 MobileNet
+  `5×576×4×7` maps，current/history 两臂共享 13,586 参数、相同五折三 seed
+  训练预算。近距 AUROC/AP delta mean `-.0016/-.0006`，仅 2/5、1/5 fold 为正；
+  走廊 AUROC/AP delta mean `+.0040/+.0038`，均 5/5 fold 为正，但 individual
+  units 仅 13/15、9/15。记录
+  `D8_TEMPORAL_SPATIAL_CORRIDOR_SIGNAL_WEAK_NOT_ACTIONABLE` 与
+  `D8_EQUAL_CAPACITY_TEMPORAL_SPATIAL_ACTIONABILITY_INCREMENT_NOT_STABLE`。
+  空间 layout 是机制一致变量，但效应小且未通过预定双目标门；停止当前 THOR
+  frozen-backbone 搜索，不删 seed、不调模型救援，下一科学变量转向独立来源复现。
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D8
   equal-capacity temporal actionability head。两臂共享相同 `5×576` 接口、4,610
   参数、120 epochs、source-balanced BCE 与 seeds `17/23/41`；current arm 仅将
   current feature 重复五次，history arm 才读取真实五帧。seed-mean fold delta：

@@ -28,11 +28,14 @@ THOR-MAGNI 已经提供了足够的跨会话局部动作性监督，不需要先
 
 - `D8_HIGH_DIMENSIONAL_COARSE_ACTIONABILITY_SEPARABILITY_SIGNAL_OBSERVED`
 - `D8_EQUAL_CAPACITY_TEMPORAL_ACTIONABILITY_INCREMENT_NOT_STABLE`
+- `D8_TEMPORAL_SPATIAL_CORRIDOR_SIGNAL_WEAK_NOT_ACTIONABLE`
+- `D8_EQUAL_CAPACITY_TEMPORAL_SPATIAL_ACTIONABILITY_INCREMENT_NOT_STABLE`
 - `D8_FULL_LOCAL_FIELD_HISTORY_INCREMENT_NOT_SUPPORTED_ON_FROZEN_REPRESENTATION`
 
 较高维 screen 是真实观察，但不能排除容量混杂，不能升级为 history 独立增量。
-当前 pooled frozen-feature temporal head 关闭；不调 epoch、seed、head 或 target
-救援，也不再增加数据治理层。
+保留空间 layout 后只出现幅度很小的 corridor-specific signal，预定的双目标总门仍
+失败。当前 THOR frozen-backbone 路线关闭；不调 epoch、seed、head 或 target
+救援，也不再增加数据治理层。下一科学变量必须是独立来源复现，而不是同源模型搜索。
 
 ## 监督物化
 
@@ -140,6 +143,28 @@ held-out 折都同时包含两类粗粒度目标的正负例。
 排除了输入维度和 head 参数量差异，它 supersede 先前较高维 screen 对“history
 独立增量”的解释，但不删除先前观察值。
 
+## 等容量 temporal-spatial 结果
+
+pooled head 可能过早丢失画面位置，因此执行最后一个同源表示对照。输入改为 frozen
+MobileNet 的 `5 × 576 × 4 × 7` feature map；两臂共享相同 13,586 参数：
+per-time/per-channel residual fusion、GroupNorm、`Conv1x1(576,16)` 与
+`Linear(16×4×7,2)`。其余 split、seeds、epochs、loss 与 final-epoch evaluation
+保持不变。
+
+三个 seed 的 fold-mean history-minus-current：
+
+| 指标 | mean | median | 正折 | 正 unit |
+|---|---:|---:|---:|---:|
+| 近距 AUROC | -0.0016 | -0.0008 | 2/5 | 5/15 |
+| 近距 AP | -0.0006 | -0.0001 | 1/5 | 7/15 |
+| 走廊侵入 AUROC | +0.0040 | +0.0027 | 5/5 | 13/15 |
+| 走廊侵入 AP | +0.0038 | +0.0027 | 5/5 | 9/15 |
+
+空间 layout 的保留确实只改变了空间定义的走廊目标，近距目标没有改善。这是一个
+机制一致但幅度很小的 corridor-specific weak signal。由于 AP 只有 9/15 个
+fold×seed units 为正，且预定门要求近距与走廊四项指标同时成立，本结果不授权
+end-to-end fine-tuning、field 恢复或主线比较。
+
 ## 可复现证据
 
 监督输出：
@@ -174,6 +199,19 @@ artifacts.local/evidence/hftf/
 - `report.json` SHA-256：
   `c7e5d6d957ecb2a6a2fe8a068e9ea55190d5489b50698d09549fadb368a086ce`
 
+spatial feature 与 temporal-spatial head 输出：
+
+```text
+artifacts.local/evidence/hftf/
+  stage-c-d8-thor-magni-spatial-features-v0/
+  stage-c-d8-thor-magni-equal-capacity-temporal-spatial-head-v0/
+```
+
+- `features.npz` SHA-256：
+  `9a80d6ca6f3b36aee3efed91f89802ebd7e5f9a972cca226175644bd55135838`
+- temporal-spatial `report.json` SHA-256：
+  `22b6dabe6bd47e404ac29639bd85106cc140bd7bf62bed7c2a1527a38ffe38ff`
+
 复现命令：
 
 ```powershell
@@ -194,6 +232,19 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   --samples artifacts.local/evidence/hftf/<new-supervision-run>/samples.jsonl `
   --features artifacts.local/evidence/hftf/<new-screen-run>/features.npz `
   --output artifacts.local/evidence/hftf/<new-head-run>/report.json
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  extract_stage_c_d8_thor_magni_spatial_features.py `
+  --samples artifacts.local/evidence/hftf/<new-supervision-run>/samples.jsonl `
+  --output artifacts.local/evidence/hftf/<new-spatial-run>/features.npz
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d8_thor_magni_equal_capacity_temporal_head.py `
+  --samples artifacts.local/evidence/hftf/<new-supervision-run>/samples.jsonl `
+  --features artifacts.local/evidence/hftf/<new-spatial-run>/features.npz `
+  --output artifacts.local/evidence/hftf/<new-spatial-head-run>/report.json
 ```
 
 ## 主张边界

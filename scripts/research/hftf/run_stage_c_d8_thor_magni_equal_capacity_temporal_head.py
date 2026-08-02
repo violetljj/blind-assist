@@ -64,6 +64,46 @@ class TemporalActionabilityHead(nn.Module):
         )
 
 
+class TemporalSpatialActionabilityHead(nn.Module):
+    """Preserve the frozen spatial grid under the same arm capacity."""
+
+    def __init__(
+        self,
+        channels: int,
+        height: int,
+        width: int,
+        hidden_channels: int = 16,
+        output_count: int = 2,
+    ) -> None:
+        super().__init__()
+        self.temporal_residual_weight = nn.Parameter(
+            torch.zeros(4, channels, 1, 1)
+        )
+        self.normalization = nn.GroupNorm(32, channels)
+        self.projection = nn.Conv2d(
+            channels,
+            hidden_channels,
+            kernel_size=1,
+        )
+        self.head = nn.Linear(
+            hidden_channels * height * width,
+            output_count,
+        )
+
+    def forward(self, features: torch.Tensor) -> torch.Tensor:
+        if features.ndim != 5 or features.shape[1] != 5:
+            raise ValueError("Expected [batch,5,channel,height,width] features")
+        current = features[:, -1]
+        residual = features[:, :4] - current[:, None]
+        weighted_residual = (
+            residual
+            * torch.tanh(self.temporal_residual_weight)[None]
+        ).mean(dim=1)
+        fused = self.normalization(current + weighted_residual)
+        hidden = nnf.hardswish(self.projection(fused))
+        return self.head(hidden.flatten(1))
+
+
 def seed_everything(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -89,11 +129,19 @@ def normalize_fold(
     features: np.ndarray,
     train_indices: np.ndarray,
 ) -> np.ndarray:
-    train = features[train_indices].reshape(-1, features.shape[-1])
-    mean = np.mean(train, axis=0)
-    scale = np.std(train, axis=0)
-    scale[scale < 1e-6] = 1.0
-    return ((features - mean) / scale).astype(np.float32)
+    if features.ndim == 3:
+        train = features[train_indices].reshape(-1, features.shape[-1])
+        mean = np.mean(train, axis=0)
+        scale = np.std(train, axis=0)
+        scale[scale < 1e-6] = 1.0
+        return ((features - mean) / scale).astype(np.float32)
+    if features.ndim == 5:
+        train = features[train_indices]
+        mean = np.mean(train, axis=(0, 1, 3, 4), keepdims=True)
+        scale = np.std(train, axis=(0, 1, 3, 4), keepdims=True)
+        scale[scale < 1e-6] = 1.0
+        return ((features - mean) / scale).astype(np.float32)
+    raise ValueError(f"Unsupported feature tensor rank: {features.ndim}")
 
 
 def train_arm(
@@ -113,12 +161,12 @@ def train_arm(
     test_values = normalized_features[test_indices]
     if arm == "current":
         train_values = np.repeat(
-            train_values[:, -1:, :],
+            train_values[:, -1:],
             5,
             axis=1,
         )
         test_values = np.repeat(
-            test_values[:, -1:, :],
+            test_values[:, -1:],
             5,
             axis=1,
         )
@@ -135,9 +183,18 @@ def train_arm(
     negative = train_y.shape[0] - positive
     positive_weight = negative / torch.clamp(positive, min=1.0)
 
-    model = TemporalActionabilityHead(
-        channels=normalized_features.shape[-1]
-    ).to(device)
+    if normalized_features.ndim == 3:
+        model: nn.Module = TemporalActionabilityHead(
+            channels=normalized_features.shape[-1]
+        ).to(device)
+    elif normalized_features.ndim == 5:
+        model = TemporalSpatialActionabilityHead(
+            channels=normalized_features.shape[2],
+            height=normalized_features.shape[3],
+            width=normalized_features.shape[4],
+        ).to(device)
+    else:
+        raise ValueError("Unsupported temporal-head feature rank")
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=LEARNING_RATE,
@@ -231,7 +288,11 @@ def load_aligned_features(
     )
     if not np.array_equal(sample_ids, expected):
         raise ValueError("Feature cache sample ordering mismatch")
-    if features.shape != (len(records), 5, 576):
+    allowed_shapes = {
+        (len(records), 5, 576),
+        (len(records), 5, 576, 4, 7),
+    }
+    if features.shape not in allowed_shapes:
         raise ValueError(
             f"Unexpected frozen feature shape: {features.shape}"
         )
@@ -252,6 +313,7 @@ def main() -> int:
     if len(records) != 1078:
         raise ValueError("Expected the fixed 1,078-sample THOR corpus")
     features = load_aligned_features(args.features, records)
+    feature_kind = "pooled" if features.ndim == 3 else "spatial"
     folds = np.asarray([int(record["fold"]) for record in records])
     sources = np.asarray(
         [str(record["source_session_id"]) for record in records]
@@ -372,10 +434,15 @@ def main() -> int:
         and int(aggregate[path]["positive_count"]) >= 3
         for path in metric_paths
     )
+    status_prefix = (
+        "D8_EQUAL_CAPACITY_TEMPORAL_ACTIONABILITY"
+        if feature_kind == "pooled"
+        else "D8_EQUAL_CAPACITY_TEMPORAL_SPATIAL_ACTIONABILITY"
+    )
     status = (
-        "D8_EQUAL_CAPACITY_TEMPORAL_ACTIONABILITY_INCREMENT_SUPPORTED"
+        f"{status_prefix}_INCREMENT_SUPPORTED"
         if supported
-        else "D8_EQUAL_CAPACITY_TEMPORAL_ACTIONABILITY_INCREMENT_NOT_STABLE"
+        else f"{status_prefix}_INCREMENT_NOT_STABLE"
     )
 
     report = {
@@ -400,10 +467,22 @@ def main() -> int:
             "epochs": EPOCHS,
             "learning_rate": LEARNING_RATE,
             "weight_decay": WEIGHT_DECAY,
-            "backbone": "frozen cached MobileNetV3-small 5x576 features",
+            "backbone": (
+                "frozen cached MobileNetV3-small "
+                f"{list(features.shape[1:])} {feature_kind} features"
+            ),
+            "feature_kind": feature_kind,
             "architecture": (
-                "current identity plus learned per-time/per-channel bounded "
-                "residual fusion, LayerNorm, Linear(576,2)"
+                (
+                    "current identity plus learned per-time/per-channel "
+                    "bounded residual fusion, LayerNorm, Linear(576,2)"
+                )
+                if feature_kind == "pooled"
+                else (
+                    "current identity plus learned per-time/per-channel "
+                    "bounded spatial residual fusion, GroupNorm, "
+                    "Conv1x1(576,16), Linear(16x4x7,2)"
+                )
             ),
             "capacity_control": (
                 "current repeats its current feature five times; both arms "

@@ -55,6 +55,10 @@ HFTF 是独立于当前 RISKSEG/YOLO 主线的未来潜力支线；只有同口�
 temporal-head 对照未复制该 coarse 增量：近距 AUROC/AP 仅 2/5 折为正，走廊 AP
 也仅 2/5。较高维 separability signal 保留为观察，但不能升级为 history 独立增量；
 当前 pooled-feature 路线关闭，不继续硬救完整 field，主线与默认 App 不变。
+最后保留 `4×7` spatial map 的等容量对照只在走廊 AUROC/AP 上产生
+5/5 fold 的小增量（mean `+.0040/+.0038`），近距仍失败，走廊 AP 也只有
+9/15 fold×seed units 为正。该 corridor-specific weak signal 不改变总终态；
+THOR frozen-backbone 搜索停止，下一变量必须来自独立来源。
 
 此前 D5/D6 Development 已推进到
 [outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：
