@@ -27,6 +27,7 @@ DECISION_POLICIES = (
     "hard_known_and_risk",
     "height_temporal_selective_v0",
     "height_temporal_selective_v1",
+    "height_spatiotemporal_selective_v2",
 )
 
 
@@ -37,6 +38,7 @@ def decision_policy_spec(policy: str) -> dict[str, dict[str, Any]]:
                 "risk_threshold": 0.5,
                 "base_mode": "known_and_risk",
                 "known_threshold": 0.5,
+                "minimum_active_distance_cells": 1,
                 "risk_override_threshold": None,
                 "causal_confirmation_steps": 1,
                 "confirm_override": True,
@@ -49,6 +51,7 @@ def decision_policy_spec(policy: str) -> dict[str, dict[str, Any]]:
                 "risk_threshold": 0.5,
                 "base_mode": "risk_only",
                 "known_threshold": None,
+                "minimum_active_distance_cells": 1,
                 "risk_override_threshold": None,
                 "causal_confirmation_steps": 3,
                 "confirm_override": True,
@@ -57,6 +60,7 @@ def decision_policy_spec(policy: str) -> dict[str, dict[str, Any]]:
                 "risk_threshold": 0.5,
                 "base_mode": "known_and_risk",
                 "known_threshold": 0.5,
+                "minimum_active_distance_cells": 1,
                 "risk_override_threshold": 0.9,
                 "causal_confirmation_steps": 2,
                 "confirm_override": True,
@@ -68,6 +72,7 @@ def decision_policy_spec(policy: str) -> dict[str, dict[str, Any]]:
                 "risk_threshold": 0.5,
                 "base_mode": "risk_only",
                 "known_threshold": None,
+                "minimum_active_distance_cells": 1,
                 "risk_override_threshold": None,
                 "causal_confirmation_steps": 3,
                 "confirm_override": True,
@@ -76,6 +81,28 @@ def decision_policy_spec(policy: str) -> dict[str, dict[str, Any]]:
                 "risk_threshold": 0.5,
                 "base_mode": "known_and_risk",
                 "known_threshold": 0.5,
+                "minimum_active_distance_cells": 1,
+                "risk_override_threshold": 0.8,
+                "causal_confirmation_steps": 2,
+                "confirm_override": False,
+            },
+        }
+    if policy == "height_spatiotemporal_selective_v2":
+        return {
+            "body": {
+                "risk_threshold": 0.5,
+                "base_mode": "risk_only",
+                "known_threshold": None,
+                "minimum_active_distance_cells": 3,
+                "risk_override_threshold": 0.8,
+                "causal_confirmation_steps": 3,
+                "confirm_override": True,
+            },
+            "head": {
+                "risk_threshold": 0.5,
+                "base_mode": "known_and_risk",
+                "known_threshold": 0.5,
+                "minimum_active_distance_cells": 1,
                 "risk_override_threshold": 0.8,
                 "causal_confirmation_steps": 2,
                 "confirm_override": False,
@@ -98,7 +125,7 @@ def raw_lane_signals(
         raise ValueError(f"Unknown base mode: {spec['base_mode']}")
     override = spec["risk_override_threshold"]
     return (
-        bool(np.any(base)),
+        int(np.sum(base)) >= spec["minimum_active_distance_cells"],
         bool(np.any(risk_probability >= override))
         if override is not None
         else False,

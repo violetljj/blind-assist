@@ -39,7 +39,8 @@ D5_DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTE
 D5_UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
 D5_UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
 D5_KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED /
-D5_HEIGHT_TEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
+D5_HEIGHT_SPATIOTEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
+D5_DIRECTIONAL_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -188,6 +189,31 @@ known 硬门虽然 9/9 提高召回，却一致增加误激活；加入高度分
 下 directional 相对 pooled 的 event recall/false-active mean delta 只有
 `+0.0144/-0.0006`，分别为 5/4 与 4/3/2；所以 v1 是模型通用的决策层信号，
 还没有把 directional representation 增量稳定转化为端到端支配。
+
+进一步诊断发现，v1 允许任一 distance cell 触发整条 lane，孤立 cell 会造成
+false-alert fragmentation 与清除失败。v2 不增加模型参数，只把 body lane 改为：
+至少 `3/6` 个 distance cells 达到 risk≥0.5，或任一 cell risk≥0.8，再保持连续
+3 个 anchor；head 保留 v1。
+
+v2 相对 hard kernel 的 event recall/false-active/clearance mean delta 为
+`+0.1352/-0.1091/+0.0566`，recall 8/9 改善、false-active 7/9 改善；
+false-alert event count mean `-0.78`。相对 v1，v2 的 false-active 8/9
+进一步下降或不变、clearance 9/9 提高或不变、false-alert events 9/9 减少或
+不变，代价是 recall 9/9 小幅回落但仍保持高于 hard 的多数优势。v2 因此替代 v1
+成为当前 Development decision-kernel candidate：
+
+`HEIGHT_SPATIOTEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+更重要的是，同一 v2 kernel 下 directional 相对 pooled 的 event recall mean
+delta 为 `+0.0810`（8/9 正），false-active 为 `-0.0739`
+（5 改善/3 恶化/1 零），clearance 为 `+0.1958`（5 改善/2 恶化/2 零）；
+body recall 9/9 提高且 body false-active 8/9 降低或不变。这首次支持：
+
+`DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+它不撤销旧的 `UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED`：旧终态精确
+描述 hard-known-and-risk kernel；新正结果来自明确披露、在同一 outcome-open
+Development 数据上选择的 spatiotemporal kernel，仍需 outcome-unseen transfer。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

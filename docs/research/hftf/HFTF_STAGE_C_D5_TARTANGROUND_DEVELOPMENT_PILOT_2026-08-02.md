@@ -2,7 +2,7 @@
 
 ## 结论
 
-TartanGround 已从“目录看起来足够大”推进到六个可执行结果：
+TartanGround 已从“目录看起来足够大”推进到七个可执行结果：
 
 1. 官方 Hugging Face revision
    `388faf9c800568cfc6828fa47e063f8369397eb3` 完整覆盖锁定 catalog 的
@@ -21,6 +21,9 @@ TartanGround 已从“目录看起来足够大”推进到六个可执行结果�
 6. 将 observability 与 alert permission 解耦，并加入高度分层的因果时间确认后，
    事件召回与误激活在多数 paired Development 单元同时改善，但 clearance 和
    false-alert fragmentation 仍未解决。
+7. 要求 body lane 具有跨 distance cells 的空间支持后，v2 同时修复 v1 的
+   clearance/fragmentation，并让 directional 相对 pooled 的表示增量首次在
+   selective synthetic event proxy 上形成多数 paired 改善。
 
 当前终态为：
 
@@ -28,7 +31,8 @@ TartanGround 已从“目录看起来足够大”推进到六个可执行结果�
 UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
 UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
 KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED /
-HEIGHT_TEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+HEIGHT_SPATIOTEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
+DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -394,6 +398,58 @@ false-active mean `-0.0006`（4 改善/3 恶化/2 零）；body recall 甚至 me
 representation 穿过事件层的稳健增量。原
 `UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED` 不被偷偷改写。
 
+### v2 spatial-support repair
+
+逐 lane 诊断显示，v1 的 body 只需任一 distance cell risk≥0.5 就能触发整条 lane。
+这允许孤立高分 cell 形成短 false-alert runs，并在 teacher truth 清除后继续激活。
+不能用最大提醒时长强制静音，因为那会在持续危险中游戏化 event recall；v2 改用
+风险场自身的空间支持：
+
+- body base：至少 `3/6` 个 distance cells risk≥0.5；
+- body override：任一 distance cell risk≥0.8；
+- base/override 合并后仍需连续 3 个 anchor；
+- head 完全继承 v1，不改变其 recall/false-active。
+
+v2 相对 directional hard reference：
+
+| 指标 delta（v2 - hard） | mean | median | paired 方向 |
+|---|---:|---:|---:|
+| event recall | +0.1352 | +0.1217 | 8 正 / 1 负 |
+| false-active lane-frame rate | -0.1091 | -0.0526 | 7 改善 / 2 恶化 |
+| clearance rate | +0.0566 | 0 | 3 改善 / 4 恶化 / 2 零 |
+| false-alert event count | -0.78 | -2 | 6 改善 / 2 恶化 / 1 零 |
+| body event recall | +0.2886 | +0.2368 | 9 正 |
+| body false-active rate | -0.0871 | -0.1296 | 5 改善 / 3 恶化 / 1 零 |
+| response-delay median | 0 | 0 | 9 不变 |
+
+相对 v1，v2 主动接受 mean `-0.0352` 的 event-recall 回退，换来
+false-active `-0.0847`、clearance `+0.1069`、false-alert events `-1.56`；
+false-active 8/9 非劣、clearance 9/9 非劣、fragmentation 9/9 非劣。因此 v2
+取代 v1：
+
+`HEIGHT_SPATIOTEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+同一个 v2 同时应用于 pooled 与 directional 后，directional - pooled 为：
+
+| 指标 delta | mean | median | paired 方向 |
+|---|---:|---:|---:|
+| event recall | +0.0810 | +0.0635 | 8 正 / 1 负 |
+| false-active rate | -0.0739 | -0.0088 | 5 改善 / 3 恶化 / 1 零 |
+| clearance rate | +0.1958 | +0.0286 | 5 改善 / 2 恶化 / 2 零 |
+| body event recall | +0.0919 | +0.0526 | 9 正 |
+| body false-active rate | -0.2154 | -0.1750 | 8 改善 / 1 零 |
+| head event recall | +0.0696 | +0.0800 | 6 正 / 3 负 |
+| head false-active rate | +0.0341 | 0 | 4 恶化 / 1 改善 / 4 零 |
+
+这建立了第一个 representation→decision 的 Development 正信号：
+
+`DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+它仍不是 fresh transfer：v2 的 3-cell support 和 0.8 override 均在这些
+outcome-open folds 上选择，negative exposure 仍只有每折 `55/114/187`，head
+false-active 也未形成 guardrail。旧 hard-kernel 负终态继续有效，新结论只描述
+selective v2。
+
 ## History mechanism repair
 
 原 single 训练把当前帧重复五次。对 5-tap、1×1 temporal convolution 来说，这只
@@ -425,24 +481,25 @@ compensation 或新的时序表征后，才值得重开 history；不再继续�
 当前正结果只支持：
 
 `teacher feasible + RGB learnable + multi-seed directional spatial-structure increment
-+ height-temporal selective decision-kernel signal`
++ height-spatiotemporal selective decision-kernel signal
++ directional selective-event transfer signal`
 
 尚未支持：
 
 - history 对独立环境具有稳定增量；
 - directional 的 threshold calibration 能跨 seed 稳定；
-- directional representation 增量能稳定穿过 selective event proxy；
 - known 正类标量重加权能同时改善召回与 false-active；
-- selective kernel 能守住 clearance 并减少 false-alert event fragmentation；
+- selective v2 在 outcome-unseen environments 仍能守住 recall/false-active；
+- head false-active 在 selective v2 下形成稳定 guardrail；
 - synthetic proxy 能迁移到真实视障步行；
 - 事件级 critical-hazard recall、false alerts 或 warning lead time 改善；
 - HFTF 超过当前主线或进入 App。
 
-下一步保留 v1 为 Development decision-kernel candidate，不再搜索静态阈值或
-known loss 权重。直接诊断 false-alert fragmentation 与 clearance：使用风险—覆盖率
-曲线和事件级 onset/clear objective，而不是增加更多 protocol。只有这两个 guardrail
-在 Development 上得到修复，才接入未参与 kernel 选择的真实 parent-event cohort。
-history 在出现显式对齐机制前停止。
+下一步保留 v2 为 Development decision-kernel candidate，不再继续搜索当前 folds
+上的 support count、静态 threshold 或 known loss 权重。直接选取未参与 kernel
+选择的 outcome-unseen TartanGround environments，复用同一 evaluator 做 transfer；
+不另建 one-shot ceremony。通过后再接真实 parent-event cohort。history 在出现
+显式对齐机制前停止。
 
 ## 复现
 

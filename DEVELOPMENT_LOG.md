@@ -4553,3 +4553,24 @@
   只有 `+0.0144/-0.0006`，分别 5/4 与 4/3/2；表示增量仍未稳健穿过事件层。
   当前保留 directional 为 representation reference、v1 为 decision-kernel
   candidate，下一步只处理 risk-coverage、clearance 和 false-alert fragmentation。
+
+## 2026-08-02：HFTF D5 spatial-support v2 与 selective event transfer
+
+- v1 的 body lane 可被任一 distance cell 触发。拒绝使用最大 alert duration 等会在
+  持续危险中静音的指标投机规则；v2 要求至少 `3/6` cells risk≥0.5，或任一 cell
+  risk≥0.8，再连续 3 个 anchor。head 保持 v1。
+- directional checkpoint 上，v2 相对 hard 的 event recall/false-active/clearance
+  mean delta 为 `+0.1352/-0.1091/+0.0566`；recall 8/9 改善，false-active
+  7/9 改善，body recall 9/9 提高。false-alert event count mean `-0.78`。
+- 相对 v1，v2 的 false-active 8/9 下降或不变、clearance 9/9 提高或不变、
+  false-alert events 9/9 减少或不变；event recall 9/9 小幅回退但相对 hard
+  仍保持多数正向。v2 取代 v1，终态为
+  `HEIGHT_SPATIOTEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT`。
+- 同一 v2 下 directional 相对 pooled 的 event recall/false-active/clearance mean
+  delta 为 `+0.0810/-0.0739/+0.1958`；event recall 8/9 正，body recall 9/9
+  正，body false-active 8/9 降低或不变。首次建立
+  `DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_IN_DEVELOPMENT`。
+- 该正结果保留在 Development 层。v2 在这些 outcome-open folds 上选择，head
+  false-active mean 仍 `+0.0341`，完整 negative exposure 每折只有
+  `55/114/187`。下一步停止当前-fold kernel search，直接做 outcome-unseen
+  TartanGround environment transfer。

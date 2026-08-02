@@ -132,6 +132,35 @@ class TartanGroundEventProxyTest(unittest.TestCase):
             [True, False, True],
         )
 
+    def test_v2_body_requires_spatial_support_or_override(self):
+        policy = "height_spatiotemporal_selective_v2"
+        unknown = np.zeros(6)
+
+        self.assertFalse(
+            raw_lane_active(
+                np.asarray([0.6, 0.6, 0.1, 0.1, 0.1, 0.1]),
+                unknown,
+                "body",
+                policy,
+            )
+        )
+        self.assertTrue(
+            raw_lane_active(
+                np.asarray([0.6, 0.6, 0.6, 0.1, 0.1, 0.1]),
+                unknown,
+                "body",
+                policy,
+            )
+        )
+        self.assertTrue(
+            raw_lane_active(
+                np.asarray([0.85, 0.1, 0.1, 0.1, 0.1, 0.1]),
+                unknown,
+                "body",
+                policy,
+            )
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
