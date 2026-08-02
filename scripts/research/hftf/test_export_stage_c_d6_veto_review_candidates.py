@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from export_stage_c_d6_veto_review_candidates import (
     build_windows,
+    conservative_veto_summary,
     consensus_cell_rows,
 )
 
@@ -57,6 +58,8 @@ class VetoReviewCandidateExportTest(unittest.TestCase):
         scores[:1, 0, 1, 1, 0, 0] = 0.6
         active[:, 0, 1, 1, 0, 1] = True
         scores[:, 0, 1, 1, 0, 1] = 0.5
+        veto = np.zeros_like(active)
+        veto[:2, 0, 1, 1, 0, 1] = True
 
         rows = consensus_cell_rows(
             windows,
@@ -64,12 +67,54 @@ class VetoReviewCandidateExportTest(unittest.TestCase):
             active,
             risk,
             known,
+            veto,
         )
 
         self.assertEqual(rows[0]["grid_column"], 1)
         self.assertEqual(rows[0]["active_vote_count"], 3)
+        self.assertEqual(rows[0]["conservative_veto_vote_count"], 2)
+        self.assertTrue(rows[0]["conservative_veto_consensus"])
         self.assertTrue(rows[0]["consensus_review_eligible"])
         self.assertFalse(rows[1]["consensus_review_eligible"])
+
+    def test_conservative_summary_counts_full_window_clearance(self):
+        active = np.zeros((2, 2, 3, 3, 6, 2), dtype=bool)
+        active[:, :, 1, 1, 2, 0] = True
+        veto = np.zeros_like(active)
+        veto[0, 0, 1, 1, 2, 0] = True
+        veto[1, 1, 1, 1, 2, 0] = True
+
+        summary = conservative_veto_summary(
+            active,
+            veto,
+            [(17, 0), (29, 1)],
+        )
+
+        self.assertEqual(
+            summary["total_baseline_active_model_windows"], 4
+        )
+        self.assertEqual(
+            summary["total_fully_cleared_model_windows"], 2
+        )
+        self.assertEqual(
+            summary["window_count_fully_cleared_by_any_model"], 2
+        )
+        self.assertEqual(
+            summary["window_count_fully_cleared_by_majority_models"],
+            0,
+        )
+        self.assertEqual(
+            summary[
+                "central_total_fully_cleared_model_windows"
+            ],
+            2,
+        )
+        self.assertEqual(
+            summary[
+                "central_window_count_fully_cleared_by_any_model"
+            ],
+            2,
+        )
 
 
 if __name__ == "__main__":

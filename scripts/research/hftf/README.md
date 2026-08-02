@@ -2,7 +2,8 @@
 
 状态：`development / candidate-side-lane /
 R3.1-reference-opportunity-not-evaluable /
-D3-Q0-screening-effect-contract-frozen`
+D3-Q0-screening-effect-contract-frozen /
+D6-real-veto-transfer-not-supported`
 
 ## 研究问题与版本
 
@@ -13,6 +14,39 @@ D3-Q0-screening-effect-contract-frozen`
 
 当前章程与终态见 `docs/research/hftf/README.md`。通用 H0 的 partial terminal 仍保留；
 source-specific H0.1/H0.2 已准入下一阶段的 geometry proxy canary。
+
+### D6 SANPO real veto transfer
+
+当前可逆 Development 接口把 D7 三人 model-blind RGB review 中 3/3 `REJECT`
+的 SANPO 区间物化为去重 media manifest，再运行 frozen veto ranker：
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf materialize_stage_c_d6_sanpo_blind_negative_media.py `
+  --candidate-index <sanpo-candidate-index.jsonl> `
+  --rgb-review <review-a.jsonl> `
+  --rgb-review <review-b.jsonl> `
+  --rgb-review <review-c.jsonl> `
+  --staging-root <review-bundle-staging-root> `
+  --output-root artifacts.local/evidence/hftf/<blind-negative-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf export_stage_c_d6_veto_review_candidates.py `
+  --media-manifest artifacts.local/evidence/hftf/<blind-negative-run>/media_manifest.jsonl `
+  --threshold-report artifacts.local/evidence/hftf/stage-c-d6-veto-eligibility-confidence-residual-canary-v0/conservative-veto-execution-summary.json `
+  --output-root artifacts.local/evidence/hftf/<veto-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_real_veto_ranking.py `
+  --output artifacts.local/evidence/hftf/<real-ranking-run>/report.json
+```
+
+物化器逐帧验证 review-bundle SHA，重叠 observation 必须 byte-identical，且每个输出
+五帧窗口必须完整落入至少一个 3/3 reject 区间。该 label 只支持 clip/window
+actionable-negative，不产生 cell localization、positive-event safety 或 system-event
+truth。ranker 的 `--threshold-report` 只应用已存在的 zero-training-true-alert
+threshold，不搜索 threshold。30-event evaluator 固定比较 candidate 与
+`1 - baseline risk` 的 cell/event-phase ranking。
 
 ## 稳定 Interface
 

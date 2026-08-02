@@ -121,6 +121,16 @@ environments 上，AUROC/AP/FPR mean delta 为
 ranking/specificity 表示信号，不升级为 event utility。下一候选不调 threshold：
 冻结 directional baseline，让 pair module 只学习 selective residual/veto，并对
 teacher-positive future body/head cells 显式施加 recall-preservation constraint。
+该 ranker 后续虽在 synthetic outcome-unseen 上建立 AUROC/AP 增量，但真实 SANPO
+迁移未成立。四段 3/3 model-blind RGB reject 的 150-frame 困难负例上，冻结
+zero-training-true-alert threshold 只 veto `48/24,046` active model-cells，
+中央方向只 veto `19/11,019`，仅一个模型清除一个窗口、无多数模型复现；全方向
+field 清除为 `0/1,308` model-windows。30-session 人审 cohort 的 candidate/comparator
+event-phase p95 AUROC mean 为 `.4613/.5714`，仅 2/9 单元增量为正。当前终态为
+`D6_CONSERVATIVE_REAL_HARD_NEGATIVE_EXECUTION_NOT_SUPPORTED /
+D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED`；synthetic ranking 正结果
+保留。下一步只做 source-session-held-out 的 baseline-only vs candidate-aware
+低容量 calibration ablation，不再调当前 threshold。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

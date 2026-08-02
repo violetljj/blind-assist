@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6
+  SANPO real veto transfer。通过 candidate index、review bundle 和逐帧 SHA join，
+  将四段 RGB A/B/C 3/3 model-blind `REJECT` 区间物化为 150 个唯一帧、146 个完整
+  五帧负例窗口；保留 clip-level 科学标签，不把缺失 authoritative timestamp/phase
+  的 final `NOT_EVALUABLE` 误写成无科学观察。冻结 zero-training-true-alert threshold
+  在 24,046 个 baseline active model-cells 中仅 veto 48 个；中央方向为
+  `19/11,019`，仅一个模型清除一个窗口且无多数模型复现，全方向 field 清除
+  `0/1,308` model-windows。随后在已消费 30-session / 1,920-frame 人审 SANPO
+  Development cohort 上比较真实排序：candidate/comparator 的 pooled cell AUROC
+  mean 为 `.5096/.5197`，event-phase p95 AUROC mean 为 `.4613/.5714`，
+  candidate delta 仅 `3/9`、`2/9` 为正；143 个 positive passed-vs-alertable
+  model×event pairs 中仅 56 个方向正确。终态为
+  `D6_CONSERVATIVE_REAL_HARD_NEGATIVE_EXECUTION_NOT_SUPPORTED /
+  D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED`；synthetic ranking 正结果
+  保留，不继续搜索当前 threshold/top-k/votes。14 个 veto-focused tests 通过；详见
+  `docs/research/hftf/HFTF_STAGE_C_D6_SANPO_REAL_VETO_TRANSFER_2026-08-02.md`。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：Codex。建立并推进
   `HFTF_D7_PUBLIC_REAL_R1` 公开真实关系监督数据集 intake。冻结
   `dataset/session/frame/source_receipt` schema、九类事件桶、RGB A/B/C、geometry、

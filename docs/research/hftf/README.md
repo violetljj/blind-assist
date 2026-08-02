@@ -66,6 +66,8 @@ D6_JOINT_PAIR_INTERACTION_SOURCE_GENERAL_TRANSFER_NOT_SUPPORTED /
 D6_EARLY_PAIR_STRUCTURED_FIELD_SELECTION_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
 D6_EARLY_PAIR_OUTCOME_UNSEEN_RANKING_AND_SPECIFICITY_SIGNAL_OBSERVED_DEVELOPMENT_ONLY /
 D6_EARLY_PAIR_STRUCTURED_FIELD_EVENT_UTILITY_INCREMENT_NOT_SUPPORTED /
+D6_CONSERVATIVE_REAL_HARD_NEGATIVE_EXECUTION_NOT_SUPPORTED /
+D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -395,6 +397,32 @@ source-isolated、人工确认的 parallel-curb / obstacle-approach 成对关系
 
 history 只有引入显式对齐/flow/ego-motion compensation 后才重开，不做更多无对齐
 结构或学习率搜索。
+
+随后将 confidence-anchored false-alert ranker 与已独立完成的 D7 SANPO blind review
+做 RGB SHA join。四个 3/3 model-blind RGB reviewer `REJECT` 区间覆盖 150 个唯一帧
+和 146 个完整五帧窗口。该 clip-level negative science signal 保留，不被 D7 因缺失
+authoritative timestamp/phase binding 写出的系统级 `NOT_EVALUABLE` 覆盖。
+
+在这些真实困难负例上，9 个 frozen baselines 产生 24,046 个 active model-cells；
+此前固定的 zero-training-true-alert threshold 只 veto 48 个。对实际 adapter 的
+中央方向，11,019 个 active model-cells 只 veto 19 个，仅一个模型清除一个窗口，
+多数模型清除仍为 0；全方向 field 为 `0/1,308` cleared model-windows。因此：
+
+`D6_CONSERVATIVE_REAL_HARD_NEGATIVE_EXECUTION_NOT_SUPPORTED`
+
+进一步在 30-session / 1,920-frame 人审 SANPO Development cohort 比较 false-alert
+ranking：candidate/comparator 的 pooled cell AUROC mean 为
+`.5096/.5197`，event-phase p95 AUROC mean 为 `.4613/.5714`；
+candidate delta 分别仅 `3/9`、`2/9` 为正。正事件 passed-minus-alertable p95
+在 143 个 model×event pairs 中只有 56 个方向正确。故当前 exact synthetic-trained
+pair veto representation 的真实迁移不成立：
+
+`D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED`
+
+synthetic ranking 正结果仍保留。下一唯一低成本 successor 是 source-session-held-out
+Logistic calibration ablation：baseline risk/known+fixed coordinates 对比再增加
+candidate score。若 candidate-aware arm 不稳定增量，则停止该 representation，
+不继续搜索 threshold/top-k/votes。
 
 ## 当前结论
 
@@ -808,6 +836,7 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C D5 TartanGround Development pilot](HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)
 - [Stage C D6 多源关系监督 canary](HFTF_STAGE_C_D6_RELATION_SUPERVISION_CANARY_2026-08-02.md)
 - [Stage C D6 early-pair structured-field canary](HFTF_STAGE_C_D6_EARLY_PAIR_STRUCTURED_FIELD_CANARY_2026-08-02.md)
+- [Stage C D6 SANPO real veto transfer](HFTF_STAGE_C_D6_SANPO_REAL_VETO_TRANSFER_2026-08-02.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

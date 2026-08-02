@@ -40,6 +40,7 @@
 - `run_research_tool.py candidate-event-mining run_real_video_batch.py`：真实公开视频的 bounded host batch adapter；按固定 cadence 物化 review frames，运行 YOLO11n + Depth Anything V2，并把 segmentation/HFTF 的可选 sidecar 或明确标注的 image-space proxy 接到 canonical trace。它只产生 `THESIS_DEVELOPMENT` discovery 输入，不把 proxy 当作 segmentation 模型，也不授予事件/安全/生产权限。
 - `run_research_tool.py candidate-event-mining acquire_wikimedia_candidates.py`：从公开 Wikimedia Commons API/原文件 URL 下载并登记候选源，写入 `F:\ba-data\blindassist-candidate-event-mining\` 的 source records 与 project index；不把许可证 receipt 等同于事件真值。
 - `run_research_tool.py candidate-event-mining run_segmentation_sidecar.py` / `run_hftf_sidecar.py` / `attach_sidecars.py`：分别运行真实 SegFormer、现有 HFTF student，以及按 `source_id × session_id × frame_index` 做 hash-bound post-inference join；缺失通道不补零，模型输出仍只作为 discovery signal。
+- `run_research_tool.py hftf <tool.py>`：HFTF Module 的稳定仓库入口；当前 D6 SANPO real-veto materialization、frozen-threshold export 与 30-event ranking evaluator 均通过该 Adapter 运行，输出仅写入 `artifacts.local/evidence/hftf/`。
 - `run_research_tool.py candidate-event-mining select_review_queue.py`：全量候选报告的确定性 review-budget 选择器；按 source×taxonomy 与 cluster 覆盖选取有限窗口，未选候选保持 `not_reviewed`，不会被静默当作负例。
 - `run_research_tool.py candidate-event-mining merge_candidate_pools.py`：合并不重叠的已复核 batch，拒绝 pool/queue ID 漂移、批次重叠和未覆盖母报告候选。
 - `run_research_tool.py candidate-event-mining register_run_index.py`：把 adapter、全量候选报告、review queue、bundle、Luna receipts 和 candidate pool 的路径/hash 追加到 `F:\ba-data\blindassist-candidate-event-mining\run_index.json`。

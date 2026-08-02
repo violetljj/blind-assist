@@ -134,6 +134,7 @@ def consensus_cell_rows(
     active_stack: np.ndarray,
     risk_stack: np.ndarray,
     known_stack: np.ndarray,
+    veto_stack: np.ndarray | None = None,
 ) -> list[dict[str, Any]]:
     if score_stack.shape != active_stack.shape:
         raise ValueError("Score and active stacks must match")
@@ -141,6 +142,8 @@ def consensus_cell_rows(
         raise ValueError("Score and risk stacks must match")
     if score_stack.shape != known_stack.shape:
         raise ValueError("Score and known stacks must match")
+    if veto_stack is not None and score_stack.shape != veto_stack.shape:
+        raise ValueError("Score and veto stacks must match")
     if score_stack.shape[1] != len(windows):
         raise ValueError("Window count mismatch")
     model_count = score_stack.shape[0]
@@ -186,6 +189,20 @@ def consensus_cell_rows(
                             column_index,
                         ]
                         active_scores = scores[active]
+                        veto_count = (
+                            int(
+                                veto_stack[
+                                    :,
+                                    window_index,
+                                    horizon_index,
+                                    height_index,
+                                    row_index,
+                                    column_index,
+                                ].sum()
+                            )
+                            if veto_stack is not None
+                            else 0
+                        )
                         rows.append(
                             {
                                 "schema": (
@@ -212,6 +229,15 @@ def consensus_cell_rows(
                                 "model_count": model_count,
                                 "active_vote_fraction": (
                                     active_count / model_count
+                                ),
+                                "conservative_veto_vote_count": (
+                                    veto_count
+                                ),
+                                "conservative_veto_vote_fraction": (
+                                    veto_count / model_count
+                                ),
+                                "conservative_veto_consensus": (
+                                    veto_count > model_count // 2
                                 ),
                                 "mean_false_eligibility_score": float(
                                     np.mean(active_scores)
@@ -251,6 +277,202 @@ def consensus_cell_rows(
     return rows
 
 
+def conservative_veto_summary(
+    active_stack: np.ndarray,
+    veto_stack: np.ndarray,
+    model_keys: list[tuple[int, int]],
+) -> dict[str, Any]:
+    if active_stack.shape != veto_stack.shape:
+        raise ValueError("Active and veto stacks must match")
+    if active_stack.shape[0] != len(model_keys):
+        raise ValueError("Model key count mismatch")
+    central_active_stack = np.zeros_like(active_stack)
+    central_veto_stack = np.zeros_like(veto_stack)
+    central_active_stack[:, :, 1:, 1:, 2:4, :] = active_stack[
+        :, :, 1:, 1:, 2:4, :
+    ]
+    central_veto_stack[:, :, 1:, 1:, 2:4, :] = veto_stack[
+        :, :, 1:, 1:, 2:4, :
+    ]
+    active_window = active_stack.reshape(
+        active_stack.shape[0],
+        active_stack.shape[1],
+        -1,
+    ).any(axis=2)
+    veto_window = veto_stack.reshape(
+        veto_stack.shape[0],
+        veto_stack.shape[1],
+        -1,
+    ).any(axis=2)
+    retained_window = (active_stack & ~veto_stack).reshape(
+        active_stack.shape[0],
+        active_stack.shape[1],
+        -1,
+    ).any(axis=2)
+    cleared_window = active_window & ~retained_window
+    central_active_window = central_active_stack.reshape(
+        central_active_stack.shape[0],
+        central_active_stack.shape[1],
+        -1,
+    ).any(axis=2)
+    central_veto_window = central_veto_stack.reshape(
+        central_veto_stack.shape[0],
+        central_veto_stack.shape[1],
+        -1,
+    ).any(axis=2)
+    central_retained_window = (
+        central_active_stack & ~central_veto_stack
+    ).reshape(
+        central_active_stack.shape[0],
+        central_active_stack.shape[1],
+        -1,
+    ).any(axis=2)
+    central_cleared_window = (
+        central_active_window & ~central_retained_window
+    )
+    units = []
+    for model_index, (seed, fold) in enumerate(model_keys):
+        active_cells = int(active_stack[model_index].sum())
+        vetoed_cells = int(veto_stack[model_index].sum())
+        baseline_windows = int(active_window[model_index].sum())
+        cleared_windows = int(cleared_window[model_index].sum())
+        central_active_cells = int(
+            central_active_stack[model_index].sum()
+        )
+        central_vetoed_cells = int(
+            central_veto_stack[model_index].sum()
+        )
+        central_baseline_windows = int(
+            central_active_window[model_index].sum()
+        )
+        central_cleared_windows = int(
+            central_cleared_window[model_index].sum()
+        )
+        units.append(
+            {
+                "seed": seed,
+                "fold": fold,
+                "baseline_active_cell_count": active_cells,
+                "vetoed_active_cell_count": vetoed_cells,
+                "vetoed_active_cell_fraction": (
+                    vetoed_cells / active_cells
+                    if active_cells
+                    else None
+                ),
+                "baseline_active_window_count": baseline_windows,
+                "veto_applied_window_count": int(
+                    veto_window[model_index].sum()
+                ),
+                "fully_cleared_window_count": cleared_windows,
+                "fully_cleared_window_fraction": (
+                    cleared_windows / baseline_windows
+                    if baseline_windows
+                    else None
+                ),
+                "central_baseline_active_cell_count": (
+                    central_active_cells
+                ),
+                "central_vetoed_active_cell_count": (
+                    central_vetoed_cells
+                ),
+                "central_vetoed_active_cell_fraction": (
+                    central_vetoed_cells / central_active_cells
+                    if central_active_cells
+                    else None
+                ),
+                "central_baseline_active_window_count": (
+                    central_baseline_windows
+                ),
+                "central_veto_applied_window_count": int(
+                    central_veto_window[model_index].sum()
+                ),
+                "central_fully_cleared_window_count": (
+                    central_cleared_windows
+                ),
+                "central_fully_cleared_window_fraction": (
+                    central_cleared_windows
+                    / central_baseline_windows
+                    if central_baseline_windows
+                    else None
+                ),
+            }
+        )
+    majority = active_stack.shape[0] // 2 + 1
+    return {
+        "units": units,
+        "total_baseline_active_model_cells": int(active_stack.sum()),
+        "total_vetoed_active_model_cells": int(veto_stack.sum()),
+        "total_baseline_active_model_windows": int(
+            active_window.sum()
+        ),
+        "total_fully_cleared_model_windows": int(
+            cleared_window.sum()
+        ),
+        "window_count_with_any_model_veto": int(
+            veto_window.any(axis=0).sum()
+        ),
+        "window_count_with_majority_model_veto": int(
+            (veto_window.sum(axis=0) >= majority).sum()
+        ),
+        "window_count_fully_cleared_by_any_model": int(
+            cleared_window.any(axis=0).sum()
+        ),
+        "window_count_fully_cleared_by_majority_models": int(
+            (cleared_window.sum(axis=0) >= majority).sum()
+        ),
+        "central_total_baseline_active_model_cells": int(
+            central_active_stack.sum()
+        ),
+        "central_total_vetoed_active_model_cells": int(
+            central_veto_stack.sum()
+        ),
+        "central_total_baseline_active_model_windows": int(
+            central_active_window.sum()
+        ),
+        "central_total_fully_cleared_model_windows": int(
+            central_cleared_window.sum()
+        ),
+        "central_window_count_with_any_model_veto": int(
+            central_veto_window.any(axis=0).sum()
+        ),
+        "central_window_count_with_majority_model_veto": int(
+            (central_veto_window.sum(axis=0) >= majority).sum()
+        ),
+        "central_window_count_fully_cleared_by_any_model": int(
+            central_cleared_window.any(axis=0).sum()
+        ),
+        "central_window_count_fully_cleared_by_majority_models": int(
+            (
+                central_cleared_window.sum(axis=0)
+                >= majority
+            ).sum()
+        ),
+    }
+
+
+def load_conservative_thresholds(
+    path: Path,
+) -> dict[tuple[int, int], dict[str, Any]]:
+    report = json.loads(path.read_text(encoding="utf-8"))
+    if (
+        report.get("design", {}).get("threshold_rule")
+        != "nextafter(max training true-alert score, +inf)"
+    ):
+        raise ValueError("Unexpected conservative threshold rule")
+    thresholds = {}
+    for unit in report["units"]:
+        key = (int(unit["seed"]), int(unit["fold"]))
+        if key in thresholds:
+            raise ValueError(f"Duplicate threshold unit: {key}")
+        thresholds[key] = {
+            "threshold": float(unit["threshold"]),
+            "candidate_checkpoint_sha256": str(
+                unit["candidate_checkpoint_sha256"]
+            ),
+        }
+    return thresholds
+
+
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.write_text(
         "".join(
@@ -282,12 +504,20 @@ def main() -> int:
     )
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--top-k-windows", type=int, default=20)
+    parser.add_argument("--threshold-report", type=Path)
     args = parser.parse_args()
     if args.top_k_windows <= 0:
         raise ValueError("--top-k-windows must be positive")
     if args.output_root.exists():
         raise ValueError("Refusing to overwrite review candidate export")
     media_rows = load_jsonl(args.media_manifest)
+    scientific_labels = sorted(
+        {
+            str(row["scientific_label"])
+            for row in media_rows
+            if row.get("scientific_label")
+        }
+    )
     windows = build_windows(media_rows)
     if not windows:
         raise ValueError("No contiguous five-frame public windows")
@@ -306,9 +536,22 @@ def main() -> int:
     active_rows = []
     risk_rows = []
     known_rows = []
+    veto_rows = []
     model_receipts = []
+    thresholds = (
+        load_conservative_thresholds(args.threshold_report)
+        if args.threshold_report is not None
+        else {}
+    )
+    expected_model_keys = {
+        (seed, fold) for seed in SEEDS for fold in FOLDS
+    }
+    if thresholds and set(thresholds) != expected_model_keys:
+        raise ValueError("Conservative threshold model set mismatch")
+    model_keys = []
     for seed in SEEDS:
         for fold in FOLDS:
+            model_keys.append((seed, fold))
             report_path = (
                 args.candidate_root
                 / f"seed-{seed}"
@@ -321,6 +564,17 @@ def main() -> int:
             if report["task"]["ranking_mode"] != "confidence_residual":
                 raise ValueError("Expected confidence_residual candidate")
             checkpoint_path = Path(report["checkpoint"]["path"])
+            checkpoint_sha256 = sha256(checkpoint_path)
+            threshold_unit = thresholds.get((seed, fold))
+            if (
+                threshold_unit is not None
+                and threshold_unit["candidate_checkpoint_sha256"]
+                != checkpoint_sha256
+            ):
+                raise ValueError(
+                    f"Threshold checkpoint mismatch: seed={seed} "
+                    f"fold={fold}"
+                )
             checkpoint = torch.load(
                 checkpoint_path,
                 map_location="cpu",
@@ -347,6 +601,7 @@ def main() -> int:
             active = np.zeros_like(scores, dtype=bool)
             risks = np.zeros_like(scores)
             knowns = np.zeros_like(scores)
+            vetoes = np.zeros_like(active)
             with torch.no_grad():
                 for frames, indices in loader:
                     frames = frames.to(device, non_blocking=True)
@@ -358,6 +613,7 @@ def main() -> int:
                         reference_risk,
                         "confidence_residual",
                     )
+                    score_probability = logits.sigmoid()
                     risk_probability = reference_risk.sigmoid()
                     known_probability = reference_known.sigmoid()
                     batch_active = (
@@ -367,9 +623,21 @@ def main() -> int:
                     critical = torch.zeros_like(batch_active)
                     critical[:, 1:, 1:] = True
                     batch_active &= critical
+                    batch_veto = (
+                        batch_active
+                        & (
+                            score_probability
+                            >= threshold_unit["threshold"]
+                        )
+                        if threshold_unit is not None
+                        else torch.zeros_like(batch_active)
+                    )
                     index_array = indices.numpy()
-                    scores[index_array] = logits.sigmoid().cpu().numpy()
+                    scores[index_array] = (
+                        score_probability.cpu().numpy()
+                    )
                     active[index_array] = batch_active.cpu().numpy()
+                    vetoes[index_array] = batch_veto.cpu().numpy()
                     risks[index_array] = (
                         risk_probability.cpu().numpy()
                     )
@@ -380,6 +648,7 @@ def main() -> int:
             active_rows.append(active)
             risk_rows.append(risks)
             known_rows.append(knowns)
+            veto_rows.append(vetoes)
             model_receipts.append(
                 {
                     "seed": seed,
@@ -387,12 +656,17 @@ def main() -> int:
                     "report_path": str(report_path.resolve()),
                     "report_sha256": sha256(report_path),
                     "checkpoint_path": str(checkpoint_path.resolve()),
-                    "checkpoint_sha256": sha256(checkpoint_path),
+                    "checkpoint_sha256": checkpoint_sha256,
                     "reference_checkpoint_path": str(
                         reference_path.resolve()
                     ),
                     "reference_checkpoint_sha256": sha256(
                         reference_path
+                    ),
+                    "conservative_veto_threshold": (
+                        threshold_unit["threshold"]
+                        if threshold_unit is not None
+                        else None
                     ),
                 }
             )
@@ -401,12 +675,15 @@ def main() -> int:
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
 
+    active_stack = np.stack(active_rows)
+    veto_stack = np.stack(veto_rows)
     cell_rows = consensus_cell_rows(
         windows,
         np.stack(score_rows),
-        np.stack(active_rows),
+        active_stack,
         np.stack(risk_rows),
         np.stack(known_rows),
+        veto_stack,
     )
     consensus_rows = [
         row for row in cell_rows if row["consensus_review_eligible"]
@@ -435,6 +712,11 @@ def main() -> int:
                     "mean_false_eligibility_score"
                 ],
                 "consensus_cell_count": len(rows),
+                "conservative_veto_consensus_cell_count": sum(
+                    1
+                    for row in rows
+                    if row["conservative_veto_consensus"]
+                ),
                 "top_cells": [
                     {
                         key: row[key]
@@ -444,6 +726,7 @@ def main() -> int:
                             "grid_row",
                             "grid_column",
                             "active_vote_count",
+                            "conservative_veto_vote_count",
                             "mean_false_eligibility_score",
                             "mean_baseline_risk_probability",
                         )
@@ -508,10 +791,44 @@ def main() -> int:
             },
         },
         "evidence_limit": (
-            "Unlabeled public-real model-aware Development discovery "
-            "only. Scores are hypotheses, not false-alert labels."
+            (
+                "Model-blind RGB review supports an actionable-negative "
+                "label for each complete five-frame window. Cell "
+                "localization truth, positive-event safety, system event "
+                "truth, promotion, and action authority remain absent."
+            )
+            if scientific_labels
+            == ["UNANIMOUS_MODEL_BLIND_RGB_ACTIONABLE_NEGATIVE"]
+            else (
+                "Unlabeled public-real model-aware Development discovery "
+                "only. Scores are hypotheses, not false-alert labels."
+            )
         ),
     }
+    if scientific_labels:
+        report["scientific_labels"] = scientific_labels
+    if args.threshold_report is not None:
+        report["conservative_veto_execution"] = {
+            "threshold_report_path": str(
+                args.threshold_report.resolve()
+            ),
+            "threshold_report_sha256": sha256(
+                args.threshold_report
+            ),
+            "threshold_rule": (
+                "nextafter(max training true-alert score, +inf)"
+            ),
+            "consensus_veto_cell_count": sum(
+                1
+                for row in cell_rows
+                if row["conservative_veto_consensus"]
+            ),
+            **conservative_veto_summary(
+                active_stack,
+                veto_stack,
+                model_keys,
+            ),
+        }
     report_path = args.output_root / "report.json"
     report_path.write_text(
         json.dumps(
