@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D23
+  THOR-MAGNI proximity multi-seed robustness。D22 seed17 的 proximity 正信号
+  作为已观察的 hypothesis generation；另冻并执行未运行的 seeds23/41，训练仍保留
+  proximity/corridor 双 target、相同 1,078 samples、19 source sessions、五折、
+  模型、flow、loss 与 30 epochs。合并 15 fold×seed units 后，proximity
+  source-macro AUROC/AP history-minus-current mean 为 `+.04098/+.03242`，
+  分别 12/15 与 11/15 units 正；fold seed-mean 为 4/5 与 5/5 正。三个 seed
+  五折 mean AUROC 为 `+.03669/+.04996/+.03628`，AP 为
+  `+.03660/+.04407/+.01658`，均 3/3 正；pooled AUROC/AP 为
+  `+.01391/+.01877`。冻结 gate 10/10 通过，终态
+  `D23_THOR_MAGNI_PROXIMITY_MULTI_SEED_ROBUSTNESS_SUPPORTED`。
+  corridor source-macro AUROC/AP 仍为 `-.00763/+.00224`，broad-transfer 失败
+  不撤销。D23 是 post-hypothesis Development robustness，不是 fresh confirmation，
+  也不建立真实事件效用、主线、App 或安全主张。下一变量只允许冻结真实连续序列上的
+  proximity-onset event recall、first-warning lead time、false-active 与 clearance
+  检验；不再扩 seed 或调模型。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D22
   THOR-MAGNI dense-flow dynamics transfer。为 D12 的 1,078 samples 全量物化
   4,312 对 current→history RAFT flow；216-sample 方向审计的 valid fraction
