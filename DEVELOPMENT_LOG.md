@@ -5148,3 +5148,17 @@
   backbone”的窄假设，也关闭当前 paired-RGB tail fine-tune recipe。下一步必须
   改变 pair interaction 或风险场表示，并先通过 source-heldout actionability
   recall。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D28
+  THOR-MAGNI kinematic field distillation。D27 current-static 与
+  history-kinematic distance fields 分别监督等容量 current/history RGB students；
+  530 anchors、19 sources、5 paired folds、10 training runs 均完整，stderr
+  为空，非工程 invalid。history-current source-macro AUROC/AP 为
+  `-0.02350/-0.02159`（均 2/5 正折），safest-choice `+0.01347`
+  （2/5），pooled AUROC/AP `-0.01708/-0.00856`；冻结 gate 2/12，
+  终态 `D28_THOR_MAGNI_KINEMATIC_FIELD_DISTILLATION_INCREMENT_NOT_SUPPORTED`。
+  fold2/4 三项真实未来指标同时为正，但不足以建立 source-general increment；
+  teacher MAE delta `+0.03538 m` 通过非劣且与 future ranking 不稳定对齐。保留
+  D27 强 information ceiling，只关闭 direct whole-frame teacher-distillation
+  recipe；下一步转向显式 object-centric detection/correspondence/velocity
+  bottleneck。report SHA-256
+  `2f359f12b04a15fa9de7f109e87231bc7c738de2dac95fb134762f18e119e29c`。
