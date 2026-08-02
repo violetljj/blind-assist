@@ -16,16 +16,23 @@ THOR-MAGNI 已经提供了足够的跨会话局部动作性监督，不需要先
 
 冻结 MobileNetV3-small 表征的首次低成本筛查给出一个分层结果：
 
-- history 相对 current-only 对**近距**和**未来走廊侵入**有稳定排序增量；
+- 2,304-D history 表征相对 576-D current-only 对**近距**和**未来走廊侵入**
+  有稳定排序信号；
 - history 对完整 `2 × 6 × 4 = 48` cell 占用场和连续最小距离排序没有稳定增量。
 
-因此本次不是统一的“成功”或“失败”。保留两个不同层级的终态：
+随后完成的等容量 temporal-head 对照没有复制该粗粒度增量。两臂使用相同 5×576
+接口、相同 4,610 参数 head、相同训练预算和三个 seed；近距 AUROC/AP 仅 2/5 折
+为正，走廊 AP 也仅 2/5 折为正。
 
-- `D8_COARSE_ACTIONABILITY_HISTORY_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY`
+因此本次不是统一的“成功”或“失败”。保留三个不同层级的终态：
+
+- `D8_HIGH_DIMENSIONAL_COARSE_ACTIONABILITY_SEPARABILITY_SIGNAL_OBSERVED`
+- `D8_EQUAL_CAPACITY_TEMPORAL_ACTIONABILITY_INCREMENT_NOT_STABLE`
 - `D8_FULL_LOCAL_FIELD_HISTORY_INCREMENT_NOT_SUPPORTED_ON_FROZEN_REPRESENTATION`
 
-下一实验只验证等容量 compact temporal actionability head，不微调 backbone、不搜索
-48-cell field 表示，也不再增加数据治理层。
+较高维 screen 是真实观察，但不能排除容量混杂，不能升级为 history 独立增量。
+当前 pooled frozen-feature temporal head 关闭；不调 epoch、seed、head 或 target
+救援，也不再增加数据治理层。
 
 ## 监督物化
 
@@ -96,9 +103,42 @@ held-out 折都同时包含两类粗粒度目标的正负例。
 | 3 | 0.55 → 0.64 | 0.49 → 0.57 |
 | 4 | 0.50 → 0.60 | 0.58 → 0.62 |
 
-这支持“history 含有 current-only 没有的粗粒度局部动作性信息”，但当前 absolute
-AUROC 仍仅约 0.54–0.66，且 history arm 维度更高。本结果因此只授权下一次等容量
-temporal-head 验证，不能直接声称完整未来场可预测或系统效用成立。
+这建立了较高维 history 表征的 coarse separability signal，但当前 absolute AUROC
+仍仅约 0.54–0.66，且 history arm 维度更高。它只授权等容量 temporal-head 验证，
+不能直接声称 history 独立增量、完整未来场可预测或系统效用成立。
+
+## 等容量 temporal-head 结果
+
+两臂都实例化相同模型：
+
+- 输入接口固定为 `5 × 576`；current arm 将当前 feature 重复五次；
+- current identity path 加 learned per-time/per-channel bounded residual fusion；
+- `LayerNorm + Linear(576,2)`，总参数量 4,610；
+- 120 个固定 epochs、AdamW、source-balanced BCE、seeds `17/23/41`；
+- held-out fold 不参与标准化、训练或模型选择，直接读取 final epoch。
+
+三个 seed 的 fold-mean history-minus-current：
+
+| 指标 | mean | median | 正折 |
+|---|---:|---:|---:|
+| 近距 AUROC | -0.0039 | -0.0113 | 2/5 |
+| 近距 AP | -0.0080 | -0.0013 | 2/5 |
+| 走廊侵入 AUROC | +0.0071 | +0.0108 | 3/5 |
+| 走廊侵入 AP | +0.0013 | -0.0009 | 2/5 |
+
+逐折 AUROC 的 seed mean：
+
+| fold | 近距 current → history | 走廊 current → history |
+|---:|---:|---:|
+| 0 | 0.47 → 0.45 | 0.61 → 0.60 |
+| 1 | 0.60 → 0.61 | 0.64 → 0.66 |
+| 2 | 0.57 → 0.56 | 0.59 → 0.59 |
+| 3 | 0.60 → 0.59 | 0.45 → 0.46 |
+| 4 | 0.50 → 0.52 | 0.61 → 0.62 |
+
+这没有通过四项指标都要求 median `>0` 且至少 3/5 折为正的门。由于该对照专门
+排除了输入维度和 head 参数量差异，它 supersede 先前较高维 screen 对“history
+独立增量”的解释，但不删除先前观察值。
 
 ## 可复现证据
 
@@ -124,6 +164,16 @@ artifacts.local/evidence/hftf/
 - `report.json` SHA-256：
   `67555819ac229b65ca248dd6ae7e2dab9e2e2574a74dc54b2c2a266f639772cd`
 
+等容量 temporal-head 输出：
+
+```text
+artifacts.local/evidence/hftf/
+  stage-c-d8-thor-magni-equal-capacity-temporal-head-v0/
+```
+
+- `report.json` SHA-256：
+  `c7e5d6d957ecb2a6a2fe8a068e9ea55190d5489b50698d09549fadb368a086ce`
+
 复现命令：
 
 ```powershell
@@ -137,6 +187,13 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   evaluate_stage_c_d8_thor_magni_rgb_history_screen.py `
   --samples artifacts.local/evidence/hftf/<new-supervision-run>/samples.jsonl `
   --output-root artifacts.local/evidence/hftf/<new-screen-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d8_thor_magni_equal_capacity_temporal_head.py `
+  --samples artifacts.local/evidence/hftf/<new-supervision-run>/samples.jsonl `
+  --features artifacts.local/evidence/hftf/<new-screen-run>/features.npz `
+  --output artifacts.local/evidence/hftf/<new-head-run>/report.json
 ```
 
 ## 主张边界

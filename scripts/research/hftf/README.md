@@ -9,7 +9,8 @@ D6-real-phase-early-pair-not-supported /
 D6-motion-alignment-separability-mixed /
 D6-raft-residual-flow-not-stable /
 D8-thor-magni-local-route-supervision-materialized /
-D8-coarse-actionability-history-increment-supported /
+D8-high-dimensional-coarse-actionability-signal-observed /
+D8-equal-capacity-temporal-actionability-increment-not-stable /
 D8-full-local-field-history-increment-not-supported`
 
 ## 研究问题与版本
@@ -98,6 +99,13 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   evaluate_stage_c_d8_thor_magni_rgb_history_screen.py `
   --samples artifacts.local/evidence/hftf/<local-route-run>/samples.jsonl `
   --output-root artifacts.local/evidence/hftf/<rgb-history-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d8_thor_magni_equal_capacity_temporal_head.py `
+  --samples artifacts.local/evidence/hftf/<local-route-run>/samples.jsonl `
+  --features artifacts.local/evidence/hftf/<rgb-history-run>/features.npz `
+  --output artifacts.local/evidence/hftf/<temporal-head-run>/report.json
 ```
 
 物化器从 19 个 THOR-MAGNI Pupil/QTM sessions 派生 wearer-motion-relative
@@ -105,7 +113,9 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
 这些只属于 source-native geometric Development supervision。筛查器固定 pretrained
 MobileNetV3-small 和五折 source-session isolation，比较 current-only 与
 history-residual linear readout。D8 结果只在近距/走廊 coarse actionability 层支持
-history 增量；完整 48-cell field 与连续距离排序不支持继续扩展。
+较高维 history separability signal；完整 48-cell field 与连续距离排序不支持继续
+扩展。相同 4,610 参数、相同训练预算的 current/history temporal head 随后没有复制
+coarse 增量，因此不把前述 signal 升级为 history 独立增量。
 
 ## 稳定 Interface
 

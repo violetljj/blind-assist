@@ -51,8 +51,10 @@ HFTF 是独立于当前 RISKSEG/YOLO 主线的未来潜力支线；只有同口�
 已从 19 个 Pupil/QTM sessions 物化 1,078 个 source-native local-actionability
 样本。冻结 MobileNet 的五折筛查中，history 相对 current-only 的近距/走廊 AUROC
 均 5/5 折提升，mean delta 为 `+.0559/+.0511`；但 48-cell occupancy AP 为
-0/5 折提升，连续距离排序也不稳定。因此保留 coarse actionability 正信号，只准入
-等容量 compact temporal head；不继续硬救完整 field，研究主线与默认 App 不变。
+0/5 折提升，连续距离排序也不稳定。随后相同 4,610 参数与训练预算的等容量
+temporal-head 对照未复制该 coarse 增量：近距 AUROC/AP 仅 2/5 折为正，走廊 AP
+也仅 2/5。较高维 separability signal 保留为观察，但不能升级为 history 独立增量；
+当前 pooled-feature 路线关闭，不继续硬救完整 field，主线与默认 App 不变。
 
 此前 D5/D6 Development 已推进到
 [outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：

@@ -1,5 +1,15 @@
 # Development Log
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D8
+  equal-capacity temporal actionability head。两臂共享相同 `5×576` 接口、4,610
+  参数、120 epochs、source-balanced BCE 与 seeds `17/23/41`；current arm 仅将
+  current feature 重复五次，history arm 才读取真实五帧。seed-mean fold delta：
+  近距 AUROC/AP mean `-.0039/-.0080`、各 2/5 折为正；走廊 AUROC mean
+  `+.0071`、3/5 折为正，但 AP mean/median `+.0013/-.0009`、仅 2/5 折为正。
+  终态 `D8_EQUAL_CAPACITY_TEMPORAL_ACTIONABILITY_INCREMENT_NOT_STABLE`。先前
+  高维 screen 的 5/5 coarse AUROC 正信号保留为 separability observation，但因
+  容量混杂不能升级为 history 独立增量。停止当前 pooled frozen-feature head，
+  不调 epoch、seed、head 或 target 救援；主线和默认 App 不变。
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D8
   THOR-MAGNI local route supervision 与首个 RGB-history screen。19 个 Pupil/QTM
   sessions 物化 1,078 个 source-session-isolated 样本；近距正例 705、走廊侵入
   正例 610，五折均含正负例。冻结 pretrained MobileNetV3-small 后，history 相对
