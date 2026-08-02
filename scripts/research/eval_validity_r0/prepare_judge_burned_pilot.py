@@ -33,12 +33,12 @@ from .freeze_screening_cohort import SCHEMA as SCREENING_COHORT_SCHEMA
 from .materialize_screening_inputs import MATERIALIZED_SCHEMA, PLAN_SCHEMA
 
 
-FREEZE_SCHEMA = "blindassist.eval_validity_r0.judge_pilot_freeze.v3"
-PACKET_SCHEMA = "blindassist.eval_validity_r0.judge_primitive_packet.v3"
+FREEZE_SCHEMA = "blindassist.eval_validity_r0.judge_pilot_freeze.v4"
+PACKET_SCHEMA = "blindassist.eval_validity_r0.judge_primitive_packet.v4"
 PRIVATE_MAP_SCHEMA = "blindassist.eval_validity_r0.judge_primitive_private_map.v1"
 REVIEW_MAP_SCHEMA = "blindassist.eval_validity_r0.judge_review_map.v1"
-REVIEW_SCHEMA = "blindassist.eval_validity_r0.judge_review.v5"
-PRIMITIVE_POLICY_VERSION = "primitive_observability_v3"
+REVIEW_SCHEMA = "blindassist.eval_validity_r0.judge_review.v6"
+PRIMITIVE_POLICY_VERSION = "primitive_observability_v4"
 VISIBILITY_POLICY_VERSION = "visibility_observability_v2"
 VISIBILITY_EVIDENCE_WINDOW = "CURRENT_RGB_FRAME_ONLY"
 GEOMETRIC_EVIDENCE_WINDOW = "CURRENT_RGB_FRAME_ONLY"
@@ -285,6 +285,10 @@ def _render_packet(
             "evidence_quality_definition": "CLEAR is interpretable route/candidate geometry; BLUR, OCCLUSION and CAMERA_ROTATION are used only when they materially prevent that interpretation; minor softness and normal shadows remain CLEAR; INSUFFICIENT is reserved for no usable route anchor. Precedence is INSUFFICIENT, CAMERA_ROTATION, OCCLUSION, BLUR, CLEAR.",
             "evidence_quality_evidence_window": GEOMETRIC_EVIDENCE_WINDOW,
             "geometric_fields_must_not_use_temporal_frames": ["path_relation", "route_certainty", "evidence_quality"],
+            "phase_policy_version": "phase_observability_v2",
+            "phase_definition": "BEFORE_INTRUSION means current path is NON_BLOCKING_PATH and no earlier BLOCKING_PATH is observed in the allowed prefix. CURRENT_INTRUSION means current path is BLOCKING_PATH. PASSED_CLEAR means current path is NON_BLOCKING_PATH and an earlier BLOCKING_PATH is observed in the allowed prefix. UNKNOWN is reserved for unavailable/ambiguous path or an unusable temporal prefix; it is not a synonym for no later event.",
+            "phase_causal_boundary": "Use current frame plus past prefix only; never use future frames to call a current clear frame PASSED_CLEAR or to infer a future intrusion.",
+            "phase_retrospective_boundary": "Retrospective may use full-event sequence for phase reporting, but may not change current-only visibility/path/route/evidence fields.",
             "temporal_fields_evidence_window": CAUSAL_TEMPORAL_EVIDENCE_WINDOW if view == "CAUSAL" else RETROSPECTIVE_TEMPORAL_EVIDENCE_WINDOW,
         },
         "items": items,

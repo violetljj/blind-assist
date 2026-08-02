@@ -287,6 +287,19 @@ v2 的新 plan binding 与 RGB-only staging 分别由
 `rebind_judge_native_plan` 和 `stage_judge_rgb_subset` 生成，并各自写入 calibration receipt；
 它们不改变既有 RGB frame receipt，不带 source mask，也不打开 formal denominator。
 
+v4 在 v2 之后进一步冻结 `primitive_observability_v4`：所有几何 primitive 共享
+`route_anchor`（当前承载相机的行人支撑面及其正前方连续延伸），`path_relation`、
+`route_certainty` 和 `evidence_quality` 只能看当前 RGB 帧；只有 `motion_relation` 与
+`phase` 才按 causal past prefix / retrospective full event 使用 temporal frames。`phase` 明确定义为
+当前 path 占用相对于允许前缀的时相：当前 non-blocking 且此前没有 blocking 为
+`BEFORE_INTRUSION`，当前 blocking 为 `CURRENT_INTRUSION`，当前 non-blocking 且此前出现
+blocking 为 `PASSED_CLEAR`，只有 path/锚点/证据/允许前缀不足才为 `UNKNOWN`；causal 不看未来，
+retrospective 不改写 current-only 几何字段。几何字段的
+`AMBIGUOUS`、`UNKNOWN` 和 `INSUFFICIENT` 语义不再由“是否提醒”反推，review packet 给出
+独立 current-only frame cards 与字段级版本/窗口。v3 曾计划使用 017–028 十二个事件，但因
+reviewer 未提交而不形成审阅证据；这些事件不再复用。v4 使用未消费的 029–040 十二个事件重新
+烧录；v2/v3 review 与 v4 review、seal、pair manifest 不得混用。
+
 ## 安全边界
 
 - 旧 RISKSEG 30-event cohort 是 consumed Development evidence，禁止作为任何输入或调参来源。

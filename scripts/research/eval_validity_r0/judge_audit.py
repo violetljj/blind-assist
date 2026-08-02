@@ -21,10 +21,10 @@ from .common import PROTOCOL_ID, read_json, sha256_file, sha256_json
 JUDGE_CONTRACT_SCHEMA = "blindassist.eval_validity_r0.judge_contract.v1"
 EVENT_LEDGER_SCHEMA = "blindassist.eval_validity_r0.judge_event_ledger.v2"
 REVIEW_MAP_SCHEMA = "blindassist.eval_validity_r0.judge_review_map.v1"
-REVIEW_SCHEMA = "blindassist.eval_validity_r0.judge_review.v5"
-PAIR_SCHEMA = "blindassist.eval_validity_r0.judge_counterfactual_pairs.v4"
+REVIEW_SCHEMA = "blindassist.eval_validity_r0.judge_review.v6"
+PAIR_SCHEMA = "blindassist.eval_validity_r0.judge_counterfactual_pairs.v5"
 ORACLE_SCHEMA = "blindassist.eval_validity_r0.judge_oracle_manifest.v3"
-REPORT_SCHEMA = "blindassist.eval_validity_r0.judge_audit_report.v5"
+REPORT_SCHEMA = "blindassist.eval_validity_r0.judge_audit_report.v6"
 
 SCENARIO_CATEGORIES = (
     "known_front_obstacle",
@@ -60,11 +60,12 @@ PRIMITIVE_VALUES = {
     "route_certainty": {"SINGLE_PLAUSIBLE_ROUTE", "MULTIPLE_PLAUSIBLE_ROUTES", "UNKNOWN"},
     "evidence_quality": {"CLEAR", "BLUR", "OCCLUSION", "CAMERA_ROTATION", "INSUFFICIENT"},
 }
-PRIMITIVE_POLICY_VERSION = "primitive_observability_v3"
+PRIMITIVE_POLICY_VERSION = "primitive_observability_v4"
 VISIBILITY_POLICY_VERSION = "visibility_observability_v2"
 PATH_RELATION_POLICY_VERSION = "path_relation_observability_v2"
 ROUTE_CERTAINTY_POLICY_VERSION = "route_certainty_observability_v2"
 EVIDENCE_QUALITY_POLICY_VERSION = "evidence_quality_observability_v2"
+PHASE_POLICY_VERSION = "phase_observability_v2"
 VISIBILITY_EVIDENCE_WINDOW = "CURRENT_RGB_FRAME_ONLY"
 GEOMETRIC_EVIDENCE_WINDOW = "CURRENT_RGB_FRAME_ONLY"
 CAUSAL_TEMPORAL_EVIDENCE_WINDOW = "CURRENT_PLUS_PAST_PREFIX"
@@ -165,6 +166,23 @@ PRIMITIVE_OBSERVATION_POLICY = {
         "current_frame_only": True,
         "not_a_catch_all_for": ["ACTIONABILITY_UNCERTAINTY", "UNKNOWN_OBJECT_IDENTITY", "REVIEWER_DISAGREEMENT"],
         "evidence_window": GEOMETRIC_EVIDENCE_WINDOW,
+    },
+    "phase": {
+        "version": PHASE_POLICY_VERSION,
+        "operational_question": "What is the current route-occupancy phase relative to the observed allowed temporal prefix?",
+        "before_if": "CURRENT_PATH_IS_NON_BLOCKING_AND_NO_EARLIER_BLOCKING_PATH_IS_OBSERVED_IN_THE_ALLOWED_PREFIX",
+        "current_if": "CURRENT_PATH_IS_BLOCKING",
+        "passed_if": "CURRENT_PATH_IS_NON_BLOCKING_AND_AN_EARLIER_BLOCKING_PATH_IS_OBSERVED_IN_THE_ALLOWED_PREFIX",
+        "unknown_if": [
+            "CURRENT_PATH_RELATION_IS_AMBIGUOUS_OR_UNAVAILABLE",
+            "ROUTE_ANCHOR_OR_EVIDENCE_QUALITY_DOES_NOT_SUPPORT_THE_PATH_RELATION",
+            "ALLOWED_PREFIX_CANNOT_ESTABLISH_THE_CURRENT_ROUTE_OCCUPANCY_STATE",
+        ],
+        "causal_rule": "Use current frame plus past prefix only; do not use future frames to call a current clear frame PASSED_CLEAR or to infer a future intrusion.",
+        "retrospective_rule": "Full-event view may use earlier and later frames to describe the event sequence, but does not change current-only visibility/path/route/evidence fields.",
+        "not_actionability_derived": True,
+        "evidence_window_causal": CAUSAL_TEMPORAL_EVIDENCE_WINDOW,
+        "evidence_window_retrospective": RETROSPECTIVE_TEMPORAL_EVIDENCE_WINDOW,
     },
     "temporal_fields_causal_evidence_window": CAUSAL_TEMPORAL_EVIDENCE_WINDOW,
     "temporal_fields_retrospective_evidence_window": RETROSPECTIVE_TEMPORAL_EVIDENCE_WINDOW,
@@ -285,6 +303,7 @@ def _contract(value: dict[str, Any]) -> dict[str, Any]:
     _require(visibility_policy.get("causal_evidence_window") == VISIBILITY_EVIDENCE_WINDOW and visibility_policy.get("retrospective_evidence_window") == VISIBILITY_EVIDENCE_WINDOW, "judge contract: visibility evidence window mismatch")
     for field in ("path_relation", "route_certainty", "evidence_quality"):
         _require(primitive_policy.get(field) == PRIMITIVE_OBSERVATION_POLICY[field], f"judge contract: {field} observation policy mismatch")
+    _require(primitive_policy.get("phase") == PRIMITIVE_OBSERVATION_POLICY["phase"], "judge contract: phase observation policy mismatch")
     _require(primitive_policy.get("temporal_fields_causal_evidence_window") == CAUSAL_TEMPORAL_EVIDENCE_WINDOW, "judge contract: causal temporal evidence window mismatch")
     _require(primitive_policy.get("temporal_fields_retrospective_evidence_window") == RETROSPECTIVE_TEMPORAL_EVIDENCE_WINDOW, "judge contract: retrospective temporal evidence window mismatch")
     pair_policy = value.get("counterfactual_pair_policy")

@@ -19,7 +19,7 @@ evidence_quality: CLEAR | BLUR | OCCLUSION | CAMERA_ROTATION | INSUFFICIENT
 
 ### Primitive 操作定义与字段级证据边界
 
-当前 primitive policy 版本为 `primitive_observability_v3`。所有几何字段先固定同一个
+当前 primitive policy 版本为 `primitive_observability_v4`。所有几何字段先固定同一个
 `route_anchor`：**当前承载相机的行人支撑面（sidewalk/path/trail 或其他当前可行走支撑面）及其可见的正前方连续延伸**。
 不得把未与当前支撑面连接的平行/背景步道、相机未占用的车道或假设中的绕行路线算进来；只有当前支撑面明确连接到两个以上实质不同的可行走延伸，才记录
 `MULTIPLE_PLAUSIBLE_ROUTES`。
@@ -39,6 +39,12 @@ evidence_quality: CLEAR | BLUR | OCCLUSION | CAMERA_ROTATION | INSUFFICIENT
 `OCCLUSION`，全局旋转使路线方向无法稳定解释才记 `CAMERA_ROTATION`；轻微软化和普通阴影仍为
 `CLEAR`；没有可用路线锚点才记 `INSUFFICIENT`。判定优先级固定为
 `INSUFFICIENT → CAMERA_ROTATION → OCCLUSION → BLUR → CLEAR`。
+
+`phase` 使用版本 `phase_observability_v2`，只描述当前路线占用相对于允许观察前缀的时相，不能由
+actionability 反推：当前 `NON_BLOCKING_PATH` 且允许前缀中没有更早的 blocking path 为
+`BEFORE_INTRUSION`；当前 `BLOCKING_PATH` 为 `CURRENT_INTRUSION`；当前
+`NON_BLOCKING_PATH` 且允许前缀中观察到更早的 blocking path 为 `PASSED_CLEAR`。当前 path
+关系、路线锚点、证据质量或允许前缀不足以确定占用状态时才为 `UNKNOWN`。causal reviewer 只能使用当前帧和过去前缀，不能用未来帧把当前 clear 改成 passed 或预判未来侵入；retrospective reviewer 可描述全事件顺序，但不能改写 current-only 的 visibility/path/route/evidence 字段。
 
 字段证据窗口如下，review packet 同时给出对应的单帧引用，防止把 temporal 视图误用于几何字段：
 

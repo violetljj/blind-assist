@@ -30,7 +30,7 @@ from .judge_audit import (
 from .prepare_judge_burned_pilot import FREEZE_SCHEMA
 
 
-SEAL_SCHEMA = "blindassist.eval_validity_r0.judge_review_bundle_seal.v3"
+SEAL_SCHEMA = "blindassist.eval_validity_r0.judge_review_bundle_seal.v4"
 
 
 class ReviewSealError(ValueError):

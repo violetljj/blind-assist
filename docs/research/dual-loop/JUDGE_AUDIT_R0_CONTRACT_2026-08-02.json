@@ -56,7 +56,7 @@
     "roadside"
   ],
   "primitive_observation_policy": {
-    "version": "primitive_observability_v3",
+    "version": "primitive_observability_v4",
     "route_anchor": {
       "definition": "The route is the pedestrian-support surface currently carrying the camera and its visible forward continuation.",
       "anchor_rule": "Use the surface directly under the camera and connected forward; do not infer the route from object identity, a reminder policy or a parallel/background walkway.",
@@ -176,6 +176,23 @@
         "REVIEWER_DISAGREEMENT"
       ],
       "evidence_window": "CURRENT_RGB_FRAME_ONLY"
+    },
+    "phase": {
+      "version": "phase_observability_v2",
+      "operational_question": "What is the current route-occupancy phase relative to the observed allowed temporal prefix?",
+      "before_if": "CURRENT_PATH_IS_NON_BLOCKING_AND_NO_EARLIER_BLOCKING_PATH_IS_OBSERVED_IN_THE_ALLOWED_PREFIX",
+      "current_if": "CURRENT_PATH_IS_BLOCKING",
+      "passed_if": "CURRENT_PATH_IS_NON_BLOCKING_AND_AN_EARLIER_BLOCKING_PATH_IS_OBSERVED_IN_THE_ALLOWED_PREFIX",
+      "unknown_if": [
+        "CURRENT_PATH_RELATION_IS_AMBIGUOUS_OR_UNAVAILABLE",
+        "ROUTE_ANCHOR_OR_EVIDENCE_QUALITY_DOES_NOT_SUPPORT_THE_PATH_RELATION",
+        "ALLOWED_PREFIX_CANNOT_ESTABLISH_THE_CURRENT_ROUTE_OCCUPANCY_STATE"
+      ],
+      "causal_rule": "Use current frame plus past prefix only; do not use future frames to call a current clear frame PASSED_CLEAR or to infer a future intrusion.",
+      "retrospective_rule": "Full-event view may use earlier and later frames to describe the event sequence, but does not change current-only visibility/path/route/evidence fields.",
+      "not_actionability_derived": true,
+      "evidence_window_causal": "CURRENT_PLUS_PAST_PREFIX",
+      "evidence_window_retrospective": "FULL_EVENT_RGB"
     },
     "temporal_fields_causal_evidence_window": "CURRENT_PLUS_PAST_PREFIX",
     "temporal_fields_retrospective_evidence_window": "FULL_EVENT_RGB"
