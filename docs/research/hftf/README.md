@@ -37,6 +37,42 @@ FROZEN_AFTER_D3_Q0_1_ATLAS_BEFORE_D4_METADATA_CENSUS_OR_FRESH_SOURCE_CONTENT /
 INNOVATION_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
+## 2026-08-02 执行纠偏：让治理重新服务于科学
+
+此前 hash、closed set、one-shot、source burning、fsync 与 claim ceiling 的强度已经
+超过当前 Development 研究所需，并多次把路径长度、scanner、parser、serialization
+等控制面故障变成整批 source 的永久关闭。这些终态作为历史记录保留，但从 D5-P0C
+起采用以下最小规则：
+
+- 在 claim-critical truth 或 held-out effect 尚未观察前，网络、路径、parser、格式、
+  中断和实现错误都是可修复工程故障；修复和重跑不烧毁 source。
+- outcome-open Development 数据可以迭代用于 reader、teacher、表示和训练调试；
+  只有最终偏差敏感的 held-out 比较才使用 one-shot。
+- 不再为每次读取另建 hash-bound 合同、root、closed set 或完整审计链。可复现性由
+  provider revision、输入路径、代码、参数、结果和测试的最小记录承担。
+- claim ceiling 只限制结论：teacher mechanics、student effect、系统效用、主线晋级
+  和产品/安全证据仍然分开，但不再让产品级治理阻塞前面的科学实验。
+
+### D5 当前直接结果
+
+官方 toolkit 的 provider 语义已直接解析并验证：
+`theairlabcmu/TartanGround@388faf9c800568cfc6828fa47e063f8369397eb3`
+完整包含锁定 catalog 的 `198/198` 个 differential-drive parents 与 `7,722/7,722`
+个 archive paths，缺失为 0。
+
+三个 outcome-open Development sentinel 的 metadata、12 路 pose 与
+RGB/depth/seg frame indices 已对齐。27 个 anchor 的 `.4/.8 s` 小型几何 pilot
+得到 2,555 个 current/future 双方 known cell，其中 54 个风险状态变化
+（30 onset、24 clearance），另有 43 个 future-only newly-known cell。跨帧
+pose-depth 重投影的 pair-median relative error 为
+`.00068–.00144`。因此当前支持的科学结论是：
+
+`TARTANGROUND_ALIGNED_TEACHER_FEASIBLE_AND_FUTURE_LABEL_NONREDUNDANCY_OBSERVED_IN_DEVELOPMENT`
+
+这不建立 student effect、真实助盲事件效用、主线晋级或产品/安全主张。下一步直接扩展
+environment-clustered Development corpus，并比较 single-frame 与 history-RGB
+student；不再先做完整 197-parent 治理 census。
+
 ## 当前结论
 
 HFTF（Human-Centric Future Traversability Field）已作为独立候选支线立项，但没有
@@ -446,6 +482,7 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C machine-readable D4-M0 invalid result](HFTF_STAGE_C_D4_M0_METADATA_CENSUS_INVALID_RESULT_2026-08-02.json)
 - [Stage C D5 TartanGround differential-drive source authority S0](HFTF_STAGE_C_D5_TARTANGROUND_DIFF_SOURCE_AUTHORITY_AND_RECRUITABILITY_S0_2026-08-02.md)
 - [Stage C machine-readable D5 TartanGround S0](HFTF_STAGE_C_D5_TARTANGROUND_DIFF_SOURCE_AUTHORITY_AND_RECRUITABILITY_S0_2026-08-02.json)
+- [Stage C D5 TartanGround Development pilot](HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界

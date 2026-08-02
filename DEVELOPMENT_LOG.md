@@ -4396,3 +4396,18 @@
   `765946ab06afe8f8d6856b04a7ebd647036e6c74a169c0d7c59cd80e599599b0`。
   canonical root 仍不存在。后续不再扩展治理；推送后直接单次执行并按终态进入 P0C
   或停止。
+
+## 2026-08-02：HFTF D5-P0C 回到 Development 科学实验
+
+- P0B.1 已成功锁定 18 个 source shards；随后不再新建 P0C one-shot 合同。可修复
+  resolver 直接确认 official Hugging Face revision
+  `388faf9c800568cfc6828fa47e063f8369397eb3` 覆盖 catalog 的
+  `198/198 parents`、`7,722/7,722 archive paths`，缺失为 0。
+- 三个 outcome-open sentinel 的 metadata、12 路 pose 与 RGB/depth/seg indices
+  完全对齐。27-anchor `.4/.8 s` pilot 在 2,555 个 common-known future cells 中
+  观察到 54 个 risk state changes（30 onset、24 clearance）和 43 个 newly-known
+  cells；pose-depth 重投影 pair-median relative error 为 `.00068–.00144`。
+- 当前只结论为 aligned geometry teacher 可构造且 future label 在 Development
+  窗口非完全冗余。未训练 student，也没有系统、主线、App 或 safety 结论。后续直接
+  扩展 environment-clustered Development corpus；工程故障在关键 held-out outcome
+  未观察前允许修复重跑，不烧毁 source。
