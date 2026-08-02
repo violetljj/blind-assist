@@ -31,6 +31,10 @@ TartanGround 已从“目录看起来足够大”推进到九个可执行结果�
 9. 不调模型或 v2，直接进入 30-session SANPO 真实连续事件集。9 个 directional
    checkpoints 全部命中 16/16 正事件，证明真实 RGB recall signal；但各自对
    13–14/14 负事件误报、只清除 0–2/16，固定 kernel 的真实事件效用不成立。
+10. 保持相同 source-session-held-out folds 与监督不变，把 relation head 从
+    30-dimensional output field 前移到固定 encoder 的 `128×3×6` spatial feature。
+    相对 output-field head，false alerts 9/9 减少、clearance mean 增加 1.78，
+    recall mean 仅减 0.22；空间表示增量成立，但 0/9 超过当前 YOLO 的三指标 Pareto。
 
 当前终态为：
 
@@ -46,7 +50,9 @@ FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED /
 DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
 CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED /
 WEAK_RELATION_HEAD_SPECIFICITY_CLEARANCE_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
-WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
+FIXED_ENCODER_SPATIAL_RELATION_HEAD_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_IN_DEVELOPMENT /
+FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -720,6 +726,40 @@ output field 中的 30 个低容量特征无法在保住 recall 的同时完成 
 分离。下一次模型改动把同一 held-out 监督前移到 HFTF encoder 的 spatial feature
 map；不搜索 logistic L2、threshold、confirmation 或 fold 分配。
 
+### Fixed-encoder spatial relation head
+
+空间头严格复用上述 5-fold source-session split、frame labels、event/class
+weights、0.5 probability threshold 与 5 Hz 两步确认。唯一表示变化是从五类
+output profiles × 6 directions 前移到固定 HFTF pointwise fused feature：
+adaptive pool 为 `128 channels × 3 rows × 6 directions = 2,304 features`。
+encoder/backbone 不解冻；每折 test sessions 仍不参与标准化或拟合。为适配维度，
+L2 strength 固定为 `1.0`，没有做结果后搜索。
+
+9 个 directional backbones 的 out-of-fold 结果为：
+
+| 指标 | spatial-head 范围 / mean | 相对 output-field head | 相对当前 YOLO |
+|---|---:|---:|---:|
+| hits | 12–14/16，mean 13.00 | mean -0.22；3 胜 / 2 同 / 4 负 | mean 相同；3 胜 / 3 同 / 3 负 |
+| false-alert events | 7–11/14，mean 9.00 | mean -2.22；9/9 改善 | mean +3.00；9/9 更差 |
+| cleared | 6–12/16，mean 9.00 | mean +1.78；6 胜 / 1 同 / 2 负 | mean +4.00；9/9 改善 |
+| response delay | median 2–6 frames | 描述性 | 尚未建立 lead-time 增量 |
+
+空间特征同时稳定改善 specificity，并在多数 checkpoints 改善 clearance，而平均
+recall 基本持平。因此保留模型表示层正终态：
+
+`FIXED_ENCODER_SPATIAL_RELATION_HEAD_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_IN_DEVELOPMENT`
+
+但 9 个 checkpoints 没有一个把 false alerts 压到 YOLO 的 6/14 或更低，0/9
+同时非劣于 YOLO 的 hits/false-alert/cleared，故系统比较负终态仍为：
+
+`FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+
+后一个终态只限制“已超过当前系统”的主张，不撤销前一个空间表示正结果。本 cohort
+已经回答 representation placement，不再用来搜索 grid、L2、threshold 或
+confirmation。下一步如继续，只允许固定当前 spatial head 并解冻靠近输出端的最小
+backbone 子集，仍做 source-session-held-out；其结果继续是 consumed Development，
+不能升格为 fresh validation。
+
 ## 边界与下一实验
 
 当前正结果只支持：
@@ -728,7 +768,8 @@ map；不搜索 logistic L2、threshold、confirmation 或 fold 分配。
 + height-spatiotemporal selective decision-kernel signal
 + directional selective-event transfer signal
 + outcome-unseen TartanGround selective-event replication
-+ real SANPO positive-event recall signal`
++ real SANPO positive-event recall signal
++ fixed-encoder spatial relation representation increment`
 
 尚未支持：
 
@@ -741,17 +782,17 @@ map；不搜索 logistic L2、threshold、confirmation 或 fold 分配。
 - directional 在真实事件上相对 pooled 或当前 YOLO 形成 Pareto 增量；
 - central-vs-lateral profile 能稳定区分 parallel curb；
 - output-field weak relation head 能形成真实事件 Pareto 增量；
+- fixed-encoder spatial relation head 能形成真实事件 Pareto 增量；
 - 真实事件 warning lead time 相对当前 YOLO 改善；
 - HFTF 超过当前主线或进入 App。
 
 下一步保留 directional + v2 为合成 Development reference，也保留真实 recall
 正信号，不再在 21 个 TartanGround environments 或 SANPO outcomes 上盲搜绝对阈值。
-output-field relation head 已证明 guardrail 可学但 Pareto 不成立。下一步保持相同
-5-fold session split、labels、event weights、0.5 threshold 与两步确认，把低容量
-relation head 接到固定 HFTF encoder 的 spatial feature map，使真实 RGB 关系信息在
-被 6×6 risk field 压缩前可用。只有该 fixed-encoder head 仍失败，才解冻 backbone
-做真实 RGB fine-tune；不再修改 v2 或 output-field calibrator。history 在出现显式
-对齐机制前停止。
+output-field relation head 已证明 guardrail 可学；fixed-encoder spatial head 又证明
+信息放置位置具有稳定增量，但仍未形成 YOLO Pareto。下一步固定 spatial grid、head
+容量、folds、labels、weights、threshold 与 confirmation，只解冻最靠近输出端的
+最小 backbone 子集做真实 RGB fine-tune；不再修改 v2、output-field calibrator 或
+空间头超参数。history 在出现显式对齐机制前停止。
 
 ## 复现
 
@@ -834,6 +875,12 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --name directional-seed17-fold0 `
   --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-weak-relation-head-v0/seed-17/fold-0.json
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_sanpo_spatial_relation_head.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --name directional-seed17-fold0 `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-spatial-relation-head-v0/seed-17/fold-0.json
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored

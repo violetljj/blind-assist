@@ -87,11 +87,11 @@ class ManifestFrames(Dataset[tuple[torch.Tensor, int, int]]):
         return tensor, event_index, frame_index
 
 
-def single_frame_logits(
+def single_frame_spatial_features(
     model: TemporalStudent,
     frames: torch.Tensor,
-) -> tuple[torch.Tensor, torch.Tensor]:
-    """Run the exact repeated-current single arm without 5x encoding."""
+) -> torch.Tensor:
+    """Return exact repeated-current fused features without 5x encoding."""
     encoded = model.encoder(frames)
     current_kernel = model.temporal_depthwise.weight.sum(dim=2)
     fused = nnf.conv2d(
@@ -99,7 +99,15 @@ def single_frame_logits(
         current_kernel,
         groups=encoded.shape[1],
     )
-    fused = model.pointwise(fused)
+    return model.pointwise(fused)
+
+
+def single_frame_logits(
+    model: TemporalStudent,
+    frames: torch.Tensor,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Run the exact repeated-current single arm without 5x encoding."""
+    fused = single_frame_spatial_features(model, frames)
     if model.architecture == "pooled":
         output = model.head(model.dropout(model.pool(fused).flatten(1)))
         output = output.reshape(frames.shape[0], 2, 3, 3, 6, 6)

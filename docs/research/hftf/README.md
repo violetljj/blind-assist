@@ -48,6 +48,8 @@ D6_DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
 D6_CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED /
 D6_WEAK_RELATION_HEAD_SPECIFICITY_CLEARANCE_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
 D6_WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
+D6_FIXED_ENCODER_SPATIAL_RELATION_HEAD_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY /
+D6_FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -282,6 +284,30 @@ event 9/9 减少、mean `-2.56`，cleared 9/9 增加、mean `+6.67`；因此保�
 真实关系监督能移动 trade-off，但当前 HFTF output field 丢失的信息不足以让线性
 head 同时守住召回与假警。后继把监督前移到真实 RGB spatial feature map，而不是
 继续调 relation threshold、L2 或确认长度。
+
+该 fixed-encoder spatial relation head 现已按相同 5-fold session split、训练标签、
+event/class weights、0.5 threshold 与两步确认复现到 9 个 checkpoints。输入从
+30-dimensional output field 前移到 pointwise fused feature 的固定 `128×3×6`
+表示，encoder 与 HFTF backbone 均未解冻。绝对结果为 hits `12–14/16`、false
+alerts `7–11/14`、cleared `6–12/16`，9-checkpoint mean 恰为
+`13 hits / 9 false alerts / 9 cleared`。
+
+相对 output-field weak head，false alerts 9/9 减少、mean `-2.22`；cleared
+6/9 增加、1/9 相同、mean `+1.78`；hits 3/9 增加、2/9 相同、4/9 减少，
+mean `-0.22`。因此空间表示在 output-field 压缩前确实保留了可用于真实事件
+guardrail 的增量：
+
+`FIXED_ENCODER_SPATIAL_RELATION_HEAD_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_IN_DEVELOPMENT`
+
+但相对当前 YOLO 的 `13/16、6/14、5/16`，空间头 mean hits 相同、cleared
+`+4`，false alerts `+3`；9/9 的 false alerts 都更差，0/9 Pareto 支配：
+
+`FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+
+这仍然是模型表示层的正结果：它不能被系统 Pareto 负终态抹掉。与此同时，同一
+consumed Development cohort 不再用于搜索 spatial grid、L2、threshold 或确认长度；
+下一科学问题是固定当前 128×3×6 head，判断少量真实关系监督能否通过解冻 HFTF
+pointwise/encoder 尾部恢复剩余 specificity，而不是再设计控制面协议。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

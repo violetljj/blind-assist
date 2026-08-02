@@ -4668,3 +4668,20 @@
   specificity。停止搜索 L2/threshold/confirmation/fold；保持相同 held-out 口径，
   下一候选把低容量 relation head 接到固定 encoder spatial feature map，之后才考虑
   解冻 backbone。
+
+## 2026-08-02：HFTF D6 fixed-encoder spatial relation head
+
+- 保持 weak relation head 的 5-fold source-session split、labels、event/class
+  weights、0.5 threshold 与两步 5 Hz 确认不变；固定 HFTF encoder/backbone，只把
+  输入前移到 pointwise fused `128×3×6` spatial feature。test sessions 不参与
+  标准化或拟合；L2 strength 预先固定为 1.0。
+- 9 个 directional backbones 的 OOF hits 为 `12–14/16`、mean `13.00`；
+  false-alert events `7–11/14`、mean `9.00`；cleared `6–12/16`、mean `9.00`。
+- 相对 output-field head，false alerts 9/9 减少、mean `-2.22`；cleared 6/9
+  增加、1/9 同、mean `+1.78`；hits mean `-0.22`。模型层正终态为
+  `FIXED_ENCODER_SPATIAL_RELATION_HEAD_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_IN_DEVELOPMENT`。
+- 相对当前 YOLO，mean hits 相同、cleared `+4`，但 false alerts `+3` 且 9/9
+  更差；0/9 Pareto，系统比较终态为
+  `FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`。
+- 不以系统负终态撤销表示层正结果。同一 consumed cohort 停止 grid/L2/threshold/
+  confirmation 搜索；下一候选固定空间头，只解冻靠近输出端的最小 backbone 子集。

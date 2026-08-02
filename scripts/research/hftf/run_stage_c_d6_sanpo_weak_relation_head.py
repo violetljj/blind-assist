@@ -141,6 +141,7 @@ def fit_logistic(
     features: np.ndarray,
     labels: np.ndarray,
     sample_weights: np.ndarray,
+    l2_strength: float = L2_STRENGTH,
 ) -> tuple[np.ndarray, float, float]:
     x = torch.from_numpy(features).double()
     y = torch.from_numpy(labels.astype(np.float64)).double()
@@ -175,7 +176,7 @@ def fit_logistic(
             * weights
         ).sum() / weights.sum()
         regularization = (
-            0.5 * L2_STRENGTH * coefficient.square().mean()
+            0.5 * l2_strength * coefficient.square().mean()
         )
         return data_loss + regularization
 

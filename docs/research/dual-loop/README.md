@@ -59,7 +59,12 @@ Pareto 增量尚未成立，因此研究主线和默认 App 不变。下一步�
 source-session-held-out 的低容量 weak relation head。该 head 相对 fixed v2
 在 9/9 backbones 上减少 false alerts 并增加 clearance，但 recall 8/9 下降且
 0/9 Pareto-dominate YOLO；保留 guardrail signal，下一步把关系监督前移到固定
-encoder spatial feature map。
+encoder spatial feature map。该 fixed-encoder spatial head 已完成：相对
+output-field head，false alerts 9/9 减少、mean `-2.22`，cleared mean `+1.78`，
+hits mean 仅 `-0.22`，证明 spatial representation placement 的 Development
+增量；但绝对 mean 为 `13 hits / 9 false alerts / 9 cleared`，对当前 YOLO
+`13/6/5` 仍是 0/9 Pareto。表示层正结果保留，研究主线与默认 App 不变；下一步
+固定空间头，只测试最小范围的真实 RGB backbone 解冻。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
