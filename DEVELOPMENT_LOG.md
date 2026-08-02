@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D26
+  THOR-MAGNI counterfactual collision field canary。对 530 个 current-clear
+  anchors 生成 `-30°/0°/+30°` 恒速候选路径，与其他人体的真实未来世界轨迹计算
+  三方向×五类首次 1.25m 冲突时间；287 个样本精确时间随方向变化，231 个在
+  2 秒 collision/no-collision 上有方向分歧。相同 1,057,651 参数 current/history
+  五折 seed17 完整训练。history-minus-current 的 source-macro
+  direction×horizon AUROC/AP 为 `-.00051/+.00434`，2/5 与 3/5 folds 正；
+  safest-direction accuracy 为 `+.00541`、3/5 正；冻结 gate 7/11 通过，终态
+  `D26_THOR_MAGNI_COUNTERFACTUAL_COLLISION_FIELD_INCREMENT_NOT_SUPPORTED`。
+  同时 right direction 的 horizon-macro AUROC/AP 为 `+.00802/+.01289`，均
+  4/5 folds 正，保留
+  `D26_RIGHT_CANDIDATE_COLLISION_FIELD_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY`，但
+  不切 primary direction、不扩 seed。总体负结果不覆盖该表示层信号，局部信号也不
+  覆盖 center 与 choice effect 失败。下一步只做 current-static vs
+  history-kinematic source-native information-ceiling oracle，先定位 target 还是 RGB
+  motion representation 瓶颈；主线、默认 App 与安全权限不变。
 - 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D25
   THOR-MAGNI ordinal time-to-entry canary。把 530 个 current-negative
   proximity anchors 按首次 1.25m 进入时间固定为五类
