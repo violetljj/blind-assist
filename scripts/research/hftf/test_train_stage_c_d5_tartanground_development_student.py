@@ -383,6 +383,67 @@ class TartanGroundDevelopmentStudentTest(unittest.TestCase):
         torch.testing.assert_close(candidate_risk, reference_risk)
         torch.testing.assert_close(candidate_known, reference_known)
 
+    def test_early_pair_risk_veto_is_exact_and_one_sided(self):
+        model = TemporalStudent.__new__(TemporalStudent)
+        torch.nn.Module.__init__(model)
+        model.architecture = "directional"
+        model.temporal_mode = "early_pair_risk_veto"
+        model.encoder = torch.nn.Sequential(
+            torch.nn.Conv2d(3, 576, kernel_size=1),
+            torch.nn.AdaptiveAvgPool2d((4, 7)),
+        )
+        model.temporal_depthwise = torch.nn.Conv3d(
+            576,
+            576,
+            kernel_size=(5, 1, 1),
+            groups=576,
+            bias=False,
+        )
+        model.pointwise = torch.nn.Conv2d(576, 128, kernel_size=1)
+        model.early_pair_stem = EarlyPairStem()
+        model.early_pair_veto_pool = torch.nn.AdaptiveAvgPool2d((1, 6))
+        model.early_pair_veto_head = torch.nn.Conv1d(
+            128,
+            3 * 3 * 6,
+            kernel_size=1,
+        )
+        torch.nn.init.zeros_(model.early_pair_veto_head.weight)
+        torch.nn.init.zeros_(model.early_pair_veto_head.bias)
+        model.pool = torch.nn.AdaptiveAvgPool2d((1, 6))
+        model.dropout = torch.nn.Identity()
+        model.head = torch.nn.Conv1d(
+            128,
+            2 * 3 * 3 * 6,
+            kernel_size=1,
+        )
+        history = torch.randn(2, 5, 3, 32, 56)
+
+        candidate_risk, candidate_known, reference_risk, reference_known = (
+            model(history, return_reference=True)
+        )
+        torch.testing.assert_close(candidate_risk, reference_risk)
+        torch.testing.assert_close(candidate_known, reference_known)
+
+        model.early_pair_veto_head.bias.data.fill_(-0.5)
+        veto_risk, veto_known, veto_reference, _ = model(
+            history,
+            return_reference=True,
+        )
+        self.assertTrue(torch.all(veto_risk <= veto_reference))
+        torch.testing.assert_close(
+            veto_risk,
+            veto_reference - 0.5,
+        )
+        torch.testing.assert_close(veto_known, reference_known)
+
+        model.early_pair_veto_head.bias.data.fill_(0.5)
+        blocked_increase, blocked_known, blocked_reference, _ = model(
+            history,
+            return_reference=True,
+        )
+        torch.testing.assert_close(blocked_increase, blocked_reference)
+        torch.testing.assert_close(blocked_known, reference_known)
+
     def test_early_pair_stem_preserves_lightweight_spatial_output(self):
         stem = EarlyPairStem()
         output = stem(torch.zeros(2, 12, 128, 224))

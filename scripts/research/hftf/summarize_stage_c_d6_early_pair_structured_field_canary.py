@@ -160,6 +160,7 @@ def main() -> int:
     }
     environment_rows = []
     pair_constraint_modes = set()
+    candidate_temporal_modes = set()
     for seed in args.seeds:
         for fold in FOLDS:
             reference_path = reference_report_path(
@@ -179,7 +180,8 @@ def main() -> int:
                 candidate_path.read_text(encoding="utf-8")
             )
             if (
-                candidate["temporal_mode"] != "early_pair"
+                candidate["temporal_mode"]
+                not in {"early_pair", "early_pair_risk_veto"}
                 or candidate["optimization"]["mode"]
                 != "early_pair_only"
                 or candidate["optimization"][
@@ -197,6 +199,7 @@ def main() -> int:
                     "none",
                 )
             )
+            candidate_temporal_modes.add(candidate["temporal_mode"])
             deltas = {}
             for name, getter in METRICS.items():
                 delta = getter(candidate) - getter(reference)
@@ -277,6 +280,9 @@ def main() -> int:
                 "early-pair parameters only"
             ),
             "pair_constraint_modes": sorted(pair_constraint_modes),
+            "candidate_temporal_modes": sorted(
+                candidate_temporal_modes
+            ),
             "metric_search": False,
             "threshold_search": False,
         },

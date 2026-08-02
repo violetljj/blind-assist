@@ -29,6 +29,7 @@ TEMPORAL_MODES = (
     "current_residual",
     "current_spatial_residual",
     "early_pair",
+    "early_pair_risk_veto",
 )
 OPTIMIZATION_MODES = (
     "all",
@@ -305,15 +306,32 @@ class TemporalStudent(nn.Module):
                 bias=False,
             )
             nn.init.zeros_(self.temporal_residual.weight)
-        elif temporal_mode == "early_pair":
+        elif temporal_mode in {"early_pair", "early_pair_risk_veto"}:
             self.early_pair_stem = EarlyPairStem()
-            self.early_pair_output = nn.Conv2d(
-                128,
-                128,
-                kernel_size=1,
-                bias=False,
-            )
-            nn.init.zeros_(self.early_pair_output.weight)
+            if temporal_mode == "early_pair":
+                self.early_pair_output = nn.Conv2d(
+                    128,
+                    128,
+                    kernel_size=1,
+                    bias=False,
+                )
+                nn.init.zeros_(self.early_pair_output.weight)
+            else:
+                if architecture != "directional":
+                    raise ValueError(
+                        "early_pair_risk_veto requires directional "
+                        "architecture"
+                    )
+                self.early_pair_veto_pool = nn.AdaptiveAvgPool2d(
+                    (1, 6)
+                )
+                self.early_pair_veto_head = nn.Conv1d(
+                    128,
+                    3 * 3 * 6,
+                    kernel_size=1,
+                )
+                nn.init.zeros_(self.early_pair_veto_head.weight)
+                nn.init.zeros_(self.early_pair_veto_head.bias)
         self.pointwise = nn.Sequential(
             nn.Conv2d(576, 128, kernel_size=1, bias=False),
             nn.GroupNorm(16, 128),
@@ -364,7 +382,7 @@ class TemporalStudent(nn.Module):
             raise ValueError("Expected Bx5x3xHxW input")
         batch, time, channels, height, width = frames.shape
         temporal_mode = getattr(self, "temporal_mode", "joint")
-        if temporal_mode == "early_pair":
+        if temporal_mode in {"early_pair", "early_pair_risk_veto"}:
             current = frames[:, -1]
             baseline = frames[:, :-1].mean(dim=1)
             delta = current - baseline
@@ -404,17 +422,18 @@ class TemporalStudent(nn.Module):
                 encoded_current
             ).squeeze(2)
             fused = self.pointwise(current_fused)
-            pair_residual = self.early_pair_output(
-                self.early_pair_stem(pair)
-            )
-            pair_residual = nnf.interpolate(
-                pair_residual,
-                size=fused.shape[-2:],
-                mode="bilinear",
-                align_corners=False,
-            )
             reference_fused = fused
-            fused = reference_fused + pair_residual
+            if temporal_mode == "early_pair":
+                pair_residual = self.early_pair_output(
+                    self.early_pair_stem(pair)
+                )
+                pair_residual = nnf.interpolate(
+                    pair_residual,
+                    size=fused.shape[-2:],
+                    mode="bilinear",
+                    align_corners=False,
+                )
+                fused = reference_fused + pair_residual
         else:
             encoded = self.encoder(
                 frames.reshape(
@@ -456,6 +475,36 @@ class TemporalStudent(nn.Module):
                     history_delta
                 ).squeeze(2)
             fused = self.pointwise(fused)
+        if temporal_mode == "early_pair_risk_veto":
+            reference_risk_logits, reference_known_logits = (
+                self._decode_projected(
+                    self.dropout(self._project_fused(reference_fused)),
+                    batch,
+                )
+            )
+            veto_features = self.early_pair_veto_pool(
+                self.early_pair_stem(pair)
+            ).squeeze(2)
+            raw_risk_delta = self.early_pair_veto_head(veto_features)
+            raw_risk_delta = raw_risk_delta.reshape(
+                batch,
+                3,
+                3,
+                6,
+                6,
+            ).permute(0, 1, 2, 4, 3)
+            risk_logits = reference_risk_logits + torch.clamp_max(
+                raw_risk_delta,
+                0.0,
+            )
+            if return_reference:
+                return (
+                    risk_logits,
+                    reference_known_logits,
+                    reference_risk_logits,
+                    reference_known_logits,
+                )
+            return risk_logits, reference_known_logits
         if return_reference:
             if temporal_mode != "early_pair":
                 raise ValueError(
@@ -880,7 +929,8 @@ def train(
             "and an initial checkpoint"
         )
     if optimization_mode == "early_pair_only" and (
-        temporal_mode != "early_pair"
+        temporal_mode
+        not in {"early_pair", "early_pair_risk_veto"}
         or initial_checkpoint_path is None
     ):
         raise ValueError(
@@ -888,7 +938,8 @@ def train(
             "and an initial checkpoint"
         )
     if pair_constraint_mode != "none" and (
-        temporal_mode != "early_pair"
+        temporal_mode
+        not in {"early_pair", "early_pair_risk_veto"}
         or optimization_mode != "early_pair_only"
     ):
         raise ValueError(
@@ -976,7 +1027,8 @@ def train(
                 )
         elif (
             initial_temporal_mode == "joint"
-            and temporal_mode == "early_pair"
+            and temporal_mode
+            in {"early_pair", "early_pair_risk_veto"}
         ):
             incompatible = model.load_state_dict(
                 initial_checkpoint["model_state_dict"],
@@ -986,7 +1038,11 @@ def train(
                 not incompatible.missing_keys
                 or any(
                     not key.startswith(
-                        ("early_pair_stem.", "early_pair_output.")
+                        (
+                            "early_pair_stem.",
+                            "early_pair_output.",
+                            "early_pair_veto_head.",
+                        )
                     )
                     for key in incompatible.missing_keys
                 )
@@ -1018,14 +1074,22 @@ def train(
     elif optimization_mode == "early_pair_only":
         for name, parameter in model.named_parameters():
             parameter.requires_grad = name.startswith(
-                ("early_pair_stem.", "early_pair_output.")
+                (
+                    "early_pair_stem.",
+                    "early_pair_output.",
+                    "early_pair_veto_head.",
+                )
+            )
+        pair_parameters = [*model.early_pair_stem.parameters()]
+        if temporal_mode == "early_pair":
+            pair_parameters.extend(model.early_pair_output.parameters())
+        else:
+            pair_parameters.extend(
+                model.early_pair_veto_head.parameters()
             )
         optimizer_groups = [
             {
-                "params": [
-                    *model.early_pair_stem.parameters(),
-                    *model.early_pair_output.parameters(),
-                ],
+                "params": pair_parameters,
                 "lr": head_lr,
             }
         ]
