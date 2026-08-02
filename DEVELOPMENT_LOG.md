@@ -1,4 +1,23 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：Codex。候选事件挖掘继续复用
+  `cem-r0-real-20260802-2hz-yolo-depth-proxy` 的既有 `candidate_report.json`，未重跑
+  模型推理，将剩余 `507` 条候选按 `128/128/128/123` 四批建立排他 queue 并由隔离
+  Luna 完成复核；571/571 覆盖，合并结果为 `240 keep / 331 quarantine`。新增
+  `--exclude-report` 与 `merge_candidate_pools.py`，每批 queue、bundle、review 和
+  pool 都保留 hash-bound lineage。另从 Wikimedia Commons 下载并登记 3 条公开源
+  （Boston crowd、descending staircase、walking in sands），位于
+  `F:\ba-data\blindassist-candidate-event-mining\`，新基础 batch 实际运行 2 Hz、
+  YOLO11n、Depth Anything V2，得到 313 帧。随后对同一 trace 实际运行
+  `nvidia/segformer-b0-finetuned-ade-512-512` ADE20K SegFormer 与现有 HFTF
+  `directional-history-finetune-seed17` checkpoint，各自输出 313/313 逐帧 sidecar；
+  post-inference join 增加 4,373 个真实 segmentation/HFTF 归一化信号并通过 hash、
+  完整覆盖、前缀和范围校验。新 run 产生 `128` raw、`92` 去重候选、`14` clusters；
+  Luna 独立复核 `81 keep / 11 reject / 0 quarantine`，候选池为 `81`，其余 `11`
+  quarantine。所有结果仍是 `THESIS_DEVELOPMENT / DISCOVERY_CANDIDATE_ONLY`；
+  `event_truth/training/confirmation/production/safety/default_app` 均为 false，
+  因此该池不构成训练集、生产授权或安全授权。7/7 candidate-module tests、sidecar
+  join 回归、hash-bound run index 与文档门禁在提交前复验。详见
+  `scripts/research/candidate_event_mining/README.md`。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：Codex。按“治理服务科学”的纠偏原则，
   完成 outcome-open、可修复的 TartanGround HFTF student Development，而不再为
   下载、路径、parser 或结果文件创建 one-shot/source-burning 终点。8 个互斥环境形成

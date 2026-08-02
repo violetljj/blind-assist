@@ -36,10 +36,22 @@ def _rank(candidate: dict[str, Any]) -> tuple[float, int, int, str]:
     )
 
 
-def _select(candidates: list[dict[str, Any]], maximum: int) -> list[dict[str, Any]]:
+def _select(
+    candidates: list[dict[str, Any]],
+    maximum: int,
+    excluded_ids: set[str] | None = None,
+) -> list[dict[str, Any]]:
     if maximum <= 0:
         raise ContractError("max_candidates must be positive")
-    ordered = sorted(candidates, key=_rank)
+    excluded_ids = excluded_ids or set()
+    eligible = [
+        candidate
+        for candidate in candidates
+        if str(candidate.get("candidate_id", "")) not in excluded_ids
+    ]
+    if not eligible:
+        raise ContractError("no eligible candidates remain after exclusions")
+    ordered = sorted(eligible, key=_rank)
     groups: dict[tuple[str, str], list[dict[str, Any]]] = {}
     for candidate in ordered:
         key = (str(candidate["source_id"]), str(candidate["trigger_type"]))
@@ -84,6 +96,24 @@ def _select(candidates: list[dict[str, Any]], maximum: int) -> list[dict[str, An
     )
 
 
+def _candidate_ids_from_exclusion(path: Path) -> set[str]:
+    value = read_json(path)
+    candidate_ids: set[str] = set()
+    raw_ids = value.get("candidate_ids")
+    if isinstance(raw_ids, list):
+        candidate_ids.update(str(item) for item in raw_ids if str(item))
+    for key in ("candidates", "pool", "quarantine"):
+        raw_items = value.get(key)
+        if not isinstance(raw_items, list):
+            continue
+        for item in raw_items:
+            if isinstance(item, dict) and item.get("candidate_id"):
+                candidate_ids.add(str(item["candidate_id"]))
+    if not candidate_ids:
+        raise ContractError(f"exclusion report has no candidate IDs: {path}")
+    return candidate_ids
+
+
 def run(args: argparse.Namespace) -> dict[str, Any]:
     _contract, contract_meta = load_contract(args.contract.resolve())
     input_path = args.candidate_report.resolve()
@@ -95,7 +125,26 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     candidates = report.get("candidates")
     if not isinstance(candidates, list) or not candidates:
         raise ContractError("full candidate report has no candidates")
-    selected = _select([dict(candidate) for candidate in candidates], args.max_candidates)
+    all_candidates = [dict(candidate) for candidate in candidates]
+    excluded_reports: list[dict[str, Any]] = []
+    excluded_ids: set[str] = set()
+    for exclusion_path in args.exclude_report:
+        path = exclusion_path.resolve()
+        ids = _candidate_ids_from_exclusion(path)
+        excluded_ids.update(ids)
+        excluded_reports.append(
+            {
+                "path": str(path),
+                "sha256": sha256_file(path),
+                "candidate_count": len(ids),
+            }
+        )
+    eligible_candidates = [
+        candidate
+        for candidate in all_candidates
+        if str(candidate["candidate_id"]) not in excluded_ids
+    ]
+    selected = _select(all_candidates, args.max_candidates, excluded_ids)
     selected_counts = Counter(str(candidate["trigger_type"]) for candidate in selected)
     selected_clusters = {str(candidate.get("cluster_id", "")) for candidate in selected}
     output = args.output.resolve()
@@ -114,17 +163,25 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "cluster_count": len(selected_clusters),
             "candidate_type_counts": {key: selected_counts.get(key, 0) for key in sorted(selected_counts)},
             "review_queue_full_candidate_count": len(candidates),
+            "review_queue_excluded_candidate_count": len(excluded_ids),
+            "review_queue_eligible_candidate_count": len(eligible_candidates),
             "review_queue_selected_candidate_count": len(selected),
-            "review_queue_unreviewed_candidate_count": len(candidates) - len(selected),
+            "review_queue_unreviewed_candidate_count": len(eligible_candidates) - len(selected),
         },
         "review_queue": {
-            "selection_policy": "score_rank_then_source_x_trigger_coverage_then_cluster_coverage",
+            "selection_policy": (
+                "score_rank_then_source_x_trigger_coverage_then_cluster_coverage"
+                "+exclude_prior_reviewed_ids"
+            ),
             "max_candidates": args.max_candidates,
             "parent_candidate_report_path": str(input_path),
             "parent_candidate_report_sha256": sha256_file(input_path),
             "full_candidate_count": len(candidates),
+            "excluded_reports": excluded_reports,
+            "excluded_candidate_count": len(excluded_ids),
+            "eligible_candidate_count": len(eligible_candidates),
             "selected_candidate_count": len(selected),
-            "unreviewed_candidate_count": len(candidates) - len(selected),
+            "unreviewed_candidate_count": len(eligible_candidates) - len(selected),
             "unreviewed_disposition": "not_reviewed_and_excluded_from_candidate_pool",
         },
         "candidates": selected,
@@ -147,6 +204,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--contract", type=Path, required=True)
     parser.add_argument("--candidate-report", type=Path, required=True)
     parser.add_argument("--max-candidates", type=int, default=64)
+    parser.add_argument(
+        "--exclude-report",
+        type=Path,
+        action="append",
+        default=[],
+        help="Candidate report, queue, bundle manifest, or pool whose IDs are already reviewed",
+    )
     parser.add_argument("--output", type=Path, required=True)
     return parser.parse_args()
 

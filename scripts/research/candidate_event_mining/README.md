@@ -64,7 +64,31 @@ $index = 'F:\ba-data\blindassist-candidate-event-mining\project_index.json'
   --output artifacts.local/evidence/candidate-event-mining/<run-id>/review_queue_report.json
 ```
 
-随后将 `build_review_bundle.py` 和 `finalize_luna_reviews.py` 的 `candidate-report` 指向 `review_queue_report.json`；全量报告仍是完整发现库存，queue 的 `review_queue.unreviewed_candidate_count` 保留未复核分母。
+随后将 `build_review_bundle.py` 和 `finalize_luna_reviews.py` 的 `candidate-report` 指向 `review_queue_report.json`；全量报告仍是完整发现库存，queue 的 `review_queue.unreviewed_candidate_count` 保留本批 eligible 未复核分母。继续下一批时可重复传入上一批的 queue、bundle manifest 或 pool：
+
+```powershell
+& $py $tool candidate-event-mining select_review_queue.py `
+  --contract $contract `
+  --candidate-report artifacts.local/evidence/candidate-event-mining/<run-id>/candidate_report.json `
+  --max-candidates 128 `
+  --exclude-report artifacts.local/evidence/candidate-event-mining/<batch-1>/review_queue_report.json `
+  --output artifacts.local/evidence/candidate-event-mining/<batch-2>/review_queue_report.json
+```
+
+`--exclude-report` 按 candidate ID 排除已经复核的窗口，并在 queue 元数据中记录排除报告路径、哈希、eligible 分母和本批剩余量，保证 64/128 批次不重叠。
+
+所有批次完成后，用 `merge_candidate_pools.py` 合并各批次的 finalized pool；它会拒绝批次重叠、pool/queue ID 不一致和母报告之外的 candidate，并在 `--require-complete` 下确认 571 条母报告候选全部有复核收据：
+
+```powershell
+& $py $tool candidate-event-mining merge_candidate_pools.py `
+  --candidate-report artifacts.local/evidence/candidate-event-mining/<run-id>/candidate_report.json `
+  --candidate-pool artifacts.local/evidence/candidate-event-mining/<run-id>/candidate_pool.json `
+  --review-queue artifacts.local/evidence/candidate-event-mining/<run-id>/review_queue_report.json `
+  --candidate-pool artifacts.local/evidence/candidate-event-mining/<run-id>/review-batches/b02-128/candidate_pool.json `
+  --review-queue artifacts.local/evidence/candidate-event-mining/<run-id>/review-batches/b02-128/review_queue_report.json `
+  --require-complete `
+  --output artifacts.local/evidence/candidate-event-mining/<run-id>/candidate_pool_merged.json
+```
 
 ### 真实公开视频 batch adapter
 
@@ -85,9 +109,24 @@ $tool = 'scripts/run_research_tool.py'
   --depth-source-root artifacts.local/models/dg-srf-f0/source-a561b849/Depth-Anything-V2-a561b849ebae10a6f5ef49e26c83cbbcd36c71bf
 ```
 
-`--enable-segmentation-proxy` 只启用一个低级图像空间风险 proxy，manifest 会明确记录 `image_space_risk_proxy_not_a_segmentation_model`；不启用时 segmentation 信号保持缺失。`--segmentation-sidecar` 与 `--hftf-sidecar` 必须按 `source_id/session_id/frame_index` 精确绑定，缺失的通道不补零、不生成负证据。完整 chain 仍由 `ingest_batch_inference.py`、`mine_candidates.py`、`build_review_bundle.py` 和 `finalize_luna_reviews.py` 依次完成。
+`--enable-segmentation-proxy` 只启用一个低级图像空间风险 proxy，manifest 会明确记录 `image_space_risk_proxy_not_a_segmentation_model`；不启用时 segmentation 信号保持缺失。真实 ADE20K SegFormer sidecar 用 `run_segmentation_sidecar.py` 生成，真实 HFTF student sidecar 用 `run_hftf_sidecar.py` 生成；两者都必须按 `source_id/session_id/frame_index` 精确绑定，缺失的通道不补零、不生成负证据。完整 chain 仍由 `ingest_batch_inference.py`、`mine_candidates.py`、`build_review_bundle.py` 和 `finalize_luna_reviews.py` 依次完成。
 
 `ingest_batch_inference.py` 是 adapter hand-off，不是假装替代模型推理的黑盒 runner。YOLO、segmentation、depth 和 HFTF 的具体推理器可以独立批量运行，但必须各自写出同一份 canonical frame JSONL，再由 ingest 绑定 source index、run ID 和输入 hash。
+
+当基础 adapter 已经完成、需要在不重跑 YOLO/depth 的情况下补充真实 sidecar 时，使用 hash-bound 的 post-inference join：
+
+```powershell
+& $py $tool candidate-event-mining attach_sidecars.py `
+  --input-trace artifacts.local/evidence/candidate-event-mining/<run-id>/adapter_trace.jsonl `
+  --sidecar artifacts.local/evidence/candidate-event-mining/<run-id>/segmentation_sidecar.jsonl `
+  --sidecar-manifest artifacts.local/evidence/candidate-event-mining/<run-id>/segmentation_sidecar.manifest.json `
+  --sidecar artifacts.local/evidence/candidate-event-mining/<run-id>/hftf_sidecar.jsonl `
+  --sidecar-manifest artifacts.local/evidence/candidate-event-mining/<run-id>/hftf_sidecar.manifest.json `
+  --output artifacts.local/evidence/candidate-event-mining/<run-id>/adapter_trace_real_sidecars.jsonl `
+  --manifest-output artifacts.local/evidence/candidate-event-mining/<run-id>/adapter_trace_real_sidecars.manifest.json
+```
+
+join 会严格校验两个 sidecar 的输入 trace hash、输出 hash、完整帧覆盖、信号前缀和 `[0,1]` 范围；它只增加真实推理字段，不覆盖基础信号，也不把缺失通道补成零。
 
 每一行 canonical frame 至少包含：
 

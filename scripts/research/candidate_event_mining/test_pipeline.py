@@ -4,6 +4,7 @@ import json
 import sys
 import tempfile
 import unittest
+from argparse import Namespace
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -25,6 +26,7 @@ from scripts.research.candidate_event_mining.pipeline import (
     write_json,
     write_jsonl,
 )
+from scripts.research.candidate_event_mining.attach_sidecars import run as attach_sidecars_run
 from scripts.research.candidate_event_mining.select_review_queue import _select
 
 CONTRACT_PATH = REPO_ROOT / "configs" / "candidate_event_mining_contract_v1.json"
@@ -268,6 +270,104 @@ class CandidateMiningPipelineTest(unittest.TestCase):
             {(item["source_id"], item["trigger_type"]) for item in selected},
             {(source, trigger) for source in ("source-a", "source-b") for trigger in ("front_obstacle_approach", "normal_passage_negative")},
         )
+
+    def test_review_queue_exclusion_keeps_follow_up_batches_disjoint(self) -> None:
+        candidates = [
+            {
+                "candidate_id": f"candidate-{index}",
+                "source_id": "source-a" if index % 2 == 0 else "source-b",
+                "trigger_type": "front_obstacle_approach",
+                "cluster_id": f"cluster-{index}",
+                "trigger_score_peak": 0.9 - index / 100.0,
+                "active_frame_count": 2,
+                "start_timestamp_ms": index * 1000,
+            }
+            for index in range(8)
+        ]
+        first = _select(candidates, 3)
+        first_ids = {item["candidate_id"] for item in first}
+        second = _select(candidates, 3, first_ids)
+        second_ids = {item["candidate_id"] for item in second}
+        self.assertEqual(len(second), 3)
+        self.assertTrue(first_ids.isdisjoint(second_ids))
+        self.assertEqual(
+            first_ids | second_ids,
+            {f"candidate-{index}" for index in range(6)},
+        )
+
+    def test_attach_sidecars_is_hash_bound_and_frame_complete(self) -> None:
+        base_rows = normalize_frames([_frame(0), _frame(1)])
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            input_path = root / "adapter_trace.jsonl"
+            write_jsonl(input_path, base_rows)
+            input_sha256 = sha256_file(input_path)
+            sidecars = [
+                (
+                    "segmentation_sidecar.jsonl",
+                    "segmentation_sidecar.manifest.json",
+                    "blindassist_candidate_event_mining_segmentation_sidecar_manifest_v1",
+                    "real_semantic_segmentation",
+                    "segmentation.risk",
+                ),
+                (
+                    "hftf_sidecar.jsonl",
+                    "hftf_sidecar.manifest.json",
+                    "blindassist_candidate_event_mining_hftf_sidecar_manifest_v1",
+                    "real_hftf_model_inference",
+                    "hftf.future_field_change",
+                ),
+            ]
+            sidecar_paths: list[Path] = []
+            manifest_paths: list[Path] = []
+            for sidecar_name, manifest_name, schema, real_flag, signal_key in sidecars:
+                sidecar_path = root / sidecar_name
+                manifest_path = root / manifest_name
+                write_jsonl(
+                    sidecar_path,
+                    [
+                        {
+                            "source_id": "source-a",
+                            "session_id": "session-a",
+                            "frame_index": 0,
+                            "signals": {signal_key: 0.7},
+                        },
+                        {
+                            "source_id": "source-a",
+                            "session_id": "session-a",
+                            "frame_index": 1,
+                            "signals": {signal_key: 0.8},
+                        },
+                    ],
+                )
+                write_json(
+                    manifest_path,
+                    {
+                        "schema": schema,
+                        real_flag: True,
+                        "input_trace": {"sha256": input_sha256},
+                        "sidecar": {"sha256": sha256_file(sidecar_path), "frame_count": 2},
+                    },
+                )
+                sidecar_paths.append(sidecar_path)
+                manifest_paths.append(manifest_path)
+            output_path = root / "attached.jsonl"
+            output_manifest_path = root / "attached.manifest.json"
+            manifest = attach_sidecars_run(
+                Namespace(
+                    input_trace=input_path,
+                    sidecar=sidecar_paths,
+                    sidecar_manifest=manifest_paths,
+                    output=output_path,
+                    manifest_output=output_manifest_path,
+                )
+            )
+            attached = read_jsonl(output_path)
+            self.assertEqual(len(attached), 2)
+            self.assertEqual(attached[0]["signals"]["segmentation.risk"], 0.7)
+            self.assertEqual(attached[1]["signals"]["hftf.future_field_change"], 0.8)
+            self.assertEqual(manifest["signals_added_count"], 4)
+            self.assertTrue(manifest["post_inference_join"])
 
 
 if __name__ == "__main__":
