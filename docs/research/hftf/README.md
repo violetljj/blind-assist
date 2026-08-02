@@ -138,7 +138,7 @@ HFTF_SCENE_SCALE_PERSISTENCE_FAMILY_STOP /
 D40_THOR_MAGNI_CONTINUOUS_TRACK_PROJECTED_RISK_NOT_SUPPORTED /
 D40_CONTINUOUS_TRACK_FORECAST_OPPORTUNITY_SUPPORTED /
 D40_SELECTED_TARGET_BOX_SCALE_PROJECTION_RECIPE_STOP /
-STAGE_C_D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_FROZEN /
+STAGE_C_D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_FROZEN_R0_1 /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-03 D41：直接评价一秒后的 future spatial representation
@@ -148,6 +148,10 @@ risk/alert kernel，而是用 D33 detector tracks 的连续 7 帧，对 box cent
 与 log width/height 做固定 OLS 外推，直接与 `+15 frames` 的 same-identity
 native box 比较。baseline 是 current detector box；candidate 使用全部可评价
 tracks，不设 evidence threshold。
+
+source-only census 发现 `20/3,692` 个 forecast 完全离开画面；R0.1 在任何聚合
+outcome 生成前冻结为保留 raw projected box，并让全部指标原样惩罚越界，不做
+拉回画面或样本排除。
 
 这次成功也只建立 detector-bound future-box representation 增量，不能越级声称
 event utility 或系统效果；失败则停止 constant-velocity image-box field recipe。

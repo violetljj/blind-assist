@@ -4,7 +4,7 @@
 
 状态：
 
-`STAGE_C_D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_FROZEN`
+`STAGE_C_D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_FROZEN_R0_1`
 
 证据角色：Development / future spatial representation canary
 
@@ -37,12 +37,18 @@ range direction；D40 证明只把 selected box 做尺度投影再送回现有 r
 - log width
 - log height
 
-candidate 按 future packet 的实际 timestamp 外推到 `+15 frames`，重建并 clamp
-future box。baseline 是 current detector box。forecast 生成完全不读取 annotation；
+candidate 按 future packet 的实际 timestamp 外推到 `+15 frames`，重建有限的
+raw future box。baseline 是 current detector box。forecast 生成完全不读取 annotation；
 current native association 与 future same-identity box 只在 evaluation join 使用。
 
 这与 D40 的差异是：D41 使用全部可评价 tracks，并显式预测 2D translation 与
 scale；输出是 future spatial representation，不进入现有 risk/alert kernel。
+
+R0.1 source-only repair：首次 join 在生成任何聚合 outcome 前，遇到一个完全离开
+画面的 forecast，原 `clamp` 语义会产生零面积 box 而中止。纯 source census 为
+`3,692` forecasts，其中 `20` fully outside、`227` partially clipped。冻结修复为
+保留 raw projected box，不把中心拉回画面；IoU union、center error 与 log-area
+error 都原样惩罚越界预测。该修复没有读取汇总指标，也不搜索或排除样本。
 
 ## 冻结指标
 
