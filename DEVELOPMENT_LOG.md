@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D14 explicit
+  motion future-onset canary。固定 pretrained RAFT-small 对 D12 的 1,078×4
+  adjacent pairs 全量推理，保留 direction-preserving raw/residual 3×6 grid；
+  4,312 pairs 无缺失。相同 49,490 参数下比较 current+zero-motion 与
+  current+RAFT。走廊 AUROC/AP mean delta `+.0219/+.0240`，但 AP median
+  `-.00485`、仅 2/5 folds 正；近距 AUROC/AP 为 `+.00048/-.01025`、均仅
+  2/5 folds 正。终态 `D14_EXPLICIT_MOTION_FUTURE_ONSET_INCREMENT_NOT_SUPPORTED`。
+  保留 folds0/1 corridor 局部信号和 D12/D13 true-onset 资产，但不切换 target、
+  不调 RAFT/grid/head；主线与默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D11–D13
   true future-onset 任务修正。D11 发现原 0–2 秒 future-ever 标签从 `t=0` 开始，
   current-static QTM geometry 五折 AUROC 已约 `.89–.97`，causal-history

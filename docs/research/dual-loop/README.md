@@ -93,7 +93,13 @@ residual successor，不关闭未来实质不同的时空表示研究。随后
 `4/3/5/4`，达到冻结门；但效应只有约 `+.0008–+.0020`，走廊 AP mean 仍略负。
 当前只记录 `D13_FUTURE_ONSET_TEMPORAL_SPATIAL_INCREMENT_SUPPORTED` 的弱
 representation signal；下一变量是显式 motion，而不是退回 current-dominated 标签
-或升级主线/App 主张。
+或升级主线/App 主张。后续
+[D14 显式 RAFT motion canary](../hftf/HFTF_STAGE_C_D14_EXPLICIT_MOTION_FUTURE_ONSET_CANARY_2026-08-02.md)
+完成 4,312 个相邻 frame pairs。走廊 AUROC/AP mean delta 为
+`+.0219/+.0240`，但 AP median 为负、仅 2/5 folds 正；近距 AP mean
+`-.0103`。终态 `D14_EXPLICIT_MOTION_FUTURE_ONSET_INCREMENT_NOT_SUPPORTED`。
+folds 0/1 的走廊局部正信号保留，但不按结果切换 target 或调 RAFT/grid/head；
+true-onset estimand 保留，主线与默认 App 不变。
 
 此前 D5/D6 Development 已推进到
 [outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：

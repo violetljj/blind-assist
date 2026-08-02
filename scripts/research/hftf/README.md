@@ -19,7 +19,9 @@ frozen-feature-history-route-stop /
 D10-trainable-tail-temporal-increment-not-supported-stop /
 D11-causal-kinematic-information-not-supported /
 D12-future-onset-target-five-fold-ready /
-D13-future-onset-temporal-spatial-increment-supported`
+D13-future-onset-temporal-spatial-increment-supported /
+D14-direction-preserving-raft-features-materialized /
+D14-explicit-motion-future-onset-increment-not-supported`
 
 ## 研究问题与版本
 
@@ -219,6 +221,29 @@ geometry 已有约 `.89–.97` AUROC，causal history kinematics 未稳定改善
 五折均含正负。D13 相同 frozen-spatial 等容量 head 在修正 target 上通过预定
 median/正折门，但增量只有约 `+.0008–+.0020`，且走廊 AP mean 仍为负。该弱
 representation signal 只授权显式 motion representation，不授权系统或主线晋级。
+
+### D14 explicit-motion future-onset canary
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  extract_stage_c_d14_thor_magni_explicit_motion_features.py `
+  --output artifacts.local/evidence/hftf/<d14-feature-run>/features.npz
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d14_thor_magni_explicit_motion_onset_canary.py `
+  --motion-features artifacts.local/evidence/hftf/<d14-feature-run>/features.npz `
+  --output artifacts.local/evidence/hftf/<d14-canary-run>/report.json
+```
+
+feature extractor 对五帧中的四个相邻 pair 运行固定 RAFT-small，保留 3×6 grid 的
+raw/residual x、y、mean/p90 magnitude，不做表示选择。4,312 pairs 全部完成。
+等容量 canary 的 current arm 输入全零 motion，candidate 输入真实 flow。走廊
+AUROC/AP mean delta 为 `+.0219/+.0240`，但 AP median 为负且仅 2/5 folds 正；
+近距 AP mean `-.0103`。终态
+`D14_EXPLICIT_MOTION_FUTURE_ONSET_INCREMENT_NOT_SUPPORTED`；不调 RAFT/grid/head，
+保留 source-local corridor signal 与 D12 onset task。
 
 ## 稳定 Interface
 
