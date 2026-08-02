@@ -209,7 +209,7 @@ def main() -> int:
                 )
     flows.flush()
     del flows
-    with partial_path.open("rb") as handle:
+    with partial_path.open("r+b") as handle:
         os.fsync(handle.fileno())
     os.replace(partial_path, args.output)
     report = {
