@@ -554,6 +554,8 @@ def train_arm(
                 device,
                 non_blocking=True,
             )
+            if not torch.any(eligible * sample_weight > 0):
+                continue
             optimizer.zero_grad(set_to_none=True)
             logits = model(frames, flow)
             loss = masked_loss(
