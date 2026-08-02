@@ -42,6 +42,9 @@ D5_KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED /
 D5_HEIGHT_SPATIOTEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
 D5_DIRECTIONAL_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
 D5_DIRECTIONAL_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUND_ENVIRONMENTS_DEVELOPMENT_ONLY /
+D6_REAL_EVENT_RECALL_SIGNAL_SUPPORTED_ACROSS_NINE_CHECKPOINTS_DEVELOPMENT_ONLY /
+D6_FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED /
+D6_DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -229,6 +232,25 @@ kernel selection。边界也同样保留：false-alert event count mean 增加 `
 主要来自 head 短事件碎片；54 个 environment×seed×fold 比较的 false-active
 环境宏平均为 `+0.0129`，其中 31 个恶化。也就是说，加权总体行为已改善，但尚未
 建立逐环境 false-alert guardrail，更不是人类事件、主线、App 或安全证据。
+
+随后直接接入已消费的 SANPO 30-session / 1,920-frame 人工审阅 parent-event
+cohort，不调模型、不调 v2。固定中央 `-15°..+15°` 路线 adapter 后，9 个
+directional checkpoints 全部命中 16/16 正事件、critical miss 为 0；当前 YOLO
+为 13/16。这建立了真实 RGB recall signal：
+
+`REAL_EVENT_RECALL_SIGNAL_SUPPORTED_ACROSS_NINE_CHECKPOINTS_IN_DEVELOPMENT`
+
+但同一 9 个模型误报 13–14/14 个负事件、只清除 0–2/16，mean active-frame
+fraction 达 87.08%；相对当前 YOLO 的 6/14 false alerts、5/16 cleared，没有一个
+checkpoint 形成三指标 Pareto 支配。因此同时保留：
+
+`FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED /
+DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+
+paired pooled 比较显示 directional 的 hit count 4/9 更高、5/9 相同，mean
+`+2.22 events`，但 false-alert mean `+0.33`、cleared mean `-1.89`。真实域中的
+召回贡献存在，actionability/specificity 尚未建立；下一步检查 central-vs-lateral
+profile，而不是继续盲调绝对阈值。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

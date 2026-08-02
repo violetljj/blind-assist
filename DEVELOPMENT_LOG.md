@@ -4601,3 +4601,31 @@
   selective-event 迁移，不建立逐环境 guardrail、human-event、主线、App 或 safety
   主张。下一步进入真实 parent-event cohort 或预先固定
   environment-balanced head/negative fragmentation guardrail。
+
+## 2026-08-02：HFTF D6 SANPO real parent-event transfer
+
+- 直接复用已消费的 RISKSEG-R0 30-session / 1,920-frame SANPO event view：
+  16 个人工审阅正事件、14 个负事件，同口径当前 YOLO reference 为
+  `13/16 hits、6/14 false alerts、5/16 cleared`。不把 consumed cohort 重新包装成
+  fresh/held-out，也不新增协议 ceremony。
+- HFTF checkpoints 从未用 SANPO 训练。outcome 前固定 adapter：current-only
+  single input、v2 原 5 Hz confirmation、中央 direction indices 2/3
+  （`-15°..+15°`）、near/far × body/head 任一 lane active 即提醒，5 Hz state
+  causal hold 到原 10 Hz timeline；评分完全复用 RISKSEG event hit/negative
+  false-alert/passed-clearance 口径。
+- 9 个 directional checkpoints 全部 `16/16 hits、0 critical misses`，
+  blocking/boundary 各 8/8；真实事件 recall positive terminal 为
+  `REAL_EVENT_RECALL_SIGNAL_SUPPORTED_ACROSS_NINE_CHECKPOINTS_IN_DEVELOPMENT`。
+- 同一模型 false-alert 为 `13–14/14`、cleared 为 `0–2/16`，all-frame active
+  fraction mean `87.08%`；0/9 对当前 YOLO 形成 hits/false-alert/cleared
+  Pareto 支配。效用终态为
+  `FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED`。
+- paired pooled 中，directional hit count 4/9 更高、5/9 相同、0/9 更低，
+  mean `+2.22 events`；false-alert 2 改善/3 恶化/4 相同、mean `+0.33`，
+  cleared 2 提高/3 降低/4 相同、mean `-1.89`。因此
+  `DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`；它不抹掉真实 recall
+  正信号或合成表示正结果。
+- 下一步不在同一 outcomes 上搜索绝对 threshold。先做跨 9 checkpoints 的
+  central-minus-lateral direction-profile 诊断，检验前方侵入与 parallel-curb
+  是否有同向相对结构；有则进入 session-held-out weak event calibration，无则转向
+  真实负例/actionability relation supervision。

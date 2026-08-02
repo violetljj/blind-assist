@@ -2,7 +2,7 @@
 
 ## 结论
 
-TartanGround 已从“目录看起来足够大”推进到八个可执行结果：
+TartanGround 已从“目录看起来足够大”推进到九个可执行结果：
 
 1. 官方 Hugging Face revision
    `388faf9c800568cfc6828fa47e063f8369397eb3` 完整覆盖锁定 catalog 的
@@ -28,6 +28,9 @@ TartanGround 已从“目录看起来足够大”推进到八个可执行结果�
    3 seeds × 3 folds checkpoints；directional 相对 pooled 的 event recall
    9/9 提高，false-active 7/9 降低，建立了跨新环境的 selective-event 迁移正结果，
    但 head false-alert fragmentation 与逐环境 false-active guardrail 尚未解决。
+9. 不调模型或 v2，直接进入 30-session SANPO 真实连续事件集。9 个 directional
+   checkpoints 全部命中 16/16 正事件，证明真实 RGB recall signal；但各自对
+   13–14/14 负事件误报、只清除 0–2/16，固定 kernel 的真实事件效用不成立。
 
 当前终态为：
 
@@ -37,7 +40,10 @@ UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
 KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED /
 HEIGHT_SPATIOTEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
 DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
-DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUND_ENVIRONMENTS_IN_DEVELOPMENT`
+DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUND_ENVIRONMENTS_IN_DEVELOPMENT /
+REAL_EVENT_RECALL_SIGNAL_SUPPORTED_ACROSS_NINE_CHECKPOINTS_IN_DEVELOPMENT /
+FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED /
+DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -580,6 +586,76 @@ false-active、clearance、false-alert count 三项上都是 9/9 非劣，代价
 多数 checkpoint pairs 降低加权误激活”，不支持“每环境都更稳”“假警更少”或
 “HFTF 已超过主线”。
 
+## Consumed SANPO real parent-event transfer
+
+### 最短真实事件接缝
+
+不新建协议 ceremony，直接复用已经存在的 RISKSEG-R0 event view：
+
+- 30 个 source-session-disjoint parent events、1,920 张真实连续 RGB；
+- 8 个 blocking-obstacle positives、8 个 boundary-level-change positives；
+- 7 个 parallel-curb negatives、7 个 normal-walkable negatives；
+- 正事件具有 alertable/passed intervals，来自两路隔离 RGB review 与
+  output-blind adjudication；
+- 同一 cohort 的当前 YOLO reference 为 `13/16` hits、`6/14` false-alert
+  events、`5/16` cleared。
+
+这个 cohort 已被主线实验消费，因此这里只是 Development，不重新包装成 fresh 或
+held-out。HFTF checkpoints 从未使用 SANPO 训练；real-event adapter 在任何 HFTF
+outcome 前固定为：
+
+- current RGB 单帧，重复输入的 single arm 用数学等价的 encoder fast path；
+- 保留 v2 的 body/head、near/far 和 5 Hz causal confirmation；
+- 只合并对应直行路线 `-15°..+15°` 的中央 direction indices 2/3；
+- 任一中央 near/far × body/head lane active 时，当前帧提醒；
+- 以 causal zero-order hold 把 5 Hz 状态映射回原 10 Hz event timeline；
+- event hit、negative false alert 与 passed clearance 完全复用 RISKSEG 口径。
+
+### 真实 recall 正信号与效用负结果
+
+9 个 directional checkpoints 的结果高度一致：
+
+| 指标 | 9-checkpoint 结果 | 当前 YOLO |
+|---|---:|---:|
+| positive-event hits | 16/16，9/9 单元相同 | 13/16 |
+| critical misses | 0/16，9/9 单元相同 | 3/16 |
+| false-alert events | 13–14/14，median 14 | 6/14 |
+| cleared events | 0–2/16，median 0 | 5/16 |
+| response delay from alertable start | median 2–4 个 10 Hz frames | 不同链路，不直接比较 |
+| all-frame active fraction | mean 87.08% | 未以同一 raw state 定义 |
+
+因此两个层级必须同时保留：
+
+`REAL_EVENT_RECALL_SIGNAL_SUPPORTED_ACROSS_NINE_CHECKPOINTS_IN_DEVELOPMENT`
+
+`FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED`
+
+前者不是被后者抹掉：从纯合成 TartanGround 训练得到的 9 个模型全部命中
+pedestrian/cone blocking 与 curb/stair/boundary 两类真实正事件，说明 risk field
+不是在真实 RGB 上完全失效。后者说明当前绝对阈值 + 中央 lane union 几乎常开，
+无法形成可用提醒。
+
+### directional 相对 pooled
+
+同一 real-event adapter 下再比较 9 个 paired pooled checkpoints：
+
+- directional hit count 4/9 更高、5/9 相同、0/9 更低，mean delta `+2.22 events`；
+- false-alert count 2/9 改善、3/9 恶化、4/9 相同，mean delta `+0.33`；
+- cleared count 2/9 提高、3/9 降低、4/9 相同，mean delta `-1.89`；
+- directional active-frame count mean 为 1,672/1,920，pooled 为
+  1,464.4/1,920。
+
+directional 的真实域贡献仍主要表现为 recall，而没有同时改善 specificity 与
+clearance；18 个模型中没有一个在 hits、false alerts、cleared 三项上
+Pareto-dominate 当前 YOLO。因此精确终态是：
+
+`DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+
+这关闭的是当前未校准 real-domain adapter，不关闭 directional 的合成表示正结果，
+也不证明真实帧没有可用于区分正负事件的相对方向结构。下一步先检查中央/侧向风险
+profile 是否能区分“前方侵入”与“平行路沿”，再决定是否值得做 session-held-out
+weak event calibration；不在同一结果上直接搜索更多绝对阈值。
+
 ## 边界与下一实验
 
 当前正结果只支持：
@@ -587,7 +663,8 @@ false-active、clearance、false-alert count 三项上都是 9/9 非劣，代价
 `teacher feasible + RGB learnable + multi-seed directional spatial-structure increment
 + height-spatiotemporal selective decision-kernel signal
 + directional selective-event transfer signal
-+ outcome-unseen TartanGround selective-event replication`
++ outcome-unseen TartanGround selective-event replication
++ real SANPO positive-event recall signal`
 
 尚未支持：
 
@@ -596,17 +673,18 @@ false-active、clearance、false-alert count 三项上都是 9/9 非劣，代价
 - known 正类标量重加权能同时改善召回与 false-active；
 - selective v2 能在每个 outcome-unseen environment 同时守住 false-active；
 - head false-alert fragmentation 在 selective v2 下形成稳定 guardrail；
-- synthetic proxy 能迁移到真实视障步行；
-- 事件级 critical-hazard recall、false alerts 或 warning lead time 改善；
+- 固定 v2 在真实事件上能守住 specificity 与 clearance；
+- directional 在真实事件上相对 pooled 或当前 YOLO 形成 Pareto 增量；
+- 真实事件 warning lead time 相对当前 YOLO 改善；
 - HFTF 超过当前主线或进入 App。
 
-下一步保留 directional + v2 为合成 Development reference，不再在这 21 个
-TartanGround environments 上搜索 support count、静态 threshold、known loss
-权重或 head debounce。优先接一个具有真实时间连续性与人类事件标注的 parent-event
-cohort，直接比较 critical-hazard recall、false-alert events、response 与
-clearance；如果只能先扩合成数据，则专门增加 environment-balanced negative/head
-exposure，并把 false-alert fragmentation 设为预先固定的 guardrail。history 在
-出现显式对齐机制前停止。
+下一步保留 directional + v2 为合成 Development reference，也保留真实 recall
+正信号，不再在 21 个 TartanGround environments 或 SANPO outcomes 上盲搜绝对阈值。
+先对 9 个 directional checkpoints 做 output-side direction-profile 诊断，检验
+central-minus-lateral、前方侵入与 parallel-curb 是否存在跨 checkpoint 同向分离。
+若存在，再用 30 sessions 做严格 session-held-out weak event calibration；若不存在，
+则当前 synthetic-to-real 表示缺少 actionability relation，应转向真实负例/关系监督，
+而不是继续修改 decision kernel。history 在出现显式对齐机制前停止。
 
 ## 复现
 
@@ -671,6 +749,12 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   --model directional artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --reference pooled --role transfer `
   --decision-policy height_spatiotemporal_selective_v2
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/evaluate_stage_c_d6_sanpo_real_event_transfer.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --name directional-seed17-fold0 `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-event-transfer-v0/directional/seed-17/fold-0.json
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored

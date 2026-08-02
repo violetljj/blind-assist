@@ -46,7 +46,16 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 ## 独立未来潜力支线：HFTF
 
 HFTF 是独立于当前 RISKSEG/YOLO 主线的未来潜力支线；只有同口径证据持续超过主线，
-才另立主线切换合同。当前进行到
+才另立主线切换合同。最新 D5/D6 Development 已推进到
+[outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：
+directional + fixed v2 在 6 个未参与开发的合成 environments 上 event recall
+9/9 提高、false-active 7/9 降低；随后在已消费的 30-session SANPO 人工审阅事件集上，
+9 个 directional checkpoints 全部命中 16/16 正事件，但误报 13–14/14 负事件、
+只清除 0–2/16。真实 recall signal 已成立，specificity/clearance 与相对当前 YOLO 的
+Pareto 增量尚未成立，因此研究主线和默认 App 不变。下一步只做相对方向 profile
+诊断，不继续盲调绝对阈值。
+
+此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
 之后的
 [timeline amendment](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_TIMELINE_AMENDMENT_2026-08-01.md)
