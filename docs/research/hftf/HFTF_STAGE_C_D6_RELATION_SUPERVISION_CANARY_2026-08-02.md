@@ -29,6 +29,19 @@
 
 `PAIRED_RGB_TAIL_FINETUNE_RELATION_TRANSFER_NOT_SUPPORTED`
 
+随后新增的配对预训练把“任务本身是否可学习”和“是否跨真实域迁移”拆开：
+
+- TartanGround 6-parent 训练到 2 个 outcome-unseen parent 的 frame BA/AUROC
+  为 `0.7098/0.7124`，episode BA/AUROC 均为 `1.0`：
+  `TARTANGROUND_PAIRED_RELATION_OUTCOME_UNSEEN_SUPPORTED_IN_DEVELOPMENT`；
+- 同一状态直接迁移到 public real 的 frame alert recall 为 `0.025`、AUROC
+  `0.4053`，没有建立 synthetic-to-real transfer；
+- SANPO-only 到 public 的直接迁移出现可复现的 Edmonton 局部正信号，但 3-source
+  macro frame/episode AUROC 只有 `0.4604/0.4167`：
+  `SANPO_TO_PUBLIC_PAIRED_RELATION_SIGNAL_SOURCE_LOCAL_ONLY`；
+- TartanGround → SANPO 的课程没有改善 public 迁移：
+  `TARTANGROUND_SANPO_CURRICULUM_PUBLIC_TRANSFER_NOT_SUPPORTED`。
+
 这不撤销空间特征相对 output-field 的增量，只关闭以下更窄假设：
 
 > 保持现有 HFTF backbone 不变，仅通过扩大弱/人工关系监督和训练线性空间头，
@@ -200,9 +213,74 @@ repeat A/B 的 folds、loss、逐 episode score 和 metrics 全部完全一致�
 Edmonton 的 7 个 held-out intervention segments 全部未命中。当前配对 RGB
 tail fine-tuning recipe 仍然是可拟合、不可迁移。
 
+## Canary E：配对任务可学习性与 synthetic-to-real
+
+为了避免把 public 迁移失败误写成“配对目标本身不可学习”，从已有 TartanGround
+样本按当前 body 中央两个方向构造同 parent 的 clear/risk 配对：
+
+- train：6 个 parents、193 帧；
+- transfer：2 个 outcome-unseen parents、66 帧；
+- ambiguous truth 排除；
+- train/transfer parent 完全互斥；
+- 与 Canary D 相同的 HFTF tail、relation head、10 epochs 和学习率。
+
+结果为：
+
+| outcome-unseen synthetic 指标 | 结果 |
+|---|---:|
+| frame alert recall | 0.6863 |
+| frame no-alert recall | 0.7333 |
+| frame balanced accuracy | 0.7098 |
+| frame AUROC | 0.7124 |
+| episode alert/no-alert recall | 1.0000 / 1.0000 |
+| episode balanced accuracy / AUROC | 1.0000 / 1.0000 |
+
+因此配对 relation 任务在合成环境中可学习并能跨 parent 迁移，正结果保留在
+synthetic representation 层。把该确定性状态直接用于 public positive-source
+held-out fine-tune 后，frame alert recall 只有 `0.025`、frame AUROC `0.4053`，
+episode alert recall 仍为 `0`。这建立的是 synthetic-to-real domain gap，不是否定
+synthetic paired learnability。
+
+## Canary F：SANPO-only real-to-real 直接迁移
+
+随后不使用任何 public frame 更新参数，只用 consumed SANPO support：
+
+- train：46 episodes / 30 sources / 711 frames；
+- transfer：Bangkok、Ulm、Edmonton 的 18 segments / 272 frames；
+- public no-alert truth 只用于构造同来源 reference；
+- public positive 和 no-alert frame 的训练使用数均为 0；
+- 固定同一模型、10 epochs、threshold `0.5`，无参数搜索。
+
+两次完整运行除时间戳外逐字段完全一致。pooled 结果为：
+
+| SANPO → public 指标 | 结果 |
+|---|---:|
+| frame alert/no-alert recall | 0.2750 / 0.8621 |
+| frame balanced accuracy / AUROC | 0.5685 / 0.5811 |
+| episode alert/no-alert recall | 0.2857 / 0.9091 |
+| episode balanced accuracy / AUROC | 0.5974 / 0.5844 |
+
+但 pooled 指标混入 source score scale。逐来源结果为：
+
+| source | frame BA | frame AUROC | episode BA | episode AUROC |
+|---|---:|---:|---:|---:|
+| Bangkok | 0.5625 | 0.5527 | 0.5000 | 0.5000 |
+| Ulm | 0.3967 | 0.0326 | 0.5000 | 0.0000 |
+| Edmonton | 0.6648 | 0.7958 | 0.6500 | 0.7500 |
+| source macro | 0.5414 | 0.4604 | 0.5500 | 0.4167 |
+
+因此 Edmonton 上存在真实、可复现的跨域 relation signal，不能被后续系统层失败
+抹去；但它没有跨 3 个来源保持方向一致，不能称为 source-general transfer。
+Ulm 的排序近乎完全反向，也说明仅做 source threshold/centering 不能解决问题。
+
+最后固定测试 TartanGround paired state → SANPO fine-tune → public direct transfer。
+该课程的 pooled frame/episode AUROC 为 `0.4920/0.4156`，source-macro AUROC 为
+`0.4790/0.3278`；Edmonton frame AUROC 也从 `0.7958` 降到 `0.5019`。因此课程没有
+建立增量，不能通过继续堆叠相同 encode-then-difference 预训练来救援。
+
 ## 失败分类
 
-本轮不是工程 invalid：
+上述有效结果不是工程 invalid：
 
 - 绑定的 11 个源视频全部存在并成功解码；
 - 42-segment 库存和标签计数与预期一致；
@@ -213,8 +291,14 @@ tail fine-tuning recipe 仍然是可拟合、不可迁移。
 phone-egocentric relation evaluation，只是 source qualification negative，
 不计为算法失败，也不烧掉未来同来源的其他用途。
 
-因此本轮负结果属于**有效科学负结果**：现有 fixed-backbone representation
-缺少跨来源 actionability relation 可迁移性。
+因此结论按实际层级分开：
+
+- synthetic paired relation outcome-unseen learnability：有效正结果；
+- Edmonton real-to-real relation ranking：有效、来源局部正信号；
+- 三来源宏平均 direct transfer、synthetic-to-real 与 synthetic→SANPO curriculum：
+  有效科学负结果；
+- 当前 `encode each frame → subtract embedding → relation head` 表示缺少跨真实来源
+  方向一致性。
 
 ## 下一步
 
@@ -226,13 +310,16 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 - fixed feature 上的 source centering 或其他线性 delta rescue。
 - fixed HFTF grid 上的 nonlinear relation head 或增加 consumed SANPO support。
 - 当前 `encoder[9:] + pointwise` paired-RGB tail fine-tuning recipe。
+- TartanGround paired state 的直接 synthetic-to-real 使用。
+- TartanGround → SANPO 的同构 encode-then-difference 课程。
 
 下一候选必须改变至少一个科学变量，而不是增加治理：
 
 1. 新增真正 phone-egocentric、含 pre/intervention/passed 的独立正来源；
-2. 使用同一来源内 `clear → intervention → clear` 的成对目标，并把
-   source-heldout actionability recall 作为训练前置筛选；
-3. 新 representation 必须改变输入或预训练任务，不能只是扩大现有 HFTF tail；
+2. 下一 representation 必须在 backbone 内联合比较 frame pair 或直接预测
+   `身体包络 × 空间占用 × 短时未来风险`，不能继续分别编码后相减；
+3. 训练目标优先回到 HFTF 的 cell/lane risk field，而不是把 actionability
+   压成单一 source-relative 二分类；
 4. 只有 source-heldout relation 先超过 chance，才进入新的 outcome-unseen
    real-event 评价。
 
@@ -242,7 +329,8 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 > `障碍位置 × 可通行路径 × 当前干预需要` 的结构。
 
 如果没有新增 backbone-level representation，D6 fixed-feature 路线保持关闭。
-如果没有新增正来源或预训练任务，paired-RGB tail recipe 也保持关闭。
+当前 encode-then-difference paired-RGB recipe 保持关闭；synthetic positive 与
+Edmonton 局部正信号作为下一代 joint-pair representation 的依据保留。
 
 ## 复现
 
@@ -275,4 +363,29 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   scripts/research/hftf/run_stage_c_d6_paired_rgb_relation_backbone_canary.py `
   --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --output artifacts.local/evidence/hftf/stage-c-d6-paired-rgb-relation-backbone-positive-source-canary-v2-repeat-a/seed-17/result.json
+```
+
+TartanGround 配对预训练：
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_tartanground_paired_relation_pretraining_canary.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --output-model artifacts.local/evidence/hftf/stage-c-d6-tartanground-paired-relation-pretraining-transfer-canary-v1/paired-relation-state.pt `
+  --output artifacts.local/evidence/hftf/stage-c-d6-tartanground-paired-relation-pretraining-transfer-canary-v1/result.json
+```
+
+SANPO-only 到 public 直接迁移：
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_sanpo_paired_pretraining_public_transfer_canary.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-paired-pretraining-public-transfer-canary-v2-source-audit/result.json
+```
+
+TartanGround → SANPO 课程只在上一个命令增加：
+
+```powershell
+  --paired-pretrained-state artifacts.local/evidence/hftf/stage-c-d6-tartanground-paired-relation-pretraining-transfer-canary-v1/paired-relation-state.pt
 ```

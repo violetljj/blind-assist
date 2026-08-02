@@ -90,7 +90,17 @@ frame BA 只有 `0.4394`。进一步解冻 810,472 个 HFTF tail parameters 做 
 AUROC 为 `0.5034/0.3377`。该负结果不撤销
 spatial-over-output-field 正结果，只关闭“增加关系监督即可救固定 backbone”的窄
 假设以及当前 paired-RGB tail recipe；下一阶段必须先新增独立正来源或新的预训练
-任务，再通过 source-heldout actionability recall。
+任务，再通过 source-heldout actionability recall。后续配对预训练已进一步拆开
+任务可学习性与真实域迁移：TartanGround 的 6-parent→2 outcome-unseen parent
+取得 frame BA/AUROC `0.7098/0.7124`、episode BA/AUROC `1.0/1.0`，证明 synthetic
+paired relation 可学习；但直接 synthetic→public 不支持。SANPO-only、public
+零训练帧的直接迁移在 Edmonton 保留 frame/episode AUROC `0.7958/0.75` 的局部正
+信号，Bangkok 近 chance、Ulm 反向，3-source macro AUROC 只有
+`0.4604/0.4167`。TartanGround→SANPO 课程又降到 pooled frame AUROC `0.4920`，
+没有增量。正结果分别保留在 synthetic learnability 与 Edmonton source-local
+ranking 层；三来源 source-general transfer 未建立。下一 representation 必须在
+backbone 内联合比较 frame pair 或直接学习人体包络未来风险场，不再继续
+encode-then-difference 的 tail/head/threshold 搜索。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

@@ -47,7 +47,7 @@ from train_stage_c_d5_tartanground_development_student import (
 
 SCHEMA = (
     "blindassist_hftf_stage_c_d6_paired_rgb_"
-    "relation_backbone_positive_source_canary_v2"
+    "relation_backbone_positive_source_canary_v3"
 )
 SEED = 17
 EPOCHS = 10
@@ -328,6 +328,7 @@ def train_positive_source_fold(
     public_rows: np.ndarray,
     held_out_source: str,
     device: torch.device,
+    initial_model: PairedRgbRelationModel | None = None,
 ) -> tuple[np.ndarray, dict[str, Any]]:
     train = np.flatnonzero(sources != held_out_source)
     test = np.flatnonzero(
@@ -342,8 +343,10 @@ def train_positive_source_fold(
     np.random.seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
-    model = PairedRgbRelationModel(
-        copy.deepcopy(base_backbone)
+    model = (
+        copy.deepcopy(initial_model)
+        if initial_model is not None
+        else PairedRgbRelationModel(copy.deepcopy(base_backbone))
     ).to(device)
     backbone_parameters = [
         parameter
@@ -458,6 +461,10 @@ def main() -> int:
         default=DEFAULT_PRETRAINED,
     )
     parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument(
+        "--paired-pretrained-state",
+        type=Path,
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--decode-batch-size", type=int, default=64)
     args = parser.parse_args()
@@ -533,6 +540,33 @@ def main() -> int:
         args.pretrained,
         args.checkpoint,
     )
+    initial_model = None
+    pretrained_state = None
+    if args.paired_pretrained_state is not None:
+        pretrained_state = torch.load(
+            args.paired_pretrained_state,
+            map_location="cpu",
+            weights_only=False,
+        )
+        if pretrained_state.get("schema") != (
+            "blindassist_hftf_stage_c_d6_tartanground_"
+            "paired_relation_pretrained_state_v1"
+        ):
+            raise ValueError(
+                "Unexpected paired pretrained state schema"
+            )
+        if pretrained_state.get(
+            "base_checkpoint_sha256"
+        ) != sha256(args.checkpoint):
+            raise ValueError(
+                "Paired pretrained state checkpoint mismatch"
+            )
+        initial_model = PairedRgbRelationModel(
+            copy.deepcopy(base_backbone)
+        )
+        initial_model.load_state_dict(
+            pretrained_state["model_state_dict"]
+        )
     device = torch.device(
         "cuda" if torch.cuda.is_available() else "cpu"
     )
@@ -556,6 +590,7 @@ def main() -> int:
             public_rows,
             held_out_source,
             device,
+            initial_model,
         )
         probabilities[test] = fold_probabilities
         folds.append(fold)
@@ -599,6 +634,21 @@ def main() -> int:
                 "architecture",
                 "pooled",
             ),
+            "paired_pretrained_state_path": (
+                str(args.paired_pretrained_state.resolve())
+                if args.paired_pretrained_state is not None
+                else None
+            ),
+            "paired_pretrained_state_sha256": (
+                sha256(args.paired_pretrained_state)
+                if args.paired_pretrained_state is not None
+                else None
+            ),
+            "paired_pretraining_train_samples_sha256": (
+                pretrained_state.get("train_samples_sha256")
+                if pretrained_state is not None
+                else None
+            ),
         },
         "inventory": {
             "public_episode_count": len(public_episodes),
@@ -639,6 +689,9 @@ def main() -> int:
             "head_learning_rate": HEAD_LEARNING_RATE,
             "weight_decay": WEIGHT_DECAY,
             "hyperparameter_search": False,
+            "tartanground_paired_pretraining_used": (
+                initial_model is not None
+            ),
             "deterministic_algorithms": True,
             "cudnn_benchmark": False,
             "tf32": False,

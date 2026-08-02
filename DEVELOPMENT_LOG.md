@@ -4798,6 +4798,21 @@
   CUDA adaptive-pool 两次不一致被归类为 engineering invalid 并允许修复重跑；
   deterministic bilinear 版本 repeat A/B 逐分数完全一致。有效结果为 frame
   alert recall `0`、AUROC `0.5034`、segment alert recall `0`、AUROC `0.3377`。
+- 另用 TartanGround current-body 中央 clear/risk 配对训练 6 个 parents，并直接
+  迁移到 2 个 outcome-unseen parents：frame BA/AUROC `0.7098/0.7124`，
+  episode BA/AUROC 均为 `1.0`。因此配对任务的 synthetic learnability 是正结果；
+  同一状态直接 synthetic→public 的 frame alert recall/AUROC 只有
+  `0.025/0.4053`，只否定跨真实域迁移。
+- SANPO-only 46 episodes / 30 sources / 711 frames 训练到 Bangkok/Ulm/Edmonton
+  的 18 segments / 272 frames，public 参数更新帧数为 0。两次运行除时间戳外逐字段
+  一致；pooled frame/episode AUROC 为 `0.5811/0.5844`。逐来源 Edmonton 为
+  `0.7958/0.75`、Bangkok `0.5527/0.50`、Ulm `0.0326/0`，source-macro 为
+  `0.4604/0.4167`。保留 Edmonton source-local 正信号，不升级为 source-general。
+- 固定的 TartanGround→SANPO→public 课程把 pooled frame AUROC 降到 `0.4920`，
+  source-macro episode AUROC 降到 `0.3278`，无增量。下一候选需在 backbone 内
+  联合比较 frame pair，或直接学习人体包络短时未来风险场；不再继续
+  encode-then-difference 的预训练、tail/head 或 threshold 搜索。
 - 保留此前 spatial-over-output-field 的正结果；只关闭“增加关系监督即可救固定
   backbone”的窄假设，也关闭当前 paired-RGB tail fine-tune recipe。下一步必须
-  新增独立正来源或新的预训练任务，并先通过 source-heldout actionability recall。
+  改变 pair interaction 或风险场表示，并先通过 source-heldout actionability
+  recall。
