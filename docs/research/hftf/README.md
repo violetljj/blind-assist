@@ -150,7 +150,19 @@ D43_JRDB_TRACK_IMU_METRIC_RESIDUAL_STUDENT_NOT_EVALUABLE /
 STAGE_C_D43_1_JRDB_TRACK_ONLY_METRIC_RESIDUAL_STUDENT_FROZEN /
 D43_1_JRDB_TRACK_ONLY_METRIC_RESIDUAL_STUDENT_NOT_SUPPORTED /
 D43_1_FIRST_ORDER_2D_TRACK_METRIC_MAPPING_STOP /
+STAGE_C_D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_FROZEN /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D44：直接检验 causal metric-depth track
+
+D44 已在读取新 outcome 前冻结。它不再学习 2D→metric 映射，而把 packet 的
+same-identity `center_base_link_m` history 当作 metric-depth-track oracle，对连续
+7 帧 relative x/y/z 做固定 OLS，直接预测 `+15 frames`。baseline 是 current
+relative center。
+
+该实验问的是“端侧若已有 causal metric depth，简单 relative track 是否足够”，
+而不是当前 RGB student 是否有效。成功只允许进入 metric-depth source shadow
+canary，不进入 alert 或主线。
 
 ## 2026-08-03 D43.1：十个 2D track features 不能跨 sequence 恢复 metric residual
 
