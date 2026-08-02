@@ -5283,3 +5283,27 @@
   engineering failure，均发生在设备 measurement 前，不烧毁 corpus。当前
   `adb devices -l` 为空且本机无 AVD，终态保持 `NOT_EVALUATED` /
   `READY_FOR_DEVICE_EXECUTION`，不解释为科学负结果。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D36
+  THOR-MAGNI production track veto event replay。复用 D12/D31 的 19 个
+  outcome-open Development sessions、530 个 proximity-eligible anchors 与冻结
+  YOLO11n source；3,710 个 unique source frames 产生 14,364 个 person
+  detections。D31 anchor raw-count mismatch、selected-mask mismatch 与最大
+  selected-box error 为 `0 / 0 / 0.0`。paired production kernel 的 baseline
+  使用 `OFF`，candidate 只注入 production
+  `CausalTrackTristateGeometryProducer` evidence；raw/stable risk mismatch
+  为 0。baseline/candidate positive event hits 均为 `79/107`，negative false
+  alerts 均为 `251/373`，candidate-only windows 与 positive losses 均为 0。
+  但完整 cohort 只有 2 个 admitted contradiction frames、来自 2 个 sessions，
+  低于冻结的 `>=10 anchors / >=5 sessions` opportunity gate；终态
+  `D36_THOR_MAGNI_PRODUCTION_TRACK_VETO_EVENT_NOT_EVALUABLE`，具体瓶颈为
+  `SELECTED_TARGET_STRICT_CONTRADICT_COVERAGE_INADEQUATE_FOR_EVENT_VETO`，不解释
+  为算法负结果。错误 Python 环境、顺序 decode 过慢与首版 seek batching parity
+  漂移均在 truth/outcome join 前停止并修复，不烧毁 cohort。detections、
+  producer receipt、kernel replay、report SHA-256 分别为
+  `5083db4c86ff20c01d12a47aa9b419d3cd1727b8f8ed1383020b33601ad6f731`、
+  `26f2991f4f836c2611224bc9ea1c9066d00b6bf03b600155736fafcbf8ab5ade`、
+  `9401307d5b4a5bce766a94b54f0890031d733cf44144b70d2aca41748a25f25d`、
+  `a3c7861a4b2a1297c6deae1dc9e3464a30043037f003eb533160bec4115ab5d3`。
+  下一步保持同一输入与 event gates，只替换为 production scene-scale producer，
+  不在同一 outcome 上调 track threshold/history/monotonicity，也不改变主线或
+  默认 App。

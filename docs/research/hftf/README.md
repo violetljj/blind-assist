@@ -122,7 +122,30 @@ D31_THOR_MAGNI_FULL_RESOLUTION_MEASUREMENT_RELATION_NOT_SUPPORTED /
 D32_JRDB_CAUSAL_TRACK_FUTURE_RANGE_SUPPORTED /
 D33_JRDB_DETECTOR_TRACK_FUTURE_RANGE_SUPPORTED /
 D34_KOTLIN_SHADOW_STATE_PARITY_RUNTIME_SUPPORTED /
+D35_ANDROID_DEVICE_SHADOW_CANARY_READY_FOR_DEVICE_EXECUTION /
+D35_NOT_EVALUATED_NO_READY_DEVICE /
+D36_THOR_MAGNI_PRODUCTION_TRACK_VETO_EVENT_NOT_EVALUABLE /
+D36_SELECTED_TARGET_STRICT_CONTRADICT_COVERAGE_INADEQUATE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D36：production track veto 的事件证据机会不足
+
+在 19 个 THOR-MAGNI sessions、530 个 proximity-eligible anchors 上，baseline
+直接运行 production `AssistDecisionKernel`，candidate 只注入 production
+`CausalTrackTristateGeometryProducer` 的 contradict evidence。3,710 个独立
+source frames 产生 14,364 个 person detections；D31 anchor raw count、
+selected mask 与 selected box parity 分别为 `0 / 0 / 0.0`。
+
+baseline 与 candidate 的 positive event hits 均为 `79/107`，negative alerts
+均为 `251/373`，candidate-only windows 为 0。关键是全 cohort 只有 2 个 admitted
+contradict frames、来自 2 个 sessions，未达到冻结的 `>=10 anchors / >=5 sessions`
+opportunity gate。终态：
+
+`D36_THOR_MAGNI_PRODUCTION_TRACK_VETO_EVENT_NOT_EVALUABLE`
+
+这不是 track 算法负结果；它定位的是严格 selected-target contradiction 的 event
+coverage 不足。下一步不在同一 outcome 上调 track 参数，而是复用同一 detector
+输入与 event gates，只替换为 production scene-scale producer。
 
 ## 2026-08-03 D34：生产 Kotlin shadow state 与 Python 零漂移
 
