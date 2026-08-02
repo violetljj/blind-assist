@@ -5190,3 +5190,16 @@
   只做 hash-bound 原视频 full-resolution current measurement replication，完全
   复用 D30 assignment/gates。report SHA-256
   `245e3625f8ea80cecdb629be9c6cd5498433ac3ae6fa58875488c95f80604c95`。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D31
+  THOR-MAGNI full-resolution current measurement replication。19/19 原视频 hash
+  校验、530 anchors 解码完整；相对 D30，person detection coverage
+  `74.15%→87.36%`、共同 anchors `289→322`、accepted fraction
+  `61.88%→67.74%`、nearest coverage `46.51%→58.43%`，source-macro
+  bearing Pearson `0.7089→0.7847`、MAE `14.12°→11.23°`。但 source-macro
+  distance Spearman `0.2867→0.2485`，pooled `0.4246→0.3410`；overall
+  6/8，终态
+  `D31_THOR_MAGNI_FULL_RESOLUTION_MEASUREMENT_RELATION_NOT_SUPPORTED`。
+  保留跨分辨率 person-bearing 正结果；停止 THOR box-height distance fitting，
+  下一步转入原生 2D/3D identity-bound person trajectories。boxes/report SHA-256：
+  `ecc30d0106372245c26cae6e5bece1b051036a2037ddb8e5908a4d75ff27701f` /
+  `bb8f68214cb617729ca289fc4762ab700b4e452e04fa386403e442dc4c0bb860`。
