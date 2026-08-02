@@ -129,8 +129,12 @@ field 清除为 `0/1,308` model-windows。30-session 人审 cohort 的 candidate
 event-phase p95 AUROC mean 为 `.4613/.5714`，仅 2/9 单元增量为正。当前终态为
 `D6_CONSERVATIVE_REAL_HARD_NEGATIVE_EXECUTION_NOT_SUPPORTED /
 D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED`；synthetic ranking 正结果
-保留。下一步只做 source-session-held-out 的 baseline-only vs candidate-aware
-低容量 calibration ablation，不再调当前 threshold。
+保留。后续 source-session-held-out baseline-only vs candidate-aware Logistic
+calibration 的 AUROC delta mean 虽为 `+0.01704`，但 median `-0.00833`、仅
+`3/9` 为正，AP 与 paired direction 也仅 `3/9` 为正，终态为
+`D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED`。不再校准当前
+candidate score；下一步只允许一个表示级 canary，把 real-phase supervision 放回
+early-pair RGB interaction/structured field。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

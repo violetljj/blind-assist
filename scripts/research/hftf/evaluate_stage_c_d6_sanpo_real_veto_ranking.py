@@ -146,9 +146,10 @@ def phase_unit_rows(
     windows: list[dict[str, Any]],
     probability: np.ndarray,
     comparator: np.ndarray,
+    known_probability: np.ndarray,
     eligible: np.ndarray,
 ) -> list[dict[str, Any]]:
-    groups: dict[tuple[str, str], dict[str, list[float]]] = {}
+    groups: dict[tuple[str, str], dict[str, Any]] = {}
     for index, window in enumerate(windows):
         if window["false_alert_target"] is None:
             continue
@@ -158,13 +159,41 @@ def phase_unit_rows(
         key = (window["parent_event_id"], window["phase"])
         group = groups.setdefault(
             key,
-            {"candidate": [], "comparator": []},
+            {
+                "candidate": [],
+                "comparator": [],
+                "known": [],
+                "horizon_counts": np.zeros(3, dtype=np.int64),
+                "height_counts": np.zeros(3, dtype=np.int64),
+                "direction_counts": np.zeros(6, dtype=np.int64),
+                "distance_counts": np.zeros(6, dtype=np.int64),
+            },
         )
         group["candidate"].extend(
             probability[index][mask].astype(float).tolist()
         )
         group["comparator"].extend(
             comparator[index][mask].astype(float).tolist()
+        )
+        group["known"].extend(
+            known_probability[index][mask].astype(float).tolist()
+        )
+        coordinates = np.argwhere(mask)
+        group["horizon_counts"] += np.bincount(
+            coordinates[:, 0],
+            minlength=3,
+        )
+        group["height_counts"] += np.bincount(
+            coordinates[:, 1],
+            minlength=3,
+        )
+        group["direction_counts"] += np.bincount(
+            coordinates[:, 2],
+            minlength=6,
+        )
+        group["distance_counts"] += np.bincount(
+            coordinates[:, 3],
+            minlength=6,
         )
     event_lookup = {
         (window["parent_event_id"], window["phase"]): window
@@ -173,6 +202,8 @@ def phase_unit_rows(
     rows = []
     for key, values in sorted(groups.items()):
         window = event_lookup[key]
+        count = len(values["candidate"])
+        distance_weight = np.arange(6, dtype=np.float64)
         rows.append(
             {
                 "parent_event_id": key[0],
@@ -182,15 +213,39 @@ def phase_unit_rows(
                 "false_alert_target": window[
                     "false_alert_target"
                 ],
-                "eligible_cell_count": len(values["candidate"]),
+                "eligible_cell_count": count,
+                "log1p_eligible_cell_count": float(np.log1p(count)),
+                "candidate_mean": float(
+                    np.mean(values["candidate"])
+                ),
                 "candidate_p95": float(
                     np.quantile(values["candidate"], 0.95)
                 ),
                 "candidate_max": max(values["candidate"]),
+                "comparator_mean": float(
+                    np.mean(values["comparator"])
+                ),
                 "comparator_p95": float(
                     np.quantile(values["comparator"], 0.95)
                 ),
                 "comparator_max": max(values["comparator"]),
+                "known_mean": float(np.mean(values["known"])),
+                "known_p95": float(
+                    np.quantile(values["known"], 0.95)
+                ),
+                "near_fraction": float(
+                    values["horizon_counts"][1] / count
+                ),
+                "body_fraction": float(
+                    values["height_counts"][1] / count
+                ),
+                "direction_2_fraction": float(
+                    values["direction_counts"][2] / count
+                ),
+                "distance_mean_normalized": float(
+                    np.dot(values["distance_counts"], distance_weight)
+                    / (count * 5.0)
+                ),
             }
         )
     return rows
@@ -359,6 +414,7 @@ def main() -> int:
                 dtype=np.float32,
             )
             comparator = np.zeros_like(probability)
+            known_probability = np.zeros_like(probability)
             eligible = np.zeros_like(probability, dtype=bool)
             with torch.no_grad():
                 for frames, indices in loader:
@@ -384,6 +440,9 @@ def main() -> int:
                     )
                     comparator[index_array] = (
                         (1.0 - risk).cpu().numpy()
+                    )
+                    known_probability[index_array] = (
+                        known.cpu().numpy()
                     )
                     eligible[index_array] = mask.cpu().numpy()
 
@@ -413,6 +472,7 @@ def main() -> int:
                 windows,
                 probability,
                 comparator,
+                known_probability,
                 eligible,
             )
             event_p95 = phase_ranking(

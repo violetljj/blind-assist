@@ -1,5 +1,18 @@
 # Development Log
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6
+  source-session-held-out real-domain calibration ablation。30 个 SANPO source
+  sessions 按正/负 strata 内稳定分为 5 folds（`7/6/6/6/5`），同一正事件的
+  alertable/passed phases 不跨 fold。固定 `StandardScaler + L2 LogisticRegression`
+  比较 baseline risk/known+空间统计与再增加 candidate mean/p95/max；没有 feature、
+  C、model、fold 或 threshold search。跨 3 seeds × 3 folds，candidate-aware 的 OOF
+  event-phase AUROC delta mean/median 为 `+0.01704/-0.00833`，AP delta 为
+  `+0.00348/-0.00354`，positive paired-direction increment 为
+  `+0.01197/-0.00302`，三项都只有 `3/9` 为正。终态为
+  `D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED`；停止当前
+  candidate-score output calibration，下一实验只改变 representation，把 real-phase
+  supervision 放回 early-pair RGB interaction/structured field。工程异常仍可按原
+  配置修复重跑，不视为科学负结果。
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6
   SANPO real veto transfer。通过 candidate index、review bundle 和逐帧 SHA join，
   将四段 RGB A/B/C 3/3 model-blind `REJECT` 区间物化为 150 个唯一帧、146 个完整
   五帧负例窗口；保留 clip-level 科学标签，不把缺失 authoritative timestamp/phase

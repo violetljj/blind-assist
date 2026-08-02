@@ -3,7 +3,8 @@
 状态：`development / candidate-side-lane /
 R3.1-reference-opportunity-not-evaluable /
 D3-Q0-screening-effect-contract-frozen /
-D6-real-veto-transfer-not-supported`
+D6-real-veto-transfer-not-supported /
+D6-real-calibration-increment-not-supported`
 
 ## 研究问题与版本
 
@@ -39,6 +40,11 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
 E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_real_veto_ranking.py `
   --output artifacts.local/evidence/hftf/<real-ranking-run>/report.json
+
+E:\codex-tools\projects\blindassist\toolchain\venvs\learned-component-validator-py311\Scripts\python.exe `
+  scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_real_veto_calibration.py `
+  --ranking-report artifacts.local/evidence/hftf/<real-ranking-run>/report.json `
+  --output artifacts.local/evidence/hftf/<real-calibration-run>/report.json
 ```
 
 物化器逐帧验证 review-bundle SHA，重叠 observation 必须 byte-identical，且每个输出
@@ -46,7 +52,10 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
 actionable-negative，不产生 cell localization、positive-event safety 或 system-event
 truth。ranker 的 `--threshold-report` 只应用已存在的 zero-training-true-alert
 threshold，不搜索 threshold。30-event evaluator 固定比较 candidate 与
-`1 - baseline risk` 的 cell/event-phase ranking。
+`1 - baseline risk` 的 cell/event-phase ranking。calibrator 固定 5-fold
+source-session-held-out split、`StandardScaler + L2 LogisticRegression(C=1,
+liblinear, class_weight=balanced)`，只比较 baseline-only 与增加 candidate
+mean/p95/max 的 candidate-aware arm；不搜索 feature、C、model、fold 或 threshold。
 
 ## 稳定 Interface
 

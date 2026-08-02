@@ -4,11 +4,13 @@
 
 ## 结论
 
-本轮得到两个有效但窄的科学负结果：
+本轮及其预声明校准后继得到三个有效但窄的科学负结果：
 
 > `D6_CONSERVATIVE_REAL_HARD_NEGATIVE_EXECUTION_NOT_SUPPORTED`
 >
 > `D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED`
+>
+> `D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED`
 
 此前 confidence-anchored pair residual 在 TartanGround
 Development/outcome-unseen 上建立的 false-alert ranking signal 保留，不因本轮撤销。
@@ -18,7 +20,7 @@ Development/outcome-unseen 上建立的 false-alert ranking signal 保留，不�
 2. synthetic-trained veto score 能在 SANPO 真实人审正负事件上继续优于简单的
    `1 - baseline risk` 排序。
 
-两者都不支持。当前问题主要在 real-domain representation/transfer，不只是阈值过严。
+三者都不支持。当前问题主要在 real-domain representation/transfer，不只是阈值过严。
 
 ## 模式与问题
 
@@ -140,7 +142,43 @@ candidate 只有 56 个方向正确；candidate 的 passed-minus-alertable p95 m
 
 ```text
 artifacts.local/evidence/hftf/
-stage-c-d6-sanpo-real-veto-ranking-v0/report.json
+stage-c-d6-sanpo-real-veto-ranking-v1/report.json
+```
+
+## Source-session-held-out 真实域校准
+
+按预声明的唯一低成本 successor，直接在同一 consumed Development cohort 上运行
+5-fold source-session-held-out ablation。30 个 source sessions 按正/负 strata 内
+SHA-256 顺序轮转分配，fold session counts 为 `7/6/6/6/5`；同一正事件的
+alertable/passed phases 始终留在同一 fold。
+
+- arm B：frozen baseline risk/known 的 mean/p95/max、eligible-cell count 与固定空间
+  统计；
+- arm C：B 再增加 candidate mean/p95/max；
+- 两臂均固定 `StandardScaler + L2 LogisticRegression(C=1, liblinear,
+  class_weight=balanced)`；
+- 没有 feature、C、model、fold 或 threshold search。
+
+跨 3 seeds × 3 folds 的 OOF event-phase 结果：
+
+| 指标 | baseline-only mean | candidate-aware mean | C - B mean | C - B median | 正/负 |
+|---|---:|---:|---:|---:|---:|
+| AUROC | 0.504550 | 0.521592 | +0.017042 | -0.008333 | 3 / 6 |
+| average precision | 0.694038 | 0.697522 | +0.003484 | -0.003541 | 3 / 6 |
+| passed-minus-alertable mean increment | — | — | +0.011967 | -0.003022 | 3 / 6 |
+
+AUROC 的正 mean 由少数单元驱动，最大单元为 `+0.127083`；6/9 单元为负，median 也为
+负。candidate-aware arm 因而没有稳定增量。这是有效的 representation-level 科学
+负结果，不是工程失效，也不能被 absolute AUROC 略高误写成稳定支持：
+
+> `D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED`
+
+输出与 SHA-256：
+
+```text
+artifacts.local/evidence/hftf/
+stage-c-d6-sanpo-real-veto-calibration-v0/report.json
+87681af73f56987e3ceb83d74d461591cfb9b0a51f7f41e6033dd960a017dc2a
 ```
 
 ## 保留与关闭
@@ -156,30 +194,29 @@ stage-c-d6-sanpo-real-veto-ranking-v0/report.json
 
 - 当前 zero-training-true-alert conservative threshold 的 real hard-negative utility；
 - 当前 synthetic-trained confidence-residual veto representation 的 SANPO real transfer；
+- 当前 candidate score 经固定低容量真实域校准后的稳定增量；
 - 在同一表示上继续搜索 threshold、top-k、vote count 或确认长度。
 
 未评价：
 
-- 新表示或 real-domain calibration 是否可用；
+- 新表示是否可用；
 - positive-event recall 下的任何新执行阈值；
 - source-general real transfer；
 - 主线、App、设备、生产或安全效用。
 
 ## 下一可证伪候选
 
-只允许一个低成本 successor：在相同 30-session consumed Development 上做
-source-session-held-out 的低容量 real-domain calibration ablation。
+停止 exact pair-residual output calibration。下一实验只改变一个科学变量：
+把 real-domain actionability supervision 放回 early-pair RGB interaction/structured
+field task，而不是再拟合当前 candidate score。
 
-- arm B：只用 frozen baseline risk/known 与固定坐标；
-- arm C：在 B 上增加当前 candidate score；
-- 模型固定为 Logistic Regression；
-- primary：held-out event-phase p95 AUROC 的 `C - B`；
-- secondary：positive passed-minus-alertable paired direction；
-- 不按结果搜索 threshold、feature family 或 fold。
-
-若 C 不能稳定优于 B，则当前 veto representation 本身没有可复用的真实增量，停止该
-exact pair-residual 路线，下一 representation 必须把 real-domain actionability
-interaction 放回 backbone/field task，而不是继续校准输出。
+先运行单一 `seed17/fold0` source-session-held-out canary；训练只读训练 sessions 的
+人审 phase labels，验证 sessions 完全隔离。baseline 为 frozen directional-single，
+candidate 只增加 zero-initialized early-pair residual。primary 是 held-out
+event-phase AUROC/AP 相对 baseline 的增量，secondary 是 positive
+passed-minus-alertable direction；不搜索结构、seed、fold、threshold 或 operating
+point。若该 canary 无增量，立即停止这条 real-phase-supervised early-pair 表示；
+若有增量，才扩展其余预定 seed/fold。工程异常允许原配置修复重跑，不消耗科学结论。
 
 ## 复现
 
@@ -202,5 +239,10 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
 
 E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_real_veto_ranking.py `
-  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-veto-ranking-v0/report.json
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-veto-ranking-v1/report.json
+
+E:\codex-tools\projects\blindassist\toolchain\venvs\learned-component-validator-py311\Scripts\python.exe `
+  scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_real_veto_calibration.py `
+  --ranking-report artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-veto-ranking-v1/report.json `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-veto-calibration-v0/report.json
 ```

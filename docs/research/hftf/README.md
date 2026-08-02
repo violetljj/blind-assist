@@ -68,6 +68,7 @@ D6_EARLY_PAIR_OUTCOME_UNSEEN_RANKING_AND_SPECIFICITY_SIGNAL_OBSERVED_DEVELOPMENT
 D6_EARLY_PAIR_STRUCTURED_FIELD_EVENT_UTILITY_INCREMENT_NOT_SUPPORTED /
 D6_CONSERVATIVE_REAL_HARD_NEGATIVE_EXECUTION_NOT_SUPPORTED /
 D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED /
+D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -419,10 +420,14 @@ pair veto representation 的真实迁移不成立：
 
 `D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED`
 
-synthetic ranking 正结果仍保留。下一唯一低成本 successor 是 source-session-held-out
-Logistic calibration ablation：baseline risk/known+fixed coordinates 对比再增加
-candidate score。若 candidate-aware arm 不稳定增量，则停止该 representation，
-不继续搜索 threshold/top-k/votes。
+synthetic ranking 正结果仍保留。随后完成 5-fold source-session-held-out Logistic
+calibration ablation：candidate-aware 相对 baseline-only 的 OOF event-phase AUROC
+delta mean 为 `+0.01704`，但 median `-0.00833`，仅 `3/9` 为正；AP 与正事件
+passed-minus-alertable direction 也都仅 `3/9` 为正。因此终态为
+`D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED`。停止当前
+candidate-score 的 threshold/output calibration；下一 canary 只改变 representation，
+把 real-phase actionability supervision 放回 early-pair RGB interaction/structured
+field task。
 
 ## 当前结论
 
