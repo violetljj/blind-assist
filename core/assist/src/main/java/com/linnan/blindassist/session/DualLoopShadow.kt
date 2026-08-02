@@ -15,7 +15,8 @@ import com.linnan.blindassist.vision.FrameStamp
 enum class DualLoopRuntimeMode {
     OFF,
     SHADOW_ABSTAIN_ONLY,
-    ACTIVE_CONTRADICT_ONLY
+    ACTIVE_CONTRADICT_ONLY,
+    ACTIVE_CONTRADICT_TTL
 }
 
 enum class DualLoopShadowDisposition {
@@ -98,7 +99,10 @@ data class DualLoopShadowObservation(
     val eventMutationAllowed: Boolean
         get() = false
     val feedbackMutationAllowed: Boolean
-        get() = mode == DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY &&
+        get() = mode in setOf(
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY,
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL
+        ) &&
             admitted &&
             correctionDecision == DualLoopCorrectionDecision.CONTRADICT_APPROACH
     val admitted: Boolean

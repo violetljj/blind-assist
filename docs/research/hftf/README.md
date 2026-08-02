@@ -129,7 +129,27 @@ D36_SELECTED_TARGET_STRICT_CONTRADICT_COVERAGE_INADEQUATE /
 D37_THOR_MAGNI_PRODUCTION_SCENE_SCALE_VETO_EVENT_NOT_SUPPORTED /
 D37_SCENE_SCALE_CONTRADICTION_EVENT_OPPORTUNITY_SUPPORTED /
 D37_FRAME_LOCAL_VETO_EVENT_UTILITY_NOT_SUPPORTED /
+D38_THOR_MAGNI_BOUNDED_TEMPORAL_VETO_EVENT_NOT_SUPPORTED /
+D38_BOUNDED_TEMPORAL_VETO_EVENT_EFFECT_OBSERVED_DEVELOPMENT_ONLY /
+D38_FIXED_250MS_PERSISTENCE_POSITIVE_NONINFERIORITY_FAILED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D38：250 ms persistence 改变了事件终态，但破坏正事件
+
+作为明确的 post-D37 adaptive Development 实验，D38 只新增独立
+`ACTIVE_CONTRADICT_TTL` mode：复用 production evidence TTL，将 admitted
+scene contradiction 的 feedback veto 延续 250 ms；未搜索 duration，也未改变
+D37 mode。231 anchors / 19 sessions 产生 492 次 latch-only suppressions。
+
+negative windows 从 `251` 降到 `217`（-34，`13.55%`），4/5 folds 改善，证明
+temporal persistence 能把 frame-level veto 转化为 event effect；但 positive
+anchors 从 `114` 降到 `98`，positive events 从 `79` 降到 `73`。终态：
+
+`D38_THOR_MAGNI_BOUNDED_TEMPORAL_VETO_EVENT_NOT_SUPPORTED`
+
+因此固定、无条件 250 ms persistence 被拒绝。下一科学变量若继续，必须是可解释的
+event/target continuity 与解除条件，而不是在同一 outcome 上搜索更多 hold
+duration；独立 event utility 仍需新鲜 outcome evidence。
 
 ## 2026-08-03 D37：scene-scale evidence 到达了，但逐帧 veto 没转化为事件效用
 

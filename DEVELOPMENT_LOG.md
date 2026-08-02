@@ -5332,3 +5332,26 @@
   `875d2b092cd110d9dae60bdf94490c8dd61a150e8a48604709d37730d23309bb`；
   重复 replay 一致，`core:assist` 全量测试与 D36+D37 evaluator 8 tests 通过。
   主线、默认 App、D35 真机终态均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D38
+  bounded temporal veto event replay。该实验明确标记为看到 D37 后的
+  `POST_D37_ADAPTIVE_OUTCOME_OPEN_DEVELOPMENT`；保持同一 19 sessions / 530
+  anchors、detector、scene producer、risk/event/planner 与 gates，只新增独立
+  `ACTIVE_CONTRADICT_TTL` mode，将 admitted contradiction 的 feedback-only veto
+  按 production evidence TTL 固定延续 250 ms，未搜索 duration，D37 原 mode
+  不变且重复 replay SHA 仍为
+  `390fa479ce1bedec904d6b22ff70fa97b32288e89a3cc26d1d1695e37856622e`。
+  D38 产生 492 次 latch-only suppressions，覆盖 `231 anchors / 19 sessions`，
+  全部 evaluability gates 通过；negative windows 从 `251/373` 降至
+  `217/373`，绝对减少 34、relative reduction `13.55%`，4/5 folds 改善，建立
+  `BOUNDED_TEMPORAL_VETO_CHANGES_EVENT_TERMINALS_DEVELOPMENT_ONLY`。但 positive
+  anchors 从 114 降至 98，positive events 从 79 降至 73，损失 16 anchors /
+  6 events，同时 relative negative reduction 未达冻结 20% gate；终态
+  `D38_THOR_MAGNI_BOUNDED_TEMPORAL_VETO_EVENT_NOT_SUPPORTED`，拒绝
+  `FIXED_250MS_UNCONDITIONAL_SCENE_VETO_PERSISTENCE`。不得在同一 outcome 上
+  搜索其他 hold duration；若继续，变量必须是可解释的 event/target continuity
+  与解除条件，并以新鲜独立 outcome evidence 评价。kernel/report SHA-256 为
+  `8cf20b345f30fa757307c430e5eeeb63a2859450d238c06a50ad5fbd22394930` /
+  `af97a203f06208f6256a1e1bee45191908c46bda41a5dc45793216f4a4ef09d7`；
+  `core:assist` 全量测试及 D36+D37+D38 evaluator 10 tests 通过。一次合并验证
+  命令因从脚本 cwd 使用 repo-relative path 而失败，未改写 report；回到 repo
+  root 后原样成功，归类为可修复 path error。主线、默认 App 与 D35 均不变。

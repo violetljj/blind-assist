@@ -64,6 +64,73 @@ class DualLoopActiveIntegrationTest {
         assertEquals(1, activeGateway.notifyCalls)
     }
 
+    @Test
+    fun boundedTtlCarriesContradictionWithoutChangingCurrentShadow() {
+        val baseline = AssistDecisionKernel()
+        val active = AssistDecisionKernel()
+        val baselineGateway = PlannerGateway()
+        val activeGateway = PlannerGateway()
+        baseline.startSession(1_000L)
+        active.startSession(1_000L)
+
+        val first = listOf(
+            detection(0, "person", 700f, 500f),
+            detection(2, "car", 550f, 780f)
+        )
+        val receding = listOf(
+            detection(0, "person", 630f, 500f),
+            detection(2, "car", 495f, 780f)
+        )
+        val noLongerReceding = listOf(
+            detection(0, "person", 650f, 500f),
+            detection(2, "car", 510f, 780f)
+        )
+        process(baseline, baselineGateway, first, 0, DualLoopRuntimeMode.OFF)
+        process(active, activeGateway, first, 0, DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL)
+        process(baseline, baselineGateway, receding, 1, DualLoopRuntimeMode.OFF)
+        process(active, activeGateway, receding, 1, DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL)
+
+        val baselineCarried =
+            process(baseline, baselineGateway, noLongerReceding, 2, DualLoopRuntimeMode.OFF)
+        val activeCarried =
+            process(
+                active,
+                activeGateway,
+                noLongerReceding,
+                2,
+                DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL
+            )
+        assertEquals(FeedbackReason.TRIGGERED, baselineCarried.feedbackDecision.reason)
+        assertFalse(activeCarried.evaluation.dualLoopShadow.admitted)
+        assertEquals(
+            FeedbackReason.DUAL_LOOP_CONTRADICTED,
+            activeCarried.feedbackDecision.reason
+        )
+        assertFalse(activeCarried.feedbackDecision.triggered)
+        assertEquals(
+            baselineCarried.evaluation.rawRisk,
+            activeCarried.evaluation.rawRisk
+        )
+        assertEquals(
+            baselineCarried.evaluation.stableRisk,
+            activeCarried.evaluation.stableRisk
+        )
+
+        val baselineExpired =
+            process(baseline, baselineGateway, noLongerReceding, 5, DualLoopRuntimeMode.OFF)
+        val activeExpired =
+            process(
+                active,
+                activeGateway,
+                noLongerReceding,
+                5,
+                DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL
+            )
+        assertEquals(FeedbackReason.TRIGGERED, baselineExpired.feedbackDecision.reason)
+        assertEquals(FeedbackReason.TRIGGERED, activeExpired.feedbackDecision.reason)
+        assertTrue(activeExpired.feedbackDecision.triggered)
+    }
+
     private fun process(
         kernel: AssistDecisionKernel,
         gateway: PlannerGateway,

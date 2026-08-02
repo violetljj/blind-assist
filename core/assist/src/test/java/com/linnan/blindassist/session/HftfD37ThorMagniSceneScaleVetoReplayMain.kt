@@ -29,36 +29,56 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        run(
+            args = args,
+            label = "D37",
+            candidateMode = DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY,
+            includeLatchColumn = false
+        )
+    }
+
+    internal fun run(
+        args: Array<String>,
+        label: String,
+        candidateMode: DualLoopRuntimeMode,
+        includeLatchColumn: Boolean
+    ) {
         require(args.size == 2) { "usage: <detections.tsv> <kernel_replay.tsv>" }
         val samples = readSamples(File(args[0]))
         require(samples.size == EXPECTED_SAMPLES) {
-            "D37 expected $EXPECTED_SAMPLES samples, got ${samples.size}"
+            "$label expected $EXPECTED_SAMPLES samples, got ${samples.size}"
         }
         require(samples.map { it.sourceSessionId }.toSet().size == EXPECTED_SESSIONS) {
-            "D37 source-session census drift"
+            "$label source-session census drift"
         }
-        val results = samples.map(::replay)
+        val results = samples.map { replay(it, label, candidateMode) }
         require(results.sumOf { it.rawRiskMismatches } == 0) {
-            "D37 baseline/candidate raw-risk drift"
+            "$label baseline/candidate raw-risk drift"
         }
         require(results.sumOf { it.stableRiskMismatches } == 0) {
-            "D37 baseline/candidate stable-risk drift"
+            "$label baseline/candidate stable-risk drift"
         }
         require(results.sumOf { it.nonSceneSourceObservations } == 0) {
-            "D37 observed non-scene dual-loop source"
+            "$label observed non-scene dual-loop source"
         }
-        writeResults(File(args[1]), results)
+        writeResults(File(args[1]), results, includeLatchColumn)
         println(
-            "D37_KERNEL_REPLAY samples=${results.size} " +
+            "${label}_KERNEL_REPLAY samples=${results.size} " +
                 "baseline_windows=${results.count { it.baselineAnyTriggered }} " +
                 "candidate_windows=${results.count { it.candidateAnyTriggered }} " +
                 "admitted_contradict_frames=" +
                 results.sumOf { it.admittedContradictFrames } +
-                " suppressions=${results.sumOf { it.suppressedFrames }}"
+                " suppressions=${results.sumOf { it.suppressedFrames }}" +
+                " latch_only_suppressions=" +
+                results.sumOf { it.latchOnlySuppressedFrames }
         )
     }
 
-    private fun replay(sample: Sample): ReplayResult {
+    private fun replay(
+        sample: Sample,
+        label: String,
+        candidateMode: DualLoopRuntimeMode
+    ): ReplayResult {
         require(sample.frames.size == EXPECTED_FRAMES)
         require(sample.frames.map { it.ordinal } == (0 until EXPECTED_FRAMES).toList())
         val baseline = AssistDecisionKernel()
@@ -80,12 +100,13 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
         var sceneAbstainObservations = 0
         var evidenceAbsentFrames = 0
         var nonSceneSourceObservations = 0
+        var latchOnlySuppressedFrames = 0
         sample.frames.forEach { frame ->
             val stamp = FrameStamp(
                 frameId = frame.sourceSceneFrame.toLong(),
                 capturedAtNs = frame.capturedAtNs,
                 receivedAtNs = frame.capturedAtNs + 1_000_000L,
-                sourceId = "d37:${sample.sampleId}",
+                sourceId = "${label.lowercase()}:${sample.sampleId}",
                 coordinateFrame = "thor-magni:pupil-rgb",
                 clockDomain = FrameClockDomain.REPLAY_TIMELINE
             )
@@ -113,7 +134,7 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
                 nowMs = nowMs,
                 sourceFrame = stamp,
                 decisionAtNs = decisionAtNs,
-                dualLoopMode = DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY
+                dualLoopMode = candidateMode
             )
             if (baselineResult.evaluation.rawRisk != candidateResult.evaluation.rawRisk) {
                 rawRiskMismatches += 1
@@ -140,6 +161,17 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
                 suppressedFrames += 1
             }
             val shadow = candidateResult.evaluation.dualLoopShadow
+            val directContradiction =
+                shadow.admitted &&
+                    shadow.correctionDecision ==
+                    DualLoopCorrectionDecision.CONTRADICT_APPROACH
+            if (
+                candidateResult.feedbackDecision.reason ==
+                FeedbackReason.DUAL_LOOP_CONTRADICTED &&
+                !directContradiction
+            ) {
+                latchOnlySuppressedFrames += 1
+            }
             if (
                 shadow.sourceId != null &&
                 shadow.sourceId != CausalSceneScaleTristateGeometryProducer.SOURCE_ID
@@ -184,7 +216,8 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
             sceneContradictObservations = sceneContradictObservations,
             sceneAbstainObservations = sceneAbstainObservations,
             evidenceAbsentFrames = evidenceAbsentFrames,
-            nonSceneSourceObservations = nonSceneSourceObservations
+            nonSceneSourceObservations = nonSceneSourceObservations,
+            latchOnlySuppressedFrames = latchOnlySuppressedFrames
         )
     }
 
@@ -256,54 +289,71 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
         }
     }
 
-    private fun writeResults(output: File, results: List<ReplayResult>) {
+    private fun writeResults(
+        output: File,
+        results: List<ReplayResult>,
+        includeLatchColumn: Boolean
+    ) {
         output.parentFile.mkdirs()
-        val header = listOf(
-            "sample_id",
-            "source_session_id",
-            "fold",
-            "anchor_scene_frame",
-            "baseline_any_triggered",
-            "candidate_any_triggered",
-            "candidate_only_triggered_window",
-            "baseline_triggered_frames",
-            "candidate_triggered_frames",
-            "candidate_only_triggered_frames",
-            "suppressed_frames",
-            "admitted_contradict_frames",
-            "admitted_confirm_frames",
-            "scene_contradict_observations",
-            "scene_abstain_observations",
-            "evidence_absent_frames",
-            "raw_risk_mismatches",
-            "stable_risk_mismatches",
-            "non_scene_source_observations"
-        )
+        val header = buildList {
+            addAll(
+                listOf(
+                    "sample_id",
+                    "source_session_id",
+                    "fold",
+                    "anchor_scene_frame",
+                    "baseline_any_triggered",
+                    "candidate_any_triggered",
+                    "candidate_only_triggered_window",
+                    "baseline_triggered_frames",
+                    "candidate_triggered_frames",
+                    "candidate_only_triggered_frames",
+                    "suppressed_frames",
+                    "admitted_contradict_frames",
+                    "admitted_confirm_frames",
+                    "scene_contradict_observations",
+                    "scene_abstain_observations",
+                    "evidence_absent_frames",
+                    "raw_risk_mismatches",
+                    "stable_risk_mismatches",
+                    "non_scene_source_observations"
+                )
+            )
+            if (includeLatchColumn) add("latch_only_suppressed_frames")
+        }
         val text = buildString {
             appendLine(header.joinToString("\t"))
             results.forEach { row ->
                 appendLine(
-                    listOf(
-                        row.sampleId,
-                        row.sourceSessionId,
-                        row.fold,
-                        row.anchorSceneFrame,
-                        row.baselineAnyTriggered,
-                        row.candidateAnyTriggered,
-                        row.candidateAnyTriggered && !row.baselineAnyTriggered,
-                        row.baselineTriggeredFrames.joinToString(","),
-                        row.candidateTriggeredFrames.joinToString(","),
-                        row.candidateOnlyTriggeredFrames,
-                        row.suppressedFrames,
-                        row.admittedContradictFrames,
-                        row.admittedConfirmFrames,
-                        row.sceneContradictObservations,
-                        row.sceneAbstainObservations,
-                        row.evidenceAbsentFrames,
-                        row.rawRiskMismatches,
-                        row.stableRiskMismatches,
-                        row.nonSceneSourceObservations
-                    ).joinToString("\t")
+                    buildList {
+                        addAll(
+                            listOf(
+                                row.sampleId,
+                                row.sourceSessionId,
+                                row.fold,
+                                row.anchorSceneFrame,
+                                row.baselineAnyTriggered,
+                                row.candidateAnyTriggered,
+                                row.candidateAnyTriggered &&
+                                    !row.baselineAnyTriggered,
+                                row.baselineTriggeredFrames.joinToString(","),
+                                row.candidateTriggeredFrames.joinToString(","),
+                                row.candidateOnlyTriggeredFrames,
+                                row.suppressedFrames,
+                                row.admittedContradictFrames,
+                                row.admittedConfirmFrames,
+                                row.sceneContradictObservations,
+                                row.sceneAbstainObservations,
+                                row.evidenceAbsentFrames,
+                                row.rawRiskMismatches,
+                                row.stableRiskMismatches,
+                                row.nonSceneSourceObservations
+                            )
+                        )
+                        if (includeLatchColumn) {
+                            add(row.latchOnlySuppressedFrames)
+                        }
+                    }.joinToString("\t")
                 )
             }
         }
@@ -401,7 +451,8 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
         val sceneContradictObservations: Int,
         val sceneAbstainObservations: Int,
         val evidenceAbsentFrames: Int,
-        val nonSceneSourceObservations: Int
+        val nonSceneSourceObservations: Int,
+        val latchOnlySuppressedFrames: Int
     ) {
         val baselineAnyTriggered: Boolean get() = baselineTriggeredFrames.isNotEmpty()
         val candidateAnyTriggered: Boolean get() = candidateTriggeredFrames.isNotEmpty()

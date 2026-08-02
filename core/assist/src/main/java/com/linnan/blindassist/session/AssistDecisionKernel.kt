@@ -81,12 +81,15 @@ class AssistDecisionKernel(
     private val dualLoopSceneScaleProducer: CausalSceneScaleTristateGeometryProducer =
         CausalSceneScaleTristateGeometryProducer()
 ) {
+    private var dualLoopContradictUntilNs = Long.MIN_VALUE
+
     fun startSession(nowMs: Long = monotonicNowMs()) {
         assistEngine.startSession(nowMs)
         riskEventTracker.reset()
         lowConfidenceSidePersonConfirmation.reset()
         dualLoopGeometryProducer.reset()
         dualLoopSceneScaleProducer.reset()
+        dualLoopContradictUntilNs = Long.MIN_VALUE
     }
 
     fun reset() {
@@ -95,6 +98,7 @@ class AssistDecisionKernel(
         lowConfidenceSidePersonConfirmation.reset()
         dualLoopGeometryProducer.reset()
         dualLoopSceneScaleProducer.reset()
+        dualLoopContradictUntilNs = Long.MIN_VALUE
     }
 
     fun sessionSummary(): SessionSummary = assistEngine.sessionSummary()
@@ -131,7 +135,8 @@ class AssistDecisionKernel(
                     selectedTarget = evaluation.rawRisk.sourceDetection,
                     decisionAtNs = decisionAtNs
                 )
-            DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY ->
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY,
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL ->
                 dualLoopSceneScaleProducer.produce(
                     sourceFrame = sourceFrame,
                     detections = detections,
@@ -161,15 +166,39 @@ class AssistDecisionKernel(
         // stableRisk below so the alert hold cannot conceal raw target disappearance.
         val event = riskEventTracker.update(shadowEvaluation.rawRisk, nowMs)
         val eventEvaluation = shadowEvaluation.copy(riskEvent = event)
+        val directContradiction =
+            dualLoopMode in setOf(
+                DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY,
+                DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL
+            ) &&
+                dualLoopShadow.admitted &&
+                dualLoopShadow.correctionDecision ==
+                DualLoopCorrectionDecision.CONTRADICT_APPROACH
+        val dualLoopContradicts = when (dualLoopMode) {
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY -> {
+                dualLoopContradictUntilNs = Long.MIN_VALUE
+                directContradiction
+            }
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL -> {
+                if (directContradiction) {
+                    dualLoopContradictUntilNs = saturatingAdd(
+                        decisionAtNs,
+                        DUAL_LOOP_CONTRADICT_HOLD_NS
+                    )
+                }
+                decisionAtNs <= dualLoopContradictUntilNs
+            }
+            else -> {
+                dualLoopContradictUntilNs = Long.MIN_VALUE
+                false
+            }
+        }
         val feedbackDecision = decideFeedback(
             eventEvaluation,
             feedbackGateway,
             requiresActiveEvent =
                 eventEvaluation.stableRisk.sourceDetection?.source == DetectionSource.SEGMENTATION,
-            dualLoopContradicts = dualLoopMode == DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY &&
-                dualLoopShadow.admitted &&
-                dualLoopShadow.correctionDecision ==
-                    DualLoopCorrectionDecision.CONTRADICT_APPROACH
+            dualLoopContradicts = dualLoopContradicts
         )
         val completedEvent = riskEventTracker.recordFeedback(event, feedbackDecision)
         return assistEngine.completeFeedback(
@@ -271,8 +300,12 @@ class AssistDecisionKernel(
         }
     }
 
+    private fun saturatingAdd(value: Long, increment: Long): Long =
+        if (value > Long.MAX_VALUE - increment) Long.MAX_VALUE else value + increment
+
     companion object {
         private const val NANOS_PER_MILLISECOND = 1_000_000L
+        private const val DUAL_LOOP_CONTRADICT_HOLD_NS = 250_000_000L
         private fun monotonicNowMs(): Long = System.nanoTime() / NANOS_PER_MILLISECOND
         const val CONTRACT_ID = "blindassist_shared_decision_kernel_v1"
         const val RISK_EVIDENCE_INPUT_CONTRACT_ID = "blindassist_shared_decision_kernel_risk_evidence_input_v1"
