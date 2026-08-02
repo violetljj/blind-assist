@@ -1,0 +1,85 @@
+{
+  "schema": "blindassist_hftf_stage_c_d5_s0b_p0b_provider_semantic_evidence_invalid_result",
+  "terminal": "D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_INVALID_STOP",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "evidence_role": "EXECUTION_RESOURCE_CAP_FAILURE_RECEIPT_NOT_PROVIDER_SOURCE_AUTHORITY_OPPORTUNITY_EFFECT_OR_SAFETY_EVIDENCE",
+  "bindings": {
+    "execution_commit": "2d8420dfab65310f682d3b1c53631855d0dcd029",
+    "execution_contract": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_EXECUTION_CONTRACT_2026-08-02.json",
+      "sha256": "dce5c3b07350cf52e0b2dcbe8e34868b8dcd734fe0118f1ebccba964dc782187"
+    },
+    "attempt": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0b-provider-semantic-evidence-20260802/attempt.json",
+      "bytes": 472,
+      "sha256": "3fff64c50ebece11909aaa288e7ba599bf98821461769fff29ad5f3c031c8560"
+    },
+    "preflight": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0b-provider-semantic-evidence-20260802/preflight.json",
+      "bytes": 1647,
+      "sha256": "8f3260460f57677e3788b6df4e07d0a7c727d1b09850052df47a5ed700f4fa61"
+    },
+    "failure": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0b-provider-semantic-evidence-20260802/failure.json",
+      "bytes": 691,
+      "sha256": "61dd13e081352410e6059c304b86db8470467b3498f069eef88953af99da8ec9"
+    }
+  },
+  "execution": {
+    "formal_git_and_hash_preflight_passed": true,
+    "head_equal_origin_master_at_start": true,
+    "canonical_root_absent_at_start": true,
+    "formal_cli_invocation_count": 1,
+    "attempt_and_preflight_fsynced_before_first_source_blob_read": true,
+    "failure_reason": "ValueError: P0B total evidence JSON byte cap exceeded",
+    "frozen_maximum_total_evidence_json_bytes": 8388608,
+    "canonical_failure_terminal_validator_accepted": true,
+    "same_root_resume_or_rerun_authorized": false
+  },
+  "artifact_closed_set": {
+    "present": [
+      "attempt.json",
+      "preflight.json",
+      "failure.json"
+    ],
+    "absent": [
+      "evidence.json",
+      "result.json"
+    ],
+    "unknown_top_level_artifacts_present": false
+  },
+  "interpretation": {
+    "failure_is_control_plane_evidence_representation_capacity_only": true,
+    "exact_required_evidence_bytes_known": false,
+    "provider_candidate_or_url_count_available_as_durable_evidence": false,
+    "provider_resolution_or_198_parent_mapping_evaluated": false,
+    "source_semantic_population_is_consumed_for_protocol_tuning": true,
+    "scientific_success_or_negative_terminal_available": false
+  },
+  "firewall": {
+    "new_git_fetch_checkout_or_network_made": false,
+    "dataset_host_request_made": false,
+    "dataset_zip_or_payload_read": false,
+    "source_code_imported_executed_evaluated_or_compiled_to_bytecode": false,
+    "provider_control_flow_or_url_derivation_interpreted": false,
+    "p0c_p1_or_s0b_execution_made": false
+  },
+  "decision": {
+    "same_canonical_root_resume_authorized": false,
+    "same_p0b_contract_rerun_authorized": false,
+    "raise_only_the_old_cap_and_retry_authorized": false,
+    "provider_claim_from_in_memory_or_failure_side_effects_authorized": false,
+    "only_a_new_versioned_representation_protocol_with_new_root_and_pre_execution_audit_may_be_considered": true,
+    "new_protocol_execution_authorized_automatically": false
+  },
+  "claim_ceiling": {
+    "provider_source_authority_established": false,
+    "exact_198_parent_archive_url_mapping_established": false,
+    "hftf_opportunity_or_effect_established": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "schema": "blindassist_hftf_stage_c_d5_s0b_p0b1_sharded_semantic_evidence_repair_design",
+  "status": "FROZEN_AFTER_P0B_EVIDENCE_CAP_INVALID_BEFORE_P0B1_EXECUTION_CONTRACT_OR_SOURCE_REREAD",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "purpose": "new_versioned_content_independent_deduplicated_path_sharded_evidence_protocol_without_scientific_rule_or_provider_outcome_tuning",
+  "parents": {
+    "p0b_invalid_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_INVALID_RESULT_2026-08-02.json",
+      "sha256": "357ea359b7346253c8916d79809dd636e098c047063321fba2d02518fba00164",
+      "required_terminal": "D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_INVALID_STOP"
+    },
+    "p0b_design": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_DESIGN_2026-08-02.json",
+      "sha256": "a15ed80b6f64f339b1a3c4ee6376de38ce50802e61094f92de51712db35b9324"
+    },
+    "p0a_locked_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0A_TOOLKIT_SOURCE_CLOSURE_LOCKED_RESULT_2026-08-02.json",
+      "sha256": "15f0bc4c96a1adea45aaa1ee1d1dddba4341f3390500147c165a4c343b523137"
+    }
+  },
+  "why_a_new_representation_protocol_is_admissible": {
+    "p0b_failure_class_is_frozen_evidence_json_capacity_not_provider_or_source_outcome": true,
+    "evidence_json_and_result_json_are_absent": true,
+    "exact_required_bytes_candidate_counts_url_values_and_provider_outcome_were_not_published_or_used": true,
+    "p0b1_rules_are_derived_only_from_schema_redundancy_and_pre_p0b_p0a_blob_byte_receipts": true,
+    "same_source_population_is_consumed_and_p0b1_is_recovery_not_fresh_validation": true,
+    "p0b1_is_not_a_resume_rerun_or_cap_only_patch_under_the_failed_contract": true
+  },
+  "unchanged_scientific_and_extraction_rules": {
+    "same_exact_toolkit_commit": "158a6844d782942110967325ca3082f50ab2bfc7",
+    "same_exact_ordered_p0a_closure_blob_count": 18,
+    "same_exact_total_source_bytes": 250569,
+    "same_runtime_ast_encoding_node_identity_role_and_classification_algorithms_required": true,
+    "same_complete_strings_calls_assignments_functions_imports_and_expression_topology_required": true,
+    "same_zero_one_or_multiple_url_candidate_neutrality_required": true,
+    "same_no_control_flow_dataflow_reachability_template_evaluation_or_provider_resolution": true,
+    "same_not_evaluable_invalid_and_locked_scientific_meanings_required": true
+  },
+  "new_canonical_protocol": {
+    "new_execution_contract_required_before_any_source_reread": true,
+    "new_canonical_root": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0b1-sharded-semantic-evidence-20260802",
+    "new_attempt_and_preflight_required": true,
+    "new_git_fetch_checkout_or_network": false,
+    "old_p0b_root_source_or_process_memory_must_not_be_reopened_recovered_or_parsed": true,
+    "p0a_local_git_object_store_is_the_only_source_blob_authority": true,
+    "all_18_object_receipts_must_complete_before_first_ast_extraction": true,
+    "one_durable_shard_per_exact_source_path": true,
+    "shard_filename_is_zero_padded_manifest_index_not_source_path": true,
+    "index_json_binds_every_shard_path_bytes_sha256_counts_and_global_totals": true,
+    "unknown_partial_or_missing_shard_is_invalid_for_locked_or_any_interrupted_write": true
+  },
+  "content_independent_deduplication": {
+    "canonical_ast_object_is_stored_exactly_once_per_node_receipt_not_as_an_escaped_json_string": true,
+    "expression_records_reference_node_receipts_and_do_not_repeat_canonical_ast_objects": true,
+    "generic_expression_source_segment_text_is_omitted_but_sha256_and_utf8_byte_length_are_retained": true,
+    "call_callee_and_full_call_source_segments_are_retained_with_hashes": true,
+    "assignment_target_value_and_full_assignment_source_segments_are_retained_with_hashes": true,
+    "string_literal_values_are_retained_with_hashes_and_roles": true,
+    "all_node_expression_string_call_assignment_function_and_import_coverage_invariants_are_unchanged": true,
+    "no_record_sampling_truncation_candidate_filtering_or_early_success": true
+  },
+  "terminal_aware_durability_and_closed_sets": {
+    "before_any_shard_write_complete_all_18_object_receipts_all_parses_all_extractions_all_per_shard_serializations_and_all_caps_in_memory": true,
+    "syntax_or_encoding_not_evaluable_writes_zero_shards_and_zero_index": true,
+    "not_evaluable_closed_set": [
+      "attempt.json",
+      "preflight.json",
+      "not-evaluable.json",
+      "result.json"
+    ],
+    "locked_write_order": [
+      "attempt_json_exclusive_fsync",
+      "preflight_json_exclusive_fsync",
+      "all_18_object_receipts_parse_extract_serialize_and_cap_validate_in_memory",
+      "shard_000_json_through_shard_017_json_each_exclusive_fsync_in_order",
+      "index_json_exclusive_fsync_after_18_of_18_shards_validate",
+      "result_json_exclusive_fsync_after_index"
+    ],
+    "locked_closed_set_is_attempt_preflight_exact_18_shards_index_result": true,
+    "failure_closed_set_is_attempt_preflight_optional_exact_shard_prefix_optional_index_optional_not_evaluable_optional_result_and_failure_only": true,
+    "any_interrupt_or_exception_after_first_shard_write_is_invalid_not_not_evaluable": true,
+    "any_interrupt_or_exception_while_writing_not_evaluable_index_or_result_is_invalid": true,
+    "failure_binds_exact_name_bytes_and_sha256_for_every_present_top_level_artifact_except_failure_itself_even_if_the_artifact_is_partial_or_invalid_json": true,
+    "terminal_validator_checks_complete_normal_terminal_first_and_accepts_failure_only_when_no_complete_normal_terminal_validates": true,
+    "partial_failure_never_resumes_completes_or_rereads_source": true,
+    "unknown_top_level_file_is_invalid": true,
+    "required_failure_injection_tests": [
+      "not_evaluable_payload_write_or_fsync_interruption",
+      "not_evaluable_result_write_or_fsync_interruption",
+      "locked_index_write_or_fsync_interruption",
+      "locked_result_write_or_fsync_interruption"
+    ]
+  },
+  "shard_and_index_schema_requirements_for_execution_contract": {
+    "each_shard_exact_identity_fields": [
+      "schema",
+      "manifest_index",
+      "source_path",
+      "toolkit_commit",
+      "git_blob_oid",
+      "source_blob_bytes",
+      "source_blob_sha256",
+      "detected_source_encoding",
+      "parse_status",
+      "ast_node_count",
+      "maximum_ast_depth",
+      "runtime_lock_sha256",
+      "algorithm_lock_sha256"
+    ],
+    "each_node_receipt_retains_path_preorder_type_span_depth_parent_field_parent_id_and_canonical_ast_object": true,
+    "each_expression_retains_node_id_parent_id_parent_field_type_span_role_scope_source_segment_sha256_and_utf8_byte_length": true,
+    "strings_calls_assignments_functions_and_imports_retain_all_p0b_fields_except_redundant_expression_canonical_dump": true,
+    "all_node_references_must_resolve_exactly_once_within_the_same_shard": true,
+    "validator_recomputes_node_ids_canonical_dfs_and_exact_one_to_one_record_coverage_per_shard": true,
+    "index_rows_are_in_exact_p0a_manifest_order": true,
+    "each_index_row_binds_manifest_index_source_path_shard_filename_bytes_sha256_and_all_record_counts": true,
+    "index_binds_exact_18_row_canonical_hash_aggregate_bytes_global_counts_and_global_maximum_depth": true,
+    "index_validator_recomputes_every_shard_hash_count_total_order_and_cap": true
+  },
+  "capacity_contract_to_be_frozen": {
+    "per_shard_maximum_bytes_formula": "max_1048576_or_512_times_p0a_blob_bytes",
+    "aggregate_shard_maximum_bytes": 129690624,
+    "aggregate_formula_is_sum_of_18_precomputed_per_shard_caps": true,
+    "exact_ordered_per_shard_cap_manifest": [
+      {
+        "manifest_index": 0,
+        "path": "tartanair/__init__.py",
+        "p0a_blob_bytes": 49,
+        "maximum_shard_bytes": 1048576
+      },
+      {
+        "manifest_index": 1,
+        "path": "tartanair/customizer.py",
+        "p0a_blob_bytes": 32995,
+        "maximum_shard_bytes": 16893440
+      },
+      {
+        "manifest_index": 2,
+        "path": "tartanair/dataloader.py",
+        "p0a_blob_bytes": 12963,
+        "maximum_shard_bytes": 6637056
+      },
+      {
+        "manifest_index": 3,
+        "path": "tartanair/dataset.py",
+        "p0a_blob_bytes": 40478,
+        "maximum_shard_bytes": 20724736
+      },
+      {
+        "manifest_index": 4,
+        "path": "tartanair/downloader.py",
+        "p0a_blob_bytes": 32876,
+        "maximum_shard_bytes": 16832512
+      },
+      {
+        "manifest_index": 5,
+        "path": "tartanair/eval_utils/trajectory_evaluator_ate.py",
+        "p0a_blob_bytes": 4551,
+        "maximum_shard_bytes": 2330112
+      },
+      {
+        "manifest_index": 6,
+        "path": "tartanair/eval_utils/trajectory_evaluator_base.py",
+        "p0a_blob_bytes": 9774,
+        "maximum_shard_bytes": 5004288
+      },
+      {
+        "manifest_index": 7,
+        "path": "tartanair/eval_utils/trajectory_evaluator_rpe.py",
+        "p0a_blob_bytes": 4972,
+        "maximum_shard_bytes": 2545664
+      },
+      {
+        "manifest_index": 8,
+        "path": "tartanair/evaluator.py",
+        "p0a_blob_bytes": 4644,
+        "maximum_shard_bytes": 2377728
+      },
+      {
+        "manifest_index": 9,
+        "path": "tartanair/flow_calculation.py",
+        "p0a_blob_bytes": 18471,
+        "maximum_shard_bytes": 9457152
+      },
+      {
+        "manifest_index": 10,
+        "path": "tartanair/flow_utils.py",
+        "p0a_blob_bytes": 3252,
+        "maximum_shard_bytes": 1665024
+      },
+      {
+        "manifest_index": 11,
+        "path": "tartanair/iterator.py",
+        "p0a_blob_bytes": 16432,
+        "maximum_shard_bytes": 8413184
+      },
+      {
+        "manifest_index": 12,
+        "path": "tartanair/lister.py",
+        "p0a_blob_bytes": 1314,
+        "maximum_shard_bytes": 1048576
+      },
+      {
+        "manifest_index": 13,
+        "path": "tartanair/reader.py",
+        "p0a_blob_bytes": 8297,
+        "maximum_shard_bytes": 4248064
+      },
+      {
+        "manifest_index": 14,
+        "path": "tartanair/tartanair.py",
+        "p0a_blob_bytes": 32905,
+        "maximum_shard_bytes": 16847360
+      },
+      {
+        "manifest_index": 15,
+        "path": "tartanair/tartanair_module.py",
+        "p0a_blob_bytes": 15206,
+        "maximum_shard_bytes": 7785472
+      },
+      {
+        "manifest_index": 16,
+        "path": "tartanair/unzipper.py",
+        "p0a_blob_bytes": 3004,
+        "maximum_shard_bytes": 1538048
+      },
+      {
+        "manifest_index": 17,
+        "path": "tartanair/visualizer.py",
+        "p0a_blob_bytes": 8386,
+        "maximum_shard_bytes": 4293632
+      }
+    ],
+    "exact_ordered_per_shard_cap_manifest_sha256": "a7e3203057f17467dfe50e5671ab51fa578b832d439305764895a7c845f0a9f8",
+    "index_attempt_preflight_not_evaluable_result_and_failure_are_not_counted_as_shard_payload_bytes_but_each_has_separate_1048576_byte_cap": true,
+    "any_shard_or_aggregate_cap_overflow_is_execution_invalid": true,
+    "cap_formula_may_not_be_changed_after_any_p0b1_source_read": true
+  },
+  "lexical_evidence_claim_ceiling": {
+    "p0b1_locks_complete_ast_semantic_structure_not_generic_exact_lexeme_parity_with_p0b": true,
+    "string_call_and_assignment_lexemes_remain_durable": true,
+    "generic_expression_lexeme_is_bound_only_by_sha256_utf8_length_encoding_and_span": true,
+    "p0c_may_not_treat_omitted_generic_lexeme_as_observed_text": true,
+    "p0c_needing_generic_exact_lexeme_requires_separate_hash_bound_source_reread_authority": true,
+    "p0b1_is_not_fresh_validation_algorithm_selection_increment_or_promotion_evidence": true
+  },
+  "planned_terminals": {
+    "evidence_locked": "D5_S0B_P0B1_SHARDED_SEMANTIC_EVIDENCE_LOCKED_REQUIRES_P0C_PROVIDER_RESOLUTION",
+    "source_not_evaluable": "D5_S0B_P0B1_SHARDED_SEMANTIC_EVIDENCE_NOT_EVALUABLE",
+    "execution_invalid": "D5_S0B_P0B1_SHARDED_SEMANTIC_EVIDENCE_INVALID_STOP"
+  },
+  "required_pre_execution_assurance": {
+    "implementation_and_tests_hash_bound_before_execution": true,
+    "focused_and_full_hftf_tests_required": true,
+    "independent_scientific_and_engineering_audit_required": true,
+    "tracked_clean_head_equal_origin_master_and_new_root_absent_required": true,
+    "single_formal_invocation_only": true
+  },
+  "authorization_at_design_freeze": {
+    "commit_and_push_invalid_result_and_this_design": true,
+    "freeze_hash_bound_p0b1_execution_contract_after_push": true,
+    "p0b1_source_blob_reread_or_execution": false,
+    "old_p0b_resume_or_rerun": false,
+    "new_git_fetch_checkout_or_network": false,
+    "dataset_host_or_zip_request": false,
+    "p0c_p1_s0b_payload_or_effect_execution": false,
+    "research_mainline_changed": false,
+    "default_app_changed": false,
+    "production_authorized": false,
+    "safety_claim_authorized": false
+  }
+}

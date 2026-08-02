@@ -4307,3 +4307,41 @@
   `HEAD == origin/master`、合同/实现/测试 hash 与 root-absent gate，且只允许调用
   一次 canonical CLI。LOCKED 只允许另冻 P0C contract，不自动授权 P0C、host、
   P1/S0B census、payload、主线/App/生产或 safety claim。
+
+## 2026-08-02：HFTF D5-S0B-P0B evidence-cap INVALID
+
+- 合同提交 `2d8420dfab65310f682d3b1c53631855d0dcd029` 推送、formal
+  tracked/clean/hash/HEAD/root-absent gate 通过后，只启动一次 canonical P0B。
+  wrapper 的短观察窗超时后没有重跑；原进程继续运行并自行关闭为
+  `D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_INVALID_STOP`。
+- 失败原因为 `ValueError: P0B total evidence JSON byte cap exceeded`，即完整
+  AST evidence 超过冻结的 8 MiB cap。attempt/preflight/failure SHA-256 分别为
+  `3fff64c50ebece11909aaa288e7ba599bf98821461769fff29ad5f3c031c8560`、
+  `8f3260460f57677e3788b6df4e07d0a7c727d1b09850052df47a5ed700f4fa61`、
+  `61dd13e081352410e6059c304b86db8470467b3498f069eef88953af99da8ec9`；
+  canonical failure validator 接受，evidence/result 均不存在。
+- 这是 evidence representation capacity failure，不是 provider/source 的正负结果。
+  同 18-source semantic population 视为 consumed recovery population；禁止旧 root、
+  旧合同、cap-only retry 或从进程内中间态推 provider 结论。没有 network/host/
+  ZIP/payload/source execution/P0C。机器 INVALID result SHA-256 为
+  `357ea359b7346253c8916d79809dd636e098c047063321fba2d02518fba00164`。
+
+## 2026-08-02：HFTF D5-S0B-P0B.1 sharded evidence repair 设计
+
+- P0B.1 只做内容无关的表示修复：每 source path 一个 manifest-index shard；
+  canonical AST object 每 node 只存一次，expression 以 node receipt 引用。generic
+  expression 省略文本但保留 segment SHA/UTF-8 length/encoding/span；string/call/
+  assignment lexeme 仍 durable。claim ceiling 是 AST-semantic completeness，不是
+  generic exact-lexeme parity；P0C 若需要原文必须另冻 source-reread 权限。
+- attempt/preflight 后先在内存完成 18/18 receipts、parse/extract/serialize/caps。
+  正常 NE 为 0 shard/index；LOCKED 才按 000..017 exclusive-fsync shards，再写
+  index、result。任何 shard/NE/index/result 写入中断只可 INVALID，failure 绑定除
+  自身外所有 present artifact 的 exact name/bytes/SHA，禁止 resume/reread。
+- 每 shard cap 固定为 `max(1 MiB, 512 × P0A blob bytes)`；18 项预冻 cap 总和
+  129690624 bytes，ordered cap manifest SHA-256 为
+  `a7e3203057f17467dfe50e5671ab51fa578b832d439305764895a7c845f0a9f8`。
+  科学与工程设计终审均 `CLEAR`；这只允许冻结 execution contract，不授权 source
+  reread/P0B.1/P0C/network/host/payload/mainline/App/production/safety。机器设计
+  JSON/MD SHA-256 分别为
+  `6b2523091a967b2a64e2062c9314d1cc4d6eaf37b99de204f4fd9ccf953f5d9d`、
+  `363bba692465f0cf7c7fed6b35cf14c43fd4312ec1a52bfa576d01e1f18b4408`。
