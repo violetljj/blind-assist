@@ -64,7 +64,12 @@ output-field head，false alerts 9/9 减少、mean `-2.22`，cleared mean `+1.78
 hits mean 仅 `-0.22`，证明 spatial representation placement 的 Development
 增量；但绝对 mean 为 `13 hits / 9 false alerts / 9 cleared`，对当前 YOLO
 `13/6/5` 仍是 0/9 Pareto。表示层正结果保留，研究主线与默认 App 不变；下一步
-固定空间头，只测试最小范围的真实 RGB backbone 解冻。
+先审计互补性与样本容量。后续事件配对发现 HFTF 平均补回 YOLO `2.56/3` misses，
+event-level OR hits 达 `15.56/16`，建立了
+YOLO-HFTF 互补性正信号；但 9-checkpoint 静态 fusion mean 只有
+`12.89 hits / 9.78 false alerts / 6.89 cleared`，rank-2 与 1 秒 causal
+canaries 也未改善 Pareto。当前 30-event cohort 的 head search 停止；下一步先扩充
+隔离的真实 relation supervision，未新增监督前不解冻 backbone。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

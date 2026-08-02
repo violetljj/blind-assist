@@ -35,6 +35,9 @@ TartanGround 已从“目录看起来足够大”推进到九个可执行结果�
     30-dimensional output field 前移到固定 encoder 的 `128×3×6` spatial feature。
     相对 output-field head，false alerts 9/9 减少、clearance mean 增加 1.78，
     recall mean 仅减 0.22；空间表示增量成立，但 0/9 超过当前 YOLO 的三指标 Pareto。
+11. 事件配对显示 HFTF 平均补回 YOLO `2.56/3` 个漏检，建立互补性正信号；但
+    rank-2 spatial canary、9-checkpoint 静态 YOLO-HFTF fusion 和 1 秒 causal
+    transition canary 都未形成 Pareto。当前瓶颈转为真实关系监督规模，不再堆 head。
 
 当前终态为：
 
@@ -52,7 +55,11 @@ CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED /
 WEAK_RELATION_HEAD_SPECIFICITY_CLEARANCE_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
 WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
 FIXED_ENCODER_SPATIAL_RELATION_HEAD_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_IN_DEVELOPMENT /
-FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
+YOLO_HFTF_EVENT_COMPLEMENTARITY_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
+LOW_RANK_SPATIAL_RELATION_HEAD_CANARY_INCREMENT_NOT_SUPPORTED /
+STATIC_YOLO_HFTF_FUSION_PARETO_INCREMENT_NOT_SUPPORTED /
+CAUSAL_TRANSITION_FUSION_CANARY_INCREMENT_NOT_SUPPORTED`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -756,9 +763,57 @@ recall 基本持平。因此保留模型表示层正终态：
 
 后一个终态只限制“已超过当前系统”的主张，不撤销前一个空间表示正结果。本 cohort
 已经回答 representation placement，不再用来搜索 grid、L2、threshold 或
-confirmation。下一步如继续，只允许固定当前 spatial head 并解冻靠近输出端的最小
-backbone 子集，仍做 source-session-held-out；其结果继续是 consumed Development，
-不能升格为 fresh validation。
+confirmation。是否解冻 backbone 取决于后续互补性与样本容量诊断；其结果无论如何
+仍是 consumed Development，不能升格为 fresh validation。
+
+### Complementarity 与 fusion 边界
+
+空间头和当前 YOLO 的错误并不相同。9 个 checkpoints 的事件级配对为：
+
+| 诊断 | 9-checkpoint mean |
+|---|---:|
+| HFTF 补回 YOLO miss | 2.56/3 |
+| HFTF 丢失 YOLO hit | 2.56 |
+| 两者同时 miss | 0.44 |
+| event-level OR hits | 15.56/16 |
+| event-level OR false alerts | 11.00/14 |
+| event-level AND hits | 10.44/16 |
+| event-level AND false alerts | 4.00/14 |
+
+因此保留：
+
+`YOLO_HFTF_EVENT_COMPLEMENTARITY_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+这不是一个可部署 OR/AND policy。为检验能否学习选择，固定 YOLO device trace 的
+7 个 causal 200 ms features（detection count、actual alert、raw/stable risk、
+left/center/right）并与 30 个 HFTF profiles 拼接；仍用原 5 folds、event/class
+weights、L2、0.5 threshold 与两步确认。9 个 OOF 结果为：
+
+| 指标 | static fusion 范围 / mean | 相对 HFTF weak head |
+|---|---:|---:|
+| hits | 11–14/16，mean 12.89 | mean -0.33；1 胜 / 5 同 / 3 负 |
+| false-alert events | 8–11/14，mean 9.78 | mean -1.44；7 胜 / 1 同 / 1 负 |
+| cleared | 3–11/16，mean 6.89 | mean -0.33；4 胜 / 2 同 / 3 负 |
+
+0/9 超过当前 YOLO，且整体弱于 fixed-encoder spatial head：
+
+`STATIC_YOLO_HFTF_FUSION_PARETO_INCREMENT_NOT_SUPPORTED`
+
+完整 spatial head 每折约 497–619 training frames，却有 2,305 个自由参数且
+regularized train loss 已约 `0.002`。固定 rank-2 把参数降到 293 的 canary 没有
+改善：seed17/fold0 从 `13 hits / 8 false / 7 cleared` 变为 `13/10/7`：
+
+`LOW_RANK_SPATIAL_RELATION_HEAD_CANARY_INCREMENT_NOT_SUPPORTED`
+
+把静态融合扩为 current + 1-second delta + 1-second causal prefix mean 的 111-feature
+transition canary 得到 `11/9/9`；clearance 上升但 recall 降到 68.75%：
+
+`CAUSAL_TRANSITION_FUSION_CANARY_INCREMENT_NOT_SUPPORTED`
+
+这三个负结果不是“互补性不存在”，而是当前 30 events 对更多结构自由度已经
+information-limited。为了避免把 Development 变成同 cohort 的无限 head search，
+rank/history/fusion-feature/L2/threshold 路线在此停止；下一步先扩充与这 30 sessions
+隔离的真实 actionability relation supervision。
 
 ## 边界与下一实验
 
@@ -769,7 +824,8 @@ backbone 子集，仍做 source-session-held-out；其结果继续是 consumed D
 + directional selective-event transfer signal
 + outcome-unseen TartanGround selective-event replication
 + real SANPO positive-event recall signal
-+ fixed-encoder spatial relation representation increment`
++ fixed-encoder spatial relation representation increment
++ YOLO-HFTF event complementarity signal`
 
 尚未支持：
 
@@ -783,16 +839,18 @@ backbone 子集，仍做 source-session-held-out；其结果继续是 consumed D
 - central-vs-lateral profile 能稳定区分 parallel curb；
 - output-field weak relation head 能形成真实事件 Pareto 增量；
 - fixed-encoder spatial relation head 能形成真实事件 Pareto 增量；
+- 静态或 1 秒 causal YOLO-HFTF fusion 能形成真实事件 Pareto 增量；
 - 真实事件 warning lead time 相对当前 YOLO 改善；
 - HFTF 超过当前主线或进入 App。
 
 下一步保留 directional + v2 为合成 Development reference，也保留真实 recall
 正信号，不再在 21 个 TartanGround environments 或 SANPO outcomes 上盲搜绝对阈值。
 output-field relation head 已证明 guardrail 可学；fixed-encoder spatial head 又证明
-信息放置位置具有稳定增量，但仍未形成 YOLO Pareto。下一步固定 spatial grid、head
-容量、folds、labels、weights、threshold 与 confirmation，只解冻最靠近输出端的
-最小 backbone 子集做真实 RGB fine-tune；不再修改 v2、output-field calibrator 或
-空间头超参数。history 在出现显式对齐机制前停止。
+信息放置位置具有稳定增量，事件配对也证明 HFTF/Yolo 互补，但当前融合仍未形成
+YOLO Pareto。30-event cohort 的 head search 到此停止；下一步优先发现并物化与现有
+30 sessions 隔离的 SANPO relation-supervision pool，先扩大真实正负关系覆盖，再
+固定比较 spatial head 与 fusion head。没有新增监督前不解冻 backbone、不修改
+v2、calibrator、空间头超参数或 history。
 
 ## 复现
 
@@ -881,6 +939,24 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --name directional-seed17-fold0 `
   --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-spatial-relation-head-v0/seed-17/fold-0.json
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_sanpo_low_rank_spatial_relation_head.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --name directional-seed17-fold0 `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-low-rank-spatial-relation-head-v0/seed-17/fold-0.json
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_sanpo_yolo_hftf_fusion_head.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --name directional-seed17-fold0 `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-yolo-hftf-fusion-head-v0/seed-17/fold-0.json
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_sanpo_causal_transition_fusion_head.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --name directional-seed17-fold0 `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-causal-transition-fusion-head-v0/seed-17/fold-0.json
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored

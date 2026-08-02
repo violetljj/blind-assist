@@ -50,6 +50,10 @@ D6_WEAK_RELATION_HEAD_SPECIFICITY_CLEARANCE_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
 D6_WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
 D6_FIXED_ENCODER_SPATIAL_RELATION_HEAD_OVER_OUTPUT_FIELD_GUARDRAIL_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY /
 D6_FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
+D6_YOLO_HFTF_EVENT_COMPLEMENTARITY_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
+D6_LOW_RANK_SPATIAL_RELATION_HEAD_CANARY_INCREMENT_NOT_SUPPORTED /
+D6_STATIC_YOLO_HFTF_FUSION_PARETO_INCREMENT_NOT_SUPPORTED /
+D6_CAUSAL_TRANSITION_FUSION_CANARY_INCREMENT_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -306,8 +310,34 @@ guardrail 的增量：
 
 这仍然是模型表示层的正结果：它不能被系统 Pareto 负终态抹掉。与此同时，同一
 consumed Development cohort 不再用于搜索 spatial grid、L2、threshold 或确认长度；
-下一科学问题是固定当前 128×3×6 head，判断少量真实关系监督能否通过解冻 HFTF
-pointwise/encoder 尾部恢复剩余 specificity，而不是再设计控制面协议。
+下一科学问题先判断 HFTF 与 YOLO 是否存在事件级互补，并审计当前监督量是否足以
+支持解冻；不是再设计控制面协议。
+
+事件级配对又揭示了一条不能被 Pareto 负终态抹掉的正信号。9 个空间头平均补回
+YOLO 漏掉的 `2.56/3` 个正事件，同时也丢掉 `2.56` 个 YOLO 已命中事件；event-level
+OR 的 mean hits 达 `15.56/16`，而 AND 的 mean false alerts 降到 `4/14`。因此：
+
+`YOLO_HFTF_EVENT_COMPLEMENTARITY_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+简单 OR/AND 都不能直接使用：OR 的 mean false alerts 为 `11/14`，AND 的 mean
+hits 只有 `10.44/16`。按相同 source-held-out folds 做 30 HFTF profiles +
+7 causal-200ms YOLO features 的 37-feature 静态融合后，9-checkpoint mean 为
+`12.89 hits / 9.78 false alerts / 6.89 cleared`；相对 HFTF weak head 虽有
+7/9 false-alert 改善，但不稳定保住 recall/clearance，且 0/9 超过 YOLO：
+
+`STATIC_YOLO_HFTF_FUSION_PARETO_INCREMENT_NOT_SUPPORTED`
+
+另外两个容量/动态机制只执行固定 canary：rank-2 spatial head 把 2,305 个自由参数
+降到 293 个，但同一 seed17/fold0 从空间头的 `13/8/7` 变为 `13/10/7`；
+加入 current、1 秒 delta 与 1 秒 prefix mean 的 causal transition fusion 得到
+`11/9/9`。终态分别为：
+
+`LOW_RANK_SPATIAL_RELATION_HEAD_CANARY_INCREMENT_NOT_SUPPORTED /
+CAUSAL_TRANSITION_FUSION_CANARY_INCREMENT_NOT_SUPPORTED`
+
+这些失败不否定互补性，而是说明 30-event cohort 已不足以区分更多 head 结构。
+停止同 cohort 的 rank、history、fusion-feature、L2 与 threshold 变化；下一步扩充
+source-isolated 的真实关系监督，再回到固定空间头/融合头比较。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

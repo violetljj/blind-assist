@@ -4685,3 +4685,24 @@
   `FIXED_ENCODER_SPATIAL_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`。
 - 不以系统负终态撤销表示层正结果。同一 consumed cohort 停止 grid/L2/threshold/
   confirmation 搜索；下一候选固定空间头，只解冻靠近输出端的最小 backbone 子集。
+
+## 2026-08-02：HFTF D6 complementarity 与 fusion
+
+- 9 个空间头平均补回 YOLO `2.56/3` misses，同时丢失 `2.56` 个 YOLO hits；
+  event-level OR mean 为 `15.56 hits / 11 false alerts`，AND 为
+  `10.44 hits / 4 false alerts`。保留
+  `YOLO_HFTF_EVENT_COMPLEMENTARITY_SIGNAL_SUPPORTED_IN_DEVELOPMENT`，但简单
+  OR/AND 不构成候选 policy。
+- 固定 30 HFTF profiles + 7 causal-200ms YOLO features 的静态融合，复用相同
+  source-held-out folds/weights/L2/threshold/confirmation。9-checkpoint OOF
+  mean 为 `12.89 hits / 9.78 false alerts / 6.89 cleared`；0/9 YOLO Pareto，
+  终态 `STATIC_YOLO_HFTF_FUSION_PARETO_INCREMENT_NOT_SUPPORTED`。
+- 2,305-parameter spatial head 的 train loss 已约 0.002。rank-2/293-parameter
+  canary 为 `13/10/7`，弱于同 backbone 完整空间头 `13/8/7`；终态
+  `LOW_RANK_SPATIAL_RELATION_HEAD_CANARY_INCREMENT_NOT_SUPPORTED`。
+- current + 1 s delta + 1 s prefix mean causal fusion canary 为 `11/9/9`；
+  clearance 改善但 recall 降到 68.75%，终态
+  `CAUSAL_TRANSITION_FUSION_CANARY_INCREMENT_NOT_SUPPORTED`。
+- 当前 30-event cohort 对更多 head 结构已 information-limited。停止 rank/history/
+  fusion-feature/L2/threshold 变化；下一步扩充与这 30 sessions 隔离的真实关系监督，
+  未新增监督前不解冻 backbone。
