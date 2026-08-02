@@ -41,6 +41,10 @@
   `SANPO_TO_PUBLIC_PAIRED_RELATION_SIGNAL_SOURCE_LOCAL_ONLY`；
 - TartanGround → SANPO 的课程没有改善 public 迁移：
   `TARTANGROUND_SANPO_CURRICULUM_PUBLIC_TRANSFER_NOT_SUPPORTED`。
+- 仅 28,313 个可训练参数的 early joint-pair stem 把 pooled frame BA/AUROC
+  提高到 `0.6185/0.6978`，并把 Edmonton frame/episode AUROC 提高到
+  `0.8134/0.80`；但 source-macro AUROC 只有 `0.4184/0.4333`：
+  `JOINT_PAIR_INTERACTION_POOLED_AND_EDMONTON_SIGNAL_SOURCE_LOCAL_ONLY`。
 
 这不撤销空间特征相对 output-field 的增量，只关闭以下更窄假设：
 
@@ -278,6 +282,42 @@ Ulm 的排序近乎完全反向，也说明仅做 source threshold/centering 不
 `0.4790/0.3278`；Edmonton frame AUROC 也从 `0.7958` 降到 `0.5019`。因此课程没有
 建立增量，不能通过继续堆叠相同 encode-then-difference 预训练来救援。
 
+## Canary G：early joint-pair interaction
+
+现有 paired-RGB recipe 先分别编码 current/reference，再在 `128×3×6` embedding
+上相减。为直接改变 frame interaction 发生的位置，新增一个小型 raw-pair stem：
+
+- input：`current RGB / baseline RGB / signed delta / abs(delta)`，共 12 channels；
+- 4 个轻量下采样 stage：`24/32/64/128` channels；
+- 与冻结 HFTF current-context 在 `3×6` 网格拼接；
+- trainable：pair stem + relation head，共 28,313 parameters；
+- train/eval inventory、10 epochs、SANPO-only/public-zero-train 与 Canary F 相同；
+- 无 threshold、architecture 或 seed 搜索。
+
+两次运行除时间戳外逐字段一致。相对 encode-then-difference baseline：
+
+| pooled frame 指标 | encode-then-difference | early joint-pair |
+|---|---:|---:|
+| alert recall | 0.2750 | 0.3750 |
+| no-alert recall | 0.8621 | 0.8621 |
+| balanced accuracy | 0.5685 | 0.6185 |
+| AUROC | 0.5811 | 0.6978 |
+
+这个 pooled frame-level 增量是真实、可复现的表示证据；但逐来源排序仍不一致：
+
+| source | frame BA | frame AUROC | episode BA | episode AUROC |
+|---|---:|---:|---:|---:|
+| Bangkok | 0.5000 | 0.1836 | 0.6667 | 0.5000 |
+| Ulm | 0.4891 | 0.2582 | 0.5000 | 0.0000 |
+| Edmonton | 0.5000 | 0.8134 | 0.5000 | 0.8000 |
+| source macro | 0.4964 | 0.4184 | 0.5556 | 0.4333 |
+
+因此 early interaction 的科学结论是“对部分来源和 pooled frame discrimination
+有增量”，不是“已经学会跨来源 actionability”。Bangkok 与 Ulm 的反向排序说明，
+继续做 source threshold calibration 仍不能修复表示。下一实验应把 early
+interaction 放回 HFTF 的 cell/lane future-risk teacher task，用结构化空间监督替代
+单一 source-relative actionability 标签。
+
 ## 失败分类
 
 上述有效结果不是工程 invalid：
@@ -295,6 +335,8 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 
 - synthetic paired relation outcome-unseen learnability：有效正结果；
 - Edmonton real-to-real relation ranking：有效、来源局部正信号；
+- early joint-pair 的 pooled frame discrimination 与 Edmonton ranking：
+  有效、来源局部表示增量；
 - 三来源宏平均 direct transfer、synthetic-to-real 与 synthetic→SANPO curriculum：
   有效科学负结果；
 - 当前 `encode each frame → subtract embedding → relation head` 表示缺少跨真实来源
@@ -312,6 +354,7 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 - 当前 `encoder[9:] + pointwise` paired-RGB tail fine-tuning recipe。
 - TartanGround paired state 的直接 synthetic-to-real 使用。
 - TartanGround → SANPO 的同构 encode-then-difference 课程。
+- 当前 SANPO binary actionability 上的 joint-pair source-general claim。
 
 下一候选必须改变至少一个科学变量，而不是增加治理：
 
@@ -330,7 +373,8 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 
 如果没有新增 backbone-level representation，D6 fixed-feature 路线保持关闭。
 当前 encode-then-difference paired-RGB recipe 保持关闭；synthetic positive 与
-Edmonton 局部正信号作为下一代 joint-pair representation 的依据保留。
+early joint-pair pooled/Edmonton 局部正信号作为下一代 structured-field
+representation 的依据保留。
 
 ## 复现
 
@@ -388,4 +432,13 @@ TartanGround → SANPO 课程只在上一个命令增加：
 
 ```powershell
   --paired-pretrained-state artifacts.local/evidence/hftf/stage-c-d6-tartanground-paired-relation-pretraining-transfer-canary-v1/paired-relation-state.pt
+```
+
+early joint-pair interaction：
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_joint_pair_interaction_public_transfer_canary.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --output artifacts.local/evidence/hftf/stage-c-d6-joint-pair-interaction-public-transfer-canary-v0/result.json
 ```

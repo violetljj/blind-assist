@@ -4812,6 +4812,15 @@
   source-macro episode AUROC 降到 `0.3278`，无增量。下一候选需在 backbone 内
   联合比较 frame pair，或直接学习人体包络短时未来风险场；不再继续
   encode-then-difference 的预训练、tail/head 或 threshold 搜索。
+- 新增 28,313-parameter early joint-pair stem，直接联合编码
+  `current/baseline/signed RGB delta/abs delta`，冻结 HFTF current context，
+  SANPO-only 训练并零 public 参数更新。两次运行除时间戳外逐字段一致；相对
+  encode-then-difference，pooled frame alert recall 从 `0.275` 升到 `0.375`，
+  no-alert recall 保持 `0.8621`，BA/AUROC 从 `0.5685/0.5811` 升到
+  `0.6185/0.6978`。但 Bangkok/Ulm/Edmonton frame AUROC 为
+  `0.1836/0.2582/0.8134`，source-macro `0.4184`。保留 pooled frame 与 Edmonton
+  局部表示增量，不建立 source-general transfer；下一实验把 early interaction
+  转入 structured HFTF cell/lane future-risk teacher task。
 - 保留此前 spatial-over-output-field 的正结果；只关闭“增加关系监督即可救固定
   backbone”的窄假设，也关闭当前 paired-RGB tail fine-tune recipe。下一步必须
   改变 pair interaction 或风险场表示，并先通过 source-heldout actionability

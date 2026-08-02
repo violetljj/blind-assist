@@ -101,6 +101,15 @@ paired relation 可学习；但直接 synthetic→public 不支持。SANPO-only�
 ranking 层；三来源 source-general transfer 未建立。下一 representation 必须在
 backbone 内联合比较 frame pair 或直接学习人体包络未来风险场，不再继续
 encode-then-difference 的 tail/head/threshold 搜索。
+该 joint-pair canary 随后已用一个 28,313-parameter raw-pair stem 完成：
+`current/baseline/signed delta/abs delta` 在 backbone 外早期联合编码，再与冻结
+HFTF context 拼接。相对 encode-then-difference，pooled frame alert recall 从
+`0.275` 升到 `0.375`、no-alert recall 保持 `0.8621`、BA/AUROC 从
+`0.5685/0.5811` 升到 `0.6185/0.6978`；重复运行逐字段一致。但 Edmonton frame
+AUROC `0.8134` 的同时，Bangkok/Ulm 只有 `0.1836/0.2582`，source-macro AUROC
+`0.4184`。因此 early interaction 的局部表示增量保留，source-general transfer
+仍不成立；下一步把 early interaction 放回 structured HFTF future-risk field
+teacher task，而不是继续优化 binary actionability head。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
