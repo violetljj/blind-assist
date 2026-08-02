@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D18
+  flow-aligned true-onset canary。固定 RAFT-small 物化 495×4 current→history
+  backward flows；99-sample 方向检查的 valid fraction `.8798`，photometric L1
+  从 `.1130` 降至 `.0577`。首次完整推理只因 Windows 只读句柄 `fsync`
+  `Bad file descriptor` 未 finalize；作为工程故障修复为 `r+b` 后原协议重跑，
+  cohort 未烧毁。对齐 history 相对 identical current 的 pooled cell AUROC/AP
+  mean `+.00549/+.00886` 且均 3/3 folds 正，sample AUROC `+.02124`、3/3
+  folds 正，far-head AUROC/AP `+.01706/+.01802`、均 3/3 folds 正；但冻结
+  primary environment-macro cell AUROC 仅 `+.00031`、1/3 folds 正，未过
+  `+.010`/2-fold gate。保留
+  `D18_FLOW_ALIGNMENT_RESCUES_POOLED_CELL_LOCALIZATION_SIGNAL_DEVELOPMENT_ONLY`
+  与 `D18_FAR_HEAD_ALIGNED_ONSET_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY`，同时记录
+  `D18_FLOW_ALIGNED_ONSET_CANARY_NOT_SUPPORTED`，不扩 seeds、不切 target。
+  下一变量只加 geometry-teacher dynamics pretraining，主线与默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D17
   early-temporal true-onset canary。固定 D16 的 495 samples、15 environments
   与三折，在 MobileNet block 0 后用 2,448 参数 3D temporal stem 编码有序相邻
