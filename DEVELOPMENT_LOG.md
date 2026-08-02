@@ -5488,3 +5488,17 @@
   稳定为
   `c96c37fca85f8a52fb37d372a8290a564982e241352e8d7a173e4b5a4ad03f09`。
   主线、默认 App 与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。冻结并实现 HFTF D45
+  phone metric-depth source canary readiness。D45 不读取 event/alert outcome，
+  固定 person-box center-60% metric sampler、coverage/confidence/IQR/staleness
+  gates 与 exact same-target 7-point OLS `+1.0 s` solver。实现置于独立
+  `:hftf-metric-depth-canary-core`，5 个 focused JVM tests 通过；ARCore 1.33.0
+  仅加入专用 `:hftf-device-canary` test APK，capability probe 不 resume session、
+  不打开 camera、不请求安装，并以 `AtomicFile` 写 canonical receipt。相对冻结
+  commit `9f47a7d`，`app/core/feature/gradle` production tree 零 diff；default App
+  runtime classpath/merged manifest 均不含 ARCore 或 D45 module。target/test APK
+  SHA-256 分别为
+  `afa7a774b9f47074b2bf2e59755e712e92421484140789513578b32b68f0f149` /
+  `a22371a81d5c1046c397691e5f73d4ee35a06495d59be126becd544d65f2dd12`。
+  当前 ADB 无设备，终态保持 `D45_NOT_EVALUATED_NO_READY_DEVICE`，不是 source
+  负结果；设备 capability/measurement 尚未执行，主线、默认 App 与 D35 均不变。
