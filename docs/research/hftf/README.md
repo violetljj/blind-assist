@@ -126,7 +126,26 @@ D35_ANDROID_DEVICE_SHADOW_CANARY_READY_FOR_DEVICE_EXECUTION /
 D35_NOT_EVALUATED_NO_READY_DEVICE /
 D36_THOR_MAGNI_PRODUCTION_TRACK_VETO_EVENT_NOT_EVALUABLE /
 D36_SELECTED_TARGET_STRICT_CONTRADICT_COVERAGE_INADEQUATE /
+D37_THOR_MAGNI_PRODUCTION_SCENE_SCALE_VETO_EVENT_NOT_SUPPORTED /
+D37_SCENE_SCALE_CONTRADICTION_EVENT_OPPORTUNITY_SUPPORTED /
+D37_FRAME_LOCAL_VETO_EVENT_UTILITY_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D37：scene-scale evidence 到达了，但逐帧 veto 没转化为事件效用
+
+同一 19-session / 530-anchor paired replay 中，production scene-scale producer
+在 351 anchors、全部 19 sessions 上产生 682 个 admitted contradictions，并造成
+508 次逐帧 feedback suppression。全部 evaluability gates 通过，positive
+events/anchors 零损失；但 negative triggered windows 只从 `251` 降到 `250`
+（`0.398%`），仅 1/5 folds 有任何 reduction。终态：
+
+`D37_THOR_MAGNI_PRODUCTION_SCENE_SCALE_VETO_EVENT_NOT_SUPPORTED`
+
+这建立 scene-scale evidence 具有真实事件机会，但不支持当前 frame-local veto 的
+event utility。断点已经从“有没有证据”推进到“逐帧 suppression 是否能改变
+event/window terminal”。下一变量应是 bounded temporal/event-scoped veto
+semantics，而不是调 scene threshold 或换主模型；任何独立主张仍需新 outcome
+evidence。
 
 ## 2026-08-03 D36：production track veto 的事件证据机会不足
 

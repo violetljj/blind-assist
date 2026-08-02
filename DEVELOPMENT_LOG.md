@@ -5307,3 +5307,28 @@
   下一步保持同一输入与 event gates，只替换为 production scene-scale producer，
   不在同一 outcome 上调 track threshold/history/monotonicity，也不改变主线或
   默认 App。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D37
+  THOR-MAGNI production scene-scale veto event replay。保持 D36 的 19 sessions、
+  530 anchors、truth-free detections、production kernel 与 event gates 不变，
+  唯一变量为 kernel 内 production
+  `CausalSceneScaleTristateGeometryProducer`。全部 evaluability gates 通过：
+  admitted contradiction 覆盖 `351 anchors / 19 sessions`、共 682 frames，
+  raw/stable risk mismatch 与 non-scene source observations 均为 0。candidate
+  造成 508 次逐帧 feedback suppression，positive anchor/event 均零损失，
+  candidate-only frames/windows 均为 0；但 negative triggered windows 仅从
+  `251/373` 降到 `250/373`，绝对减少 1、relative reduction `0.398%`，且只有
+  1/5 folds 出现任何 reduction，未通过冻结的 `>=10`、`>=20%`、`>=3/5 folds`
+  gates。终态
+  `D37_THOR_MAGNI_PRODUCTION_SCENE_SCALE_VETO_EVENT_NOT_SUPPORTED`。它保留
+  `PRODUCTION_SCENE_SCALE_CONTRADICTION_HAS_REAL_EVENT_OPPORTUNITY` 正机制，但
+  `FRAME_LOCAL_SCENE_SCALE_VETO_EVENT_UTILITY_NOT_SUPPORTED`；断点位于逐帧
+  suppression 与 window/event terminal 之间，下一变量应是 bounded
+  temporal/event-scoped veto semantics，而不是调 scene threshold。首次报告
+  虽正确写出 `NOT_SUPPORTED`，但后缀判断错误地序列化
+  `supported=true`；改为 exact status equality、增加回归测试并原样重跑后为
+  `supported=false`，归类为可修复 control-plane bug，不烧毁 cohort。
+  kernel/report SHA-256 分别为
+  `390fa479ce1bedec904d6b22ff70fa97b32288e89a3cc26d1d1695e37856622e` /
+  `875d2b092cd110d9dae60bdf94490c8dd61a150e8a48604709d37730d23309bb`；
+  重复 replay 一致，`core:assist` 全量测试与 D36+D37 evaluator 8 tests 通过。
+  主线、默认 App、D35 真机终态均不变。

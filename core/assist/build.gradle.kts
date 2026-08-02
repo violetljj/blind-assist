@@ -74,3 +74,29 @@ tasks.register<JavaExec>("runHftfD36ThorMagniTrackVetoReplay") {
         ).get()
     )
 }
+
+tasks.register<JavaExec>("runHftfD37ThorMagniSceneScaleVetoReplay") {
+    group = "verification"
+    description = "Runs production-kernel HFTF D37 THOR-MAGNI scene-scale veto replay."
+    dependsOn(tasks.named("testClasses"))
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set(
+        "com.linnan.blindassist.session.HftfD37ThorMagniSceneScaleVetoReplayMain"
+    )
+    args(
+        providers.gradleProperty("d37Input").orElse(
+            rootProject.layout.projectDirectory.file(
+                "artifacts.local/evidence/hftf/" +
+                    "stage-c-d36-thor-magni-production-track-veto-event-v0/" +
+                    "detections.tsv"
+            ).asFile.absolutePath
+        ).get(),
+        providers.gradleProperty("d37KernelOutput").orElse(
+            rootProject.layout.projectDirectory.file(
+                "artifacts.local/evidence/hftf/" +
+                    "stage-c-d37-thor-magni-production-scene-scale-veto-event-v0/" +
+                    "kernel_replay.tsv"
+            ).asFile.absolutePath
+        ).get()
+    )
+}
