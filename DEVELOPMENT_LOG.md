@@ -4237,3 +4237,45 @@
   `0da2a0ca485435b5ad458895f2dbc1cb7c929794c69d888ab2f664dcad5bfb93`。
   当前只授权精确提交推送；formal root 仍不存在，未发生 toolkit 或 dataset-host
   请求。
+
+## 2026-08-02：HFTF D5-S0B-P0A toolkit source closure locked
+
+- 合同提交 `3789d3b1ed7c01f2a1bb2fc93a414df48ddfc2fc` 推送且 formal gate
+  通过后，只调用一次 P0A CLI。终态为
+  `D5_S0B_P0A_TOOLKIT_SOURCE_CLOSURE_LOCKED_REQUIRES_P0B_PROVIDER_RESOLUTION`；
+  canonical terminal validator 接受，failure 不存在。
+- exact toolkit tree 含 25 paths / 19 Python paths；从
+  `tartanair/__init__.py` 出发的冻结静态 import closure 为 18 blobs /
+  250569 bytes。direct dynamic 与 indirect dynamic/exec evidence 均为 0；
+  这只表示冻结检测器未命中，不是 runtime import 完整性证明。
+- attempt/preflight/tree/closure/result SHA-256 分别为
+  `9107aaf0a82b0dc9538a46f09184958d2af22bd4d98c43490ad8d0004e1d01ee`、
+  `c0ae093d5722c379614417bac0cb56887df550aa166d38475d2a7b4d4627fcd2`、
+  `8b74807e5584297d0875e345ec47301208f78c48102cc90cd0646f94f2b20f0e`、
+  `ef0b07fca57004c59d0bd659133e3cc7155705f26ed1d93f864c989b7eb78881`、
+  `72dcebb4f8ca69518a8d86bc3982f5e2f5691faf7aafbb60351533dc132f7582`。
+- 本终态没有解释 provider 控制流、提取 URL、建立 mapping 或请求 dataset host。
+  它只允许另冻 hash-bound P0B source-semantic evidence contract；不自动授权
+  P0B、P1、S0B census、payload、主线/App/生产或 safety claim。机器 locked
+  result SHA-256 为
+  `15f0bc4c96a1adea45aaa1ee1d1dddba4341f3390500147c165a4c343b523137`。
+
+## 2026-08-02：HFTF D5-S0B-P0B provider semantic evidence 设计
+
+- P0B 是 syntactic/source-evidence extractor，不是 provider resolver。它只允许从
+  既有 P0A local object store 按 hash-bound 18 rows 全量复核 commit:path OID、
+  object type/size、raw bytes 与 SHA-256；禁止 refetch、checkout、unresolved/
+  unreachable source、外部 txt/config、dataset host 或 ZIP。
+- 18 个 object receipts 必须在 AST extraction 前全部成立。随后只用冻结 encoding
+  detector 与 Python AST 记录全部 string literals、import aliases、functions、
+  calls、assignments 和 bounded expression graph；禁止 compile/import/exec/eval、
+  模块初始化、CFG/dataflow/runtime reachability 或字符串模板求值。
+- URL-like、单/多候选、docstring、logging/error/help/example、dead branch、
+  assignment 与 call spelling 均不能升级为 provider/runtime authority。JoinedStr、
+  BinOp、`%`、`.format`、`urljoin` 只保留结构。零 URL 或零 dynamic evidence
+  也不证明 provider 缺失或 runtime closure 完整。
+- LOCKED 只允许另冻 P0C provider-resolution contract；任何 cap/receipt/OID/hash/
+  FETCH_HEAD/partial/implementation failure 为 INVALID。当前设计不授权 source blob
+  read、P0B/P0C、dataset host、P1/S0B census、payload 或主线/App/生产/safety。
+  机器设计 SHA-256 为
+  `a15ed80b6f64f339b1a3c4ee6376de38ce50802e61094f92de51712db35b9324`。
