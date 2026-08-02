@@ -26,3 +26,25 @@ tasks.register<JavaExec>("runDualLoopJrdbShadowReplay") {
     classpath = sourceSets["test"].runtimeClasspath
     mainClass.set("com.linnan.blindassist.session.DualLoopJrdbShadowReplayMain")
 }
+
+tasks.register<JavaExec>("runHftfD34DetectorTrackParity") {
+    group = "verification"
+    description = "Runs source-only HFTF D34 Kotlin/Python track-state parity."
+    dependsOn(tasks.named("testClasses"))
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.linnan.blindassist.session.HftfD34DetectorTrackParityMain")
+    args(
+        providers.gradleProperty("d34Input").orElse(
+            rootProject.layout.projectDirectory.file(
+                "artifacts.local/evidence/hftf/" +
+                    "stage-c-d34-kotlin-shadow-state-parity-v0/parity_input.tsv"
+            ).asFile.absolutePath
+        ).get(),
+        providers.gradleProperty("d34Output").orElse(
+            rootProject.layout.projectDirectory.file(
+                "artifacts.local/evidence/hftf/" +
+                    "stage-c-d34-kotlin-shadow-state-parity-v0/report.json"
+            ).asFile.absolutePath
+        ).get()
+    )
+}
