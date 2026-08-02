@@ -106,6 +106,14 @@ source-pair folds 均含正负例。等容量 history replication 的 corridor A
 两折 seed-mean 都为负，aggregate `-.00618/-.03098`，终态
 `D15_JRDB_FUTURE_ONSET_HISTORY_REPLICATION_NOT_SUPPORTED`。D13 弱正信号因此只保留
 在 THOR source-local representation 层，不升级为跨数据集效应。
+随后
+[D16 TartanGround true-onset baseline](../hftf/HFTF_STAGE_C_D16_TARTANGROUND_TRUE_FUTURE_ONSET_BASELINE_2026-08-02.md)
+在 15 environments、495 samples 上物化 19,478 eligible cells 与 1,652 onset
+cells，四个 near/far × body/head targets 在三折都有正负。相同 frozen-spatial
+history recipe 的 near 增量仅千分位，far body/head 多数为负，终态
+`D16_TARTANGROUND_FUTURE_ONSET_HISTORY_INCREMENT_NOT_SUPPORTED`。这关闭 frozen
+single-frame feature + post-hoc temporal residual family；true-onset task 保留，
+下一表示必须在预训练阶段共同编码时序。
 
 此前 D5/D6 Development 已推进到
 [outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：

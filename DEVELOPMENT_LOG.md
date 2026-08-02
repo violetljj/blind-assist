@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D16
+  TartanGround true-future-onset baseline。继承既有 15-environment 三折，物化
+  495 samples、19,478 eligible cells、1,652 onset cells；near/far × body/head
+  四 targets 每折均有正负。相同 14,484 参数 frozen-spatial current/history
+  head 下，near AUROC/AP 增量仅约 `+.0005–+.0012`、2/3 folds 正，far body/head
+  多数反向。终态 `D16_TARTANGROUND_FUTURE_ONSET_HISTORY_INCREMENT_NOT_SUPPORTED`
+  与 `FROZEN_SINGLE_FRAME_FEATURE_PLUS_POSTHOC_TEMPORAL_RESIDUAL_FAMILY_STOP`。
+  数据机会充足但表示仍失败；下一候选必须前移到五帧共同时空预训练，不再调
+  residual head/seed/threshold，主线与默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D15 JRDB
   true-future-onset 独立复现。用 anchor-frame source-native 3D person geometry
   排除 current-risk，得到 proximity 14 positive / 102 eligible、corridor 10 / 71；

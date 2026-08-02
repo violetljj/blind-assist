@@ -23,7 +23,10 @@ D13-future-onset-temporal-spatial-increment-supported /
 D14-direction-preserving-raft-features-materialized /
 D14-explicit-motion-future-onset-increment-not-supported /
 D15-jrdb-corridor-future-onset-two-fold-ready /
-D15-jrdb-future-onset-history-replication-not-supported`
+D15-jrdb-future-onset-history-replication-not-supported /
+D16-tartanground-future-onset-three-fold-ready /
+D16-tartanground-history-increment-not-supported /
+frozen-single-frame-posthoc-temporal-residual-family-stop`
 
 ## 研究问题与版本
 
@@ -268,6 +271,34 @@ D15 从 JRDB anchor-frame 3D-person geometry 计算 current state，物化 proxi
 均为负，aggregate `-.00618/-.03098`，终态
 `D15_JRDB_FUTURE_ONSET_HISTORY_REPLICATION_NOT_SUPPORTED`。D13 只保留为 THOR
 source-local weak signal；不继续当前 frozen representation search。
+
+### D16 TartanGround true-future-onset baseline
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  materialize_stage_c_d16_tartanground_future_onset.py `
+  --output-root artifacts.local/evidence/hftf/<d16-onset-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  extract_stage_c_d16_tartanground_spatial_features.py `
+  --samples artifacts.local/evidence/hftf/<d16-onset-run>/samples.jsonl `
+  --output artifacts.local/evidence/hftf/<d16-feature-run>/features.npz
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d16_tartanground_future_onset_temporal_baseline.py `
+  --samples artifacts.local/evidence/hftf/<d16-onset-run>/samples.jsonl `
+  --features artifacts.local/evidence/hftf/<d16-feature-run>/features.npz `
+  --output artifacts.local/evidence/hftf/<d16-baseline-run>/report.json
+```
+
+D16 继承 D5 三折 environment assignments，物化 19,478 eligible cells、1,652 onset
+cells；near/far × body/head 四个 targets 在每折都有正负。等容量 frozen-spatial
+history 的 near 增量仅约 `+.0005–+.0012`，far body/head AUROC 为负，未达到
+预定 effect floor。终态关闭 frozen single-frame feature + post-hoc temporal
+residual family；下一候选必须在 representation pretraining 阶段共同编码五帧。
 
 ## 稳定 Interface
 
