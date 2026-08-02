@@ -15,6 +15,8 @@
 > `D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP`
 >
 > `D6_MOTION_ALIGNED_PAIR_SEPARABILITY_SIGNAL_MIXED_NOT_READY_TO_TRAIN`
+>
+> `D6_RAFT_RESIDUAL_FLOW_SEPARABILITY_NOT_STABLE`
 
 此前 confidence-anchored pair residual 在 TartanGround
 Development/outcome-unseen 上建立的 false-alert ranking signal 保留，不因本轮撤销。
@@ -268,6 +270,46 @@ fold3 b1273299075edf6a47397a763f6a44b26c5dac3cce7bb09da7007fdf9a1f866c
 fold4 773a835f47f2f00af360ee7d612ec35a270a76b0971e1d5e03029b6c5237a78e
 ```
 
+## Pretrained RAFT dense-flow representation
+
+为区分“classical alignment 不稳”与“motion signal 本身不足”，固定 torchvision
+RAFT-small `FlyingChairs + FlyingThings3D` 权重：
+
+```text
+raft_small_C_T_V2-01064c6d.pth
+01064c6dba73b0fc9fc8edf772248560a00a3acfd62ac6677e9eeebad9680e27
+```
+
+三臂为 raw pixel residual、RAFT flow magnitude、RAFT flow 减去 dominant global
+motion 后的 residual-flow magnitude；继续使用相同 3×6 grid summary、train-only
+L2 projection、source folds 与 AUROC/AP 联合门。
+
+初版 partial-affine global-flow extraction 覆盖 `96.16%`，在监督投影前合法终止。
+修复版在 affine 共识不足时使用 spatial median-flow translation，coverage 达到
+`100%`，随后一次性评价五折。residual-flow 相对 raw pixel：
+
+| fold | AUROC delta | AP delta |
+|---:|---:|---:|
+| 0 | -0.0833 | -0.0333 |
+| 1 | -0.2222 | -0.2000 |
+| 2 | +0.3333 | +0.3556 |
+| 3 | -0.3333 | -0.3611 |
+| 4 | -0.3333 | -0.3333 |
+
+只有 `1/5` folds 双增量。未去全局运动的 raw RAFT flow 也没有任何 fold 双增量；
+AUROC delta 为 `-0.1667/-0.3333/-0.3333/-0.2222/0.0000`。因此：
+
+> `D6_RAFT_RESIDUAL_FLOW_SEPARABILITY_NOT_STABLE`
+
+这关闭的是当前 global phase supervision + 54-dimensional motion grid summary，不证明
+dense flow 没有信息，也不撤销 classical folds0/1 的局部正信号。修复版报告：
+
+```text
+artifacts.local/evidence/hftf/
+stage-c-d6-sanpo-raft-motion-representation-v1/report.json
+c1f95073f38a0a73443455ab7795abc3b58faec8f24dc422dc8dfabdcb2ff6a4
+```
+
 ## 保留与关闭
 
 保留：
@@ -285,22 +327,24 @@ fold4 773a835f47f2f00af360ee7d612ec35a270a76b0971e1d5e03029b6c5237a78e
 - 当前 candidate score 经固定低容量真实域校准后的稳定增量；
 - 当前 global phase label 直接监督的 exact early-pair field residual recipe；
 - 当前 sparse-LK partial-affine residual 直接进入 field training；
+- 当前 RAFT flow/residual-flow 的 54-dimensional global phase summary；
 - 在同一表示上继续搜索 threshold、top-k、vote count 或确认长度。
 
 未评价：
 
-- 更可靠 learned flow/correspondence representation 是否可用；
+- source-diverse local actionability supervision 下的 learned motion field；
 - positive-event recall 下的任何新执行阈值；
 - source-general real transfer；
 - 主线、App、设备、生产或安全效用。
 
 ## 下一可证伪候选
 
-下一候选继续只改变 motion representation，但不再放松 classical alignment coverage
-或重试其 feature thresholds。使用现有公开预训练的 dense optical-flow/
-correspondence encoder，先 outcome-blind 地验证所有 folds 的 flow coverage 与数值
-稳定性；达标后复用完全相同的 54 维 grid summary、fold split、L2 projection 与
-AUROC/AP 联合门。只有跨可评价 folds 稳定增量，才进入 field residual training。
+同一 30-session global phase cohort 上的 output calibration、raw early-pair、classical
+alignment 和 RAFT summary 已足以停止；不再更换 flow backbone、grid threshold、
+projection 或 fold。下一科学瓶颈是 supervision granularity 与 source diversity：
+需要多个新真实来源的局部 route/actionability correspondence，而不是把全事件 phase
+label 重复到所有 cells。该数据到达前 HFTF 保持 active candidate side lane，但不再
+在这 30 sessions 上消费更多模型变化。
 
 ## 复现
 
@@ -340,4 +384,8 @@ foreach ($fold in 0..4) {
     --heldout-fold $fold `
     --output "artifacts.local/evidence/hftf/stage-c-d6-sanpo-motion-alignment-separability-v1-fold-$fold/report.json"
 }
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_raft_motion_representation.py `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-raft-motion-representation-v1/report.json
 ```

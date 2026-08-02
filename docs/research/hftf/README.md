@@ -71,6 +71,7 @@ D6_SYNTHETIC_VETO_RANKING_REAL_TRANSFER_NOT_SUPPORTED /
 D6_CANDIDATE_AWARE_REAL_CALIBRATION_INCREMENT_NOT_SUPPORTED /
 D6_REAL_PHASE_SUPERVISED_EARLY_PAIR_CANARY_INCREMENT_NOT_SUPPORTED_STOP /
 D6_MOTION_ALIGNED_PAIR_SEPARABILITY_SIGNAL_MIXED_NOT_READY_TO_TRAIN /
+D6_RAFT_RESIDUAL_FLOW_SEPARABILITY_NOT_STABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -440,6 +441,11 @@ partial-affine residual 在 held-out folds 0/1 得到 AUROC/AP 双增量，fold4
 fold2/3 因各一个短 phase alignment coverage 只有 `.64/.667` 而不评价。终态为
 `D6_MOTION_ALIGNED_PAIR_SEPARABILITY_SIGNAL_MIXED_NOT_READY_TO_TRAIN`：保留显式
 ego-motion removal 的正信号，但当前 classical alignment 不进入 field training。
+预训练 RAFT-small 随后把 dense-flow coverage 修复到 `100%`，但 residual-flow 相对
+raw pixel 仅 fold2 双增量，其余 4 folds 的 AUROC/AP 均下降；raw flow 也为
+`0/5` 双增量。终态为 `D6_RAFT_RESIDUAL_FLOW_SEPARABILITY_NOT_STABLE`。停止在当前
+30 sessions 上更换 motion backbone/summary；下一瓶颈是 source-diverse local
+actionability supervision。
 
 ## 当前结论
 

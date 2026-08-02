@@ -144,6 +144,11 @@ partial-affine residual 在 folds 0/1 双增量、fold4 双负，fold2/3 因局�
 alignment coverage 不足保持 `NOT_EVALUABLE`。终态为
 `D6_MOTION_ALIGNED_PAIR_SEPARABILITY_SIGNAL_MIXED_NOT_READY_TO_TRAIN`；显式
 ego-motion removal 信号保留，但当前 classical alignment 不进入 field training。
+进一步以固定 pretrained RAFT-small 将 flow coverage 提到 `100%` 后，residual-flow
+相对 raw pixel 只有 fold2 的 AUROC/AP 双增量，其余 4 folds 双负；raw flow 也没有
+fold 双增量。终态为 `D6_RAFT_RESIDUAL_FLOW_SEPARABILITY_NOT_STABLE`。当前
+30-session global phase cohort 停止更多模型变化，下一需求是新真实来源的 local
+route/actionability correspondence。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

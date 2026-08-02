@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6 pretrained
+  RAFT-small motion representation evaluation。权重固定为 torchvision
+  `raft_small_C_T_V2-01064c6d.pth`，SHA-256
+  `01064c6dba73b0fc9fc8edf772248560a00a3acfd62ac6677e9eeebad9680e27`。比较 raw
+  pixel、raw dense flow、去 dominant global motion 的 residual flow；三臂共享相同
+  3×6 grid summary、train-only L2 projection 与五折。初版 partial-affine extraction
+  coverage `.9616`，在监督投影前终止；outcome-blind 增加 median-flow translation
+  fallback 后 coverage `1.0`。residual-flow 相对 raw pixel 的 AUROC/AP delta：
+  fold0 `-.0833/-.0333`、fold1 `-.2222/-.2000`、fold2 `+.3333/+.3556`、
+  fold3 `-.3333/-.3611`、fold4 `-.3333/-.3333`；raw flow 为 `0/5` 双增量。
+  终态 `D6_RAFT_RESIDUAL_FLOW_SEPARABILITY_NOT_STABLE`。保留 classical folds0/1
+  motion-alignment 局部正信号，但停止在当前 30-session global phase cohort 上继续
+  更换 flow backbone/summary。下一科学需求是 source-diverse local
+  route/actionability correspondence，而不是更多模型控制面。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6
   motion-alignment separability audit。只将 raw adjacent-frame residual 替换为
   sparse-LK + RANSAC partial-affine aligned residual；两臂共享 54 维 `3×6`

@@ -6,7 +6,8 @@ D3-Q0-screening-effect-contract-frozen /
 D6-real-veto-transfer-not-supported /
 D6-real-calibration-increment-not-supported /
 D6-real-phase-early-pair-not-supported /
-D6-motion-alignment-separability-mixed`
+D6-motion-alignment-separability-mixed /
+D6-raft-residual-flow-not-stable`
 
 ## 研究问题与版本
 
@@ -56,6 +57,11 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_motion_alignment_separability.py `
   --heldout-fold 0 `
   --output artifacts.local/evidence/hftf/<motion-alignment-run>/report.json
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf evaluate_stage_c_d6_sanpo_raft_motion_representation.py `
+  --raft-weights artifacts.local/models/hftf/torch/optical-flow/raft_small_C_T_V2-01064c6d.pth `
+  --output artifacts.local/evidence/hftf/<raft-motion-run>/report.json
 ```
 
 物化器逐帧验证 review-bundle SHA，重叠 observation 必须 byte-identical，且每个输出
@@ -73,6 +79,8 @@ AUROC 与 AP delta 同时为正才允许扩展。
 motion-alignment evaluator 用 sparse-LK + RANSAC partial affine 比较 raw/aligned
 相邻帧残差；两臂固定相同 54 维 grid features 与 L2 projection。配准 coverage 在
 监督投影前判定，失败只产生 `NOT_EVALUABLE`。
+RAFT evaluator 固定校验官方 small weights SHA-256，并在一次运行中输出五折 raw
+pixel / raw flow / global-motion-residual flow 对照；不按 fold 选择 representation。
 
 ## 稳定 Interface
 
