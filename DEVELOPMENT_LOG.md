@@ -4279,3 +4279,31 @@
   read、P0B/P0C、dataset host、P1/S0B census、payload 或主线/App/生产/safety。
   机器设计 SHA-256 为
   `a15ed80b6f64f339b1a3c4ee6376de38ce50802e61094f92de51712db35b9324`。
+
+## 2026-08-02：HFTF D5-S0B-P0B provider semantic evidence execution contract
+
+- 执行者：violjjet。P0B 只复用 P0A local Git object store；18 个 hash-bound
+  source blobs 必须按 closure 顺序逐个完成 commit:path OID、type、size、bytes 与
+  SHA-256 收据，并且所有 object receipts 在首个 AST extraction 前完成。禁止新
+  fetch/checkout/network、unresolved source、外部 txt/config、dataset host 或 ZIP。
+- runtime 冻结为 CPython 3.11.9，并绑定 launcher/base executable、parser DLL、
+  `ast.py` 与 `tokenize.py`。每个 AST occurrence（包括复用的 operator/context
+  singleton）单独编号；child-first canonical shallow dump 构成 Merkle 式 node ID。
+  validator 从每个 Module 根按 runtime `_fields` 与 list index 顺序重走完整 DFS，
+  并核对每 path preorder/count/depth、双向 parent/child edge 与全部 node IDs。
+- strings/calls/assignments/expressions 必须与 all-node AST exact one-to-one 覆盖；
+  literal role/docstring、call/assignment links、function arguments 与 import aliases
+  均从 canonical dump graph 回算。每个成功 blob 后立即执行 global AST/record caps；
+  syntax NOT_EVALUABLE 使用 exact schema，携带 parse prefix AST/record cap usage，
+  因而后续 SyntaxError 不能掩盖已发生的 cap overflow。
+- focused tests `16/16`、项目标准 HFTF full suite `502/502`。最终科学与工程独立
+  复审均为 `CLEAR`、0 blocker；formal canonical root 仍不存在。planner/test/
+  叙述合同/机器合同 SHA-256 分别为
+  `93a31d1f45b399d7e3fb43519e70c483322ade285fe627f3fe0cdec231c1abcd`、
+  `cceb16f8587bd4f80e27655f4a97a8ed637ae701a25e9d2a976fb5498efbf038`、
+  `8f2af2ee97ab50df049368e11f43d5b9eba57089a9453fc58775c0fb34cd3f52`、
+  `dce5c3b07350cf52e0b2dcbe8e34868b8dcd734fe0118f1ebccba964dc782187`。
+- 当前只授权精确提交推送；正式 P0B 必须在推送后再次通过 tracked/clean、
+  `HEAD == origin/master`、合同/实现/测试 hash 与 root-absent gate，且只允许调用
+  一次 canonical CLI。LOCKED 只允许另冻 P0C contract，不自动授权 P0C、host、
+  P1/S0B census、payload、主线/App/生产或 safety claim。

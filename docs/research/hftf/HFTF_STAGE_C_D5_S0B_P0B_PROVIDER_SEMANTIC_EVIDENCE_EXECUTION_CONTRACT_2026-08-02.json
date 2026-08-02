@@ -1,0 +1,194 @@
+{
+  "schema": "blindassist_hftf_stage_c_d5_s0b_p0b_provider_semantic_evidence_execution_contract",
+  "status": "FROZEN_AFTER_P0B_DESIGN_BEFORE_FIRST_P0B_SOURCE_BLOB_SEMANTIC_READ",
+  "workflow_profile": "THESIS_DEVELOPMENT",
+  "executor": "violjjet",
+  "purpose": "one_shot_bounded_exact_source_ast_evidence_lock_without_provider_resolution_or_network",
+  "parents": {
+    "p0b_design": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_DESIGN_2026-08-02.json",
+      "sha256": "a15ed80b6f64f339b1a3c4ee6376de38ce50802e61094f92de51712db35b9324",
+      "required_status": "FROZEN_AFTER_P0A_SOURCE_CLOSURE_LOCK_BEFORE_P0B_SOURCE_BLOB_SEMANTIC_READ"
+    },
+    "p0a_locked_result": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0A_TOOLKIT_SOURCE_CLOSURE_LOCKED_RESULT_2026-08-02.json",
+      "sha256": "15f0bc4c96a1adea45aaa1ee1d1dddba4341f3390500147c165a4c343b523137",
+      "required_terminal": "D5_S0B_P0A_TOOLKIT_SOURCE_CLOSURE_LOCKED_REQUIRES_P0B_PROVIDER_RESOLUTION"
+    }
+  },
+  "source_boundary": {
+    "toolkit_repository": "https://github.com/castacks/tartanairpy.git",
+    "toolkit_commit": "158a6844d782942110967325ca3082f50ab2bfc7",
+    "p0a_toolkit_root": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0a-toolkit-source-closure-20260802/toolkit",
+    "p0a_closure_artifact": {
+      "path": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0a-toolkit-source-closure-20260802/closure.json",
+      "bytes": 8918,
+      "sha256": "ef0b07fca57004c59d0bd659133e3cc7155705f26ed1d93f864c989b7eb78881"
+    },
+    "p0a_artifacts": {
+      "execution_contract": {
+        "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0A_TOOLKIT_SOURCE_CLOSURE_EXECUTION_CONTRACT_2026-08-02.json",
+        "bytes": 5845,
+        "sha256": "0da2a0ca485435b5ad458895f2dbc1cb7c929794c69d888ab2f664dcad5bfb93"
+      },
+      "attempt": {
+        "path": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0a-toolkit-source-closure-20260802/attempt.json",
+        "bytes": 588,
+        "sha256": "9107aaf0a82b0dc9538a46f09184958d2af22bd4d98c43490ad8d0004e1d01ee"
+      },
+      "preflight": {
+        "path": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0a-toolkit-source-closure-20260802/preflight.json",
+        "bytes": 1050,
+        "sha256": "c0ae093d5722c379614417bac0cb56887df550aa166d38475d2a7b4d4627fcd2"
+      },
+      "tree": {
+        "path": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0a-toolkit-source-closure-20260802/tree.json",
+        "bytes": 1228,
+        "sha256": "8b74807e5584297d0875e345ec47301208f78c48102cc90cd0646f94f2b20f0e"
+      },
+      "closure": {
+        "path": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0a-toolkit-source-closure-20260802/closure.json",
+        "bytes": 8918,
+        "sha256": "ef0b07fca57004c59d0bd659133e3cc7155705f26ed1d93f864c989b7eb78881"
+      },
+      "result": {
+        "path": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0a-toolkit-source-closure-20260802/result.json",
+        "bytes": 884,
+        "sha256": "72dcebb4f8ca69518a8d86bc3982f5e2f5691faf7aafbb60351533dc132f7582"
+      }
+    },
+    "exact_blob_count": 18,
+    "exact_total_source_bytes": 250569,
+    "exact_ordered_row_manifest_sha256": "e1ceefc4b25126a296753e8b9824f941801036f9d6a1f991cd44d9e4281768b2",
+    "p0a_unresolved_local_import_count": 8,
+    "p0a_python_tree_path_count": 19,
+    "read_every_and_only_exact_ordered_closure_row_once": true,
+    "unresolved_or_unreachable_source_read": false,
+    "external_txt_or_config_read": false,
+    "new_git_fetch_checkout_or_network": false
+  },
+  "allowed_local_git_reads_per_row_in_order": [
+    "git_rev_parse_exact_commit_colon_path",
+    "git_cat_file_type_hash_bound_oid",
+    "git_cat_file_size_hash_bound_oid",
+    "git_cat_file_blob_hash_bound_oid_once"
+  ],
+  "runtime_lock": {
+    "python_implementation": "CPython",
+    "python_version": "3.11.9",
+    "python_launcher_path": "E:\\codex-tools\\tools\\venvs\\blindassist-venv-export312\\Scripts\\python.exe",
+    "python_launcher_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "python_base_executable_path": "E:\\codex-tools\\tools\\python-3.11-blindassist\\python.exe",
+    "python_base_executable_sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec",
+    "python_parser_runtime_path": "E:\\codex-tools\\tools\\python-3.11-blindassist\\python311.dll",
+    "python_parser_runtime_sha256": "0817a2a657a24c0d5fbb60df56960f42fc66b3039d522ec952dab83e2d869364",
+    "python_stable_abi_path": "E:\\codex-tools\\tools\\python-3.11-blindassist\\python3.dll",
+    "python_stable_abi_sha256": "db84bc052cfb121fe4db36242ba5f1d2c031b600ef5d8d752cf25b7c02b6bac6",
+    "ast_module_path": "E:\\codex-tools\\tools\\python-3.11-blindassist\\Lib\\ast.py",
+    "ast_module_sha256": "60ca452cfac189e51c7c2a582c1240c28fccd12964221bc8d10462f2ee74de18",
+    "tokenize_module_path": "E:\\codex-tools\\tools\\python-3.11-blindassist\\Lib\\tokenize.py",
+    "tokenize_module_sha256": "7c723db5c8f22bf930658bc89b2fab77f2d5702f3fefc116597f23051d028b7e"
+  },
+  "algorithm_lock": {
+    "canonical_json": "utf8_ensure_ascii_false_sort_keys_true_separators_comma_colon_single_lf",
+    "node_id": "sha256_utf8_nul_join_path_preorder_node_type_start_end_span_canonical_shallow_ast_dump_with_direct_child_occurrence_ids_preorder_ast_iter_fields_depth_first_children_hashed_first",
+    "canonical_ast_dump": "shallow_node_type_and_ast_iter_fields_scalars_with_direct_children_replaced_by_node_id_json_scalars_direct_bytes_hex_complex_repr_ellipsis_tag_using_canonical_json_without_lf",
+    "source_segment": "ast_get_source_segment_on_detected_decoded_source",
+    "url_scheme_class": "case_insensitive_prefix_https_then_http_else_none",
+    "archive_suffix_class": "case_insensitive_endswith_dot_zip_else_none",
+    "lexical_scope": "class_and_function_name_stack_dot_joined",
+    "literal_role_precedence": "docstring_then_call_arg_then_assignment_then_default_annotation_then_ordinary_expr_then_other",
+    "cap_scope": "record_counts_ast_nodes_and_json_bytes_global_ast_depth_per_blob_single_string_and_segment_per_record"
+  },
+  "frozen_extraction": {
+    "maximum_string_literal_records": 4096,
+    "maximum_call_site_records": 8192,
+    "maximum_assignment_records": 4096,
+    "maximum_function_records": 2048,
+    "maximum_import_alias_records": 4096,
+    "maximum_expression_records": 32768,
+    "maximum_ast_nodes": 65536,
+    "maximum_ast_depth": 256,
+    "maximum_single_string_utf8_bytes": 16384,
+    "maximum_single_source_segment_utf8_bytes": 16384,
+    "maximum_total_evidence_json_bytes": 8388608,
+    "string_literal_role_classes": [
+      "module_docstring",
+      "class_docstring",
+      "function_docstring",
+      "ordinary_expression",
+      "assignment_value",
+      "call_positional_argument",
+      "call_keyword_argument",
+      "default_or_annotation",
+      "other_lexical_context"
+    ],
+    "no_truncation_drop_sampling_or_early_success": true,
+    "all_object_receipts_complete_before_ast": true
+  },
+  "implementations": {
+    "p0b_planner": {
+      "path": "scripts/research/hftf/plan_stage_c_d5_s0b_p0b_provider_semantic_evidence.py",
+      "sha256": "93a31d1f45b399d7e3fb43519e70c483322ade285fe627f3fe0cdec231c1abcd"
+    },
+    "durability_and_git_helper": {
+      "path": "scripts/research/hftf/plan_stage_c_d5_s0a_tartanground_catalog.py",
+      "sha256": "1c84bb5ed680e7f36cdb1f7f81913e3e3bd906b082c4a8950946500a6b044f71"
+    },
+    "narrative_mirror": {
+      "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_EXECUTION_CONTRACT_2026-08-02.md",
+      "sha256": "8f2af2ee97ab50df049368e11f43d5b9eba57089a9453fc58775c0fb34cd3f52"
+    }
+  },
+  "implementation_tests": {
+    "planner_test": {
+      "path": "scripts/research/hftf/test_plan_stage_c_d5_s0b_p0b_provider_semantic_evidence.py",
+      "sha256": "cceb16f8587bd4f80e27655f4a97a8ed637ae701a25e9d2a976fb5498efbf038"
+    },
+    "test_count": 16,
+    "tests_passed": 16,
+    "hftf_full_test_count": 502,
+    "hftf_full_tests_passed": 502
+  },
+  "canonical_artifacts": {
+    "root": "artifacts.local/evidence/hftf/stage-c-d5-s0b-p0b-provider-semantic-evidence-20260802",
+    "attempt": "attempt.json",
+    "preflight": "preflight.json",
+    "evidence": "evidence.json",
+    "result": "result.json",
+    "failure": "failure.json",
+    "unknown_or_partial_root_is_invalid": true
+  },
+  "planned_terminals": {
+    "evidence_locked": "D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_LOCKED_REQUIRES_P0C_PROVIDER_RESOLUTION",
+    "source_not_evaluable": "D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_NOT_EVALUABLE",
+    "execution_invalid": "D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_INVALID_STOP"
+  },
+  "classification": {
+    "verified_source_incompatible_with_frozen_encoding_or_ast_grammar": "source_not_evaluable",
+    "p0a_dynamic_evidence_nonzero": "source_not_evaluable",
+    "receipt_hash_oid_type_size_fetch_head_runtime_cap_partial_or_implementation_failure": "execution_invalid",
+    "zero_or_multiple_url_literals": "evidence_locked_without_provider_conclusion"
+  },
+  "firewall": {
+    "ast_parse_pycf_only_ast_only": true,
+    "code_object_or_bytecode_compiled": false,
+    "source_code_import_or_execution": false,
+    "provider_control_flow_or_url_derivation_interpreted": false,
+    "official_provider_url_template_established": false,
+    "exact_198_parent_archive_url_mapping_established": false,
+    "dataset_host_request_made": false,
+    "dataset_zip_or_payload_read": false
+  },
+  "authorization": {
+    "commit_and_push_contract_implementation_and_tests": true,
+    "execute_once_only_after_push_git_gate_and_double_audit": true,
+    "p0b_exact_local_source_read_authorized_after_all_gates": true,
+    "new_git_fetch_checkout_or_network_authorized": false,
+    "dataset_host_request_authorized": false,
+    "p0c_execution_authorized_automatically": false,
+    "p1_s0b_payload_or_effect_authorized": false,
+    "research_mainline_or_default_app_changed": false,
+    "production_or_safety_claim_authorized": false
+  }
+}
