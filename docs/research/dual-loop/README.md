@@ -76,7 +76,15 @@ passage negatives 并改用固定 spatial feature 后，mean 为
 `12.33/8.78/7.22`；相对外部 output-field head 的 false alerts 9/9 改善，
 但召回下降且 0/9 超过 YOLO。统一阈值和低置信 parallel-curb canary 都只移动
 trade-off。跨源空间关系正结果保留在 representation/guardrail 层，研究主线和
-默认 App 继续不变；下一步需要人工确认、source-isolated 的成对难例监督。
+默认 App 继续不变。随后
+[D6 多源关系监督 canary](../hftf/HFTF_STAGE_C_D6_RELATION_SUPERVISION_CANARY_2026-08-02.md)
+加入 Luna merged relation pool 与 r789 人工状态转移片段；两者都没有超过上述
+reviewed-normal-negative reference。更关键的是，11-source public-video LOSO
+对 intervention 的 frame/segment recall 都为 `0`，表明现有 fixed HFTF spatial
+feature 不能把 actionability relation 迁移到新来源。该负结果不撤销
+spatial-over-output-field 正结果，只关闭“增加关系监督即可救固定 backbone”的窄
+假设；下一阶段必须改为 relation-aware representation，并先通过 source-heldout
+actionability recall。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

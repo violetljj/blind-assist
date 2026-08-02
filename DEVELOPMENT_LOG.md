@@ -4754,3 +4754,20 @@
   quarantine 不升级为真值或训练 reference。下一步需要新的、人工确认且 source
   isolated 的 parallel-curb / obstacle-approach 关系监督，不再搜索当前 cohort 的
   threshold、L2、集成或更多低置信负例。
+# 2026-08-02 — HFTF D6 多源关系监督 canary
+
+- 复用 r789 的 16 个人工 actionability events，按
+  `clear/context → intervention → clear` 状态转移切成 28 个 public-video
+  segments，并以 2 Hz 从 11 个本地源视频直接解码。
+- 与既有 provisional supervision 合并后固定为
+  `42 segments / 18 sources / 485 frames`；不更换 backbone、L2 或确认逻辑。
+- seed17/fold0 SANPO canary 为 `12 hits / 11 false alerts / 9 cleared`，
+  未超过 reviewed-normal-negative reference `14/10/7`，完整阈值曲线也没有
+  YOLO Pareto 点，因此没有扩到 9 checkpoints。
+- public-video 逐来源留一诊断对 intervention 的 frame/segment recall 都为
+  `0`，balanced accuracy 分别为 `0.4962/0.5000`。结论是 fixed HFTF spatial
+  representation 缺少跨来源 actionability relation 可迁移性，而不是 parser、
+  path、scanner 或 output-size 工程 invalid。
+- 保留此前 spatial-over-output-field 的正结果；只关闭“增加关系监督即可救固定
+  backbone”的窄假设。下一步必须训练 relation-aware representation，并先通过
+  source-heldout actionability recall，才进入新的 real-event 评价。

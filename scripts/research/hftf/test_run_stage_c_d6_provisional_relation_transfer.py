@@ -8,12 +8,46 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from run_stage_c_d6_provisional_relation_transfer import (
     active_at_threshold,
+    actionability_segments,
+    collect_merged_relation_sources,
     collect_reviewed_negative_sources,
     collect_training_episodes,
 )
 
 
 class ProvisionalRelationTransferTest(unittest.TestCase):
+    def test_actionability_segments_preserve_causal_state_changes(self):
+        segments = actionability_segments(
+            {
+                "item_id": "event-1",
+                "window_ms": [1000, 5000],
+                "intervention_required": True,
+                "transitions": [
+                    {
+                        "state": "intervention_needed",
+                        "timestamp_ms": 2000,
+                    },
+                    {
+                        "state": "route_clear",
+                        "timestamp_ms": 3000,
+                    },
+                    {
+                        "state": "intervention_needed",
+                        "timestamp_ms": 4000,
+                    },
+                ],
+            }
+        )
+        self.assertEqual(
+            [
+                (1000, 2000, 0),
+                (2000, 3000, 1),
+                (3000, 4000, 0),
+                (4000, 5000, 1),
+            ],
+            segments,
+        )
+
     def test_threshold_replays_causal_confirmation(self):
         event = {
             "parent_event_id": "event-1",
@@ -209,6 +243,81 @@ class ProvisionalRelationTransferTest(unittest.TestCase):
         self.assertEqual(
             ["parallel_curb"],
             canary[0]["risk_profile"]["observed_types"],
+        )
+
+    def test_merged_relation_removes_cross_label_frames(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            shared = root / "shared.png"
+            positive = root / "positive.png"
+            negative = root / "negative.png"
+            for path in (shared, positive, negative):
+                path.write_bytes(path.name.encode())
+
+            def candidate(
+                candidate_id,
+                observed_types,
+                frames,
+            ):
+                return {
+                    "candidate_id": candidate_id,
+                    "source_id": "source-1",
+                    "candidate_status": "luna_reviewed_keep",
+                    "pool_authority": "DISCOVERY_CANDIDATE_ONLY",
+                    "truth_status": "not_evaluated",
+                    "luna_reviewed_types": observed_types,
+                    "luna_review_confidence": 0.8,
+                    "luna_review_sha256": candidate_id * 8,
+                    "start_timestamp_ms": 0,
+                    "end_timestamp_ms": 100,
+                    "peak_frame_index": 0,
+                    "frame_refs": frames,
+                }
+
+            def frame(path, value, timestamp):
+                return {
+                    "frame_ref": str(path),
+                    "frame_sha256": value * 64,
+                    "timestamp_ms": timestamp,
+                }
+
+            pool_path = root / "pool.json"
+            pool_path.write_text(
+                json.dumps(
+                    {
+                        "pool": [
+                            candidate(
+                                "positive",
+                                ["front_obstacle_approach"],
+                                [
+                                    frame(shared, "a", 0),
+                                    frame(positive, "b", 100),
+                                ],
+                            ),
+                            candidate(
+                                "negative",
+                                ["parallel_curb"],
+                                [
+                                    frame(shared, "a", 0),
+                                    frame(negative, "c", 100),
+                                ],
+                            ),
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            episodes = collect_merged_relation_sources(pool_path)
+        self.assertEqual(2, len(episodes))
+        self.assertEqual(
+            [1, 1],
+            [len(episode["frames"]) for episode in episodes],
+        )
+        self.assertTrue(
+            all(
+                episode["excluded_cross_label_frame_count"] == 1
+                for episode in episodes
+            )
         )
 
 

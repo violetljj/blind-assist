@@ -798,6 +798,7 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C D5 TartanGround differential-drive source authority S0](HFTF_STAGE_C_D5_TARTANGROUND_DIFF_SOURCE_AUTHORITY_AND_RECRUITABILITY_S0_2026-08-02.md)
 - [Stage C machine-readable D5 TartanGround S0](HFTF_STAGE_C_D5_TARTANGROUND_DIFF_SOURCE_AUTHORITY_AND_RECRUITABILITY_S0_2026-08-02.json)
 - [Stage C D5 TartanGround Development pilot](HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)
+- [Stage C D6 多源关系监督 canary](HFTF_STAGE_C_D6_RELATION_SUPERVISION_CANARY_2026-08-02.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
