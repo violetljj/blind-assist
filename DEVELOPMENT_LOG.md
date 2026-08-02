@@ -5425,3 +5425,23 @@
   D32/D33/D41 evaluator 11 tests 通过；report 连续重建 SHA 稳定为
   `73418b3308a259e63a2c413105d907f6ea416297628568f1d80f0d0d0db71ba3`。
   主线、默认 App 与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D42 JRDB
+  ego-object metric teacher。D42 在 outcome 前冻结，复用 D41 detector-matched
+  opportunities 与 7-frame history，以 packet 的 `odom <- base_link` pose、
+  `center_base_link_m`、`center_odom_m` 构造 current-static、ego-only、
+  ego+person-world 三臂，固定预测 `+15 frames`。3,384 opportunities /
+  53 identities、4 sequences 全部 evaluable；transform parity maximum error
+  `1.1368683772161603e-13 m`。完整 teacher 相对 current-static 使 mean
+  horizontal error `0.80935 -> 0.34757 m`（-57.06%）、median
+  `0.74938 -> 0.14080 m`（-81.21%），`79.994%` opportunities 改善，
+  range/bearing error 分别降低 `81.80%/53.79%`，四 sequences 全部改善，
+  7/7 support gates 通过，终态
+  `D42_JRDB_EGO_OBJECT_METRIC_TEACHER_SUPPORTED_DEVELOPMENT_ONLY`。
+  ego-only 仅改善 `9.65%`，加入 person world motion 后相对 ego-only 再改善
+  `52.47%`，建立 `D42_PERSON_WORLD_MOTION_DOMINANT_INCREMENT_SUPPORTED`。
+  该正结果只授权冻结 D43 的 phone-causal 2D track/RGB/IMU student contract，
+  不授权 inference 使用 native identity/pose/3D/future truth，也不建立 event、
+  Android、主线、产品或安全主张。D32/D33/D41/D42 evaluator 13 tests 通过；
+  report 连续重建 SHA 稳定为
+  `1b8a8b9458edb2dd7b5f34eca95b5c0bdd9b0715efa8881cbbf8a43d5e1f5dfb`。
+  主线、默认 App 与 D35 均不变。

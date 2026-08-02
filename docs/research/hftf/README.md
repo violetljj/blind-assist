@@ -143,18 +143,27 @@ D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_NOT_SUPPORTED /
 D41_TRANSLATION_LOCAL_SIGNAL_RETAINED_DEVELOPMENT_ONLY /
 D41_CONSTANT_VELOCITY_LOG_SCALE_RECIPE_STOP /
 STAGE_C_D42_JRDB_EGO_OBJECT_METRIC_TEACHER_FROZEN /
+D42_JRDB_EGO_OBJECT_METRIC_TEACHER_SUPPORTED_DEVELOPMENT_ONLY /
+D42_PERSON_WORLD_MOTION_DOMINANT_INCREMENT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
-## 2026-08-03 D42：把 ego motion 与 person world motion 分开
+## 2026-08-03 D42：metric teacher 强支持，主要增量来自 person world motion
 
-D42 已在读取新的 metric outcome 前冻结。它复用 D41 detector-matched
+D42 在读取新的 metric outcome 前冻结。它复用 D41 detector-matched
 opportunities，但不再用 2D box scale 猜深度：packet 已绑定
 `odom <- base_link` pose、`center_base_link_m` 与 `center_odom_m`。三臂分别是
 current-relative static、ego-only kinematic、ego+person-world kinematic，全部只读
 连续 7 帧历史并预测 `+15 frames`。
 
-主要终点是完整 metric teacher 相对 current-static 的 horizontal/range/bearing
-误差与跨 sequence 广度；ego-only 只做贡献归因。成功只允许冻结 D43 学生合同，
+3,384 opportunities / 53 identities 上，完整 teacher 使 mean/median horizontal
+error 降低 `57.06%/81.21%`，`79.994%` 样本改善，range/bearing error 降低
+`81.80%/53.79%`，四个 sequences 全部改善，终态：
+
+`D42_JRDB_EGO_OBJECT_METRIC_TEACHER_SUPPORTED_DEVELOPMENT_ONLY`
+
+ego-only 只降低 `9.65%`，加入 person world motion 后相对 ego-only 再降低
+`52.47%`。因此下一瓶颈是从 phone-causal 2D track/RGB/IMU 恢复 metric person
+motion，而不是继续调 2D scale。该正结果只授权冻结 D43 student contract，
 不建立 RGB、App、事件或主线主张。
 
 ## 2026-08-03 D41：mean IoU 有局部增量，但 future-box field 不稳定
