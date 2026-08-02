@@ -141,10 +141,21 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         dataset_id = str(receipt.get("dataset_id", "UNKNOWN"))
         counts = receipt.get("counts", {})
         if isinstance(counts, dict):
-            candidate_count = int(counts.get("candidate_windows", 0) or 0)
+            candidate_count = int(
+                counts.get("candidate_windows", 0)
+                or counts.get("candidate_count", 0)
+                or receipt.get("candidate_count", 0)
+                or 0
+            )
             generated_at = str(receipt.get("generated_at_utc", ""))
             previous = intake_candidate_latest.get(dataset_id)
             if candidate_count and (previous is None or generated_at >= previous[0]):
+                intake_candidate_latest[dataset_id] = (generated_at, candidate_count)
+        elif receipt.get("candidate_count"):
+            candidate_count = int(receipt.get("candidate_count", 0) or 0)
+            generated_at = str(receipt.get("generated_at_utc", ""))
+            previous = intake_candidate_latest.get(dataset_id)
+            if previous is None or generated_at >= previous[0]:
                 intake_candidate_latest[dataset_id] = (generated_at, candidate_count)
         intake_rgb_counts[dataset_id] = max(
             intake_rgb_counts[dataset_id],
