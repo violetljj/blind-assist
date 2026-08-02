@@ -15,6 +15,7 @@ from typing import Any, Iterable
 
 
 SCHEMA = "blindassist_hftf_stage_c_d32_jrdb_future_range_v0"
+REPO_ROOT = Path(__file__).resolve().parents[3]
 SOURCE_SLOPE_THRESHOLD_PER_S = 0.2
 TRUTH_RATE_DEADBAND_MPS = 0.1
 HISTORY_COUNT = 7
@@ -32,30 +33,34 @@ MINIMUM_DIRECTION_LIFT = 0.10
 MINIMUM_SEQUENCE_PRECISION = 0.75
 MINIMUM_SUPPORTING_SEQUENCES = 3
 
-DEFAULT_OUTPUT = Path(
+DEFAULT_OUTPUT = REPO_ROOT / (
     "artifacts.local/evidence/hftf/"
     "stage-c-d32-jrdb-causal-track-future-range-v0/report.json"
 )
 DEFAULT_PACKETS = (
-    Path(
+    REPO_ROOT
+    / (
         "artifacts.local/datasets/"
         "jrdb-person-3d-trajectory-sensor-support-and-bias-"
         "cross-sequence-replication-r0/"
         "clark-center-2019-02-28_0/observation-packet.json"
     ),
-    Path(
+    REPO_ROOT
+    / (
         "artifacts.local/datasets/"
         "jrdb-person-3d-trajectory-sensor-support-and-bias-"
         "cross-sequence-replication-r0/"
         "gates-basement-elevators-2019-01-17_1/"
         "observation-packet.json"
     ),
-    Path(
+    REPO_ROOT
+    / (
         "artifacts.local/evidence/"
         "jrdb-single-sequence-native-multisensor-person-"
         "geometry-canary-r0/observation-packet.json"
     ),
-    Path(
+    REPO_ROOT
+    / (
         "artifacts.local/datasets/"
         "jrdb-person-3d-trajectory-sensor-support-and-bias-"
         "cross-sequence-replication-r0/"
