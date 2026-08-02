@@ -82,9 +82,12 @@ trade-off。跨源空间关系正结果保留在 representation/guardrail 层，
 reviewed-normal-negative reference。更关键的是，11-source public-video LOSO
 对 intervention 的 frame/segment recall 都为 `0`，表明现有 fixed HFTF spatial
 feature 不能把 actionability relation 迁移到新来源；即使使用 held-out source
-人工 no-alert baseline 的 centering oracle，intervention recall 仍为 `0`。该负结果不撤销
+人工 no-alert baseline 的 centering oracle，intervention recall 仍为 `0`。
+固定 13,137-parameter nonlinear 3×6 relation encoder 再加入 30 个 consumed
+SANPO support sources 后，public-video held-out intervention recall 仍为 `0`，
+frame BA 只有 `0.4394`。该负结果不撤销
 spatial-over-output-field 正结果，只关闭“增加关系监督即可救固定 backbone”的窄
-假设；下一阶段必须改为 relation-aware representation，并先通过 source-heldout
+假设；下一阶段必须改为 relation-aware backbone，并先通过 source-heldout
 actionability recall。
 
 此前路线进行到

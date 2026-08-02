@@ -4771,6 +4771,10 @@
 - 即使使用 held-out source 的全部人工 no-alert segments 构造 episode-balanced
   baseline oracle，intervention frame/segment recall 仍为 `0`，frame balanced
   accuracy 为 `0.4899`；因此 source-centering fixed-feature rescue 也不支持。
+- 固定 `delta + abs(delta)` 的 13,137-parameter 3×6 convolutional relation
+  encoder 仍为 `0` intervention recall。再加入 30 个 consumed SANPO sources、
+  46 个 phase episodes、711 帧作训练 support 后，public-video held-out frame BA
+  反降到 `0.4394`；各 fold train loss 接近 `0`，确认是记忆而非迁移。
 - 保留此前 spatial-over-output-field 的正结果；只关闭“增加关系监督即可救固定
-  backbone”的窄假设。下一步必须训练 relation-aware representation，并先通过
+  backbone”的窄假设。下一步必须训练 relation-aware backbone，并先通过
   source-heldout actionability recall，才进入新的 real-event 评价。

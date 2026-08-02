@@ -20,6 +20,11 @@
 
 `SOURCE_CENTERED_FIXED_FEATURE_RESCUE_NOT_SUPPORTED`
 
+固定 `3 × 6` 网格上的非线性局部关系编码器以及额外 SANPO 正来源 support 也未
+恢复迁移：
+
+`FIXED_HFTF_GRID_NONLINEAR_RELATION_TRANSFER_NOT_SUPPORTED`
+
 这不撤销空间特征相对 output-field 的增量，只关闭以下更窄假设：
 
 > 保持现有 HFTF backbone 不变，仅通过扩大弱/人工关系监督和训练线性空间头，
@@ -106,6 +111,52 @@ segments** 的 episode-balanced 均值作为基线，再对其所有 frame 做�
 absolute source appearance offset；在 fixed feature 上继续做 centering、线性
 投影或阈值救援没有依据。
 
+## Canary C：非线性局部关系编码器
+
+为了排除“关系信号存在，但线性不可分”，固定一个不搜索超参数的小型卷积头：
+
+- input：`current − source no-alert baseline` 与 `abs(delta)`；
+- tensor：`256 × 3 × 6`；
+- head：`1×1 conv 256→32`、`3×3 conv 32→16`、linear；
+- parameters：13,137；
+- training：200 epochs，AdamW，固定 threshold `0.5`；
+- split：11 个 public-video source 逐来源留一；
+- held-out source baseline 仍使用人工 no-alert oracle。
+
+只使用 public-video 训练时：
+
+| 指标 | 结果 |
+|---|---:|
+| frame alert recall | 0.0000 |
+| frame no-alert recall | 0.9949 |
+| frame balanced accuracy | 0.4975 |
+| segment alert recall | 0.0000 |
+| segment no-alert recall | 1.0000 |
+
+随后加入已消费 SANPO 作为**训练 support，而不是评价**：
+
+- 30 个 SANPO source；
+- 46 个 phase episodes；
+- 711 个 selected frames；
+- 其中 16 个独立 positive sources；
+- public + SANPO 合计 1,147 feature rows；
+- 评价仍只看 11 个 held-out public-video sources。
+
+结果：
+
+| 指标 | SANPO support canary |
+|---|---:|
+| frame alert recall | 0.0000 |
+| frame no-alert recall | 0.8788 |
+| frame balanced accuracy | 0.4394 |
+| segment alert recall | 0.0000 |
+| segment no-alert recall | 1.0000 |
+| segment balanced accuracy | 0.5000 |
+
+每折 final train loss 都接近 `0`，但所有 held-out intervention segments 仍被判为
+no-alert。这说明当前固定 HFTF grid 可以记忆训练来源，却没有可由该非线性局部头
+提取的跨来源 actionability relation。
+
 ## 失败分类
 
 本轮不是工程 invalid：
@@ -130,10 +181,11 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 - 同一 SANPO 30-event cohort 上的 L2、阈值和 head 搜索；
 - 更多 discovery-only candidate 混入。
 - fixed feature 上的 source centering 或其他线性 delta rescue。
+- fixed HFTF grid 上的 nonlinear relation head 或增加 consumed SANPO support。
 
 下一候选必须改变至少一个科学变量，而不是增加治理：
 
-1. 直接训练/微调 relation-aware representation，而不是冻结现有 backbone；
+1. 直接训练/微调 relation-aware backbone，而不是冻结现有 HFTF grid；
 2. 使用同一来源内 `clear → intervention → clear` 的成对目标，并把
    source-heldout actionability recall 作为训练前置筛选；
 3. 补充真正 phone-egocentric、含 pre-event baseline 的独立实拍序列；
@@ -144,6 +196,8 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 
 > relation-aware representation 是否能在来源外保留
 > `障碍位置 × 可通行路径 × 当前干预需要` 的结构。
+
+如果没有新增 backbone-level representation，D6 fixed-feature 路线保持关闭。
 
 ## 复现
 
@@ -156,4 +210,15 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --name directional-seed17-fold0 `
   --output artifacts.local/evidence/hftf/stage-c-d6-provisional-relation-spatial-public-video-actionability-v2/seed-17/fold-0.json
+```
+
+非线性 SANPO-support canary：
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_source_centered_relation_encoder_canary.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --sanpo-support-manifest artifacts.local/evidence/riskseg-r0/event-eval/device-view-v2/manifest.json `
+  --output-cache artifacts.local/evidence/hftf/stage-c-d6-source-centered-relation-encoder-sanpo-support-canary-v1/seed-17/fold-0-features.npz `
+  --output artifacts.local/evidence/hftf/stage-c-d6-source-centered-relation-encoder-sanpo-support-canary-v1/seed-17/fold-0.json
 ```
