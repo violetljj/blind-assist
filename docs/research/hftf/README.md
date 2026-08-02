@@ -138,12 +138,15 @@ HFTF_SCENE_SCALE_PERSISTENCE_FAMILY_STOP /
 D40_THOR_MAGNI_CONTINUOUS_TRACK_PROJECTED_RISK_NOT_SUPPORTED /
 D40_CONTINUOUS_TRACK_FORECAST_OPPORTUNITY_SUPPORTED /
 D40_SELECTED_TARGET_BOX_SCALE_PROJECTION_RECIPE_STOP /
-STAGE_C_D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_FROZEN_R0_1 /
+STAGE_C_D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_FROZEN_R0_2 /
+D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_NOT_SUPPORTED /
+D41_TRANSLATION_LOCAL_SIGNAL_RETAINED_DEVELOPMENT_ONLY /
+D41_CONSTANT_VELOCITY_LOG_SCALE_RECIPE_STOP /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
-## 2026-08-03 D41：直接评价一秒后的 future spatial representation
+## 2026-08-03 D41：mean IoU 有局部增量，但 future-box field 不稳定
 
-D41 已在读取 future-box outcome 前冻结。它不再把 track forecast 接回现有
+D41 在读取 future-box outcome 前冻结。它不再把 track forecast 接回现有
 risk/alert kernel，而是用 D33 detector tracks 的连续 7 帧，对 box center x/y
 与 log width/height 做固定 OLS 外推，直接与 `+15 frames` 的 same-identity
 native box 比较。baseline 是 current detector box；candidate 使用全部可评价
@@ -153,8 +156,21 @@ source-only census 发现 `20/3,692` 个 forecast 完全离开画面；R0.1 在�
 outcome 生成前冻结为保留 raw projected box，并让全部指标原样惩罚越界，不做
 拉回画面或样本排除。
 
-这次成功也只建立 detector-bound future-box representation 增量，不能越级声称
-event utility 或系统效果；失败则停止 constant-velocity image-box field recipe。
+首次完整 report 又发现 source census 把 478 个非空 track frames 误当作 producer
+请求帧数；R0.2 改为绑定 D33 COMPLETE receipt 的 480/480，同时保留 478 作为
+non-empty diagnostic。该修复不改变任何 effect metric，且无法越过已失败的四项
+support gates。
+
+3,392 opportunities / 54 identities 上，mean future-box IoU 从 `0.36434` 升至
+`0.40926`（`+0.04491`），3/4 sequences 为正；但 median delta 为 0，只有
+`47.995%` 样本改善，center error 只降低 `6.887%`，log-area error 在四个
+sequences 全部恶化。终态：
+
+`D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_NOT_SUPPORTED`
+
+保留 translation 的局部表示信号，但停止当前 constant-velocity log-scale recipe；
+不在同一 outcome 上删 state 或调 horizon。下一变量必须使用新鲜 evidence 或新的
+ego-motion/metric-geometry teacher。
 
 ## 2026-08-03 D40：连续轨迹预测有机会，但一秒框投影没有改变风险终态
 

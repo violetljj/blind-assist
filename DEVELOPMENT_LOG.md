@@ -5404,3 +5404,24 @@
   阶段修复 deduplicated-frame ordinal 比较，truth join 前完成，不烧毁 cohort；
   一次 Gradle JVM property 被 PowerShell 误解析为 task，改用 `GRADLE_OPTS`
   后原样成功。主线、默认 App 与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D41
+  JRDB causal future-box field。实验在 outcome 前冻结，以 D33 detector tracks
+  的连续 7 帧分别对 center x/y 与 log width/height 做 timestamp-aware OLS，
+  固定外推到 `+15 frames`；forecast 不读取 annotation，评价才联接 current
+  Hungarian match 与 future same-identity native box。3,392 opportunities /
+  54 identities、4 sequences 的 evaluability gates 全部通过。candidate mean
+  future-box IoU 从 current-box baseline 的 `0.36434` 升至 `0.40926`
+  （`+0.04491`），3/4 sequences mean delta 为正；但 median delta 为 0，
+  candidate better fraction 仅 `47.995%`，center error 只降低 `6.887%`，
+  absolute log-area error 从 `0.29466` 恶化到 `0.41313`，终态
+  `D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_NOT_SUPPORTED`。保留
+  `D41_TRANSLATION_LOCAL_SIGNAL_RETAINED_DEVELOPMENT_ONLY`，建立
+  `D41_CONSTANT_VELOCITY_LOG_SCALE_RECIPE_STOP`；不得在已消费 outcome 上删除
+  scale、搜索 state subset/horizon/regression。下一变量需使用新鲜 evidence 或
+  ego-motion/metric-geometry teacher。R0.1 在任何聚合 outcome 前修复
+  20/3,692 fully-off-frame forecast 语义，保留 raw box 并原样惩罚；R0.2 修复
+  `478 non-empty frames` 被误当作 source census，改绑定 D33 COMPLETE receipt
+  的 `480/480`，不改变任何 effect metric且不可能翻转已失败的四项 support gate。
+  D32/D33/D41 evaluator 11 tests 通过；report 连续重建 SHA 稳定为
+  `73418b3308a259e63a2c413105d907f6ea416297628568f1d80f0d0d0db71ba3`。
+  主线、默认 App 与 D35 均不变。

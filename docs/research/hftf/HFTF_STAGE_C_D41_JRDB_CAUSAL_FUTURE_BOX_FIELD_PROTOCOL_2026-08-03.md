@@ -4,7 +4,7 @@
 
 状态：
 
-`STAGE_C_D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_FROZEN_R0_1`
+`STAGE_C_D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_FROZEN_R0_2`
 
 证据角色：Development / future spatial representation canary
 
@@ -49,6 +49,13 @@ R0.1 source-only repair：首次 join 在生成任何聚合 outcome 前，遇到
 `3,692` forecasts，其中 `20` fully outside、`227` partially clipped。冻结修复为
 保留 raw projected box，不把中心拉回画面；IoU union、center error 与 log-area
 error 都原样惩罚越界预测。该修复没有读取汇总指标，也不搜索或排除样本。
+
+R0.2 control-plane repair：首次完整 report 错把 `tracks.jsonl` 中出现的 478 个
+非空帧当作 producer source census，导致 `exact_source_frames=false`；冻结 D33
+producer receipt 实际记录 480/480 frames，其中两帧允许零 tracked occurrence。
+评估器改为绑定 receipt SHA 并以 `frame_count=480` 做 source census，同时另报
+`frames_with_tracked_occurrences=478`。该修复不改变 opportunity、metric 或 support
+gate；首次 report 已有四项 support gate 失败，修复不可能把结果救成 supported。
 
 ## 冻结指标
 
