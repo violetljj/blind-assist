@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D21
+  ConvGRU future-state canary。保留 D20 相同四步 20-channel aligned
+  dense-flow dynamics，只把一次性 3D collapse 换成按时间递推的 16-channel
+  ConvGRU；current comparator 的 zero dynamics 在任意 recurrent weights 下
+  保持精确零状态，两臂共享 1,017,316 参数、30 epochs 与 seed17。完整 6 次
+  training runs 正常完成，无工程无效。history-minus-current 的
+  environment-macro cell AUROC/AP 为 `+.00390/+.00356`、均 2/3 folds 正，
+  未达到冻结的 `+.010/+.005` effect floors；其余 5 项 gate 通过。pooled cell
+  AUROC/AP 为 `+.00905/+.00992` 且均 3/3 folds 正，sample AUROC/AP 为
+  `+.01728/+.01345`，四 targets 的 mean AUROC/AP 全部同时为正，near/far-head
+  两指标也均 3/3 folds 正。这些分层 Development 正结果继续保留，但 ConvGRU
+  没有把它们转成稳定的 environment-macro effect，终态
+  `D21_CONVGRU_FUTURE_STATE_CANARY_NOT_SUPPORTED` 与
+  `D21_LIGHTWEIGHT_TEMPORAL_STATE_FAMILY_STOP`。不扩 seeds、不调 hidden width、
+  epoch、loss 或 gate；D20 仍是当前最强 Development mechanism signal，下一步
+  离开同一 operator family，检验 dense-flow dynamics 的独立 source/事件层复现。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D20
   dense-flow dynamics canary。在 D18 aligned 16-channel feature residual 上
   显式追加 normalized flow x/y、magnitude、validity，形成四步 20-channel
