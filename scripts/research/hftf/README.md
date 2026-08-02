@@ -7,7 +7,10 @@ D6-real-veto-transfer-not-supported /
 D6-real-calibration-increment-not-supported /
 D6-real-phase-early-pair-not-supported /
 D6-motion-alignment-separability-mixed /
-D6-raft-residual-flow-not-stable`
+D6-raft-residual-flow-not-stable /
+D8-thor-magni-local-route-supervision-materialized /
+D8-coarse-actionability-history-increment-supported /
+D8-full-local-field-history-increment-not-supported`
 
 ## 研究问题与版本
 
@@ -81,6 +84,28 @@ motion-alignment evaluator 用 sparse-LK + RANSAC partial affine 比较 raw/alig
 监督投影前判定，失败只产生 `NOT_EVALUABLE`。
 RAFT evaluator 固定校验官方 small weights SHA-256，并在一次运行中输出五折 raw
 pixel / raw flow / global-motion-residual flow 对照；不按 fold 选择 representation。
+
+### D8 THOR-MAGNI local route supervision
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  materialize_stage_c_d8_thor_magni_local_route_supervision.py `
+  --output-root artifacts.local/evidence/hftf/<local-route-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  evaluate_stage_c_d8_thor_magni_rgb_history_screen.py `
+  --samples artifacts.local/evidence/hftf/<local-route-run>/samples.jsonl `
+  --output-root artifacts.local/evidence/hftf/<rgb-history-run>
+```
+
+物化器从 19 个 THOR-MAGNI Pupil/QTM sessions 派生 wearer-motion-relative
+`2×6×4` future occupancy、未来最小同步距离、1.25 m 近距和前向走廊侵入代理。
+这些只属于 source-native geometric Development supervision。筛查器固定 pretrained
+MobileNetV3-small 和五折 source-session isolation，比较 current-only 与
+history-residual linear readout。D8 结果只在近距/走廊 coarse actionability 层支持
+history 增量；完整 48-cell field 与连续距离排序不支持继续扩展。
 
 ## 稳定 Interface
 

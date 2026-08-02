@@ -46,7 +46,15 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 ## 独立未来潜力支线：HFTF
 
 HFTF 是独立于当前 RISKSEG/YOLO 主线的未来潜力支线；只有同口径证据持续超过主线，
-才另立主线切换合同。最新 D5/D6 Development 已推进到
+才另立主线切换合同。最新
+[D8 THOR-MAGNI 局部路线监督](../hftf/HFTF_STAGE_C_D8_THOR_MAGNI_LOCAL_ROUTE_SUPERVISION_2026-08-02.md)
+已从 19 个 Pupil/QTM sessions 物化 1,078 个 source-native local-actionability
+样本。冻结 MobileNet 的五折筛查中，history 相对 current-only 的近距/走廊 AUROC
+均 5/5 折提升，mean delta 为 `+.0559/+.0511`；但 48-cell occupancy AP 为
+0/5 折提升，连续距离排序也不稳定。因此保留 coarse actionability 正信号，只准入
+等容量 compact temporal head；不继续硬救完整 field，研究主线与默认 App 不变。
+
+此前 D5/D6 Development 已推进到
 [outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：
 directional + fixed v2 在 6 个未参与开发的合成 environments 上 event recall
 9/9 提高、false-active 7/9 降低；随后在已消费的 30-session SANPO 人工审阅事件集上，

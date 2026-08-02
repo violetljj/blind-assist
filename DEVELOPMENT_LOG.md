@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D8
+  THOR-MAGNI local route supervision 与首个 RGB-history screen。19 个 Pupil/QTM
+  sessions 物化 1,078 个 source-session-isolated 样本；近距正例 705、走廊侵入
+  正例 610，五折均含正负例。冻结 pretrained MobileNetV3-small 后，history 相对
+  current-only 的近距 AUROC delta mean/median 为 `+.0559/+.0358`、5/5 折为正，
+  走廊侵入为 `+.0511/+.0473`、5/5 折为正；对应 AP 均 4/5 折为正。完整 48-cell
+  occupancy AUROC/AP delta mean 为 `-.0103/-.0074`，AP 0/5 折为正；最小距离
+  Spearman 仅 2/5 折为正。分别记录
+  `D8_COARSE_ACTIONABILITY_HISTORY_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY` 与
+  `D8_FULL_LOCAL_FIELD_HISTORY_INCREMENT_NOT_SUPPORTED_ON_FROZEN_REPRESENTATION`。
+  下一步只做等容量 compact temporal actionability head，不微调 backbone、不搜索
+  field 表示；主线和默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D6 pretrained
   RAFT-small motion representation evaluation。权重固定为 torchvision
   `raft_small_C_T_V2-01064c6d.pth`，SHA-256
