@@ -151,18 +151,26 @@ STAGE_C_D43_1_JRDB_TRACK_ONLY_METRIC_RESIDUAL_STUDENT_FROZEN /
 D43_1_JRDB_TRACK_ONLY_METRIC_RESIDUAL_STUDENT_NOT_SUPPORTED /
 D43_1_FIRST_ORDER_2D_TRACK_METRIC_MAPPING_STOP /
 STAGE_C_D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_FROZEN /
+D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_SUPPORTED_DEVELOPMENT_ONLY /
+D44_RELATIVE_METRIC_HISTORY_SUFFICIENCY_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
-## 2026-08-03 D44：直接检验 causal metric-depth track
+## 2026-08-03 D44：causal relative metric track 几乎达到完整 world teacher
 
-D44 已在读取新 outcome 前冻结。它不再学习 2D→metric 映射，而把 packet 的
+D44 在读取新 outcome 前冻结。它不再学习 2D→metric 映射，而把 packet 的
 same-identity `center_base_link_m` history 当作 metric-depth-track oracle，对连续
 7 帧 relative x/y/z 做固定 OLS，直接预测 `+15 frames`。baseline 是 current
 relative center。
 
-该实验问的是“端侧若已有 causal metric depth，简单 relative track 是否足够”，
-而不是当前 RGB student 是否有效。成功只允许进入 metric-depth source shadow
-canary，不进入 alert 或主线。
+3,384 opportunities / 53 identities 上，mean/median horizontal error 降低
+`56.36%/81.39%`，`79.787%` opportunities 改善，range/bearing error 降低
+`79.10%/54.20%`，四个 sequences 全部改善，终态：
+
+`D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_SUPPORTED_DEVELOPMENT_ONLY`
+
+其 mean error `0.35324 m` 几乎达到 D42 world-decomposed teacher 的 `0.34757 m`。
+因此下一瓶颈不是更大时序模型，而是端侧 same-target metric-depth measurement。
+只授权 source-only shadow canary，不进入 alert 或主线。
 
 ## 2026-08-03 D43.1：十个 2D track features 不能跨 sequence 恢复 metric residual
 

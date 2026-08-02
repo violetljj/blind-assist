@@ -5470,3 +5470,21 @@
   measurement。D42/D43/D43.1 focused tests 4 PASS；report 连续重建 SHA 稳定为
   `d104279a42a8089a171ca4fcab4db7c85e0004f1f201ee51f1667bd9dbadcd23`。
   主线、默认 App 与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D44 JRDB
+  causal relative metric track。D44 在 outcome 前冻结，复用 exact 3,384
+  opportunities / 53 identities，对 same-target 连续 7 帧
+  `center_base_link_m` x/y/z 做 timestamp-aware OLS，固定预测 `+15 frames`，
+  不显式使用 future、world pose 或 ego/object decomposition。相对 current-static，
+  mean horizontal error `0.80935 -> 0.35324 m`（-56.36%），median
+  `0.74938 -> 0.13948 m`（-81.39%），`79.787%` opportunities 改善，
+  range/bearing error 分别降低 `79.10%/54.20%`，四 sequences 全部改善，
+  7/7 gates 通过，终态
+  `D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_SUPPORTED_DEVELOPMENT_ONLY`，建立
+  `D44_RELATIVE_METRIC_HISTORY_SUFFICIENCY_SUPPORTED`。D44 mean error
+  `0.35324 m` 几乎达到 D42 full world teacher 的 `0.34757 m`，将下一瓶颈定位为
+  phone-causal same-target metric-depth measurement，而不是更大模型。只授权
+  source-only depth measurement/quality/latency shadow canary，不接入 event 或
+  production seam。D42/D43.1/D44 focused tests 5 PASS；report 连续重建 SHA
+  稳定为
+  `c96c37fca85f8a52fb37d372a8290a564982e241352e8d7a173e4b5a4ad03f09`。
+  主线、默认 App 与 D35 均不变。
