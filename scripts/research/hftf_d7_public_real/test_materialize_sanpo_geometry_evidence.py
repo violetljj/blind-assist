@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from materialize_sanpo_geometry_evidence import (
+    build_parser,
     _finite_stats,
     _read_depth,
     _sample_indices,
@@ -25,6 +26,16 @@ class MaterializeSanpoGeometryEvidenceTest(unittest.TestCase):
         self.assertEqual(_sample_indices(0), [])
         self.assertEqual(_sample_indices(1), [0])
         self.assertEqual(_sample_indices(10, limit=4), [0, 3, 6, 9])
+
+    def test_relative_nominal_phase_contract_is_explicitly_opt_in(self) -> None:
+        args = build_parser().parse_args([
+            "--output-root", "F:\\out",
+            "--batch-id", "batch",
+            "--run-id", "run",
+            "--ffmpeg-path", "F:\\ffmpeg.exe",
+            "--relative-nominal-phase-contract",
+        ])
+        self.assertTrue(args.relative_nominal_phase_contract)
 
     def test_read_depth_validates_sanpo_header_and_shape(self) -> None:
         np = self._numpy()

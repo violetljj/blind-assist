@@ -220,6 +220,7 @@ def _summarize_candidate(
     np: Any,
     display_min_m: float,
     display_max_m: float,
+    allow_relative_nominal_phase: bool,
 ) -> tuple[dict[str, Any], Path]:
     candidate_id = str(geometry.get("candidate_id") or "")
     frames = geometry.get("frames")
@@ -320,6 +321,15 @@ def _summarize_candidate(
         "summary_semantics": "descriptive source-native depth measurements and display previews; not event truth",
         "source_intrinsics_refs": _source_refs(geometry),
         "pose_row_binding": geometry.get("pose_row_binding"),
+        "relative_nominal_phase_contract": bool(
+            allow_relative_nominal_phase
+            and geometry.get("pose_row_binding") == "FRAME_INDEX_ROW_KEYED"
+        ),
+        "relative_nominal_phase_rule": (
+            "frame_index_at_declared_fps_with_complete_pose_row_binding"
+            if allow_relative_nominal_phase
+            else "not_enabled"
+        ),
         "frame_count": len(frames),
         "preview_frame_positions": sample_indices,
         "depth_display_mapping": {
@@ -409,6 +419,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             np=np,
             display_min_m=float(args.display_min_m),
             display_max_m=float(args.display_max_m),
+            allow_relative_nominal_phase=bool(args.relative_nominal_phase_contract),
         )
         enhanced = copy.deepcopy(geometry)
         enhanced["geometry_evidence_summary_path"] = str(summary_path.resolve())
@@ -423,8 +434,33 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         enhanced["event_threshold_applied"] = False
         enhanced["model_output_visible"] = False
         enhanced["rgb_included"] = False
+        relative_phase_allowed = bool(
+            args.relative_nominal_phase_contract
+            and geometry.get("pose_row_binding") == "FRAME_INDEX_ROW_KEYED"
+        )
+        enhanced["relative_nominal_phase_contract"] = relative_phase_allowed
+        enhanced["phase_timing_contract"] = {
+            "nominal_time_semantics": "DERIVED_RELATIVE_FRAME_INDEX_AT_DECLARED_FPS",
+            "capture_timestamp_required": False,
+            "pose_row_binding_required": True,
+            "relative_phase_allowed": relative_phase_allowed,
+            "phase_contract_is_not_event_truth": True,
+        }
+        base_instruction = str(geometry.get("instructions") or "")
+        if relative_phase_allowed:
+            phase_instruction = (
+                " Relative nominal frame time may be used for pre/alertable/passed-clearance "
+                "phase intervals because the complete pose CSV is row-keyed to every source frame; "
+                "missing capture_timestamp alone is not NOT_EVALUABLE."
+            )
+        else:
+            phase_instruction = (
+                " Relative phase timing is NOT_EVALUABLE unless complete frame-index pose binding "
+                "is present; missing capture_timestamp remains a recorded limitation."
+            )
         enhanced["instructions"] = (
-            str(geometry.get("instructions") or "")
+            base_instruction
+            + phase_instruction
             + " Descriptive depth statistics and contact sheets are source-native aids only; "
             "they do not establish event truth or an alert threshold."
         ).strip()
@@ -476,6 +512,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--ffmpeg-path", required=True)
     parser.add_argument("--display-min-m", type=float, default=DEFAULT_DISPLAY_MIN_M)
     parser.add_argument("--display-max-m", type=float, default=DEFAULT_DISPLAY_MAX_M)
+    parser.add_argument(
+        "--relative-nominal-phase-contract",
+        action="store_true",
+        help="permit relative nominal phase intervals only with complete frame-index pose binding",
+    )
     return parser
 
 
