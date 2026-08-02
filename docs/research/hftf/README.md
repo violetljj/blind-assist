@@ -145,7 +145,19 @@ D41_CONSTANT_VELOCITY_LOG_SCALE_RECIPE_STOP /
 STAGE_C_D42_JRDB_EGO_OBJECT_METRIC_TEACHER_FROZEN /
 D42_JRDB_EGO_OBJECT_METRIC_TEACHER_SUPPORTED_DEVELOPMENT_ONLY /
 D42_PERSON_WORLD_MOTION_DOMINANT_INCREMENT_SUPPORTED /
+STAGE_C_D43_JRDB_TRACK_IMU_METRIC_RESIDUAL_STUDENT_FROZEN /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D43：从 metric teacher 进入可学习 residual
+
+D43 已在训练或读取 held-out metric 前冻结。它不预测风险或提醒，而以 D42
+history-only full teacher 的水平 future displacement residual 为 target；inference
+只允许 7-frame detector-track 统计与同步 IMU。模型固定为
+`StandardScaler + Ridge(alpha=1.0)`，四折 leave-one-sequence-out。
+
+候选 `TRACK_IMU` 同时与 zero residual、等容量 `TRACK_ONLY` 比较，并在 held-out
+sequence 上核对 teacher residual 与 source-recorded actual future residual。成功
+也只建立离线轻量 learnability，不自动获得 Android、event 或主线权限。
 
 ## 2026-08-03 D42：metric teacher 强支持，主要增量来自 person world motion
 
