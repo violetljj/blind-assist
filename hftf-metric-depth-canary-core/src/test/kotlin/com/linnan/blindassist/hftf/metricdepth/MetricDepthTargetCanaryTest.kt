@@ -68,6 +68,69 @@ class MetricDepthTargetCanaryTest {
     }
 
     @Test
+    fun nativeRawDepthGridIsSampledThroughRegistrationWithoutUpsamplingDuplicates() {
+        val registration = registration(
+            rawDepthSize = FrameSize(5, 5),
+            cameraToRawDepth = MetricAffineTransform2D(
+                m00 = 0.5f,
+                m01 = 0f,
+                m02 = 0f,
+                m10 = 0f,
+                m11 = 0.5f,
+                m12 = 0f
+            )
+        )
+        val result = MetricDepthTargetSampler(
+            MetricDepthTargetSamplerConfig(minimumValidSamples = 1)
+        ).sample(
+            frame = depthFrame(
+                depth = IntArray(25) { 2_000 },
+                confidence = FloatArray(25) { 0.9f },
+                registration = registration
+            ),
+            detection = person(),
+            targetKey = "track-7",
+            observedAtNs = BASE_NS + 80_000_000L
+        )
+
+        val measurement = (result as MetricDepthSampleResult.Available).measurement
+        assertEquals(9, measurement.diagnostics.candidateSampleCount)
+        assertEquals(9, measurement.diagnostics.validSampleCount)
+    }
+
+    @Test
+    fun detectorRegionOutsideDepthCropIsRegistrationAbsenceNotLowDepthQuality() {
+        val result = MetricDepthTargetSampler(
+            MetricDepthTargetSamplerConfig(minimumValidSamples = 1)
+        ).sample(
+            frame = depthFrame(
+                depth = IntArray(25) { 2_000 },
+                confidence = FloatArray(25) { 0.9f },
+                registration = registration(
+                    rawDepthSize = FrameSize(5, 5),
+                    cameraToRawDepth = MetricAffineTransform2D(
+                        m00 = 0.5f,
+                        m01 = 0f,
+                        m02 = 100f,
+                        m10 = 0f,
+                        m11 = 0.5f,
+                        m12 = 100f
+                    )
+                )
+            ),
+            detection = person(),
+            targetKey = "track-7",
+            observedAtNs = BASE_NS + 80_000_000L
+        )
+
+        assertEquals(
+            MetricDepthSampleFailure.NO_REGISTERED_PIXELS,
+            (result as MetricDepthSampleResult.Unavailable).failure
+        )
+        assertEquals(0, result.diagnostics.candidateSampleCount)
+    }
+
+    @Test
     fun sevenPointMetricHistoryRecoversConstantCameraRelativeMotionAtOneSecond() {
         val history = (0 until 7).map { index ->
             val timeSeconds = index * 0.05f
@@ -147,7 +210,8 @@ class MetricDepthTargetCanaryTest {
 
     private fun depthFrame(
         depth: IntArray = IntArray(100) { 2_000 },
-        confidence: FloatArray = FloatArray(100) { 0.9f }
+        confidence: FloatArray = FloatArray(100) { 0.9f },
+        registration: MetricDepthRegistrationTransform = registration()
     ) = RegisteredMetricDepthFrame(
         sourceFrame = FrameStamp(
             frameId = 7L,
@@ -168,10 +232,24 @@ class MetricDepthTargetCanaryTest {
         ),
         depthMillimeters = depth,
         confidence = confidence,
-        source = MetricDepthSource.ARCORE_AUTOMATIC,
-        registrationTransformId = "arcore-image-to-depth-v1",
+        source = MetricDepthSource.ARCORE_RAW_REGISTERED,
+        registration = registration,
         producedAtNs = BASE_NS + 20_000_000L,
         validUntilNs = BASE_NS + 150_000_000L
+    )
+
+    private fun registration(
+        rawDepthSize: FrameSize = FRAME_SIZE,
+        cameraToRawDepth: MetricAffineTransform2D = MetricAffineTransform2D.IDENTITY
+    ) = MetricDepthRegistrationTransform(
+        detectorDisplaySize = FRAME_SIZE,
+        cameraImageSize = FRAME_SIZE,
+        rawDepthSize = rawDepthSize,
+        detectorRotationDegrees = 0,
+        detectorToCameraImage = MetricAffineTransform2D.IDENTITY,
+        cameraImageToRawDepth = cameraToRawDepth,
+        maximumFitResidualPx = 0f,
+        transformId = "arcore-image-to-depth-v1"
     )
 
     private fun measurement(

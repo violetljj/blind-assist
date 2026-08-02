@@ -10,6 +10,7 @@ import com.linnan.blindassist.hftf.metricdepth.D45UnregisteredRawMetricDepthFram
 import com.linnan.blindassist.hftf.metricdepth.MetricDepthCameraIntrinsics
 import com.linnan.blindassist.vision.FrameClockDomain
 import com.linnan.blindassist.vision.FrameStamp
+import java.nio.ByteOrder
 
 enum class D45ArCoreRawDepthFailure {
     CLOCK_DOMAIN_MISMATCH,
@@ -161,7 +162,8 @@ class D45ArCoreRawDepthObservationAdapter(
                 rowStrideBytes = confidencePlane.rowStride,
                 pixelStrideBytes = confidencePlane.pixelStride,
                 buffer = confidencePlane.buffer
-            )
+            ),
+            depthByteOrder = ByteOrder.nativeOrder()
         )
     }
 

@@ -1,11 +1,15 @@
 package com.linnan.blindassist.ustrfbenchmark
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.os.Build
 import android.os.Bundle
 import android.util.AtomicFile
 import android.util.Log
+import android.view.Surface
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
@@ -24,8 +28,9 @@ import java.io.File
  * D45 benchmark-only source canary.
  *
  * This test answers only whether one device/run can expose, timestamp-bind, and decode ARCore raw
- * depth plus confidence. It stores no raster and performs no registration, person measurement,
- * event evaluation, navigation, or production authorization.
+ * depth plus confidence, and whether ARCore's CPU-image -> depth mapping is affine-consistent for
+ * the detector's explicit rotation. It stores no raster and performs no person measurement, event
+ * evaluation, navigation, or production authorization.
  */
 @RunWith(AndroidJUnit4::class)
 class D45ArCoreRawSourceDecoderCanaryTest {
@@ -84,6 +89,18 @@ class D45ArCoreRawSourceDecoderCanaryTest {
         var captureError: String? = null
         var session: Session? = null
         val adapter = D45ArCoreRawDepthObservationAdapter()
+        val registrationAdapter = D45ArCoreMetricDepthRegistrationAdapter()
+        val registrationFailures = linkedMapOf<String, Int>()
+        val registrationTransformIds = linkedMapOf<String, Int>()
+        val registrationResidualsPx = mutableListOf<Double>()
+        var registrationObservations = 0
+        var cameraId: String? = null
+        var sensorOrientationDegrees: Int? = null
+        var lensFacing: Int? = null
+        var detectorRotationDegrees: Int? = null
+        val displayRotation = activity.display?.rotation ?: Surface.ROTATION_0
+        val displayWidth = activity.window.decorView.width.coerceAtLeast(1)
+        val displayHeight = activity.window.decorView.height.coerceAtLeast(1)
 
         try {
             if (availability == ArCoreApk.Availability.SUPPORTED_INSTALLED) {
@@ -102,6 +119,23 @@ class D45ArCoreRawSourceDecoderCanaryTest {
                                 updateMode = Config.UpdateMode.LATEST_CAMERA_IMAGE
                             }
                             created.configure(config)
+                            created.setDisplayGeometry(
+                                displayRotation,
+                                displayWidth,
+                                displayHeight
+                            )
+                            cameraId = created.cameraConfig.cameraId
+                            val characteristics = (
+                                activity.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+                                ).getCameraCharacteristics(requireNotNull(cameraId))
+                            sensorOrientationDegrees =
+                                characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)
+                            lensFacing = characteristics.get(CameraCharacteristics.LENS_FACING)
+                            detectorRotationDegrees = detectorRotationDegrees(
+                                sensorOrientationDegrees = sensorOrientationDegrees,
+                                targetRotation = DETECTOR_ANALYSIS_TARGET_ROTATION,
+                                lensFacing = lensFacing
+                            )
                             created.setCameraTextureName(activity.cameraTextureName())
                             created.resume()
                         }
@@ -141,6 +175,44 @@ class D45ArCoreRawSourceDecoderCanaryTest {
                                             dimensions.increment(
                                                 "${raster.widthPx}x${raster.heightPx}"
                                             )
+                                            val rotation = detectorRotationDegrees
+                                            if (rotation == null) {
+                                                registrationFailures.increment(
+                                                    "DETECTOR_ROTATION_UNAVAILABLE"
+                                                )
+                                            } else {
+                                                when (
+                                                    val registration = registrationAdapter.observe(
+                                                        frame = frame,
+                                                        rawObservation = observation,
+                                                        detectorRotationDegrees = rotation
+                                                    )
+                                                ) {
+                                                    is D45ArCoreRegistrationObservationResult
+                                                        .Available -> {
+                                                        registrationObservations++
+                                                        registrationTransformIds.increment(
+                                                            registration.observation.transform
+                                                                .transformId
+                                                        )
+                                                        registrationResidualsPx +=
+                                                            registration.observation.transform
+                                                                .maximumFitResidualPx.toDouble()
+                                                    }
+
+                                                    is D45ArCoreRegistrationObservationResult
+                                                        .Unavailable -> {
+                                                        val key = buildString {
+                                                            append(registration.failure.name)
+                                                            registration.registrationFailure?.let {
+                                                                append(':')
+                                                                append(it.name)
+                                                            }
+                                                        }
+                                                        registrationFailures.increment(key)
+                                                    }
+                                                }
+                                            }
                                         }
 
                                         is D45ArCoreRawDepthObservationResult.Unavailable ->
@@ -176,6 +248,16 @@ class D45ArCoreRawSourceDecoderCanaryTest {
             else ->
                 "RAW_SOURCE_DECODER_OBSERVED"
         }
+        val registrationTerminal = when {
+            availableObservations == 0 ->
+                "NOT_EVALUATED_NO_RAW_DEPTH_OBSERVATIONS"
+            detectorRotationDegrees == null ->
+                "NOT_EVALUABLE_DETECTOR_ROTATION_UNAVAILABLE"
+            registrationObservations == 0 ->
+                "NOT_EVALUABLE_NO_AFFINE_REGISTRATION_OBSERVATIONS"
+            else ->
+                "AFFINE_REGISTRATION_OBSERVED_DEVICE_ONLY"
+        }
         val report = JSONObject()
             .put("schema", REPORT_SCHEMA)
             .put("run_id", runId)
@@ -196,7 +278,24 @@ class D45ArCoreRawSourceDecoderCanaryTest {
             .put("arcore", JSONObject()
                 .put("availability", availability.name)
                 .put("sdk_dependency_version", ARCORE_SDK_VERSION)
-                .put("raw_depth_only_supported", rawDepthSupported))
+                .put("raw_depth_only_supported", rawDepthSupported)
+                .put("camera_id", cameraId ?: JSONObject.NULL)
+                .put(
+                    "sensor_orientation_degrees",
+                    sensorOrientationDegrees ?: JSONObject.NULL
+                )
+                .put("lens_facing", lensFacing ?: JSONObject.NULL)
+                .put("display_rotation", displayRotation)
+                .put("display_width_px", displayWidth)
+                .put("display_height_px", displayHeight)
+                .put(
+                    "detector_analysis_target_rotation",
+                    DETECTOR_ANALYSIS_TARGET_ROTATION
+                )
+                .put(
+                    "detector_rotation_degrees",
+                    detectorRotationDegrees ?: JSONObject.NULL
+                ))
             .put("capture", JSONObject()
                 .put("requested_frame_attempts", frameAttempts)
                 .put("attempted_session_updates", attemptedUpdates)
@@ -224,11 +323,41 @@ class D45ArCoreRawSourceDecoderCanaryTest {
                 .put("sample_count", latencyValuesMs.size)
                 .put("p50", percentileOrNull(latencyValuesMs, 0.50))
                 .put("p95", percentileOrNull(latencyValuesMs, 0.95)))
+            .put("registration_candidate", JSONObject()
+                .put("terminal", registrationTerminal)
+                .put("coordinate_contract", REGISTRATION_COORDINATE_CONTRACT)
+                .put("observation_count", registrationObservations)
+                .put(
+                    "distinct_transform_id_count",
+                    registrationTransformIds.size
+                )
+                .put(
+                    "transform_id_counts",
+                    JSONObject(registrationTransformIds as Map<*, *>)
+                )
+                .put(
+                    "failure_counts",
+                    JSONObject(registrationFailures as Map<*, *>)
+                )
+                .put(
+                    "maximum_fit_residual_px_p50",
+                    percentileOrNull(registrationResidualsPx, 0.50)
+                )
+                .put(
+                    "maximum_fit_residual_px_p95",
+                    percentileOrNull(registrationResidualsPx, 0.95)
+                )
+                .put("external_alignment_verified", false)
+                .put("person_registration_verified", false))
             .put("evidence_boundary", JSONObject()
                 .put("benchmark_only", true)
                 .put("app_runtime_involved", false)
                 .put("raster_pixels_persisted", false)
-                .put("registration_verified", false)
+                .put(
+                    "affine_registration_candidate_observed",
+                    registrationObservations > 0
+                )
+                .put("external_registration_verified", false)
                 .put("person_measurement_performed", false)
                 .put("event_outcome_evaluated", false)
                 .put("navigation_output_issued", false)
@@ -263,6 +392,26 @@ class D45ArCoreRawSourceDecoderCanaryTest {
         return sorted[index]
     }
 
+    private fun detectorRotationDegrees(
+        sensorOrientationDegrees: Int?,
+        targetRotation: Int,
+        lensFacing: Int?
+    ): Int? {
+        val sensor = sensorOrientationDegrees ?: return null
+        val targetDegrees = when (targetRotation) {
+            Surface.ROTATION_0 -> 0
+            Surface.ROTATION_90 -> 90
+            Surface.ROTATION_180 -> 180
+            Surface.ROTATION_270 -> 270
+            else -> return null
+        }
+        return if (lensFacing == CameraCharacteristics.LENS_FACING_FRONT) {
+            (sensor + targetDegrees) % 360
+        } else {
+            (sensor - targetDegrees + 360) % 360
+        }.takeIf { it in setOf(0, 90, 180, 270) }
+    }
+
     private fun writeAtomicUtf8(file: File, content: String) {
         val atomicFile = AtomicFile(file)
         val stream = atomicFile.startWrite()
@@ -294,9 +443,13 @@ class D45ArCoreRawSourceDecoderCanaryTest {
         const val ARCORE_SDK_VERSION = "1.33.0"
         const val MOTION_PROTOCOL =
             "AUTONOMOUS_STATIONARY_OR_UNCONTROLLED_NO_USER_INSTRUCTION"
-        const val OUTPUT_PARENT = "hftf-d45/raw-source-decoder-r0"
+        const val REGISTRATION_COORDINATE_CONTRACT =
+            "DETECTOR_DISPLAY_TO_CPU_IMAGE_TO_TEXTURE_NORMALIZED_RAW_DEPTH"
+        const val DETECTOR_ANALYSIS_TARGET_ROTATION = Surface.ROTATION_0
+        const val OUTPUT_PARENT = "hftf-d45/raw-source-registration-r0"
         const val OUTPUT_FILE = "summary.json"
-        const val REPORT_SCHEMA = "blindassist_hftf_d45_raw_source_decoder_canary_v1"
+        const val REPORT_SCHEMA =
+            "blindassist_hftf_d45_raw_source_registration_canary_v1"
         const val REPORT_KEY = "hftf_d45_raw_source_decoder_canary"
         const val REPORT_PATH_KEY = "hftf_d45_raw_source_decoder_canary_path"
         const val TAG = "UstrfShadowBenchmark"

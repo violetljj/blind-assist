@@ -2,7 +2,7 @@
 
 日期：2026-08-03
 
-执行状态：`D45_SOURCE_CANARY_READY_FOR_DEVICE_EXECUTION`
+执行状态：`D45_SOURCE_AND_AFFINE_REGISTRATION_CANARY_READY_FOR_DEVICE_EXECUTION`
 
 科学终态：`D45_NOT_EVALUATED_NO_READY_DEVICE`
 
@@ -14,7 +14,7 @@
   - coverage/confidence/IQR/staleness fail-closed receipts；
   - camera-relative x/y/z metric measurement；
   - exact same-target/source/registration 7-point OLS `+1.0 s` forecast；
-- 10 个 focused JVM tests 全部通过：
+- 18 个 focused JVM tests 全部通过：
   - accepted person measurement；
   - insufficient coverage rejection；
   - stale receipt rejection；
@@ -25,6 +25,14 @@
   - padded row/pixel stride 下 unsigned raw depth/confidence 解码；
   - truncated plane 在任何 partial raster 逸出前 fail closed；
   - decoded raw frame 保持 `SOURCE_REGISTRATION_UNVERIFIED`；
+  - CPU-image crop/scale affine recovery；
+  - detector 90° rotation 与 inverse round-trip；
+  - non-affine coordinate receipt fail closed；
+  - registration identity 对微小浮点噪声稳定；
+  - cross-frame registration 不能解锁 raw raster；
+  - native sparse depth pixels 不经 upsampling 重复计入 coverage；
+  - detector region 落在 depth crop 外时报告 `NO_REGISTERED_PIXELS`，不混入
+    depth-quality failure；
 - ARCore 1.33.0 仅加入现有 `:hftf-device-canary` test APK；
 - locked API semantic receipt 确认只有 raw depth 暴露对应 confidence image，因此
   R0.1 在任何 device outcome 前把 raw+confidence 设为唯一 measurement-ready
@@ -45,6 +53,37 @@
   - 不持久化 raster，不产生人物/事件结果；
   - 单 receipt 上限 `256 KiB`，使用 `AtomicFile`；
   - 静止或无纹理条件下零观测终态为 `NOT_EVALUABLE_*`，不是算法负结果。
+
+## R0.3 pre-device coordinate semantic repair
+
+ARCore 官方坐标合同明确：
+
+- raw depth 是 GPU aspect ratio、native orientation；
+- CPU camera image 与 depth image 可能宽高比不同，depth 是 camera image 的 crop；
+- camera pixel 必须用
+  `Frame.transformCoordinates2d(IMAGE_PIXELS, ..., TEXTURE_NORMALIZED, ...)`
+  转为 depth coordinate，不能只按宽高缩放。
+
+参考：
+
+- `https://developers.google.com/ar/develop/java/depth/developer-guide#converting_coordinates_between_camera_images_and_depth_images`
+- `https://developers.google.com/ar/develop/java/depth/raw-depth`
+
+因此 R0.3 在没有 device outcome 前修复原实现中的简单 scale 假设：
+
+- `detector display -> native CPU image` 使用 CameraX detector rotation；
+- `native CPU image -> raw depth` 使用同一 ARCore frame 的 9-point coordinate
+  receipt 拟合并检查 affine residual；
+- sampler 逐个 inverse-map native raw-depth pixel center 到 person inner box，
+  不 upsample sparse depth，也不把同一个 depth pixel 重复计入 coverage；
+- registration observation 与 exact source frame id/timestamp 绑定，不能跨帧解锁；
+- transform id 对微小浮点抖动 canonicalize，避免纯数值噪声切断 7-point history；
+- depth byte order 使用 Android `nativeOrder()`，与官方 uint16 读取语义一致。
+
+设备 receipt 中
+`AFFINE_REGISTRATION_OBSERVED_DEVICE_ONLY` 只表示 ARCore 内部 coordinate mapping
+可被一致地恢复；`external_alignment_verified=false` 与
+`person_registration_verified=false` 保持不变。它不能替代 1/2/3/5 m 人工量测。
 
 ## 既有物理机 source-class prior，不是 D45 outcome
 
@@ -104,15 +143,15 @@ default debug App merged manifests 中也没有 `com.google.ar.core` 或
 - source-decoder benchmark APK：
   - path：
     `ustrf-shadow-benchmark/build/outputs/apk/debug/ustrf-shadow-benchmark-debug.apk`
-  - bytes：`33636481`
+  - bytes：`33650193`
   - SHA-256：
-    `4b316a5895da000023f24ba19e118d5c1aa97024f8702c0f2e6e9904aa3b3087`
+    `3e99937243b7014a8cdaf27dfa00343d0f4a5666d41d295dadd1ab82e15639b4`
 - source-decoder instrumentation APK：
   - path：
     `ustrf-shadow-benchmark/build/outputs/apk/androidTest/debug/ustrf-shadow-benchmark-debug-androidTest.apk`
-  - bytes：`425437`
+  - bytes：`479355`
   - SHA-256：
-    `d4b90e06c1d0430885dcb9498f305a747555653c078e4d3733dcbf1b67d5f83c`
+    `bd364997988853474d71d6825bfa40787698da5f04cee521f1b2857e6c27ad6b`
 
 新增 source-decoder build 命令：
 
@@ -123,7 +162,7 @@ default debug App merged manifests 中也没有 `com.google.ar.core` 或
   --no-daemon --max-workers=2 -Dorg.gradle.jvmargs=-Xmx2048m
 ```
 
-结果为 `BUILD SUCCESSFUL`；JVM tests 为 `10/10`。
+结果为 `BUILD SUCCESSFUL`；JVM tests 为 `18/18`。
 
 ## 剩余 device actions
 
@@ -157,10 +196,11 @@ receipt path：
 
 ```text
 /sdcard/Android/data/com.linnan.blindassist.ustrfbenchmark/files/
-hftf-d45/raw-source-decoder-r0/<run-id>/summary.json
+hftf-d45/raw-source-registration-r0/<run-id>/summary.json
 ```
 
-只有 `RAW_SOURCE_DECODER_OBSERVED` 才允许进入 registration calibration；它也不
-直接授权 person measurement。`AUTOMATIC_ONLY_*_CONFIDENCE_UNAVAILABLE` 与
-所有 `NOT_EVALUABLE_*` 都不是 depth 精度负结果；无设备也不是 source 负结果，
-不关闭 D45。
+`RAW_SOURCE_DECODER_OBSERVED` 只证明 source decode；
+`AFFINE_REGISTRATION_OBSERVED_DEVICE_ONLY` 只证明同帧坐标映射内部一致。二者
+均成立后才进入 1/2/3/5 m person measurement，仍不授权 event 或 App。
+`AUTOMATIC_ONLY_*_CONFIDENCE_UNAVAILABLE` 与所有 `NOT_EVALUABLE_*` 都不是
+depth 精度负结果；无设备也不是 source 负结果，不关闭 D45。

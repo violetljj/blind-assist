@@ -167,7 +167,7 @@ availability。sampler、OLS horizon 与支持门已固定；不把 depth 写入
 `Detection.distanceEvidence`，不调用 risk/feedback seam。
 
 source contract、person-box sampler、7 点 OLS solver 已在独立 JVM module 中实现，
-10 个 focused tests 通过；ARCore capability receipt 仅进入专用
+18 个 focused tests 通过；ARCore capability receipt 仅进入专用
 `hftf-device-canary` APK。default App runtime classpath/manifest 均不含 ARCore
 或 D45 module。R0.1 在任何 device outcome 前修复 locked API 语义：只有 raw
 depth 有对应 confidence image，因此 raw+confidence 是唯一 measurement-ready
@@ -182,6 +182,14 @@ valid-pixel coverage 与 decode latency 的小 JSON，不保存 raster，不接�
 结果。既有 SM-S9280 evidence 在 moving run 中曾取得 585/813 次 raw depth，
 而两个 autonomous frame-bound run 均为 0/150；因此零 acquisition 按上下文不足
 记为 `NOT_EVALUABLE`，不再由控制面失败烧毁科学路线。
+
+R0.3 在 device outcome 前修复坐标语义：ARCore depth 是 camera crop，不能把
+detector box 按 raster 宽高直接缩放。现在 registration 显式组合 CameraX detector
+rotation 与同帧 ARCore `IMAGE_PIXELS -> TEXTURE_NORMALIZED` 9-point affine
+receipt；sampler inverse-map native raw-depth pixel center，不 upsample sparse
+depth。registration 必须与 exact source frame 绑定，设备 receipt 仍明确
+`external_alignment_verified=false`。这使下一次物理机执行真正回答 source/
+registration，而不是把坐标实现错误误判为 depth 算法失败。
 
 ## 2026-08-03 D44：causal relative metric track 几乎达到完整 world teacher
 

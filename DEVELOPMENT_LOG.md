@@ -5521,3 +5521,19 @@
   default App production runtime classpath/manifest 仍不含 ARCore/D45；当前 ADB
   无设备，科学终态仍为 `D45_NOT_EVALUATED_NO_READY_DEVICE`，主线、默认 App
   与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D45
+  coordinate registration readiness R0.3，不读取 device/person outcome。官方
+  ARCore 语义确认 raw depth 是 GPU-aspect/native-orientation camera crop，原
+  detector-box→depth 的简单宽高 scale 不能成立。实现改为显式组合 CameraX
+  detector rotation 与同帧 ARCore `IMAGE_PIXELS -> TEXTURE_NORMALIZED`
+  9-point affine receipt；sampler inverse-map native raw-depth pixel center，
+  不 upsample sparse depth、不重复计数。registration 与 exact source frame
+  id/timestamp 绑定，跨帧不能解锁；transform id 对微小 float noise canonicalize，
+  depth uint16 使用 Android native byte order；depth crop 外目标显式报告
+  `NO_REGISTERED_PIXELS`，不混入 depth-quality failure。18/18 focused JVM tests 与
+  benchmark/test APK 编译通过；APK SHA-256 为
+  `3e99937243b7014a8cdaf27dfa00343d0f4a5666d41d295dadd1ab82e15639b4` /
+  `bd364997988853474d71d6825bfa40787698da5f04cee521f1b2857e6c27ad6b`。
+  device receipt 即使得到 `AFFINE_REGISTRATION_OBSERVED_DEVICE_ONLY`，仍固定
+  `external_alignment_verified=false`、`person_registration_verified=false`；
+  当前无 ADB 设备，科学终态不变，主线、默认 App 与 D35 均不变。

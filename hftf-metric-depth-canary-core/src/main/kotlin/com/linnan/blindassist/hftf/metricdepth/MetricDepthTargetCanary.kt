@@ -46,17 +46,26 @@ data class RegisteredMetricDepthFrame(
     val depthMillimeters: IntArray,
     val confidence: FloatArray,
     val source: MetricDepthSource,
-    val registrationTransformId: String,
+    val registration: MetricDepthRegistrationTransform,
     val producedAtNs: Long,
     val validUntilNs: Long
 ) {
+    val registrationTransformId: String get() = registration.transformId
+
     init {
         require(detectorDisplaySize.width > 0 && detectorDisplaySize.height > 0)
-        require(intrinsics.imageWidthPx * intrinsics.imageHeightPx == depthMillimeters.size)
+        require(detectorDisplaySize == registration.detectorDisplaySize)
+        require(
+            intrinsics.imageWidthPx == registration.cameraImageSize.width &&
+                intrinsics.imageHeightPx == registration.cameraImageSize.height
+        )
+        require(
+            registration.rawDepthSize.width * registration.rawDepthSize.height ==
+                depthMillimeters.size
+        )
         require(confidence.size == depthMillimeters.size)
         require(depthMillimeters.all { it >= 0 })
         require(confidence.all { it.isFinite() && it in 0f..1f })
-        require(registrationTransformId.isNotBlank())
         require(sourceFrame.clockDomain == FrameClockDomain.ANDROID_ELAPSED_REALTIME) {
             "live metric depth requires an elapsed-realtime source frame"
         }
@@ -186,19 +195,25 @@ class MetricDepthTargetSampler(
             )
         }
 
-        val region = registeredInnerRegion(frame, detection)
+        val region = detectorInnerRegion(frame, detection)
         if (region.right <= region.left || region.bottom <= region.top) {
             return MetricDepthSampleResult.Unavailable(
                 MetricDepthSampleFailure.NO_REGISTERED_PIXELS,
                 emptyDiagnostics
             )
         }
-        val candidateCount = (region.right - region.left) * (region.bottom - region.top)
-        val depths = ArrayList<Float>(candidateCount)
+        val depthBounds = rawDepthBounds(frame, region)
+        val depths = ArrayList<Float>()
+        var candidateCount = 0
         var confidenceSum = 0f
-        for (y in region.top until region.bottom) {
-            val row = y * frame.intrinsics.imageWidthPx
-            for (x in region.left until region.right) {
+        for (y in depthBounds.top until depthBounds.bottom) {
+            val row = y * frame.registration.rawDepthSize.width
+            for (x in depthBounds.left until depthBounds.right) {
+                val detectorPoint = frame.registration.rawDepthToDetector.map(
+                    MetricImagePoint(x + PIXEL_CENTER_OFFSET, y + PIXEL_CENTER_OFFSET)
+                )
+                if (!region.contains(detectorPoint)) continue
+                candidateCount++
                 val index = row + x
                 val depthMeters = frame.depthMillimeters[index] / MILLIMETERS_PER_METER
                 val sampleConfidence = frame.confidence[index]
@@ -210,6 +225,12 @@ class MetricDepthTargetSampler(
                     confidenceSum += sampleConfidence
                 }
             }
+        }
+        if (candidateCount == 0) {
+            return MetricDepthSampleResult.Unavailable(
+                MetricDepthSampleFailure.NO_REGISTERED_PIXELS,
+                emptyDiagnostics
+            )
         }
         val coverage = if (candidateCount == 0) 0f else depths.size.toFloat() / candidateCount
         val meanConfidence = if (depths.isEmpty()) null else confidenceSum / depths.size
@@ -257,13 +278,14 @@ class MetricDepthTargetSampler(
             )
         }
 
-        val depthU = detection.centerX / frame.detectorDisplaySize.width *
-            frame.intrinsics.imageWidthPx
-        val depthV = detection.centerY / frame.detectorDisplaySize.height *
-            frame.intrinsics.imageHeightPx
+        val cameraPoint = frame.registration.detectorToCameraImage.map(
+            MetricImagePoint(detection.centerX, detection.centerY)
+        )
         val position = MetricVector3Meters(
-            x = (depthU - frame.intrinsics.principalXpx) * medianDepth / frame.intrinsics.focalXpx,
-            y = (depthV - frame.intrinsics.principalYpx) * medianDepth / frame.intrinsics.focalYpx,
+            x = (cameraPoint.x - frame.intrinsics.principalXpx) *
+                medianDepth / frame.intrinsics.focalXpx,
+            y = (cameraPoint.y - frame.intrinsics.principalYpx) *
+                medianDepth / frame.intrinsics.focalYpx,
             z = medianDepth
         )
         val stability = (1f / (1f + relativeIqr)).coerceIn(0f, 1f)
@@ -284,29 +306,53 @@ class MetricDepthTargetSampler(
         )
     }
 
-    private fun registeredInnerRegion(
+    private fun detectorInnerRegion(
         frame: RegisteredMetricDepthFrame,
         detection: Detection
-    ): PixelRegion {
+    ): ContinuousRegion {
         val box = detection.boundingBox.clamped(frame.detectorDisplaySize)
         val halfWidth = box.width * config.innerCropRatio / 2f
         val halfHeight = box.height * config.innerCropRatio / 2f
-        val leftDisplay = box.centerX - halfWidth
-        val rightDisplay = box.centerX + halfWidth
-        val topDisplay = box.centerY - halfHeight
-        val bottomDisplay = box.centerY + halfHeight
-        val depthWidth = frame.intrinsics.imageWidthPx
-        val depthHeight = frame.intrinsics.imageHeightPx
-        return PixelRegion(
-            left = floor(leftDisplay / frame.detectorDisplaySize.width * depthWidth)
-                .toInt().coerceIn(0, depthWidth),
-            right = ceil(rightDisplay / frame.detectorDisplaySize.width * depthWidth)
-                .toInt().coerceIn(0, depthWidth),
-            top = floor(topDisplay / frame.detectorDisplaySize.height * depthHeight)
-                .toInt().coerceIn(0, depthHeight),
-            bottom = ceil(bottomDisplay / frame.detectorDisplaySize.height * depthHeight)
-                .toInt().coerceIn(0, depthHeight)
+        return ContinuousRegion(
+            left = box.centerX - halfWidth,
+            right = box.centerX + halfWidth,
+            top = box.centerY - halfHeight,
+            bottom = box.centerY + halfHeight
         )
+    }
+
+    private fun rawDepthBounds(
+        frame: RegisteredMetricDepthFrame,
+        detectorRegion: ContinuousRegion
+    ): PixelRegion {
+        val corners = listOf(
+            MetricImagePoint(detectorRegion.left, detectorRegion.top),
+            MetricImagePoint(detectorRegion.right, detectorRegion.top),
+            MetricImagePoint(detectorRegion.left, detectorRegion.bottom),
+            MetricImagePoint(detectorRegion.right, detectorRegion.bottom)
+        ).map(frame.registration.detectorToRawDepth::map)
+        val width = frame.registration.rawDepthSize.width
+        val height = frame.registration.rawDepthSize.height
+        return PixelRegion(
+            left = floor(corners.minOf { it.x } - PIXEL_CENTER_OFFSET)
+                .toInt().coerceIn(0, width),
+            right = ceil(corners.maxOf { it.x } - PIXEL_CENTER_OFFSET)
+                .toInt().plus(1).coerceIn(0, width),
+            top = floor(corners.minOf { it.y } - PIXEL_CENTER_OFFSET)
+                .toInt().coerceIn(0, height),
+            bottom = ceil(corners.maxOf { it.y } - PIXEL_CENTER_OFFSET)
+                .toInt().plus(1).coerceIn(0, height)
+        )
+    }
+
+    private data class ContinuousRegion(
+        val left: Float,
+        val right: Float,
+        val top: Float,
+        val bottom: Float
+    ) {
+        fun contains(point: MetricImagePoint): Boolean =
+            point.x >= left && point.x < right && point.y >= top && point.y < bottom
     }
 
     private fun unavailable(
@@ -353,6 +399,7 @@ class MetricDepthTargetSampler(
     private companion object {
         const val PERSON_LABEL = "person"
         const val MILLIMETERS_PER_METER = 1_000f
+        const val PIXEL_CENTER_OFFSET = 0.5f
     }
 }
 
