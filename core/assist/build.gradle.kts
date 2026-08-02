@@ -152,3 +152,30 @@ tasks.register<JavaExec>("runHftfD39ThorMagniConfirmReleaseVetoReplay") {
         ).get()
     )
 }
+
+tasks.register<JavaExec>("runHftfD40ThorMagniContinuousTrackProjectedRiskReplay") {
+    group = "verification"
+    description = "Runs HFTF D40 continuous track-projected production risk replay."
+    dependsOn(tasks.named("testClasses"))
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set(
+        "com.linnan.blindassist.session." +
+            "HftfD40ThorMagniContinuousTrackProjectedRiskReplayMain"
+    )
+    args(
+        providers.gradleProperty("d40Input").orElse(
+            rootProject.layout.projectDirectory.file(
+                "artifacts.local/evidence/hftf/" +
+                    "stage-c-d36-thor-magni-production-track-veto-event-v0/" +
+                    "detections.tsv"
+            ).asFile.absolutePath
+        ).get(),
+        providers.gradleProperty("d40KernelOutput").orElse(
+            rootProject.layout.projectDirectory.file(
+                "artifacts.local/evidence/hftf/" +
+                    "stage-c-d40-thor-magni-continuous-track-projected-risk-v0/" +
+                    "kernel_replay.tsv"
+            ).asFile.absolutePath
+        ).get()
+    )
+}

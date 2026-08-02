@@ -5380,3 +5380,27 @@
   通过。首次 combined patch 因 context mismatch 整体未应用，拆分后成功；
   发生在 source replay/truth join 前，不烧毁 cohort。主线、默认 App 与 D35
   均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D40
+  continuous-track projected-risk replay。该实验在 outcome 前冻结并离开
+  `HFTF_SCENE_SCALE_PERSISTENCE_FAMILY_STOP`：复用 D36 的 19 sessions / 530
+  anchors / 3,710 unique frames / 14,364 detections，从 production
+  `CausalTrackTristateGeometryProducer` 读取连续 `signedApproachRatePerS`，
+  固定 `1.0 s` horizon、`scale=exp(slope*horizon)`，保持 selected box
+  bottom-center 后运行独立 production risk kernel。205 forecast windows
+  覆盖全部 19 sessions（136 positive-slope / 69 negative-slope），全部
+  evaluability gates 通过；但 candidate 与 baseline 的 positive anchors
+  `114/157`、positive events `79/107`、negative alerts `251/373` 完全一致，
+  五 folds 均无 gain/loss。终态
+  `D40_THOR_MAGNI_CONTINUOUS_TRACK_PROJECTED_RISK_NOT_SUPPORTED`，建立
+  `D40_SELECTED_TARGET_BOX_SCALE_PROJECTION_RECIPE_STOP`；不在已消费 outcome
+  上搜索 horizon、clamp 或 threshold。该结果不撤销 D32/D33 future-range
+  mechanism；下一候选必须使用新的 geometry teacher/field evidence 直接表达
+  future traversability，并绑定新数据角色或新鲜 outcome cohort。重复 Kotlin
+  replay SHA 为
+  `fae215ddebfcb774c15e5ef18934fca36a85b1481d63905762fb70ac435884e4`，
+  report SHA 为
+  `c4716729c69de435f40eee3717c5bdada2e20ee6f49fb79f0dfec8d4869d0d06`；
+  `core:assist` 全量测试与 D36-D40 evaluator 14 tests 通过。source-only
+  阶段修复 deduplicated-frame ordinal 比较，truth join 前完成，不烧毁 cohort；
+  一次 Gradle JVM property 被 PowerShell 误解析为 task，改用 `GRADLE_OPTS`
+  后原样成功。主线、默认 App 与 D35 均不变。

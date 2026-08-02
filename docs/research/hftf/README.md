@@ -135,7 +135,29 @@ D38_FIXED_250MS_PERSISTENCE_POSITIVE_NONINFERIORITY_FAILED /
 D39_THOR_MAGNI_CONFIRM_RELEASE_VETO_EVENT_NOT_SUPPORTED /
 D39_BIDIRECTIONAL_CONFIRM_RELEASE_MECHANISM_EXECUTED /
 HFTF_SCENE_SCALE_PERSISTENCE_FAMILY_STOP /
+D40_THOR_MAGNI_CONTINUOUS_TRACK_PROJECTED_RISK_NOT_SUPPORTED /
+D40_CONTINUOUS_TRACK_FORECAST_OPPORTUNITY_SUPPORTED /
+D40_SELECTED_TARGET_BOX_SCALE_PROJECTION_RECIPE_STOP /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D40：连续轨迹预测有机会，但一秒框投影没有改变风险终态
+
+D40 离开已停止的 scene-scale veto/persistence family，直接用 production causal
+track 的连续尺度斜率将 selected box 投影到一秒后，再经独立 production risk
+kernel 计算 candidate terminal。205 forecast windows 覆盖全部 19 sessions，
+说明 D36 的严格 tri-state coverage 不等于 continuous estimator 的 coverage
+ceiling；全部 evaluability gates 通过。
+
+然而 candidate 与 baseline 在 530 anchors 上完全同终态：positive anchors
+`114 -> 114`、positive events `79 -> 79`、negative alerts `251 -> 251`，
+0/5 folds 有 strict gain。终态：
+
+`D40_THOR_MAGNI_CONTINUOUS_TRACK_PROJECTED_RISK_NOT_SUPPORTED`
+
+因此停止当前 selected-target box-scale projection recipe，不在已消费 outcome
+上搜索 horizon、clamp 或 threshold。D32/D33 的 future-range mechanism 正结果
+保持成立；下一候选必须使用新的几何 teacher/field evidence，直接表达 future
+traversability，而不是继续改写现有 alert。
 
 ## 2026-08-03 D39：显式 confirm 修复了正事件，但也释放了负事件收益
 
