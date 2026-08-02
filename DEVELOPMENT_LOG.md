@@ -1,4 +1,22 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D22
+  THOR-MAGNI dense-flow dynamics transfer。为 D12 的 1,078 samples 全量物化
+  4,312 对 current→history RAFT flow；216-sample 方向审计的 valid fraction
+  `.85275`，photometric L1 从 `.15305` 降至 `.06485`。同一 D20
+  20-channel dynamics、19 source sessions、5 folds、seed17、30 epochs 下，
+  current/history 两臂共享 1,004,134 参数。完整 10 个 training runs 后，
+  target-macro source-session-macro AUROC/AP delta 为 `+.01638/+.02376`、
+  均 3/5 folds 正；但 pooled macro AUROC 为 `-.01359`，且 corridor
+  source-macro AUROC 为 `-.00393`，因此 broad gate 终态
+  `D22_THOR_MAGNI_DENSE_FLOW_TRANSFER_CANARY_NOT_SUPPORTED`。同时 proximity
+  source-macro AUROC/AP 为 `+.03669/+.03660`，均 4/5 folds 正，pooled
+  `-.00100/+.00723`，保留
+  `D22_PROXIMITY_SOURCE_MACRO_TRANSFER_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY`。
+  首次运行因一个双 target 均无 eligible sample 的 mini-batch 抛出异常；在任何
+  held-out metric 前仅修复为空 batch 跳过并从头重跑，属于工程无效，不烧毁 cohort。
+  不扩 broad D22 gate、不追溯撤销 corridor 负结果；如继续，须另冻同一双 target
+  训练下的 proximity-only seeds23/41 稳定性检查，且只允许 target-specific
+  Development robustness。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D21
   ConvGRU future-state canary。保留 D20 相同四步 20-channel aligned
   dense-flow dynamics，只把一次性 3D collapse 换成按时间递推的 16-channel
