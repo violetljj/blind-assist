@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D9 JRDB
+  independent-dataset corridor replication。四个本地 RGB360+`labels_3d`
+  sequences 各 120 连续帧，物化 104 个 samples；geometry-only census 后固定两个
+  完整 source-pair folds。复用 D8 相同 13,586 参数 temporal-spatial head、120
+  epochs 与 seeds `17/23/41`。主检验 corridor AUROC/AP history-minus-current
+  mean `-.00235/-.00152`，0/2 folds 为正，individual units 仅 1/6、0/6 为正。
+  终态 `D9_JRDB_TEMPORAL_SPATIAL_CORRIDOR_REPLICATION_NOT_SUPPORTED` 与
+  `HFTF_FROZEN_FEATURE_HISTORY_ROUTE_STOP`。近距负对照虽为小正但不切换 target。
+  这是完整执行后的科学负结果，不是工程/协议失败；保留 D8 的 19-session 监督资产，
+  停止同一 frozen-backbone/head family 搜索，主线和默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D8
   equal-capacity temporal-spatial actionability head。冻结 MobileNet
   `5×576×4×7` maps，current/history 两臂共享 13,586 参数、相同五折三 seed

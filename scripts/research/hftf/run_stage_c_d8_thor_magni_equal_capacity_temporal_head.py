@@ -303,6 +303,11 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--samples", type=Path, default=DEFAULT_SAMPLES)
     parser.add_argument("--features", type=Path, default=DEFAULT_FEATURES)
+    parser.add_argument(
+        "--experiment",
+        choices=("d8-thor", "d9-jrdb"),
+        default="d8-thor",
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists() or Path(str(args.output) + ".sha256").exists():
@@ -310,8 +315,11 @@ def main() -> int:
 
     records = load_jsonl(args.samples)
     records.sort(key=lambda row: row["sample_id"])
-    if len(records) != 1078:
-        raise ValueError("Expected the fixed 1,078-sample THOR corpus")
+    expected_samples = 1078 if args.experiment == "d8-thor" else 104
+    if len(records) != expected_samples:
+        raise ValueError(
+            f"Expected {expected_samples} samples for {args.experiment}"
+        )
     features = load_aligned_features(args.features, records)
     feature_kind = "pooled" if features.ndim == 3 else "spatial"
     folds = np.asarray([int(record["fold"]) for record in records])
@@ -331,6 +339,16 @@ def main() -> int:
     device = torch.device(
         "cuda" if torch.cuda.is_available() else "cpu"
     )
+    fold_ids = sorted(set(folds.tolist()))
+    expected_folds = (
+        list(range(5))
+        if args.experiment == "d8-thor"
+        else [0, 1]
+    )
+    if fold_ids != expected_folds:
+        raise ValueError(
+            f"Unexpected folds for {args.experiment}: {fold_ids}"
+        )
 
     metric_paths = (
         "proximity.auroc",
@@ -341,9 +359,9 @@ def main() -> int:
     units = []
     by_fold_delta: dict[int, dict[str, list[float]]] = {
         fold: {path: [] for path in metric_paths}
-        for fold in range(5)
+        for fold in fold_ids
     }
-    for fold in range(5):
+    for fold in fold_ids:
         test_indices = np.flatnonzero(folds == fold)
         train_indices = np.flatnonzero(folds != fold)
         train_sources = set(sources[train_indices].tolist())
@@ -409,7 +427,7 @@ def main() -> int:
     aggregate_values: dict[str, list[float]] = {
         path: [] for path in metric_paths
     }
-    for fold in range(5):
+    for fold in fold_ids:
         mean_delta = {}
         for path in metric_paths:
             values = by_fold_delta[fold][path]
@@ -428,25 +446,64 @@ def main() -> int:
         path: summarize(values)
         for path, values in aggregate_values.items()
     }
-    supported = all(
-        aggregate[path]["median"] is not None
-        and float(aggregate[path]["median"]) > 0.0
-        and int(aggregate[path]["positive_count"]) >= 3
-        for path in metric_paths
-    )
-    status_prefix = (
-        "D8_EQUAL_CAPACITY_TEMPORAL_ACTIONABILITY"
-        if feature_kind == "pooled"
-        else "D8_EQUAL_CAPACITY_TEMPORAL_SPATIAL_ACTIONABILITY"
-    )
-    status = (
-        f"{status_prefix}_INCREMENT_SUPPORTED"
-        if supported
-        else f"{status_prefix}_INCREMENT_NOT_STABLE"
-    )
+    if args.experiment == "d8-thor":
+        supported = all(
+            aggregate[path]["median"] is not None
+            and float(aggregate[path]["median"]) > 0.0
+            and int(aggregate[path]["positive_count"]) >= 3
+            for path in metric_paths
+        )
+        status_prefix = (
+            "D8_EQUAL_CAPACITY_TEMPORAL_ACTIONABILITY"
+            if feature_kind == "pooled"
+            else "D8_EQUAL_CAPACITY_TEMPORAL_SPATIAL_ACTIONABILITY"
+        )
+        status = (
+            f"{status_prefix}_INCREMENT_SUPPORTED"
+            if supported
+            else f"{status_prefix}_INCREMENT_NOT_STABLE"
+        )
+        success_gate = (
+            "seed-mean fold delta median > 0 and at least 3/5 "
+            "positive folds for proximity/corridor AUROC and AP"
+        )
+    else:
+        primary_paths = (
+            "corridor.auroc",
+            "corridor.average_precision",
+        )
+        supported = all(
+            aggregate[path]["mean"] is not None
+            and float(aggregate[path]["mean"]) > 0.0
+            and int(aggregate[path]["positive_count"]) == len(fold_ids)
+            and sum(
+                1
+                for unit in units
+                if unit["history_minus_current"][path] > 0.0
+            )
+            >= 4
+            for path in primary_paths
+        )
+        status = (
+            "D9_JRDB_TEMPORAL_SPATIAL_CORRIDOR_REPLICATION_SUPPORTED"
+            if supported
+            else "D9_JRDB_TEMPORAL_SPATIAL_CORRIDOR_REPLICATION_NOT_SUPPORTED"
+        )
+        success_gate = (
+            "corridor AUROC and AP seed-mean delta > 0 in both fixed "
+            "source-pair folds and at least 4/6 fold-seed units positive; "
+            "proximity is a negative control"
+        )
 
     report = {
-        "schema": SCHEMA,
+        "schema": (
+            SCHEMA
+            if args.experiment == "d8-thor"
+            else (
+                "blindassist_hftf_stage_c_d9_jrdb_equal_capacity_"
+                "temporal_spatial_corridor_replication_v0"
+            )
+        ),
         "created_at_utc": datetime.now(timezone.utc).astimezone().isoformat(),
         "status": status,
         "authority": {
@@ -462,7 +519,14 @@ def main() -> int:
             "features_sha256": sha256(args.features),
         },
         "design": {
-            "split": "fixed SHA-256(source_session_id) modulo 5",
+            "split": (
+                "fixed SHA-256(source_session_id) modulo 5"
+                if args.experiment == "d8-thor"
+                else (
+                    "two fixed source-pair folds: clark+gates and "
+                    "meyer+stlc"
+                )
+            ),
             "seeds": list(SEEDS),
             "epochs": EPOCHS,
             "learning_rate": LEARNING_RATE,
@@ -493,15 +557,12 @@ def main() -> int:
                 "positive weights"
             ),
             "selection": "fixed final epoch; no heldout model selection",
-            "success_gate": (
-                "seed-mean fold delta median > 0 and at least 3/5 positive "
-                "folds for proximity/corridor AUROC and AP"
-            ),
+            "success_gate": success_gate,
         },
         "counts": {
             "samples": len(records),
             "source_sessions": len(set(sources.tolist())),
-            "folds": 5,
+            "folds": len(fold_ids),
             "seeds": len(SEEDS),
             "training_units": len(units) * 2,
         },
@@ -510,11 +571,22 @@ def main() -> int:
         "folds": fold_rows,
         "aggregate_seed_mean_history_minus_current": aggregate,
         "next_action": (
-            "seek independent-source replication before any field or App work"
+            (
+                "seek another independent source before any App or field work"
+                if args.experiment == "d9-jrdb"
+                else (
+                    "seek independent-source replication before any field "
+                    "or App work"
+                )
+            )
             if supported
             else (
-                "stop the compact temporal head on this representation and "
-                "do not use the earlier higher-dimensional screen as proof"
+                "close this independent-source replication"
+                if args.experiment == "d9-jrdb"
+                else (
+                    "stop the compact temporal head on this representation "
+                    "and do not use the earlier screen as proof"
+                )
             )
         ),
     }

@@ -13,7 +13,9 @@ D8-high-dimensional-coarse-actionability-signal-observed /
 D8-equal-capacity-temporal-actionability-increment-not-stable /
 D8-temporal-spatial-corridor-signal-weak /
 D8-equal-capacity-temporal-spatial-increment-not-stable /
-D8-full-local-field-history-increment-not-supported`
+D8-full-local-field-history-increment-not-supported /
+D9-jrdb-corridor-replication-not-supported /
+frozen-feature-history-route-stop`
 
 ## 研究问题与版本
 
@@ -134,6 +136,36 @@ coarse 增量，因此不把前述 signal 升级为 history 独立增量。最�
 spatial-map 对照只在 corridor AUROC/AP 上得到 5/5 fold 的小增量
 (`+.0040/+.0038`)，近距不支持，AP 也只有 9/15 units 为正；记录 weak signal 后
 停止当前 THOR frozen-backbone 模型搜索。
+
+### D9 JRDB independent-dataset corridor replication
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  materialize_stage_c_d9_jrdb_local_route_replication.py `
+  --output-root artifacts.local/evidence/hftf/<jrdb-route-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  extract_stage_c_d9_jrdb_spatial_features.py `
+  --samples artifacts.local/evidence/hftf/<jrdb-route-run>/samples.jsonl `
+  --output artifacts.local/evidence/hftf/<jrdb-feature-run>/features.npz
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d8_thor_magni_equal_capacity_temporal_head.py `
+  --experiment d9-jrdb `
+  --samples artifacts.local/evidence/hftf/<jrdb-route-run>/samples.jsonl `
+  --features artifacts.local/evidence/hftf/<jrdb-feature-run>/features.npz `
+  --output artifacts.local/evidence/hftf/<jrdb-replication-run>/report.json
+```
+
+D9 从四个本地 JRDB sequences 的连续 RGB360 与同 frame-stem `labels_3d`
+物化 104 个 samples。geometry-only census 后固定两个完整 source-pair folds，
+主检验只复现 D8 corridor weak signal。corridor AUROC/AP delta 在 0/2 folds 和
+1/6、0/6 units 为正，终态为
+`D9_JRDB_TEMPORAL_SPATIAL_CORRIDOR_REPLICATION_NOT_SUPPORTED`。近距负对照的小正值
+不触发 target 切换；当前 frozen-feature history route 停止。
 
 ## 稳定 Interface
 

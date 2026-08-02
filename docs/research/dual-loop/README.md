@@ -43,6 +43,17 @@ DEVELOPMENT_REQUIRES_LEGACY_FORMAL_GATES: false
 HISTORICAL_TERMINALS_IMMUTABLE: true
 ```
 
+## 评价器有效性审计：EVAL-VALIDITY R0
+
+在继续比较任何新视觉候选前，已冻结
+[EVAL-VALIDITY R0 合同](EVAL_VALIDITY_R0_CONTRACT_2026-08-02.md)：它不训练模型，要求一个
+新的 session-disjoint cohort 先把 native scene facts 与 output-blind 的
+`reminder_now / cleared / knownness` event facts 分开；后者的双 reviewer 一致性必须先于
+YOLO、truth box、truth mask 和 synthetic oracle 的输出访问。四臂使用同一 decision chain，
+并按 oracle 单调性检验“更丰富输入不得产生更差事件结果”。当前为
+`PRE_OUTPUT_LOCKED / DATA_ADMISSION_NOT_STARTED`；旧 RISKSEG 30-event cohort 保持
+`CONSUMED`，不得重算、调阈值或用于此审计。
+
 ## 独立未来潜力支线：HFTF
 
 HFTF 是独立于当前 RISKSEG/YOLO 主线的未来潜力支线；只有同口径证据持续超过主线，
@@ -59,6 +70,14 @@ temporal-head 对照未复制该 coarse 增量：近距 AUROC/AP 仅 2/5 折为�
 5/5 fold 的小增量（mean `+.0040/+.0038`），近距仍失败，走廊 AP 也只有
 9/15 fold×seed units 为正。该 corridor-specific weak signal 不改变总终态；
 THOR frozen-backbone 搜索停止，下一变量必须来自独立来源。
+随后
+[D9 JRDB 独立数据集复现](../hftf/HFTF_STAGE_C_D9_JRDB_CORRIDOR_REPLICATION_2026-08-02.md)
+使用四个本地 RGB360+3D-person sequences、104 个 samples 和两个完整 source-pair
+folds 复现该 corridor signal。history-minus-current corridor AUROC/AP 在 0/2
+folds 为正，mean `-.00235/-.00152`；六个 fold×seed units 中 AP 为 0/6 正。
+终态 `D9_JRDB_TEMPORAL_SPATIAL_CORRIDOR_REPLICATION_NOT_SUPPORTED`，当前 HFTF
+frozen-feature history route 停止。该科学负结果不删除 D8 局部监督资产，也不改变
+研究主线或默认 App。
 
 此前 D5/D6 Development 已推进到
 [outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：
