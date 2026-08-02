@@ -5177,3 +5177,16 @@
   object-slot/report SHA-256 分别为
   `aa9d0f28b1e050105086fee3078002862fd0d21d06e5bd4aa12ecc950ec451f7` /
   `22b910c1500beb7683241ea69fc0f5a3a5fa88747ebed06d28a1a10100ba1206`。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D30
+  THOR-MAGNI current box-to-world measurement diagnostic；不训练、不读取 future
+  outcome，并明确只评价 `Helmet_*` Visitor/Carrier，排除 DARKO/LO1 非 person。
+  289 anchors 同时有 box/visible person，501 assigned、310 accepted，accepted
+  fraction `61.88%`。source-macro box-x/bearing Pearson `0.7089`、bearing MAE
+  `14.12°`，17/19 sources 可评，均通过；pooled distance Spearman `0.4246`
+  且 5/5 folds 为正。nearest-body coverage `46.51%`、source-macro distance
+  Spearman `0.2867` 与 anchor opportunity 未过，整体 5/8，终态
+  `D30_THOR_MAGNI_BOX_WORLD_MEASUREMENT_RELATION_NOT_SUPPORTED`。保留 bearing
+  measurement 与跨折 distance-rank 正信号，不升级为完整 state estimator。下一步
+  只做 hash-bound 原视频 full-resolution current measurement replication，完全
+  复用 D30 assignment/gates。report SHA-256
+  `245e3625f8ea80cecdb629be9c6cd5498433ac3ae6fa58875488c95f80604c95`。
