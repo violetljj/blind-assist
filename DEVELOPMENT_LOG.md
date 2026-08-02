@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D24
+  THOR-MAGNI proximity event input ablation。复用 D23 的 15 个 history
+  checkpoints，不新增训练；同一权重分别读取真实五帧+dense flow 与重复当前帧+零
+  flow。D12 的 530 个 proximity-eligible anchors 形成 157 positive、373
+  negative 与 107 个连续 positive events；157/157 个正 anchor 均从原始 scenario
+  CSV 重建首次 1.25m 进入时间。15/15 paired units 完整产生。history 相对
+  zero-dynamics 的 source-macro event AUROC/AP mean 为
+  `-.00641/-.00873`，10% false-active 诊断包络下 event recall 为 `-.00132`，
+  仅 5/15、7/15、6/15 units 为正；lead-time credit 虽为 `+.02175s`、9/15
+  units 正，但仅 1/3 seed mean 与 1/5 fold seed-mean 为正。冻结 gate 2/7
+  通过，终态 `D24_THOR_MAGNI_PROXIMITY_EVENT_DYNAMICS_NOT_SUPPORTED`。这只否定
+  当前 checkpoint 的稳定事件级动态依赖，不撤销 D23 独立训练 history arm 的
+  representation 正结果。下一变量限于 train-only 的单标量动态残差决策桥，不再
+  扩 seed、阈值或主模型；主线、默认 App 与安全权限不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D23
   THOR-MAGNI proximity multi-seed robustness。D22 seed17 的 proximity 正信号
   作为已观察的 hypothesis generation；另冻并执行未运行的 seeds23/41，训练仍保留
