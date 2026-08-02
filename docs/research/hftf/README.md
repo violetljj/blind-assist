@@ -897,6 +897,7 @@ remote identities、本地 SHA/MD5 逐项等价，实际 final/`.tmp` 最大路�
 - [Stage C D17 early-temporal true-onset canary result](HFTF_STAGE_C_D17_EARLY_TEMPORAL_ONSET_CANARY_RESULT_2026-08-02.md)
 - [Stage C D18 flow-aligned true-onset canary protocol](HFTF_STAGE_C_D18_FLOW_ALIGNED_ONSET_CANARY_PROTOCOL_2026-08-02.md)
 - [Stage C D18 flow-aligned true-onset canary result](HFTF_STAGE_C_D18_FLOW_ALIGNED_ONSET_CANARY_RESULT_2026-08-02.md)
+- [Stage C D19 geometry-dynamics pretraining protocol](HFTF_STAGE_C_D19_GEOMETRY_DYNAMICS_PRETRAINING_PROTOCOL_2026-08-02.md)
 - [可执行审计 Module](../../../scripts/research/hftf/README.md)
 
 ## 与历史 USTRF-SC 的边界
