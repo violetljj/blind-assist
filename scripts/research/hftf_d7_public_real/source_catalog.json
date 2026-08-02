@@ -26,24 +26,24 @@
     {
       "dataset_id": "Project-Aria-Everyday-Activities",
       "priority": 3,
-      "official_url": "https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_everyday_activities_dataset",
-      "download_url": "https://www.projectaria.com/datasets/aea/",
+      "official_url": "https://explorer.projectaria.com/aea/loc3_script2_seq3_rec1",
+      "download_url": "https://dtc.projectaria.com/data/aea/download_links",
       "license": "DATASET_TERMS_TO_VERIFY",
-      "access_status": "PUBLIC_DATASET_PAGE_ACCESS_DOWNLOAD_PROBE_REQUIRED",
-      "local_evidence_paths": [],
+      "access_status": "ACCESS_BLOCKED_API_KEY_REQUIRED",
+      "local_evidence_paths": ["F:/ba-data/hftf-d7-public-real/receipts/projectaria_access_probe_aea_receipt_d7-r1-20260802.json"],
       "native_fields": ["rgb", "trajectory", "point_cloud", "eye_gaze", "calibration", "shared_timestamps"],
-      "notes": "Official docs describe 143 recordings, 5 locations, and over 1 million images."
+      "notes": "Explorer shell/detail page is public, but version_config, data, previews, and download_links API routes returned HTTP 401 without credentials; no credentials or media download were attempted."
     },
     {
       "dataset_id": "Project-Aria-Everyday-Objects",
       "priority": 4,
-      "official_url": "https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_everyday_objects_dataset",
-      "download_url": "https://www.projectaria.com/datasets/aeo/",
+      "official_url": "https://explorer.projectaria.com/aeo/aeo_seq17_1615689348857273",
+      "download_url": "https://dtc.projectaria.com/data/aeo/download_links",
       "license": "PROJECT_ARIA_DATASET_LICENSE_NONCOMMERCIAL",
-      "access_status": "PUBLIC_DATASET_PAGE_ACCESS_DOWNLOAD_PROBE_REQUIRED",
-      "local_evidence_paths": [],
+      "access_status": "ACCESS_BLOCKED_API_KEY_REQUIRED",
+      "local_evidence_paths": ["F:/ba-data/hftf-d7-public-real/receipts/projectaria_access_probe_aeo_receipt_d7-r1-20260802.json"],
       "native_fields": ["rgb", "calibration", "slam_trajectory", "semi_dense_point_cloud", "3d_boxes"],
-      "notes": "Useful for static structures/objects; 3D boxes do not alone create alertable event truth."
+      "notes": "Explorer shell/detail page is public, but version_config, data, previews, and download_links API routes returned HTTP 401 without credentials; no credentials or media download were attempted. Useful for static structures/objects if lawful access is later obtained; 3D boxes do not alone create alertable event truth."
     },
     {
       "dataset_id": "JRDB",
