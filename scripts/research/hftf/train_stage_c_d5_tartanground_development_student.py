@@ -23,6 +23,14 @@ from torchvision.transforms import functional as tvf
 
 
 ARMS = ("single", "history")
+ARCHITECTURES = ("pooled", "directional", "grid")
+TEMPORAL_MODES = (
+    "joint",
+    "current_residual",
+    "current_spatial_residual",
+)
+OPTIMIZATION_MODES = ("all", "temporal_residual_only")
+SELECTION_MODES = ("aggregate", "environment_macro")
 HORIZONS = ("current", "near", "far")
 HEIGHTS = ("foot", "body", "head")
 MEAN = (0.485, 0.456, 0.406)
@@ -186,8 +194,19 @@ class HftfDataset(
 
 
 class TemporalStudent(nn.Module):
-    def __init__(self, pretrained_path: Path) -> None:
+    def __init__(
+        self,
+        pretrained_path: Path,
+        architecture: str = "pooled",
+        temporal_mode: str = "joint",
+    ) -> None:
         super().__init__()
+        if architecture not in ARCHITECTURES:
+            raise ValueError(f"Unknown architecture: {architecture}")
+        if temporal_mode not in TEMPORAL_MODES:
+            raise ValueError(f"Unknown temporal mode: {temporal_mode}")
+        self.architecture = architecture
+        self.temporal_mode = temporal_mode
         backbone = mobilenet_v3_small(weights=None)
         backbone.load_state_dict(
             torch.load(
@@ -205,14 +224,52 @@ class TemporalStudent(nn.Module):
             groups=576,
             bias=False,
         )
+        if temporal_mode in {
+            "current_residual",
+            "current_spatial_residual",
+        }:
+            spatial_kernel = (
+                (1, 1)
+                if temporal_mode == "current_residual"
+                else (3, 3)
+            )
+            spatial_padding = (
+                (0, 0)
+                if temporal_mode == "current_residual"
+                else (1, 1)
+            )
+            self.temporal_residual = nn.Conv3d(
+                576,
+                576,
+                kernel_size=(4, *spatial_kernel),
+                padding=(0, *spatial_padding),
+                groups=576,
+                bias=False,
+            )
+            nn.init.zeros_(self.temporal_residual.weight)
         self.pointwise = nn.Sequential(
             nn.Conv2d(576, 128, kernel_size=1, bias=False),
             nn.GroupNorm(16, 128),
             nn.Hardswish(),
         )
-        self.pool = nn.AdaptiveAvgPool2d(1)
         self.dropout = nn.Dropout(0.2)
-        self.head = nn.Linear(128, 2 * 3 * 3 * 6 * 6)
+        if architecture == "pooled":
+            self.pool = nn.AdaptiveAvgPool2d(1)
+            self.head = nn.Linear(128, 2 * 3 * 3 * 6 * 6)
+        elif architecture == "directional":
+            self.pool = nn.AdaptiveAvgPool2d((1, 6))
+            self.head = nn.Conv1d(
+                128,
+                2 * 3 * 3 * 6,
+                kernel_size=1,
+            )
+        else:
+            self.pool = nn.AdaptiveAvgPool2d((3, 6))
+            self.head = nn.Conv2d(
+                128,
+                2 * 3 * 6,
+                kernel_size=1,
+            )
 
     def train(self, mode: bool = True) -> "TemporalStudent":
         super().train(mode)
@@ -240,10 +297,36 @@ class TemporalStudent(nn.Module):
             feature_height,
             feature_width,
         ).permute(0, 2, 1, 3, 4)
-        fused = self.temporal_depthwise(encoded).squeeze(2)
+        if getattr(self, "temporal_mode", "joint") == "joint":
+            fused = self.temporal_depthwise(encoded).squeeze(2)
+        else:
+            current = encoded[:, :, -1]
+            current_kernel = self.temporal_depthwise.weight.sum(dim=2)
+            current_fused = nnf.conv2d(
+                current,
+                current_kernel,
+                groups=current.shape[1],
+            )
+            history_delta = encoded[:, :, :-1] - encoded[:, :, -1:]
+            fused = current_fused + self.temporal_residual(
+                history_delta
+            ).squeeze(2)
         fused = self.pointwise(fused)
-        output = self.head(self.dropout(self.pool(fused).flatten(1)))
-        output = output.reshape(batch, 2, 3, 3, 6, 6)
+        if getattr(self, "architecture", "pooled") == "pooled":
+            output = self.head(
+                self.dropout(self.pool(fused).flatten(1))
+            )
+            output = output.reshape(batch, 2, 3, 3, 6, 6)
+        elif self.architecture == "directional":
+            directional = self.pool(fused).squeeze(2)
+            output = self.head(self.dropout(directional))
+            output = output.reshape(batch, 2, 3, 3, 6, 6)
+            output = output.permute(0, 1, 2, 3, 5, 4)
+        else:
+            grid = self.pool(fused)
+            output = self.head(self.dropout(grid))
+            output = output.reshape(batch, 2, 3, 6, 3, 6)
+            output = output.permute(0, 1, 2, 4, 5, 3)
         return output[:, 0], output[:, 1]
 
 
@@ -288,9 +371,10 @@ def binary_metrics(
     probability: np.ndarray,
     truth_score: np.ndarray,
     known: np.ndarray,
-) -> dict[str, float | int]:
+) -> dict[str, float | int | None]:
     mask = known.astype(bool)
-    prediction = probability[mask] >= 0.5
+    scores = probability[mask]
+    prediction = scores >= 0.5
     truth = truth_score[mask] >= 0.5
     tp = int(np.sum(prediction & truth))
     fp = int(np.sum(prediction & ~truth))
@@ -303,6 +387,59 @@ def binary_metrics(
         if precision + recall
         else 0.0
     )
+    positive_count = int(truth.sum())
+    negative_count = int((~truth).sum())
+    auroc = None
+    average_precision = None
+    if positive_count and negative_count:
+        order = np.argsort(scores, kind="stable")
+        sorted_scores = scores[order]
+        ranks = np.empty(scores.shape[0], dtype=np.float64)
+        start = 0
+        while start < scores.shape[0]:
+            end = start + 1
+            while (
+                end < scores.shape[0]
+                and sorted_scores[end] == sorted_scores[start]
+            ):
+                end += 1
+            ranks[order[start:end]] = (start + 1 + end) / 2.0
+            start = end
+        auroc = float(
+            (
+                ranks[truth].sum()
+                - positive_count * (positive_count + 1) / 2.0
+            )
+            / (positive_count * negative_count)
+        )
+
+        descending = np.argsort(-scores, kind="stable")
+        sorted_scores = scores[descending]
+        sorted_truth = truth[descending]
+        cumulative_tp = 0
+        cumulative_fp = 0
+        average_precision_value = 0.0
+        start = 0
+        while start < scores.shape[0]:
+            end = start + 1
+            while (
+                end < scores.shape[0]
+                and sorted_scores[end] == sorted_scores[start]
+            ):
+                end += 1
+            group_positive = int(sorted_truth[start:end].sum())
+            group_negative = end - start - group_positive
+            cumulative_tp += group_positive
+            cumulative_fp += group_negative
+            if group_positive:
+                average_precision_value += (
+                    group_positive
+                    / positive_count
+                    * cumulative_tp
+                    / (cumulative_tp + cumulative_fp)
+                )
+            start = end
+        average_precision = float(average_precision_value)
     return {
         "known_cells": int(mask.sum()),
         "tp": tp,
@@ -313,8 +450,10 @@ def binary_metrics(
         "recall": recall,
         "f1": f1,
         "false_positive_rate": fp / (fp + tn) if fp + tn else 0.0,
+        "auroc": auroc,
+        "average_precision": average_precision,
         "risk_score_mae": (
-            float(np.mean(np.abs(probability[mask] - truth_score[mask])))
+            float(np.mean(np.abs(scores - truth_score[mask])))
             if np.any(mask)
             else 0.0
         ),
@@ -469,11 +608,32 @@ def train(
     initial_checkpoint_path: Path | None = None,
     encoder_lr: float = 3e-5,
     head_lr: float = 3e-4,
+    architecture: str = "pooled",
+    temporal_mode: str = "joint",
+    optimization_mode: str = "all",
+    selection_mode: str = "aggregate",
 ) -> dict[str, Any]:
     if arm not in ARMS:
         raise ValueError(f"Unknown arm: {arm}")
     if encoder_lr <= 0.0 or head_lr <= 0.0:
         raise ValueError("Learning rates must be positive")
+    if architecture not in ARCHITECTURES:
+        raise ValueError(f"Unknown architecture: {architecture}")
+    if temporal_mode not in TEMPORAL_MODES:
+        raise ValueError(f"Unknown temporal mode: {temporal_mode}")
+    if optimization_mode not in OPTIMIZATION_MODES:
+        raise ValueError(f"Unknown optimization mode: {optimization_mode}")
+    if optimization_mode == "temporal_residual_only" and (
+        temporal_mode
+        not in {"current_residual", "current_spatial_residual"}
+        or initial_checkpoint_path is None
+    ):
+        raise ValueError(
+            "temporal_residual_only requires a residual temporal mode "
+            "and an initial checkpoint"
+        )
+    if selection_mode not in SELECTION_MODES:
+        raise ValueError(f"Unknown selection mode: {selection_mode}")
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA is required for this Development run")
     seed_everything(seed)
@@ -495,7 +655,11 @@ def train(
     weights = positive_weights(train_records)
     prior_dev_metrics = train_prior_metrics(train_records, dev_records)
     device = torch.device("cuda")
-    model = TemporalStudent(pretrained_path).to(device)
+    model = TemporalStudent(
+        pretrained_path,
+        architecture=architecture,
+        temporal_mode=temporal_mode,
+    ).to(device)
     initial_checkpoint_sha256 = None
     if initial_checkpoint_path is not None:
         initial_checkpoint = torch.load(
@@ -503,10 +667,57 @@ def train(
             map_location="cpu",
             weights_only=False,
         )
-        model.load_state_dict(initial_checkpoint["model_state_dict"])
+        initial_architecture = initial_checkpoint.get(
+            "architecture",
+            "pooled",
+        )
+        if initial_architecture != architecture:
+            raise ValueError(
+                "Initial checkpoint architecture mismatch: "
+                f"{initial_architecture} != {architecture}"
+            )
+        initial_temporal_mode = initial_checkpoint.get(
+            "temporal_mode",
+            "joint",
+        )
+        if initial_temporal_mode == temporal_mode:
+            model.load_state_dict(initial_checkpoint["model_state_dict"])
+        elif (
+            initial_temporal_mode == "joint"
+            and temporal_mode
+            in {"current_residual", "current_spatial_residual"}
+        ):
+            incompatible = model.load_state_dict(
+                initial_checkpoint["model_state_dict"],
+                strict=False,
+            )
+            if incompatible.missing_keys != ["temporal_residual.weight"]:
+                raise ValueError(
+                    "Unexpected missing keys during joint-to-residual "
+                    f"initialization: {incompatible.missing_keys}"
+                )
+            if incompatible.unexpected_keys:
+                raise ValueError(
+                    "Unexpected keys during joint-to-residual "
+                    f"initialization: {incompatible.unexpected_keys}"
+                )
+        else:
+            raise ValueError(
+                "Initial checkpoint temporal mode mismatch: "
+                f"{initial_temporal_mode} != {temporal_mode}"
+            )
         initial_checkpoint_sha256 = sha256(initial_checkpoint_path)
-    optimizer = torch.optim.AdamW(
-        [
+    if optimization_mode == "temporal_residual_only":
+        for name, parameter in model.named_parameters():
+            parameter.requires_grad = name.startswith("temporal_residual.")
+        optimizer_groups = [
+            {
+                "params": model.temporal_residual.parameters(),
+                "lr": head_lr,
+            }
+        ]
+    else:
+        optimizer_groups = [
             {"params": model.encoder.parameters(), "lr": encoder_lr},
             {
                 "params": [
@@ -516,7 +727,9 @@ def train(
                 ],
                 "lr": head_lr,
             },
-        ],
+        ]
+    optimizer = torch.optim.AdamW(
+        optimizer_groups,
         weight_decay=1e-4,
     )
     weights = weights.to(device)
@@ -527,6 +740,45 @@ def train(
         num_workers=0,
         pin_memory=True,
     )
+    dev_environment_loaders = {
+        environment: DataLoader(
+            HftfDataset(
+                [
+                    record
+                    for record in dev_records
+                    if record["environment"] == environment
+                ],
+                arm,
+                train=False,
+                seed=seed,
+            ),
+            batch_size=8,
+            shuffle=False,
+            num_workers=0,
+            pin_memory=True,
+        )
+        for environment in sorted(
+            {record["environment"] for record in dev_records}
+        )
+    }
+
+    def score(
+        aggregate_metrics: dict[str, Any],
+        environment_rows: dict[str, dict[str, Any]],
+    ) -> float:
+        if selection_mode == "aggregate":
+            return float(
+                aggregate_metrics["future_body_head_macro_f1"]
+            )
+        return float(
+            np.mean(
+                [
+                    metrics["future_body_head_macro_f1"]
+                    for metrics in environment_rows.values()
+                ]
+            )
+        )
+
     best_f1 = -1.0
     best_epoch = -1
     best_metrics = None
@@ -534,7 +786,18 @@ def train(
     history = []
     if initial_checkpoint_path is not None:
         initial_metrics = evaluate(model, dev_loader, device)
-        best_f1 = float(initial_metrics["future_body_head_macro_f1"])
+        initial_environment_metrics = (
+            {
+                environment: evaluate(model, loader, device)
+                for environment, loader in dev_environment_loaders.items()
+            }
+            if selection_mode == "environment_macro"
+            else {}
+        )
+        best_f1 = score(
+            initial_metrics,
+            initial_environment_metrics,
+        )
         best_epoch = 0
         best_metrics = copy.deepcopy(initial_metrics)
         best_state = {
@@ -548,6 +811,7 @@ def train(
                 "train_risk_loss": None,
                 "train_known_loss": None,
                 "dev": initial_metrics,
+                "dev_by_environment": initial_environment_metrics,
             }
         )
     for epoch in range(1, epochs + 1):
@@ -593,15 +857,24 @@ def train(
             ]
             batches += 1
         metrics = evaluate(model, dev_loader, device)
+        epoch_environment_metrics = (
+            {
+                environment: evaluate(model, loader, device)
+                for environment, loader in dev_environment_loaders.items()
+            }
+            if selection_mode == "environment_macro"
+            else {}
+        )
         row = {
             "epoch": epoch,
             "train_loss": float(totals[0] / batches),
             "train_risk_loss": float(totals[1] / batches),
             "train_known_loss": float(totals[2] / batches),
             "dev": metrics,
+            "dev_by_environment": epoch_environment_metrics,
         }
         history.append(row)
-        future_f1 = float(metrics["future_body_head_macro_f1"])
+        future_f1 = score(metrics, epoch_environment_metrics)
         if future_f1 > best_f1:
             best_f1 = future_f1
             best_epoch = epoch
@@ -616,7 +889,11 @@ def train(
                     "arm": arm,
                     "seed": seed,
                     "epoch": epoch,
-                    "selection_metric": "future_body_head_macro_f1",
+                    "selection_metric": (
+                        "environment_macro_future_body_head_macro_f1"
+                        if selection_mode == "environment_macro"
+                        else "future_body_head_macro_f1"
+                    ),
                     "dev_selection_f1": future_f1,
                     "best_epoch": best_epoch,
                     "best_selection_f1": best_f1,
@@ -662,8 +939,13 @@ def train(
     checkpoint = {
         "schema": "blindassist_hftf_tartanground_development_checkpoint",
         "arm": arm,
+        "architecture": architecture,
+        "temporal_mode": temporal_mode,
+        "optimization_mode": optimization_mode,
+        "selection_mode": selection_mode,
         "seed": seed,
         "selected_epoch": best_epoch,
+        "selected_selection_score": best_f1,
         "selected_dev_metrics": best_metrics,
         "selected_dev_metrics_by_environment": environment_metrics,
         "model_state_dict": best_state,
@@ -680,12 +962,25 @@ def train(
             "promotion_evidence": False,
         },
         "arm": arm,
+        "architecture": architecture,
+        "temporal_mode": temporal_mode,
         "seed": seed,
         "epochs": epochs,
-        "selection_metric": "future_body_head_macro_f1",
+        "selection_metric": (
+            "environment_macro_future_body_head_macro_f1"
+            if selection_mode == "environment_macro"
+            else "future_body_head_macro_f1"
+        ),
+        "selection_mode": selection_mode,
         "optimization": {
+            "mode": optimization_mode,
             "encoder_lr": encoder_lr,
             "head_lr": head_lr,
+            "trainable_parameters": sum(
+                parameter.numel()
+                for parameter in model.parameters()
+                if parameter.requires_grad
+            ),
             "initial_checkpoint_path": (
                 str(initial_checkpoint_path.resolve())
                 if initial_checkpoint_path is not None
@@ -703,6 +998,7 @@ def train(
         "samples_sha256": sha256(samples_path),
         "pretrained_sha256": sha256(pretrained_path),
         "selected_epoch": best_epoch,
+        "selected_selection_score": best_f1,
         "selected_dev_metrics": best_metrics,
         "selected_dev_metrics_by_environment": environment_metrics,
         "checkpoint": {
@@ -731,6 +1027,26 @@ def main() -> int:
     parser.add_argument("--pretrained", type=Path, required=True)
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--arm", choices=ARMS, required=True)
+    parser.add_argument(
+        "--architecture",
+        choices=ARCHITECTURES,
+        default="pooled",
+    )
+    parser.add_argument(
+        "--selection-mode",
+        choices=SELECTION_MODES,
+        default="aggregate",
+    )
+    parser.add_argument(
+        "--temporal-mode",
+        choices=TEMPORAL_MODES,
+        default="joint",
+    )
+    parser.add_argument(
+        "--optimization-mode",
+        choices=OPTIMIZATION_MODES,
+        default="all",
+    )
     parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--initial-checkpoint", type=Path)
@@ -747,6 +1063,10 @@ def main() -> int:
         initial_checkpoint_path=args.initial_checkpoint,
         encoder_lr=args.encoder_lr,
         head_lr=args.head_lr,
+        architecture=args.architecture,
+        temporal_mode=args.temporal_mode,
+        optimization_mode=args.optimization_mode,
+        selection_mode=args.selection_mode,
     )
     print(
         json.dumps(
@@ -754,6 +1074,9 @@ def main() -> int:
                 "arm": report["arm"],
                 "seed": report["seed"],
                 "selected_epoch": report["selected_epoch"],
+                "selected_selection_score": report[
+                    "selected_selection_score"
+                ],
                 "dev_future_micro_f1": report["selected_dev_metrics"][
                     "risk_future"
                 ]["f1"],

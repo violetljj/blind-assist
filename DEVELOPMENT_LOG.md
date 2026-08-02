@@ -4428,3 +4428,40 @@
   窗口非完全冗余。未训练 student，也没有系统、主线、App 或 safety 结论。后续直接
   扩展 environment-clustered Development corpus；工程故障在关键 held-out outcome
   未观察前允许修复重跑，不烧毁 source。
+
+## 2026-08-02：HFTF D5 environment expansion 与空间结构增量
+
+- outcome-open expansion 增加 `WaterMillDay` diagnostic counterpart 和六个固定
+  哈希顺序的未使用 environments，共 231 samples / 518 PNG；samples SHA-256
+  `fad64102b9c1bcbeb5a93662f0f8c5acb30ea615668daf22f4d851ac3f958049`。
+  原 staged-history 三个 checkpoint 在七环境上均未超过 pooled single。
+- pooled head 在 expansion 上 macro F1 `0.3444`，且 head label 的 AUROC 约
+  `0.491/0.472`。保留水平方向轴的 directional head 参数更少，在七环境上达到
+  `0.3905`、6/7 environments 胜出，但在原两环境 dev 上较弱，因此只进入跨折复核。
+- 15 environments / 495 samples 的三折 environment-held-out Development 中，
+  directional 相对 pooled 的 environment-macro F1 delta 为
+  `+0.0058/+0.0112/+0.0806`，折均 `+0.0326`；15 环境 11 胜 4 负。折均
+  aggregate macro/micro/AUROC/AP/FPR delta 为
+  `+0.0327/+0.0411/+0.0459/+0.0587/-0.0098`。最差 `GreatMarsh`
+  为 `-0.1788`，不声称每环境支配。
+- 当前 representation 终态为
+  `DIRECTIONAL_SPATIAL_STRUCTURE_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT`。
+  它将 directional single 设为 HFTF Development reference，不建立事件级系统效用、
+  主线晋级、App 或 safety 结论。
+
+## 2026-08-02：HFTF D5 无对齐 history fusion 负终态
+
+- 原 single 使用五份重复当前帧，导致 5-tap temporal convolution 只约束权重之和；
+  换成真实 history 会先产生未识别的时间权重扰动。新增 current baseline 加
+  zero-initialized temporal residual，使三折 epoch 0 与 directional single 精确相同。
+- joint history 相对 directional single 三折 delta 为
+  `-0.0140/-0.0123/+0.0017`。zero-init residual 全模型微调三折均选 epoch 0；
+  冻结基线只训练 2,304 个 1×1 residual 参数也三折均选 epoch 0；20,736 参数的
+  3×3 spatial residual 仅 fold 2 为 `+0.0029`，fold 0/1 仍选 epoch 0。
+- 当前精确负终态为 `UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED`，只关闭
+  当前 joint/逐点/局部 spatial、无显式对齐的 history fusion。它不证明历史 RGB
+  没有信息；只有显式 feature alignment、flow 或 ego-motion compensation 才值得
+  重开。当前停止更多无对齐结构和学习率搜索。
+- 结果层级改为显式分离：teacher、representation、decision kernel、research
+  mainline、App/safety。后一层未完成只限制 claim，不抹掉前一层正结果；路径、parser、
+  network、serialization 和 interruption 失败属于可修复工程故障，不产生科学终态。

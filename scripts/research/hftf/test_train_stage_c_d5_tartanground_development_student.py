@@ -47,6 +47,19 @@ class TartanGroundDevelopmentStudentTest(unittest.TestCase):
         self.assertEqual(result["fp"], 0)
         self.assertAlmostEqual(result["f1"], 2.0 / 3.0)
 
+    def test_binary_metrics_include_threshold_free_ranking(self):
+        result = binary_metrics(
+            np.asarray([0.9, 0.8, 0.2, 0.1]),
+            np.asarray([1.0, 0.0, 1.0, 0.0]),
+            np.ones(4, dtype=np.uint8),
+        )
+
+        self.assertAlmostEqual(result["auroc"], 0.75)
+        self.assertAlmostEqual(
+            result["average_precision"],
+            (1.0 + 2.0 / 3.0) / 2.0,
+        )
+
     def test_temporal_student_output_shape(self):
         model = TemporalStudent.__new__(TemporalStudent)
         torch.nn.Module.__init__(model)
@@ -70,6 +83,147 @@ class TartanGroundDevelopmentStudentTest(unittest.TestCase):
 
         self.assertEqual(tuple(risk.shape), (2, 3, 3, 6, 6))
         self.assertEqual(tuple(known.shape), (2, 3, 3, 6, 6))
+
+    def test_directional_student_preserves_direction_axis(self):
+        model = TemporalStudent.__new__(TemporalStudent)
+        torch.nn.Module.__init__(model)
+        model.architecture = "directional"
+        model.encoder = torch.nn.Sequential(
+            torch.nn.Conv2d(3, 576, kernel_size=1),
+            torch.nn.AdaptiveAvgPool2d((2, 7)),
+        )
+        model.temporal_depthwise = torch.nn.Conv3d(
+            576,
+            576,
+            kernel_size=(5, 1, 1),
+            groups=576,
+            bias=False,
+        )
+        model.pointwise = torch.nn.Conv2d(576, 128, kernel_size=1)
+        model.pool = torch.nn.AdaptiveAvgPool2d((1, 6))
+        model.dropout = torch.nn.Identity()
+        model.head = torch.nn.Conv1d(
+            128,
+            2 * 3 * 3 * 6,
+            kernel_size=1,
+        )
+
+        risk, known = model(torch.zeros(2, 5, 3, 8, 14))
+
+        self.assertEqual(tuple(risk.shape), (2, 3, 3, 6, 6))
+        self.assertEqual(tuple(known.shape), (2, 3, 3, 6, 6))
+
+    def test_grid_student_preserves_height_and_direction_axes(self):
+        model = TemporalStudent.__new__(TemporalStudent)
+        torch.nn.Module.__init__(model)
+        model.architecture = "grid"
+        model.encoder = torch.nn.Sequential(
+            torch.nn.Conv2d(3, 576, kernel_size=1),
+            torch.nn.AdaptiveAvgPool2d((4, 7)),
+        )
+        model.temporal_depthwise = torch.nn.Conv3d(
+            576,
+            576,
+            kernel_size=(5, 1, 1),
+            groups=576,
+            bias=False,
+        )
+        model.pointwise = torch.nn.Conv2d(576, 128, kernel_size=1)
+        model.pool = torch.nn.AdaptiveAvgPool2d((3, 6))
+        model.dropout = torch.nn.Identity()
+        model.head = torch.nn.Conv2d(
+            128,
+            2 * 3 * 6,
+            kernel_size=1,
+        )
+
+        risk, known = model(torch.zeros(2, 5, 3, 16, 28))
+
+        self.assertEqual(tuple(risk.shape), (2, 3, 3, 6, 6))
+        self.assertEqual(tuple(known.shape), (2, 3, 3, 6, 6))
+
+    def test_current_residual_starts_at_repeated_current_baseline(self):
+        model = TemporalStudent.__new__(TemporalStudent)
+        torch.nn.Module.__init__(model)
+        model.architecture = "directional"
+        model.temporal_mode = "current_residual"
+        model.encoder = torch.nn.Sequential(
+            torch.nn.Conv2d(3, 576, kernel_size=1),
+            torch.nn.AdaptiveAvgPool2d((2, 7)),
+        )
+        model.temporal_depthwise = torch.nn.Conv3d(
+            576,
+            576,
+            kernel_size=(5, 1, 1),
+            groups=576,
+            bias=False,
+        )
+        model.temporal_residual = torch.nn.Conv3d(
+            576,
+            576,
+            kernel_size=(4, 1, 1),
+            groups=576,
+            bias=False,
+        )
+        torch.nn.init.zeros_(model.temporal_residual.weight)
+        model.pointwise = torch.nn.Conv2d(576, 128, kernel_size=1)
+        model.pool = torch.nn.AdaptiveAvgPool2d((1, 6))
+        model.dropout = torch.nn.Identity()
+        model.head = torch.nn.Conv1d(
+            128,
+            2 * 3 * 3 * 6,
+            kernel_size=1,
+        )
+        history = torch.randn(2, 5, 3, 8, 14)
+        repeated_current = history[:, -1:].repeat(1, 5, 1, 1, 1)
+
+        history_risk, history_known = model(history)
+        current_risk, current_known = model(repeated_current)
+
+        torch.testing.assert_close(history_risk, current_risk)
+        torch.testing.assert_close(history_known, current_known)
+
+    def test_spatial_residual_starts_at_repeated_current_baseline(self):
+        model = TemporalStudent.__new__(TemporalStudent)
+        torch.nn.Module.__init__(model)
+        model.architecture = "directional"
+        model.temporal_mode = "current_spatial_residual"
+        model.encoder = torch.nn.Sequential(
+            torch.nn.Conv2d(3, 576, kernel_size=1),
+            torch.nn.AdaptiveAvgPool2d((4, 7)),
+        )
+        model.temporal_depthwise = torch.nn.Conv3d(
+            576,
+            576,
+            kernel_size=(5, 1, 1),
+            groups=576,
+            bias=False,
+        )
+        model.temporal_residual = torch.nn.Conv3d(
+            576,
+            576,
+            kernel_size=(4, 3, 3),
+            padding=(0, 1, 1),
+            groups=576,
+            bias=False,
+        )
+        torch.nn.init.zeros_(model.temporal_residual.weight)
+        model.pointwise = torch.nn.Conv2d(576, 128, kernel_size=1)
+        model.pool = torch.nn.AdaptiveAvgPool2d((1, 6))
+        model.dropout = torch.nn.Identity()
+        model.head = torch.nn.Conv1d(
+            128,
+            2 * 3 * 3 * 6,
+            kernel_size=1,
+        )
+        history = torch.randn(2, 5, 3, 16, 28)
+        repeated_current = history[:, -1:].repeat(1, 5, 1, 1, 1)
+
+        history_risk, history_known = model(history)
+        current_risk, current_known = model(repeated_current)
+
+        torch.testing.assert_close(history_risk, current_risk)
+        torch.testing.assert_close(history_known, current_known)
 
     def test_train_prior_metrics_use_train_cell_prior_on_dev(self):
         labels = {}

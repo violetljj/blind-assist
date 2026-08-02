@@ -35,7 +35,8 @@ D3_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_NOT_EVALUABLE_BUDGET_EXHAUSTED_NO_EXPANS
 D3_Q0_1_CURRENT_REFERENCE_TRUTH_RISK_OPPORTUNITY_SCARCITY_DOMINANT_HYPOTHESIS_ONLY /
 FROZEN_AFTER_D3_Q0_1_ATLAS_BEFORE_D4_METADATA_CENSUS_OR_FRESH_SOURCE_CONTENT /
 INNOVATION_NOT_EVALUABLE /
-D5_STAGED_HISTORY_SIGNAL_OBSERVED_ENVIRONMENT_ROBUST_INCREMENT_NOT_ESTABLISHED /
+D5_DIRECTIONAL_SPATIAL_STRUCTURE_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY /
+D5_UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -53,6 +54,20 @@ RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
   provider revision、输入路径、代码、参数、结果和测试的最小记录承担。
 - claim ceiling 只限制结论：teacher mechanics、student effect、系统效用、主线晋级
   和产品/安全证据仍然分开，但不再让产品级治理阻塞前面的科学实验。
+
+### 结果不是“系统证明 / 无效”的二分
+
+Development 正结果应按它实际回答的问题保留，不因尚未达到系统层而被降成
+`NOT_EVALUABLE`：
+
+- teacher/label 结果回答标签是否可构造；
+- representation 结果回答模型表示是否更好；
+- decision-kernel 结果回答事件级行为是否更好；
+- research-mainline 比较回答是否应替换当前研究路线；
+- App、生产与安全主张始终是更后的独立问题。
+
+后一层尚未完成只限制措辞，不否定前一层已经成立的结果。工程失败不占据其中任何
+一层；修复后继续回答原科学问题。
 
 ### D5 当前直接结果
 
@@ -83,8 +98,29 @@ Development。相同 1,087,464 参数下，train cell-prior、single 和从随�
 `STAGED_HISTORY_SIGNAL_OBSERVED_BUT_ENVIRONMENT_ROBUST_INCREMENT_NOT_ESTABLISHED`
 
 这不建立独立环境 student effect、真实助盲事件效用、主线晋级或产品/安全主张。
-下一步增加 outcome-open Development environments，并诊断最差环境，而不是立即打开
-held-out 或先做完整 197-parent 治理 census。
+
+随后新增 7 个 outcome-open environments，并把总计 15 个 environments、495
+samples 重组为三折 environment-held-out Development。保留 feature-map 水平方向的
+directional head 相对 pooled head，在三折 environment-macro future body/head F1
+分别改善 `+0.0058 / +0.0112 / +0.0806`，折均从 `0.4061` 升到
+`0.4386`；15 个 environments 中 11 胜、4 负，折均 AUROC `+0.0459`、AP
+`+0.0587`、FPR `-0.0098`。当前建立的 representation 结论是：
+
+`DIRECTIONAL_SPATIAL_STRUCTURE_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT`
+
+它把 directional single 提升为本支线当前 Development reference，但没有建立
+decision-kernel、主线晋级或系统效用。
+
+在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
+3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重
+不确定性先破坏基线；但只有 3×3 residual 在 fold 2 得到 `+0.0029`，其余折和结构
+均选择 epoch 0 或低于 single。当前 history 终态为：
+
+`UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED`
+
+下一步先验证 directional single 的多 seed 稳定性和 `GreatMarsh` 失败机制，再进入
+同一 decision kernel 的事件级比较；history 只有引入显式对齐/flow/ego-motion
+compensation 后才重开，不做更多无对齐结构或学习率搜索。
 
 ## 当前结论
 

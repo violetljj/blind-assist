@@ -12,13 +12,19 @@ TartanGround 已从“目录看起来足够大”推进到三个可执行结果�
 3. 六个 train environments、两个 dev environments 的 student Development
    证明 RGB 标签可学习；直接从随机初始化联合训练 history 失败，而从 single
    checkpoint 分阶段微调 history 出现小幅、随机性可重复但环境不稳健的增量。
+4. 扩展到 15 个 environments 的三折 environment-held-out Development 后，
+   保留水平方向轴的 directional head 在三折都超过全局 pooled head；但 joint、
+   零初始化逐点 residual 和 3×3 spatial residual 三类未对齐 history fusion
+   都没有建立跨折增量。
 
 当前终态为：
 
-`STAGED_HISTORY_SIGNAL_OBSERVED_BUT_ENVIRONMENT_ROBUST_INCREMENT_NOT_ESTABLISHED`
+`DIRECTIONAL_SPATIAL_STRUCTURE_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT /
+UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED`
 
-这足以保留 HFTF 作为候选支线，并优先扩大环境覆盖和诊断最差环境；不需要先完成
-197-parent 产品级 census。它不证明 HFTF 超过主线或系统具有安全效用。
+这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
+pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
+它不证明 HFTF 超过主线或系统具有安全效用。
 
 ## Provider 与映射
 
@@ -171,25 +177,102 @@ single，三次 fine-tune 的整体 body/head FPR 从 `0.4232` 降至
 `0.4098–0.4123`，recall 从 `0.7535` 升至 `0.7810–0.7877`，但这些 aggregate
 改善不能覆盖最差环境的负 delta。
 
+## Outcome-open environment expansion
+
+为区分 `WaterMillNight` 特例与一般环境迁移，增加其白天 counterpart
+`WaterMillDay/Data_diff/P1002`，并按固定哈希顺序加入六个此前未使用的 P1000
+environments：`Downtown / JapaneseAlley / NordicHarbor / Supermarket /
+OldTownNight / GreatMarsh`。共新增 231 samples、518 PNG；samples SHA-256 为
+`fad64102b9c1bcbeb5a93662f0f8c5acb30ea615668daf22f4d851ac3f958049`。
+
+原 pooled single 在七环境的 aggregate macro F1 为 `0.3444`。三个原 staged
+history checkpoint 均低于 pooled single，environment wins/losses 最好也只有
+`2/5`；它们虽在 AUROC/AP 上有小幅改善，但没有转化为环境稳健的 thresholded
+field effect。
+
+诊断发现原 pooled head 丢弃全部空间结构后一次生成 6×6 field，并在新环境中严重
+过预测；expansion 的 near/far head positives 仅约 `7.6%/8.3%`，原 pooled head
+对应 AUROC 约 `0.491/0.472`。因此下一模型改动不是调阈值，而是保留输出方向与
+feature-map 方向的对应关系。
+
+directional head 的参数量为 `1,017,804`，少于 pooled 的 `1,087,464`。它在原
+两环境 dev 上 macro F1 从 `0.5435` 降到 `0.5172`，但在七个新增环境上从
+`0.3444` 升到 `0.3905`，AUROC `+0.0494`、AP `+0.0421`，且 6/7 environments
+胜出。这个结果只用于提出跨环境复核，不单独作为成功终态。
+
+## 15-environment cross-environment Development
+
+原 8 个与新增 7 个 environments 合并为 495 samples，并构造三折：
+
+- 每折 10 train / 5 dev environments；
+- `WaterMillDay` 与 `WaterMillNight` 固定在同一折，避免 family leakage；
+- checkpoint selection 使用五个 dev environments 各自 future body/head macro
+  F1 的等权平均，防止 cell 数较多环境主导选择；
+- 每个结构 seed 17、20 epochs；这是 outcome-open Development，不是 held-out
+  promotion evidence。
+
+三折结果：
+
+| fold | pooled env-macro F1 | directional env-macro F1 | delta |
+|---:|---:|---:|---:|
+| 0 | 0.4738 | 0.4796 | +0.0058 |
+| 1 | 0.3860 | 0.3972 | +0.0112 |
+| 2 | 0.3584 | 0.4391 | +0.0806 |
+| mean | 0.4061 | 0.4386 | +0.0326 |
+
+directional 在 15 个 dev environments 中 11 胜、4 负。折均 aggregate
+body/head macro F1 `+0.0327`、micro F1 `+0.0411`、AUROC `+0.0459`、AP
+`+0.0587`，FPR `-0.0098`。最差环境是 `GreatMarsh`，macro delta
+`-0.1788`；最大改善是 `MiddleEast` 的 `+0.2629`。因此支持的是跨折平均增量和
+方向一致性，不是每环境支配。
+
+更完整的 3×6 spatial grid 在 fold 0 的 environment-macro F1 只有 `0.4581`，
+低于 pooled 和 directional，因此没有进入其余两折。
+
+## History mechanism repair
+
+原 single 训练把当前帧重复五次。对 5-tap、1×1 temporal convolution 来说，这只
+约束五个时间权重之和；各时间位置权重本身不确定。直接换成真实 history 会先产生
+任意扰动，然后微调再尝试修复。为排除这个结构性伪差异，增加：
+
+1. `current + zero-initialized 1×1 temporal residual`；
+2. 冻结 directional single，只训练 2,304 个 residual 参数；
+3. 允许邻域运动的 zero-initialized 3×3 temporal residual，只训练 20,736 个参数。
+
+三者的 epoch 0 都与 directional single 精确相同。结果仍不支持 history：
+
+- 原 joint history 相对 directional single 三折 delta 为
+  `-0.0140 / -0.0123 / +0.0017`；
+- zero-init residual 全模型微调三折都选择 epoch 0；
+- 1×1 residual-only 三折都选择 epoch 0；
+- 3×3 residual-only 仅 fold 2 为 `+0.0029`，fold 0/1 都选择 epoch 0。
+
+因此当前负终态精确限制为：
+
+`UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED`
+
+它不证明历史 RGB 没有信息。只有引入显式 feature alignment、flow/ego-motion
+compensation 或新的时序表征后，才值得重开 history；不再继续无对齐结构或学习率
+搜索。
+
 ## 边界与下一实验
 
 当前正结果只支持：
 
-`teacher feasible + RGB learnable + staged-history optimization signal`
+`teacher feasible + RGB learnable + directional spatial-structure increment`
 
 尚未支持：
 
 - history 对独立环境具有稳定增量；
-- 当前小增量能在完整 pipeline 随机种子上复现；
+- directional 增量能在多个完整 pipeline 随机种子上复现；
 - synthetic proxy 能迁移到真实视障步行；
 - 事件级 critical-hazard recall、false alerts 或 warning lead time 改善；
 - HFTF 超过当前主线或进入 App。
 
-下一步不是立即重复更多完整训练，也不是打开 held-out。先增加 outcome-open
-Development environments，并针对 `WaterMillNight` 检查 scene appearance、
-teacher prevalence、known coverage 与过预测来源。只有 staged-history 在更多环境
-上同号，才进行完整 pipeline 多种子和时间顺序/残差消融；随后才保留未用于迭代的
-held-out environments 做偏差敏感评价。
+下一步以 directional single 为 reference，先做多 seed 稳定性和
+`GreatMarsh` failure attribution；随后把表示接入同一 decision kernel，比较事件级
+critical misses、false alerts、response 与 clearance。只有这两层成立，才使用未参与
+迭代的 held-out environments 做一次偏差敏感评价。history 在出现显式对齐机制前停止。
 
 ## 复现
 
@@ -210,6 +293,12 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   --pretrained artifacts.local/models/hftf/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth `
   --output-root artifacts.local/evidence/hftf/stage-c-d5-tartanground-development-student-v0/single-seed17 `
   --arm single --seed 17 --epochs 20
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/materialize_stage_c_d5_tartanground_development_expansion.py
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/build_stage_c_d5_tartanground_cross_environment_folds.py
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored
