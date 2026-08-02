@@ -286,13 +286,30 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "## Quality gates",
         "",
         "- Timestamp monotonicity and pose-gap cuts are recorded for EgoWalk metadata; they do not establish obstacle truth.",
-        "- Source license/access remains unresolved for EgoWalk extracted media and gated for raw recordings.",
         "- Existing model-selected candidate reports remain Development discovery only.",
         "- No model output was read during EgoWalk uniform coverage selection.",
         "",
         "## Pending reasons",
         "",
     ]
+    egowalk_rgb_receipts = sorted((root / "receipts").glob("egowalk_rgb_receipt_*.json"))
+    if egowalk_rgb_receipts:
+        latest_rgb_receipt = load_json(egowalk_rgb_receipts[-1])
+        if isinstance(latest_rgb_receipt, dict) and latest_rgb_receipt.get("status") == "PUBLIC_EXTRACTED_RGB_DOWNLOADED":
+            dataset_quality.insert(
+                dataset_quality.index("- Existing model-selected candidate reports remain Development discovery only."),
+                "- EgoWalk extracted RGB has a complete public-repository receipt; raw-recordings access remains blocked and RGB still requires independent review.",
+            )
+        else:
+            dataset_quality.insert(
+                dataset_quality.index("- Existing model-selected candidate reports remain Development discovery only."),
+                "- EgoWalk extracted RGB download is partial or unresolved; raw-recordings access remains blocked.",
+            )
+    else:
+        dataset_quality.insert(
+            dataset_quality.index("- Existing model-selected candidate reports remain Development discovery only."),
+            "- Source license/access remains unresolved for EgoWalk extracted media and gated for raw recordings.",
+        )
     for reason, count in sorted(pending_reasons.items()):
         dataset_quality.append(f"- `{reason}`: `{count}`")
     (root / "reports" / "dataset_quality_report.md").write_text("\n".join(dataset_quality) + "\n", encoding="utf-8")
