@@ -12,12 +12,23 @@ from evaluate_stage_c_d5_tartanground_event_proxy import (
     causal_confirmation,
     decision_policy_spec,
     lane_truth_state,
+    predict,
     raw_lane_active,
     trace_metrics,
 )
 
 
 class TartanGroundEventProxyTest(unittest.TestCase):
+    def test_predict_rejects_unknown_input_arm_before_io(self):
+        with self.assertRaisesRegex(ValueError, "Unknown input arm"):
+            predict(
+                [],
+                Path("missing-checkpoint.pt"),
+                Path("missing-pretrained.pt"),
+                "cpu",
+                input_arm="not-an-arm",
+            )
+
     def test_lane_truth_requires_positive_or_complete_negative(self):
         self.assertTrue(
             lane_truth_state(

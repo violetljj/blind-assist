@@ -8,6 +8,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from train_stage_c_d5_tartanground_development_student import (
+    EarlyPairStem,
     TemporalStudent,
     binary_metrics,
     decode_labels,
@@ -278,6 +279,57 @@ class TartanGroundDevelopmentStudentTest(unittest.TestCase):
 
         torch.testing.assert_close(history_risk, current_risk)
         torch.testing.assert_close(history_known, current_known)
+
+    def test_early_pair_starts_at_repeated_current_baseline(self):
+        model = TemporalStudent.__new__(TemporalStudent)
+        torch.nn.Module.__init__(model)
+        model.architecture = "directional"
+        model.temporal_mode = "early_pair"
+        model.encoder = torch.nn.Sequential(
+            torch.nn.Conv2d(3, 576, kernel_size=1),
+            torch.nn.AdaptiveAvgPool2d((4, 7)),
+        )
+        model.temporal_depthwise = torch.nn.Conv3d(
+            576,
+            576,
+            kernel_size=(5, 1, 1),
+            groups=576,
+            bias=False,
+        )
+        model.pointwise = torch.nn.Conv2d(576, 128, kernel_size=1)
+        model.early_pair_stem = EarlyPairStem()
+        model.early_pair_output = torch.nn.Conv2d(
+            128,
+            128,
+            kernel_size=1,
+            bias=False,
+        )
+        torch.nn.init.zeros_(model.early_pair_output.weight)
+        model.pool = torch.nn.AdaptiveAvgPool2d((1, 6))
+        model.dropout = torch.nn.Identity()
+        model.head = torch.nn.Conv1d(
+            128,
+            2 * 3 * 3 * 6,
+            kernel_size=1,
+        )
+        history = torch.randn(2, 5, 3, 32, 56)
+        repeated_current = history[:, -1:].repeat(1, 5, 1, 1, 1)
+
+        history_risk, history_known = model(history)
+        current_risk, current_known = model(repeated_current)
+
+        torch.testing.assert_close(history_risk, current_risk)
+        torch.testing.assert_close(history_known, current_known)
+
+    def test_early_pair_stem_preserves_lightweight_spatial_output(self):
+        stem = EarlyPairStem()
+        output = stem(torch.zeros(2, 12, 128, 224))
+
+        self.assertEqual((2, 128, 8, 14), tuple(output.shape))
+        self.assertLess(
+            sum(parameter.numel() for parameter in stem.parameters()),
+            20_000,
+        )
 
     def test_train_prior_metrics_use_train_cell_prior_on_dev(self):
         labels = {}

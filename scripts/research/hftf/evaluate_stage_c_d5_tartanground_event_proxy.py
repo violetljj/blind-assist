@@ -372,7 +372,10 @@ def predict(
     checkpoint_path: Path,
     pretrained_path: Path,
     device: torch.device,
+    input_arm: str = "single",
 ) -> tuple[np.ndarray, np.ndarray]:
+    if input_arm not in {"single", "history"}:
+        raise ValueError(f"Unknown input arm: {input_arm}")
     checkpoint = torch.load(
         checkpoint_path,
         map_location="cpu",
@@ -388,7 +391,7 @@ def predict(
     risk_rows = []
     known_rows = []
     loader = DataLoader(
-        HftfDataset(records, "single", train=False, seed=0),
+        HftfDataset(records, input_arm, train=False, seed=0),
         batch_size=8,
         shuffle=False,
         num_workers=0,

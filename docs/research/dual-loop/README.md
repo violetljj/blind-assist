@@ -110,6 +110,17 @@ AUROC `0.8134` 的同时，Bangkok/Ulm 只有 `0.1836/0.2582`，source-macro AUR
 `0.4184`。因此 early interaction 的局部表示增量保留，source-general transfer
 仍不成立；下一步把 early interaction 放回 structured HFTF future-risk field
 teacher task，而不是继续优化 binary actionability head。
+该 structured-field 后继现已完成 3 seeds × 3 folds。31,560 个可训练参数的
+zero-initialized early-pair residual 相对各自 directional-single reference，
+environment-macro future body/head F1 为 6 正/3 个精确 epoch-0 中性/0 负，
+mean `+0.00565`；但 dev fixed-event recall/FPR mean delta 为
+`+0.00761/+0.04808`，没有形成行动层增量。在 6 个 outcome-unseen synthetic
+environments 上，AUROC/AP/FPR mean delta 为
+`+0.00757/+0.01065/-0.01387`，false-alert events 平均减少 `2.0`，但 macro F1
+`-0.00135`、event recall `-0.00919`。因此保留 early interaction 的
+ranking/specificity 表示信号，不升级为 event utility。下一候选不调 threshold：
+冻结 directional baseline，让 pair module 只学习 selective residual/veto，并对
+teacher-positive future body/head cells 显式施加 recall-preservation constraint。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

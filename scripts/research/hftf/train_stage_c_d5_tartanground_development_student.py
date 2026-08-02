@@ -28,8 +28,13 @@ TEMPORAL_MODES = (
     "joint",
     "current_residual",
     "current_spatial_residual",
+    "early_pair",
 )
-OPTIMIZATION_MODES = ("all", "temporal_residual_only")
+OPTIMIZATION_MODES = (
+    "all",
+    "temporal_residual_only",
+    "early_pair_only",
+)
 KNOWN_LOSS_MODES = ("plain", "balanced", "sqrt_balanced")
 SELECTION_MODES = ("aggregate", "environment_macro")
 HORIZONS = ("current", "near", "far")
@@ -194,6 +199,57 @@ class HftfDataset(
         return torch.stack(frames), risk, known
 
 
+class DepthwiseSeparableDownsample(nn.Module):
+    def __init__(self, input_channels: int, output_channels: int) -> None:
+        super().__init__()
+        groups = 8 if output_channels % 8 == 0 else 1
+        self.block = nn.Sequential(
+            nn.Conv2d(
+                input_channels,
+                input_channels,
+                kernel_size=3,
+                stride=2,
+                padding=1,
+                groups=input_channels,
+                bias=False,
+            ),
+            nn.Conv2d(
+                input_channels,
+                output_channels,
+                kernel_size=1,
+                bias=False,
+            ),
+            nn.GroupNorm(groups, output_channels),
+            nn.Hardswish(),
+        )
+
+    def forward(self, value: torch.Tensor) -> torch.Tensor:
+        return self.block(value)
+
+
+class EarlyPairStem(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        self.layers = nn.Sequential(
+            nn.Conv2d(
+                12,
+                24,
+                kernel_size=3,
+                stride=2,
+                padding=1,
+                bias=False,
+            ),
+            nn.GroupNorm(6, 24),
+            nn.Hardswish(),
+            DepthwiseSeparableDownsample(24, 32),
+            DepthwiseSeparableDownsample(32, 64),
+            DepthwiseSeparableDownsample(64, 128),
+        )
+
+    def forward(self, value: torch.Tensor) -> torch.Tensor:
+        return self.layers(value)
+
+
 class TemporalStudent(nn.Module):
     def __init__(
         self,
@@ -248,6 +304,15 @@ class TemporalStudent(nn.Module):
                 bias=False,
             )
             nn.init.zeros_(self.temporal_residual.weight)
+        elif temporal_mode == "early_pair":
+            self.early_pair_stem = EarlyPairStem()
+            self.early_pair_output = nn.Conv2d(
+                128,
+                128,
+                kernel_size=1,
+                bias=False,
+            )
+            nn.init.zeros_(self.early_pair_output.weight)
         self.pointwise = nn.Sequential(
             nn.Conv2d(576, 128, kernel_size=1, bias=False),
             nn.GroupNorm(16, 128),
@@ -287,32 +352,98 @@ class TemporalStudent(nn.Module):
         if frames.ndim != 5 or frames.shape[1:3] != (5, 3):
             raise ValueError("Expected Bx5x3xHxW input")
         batch, time, channels, height, width = frames.shape
-        encoded = self.encoder(
-            frames.reshape(batch * time, channels, height, width)
-        )
-        _, feature_channels, feature_height, feature_width = encoded.shape
-        encoded = encoded.reshape(
-            batch,
-            time,
-            feature_channels,
-            feature_height,
-            feature_width,
-        ).permute(0, 2, 1, 3, 4)
-        if getattr(self, "temporal_mode", "joint") == "joint":
-            fused = self.temporal_depthwise(encoded).squeeze(2)
-        else:
-            current = encoded[:, :, -1]
-            current_kernel = self.temporal_depthwise.weight.sum(dim=2)
-            current_fused = nnf.conv2d(
-                current,
-                current_kernel,
-                groups=current.shape[1],
+        temporal_mode = getattr(self, "temporal_mode", "joint")
+        if temporal_mode == "early_pair":
+            current = frames[:, -1]
+            baseline = frames[:, :-1].mean(dim=1)
+            delta = current - baseline
+            pair = torch.cat(
+                (current, baseline, delta, delta.abs()),
+                dim=1,
             )
-            history_delta = encoded[:, :, :-1] - encoded[:, :, -1:]
-            fused = current_fused + self.temporal_residual(
-                history_delta
+            repeated_current = current[:, None].expand(
+                -1,
+                time,
+                -1,
+                -1,
+                -1,
+            ).contiguous()
+            encoded_current = self.encoder(
+                repeated_current.reshape(
+                    batch * time,
+                    channels,
+                    height,
+                    width,
+                )
+            )
+            (
+                _,
+                feature_channels,
+                feature_height,
+                feature_width,
+            ) = encoded_current.shape
+            encoded_current = encoded_current.reshape(
+                batch,
+                time,
+                feature_channels,
+                feature_height,
+                feature_width,
+            ).permute(0, 2, 1, 3, 4)
+            current_fused = self.temporal_depthwise(
+                encoded_current
             ).squeeze(2)
-        fused = self.pointwise(fused)
+            fused = self.pointwise(current_fused)
+            pair_residual = self.early_pair_output(
+                self.early_pair_stem(pair)
+            )
+            pair_residual = nnf.interpolate(
+                pair_residual,
+                size=fused.shape[-2:],
+                mode="bilinear",
+                align_corners=False,
+            )
+            fused = fused + pair_residual
+        else:
+            encoded = self.encoder(
+                frames.reshape(
+                    batch * time,
+                    channels,
+                    height,
+                    width,
+                )
+            )
+            (
+                _,
+                feature_channels,
+                feature_height,
+                feature_width,
+            ) = encoded.shape
+            encoded = encoded.reshape(
+                batch,
+                time,
+                feature_channels,
+                feature_height,
+                feature_width,
+            ).permute(0, 2, 1, 3, 4)
+            if temporal_mode == "joint":
+                fused = self.temporal_depthwise(encoded).squeeze(2)
+            else:
+                current = encoded[:, :, -1]
+                current_kernel = self.temporal_depthwise.weight.sum(
+                    dim=2
+                )
+                current_fused = nnf.conv2d(
+                    current,
+                    current_kernel,
+                    groups=current.shape[1],
+                )
+                history_delta = (
+                    encoded[:, :, :-1] - encoded[:, :, -1:]
+                )
+                fused = current_fused + self.temporal_residual(
+                    history_delta
+                ).squeeze(2)
+            fused = self.pointwise(fused)
         if getattr(self, "architecture", "pooled") == "pooled":
             output = self.head(
                 self.dropout(self.pool(fused).flatten(1))
@@ -667,6 +798,14 @@ def train(
             "temporal_residual_only requires a residual temporal mode "
             "and an initial checkpoint"
         )
+    if optimization_mode == "early_pair_only" and (
+        temporal_mode != "early_pair"
+        or initial_checkpoint_path is None
+    ):
+        raise ValueError(
+            "early_pair_only requires early_pair mode "
+            "and an initial checkpoint"
+        )
     if selection_mode not in SELECTION_MODES:
         raise ValueError(f"Unknown selection mode: {selection_mode}")
     if not torch.cuda.is_available():
@@ -746,6 +885,32 @@ def train(
                     "Unexpected keys during joint-to-residual "
                     f"initialization: {incompatible.unexpected_keys}"
                 )
+        elif (
+            initial_temporal_mode == "joint"
+            and temporal_mode == "early_pair"
+        ):
+            incompatible = model.load_state_dict(
+                initial_checkpoint["model_state_dict"],
+                strict=False,
+            )
+            if (
+                not incompatible.missing_keys
+                or any(
+                    not key.startswith(
+                        ("early_pair_stem.", "early_pair_output.")
+                    )
+                    for key in incompatible.missing_keys
+                )
+            ):
+                raise ValueError(
+                    "Unexpected missing keys during joint-to-early-pair "
+                    f"initialization: {incompatible.missing_keys}"
+                )
+            if incompatible.unexpected_keys:
+                raise ValueError(
+                    "Unexpected keys during joint-to-early-pair "
+                    f"initialization: {incompatible.unexpected_keys}"
+                )
         else:
             raise ValueError(
                 "Initial checkpoint temporal mode mismatch: "
@@ -758,6 +923,20 @@ def train(
         optimizer_groups = [
             {
                 "params": model.temporal_residual.parameters(),
+                "lr": head_lr,
+            }
+        ]
+    elif optimization_mode == "early_pair_only":
+        for name, parameter in model.named_parameters():
+            parameter.requires_grad = name.startswith(
+                ("early_pair_stem.", "early_pair_output.")
+            )
+        optimizer_groups = [
+            {
+                "params": [
+                    *model.early_pair_stem.parameters(),
+                    *model.early_pair_output.parameters(),
+                ],
                 "lr": head_lr,
             }
         ]
