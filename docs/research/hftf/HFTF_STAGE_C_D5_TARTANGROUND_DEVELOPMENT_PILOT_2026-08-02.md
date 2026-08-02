@@ -43,7 +43,8 @@ DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_IN_DEVEL
 DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUND_ENVIRONMENTS_IN_DEVELOPMENT /
 REAL_EVENT_RECALL_SIGNAL_SUPPORTED_ACROSS_NINE_CHECKPOINTS_IN_DEVELOPMENT /
 FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED /
-DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
+CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -656,6 +657,30 @@ Pareto-dominate 当前 YOLO。因此精确终态是：
 profile 是否能区分“前方侵入”与“平行路沿”，再决定是否值得做 session-held-out
 weak event calibration；不在同一结果上直接搜索更多绝对阈值。
 
+### Central-vs-lateral profile diagnostic
+
+诊断保持 alert output 完全不变，也不搜索 threshold。每个 checkpoint 只把
+alertable positive interval 与完整 negative event 各压成一个 event-level median，
+比较五类 field evidence 的中央绝对值、中央减侧向均值和中央峰值减侧向峰值：
+
+| profile | all-negative AUC mean/median | parallel-curb AUC mean/median |
+|---|---:|---:|
+| `risk_mean / central_mean` | 0.5893 / 0.6071 | 0.5327 / 0.5625 |
+| `risk_mean / central_peak-lateral_peak` | 0.5655 / 0.5938 | 0.5208 / 0.5089 |
+| `risk_mean / central_mean-lateral_mean` | 0.5501 / 0.5312 | 0.4990 / 0.4732 |
+| `body_k3 / central_mean-lateral_mean` | 0.5060 / 0.4777 | 0.4772 / 0.4464 |
+| `head_known_risk / central_mean-lateral_mean` | 0.5025 / 0.5179 | 0.4633 / 0.4286 |
+
+绝对中央 risk 对 normal-walkable 有弱排序信号，但没有稳定分离 parallel curb；
+相对方向 profile 在最关键的 parallel-curb 对比上接近或低于随机。因此：
+
+`CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED`
+
+这说明真实 recall 的主要来源是整体高风险响应，而不是已经学会“前方侵入 vs
+平行但不阻塞”的关系。简单换 absolute threshold、手工 central-minus-lateral
+公式或继续 v2 搜索都缺少机制依据；后继必须显式加入真实 actionability relation
+监督，并以 source-session-held-out 输出评价。
+
 ## 边界与下一实验
 
 当前正结果只支持：
@@ -675,16 +700,18 @@ weak event calibration；不在同一结果上直接搜索更多绝对阈值。
 - head false-alert fragmentation 在 selective v2 下形成稳定 guardrail；
 - 固定 v2 在真实事件上能守住 specificity 与 clearance；
 - directional 在真实事件上相对 pooled 或当前 YOLO 形成 Pareto 增量；
+- central-vs-lateral profile 能稳定区分 parallel curb；
 - 真实事件 warning lead time 相对当前 YOLO 改善；
 - HFTF 超过当前主线或进入 App。
 
 下一步保留 directional + v2 为合成 Development reference，也保留真实 recall
 正信号，不再在 21 个 TartanGround environments 或 SANPO outcomes 上盲搜绝对阈值。
-先对 9 个 directional checkpoints 做 output-side direction-profile 诊断，检验
-central-minus-lateral、前方侵入与 parallel-curb 是否存在跨 checkpoint 同向分离。
-若存在，再用 30 sessions 做严格 session-held-out weak event calibration；若不存在，
-则当前 synthetic-to-real 表示缺少 actionability relation，应转向真实负例/关系监督，
-而不是继续修改 decision kernel。history 在出现显式对齐机制前停止。
+当前诊断已经否定无需学习的相对方向公式。下一步用 30 个已消费 sessions 构造严格
+source-session-held-out 的弱 actionability relation head：train fold 只能看到其自身
+alertable positives、passed intervals 和完整 negatives，test sessions 不参与标准化、
+拟合或 threshold；先固定 HFTF backbone，只检验低容量 relation head 能否把真实
+recall 转成 specificity/clearance。若仍失败，再进入真实 RGB backbone fine-tune；
+不再修改 decision kernel。history 在出现显式对齐机制前停止。
 
 ## 复现
 
@@ -755,6 +782,12 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --name directional-seed17-fold0 `
   --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-real-event-transfer-v0/directional/seed-17/fold-0.json
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/diagnose_stage_c_d6_sanpo_direction_profile.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --name directional-seed17-fold0 `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-direction-profile-v0/seed-17/fold-0.json
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored

@@ -45,6 +45,7 @@ D5_DIRECTIONAL_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUN
 D6_REAL_EVENT_RECALL_SIGNAL_SUPPORTED_ACROSS_NINE_CHECKPOINTS_DEVELOPMENT_ONLY /
 D6_FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED /
 D6_DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
+D6_CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -251,6 +252,19 @@ paired pooled 比较显示 directional 的 hit count 4/9 更高、5/9 相同，m
 `+2.22 events`，但 false-alert mean `+0.33`、cleared mean `-1.89`。真实域中的
 召回贡献存在，actionability/specificity 尚未建立；下一步检查 central-vs-lateral
 profile，而不是继续盲调绝对阈值。
+
+该 output-side profile 诊断也已完成。9 个 directional checkpoints 中，最佳绝对
+中央 `risk_mean` 的正事件 vs 全负事件 event-level AUC mean/median 仅
+`0.589/0.607`，对 parallel-curb 为 `0.533/0.563`。更关键的
+`central-minus-lateral risk_mean` AUC 只有 `0.550`，对 parallel-curb 为
+`0.499`；body 3-cell support 和 head known-risk 的相对方向 profile 也接近随机。
+因此终态为：
+
+`CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED`
+
+当前真实 recall 主要来自普遍高激活，不是已建立的前方侵入关系。下一步应在真实
+source-session-held-out 口径上增加弱 actionability/关系监督；不再搜索 absolute
+threshold 或 central/lateral 手工公式。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

@@ -53,7 +53,10 @@ directional + fixed v2 在 6 个未参与开发的合成 environments 上 event 
 9 个 directional checkpoints 全部命中 16/16 正事件，但误报 13–14/14 负事件、
 只清除 0–2/16。真实 recall signal 已成立，specificity/clearance 与相对当前 YOLO 的
 Pareto 增量尚未成立，因此研究主线和默认 App 不变。下一步只做相对方向 profile
-诊断，不继续盲调绝对阈值。
+诊断，不继续盲调绝对阈值。该诊断现已发现 central-minus-lateral 对 parallel-curb
+的 9-checkpoint AUC mean 只有 `0.499`，终态为
+`CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED`；后继转为
+source-session-held-out 的低容量 weak relation head。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

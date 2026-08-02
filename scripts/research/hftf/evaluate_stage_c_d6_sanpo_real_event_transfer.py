@@ -386,6 +386,39 @@ def load_model(
     return model, checkpoint
 
 
+def infer_manifest_probabilities(
+    model: TemporalStudent,
+    dataset: ManifestFrames,
+    manifest: dict[str, Any],
+    batch_size: int,
+) -> tuple[list[np.ndarray], list[np.ndarray]]:
+    loader = DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=0,
+    )
+    risk_by_event = [
+        np.zeros((len(event["frames"]), 3, 3, 6, 6), np.float32)
+        for event in manifest["events"]
+    ]
+    known_by_event = [
+        np.zeros((len(event["frames"]), 3, 3, 6, 6), np.float32)
+        for event in manifest["events"]
+    ]
+    with torch.inference_mode():
+        for frames, event_indices, frame_indices in loader:
+            risk_logits, known_logits = single_frame_logits(model, frames)
+            risks = torch.sigmoid(risk_logits).cpu().numpy()
+            knowns = torch.sigmoid(known_logits).cpu().numpy()
+            for batch_index in range(len(frames)):
+                event_index = int(event_indices[batch_index])
+                frame_index = int(frame_indices[batch_index])
+                risk_by_event[event_index][frame_index] = risks[batch_index]
+                known_by_event[event_index][frame_index] = knowns[batch_index]
+    return risk_by_event, known_by_event
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
@@ -419,30 +452,12 @@ def main() -> int:
         args.checkpoint,
     )
     dataset = ManifestFrames(args.manifest, manifest)
-    loader = DataLoader(
+    risk_by_event, known_by_event = infer_manifest_probabilities(
+        model,
         dataset,
-        batch_size=args.batch_size,
-        shuffle=False,
-        num_workers=0,
+        manifest,
+        args.batch_size,
     )
-    risk_by_event = [
-        np.zeros((len(event["frames"]), 3, 3, 6, 6), np.float32)
-        for event in manifest["events"]
-    ]
-    known_by_event = [
-        np.zeros((len(event["frames"]), 3, 3, 6, 6), np.float32)
-        for event in manifest["events"]
-    ]
-    with torch.inference_mode():
-        for frames, event_indices, frame_indices in loader:
-            risk_logits, known_logits = single_frame_logits(model, frames)
-            risks = torch.sigmoid(risk_logits).cpu().numpy()
-            knowns = torch.sigmoid(known_logits).cpu().numpy()
-            for batch_index in range(len(frames)):
-                event_index = int(event_indices[batch_index])
-                frame_index = int(frame_indices[batch_index])
-                risk_by_event[event_index][frame_index] = risks[batch_index]
-                known_by_event[event_index][frame_index] = knowns[batch_index]
 
     event_rows = []
     for event_index, event in enumerate(manifest["events"]):

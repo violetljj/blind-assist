@@ -4629,3 +4629,22 @@
   central-minus-lateral direction-profile 诊断，检验前方侵入与 parallel-curb
   是否有同向相对结构；有则进入 session-held-out weak event calibration，无则转向
   真实负例/actionability relation supervision。
+
+## 2026-08-02：HFTF D6 central-vs-lateral profile diagnostic
+
+- 诊断不改变 alert output、不搜索 threshold。对 9 个 directional checkpoints，
+  分别把每个 positive alertable interval 和完整 negative event 压成 event-level
+  median，比较 `risk_mean / risk_max / body_k3 / head_known_risk / known_mean`
+  的中央绝对值、中央减侧向均值与中央峰值减侧向峰值。
+- 最佳绝对中央 `risk_mean` 的 all-negative AUC mean/median 为
+  `0.5893/0.6071`，parallel-curb 为 `0.5327/0.5625`；只有弱排序信号。
+- `risk_mean central-minus-lateral` 的 all-negative AUC 为 `0.5501`，
+  parallel-curb 为 `0.4990`；body_k3 相对 profile 为 `0.5060/0.4772`，
+  head known-risk 相对 profile 为 `0.5025/0.4633`。关键关系分离接近或低于随机。
+- 终态为 `CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED`。它不否定真实
+  16/16 recall signal；它把高 recall 归因为普遍高激活，而不是已经学会
+  “前方侵入 vs 平行但不阻塞”。
+- 下一步停止 absolute threshold、手工 relative formula 和更多 v2 搜索。固定 HFTF
+  backbone，用 30 consumed sessions 做严格 source-session-held-out、低容量 weak
+  actionability relation head；若仍不能同时守住 recall/specificity/clearance，再
+  进入真实 RGB backbone fine-tune。
