@@ -30,6 +30,7 @@ TEMPORAL_MODES = (
     "current_spatial_residual",
 )
 OPTIMIZATION_MODES = ("all", "temporal_residual_only")
+KNOWN_LOSS_MODES = ("plain", "balanced", "sqrt_balanced")
 SELECTION_MODES = ("aggregate", "environment_macro")
 HORIZONS = ("current", "near", "far")
 HEIGHTS = ("foot", "body", "head")
@@ -346,12 +347,38 @@ def positive_weights(records: list[dict[str, Any]]) -> torch.Tensor:
     )
 
 
+def known_positive_weights(
+    records: list[dict[str, Any]],
+    power: float = 1.0,
+) -> torch.Tensor:
+    if not 0.0 < power <= 1.0:
+        raise ValueError("Known positive-weight power must be in (0, 1]")
+    positive = np.zeros((3, 3), dtype=np.float64)
+    total = np.zeros((3, 3), dtype=np.float64)
+    for record in records:
+        _, known = decode_labels(record)
+        known_array = known.numpy()
+        positive += known_array.sum(axis=(2, 3))
+        total += np.prod(known_array.shape[2:])
+    negative = total - positive
+    if np.any(positive <= 0.0) or np.any(negative <= 0.0):
+        raise ValueError(
+            "Every horizon/height needs known and unknown cells"
+        )
+    return torch.from_numpy(
+        np.clip((negative / positive) ** power, 0.25, 20.0).astype(
+            np.float32
+        )
+    )
+
+
 def losses(
     risk_logits: torch.Tensor,
     known_logits: torch.Tensor,
     risk: torch.Tensor,
     known: torch.Tensor,
     weights: torch.Tensor,
+    known_weights: torch.Tensor | None = None,
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
     raw_risk = nnf.binary_cross_entropy_with_logits(
         risk_logits,
@@ -363,6 +390,11 @@ def losses(
     known_loss = nnf.binary_cross_entropy_with_logits(
         known_logits,
         known,
+        pos_weight=(
+            known_weights.view(1, 3, 3, 1, 1)
+            if known_weights is not None
+            else None
+        ),
     )
     return risk_loss + known_loss, risk_loss, known_loss
 
@@ -611,6 +643,7 @@ def train(
     architecture: str = "pooled",
     temporal_mode: str = "joint",
     optimization_mode: str = "all",
+    known_loss_mode: str = "plain",
     selection_mode: str = "aggregate",
 ) -> dict[str, Any]:
     if arm not in ARMS:
@@ -623,6 +656,8 @@ def train(
         raise ValueError(f"Unknown temporal mode: {temporal_mode}")
     if optimization_mode not in OPTIMIZATION_MODES:
         raise ValueError(f"Unknown optimization mode: {optimization_mode}")
+    if known_loss_mode not in KNOWN_LOSS_MODES:
+        raise ValueError(f"Unknown known loss mode: {known_loss_mode}")
     if optimization_mode == "temporal_residual_only" and (
         temporal_mode
         not in {"current_residual", "current_spatial_residual"}
@@ -653,6 +688,16 @@ def train(
         seed=seed,
     )
     weights = positive_weights(train_records)
+    known_weight_power = {
+        "plain": None,
+        "balanced": 1.0,
+        "sqrt_balanced": 0.5,
+    }[known_loss_mode]
+    known_weights = (
+        known_positive_weights(train_records, power=known_weight_power)
+        if known_weight_power is not None
+        else None
+    )
     prior_dev_metrics = train_prior_metrics(train_records, dev_records)
     device = torch.device("cuda")
     model = TemporalStudent(
@@ -733,6 +778,8 @@ def train(
         weight_decay=1e-4,
     )
     weights = weights.to(device)
+    if known_weights is not None:
+        known_weights = known_weights.to(device)
     dev_loader = DataLoader(
         dev_dataset,
         batch_size=8,
@@ -840,6 +887,7 @@ def train(
                 risk,
                 known,
                 weights,
+                known_weights,
             )
             if not torch.isfinite(loss):
                 raise RuntimeError("Non-finite loss")
@@ -942,6 +990,7 @@ def train(
         "architecture": architecture,
         "temporal_mode": temporal_mode,
         "optimization_mode": optimization_mode,
+        "known_loss_mode": known_loss_mode,
         "selection_mode": selection_mode,
         "seed": seed,
         "selected_epoch": best_epoch,
@@ -974,6 +1023,12 @@ def train(
         "selection_mode": selection_mode,
         "optimization": {
             "mode": optimization_mode,
+            "known_loss_mode": known_loss_mode,
+            "known_positive_weights": (
+                known_weights.detach().cpu().tolist()
+                if known_weights is not None
+                else None
+            ),
             "encoder_lr": encoder_lr,
             "head_lr": head_lr,
             "trainable_parameters": sum(
@@ -1047,6 +1102,11 @@ def main() -> int:
         choices=OPTIMIZATION_MODES,
         default="all",
     )
+    parser.add_argument(
+        "--known-loss-mode",
+        choices=KNOWN_LOSS_MODES,
+        default="plain",
+    )
     parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--initial-checkpoint", type=Path)
@@ -1066,6 +1126,7 @@ def main() -> int:
         architecture=args.architecture,
         temporal_mode=args.temporal_mode,
         optimization_mode=args.optimization_mode,
+        known_loss_mode=args.known_loss_mode,
         selection_mode=args.selection_mode,
     )
     print(

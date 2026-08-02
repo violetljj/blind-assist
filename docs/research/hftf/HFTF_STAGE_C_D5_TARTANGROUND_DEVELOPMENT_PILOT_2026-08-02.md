@@ -2,7 +2,7 @@
 
 ## 结论
 
-TartanGround 已从“目录看起来足够大”推进到三个可执行结果：
+TartanGround 已从“目录看起来足够大”推进到五个可执行结果：
 
 1. 官方 Hugging Face revision
    `388faf9c800568cfc6828fa47e063f8369397eb3` 完整覆盖锁定 catalog 的
@@ -16,12 +16,15 @@ TartanGround 已从“目录看起来足够大”推进到三个可执行结果�
    保留水平方向轴的 directional head 在 3 seeds × 3 folds 的九个 paired 单元中
    8 胜 1 负；但 joint、零初始化逐点 residual 和 3×3 spatial residual 三类
    未对齐 history fusion 都没有建立跨折增量。
+5. predicted-known 的完全与平方根逆频率重加权能提高部分 body/event recall，
+   但不能同时守住 negative false-active；该标量损失修补路线停止。
 
 当前终态为：
 
 `DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT /
 UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
-UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED`
+UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
+KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -299,6 +302,48 @@ head recall 上升但 false-active 更明显上升。cell F1/排序正结果没�
 
 `UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED`
 
+## Known-loss objective intervention
+
+事件代理审计显示，risk-only 的 body 激活仍较高，主要损失发生在
+`predicted-known AND predicted-risk` 的 known gate。为检验这是否只是 known
+正类稀疏造成的训练偏置，在不改变数据、架构、threshold 和事件定义的情况下增加
+两种训练目标：
+
+- `balanced`：每个 horizon×height 使用 train negatives/positives 作为 known
+  positive weight；
+- `sqrt_balanced`：使用上述比值的平方根，作为 plain 与完全补偿之间的对数空间
+  中点。
+
+完全 balanced 已运行 3 seeds × 3 folds。相对同 seed/fold 的 directional
+reference：
+
+| 指标 delta（balanced - directional） | mean | 方向 |
+|---|---:|---|
+| environment-macro F1 | +0.0010 | 8/9 正，但最差单元 -0.0468 |
+| event recall | +0.0941 | 7/9 正 |
+| false-active lane-frame rate | +0.0435 | 5/9 恶化 |
+| body event recall | +0.1492 | 8/9 正 |
+| body false-active rate | +0.0578 | 5 恶化、3 改善、1 零 |
+| clearance rate | -0.0101 | 无稳定改善 |
+
+完全补偿确认 known gate 是可干预瓶颈，但以更高误激活换取召回，不能作为事件级
+reference。为避免无界调权，只追加一个 seed17 三折的 sqrt-balanced 判别：
+
+| fold | event recall delta | false-active delta | clearance delta |
+|---:|---:|---:|---:|
+| 0 | -0.0688 | +0.0182 | 0 |
+| 1 | +0.0928 | +0.0263 | -0.0714 |
+| 2 | +0.0759 | +0.0214 | -0.0571 |
+
+其 cell-level future body/head macro F1 mean delta 只有 `+0.0009`；事件召回
+mean `+0.0333`，但三折 false-active 全部恶化，mean `+0.0220`。因此不扩展
+seed29/43，也不继续搜索标量权重：
+
+`KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED`
+
+这是有效的算法权衡负结果，不是 protocol INVALID。它只关闭当前 known 正类
+reweighting；directional 的 representation 正结果仍成立。
+
 ## History mechanism repair
 
 原 single 训练把当前帧重复五次。对 5-tap、1×1 temporal convolution 来说，这只
@@ -336,15 +381,16 @@ compensation 或新的时序表征后，才值得重开 history；不再继续�
 - history 对独立环境具有稳定增量；
 - directional 的 threshold calibration 能跨 seed 稳定；
 - directional 增量能穿过 synthetic event proxy；
+- known 正类标量重加权能同时改善召回与 false-active；
 - synthetic proxy 能迁移到真实视障步行；
 - 事件级 critical-hazard recall、false alerts 或 warning lead time 改善；
 - HFTF 超过当前主线或进入 App。
 
-下一步不再调阈值；以 directional single 为 reference，修改训练目标或采样，使
-body critical recall 与 head false-active 成为分开的可控量，再重新运行同一个
-synthetic event proxy。只有事件代理稳定改善，才接入真实 parent-event decision
-kernel；之后才使用未参与迭代的 held-out environments 做一次偏差敏感评价。history
-在出现显式对齐机制前停止。
+下一步不再调阈值或 known 正类标量权重；以 directional single 为 reference，
+把 observability/known 与 alert decision 显式解耦，使 body critical recall 与
+head false-active 成为分开的可控量，再运行同一个 synthetic event proxy。事件代理
+稳定改善后才接入真实 parent-event decision kernel；之后才使用未参与迭代的
+held-out environments 做一次偏差敏感评价。history 在出现显式对齐机制前停止。
 
 ## 复现
 

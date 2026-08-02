@@ -38,6 +38,7 @@ INNOVATION_NOT_EVALUABLE /
 D5_DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY /
 D5_UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
 D5_UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
+D5_KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -55,6 +56,18 @@ RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
   provider revision、输入路径、代码、参数、结果和测试的最小记录承担。
 - claim ceiling 只限制结论：teacher mechanics、student effect、系统效用、主线晋级
   和产品/安全证据仍然分开，但不再让产品级治理阻塞前面的科学实验。
+
+以后只保留三类状态，不能互相冒充：
+
+1. **科学负结果**：数据、实现和评价均有效，候选相对 reference 没有建立所需增量；
+2. **工程无效**：路径长度、`OSError`、parser、manifest、单文件尺寸、网络或中断等
+   控制面错误；修复后重跑，不关闭科学问题、不永久烧毁 cohort；
+3. **主张边界**：结果已经成立，但只能支持 teacher、representation 或
+   decision-kernel 中的某一层；它限制措辞和晋级，不把结果改写成失败。
+
+因此，Windows 长路径、metadata scanner 对 1,442 个候选的 `OSError`、size 语法
+误解析和单 JSON 超 8 MiB 这类历史失败，只能作为控制面设计缺陷的证据，不能再作为
+算法、数据路线或 source population 的负证据。
 
 ### 结果不是“系统证明 / 无效”的二分
 
@@ -138,6 +151,21 @@ body/head 行为，没有建立稳定事件增量：
 这个 proxy 不是 human event truth 或 App kernel；它只证明下一步不能靠后处理阈值
 把 cell-level 正结果自动升级。需修改训练目标/采样，分别控制 body critical recall
 与 head false-active，然后重跑同一个 proxy。
+
+对 predicted-known 分支做的逆频率损失重加权也已完成有界检验。完全 balanced 的
+3 seeds × 3 folds 相对 directional reference，cell-level environment-macro F1
+几乎不变（mean `+0.0010`），event recall mean `+0.0941`，但
+false-active lane-frame rate mean 同时恶化 `+0.0435`；body event recall
+`+0.1492` 的代价是 body false-active `+0.0578`。随后只在 seed17 三折测试
+平方根补偿：event recall delta 为
+`-0.0688/+0.0928/+0.0759`，而 false-active 三折全部恶化
+`+0.0182/+0.0263/+0.0214`，所以没有扩到更多种子。当前精确终态是：
+
+`KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED`
+
+这只关闭 plain、inverse-frequency balanced 与 sqrt-balanced 这一条 known
+正类标量重加权路线，不否定 directional representation 正结果，也不关闭显式
+observability/alert 解耦、选择性预测或新的 decision objective。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

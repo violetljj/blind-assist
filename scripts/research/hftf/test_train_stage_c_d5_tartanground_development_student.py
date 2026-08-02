@@ -11,6 +11,8 @@ from train_stage_c_d5_tartanground_development_student import (
     TemporalStudent,
     binary_metrics,
     decode_labels,
+    known_positive_weights,
+    losses,
     train_prior_metrics,
 )
 
@@ -58,6 +60,58 @@ class TartanGroundDevelopmentStudentTest(unittest.TestCase):
         self.assertAlmostEqual(
             result["average_precision"],
             (1.0 + 2.0 / 3.0) / 2.0,
+        )
+
+    def test_balanced_known_loss_increases_positive_known_penalty(self):
+        shape = (1, 3, 3, 1, 1)
+        risk_logits = torch.zeros(shape)
+        known_logits = torch.zeros(shape)
+        risk = torch.zeros(shape)
+        known = torch.ones(shape)
+        risk_weights = torch.ones((3, 3))
+
+        _, _, plain = losses(
+            risk_logits,
+            known_logits,
+            risk,
+            known,
+            risk_weights,
+        )
+        _, _, balanced = losses(
+            risk_logits,
+            known_logits,
+            risk,
+            known,
+            risk_weights,
+            torch.full((3, 3), 2.0),
+        )
+
+        self.assertGreater(float(balanced), float(plain))
+
+    def test_sqrt_balanced_known_weight_is_log_space_halfway(self):
+        labels = {}
+        for horizon in ("current", "near", "far"):
+            known = np.zeros((3, 6, 6), dtype=np.uint8)
+            known[:, :3, :3] = 1
+            risk = np.full((3, 6, 6), None, dtype=object)
+            risk[known.astype(bool)] = 0.0
+            labels[horizon] = {
+                "known_target": known.tolist(),
+                "risk_score_target_nullable": risk.tolist(),
+            }
+
+        balanced = known_positive_weights([{"labels": labels}])
+        sqrt_balanced = known_positive_weights(
+            [{"labels": labels}],
+            power=0.5,
+        )
+
+        self.assertTrue(torch.allclose(balanced, torch.full((3, 3), 3.0)))
+        self.assertTrue(
+            torch.allclose(
+                sqrt_balanced,
+                torch.full((3, 3), 3.0**0.5),
+            )
         )
 
     def test_temporal_student_output_shape(self):

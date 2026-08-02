@@ -4508,3 +4508,27 @@
 - 下一步不再调阈值；修改训练目标或采样，分别控制 body critical recall 与 head
   false-active，再运行同一个 proxy。只有代理稳定改善才进入真实 parent-event
   decision kernel。
+
+## 2026-08-02：HFTF D5 known-loss intervention 与研究边界纠偏
+
+- 先审计 known gate：risk-only body 激活仍高，主要召回损失来自
+  `predicted-known AND predicted-risk`。新增 train-only known positive
+  reweighting，保留同一数据、directional 架构、0.5 threshold 和 synthetic event
+  proxy。
+- 完全 inverse-frequency balanced 的 3 seeds × 3 folds 相对 directional
+  reference，environment-macro F1 mean delta 仅 `+0.0010`；event/body recall
+  mean delta 为 `+0.0941/+0.1492`，但 false-active/body false-active 同时为
+  `+0.0435/+0.0578`，没有建立事件级改进。
+- 有界追加 seed17 三折 sqrt-balanced。event recall delta 为
+  `-0.0688/+0.0928/+0.0759`，false-active 三折全部恶化
+  `+0.0182/+0.0263/+0.0214`，clearance 为
+  `0/-0.0714/-0.0571`。不扩 seed29/43，不继续调标量权重，终态为
+  `KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED`。
+- 该终态是有效算法权衡负结果，只关闭 plain/balanced/sqrt-balanced known 正类
+  重加权；不抹掉 directional representation 正结果，也不关闭显式
+  observability/alert 解耦。
+- 研究状态重新分为科学负结果、可修复工程无效和主张边界。Windows 长路径、
+  scanner `OSError`、manifest/parser、单文件尺寸、网络与 interruption 只能触发
+  修复重跑，不能关闭科学问题或烧毁 cohort。teacher、representation、
+  decision-kernel、research-mainline、App/safety 是逐层证据；后一层未完成只限制
+  主张，不把前一层正结果改写成失败。
