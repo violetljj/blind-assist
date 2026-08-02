@@ -4,6 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import numpy as np
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from run_stage_c_d6_provisional_relation_transfer import (
@@ -12,10 +14,43 @@ from run_stage_c_d6_provisional_relation_transfer import (
     collect_merged_relation_sources,
     collect_reviewed_negative_sources,
     collect_training_episodes,
+    source_no_alert_centered_features,
 )
 
 
 class ProvisionalRelationTransferTest(unittest.TestCase):
+    def test_source_centering_balances_no_alert_episodes(self):
+        features = np.asarray(
+            [[1.0], [3.0], [5.0], [7.0], [10.0], [14.0]],
+            dtype=np.float64,
+        )
+        centered, baselines = source_no_alert_centered_features(
+            features,
+            np.asarray([0, 0, 0, 1, 0, 1]),
+            np.asarray(
+                [
+                    "source-a",
+                    "source-a",
+                    "source-a",
+                    "source-a",
+                    "source-b",
+                    "source-b",
+                ]
+            ),
+            np.asarray(["a-1", "a-1", "a-2", "a-3", "b-1", "b-2"]),
+        )
+        np.testing.assert_allclose(
+            centered[:, 0],
+            [-2.5, -0.5, 1.5, 3.5, 0.0, 4.0],
+        )
+        self.assertEqual(
+            [2, 1],
+            [
+                row["no_alert_episode_count"]
+                for row in baselines
+            ],
+        )
+
     def test_actionability_segments_preserve_causal_state_changes(self):
         segments = actionability_segments(
             {

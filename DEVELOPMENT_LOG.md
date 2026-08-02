@@ -4768,6 +4768,9 @@
   `0`，balanced accuracy 分别为 `0.4962/0.5000`。结论是 fixed HFTF spatial
   representation 缺少跨来源 actionability relation 可迁移性，而不是 parser、
   path、scanner 或 output-size 工程 invalid。
+- 即使使用 held-out source 的全部人工 no-alert segments 构造 episode-balanced
+  baseline oracle，intervention frame/segment recall 仍为 `0`，frame balanced
+  accuracy 为 `0.4899`；因此 source-centering fixed-feature rescue 也不支持。
 - 保留此前 spatial-over-output-field 的正结果；只关闭“增加关系监督即可救固定
   backbone”的窄假设。下一步必须训练 relation-aware representation，并先通过
   source-heldout actionability recall，才进入新的 real-event 评价。

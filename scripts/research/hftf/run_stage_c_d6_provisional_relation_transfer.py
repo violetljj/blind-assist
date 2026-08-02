@@ -1012,6 +1012,56 @@ def source_heldout_training_diagnostic(
     }
 
 
+def source_no_alert_centered_features(
+    x: np.ndarray,
+    y: np.ndarray,
+    sources: np.ndarray,
+    episode_ids: np.ndarray,
+) -> tuple[np.ndarray, list[dict[str, Any]]]:
+    centered = np.empty_like(x)
+    baselines = []
+    for source_id in sorted(set(sources.tolist())):
+        source_rows = sources == source_id
+        no_alert_rows = source_rows & (y == 0)
+        no_alert_episodes = sorted(
+            set(episode_ids[no_alert_rows].tolist())
+        )
+        if not no_alert_episodes:
+            raise ValueError(
+                f"Source lacks no-alert baseline: {source_id}"
+            )
+        episode_means = [
+            np.mean(
+                x[
+                    no_alert_rows
+                    & (episode_ids == episode_id)
+                ],
+                axis=0,
+            )
+            for episode_id in no_alert_episodes
+        ]
+        baseline = np.mean(
+            np.stack(episode_means),
+            axis=0,
+        )
+        centered[source_rows] = x[source_rows] - baseline
+        baselines.append(
+            {
+                "source_id": source_id,
+                "no_alert_episode_count": len(
+                    no_alert_episodes
+                ),
+                "no_alert_frame_count": int(
+                    no_alert_rows.sum()
+                ),
+                "baseline_l2_norm": float(
+                    np.linalg.norm(baseline)
+                ),
+            }
+        )
+    return centered, baselines
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
@@ -1253,15 +1303,47 @@ def main() -> int:
             training_episode_ids_array,
             "public-video-actionability/",
         )
-        training_source_heldout = (
-            source_heldout_training_diagnostic(
-                x_train[public_video_rows],
-                y_train[public_video_rows],
-                training_source_ids[public_video_rows],
-                training_episode_ids_array[public_video_rows],
-                l2_strength,
+        public_x = x_train[public_video_rows]
+        public_y = y_train[public_video_rows]
+        public_sources = training_source_ids[public_video_rows]
+        public_episode_ids = training_episode_ids_array[
+            public_video_rows
+        ]
+        centered_x, baseline_rows = (
+            source_no_alert_centered_features(
+                public_x,
+                public_y,
+                public_sources,
+                public_episode_ids,
             )
         )
+        training_source_heldout = {
+            "raw_spatial_features": (
+                source_heldout_training_diagnostic(
+                    public_x,
+                    public_y,
+                    public_sources,
+                    public_episode_ids,
+                    l2_strength,
+                )
+            ),
+            "source_no_alert_centered_oracle": {
+                **source_heldout_training_diagnostic(
+                    centered_x,
+                    public_y,
+                    public_sources,
+                    public_episode_ids,
+                    l2_strength,
+                ),
+                "baseline": (
+                    "episode-balanced mean of all no-alert "
+                    "segments from the same held-out source"
+                ),
+                "uses_held_out_source_no_alert_labels": True,
+                "system_authority": False,
+                "source_baselines": baseline_rows,
+            },
+        }
     else:
         training_source_heldout = None
 
@@ -1343,7 +1425,7 @@ def main() -> int:
                 "cross_source_spatial_merged_relation_v0"
                 if spatial and merged_relation
                 else
-                "cross_source_spatial_public_video_actionability_v1"
+                "cross_source_spatial_public_video_actionability_v2"
                 if spatial and public_video_relation
                 else
                 "cross_source_spatial_weak_parallel_curb_v0"

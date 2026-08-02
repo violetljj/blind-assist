@@ -16,6 +16,10 @@
 
 `FIXED_HFTF_SPATIAL_ACTIONABILITY_RELATION_TRANSFER_NOT_SUPPORTED`
 
+并且最宽松的 held-out-source no-alert baseline oracle 也没有恢复 intervention：
+
+`SOURCE_CENTERED_FIXED_FEATURE_RESCUE_NOT_SUPPORTED`
+
 这不撤销空间特征相对 output-field 的增量，只关闭以下更窄假设：
 
 > 保持现有 HFTF backbone 不变，仅通过扩大弱/人工关系监督和训练线性空间头，
@@ -83,18 +87,24 @@ Pareto 增量。
 
 更关键的是，在 public-video 的 11 个来源上逐来源留一、复用同一固定空间特征：
 
-| source-heldout 指标 | 结果 |
-|---|---:|
-| frame alert recall | 0.0000 |
-| frame no-alert recall | 0.9924 |
-| frame balanced accuracy | 0.4962 |
-| segment alert recall | 0.0000 |
-| segment no-alert recall | 1.0000 |
-| segment balanced accuracy | 0.5000 |
+| source-heldout 指标 | raw spatial | no-alert-centered oracle |
+|---|---:|---:|
+| frame alert recall | 0.0000 | 0.0000 |
+| frame no-alert recall | 0.9924 | 0.9798 |
+| frame balanced accuracy | 0.4962 | 0.4899 |
+| segment alert recall | 0.0000 | 0.0000 |
+| segment no-alert recall | 1.0000 | 1.0000 |
+| segment balanced accuracy | 0.5000 | 0.5000 |
 
 所有 7 个 held-out intervention segments 都被判为 no-alert。训练 loss 很低不能
 改变这一点：当前固定特征可以拟合训练来源，却没有把 actionability relation
 迁移到新来源。
+
+no-alert-centered oracle 对每个 held-out source 使用该来源**全部人工 no-alert
+segments** 的 episode-balanced 均值作为基线，再对其所有 frame 做差。这比未来
+在线系统可获得的信息更宽松，仍然没有命中任何 intervention。因此失败不只是
+absolute source appearance offset；在 fixed feature 上继续做 centering、线性
+投影或阈值救援没有依据。
 
 ## 失败分类
 
@@ -119,6 +129,7 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 - 当前 fixed HFTF spatial head 的 checkpoint sweep；
 - 同一 SANPO 30-event cohort 上的 L2、阈值和 head 搜索；
 - 更多 discovery-only candidate 混入。
+- fixed feature 上的 source centering 或其他线性 delta rescue。
 
 下一候选必须改变至少一个科学变量，而不是增加治理：
 
@@ -144,5 +155,5 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   --public-video-feature-contract configs/public_video_actionability_linear_probe_contract_r790.json `
   --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --name directional-seed17-fold0 `
-  --output artifacts.local/evidence/hftf/stage-c-d6-provisional-relation-spatial-public-video-actionability-v1/seed-17/fold-0.json
+  --output artifacts.local/evidence/hftf/stage-c-d6-provisional-relation-spatial-public-video-actionability-v2/seed-17/fold-0.json
 ```
