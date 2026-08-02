@@ -98,17 +98,18 @@ and local SHA-256; it never materializes the full archive:
   --member THOR_MAGNI/MP4_Videos/Files/<scene>.mp4
 ```
 
-For an extracted THÖR-MAGNI run, `materialize_thor_magni_windows.py` uses the
-source `SceneFNr` binding and QTM `Time` column to create non-overlapping,
-approximately four-second model-blind intake windows.  It emits a separate
-source manifest and does not merge or label the D7 top-level event registry:
+For an extracted THÖR-MAGNI run, `materialize_thor_magni_windows.py` uses QTM
+`Frame`/`Time` at 100 Hz for non-overlapping four-second windows, then records
+the actual `SceneFNr` values, missing frames, duplicate QTM rows, and centroid
+coverage.  It emits a separate source manifest and does not merge or label the
+D7 top-level event registry:
 
 ```powershell
 & $py scripts/run_research_tool.py hftf-d7-public-real materialize_thor_magni_windows.py `
   --output-root F:\ba-data\hftf-d7-public-real `
   --scenario-csv F:\ba-data\hftf-d7-public-real\raw\<scenario>.csv `
   --rgb-path F:\ba-data\hftf-d7-public-real\raw\<scene>.mp4 `
-  --device PPL --run-id d7-r1-thor-magni-window-intake
+  --device PPL --qtm-fps 100 --run-id d7-r1-thor-magni-window-intake
 ```
 
 ## Outputs and data roles
