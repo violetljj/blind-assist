@@ -187,7 +187,7 @@ def _write_reports(root: Path, catalog: dict[str, Any], stats: dict[str, dict[st
         "",
         "This is an intake snapshot. It does not grant event truth or Confirmation authority.",
         "",
-        "| Dataset | Access status | Ledger rows | RGB frames | Mask frames | Depth frames | Pose frames |", 
+        "| Dataset | Access status | Ledger rows | RGB frames | Mask frames | Depth frames | Pose frames |",
         "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
     ]
     by_id = {item.get("dataset_id"): item for item in catalog.get("sources", []) if isinstance(item, dict)}
