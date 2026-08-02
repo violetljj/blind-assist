@@ -42,6 +42,18 @@ def _load_intake_receipts(root: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _final_adjudication_candidate_ids(root: Path) -> set[str]:
+    """Count final adjudication coverage across all immutable review batches."""
+
+    candidate_ids: set[str] = set()
+    for path in sorted((root / "reviews" / "adjudication_bundles").glob("*/FINAL_ADJUDICATOR/final_adjudication.jsonl")):
+        for row in load_jsonl(path):
+            candidate_id = str(row.get("candidate_id") or "")
+            if candidate_id:
+                candidate_ids.add(candidate_id)
+    return candidate_ids
+
+
 def _table(rows: list[list[str]]) -> list[str]:
     if not rows:
         return []
@@ -85,13 +97,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     rejected = load_jsonl(required["rejected"])
     receipts = load_jsonl(required["receipts"])
     intake_receipts = _load_intake_receipts(root)
-    adjudication_receipts = []
-    for path in sorted((root / "receipts").glob("adjudication_ingest_receipt_*.json")):
-        value = load_json(path)
-        if isinstance(value, dict):
-            adjudication_receipts.append(value)
-    latest_adjudication = adjudication_receipts[-1] if adjudication_receipts else {}
-    final_adjudication_count = int(latest_adjudication.get("candidate_count", 0) or 0)
+    final_adjudication_count = len(_final_adjudication_candidate_ids(root))
 
     review_paths = {
         "RGB_REVIEWER_A": root / "reviews" / "review_a.jsonl",

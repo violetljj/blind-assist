@@ -196,6 +196,7 @@ def _geometry_row(candidate: dict[str, Any], *, batch_id: str, index: int, sourc
         "input_scope": "SOURCE_NATIVE_GEOMETRY_ONLY",
         "rgb_included": False,
         "native_geometry_included": True,
+        "route_evidence_included": bool(candidate.get("source_native_route_evidence")),
         "native_geometry_path": str(geometry_path.resolve()),
         "native_geometry_sha256": sha256_file(geometry_path),
     })
@@ -283,7 +284,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             manifest_rows[role].append(_rgb_row(candidate, batch_id=args.batch_id, role=role, index=index, source_start_ns=source_start, sheet_path=role_sheet, temporal_path=role_temporal))
         geometry_path = batch_root / GEOMETRY_ROLE / "native_geometry" / f"{candidate_id}.json"
         geometry_path.parent.mkdir(parents=True, exist_ok=True)
-        write_json(geometry_path, {
+        geometry_payload = {
             "schema": "hftf_d7_public_real_geometry_review_input_v1",
             "record_kind": "REVIEW_INPUT",
             "batch_id": args.batch_id,
@@ -298,8 +299,20 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "missing_source_native_fields": ["depth", "segmentation"],
             "frame_rows": geometry_by_candidate[candidate_id],
             "model_output_visible": False,
-            "instructions": "Use only QTM time, source-native pose/tracks/intrinsics. Do not open RGB or other-role files. Missing depth/segmentation is NOT_EVALUABLE, never negative.",
-        })
+            "instructions": "Use only QTM time, source-native pose/tracks/intrinsics, and any explicitly marked local-route measurements. Do not open RGB or other-role files. Local-route measurements are Development candidate evidence, not event truth; withheld proxy booleans must not be reconstructed as labels. Missing depth/segmentation is NOT_EVALUABLE, never negative.",
+        }
+        route_evidence = candidate.get("source_native_route_evidence")
+        if route_evidence:
+            if not isinstance(route_evidence, list):
+                raise ContractError(f"invalid route evidence payload: {candidate_id}")
+            geometry_payload["source_native_fields"].append("local_route_supervision_measurements")
+            geometry_payload["local_route_supervision_measurements"] = route_evidence
+            geometry_payload["local_route_supervision_contract"] = candidate.get("route_evidence_contract", {
+                "source_native_geometry_only": True,
+                "human_event_truth": False,
+                "promotion": False,
+            })
+        write_json(geometry_path, geometry_payload)
         manifest_rows[GEOMETRY_ROLE].append(_geometry_row(candidate, batch_id=args.batch_id, index=index, source_start_ns=source_start, geometry_path=geometry_path))
     manifests_root.mkdir(parents=True, exist_ok=False)
     manifest_paths: dict[str, Path] = {}
@@ -329,7 +342,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "final_adjudication_written": False,
         "notes": [
             "RGB roles receive only RGB contact sheets and source-time temporal manifests.",
-            "Geometry receives only QTM time, pose, tracks, intrinsics, and copied native geometry JSON; no RGB.",
+            "Geometry receives only QTM time, pose, tracks, intrinsics, and copied native geometry JSON; route measurements are source-native Development evidence only; no RGB.",
             "Member-specific license terms remain review-gated; no production or Confirmation authority is granted.",
         ],
     }

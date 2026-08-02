@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import csv
 import hashlib
 import json
 import math
@@ -110,17 +111,26 @@ def _object_maps(record: dict[str, Any]) -> dict[str, dict[int, dict[str, Any]]]
     return result
 
 
-def _select_candidates(rows: list[dict[str, Any]], *, count: int, session_count: int) -> list[dict[str, Any]]:
+def _select_candidates(
+    rows: list[dict[str, Any]],
+    *,
+    count: int,
+    session_count: int,
+    session_offset: int = 0,
+    allowed_sessions: set[str] | None = None,
+) -> list[dict[str, Any]]:
     if count <= 0:
         raise ContractError("--count must be positive")
+    if session_offset < 0:
+        raise ContractError("--session-offset must be non-negative")
     by_session: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
         if row.get("dataset_id") != "SANPO-Real":
             continue
         raw_session = str(row.get("source_metadata", {}).get("raw_source_session_id") or row.get("source_id") or "")
-        if raw_session:
+        if raw_session and (allowed_sessions is None or raw_session in allowed_sessions):
             by_session[raw_session].append(row)
-    ordered_sessions = sorted(by_session)
+    ordered_sessions = sorted(by_session)[session_offset:]
     if session_count > 0:
         ordered_sessions = ordered_sessions[:session_count]
     selected: list[dict[str, Any]] = []
@@ -160,6 +170,92 @@ def _provider_destination(batch_root: Path, item: dict[str, Any]) -> Path:
     name = str(item["name"])
     filename = Path(name).name
     return batch_root / "provider_cache" / _provider_kind(name) / f"{_sha256_text(name)[:24]}_{filename}"
+
+
+POSE_NUMERIC_FIELDS = (
+    "pos_x",
+    "pos_y",
+    "pos_z",
+    "q_x",
+    "q_y",
+    "q_z",
+    "q_w",
+)
+
+
+def _read_pose_csv(path: Path, *, expected_rows: int) -> list[dict[str, str]] | None:
+    """Read a SANPO pose CSV only when its row cardinality is source-closed."""
+
+    if not path.is_file() or expected_rows <= 0:
+        return None
+    try:
+        with path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            fieldnames = set(reader.fieldnames or [])
+            if not set(POSE_NUMERIC_FIELDS).issubset(fieldnames):
+                return None
+            rows = list(reader)
+    except (OSError, UnicodeError, csv.Error):
+        return None
+    if len(rows) != expected_rows:
+        return None
+    return rows
+
+
+def _pose_value(row: dict[str, str]) -> dict[str, Any] | None:
+    values: dict[str, float] = {}
+    for field in POSE_NUMERIC_FIELDS:
+        value = row.get(field)
+        try:
+            parsed = float(value) if value is not None and value != "" else None
+        except (TypeError, ValueError):
+            return None
+        if parsed is None or not math.isfinite(parsed):
+            return None
+        values[field] = parsed
+    return {
+        "tracking_state": row.get("tracking_state"),
+        "position": {field: values[field] for field in ("pos_x", "pos_y", "pos_z")},
+        "orientation": {field: values[field] for field in ("q_x", "q_y", "q_z", "q_w")},
+    }
+
+
+def _bind_pose_rows(
+    *,
+    pose_path: Path,
+    fixed_pose_path: Path | None,
+    expected_rows: int,
+    frame_indices: list[int],
+) -> tuple[str, dict[int, dict[str, Any]], str]:
+    """Bind source pose rows to source frame indices, or fail closed.
+
+    SANPO publishes frame-named media and a pose CSV with one row per source
+    frame.  The binding is admitted only when the complete media frame count
+    equals the CSV data-row count and every requested row has finite pose
+    values.  No capture timestamp is inferred by this helper.
+    """
+
+    pose_rows = _read_pose_csv(pose_path, expected_rows=expected_rows)
+    fixed_rows = _read_pose_csv(fixed_pose_path, expected_rows=expected_rows) if fixed_pose_path else None
+    if pose_rows is None and fixed_rows is None:
+        return "NOT_EVALUABLE", {}, "pose_csv_row_count_or_schema_mismatch"
+    bound: dict[int, dict[str, Any]] = {}
+    for frame_index in frame_indices:
+        if frame_index < 0 or frame_index >= expected_rows:
+            return "NOT_EVALUABLE", {}, "requested_frame_outside_pose_row_range"
+        row: dict[str, Any] = {"frame_index": frame_index}
+        if pose_rows is not None:
+            value = _pose_value(pose_rows[frame_index])
+            if value is None:
+                return "NOT_EVALUABLE", {}, "camera_pose_row_has_nonfinite_value"
+            row["camera_pose"] = value
+        if fixed_rows is not None:
+            value = _pose_value(fixed_rows[frame_index])
+            if value is None:
+                return "NOT_EVALUABLE", {}, "fixed_camera_pose_row_has_nonfinite_value"
+            row["fixed_camera_pose"] = value
+        bound[frame_index] = row
+    return "FRAME_INDEX_ROW_KEYED", bound, "complete_frame_count_equals_pose_data_rows"
 
 
 def _download_required_items(
@@ -271,12 +367,28 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if batch_root.exists():
         raise ContractError(f"review batch already exists; refusing overwrite: {batch_root}")
     candidates = load_jsonl(candidate_path)
-    selected = _select_candidates(candidates, count=args.count, session_count=args.session_count)
     inventory = load_json(inventory_path)
     inventory_records = inventory.get("records") if isinstance(inventory, dict) else None
     if not isinstance(inventory_records, list):
         raise ContractError("SANPO span inventory has no records")
     by_raw_session = {str(record.get("source_session_id")): record for record in inventory_records}
+    complete_sessions = {
+        str(record.get("source_session_id"))
+        for record in inventory_records
+        if int(
+            (record.get("media") if isinstance(record.get("media"), dict) else {}).get(
+                "complete_frame_count", 0
+            )
+            or 0
+        ) > 0
+    }
+    selected = _select_candidates(
+        candidates,
+        count=args.count,
+        session_count=args.session_count,
+        session_offset=args.session_offset,
+        allowed_sessions=complete_sessions if args.require_complete_media else None,
+    )
     batch_root.mkdir(parents=True, exist_ok=False)
     for role in ROLES:
         (batch_root / role).mkdir(parents=True, exist_ok=False)
@@ -326,6 +438,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 
     manifest_rows: dict[str, list[dict[str, Any]]] = defaultdict(list)
     source_receipts: dict[str, dict[str, Any]] = {}
+    pose_binding_cache: dict[str, tuple[str, dict[int, dict[str, Any]], str]] = {}
     for index, context in enumerate(candidate_context):
         candidate = context["candidate"]
         record = context["record"]
@@ -333,6 +446,34 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         frames = context["frames"]
         raw_session = str(record["source_session_id"])
         candidate_id = str(candidate["candidate_id"])
+        if raw_session not in pose_binding_cache:
+            auxiliary = record.get("auxiliary") if isinstance(record.get("auxiliary"), dict) else {}
+            pose_items = auxiliary.get("pose") if isinstance(auxiliary.get("pose"), list) else []
+            camera_pose_item = next(
+                (item for item in pose_items if "fixed_camera_poses.csv" not in str(item.get("name"))),
+                None,
+            )
+            fixed_pose_item = next(
+                (item for item in pose_items if "fixed_camera_poses.csv" in str(item.get("name"))),
+                None,
+            )
+            expected_rows = int(
+                (record.get("media") if isinstance(record.get("media"), dict) else {}).get(
+                    "complete_frame_count", 0
+                )
+                or 0
+            )
+            pose_binding_cache[raw_session] = _bind_pose_rows(
+                pose_path=Path(downloaded[str(camera_pose_item["name"])] ["local_path"])
+                if camera_pose_item is not None and str(camera_pose_item.get("name")) in downloaded
+                else Path(),
+                fixed_pose_path=Path(downloaded[str(fixed_pose_item["name"])] ["local_path"])
+                if fixed_pose_item is not None and str(fixed_pose_item.get("name")) in downloaded
+                else None,
+                expected_rows=expected_rows,
+                frame_indices=list(range(expected_rows)),
+            )
+        pose_row_binding, pose_by_frame, pose_binding_reason = pose_binding_cache[raw_session]
         media_root = _safe_candidate_media_root(batch_root, raw_session, candidate_id)
         rgb_dir = media_root / "rgb"
         depth_dir = media_root / "depth"
@@ -364,22 +505,34 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 "mask_path": str(mask_local.resolve()) if mask_local is not None else None,
                 "mask_sha256": sha256_file(mask_local) if mask_local is not None else None,
                 "capture_timestamp_authoritative": False,
-                "pose_row_binding": "NOT_EVALUABLE",
+                "pose_row_binding": pose_row_binding,
                 "rgb_depth_mask_binding": "INDEX_KEYED",
             })
-            geometry_rows.append({
+            geometry_row: dict[str, Any] = {
                 "frame_index": frame_index,
                 "nominal_time_ns": round(frame_index * 1_000_000_000 / args.fps),
                 "depth_path": str(depth_local.resolve()),
                 "depth_sha256": sha256_file(depth_local),
                 "mask_path": str(mask_local.resolve()) if mask_local is not None else None,
                 "mask_sha256": sha256_file(mask_local) if mask_local is not None else None,
-            })
+                "pose_row_binding": pose_row_binding,
+            }
+            if pose_row_binding == "FRAME_INDEX_ROW_KEYED":
+                geometry_row["pose"] = pose_by_frame[frame_index]
+            geometry_rows.append(geometry_row)
         contact_sheet = batch_root / "staging" / candidate_id / "contact_sheet.jpg"
         _contact_sheet(ffmpeg, rgb_dir, contact_sheet)
         temporal_path = batch_root / "staging" / candidate_id / "temporal_manifest.jsonl"
         write_jsonl(temporal_path, temporal_rows)
         auxiliary = record.get("auxiliary") if isinstance(record.get("auxiliary"), dict) else {}
+        source_native_fields = ["depth", "intrinsics"]
+        if pose_row_binding == "FRAME_INDEX_ROW_KEYED":
+            source_native_fields.append("pose")
+        if any(row["mask_path"] for row in geometry_rows):
+            source_native_fields.append("segmentation")
+        missing_source_native_fields = ["capture_timestamp"]
+        if pose_row_binding != "FRAME_INDEX_ROW_KEYED":
+            missing_source_native_fields.append("pose_row_binding")
         geometry_path = batch_root / "staging" / candidate_id / "native_geometry.json"
         write_json(geometry_path, {
             "schema": "hftf_d7_public_real_sanpo_geometry_review_input_v1",
@@ -389,15 +542,16 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "source_session_token": _sha256_text(raw_session),
             "camera": record.get("camera"),
             "view": record.get("view"),
-            "source_native_fields": ["depth", "intrinsics", "pose"] + (["segmentation"] if any(row["mask_path"] for row in geometry_rows) else []),
-            "missing_source_native_fields": ["capture_timestamp", "pose_row_binding"],
+            "source_native_fields": source_native_fields,
+            "missing_source_native_fields": missing_source_native_fields,
             "capture_timestamp_authoritative": False,
-            "pose_row_binding": "NOT_EVALUABLE",
+            "pose_row_binding": pose_row_binding,
+            "pose_binding_rule": pose_binding_reason,
             "intrinsics_objects": [downloaded[str(item["name"])] for item in auxiliary.get("intrinsics", []) if str(item.get("name")) in downloaded],
             "pose_objects": [downloaded[str(item["name"])] for item in auxiliary.get("pose", []) if str(item.get("name")) in downloaded],
             "frames": geometry_rows,
             "model_output_visible": False,
-            "instructions": "Use only source-native depth, segmentation when present, intrinsics, and pose metadata. Missing binding is NOT_EVALUABLE, never a negative.",
+            "instructions": "Use only source-native depth, segmentation when present, intrinsics, and pose metadata. Frame-index pose binding is source-native row pairing only; capture timestamp remains non-authoritative. Missing binding is NOT_EVALUABLE, never a negative.",
         })
         source_receipts[raw_session] = {
             "source_session_id": raw_session,
@@ -522,6 +676,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--inventory", required=True)
     parser.add_argument("--count", type=int, default=20)
     parser.add_argument("--session-count", type=int, default=20)
+    parser.add_argument("--session-offset", type=int, default=0)
+    parser.add_argument(
+        "--require-complete-media",
+        action="store_true",
+        help="select only sessions with a nonzero contiguous RGB/depth/mask intersection in the span inventory",
+    )
     parser.add_argument("--fps", type=float, default=15.0)
     parser.add_argument("--max-bytes", type=int, default=20_000_000_000)
     parser.add_argument("--workers", type=int, default=8)
