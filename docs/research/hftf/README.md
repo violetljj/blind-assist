@@ -120,7 +120,24 @@ D29_THOR_MAGNI_OBJECT_SLOT_MOTION_RESIDUAL_INCREMENT_NOT_SUPPORTED /
 D30_THOR_MAGNI_BOX_WORLD_MEASUREMENT_RELATION_NOT_SUPPORTED /
 D31_THOR_MAGNI_FULL_RESOLUTION_MEASUREMENT_RELATION_NOT_SUPPORTED /
 D32_JRDB_CAUSAL_TRACK_FUTURE_RANGE_SUPPORTED /
+D33_JRDB_DETECTOR_TRACK_FUTURE_RANGE_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D33：detector-track source 复现短未来正机制
+
+真实 stitched RGB 上的冻结五 tile YOLO11n + ByteTrack 产生 5,366 个 tracked
+occurrences；4,772 个 current occurrences 与 native boxes 一对一匹配。3,392 个
+七帧+future opportunities 中有 283 条 non-abstain evidence、25 个 native
+identities，pooled precision `96.82%`。confirm/contradict 分别
+`96.24%/97.33%`，相对 prevalence lift `+65.70/+27.88 pp`，七帧 native-ID
+全一致率 `96.47%`，三条 evidence-sufficient sequences 全部通过。终态：
+
+`D33_JRDB_DETECTOR_TRACK_FUTURE_RANGE_SUPPORTED`
+
+相对 D32 annotation source，precision 只下降 `0.68 pp`。因此 same-identity
+causal track state 已从 annotation mechanism 推进到 detector-bound mechanism；
+下一步是非 actuating Android shadow state parity/runtime canary，而不是继续换
+主模型。
 
 ## 2026-08-03 D32：same-identity 轨迹状态可预测约一秒 future range
 

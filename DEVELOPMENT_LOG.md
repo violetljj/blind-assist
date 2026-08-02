@@ -5223,3 +5223,26 @@
   为冻结 detector + causal tracker。report SHA-256
   `81761e24b2098d9f585d8c8fd9a786eea0e21fff22c9b99b55dfb017dd07c2ec`；
   删除 wall-clock 字段后连续两次重建 SHA 一致。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D33
+  JRDB detector-track future-range replication。只把 D32 annotation box/native
+  identity source 替换为真实 stitched RGB 上冻结的五 tile YOLO11n + ByteTrack；
+  七帧 `log(box_height)` tri-state、`+15 frames` future range、deadband 与 gates
+  不变。按既有 packet member/CRC/SHA 从官方 ZIP range 恢复 480/480 JPEG，
+  network `197,136,580` bytes，未下载完整 archive。source producer 产生
+  8,665 raw detections、5,366 tracked occurrences、165 tracks；4,772 个
+  detector/native matches 的 IoU median/P10 为 `0.770/0.528`。3,392 个七帧+
+  future opportunities 中有 283 条 non-abstain evidence、25 个 native identities；
+  pooled precision `274/283=96.82%`，confirm `128/133=96.24%`，contradict
+  `146/150=97.33%`，相对对应 prevalence lift `+65.70/+27.88 pp`，七帧
+  native-ID 全一致率 `96.47%`。Clark/Gates/STLC precision
+  `96.36%/100%/95.31%` 全部通过；Meyer 有 161 个 opportunities 但 0 个严格单调
+  non-abstain，按 gate 为 sequence-level insufficient，不改写成错误方向负结果。
+  全部 evaluability/effect gates 通过，终态
+  `D33_JRDB_DETECTOR_TRACK_FUTURE_RANGE_SUPPORTED`。相对 D32 precision 仅下降
+  `0.68 pp`，建立
+  `JRDB_DETECTOR_TRACK_SHORT_FUTURE_MECHANISM_SUPPORTED`；下一步进入不驱动提醒的
+  Android shadow state parity/runtime canary，主线与默认 App 不变。tracks/report
+  SHA-256 分别
+  `efa249fdfe8114dfeb1da419ffdb359189e3d4e6b1f406fabad04a31a39a0fa1` /
+  `fa2b403328428bbe596833a670970785964ae197e992b39cc47f878b3013984a`，
+  连续重建一致。
