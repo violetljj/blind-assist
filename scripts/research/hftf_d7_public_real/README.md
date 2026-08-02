@@ -99,6 +99,17 @@ Run `audit_role_isolation.py` before any split materialization. An ancestry grou
 crossing prior roles is a `HOLD_ROLE_REVIEW`, even when source-session identities
 are unique.
 
+Generate the required twelve-item status report from the current machine-readable
+artifacts, then run the validator once more so its artifact hashes bind the final
+report:
+
+```powershell
+& $py scripts/run_research_tool.py hftf-d7-public-real materialize_final_report.py `
+  --output-root F:\ba-data\hftf-d7-public-real --run-id d7-r1-final-report
+& $py scripts/run_research_tool.py hftf-d7-public-real validate_d7_package.py `
+  --output-root F:\ba-data\hftf-d7-public-real --run-id d7-r1-validation-final
+```
+
 ## Stop conditions
 
 Fail closed for missing identities, non-monotone timestamps, duplicate source

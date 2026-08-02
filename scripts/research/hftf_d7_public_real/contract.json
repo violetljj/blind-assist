@@ -68,7 +68,11 @@
     "class_balance_report.md",
     "source_coverage_report.md",
     "duplicate_audit_report.md",
-    "label_agreement_report.md"
+    "label_agreement_report.md",
+    "d7_final_report.md",
+    "final_report_receipt.json",
+    "role_isolation_report.md",
+    "role_isolation_receipt.json"
   ],
   "registry_outputs": [
     "dataset_registry.json",

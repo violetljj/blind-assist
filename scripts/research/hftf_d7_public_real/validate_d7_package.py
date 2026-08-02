@@ -131,6 +131,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "label_agreement_report": root / "reports" / "label_agreement_report.md",
         "role_isolation_report": root / "reports" / "role_isolation_report.md",
         "role_isolation_receipt": root / "manifests" / "role_isolation_receipt.json",
+        "final_report": root / "reports" / "d7_final_report.md",
+        "final_report_receipt": root / "manifests" / "final_report_receipt.json",
     }
     errors: list[str] = []
     for name, path in required.items():
