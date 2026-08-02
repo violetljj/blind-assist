@@ -82,6 +82,61 @@ class CausalSceneScaleTristateGeometryProducerTest {
         assertTrue(result.signedApproachRatePerS!! < -0.05f)
     }
 
+    @Test
+    fun bidirectionalSourceConfirmsCollectiveGrowthAndKeepsDeadband() {
+        val producer = CausalSceneScaleTristateGeometryProducer.bidirectional()
+        val first = listOf(detection(0, 200f, 350f), detection(1, 160f, 700f))
+        producer.produce(stamp(0), first, first[0], 1_010_000_000L)
+        val growing = listOf(detection(0, 220f, 350f), detection(1, 180f, 700f))
+        val confirm = producer.produce(
+            stamp(1),
+            growing,
+            growing[0],
+            1_110_000_000L
+        )!!
+
+        assertEquals(
+            CausalSceneScaleTristateGeometryProducer.BIDIRECTIONAL_SOURCE_ID,
+            confirm.sourceId
+        )
+        assertEquals(
+            DualLoopCorrectionDecision.CONFIRM_APPROACH,
+            confirm.correctionDecision
+        )
+        assertTrue(confirm.signedApproachRatePerS!! > 0.05f)
+        assertNull(confirm.sourceAbstentionReason)
+
+        producer.reset()
+        val deadbandFirst = listOf(
+            detection(0, 200f, 350f),
+            detection(1, 160f, 700f)
+        )
+        producer.produce(
+            stamp(0),
+            deadbandFirst,
+            deadbandFirst[0],
+            1_010_000_000L
+        )
+        val deadbandSecond = listOf(
+            detection(0, 200.5f, 350f),
+            detection(1, 160.4f, 700f)
+        )
+        val abstain = producer.produce(
+            stamp(1),
+            deadbandSecond,
+            deadbandSecond[0],
+            1_110_000_000L
+        )!!
+        assertEquals(
+            DualLoopCorrectionDecision.ABSTAIN,
+            abstain.correctionDecision
+        )
+        assertEquals(
+            "SCENE_RATE_IN_DEADBAND",
+            abstain.sourceAbstentionReason
+        )
+    }
+
     private fun detection(classId: Int, height: Float, centerX: Float) = Detection(
         classId = classId,
         label = if (classId == 0) "person" else "car",

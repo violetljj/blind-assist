@@ -16,7 +16,8 @@ enum class DualLoopRuntimeMode {
     OFF,
     SHADOW_ABSTAIN_ONLY,
     ACTIVE_CONTRADICT_ONLY,
-    ACTIVE_CONTRADICT_TTL
+    ACTIVE_CONTRADICT_TTL,
+    ACTIVE_CONTRADICT_TTL_CONFIRM_RELEASE
 }
 
 enum class DualLoopShadowDisposition {
@@ -101,7 +102,8 @@ data class DualLoopShadowObservation(
     val feedbackMutationAllowed: Boolean
         get() = mode in setOf(
             DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY,
-            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL,
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL_CONFIRM_RELEASE
         ) &&
             admitted &&
             correctionDecision == DualLoopCorrectionDecision.CONTRADICT_APPROACH
@@ -265,6 +267,10 @@ class DualLoopShadowAdmitter(
                 DualLoopSourceIdentity(
                     CONTRACT_ID,
                     CausalSceneScaleTristateGeometryProducer.SOURCE_ID
+                ),
+                DualLoopSourceIdentity(
+                    CONTRACT_ID,
+                    CausalSceneScaleTristateGeometryProducer.BIDIRECTIONAL_SOURCE_ID
                 )
             )
         )

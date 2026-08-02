@@ -132,7 +132,27 @@ D37_FRAME_LOCAL_VETO_EVENT_UTILITY_NOT_SUPPORTED /
 D38_THOR_MAGNI_BOUNDED_TEMPORAL_VETO_EVENT_NOT_SUPPORTED /
 D38_BOUNDED_TEMPORAL_VETO_EVENT_EFFECT_OBSERVED_DEVELOPMENT_ONLY /
 D38_FIXED_250MS_PERSISTENCE_POSITIVE_NONINFERIORITY_FAILED /
+D39_THOR_MAGNI_CONFIRM_RELEASE_VETO_EVENT_NOT_SUPPORTED /
+D39_BIDIRECTIONAL_CONFIRM_RELEASE_MECHANISM_EXECUTED /
+HFTF_SCENE_SCALE_PERSISTENCE_FAMILY_STOP /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D39：显式 confirm 修复了正事件，但也释放了负事件收益
+
+新增独立 bidirectional scene source，以严格对称 `-0.05/+0.05/s` 输出
+contradict/confirm，并在新 mode 中让 admitted confirm 立即解除 250 ms hard-cap
+latch。406 anchors / 19 sessions 产生 confirm，272 anchors / 19 sessions 实际
+解除 live latch；全部 evaluability gates 通过。
+
+D38 的 6 个 positive event losses 恢复为 0，但 negative windows 只从 `251`
+降到 `250`，仅 1/5 folds 改善；仍有 2 个 positive anchor losses。终态：
+
+`D39_THOR_MAGNI_CONFIRM_RELEASE_VETO_EVENT_NOT_SUPPORTED`
+
+D38 的无条件保持过强，D39 的单帧对称 confirm release 又过弱。按冻结 stop rule，
+当前 scene-scale persistence family 停止；不在同一 outcome 上继续搜索
+threshold、confirm count 或 duration。下一变量必须来自新的 target/event
+continuity evidence 或新鲜 event cohort。
 
 ## 2026-08-03 D38：250 ms persistence 改变了事件终态，但破坏正事件
 

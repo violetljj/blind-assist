@@ -79,7 +79,10 @@ class AssistDecisionKernel(
     private val dualLoopGeometryProducer: CausalTrackTristateGeometryProducer =
         CausalTrackTristateGeometryProducer(),
     private val dualLoopSceneScaleProducer: CausalSceneScaleTristateGeometryProducer =
-        CausalSceneScaleTristateGeometryProducer()
+        CausalSceneScaleTristateGeometryProducer(),
+    private val dualLoopSceneScaleBidirectionalProducer:
+        CausalSceneScaleTristateGeometryProducer =
+        CausalSceneScaleTristateGeometryProducer.bidirectional()
 ) {
     private var dualLoopContradictUntilNs = Long.MIN_VALUE
 
@@ -89,6 +92,7 @@ class AssistDecisionKernel(
         lowConfidenceSidePersonConfirmation.reset()
         dualLoopGeometryProducer.reset()
         dualLoopSceneScaleProducer.reset()
+        dualLoopSceneScaleBidirectionalProducer.reset()
         dualLoopContradictUntilNs = Long.MIN_VALUE
     }
 
@@ -98,6 +102,7 @@ class AssistDecisionKernel(
         lowConfidenceSidePersonConfirmation.reset()
         dualLoopGeometryProducer.reset()
         dualLoopSceneScaleProducer.reset()
+        dualLoopSceneScaleBidirectionalProducer.reset()
         dualLoopContradictUntilNs = Long.MIN_VALUE
     }
 
@@ -143,6 +148,13 @@ class AssistDecisionKernel(
                     selectedTarget = evaluation.rawRisk.sourceDetection,
                     decisionAtNs = decisionAtNs
                 )
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL_CONFIRM_RELEASE ->
+                dualLoopSceneScaleBidirectionalProducer.produce(
+                    sourceFrame = sourceFrame,
+                    detections = detections,
+                    selectedTarget = evaluation.rawRisk.sourceDetection,
+                    decisionAtNs = decisionAtNs
+                )
         }
         val admittedShadow = dualLoopShadowAdmitter.evaluate(
             mode = dualLoopMode,
@@ -169,7 +181,8 @@ class AssistDecisionKernel(
         val directContradiction =
             dualLoopMode in setOf(
                 DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY,
-                DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL
+                DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL,
+                DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL_CONFIRM_RELEASE
             ) &&
                 dualLoopShadow.admitted &&
                 dualLoopShadow.correctionDecision ==
@@ -185,6 +198,22 @@ class AssistDecisionKernel(
                         decisionAtNs,
                         DUAL_LOOP_CONTRADICT_HOLD_NS
                     )
+                }
+                decisionAtNs <= dualLoopContradictUntilNs
+            }
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL_CONFIRM_RELEASE -> {
+                when {
+                    directContradiction -> {
+                        dualLoopContradictUntilNs = saturatingAdd(
+                            decisionAtNs,
+                            DUAL_LOOP_CONTRADICT_HOLD_NS
+                        )
+                    }
+                    dualLoopShadow.admitted &&
+                        dualLoopShadow.correctionDecision ==
+                        DualLoopCorrectionDecision.CONFIRM_APPROACH -> {
+                        dualLoopContradictUntilNs = Long.MIN_VALUE
+                    }
                 }
                 decisionAtNs <= dualLoopContradictUntilNs
             }

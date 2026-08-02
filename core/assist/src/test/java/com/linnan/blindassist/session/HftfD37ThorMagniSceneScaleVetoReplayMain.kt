@@ -33,7 +33,9 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
             args = args,
             label = "D37",
             candidateMode = DualLoopRuntimeMode.ACTIVE_CONTRADICT_ONLY,
-            includeLatchColumn = false
+            expectedSourceId = CausalSceneScaleTristateGeometryProducer.SOURCE_ID,
+            includeLatchColumn = false,
+            includeConfirmReleaseColumn = false
         )
     }
 
@@ -41,7 +43,9 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
         args: Array<String>,
         label: String,
         candidateMode: DualLoopRuntimeMode,
-        includeLatchColumn: Boolean
+        expectedSourceId: String,
+        includeLatchColumn: Boolean,
+        includeConfirmReleaseColumn: Boolean
     ) {
         require(args.size == 2) { "usage: <detections.tsv> <kernel_replay.tsv>" }
         val samples = readSamples(File(args[0]))
@@ -51,7 +55,9 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
         require(samples.map { it.sourceSessionId }.toSet().size == EXPECTED_SESSIONS) {
             "$label source-session census drift"
         }
-        val results = samples.map { replay(it, label, candidateMode) }
+        val results = samples.map {
+            replay(it, label, candidateMode, expectedSourceId)
+        }
         require(results.sumOf { it.rawRiskMismatches } == 0) {
             "$label baseline/candidate raw-risk drift"
         }
@@ -61,7 +67,12 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
         require(results.sumOf { it.nonSceneSourceObservations } == 0) {
             "$label observed non-scene dual-loop source"
         }
-        writeResults(File(args[1]), results, includeLatchColumn)
+        writeResults(
+            File(args[1]),
+            results,
+            includeLatchColumn,
+            includeConfirmReleaseColumn
+        )
         println(
             "${label}_KERNEL_REPLAY samples=${results.size} " +
                 "baseline_windows=${results.count { it.baselineAnyTriggered }} " +
@@ -70,14 +81,17 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
                 results.sumOf { it.admittedContradictFrames } +
                 " suppressions=${results.sumOf { it.suppressedFrames }}" +
                 " latch_only_suppressions=" +
-                results.sumOf { it.latchOnlySuppressedFrames }
+                results.sumOf { it.latchOnlySuppressedFrames } +
+                " confirm_releases=" +
+                results.sumOf { it.confirmReleaseFrames }
         )
     }
 
     private fun replay(
         sample: Sample,
         label: String,
-        candidateMode: DualLoopRuntimeMode
+        candidateMode: DualLoopRuntimeMode,
+        expectedSourceId: String
     ): ReplayResult {
         require(sample.frames.size == EXPECTED_FRAMES)
         require(sample.frames.map { it.ordinal } == (0 until EXPECTED_FRAMES).toList())
@@ -101,6 +115,8 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
         var evidenceAbsentFrames = 0
         var nonSceneSourceObservations = 0
         var latchOnlySuppressedFrames = 0
+        var confirmReleaseFrames = 0
+        var diagnosticLatchUntilNs = Long.MIN_VALUE
         sample.frames.forEach { frame ->
             val stamp = FrameStamp(
                 frameId = frame.sourceSceneFrame.toLong(),
@@ -161,6 +177,8 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
                 suppressedFrames += 1
             }
             val shadow = candidateResult.evaluation.dualLoopShadow
+            val diagnosticLatchWasActive =
+                decisionAtNs <= diagnosticLatchUntilNs
             val directContradiction =
                 shadow.admitted &&
                     shadow.correctionDecision ==
@@ -172,22 +190,37 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
             ) {
                 latchOnlySuppressedFrames += 1
             }
+            if (shadow.admitted) {
+                when (shadow.correctionDecision) {
+                    DualLoopCorrectionDecision.CONTRADICT_APPROACH -> {
+                        diagnosticLatchUntilNs = saturatingAdd(
+                            decisionAtNs,
+                            DIAGNOSTIC_LATCH_HOLD_NS
+                        )
+                    }
+                    DualLoopCorrectionDecision.CONFIRM_APPROACH -> {
+                        if (diagnosticLatchWasActive) {
+                            confirmReleaseFrames += 1
+                        }
+                        diagnosticLatchUntilNs = Long.MIN_VALUE
+                    }
+                    else -> Unit
+                }
+            }
             if (
                 shadow.sourceId != null &&
-                shadow.sourceId != CausalSceneScaleTristateGeometryProducer.SOURCE_ID
+                shadow.sourceId != expectedSourceId
             ) {
                 nonSceneSourceObservations += 1
             }
             when {
                 shadow.disposition == DualLoopShadowDisposition.EVIDENCE_ABSENT ->
                     evidenceAbsentFrames += 1
-                shadow.sourceId ==
-                    CausalSceneScaleTristateGeometryProducer.SOURCE_ID &&
+                shadow.sourceId == expectedSourceId &&
                     shadow.correctionDecision ==
                     DualLoopCorrectionDecision.CONTRADICT_APPROACH ->
                     sceneContradictObservations += 1
-                shadow.sourceId ==
-                    CausalSceneScaleTristateGeometryProducer.SOURCE_ID ->
+                shadow.sourceId == expectedSourceId ->
                     sceneAbstainObservations += 1
             }
             if (shadow.admitted) {
@@ -217,7 +250,8 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
             sceneAbstainObservations = sceneAbstainObservations,
             evidenceAbsentFrames = evidenceAbsentFrames,
             nonSceneSourceObservations = nonSceneSourceObservations,
-            latchOnlySuppressedFrames = latchOnlySuppressedFrames
+            latchOnlySuppressedFrames = latchOnlySuppressedFrames,
+            confirmReleaseFrames = confirmReleaseFrames
         )
     }
 
@@ -292,7 +326,8 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
     private fun writeResults(
         output: File,
         results: List<ReplayResult>,
-        includeLatchColumn: Boolean
+        includeLatchColumn: Boolean,
+        includeConfirmReleaseColumn: Boolean
     ) {
         output.parentFile.mkdirs()
         val header = buildList {
@@ -320,6 +355,7 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
                 )
             )
             if (includeLatchColumn) add("latch_only_suppressed_frames")
+            if (includeConfirmReleaseColumn) add("confirm_release_frames")
         }
         val text = buildString {
             appendLine(header.joinToString("\t"))
@@ -353,6 +389,9 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
                         if (includeLatchColumn) {
                             add(row.latchOnlySuppressedFrames)
                         }
+                        if (includeConfirmReleaseColumn) {
+                            add(row.confirmReleaseFrames)
+                        }
                     }.joinToString("\t")
                 )
             }
@@ -375,6 +414,9 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
         fps = 15f,
         modelStatus = "replay"
     )
+
+    private fun saturatingAdd(value: Long, increment: Long): Long =
+        if (value > Long.MAX_VALUE - increment) Long.MAX_VALUE else value + increment
 
     private class PlannerGateway : FeedbackGateway {
         override fun resetSession() = Unit
@@ -452,9 +494,12 @@ object HftfD37ThorMagniSceneScaleVetoReplayMain {
         val sceneAbstainObservations: Int,
         val evidenceAbsentFrames: Int,
         val nonSceneSourceObservations: Int,
-        val latchOnlySuppressedFrames: Int
+        val latchOnlySuppressedFrames: Int,
+        val confirmReleaseFrames: Int
     ) {
         val baselineAnyTriggered: Boolean get() = baselineTriggeredFrames.isNotEmpty()
         val candidateAnyTriggered: Boolean get() = candidateTriggeredFrames.isNotEmpty()
     }
+
+    private const val DIAGNOSTIC_LATCH_HOLD_NS = 250_000_000L
 }

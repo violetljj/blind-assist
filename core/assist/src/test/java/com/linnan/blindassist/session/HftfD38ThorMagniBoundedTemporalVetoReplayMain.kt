@@ -11,7 +11,9 @@ object HftfD38ThorMagniBoundedTemporalVetoReplayMain {
             args = args,
             label = "D38",
             candidateMode = DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL,
-            includeLatchColumn = true
+            expectedSourceId = CausalSceneScaleTristateGeometryProducer.SOURCE_ID,
+            includeLatchColumn = true,
+            includeConfirmReleaseColumn = false
         )
     }
 }

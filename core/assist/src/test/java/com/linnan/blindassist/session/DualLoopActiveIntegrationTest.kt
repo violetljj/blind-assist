@@ -131,6 +131,79 @@ class DualLoopActiveIntegrationTest {
         assertTrue(activeExpired.feedbackDecision.triggered)
     }
 
+    @Test
+    fun admittedBidirectionalConfirmReleasesLiveLatch() {
+        val baseline = AssistDecisionKernel()
+        val active = AssistDecisionKernel()
+        val baselineGateway = PlannerGateway()
+        val activeGateway = PlannerGateway()
+        baseline.startSession(1_000L)
+        active.startSession(1_000L)
+
+        val first = listOf(
+            detection(0, "person", 700f, 500f),
+            detection(2, "car", 550f, 780f)
+        )
+        val receding = listOf(
+            detection(0, "person", 630f, 500f),
+            detection(2, "car", 495f, 780f)
+        )
+        val approaching = listOf(
+            detection(0, "person", 680f, 500f),
+            detection(2, "car", 535f, 780f)
+        )
+        process(baseline, baselineGateway, first, 0, DualLoopRuntimeMode.OFF)
+        process(
+            active,
+            activeGateway,
+            first,
+            0,
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL_CONFIRM_RELEASE
+        )
+        process(baseline, baselineGateway, receding, 1, DualLoopRuntimeMode.OFF)
+        val contradicted = process(
+            active,
+            activeGateway,
+            receding,
+            1,
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL_CONFIRM_RELEASE
+        )
+        assertEquals(
+            FeedbackReason.DUAL_LOOP_CONTRADICTED,
+            contradicted.feedbackDecision.reason
+        )
+
+        val baselineConfirmed =
+            process(baseline, baselineGateway, approaching, 2, DualLoopRuntimeMode.OFF)
+        val activeConfirmed = process(
+            active,
+            activeGateway,
+            approaching,
+            2,
+            DualLoopRuntimeMode.ACTIVE_CONTRADICT_TTL_CONFIRM_RELEASE
+        )
+        assertTrue(activeConfirmed.evaluation.dualLoopShadow.admitted)
+        assertEquals(
+            CausalSceneScaleTristateGeometryProducer.BIDIRECTIONAL_SOURCE_ID,
+            activeConfirmed.evaluation.dualLoopShadow.sourceId
+        )
+        assertEquals(
+            DualLoopCorrectionDecision.CONFIRM_APPROACH,
+            activeConfirmed.evaluation.dualLoopShadow.correctionDecision
+        )
+        assertEquals(FeedbackReason.TRIGGERED, baselineConfirmed.feedbackDecision.reason)
+        assertEquals(FeedbackReason.TRIGGERED, activeConfirmed.feedbackDecision.reason)
+        assertTrue(activeConfirmed.feedbackDecision.triggered)
+        assertEquals(
+            baselineConfirmed.evaluation.rawRisk,
+            activeConfirmed.evaluation.rawRisk
+        )
+        assertEquals(
+            baselineConfirmed.evaluation.stableRisk,
+            activeConfirmed.evaluation.stableRisk
+        )
+    }
+
     private fun process(
         kernel: AssistDecisionKernel,
         gateway: PlannerGateway,

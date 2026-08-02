@@ -5355,3 +5355,28 @@
   `core:assist` 全量测试及 D36+D37+D38 evaluator 10 tests 通过。一次合并验证
   命令因从脚本 cwd 使用 repo-relative path 而失败，未改写 report；回到 repo
   root 后原样成功，归类为可修复 path error。主线、默认 App 与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D39
+  confirm-release veto event replay。该实验明确标记为 D38 后的 adaptive
+  outcome-open Development；新增独立 source
+  `CAUSAL_SCENE_SCALE_BIDIRECTIONAL_R1`，保持 scene association/median/quality
+  不变，以严格对称 `-0.05/+0.05/s` 输出 contradict/confirm；新增独立
+  `ACTIVE_CONTRADICT_TTL_CONFIRM_RELEASE` mode，让 admitted confirm 立即解除
+  250 ms hard-cap latch。D37/D38 artifact SHA 保持
+  `390fa479ce1bedec904d6b22ff70fa97b32288e89a3cc26d1d1695e37856622e` /
+  `8cf20b345f30fa757307c430e5eeeb63a2859450d238c06a50ad5fbd22394930`。
+  D39 有 1,247 admitted confirm frames；406 anchors / 19 sessions 有 confirm，
+  272 / 19 实际解除 live latch，331 次 release；latch-only suppressions 降至
+  73。全部 evaluability gates 通过。positive event losses 从 D38 的 6 恢复为
+  0，但仍损失 2 positive anchors；negative windows 仅从 `251/373` 降至
+  `250/373`，relative reduction `0.398%`，仅 1/5 folds 改善。终态
+  `D39_THOR_MAGNI_CONFIRM_RELEASE_VETO_EVENT_NOT_SUPPORTED`。D38 无条件保持
+  过强、D39 单帧对称 confirm release 过弱，按冻结 stop rule 建立
+  `HFTF_SCENE_SCALE_PERSISTENCE_FAMILY_STOP`；不得在同一 outcome 上继续搜索
+  threshold、confirm count 或 duration。下一变量必须来自新的 target/event
+  continuity evidence 或新鲜 event cohort。kernel/report SHA-256 为
+  `3b3a3d7a587a95baa5942b3b343ad9bd31a3cf788f5ef3c6929f4d25216ea832` /
+  `bfad01a931d169178e5060e13e2fcb4f40aefccf612e57c8bf03158cd5e7abb7`。
+  重复 D37-D39 replay、`core:assist` 全量测试及 D36-D39 evaluator 12 tests
+  通过。首次 combined patch 因 context mismatch 整体未应用，拆分后成功；
+  发生在 source replay/truth join 前，不烧毁 cohort。主线、默认 App 与 D35
+  均不变。

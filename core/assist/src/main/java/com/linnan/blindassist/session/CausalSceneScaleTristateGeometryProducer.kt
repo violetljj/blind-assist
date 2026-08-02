@@ -11,10 +11,20 @@ import kotlin.math.ln
  * It asks only whether at least two uniquely associated detector boxes shrink together. It does
  * not select an obstacle, attribute motion, estimate TTC, or emit a positive alert signal.
  */
-class CausalSceneScaleTristateGeometryProducer(
+class CausalSceneScaleTristateGeometryProducer private constructor(
     private val rateThresholdPerS: Float = DEFAULT_RATE_THRESHOLD_PER_S,
-    private val maximumGapNs: Long = DEFAULT_MAXIMUM_GAP_NS
+    private val maximumGapNs: Long = DEFAULT_MAXIMUM_GAP_NS,
+    private val emitConfirmApproach: Boolean
 ) {
+    constructor(
+        rateThresholdPerS: Float = DEFAULT_RATE_THRESHOLD_PER_S,
+        maximumGapNs: Long = DEFAULT_MAXIMUM_GAP_NS
+    ) : this(
+        rateThresholdPerS = rateThresholdPerS,
+        maximumGapNs = maximumGapNs,
+        emitConfirmApproach = false
+    )
+
     private data class Track(
         val epoch: Long,
         var frame: FrameStamp,
@@ -70,14 +80,22 @@ class CausalSceneScaleTristateGeometryProducer(
                 else (sorted[middle - 1] + sorted[middle]) / 2f
             }
         val contradicts = medianRate != null && medianRate <= rateThresholdPerS
+        val confirms = emitConfirmApproach &&
+            medianRate != null &&
+            medianRate >= -rateThresholdPerS
         val reason = when {
             rates.size < MINIMUM_MATCHES -> "INSUFFICIENT_SCENE_MATCHES"
-            !contradicts -> "SCENE_NOT_COLLECTIVELY_RECEDING"
-            else -> null
+            contradicts || confirms -> null
+            emitConfirmApproach -> "SCENE_RATE_IN_DEADBAND"
+            else -> "SCENE_NOT_COLLECTIVELY_RECEDING"
         }
         return DualLoopGeometryEvidence(
             sourceContractId = DualLoopShadowAdmitter.CONTRACT_ID,
-            sourceId = SOURCE_ID,
+            sourceId = if (emitConfirmApproach) {
+                BIDIRECTIONAL_SOURCE_ID
+            } else {
+                SOURCE_ID
+            },
             previousFrame = previousFrame ?: sourceFrame,
             currentFrame = sourceFrame,
             availableAtNs = decisionAtNs,
@@ -89,13 +107,16 @@ class CausalSceneScaleTristateGeometryProducer(
             targetBoundingBox = selectedTarget.boundingBox,
             targetFrameSize = selectedTarget.frameSize,
             targetSource = selectedTarget.source,
-            correctionDecision = if (contradicts) {
-                DualLoopCorrectionDecision.CONTRADICT_APPROACH
-            } else {
-                DualLoopCorrectionDecision.ABSTAIN
+            correctionDecision = when {
+                contradicts ->
+                    DualLoopCorrectionDecision.CONTRADICT_APPROACH
+                confirms ->
+                    DualLoopCorrectionDecision.CONFIRM_APPROACH
+                else ->
+                    DualLoopCorrectionDecision.ABSTAIN
             },
             signedApproachRatePerS = medianRate,
-            quality = if (contradicts) {
+            quality = if (contradicts || confirms) {
                 (rates.size.toFloat() / QUALITY_FULL_MATCH_COUNT).coerceAtMost(1f)
             } else {
                 null
@@ -207,6 +228,8 @@ class CausalSceneScaleTristateGeometryProducer(
 
     companion object {
         const val SOURCE_ID = "CAUSAL_SCENE_SCALE_VETO_R1"
+        const val BIDIRECTIONAL_SOURCE_ID =
+            "CAUSAL_SCENE_SCALE_BIDIRECTIONAL_R1"
         const val DEFAULT_RATE_THRESHOLD_PER_S = -0.05f
         const val DEFAULT_MAXIMUM_GAP_NS = 500_000_000L
         private const val MINIMUM_MATCHES = 2
@@ -215,5 +238,15 @@ class CausalSceneScaleTristateGeometryProducer(
         private const val MAXIMUM_CENTER_DISTANCE = 0.12f
         private const val EVIDENCE_TTL_NS = 250_000_000L
         private const val NANOS_PER_SECOND = 1_000_000_000.0
+
+        fun bidirectional(
+            rateThresholdPerS: Float = DEFAULT_RATE_THRESHOLD_PER_S,
+            maximumGapNs: Long = DEFAULT_MAXIMUM_GAP_NS
+        ): CausalSceneScaleTristateGeometryProducer =
+            CausalSceneScaleTristateGeometryProducer(
+                rateThresholdPerS = rateThresholdPerS,
+                maximumGapNs = maximumGapNs,
+                emitConfirmApproach = true
+            )
     }
 }
