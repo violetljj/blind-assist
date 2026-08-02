@@ -56,7 +56,10 @@ Pareto 增量尚未成立，因此研究主线和默认 App 不变。下一步�
 诊断，不继续盲调绝对阈值。该诊断现已发现 central-minus-lateral 对 parallel-curb
 的 9-checkpoint AUC mean 只有 `0.499`，终态为
 `CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED`；后继转为
-source-session-held-out 的低容量 weak relation head。
+source-session-held-out 的低容量 weak relation head。该 head 相对 fixed v2
+在 9/9 backbones 上减少 false alerts 并增加 clearance，但 recall 8/9 下降且
+0/9 Pareto-dominate YOLO；保留 guardrail signal，下一步把关系监督前移到固定
+encoder spatial feature map。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)

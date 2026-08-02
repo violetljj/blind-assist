@@ -4648,3 +4648,23 @@
   backbone，用 30 consumed sessions 做严格 source-session-held-out、低容量 weak
   actionability relation head；若仍不能同时守住 recall/specificity/clearance，再
   进入真实 RGB backbone fine-tune。
+
+## 2026-08-02：HFTF D6 source-session-held-out weak relation head
+
+- 30 events 按 bucket 内固定 hash 分 5 folds。每折 test sessions 不参与标准化、
+  拟合或 threshold；train labels 只取 positive alertable、positive passed 与完整
+  negatives 的 5 Hz frames，transition gap 排除。输入为五类 HFTF profile ×
+  6 directions 共 30 features；event 与 class 均衡，L2 logistic、0.5 threshold、
+  两步因果确认全部固定。
+- 9 个 directional backbones 的 out-of-fold hits 为 `11–16/16`、mean `13.22`；
+  false-alert events `8–13/14`、mean `11.22`；cleared `4–11/16`、mean `7.22`。
+- 相对 fixed v2，false alerts 9/9 减少、mean `-2.56`，cleared 9/9 增加、mean
+  `+6.67`；guardrail 正信号为
+  `WEAK_RELATION_HEAD_SPECIFICITY_CLEARANCE_SIGNAL_SUPPORTED_IN_DEVELOPMENT`。
+- hit count 同时 mean `-2.78`，8/9 下降。0/9 checkpoint 同时非劣于当前 YOLO
+  `13 hits / 6 false alerts / 5 cleared`，终态为
+  `WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`。
+- 关系监督不是完全无效，但 output field 压缩后的 30 features 不足以兼顾 recall 与
+  specificity。停止搜索 L2/threshold/confirmation/fold；保持相同 held-out 口径，
+  下一候选把低容量 relation head 接到固定 encoder spatial feature map，之后才考虑
+  解冻 backbone。

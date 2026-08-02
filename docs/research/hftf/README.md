@@ -46,6 +46,8 @@ D6_REAL_EVENT_RECALL_SIGNAL_SUPPORTED_ACROSS_NINE_CHECKPOINTS_DEVELOPMENT_ONLY /
 D6_FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED /
 D6_DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
 D6_CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED /
+D6_WEAK_RELATION_HEAD_SPECIFICITY_CLEARANCE_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
+D6_WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -265,6 +267,21 @@ profile，而不是继续盲调绝对阈值。
 当前真实 recall 主要来自普遍高激活，不是已建立的前方侵入关系。下一步应在真实
 source-session-held-out 口径上增加弱 actionability/关系监督；不再搜索 absolute
 threshold 或 central/lateral 手工公式。
+
+固定 directional backbone 后，5 折 source-session-held-out 的 30-feature
+线性 weak relation head 也已复现到 9 个 checkpoints。相对固定 v2，false-alert
+event 9/9 减少、mean `-2.56`，cleared 9/9 增加、mean `+6.67`；因此保留：
+
+`WEAK_RELATION_HEAD_SPECIFICITY_CLEARANCE_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+但 hit count 8/9 下降、mean `-2.78`。绝对结果为 hits `11–16/16`、false alerts
+`8–13/14`、cleared `4–11/16`，0/9 同时非劣于当前 YOLO 的 `13/16、6/14、5/16`：
+
+`WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+
+真实关系监督能移动 trade-off，但当前 HFTF output field 丢失的信息不足以让线性
+head 同时守住召回与假警。后继把监督前移到真实 RGB spatial feature map，而不是
+继续调 relation threshold、L2 或确认长度。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

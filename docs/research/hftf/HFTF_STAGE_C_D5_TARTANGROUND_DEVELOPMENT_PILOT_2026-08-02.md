@@ -44,7 +44,9 @@ DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNS
 REAL_EVENT_RECALL_SIGNAL_SUPPORTED_ACROSS_NINE_CHECKPOINTS_IN_DEVELOPMENT /
 FIXED_KERNEL_REAL_EVENT_SPECIFICITY_AND_CLEARANCE_NOT_SUPPORTED /
 DIRECTIONAL_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED /
-CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED`
+CENTRAL_VS_LATERAL_ACTIONABILITY_PROFILE_NOT_SUPPORTED /
+WEAK_RELATION_HEAD_SPECIFICITY_CLEARANCE_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
+WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -681,6 +683,43 @@ alertable positive interval 与完整 negative event 各压成一个 event-level
 公式或继续 v2 搜索都缺少机制依据；后继必须显式加入真实 actionability relation
 监督，并以 source-session-held-out 输出评价。
 
+### Source-session-held-out weak relation head
+
+后继固定 HFTF backbone，不访问 test session 做标准化、拟合或 threshold。30 个
+events 在每个 bucket 内按固定 hash 排为 5 folds；train labels 只来自：
+
+- positive event 的 alertable 5 Hz frames；
+- positive event 的 passed 5 Hz frames；
+- 完整 negative event frames；
+- alertable 与 passed 之间的 transition gap 不进入训练。
+
+输入是五类 HFTF field profile × 6 directions 共 30 个特征；每个 event 总权重相等，
+正负类权重各 0.5。每折只在 24 个 train sessions 上做加权标准化和 L2 logistic fit，
+test 使用固定 probability 0.5 与 5 Hz 两步因果确认。
+
+9 个 backbone 的 out-of-fold 结果为：
+
+| 指标 | relation-head 范围 / mean | 相对 fixed v2 |
+|---|---:|---:|
+| hits | 11–16/16，mean 13.22 | mean -2.78；8 降 / 1 同 |
+| false-alert events | 8–13/14，mean 11.22 | mean -2.56；9/9 改善 |
+| cleared | 4–11/16，mean 7.22 | mean +6.67；9/9 改善 |
+| response delay | median 3–11 frames | 描述性 |
+
+因此关系监督确实能稳定压低常开和恢复清除：
+
+`WEAK_RELATION_HEAD_SPECIFICITY_CLEARANCE_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+
+但没有一个 checkpoint 同时非劣于当前 YOLO 的 `13 hits / 6 false alerts /
+5 cleared`；0/9 Pareto，精确负终态为：
+
+`WEAK_RELATION_HEAD_REAL_EVENT_PARETO_INCREMENT_NOT_SUPPORTED`
+
+这不是“关系监督无效”：它在 9/9 上把两个 guardrails 向正确方向移动。失败点是当前
+output field 中的 30 个低容量特征无法在保住 recall 的同时完成 actionability
+分离。下一次模型改动把同一 held-out 监督前移到 HFTF encoder 的 spatial feature
+map；不搜索 logistic L2、threshold、confirmation 或 fold 分配。
+
 ## 边界与下一实验
 
 当前正结果只支持：
@@ -701,17 +740,18 @@ alertable positive interval 与完整 negative event 各压成一个 event-level
 - 固定 v2 在真实事件上能守住 specificity 与 clearance；
 - directional 在真实事件上相对 pooled 或当前 YOLO 形成 Pareto 增量；
 - central-vs-lateral profile 能稳定区分 parallel curb；
+- output-field weak relation head 能形成真实事件 Pareto 增量；
 - 真实事件 warning lead time 相对当前 YOLO 改善；
 - HFTF 超过当前主线或进入 App。
 
 下一步保留 directional + v2 为合成 Development reference，也保留真实 recall
 正信号，不再在 21 个 TartanGround environments 或 SANPO outcomes 上盲搜绝对阈值。
-当前诊断已经否定无需学习的相对方向公式。下一步用 30 个已消费 sessions 构造严格
-source-session-held-out 的弱 actionability relation head：train fold 只能看到其自身
-alertable positives、passed intervals 和完整 negatives，test sessions 不参与标准化、
-拟合或 threshold；先固定 HFTF backbone，只检验低容量 relation head 能否把真实
-recall 转成 specificity/clearance。若仍失败，再进入真实 RGB backbone fine-tune；
-不再修改 decision kernel。history 在出现显式对齐机制前停止。
+output-field relation head 已证明 guardrail 可学但 Pareto 不成立。下一步保持相同
+5-fold session split、labels、event weights、0.5 threshold 与两步确认，把低容量
+relation head 接到固定 HFTF encoder 的 spatial feature map，使真实 RGB 关系信息在
+被 6×6 risk field 压缩前可用。只有该 fixed-encoder head 仍失败，才解冻 backbone
+做真实 RGB fine-tune；不再修改 v2 或 output-field calibrator。history 在出现显式
+对齐机制前停止。
 
 ## 复现
 
@@ -788,6 +828,12 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --name directional-seed17-fold0 `
   --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-direction-profile-v0/seed-17/fold-0.json
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_sanpo_weak_relation_head.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --name directional-seed17-fold0 `
+  --output artifacts.local/evidence/hftf/stage-c-d6-sanpo-weak-relation-head-v0/seed-17/fold-0.json
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored
