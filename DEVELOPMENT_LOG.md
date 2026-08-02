@@ -4484,3 +4484,27 @@
   但把 body recall 压到约 `0.27`。下一步先做 train-side height-aware calibration，
   以 dev folds 分别检查 body recall 与 head false-alert tradeoff，再进入事件级
   decision kernel；不把 F1/排序正结果写成系统提醒改善。
+
+## 2026-08-02：HFTF D5 calibration 与 synthetic event transfer
+
+- loss-derived `w/(1+w)` threshold 显著降低 head FPR，但几乎清空 head recall；
+  seed17 三折 macro F1 全降。按 10 个 train environments 的 environment-macro
+  F1 选择 horizon×height threshold，也只改善 fold1，fold0/2 下降。停止
+  post-processing threshold search。
+- 新增 synthetic teacher-derived continuous-event proxy：每条
+  environment×horizon×height×direction lane 中，任一 teacher-known risk cell
+  为 positive，六个 distance cells 全 known 且均非风险才为 negative，其余
+  unknown；candidate 需同时 predicted-known 与 predicted-risk。它只评估连续
+  hit/miss、negative false-active、clearance，不是 human truth、route 或 App kernel。
+- 9 个 paired fold×seed 单元的 event recall delta 4 正 5 负，mean/median
+  `+0.0102/-0.0069`；false-active rate 3 正 6 负，mean/median
+  `+0.0207/-0.0182`；clearance median 为 0。三个 folds 完整负 exposures 只有
+  `55/114/187` lane-frames，seed 重复不增加 truth exposure。
+- height 分解显示 body recall/false-active mean delta
+  `-0.0482/-0.0565`，head recall/false-active
+  `+0.0820/+0.1544`。directional 的 cell-level 正结果主要重分配 body/head
+  行为，没有稳定穿过最小事件代理。终态为
+  `UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED`。
+- 下一步不再调阈值；修改训练目标或采样，分别控制 body critical recall 与 head
+  false-active，再运行同一个 proxy。只有代理稳定改善才进入真实 parent-event
+  decision kernel。

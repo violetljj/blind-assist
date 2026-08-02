@@ -37,6 +37,7 @@ FROZEN_AFTER_D3_Q0_1_ATLAS_BEFORE_D4_METADATA_CENSUS_OR_FRESH_SOURCE_CONTENT /
 INNOVATION_NOT_EVALUABLE /
 D5_DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY /
 D5_UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
+D5_UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -123,6 +124,20 @@ aggregate macro/micro/AUROC/AP mean delta 为
 `GreatMarsh` 还暴露出 train 与 dev 的极端 body/head prevalence mix shift
 （`48.9%/15.3%` 对 `93.1%/0.97%`）。下一步先做 train-side height-aware
 calibration，分别守住 body recall 与 head false alerts，再进入 decision kernel。
+
+loss-derived threshold 与 train-environment-macro threshold 随后均未跨折改善。固定
+0.5 threshold 的 synthetic teacher-derived continuous-event proxy 进一步显示：
+9 个 paired 单元的 event recall delta 为 4 正 5 负、mean/median
+`+0.0102/-0.0069`；false-active rate 6 个改善、3 个恶化，但 mean 为
+`+0.0207`。body recall/false-active mean delta 为 `-0.0482/-0.0565`，
+head recall/false-active 为 `+0.0820/+0.1544`。因此表示增量主要重分配了
+body/head 行为，没有建立稳定事件增量：
+
+`UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED`
+
+这个 proxy 不是 human event truth 或 App kernel；它只证明下一步不能靠后处理阈值
+把 cell-level 正结果自动升级。需修改训练目标/采样，分别控制 body critical recall
+与 head false-active，然后重跑同一个 proxy。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重

@@ -20,7 +20,8 @@ TartanGround 已从“目录看起来足够大”推进到三个可执行结果�
 当前终态为：
 
 `DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT /
-UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED`
+UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
+UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -257,6 +258,47 @@ body recall 降到约 `0.27`，导致 macro F1 `-0.1788`。后续 calibration/de
 kernel 必须分别守住 body critical recall 与 head false alerts，不能只优化 pooled
 macro。
 
+### Calibration 与 synthetic event transfer
+
+两个不读取 dev outcome 的 train-side calibration 都未建立稳健修复：
+
+- 按加权 BCE 的解析逆变换使用 `w/(1+w)` 阈值，显著降低 head FPR，却几乎清空
+  head recall，seed17 三折 macro F1 全部下降；
+- 每个 horizon×height 在 10 个 train environments 上按 environment-macro F1
+  选阈值，seed17 只在 fold1 从约 `0.397` 升到 `0.432`，fold0/2 分别降到约
+  `0.438/0.391`。
+
+因此停止后处理阈值搜索。为直接检查 representation 增量能否穿过连续决策，增加一个
+synthetic teacher-derived event proxy：
+
+- lane unit：`environment × near/far × body/head × direction`；
+- truth positive：任一 teacher-known distance cell risk ≥0.5；
+- truth negative：六个 distance cells 全 known 且都非风险；其余为 unknown；
+- candidate active：任一 distance cell 同时 predicted-known 与 predicted-risk；
+- 连续 positive lane-frames 组成事件，并报告 hit/miss、negative false-active 与
+  clearance。
+
+它不是人类事件 truth，不是用户路线，也不是 App decision kernel，只是
+Development 表示到连续行为的最小压力测试。3 seeds × 3 folds 结果：
+
+| 指标 delta（directional - pooled） | mean | median | 正/负/零 |
+|---|---:|---:|---:|
+| event recall | +0.0102 | -0.0069 | 4 / 5 / 0 |
+| false-active lane-frame rate | +0.0207 | -0.0182 | 3 / 6 / 0 |
+| clearance rate | +0.0841 | 0 | 4 / 2 / 3 |
+| body event recall | -0.0482 | -0.0805 | 4 / 5 / 0 |
+| body false-active rate | -0.0565 | -0.0370 | 1 / 6 / 2 |
+| head event recall | +0.0820 | 0 | 4 / 4 / 1 |
+| head false-active rate | +0.1544 | +0.1351 | 6 / 3 / 0 |
+
+三个 folds 的完整负 lane-frame exposures 只有 `55/114/187`，且 seed 重复不增加
+truth exposure，所以 clearance/false-active 只作诊断。结果显示 directional 主要把
+行为从 body alerts 重分配到 head alerts：body false-active 降低但 recall 也下降，
+head recall 上升但 false-active 更明显上升。cell F1/排序正结果没有稳定转化成事件
+行为改善，当前终态为：
+
+`UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED`
+
 ## History mechanism repair
 
 原 single 训练把当前帧重复五次。对 5-tap、1×1 temporal convolution 来说，这只
@@ -293,15 +335,16 @@ compensation 或新的时序表征后，才值得重开 history；不再继续�
 
 - history 对独立环境具有稳定增量；
 - directional 的 threshold calibration 能跨 seed 稳定；
+- directional 增量能穿过 synthetic event proxy；
 - synthetic proxy 能迁移到真实视障步行；
 - 事件级 critical-hazard recall、false alerts 或 warning lead time 改善；
 - HFTF 超过当前主线或进入 App。
 
-下一步以 directional single 为 reference，在 train-side 完成 height-aware
-calibration，并用 dev folds 检查 body recall/head false-alert tradeoff；随后才把表示
-接入同一 decision kernel，比较事件级 critical misses、false alerts、response 与
-clearance。只有这两层成立，才使用未参与迭代的 held-out environments 做一次偏差敏感
-评价。history 在出现显式对齐机制前停止。
+下一步不再调阈值；以 directional single 为 reference，修改训练目标或采样，使
+body critical recall 与 head false-active 成为分开的可控量，再重新运行同一个
+synthetic event proxy。只有事件代理稳定改善，才接入真实 parent-event decision
+kernel；之后才使用未参与迭代的 held-out environments 做一次偏差敏感评价。history
+在出现显式对齐机制前停止。
 
 ## 复现
 
@@ -328,6 +371,15 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
 
 E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   scripts/research/hftf/build_stage_c_d5_tartanground_cross_environment_folds.py
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/evaluate_stage_c_d5_tartanground_event_proxy.py `
+  --samples artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/fold-0/samples.jsonl `
+  --pretrained artifacts.local/models/hftf/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth `
+  --output artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/event-proxy/seed-17/fold-0.json `
+  --model pooled artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/pooled-single-seed17/checkpoint.pt `
+  --model directional artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --reference pooled
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored
