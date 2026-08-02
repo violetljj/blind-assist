@@ -60,6 +60,28 @@ class NormalizeAdjudicationTerminalsTest(unittest.TestCase):
             with self.assertRaises(ContractError):
                 normalize(path, expected_count=1)
 
+    def test_legacy_not_admitted_decision_is_rebound_only_for_unevaluable_terminal(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "final.jsonl"
+            legacy = _row("NOT_ADMITTED", admission_status=None)
+            path.write_text(json.dumps(legacy) + "\n", encoding="utf-8")
+
+            result = normalize(path, expected_count=1)
+
+            self.assertEqual(result["rebound_not_admitted_decision"], 1)
+            row = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(row["adjudication_decision"], "NOT_EVALUABLE")
+            self.assertEqual(row["admission_status"], "NOT_ADMITTED")
+
+    def test_unsafe_not_admitted_decision_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "final.jsonl"
+            legacy = _row("NOT_ADMITTED", admission_status=None, event_bucket="NORMAL_WALKABLE_NEGATIVE")
+            path.write_text(json.dumps(legacy) + "\n", encoding="utf-8")
+
+            with self.assertRaises(ContractError):
+                normalize(path, expected_count=1)
+
 
 if __name__ == "__main__":
     unittest.main()

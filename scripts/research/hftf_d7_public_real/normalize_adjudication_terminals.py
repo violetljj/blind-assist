@@ -29,6 +29,7 @@ def normalize(
         raise ContractError(f"adjudication output is missing: {path}")
     rows: list[dict[str, Any]] = []
     rebound = 0
+    rebound_not_admitted_decision = 0
     decision_aliases = 0
     with path.open("r", encoding="utf-8") as source:
         for line_number, line in enumerate(source, 1):
@@ -55,6 +56,13 @@ def normalize(
                 row["adjudication_decision"] = "NOT_EVALUABLE"
                 row["normalization_note"] = "NOT_ADMIT_REBOUND_TO_FROZEN_NOT_EVALUABLE_TERMINAL"
                 rebound += 1
+            elif decision == "NOT_ADMITTED":
+                if row.get("event_bucket") != "NOT_EVALUABLE" or row.get("admission_status") not in (None, "NOT_ADMITTED"):
+                    raise ContractError(f"unsafe NOT_ADMITTED decision at {path}:{line_number}")
+                row["adjudication_decision"] = "NOT_EVALUABLE"
+                row["admission_status"] = "NOT_ADMITTED"
+                row["normalization_note"] = "NOT_ADMITTED_DECISION_REBOUND_TO_FROZEN_NOT_EVALUABLE_TERMINAL"
+                rebound_not_admitted_decision += 1
             if row.get("model_output_visible") is not False:
                 raise ContractError(f"adjudication model visibility is not false: {path}:{line_number}")
             rows.append(row)
@@ -76,6 +84,7 @@ def normalize(
         "path": str(path),
         "rows": len(rows),
         "rebound_not_admit": rebound,
+        "rebound_not_admitted_decision": rebound_not_admitted_decision,
         "decision_aliases": decision_aliases,
         "status": "NORMALIZED",
     }
