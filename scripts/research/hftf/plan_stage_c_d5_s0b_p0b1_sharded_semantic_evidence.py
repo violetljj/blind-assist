@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Fail-closed draft skeleton for HFTF D5-S0B P0B.1 sharded evidence.
+"""Governed HFTF D5-S0B P0B.1 sharded semantic-evidence execution.
 
-This module freezes names, schemas, terminals, capacity constants, and closed
-artifact sets only.  It is deliberately not executable: implementation and
-test receipts are not yet bound, and no source blob or canonical artifact root
-may be opened by this draft.
+Draft contracts remain fail-closed.  A frozen executable contract must pass
+all parent, implementation, test, runtime, Git, authorization, and canonical
+root gates before this module can read any bound source blob.
 """
 
 from __future__ import annotations
@@ -29,10 +28,21 @@ if sys_path_parent not in sys.path:
 from plan_stage_c_d5_s0b_p0b_provider_semantic_evidence import (
     EvidenceVisitor,
     index_ast,
+    runtime_receipt,
+    subprocess_git_runner,
 )
 from plan_stage_c_d5_s0a_tartanground_catalog import (
+    git_local,
+    load_json,
+    require_tracked_clean,
+    resolve_bound,
     sha256,
+    test_definition_count,
     write_bytes_exclusive_fsync,
+)
+from plan_stage_c_d5_s0b_p0a_toolkit_source_closure import (
+    artifact_state as p0a_artifact_state,
+    validate_existing_terminal as validate_p0a_terminal,
 )
 
 
@@ -41,6 +51,10 @@ CONTRACT_SCHEMA = (
     "execution_contract"
 )
 CONTRACT_STATUS = "DRAFT_NOT_EXECUTABLE"
+EXECUTABLE_CONTRACT_STATUS = (
+    "FROZEN_EXECUTABLE_AFTER_P0B1_IMPLEMENTATION_TEST_DOUBLE_AUDIT_"
+    "BEFORE_FIRST_SOURCE_REREAD"
+)
 DESIGN_SCHEMA = (
     "blindassist_hftf_stage_c_d5_s0b_p0b1_sharded_semantic_evidence_"
     "repair_design"
@@ -101,6 +115,31 @@ DESIGN_RELATIVE_PATH = Path(
 DESIGN_SHA256 = (
     "6b2523091a967b2a64e2062c9314d1cc4d6eaf37b99de204f4fd9ccf953f5d9d"
 )
+PLANNER_RELATIVE_PATH = Path(
+    "scripts/research/hftf/"
+    "plan_stage_c_d5_s0b_p0b1_sharded_semantic_evidence.py"
+)
+TEST_RELATIVE_PATH = Path(
+    "scripts/research/hftf/"
+    "test_plan_stage_c_d5_s0b_p0b1_sharded_semantic_evidence.py"
+)
+VALIDATOR_RELATIVE_PATH = Path(
+    "scripts/research/hftf/"
+    "validate_stage_c_d5_s0b_p0b1_sharded_semantic_evidence.py"
+)
+DURABILITY_HELPER_RELATIVE_PATH = Path(
+    "scripts/research/hftf/"
+    "plan_stage_c_d5_s0a_tartanground_catalog.py"
+)
+SEMANTIC_HELPER_RELATIVE_PATH = Path(
+    "scripts/research/hftf/"
+    "plan_stage_c_d5_s0b_p0b_provider_semantic_evidence.py"
+)
+MARKDOWN_RELATIVE_PATH = CONTRACT_RELATIVE_PATH.with_suffix(".md")
+P0A_ROOT = Path(
+    "artifacts.local/evidence/hftf/"
+    "stage-c-d5-s0b-p0a-toolkit-source-closure-20260802"
+)
 
 ATTEMPT_FILENAME = "attempt.json"
 PREFLIGHT_FILENAME = "preflight.json"
@@ -121,6 +160,8 @@ EncodingDetector = Callable[[bytes], str]
 AstParser = Callable[[str, str], ast.AST]
 _FORMAL_EXECUTION_GATE = object()
 _TEST_EXECUTION_GATE = object()
+TEST_ONLY_TOOLKIT_REPOSITORY = "test://p0b1-synthetic-fixture"
+TEST_ONLY_TOOLKIT_COMMIT = "f" * 40
 CAP_MANIFEST: tuple[dict[str, Any], ...] = (
     {"manifest_index": 0, "path": "tartanair/__init__.py",
      "p0a_blob_bytes": 49, "maximum_shard_bytes": 1048576},
@@ -532,17 +573,74 @@ def build_shards_from_p0b_observation(
     return shards
 
 
-def extract_sharded_evidence(
+def validate_synthetic_source_context(
     contract: dict[str, Any],
-    p0b_contract: dict[str, Any],
+    closure: dict[str, Any],
+    toolkit: Path,
+) -> None:
+    rows = closure.get("observation", {}).get("closure_rows", [])
+    source = contract.get("source_authority", {})
+    if (
+        source.get("toolkit_repository")
+        != TEST_ONLY_TOOLKIT_REPOSITORY
+        or source.get("toolkit_commit") != TEST_ONLY_TOOLKIT_COMMIT
+        or closure.get("schema") != "p0a-closure"
+        or not isinstance(rows, list)
+        or not rows
+        or [row.get("git_blob_oid") for row in rows]
+        != [f"{index:040x}" for index in range(1, len(rows) + 1)]
+        or repo_root().resolve() in toolkit.resolve().parents
+    ):
+        raise DraftNotExecutable(
+            "P0B.1 test source gate requires exact synthetic authority"
+        )
+
+
+def _extract_sharded_evidence(
+    contract: dict[str, Any],
     closure: dict[str, Any],
     toolkit: Path,
     *,
     git_runner: GitRunner,
     encoding_detector: EncodingDetector = detect_source_encoding,
     parser: AstParser = parse_source_ast,
+    source_gate: object | None = None,
+    execution_root: Path | None = None,
 ) -> tuple[str, dict[str, Any] | list[dict[str, Any]]]:
     """Read each bound blob once and build all proposed shards in memory."""
+    if source_gate is _TEST_EXECUTION_GATE:
+        validate_synthetic_source_context(contract, closure, toolkit)
+    elif source_gate is _FORMAL_EXECUTION_GATE:
+        formal_context = validate_executable_contract(
+            repo_root() / CONTRACT_RELATIVE_PATH,
+            verify_git=True,
+        )
+        if (
+            execution_root is None
+            or execution_root.resolve()
+            != (repo_root() / CANONICAL_ROOT).resolve()
+            or contract != formal_context["contract"]
+            or closure != formal_context["closure"]
+            or toolkit.resolve()
+            != formal_context["toolkit"].resolve()
+        ):
+            raise DraftNotExecutable(
+                "P0B.1 formal source-read context drift"
+            )
+        from validate_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
+            validate_attempt_preflight,
+        )
+
+        validate_attempt_preflight(
+            execution_root,
+            contract,
+            formal_context["contract_path"],
+            closure,
+        )
+    else:
+        raise DraftNotExecutable(
+            "P0B.1 source extraction requires formal or synthetic authority"
+        )
     closure_observation = closure["observation"]
     if (
         closure_observation["dynamic_import_call_count"] != 0
@@ -583,7 +681,6 @@ def extract_sharded_evidence(
     ):
         raise ValueError("P0B.1 P0A closure blob count drift")
 
-    p0b_rules = p0b_contract["frozen_extraction"]
     p0b1_limits = contract["unchanged_extraction_limits"]
     limit_bindings = {
         "maximum_string_literal_records": (
@@ -612,17 +709,14 @@ def extract_sharded_evidence(
         ),
         "string_literal_role_classes": "string_literal_role_classes",
     }
-    for p0b_key, p0b1_key in limit_bindings.items():
-        if p0b_rules[p0b_key] != p0b1_limits[p0b1_key]:
-            raise ValueError(
-                f"P0B.1 extraction-limit binding drift: {p0b1_key}"
-            )
+    p0b_rules = {
+        p0b_key: p0b1_limits[p0b1_key]
+        for p0b_key, p0b1_key in limit_bindings.items()
+    }
 
     object_receipts: list[dict[str, Any]] = []
     verified_sources: list[tuple[dict[str, Any], bytes]] = []
     commit = contract["source_authority"]["toolkit_commit"]
-    if commit != p0b_contract["source_boundary"]["toolkit_commit"]:
-        raise ValueError("P0B.1 toolkit commit binding drift")
     for row in rows:
         oid = str(row["git_blob_oid"])
         if not re.fullmatch(r"[0-9a-f]{40}", oid):
@@ -979,9 +1073,8 @@ def observed_artifacts(root: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def execute_with_context(
+def _execute_with_validated_context(
     contract: dict[str, Any],
-    p0b_contract: dict[str, Any],
     closure: dict[str, Any],
     toolkit: Path,
     root: Path,
@@ -989,6 +1082,7 @@ def execute_with_context(
     git_runner: GitRunner,
     writer: BytesWriter = write_bytes_exclusive_fsync,
     execution_gate: object | None = None,
+    execution_commit: str = "TEST_CONTEXT",
 ) -> dict[str, Any]:
     """Gated execution core; raw draft dictionaries are never sufficient."""
     if execution_gate is _TEST_EXECUTION_GATE:
@@ -1003,11 +1097,27 @@ def execute_with_context(
             raise DraftNotExecutable(
                 "P0B.1 test gate accepts only non-repository temporary paths"
             )
-    elif execution_gate is not _FORMAL_EXECUTION_GATE:
+    elif execution_gate is _FORMAL_EXECUTION_GATE:
+        formal_context = validate_executable_contract(
+            repo_root() / CONTRACT_RELATIVE_PATH,
+            verify_git=True,
+        )
+        if (
+            contract != formal_context["contract"]
+            or closure != formal_context["closure"]
+            or toolkit.resolve()
+            != formal_context["toolkit"].resolve()
+            or root.resolve()
+            != (repo_root() / CANONICAL_ROOT).resolve()
+            or execution_commit != git_local("rev-parse", "HEAD")
+        ):
+            raise DraftNotExecutable(
+                "P0B.1 formal core context or canonical-root drift"
+            )
+    else:
         raise DraftNotExecutable(
             "P0B.1 execution core requires validated executable authority"
         )
-    root.mkdir(parents=True, exist_ok=False)
     contract_path = repo_root() / CONTRACT_RELATIVE_PATH
     attempt = {
         "schema": ATTEMPT_SCHEMA,
@@ -1027,53 +1137,58 @@ def execute_with_context(
         "dataset_host_request_authorized": False,
         "old_p0b_root_reopen_authorized": False,
     }
+    preflight_static = {
+        "schema": PREFLIGHT_SCHEMA,
+        "status": (
+            "LOCAL_BINDINGS_VALIDATED_BEFORE_FIRST_SOURCE_BLOB_READ"
+        ),
+        "execution_commit": execution_commit,
+        "head_equal_origin_master": True,
+        "tracked_clean": True,
+        "new_canonical_root_absent_before_attempt": True,
+        "p0a_terminal_validated": True,
+        "p0b_invalid_terminal_validated": True,
+        "exact_blob_count": len(
+            closure["observation"]["closure_rows"]
+        ),
+        "exact_total_source_bytes": sum(
+            int(row["bytes"])
+            for row in closure["observation"]["closure_rows"]
+        ),
+        "exact_ordered_row_manifest_sha256": contract[
+            "source_authority"
+        ]["exact_ordered_row_manifest_sha256"],
+        "runtime_lock": contract["runtime_lock"],
+        "runtime_lock_sha256": canonical_object_sha256(
+            contract["runtime_lock"]
+        ),
+        "algorithm_lock_sha256": canonical_object_sha256(
+            contract["algorithm_lock"]
+        ),
+        "new_git_fetch_or_network_made": False,
+        "dataset_host_request_made": False,
+    }
     try:
+        root.mkdir(parents=True, exist_ok=False)
         writer(
             root / ATTEMPT_FILENAME,
             serialize_control_artifact(ATTEMPT_FILENAME, attempt),
         )
         preflight = {
-            "schema": PREFLIGHT_SCHEMA,
-            "status": "LOCAL_BINDINGS_VALIDATED_BEFORE_FIRST_SOURCE_BLOB_READ",
+            **preflight_static,
             "attempt_sha256": sha256(root / ATTEMPT_FILENAME),
-            "execution_commit": contract.get(
-                "draft_execution_commit", "TEST_CONTEXT"
-            ),
-            "head_equal_origin_master": True,
-            "tracked_clean": True,
-            "new_canonical_root_absent_before_attempt": True,
-            "p0a_terminal_validated": True,
-            "p0b_invalid_terminal_validated": True,
-            "exact_blob_count": len(
-                closure["observation"]["closure_rows"]
-            ),
-            "exact_total_source_bytes": sum(
-                int(row["bytes"])
-                for row in closure["observation"]["closure_rows"]
-            ),
-            "exact_ordered_row_manifest_sha256": contract[
-                "source_authority"
-            ]["exact_ordered_row_manifest_sha256"],
-            "runtime_lock": contract["runtime_lock"],
-            "runtime_lock_sha256": canonical_object_sha256(
-                contract["runtime_lock"]
-            ),
-            "algorithm_lock_sha256": canonical_object_sha256(
-                contract["algorithm_lock"]
-            ),
-            "new_git_fetch_or_network_made": False,
-            "dataset_host_request_made": False,
         }
         writer(
             root / PREFLIGHT_FILENAME,
             serialize_control_artifact(PREFLIGHT_FILENAME, preflight),
         )
-        terminal, payload = extract_sharded_evidence(
+        terminal, payload = _extract_sharded_evidence(
             contract,
-            p0b_contract,
             closure,
             toolkit,
             git_runner=git_runner,
+            source_gate=execution_gate,
+            execution_root=root,
         )
         if terminal == EVIDENCE_NOT_EVALUABLE:
             not_evaluable = {
@@ -1360,6 +1475,379 @@ def execute_with_context(
         raise
 
 
+def load_contract_document(contract_path: Path) -> dict[str, Any]:
+    try:
+        value = json.loads(
+            contract_path.read_text(encoding="utf-8"),
+            object_pairs_hook=reject_duplicate_object_pairs,
+        )
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise ValueError(f"P0B.1 contract unreadable: {error}") from error
+    if not isinstance(value, dict):
+        raise ValueError("P0B.1 contract must be an object")
+    return value
+
+
+def contract_semantic_sha256(contract: dict[str, Any]) -> str:
+    normalized = copy.deepcopy(contract)
+    pair = normalized.get("document_pair")
+    if not isinstance(pair, dict):
+        raise ValueError("P0B.1 document pair missing")
+    pair["json_semantic_sha256"] = "0" * 64
+    return hashlib.sha256(canonical_json_bytes(normalized)).hexdigest()
+
+
+def validate_executable_contract(
+    contract_path: Path,
+    *,
+    verify_git: bool,
+) -> dict[str, Any]:
+    """Validate every frozen binding without reading any source blob."""
+    validate_frozen_capacity_constants()
+    contract_path = contract_path.resolve()
+    expected_contract_path = (
+        repo_root() / CONTRACT_RELATIVE_PATH
+    ).resolve()
+    if contract_path != expected_contract_path:
+        raise ValueError("P0B.1 executable contract path drift")
+    contract = load_contract_document(contract_path)
+    if (
+        contract.get("schema") != CONTRACT_SCHEMA
+        or contract.get("status") != EXECUTABLE_CONTRACT_STATUS
+        or contract.get("executable") is not True
+    ):
+        raise ValueError("P0B.1 contract is not executable")
+
+    document_pair = contract.get("document_pair")
+    expected_document_pair_keys = {
+        "json_path",
+        "json_self_hash_rule",
+        "json_semantic_sha256",
+        "markdown_path",
+        "markdown_sha256",
+    }
+    if (
+        not isinstance(document_pair, dict)
+        or set(document_pair) != expected_document_pair_keys
+        or document_pair["json_path"]
+        != CONTRACT_RELATIVE_PATH.as_posix()
+        or document_pair["json_self_hash_rule"]
+        != (
+            "sha256_of_canonical_contract_with_"
+            "json_semantic_sha256_replaced_by_64_zeroes"
+        )
+        or document_pair["json_semantic_sha256"]
+        != contract_semantic_sha256(contract)
+        or document_pair["markdown_path"]
+        != MARKDOWN_RELATIVE_PATH.as_posix()
+    ):
+        raise ValueError("P0B.1 document-pair binding drift")
+    markdown_path = resolve_bound(document_pair["markdown_path"])
+    if sha256(markdown_path) != document_pair["markdown_sha256"]:
+        raise ValueError("P0B.1 markdown hash drift")
+
+    bound_paths: list[tuple[Path, str]] = [
+        (contract_path, "execution contract"),
+        (markdown_path, "execution contract markdown"),
+    ]
+    expected_parent_paths = {
+        "p0b1_repair_design": (
+            "docs/research/hftf/"
+            "HFTF_STAGE_C_D5_S0B_P0B1_SHARDED_SEMANTIC_EVIDENCE_"
+            "REPAIR_DESIGN_2026-08-02.json"
+        ),
+        "p0b_invalid_result": (
+            "docs/research/hftf/"
+            "HFTF_STAGE_C_D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_"
+            "INVALID_RESULT_2026-08-02.json"
+        ),
+        "p0b_design": (
+            "docs/research/hftf/"
+            "HFTF_STAGE_C_D5_S0B_P0B_PROVIDER_SEMANTIC_EVIDENCE_"
+            "DESIGN_2026-08-02.json"
+        ),
+        "p0a_locked_result": (
+            "docs/research/hftf/"
+            "HFTF_STAGE_C_D5_S0B_P0A_TOOLKIT_SOURCE_CLOSURE_"
+            "LOCKED_RESULT_2026-08-02.json"
+        ),
+    }
+    if set(contract["parents"]) != set(expected_parent_paths):
+        raise ValueError("P0B.1 exact parent set drift")
+    parent_values: dict[str, dict[str, Any]] = {}
+    for label, binding in contract["parents"].items():
+        if binding.get("path") != expected_parent_paths[label]:
+            raise ValueError(f"P0B.1 parent path drift: {label}")
+        path = resolve_bound(str(binding["path"]))
+        if sha256(path) != str(binding["sha256"]):
+            raise ValueError(f"P0B.1 parent hash drift: {label}")
+        value = load_json(path)
+        if binding.get("required_status") and value.get(
+            "status"
+        ) != binding["required_status"]:
+            raise ValueError(f"P0B.1 parent status drift: {label}")
+        if binding.get("required_terminal") and value.get(
+            "terminal"
+        ) != binding["required_terminal"]:
+            raise ValueError(f"P0B.1 parent terminal drift: {label}")
+        parent_values[label] = value
+        bound_paths.append((path, f"parent {label}"))
+
+    implementations = contract["implementation_receipts"]
+    if (
+        implementations.get("status") != "BOUND_EXECUTABLE"
+        or set(implementations)
+        != {
+            "status",
+            "planner",
+            "durability_helper",
+            "semantic_helper",
+            "terminal_validator",
+        }
+    ):
+        raise ValueError("P0B.1 implementation receipt status drift")
+    expected_implementations = {
+        "planner": PLANNER_RELATIVE_PATH,
+        "durability_helper": DURABILITY_HELPER_RELATIVE_PATH,
+        "semantic_helper": SEMANTIC_HELPER_RELATIVE_PATH,
+        "terminal_validator": VALIDATOR_RELATIVE_PATH,
+    }
+    for label, expected_relative in expected_implementations.items():
+        binding = implementations[label]
+        if (
+            set(binding) != {"path", "sha256"}
+            or binding["path"] != expected_relative.as_posix()
+        ):
+            raise ValueError(
+                f"P0B.1 implementation path drift: {label}"
+            )
+        path = resolve_bound(binding["path"])
+        if sha256(path) != binding["sha256"]:
+            raise ValueError(
+                f"P0B.1 implementation hash drift: {label}"
+            )
+        bound_paths.append((path, f"implementation {label}"))
+
+    tests = contract["test_receipts"]
+    expected_tests = {
+        "status": "BOUND_PASS",
+        "focused_test_path": TEST_RELATIVE_PATH.as_posix(),
+        "focused_test_sha256": sha256(
+            repo_root() / TEST_RELATIVE_PATH
+        ),
+        "focused_test_count": 18,
+        "focused_tests_passed": 18,
+        "full_hftf_test_count": 520,
+        "full_hftf_tests_passed": 520,
+        "failure_injection_tests_passed": 4,
+        "independent_scientific_audit": "CLEAR",
+        "independent_engineering_audit": "CLEAR",
+    }
+    if tests != expected_tests:
+        raise ValueError("P0B.1 test receipt drift")
+    test_path = resolve_bound(tests["focused_test_path"])
+    if test_definition_count(test_path) != tests["focused_test_count"]:
+        raise ValueError("P0B.1 focused test definition count drift")
+    bound_paths.append((test_path, "focused test"))
+
+    source = contract["source_authority"]
+    closure_binding = source["p0a_closure_artifact"]
+    closure_path = resolve_bound(closure_binding["path"])
+    if (
+        closure_path.stat().st_size != closure_binding["bytes"]
+        or sha256(closure_path) != closure_binding["sha256"]
+    ):
+        raise ValueError("P0B.1 P0A closure artifact drift")
+    closure = load_json(closure_path)
+    p0a_parent = parent_values["p0a_locked_result"]
+    if (
+        closure_binding != p0a_parent["bindings"]["closure"]
+        or source["toolkit_repository"]
+        != p0a_parent["source_identity"]["toolkit_repository"]
+        or source["toolkit_commit"]
+        != p0a_parent["source_identity"]["toolkit_commit"]
+        or source["toolkit_commit"]
+        != p0a_parent["source_identity"]["fetch_head"]
+        or closure.get("toolkit_repository")
+        != source["toolkit_repository"]
+        or closure.get("toolkit_commit") != source["toolkit_commit"]
+    ):
+        raise ValueError(
+            "P0B.1 P0A parent/closure/toolkit cross-binding drift"
+        )
+    observation = closure["observation"]
+    rows = observation["closure_rows"]
+    row_manifest = [
+        {
+            key: row[key]
+            for key in ("path", "git_blob_oid", "bytes", "sha256")
+        }
+        for row in rows
+    ]
+    if (
+        observation["closure_blob_count"]
+        != source["exact_ordered_blob_count"]
+        or observation["closure_total_source_bytes"]
+        != source["exact_total_source_bytes"]
+        or len(rows) != SHARD_COUNT
+        or hashlib.sha256(
+            canonical_json_bytes(row_manifest)
+        ).hexdigest()
+        != source["exact_ordered_row_manifest_sha256"]
+    ):
+        raise ValueError("P0B.1 P0A closure aggregate/manifest drift")
+    for index, (row, cap_row) in enumerate(
+        zip(rows, CAP_MANIFEST, strict=True)
+    ):
+        if (
+            cap_row["manifest_index"] != index
+            or cap_row["path"] != row["path"]
+            or cap_row["p0a_blob_bytes"] != row["bytes"]
+        ):
+            raise ValueError("P0B.1 P0A cap-manifest row drift")
+    p0a_root = (repo_root() / P0A_ROOT).resolve()
+    if not validate_p0a_terminal(
+        p0a_root, p0a_artifact_state(p0a_root)
+    ):
+        raise ValueError("P0B.1 P0A terminal does not validate")
+    toolkit = p0a_root / "toolkit"
+    if not toolkit.is_dir():
+        raise ValueError("P0B.1 local toolkit object store missing")
+
+    if contract["runtime_lock"] != runtime_receipt():
+        raise ValueError("P0B.1 Python AST runtime drift")
+    schemas = contract["exact_artifact_schemas"]
+    if (
+        set(schemas["node_receipt_exact_keys"])
+        != NODE_RECEIPT_FIELDS
+        or set(schemas["expression_record_exact_keys"])
+        != EXPRESSION_FIELDS
+        or contract["capacity_contract"][
+            "exact_ordered_per_shard_cap_manifest"
+        ]
+        != list(CAP_MANIFEST)
+        or contract["capacity_contract"][
+            "exact_ordered_per_shard_cap_manifest_sha256"
+        ]
+        != CAP_MANIFEST_SHA256
+        or contract["capacity_contract"][
+            "aggregate_shard_maximum_bytes"
+        ]
+        != AGGREGATE_SHARD_MAXIMUM_BYTES
+    ):
+        raise ValueError("P0B.1 schema or capacity contract drift")
+    closed_sets = contract["terminal_closed_sets"]
+    if (
+        closed_sets["locked_exact_names_in_write_order"]
+        != [
+            ATTEMPT_FILENAME,
+            PREFLIGHT_FILENAME,
+            *shard_filenames(),
+            INDEX_FILENAME,
+            RESULT_FILENAME,
+        ]
+        or closed_sets["not_evaluable_exact_names_in_write_order"]
+        != [
+            ATTEMPT_FILENAME,
+            PREFLIGHT_FILENAME,
+            NOT_EVALUABLE_FILENAME,
+            RESULT_FILENAME,
+        ]
+    ):
+        raise ValueError("P0B.1 closed-set contract drift")
+
+    authorization = contract["authorization"]
+    expected_authorization = {
+        "commit_and_push_contract_implementation_and_tests": True,
+        "separate_explicit_execution_authorization": True,
+        "p0b1_source_blob_reread_after_all_gates": True,
+        "p0b1_execute_once_after_push_git_gate_and_double_audit": True,
+        "old_p0b_resume_or_rerun": False,
+        "new_git_fetch_checkout_or_network": False,
+        "dataset_host_or_zip_request": False,
+        "p0c_p1_s0b_payload_or_effect_execution": False,
+        "research_mainline_or_default_app_change": False,
+        "production_or_safety_claim": False,
+    }
+    if authorization != expected_authorization:
+        raise ValueError("P0B.1 executable authorization drift")
+    if (
+        contract["lexical_claim_ceiling"][
+            "same_source_population_is_consumed_and_not_fresh_validation"
+        ]
+        is not True
+        or contract["firewall"][
+            "fresh_validation_algorithm_selection_or_promotion_increment"
+        ]
+        is not False
+        or contract["firewall"]["p0c_p1_s0b_payload_or_effect_execution"]
+        is not False
+    ):
+        raise ValueError("P0B.1 scientific firewall drift")
+
+    if verify_git:
+        head = git_local("rev-parse", "HEAD")
+        if head != git_local("rev-parse", "origin/master"):
+            raise ValueError("P0B.1 HEAD differs from origin/master")
+        if git_local(
+            "status", "--porcelain", "--untracked-files=no"
+        ):
+            raise ValueError("P0B.1 tracked worktree is not clean")
+        for path, label in bound_paths:
+            require_tracked_clean(path, f"P0B.1 {label}")
+    return {
+        "contract": contract,
+        "contract_path": contract_path,
+        "closure": closure,
+        "closure_path": closure_path,
+        "toolkit": toolkit,
+        "bound_paths": bound_paths,
+    }
+
+
+def execute_formal(
+    contract_path: Path,
+    root: Path,
+    *,
+    git_runner: GitRunner = subprocess_git_runner,
+) -> dict[str, Any]:
+    """Run the single canonical invocation after every executable gate."""
+    context = validate_executable_contract(
+        contract_path, verify_git=True
+    )
+    canonical_root = (repo_root() / CANONICAL_ROOT).resolve()
+    if root.resolve() != canonical_root:
+        raise ValueError("P0B.1 formal output root drift")
+    if canonical_root.exists():
+        raise FileExistsError(
+            "P0B.1 canonical root already exists; rerun forbidden"
+        )
+    execution_commit = git_local("rev-parse", "HEAD")
+    try:
+        return _execute_with_validated_context(
+            context["contract"],
+            context["closure"],
+            context["toolkit"],
+            canonical_root,
+            git_runner=git_runner,
+            execution_gate=_FORMAL_EXECUTION_GATE,
+            execution_commit=execution_commit,
+        )
+    except BaseException:
+        from validate_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
+            validate_terminal,
+        )
+
+        if canonical_root.exists():
+            return validate_terminal(
+                canonical_root,
+                context["contract"],
+                context["contract_path"],
+                context["closure"],
+            )
+        raise
+
+
 def load_contract_fail_closed(contract_path: Path) -> dict[str, Any]:
     """Load identity only, then refuse because receipts are deliberately unbound."""
     validate_frozen_capacity_constants()
@@ -1491,19 +1979,46 @@ def main() -> int:
         "--output-root",
         type=Path,
         default=repo_root() / CANONICAL_ROOT,
-        help="Identity only; this draft never resolves, reads, or creates it.",
+        help="Must equal the frozen canonical root for formal execution.",
+    )
+    parser.add_argument(
+        "--execute-once",
+        action="store_true",
+        help="Run the single canonical invocation after every frozen gate.",
     )
     args = parser.parse_args()
-    del args.output_root
-    try:
-        load_contract_fail_closed(args.execution_contract)
-    except DraftNotExecutable as error:
+    contract = load_contract_document(args.execution_contract)
+    if contract.get("status") == CONTRACT_STATUS:
+        try:
+            load_contract_fail_closed(args.execution_contract)
+        except DraftNotExecutable as error:
+            print(
+                json.dumps(
+                    {
+                        "ok": False,
+                        "status": CONTRACT_STATUS,
+                        "error": str(error),
+                        "source_blob_read_count": 0,
+                        "canonical_root_opened_or_created": False,
+                        "network_request_made": False,
+                    },
+                    ensure_ascii=False,
+                )
+            )
+            return 2
+        raise AssertionError(
+            "P0B.1 draft contract unexpectedly became executable"
+        )
+    if not args.execute_once:
+        validate_executable_contract(
+            args.execution_contract, verify_git=False
+        )
         print(
             json.dumps(
                 {
-                    "ok": False,
-                    "status": CONTRACT_STATUS,
-                    "error": str(error),
+                    "ok": True,
+                    "status": EXECUTABLE_CONTRACT_STATUS,
+                    "execution_ready_but_not_started": True,
                     "source_blob_read_count": 0,
                     "canonical_root_opened_or_created": False,
                     "network_request_made": False,
@@ -1511,8 +2026,12 @@ def main() -> int:
                 ensure_ascii=False,
             )
         )
-        return 2
-    raise AssertionError("P0B.1 draft contract unexpectedly became executable")
+        return 0
+    result = execute_formal(
+        args.execution_contract, args.output_root
+    )
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+    return 0 if result["terminal"] != EVIDENCE_INVALID else 1
 
 
 if __name__ == "__main__":

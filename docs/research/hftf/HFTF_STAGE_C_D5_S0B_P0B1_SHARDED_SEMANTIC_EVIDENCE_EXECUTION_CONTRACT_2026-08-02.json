@@ -1,10 +1,10 @@
 {
   "schema": "blindassist_hftf_stage_c_d5_s0b_p0b1_sharded_semantic_evidence_execution_contract",
-  "status": "DRAFT_NOT_EXECUTABLE",
-  "executable": false,
+  "status": "FROZEN_EXECUTABLE_AFTER_P0B1_IMPLEMENTATION_TEST_DOUBLE_AUDIT_BEFORE_FIRST_SOURCE_REREAD",
+  "executable": true,
   "workflow_profile": "THESIS_DEVELOPMENT",
   "executor": "violjjet",
-  "purpose": "freeze_a_new_content_independent_deduplicated_path_sharded_semantic_evidence_protocol_before_implementation_test_binding_or_any_source_reread",
+  "purpose": "execute_once_a_content_independent_deduplicated_path_sharded_consumed_source_recovery_after_hash_test_runtime_git_root_and_double_audit_gates",
   "parents": {
     "p0b1_repair_design": {
       "path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0B1_SHARDED_SEMANTIC_EVIDENCE_REPAIR_DESIGN_2026-08-02.json",
@@ -26,11 +26,12 @@
       "required_terminal": "D5_S0B_P0A_TOOLKIT_SOURCE_CLOSURE_LOCKED_REQUIRES_P0B_PROVIDER_RESOLUTION"
     }
   },
-  "draft_document_pair": {
+  "document_pair": {
     "json_path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0B1_SHARDED_SEMANTIC_EVIDENCE_EXECUTION_CONTRACT_2026-08-02.json",
-    "json_sha256": "UNBOUND_TODO",
+    "json_self_hash_rule": "sha256_of_canonical_contract_with_json_semantic_sha256_replaced_by_64_zeroes",
+    "json_semantic_sha256": "765946ab06afe8f8d6856b04a7ebd647036e6c74a169c0d7c59cd80e599599b0",
     "markdown_path": "docs/research/hftf/HFTF_STAGE_C_D5_S0B_P0B1_SHARDED_SEMANTIC_EVIDENCE_EXECUTION_CONTRACT_2026-08-02.md",
-    "markdown_sha256": "UNBOUND_TODO"
+    "markdown_sha256": "12551fb701f801b970e109076da6bb6ec84021912735dcaba8b1a0281a7b736d"
   },
   "source_authority": {
     "toolkit_repository": "https://github.com/castacks/tartanairpy.git",
@@ -759,31 +760,35 @@
     "safety_claim_authorized": false
   },
   "implementation_receipts": {
-    "status": "UNBOUND_TODO",
+    "status": "BOUND_EXECUTABLE",
     "planner": {
-      "path": "UNBOUND_TODO",
-      "sha256": "UNBOUND_TODO"
+      "path": "scripts/research/hftf/plan_stage_c_d5_s0b_p0b1_sharded_semantic_evidence.py",
+      "sha256": "f9685e5a8cef5715092149ff5620ab59b4744fac39b52dd764dd31d663acc85d"
     },
     "durability_helper": {
-      "path": "UNBOUND_TODO",
-      "sha256": "UNBOUND_TODO"
+      "path": "scripts/research/hftf/plan_stage_c_d5_s0a_tartanground_catalog.py",
+      "sha256": "1c84bb5ed680e7f36cdb1f7f81913e3e3bd906b082c4a8950946500a6b044f71"
+    },
+    "semantic_helper": {
+      "path": "scripts/research/hftf/plan_stage_c_d5_s0b_p0b_provider_semantic_evidence.py",
+      "sha256": "93a31d1f45b399d7e3fb43519e70c483322ade285fe627f3fe0cdec231c1abcd"
     },
     "terminal_validator": {
-      "path": "UNBOUND_TODO",
-      "sha256": "UNBOUND_TODO"
+      "path": "scripts/research/hftf/validate_stage_c_d5_s0b_p0b1_sharded_semantic_evidence.py",
+      "sha256": "a3f783780471f64d23309c7b382cbd26610fe63b8fb195d672f92d8ee71ac039"
     }
   },
   "test_receipts": {
-    "status": "UNBOUND_TODO",
-    "focused_test_path": "UNBOUND_TODO",
-    "focused_test_sha256": "UNBOUND_TODO",
-    "focused_test_count": "UNBOUND_TODO",
-    "focused_tests_passed": "UNBOUND_TODO",
-    "full_hftf_test_count": "UNBOUND_TODO",
-    "full_hftf_tests_passed": "UNBOUND_TODO",
-    "failure_injection_tests_passed": "UNBOUND_TODO",
-    "independent_scientific_audit": "UNBOUND_TODO",
-    "independent_engineering_audit": "UNBOUND_TODO"
+    "status": "BOUND_PASS",
+    "focused_test_path": "scripts/research/hftf/test_plan_stage_c_d5_s0b_p0b1_sharded_semantic_evidence.py",
+    "focused_test_sha256": "bdbc459e2cbf9109862ee34814ec57c2013dec21fb506acaf31e589423d71d4f",
+    "focused_test_count": 18,
+    "focused_tests_passed": 18,
+    "full_hftf_test_count": 520,
+    "full_hftf_tests_passed": 520,
+    "failure_injection_tests_passed": 4,
+    "independent_scientific_audit": "CLEAR",
+    "independent_engineering_audit": "CLEAR"
   },
   "transition_to_executable_contract_requires": [
     "commit_and_push_this_draft_after_review",
@@ -799,10 +804,10 @@
     "separate_explicit_execution_authorization"
   ],
   "authorization": {
-    "commit_or_push_by_this_draft": false,
-    "create_planner_or_tests_by_this_draft": false,
-    "p0b1_source_blob_reread": false,
-    "p0b1_execution": false,
+    "commit_and_push_contract_implementation_and_tests": true,
+    "separate_explicit_execution_authorization": true,
+    "p0b1_source_blob_reread_after_all_gates": true,
+    "p0b1_execute_once_after_push_git_gate_and_double_audit": true,
     "old_p0b_resume_or_rerun": false,
     "new_git_fetch_checkout_or_network": false,
     "dataset_host_or_zip_request": false,

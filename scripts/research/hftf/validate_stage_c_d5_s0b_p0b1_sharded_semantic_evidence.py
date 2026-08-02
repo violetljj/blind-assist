@@ -19,6 +19,7 @@ from plan_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
     CAP_MANIFEST_SHA256,
     CONTROL_ARTIFACT_MAXIMUM_BYTES,
     DESIGN_SHA256,
+    EXECUTABLE_CONTRACT_STATUS,
     EVIDENCE_INVALID,
     EVIDENCE_LOCKED,
     EVIDENCE_NOT_EVALUABLE,
@@ -34,6 +35,7 @@ from plan_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
     RESULT_SCHEMA,
     SHARD_COUNT,
     SHARD_SCHEMA,
+    TEST_ONLY_TOOLKIT_REPOSITORY,
     canonical_json_bytes,
     canonical_object_sha256,
     failure_allowed_set,
@@ -716,8 +718,18 @@ def validate_attempt_preflight(
         == "LOCAL_BINDINGS_VALIDATED_BEFORE_FIRST_SOURCE_BLOB_READ"
         and preflight["attempt_sha256"]
         == sha256_path(root / ATTEMPT_FILENAME)
-        and isinstance(preflight["execution_commit"], str)
-        and bool(preflight["execution_commit"])
+        and (
+            preflight["execution_commit"] == "TEST_CONTEXT"
+            if contract.get("source_authority", {}).get(
+                "toolkit_repository"
+            )
+            == TEST_ONLY_TOOLKIT_REPOSITORY
+            else bool(
+                HEX40_RE.fullmatch(preflight["execution_commit"])
+            )
+            if contract.get("status") == EXECUTABLE_CONTRACT_STATUS
+            else preflight["execution_commit"] == "TEST_CONTEXT"
+        )
         and preflight["head_equal_origin_master"] is True
         and preflight["tracked_clean"] is True
         and preflight["new_canonical_root_absent_before_attempt"] is True
@@ -1170,13 +1182,17 @@ def validate_failure_terminal(
     contract_path: Path,
     closure: dict[str, Any],
 ) -> dict[str, Any]:
-    del closure
     names = root_names(root)
     require(
         FAILURE_FILENAME in names
         and names <= failure_allowed_set(),
         "failure closed set contains unknown artifacts",
     )
+    require(
+        ATTEMPT_FILENAME in names and PREFLIGHT_FILENAME in names,
+        "failure closed set lacks durable attempt/preflight",
+    )
+    validate_attempt_preflight(root, contract, contract_path, closure)
     present_shards = [
         name for name in shard_filenames() if name in names
     ]

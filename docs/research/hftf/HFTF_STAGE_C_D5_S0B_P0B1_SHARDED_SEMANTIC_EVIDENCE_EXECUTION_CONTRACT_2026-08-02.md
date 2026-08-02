@@ -2,14 +2,18 @@
 
 ## 状态与结论
 
-本文件与同名 JSON 当前均为 `DRAFT_NOT_EXECUTABLE`。它们只把已 CLEAR 的
-P0B.1 repair design 展开成可审计的 execution-contract 草案；implementation、
-terminal validator 与 tests 的路径、SHA-256、测试计数和审计收据全部仍是
-`UNBOUND_TODO`。
+本文件与同名 JSON 已冻结为
+`FROZEN_EXECUTABLE_AFTER_P0B1_IMPLEMENTATION_TEST_DOUBLE_AUDIT_BEFORE_FIRST_SOURCE_REREAD`。
+planner、durability helper、复用的纯 AST semantic helper、terminal validator、
+focused tests、runtime、父项与本文均由 path/SHA-256 绑定；focused tests
+`18/18`、绑定运行时的 HFTF full suite
+`520/520`，四个规定的 write/fsync failure injections 全绿，独立科学与工程审计
+均须为 `CLEAR`。
 
-因此，本草案不授权创建 planner/test，不授权读取 18 个 source blobs，不授权打开
-旧 P0B root，不授权创建新 canonical root，也不授权 P0B.1、P0C、network、
-dataset host、ZIP/payload、主线/App、生产或 safety 行为。
+本合同只授权在提交推送后、tracked clean、`HEAD=origin/master`、canonical root
+不存在且 core 二次复核完整 formal context 时，执行一次 exact P0B.1 source
+recovery。它不授权打开旧 P0B root、fetch/network、dataset host、ZIP/payload、
+P0C/P1/S0B effect execution、主线/App、生产或 safety 行为。
 
 ## 固定父项与 source authority
 
@@ -180,10 +184,17 @@ validation、algorithm-selection increment、mainline/App、production 或 safet
 `STOP_PROVIDER_RESOLUTION_SOURCE_EVIDENCE_NOT_EVALUABLE`。两者的
 `p0c_execution_authorized_automatically` 均严格为 false，P0C 执行仍需独立合同与授权。
 
-## 从 DRAFT 转为 executable 的必要条件
+## Executable gate 与单次执行
 
-当前 implementation/test receipts 全部为 `UNBOUND_TODO`。只有在未重读 source 的
-前提下完成并审计 implementation/tests，替换全部 TODO，绑定 JSON/MD 与代码/测试
-SHA，focused/full HFTF 及四类 injection tests 全绿，独立科学与工程复审 CLEAR，
-提交推送后再次满足 clean HEAD = origin/master、新 root absent，并获得单独明确的
-execution authorization，才可以另行形成 executable contract。
+JSON 使用自引用安全的 semantic hash：将
+`document_pair.json_semantic_sha256` 临时替换为 64 个 `0` 后，对完整 canonical
+contract JSON 计算 SHA-256；本文使用普通 raw-file SHA-256。正式入口与私有 core
+都会验证 executable status、全部 parent/implementation/test/document/runtime
+bindings、P0A locked terminal、exact closure/cap manifest、positive/negative
+authorization、tracked clean、`HEAD=origin/master`、canonical root 与 execution
+commit。任何一步失败都必须在创建 root 和读取 source 前停止。
+
+单次调用开始后，attempt/preflight 先 durable；随后才允许 exact 18 local Git blob
+reads。canonical root 一旦存在，任何 terminal 均禁止 rerun。若得到 LOCKED，只能
+另冻独立 hash-bound P0C contract；若得到 NOT_EVALUABLE 或 INVALID，则保留对应负
+终端并停止本路线的本次恢复，不得调参救援、resume 或 source reread。

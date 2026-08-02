@@ -24,15 +24,19 @@ from plan_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
     EVIDENCE_INVALID,
     EVIDENCE_LOCKED,
     EVIDENCE_NOT_EVALUABLE,
+    EXECUTABLE_CONTRACT_STATUS,
     FAILURE_FILENAME,
     INDEX_FILENAME,
     NOT_EVALUABLE_FILENAME,
     RESULT_FILENAME,
+    TEST_ONLY_TOOLKIT_COMMIT,
+    TEST_ONLY_TOOLKIT_REPOSITORY,
+    _FORMAL_EXECUTION_GATE,
     _TEST_EXECUTION_GATE,
+    _extract_sharded_evidence,
     canonical_json_bytes,
     detect_source_encoding,
-    execute_with_context,
-    extract_sharded_evidence,
+    _execute_with_validated_context,
     failure_allowed_set,
     load_contract_fail_closed,
     locked_closed_set,
@@ -40,6 +44,7 @@ from plan_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
     repo_root,
     shard_filename,
     shard_filenames,
+    validate_executable_contract,
     validate_frozen_capacity_constants,
 )
 from plan_stage_c_d5_s0a_tartanground_catalog import (
@@ -48,7 +53,6 @@ from plan_stage_c_d5_s0a_tartanground_catalog import (
 from test_plan_stage_c_d5_s0b_p0b_provider_semantic_evidence import (
     FakeGit,
     make_closure,
-    make_contract,
 )
 from validate_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
     TerminalValidationError,
@@ -107,26 +111,26 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
     ) -> tuple[
         dict[str, object],
         dict[str, object],
-        dict[str, object],
         Path,
         FakeGit,
     ]:
         sources = make_exact_sources(invalid_index=invalid_index)
         closure = make_closure(sources)
-        _, p0b_contract, _ = make_contract(base, closure)
         contract = json.loads(
             (repo_root() / CONTRACT_RELATIVE_PATH).read_text(
                 encoding="utf-8"
             )
         )
-        p0b_contract["source_boundary"]["toolkit_commit"] = contract[
-            "source_authority"
-        ]["toolkit_commit"]
+        contract["source_authority"][
+            "toolkit_repository"
+        ] = TEST_ONLY_TOOLKIT_REPOSITORY
+        contract["source_authority"][
+            "toolkit_commit"
+        ] = TEST_ONLY_TOOLKIT_COMMIT
         toolkit = base / "toolkit"
         toolkit.mkdir()
         return (
             contract,
-            p0b_contract,
             closure,
             toolkit,
             FakeGit(closure, sources),
@@ -138,25 +142,27 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)
             closure = make_closure()
-            _, p0b_contract, _ = make_contract(base, closure)
             contract = json.loads(
                 (repo_root() / CONTRACT_RELATIVE_PATH).read_text(
                     encoding="utf-8"
                 )
             )
+            contract["source_authority"][
+                "toolkit_repository"
+            ] = TEST_ONLY_TOOLKIT_REPOSITORY
+            contract["source_authority"][
+                "toolkit_commit"
+            ] = TEST_ONLY_TOOLKIT_COMMIT
             contract["source_authority"]["exact_ordered_blob_count"] = len(
                 closure["observation"]["closure_rows"]
             )
-            contract["source_authority"]["toolkit_commit"] = p0b_contract[
-                "source_boundary"
-            ]["toolkit_commit"]
             fake = FakeGit(closure)
-            terminal, result = extract_sharded_evidence(
+            terminal, result = _extract_sharded_evidence(
                 contract,
-                p0b_contract,
                 closure,
                 base,
                 git_runner=fake,
+                source_gate=_TEST_EXECUTION_GATE,
             )
         self.assertEqual(EVIDENCE_LOCKED, terminal)
         self.assertIsInstance(result, list)
@@ -206,11 +212,19 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
         self.assertIn("index.json", failure)
         self.assertIn("not-evaluable.json", failure)
 
-    def test_real_draft_contract_is_rejected_without_root_access(self) -> None:
+    def test_real_contract_gate_never_opens_canonical_root(self) -> None:
         root = repo_root() / CANONICAL_ROOT
         self.assertFalse(root.exists())
-        with self.assertRaisesRegex(DraftNotExecutable, "UNBOUND"):
-            load_contract_fail_closed(repo_root() / CONTRACT_RELATIVE_PATH)
+        contract_path = repo_root() / CONTRACT_RELATIVE_PATH
+        contract = json.loads(contract_path.read_text(encoding="utf-8"))
+        if contract["status"] == EXECUTABLE_CONTRACT_STATUS:
+            context = validate_executable_contract(
+                contract_path, verify_git=False
+            )
+            self.assertTrue(context["contract"]["executable"])
+        else:
+            with self.assertRaisesRegex(DraftNotExecutable, "UNBOUND"):
+                load_contract_fail_closed(contract_path)
         self.assertFalse(root.exists())
 
     def test_executable_or_bound_receipt_drift_is_rejected(self) -> None:
@@ -321,7 +335,7 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
     ) -> None:
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)
-            contract, p0b_contract, closure, toolkit, fake = (
+            contract, closure, toolkit, fake = (
                 self.make_exact_fixture(base)
             )
             events: list[str] = []
@@ -339,14 +353,14 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
                 events.append("parse")
                 return ast.parse(source, filename=filename)
 
-            terminal, shards = extract_sharded_evidence(
+            terminal, shards = _extract_sharded_evidence(
                 contract,
-                p0b_contract,
                 closure,
                 toolkit,
                 git_runner=runner,
                 encoding_detector=detector,
                 parser=parser,
+                source_gate=_TEST_EXECUTION_GATE,
             )
         self.assertEqual(EVIDENCE_LOCKED, terminal)
         self.assertEqual(18, len(shards))
@@ -373,16 +387,16 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
     def test_dynamic_not_evaluable_reads_zero_sources(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)
-            contract, p0b_contract, closure, toolkit, fake = (
+            contract, closure, toolkit, fake = (
                 self.make_exact_fixture(base)
             )
             closure["observation"]["dynamic_import_call_count"] = 1
-            terminal, payload = extract_sharded_evidence(
+            terminal, payload = _extract_sharded_evidence(
                 contract,
-                p0b_contract,
                 closure,
                 toolkit,
                 git_runner=fake,
+                source_gate=_TEST_EXECUTION_GATE,
             )
         self.assertEqual(EVIDENCE_NOT_EVALUABLE, terminal)
         self.assertEqual(0, payload["source_blob_read_count"])
@@ -394,15 +408,15 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
     ) -> None:
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)
-            contract, p0b_contract, closure, toolkit, fake = (
+            contract, closure, toolkit, fake = (
                 self.make_exact_fixture(base, invalid_index=7)
             )
-            terminal, payload = extract_sharded_evidence(
+            terminal, payload = _extract_sharded_evidence(
                 contract,
-                p0b_contract,
                 closure,
                 toolkit,
                 git_runner=fake,
+                source_gate=_TEST_EXECUTION_GATE,
             )
         self.assertEqual(EVIDENCE_NOT_EVALUABLE, terminal)
         self.assertEqual(18, payload["source_blob_read_count"])
@@ -419,13 +433,12 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
     ) -> None:
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)
-            contract, p0b_contract, closure, toolkit, fake = (
+            contract, closure, toolkit, fake = (
                 self.make_exact_fixture(base)
             )
             root = base / "locked-root"
-            result = execute_with_context(
+            result = _execute_with_validated_context(
                 contract,
-                p0b_contract,
                 closure,
                 toolkit,
                 root,
@@ -453,13 +466,12 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
     ) -> None:
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)
-            contract, p0b_contract, closure, toolkit, fake = (
+            contract, closure, toolkit, fake = (
                 self.make_exact_fixture(base, invalid_index=4)
             )
             root = base / "ne-root"
-            result = execute_with_context(
+            result = _execute_with_validated_context(
                 contract,
-                p0b_contract,
                 closure,
                 toolkit,
                 root,
@@ -488,15 +500,14 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
     ) -> None:
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)
-            contract, p0b_contract, closure, toolkit, fake = (
+            contract, closure, toolkit, fake = (
                 self.make_exact_fixture(base)
             )
             with self.assertRaisesRegex(
                 DraftNotExecutable, "validated executable authority"
             ):
-                execute_with_context(
+                _execute_with_validated_context(
                     contract,
-                    p0b_contract,
                     closure,
                     toolkit,
                     base / "ungated",
@@ -505,15 +516,29 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
             with self.assertRaisesRegex(
                 DraftNotExecutable, "temporary paths"
             ):
-                execute_with_context(
+                _execute_with_validated_context(
                     contract,
-                    p0b_contract,
                     closure,
                     toolkit,
                     repo_root() / CANONICAL_ROOT,
                     git_runner=fake,
                     execution_gate=_TEST_EXECUTION_GATE,
                 )
+            formal_root = base / "forged-formal"
+            with self.assertRaises(
+                (DraftNotExecutable, ValueError)
+            ):
+                _execute_with_validated_context(
+                    contract,
+                    closure,
+                    toolkit,
+                    formal_root,
+                    git_runner=fake,
+                    execution_gate=_FORMAL_EXECUTION_GATE,
+                    execution_commit="0" * 40,
+                )
+            self.assertFalse(formal_root.exists())
+            self.assertEqual([], fake.calls)
 
     def test_required_failure_injections_validate_raw_partial_state(
         self,
@@ -530,7 +555,6 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
                     base = Path(temp)
                     (
                         contract,
-                        p0b_contract,
                         closure,
                         toolkit,
                         fake,
@@ -542,9 +566,8 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
                     with self.assertRaisesRegex(
                         OSError, "injected write interruption"
                     ):
-                        execute_with_context(
+                        _execute_with_validated_context(
                             contract,
-                            p0b_contract,
                             closure,
                             toolkit,
                             root,
@@ -581,13 +604,12 @@ class P0B1DraftSkeletonTest(unittest.TestCase):
     def test_semantic_tamper_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)
-            contract, p0b_contract, closure, toolkit, fake = (
+            contract, closure, toolkit, fake = (
                 self.make_exact_fixture(base)
             )
             root = base / "tamper-root"
-            execute_with_context(
+            _execute_with_validated_context(
                 contract,
-                p0b_contract,
                 closure,
                 toolkit,
                 root,

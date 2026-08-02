@@ -4384,3 +4384,15 @@
   reread。raw execution core 无 validated gate 会拒绝，test gate 也拒绝 repo/canonical
   路径。focused tests `18/18`、绑定运行时下 HFTF full suite `520/520`；正式
   canonical P0B.1 root 仍不存在，本 checkpoint 不授权 source reread 或正式执行。
+
+## 2026-08-02：HFTF D5-S0B-P0B.1 executable candidate
+
+- P0B.1 已收缩为最小执行门：exact input/runtime/code/test hashes、单次 canonical
+  root、durable terminal validation。复用的纯 AST helper 也已 hash-bind；P0A
+  locked-result、closure 与 toolkit commit 完成交叉绑定。test-only source path
+  仅接受 synthetic authority，formal source read 还要求 durable attempt/preflight。
+- focused `18/18`、绑定运行时 HFTF full `520/520`，科学边界复审 `CLEAR`；
+  executable contract 的 semantic self-hash 为
+  `765946ab06afe8f8d6856b04a7ebd647036e6c74a169c0d7c59cd80e599599b0`。
+  canonical root 仍不存在。后续不再扩展治理；推送后直接单次执行并按终态进入 P0C
+  或停止。
