@@ -313,14 +313,27 @@ def main() -> int:
         if not capture.isOpened():
             raise OSError(f"D36 cannot open video: {video_path}")
         requested = requests[video_text]
-        frame_number = 0
         requested_seen: set[int] = set()
-        batch_frames: list[int] = []
-        batch_images: list[np.ndarray] = []
-        try:
-            for segment_start, segment_end in requested_segments(
-                list(requested)
-            ):
+        anchor_frames = {
+            frame
+            for frame, destinations in requested.items()
+            if any(
+                ordinal == HISTORY_FRAMES - 1
+                for _, ordinal in destinations
+            )
+        }
+        history_only_frames = set(requested) - anchor_frames
+        seek_segment_count = 0
+
+        def decode_roster(roster: set[int]) -> None:
+            nonlocal seek_segment_count
+            if not roster:
+                return
+            batch_frames: list[int] = []
+            batch_images: list[np.ndarray] = []
+            segments = requested_segments(list(roster))
+            seek_segment_count += len(segments)
+            for segment_start, segment_end in segments:
                 if not capture.set(
                     cv2.CAP_PROP_POS_FRAMES,
                     float(segment_start - 1),
@@ -330,20 +343,34 @@ def main() -> int:
                 while frame_number < segment_end:
                     ok, frame = capture.read()
                     if not ok:
-                        raise OSError("D36 requested source frame decode failed")
+                        raise OSError(
+                            "D36 requested source frame decode failed"
+                        )
                     frame_number += 1
-                    if frame_number not in requested:
+                    if frame_number not in roster:
                         continue
                     if frame_number in requested_seen:
-                        raise ValueError("D36 requested frame decoded twice")
+                        raise ValueError(
+                            "D36 requested frame decoded twice"
+                        )
                     requested_seen.add(frame_number)
                     batch_frames.append(frame_number)
                     batch_images.append(frame)
                     if len(batch_images) >= args.batch_size:
-                        infer_batch(video_text, batch_frames, batch_images)
+                        infer_batch(
+                            video_text,
+                            batch_frames,
+                            batch_images,
+                        )
                         batch_frames.clear()
                         batch_images.clear()
             infer_batch(video_text, batch_frames, batch_images)
+
+        try:
+            # Preserve D31's anchor-only batch composition before producing
+            # any new history-frame detections.
+            decode_roster(anchor_frames)
+            decode_roster(history_only_frames)
         finally:
             capture.release()
         if len(requested_seen) != len(requested):
@@ -357,9 +384,7 @@ def main() -> int:
                     video_metadata[video_text]["frame_count"]
                 ),
                 "requested_unique_frames": len(requested_seen),
-                "seek_segments": len(
-                    requested_segments(list(requested))
-                ),
+                "seek_segments": seek_segment_count,
             }
         )
         print(
