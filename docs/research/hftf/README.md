@@ -142,7 +142,20 @@ STAGE_C_D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_FROZEN_R0_2 /
 D41_JRDB_CAUSAL_FUTURE_BOX_FIELD_NOT_SUPPORTED /
 D41_TRANSLATION_LOCAL_SIGNAL_RETAINED_DEVELOPMENT_ONLY /
 D41_CONSTANT_VELOCITY_LOG_SCALE_RECIPE_STOP /
+STAGE_C_D42_JRDB_EGO_OBJECT_METRIC_TEACHER_FROZEN /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D42：把 ego motion 与 person world motion 分开
+
+D42 已在读取新的 metric outcome 前冻结。它复用 D41 detector-matched
+opportunities，但不再用 2D box scale 猜深度：packet 已绑定
+`odom <- base_link` pose、`center_base_link_m` 与 `center_odom_m`。三臂分别是
+current-relative static、ego-only kinematic、ego+person-world kinematic，全部只读
+连续 7 帧历史并预测 `+15 frames`。
+
+主要终点是完整 metric teacher 相对 current-static 的 horizontal/range/bearing
+误差与跨 sequence 广度；ego-only 只做贡献归因。成功只允许冻结 D43 学生合同，
+不建立 RGB、App、事件或主线主张。
 
 ## 2026-08-03 D41：mean IoU 有局部增量，但 future-box field 不稳定
 
