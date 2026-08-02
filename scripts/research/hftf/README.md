@@ -16,7 +16,10 @@ D8-equal-capacity-temporal-spatial-increment-not-stable /
 D8-full-local-field-history-increment-not-supported /
 D9-jrdb-corridor-replication-not-supported /
 frozen-feature-history-route-stop /
-D10-trainable-tail-temporal-increment-not-supported-stop`
+D10-trainable-tail-temporal-increment-not-supported-stop /
+D11-causal-kinematic-information-not-supported /
+D12-future-onset-target-five-fold-ready /
+D13-future-onset-temporal-spatial-increment-supported`
 
 ## 研究问题与版本
 
@@ -189,6 +192,33 @@ partial 后按同一输入重建，不烧毁 source。canary 冻结 MobileNet bl
 parameters。固定 seed17、五折、8 epochs 的四项 AUROC/AP gate 全部失败，终态为
 `D10_TRAINABLE_TAIL_TEMPORAL_INCREMENT_NOT_SUPPORTED_STOP`。按预定规则不扩 seeds、
 不运行 JRDB zero-shot，也不调整解冻边界、学习率、epoch 或 head。
+
+### D11–D13 true future-onset repair
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  evaluate_stage_c_d11_thor_magni_kinematic_information_ceiling.py `
+  --output artifacts.local/evidence/hftf/<d11-run>/report.json
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  materialize_stage_c_d12_thor_magni_future_onset.py `
+  --output-root artifacts.local/evidence/hftf/<d12-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d13_thor_magni_future_onset_temporal_baseline.py `
+  --samples artifacts.local/evidence/hftf/<d12-run>/samples.jsonl `
+  --output artifacts.local/evidence/hftf/<d13-run>/report.json
+```
+
+D11 发现原 future-ever target 被 `t=0` current risk 主导：current-static QTM
+geometry 已有约 `.89–.97` AUROC，causal history kinematics 未稳定改善。D12 因而
+只在当前安全样本中定义未来 onset，得到近距 `157/530`、走廊 `148/616` 正例/eligible，
+五折均含正负。D13 相同 frozen-spatial 等容量 head 在修正 target 上通过预定
+median/正折门，但增量只有约 `+.0008–+.0020`，且走廊 AP mean 仍为负。该弱
+representation signal 只授权显式 motion representation，不授权系统或主线晋级。
 
 ## 稳定 Interface
 

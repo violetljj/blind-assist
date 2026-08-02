@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D11–D13
+  true future-onset 任务修正。D11 发现原 0–2 秒 future-ever 标签从 `t=0` 开始，
+  current-static QTM geometry 五折 AUROC 已约 `.89–.97`，causal-history
+  kinematic AP 未稳定改善；原任务主要测当前占用。D12 只保留当前安全样本，物化
+  近距 157 positive / 530 eligible、走廊 148 / 616，五折均有正负例。
+  D13 用相同 13,586 参数 frozen-spatial head 比较 current/history；四项
+  seed-mean fold median delta 均为正，正折数 `4/3/5/4`，终态
+  `D13_FUTURE_ONSET_TEMPORAL_SPATIAL_INCREMENT_SUPPORTED`。效应仅
+  `+.0008–+.0020`，且走廊 AP mean 略负；保留为弱 representation 正信号，
+  下一步测试显式 motion，不升级主线、App 或安全主张。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D10
   THOR-MAGNI trainable-tail temporal canary。先以可恢复 `.partial.npy` + atomic
   replace 物化 1,078×5 RGB cache；工程中断只重建 cache，不烧毁 source。固定

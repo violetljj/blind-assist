@@ -84,7 +84,16 @@ parameters。近距与走廊 AUROC/AP 四项 history-minus-current 都只有 2/5
 为正，mean delta 分别为 `-.000235/+.000004/-.000403/-.000546`。冻结扩展门失败，
 终态 `D10_TRAINABLE_TAIL_TEMPORAL_INCREMENT_NOT_SUPPORTED_STOP`；不扩 seed、
 不启动 JRDB zero-shot、不调 recipe 救援。该终态只关闭当前 late-tail temporal
-residual successor，不关闭未来实质不同的时空表示研究。
+residual successor，不关闭未来实质不同的时空表示研究。随后
+[D11–D13 future-onset 任务修正](../hftf/HFTF_STAGE_C_D11_D13_TRUE_FUTURE_ONSET_REPAIR_2026-08-02.md)
+发现原 0–2 秒 future-ever 标签包含 `t=0`，current-static QTM geometry 五折 AUROC
+已约 `.89–.97`，history kinematic oracle 没有稳定增量。改为只预测当前安全样本的
+未来 onset 后，近距有 157/530 positive/eligible、走廊 148/616，五折均可评价。
+等容量 frozen-spatial history baseline 的四项 median delta 均为正，正折数为
+`4/3/5/4`，达到冻结门；但效应只有约 `+.0008–+.0020`，走廊 AP mean 仍略负。
+当前只记录 `D13_FUTURE_ONSET_TEMPORAL_SPATIAL_INCREMENT_SUPPORTED` 的弱
+representation signal；下一变量是显式 motion，而不是退回 current-dominated 标签
+或升级主线/App 主张。
 
 此前 D5/D6 Development 已推进到
 [outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：
