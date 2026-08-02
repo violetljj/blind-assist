@@ -12,6 +12,7 @@ from train_stage_c_d5_tartanground_development_student import (
     TemporalStudent,
     binary_metrics,
     decode_labels,
+    future_body_head_recall_preservation_loss,
     known_positive_weights,
     losses,
     train_prior_metrics,
@@ -88,6 +89,56 @@ class TartanGroundDevelopmentStudentTest(unittest.TestCase):
         )
 
         self.assertGreater(float(balanced), float(plain))
+
+    def test_recall_preservation_only_penalizes_critical_positive_decrease(
+        self,
+    ):
+        shape = (1, 3, 3, 2, 2)
+        candidate = torch.zeros(shape)
+        reference = torch.zeros(shape)
+        risk = torch.zeros(shape)
+        known = torch.ones(shape)
+        risk[0, 1, 1, 0, 0] = 1.0
+        reference[0, 1, 1, 0, 0] = 2.0
+        candidate[0, 1, 1, 0, 0] = 0.5
+        reference[0, 0, 1, 0, 1] = 100.0
+        reference[0, 1, 0, 1, 0] = 100.0
+        reference[0, 1, 1, 1, 1] = 100.0
+
+        result = future_body_head_recall_preservation_loss(
+            candidate,
+            reference,
+            risk,
+            known,
+        )
+
+        self.assertAlmostEqual(float(result), 1.5)
+
+    def test_recall_preservation_is_zero_for_no_decrease_or_no_mask(self):
+        shape = (1, 3, 3, 1, 1)
+        candidate = torch.ones(shape, requires_grad=True)
+        reference = torch.zeros(shape)
+        risk = torch.zeros(shape)
+        known = torch.ones(shape)
+        risk[0, 2, 2, 0, 0] = 1.0
+
+        no_decrease = future_body_head_recall_preservation_loss(
+            candidate,
+            reference,
+            risk,
+            known,
+        )
+        no_mask = future_body_head_recall_preservation_loss(
+            candidate,
+            reference,
+            torch.zeros_like(risk),
+            known,
+        )
+
+        self.assertEqual(float(no_decrease.detach()), 0.0)
+        self.assertEqual(float(no_mask.detach()), 0.0)
+        no_mask.backward()
+        self.assertIsNotNone(candidate.grad)
 
     def test_sqrt_balanced_known_weight_is_log_space_halfway(self):
         labels = {}
@@ -306,7 +357,7 @@ class TartanGroundDevelopmentStudentTest(unittest.TestCase):
         )
         torch.nn.init.zeros_(model.early_pair_output.weight)
         model.pool = torch.nn.AdaptiveAvgPool2d((1, 6))
-        model.dropout = torch.nn.Identity()
+        model.dropout = torch.nn.Dropout(0.5)
         model.head = torch.nn.Conv1d(
             128,
             2 * 3 * 3 * 6,
@@ -315,11 +366,22 @@ class TartanGroundDevelopmentStudentTest(unittest.TestCase):
         history = torch.randn(2, 5, 3, 32, 56)
         repeated_current = history[:, -1:].repeat(1, 5, 1, 1, 1)
 
+        model.eval()
         history_risk, history_known = model(history)
         current_risk, current_known = model(repeated_current)
 
         torch.testing.assert_close(history_risk, current_risk)
         torch.testing.assert_close(history_known, current_known)
+
+        model.train()
+        (
+            candidate_risk,
+            candidate_known,
+            reference_risk,
+            reference_known,
+        ) = model(history, return_reference=True)
+        torch.testing.assert_close(candidate_risk, reference_risk)
+        torch.testing.assert_close(candidate_known, reference_known)
 
     def test_early_pair_stem_preserves_lightweight_spatial_output(self):
         stem = EarlyPairStem()

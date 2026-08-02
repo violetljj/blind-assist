@@ -134,6 +134,12 @@ def main() -> int:
         type=Path,
         default=DEFAULT_CANDIDATE_ROOT,
     )
+    parser.add_argument(
+        "--seeds",
+        type=int,
+        nargs="+",
+        default=list(SEEDS),
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if (
@@ -150,10 +156,11 @@ def main() -> int:
         str, dict[str, list[float]]
     ] = {
         str(seed): {name: [] for name in METRICS}
-        for seed in SEEDS
+        for seed in args.seeds
     }
     environment_rows = []
-    for seed in SEEDS:
+    pair_constraint_modes = set()
+    for seed in args.seeds:
         for fold in FOLDS:
             reference_path = reference_report_path(
                 args.reference_root,
@@ -184,6 +191,12 @@ def main() -> int:
                     f"Candidate/reference mismatch: seed {seed} "
                     f"fold {fold}"
                 )
+            pair_constraint_modes.add(
+                candidate["optimization"].get(
+                    "pair_constraint_mode",
+                    "none",
+                )
+            )
             deltas = {}
             for name, getter in METRICS.items():
                 delta = getter(candidate) - getter(reference)
@@ -251,7 +264,7 @@ def main() -> int:
             "EARLY_PAIR_STRUCTURED_FIELD_CANARY_SUMMARY_COMPLETE"
         ),
         "design": {
-            "seeds": list(SEEDS),
+            "seeds": list(args.seeds),
             "folds": list(FOLDS),
             "unit_count": len(units),
             "environment_unit_count": len(environment_rows),
@@ -263,6 +276,7 @@ def main() -> int:
                 "zero-initialized early RGB-pair residual, "
                 "early-pair parameters only"
             ),
+            "pair_constraint_modes": sorted(pair_constraint_modes),
             "metric_search": False,
             "threshold_search": False,
         },

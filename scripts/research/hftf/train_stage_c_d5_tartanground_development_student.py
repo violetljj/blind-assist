@@ -35,6 +35,7 @@ OPTIMIZATION_MODES = (
     "temporal_residual_only",
     "early_pair_only",
 )
+PAIR_CONSTRAINT_MODES = ("none", "future_body_head_recall")
 KNOWN_LOSS_MODES = ("plain", "balanced", "sqrt_balanced")
 SELECTION_MODES = ("aggregate", "environment_macro")
 HORIZONS = ("current", "near", "far")
@@ -348,7 +349,17 @@ class TemporalStudent(nn.Module):
     def forward(
         self,
         frames: torch.Tensor,
-    ) -> tuple[torch.Tensor, torch.Tensor]:
+        *,
+        return_reference: bool = False,
+    ) -> (
+        tuple[torch.Tensor, torch.Tensor]
+        | tuple[
+            torch.Tensor,
+            torch.Tensor,
+            torch.Tensor,
+            torch.Tensor,
+        ]
+    ):
         if frames.ndim != 5 or frames.shape[1:3] != (5, 3):
             raise ValueError("Expected Bx5x3xHxW input")
         batch, time, channels, height, width = frames.shape
@@ -402,7 +413,8 @@ class TemporalStudent(nn.Module):
                 mode="bilinear",
                 align_corners=False,
             )
-            fused = fused + pair_residual
+            reference_fused = fused
+            fused = reference_fused + pair_residual
         else:
             encoded = self.encoder(
                 frames.reshape(
@@ -444,19 +456,63 @@ class TemporalStudent(nn.Module):
                     history_delta
                 ).squeeze(2)
             fused = self.pointwise(fused)
-        if getattr(self, "architecture", "pooled") == "pooled":
-            output = self.head(
-                self.dropout(self.pool(fused).flatten(1))
+        if return_reference:
+            if temporal_mode != "early_pair":
+                raise ValueError(
+                    "Reference output is only available for early_pair"
+                )
+            projected = self._project_fused(fused)
+            reference_projected = self._project_fused(reference_fused)
+            if isinstance(self.dropout, nn.Dropout) and self.training:
+                keep_probability = 1.0 - self.dropout.p
+                dropout_mask = torch.empty_like(projected).bernoulli_(
+                    keep_probability
+                )
+                dropout_mask.div_(keep_probability)
+                projected = projected * dropout_mask
+                reference_projected = reference_projected * dropout_mask
+            else:
+                projected = self.dropout(projected)
+                reference_projected = self.dropout(reference_projected)
+            risk_logits, known_logits = self._decode_projected(
+                projected,
+                batch,
             )
+            reference_risk_logits, reference_known_logits = (
+                self._decode_projected(reference_projected, batch)
+            )
+            return (
+                risk_logits,
+                known_logits,
+                reference_risk_logits,
+                reference_known_logits,
+            )
+        return self._decode_projected(
+            self.dropout(self._project_fused(fused)),
+            batch,
+        )
+
+    def _project_fused(self, fused: torch.Tensor) -> torch.Tensor:
+        if getattr(self, "architecture", "pooled") == "pooled":
+            return self.pool(fused).flatten(1)
+        if self.architecture == "directional":
+            return self.pool(fused).squeeze(2)
+        return self.pool(fused)
+
+    def _decode_projected(
+        self,
+        projected: torch.Tensor,
+        batch: int,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        if getattr(self, "architecture", "pooled") == "pooled":
+            output = self.head(projected)
             output = output.reshape(batch, 2, 3, 3, 6, 6)
         elif self.architecture == "directional":
-            directional = self.pool(fused).squeeze(2)
-            output = self.head(self.dropout(directional))
+            output = self.head(projected)
             output = output.reshape(batch, 2, 3, 3, 6, 6)
             output = output.permute(0, 1, 2, 3, 5, 4)
         else:
-            grid = self.pool(fused)
-            output = self.head(self.dropout(grid))
+            output = self.head(projected)
             output = output.reshape(batch, 2, 3, 6, 3, 6)
             output = output.permute(0, 1, 2, 4, 5, 3)
         return output[:, 0], output[:, 1]
@@ -528,6 +584,26 @@ def losses(
         ),
     )
     return risk_loss + known_loss, risk_loss, known_loss
+
+
+def future_body_head_recall_preservation_loss(
+    candidate_risk_logits: torch.Tensor,
+    reference_risk_logits: torch.Tensor,
+    risk: torch.Tensor,
+    known: torch.Tensor,
+) -> torch.Tensor:
+    """Penalize pair-induced risk-logit decreases on critical positives."""
+    critical_positive = (
+        (known[:, 1:, 1:] > 0.5)
+        & (risk[:, 1:, 1:] >= 0.5)
+    )
+    if not torch.any(critical_positive):
+        return candidate_risk_logits.sum() * 0.0
+    decreases = nnf.relu(
+        reference_risk_logits[:, 1:, 1:].detach()
+        - candidate_risk_logits[:, 1:, 1:]
+    )
+    return decreases[critical_positive].mean()
 
 
 def binary_metrics(
@@ -774,6 +850,7 @@ def train(
     architecture: str = "pooled",
     temporal_mode: str = "joint",
     optimization_mode: str = "all",
+    pair_constraint_mode: str = "none",
     known_loss_mode: str = "plain",
     selection_mode: str = "aggregate",
 ) -> dict[str, Any]:
@@ -787,6 +864,10 @@ def train(
         raise ValueError(f"Unknown temporal mode: {temporal_mode}")
     if optimization_mode not in OPTIMIZATION_MODES:
         raise ValueError(f"Unknown optimization mode: {optimization_mode}")
+    if pair_constraint_mode not in PAIR_CONSTRAINT_MODES:
+        raise ValueError(
+            f"Unknown pair constraint mode: {pair_constraint_mode}"
+        )
     if known_loss_mode not in KNOWN_LOSS_MODES:
         raise ValueError(f"Unknown known loss mode: {known_loss_mode}")
     if optimization_mode == "temporal_residual_only" and (
@@ -805,6 +886,14 @@ def train(
         raise ValueError(
             "early_pair_only requires early_pair mode "
             "and an initial checkpoint"
+        )
+    if pair_constraint_mode != "none" and (
+        temporal_mode != "early_pair"
+        or optimization_mode != "early_pair_only"
+    ):
+        raise ValueError(
+            "Pair constraints require early_pair mode and "
+            "early_pair_only optimization"
         )
     if selection_mode not in SELECTION_MODES:
         raise ValueError(f"Unknown selection mode: {selection_mode}")
@@ -1036,6 +1125,7 @@ def train(
                 "train_loss": None,
                 "train_risk_loss": None,
                 "train_known_loss": None,
+                "train_pair_constraint_loss": None,
                 "dev": initial_metrics,
                 "dev_by_environment": initial_environment_metrics,
             }
@@ -1052,14 +1142,22 @@ def train(
             pin_memory=True,
         )
         model.train()
-        totals = np.zeros(3, dtype=np.float64)
+        totals = np.zeros(4, dtype=np.float64)
         batches = 0
         for frames, risk, known in train_loader:
             frames = frames.to(device, non_blocking=True)
             risk = risk.to(device, non_blocking=True)
             known = known.to(device, non_blocking=True)
             optimizer.zero_grad(set_to_none=True)
-            risk_logits, known_logits = model(frames)
+            if pair_constraint_mode == "future_body_head_recall":
+                (
+                    risk_logits,
+                    known_logits,
+                    reference_risk_logits,
+                    _,
+                ) = model(frames, return_reference=True)
+            else:
+                risk_logits, known_logits = model(frames)
             loss, risk_loss, known_loss = losses(
                 risk_logits,
                 known_logits,
@@ -1068,6 +1166,18 @@ def train(
                 weights,
                 known_weights,
             )
+            if pair_constraint_mode == "future_body_head_recall":
+                pair_constraint_loss = (
+                    future_body_head_recall_preservation_loss(
+                        risk_logits,
+                        reference_risk_logits,
+                        risk,
+                        known,
+                    )
+                )
+                loss = loss + pair_constraint_loss
+            else:
+                pair_constraint_loss = loss.new_zeros(())
             if not torch.isfinite(loss):
                 raise RuntimeError("Non-finite loss")
             loss.backward()
@@ -1081,6 +1191,7 @@ def train(
                 float(loss.detach()),
                 float(risk_loss.detach()),
                 float(known_loss.detach()),
+                float(pair_constraint_loss.detach()),
             ]
             batches += 1
         metrics = evaluate(model, dev_loader, device)
@@ -1097,6 +1208,7 @@ def train(
             "train_loss": float(totals[0] / batches),
             "train_risk_loss": float(totals[1] / batches),
             "train_known_loss": float(totals[2] / batches),
+            "train_pair_constraint_loss": float(totals[3] / batches),
             "dev": metrics,
             "dev_by_environment": epoch_environment_metrics,
         }
@@ -1169,6 +1281,7 @@ def train(
         "architecture": architecture,
         "temporal_mode": temporal_mode,
         "optimization_mode": optimization_mode,
+        "pair_constraint_mode": pair_constraint_mode,
         "known_loss_mode": known_loss_mode,
         "selection_mode": selection_mode,
         "seed": seed,
@@ -1202,6 +1315,10 @@ def train(
         "selection_mode": selection_mode,
         "optimization": {
             "mode": optimization_mode,
+            "pair_constraint_mode": pair_constraint_mode,
+            "pair_constraint_weight": (
+                1.0 if pair_constraint_mode != "none" else None
+            ),
             "known_loss_mode": known_loss_mode,
             "known_positive_weights": (
                 known_weights.detach().cpu().tolist()
@@ -1282,6 +1399,11 @@ def main() -> int:
         default="all",
     )
     parser.add_argument(
+        "--pair-constraint-mode",
+        choices=PAIR_CONSTRAINT_MODES,
+        default="none",
+    )
+    parser.add_argument(
         "--known-loss-mode",
         choices=KNOWN_LOSS_MODES,
         default="plain",
@@ -1305,6 +1427,7 @@ def main() -> int:
         architecture=args.architecture,
         temporal_mode=args.temporal_mode,
         optimization_mode=args.optimization_mode,
+        pair_constraint_mode=args.pair_constraint_mode,
         known_loss_mode=args.known_loss_mode,
         selection_mode=args.selection_mode,
     )
