@@ -15,7 +15,8 @@ D8-temporal-spatial-corridor-signal-weak /
 D8-equal-capacity-temporal-spatial-increment-not-stable /
 D8-full-local-field-history-increment-not-supported /
 D9-jrdb-corridor-replication-not-supported /
-frozen-feature-history-route-stop`
+frozen-feature-history-route-stop /
+D10-trainable-tail-temporal-increment-not-supported-stop`
 
 ## 研究问题与版本
 
@@ -166,6 +167,28 @@ D9 从四个本地 JRDB sequences 的连续 RGB360 与同 frame-stem `labels_3d`
 1/6、0/6 units 为正，终态为
 `D9_JRDB_TEMPORAL_SPATIAL_CORRIDOR_REPLICATION_NOT_SUPPORTED`。近距负对照的小正值
 不触发 target 切换；当前 frozen-feature history route 停止。
+
+### D10 THOR-MAGNI trainable-tail temporal canary
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  cache_stage_c_d10_thor_magni_rgb_history.py `
+  --output artifacts.local/evidence/hftf/<d10-cache-run>/history_rgb_uint8.npy
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d10_thor_magni_trainable_tail_canary.py `
+  --cache artifacts.local/evidence/hftf/<d10-cache-run>/history_rgb_uint8.npy `
+  --output artifacts.local/evidence/hftf/<d10-run>/report.json
+```
+
+cache 先写 `.partial.npy`，完整填充并计算摘要后才 atomic replace；工程中断可删除
+partial 后按同一输入重建，不烧毁 source。canary 冻结 MobileNet blocks `0..8`，
+训练 blocks `9..12`，current/history 两臂共享完全相同的 765,386 个 trainable
+parameters。固定 seed17、五折、8 epochs 的四项 AUROC/AP gate 全部失败，终态为
+`D10_TRAINABLE_TAIL_TEMPORAL_INCREMENT_NOT_SUPPORTED_STOP`。按预定规则不扩 seeds、
+不运行 JRDB zero-shot，也不调整解冻边界、学习率、epoch 或 head。
 
 ## 稳定 Interface
 

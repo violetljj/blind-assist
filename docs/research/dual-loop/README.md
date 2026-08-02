@@ -77,7 +77,14 @@ folds 复现该 corridor signal。history-minus-current corridor AUROC/AP 在 0/
 folds 为正，mean `-.00235/-.00152`；六个 fold×seed units 中 AP 为 0/6 正。
 终态 `D9_JRDB_TEMPORAL_SPATIAL_CORRIDOR_REPLICATION_NOT_SUPPORTED`，当前 HFTF
 frozen-feature history route 停止。该科学负结果不删除 D8 局部监督资产，也不改变
-研究主线或默认 App。
+研究主线或默认 App。为区分 frozen-feature ceiling 与 history 本身，后续又执行
+[D10 trainable-tail temporal canary](../hftf/HFTF_STAGE_C_D10_TRAINABLE_TAIL_TEMPORAL_CANARY_2026-08-02.md)：
+解冻 MobileNet blocks `9..12`，current/history 使用相同 765,386 个 trainable
+parameters。近距与走廊 AUROC/AP 四项 history-minus-current 都只有 2/5 folds
+为正，mean delta 分别为 `-.000235/+.000004/-.000403/-.000546`。冻结扩展门失败，
+终态 `D10_TRAINABLE_TAIL_TEMPORAL_INCREMENT_NOT_SUPPORTED_STOP`；不扩 seed、
+不启动 JRDB zero-shot、不调 recipe 救援。该终态只关闭当前 late-tail temporal
+residual successor，不关闭未来实质不同的时空表示研究。
 
 此前 D5/D6 Development 已推进到
 [outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：

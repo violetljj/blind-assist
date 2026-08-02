@@ -1,4 +1,14 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D10
+  THOR-MAGNI trainable-tail temporal canary。先以可恢复 `.partial.npy` + atomic
+  replace 物化 1,078×5 RGB cache；工程中断只重建 cache，不烧毁 source。固定
+  五折 source-session isolation、seed17、8 epochs，冻结 MobileNet blocks `0..8`、
+  训练 `9..12`；current/history 两臂共享相同 765,386 个 trainable parameters。
+  history-minus-current 的近距 AUROC/AP mean 为 `-.000235/+.000004`，走廊为
+  `-.000403/-.000546`，四项均仅 2/5 folds 为正。终态
+  `D10_TRAINABLE_TAIL_TEMPORAL_INCREMENT_NOT_SUPPORTED_STOP`。不扩 seeds23/41，
+  不启动 JRDB zero-shot，不改 epoch、解冻边界、学习率或 head 救援；该科学负结果
+  只关闭当前 late-tail temporal residual successor，主线与默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D9 JRDB
   independent-dataset corridor replication。四个本地 RGB360+`labels_3d`
   sequences 各 120 连续帧，物化 104 个 samples；geometry-only census 后固定两个
