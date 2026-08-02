@@ -101,9 +101,13 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         materialized_receipt = materialized.get(dataset_id)
         if materialized_receipt is not None:
             materialized_path, payload = materialized_receipt
-            status = payload.get("status") or payload.get("access_status") or item.get("access_status")
+            status = payload.get("status") or payload.get("access_status") or payload.get("media_status") or item.get("access_status")
             local_paths = list(item.get("local_evidence_paths", []))
             for key in ("raw_path", "inventory_path"):
+                value = payload.get(key)
+                if value:
+                    local_paths.append(str(value))
+            for key in ("manifest_path",):
                 value = payload.get(key)
                 if value:
                     local_paths.append(str(value))
@@ -118,9 +122,35 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 "source_hash_kind": "MATERIALIZED_INTAKE_RECEIPT",
                 "event_truth_authority": False,
             })
-            for key in ("rgb_media_count", "rgb_media_bytes", "raw_recording_status"):
+            for key in (
+                "rgb_media_count",
+                "rgb_media_bytes",
+                "raw_recording_status",
+                "frame_count",
+                "rgb_frame_count",
+                "depth_frame_count",
+                "mask_frame_count",
+                "bytes_from_provider_metadata",
+                "source_session_id",
+                "camera",
+                "view",
+                "fps",
+                "time_semantics",
+                "capture_timestamp_authoritative",
+                "pose_row_binding",
+                "rgb_depth_mask_binding",
+                "nominal_time_contract",
+            ):
                 if payload.get(key) not in (None, ""):
                     row[key] = payload[key]
+            if payload.get("rgb_frame_count") not in (None, ""):
+                row["rgb_media_count"] = payload["rgb_frame_count"]
+            if isinstance(payload.get("objects"), list):
+                row["rgb_media_bytes"] = sum(
+                    int(value.get("size", 0))
+                    for value in payload["objects"]
+                    if isinstance(value, dict) and value.get("kind") == "rgb"
+                )
             row.pop("source_hash_note", None)
         else:
             row["local_evidence_paths"] = item.get("local_evidence_paths", [])
