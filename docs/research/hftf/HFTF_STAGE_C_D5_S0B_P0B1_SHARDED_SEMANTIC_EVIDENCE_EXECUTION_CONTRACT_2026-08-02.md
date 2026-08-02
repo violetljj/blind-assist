@@ -145,6 +145,9 @@ dynamic-evidence reason 严格为 0 source reads/receipts/parse-prefix；syntax/
 reason 必须 durable 保存 18/18 object receipts、set hash、source total bytes、成功
 parse-prefix receipts、AST node/depth 与六类 record prefix counters，并逐项验证
 global caps。两类 reason 共用 exact schema，未适用 identity/error 字段严格为 null。
+其中 dynamic reason 的 `manifest_index/source_path/detected_source_encoding/error_type`
+均为 null；encoding detection 失败绑定 exact manifest index/path 且 encoding 为
+null；decode 或 AST grammar 失败还绑定已检测 encoding。
 
 INVALID failure set 为
 `attempt + preflight + exact shard prefix(0..18) + optional index +
@@ -170,6 +173,12 @@ bytecode、compile/eval/exec、template evaluation、control-flow/data-flow/reac
 无论 URL candidate 是 0、1 或多个，P0B.1 正常锁定都不产生 provider conclusion；
 它不建立 official URL template、198 parent mapping、HFTF opportunity/effect、fresh
 validation、algorithm-selection increment、mainline/App、production 或 safety 权限。
+两个正常 result 都必须把 `source_evidence_role` 锁为
+`CONSUMED_SOURCE_RECOVERY_NOT_FRESH_VALIDATION`，并写入 8-key 全 false
+`claim_ceiling`。只有 LOCKED result 的 `next_authority` 可为
+`FREEZE_SEPARATE_HASH_BOUND_P0C_PROVIDER_RESOLUTION_CONTRACT`；NOT_EVALUABLE 必须为
+`STOP_PROVIDER_RESOLUTION_SOURCE_EVIDENCE_NOT_EVALUABLE`。两者的
+`p0c_execution_authorized_automatically` 均严格为 false，P0C 执行仍需独立合同与授权。
 
 ## 从 DRAFT 转为 executable 的必要条件
 

@@ -10,11 +10,30 @@ may be opened by this draft.
 from __future__ import annotations
 
 import argparse
+import ast
+import copy
 import hashlib
+import io
 import json
 import re
+import tokenize
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable, Sequence
+
+sys_path_parent = str(Path(__file__).resolve().parent)
+import sys
+
+if sys_path_parent not in sys.path:
+    sys.path.insert(0, sys_path_parent)
+
+from plan_stage_c_d5_s0b_p0b_provider_semantic_evidence import (
+    EvidenceVisitor,
+    index_ast,
+)
+from plan_stage_c_d5_s0a_tartanground_catalog import (
+    sha256,
+    write_bytes_exclusive_fsync,
+)
 
 
 CONTRACT_SCHEMA = (
@@ -96,6 +115,12 @@ CAP_MANIFEST_SHA256 = (
     "a7e3203057f17467dfe50e5671ab51fa578b832d439305764895a7c845f0a9f8"
 )
 HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
+GitRunner = Callable[[Sequence[str], Path], bytes]
+BytesWriter = Callable[[Path, bytes], None]
+EncodingDetector = Callable[[bytes], str]
+AstParser = Callable[[str, str], ast.AST]
+_FORMAL_EXECUTION_GATE = object()
+_TEST_EXECUTION_GATE = object()
 CAP_MANIFEST: tuple[dict[str, Any], ...] = (
     {"manifest_index": 0, "path": "tartanair/__init__.py",
      "p0a_blob_bytes": 49, "maximum_shard_bytes": 1048576},
@@ -292,6 +317,1047 @@ def validate_frozen_capacity_constants() -> None:
         )
         if int(row["maximum_shard_bytes"]) != expected:
             raise DraftNotExecutable("P0B.1 per-shard cap formula drift")
+
+
+def canonical_object_sha256(value: Any) -> str:
+    return hashlib.sha256(canonical_json_bytes(value)).hexdigest()
+
+
+def false_claim_ceiling(contract: dict[str, Any]) -> dict[str, bool]:
+    return {
+        key: False
+        for key in contract["exact_artifact_schemas"][
+            "claim_ceiling_exact_keys"
+        ]
+    }
+
+
+def serialize_control_artifact(
+    name: str,
+    value: dict[str, Any],
+) -> bytes:
+    payload = canonical_json_bytes(value)
+    if len(payload) > CONTROL_ARTIFACT_MAXIMUM_BYTES:
+        raise ValueError(f"P0B.1 control artifact cap exceeded: {name}")
+    return payload
+
+
+def detect_source_encoding(blob: bytes) -> str:
+    encoding, _ = tokenize.detect_encoding(io.BytesIO(blob).readline)
+    return encoding
+
+
+def parse_source_ast(source: str, filename: str) -> ast.AST:
+    return ast.parse(source, filename=filename)
+
+
+def records_for_path(
+    observation: dict[str, Any],
+    key: str,
+    path: str,
+) -> list[dict[str, Any]]:
+    return [
+        copy.deepcopy(row)
+        for row in observation[key]
+        if row["source_path"] == path
+    ]
+
+
+def build_shards_from_p0b_observation(
+    contract: dict[str, Any],
+    closure: dict[str, Any],
+    observation: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Convert complete in-memory P0B evidence into deduplicated path shards."""
+    rows = closure["observation"]["closure_rows"]
+    if len(rows) != int(
+        contract["source_authority"]["exact_ordered_blob_count"]
+    ):
+        raise ValueError("P0B.1 closure blob count drift")
+    object_by_path = {
+        row["path"]: row for row in observation["object_receipts"]
+    }
+    parse_by_path = {
+        row["path"]: row for row in observation["parse_receipts"]
+    }
+    runtime_sha = canonical_object_sha256(contract["runtime_lock"])
+    algorithm_sha = canonical_object_sha256(contract["algorithm_lock"])
+    shards: list[dict[str, Any]] = []
+    aggregate_bytes = 0
+    for manifest_index, closure_row in enumerate(rows):
+        path = closure_row["path"]
+        if len(rows) == SHARD_COUNT and (
+            CAP_MANIFEST[manifest_index]["path"] != path
+            or CAP_MANIFEST[manifest_index]["p0a_blob_bytes"]
+            != int(closure_row["bytes"])
+        ):
+            raise ValueError("P0B.1 cap manifest source binding drift")
+        object_receipt = copy.deepcopy(object_by_path[path])
+        parse_receipt = parse_by_path[path]
+        nodes = records_for_path(
+            observation, "ast_node_receipts", path
+        )
+        node_map = {row["node_id"]: row for row in nodes}
+        for node in nodes:
+            node["canonical_ast_object"] = json.loads(
+                node.pop("canonical_ast_dump")
+            )
+        expressions = records_for_path(
+            observation, "expressions", path
+        )
+        for expression in expressions:
+            segment = expression.pop("source_segment")
+            expression.pop("canonical_ast_dump")
+            expression["source_segment_utf8_bytes"] = len(
+                segment.encode("utf-8")
+            )
+            expression["source_encoding"] = parse_receipt[
+                "detected_source_encoding"
+            ]
+        strings = records_for_path(
+            observation, "string_literals", path
+        )
+        for string in strings:
+            string["value_utf8_bytes"] = len(
+                string["value"].encode("utf-8")
+            )
+        calls = records_for_path(observation, "call_sites", path)
+        for call in calls:
+            call["callee_syntax_sha256"] = hashlib.sha256(
+                call["callee_syntax"].encode("utf-8")
+            ).hexdigest()
+            call["callee_syntax_utf8_bytes"] = len(
+                call["callee_syntax"].encode("utf-8")
+            )
+            call["source_segment_utf8_bytes"] = len(
+                call["source_segment"].encode("utf-8")
+            )
+            for field in ("callee_syntax", "source_segment"):
+                if call[f"{field}_utf8_bytes"] > int(
+                    contract["unchanged_extraction_limits"][
+                        "maximum_single_source_segment_utf8_bytes"
+                    ]
+                ):
+                    raise ValueError(
+                        f"P0B.1 retained call text cap exceeded: {field}"
+                    )
+        assignments = records_for_path(
+            observation, "assignments", path
+        )
+        for assignment in assignments:
+            for field in ("target_syntax", "value_syntax"):
+                assignment[f"{field}_sha256"] = hashlib.sha256(
+                    assignment[field].encode("utf-8")
+                ).hexdigest()
+                assignment[f"{field}_utf8_bytes"] = len(
+                    assignment[field].encode("utf-8")
+                )
+            assignment["source_segment_utf8_bytes"] = len(
+                assignment["source_segment"].encode("utf-8")
+            )
+            for field in (
+                "target_syntax",
+                "value_syntax",
+                "source_segment",
+            ):
+                if assignment[f"{field}_utf8_bytes"] > int(
+                    contract["unchanged_extraction_limits"][
+                        "maximum_single_source_segment_utf8_bytes"
+                    ]
+                ):
+                    raise ValueError(
+                        "P0B.1 retained assignment text cap exceeded: "
+                        f"{field}"
+                    )
+        functions = records_for_path(
+            observation, "functions", path
+        )
+        imports = records_for_path(
+            observation, "import_aliases", path
+        )
+        for import_record in imports:
+            node = node_map[import_record["node_id"]]
+            import_record["col_offset"] = node["col_offset"]
+            import_record["end_col_offset"] = node["end_col_offset"]
+        counts = {
+            "ast_nodes": len(nodes),
+            "expressions": len(expressions),
+            "strings": len(strings),
+            "calls": len(calls),
+            "assignments": len(assignments),
+            "functions": len(functions),
+            "imports": len(imports),
+        }
+        shard = {
+            "schema": SHARD_SCHEMA,
+            "status": "AST_SEMANTIC_SHARD_LOCKED",
+            "manifest_index": manifest_index,
+            "source_path": path,
+            "toolkit_commit": contract["source_authority"][
+                "toolkit_commit"
+            ],
+            "git_blob_oid": closure_row["git_blob_oid"],
+            "source_blob_bytes": closure_row["bytes"],
+            "source_blob_sha256": closure_row["sha256"],
+            "detected_source_encoding": parse_receipt[
+                "detected_source_encoding"
+            ],
+            "parse_status": parse_receipt["ast_parse_status"],
+            "ast_node_count": parse_receipt["ast_node_count"],
+            "maximum_ast_depth": parse_receipt["maximum_ast_depth"],
+            "runtime_lock_sha256": runtime_sha,
+            "algorithm_lock_sha256": algorithm_sha,
+            "object_receipt": object_receipt,
+            "node_receipts": nodes,
+            "expression_records": expressions,
+            "string_literal_records": strings,
+            "call_site_records": calls,
+            "assignment_records": assignments,
+            "function_records": functions,
+            "import_alias_records": imports,
+            "record_counts": counts,
+        }
+        shard_bytes = canonical_json_bytes(shard)
+        maximum = int(
+            CAP_MANIFEST[manifest_index]["maximum_shard_bytes"]
+        )
+        if len(shard_bytes) > maximum:
+            raise ValueError(
+                f"P0B.1 shard cap exceeded: {manifest_index}"
+            )
+        aggregate_bytes += len(shard_bytes)
+        shards.append(shard)
+    if aggregate_bytes > AGGREGATE_SHARD_MAXIMUM_BYTES:
+        raise ValueError("P0B.1 aggregate shard cap exceeded")
+    return shards
+
+
+def extract_sharded_evidence(
+    contract: dict[str, Any],
+    p0b_contract: dict[str, Any],
+    closure: dict[str, Any],
+    toolkit: Path,
+    *,
+    git_runner: GitRunner,
+    encoding_detector: EncodingDetector = detect_source_encoding,
+    parser: AstParser = parse_source_ast,
+) -> tuple[str, dict[str, Any] | list[dict[str, Any]]]:
+    """Read each bound blob once and build all proposed shards in memory."""
+    closure_observation = closure["observation"]
+    if (
+        closure_observation["dynamic_import_call_count"] != 0
+        or closure_observation[
+            "indirect_dynamic_import_or_exec_count"
+        ] != 0
+    ):
+        return EVIDENCE_NOT_EVALUABLE, {
+            "reason": "p0a_dynamic_import_evidence_nonzero",
+            "source_blob_read_count": 0,
+            "object_receipt_count": 0,
+            "object_receipts": [],
+            "object_receipt_set_sha256": None,
+            "source_total_bytes": 0,
+            "failed_manifest_index": None,
+            "failed_path": None,
+            "detected_source_encoding": None,
+            "error_type": None,
+            "parse_receipt_count": 0,
+            "parse_receipts": [],
+            "parsed_prefix_ast_node_count": 0,
+            "parsed_prefix_maximum_ast_depth_observed": 0,
+            "parsed_prefix_string_literal_count": 0,
+            "parsed_prefix_call_site_count": 0,
+            "parsed_prefix_assignment_count": 0,
+            "parsed_prefix_function_count": 0,
+            "parsed_prefix_import_alias_count": 0,
+            "parsed_prefix_expression_count": 0,
+        }
+
+    rows = closure_observation["closure_rows"]
+    if [row["path"] for row in rows] != sorted(
+        row["path"] for row in rows
+    ):
+        raise ValueError("P0B.1 P0A closure row order drift")
+    if len(rows) != int(
+        contract["source_authority"]["exact_ordered_blob_count"]
+    ):
+        raise ValueError("P0B.1 P0A closure blob count drift")
+
+    p0b_rules = p0b_contract["frozen_extraction"]
+    p0b1_limits = contract["unchanged_extraction_limits"]
+    limit_bindings = {
+        "maximum_string_literal_records": (
+            "maximum_string_literal_records_global"
+        ),
+        "maximum_call_site_records": (
+            "maximum_call_site_records_global"
+        ),
+        "maximum_assignment_records": (
+            "maximum_assignment_records_global"
+        ),
+        "maximum_function_records": "maximum_function_records_global",
+        "maximum_import_alias_records": (
+            "maximum_import_alias_records_global"
+        ),
+        "maximum_expression_records": (
+            "maximum_expression_records_global"
+        ),
+        "maximum_ast_nodes": "maximum_ast_nodes_global",
+        "maximum_ast_depth": "maximum_ast_depth_per_blob",
+        "maximum_single_string_utf8_bytes": (
+            "maximum_single_string_utf8_bytes"
+        ),
+        "maximum_single_source_segment_utf8_bytes": (
+            "maximum_single_source_segment_utf8_bytes"
+        ),
+        "string_literal_role_classes": "string_literal_role_classes",
+    }
+    for p0b_key, p0b1_key in limit_bindings.items():
+        if p0b_rules[p0b_key] != p0b1_limits[p0b1_key]:
+            raise ValueError(
+                f"P0B.1 extraction-limit binding drift: {p0b1_key}"
+            )
+
+    object_receipts: list[dict[str, Any]] = []
+    verified_sources: list[tuple[dict[str, Any], bytes]] = []
+    commit = contract["source_authority"]["toolkit_commit"]
+    if commit != p0b_contract["source_boundary"]["toolkit_commit"]:
+        raise ValueError("P0B.1 toolkit commit binding drift")
+    for row in rows:
+        oid = str(row["git_blob_oid"])
+        if not re.fullmatch(r"[0-9a-f]{40}", oid):
+            raise ValueError("P0B.1 invalid blob OID")
+        actual_oid = git_runner(
+            ["rev-parse", f"{commit}:{row['path']}"], toolkit
+        ).decode("ascii").strip()
+        object_type = git_runner(
+            ["cat-file", "-t", oid], toolkit
+        ).decode("ascii").strip()
+        size_text = git_runner(
+            ["cat-file", "-s", oid], toolkit
+        ).decode("ascii").strip()
+        if not re.fullmatch(r"0|[1-9][0-9]*", size_text):
+            raise ValueError(
+                f"P0B.1 invalid object size: {row['path']}"
+            )
+        actual_size = int(size_text)
+        if (
+            actual_oid != oid
+            or object_type != "blob"
+            or actual_size != int(row["bytes"])
+        ):
+            raise ValueError(
+                f"P0B.1 object receipt mismatch: {row['path']}"
+            )
+        blob = git_runner(["cat-file", "blob", oid], toolkit)
+        actual_sha = hashlib.sha256(blob).hexdigest()
+        if len(blob) != actual_size or actual_sha != row["sha256"]:
+            raise ValueError(f"P0B.1 blob hash mismatch: {row['path']}")
+        object_receipts.append(
+            {
+                "path": row["path"],
+                "expected_git_blob_oid": oid,
+                "actual_commit_path_oid": actual_oid,
+                "git_object_type": object_type,
+                "expected_bytes": int(row["bytes"]),
+                "actual_object_size_bytes": actual_size,
+                "actual_content_bytes": len(blob),
+                "expected_sha256": row["sha256"],
+                "actual_content_sha256": actual_sha,
+            }
+        )
+        verified_sources.append((row, blob))
+
+    object_receipt_set_sha256 = hashlib.sha256(
+        canonical_json_bytes(object_receipts)
+    ).hexdigest()
+    detected_sources: list[
+        tuple[dict[str, Any], bytes, str | None, BaseException | None]
+    ] = []
+    for row, blob in verified_sources:
+        try:
+            encoding = encoding_detector(blob)
+            detected_sources.append((row, blob, encoding, None))
+        except (UnicodeError, SyntaxError) as error:
+            detected_sources.append((row, blob, None, error))
+
+    parse_receipts: list[dict[str, Any]] = []
+    strings: list[dict[str, Any]] = []
+    calls: list[dict[str, Any]] = []
+    assignments: list[dict[str, Any]] = []
+    functions: list[dict[str, Any]] = []
+    imports: list[dict[str, Any]] = []
+    expressions: list[dict[str, Any]] = []
+    node_receipts: list[dict[str, Any]] = []
+    total_ast_nodes = 0
+    maximum_ast_depth_observed = 0
+
+    def not_evaluable_payload(
+        manifest_index: int,
+        row: dict[str, Any],
+        encoding: str | None,
+        error: BaseException,
+    ) -> dict[str, Any]:
+        return {
+            "reason": (
+                "verified_source_incompatible_with_frozen_encoding_"
+                "or_ast_grammar"
+            ),
+            "source_blob_read_count": len(verified_sources),
+            "object_receipt_count": len(object_receipts),
+            "object_receipts": object_receipts,
+            "object_receipt_set_sha256": object_receipt_set_sha256,
+            "source_total_bytes": sum(
+                receipt["actual_content_bytes"]
+                for receipt in object_receipts
+            ),
+            "failed_manifest_index": manifest_index,
+            "failed_path": row["path"],
+            "detected_source_encoding": encoding,
+            "error_type": type(error).__name__,
+            "parse_receipt_count": len(parse_receipts),
+            "parse_receipts": parse_receipts,
+            "parsed_prefix_ast_node_count": total_ast_nodes,
+            "parsed_prefix_maximum_ast_depth_observed": (
+                maximum_ast_depth_observed
+            ),
+            "parsed_prefix_string_literal_count": len(strings),
+            "parsed_prefix_call_site_count": len(calls),
+            "parsed_prefix_assignment_count": len(assignments),
+            "parsed_prefix_function_count": len(functions),
+            "parsed_prefix_import_alias_count": len(imports),
+            "parsed_prefix_expression_count": len(expressions),
+        }
+
+    for manifest_index, (
+        row,
+        blob,
+        encoding,
+        detection_error,
+    ) in enumerate(detected_sources):
+        if detection_error is not None:
+            return (
+                EVIDENCE_NOT_EVALUABLE,
+                not_evaluable_payload(
+                    manifest_index,
+                    row,
+                    encoding,
+                    detection_error,
+                ),
+            )
+        assert encoding is not None
+        try:
+            source = blob.decode(encoding)
+            tree = parser(source, str(row["path"]))
+        except (UnicodeError, SyntaxError) as error:
+            return (
+                EVIDENCE_NOT_EVALUABLE,
+                not_evaluable_payload(
+                    manifest_index, row, encoding, error
+                ),
+            )
+        (
+            node_ids,
+            parents,
+            blob_node_receipts,
+            edge_node_ids_by_node,
+            node_count,
+            depth,
+        ) = index_ast(
+            str(row["path"]),
+            tree,
+            int(p0b_rules["maximum_ast_depth"]),
+        )
+        if (
+            total_ast_nodes + node_count
+            > int(p0b_rules["maximum_ast_nodes"])
+        ):
+            raise ValueError("P0B.1 global AST node cap exceeded")
+        visitor = EvidenceVisitor(
+            str(row["path"]),
+            source,
+            p0b_rules,
+            node_ids,
+            parents,
+            edge_node_ids_by_node,
+        )
+        visitor.visit(tree)
+        additions = (
+            (
+                strings,
+                visitor.strings,
+                "maximum_string_literal_records",
+            ),
+            (calls, visitor.calls, "maximum_call_site_records"),
+            (
+                assignments,
+                visitor.assignments,
+                "maximum_assignment_records",
+            ),
+            (
+                functions,
+                visitor.functions,
+                "maximum_function_records",
+            ),
+            (
+                imports,
+                visitor.imports,
+                "maximum_import_alias_records",
+            ),
+            (
+                expressions,
+                visitor.expressions,
+                "maximum_expression_records",
+            ),
+        )
+        for existing, added, cap_name in additions:
+            if len(existing) + len(added) > int(
+                p0b_rules[cap_name]
+            ):
+                raise ValueError(
+                    f"P0B.1 evidence record cap exceeded: {cap_name}"
+                )
+        total_ast_nodes += node_count
+        maximum_ast_depth_observed = max(
+            maximum_ast_depth_observed, depth
+        )
+        node_receipts.extend(blob_node_receipts)
+        parse_receipts.append(
+            {
+                "path": row["path"],
+                "git_blob_oid": row["git_blob_oid"],
+                "detected_source_encoding": encoding,
+                "ast_parse_status": "PARSED",
+                "ast_node_count": node_count,
+                "maximum_ast_depth": depth,
+            }
+        )
+        for existing, added, _ in additions:
+            existing.extend(added)
+
+    preorder_by_node_id = {
+        row["node_id"]: int(row["preorder_index"])
+        for row in node_receipts
+    }
+    for records in (
+        strings,
+        calls,
+        assignments,
+        functions,
+        imports,
+        expressions,
+    ):
+        records.sort(
+            key=lambda row: (
+                preorder_by_node_id[row["node_id"]],
+                canonical_json_bytes(row),
+            )
+        )
+    observation = {
+        "object_receipt_count": len(object_receipts),
+        "object_receipt_set_sha256": object_receipt_set_sha256,
+        "object_receipts_completed_before_ast_extraction": True,
+        "object_receipts": object_receipts,
+        "parse_receipt_count": len(parse_receipts),
+        "parse_receipts": parse_receipts,
+        "source_total_bytes": sum(
+            row["actual_content_bytes"] for row in object_receipts
+        ),
+        "ast_node_count": total_ast_nodes,
+        "maximum_ast_depth_observed": maximum_ast_depth_observed,
+        "ast_node_receipts": node_receipts,
+        "string_literals": strings,
+        "call_sites": calls,
+        "assignments": assignments,
+        "functions": functions,
+        "import_aliases": imports,
+        "expressions": expressions,
+    }
+    return (
+        EVIDENCE_LOCKED,
+        build_shards_from_p0b_observation(
+            contract, closure, observation
+        ),
+    )
+
+
+def artifact_state(root: Path) -> set[str]:
+    if not root.exists():
+        return set()
+    return {path.name for path in root.iterdir()}
+
+
+def build_index(
+    contract: dict[str, Any],
+    closure: dict[str, Any],
+    shards: list[dict[str, Any]],
+    *,
+    attempt_sha256: str,
+    preflight_sha256: str,
+) -> dict[str, Any]:
+    index_rows: list[dict[str, Any]] = []
+    global_counts = {
+        key: 0
+        for key in (
+            "ast_nodes",
+            "expressions",
+            "strings",
+            "calls",
+            "assignments",
+            "functions",
+            "imports",
+        )
+    }
+    aggregate = 0
+    for shard in shards:
+        content = canonical_json_bytes(shard)
+        aggregate += len(content)
+        for key, count in shard["record_counts"].items():
+            global_counts[key] += int(count)
+        index_rows.append(
+            {
+                "manifest_index": shard["manifest_index"],
+                "source_path": shard["source_path"],
+                "shard_filename": shard_filename(
+                    shard["manifest_index"]
+                ),
+                "bytes": len(content),
+                "sha256": hashlib.sha256(content).hexdigest(),
+                "record_counts": shard["record_counts"],
+                "maximum_ast_depth": shard["maximum_ast_depth"],
+                "maximum_shard_bytes": CAP_MANIFEST[
+                    shard["manifest_index"]
+                ]["maximum_shard_bytes"],
+            }
+        )
+    return {
+        "schema": INDEX_SCHEMA,
+        "status": "SHARDED_AST_SEMANTIC_EVIDENCE_LOCKED",
+        "attempt_sha256": attempt_sha256,
+        "preflight_sha256": preflight_sha256,
+        "toolkit_commit": contract["source_authority"]["toolkit_commit"],
+        "p0a_manifest_sha256": contract["source_authority"][
+            "exact_ordered_row_manifest_sha256"
+        ],
+        "object_receipt_set_sha256": hashlib.sha256(
+            canonical_json_bytes(
+                [shard["object_receipt"] for shard in shards]
+            )
+        ).hexdigest(),
+        "runtime_lock_sha256": canonical_object_sha256(
+            contract["runtime_lock"]
+        ),
+        "algorithm_lock_sha256": canonical_object_sha256(
+            contract["algorithm_lock"]
+        ),
+        "cap_manifest_sha256": CAP_MANIFEST_SHA256,
+        "shards": index_rows,
+        "aggregate_shard_bytes": aggregate,
+        "global_record_counts": global_counts,
+        "global_maximum_ast_depth": max(
+            shard["maximum_ast_depth"] for shard in shards
+        ),
+    }
+
+
+def observed_artifacts(root: Path) -> list[dict[str, Any]]:
+    rows = []
+    if not root.exists():
+        return rows
+    for path in sorted(root.iterdir(), key=lambda item: item.name):
+        if path.name == FAILURE_FILENAME:
+            continue
+        if not path.is_file():
+            raise ValueError("P0B.1 nonregular top-level artifact")
+        rows.append(
+            {
+                "name": path.name,
+                "bytes": path.stat().st_size,
+                "sha256": sha256(path),
+            }
+        )
+    return rows
+
+
+def execute_with_context(
+    contract: dict[str, Any],
+    p0b_contract: dict[str, Any],
+    closure: dict[str, Any],
+    toolkit: Path,
+    root: Path,
+    *,
+    git_runner: GitRunner,
+    writer: BytesWriter = write_bytes_exclusive_fsync,
+    execution_gate: object | None = None,
+) -> dict[str, Any]:
+    """Gated execution core; raw draft dictionaries are never sufficient."""
+    if execution_gate is _TEST_EXECUTION_GATE:
+        resolved_repo = repo_root().resolve()
+        resolved_root = root.resolve()
+        resolved_toolkit = toolkit.resolve()
+        if (
+            resolved_root == (resolved_repo / CANONICAL_ROOT).resolve()
+            or resolved_repo in resolved_root.parents
+            or resolved_repo in resolved_toolkit.parents
+        ):
+            raise DraftNotExecutable(
+                "P0B.1 test gate accepts only non-repository temporary paths"
+            )
+    elif execution_gate is not _FORMAL_EXECUTION_GATE:
+        raise DraftNotExecutable(
+            "P0B.1 execution core requires validated executable authority"
+        )
+    root.mkdir(parents=True, exist_ok=False)
+    contract_path = repo_root() / CONTRACT_RELATIVE_PATH
+    attempt = {
+        "schema": ATTEMPT_SCHEMA,
+        "status": "ATTEMPT_FSYNCED_BEFORE_FIRST_SOURCE_BLOB_READ",
+        "execution_contract_sha256": (
+            sha256(contract_path) if contract_path.is_file() else "0" * 64
+        ),
+        "p0b1_design_sha256": DESIGN_SHA256,
+        "p0b_invalid_result_sha256": contract["parents"][
+            "p0b_invalid_result"
+        ]["sha256"],
+        "p0a_closure_sha256": contract["source_authority"][
+            "p0a_closure_artifact"
+        ]["sha256"],
+        "toolkit_commit": contract["source_authority"]["toolkit_commit"],
+        "new_git_fetch_or_network_authorized": False,
+        "dataset_host_request_authorized": False,
+        "old_p0b_root_reopen_authorized": False,
+    }
+    try:
+        writer(
+            root / ATTEMPT_FILENAME,
+            serialize_control_artifact(ATTEMPT_FILENAME, attempt),
+        )
+        preflight = {
+            "schema": PREFLIGHT_SCHEMA,
+            "status": "LOCAL_BINDINGS_VALIDATED_BEFORE_FIRST_SOURCE_BLOB_READ",
+            "attempt_sha256": sha256(root / ATTEMPT_FILENAME),
+            "execution_commit": contract.get(
+                "draft_execution_commit", "TEST_CONTEXT"
+            ),
+            "head_equal_origin_master": True,
+            "tracked_clean": True,
+            "new_canonical_root_absent_before_attempt": True,
+            "p0a_terminal_validated": True,
+            "p0b_invalid_terminal_validated": True,
+            "exact_blob_count": len(
+                closure["observation"]["closure_rows"]
+            ),
+            "exact_total_source_bytes": sum(
+                int(row["bytes"])
+                for row in closure["observation"]["closure_rows"]
+            ),
+            "exact_ordered_row_manifest_sha256": contract[
+                "source_authority"
+            ]["exact_ordered_row_manifest_sha256"],
+            "runtime_lock": contract["runtime_lock"],
+            "runtime_lock_sha256": canonical_object_sha256(
+                contract["runtime_lock"]
+            ),
+            "algorithm_lock_sha256": canonical_object_sha256(
+                contract["algorithm_lock"]
+            ),
+            "new_git_fetch_or_network_made": False,
+            "dataset_host_request_made": False,
+        }
+        writer(
+            root / PREFLIGHT_FILENAME,
+            serialize_control_artifact(PREFLIGHT_FILENAME, preflight),
+        )
+        terminal, payload = extract_sharded_evidence(
+            contract,
+            p0b_contract,
+            closure,
+            toolkit,
+            git_runner=git_runner,
+        )
+        if terminal == EVIDENCE_NOT_EVALUABLE:
+            not_evaluable = {
+                "schema": NOT_EVALUABLE_SCHEMA,
+                "terminal": terminal,
+                "attempt_sha256": sha256(root / ATTEMPT_FILENAME),
+                "preflight_sha256": sha256(root / PREFLIGHT_FILENAME),
+                "toolkit_commit": contract["source_authority"][
+                    "toolkit_commit"
+                ],
+                "reason_class": payload["reason"],
+                "source_blob_read_count": payload.get(
+                    "source_blob_read_count",
+                    payload.get("object_receipt_count", 0),
+                ),
+                "object_receipt_count": payload.get(
+                    "object_receipt_count", 0
+                ),
+                "object_receipts": payload.get("object_receipts", []),
+                "object_receipt_set_sha256": payload.get(
+                    "object_receipt_set_sha256"
+                ),
+                "source_total_bytes": payload.get("source_total_bytes", 0),
+                "manifest_index": payload.get("failed_manifest_index"),
+                "source_path": payload.get("failed_path"),
+                "detected_source_encoding": payload.get(
+                    "detected_source_encoding"
+                ),
+                "parse_status": (
+                    None
+                    if payload["reason"]
+                    == "p0a_dynamic_import_evidence_nonzero"
+                    else "ENCODING_DETECTION_FAILED"
+                    if payload.get("detected_source_encoding") is None
+                    else "SOURCE_DECODE_FAILED"
+                    if payload.get("error_type")
+                    in {"UnicodeDecodeError", "UnicodeError"}
+                    else "AST_PARSE_FAILED"
+                ),
+                "error_type": payload.get("error_type"),
+                "parse_receipt_count": payload.get(
+                    "parse_receipt_count", 0
+                ),
+                "parse_receipts": payload.get("parse_receipts", []),
+                "prefix_ast_node_count": payload.get(
+                    "parsed_prefix_ast_node_count", 0
+                ),
+                "prefix_maximum_ast_depth": payload.get(
+                    "parsed_prefix_maximum_ast_depth_observed", 0
+                ),
+                "prefix_string_count": payload.get(
+                    "parsed_prefix_string_literal_count", 0
+                ),
+                "prefix_call_count": payload.get(
+                    "parsed_prefix_call_site_count", 0
+                ),
+                "prefix_assignment_count": payload.get(
+                    "parsed_prefix_assignment_count", 0
+                ),
+                "prefix_function_count": payload.get(
+                    "parsed_prefix_function_count", 0
+                ),
+                "prefix_import_count": payload.get(
+                    "parsed_prefix_import_alias_count", 0
+                ),
+                "prefix_expression_count": payload.get(
+                    "parsed_prefix_expression_count", 0
+                ),
+                "new_git_fetch_or_network_made": False,
+                "dataset_host_request_made": False,
+            }
+            if set(not_evaluable) != set(
+                contract["exact_artifact_schemas"][
+                    "not_evaluable_json_exact_keys"
+                ]
+            ):
+                raise ValueError(
+                    "P0B.1 not-evaluable exact schema mismatch"
+                )
+            writer(
+                root / NOT_EVALUABLE_FILENAME,
+                serialize_control_artifact(
+                    NOT_EVALUABLE_FILENAME, not_evaluable
+                ),
+            )
+            result = {
+                "schema": RESULT_SCHEMA,
+                "terminal": terminal,
+                "attempt_sha256": sha256(root / ATTEMPT_FILENAME),
+                "preflight_sha256": sha256(root / PREFLIGHT_FILENAME),
+                "index_sha256": None,
+                "not_evaluable_sha256": sha256(
+                    root / NOT_EVALUABLE_FILENAME
+                ),
+                "toolkit_commit": contract["source_authority"][
+                    "toolkit_commit"
+                ],
+                "exact_blob_count": len(
+                    closure["observation"]["closure_rows"]
+                ),
+                "aggregate_shard_bytes": 0,
+                "global_record_counts": None,
+                "provider_resolution_performed": False,
+                "dataset_host_request_made": False,
+                "source_evidence_role": (
+                    "CONSUMED_SOURCE_RECOVERY_NOT_FRESH_VALIDATION"
+                ),
+                "next_authority": (
+                    "STOP_PROVIDER_RESOLUTION_SOURCE_EVIDENCE_"
+                    "NOT_EVALUABLE"
+                ),
+                "p0c_execution_authorized_automatically": False,
+                "claim_ceiling": false_claim_ceiling(contract),
+            }
+            writer(
+                root / RESULT_FILENAME,
+                serialize_control_artifact(RESULT_FILENAME, result),
+            )
+            from validate_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
+                validate_not_evaluable_terminal,
+            )
+
+            return validate_not_evaluable_terminal(
+                root, contract, contract_path, closure
+            )
+        shards = payload
+        from validate_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
+            load_json_strict,
+            validate_locked_terminal,
+            validate_shard,
+        )
+
+        serialized_shards: list[bytes] = []
+        for manifest_index, shard in enumerate(shards):
+            validate_shard(
+                shard,
+                contract,
+                closure["observation"]["closure_rows"][manifest_index],
+                manifest_index,
+            )
+            content = canonical_json_bytes(shard)
+            if len(content) > int(
+                CAP_MANIFEST[manifest_index]["maximum_shard_bytes"]
+            ):
+                raise ValueError(
+                    f"P0B.1 shard cap exceeded: {manifest_index}"
+                )
+            serialized_shards.append(content)
+        if (
+            sum(len(content) for content in serialized_shards)
+            > AGGREGATE_SHARD_MAXIMUM_BYTES
+        ):
+            raise ValueError("P0B.1 aggregate shard cap exceeded")
+        for shard, content in zip(
+            shards, serialized_shards, strict=True
+        ):
+            writer(
+                root / shard_filename(shard["manifest_index"]),
+                content,
+            )
+        durable_shards = []
+        for manifest_index in range(len(shards)):
+            path = root / shard_filename(manifest_index)
+            durable = load_json_strict(
+                path,
+                int(
+                    CAP_MANIFEST[manifest_index][
+                        "maximum_shard_bytes"
+                    ]
+                ),
+            )
+            validate_shard(
+                durable,
+                contract,
+                closure["observation"]["closure_rows"][manifest_index],
+                manifest_index,
+            )
+            durable_shards.append(durable)
+        index = build_index(
+            contract,
+            closure,
+            durable_shards,
+            attempt_sha256=sha256(root / ATTEMPT_FILENAME),
+            preflight_sha256=sha256(root / PREFLIGHT_FILENAME),
+        )
+        writer(
+            root / INDEX_FILENAME,
+            serialize_control_artifact(INDEX_FILENAME, index),
+        )
+        durable_index = load_json_strict(
+            root / INDEX_FILENAME, CONTROL_ARTIFACT_MAXIMUM_BYTES
+        )
+        recomputed_index = build_index(
+            contract,
+            closure,
+            durable_shards,
+            attempt_sha256=sha256(root / ATTEMPT_FILENAME),
+            preflight_sha256=sha256(root / PREFLIGHT_FILENAME),
+        )
+        if durable_index != recomputed_index:
+            raise ValueError("P0B.1 durable index validation failed")
+        result = {
+            "schema": RESULT_SCHEMA,
+            "terminal": EVIDENCE_LOCKED,
+            "attempt_sha256": sha256(root / ATTEMPT_FILENAME),
+            "preflight_sha256": sha256(root / PREFLIGHT_FILENAME),
+            "index_sha256": sha256(root / INDEX_FILENAME),
+            "not_evaluable_sha256": None,
+            "toolkit_commit": contract["source_authority"][
+                "toolkit_commit"
+            ],
+            "exact_blob_count": len(shards),
+            "aggregate_shard_bytes": durable_index[
+                "aggregate_shard_bytes"
+            ],
+            "global_record_counts": durable_index[
+                "global_record_counts"
+            ],
+            "provider_resolution_performed": False,
+            "dataset_host_request_made": False,
+            "source_evidence_role": (
+                "CONSUMED_SOURCE_RECOVERY_NOT_FRESH_VALIDATION"
+            ),
+            "next_authority": (
+                "FREEZE_SEPARATE_HASH_BOUND_P0C_PROVIDER_"
+                "RESOLUTION_CONTRACT"
+            ),
+            "p0c_execution_authorized_automatically": False,
+            "claim_ceiling": false_claim_ceiling(contract),
+        }
+        writer(
+            root / RESULT_FILENAME,
+            serialize_control_artifact(RESULT_FILENAME, result),
+        )
+        return validate_locked_terminal(
+            root, contract, contract_path, closure
+        )
+    except BaseException as error:
+        from validate_stage_c_d5_s0b_p0b1_sharded_semantic_evidence import (
+            TerminalValidationError,
+            validate_attempt_preflight,
+            validate_locked_terminal,
+            validate_not_evaluable_terminal,
+        )
+
+        for normal_validator in (
+            validate_locked_terminal,
+            validate_not_evaluable_terminal,
+        ):
+            try:
+                return normal_validator(
+                    root, contract, contract_path, closure
+                )
+            except (OSError, TerminalValidationError):
+                pass
+        if root.exists() and not (root / FAILURE_FILENAME).exists():
+            try:
+                validate_attempt_preflight(
+                    root, contract, contract_path, closure
+                )
+                reason = f"{type(error).__name__}: {error}"
+                failure = {
+                    "schema": FAILURE_SCHEMA,
+                    "terminal": EVIDENCE_INVALID,
+                    "reason_class": reason[:1024],
+                    "attempt_sha256": sha256(
+                        root / ATTEMPT_FILENAME
+                    ),
+                    "execution_contract_sha256": sha256(contract_path),
+                    "observed_artifacts": observed_artifacts(root),
+                    "resume_or_rerun_authorized": False,
+                    "source_reread_authorized": False,
+                    "new_git_fetch_or_network_made": False,
+                    "dataset_host_request_made": False,
+                }
+                writer(
+                    root / FAILURE_FILENAME,
+                    serialize_control_artifact(
+                        FAILURE_FILENAME, failure
+                    ),
+                )
+            except BaseException:
+                pass
+        raise
 
 
 def load_contract_fail_closed(contract_path: Path) -> dict[str, Any]:

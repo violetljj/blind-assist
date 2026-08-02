@@ -4363,3 +4363,24 @@
   `05921dd875576a13397e8eb7ac55df1920c5347be69863c1eee8e1c634a66449`、
   `acf8b1239d12091870e940c3403d9e69fa945f63bc666f3fd39a59d949b6e70b`、
   `487c31c5f3121e5e1c8ac89baba1342c53dd500d85f96a59ec13fbfcfe9963c7`。
+
+## 2026-08-02：HFTF D5-S0B-P0B.1 semantic/durability implementation checkpoint
+
+- P0B.1 已有独立 sharded extractor；只复用 P0B 的纯 AST indexing/visitor kernel，
+  不调用旧 P0B monolithic `extract_evidence`、execute、terminal validator 或 writer。
+  exact 18-row 测试证明顺序为全部 blob/OID/type/size/SHA receipts 完成并冻结 set hash，
+  再检测全部 18 个 encoding，最后才开始首次 parse；每个 blob 只读一次且无 network。
+- 新增 fail-closed terminal validator：首个 shard 写入前验证 18 个完整序列化 payload 的
+  exact schema、node ID、parent/edge、canonical DFS、same-shard references、one-to-one
+  expression/string/call/assignment/function/import coverage、record/global/shard/aggregate
+  caps；写完后从 durable shards 重验，index 写后再重验 hash/count/depth chain。
+- 两个正常 result 均固定 consumed-source recovery role、8-key 全 false claim ceiling
+  与 `p0c_execution_authorized_automatically=false`。只有 LOCKED 可要求另冻独立
+  hash-bound P0C contract；NOT_EVALUABLE 必须 stop。syntax/encoding terminal 绑定
+  exact failed manifest row、encoding state、18/18 object receipts 与 parse-prefix；
+  dynamic reason 保持 0 source reads/receipts。
+- 所有 control artifacts 有独立 1 MiB serialization cap；四个规定 write/fsync
+  interruption 点均生成 raw-byte/hash-bound INVALID terminal，不 resume、不 source
+  reread。raw execution core 无 validated gate 会拒绝，test gate 也拒绝 repo/canonical
+  路径。focused tests `18/18`、绑定运行时下 HFTF full suite `520/520`；正式
+  canonical P0B.1 root 仍不存在，本 checkpoint 不授权 source reread 或正式执行。

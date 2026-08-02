@@ -395,6 +395,9 @@
       "global_record_counts",
       "provider_resolution_performed",
       "dataset_host_request_made",
+      "source_evidence_role",
+      "next_authority",
+      "p0c_execution_authorized_automatically",
       "claim_ceiling"
     ],
     "failure_json_exact_keys": [
@@ -723,7 +726,7 @@
   },
   "classification": {
     "verified_source_incompatible_with_frozen_encoding_or_ast_grammar": "source_not_evaluable",
-    "p0a_dynamic_evidence_nonzero": "source_not_evaluable",
+    "p0a_dynamic_import_evidence_nonzero": "source_not_evaluable",
     "receipt_hash_oid_type_size_fetch_head_runtime_algorithm_cap_schema_reference_coverage_partial_or_implementation_failure": "execution_invalid",
     "zero_one_or_multiple_url_literals": "evidence_locked_without_provider_conclusion"
   },
