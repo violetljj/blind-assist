@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D27
+  THOR-MAGNI kinematic information-ceiling oracle。prediction 两臂均不读未来：
+  current-static 冻结其他人体当前位置，history-kinematic 只用 anchor 前 0.4s
+  世界位置估计恒速；truth 仍为 D26 的真实未来轨迹。2,927 个 current-body
+  observations 中 2,787 个有历史速度，coverage `95.22%`。history 相对 static
+  的 source-macro direction×horizon AUROC/AP 为 `+.10833/+.17781`，
+  safest-direction accuracy `+.13955`，pooled AUROC/AP
+  `+.09163/+.24982`；五折全部为正。left/center/right AUROC 分别
+  `+.11345/+.08086/+.13069`，AP `+.16539/+.17820/+.18985`，三方向均
+  5/5 folds 正。冻结 gate 11/11 通过，终态
+  `D27_THOR_MAGNI_HISTORY_KINEMATIC_INFORMATION_CEILING_SUPPORTED`。
+  这建立强 source-native history-motion information ceiling，定位 D26 瓶颈为
+  whole-frame RGB dense-flow 没有恢复 object-centric motion；不撤销 D26 RGB
+  总体负结果，也不升级为系统效用。下一学生直接蒸馏 current-static 与
+  history-kinematic distance fields，不再让 full-truth loss 自行发现运动；主线、
+  默认 App 与安全权限不变。
 - 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D26
   THOR-MAGNI counterfactual collision field canary。对 530 个 current-clear
   anchors 生成 `-30°/0°/+30°` 恒速候选路径，与其他人体的真实未来世界轨迹计算
