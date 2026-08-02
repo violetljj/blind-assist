@@ -168,7 +168,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "",
         "## 11. Fixed-model learning-curve plan",
         "",
-        f"- Status: `{learning_curve.get('status', 'UNKNOWN')}`; sizes: `{learning_curve.get('train_event_counts', [])}`; seeds per size: `{learning_curve.get('seeds_per_size', 0)}`.",
+        f"- Status: `{learning_curve.get('status', 'UNKNOWN')}`; sizes: `{learning_curve.get('training_event_counts', [])}`; seeds per size: `{learning_curve.get('seeds_per_count', 0)}`.",
         "- YOLO/HFTF/threshold/confirmation-length/backbone changes remain unauthorized before dataset completion.",
         "",
         "## 12. 10,000-event target",
