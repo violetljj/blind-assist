@@ -37,6 +37,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
+import java.io.InputStream
 import java.security.MessageDigest
 
 /**
@@ -90,6 +91,10 @@ class D45ArCorePersonMeasurementCanaryTest {
             instrumentation.targetContext,
             TfliteYoloDetector.MODEL_ASSET
         )
+        val targetApk = File(instrumentation.targetContext.applicationInfo.sourceDir)
+        val instrumentationApk = File(instrumentation.context.applicationInfo.sourceDir)
+        val targetApkSha256 = fileSha256(targetApk)
+        val instrumentationApkSha256 = fileSha256(instrumentationApk)
         val activity = instrumentation.startActivitySync(
             Intent(instrumentation.targetContext, UstrfArCoreBenchmarkActivity::class.java)
                 .putExtra(
@@ -378,6 +383,11 @@ class D45ArCorePersonMeasurementCanaryTest {
                 .put("build_fingerprint", Build.FINGERPRINT)
                 .put("android_sdk_int", Build.VERSION.SDK_INT)
                 .put("android_release", Build.VERSION.RELEASE))
+            .put("build", JSONObject()
+                .put("target_apk_bytes", targetApk.length())
+                .put("target_apk_sha256", targetApkSha256)
+                .put("instrumentation_apk_bytes", instrumentationApk.length())
+                .put("instrumentation_apk_sha256", instrumentationApkSha256))
             .put("source", JSONObject()
                 .put("arcore_availability", availability.name)
                 .put("arcore_sdk_dependency_version", ARCORE_SDK_VERSION)
@@ -454,6 +464,7 @@ class D45ArCorePersonMeasurementCanaryTest {
             .put("evidence_boundary", JSONObject()
                 .put("benchmark_only", true)
                 .put("app_runtime_involved", false)
+                .put("risk_feedback_invocation_count", 0)
                 .put("raster_pixels_persisted", false)
                 .put("camera_images_persisted", false)
                 .put("person_boxes_persisted", false)
@@ -524,11 +535,22 @@ class D45ArCorePersonMeasurementCanaryTest {
     }
 
     private fun assetSha256(context: Context, assetName: String): String {
+        return context.assets.open(assetName).use(::sha256)
+    }
+
+    private fun fileSha256(file: File): String {
+        check(file.isFile && file.length() > 0L) {
+            "D45 build binding APK is unavailable"
+        }
+        return file.inputStream().buffered().use(::sha256)
+    }
+
+    private fun sha256(input: InputStream): String {
         val digest = MessageDigest.getInstance("SHA-256")
-        context.assets.open(assetName).use { input ->
+        input.use {
             val buffer = ByteArray(HASH_BUFFER_BYTES)
             while (true) {
-                val count = input.read(buffer)
+                val count = it.read(buffer)
                 if (count < 0) break
                 digest.update(buffer, 0, count)
             }

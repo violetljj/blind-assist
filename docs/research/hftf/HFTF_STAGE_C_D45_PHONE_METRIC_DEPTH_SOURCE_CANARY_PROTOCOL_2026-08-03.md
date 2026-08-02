@@ -2,7 +2,7 @@
 
 状态：
 
-`STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN_R0_1`
+`STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN_R0_2`
 
 ## 单一问题
 
@@ -98,6 +98,32 @@ center 的 `1/2/3/5 m` 四个距离；每个距离至少 20 个 accepted observa
 - latency P95 `<=150 ms`；
 - eligible 7-point history availability `>=0.50`；
 - 无任何 risk/feedback invocation，baseline artifact hash 不变。
+
+### R0.2 pre-outcome executable aggregation clarification
+
+在没有 device/person outcome 时，把上面的 fixed report/gates 明确成唯一可执行
+aggregation：
+
+- 只显式读取 1/2/3/5 m 各一个 receipt；不得扫描目录后挑选 run；
+- 四个 receipt 必须是同一 device、target/test APK、camera/rotation 与 detector
+  asset/backend；
+- overall absolute/relative error 和 latency 从四个 receipt 的 accepted scalar
+  observations 合并后计算，不取 four-summary mean；
+- overall accepted-person coverage 固定为
+  `sum(accepted observations) / sum(exact-single-person frames)`；
+- history availability 固定为
+  `sum(available forecasts) / sum(eligible windows)`；
+- median/P90/P95 固定 linear rank `(n-1)` interpolation；
+- bounded scalar 必须与 receipt aggregate 重算一致；
+- frozen baseline App SHA-256 为
+  `afa7a774b9f47074b2bf2e59755e712e92421484140789513578b32b68f0f149`。
+
+缺距离、malformed/oversized JSON、cross-build binding mismatch 或 baseline
+mismatch 都是 recoverable control-plane state，必须保持
+`scientific_terminal=null`，不得映射为 `NOT_SUPPORTED`，也不得占用最终
+non-overwriting report path。只有四距离完整且输入合法时才执行科学终态。
+
+R0.2 不改变 source、sampler、history solver、threshold 或 gate，只消除实现歧义。
 
 ## 终态
 

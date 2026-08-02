@@ -5551,3 +5551,16 @@
   receipt。缺 reference 参数时 test SKIP；source/detector/registration 不可用
   仍为 `NOT_EVALUABLE_*`，四距离完成前不产生总终态。默认 App 与主线均不接
   ARCore/D45，当前无 ADB 设备，D35 不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D45
+  recoverable four-distance aggregation R0.5，仍未读取 device/person outcome、
+  未新增 gate。measurement runner receipt 现在记录 target/test APK 内容哈希与
+  `risk_feedback_invocation_count=0`；host reader 只接受显式的 1/2/3/5 m 小
+  receipt，strict 校验 UTF-8 JSON、duplicate key、finite scalar、size ceiling、
+  bounded arrays、recomputed error 及同 device/build/camera/detector binding。
+  overall error/latency 固定 pooled accepted observations，coverage/history
+  固定 ratio-of-sums。10/10 host tests 与 24/24 focused JVM tests 通过，
+  benchmark/test APK 编译成功。缺距离、malformed input、跨构建和 baseline
+  mismatch 均固定 `scientific_terminal=null` 且不创建最终 output；修复后可
+  重跑，不能烧毁 D45。default App APK hash 仍为
+  `afa7a774b9f47074b2bf2e59755e712e92421484140789513578b32b68f0f149`；
+  当前无 ADB 设备，科学终态、主线、默认 App 与 D35 均不变。

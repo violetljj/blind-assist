@@ -3,7 +3,7 @@
 日期：2026-08-03
 
 执行状态：
-`D45_SOURCE_REGISTRATION_AND_PERSON_MEASUREMENT_RUNNER_READY_FOR_DEVICE_EXECUTION`
+`D45_SOURCE_REGISTRATION_PERSON_MEASUREMENT_AND_AGGREGATION_READY_FOR_DEVICE_EXECUTION`
 
 科学终态：`D45_NOT_EVALUATED_NO_READY_DEVICE`
 
@@ -116,6 +116,46 @@ ARCore 官方坐标合同明确：
 
 R0.4 没有增加支持门；它只实现已冻结的 1/2/3/5 m contract。
 
+## R0.5 recoverable four-distance aggregation
+
+在任何 device/person outcome 前，新增 host-only
+`aggregate_stage_c_d45_phone_metric_depth_canary.py`，把协议中已经冻结的支持门
+实现为一个小型、可测试的 reader：
+
+- 只接受显式传入的最多 4 个 `<=256 KiB` receipt，不扫描 cohort 目录；
+- strict UTF-8 JSON，拒绝 duplicate key、NaN/Infinity、超长数组和 size ceiling
+  违规；
+- 重新用 bounded depth/latency scalars 计算 per-distance error，不能盲信 receipt
+  aggregate；
+- 四个 receipt 必须绑定同一 device、target APK、instrumentation APK、camera、
+  rotation、detector asset/backend；APK 内容哈希由 device runner 自身记录；
+- overall error/latency 使用 pooled accepted observations；
+  accepted-person coverage 使用
+  `sum(accepted) / sum(exact-single-person frames)`；history availability 使用
+  `sum(available forecasts) / sum(eligible windows)`；
+- percentile 固定为 linear rank `(n-1)`，不在 outcome 后选择算法；
+- `risk_feedback_invocation_count=0` 与 frozen baseline App SHA-256
+  `afa7a774b9f47074b2bf2e59755e712e92421484140789513578b32b68f0f149`
+  均纳入既有 non-interference gate；
+- 10/10 host unit tests 覆盖支持、门失败、source 不可评估、缺距离、跨构建、
+  summary 不一致、baseline 不一致、duplicate key、oversized receipt 和
+  non-overwriting final write。
+
+最关键的恢复语义：
+
+- 缺少任一距离：
+  `INCOMPLETE_DISTANCE_SET` + `scientific_terminal=null`；
+- malformed/mismatched receipt：
+  `CONTROL_PLANE_INPUT_REJECTED` + `scientific_terminal=null`；
+- baseline artifact 缺失或不一致：
+  `CONTROL_PLANE_BASELINE_*` + `scientific_terminal=null`；
+- 这些状态只打印诊断，不创建最终 output，因此修复后可原路径重跑；
+- 只有四距离完整且输入合法时，才允许写
+  `SUPPORTED_DEVELOPMENT_ONLY`、`NOT_SUPPORTED` 或 source
+  `NOT_EVALUABLE` 终态。
+
+R0.5 不新增 gate，也不改变测量 outcome；它把控制面失败从科学负结果中显式拆开。
+
 ## 既有物理机 source-class prior，不是 D45 outcome
 
 ignored local evidence 中，同一台 `SM-S9280 / Android 16` 已显示 acquisition
@@ -180,9 +220,9 @@ default debug App merged manifests 中也没有 `com.google.ar.core` 或
 - source-decoder instrumentation APK：
   - path：
     `ustrf-shadow-benchmark/build/outputs/apk/androidTest/debug/ustrf-shadow-benchmark-debug-androidTest.apk`
-  - bytes：`506033`
+  - bytes：`440221`
   - SHA-256：
-    `19dfbb940ae1186ff61305d89ed7ab5298af1693d13fdf6cf3c02976feb64e23`
+    `27a33b1097cb46f09e14692bc7a24957dac9b86837dd784f5f606936c87c7a66`
 
 新增 source-decoder build 命令：
 
@@ -255,3 +295,26 @@ hftf-d45/person-measurement-r0/<distance>m/<run-id>/summary.json
 ```
 
 四个距离未全部执行前不产生 D45 支持/不支持总终态。
+
+四个 receipt 拉回 host 后执行：
+
+```text
+python scripts/research/hftf/aggregate_stage_c_d45_phone_metric_depth_canary.py
+  --receipt <1m-summary.json>
+  --receipt <2m-summary.json>
+  --receipt <3m-summary.json>
+  --receipt <5m-summary.json>
+```
+
+默认同时核验：
+
+```text
+app/build/outputs/apk/debug/app-debug.apk
+```
+
+只有合法完整输入才会原子、非覆盖写入：
+
+```text
+artifacts.local/evidence/hftf/
+stage-c-d45-phone-metric-depth-source-canary-r0/report.json
+```

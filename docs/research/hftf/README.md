@@ -153,7 +153,7 @@ D43_1_FIRST_ORDER_2D_TRACK_METRIC_MAPPING_STOP /
 STAGE_C_D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_FROZEN /
 D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_SUPPORTED_DEVELOPMENT_ONLY /
 D44_RELATIVE_METRIC_HISTORY_SUFFICIENCY_SUPPORTED /
-STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN_R0_1 /
+STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN_R0_2 /
 D45_SOURCE_CANARY_READY_FOR_DEVICE_EXECUTION /
 D45_NOT_EVALUATED_NO_READY_DEVICE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
@@ -197,6 +197,14 @@ fresh depth/confidence、registration、YUV→RGBA、CPU person detection 和 na
 depth sampling。controlled scene 只接受 exactly one person；不保存图像、depth
 raster 或 box，只写小型 scalar receipt。measurement latency 包含 conversion 和
 detector；四距离未全部执行前不生成总终态。default App runtime 仍不接 ARCore/D45。
+
+R0.5 在读取任何物理 outcome 前补齐 recoverable host aggregation。四个 receipt
+现在绑定同一 device、target/test APK hash、camera rotation 和 detector hash；
+总评器用 bounded scalars 重算 pooled error、coverage、latency 与 history
+availability，并只执行已冻结门槛。缺距离、JSON/size/parser 错误、跨构建或
+baseline mismatch 都输出 `scientific_terminal=null`，且不占用最终 report 路径；
+修复后可重跑。10/10 host tests 通过。这使控制面失败不再伪装成算法负结果，也不
+改变当前 `D45_NOT_EVALUATED_NO_READY_DEVICE`。
 
 ## 2026-08-03 D44：causal relative metric track 几乎达到完整 world teacher
 
