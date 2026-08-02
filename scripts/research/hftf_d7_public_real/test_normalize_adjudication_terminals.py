@@ -23,6 +23,24 @@ def _row(decision: str, *, admission_status: str = "NOT_ADMITTED", event_bucket:
 
 
 class NormalizeAdjudicationTerminalsTest(unittest.TestCase):
+    def test_legacy_final_fields_are_canonicalized_without_changing_terminal(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "final.jsonl"
+            legacy = _row("NOT_EVALUABLE")
+            legacy["decision"] = legacy.pop("adjudication_decision")
+            legacy["schema"] = "hftf_d7_public_real_final_adjudication_v1"
+            legacy["record_kind"] = "FINAL_ADJUDICATION"
+            path.write_text(json.dumps(legacy) + "\n", encoding="utf-8")
+
+            result = normalize(path, expected_count=1, canonicalize_legacy_final=True)
+
+            self.assertEqual(result["decision_aliases"], 1)
+            row = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(row["adjudication_decision"], "NOT_EVALUABLE")
+            self.assertNotIn("decision", row)
+            self.assertEqual(row["schema"], "hftf_d7_public_real_completed_adjudication_v1")
+            self.assertEqual(row["record_kind"], "COMPLETED_ADJUDICATION")
+
     def test_safe_not_admit_is_rebound_to_frozen_terminal(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "final.jsonl"

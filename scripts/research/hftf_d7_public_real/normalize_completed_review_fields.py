@@ -77,11 +77,15 @@ def normalize(
     downgrade_incomplete_support: bool = False,
     normalize_negative_support_phase: bool = False,
     manifest_path: Path | None = None,
+    assume_model_blind_from_manifest: bool = False,
+    canonicalize_completed_review: bool = False,
 ) -> dict[str, object]:
     if not path.is_file():
         raise ContractError(f"review output is missing: {path}")
     rows: list[dict[str, object]] = []
     input_ids_by_candidate: dict[str, str] = {}
+    model_blind_by_candidate: dict[str, object] = {}
+    review_index_by_candidate: dict[str, object] = {}
     if manifest_path is not None:
         manifest_rows = load_jsonl(manifest_path)
         for manifest_row in manifest_rows:
@@ -90,6 +94,8 @@ def normalize(
             if not candidate_id or not review_input_id or candidate_id in input_ids_by_candidate:
                 raise ContractError(f"invalid or duplicate review manifest identity: {manifest_path}")
             input_ids_by_candidate[candidate_id] = review_input_id
+            model_blind_by_candidate[candidate_id] = manifest_row.get("model_output_visible")
+            review_index_by_candidate[candidate_id] = manifest_row.get("review_index")
     with path.open("r", encoding="utf-8") as source:
         for line_number, line in enumerate(source, 1):
             if not line.strip():
@@ -112,6 +118,23 @@ def normalize(
                     raise ContractError(f"candidate missing from review manifest: {candidate_id}")
                 row["review_input_id"] = review_input_id
                 row["normalization_note"] = "REVIEW_INPUT_ID_BOUND_FROM_IMMUTABLE_MANIFEST"
+            if row.get("model_output_visible") is None and assume_model_blind_from_manifest:
+                candidate_id = str(row.get("candidate_id") or "")
+                if model_blind_by_candidate.get(candidate_id) is not False:
+                    raise ContractError(
+                        f"cannot assume model blind without manifest false: {path}:{line_number}"
+                    )
+                row["model_output_visible"] = False
+                row["normalization_note"] = "MODEL_BLIND_BOUND_FROM_IMMUTABLE_MANIFEST"
+            if canonicalize_completed_review:
+                if row.get("review_completed") not in (None, True):
+                    raise ContractError(f"review is explicitly incomplete: {path}:{line_number}")
+                row["schema"] = "hftf_d7_public_real_completed_review_v1"
+                row["record_kind"] = "COMPLETED_REVIEW"
+                row["review_completed"] = True
+                candidate_id = str(row.get("candidate_id") or "")
+                if "review_index" not in row and candidate_id in review_index_by_candidate:
+                    row["review_index"] = review_index_by_candidate[candidate_id]
             if downgrade_incomplete_support and row.get("decision") == "SUPPORT":
                 bucket = str(row.get("event_bucket") or "")
                 if normalize_negative_support_phase and bucket not in POSITIVE_BUCKETS:
@@ -186,6 +209,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--downgrade-incomplete-support", action="store_true")
     parser.add_argument("--normalize-negative-support-phase", action="store_true")
     parser.add_argument("--manifest-path")
+    parser.add_argument(
+        "--assume-model-blind-from-manifest",
+        action="store_true",
+        help="fill missing model_output_visible only when the immutable role manifest is explicitly false",
+    )
+    parser.add_argument(
+        "--canonicalize-completed-review",
+        action="store_true",
+        help="rebind a legacy completed row to the frozen completed-review schema",
+    )
     return parser.parse_args()
 
 
@@ -199,4 +232,6 @@ if __name__ == "__main__":
         args.downgrade_incomplete_support,
         args.normalize_negative_support_phase,
         Path(args.manifest_path) if args.manifest_path else None,
+        args.assume_model_blind_from_manifest,
+        args.canonicalize_completed_review,
     ), ensure_ascii=False, sort_keys=True))

@@ -19,11 +19,17 @@ from typing import Any
 from pipeline import ContractError
 
 
-def normalize(path: Path, *, expected_count: int) -> dict[str, Any]:
+def normalize(
+    path: Path,
+    *,
+    expected_count: int,
+    canonicalize_legacy_final: bool = False,
+) -> dict[str, Any]:
     if not path.is_file():
         raise ContractError(f"adjudication output is missing: {path}")
     rows: list[dict[str, Any]] = []
     rebound = 0
+    decision_aliases = 0
     with path.open("r", encoding="utf-8") as source:
         for line_number, line in enumerate(source, 1):
             if not line.strip():
@@ -34,6 +40,14 @@ def normalize(path: Path, *, expected_count: int) -> dict[str, Any]:
                 raise ContractError(f"invalid JSON at {path}:{line_number}: {exc}") from exc
             if not isinstance(row, dict):
                 raise ContractError(f"adjudication row is not an object: {path}:{line_number}")
+            if canonicalize_legacy_final:
+                if "decision" in row and "adjudication_decision" in row:
+                    raise ContractError(f"both decision keys are present: {path}:{line_number}")
+                if "decision" in row:
+                    row["adjudication_decision"] = row.pop("decision")
+                    decision_aliases += 1
+                row["schema"] = "hftf_d7_public_real_completed_adjudication_v1"
+                row["record_kind"] = "COMPLETED_ADJUDICATION"
             decision = row.get("adjudication_decision")
             if decision == "NOT_ADMIT":
                 if row.get("admission_status") != "NOT_ADMITTED" or row.get("event_bucket") != "NOT_EVALUABLE":
@@ -58,16 +72,35 @@ def normalize(path: Path, *, expected_count: int) -> dict[str, Any]:
     except Exception:
         Path(temp_name).unlink(missing_ok=True)
         raise
-    return {"path": str(path), "rows": len(rows), "rebound_not_admit": rebound, "status": "NORMALIZED"}
+    return {
+        "path": str(path),
+        "rows": len(rows),
+        "rebound_not_admit": rebound,
+        "decision_aliases": decision_aliases,
+        "status": "NORMALIZED",
+    }
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--path", required=True)
     parser.add_argument("--expected-count", type=int, default=20)
+    parser.add_argument(
+        "--canonicalize-legacy-final",
+        action="store_true",
+        help="map legacy decision/schema/record-kind fields to the frozen adjudication contract",
+    )
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    print(json.dumps(normalize(Path(args.path), expected_count=args.expected_count), ensure_ascii=False, sort_keys=True))
+    print(json.dumps(
+        normalize(
+            Path(args.path),
+            expected_count=args.expected_count,
+            canonicalize_legacy_final=args.canonicalize_legacy_final,
+        ),
+        ensure_ascii=False,
+        sort_keys=True,
+    ))
