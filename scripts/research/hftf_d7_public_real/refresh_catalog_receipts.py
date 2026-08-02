@@ -61,6 +61,26 @@ def _latest_materialized_receipts(root: Path) -> dict[str, tuple[Path, dict[str,
         payload = load_json(path)
         if not isinstance(payload, dict) or not payload.get("dataset_id"):
             continue
+        schema = str(payload.get("schema", "")).lower()
+        # Receipts are colocated with review/adjudication/window artifacts.
+        # Those are downstream package state, not source-material receipts; a
+        # naive latest-by-time selection would replace a source license/hash
+        # row with (for example) a review-bundle status.
+        if any(
+            token in schema
+            for token in (
+                "review",
+                "adjudication",
+                "ingest",
+                "merge",
+                "window",
+                "role_isolation",
+                "final_report",
+                "validation",
+                "catalog_refresh",
+            )
+        ):
+            continue
         dataset_id = str(payload["dataset_id"])
         stamp = str(payload.get("generated_at_utc", ""))
         previous = latest.get(dataset_id)
