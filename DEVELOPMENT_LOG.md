@@ -4465,3 +4465,22 @@
 - 结果层级改为显式分离：teacher、representation、decision kernel、research
   mainline、App/safety。后一层未完成只限制 claim，不抹掉前一层正结果；路径、parser、
   network、serialization 和 interruption 失败属于可修复工程故障，不产生科学终态。
+
+## 2026-08-02：HFTF D5 directional paired multi-seed replication
+
+- 在同一三折上增加 paired seed 29/43，每个 seed 同时重训 pooled/directional。
+  9 个 fold×seed 单元的 environment-macro F1 为 8 胜 1 负，mean/median delta
+  `+0.0351/+0.0385`，range `-0.0046..+0.0806`。seed 17/29/43 的三折
+  mean delta 分别为 `+0.0326/+0.0424/+0.0304`。
+- aggregate macro/micro/AUROC/AP mean delta 为
+  `+0.0357/+0.0375/+0.0395/+0.0448`，各 8/9 改善；45 个
+  environment×seed 比较为 30 胜、15 负。当前 representation 终态提升为
+  `DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT`。
+- threshold behavior 尚不稳健：recall mean delta `+0.0797`，FPR mean delta
+  `+0.0229`，FPR 6/9 变差。唯一 environment-macro 反向单元 seed43/fold1 为
+  `-0.0046`，其 aggregate macro/micro 仍为 `+0.0153/+0.0200`。
+- `GreatMarsh` 的精确 shift 是 future body/head positive rate：fold0 train
+  `48.9%/15.3%`，GreatMarsh `93.1%/0.97%`。directional seed17 显著降低 FPR，
+  但把 body recall 压到约 `0.27`。下一步先做 train-side height-aware calibration，
+  以 dev folds 分别检查 body recall 与 head false-alert tradeoff，再进入事件级
+  decision kernel；不把 F1/排序正结果写成系统提醒改善。

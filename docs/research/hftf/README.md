@@ -35,7 +35,7 @@ D3_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_NOT_EVALUABLE_BUDGET_EXHAUSTED_NO_EXPANS
 D3_Q0_1_CURRENT_REFERENCE_TRUTH_RISK_OPPORTUNITY_SCARCITY_DOMINANT_HYPOTHESIS_ONLY /
 FROZEN_AFTER_D3_Q0_1_ATLAS_BEFORE_D4_METADATA_CENSUS_OR_FRESH_SOURCE_CONTENT /
 INNOVATION_NOT_EVALUABLE /
-D5_DIRECTIONAL_SPATIAL_STRUCTURE_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY /
+D5_DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_DEVELOPMENT_ONLY /
 D5_UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
@@ -111,6 +111,19 @@ directional head 相对 pooled head，在三折 environment-macro future body/he
 它把 directional single 提升为本支线当前 Development reference，但没有建立
 decision-kernel、主线晋级或系统效用。
 
+在同一三折增加 paired seed 29/43 后，directional 的 environment-macro F1 在
+9 个 fold×seed 单元中 8 胜 1 负，mean/median delta 为 `+0.0351/+0.0385`；
+三个 seed 的三折 mean delta 均为正：`+0.0326/+0.0424/+0.0304`。
+aggregate macro/micro/AUROC/AP mean delta 为
+`+0.0357/+0.0375/+0.0395/+0.0448`。因此当前 representation 结论提升为：
+
+`DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT`
+
+但 FPR mean delta 为 `+0.0229`，6/9 单元变差；正结果尚未等于稳定的提醒行为。
+`GreatMarsh` 还暴露出 train 与 dev 的极端 body/head prevalence mix shift
+（`48.9%/15.3%` 对 `93.1%/0.97%`）。下一步先做 train-side height-aware
+calibration，分别守住 body recall 与 head false alerts，再进入 decision kernel。
+
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重
 不确定性先破坏基线；但只有 3×3 residual 在 fold 2 得到 `+0.0029`，其余折和结构
@@ -118,9 +131,8 @@ decision-kernel、主线晋级或系统效用。
 
 `UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED`
 
-下一步先验证 directional single 的多 seed 稳定性和 `GreatMarsh` 失败机制，再进入
-同一 decision kernel 的事件级比较；history 只有引入显式对齐/flow/ego-motion
-compensation 后才重开，不做更多无对齐结构或学习率搜索。
+history 只有引入显式对齐/flow/ego-motion compensation 后才重开，不做更多无对齐
+结构或学习率搜索。
 
 ## 当前结论
 

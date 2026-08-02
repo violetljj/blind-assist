@@ -13,13 +13,13 @@ TartanGround 已从“目录看起来足够大”推进到三个可执行结果�
    证明 RGB 标签可学习；直接从随机初始化联合训练 history 失败，而从 single
    checkpoint 分阶段微调 history 出现小幅、随机性可重复但环境不稳健的增量。
 4. 扩展到 15 个 environments 的三折 environment-held-out Development 后，
-   保留水平方向轴的 directional head 在三折都超过全局 pooled head；但 joint、
-   零初始化逐点 residual 和 3×3 spatial residual 三类未对齐 history fusion
-   都没有建立跨折增量。
+   保留水平方向轴的 directional head 在 3 seeds × 3 folds 的九个 paired 单元中
+   8 胜 1 负；但 joint、零初始化逐点 residual 和 3×3 spatial residual 三类
+   未对齐 history fusion 都没有建立跨折增量。
 
 当前终态为：
 
-`DIRECTIONAL_SPATIAL_STRUCTURE_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT /
+`DIRECTIONAL_SPATIAL_STRUCTURE_MULTI_SEED_CROSS_ENVIRONMENT_INCREMENT_SUPPORTED_IN_DEVELOPMENT /
 UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
@@ -229,6 +229,34 @@ body/head macro F1 `+0.0327`、micro F1 `+0.0411`、AUROC `+0.0459`、AP
 更完整的 3×6 spatial grid 在 fold 0 的 environment-macro F1 只有 `0.4581`，
 低于 pooled 和 directional，因此没有进入其余两折。
 
+### Paired multi-seed replication
+
+在相同三折上增加 seed 29/43，并对每个 seed 同时重训 pooled 和 directional，
+避免把初始化差异误作结构增量。九个 paired fold×seed 单元结果为：
+
+- environment-macro F1：8 胜 1 负，mean `+0.0351`，median `+0.0385`，
+  range `-0.0046..+0.0806`；
+- 三个 seed 的三折 mean delta：`+0.0326 / +0.0424 / +0.0304`；
+- 三个 fold 的三 seed mean delta：`+0.0260 / +0.0150 / +0.0643`；
+- 45 个 environment×seed 比较中 30 胜、15 负。
+
+九单元折均 aggregate macro F1、micro F1、AUROC、AP delta 分别为
+`+0.0357 / +0.0375 / +0.0395 / +0.0448`，各自均为 8/9 单元改善。
+唯一 environment-macro 反向单元是 seed43/fold1 的 `-0.0046`；该单元
+aggregate macro/micro 仍为 `+0.0153/+0.0200`。
+
+但 threshold calibration 还不稳定：recall mean delta `+0.0797`，FPR mean delta
+却为 `+0.0229`，且 FPR 在 6/9 单元变差。特别是 seed43/fold0 的 FPR
+`+0.1957`。因此 multi-seed 复核强化的是表示/排序与 F1 候选，不允许直接推提醒层
+false-alert 改善。
+
+`GreatMarsh` 的最差 delta 不是一般亮度问题，而是 extreme height-mixture shift：
+fold0 train 的 future body/head positive rate 为 `48.9%/15.3%`，GreatMarsh 为
+`93.1%/0.97%`。seed17 directional 把整体 FPR 从 `0.459` 降到 `0.146`，但
+body recall 降到约 `0.27`，导致 macro F1 `-0.1788`。后续 calibration/decision
+kernel 必须分别守住 body critical recall 与 head false alerts，不能只优化 pooled
+macro。
+
 ## History mechanism repair
 
 原 single 训练把当前帧重复五次。对 5-tap、1×1 temporal convolution 来说，这只
@@ -259,20 +287,21 @@ compensation 或新的时序表征后，才值得重开 history；不再继续�
 
 当前正结果只支持：
 
-`teacher feasible + RGB learnable + directional spatial-structure increment`
+`teacher feasible + RGB learnable + multi-seed directional spatial-structure increment`
 
 尚未支持：
 
 - history 对独立环境具有稳定增量；
-- directional 增量能在多个完整 pipeline 随机种子上复现；
+- directional 的 threshold calibration 能跨 seed 稳定；
 - synthetic proxy 能迁移到真实视障步行；
 - 事件级 critical-hazard recall、false alerts 或 warning lead time 改善；
 - HFTF 超过当前主线或进入 App。
 
-下一步以 directional single 为 reference，先做多 seed 稳定性和
-`GreatMarsh` failure attribution；随后把表示接入同一 decision kernel，比较事件级
-critical misses、false alerts、response 与 clearance。只有这两层成立，才使用未参与
-迭代的 held-out environments 做一次偏差敏感评价。history 在出现显式对齐机制前停止。
+下一步以 directional single 为 reference，在 train-side 完成 height-aware
+calibration，并用 dev folds 检查 body recall/head false-alert tradeoff；随后才把表示
+接入同一 decision kernel，比较事件级 critical misses、false alerts、response 与
+clearance。只有这两层成立，才使用未参与迭代的 held-out environments 做一次偏差敏感
+评价。history 在出现显式对齐机制前停止。
 
 ## 复现
 
