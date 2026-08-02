@@ -11,6 +11,7 @@ from evaluate_stage_c_d36_thor_magni_track_veto_event import (
     summarize,
 )
 from produce_stage_c_d36_thor_magni_track_veto_input import (
+    requested_segments,
     window_frames,
 )
 
@@ -20,6 +21,12 @@ class D36TrackVetoEventTests(unittest.TestCase):
         step, frames = window_frames(100, 29.97)
         self.assertEqual(2, step)
         self.assertEqual([88, 90, 92, 94, 96, 98, 100], frames)
+
+    def test_requested_frames_form_small_seek_segments(self) -> None:
+        self.assertEqual(
+            [(10, 14), (30, 32)],
+            requested_segments([14, 10, 12, 30, 32]),
+        )
 
     def test_positive_events_do_not_cross_gap(self) -> None:
         rows = [

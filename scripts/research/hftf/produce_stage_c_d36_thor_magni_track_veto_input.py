@@ -110,6 +110,29 @@ def window_frames(anchor: int, fps: float) -> tuple[int, list[int]]:
     return step, frames
 
 
+def requested_segments(
+    frames: list[int],
+    maximum_gap: int = 2,
+) -> list[tuple[int, int]]:
+    ordered = sorted(set(frames))
+    if not ordered:
+        return []
+    if maximum_gap < 1:
+        raise ValueError("D36 segment gap must be positive")
+    segments: list[tuple[int, int]] = []
+    start = ordered[0]
+    end = ordered[0]
+    for frame in ordered[1:]:
+        if frame - end <= maximum_gap:
+            end = frame
+        else:
+            segments.append((start, end))
+            start = frame
+            end = frame
+    segments.append((start, end))
+    return segments
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--samples", type=Path, default=DEFAULT_SAMPLES)
@@ -291,36 +314,52 @@ def main() -> int:
             raise OSError(f"D36 cannot open video: {video_path}")
         requested = requests[video_text]
         frame_number = 0
-        requested_seen = 0
+        requested_seen: set[int] = set()
         batch_frames: list[int] = []
         batch_images: list[np.ndarray] = []
         try:
-            while True:
-                ok, frame = capture.read()
-                if not ok:
-                    break
-                frame_number += 1
-                if frame_number not in requested:
-                    continue
-                batch_frames.append(frame_number)
-                batch_images.append(frame)
-                requested_seen += 1
-                if len(batch_images) >= args.batch_size:
-                    infer_batch(video_text, batch_frames, batch_images)
-                    batch_frames.clear()
-                    batch_images.clear()
+            for segment_start, segment_end in requested_segments(
+                list(requested)
+            ):
+                if not capture.set(
+                    cv2.CAP_PROP_POS_FRAMES,
+                    float(segment_start - 1),
+                ):
+                    raise OSError("D36 video seek failed")
+                frame_number = segment_start - 1
+                while frame_number < segment_end:
+                    ok, frame = capture.read()
+                    if not ok:
+                        raise OSError("D36 requested source frame decode failed")
+                    frame_number += 1
+                    if frame_number not in requested:
+                        continue
+                    if frame_number in requested_seen:
+                        raise ValueError("D36 requested frame decoded twice")
+                    requested_seen.add(frame_number)
+                    batch_frames.append(frame_number)
+                    batch_images.append(frame)
+                    if len(batch_images) >= args.batch_size:
+                        infer_batch(video_text, batch_frames, batch_images)
+                        batch_frames.clear()
+                        batch_images.clear()
             infer_batch(video_text, batch_frames, batch_images)
         finally:
             capture.release()
-        if requested_seen != len(requested):
+        if len(requested_seen) != len(requested):
             raise ValueError("D36 requested source frame missing")
         decoded_receipts.append(
             {
                 "video_path": video_text,
                 "video_sha256": actual_hash,
                 "fps": float(video_metadata[video_text]["fps"]),
-                "decoded_frames": frame_number,
-                "requested_unique_frames": requested_seen,
+                "source_frame_count": int(
+                    video_metadata[video_text]["frame_count"]
+                ),
+                "requested_unique_frames": len(requested_seen),
+                "seek_segments": len(
+                    requested_segments(list(requested))
+                ),
             }
         )
         print(
@@ -328,7 +367,7 @@ def main() -> int:
                 {
                     "video": video_index + 1,
                     "videos": len(requests),
-                    "requested_unique_frames": requested_seen,
+                    "requested_unique_frames": len(requested_seen),
                 }
             ),
             flush=True,
