@@ -121,7 +121,21 @@ D30_THOR_MAGNI_BOX_WORLD_MEASUREMENT_RELATION_NOT_SUPPORTED /
 D31_THOR_MAGNI_FULL_RESOLUTION_MEASUREMENT_RELATION_NOT_SUPPORTED /
 D32_JRDB_CAUSAL_TRACK_FUTURE_RANGE_SUPPORTED /
 D33_JRDB_DETECTOR_TRACK_FUTURE_RANGE_SUPPORTED /
+D34_KOTLIN_SHADOW_STATE_PARITY_RUNTIME_SUPPORTED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D34：生产 Kotlin shadow state 与 Python 零漂移
+
+D33 全部 5,366 个 source-only detector-track occurrences、165 tracks 进入生产
+Kotlin `CausalTrackTristateGeometryProducer`。decision mismatch 与 slope
+presence mismatch 均为 0，最大 slope 误差 `8.44e-7/s`；host JVM producer-call
+P50/P95/P99 为 `0.0014/0.0022/0.0044 ms`。`core:assist` 全量测试通过，终态：
+
+`D34_KOTLIN_SHADOW_STATE_PARITY_RUNTIME_SUPPORTED`
+
+corpus 不含 annotation association、native identity、3D range 或 future truth；
+execution 不进入 decision/event/feedback seam。下一步是 isolated
+`.dualloop.shadow` 物理设备 parity/runtime/non-interference canary，不改变默认 App。
 
 ## 2026-08-03 D33：detector-track source 复现短未来正机制
 

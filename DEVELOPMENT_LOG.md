@@ -5246,3 +5246,23 @@
   `efa249fdfe8114dfeb1da419ffdb359189e3d4e6b1f406fabad04a31a39a0fa1` /
   `fa2b403328428bbe596833a670970785964ae197e992b39cc47f878b3013984a`，
   连续重建一致。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D34
+  Kotlin shadow-state parity/runtime canary。把 D33 全部 5,366 个 source-only
+  detector-track occurrences、165 tracks 与 packet timestamps 物化为 deterministic
+  TSV，不携带 annotation association、native identity、3D range 或 future truth；
+  input SHA-256
+  `d1f24dc7c61890e912d2a4a1cbca23e4b729dfceb1ef76b435cd573c97e6021e`。
+  直接调用 production `CausalTrackTristateGeometryProducer`，第一遍 warm-up、
+  第二遍逐 occurrence parity/计时。decision mismatch `0/5,366`，slope presence
+  mismatch `0`，最大 absolute slope error `8.44e-7/s`。host JVM producer-call
+  P50/P95/P99 `0.0014/0.0022/0.0044 ms`，P95 远低于冻结 `0.10 ms` gate；
+  `core:assist` 全量测试通过。终态
+  `D34_KOTLIN_SHADOW_STATE_PARITY_RUNTIME_SUPPORTED`，建立
+  `PRODUCTION_KOTLIN_CAUSAL_TRACK_STATE_PARITY_AND_HOST_RUNTIME_SUPPORTED`。
+  execution 未进入 decision/event/feedback seam，non-actuating、future-truth-free，
+  主线与默认 App 不变。首次 Gradle 验证命令因 PowerShell 未引用 `-D` 参数，在
+  编译前被误读为 task；修正后成功，归类为工程命令错误，不产生科学终态。
+  report SHA-256
+  `c6ac570f19cf5d06f00dc159b920f75dbbd44be1d2808949bc894620631a9247`。
+  下一步进入 isolated `.dualloop.shadow` 物理设备 parity/runtime/non-interference
+  canary。
