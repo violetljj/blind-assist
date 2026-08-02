@@ -5505,3 +5505,19 @@
   confidence。当前 ADB 无设备，终态保持
   `D45_NOT_EVALUATED_NO_READY_DEVICE`，不是 source
   负结果；设备 capability/measurement 尚未执行，主线、默认 App 与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D45 raw
+  source decoder readiness R0.2，不新增结果门。实现 stride-safe unsigned
+  16-bit raw depth + 8-bit confidence decoder，并用类型边界固定为
+  `SOURCE_REGISTRATION_UNVERIFIED`，不能进入 person sampler；10/10 focused JVM
+  tests 通过。isolated `:ustrf-shadow-benchmark` device canary 只聚合 acquisition
+  failure、timestamp、valid-pixel coverage 与 acquisition+decode P50/P95，单
+  `AtomicFile` receipt 上限 256 KiB，不保存 raster、不产生人物/事件结果。既有
+  SM-S9280 source-class prior 在 moving runs 中取得 585/813 次 raw depth，而
+  两个 autonomous frame-bound runs 均为 0/150 tracking/depth，故零观测固定为
+  `NOT_EVALUABLE_*`，不作为算法负结果或 cohort burning。benchmark/test APK
+  SHA-256 为
+  `4b316a5895da000023f24ba19e118d5c1aa97024f8702c0f2e6e9904aa3b3087` /
+  `d4b90e06c1d0430885dcb9498f305a747555653c078e4d3733dcbf1b67d5f83c`。
+  default App production runtime classpath/manifest 仍不含 ARCore/D45；当前 ADB
+  无设备，科学终态仍为 `D45_NOT_EVALUATED_NO_READY_DEVICE`，主线、默认 App
+  与 D35 均不变。

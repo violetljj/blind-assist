@@ -167,13 +167,21 @@ availability。sampler、OLS horizon 与支持门已固定；不把 depth 写入
 `Detection.distanceEvidence`，不调用 risk/feedback seam。
 
 source contract、person-box sampler、7 点 OLS solver 已在独立 JVM module 中实现，
-7 个 focused tests 通过；ARCore capability receipt 仅进入专用
+10 个 focused tests 通过；ARCore capability receipt 仅进入专用
 `hftf-device-canary` APK。default App runtime classpath/manifest 均不含 ARCore
 或 D45 module。R0.1 在任何 device outcome 前修复 locked API 语义：只有 raw
 depth 有对应 confidence image，因此 raw+confidence 是唯一 measurement-ready
 source，automatic-only 不伪造 confidence。当前 ADB 无设备，因此物理终态仍为
 `D45_NOT_EVALUATED_NO_READY_DEVICE`；这只表示 capability/measurement 尚未执行，
 不关闭 D45 source 问题。
+
+R0.2 没有新增实验主张，只补齐 source 观测面：stride-safe raw depth/confidence
+decoder、显式 `SOURCE_REGISTRATION_UNVERIFIED` 类型边界，以及 isolated
+`ustrf-shadow-benchmark` aggregate canary。它只输出 acquisition/timestamp、
+valid-pixel coverage 与 decode latency 的小 JSON，不保存 raster，不接人物或事件
+结果。既有 SM-S9280 evidence 在 moving run 中曾取得 585/813 次 raw depth，
+而两个 autonomous frame-bound run 均为 0/150；因此零 acquisition 按上下文不足
+记为 `NOT_EVALUABLE`，不再由控制面失败烧毁科学路线。
 
 ## 2026-08-03 D44：causal relative metric track 几乎达到完整 world teacher
 

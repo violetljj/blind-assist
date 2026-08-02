@@ -35,6 +35,7 @@ dependencies {
     implementation(project(":core:assist"))
     implementation(project(":core:ustrf"))
     implementation(project(":core:vision"))
+    implementation(project(":hftf-metric-depth-canary-core"))
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.lifecycle.common)
