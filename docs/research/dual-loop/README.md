@@ -99,7 +99,13 @@ representation signal；下一变量是显式 motion，而不是退回 current-d
 `+.0219/+.0240`，但 AP median 为负、仅 2/5 folds 正；近距 AP mean
 `-.0103`。终态 `D14_EXPLICIT_MOTION_FUTURE_ONSET_INCREMENT_NOT_SUPPORTED`。
 folds 0/1 的走廊局部正信号保留，但不按结果切换 target 或调 RAFT/grid/head；
-true-onset estimand 保留，主线与默认 App 不变。
+true-onset estimand 保留，主线与默认 App 不变。随后
+[D15 JRDB true-onset 独立复现](../hftf/HFTF_STAGE_C_D15_JRDB_TRUE_FUTURE_ONSET_REPLICATION_2026-08-02.md)
+物化 proximity 14/102、corridor 10/71 onset-positive/eligible，两个固定
+source-pair folds 均含正负例。等容量 history replication 的 corridor AUROC/AP
+两折 seed-mean 都为负，aggregate `-.00618/-.03098`，终态
+`D15_JRDB_FUTURE_ONSET_HISTORY_REPLICATION_NOT_SUPPORTED`。D13 弱正信号因此只保留
+在 THOR source-local representation 层，不升级为跨数据集效应。
 
 此前 D5/D6 Development 已推进到
 [outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：

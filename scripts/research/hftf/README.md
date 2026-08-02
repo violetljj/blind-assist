@@ -21,7 +21,9 @@ D11-causal-kinematic-information-not-supported /
 D12-future-onset-target-five-fold-ready /
 D13-future-onset-temporal-spatial-increment-supported /
 D14-direction-preserving-raft-features-materialized /
-D14-explicit-motion-future-onset-increment-not-supported`
+D14-explicit-motion-future-onset-increment-not-supported /
+D15-jrdb-corridor-future-onset-two-fold-ready /
+D15-jrdb-future-onset-history-replication-not-supported`
 
 ## 研究问题与版本
 
@@ -244,6 +246,28 @@ AUROC/AP mean delta 为 `+.0219/+.0240`，但 AP median 为负且仅 2/5 folds �
 近距 AP mean `-.0103`。终态
 `D14_EXPLICIT_MOTION_FUTURE_ONSET_INCREMENT_NOT_SUPPORTED`；不调 RAFT/grid/head，
 保留 source-local corridor signal 与 D12 onset task。
+
+### D15 JRDB true-future-onset replication
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  materialize_stage_c_d15_jrdb_future_onset.py `
+  --output-root artifacts.local/evidence/hftf/<d15-onset-run>
+
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/run_research_tool.py hftf `
+  run_stage_c_d15_jrdb_future_onset_replication.py `
+  --samples artifacts.local/evidence/hftf/<d15-onset-run>/samples.jsonl `
+  --output artifacts.local/evidence/hftf/<d15-replication-run>/report.json
+```
+
+D15 从 JRDB anchor-frame 3D-person geometry 计算 current state，物化 proximity
+14/102、corridor 10/71 onset-positive/eligible；两个固定 source-pair folds 都有
+正负例。等容量 frozen-spatial replication 的 corridor AUROC/AP 两折 seed-mean
+均为负，aggregate `-.00618/-.03098`，终态
+`D15_JRDB_FUTURE_ONSET_HISTORY_REPLICATION_NOT_SUPPORTED`。D13 只保留为 THOR
+source-local weak signal；不继续当前 frozen representation search。
 
 ## 稳定 Interface
 

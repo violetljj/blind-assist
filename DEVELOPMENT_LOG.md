@@ -1,4 +1,13 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D15 JRDB
+  true-future-onset 独立复现。用 anchor-frame source-native 3D person geometry
+  排除 current-risk，得到 proximity 14 positive / 102 eligible、corridor 10 / 71；
+  两个固定 source-pair folds 均含正负例。相同 13,586 参数 frozen-spatial
+  current/history head、seeds17/23/41 下，primary corridor AUROC/AP 两折
+  seed-mean 均为负，aggregate `-.00618/-.03098`、0/2 folds 正。终态
+  `D15_JRDB_FUTURE_ONSET_HISTORY_REPLICATION_NOT_SUPPORTED`。这是可评价后的科学
+  负结果；D13 只保留为 THOR source-local weak signal，不切换 proximity target、
+  不继续当前 frozen representation search，主线与默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D14 explicit
   motion future-onset canary。固定 pretrained RAFT-small 对 D12 的 1,078×4
   adjacent pairs 全量推理，保留 direction-preserving raw/residual 3×6 grid；
