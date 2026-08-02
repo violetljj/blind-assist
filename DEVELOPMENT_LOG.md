@@ -5266,3 +5266,20 @@
   `c6ac570f19cf5d06f00dc159b920f75dbbd44be1d2808949bc894620631a9247`。
   下一步进入 isolated `.dualloop.shadow` 物理设备 parity/runtime/non-interference
   canary。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。冻结并实现 HFTF D35
+  Android device shadow parity/runtime/non-interference canary，但尚未执行科学
+  measurement。新增独立 `:hftf-device-canary` `com.android.test` 模块，以同名
+  test build type 绑定 target App `dualLoopShadow`；`aapt` 确认 target package
+  `com.linnan.blindassist.dualloop.shadow`，production BuildConfig 为
+  `DUAL_LOOP_SHADOW=true`、`DUAL_LOOP_ACTIVE=false`。D34 的 5,366-row
+  source-only corpus 以 gzip payload 内嵌，APK 内 payload SHA-256
+  `91039be8a9d6282d89a8a9dc3e6200a8e8e09cc6f4fc43aa80c9ae935aeecfec`，
+  device report 改用 Android `AtomicFile` interruption-safe 写入。
+  `:hftf-device-canary:assembleDualLoopShadow` 通过；target/test APK SHA-256
+  分别为
+  `e28e5c996174adef706f43ad6267a44e1c2ab017261ad99643b4efd4016a9557` /
+  `adffd1be8c401a65070c25b2e51263394311951d1f9986ef1693f812d8e695c3`。
+  构建过程中修复 Kotlin named-argument 与 Android 自动解包 `.gz` asset 两项
+  engineering failure，均发生在设备 measurement 前，不烧毁 corpus。当前
+  `adb devices -l` 为空且本机无 AVD，终态保持 `NOT_EVALUATED` /
+  `READY_FOR_DEVICE_EXECUTION`，不解释为科学负结果。

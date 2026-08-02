@@ -18,6 +18,7 @@ rootProject.name = "BlindAssist"
 include(":app")
 include(":npu-candidate")
 include(":device-benchmark")
+include(":hftf-device-canary")
 include(":core:assist")
 include(":core:ustrf")
 include(":ustrf-shadow-benchmark")
