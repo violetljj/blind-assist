@@ -4214,3 +4214,26 @@
   toolkit/provider read、dataset host/ZIP、S0B、payload、ecology/effect/student 或
   主线/App/Android/生产/safety。机器设计 SHA-256 为
   `87641ff8585dc5fe112d77cfacd3e5ce8c23b402b1396768473733f1c716aef1`。
+
+## 2026-08-02：HFTF D5-S0B-P0A toolkit source closure contract
+
+- 执行者：violjjet。P0A 只从 exact toolkit commit 的
+  `tartanair/__init__.py` 出发，按 AST 追踪相对 import 与 `tartanair.*` import；
+  tree 只读 names，只有 seed 可达 Python blobs 能读取。每个 blob 先查询 Git
+  object-size，再在内容读取前检查 128 blobs / 4 MiB 总预算。
+- 动态 import 不执行。直接 `__import__` / `importlib.import_module`、模块对象和
+  callable 的简单别名会计数；subscription、container escape、`getattr`、`exec`、
+  `eval` 等另计 indirect evidence。未来 P0B 遇到任一非零计数必须
+  `NOT_EVALUABLE`；零计数只表示冻结检测器未命中，不是运行时完整性证明。
+- terminal validator 重算 tree/closure hash chain、contract/status/bindings、预算、
+  非负动态计数及从 seed 出发的 exact graph reachability；seed 缺失严格配为
+  `D5_S0B_P0A_TOOLKIT_SOURCE_CLOSURE_NOT_EVALUABLE`。partial/failure 同时绑定
+  attempt、preflight 与可观察 `FETCH_HEAD`，不得 resume/retry。
+- focused tests `27/27`、HFTF full suite `486/486`。最终科学与工程双审均
+  `CLEAR`、0 blocker。planner/test/叙述合同/机器合同 SHA-256 分别为
+  `5a09da4d548775d0442e6cef327f0d50a003e60484cf90a9d2656f77d3c285d6`、
+  `2f4fe44d8684920fc17ce77c55e8954c20226fdca8014193bb407cc0d2afcf7a`、
+  `3f04ce0d02273bec82602171507064440e576b8c6bdd0df10e69508fc45ab1b2`、
+  `0da2a0ca485435b5ad458895f2dbc1cb7c929794c69d888ab2f664dcad5bfb93`。
+  当前只授权精确提交推送；formal root 仍不存在，未发生 toolkit 或 dataset-host
+  请求。
