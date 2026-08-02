@@ -153,7 +153,21 @@ D43_1_FIRST_ORDER_2D_TRACK_METRIC_MAPPING_STOP /
 STAGE_C_D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_FROZEN /
 D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_SUPPORTED_DEVELOPMENT_ONLY /
 D44_RELATIVE_METRIC_HISTORY_SUFFICIENCY_SUPPORTED /
+STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN /
+D45_NOT_EVALUATED_NO_READY_DEVICE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D45：只验证手机端 metric-depth source，不接 alert
+
+D45 已在任何 device capability 或 measurement outcome 前冻结。它优先探测仓库
+已锁定的 ARCore 1.33.0，并只在 isolated instrumentation/source canary 中记录
+registered person-box metric depth、质量、时间戳、误差、延迟和 7 点 history
+availability。sampler、OLS horizon 与支持门已固定；不把 depth 写入
+`Detection.distanceEvidence`，不调用 risk/feedback seam。
+
+当前 ADB 无设备，因此物理终态为 `D45_NOT_EVALUATED_NO_READY_DEVICE`；这只表示
+设备测量尚未执行，不关闭 D45 source 问题。下一步是实现可测试的 source contract、
+sampler/solver 和 ARCore capability receipt，再构建 instrumentation APK。
 
 ## 2026-08-03 D44：causal relative metric track 几乎达到完整 world teacher
 
