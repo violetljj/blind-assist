@@ -5455,3 +5455,18 @@
   learnability 结论。原协议的四折 `TRACK_ONLY` arm 输入完整，因此独立冻结
   D43.1，保持原 10 features、D42 teacher target、Ridge alpha、zero baseline
   与 effect floors，不回填 D43 IMU 主张。主线、默认 App 与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D43.1
+  track-only metric residual student。固定十个 current/7-frame detector-track
+  state/slopes/confidence features、population standardization、closed-form
+  multi-output `Ridge(alpha=1.0)` 与四折 leave-one-sequence-out。3,384
+  opportunities / 53 identities 全部 evaluable。相对 zero residual，pooled
+  teacher vector error `0.80238 -> 1.10533 m`（恶化 37.76%），actual future
+  error `0.80935 -> 1.11648 m`（恶化 37.95%），actual better fraction
+  `22.370%`；仅 Meyer 1/4 folds 改善，STLC actual error 恶化 `169.30%`。
+  终态 `D43_1_JRDB_TRACK_ONLY_METRIC_RESIDUAL_STUDENT_NOT_SUPPORTED`，建立
+  `D43_1_FIRST_ORDER_2D_TRACK_METRIC_MAPPING_STOP`。不得在同一 outcome 上改
+  alpha、feature subset、target normalization、加非线性或删 STLC。D42 teacher
+  ceiling 保持；下一 source 必须增加完整 IMU 或 causal metric-depth/ground
+  measurement。D42/D43/D43.1 focused tests 4 PASS；report 连续重建 SHA 稳定为
+  `d104279a42a8089a171ca4fcab4db7c85e0004f1f201ee51f1667bd9dbadcd23`。
+  主线、默认 App 与 D35 均不变。

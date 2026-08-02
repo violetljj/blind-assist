@@ -148,7 +148,22 @@ D42_PERSON_WORLD_MOTION_DOMINANT_INCREMENT_SUPPORTED /
 STAGE_C_D43_JRDB_TRACK_IMU_METRIC_RESIDUAL_STUDENT_FROZEN /
 D43_JRDB_TRACK_IMU_METRIC_RESIDUAL_STUDENT_NOT_EVALUABLE /
 STAGE_C_D43_1_JRDB_TRACK_ONLY_METRIC_RESIDUAL_STUDENT_FROZEN /
+D43_1_JRDB_TRACK_ONLY_METRIC_RESIDUAL_STUDENT_NOT_SUPPORTED /
+D43_1_FIRST_ORDER_2D_TRACK_METRIC_MAPPING_STOP /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 D43.1：十个 2D track features 不能跨 sequence 恢复 metric residual
+
+D43.1 在 3,384 opportunities / 53 identities 上完整执行四折 LOSO。相对 zero
+residual，teacher vector error 恶化 `37.76%`，actual future error 恶化
+`37.95%`，只有 `22.370%` 样本改善；仅 Meyer 1/4 folds 为正，STLC actual
+error 恶化 `169.30%`。终态：
+
+`D43_1_JRDB_TRACK_ONLY_METRIC_RESIDUAL_STUDENT_NOT_SUPPORTED`
+
+因此停止当前 first-order 2D track -> metric residual linear mapping，不在同一
+outcome 上改 alpha、加非线性或删 STLC。D42 teacher ceiling 保持；下一步必须增加
+完整 IMU source 或 causal metric-depth/ground measurement。
 
 ## 2026-08-03 D43 → D43.1：IMU source 不完整，保留四折 track-only 问题
 

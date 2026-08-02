@@ -258,6 +258,7 @@ def build_sequence_rows(
     sequence: str,
     frames: dict[int, dict[str, Any]],
     source_rows: list[dict[str, Any]],
+    include_imu: bool = True,
 ) -> list[dict[str, Any]]:
     source_by_frame: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for row in source_rows:
@@ -335,8 +336,12 @@ def build_sequence_rows(
                 - current_center
             )
             track = track_features(detector_history, frames)
-            full = np.concatenate(
-                [track, imu_features(history_frames, frames)]
+            full = (
+                np.concatenate(
+                    [track, imu_features(history_frames, frames)]
+                )
+                if include_imu
+                else track.copy()
             )
             arrays = (track, full, teacher_target, actual_target)
             if not all(np.all(np.isfinite(value)) for value in arrays):
