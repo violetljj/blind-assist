@@ -90,7 +90,8 @@ D35 继续负责 Android parity/runtime；D36 负责离线事件层科学效用�
 3. negative alerted anchors 至少减少 10；
 4. negative alerted anchors relative reduction >= `0.20`；
 5. 至少 3/5 folds 的 negative alerted anchors 减少；
-6. candidate-only triggered frames = 0。
+6. candidate-only triggered windows = 0；逐帧 delayed-trigger 仅作时序诊断，不把
+   同一 window 内 baseline 已触发过的延迟提醒误算为新增提醒机会。
 
 通过：
 

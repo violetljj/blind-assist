@@ -48,3 +48,29 @@ tasks.register<JavaExec>("runHftfD34DetectorTrackParity") {
         ).get()
     )
 }
+
+tasks.register<JavaExec>("runHftfD36ThorMagniTrackVetoReplay") {
+    group = "verification"
+    description = "Runs production-kernel HFTF D36 THOR-MAGNI track-veto replay."
+    dependsOn(tasks.named("testClasses"))
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set(
+        "com.linnan.blindassist.session.HftfD36ThorMagniTrackVetoReplayMain"
+    )
+    args(
+        providers.gradleProperty("d36Input").orElse(
+            rootProject.layout.projectDirectory.file(
+                "artifacts.local/evidence/hftf/" +
+                    "stage-c-d36-thor-magni-production-track-veto-event-v0/" +
+                    "detections.tsv"
+            ).asFile.absolutePath
+        ).get(),
+        providers.gradleProperty("d36KernelOutput").orElse(
+            rootProject.layout.projectDirectory.file(
+                "artifacts.local/evidence/hftf/" +
+                    "stage-c-d36-thor-magni-production-track-veto-event-v0/" +
+                    "kernel_replay.tsv"
+            ).asFile.absolutePath
+        ).get()
+    )
+}
