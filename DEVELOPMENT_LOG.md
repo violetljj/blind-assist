@@ -5162,3 +5162,18 @@
   recipe；下一步转向显式 object-centric detection/correspondence/velocity
   bottleneck。report SHA-256
   `2f359f12b04a15fa9de7f109e87231bc7c738de2dac95fb134762f18e119e29c`。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D29
+  THOR-MAGNI object-slot motion residual。冻结 YOLO11n current-person boxes 与
+  box 内 backward-RAFT 形成 8×34 slots，530 anchors 中 393 有检测，
+  coverage `74.15%`，1,161 selected slots 的 mean warp-valid `90.95%`。
+  14,104 参数 paired DeepSets 在五折完整训练；history-current source-macro
+  AUROC/AP `-0.04125/-0.02507`（均 2/5 正折），safest-choice `+0.00560`
+  （2/5），pooled AUROC/AP `-0.04875/-0.02593`。teacher MAE delta
+  `+0.14027m` 与 monotonicity 通过，其余 gate 失败，终态
+  `D29_THOR_MAGNI_OBJECT_SLOT_MOTION_RESIDUAL_INCREMENT_NOT_SUPPORTED`。
+  这关闭 low-resolution current-box + within-box-flow residual recipe，不撤销
+  D27 information ceiling；也不支持只用全分辨率 detector 重跑。下一步先检验
+  2D box 与 source-native bearing/distance 的 measurement correspondence。
+  object-slot/report SHA-256 分别为
+  `aa9d0f28b1e050105086fee3078002862fd0d21d06e5bd4aa12ecc950ec451f7` /
+  `22b910c1500beb7683241ea69fc0f5a3a5fa88747ebed06d28a1a10100ba1206`。
