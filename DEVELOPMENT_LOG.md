@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D25
+  THOR-MAGNI ordinal time-to-entry canary。把 530 个 current-negative
+  proximity anchors 按首次 1.25m 进入时间固定为五类
+  `61/32/35/29/373`，四个累计 horizon positives 为 `61/93/128/157`，每折均
+  有正负。相同 D22 encoder、五折、seed17、30 epochs 下独立训练等容量
+  current/history 共 10 runs。history-minus-current 的 source-macro
+  horizon-macro AUROC/AP 为 `-.04575/-.06348`，仅 2/5、1/5 folds 正；
+  pooled 为 `-.03031/-.02951`，四个 horizon 的 AUROC/AP mean 均不为正。
+  0.5/1.0s Brier 虽改善 `-.00710/-.00728`，不足以覆盖 ranking 负结果；终态
+  `D25_THOR_MAGNI_TIME_TO_ENTRY_INCREMENT_NOT_SUPPORTED`。首次执行在 fold1
+  held-out metric 前因 current 模型跨 arm 留在 GPU 触发 OOM；commit `9b65e37`
+  改为逐 arm CPU checkpoint 后释放，从 fold0 完整重跑，属于工程无效，不烧毁
+  cohort。D23 binary representation 正结果保留；当前 dense-flow timing successor
+  停止。下一变量改为多候选方向的 counterfactual collision field，不再调 time head、
+  seed 或 loss；主线、默认 App 与安全权限不变。
 - 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D24
   THOR-MAGNI proximity event input ablation。复用 D23 的 15 个 history
   checkpoints，不新增训练；同一权重分别读取真实五帧+dense flow 与重复当前帧+零
