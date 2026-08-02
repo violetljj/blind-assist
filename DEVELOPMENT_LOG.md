@@ -5445,3 +5445,13 @@
   report 连续重建 SHA 稳定为
   `1b8a8b9458edb2dd7b5f34eca95b5c0bdd9b0715efa8881cbbf8a43d5e1f5dfb`。
   主线、默认 App 与 D35 均不变。
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D43
+  track-IMU metric residual student source gate。D43 在训练/held-out outcome
+  前发现 IMU coverage 不满足冻结四折合同：Clark/Meyer 各 120/120
+  IMU-complete frames 与 1,304/194 complete track histories；Gates/STLC
+  complete frames/histories 均为 0。未填零、插值、删 sequence 或降为两折；
+  `model_training_executed=false`、`future_outcome_evaluated=false`，终态
+  `D43_JRDB_TRACK_IMU_METRIC_RESIDUAL_STUDENT_NOT_EVALUABLE`，不产生 IMU
+  learnability 结论。原协议的四折 `TRACK_ONLY` arm 输入完整，因此独立冻结
+  D43.1，保持原 10 features、D42 teacher target、Ridge alpha、zero baseline
+  与 effect floors，不回填 D43 IMU 主张。主线、默认 App 与 D35 均不变。
