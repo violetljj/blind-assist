@@ -1,4 +1,21 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：Codex。按“治理服务科学”的纠偏原则，
+  完成 outcome-open、可修复的 TartanGround HFTF student Development，而不再为
+  下载、路径、parser 或结果文件创建 one-shot/source-burning 终点。8 个互斥环境形成
+  `6 train / 2 dev`、`198 / 66` samples；592 个 RGB/depth PNG 全部可解码，样本路径
+  缺失为 0，samples SHA-256 为
+  `649d8ffc1e550b209ed64fcc87de20858da707089a5c31b7c00fabc14591ec75`。
+  相同 1,087,464 参数下，train cell-prior、single、随机初始化 history 的 future
+  body/head macro F1 为 `0.2874 / 0.5435 / 0.4996`，证明 RGB 可学习但否定 naive
+  history joint training。交叉输入显示 single checkpoint 使用真实 history 可达
+  `0.5509`；据此从该 single checkpoint 以较小学习率微调 history，三个微调随机种子
+  得到 `0.5549 / 0.5565 / 0.5512`，相对 single 增量
+  `+0.0114 / +0.0130 / +0.0077`。但增益只出现在 `MiddleEast`；
+  `WaterMillNight` 三次 macro delta 均为负，终态为
+  `STAGED_HISTORY_SIGNAL_OBSERVED_BUT_ENVIRONMENT_ROBUST_INCREMENT_NOT_ESTABLISHED`。
+  下一步先扩 outcome-open Development 环境并诊断最差环境，不打开 held-out，不建立
+  主线、Android、产品或安全主张。实现、结果与复现命令见
+  `docs/research/hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md`。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。将候选事件自动挖掘从接口骨架推进到一条真实 `THESIS_DEVELOPMENT` host 链：4 个已登记公开视频 source/session 的 byte-verified 副本位于 `F:\ba-data\blindassist-candidate-event-mining\`，实际运行 2 Hz、YOLO11n 与 Depth Anything V2 Small，产出 2,566 帧 canonical trace。全量发现为 `715` raw windows、`571` 同 session 去重候选、`15` cluster；HFTF 无 sidecar，保持 `0`，segmentation 只以 manifest 明确标注的 `image_space_risk_proxy_not_a_segmentation_model` 参与，不冒充分割模型。新增确定性 review-budget queue：覆盖 source×taxonomy/cluster 选 `64` 条，另 `507` 条保留为 `not_reviewed_and_excluded_from_candidate_pool`。Luna 在 candidate-blind、hash-bound、独立上下文中复核 64 条，`24 keep / 27 reject / 13 quarantine`；candidate pool 只收 `24` 条，`40` 条进入 quarantine，未复核分母保持 `507`。完整 source/run 索引位于 `F:\ba-data\blindassist-candidate-event-mining\project_index.json` 与 `run_index.json`；探针 Norrköping run 也保留为 `0 keep / 26 quarantine`。代码、contract tests（5/5；完整 suite 14/14）、docs index 和权限边界均复验通过；结果仅用于候选发现与后续复核，不授权事件真值、训练、Confirmation、Android、默认 App、生产或安全结论。详见 `scripts/research/candidate_event_mining/README.md`。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。新增独立
   `candidate_event_mining` discovery Module，冻结 `CANDIDATE_EVENT_MINING_DISCOVERY_R0`

@@ -35,6 +35,7 @@ D3_REFERENCE_SUPPORT_OPPORTUNITY_COHORT_NOT_EVALUABLE_BUDGET_EXHAUSTED_NO_EXPANS
 D3_Q0_1_CURRENT_REFERENCE_TRUTH_RISK_OPPORTUNITY_SCARCITY_DOMINANT_HYPOTHESIS_ONLY /
 FROZEN_AFTER_D3_Q0_1_ATLAS_BEFORE_D4_METADATA_CENSUS_OR_FRESH_SOURCE_CONTENT /
 INNOVATION_NOT_EVALUABLE /
+D5_STAGED_HISTORY_SIGNAL_OBSERVED_ENVIRONMENT_ROBUST_INCREMENT_NOT_ESTABLISHED /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -69,9 +70,21 @@ pose-depth 重投影的 pair-median relative error 为
 
 `TARTANGROUND_ALIGNED_TEACHER_FEASIBLE_AND_FUTURE_LABEL_NONREDUNDANCY_OBSERVED_IN_DEVELOPMENT`
 
-这不建立 student effect、真实助盲事件效用、主线晋级或产品/安全主张。下一步直接扩展
-environment-clustered Development corpus，并比较 single-frame 与 history-RGB
-student；不再先做完整 197-parent 治理 census。
+随后完成 6 train + 2 dev environments、198 + 66 samples 的 student
+Development。相同 1,087,464 参数下，train cell-prior、single 和从随机初始化直接
+训练的 history 的 future body/head macro F1 分别为 `0.2874 / 0.5435 / 0.4996`。
+因此 RGB field 可学习，但 naive history joint training 不成立。
+
+把同一个 single checkpoint 作为起点，用真实 history 小学习率微调 5 epochs，
+三个微调随机种子的 macro F1 为 `0.5549 / 0.5565 / 0.5512`，相对 single 增量为
+`+0.0114 / +0.0130 / +0.0077`。但 `MiddleEast` 三次改善，
+`WaterMillNight` 三次均轻微下降，当前结论因此是：
+
+`STAGED_HISTORY_SIGNAL_OBSERVED_BUT_ENVIRONMENT_ROBUST_INCREMENT_NOT_ESTABLISHED`
+
+这不建立独立环境 student effect、真实助盲事件效用、主线晋级或产品/安全主张。
+下一步增加 outcome-open Development environments，并诊断最差环境，而不是立即打开
+held-out 或先做完整 197-parent 治理 census。
 
 ## 当前结论
 
