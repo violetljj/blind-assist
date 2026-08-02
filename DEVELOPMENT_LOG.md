@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D17
+  early-temporal true-onset canary。固定 D16 的 495 samples、15 environments
+  与三折，在 MobileNet block 0 后用 2,448 参数 3D temporal stem 编码有序相邻
+  feature difference，再让 motion-conditioned feature 进入其余完整 encoder；
+  current/history 两臂共享相同初始化和 1,003,956 参数。environment-macro cell
+  AUROC/AP history-minus-current mean 为 `-.00128/+.00766`、1/3 与 2/3 folds
+  正；sample-macro AUROC 为 `+.00580` 且 3/3 folds 正，但四 targets 无一同时
+  获得正 cell AUROC/AP mean。终态
+  `D17_EARLY_TEMPORAL_ONSET_CANARY_NOT_SUPPORTED` 与
+  `D17_COARSE_ONSET_PRESENCE_SIGNAL_WITHOUT_STABLE_CELL_LOCALIZATION`。不扩
+  seeds23/41；下一候选只引入 dense correspondence/alignment，不调 width、
+  epoch、loss 或门槛救援，主线与默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D16
   TartanGround true-future-onset baseline。继承既有 15-environment 三折，物化
   495 samples、19,478 eligible cells、1,652 onset cells；near/far × body/head
