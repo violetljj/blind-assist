@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：Codex。建立并推进
+  `HFTF_D7_PUBLIC_REAL_R1` 公开真实关系监督数据集 intake。冻结
+  `dataset/session/frame/source_receipt` schema、九类事件桶、RGB A/B/C、geometry、
+  counterexample、final adjudication 与 source-session-disjoint split 边界；不得在
+  数据集完成前修改 YOLO、HFTF、阈值、confirmation length 或 backbone。公开
+  EgoWalk trajectories 元数据完成 239 trajectories、1,032,900 frame rows、51,645
+  model-blind uniform windows；与既有 Development candidate 合并后为 52,216 个
+  candidate windows，超过 50,000 发现目标，但 `adjudicated_events.jsonl` 仍为 0，
+  未生成任何训练或 Confirmation split。THOR Zenodo 3382145 的 22 个开放
+  tracks/LiDAR 文件已下载并以 MD5/SHA-256 receipt 登记；同步视频受限，未作事件真值。
+  EgoWalk 提取 RGB 与 SANPO 官方 GCS metadata inventory 仍在异步获取。role isolation
+  当前为 `HOLD_ROLE_REVIEW`（2 个 ancestry groups 跨历史角色）；assignment-only
+  rows、NOT_EVALUABLE terminal、source receipt hash kind 与 fail-closed validator
+  已补齐。当前终态为 `NOT_COMPLETE`，不凑类别数、不把候选当标签、不改变模型。
+  详见 `scripts/research/hftf_d7_public_real/README.md` 与
+  `F:\ba-data\hftf-d7-public-real\reports\d7_validation_report.json`。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：Codex。候选事件挖掘继续复用
   `cem-r0-real-20260802-2hz-yolo-depth-proxy` 的既有 `candidate_report.json`，未重跑
   模型推理，将剩余 `507` 条候选按 `128/128/128/123` 四批建立排他 queue 并由隔离

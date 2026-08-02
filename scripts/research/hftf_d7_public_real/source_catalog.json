@@ -1,0 +1,105 @@
+{
+  "schema": "hftf_d7_public_real_source_catalog_v1",
+  "sources": [
+    {
+      "dataset_id": "SANPO-Real",
+      "priority": 1,
+      "official_url": "https://google-research-datasets.github.io/sanpo_dataset/",
+      "download_url": "https://github.com/google-research-datasets/SANPO",
+      "license": "Creative Commons 4.0",
+      "access_status": "LOCAL_ASSETS_FOUND_PUBLIC_SOURCE_REVIEW_REQUIRED",
+      "local_evidence_paths": ["DATASET_MASTER_LEDGER.csv", "artifacts.local"],
+      "native_fields": ["rgb", "stereo", "depth", "pose", "imu", "segmentation", "session_metadata"],
+      "notes": "Ledger contains SANPO rows; split/role and frame alignment remain source-session checks."
+    },
+    {
+      "dataset_id": "EgoWalk",
+      "priority": 2,
+      "official_url": "https://huggingface.co/datasets/EgoWalk/trajectories",
+      "download_url": "https://huggingface.co/datasets/EgoWalk/raw-recordings",
+      "license": "MIT_EXTRACTED_TRAJECTORIES_REPOSITORY; raw recordings terms/gate separate",
+      "access_status": "PUBLIC_EXTRACTED_METADATA_RGB_DOWNLOADABLE_RAW_RECORDINGS_ACCESS_BLOCKED",
+      "local_evidence_paths": ["DATASET_MASTER_LEDGER.csv", "docs/research/hftf", "F:/ba-data/hftf-d7-public-real/raw/egowalk-trajectories"],
+      "native_fields": ["rgb_video", "depth_video", "pose", "timestamps", "camera_parameters", "trajectory_metadata"],
+      "notes": "HF card reports 1,168,593 rows and 268 GB; odometry nulls/reinitialization require explicit ancestry cuts."
+    },
+    {
+      "dataset_id": "Project-Aria-Everyday-Activities",
+      "priority": 3,
+      "official_url": "https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_everyday_activities_dataset",
+      "download_url": "https://www.projectaria.com/datasets/aea/",
+      "license": "DATASET_TERMS_TO_VERIFY",
+      "access_status": "PUBLIC_DATASET_PAGE_ACCESS_DOWNLOAD_PROBE_REQUIRED",
+      "local_evidence_paths": [],
+      "native_fields": ["rgb", "trajectory", "point_cloud", "eye_gaze", "calibration", "shared_timestamps"],
+      "notes": "Official docs describe 143 recordings, 5 locations, and over 1 million images."
+    },
+    {
+      "dataset_id": "Project-Aria-Everyday-Objects",
+      "priority": 4,
+      "official_url": "https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_everyday_objects_dataset",
+      "download_url": "https://www.projectaria.com/datasets/aeo/",
+      "license": "PROJECT_ARIA_DATASET_LICENSE_NONCOMMERCIAL",
+      "access_status": "PUBLIC_DATASET_PAGE_ACCESS_DOWNLOAD_PROBE_REQUIRED",
+      "local_evidence_paths": [],
+      "native_fields": ["rgb", "calibration", "slam_trajectory", "semi_dense_point_cloud", "3d_boxes"],
+      "notes": "Useful for static structures/objects; 3D boxes do not alone create alertable event truth."
+    },
+    {
+      "dataset_id": "JRDB",
+      "priority": 5,
+      "official_url": "https://jrdb.erc.monash.edu/dataset/",
+      "download_url": "https://jrdb.erc.monash.edu/dataset/",
+      "license": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0",
+      "access_status": "PARTIAL_PUBLIC_FULL_LOGIN_REQUIRED_LOCAL_CANARY",
+      "local_evidence_paths": ["DATASET_MASTER_LEDGER.csv", "artifacts.local/datasets/jrdb-far-range-r0", "artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb"],
+      "native_fields": ["360_rgb", "lidar_point_cloud", "2d_boxes", "3d_boxes", "pose", "tracks", "timestamps"],
+      "notes": "Ledger contains JRDB subsets and prior consumed roles; no role upgrade through copying."
+    },
+    {
+      "dataset_id": "THOR",
+      "priority": 6,
+      "official_url": "https://arxiv.org/abs/1909.04403",
+      "download_url": "https://zenodo.org/records/3382145",
+      "access_urls": ["https://zenodo.org/records/3405915", "https://zenodo.org/records/3408199", "https://zenodo.org/records/3460124"],
+      "license": "Creative Commons Attribution 4.0 (tracks/point-cloud/eye-tracking); complementary video restricted",
+      "access_status": "PUBLIC_TRACKS_LIDAR_EYE_VIDEO_RESTRICTED",
+      "local_evidence_paths": ["artifacts.local/datasets/thor-source-native-id-time-transform-authority-recovery-r1"],
+      "native_fields": ["lidar", "robot_pose", "motion_capture", "timestamps"],
+      "notes": "Zenodo exposes tracks, point clouds, and eye-tracking; complementary video is restricted and synchronization/ancestry must be re-audited before use."
+    },
+    {
+      "dataset_id": "THOR-MAGNI",
+      "priority": 7,
+      "official_url": "https://arxiv.org/abs/2403.09285",
+      "download_url": "https://zenodo.org/records/13865754",
+      "license": "Creative Commons Attribution 4.0 (main v2 archive); selected video/eye-tracking components restricted",
+      "access_status": "PUBLIC_MAIN_ZIP_NOT_MATERIALIZED_VIDEO_EYE_PARTIAL_REQUEST",
+      "local_evidence_paths": ["artifacts.local/datasets/thor-source-native-id-time-transform-authority-recovery-r1"],
+      "native_fields": ["motion_capture", "robot_interaction", "human_trajectories", "scene_context"],
+      "notes": "Main v2 archive is publicly listed but not materialized locally; download and schema/hash audit are still required. Do not treat v1/v2 or derived restoration outputs as independent parent events."
+    },
+    {
+      "dataset_id": "Ego4D",
+      "priority": 8,
+      "official_url": "https://ego4d-data.org/docs/start-here/",
+      "download_url": "https://ego4d-data.org/docs/CLI/",
+      "license": "LICENSE_AGREEMENT_REQUIRED",
+      "access_status": "ACCESS_BLOCKED_LICENSE_AND_AWS_CREDENTIALS_REQUIRED",
+      "local_evidence_paths": [],
+      "native_fields": ["egocentric_video", "annotations", "egotracks", "imu", "audio"],
+      "notes": "Do not attempt gated download without credentials; metadata-only planning remains allowed."
+    },
+    {
+      "dataset_id": "Ego-Exo4D",
+      "priority": 9,
+      "official_url": "https://docs.ego-exo4d-data.org/",
+      "download_url": "https://docs.ego-exo4d-data.org/download/",
+      "license": "LICENSE_AGREEMENT_AND_AWS_CREDENTIALS_REQUIRED",
+      "access_status": "ACCESS_BLOCKED_LICENSE_AND_AWS_CREDENTIALS_REQUIRED",
+      "local_evidence_paths": [],
+      "native_fields": ["ego_video", "exo_video", "trajectory", "eye_gaze", "point_cloud", "pose", "segmentation"],
+      "notes": "Official downloader requires a license agreement and configured AWS credentials."
+    }
+  ]
+}
