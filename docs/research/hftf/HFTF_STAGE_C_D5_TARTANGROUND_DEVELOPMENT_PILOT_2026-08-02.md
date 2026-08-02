@@ -2,7 +2,7 @@
 
 ## 结论
 
-TartanGround 已从“目录看起来足够大”推进到七个可执行结果：
+TartanGround 已从“目录看起来足够大”推进到八个可执行结果：
 
 1. 官方 Hugging Face revision
    `388faf9c800568cfc6828fa47e063f8369397eb3` 完整覆盖锁定 catalog 的
@@ -24,6 +24,10 @@ TartanGround 已从“目录看起来足够大”推进到七个可执行结果�
 7. 要求 body lane 具有跨 distance cells 的空间支持后，v2 同时修复 v1 的
    clearance/fragmentation，并让 directional 相对 pooled 的表示增量首次在
    selective synthetic event proxy 上形成多数 paired 改善。
+8. 固定 v2 后，在 6 个此前完全未使用的 outcome-unseen environments 上复用
+   3 seeds × 3 folds checkpoints；directional 相对 pooled 的 event recall
+   9/9 提高，false-active 7/9 降低，建立了跨新环境的 selective-event 迁移正结果，
+   但 head false-alert fragmentation 与逐环境 false-active guardrail 尚未解决。
 
 当前终态为：
 
@@ -32,7 +36,8 @@ UNALIGNED_HISTORY_FUSION_INCREMENT_NOT_SUPPORTED /
 UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
 KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED /
 HEIGHT_SPATIOTEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
-DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_IN_DEVELOPMENT`
+DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_IN_DEVELOPMENT /
+DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUND_ENVIRONMENTS_IN_DEVELOPMENT`
 
 这足以把 directional single 提升为 HFTF 当前 Development reference，并停止
 pooled/grid 与无对齐 history fusion；不需要先完成 197-parent 产品级 census。
@@ -476,30 +481,132 @@ selective v2。
 compensation 或新的时序表征后，才值得重开 history；不再继续无对齐结构或学习率
 搜索。
 
+## Outcome-unseen TartanGround transfer
+
+### 固定选择与 corpus
+
+在 v2 参数和 evaluation code 已固定后，从 base + expansion 未使用的
+TartanGround environments 中机械选择 transfer cohort：
+
+- selection seed：`HFTF_D5_OUTCOME_UNSEEN_TRANSFER_V0`；
+- 排除前 15 个已使用 environments；
+- 只保留同时具有 metadata、front RGB、front depth 的 P1000 parents；
+- 按 `sha256(seed:environment)` 升序取前 6 个；
+- engineering failure 可修复重跑，不因下载、路径或解码错误烧毁 environment。
+
+选择结果为：
+
+- `ModularNeighborhoodIntExt`
+- `Fantasy`
+- `GothicIsland`
+- `OldIndustrialCity`
+- `Hospital`
+- `OldTownFall`
+
+每个 environment 生成 33 个 5 Hz anchors，共 198 samples、444 个 RGB/depth
+PNG 和 222 张 unique history RGB images。全部 PNG 解码成功，全部样本路径存在，
+teacher label 重解码一致，且 selected 与此前 used environment sets 无交集。
+manifest SHA-256 为
+`292315ce65c14e53fc94981b28326390a71566581b60b87b824ef34719858e38`，
+samples JSONL SHA-256 为
+`f2669c336c36b24b98ee24bfa9c27db42d2a70869b7e85a0528416e0d4b9b237`。
+
+这个 transfer corpus 包含 266 个 positive lane events、1,608 个 positive
+lane frames、130 个 complete negative lane frames 和 20 个 clearance-eligible
+events；六个 environments 都同时具有正、负机会。它比原三折每折
+`55/114/187` 个 negative frames 增加了独立环境覆盖，但 130 个 negative frames
+和 20 个 clearance events 仍然偏少。
+
+### 表示层迁移
+
+先不经过 event kernel，直接在 9 个原训练 checkpoint pairs 上比较 directional
+与 pooled 的 future body/head field：
+
+| 指标 delta（directional - pooled） | mean | median | paired 方向 |
+|---|---:|---:|---:|
+| environment-macro F1 | +0.0473 | +0.0822 | 7 正 / 2 负 |
+| aggregate macro F1 | +0.0298 | +0.0657 | 6 正 / 3 负 |
+| aggregate micro F1 | +0.0284 | +0.0397 | 5 正 / 4 负 |
+| recall | +0.1538 | +0.2462 | 7 正 / 2 负 |
+| false-positive rate | +0.1420 | +0.1412 | 9 恶化 |
+| precision | -0.0120 | -0.0283 | 3 正 / 6 负 |
+
+54 个 environment×seed×fold F1 比较中 37 胜、17 负。也就是说，directional
+的 field F1/recall 增量在新环境中仍有多数支持，但裸 0.5 threshold 的 FPR
+9/9 变差；不能把表示层结果直接写成提醒行为改善。
+
+### 固定 v2 下的表示到事件迁移
+
+复用完全相同的 `height_spatiotemporal_selective_v2`，不在 transfer outcomes 上
+修改 support count、threshold、confirmation length 或 override：
+
+| 指标 delta（directional - pooled，同一 v2） | mean | median | paired 方向 |
+|---|---:|---:|---:|
+| event recall | +0.1809 | +0.1692 | 9 正 |
+| false-active lane-frame rate | -0.0727 | -0.0923 | 7 改善 / 2 恶化 |
+| clearance rate | +0.0444 | +0.1000 | 6 改善 / 3 恶化 |
+| response-delay median | 0 | 0 | 9 不变 |
+| false-alert event count | +3.56 | +3 | 6 恶化 / 2 改善 / 1 零 |
+| body event recall | +0.1794 | +0.1803 | 9 正 |
+| head event recall | +0.1821 | +0.1528 | 6 正 / 2 负 / 1 零 |
+
+因此当前最强、但仍严格限层的正终态是：
+
+`DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUND_ENVIRONMENTS_IN_DEVELOPMENT`
+
+这里的 “replicated” 指 v2 在固定后迁移到未参与数据、模型或 kernel 开发的六个
+TartanGround environments；不是把这些 environments 宣称为真实人类 held-out
+event truth。
+
+### 决策层贡献与反例
+
+在 directional checkpoint 上单独比较 decision kernels，v2 相对 hard
+known-and-risk 的 event recall `+0.1412`（8/9 正）、clearance `+0.1444`
+（8 改善/1 零）、false-alert event count `-4.89`（8 改善/1 零），但
+false-active lane-frame rate mean `+0.0359`，5/9 恶化。v2 相对 v1 则在
+false-active、clearance、false-alert count 三项上都是 9/9 非劣，代价是 recall
+7/9 回落。空间支持对 v1 fragmentation 的修复可以迁移，但 v2 尚未相对 hard
+建立全部 guardrail 支配。
+
+还必须保留两个聚合反例：
+
+- directional 相对 pooled 虽然按全部 negative frames 加权的 false-active
+  7/9 改善，但 54 个 environment cells 的等权 mean delta 为 `+0.0129`，
+  其中 31 恶化、16 改善、7 不变；
+- false-alert event count mean 增加 `+3.56`；height 分解显示 head count
+  8/9 恶化、1/9 改善，说明更少的 active frames 仍可能碎成更多 head alerts。
+
+所以当前证据支持“方向结构 + 固定选择性 kernel 在合成新环境上提高事件召回，并在
+多数 checkpoint pairs 降低加权误激活”，不支持“每环境都更稳”“假警更少”或
+“HFTF 已超过主线”。
+
 ## 边界与下一实验
 
 当前正结果只支持：
 
 `teacher feasible + RGB learnable + multi-seed directional spatial-structure increment
 + height-spatiotemporal selective decision-kernel signal
-+ directional selective-event transfer signal`
++ directional selective-event transfer signal
++ outcome-unseen TartanGround selective-event replication`
 
 尚未支持：
 
 - history 对独立环境具有稳定增量；
 - directional 的 threshold calibration 能跨 seed 稳定；
 - known 正类标量重加权能同时改善召回与 false-active；
-- selective v2 在 outcome-unseen environments 仍能守住 recall/false-active；
-- head false-active 在 selective v2 下形成稳定 guardrail；
+- selective v2 能在每个 outcome-unseen environment 同时守住 false-active；
+- head false-alert fragmentation 在 selective v2 下形成稳定 guardrail；
 - synthetic proxy 能迁移到真实视障步行；
 - 事件级 critical-hazard recall、false alerts 或 warning lead time 改善；
 - HFTF 超过当前主线或进入 App。
 
-下一步保留 v2 为 Development decision-kernel candidate，不再继续搜索当前 folds
-上的 support count、静态 threshold 或 known loss 权重。直接选取未参与 kernel
-选择的 outcome-unseen TartanGround environments，复用同一 evaluator 做 transfer；
-不另建 one-shot ceremony。通过后再接真实 parent-event cohort。history 在出现
-显式对齐机制前停止。
+下一步保留 directional + v2 为合成 Development reference，不再在这 21 个
+TartanGround environments 上搜索 support count、静态 threshold、known loss
+权重或 head debounce。优先接一个具有真实时间连续性与人类事件标注的 parent-event
+cohort，直接比较 critical-hazard recall、false-alert events、response 与
+clearance；如果只能先扩合成数据，则专门增加 environment-balanced negative/head
+exposure，并把 false-alert fragmentation 设为预先固定的 guardrail。history 在
+出现显式对齐机制前停止。
 
 ## 复现
 
@@ -542,6 +649,28 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   --pretrained artifacts.local/models/hftf/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth `
   --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
   --output artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/decision-kernel/height-temporal-selective-v1/seed-17/fold-0.json
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/materialize_stage_c_d5_tartanground_outcome_unseen_transfer.py
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/evaluate_stage_c_d5_tartanground_development_checkpoints.py `
+  --samples artifacts.local/evidence/hftf/stage-c-d5-tartanground-outcome-unseen-transfer-v0/samples.jsonl `
+  --pretrained artifacts.local/models/hftf/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth `
+  --output artifacts.local/evidence/hftf/stage-c-d5-tartanground-outcome-unseen-transfer-v0/evaluation/cell-level/seed-17/fold-0.json `
+  --model pooled single artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/pooled-single-seed17/checkpoint.pt `
+  --model directional single artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --reference pooled --role transfer
+
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  scripts/research/hftf/evaluate_stage_c_d5_tartanground_event_proxy.py `
+  --samples artifacts.local/evidence/hftf/stage-c-d5-tartanground-outcome-unseen-transfer-v0/samples.jsonl `
+  --pretrained artifacts.local/models/hftf/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth `
+  --output artifacts.local/evidence/hftf/stage-c-d5-tartanground-outcome-unseen-transfer-v0/evaluation/height-spatiotemporal-selective-v2/seed-17/fold-0.json `
+  --model pooled artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/pooled-single-seed17/checkpoint.pt `
+  --model directional artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --reference pooled --role transfer `
+  --decision-policy height_spatiotemporal_selective_v2
 ```
 
 网络读取完成后可用 `--skip-fetch` 重算 geometry result。生成数据位于 ignored

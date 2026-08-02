@@ -4574,3 +4574,30 @@
   false-active mean 仍 `+0.0341`，完整 negative exposure 每折只有
   `55/114/187`。下一步停止当前-fold kernel search，直接做 outcome-unseen
   TartanGround environment transfer。
+
+## 2026-08-02：HFTF D5 outcome-unseen TartanGround transfer
+
+- v2 固定后，排除此前 15 个 environments，从具有 metadata/front RGB/front
+  depth 的未使用 P1000 parents 中按
+  `sha256(HFTF_D5_OUTCOME_UNSEEN_TRANSFER_V0:environment)` 升序选择 6 个：
+  `ModularNeighborhoodIntExt / Fantasy / GothicIsland / OldIndustrialCity /
+  Hospital / OldTownFall`。共 198 transfer samples、444 PNG；selected 与 used
+  environment sets 无交集，全部路径、PNG 解码和 teacher labels 验证通过。
+- corpus 中有 266 个 positive lane events、1,608 个 positive lane frames、
+  130 个 complete negative lane frames 和 20 个 clearance-eligible events；
+  六环境均同时有正、负机会。engineering failure 可修复重跑，不是 one-shot。
+- 不经 kernel 的 field comparison 中，directional 相对 pooled 的
+  environment-macro F1 mean delta `+0.0473`，7/9 单元为正，54 个 environment
+  cells 为 37 胜 17 负；但裸 threshold FPR mean `+0.1420` 且 9/9 恶化，
+  表示正结果不能直接当作提醒行为改善。
+- 固定 v2 下，directional 相对 pooled 的 event recall/false-active/clearance
+  mean delta 为 `+0.1809/-0.0727/+0.0444`；recall 9/9 正、false-active
+  7/9 改善、clearance 6/9 改善、response-delay median 9/9 不变。终态提升为
+  `DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUND_ENVIRONMENTS_IN_DEVELOPMENT`。
+- 反例不隐藏：false-alert event count mean `+3.56`，主要是 head 短事件碎片；
+  54 个 environment cells 的 false-active 等权 mean delta 为 `+0.0129`，
+  31 恶化、16 改善、7 不变。v2 相对 directional hard 虽改善 recall、clearance
+  与 fragmentation，却使 false-active mean `+0.0359`。因此当前只建立合成新环境
+  selective-event 迁移，不建立逐环境 guardrail、human-event、主线、App 或 safety
+  主张。下一步进入真实 parent-event cohort 或预先固定
+  environment-balanced head/negative fragmentation guardrail。

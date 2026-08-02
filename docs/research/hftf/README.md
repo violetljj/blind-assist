@@ -41,6 +41,7 @@ D5_UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED /
 D5_KNOWN_LOSS_REWEIGHTING_EVENT_INCREMENT_NOT_SUPPORTED /
 D5_HEIGHT_SPATIOTEMPORAL_SELECTIVE_DECISION_KERNEL_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
 D5_DIRECTIONAL_SELECTIVE_EVENT_TRANSFER_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY /
+D5_DIRECTIONAL_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUND_ENVIRONMENTS_DEVELOPMENT_ONLY /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-02 执行纠偏：让治理重新服务于科学
@@ -214,6 +215,20 @@ body recall 9/9 提高且 body false-active 8/9 降低或不变。这首次支�
 它不撤销旧的 `UNCALIBRATED_SYNTHETIC_EVENT_TRANSFER_NOT_SUPPORTED`：旧终态精确
 描述 hard-known-and-risk kernel；新正结果来自明确披露、在同一 outcome-open
 Development 数据上选择的 spatiotemporal kernel，仍需 outcome-unseen transfer。
+
+固定 v2 后，又按预先确定的哈希顺序选取 6 个完全未参与数据、模型或 kernel
+开发的 TartanGround environments，共 198 个 transfer samples。相同 3 seeds ×
+3 folds checkpoints 与相同 v2 下，directional 相对 pooled 的 event recall
+9/9 提高，mean `+0.1809`；false-active lane-frame rate 7/9 降低，mean
+`-0.0727`；clearance 6/9 提高，mean `+0.0444`。因此结果提升为：
+
+`DIRECTIONAL_SPATIAL_STRUCTURE_SELECTIVE_EVENT_TRANSFER_REPLICATED_ON_OUTCOME_UNSEEN_TARTANGROUND_ENVIRONMENTS_IN_DEVELOPMENT`
+
+这是真正的 outcome-unseen 合成环境迁移正结果，不是新的 outcome-open
+kernel selection。边界也同样保留：false-alert event count mean 增加 `+3.56`，
+主要来自 head 短事件碎片；54 个 environment×seed×fold 比较的 false-active
+环境宏平均为 `+0.0129`，其中 31 个恶化。也就是说，加权总体行为已改善，但尚未
+建立逐环境 false-alert guardrail，更不是人类事件、主线、App 或安全证据。
 
 在该 reference 上继续测试 joint history、zero-initialized 1×1 residual 和
 3×3 spatial residual。后两者的 epoch 0 与 single 精确相同，避免 temporal 权重
