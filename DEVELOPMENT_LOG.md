@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D20
+  dense-flow dynamics canary。在 D18 aligned 16-channel feature residual 上
+  显式追加 normalized flow x/y、magnitude、validity，形成四步 20-channel
+  dynamics tensor；current comparator 精确为零，两臂共享 1,004,392 参数与
+  30-epoch direct-onset budget。history-minus-current 的 environment-macro
+  cell AUROC/AP 为 `+.00431/+.03421`、2/3 与 3/3 folds 正，pooled cell
+  `+.00604/+.00966`、均 3/3，sample AUROC/AP `+.01612/+.01068`，4/4
+  targets 的 mean AUROC/AP 同时为正。7 项 gate 通过 6 项；仅 AUROC effect
+  未到预定 `+.010`，故终态 `D20_DENSE_FLOW_DYNAMICS_CANARY_NOT_SUPPORTED`，
+  不扩 seeds、不降门。同时保留
+  `D20_DENSE_FLOW_DYNAMICS_BROAD_ONSET_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY`。
+  下一变量只把 temporal collapse 改为 ConvGRU future-state recurrence，
+  flow/loss/epoch/gate 不变，主线与默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D19
   geometry-dynamics pretraining canary。在 D18 flow-aligned encoder 上固定总
   30 epochs：15 epochs 预测 current/near/far body/head fields，复制四个
