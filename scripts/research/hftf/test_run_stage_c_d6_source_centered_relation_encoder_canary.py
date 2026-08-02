@@ -96,6 +96,8 @@ class SourceCenteredRelationEncoderCanaryTest(unittest.TestCase):
         self.assertEqual(0.0, result["frame_no_alert_recall"])
         self.assertEqual(1.0, result["episode_alert_recall"])
         self.assertEqual(0.0, result["episode_no_alert_recall"])
+        self.assertEqual(0.5, result["frame_auroc"])
+        self.assertEqual(0.0, result["episode_auroc"])
 
 
 if __name__ == "__main__":

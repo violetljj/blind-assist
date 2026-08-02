@@ -4775,6 +4775,11 @@
   encoder 仍为 `0` intervention recall。再加入 30 个 consumed SANPO sources、
   46 个 phase episodes、711 帧作训练 support 后，public-video held-out frame BA
   反降到 `0.4394`；各 fold train loss 接近 `0`，确认是记忆而非迁移。
+- paired-RGB backbone canary 解冻 `encoder[9:] + pointwise` 的 810,472 个参数，
+  只评价 Bangkok/Ulm/Edmonton 三个 intervention-bearing held-out sources。早期
+  CUDA adaptive-pool 两次不一致被归类为 engineering invalid 并允许修复重跑；
+  deterministic bilinear 版本 repeat A/B 逐分数完全一致。有效结果为 frame
+  alert recall `0`、AUROC `0.5034`、segment alert recall `0`、AUROC `0.3377`。
 - 保留此前 spatial-over-output-field 的正结果；只关闭“增加关系监督即可救固定
-  backbone”的窄假设。下一步必须训练 relation-aware backbone，并先通过
-  source-heldout actionability recall，才进入新的 real-event 评价。
+  backbone”的窄假设，也关闭当前 paired-RGB tail fine-tune recipe。下一步必须
+  新增独立正来源或新的预训练任务，并先通过 source-heldout actionability recall。

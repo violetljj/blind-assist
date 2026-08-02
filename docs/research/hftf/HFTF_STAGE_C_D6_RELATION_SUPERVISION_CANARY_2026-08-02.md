@@ -25,6 +25,10 @@
 
 `FIXED_HFTF_GRID_NONLINEAR_RELATION_TRANSFER_NOT_SUPPORTED`
 
+解冻 HFTF encoder tail 的 paired-RGB 训练仍未恢复 held-out intervention：
+
+`PAIRED_RGB_TAIL_FINETUNE_RELATION_TRANSFER_NOT_SUPPORTED`
+
 这不撤销空间特征相对 output-field 的增量，只关闭以下更窄假设：
 
 > 保持现有 HFTF backbone 不变，仅通过扩大弱/人工关系监督和训练线性空间头，
@@ -157,6 +161,45 @@ absolute source appearance offset；在 fixed feature 上继续做 centering、�
 no-alert。这说明当前固定 HFTF grid 可以记忆训练来源，却没有可由该非线性局部头
 提取的跨来源 actionability relation。
 
+## Canary D：paired-RGB backbone tail fine-tune
+
+最后一个 canary 真正改变 backbone 表征，而不是继续换 fixed-grid head：
+
+- Siamese input：current RGB 与同来源 episode-balanced no-alert references；
+- 解冻：MobileNetV3-small `encoder[9:] + pointwise`；
+- trainable backbone parameters：810,472；
+- relation head parameters：13,137；
+- support：其余 public sources + 30 个 consumed SANPO sources；
+- evaluation：只留出 3 个含 intervention 的 public sources；
+- 10 epochs，backbone LR `1e-4`，head LR `3e-3`；
+- threshold `0.5`，无超参数搜索。
+
+第一次实现使用 CUDA adaptive-pool backward，完全相同配置两次出现不同结果。
+这两次明确归类为：
+
+`ENGINEERING_INVALID_NONDETERMINISTIC_BACKWARD_RETRY_ALLOWED`
+
+它们没有烧掉 cohort，也不进入科学结论。修复为 deterministic algorithms、
+关闭 TF32/benchmark，并把 `4×7 → 3×6` 改为 deterministic bilinear resize 后，
+repeat A/B 的 folds、loss、逐 episode score 和 metrics 全部完全一致。
+
+确定性结果：
+
+| positive-source-heldout 指标 | 结果 |
+|---|---:|
+| frame alert recall | 0.0000 |
+| frame no-alert recall | 0.8922 |
+| frame balanced accuracy | 0.4461 |
+| frame AUROC | 0.5034 |
+| segment alert recall | 0.0000 |
+| segment no-alert recall | 1.0000 |
+| segment balanced accuracy | 0.5000 |
+| segment AUROC | 0.3377 |
+
+三折 final train loss 分别约为 `0.0013 / 0.0082 / 0.0017`，但 Bangkok、Ulm、
+Edmonton 的 7 个 held-out intervention segments 全部未命中。当前配对 RGB
+tail fine-tuning recipe 仍然是可拟合、不可迁移。
+
 ## 失败分类
 
 本轮不是工程 invalid：
@@ -182,13 +225,14 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 - 更多 discovery-only candidate 混入。
 - fixed feature 上的 source centering 或其他线性 delta rescue。
 - fixed HFTF grid 上的 nonlinear relation head 或增加 consumed SANPO support。
+- 当前 `encoder[9:] + pointwise` paired-RGB tail fine-tuning recipe。
 
 下一候选必须改变至少一个科学变量，而不是增加治理：
 
-1. 直接训练/微调 relation-aware backbone，而不是冻结现有 HFTF grid；
+1. 新增真正 phone-egocentric、含 pre/intervention/passed 的独立正来源；
 2. 使用同一来源内 `clear → intervention → clear` 的成对目标，并把
    source-heldout actionability recall 作为训练前置筛选；
-3. 补充真正 phone-egocentric、含 pre-event baseline 的独立实拍序列；
+3. 新 representation 必须改变输入或预训练任务，不能只是扩大现有 HFTF tail；
 4. 只有 source-heldout relation 先超过 chance，才进入新的 outcome-unseen
    real-event 评价。
 
@@ -198,6 +242,7 @@ phone-egocentric relation evaluation，只是 source qualification negative，
 > `障碍位置 × 可通行路径 × 当前干预需要` 的结构。
 
 如果没有新增 backbone-level representation，D6 fixed-feature 路线保持关闭。
+如果没有新增正来源或预训练任务，paired-RGB tail recipe 也保持关闭。
 
 ## 复现
 
@@ -221,4 +266,13 @@ E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
   --sanpo-support-manifest artifacts.local/evidence/riskseg-r0/event-eval/device-view-v2/manifest.json `
   --output-cache artifacts.local/evidence/hftf/stage-c-d6-source-centered-relation-encoder-sanpo-support-canary-v1/seed-17/fold-0-features.npz `
   --output artifacts.local/evidence/hftf/stage-c-d6-source-centered-relation-encoder-sanpo-support-canary-v1/seed-17/fold-0.json
+```
+
+确定性 paired-RGB backbone canary：
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-torch-gpu\Scripts\python.exe `
+  scripts/research/hftf/run_stage_c_d6_paired_rgb_relation_backbone_canary.py `
+  --checkpoint artifacts.local/evidence/hftf/stage-c-d5-tartanground-cross-environment-v1/training/fold-0/directional-single-seed17/checkpoint.pt `
+  --output artifacts.local/evidence/hftf/stage-c-d6-paired-rgb-relation-backbone-positive-source-canary-v2-repeat-a/seed-17/result.json
 ```

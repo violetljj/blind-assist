@@ -294,6 +294,29 @@ def summarize_predictions(
     sources: np.ndarray,
     episode_ids: np.ndarray,
 ) -> dict[str, Any]:
+    def binary_auroc(
+        values: np.ndarray,
+        scores: np.ndarray,
+    ) -> float:
+        positive = scores[values == 1]
+        negative = scores[values == 0]
+        if len(positive) == 0 or len(negative) == 0:
+            raise ValueError("AUROC requires both classes")
+        wins = sum(
+            left > right
+            for left in positive
+            for right in negative
+        )
+        ties = sum(
+            left == right
+            for left in positive
+            for right in negative
+        )
+        return float(
+            (wins + 0.5 * ties)
+            / (len(positive) * len(negative))
+        )
+
     predictions = (probabilities >= 0.5).astype(np.int64)
     frame_alert_recall = float(
         (predictions[labels == 1] == 1).mean()
@@ -347,12 +370,20 @@ def summarize_predictions(
             frame_alert_recall + frame_no_alert_recall
         )
         / 2.0,
+        "frame_auroc": binary_auroc(labels, probabilities),
         "episode_alert_recall": episode_alert_recall,
         "episode_no_alert_recall": episode_no_alert_recall,
         "episode_balanced_accuracy": (
             episode_alert_recall + episode_no_alert_recall
         )
         / 2.0,
+        "episode_auroc": binary_auroc(
+            episode_labels,
+            np.asarray(
+                [row["score"] for row in episode_rows],
+                dtype=np.float64,
+            ),
+        ),
         "episodes": episode_rows,
     }
 

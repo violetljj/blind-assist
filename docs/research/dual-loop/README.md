@@ -85,10 +85,12 @@ feature 不能把 actionability relation 迁移到新来源；即使使用 held-
 人工 no-alert baseline 的 centering oracle，intervention recall 仍为 `0`。
 固定 13,137-parameter nonlinear 3×6 relation encoder 再加入 30 个 consumed
 SANPO support sources 后，public-video held-out intervention recall 仍为 `0`，
-frame BA 只有 `0.4394`。该负结果不撤销
+frame BA 只有 `0.4394`。进一步解冻 810,472 个 HFTF tail parameters 做 paired-RGB
+训练，在 deterministic repeat A/B 中仍为 `0` intervention recall，frame/segment
+AUROC 为 `0.5034/0.3377`。该负结果不撤销
 spatial-over-output-field 正结果，只关闭“增加关系监督即可救固定 backbone”的窄
-假设；下一阶段必须改为 relation-aware backbone，并先通过 source-heldout
-actionability recall。
+假设以及当前 paired-RGB tail recipe；下一阶段必须先新增独立正来源或新的预训练
+任务，再通过 source-heldout actionability recall。
 
 此前路线进行到
 [G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
