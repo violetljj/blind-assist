@@ -5492,13 +5492,16 @@
   phone metric-depth source canary readiness。D45 不读取 event/alert outcome，
   固定 person-box center-60% metric sampler、coverage/confidence/IQR/staleness
   gates 与 exact same-target 7-point OLS `+1.0 s` solver。实现置于独立
-  `:hftf-metric-depth-canary-core`，5 个 focused JVM tests 通过；ARCore 1.33.0
+  `:hftf-metric-depth-canary-core`，7 个 focused JVM tests 通过；ARCore 1.33.0
   仅加入专用 `:hftf-device-canary` test APK，capability probe 不 resume session、
   不打开 camera、不请求安装，并以 `AtomicFile` 写 canonical receipt。相对冻结
   commit `9f47a7d`，`app/core/feature/gradle` production tree 零 diff；default App
   runtime classpath/merged manifest 均不含 ARCore 或 D45 module。target/test APK
   SHA-256 分别为
   `afa7a774b9f47074b2bf2e59755e712e92421484140789513578b32b68f0f149` /
-  `a22371a81d5c1046c397691e5f73d4ee35a06495d59be126becd544d65f2dd12`。
-  当前 ADB 无设备，终态保持 `D45_NOT_EVALUATED_NO_READY_DEVICE`，不是 source
+  `1b0142c94abd19a5b0702f67c3c7a38115251f51bd04a25411d6867a570a64ca`。
+  R0.1 在任何 device outcome 前确认 only raw depth 暴露对应 confidence image，
+  将 raw+confidence 设为唯一 measurement-ready source，automatic-only 不伪造
+  confidence。当前 ADB 无设备，终态保持
+  `D45_NOT_EVALUATED_NO_READY_DEVICE`，不是 source
   负结果；设备 capability/measurement 尚未执行，主线、默认 App 与 D35 均不变。

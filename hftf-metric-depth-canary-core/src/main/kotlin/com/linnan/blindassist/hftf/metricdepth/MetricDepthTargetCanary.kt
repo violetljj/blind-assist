@@ -501,3 +501,31 @@ class MetricDepthHistorySolver(
         const val NANOS_PER_SECOND = 1_000_000_000.0
     }
 }
+
+enum class D45InstalledArCoreDepthCapability {
+    READY_RAW_DEPTH_REGISTRATION_REQUIRED,
+    AUTOMATIC_ONLY_HARDWARE_CONFIDENCE_UNAVAILABLE,
+    AUTOMATIC_ONLY_ESTIMATED_CONFIDENCE_UNAVAILABLE,
+    DEPTH_UNSUPPORTED
+}
+
+object D45ArCoreDepthCapabilityClassifier {
+    fun classifyInstalled(
+        supportsAutomatic: Boolean,
+        supportsRaw: Boolean,
+        hardwareDepthCameraConfigCount: Int
+    ): D45InstalledArCoreDepthCapability {
+        require(hardwareDepthCameraConfigCount >= 0)
+        return when {
+            supportsRaw ->
+                D45InstalledArCoreDepthCapability.READY_RAW_DEPTH_REGISTRATION_REQUIRED
+            supportsAutomatic && hardwareDepthCameraConfigCount > 0 ->
+                D45InstalledArCoreDepthCapability
+                    .AUTOMATIC_ONLY_HARDWARE_CONFIDENCE_UNAVAILABLE
+            supportsAutomatic ->
+                D45InstalledArCoreDepthCapability
+                    .AUTOMATIC_ONLY_ESTIMATED_CONFIDENCE_UNAVAILABLE
+            else -> D45InstalledArCoreDepthCapability.DEPTH_UNSUPPORTED
+        }
+    }
+}

@@ -2,7 +2,7 @@
 
 状态：
 
-`STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN`
+`STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN_R0_1`
 
 ## 单一问题
 
@@ -27,14 +27,25 @@ JRDB Development 上把一秒后水平位置误差降低 `56.36%`。D45 不再�
 
 1. 先探测仓库已锁定的 `com.google.ar:core:1.33.0`：
    `AUTOMATIC`、`RAW_DEPTH_ONLY`、camera config 及 hardware depth usage；
-2. 若 `AUTOMATIC` 可用，首选 registered automatic depth；存在 hardware-depth
-   camera config 时只作为 source 属性记录，不另开 arm；
-3. 若只有 raw depth，必须先完成 raw-to-camera registration receipt，之后才可进入
-   measurement；
+2. 若 `RAW_DEPTH_ONLY` 可用，首选 raw depth + raw confidence；必须先完成
+   raw-to-camera registration receipt，之后才可进入 measurement；
+3. 若只有 `AUTOMATIC`，只记录 capability；不得把 nonzero/validity 伪造成逐像素
+   confidence，因此在本合同下为 `NOT_EVALUABLE`；
 4. ARCore 不可用时报告 source-unavailable，不用未校准的逐帧 relative monocular
    depth补位。
 
 Capability probe 不启动 CameraX、不请求安装 ARCore、不写 alert。
+
+### R0.1 pre-outcome API semantic repair
+
+仓库锁定的 ARCore 1.33.0 `Frame` API 同时提供
+`acquireDepthImage16Bits()`、`acquireRawDepthImage16Bits()`，但 confidence API
+只有 `acquireRawDepthConfidenceImage()`。R0 原 source 顺序把 automatic 放在
+per-sample confidence contract 之前，二者不可同时诚实执行。
+
+R0.1 在没有连接设备、没有 capability receipt、没有 measurement outcome 时修复
+source 顺序；不改变 sampler/gates/horizon，也不烧毁 D45。hardware-depth
+camera-config count 仍只作为 source 属性记录，不替代 raw confidence。
 
 ## 冻结 measurement contract
 

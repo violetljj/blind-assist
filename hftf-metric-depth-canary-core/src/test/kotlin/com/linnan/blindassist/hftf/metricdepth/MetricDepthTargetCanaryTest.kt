@@ -110,6 +110,31 @@ class MetricDepthTargetCanaryTest {
         )
     }
 
+    @Test
+    fun rawConfidenceCapabilityTakesPrecedenceOverAutomaticDepth() {
+        assertEquals(
+            D45InstalledArCoreDepthCapability.READY_RAW_DEPTH_REGISTRATION_REQUIRED,
+            D45ArCoreDepthCapabilityClassifier.classifyInstalled(
+                supportsAutomatic = true,
+                supportsRaw = true,
+                hardwareDepthCameraConfigCount = 1
+            )
+        )
+    }
+
+    @Test
+    fun automaticOnlyCapabilityCannotSatisfyFrozenConfidenceContract() {
+        assertEquals(
+            D45InstalledArCoreDepthCapability
+                .AUTOMATIC_ONLY_ESTIMATED_CONFIDENCE_UNAVAILABLE,
+            D45ArCoreDepthCapabilityClassifier.classifyInstalled(
+                supportsAutomatic = true,
+                supportsRaw = false,
+                hardwareDepthCameraConfigCount = 0
+            )
+        )
+    }
+
     private fun sampler() = MetricDepthTargetSampler()
 
     private fun person() = Detection(

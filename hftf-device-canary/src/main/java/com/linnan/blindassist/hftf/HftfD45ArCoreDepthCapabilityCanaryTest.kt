@@ -11,6 +11,7 @@ import com.google.ar.core.CameraConfig
 import com.google.ar.core.CameraConfigFilter
 import com.google.ar.core.Config
 import com.google.ar.core.Session
+import com.linnan.blindassist.hftf.metricdepth.D45ArCoreDepthCapabilityClassifier
 import com.linnan.blindassist.hftf.metricdepth.MetricDepthHistorySolverConfig
 import com.linnan.blindassist.hftf.metricdepth.MetricDepthTargetSamplerConfig
 import java.io.File
@@ -135,13 +136,12 @@ class HftfD45ArCoreDepthCapabilityCanaryTest {
     ): String {
         if (errorType != null) return "PROBE_ERROR"
         return when (availability) {
-            ArCoreApk.Availability.SUPPORTED_INSTALLED -> when {
-                supportsAutomatic && hardwareDepthCameraConfigCount > 0 ->
-                    "READY_AUTOMATIC_HARDWARE_DEPTH"
-                supportsAutomatic -> "READY_AUTOMATIC_ESTIMATED_DEPTH"
-                supportsRaw -> "READY_RAW_DEPTH_REGISTRATION_REQUIRED"
-                else -> "DEPTH_UNSUPPORTED"
-            }
+            ArCoreApk.Availability.SUPPORTED_INSTALLED ->
+                D45ArCoreDepthCapabilityClassifier.classifyInstalled(
+                    supportsAutomatic = supportsAutomatic,
+                    supportsRaw = supportsRaw,
+                    hardwareDepthCameraConfigCount = hardwareDepthCameraConfigCount
+                ).name
             ArCoreApk.Availability.SUPPORTED_NOT_INSTALLED -> "ARCORE_NOT_INSTALLED"
             ArCoreApk.Availability.SUPPORTED_APK_TOO_OLD -> "ARCORE_APK_TOO_OLD"
             ArCoreApk.Availability.UNSUPPORTED_DEVICE_NOT_CAPABLE -> "DEVICE_UNSUPPORTED"

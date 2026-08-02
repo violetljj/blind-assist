@@ -14,13 +14,18 @@
   - coverage/confidence/IQR/staleness fail-closed receipts；
   - camera-relative x/y/z metric measurement；
   - exact same-target/source/registration 7-point OLS `+1.0 s` forecast；
-- 5 个 focused JVM tests 全部通过：
+- 7 个 focused JVM tests 全部通过：
   - accepted person measurement；
   - insufficient coverage rejection；
   - stale receipt rejection；
   - constant-motion OLS recovery；
   - mixed-target rejection；
+  - raw+confidence capability precedence；
+  - automatic-only confidence-contract rejection；
 - ARCore 1.33.0 仅加入现有 `:hftf-device-canary` test APK；
+- locked API semantic receipt 确认只有 raw depth 暴露对应 confidence image，因此
+  R0.1 在任何 device outcome 前把 raw+confidence 设为唯一 measurement-ready
+  ARCore source；automatic-only 不伪造 confidence；
 - capability test 只执行：
   - `ArCoreApk.checkAvailability`；
   - 未 resume 的 `Session` depth-mode/camera-config query；
@@ -61,9 +66,9 @@ default debug App merged manifests 中也没有 `com.google.ar.core` 或
 - D45-capable test APK：
   - path：
     `hftf-device-canary/build/outputs/apk/debug/hftf-device-canary-debug.apk`
-  - bytes：`1384327`
+  - bytes：`1385159`
   - SHA-256：
-    `a22371a81d5c1046c397691e5f73d4ee35a06495d59be126becd544d65f2dd12`
+    `1b0142c94abd19a5b0702f67c3c7a38115251f51bd04a25411d6867a570a64ca`
 
 ## 唯一剩余的 capability device action
 
@@ -83,6 +88,7 @@ receipt path：
 arcore-depth-capability-r0.json
 ```
 
-只有 receipt 为 `READY_AUTOMATIC_*` 或
-`READY_RAW_DEPTH_REGISTRATION_REQUIRED`，才进入已冻结的物理 measurement
-canary。无设备不是 source 负结果，不关闭 D45。
+只有 receipt 为 `READY_RAW_DEPTH_REGISTRATION_REQUIRED`，才进入已冻结的物理
+measurement canary。`AUTOMATIC_ONLY_*_CONFIDENCE_UNAVAILABLE` 是当前合同的
+`NOT_EVALUABLE`，不是 depth 精度负结果；无设备也不是 source 负结果，不关闭
+D45。

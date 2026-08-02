@@ -153,7 +153,7 @@ D43_1_FIRST_ORDER_2D_TRACK_METRIC_MAPPING_STOP /
 STAGE_C_D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_FROZEN /
 D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_SUPPORTED_DEVELOPMENT_ONLY /
 D44_RELATIVE_METRIC_HISTORY_SUFFICIENCY_SUPPORTED /
-STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN /
+STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN_R0_1 /
 D45_SOURCE_CANARY_READY_FOR_DEVICE_EXECUTION /
 D45_NOT_EVALUATED_NO_READY_DEVICE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
@@ -167,9 +167,11 @@ availability。sampler、OLS horizon 与支持门已固定；不把 depth 写入
 `Detection.distanceEvidence`，不调用 risk/feedback seam。
 
 source contract、person-box sampler、7 点 OLS solver 已在独立 JVM module 中实现，
-5 个 focused tests 通过；ARCore capability receipt 仅进入专用
+7 个 focused tests 通过；ARCore capability receipt 仅进入专用
 `hftf-device-canary` APK。default App runtime classpath/manifest 均不含 ARCore
-或 D45 module。当前 ADB 无设备，因此物理终态仍为
+或 D45 module。R0.1 在任何 device outcome 前修复 locked API 语义：只有 raw
+depth 有对应 confidence image，因此 raw+confidence 是唯一 measurement-ready
+source，automatic-only 不伪造 confidence。当前 ADB 无设备，因此物理终态仍为
 `D45_NOT_EVALUATED_NO_READY_DEVICE`；这只表示 capability/measurement 尚未执行，
 不关闭 D45 source 问题。
 
