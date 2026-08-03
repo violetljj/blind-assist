@@ -27,6 +27,7 @@ D15-jrdb-future-onset-history-replication-not-supported /
 D16-tartanground-future-onset-three-fold-ready /
 D16-tartanground-history-increment-not-supported /
 A1-consumed-motion-increment-not-supported /
+A0.1-android-probability-head-parity-runtime-supported /
 frozen-single-frame-posthoc-temporal-residual-family-stop`
 
 ## 研究问题与版本
@@ -57,6 +58,13 @@ A1 冻结六臂比较保留终态 `COLLISION_RISK_FIELD_A1_DEVELOPMENT_FAIL`：�
 `0.59` 个百分点且 4/7 窗口 Brier 改善，但 pooled Brier 恶化 `3.94%`、F1
 下降 `0.00678`、MCC 下降 `0.02292`。因此保留概率质量、F1 与召回的描述性支持，
 但不主张独立 causal-motion increment，也不搜索特征子集或阈值救援。
+
+SM-S9280 / Android 16 上的隔离 instrumentation canary 又对 1,716 个绑定特征行
+执行 20 次冻结 A0.1 概率头：概率和 0.50 决策 mismatch 都为 `0`，最大绝对误差
+`2.22e-16`，P95 `0.001615 ms`，终态
+`A0_1_ANDROID_PROBABILITY_HEAD_PARITY_RUNTIME_SUPPORTED`。这只清除了 Kotlin
+标准化/逻辑头的数值与时延风险；`heavy_inference_covered=false`，因此 UniDepth、
+clearance geometry、RAFT、内存和持续热行为仍未获得 Android 证据。
 
 ### D6 SANPO real veto transfer
 

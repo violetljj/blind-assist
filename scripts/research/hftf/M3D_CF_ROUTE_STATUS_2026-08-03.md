@@ -36,6 +36,7 @@ UniDepthV2-S was the better source in this branch.
 | A2.1 2D+3D+motion future occupancy | Development pass, fresh fail | did not transfer walking to sitting regime |
 | Bonn cross-dataset proxy | not evaluable | source pose was not a calibrated RGB optical camera floor reference |
 | PC runtime | complete | supported route about 50.25 ms mean component sum on RTX 5060 |
+| Android A0.1 probability head | supported | exact parity on 1,716 rows; SM-S9280 P95 0.001615 ms; heavy inference not covered |
 | Candidate-only CLI | smoke pass | 30/30 RGB frames, JSONL and MP4, evaluator-consistent probabilities |
 
 The strongest fresh A0.1 result on 1,716 known opportunities was:
