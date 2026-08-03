@@ -1,0 +1,65 @@
+{
+  "schema": "hftf_external_rgb_metric_track_sidecar_r0_result",
+  "date": "2026-08-03",
+  "development_data_role": "consumed_replay_only",
+  "fresh_data_opened": false,
+  "threshold_or_parameter_tuning": false,
+  "post_initial_result_structural_followup": "rebased_torso_history on the same consumed sequence; diagnostic only",
+  "terminals": [
+    "VITS_392X672_RAFT2_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD",
+    "VITS_392X672_FULL4_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD",
+    "UNIDEPTH_QAIRT_HTP_NUMERIC_AND_LATENCY_NOT_SUPPORTED_GPU_FINALIZE_FAILED",
+    "CANONICAL_VITS_1P5S_ASYNC_ANCHOR_CONTINUITY_NOT_SUPPORTED",
+    "CANONICAL_VITS_WINDOWS_GPU_EXTERNAL_RGB_METRIC_TRACK_SIDECAR_EXECUTED_CONSUMED_REPLAY_ONLY"
+  ],
+  "bonn_source_accuracy": {
+    "frames": 30,
+    "fixed_gates": {
+      "depth_mae_m_max": 0.25,
+      "mean_relative_absolute_error_max": 0.15
+    },
+    "vits_392x672_raft2_htp": {
+      "depth_mae_m": 0.2970709582,
+      "mean_relative_absolute_error": 0.159104,
+      "supported": false
+    },
+    "vits_392x672_full4_htp": {
+      "depth_mae_m": 0.2801676929,
+      "mean_relative_absolute_error": 0.1500980198,
+      "supported": false
+    }
+  },
+  "canonical_async_anchor": {
+    "frames": 130,
+    "canonical_htp_service_time_s": 1.500794,
+    "best_parameter_free_method": "rebased_torso_history",
+    "available_frames": 115,
+    "d44_opportunities": 106,
+    "mean_current_depth_difference_m": 0.198011,
+    "mean_d44_position_difference_m": 0.52451265,
+    "fixed_mean_d44_position_difference_gate_m": 0.5,
+    "supported": false
+  },
+  "windows_gpu_sidecar": {
+    "manifest_replay": {
+      "frames": 12,
+      "tracks": 12,
+      "d44_forecasts": 6,
+      "first_forecast_frame": 6,
+      "steady_metric_depth_median_ms": 148.673,
+      "max_absolute_depth_difference_from_prior_canonical_observation_m": 0.0
+    },
+    "manifest_redetect": {
+      "frames": 12,
+      "track_observations": 109,
+      "unique_track_ids": 21,
+      "track_ids_with_d44": 7,
+      "d44_forecasts": 30,
+      "steady_detector_median_ms": 13.5958,
+      "steady_metric_depth_median_ms": 156.7522,
+      "steady_sum_median_ms": 170.348
+    },
+    "supported_scope": "executable Windows CUDA research reference on consumed replay"
+  },
+  "claim_ceiling": "No live external-camera capture, final-camera metric truth, phone continuity, alert utility, safety, mainline, or default-App claim."
+}

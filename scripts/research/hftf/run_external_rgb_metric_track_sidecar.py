@@ -1,0 +1,314 @@
+#!/usr/bin/env python3
+"""Run the bounded Windows-GPU external-RGB metric-track reference sidecar.
+
+This reference emits metric observations and one-second D44 forecasts. It does
+not emit alerts or make safety decisions. Camera mode requires calibrated
+intrinsics; manifest mode replays already-materialized frames and detections.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import time
+from collections import defaultdict, deque
+from pathlib import Path
+from typing import Any, Iterator
+
+import cv2
+import numpy as np
+
+from prepare_external_rgb_metric_depth_manifest import torso_roi_from_person_box
+from produce_external_rgb_metric_depth_observations import (
+    Metric3DPytorchSource,
+    robust_roi_median,
+)
+
+
+HISTORY_COUNT = 7
+FUTURE_SECONDS = 1.0
+
+
+def relative_position(
+    roi: list[int] | tuple[int, int, int, int],
+    intrinsics: list[float],
+    depth_m: float,
+) -> np.ndarray:
+    left, top, right, bottom = (float(value) for value in roi)
+    fx, fy, cx, cy = (float(value) for value in intrinsics)
+    u, v = (left + right) / 2.0, (top + bottom) / 2.0
+    return np.asarray(
+        [depth_m, (u - cx) * depth_m / fx, -(v - cy) * depth_m / fy],
+        dtype=np.float64,
+    )
+
+
+def d44_predict(history: list[dict[str, Any]], target_timestamp_ns: int) -> np.ndarray:
+    if len(history) != HISTORY_COUNT:
+        raise ValueError("D44 requires seven observations")
+    timestamps = np.asarray(
+        [int(row["timestamp_ns"]) for row in history], dtype=np.float64
+    ) / 1e9
+    if np.any(np.diff(timestamps) <= 0):
+        raise ValueError("track timestamps must increase")
+    positions = np.stack(
+        [
+            relative_position(
+                row["torso_roi_xyxy_px"],
+                row["intrinsics_fx_fy_cx_cy"],
+                float(row["depth_m"]),
+            )
+            for row in history
+        ]
+    )
+    centered = timestamps - float(np.mean(timestamps))
+    denominator = float(np.dot(centered, centered))
+    if denominator <= 0:
+        raise ValueError("degenerate history timestamps")
+    velocity = centered @ positions / denominator
+    prediction = np.mean(positions, axis=0) + velocity * (
+        target_timestamp_ns / 1e9 - float(np.mean(timestamps))
+    )
+    return prediction
+
+
+def load_manifest(path: Path) -> list[dict[str, Any]]:
+    rows = [
+        json.loads(line)
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    for row in rows:
+        frame = Path(row["frame_path"])
+        if not frame.is_absolute():
+            row["frame_path"] = str((path.parent / frame).resolve())
+    return sorted(rows, key=lambda row: int(row["timestamp_ns"]))
+
+
+def yolo_person_detections(
+    detector: Any,
+    bgr: np.ndarray,
+    yolo_device: str,
+) -> list[dict[str, Any]]:
+    result = detector.track(
+        bgr,
+        persist=True,
+        classes=[0],
+        conf=0.25,
+        imgsz=640,
+        device=yolo_device,
+        tracker="bytetrack.yaml",
+        verbose=False,
+    )[0]
+    if result.boxes is None or not len(result.boxes) or result.boxes.id is None:
+        return []
+    boxes = result.boxes.xyxy.detach().cpu().numpy()
+    scores = result.boxes.conf.detach().cpu().numpy()
+    ids = result.boxes.id.detach().cpu().numpy().astype(int)
+    detections = []
+    for box, score, track_id in zip(boxes, scores, ids, strict=True):
+        detections.append(
+            {
+                "track_id": int(track_id),
+                "person_box_xyxy_px": box.tolist(),
+                "confidence": float(score),
+                "torso_roi_xyxy_px": torso_roi_from_person_box(box.tolist(), bgr.shape),
+            }
+        )
+    return detections
+
+
+def manifest_frames(
+    path: Path,
+    detector: Any | None = None,
+    yolo_device: str = "0",
+) -> Iterator[tuple[np.ndarray, dict[str, Any]]]:
+    for row in load_manifest(path):
+        bgr = cv2.imread(str(row["frame_path"]), cv2.IMREAD_COLOR)
+        if bgr is None:
+            raise ValueError(f"cannot decode {row['frame_path']}")
+        frozen_detections = [
+            {
+                "track_id": 0,
+                "person_box_xyxy_px": row["person_box_xyxy_px"],
+                "confidence": float(row["person_confidence"]),
+                "torso_roi_xyxy_px": row["torso_roi_xyxy_px"],
+            }
+        ]
+        detector_started = time.perf_counter()
+        detections = (
+            yolo_person_detections(detector, bgr, yolo_device)
+            if detector is not None
+            else frozen_detections
+        )
+        detector_latency_ms = (
+            (time.perf_counter() - detector_started) * 1000.0
+            if detector is not None
+            else None
+        )
+        yield bgr, {
+            "frame_index": int(row["frame_index"]),
+            "timestamp_ns": int(row["timestamp_ns"]),
+            "detections": detections,
+            "detector_latency_ms": detector_latency_ms,
+            "intrinsics_fx_fy_cx_cy": row["intrinsics_fx_fy_cx_cy"],
+            "source": "manifest_redetect" if detector is not None else "manifest_replay",
+        }
+
+
+def camera_frames(
+    camera_index: int,
+    intrinsics: list[float],
+    detector: Any,
+    yolo_device: str,
+) -> Iterator[tuple[np.ndarray, dict[str, Any]]]:
+    capture = cv2.VideoCapture(camera_index)
+    capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    if not capture.isOpened():
+        raise RuntimeError(f"cannot open camera index {camera_index}")
+    frame_index = 0
+    try:
+        while True:
+            ok, bgr = capture.read()
+            timestamp_ns = time.monotonic_ns()
+            if not ok:
+                raise RuntimeError("camera read failed")
+            detector_started = time.perf_counter()
+            detections = yolo_person_detections(detector, bgr, yolo_device)
+            detector_latency_ms = (time.perf_counter() - detector_started) * 1000.0
+            yield bgr, {
+                "frame_index": frame_index,
+                "timestamp_ns": timestamp_ns,
+                "detections": detections,
+                "detector_latency_ms": detector_latency_ms,
+                "intrinsics_fx_fy_cx_cy": intrinsics,
+                "source": f"camera:{camera_index}",
+            }
+            frame_index += 1
+    finally:
+        capture.release()
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--manifest", type=Path)
+    source.add_argument("--camera-index", type=int)
+    parser.add_argument("--intrinsics", type=float, nargs=4)
+    parser.add_argument("--yolo-weights", type=Path)
+    parser.add_argument("--yolo-device", default="0")
+    parser.add_argument(
+        "--redetect-manifest",
+        action="store_true",
+        help="rerun YOLO+ByteTrack on manifest frames instead of using frozen boxes",
+    )
+    parser.add_argument("--metric3d-repo", type=Path, required=True)
+    parser.add_argument("--metric3d-checkpoint", type=Path, required=True)
+    parser.add_argument("--device", default="cuda")
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--max-frames", type=int)
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    if args.camera_index is not None and (
+        args.intrinsics is None or args.yolo_weights is None
+    ):
+        raise ValueError("camera mode requires --intrinsics and --yolo-weights")
+    if args.redetect_manifest and args.manifest is None:
+        raise ValueError("--redetect-manifest requires --manifest")
+    if args.redetect_manifest and args.yolo_weights is None:
+        raise ValueError("--redetect-manifest requires --yolo-weights")
+    detector = None
+    if args.camera_index is not None or args.redetect_manifest:
+        from ultralytics import YOLO
+
+        detector = YOLO(str(args.yolo_weights), task="detect")
+    source = Metric3DPytorchSource(
+        args.metric3d_repo, args.metric3d_checkpoint, args.device
+    )
+    frames = (
+        manifest_frames(args.manifest, detector, args.yolo_device)
+        if args.manifest is not None
+        else camera_frames(
+            args.camera_index,
+            list(args.intrinsics),
+            detector,
+            args.yolo_device,
+        )
+    )
+    histories: dict[int, deque[dict[str, Any]]] = defaultdict(
+        lambda: deque(maxlen=HISTORY_COUNT)
+    )
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    processed = 0
+    with args.output.open("w", encoding="utf-8", newline="\n") as output:
+        for bgr, packet in frames:
+            if args.max_frames is not None and processed >= args.max_frames:
+                break
+            rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+            started = time.perf_counter()
+            depth, _metadata = source.infer(
+                rgb,
+                {"intrinsics_fx_fy_cx_cy": packet["intrinsics_fx_fy_cx_cy"]},
+            )
+            metric_depth_latency_ms = (time.perf_counter() - started) * 1000.0
+            tracks = []
+            for detection in packet["detections"]:
+                roi = tuple(int(value) for value in detection["torso_roi_xyxy_px"])
+                torso_depth, valid_pixels, valid_fraction = robust_roi_median(depth, roi)
+                if torso_depth is None:
+                    continue
+                track_id = int(detection["track_id"])
+                observation = {
+                    "timestamp_ns": int(packet["timestamp_ns"]),
+                    "depth_m": float(torso_depth),
+                    "torso_roi_xyxy_px": list(roi),
+                    "intrinsics_fx_fy_cx_cy": list(packet["intrinsics_fx_fy_cx_cy"]),
+                }
+                histories[track_id].append(observation)
+                current = relative_position(
+                    observation["torso_roi_xyxy_px"],
+                    observation["intrinsics_fx_fy_cx_cy"],
+                    observation["depth_m"],
+                )
+                target_ns = int(packet["timestamp_ns"] + FUTURE_SECONDS * 1e9)
+                forecast = (
+                    d44_predict(list(histories[track_id]), target_ns)
+                    if len(histories[track_id]) == HISTORY_COUNT
+                    else None
+                )
+                tracks.append(
+                    {
+                        **detection,
+                        "depth_m": float(torso_depth),
+                        "relative_position_m": current.tolist(),
+                        "d44_future_timestamp_ns": target_ns if forecast is not None else None,
+                        "d44_future_relative_position_m": forecast.tolist() if forecast is not None else None,
+                        "history_count": len(histories[track_id]),
+                        "roi_valid_pixels_after_trim": valid_pixels,
+                        "roi_valid_fraction_before_trim": valid_fraction,
+                    }
+                )
+            record = {
+                "schema": "hftf_external_rgb_metric_track_sidecar_r0",
+                "frame_index": int(packet["frame_index"]),
+                "timestamp_ns": int(packet["timestamp_ns"]),
+                "source": packet["source"],
+                "detector_latency_ms": packet.get("detector_latency_ms"),
+                "metric_depth_latency_ms": metric_depth_latency_ms,
+                "tracks": tracks,
+                "claim_ceiling": "metric track and D44 research primitive only; no alert or safety decision",
+            }
+            output.write(json.dumps(record, sort_keys=True) + "\n")
+            output.flush()
+            processed += 1
+            print(
+                f"frame={record['frame_index']} tracks={len(tracks)} depth_ms={metric_depth_latency_ms:.1f}",
+                flush=True,
+            )
+
+
+if __name__ == "__main__":
+    main()

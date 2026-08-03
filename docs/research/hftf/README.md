@@ -162,7 +162,36 @@ VITS_392X672_RAFT2_HTP_DEPLOYMENT_PARITY_SUPPORTED_CONSUMED_CANARY_ONLY /
 VITS_LOW_LATENCY_LIVE_TARGET_NOT_MET /
 POST_TRAINING_QUANTIZATION_NUMERICALLY_INVALID_OR_SLOWER_STOP /
 CONVTINY_HTP_DEPLOYMENT_PARITY_SUPPORTED_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD_CANARY /
+VITS_392X672_RAFT2_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD /
+VITS_392X672_FULL4_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD /
+UNIDEPTH_QAIRT_HTP_NUMERIC_AND_LATENCY_NOT_SUPPORTED_GPU_FINALIZE_FAILED /
+CANONICAL_VITS_1P5S_ASYNC_ANCHOR_CONTINUITY_NOT_SUPPORTED /
+CANONICAL_VITS_WINDOWS_GPU_EXTERNAL_RGB_METRIC_TRACK_SIDECAR_EXECUTED_CONSUMED_REPLAY_ONLY /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 外接 RGB metric-track：手机连续源未过门槛，Windows GPU 参考侧车跑通
+
+只用已消费的 Bonn/Tokyo 数据、不开 fresh、不调参数或门槛，继续裁决 Metric3D 连续源。
+`392x672` ViT-S RAFT-2 与 full-4 HTP 在 30 帧 Bonn RGB-D 上的躯干深度
+MAE 分别为 `0.2971/0.2802 m`，平均相对误差为 `15.91%/15.01%`，均未通过
+预先固定的 `0.25 m/15%` source gate。canonical ViT-S 以实测 `1.500794 s`
+HTP service time 做稀疏锚点时，最强的无参数 `rebased_torso_history` 在 106 个
+D44 opportunity 上与 full-rate source 的平均 future position 差为 `0.5245 m`，
+冻结门槛是 `0.50 m`，因此仍按失败收口。该无参数结构是在首轮三臂结果之后追加的
+同一 consumed-sequence 诊断，不获得 fresh 或 promotion 权限。
+
+UniDepthV2-S 的 converter `Acos` 已用端到端误差 `0.000051 m` 的解析近似解决，
+但 SM8650 HTP 输出相对 ONNX 的 `pts_3d` 平均相对误差达 `52.58%`，accelerator
+约 `720.9 ms`；GPU DLC 又在 graph finalize 失败，路线停止，不做量化救援。
+
+可运行的替代支线已落为 Windows CUDA reference sidecar：
+`YOLO11n + ByteTrack -> canonical Metric3D -> torso metric track -> D44`。12 帧
+frozen-box 回放从第 7 帧起得到 6 个 D44，深度与既有 canonical 观测最大差 `0 m`；
+同帧重新检测得到 21 个 track ID，其中 7 个形成七帧历史，共 30 个 D44。
+稳态检测/深度/两者相加中位延迟为 `13.6/156.8/170.3 ms`。这只建立已消费
+回放上的 Windows GPU 研究参考；尚无真实外接摄像头采集、最终镜头真值、alert、
+safety、主线或 default App 权限。详见
+[sidecar R0 result](../../../scripts/research/hftf/EXTERNAL_RGB_METRIC_TRACK_SIDECAR_R0_RESULT.md)。
 
 ## 2026-08-03 Metric3D QAIRT 实时化 R0：ConvTiny 真值失败，保留 ViT-S 连续性候选
 
