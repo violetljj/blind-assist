@@ -38,6 +38,16 @@ frozen-single-frame-posthoc-temporal-residual-family-stop`
 当前章程与终态见 `docs/research/hftf/README.md`。通用 H0 的 partial terminal 仍保留；
 source-specific H0.1/H0.2 已准入下一阶段的 geometry proxy canary。
 
+### M3D-CF 当前碰撞占用支线（2026-08-03）
+
+最新独立支线决策见 `M3D_CF_ROUTE_STATUS_2026-08-03.md`。当前冻结结论是
+`KEEP_CANDIDATE_SIDE_LANE_CURRENT_OCCUPANCY_ONLY`：普通标定 RGB 上的
+UniDepthV2-S + 3D clearance + RAFT + 低容量概率头已获得 TUM same-family fresh
+Development 支持，并已有 candidate-only JSONL/MP4 CLI；0.5 秒未来占用未通过
+`sitting_halfsphere` fresh transfer，Bonn 跨数据集代理因 source pose/reference
+不兼容而 `NOT_EVALUABLE`。该支线不依赖 ARCore，但在最终外接摄像头和目标设备验证前
+不得晋级主线、提醒或 safety claim。
+
 ### D6 SANPO real veto transfer
 
 当前可逆 Development 接口把 D7 三人 model-blind RGB review 中 3/3 `REJECT`
