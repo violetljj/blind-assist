@@ -39,6 +39,10 @@ def load_manifest(path: Path, max_frames: int | None = None) -> list[dict[str, A
         if len(row.get("intrinsics_fx_fy_cx_cy", [])) != 4:
             raise ValueError("every row needs four intrinsics values")
         row["frame_path"] = str(Path(row["frame_path"]).resolve())
+        if "timestamp" not in row:
+            if "timestamp_ns" not in row:
+                raise ValueError("every row needs timestamp or timestamp_ns")
+            row["timestamp"] = float(row["timestamp_ns"]) / 1_000_000_000.0
     by_sequence: dict[str, list[float]] = {}
     for row in rows:
         by_sequence.setdefault(str(row["sequence_id"]), []).append(float(row["timestamp"]))
