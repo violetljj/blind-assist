@@ -34,7 +34,7 @@ VISUAL_ONLY_SIDECAR_R0_AVAILABLE /
 THESIS_DEVELOPMENT_DEFAULT /
 FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`
 
-最后核验：2026-08-02（Asia/Hong_Kong）
+最后核验：2026-08-04（Asia/Hong_Kong）
 
 ```text
 FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4
@@ -259,6 +259,29 @@ prediction 或 truth join，既不支持也不拒绝 signed-clearance；主线�
 另冻 reference-and-support-only qualifier 与 outcome 前 effect skeleton。当前尚未
 授权 D3 metadata scan、媒体、truth、effect 或 RGB student；研究主线与默认 App
 继续不变。
+
+2026-08-04 的已知相机高度地面尺度后继先尝试 fresh ARKit source gate，但固定的
+4 个 parents 只有 2 个达到 pre-DA 高度代理资格，故以
+`HOLD_SOURCE_AUTHORITY_NO_REPLACEMENT` 关闭 fresh effect。用户随后明确允许消费数据
+用于开发；[消费开发结果](../hftf/KNOWN_CAMERA_HEIGHT_GROUND_SCALE_CONSUMED_RESULT_2026-08-04.md)
+在 5 个 TartanGround parents、165 个冻结 anchors 上显示：R0 相对 raw DA 将
+parent-macro clearance MAE 从 `1.0424 m` 降至 `0.4710 m`，false-clear 从
+`.4672` 降至 `.1814`；后验、只用过去帧的 9-valid-scale 因果中值 R1 又改善到
+`0.3949 m/.1510`。但 MAE、agreement、false-clear、temporal 四个绝对 gate 仍失败，
+终态 `POSTHOC_CONSUMED_R1_ABSOLUTE_GATES_FAIL_STOP_OPTIMIZATION`。这些结果只能作为
+同一消费 synthetic Development 信号，不授权继续 outcome-conditioned 搜索、购买 ToF、
+主线切换或默认 App 变更。
+
+同日又按目标允许的激进软件后继冻结了
+[相机条件化轻量尺度学生](../hftf/CAMERA_CONDITIONED_SCALE_STUDENT_R0_RESULT_2026-08-04.md)。
+固定十特征 ridge 在 5 个 parents 的 leave-one-parent-out Development 中通过全部
+parent-macro gates；随后不改模型，在 10 个训练未见 parents、330 个 anchors 的外部
+复现中再次全部通过：coverage `.9909`、clearance MAE `.1046 m`、agreement `.9899`、
+false-clear `.0101`、temporal delta MAE `.0518 m`，且 10/10 parents 均优于 raw DA。
+该信号只把路线提升为 `PROMOTE_TO_FRESH_REAL_PHONE_MECHANISM_CANDIDATE_NOT_DEFAULT_APP`：
+数据仍是历史已消费 synthetic，精确 robot height/intrinsics 属于 oracle-quality receipt，
+个别 parent 仍超局部门槛，真实手机 exact-timestamp depth cohort 也尚不可评价。因此不授权
+ToF 采购、默认 App 接入、实时提醒或安全主张；下一门只能是另冻的固定高度/内参真机 shadow。
 
 ## 当前决定
 

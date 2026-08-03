@@ -1,0 +1,24 @@
+{
+  "schema": "blindassist_known_camera_height_ground_scale_r0_committed_roster_lock",
+  "date": "2026-08-04",
+  "protocol_sha256": "040FF50AA7E62E37EDF7AD8DEA198426703A13DD43157CDC632D4E294C14B97B",
+  "raw_roster_sha256": "76CB4AC76F60D815A9E09360A936FF215058B77F5557D9AB2A62B9CABEF3905D",
+  "metadata_sha256": "F93CD6A1EC0AEA5E103313F3BB4660744B011A1EAA8AA44A992E2C7C2966B145",
+  "predecessor_roster_sha256": "7CE2D9931723EF7517531F7389FF1DFA0E4BF9BD4C8291A9E72A5BBFF7102EEC",
+  "excluded_predecessor_parent_count": 24,
+  "fresh_evaluation": [
+    {"visit_id": "468286", "video_id": "47331319", "selection_rank_sha256": "000b2bd68043fe9de8d3931686ac2b53be6bfb226c16ccd56d4807f746974ab1"},
+    {"visit_id": "466192", "video_id": "45260898", "selection_rank_sha256": "00ce7e03d1a23505f9ec18de8706029eb31fb284d5202c48900ba09eac6cf9df"},
+    {"visit_id": "422826", "video_id": "42897538", "selection_rank_sha256": "05298a04f5b92e392c99942f7051ce0d844117b2f978a2bee4f31ee4497ab872"},
+    {"visit_id": "470831", "video_id": "47331963", "selection_rank_sha256": "061a67906b3ed59abb20739d0d0b9a2d7d471d6b3d3a8c9211fe5ed4619ed59b"}
+  ],
+  "selected_parent_count": 4,
+  "height_authority": "SOURCE_TRUTH_DERIVED_PER_FRAME_ORACLE",
+  "claim_ceiling": "ORACLE_HEIGHT_MECHANISM_ONLY",
+  "media_bytes_read": false,
+  "metric_truth_opened": false,
+  "outcomes_opened": false,
+  "replacement_allowed": false,
+  "wearable_height_confirmation": "NOT_EVALUABLE_NO_INDEPENDENT_FIXED_MOUNT_HEIGHT_RECEIPT",
+  "terminal": "KNOWN_CAMERA_HEIGHT_GROUND_SCALE_R0_FRESH_ROSTER_4_LOCKED_MEDIA_UNOPENED"
+}

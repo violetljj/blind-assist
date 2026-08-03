@@ -1,0 +1,46 @@
+{
+  "schema": "blindassist_camera_conditioned_scale_student_external_replication_r0_protocol_v1",
+  "date": "2026-08-04",
+  "status": "FROZEN_BEFORE_EXTERNAL_STUDENT_PREDICTION_OR_EFFECT_EXECUTION",
+  "data_role": "HISTORICALLY_CONSUMED_STUDENT_UNSEEN_SYNTHETIC_EXTERNAL_REPLICATION",
+  "student_protocol_sha256": "87DAEA390DD58393A319DBEF2E7AA60804AEE85EE3AB1BF84EC5152C262C829B",
+  "cross_validation_result_sha256": "E6766A023EEE45D056E918AAAC59A2545AD561DDD4A2FEDA5311130ECAB2317E",
+  "training_parent_count": 5,
+  "training_record_count_expected": 163,
+  "training_rule": "fit the frozen ridge once on every valid record from the five-parent R0 corpus",
+  "external_corpora": [
+    {
+      "role": "HISTORICALLY_CONSUMED_EXPANSION_STUDENT_UNSEEN",
+      "root": "artifacts.local/evidence/hftf/stage-c-d5-tartanground-development-expansion-v1",
+      "samples_sha256": "FAD64102B9C1BCBEB5A93662F0F8C5ACB30EA615668DAF22F4D851AC3F958049",
+      "eligible_parents": [
+        {"parent_id": "WaterMillDay/Data_diff/P1002", "robot_height_m": 1.0726094375768134},
+        {"parent_id": "JapaneseAlley/Data_diff/P1000", "robot_height_m": 0.8763697672614856},
+        {"parent_id": "Supermarket/Data_diff/P1000", "robot_height_m": 0.8039684728750581},
+        {"parent_id": "OldTownNight/Data_diff/P1000", "robot_height_m": 1.4587660187626132},
+        {"parent_id": "GreatMarsh/Data_diff/P1000", "robot_height_m": 0.92855987196937}
+      ]
+    },
+    {
+      "role": "HISTORICALLY_CONSUMED_OUTCOME_UNSEEN_TRANSFER_STUDENT_UNSEEN",
+      "root": "artifacts.local/evidence/hftf/stage-c-d5-tartanground-outcome-unseen-transfer-v0",
+      "samples_sha256": "F2669C336C36B24B98EE24BFA9C27DB42D2A70869B7E85A0528416E0D4B9B237",
+      "eligible_parents": [
+        {"parent_id": "ModularNeighborhoodIntExt/Data_diff/P1000", "robot_height_m": 1.3383794145262926},
+        {"parent_id": "GothicIsland/Data_diff/P1000", "robot_height_m": 1.0341161949454936},
+        {"parent_id": "OldIndustrialCity/Data_diff/P1000", "robot_height_m": 0.8011174361195654},
+        {"parent_id": "Hospital/Data_diff/P1000", "robot_height_m": 1.664739344721993},
+        {"parent_id": "OldTownFall/Data_diff/P1000", "robot_height_m": 1.566174143358995}
+      ]
+    }
+  ],
+  "external_parent_count": 10,
+  "frames_per_parent": 33,
+  "external_frame_count": 330,
+  "height_exclusion_is_metadata_only": true,
+  "student_features_or_model_changed": false,
+  "effect_gates_changed": false,
+  "post_result_rescue_allowed": false,
+  "claim_ceiling": "HISTORICALLY_CONSUMED_SYNTHETIC_STUDENT_UNSEEN_REPLICATION_ONLY",
+  "failure_terminal": "CAMERA_CONDITIONED_SCALE_STUDENT_EXTERNAL_REPLICATION_GATES_FAIL_STOP"
+}

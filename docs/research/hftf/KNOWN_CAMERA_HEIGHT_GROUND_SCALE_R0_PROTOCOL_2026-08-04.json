@@ -1,0 +1,64 @@
+{
+  "schema": "blindassist_known_camera_height_ground_scale_protocol_v1",
+  "protocol_id": "KNOWN_CAMERA_HEIGHT_GROUND_SCALE_R0",
+  "date": "2026-08-04",
+  "workflow": "THESIS_DEVELOPMENT",
+  "status": "IMPLEMENTATION_AND_GATES_FROZEN_FRESH_COHORT_NOT_YET_LOCKED",
+  "claim_ceiling": "CONDITIONAL_MECHANISM_ONLY_NO_PRODUCTION_OR_SAFETY_AUTHORITY",
+  "operator": {
+    "depth_stride": 4,
+    "lower_roi_start_fraction": 0.55,
+    "ransac_seed": 1729,
+    "ransac_iterations": 240,
+    "maximum_candidates": 5000,
+    "minimum_candidates": 100,
+    "minimum_inliers": 80,
+    "minimum_inlier_fraction": 0.08,
+    "minimum_abs_normal_y": 0.55,
+    "maximum_normalized_plane_residual": 0.035,
+    "camera_height_range_m": [0.8, 2.2],
+    "maximum_camera_height_uncertainty_m": 0.05,
+    "scale_range": [0.25, 4.0],
+    "scale_formula": "camera_height_m / abs(relative_plane_offset)",
+    "offset_allowed": false,
+    "per_band_scale_allowed": false,
+    "temporal_smoothing_allowed": false,
+    "runtime_ground_truth_mask_allowed": false
+  },
+  "fresh_evaluation_gates": {
+    "minimum_parent_count": 4,
+    "minimum_planar_ground_known_coverage": 0.6,
+    "maximum_clearance_mae_m": 0.25,
+    "minimum_envelope_agreement": 0.9,
+    "maximum_false_clear_rate": 0.05,
+    "maximum_temporal_delta_mae_m": 0.15,
+    "maximum_median_absolute_relative_scale_error": 0.1,
+    "maximum_p90_absolute_relative_scale_error": 0.25,
+    "minimum_jointly_better_parent_count": 3,
+    "comparator": "raw_depth_anything_v2_metric_hypersim_vits"
+  },
+  "data_firewall": {
+    "spatial_head_train_validation_outcomes_for_threshold_selection": false,
+    "spatial_head_sealed_metric_truth_open_allowed": false,
+    "consumed_sources": "loader_shape_coordinate_hash_debug_only_no_effect_summary",
+    "fresh_roster": "metadata_only_parent_disjoint_lock_required_before_media_or_outcomes",
+    "public_truth_derived_height_label": "ORACLE_HEIGHT_MECHANISM_ONLY",
+    "wearable_confirmation": "independent_intrinsics_height_mount_receipts_and_four_fresh_sessions_required"
+  },
+  "terminals": [
+    "KNOWN_HEIGHT_GROUND_SCALE_CONDITIONAL_MECHANISM_SUPPORTED",
+    "ORACLE_HEIGHT_MECHANISM_SUPPORTED_WEARABLE_CONFIRMATION_NOT_EVALUABLE",
+    "GROUND_SCALE_OPPORTUNITY_INADEQUATE_NOT_EVALUABLE",
+    "KNOWN_HEIGHT_GROUND_SCALE_NOT_SUPPORTED_STOP",
+    "HOLD_SOURCE_AUTHORITY"
+  ],
+  "forbidden_rescue": [
+    "roi_search",
+    "plane_residual_search",
+    "ransac_search",
+    "scale_range_search",
+    "clearance_quantile_or_horizon_search",
+    "source_or_frame_replacement_after_outcome",
+    "threshold_loss_model_seed_or_operating_point_search_on_spatial_head_outcomes"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "blindassist_camera_conditioned_lightweight_scale_student_r0_protocol_v1",
+  "date": "2026-08-04",
+  "status": "FROZEN_BEFORE_STUDENT_EFFECT_EXECUTION",
+  "data_role": "CONSUMED_SYNTHETIC_DEVELOPMENT_PARENT_DISJOINT_CROSS_VALIDATION",
+  "input_result_sha256": "CF32CF6F57504AF51633AC97F7DCC74C97B37C0F559181A6463051E8E5B6F0BE",
+  "fold_unit": "parent_id",
+  "fold_count": 5,
+  "test_parent_count_per_fold": 1,
+  "training_parent_count_per_fold": 4,
+  "student": {
+    "family": "closed_form_log_scale_ridge",
+    "ridge_alpha": 1.0,
+    "intercept_regularized": false,
+    "feature_standardization": "training_fold_mean_and_population_std_only",
+    "target": "log_posthoc_pixel_median_sensor_depth_to_da_depth_scale",
+    "target_authority": "CONSUMED_SYNTHETIC_TRAINING_LABEL_NOT_INDEPENDENT_TRUTH",
+    "scale_admission_range": [0.25, 4.0]
+  },
+  "runtime_features": [
+    "log_r0_known_height_scale",
+    "log_known_camera_height_m",
+    "r0_plane_normal_x",
+    "r0_plane_normal_y",
+    "r0_plane_normal_z",
+    "r0_normalized_plane_residual",
+    "log_da_depth_q10",
+    "log_da_depth_q50",
+    "log_da_depth_q90",
+    "log_da_depth_q90_over_q10"
+  ],
+  "heldout_truth_or_sensor_depth_runtime_access": false,
+  "effect_gates": {
+    "known_coverage_at_least": 0.60,
+    "clearance_mae_m_at_most": 0.25,
+    "envelope_agreement_at_least": 0.90,
+    "false_clear_rate_at_most": 0.05,
+    "temporal_delta_mae_m_at_most": 0.15,
+    "jointly_better_than_raw_da_parent_count_at_least": 3
+  },
+  "effect_gates_changed": false,
+  "model_or_feature_search_after_result_allowed": false,
+  "fresh_or_product_claim_allowed": false,
+  "claim_ceiling": "CONSUMED_SYNTHETIC_PARENT_DISJOINT_DEVELOPMENT_SIGNAL_ONLY",
+  "failure_terminal": "CAMERA_CONDITIONED_SCALE_STUDENT_R0_ABSOLUTE_GATES_FAIL_STOP"
+}
