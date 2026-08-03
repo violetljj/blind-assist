@@ -1,5 +1,8 @@
 # External RGB metric-depth source R0
 
+Current public-proxy result:
+`EXTERNAL_RGB_METRIC_DEPTH_SOURCE_R0_RESULT.md`.
+
 This is the depth-only admission path for the D44 successor. It deliberately
 uses one shared person torso ROI for all three depth models so detector and
 tracker errors do not decide the depth-source comparison.
@@ -54,6 +57,7 @@ pwsh E:\linnan\linnan\scripts\research\hftf\run_external_rgb_metric_depth_triarm
 The output `triarm-report.json` contains valid fraction, metric error where
 truth exists, direction accuracy, static jitter, seven-frame availability,
 cold/steady-state latency, process RSS, and CUDA peak allocation. Metric3D is
-currently run through FP32 ONNX on CPU because the installed ONNX Runtime CUDA
-wheel cannot execute on this RTX 5060; its latency is therefore not comparable
-to the two PyTorch CUDA arms.
+run through its official PyTorch ViT-Small path on CUDA. The retained FP32 ONNX
+path is a deployment compatibility probe only: the installed ONNX Runtime CUDA
+wheel cannot execute its kernels on this RTX 5060 (compute capability 12.0), so
+ONNX-CPU latency must not be compared with the three CUDA arms.

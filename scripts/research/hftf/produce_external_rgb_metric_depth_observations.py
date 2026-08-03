@@ -26,7 +26,13 @@ import psutil
 MODEL_UNIDEPTH = "unidepth-v2-vits14"
 MODEL_VDA = "video-depth-anything-metric-vits-stream"
 MODEL_METRIC3D = "metric3d-v2-vits-onnx"
-MODEL_CHOICES = (MODEL_UNIDEPTH, MODEL_VDA, MODEL_METRIC3D)
+MODEL_METRIC3D_PYTORCH = "metric3d-v2-vits-pytorch"
+MODEL_CHOICES = (
+    MODEL_UNIDEPTH,
+    MODEL_VDA,
+    MODEL_METRIC3D,
+    MODEL_METRIC3D_PYTORCH,
+)
 
 
 def load_manifest(path: Path) -> list[dict[str, Any]]:
@@ -302,6 +308,91 @@ class Metric3DOnnxSource(DepthSource):
         }
 
 
+class Metric3DPytorchSource(DepthSource):
+    model_id = MODEL_METRIC3D_PYTORCH
+    input_height = 616
+    input_width = 1064
+
+    def __init__(
+        self, repo: Path, checkpoint: Path, device: str
+    ) -> None:
+        import torch
+
+        self.torch = torch
+        self.device = torch.device(device)
+        self.model = torch.hub.load(
+            str(repo),
+            "metric3d_vit_small",
+            source="local",
+            pretrain=False,
+        )
+        state = torch.load(
+            checkpoint, map_location="cpu", weights_only=True
+        )
+        self.model.load_state_dict(state["model_state_dict"], strict=False)
+        self.model = self.model.to(self.device).eval()
+        self.mean = torch.tensor(
+            [123.675, 116.28, 103.53], device=self.device
+        ).float()[:, None, None]
+        self.std = torch.tensor(
+            [58.395, 57.12, 57.375], device=self.device
+        ).float()[:, None, None]
+
+    def infer(
+        self, rgb: np.ndarray, row: dict[str, Any]
+    ) -> tuple[np.ndarray, dict[str, Any]]:
+        height, width = rgb.shape[:2]
+        scale = min(
+            self.input_height / height,
+            self.input_width / width,
+        )
+        resized_height = int(height * scale)
+        resized_width = int(width * scale)
+        resized = cv2.resize(
+            rgb,
+            (resized_width, resized_height),
+            interpolation=cv2.INTER_LINEAR,
+        )
+        pad_height = self.input_height - resized_height
+        pad_width = self.input_width - resized_width
+        pad_top = pad_height // 2
+        pad_left = pad_width // 2
+        padded = cv2.copyMakeBorder(
+            resized,
+            pad_top,
+            pad_height - pad_top,
+            pad_left,
+            pad_width - pad_left,
+            cv2.BORDER_CONSTANT,
+            value=[123.675, 116.28, 103.53],
+        )
+        tensor = self.torch.from_numpy(
+            np.ascontiguousarray(padded.transpose(2, 0, 1))
+        ).float().to(self.device)
+        tensor = ((tensor - self.mean) / self.std)[None]
+        with self.torch.inference_mode():
+            prediction, _, _ = self.model.inference({"input": tensor})
+        canonical = prediction.squeeze()
+        canonical = canonical[
+            pad_top : self.input_height - (pad_height - pad_top),
+            pad_left : self.input_width - (pad_width - pad_left),
+        ]
+        canonical = self.torch.nn.functional.interpolate(
+            canonical[None, None],
+            (height, width),
+            mode="bilinear",
+            align_corners=False,
+        ).squeeze()
+        intrinsics = intrinsics_matrix(row)
+        canonical_to_real = float(intrinsics[0, 0]) * scale / 1000.0
+        depth = canonical * canonical_to_real
+        depth = self.torch.clamp(depth, 0, 300)
+        return depth.detach().cpu().numpy(), {
+            "runtime": "pytorch",
+            "device": str(self.device),
+        }
+
+
 def build_source(args: argparse.Namespace) -> DepthSource:
     if args.model == MODEL_UNIDEPTH:
         return UniDepthSource(
@@ -317,7 +408,13 @@ def build_source(args: argparse.Namespace) -> DepthSource:
             args.vda_input_size,
             args.device,
         )
-    return Metric3DOnnxSource(args.metric3d_onnx, args.onnx_provider)
+    if args.model == MODEL_METRIC3D:
+        return Metric3DOnnxSource(args.metric3d_onnx, args.onnx_provider)
+    return Metric3DPytorchSource(
+        args.metric3d_repo,
+        args.metric3d_checkpoint,
+        args.device,
+    )
 
 
 def produce(
@@ -407,6 +504,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--vda-checkpoint", type=Path)
     parser.add_argument("--vda-input-size", type=int, default=392)
     parser.add_argument("--metric3d-onnx", type=Path)
+    parser.add_argument("--metric3d-repo", type=Path)
+    parser.add_argument("--metric3d-checkpoint", type=Path)
     parser.add_argument(
         "--onnx-provider", choices=("cpu", "cuda"), default="cpu"
     )
@@ -419,6 +518,13 @@ def parse_args() -> argparse.Namespace:
         parser.error("--vda-repo and --vda-checkpoint are required for VDA")
     if args.model == MODEL_METRIC3D and args.metric3d_onnx is None:
         parser.error("--metric3d-onnx is required for Metric3D")
+    if args.model == MODEL_METRIC3D_PYTORCH and (
+        args.metric3d_repo is None or args.metric3d_checkpoint is None
+    ):
+        parser.error(
+            "--metric3d-repo and --metric3d-checkpoint are required "
+            "for PyTorch Metric3D"
+        )
     return args
 
 

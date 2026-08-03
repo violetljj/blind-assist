@@ -22,7 +22,7 @@ $resolvedManifests = @($Manifest | ForEach-Object { (Resolve-Path $_).Path })
 
 $unidepthOutput = Join-Path $outputRoot 'unidepth-v2-vits14.jsonl'
 $vdaOutput = Join-Path $outputRoot 'video-depth-anything-metric-vits-stream.jsonl'
-$metric3dOutput = Join-Path $outputRoot 'metric3d-v2-vits-onnx.jsonl'
+$metric3dOutput = Join-Path $outputRoot 'metric3d-v2-vits-pytorch.jsonl'
 $reportOutput = Join-Path $outputRoot 'triarm-report.json'
 
 $common = @($producer, '--manifest') + $resolvedManifests
@@ -45,10 +45,11 @@ if ($LASTEXITCODE -ne 0) { throw "UniDepth failed with exit code $LASTEXITCODE" 
 if ($LASTEXITCODE -ne 0) { throw "Video Depth Anything failed with exit code $LASTEXITCODE" }
 
 & $Python @common `
-    --model 'metric3d-v2-vits-onnx' `
+    --model 'metric3d-v2-vits-pytorch' `
     --output $metric3dOutput `
-    --metric3d-onnx (Join-Path $repoRoot 'artifacts.local\models\hftf-external-rgb-metric-track-r0\metric3d-vit-small\onnx\model.onnx') `
-    --onnx-provider 'cpu'
+    --metric3d-repo (Join-Path $repoRoot 'artifacts.local\vendor\Metric3D') `
+    --metric3d-checkpoint (Join-Path $repoRoot 'artifacts.local\models\hftf-external-rgb-metric-track-r0\metric3d-vit-small-pytorch\metric_depth_vit_small_800k.pth') `
+    --device 'cuda'
 if ($LASTEXITCODE -ne 0) { throw "Metric3D failed with exit code $LASTEXITCODE" }
 
 & $Python $evaluator `
