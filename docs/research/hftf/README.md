@@ -161,10 +161,10 @@ METRIC3D_QAIRT_HTP_EXECUTION_AND_DEPLOYMENT_PARITY_SUPPORTED_CONSUMED_CANARY_ONL
 VITS_392X672_RAFT2_HTP_DEPLOYMENT_PARITY_SUPPORTED_CONSUMED_CANARY_ONLY /
 VITS_LOW_LATENCY_LIVE_TARGET_NOT_MET /
 POST_TRAINING_QUANTIZATION_NUMERICALLY_INVALID_OR_SLOWER_STOP /
-CONVTINY_HTP_DEPLOYMENT_PARITY_SUPPORTED_SOURCE_ACCURACY_NOT_EVALUABLE /
+CONVTINY_HTP_DEPLOYMENT_PARITY_SUPPORTED_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD_CANARY /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
-## 2026-08-03 Metric3D QAIRT 实时化 R0：两个候选保留，仍未达到 live source 门槛
+## 2026-08-03 Metric3D QAIRT 实时化 R0：ConvTiny 真值失败，保留 ViT-S 连续性候选
 
 在 canonical HTP 成功之后，只用既有 9 帧 consumed technical canary 做了分辨率、
 RAFT early-exit、PTQ 和 ConvNeXt-Tiny 增量。ViT-S `392x672` RAFT-2 在独占 HTP
@@ -175,14 +175,22 @@ RAFT early-exit、PTQ 和 ConvNeXt-Tiny 增量。ViT-S `392x672` RAFT-2 在独�
 
 官方 ConvNeXt-Tiny v1 depth-only `544x1216` 在 HTP 上为 `434.893 ms`，相对自身
 ORT 的人物深度和 D44 future 只差 `0.0030/0.00793 m`，证明部署链可靠；但它与
-ViT-S canonical 的 D44 future 相差 `2.813 m`。该 tiny 权重为 outdoor-only，现有
-canary 又没有独立米制真值，因此保留为 truth-required speed candidate，不能用模型
-互相同意来裁决谁正确。
+ViT-S canonical 的 D44 future 相差 `2.813 m`。随后直接使用仓库中已消费的 30 帧
+Bonn person-tracking RGB-D canary 裁决，不开 fresh、不调参。注册传感器深度不是
+模型输入；两臂复用同帧 torso ROI 和内参。
+
+ConvTiny 的 torso depth MAE 为 `1.1025 m`（相对误差 `59.13%`），ViT-S 为
+`0.03816 m`（`2.052%`），ViT-S 赢 `30/30` 帧；七帧外推到一秒真实未来位置时，
+ConvTiny/ViT-S 平均误差为 `1.0967/0.4362 m`，ViT-S 赢 `14/14` 窗口。独立
+PyTorch 与 ONNX 在首帧分别输出 `0.73282546/0.73282579 m`，排除了导出链尺度
+错误。因此 ConvTiny 部署一致性成立，但 v1-T source candidate 在该已消费室内人物
+序列上不受支持，直接停止，不做调参救援。
 
 两臂均已生成 SM8650 cached DLC，单帧 cached/online 输出字节一致；runtime 同时报告
 compatible `HTP_V75_SM8650_4MB` record 与 VTCM/DSP mismatch warning，警告保留。
-当前连续性候选为 ViT-S RAFT-2，速度候选为 ConvTiny；二者都约 `2.3 fps`，不接
-alert、研究主线或 default App。详见
+当前只保留 ViT-S RAFT-2 作为连续性候选；其约 `2.34 fps`，仍不满足 live source
+门槛，不接 alert、研究主线或 default App。单个 Bonn 已消费序列也不提供最终外接
+相机的跨域推广权。详见
 [QAIRT real-time optimization R0](../../../scripts/research/hftf/METRIC_DEPTH_QAIRT_REALTIME_OPT_R0_RESULT.md)。
 
 ## 2026-08-03 Metric3D QAIRT：GPU 停止，SM8650 HTP 成为低频部署候选

@@ -8,17 +8,17 @@
     "android": 16,
     "htp_arch": "v75"
   },
-  "data_role": "already_consumed_technical_smoke_only",
+  "data_role": "already_consumed_technical_smoke_plus_consumed_bonn_rgbd_truth_diagnostic",
   "fresh_data_opened": false,
   "terminals": [
     "VITS_392X672_RAFT2_HTP_DEPLOYMENT_PARITY_SUPPORTED_CONSUMED_CANARY_ONLY",
     "VITS_LOW_LATENCY_LIVE_TARGET_NOT_MET",
     "POST_TRAINING_QUANTIZATION_NUMERICALLY_INVALID_OR_SLOWER_STOP",
-    "CONVTINY_HTP_DEPLOYMENT_PARITY_SUPPORTED_SOURCE_ACCURACY_NOT_EVALUABLE"
+    "CONVTINY_HTP_DEPLOYMENT_PARITY_SUPPORTED_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD_CANARY"
   ],
   "decision": [
     "KEEP_VITS_392X672_RAFT2_CACHED_AS_CONTINUITY_CANDIDATE",
-    "KEEP_CONVTINY_CACHED_AS_TRUTH_REQUIRED_SPEED_CANDIDATE",
+    "STOP_CONVTINY_V1_T_SOURCE_CANDIDATE",
     "STOP_CURRENT_PTQ_SEARCH",
     "NO_RESEARCH_MAINLINE_OR_DEFAULT_APP_CHANGE"
   ],
@@ -73,7 +73,7 @@
       "terminal": "SLOWER_AND_LESS_FAITHFUL_THAN_FP16"
     },
     "convtiny_544x1216_depth_fp16": {
-      "selected_role": "truth_required_speed_candidate",
+      "selected_role": "stopped_source_candidate",
       "training_scope_note": "official tiny checkpoint documented as outdoor-only",
       "macs": 83359361728,
       "mean_execute_ms": 434.893,
@@ -90,9 +90,28 @@
       "cached_process_init_ms": 77.250,
       "cached_graph_record_load_ms": 18.847,
       "cached_online_frame0_byte_identical": true,
-      "source_accuracy_terminal": "NOT_EVALUABLE_WITHOUT_INDEPENDENT_METRIC_TRUTH"
+      "consumed_bonn_rgbd_truth_diagnostic": {
+        "frames": 30,
+        "truth_source": "registered_rgbd_sensor_depth_not_model_input",
+        "convtiny_torso_depth_mae_m": 1.1025321722030639,
+        "vits_torso_depth_mae_m": 0.038158931334813434,
+        "convtiny_mean_relative_absolute_error": 0.5913252502993098,
+        "vits_mean_relative_absolute_error": 0.020517006494512387,
+        "convtiny_frame_wins": 0,
+        "vits_frame_wins": 30,
+        "d44_paired_windows": 14,
+        "convtiny_d44_future_mean_error_m": 1.0967088443334552,
+        "vits_d44_future_mean_error_m": 0.43616183768578376,
+        "convtiny_d44_window_wins": 0,
+        "vits_d44_window_wins": 14,
+        "first_frame_pytorch_torso_depth_m": 0.7328254580497742,
+        "first_frame_onnx_torso_depth_m": 0.7328257858753204,
+        "first_frame_truth_depth_m": 1.8530000448226929,
+        "checkpoint_missing_keys": 0
+      },
+      "source_accuracy_terminal": "NOT_SUPPORTED_CONSUMED_BONN_RGBD_CANARY_NO_TUNING_RESCUE"
     }
   },
   "cache_warning": "compatible HTP_V75_SM8650_4MB record selected with VTCM/DSP architecture mismatch warning",
-  "claim_ceiling": "deployment parity and consumed-canary continuity only; no metric truth, alert, safety, production, research-mainline, or default-App authority"
+  "claim_ceiling": "deployment parity plus one consumed Bonn RGB-D sequence diagnostic only; no fresh or final-camera generalization, alert, safety, production, research-mainline, or default-App authority"
 }

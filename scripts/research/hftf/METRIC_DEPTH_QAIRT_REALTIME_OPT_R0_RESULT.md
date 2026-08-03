@@ -5,18 +5,18 @@ Terminals:
 - `VITS_392X672_RAFT2_HTP_DEPLOYMENT_PARITY_SUPPORTED_CONSUMED_CANARY_ONLY`
 - `VITS_LOW_LATENCY_LIVE_TARGET_NOT_MET`
 - `POST_TRAINING_QUANTIZATION_NUMERICALLY_INVALID_OR_SLOWER_STOP`
-- `CONVTINY_HTP_DEPLOYMENT_PARITY_SUPPORTED_SOURCE_ACCURACY_NOT_EVALUABLE`
+- `CONVTINY_HTP_DEPLOYMENT_PARITY_SUPPORTED_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD_CANARY`
 
 Decision:
 
 `KEEP_VITS_392X672_RAFT2_CACHED_AS_CONTINUITY_CANDIDATE /
-KEEP_CONVTINY_CACHED_AS_TRUTH_REQUIRED_SPEED_CANDIDATE /
+STOP_CONVTINY_V1_T_SOURCE_CANDIDATE /
 STOP_CURRENT_PTQ_SEARCH /
 NO_RESEARCH_MAINLINE_OR_DEFAULT_APP_CHANGE`
 
 ## Scope
 
-This optimization used only the nine already-consumed
+The device optimization used only the nine already-consumed
 `prepared-tokyo-smoke` technical frames, including the existing consecutive
 seven-frame window. It did not open fresh data, search an alert operating
 point, or evaluate safety utility. All executions used QAIRT Community
@@ -27,6 +27,12 @@ RPC time, and accelerator time.
 The canonical comparison remains Metric3Dv2 ViT-S FP32 ORT at `616x1064`.
 Agreement with that source is deployment/continuity evidence, not real metric
 truth.
+
+The previously unresolved ConvNeXt-Tiny source disagreement was then tested on
+the separate, already-consumed 30-frame Bonn person-tracking canary. Its frozen
+manifest supplies registered RGB-D sensor depth that was not model input, the
+same torso ROIs and camera intrinsics, and already-produced ViT-S results. No
+fresh cohort or tuning was opened.
 
 ## ViT-S resolution and early-exit results
 
@@ -86,9 +92,28 @@ strong:
 
 However, ConvNeXt-Tiny HTP and canonical ViT-S ORT differed by `2.643 m` mean
 person-torso depth and `2.813 m` at the D44 future position. The official tiny
-checkpoint is documented as outdoor-only, and this consumed canary has no
-independent metric truth. The disagreement cannot be resolved by model-to-model
-agreement, so source accuracy is `NOT_EVALUABLE` rather than negative.
+checkpoint is documented as outdoor-only, so model-to-model disagreement alone
+did not initially resolve source accuracy.
+
+The consumed Bonn RGB-D canary does resolve that narrow question. Using exactly
+the frozen 30 frames, torso ROIs, intrinsics, registered sensor-depth truth,
+10%-90% trimmed torso median, and each model's fixed official input geometry:
+
+| Consumed Bonn paired measure | ConvNeXt-Tiny v1-T | ViT-S |
+| --- | ---: | ---: |
+| Frame torso depth MAE | `1.1025 m` | `0.03816 m` |
+| Frame torso mean relative absolute error | `59.13%` | `2.052%` |
+| Paired frame wins | `0/30` | `30/30` |
+| Seven-frame to one-second future position mean error | `1.0967 m` | `0.4362 m` |
+| Paired future-window wins | `0/14` | `14/14` |
+
+The scale failure is not an export artifact. The official PyTorch model and
+the exported ONNX produced `0.73282546 m` and `0.73282579 m` respectively on
+the first Bonn torso, whose registered truth was `1.85300004 m`; checkpoint
+loading had no missing keys. Therefore deployment parity remains supported,
+but ConvNeXt-Tiny v1-T source accuracy is not supported on this consumed
+indoor person-tracking canary and the candidate is stopped without a tuning
+rescue.
 
 The online DLC is SHA-256
 `F51B9ABF9F53865FFFA14481BBFE5DC6409AF4ECCB9D18C659BA9B1DCCEE7553`;
@@ -104,16 +129,20 @@ deployment evidence and must not be suppressed.
 
 ## Interpretation and next admissible step
 
-This R0 found two different Pareto candidates but not a promoted live source:
+This R0 retains one deployment-continuity candidate but not a promoted live
+source:
 
 - ViT-S RAFT-2 preserves continuity with the existing teacher better but is
   still too slow and inherits a resolution-induced shift.
 - ConvNeXt-Tiny provides more pixels at similar latency and excellent
-  deployment parity, but its absolute metric source accuracy is unresolved.
+  deployment parity, but its absolute metric scale failed the consumed Bonn
+  RGB-D paired diagnostic and the v1-T source candidate is stopped.
 
-The next claim-critical experiment requires independent meter-level truth for
-the final external camera or an already-authorized consumed truth source. Until
-then, neither arm may feed alerts or replace the research mainline/default App.
+Any later source candidate still requires independent meter-level truth from
+the final external camera before promotion. The single consumed Bonn sequence
+does not establish cross-camera generalization, live utility, or alert safety.
+The retained ViT-S RAFT-2 candidate may not feed alerts or replace the research
+mainline/default App.
 
 Machine-readable result:
 [METRIC_DEPTH_QAIRT_REALTIME_OPT_R0_RESULT.json](METRIC_DEPTH_QAIRT_REALTIME_OPT_R0_RESULT.json).
