@@ -37,6 +37,10 @@ kotlin {
 
 dependencies {
     implementation(project(":core:assist"))
+    // Keep the instrumentation APK ABI-aligned with the target App. Without
+    // this explicit constraint, androidx.test contributes lifecycle-common
+    // 2.3.1 while the target App uses LifecycleRegistry 2.8.7.
+    implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.test.runner)
     implementation(libs.androidx.test.rules)
     implementation(libs.androidx.test.ext.junit)
