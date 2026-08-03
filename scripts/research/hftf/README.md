@@ -26,6 +26,7 @@ D15-jrdb-corridor-future-onset-two-fold-ready /
 D15-jrdb-future-onset-history-replication-not-supported /
 D16-tartanground-future-onset-three-fold-ready /
 D16-tartanground-history-increment-not-supported /
+A1-consumed-motion-increment-not-supported /
 frozen-single-frame-posthoc-temporal-residual-family-stop`
 
 ## 研究问题与版本
@@ -47,6 +48,15 @@ Development 支持，并已有 candidate-only JSONL/MP4 CLI；0.5 秒未来占�
 `sitting_halfsphere` fresh transfer，Bonn 跨数据集代理因 source pose/reference
 不兼容而 `NOT_EVALUABLE`。该支线不依赖 ARCore，但在最终外接摄像头和目标设备验证前
 不得晋级主线、提醒或 safety claim。
+
+A1 冻结六臂比较保留终态 `COLLISION_RISK_FIELD_A1_DEVELOPMENT_FAIL`：完整概率场在
+1,716 个已消费机会中仍是非 oracle 臂的 Brier、F1、recall 最优者（`0.08936 /`
+`0.89841 / 88.43%`），但 MCC `0.75579` 未超过 2D corridor 的 `0.76141`。
+后续只用同一已消费 cohort、相同 LOSO/逻辑回归/阈值执行的固定双臂增量消融得到
+`A1_CONSUMED_MOTION_INCREMENT_NOT_SUPPORTED`：加入十个运动特征使 recall 增加
+`0.59` 个百分点且 4/7 窗口 Brier 改善，但 pooled Brier 恶化 `3.94%`、F1
+下降 `0.00678`、MCC 下降 `0.02292`。因此保留概率质量、F1 与召回的描述性支持，
+但不主张独立 causal-motion increment，也不搜索特征子集或阈值救援。
 
 ### D6 SANPO real veto transfer
 

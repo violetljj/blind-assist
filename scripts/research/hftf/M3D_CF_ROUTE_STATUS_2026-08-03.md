@@ -31,6 +31,7 @@ UniDepthV2-S was the better source in this branch.
 | Deterministic 3D clearance | fresh fail | metric depth alone was too noisy for hard collision decisions |
 | A0.1 motion-conditioned current occupancy | fresh pass | first supported algorithm result |
 | A1 current-risk arm comparison | mixed fail | probability field led Brier/F1/recall; 2D corridor narrowly led MCC |
+| A1 consumed incremental ablation | not supported | motion raised recall 0.59 pp but worsened pooled Brier 3.94%, F1, and MCC |
 | A2 future occupancy | Development fail | useful 0.5 s signal, but FPR exceeded gate |
 | A2.1 2D+3D+motion future occupancy | Development pass, fresh fail | did not transfer walking to sitting regime |
 | Bonn cross-dataset proxy | not evaluable | source pose was not a calibrated RGB optical camera floor reference |
