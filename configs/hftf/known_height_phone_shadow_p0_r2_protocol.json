@@ -1,0 +1,41 @@
+{
+  "schema": "blindassist_known_height_phone_shadow_protocol_v1",
+  "protocol_id": "KNOWN_HEIGHT_PHONE_SHADOW_P0_R2_20260804",
+  "frozen_at": "2026-08-04",
+  "status": "FROZEN_BEFORE_PHONE_OUTCOMES",
+  "model_id": "CAMERA_CONDITIONED_SCALE_STUDENT_R0_FINAL_5P",
+  "arms": ["RAW_DA_METRIC", "KNOWN_HEIGHT_R0", "SEALED_STUDENT_R0"],
+  "common": {
+    "depth_checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+    "maximum_camera_height_uncertainty_m": 0.02,
+    "camera_height_range_m": [0.8, 2.2],
+    "require_fixed_mount_identity": true,
+    "require_intrinsics_identity": true,
+    "require_monotonic_capture_timestamps": true,
+    "inference_truth_firewall": true,
+    "prediction_can_mutate_app_or_feedback": false,
+    "rerun_or_rescue_after_outcome_inspection": false
+  },
+  "phases": {
+    "P0": {
+      "required_sessions": 3,
+      "target_frames_per_session": 120,
+      "minimum_admitted_frames_per_session": 90,
+      "purpose": "source_and_geometry_preflight_only",
+      "promotion_authorized": false
+    },
+    "R2": {
+      "required_sessions": 8,
+      "fixed_anchors_per_session": 25,
+      "required_total_anchors": 200,
+      "minimum_session_admission": 8,
+      "gates": {
+        "macro_median_absolute_relative_error_max": 0.20,
+        "macro_p90_absolute_relative_error_max": 0.50,
+        "per_session_false_clear_rate_max": 0.05,
+        "temporal_instability_rate_max": 0.15
+      },
+      "decision": "PASS_ONLY_IF_ALL_FIXED_GATES_PASS_ELSE_STOP"
+    }
+  }
+}

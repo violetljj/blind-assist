@@ -36,3 +36,8 @@ its window was selected on the same consumed outcomes and therefore remains diag
 ridge evaluation. `evaluate_student_external_replication_r0.py` fits that unchanged student once
 on the five Development parents and runs the separately frozen ten-parent student-unseen
 replication. Both are synthetic evidence runners; neither is an Android or safety implementation.
+
+`sealed_student.py` is the no-fit loader for the final consumed-evidence ridge head. Its JSON
+receipt and cross-language golden vectors live under `configs/hftf/`. `preflight_phone_session.py`
+fail-closes P0/R2 phone sessions unless measured camera height, fixed mount/camera identity,
+monotonic hashed RGB frames, and an independently hashed reference manifest are all present.

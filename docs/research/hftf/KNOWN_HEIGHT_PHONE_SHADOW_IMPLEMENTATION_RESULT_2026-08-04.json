@@ -1,0 +1,29 @@
+{
+  "schema": "blindassist_known_height_phone_shadow_implementation_result_v1",
+  "date": "2026-08-04",
+  "status": "IMPLEMENTATION_READY_DEVICE_CAPABILITY_SUPPORTED_PHYSICAL_P0_NOT_EVALUATED",
+  "model": {
+    "model_id": "CAMERA_CONDITIONED_SCALE_STUDENT_R0_FINAL_5P",
+    "sealed_model_sha256": "5417A24EFCAD59713F35F0AA13B7C56A182D72C9670B5B12D418DC06C9793BDD",
+    "golden_sha256": "A473D429BB6971E86B717936E96182C997BED58576E787E61517615A12A126EC",
+    "claim_ceiling": "CONSUMED_SYNTHETIC_MECHANISM_CANDIDATE_ONLY"
+  },
+  "device": {
+    "serial": "R5CX10M8Y8X",
+    "model": "SM-S9280",
+    "android": "16",
+    "camera_capability_tests": {"tests": 4, "failures": 0},
+    "student_head_canary": {
+      "golden_vectors": 3,
+      "failures": 0,
+      "iterations": 100000,
+      "head_only_mean_latency_us": 1.27171615
+    }
+  },
+  "terminals": {
+    "P0": "READY_FOR_PHYSICAL_CAPTURE_NOT_EVALUATED_MISSING_MEASURED_HEIGHT_AND_REFERENCE",
+    "R2": "BLOCKED_BY_P0_NOT_STARTED",
+    "full_device_latency": "NOT_EVALUABLE_NO_EQUIVALENT_ANDROID_EXPORT"
+  },
+  "authorization": {"shadow_only": true, "app_runtime": false, "production": false}
+}

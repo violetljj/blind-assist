@@ -37,6 +37,7 @@ kotlin {
 
 dependencies {
     implementation(project(":core:assist"))
+    implementation(project(":hftf-metric-depth-canary-core"))
     // Keep the instrumentation APK ABI-aligned with the target App. Without
     // this explicit constraint, androidx.test contributes lifecycle-common
     // 2.3.1 while the target App uses LifecycleRegistry 2.8.7.

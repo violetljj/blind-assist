@@ -1,5 +1,9 @@
 # HFTF 候选未来可通行场支线
 
+- [Known-height phone shadow P0/R2 frozen protocol](KNOWN_HEIGHT_PHONE_SHADOW_P0_R2_PROTOCOL_2026-08-04.md)
+- [Known-height phone shadow implementation/device result](KNOWN_HEIGHT_PHONE_SHADOW_IMPLEMENTATION_RESULT_2026-08-04.md)
+- [Machine-readable implementation/device result](KNOWN_HEIGHT_PHONE_SHADOW_IMPLEMENTATION_RESULT_2026-08-04.json)
+
 当前状态：
 
 `CANDIDATE_SIDE_LANE_ACTIVE / DEVELOPMENT_STANDARD /
