@@ -9,6 +9,7 @@ from evaluate_metric3d_clearance_field_a0 import (
     depth_to_points,
     fit_ground_plane,
     fit_gravity_guided_ground_plane,
+    fixed_world_plane_in_camera,
     fit_normal_guided_ground_plane,
     summarize,
     tum_fixed_world_floor_in_camera,
@@ -67,6 +68,20 @@ class Metric3dClearanceFieldA0Test(unittest.TestCase):
         assert plane is not None
         np.testing.assert_allclose(plane[0], [0.0, 0.0, 1.0])
         self.assertAlmostEqual(plane[1], 1.4)
+
+    def test_fixed_world_plane_supports_non_z_aligned_world(self) -> None:
+        poses = (
+            np.asarray([10.0]),
+            np.asarray([[0.0, 1.0, 0.0]]),
+            np.asarray([[0.0, 0.0, 0.0, 1.0]]),
+        )
+        plane = fixed_world_plane_in_camera(
+            10.0, poses, np.asarray([0.0, -1.0, 0.0]), 2.0
+        )
+        self.assertIsNotNone(plane)
+        assert plane is not None
+        np.testing.assert_allclose(plane[0], [0.0, -1.0, 0.0])
+        self.assertAlmostEqual(plane[1], 1.0)
 
     def test_unknown_when_no_ground_support(self) -> None:
         depth = np.zeros((20, 20))

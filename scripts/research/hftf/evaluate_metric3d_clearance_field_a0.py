@@ -408,6 +408,29 @@ def tum_fixed_world_floor_in_camera(
     if not 0.45 <= camera_height <= 2.20:
         return None
     return up_camera, camera_height, 0.0
+
+
+def fixed_world_plane_in_camera(
+    timestamp: float,
+    poses: tuple[np.ndarray, np.ndarray, np.ndarray],
+    world_normal: np.ndarray,
+    world_offset: float,
+) -> tuple[np.ndarray, float, float] | None:
+    timestamps, translations, quaternions = poses
+    index = int(np.argmin(np.abs(timestamps - timestamp)))
+    if abs(float(timestamps[index]) - timestamp) > 0.03:
+        return None
+    normal = np.asarray(world_normal, dtype=np.float64)
+    norm = float(np.linalg.norm(normal))
+    if norm <= 1e-8:
+        raise ValueError("world plane normal must be non-zero")
+    normal /= norm
+    camera_to_world = quaternion_rotation_matrix_xyzw(quaternions[index])
+    up_camera = camera_to_world.T @ normal
+    camera_height = float(np.dot(normal, translations[index]) + world_offset)
+    if not 0.45 <= camera_height <= 2.20:
+        return None
+    return up_camera, camera_height, 0.0
     tensor = source.torch.from_numpy(
         np.ascontiguousarray(padded.transpose(2, 0, 1))
     ).float().to(source.device)
@@ -448,6 +471,7 @@ def evaluate_rows(
     ground_mode: str = "depth_ransac",
     reference_ground_mode: str = "depth_ransac",
     reference_floor_world_z_m: float | None = None,
+    reference_floor_world_plane: tuple[np.ndarray, float] | None = None,
 ) -> dict[str, Any]:
     lookup_cache: dict[Path, dict[str, Path]] = {}
     pose_cache: dict[
@@ -482,7 +506,15 @@ def evaluate_rows(
             else None
         )
         reference_plane = (
-            tum_fixed_world_floor_in_camera(
+            fixed_world_plane_in_camera(
+                float(frame_path.stem),
+                pose_cache[sequence_root],
+                reference_floor_world_plane[0],
+                reference_floor_world_plane[1],
+            )
+            if reference_ground_mode == "tum_fixed_world_plane"
+            and reference_floor_world_plane is not None
+            else tum_fixed_world_floor_in_camera(
                 float(frame_path.stem),
                 pose_cache[sequence_root],
                 float(reference_floor_world_z_m),
@@ -536,6 +568,10 @@ def evaluate_rows(
                     )
                     or (
                         reference_ground_mode == "tum_fixed_world_floor"
+                        and reference_plane is None
+                    )
+                    or (
+                        reference_ground_mode == "tum_fixed_world_plane"
                         and reference_plane is None
                     )
                     else clearance_field(
@@ -660,10 +696,17 @@ def main() -> None:
             "depth_ransac",
             "tum_gravity_oracle",
             "tum_fixed_world_floor",
+            "tum_fixed_world_plane",
         ),
         default="depth_ransac",
     )
     parser.add_argument("--reference-floor-world-z-m", type=float)
+    parser.add_argument(
+        "--reference-floor-world-plane",
+        nargs=4,
+        type=float,
+        metavar=("NX", "NY", "NZ", "OFFSET"),
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     source: DepthSource
@@ -686,6 +729,11 @@ def main() -> None:
         args.ground_mode,
         args.reference_ground_mode,
         args.reference_floor_world_z_m,
+        (
+            (np.asarray(args.reference_floor_world_plane[:3]), args.reference_floor_world_plane[3])
+            if args.reference_floor_world_plane is not None
+            else None
+        ),
     )
     report["candidate_model_id"] = source.model_id
     args.output.parent.mkdir(parents=True, exist_ok=True)
