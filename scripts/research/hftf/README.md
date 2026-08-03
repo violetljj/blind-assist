@@ -89,6 +89,15 @@ ToF 3D 点，经刚体 `T_rgb_from_tof` 投影到矫正 RGB，再与同像素 DA
 也未连接 ToF 硬件，所以这一步只完成硬件无关接口；详见
 `MULTIZONE_TOF_RGB_ADAPTER_R0.md` 和 `MULTIZONE_TOF_RGB_ADAPTER_R0_RESULT.json`。
 
+本轮硬件选型终态：
+`VL53L8CX_DEFAULT_CANARY_VL53L5CX_AVAILABILITY_FALLBACK`。默认传感器选
+ST `VL53L8CX`：8×8、4 m、65°、最高 60 Hz，支持 1 MHz I²C 与 3 MHz SPI，连续
+模式官方示例约 215 mW；它只补绝对尺度和逐区质量，不替代 RGB clearance。第一套
+实验台优先 `X-NUCLEO-53L8A1 + STM32 Nucleo USB bridge`，最终小型化改用
+`SATEL-VL53L8 + A568 direct bus` 或小型 USB bridge。`VL53L5CX` 仅作为供货备选；
+单点 ToF、超声和手机 proximity 不进入该支线。尚未采购，价格、库存和载板电气仍需
+下单时确认。详见 `MULTIZONE_TOF_HARDWARE_SELECTION_R0.md`。
+
 ## 研究问题与版本
 
 本 Module 服务 `HFTF_CANDIDATE_LANE_R0`：检验历史 RGB 能否预测面向行人身体包络的

@@ -1,0 +1,33 @@
+{
+  "schema": "hftf_multizone_tof_hardware_selection_r0",
+  "date": "2026-08-03",
+  "terminal": "VL53L8CX_DEFAULT_CANARY_VL53L5CX_AVAILABILITY_FALLBACK",
+  "default_sensor": "ST VL53L8CX",
+  "first_bench": "X-NUCLEO-53L8A1 plus compatible STM32 Nucleo USB bridge",
+  "compact_a568": "SATEL-VL53L8 plus verified voltage-compatible direct I2C or SPI carrier",
+  "compact_phone": "SATEL-VL53L8 plus small MCU USB bridge",
+  "availability_fallback": "ST VL53L5CX",
+  "initial_canary": {
+    "zones": "8x8",
+    "frame_rate_hz": 15,
+    "mode": "continuous",
+    "timestamp_authority": "host_monotonic",
+    "selected_optimum": false
+  },
+  "selection_facts": {
+    "maximum_range_m": 4.0,
+    "diagonal_fov_degrees": 65,
+    "maximum_frame_rate_hz": 60,
+    "vl53l8cx_interfaces": ["I2C_1MHz", "SPI_3MHz"],
+    "vl53l5cx_interfaces": ["I2C_1MHz"],
+    "vl53l8cx_continuous_example_power_mw": 215
+  },
+  "rejected_as_default": [
+    "single-zone ToF",
+    "ultrasonic range",
+    "phone proximity sensor",
+    "unanchored pure RGB metric depth"
+  ],
+  "procurement_performed": false,
+  "claim_ceiling": "component and bench-path selection from official specifications only; no purchased hardware, physical registration, live ranging, final-camera quality, end-to-end performance, safety, production, research-mainline, or default-App authority"
+}

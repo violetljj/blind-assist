@@ -248,6 +248,13 @@ sigma、zone/band coverage、scale disagreement 和 expiry UNKNOWN 均已有合�
 公开 depth output，主机也没有连接 ToF，因此不能宣称真实硬件或性能问题解决。接口见
 [multi-zone ToF to RGB adapter R0](../../../scripts/research/hftf/MULTIZONE_TOF_RGB_ADAPTER_R0.md)。
 
+硬件选型已冻结为 `VL53L8CX_DEFAULT_CANARY_VL53L5CX_AVAILABILITY_FALLBACK`：首个
+低风险 bench 使用 `X-NUCLEO-53L8A1 + STM32 Nucleo USB bridge`，紧凑 A568/手机
+版本再切 `SATEL-VL53L8 + direct bus/小 MCU bridge`。VL53L8CX 的 8×8、4 m、65°、
+I²C/SPI 与逐区质量正好补当前尺度缺口；它不负责稠密 clearance。VL53L5CX 只作供货
+备选，单点 ToF、超声和 proximity 排除。选型没有采购或产生实测性能，完整依据见
+[multi-zone ToF hardware selection R0](../../../scripts/research/hftf/MULTIZONE_TOF_HARDWARE_SELECTION_R0.md)。
+
 ## 2026-08-03 Metric3D QAIRT 实时化 R0：ConvTiny 真值失败，保留 ViT-S 连续性候选
 
 在 canonical HTP 成功之后，只用既有 9 帧 consumed technical canary 做了分辨率、
