@@ -12,18 +12,17 @@ import argparse
 import json
 import time
 from collections import defaultdict, deque
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any
 
 import cv2
 import numpy as np
-
 from prepare_external_rgb_metric_depth_manifest import torso_roi_from_person_box
 from produce_external_rgb_metric_depth_observations import (
     Metric3DPytorchSource,
     robust_roi_median,
 )
-
 
 HISTORY_COUNT = 7
 FUTURE_SECONDS = 1.0

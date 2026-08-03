@@ -17,7 +17,6 @@ from typing import Any
 import cv2
 import numpy as np
 
-
 HEIGHT = 392
 WIDTH = 672
 HISTORY_COUNT = 7
@@ -40,7 +39,7 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 
 
 def robust_roi_median(depth: np.ndarray, roi: list[Any]) -> float:
-    x0, y0, x1, y1 = (int(round(float(value))) for value in roi)
+    x0, y0, x1, y1 = (round(float(value)) for value in roi)
     values = np.asarray(depth[y0:y1, x0:x1], dtype=np.float64).reshape(-1)
     valid = values[np.isfinite(values) & (values > 0)]
     if not len(valid):
