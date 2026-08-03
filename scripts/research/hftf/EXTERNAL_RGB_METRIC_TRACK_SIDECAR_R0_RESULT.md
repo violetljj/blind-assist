@@ -40,11 +40,19 @@ Across five already-consumed Bonn sequences (`150` frames), FP16 passed every ga
 
 Terminal: `METRIC3D_VITS_CUDA_FP16_PRECISION_AND_LATENCY_SUPPORTED_CONSUMED_BONN_RGBD`. FP16 is now the Windows sidecar default; `--metric3d-precision fp32` remains available as the reference control.
 
+### VideoCapture full-chain canary
+
+The runner now accepts `--video` in addition to manifest and camera sources. Twelve already-consumed Tokyo frames were encoded as a `1280x720`, `7.5 FPS` MP4, then reread exclusively through OpenCV `VideoCapture`; frozen boxes and manifest timestamps were not used. YOLO11n and ByteTrack produced 102 track observations across 21 IDs. Five IDs accumulated seven consecutive observations and emitted 28 D44 forecasts. Video timestamps were strictly increasing with a median interval of `133333333 ns`.
+
+With default FP16, steady medians were `9.781 ms` for detection/tracking, `135.241 ms` for Metric3D, and `145.238 ms` for their sum. Camera and video modes now require both calibrated intrinsics and the calibration resolution. Any actual frame-size mismatch, non-finite/non-positive focal length, or principal point outside the frame fails closed before metric coordinates are emitted.
+
+Terminal: `WINDOWS_GPU_VIDEO_CAPTURE_FULL_CHAIN_EXECUTED_CONSUMED_REPLAY_ONLY`. This covers the same capture API and downstream software stages as an external camera, but not the final camera's optics, driver latency, exposure, distortion, or metric truth.
+
 ## Claim ceiling and next admission
 
 This result supports an executable Windows GPU research reference, not a live-camera or product result. It does not establish final-camera metric accuracy, cross-camera generalization, phone/NPU continuity, alert utility, safety, research-mainline promotion, or default-App authority.
 
-The next admissible step, when recording becomes convenient, is a short calibrated external-camera canary with known distances and motion directions. Until then, this sidecar can generate offline teacher tracks and exercise the D44 integration without ARCore.
+The next admissible step, when recording becomes convenient, is a short calibrated external-camera canary with known distances and motion directions. Camera/video execution requires `--intrinsics fx fy cx cy --calibration-size width height`; this prevents silently applying calibration at the wrong capture resolution. Until then, this sidecar can generate offline teacher tracks and exercise the D44 integration without ARCore.
 
 Machine-readable summary: [EXTERNAL_RGB_METRIC_TRACK_SIDECAR_R0_RESULT.json](EXTERNAL_RGB_METRIC_TRACK_SIDECAR_R0_RESULT.json).
 

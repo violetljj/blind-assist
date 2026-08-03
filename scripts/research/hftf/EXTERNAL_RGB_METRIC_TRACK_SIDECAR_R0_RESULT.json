@@ -11,7 +11,8 @@
     "UNIDEPTH_QAIRT_HTP_NUMERIC_AND_LATENCY_NOT_SUPPORTED_GPU_FINALIZE_FAILED",
     "CANONICAL_VITS_1P5S_ASYNC_ANCHOR_CONTINUITY_NOT_SUPPORTED",
     "CANONICAL_VITS_WINDOWS_GPU_EXTERNAL_RGB_METRIC_TRACK_SIDECAR_EXECUTED_CONSUMED_REPLAY_ONLY",
-    "METRIC3D_VITS_CUDA_FP16_PRECISION_AND_LATENCY_SUPPORTED_CONSUMED_BONN_RGBD"
+    "METRIC3D_VITS_CUDA_FP16_PRECISION_AND_LATENCY_SUPPORTED_CONSUMED_BONN_RGBD",
+    "WINDOWS_GPU_VIDEO_CAPTURE_FULL_CHAIN_EXECUTED_CONSUMED_REPLAY_ONLY"
   ],
   "bonn_source_accuracy": {
     "frames": 30,
@@ -76,6 +77,21 @@
       "steady_detector_median_ms": 13.5958,
       "steady_metric_depth_median_ms": 156.7522,
       "steady_sum_median_ms": 170.348
+    },
+    "video_capture_full_chain": {
+      "frames": 12,
+      "encoded_video_size_px": [1280, 720],
+      "capture_fps": 7.5,
+      "precision": "fp16",
+      "track_observations": 102,
+      "unique_track_ids": 21,
+      "track_ids_with_d44": 5,
+      "d44_forecasts": 28,
+      "steady_detector_median_ms": 9.7806,
+      "steady_metric_depth_median_ms": 135.2407,
+      "steady_sum_median_ms": 145.2381,
+      "timestamps_strictly_increasing": true,
+      "calibration_size_and_intrinsics_guard": true
     },
     "supported_scope": "executable Windows CUDA research reference on consumed replay"
   },

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import time
 from collections import defaultdict, deque
 from collections.abc import Iterator
@@ -40,6 +41,17 @@ def relative_position(
         [depth_m, (u - cx) * depth_m / fx, -(v - cy) * depth_m / fy],
         dtype=np.float64,
     )
+
+
+def validate_intrinsics(intrinsics: list[float], image_shape: tuple[int, ...]) -> None:
+    fx, fy, cx, cy = (float(value) for value in intrinsics)
+    height, width = image_shape[:2]
+    if not all(math.isfinite(value) for value in (fx, fy, cx, cy)):
+        raise ValueError("camera intrinsics must be finite")
+    if fx <= 0 or fy <= 0:
+        raise ValueError("camera focal lengths must be positive")
+    if not (0 <= cx <= width and 0 <= cy <= height):
+        raise ValueError("camera principal point must lie inside the frame")
 
 
 def d44_predict(history: list[dict[str, Any]], target_timestamp_ns: int) -> np.ndarray:
@@ -174,10 +186,13 @@ def manifest_frames(
 def camera_frames(
     camera_index: int,
     intrinsics: list[float],
+    calibration_size: list[int],
     detector: Any,
     yolo_device: str,
 ) -> Iterator[tuple[np.ndarray, dict[str, Any]]]:
     capture = cv2.VideoCapture(camera_index)
+    capture.set(cv2.CAP_PROP_FRAME_WIDTH, int(calibration_size[0]))
+    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, int(calibration_size[1]))
     capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
     if not capture.isOpened():
         raise RuntimeError(f"cannot open camera index {camera_index}")
@@ -205,12 +220,66 @@ def camera_frames(
         capture.release()
 
 
+def video_frames(
+    path: Path,
+    intrinsics: list[float],
+    detector: Any,
+    yolo_device: str,
+) -> Iterator[tuple[np.ndarray, dict[str, Any]]]:
+    capture = cv2.VideoCapture(str(path))
+    if not capture.isOpened():
+        raise RuntimeError(f"cannot open video {path}")
+    fps = float(capture.get(cv2.CAP_PROP_FPS))
+    if not math.isfinite(fps) or fps <= 0:
+        capture.release()
+        raise RuntimeError(f"video has invalid FPS: {fps}")
+    sequence_id = f"video:{path.resolve()}"
+    frame_index = 0
+    previous_timestamp_ns = -1
+    try:
+        while True:
+            ok, bgr = capture.read()
+            if not ok:
+                break
+            position_ms = float(capture.get(cv2.CAP_PROP_POS_MSEC))
+            timestamp_ns = round(position_ms * 1e6)
+            if timestamp_ns <= previous_timestamp_ns:
+                timestamp_ns = round(frame_index / fps * 1e9)
+            if timestamp_ns <= previous_timestamp_ns:
+                raise RuntimeError("video timestamps are not strictly increasing")
+            previous_timestamp_ns = timestamp_ns
+            detector_started = time.perf_counter()
+            detections = yolo_person_detections(detector, bgr, yolo_device)
+            detector_latency_ms = (time.perf_counter() - detector_started) * 1000.0
+            yield bgr, {
+                "frame_index": frame_index,
+                "sequence_id": sequence_id,
+                "timestamp_ns": timestamp_ns,
+                "detections": detections,
+                "detector_latency_ms": detector_latency_ms,
+                "intrinsics_fx_fy_cx_cy": intrinsics,
+                "capture_fps": fps,
+                "source": sequence_id,
+            }
+            frame_index += 1
+    finally:
+        capture.release()
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--manifest", type=Path)
     source.add_argument("--camera-index", type=int)
+    source.add_argument("--video", type=Path)
     parser.add_argument("--intrinsics", type=float, nargs=4)
+    parser.add_argument(
+        "--calibration-size",
+        type=int,
+        nargs=2,
+        metavar=("WIDTH", "HEIGHT"),
+        help="pixel dimensions for which the supplied intrinsics were calibrated",
+    )
     parser.add_argument("--yolo-weights", type=Path)
     parser.add_argument("--yolo-device", default="0")
     parser.add_argument(
@@ -233,16 +302,20 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if args.camera_index is not None and (
-        args.intrinsics is None or args.yolo_weights is None
+    if (args.camera_index is not None or args.video is not None) and (
+        args.intrinsics is None
+        or args.calibration_size is None
+        or args.yolo_weights is None
     ):
-        raise ValueError("camera mode requires --intrinsics and --yolo-weights")
+        raise ValueError(
+            "camera/video mode requires --intrinsics, --calibration-size, and --yolo-weights"
+        )
     if args.redetect_manifest and args.manifest is None:
         raise ValueError("--redetect-manifest requires --manifest")
     if args.redetect_manifest and args.yolo_weights is None:
         raise ValueError("--redetect-manifest requires --yolo-weights")
     detector = None
-    if args.camera_index is not None or args.redetect_manifest:
+    if args.camera_index is not None or args.video is not None or args.redetect_manifest:
         from ultralytics import YOLO
 
         detector = YOLO(str(args.yolo_weights), task="detect")
@@ -252,16 +325,23 @@ def main() -> None:
         args.device,
         args.metric3d_precision,
     )
-    frames = (
-        manifest_frames(args.manifest, detector, args.yolo_device)
-        if args.manifest is not None
-        else camera_frames(
-            args.camera_index,
+    if args.manifest is not None:
+        frames = manifest_frames(args.manifest, detector, args.yolo_device)
+    elif args.video is not None:
+        frames = video_frames(
+            args.video,
             list(args.intrinsics),
             detector,
             args.yolo_device,
         )
-    )
+    else:
+        frames = camera_frames(
+            args.camera_index,
+            list(args.intrinsics),
+            list(args.calibration_size),
+            detector,
+            args.yolo_device,
+        )
     histories: dict[tuple[str, int], deque[dict[str, Any]]] = defaultdict(
         lambda: deque(maxlen=HISTORY_COUNT)
     )
@@ -271,6 +351,15 @@ def main() -> None:
         for bgr, packet in frames:
             if args.max_frames is not None and processed >= args.max_frames:
                 break
+            height, width = bgr.shape[:2]
+            if args.calibration_size is not None and [width, height] != list(
+                args.calibration_size
+            ):
+                raise ValueError(
+                    f"frame size {(width, height)} differs from calibration size "
+                    f"{tuple(args.calibration_size)}"
+                )
+            validate_intrinsics(packet["intrinsics_fx_fy_cx_cy"], bgr.shape)
             rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
             started = time.perf_counter()
             depth, _metadata = source.infer(
@@ -322,7 +411,10 @@ def main() -> None:
                 "frame_index": int(packet["frame_index"]),
                 "sequence_id": str(packet["sequence_id"]),
                 "timestamp_ns": int(packet["timestamp_ns"]),
+                "frame_width_px": width,
+                "frame_height_px": height,
                 "source": packet["source"],
+                "capture_fps": packet.get("capture_fps"),
                 "metric_depth_model_id": source.model_id,
                 "metric_depth_precision": args.metric3d_precision,
                 "detector_latency_ms": packet.get("detector_latency_ms"),

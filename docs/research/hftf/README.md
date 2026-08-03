@@ -168,6 +168,7 @@ UNIDEPTH_QAIRT_HTP_NUMERIC_AND_LATENCY_NOT_SUPPORTED_GPU_FINALIZE_FAILED /
 CANONICAL_VITS_1P5S_ASYNC_ANCHOR_CONTINUITY_NOT_SUPPORTED /
 CANONICAL_VITS_WINDOWS_GPU_EXTERNAL_RGB_METRIC_TRACK_SIDECAR_EXECUTED_CONSUMED_REPLAY_ONLY /
 METRIC3D_VITS_CUDA_FP16_PRECISION_AND_LATENCY_SUPPORTED_CONSUMED_BONN_RGBD /
+WINDOWS_GPU_VIDEO_CAPTURE_FULL_CHAIN_EXECUTED_CONSUMED_REPLAY_ONLY /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-03 外接 RGB metric-track：手机连续源未过门槛，Windows GPU 参考侧车跑通
@@ -204,6 +205,15 @@ D44 窗口的平均 3D 误差为 `0.429896/0.430078 m`。FP16 与 FP32 的人物
 得到 `5 x 24 = 120` 个 D44 opportunity。FP16
 因此成为 Windows reference sidecar 默认精度；仍不产生 final-camera、alert、safety、
 研究主线或 default App 权限。
+
+为覆盖尚未录制时的 capture gap，侧车新增 `--video`，与 USB camera 一样走 OpenCV
+`VideoCapture -> YOLO11n/ByteTrack -> FP16 Metric3D -> D44`。12 个已消费 Tokyo
+帧编码成 `1280x720 @ 7.5 FPS` MP4 后重新解码，不读取 frozen box 或 manifest
+timestamp；得到 102 个 track observation、21 个 ID，其中 5 个 ID 产生 28 个 D44。
+稳态检测/深度/合计中位为 `9.78/135.24/145.24 ms`。视频时间戳严格递增。
+camera/video 现在都强制同时提供内参与对应的 calibration size；实际帧尺寸不符、
+焦距非正或 principal point 越界会 fail closed。该结果覆盖真实摄像头之外的采集 API
+和完整软件链，但不覆盖最终镜头光学域、驱动延迟、曝光、畸变或 metric truth。
 
 ## 2026-08-03 Metric3D QAIRT 实时化 R0：ConvTiny 真值失败，保留 ViT-S 连续性候选
 

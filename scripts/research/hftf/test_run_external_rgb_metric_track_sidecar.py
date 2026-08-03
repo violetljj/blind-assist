@@ -14,6 +14,7 @@ from run_external_rgb_metric_track_sidecar import (
     d44_predict,
     load_manifest,
     relative_position,
+    validate_intrinsics,
 )
 
 
@@ -78,6 +79,13 @@ class ExternalRgbMetricTrackSidecarTest(unittest.TestCase):
         append_contiguous_history(history, {"frame_index": 1})
         append_contiguous_history(history, {"frame_index": 3})
         self.assertEqual(list(history), [{"frame_index": 3}])
+
+    def test_intrinsics_must_match_a_valid_frame_domain(self) -> None:
+        validate_intrinsics([1000, 1000, 640, 360], (720, 1280, 3))
+        with self.assertRaisesRegex(ValueError, "focal lengths"):
+            validate_intrinsics([0, 1000, 640, 360], (720, 1280, 3))
+        with self.assertRaisesRegex(ValueError, "principal point"):
+            validate_intrinsics([1000, 1000, 2000, 360], (720, 1280, 3))
 
 
 if __name__ == "__main__":
