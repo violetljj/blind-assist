@@ -67,6 +67,17 @@ ORT 的平均米制差 `0.0145 m`；但未标定 clearance 只过 2/5 门。每�
 周期性多区 ToF/稀疏米制尺度锚点 + 过期 UNKNOWN”，不是纯 RGB 或一次标定方案。详见
 `DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.md`。
 
+最新稀疏尺度侧车回放终态：
+`SPARSE_SCALE_CLEARANCE_SIDECAR_REPLAY_SUPPORTED_CONSUMED_PROXY /`
+`CLOCK_DOMAIN_BINDING_REQUIRED_AND_VERIFIED / REAL_TOF_REGISTRATION_NOT_EVALUATED`。
+新的 class-free 侧车从 120 帧已消费 RGB 重新执行 `392x518` 观测器、三带 clearance、
+时间戳锚点和 UNKNOWN 门控；每段前 10 帧锚定、后 20 帧评价仍得到
+`0.0981 m / 93.77% / 4.95%`，五项任务门全过，且锚点前没有提前 VALID。首次把绝对
+图像时钟误接到相对 manifest 时钟时，119 帧保持 UNKNOWN，证明错误时钟域 fail
+closed；修复后以 manifest timestamp 为唯一锚点时钟。`5000 ms` 只用于短序列回放，
+不是部署 TTL。该结果验证接口因果性与已消费质量，不是实机 ToF、端到端 HTP 或性能
+问题已解决。详见 `SPARSE_SCALE_CLEARANCE_SIDECAR_R0_RESULT.md`。
+
 ## 研究问题与版本
 
 本 Module 服务 `HFTF_CANDIDATE_LANE_R0`：检验历史 RGB 能否预测面向行人身体包络的

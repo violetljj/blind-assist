@@ -229,6 +229,16 @@ threads、无观测到的 CPU fallback，相对同形状 ORT 平均差 `0.0145 m
 候选；纯 RGB、一次标定、alert、主线与 default App 均未获准入。详见
 [DA V2 Metric QAIRT + sparse scale R0](../../../scripts/research/hftf/DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.md)。
 
+随后新增的 class-free clearance 侧车把 RGB、manifest 时钟、三带 scale anchor 和
+UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得到 5/5：80 个评价帧中
+78 个 paired-valid，MAE `0.0981 m`、一致率 `93.77%`、false-clear `4.95%`。绝对
+图像时钟误接相对 manifest 时钟的首次尝试没有产生错误量测，而是 119 帧 fail closed
+为无锚点 UNKNOWN；修复后锚点前也没有提前 VALID。终态为
+`SPARSE_SCALE_CLEARANCE_SIDECAR_REPLAY_SUPPORTED_CONSUMED_PROXY /`
+`CLOCK_DOMAIN_BINDING_REQUIRED_AND_VERIFIED / REAL_TOF_REGISTRATION_NOT_EVALUATED`。
+这仍不是实机 ToF、完整 HTP 性能或主线准入。详见
+[sparse-scale clearance sidecar R0](../../../scripts/research/hftf/SPARSE_SCALE_CLEARANCE_SIDECAR_R0_RESULT.md)。
+
 ## 2026-08-03 Metric3D QAIRT 实时化 R0：ConvTiny 真值失败，保留 ViT-S 连续性候选
 
 在 canonical HTP 成功之后，只用既有 9 帧 consumed technical canary 做了分辨率、
