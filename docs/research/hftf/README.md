@@ -158,7 +158,32 @@ D45_CURRENT_DEVICE_SOURCE_EXECUTED_PERSON_MEASUREMENT_NOT_ADMITTED /
 D45_PHONE_METRIC_DEPTH_SOURCE_NOT_EVALUABLE /
 METRIC3D_QAIRT_GPU_EXECUTION_ESTABLISHED_NUMERICALLY_INVALID_NONDETERMINISTIC /
 METRIC3D_QAIRT_HTP_EXECUTION_AND_DEPLOYMENT_PARITY_SUPPORTED_CONSUMED_CANARY_ONLY /
+VITS_392X672_RAFT2_HTP_DEPLOYMENT_PARITY_SUPPORTED_CONSUMED_CANARY_ONLY /
+VITS_LOW_LATENCY_LIVE_TARGET_NOT_MET /
+POST_TRAINING_QUANTIZATION_NUMERICALLY_INVALID_OR_SLOWER_STOP /
+CONVTINY_HTP_DEPLOYMENT_PARITY_SUPPORTED_SOURCE_ACCURACY_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 Metric3D QAIRT 实时化 R0：两个候选保留，仍未达到 live source 门槛
+
+在 canonical HTP 成功之后，只用既有 9 帧 consumed technical canary 做了分辨率、
+RAFT early-exit、PTQ 和 ConvNeXt-Tiny 增量。ViT-S `392x672` RAFT-2 在独占 HTP
+上为 `428.058 ms`，相对同臂 ORT 的 D44 future 差 `0.0738 m`；但相对 canonical
+`616x1064` ORT 仍差 `0.4842 m`，主要代价来自缩分辨率。全 INT8 虽到
+`284.913 ms`，却产生约 `31.6 m` 的尺度错误；W8A16 更慢且更不一致，当前 PTQ
+搜索停止。
+
+官方 ConvNeXt-Tiny v1 depth-only `544x1216` 在 HTP 上为 `434.893 ms`，相对自身
+ORT 的人物深度和 D44 future 只差 `0.0030/0.00793 m`，证明部署链可靠；但它与
+ViT-S canonical 的 D44 future 相差 `2.813 m`。该 tiny 权重为 outdoor-only，现有
+canary 又没有独立米制真值，因此保留为 truth-required speed candidate，不能用模型
+互相同意来裁决谁正确。
+
+两臂均已生成 SM8650 cached DLC，单帧 cached/online 输出字节一致；runtime 同时报告
+compatible `HTP_V75_SM8650_4MB` record 与 VTCM/DSP mismatch warning，警告保留。
+当前连续性候选为 ViT-S RAFT-2，速度候选为 ConvTiny；二者都约 `2.3 fps`，不接
+alert、研究主线或 default App。详见
+[QAIRT real-time optimization R0](../../../scripts/research/hftf/METRIC_DEPTH_QAIRT_REALTIME_OPT_R0_RESULT.md)。
 
 ## 2026-08-03 Metric3D QAIRT：GPU 停止，SM8650 HTP 成为低频部署候选
 
