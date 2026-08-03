@@ -702,6 +702,22 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
             if values["false_clear"]
             else None,
         }
+    latency_values = [float(row["latency_ms"]) for row in rows]
+    seen_sequences: set[str] = set()
+    steady_latency_values = []
+    for row in sorted(
+        rows,
+        key=lambda value: (
+            str(value.get("sequence_id", "")),
+            float(value.get("timestamp", 0.0)),
+        ),
+    ):
+        sequence_id = str(row.get("sequence_id", ""))
+        if sequence_id in seen_sequences:
+            steady_latency_values.append(float(row["latency_ms"]))
+        else:
+            seen_sequences.add(sequence_id)
+    steady_sorted = sorted(steady_latency_values)
     return {
         "schema": SCHEMA,
         "unique_frames": len(rows),
@@ -717,7 +733,20 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         if height_errors
         else None,
         "per_band": per_band,
-        "latency_mean_ms": statistics.fmean(row["latency_ms"] for row in rows),
+        "latency_mean_ms": statistics.fmean(latency_values),
+        "latency_median_ms": statistics.median(latency_values),
+        "steady_latency_frames": len(steady_latency_values),
+        "steady_latency_mean_ms": statistics.fmean(steady_latency_values)
+        if steady_latency_values
+        else None,
+        "steady_latency_median_ms": statistics.median(steady_latency_values)
+        if steady_latency_values
+        else None,
+        "steady_latency_p95_ms": steady_sorted[
+            round(0.95 * (len(steady_sorted) - 1))
+        ]
+        if steady_sorted
+        else None,
         "process_rss_peak_mib": max(
             (row.get("process_rss_mib", 0.0) for row in rows), default=None
         ),
@@ -743,6 +772,11 @@ def main() -> None:
     parser.add_argument("--metric3d-repo", type=Path)
     parser.add_argument("--metric3d-checkpoint", type=Path)
     parser.add_argument(
+        "--metric3d-precision",
+        choices=("fp32", "tf32", "fp16", "bf16"),
+        default="fp32",
+    )
+    parser.add_argument(
         "--source-model",
         choices=("metric3d", "unidepth", "moge2", "depth_anything_v2_metric"),
         default="metric3d",
@@ -760,6 +794,11 @@ def main() -> None:
     parser.add_argument("--depth-anything-repo", type=Path)
     parser.add_argument("--depth-anything-checkpoint", type=Path)
     parser.add_argument("--depth-anything-input-size", type=int, default=518)
+    parser.add_argument(
+        "--depth-anything-precision",
+        choices=("fp32", "fp16"),
+        default="fp32",
+    )
     parser.add_argument("--device", default="cuda")
     parser.add_argument(
         "--ground-mode",
@@ -826,12 +865,16 @@ def main() -> None:
             args.depth_anything_checkpoint,
             args.device,
             args.depth_anything_input_size,
+            args.depth_anything_precision,
         )
     else:
         if args.metric3d_repo is None or args.metric3d_checkpoint is None:
             parser.error("Metric3D requires --metric3d-repo and --metric3d-checkpoint")
         source = Metric3DPytorchSource(
-            args.metric3d_repo, args.metric3d_checkpoint, args.device
+            args.metric3d_repo,
+            args.metric3d_checkpoint,
+            args.device,
+            args.metric3d_precision,
         )
     report = evaluate_rows(
         _unique_frames(args.manifest),
@@ -849,6 +892,16 @@ def main() -> None:
         ),
     )
     report["candidate_model_id"] = source.model_id
+    report["candidate_runtime"] = {
+        key: value
+        for key, value in {
+            "device": str(getattr(source, "device", args.device)),
+            "precision": getattr(source, "precision", None),
+            "input_size": getattr(source, "input_size", None),
+            "resolution_level": getattr(source, "resolution_level", None),
+        }.items()
+        if value is not None
+    }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"

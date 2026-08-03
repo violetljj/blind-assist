@@ -39,8 +39,31 @@ class ExternalRgbMetricDepthProducerTest(unittest.TestCase):
 
         source = object.__new__(DepthAnythingV2MetricSource)
         source.model = FakeModel()
-        source.device = "cuda"
+        class FakeDevice:
+            type = "cuda"
+
+            def __str__(self) -> str:
+                return self.type
+
+        source.device = FakeDevice()
         source.input_size = 518
+        source.precision = "fp32"
+
+        class FakeAutocast:
+            def __enter__(self) -> None:
+                return None
+
+            def __exit__(self, *args: object) -> None:
+                return None
+
+        class FakeTorch:
+            float16 = "float16"
+
+            @staticmethod
+            def autocast(**kwargs: object) -> FakeAutocast:
+                return FakeAutocast()
+
+        source.torch = FakeTorch()
         rgb = np.asarray([[[10, 20, 30]]], dtype=np.uint8)
         depth, metadata = source.infer(rgb, {})
         np.testing.assert_array_equal(source.model.received, [[[30, 20, 10]]])

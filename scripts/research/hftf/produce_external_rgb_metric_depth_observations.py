@@ -474,6 +474,7 @@ class DepthAnythingV2MetricSource(DepthSource):
         checkpoint: Path,
         device: str,
         input_size: int = 518,
+        precision: str = "fp32",
     ) -> None:
         sys.path.insert(0, str(repo / "metric_depth"))
         import torch
@@ -482,6 +483,13 @@ class DepthAnythingV2MetricSource(DepthSource):
         self.torch = torch
         self.device = torch.device(device)
         self.input_size = input_size
+        self.precision = precision
+        if precision not in {"fp32", "fp16"}:
+            raise ValueError(
+                f"unsupported Depth Anything V2 precision: {precision}"
+            )
+        if self.device.type != "cuda" and precision != "fp32":
+            raise ValueError("DA V2 FP16 requires CUDA")
         self.model = DepthAnythingV2(
             encoder="vits",
             features=64,
@@ -497,11 +505,16 @@ class DepthAnythingV2MetricSource(DepthSource):
     ) -> tuple[np.ndarray, dict[str, Any]]:
         # The official infer_image API accepts OpenCV BGR input.
         bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
-        depth = self.model.infer_image(bgr, input_size=self.input_size)
+        with self.torch.autocast(
+            device_type=self.device.type,
+            dtype=self.torch.float16,
+            enabled=self.precision == "fp16",
+        ):
+            depth = self.model.infer_image(bgr, input_size=self.input_size)
         return np.asarray(depth, dtype=np.float32), {
             "runtime": "pytorch",
             "device": str(self.device),
-            "precision": "fp32",
+            "precision": self.precision,
             "input_size": self.input_size,
             "training_domain": "hypersim_indoor",
             "max_depth_m": 20.0,
@@ -539,6 +552,7 @@ def build_source(args: argparse.Namespace) -> DepthSource:
             args.depth_anything_checkpoint,
             args.device,
             args.depth_anything_input_size,
+            args.depth_anything_precision,
         )
     return Metric3DPytorchSource(
         args.metric3d_repo,
@@ -635,6 +649,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--depth-anything-repo", type=Path)
     parser.add_argument("--depth-anything-checkpoint", type=Path)
     parser.add_argument("--depth-anything-input-size", type=int, default=518)
+    parser.add_argument(
+        "--depth-anything-precision",
+        choices=("fp32", "fp16"),
+        default="fp32",
+    )
     parser.add_argument("--onnx-provider", choices=("cpu", "cuda"), default="cpu")
     args = parser.parse_args()
     if args.model == MODEL_UNIDEPTH and args.unidepth_repo is None:

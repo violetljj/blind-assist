@@ -32,11 +32,17 @@ metric-depth-android-dualarm-runtime-supported-no-realtime /
 frozen-single-frame-posthoc-temporal-residual-family-stop`
 
 最新深度观测器同屏终态：
-`METRIC3D_ONLY_TASK_GATE_PASS_MOGE2_AND_DAV2_NOT_ADMITTED`。在同一 120 帧已消费
-TUM clearance-field 屏幕上，Metric3D 复现五项全过；MoGe-2 ViT-S Normal 的
-clearance/包络/时序 gate 未过，Depth Anything V2 Small Metric 虽达到
-`59.30 ms` CUDA 均值，但 false-clear 为 `24.32%`，不得独立驱动米制 clearance。
-三者都只是观测器；Metric3D 保留为当前 baseline/teacher，不默认成为最终部署模型。
+`METRIC3D_FP16_BALANCE_DAV2_DUAL_FREQUENCY_DIAGNOSTIC_FAIL`。这里的目标
+是质量/开销 Pareto，不要求轻模型超过最重模型的绝对精度。在同一 120 帧已消费 TUM
+屏幕上，Metric3D FP16 保持五项全过，稳态中位数 `142.33 ms`、CUDA 峰值
+`573 MiB`；DA V2 Small Metric FP16 为 `54.27 ms / 328 MiB`，但 false-clear
+仍为 `24.29%`，只保留为“高频相对结构 + 低频米制锚点”候选，不得独立驱动米制
+clearance。MoGe-2 仅快约 9%、显存约 2 倍且任务质量更差，不是当前平衡点。
+三者都只是观测器；Metric3D 是当前单模型 balance/teacher，不默认成为最终部署模型。
+固定每五帧一次 Metric3D 锚点的因果回放把 DA 的 clearance MAE 降到 `0.16506 m`，
+稳态顺序均值为 `79.41 ms`，但包络一致率 `88.62%`、false-clear `6.97%`，仍有两项
+gate 未过，而且同步锚点 P95 为 `198.59 ms`。因此只支持下一步研究异步锚点与共驻
+内存，不允许在已消费 cohort 搜索锚点周期救援。
 完整结果见 `DEPTH_OBSERVER_CLEARANCE_A0_CONSUMED_RESULT.md`。
 
 ## 研究问题与版本
