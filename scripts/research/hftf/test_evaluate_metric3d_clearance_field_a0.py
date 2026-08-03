@@ -8,7 +8,10 @@ from evaluate_metric3d_clearance_field_a0 import (
     clearance_field,
     depth_to_points,
     fit_ground_plane,
+    fit_gravity_guided_ground_plane,
+    fit_normal_guided_ground_plane,
     summarize,
+    tum_fixed_world_floor_in_camera,
     tum_depth_metres,
 )
 
@@ -28,6 +31,42 @@ class Metric3dClearanceFieldA0Test(unittest.TestCase):
         self.assertIsNotNone(plane)
         assert plane is not None
         self.assertAlmostEqual(plane[1], 1.2, places=6)
+
+    def test_normal_guided_plane_rejects_wall_normals(self) -> None:
+        x, z = np.meshgrid(np.linspace(-2, 2, 30), np.linspace(0.5, 5, 30))
+        points = np.stack((x.ravel(), np.full(x.size, 1.2), z.ravel()), axis=1)
+        pixels = np.stack((np.arange(x.size) % 40, np.full(x.size, 30)), axis=1)
+        normal_map = np.zeros((40, 40, 4), dtype=np.float64)
+        normal_map[:, :, :] = [0.0, -1.0, 0.0, 5.0]
+        normal_map[:10, :, :] = [1.0, 0.0, 0.0, 20.0]
+        plane = fit_normal_guided_ground_plane(points, pixels, normal_map, 40)
+        self.assertIsNotNone(plane)
+        assert plane is not None
+        self.assertAlmostEqual(plane[1], 1.2, places=6)
+
+    def test_gravity_guided_plane_keeps_given_orientation(self) -> None:
+        x, z = np.meshgrid(np.linspace(-2, 2, 30), np.linspace(0.5, 5, 30))
+        points = np.stack((x.ravel(), np.full(x.size, 1.2), z.ravel()), axis=1)
+        pixels = np.stack((np.arange(x.size) % 40, np.full(x.size, 30)), axis=1)
+        plane = fit_gravity_guided_ground_plane(
+            points, pixels, np.asarray([0.0, -1.0, 0.0]), 40
+        )
+        self.assertIsNotNone(plane)
+        assert plane is not None
+        np.testing.assert_allclose(plane[0], [0.0, -1.0, 0.0])
+        self.assertAlmostEqual(plane[1], 1.2, places=6)
+
+    def test_fixed_world_floor_uses_camera_translation(self) -> None:
+        poses = (
+            np.asarray([10.0]),
+            np.asarray([[0.0, 0.0, 1.5]]),
+            np.asarray([[0.0, 0.0, 0.0, 1.0]]),
+        )
+        plane = tum_fixed_world_floor_in_camera(10.0, poses, 0.1)
+        self.assertIsNotNone(plane)
+        assert plane is not None
+        np.testing.assert_allclose(plane[0], [0.0, 0.0, 1.0])
+        self.assertAlmostEqual(plane[1], 1.4)
 
     def test_unknown_when_no_ground_support(self) -> None:
         depth = np.zeros((20, 20))

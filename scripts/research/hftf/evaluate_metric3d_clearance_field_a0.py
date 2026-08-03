@@ -95,11 +95,118 @@ def fit_ground_plane(
     return normal, offset, residual
 
 
+def fit_normal_guided_ground_plane(
+    points: np.ndarray,
+    pixels: np.ndarray,
+    normal_kappa_map: np.ndarray,
+    image_height: int,
+) -> tuple[np.ndarray, float, float] | None:
+    sampled = normal_kappa_map[pixels[:, 1].astype(int), pixels[:, 0].astype(int)]
+    normals = np.asarray(sampled[:, :3], dtype=np.float64)
+    kappa = np.asarray(sampled[:, 3], dtype=np.float64)
+    candidate = (
+        (pixels[:, 1] >= 0.55 * image_height)
+        & np.all(np.isfinite(normals), axis=1)
+        & np.isfinite(kappa)
+        & (kappa > 0)
+        & (np.abs(normals[:, 1]) >= 0.55)
+    )
+    if int(np.sum(candidate)) < 100:
+        return None
+    confidence_cut = float(np.median(kappa[candidate]))
+    candidate &= kappa >= confidence_cut
+    vectors = normals[candidate].copy()
+    vectors[vectors[:, 1] > 0] *= -1.0
+    weights = np.minimum(kappa[candidate], float(np.quantile(kappa[candidate], 0.90)))
+    consensus = np.sum(vectors * weights[:, None], axis=0)
+    norm = float(np.linalg.norm(consensus))
+    if norm <= 1e-9:
+        return None
+    consensus /= norm
+    candidate_points = points[candidate]
+    candidate_vectors = vectors
+    offsets = -(candidate_points @ consensus)
+    valid_offset = (offsets >= 0.45) & (offsets <= 2.20)
+    if int(np.sum(valid_offset)) < 80:
+        return None
+    bins = np.arange(0.45, 2.24 + 1e-9, 0.04)
+    counts, edges = np.histogram(offsets[valid_offset], bins=bins)
+    if not len(counts) or int(np.max(counts)) < 40:
+        return None
+    mode_index = int(np.argmax(counts))
+    mode_center = float((edges[mode_index] + edges[mode_index + 1]) / 2.0)
+    angular = candidate_vectors @ consensus >= math.cos(math.radians(15.0))
+    support = valid_offset & angular & (np.abs(offsets - mode_center) <= 0.08)
+    if int(np.sum(support)) < 80:
+        return None
+    ground = candidate_points[support]
+    center = np.mean(ground, axis=0)
+    _, _, right_vectors = np.linalg.svd(ground - center, full_matrices=False)
+    normal = right_vectors[-1]
+    offset = -float(np.dot(normal, center))
+    if offset < 0:
+        normal = -normal
+        offset = -offset
+    residual = float(np.median(np.abs(ground @ normal + offset)))
+    if abs(float(normal[1])) < 0.55 or not 0.45 <= offset <= 2.20:
+        return None
+    return normal, offset, residual
+
+
+def fit_gravity_guided_ground_plane(
+    points: np.ndarray,
+    pixels: np.ndarray,
+    up_camera: np.ndarray,
+    image_height: int,
+) -> tuple[np.ndarray, float, float] | None:
+    up = np.asarray(up_camera, dtype=np.float64)
+    norm = float(np.linalg.norm(up))
+    if norm <= 1e-9:
+        return None
+    up /= norm
+    candidates = points[pixels[:, 1] >= 0.55 * image_height]
+    if len(candidates) < 100:
+        return None
+    offsets = -(candidates @ up)
+    if float(np.median(offsets)) < 0:
+        up = -up
+        offsets = -offsets
+    valid = (offsets >= 0.45) & (offsets <= 2.20)
+    if int(np.sum(valid)) < 80:
+        return None
+    bins = np.arange(0.45, 2.24 + 1e-9, 0.04)
+    counts, edges = np.histogram(offsets[valid], bins=bins)
+    if not len(counts) or int(np.max(counts)) < 40:
+        return None
+    mode = int(np.argmax(counts))
+    center = float((edges[mode] + edges[mode + 1]) / 2.0)
+    support = valid & (np.abs(offsets - center) <= 0.08)
+    if int(np.sum(support)) < 80:
+        return None
+    offset = float(np.median(offsets[support]))
+    residual = float(np.median(np.abs(offsets[support] - offset)))
+    return up, offset, residual
+
+
 def clearance_field(
-    depth: np.ndarray, intrinsics: np.ndarray
+    depth: np.ndarray,
+    intrinsics: np.ndarray,
+    normal_kappa_map: np.ndarray | None = None,
+    up_camera: np.ndarray | None = None,
+    plane_override: tuple[np.ndarray, float, float] | None = None,
 ) -> dict[str, Any]:
     points, pixels = depth_to_points(depth, intrinsics)
-    plane = fit_ground_plane(points, pixels, depth.shape[0])
+    plane = plane_override or (
+        fit_gravity_guided_ground_plane(
+            points, pixels, up_camera, depth.shape[0]
+        )
+        if up_camera is not None
+        else fit_normal_guided_ground_plane(
+            points, pixels, normal_kappa_map, depth.shape[0]
+        )
+        if normal_kappa_map is not None
+        else fit_ground_plane(points, pixels, depth.shape[0])
+    )
     if plane is None:
         return {"status": "UNKNOWN_GROUND"}
     up, camera_height, plane_residual = plane
@@ -135,6 +242,15 @@ def clearance_field(
         }
     return {
         "status": "VALID",
+        "ground_source": (
+            "tum_fixed_world_floor_oracle"
+            if plane_override is not None
+            else "tum_mocap_gravity_oracle"
+            if up_camera is not None
+            else "metric3d_prediction_normal"
+            if normal_kappa_map is not None
+            else "depth_ransac"
+        ),
         "camera_height_m": camera_height,
         "ground_plane_median_residual_m": plane_residual,
         "bands": band_output,
@@ -187,14 +303,143 @@ def tum_depth_metres(depth_raw: np.ndarray) -> np.ndarray:
     return np.asarray(depth_raw, dtype=np.float32) / 5000.0
 
 
-def evaluate_rows(rows: list[dict[str, Any]], source: Metric3DPytorchSource) -> dict[str, Any]:
+def infer_metric3d_depth_normal(
+    source: Metric3DPytorchSource, rgb: np.ndarray, row: dict[str, Any]
+) -> tuple[np.ndarray, np.ndarray]:
+    height, width = rgb.shape[:2]
+    scale = min(source.input_height / height, source.input_width / width)
+    resized_height, resized_width = int(height * scale), int(width * scale)
+    resized = cv2.resize(rgb, (resized_width, resized_height), interpolation=cv2.INTER_LINEAR)
+    pad_height = source.input_height - resized_height
+    pad_width = source.input_width - resized_width
+    pad_top, pad_left = pad_height // 2, pad_width // 2
+    padded = cv2.copyMakeBorder(
+        resized,
+        pad_top,
+        pad_height - pad_top,
+        pad_left,
+        pad_width - pad_left,
+        cv2.BORDER_CONSTANT,
+        value=[123.675, 116.28, 103.53],
+    )
+
+
+def load_tum_camera_poses(
+    path: Path,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    timestamps = []
+    translations = []
+    quaternions = []
+    for line_number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        fields = line.split()
+        if len(fields) != 8:
+            raise ValueError(f"{path}:{line_number}: expected 8 fields")
+        values = [float(value) for value in fields]
+        quaternion = np.asarray(values[4:8], dtype=np.float64)
+        quaternion /= np.linalg.norm(quaternion)
+        timestamps.append(values[0])
+        translations.append(values[1:4])
+        quaternions.append(quaternion)
+    if not timestamps:
+        raise ValueError(f"{path}: no camera orientations")
+    return np.asarray(timestamps), np.asarray(translations), np.stack(quaternions)
+
+
+def quaternion_rotation_matrix_xyzw(quaternion: np.ndarray) -> np.ndarray:
+    x, y, z, w = (float(value) for value in quaternion)
+    return np.asarray(
+        [
+            [1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)],
+            [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
+            [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)],
+        ],
+        dtype=np.float64,
+    )
+
+
+def tum_world_up_in_camera(
+    timestamp: float, poses: tuple[np.ndarray, np.ndarray, np.ndarray]
+) -> np.ndarray | None:
+    timestamps, _, quaternions = poses
+    index = int(np.argmin(np.abs(timestamps - timestamp)))
+    if abs(float(timestamps[index]) - timestamp) > 0.03:
+        return None
+    camera_to_world = quaternion_rotation_matrix_xyzw(quaternions[index])
+    return camera_to_world.T @ np.asarray([0.0, 0.0, 1.0])
+
+
+def tum_fixed_world_floor_in_camera(
+    timestamp: float,
+    poses: tuple[np.ndarray, np.ndarray, np.ndarray],
+    floor_world_z_m: float,
+) -> tuple[np.ndarray, float, float] | None:
+    timestamps, translations, quaternions = poses
+    index = int(np.argmin(np.abs(timestamps - timestamp)))
+    if abs(float(timestamps[index]) - timestamp) > 0.03:
+        return None
+    camera_to_world = quaternion_rotation_matrix_xyzw(quaternions[index])
+    up_camera = camera_to_world.T @ np.asarray([0.0, 0.0, 1.0])
+    camera_height = float(translations[index, 2] - floor_world_z_m)
+    if not 0.45 <= camera_height <= 2.20:
+        return None
+    return up_camera, camera_height, 0.0
+    tensor = source.torch.from_numpy(
+        np.ascontiguousarray(padded.transpose(2, 0, 1))
+    ).float().to(source.device)
+    tensor = ((tensor - source.mean) / source.std)[None]
+    with source.torch.inference_mode():
+        prediction, _, outputs = source.model.inference({"input": tensor})
+    depth = prediction.squeeze()[
+        pad_top : source.input_height - (pad_height - pad_top),
+        pad_left : source.input_width - (pad_width - pad_left),
+    ]
+    depth = source.torch.nn.functional.interpolate(
+        depth[None, None], (height, width), mode="bilinear", align_corners=False
+    ).squeeze()
+    canonical_to_real = float(intrinsics_matrix(row)[0, 0]) * scale / 1000.0
+    depth = source.torch.clamp(depth * canonical_to_real, 0, 300)
+    normal = outputs["prediction_normal"].squeeze(0)[
+        :,
+        pad_top : source.input_height - (pad_height - pad_top),
+        pad_left : source.input_width - (pad_width - pad_left),
+    ]
+    normal = source.torch.nn.functional.interpolate(
+        normal[None], (height, width), mode="bilinear", align_corners=False
+    ).squeeze(0)
+    directions = normal[:3]
+    directions = directions / source.torch.clamp(
+        source.torch.linalg.vector_norm(directions, dim=0, keepdim=True), min=1e-8
+    )
+    normal = source.torch.cat((directions, normal[3:4]), dim=0)
+    return (
+        depth.detach().cpu().numpy(),
+        normal.permute(1, 2, 0).detach().cpu().numpy(),
+    )
+
+
+def evaluate_rows(
+    rows: list[dict[str, Any]],
+    source: Metric3DPytorchSource,
+    ground_mode: str = "depth_ransac",
+    reference_ground_mode: str = "depth_ransac",
+    reference_floor_world_z_m: float | None = None,
+) -> dict[str, Any]:
     lookup_cache: dict[Path, dict[str, Path]] = {}
+    pose_cache: dict[
+        Path, tuple[np.ndarray, np.ndarray, np.ndarray]
+    ] = {}
     frame_results = []
     for row in rows:
         frame_path = Path(str(row["frame_path"])).resolve()
         sequence_root = frame_path.parent.parent
         if sequence_root not in lookup_cache:
             lookup_cache[sequence_root] = _depth_lookup(sequence_root)
+            pose_cache[sequence_root] = load_tum_camera_poses(
+                sequence_root / "groundtruth.txt"
+            )
         depth_path = lookup_cache[sequence_root].get(str(frame_path))
         if depth_path is None:
             raise ValueError(f"no registered depth for {frame_path}")
@@ -207,9 +452,43 @@ def evaluate_rows(rows: list[dict[str, Any]], source: Metric3DPytorchSource) -> 
             )
         )
         intrinsics = intrinsics_matrix(row)
+        reference_up = (
+            tum_world_up_in_camera(
+                float(frame_path.stem), pose_cache[sequence_root]
+            )
+            if reference_ground_mode == "tum_gravity_oracle"
+            else None
+        )
+        reference_plane = (
+            tum_fixed_world_floor_in_camera(
+                float(frame_path.stem),
+                pose_cache[sequence_root],
+                float(reference_floor_world_z_m),
+            )
+            if reference_ground_mode == "tum_fixed_world_floor"
+            and reference_floor_world_z_m is not None
+            else None
+        )
         started = time.perf_counter()
-        model, _ = source.infer(cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB), row)
+        rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+        if ground_mode == "metric3d_normal_guided":
+            model, normal_kappa = infer_metric3d_depth_normal(source, rgb, row)
+        else:
+            model, _ = source.infer(rgb, row)
+            normal_kappa = None
+        up_camera = (
+            tum_world_up_in_camera(
+                float(frame_path.stem), pose_cache[sequence_root]
+            )
+            if ground_mode == "tum_gravity_oracle"
+            else None
+        )
         latency_ms = (time.perf_counter() - started) * 1000.0
+        model_field = (
+            {"status": "UNKNOWN_GRAVITY"}
+            if ground_mode == "tum_gravity_oracle" and up_camera is None
+            else clearance_field(model, intrinsics, normal_kappa, up_camera)
+        )
         frame_results.append(
             {
                 "sequence_root": sequence_root.name,
@@ -217,8 +496,24 @@ def evaluate_rows(rows: list[dict[str, Any]], source: Metric3DPytorchSource) -> 
                 "timestamp": float(frame_path.stem),
                 "frame_path": str(frame_path),
                 "latency_ms": latency_ms,
-                "sensor": clearance_field(sensor, intrinsics),
-                "metric3d": clearance_field(model, intrinsics),
+                "sensor": (
+                    {"status": "UNKNOWN_GRAVITY"}
+                    if (
+                        reference_ground_mode == "tum_gravity_oracle"
+                        and reference_up is None
+                    )
+                    or (
+                        reference_ground_mode == "tum_fixed_world_floor"
+                        and reference_plane is None
+                    )
+                    else clearance_field(
+                        sensor,
+                        intrinsics,
+                        up_camera=reference_up,
+                        plane_override=reference_plane,
+                    )
+                ),
+                "metric3d": model_field,
             }
         )
     return summarize(frame_results)
@@ -307,10 +602,35 @@ def main() -> None:
     parser.add_argument("--metric3d-repo", type=Path, required=True)
     parser.add_argument("--metric3d-checkpoint", type=Path, required=True)
     parser.add_argument("--device", default="cuda")
+    parser.add_argument(
+        "--ground-mode",
+        choices=(
+            "depth_ransac",
+            "metric3d_normal_guided",
+            "tum_gravity_oracle",
+        ),
+        default="depth_ransac",
+    )
+    parser.add_argument(
+        "--reference-ground-mode",
+        choices=(
+            "depth_ransac",
+            "tum_gravity_oracle",
+            "tum_fixed_world_floor",
+        ),
+        default="depth_ransac",
+    )
+    parser.add_argument("--reference-floor-world-z-m", type=float)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     source = Metric3DPytorchSource(args.metric3d_repo, args.metric3d_checkpoint, args.device)
-    report = evaluate_rows(_unique_frames(args.manifest), source)
+    report = evaluate_rows(
+        _unique_frames(args.manifest),
+        source,
+        args.ground_mode,
+        args.reference_ground_mode,
+        args.reference_floor_world_z_m,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({key: value for key, value in report.items() if key != "frames"}, indent=2, sort_keys=True))

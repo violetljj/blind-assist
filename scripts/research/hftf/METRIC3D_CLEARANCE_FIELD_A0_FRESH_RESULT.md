@@ -54,6 +54,12 @@ This pattern is consistent with the depth-only, independently fitted ground
 frame becoming unstable under parts of the roll/pitch/yaw motion. It is a
 diagnostic inference, not proof that orientation is the only cause.
 
+Later evaluator-validity work found that this result's sensor reference also
+jumped between floor and desk-like horizontal planes. Preserve this historical
+terminal and its execution order, but use
+`METRIC3D_CLEARANCE_FIELD_A0_MECHANISM_RESULT.md` for clean model attribution
+against a fixed world-floor reference.
+
 ## Decision
 
 Do not promote this exact per-frame depth-only RANSAC clearance field to A1.
