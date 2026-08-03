@@ -1,12 +1,20 @@
+import json
 import sys
+import tempfile
 import unittest
+from collections import deque
 from pathlib import Path
 
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from run_external_rgb_metric_track_sidecar import d44_predict, relative_position
+from run_external_rgb_metric_track_sidecar import (
+    append_contiguous_history,
+    d44_predict,
+    load_manifest,
+    relative_position,
+)
 
 
 class ExternalRgbMetricTrackSidecarTest(unittest.TestCase):
@@ -27,6 +35,49 @@ class ExternalRgbMetricTrackSidecarTest(unittest.TestCase):
             )
         prediction = d44_predict(history, 1_600_000_000)
         np.testing.assert_allclose(prediction, [1.4, 0.0, 0.0], atol=1e-9)
+
+    def test_manifest_preserves_sequence_blocks_with_reset_timestamps(self) -> None:
+        rows = [
+            {
+                "sequence_id": "first",
+                "frame_path": "first.png",
+                "timestamp_ns": 10,
+            },
+            {
+                "sequence_id": "second",
+                "frame_path": "second.png",
+                "timestamp_ns": 0,
+            },
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "manifest.jsonl"
+            path.write_text(
+                "".join(f"{json.dumps(row)}\n" for row in rows),
+                encoding="utf-8",
+            )
+            loaded = load_manifest(path)
+        self.assertEqual([row["sequence_id"] for row in loaded], ["first", "second"])
+
+    def test_manifest_rejects_nonincreasing_timestamp_within_sequence(self) -> None:
+        rows = [
+            {"sequence_id": "same", "frame_path": "a.png", "timestamp_ns": 1},
+            {"sequence_id": "same", "frame_path": "b.png", "timestamp_ns": 1},
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "manifest.jsonl"
+            path.write_text(
+                "".join(f"{json.dumps(row)}\n" for row in rows),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "timestamps must increase"):
+                load_manifest(path)
+
+    def test_track_history_resets_after_processed_frame_gap(self) -> None:
+        history: deque[dict[str, int]] = deque(maxlen=7)
+        append_contiguous_history(history, {"frame_index": 0})
+        append_contiguous_history(history, {"frame_index": 1})
+        append_contiguous_history(history, {"frame_index": 3})
+        self.assertEqual(list(history), [{"frame_index": 3}])
 
 
 if __name__ == "__main__":

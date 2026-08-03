@@ -32,6 +32,14 @@ The committed runner supports calibrated camera input and deterministic manifest
 
 The same 12 frames were then rerun through YOLO11n and ByteTrack, without using frozen boxes. It produced 109 track observations across 21 track IDs; seven IDs accumulated seven valid observations and generated 30 D44 forecasts. Steady medians were `13.596 ms` for detection/tracking, `156.752 ms` for metric depth, and `170.348 ms` for their sum. This validates every software stage except the physical capture driver and final-camera calibration/domain behavior.
 
+### CUDA FP16 admission
+
+Before reading candidate outcomes, the precision canary required finite output, mean/max torso-depth difference from FP32 `<= 0.05/0.10 m`, mean D44 difference `<= 0.10 m`, steady median latency ratio `<= 0.90`, truth depth-MAE increment `<= 0.02 m`, truth D44-error increment `<= 0.05 m`, and at least eight truth D44 windows.
+
+Across five already-consumed Bonn sequences (`150` frames), FP16 passed every gate. Steady Metric3D median latency fell from `150.344 ms` to `125.950 ms` (`0.83774x`). Mean/max torso-depth difference from FP32 was `0.000500/0.001995 m`; mean D44 difference was `0.000964 m`. Against registered RGB-D truth, depth MAE was `0.087694 m` for FP32 and `0.087624 m` for FP16. Across 70 truth-paired future windows, D44 mean 3D error was `0.429896/0.430078 m`. The 150-frame sidecar produced exactly 120 D44 opportunities, or 24 per sequence, after sequence-keyed history isolation. A missing processed frame now clears that track's history, so reacquired IDs cannot masquerade as seven consecutive observations.
+
+Terminal: `METRIC3D_VITS_CUDA_FP16_PRECISION_AND_LATENCY_SUPPORTED_CONSUMED_BONN_RGBD`. FP16 is now the Windows sidecar default; `--metric3d-precision fp32` remains available as the reference control.
+
 ## Claim ceiling and next admission
 
 This result supports an executable Windows GPU research reference, not a live-camera or product result. It does not establish final-camera metric accuracy, cross-camera generalization, phone/NPU continuity, alert utility, safety, research-mainline promotion, or default-App authority.

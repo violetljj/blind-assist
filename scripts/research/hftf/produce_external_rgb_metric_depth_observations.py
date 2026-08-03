@@ -22,7 +22,6 @@ import cv2
 import numpy as np
 import psutil
 
-
 MODEL_UNIDEPTH = "unidepth-v2-vits14"
 MODEL_VDA = "video-depth-anything-metric-vits-stream"
 MODEL_METRIC3D = "metric3d-v2-vits-onnx"
@@ -95,7 +94,7 @@ def validate_roi(
     roi: list[Any], image_shape: tuple[int, ...]
 ) -> tuple[int, int, int, int]:
     height, width = image_shape[:2]
-    x0, y0, x1, y1 = (int(round(float(value))) for value in roi)
+    x0, y0, x1, y1 = (round(float(value)) for value in roi)
     if not (0 <= x0 < x1 <= width and 0 <= y0 < y1 <= height):
         raise ValueError(
             f"ROI {(x0, y0, x1, y1)} outside image {(width, height)}"
@@ -314,12 +313,25 @@ class Metric3DPytorchSource(DepthSource):
     input_width = 1064
 
     def __init__(
-        self, repo: Path, checkpoint: Path, device: str
+        self,
+        repo: Path,
+        checkpoint: Path,
+        device: str,
+        precision: str = "fp32",
     ) -> None:
         import torch
 
         self.torch = torch
         self.device = torch.device(device)
+        self.precision = precision
+        if precision not in {"fp32", "tf32", "fp16", "bf16"}:
+            raise ValueError(f"unsupported Metric3D precision: {precision}")
+        if self.device.type != "cuda" and precision != "fp32":
+            raise ValueError("non-fp32 Metric3D precision requires CUDA")
+        if precision == "tf32":
+            torch.set_float32_matmul_precision("high")
+            torch.backends.cuda.matmul.allow_tf32 = True
+            torch.backends.cudnn.allow_tf32 = True
         self.model = torch.hub.load(
             str(repo),
             "metric3d_vit_small",
@@ -370,7 +382,15 @@ class Metric3DPytorchSource(DepthSource):
             np.ascontiguousarray(padded.transpose(2, 0, 1))
         ).float().to(self.device)
         tensor = ((tensor - self.mean) / self.std)[None]
-        with self.torch.inference_mode():
+        autocast_dtype = {
+            "fp16": self.torch.float16,
+            "bf16": self.torch.bfloat16,
+        }.get(self.precision)
+        with self.torch.inference_mode(), self.torch.autocast(
+            device_type=self.device.type,
+            dtype=autocast_dtype,
+            enabled=autocast_dtype is not None,
+        ):
             prediction, _, _ = self.model.inference({"input": tensor})
         canonical = prediction.squeeze()
         canonical = canonical[
@@ -390,6 +410,7 @@ class Metric3DPytorchSource(DepthSource):
         return depth.detach().cpu().numpy(), {
             "runtime": "pytorch",
             "device": str(self.device),
+            "precision": self.precision,
         }
 
 

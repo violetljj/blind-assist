@@ -167,6 +167,7 @@ VITS_392X672_FULL4_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD /
 UNIDEPTH_QAIRT_HTP_NUMERIC_AND_LATENCY_NOT_SUPPORTED_GPU_FINALIZE_FAILED /
 CANONICAL_VITS_1P5S_ASYNC_ANCHOR_CONTINUITY_NOT_SUPPORTED /
 CANONICAL_VITS_WINDOWS_GPU_EXTERNAL_RGB_METRIC_TRACK_SIDECAR_EXECUTED_CONSUMED_REPLAY_ONLY /
+METRIC3D_VITS_CUDA_FP16_PRECISION_AND_LATENCY_SUPPORTED_CONSUMED_BONN_RGBD /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-03 外接 RGB metric-track：手机连续源未过门槛，Windows GPU 参考侧车跑通
@@ -192,6 +193,17 @@ frozen-box 回放从第 7 帧起得到 6 个 D44，深度与既有 canonical 观
 回放上的 Windows GPU 研究参考；尚无真实外接摄像头采集、最终镜头真值、alert、
 safety、主线或 default App 权限。详见
 [sidecar R0 result](../../../scripts/research/hftf/EXTERNAL_RGB_METRIC_TRACK_SIDECAR_R0_RESULT.md)。
+
+随后冻结 CUDA precision admission，只比较同一 canonical ViT-S 的 FP32/TF32/FP16/BF16，
+不改 D44。五个已消费 Bonn 序列共 150 帧上，FP16 通过全部门槛：稳态中位延迟
+`150.34 -> 125.95 ms`，人物深度 MAE `0.087694 -> 0.087624 m`；70 个真值配对
+D44 窗口的平均 3D 误差为 `0.429896/0.430078 m`。FP16 与 FP32 的人物深度
+平均/最大差仅 `0.000500/0.001995 m`，D44 平均差 `0.000964 m`。同时修复了
+多序列 manifest 被全局时间排序、track 0 历史跨序列串接的问题；现在 history key
+包含 `sequence_id`，任一 processed-frame 漏检也会清空该 track 历史；150 帧严格
+得到 `5 x 24 = 120` 个 D44 opportunity。FP16
+因此成为 Windows reference sidecar 默认精度；仍不产生 final-camera、alert、safety、
+研究主线或 default App 权限。
 
 ## 2026-08-03 Metric3D QAIRT 实时化 R0：ConvTiny 真值失败，保留 ViT-S 连续性候选
 

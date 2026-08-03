@@ -71,17 +71,32 @@ def d44_predict(history: list[dict[str, Any]], target_timestamp_ns: int) -> np.n
     return prediction
 
 
+def append_contiguous_history(
+    history: deque[dict[str, Any]], observation: dict[str, Any]
+) -> None:
+    if history and int(observation["frame_index"]) != int(history[-1]["frame_index"]) + 1:
+        history.clear()
+    history.append(observation)
+
+
 def load_manifest(path: Path) -> list[dict[str, Any]]:
     rows = [
         json.loads(line)
         for line in path.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
+    previous_timestamp_by_sequence: dict[str, int] = {}
     for row in rows:
         frame = Path(row["frame_path"])
         if not frame.is_absolute():
             row["frame_path"] = str((path.parent / frame).resolve())
-    return sorted(rows, key=lambda row: int(row["timestamp_ns"]))
+        sequence_id = str(row.get("sequence_id", "manifest"))
+        timestamp_ns = int(row["timestamp_ns"])
+        previous = previous_timestamp_by_sequence.get(sequence_id)
+        if previous is not None and timestamp_ns <= previous:
+            raise ValueError(f"timestamps must increase within sequence {sequence_id}")
+        previous_timestamp_by_sequence[sequence_id] = timestamp_ns
+    return rows
 
 
 def yolo_person_detections(
@@ -147,6 +162,7 @@ def manifest_frames(
         )
         yield bgr, {
             "frame_index": int(row["frame_index"]),
+            "sequence_id": str(row.get("sequence_id", "manifest")),
             "timestamp_ns": int(row["timestamp_ns"]),
             "detections": detections,
             "detector_latency_ms": detector_latency_ms,
@@ -177,6 +193,7 @@ def camera_frames(
             detector_latency_ms = (time.perf_counter() - detector_started) * 1000.0
             yield bgr, {
                 "frame_index": frame_index,
+                "sequence_id": f"camera:{camera_index}",
                 "timestamp_ns": timestamp_ns,
                 "detections": detections,
                 "detector_latency_ms": detector_latency_ms,
@@ -204,6 +221,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--metric3d-repo", type=Path, required=True)
     parser.add_argument("--metric3d-checkpoint", type=Path, required=True)
     parser.add_argument("--device", default="cuda")
+    parser.add_argument(
+        "--metric3d-precision",
+        choices=("fp32", "tf32", "fp16", "bf16"),
+        default="fp16",
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--max-frames", type=int)
     return parser.parse_args()
@@ -225,7 +247,10 @@ def main() -> None:
 
         detector = YOLO(str(args.yolo_weights), task="detect")
     source = Metric3DPytorchSource(
-        args.metric3d_repo, args.metric3d_checkpoint, args.device
+        args.metric3d_repo,
+        args.metric3d_checkpoint,
+        args.device,
+        args.metric3d_precision,
     )
     frames = (
         manifest_frames(args.manifest, detector, args.yolo_device)
@@ -237,7 +262,7 @@ def main() -> None:
             args.yolo_device,
         )
     )
-    histories: dict[int, deque[dict[str, Any]]] = defaultdict(
+    histories: dict[tuple[str, int], deque[dict[str, Any]]] = defaultdict(
         lambda: deque(maxlen=HISTORY_COUNT)
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -260,13 +285,15 @@ def main() -> None:
                 if torso_depth is None:
                     continue
                 track_id = int(detection["track_id"])
+                history_key = (str(packet["sequence_id"]), track_id)
                 observation = {
+                    "frame_index": int(packet["frame_index"]),
                     "timestamp_ns": int(packet["timestamp_ns"]),
                     "depth_m": float(torso_depth),
                     "torso_roi_xyxy_px": list(roi),
                     "intrinsics_fx_fy_cx_cy": list(packet["intrinsics_fx_fy_cx_cy"]),
                 }
-                histories[track_id].append(observation)
+                append_contiguous_history(histories[history_key], observation)
                 current = relative_position(
                     observation["torso_roi_xyxy_px"],
                     observation["intrinsics_fx_fy_cx_cy"],
@@ -274,8 +301,8 @@ def main() -> None:
                 )
                 target_ns = int(packet["timestamp_ns"] + FUTURE_SECONDS * 1e9)
                 forecast = (
-                    d44_predict(list(histories[track_id]), target_ns)
-                    if len(histories[track_id]) == HISTORY_COUNT
+                    d44_predict(list(histories[history_key]), target_ns)
+                    if len(histories[history_key]) == HISTORY_COUNT
                     else None
                 )
                 tracks.append(
@@ -285,7 +312,7 @@ def main() -> None:
                         "relative_position_m": current.tolist(),
                         "d44_future_timestamp_ns": target_ns if forecast is not None else None,
                         "d44_future_relative_position_m": forecast.tolist() if forecast is not None else None,
-                        "history_count": len(histories[track_id]),
+                        "history_count": len(histories[history_key]),
                         "roi_valid_pixels_after_trim": valid_pixels,
                         "roi_valid_fraction_before_trim": valid_fraction,
                     }
@@ -293,8 +320,11 @@ def main() -> None:
             record = {
                 "schema": "hftf_external_rgb_metric_track_sidecar_r0",
                 "frame_index": int(packet["frame_index"]),
+                "sequence_id": str(packet["sequence_id"]),
                 "timestamp_ns": int(packet["timestamp_ns"]),
                 "source": packet["source"],
+                "metric_depth_model_id": source.model_id,
+                "metric_depth_precision": args.metric3d_precision,
                 "detector_latency_ms": packet.get("detector_latency_ms"),
                 "metric_depth_latency_ms": metric_depth_latency_ms,
                 "tracks": tracks,

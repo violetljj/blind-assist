@@ -10,7 +10,8 @@
     "VITS_392X672_FULL4_SOURCE_ACCURACY_NOT_SUPPORTED_CONSUMED_BONN_RGBD",
     "UNIDEPTH_QAIRT_HTP_NUMERIC_AND_LATENCY_NOT_SUPPORTED_GPU_FINALIZE_FAILED",
     "CANONICAL_VITS_1P5S_ASYNC_ANCHOR_CONTINUITY_NOT_SUPPORTED",
-    "CANONICAL_VITS_WINDOWS_GPU_EXTERNAL_RGB_METRIC_TRACK_SIDECAR_EXECUTED_CONSUMED_REPLAY_ONLY"
+    "CANONICAL_VITS_WINDOWS_GPU_EXTERNAL_RGB_METRIC_TRACK_SIDECAR_EXECUTED_CONSUMED_REPLAY_ONLY",
+    "METRIC3D_VITS_CUDA_FP16_PRECISION_AND_LATENCY_SUPPORTED_CONSUMED_BONN_RGBD"
   ],
   "bonn_source_accuracy": {
     "frames": 30,
@@ -41,6 +42,23 @@
     "supported": false
   },
   "windows_gpu_sidecar": {
+    "default_metric3d_precision": "fp16",
+    "precision_admission": {
+      "frames": 150,
+      "sequences": 5,
+      "fp32_steady_median_ms": 150.3444,
+      "fp16_steady_median_ms": 125.9501,
+      "latency_ratio": 0.8377438734,
+      "mean_depth_difference_m": 0.0005001974,
+      "max_depth_difference_m": 0.0019953251,
+      "mean_d44_difference_m": 0.0009644534,
+      "fp32_truth_depth_mae_m": 0.0876942623,
+      "fp16_truth_depth_mae_m": 0.0876239431,
+      "truth_d44_windows": 70,
+      "fp32_truth_d44_mean_3d_error_m": 0.4298961368,
+      "fp16_truth_d44_mean_3d_error_m": 0.430077981,
+      "all_frozen_gates_pass": true
+    },
     "manifest_replay": {
       "frames": 12,
       "tracks": 12,
