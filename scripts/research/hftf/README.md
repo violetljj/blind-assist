@@ -31,6 +31,14 @@ A0.1-android-probability-head-parity-runtime-supported /
 metric-depth-android-dualarm-runtime-supported-no-realtime /
 frozen-single-frame-posthoc-temporal-residual-family-stop`
 
+最新深度观测器同屏终态：
+`METRIC3D_ONLY_TASK_GATE_PASS_MOGE2_AND_DAV2_NOT_ADMITTED`。在同一 120 帧已消费
+TUM clearance-field 屏幕上，Metric3D 复现五项全过；MoGe-2 ViT-S Normal 的
+clearance/包络/时序 gate 未过，Depth Anything V2 Small Metric 虽达到
+`59.30 ms` CUDA 均值，但 false-clear 为 `24.32%`，不得独立驱动米制 clearance。
+三者都只是观测器；Metric3D 保留为当前 baseline/teacher，不默认成为最终部署模型。
+完整结果见 `DEPTH_OBSERVER_CLEARANCE_A0_CONSUMED_RESULT.md`。
+
 ## 研究问题与版本
 
 本 Module 服务 `HFTF_CANDIDATE_LANE_R0`：检验历史 RGB 能否预测面向行人身体包络的

@@ -19,6 +19,13 @@ from typing import Any
 
 import cv2
 import numpy as np
+
+from external_camera_calibration import (
+    FrameRectifier,
+    finite_ratio,
+    load_calibration,
+    pinhole_calibration,
+)
 from prepare_external_rgb_metric_depth_manifest import torso_roi_from_person_box
 from produce_external_rgb_metric_depth_observations import (
     Metric3DPytorchSource,
@@ -185,24 +192,24 @@ def manifest_frames(
 
 def camera_frames(
     camera_index: int,
-    intrinsics: list[float],
-    calibration_size: list[int],
+    rectifier: FrameRectifier,
     detector: Any,
     yolo_device: str,
 ) -> Iterator[tuple[np.ndarray, dict[str, Any]]]:
     capture = cv2.VideoCapture(camera_index)
-    capture.set(cv2.CAP_PROP_FRAME_WIDTH, int(calibration_size[0]))
-    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, int(calibration_size[1]))
+    capture.set(cv2.CAP_PROP_FRAME_WIDTH, rectifier.calibration.width)
+    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, rectifier.calibration.height)
     capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
     if not capture.isOpened():
         raise RuntimeError(f"cannot open camera index {camera_index}")
     frame_index = 0
     try:
         while True:
-            ok, bgr = capture.read()
+            ok, raw_bgr = capture.read()
             timestamp_ns = time.monotonic_ns()
             if not ok:
                 raise RuntimeError("camera read failed")
+            bgr, valid_mask = rectifier.rectify(raw_bgr)
             detector_started = time.perf_counter()
             detections = yolo_person_detections(detector, bgr, yolo_device)
             detector_latency_ms = (time.perf_counter() - detector_started) * 1000.0
@@ -212,7 +219,10 @@ def camera_frames(
                 "timestamp_ns": timestamp_ns,
                 "detections": detections,
                 "detector_latency_ms": detector_latency_ms,
-                "intrinsics_fx_fy_cx_cy": intrinsics,
+                "intrinsics_fx_fy_cx_cy": rectifier.calibration.intrinsics,
+                "rectification_valid_mask": valid_mask,
+                "calibration_source_id": rectifier.calibration.source_id,
+                "rectification_applied": rectifier.calibration.rectification_required,
                 "source": f"camera:{camera_index}",
             }
             frame_index += 1
@@ -222,7 +232,7 @@ def camera_frames(
 
 def video_frames(
     path: Path,
-    intrinsics: list[float],
+    rectifier: FrameRectifier,
     detector: Any,
     yolo_device: str,
 ) -> Iterator[tuple[np.ndarray, dict[str, Any]]]:
@@ -238,9 +248,10 @@ def video_frames(
     previous_timestamp_ns = -1
     try:
         while True:
-            ok, bgr = capture.read()
+            ok, raw_bgr = capture.read()
             if not ok:
                 break
+            bgr, valid_mask = rectifier.rectify(raw_bgr)
             position_ms = float(capture.get(cv2.CAP_PROP_POS_MSEC))
             timestamp_ns = round(position_ms * 1e6)
             if timestamp_ns <= previous_timestamp_ns:
@@ -257,7 +268,10 @@ def video_frames(
                 "timestamp_ns": timestamp_ns,
                 "detections": detections,
                 "detector_latency_ms": detector_latency_ms,
-                "intrinsics_fx_fy_cx_cy": intrinsics,
+                "intrinsics_fx_fy_cx_cy": rectifier.calibration.intrinsics,
+                "rectification_valid_mask": valid_mask,
+                "calibration_source_id": rectifier.calibration.source_id,
+                "rectification_applied": rectifier.calibration.rectification_required,
                 "capture_fps": fps,
                 "source": sequence_id,
             }
@@ -273,6 +287,7 @@ def parse_args() -> argparse.Namespace:
     source.add_argument("--camera-index", type=int)
     source.add_argument("--video", type=Path)
     parser.add_argument("--intrinsics", type=float, nargs=4)
+    parser.add_argument("--calibration-json", type=Path)
     parser.add_argument(
         "--calibration-size",
         type=int,
@@ -302,14 +317,22 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if (args.camera_index is not None or args.video is not None) and (
-        args.intrinsics is None
-        or args.calibration_size is None
-        or args.yolo_weights is None
+    capture_mode = args.camera_index is not None or args.video is not None
+    has_cli_calibration = args.intrinsics is not None or args.calibration_size is not None
+    if not capture_mode and (args.calibration_json is not None or has_cli_calibration):
+        raise ValueError("manifest mode uses per-row calibration and rejects camera calibration flags")
+    if args.calibration_json is not None and has_cli_calibration:
+        raise ValueError(
+            "use either --calibration-json or --intrinsics/--calibration-size, not both"
+        )
+    if capture_mode and args.calibration_json is None and (
+        args.intrinsics is None or args.calibration_size is None
     ):
         raise ValueError(
-            "camera/video mode requires --intrinsics, --calibration-size, and --yolo-weights"
+            "camera/video mode requires --calibration-json or both --intrinsics and --calibration-size"
         )
+    if capture_mode and args.yolo_weights is None:
+        raise ValueError("camera/video mode requires --yolo-weights")
     if args.redetect_manifest and args.manifest is None:
         raise ValueError("--redetect-manifest requires --manifest")
     if args.redetect_manifest and args.yolo_weights is None:
@@ -319,6 +342,14 @@ def main() -> None:
         from ultralytics import YOLO
 
         detector = YOLO(str(args.yolo_weights), task="detect")
+    rectifier = None
+    if capture_mode:
+        calibration = (
+            load_calibration(args.calibration_json)
+            if args.calibration_json is not None
+            else pinhole_calibration(list(args.intrinsics), list(args.calibration_size))
+        )
+        rectifier = FrameRectifier(calibration)
     source = Metric3DPytorchSource(
         args.metric3d_repo,
         args.metric3d_checkpoint,
@@ -330,15 +361,14 @@ def main() -> None:
     elif args.video is not None:
         frames = video_frames(
             args.video,
-            list(args.intrinsics),
+            rectifier,
             detector,
             args.yolo_device,
         )
     else:
         frames = camera_frames(
             args.camera_index,
-            list(args.intrinsics),
-            list(args.calibration_size),
+            rectifier,
             detector,
             args.yolo_device,
         )
@@ -352,13 +382,6 @@ def main() -> None:
             if args.max_frames is not None and processed >= args.max_frames:
                 break
             height, width = bgr.shape[:2]
-            if args.calibration_size is not None and [width, height] != list(
-                args.calibration_size
-            ):
-                raise ValueError(
-                    f"frame size {(width, height)} differs from calibration size "
-                    f"{tuple(args.calibration_size)}"
-                )
             validate_intrinsics(packet["intrinsics_fx_fy_cx_cy"], bgr.shape)
             rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
             started = time.perf_counter()
@@ -366,6 +389,12 @@ def main() -> None:
                 rgb,
                 {"intrinsics_fx_fy_cx_cy": packet["intrinsics_fx_fy_cx_cy"]},
             )
+            rectification_valid_mask = packet.get("rectification_valid_mask")
+            if rectification_valid_mask is not None:
+                if rectification_valid_mask.shape != depth.shape:
+                    raise ValueError("rectification mask and depth shape differ")
+                depth = np.asarray(depth).copy()
+                depth[~rectification_valid_mask] = np.nan
             metric_depth_latency_ms = (time.perf_counter() - started) * 1000.0
             tracks = []
             for detection in packet["detections"]:
@@ -414,6 +443,17 @@ def main() -> None:
                 "frame_width_px": width,
                 "frame_height_px": height,
                 "source": packet["source"],
+                "calibration_source_id": packet.get(
+                    "calibration_source_id", "manifest:per-row-pinhole"
+                ),
+                "rectification_applied": bool(
+                    packet.get("rectification_applied", False)
+                ),
+                "rectification_valid_fraction": (
+                    finite_ratio(rectification_valid_mask)
+                    if rectification_valid_mask is not None
+                    else 1.0
+                ),
                 "capture_fps": packet.get("capture_fps"),
                 "metric_depth_model_id": source.model_id,
                 "metric_depth_precision": args.metric3d_precision,

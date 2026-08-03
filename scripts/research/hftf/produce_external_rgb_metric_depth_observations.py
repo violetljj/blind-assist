@@ -26,11 +26,15 @@ MODEL_UNIDEPTH = "unidepth-v2-vits14"
 MODEL_VDA = "video-depth-anything-metric-vits-stream"
 MODEL_METRIC3D = "metric3d-v2-vits-onnx"
 MODEL_METRIC3D_PYTORCH = "metric3d-v2-vits-pytorch"
+MODEL_MOGE2_VITS_NORMAL = "moge-2-vits-normal"
+MODEL_DAV2_METRIC_HYPERSIM_VITS = "depth-anything-v2-metric-hypersim-vits"
 MODEL_CHOICES = (
     MODEL_UNIDEPTH,
     MODEL_VDA,
     MODEL_METRIC3D,
     MODEL_METRIC3D_PYTORCH,
+    MODEL_MOGE2_VITS_NORMAL,
+    MODEL_DAV2_METRIC_HYPERSIM_VITS,
 )
 
 
@@ -96,9 +100,7 @@ def validate_roi(
     height, width = image_shape[:2]
     x0, y0, x1, y1 = (round(float(value)) for value in roi)
     if not (0 <= x0 < x1 <= width and 0 <= y0 < y1 <= height):
-        raise ValueError(
-            f"ROI {(x0, y0, x1, y1)} outside image {(width, height)}"
-        )
+        raise ValueError(f"ROI {(x0, y0, x1, y1)} outside image {(width, height)}")
     return x0, y0, x1, y1
 
 
@@ -123,9 +125,7 @@ def robust_roi_median(
 def intrinsics_matrix(row: dict[str, Any]) -> np.ndarray:
     values = row.get("intrinsics_fx_fy_cx_cy")
     if not isinstance(values, list) or len(values) != 4:
-        raise ValueError(
-            "intrinsics_fx_fy_cx_cy is required and must have four values"
-        )
+        raise ValueError("intrinsics_fx_fy_cx_cy is required and must have four values")
     fx, fy, cx, cy = (float(value) for value in values)
     if not all(math.isfinite(value) for value in (fx, fy, cx, cy)):
         raise ValueError("intrinsics must be finite")
@@ -135,6 +135,11 @@ def intrinsics_matrix(row: dict[str, Any]) -> np.ndarray:
         [[fx, 0.0, cx], [0.0, fy, cy], [0.0, 0.0, 1.0]],
         dtype=np.float32,
     )
+
+
+def horizontal_fov_degrees(row: dict[str, Any], width: int) -> float:
+    intrinsics = intrinsics_matrix(row)
+    return math.degrees(2.0 * math.atan(float(width) / (2.0 * float(intrinsics[0, 0]))))
 
 
 class DepthSource(ABC):
@@ -189,9 +194,7 @@ class UniDepthSource(DepthSource):
         metadata: dict[str, Any] = {}
         confidence = prediction.get("confidence")
         if confidence is not None:
-            metadata["confidence_map"] = (
-                confidence.squeeze().detach().cpu().numpy()
-            )
+            metadata["confidence_map"] = confidence.squeeze().detach().cpu().numpy()
         return depth, metadata
 
 
@@ -252,13 +255,9 @@ class Metric3DOnnxSource(DepthSource):
             if provider == "cpu"
             else ["CUDAExecutionProvider", "CPUExecutionProvider"]
         )
-        self.session = ort.InferenceSession(
-            str(model_path), providers=providers
-        )
+        self.session = ort.InferenceSession(str(model_path), providers=providers)
         self.input = self.session.get_inputs()[0]
-        self.dtype = (
-            np.float16 if self.input.type == "tensor(float16)" else np.float32
-        )
+        self.dtype = np.float16 if self.input.type == "tensor(float16)" else np.float32
 
     def infer(
         self, rgb: np.ndarray, row: dict[str, Any]
@@ -288,9 +287,7 @@ class Metric3DOnnxSource(DepthSource):
             cv2.BORDER_CONSTANT,
             value=[123.675, 116.28, 103.53],
         )
-        tensor = np.ascontiguousarray(
-            padded.transpose(2, 0, 1)[None], dtype=self.dtype
-        )
+        tensor = np.ascontiguousarray(padded.transpose(2, 0, 1)[None], dtype=self.dtype)
         outputs = self.session.run(None, {self.input.name: tensor})
         canonical = np.squeeze(outputs[0]).astype(np.float32)
         canonical = canonical[
@@ -338,17 +335,15 @@ class Metric3DPytorchSource(DepthSource):
             source="local",
             pretrain=False,
         )
-        state = torch.load(
-            checkpoint, map_location="cpu", weights_only=True
-        )
+        state = torch.load(checkpoint, map_location="cpu", weights_only=True)
         self.model.load_state_dict(state["model_state_dict"], strict=False)
         self.model = self.model.to(self.device).eval()
-        self.mean = torch.tensor(
-            [123.675, 116.28, 103.53], device=self.device
-        ).float()[:, None, None]
-        self.std = torch.tensor(
-            [58.395, 57.12, 57.375], device=self.device
-        ).float()[:, None, None]
+        self.mean = torch.tensor([123.675, 116.28, 103.53], device=self.device).float()[
+            :, None, None
+        ]
+        self.std = torch.tensor([58.395, 57.12, 57.375], device=self.device).float()[
+            :, None, None
+        ]
 
     def infer(
         self, rgb: np.ndarray, row: dict[str, Any]
@@ -378,18 +373,23 @@ class Metric3DPytorchSource(DepthSource):
             cv2.BORDER_CONSTANT,
             value=[123.675, 116.28, 103.53],
         )
-        tensor = self.torch.from_numpy(
-            np.ascontiguousarray(padded.transpose(2, 0, 1))
-        ).float().to(self.device)
+        tensor = (
+            self.torch.from_numpy(np.ascontiguousarray(padded.transpose(2, 0, 1)))
+            .float()
+            .to(self.device)
+        )
         tensor = ((tensor - self.mean) / self.std)[None]
         autocast_dtype = {
             "fp16": self.torch.float16,
             "bf16": self.torch.bfloat16,
         }.get(self.precision)
-        with self.torch.inference_mode(), self.torch.autocast(
-            device_type=self.device.type,
-            dtype=autocast_dtype,
-            enabled=autocast_dtype is not None,
+        with (
+            self.torch.inference_mode(),
+            self.torch.autocast(
+                device_type=self.device.type,
+                dtype=autocast_dtype,
+                enabled=autocast_dtype is not None,
+            ),
         ):
             prediction, _, _ = self.model.inference({"input": tensor})
         canonical = prediction.squeeze()
@@ -414,6 +414,100 @@ class Metric3DPytorchSource(DepthSource):
         }
 
 
+class MoGe2Source(DepthSource):
+    model_id = MODEL_MOGE2_VITS_NORMAL
+
+    def __init__(
+        self,
+        repo: Path,
+        utils3d_repo: Path,
+        checkpoint: Path,
+        device: str,
+        resolution_level: int = 9,
+    ) -> None:
+        sys.path[:0] = [str(utils3d_repo), str(repo)]
+        import torch
+        from moge.model.v2 import MoGeModel
+
+        self.torch = torch
+        self.device = torch.device(device)
+        self.resolution_level = resolution_level
+        self.model = MoGeModel.from_pretrained(checkpoint)
+        self.model = self.model.to(self.device).eval()
+
+    def infer(
+        self, rgb: np.ndarray, row: dict[str, Any]
+    ) -> tuple[np.ndarray, dict[str, Any]]:
+        tensor = self.torch.from_numpy(rgb.copy()).permute(2, 0, 1)
+        tensor = tensor.to(self.device, dtype=self.torch.float32) / 255.0
+        prediction = self.model.infer(
+            tensor,
+            resolution_level=self.resolution_level,
+            fov_x=horizontal_fov_degrees(row, rgb.shape[1]),
+            use_fp16=self.device.type == "cuda",
+        )
+        depth = prediction["depth"].detach().cpu().numpy()
+        mask = prediction.get("mask")
+        valid_fraction = None
+        if mask is not None:
+            mask_array = mask.detach().cpu().numpy().astype(bool)
+            depth = np.where(mask_array, depth, np.nan)
+            valid_fraction = float(np.mean(mask_array))
+        metadata: dict[str, Any] = {
+            "runtime": "pytorch",
+            "device": str(self.device),
+            "precision": "fp16_autocast" if self.device.type == "cuda" else "fp32",
+            "resolution_level": self.resolution_level,
+            "published_intrinsics_fov_constraint": True,
+        }
+        if valid_fraction is not None:
+            metadata["model_valid_fraction"] = valid_fraction
+        return np.asarray(depth, dtype=np.float32), metadata
+
+
+class DepthAnythingV2MetricSource(DepthSource):
+    model_id = MODEL_DAV2_METRIC_HYPERSIM_VITS
+
+    def __init__(
+        self,
+        repo: Path,
+        checkpoint: Path,
+        device: str,
+        input_size: int = 518,
+    ) -> None:
+        sys.path.insert(0, str(repo / "metric_depth"))
+        import torch
+        from depth_anything_v2.dpt import DepthAnythingV2
+
+        self.torch = torch
+        self.device = torch.device(device)
+        self.input_size = input_size
+        self.model = DepthAnythingV2(
+            encoder="vits",
+            features=64,
+            out_channels=[48, 96, 192, 384],
+            max_depth=20.0,
+        )
+        state = torch.load(checkpoint, map_location="cpu", weights_only=True)
+        self.model.load_state_dict(state, strict=True)
+        self.model = self.model.to(self.device).eval()
+
+    def infer(
+        self, rgb: np.ndarray, row: dict[str, Any]
+    ) -> tuple[np.ndarray, dict[str, Any]]:
+        # The official infer_image API accepts OpenCV BGR input.
+        bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+        depth = self.model.infer_image(bgr, input_size=self.input_size)
+        return np.asarray(depth, dtype=np.float32), {
+            "runtime": "pytorch",
+            "device": str(self.device),
+            "precision": "fp32",
+            "input_size": self.input_size,
+            "training_domain": "hypersim_indoor",
+            "max_depth_m": 20.0,
+        }
+
+
 def build_source(args: argparse.Namespace) -> DepthSource:
     if args.model == MODEL_UNIDEPTH:
         return UniDepthSource(
@@ -431,6 +525,21 @@ def build_source(args: argparse.Namespace) -> DepthSource:
         )
     if args.model == MODEL_METRIC3D:
         return Metric3DOnnxSource(args.metric3d_onnx, args.onnx_provider)
+    if args.model == MODEL_MOGE2_VITS_NORMAL:
+        return MoGe2Source(
+            args.moge_repo,
+            args.utils3d_repo,
+            args.moge_checkpoint,
+            args.device,
+            args.moge_resolution_level,
+        )
+    if args.model == MODEL_DAV2_METRIC_HYPERSIM_VITS:
+        return DepthAnythingV2MetricSource(
+            args.depth_anything_repo,
+            args.depth_anything_checkpoint,
+            args.device,
+            args.depth_anything_input_size,
+        )
     return Metric3DPytorchSource(
         args.metric3d_repo,
         args.metric3d_checkpoint,
@@ -438,9 +547,7 @@ def build_source(args: argparse.Namespace) -> DepthSource:
     )
 
 
-def produce(
-    rows: list[dict[str, Any]], source: DepthSource
-) -> list[dict[str, Any]]:
+def produce(rows: list[dict[str, Any]], source: DepthSource) -> list[dict[str, Any]]:
     output = []
     previous_sequence = None
     process = psutil.Process()
@@ -464,9 +571,7 @@ def produce(
             raise ValueError(
                 f"depth shape {depth.shape} differs from RGB {rgb.shape[:2]}"
             )
-        predicted, valid_pixels, valid_fraction = robust_roi_median(
-            depth, roi
-        )
+        predicted, valid_pixels, valid_fraction = robust_roi_median(depth, roi)
         observation = {
             key: row[key]
             for key in (
@@ -489,9 +594,7 @@ def produce(
                 "torso_roi_xyxy_px": list(roi),
                 "roi_valid_pixels_after_trim": valid_pixels,
                 "roi_valid_fraction_before_trim": valid_fraction,
-                "process_rss_mib": (
-                    process.memory_info().rss / (1024.0 * 1024.0)
-                ),
+                "process_rss_mib": (process.memory_info().rss / (1024.0 * 1024.0)),
             }
         )
         if torch_runtime is not None and torch_runtime.cuda.is_available():
@@ -509,9 +612,7 @@ def produce(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--manifest", type=Path, nargs="+", required=True
-    )
+    parser.add_argument("--manifest", type=Path, nargs="+", required=True)
     parser.add_argument("--model", choices=MODEL_CHOICES, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda")
@@ -527,9 +628,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--metric3d-onnx", type=Path)
     parser.add_argument("--metric3d-repo", type=Path)
     parser.add_argument("--metric3d-checkpoint", type=Path)
-    parser.add_argument(
-        "--onnx-provider", choices=("cpu", "cuda"), default="cpu"
-    )
+    parser.add_argument("--moge-repo", type=Path)
+    parser.add_argument("--utils3d-repo", type=Path)
+    parser.add_argument("--moge-checkpoint", type=Path)
+    parser.add_argument("--moge-resolution-level", type=int, default=9)
+    parser.add_argument("--depth-anything-repo", type=Path)
+    parser.add_argument("--depth-anything-checkpoint", type=Path)
+    parser.add_argument("--depth-anything-input-size", type=int, default=518)
+    parser.add_argument("--onnx-provider", choices=("cpu", "cuda"), default="cpu")
     args = parser.parse_args()
     if args.model == MODEL_UNIDEPTH and args.unidepth_repo is None:
         parser.error("--unidepth-repo is required for UniDepth")
@@ -546,16 +652,27 @@ def parse_args() -> argparse.Namespace:
             "--metric3d-repo and --metric3d-checkpoint are required "
             "for PyTorch Metric3D"
         )
+    if args.model == MODEL_MOGE2_VITS_NORMAL and (
+        args.moge_repo is None
+        or args.utils3d_repo is None
+        or args.moge_checkpoint is None
+    ):
+        parser.error(
+            "--moge-repo, --utils3d-repo, and --moge-checkpoint are required for MoGe-2"
+        )
+    if args.model == MODEL_DAV2_METRIC_HYPERSIM_VITS and (
+        args.depth_anything_repo is None or args.depth_anything_checkpoint is None
+    ):
+        parser.error(
+            "--depth-anything-repo and --depth-anything-checkpoint are "
+            "required for Depth Anything V2 Metric"
+        )
     return args
 
 
 def main() -> None:
     args = parse_args()
-    rows = [
-        row
-        for manifest in args.manifest
-        for row in load_manifest(manifest)
-    ]
+    rows = [row for manifest in args.manifest for row in load_manifest(manifest)]
     rows.sort(
         key=lambda row: (
             str(row["sequence_id"]),

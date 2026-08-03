@@ -10,6 +10,8 @@ from pathlib import Path
 import numpy as np
 
 from produce_external_rgb_metric_depth_observations import (
+    DepthAnythingV2MetricSource,
+    horizontal_fov_degrees,
     intrinsics_matrix,
     load_manifest,
     robust_roi_median,
@@ -18,6 +20,33 @@ from produce_external_rgb_metric_depth_observations import (
 
 
 class ExternalRgbMetricDepthProducerTest(unittest.TestCase):
+    def test_horizontal_fov_uses_published_focal_length(self) -> None:
+        row = {"intrinsics_fx_fy_cx_cy": [320, 321, 320, 240]}
+        self.assertAlmostEqual(horizontal_fov_degrees(row, 640), 90.0)
+
+    def test_depth_anything_adapter_converts_rgb_to_official_bgr_api(
+        self,
+    ) -> None:
+        class FakeModel:
+            received: np.ndarray | None = None
+
+            def infer_image(
+                self, image: np.ndarray, input_size: int
+            ) -> np.ndarray:
+                self.received = image.copy()
+                self.input_size = input_size
+                return np.ones(image.shape[:2], dtype=np.float32)
+
+        source = object.__new__(DepthAnythingV2MetricSource)
+        source.model = FakeModel()
+        source.device = "cuda"
+        source.input_size = 518
+        rgb = np.asarray([[[10, 20, 30]]], dtype=np.uint8)
+        depth, metadata = source.infer(rgb, {})
+        np.testing.assert_array_equal(source.model.received, [[[30, 20, 10]]])
+        np.testing.assert_array_equal(depth, [[1.0]])
+        self.assertEqual(metadata["max_depth_m"], 20.0)
+
     def test_robust_roi_median_excludes_invalid_and_extreme_values(self) -> None:
         depth = np.full((10, 10), 2.0, dtype=np.float32)
         depth[0, 0] = np.nan

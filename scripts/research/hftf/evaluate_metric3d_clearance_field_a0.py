@@ -13,6 +13,7 @@ from typing import Any
 
 import cv2
 import numpy as np
+import psutil
 
 from prepare_bonn_rgbd_metric_depth_manifest import (
     associate_nearest,
@@ -20,14 +21,15 @@ from prepare_bonn_rgbd_metric_depth_manifest import (
     read_tum_index,
 )
 from produce_external_rgb_metric_depth_observations import (
+    DepthAnythingV2MetricSource,
     DepthSource,
     Metric3DPytorchSource,
+    MoGe2Source,
     UniDepthSource,
     intrinsics_matrix,
 )
 
-
-SCHEMA = "blindassist_hftf_metric3d_clearance_field_a0"
+SCHEMA = "blindassist_hftf_depth_observer_clearance_a0"
 BANDS = {
     "left": (-1.20, -0.40),
     "center": (-0.40, 0.40),
@@ -48,7 +50,11 @@ def depth_to_points(
     y = (rows - cy) * z / fy
     points = np.stack((x, y, z), axis=-1).reshape(-1, 3)
     pixels = np.stack((columns, rows), axis=-1).reshape(-1, 2)
-    valid = np.all(np.isfinite(points), axis=1) & (points[:, 2] >= 0.25) & (points[:, 2] <= 6.0)
+    valid = (
+        np.all(np.isfinite(points), axis=1)
+        & (points[:, 2] >= 0.25)
+        & (points[:, 2] <= 6.0)
+    )
     return points[valid], pixels[valid]
 
 
@@ -84,7 +90,9 @@ def fit_ground_plane(
         inliers = np.abs(candidates @ normal + offset) <= 0.045
         if best_inliers is None or int(np.sum(inliers)) > int(np.sum(best_inliers)):
             best_inliers = inliers
-    if best_inliers is None or int(np.sum(best_inliers)) < max(80, int(0.08 * len(candidates))):
+    if best_inliers is None or int(np.sum(best_inliers)) < max(
+        80, int(0.08 * len(candidates))
+    ):
         return None
     ground = candidates[best_inliers]
     center = np.mean(ground, axis=0)
@@ -203,9 +211,7 @@ def clearance_field(
 ) -> dict[str, Any]:
     points, pixels = depth_to_points(depth, intrinsics)
     plane = plane_override or (
-        fit_gravity_guided_ground_plane(
-            points, pixels, up_camera, depth.shape[0]
-        )
+        fit_gravity_guided_ground_plane(points, pixels, up_camera, depth.shape[0])
         if up_camera is not None
         else fit_normal_guided_ground_plane(
             points, pixels, normal_kappa_map, depth.shape[0]
@@ -227,7 +233,9 @@ def clearance_field(
     heights = points @ up + camera_height
     forward = points @ forward_axis
     lateral = points @ lateral_axis
-    obstacle = (heights >= 0.08) & (heights <= 2.00) & (forward >= 0.20) & (forward <= 4.00)
+    obstacle = (
+        (heights >= 0.08) & (heights <= 2.00) & (forward >= 0.20) & (forward <= 4.00)
+    )
     point_confidence = (
         np.asarray(confidence_map, dtype=np.float64)[
             pixels[:, 1].astype(int), pixels[:, 0].astype(int)
@@ -242,7 +250,7 @@ def clearance_field(
         if len(distances) < 20:
             band_output[name] = {
                 "clearance_m": None,
-                "obstacle_points": int(len(distances)),
+                "obstacle_points": len(distances),
                 "occupied_by_horizon": {str(value): None for value in HORIZONS_M},
             }
             continue
@@ -257,7 +265,7 @@ def clearance_field(
         band_output[name] = {
             "clearance_m": clearance,
             "clearance_log1p_confidence": clearance_confidence,
-            "obstacle_points": int(len(distances)),
+            "obstacle_points": len(distances),
             "occupied_by_horizon": {
                 str(value): clearance <= value for value in HORIZONS_M
             },
@@ -282,11 +290,15 @@ def clearance_field(
 def load_clearance_manifests(manifest_paths: list[Path]) -> list[dict[str, Any]]:
     rows = []
     for path in manifest_paths:
-        for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        for line_number, line in enumerate(
+            path.read_text(encoding="utf-8").splitlines(), 1
+        ):
             if not line.strip():
                 continue
             row = json.loads(line)
-            missing = sorted({"sequence_id", "frame_path", "intrinsics_fx_fy_cx_cy"} - row.keys())
+            missing = sorted(
+                {"sequence_id", "frame_path", "intrinsics_fx_fy_cx_cy"} - row.keys()
+            )
             if missing:
                 raise ValueError(f"{path}:{line_number}: missing {missing}")
             frame_path = Path(str(row["frame_path"]))
@@ -315,7 +327,9 @@ def _depth_lookup(sequence_root: Path) -> dict[str, Path]:
         0.02,
     )
     return {
-        str((sequence_root / rgb_relative).resolve()): (sequence_root / depth_relative).resolve()
+        str((sequence_root / rgb_relative).resolve()): (
+            sequence_root / depth_relative
+        ).resolve()
         for _, rgb_relative, _, depth_relative in pairs
     }
 
@@ -331,7 +345,9 @@ def infer_metric3d_depth_normal(
     height, width = rgb.shape[:2]
     scale = min(source.input_height / height, source.input_width / width)
     resized_height, resized_width = int(height * scale), int(width * scale)
-    resized = cv2.resize(rgb, (resized_width, resized_height), interpolation=cv2.INTER_LINEAR)
+    resized = cv2.resize(
+        rgb, (resized_width, resized_height), interpolation=cv2.INTER_LINEAR
+    )
     pad_height = source.input_height - resized_height
     pad_width = source.input_width - resized_width
     pad_top, pad_left = pad_height // 2, pad_width // 2
@@ -343,6 +359,47 @@ def infer_metric3d_depth_normal(
         pad_width - pad_left,
         cv2.BORDER_CONSTANT,
         value=[123.675, 116.28, 103.53],
+    )
+    tensor = (
+        source.torch.from_numpy(np.ascontiguousarray(padded.transpose(2, 0, 1)))
+        .float()
+        .to(source.device)
+    )
+    tensor = ((tensor - source.mean) / source.std)[None]
+    with source.torch.inference_mode():
+        prediction, _, outputs = source.model.inference({"input": tensor})
+    depth = prediction.squeeze()[
+        pad_top : source.input_height - (pad_height - pad_top),
+        pad_left : source.input_width - (pad_width - pad_left),
+    ]
+    depth = source.torch.nn.functional.interpolate(
+        depth[None, None],
+        (height, width),
+        mode="bilinear",
+        align_corners=False,
+    ).squeeze()
+    canonical_to_real = float(intrinsics_matrix(row)[0, 0]) * scale / 1000.0
+    depth = source.torch.clamp(depth * canonical_to_real, 0, 300)
+    normal = outputs["prediction_normal"].squeeze(0)[
+        :,
+        pad_top : source.input_height - (pad_height - pad_top),
+        pad_left : source.input_width - (pad_width - pad_left),
+    ]
+    normal = source.torch.nn.functional.interpolate(
+        normal[None],
+        (height, width),
+        mode="bilinear",
+        align_corners=False,
+    ).squeeze(0)
+    directions = normal[:3]
+    directions = directions / source.torch.clamp(
+        source.torch.linalg.vector_norm(directions, dim=0, keepdim=True),
+        min=1e-8,
+    )
+    normal = source.torch.cat((directions, normal[3:4]), dim=0)
+    return (
+        depth.detach().cpu().numpy(),
+        normal.permute(1, 2, 0).detach().cpu().numpy(),
     )
 
 
@@ -431,38 +488,6 @@ def fixed_world_plane_in_camera(
     if not 0.45 <= camera_height <= 2.20:
         return None
     return up_camera, camera_height, 0.0
-    tensor = source.torch.from_numpy(
-        np.ascontiguousarray(padded.transpose(2, 0, 1))
-    ).float().to(source.device)
-    tensor = ((tensor - source.mean) / source.std)[None]
-    with source.torch.inference_mode():
-        prediction, _, outputs = source.model.inference({"input": tensor})
-    depth = prediction.squeeze()[
-        pad_top : source.input_height - (pad_height - pad_top),
-        pad_left : source.input_width - (pad_width - pad_left),
-    ]
-    depth = source.torch.nn.functional.interpolate(
-        depth[None, None], (height, width), mode="bilinear", align_corners=False
-    ).squeeze()
-    canonical_to_real = float(intrinsics_matrix(row)[0, 0]) * scale / 1000.0
-    depth = source.torch.clamp(depth * canonical_to_real, 0, 300)
-    normal = outputs["prediction_normal"].squeeze(0)[
-        :,
-        pad_top : source.input_height - (pad_height - pad_top),
-        pad_left : source.input_width - (pad_width - pad_left),
-    ]
-    normal = source.torch.nn.functional.interpolate(
-        normal[None], (height, width), mode="bilinear", align_corners=False
-    ).squeeze(0)
-    directions = normal[:3]
-    directions = directions / source.torch.clamp(
-        source.torch.linalg.vector_norm(directions, dim=0, keepdim=True), min=1e-8
-    )
-    normal = source.torch.cat((directions, normal[3:4]), dim=0)
-    return (
-        depth.detach().cpu().numpy(),
-        normal.permute(1, 2, 0).detach().cpu().numpy(),
-    )
 
 
 def evaluate_rows(
@@ -474,10 +499,9 @@ def evaluate_rows(
     reference_floor_world_plane: tuple[np.ndarray, float] | None = None,
 ) -> dict[str, Any]:
     lookup_cache: dict[Path, dict[str, Path]] = {}
-    pose_cache: dict[
-        Path, tuple[np.ndarray, np.ndarray, np.ndarray]
-    ] = {}
+    pose_cache: dict[Path, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
     frame_results = []
+    process = psutil.Process()
     for row in rows:
         frame_path = Path(str(row["frame_path"])).resolve()
         sequence_root = frame_path.parent.parent
@@ -499,9 +523,7 @@ def evaluate_rows(
         )
         intrinsics = intrinsics_matrix(row)
         reference_up = (
-            tum_world_up_in_camera(
-                float(frame_path.stem), pose_cache[sequence_root]
-            )
+            tum_world_up_in_camera(float(frame_path.stem), pose_cache[sequence_root])
             if reference_ground_mode == "tum_gravity_oracle"
             else None
         )
@@ -525,6 +547,9 @@ def evaluate_rows(
         )
         started = time.perf_counter()
         rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+        torch_runtime = getattr(source, "torch", None)
+        if torch_runtime is not None and torch_runtime.cuda.is_available():
+            torch_runtime.cuda.reset_peak_memory_stats()
         if ground_mode == "metric3d_normal_guided":
             if not isinstance(source, Metric3DPytorchSource):
                 raise ValueError("normal-guided mode requires Metric3D PyTorch")
@@ -535,9 +560,7 @@ def evaluate_rows(
             normal_kappa = None
             confidence_map = metadata.get("confidence_map")
         up_camera = (
-            tum_world_up_in_camera(
-                float(frame_path.stem), pose_cache[sequence_root]
-            )
+            tum_world_up_in_camera(float(frame_path.stem), pose_cache[sequence_root])
             if ground_mode == "tum_gravity_oracle"
             else None
         )
@@ -581,14 +604,31 @@ def evaluate_rows(
                         plane_override=reference_plane,
                     )
                 ),
-                "metric3d": model_field,
+                "candidate": model_field,
+                "process_rss_mib": process.memory_info().rss / (1024.0 * 1024.0),
+                "cuda_peak_allocated_mib": (
+                    torch_runtime.cuda.max_memory_allocated() / (1024.0 * 1024.0)
+                    if torch_runtime is not None and torch_runtime.cuda.is_available()
+                    else None
+                ),
             }
         )
     return summarize(frame_results)
 
 
+def _candidate_field(row: dict[str, Any]) -> dict[str, Any]:
+    if "candidate" in row:
+        return row["candidate"]
+    return row["metric3d"]
+
+
 def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
-    paired_valid = [row for row in rows if row["sensor"]["status"] == "VALID" and row["metric3d"]["status"] == "VALID"]
+    paired_valid = [
+        row
+        for row in rows
+        if row["sensor"]["status"] == "VALID"
+        and _candidate_field(row)["status"] == "VALID"
+    ]
     clear_errors = []
     decisions = []
     false_clear = []
@@ -600,10 +640,13 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
     previous: dict[tuple[str, str], tuple[float, float]] = {}
     for row in paired_valid:
-        height_errors.append(abs(row["metric3d"]["camera_height_m"] - row["sensor"]["camera_height_m"]))
+        candidate = _candidate_field(row)
+        height_errors.append(
+            abs(candidate["camera_height_m"] - row["sensor"]["camera_height_m"])
+        )
         for band in BANDS:
             truth_band = row["sensor"]["bands"][band]
-            model_band = row["metric3d"]["bands"][band]
+            model_band = candidate["bands"][band]
             truth_clearance = truth_band["clearance_m"]
             model_clearance = model_band["clearance_m"]
             if truth_clearance is not None and model_clearance is not None:
@@ -613,7 +656,12 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 key = (row["sequence_id"], band)
                 if key in previous:
                     previous_truth, previous_model = previous[key]
-                    delta_errors.append(abs((model_clearance - previous_model) - (truth_clearance - previous_truth)))
+                    delta_errors.append(
+                        abs(
+                            (model_clearance - previous_model)
+                            - (truth_clearance - previous_truth)
+                        )
+                    )
                 previous[key] = (truth_clearance, model_clearance)
             for horizon in HORIZONS_M:
                 truth = truth_band["occupied_by_horizon"][str(horizon)]
@@ -630,19 +678,29 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     temporal_delta_mae = statistics.fmean(delta_errors) if delta_errors else None
     gates = {
         "paired_valid_fraction_at_least_0_90": valid_fraction >= 0.90,
-        "clearance_mae_at_most_0_25m": clearance_mae is not None and clearance_mae <= 0.25,
-        "collision_agreement_at_least_0_90": decision_agreement is not None and decision_agreement >= 0.90,
-        "false_clear_rate_at_most_0_05": false_clear_rate is not None and false_clear_rate <= 0.05,
-        "temporal_delta_mae_at_most_0_15m": temporal_delta_mae is not None and temporal_delta_mae <= 0.15,
+        "clearance_mae_at_most_0_25m": clearance_mae is not None
+        and clearance_mae <= 0.25,
+        "collision_agreement_at_least_0_90": decision_agreement is not None
+        and decision_agreement >= 0.90,
+        "false_clear_rate_at_most_0_05": false_clear_rate is not None
+        and false_clear_rate <= 0.05,
+        "temporal_delta_mae_at_most_0_15m": temporal_delta_mae is not None
+        and temporal_delta_mae <= 0.15,
     }
     per_band = {}
     for band, values in by_band.items():
         per_band[band] = {
             "known_clearance_pairs": len(values["clearance_errors"]),
-            "clearance_mae_m": statistics.fmean(values["clearance_errors"]) if values["clearance_errors"] else None,
+            "clearance_mae_m": statistics.fmean(values["clearance_errors"])
+            if values["clearance_errors"]
+            else None,
             "known_collision_pairs": len(values["decisions"]),
-            "collision_agreement": statistics.fmean(values["decisions"]) if values["decisions"] else None,
-            "false_clear_rate": statistics.fmean(values["false_clear"]) if values["false_clear"] else None,
+            "collision_agreement": statistics.fmean(values["decisions"])
+            if values["decisions"]
+            else None,
+            "false_clear_rate": statistics.fmean(values["false_clear"])
+            if values["false_clear"]
+            else None,
         }
     return {
         "schema": SCHEMA,
@@ -655,11 +713,26 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "collision_agreement": decision_agreement,
         "false_clear_rate": false_clear_rate,
         "temporal_clearance_delta_mae_m": temporal_delta_mae,
-        "camera_height_mae_m": statistics.fmean(height_errors) if height_errors else None,
+        "camera_height_mae_m": statistics.fmean(height_errors)
+        if height_errors
+        else None,
         "per_band": per_band,
         "latency_mean_ms": statistics.fmean(row["latency_ms"] for row in rows),
+        "process_rss_peak_mib": max(
+            (row.get("process_rss_mib", 0.0) for row in rows), default=None
+        ),
+        "cuda_peak_allocated_mib": max(
+            (
+                row["cuda_peak_allocated_mib"]
+                for row in rows
+                if row.get("cuda_peak_allocated_mib") is not None
+            ),
+            default=None,
+        ),
         "gates": gates,
-        "status": "METRIC3D_CLEARANCE_FIELD_A0_DEVELOPMENT_PASS" if all(gates.values()) else "METRIC3D_CLEARANCE_FIELD_A0_DEVELOPMENT_FAIL",
+        "status": "DEPTH_OBSERVER_CLEARANCE_A0_CONSUMED_PASS"
+        if all(gates.values())
+        else "DEPTH_OBSERVER_CLEARANCE_A0_CONSUMED_FAIL",
         "frames": rows,
     }
 
@@ -667,11 +740,11 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, nargs="+", required=True)
-    parser.add_argument("--metric3d-repo", type=Path, required=True)
-    parser.add_argument("--metric3d-checkpoint", type=Path, required=True)
+    parser.add_argument("--metric3d-repo", type=Path)
+    parser.add_argument("--metric3d-checkpoint", type=Path)
     parser.add_argument(
         "--source-model",
-        choices=("metric3d", "unidepth"),
+        choices=("metric3d", "unidepth", "moge2", "depth_anything_v2_metric"),
         default="metric3d",
     )
     parser.add_argument("--unidepth-repo", type=Path)
@@ -680,6 +753,13 @@ def main() -> None:
         default="lpiccinelli/unidepth-v2-vits14",
     )
     parser.add_argument("--unidepth-resolution-level", type=int, default=0)
+    parser.add_argument("--moge-repo", type=Path)
+    parser.add_argument("--utils3d-repo", type=Path)
+    parser.add_argument("--moge-checkpoint", type=Path)
+    parser.add_argument("--moge-resolution-level", type=int, default=9)
+    parser.add_argument("--depth-anything-repo", type=Path)
+    parser.add_argument("--depth-anything-checkpoint", type=Path)
+    parser.add_argument("--depth-anything-input-size", type=int, default=518)
     parser.add_argument("--device", default="cuda")
     parser.add_argument(
         "--ground-mode",
@@ -719,7 +799,37 @@ def main() -> None:
             args.unidepth_resolution_level,
             args.device,
         )
+    elif args.source_model == "moge2":
+        if (
+            args.moge_repo is None
+            or args.utils3d_repo is None
+            or args.moge_checkpoint is None
+        ):
+            parser.error(
+                "MoGe-2 requires --moge-repo, --utils3d-repo, and --moge-checkpoint"
+            )
+        source = MoGe2Source(
+            args.moge_repo,
+            args.utils3d_repo,
+            args.moge_checkpoint,
+            args.device,
+            args.moge_resolution_level,
+        )
+    elif args.source_model == "depth_anything_v2_metric":
+        if args.depth_anything_repo is None or args.depth_anything_checkpoint is None:
+            parser.error(
+                "Depth Anything V2 Metric requires --depth-anything-repo "
+                "and --depth-anything-checkpoint"
+            )
+        source = DepthAnythingV2MetricSource(
+            args.depth_anything_repo,
+            args.depth_anything_checkpoint,
+            args.device,
+            args.depth_anything_input_size,
+        )
     else:
+        if args.metric3d_repo is None or args.metric3d_checkpoint is None:
+            parser.error("Metric3D requires --metric3d-repo and --metric3d-checkpoint")
         source = Metric3DPytorchSource(
             args.metric3d_repo, args.metric3d_checkpoint, args.device
         )
@@ -730,15 +840,26 @@ def main() -> None:
         args.reference_ground_mode,
         args.reference_floor_world_z_m,
         (
-            (np.asarray(args.reference_floor_world_plane[:3]), args.reference_floor_world_plane[3])
+            (
+                np.asarray(args.reference_floor_world_plane[:3]),
+                args.reference_floor_world_plane[3],
+            )
             if args.reference_floor_world_plane is not None
             else None
         ),
     )
     report["candidate_model_id"] = source.model_id
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({key: value for key, value in report.items() if key != "frames"}, indent=2, sort_keys=True))
+    args.output.write_text(
+        json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    print(
+        json.dumps(
+            {key: value for key, value in report.items() if key != "frames"},
+            indent=2,
+            sort_keys=True,
+        )
+    )
 
 
 if __name__ == "__main__":
