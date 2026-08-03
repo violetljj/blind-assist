@@ -19,7 +19,12 @@ from prepare_bonn_rgbd_metric_depth_manifest import (
     normalize_depth_image,
     read_tum_index,
 )
-from produce_external_rgb_metric_depth_observations import Metric3DPytorchSource, intrinsics_matrix
+from produce_external_rgb_metric_depth_observations import (
+    DepthSource,
+    Metric3DPytorchSource,
+    UniDepthSource,
+    intrinsics_matrix,
+)
 
 
 SCHEMA = "blindassist_hftf_metric3d_clearance_field_a0"
@@ -194,6 +199,7 @@ def clearance_field(
     normal_kappa_map: np.ndarray | None = None,
     up_camera: np.ndarray | None = None,
     plane_override: tuple[np.ndarray, float, float] | None = None,
+    confidence_map: np.ndarray | None = None,
 ) -> dict[str, Any]:
     points, pixels = depth_to_points(depth, intrinsics)
     plane = plane_override or (
@@ -222,9 +228,17 @@ def clearance_field(
     forward = points @ forward_axis
     lateral = points @ lateral_axis
     obstacle = (heights >= 0.08) & (heights <= 2.00) & (forward >= 0.20) & (forward <= 4.00)
+    point_confidence = (
+        np.asarray(confidence_map, dtype=np.float64)[
+            pixels[:, 1].astype(int), pixels[:, 0].astype(int)
+        ]
+        if confidence_map is not None
+        else None
+    )
     band_output = {}
     for name, (minimum, maximum) in BANDS.items():
-        distances = forward[obstacle & (lateral >= minimum) & (lateral < maximum)]
+        band_mask = obstacle & (lateral >= minimum) & (lateral < maximum)
+        distances = forward[band_mask]
         if len(distances) < 20:
             band_output[name] = {
                 "clearance_m": None,
@@ -233,8 +247,16 @@ def clearance_field(
             }
             continue
         clearance = float(np.quantile(distances, 0.02))
+        clearance_confidence = None
+        if point_confidence is not None:
+            values = point_confidence[band_mask]
+            support = values[distances <= clearance + 0.10]
+            support = support[np.isfinite(support) & (support >= 0)]
+            if len(support):
+                clearance_confidence = float(np.median(np.log1p(support)))
         band_output[name] = {
             "clearance_m": clearance,
+            "clearance_log1p_confidence": clearance_confidence,
             "obstacle_points": int(len(distances)),
             "occupied_by_horizon": {
                 str(value): clearance <= value for value in HORIZONS_M
@@ -422,7 +444,7 @@ def tum_fixed_world_floor_in_camera(
 
 def evaluate_rows(
     rows: list[dict[str, Any]],
-    source: Metric3DPytorchSource,
+    source: DepthSource,
     ground_mode: str = "depth_ransac",
     reference_ground_mode: str = "depth_ransac",
     reference_floor_world_z_m: float | None = None,
@@ -472,10 +494,14 @@ def evaluate_rows(
         started = time.perf_counter()
         rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
         if ground_mode == "metric3d_normal_guided":
+            if not isinstance(source, Metric3DPytorchSource):
+                raise ValueError("normal-guided mode requires Metric3D PyTorch")
             model, normal_kappa = infer_metric3d_depth_normal(source, rgb, row)
+            confidence_map = None
         else:
-            model, _ = source.infer(rgb, row)
+            model, metadata = source.infer(rgb, row)
             normal_kappa = None
+            confidence_map = metadata.get("confidence_map")
         up_camera = (
             tum_world_up_in_camera(
                 float(frame_path.stem), pose_cache[sequence_root]
@@ -487,7 +513,13 @@ def evaluate_rows(
         model_field = (
             {"status": "UNKNOWN_GRAVITY"}
             if ground_mode == "tum_gravity_oracle" and up_camera is None
-            else clearance_field(model, intrinsics, normal_kappa, up_camera)
+            else clearance_field(
+                model,
+                intrinsics,
+                normal_kappa,
+                up_camera,
+                confidence_map=confidence_map,
+            )
         )
         frame_results.append(
             {
@@ -601,6 +633,17 @@ def main() -> None:
     parser.add_argument("--manifest", type=Path, nargs="+", required=True)
     parser.add_argument("--metric3d-repo", type=Path, required=True)
     parser.add_argument("--metric3d-checkpoint", type=Path, required=True)
+    parser.add_argument(
+        "--source-model",
+        choices=("metric3d", "unidepth"),
+        default="metric3d",
+    )
+    parser.add_argument("--unidepth-repo", type=Path)
+    parser.add_argument(
+        "--unidepth-model-name",
+        default="lpiccinelli/unidepth-v2-vits14",
+    )
+    parser.add_argument("--unidepth-resolution-level", type=int, default=0)
     parser.add_argument("--device", default="cuda")
     parser.add_argument(
         "--ground-mode",
@@ -623,7 +666,20 @@ def main() -> None:
     parser.add_argument("--reference-floor-world-z-m", type=float)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    source = Metric3DPytorchSource(args.metric3d_repo, args.metric3d_checkpoint, args.device)
+    source: DepthSource
+    if args.source_model == "unidepth":
+        if args.unidepth_repo is None:
+            parser.error("--unidepth-repo is required for UniDepth")
+        source = UniDepthSource(
+            args.unidepth_repo,
+            args.unidepth_model_name,
+            args.unidepth_resolution_level,
+            args.device,
+        )
+    else:
+        source = Metric3DPytorchSource(
+            args.metric3d_repo, args.metric3d_checkpoint, args.device
+        )
     report = evaluate_rows(
         _unique_frames(args.manifest),
         source,
@@ -631,6 +687,7 @@ def main() -> None:
         args.reference_ground_mode,
         args.reference_floor_world_z_m,
     )
+    report["candidate_model_id"] = source.model_id
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({key: value for key, value in report.items() if key != "frames"}, indent=2, sort_keys=True))
