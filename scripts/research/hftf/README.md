@@ -28,6 +28,7 @@ D16-tartanground-future-onset-three-fold-ready /
 D16-tartanground-history-increment-not-supported /
 A1-consumed-motion-increment-not-supported /
 A0.1-android-probability-head-parity-runtime-supported /
+metric-depth-android-dualarm-runtime-supported-no-realtime /
 frozen-single-frame-posthoc-temporal-residual-family-stop`
 
 ## 研究问题与版本
@@ -65,6 +66,17 @@ SM-S9280 / Android 16 上的隔离 instrumentation canary 又对 1,716 个绑定
 `A0_1_ANDROID_PROBABILITY_HEAD_PARITY_RUNTIME_SUPPORTED`。这只清除了 Kotlin
 标准化/逻辑头的数值与时延风险；`heavy_inference_covered=false`，因此 UniDepth、
 clearance geometry、RAFT、内存和持续热行为仍未获得 Android 证据。
+
+随后冻结的 `METRIC_DEPTH_ANDROID_DUALARM_R0` 首次把 Metric3Dv2-S 与
+UniDepthV2-S 放入同一 `onnxruntime-android:1.26.0` instrumentation。两臂在
+SM-S9280 的 CPU 与 NNAPI 会话均能加载并完成推理，但当前全精度直跑不具备实时性：
+CPU P95 分别为 `5367.79 ms` 与 `1721.97 ms`，Metric3D 是 UniDepth 的
+`3.1172x`；对应顺序进程 PSS 增量约 `832.13 MiB` 与 `260.54 MiB`。注册 NNAPI
+反而使 P95 分别恶化 `33.77%` 与 `14.10%`，且不能证明 accelerator-only coverage。
+因此保留 Metric3D 为精度 teacher/部署优化首选，保留 UniDepth 为延迟参考；两者当前
+均不得进入实时 App。完整协议与结果见
+`METRIC_DEPTH_ANDROID_DUALARM_R0_PROTOCOL.md` 和
+`METRIC_DEPTH_ANDROID_DUALARM_R0_RESULT.md`。
 
 ### D6 SANPO real veto transfer
 

@@ -44,4 +44,5 @@ dependencies {
     implementation(libs.androidx.test.runner)
     implementation(libs.androidx.test.rules)
     implementation(libs.androidx.test.ext.junit)
+    implementation(libs.onnxruntime.android)
 }
