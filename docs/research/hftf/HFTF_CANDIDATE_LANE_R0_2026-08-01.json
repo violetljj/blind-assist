@@ -7,6 +7,27 @@
   "default_app_changed": false,
   "historical_ustrf_terminals_immutable": true,
   "scientific_question": "Can a causal history-only RGB student predict a human-envelope-conditioned short-horizon traversability field that improves parent-event utility over the incumbent under the same device budget?",
+  "runtime_input_contract": {
+    "required": [
+      "causal_rgb_frames",
+      "source_monotonic_frame_timestamp",
+      "frozen_camera_profile",
+      "model_causal_state"
+    ],
+    "not_required": [
+      "arcore_or_runtime_depth",
+      "object_detector_or_track",
+      "phone_camerax_camera_id",
+      "imu_vio_or_fixed_external_camera_to_phone_extrinsic"
+    ],
+    "teacher_only_inputs": [
+      "source_authoritative_metric_depth",
+      "pose",
+      "future_frames",
+      "person_trajectories",
+      "geometric_body_envelope"
+    ]
+  },
   "representation": {
     "axes": [
       "theta_bin",

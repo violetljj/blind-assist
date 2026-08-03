@@ -14,6 +14,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import com.google.ar.core.ArCoreApk
+import com.google.ar.core.CameraConfig
+import com.google.ar.core.CameraConfigFilter
 import com.google.ar.core.Config
 import com.google.ar.core.Session
 import com.google.ar.core.TrackingState
@@ -23,6 +25,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
+import java.util.EnumSet
 
 /**
  * D45 benchmark-only source canary.
@@ -48,6 +51,12 @@ class D45ArCoreRawSourceDecoderCanaryTest {
         val runId = arguments.getString(ARG_RUN_ID)
             ?.takeIf(RUN_ID::matches)
             ?: "autonomous-${System.currentTimeMillis()}"
+        val motionProtocol = arguments.getString(ARG_MOTION_PROTOCOL)?.let { requested ->
+            require(requested in ALLOWED_MOTION_PROTOCOLS) {
+                "unsupported D45 raw-source motion protocol: $requested"
+            }
+            requested
+        } ?: MOTION_PROTOCOL_AUTONOMOUS
         val outputRoot = File(
             instrumentation.targetContext.getExternalFilesDir(null)
                 ?: instrumentation.targetContext.filesDir,
@@ -73,6 +82,9 @@ class D45ArCoreRawSourceDecoderCanaryTest {
         }
 
         var rawDepthSupported = false
+        var automaticDepthSupported = false
+        var cameraConfigCount = 0
+        var hardwareDepthCameraConfigCount = 0
         var attemptedUpdates = 0
         var trackingFrames = 0
         var strictlyAdvancingTimestamps = 0
@@ -80,7 +92,13 @@ class D45ArCoreRawSourceDecoderCanaryTest {
         val distinctTimestamps = linkedSetOf<Long>()
         var availableObservations = 0
         var totalDecodedPixels = 0L
+        var totalNonzeroDepthPixels = 0L
+        var totalInRangeDepthPixels = 0L
+        var totalNonzeroConfidencePixels = 0L
+        var totalThresholdConfidencePixels = 0L
         var totalValidPixels = 0L
+        var maximumDecodedDepthMm = 0
+        var maximumDecodedConfidence = 0f
         val coverageValues = mutableListOf<Double>()
         val latencyValuesMs = mutableListOf<Double>()
         val dimensions = linkedMapOf<String, Int>()
@@ -111,8 +129,19 @@ class D45ArCoreRawSourceDecoderCanaryTest {
                     )
                 ) {
                     session = Session(activity).also { created ->
+                        automaticDepthSupported =
+                            created.isDepthModeSupported(Config.DepthMode.AUTOMATIC)
                         rawDepthSupported =
                             created.isDepthModeSupported(Config.DepthMode.RAW_DEPTH_ONLY)
+                        val cameraConfigs = created.getSupportedCameraConfigs(
+                            CameraConfigFilter(created).setDepthSensorUsage(
+                                EnumSet.allOf(CameraConfig.DepthSensorUsage::class.java)
+                            )
+                        )
+                        cameraConfigCount = cameraConfigs.size
+                        hardwareDepthCameraConfigCount = cameraConfigs.count {
+                            it.depthSensorUsage == CameraConfig.DepthSensorUsage.REQUIRE_AND_USE
+                        }
                         if (rawDepthSupported) {
                             val config = Config(created).apply {
                                 depthMode = Config.DepthMode.RAW_DEPTH_ONLY
@@ -159,13 +188,38 @@ class D45ArCoreRawSourceDecoderCanaryTest {
                                             availableObservations++
                                             val observation = result.observation
                                             val raster = observation.raster
+                                            val nonzeroDepthPixels =
+                                                raster.depthMillimeters.count { it > 0 }
+                                            val inRangeDepthPixels =
+                                                raster.depthMillimeters.count {
+                                                    it in MIN_VALID_DEPTH_MM..MAX_VALID_DEPTH_MM
+                                                }
+                                            val nonzeroConfidencePixels =
+                                                raster.confidence.count { it > 0f }
+                                            val thresholdConfidencePixels =
+                                                raster.confidence.count {
+                                                    it >= MIN_VALID_CONFIDENCE
+                                                }
                                             val validPixels = raster.depthMillimeters.indices.count { index ->
                                                 raster.depthMillimeters[index] in
                                                     MIN_VALID_DEPTH_MM..MAX_VALID_DEPTH_MM &&
                                                     raster.confidence[index] >= MIN_VALID_CONFIDENCE
                                             }
                                             totalDecodedPixels += raster.depthMillimeters.size
+                                            totalNonzeroDepthPixels += nonzeroDepthPixels
+                                            totalInRangeDepthPixels += inRangeDepthPixels
+                                            totalNonzeroConfidencePixels += nonzeroConfidencePixels
+                                            totalThresholdConfidencePixels +=
+                                                thresholdConfidencePixels
                                             totalValidPixels += validPixels
+                                            maximumDecodedDepthMm = maxOf(
+                                                maximumDecodedDepthMm,
+                                                raster.depthMillimeters.maxOrNull() ?: 0
+                                            )
+                                            maximumDecodedConfidence = maxOf(
+                                                maximumDecodedConfidence,
+                                                raster.confidence.maxOrNull() ?: 0f
+                                            )
                                             coverageValues +=
                                                 validPixels.toDouble() / raster.depthMillimeters.size
                                             latencyValuesMs +=
@@ -278,7 +332,13 @@ class D45ArCoreRawSourceDecoderCanaryTest {
             .put("arcore", JSONObject()
                 .put("availability", availability.name)
                 .put("sdk_dependency_version", ARCORE_SDK_VERSION)
+                .put("automatic_depth_supported", automaticDepthSupported)
                 .put("raw_depth_only_supported", rawDepthSupported)
+                .put("camera_config_count", cameraConfigCount)
+                .put(
+                    "hardware_depth_camera_config_count",
+                    hardwareDepthCameraConfigCount
+                )
                 .put("camera_id", cameraId ?: JSONObject.NULL)
                 .put(
                     "sensor_orientation_degrees",
@@ -306,13 +366,25 @@ class D45ArCoreRawSourceDecoderCanaryTest {
                 .put("tracking_state_counts", JSONObject(trackingStates as Map<*, *>))
                 .put("unavailable_failure_counts", JSONObject(failures as Map<*, *>))
                 .put("decoded_dimension_counts", JSONObject(dimensions as Map<*, *>))
-                .put("motion_protocol", MOTION_PROTOCOL))
+                .put("motion_protocol", motionProtocol))
             .put("valid_pixel_contract", JSONObject()
                 .put("minimum_depth_mm", MIN_VALID_DEPTH_MM)
                 .put("maximum_depth_mm", MAX_VALID_DEPTH_MM)
                 .put("minimum_confidence", MIN_VALID_CONFIDENCE.toDouble())
                 .put("decoded_pixel_count", totalDecodedPixels)
+                .put("nonzero_depth_pixel_count", totalNonzeroDepthPixels)
+                .put("in_range_depth_pixel_count", totalInRangeDepthPixels)
+                .put("nonzero_confidence_pixel_count", totalNonzeroConfidencePixels)
+                .put(
+                    "threshold_confidence_pixel_count",
+                    totalThresholdConfidencePixels
+                )
                 .put("valid_pixel_count", totalValidPixels)
+                .put("maximum_decoded_depth_mm", maximumDecodedDepthMm)
+                .put(
+                    "maximum_decoded_confidence",
+                    maximumDecodedConfidence.toDouble()
+                )
                 .put(
                     "aggregate_valid_pixel_coverage",
                     ratioOrNull(totalValidPixels, totalDecodedPixels)
@@ -428,6 +500,7 @@ class D45ArCoreRawSourceDecoderCanaryTest {
     private companion object {
         const val ARG_FRAME_ATTEMPTS = "hftfD45RawSourceFrameAttempts"
         const val ARG_RUN_ID = "hftfD45RawSourceRunId"
+        const val ARG_MOTION_PROTOCOL = "hftfD45RawSourceMotionProtocol"
         const val DEFAULT_FRAME_ATTEMPTS = 300
         const val MAX_FRAME_ATTEMPTS = 1_800
         const val AVAILABILITY_ATTEMPTS = 10
@@ -441,8 +514,14 @@ class D45ArCoreRawSourceDecoderCanaryTest {
         const val NANOS_PER_MILLISECOND = 1_000_000.0
         const val MAX_RECEIPT_BYTES = 256L * 1_024L
         const val ARCORE_SDK_VERSION = "1.33.0"
-        const val MOTION_PROTOCOL =
+        const val MOTION_PROTOCOL_AUTONOMOUS =
             "AUTONOMOUS_STATIONARY_OR_UNCONTROLLED_NO_USER_INSTRUCTION"
+        const val MOTION_PROTOCOL_OPERATOR_CONTROLLED =
+            "OPERATOR_CONTROLLED_TRANSLATION_TEXTURED_SCENE"
+        val ALLOWED_MOTION_PROTOCOLS = setOf(
+            MOTION_PROTOCOL_AUTONOMOUS,
+            MOTION_PROTOCOL_OPERATOR_CONTROLLED
+        )
         const val REGISTRATION_COORDINATE_CONTRACT =
             "DETECTOR_DISPLAY_TO_CPU_IMAGE_TO_TEXTURE_NORMALIZED_RAW_DEPTH"
         const val DETECTOR_ANALYSIS_TARGET_ROTATION = Surface.ROTATION_0

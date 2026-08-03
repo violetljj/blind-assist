@@ -154,8 +154,8 @@ STAGE_C_D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_FROZEN /
 D44_JRDB_CAUSAL_RELATIVE_METRIC_TRACK_SUPPORTED_DEVELOPMENT_ONLY /
 D44_RELATIVE_METRIC_HISTORY_SUFFICIENCY_SUPPORTED /
 STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN_R0_2 /
-D45_SOURCE_CANARY_READY_FOR_DEVICE_EXECUTION /
-D45_NOT_EVALUATED_NO_READY_DEVICE /
+D45_CURRENT_DEVICE_SOURCE_EXECUTED_PERSON_MEASUREMENT_NOT_ADMITTED /
+D45_PHONE_METRIC_DEPTH_SOURCE_NOT_EVALUABLE /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
 
 ## 2026-08-03 D45：只验证手机端 metric-depth source，不接 alert
@@ -167,13 +167,11 @@ availability。sampler、OLS horizon 与支持门已固定；不把 depth 写入
 `Detection.distanceEvidence`，不调用 risk/feedback seam。
 
 source contract、person-box sampler、7 点 OLS solver 已在独立 JVM module 中实现，
-24 个 focused tests 通过；ARCore capability receipt 仅进入专用
-`hftf-device-canary` APK。default App runtime classpath/manifest 均不含 ARCore
+24 个 focused tests 通过；ARCore capability/source receipt 仅进入 isolated
+`ustrf-shadow-benchmark`。default App runtime classpath/manifest 均不含 ARCore
 或 D45 module。R0.1 在任何 device outcome 前修复 locked API 语义：只有 raw
 depth 有对应 confidence image，因此 raw+confidence 是唯一 measurement-ready
-source，automatic-only 不伪造 confidence。当前 ADB 无设备，因此物理终态仍为
-`D45_NOT_EVALUATED_NO_READY_DEVICE`；这只表示 capability/measurement 尚未执行，
-不关闭 D45 source 问题。
+source，automatic-only 不伪造 confidence。
 
 R0.2 没有新增实验主张，只补齐 source 观测面：stride-safe raw depth/confidence
 decoder、显式 `SOURCE_REGISTRATION_UNVERIFIED` 类型边界，以及 isolated
@@ -204,7 +202,25 @@ R0.5 在读取任何物理 outcome 前补齐 recoverable host aggregation。四�
 availability，并只执行已冻结门槛。缺距离、JSON/size/parser 错误、跨构建或
 baseline mismatch 都输出 `scientific_terminal=null`，且不占用最终 report 路径；
 修复后可重跑。10/10 host tests 通过。这使控制面失败不再伪装成算法负结果，也不
-改变当前 `D45_NOT_EVALUATED_NO_READY_DEVICE`。
+改变当时的 `D45_NOT_EVALUATED_NO_READY_DEVICE`。
+
+R0.6 已在 `SM-S9280 / Android 16` 上完成 source execution。显式受控平移、纹理
+场景的 900-update R4 有 844 个 tracking frame、864 个 distinct camera timestamp，
+但 0 个 exact-timestamp raw-depth observation；844 次均为
+`DEPTH_TIMESTAMP_MISMATCH`。ARCore capability 为 supported、raw-depth-only 为 true，
+但 hardware-depth camera config 为 0。终态因此是 current device/build source
+`D45_PHONE_METRIC_DEPTH_SOURCE_NOT_EVALUABLE`，不是算法或精度负结果；1/2/3/5 m
+person measurement 未获 admission。重复且 target-context 非法的
+`hftf-device-canary` capability path 已撤销，capability/source/registration 合并为
+同一合法 benchmark receipt。详见 [D45 device result](HFTF_STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_RESULT_2026-08-03.md)。
+
+R0.7 根据最终硬件形态修正战略边界：普通外接摄像头不能假设进入 ARCore 或提供深度，
+所以 D45 即使成功也只能是 teacher/diagnostic bridge，不是运行时核心。HFTF 在线必需
+输入收缩为 causal RGB、source-monotonic timestamp、冻结 camera profile 与模型 causal
+state；depth/pose/future 只在 teacher 侧使用。下一科学问题是在新的 external-camera-like
+human-egocentric source 上比较 equal-budget history RGB 与 current RGB，不重跑已关闭的
+THOR dense-flow、box-flow slot 或 JRDB 2D linear metric mapping。详见
+[external-camera runtime boundary](HFTF_EXTERNAL_CAMERA_RUNTIME_BOUNDARY_R0_2026-08-03.md)。
 
 ## 2026-08-03 D44：causal relative metric track 几乎达到完整 world teacher
 
@@ -1270,7 +1286,7 @@ primitive**，不能作为仓库内新增因果变量。允许重开的新增信
 极坐标 student、未来方向或双路径架构”本身首次出现。
 
 当前只保留一个待检验的组合新意：助盲行人场景下
-`foot/body/head × current/short-future × phone-causal × selective-abstention`
+`foot/body/head × current/short-future × camera-causal RGB × selective-abstention`
 的统一输出合同。系统检索、直接基线和消融完成前，不使用“首次”“世界模型”或
 “已确认革新”等表述。
 

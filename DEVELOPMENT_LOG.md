@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-03（Asia/Hong_Kong）；执行者：Codex。完成 HFTF D45
+  `SM-S9280 / Android 16` 物理 source canary 与外接相机运行时边界修正。R4 在
+  `OPERATOR_CONTROLLED_TRANSLATION_TEXTURED_SCENE` 下执行 900 updates，得到 844
+  tracking frames、864 distinct camera timestamps、0 exact-timestamp raw-depth
+  observation，844 次 acquisition 全为 `DEPTH_TIMESTAMP_MISMATCH`；ARCore 报告
+  raw-depth supported，但 hardware-depth camera config 为 0。终态为
+  `D45_PHONE_METRIC_DEPTH_SOURCE_NOT_EVALUABLE`，未执行 1/2/3/5 m 人体测距，不把
+  source 不可评估写成算法负结果。撤销 target-context 非法的重复 capability canary，
+  capability/source/registration 合并为一个合法 benchmark receipt。鉴于最终普通
+  外接摄像头不能假设 ARCore/depth，D45 同时降级为 teacher/diagnostic bridge；HFTF
+  在线核心只要求 causal RGB、单调时间戳与冻结 camera profile，depth/pose/future
+  保持 teacher-only。研究主线与默认 App 不变。
 - 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D27
   THOR-MAGNI kinematic information-ceiling oracle。prediction 两臂均不读未来：
   current-static 冻结其他人体当前位置，history-kinematic 只用 anchor 前 0.4s

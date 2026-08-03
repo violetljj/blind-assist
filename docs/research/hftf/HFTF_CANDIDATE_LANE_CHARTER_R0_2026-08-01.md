@@ -60,6 +60,9 @@ short-future layered cells 的表示增量。
 - teacher 可读取 metric depth、相机内外参、future frames 和经验证的 pose-frame
   binding；
 - student 只能读取决策时刻及之前的 RGB/内部状态；
+- runtime 必需输入只允许 causal RGB、source-monotonic timestamp 与冻结 camera
+  profile；ARCore、depth、detector、track、IMU/VIO 和固定 phone-camera identity
+  均不能成为核心必需输入；
 - teacher 未来信息不得进入 student 输入、阈值选择或测试时 adapter；
 - dynamic object、遮挡、pose 质量和 body/ground transform 不充分时必须输出
   `UNKNOWN`，不得默认当作 `SAFE`；

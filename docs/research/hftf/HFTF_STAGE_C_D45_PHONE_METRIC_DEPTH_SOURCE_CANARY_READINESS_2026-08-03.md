@@ -3,9 +3,9 @@
 日期：2026-08-03
 
 执行状态：
-`D45_SOURCE_REGISTRATION_PERSON_MEASUREMENT_AND_AGGREGATION_READY_FOR_DEVICE_EXECUTION`
+`D45_CURRENT_DEVICE_SOURCE_EXECUTED_PERSON_MEASUREMENT_NOT_ADMITTED`
 
-科学终态：`D45_NOT_EVALUATED_NO_READY_DEVICE`
+科学终态：`D45_PHONE_METRIC_DEPTH_SOURCE_NOT_EVALUABLE`
 
 ## 已落地
 
@@ -37,15 +37,13 @@
   - padded/interleaved YUV_420_888 到 RGBA 解码；
   - truncated YUV plane 在 partial image 逸出前 fail closed；
   - 1/2/3/5 m error median/P90 与 relative-error summary；
-- ARCore 1.33.0 仅加入现有 `:hftf-device-canary` test APK；
+- ARCore 1.33.0 仅加入 isolated `:ustrf-shadow-benchmark` benchmark/test APK；
 - locked API semantic receipt 确认只有 raw depth 暴露对应 confidence image，因此
   R0.1 在任何 device outcome 前把 raw+confidence 设为唯一 measurement-ready
   ARCore source；automatic-only 不伪造 confidence；
-- capability test 只执行：
-  - `ArCoreApk.checkAvailability`；
-  - 未 resume 的 `Session` depth-mode/camera-config query；
-  - canonical JSON receipt；
-- capability test 不打开 camera、不请求安装 ARCore、不调用 risk/feedback。
+- capability、camera-config、raw-source freshness 与 registration 由同一个合法
+  ARCore optional benchmark context 生成一个 canonical JSON receipt；不再维护
+  目标 App manifest 不声明 ARCore 却尝试探测 capability 的重复 canary；
 - 在既有 isolated `:ustrf-shadow-benchmark` 中新增 source decoder adapter：
   - 只接受与当前 ARCore frame timestamp 完全一致的 raw depth + confidence；
   - 正确处理 `Image.Plane` row stride、pixel stride、buffer position 和 unsigned
@@ -235,86 +233,22 @@ default debug App merged manifests 中也没有 `com.google.ar.core` 或
 
 结果为 `BUILD SUCCESSFUL`；JVM tests 为 `24/24`。
 
-## 剩余 device actions
+## 2026-08-03 device execution
 
-当前 `adb devices -l` 无设备，因此没有伪造 capability 结果。连接设备后只运行
-D45 class，避免同时触发 D35：
+无线连接的 `SM-S9280 / Android 16 / SDK 36` 上已执行 source canary。最终 R4
+把 900 次尝试和
+`OPERATOR_CONTROLLED_TRANSLATION_TEXTURED_SCENE` 写入同一 receipt：844 个 tracking
+frame、864 个 distinct camera timestamps、0 个 exact-timestamp raw-depth
+observation，844 次 acquisition 全部为 `DEPTH_TIMESTAMP_MISMATCH`。ARCore 同时报告
+`SUPPORTED_INSTALLED`、`AUTOMATIC=true`、`RAW_DEPTH_ONLY=true`、3 个 camera config，
+但 hardware-depth config 为 0。
 
-```text
-.\gradlew.bat :hftf-device-canary:connectedDebugAndroidTest
-  -Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.hftf.HftfD45ArCoreDepthCapabilityCanaryTest
-  --no-daemon --max-workers=2 -Dorg.gradle.jvmargs=-Xmx2048m
-```
+因此当前 device/build 的终态是
+`D45_PHONE_METRIC_DEPTH_SOURCE_NOT_EVALUABLE`。这不是 depth 精度、person sampler、
+history solver 或 D44 假设的负结果。source+registration admission 没有成立，故没有
+执行 1/2/3/5 m person measurement，也没有创建四距离 aggregate scientific terminal。
 
-receipt path：
-
-```text
-/sdcard/Android/data/com.linnan.blindassist/files/hftf-d45/
-arcore-depth-capability-r0.json
-```
-
-若 capability receipt 为 `READY_RAW_DEPTH_REGISTRATION_REQUIRED`，先执行
-raw source decoder canary：
-
-```text
-.\gradlew.bat :ustrf-shadow-benchmark:connectedDebugAndroidTest
-  -Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.ustrfbenchmark.D45ArCoreRawSourceDecoderCanaryTest
-  -Pandroid.testInstrumentationRunnerArguments.hftfD45RawSourceFrameAttempts=300
-  --no-daemon --max-workers=2 -Dorg.gradle.jvmargs=-Xmx2048m
-```
-
-receipt path：
-
-```text
-/sdcard/Android/data/com.linnan.blindassist.ustrfbenchmark/files/
-hftf-d45/raw-source-registration-r0/<run-id>/summary.json
-```
-
-`RAW_SOURCE_DECODER_OBSERVED` 只证明 source decode；
-`AFFINE_REGISTRATION_OBSERVED_DEVICE_ONLY` 只证明同帧坐标映射内部一致。二者
-均成立后才进入 1/2/3/5 m person measurement，仍不授权 event 或 App。
-`AUTOMATIC_ONLY_*_CONFIDENCE_UNAVAILABLE` 与所有 `NOT_EVALUABLE_*` 都不是
-depth 精度负结果；无设备也不是 source 负结果，不关闭 D45。
-
-source+registration receipt 成立后，每个距离单独执行：
-
-```text
-.\gradlew.bat :ustrf-shadow-benchmark:connectedDebugAndroidTest
-  -Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.ustrfbenchmark.D45ArCorePersonMeasurementCanaryTest
-  -Pandroid.testInstrumentationRunnerArguments.hftfD45ReferenceDistanceMeters=<1|2|3|5>
-  -Pandroid.testInstrumentationRunnerArguments.hftfD45PersonFrameAttempts=900
-  --no-daemon --max-workers=2 -Dorg.gradle.jvmargs=-Xmx2048m
-```
-
-operator contract：人物 torso plane 到 camera optical center 保持声明距离，并轻微
-平移手机以维持 ARCore depth；画面中只保留一个 person。receipt path：
-
-```text
-/sdcard/Android/data/com.linnan.blindassist.ustrfbenchmark/files/
-hftf-d45/person-measurement-r0/<distance>m/<run-id>/summary.json
-```
-
-四个距离未全部执行前不产生 D45 支持/不支持总终态。
-
-四个 receipt 拉回 host 后执行：
-
-```text
-python scripts/research/hftf/aggregate_stage_c_d45_phone_metric_depth_canary.py
-  --receipt <1m-summary.json>
-  --receipt <2m-summary.json>
-  --receipt <3m-summary.json>
-  --receipt <5m-summary.json>
-```
-
-默认同时核验：
-
-```text
-app/build/outputs/apk/debug/app-debug.apk
-```
-
-只有合法完整输入才会原子、非覆盖写入：
-
-```text
-artifacts.local/evidence/hftf/
-stage-c-d45-phone-metric-depth-source-canary-r0/report.json
-```
+完整结果、receipt hash 和恢复边界见
+[device result](HFTF_STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_RESULT_2026-08-03.md)。
+未来只有新的 source context（例如不同 device、ARCore/runtime 版本或 hardware-depth
+camera config）才可另立新 run；不得把本次旧时间戳 depth 当作 fresh depth 回救。
