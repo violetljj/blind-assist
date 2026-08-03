@@ -215,6 +215,20 @@ camera/video 现在都强制同时提供内参与对应的 calibration size；�
 焦距非正或 principal point 越界会 fail closed。该结果覆盖真实摄像头之外的采集 API
 和完整软件链，但不覆盖最终镜头光学域、驱动延迟、曝光、畸变或 metric truth。
 
+## 2026-08-03 DA V2 Metric HTP：保留周期性稀疏尺度锚点候选
+
+同一 Hypersim 米制 ViT-S 已按 GPU 原臂 `518x686` 与唯一预选降分辨率
+`392x518` 导出。后者在 SM8650 HTP cached burst 上平均执行 `123.19 ms`，四 HVX
+threads、无观测到的 CPU fallback，相对同形状 ORT 平均差 `0.0145 m`。但未标定任务
+质量严重失败：clearance MAE `0.6942 m`、一致率 `64.87%`、false-clear `35.01%`。
+
+固定三带共享尺度诊断随后只用各段前 10 帧估计中位尺度、后 20 帧评价，不搜索尺寸、
+门或标定窗口。周期性段首锚点得到 `0.0981 m / 93.77% / 4.95%`，五门全过；只用
+第一段一次性尺度转移到其余 110 帧时 false-clear 为 `6.99%`，仍失败。因此保留的是
+“`392x518` DA Metric HTP + 周期性多区 ToF/稀疏米制锚点 + 过期 UNKNOWN”的条件
+候选；纯 RGB、一次标定、alert、主线与 default App 均未获准入。详见
+[DA V2 Metric QAIRT + sparse scale R0](../../../scripts/research/hftf/DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.md)。
+
 ## 2026-08-03 Metric3D QAIRT 实时化 R0：ConvTiny 真值失败，保留 ViT-S 连续性候选
 
 在 canonical HTP 成功之后，只用既有 9 帧 consumed technical canary 做了分辨率、

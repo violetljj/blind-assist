@@ -55,6 +55,18 @@ DA V2 Small 的现成相对深度 DLC 已在 SM8650 / HTP V75 上确认无 CPU f
 的专用 metric observer，而不是在本次已消费 timing 上挑性能档。完整记录见
 `DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md`。
 
+最新米制 NPU/稀疏锚点终态：
+`DAV2_METRIC_392X518_HTP_DEPLOYMENT_PARITY_SUPPORTED /`
+`PER_SEGMENT_SPARSE_SCALE_ANCHOR_DEVELOPMENT_SIGNAL_5_OF_5 /`
+`GLOBAL_ONE_SHOT_CAMERA_SCALE_FALSE_CLEAR_FAIL / PERIODIC_METRIC_SCALE_ANCHOR_REQUIRED`。
+同一 Hypersim 米制 ViT-S 的 `392x518` HTP cached burst 平均执行 `123.19 ms`，相对
+ORT 的平均米制差 `0.0145 m`；但未标定 clearance 只过 2/5 门。每段前 10 帧三带
+稀疏米制尺度锚点、后 20 帧盲评时，MAE/一致率/false-clear 为
+`0.0981 m / 93.77% / 4.95%`，5/5 门通过；只用第一段一次性全局尺度时 false-clear
+回升至 `6.99%`，4/5 门。因此当前唯一保留的端侧架构是“低分辨率 DA Metric HTP +
+周期性多区 ToF/稀疏米制尺度锚点 + 过期 UNKNOWN”，不是纯 RGB 或一次标定方案。详见
+`DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.md`。
+
 ## 研究问题与版本
 
 本 Module 服务 `HFTF_CANDIDATE_LANE_R0`：检验历史 RGB 能否预测面向行人身体包络的
