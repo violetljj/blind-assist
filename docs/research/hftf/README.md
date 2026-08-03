@@ -239,6 +239,15 @@ UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得�
 这仍不是实机 ToF、完整 HTP 性能或主线准入。详见
 [sparse-scale clearance sidecar R0](../../../scripts/research/hftf/SPARSE_SCALE_CLEARANCE_SIDECAR_R0_RESULT.md)。
 
+真实传感器接口已进一步落为多区 ToF 的刚体空间注册，而不是把径向距离直接当三带
+forward clearance。zone 射线和量程先恢复 ToF 点，经 `T_rgb_from_tof` 投到矫正 RGB，
+再与同像素候选 optical-z 估计尺度；PnP 标定器、同 clock-domain 因果队列、skew、
+sigma、zone/band coverage、scale disagreement 和 expiry UNKNOWN 均已有合成测试。
+终态仍是 `MULTIZONE_TOF_RGB_INTERFACE_READY_SYNTHETIC_ONLY /`
+`CURRENT_PHONE_PUBLIC_DEPTH_SOURCE_ABSENT / REAL_TOF_HARDWARE_NOT_PRESENT`：当前手机未暴露
+公开 depth output，主机也没有连接 ToF，因此不能宣称真实硬件或性能问题解决。接口见
+[multi-zone ToF to RGB adapter R0](../../../scripts/research/hftf/MULTIZONE_TOF_RGB_ADAPTER_R0.md)。
+
 ## 2026-08-03 Metric3D QAIRT 实时化 R0：ConvTiny 真值失败，保留 ViT-S 连续性候选
 
 在 canonical HTP 成功之后，只用既有 9 帧 consumed technical canary 做了分辨率、

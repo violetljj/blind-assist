@@ -22,6 +22,13 @@ from external_camera_calibration import (
     pinhole_calibration,
 )
 from metric_scale_anchor import MetricScaleTracker
+from multizone_tof_anchor import (
+    TofAnchorPolicy,
+    TofFrameStream,
+    estimate_tof_scale_anchor,
+    load_registration,
+    load_tof_frames,
+)
 from produce_external_rgb_metric_depth_observations import DepthAnythingV2MetricSource
 from sparse_scale_anchor_io import ScaleAnchorStream, load_scale_anchors
 
@@ -167,7 +174,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--intrinsics", type=float, nargs=4)
     parser.add_argument("--calibration-size", type=int, nargs=2)
     parser.add_argument("--calibration-json", type=Path)
-    parser.add_argument("--scale-anchor-jsonl", type=Path, required=True)
+    anchor_source = parser.add_mutually_exclusive_group(required=True)
+    anchor_source.add_argument("--scale-anchor-jsonl", type=Path)
+    anchor_source.add_argument("--tof-jsonl", type=Path)
+    parser.add_argument("--tof-registration-json", type=Path)
+    parser.add_argument("--rgb-calibration-id")
+    parser.add_argument("--rgb-clock-domain")
+    parser.add_argument("--max-tof-rgb-skew-ms", type=float)
+    parser.add_argument("--max-tof-sigma-m", type=float)
+    parser.add_argument("--min-tof-zones", type=int)
+    parser.add_argument("--min-tof-bands", type=int)
+    parser.add_argument("--max-tof-scale-mad", type=float)
+    parser.add_argument("--tof-depth-patch-radius-px", type=int, default=2)
     parser.add_argument("--max-anchor-age-ms", type=float, required=True)
     parser.add_argument("--depth-anything-repo", type=Path, required=True)
     parser.add_argument("--depth-anything-checkpoint", type=Path, required=True)
@@ -202,7 +220,44 @@ def main() -> None:
     ):
         raise ValueError("choose JSON calibration or CLI calibration, not both")
 
-    anchor_stream = ScaleAnchorStream(load_scale_anchors(args.scale_anchor_jsonl))
+    tof_mode = args.tof_jsonl is not None
+    tof_required = (
+        "tof_registration_json",
+        "rgb_clock_domain",
+        "max_tof_rgb_skew_ms",
+        "max_tof_sigma_m",
+        "min_tof_zones",
+        "min_tof_bands",
+        "max_tof_scale_mad",
+    )
+    if tof_mode:
+        missing = [name for name in tof_required if getattr(args, name) is None]
+        if missing:
+            raise ValueError(f"ToF mode requires {missing}")
+    elif any(getattr(args, name) is not None for name in tof_required) or args.rgb_calibration_id:
+        raise ValueError("ToF registration, clock, calibration, and policy require --tof-jsonl")
+
+    anchor_stream = (
+        ScaleAnchorStream(load_scale_anchors(args.scale_anchor_jsonl))
+        if args.scale_anchor_jsonl is not None
+        else None
+    )
+    tof_stream = TofFrameStream(load_tof_frames(args.tof_jsonl)) if tof_mode else None
+    registration = load_registration(args.tof_registration_json) if tof_mode else None
+    tof_policy = (
+        TofAnchorPolicy(
+            max_rgb_tof_skew_ns=round(args.max_tof_rgb_skew_ms * 1e6),
+            max_sigma_m=args.max_tof_sigma_m,
+            minimum_zones=args.min_tof_zones,
+            minimum_bands=args.min_tof_bands,
+            maximum_scale_mad=args.max_tof_scale_mad,
+            depth_patch_radius_px=args.tof_depth_patch_radius_px,
+        )
+        if tof_mode
+        else None
+    )
+    if tof_policy is not None:
+        tof_policy.validate()
     trackers: dict[str, MetricScaleTracker] = {}
     max_age_ns = round(args.max_anchor_age_ms * 1e6)
     source = DepthAnythingV2MetricSource(
@@ -213,6 +268,9 @@ def main() -> None:
         args.depth_anything_precision,
     )
     if args.manifest is not None:
+        if tof_mode and not args.rgb_calibration_id:
+            raise ValueError("manifest ToF mode requires --rgb-calibration-id")
+        active_rgb_calibration_id = args.rgb_calibration_id
         frames = manifest_frames(args.manifest)
     else:
         calibration = (
@@ -226,6 +284,10 @@ def main() -> None:
             args.sequence_id,
             FrameRectifier(calibration),
         )
+        active_rgb_calibration_id = calibration.source_id
+
+    if tof_mode and active_rgb_calibration_id != registration.rgb_calibration_id:
+        raise ValueError("active RGB calibration does not match ToF registration")
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     processed = 0
@@ -235,8 +297,18 @@ def main() -> None:
                 break
             sequence = str(packet["sequence_id"])
             tracker = trackers.setdefault(sequence, MetricScaleTracker(max_age_ns))
-            for anchor in anchor_stream.take_available(sequence, int(packet["timestamp_ns"])):
-                tracker.update(anchor)
+            anchor_updates = []
+            if anchor_stream is not None:
+                for anchor in anchor_stream.take_available(
+                    sequence, int(packet["timestamp_ns"])
+                ):
+                    tracker.update(anchor)
+                    anchor_updates.append(
+                        {
+                            "status": "VALID_PRECOMPUTED_SCALE_ANCHOR",
+                            "timestamp_ns": anchor.timestamp_ns,
+                        }
+                    )
             rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
             depth_started = time.perf_counter()
             depth, metadata = source.infer(
@@ -248,6 +320,24 @@ def main() -> None:
                 depth = np.asarray(depth).copy()
                 depth[~valid_mask] = np.nan
             depth_ms = (time.perf_counter() - depth_started) * 1000.0
+            if tof_stream is not None:
+                available_tof = tof_stream.take_available(
+                    sequence, int(packet["timestamp_ns"])
+                )
+                for tof_frame in available_tof:
+                    anchor, diagnostic = estimate_tof_scale_anchor(
+                        np.asarray(depth),
+                        list(packet["intrinsics_fx_fy_cx_cy"]),
+                        int(packet["timestamp_ns"]),
+                        args.rgb_clock_domain,
+                        tof_frame,
+                        registration,
+                        active_rgb_calibration_id,
+                        tof_policy,
+                    )
+                    anchor_updates.append(diagnostic)
+                    if anchor is not None:
+                        tracker.update(anchor)
             geometry_started = time.perf_counter()
             raw_field = clearance_field(
                 depth,
@@ -275,6 +365,7 @@ def main() -> None:
                 "rectification_valid_fraction": finite_ratio(valid_mask) if valid_mask is not None else 1.0,
                 "raw_clearance": raw_field,
                 "scaled_clearance": scaled_field,
+                "metric_anchor_updates": anchor_updates,
                 "claim_ceiling": "candidate-only clearance sidecar; no alert or safety decision",
             }
             output.write(json.dumps(record, sort_keys=True) + "\n")

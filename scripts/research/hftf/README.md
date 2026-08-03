@@ -78,6 +78,17 @@ closed；修复后以 manifest timestamp 为唯一锚点时钟。`5000 ms` 只�
 不是部署 TTL。该结果验证接口因果性与已消费质量，不是实机 ToF、端到端 HTP 或性能
 问题已解决。详见 `SPARSE_SCALE_CLEARANCE_SIDECAR_R0_RESULT.md`。
 
+最新真实硬件接口终态：
+`MULTIZONE_TOF_RGB_INTERFACE_READY_SYNTHETIC_ONLY /`
+`CURRENT_PHONE_PUBLIC_DEPTH_SOURCE_ABSENT / REAL_TOF_HARDWARE_NOT_PRESENT`。
+多区 ToF 不再被当作与 RGB 共光心的三带距离：每个 zone 的径向量程先沿标定射线恢复
+ToF 3D 点，经刚体 `T_rgb_from_tof` 投影到矫正 RGB，再与同像素 DA optical-z 求稳健
+尺度。新增 PnP 外参标定、同 clock-domain 因果队列、range/sigma/zone/band/scale-MAD
+质量门，并接入现有 clearance sidecar。5 项新合成几何测试和共 14 项相关测试通过。
+当前 SM-S9280 的只读 ADB 探测未发现公开 Camera2 depth output 或多区 ToF，Windows
+也未连接 ToF 硬件，所以这一步只完成硬件无关接口；详见
+`MULTIZONE_TOF_RGB_ADAPTER_R0.md` 和 `MULTIZONE_TOF_RGB_ADAPTER_R0_RESULT.json`。
+
 ## 研究问题与版本
 
 本 Module 服务 `HFTF_CANDIDATE_LANE_R0`：检验历史 RGB 能否预测面向行人身体包络的
