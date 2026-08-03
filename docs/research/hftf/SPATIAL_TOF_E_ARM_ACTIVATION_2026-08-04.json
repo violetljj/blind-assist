@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist_spatial_tof_e_arm_activation_r0",
+  "date": "2026-08-04",
+  "trigger_protocol_sha256": "4A2083C96387817DA6E10EAEB09DFB573DCAE6F8EEEE88BE6B6E7EA9F23F198C",
+  "trigger_result_sha256": "A2EE8A5709A012296F7924AEAA85EA6CB1893C88BB6DE7279CB72676813DA326",
+  "trigger_facts": {
+    "positive_folds_jointly_better_than_constant": 0,
+    "required_positive_folds": 3,
+    "validation_false_clear": 0.194542762981859,
+    "false_clear_gate": 0.05,
+    "validation_confidence_ece": 0.601009345612272,
+    "confidence_ece_gate": 0.10
+  },
+  "hardware_authority": {
+    "path": "scripts/research/hftf/MULTIZONE_TOF_HARDWARE_SELECTION_R0.json",
+    "sha256": "53D9BD517D6D16D625D8C92D2ED3DF947C87A47AA7EA3E47135499F786FAE7CC",
+    "terminal": "VL53L8CX_DEFAULT_CANARY_VL53L5CX_AVAILABILITY_FALLBACK",
+    "default_sensor": "ST VL53L8CX",
+    "availability_fallback": "ST VL53L5CX",
+    "selection_may_not_change_after_e_arm_outcomes": true
+  },
+  "comparison_scope": {
+    "arm_d": "Frozen DA V2 plus Spatial Calibration Head R1 artifact, no refit on E-arm evaluation sessions",
+    "arm_e": "Same RGB path plus registered multizone ToF, using the preselected default sensor or availability fallback",
+    "same_final_camera": true,
+    "same_mount_and_session": true,
+    "same_parent_session_units": true,
+    "same_task_gates": true,
+    "source_native_metric_truth_required": true,
+    "no_metric3d_truth_substitution": true
+  },
+  "prerequisites_before_capture": [
+    "Name the final camera and freeze intrinsics, resolution, mount, and synchronization authority.",
+    "Record procurement/availability without changing the frozen default-versus-fallback rule.",
+    "Freeze ToF-to-camera registration, zone-quality rejection, fusion rule, session roster, and sealed activation receipt.",
+    "Commit and validate the exact acquisition/evaluation implementation before opening outcomes."
+  ],
+  "current_state": {
+    "procurement_performed": false,
+    "hardware_connected": false,
+    "capture_started": false,
+    "performance_claim": false
+  },
+  "terminal": "SPATIAL_TOF_E_ARM_ACTIVATED_HARDWARE_AND_CAPTURE_PROTOCOL_PENDING"
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist_spatial_calibration_head_r1_cohort_roster_lock",
+  "protocol_id": "SPATIAL_CALIBRATION_HEAD_R1",
+  "protocol_sha256": "4A2083C96387817DA6E10EAEB09DFB573DCAE6F8EEEE88BE6B6E7EA9F23F198C",
+  "metadata_roster_sha256": "7CE2D9931723EF7517531F7389FF1DFA0E4BF9BD4C8291A9E72A5BBFF7102EEC",
+  "source_repository_commit": "7283761bf26c27570ec59a5dc0f8686fbff07726",
+  "source_metadata_sha256": "F93CD6A1EC0AEA5E103313F3BB4660744B011A1EAA8AA44A992E2C7C2966B145",
+  "status": "METADATA_ROSTER_24_LOCKED_MEDIA_UNOPENED_LICENSE_REVIEW_REQUIRED",
+  "source_inventory": {
+    "rows": 5071,
+    "na_visit_rows_excluded": 8,
+    "cross_official_fold_visits_excluded": ["381879"],
+    "eligible_unique_visits": {"Training": 1481, "Validation": 182}
+  },
+  "roles": {
+    "train": [
+      {"visit_id": "381449", "video_id": "41048097", "cv_fold": 0},
+      {"visit_id": "437220", "video_id": "43649772", "cv_fold": 0},
+      {"visit_id": "469556", "video_id": "45663404", "cv_fold": 0},
+      {"visit_id": "471411", "video_id": "47429771", "cv_fold": 0},
+      {"visit_id": "422841", "video_id": "42897666", "cv_fold": 1},
+      {"visit_id": "434891", "video_id": "42899300", "cv_fold": 1},
+      {"visit_id": "467135", "video_id": "47333472", "cv_fold": 1},
+      {"visit_id": "467334", "video_id": "45261532", "cv_fold": 1},
+      {"visit_id": "434897", "video_id": "42899163", "cv_fold": 2},
+      {"visit_id": "469455", "video_id": "47333053", "cv_fold": 2},
+      {"visit_id": "471032", "video_id": "47332106", "cv_fold": 2},
+      {"visit_id": "472310", "video_id": "47430690", "cv_fold": 2},
+      {"visit_id": "382112", "video_id": "41125199", "cv_fold": 3},
+      {"visit_id": "472626", "video_id": "47332591", "cv_fold": 3},
+      {"visit_id": "482849", "video_id": "48018023", "cv_fold": 3},
+      {"visit_id": "484248", "video_id": "48458617", "cv_fold": 3}
+    ],
+    "validation": [
+      {"visit_id": "382124", "video_id": "41159579"},
+      {"visit_id": "423296", "video_id": "42897890"},
+      {"visit_id": "437528", "video_id": "43828420"},
+      {"visit_id": "483071", "video_id": "48458221"}
+    ],
+    "sealed": [
+      {"visit_id": "422008", "video_id": "42446093"},
+      {"visit_id": "467176", "video_id": "47333440"},
+      {"visit_id": "483311", "video_id": "48018382"},
+      {"visit_id": "483620", "video_id": "48018566"}
+    ]
+  },
+  "invariants": {
+    "selected_parent_count": 24,
+    "visit_overlap_count": 0,
+    "videos_per_parent": 1,
+    "media_bytes_read": false,
+    "sealed_media_opened": false,
+    "media_download_authorized": false
+  },
+  "next_gate": "bind explicit user license review receipt, then asset-qualify these exact 24 videos without replacement"
+}

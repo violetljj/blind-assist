@@ -32,7 +32,20 @@ metric-depth-android-dualarm-runtime-supported-no-realtime /
 dual-rate-metric-depth-observer-r1-development-not-supported /
 dense-metric-depth-propagation-r0-development-not-supported /
 metric-depth-calibration-head-r0-development-not-supported /
+spatial-calibration-head-r1-development-not-supported-stop /
+spatial-tof-e-arm-activated-capture-protocol-pending /
 frozen-single-frame-posthoc-temporal-residual-family-stop`
+
+Spatial Calibration Head R1 已按预冻结合同完成 fresh、visit-disjoint ARKitScenes
+开发评价。3,000 帧开发缓存与 3,600 帧 RGB 身份审计通过数据边界，但 9,423 参数
+spatial head 在 `0/4` 折联合优于常数，固定 validation 的 coverage/MAE/agreement/
+false-clear/temporal/ECE 六门全失败；sealed 米制真值未打开，手机 shadow 未授权，
+纯 RGB 尺度扩展停止。协议与结果权威见
+[protocol](../../../docs/research/hftf/SPATIAL_CALIBRATION_HEAD_R1_PROTOCOL_2026-08-04.json)、
+[development result](../../../docs/research/hftf/SPATIAL_CALIBRATION_HEAD_R1_DEVELOPMENT_RESULT_2026-08-04.json)。
+预冻结 ToF 切换条件已触发；当前只激活同摄像头/session 的多区 ToF E 臂准备，尚未
+采购、采集或产生性能证据，见
+[E-arm activation](../../../docs/research/hftf/SPATIAL_TOF_E_ARM_ACTIVATION_2026-08-04.json)。
 
 最新深度观测器同屏终态：
 `METRIC3D_FP16_BALANCE_DAV2_DUAL_FREQUENCY_DIAGNOSTIC_FAIL`。这里的目标
