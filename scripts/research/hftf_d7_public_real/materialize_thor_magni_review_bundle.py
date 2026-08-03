@@ -145,7 +145,19 @@ def _extract_dense_contact_sheet(*, ffmpeg_path: Path, video_path: Path, sample_
 
 def _load_geometry(frame_path: Path, selected: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
     ids = {str(frame_id) for candidate in selected for frame_id in candidate.get("frame_ids", [])}
-    frames = {str(row.get("frame_id")): row for row in load_jsonl(frame_path)}
+    # The canonical THOR frame registry is large (currently 1.46M rows).  A
+    # review bundle needs only the frame IDs referenced by its selected
+    # candidates; stream the JSONL and retain those rows instead of building a
+    # second in-memory copy of the complete registry for every batch.
+    frames: dict[str, dict[str, Any]] = {}
+    with frame_path.open("r", encoding="utf-8") as source:
+        for line in source:
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            frame_id = str(row.get("frame_id") or "")
+            if frame_id in ids:
+                frames[frame_id] = row
     missing = sorted(ids - set(frames))
     if missing:
         raise ContractError(f"THOR-MAGNI frame registry missing selected frame IDs: {missing[:5]}")

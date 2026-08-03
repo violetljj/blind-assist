@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
-from materialize_thor_magni_review_bundle import _dense_sample_times, _select
+from materialize_thor_magni_review_bundle import _dense_sample_times, _load_geometry, _select
 
 
 class MaterializeThorMagniReviewBundleTest(unittest.TestCase):
@@ -33,6 +36,18 @@ class MaterializeThorMagniReviewBundleTest(unittest.TestCase):
         self.assertLessEqual(times[0], 1.0)
         self.assertGreaterEqual(times[-1], 5.0)
         self.assertEqual(times, sorted(times))
+
+    def test_geometry_loader_reads_only_referenced_frame_ids(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "frame_registry.jsonl"
+            rows = [
+                {"frame_id": "keep", "frame_index": 1, "pose_optional": {"qtm_time": 1.0}},
+                {"frame_id": "ignore", "frame_index": 2, "pose_optional": {"qtm_time": 2.0}},
+            ]
+            path.write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
+            selected = [{"candidate_id": "candidate", "frame_ids": ["keep"]}]
+            result = _load_geometry(path, selected)
+            self.assertEqual([row["frame_id"] for row in result["candidate"]], ["keep"])
 
 
 if __name__ == "__main__":

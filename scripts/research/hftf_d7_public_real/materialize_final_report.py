@@ -98,6 +98,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     receipts = load_jsonl(required["receipts"])
     intake_receipts = _load_intake_receipts(root)
     final_adjudication_count = len(_final_adjudication_candidate_ids(root))
+    rereview_path = root / "reports" / "ten_percent_admitted_event_rereview_report.json"
+    rereview = load_json(rereview_path) if rereview_path.is_file() else None
 
     review_paths = {
         "RGB_REVIEWER_A": root / "reviews" / "review_a.jsonl",
@@ -107,15 +109,26 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "COUNTEREXAMPLE_REVIEWER": root / "reviews" / "counterexample_review.jsonl",
     }
     review_rows = {role: load_jsonl(path) for role, path in review_paths.items() if path.is_file()}
+    def _is_independent_completed(row: dict[str, Any]) -> bool:
+        return (
+            row.get("record_kind") == "COMPLETED_REVIEW"
+            and row.get("review_completed") is True
+            and row.get("independent_observation_recorded", True) is not False
+        )
+
     completed_review_counts = {
         role: sum(1 for row in rows if row.get("record_kind") == "COMPLETED_REVIEW" and row.get("review_completed") is True)
+        for role, rows in review_rows.items()
+    }
+    independent_completed_review_counts = {
+        role: sum(1 for row in rows if _is_independent_completed(row))
         for role, rows in review_rows.items()
     }
     completed_by_role = {
         role: {
             str(row.get("candidate_id")): str(row.get("event_bucket"))
             for row in rows
-            if row.get("record_kind") == "COMPLETED_REVIEW" and row.get("review_completed") is True
+            if _is_independent_completed(row)
         }
         for role, rows in review_rows.items()
     }
@@ -125,6 +138,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         1 for candidate_id in rgb_common_ids
         if len({completed_by_role[role][candidate_id] for role in rgb_roles}) == 1
     )
+    if isinstance(rereview, dict):
+        rereview_line = (
+            f"- 10% admitted-event re-review: `{rereview.get('status', 'UNKNOWN')}`; "
+            f"sample `{rereview.get('selected_sample_count', 0)}` / required `{rereview.get('required_sample_count', 0)}`; "
+            f"RGB disagreement count `{rereview.get('rgb_disagreement_count', 'UNKNOWN')}`; "
+            "primary adjudication unchanged. Adjudicator conflict-rate gate remains incomplete."
+        )
+    else:
+        rereview_line = "- 10% admitted-event re-review remains incomplete; missing agreement is not treated as agreement."
 
     candidate_by_dataset = Counter(str(row.get("dataset_id", "UNKNOWN")) for row in candidates)
     admitted_by_bucket = Counter(str(row.get("event_bucket", "UNKNOWN")) for row in events)
@@ -250,9 +272,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "## 6. Reviewer agreement",
         "",
         f"- Validation review rows: `{validation.get('counts', {}).get('review_rows', {})}`.",
-        f"- Completed independent review rows: `{completed_review_counts}`; final adjudication outputs: `{final_adjudication_count}`; admitted events: `{len(events)}`.",
-        f"- RGB A/B/C common completed candidates: `{len(rgb_common_ids)}`; exact bucket agreement: `{rgb_exact_agreement}`; this is a pilot agreement count, not event truth.",
-        "- 10% re-review and adjudicator conflict-rate gates remain incomplete; missing agreement is not treated as agreement.",
+        f"- Completed review terminals (including explicit fail-closed terminals): `{completed_review_counts}`.",
+        f"- Independently observed completed review rows: `{independent_completed_review_counts}`; final adjudication outputs: `{final_adjudication_count}`; admitted events: `{len(events)}`.",
+        f"- RGB A/B/C common independently observed candidates: `{len(rgb_common_ids)}`; exact bucket agreement: `{rgb_exact_agreement}`; this is a pilot agreement count, not event truth.",
+        rereview_line,
+        "- Missing agreement is not treated as agreement; re-review conflicts do not become negative labels.",
         "",
         "## 7. NOT_EVALUABLE reasons",
         "",
@@ -264,17 +288,18 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "## 8. Deduplication result",
         "",
         f"- Candidate duplicate IDs: `{validation.get('counts', {}).get('candidate_duplicate_ids', 'UNKNOWN')}`.",
-        "- Temporal overlap, near-duplicate image graph, stereo/view collapse, and parent-event adjacency merge remain review-gated; no candidate was promoted as an event by this intake.",
+        f"- Temporal overlap, near-duplicate image graph, stereo/view collapse, and parent-event adjacency merge remain review-gated; current materialized admitted events: `{len(events)}`. No dataset-wide deduplication absence claim is authorized.",
         "",
         "## 9. Data roles and session isolation",
         "",
         f"- Role-isolation status: `{role_isolation.get('status', 'UNKNOWN')}`; ancestry role conflicts: `{role_isolation.get('counts', {}).get('ancestry_role_conflicts', 'UNKNOWN')}`.",
-        f"- Validator session-disjoint check: `{validation_checks.get('splits_session_disjoint', False)}` (vacuous with zero admitted events).",
+        f"- Validator session-disjoint check: `{validation_checks.get('splits_session_disjoint', False)}` for currently admitted events.",
         "- Training, Confirmation, production, and event-truth authority remain false.",
         "",
         "## 10. Data gaps",
         "",
-        f"- Independent review pilot completed rows: `{sum(completed_review_counts.values())}`; final adjudication outputs: `{final_adjudication_count}`; admitted events: `{len(events)}`.",
+        f"- Independent review pilot completed rows: `{sum(independent_completed_review_counts.values())}`; explicit review terminals: `{sum(completed_review_counts.values())}`; final adjudication outputs: `{final_adjudication_count}`; admitted events: `{len(events)}`.",
+        rereview_line,
         "- EgoWalk raw recordings, Project Aria terms/download, JRDB full access, THOR synchronized video, archive-wide THOR-MAGNI media/review, Ego4D, and Ego-Exo4D remain blocked, partial, or not lawfully closed in the receipts.",
         "- Existing consumed/Development evidence and model outputs were not upgraded into D7 event truth.",
         "",

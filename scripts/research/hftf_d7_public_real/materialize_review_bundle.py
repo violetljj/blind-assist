@@ -28,6 +28,7 @@ RGB_ROLES = ("RGB_REVIEWER_A", "RGB_REVIEWER_B", "RGB_REVIEWER_C")
 GEOMETRY_ROLE = "GEOMETRY_EVIDENCE_REVIEWER"
 COUNTEREXAMPLE_ROLE = "COUNTEREXAMPLE_REVIEWER"
 REVIEW_ROLES = RGB_ROLES + (GEOMETRY_ROLE, COUNTEREXAMPLE_ROLE)
+EGOWALK_POSE_RATE_HZ = 5.0
 
 # These fields can encode a discovery selector, a previous label, or a
 # promotion decision.  They are intentionally not copied into review input.
@@ -64,11 +65,16 @@ GENERIC_REVIEW_INSTRUCTIONS = (
     "Review only the supplied visual/geometry evidence. Do not infer a label "
     "from the sampling method, candidate identifier, source name, or any "
     "model output. Select exactly one allowed event bucket or NOT_EVALUABLE. "
+    "Use decision SUPPORT when the supplied evidence supports the selected "
+    "bucket, including a negative bucket; use REJECT when the candidate does "
+    "not support the proposed bucket and should not be promoted. "
     "Use NOT_EVALUABLE when the view is occluded, the event is ambiguous, the "
     "required phase cannot be established, or required evidence is absent. "
-    "A positive requires observable pre, alertable, and passed-clearance phases; "
-    "a negative requires a continuous negative interval. Missing optional "
-    "geometry is not negative evidence."
+    "A positive requires observable pre, alertable, and passed-clearance phases "
+    "and a SUPPORT decision must include all three intervals; a supported "
+    "negative requires a continuous negative interval and a SUPPORT decision "
+    "must include that interval. Missing optional geometry is not negative "
+    "evidence."
 )
 
 
@@ -203,6 +209,28 @@ def _probe_video(path: Path, ffprobe_path: Path) -> dict[str, Any]:
     return streams[0]
 
 
+def _rate_hz(value: object) -> float | None:
+    """Parse an ffprobe rational frame rate without accepting bad metadata."""
+
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        if "/" in text:
+            numerator, denominator = text.split("/", 1)
+            denominator_value = float(denominator)
+            if denominator_value == 0:
+                return None
+            parsed = float(numerator) / denominator_value
+        else:
+            parsed = float(text)
+    except (TypeError, ValueError, ZeroDivisionError):
+        return None
+    return parsed if math.isfinite(parsed) and parsed > 0 else None
+
+
 def _float_or_none(value: object) -> float | None:
     try:
         parsed = float(value)
@@ -244,6 +272,47 @@ def _sample_times(candidate: dict[str, Any], source_start_ns: int, duration_s: f
         if not result or abs(value - result[-1]) > 0.001:
             result.append(value)
     return result
+
+
+def _sample_egowalk_times(
+    candidate: dict[str, Any],
+    *,
+    video_rate_hz: float,
+    video_frame_count: int | None,
+    pose_rate_hz: float,
+) -> tuple[list[float], list[int]]:
+    """Map EgoWalk pose-row ordinals to the extracted video timeline.
+
+    EgoWalk's extracted videos contain one video frame per trajectory row but
+    advertise a container rate of 100 Hz while the pose timeline is 5 Hz.
+    Timestamp-based seeking therefore collapses later windows onto the end of
+    a short video.  D7 review inputs must use the source row/frame binding and
+    only then convert the ordinal to the container's playback time.
+    """
+
+    try:
+        start = int(candidate["start_frame_index"])
+        end = int(candidate["end_frame_index"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ContractError(f"EgoWalk candidate has invalid frame range: {candidate.get('candidate_id')}") from exc
+    if start < 0 or end < start:
+        raise ContractError(f"EgoWalk candidate frame range is not monotone: {candidate.get('candidate_id')}")
+    if not math.isfinite(pose_rate_hz) or pose_rate_hz <= 0:
+        raise ContractError("EgoWalk pose rate must be positive")
+    if not math.isfinite(video_rate_hz) or video_rate_hz <= 0:
+        raise ContractError("EgoWalk video rate must be positive")
+    padding = max(1, int(round(0.75 * pose_rate_hz)))
+    midpoint = int(round((start + end) / 2.0))
+    frame_indices = [start - padding, start, midpoint, end, end + padding]
+    if video_frame_count is not None and video_frame_count > 0:
+        frame_indices = [min(max(0, value), video_frame_count - 1) for value in frame_indices]
+    else:
+        frame_indices = [max(0, value) for value in frame_indices]
+    deduped: list[int] = []
+    for value in frame_indices:
+        if not deduped or value != deduped[-1]:
+            deduped.append(value)
+    return [value / video_rate_hz for value in deduped], deduped
 
 
 def _extract_contact_sheet(
@@ -397,6 +466,7 @@ def _build_rgb_input(
     source_start_ns: int,
     sheet_path: Path,
     sample_times: list[float],
+    sample_frame_indices: list[int] | None,
     role_root: Path,
 ) -> dict[str, Any]:
     destination = role_root / "contact_sheets" / f"{candidate['candidate_id']}.jpg"
@@ -408,6 +478,7 @@ def _build_rgb_input(
         "contact_sheet_path": str(destination.resolve()),
         "contact_sheet_sha256": sha256_file(destination),
         "sample_times_seconds_from_source_start": [round(value, 6) for value in sample_times],
+        "sample_frame_indices": sample_frame_indices,
         "native_geometry_included": False,
         "counterexample_search_required": role == COUNTEREXAMPLE_ROLE,
     })
@@ -482,11 +553,22 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if args.offset < 0:
         raise ContractError("--offset must be non-negative")
     roles = _parse_roles(args.roles)
-    candidate_rows = _jsonl_rows(output_root / "candidates" / "candidate_index.jsonl")
+    default_candidate_path = (output_root / "candidates" / "candidate_index.jsonl").resolve()
+    candidate_path = Path(args.candidate_artifact).resolve() if args.candidate_artifact else default_candidate_path
+    if not candidate_path.is_file():
+        raise ContractError(f"candidate artifact is missing: {candidate_path}")
+    candidate_rows = _jsonl_rows(candidate_path)
     selected = _select_candidates(candidate_rows, args)
     if any(str(row.get("dataset_id")) != "EgoWalk" for row in selected):
         raise ContractError("the current review-bundle extractor is limited to EgoWalk RGB/pose pilot inputs")
-    source_starts = _source_start_times(candidate_rows)
+    # A selection artifact may contain one window per session rather than the
+    # full candidate index.  Keep source-time binding anchored to the full
+    # canonical index when available, while selecting only from the supplied
+    # review artifact.
+    source_rows = candidate_rows
+    if candidate_path != default_candidate_path:
+        source_rows = _jsonl_rows(default_candidate_path)
+    source_starts = _source_start_times(source_rows)
     geometry_by_candidate = _load_selected_geometry(output_root=output_root, selected=selected)
     ffmpeg_path = Path(args.ffmpeg_path).resolve()
     ffprobe_path = Path(args.ffprobe_path).resolve()
@@ -512,21 +594,42 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             rgb_roles = [role for role in roles if role in RGB_ROLES or role == COUNTEREXAMPLE_ROLE]
             sheet_path: Path | None = None
             sample_times: list[float] = []
+            sample_frame_indices: list[int] | None = None
             if rgb_roles:
                 video_path = _safe_rgb_path(candidate, output_root=output_root)
                 video_key = str(video_path)
                 if video_key not in source_video_receipts:
                     probe = _probe_video(video_path, ffprobe_path)
                     duration_s = _float_or_none(probe.get("duration"))
+                    frame_count: int | None = None
+                    try:
+                        parsed_frame_count = int(str(probe.get("nb_frames")))
+                    except (TypeError, ValueError):
+                        parsed_frame_count = 0
+                    if parsed_frame_count > 0:
+                        frame_count = parsed_frame_count
                     source_video_receipts[video_key] = {
                         "path": video_key,
                         "sha256": sha256_file(video_path),
                         "bytes": video_path.stat().st_size,
                         "probe": probe,
                         "duration_seconds": duration_s,
+                        "frame_count": frame_count,
+                        "video_rate_hz": _rate_hz(probe.get("r_frame_rate") or probe.get("avg_frame_rate")),
                     }
                 duration_s = source_video_receipts[video_key]["duration_seconds"]
-                sample_times = _sample_times(candidate, source_start_ns, duration_s)
+                if str(candidate.get("dataset_id")) == "EgoWalk":
+                    video_rate_hz = source_video_receipts[video_key].get("video_rate_hz")
+                    if not isinstance(video_rate_hz, (int, float)) or video_rate_hz <= 0:
+                        raise ContractError(f"EgoWalk video rate is unavailable: {video_path}")
+                    sample_times, sample_frame_indices = _sample_egowalk_times(
+                        candidate,
+                        video_rate_hz=float(video_rate_hz),
+                        video_frame_count=source_video_receipts[video_key].get("frame_count"),
+                        pose_rate_hz=EGOWALK_POSE_RATE_HZ,
+                    )
+                else:
+                    sample_times = _sample_times(candidate, source_start_ns, duration_s)
                 staging_dir = staging_root / candidate_id
                 sheet_path, _ = _extract_contact_sheet(
                     ffmpeg_path=ffmpeg_path,
@@ -545,6 +648,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         source_start_ns=source_start_ns,
                         sheet_path=sheet_path,
                         sample_times=sample_times,
+                        sample_frame_indices=sample_frame_indices,
                         role_root=batch_root / role,
                     )
                 else:
@@ -571,7 +675,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "status": "READY_FOR_ISOLATED_REVIEW",
             "candidate_count": len(selected),
             "candidate_ids": [str(row["candidate_id"]) for row in selected],
-            "candidate_index_sha256": sha256_file(output_root / "candidates" / "candidate_index.jsonl"),
+            "candidate_index_sha256": sha256_file(candidate_path),
+            "candidate_artifact": {
+                "path": str(candidate_path),
+                "sha256": sha256_file(candidate_path),
+            },
             "roles": {
                 role: {
                     "manifest_path": str(manifest_paths[role].resolve()),
@@ -588,6 +696,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "notes": [
                 "Each role has a separate bundle directory and manifest.",
                 "RGB contact sheets are generated from the public extracted EgoWalk RGB receipt only.",
+                "EgoWalk RGB uses the frozen pose-row-to-video-ordinal binding; container timestamps are not used as the physical pose timeline.",
                 "The staging directory is not a review decision and contains no model output.",
                 "This bundle does not authorize training, confirmation, production, or safety claims.",
             ],
@@ -614,6 +723,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 for role, path in manifest_paths.items()
             },
             "source_video_count": len(source_video_receipts),
+            "candidate_artifact": {
+                "path": str(candidate_path),
+                "sha256": sha256_file(candidate_path),
+            },
             "source_video_sha256": sorted(item["sha256"] for item in source_video_receipts.values()),
             "model_output_visible_in_any_input": False,
             "review_assignments_are_not_labels": True,
@@ -640,6 +753,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--batch-id", required=True)
     parser.add_argument("--dataset-id", default="EgoWalk")
+    parser.add_argument(
+        "--candidate-artifact",
+        help="optional model-blind candidate JSONL; selection defaults to the canonical candidate index",
+    )
     parser.add_argument("--candidate-id", action="append", default=[])
     parser.add_argument("--offset", type=int, default=0)
     parser.add_argument("--count", type=int)

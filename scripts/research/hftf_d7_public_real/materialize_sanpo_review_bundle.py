@@ -15,8 +15,11 @@ import csv
 import hashlib
 import json
 import math
+import os
 import shutil
 import subprocess
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from collections import defaultdict
@@ -69,28 +72,105 @@ def _download_object(item: dict[str, Any], destination: Path) -> dict[str, Any]:
             raise ContractError(f"existing SANPO review media does not match provider metadata: {destination}")
     else:
         encoded = urllib.parse.quote(str(item["name"]), safe="")
-        request = urllib.request.Request(
-            f"{MEDIA}/{encoded}?alt=media",
-            headers={"User-Agent": "blindassist-hftf-d7/1.0"},
-        )
+        temporary = destination.with_name(destination.name + ".part")
+        last_error: BaseException | None = None
+        for attempt in range(1, 5):
+            try:
+                temporary.unlink(missing_ok=True)
+                request = urllib.request.Request(
+                    f"{MEDIA}/{encoded}?alt=media",
+                    headers={"User-Agent": "blindassist-hftf-d7/1.0"},
+                )
+                with urllib.request.urlopen(request, timeout=300) as response, temporary.open("wb") as handle:
+                    for chunk in iter(lambda: response.read(1024 * 1024), b""):
+                        handle.write(chunk)
+                if temporary.stat().st_size != expected_size:
+                    raise OSError(
+                        f"downloaded size {temporary.stat().st_size} does not match provider size {expected_size}"
+                    )
+                temporary.replace(destination)
+                last_error = None
+                break
+            except (OSError, urllib.error.URLError) as exc:
+                last_error = exc
+                temporary.unlink(missing_ok=True)
+                if attempt < 4:
+                    time.sleep(min(2 ** (attempt - 1), 8))
+        if last_error is not None:
+            try:
+                temporary.unlink(missing_ok=True)
+                completed = subprocess.run(
+                    [
+                        "curl.exe",
+                        "--fail",
+                        "--location",
+                        "--retry",
+                        "3",
+                        "--retry-all-errors",
+                        "--connect-timeout",
+                        "30",
+                        "--max-time",
+                        "300",
+                        "--user-agent",
+                        "blindassist-hftf-d7/1.0",
+                        "--output",
+                        str(temporary),
+                        f"{MEDIA}/{encoded}?alt=media",
+                    ],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                    timeout=360,
+                )
+                if completed.returncode != 0:
+                    detail = (completed.stderr or completed.stdout or "curl failed").strip()
+                    raise OSError(f"curl exit {completed.returncode}: {detail}")
+                if temporary.stat().st_size != expected_size:
+                    raise OSError(
+                        f"curl downloaded size {temporary.stat().st_size} does not match provider size {expected_size}"
+                    )
+                temporary.replace(destination)
+                last_error = None
+            except (OSError, subprocess.SubprocessError) as exc:
+                last_error = exc
+        if last_error is not None:
+            raise ContractError(f"SANPO review media download failed after urllib retries and curl fallback: {item['name']}: {last_error}") from last_error
+    return _verified_object_record(item, destination)
+
+
+def _reuse_provider_cache_object(
+    item: dict[str, Any],
+    destination: Path,
+    provider_cache_root: Path,
+) -> dict[str, Any] | None:
+    """Reuse an already verified provider object without contacting the source."""
+
+    source = _provider_cache_destination(provider_cache_root, item)
+    if not source.is_file():
+        return None
+    _verified_object_record(item, source)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if not destination.exists():
         try:
-            with urllib.request.urlopen(request, timeout=300) as response, destination.open("wb") as handle:
-                for chunk in iter(lambda: response.read(1024 * 1024), b""):
-                    handle.write(chunk)
-        except OSError as exc:
-            raise ContractError(f"SANPO review media download failed: {item['name']}: {exc}") from exc
-    actual_md5 = _md5_base64(destination)
-    if actual_md5 != expected_md5:
-        raise ContractError(f"SANPO review media MD5 mismatch: {destination}")
-    return {
-        "remote_name": item["name"],
-        "generation": item.get("generation"),
-        "provider_md5_base64": expected_md5,
-        "size": expected_size,
-        "local_path": str(destination.resolve()),
-        "local_sha256": sha256_file(destination),
-        "md5_verified": True,
-    }
+            os.link(source, destination)
+        except OSError:
+            shutil.copy2(source, destination)
+    return _verified_object_record(item, destination)
+
+
+def _materialize_object(
+    item: dict[str, Any],
+    destination: Path,
+    provider_cache_root: Path | None = None,
+    cache_only: bool = False,
+) -> dict[str, Any]:
+    if provider_cache_root is not None:
+        reused = _reuse_provider_cache_object(item, destination, provider_cache_root)
+        if reused is not None:
+            return reused
+    if cache_only:
+        raise ContractError(f"required SANPO object is absent from provider cache: {item['name']}")
+    return _download_object(item, destination)
 
 
 def _object_maps(record: dict[str, Any]) -> dict[str, dict[int, dict[str, Any]]]:
@@ -118,14 +198,55 @@ def _select_candidates(
     session_count: int,
     session_offset: int = 0,
     allowed_sessions: set[str] | None = None,
+    excluded_candidate_ids: set[str] | None = None,
+    require_segmentation: bool = False,
+    one_per_session: bool = False,
+    candidate_ids: list[str] | None = None,
 ) -> list[dict[str, Any]]:
     if count <= 0:
         raise ContractError("--count must be positive")
     if session_offset < 0:
         raise ContractError("--session-offset must be non-negative")
+    if candidate_ids:
+        by_id = {str(row.get("candidate_id") or ""): row for row in rows}
+        if len(by_id) != len(rows) or "" in by_id:
+            raise ContractError("SANPO candidate rows have missing or duplicate candidate_id")
+        if len(set(candidate_ids)) != len(candidate_ids):
+            raise ContractError("--candidate-id contains duplicates")
+        missing = sorted(set(candidate_ids) - set(by_id))
+        if missing:
+            raise ContractError(f"requested SANPO candidate_id not found: {missing[:5]}")
+        selected = [by_id[candidate_id] for candidate_id in candidate_ids]
+        if any(row.get("dataset_id") != "SANPO-Real" for row in selected):
+            raise ContractError("--candidate-id selected a non-SANPO row")
+        if require_segmentation and any(
+            row.get("source_metadata", {}).get("segmentation_complete") is not True for row in selected
+        ):
+            raise ContractError("--candidate-id selected a row without complete segmentation")
+        if allowed_sessions is not None and any(
+            str(row.get("source_metadata", {}).get("raw_source_session_id") or row.get("source_id") or "")
+            not in allowed_sessions
+            for row in selected
+        ):
+            raise ContractError("--candidate-id selected a row outside the allowed complete-media sessions")
+        if excluded_candidate_ids and any(str(row.get("candidate_id")) in excluded_candidate_ids for row in selected):
+            raise ContractError("--candidate-id selected a completed review candidate")
+        if one_per_session:
+            sessions = [
+                str(row.get("source_metadata", {}).get("raw_source_session_id") or row.get("source_id") or "")
+                for row in selected
+            ]
+            if len(set(sessions)) != len(sessions):
+                raise ContractError("--candidate-id violates --one-per-session")
+        return selected
     by_session: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
         if row.get("dataset_id") != "SANPO-Real":
+            continue
+        candidate_id = str(row.get("candidate_id") or "")
+        if excluded_candidate_ids and candidate_id in excluded_candidate_ids:
+            continue
+        if require_segmentation and row.get("source_metadata", {}).get("segmentation_complete") is not True:
             continue
         raw_session = str(row.get("source_metadata", {}).get("raw_source_session_id") or row.get("source_id") or "")
         if raw_session and (allowed_sessions is None or raw_session in allowed_sessions):
@@ -135,13 +256,41 @@ def _select_candidates(
         ordered_sessions = ordered_sessions[:session_count]
     selected: list[dict[str, Any]] = []
     for raw_session in ordered_sessions:
-        for row in sorted(by_session[raw_session], key=lambda item: (int(item.get("start_frame_index", -1)), str(item.get("candidate_id")))):
+        session_rows = sorted(
+            by_session[raw_session],
+            key=lambda item: (int(item.get("start_frame_index", -1)), str(item.get("candidate_id"))),
+        )
+        if one_per_session:
+            session_rows = session_rows[:1]
+        for row in session_rows:
             selected.append(row)
             if len(selected) >= count:
                 return selected
     if len(selected) < count:
         raise ContractError(f"requested {count} SANPO candidates but only {len(selected)} fit the session selection")
     return selected
+
+
+def _completed_review_candidate_ids(output_root: Path) -> set[str]:
+    """Return candidate IDs with a completed primary review in any role."""
+
+    candidate_ids: set[str] = set()
+    for relative in (
+        "reviews/review_a.jsonl",
+        "reviews/review_b.jsonl",
+        "reviews/review_c.jsonl",
+        "reviews/geometry_review.jsonl",
+        "reviews/counterexample_review.jsonl",
+    ):
+        path = output_root / relative
+        if not path.is_file():
+            continue
+        for row in load_jsonl(path):
+            if row.get("record_kind") == "COMPLETED_REVIEW" and row.get("review_completed") is True:
+                candidate_id = str(row.get("candidate_id") or "")
+                if candidate_id:
+                    candidate_ids.add(candidate_id)
+    return candidate_ids
 
 
 def _sha256_text(value: str) -> str:
@@ -170,6 +319,35 @@ def _provider_destination(batch_root: Path, item: dict[str, Any]) -> Path:
     name = str(item["name"])
     filename = Path(name).name
     return batch_root / "provider_cache" / _provider_kind(name) / f"{_sha256_text(name)[:24]}_{filename}"
+
+
+def _provider_cache_destination(provider_cache_root: Path, item: dict[str, Any]) -> Path:
+    name = str(item["name"])
+    filename = Path(name).name
+    return provider_cache_root / _provider_kind(name) / f"{_sha256_text(name)[:24]}_{filename}"
+
+
+def _verified_object_record(item: dict[str, Any], destination: Path) -> dict[str, Any]:
+    expected_size = int(item.get("size", -1))
+    expected_md5 = str(item.get("md5Hash") or "")
+    if not destination.is_file():
+        raise ContractError(f"SANPO review media is missing after materialization: {destination}")
+    if destination.stat().st_size != expected_size:
+        raise ContractError(
+            f"SANPO review media size mismatch: {destination.stat().st_size} != {expected_size}: {destination}"
+        )
+    actual_md5 = _md5_base64(destination)
+    if actual_md5 != expected_md5:
+        raise ContractError(f"SANPO review media MD5 mismatch: {destination}")
+    return {
+        "remote_name": item["name"],
+        "generation": item.get("generation"),
+        "provider_md5_base64": expected_md5,
+        "size": expected_size,
+        "local_path": str(destination.resolve()),
+        "local_sha256": sha256_file(destination),
+        "md5_verified": True,
+    }
 
 
 POSE_NUMERIC_FIELDS = (
@@ -263,6 +441,8 @@ def _download_required_items(
     batch_root: Path,
     items: list[dict[str, Any]],
     workers: int,
+    provider_cache_root: Path | None = None,
+    cache_only: bool = False,
 ) -> dict[str, dict[str, Any]]:
     if workers <= 0:
         raise ContractError("--workers must be positive")
@@ -270,7 +450,13 @@ def _download_required_items(
     downloaded: dict[str, dict[str, Any]] = {}
     with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="sanpo-review") as pool:
         futures = {
-            pool.submit(_download_object, item, _provider_destination(batch_root, item)): str(item["name"])
+            pool.submit(
+                _materialize_object,
+                item,
+                _provider_destination(batch_root, item),
+                provider_cache_root,
+                cache_only,
+            ): str(item["name"])
             for item in ordered
         }
         try:
@@ -361,6 +547,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         raise ContractError("SANPO candidate artifact and span inventory are required")
     if not ffmpeg.is_file():
         raise ContractError(f"ffmpeg not found: {ffmpeg}")
+    provider_cache_root = Path(args.provider_cache_root).resolve() if args.provider_cache_root else None
+    if provider_cache_root is not None and not provider_cache_root.is_dir():
+        raise ContractError(f"provider cache root is not a directory: {provider_cache_root}")
+    if args.cache_only and provider_cache_root is None:
+        raise ContractError("--cache-only requires --provider-cache-root")
     if args.count <= 0 or args.session_count <= 0:
         raise ContractError("--count and --session-count must be positive")
     batch_root = root / "reviews" / "input_bundles" / args.batch_id
@@ -388,6 +579,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         session_count=args.session_count,
         session_offset=args.session_offset,
         allowed_sessions=complete_sessions if args.require_complete_media else None,
+        excluded_candidate_ids=(
+            _completed_review_candidate_ids(root) if args.exclude_completed_reviews else None
+        ),
+        require_segmentation=args.require_segmentation,
+        one_per_session=args.one_per_session,
+        candidate_ids=args.candidate_id,
     )
     batch_root.mkdir(parents=True, exist_ok=False)
     for role in ROLES:
@@ -419,6 +616,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 required_provider_items[str(mask["name"])] = mask
         auxiliary = record.get("auxiliary") if isinstance(record.get("auxiliary"), dict) else {}
         for kind in ("intrinsics", "pose"):
+            if kind == "pose" and args.allow_missing_pose:
+                continue
             values = auxiliary.get(kind) if isinstance(auxiliary.get(kind), list) else []
             for item in values:
                 required_provider_items[str(item["name"])] = item
@@ -434,6 +633,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         batch_root=batch_root,
         items=list(required_provider_items.values()),
         workers=args.workers,
+        provider_cache_root=provider_cache_root,
+        cache_only=args.cache_only,
     )
 
     manifest_rows: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -625,6 +826,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         },
         "candidate_artifact": {"path": str(candidate_path), "sha256": sha256_file(candidate_path)},
         "inventory_artifact": {"path": str(inventory_path), "sha256": sha256_file(inventory_path)},
+        "pose_download_policy": "OPTIONAL_SOURCE_NATIVE_FAIL_CLOSED" if args.allow_missing_pose else "REQUIRED",
+        "provider_cache_policy": (
+            "CACHE_ONLY_REUSED_LOCAL"
+            if args.cache_only
+            else "CACHE_REUSE_THEN_DOWNLOAD"
+            if provider_cache_root is not None
+            else "DOWNLOAD"
+        ),
         "source_media_receipts": sorted(source_receipts.values(), key=lambda row: str(row["candidate_id"])),
         "model_output_visible_in_any_input": False,
         "review_assignments_are_not_labels": True,
@@ -634,6 +843,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "Geometry role receives only source-native depth/mask/calibration/pose evidence and no RGB.",
             "Counterexample role receives RGB evidence and a dedicated counterexample instruction.",
             "Relative nominal frame times are not capture-authoritative.",
+            "Pose CSV download policy is optional only when explicitly requested; missing pose binding remains NOT_EVALUABLE.",
         ],
     }
     bundle_path = batch_root / "bundle_manifest.json"
@@ -655,6 +865,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "review_roles": list(ROLES),
         "estimated_provider_bytes": estimated_bytes,
         "provider_object_count": len(required_provider_items),
+        "pose_download_policy": "OPTIONAL_SOURCE_NATIVE_FAIL_CLOSED" if args.allow_missing_pose else "REQUIRED",
+        "provider_cache_policy": (
+            "CACHE_ONLY_REUSED_LOCAL"
+            if args.cache_only
+            else "CACHE_REUSE_THEN_DOWNLOAD"
+            if provider_cache_root is not None
+            else "DOWNLOAD"
+        ),
         "bundle_manifest": {"path": str(bundle_path), "sha256": sha256_file(bundle_path)},
         "manifest_files": {role: {"path": str(path), "sha256": sha256_file(path)} for role, path in manifest_paths.items()},
         "model_output_visible_in_any_input": False,
@@ -678,13 +896,48 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--session-count", type=int, default=20)
     parser.add_argument("--session-offset", type=int, default=0)
     parser.add_argument(
+        "--candidate-id",
+        action="append",
+        default=[],
+        help="select exact candidate IDs; repeat the option for multiple candidates",
+    )
+    parser.add_argument(
         "--require-complete-media",
         action="store_true",
         help="select only sessions with a nonzero contiguous RGB/depth/mask intersection in the span inventory",
     )
+    parser.add_argument(
+        "--require-segmentation",
+        action="store_true",
+        help="select only candidate rows whose source metadata marks segmentation as complete",
+    )
+    parser.add_argument(
+        "--exclude-completed-reviews",
+        action="store_true",
+        help="exclude candidate IDs already marked COMPLETED_REVIEW in any primary review role",
+    )
+    parser.add_argument(
+        "--one-per-session",
+        action="store_true",
+        help="select at most one deterministic candidate window per source session",
+    )
+    parser.add_argument(
+        "--allow-missing-pose",
+        action="store_true",
+        help="skip SANPO pose CSV downloads and keep pose binding fail-closed for RGB/depth review",
+    )
     parser.add_argument("--fps", type=float, default=15.0)
     parser.add_argument("--max-bytes", type=int, default=20_000_000_000)
     parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument(
+        "--provider-cache-root",
+        help="reuse provider objects from an existing verified provider_cache directory",
+    )
+    parser.add_argument(
+        "--cache-only",
+        action="store_true",
+        help="fail closed instead of downloading when an object is absent from --provider-cache-root",
+    )
     parser.add_argument("--ffmpeg-path", default=r"E:\codex-tools\ffmpeg-8.1.2-full_build-shared\ffmpeg-8.1.2-full_build-shared\bin\ffmpeg.exe")
     return parser.parse_args()
 

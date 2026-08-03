@@ -185,6 +185,31 @@ assignment-only files and still writes no adjudicated event:
   --batch-id d7-r1-egowalk-review-pilot
 ```
 
+For the extracted EgoWalk videos, the pose parquet is the physical timeline
+and each pose row binds to one video ordinal. The container advertises a 100 Hz
+playback rate while the pose timeline is 5 Hz, so review contact sheets use
+pose-row ordinals converted to container seconds; they must not seek by the
+pose timestamps directly. `materialize_review_bundle.py` records the selected
+ordinal frame indices in every RGB assignment.
+
+If a separately frozen, hash-bound EgoWalk depth root is explicitly in scope
+for Development review, augment an untouched bundle before any role writes an
+output:
+
+```powershell
+& $py scripts/run_research_tool.py hftf-d7-public-real augment_egowalk_depth_evidence.py `
+  --output-root F:\ba-data\hftf-d7-public-real `
+  --batch-id <untouched-egowalk-batch> `
+  --run-id <depth-evidence-run> `
+  --media-root <hash-bound-egowalk-media-root> `
+  --ffmpeg-path E:\codex-tools\ffmpeg-8.1.2-full_build-shared\ffmpeg-8.1.2-full_build-shared\bin\ffmpeg.exe
+```
+
+The augmentation is source-native and model-blind, but a media root marked
+consumed/burned by another frozen protocol is Development-only and cannot
+receive fresh Confirmation credit. Depth previews are descriptive aids; they
+do not create segmentation, event truth, or an admission.
+
 After all five independent roles are ingested, materialize a final-adjudicator
 bundle and ingest only its terminal outputs. The adjudicator bundle exposes all
 raw review records and copied evidence, but still has no model discovery fields:
@@ -199,6 +224,25 @@ raw review records and copied evidence, but still has no model discovery fields:
   --run-id d7-r1-adjudication-ingest-pilot `
   --batch-id d7-r1-egowalk-review-pilot
 ```
+
+Legacy reviewer files may be canonicalized only with an immutable role
+manifest. A negative support interval recorded in frame/time-from-source-start
+fields may be bound to the manifest's full candidate window; incomplete positive
+phases are downgraded to `NOT_EVALUABLE` rather than interpolated:
+
+```powershell
+& $py scripts/run_research_tool.py hftf-d7-public-real normalize_completed_review_fields.py `
+  --path <role>\completed_review.jsonl --expected-count <N> `
+  --role <role> --manifest-path <bundle>\manifests\<role>.jsonl `
+  --canonicalize-completed-review --bind-support-intervals-from-manifest `
+  --downgrade-incomplete-support
+```
+
+When all five roles are ingested and the source-native geometry role is
+uniformly `NOT_EVALUABLE`,
+`materialize_conservative_adjudication.py` can produce only fail-closed
+`NOT_EVALUABLE`/`NOT_ADMITTED` terminals. It cannot create a positive or
+negative event, and it must be followed by `ingest_adjudications.py`.
 
 Generate the required twelve-item status report from the current machine-readable
 artifacts, then run the validator once more so its artifact hashes bind the final

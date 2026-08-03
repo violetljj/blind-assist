@@ -65,9 +65,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     source_manifest = load_json(source_root / "bundle_manifest.json")
     source_ids = {str(value) for value in source_manifest.get("candidate_ids", [])}
     excluded = {str(value) for value in args.exclude_candidate_id}
+    included = {str(value) for value in args.include_candidate_id}
     if not excluded.issubset(source_ids):
         raise ContractError(f"excluded candidate is not in source batch: {sorted(excluded - source_ids)}")
-    selected_ids = source_ids - excluded
+    if not included.issubset(source_ids):
+        raise ContractError(f"included candidate is not in source batch: {sorted(included - source_ids)}")
+    if included and excluded.intersection(included):
+        raise ContractError("a candidate cannot be both included and excluded")
+    selected_ids = included if included else source_ids - excluded
     if not selected_ids:
         raise ContractError("subset selection is empty")
     output_root.mkdir(parents=True, exist_ok=False)
@@ -158,6 +163,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source-batch-root", required=True)
     parser.add_argument("--output-batch-root", required=True)
     parser.add_argument("--exclude-candidate-id", action="append", default=[])
+    parser.add_argument(
+        "--include-candidate-id",
+        action="append",
+        default=[],
+        help="select exactly these candidate IDs; repeat for a deterministic re-review sample",
+    )
     return parser.parse_args()
 
 

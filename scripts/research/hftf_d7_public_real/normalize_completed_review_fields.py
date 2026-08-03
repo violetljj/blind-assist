@@ -69,6 +69,44 @@ def _negative_interval_from_positive_phase_span(phases: object) -> dict[str, int
     }
 
 
+def _negative_interval_from_manifest(
+    row: dict[str, object], manifest_row: dict[str, object]
+) -> dict[str, object] | None:
+    """Bind a reviewer-declared full-window negative interval to source time.
+
+    Some older role outputs recorded the negative interval in frame/time-from-
+    source-start fields while the frozen review contract requires nanoseconds.
+    The immutable role manifest already binds the candidate window to source
+    timestamps; reuse that binding without inventing a shorter interval.
+    """
+
+    raw = row.get("continuous_negative_interval")
+    if not isinstance(raw, dict):
+        phases = row.get("phase_intervals")
+        if isinstance(phases, dict):
+            raw = phases.get("continuous_negative_interval")
+    if not isinstance(raw, dict):
+        return None
+    start = raw.get("start_timestamp_ns")
+    end = raw.get("end_timestamp_ns")
+    if start is None:
+        start = manifest_row.get("window_start_timestamp_ns")
+    if end is None:
+        end = manifest_row.get("window_end_timestamp_ns")
+    try:
+        start_ns = int(start)
+        end_ns = int(end)
+    except (TypeError, ValueError):
+        return None
+    if start_ns >= end_ns:
+        return None
+    bound = dict(raw)
+    bound["start_timestamp_ns"] = start_ns
+    bound["end_timestamp_ns"] = end_ns
+    bound["interval_binding"] = "IMMUTABLE_REVIEW_MANIFEST_WINDOW"
+    return {"continuous_negative_interval": bound}
+
+
 def normalize(
     path: Path,
     expected_count: int,
@@ -79,6 +117,8 @@ def normalize(
     manifest_path: Path | None = None,
     assume_model_blind_from_manifest: bool = False,
     canonicalize_completed_review: bool = False,
+    bind_support_intervals_from_manifest: bool = False,
+    rebind_identity_from_manifest: bool = False,
 ) -> dict[str, object]:
     if not path.is_file():
         raise ContractError(f"review output is missing: {path}")
@@ -86,6 +126,7 @@ def normalize(
     input_ids_by_candidate: dict[str, str] = {}
     model_blind_by_candidate: dict[str, object] = {}
     review_index_by_candidate: dict[str, object] = {}
+    manifest_by_candidate: dict[str, dict[str, object]] = {}
     if manifest_path is not None:
         manifest_rows = load_jsonl(manifest_path)
         for manifest_row in manifest_rows:
@@ -96,6 +137,7 @@ def normalize(
             input_ids_by_candidate[candidate_id] = review_input_id
             model_blind_by_candidate[candidate_id] = manifest_row.get("model_output_visible")
             review_index_by_candidate[candidate_id] = manifest_row.get("review_index")
+            manifest_by_candidate[candidate_id] = manifest_row
     with path.open("r", encoding="utf-8") as source:
         for line_number, line in enumerate(source, 1):
             if not line.strip():
@@ -108,9 +150,22 @@ def normalize(
                     raise ContractError(f"both bucket keys are present: {path}:{line_number}")
                 row["event_bucket"] = row.pop("bucket")
             if "decision" not in row:
-                if default_decision is None:
+                terminal_alias = row.get("terminal")
+                if terminal_alias in DECISIONS:
+                    # Some isolated reviewers emit the contract terminal name
+                    # instead of the canonical decision key.  Preserve the
+                    # original terminal field and bind only recognized
+                    # values; never infer SUPPORT/REJECT from free text.
+                    row["decision"] = terminal_alias
+                elif default_decision is None:
                     raise ContractError(f"missing decision: {path}:{line_number}")
-                row["decision"] = default_decision
+                else:
+                    row["decision"] = default_decision
+            if row.get("decision") == "NOT_EVALUABLE" and row.get("event_bucket") is None:
+                # Geometry/counterexample roles may express the terminal but
+                # omit a bucket because no event bucket was evaluable.  The
+                # canonical terminal is explicit and does not create a label.
+                row["event_bucket"] = "NOT_EVALUABLE"
             if not row.get("review_input_id") and manifest_path is not None:
                 candidate_id = str(row.get("candidate_id") or "")
                 review_input_id = input_ids_by_candidate.get(candidate_id)
@@ -129,12 +184,45 @@ def normalize(
             if canonicalize_completed_review:
                 if row.get("review_completed") not in (None, True):
                     raise ContractError(f"review is explicitly incomplete: {path}:{line_number}")
+                candidate_id = str(row.get("candidate_id") or "")
+                manifest_row = manifest_by_candidate.get(candidate_id)
+                if manifest_row is None and manifest_path is not None:
+                    raise ContractError(f"candidate missing from review manifest: {candidate_id}")
+                if row.get("review_role") is None and row.get("reviewer_role") is not None:
+                    row["review_role"] = row.pop("reviewer_role")
+                if role is not None and row.get("review_role") is None:
+                    row["review_role"] = role
+                if rebind_identity_from_manifest and manifest_row is not None:
+                    row["review_input_id"] = input_ids_by_candidate[candidate_id]
+                    if manifest_row.get("batch_id") is not None:
+                        row["batch_id"] = manifest_row["batch_id"]
+                    row["normalization_note"] = (
+                        "REVIEW_IDENTITY_REBOUND_FROM_IMMUTABLE_MANIFEST"
+                    )
                 row["schema"] = "hftf_d7_public_real_completed_review_v1"
                 row["record_kind"] = "COMPLETED_REVIEW"
                 row["review_completed"] = True
-                candidate_id = str(row.get("candidate_id") or "")
+                if row.get("decision") == "NOT_EVALUABLE" and row.get("event_bucket") == "NOT_EVALUABLE":
+                    row["phase_intervals"] = None
+                elif row.get("decision") != "SUPPORT" and not isinstance(row.get("phase_intervals"), (dict, type(None))):
+                    # REJECT/ESCALATE records do not carry a phase contract. Drop
+                    # legacy list-shaped payloads instead of letting a
+                    # non-canonical value reach the ingest boundary.
+                    row["phase_intervals"] = None
+                    row["normalization_note"] = "NON_SUPPORT_PHASE_INTERVALS_CANONICALIZED_TO_NULL"
                 if "review_index" not in row and candidate_id in review_index_by_candidate:
                     row["review_index"] = review_index_by_candidate[candidate_id]
+            if bind_support_intervals_from_manifest and row.get("decision") == "SUPPORT":
+                bucket = str(row.get("event_bucket") or "")
+                candidate_id = str(row.get("candidate_id") or "")
+                manifest_row = manifest_by_candidate.get(candidate_id)
+                if bucket.endswith("NEGATIVE") and manifest_row is not None:
+                    bound = _negative_interval_from_manifest(row, manifest_row)
+                    if bound is not None:
+                        row["phase_intervals"] = bound
+                        row["normalization_note"] = (
+                            "NEGATIVE_SUPPORT_INTERVAL_BOUND_FROM_IMMUTABLE_REVIEW_MANIFEST"
+                        )
             if downgrade_incomplete_support and row.get("decision") == "SUPPORT":
                 bucket = str(row.get("event_bucket") or "")
                 if normalize_negative_support_phase and bucket not in POSITIVE_BUCKETS:
@@ -219,6 +307,16 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="rebind a legacy completed row to the frozen completed-review schema",
     )
+    parser.add_argument(
+        "--bind-support-intervals-from-manifest",
+        action="store_true",
+        help="bind legacy negative support intervals to the immutable review-window timestamps",
+    )
+    parser.add_argument(
+        "--rebind-identity-from-manifest",
+        action="store_true",
+        help="explicitly replace legacy review-role/input/batch identity with the immutable manifest identity",
+    )
     return parser.parse_args()
 
 
@@ -234,4 +332,6 @@ if __name__ == "__main__":
         Path(args.manifest_path) if args.manifest_path else None,
         args.assume_model_blind_from_manifest,
         args.canonicalize_completed_review,
+        args.bind_support_intervals_from_manifest,
+        args.rebind_identity_from_manifest,
     ), ensure_ascii=False, sort_keys=True))

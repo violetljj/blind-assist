@@ -30,6 +30,7 @@ def normalize(
     rows: list[dict[str, Any]] = []
     rebound = 0
     rebound_not_admitted_decision = 0
+    rebound_swapped_terminal = 0
     decision_aliases = 0
     with path.open("r", encoding="utf-8") as source:
         for line_number, line in enumerate(source, 1):
@@ -56,6 +57,19 @@ def normalize(
                 row["adjudication_decision"] = "NOT_EVALUABLE"
                 row["normalization_note"] = "NOT_ADMIT_REBOUND_TO_FROZEN_NOT_EVALUABLE_TERMINAL"
                 rebound += 1
+            elif (
+                decision == "NOT_ADMITTED"
+                and row.get("admission_status") == "NOT_EVALUABLE"
+                and row.get("event_bucket") == "NOT_EVALUABLE"
+            ):
+                # A legacy writer occasionally swapped the terminal enum and
+                # admission-status fields.  This is safe only for the fully
+                # unevaluable, non-admitted terminal; never repair a bucket
+                # carrying a class or phase evidence here.
+                row["adjudication_decision"] = "NOT_EVALUABLE"
+                row["admission_status"] = "NOT_ADMITTED"
+                row["normalization_note"] = "SWAPPED_NOT_ADMITTED_NOT_EVALUABLE_TERMINAL_REBOUND"
+                rebound_swapped_terminal += 1
             elif decision == "NOT_ADMITTED":
                 if row.get("event_bucket") != "NOT_EVALUABLE" or row.get("admission_status") not in (None, "NOT_ADMITTED"):
                     raise ContractError(f"unsafe NOT_ADMITTED decision at {path}:{line_number}")
@@ -85,6 +99,7 @@ def normalize(
         "rows": len(rows),
         "rebound_not_admit": rebound,
         "rebound_not_admitted_decision": rebound_not_admitted_decision,
+        "rebound_swapped_terminal": rebound_swapped_terminal,
         "decision_aliases": decision_aliases,
         "status": "NORMALIZED",
     }

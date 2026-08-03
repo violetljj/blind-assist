@@ -72,107 +72,6 @@
   当前 checkpoint 的稳定事件级动态依赖，不撤销 D23 独立训练 history arm 的
   representation 正结果。下一变量限于 train-only 的单标量动态残差决策桥，不再
   扩 seed、阈值或主模型；主线、默认 App 与安全权限不变。
-- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D23
-  THOR-MAGNI proximity multi-seed robustness。D22 seed17 的 proximity 正信号
-  作为已观察的 hypothesis generation；另冻并执行未运行的 seeds23/41，训练仍保留
-  proximity/corridor 双 target、相同 1,078 samples、19 source sessions、五折、
-  模型、flow、loss 与 30 epochs。合并 15 fold×seed units 后，proximity
-  source-macro AUROC/AP history-minus-current mean 为 `+.04098/+.03242`，
-  分别 12/15 与 11/15 units 正；fold seed-mean 为 4/5 与 5/5 正。三个 seed
-  五折 mean AUROC 为 `+.03669/+.04996/+.03628`，AP 为
-  `+.03660/+.04407/+.01658`，均 3/3 正；pooled AUROC/AP 为
-  `+.01391/+.01877`。冻结 gate 10/10 通过，终态
-  `D23_THOR_MAGNI_PROXIMITY_MULTI_SEED_ROBUSTNESS_SUPPORTED`。
-  corridor source-macro AUROC/AP 仍为 `-.00763/+.00224`，broad-transfer 失败
-  不撤销。D23 是 post-hypothesis Development robustness，不是 fresh confirmation，
-  也不建立真实事件效用、主线、App 或安全主张。下一变量只允许冻结真实连续序列上的
-  proximity-onset event recall、first-warning lead time、false-active 与 clearance
-  检验；不再扩 seed 或调模型。
-- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D22
-  THOR-MAGNI dense-flow dynamics transfer。为 D12 的 1,078 samples 全量物化
-  4,312 对 current→history RAFT flow；216-sample 方向审计的 valid fraction
-  `.85275`，photometric L1 从 `.15305` 降至 `.06485`。同一 D20
-  20-channel dynamics、19 source sessions、5 folds、seed17、30 epochs 下，
-  current/history 两臂共享 1,004,134 参数。完整 10 个 training runs 后，
-  target-macro source-session-macro AUROC/AP delta 为 `+.01638/+.02376`、
-  均 3/5 folds 正；但 pooled macro AUROC 为 `-.01359`，且 corridor
-  source-macro AUROC 为 `-.00393`，因此 broad gate 终态
-  `D22_THOR_MAGNI_DENSE_FLOW_TRANSFER_CANARY_NOT_SUPPORTED`。同时 proximity
-  source-macro AUROC/AP 为 `+.03669/+.03660`，均 4/5 folds 正，pooled
-  `-.00100/+.00723`，保留
-  `D22_PROXIMITY_SOURCE_MACRO_TRANSFER_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY`。
-  首次运行因一个双 target 均无 eligible sample 的 mini-batch 抛出异常；在任何
-  held-out metric 前仅修复为空 batch 跳过并从头重跑，属于工程无效，不烧毁 cohort。
-  不扩 broad D22 gate、不追溯撤销 corridor 负结果；如继续，须另冻同一双 target
-  训练下的 proximity-only seeds23/41 稳定性检查，且只允许 target-specific
-  Development robustness。
-- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D21
-  ConvGRU future-state canary。保留 D20 相同四步 20-channel aligned
-  dense-flow dynamics，只把一次性 3D collapse 换成按时间递推的 16-channel
-  ConvGRU；current comparator 的 zero dynamics 在任意 recurrent weights 下
-  保持精确零状态，两臂共享 1,017,316 参数、30 epochs 与 seed17。完整 6 次
-  training runs 正常完成，无工程无效。history-minus-current 的
-  environment-macro cell AUROC/AP 为 `+.00390/+.00356`、均 2/3 folds 正，
-  未达到冻结的 `+.010/+.005` effect floors；其余 5 项 gate 通过。pooled cell
-  AUROC/AP 为 `+.00905/+.00992` 且均 3/3 folds 正，sample AUROC/AP 为
-  `+.01728/+.01345`，四 targets 的 mean AUROC/AP 全部同时为正，near/far-head
-  两指标也均 3/3 folds 正。这些分层 Development 正结果继续保留，但 ConvGRU
-  没有把它们转成稳定的 environment-macro effect，终态
-  `D21_CONVGRU_FUTURE_STATE_CANARY_NOT_SUPPORTED` 与
-  `D21_LIGHTWEIGHT_TEMPORAL_STATE_FAMILY_STOP`。不扩 seeds、不调 hidden width、
-  epoch、loss 或 gate；D20 仍是当前最强 Development mechanism signal，下一步
-  离开同一 operator family，检验 dense-flow dynamics 的独立 source/事件层复现。
-- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D20
-  dense-flow dynamics canary。在 D18 aligned 16-channel feature residual 上
-  显式追加 normalized flow x/y、magnitude、validity，形成四步 20-channel
-  dynamics tensor；current comparator 精确为零，两臂共享 1,004,392 参数与
-  30-epoch direct-onset budget。history-minus-current 的 environment-macro
-  cell AUROC/AP 为 `+.00431/+.03421`、2/3 与 3/3 folds 正，pooled cell
-  `+.00604/+.00966`、均 3/3，sample AUROC/AP `+.01612/+.01068`，4/4
-  targets 的 mean AUROC/AP 同时为正。7 项 gate 通过 6 项；仅 AUROC effect
-  未到预定 `+.010`，故终态 `D20_DENSE_FLOW_DYNAMICS_CANARY_NOT_SUPPORTED`，
-  不扩 seeds、不降门。同时保留
-  `D20_DENSE_FLOW_DYNAMICS_BROAD_ONSET_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY`。
-  下一变量只把 temporal collapse 改为 ConvGRU future-state recurrence，
-  flow/loss/epoch/gate 不变，主线与默认 App 不变。
-- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D19
-  geometry-dynamics pretraining canary。在 D18 flow-aligned encoder 上固定总
-  30 epochs：15 epochs 预测 current/near/far body/head fields，复制四个
-  future head channels 后再 15 epochs fine-tune onset。head transfer 把三折
-  current onset 首轮 loss 降至 `.6437/.5166/.5816`，但 history-minus-current
-  的 environment-macro cell AUROC/AP mean 为 `-.00219/-.00321`，pooled cell
-  `-.00246/+.00118`，sample AP `-.00679`；完整 gate 失败。终态
-  `D19_GEOMETRY_DYNAMICS_PRETRAINING_CANARY_NOT_SUPPORTED` 与
-  `D19_GENERIC_GEOMETRY_FIELD_PRETRAINING_SCHEDULE_STOP`。这表明通用 geometry
-  pretraining 同时强化了 current-static predictor，没有增加 history 独立增量。
-  保留 D18 alignment 正结果；下一候选显式编码 dense flow dynamics，不调
-  pretrain 比例、loss、seed 或 gate，主线与默认 App 不变。
-- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D18
-  flow-aligned true-onset canary。固定 RAFT-small 物化 495×4 current→history
-  backward flows；99-sample 方向检查的 valid fraction `.8798`，photometric L1
-  从 `.1130` 降至 `.0577`。首次完整推理只因 Windows 只读句柄 `fsync`
-  `Bad file descriptor` 未 finalize；作为工程故障修复为 `r+b` 后原协议重跑，
-  cohort 未烧毁。对齐 history 相对 identical current 的 pooled cell AUROC/AP
-  mean `+.00549/+.00886` 且均 3/3 folds 正，sample AUROC `+.02124`、3/3
-  folds 正，far-head AUROC/AP `+.01706/+.01802`、均 3/3 folds 正；但冻结
-  primary environment-macro cell AUROC 仅 `+.00031`、1/3 folds 正，未过
-  `+.010`/2-fold gate。保留
-  `D18_FLOW_ALIGNMENT_RESCUES_POOLED_CELL_LOCALIZATION_SIGNAL_DEVELOPMENT_ONLY`
-  与 `D18_FAR_HEAD_ALIGNED_ONSET_SIGNAL_SUPPORTED_DEVELOPMENT_ONLY`，同时记录
-  `D18_FLOW_ALIGNED_ONSET_CANARY_NOT_SUPPORTED`，不扩 seeds、不切 target。
-  下一变量只加 geometry-teacher dynamics pretraining，主线与默认 App 不变。
-- 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D17
-  early-temporal true-onset canary。固定 D16 的 495 samples、15 environments
-  与三折，在 MobileNet block 0 后用 2,448 参数 3D temporal stem 编码有序相邻
-  feature difference，再让 motion-conditioned feature 进入其余完整 encoder；
-  current/history 两臂共享相同初始化和 1,003,956 参数。environment-macro cell
-  AUROC/AP history-minus-current mean 为 `-.00128/+.00766`、1/3 与 2/3 folds
-  正；sample-macro AUROC 为 `+.00580` 且 3/3 folds 正，但四 targets 无一同时
-  获得正 cell AUROC/AP mean。终态
-  `D17_EARLY_TEMPORAL_ONSET_CANARY_NOT_SUPPORTED` 与
-  `D17_COARSE_ONSET_PRESENCE_SIGNAL_WITHOUT_STABLE_CELL_LOCALIZATION`。不扩
-  seeds23/41；下一候选只引入 dense correspondence/alignment，不调 width、
-  epoch、loss 或门槛救援，主线与默认 App 不变。
 - 时间：2026-08-02（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D16
   TartanGround true-future-onset baseline。继承既有 15-environment 三折，物化
   495 samples、19,478 eligible cells、1,652 onset cells；near/far × body/head
@@ -5160,6 +5059,47 @@
   backbone”的窄假设，也关闭当前 paired-RGB tail fine-tune recipe。下一步必须
   改变 pair interaction 或风险场表示，并先通过 source-heldout actionability
   recall。
+
+# 2026-08-02 — HFTF D7 public-real review pilot
+
+- 为 52,216 个候选窗口保留当前 `NOT_COMPLETE` 终态：候选目标已达到，
+  但 admitted parent events 为 `0/10000`，`HOLD_ROLE_REVIEW` 的两个 ancestry
+  冲突仍未授权 split、training 或 Confirmation。
+- 用 public extracted EgoWalk RGB 固化 5 个 model-blind 窗口，并为
+  RGB A/B/C、source-native geometry、counterexample 建立彼此隔离的输入包；
+  5 个角色各完成 5 条独立记录。RGB A/B/C 的 5/5 bucket 观察一致，但严格
+  phase contract 未满足；geometry 全部因 pose-only、缺少 obstacle geometry/
+  depth/tracks 而为 `NOT_EVALUABLE`。
+- 最终 adjudicator 消费全部 5 类 raw review 后输出 `5 NOT_EVALUABLE / 0 ADMITTED`。
+  没有把 RGB negative 观察、缺失 geometry 或候选发现信号升级为 event truth；
+  training/Confirmation/production authority 仍为 false。
+- 新增 `materialize_review_bundle.py`、`ingest_review_outputs.py`、
+  `materialize_adjudication_bundle.py`、`ingest_adjudications.py` 及对应防泄漏、
+  phase、原子合并测试；每次合并均保留 backup 和 sha256 receipt。
+- SANPO-Real 另完成一个明确 session/camera/view 的 bounded canary：20 RGB、
+  20 depth、20 segmentation mask、2 pose CSV，对 62 个公开 GCS 对象逐一做
+  provider MD5 校验；由于该 pose CSV 没有时间戳，暂不把这个媒体 canary 擅自
+  变成带 phase contract 的 D7 event candidate，保留为 source-intake evidence。
+
+# 2026-08-02 — HFTF D7 public-real source expansion receipts
+
+- SANPO-Real canary expanded to 60 RGB/depth/mask frames plus session intrinsics
+  and raw/fixed pose CSVs.  The official 15 FPS value is recorded only as
+  `DERIVED_RELATIVE_NOMINAL`; `timestamp_ns` remains null, capture timestamps
+  are not authoritative, and pose-row/frame binding remains `NOT_EVALUABLE`.
+- THÖR-MAGNI public Zenodo ZIP central-directory inspection fetched 135,487
+  bytes of metadata for a 22,259,767,649-byte archive: 122 videos, 581 point
+  clouds, and 185 tabular/JSON members were inventoried without full-archive
+  download.
+- A bounded six-member THÖR-MAGNI canary materialized and CRC/SHA-256 verified
+  151,725,897 bytes, including one scene video, one synchronized scenario CSV,
+  synchronization metadata, Tobii raw eye-tracking, goals, and camera
+  intrinsics.  QTM `Frame`/`Time` windows (100 Hz, 400 QTM rows/window) retain
+  24,057 source rows including one duplicate QTM frame, 6,104 unique scene
+  frames, and 60 four-second source windows for one `Visitors-Alone` Pupil
+  run; only 58 have complete SceneFNr coverage and 3 have complete camera
+  centroid coverage.  These remain intake-only and
+  `NOT_EVALUABLE`; no top-level event label or authority was created.
 - 时间：2026-08-03（Asia/Hong_Kong）；执行者：violjjet。完成 HFTF D28
   THOR-MAGNI kinematic field distillation。D27 current-static 与
   history-kinematic distance fields 分别监督等容量 current/history RGB students；

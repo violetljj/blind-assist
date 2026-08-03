@@ -82,6 +82,21 @@ class NormalizeAdjudicationTerminalsTest(unittest.TestCase):
             with self.assertRaises(ContractError):
                 normalize(path, expected_count=1)
 
+    def test_swapped_unevaluable_terminal_is_rebound_safely(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "final.jsonl"
+            path.write_text(
+                json.dumps(_row("NOT_ADMITTED", admission_status="NOT_EVALUABLE")) + "\n",
+                encoding="utf-8",
+            )
+
+            result = normalize(path, expected_count=1)
+
+            self.assertEqual(result["rebound_swapped_terminal"], 1)
+            row = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(row["adjudication_decision"], "NOT_EVALUABLE")
+            self.assertEqual(row["admission_status"], "NOT_ADMITTED")
+
 
 if __name__ == "__main__":
     unittest.main()

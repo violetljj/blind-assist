@@ -48,10 +48,14 @@ def _completed_reviews(root: Path) -> dict[str, list[dict[str, Any]]]:
 
 
 def _final_adjudication_count(root: Path) -> int:
-    total = 0
+    candidate_ids: set[str] = set()
     for path in sorted((root / "reviews" / "adjudication_bundles").glob("*/FINAL_ADJUDICATOR/final_adjudication.jsonl")):
-        total += len(load_jsonl(path))
-    return total
+        candidate_ids.update(
+            str(row.get("candidate_id"))
+            for row in load_jsonl(path)
+            if row.get("candidate_id")
+        )
+    return len(candidate_ids)
 
 
 def run(args: argparse.Namespace) -> dict[str, Any]:
@@ -149,7 +153,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         f"- Candidate ID duplicate count: `{len(candidates) - len({str(row.get('candidate_id')) for row in candidates})}`.",
         f"- Event manifest rows: `{len(events)}`; admitted event rows: `{len(adjudicated)}`.",
         "- Temporal overlap, near-duplicate image graph, stereo/view collapse, and parent-event adjacency remain review-gated.",
-        "- No candidate was admitted by this refresh.",
+        f"- No dataset-wide deduplication admission claim is authorized; currently materialized admitted event rows: `{len(adjudicated)}`.",
     ]
     _write(root / "reports" / "duplicate_audit_report.md", duplicate_lines)
 

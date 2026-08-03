@@ -73,7 +73,7 @@ def _validate_adjudicated(path: Path) -> tuple[list[dict[str, Any]], list[str]]:
         if event_id in seen:
             errors.append(f"duplicate adjudicated event_id: {event_id}")
         seen.add(event_id)
-        if row.get("record_kind") == "ASSIGNMENT_ONLY" or row.get("decision") in {"PENDING", None}:
+        if row.get("record_kind") == "ASSIGNMENT_ONLY" or row.get("decision") == "PENDING":
             errors.append(f"assignment-only row found in adjudicated_events.jsonl: {event_id}")
         if row.get("admission_status") != "ADMITTED":
             errors.append(f"event not marked ADMITTED: {event_id}")

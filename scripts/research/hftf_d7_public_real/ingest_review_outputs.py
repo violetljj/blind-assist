@@ -176,9 +176,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         raise ContractError("review bundle references candidate absent from event manifest")
 
     receipt_path = root / "receipts" / f"review_ingest_receipt_{args.batch_id}.json"
-    if receipt_path.exists():
-        raise ContractError(f"review ingest receipt already exists; refusing overwrite: {receipt_path}")
     backup_root = root / "reviews" / "backups" / args.batch_id
+    if receipt_path.exists() or backup_root.exists():
+        if not args.allow_same_batch_reingest:
+            existing = receipt_path if receipt_path.exists() else backup_root
+            raise ContractError(f"review ingest artifact already exists; refusing overwrite: {existing}")
+        receipt_path = root / "receipts" / f"review_ingest_receipt_{args.batch_id}_{args.run_id}.json"
+        backup_root = root / "reviews" / "backups" / args.batch_id / f"reingest-{args.run_id}"
+    if receipt_path.exists() or backup_root.exists():
+        raise ContractError(f"review reingest artifact already exists: {receipt_path} / {backup_root}")
     backup_root.mkdir(parents=True, exist_ok=False)
     primary_hashes_before: dict[str, str] = {}
     primary_hashes_after: dict[str, str] = {}
@@ -207,7 +213,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             if candidate_id not in replacements:
                 merged.append(row)
                 continue
-            if row.get("record_kind") != "ASSIGNMENT_ONLY" or row.get("review_completed") is True:
+            same_batch_reingest = (
+                row.get("record_kind") == "COMPLETED_REVIEW"
+                and str(row.get("review_batch_id") or "") == args.batch_id
+            )
+            if not same_batch_reingest and (row.get("record_kind") != "ASSIGNMENT_ONLY" or row.get("review_completed") is True):
                 raise ContractError(f"refusing to overwrite an existing completed review: {role} {candidate_id}")
             source_event = event_by_candidate[candidate_id]
             source_review = replacements[candidate_id]
@@ -220,6 +230,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 "dataset_id": source_event.get("dataset_id"),
                 "source_session_id": source_event.get("source_session_id"),
                 "review_completed": True,
+                "review_origin": source_review.get("review_origin"),
+                "independent_observation_recorded": source_review.get("independent_observation_recorded", True),
                 "decision": source_review.get("decision"),
                 "event_bucket": source_review.get("event_bucket"),
                 "phase_intervals": source_review.get("phase_intervals"),
@@ -230,7 +242,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 "evidence_basis": source_review.get("evidence_basis"),
                 "review_batch_id": args.batch_id,
                 "review_input_id": source_review.get("review_input_id"),
-                "review_notes": source_review.get("notes"),
+                "review_notes": source_review.get("review_notes") or source_review.get("review_note") or source_review.get("notes"),
                 "reason_code": source_review.get("reason_code"),
                 "rgb_local_path": source_event.get("rgb_local_path"),
             })
@@ -246,6 +258,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     # Mark the event shells as having completed raw review roles, without
     # changing their event bucket, truth status, or admission status.
     event_path = root / "manifests" / "event_manifest.jsonl"
+    output_by_candidate = {
+        role: {str(row.get("candidate_id")): row for row in output_by_role[role]}
+        for role in roles
+    }
     event_merged: list[dict[str, Any]] = []
     for row in event_rows:
         candidate_id = str(row.get("candidate_id") or "")
@@ -255,7 +271,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             completed_roles = set(previous if isinstance(previous, list) else [])
             completed_roles.update(roles)
             updated["completed_review_roles"] = sorted(completed_roles)
-            updated["review_state"] = "INDEPENDENT_REVIEW_COMPLETED"
+            all_roles_observed = all(
+                output_by_candidate[role][candidate_id].get("independent_observation_recorded", True) is not False
+                for role in roles
+            )
+            updated["review_state"] = (
+                "INDEPENDENT_REVIEW_COMPLETED"
+                if all_roles_observed
+                else "REVIEW_TERMINAL_NOT_EVALUABLE"
+            )
             updated["review_batch_id"] = args.batch_id
             updated["admission_status"] = "PENDING_REVIEW"
             updated["truth_status"] = "NOT_EVALUABLE"
@@ -303,6 +327,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--batch-id", required=True)
     parser.add_argument("--roles", default=",".join(REVIEW_ROLES))
+    parser.add_argument(
+        "--allow-same-batch-reingest",
+        action="store_true",
+        help="allow an auditable metadata-preserving reingest for an already ingested batch",
+    )
     return parser.parse_args()
 
 
