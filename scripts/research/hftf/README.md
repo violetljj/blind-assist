@@ -29,6 +29,9 @@ D16-tartanground-history-increment-not-supported /
 A1-consumed-motion-increment-not-supported /
 A0.1-android-probability-head-parity-runtime-supported /
 metric-depth-android-dualarm-runtime-supported-no-realtime /
+dual-rate-metric-depth-observer-r1-development-not-supported /
+dense-metric-depth-propagation-r0-development-not-supported /
+metric-depth-calibration-head-r0-development-not-supported /
 frozen-single-frame-posthoc-temporal-residual-family-stop`
 
 最新深度观测器同屏终态：
@@ -44,6 +47,29 @@ clearance。MoGe-2 仅快约 9%、显存约 2 倍且任务质量更差，不是�
 gate 未过，而且同步锚点 P95 为 `198.59 ms`。因此只支持下一步研究异步锚点与共驻
 内存，不允许在已消费 cohort 搜索锚点周期救援。
 完整结果见 `DEPTH_OBSERVER_CLEARANCE_A0_CONSUMED_RESULT.md`。
+
+冻结的 `DUAL_RATE_METRIC_DEPTH_OBSERVER_R1` 已执行。D 臂用独立 CUDA worker、
+completion-time 因果调度、最近三个已完成锚点的 Theil-Sen 全局仿射校正和 1 秒
+source-age `UNKNOWN`，没有搜索 cadence、TTL 或拟合器。已知帧 MAE 为
+`0.15241 m`，但只有 `58/120` 帧保持已知，包络一致率 `86.21%`、false-clear
+`8.43%`，终态 `R1_DEVELOPMENT_TASK_GATES_NOT_SUPPORTED`。按已测
+`1500.794 ms` Metric3D HTP service time 做的共享加速器资源审计又得到 DA 中断
+`112/120`、anchor completion age `1.500794 s`，终态
+`R1_PHONE_SHARED_HTP_FEASIBILITY_NOT_SUPPORTED`。不得在该 consumed cohort 调参
+救援；fresh final-camera、共驻内存、温度仍未评价，因此不把负结果升级为 ToF 唯一性
+或采购授权。协议和结果见
+`../../../docs/research/hftf/DUAL_RATE_METRIC_DEPTH_OBSERVER_R1_PROTOCOL_2026-08-03.md`
+与
+`../../../docs/research/hftf/DUAL_RATE_METRIC_DEPTH_OBSERVER_R1_DEVELOPMENT_RESULT_2026-08-03.md`。
+
+两个冻结后继也已执行并判负。稠密 residual + 双向 RAFT 传播得到 `81/120` paired、
+MAE `0.17694 m`、一致率 `89.81%`、false-clear `7.02%`，终态
+`DENSE_PROPAGATION_CONSUMED_DEVELOPMENT_NOT_SUPPORTED`。离线 Metric3D 教师的
+770 参数 DA CLS calibration head 得到 MAE `0.19980 m`，4/4 折优于 raw DA、仅
+2/4 折优于训练折常数 affine，一致率 `89.67%`、false-clear `8.92%`，终态
+`CALIBRATION_HEAD_CONSUMED_DEVELOPMENT_NOT_SUPPORTED`。三条当前候选均停止 consumed
+调参，但这不授权 ToF 采购；综合决策见
+`../../../docs/research/hftf/METRIC_DEPTH_THREE_ROUTE_DECISION_2026-08-03.md`。
 
 最新 NPU 性能终态：
 `HTP_EXECUTION_SUPPORTED_HIGH_FREQUENCY_NOT_SUPPORTED_RELATIVE_ONLY`。Qualcomm

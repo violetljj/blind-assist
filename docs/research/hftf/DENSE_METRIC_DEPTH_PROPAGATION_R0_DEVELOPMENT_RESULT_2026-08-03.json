@@ -1,0 +1,38 @@
+{
+  "schema": "blindassist_dense_metric_depth_propagation_r0_committed_summary",
+  "date": "2026-08-03",
+  "terminal": "DENSE_PROPAGATION_CONSUMED_DEVELOPMENT_NOT_SUPPORTED",
+  "protocol_sha256": "6F93050C2FBF8C5769CA363EC23E34D69356B318331475FA0AD75A90B299C2E1",
+  "cache_manifest_sha256": "49C3F9426D0D658B61741569BB5AD1DB6839DBECF76227531E628FE662D9D8B4",
+  "ignored_result_sha256": "2B5937E4B8242F6220590745D041DE69F5F907C206FDA51AD9F249D20F4EC51E",
+  "ignored_trace_sha256": "80DE838625ACAA0EB3E7D2C4BE69A75EE7FC5DC644133AAC085859C0D6BC653E",
+  "data_role": "already_consumed_tum_rgbd_four_sequence_diagnostic",
+  "fresh_data_opened": false,
+  "non_keyframe_metric3d_candidate_reads": 0,
+  "task": {
+    "paired_valid_frames": 81,
+    "paired_valid_fraction": 0.675,
+    "clearance_mae_m": 0.17694088673085234,
+    "collision_agreement": 0.8980716253443526,
+    "false_clear_rate": 0.07024793388429752,
+    "temporal_clearance_delta_mae_m": 0.15113509771502123,
+    "steady_latency_mean_ms": 112.55359741341542,
+    "steady_latency_p95_ms": 131.5887999953702,
+    "gates_passed": 1,
+    "gates_total": 5
+  },
+  "system": {
+    "known_output_fraction": 0.6833333333333333,
+    "anchor_source_age_p95_s": 0.604079008102417,
+    "flow_consistent_coverage_mean": 0.8759912903328252,
+    "flow_consistent_coverage_p05": 0.7558170572916667,
+    "flow_latency_mean_ms": 55.806680000083965,
+    "flow_latency_p95_ms": 78.30739999917569,
+    "causality_violations": 0,
+    "unknown_reason_counts": {
+      "UNKNOWN_AFFINE_RESIDUAL": 30,
+      "UNKNOWN_ANCHOR_STARTUP": 8
+    }
+  },
+  "claim_ceiling": "consumed TUM Development replay only; no fresh, final-camera, phone, alert, safety, or ToF-replacement authority"
+}
