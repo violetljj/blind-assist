@@ -43,6 +43,8 @@ class ExternalRgbMetricDepthSourceTest(unittest.TestCase):
         self.assertEqual(report["direction_accuracy"], 1.0)
         self.assertAlmostEqual(report["median_static_mad_jitter_m"], 0.01)
         self.assertEqual(report["p95_latency_ms"], 17.0)
+        self.assertEqual(report["mean_cold_start_latency_ms"], 10.0)
+        self.assertEqual(report["mean_steady_state_latency_ms"], 14.0)
 
     def test_nonfinite_prediction_reduces_availability(self) -> None:
         rows = [
@@ -52,6 +54,25 @@ class ExternalRgbMetricDepthSourceTest(unittest.TestCase):
         report = summarize(rows)["models"]["arm"]
         self.assertEqual(report["valid_observations"], 6)
         self.assertEqual(report["seven_frame_availability"], 0.0)
+
+    def test_direction_only_truth_does_not_create_metric_error(self) -> None:
+        rows = []
+        for frame in range(7):
+            row = observation(
+                "arm",
+                "approach-only",
+                frame,
+                3.0,
+                3.0 - frame * 0.1,
+                scenario="approach",
+            )
+            row["truth_depth_m"] = None
+            row["truth_direction"] = "approach"
+            rows.append(row)
+        report = summarize(rows)["models"]["arm"]
+        self.assertEqual(report["direction_accuracy"], 1.0)
+        self.assertEqual(report["metric_truth_observations"], 0)
+        self.assertIsNone(report["mean_absolute_error_m"])
 
 
 if __name__ == "__main__":
