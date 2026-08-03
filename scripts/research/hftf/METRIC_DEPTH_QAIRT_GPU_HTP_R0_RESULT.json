@@ -1,0 +1,62 @@
+{
+  "schema": "blindassist_metric_depth_qairt_gpu_htp_r0_result",
+  "date": "2026-08-03",
+  "device": {
+    "model": "Samsung SM-S9280",
+    "soc": "SM8650",
+    "android": 16
+  },
+  "sdk": {
+    "name": "Qualcomm AI Runtime Community",
+    "version": "2.47.0.260601"
+  },
+  "gpu": {
+    "terminal": "GPU_EXECUTION_ESTABLISHED_NUMERICALLY_INVALID_NONDETERMINISTIC",
+    "actual_backend_execution_proved": true,
+    "same_dlc_cpu_control_passed": true,
+    "fp32_single_execute_ms": 2102.371,
+    "fp32_depth_mean_absolute_error_vs_ort": 158.39,
+    "encoder_and_decoder_front_parity_supported": true,
+    "late_decoder_cross_run_nondeterminism_observed": true,
+    "disable_queue_recording_fixed": false,
+    "admitted": false
+  },
+  "htp": {
+    "terminal": "HTP_EXECUTION_AND_DEPLOYMENT_PARITY_SUPPORTED_CONSUMED_CANARY_ONLY",
+    "actual_backend_execution_proved": true,
+    "hvx_threads": 4,
+    "model_precision": "float16",
+    "model_sha256": "223447DF4B8E1C4D29C1C05FBAC581C17CD6B92BAE890BE097B93BD63ADC1C38",
+    "cached_model_sha256": "0E15888FA2CBFE4C6FB75F3C2B854DE71633F94433B7B6DB6D883638CB73F959",
+    "steady_five_execute_ms": {
+      "mean": 1500.794,
+      "min": 1491.137,
+      "max": 1508.819
+    },
+    "online_prepare_finalize_ms": 35777.293,
+    "cached_load_ms": 169.908,
+    "cached_and_online_outputs_bit_identical_on_nine_inputs": true,
+    "consumed_parity": {
+      "source": "prepared-tokyo-smoke",
+      "frame_count": 9,
+      "depth_relative_mean_absolute_error_range": [
+        0.009503464,
+        0.010329189
+      ],
+      "person_torso_depth_absolute_difference_m_mean": 0.09282128,
+      "person_torso_depth_absolute_difference_m_max": 0.11786604,
+      "seven_frame_velocity_difference_norm_mps": 0.004432495,
+      "seven_frame_one_second_future_position_difference_m": 0.08273221
+    },
+    "deployment_parity_admitted": true,
+    "realtime_source_admitted": false
+  },
+  "decision": "KEEP_HTP_CACHED_METRIC3D_AS_LOW_RATE_OR_OFFLINE_DEPLOYMENT_CANDIDATE; STOP_CURRENT_GPU_ROUTE; FULL_616X1064_MODEL_REQUIRES_RESOLUTION_REDUCTION_OR_DISTILLATION_BEFORE_LIVE_D44",
+  "claim_boundary": "No fresh source was opened. Results establish backend execution and parity to the existing FP32 ORT source on consumed technical frames, not real-world metric accuracy, alert quality, safety, or default-App promotion.",
+  "ignored_evidence_roots": [
+    "artifacts.local/evidence/hftf/metric-depth-qairt-gpu-r0",
+    "artifacts.local/evidence/hftf/metric-depth-qairt-htp-r0",
+    "artifacts.local/models/hftf-m3d-cf-qnn-r0/qairt-gpu",
+    "artifacts.local/models/hftf-m3d-cf-qnn-r0/qairt-htp"
+  ]
+}

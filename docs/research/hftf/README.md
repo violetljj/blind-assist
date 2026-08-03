@@ -156,7 +156,30 @@ D44_RELATIVE_METRIC_HISTORY_SUFFICIENCY_SUPPORTED /
 STAGE_C_D45_PHONE_METRIC_DEPTH_SOURCE_CANARY_FROZEN_R0_2 /
 D45_CURRENT_DEVICE_SOURCE_EXECUTED_PERSON_MEASUREMENT_NOT_ADMITTED /
 D45_PHONE_METRIC_DEPTH_SOURCE_NOT_EVALUABLE /
+METRIC3D_QAIRT_GPU_EXECUTION_ESTABLISHED_NUMERICALLY_INVALID_NONDETERMINISTIC /
+METRIC3D_QAIRT_HTP_EXECUTION_AND_DEPLOYMENT_PARITY_SUPPORTED_CONSUMED_CANARY_ONLY /
 RESEARCH_MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`
+
+## 2026-08-03 Metric3D QAIRT：GPU 停止，SM8650 HTP 成为低频部署候选
+
+按 GPU→NPU 顺序，在 `SM-S9280 / SM8650 / Android 16` 上执行了独占 QNN
+backend canary。GPU FP16/FP32 都能真实 compose/execute，但最终输出损坏；同一
+FP32 DLC 的 QNN CPU control 与 ORT 接近，逐层检查又证明 encoder 和 decoder
+前半段保持一致，而后段出现跨运行 NaN/极值与深度不确定性。关闭 queue recording
+无效，因此当前 GPU 路线停止，不能用其约 `2.10 s` 的无效延迟作为部署收益。
+
+HTP FP16 则完成真实 accelerator execution，profile 报告 4 个 HVX threads。
+五次稳态 execute mean/min/max 为 `1500.794/1491.137/1508.819 ms`。SM8650
+cached-context 把在线图 finalize 的 `35.777 s` 降到 `169.908 ms` load，且九个
+已消费 technical frames 上 cached/online 输出逐元素一致。相对既有 FP32 ORT
+source，整图 depth relative MAE 为 `0.950%–1.033%`，人物躯干深度差 mean/max
+为 `0.0928/0.1179 m`；连续七帧传入同一 OLS 后，一秒 future position 差
+`0.0827 m`。
+
+这建立的是 D44 source 的部署等价 canary，不是真实 metric accuracy。完整
+`616x1064` 模型仍只有约 `0.67 fps`，因此只保留为低频 shadow/offline candidate
+和后续缩分辨率/蒸馏的 deployment teacher；不接 alert、主线或 default App。详见
+[QAIRT GPU/HTP result](../../../scripts/research/hftf/METRIC_DEPTH_QAIRT_GPU_HTP_R0_RESULT.md)。
 
 ## 2026-08-03 D45：只验证手机端 metric-depth source，不接 alert
 
