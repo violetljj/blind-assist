@@ -1,0 +1,71 @@
+{
+  "schema": "hftf_depth_anything_v2_qairt_htp_result_r0",
+  "date": "2026-08-03",
+  "terminal": "HTP_EXECUTION_SUPPORTED_HIGH_FREQUENCY_NOT_SUPPORTED_RELATIVE_ONLY",
+  "decision_role": "relative-depth performance canary only",
+  "device": {
+    "model": "SM-S9280",
+    "soc_platform": "pineapple",
+    "android_release": "16",
+    "htp_architecture": "V75"
+  },
+  "runtime": {
+    "qairt_version": "2.47.0.260601",
+    "qnn_net_run_build": "v2.47.0.260601114230",
+    "backend": "libQnnHtp.so",
+    "hvx_threads": 4,
+    "cpu_fallback_observed": false
+  },
+  "model": {
+    "name": "Qualcomm Depth Anything V2 Small",
+    "semantic_role": "relative depth, not metric depth",
+    "input_shape": [1, 518, 518, 3],
+    "float_dlc_sha256": "F5ED76143DAB248FEE7022751EF0BCE095B69D3B036174455406C5A064A72600",
+    "float_cached_dlc_sha256": "8C216A5F9E729753A86FC58239780ECD53826FC02828D3104E9251F1A69AE82E",
+    "w8a16_dlc_sha256": "0B81DE729848BD6518A657D9CA087C6726449953D038D161E1DBC5E4C8712928"
+  },
+  "input": {
+    "kind": "deterministic gradient tensor repeated six times",
+    "float_raw_sha256": "5A390D1A4F790DAF246DF424D2ACBBC180CECD8E145EB3457DFA9B6903959F8C",
+    "w8a16_raw_sha256": "1DBC9926708125C092EBD1946F1F3134713D09606BD3CCC8732FBD006B224482"
+  },
+  "measurements": {
+    "w8a16_cached_default": {
+      "netrun_execute_mean_ms": 451.627,
+      "netrun_execute_min_ms": 449.979,
+      "netrun_execute_max_ms": 454.036,
+      "accelerator_execute_mean_ms": 449.414,
+      "netrun_ips_including_io": 2.0
+    },
+    "float_cached_default": {
+      "load_binary_ms": 49.688,
+      "netrun_execute_mean_ms": 174.319,
+      "netrun_execute_min_ms": 173.023,
+      "netrun_execute_max_ms": 178.514,
+      "accelerator_execute_mean_ms": 171.009,
+      "netrun_ips_including_io": 4.69
+    },
+    "float_cached_burst": {
+      "load_binary_ms": 49.312,
+      "netrun_execute_mean_ms": 177.193,
+      "netrun_execute_min_ms": 175.962,
+      "netrun_execute_max_ms": 181.29,
+      "accelerator_execute_mean_ms": 173.502,
+      "accelerator_execute_excluding_wait_mean_ms": 171.308,
+      "netrun_ips_including_io": 4.3214,
+      "output_0_sha256": "E80D6A65C5583863B3513FB65CC58AB6735FA778DFAF0F6DC1B9A64681A1EFBD"
+    }
+  },
+  "comparisons": {
+    "float_vs_w8a16_execute_speedup": 2.591,
+    "burst_vs_default_execute_ratio": 1.0165,
+    "pc_cuda_dav2_metric_fp16_median_ms": 54.2653,
+    "cross_platform_comparison_is_diagnostic_only": true
+  },
+  "warnings": [
+    "The cached record was reported compatible, but QAIRT warned that its VTCM size and DSP architecture did not exactly match the target device.",
+    "The input is synthetic and proves execution/performance only; it does not measure depth quality.",
+    "The Qualcomm asset is relative depth and cannot directly authorize metric clearance.",
+    "NPU execution alone does not establish battery, thermal, sustained, or application-pipeline performance."
+  ]
+}

@@ -45,6 +45,16 @@ gate 未过，而且同步锚点 P95 为 `198.59 ms`。因此只支持下一步�
 内存，不允许在已消费 cohort 搜索锚点周期救援。
 完整结果见 `DEPTH_OBSERVER_CLEARANCE_A0_CONSUMED_RESULT.md`。
 
+最新 NPU 性能终态：
+`HTP_EXECUTION_SUPPORTED_HIGH_FREQUENCY_NOT_SUPPORTED_RELATIVE_ONLY`。Qualcomm
+DA V2 Small 的现成相对深度 DLC 已在 SM8650 / HTP V75 上确认无 CPU fallback；六次固定
+输入中，cached float 默认档平均执行 `174.32 ms`，W8A16 为 `451.63 ms`。显式
+`burst` 档为 `177.19 ms`，未形成性能救援。这个结果只证明本机 HTP 执行与成本，不能
+把相对深度提升为米制 clearance，也不证明真实图像质量、功耗或持续热性能。当前端侧
+性能问题仍未解决；后继必须是 metric checkpoint 的独立转换、输入/decoder 降本或更小
+的专用 metric observer，而不是在本次已消费 timing 上挑性能档。完整记录见
+`DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md`。
+
 ## 研究问题与版本
 
 本 Module 服务 `HFTF_CANDIDATE_LANE_R0`：检验历史 RGB 能否预测面向行人身体包络的
