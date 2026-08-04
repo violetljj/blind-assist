@@ -74,6 +74,13 @@ def _state_color(state: str) -> tuple[int, int, int]:
     return UNKNOWN
 
 
+def _source_badge(row: dict[str, Any]) -> str | None:
+    source_role = str(row.get("source_role", ""))
+    if "TEACHER" in source_role:
+        return "REAL RGB-D TEACHER | NOT RGB MODEL INFERENCE"
+    return None
+
+
 def _draw_bev(field: dict[str, Any], width: int, height: int) -> np.ndarray:
     panel = np.full((height, width, 3), 38, dtype=np.uint8)
     cv2.putText(panel, "BEV BODY-SWEEP ENVELOPE", (12, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.58, (245, 245, 245), 2)
@@ -162,6 +169,9 @@ def render_frame(row: dict[str, Any]) -> np.ndarray:
     canvas[375 : 375 + PANEL_H, 650 : 650 + PANEL_W] = _draw_profile(field, alert, PANEL_W, PANEL_H)
     cv2.putText(canvas, "BlindAssist MetricTraversabilityField R0", (12, 26), cv2.FONT_HERSHEY_SIMPLEX, 0.78, (245, 245, 245), 2)
     cv2.putText(canvas, "DEVELOPMENT_ONLY | SHADOW_DEMO | NO_NAVIGATION_AUTHORITY", (12, 48), cv2.FONT_HERSHEY_SIMPLEX, 0.52, (80, 180, 245), 1)
+    source_badge = _source_badge(row)
+    if source_badge is not None:
+        cv2.putText(canvas, source_badge, (650, 48), cv2.FONT_HERSHEY_SIMPLEX, 0.48, (80, 210, 245), 1)
     cv2.putText(canvas, f"frame={row.get('frame_index', '?')}  status={field.get('status', 'UNKNOWN')}", (930, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.48, (220, 220, 220), 1)
     return canvas
 
