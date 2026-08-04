@@ -94,6 +94,19 @@ def _status_color(status: str) -> tuple[int, int, int]:
     return CLEAR if status == "VALID" else (80, 175, 235)
 
 
+def _friendly_unknown_reason(reasons: list[str]) -> str:
+    translations = {
+        "UNKNOWN_IMPLAUSIBLE_GROUND_ORIENTATION": "地面方向不可信",
+        "UNKNOWN_GROUND_PLANE": "未找到可靠地面",
+        "UNKNOWN_GROUND_FORWARD": "无法建立前方地面轴",
+        "UNKNOWN_IMAGE_QUALITY": "图像质量不足",
+        "UNKNOWN_INSUFFICIENT_DEPTH_SUPPORT": "有效深度不足",
+    }
+    if not reasons:
+        return "当前几何场不可用"
+    return "；".join(translations.get(reason, reason) for reason in reasons)[:42]
+
+
 def load_records(paths: list[Path]) -> list[dict[str, Any]]:
     records = []
     for path in paths:
@@ -333,11 +346,23 @@ def _draw_bev(field: dict[str, Any], width: int, height: int) -> np.ndarray:
         cv2.LINE_AA,
     )
     cv2.circle(panel, origin, 8, ACCENT, -1, cv2.LINE_AA)
+    cv2.arrowedLine(
+        panel,
+        (origin[0], origin[1] - 15),
+        (origin[0], max(42, origin[1] - round(1.15 * pixels_per_meter))),
+        ACCENT,
+        1,
+        cv2.LINE_AA,
+        tipLength=0.18,
+    )
+    _text(panel, "前方", (origin[0] + 8, max(53, origin[1] - round(1.1 * pixels_per_meter))), 0.28, MUTED)
+    _text(panel, "画面左", (14, height - 8), 0.27, MUTED)
+    _text(panel, "画面右", (width - 60, height - 8), 0.27, MUTED)
 
     if field.get("status") != "VALID":
         _text(panel, "主动拒绝判断", (origin[0] - 83, height // 2), 0.62, (80, 175, 235), 2)
-        reasons = ", ".join(field.get("unknown_reasons", []))[:72]
-        _text(panel, reasons, (14, height - 9), 0.31, MUTED)
+        reason = _friendly_unknown_reason(field.get("unknown_reasons", []))
+        _text(panel, reason, (14, height - 31), 0.31, MUTED)
         return panel
 
     for envelope in field.get("sweep_envelopes", []):
@@ -360,9 +385,9 @@ def _draw_bev(field: dict[str, Any], width: int, height: int) -> np.ndarray:
         )
         cv2.circle(panel, point, 5, OCCUPIED, -1, cv2.LINE_AA)
     for x, color, label in (
-        (14, CLEAR, "已观测空域"),
-        (120, OCCUPIED, "侵入"),
-        (200, UNKNOWN, "未知"),
+        (76, CLEAR, "已观测空域"),
+        (182, OCCUPIED, "侵入"),
+        (262, UNKNOWN, "未知"),
     ):
         cv2.circle(panel, (x, height - 10), 4, color, -1, cv2.LINE_AA)
         _text(panel, label, (x + 9, height - 6), 0.28, MUTED)

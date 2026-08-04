@@ -3,6 +3,7 @@
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import numpy as np
 
@@ -30,6 +31,61 @@ def synthetic_depth(with_center_wall: bool = True) -> tuple[np.ndarray, np.ndarr
 
 
 class MetricTraversabilityFieldTest(unittest.TestCase):
+    def test_rejects_a_downward_ground_normal_before_building_lateral_basis(self) -> None:
+        depth, intrinsics = synthetic_depth()
+        with patch(
+            "metric_traversability_field.fit_ground_plane",
+            return_value=(np.asarray([0.45, 0.66, -0.60]), 0.68, 0.02),
+        ):
+            field = build_metric_traversability_field(
+                depth,
+                intrinsics,
+                metric_scale={
+                    "status": "VALID",
+                    "scale": 1.0,
+                    "anchor_age_ns": 0,
+                    "anchor_source": "orientation-test",
+                },
+                source_model="orientation-test",
+            )
+
+        self.assertEqual("UNKNOWN", field["status"])
+        self.assertIn(
+            "UNKNOWN_IMPLAUSIBLE_GROUND_ORIENTATION",
+            field["unknown_reasons"],
+        )
+
+    def test_image_left_and_right_preserve_signed_birdseye_direction(self) -> None:
+        scale = {
+            "status": "VALID",
+            "scale": 1.0,
+            "anchor_age_ns": 0,
+            "anchor_source": "orientation-test",
+        }
+        nearest_thetas = []
+        for columns in (slice(34, 54), slice(106, 126)):
+            depth, intrinsics = synthetic_depth(False)
+            depth[28:86, columns] = 1.0
+            field = build_metric_traversability_field(
+                depth,
+                intrinsics,
+                metric_scale=scale,
+                source_model="orientation-test",
+            )
+            occupied = [
+                item
+                for item in field["clearance_profile"]
+                if item["nearest_intrusion_m"] is not None
+            ]
+            nearest_thetas.append(
+                min(occupied, key=lambda item: item["nearest_intrusion_m"])[
+                    "theta_deg"
+                ]
+            )
+
+        self.assertLess(nearest_thetas[0], 0)
+        self.assertGreater(nearest_thetas[1], 0)
+
     def test_builds_continuous_profile_envelopes_and_intrusion_regions(self) -> None:
         depth, intrinsics = synthetic_depth()
         field = build_metric_traversability_field(

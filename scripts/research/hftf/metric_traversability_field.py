@@ -247,6 +247,17 @@ def build_metric_traversability_field(
             ["UNKNOWN_GROUND_PLANE"], depth_summary=depth_summary, quality=quality
         )
     up, camera_height, plane_residual = plane
+    # OpenCV camera coordinates use +y downward.  A supporting floor below the
+    # camera must therefore have an upward normal with a negative y component.
+    # The generic RANSAC fitter orients by positive plane offset only, so a
+    # dominant upright/oblique obstacle can otherwise pass its abs(y) check and
+    # mirror the derived lateral basis.
+    if float(up[1]) >= -0.55:
+        return _unknown(
+            ["UNKNOWN_IMPLAUSIBLE_GROUND_ORIENTATION"],
+            depth_summary=depth_summary,
+            quality=quality,
+        )
     optical_forward = np.asarray([0.0, 0.0, 1.0])
     forward_axis = optical_forward - float(np.dot(optical_forward, up)) * up
     forward_norm = float(np.linalg.norm(forward_axis))
