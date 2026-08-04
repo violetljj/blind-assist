@@ -5678,3 +5678,30 @@
   终态为 `FRESH_TF_R1A_C1_FROZEN_MECHANICS_NOT_SUPPORTED_CANARY_ONLY`；正式四臂
   gate 未运行，因为 direction/traversability truth 缺失且每机制只有一个 session。
   `LOCAL_GEOMETRIC_VALIDITY_EFFECT_NOT_EVALUATED` 保持；不得在已打开三序列上调参救援。
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。基于 FRESH-TF R0 的全局
+  freshness coverage collapse 与 R1-A C1 的 local-cell support collapse，正式登记
+  `DENSE_OR_FIXED_CELL_DEPTH_PROPAGATION_FAMILY_STOP`。停止 whole-frame RGB validity、
+  dense pixel/fixed image-cell 深度传播和二维光流维持完整可通行场；不关闭 fresh
+  metric depth、异步双环、继承的 foot/body/head swept envelope 或未来决策层周期
+  米制锚定。明确禁止在三条 consumed R1-A sequence 上换网格、点数、光流或 residual
+  阈值救援，也不把三层人体包络重新申报为首次创新。
+- 同日冻结 `HFTF_FRESH_METRIC_SNAPSHOT_LAYERED_INTRUSION_R0`，状态
+  `FROZEN_BEFORE_SOURCE_COLLECTION_OR_QNN_OUTCOME`。新 formal cohort 固定为一台
+  SM-S9280、CameraX 同帧 QNN depth、18 个完全重置 parent sessions、六类受控物理
+  场景和 180 个 session 内重复 snapshot；独立卷尺/激光/fiducial 真值必须在第一份
+  QNN output 前封存。固定比较 ground-only 2D、height-collapsed 3D 与继承的
+  foot/body/head 三层表示；禁止 propagation、Track、语义、ToF/ARCore depth、调度和
+  alert。新增 fail-closed source validator，强制 roster/order、真实镜头高度、同帧
+  timestamp、calibration/truth/media SHA-256、18/180 exact counts，并拒绝任何 arm-output
+  key；6/6 tests 与 py_compile 通过。当前只授权新数据采集和来源 admission，不授权
+  outcome、PMAF Track、App、生产或安全结论。
+- 时间：2026-08-05（Asia/Hong_Kong）；用户明确要求暂停 FRESH-TF 及本轮开拓出的
+  后继路线。新增
+  `FRESH_TF_AND_OPENED_SUCCESSORS_PAUSED_BY_USER / PAUSED_NO_ACTIVE_EXECUTION`
+  覆盖记录，暂停 R1-A successor、dense/fixed-cell propagation successor、fresh
+  metric snapshot 18-session collection/evaluation、PMAF/HSTF-PMA、periodic metric
+  anchoring、stable Track metric anchoring 和相关 NPU scheduling/App integration。
+  暂停不是失败，不改写既有终态；HFTF 明确保留为用户与本项目已经建立的原创贡献，
+  CameraX/QNN/NPU 工程结果、depth demo、默认 App 和无关路线保持不变。fresh-snapshot
+  protocol 在正式采集和 QNN outcome 前暂停，仍为 unconsumed design。只有用户以后明确
+  指定 route/scope 并完成 repository/source/hardware/authority 复核后才可恢复。

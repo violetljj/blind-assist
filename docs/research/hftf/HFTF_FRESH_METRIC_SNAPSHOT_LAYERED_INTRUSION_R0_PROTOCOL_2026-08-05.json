@@ -1,0 +1,155 @@
+{
+  "schema": "blindassist_hftf_fresh_metric_snapshot_layered_intrusion_r0_protocol_v1",
+  "date": "2026-08-05",
+  "status": "FROZEN_BEFORE_SOURCE_COLLECTION_OR_QNN_OUTCOME",
+  "authority": "SOURCE_AND_EVALUATION_CONTRACT_ONLY",
+  "research_question": "On the exact frame where mobile QNN metric depth becomes available, does the inherited foot-body-head swept envelope represent physically measured collision intrusion more reliably than ground-only 2D clearance without unsafe UNKNOWN-to-CLEAR conversion?",
+  "relationship_to_prior_work": {
+    "inherits": [
+      "the project-owned HFTF foot-body-head contribution",
+      "the project-owned HFTF body-width swept envelope",
+      "UNKNOWN fail-closed semantics",
+      "fresh QNN depth CameraX tensor path"
+    ],
+    "new_evaluation_increment": "fresh mobile metric-depth snapshot under independent controlled physical intrusion truth",
+    "novelty_accounting": "HFTF remains the project-owned first contribution; this successor may claim only fresh mobile metric-snapshot evidence and must not double-count HFTF inside the same paper"
+  },
+  "excluded": [
+    "depth or field propagation",
+    "optical flow",
+    "historical metric carry-forward",
+    "track anchoring",
+    "semantic detection",
+    "ToF or ARCore depth fusion",
+    "NPU active scheduling",
+    "alert actuation"
+  ],
+  "source": {
+    "collection_status": "NOT_STARTED",
+    "device": "SM-S9280",
+    "depth_source": "existing CameraX same-frame exact QNN metric-depth branch",
+    "rgb_input": "the exact CameraX frame whose tensor produced the bound depth output",
+    "required_depth_shape": [259, 343],
+    "required_rgb_capture_shape": [480, 640],
+    "camera_mount": "tripod or head-height rigid mount reset for every parent session",
+    "lens_height_m_range": [1.35, 1.75],
+    "lens_height_measurement_max_error_m": 0.01,
+    "pitch_roll_yaw_abs_error_deg_max": 2.0,
+    "intrinsics": "hash-bound calibration captured before the formal cohort",
+    "camera_calibration_reprojection_error_px_max": 0.50,
+    "physical_truth": {
+      "independent_of_qnn": true,
+      "tools": ["tape_or_rigid_ruler", "laser_distance_meter", "level", "fiducial_pose_board"],
+      "maximum_distance_error_m": 0.02,
+      "maximum_height_or_lateral_error_m": 0.01,
+      "obstacle_material": "matte nontransparent surface",
+      "support_structure_rule": "supports must remain outside every evaluated swept envelope",
+      "truth_sealed_before_first_qnn_output": true
+    },
+    "forbidden_truth": [
+      "QNN depth used to place or relabel obstacles",
+      "Samsung Quick Measure as sole truth",
+      "ARCore depth as sole truth",
+      "visual post-selection of successful frames"
+    ]
+  },
+  "field": {
+    "direction_centers_deg": [-25, 0, 25],
+    "distance_centers_m": [1.0, 1.5, 2.0],
+    "distance_tolerance_m": 0.10,
+    "height_bands_m": {
+      "foot": [0.05, 0.35],
+      "body": [0.35, 1.35],
+      "head": [1.35, 2.05]
+    },
+    "effective_lateral_half_width_m": {
+      "foot": 0.30,
+      "body": 0.40,
+      "head": 0.28
+    },
+    "interval_semantics": "lower inclusive, upper exclusive except head upper inclusive",
+    "snapshot_validity": "exact bound depth output only; no reuse by later RGB frames"
+  },
+  "cohort": {
+    "independent_unit": "parent capture session after complete mount and scene reset",
+    "scenario_classes": [
+      "CLEAR_ALL",
+      "FOOT_ONLY",
+      "BODY_ONLY",
+      "HEAD_ONLY",
+      "MULTI_LAYER",
+      "LEFT_RIGHT_HEIGHT_COMPETITION"
+    ],
+    "sessions_per_class": 3,
+    "exact_session_count": 18,
+    "snapshots_per_session": 10,
+    "exact_snapshot_count": 180,
+    "session_ids": [
+      "clear_all_s01", "clear_all_s02", "clear_all_s03",
+      "foot_only_s01", "foot_only_s02", "foot_only_s03",
+      "body_only_s01", "body_only_s02", "body_only_s03",
+      "head_only_s01", "head_only_s02", "head_only_s03",
+      "multi_layer_s01", "multi_layer_s02", "multi_layer_s03",
+      "left_right_height_competition_s01", "left_right_height_competition_s02", "left_right_height_competition_s03"
+    ],
+    "roster_frozen_before_collection": true,
+    "no_substitution_after_any_qnn_output": true,
+    "frame_role": "repeated measurement within session, never an independent experimental unit"
+  },
+  "arms": {
+    "B0_GROUND_ONLY_2D": "foot-ground clearance and discontinuity only; body/head obstacles cannot be inferred from absent ground evidence",
+    "B1_HEIGHT_COLLAPSED_3D": "same fresh 3D points and maximum body envelope, predicts any intrusion but no height identity",
+    "C1_HEIGHT_STRATIFIED": "same fresh 3D points split into inherited foot-body-head swept envelopes"
+  },
+  "truth_and_unknown": {
+    "primary_truth": "physically measured obstacle prism intersecting the frozen direction-distance-height swept volume",
+    "clear_truth": "no measured prism intersection and measured flat supported floor for the evaluated volume",
+    "unknown_truth": "pose, calibration, physical ledger, image quality, depth support, or ground support is insufficient",
+    "unknown_never_clear": true,
+    "manual_review": "geometry ledger verification only; reviewers cannot view arm outputs"
+  },
+  "metrics": [
+    "false-clear frame count and parent-session event count",
+    "per-height intrusion precision recall F1",
+    "height-layer confusion matrix",
+    "UNKNOWN coverage and reason composition",
+    "cell and parent-session macro known coverage",
+    "worst-session known coverage",
+    "left-right opposite-direction error count",
+    "nearest-intrusion clearance MAE and P90",
+    "B1 versus C1 any-intrusion agreement",
+    "B0 versus C1 false-clear reduction"
+  ],
+  "promotion_gates": {
+    "all_18_sessions_admitted": true,
+    "each_height_intrusion_recall_min": 0.90,
+    "each_height_intrusion_precision_min": 0.90,
+    "macro_height_f1_min": 0.90,
+    "height_layer_confusion_rate_max": 0.10,
+    "false_clear_parent_session_event_count_max": 0,
+    "unknown_to_clear_count_max": 0,
+    "macro_session_known_coverage_min": 0.80,
+    "worst_session_known_coverage_min": 0.60,
+    "left_right_opposite_direction_error_count_max": 0,
+    "nearest_intrusion_clearance_mae_m_max": 0.25,
+    "nearest_intrusion_clearance_p90_m_max": 0.50,
+    "b1_c1_any_intrusion_agreement_min": 0.98,
+    "c1_false_clear_rate_reduction_vs_b0_min": 0.30
+  },
+  "ordered_terminals": [
+    "FRESH_SNAPSHOT_SOURCE_PACKAGE_NOT_EVALUABLE",
+    "FRESH_SNAPSHOT_PHYSICAL_TRUTH_NOT_EVALUABLE",
+    "FRESH_SNAPSHOT_QNN_DEPTH_NOT_EVALUABLE",
+    "FRESH_SNAPSHOT_LAYERED_INTRUSION_NOT_SUPPORTED_STOP",
+    "FRESH_SNAPSHOT_LAYERED_INTRUSION_SUPPORTED_DEVELOPMENT_ONLY"
+  ],
+  "execution_rules": [
+    "Implement and test the source validator and evaluator on analytic fixtures before collecting the formal cohort.",
+    "Seal physical truth and source hashes before reading any arm output.",
+    "Do not change roster, height bands, envelope widths, thresholds, truth, gates, or aggregation after any formal QNN output is opened.",
+    "Report session-macro and worst-session metrics; do not promote frame-micro results.",
+    "Any missing scenario class or opportunity returns NOT_EVALUABLE rather than pass.",
+    "A supported result authorizes only a separately frozen periodic metric anchor utility protocol."
+  ],
+  "claim_ceiling": "controlled fresh-snapshot Development evidence only; no temporal persistence, user event, alert, navigation, production, or safety authority"
+}
