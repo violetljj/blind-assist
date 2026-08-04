@@ -17,9 +17,11 @@ import numpy as np
 
 from metric_traversability_field import AlertMapper, build_metric_traversability_field
 from prepare_bonn_rgbd_metric_depth_manifest import (
+    BONN_INTRINSICS,
     associate_nearest,
     normalize_depth_image,
     read_tum_index,
+    sample_timestamp_pairs,
 )
 from render_metric_traversability_field_demo import render
 from run_external_rgb_clearance_sidecar import (
@@ -44,6 +46,48 @@ def _load_manifest(path: Path, maximum_frames: int | None) -> list[dict[str, Any
     return rows
 
 
+def _load_sequence(
+    sequence_root: Path,
+    *,
+    sequence_id: str,
+    start_s: float,
+    duration_s: float,
+    target_fps: float,
+    maximum_frames: int | None,
+) -> list[dict[str, Any]]:
+    pairs = associate_nearest(
+        read_tum_index(sequence_root / "rgb.txt"),
+        read_tum_index(sequence_root / "depth.txt"),
+        MAX_RGB_DEPTH_DELTA_S,
+    )
+    sampled = sample_timestamp_pairs(
+        pairs,
+        start_s=start_s,
+        duration_s=duration_s,
+        target_fps=target_fps,
+    )
+    if maximum_frames is not None:
+        sampled = sampled[:maximum_frames]
+    if not sampled:
+        raise ValueError("selected sequence segment contains no RGB-D pairs")
+    first_timestamp = sampled[0][0]
+    return [
+        {
+            "sequence_id": sequence_id,
+            "frame_index": frame_index,
+            "frame_path": str((sequence_root / rgb_relative).resolve()),
+            "timestamp_ns": round((rgb_timestamp - first_timestamp) * 1e9),
+            "intrinsics_fx_fy_cx_cy": BONN_INTRINSICS,
+        }
+        for frame_index, (
+            rgb_timestamp,
+            rgb_relative,
+            _depth_timestamp,
+            _depth_relative,
+        ) in enumerate(sampled)
+    ]
+
+
 def _depth_pairs(sequence_root: Path) -> dict[Path, tuple[float, Path]]:
     pairs = associate_nearest(
         read_tum_index(sequence_root / "rgb.txt"),
@@ -60,16 +104,34 @@ def _depth_pairs(sequence_root: Path) -> dict[Path, tuple[float, Path]]:
 
 
 def generate(
-    manifest: Path,
+    manifest: Path | None,
     output_dir: Path,
     *,
     fps: float,
     maximum_frames: int | None,
+    sequence_root: Path | None = None,
+    sequence_id: str | None = None,
+    start_s: float = 0.0,
+    duration_s: float = 20.0,
 ) -> dict[str, Any]:
-    rows = _load_manifest(manifest, maximum_frames)
+    if (manifest is None) == (sequence_root is None):
+        raise ValueError("provide exactly one of manifest or sequence_root")
+    if manifest is not None:
+        rows = _load_manifest(manifest, maximum_frames)
+    else:
+        if not sequence_id:
+            raise ValueError("sequence_id is required with sequence_root")
+        rows = _load_sequence(
+            sequence_root.resolve(),
+            sequence_id=sequence_id,
+            start_s=start_s,
+            duration_s=duration_s,
+            target_fps=fps,
+            maximum_frames=maximum_frames,
+        )
     first_frame = Path(rows[0]["frame_path"]).resolve()
-    sequence_root = first_frame.parent.parent
-    pairs = _depth_pairs(sequence_root)
+    resolved_sequence_root = first_frame.parent.parent
+    pairs = _depth_pairs(resolved_sequence_root)
     output_dir.mkdir(parents=True, exist_ok=True)
     assets_dir = output_dir / "assets"
     depth_dir = output_dir / "depth"
@@ -179,9 +241,17 @@ def generate(
     summary = {
         "schema": "hftf_metric_traversability_bonn_rgbd_teacher_demo_summary_r0",
         "status": "REAL_RGBD_TEACHER_GEOMETRY_DEMO_RENDERED",
-        "source_manifest": str(manifest.resolve()),
-        "sequence_root": str(sequence_root),
+        "source_manifest": str(manifest.resolve()) if manifest is not None else None,
+        "sequence_root": str(resolved_sequence_root),
+        "source_start_s": start_s if manifest is None else None,
+        "source_duration_s": duration_s if manifest is None else None,
         "frames": len(records),
+        "rendered_duration_s": len(records) / fps,
+        "sampled_source_span_s": (
+            (records[-1]["timestamp_ns"] - records[0]["timestamp_ns"]) / 1e9
+            if len(records) > 1
+            else 0.0
+        ),
         "valid_fields": valid,
         "unknown_fields": len(records) - valid,
         "maximum_rgb_depth_timestamp_delta_s": maximum_delta_s,
@@ -204,7 +274,12 @@ def generate(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--manifest", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--manifest", type=Path)
+    source.add_argument("--sequence-root", type=Path)
+    parser.add_argument("--sequence-id")
+    parser.add_argument("--start-s", type=float, default=0.0)
+    parser.add_argument("--duration-s", type=float, default=20.0)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--fps", type=float, default=10.0)
     parser.add_argument("--max-frames", type=int)
@@ -216,6 +291,10 @@ def main() -> None:
                 args.output_dir,
                 fps=args.fps,
                 maximum_frames=args.max_frames,
+                sequence_root=args.sequence_root,
+                sequence_id=args.sequence_id,
+                start_s=args.start_s,
+                duration_s=args.duration_s,
             ),
             indent=2,
             sort_keys=True,
