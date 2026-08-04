@@ -8,8 +8,11 @@
   full pipeline P95 `<=350 ms`、fresh result age P95 `<=750 ms`，不覆盖旧 fast/fused
   R0 证据。20 秒真实 CameraX 冒烟通过：287/287 个 `ImageProxy` 关闭，canonical
   route 命中，preprocess+QNN/full/result-age P95 为 `98.78/192.85/230.77 ms`，
-  thermal max `0`。完整 600 秒 R1 仍待冻结提交后的同机执行；该门只授予支持设备上的
-  持续部署/性能证据，不授权精度、metric geometry、安全或默认 App。
+  thermal max `0`。随后以冻结提交 `5f73f54` 在同机完成 600 秒 R1：
+  8,993/8,993 个 `ImageProxy` 关闭，1,143 次完整处理，最大并发 1、三槽全归还、
+  thermal before/max/after `0/0/0`；canonical preprocess+QNN、full pipeline、
+  result-age P95 为 `99.00/195.23/215.71 ms`，base 与 R1 门均通过。该门只授予
+  支持设备上的持续部署/性能证据，不授权精度、metric geometry、安全或默认 App。
 - 时间：2026-08-04（Asia/Hong_Kong）；执行者：violjjet。完成 DA V2 Android
   `CPU_BOUNDARY_MICROBENCH_R0`、`PREPROCESS_KOTLIN_TABLE_R0` 与
   `PREPROCESS_NATIVE_OPENCV_R0`。冻结官方 `640x480 RGB -> float/255 -> OpenCV

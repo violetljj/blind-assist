@@ -335,6 +335,16 @@ cubic 严格复刻官方 float32 系数、四 tap 顺序与 float64 中间运算
 快速臂只保留作诊断；全黑后摄帧仍作为退化输入拒绝，前摄 geometry 无 metric authority。
 详见 [CameraX layered depth parity R0](DAV2_CAMERAX_DEPTH_PARITY_R0_RESULT_2026-08-04.md)。
 
+最后用提交 `5f73f54` 对同一 `SM-S9280 / SM8650 / Android 16` 补跑 canonical
+链路 600 秒持续门。测试显式绑定
+`canonical_native_official_fp32_then_integer_rnte_fp16_v1`，8,993/8,993 个
+`ImageProxy` 全关闭，1,143 次完整处理，最大并发 1、三槽全归还、thermal
+before/max/after 均为 0。canonical preprocess+QNN、full depth+geometry、result age
+P95 分别为 `99.00/195.23/215.71 ms`，均通过预冻结的 `250/350/750 ms` 门。
+这补齐了支持设备上的持续部署/性能闭环；旧 fast/fused R0 不改写，accuracy、metric
+geometry、安全、跨设备和默认 App 权限仍关闭。详见
+[canonical CameraX sustained ten-minute R1](DAV2_CAMERAX_CANONICAL_SUSTAINED_10MIN_R1_RESULT_2026-08-04.md)。
+
 同日把上述已通过 parity 的 canonical 链路封装为独立可启动的设备体验 App，未接入
 默认 BlindAssist 决策路径。`SM-S9280 / SM8650` 真机冷启动后，后置相机、HTP 深度
 热力图和状态面板均正常运行；现场帧显示全链路 `92.8 ms`、刷新 `2.1 Hz`、thermal
