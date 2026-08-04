@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist_fresh_tf_r0_consumed_diagnostic_result_v1",
+  "date": "2026-08-04",
+  "authority": "CONSUMED_DIAGNOSTIC_ONLY",
+  "terminal": "FRESH_TF_R0_CONSUMED_DIAGNOSTIC_NOT_SUPPORTED",
+  "scope_terminals": [
+    "GLOBAL_FRAME_FRESHNESS_PROXY_REJECTED",
+    "LOCAL_GEOMETRIC_VALIDITY_NOT_YET_EVALUATED"
+  ],
+  "protocol_sha256": "1A8574E8FC8758E3810F01E783BFB600952264552AAB5A7278304AFDA48012F6",
+  "implementation_sha256": "E750976075FD15BE6CB144AA85175CFD481548C81DF6EB40E724279450AE9085",
+  "test_sha256": "40D23F01B408BFA8D5E3406FD89C9579CAE1DC322B36E77234543E19AED78797",
+  "ignored_result_sha256": "358220156DCC7A0F3779FF1891E773583EE09AB787489402A8E1E09E1A1DFD43",
+  "ignored_trace_sha256": "8D737F0F1AEAD7544BAE87FB77AA6166887518B0341316A09D6EFF1BCC27BB14",
+  "parent_sequence_count": 1,
+  "frame_count": 30,
+  "cell_count_per_arm": 1530,
+  "anchor_to_current_state_transitions": 30,
+  "arm_summaries": {
+    "fixed_2hz_zero_order_hold": {
+      "known_coverage": 1.0,
+      "known_accuracy": 0.9803921568627451,
+      "false_clear_count": 3,
+      "false_clear_rate_among_predicted_clear": 0.0027149321266968325
+    },
+    "fixed_2hz_ttl_750ms": {
+      "known_coverage": 1.0,
+      "known_accuracy": 0.9803921568627451,
+      "false_clear_count": 3,
+      "false_clear_rate_among_predicted_clear": 0.0027149321266968325
+    },
+    "uniform_age_freshness": {
+      "known_coverage": 0.8,
+      "known_accuracy": 0.9861111111111112,
+      "false_clear_count": 1,
+      "false_clear_rate_among_predicted_clear": 0.0011312217194570137
+    },
+    "selective_rgb_change_freshness": {
+      "known_coverage": 0.21241830065359477,
+      "known_accuracy": 1.0,
+      "false_clear_count": 0,
+      "false_clear_rate_among_predicted_clear": 0.0
+    }
+  },
+  "gate_results": {
+    "transition_opportunity": true,
+    "false_clear_count_improves_over_zoh": true,
+    "false_clear_rate_no_worse_than_uniform": true,
+    "known_coverage": false,
+    "known_accuracy_noninferior_to_ttl": true,
+    "unknown_to_clear_violations": true
+  },
+  "diagnosis": "whole-frame RGB MAD is too sensitive to appearance change and collapses selective coverage; do not tune this consumed sequence",
+  "next_admissible_step": "freeze parent-session-disjoint R1-A for motion-compensated local-cell support only; defer foot/body/head validity to R1-B after R1-A passes",
+  "claim_ceiling": "single consumed sequence diagnostic only; no fresh effect height increment warp scheduler energy app production navigation or safety authority"
+}

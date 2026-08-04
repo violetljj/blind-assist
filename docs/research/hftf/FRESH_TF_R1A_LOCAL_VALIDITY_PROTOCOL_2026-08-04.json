@@ -1,0 +1,165 @@
+{
+  "schema": "blindassist_fresh_tf_r1a_local_validity_protocol_v1",
+  "date": "2026-08-04",
+  "status": "FRESH_TF_R1A_SOURCE_ACQUISITION_ONLY",
+  "authority": "FROZEN_PROTOCOL_NO_OUTCOME_AUTHORITY",
+  "research_question": "Can motion-compensated local-cell support reduce false-clear versus uniform age without collapsing usable coverage?",
+  "scope": {
+    "included": [
+      "local geometric propagation",
+      "visibility and z-buffer occlusion",
+      "out-of-frame and newly-exposed rejection",
+      "local correspondence support",
+      "warp residual rejection"
+    ],
+    "excluded": [
+      "foot-body-head stratification",
+      "NPU scheduling",
+      "semantic detection",
+      "ToF fusion",
+      "learned validity model",
+      "app navigation or safety claims"
+    ]
+  },
+  "frozen_arms": {
+    "B0": "2 Hz zero-order hold",
+    "B1": "uniform age freshness",
+    "B2": "global RGB-change freshness exactly as R0",
+    "C1": "motion-compensated local-cell support with hard invalidation"
+  },
+  "cell_states": [
+    "SUPPORTED",
+    "OCCLUDED",
+    "OUT_OF_FRAME",
+    "NEWLY_EXPOSED",
+    "LOW_FLOW_SUPPORT",
+    "HIGH_WARP_RESIDUAL",
+    "STALE"
+  ],
+  "hard_rejection": [
+    "projected support outside the current image",
+    "forward-backward correspondence inconsistency",
+    "current cell newly exposed with no anchor support",
+    "local support below the frozen minimum",
+    "warp residual above the frozen maximum",
+    "age above 750 ms"
+  ],
+  "mechanics_lock": {
+    "anchor_period_ms": 500,
+    "evaluation_rate_hz": 10,
+    "hard_ttl_ms": 750,
+    "image_grid_columns": 12,
+    "image_grid_rows": 8,
+    "minimum_valid_projected_points_per_cell": 32,
+    "minimum_supported_area_fraction": 0.60,
+    "forward_backward_residual_px_max": 1.5,
+    "geometry_flow_warp_residual_px_max": 3.0,
+    "boundary_margin_px": 2,
+    "minimum_occlusion_evidence_points_per_cell": 32,
+    "classification_precedence": [
+      "STALE",
+      "OUT_OF_FRAME",
+      "OCCLUDED",
+      "NEWLY_EXPOSED",
+      "LOW_FLOW_SUPPORT",
+      "HIGH_WARP_RESIDUAL",
+      "SUPPORTED"
+    ],
+    "cell_support_denominator": "current-view valid depth pixels inside the fixed cell",
+    "out_of_frame_rule": "at least 40 percent of current valid-depth pixels back-project outside the anchor image after the 2 px margin",
+    "newly_exposed_rule": "supported area fraction below 0.60 after out-of-frame and occlusion rejection",
+    "occluded_rule": "at least 32 projected anchor points are behind registered current depth beyond the frozen tolerance",
+    "flow_support_rule": "at least 32 projected points and at least 60 percent pass forward-backward residual",
+    "warp_residual_rule": "median geometry-versus-flow endpoint residual among flow-supported projected points must not exceed 3.0 px",
+    "occlusion_depth_tolerance": "max(0.10 m, 0.05 * current_depth_m)",
+    "projection": "source-native depth plus intrinsics and relative ground-truth pose, current-view z-buffer",
+    "depth_scale_uint16_per_m": 5000,
+    "intrinsics_fx_fy_cx_cy": {
+      "freiburg1": [517.3, 516.5, 318.6, 255.3],
+      "freiburg3": [535.4, 539.2, 320.1, 247.6]
+    },
+    "optical_flow": {
+      "implementation": "OpenCV Farneback full resolution grayscale in both directions",
+      "pyr_scale": 0.5,
+      "levels": 3,
+      "winsize": 15,
+      "iterations": 3,
+      "poly_n": 5,
+      "poly_sigma": 1.2,
+      "flags": 0
+    },
+    "role_of_pose": "offline source-native oracle mechanics only; no phone pose authority"
+  },
+  "source_lock": {
+    "canonical_dataset": "TUM RGB-D",
+    "official_index": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/",
+    "official_format": "https://cvg.cit.tum.de/data/datasets/rgbd-dataset/file_formats",
+    "selected_before_media_open": true,
+    "freshness_rule": "exact sequence names must be absent from the repository evidence inventory before lock",
+    "sequences": [
+      {
+        "name": "rgbd_dataset_freiburg1_rpy",
+        "role": "pure_camera_rotation_static_scene",
+        "official_duration_s": 27.67,
+        "official_size_gb": 0.38
+      },
+      {
+        "name": "rgbd_dataset_freiburg1_desk",
+        "role": "translation_and_rotation_static_scene",
+        "official_duration_s": 23.40,
+        "official_size_gb": 0.32
+      },
+      {
+        "name": "rgbd_dataset_freiburg3_sitting_static",
+        "role": "local_dynamic_near_static_camera",
+        "official_duration_s": 23.63,
+        "official_size_gb": 0.41
+      }
+    ],
+    "required_files": ["rgb.txt", "depth.txt", "groundtruth.txt"],
+    "transport_failure_terminal": "FRESH_TF_R1A_SOURCE_TRANSPORT_NOT_EVALUABLE",
+    "substitution_rule": "no post-opening sequence substitution"
+  },
+  "association_and_admission": {
+    "rgb_depth_timestamp_delta_ms_max": 30,
+    "rgb_pose_timestamp_delta_ms_max": 30,
+    "minimum_admitted_frames_per_session": 300,
+    "minimum_duration_s_per_session": 15,
+    "minimum_sessions_per_mechanism_for_formal_effect_claim": 2,
+    "current_locked_sessions_per_mechanism": 1,
+    "current_use": "mechanics and opportunity canary only; formal effect claim is not yet admissible"
+  },
+  "frozen_metrics": [
+    "false-clear frame count",
+    "false-clear event count",
+    "valid-to-invalid detection latency",
+    "invalid-to-valid recovery latency",
+    "cell-level support coverage",
+    "direction-level coverage",
+    "macro-session coverage",
+    "worst-session coverage",
+    "newly-exposed inheritance rate",
+    "occluded inheritance rate",
+    "left-right opposite-direction error count",
+    "UNKNOWN reason composition"
+  ],
+  "promotion_gates": {
+    "c1_false_clear_event_count_lte_B1": true,
+    "macro_session_direction_coverage_min": 0.65,
+    "worst_session_direction_coverage_min": 0.50,
+    "newly_exposed_inheritance_count_max": 0,
+    "occluded_inheritance_count_max": 0,
+    "valid_to_invalid_p95_ms_max": 200,
+    "invalid_to_valid_p95_ms_max": 300,
+    "all_required_mechanism_roles_evaluable": true
+  },
+  "analysis_rules": [
+    "The mechanics completion fields, 10 Hz deterministic sampling, source-native intrinsics, depth scale, and Farneback parameters were frozen after source metadata admission but before opening RGB or depth media; the source receipt must bind the final protocol hash.",
+    "Freeze archive hashes and admission receipts before evaluation.",
+    "Do not tune thresholds, grids, features, source roster, or labels after any outcome is opened.",
+    "Report frame and event counts together; do not rescue aggregate coverage with micro averaging.",
+    "If any mechanism opportunity is absent, return NOT_EVALUABLE rather than pass.",
+    "R1-B height stratification is allowed only after R1-A passes on an admissible cohort."
+  ],
+  "claim_ceiling": "offline source-native local-validity mechanics only; no mobile, NPU, production, navigation, or safety authority"
+}

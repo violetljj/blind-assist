@@ -5641,3 +5641,40 @@
   tensor、thermal gate 或任何下游判断；状态面板只报告真实完成帧。CameraX 仍为
   `KEEP_ONLY_LATEST`、单任务 in-flight、`ImageProxy` finally-close，severe thermal
   仍 fail closed。该改动只改善设备体验观感，不新增准确率、生产或安全 authority。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。记录并首次执行
+  `FRESH-TF R0` consumed diagnostic。该候选明确继承 HFTF 已有 foot/body/head swept
+  envelope，不把人体分层重新申报为创新；本次只比较 2 Hz zero-order hold、750 ms TTL、
+  uniform age freshness 与 selective RGB-change freshness。唯一已消费 Bonn
+  parent sequence 提供 30 帧、每臂 1,530 cells 和 30 个 anchor-to-current state
+  transitions。selective 臂把 false-clear `3 -> 0`，但 known coverage
+  `100% -> 21.24%`，未过预冻结 65% 门，终态
+  `FRESH_TF_R0_CONSUMED_DIAGNOSTIC_NOT_SUPPORTED`。失败限定为 whole-frame grayscale
+  MAD 乘全局 age decay；不在同一片段调 scale/tau/threshold 救援。下一可评价问题需
+  新 parent/session-disjoint 数据、motion-compensated local-cell support 与分层硬
+  validity gates；默认 App、NPU scheduler、提醒、生产和安全 authority 不变。6 个
+  focused tests 通过。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。收紧上述 R0 的结论边界：
+  正式记录 `GLOBAL_FRAME_FRESHNESS_PROXY_REJECTED` 与
+  `LOCAL_GEOMETRIC_VALIDITY_NOT_YET_EVALUATED`，不把全局 MAD 的负结果外推为
+  FRESH-TF 总概念失败。冻结 R1-A 只评价 motion-compensated local-cell support，
+  foot/body/head 分层延后到 R1-B；NPU 调度、语义、ToF 与学习模型均不进入本轮。
+  在媒体 outcome 未打开的条件下，从 TUM 旧官方端点取得预锁定的 `freiburg1_rpy`、
+  `freiburg1_desk`、`freiburg3_sitting_static` 三个 archive；SHA-256、archive 根目录及
+  `rgb.txt/depth.txt/groundtruth.txt` 均已封存。仅解析时间戳元数据后，三个序列分别
+  接纳 721/596/688 个 RGB frame，均通过每 session 300 帧与 15 秒的来源 admission。
+  当前终态仅为 `FRESH_TF_R1A_SOURCE_TRANSPORT_AND_METADATA_ADMISSION_SUPPORTED`；
+  尚未打开图像/深度 outcome、实现 C1 或运行四臂。每机制仍只有一个 session，正式
+  效果评价继续 `NOT_YET_ADMISSIBLE`。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。执行 R1-A C1 mechanics /
+  opportunity canary。媒体打开前补齐并冻结 10 Hz sampling、TUM 内参、depth scale、
+  full-resolution Farneback 参数、3 px geometry-flow residual 和 cell 状态优先级，
+  最终 protocol SHA-256 为
+  `2379D50E497ED417C6EF8BF6D9CFDD793AF64709B22AD494061E861687D345F9`。
+  9 个 focused tests 通过；三序列共评价 676 帧、64,896 cells。C1 cell support
+  coverage macro `28.91%`、worst-session `19.12%`；rpy/desk/sitting-static 分别为
+  `19.12% / 23.61% / 44.01%`。状态中识别到 12,890 个 occluded、8,956 个
+  newly-exposed 和 6,329 个 out-of-frame cell opportunity；硬状态赋值保证这些 cell
+  不继承 supported，但这不是 false-clear 或遮挡检测准确率证据。冻结 C1 mechanics
+  终态为 `FRESH_TF_R1A_C1_FROZEN_MECHANICS_NOT_SUPPORTED_CANARY_ONLY`；正式四臂
+  gate 未运行，因为 direction/traversability truth 缺失且每机制只有一个 session。
+  `LOCAL_GEOMETRIC_VALIDITY_EFFECT_NOT_EVALUATED` 保持；不得在已打开三序列上调参救援。

@@ -1,0 +1,72 @@
+{
+  "schema": "blindassist_fresh_tf_r1a_mechanics_canary_result_v1",
+  "date": "2026-08-04",
+  "authority": "MECHANICS_OPPORTUNITY_CANARY_ONLY",
+  "terminal": "FRESH_TF_R1A_C1_FROZEN_MECHANICS_NOT_SUPPORTED_CANARY_ONLY",
+  "scope_terminal": "LOCAL_GEOMETRIC_VALIDITY_EFFECT_NOT_EVALUATED",
+  "execution_terminal": "FRESH_TF_R1A_MECHANICS_CANARY_COMPLETE_FORMAL_EFFECT_NOT_ADMISSIBLE",
+  "protocol_sha256": "2379D50E497ED417C6EF8BF6D9CFDD793AF64709B22AD494061E861687D345F9",
+  "source_receipt_sha256": "3289900FB291749F0F574E907D42A7A66022A4718969FF3264AF80D096CE899A",
+  "implementation_sha256": "69492C75913E3065D879BB9B7BDDB810B73ACF1FDB002B1A0B687010D082C913",
+  "test_sha256": "5A3F9A5BA1DA7D3CC11E76A9F552702B5625C114BCEE100A3721F7C0BDF5B00B",
+  "ignored_result_sha256": "3702EBB7712FB0DDA1A6A9DA79EB973A96DED36977FE57918535FA70A8035971",
+  "ignored_trace_sha256": "04AB6C2A0DAF504ADDFC68C2A1515A4670473C304B70FCA0A158B7B87D7961C2",
+  "sampled_frames": 676,
+  "evaluated_cells": 64896,
+  "sessions": [
+    {
+      "sequence": "rgbd_dataset_freiburg1_rpy",
+      "sampled_frames": 241,
+      "cell_support_coverage": 0.19117392807745504,
+      "state_counts": {
+        "SUPPORTED": 4423,
+        "OCCLUDED": 3178,
+        "NEWLY_EXPOSED": 2620,
+        "OUT_OF_FRAME": 4249,
+        "LOW_FLOW_SUPPORT": 7091,
+        "HIGH_WARP_RESIDUAL": 1575
+      }
+    },
+    {
+      "sequence": "rgbd_dataset_freiburg1_desk",
+      "sampled_frames": 199,
+      "cell_support_coverage": 0.2361285594639866,
+      "state_counts": {
+        "SUPPORTED": 4511,
+        "OCCLUDED": 2476,
+        "NEWLY_EXPOSED": 2905,
+        "OUT_OF_FRAME": 2049,
+        "LOW_FLOW_SUPPORT": 5098,
+        "HIGH_WARP_RESIDUAL": 2065
+      }
+    },
+    {
+      "sequence": "rgbd_dataset_freiburg3_sitting_static",
+      "sampled_frames": 236,
+      "cell_support_coverage": 0.4401041666666667,
+      "state_counts": {
+        "SUPPORTED": 9971,
+        "OCCLUDED": 7236,
+        "NEWLY_EXPOSED": 3431,
+        "OUT_OF_FRAME": 31,
+        "LOW_FLOW_SUPPORT": 501,
+        "HIGH_WARP_RESIDUAL": 1486
+      }
+    }
+  ],
+  "aggregate": {
+    "macro_session_cell_support_coverage": 0.28913555140270275,
+    "worst_session_cell_support_coverage": 0.19117392807745504,
+    "occlusion_opportunity_cells": 12890,
+    "newly_exposed_opportunity_cells": 8956,
+    "out_of_frame_opportunity_cells": 6329,
+    "newly_exposed_inheritance_count_by_state_machine": 0,
+    "occluded_inheritance_count_by_state_machine": 0
+  },
+  "formal_gate_results": "NOT_RUN",
+  "formal_effect_evaluation_admissible": false,
+  "mechanics_diagnosis": "the frozen local support implementation rejects most cells, especially under pure rotation and camera sweep; the canary does not establish whether the cause is optical-flow support, pose/depth registration residual, cell aggregation, occlusion sensitivity, or their interaction",
+  "interpretation": "hard fail-closed state routing executed and nontrivial invalidity opportunities exist, but usable local support collapsed; zero inheritance is a state-machine invariant, not empirical occlusion or false-clear accuracy",
+  "next_admissible_step": "close this exact C1; any successor must be mechanism-motivated, frozen before opening new parent/session-disjoint data, and must retain the formal R1-A truth and two-session-per-mechanism requirements",
+  "claim_ceiling": "offline source-native local-validity mechanics only; no effect, direction, mobile, NPU, production, navigation, or safety authority"
+}
