@@ -19,7 +19,7 @@ add_library(
     dav2_qnn_cached_context.cpp
 )
 target_compile_features(dav2_preprocess_native PRIVATE cxx_std_17)
-target_compile_options(dav2_preprocess_native PRIVATE -O3 -ffast-math)
+target_compile_options(dav2_preprocess_native PRIVATE -O3 -fno-fast-math -ffp-contract=off)
 target_compile_definitions(dav2_preprocess_native PRIVATE DAV2_QNN_AVAILABLE=${DAV2_QNN_AVAILABLE})
 if(DAV2_QNN_AVAILABLE)
     target_include_directories(dav2_preprocess_native PRIVATE "${QAIRT_INCLUDE_DIR}")

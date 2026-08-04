@@ -326,6 +326,15 @@ thermal before/max/after 均为 0，非亮屏观察为 0。全链路 P50/P95/max
 实验臂，不得用持续门救活准确率或生产晋级。GPU CPU gate 仍未触发。详见
 [CameraX sustained ten-minute R0](DAV2_CAMERAX_SUSTAINED_10MIN_R0_RESULT_2026-08-04.md)。
 
+随后实现严格整数位运算的 IEEE round-to-nearest ties-to-even FP32→FP16，并新增
+真实 CameraX 同帧逐层落盘门。快速 OpenCV/NEON 臂被定位为 cubic 运算顺序跨 half-bin：
+冻结静态 corpus 有 610 个 FP16 mismatch，真实前摄帧有 1631 个。新增 native canonical
+cubic 严格复刻官方 float32 系数、四 tap 顺序与 float64 中间运算；静态 corpus 与 CameraX
+帧的 FP32 均全元素 exact，FP16 均 `0/1,066,044` mismatch，App/CLI depth 误差为 0。
+前处理加 cached QNN P50/P95/max 为 `90.75/92.62/93.18 ms`，P0/P1 门均通过。
+快速臂只保留作诊断；全黑后摄帧仍作为退化输入拒绝，前摄 geometry 无 metric authority。
+详见 [CameraX layered depth parity R0](DAV2_CAMERAX_DEPTH_PARITY_R0_RESULT_2026-08-04.md)。
+
 随后新增的 class-free clearance 侧车把 RGB、manifest 时钟、三带 scale anchor 和
 UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得到 5/5：80 个评价帧中
 78 个 paired-valid，MAE `0.0981 m`、一致率 `93.77%`、false-clear `4.95%`。绝对

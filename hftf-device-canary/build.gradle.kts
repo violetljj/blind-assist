@@ -40,7 +40,7 @@ android {
         }
         externalNativeBuild {
             cmake {
-                cppFlags += listOf("-std=c++17", "-O3", "-ffast-math")
+                cppFlags += listOf("-std=c++17", "-O3", "-fno-fast-math", "-ffp-contract=off")
                 arguments += "-DANDROID_STL=c++_shared"
                 arguments += "-DQAIRT_ROOT=${qairtRoot.get()}"
             }

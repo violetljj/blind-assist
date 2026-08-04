@@ -396,7 +396,7 @@ Java_com_linnan_blindassist_hftf_Dav2QnnCachedContext_nativeMetadata(JNIEnv* env
 #endif
 }
 
-extern "C" JNIEXPORT void JNICALL
+extern "C" JNIEXPORT jlong JNICALL
 Java_com_linnan_blindassist_hftf_Dav2QnnCachedContext_nativeExecute(
         JNIEnv* env, jobject, jlong handle, jobject input, jobject output) {
 #if DAV2_QNN_AVAILABLE
@@ -406,16 +406,26 @@ Java_com_linnan_blindassist_hftf_Dav2QnnCachedContext_nativeExecute(
         void* input_data = env->GetDirectBufferAddress(input);
         void* output_data = env->GetDirectBufferAddress(output);
         check(input_data != nullptr && output_data != nullptr, "QNN tensors must be direct buffers");
+        const uint64_t input_bytes = context->input_bytes;
+        const auto* bytes = static_cast<const uint8_t*>(input_data);
+        uint64_t hash = 14695981039346656037ull;
+        for (uint64_t index = 0; index < input_bytes; ++index) {
+            hash ^= bytes[index];
+            hash *= 1099511628211ull;
+        }
         context->execute(
             input_data,
             env->GetDirectBufferCapacity(input),
             output_data,
             env->GetDirectBufferCapacity(output));
+        return static_cast<jlong>(hash);
     } catch (const std::exception& error) {
         throw_java(env, error);
+        return 0;
     }
 #else
     env->ThrowNew(env->FindClass("java/lang/UnsupportedOperationException"), "QAIRT headers unavailable at build time");
+    return 0;
 #endif
 }
 

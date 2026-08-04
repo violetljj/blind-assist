@@ -1,6 +1,6 @@
 # DA V2 QNN native cached context R0 result
 
-Decision: `QNN_NATIVE_CACHED_CONTEXT_R0_SUPPORTED_DEVICE_ONLY`; `FP16_FUSED_PREPROCESS_STRICT_DEPTH_PARITY_NOT_SUPPORTED`. This is an Android device-deployment result, not CameraX end-to-end, accuracy, safety, or production authority.
+Decision: `QNN_NATIVE_CACHED_CONTEXT_R0_SUPPORTED_DEVICE_ONLY`; `CANONICAL_NATIVE_STRICT_FP16_DEPTH_PARITY_SUPPORTED_DEVICE_ONLY`. This is an Android device-deployment result, not accuracy, safety, metric-geometry, or production authority.
 
 ## Frozen implementation
 
@@ -14,26 +14,25 @@ Device: `SM-S9280 / SM8650 / Android 16`, USB serial `R5CX10M8Y8X`. Frozen graph
 
 | Measure | Result |
 |---|---:|
-| context initialization | 211.16 ms |
-| graph execute P50 / P95 / max | 74.45 / 74.69 / 74.77 ms |
-| Native FP16 preprocess + graph P50 / P95 / max | 79.64 / 94.29 / 94.54 ms |
+| context initialization | 293.13 ms |
+| graph execute P50 / P95 / max | 81.01 / 84.89 / 85.50 ms |
+| canonical Native FP16 preprocess + graph P50 / P95 / max | 90.75 / 92.62 / 93.18 ms |
 | thermal status before / after | 0 / 0 |
 | App vs CLI, identical FP16 input mean / P95 / max | 0 / 0 / 0 m |
 
 The App/CLI gate passes exactly. The 74.45 ms host wall time also matches the earlier CLI HTP accelerator average of 74.05 ms and improves on the CLI graph-execute average of 134.62 ms. This supports a persistent in-process ordinary client-buffer route; it does not yet measure CameraX capture, YUV conversion, scheduling, or ten-minute sustained behavior.
 
-## FP16 fused-preprocess boundary
+## Canonical strict-FP16 closure
 
 The Kotlin FP32-to-FP16 helper previously rounded half-way cases upward. Replacing it with Android's IEEE 754 ties-to-even `Half` conversion made the official FP16 App input exactly reproduce the CLI output.
 
-The Native OpenCV fused RGB-to-FP16 arm still differs slightly from the frozen official preprocessing tensor. Its depth-output error was mean `0.001988 m`, P95 `0.0078125 m`, max `0.046875 m`. The preregistered `0.002 / 0.005 / 0.02 m` elementwise gate therefore fails. Downstream remained `VALID` in both arms; relative-height drift was about `0.00356` and scale drift about `0.00188`, both below `0.01`. These downstream passes do not rescue the failed elementwise gate.
+The old fast OpenCV/NEON FP32 route was close but not bit-exact. On the frozen corpus its FP32 max error `1.70e-6` crossed 610 half bins and produced depth mean/P95/max drift `0.001617/0.0078125/0.0390625 m`; it remains a diagnostic control only.
 
-Consequently, the native cached-context wrapper is supported with a frozen, correctly rounded FP16 tensor, while direct fused Native FP16 preprocessing remains a separate non-promoted experiment arm. Thresholds, crop, rotation, interpolation, normalization, geometry, and model were not changed.
+The promoted native canonical path explicitly reproduces the official OpenCV cubic coefficient precision and separable evaluation order, performs the official float64 intermediate arithmetic and final FP32 cast, then applies the strict integer converter. It produced exact FP32, `0/1,066,044` FP16 bit mismatches, equal FP16 SHA-256, and App/CLI depth mean/P95/max `0/0/0 m`. Preprocess plus cached-context execute P50/P95/max was `90.75/92.62/93.18 ms`, with thermal status `0/0`. No threshold, crop, rotation, normalization, geometry, or model was changed.
 
 ## Evidence
 
-- Bundle: `artifacts.local/evidence/hftf/qnn-native-cached-context-r0-20260804-191329/result.json`
-- Bundle SHA-256: `C11464B2EFB6328C925F381939CE09DB1903079BAD27A32FC87AA0DD006631C1`
+- Closure bundle: `artifacts.local/evidence/hftf/qnn-native-cached-context-r0-20260804-205756/result.json`
 - Cached DLC SHA-256: `2BB02F37FEF177FF4B02B8EE0C416EE9FF998BCEEF9786B92959E1F682EBAA24`
 - Host runner: `scripts/research/hftf/run_qnn_native_cached_context_r0.ps1`
 

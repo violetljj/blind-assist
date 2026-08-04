@@ -11,6 +11,8 @@ internal class Dav2QnnCachedContext(
     private var handle: Long
     val metadata: JSONObject
     val output: ByteBuffer
+    var lastInputFnv1a64: Long = 0L
+        private set
 
     init {
         System.loadLibrary("cdsprpc")
@@ -26,9 +28,13 @@ internal class Dav2QnnCachedContext(
 
     fun execute(input: ByteBuffer): ByteBuffer {
         check(handle != 0L)
+        require(input.isDirect) { "QNN input must be a direct buffer" }
+        require(input.limit() == metadata.getInt("input_bytes")) {
+            "QNN input limit ${input.limit()} != ${metadata.getInt("input_bytes")}"
+        }
         input.rewind()
         output.rewind()
-        nativeExecute(handle, input, output)
+        lastInputFnv1a64 = nativeExecute(handle, input, output)
         output.rewind()
         return output
     }
@@ -40,7 +46,7 @@ internal class Dav2QnnCachedContext(
 
     private external fun nativeCreate(cachedDlcPath: String, backendPath: String, systemPath: String): Long
     private external fun nativeMetadata(handle: Long): String
-    private external fun nativeExecute(handle: Long, input: ByteBuffer, output: ByteBuffer)
+    private external fun nativeExecute(handle: Long, input: ByteBuffer, output: ByteBuffer): Long
     private external fun nativeDestroy(handle: Long)
 
     companion object {

@@ -11,6 +11,7 @@ import com.linnan.blindassist.hftf.metricdepth.KnownHeightScaleStudent
 import java.io.File
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.security.MessageDigest
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
@@ -75,6 +76,25 @@ class Dav2QnnCachedContextDeviceTest {
             if (!appCliGatePass) gateFailures += "App/CLI depth drift: $cliParity"
 
             Dav2NativePreprocessor().use { preprocessor ->
+                val nativeFp32 = preprocessor.preprocessFp32(rgb)
+                val fp32InputParity = parity(floatArray(nativeFp32), official)
+                val fastStrictFp16 = preprocessor.preprocessFp16Strict(rgb)
+                val fastFp16TensorParity = halfBitParity(fastStrictFp16, officialFp16)
+                val canonicalFp32 = preprocessor.preprocessFp32Canonical(rgb)
+                val canonicalFp32Parity = parity(floatArray(canonicalFp32), official)
+                val canonicalFp16 = preprocessor.preprocessFp16CanonicalStrict(rgb)
+                val canonicalFp16Parity = halfBitParity(canonicalFp16, officialFp16)
+                val canonicalFp16Sha256 = sha256(canonicalFp16)
+                report
+                    .put("native_fast_fp32_input_parity", fp32InputParity)
+                    .put("native_fast_strict_fp16_tensor_parity", fastFp16TensorParity)
+                    .put("native_canonical_fp32_input_parity", canonicalFp32Parity)
+                    .put("native_canonical_strict_fp16_tensor_parity", canonicalFp16Parity)
+                    .put("official_fp16_sha256", sha256(officialFp16))
+                    .put("native_canonical_strict_fp16_sha256", canonicalFp16Sha256)
+                if (canonicalFp16Parity.getInt("mismatch_elements") != 0) {
+                    gateFailures += "canonical strict FP16 tensor is not bit-exact: $canonicalFp16Parity"
+                }
                 val fullLatencies = DoubleArray(repetitions)
                 repeat(repetitions) { index ->
                     val start = SystemClock.elapsedRealtimeNanos()
@@ -181,6 +201,62 @@ class Dav2QnnCachedContextDeviceTest {
         buffer.rewind()
         val shorts = buffer.asShortBuffer()
         return FloatArray(Dav2PreprocessContract.PLANE) { halfBitsToFloat(shorts.get(it)) }
+    }
+
+    private fun floatArray(buffer: ByteBuffer): FloatArray {
+        val copy = buffer.duplicate().order(ByteOrder.nativeOrder())
+        copy.position(0)
+        return FloatArray(copy.limit() / 4).also { copy.asFloatBuffer().get(it) }
+    }
+
+    private fun halfBitParity(actual: ByteBuffer, expected: ByteBuffer): JSONObject {
+        val actualShorts = actual.duplicate().order(ByteOrder.nativeOrder()).apply { position(0) }.asShortBuffer()
+        val expectedShorts = expected.duplicate().order(ByteOrder.nativeOrder()).apply { position(0) }.asShortBuffer()
+        assertEquals(expectedShorts.remaining(), actualShorts.remaining())
+        var mismatches = 0
+        var first = -1
+        var firstExpected = 0
+        var firstActual = 0
+        var actualLower = 0
+        var actualHigher = 0
+        val channelMismatches = IntArray(3)
+        for (index in 0 until actualShorts.remaining()) {
+            val observed = actualShorts.get(index).toInt() and 0xffff
+            val wanted = expectedShorts.get(index).toInt() and 0xffff
+            if (observed != wanted) {
+                if (first < 0) {
+                    first = index
+                    firstExpected = wanted
+                    firstActual = observed
+                }
+                val observedFloat = halfBitsToFloat(observed.toShort())
+                val wantedFloat = halfBitsToFloat(wanted.toShort())
+                if (observedFloat < wantedFloat) actualLower++ else if (observedFloat > wantedFloat) actualHigher++
+                channelMismatches[index / Dav2PreprocessContract.PLANE]++
+                mismatches++
+            }
+        }
+        return JSONObject()
+            .put("elements", actualShorts.remaining())
+            .put("mismatch_elements", mismatches)
+            .put("first_mismatch_index", first)
+            .put("first_expected_bits", if (first < 0) JSONObject.NULL else "0x${firstExpected.toString(16).padStart(4, '0')}")
+            .put("first_actual_bits", if (first < 0) JSONObject.NULL else "0x${firstActual.toString(16).padStart(4, '0')}")
+            .put("actual_lower_than_expected", actualLower)
+            .put("actual_higher_than_expected", actualHigher)
+            .put("channel_mismatch_elements", JSONArray(channelMismatches.toList()))
+    }
+
+    private fun sha256(buffer: ByteBuffer): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val copy = buffer.duplicate().apply { position(0) }
+        val chunk = ByteArray(64 * 1024)
+        while (copy.hasRemaining()) {
+            val count = minOf(copy.remaining(), chunk.size)
+            copy.get(chunk, 0, count)
+            digest.update(chunk, 0, count)
+        }
+        return digest.digest().joinToString("") { "%02X".format(it) }
     }
 
     private fun parity(actual: FloatArray, expected: FloatArray): JSONObject {

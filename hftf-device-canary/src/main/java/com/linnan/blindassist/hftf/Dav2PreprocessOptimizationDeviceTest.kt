@@ -20,6 +20,53 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class Dav2PreprocessOptimizationDeviceTest {
     @Test
+    fun strictFloat32ToFloat16MatchesAndroidHalf() {
+        val values = ArrayList<Float>(0x7c00 * 3)
+        values += listOf(
+            0.0f,
+            -0.0f,
+            Float.POSITIVE_INFINITY,
+            Float.NEGATIVE_INFINITY,
+            Float.NaN,
+            Float.fromBits(0x00000001),
+            Float.fromBits(0x80000001.toInt()),
+            65504.0f,
+            65520.0f,
+            -65520.0f,
+        )
+        // Every positive finite half value plus every exact midpoint exercises
+        // normal, subnormal, carry, overflow, and ties-to-even behavior.
+        for (bits in 0 until 0x7c00) {
+            val lower = halfBitsToFloat(bits.toShort())
+            values += lower
+            if (bits + 1 < 0x7c00) {
+                val upper = halfBitsToFloat((bits + 1).toShort())
+                val midpoint = (lower + upper) * 0.5f
+                values += midpoint
+                values += -midpoint
+            }
+        }
+        val input = ByteBuffer.allocateDirect(values.size * 4).order(ByteOrder.nativeOrder())
+        val floats = input.asFloatBuffer()
+        values.forEachIndexed { index, value -> floats.put(index, value) }
+        input.position(0)
+        input.limit(values.size * 4)
+
+        Dav2NativePreprocessor().use { native ->
+            val actual = native.convertFp32ToFp16Strict(input, values.size).asShortBuffer()
+            values.forEachIndexed { index, value ->
+                val expected = floatToHalfBits(value).toInt() and 0xffff
+                val observed = actual.get(index).toInt() and 0xffff
+                if (value.isNaN()) {
+                    assertTrue("NaN became non-NaN: 0x${observed.toString(16)}", observed and 0x7c00 == 0x7c00 && observed and 0x03ff != 0)
+                } else {
+                    assertEquals("half mismatch at index=$index value=$value", expected, observed)
+                }
+            }
+        }
+    }
+
+    @Test
     fun cpuBoundaryMicrobench() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val arguments = InstrumentationRegistry.getArguments()
@@ -87,12 +134,27 @@ class Dav2PreprocessOptimizationDeviceTest {
             val nativeParity = parity(nativeValues, official)
             report.getJSONObject("parity").put("native_opencv_neon_fp32_vs_official", nativeParity)
             assertTrue("Native OpenCV preprocess drift: $nativeParity", nativeParity.getDouble("max_abs") <= 5e-5)
-            val nativeFp16Values = floatArrayFromHalf(native.preprocessFp16(rgb))
+            val nativeFp16Values = floatArrayFromHalf(native.preprocessFp16Strict(rgb))
             val nativeFp16Parity = parity(nativeFp16Values, official)
-            report.getJSONObject("parity").put("native_opencv_neon_fp16_roundtrip_vs_official", nativeFp16Parity)
-            assertTrue("Native FP16 preprocess drift: $nativeFp16Parity", nativeFp16Parity.getDouble("max_abs") <= 0.002)
+            report.getJSONObject("parity").put("native_opencv_neon_fp32_then_strict_fp16_vs_official", nativeFp16Parity)
+            assertTrue("Native strict FP16 preprocess drift: $nativeFp16Parity", nativeFp16Parity.getDouble("max_abs") <= 0.002)
             stages.put("native_opencv_neon_fp32_reused", benchmark(repetitions) { native.preprocessFp32(rgb) })
-            stages.put("native_opencv_neon_fp16_reused", benchmark(repetitions) { native.preprocessFp16(rgb) })
+            stages.put("native_opencv_neon_fp32_then_strict_fp16_reused", benchmark(repetitions) {
+                native.preprocessFp16Strict(rgb)
+            })
+            val canonical = floatArray(native.preprocessFp32Canonical(rgb))
+            val canonicalParity = parity(canonical, official)
+            val canonicalHalf = floatArrayFromHalf(native.preprocessFp16CanonicalStrict(rgb))
+            val canonicalHalfParity = parity(canonicalHalf, official)
+            report.getJSONObject("parity")
+                .put("native_canonical_fp32_vs_official", canonicalParity)
+                .put("native_canonical_strict_fp16_vs_official", canonicalHalfParity)
+            stages.put("native_canonical_fp32_then_strict_fp16_reused", benchmark(repetitions) {
+                native.preprocessFp16CanonicalStrict(rgb)
+            })
+            stages.put("native_opencv_neon_fp16_fused_control_reused", benchmark(repetitions) {
+                native.preprocessFp16Fused(rgb)
+            })
         }
 
         report.put("memory_after", memoryJson())
