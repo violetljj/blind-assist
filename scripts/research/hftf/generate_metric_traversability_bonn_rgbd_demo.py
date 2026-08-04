@@ -35,6 +35,7 @@ SCHEMA = "hftf_metric_traversability_bonn_rgbd_teacher_demo_r0"
 DEPTH_UNITS_PER_METER = 5000.0
 MAX_RGB_DEPTH_DELTA_S = 0.02
 SOURCE_ROLE = "SOURCE_AUTHORITATIVE_REGISTERED_RGBD_DEPTH_TEACHER_DISPLAY_ONLY"
+SHOWCASE_DEPTH_RANGE_M = (0.5, 4.0)
 
 
 def _load_manifest(path: Path, maximum_frames: int | None) -> list[dict[str, Any]]:
@@ -101,6 +102,27 @@ def _depth_pairs(sequence_root: Path) -> dict[Path, tuple[float, Path]]:
         )
         for rgb_timestamp, rgb_relative, depth_timestamp, depth_relative in pairs
     }
+
+
+def _write_fixed_metric_depth_preview(
+    depth_m: np.ndarray,
+    visualization_assets: dict[str, Any],
+) -> None:
+    low, high = SHOWCASE_DEPTH_RANGE_M
+    valid = np.isfinite(depth_m) & (depth_m > 0)
+    normalized = np.clip((depth_m - low) / (high - low), 0.0, 1.0)
+    grayscale = np.where(valid, np.round(255.0 * (1.0 - normalized)), 0).astype(
+        np.uint8
+    )
+    preview = cv2.applyColorMap(grayscale, cv2.COLORMAP_TURBO)
+    preview[~valid] = (74, 78, 84)
+    output_path = Path(visualization_assets["metric_depth_heatmap_path"])
+    if not cv2.imwrite(str(output_path), preview):
+        raise RuntimeError(f"failed to write fixed metric-depth preview: {output_path}")
+    visualization_assets["metric_depth_display_range_m"] = [low, high]
+    visualization_assets["metric_depth_display_scale"] = (
+        "FIXED_LINEAR_NEAR_HOT_FAR_COOL_DISPLAY_ONLY"
+    )
 
 
 def generate(
@@ -190,6 +212,7 @@ def generate(
             str(row["sequence_id"]),
             int(row.get("frame_index", ordinal)),
         )
+        _write_fixed_metric_depth_preview(depth_m, assets)
         depth_artifact = write_research_depth_artifact(
             depth_raw,
             depth_m,

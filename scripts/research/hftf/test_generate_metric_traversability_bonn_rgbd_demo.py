@@ -2,7 +2,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import cv2
+import numpy as np
+
 from generate_metric_traversability_bonn_rgbd_demo import _load_sequence
+from generate_metric_traversability_bonn_rgbd_demo import (
+    _write_fixed_metric_depth_preview,
+)
 
 
 class GenerateMetricTraversabilityBonnRgbdDemoTest(unittest.TestCase):
@@ -32,6 +38,19 @@ class GenerateMetricTraversabilityBonnRgbdDemoTest(unittest.TestCase):
             self.assertEqual(0, rows[0]["timestamp_ns"])
             self.assertEqual(800_000_000, rows[-1]["timestamp_ns"])
             self.assertTrue(rows[0]["frame_path"].endswith("rgb\\000005.png"))
+
+    def test_writes_a_fixed_metric_depth_display_scale(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            output = Path(temporary_directory) / "depth.png"
+            assets = {"metric_depth_heatmap_path": str(output)}
+            depth_m = np.asarray([[0.5, 1.0, 4.0, np.nan]], dtype=np.float32)
+
+            _write_fixed_metric_depth_preview(depth_m, assets)
+
+            self.assertEqual([0.5, 4.0], assets["metric_depth_display_range_m"])
+            preview = cv2.imread(str(output), cv2.IMREAD_COLOR)
+            self.assertEqual((1, 4, 3), preview.shape)
+            self.assertTrue(np.array_equal((74, 78, 84), preview[0, 3]))
 
 
 if __name__ == "__main__":
