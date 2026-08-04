@@ -1,0 +1,54 @@
+{
+  "authority": {
+    "alert": false,
+    "confirmation": false,
+    "development_only": true,
+    "metric_distance": false,
+    "production": false,
+    "safety": false
+  },
+  "candidate": {
+    "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+    "operator_protocol_id": "SCALE_FREE_TRAVERSABILITY_R0",
+    "operator_changes_after_bonn_r1": false
+  },
+  "data": {
+    "depth_units_per_metre": 1000,
+    "frame_count_each_video": 150,
+    "role": [
+      "PROJECT_CONSUMED_DEVELOPMENT",
+      "OPERATOR_UNSEEN_EXTERNAL_REPLICATION"
+    ],
+    "roster_path": "artifacts.local/evidence/hftf/spatial-calibration-head-r1-roster-20260804-r2/roster.json",
+    "roster_sha256": "7CE2D9931723EF7517531F7389FF1DFA0E4BF9BD4C8291A9E72A5BBFF7102EEC",
+    "sampling": "all_150_prelocked_timestamp_sorted_matched_rgb_depth_confidence_frames",
+    "source": "ARKitScenes_raw_Training_lowres_wide_lowres_depth_confidence",
+    "truth_firewall": "depth and confidence are read only after candidate inference and are never model input",
+    "unique_parent_count": 20
+  },
+  "gates": {
+    "maximum_macro_opposite_direction_rate": 0.05,
+    "minimum_candidate_execution_coverage_each_sequence": 0.95,
+    "minimum_directional_accuracy_macro": 0.75,
+    "minimum_directional_accuracy_worst_sequence": 0.60,
+    "minimum_directional_truth_support_each_sequence": 20,
+    "minimum_recommendation_coverage_each_sequence": 0.50,
+    "minimum_truth_score_coverage_each_sequence": 0.80
+  },
+  "independent_unit": "ARKitScenes_visit_id",
+  "protocol_id": "SCALE_FREE_TRAVERSABILITY_R2_ARKITSCENES_RGBD_CONSUMED",
+  "status": "FROZEN_BEFORE_ARKITSCENES_CANDIDATE_OUTPUT_EXECUTION",
+  "terminals": {
+    "not_evaluable": "SCALE_FREE_TRAVERSABILITY_R2_NOT_EVALUABLE_SOURCE_SUPPORT",
+    "not_supported": "SCALE_FREE_TRAVERSABILITY_R2_EXTERNAL_RGBD_REPLICATION_NOT_SUPPORTED",
+    "supported": "SCALE_FREE_TRAVERSABILITY_R2_EXTERNAL_RGBD_REPLICATION_SUPPORTED_DEVELOPMENT_ONLY"
+  },
+  "truth": {
+    "confidence_value": 2,
+    "decision_operator": "same_frozen_scale_free_traversability_r0_mechanics",
+    "dense_reconstruction": "nearest_valid_confidence2_sensor_return_in_image_coordinates",
+    "maximum_depth_m": 6.0,
+    "minimum_depth_m": 0.25,
+    "minimum_source_valid_fraction_per_frame": 0.50
+  }
+}

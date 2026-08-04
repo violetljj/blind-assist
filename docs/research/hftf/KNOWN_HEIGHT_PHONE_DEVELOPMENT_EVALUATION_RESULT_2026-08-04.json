@@ -1,0 +1,34 @@
+{
+  "authority": {
+    "consumed_same_phone_ar_reference": true,
+    "development_only": true,
+    "formal_p0_r2": false,
+    "production": false
+  },
+  "camera_height": {
+    "correction_source": "user_correction_2026-08-04",
+    "effective_height_m": 0.15,
+    "effective_uncertainty_m": 0.05,
+    "original_receipts_unchanged": true,
+    "protocol_range_m": [
+      0.8,
+      2.2
+    ],
+    "recorded_receipt_values_m": [
+      1.43
+    ]
+  },
+  "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+  "frame_count": 75,
+  "frames_jsonl_sha256": "CEBC73AA9F38FE01B651CB09E8E7440816197F3230186A2DE4B62C3063150994",
+  "known_height_coverage": 0.0,
+  "recommendation": "DEVELOPMENT_NOT_EVALUABLE_CAMERA_HEIGHT_OUT_OF_PROTOCOL",
+  "result_sha256": "849B9C7CB95918D308175DE4DA8F5AA051E49CE1F1253C03B8667EE81E5BF44A",
+  "schema": "blindassist_known_height_phone_development_result_v1",
+  "session_count": 3,
+  "status": "DEVELOPMENT_DIAGNOSTIC_COMPLETE",
+  "supersedes_evaluation_using_incorrect_height_m": 1.43,
+  "unknown_reason_counts": {
+    "INVALID_HEIGHT_RECEIPT": 75
+  }
+}

@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
-import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
@@ -33,7 +32,6 @@ import java.util.concurrent.atomic.AtomicInteger
 
 data class KnownHeightCaptureRequest(
     val form: CaptureFormState,
-    val referenceUri: Uri,
 )
 
 @ExperimentalCamera2Interop
@@ -55,7 +53,7 @@ class KnownHeightCaptureEngine(
         if (executor != null) return
         stopped.set(false)
         terminal.set(false)
-        emit(CaptureRunState.Preparing("正在校验参考清单并启动相机…"))
+        emit(CaptureRunState.Preparing("正在生成测量记录并启动相机…"))
         val root = requireNotNull(context.getExternalFilesDir("known-height-phone-shadow"))
             .resolve(request.form.sessionId)
         if (root.exists() && root.listFiles()?.isNotEmpty() == true) {
@@ -65,18 +63,14 @@ class KnownHeightCaptureEngine(
         root.mkdirs()
         activeRoot = root
         val referenceDirectory = root.resolve("reference").apply { mkdirs() }
-        val referenceName = safeName(request.form.referenceDisplayName ?: "reference.json")
-        val referenceFile = referenceDirectory.resolve(referenceName)
+        val referenceFile = referenceDirectory.resolve("reference.json")
         try {
-            context.contentResolver.openInputStream(request.referenceUri).use { input ->
-                requireNotNull(input) { "无法读取参考清单" }
-                referenceFile.outputStream().use(input::copyTo)
-            }
+            referenceFile.writeText(referenceJson(request.form).toString(2))
         } catch (error: Throwable) {
             referenceFile.delete()
             referenceDirectory.delete()
             root.delete()
-            emit(CaptureRunState.Hold("参考清单读取失败：${error.message ?: error.javaClass.simpleName}"))
+            emit(CaptureRunState.Hold("测量记录生成失败：${error.message ?: error.javaClass.simpleName}"))
             return
         }
 
@@ -178,22 +172,30 @@ class KnownHeightCaptureEngine(
         val form = request.form
         val receipt = JSONObject()
             .put("schema", "blindassist_known_height_phone_capture_receipt_v1")
-            .put("protocol_id", PROTOCOL_ID)
+            .put("protocol_id", if (form.phase == CapturePhase.DEV) DEVELOPMENT_PROTOCOL_ID else PROTOCOL_ID)
             .put("model_id", MODEL_ID)
-            .put("status", "CAPTURED_PENDING_HOST_PREFLIGHT")
+            .put("status", if (form.phase == CapturePhase.DEV) "DEVELOPMENT_CAPTURED_CONSUMED_REFERENCE" else "CAPTURED_PENDING_HOST_PREFLIGHT")
             .put("session_id", form.sessionId)
             .put("phase", form.phase.name)
             .put("device_serial", Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID))
             .put("device_model", "${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}")
             .put("camera_id", observedCameraId)
-            .put("camera_height_m", form.cameraHeightM.toDouble())
-            .put("camera_height_uncertainty_m", form.cameraHeightUncertaintyM.toDouble())
+            .put("camera_height_m", requireNotNull(form.cameraHeightM))
+            .put("camera_height_uncertainty_m", requireNotNull(form.cameraHeightUncertaintyM))
             .put("mount_profile_id", form.mountProfileId.trim())
             .put("intrinsics_sha256", intrinsics.second)
             .put("frame_manifest", "frames.json")
             .put("reference_manifest", "reference/${referenceFile.name}")
             .put("reference_manifest_sha256", sha256(referenceFile))
-            .put("authorization", JSONObject().put("shadow_capture_only", true).put("app_runtime", false).put("production", false))
+            .put(
+                "authorization",
+                JSONObject()
+                    .put("development_only", form.phase == CapturePhase.DEV)
+                    .put("formal_evaluation", form.phase != CapturePhase.DEV)
+                    .put("shadow_capture_only", true)
+                    .put("app_runtime", false)
+                    .put("production", false),
+            )
         root.resolve("receipt.json").writeText(receipt.toString(2))
         mainHandler.post {
             provider?.unbindAll()
@@ -260,10 +262,39 @@ class KnownHeightCaptureEngine(
         digest.digest().joinToString("") { "%02X".format(it) }
     }
     private fun sha256(bytes: ByteArray): String = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02X".format(it) }
-    private fun safeName(name: String): String = name.replace(Regex("[^A-Za-z0-9._-]"), "_").take(80).ifBlank { "reference.json" }
+
+    private fun referenceJson(form: CaptureFormState): JSONObject = JSONObject()
+        .put("schema", "blindassist_known_height_phone_reference_v1")
+        .put("session_id", form.sessionId)
+        .put("phase", form.phase.name)
+        .put("reference_method", form.measurementMethod.receiptValue)
+        .put("instrument", form.measurementMethod.label)
+        .put("instrument_error_cm", form.instrumentErrorCm.toDouble())
+        .put(
+            "camera_height_readings_cm",
+            JSONArray(
+                if (form.phase == CapturePhase.DEV) listOf(form.heightReading1Cm.toDouble())
+                else requireNotNull(form.heightReadingsCm),
+            ),
+        )
+        .put("camera_height_m", requireNotNull(form.cameraHeightM))
+        .put("camera_height_uncertainty_m", requireNotNull(form.cameraHeightUncertaintyM))
+        .put("reference_points", JSONArray(requireNotNull(form.referencePoints).map { point ->
+            JSONObject()
+                .put("id", point.id)
+                .put("description", point.label)
+                .put("measurement_type", form.measurementMethod.receiptValue)
+                .put("measured_distance_m", point.distanceM)
+        }))
+        .put(
+            "truth_firewall",
+            if (form.phase == CapturePhase.DEV) "DEVELOPMENT_LABEL_ONLY_NOT_FORMAL_GROUND_TRUTH"
+            else "OFFLINE_EVALUATOR_ONLY_NOT_MODEL_INPUT",
+        )
 
     private companion object {
         const val PROTOCOL_ID = "KNOWN_HEIGHT_PHONE_SHADOW_P0_R2_20260804"
+        const val DEVELOPMENT_PROTOCOL_ID = "KNOWN_HEIGHT_PHONE_DEVELOPMENT_CAPTURE_R0"
         const val MODEL_ID = "CAMERA_CONDITIONED_SCALE_STUDENT_R0_FINAL_5P"
     }
 }

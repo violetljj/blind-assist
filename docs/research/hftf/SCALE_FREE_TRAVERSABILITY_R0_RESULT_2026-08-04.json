@@ -1,0 +1,55 @@
+{
+  "authority": {
+    "alert": false,
+    "development_only": true,
+    "integration": false,
+    "metric_distance": false,
+    "production": false,
+    "safety": false
+  },
+  "camera_height_read": false,
+  "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+  "frame_count": 75,
+  "frames_jsonl_sha256": "794E2F2CB18BBFAEEC43F1F06262ADB07A43FB13E67A77DCD252709ABD734AC8",
+  "integration_decision": "KEEP_OFFLINE_DIAGNOSTIC_ONLY_DO_NOT_INTEGRATE",
+  "result_sha256": "ED1584350A171A73DECB819D16B7D167413ED87784F11C0643A28944BE5361B3",
+  "samsung_quick_measure_read": false,
+  "schema": "blindassist_scale_free_traversability_r0_committed_result_v1",
+  "session_count": 3,
+  "session_results": [
+    {
+      "execution_coverage": 1.0,
+      "inference_latency_median_ms": 53.06239999481477,
+      "label_counts": {
+        "AMBIGUOUS": 20,
+        "RELATIVELY_OPEN_CENTER": 1
+      },
+      "modal_label_fraction": 0.9523809523809523,
+      "non_ambiguous_recommendation_coverage": 0.047619047619047616,
+      "session_id": "DEV-20260804-125252"
+    },
+    {
+      "execution_coverage": 1.0,
+      "inference_latency_median_ms": 53.4656000090763,
+      "label_counts": {
+        "RELATIVELY_OPEN_CENTER": 21
+      },
+      "modal_label_fraction": 1.0,
+      "non_ambiguous_recommendation_coverage": 1.0,
+      "session_id": "DEV-20260804-130313"
+    },
+    {
+      "execution_coverage": 1.0,
+      "inference_latency_median_ms": 54.44520000310149,
+      "label_counts": {
+        "RELATIVELY_OPEN_LEFT": 21
+      },
+      "modal_label_fraction": 1.0,
+      "non_ambiguous_recommendation_coverage": 1.0,
+      "session_id": "DEV-20260804-130930"
+    }
+  ],
+  "status": "DEVELOPMENT_DIAGNOSTIC_COMPLETE",
+  "terminal": "SCALE_FREE_TRAVERSABILITY_R0_EXECUTES_STABLY_DEVELOPMENT_ONLY",
+  "truth_inputs_read": []
+}

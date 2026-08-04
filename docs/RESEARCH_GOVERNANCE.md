@@ -374,6 +374,32 @@ confirmation gate: rate >= 0.05/s
 
 ## 数据使用和“用过即烧”
 
+### 已消费数据的主动复用
+
+已消费不等于不可用。对于 Discovery、Canary、Development、回归、消融、失败分析、
+论文机制实验和可运行演示，项目默认允许主动复用已消费数据，不得仅因“用过”而阻塞
+有信息增益的实验。复用时必须同时记录：此前读取过什么、是否影响当前候选、当前最强
+证据角色、独立性的具体维度，以及不能主张什么。
+
+推荐角色包括：
+
+- `PROJECT_CONSUMED_DEVELOPMENT`：项目历史已读取，可用于当前开发评价；
+- `OPERATOR_UNSEEN_EXTERNAL_REPLICATION`：数据虽被其他实验消费，但当前算子未在该
+  cohort 上设计、调参或选门，可报告为算子未见的外部复现；
+- `REGRESSION_ONLY`：只验证实现、数值、接口或旧结论没有漂移。
+
+在已消费数据上使用“独立”一词时，必须紧邻说明独立的是 evaluator/validator、实现、
+parent/session、模型训练集，还是当前算子的设计过程。它不得被省略限定词后解释为
+`SEALED_UNSEEN`、全局 fresh、Confirmation 或产品安全证据。新算法若根据这次结果修改，
+该 cohort 对修改后的算法继续保持 Development；无需停止使用，但最终 Confirmation
+必须另行明确激活并使用适当独立数据。
+
+正式门失败或 `NOT_EVALUABLE` 只限制对应正式 claim，不自动废弃数据和全部观察。有效
+行、诊断统计、反例、loader、ledger 和实现仍应按“能用就用”原则进入 Development、
+debug、回归、source characterization 和下一候选；报告同时保留原终态，并另写更窄的
+practical-use decision。不得为了形式完整反复寻找新数据重做已经有信息增益的工作，也
+不得把这种务实复用反写成门已通过。
+
 结果访问统一使用四个状态：
 
 | 状态 | 含义 | 后续角色 |

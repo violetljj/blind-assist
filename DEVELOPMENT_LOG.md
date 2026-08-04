@@ -1,4 +1,21 @@
 # Development Log
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：violjjet。完成公开 RGB-D
+  scale-free traversability 独立实现复核，并把“已消费数据可主动复用、但必须披露
+  最强证据角色与独立性的具体维度”写入项目/研究准则。R1 在两段已消费 Bonn
+  registered RGB-D 上固定评价 192 帧；候选执行率 100%，观察到 19/19 推荐方向与
+  sensor reference 一致，但 `bonn_person_tracking` truth-score coverage 仅
+  `47/97 = 48.45%`，低于预冻结 50%，终态
+  `SCALE_FREE_TRAVERSABILITY_R1_NOT_EVALUABLE_SOURCE_SUPPORT`。未降门后，R2
+  另冻 20 个 parent-disjoint ARKitScenes visits、3,000 帧与 confidence-2 nearest
+  reconstruction；独立 validator 复算无差异，但 visit `472626` coverage 74% 且
+  truth directions 19<20，visit `469455` support 17<20，仍为
+  `SCALE_FREE_TRAVERSABILITY_R2_NOT_EVALUABLE_SOURCE_SUPPORT`。诊断性 visit-macro
+  directional agreement 为 94.90%、opposite error 1.01%，但只有 16/20 visits
+  通过 recommendation coverage，visit `484248` accuracy 38.46%，即使忽略 source
+  precondition 也不能支持候选。两轮均保留 Development/validator/counterexample
+  价值；按用户“能用就用”的要求，明确 practical-use decision 为继续用于开发诊断、
+  回归和下一候选，而不是因 formal gate 失败丢弃数据；仍不授权 App 集成、米制距离、
+  提醒、安全或生产。
 - 时间：2026-08-03（Asia/Hong_Kong）；执行者：Codex。完成 HFTF D45
   `SM-S9280 / Android 16` 物理 source canary 与外接相机运行时边界修正。R4 在
   `OPERATOR_CONTROLLED_TRANSLATION_TEXTURED_SCENE` 下执行 900 updates，得到 844

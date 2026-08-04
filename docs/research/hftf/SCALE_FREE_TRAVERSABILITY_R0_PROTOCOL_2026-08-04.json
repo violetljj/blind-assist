@@ -1,0 +1,42 @@
+{
+  "authority": {
+    "alert": false,
+    "development_only": true,
+    "metric_distance": false,
+    "production": false,
+    "safety": false
+  },
+  "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+  "decision": {
+    "causal_window": 5,
+    "minimum_margin_log_units": 0.08,
+    "minimum_winner_count": 4,
+    "warmup_frames": 4
+  },
+  "independent_unit": "session",
+  "operator": {
+    "analysis_roi_xyxy": [0.05, 0.3, 0.95, 0.9],
+    "band_score_percentile": 85,
+    "bands_x": {
+      "center": [0.35, 0.65],
+      "left": [0.05, 0.35],
+      "right": [0.65, 0.95]
+    },
+    "depth_transform": "negative_natural_log",
+    "minimum_valid_fraction": 0.9,
+    "pixel_intrusion": "max(0, transformed_depth - row_baseline)",
+    "row_baseline_percentile": 25
+  },
+  "positive_terminal": {
+    "minimum_execution_coverage_each_session": 0.95,
+    "minimum_modal_label_fraction_each_session": 0.8,
+    "status": "SCALE_FREE_TRAVERSABILITY_R0_EXECUTES_STABLY_DEVELOPMENT_ONLY"
+  },
+  "protocol_id": "SCALE_FREE_TRAVERSABILITY_R0",
+  "status": "FROZEN_BEFORE_SCALE_FREE_OUTPUT_EXECUTION",
+  "truth_inputs_forbidden": [
+    "camera_height",
+    "metric_depth_truth",
+    "samsung_quick_measure"
+  ]
+}

@@ -34,6 +34,8 @@ dense-metric-depth-propagation-r0-development-not-supported /
 metric-depth-calibration-head-r0-development-not-supported /
 spatial-calibration-head-r1-development-not-supported-stop /
 spatial-tof-e-arm-activated-capture-protocol-pending /
+scale-free-r1-bonn-source-support-not-evaluable /
+scale-free-r2-arkitscenes-source-support-not-evaluable /
 frozen-single-frame-posthoc-temporal-residual-family-stop`
 
 Spatial Calibration Head R1 已按预冻结合同完成 fresh、visit-disjoint ARKitScenes

@@ -1,17 +1,16 @@
 package com.linnan.blindassist.ustrfbenchmark
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +25,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -38,7 +36,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -58,10 +55,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.io.File
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -75,15 +72,12 @@ class KnownHeightCaptureActivity : ComponentActivity() {
             statusBarStyle = SystemBarStyle.light(android.graphics.Color.rgb(156, 244, 201), android.graphics.Color.rgb(156, 244, 201)),
             navigationBarStyle = SystemBarStyle.light(android.graphics.Color.rgb(247, 251, 247), android.graphics.Color.rgb(247, 251, 247)),
         )
-        setContent {
-            MaterialTheme(colorScheme = captureColorScheme()) {
-                KnownHeightCaptureRoute()
-            }
-        }
+        setContent { MaterialTheme(colorScheme = captureColorScheme()) { CaptureRoute() } }
     }
 
     @Composable
-    private fun KnownHeightCaptureRoute() {
+    private fun CaptureRoute() {
+        val mountPreferences = remember { getSharedPreferences("fixed_mount", MODE_PRIVATE) }
         val previewView = remember {
             PreviewView(this).apply {
                 implementationMode = PreviewView.ImplementationMode.COMPATIBLE
@@ -91,54 +85,62 @@ class KnownHeightCaptureActivity : ComponentActivity() {
             }
         }
         var runState by remember { mutableStateOf<CaptureRunState>(CaptureRunState.Idle) }
-        var sessionId by rememberSaveable { mutableStateOf(defaultSessionId(CapturePhase.P0)) }
-        var phaseName by rememberSaveable { mutableStateOf(CapturePhase.P0.name) }
-        var height by rememberSaveable { mutableStateOf("") }
-        var uncertainty by rememberSaveable { mutableStateOf("0.01") }
-        var mountId by rememberSaveable { mutableStateOf("") }
-        var referenceUri by rememberSaveable { mutableStateOf<Uri?>(null) }
-        var referenceName by rememberSaveable { mutableStateOf<String?>(null) }
+        var sessionId by rememberSaveable { mutableStateOf(defaultSessionId(CapturePhase.DEV)) }
+        var phaseName by rememberSaveable { mutableStateOf(CapturePhase.DEV.name) }
+        var mountId by rememberSaveable { mutableStateOf(mountPreferences.getString("mount_id", "固定支架") ?: "固定支架") }
+        var methodName by rememberSaveable { mutableStateOf(MeasurementMethod.SAMSUNG_QUICK_MEASURE.name) }
+        var instrumentErrorCm by rememberSaveable { mutableStateOf(MeasurementMethod.SAMSUNG_QUICK_MEASURE.suggestedInstrumentErrorCm) }
+        var height1 by rememberSaveable { mutableStateOf(mountPreferences.getString("camera_height_cm", "") ?: "") }
+        var height2 by rememberSaveable { mutableStateOf("") }
+        var height3 by rememberSaveable { mutableStateOf("") }
+        var nearDistance by rememberSaveable { mutableStateOf("") }
+        var middleDistance by rememberSaveable { mutableStateOf("") }
+        var farDistance by rememberSaveable { mutableStateOf("") }
+        var developmentDistanceCm by rememberSaveable { mutableStateOf("") }
         val phase = CapturePhase.valueOf(phaseName)
-        val form = CaptureFormState(sessionId, phase, height, uncertainty, mountId, referenceName)
-
-        val referencePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-            if (uri != null) {
-                runCatching { contentResolver.takePersistableUriPermission(uri, android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION) }
-                referenceUri = uri
-                referenceName = displayName(uri)
-            }
-        }
+        val method = MeasurementMethod.valueOf(methodName)
+        val form = CaptureFormState(
+            sessionId = sessionId,
+            phase = phase,
+            mountProfileId = mountId,
+            measurementMethod = method,
+            instrumentErrorCm = instrumentErrorCm,
+            heightReading1Cm = height1,
+            heightReading2Cm = height2,
+            heightReading3Cm = height3,
+            nearDistanceM = nearDistance,
+            middleDistanceM = middleDistance,
+            farDistanceM = farDistance,
+            developmentDistanceCm = developmentDistanceCm,
+        )
         val exportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) { uri ->
             val complete = runState as? CaptureRunState.Complete
             if (uri != null && complete != null) {
-                val exported = runCatching { exportSession(File(complete.sessionDirectory), uri) }.isSuccess
-                Toast.makeText(this, if (exported) "采集包已导出" else "导出失败，请重试", Toast.LENGTH_LONG).show()
+                val ok = runCatching { exportSession(File(complete.sessionDirectory), uri) }.isSuccess
+                Toast.makeText(this, if (ok) "采集包已导出" else "导出失败，请重试", Toast.LENGTH_LONG).show()
             }
         }
         fun beginCapture() {
-            val uri = referenceUri ?: return
             captureEngine?.stop()
             captureEngine = KnownHeightCaptureEngine(this, this, previewView) { runState = it }
-            captureEngine?.start(KnownHeightCaptureRequest(form, uri))
+            captureEngine?.start(KnownHeightCaptureRequest(form))
         }
         val cameraPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) beginCapture() else runState = CaptureRunState.Hold("相机权限被拒绝，无法采集")
         }
         DisposableEffect(Unit) { onDispose { captureEngine?.stop() } }
 
-        KnownHeightCaptureScreen(
+        CaptureScreen(
             form = form,
             runState = runState,
             previewView = previewView,
-            onSessionIdChange = { sessionId = it },
-            onPhaseChange = {
-                phaseName = it.name
-                if (runState is CaptureRunState.Idle) sessionId = defaultSessionId(it)
+            onMountIdChange = { value -> mountId = value; mountPreferences.edit().putString("mount_id", value).apply() },
+            onHeight1Change = { value -> height1 = numericInput(value); mountPreferences.edit().putString("camera_height_cm", height1).apply() },
+            onDevelopmentDistanceChange = { developmentDistanceCm = numericInput(it) },
+            onOpenQuickMeasure = {
+                runCatching { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("ruler://com.samsung.android.ruler"))) }
+                    .onFailure { Toast.makeText(this, "未找到三星快速测量", Toast.LENGTH_LONG).show() }
             },
-            onHeightChange = { height = numericInput(it) },
-            onUncertaintyChange = { uncertainty = numericInput(it) },
-            onMountIdChange = { mountId = it },
-            onPickReference = { referencePicker.launch(arrayOf("application/json", "text/*")) },
             onStart = {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) beginCapture()
                 else cameraPermission.launch(Manifest.permission.CAMERA)
@@ -147,7 +149,8 @@ class KnownHeightCaptureActivity : ComponentActivity() {
             onReset = {
                 captureEngine?.stop()
                 runState = CaptureRunState.Idle
-                sessionId = defaultSessionId(phase)
+                sessionId = defaultSessionId(CapturePhase.DEV)
+                developmentDistanceCm = ""
             },
             onExport = { exportLauncher.launch("${form.sessionId}.zip") },
         )
@@ -157,11 +160,6 @@ class KnownHeightCaptureActivity : ComponentActivity() {
         captureEngine?.stop()
         super.onDestroy()
     }
-
-    private fun displayName(uri: Uri): String = contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
-        ?.use { cursor: Cursor -> if (cursor.moveToFirst()) cursor.getString(0) else null }
-        ?: uri.lastPathSegment
-        ?: "reference.json"
 
     private fun defaultSessionId(phase: CapturePhase): String = "${phase.name}-${SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date())}"
     private fun numericInput(value: String): String = value.filterIndexed { index, char -> char.isDigit() || (char == '.' && index > 0) }.take(6)
@@ -183,16 +181,14 @@ class KnownHeightCaptureActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun KnownHeightCaptureScreen(
+private fun CaptureScreen(
     form: CaptureFormState,
     runState: CaptureRunState,
     previewView: PreviewView,
-    onSessionIdChange: (String) -> Unit,
-    onPhaseChange: (CapturePhase) -> Unit,
-    onHeightChange: (String) -> Unit,
-    onUncertaintyChange: (String) -> Unit,
     onMountIdChange: (String) -> Unit,
-    onPickReference: () -> Unit,
+    onHeight1Change: (String) -> Unit,
+    onDevelopmentDistanceChange: (String) -> Unit,
+    onOpenQuickMeasure: () -> Unit,
     onStart: () -> Unit,
     onCancel: () -> Unit,
     onReset: () -> Unit,
@@ -202,7 +198,7 @@ private fun KnownHeightCaptureScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Column { Text("高度标定采集", fontWeight = FontWeight.Bold); Text("隔离 Shadow 工具 · 不产生导航提示", style = MaterialTheme.typography.labelSmall) } },
+                title = { Column { Text("快速采集", fontWeight = FontWeight.Bold); Text("测距 → 采集 → 下一目标", style = MaterialTheme.typography.labelSmall) } },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             )
         },
@@ -214,65 +210,85 @@ private fun KnownHeightCaptureScreen(
             item { Spacer(Modifier.height(2.dp)) }
             item { RunStateCard(runState, form.phase.frameTarget) }
             item {
-                Card {
-                    val previewRatio = if (running) 4f / 3f else 16f / 9f
-                    Box(Modifier.fillMaxWidth().aspectRatio(previewRatio), contentAlignment = Alignment.Center) {
-                        AndroidView(factory = { previewView }, modifier = Modifier.fillMaxSize())
-                        if (runState is CaptureRunState.Idle || runState is CaptureRunState.Hold) {
-                            Text("填写并检查信息后启动相机", color = Color.White, modifier = Modifier.padding(12.dp))
-                        }
+                SectionCard("固定支架 · 只填一次") {
+                    OutlinedTextField(
+                        value = form.mountProfileId,
+                        onValueChange = onMountIdChange,
+                        enabled = !running,
+                        label = { Text("支架名称") },
+                        placeholder = { Text("例如：三脚架A") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth().testTag("mount_id"),
+                    )
+                    MeasurementField("地面到后摄镜头中心（cm）", form.heightReading1Cm, onHeight1Change, !running, Modifier.fillMaxWidth(), "例如 143", "height_1")
+                    Text(
+                        "必须实际架高到 80–220 cm；15 cm 低支架不可用。",
+                        color = MaterialTheme.colorScheme.error,
+                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                    form.heightReading1Cm.toDoubleOrNull()?.let { heightCm ->
+                        Text(
+                            "当前填写：%.0f cm（%.2f m），请和镜头实际位置核对。".format(heightCm, heightCm / 100.0),
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.bodySmall,
+                        )
                     }
+                    Text("核对后会自动保存，下次不需要重复填写。", style = MaterialTheme.typography.bodySmall)
                 }
             }
             item {
-                SectionCard("1 · 本次采集") {
-                    Text("阶段", style = MaterialTheme.typography.labelLarge)
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        CapturePhase.entries.forEach { phase ->
-                            FilterChip(selected = form.phase == phase, onClick = { onPhaseChange(phase) }, enabled = !running, label = { Text(phase.label) })
-                        }
+                SectionCard("当前目标") {
+                    Button(onClick = onOpenQuickMeasure, enabled = !running, modifier = Modifier.fillMaxWidth().height(54.dp)) {
+                        Text("打开三星快速测量")
                     }
-                    OutlinedTextField(value = form.sessionId, onValueChange = onSessionIdChange, enabled = !running, label = { Text("Session ID") }, supportingText = { Text("每次采集必须唯一") }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                    OutlinedTextField(value = form.mountProfileId, onValueChange = onMountIdChange, enabled = !running, label = { Text("固定支架编号") }, placeholder = { Text("例如 tripod-A-145cm") }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                }
-            }
-            item {
-                SectionCard("2 · 现场量高") {
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        OutlinedTextField(value = form.cameraHeightM, onValueChange = onHeightChange, enabled = !running, label = { Text("光心高度 (m)") }, placeholder = { Text("1.45") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true, modifier = Modifier.weight(1f))
-                        OutlinedTextField(value = form.cameraHeightUncertaintyM, onValueChange = onUncertaintyChange, enabled = !running, label = { Text("误差 (m)") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true, modifier = Modifier.weight(1f))
+                    MeasurementField(
+                        "快速测量读数（厘米）",
+                        form.developmentDistanceCm,
+                        onDevelopmentDistanceChange,
+                        !running,
+                        Modifier.fillMaxWidth(),
+                        "例如 29",
+                        "development_distance_cm",
+                    )
+                    form.developmentDistanceCm.toDoubleOrNull()?.let { distanceCm ->
+                        Text("将记录为 %.2f 米".format(distanceCm / 100.0), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)
                     }
-                    Text("必须现场测量相机镜头光心；误差上限 0.02 m，不能用估计值。", style = MaterialTheme.typography.bodySmall)
-                }
-            }
-            item {
-                SectionCard("3 · 独立参考") {
-                    Text(form.referenceDisplayName ?: "尚未选择卷尺/激光参考清单", style = MaterialTheme.typography.bodyMedium)
-                    OutlinedButton(onClick = onPickReference, enabled = !running, modifier = Modifier.fillMaxWidth()) { Text(if (form.referenceDisplayName == null) "选择参考清单" else "更换参考清单") }
-                    Text("App 会自动复制并计算 SHA-256；参考数据只供离线评价，不进入模型推理。", style = MaterialTheme.typography.bodySmall)
+                    Text("三星 AR 测距仅作开发参考；采集包自动标记 DEVELOPMENT_ONLY。", style = MaterialTheme.typography.bodySmall)
                 }
             }
             item {
                 val problems = form.validationProblems()
-                SectionCard(if (problems.isEmpty()) "✓ 已满足启动条件" else "启动前还需处理 ${problems.size} 项") {
-                    if (problems.isEmpty()) Text("固定支架后即可采集 ${form.phase.frameTarget} 帧。", color = MaterialTheme.colorScheme.primary)
+                SectionCard(if (problems.isEmpty()) "✓ 可以采集" else "还差 ${problems.size} 项") {
+                    if (problems.isEmpty()) Text("距离已记录，直接开始。", color = MaterialTheme.colorScheme.primary)
                     else problems.forEach { Text("• $it", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
                 }
             }
+            if (running) {
+                item {
+                    Card {
+                        Box(Modifier.fillMaxWidth().aspectRatio(4f / 3f), contentAlignment = Alignment.Center) {
+                            AndroidView(factory = { previewView }, modifier = Modifier.fillMaxSize())
+                        }
+                    }
+                }
+            }
             item {
-                if (runState is CaptureRunState.Complete || runState is CaptureRunState.Hold) {
-                    if (runState is CaptureRunState.Complete) {
-                        Button(onClick = onExport, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text("导出 ZIP 采集包") }
+                when (runState) {
+                    is CaptureRunState.Complete -> {
+                        Button(onClick = onExport, modifier = Modifier.fillMaxWidth().height(54.dp)) { Text("导出 ZIP 采集包") }
                         Spacer(Modifier.height(8.dp))
+                        OutlinedButton(onClick = onReset, modifier = Modifier.fillMaxWidth().height(50.dp)) { Text("采下一个目标") }
                     }
-                    OutlinedButton(onClick = onReset, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text("新建一次采集") }
-                } else {
-                    Button(onClick = onStart, enabled = form.canStart && !running, modifier = Modifier.fillMaxWidth().height(56.dp).testTag("start_capture")) {
-                        Text(if (running) "采集中，请保持支架不动" else "开始采集 ${form.phase.frameTarget} 帧")
-                    }
-                    if (running) {
-                        Spacer(Modifier.height(8.dp))
-                        OutlinedButton(onClick = onCancel, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("停止并记为 HOLD") }
+                    is CaptureRunState.Hold -> OutlinedButton(onClick = onReset, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text("重新开始") }
+                    else -> {
+                        Button(onClick = onStart, enabled = form.canStart && !running, modifier = Modifier.fillMaxWidth().height(58.dp).testTag("start_capture")) {
+                            Text(if (running) "正在采集 ${form.phase.frameTarget} 帧…" else "采集当前目标")
+                        }
+                        if (running) {
+                            Spacer(Modifier.height(8.dp))
+                            OutlinedButton(onClick = onCancel, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("停止并作废本组") }
+                        }
                     }
                 }
                 Spacer(Modifier.height(20.dp))
@@ -282,20 +298,42 @@ private fun KnownHeightCaptureScreen(
 }
 
 @Composable
+private fun MeasurementField(
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    enabled: Boolean,
+    modifier: Modifier,
+    placeholder: String,
+    tag: String,
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        enabled = enabled,
+        label = { Text(label) },
+        placeholder = { Text(placeholder) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        singleLine = true,
+        modifier = modifier.testTag(tag),
+    )
+}
+
+@Composable
 private fun RunStateCard(state: CaptureRunState, target: Int) {
     val (title, detail, progress) = when (state) {
-        CaptureRunState.Idle -> Triple("等待准备", "按 1 → 2 → 3 完成现场信息", null)
+        CaptureRunState.Idle -> Triple("准备采集", "填写当前快速测量距离，然后一键采集", null)
         is CaptureRunState.Preparing -> Triple("正在准备", state.message, null)
-        is CaptureRunState.Capturing -> Triple("正在采集 ${state.captured} / ${state.target}", "保持支架固定，不要遮挡镜头", state.captured.toFloat() / state.target)
-        is CaptureRunState.Complete -> Triple("采集完成", "已保存 ${state.captured} 帧\n${state.sessionDirectory}", 1f)
-        is CaptureRunState.Hold -> Triple("已停止 · HOLD", state.reason, null)
+        is CaptureRunState.Capturing -> Triple("正在采集 ${state.captured} / ${state.target}", "保持支架不动，不要遮挡镜头", state.captured.toFloat() / state.target)
+        is CaptureRunState.Complete -> Triple("采集完成", "${state.captured} 帧和测量记录均已保存", 1f)
+        is CaptureRunState.Hold -> Triple("本组已作废", state.reason, null)
     }
     Card(colors = CardDefaults.cardColors(containerColor = when (state) { is CaptureRunState.Hold -> MaterialTheme.colorScheme.errorContainer; is CaptureRunState.Complete -> MaterialTheme.colorScheme.primaryContainer; else -> MaterialTheme.colorScheme.surfaceVariant })) {
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(title, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
             Text(detail, style = MaterialTheme.typography.bodyMedium)
             if (progress != null) LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth(), gapSize = 0.dp)
-            if (state is CaptureRunState.Idle) Text("目标：$target 帧", style = MaterialTheme.typography.labelMedium)
+            if (state is CaptureRunState.Idle) Text("本组目标：$target 帧", style = MaterialTheme.typography.labelMedium)
         }
     }
 }
