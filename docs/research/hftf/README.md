@@ -310,6 +310,14 @@ height 与 scale parity 通过，仍不得宣称逐元素等价或晋级。详�
 居中 4:3 裁剪是新增且已冻结的相机合同，不是准确率或生产准入。详见
 [CameraX latest-only R0](DAV2_CAMERAX_LATEST_ONLY_R0_RESULT_2026-08-04.md)。
 
+冻结几何随后完成完全等价的实现优化：缓存像素射线，复用 SoA point/inlier/residual/
+finite-depth buffer，并用精确 order statistic 代替完整排序；stride、5000 点确定性 cap、
+240 次 RANSAC、seed、阈值、特征和拒答均未改变。真机 100 次下 reference P50
+`119.87 ms`、每帧分配约 `23.66 MB`、90 次 GC；optimized P50 `64.04 ms`、
+每帧约 `3.28 KB`、零 GC，逐字段最大误差 `6.94e-18`。稀疏采样、减少迭代和
+提前停止仍未运行。详见
+[geometry equivalent optimization R0](DAV2_GEOMETRY_EQUIVALENT_OPTIMIZATION_R0_RESULT_2026-08-04.md)。
+
 随后新增的 class-free clearance 侧车把 RGB、manifest 时钟、三带 scale anchor 和
 UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得到 5/5：80 个评价帧中
 78 个 paired-valid，MAE `0.0981 m`、一致率 `93.77%`、false-clear `4.95%`。绝对

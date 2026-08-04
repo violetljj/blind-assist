@@ -5586,3 +5586,12 @@
   `141.14 ms`；无 stale、异常或 thermal fail closed。终态仅为
   `CAMERAX_LATEST_ONLY_R0_SUPPORTED_DEVICE_CANARY_ONLY`；新增相机 crop/rotation/color
   合同已冻结，但尚无准确率、10 分钟持续、生产或安全 authority。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。完成
+  `GEOMETRY_EQUIVALENT_OPTIMIZATION_R0`。保持 stride=4、确定性 5000 点 cap、
+  `Random(1729)`、240 次 RANSAC、全部门限/特征/拒答不变，仅缓存像素射线、改用
+  reusable SoA/inlier/residual/finite-depth buffer 与精确 order statistic。冻结 clean
+  HTP depth 真机 100 次 reference/optimized P50 为 `119.87/64.04 ms`，每帧分配
+  `23,655,998.4/3,276.8 bytes`，GC `90/0`，逐字段最大误差 `6.94e-18`，JVM
+  synthetic noisy/invalid parity 同样通过。终态为
+  `GEOMETRY_EQUIVALENT_OPTIMIZATION_R0_SUPPORTED_DEVICE_ONLY`；稀疏采样、减少迭代、
+  提前停止均未执行，生产与安全 authority 不变。
