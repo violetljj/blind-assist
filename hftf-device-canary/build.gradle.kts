@@ -23,6 +23,12 @@ android {
         }
     }
 
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
@@ -47,4 +53,6 @@ dependencies {
     implementation(libs.androidx.test.ext.junit)
     implementation(libs.onnxruntime.android)
     implementation(libs.tflite)
+    implementation(libs.qnn.runtime)
+    implementation(libs.qnn.litert.delegate)
 }

@@ -17,6 +17,9 @@ val releaseSigningProperties = Properties().apply {
 }
 val hasReleaseSigningProperties = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
     .all { key -> releaseSigningProperties.getProperty(key).isNullOrBlank().not() }
+val qnnLegacyPackaging = providers.gradleProperty("qnnLegacyPackaging")
+    .map(String::toBoolean)
+    .orElse(false)
 gradle.taskGraph.whenReady {
     val releasePackageTaskRequested = gradle.startParameter.taskNames.any { requestedTask ->
         requestedTask.substringAfterLast(':') in setOf("assembleRelease", "bundleRelease")
@@ -109,7 +112,7 @@ android {
 
     packaging {
         jniLibs {
-            useLegacyPackaging = false
+            useLegacyPackaging = qnnLegacyPackaging.get()
         }
     }
 

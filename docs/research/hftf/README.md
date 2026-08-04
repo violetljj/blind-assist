@@ -266,6 +266,22 @@ threads、无观测到的 CPU fallback，相对同形状 ORT 平均差 `0.0145 m
 候选；纯 RGB、一次标定、alert、主线与 default App 均未获准入。详见
 [DA V2 Metric QAIRT + sparse scale R0](../../../scripts/research/hftf/DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.md)。
 
+## 2026-08-04 DA V2 Metric Android QNN：真实 HTP 可用，但当前全链路仍非实时
+
+在 `SM-S9280 / SM8650 / Android 16` 上，精确 `518x686` 的 SM8650 cached DLC
+以 `sustained_high_performance` 连续 600 秒完成 1,342 次推理。QAIRT overall 为
+`2.2353 FPS`，QNN graph execute 平均 `134.62 ms`，HTP accelerator execute 平均
+`74.05 ms`，四 HVX threads，49 个温控样本的 thermal status 均为 0。
+
+但 LiteRT QNN delegate 的 App 直连路径在 604 秒内为零帧，后台累计约 33 分钟仍只在
+编译多个子图且没有留下可用缓存。用 matched clean HTP 输出补测后，下游为 `12/12` 与
+`15/15` 有效；现有 Kotlin 前处理加冻结几何/学生头的 P50 仍为 `1.28–1.35 s`，P95
+约 `12.7 s`。与 QAIRT CLI 有效时间相加的 staged sequential estimate 只有
+`0.56–0.58 FPS`，不是单进程 CameraX 端到端结果。因此主链和当前同步 fallback 均拒绝，
+只保留预编译 HTP 作为周期性辅助输出或 disagreement detector 候选。
+
+[Android QNN full-pipeline R0](DAV2_METRIC_ANDROID_QNN_FULL_PIPELINE_R0_RESULT_2026-08-04.md)。
+
 随后新增的 class-free clearance 侧车把 RGB、manifest 时钟、三带 scale anchor 和
 UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得到 5/5：80 个评价帧中
 78 个 paired-valid，MAE `0.0981 m`、一致率 `93.77%`、false-clear `4.95%`。绝对

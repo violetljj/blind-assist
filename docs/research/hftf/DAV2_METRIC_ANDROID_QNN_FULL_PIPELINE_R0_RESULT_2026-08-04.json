@@ -1,0 +1,135 @@
+{
+  "schema": "blindassist_dav2_metric_android_qnn_full_pipeline_r0_result_v1",
+  "date": "2026-08-04",
+  "status": "COMPLETE_STAGED_DEVICE_DIAGNOSTIC",
+  "decision": "REJECT_LITERT_QNN_DIRECT_EXACT_GRAPH_FOR_APP_RUNTIME; REJECT_CURRENT_SEQUENTIAL_FULL_CHAIN_FOR_REAL_TIME_CAMERA_RUNTIME; RETAIN_PRECOMPILED_QAIRT_HTP_AS_PERIODIC_AUXILIARY_OR_DISAGREEMENT_CANDIDATE_ONLY",
+  "device": {
+    "manufacturer": "Samsung",
+    "model": "SM-S9280",
+    "soc": "SM8650",
+    "android": 16,
+    "adb_transport": "wireless_192.168.5.4:46453"
+  },
+  "model_identity": {
+    "name": "Depth Anything V2 Metric Hypersim ViT-S",
+    "input_shape_nchw": [1, 3, 518, 686],
+    "tflite_fp32_sha256": "0277FBC74C73D95433B43BEE9D61DD08F1E79B67A2F64A6DA871F3A23FBED8E3",
+    "qairt_online_dlc_sha256": "8D2439D1646A3EEF8F74F6C69762A064C9D123775928CA54E5A8441132CEFA3B",
+    "qairt_sm8650_cached_dlc_sha256": "2BB02F37FEF177FF4B02B8EE0C416EE9FF998BCEEF9786B92959E1F682EBAA24"
+  },
+  "litert_qnn_direct_route": {
+    "runtime": "LiteRT 1.4.2 plus QNN 2.47.0 HTP FP16 delegate",
+    "result": "REJECT_RUNTIME_COMPILE_PATH",
+    "bounded_host_wait_seconds": 604,
+    "inferences_completed_during_bounded_wait": 0,
+    "observed_background_compile_span": "approximately 16:27 through 16:59",
+    "qnn_subgraph_finalize_success_count": 9,
+    "largest_observed_prepare_ms": 143505,
+    "usable_compiled_cache_created": false,
+    "interpretation": "The logs prove genuine HTP graph preparation rather than CPU fallback, but cold preparation is not an acceptable App startup path and never produced an inference in the bounded run."
+  },
+  "precompiled_qairt_htp_sustained": {
+    "runtime": "QAIRT 2.47.0 qnn-net-run cached DLC",
+    "performance_profile": "sustained_high_performance",
+    "requested_duration_seconds": 600,
+    "completed_inferences": 1342,
+    "overall_netrun_ips_including_io_and_misc": 2.2353,
+    "effective_ms_per_inference_including_io_and_misc": 447.367242651993,
+    "qnn_graph_execute_us": {
+      "average": 134618,
+      "minimum": 73476,
+      "maximum": 603500
+    },
+    "htp_accelerator_execute_us": {
+      "average": 74051,
+      "minimum": 72509,
+      "maximum": 73225
+    },
+    "hvx_threads": 4,
+    "outputs_retained": 1,
+    "warning_retained": "Compatible HTP_V75_SM8650_4MB record was found, while qnn-net-run also emitted a VTCM size and DSP architecture mismatch warning."
+  },
+  "matched_clean_semantic_check": {
+    "normalized_input_sha256": "D4E68D576AE728D95D1DD9EC68732D8B7E0D364F95644A6D7D9CEEEEBBCE9AE5",
+    "qairt_depth_output_sha256": "5A3AC1A71E253D691180FCF020785F571AF852AE1CD08673413C660C040128F4",
+    "lockscreen_awake_valid_pipeline_frames": "12/12",
+    "lockscreen_dozing_valid_pipeline_frames": "15/15",
+    "interpretation": "The clean HTP depth output enters the frozen ground geometry and scale student successfully. The earlier gradient performance canary produced 0 valid frames by construction and is not treated as an algorithm failure."
+  },
+  "android_cpu_boundary_stages": {
+    "contract": "fixed clean RGB; existing Kotlin cubic preprocessing; copied clean HTP depth output; resize; frozen ground RANSAC/features; frozen scale student",
+    "lockscreen_awake": {
+      "duration_actual_ms": 60137,
+      "frames": 12,
+      "valid_pipeline_frames": 12,
+      "stage_p50_ms": {
+        "preprocess": 1193.3945565,
+        "npu_output_copy": 0.51724,
+        "postprocess": 2.8139585,
+        "ransac_features": 127.406563,
+        "student": 0.019948,
+        "cpu_boundary_total": 1349.486379
+      },
+      "cpu_boundary_total_p95_ms": 12710.0669026,
+      "thermal_status_max": 0
+    },
+    "lockscreen_dozing": {
+      "duration_actual_ms": 63019,
+      "frames": 15,
+      "valid_pipeline_frames": 15,
+      "stage_p50_ms": {
+        "preprocess": 1142.36302,
+        "npu_output_copy": 0.600157,
+        "postprocess": 2.895781,
+        "ransac_features": 124.614219,
+        "student": 0.020364,
+        "cpu_boundary_total": 1275.290885
+      },
+      "cpu_boundary_total_p95_ms": 12668.7511467,
+      "thermal_status_max": 0
+    },
+    "display_interpretation": "The matched repeat did not establish a deterministic awake-versus-dozing median difference. Both conditions exhibited severe approximately 12.7 second P95 tails, so locked-screen execution is not a guaranteed service condition even though wireless ADB and HTP remained alive."
+  },
+  "staged_sequential_full_chain_estimate": {
+    "definition": "Android CPU-boundary P50 plus QAIRT overall effective time including CLI tensor IO and miscellaneous time",
+    "lockscreen_awake_ms": 1796.853621651993,
+    "lockscreen_awake_fps": 0.556528360435181,
+    "lockscreen_dozing_ms": 1722.658127651993,
+    "lockscreen_dozing_fps": 0.580498233484675,
+    "not_measured_as": [
+      "single-process App end-to-end latency",
+      "CameraX capture-to-result latency",
+      "pipelined asynchronous throughput"
+    ]
+  },
+  "thermal_and_battery": {
+    "qairt_sampler_count": 49,
+    "sampler_span_seconds": 729,
+    "maximum_thermal_status": 0,
+    "battery_level_percent_first_last": [95, 93],
+    "battery_temperature_c_min_max": [32.2, 33.9],
+    "spot_checked_current_hal_temperature_c": {
+      "AP": 38.1,
+      "BAT": 32.9,
+      "SKIN": 34.5
+    }
+  },
+  "evidence": {
+    "artifact_root": "artifacts.local/evidence/hftf/dav2-metric-android-qnn-fullchain-r0",
+    "qnn_profiling_data_sustained_sha256": "91DBD1CC69871E748571BE6D5C69DA300FDBB54506E707D808D12720AAA7AF39",
+    "qnn_profile_csv_sha256": "F48DFE15751F61037978983A5094048380934377084E5D30F5D3D7A4C9C6A863",
+    "execution_metadata_sha256": "0FC7507D3DC4C54FB75957972191EE1F71BFC000FB6C6438CCF01CBDE1700E11",
+    "thermal_log_sha256": "4331CADED27CB6D288C6AB4A778E9923FE2C31A032CC489126DB4CCE285EBD3B",
+    "litert_delegate_compile_log_sha256": "B7ECCAEABE9FCC474E17ED08AAA469371F5EB5386D42B227094F5CE5644BA296",
+    "cpu_boundary_awake_sha256": "94FE74CEAFF11324CA66B0E439AB595EC771C5E6D484C51BD6B402677C27870E",
+    "cpu_boundary_dozing_sha256": "ABD3A75DADCC09796EABE4FB8FFA4B07F8B25A4BEC7FAC414F4E3BD45C4ADE64"
+  },
+  "product_routing": {
+    "primary_per_frame_depth": "REJECT",
+    "synchronous_fallback": "REJECT_CURRENT_IMPLEMENTATION",
+    "periodic_auxiliary_output": "RETAIN_CANDIDATE",
+    "disagreement_detector": "RETAIN_CANDIDATE",
+    "scale_free_threshold_or_window_changes_authorized": false
+  },
+  "claim_ceiling": "DEVICE_DEPLOYMENT_AND_PERFORMANCE_DIAGNOSTIC_ONLY; NO_CAMERAX, ENERGY, ACCURACY, SAFETY, SCALE_FREE_ROUTE, OR PRODUCTION_AUTHORITY"
+}
