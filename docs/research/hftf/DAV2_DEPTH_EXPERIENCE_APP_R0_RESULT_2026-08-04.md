@@ -54,3 +54,12 @@ This result establishes an installable visual demo on the tested device only. It
 does not establish cross-device support, metric-depth accuracy in uncontrolled
 scenes, accessibility readiness, production integration, release signing, or any
 safety authority. The default BlindAssist App and its decision path are unchanged.
+
+## R0.1 smooth-display update
+
+The experience app `0.2-r0` retains the stable nominal `2 Hz` real QNN depth rate.
+Each newly completed real depth bitmap is blended from the preceding real bitmap
+for `110 ms` on the Android UI timeline. The transition only affects display
+pixels: metric values, QNN tensors, thermal decisions, and any downstream authority
+remain tied to completed real inference outputs. No synthetic depth value is
+exposed as a measurement.

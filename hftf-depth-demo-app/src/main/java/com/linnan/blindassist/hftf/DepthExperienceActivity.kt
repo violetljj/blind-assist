@@ -1,6 +1,9 @@
 package com.linnan.blindassist.hftf
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
@@ -16,6 +19,7 @@ import android.util.Size
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -496,6 +500,9 @@ private class DepthHeatmapView(context: Context) : View(context) {
         strokeWidth = resources.displayMetrics.density * 2f
     }
     private var bitmap: Bitmap? = null
+    private var previousBitmap: Bitmap? = null
+    private var blendProgress = 1f
+    private var blendAnimator: ValueAnimator? = null
     var displayMode: DepthDisplayMode = DepthDisplayMode.SPLIT
         set(value) {
             field = value
@@ -508,27 +515,54 @@ private class DepthHeatmapView(context: Context) : View(context) {
     }
 
     fun show(visual: DepthVisual) {
+        if (bitmap == null) {
+            bitmap = visual.heatmap
+            blendProgress = 1f
+            invalidate()
+            return
+        }
+        blendAnimator?.cancel()
+        previousBitmap = bitmap
         bitmap = visual.heatmap
-        invalidate()
+        blendProgress = 0f
+        blendAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = BLEND_DURATION_MS
+            interpolator = LinearInterpolator()
+            addUpdateListener {
+                blendProgress = it.animatedValue as Float
+                invalidate()
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    previousBitmap = null
+                    blendProgress = 1f
+                    invalidate()
+                }
+            })
+            start()
+        }
     }
 
     fun clearDepth() {
+        blendAnimator?.cancel()
+        blendAnimator = null
+        previousBitmap = null
         bitmap = null
+        blendProgress = 1f
         invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        bitmap?.let {
+        bitmap?.let { current ->
+            val old = previousBitmap
             when (displayMode) {
                 DepthDisplayMode.SPLIT -> {
-                    bitmapPaint.alpha = 255
-                    canvas.drawBitmap(it, null, Rect(width / 2, 0, width, height), bitmapPaint)
+                    drawBlended(canvas, old, current, Rect(width / 2, 0, width, height), 255)
                     canvas.drawLine(width / 2f, 0f, width / 2f, height.toFloat(), reticlePaint)
                 }
                 DepthDisplayMode.OVERLAY -> {
-                    bitmapPaint.alpha = 164
-                    canvas.drawBitmap(it, null, Rect(0, 0, width, height), bitmapPaint)
+                    drawBlended(canvas, old, current, Rect(0, 0, width, height), 164)
                 }
                 DepthDisplayMode.RGB -> Unit
             }
@@ -539,6 +573,34 @@ private class DepthHeatmapView(context: Context) : View(context) {
         canvas.drawCircle(cx, cy, radius, reticlePaint)
         canvas.drawLine(cx - radius * 1.5f, cy, cx + radius * 1.5f, cy, reticlePaint)
         canvas.drawLine(cx, cy - radius * 1.5f, cx, cy + radius * 1.5f, reticlePaint)
+    }
+
+    override fun onDetachedFromWindow() {
+        blendAnimator?.cancel()
+        blendAnimator = null
+        super.onDetachedFromWindow()
+    }
+
+    private fun drawBlended(
+        canvas: Canvas,
+        old: Bitmap?,
+        current: Bitmap,
+        destination: Rect,
+        baseAlpha: Int,
+    ) {
+        if (old != null && blendProgress < 1f) {
+            bitmapPaint.alpha = (baseAlpha * (1f - blendProgress)).toInt().coerceIn(0, 255)
+            canvas.drawBitmap(old, null, destination, bitmapPaint)
+            bitmapPaint.alpha = (baseAlpha * blendProgress).toInt().coerceIn(0, 255)
+            canvas.drawBitmap(current, null, destination, bitmapPaint)
+        } else {
+            bitmapPaint.alpha = baseAlpha
+            canvas.drawBitmap(current, null, destination, bitmapPaint)
+        }
+    }
+
+    private companion object {
+        const val BLEND_DURATION_MS = 110L
     }
 }
 

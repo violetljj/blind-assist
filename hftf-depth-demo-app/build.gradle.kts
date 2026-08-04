@@ -53,8 +53,8 @@ android {
         applicationId = "com.linnan.blindassist.depthdemo"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "0.1-r0"
+        versionCode = 2
+        versionName = "0.2-r0"
         ndk { abiFilters += "arm64-v8a" }
         externalNativeBuild {
             cmake {

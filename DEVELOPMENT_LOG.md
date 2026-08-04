@@ -5619,3 +5619,11 @@
   Activity 保持 resumed 且无 fatal exception。终态仅为
   `DEPTH_EXPERIENCE_APP_R0_AVAILABLE_DEVICE_ONLY`；跨设备、场景准确率、无障碍、发布
   签名、生产与安全 authority 均未建立。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。为
+  `:hftf-depth-demo-app` 增加 R0.1 短时平滑显示：保留 nominal 2 Hz 真实 QNN 深度，
+  每张已完成真实深度图只在 View 显示层执行 `110 ms` 线性交叉渐变。曾诊断性尝试
+  8 Hz target，但低照 CameraX source 只有约 3–4 FPS，且用户决定暂不保留高频模式；
+  最终版本不强制 Camera2 FPS、不提高推理频率。渐变像素不回写 metric 数值、QNN
+  tensor、thermal gate 或任何下游判断；状态面板只报告真实完成帧。CameraX 仍为
+  `KEEP_ONLY_LATEST`、单任务 in-flight、`ImageProxy` finally-close，severe thermal
+  仍 fail closed。该改动只改善设备体验观感，不新增准确率、生产或安全 authority。
