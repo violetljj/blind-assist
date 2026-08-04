@@ -15,6 +15,7 @@ add_library(
     dav2_preprocess_native
     SHARED
     dav2_preprocess_native.cpp
+    dav2_yuv420_rgb.cpp
     dav2_qnn_cached_context.cpp
 )
 target_compile_features(dav2_preprocess_native PRIVATE cxx_std_17)

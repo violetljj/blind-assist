@@ -302,6 +302,14 @@ mean/P95/max 漂移为 `1.99/7.81/46.88 mm`，只通过 mean 门，虽然冻结�
 height 与 scale parity 通过，仍不得宣称逐元素等价或晋级。详见
 [QNN native cached context R0](DAV2_QNN_NATIVE_CACHED_CONTEXT_R0_RESULT_2026-08-04.md)。
 
+同日把 cached context 接入真实 CameraX YUV latest-only canary。20 秒真机短跑中，
+291/291 个 `ImageProxy` 关闭，三个循环槽全部归还，最大深度并发为 1；压力臂发生
+6 次 pending 替换，随后 2 Hz 臂提交 29 次。YUV copy P50 为 `5.47 ms`，
+`YUV->RGB->FP16->QNN` P50/P95 为 `75.93/84.44 ms`，结果年龄 P95 为
+`141.14 ms`，无 stale 或 thermal fail-closed。这个结果只支持设备 canary，旋转后
+居中 4:3 裁剪是新增且已冻结的相机合同，不是准确率或生产准入。详见
+[CameraX latest-only R0](DAV2_CAMERAX_LATEST_ONLY_R0_RESULT_2026-08-04.md)。
+
 随后新增的 class-free clearance 侧车把 RGB、manifest 时钟、三带 scale anchor 和
 UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得到 5/5：80 个评价帧中
 78 个 paired-valid，MAE `0.0981 m`、一致率 `93.77%`、false-clear `4.95%`。绝对

@@ -1,0 +1,76 @@
+param(
+    [string]$AdbPath = "E:\codex-tools\projects\blindassist\toolchain\android-sdk\platform-tools\adb.exe",
+    [string]$DeviceSerial = "R5CX10M8Y8X",
+    [string]$QairtRoot = "E:\codex-tools\qairt\2.47.0.260601",
+    [string]$CachedDlcPath = "/data/local/tmp/ba_qairt_htp_r0/dav2-metric/518x686/output/model-sm8650-cached.dlc",
+    [int]$DurationSeconds = 20,
+    [int]$StressSeconds = 5,
+    [int]$DepthPeriodMs = 500,
+    [int]$TtlMs = 750,
+    [string]$OutputRoot,
+    [switch]$SkipBuild
+)
+$ErrorActionPreference = "Stop"
+if ($DurationSeconds -lt 12) { throw "DurationSeconds must be at least 12" }
+if ($StressSeconds -lt 3 -or $StressSeconds -ge $DurationSeconds) { throw "StressSeconds is invalid" }
+
+function Invoke-Native([string]$FilePath, [string[]]$Arguments, [string]$LogPath, [switch]$AllowFailure) {
+    $oldPreference = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+    try { $output = & $FilePath @Arguments 2>&1; $code = $LASTEXITCODE }
+    finally { $ErrorActionPreference = $oldPreference }
+    if ($LogPath) { $output | Set-Content -LiteralPath $LogPath -Encoding utf8 }
+    if ($code -ne 0 -and -not $AllowFailure) { throw "$FilePath failed with exit code $code" }
+    [pscustomobject]@{ Lines = @($output | ForEach-Object { "$_" }); ExitCode = $code }
+}
+function Parse-Report([string[]]$Lines) {
+    $match = [regex]::Match(($Lines -join "`n"), "camerax_latest_only_r0_report=(\{.*\})")
+    if (-not $match.Success) { throw "CameraX latest-only report is missing" }
+    $match.Groups[1].Value | ConvertFrom-Json
+}
+
+$repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..\..")).Path
+if (-not ((Invoke-Native $AdbPath @("devices") $null).Lines -match "^$([regex]::Escape($DeviceSerial))\s+device$")) {
+    throw "USB device $DeviceSerial is not online"
+}
+$timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+$artifactRoot = if ($OutputRoot) { [IO.Path]::GetFullPath($OutputRoot) } else {
+    Join-Path $repoRoot "artifacts.local\evidence\hftf\camerax-latest-only-r0-$timestamp"
+}
+if (Test-Path -LiteralPath $artifactRoot) { throw "output already exists: $artifactRoot" }
+New-Item -ItemType Directory -Path $artifactRoot | Out-Null
+$appApk = Join-Path $repoRoot "app\build\outputs\apk\debug\app-debug.apk"
+$testApk = Join-Path $repoRoot "hftf-device-canary\build\outputs\apk\debug\hftf-device-canary-debug.apk"
+Push-Location $repoRoot
+try {
+    if (-not $SkipBuild) {
+        $env:JAVA_HOME = "E:\codex-tools\projects\blindassist\toolchain\.jdk\jdk17.0.19_10"
+        $env:GRADLE_USER_HOME = "E:\codex-tools\projects\blindassist\state\gradle"
+        $env:ANDROID_HOME = "E:\codex-tools\projects\blindassist\toolchain\android-sdk"
+        $env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
+        (Invoke-Native ".\gradlew.bat" @(
+            ":app:assembleDebug", ":hftf-device-canary:assembleDebug", "-PqairtRoot=$QairtRoot",
+            "--no-daemon", "--console=plain", "--max-workers=2"
+        ) (Join-Path $artifactRoot "gradle-build.txt")).Lines | Out-Null
+    }
+    (Invoke-Native $AdbPath @("-s", $DeviceSerial, "shell", "input", "keyevent", "KEYCODE_WAKEUP") $null).Lines | Out-Null
+    (Invoke-Native $AdbPath @("-s", $DeviceSerial, "shell", "wm", "dismiss-keyguard") $null -AllowFailure).Lines | Out-Null
+    (Invoke-Native $AdbPath @("-s", $DeviceSerial, "install", "-r", $appApk) (Join-Path $artifactRoot "install-app.txt")).Lines | Out-Null
+    (Invoke-Native $AdbPath @("-s", $DeviceSerial, "install", "-r", $testApk) (Join-Path $artifactRoot "install-test.txt")).Lines | Out-Null
+    (Invoke-Native $AdbPath @("-s", $DeviceSerial, "shell", "chmod", "644", $CachedDlcPath) $null).Lines | Out-Null
+    $instrument = Invoke-Native $AdbPath @(
+        "-s", $DeviceSerial, "shell", "am", "instrument", "-w", "-r",
+        "-e", "class", "com.linnan.blindassist.hftf.CameraXLatestOnlyDepthDeviceTest#realYuvLatestOnlyCachedQnn",
+        "-e", "cachedDlcPath", $CachedDlcPath, "-e", "durationSeconds", "$DurationSeconds",
+        "-e", "stressSeconds", "$StressSeconds", "-e", "depthPeriodMs", "$DepthPeriodMs",
+        "-e", "ttlMs", "$TtlMs",
+        "com.linnan.blindassist.hftf.devicecanary/androidx.test.runner.AndroidJUnitRunner"
+    ) (Join-Path $artifactRoot "instrument.txt") -AllowFailure
+    $report = Parse-Report $instrument.Lines
+    [ordered]@{
+        schema = "blindassist_camerax_latest_only_r0_bundle"; generated_at = (Get-Date).ToString("o")
+        device_serial = $DeviceSerial; transport = "usb"; cached_dlc_path = $CachedDlcPath
+        instrumentation_exit_code = $instrument.ExitCode; report = $report
+    } | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $artifactRoot "result.json") -Encoding utf8
+    "artifact_root=$artifactRoot"; "gate_pass=$($report.gate_pass)"
+    "full_pipeline_p50_ms=$($report.yuv_to_fp16_plus_qnn_ms.p50)"
+} finally { Pop-Location }

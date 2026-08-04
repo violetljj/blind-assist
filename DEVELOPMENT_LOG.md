@@ -5576,3 +5576,13 @@
   `QNN_NATIVE_CACHED_CONTEXT_R0_SUPPORTED_DEVICE_ONLY` 与
   `FP16_FUSED_PREPROCESS_STRICT_DEPTH_PARITY_NOT_SUPPORTED`；CameraX、持续能耗、生产和
   安全 authority 仍未建立。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。完成
+  `CAMERAX_LATEST_ONLY_R0` USB 真机短跑。隔离 canary 固定真实 `YUV_420_888`
+  640x480、CameraX `KEEP_ONLY_LATEST`、rotation 后居中 4:3 crop、三槽循环复用、
+  单运行任务加可替换 pending、750 ms TTL 与 severe-thermal fail closed。20 秒内
+  291/291 个 `ImageProxy` 关闭，三个槽全部归还；5 秒压力段提交 64 次并发生 6 次
+  pending 替换，随后 2 Hz 段提交 29 次，最大深度并发严格为 1。YUV copy P50/P95
+  `5.47/18.64 ms`，YUV->FP16->QNN P50/P95 `75.93/84.44 ms`，结果年龄 P95
+  `141.14 ms`；无 stale、异常或 thermal fail closed。终态仅为
+  `CAMERAX_LATEST_ONLY_R0_SUPPORTED_DEVICE_CANARY_ONLY`；新增相机 crop/rotation/color
+  合同已冻结，但尚无准确率、10 分钟持续、生产或安全 authority。
