@@ -1,8 +1,28 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.gradle.api.tasks.Sync
+
+val qairtRoot = providers.gradleProperty("qairtRoot")
+    .orElse(providers.environmentVariable("QAIRT_ROOT"))
+    .orElse("E:/codex-tools/qairt/2.47.0.260601")
+val localQairtRuntimeAvailable = file(
+    "${qairtRoot.get()}/lib/aarch64-android/libQnnHtp.so",
+).isFile
 
 plugins {
     alias(libs.plugins.android.test)
     alias(libs.plugins.kotlin.android)
+}
+
+val prepareQairtRuntimeJni by tasks.registering(Sync::class) {
+    val generatedRoot = layout.buildDirectory.dir("generated/qairtRuntimeJni")
+    into(generatedRoot.map { it.dir("arm64-v8a") })
+    from(qairtRoot.map { file("$it/lib/aarch64-android") }) {
+        include("libQnnHtp.so", "libQnnHtpV75Stub.so", "libQnnSystem.so")
+    }
+    from(qairtRoot.map { file("$it/lib/hexagon-v75/unsigned") }) {
+        include("libQnnHtpV75Skel.so")
+    }
+    onlyIf { localQairtRuntimeAvailable }
 }
 
 android {
@@ -22,6 +42,7 @@ android {
             cmake {
                 cppFlags += listOf("-std=c++17", "-O3", "-ffast-math")
                 arguments += "-DANDROID_STL=c++_shared"
+                arguments += "-DQAIRT_ROOT=${qairtRoot.get()}"
             }
         }
     }
@@ -39,6 +60,10 @@ android {
         }
     }
 
+    sourceSets.getByName("main").jniLibs.srcDir(
+        layout.buildDirectory.dir("generated/qairtRuntimeJni"),
+    )
+
     buildFeatures {
         prefab = true
     }
@@ -54,6 +79,10 @@ android {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
+}
+
+tasks.named("preBuild").configure {
+    dependsOn(prepareQairtRuntimeJni)
 }
 
 kotlin {
@@ -74,7 +103,13 @@ dependencies {
     implementation(libs.androidx.test.ext.junit)
     implementation(libs.onnxruntime.android)
     implementation(libs.tflite)
-    implementation(libs.qnn.runtime)
-    implementation(libs.qnn.litert.delegate)
+    if (localQairtRuntimeAvailable) {
+        implementation(libs.qnn.litert.delegate) {
+            exclude(group = "com.qualcomm.qti", module = "qnn-runtime")
+        }
+    } else {
+        implementation(libs.qnn.runtime)
+        implementation(libs.qnn.litert.delegate)
+    }
     implementation("org.opencv:opencv:4.10.0")
 }

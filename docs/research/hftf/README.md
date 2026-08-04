@@ -292,6 +292,16 @@ OpenCV+NEON FP32 臂为 `1.29/5.40 ms`，P95 `1.78/8.12 ms`。Native FP32 相对
 下一步直接做普通复制版 App-native cached QNN context。详见
 [Android preprocess optimization R0](DAV2_ANDROID_PREPROCESS_OPT_R0_RESULT_2026-08-04.md)。
 
+同日的普通 client-buffer App-native cached context 已补齐 SampleApp 的
+`backendCreate -> deviceCreate -> contextCreateFromBinary -> graphRetrieve` 生命周期。
+在相同 QAIRT runtime 与相同 FP16 tensor 下，App/CLI 输出逐元素完全一致；graph
+execute P50/P95 为 `74.45/74.69 ms`，Native FP16 前处理加 execute 为
+`79.64/94.29 ms`，温控状态保持 0。遗漏 device handle 的诊断臂会使 execute 回退到
+约 `274 ms`，因此它是必要合同。另一方面，fused Native RGB->FP16 的深度输出
+mean/P95/max 漂移为 `1.99/7.81/46.88 mm`，只通过 mean 门，虽然冻结下游 status、
+height 与 scale parity 通过，仍不得宣称逐元素等价或晋级。详见
+[QNN native cached context R0](DAV2_QNN_NATIVE_CACHED_CONTEXT_R0_RESULT_2026-08-04.md)。
+
 随后新增的 class-free clearance 侧车把 RGB、manifest 时钟、三带 scale anchor 和
 UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得到 5/5：80 个评价帧中
 78 个 paired-valid，MAE `0.0981 m`、一致率 `93.77%`、false-clear `4.95%`。绝对

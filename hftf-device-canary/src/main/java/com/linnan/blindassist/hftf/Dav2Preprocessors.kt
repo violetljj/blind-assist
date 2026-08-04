@@ -224,46 +224,6 @@ internal class Dav2NativePreprocessor : AutoCloseable {
     }
 }
 
-internal fun floatToHalfBits(value: Float): Short {
-    val bits = value.toRawBits()
-    val sign = (bits ushr 16) and 0x8000
-    var exponent = ((bits ushr 23) and 0xff) - 127 + 15
-    var mantissa = bits and 0x7fffff
-    if (exponent <= 0) {
-        if (exponent < -10) return sign.toShort()
-        mantissa = (mantissa or 0x800000) shr (1 - exponent)
-        return (sign or ((mantissa + 0x1000) shr 13)).toShort()
-    }
-    if (exponent >= 31) return (sign or 0x7c00 or if (mantissa != 0) 0x0200 else 0).toShort()
-    mantissa += 0x1000
-    if ((mantissa and 0x800000) != 0) {
-        mantissa = 0
-        exponent++
-        if (exponent >= 31) return (sign or 0x7c00).toShort()
-    }
-    return (sign or (exponent shl 10) or (mantissa shr 13)).toShort()
-}
+internal fun floatToHalfBits(value: Float): Short = android.util.Half.toHalf(value)
 
-internal fun halfBitsToFloat(value: Short): Float {
-    val bits = value.toInt() and 0xffff
-    val sign = (bits and 0x8000) shl 16
-    var exponent = (bits ushr 10) and 0x1f
-    var mantissa = bits and 0x03ff
-    val floatBits = when {
-        exponent == 0 -> {
-            if (mantissa == 0) {
-                sign
-            } else {
-                while ((mantissa and 0x0400) == 0) {
-                    mantissa = mantissa shl 1
-                    exponent--
-                }
-                mantissa = mantissa and 0x03ff
-                sign or ((exponent + 127 - 15 + 1) shl 23) or (mantissa shl 13)
-            }
-        }
-        exponent == 0x1f -> sign or 0x7f800000.toInt() or (mantissa shl 13)
-        else -> sign or ((exponent + 127 - 15) shl 23) or (mantissa shl 13)
-    }
-    return Float.fromBits(floatBits)
-}
+internal fun halfBitsToFloat(value: Short): Float = android.util.Half.toFloat(value)

@@ -5563,3 +5563,16 @@
   mount identity、至少 75% 全宽 lower-ROI support、独立 blur quality gate，否则
   `UNKNOWN`；pitch 数值范围仍待真实手机确认。20 个 focused tests、语法、JSON/
   ledger 数量与 protocol hash 复核通过；默认 App、生产与安全权限不变。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。完成
+  `QNN_NATIVE_CACHED_CONTEXT_R0` USB 真机闭环。基于 QAIRT SampleApp 补齐
+  backend/device/cached-context/graph 生命周期、复用 FP16 direct input/output buffer，
+  并从 `QAIRT_ROOT` 生成 APK JNI runtime，不提交 proprietary binary。相同 runtime 与
+  相同 FP16 tensor 下 App/CLI 深度逐元素误差为 0；10 次 graph execute
+  P50/P95 `74.45/74.69 ms`，Native preprocess+execute `79.64/94.29 ms`，thermal
+  `0 -> 0`。遗漏 `deviceCreate` 的诊断臂约 `274 ms` 且 RPC polling 不可用，已修正。
+  Kotlin half conversion 改为 IEEE ties-to-even 后官方 FP16 parity 恢复；但 fused Native
+  FP16 深度输出 mean/P95/max 为 `1.99/7.81/46.88 mm`，严格 `2/5/20 mm` 门失败，
+  即使下游 status/height/scale 门通过也不救活。终态分别为
+  `QNN_NATIVE_CACHED_CONTEXT_R0_SUPPORTED_DEVICE_ONLY` 与
+  `FP16_FUSED_PREPROCESS_STRICT_DEPTH_PARITY_NOT_SUPPORTED`；CameraX、持续能耗、生产和
+  安全 authority 仍未建立。
