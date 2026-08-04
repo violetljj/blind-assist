@@ -68,12 +68,27 @@ try {
         "com.linnan.blindassist.hftf.devicecanary/androidx.test.runner.AndroidJUnitRunner"
     ) (Join-Path $artifactRoot "instrument.txt") -AllowFailure
     $report = Parse-Report $instrument.Lines
+    $gitHead = (& git -C $repoRoot rev-parse HEAD).Trim()
+    $dlcHashLine = (Invoke-Native $AdbPath @(
+        "-s", $DeviceSerial, "shell", "sha256sum", $CachedDlcPath
+    ) (Join-Path $artifactRoot "cached-dlc-sha256.txt")).Lines | Select-Object -First 1
+    if ($dlcHashLine -notmatch '^([0-9a-fA-F]{64})\s+') { throw "cached DLC SHA-256 is unavailable" }
+    $cachedDlcSha256 = $Matches[1].ToUpperInvariant()
     [ordered]@{
         schema = "blindassist_camerax_latest_only_r0_bundle"; generated_at = (Get-Date).ToString("o")
         device_serial = $DeviceSerial; transport = "usb"; cached_dlc_path = $CachedDlcPath
+        device_model = ((Invoke-Native $AdbPath @("-s", $DeviceSerial, "shell", "getprop", "ro.product.model") $null).Lines -join "").Trim()
+        device_soc = ((Invoke-Native $AdbPath @("-s", $DeviceSerial, "shell", "getprop", "ro.soc.model") $null).Lines -join "").Trim()
+        device_android_release = ((Invoke-Native $AdbPath @("-s", $DeviceSerial, "shell", "getprop", "ro.build.version.release") $null).Lines -join "").Trim()
+        cached_dlc_sha256 = $cachedDlcSha256
+        git_head = $gitHead
+        app_apk_sha256 = (Get-FileHash -LiteralPath $appApk -Algorithm SHA256).Hash
+        test_apk_sha256 = (Get-FileHash -LiteralPath $testApk -Algorithm SHA256).Hash
         instrumentation_exit_code = $instrument.ExitCode; report = $report
     } | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $artifactRoot "result.json") -Encoding utf8
     "artifact_root=$artifactRoot"; "gate_pass=$($report.gate_pass)"
     $p50 = if ($report.include_geometry) { $report.full_depth_geometry_ms.p50 } else { $report.yuv_to_fp16_plus_qnn_ms.p50 }
     "full_pipeline_p50_ms=$p50"
+    if ($instrument.ExitCode -ne 0) { throw "instrumentation failed with exit code $($instrument.ExitCode)" }
+    if (-not $report.gate_pass) { throw "CameraX latest-only device gate failed" }
 } finally { Pop-Location }

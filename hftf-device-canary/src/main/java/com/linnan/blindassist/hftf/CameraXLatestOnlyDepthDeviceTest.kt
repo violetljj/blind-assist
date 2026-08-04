@@ -120,7 +120,7 @@ class CameraXLatestOnlyDepthDeviceTest {
                     }
                     val fullStart = SystemClock.elapsedRealtimeNanos()
                     val rgb = converter.convert(frame)
-                    val output = runtime.execute(preprocessor.preprocessFp16(rgb))
+                    val output = runtime.execute(preprocessor.preprocessFp16CanonicalStrict(rgb))
                     val qnnElapsed = elapsedMs(fullStart)
                     executeLatencies += qnnElapsed
                     var geometryStatus = "NOT_REQUESTED"
@@ -253,6 +253,10 @@ class CameraXLatestOnlyDepthDeviceTest {
                 .put("crop", "center 4:3 after rotation")
                 .put("camera_resize", "OpenCV INTER_LINEAR to 640x480 RGB")
                 .put("tensor", "frozen OpenCV cubic normalize NCHW FP16 1x3x518x686")
+                .put(
+                    "preprocess_route",
+                    "canonical_native_official_fp32_then_integer_rnte_fp16_v1",
+                )
                 .put("backpressure", "CameraX KEEP_ONLY_LATEST + one running/one replaceable pending")
                 .put("depth_period_ms", depthPeriodMs)
                 .put("result_ttl_ms", ttlMs))
