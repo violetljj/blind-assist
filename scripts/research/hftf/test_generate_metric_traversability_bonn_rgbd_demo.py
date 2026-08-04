@@ -8,6 +8,7 @@ import numpy as np
 from generate_metric_traversability_bonn_rgbd_demo import _load_sequence
 from generate_metric_traversability_bonn_rgbd_demo import (
     _write_fixed_metric_depth_preview,
+    observe_center_image_near_surface,
 )
 
 
@@ -51,6 +52,16 @@ class GenerateMetricTraversabilityBonnRgbdDemoTest(unittest.TestCase):
             preview = cv2.imread(str(output), cv2.IMREAD_COLOR)
             self.assertEqual((1, 4, 3), preview.shape)
             self.assertTrue(np.array_equal((74, 78, 84), preview[0, 3]))
+
+    def test_observes_near_surface_without_a_ground_plane(self) -> None:
+        depth_m = np.full((120, 160), 3.0, dtype=np.float32)
+        depth_m[40:80, 65:95] = 1.1
+
+        observation = observe_center_image_near_surface(depth_m)
+
+        self.assertEqual("OBSERVED_NEAR_SURFACE", observation["status"])
+        self.assertAlmostEqual(1.1, observation["robust_nearest_surface_m"], places=4)
+        self.assertIn("no object, ground", observation["claim_ceiling"])
 
 
 if __name__ == "__main__":

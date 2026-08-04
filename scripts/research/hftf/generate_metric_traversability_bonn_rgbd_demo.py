@@ -36,6 +36,7 @@ DEPTH_UNITS_PER_METER = 5000.0
 MAX_RGB_DEPTH_DELTA_S = 0.02
 SOURCE_ROLE = "SOURCE_AUTHORITATIVE_REGISTERED_RGBD_DEPTH_TEACHER_DISPLAY_ONLY"
 SHOWCASE_DEPTH_RANGE_M = (0.5, 4.0)
+CENTER_IMAGE_NEAR_THRESHOLD_M = 1.5
 
 
 def _load_manifest(path: Path, maximum_frames: int | None) -> list[dict[str, Any]]:
@@ -123,6 +124,56 @@ def _write_fixed_metric_depth_preview(
     visualization_assets["metric_depth_display_scale"] = (
         "FIXED_LINEAR_NEAR_HOT_FAR_COOL_DISPLAY_ONLY"
     )
+
+
+def observe_center_image_near_surface(depth_m: np.ndarray) -> dict[str, Any]:
+    """Summarize registered depth without requiring a ground-plane basis."""
+
+    height, width = depth_m.shape
+    polygon = np.asarray(
+        [
+            [round(0.37 * width), round(0.72 * height)],
+            [round(0.63 * width), round(0.72 * height)],
+            [round(0.56 * width), round(0.30 * height)],
+            [round(0.44 * width), round(0.30 * height)],
+        ],
+        dtype=np.int32,
+    )
+    mask = np.zeros((height, width), dtype=np.uint8)
+    cv2.fillConvexPoly(mask, polygon, 1)
+    valid = (
+        (mask > 0)
+        & np.isfinite(depth_m)
+        & (depth_m >= SHOWCASE_DEPTH_RANGE_M[0])
+        & (depth_m <= 6.0)
+    )
+    valid_fraction = float(np.sum(valid) / max(int(np.sum(mask)), 1))
+    if valid_fraction < 0.20:
+        return {
+            "schema": "hftf_registered_depth_center_image_observation_r0",
+            "status": "UNKNOWN_INSUFFICIENT_REGISTERED_DEPTH",
+            "valid_fraction": valid_fraction,
+            "robust_nearest_surface_m": None,
+            "near_threshold_m": CENTER_IMAGE_NEAR_THRESHOLD_M,
+            "authority": "REGISTERED_SENSOR_DEPTH_DISPLAY_OBSERVATION_ONLY",
+            "claim_ceiling": "center-image surface range only; no object, ground, traversability, navigation, or safety claim",
+        }
+    values = depth_m[valid]
+    robust_nearest = float(np.quantile(values, 0.05))
+    return {
+        "schema": "hftf_registered_depth_center_image_observation_r0",
+        "status": (
+            "OBSERVED_NEAR_SURFACE"
+            if robust_nearest <= CENTER_IMAGE_NEAR_THRESHOLD_M
+            else "OBSERVED_SURFACE_OUTSIDE_NEAR_THRESHOLD"
+        ),
+        "valid_fraction": valid_fraction,
+        "robust_nearest_surface_m": robust_nearest,
+        "near_threshold_m": CENTER_IMAGE_NEAR_THRESHOLD_M,
+        "distance_statistic": "registered_depth_center_image_zone_q05",
+        "authority": "REGISTERED_SENSOR_DEPTH_DISPLAY_OBSERVATION_ONLY",
+        "claim_ceiling": "center-image surface range only; no object, ground, traversability, navigation, or safety claim",
+    }
 
 
 def generate(
@@ -231,6 +282,9 @@ def generate(
             "intrinsics_fx_fy_cx_cy": intrinsics_values,
             "source_role": SOURCE_ROLE,
             "metric_traversability_field": field,
+            "sensor_near_field_observation": observe_center_image_near_surface(
+                depth_m
+            ),
             "shadow_demo_alert_projection": AlertMapper().map(field),
             "visualization_assets": assets,
             "research_depth_artifact": depth_artifact,

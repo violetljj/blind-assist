@@ -38,6 +38,18 @@ scale-free-r1-bonn-source-support-not-evaluable /
 scale-free-r2-arkitscenes-source-support-not-evaluable /
 frozen-single-frame-posthoc-temporal-residual-family-stop`
 
+### 最新 RGB 模型户外实时展示（2026-08-04）
+
+`generate_scale_free_model_video_demo.py` 对真实 RGB 视频逐帧执行当前
+Depth Anything V2 Metric Hypersim ViT-S，并接入冻结的 Scale-Free
+Traversability R0 三带算子。展示同时给出 RGB、模型深度、时延与“模型相对俯视
+观测”；俯视扇区保持画面左/右方向一致，但只编码相对侵入排序，不使用源视频深度，
+也不绘制米制距离环。输出固定写入 `artifacts.local/evidence/hftf/`。
+
+状态为 `DEVELOPMENT_ONLY`：该回放只证明真实逐帧模型执行与可视化链路，不支持米制
+距离、安全方向、导航或产品能力结论。当地面/尺度证据不足时不得把相对俯视图升级为
+metric BEV；相应测试位于 `test_generate_scale_free_model_video_demo.py`。
+
 Spatial Calibration Head R1 已按预冻结合同完成 fresh、visit-disjoint ARKitScenes
 开发评价。3,000 帧开发缓存与 3,600 帧 RGB 身份审计通过数据边界，但 9,423 参数
 spatial head 在 `0/4` 折联合优于常数，固定 validation 的 coverage/MAE/agreement/

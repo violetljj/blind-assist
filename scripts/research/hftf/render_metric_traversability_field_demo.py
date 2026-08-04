@@ -80,6 +80,8 @@ def _text(
 
 
 def _scene_title(row: dict[str, Any]) -> str:
+    if row.get("scene_title"):
+        return str(row["scene_title"])
     sequence = str(row.get("sequence_id", "real-rgbd-sequence")).lower()
     if "obstructing-box" in sequence:
         return "场景：移动纸箱近距离遮挡"
@@ -218,6 +220,19 @@ def _nearest_intrusion(field: dict[str, Any]) -> float | None:
     return min(distances) if distances else None
 
 
+def _sensor_observation(row: dict[str, Any]) -> dict[str, Any]:
+    return row.get("sensor_near_field_observation") or {}
+
+
+def _sensor_near(row: dict[str, Any]) -> bool:
+    return _sensor_observation(row).get("status") == "OBSERVED_NEAR_SURFACE"
+
+
+def _sensor_distance(row: dict[str, Any]) -> float | None:
+    value = _sensor_observation(row).get("robust_nearest_surface_m")
+    return float(value) if value is not None else None
+
+
 def _scene_state_text(alert: dict[str, Any], field_status: str) -> tuple[str, str]:
     if field_status != "VALID":
         return "主动拒绝判断", "当前几何场不可靠，保留 UNKNOWN"
@@ -239,7 +254,9 @@ def _draw_rgb_showcase(
     panel = _fit_image(_asset(row, "rgb_path"), width, height, "真实 RGB  /  主视图")
     status = str(field.get("status", "UNKNOWN"))
     alert_status = str(alert.get("status", ""))
-    if status != "VALID":
+    if _sensor_near(row):
+        corridor_color = OCCUPIED
+    elif status != "VALID":
         corridor_color = (80, 175, 235)
     elif alert_status == "CENTER_RISK":
         corridor_color = OCCUPIED
@@ -267,16 +284,21 @@ def _draw_rgb_showcase(
         cv2.LINE_AA,
         tipLength=0.22,
     )
-    _text(panel, "中心观测区", (round(width * 0.45), height - 34), 0.36, TEXT, 1)
-    nearest = _nearest_intrusion(field)
+    _text(panel, "中心图像观测区", (round(width * 0.43), height - 34), 0.34, TEXT, 1)
+    nearest = _sensor_distance(row)
+    distance_label = "中心区稳健近距"
+    if nearest is None:
+        nearest = _nearest_intrusion(field)
+        distance_label = "最近几何侵入"
     if nearest is not None:
         cv2.rectangle(panel, (width - 185, 50), (width - 18, 112), (16, 20, 26), -1)
-        _text(panel, "最近观测侵入", (width - 170, 73), 0.34, MUTED)
+        _text(panel, distance_label, (width - 170, 73), 0.31, MUTED)
         _text(panel, f"{nearest:.2f} m", (width - 170, 103), 0.66, corridor_color, 2)
     return panel
 
 
 def _draw_status_summary(
+    row: dict[str, Any],
     field: dict[str, Any],
     alert: dict[str, Any],
     width: int,
@@ -284,18 +306,28 @@ def _draw_status_summary(
 ) -> np.ndarray:
     panel = np.full((height, width, 3), CARD, dtype=np.uint8)
     status = str(field.get("status", "UNKNOWN"))
-    title, explanation = _scene_state_text(alert, status)
+    if status != "VALID" and _sensor_near(row):
+        title = "前方近距表面已观测"
+        explanation = "注册深度直接支持；俯视方向暂不可信"
+    else:
+        title, explanation = _scene_state_text(alert, status)
     state_color = _status_color(status)
-    if status == "VALID" and str(alert.get("status")) == "CENTER_RISK":
+    if _sensor_near(row) or (
+        status == "VALID" and str(alert.get("status")) == "CENTER_RISK"
+    ):
         state_color = OCCUPIED
     cv2.rectangle(panel, (0, 0), (8, height), state_color, -1)
     _text(panel, "当前画面", (28, 29), 0.36, MUTED)
     _text(panel, title, (28, 68), 0.82, state_color, 2)
     _text(panel, explanation, (28, 94), 0.38, TEXT)
 
-    nearest = _nearest_intrusion(field)
+    nearest = _sensor_distance(row)
+    distance_label = "中心区稳健近距"
+    if nearest is None:
+        nearest = _nearest_intrusion(field)
+        distance_label = "最近几何侵入"
     value = f"{nearest:.2f} m" if nearest is not None else "—"
-    _text(panel, "最近观测侵入", (505, 31), 0.35, MUTED)
+    _text(panel, distance_label, (505, 31), 0.35, MUTED)
     _text(panel, value, (505, 73), 0.88, TEXT, 2)
 
     _text(panel, "几何场状态", (820, 31), 0.35, MUTED)
@@ -453,11 +485,14 @@ def render_frame(
     canvas[76:566, 16:776] = _draw_rgb_showcase(row, field, alert, 760, 490)
     canvas[76:306, 792:1264] = _draw_depth(row, 472, 230)
     canvas[318:566, 792:1264] = _draw_bev(field, 472, 248)
-    canvas[578:682, 16:1264] = _draw_status_summary(field, alert, 1248, 104)
+    canvas[578:682, 16:1264] = _draw_status_summary(row, field, alert, 1248, 104)
 
     status = str(field.get("status", "UNKNOWN"))
-    field_label = "几何场可用" if status == "VALID" else "几何场不确定"
-    scene_title, _explanation = _scene_state_text(alert, status)
+    if _sensor_near(row):
+        field_label = "传感器：近距表面"
+    else:
+        field_label = "传感器：持续观测"
+    scene_title = "几何场可用" if status == "VALID" else "几何场不确定"
     _text(canvas, "BlindAssist  /  实时空间观测", (18, 31), 0.67, TEXT, 2)
     _text(canvas, _scene_title(row), (18, 58), 0.39, MUTED)
     _text(canvas, field_label, (790, 30), 0.43, _status_color(status), 2)
