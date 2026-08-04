@@ -71,16 +71,10 @@ class MetricScaleTracker:
     def apply(
         self, timestamp_ns: int, clearance: Mapping[str, float | None]
     ) -> dict[str, object]:
-        if self.anchor is None:
-            return {"status": "UNKNOWN_NO_METRIC_SCALE_ANCHOR"}
-        age_ns = int(timestamp_ns) - self.anchor.timestamp_ns
-        if age_ns < 0:
-            return {"status": "UNKNOWN_FUTURE_METRIC_SCALE_ANCHOR"}
-        if age_ns > self.max_age_ns:
-            return {
-                "status": "UNKNOWN_STALE_METRIC_SCALE_ANCHOR",
-                "anchor_age_ns": age_ns,
-            }
+        receipt = self.resolve(timestamp_ns)
+        if receipt["status"] != "VALID":
+            return receipt
+        assert self.anchor is not None
         scaled = {
             band: (
                 None
@@ -91,9 +85,23 @@ class MetricScaleTracker:
         }
         if all(value is None for value in scaled.values()):
             return {"status": "UNKNOWN_NO_CLEARANCE_BANDS"}
+        return {**receipt, "bands_m": scaled}
+
+    def resolve(self, timestamp_ns: int) -> dict[str, object]:
+        """Resolve the causal scale receipt without depending on legacy bands."""
+
+        if self.anchor is None:
+            return {"status": "UNKNOWN_NO_METRIC_SCALE_ANCHOR"}
+        age_ns = int(timestamp_ns) - self.anchor.timestamp_ns
+        if age_ns < 0:
+            return {"status": "UNKNOWN_FUTURE_METRIC_SCALE_ANCHOR"}
+        if age_ns > self.max_age_ns:
+            return {
+                "status": "UNKNOWN_STALE_METRIC_SCALE_ANCHOR",
+                "anchor_age_ns": age_ns,
+            }
         return {
             "status": "VALID",
-            "bands_m": scaled,
             "scale": self.anchor.scale,
             "anchor_age_ns": age_ns,
             "anchor_pair_count": self.anchor.pair_count,

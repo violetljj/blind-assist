@@ -44,6 +44,22 @@ class MetricScaleAnchorTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             tracker.update(anchor)
 
+    def test_resolve_exposes_valid_scale_without_legacy_clearance_bands(self) -> None:
+        tracker = MetricScaleTracker(max_age_ns=100)
+        tracker.update(MetricScaleAnchor(10, 0.5, 3, 0.0, "tof"))
+
+        receipt = tracker.resolve(20)
+
+        self.assertEqual(receipt["status"], "VALID")
+        self.assertEqual(receipt["scale"], 0.5)
+        self.assertNotIn("bands_m", receipt)
+        self.assertEqual(
+            tracker.apply(20, {band: None for band in ("left", "center", "right")})[
+                "status"
+            ],
+            "UNKNOWN_NO_CLEARANCE_BANDS",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

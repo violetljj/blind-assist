@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import time
@@ -22,6 +23,10 @@ from external_camera_calibration import (
     pinhole_calibration,
 )
 from metric_scale_anchor import MetricScaleTracker
+from metric_traversability_field import (
+    AlertMapper,
+    build_metric_traversability_field,
+)
 from multizone_tof_anchor import (
     TofAnchorPolicy,
     TofFrameStream,
@@ -84,6 +89,7 @@ def manifest_frames(paths: list[Path]) -> Iterator[tuple[np.ndarray, dict[str, A
             "timestamp_ns": int(row["timestamp_ns"]),
             "intrinsics_fx_fy_cx_cy": list(row["intrinsics_fx_fy_cx_cy"]),
             "source": "manifest_replay",
+            "frame_path": str(row["frame_path"]),
         }
 
 
@@ -164,6 +170,121 @@ def calibrated_field(
     return {**scaled, "bands": bands}
 
 
+def _safe_asset_stem(sequence_id: str, frame_index: int) -> str:
+    safe_sequence = "".join(
+        character if character.isalnum() or character in "-_" else "_"
+        for character in sequence_id
+    )
+    return f"{safe_sequence}_{frame_index:06d}"
+
+
+def write_visualization_assets(
+    bgr: np.ndarray,
+    calibrated_depth_m: np.ndarray | None,
+    output_dir: Path,
+    sequence_id: str,
+    frame_index: int,
+) -> dict[str, Any]:
+    """Write optional display assets; these files carry no evidence authority."""
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    stem = _safe_asset_stem(sequence_id, frame_index)
+    rgb_path = (output_dir / f"{stem}_rgb.jpg").resolve()
+    depth_path = (output_dir / f"{stem}_metric_depth.png").resolve()
+    if not cv2.imwrite(str(rgb_path), bgr):
+        raise RuntimeError(f"failed to write {rgb_path}")
+    if calibrated_depth_m is None:
+        preview = np.full(bgr.shape[:2], 96, dtype=np.uint8)
+        preview = cv2.applyColorMap(preview, cv2.COLORMAP_TURBO)
+        cv2.putText(
+            preview,
+            "UNKNOWN METRIC DEPTH",
+            (12, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.65,
+            (235, 235, 235),
+            2,
+            cv2.LINE_AA,
+        )
+        depth_status = "UNKNOWN"
+    else:
+        depth = np.asarray(calibrated_depth_m, dtype=np.float64)
+        valid = np.isfinite(depth) & (depth > 0)
+        if not np.any(valid):
+            preview = np.zeros(depth.shape, dtype=np.uint8)
+        else:
+            low, high = np.quantile(depth[valid], [0.05, 0.95])
+            span = max(float(high - low), 1e-6)
+            normalized = np.clip((depth - low) / span, 0.0, 1.0)
+            preview = np.where(valid, np.round(255.0 * (1.0 - normalized)), 0).astype(
+                np.uint8
+            )
+        preview = cv2.applyColorMap(preview, cv2.COLORMAP_TURBO)
+        preview[~valid] = (80, 80, 80)
+        depth_status = "VALID_DEVELOPMENT_DISPLAY"
+    if not cv2.imwrite(str(depth_path), preview):
+        raise RuntimeError(f"failed to write {depth_path}")
+    return {
+        "rgb_path": str(rgb_path),
+        "metric_depth_heatmap_path": str(depth_path),
+        "metric_depth_heatmap_status": depth_status,
+        "authority": "DISPLAY_ONLY_NO_EVIDENCE_AUTHORITY",
+    }
+
+
+def assess_image_quality(bgr: np.ndarray) -> dict[str, Any]:
+    """Frozen display-independent blur/exposure diagnostics for fail-closed output."""
+
+    gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
+    preview = cv2.resize(gray, (320, 240), interpolation=cv2.INTER_AREA)
+    laplacian_variance = float(cv2.Laplacian(preview, cv2.CV_64F).var())
+    underexposed_fraction = float(np.mean(preview <= 10))
+    overexposed_fraction = float(np.mean(preview >= 245))
+    sharpness_pass = laplacian_variance >= 20.0
+    exposure_pass = underexposed_fraction <= 0.80 and overexposed_fraction <= 0.80
+    return {
+        "status": "PASS" if sharpness_pass and exposure_pass else "FAIL",
+        "pass": sharpness_pass and exposure_pass,
+        "laplacian_variance_320x240": laplacian_variance,
+        "minimum_laplacian_variance": 20.0,
+        "underexposed_fraction": underexposed_fraction,
+        "overexposed_fraction": overexposed_fraction,
+        "maximum_extreme_exposure_fraction": 0.80,
+        "claim_ceiling": "frozen software quality gate; not calibrated perception confidence",
+    }
+
+
+def write_research_depth_artifact(
+    raw_depth: np.ndarray,
+    calibrated_depth_m: np.ndarray | None,
+    output_dir: Path,
+    sequence_id: str,
+    frame_index: int,
+) -> dict[str, Any]:
+    """Retain replayable depth under ignored artifacts.local, never in Git."""
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = (output_dir / f"{_safe_asset_stem(sequence_id, frame_index)}_depth.npz").resolve()
+    np.savez_compressed(
+        path,
+        raw_depth=np.asarray(raw_depth, dtype=np.float32),
+        calibrated_depth_m=(
+            np.asarray(calibrated_depth_m, dtype=np.float32)
+            if calibrated_depth_m is not None
+            else np.empty((0, 0), dtype=np.float32)
+        ),
+        calibrated_available=np.asarray([calibrated_depth_m is not None], dtype=np.bool_),
+    )
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    return {
+        "path": str(path),
+        "sha256": digest,
+        "raw_depth_retained": True,
+        "calibrated_depth_retained": calibrated_depth_m is not None,
+        "authority": "RESEARCH_REPLAY_ARTIFACT_NO_EVIDENCE_PROMOTION",
+    }
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     source = parser.add_mutually_exclusive_group(required=True)
@@ -193,6 +314,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--depth-anything-precision", choices=("fp32", "fp16"), default="fp16")
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--visualization-dir", type=Path)
+    parser.add_argument("--research-depth-dir", type=Path)
+    parser.add_argument("--demo-alert-horizon-m", type=float, default=1.5)
     parser.add_argument("--max-frames", type=int)
     return parser.parse_args()
 
@@ -259,6 +383,8 @@ def main() -> None:
     if tof_policy is not None:
         tof_policy.validate()
     trackers: dict[str, MetricScaleTracker] = {}
+    previous_fields: dict[str, tuple[int, dict[str, Any]]] = {}
+    alert_mapper = AlertMapper(args.demo_alert_horizon_m)
     max_age_ns = round(args.max_anchor_age_ms * 1e6)
     source = DepthAnythingV2MetricSource(
         args.depth_anything_repo,
@@ -310,6 +436,7 @@ def main() -> None:
                         }
                     )
             rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+            image_quality = assess_image_quality(bgr)
             depth_started = time.perf_counter()
             depth, metadata = source.infer(
                 rgb,
@@ -351,22 +478,85 @@ def main() -> None:
                 ),
             )
             scaled_field = calibrated_field(raw_field, tracker, int(packet["timestamp_ns"]))
+            scale_receipt = tracker.resolve(int(packet["timestamp_ns"]))
+            metric_depth = (
+                np.asarray(depth, dtype=np.float64) * float(scale_receipt["scale"])
+                if scale_receipt.get("status") == "VALID"
+                else None
+            )
+            previous_timestamp, previous_field = previous_fields.get(
+                sequence, (None, None)
+            )
+            traversability_field = build_metric_traversability_field(
+                metric_depth if metric_depth is not None else np.asarray(depth),
+                np.asarray(
+                    [
+                        [packet["intrinsics_fx_fy_cx_cy"][0], 0, packet["intrinsics_fx_fy_cx_cy"][2]],
+                        [0, packet["intrinsics_fx_fy_cx_cy"][1], packet["intrinsics_fx_fy_cx_cy"][3]],
+                        [0, 0, 1],
+                    ],
+                    dtype=np.float64,
+                ),
+                metric_scale=scale_receipt,
+                source_model=source.model_id,
+                timestamp_ns=int(packet["timestamp_ns"]),
+                previous_field=previous_field,
+                previous_timestamp_ns=previous_timestamp,
+                image_quality=image_quality,
+            )
+            previous_fields[sequence] = (
+                int(packet["timestamp_ns"]),
+                traversability_field,
+            )
+            alert_projection = alert_mapper.map(traversability_field)
             geometry_ms = (time.perf_counter() - geometry_started) * 1000.0
+            visualization_assets = (
+                write_visualization_assets(
+                    bgr,
+                    metric_depth,
+                    args.visualization_dir,
+                    sequence,
+                    int(packet["frame_index"]),
+                )
+                if args.visualization_dir is not None
+                else None
+            )
+            research_depth_artifact = (
+                write_research_depth_artifact(
+                    depth,
+                    metric_depth,
+                    args.research_depth_dir,
+                    sequence,
+                    int(packet["frame_index"]),
+                )
+                if args.research_depth_dir is not None
+                else None
+            )
             record = {
                 "schema": SCHEMA,
                 "sequence_id": sequence,
                 "frame_index": int(packet["frame_index"]),
                 "timestamp_ns": int(packet["timestamp_ns"]),
                 "source": packet["source"],
+                "intrinsics_fx_fy_cx_cy": packet["intrinsics_fx_fy_cx_cy"],
                 "model_id": source.model_id,
                 "model_metadata": metadata,
                 "depth_latency_ms": depth_ms,
                 "geometry_and_scale_latency_ms": geometry_ms,
                 "rectification_valid_fraction": finite_ratio(valid_mask) if valid_mask is not None else 1.0,
+                "image_quality": image_quality,
+                "metric_scale_receipt": scale_receipt,
                 "raw_clearance": raw_field,
                 "scaled_clearance": scaled_field,
+                "metric_traversability_field": traversability_field,
+                "shadow_demo_alert_projection": alert_projection,
+                "visualization_assets": visualization_assets,
+                "research_depth_artifact": research_depth_artifact,
                 "metric_anchor_updates": anchor_updates,
-                "claim_ceiling": "candidate-only clearance sidecar; no alert or safety decision",
+                "claim_ceiling": (
+                    "candidate-only clearance sidecar; alert projection is non-actuating "
+                    "shadow/demo only; no safety, navigation, or production decision"
+                ),
             }
             output.write(json.dumps(record, sort_keys=True) + "\n")
             output.flush()

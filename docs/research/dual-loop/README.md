@@ -58,6 +58,10 @@ YOLO、truth box、truth mask 和 synthetic oracle 的输出访问。四臂使�
 
 HFTF 是独立于当前 RISKSEG/YOLO 主线的未来潜力支线；只有同口径证据持续超过主线，
 才另立主线切换合同。最新
+[MetricTraversabilityField shadow/demo R0](../hftf/METRIC_TRAVERSABILITY_FIELD_SHADOW_DEMO_R0_IMPLEMENTATION_RESULT_2026-08-04.md)
+已把丰富米制观测场、身体扫掠包络、`UNKNOWN` 与末端提醒映射在独立侧车中解耦；
+它是 `DEVELOPMENT_ONLY / SHADOW_DEMO` 软件能力，不是新效果证据，`MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`。
+此前
 [D8 THOR-MAGNI 局部路线监督](../hftf/HFTF_STAGE_C_D8_THOR_MAGNI_LOCAL_ROUTE_SUPERVISION_2026-08-02.md)
 已从 19 个 Pupil/QTM sessions 物化 1,078 个 source-native local-actionability
 样本。冻结 MobileNet 的五折筛查中，history 相对 current-only 的近距/走廊 AUROC

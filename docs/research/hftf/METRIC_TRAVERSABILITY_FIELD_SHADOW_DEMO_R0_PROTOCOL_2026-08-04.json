@@ -1,0 +1,27 @@
+{
+  "schema": "blindassist_hftf_metric_traversability_field_shadow_demo_protocol_r0",
+  "date": "2026-08-04",
+  "status": "FROZEN_IMPLEMENTATION_PROTOCOL",
+  "authority": "DEVELOPMENT_ONLY_SHADOW_DEMO",
+  "direction_degrees": { "minimum": -40, "maximum": 40, "step": 5 },
+  "horizons_m": [1.0, 1.5, 2.0],
+  "body_half_width_m": 0.32,
+  "lateral_margin_m": 0.10,
+  "obstacle_height_m": [0.08, 2.0],
+  "forward_range_m": [0.2, 4.0],
+  "minimum_direction_support_points": 20,
+  "clearance_quantile": 0.02,
+  "image_quality_gate": {
+    "resize": [320, 240],
+    "minimum_laplacian_variance": 20.0,
+    "extreme_dark_luma_max": 10,
+    "extreme_bright_luma_min": 245,
+    "maximum_single_extreme_fraction": 0.80
+  },
+  "research_depth_retention": "optional_compressed_npz_under_ignored_artifacts.local_with_sha256",
+  "states": ["OCCUPIED_OBSERVED", "CLEAR_OBSERVED", "UNKNOWN_SUPPORT"],
+  "alert_mapper": { "authority": "SHADOW_DEMO_ONLY", "horizon_m": 1.5, "actuating": false },
+  "promotion_authority": false,
+  "default_app_authority": false,
+  "safety_authority": false
+}
