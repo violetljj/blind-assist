@@ -282,6 +282,16 @@ threads、无观测到的 CPU fallback，相对同形状 ORT 平均差 `0.0145 m
 
 [Android QNN full-pipeline R0](DAV2_METRIC_ANDROID_QNN_FULL_PIPELINE_R0_RESULT_2026-08-04.md)。
 
+同日完成的 `CPU_BOUNDARY_MICROBENCH_R0` 将官方前处理冻结为
+`RGB float/255 -> OpenCV INTER_CUBIC -> ImageNet normalize -> NCHW`。USB 真机
+亮屏/锁屏各 100 次下，旧 Double resize P50 为 `1212.64/1214.53 ms`；预计算
+Float 权重并复用 direct buffer 的 Kotlin 臂为 `60.88/60.86 ms`，Native
+OpenCV+NEON FP32 臂为 `1.29/5.40 ms`，P95 `1.78/8.12 ms`。Native FP32 相对
+官方张量最大误差 `1.74e-6`，FP16 round-trip 最大误差 `9.77e-4`；Native 两状态
+均未观察到 Java allocation 或 GC。`<40 ms` CPU 门已通过，因此 GPU 前处理不触发；
+下一步直接做普通复制版 App-native cached QNN context。详见
+[Android preprocess optimization R0](DAV2_ANDROID_PREPROCESS_OPT_R0_RESULT_2026-08-04.md)。
+
 随后新增的 class-free clearance 侧车把 RGB、manifest 时钟、三带 scale anchor 和
 UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得到 5/5：80 个评价帧中
 78 个 paired-valid，MAE `0.0981 m`、一致率 `93.77%`、false-clear `4.95%`。绝对

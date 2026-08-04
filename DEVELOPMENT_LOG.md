@@ -1,4 +1,16 @@
 # Development Log
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：violjjet。完成 DA V2 Android
+  `CPU_BOUNDARY_MICROBENCH_R0`、`PREPROCESS_KOTLIN_TABLE_R0` 与
+  `PREPROCESS_NATIVE_OPENCV_R0`。冻结官方 `640x480 RGB -> float/255 -> OpenCV
+  INTER_CUBIC 686x518 -> ImageNet normalize -> NCHW`，不改 crop、旋转、插值、
+  归一化、模型或几何。`SM-S9280/SM8650/Android 16` USB 真机亮屏/锁屏各 100 次：
+  旧 Double resize P50 `1212.64/1214.53 ms`；Kotlin 预计算 Float 表、融合 packing
+  与 direct-buffer 复用后为 `60.88/60.86 ms`；Native OpenCV 四线程+NEON FP32 为
+  `1.29/5.40 ms`，P95 `1.78/8.12 ms`。Native FP32 与官方张量最大误差
+  `1.74e-6`，FP16 round-trip 最大误差 `9.77e-4`；Native 两状态观察到 0 Java
+  allocation/0 GC。刻意 allocation/copy 对照约 `8.55 MB/次`并触发 19/14 次 GC。
+  Native 已过 `<40 ms` 门，故 GPU 前处理不触发；下一步为普通内存复制版 App-native
+  cached QNN context，结果仍仅属平台工程 benchmark，不授权默认 App 或生产路由。
 - 时间：2026-08-04（Asia/Hong_Kong）；执行者：violjjet。完成公开 RGB-D
   scale-free traversability 独立实现复核，并把“已消费数据可主动复用、但必须披露
   最强证据角色与独立性的具体维度”写入项目/研究准则。R1 在两段已消费 Bonn

@@ -8,12 +8,22 @@ plugins {
 android {
     namespace = "com.linnan.blindassist.hftf.devicecanary"
     compileSdk = libs.versions.compileSdk.get().toInt()
+    ndkVersion = "27.0.12077973"
     targetProjectPath = ":app"
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters += "arm64-v8a"
+        }
+        externalNativeBuild {
+            cmake {
+                cppFlags += listOf("-std=c++17", "-O3", "-ffast-math")
+                arguments += "-DANDROID_STL=c++_shared"
+            }
+        }
     }
 
     buildTypes {
@@ -26,6 +36,17 @@ android {
     packaging {
         jniLibs {
             useLegacyPackaging = true
+        }
+    }
+
+    buildFeatures {
+        prefab = true
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
         }
     }
 
@@ -55,4 +76,5 @@ dependencies {
     implementation(libs.tflite)
     implementation(libs.qnn.runtime)
     implementation(libs.qnn.litert.delegate)
+    implementation("org.opencv:opencv:4.10.0")
 }
