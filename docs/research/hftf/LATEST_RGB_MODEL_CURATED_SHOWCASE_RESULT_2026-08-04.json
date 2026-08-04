@@ -1,0 +1,79 @@
+{
+  "schema": "blindassist_latest_rgb_model_curated_showcase_result_r0",
+  "date": "2026-08-04",
+  "status": "RECORDED_MODEL_REPLAY_SHOWCASE_RENDERED_DEVELOPMENT_ONLY",
+  "generator_commit": "91cea0f",
+  "model": "Depth Anything V2 Metric Hypersim ViT-S",
+  "operator": "frozen Scale-Free Traversability R0",
+  "input_contract": {
+    "rgb_only_model_input": true,
+    "source_depth_read": false
+  },
+  "output_contract": {
+    "clips": 5,
+    "frames_per_clip": 300,
+    "duration_s_per_clip": 30.0,
+    "fps": 10.0,
+    "width": 1280,
+    "height": 720,
+    "local_root": "artifacts.local/evidence/hftf/latest-rgb-model-curated-showcase-20260804"
+  },
+  "clips": [
+    {
+      "id": "clip-01-roadwork-narrowing",
+      "source_video": "artifacts.local/evidence/public-video-r729-prospective-20260719/source-videos/youtube-edmonton-construction-chaos-pov.mp4",
+      "source_sha256": "B63CDC78FE7D97CFF3536C88BB3807A032A5D0FA413BC9836AF6A03E99A00468",
+      "start_s": 652.0,
+      "duration_s": 30.0,
+      "median_inference_ms": 76.68655000452418,
+      "p95_inference_ms": 79.72945999645162,
+      "decision_counts": {"UNKNOWN": 4, "RELATIVELY_OPEN_LEFT": 202, "AMBIGUOUS": 19, "RELATIVELY_OPEN_CENTER": 75},
+      "output_sha256": "8B07932BA17B531DB5D0DEE75D8821F3D07716FB2A5250011E3A06B4B715DF47"
+    },
+    {
+      "id": "clip-02-dynamic-pedestrians",
+      "source_video": "artifacts.local/evidence/public-video-r719-acquisition-20260719/source-videos/youtube-open-streets-SI7uinNg7jk.mp4",
+      "source_sha256": "3393AC151DB5BEADD60BC4C1531A505D5D0CAB6EEF84381EC002850BD2552A16",
+      "start_s": 45.0,
+      "duration_s": 30.0,
+      "median_inference_ms": 76.96140000189189,
+      "p95_inference_ms": 81.62405499460874,
+      "decision_counts": {"UNKNOWN": 4, "RELATIVELY_OPEN_RIGHT": 93, "AMBIGUOUS": 114, "RELATIVELY_OPEN_LEFT": 39, "RELATIVELY_OPEN_CENTER": 50},
+      "output_sha256": "B77603FD3A8D9A7CD00E40D377EBF0B30C70E5F2898978C987E35EA4B653081C"
+    },
+    {
+      "id": "clip-03-narrow-alley",
+      "source_video": "artifacts.local/evidence/public-video-r766-prospective-spiegelgasse-20260719/spiegelgasse_240p.webm",
+      "source_sha256": "2D68BA23FD1D03ECB94F4FD2D7EB01BBFF289611F7370D623644D5E6D08AE852",
+      "start_s": 22.0,
+      "duration_s": 30.0,
+      "median_inference_ms": 75.30120000592433,
+      "p95_inference_ms": 80.02851000710507,
+      "decision_counts": {"UNKNOWN": 4, "RELATIVELY_OPEN_CENTER": 189, "AMBIGUOUS": 69, "RELATIVELY_OPEN_LEFT": 13, "RELATIVELY_OPEN_RIGHT": 25},
+      "output_sha256": "03E4F1844554FFEA6666732347F56425A27F0193C1415730358FA0F228921E35"
+    },
+    {
+      "id": "clip-04-waterfront-walk",
+      "source_video": "artifacts.local/evidence/public-video-r733-prospective-20260719/source-videos/youtube-cape-town-waterfront-construction-780-1000.mp4",
+      "source_sha256": "978FD134A69BD0B262A104F6D5B2571DBBBA130C2723539687FF5567D7F68A15",
+      "start_s": 88.0,
+      "duration_s": 30.0,
+      "median_inference_ms": 77.03109999420121,
+      "p95_inference_ms": 81.89787500086823,
+      "decision_counts": {"UNKNOWN": 4, "AMBIGUOUS": 20, "RELATIVELY_OPEN_RIGHT": 157, "RELATIVELY_OPEN_CENTER": 119},
+      "output_sha256": "F26EBD51C7C2C5E8570090A610C41ECF9D48BD5895A7B88997849365C3811BA5"
+    },
+    {
+      "id": "clip-05-plaza-cones",
+      "source_video": "artifacts.local/evidence/public-video-r734-prospective-20260719/source-videos/youtube-jakarta-car-free-reopening-480-560.mp4",
+      "source_sha256": "F2A0D3EC4F075894D0E27FEE8FC07B5446C477DC88AABC2CD6A0A378BD684FDB",
+      "start_s": 28.0,
+      "duration_s": 30.0,
+      "median_inference_ms": 76.8856000067899,
+      "p95_inference_ms": 82.91959999187384,
+      "decision_counts": {"UNKNOWN": 4, "AMBIGUOUS": 173, "RELATIVELY_OPEN_RIGHT": 120, "RELATIVELY_OPEN_CENTER": 3},
+      "output_sha256": "EA5EE8D655DA40BB15D4D2F40129A9F5EBE779ED5886D3AEDE2A374D2CAE3B2D"
+    }
+  ],
+  "claim_ceiling": "visual demonstration receipt only; not metric distance, safe direction, navigation, outdoor-domain validity, model evaluation, device performance, or production evidence"
+}

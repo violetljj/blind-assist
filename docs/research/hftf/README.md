@@ -1,5 +1,7 @@
 # HFTF 候选未来可通行场支线
 
+- [Latest RGB model curated showcase result](LATEST_RGB_MODEL_CURATED_SHOWCASE_RESULT_2026-08-04.md)
+- [Machine-readable curated showcase result](LATEST_RGB_MODEL_CURATED_SHOWCASE_RESULT_2026-08-04.json)
 - [MetricTraversabilityField shadow/demo R0 protocol](METRIC_TRAVERSABILITY_FIELD_SHADOW_DEMO_R0_PROTOCOL_2026-08-04.md)
 - [Machine-readable MetricTraversabilityField protocol](METRIC_TRAVERSABILITY_FIELD_SHADOW_DEMO_R0_PROTOCOL_2026-08-04.json)
 - [MetricTraversabilityField shadow/demo R0 implementation result](METRIC_TRAVERSABILITY_FIELD_SHADOW_DEMO_R0_IMPLEMENTATION_RESULT_2026-08-04.md)
