@@ -7,6 +7,7 @@ param(
     [int]$StressSeconds = 5,
     [int]$DepthPeriodMs = 500,
     [int]$TtlMs = 750,
+    [switch]$IncludeGeometry,
     [string]$OutputRoot,
     [switch]$SkipBuild
 )
@@ -63,6 +64,7 @@ try {
         "-e", "cachedDlcPath", $CachedDlcPath, "-e", "durationSeconds", "$DurationSeconds",
         "-e", "stressSeconds", "$StressSeconds", "-e", "depthPeriodMs", "$DepthPeriodMs",
         "-e", "ttlMs", "$TtlMs",
+        "-e", "includeGeometry", "$($IncludeGeometry.IsPresent.ToString().ToLowerInvariant())",
         "com.linnan.blindassist.hftf.devicecanary/androidx.test.runner.AndroidJUnitRunner"
     ) (Join-Path $artifactRoot "instrument.txt") -AllowFailure
     $report = Parse-Report $instrument.Lines
@@ -72,5 +74,6 @@ try {
         instrumentation_exit_code = $instrument.ExitCode; report = $report
     } | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $artifactRoot "result.json") -Encoding utf8
     "artifact_root=$artifactRoot"; "gate_pass=$($report.gate_pass)"
-    "full_pipeline_p50_ms=$($report.yuv_to_fp16_plus_qnn_ms.p50)"
+    $p50 = if ($report.include_geometry) { $report.full_depth_geometry_ms.p50 } else { $report.yuv_to_fp16_plus_qnn_ms.p50 }
+    "full_pipeline_p50_ms=$p50"
 } finally { Pop-Location }

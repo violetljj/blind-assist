@@ -22,3 +22,5 @@ P50 speedup was `1.87x`. Status and every geometry output field matched; maximum
 - Bundle SHA-256: `79AC53B7726B48897819E8FF3F376EC59AA3002ECE4FF98A09F75F1F214BDFE7`
 
 Next gate: include this equivalent geometry in the 2 Hz CameraX pipeline and complete a bright-screen ten-minute sustained run.
+
+That gate subsequently passed; see [CameraX sustained ten-minute R0](DAV2_CAMERAX_SUSTAINED_10MIN_R0_RESULT_2026-08-04.md).

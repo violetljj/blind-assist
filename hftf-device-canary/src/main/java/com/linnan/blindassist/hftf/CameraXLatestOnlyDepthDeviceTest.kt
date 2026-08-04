@@ -2,6 +2,7 @@ package com.linnan.blindassist.hftf
 
 import android.Manifest
 import android.os.Bundle
+import android.os.Debug
 import android.os.PowerManager
 import android.os.SystemClock
 import android.util.Size
@@ -17,6 +18,8 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
+import com.linnan.blindassist.hftf.metricdepth.KnownHeightGroundPipeline
+import com.linnan.blindassist.vision.ExpiringLatestResult
 import com.linnan.blindassist.vision.LatestOnlySidecar
 import java.io.File
 import java.nio.ByteBuffer
@@ -48,6 +51,7 @@ class CameraXLatestOnlyDepthDeviceTest {
         val stressSeconds = arguments.getString("stressSeconds")?.toInt() ?: 5
         val depthPeriodMs = arguments.getString("depthPeriodMs")?.toLong() ?: 500L
         val ttlMs = arguments.getString("ttlMs")?.toLong() ?: 750L
+        val includeGeometry = arguments.getString("includeGeometry")?.toBooleanStrictOrNull() ?: false
         require(durationSeconds >= 12 && stressSeconds in 3 until durationSeconds)
         require(depthPeriodMs in 250L..2_000L && ttlMs >= depthPeriodMs)
         assertTrue(cachedDlc.isFile)
@@ -70,11 +74,17 @@ class CameraXLatestOnlyDepthDeviceTest {
         val replaced = AtomicInteger()
         val fresh = AtomicInteger()
         val thermalFailClosed = AtomicInteger()
+        val nonInteractiveObservations = AtomicInteger()
+        val maximumThermalStatus = AtomicInteger(power.currentThermalStatus)
+        val geometryValid = AtomicInteger()
+        val geometryUnknown = AtomicInteger()
         val running = AtomicInteger()
         val maxRunning = AtomicInteger()
         val failures = Collections.synchronizedList(mutableListOf<String>())
         val copyLatencies = Collections.synchronizedList(mutableListOf<Double>())
         val executeLatencies = Collections.synchronizedList(mutableListOf<Double>())
+        val geometryLatencies = Collections.synchronizedList(mutableListOf<Double>())
+        val fullPipelineLatencies = Collections.synchronizedList(mutableListOf<Double>())
         val freshAges = Collections.synchronizedList(mutableListOf<Double>())
         val rotations = Collections.synchronizedSet(mutableSetOf<Int>())
         val dimensions = Collections.synchronizedSet(mutableSetOf<String>())
@@ -89,6 +99,11 @@ class CameraXLatestOnlyDepthDeviceTest {
         val runtime = Dav2QnnCachedContext(cachedDlc.absolutePath, nativeLibraryDir)
         val preprocessor = Dav2NativePreprocessor()
         val converter = Dav2Yuv420RgbConverter()
+        val resultStore = ExpiringLatestResult<DepthReceipt>(TimeUnit.MILLISECONDS.toNanos(ttlMs))
+        val runtimeStatsBefore = RuntimeStats.capture()
+        val memoryBefore = memoryJson()
+        val rawDepth = FloatArray(Dav2PreprocessContract.PLANE)
+        val alignedDepth = FloatArray(WIDTH * HEIGHT)
         val sidecar = LatestOnlySidecar<OwnedYuv420Frame, DepthReceipt>(
             executor = depthExecutor,
             maxResultAgeNanos = TimeUnit.MILLISECONDS.toNanos(ttlMs),
@@ -97,17 +112,38 @@ class CameraXLatestOnlyDepthDeviceTest {
                 val active = running.incrementAndGet()
                 maxRunning.accumulateAndGet(active, ::maxOf)
                 try {
-                    if (power.currentThermalStatus >= PowerManager.THERMAL_STATUS_SEVERE) {
+                    val thermalStatus = power.currentThermalStatus
+                    maximumThermalStatus.accumulateAndGet(thermalStatus, ::maxOf)
+                    if (thermalStatus >= PowerManager.THERMAL_STATUS_SEVERE) {
                         thermalFailClosed.incrementAndGet()
-                        throw IllegalStateException("thermal fail-closed status=${power.currentThermalStatus}")
+                        throw IllegalStateException("thermal fail-closed status=$thermalStatus")
                     }
-                    val start = SystemClock.elapsedRealtimeNanos()
+                    val fullStart = SystemClock.elapsedRealtimeNanos()
                     val rgb = converter.convert(frame)
                     val output = runtime.execute(preprocessor.preprocessFp16(rgb))
-                    val elapsed = elapsedMs(start)
-                    executeLatencies += elapsed
+                    val qnnElapsed = elapsedMs(fullStart)
+                    executeLatencies += qnnElapsed
+                    var geometryStatus = "NOT_REQUESTED"
+                    if (includeGeometry) {
+                        val geometryStart = SystemClock.elapsedRealtimeNanos()
+                        val shorts = output.asShortBuffer()
+                        for (index in rawDepth.indices) rawDepth[index] = halfBitsToFloat(shorts.get(index))
+                        resizeDepthAlignCorners(rawDepth, alignedDepth)
+                        val geometry = KnownHeightGroundPipeline.evaluateGeometry(
+                            alignedDepth, WIDTH, HEIGHT, 320.0, 320.0, 320.0, 240.0, 1.0341161949454936,
+                        )
+                        geometryStatus = if (geometry is KnownHeightGroundPipeline.Geometry) {
+                            geometryValid.incrementAndGet(); "VALID"
+                        } else {
+                            geometryUnknown.incrementAndGet(); "UNKNOWN"
+                        }
+                        geometryLatencies += elapsedMs(geometryStart)
+                    }
+                    val fullElapsed = elapsedMs(fullStart)
+                    fullPipelineLatencies += fullElapsed
                     processed.incrementAndGet()
-                    DepthReceipt(frame.stage, frame.sensorTimestampNanos, elapsed,
+                    DepthReceipt(frame.stage, frame.sensorTimestampNanos, fullElapsed,
+                        geometryStatus,
                         output.asShortBuffer().get(0).toInt() and 0xffff)
                 } finally {
                     running.decrementAndGet()
@@ -116,6 +152,7 @@ class CameraXLatestOnlyDepthDeviceTest {
             onFreshResult = { result ->
                 fresh.incrementAndGet()
                 freshAges += result.ageNanos / 1_000_000.0
+                resultStore.update(result.value, result.capturedAtNanos, result.completedAtNanos)
             },
             onFailure = { failure -> failures += "${failure.javaClass.simpleName}: ${failure.message}" },
             nowNanos = SystemClock::elapsedRealtimeNanos,
@@ -130,6 +167,7 @@ class CameraXLatestOnlyDepthDeviceTest {
             .build()
         analysis.setAnalyzer(analyzerExecutor) { image ->
             framesSeen.incrementAndGet()
+            if (!power.isInteractive) nonInteractiveObservations.incrementAndGet()
             val receivedAt = SystemClock.elapsedRealtimeNanos()
             try {
                 dimensions += "${image.width}x${image.height}"
@@ -201,6 +239,11 @@ class CameraXLatestOnlyDepthDeviceTest {
 
         replaced.set(pool.replacedCount.get())
         val stale = (processed.get() - fresh.get()).coerceAtLeast(0)
+        val expiryProbe = resultStore.readAt(
+            SystemClock.elapsedRealtimeNanos() + 2 * TimeUnit.MILLISECONDS.toNanos(ttlMs),
+        )
+        val ttlExpiresToUnknown = expiryProbe is ExpiringLatestResult.State.Unknown &&
+            expiryProbe.reason == ExpiringLatestResult.UnknownReason.EXPIRED
         val report = JSONObject()
             .put("schema", "blindassist_camerax_latest_only_r0")
             .put("contract", JSONObject()
@@ -213,6 +256,7 @@ class CameraXLatestOnlyDepthDeviceTest {
                 .put("backpressure", "CameraX KEEP_ONLY_LATEST + one running/one replaceable pending")
                 .put("depth_period_ms", depthPeriodMs)
                 .put("result_ttl_ms", ttlMs))
+            .put("include_geometry", includeGeometry)
             .put("duration_seconds", durationSeconds)
             .put("stress_seconds", stressSeconds)
             .put("frames_seen", framesSeen.get())
@@ -229,15 +273,29 @@ class CameraXLatestOnlyDepthDeviceTest {
             .put("pending_replaced", replaced.get())
             .put("fresh_results", fresh.get())
             .put("stale_results", stale)
+            .put("ttl_expires_to_unknown", ttlExpiresToUnknown)
             .put("max_concurrent_depth_tasks", maxRunning.get())
             .put("pool_available_after_close", pool.available())
             .put("thermal_status_before", thermalBefore)
             .put("thermal_status_after", power.currentThermalStatus)
             .put("thermal_fail_closed", thermalFailClosed.get())
+            .put("maximum_thermal_status", maximumThermalStatus.get())
+            .put("noninteractive_camera_observations", nonInteractiveObservations.get())
+            .put("geometry_valid", geometryValid.get())
+            .put("geometry_unknown", geometryUnknown.get())
             .put("yuv_copy_ms", latencyJson(copyLatencies))
             .put("yuv_to_fp16_plus_qnn_ms", latencyJson(executeLatencies))
+            .put("fp16_decode_align_plus_geometry_ms", latencyJson(geometryLatencies))
+            .put("full_depth_geometry_ms", latencyJson(fullPipelineLatencies))
             .put("fresh_result_age_ms", latencyJson(freshAges))
             .put("failures", JSONArray(failures.toList()))
+            .put("memory_before", memoryBefore)
+            .put("memory_after", memoryJson())
+        val runtimeStatsAfter = RuntimeStats.capture()
+        report.put("runtime_deltas", JSONObject()
+            .put("allocated_bytes", deltaOrNull(runtimeStatsBefore.allocated, runtimeStatsAfter.allocated))
+            .put("gc_count", deltaOrNull(runtimeStatsBefore.gcCount, runtimeStatsAfter.gcCount))
+            .put("gc_time_ms", deltaOrNull(runtimeStatsBefore.gcTimeMs, runtimeStatsAfter.gcTimeMs)))
 
         val gateFailures = mutableListOf<String>()
         if (framesSeen.get() < durationSeconds * 5) gateFailures += "camera frame rate below 5 fps"
@@ -248,7 +306,12 @@ class CameraXLatestOnlyDepthDeviceTest {
         if (maxRunning.get() != 1) gateFailures += "depth concurrency was ${maxRunning.get()}"
         if (pool.available() != 3) gateFailures += "owned YUV slot leak"
         if (fresh.get() == 0 || freshAges.any { it > ttlMs }) gateFailures += "TTL freshness contract failed"
+        if (!ttlExpiresToUnknown) gateFailures += "expired depth did not become UNKNOWN"
         if (thermalFailClosed.get() != 0) gateFailures += "device reached severe thermal status"
+        if (nonInteractiveObservations.get() != 0) gateFailures += "screen was not continuously interactive"
+        if (includeGeometry && geometryValid.get() + geometryUnknown.get() != processed.get()) {
+            gateFailures += "geometry did not run for every processed frame"
+        }
         if (failures.isNotEmpty()) gateFailures += failures
         report.put("gate_pass", gateFailures.isEmpty()).put("gate_failures", JSONArray(gateFailures))
         File(context.filesDir, REPORT_FILE).writeText(report.toString(2))
@@ -296,8 +359,45 @@ class CameraXLatestOnlyDepthDeviceTest {
     private fun elapsedMs(startNanos: Long) =
         (SystemClock.elapsedRealtimeNanos() - startNanos) / 1_000_000.0
 
+    private fun memoryJson(): JSONObject {
+        val runtime = Runtime.getRuntime()
+        return JSONObject().put("pss_kib", Debug.getPss())
+            .put("java_heap_used_bytes", runtime.totalMemory() - runtime.freeMemory())
+            .put("native_heap_allocated_bytes", Debug.getNativeHeapAllocatedSize())
+    }
+
+    private fun deltaOrNull(before: Long, after: Long): Any =
+        if (before >= 0 && after >= before) after - before else JSONObject.NULL
+
+    private fun resizeDepthAlignCorners(input: FloatArray, output: FloatArray) {
+        for (row in 0 until HEIGHT) {
+            val sy = row.toDouble() * (Dav2PreprocessContract.OUTPUT_HEIGHT - 1) / (HEIGHT - 1)
+            val y0 = sy.toInt()
+            val y1 = minOf(y0 + 1, Dav2PreprocessContract.OUTPUT_HEIGHT - 1)
+            val fy = sy - y0
+            for (column in 0 until WIDTH) {
+                val sx = column.toDouble() * (Dav2PreprocessContract.OUTPUT_WIDTH - 1) / (WIDTH - 1)
+                val x0 = sx.toInt()
+                val x1 = minOf(x0 + 1, Dav2PreprocessContract.OUTPUT_WIDTH - 1)
+                val fx = sx - x0
+                val top = input[y0 * Dav2PreprocessContract.OUTPUT_WIDTH + x0] * (1 - fx) +
+                    input[y0 * Dav2PreprocessContract.OUTPUT_WIDTH + x1] * fx
+                val bottom = input[y1 * Dav2PreprocessContract.OUTPUT_WIDTH + x0] * (1 - fx) +
+                    input[y1 * Dav2PreprocessContract.OUTPUT_WIDTH + x1] * fx
+                output[row * WIDTH + column] = (top * (1 - fy) + bottom * fy).toFloat()
+            }
+        }
+    }
+
     private data class DepthReceipt(val stage: String, val sensorTimestampNanos: Long,
-        val executeMs: Double, val checksum: Int)
+        val executeMs: Double, val geometryStatus: String, val checksum: Int)
+
+    private data class RuntimeStats(val allocated: Long, val gcCount: Long, val gcTimeMs: Long) {
+        companion object {
+            fun capture() = RuntimeStats(stat("art.gc.bytes-allocated"), stat("art.gc.gc-count"), stat("art.gc.gc-time"))
+            private fun stat(name: String) = Debug.getRuntimeStat(name)?.toLongOrNull() ?: -1L
+        }
+    }
 
     private class YuvFramePool(capacity: Int, width: Int, height: Int) {
         private val available = ArrayDeque<OwnedYuv420Frame>()

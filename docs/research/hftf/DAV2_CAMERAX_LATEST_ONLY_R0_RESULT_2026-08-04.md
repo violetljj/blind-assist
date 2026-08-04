@@ -34,3 +34,5 @@ The earlier official tensor started from a frozen 640x480 RGB file, so this is a
 - Bundle SHA-256: `564D10EC1912983C099C4700490EA250015022F7451C850F47203DD4032755E3`
 
 Next gate: optimize geometry without changing its output, then run the complete bright-screen CameraX pipeline continuously for ten minutes.
+
+That gate subsequently passed; see [CameraX sustained ten-minute R0](DAV2_CAMERAX_SUSTAINED_10MIN_R0_RESULT_2026-08-04.md). The sustained performance result still uses the non-promoted fused FP16 preprocessing arm and therefore does not change its failed strict parity terminal.

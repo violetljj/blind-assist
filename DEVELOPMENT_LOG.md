@@ -5595,3 +5595,14 @@
   synthetic noisy/invalid parity 同样通过。终态为
   `GEOMETRY_EQUIVALENT_OPTIMIZATION_R0_SUPPORTED_DEVICE_ONLY`；稀疏采样、减少迭代、
   提前停止均未执行，生产与安全 authority 不变。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。完成 600 秒亮屏
+  `CAMERAX_FULL_PIPELINE_SUSTAINED_R0`。真实 YUV CameraX 持续 8993 帧且 8993 个
+  `ImageProxy` 全关闭；2 Hz 精确链路完成 1144 次 YUV->FP16->cached QNN->depth
+  decode/resize->等价几何，最大并发 1，三槽全归还，geometry `1144 VALID/0 UNKNOWN`。
+  全链路 P50/P95/max `174.70/202.69/220.58 ms`，结果年龄 P95 `218.47 ms`；
+  thermal before/max/after `0/0/0`，非亮屏观察 0，过期结果显式
+  `UNKNOWN(EXPIRED)`。PSS endpoint 增加约 19.2 MiB，ART 全程 14 次 GC/321 ms；
+  endpoint 不单独证明无 leak slope，但无 owned resource 泄漏或延迟/温控门失败。
+  终态 `CAMERAX_FULL_PIPELINE_SUSTAINED_R0_PERFORMANCE_SUPPORTED_DEVICE_ONLY`；因使用
+  strict depth parity 已失败的 fused FP16 臂，准确率、生产和安全 promotion 继续拒绝，
+  GPU 前处理 gate 未触发。

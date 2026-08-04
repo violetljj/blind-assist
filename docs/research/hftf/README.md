@@ -318,6 +318,14 @@ finite-depth buffer，并用精确 order statistic 代替完整排序；stride�
 提前停止仍未运行。详见
 [geometry equivalent optimization R0](DAV2_GEOMETRY_EQUIVALENT_OPTIMIZATION_R0_RESULT_2026-08-04.md)。
 
+最终完成 600 秒亮屏真实 CameraX 全链路持续门：8993/8993 个 `ImageProxy` 关闭，
+1144 次完整 YUV->FP16->QNN->depth decode/resize->等价几何，最大并发 1、三槽全归还，
+thermal before/max/after 均为 0，非亮屏观察为 0。全链路 P50/P95/max 为
+`174.70/202.69/220.58 ms`，结果年龄 P95 `218.47 ms`，paced 段约 `1.88 Hz`。
+这一结论只支持调度、性能和持续性；链路仍使用严格 depth parity 已失败的 fused FP16
+实验臂，不得用持续门救活准确率或生产晋级。GPU CPU gate 仍未触发。详见
+[CameraX sustained ten-minute R0](DAV2_CAMERAX_SUSTAINED_10MIN_R0_RESULT_2026-08-04.md)。
+
 随后新增的 class-free clearance 侧车把 RGB、manifest 时钟、三带 scale anchor 和
 UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得到 5/5：80 个评价帧中
 78 个 paired-valid，MAE `0.0981 m`、一致率 `93.77%`、false-clear `4.95%`。绝对
