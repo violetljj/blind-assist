@@ -1,0 +1,55 @@
+{
+  "schema": "blindassist_dav2_metric_android_pipeline_performance_r0_protocol_v1",
+  "date": "2026-08-04",
+  "status": "LOCKED_BEFORE_SUSTAINED_EXECUTION",
+  "research_question": "What exact-output parity and sustained end-to-end cost does the frozen DA V2 Metric Hypersim ViT-S scale-student pipeline have on SM-S9280?",
+  "no_rescue_rule": "Do not tune model, input shape, stress samples, margins, percentiles, RANSAC gates, or student weights after reading device outcomes.",
+  "model": {
+    "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+    "input_shape_nchw": [1, 3, 518, 686],
+    "onnx_sha256": "870339770E21675830F7E2020983DDA058752D237C8B86951ED1E6F9A6243D01",
+    "tflite_fp32_sha256": "0277FBC74C73D95433B43BEE9D61DD08F1E79B67A2F64A6DA871F3A23FBED8E3"
+  },
+  "parity_corpus": {
+    "rgb_scenarios": ["clean", "gaussian_sigma3", "motion_horizontal_length17"],
+    "depth_boundary_scenarios": [
+      "clean",
+      "lower_roi_full_width_bottom_50pct_nan",
+      "local_horizontal_linear_amplitude20pct_polarity_p1"
+    ],
+    "neural_gates_m": {
+      "maximum_mean_absolute_error": 0.002,
+      "maximum_p95_absolute_error": 0.005,
+      "maximum_absolute_error": 0.02
+    },
+    "cross_language_geometry_gates": {
+      "maximum_relative_height_absolute_error": 0.10,
+      "maximum_student_scale_absolute_error": 0.10,
+      "status_must_match": true
+    }
+  },
+  "device": {
+    "serial": "R5CX10M8Y8X",
+    "model": "SM-S9280",
+    "soc": "SM8650",
+    "android": 16
+  },
+  "runtime_arms": [
+    "onnxruntime_android_1_26_cpu_4_threads",
+    "litert_1_4_2_fp32_cpu_4_threads",
+    "existing_qairt_2_47_htp_v75_exclusive_evidence"
+  ],
+  "sustained_run": {
+    "required_duration_seconds": 600,
+    "stages": ["preprocess", "da", "postprocess", "ransac_features", "student", "total"],
+    "latency_statistics": ["p50", "p95", "max"],
+    "throughput": "completed_full_pipeline_frames_per_second",
+    "memory": ["pss_kib", "java_heap_used_bytes", "native_heap_allocated_bytes"],
+    "thermal": {
+      "instrumentation_interval_seconds": 30,
+      "host_interval_seconds": 5,
+      "required_sources": ["PowerManager.currentThermalStatus", "dumpsys thermalservice", "dumpsys battery", "dumpsys meminfo"]
+    }
+  },
+  "claim_ceiling": "DEVICE_DEPLOYMENT_AND_PERFORMANCE_DIAGNOSTIC_ONLY_NO_ACCURACY_SAFETY_OR_PRODUCTION_AUTHORITY"
+}
