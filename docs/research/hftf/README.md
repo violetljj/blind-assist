@@ -335,6 +335,12 @@ cubic 严格复刻官方 float32 系数、四 tap 顺序与 float64 中间运算
 快速臂只保留作诊断；全黑后摄帧仍作为退化输入拒绝，前摄 geometry 无 metric authority。
 详见 [CameraX layered depth parity R0](DAV2_CAMERAX_DEPTH_PARITY_R0_RESULT_2026-08-04.md)。
 
+同日把上述已通过 parity 的 canonical 链路封装为独立可启动的设备体验 App，未接入
+默认 BlindAssist 决策路径。`SM-S9280 / SM8650` 真机冷启动后，后置相机、HTP 深度
+热力图和状态面板均正常运行；现场帧显示全链路 `92.8 ms`、刷新 `2.1 Hz`、thermal
+`0`。该结果仅说明设备体验版可用，不授予跨设备、准确率、生产或安全权限。详见
+[DAV2 Depth Experience App R0](DAV2_DEPTH_EXPERIENCE_APP_R0_RESULT_2026-08-04.md)。
+
 随后新增的 class-free clearance 侧车把 RGB、manifest 时钟、三带 scale anchor 和
 UNKNOWN 门控接成完整因果链，并在 120 帧已消费回放上重新得到 5/5：80 个评价帧中
 78 个 paired-valid，MAE `0.0981 m`、一致率 `93.77%`、false-clear `4.95%`。绝对

@@ -5606,3 +5606,16 @@
   终态 `CAMERAX_FULL_PIPELINE_SUSTAINED_R0_PERFORMANCE_SUPPORTED_DEVICE_ONLY`；因使用
   strict depth parity 已失败的 fused FP16 臂，准确率、生产和安全 promotion 继续拒绝，
   GPU 前处理 gate 未触发。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。完成独立可启动的
+  `:hftf-depth-demo-app` 设备体验版，不改默认 BlindAssist App 或安全决策路径。
+  Demo 复用 canary 的 canonical Native FP32 OpenCV/NEON、严格 IEEE ties-to-even
+  FP32→FP16 与 QNN cached-context 源码，构建时打包本地 SM8650 DLC 和 QNN runtime；
+  CameraX 使用真实后置 `640x480 YUV_420_888`、`KEEP_ONLY_LATEST`、单任务与 nominal
+  2 Hz 节流，并展示 `343x259`、按帧内有效深度 5th/95th percentile 动态着色的
+  红→黄→青→深蓝热力图；默认采用左 RGB/右纯热力图对照，并可切换全屏叠加或
+  RGB-only，同时显示中心/近处深度、全链路延迟、刷新率和 thermal 状态。
+  `SM-S9280 / SM8650` 上 debug APK 构建、安装、授权与 cold start 成功；实拍画面显示
+  中心约 `1.67 m`、近处约 `0.70 m`、全链路 `92.8 ms`、刷新 `2.1 Hz`、thermal `0`，
+  Activity 保持 resumed 且无 fatal exception。终态仅为
+  `DEPTH_EXPERIENCE_APP_R0_AVAILABLE_DEVICE_ONLY`；跨设备、场景准确率、无障碍、发布
+  签名、生产与安全 authority 均未建立。
