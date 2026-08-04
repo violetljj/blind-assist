@@ -58,7 +58,8 @@ class Dav2MetricAndroidParityTest {
                         session.run(mapOf("image" to tensor)).use { result ->
                             Log.i(TAG, "ort_complete=$scenario")
                             val output = result[0] as OnnxTensor
-                            FloatArray(output.floatBuffer.capacity()) { output.floatBuffer[it] }
+                            val values = output.floatBuffer
+                            FloatArray(values.capacity()) { values[it] }
                         }
                     }
                     val metrics = errorMetrics(actual, reference).put("scenario", scenario)

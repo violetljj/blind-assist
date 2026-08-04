@@ -1,0 +1,146 @@
+{
+  "schema": "blindassist_dav2_metric_android_pipeline_performance_r0_result_v1",
+  "date": "2026-08-04",
+  "protocol": "DAV2_METRIC_ANDROID_PIPELINE_PERFORMANCE_R0_PROTOCOL_2026-08-04.json",
+  "status": "COMPLETE_DEVICE_DIAGNOSTIC",
+  "decision": "REJECT_EXACT_CPU_ARMS_FOR_REAL_TIME_CAMERA_RUNTIME; RETAIN_QAIRT_HTP_AS_A_SEPARATE_PERIODIC_DA_CANDIDATE_PENDING_MATCHED_FULL_PIPELINE_BRIGHT_SCREEN_THERMAL_TEST",
+  "device": {
+    "manufacturer": "Samsung",
+    "model": "SM-S9280",
+    "physical_serial": "R5CX10M8Y8X",
+    "soc": "SM8650",
+    "android": 16,
+    "adb_transport": "wireless_192.168.5.4:46453"
+  },
+  "model_identity": {
+    "name": "Depth Anything V2 Metric Hypersim ViT-S",
+    "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+    "input_shape_nchw": [1, 3, 518, 686],
+    "onnx_sha256": "870339770E21675830F7E2020983DDA058752D237C8B86951ED1E6F9A6243D01",
+    "tflite_fp32_sha256": "0277FBC74C73D95433B43BEE9D61DD08F1E79B67A2F64A6DA871F3A23FBED8E3",
+    "host_onnx_tflite_parity_m": {
+      "mean_absolute_error": 8.487614998439085e-7,
+      "p95_absolute_error": 2.0265579223632812e-6,
+      "maximum_absolute_error": 6.318092346191406e-6
+    }
+  },
+  "android_parity": {
+    "result": "PASS_ALL_FROZEN_GATES",
+    "neural_pytorch_reference_vs_android_ort": [
+      {
+        "scenario": "clean",
+        "mean_absolute_error_m": 0.0002773040288640927,
+        "p95_absolute_error_m": 0.0007066726684570312,
+        "maximum_absolute_error_m": 0.005645751953125
+      },
+      {
+        "scenario": "gaussian_sigma3",
+        "mean_absolute_error_m": 0.00023714118172547352,
+        "p95_absolute_error_m": 0.0005872249603271484,
+        "maximum_absolute_error_m": 0.0014510154724121094
+      },
+      {
+        "scenario": "motion_horizontal_length17",
+        "mean_absolute_error_m": 0.0002234518537713306,
+        "p95_absolute_error_m": 0.0005679130554199219,
+        "maximum_absolute_error_m": 0.0015332698822021484
+      }
+    ],
+    "downstream_python_reference_vs_android": [
+      {
+        "scenario": "clean",
+        "status": "VALID",
+        "relative_height_absolute_error": 0.0010241940200934607,
+        "student_scale_absolute_error": 0.00014822765721866915
+      },
+      {
+        "scenario": "lower_roi_full_width_bottom_50pct_nan",
+        "status": "VALID",
+        "relative_height_absolute_error": 0.01486888160714872,
+        "student_scale_absolute_error": 0.0049468265260068645
+      },
+      {
+        "scenario": "local_horizontal_linear_amplitude20pct_polarity_p1",
+        "status": "VALID",
+        "relative_height_absolute_error": 0.0013466676274020983,
+        "student_scale_absolute_error": 0.0008818729591946184
+      }
+    ]
+  },
+  "short_runtime_arms": {
+    "onnxruntime_android_1_26_cpu_4threads": {
+      "measured_runs": 10,
+      "da_latency_ms": {"p50": 1333.3886710000002, "p95": 1767.96692385, "max": 1773.062916},
+      "processing_fps": 0.6951729910010869,
+      "pss_after_runs_kib": 750387,
+      "terminal": "REJECT_REAL_TIME_RUNTIME"
+    },
+    "litert_1_4_2_fp32_cpu_4threads": {
+      "measured_runs": 10,
+      "da_latency_ms": {"p50": 6238.700701, "p95": 22466.02775134998, "max": 31884.692792},
+      "processing_fps": 0.10983887386963477,
+      "pss_after_runs_kib": 570918,
+      "terminal": "REJECT_REAL_TIME_RUNTIME"
+    },
+    "nnapi": {
+      "terminal": "NOT_COMPARABLE",
+      "reason": "The exact FP32 graph did not finish the bounded setup/run attempt; no latency number is reported."
+    }
+  },
+  "sustained_exact_cpu_pipeline": {
+    "runtime": "onnxruntime-android-1.26.0-cpu-4threads",
+    "capture_condition": "fixed_rgb_corpus_no_camerax",
+    "display_condition": "user_reported_locked_during_run; post_run_dumpsys_wakefulness_dozing_and_keyguard_showing; display_state_was_not_sampled_during_each_frame",
+    "duration_target_seconds": 600,
+    "duration_actual_seconds": 607.797,
+    "completed_frames": 82,
+    "valid_pipeline_frames": 82,
+    "processing_fps": 0.13491346617373892,
+    "stage_latency_ms": {
+      "preprocess": {"p50": 2383.0850765, "p95": 8139.734191350001, "max": 9812.123325},
+      "da": {"p50": 2330.5462225, "p95": 7221.00094505, "max": 7547.837443},
+      "postprocess": {"p50": 3.1412495, "p95": 4.22249975, "max": 19.95474},
+      "ransac_features": {"p50": 179.9987755, "p95": 1500.2270561, "max": 1547.692603},
+      "student": {"p50": 0.022344, "p95": 0.08694840000000002, "max": 0.209479},
+      "total": {"p50": 5767.577965500001, "p95": 14863.27275695, "max": 17709.706758}
+    },
+    "memory": {
+      "instrumentation_pss_before_kib": 180009,
+      "instrumentation_pss_after_kib": 745961,
+      "instrumentation_pss_max_30s_sample_kib": 768318,
+      "host_pss_max_kib": 769781,
+      "native_heap_allocated_after_bytes": 742413328
+    },
+    "thermal_and_battery": {
+      "host_sample_count": 109,
+      "host_sample_span_seconds": 629.546,
+      "maximum_thermal_status": 0,
+      "hal_temperature_c": {
+        "AP": {"first": 39.7, "last": 40.8, "max": 49.5},
+        "BAT": {"first": 36.1, "last": 36.4, "max": 36.7},
+        "SKIN": {"first": 37.0, "last": 37.1, "max": 39.0}
+      },
+      "battery_level_percent": {"first": 100, "last": 98},
+      "power_connected": false
+    },
+    "terminal": "REJECT_EXACT_CPU_FULL_PIPELINE_FOR_REAL_TIME_CAMERA_RUNTIME"
+  },
+  "separate_existing_accelerator_evidence": {
+    "source": "scripts/research/hftf/DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.json",
+    "backend": "QAIRT 2.47.0 HTP V75",
+    "exact_518x686_da_only_cached_burst_mean_ms": 277.917,
+    "exact_518x686_da_only_accelerator_mean_ms": 274.562,
+    "ort_vs_htp_mean_relative_absolute_difference": 0.006309903271867759,
+    "interpretation": "DEPLOYMENT_CANDIDATE_ONLY_NOT_A_MATCHED_FULL_PIPELINE_OR_SUSTAINED_BRIGHT_SCREEN_RESULT"
+  },
+  "evidence": {
+    "artifact_root": "artifacts.local/evidence/hftf/dav2-android-performance-r0-20260804-155524",
+    "raw_bundle_result_sha256": "EEEC2787841ED2F26A75FF1BA876618CEF6C2D107AB7DB9B202E4770610601F2",
+    "instrument_parity_sha256": "9343CCBD9D56C0B45F24A0DDD73128F2AF23865BA83DF2D3AF21CD8BFC1A9BFF",
+    "instrument_onnx_short_sha256": "94802F3C0C4BCC13FDDA7964B0DB38AE2CE9C10BF7D135A0DD29D43843492B1A",
+    "instrument_tflite_short_sha256": "F665DC0B89979F10B5B250515F8C37B2732DA572313D13CBDD2F9ACCDD1832B6",
+    "instrument_sustained_sha256": "D9C929B4DD0F383156F23E1CEB2C8A4F3AE0E5AD30845FD018F06941238A7B4D",
+    "host_thermal_memory_sha256": "89F1B4A8347F39C465D2EB2EB37AF995E21CBDCE8FE68412483FB2699FF6E2DC"
+  },
+  "claim_ceiling": "DEVICE_DEPLOYMENT_AND_PERFORMANCE_DIAGNOSTIC_ONLY_NO_CAMERAX_CAPTURE_ENERGY_ACCURACY_SAFETY_OR_PRODUCTION_AUTHORITY"
+}
