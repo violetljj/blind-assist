@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist_camera_conditioned_scale_student_offline_stress_committed_result_v1",
+  "date": "2026-08-04",
+  "status": "OFFLINE_STRESS_COMPLETE_CONSUMED_SYNTHETIC_ONLY",
+  "model_id": "CAMERA_CONDITIONED_SCALE_STUDENT_R0_FINAL_5P",
+  "frozen_model_refit_or_retraining": false,
+  "cached_depth": {
+    "record_count": 330,
+    "parent_count": 10,
+    "scenario_count": 47,
+    "clean": {"known_coverage": 0.990909090909091, "clearance_mae_m": 0.10460765133806667, "false_clear_rate": 0.0101010101010101},
+    "global_da_scale_drift": {"tested_fraction": [-0.4, 0.4], "worst_clearance_mae_m": 0.10748474168499496, "conclusion": "PURE_GLOBAL_SCALE_DRIFT_MOSTLY_CORRECTED"},
+    "local_geometry": {"bandwise_20_percent_worst_accepted_bad_rate": 0.5151515151515151, "conclusion": "LOCAL_GEOMETRY_NOT_CORRECTED"},
+    "full_width_lower_roi_occlusion": {
+      "occluded_25_percent": {"known_coverage": 0.9939393939393939, "clearance_mae_m": 0.15986891702462835, "false_clear_rate": 0.01823442760942761},
+      "occluded_50_percent": {"known_coverage": 0.9757575757575758, "clearance_mae_m": 0.3211052591817968, "false_clear_rate": 0.12312408474811143},
+      "occluded_75_percent": {"known_coverage": 0.9272727272727274, "clearance_mae_m": 0.6531705245173864, "false_clear_rate": 0.3435992421865614}
+    }
+  },
+  "rgb_second_layer": {
+    "record_count": 50,
+    "parent_count": 10,
+    "scenario_count": 25,
+    "clean": {"known_coverage": 1.0, "clearance_mae_m": 0.09684886132209199, "false_clear_rate": 0.008888888888888889},
+    "gaussian_sigma_3": {"known_coverage": 0.86, "clearance_mae_m": 0.37798457500429217, "false_clear_rate": 0.16111111111111112, "accepted_bad_rate": 0.32},
+    "motion_blur_17": {"known_coverage": 1.0, "clearance_mae_m": 0.19214672114085174, "false_clear_rate": 0.05333333333333333, "accepted_bad_rate": 0.18},
+    "gamma_2_4": {"known_coverage": 1.0, "clearance_mae_m": 0.09954895528944106, "false_clear_rate": 0.006666666666666666},
+    "exposure_0_25": {"known_coverage": 1.0, "clearance_mae_m": 0.12321315021654249, "false_clear_rate": 0.017777777777777778},
+    "geometry_canary_conclusion": "CROP_ROLL_AND_PITCH_MISMATCHES_ARE_MOSTLY_ACCEPTED_AND_REQUIRE_EXTERNAL_IDENTITY_GATES"
+  },
+  "provisional_capture_contract": {
+    "camera_height": "MEASURED_UNCERTAINTY_AT_MOST_5_CM; offline accepted predictions did not degrade through plus_or_minus_10_cm, but minus errors crossed the frozen 0.8 m admission bound for short synthetic cameras and do not authorize a real-phone relaxation",
+    "focal_length": "plus_or_minus_5_percent_cached_K perturbations were stable, but exact camera/intrinsics identity remains required",
+    "pitch": "NO_NUMERIC_ALLOWANCE_ESTABLISHED; bind mount identity and gravity/IMU receipt or return UNKNOWN",
+    "crop_rotation": "EXACT_CAMERAX_CROP_ROTATION_AND_INTRINSICS_COORDINATE_IDENTITY_REQUIRED",
+    "ground_support": "PROVISIONAL_MINIMUM_75_PERCENT_UNOCCLUDED_FULL_WIDTH_LOWER_ROI; otherwise UNKNOWN pending real-phone confirmation",
+    "image_quality": "INDEPENDENT_BLUR_QUALITY_GATE_REQUIRED; plane residual and support are not sufficient",
+    "unknown": "return UNKNOWN on identity mismatch, quality-gate failure, insufficient lower-ROI support, invalid height receipt, rejected ground plane, or scale admission failure"
+  },
+  "protocol_sha256": "33C344C4DEC84EEBCFDF8EB9330F2B3EDD7850D000C7BD00E7B8EEE38F82EBD0",
+  "cached_result_sha256": "50DD0991B8F9E2DB227155F8580FEFC92C099C48C6EBE6980B9424D6D270B40D",
+  "rgb_result_sha256": "D4D92C225BFF97C483AD845D366C2422FCB8D26B3FC63F1985D527679E82C72A",
+  "claim_ceiling": "OFFLINE_SYNTHETIC_ROBUSTNESS_DIAGNOSTIC_AND_PROVISIONAL_PHONE_CAPTURE_CONTRACT_ONLY",
+  "production_or_safety_claim_allowed": false
+}

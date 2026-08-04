@@ -1,0 +1,61 @@
+{
+  "schema": "blindassist_scale_free_traversability_r2_counterexample_audit_committed_result_v1",
+  "date": "2026-08-04",
+  "visit_id": "484248",
+  "video_id": "48458617",
+  "status": "COUNTEREXAMPLE_MECHANISM_AUDIT_COMPLETE_DEVELOPMENT_ONLY",
+  "immutable_source_terminal": "SCALE_FREE_TRAVERSABILITY_R2_NOT_EVALUABLE_SOURCE_SUPPORT",
+  "mechanism_conclusion": "HANDHELD_ORIENTATION_PLUS_CLOSE_PLANAR_GEOMETRY_AND_SPATIAL_RANK_ERROR_NOT_GLOBAL_SCALE_OR_NEAREST_FILL",
+  "orientation": {
+    "official_left_orientation_frames": 150,
+    "frame_count": 150,
+    "pose_supported_frames": 147,
+    "stored_columns_represent_physical_left_center_right": false,
+    "explanatory_upright_counterfactual": {
+      "recommendation_coverage_before": 0.22413793103448276,
+      "recommendation_coverage_after": 0.8260869565217391,
+      "directional_accuracy_before": 0.38461538461538464,
+      "directional_accuracy_after": 0.8947368421052632,
+      "authority": "EXPLANATORY_ONLY_NEVER_REPLACES_R2"
+    }
+  },
+  "scene_geometry": {
+    "auditable_frames": 148,
+    "large_plane_frames": 132,
+    "near_plane_frames": 119,
+    "vertical_dominant_plane_frames": 123,
+    "same_plane_all_bands_frames": 72
+  },
+  "source_and_fill": {
+    "source_valid_fraction_median": 0.954864501953125,
+    "cross_band_nearest_fill_fraction_median": 0.005673841206781864,
+    "global_vs_band_local_order_agreement_fraction": 1.0,
+    "conclusion": "SOURCE_SPARSITY_AND_CROSS_BAND_NEAREST_FILL_ARE_NOT_PRIMARY_MECHANISMS"
+  },
+  "da_vs_sensor": {
+    "global_scale_median": 0.8056614725681659,
+    "post_scale_abs_rel_median_frame_macro": 0.07995097000297778,
+    "post_scale_abs_rel_p90_frame_macro": 0.2535191610410005,
+    "spearman_spatial_rank_median": 0.8081551037123,
+    "per_frame_band_order_agreement_fraction": 0.4797297297297297,
+    "conclusion": "GLOBAL_SCALE_IS_NOT_THE_DIRECTIONAL_FAILURE; LOCAL_SPATIAL_ORDER_IS"
+  },
+  "ambiguous_proxy_counts": {
+    "reasonable": 39,
+    "wrong_refusal": 45,
+    "over_answer": 43,
+    "other_or_unknown": 23
+  },
+  "route_decision": {
+    "unrectified_input": "DISABLE",
+    "current_research_role": "DISAGREEMENT_DETECTOR_ONLY_WITH_ORIENTATION_RECEIPT",
+    "auxiliary_output": false,
+    "fallback": false,
+    "production_or_safety": false
+  },
+  "protocol_sha256": "68E4EB1015E86F38FD7A2AE6216B4CC8C7AB02B5DCF97110FAC023E58FB9D5B6",
+  "full_result_sha256": "C59A601AB3F347CA66DB609599312FF14DC36FB748FCE9591D65598C99263D9A",
+  "frame_ledger_sha256": "08D5B45D4389FCC184CEB39B97C5B77861FDB65E94F37C6D22DA7181279E5FA7",
+  "representative_counterexamples_sha256": "743F5CD92A943B06E1CEDC104B8837051358F5DEA4675C7B8BD40A0E1621300C",
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_MECHANISM_ATTRIBUTION_AND_PAPER_FAILURE_CASE_ONLY"
+}

@@ -283,6 +283,22 @@ false-clear `.0101`、temporal delta MAE `.0518 m`，且 10/10 parents 均优于
 个别 parent 仍超局部门槛，真实手机 exact-timestamp depth cohort 也尚不可评价。因此不授权
 ToF 采购、默认 App 接入、实时提醒或安全主张；下一门只能是另冻的固定高度/内参真机 shadow。
 
+同日完成的[离线压力测试](../hftf/CAMERA_CONDITIONED_SCALE_STUDENT_OFFLINE_STRESS_R0_RESULT_2026-08-04.md)
+没有重训或搜索。330 帧 cached-depth 结果显示学生能把单一 DA 全局尺度漂移 `±40%`
+基本抵消，但不能修复局部 geometry：20% bandwise 形变的 accepted-bad 最高 `51.5%`。
+50 帧 frozen-DA RGB 重放又显示 Gaussian `sigma=3` 时 coverage 仍有 `.86`，却产生
+`.378 m` MAE 与 `.161` false-clear；下部 ROI 全宽遮挡 50% 时 coverage 仍有 `.976`，
+MAE/false-clear 已到 `.321 m/.123`。因此真机合同必须在学生外绑定 camera/intrinsics、
+CameraX crop/rotation、mount/gravity、ground support 与独立 blur quality gate；当前只保留
+严格外部门控的 mechanism candidate，不授权 App 或安全输出。
+
+[ARKitScenes 484248 反例审计](../hftf/SCALE_FREE_TRAVERSABILITY_R2_ARKITSCENES_COUNTEREXAMPLE_AUDIT_R0_RESULT_2026-08-04.md)
+确认 R2 失败不是 global scale 或 nearest-fill 主导：150/150 帧按官方 pose 都需顺时针
+90 度矫正，132/148 帧有大平面，完整 band 排序仅 `.480` 一致。解释性 orientation
+反事实把 coverage/方向一致率从 `.224/.385` 提到 `.826/.895`，但不改写原 R2
+`NOT_EVALUABLE`。scale-free 不作为辅助输出或 fallback；仅在 orientation receipt 后保留为
+Development disagreement detector，未矫正输入直接关闭。
+
 ## 当前决定
 
 2026-08-01，当前唯一算法主线切换为

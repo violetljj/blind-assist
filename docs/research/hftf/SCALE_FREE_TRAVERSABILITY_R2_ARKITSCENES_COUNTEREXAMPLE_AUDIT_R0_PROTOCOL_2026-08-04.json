@@ -1,0 +1,103 @@
+{
+  "schema": "blindassist_scale_free_traversability_r2_counterexample_audit_protocol_v1",
+  "protocol_id": "SCALE_FREE_TRAVERSABILITY_R2_ARKITSCENES_COUNTEREXAMPLE_AUDIT_R0",
+  "date": "2026-08-04",
+  "status": "FROZEN_BEFORE_COUNTEREXAMPLE_MECHANISM_OUTPUT_EXECUTION",
+  "research_mode": "REVERSIBLE_EXPLORATION_DEVELOPMENT_STANDARD",
+  "research_question": "Why does the unchanged scale-free three-band operator fail on ARKitScenes visit 484248 despite strong aggregate source-characterization diagnostics?",
+  "source_result": {
+    "path": "artifacts.local/evidence/hftf/scale-free-traversability-r2-arkitscenes-rgbd-consumed-20260804/result.json",
+    "sha256": "1026E3E3C2BABF805D99F4CCA481725EE1D745848662999D44D5F8960B5E81F6",
+    "frame_ledger_sha256": "BD65AE6114786C7CF0C5F75D80BF6EE1B9F94DAA4F608F43B2C74F26F0A1174E",
+    "immutable_terminal": "SCALE_FREE_TRAVERSABILITY_R2_NOT_EVALUABLE_SOURCE_SUPPORT"
+  },
+  "cohort": {
+    "visit_id": "484248",
+    "video_id": "48458617",
+    "frame_count": 150,
+    "role": "PROJECT_CONSUMED_DEVELOPMENT_COUNTEREXAMPLE",
+    "comparison_context": "the other 19 consumed Development visits may be summarized only as a fixed reference distribution"
+  },
+  "candidate": {
+    "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+    "operator_changes": false,
+    "threshold_search": false,
+    "forbidden_changes": [
+      "ROI or left-center-right bands",
+      "row or band percentile",
+      "five-frame causal window",
+      "minimum margin or winner count",
+      "truth source fraction or reconstruction",
+      "frame or visit selection"
+    ]
+  },
+  "truth_reconstruction": {
+    "primary": "unchanged global nearest confidence-2 sensor return in image coordinates",
+    "diagnostic_comparator": "nearest confidence-2 return constrained to the same frozen image band",
+    "comparator_authority": "artifact-attribution diagnostic only; it cannot replace or rescue the primary reference",
+    "confidence_value": 2,
+    "valid_depth_m": [0.25, 6.0],
+    "minimum_source_valid_fraction": 0.5
+  },
+  "mechanism_diagnostics": {
+    "image_orientation": {
+      "question": "Do stored image columns represent physical left-center-right, or has handheld/device orientation rotated gravity into the image x axis?",
+      "gravity_projection_source": "trajectory-derived world positive-y expressed in the camera frame and projected with matched intrinsics",
+      "report_gravity_angle_in_stored_image_degrees": true,
+      "orientation_normalized_90_degree_counterfactual": "mechanism explanation only; never substitutes for the immutable R2 ledger or changes its terminal"
+    },
+    "pose": {
+      "source": "lowres_wide.traj nearest timestamp",
+      "maximum_timestamp_difference_s": 0.05,
+      "world_up_axis": "positive_y",
+      "report_absolute_optical_axis_tilt_degrees": true
+    },
+    "dominant_plane": {
+      "roi_y": [0.3, 0.9],
+      "roi_x": [0.05, 0.95],
+      "sample_stride_px": 2,
+      "ransac_seed": 20260804,
+      "ransac_iterations": 200,
+      "inlier_threshold_m": 0.05,
+      "minimum_points": 200,
+      "large_plane_roi_inlier_fraction": 0.35,
+      "same_plane_minimum_inlier_fraction_each_band": 0.2,
+      "horizontal_normal_gravity_alignment_minimum": 0.906307787,
+      "vertical_normal_gravity_alignment_maximum": 0.422618262,
+      "near_plane_median_depth_m_maximum": 1.5
+    },
+    "nearest_fill": {
+      "report_fraction_of_filled_pixels_borrowing_a_source_from_another_band": true,
+      "report_global_vs_band_local_score_order_and_decision_disagreement": true
+    },
+    "da_vs_sensor": {
+      "paired_pixels": "source confidence-2 pixels in the frozen ROI",
+      "global_scale_fit": "median log sensor depth minus log DA depth",
+      "report": [
+        "post-scale median and p90 absolute relative error",
+        "Spearman spatial-rank correlation",
+        "per-frame and five-frame band ordering agreement",
+        "directional and opposite-direction disagreement"
+      ]
+    },
+    "ambiguous": {
+      "reasonable_proxy": "candidate AMBIGUOUS and reconstructed truth AMBIGUOUS",
+      "wrong_refusal_proxy": "candidate AMBIGUOUS while reconstructed truth is directional",
+      "over_answer_proxy": "candidate directional while reconstructed truth is AMBIGUOUS",
+      "note": "all three are reconstructed-reference diagnostics, not actionability or safety labels"
+    }
+  },
+  "outputs": [
+    "frame_mechanism_ledger.jsonl",
+    "result.json",
+    "representative_counterexamples.png"
+  ],
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_MECHANISM_ATTRIBUTION_AND_PAPER_FAILURE_CASE_ONLY",
+  "allowed_route_decisions": [
+    "AUXILIARY_OUTPUT_ONLY",
+    "FALLBACK_ONLY",
+    "DISAGREEMENT_DETECTOR_ONLY",
+    "DISABLE"
+  ],
+  "production_or_safety_claim_allowed": false
+}

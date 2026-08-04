@@ -5533,3 +5533,21 @@
   重跑，不能烧毁 D45。default App APK hash 仍为
   `afa7a774b9f47074b2bf2e59755e712e92421484140789513578b32b68f0f149`；
   当前无 ADB 设备，科学终态、主线、默认 App 与 D35 均不变。
+- 时间：2026-08-04（Asia/Hong_Kong）；执行者：Codex。完成 ARKitScenes visit
+  `484248` scale-free 反例机制审计与 sealed camera-conditioned scale student R0
+  离线压力测试，全程未调 margin/percentile/window、未重训或 refit。反例审计确认
+  150/150 帧按官方 pose 均为需顺时针 90 度矫正的 `left` orientation；132/148
+  帧含大平面，source confidence-2 覆盖中位数 `.9549`、跨 band 最近邻借点中位数
+  仅 `.0057`，而 DA/sensor 完整 band 排序仅 `.4797`。解释性 upright 反事实把
+  coverage/方向一致率从 `.2241/.3846` 提到 `.8261/.8947`，但原 R2
+  `NOT_EVALUABLE` 保持。scale-free 不作为辅助输出或 fallback，仅在 orientation
+  receipt 后保留 Development disagreement detector；未矫正输入关闭。冻结学生
+  在 330 帧 × 47 cached-depth 场景中能抵消 DA 全局尺度 `±40%`，但 20% bandwise
+  局部形变 accepted-bad 最高 `.5152`；全宽 lower ROI 遮挡 50% 仍有 `.9758`
+  coverage，却达到 `.3211 m/.1231` MAE/false-clear。50 帧 × 25 RGB→冻结 DA
+  场景中 Gaussian `sigma=3` coverage `.86`、MAE `.3780 m`、false-clear `.1611`，
+  证明现 plane residual/支持不能代替独立 blur 与 ground-support gate。产出 provisional
+  phone capture contract：高度不确定度 `<=5 cm`、严格 camera/intrinsics/crop/rotation/
+  mount identity、至少 75% 全宽 lower-ROI support、独立 blur quality gate，否则
+  `UNKNOWN`；pitch 数值范围仍待真实手机确认。20 个 focused tests、语法、JSON/
+  ledger 数量与 protocol hash 复核通过；默认 App、生产与安全权限不变。
