@@ -157,4 +157,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.compose.foundation)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(project(":core:assist"))
+    androidTestImplementation(project(":core:device"))
+    androidTestImplementation(project(":core:vision"))
 }

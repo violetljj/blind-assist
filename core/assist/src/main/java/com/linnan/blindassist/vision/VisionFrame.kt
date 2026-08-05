@@ -9,6 +9,8 @@ enum class FrameClockDomain {
     CAMERA_HARDWARE_UNMAPPED,
     /** Monotonic on an external device; not comparable with Android until explicitly synchronized. */
     EXTERNAL_DEVICE_MONOTONIC_UNMAPPED,
+    /** External monotonic timestamps mapped to Android elapsed realtime by bounded UDP midpoint sync. */
+    EXTERNAL_DEVICE_MONOTONIC_MAPPED_TO_ANDROID,
     /** A deterministic offline timeline; never claim that it is a live camera clock. */
     REPLAY_TIMELINE
 }
@@ -27,6 +29,35 @@ data class RangingSample(
     }
 }
 
+/** Frame-bound acquisition timing. All Android fields use elapsed-realtime nanoseconds. */
+data class ExternalFrameTiming(
+    val deviceCaptureNs: Long,
+    val deviceJpegReadyNs: Long,
+    val deviceSendStartNs: Long?,
+    val androidReadStartNs: Long,
+    val androidFirstByteNs: Long,
+    val androidJpegCompleteNs: Long,
+    val androidDecodeStartNs: Long,
+    val androidDecodeCompleteNs: Long,
+    val androidRgbaCompleteNs: Long,
+    val deviceMinusAndroidNs: Long?,
+    val clockSyncRttNs: Long?,
+    val clockSyncErrorBoundNs: Long?
+) {
+    init {
+        require(deviceCaptureNs >= 0L && deviceJpegReadyNs >= deviceCaptureNs)
+        require(deviceSendStartNs == null || deviceSendStartNs >= deviceJpegReadyNs)
+        require(androidReadStartNs >= 0L)
+        require(androidFirstByteNs >= androidReadStartNs)
+        require(androidJpegCompleteNs >= androidFirstByteNs)
+        require(androidDecodeStartNs >= androidJpegCompleteNs)
+        require(androidDecodeCompleteNs >= androidDecodeStartNs)
+        require(androidRgbaCompleteNs >= androidDecodeCompleteNs)
+        require(clockSyncRttNs == null || clockSyncRttNs >= 0L)
+        require(clockSyncErrorBoundNs == null || clockSyncErrorBoundNs >= 0L)
+    }
+}
+
 /** Immutable capture identity. Decision/effect time is deliberately carried separately. */
 data class FrameStamp(
     val frameId: Long,
@@ -40,7 +71,9 @@ data class FrameStamp(
         require(frameId >= 0L)
         require(capturedAtNs >= 0L && receivedAtNs >= 0L)
         require(sourceId.isNotBlank() && coordinateFrame.isNotBlank())
-        if (clockDomain == FrameClockDomain.ANDROID_ELAPSED_REALTIME) {
+        if (clockDomain == FrameClockDomain.ANDROID_ELAPSED_REALTIME ||
+            clockDomain == FrameClockDomain.EXTERNAL_DEVICE_MONOTONIC_MAPPED_TO_ANDROID
+        ) {
             require(receivedAtNs >= capturedAtNs) {
                 "elapsed-realtime capture cannot arrive before it was captured"
             }
@@ -56,6 +89,8 @@ interface VisionFrame : AutoCloseable {
     val frameStamp: FrameStamp? get() = null
     /** Optional ranging sample explicitly paired by the producing frame source. */
     val rangingSample: RangingSample? get() = null
+    /** Optional external acquisition/decode timing carried with the exact frame. */
+    val externalTiming: ExternalFrameTiming? get() = null
 
     override fun close()
 }

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.linnan.blindassist.vision.RgbaVisionFrame
 import com.linnan.blindassist.vision.FrameStamp
 import com.linnan.blindassist.vision.RangingSample
+import com.linnan.blindassist.vision.ExternalFrameTiming
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -14,6 +15,7 @@ class BitmapRgbaVisionFrame private constructor(
     override val rotationDegrees: Int,
     override val frameStamp: FrameStamp?,
     override val rangingSample: RangingSample?,
+    override val externalTiming: ExternalFrameTiming?,
     private val pixels: ByteBuffer
 ) : RgbaVisionFrame {
     private val closed = AtomicBoolean(false)
@@ -34,7 +36,9 @@ class BitmapRgbaVisionFrame private constructor(
             bitmap: Bitmap,
             rotationDegrees: Int = 0,
             frameStamp: FrameStamp? = null,
-            rangingSample: RangingSample? = null
+            rangingSample: RangingSample? = null,
+            externalTiming: ExternalFrameTiming? = null,
+            externalTimingFactory: (() -> ExternalFrameTiming?)? = null
         ): BitmapRgbaVisionFrame {
             require(bitmap.width > 0 && bitmap.height > 0) { "Bitmap must have positive dimensions" }
             val argbPixels = IntArray(bitmap.width * bitmap.height)
@@ -61,6 +65,7 @@ class BitmapRgbaVisionFrame private constructor(
                 rotationDegrees = rotationDegrees,
                 frameStamp = frameStamp,
                 rangingSample = rangingSample,
+                externalTiming = externalTiming ?: externalTimingFactory?.invoke(),
                 pixels = rgba
             )
         }

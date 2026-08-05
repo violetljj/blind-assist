@@ -14,7 +14,11 @@ data class FeedbackDecision(
     val triggered: Boolean,
     val reason: FeedbackReason,
     val speechTriggered: Boolean = false,
-    val vibrationTriggered: Boolean = false
+    val vibrationTriggered: Boolean = false,
+    /** Android elapsed-realtime timestamp immediately before the TTS API request. */
+    val speechRequestAtNs: Long? = null,
+    /** Android elapsed-realtime timestamp immediately before the vibration API request. */
+    val vibrationRequestAtNs: Long? = null
 ) {
     fun withDisplayReason(displayReason: FeedbackReason): FeedbackDecision {
         return if (triggered) this else copy(reason = displayReason)

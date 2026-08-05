@@ -81,6 +81,7 @@ internal class AssistFrameProcessor(
                 val sourceFrame = detectorFrame.sourceFrame
                 val eventTimeMs = when (sourceFrame?.clockDomain) {
                     FrameClockDomain.ANDROID_ELAPSED_REALTIME,
+                    FrameClockDomain.EXTERNAL_DEVICE_MONOTONIC_MAPPED_TO_ANDROID,
                     FrameClockDomain.REPLAY_TIMELINE ->
                         sourceFrame.capturedAtNs / NANOS_PER_MILLISECOND
                     FrameClockDomain.CAMERA_HARDWARE_UNMAPPED,

@@ -6,6 +6,7 @@ import android.os.SystemClock
 import androidx.camera.view.PreviewView
 import com.linnan.blindassist.util.FatalThrowables
 import com.linnan.blindassist.vision.FrameClockDomain
+import com.linnan.blindassist.vision.ExternalFrameTiming
 import com.linnan.blindassist.vision.FrameStamp
 import com.linnan.blindassist.vision.RangingSample
 import com.linnan.blindassist.vision.VisionFrame
@@ -19,12 +20,14 @@ import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicLong
 
 /** Reads AtomS3R MJPEG as a latest-only external frame source. */
 class AtomS3rMjpegFrameSource(
     endpoint: String,
     private val connectionFactory: (String) -> HttpURLConnection = ::openConnection,
-    private val executor: ExecutorService = Executors.newFixedThreadPool(2)
+    private val executor: ExecutorService = Executors.newFixedThreadPool(3),
+    private val clockSynchronizer: AtomS3rClockSynchronizer = AtomS3rClockSynchronizer(endpoint)
 ) : FrameSource {
     private val baseEndpoint = endpoint.trim().trimEnd('/')
     private val streamUrl = baseEndpoint.replace(Regex(":\\d+$"), "") + ":81/stream"
@@ -34,6 +37,13 @@ class AtomS3rMjpegFrameSource(
     private var shutdownRequested = false
     private var activeConnection: HttpURLConnection? = null
     private var latestPacket: MjpegPacket? = null
+    @Volatile private var clockMapping: AtomS3rClockMapping? = null
+    private val packetsRead = AtomicLong()
+    private val latestPacketOverwrites = AtomicLong()
+    private val reconnects = AtomicLong()
+    private val streamErrors = AtomicLong()
+    private val clockSyncSuccesses = AtomicLong()
+    private val clockSyncFailures = AtomicLong()
 
     init {
         require(baseEndpoint.startsWith("http://") || baseEndpoint.startsWith("https://"))
@@ -54,6 +64,7 @@ class AtomS3rMjpegFrameSource(
         }
         executor.execute { readLoop(session, onError) }
         executor.execute { consumeLoop(session, onFrame, onStarted, onError, onPreviewBitmap) }
+        executor.execute { clockSyncLoop(session) }
     }
 
     override fun stop() {
@@ -85,6 +96,9 @@ class AtomS3rMjpegFrameSource(
         var deliveredPacket = false
         while (isCurrent(session)) {
             try {
+                if (clockMapping == null) {
+                    clockMapping = synchronizeClock()
+                }
                 val connection = connectionFactory(streamUrl)
                 synchronized(lifecycleLock) {
                     if (!isCurrentLocked(session)) {
@@ -101,9 +115,11 @@ class AtomS3rMjpegFrameSource(
                 }
                 BufferedInputStream(connection.inputStream, BUFFER_SIZE).use { input ->
                     while (isCurrent(session)) {
-                        val packet = MjpegPartReader.readPacket(input)
+                        val packet = MjpegPartReader.readPacket(input, clockMapping = clockMapping)
+                        packetsRead.incrementAndGet()
                         synchronized(lifecycleLock) {
                             if (!isCurrentLocked(session)) return
+                            if (latestPacket != null) latestPacketOverwrites.incrementAndGet()
                             latestPacket = packet
                             deliveredPacket = true
                             lifecycleLock.notifyAll()
@@ -113,10 +129,12 @@ class AtomS3rMjpegFrameSource(
             } catch (error: Throwable) {
                 FatalThrowables.rethrowIfFatal(error)
                 if (!deliveredPacket && isCurrent(session)) {
+                    streamErrors.incrementAndGet()
                     onError(error)
                     return
                 }
                 if (isCurrent(session)) {
+                    reconnects.incrementAndGet()
                     try {
                         Thread.sleep(RECONNECT_DELAY_MS)
                     } catch (_: InterruptedException) {
@@ -133,6 +151,44 @@ class AtomS3rMjpegFrameSource(
         }
     }
 
+    private fun clockSyncLoop(session: Long) {
+        while (isCurrent(session)) {
+            try {
+                Thread.sleep(CLOCK_SYNC_INTERVAL_MS)
+            } catch (_: InterruptedException) {
+                Thread.currentThread().interrupt()
+                return
+            }
+            if (isCurrent(session)) synchronizeClock()?.let { clockMapping = it }
+        }
+    }
+
+    private fun synchronizeClock(): AtomS3rClockMapping? =
+        runCatching(clockSynchronizer::synchronize)
+            .onSuccess { clockSyncSuccesses.incrementAndGet() }
+            .onFailure { clockSyncFailures.incrementAndGet() }
+            .getOrNull()
+
+    fun diagnostics(): Diagnostics = Diagnostics(
+        packetsRead = packetsRead.get(),
+        latestPacketOverwrites = latestPacketOverwrites.get(),
+        reconnects = reconnects.get(),
+        streamErrors = streamErrors.get(),
+        clockSyncSuccesses = clockSyncSuccesses.get(),
+        clockSyncFailures = clockSyncFailures.get(),
+        currentClockMapping = clockMapping
+    )
+
+    data class Diagnostics(
+        val packetsRead: Long,
+        val latestPacketOverwrites: Long,
+        val reconnects: Long,
+        val streamErrors: Long,
+        val clockSyncSuccesses: Long,
+        val clockSyncFailures: Long,
+        val currentClockMapping: AtomS3rClockMapping?
+    )
+
     private fun consumeLoop(
         session: Long,
         onFrame: (VisionFrame) -> Unit,
@@ -147,15 +203,22 @@ class AtomS3rMjpegFrameSource(
                 latestPacket.also { latestPacket = null }
             } ?: continue
             try {
+                val decodeStartNs = SystemClock.elapsedRealtimeNanos()
                 val bitmap = requireNotNull(BitmapFactory.decodeByteArray(packet.jpeg, 0, packet.jpeg.size)) {
                     "Unable to decode AtomS3R JPEG"
                 }
+                val decodeCompleteNs = SystemClock.elapsedRealtimeNanos()
                 try {
-                    val metadata = packet.metadata()
+                    val metadata = packet.metadata(decodeStartNs, decodeCompleteNs)
                     val frame = BitmapRgbaVisionFrame.from(
                         bitmap = bitmap,
                         frameStamp = metadata.frameStamp,
-                        rangingSample = metadata.rangingSample
+                        rangingSample = metadata.rangingSample,
+                        externalTimingFactory = {
+                            metadata.externalTimingSeed.withRgbaComplete(
+                                SystemClock.elapsedRealtimeNanos()
+                            )
+                        }
                     )
                     if (!started) {
                         started = true
@@ -188,24 +251,66 @@ class AtomS3rMjpegFrameSource(
 
     internal data class PacketMetadata(
         val frameStamp: FrameStamp,
-        val rangingSample: RangingSample?
+        val rangingSample: RangingSample?,
+        val externalTimingSeed: ExternalTimingSeed
     )
+
+    internal data class ExternalTimingSeed(
+        val deviceCaptureNs: Long,
+        val deviceJpegReadyNs: Long,
+        val deviceSendStartNs: Long?,
+        val androidReadStartNs: Long,
+        val androidFirstByteNs: Long,
+        val androidJpegCompleteNs: Long,
+        val androidDecodeStartNs: Long,
+        val androidDecodeCompleteNs: Long,
+        val clockMapping: AtomS3rClockMapping?
+    ) {
+        fun withRgbaComplete(androidRgbaCompleteNs: Long) = ExternalFrameTiming(
+            deviceCaptureNs = deviceCaptureNs,
+            deviceJpegReadyNs = deviceJpegReadyNs,
+            deviceSendStartNs = deviceSendStartNs,
+            androidReadStartNs = androidReadStartNs,
+            androidFirstByteNs = androidFirstByteNs,
+            androidJpegCompleteNs = androidJpegCompleteNs,
+            androidDecodeStartNs = androidDecodeStartNs,
+            androidDecodeCompleteNs = androidDecodeCompleteNs,
+            androidRgbaCompleteNs = androidRgbaCompleteNs,
+            deviceMinusAndroidNs = clockMapping?.deviceMinusAndroidNs,
+            clockSyncRttNs = clockMapping?.roundTripNs,
+            clockSyncErrorBoundNs = clockMapping?.errorBoundNs
+        )
+    }
 
     internal data class MjpegPacket(
         val headers: Map<String, String>,
         val jpeg: ByteArray,
-        val receivedAtNs: Long
+        val readStartNs: Long,
+        val firstByteNs: Long,
+        val jpegCompleteNs: Long,
+        val clockMapping: AtomS3rClockMapping?
     ) {
-        fun metadata(): PacketMetadata {
+        fun metadata(
+            decodeStartNs: Long = jpegCompleteNs,
+            decodeCompleteNs: Long = decodeStartNs
+        ): PacketMetadata {
             val frameSequence = headers.requiredLong("x-frame-sequence")
             val captureNs = headers.requiredLong("x-capture-timestamp-us") * NANOS_PER_MICROSECOND
+            val jpegReadyNs = headers.requiredLong("x-jpeg-ready-timestamp-us") * NANOS_PER_MICROSECOND
+            val sendStartNs = headers["x-device-send-start-timestamp-us"]
+                ?.toLongOrNull()?.times(NANOS_PER_MICROSECOND)
+            val mappedCaptureNs = clockMapping?.deviceToAndroidNs(captureNs)
             val frameStamp = FrameStamp(
                 frameId = frameSequence,
-                capturedAtNs = captureNs,
-                receivedAtNs = receivedAtNs,
+                capturedAtNs = mappedCaptureNs ?: captureNs,
+                receivedAtNs = jpegCompleteNs,
                 sourceId = "atoms3r-m12:${headers["x-sequence-id"] ?: "unknown"}",
                 coordinateFrame = "atoms3r-m12:camera",
-                clockDomain = FrameClockDomain.EXTERNAL_DEVICE_MONOTONIC_UNMAPPED
+                clockDomain = if (clockMapping == null) {
+                    FrameClockDomain.EXTERNAL_DEVICE_MONOTONIC_UNMAPPED
+                } else {
+                    FrameClockDomain.EXTERNAL_DEVICE_MONOTONIC_MAPPED_TO_ANDROID
+                }
             )
             val tofTimestampUs = headers["x-tof-timestamp-us"]?.toLongOrNull() ?: 0L
             val ranging = if (tofTimestampUs > 0L) {
@@ -219,14 +324,29 @@ class AtomS3rMjpegFrameSource(
                     clockDomain = FrameClockDomain.EXTERNAL_DEVICE_MONOTONIC_UNMAPPED
                 )
             } else null
-            return PacketMetadata(frameStamp, ranging)
+            return PacketMetadata(
+                frameStamp,
+                ranging,
+                ExternalTimingSeed(
+                    deviceCaptureNs = captureNs,
+                    deviceJpegReadyNs = jpegReadyNs,
+                    deviceSendStartNs = sendStartNs,
+                    androidReadStartNs = readStartNs,
+                    androidFirstByteNs = firstByteNs,
+                    androidJpegCompleteNs = jpegCompleteNs,
+                    androidDecodeStartNs = decodeStartNs,
+                    androidDecodeCompleteNs = decodeCompleteNs,
+                    clockMapping = clockMapping
+                )
+            )
         }
     }
 
     internal object MjpegPartReader {
         fun readPacket(
             input: BufferedInputStream,
-            receivedAtNs: Long = SystemClock.elapsedRealtimeNanos()
+            receivedAtNs: Long? = null,
+            clockMapping: AtomS3rClockMapping? = null
         ): MjpegPacket {
             var line: String
             do {
@@ -245,13 +365,26 @@ class AtomS3rMjpegFrameSource(
                 ?: error("Missing Content-Length")
             require(length in 1..MAX_JPEG_BYTES) { "Invalid JPEG length: $length" }
             val jpeg = ByteArray(length)
-            var offset = 0
+            val readStartNs = receivedAtNs ?: SystemClock.elapsedRealtimeNanos()
+            val first = input.read()
+            if (first < 0) throw EOFException("MJPEG ended before JPEG")
+            jpeg[0] = first.toByte()
+            val firstByteNs = receivedAtNs ?: SystemClock.elapsedRealtimeNanos()
+            var offset = 1
             while (offset < length) {
                 val read = input.read(jpeg, offset, length - offset)
                 if (read < 0) throw EOFException("MJPEG ended inside JPEG")
                 offset += read
             }
-            return MjpegPacket(headers, jpeg, receivedAtNs)
+            val jpegCompleteNs = receivedAtNs ?: SystemClock.elapsedRealtimeNanos()
+            return MjpegPacket(
+                headers,
+                jpeg,
+                readStartNs,
+                firstByteNs,
+                jpegCompleteNs,
+                clockMapping
+            )
         }
 
         private fun readLine(input: BufferedInputStream): String {
@@ -272,6 +405,7 @@ class AtomS3rMjpegFrameSource(
         private const val MAX_JPEG_BYTES = 2 * 1024 * 1024
         private const val MAX_HEADER_LINE_BYTES = 2048
         private const val RECONNECT_DELAY_MS = 500L
+        private const val CLOCK_SYNC_INTERVAL_MS = 30_000L
         private const val NANOS_PER_MICROSECOND = 1_000L
 
         private fun openConnection(url: String): HttpURLConnection =

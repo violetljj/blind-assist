@@ -45,7 +45,8 @@ class FeedbackController constructor(
     private val speechOutput: SpeechOutput,
     private val hapticOutput: HapticOutput,
     private val clock: FeedbackClock,
-    initialSettings: FeedbackRuntimeSettings
+    initialSettings: FeedbackRuntimeSettings,
+    private val effectClockNs: () -> Long = System::nanoTime
 ) : FeedbackGateway {
     @Volatile
     private var settings = initialSettings
@@ -59,7 +60,8 @@ class FeedbackController constructor(
         speechOutput = AndroidSpeechOutput(context.applicationContext),
         hapticOutput = AndroidHapticOutput(context.applicationContext),
         clock = FeedbackClock { SystemClock.elapsedRealtime() },
-        initialSettings = FeedbackRuntimeSettings()
+        initialSettings = FeedbackRuntimeSettings(),
+        effectClockNs = SystemClock::elapsedRealtimeNanos
     )
 
     init {
@@ -112,7 +114,9 @@ class FeedbackController constructor(
             return FeedbackDecision(plan, triggered = false, reason = FeedbackReason.COOLDOWN)
         }
 
+        var speechRequestAtNs: Long? = null
         val speechTriggered = if (snapshot.speechEnabled && speechOutput.ready) {
+            speechRequestAtNs = effectClockNs()
             speechOutput.speak(
                 message = snapshot.speechStyle.messageFor(risk, snapshot.appLanguage),
                 utteranceId = "risk-$now"
@@ -120,7 +124,9 @@ class FeedbackController constructor(
         } else {
             false
         }
+        var vibrationRequestAtNs: Long? = null
         val vibrationTriggered = if (snapshot.vibrationEnabled) {
+            vibrationRequestAtNs = effectClockNs()
             hapticOutput.vibrate(plan)
         } else {
             false
@@ -141,7 +147,9 @@ class FeedbackController constructor(
             triggered = true,
             reason = FeedbackReason.TRIGGERED,
             speechTriggered = speechTriggered,
-            vibrationTriggered = vibrationTriggered
+            vibrationTriggered = vibrationTriggered,
+            speechRequestAtNs = speechRequestAtNs,
+            vibrationRequestAtNs = vibrationRequestAtNs
         )
     }
 
