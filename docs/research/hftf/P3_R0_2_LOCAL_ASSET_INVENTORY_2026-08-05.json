@@ -1,0 +1,90 @@
+{
+  "schema": "blindassist_p3_r0_2_local_asset_inventory",
+  "generated_at": "2026-08-05T19:16:38.1415368+08:00",
+  "scope": "P3 public-source admission, Bonn identity capacity, R0.2 role attempts and R0.2.1 ARKit validation extension",
+  "storage_policy": {
+    "payload_root": "artifacts.local",
+    "payloads_git_ignored": true,
+    "formal_protocols_and_summaries_tracked": true,
+    "global_dataset_master_ledger_last_generated": "2026-08-02T02:19:16+08:00",
+    "global_dataset_master_ledger_current_for_this_scope": false,
+    "global_rebuild_rule": "Rebuild after the locked ARKit validation body download finishes so the multi-hundred-megabyte generated ledger is not regenerated twice."
+  },
+  "assets": [
+    {
+      "asset_id": "bonn-full-official-archive",
+      "kind": "source_archive",
+      "path": "artifacts.local/downloads/bonn-rgbd-dynamic/rgbd_bonn_dataset.zip",
+      "bytes": 16395422367,
+      "sha256": "D2AFDC286ECDB02A3E57CB98E3908185B1133A3F79F181970064EB177221A84B",
+      "file_count": 1,
+      "status": "RETAIN_SOURCE_BOUND"
+    },
+    {
+      "asset_id": "bonn-kidnapping-box-independent-reproduction-archive",
+      "kind": "integrity_reproduction_archive",
+      "path": "artifacts.local/downloads/bonn-rgbd-dynamic/individual-verification/rgbd_bonn_kidnapping_box.zip",
+      "bytes": 618957920,
+      "sha256": "E38AA756291BF5E4A1A9941BE60638D05D40F371F674C82B9AE4396E1A209CA5",
+      "file_count": 1,
+      "status": "RETAIN_UNTIL_ROUTE_CLOSURE"
+    },
+    {
+      "asset_id": "bonn-full-extracted-rgbd",
+      "kind": "extracted_dataset",
+      "path": "artifacts.local/datasets/bonn-rgbd-dynamic-full-r0",
+      "bytes": 16821630031,
+      "file_count": 59164,
+      "aggregate_binding": {
+        "receipt_path": "artifacts.local/evidence/hftf/p3-public-rgbd-source-admission-r0/bonn-valid-pairs-identity-receipt-attempt-03.json",
+        "receipt_sha256": "6E4089B3C2E5535D51104914EDE1DD783475EFB237FEBD517F80F1A7A20F6D56"
+      },
+      "status": "ACTIVE_IDENTITY_AND_FUTURE_SEALING_SOURCE"
+    },
+    {
+      "asset_id": "bonn-identity-catalog-attempt-03",
+      "kind": "evidence",
+      "path": "artifacts.local/evidence/hftf/p3-public-rgbd-source-admission-r0/bonn-valid-pairs-identity-catalog-attempt-03.json",
+      "bytes": 19267,
+      "sha256": "0F6307FBDB26295B7EB2CE407F3D586A43D2709653443F34CCFBB97DDB14E20E",
+      "status": "FORMAL_LOCAL_EVIDENCE_RETAIN"
+    },
+    {
+      "asset_id": "bonn-capacity-result-attempt-03",
+      "kind": "evidence",
+      "path": "artifacts.local/evidence/hftf/p3-public-rgbd-source-admission-r0/bonn-capacity-result-attempt-03.json",
+      "bytes": 2453,
+      "sha256": "3F9BCC4F5D701E3E67C61E512E64FC8E0184F74EF3676F321743A568F1BF4A28",
+      "status": "FORMAL_LOCAL_EVIDENCE_RETAIN"
+    },
+    {
+      "asset_id": "arkit-validation-extension-roster",
+      "kind": "identity_lock",
+      "path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1-validation-extension/roster-attempt-01.json",
+      "bytes": 3387,
+      "sha256": "2CD2425A7243D58D230FA414C8C8478E252605F547F18F32C07891CDF761B024",
+      "status": "LOCKED_MEDIA_UNOPENED"
+    },
+    {
+      "asset_id": "arkit-validation-extension-head-preflight",
+      "kind": "header_evidence",
+      "path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1-validation-extension/media-head-preflight-attempt-01.json",
+      "bytes": 19805,
+      "sha256": "59821BEF17FA3046AF8CF2D306BBE03770C2F71AC3C744B7A7C6605A2B81560B",
+      "status": "40_OF_40_AVAILABLE_BODY_UNREAD"
+    }
+  ],
+  "planned_not_yet_downloaded": [
+    {
+      "asset_id": "arkit-validation-extension-eight-video-rgbd",
+      "asset_count": 40,
+      "expected_bytes": 5391819729,
+      "license_scope_confirmed": true,
+      "body_bytes_downloaded": 0
+    }
+  ],
+  "approximate_current_payload_bytes": 33836117834,
+  "model_loaded": false,
+  "training_started": false,
+  "terminal": "P3_R0_2_LOCAL_ASSET_INVENTORY_UPDATED_ARKIT_BODY_PENDING"
+}

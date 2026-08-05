@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist_p3_r0_2_1_arkit_validation_license_scope_receipt",
+  "confirmed_by": "user",
+  "confirmed_at": "2026-08-05T19:16:38.1415368+08:00",
+  "confirmation": "同意将已审阅的 ARKitScenes license 下载授权扩展到 P3 R0.2.1 锁定的 8 个 validation 视频及其 RGB、depth、confidence、intrinsics、trajectory 资产。",
+  "license": {
+    "path": "artifacts.local/downloads/ARKitScenes-7283761/LICENSE",
+    "sha256": "D8D156565F81B4B56B37A6D5A68A223A0874ED1131BAC6A404B0D5E765189071"
+  },
+  "roster": {
+    "path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1-validation-extension/roster-attempt-01.json",
+    "sha256": "2CD2425A7243D58D230FA414C8C8478E252605F547F18F32C07891CDF761B024",
+    "video_count": 8
+  },
+  "asset_preflight": {
+    "path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1-validation-extension/media-head-preflight-attempt-01.json",
+    "sha256": "59821BEF17FA3046AF8CF2D306BBE03770C2F71AC3C744B7A7C6605A2B81560B",
+    "asset_count": 40,
+    "total_content_length_bytes": 5391819729
+  },
+  "authorized_assets": [
+    "lowres_wide.zip",
+    "lowres_depth.zip",
+    "confidence.zip",
+    "lowres_wide_intrinsics.zip",
+    "lowres_wide.traj"
+  ],
+  "authorized_use": "P3 R0.2.1 validation identity continuity and later frozen training-only validation target materialization",
+  "redistribution_authorized": false,
+  "holdout_use_authorized": false,
+  "replacement_video_authorized": false,
+  "model_or_training_authorized": false,
+  "media_download_authorized": true,
+  "terminal": "P3_R0_2_1_ARKIT_VALIDATION_LICENSE_SCOPE_CONFIRMED"
+}
