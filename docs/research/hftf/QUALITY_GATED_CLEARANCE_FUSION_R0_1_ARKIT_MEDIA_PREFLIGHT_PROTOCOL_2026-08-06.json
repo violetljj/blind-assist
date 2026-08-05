@@ -20,6 +20,10 @@
     "path": "scripts/research/hftf/preflight_quality_gated_clearance_fusion_r0_1_arkit_assets.py",
     "sha256": "AADBCCFA235C3C51002D078F4A6683B23C861B20FA6ABE8443977504FB2680BA"
   },
+  "download_producer": {
+    "path": "scripts/research/hftf/download_quality_gated_clearance_fusion_r0_1_arkit_assets.py",
+    "sha256": "A70478A671864D54FFD5609258235710F9056EA4D62FA52BE819E7EE8E53DEEF"
+  },
   "forbidden_reads": ["rgb_image_body", "depth_image_body", "clearance", "geometry_state", "transition_label", "model_output", "metric", "score"],
   "replacement_allowed": false,
   "terminal": "FROZEN_NOT_RUN"
