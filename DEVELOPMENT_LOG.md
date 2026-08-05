@@ -16,8 +16,16 @@
   Pololu 1.3.1 真实头文件下的 C++17 syntax-only 检查、5 项 Python 单测、Ruff、
   PowerShell 解析、`git diff --check` 与文档索引也通过；全仓卫生门仍被既有 root
   allowlist、历史 Module README/内部引用等结构债务阻断，本任务未改动或吸收这些
-  并发范围。设备枚举为 `VID_303A/PID_8000` UVC，实际烧录与串口采集仍需物理进入
-  下载模式后执行。
+  并发范围。随后在真实 `ESP32-S3-PICO-1` 上完成烧录，
+  esptool 对 bootloader、partition、boot app 与 344112 B app image 的写入哈希均
+  校验通过。设备退出 `DOWNLOAD(USB/UART0)` 后从 `COM5` 完成 10 秒 Development
+  capture：validator 接受 8 条 event 和 42 条 sample，`0x29` 最终探测成功且
+  `sensor_init=READY`；41 条为 `VALID`、1 条为 `INVALID_RANGE`，有效距离
+  `0.052–0.059 m`（均值 `0.055 m`）。capture SHA-256 为
+  `37ecef808e2f749c37fd0d762c5923f2c6f438c2ff2e0f3e4e7ea8fe4e3c7629`；串口打开/重启
+  期间另丢弃 12 条非 JSONL ROM/残片，并观察到初始化早期 `0x29` 暂未发现后恢复，
+  因此结果仅证明该实物组合的开发级连通、初始化与单点测距，不授权持续可靠性、
+  精度、相机同步、多区、Android、提醒或安全结论。
 - 时间：2026-08-04（Asia/Hong_Kong）；执行者：violjjet。补齐 DA V2 canonical
   CameraX 十分钟持续部署门的实现与证据绑定：持续测试显式调用
   `preprocessFp16CanonicalStrict()`，报告固定
