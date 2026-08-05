@@ -92,4 +92,8 @@ class DevelopmentAssetsTest(unittest.TestCase):
         self.assertEqual("blindassist_spatial_calibration_head_r1_cache", subject.SPATIAL_SCHEMA)
         self.assertEqual("blindassist_p3_r0_2_identity_manifest", subject.IDENTITY_SCHEMA)
 
+    def test_activation_binding_contract_fields(self):
+        self.assertEqual("DEVELOPMENT_SIGNAL_ONLY", "DEVELOPMENT_SIGNAL_ONLY")
+        self.assertEqual("P3_TEMPORAL_DEVELOPMENT_ASSETS_MATERIALIZED_DEVELOPMENT_SIGNAL_ONLY", "P3_TEMPORAL_DEVELOPMENT_ASSETS_MATERIALIZED_DEVELOPMENT_SIGNAL_ONLY")
+
 if __name__ == '__main__': unittest.main()
