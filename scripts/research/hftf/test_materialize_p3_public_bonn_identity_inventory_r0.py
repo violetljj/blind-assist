@@ -77,10 +77,14 @@ class BonnIdentityMaterializerTest(unittest.TestCase):
         self.assertEqual(1, receipt["eligible_identity_count"])
         self.assertFalse(receipt["label_or_model_data_read"])
 
-    def test_missing_referenced_depth_fails_closed(self) -> None:
+    def test_missing_referenced_depth_is_disclosed_and_not_admitted(self) -> None:
         self.make_sequence("a", missing_depth=True)
-        with self.assertRaisesRegex(ValueError, "referenced member missing"):
-            MODULE.materialize(self.repo, self.data, self.archive, self.base, self.exclusions([]))
+        catalog, receipt = MODULE.materialize(self.repo, self.data, self.archive, self.base, self.exclusions([]))
+        identity = catalog["sources"][0]["identity_inventory"][0]
+        self.assertFalse(identity["raw_metric_sensor_assets_present"])
+        self.assertFalse(identity["four_frame_continuity_confirmed"])
+        self.assertEqual(1, receipt["parents"][0]["missing_depth_reference_count"])
+        self.assertEqual(3, receipt["parents"][0]["paired_rgb_depth_identity_count"])
 
     def test_member_escape_fails_closed(self) -> None:
         self.make_sequence("a")

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import bisect
 import hashlib
 import json
 from pathlib import Path
@@ -14,6 +15,7 @@ EXCLUSION_SCHEMA = "blindassist_p3_public_bonn_ancestry_exclusions_r0"
 CATALOG_SCHEMA = "blindassist_p3_public_rgbd_source_admission_r0_catalog"
 RECEIPT_SCHEMA = "blindassist_p3_public_bonn_identity_inventory_r0_receipt"
 MAX_GAP_SECONDS = 0.5
+MAX_RGB_DEPTH_DELTA_SECONDS = 0.05
 
 
 def require(condition: bool, message: str) -> None:
@@ -35,18 +37,20 @@ def load_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def resolve_member(sequence_root: Path, relative: str) -> Path:
+def resolve_member(sequence_root: Path, relative: str, *, required: bool) -> Path | None:
     require(not Path(relative).is_absolute(), f"absolute member path: {relative}")
     candidate = (sequence_root / relative).resolve()
     require(candidate.is_relative_to(sequence_root.resolve()), f"member escaped sequence: {relative}")
-    require(candidate.is_file(), f"referenced member missing: {candidate}")
-    return candidate
+    if candidate.is_file():
+        return candidate
+    require(not required, f"referenced member missing: {candidate}")
+    return None
 
 
-def parse_index(sequence_root: Path, name: str) -> list[tuple[float, str, Path]]:
+def parse_index(sequence_root: Path, name: str, *, members_required: bool) -> list[tuple[float, str, Path | None]]:
     path = sequence_root / name
     require(path.is_file(), f"index missing: {path}")
-    rows: list[tuple[float, str, Path]] = []
+    rows: list[tuple[float, str, Path | None]] = []
     for number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         line = raw.strip()
         if not line or line.startswith("#"):
@@ -55,26 +59,47 @@ def parse_index(sequence_root: Path, name: str) -> list[tuple[float, str, Path]]
         require(len(parts) == 2, f"invalid {name}:{number}")
         timestamp = float(parts[0])
         require(not rows or timestamp > rows[-1][0], f"timestamps not strictly increasing: {name}:{number}")
-        rows.append((timestamp, parts[1], resolve_member(sequence_root, parts[1])))
+        rows.append((timestamp, parts[1], resolve_member(sequence_root, parts[1], required=members_required)))
     require(len(rows) >= 4, f"fewer than four rows: {path}")
     return rows
 
 
-def has_four_frame_run(rows: list[tuple[float, str, Path]]) -> bool:
-    for start in range(len(rows) - 3):
-        if all(0 < rows[i + 1][0] - rows[i][0] <= MAX_GAP_SECONDS for i in range(start, start + 3)):
+def has_four_frame_run(timestamps: list[float]) -> bool:
+    for start in range(len(timestamps) - 3):
+        if all(0 < timestamps[i + 1] - timestamps[i] <= MAX_GAP_SECONDS for i in range(start, start + 3)):
             return True
     return False
 
 
-def aggregate_members(rows: list[tuple[float, str, Path]]) -> str:
+def aggregate_files(paths: list[Path], root: Path) -> str:
     digest = hashlib.sha256()
-    for _timestamp, relative, path in rows:
+    for path in sorted(paths, key=lambda item: item.relative_to(root).as_posix()):
+        relative = path.relative_to(root).as_posix()
         digest.update(relative.encode("utf-8"))
         digest.update(b"\0")
         digest.update(sha256_file(path).encode("ascii"))
         digest.update(b"\n")
     return digest.hexdigest().upper()
+
+
+def paired_rgb_timestamps(
+    rgb: list[tuple[float, str, Path | None]],
+    depth: list[tuple[float, str, Path | None]],
+) -> list[float]:
+    valid_depth = [(timestamp, relative) for timestamp, relative, path in depth if path is not None]
+    depth_times = [row[0] for row in valid_depth]
+    used: set[int] = set()
+    paired: list[float] = []
+    for rgb_timestamp, _relative, _path in rgb:
+        insertion = bisect.bisect_left(depth_times, rgb_timestamp)
+        candidates = [index for index in (insertion - 1, insertion) if 0 <= index < len(depth_times) and index not in used]
+        if not candidates:
+            continue
+        nearest = min(candidates, key=lambda index: abs(depth_times[index] - rgb_timestamp))
+        if abs(depth_times[nearest] - rgb_timestamp) <= MAX_RGB_DEPTH_DELTA_SECONDS:
+            used.add(nearest)
+            paired.append(rgb_timestamp)
+    return paired
 
 
 def write_new(path: Path, value: dict[str, Any]) -> None:
@@ -113,17 +138,23 @@ def materialize(
     identities = []
     details = []
     for sequence in sequences:
-        rgb = parse_index(sequence, "rgb.txt")
-        depth = parse_index(sequence, "depth.txt")
-        rgb_aggregate = aggregate_members(rgb)
-        depth_aggregate = aggregate_members(depth)
-        continuity = has_four_frame_run(rgb)
+        rgb = parse_index(sequence, "rgb.txt", members_required=True)
+        depth = parse_index(sequence, "depth.txt", members_required=False)
+        rgb_files = [path for path in (sequence / "rgb").iterdir() if path.is_file()]
+        depth_files = [path for path in (sequence / "depth").iterdir() if path.is_file()]
+        require(rgb_files, f"RGB directory empty: {sequence}")
+        require(depth_files, f"depth directory empty: {sequence}")
+        rgb_aggregate = aggregate_files(rgb_files, sequence)
+        depth_aggregate = aggregate_files(depth_files, sequence)
+        paired_timestamps = paired_rgb_timestamps(rgb, depth)
+        continuity = has_four_frame_run(paired_timestamps)
+        missing_depth_refs = [relative for _timestamp, relative, path in depth if path is None]
         identity = {
             "parent_id": sequence.name,
             "higher_cluster_id": sequence.name,
             "rgb_identity_count": len(rgb),
             "four_frame_continuity_confirmed": continuity,
-            "raw_metric_sensor_assets_present": len(depth) >= 4,
+            "raw_metric_sensor_assets_present": continuity,
             "rgb_files_sha256_complete": True,
             "metric_sensor_files_sha256_complete": True,
             "timestamp_files_sha256_complete": True,
@@ -135,6 +166,11 @@ def materialize(
             "ancestry_excluded": sequence.name in excluded,
             "rgb_index_row_count": len(rgb),
             "depth_index_row_count": len(depth),
+            "rgb_directory_file_count": len(rgb_files),
+            "depth_directory_file_count": len(depth_files),
+            "paired_rgb_depth_identity_count": len(paired_timestamps),
+            "missing_depth_reference_count": len(missing_depth_refs),
+            "missing_depth_references": missing_depth_refs,
             "rgb_index_sha256": sha256_file(sequence / "rgb.txt"),
             "depth_index_sha256": sha256_file(sequence / "depth.txt"),
             "rgb_referenced_members_aggregate_sha256": rgb_aggregate,
@@ -157,6 +193,8 @@ def materialize(
         "excluded_sequence_count": len(excluded),
         "eligible_identity_count": sum(not row["ancestry_excluded"] for row in identities),
         "maximum_adjacent_gap_seconds": MAX_GAP_SECONDS,
+        "maximum_rgb_depth_delta_seconds": MAX_RGB_DEPTH_DELTA_SECONDS,
+        "missing_index_references_are_not_admitted_as_frame_identities": True,
         "label_or_model_data_read": False,
         "parents": details,
     }
