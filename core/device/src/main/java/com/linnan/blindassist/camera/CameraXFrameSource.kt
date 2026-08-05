@@ -1,6 +1,7 @@
 package com.linnan.blindassist.camera
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.SystemClock
@@ -48,7 +49,8 @@ class CameraXFrameSource(
         previewView: PreviewView?,
         onFrame: (VisionFrame) -> Unit,
         onStarted: () -> Unit,
-        onError: (Throwable) -> Unit
+        onError: (Throwable) -> Unit,
+        onPreviewBitmap: ((Bitmap) -> Unit)?
     ) {
         if (previewView == null) {
             onError(IllegalArgumentException("CameraXFrameSource requires a non-null PreviewView"))

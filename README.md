@@ -34,7 +34,8 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - SANPO 分割路线采用双通道：论文 `THESIS_DEVELOPMENT` 不要求先通过 INT8、blind 或
   设备事件门；显式 `PRODUCTION_PROMOTION` 才使用完整晋级链。当前未替换 App 默认模型。
 - 正式 App 保持本地推理；眼镜外界硬件入口已能通过局域网连接 AtomS3R-M12 +
-  ToF4M，读取设备/距离状态并验证 MJPEG 端点。视频帧尚未送入识别与提醒链路。
+  ToF4M，读取设备/距离状态；实时 MJPEG 采用 latest-only 语义进入现有识别与提醒链路。
+  ToF 仅作逐帧绑定元数据，标定融合仍暂缓。
 
 发布变化见 [CHANGELOG.md](CHANGELOG.md)，近期工程过程见
 [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。当前论文系统研究入口见

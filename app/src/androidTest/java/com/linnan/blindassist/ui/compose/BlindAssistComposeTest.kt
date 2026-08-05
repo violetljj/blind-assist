@@ -487,7 +487,7 @@ class CameraControlPanelStandaloneTest {
                     onScenarioChange = {},
                     onQuietShortcut = {},
                     onSensitiveShortcut = {},
-                    onCameraViewsReady = { _, _ -> }
+                    onCameraViewsReady = { _, _, _ -> }
                 )
             }
         }

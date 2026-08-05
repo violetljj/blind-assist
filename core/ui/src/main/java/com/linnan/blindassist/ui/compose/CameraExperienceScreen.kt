@@ -134,7 +134,7 @@ fun CameraExperienceScreen(
     onScenarioChange: (AssistScenario) -> Unit,
     onQuietShortcut: () -> Unit,
     onSensitiveShortcut: () -> Unit,
-    onCameraViewsReady: (PreviewView?, DetectionOverlayView) -> Unit,
+    onCameraViewsReady: (PreviewView?, ImageView?, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.fillMaxSize().background(Color.Black)) {
@@ -168,6 +168,21 @@ fun CameraExperienceScreen(
                     .padding(top = 72.dp)
             )
         }
+        if (inputSource == AssistInputSource.GLASSES_HARDWARE) {
+            Text(
+                text = if (controls.appLanguage == AppLanguage.EN) {
+                    "AtomS3R external camera · live MJPEG"
+                } else {
+                    "AtomS3R 外界摄像头 · 实时 MJPEG"
+                },
+                color = BaMint,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .statusBarsPadding()
+                    .padding(top = 72.dp)
+            )
+        }
         CameraControlPanel(
             controls = controls,
             guidance = guidance,
@@ -192,7 +207,7 @@ fun CameraExperienceScreen(
 fun CameraPreviewHost(
     inputSource: AssistInputSource,
     replayScenario: ReplayScenario?,
-    onCameraViewsReady: (PreviewView?, DetectionOverlayView) -> Unit,
+    onCameraViewsReady: (PreviewView?, ImageView?, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -236,6 +251,17 @@ fun CameraPreviewHost(
             } else {
                 null
             }
+            val externalImage = if (inputSource == AssistInputSource.GLASSES_HARDWARE) {
+                ImageView(context).apply {
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                    setBackgroundColor(android.graphics.Color.BLACK)
+                    contentDescription = "AtomS3R live MJPEG preview"
+                    layoutParams = FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                }
+            } else null
             val overlay = DetectionOverlayView(context).apply {
                 layoutParams = FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -244,8 +270,9 @@ fun CameraPreviewHost(
             }
             preview?.let(frame::addView)
             replayImage?.let(frame::addView)
+            externalImage?.let(frame::addView)
             frame.addView(overlay)
-            onCameraViewsReady(preview, overlay)
+            onCameraViewsReady(preview, externalImage, overlay)
             frame
         }
     )

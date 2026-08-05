@@ -1,6 +1,7 @@
 package com.linnan.blindassist.ui.compose
 
 import androidx.camera.view.PreviewView
+import android.widget.ImageView
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
@@ -50,7 +51,7 @@ data class AssistRuntimeUiActions(
     val onQuietShortcut: () -> Unit,
     val onSensitiveShortcut: () -> Unit,
     val onLanguageChange: (AppLanguage) -> Unit,
-    val onCameraViewsReady: (PreviewView?, DetectionOverlayView) -> Unit
+    val onCameraViewsReady: (PreviewView?, ImageView?, DetectionOverlayView) -> Unit
 )
 
 data class AssistNavigationActions(
@@ -63,5 +64,6 @@ data class AssistNavigationActions(
 data class GlassesSimulatorActions(
     val onConnect: () -> Unit,
     val onDisconnect: () -> Unit,
+    val onStartLiveAssist: (String) -> Unit,
     val onReplayScenarioSelected: (ReplayScenario) -> Unit
 )

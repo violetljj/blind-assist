@@ -193,6 +193,7 @@ private fun SimulatorStatusCard(state: GlassesSimulatorUiState, language: AppLan
     val battery = state.batteryPercent?.let { "$it%" } ?: if (english) "Not simulated" else "未模拟"
     val input = when (state.selectedInput) {
         AssistInputSource.PHONE_CAMERA -> if (english) "Simulated phone camera source" else "模拟手机摄像头来源"
+        AssistInputSource.GLASSES_HARDWARE -> if (english) "Live external glasses camera" else "眼镜外设实时画面"
         AssistInputSource.OFFLINE_REPLAY -> if (english) "Simulated offline replay source" else "模拟离线回放来源"
     }
     val feedback = if (state.connectionState == GlassesConnectionState.CONNECTED) {

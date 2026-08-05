@@ -2,6 +2,8 @@ package com.linnan.blindassist.camera
 
 import android.graphics.Bitmap
 import com.linnan.blindassist.vision.RgbaVisionFrame
+import com.linnan.blindassist.vision.FrameStamp
+import com.linnan.blindassist.vision.RangingSample
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -10,6 +12,8 @@ class BitmapRgbaVisionFrame private constructor(
     override val width: Int,
     override val height: Int,
     override val rotationDegrees: Int,
+    override val frameStamp: FrameStamp?,
+    override val rangingSample: RangingSample?,
     private val pixels: ByteBuffer
 ) : RgbaVisionFrame {
     private val closed = AtomicBoolean(false)
@@ -26,7 +30,12 @@ class BitmapRgbaVisionFrame private constructor(
 
     companion object {
         /** Copies [bitmap] so the returned frame remains valid after the bitmap is recycled. */
-        fun from(bitmap: Bitmap, rotationDegrees: Int = 0): BitmapRgbaVisionFrame {
+        fun from(
+            bitmap: Bitmap,
+            rotationDegrees: Int = 0,
+            frameStamp: FrameStamp? = null,
+            rangingSample: RangingSample? = null
+        ): BitmapRgbaVisionFrame {
             require(bitmap.width > 0 && bitmap.height > 0) { "Bitmap must have positive dimensions" }
             val argbPixels = IntArray(bitmap.width * bitmap.height)
             bitmap.getPixels(
@@ -50,6 +59,8 @@ class BitmapRgbaVisionFrame private constructor(
                 width = bitmap.width,
                 height = bitmap.height,
                 rotationDegrees = rotationDegrees,
+                frameStamp = frameStamp,
+                rangingSample = rangingSample,
                 pixels = rgba
             )
         }

@@ -13,10 +13,16 @@ class FrameSourceFactory @Inject constructor() {
         source: AssistInputSource,
         context: Context,
         lifecycleOwner: LifecycleOwner,
-        replayScenario: ReplayScenario? = null
+        replayScenario: ReplayScenario? = null,
+        endpoint: String? = null
     ): FrameSource {
         return when (source) {
             AssistInputSource.PHONE_CAMERA -> CameraXFrameSource(context, lifecycleOwner)
+            AssistInputSource.GLASSES_HARDWARE -> AtomS3rMjpegFrameSource(
+                endpoint = requireNotNull(endpoint) {
+                    "Endpoint is required for GLASSES_HARDWARE"
+                }
+            )
             AssistInputSource.OFFLINE_REPLAY -> ReplayFrameSource(
                 context = context,
                 scenario = requireNotNull(replayScenario) {

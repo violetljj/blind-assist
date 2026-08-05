@@ -1,4 +1,17 @@
 # Development Log
+- 时间：2026-08-06（Asia/Hong_Kong）；执行者：violjjet。将 AtomS3R-M12 外设视频接入
+  Android 现有感知链。新增 `GLASSES_HARDWARE` 与 `AtomS3rMjpegFrameSource`，按固件
+  multipart `Content-Length` 读取 JPEG，读线程容量 1 覆盖旧完整帧，解码后同时更新
+  App 预览并进入既有 `ObjectDetector -> AssistSessionCoordinator -> 语音/震动` 路线。
+  每帧绑定 `X-Frame-Sequence`、capture、ToF timestamp/valid/range/age；设备时间显式
+  标记 `EXTERNAL_DEVICE_MONOTONIC_UNMAPPED`，未对时前风险事件使用 Android decision
+  clock，禁止跨时钟直接比较。ToF 仅保留为逐帧诊断元数据，不改变风险算法，相机—ToF
+  标定继续暂停。增加 multipart/metadata fail-closed JVM 测试和 SM-S9280 真实流五帧
+  instrumentation；本地 `core:assist`、`core:device`、`feature:assist` 测试及 debug APK
+  构建、instrumentation 源集编译通过。手机无线调试恢复后，debug APK 覆盖安装至
+  SM-S9280（Android 16），`:core:device:connectedDebugAndroidTest` 2/2 通过：手机进程
+  读取状态/距离/流端点，并真实解码连续五帧 MJPEG，设备 capture 时间严格递增、外设
+  时钟域正确，且至少一帧绑定有效 ToF 距离。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：violjjet。建立 Android 手机与
   AtomS3R-M12 + ToF4M 的首条真实外设链路。无线 ADB 发现并连接 Samsung SM-S9280
   (`192.168.5.4:43505`, Android 16)，手机到设备 `192.168.5.11` 三次 ping 0 丢包、

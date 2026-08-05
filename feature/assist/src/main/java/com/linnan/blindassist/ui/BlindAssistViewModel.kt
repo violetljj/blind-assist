@@ -441,6 +441,22 @@ class BlindAssistViewModel @Inject constructor(
         }
     }
 
+    fun onStartGlassesHardware() {
+        _uiState.update { state ->
+            if (
+                state.glassesSimulator.connectionState == GlassesConnectionState.CONNECTED &&
+                state.glassesSimulator.streamReachable
+            ) {
+                state.copy(
+                    showGlassesCenter = false,
+                    glassesSimulator = state.glassesSimulator.copy(
+                        selectedInput = AssistInputSource.GLASSES_HARDWARE
+                    )
+                )
+            } else state
+        }
+    }
+
     fun onShowCameraPermissionDialog() {
         _uiState.update { it.copy(showCameraPermissionDialog = true) }
     }

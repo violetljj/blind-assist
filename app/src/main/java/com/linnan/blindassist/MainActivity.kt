@@ -110,8 +110,10 @@ class MainActivity : ComponentActivity() {
                             onQuietShortcut = { assistSession.dispatch(AssistRuntimeIntent.QuietShortcutSelected) },
                             onSensitiveShortcut = { assistSession.dispatch(AssistRuntimeIntent.SensitiveShortcutSelected) },
                             onLanguageChange = { assistSession.dispatch(AssistRuntimeIntent.AppLanguageChanged(it)) },
-                            onCameraViewsReady = { preview, overlay ->
-                                assistSession.dispatch(AssistRuntimeIntent.CameraViewsReady(preview, overlay))
+                            onCameraViewsReady = { preview, externalPreview, overlay ->
+                                assistSession.dispatch(
+                                    AssistRuntimeIntent.CameraViewsReady(preview, externalPreview, overlay)
+                                )
                             }
                         ),
                         navigation = AssistNavigationActions(
@@ -123,6 +125,10 @@ class MainActivity : ComponentActivity() {
                         glasses = GlassesSimulatorActions(
                             onConnect = appViewModel::onConnectGlassesDevice,
                             onDisconnect = appViewModel::onDisconnectGlassesDevice,
+                            onStartLiveAssist = { endpoint ->
+                                appViewModel.onStartGlassesHardware()
+                                assistSession.dispatch(AssistRuntimeIntent.OpenGlassesHardware(endpoint))
+                            },
                             onReplayScenarioSelected = appViewModel::onReplayScenarioSelected
                         )
                     )

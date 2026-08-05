@@ -274,6 +274,20 @@ class BlindAssistViewModelTest {
     }
 
     @Test
+    fun glassesLiveAssistRequiresConnectedReachableStream() {
+        val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
+
+        viewModel.onStartGlassesHardware()
+        assertEquals(AssistInputSource.PHONE_CAMERA, viewModel.uiState.value.glassesSimulator.selectedInput)
+
+        viewModel.onSimulateGlassesConnection()
+        viewModel.onSimulatedGlassesConnectionCompleted()
+        viewModel.onStartGlassesHardware()
+
+        assertEquals(AssistInputSource.PHONE_CAMERA, viewModel.uiState.value.glassesSimulator.selectedInput)
+    }
+
+    @Test
     fun cameraAndFieldSummaryStateCanBeUpdatedFromActivityBoundary() {
         val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
         val summary = FieldTestSummaryUiState.empty(AlertProfile.SENSITIVE.displayName, AssistScenario.CORRIDOR.displayName)

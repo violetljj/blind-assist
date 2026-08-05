@@ -8,5 +8,6 @@ data class DetectorFrameResult(
     val detections: List<Detection>,
     val frameSize: FrameSize,
     val metrics: DetectorMetrics,
-    val sourceFrame: FrameStamp? = null
+    val sourceFrame: FrameStamp? = null,
+    val sourceRanging: RangingSample? = null
 )

@@ -43,6 +43,7 @@ fun GlassesHardwareScreen(
     onBack: () -> Unit,
     onConnect: () -> Unit,
     onDisconnect: () -> Unit,
+    onStartLiveAssist: (String) -> Unit,
     @Suppress("UNUSED_PARAMETER") onReplayScenarioSelected: (ReplayScenario) -> Unit,
     @Suppress("UNUSED_PARAMETER") onStartReplay: (ReplayScenario) -> Unit,
     modifier: Modifier = Modifier
@@ -113,6 +114,19 @@ fun GlassesHardwareScreen(
                 Text(if (english) " Disconnect" else " 断开连接")
             }
         }
+        if (state.connectionState == GlassesConnectionState.CONNECTED && state.streamReachable) {
+            Spacer(Modifier.height(10.dp))
+            Button(
+                onClick = { onStartLiveAssist(state.endpoint) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 52.dp)
+                    .testTag("start_glasses_live_assist"),
+                colors = ButtonDefaults.buttonColors(containerColor = BaAmber, contentColor = BaInk)
+            ) {
+                Text(if (english) "Use live glasses camera" else "使用眼镜实时画面")
+            }
+        }
         state.errorMessage?.let { error ->
             Spacer(Modifier.height(10.dp))
             Text(
@@ -126,9 +140,9 @@ fun GlassesHardwareScreen(
             icon = Icons.Rounded.Link,
             title = if (english) "Current integration boundary" else "当前接入边界",
             body = if (english) {
-                "Status, ToF distance, and MJPEG endpoint reachability are verified. Live frame decoding and risk-pipeline input are next."
+                "Live MJPEG can enter the existing detection and reminder pipeline. ToF is frame-bound metadata only; calibrated fusion remains paused."
             } else {
-                "已验证设备状态、ToF 距离和 MJPEG 端点可达；实时画面解码并送入风险链路是下一步。"
+                "实时 MJPEG 可进入现有检测与提醒链路。ToF 当前仅作逐帧绑定元数据；标定融合仍暂缓。"
             }
         )
     }

@@ -1,6 +1,7 @@
 package com.linnan.blindassist.camera
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.camera.view.PreviewView
 import com.linnan.blindassist.model.ReplayScenario
@@ -44,7 +45,8 @@ class ReplayFrameSource internal constructor(
         previewView: PreviewView?,
         onFrame: (VisionFrame) -> Unit,
         onStarted: () -> Unit,
-        onError: (Throwable) -> Unit
+        onError: (Throwable) -> Unit,
+        onPreviewBitmap: ((Bitmap) -> Unit)?
     ) {
         val generation = synchronized(lifecycleLock) {
             if (shutdownRequested || starting || started) return

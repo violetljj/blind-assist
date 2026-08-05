@@ -1,6 +1,7 @@
 package com.linnan.blindassist.runtime
 
 import androidx.camera.view.PreviewView
+import android.widget.ImageView
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
@@ -26,12 +27,17 @@ enum class AssistRuntimeMode {
 
 sealed interface AssistRuntimeIntent {
     data object OpenPhoneCamera : AssistRuntimeIntent
+    data class OpenGlassesHardware(val endpoint: String) : AssistRuntimeIntent
     data class OpenOfflineReplay(val scenario: ReplayScenario) : AssistRuntimeIntent
     data object CloseCamera : AssistRuntimeIntent
     data class PermissionExplanationAccepted(val launchPermissionRequest: () -> Unit) : AssistRuntimeIntent
     data object DismissPermissionFlow : AssistRuntimeIntent
     data class CameraPermissionResult(val granted: Boolean) : AssistRuntimeIntent
-    data class CameraViewsReady(val preview: PreviewView?, val overlay: DetectionOverlayView) : AssistRuntimeIntent
+    data class CameraViewsReady(
+        val preview: PreviewView?,
+        val externalPreview: ImageView?,
+        val overlay: DetectionOverlayView
+    ) : AssistRuntimeIntent
     data class DetectionEnabled(val enabled: Boolean) : AssistRuntimeIntent
     data class SpeechEnabled(val enabled: Boolean) : AssistRuntimeIntent
     data class VibrationEnabled(val enabled: Boolean) : AssistRuntimeIntent

@@ -67,14 +67,26 @@ internal class AssistFrameProcessor(
                     detectedFrame.sourceFrame != frame.frameStamp ->
                     error("detector result source frame does not match the input frame")
                 detectedFrame.sourceFrame == null && frame.frameStamp != null ->
-                    detectedFrame.copy(sourceFrame = frame.frameStamp)
+                    detectedFrame.copy(
+                        sourceFrame = frame.frameStamp,
+                        sourceRanging = detectedFrame.sourceRanging ?: frame.rangingSample
+                    )
+                detectedFrame.sourceRanging == null && frame.rangingSample != null ->
+                    detectedFrame.copy(sourceRanging = frame.rangingSample)
                 else -> detectedFrame
             }
             val committedFrame = lifecycleGate.commitIfCurrent(lease) {
                 val decisionAtNs = decisionClockNs()
                 require(decisionAtNs >= 0L) { "decision clock must be non-negative" }
-                val eventTimeMs = detectorFrame.sourceFrame?.capturedAtNs?.div(NANOS_PER_MILLISECOND)
-                    ?: decisionAtNs / NANOS_PER_MILLISECOND
+                val sourceFrame = detectorFrame.sourceFrame
+                val eventTimeMs = when (sourceFrame?.clockDomain) {
+                    FrameClockDomain.ANDROID_ELAPSED_REALTIME,
+                    FrameClockDomain.REPLAY_TIMELINE ->
+                        sourceFrame.capturedAtNs / NANOS_PER_MILLISECOND
+                    FrameClockDomain.CAMERA_HARDWARE_UNMAPPED,
+                    FrameClockDomain.EXTERNAL_DEVICE_MONOTONIC_UNMAPPED,
+                    null -> decisionAtNs / NANOS_PER_MILLISECOND
+                }
                 val snapshot = stats.onProcessed(detectorFrame.metrics.inferenceMs)
                 val detectorFrameWithPipelineStats = detectorFrame.copy(
                     metrics = detectorFrame.metrics.copy(

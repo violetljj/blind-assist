@@ -1,10 +1,15 @@
 package com.linnan.blindassist.runtime
 
 import android.util.Log
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.widget.ImageView
 import androidx.camera.view.PreviewView
 import com.linnan.blindassist.camera.FrameSource
 import com.linnan.blindassist.ui.DetectionOverlayView
 import com.linnan.blindassist.vision.VisionFrame
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 
 internal class AssistCameraLifecycleAdapter(
     initialFrameSource: FrameSource,
@@ -18,9 +23,17 @@ internal class AssistCameraLifecycleAdapter(
 ) {
     private var frameSource: FrameSource = initialFrameSource
     private var previewView: PreviewView? = null
+    private var externalPreview: ImageView? = null
+    private val latestPreviewBitmap = AtomicReference<Bitmap?>(null)
+    private val previewDispatchScheduled = AtomicBoolean(false)
 
-    fun onCameraViewsReady(preview: PreviewView?, overlay: DetectionOverlayView) {
+    fun onCameraViewsReady(
+        preview: PreviewView?,
+        externalPreview: ImageView?,
+        overlay: DetectionOverlayView
+    ) {
         previewView = preview
+        this.externalPreview = externalPreview
         renderer.attachOverlay(overlay)
     }
 
@@ -46,7 +59,8 @@ internal class AssistCameraLifecycleAdapter(
                     if (isCameraActive()) onCameraStarted()
                 }
             },
-            onError = ::handleCameraSourceError
+            onError = ::handleCameraSourceError,
+            onPreviewBitmap = ::renderExternalPreview
         )
     }
 
@@ -56,6 +70,14 @@ internal class AssistCameraLifecycleAdapter(
 
     fun clearViews() {
         previewView = null
+        (externalPreview?.drawable as? BitmapDrawable)?.bitmap?.let { bitmap ->
+            if (!bitmap.isRecycled) bitmap.recycle()
+        }
+        externalPreview?.setImageDrawable(null)
+        externalPreview = null
+        latestPreviewBitmap.getAndSet(null)?.let { bitmap ->
+            if (!bitmap.isRecycled) bitmap.recycle()
+        }
         renderer.detachOverlay()
     }
 
@@ -69,6 +91,33 @@ internal class AssistCameraLifecycleAdapter(
         Log.e(PERF_TAG, "Camera source failed", error)
         runOnUiThread {
             if (isCameraActive()) onCameraFailure(message)
+        }
+    }
+
+    private fun renderExternalPreview(bitmap: Bitmap) {
+        val ownedCopy = bitmap.copy(Bitmap.Config.ARGB_8888, false)
+        latestPreviewBitmap.getAndSet(ownedCopy)?.let { stale ->
+            if (!stale.isRecycled) stale.recycle()
+        }
+        schedulePreviewDrain()
+    }
+
+    private fun schedulePreviewDrain() {
+        if (!previewDispatchScheduled.compareAndSet(false, true)) return
+        runOnUiThread {
+            val next = latestPreviewBitmap.getAndSet(null)
+            val target = externalPreview
+            if (next != null) {
+                if (target == null || !isCameraActive()) {
+                    if (!next.isRecycled) next.recycle()
+                } else {
+                    val previous = (target.drawable as? BitmapDrawable)?.bitmap
+                    target.setImageBitmap(next)
+                    if (previous != null && previous !== next && !previous.isRecycled) previous.recycle()
+                }
+            }
+            previewDispatchScheduled.set(false)
+            if (latestPreviewBitmap.get() != null) schedulePreviewDrain()
         }
     }
 

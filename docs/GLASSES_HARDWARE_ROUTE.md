@@ -27,4 +27,18 @@ Android 侧按以下边界继续扩展，并保持无外设降级行为：
 - `GlassesFrameSource`：尚未实现；下一里程碑是 MJPEG 解码、设备时间戳、latest-only
   背压和失效帧处理。
 
+## AtomS3R 实时画面路线
+
+Android 已增加 `GLASSES_HARDWARE` 输入源与 `AtomS3rMjpegFrameSource`。设备页在
+连接成功且 MJPEG 端点可达后，可启动外设实时画面；帧沿与 CameraX 相同的
+`FrameSource -> ObjectDetector -> AssistSessionCoordinator` 路线进入现有检测、风险、
+语音和震动链路。读取线程只保留最新的完整 JPEG，解码/推理落后时覆盖旧帧，不积压
+历史画面。
+
+每个 MJPEG part 的固件 header 与 JPEG 一起解析，至少保留帧序号、设备 capture 时间、
+ToF 时间、有效性、距离和 ToF age。AtomS3R 时间属于
+`EXTERNAL_DEVICE_MONOTONIC_UNMAPPED`，未完成手机—设备单调时钟映射前，不得与 Android
+elapsed realtime 直接比较；风险事件时间继续使用手机 decision clock。ToF 当前仅作为
+逐帧绑定元数据保留，不参与风险阈值或空间融合，相机—ToF 标定仍处于暂停状态。
+
 旧工程中的 TCP PCM / MJPEG 协议仅作实验参考，不能直接视为 Android 产品接入方案或可靠性结论。先完成威胁建模、权限设计、离线降级和可测试接口，再决定是否复用协议。

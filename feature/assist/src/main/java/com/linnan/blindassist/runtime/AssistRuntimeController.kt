@@ -6,6 +6,7 @@ import android.util.Log
 import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity
 import androidx.camera.view.PreviewView
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
@@ -137,12 +138,17 @@ internal class AssistRuntimeSession(
     override fun dispatch(intent: AssistRuntimeIntent) {
         when (intent) {
             AssistRuntimeIntent.OpenPhoneCamera -> openCameraExperience()
+            is AssistRuntimeIntent.OpenGlassesHardware -> openGlassesHardware(intent.endpoint)
             is AssistRuntimeIntent.OpenOfflineReplay -> openOfflineReplay(intent.scenario)
             AssistRuntimeIntent.CloseCamera -> closeCameraExperience()
             is AssistRuntimeIntent.PermissionExplanationAccepted -> requestCameraPermissionAfterExplanation(intent.launchPermissionRequest)
             AssistRuntimeIntent.DismissPermissionFlow -> dismissCameraPermissionFlow()
             is AssistRuntimeIntent.CameraPermissionResult -> onCameraPermissionResult(intent.granted)
-            is AssistRuntimeIntent.CameraViewsReady -> onCameraViewsReady(intent.preview, intent.overlay)
+            is AssistRuntimeIntent.CameraViewsReady -> onCameraViewsReady(
+                intent.preview,
+                intent.externalPreview,
+                intent.overlay
+            )
             is AssistRuntimeIntent.DetectionEnabled -> setDetectionEnabled(intent.enabled)
             is AssistRuntimeIntent.SpeechEnabled -> setSpeechEnabled(intent.enabled)
             is AssistRuntimeIntent.VibrationEnabled -> setVibrationEnabled(intent.enabled)
@@ -166,7 +172,15 @@ internal class AssistRuntimeSession(
         openExperience(AssistInputSource.OFFLINE_REPLAY, scenario)
     }
 
-    private fun openExperience(inputSource: AssistInputSource, replayScenario: ReplayScenario?) {
+    private fun openGlassesHardware(endpoint: String) {
+        openExperience(AssistInputSource.GLASSES_HARDWARE, null, endpoint)
+    }
+
+    private fun openExperience(
+        inputSource: AssistInputSource,
+        replayScenario: ReplayScenario?,
+        endpoint: String? = null
+    ) {
         if (stateMachine.currentState != AssistRuntimeState.Idle) return
         if (inputSource == AssistInputSource.OFFLINE_REPLAY) {
             requireNotNull(replayScenario) { "ReplayScenario is required for offline replay" }
@@ -176,7 +190,8 @@ internal class AssistRuntimeSession(
                 source = inputSource,
                 context = activity,
                 lifecycleOwner = activity,
-                replayScenario = replayScenario
+                replayScenario = replayScenario,
+                endpoint = endpoint
             )
             cameraLifecycleAdapter.replaceFrameSource(replacement)
             currentInputSource = inputSource
@@ -220,8 +235,12 @@ internal class AssistRuntimeSession(
         handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CloseCamera))
     }
 
-    private fun onCameraViewsReady(preview: PreviewView?, overlay: DetectionOverlayView) {
-        cameraLifecycleAdapter.onCameraViewsReady(preview, overlay)
+    private fun onCameraViewsReady(
+        preview: PreviewView?,
+        externalPreview: ImageView?,
+        overlay: DetectionOverlayView
+    ) {
+        cameraLifecycleAdapter.onCameraViewsReady(preview, externalPreview, overlay)
         settingsController.syncConfigFromViewModel()
         handleTransition(stateMachine.onEvent(AssistRuntimeEvent.CameraViewsReady))
     }
