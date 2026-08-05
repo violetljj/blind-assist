@@ -1,0 +1,256 @@
+{
+  "schema": "blindassist_dav2_temporal_392_student_p3_r0_1_protocol",
+  "frozen_at": "2026-08-05",
+  "status": "FROZEN_PRE_ACTIVATION_CORRECTION_DATA_CHECKPOINT_AND_HOLDOUT_UNOPENED",
+  "parent_r0_protocol_sha256": "F51CFFDA3F0E520BBCB1E7EB5D0C7F245777883D396409F07CBF2747054DA8AB",
+  "correction_scope": [
+    "one evidence builder supplies head inputs, abstention labels, and every supervision mask",
+    "geometry transition is separated from external abstention",
+    "stale, invalid, or invalid-pixel teacher targets are excluded from every A2 depth-loss component",
+    "current-student disagreement never creates labels or removes clearance supervision",
+    "holdout public fields are an exact allowlist and aggregate sealed coverage is attested separately",
+    "clip P1 metrics, denominators, confidence intervals, tolerances, and undefined behavior are numeric and executable",
+    "nine-class train distribution deterministically creates class weights"
+  ],
+  "unchanged_from_r0": {
+    "model": "exact A2 DA V2 Metric ViT-S selected checkpoint",
+    "input_size": 392,
+    "clip_length": 4,
+    "timestamp": "source-native integer nanoseconds",
+    "maximum_adjacent_gap_s": 0.5,
+    "video_parent_disjoint_roles": true,
+    "seed": 20260805,
+    "epochs": 3,
+    "clip_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "optimizer": "AdamW",
+    "learning_rate": 0.00002,
+    "weight_decay": 0.01,
+    "gradient_clip_norm": 1.0,
+    "augmentation": "none"
+  },
+  "evidence_builder": {
+    "function": "build_temporal_evidence",
+    "sole_input_order": [
+      "sample_timestamp_ns",
+      "teacher_timestamp_ns",
+      "teacher_valid",
+      "tof_valid",
+      "frozen_a2_mean_abs_log_depth_disagreement"
+    ],
+    "teacher_stale_after_s": 0.5,
+    "frozen_a2_disagreement_threshold": 0.2,
+    "disagreement_source": "precomputed once by the exact hash-bound parent A2 checkpoint before P3 model load",
+    "current_trainable_student_disagreement_forbidden": true,
+    "outputs": [
+      "detached head_features",
+      "teacher_frame_usable",
+      "clearance_frame_usable",
+      "external_abstain_target",
+      "frozen_a2_disagreement"
+    ],
+    "caller_constructed_parallel_evidence_forbidden": true
+  },
+  "head_and_output_semantics": {
+    "backbone_forward": "independent per frame",
+    "clearance_delta_head": "training auxiliary over pooled log-depth pairs",
+    "geometry_transition_head": "training auxiliary; sees only two pooled depth features, their difference, and real delta_seconds",
+    "geometry_transition_classes": [
+      "CLEAR_TO_CLEAR",
+      "CLEAR_TO_OCCUPIED",
+      "CLEAR_TO_UNKNOWN_GROUND",
+      "OCCUPIED_TO_CLEAR",
+      "OCCUPIED_TO_OCCUPIED",
+      "OCCUPIED_TO_UNKNOWN_GROUND",
+      "UNKNOWN_GROUND_TO_CLEAR",
+      "UNKNOWN_GROUND_TO_OCCUPIED",
+      "UNKNOWN_GROUND_TO_UNKNOWN_GROUND"
+    ],
+    "external_abstention_head": "separate per-frame per-band head that alone consumes evidence builder features",
+    "external_abstention_decision": "sigmoid probability >= 0.5, equivalently logit >= 0",
+    "p1_geometry_state": "existing frozen depth-to-geometry operator; auxiliary transition logits do not replace absolute clearance or invent frame-zero state",
+    "final_state": "external abstention overrides the frozen geometry state to UNKNOWN_GROUND"
+  },
+  "supervision": {
+    "single_frame_depth": {
+      "losses": [
+        "log_depth_smooth_l1",
+        "masked_log_depth_gradient_l1",
+        "masked_median_log_scale"
+      ],
+      "weights": [
+        1.0,
+        0.5,
+        0.25
+      ],
+      "smooth_l1_beta": 0.05,
+      "valid_depth_range_m": [
+        0.1,
+        20.0
+      ],
+      "frame_mask": "teacher_valid AND teacher_age_s <= 0.5",
+      "pixel_mask": "teacher finite and within range AND student finite and positive AND teacher_pixel_valid",
+      "tof_invalid_masks_depth": false
+    },
+    "clearance_delta": {
+      "definition": "C_t - C_t-1 for left, center, right",
+      "loss": "SmoothL1 beta 0.05",
+      "weight": 1.0,
+      "mask": "both endpoint clearances finite AND both endpoints teacher usable AND ToF valid",
+      "frozen_or_current_disagreement_masks_clearance": false
+    },
+    "geometry_transition": {
+      "loss": "nine-class cross entropy",
+      "weight": 0.5,
+      "target": "geometry-only CLEAR/OCCUPIED/UNKNOWN_GROUND pair; never overwritten by teacher age, ToF validity, or disagreement",
+      "mask": "both endpoint geometry_target_valid AND both endpoint teacher usable",
+      "class_weight_formula": "effective number (1-beta)/(1-beta^count), beta 0.999, normalized to arithmetic mean 1",
+      "class_weight_source": "frozen train manifest only",
+      "minimum_train_and_validation_support_per_class": 1,
+      "manual_or_holdout_derived_weights_forbidden": true
+    },
+    "external_abstention": {
+      "loss": "binary cross entropy with logits",
+      "weight": 0.5,
+      "target_true_if": "teacher stale OR teacher invalid OR ToF invalid OR frozen A2 disagreement > 0.20",
+      "does_not_relabel_geometry_transition": true,
+      "does_not_mask_valid_clearance_delta_for_disagreement_only": true
+    },
+    "additional_loss_families_allowed": false
+  },
+  "data_contract": {
+    "manifest_schema": "blindassist_dav2_temporal_392_student_p3_r0_1_clip_manifest",
+    "strict_exact_field_allowlists": true,
+    "manifest_self_hash_fields_forbidden": true,
+    "sealed_holdout_frame_allowlist": [
+      "frame_id",
+      "video_id",
+      "parent_id",
+      "timestamp_ns",
+      "sealed_target_id",
+      "rgb_identity",
+      "rgb_sha256"
+    ],
+    "legacy_p1_parent_overlap": 0,
+    "frame_reuse_across_clips": false,
+    "training_and_validation_transition_distribution_required": "all nine exact class counts",
+    "sealed_coverage_receipt_schema": "blindassist_dav2_temporal_392_student_p3_r0_1_sealed_coverage_receipt",
+    "sealed_coverage_receipt_public_fields": [
+      "sealed_bundle_sha256",
+      "evaluable_clip_count",
+      "video_parent_count",
+      "four key transition counts",
+      "nine geometry transition counts",
+      "coverage producer sha256",
+      "no row labels"
+    ]
+  },
+  "clip_p1": {
+    "status": "NOT_OPENED",
+    "opening_count": 1,
+    "minimum_evaluable_clips": 32,
+    "minimum_video_parents": 8,
+    "minimum_each_key_transition_count": 8,
+    "statistical_unit": "clip rows evaluated with video-parent cluster resampling; frames are never independent bootstrap units",
+    "bootstrap": {
+      "draws": 10000,
+      "seed": 20260805,
+      "per_metric_seed": "seed plus zero-based metric order in evaluator output",
+      "quantile_method": "NumPy linear",
+      "resampling": "sample video parents with replacement and include every complete clip belonging to each sampled parent",
+      "finite_draw_requirement": 0.95,
+      "one_sided_confidence": 0.95,
+      "loss_noninferiority_rule": "95th percentile of candidate-minus-canonical difference <= allowed increase",
+      "score_noninferiority_rule": "5th percentile of candidate-minus-canonical difference >= negative allowed drop",
+      "absolute_upper_rule": "95th percentile of candidate metric <= absolute ceiling"
+    },
+    "metric_definitions": {
+      "minimum_paired_pixel_coverage": "minimum frame paired-pixel coverage; parent-bootstrap candidate-minus-canonical lower bound",
+      "metric_abs_rel_median": "median of per-frame median abs(prediction-truth)/truth on registered truth pixels in [0.25m,6m]",
+      "scale_aligned_abs_rel_median": "same after one diagnostic per-frame median multiplicative scale; never deployment scale authority",
+      "clearance_mae_m": "mean absolute candidate-versus-truth clearance over finite truth-valid left/center/right band rows",
+      "clearance_delta_mae_m": "mean absolute error of consecutive C_t-C_t-1 within the same four-frame clip and band when both truth endpoints are valid",
+      "clearance_delta_pair_coverage": "finite candidate delta pairs divided by truth-valid delta pairs; zero denominator is undefined",
+      "geometry_transition_exact_agreement": "exact nine-class pair agreement over all adjacent clip pairs and three bands",
+      "geometry_transition_macro_f1": "unweighted macro-F1 over the fixed nine-class vocabulary; a class with zero support in a bootstrap draw scores zero",
+      "ground_recovery_rate": "candidate geometry state known divided by truth geometry state known",
+      "false_clear_rate_all_truth_known": "truth OCCUPIED and final candidate CLEAR divided by all externally-valid truth-known band-frame decisions; candidate UNKNOWN remains in the denominator and is controlled separately",
+      "invalid_to_known_rate": "final candidate known divided by band-frame decisions whose external_abstain_target is true; zero denominator is undefined",
+      "valid_to_unknown_rate": "final candidate UNKNOWN divided by externally-valid truth-geometry-known band-frame decisions; zero denominator is undefined"
+    },
+    "noninferiority_tolerances": {
+      "minimum_pixel_coverage_drop": 0.01,
+      "metric_abs_rel_absolute_increase": 0.02,
+      "scale_aligned_abs_rel_absolute_increase": 0.01,
+      "clearance_mae_increase_m": 0.025,
+      "clearance_delta_mae_increase_m": 0.015,
+      "clearance_delta_pair_coverage_drop": 0.01,
+      "transition_macro_f1_drop": 0.05,
+      "transition_exact_agreement_drop": 0.05,
+      "ground_recovery_rate_drop": 0.01,
+      "false_clear_rate_increase": 0.01,
+      "invalid_to_known_rate_increase": 0.01,
+      "valid_to_unknown_rate_increase": 0.02
+    },
+    "absolute_gates": {
+      "maximum_clearance_mae_m": 0.25,
+      "maximum_clearance_delta_mae_m": 0.15,
+      "maximum_false_clear_rate": 0.05,
+      "maximum_invalid_to_known_rate": 0.05,
+      "maximum_valid_to_unknown_rate": 0.1
+    },
+    "undefined_rule": "any undefined or non-finite gated metric, insufficient denominator, or fewer than 95 percent finite bootstrap draws fails closed and is serialized as null",
+    "decision_rule": "all 17 gates pass; no weighted compensation",
+    "on_pass": "P3_A2_392_TEMPORAL_STUDENT_QUALITY_NONINFERIORITY_SUPPORTED_A5S_STACK_ELIGIBLE",
+    "on_fail": "P3_A2_392_TEMPORAL_STUDENT_QUALITY_NONINFERIORITY_NOT_SUPPORTED",
+    "insufficient_coverage": "P3_CLIP_P1_NOT_EVALUABLE_NO_SUBSTITUTION"
+  },
+  "activation_receipt_required_bindings": [
+    "this protocol sha256",
+    "exact A2 selected checkpoint sha256 and A2 training receipt sha256",
+    "frozen A2 disagreement cache sha256 and producer source sha256",
+    "legacy P1 ancestry exclusion ledger sha256",
+    "train/validation/public holdout identity manifest sha256",
+    "train and validation nine-class transition counts",
+    "derived nine-class weight vector and derivation receipt sha256",
+    "sealed target bundle sha256 held outside the trainer",
+    "sealed coverage receipt sha256 and coverage producer sha256",
+    "trainer, evidence/loss module, evaluator, and tests sha256",
+    "candidate output directory proven absent",
+    "holdout outcomes_opened false",
+    "model_loaded false"
+  ],
+  "activation_rule": "no model import/load, cache materialization, optimizer construction, or training before every binding validates",
+  "promotion_sequence": [
+    "activate and train exactly one P3 A2-392 temporal student",
+    "lock checkpoint and candidate cache hashes",
+    "open new clip P1 once",
+    "stack the already frozen A5S selective W8A16 only after pass",
+    "reconfirm quality on a separately prebound gate",
+    "convert QNN/HTP",
+    "run one fixed-cadence device chain canary",
+    "consider cadence search only under later authorization"
+  ],
+  "forbidden": [
+    "modify or relabel the committed P3 R0 protocol",
+    "search quantization partitions, skip locations, input sizes, clip lengths, thresholds, loss weights, class-weight formulas, seeds, checkpoints, or cadence",
+    "use current student disagreement to create labels or remove clearance supervision",
+    "feed external evidence into the geometry transition head",
+    "use invalid or stale teacher pixels in depth loss",
+    "open legacy P1 or new clip P1 during training or checkpoint selection",
+    "rename a label field into the sealed public identity manifest",
+    "count frames as independent samples",
+    "treat an undefined metric as zero or as a pass"
+  ],
+  "implementation": {
+    "evidence_loss_manifest_module": "scripts/research/hftf/dav2_temporal_392_student_p3_r0_1.py",
+    "evidence_loss_manifest_module_sha256": "B4F0772C7A407954FE61EEB7596E1B21E6C382B9A6ADBF21AB83F24FE7172A39",
+    "clip_p1_evaluator": "scripts/research/hftf/evaluate_dav2_temporal_392_clip_p1_r0_1.py",
+    "clip_p1_evaluator_sha256": "A51F3B3C0920BB27D573CFE2876C98865609DAB7DEFCDF4C7F3958A6F709893C",
+    "module_tests": "scripts/research/hftf/test_dav2_temporal_392_student_p3_r0_1.py",
+    "module_tests_sha256": "D441831992265AB3C30B34677E61CCF6482724221A15D77EF1C0FED18F330406",
+    "evaluator_tests": "scripts/research/hftf/test_evaluate_dav2_temporal_392_clip_p1_r0_1.py",
+    "evaluator_tests_sha256": "EEE3F7BA6718E74050455664CE44C51CBD54369AB5072F995B0A97A230C0DF9C"
+  },
+  "current_terminal": "P3_R0_1_PRE_ACTIVATION_CORRECTION_COMPLETE_BINDINGS_PENDING_HOLDOUT_UNOPENED"
+}
