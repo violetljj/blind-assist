@@ -407,7 +407,7 @@ def materialize_predictions(
     if len(parents) != 3:
         raise ValueError("validation asset manifest must contain exactly three parents")
     clip_fields = {"clip_id", "parent_id", "video_id", "frames"}
-    frame_fields = {"frame_id", "parent_id", "video_id", "timestamp_ns", "rgb_identity", "rgb_sha256", "teacher_depth_ref", "teacher_depth_sha256", "teacher_timestamp_ns", "teacher_valid", "tof_valid", "frozen_a2_mean_abs_log_depth_disagreement", "clearance_m", "geometry_state", "geometry_target_valid", "truth_depth_path", "truth_depth_sha256", "truth_depth_scale_m", "intrinsics_fx_fy_cx_cy"}
+    frame_fields = {"frame_id", "parent_id", "video_id", "timestamp_ns", "rgb_identity", "rgb_path", "rgb_sha256", "teacher_depth_ref", "teacher_depth_sha256", "teacher_timestamp_ns", "teacher_valid", "tof_valid", "frozen_a2_mean_abs_log_depth_disagreement", "clearance_m", "geometry_state", "geometry_target_valid", "truth_depth_path", "truth_depth_sha256", "truth_depth_scale_m", "intrinsics_fx_fy_cx_cy"}
     result: list[dict[str, Any]] = []
     for clip in clips:
         _exact(clip, clip_fields, "clip")
