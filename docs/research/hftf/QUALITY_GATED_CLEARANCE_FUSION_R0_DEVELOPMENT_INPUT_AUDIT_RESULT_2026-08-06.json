@@ -1,0 +1,16 @@
+{
+  "schema": "blindassist_quality_gated_clearance_fusion_r0_development_input_audit_result",
+  "protocol_path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_PROTOCOL_2026-08-06.json",
+  "source_admission_terminal": "QUALITY_GATED_CLEARANCE_FUSION_R0_1_SOURCE_IDENTITIES_READY_MEDIA_INTEGRITY_BOUND",
+  "clip_capacity_terminal": "QUALITY_GATED_CLEARANCE_FUSION_R0_1_CLIP_CAPACITY_READY",
+  "required_fields": ["raw_clearance_m", "raw_geometry_valid", "raw_geometry_state", "tof_valid", "teacher_age_s", "frozen_a2_disagreement"],
+  "available_uniform_stream": false,
+  "existing_tum_metric3d_reports_reused": false,
+  "arkitscenes_raw_geometry_stream_materialized": false,
+  "labels_opened": false,
+  "model_loaded": false,
+  "optimizer_constructed": false,
+  "training_started": false,
+  "replay_started": false,
+  "terminal": "QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_INPUT_NOT_READY"
+}
