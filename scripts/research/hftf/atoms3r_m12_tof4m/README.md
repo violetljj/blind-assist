@@ -213,12 +213,19 @@ A/B 中，response write P50/P95 只改善 `1.34/2.11 ms`、P99 仅改善 `0.26 
 coalescing 导致尖峰，但正常分位收益不足以承担额外不确定性，故候选不晋升，正式
 配置恢复 split preamble。配置写入状态 API 和逐帧 header，方便后续审计。
 
+R8 审计确认工具链的 Wi-Fi/lwIP 固定 core 0、Arduino loop/UDP 对时固定 core 1，
+HTTP stream server 默认 no-affinity/priority 5；no-affinity 五分钟实际 handler 全在
+core 1。固定 core 0 后 response write P50/P95 增加 `5.15/3.88 ms`，
+JPEG-ready→host read start P50/P95 增加 `3.21/2.84 ms`，capture→feedback P50
+增加 `4.25 ms`。吞吐虽提高约 `1.18 fps`，但相机双周期和 RSSI 两臂不同，不能作为
+干净 affinity 收益。正式恢复 no-affinity，保留实际 handler core 逐帧账本。
+
 ## 停止条件与下一步
 
 首轮只要求：I2C `0x29` 可见、连续 JSONL 可解析、时间戳/序号单调、有效/无效状态
 可复现。任一项失败时停止在对应电气、驱动或协议层，不修改多区 adapter 来迁就数据。
 当前时间账本、latest-frame 接收策略、ToF 单变量排除、主机 4 线程和 stream
 `TCP_NODELAY` 尾延迟路线已建立；preamble coalescing 已测试但不晋升。下一性能工作
-可针对服务任务调度的受控单变量，或真实手机输出；固定曝光暂缓，相机与 ToF 的空间
-标定仍按用户要求暂缓。
+不再优先尝试 core affinity；可单独评价 stream task priority 或真实手机输出。固定曝光
+暂缓，相机与 ToF 的空间标定仍按用户要求暂缓。
 单区数据不得填充成三个或更多伪 zone。

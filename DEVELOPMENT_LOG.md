@@ -1,5 +1,27 @@
 # Development Log
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
+  ToF4M stream server core affinity 单变量 R8。本地 sdkconfig/HTTPD contract 确认
+  Wi-Fi/lwIP 固定 core 0、Arduino loop 和 timing UDP 固定 core 1、HTTPD 默认
+  no-affinity/priority 5。新增 configured core/priority 状态与逐帧实际 handler core；
+  no-affinity canary/五分钟实际全部为 core 1，因此不做无效的 core-1 候选，只比较
+  no-affinity 与固定 core 0。两臂 `7,040/7,397 frames`、`23.419/24.603 fps`，均
+  0 reconnect/error/overwrite/gap。core 0 将 response write P50/P95/P99 从
+  `26.287/35.132/42.301` 恶化到 `31.439/39.009/43.308 ms`，JPEG-ready→host
+  read start P50/P95 从 `3.561/7.587` 恶化到 `6.770/10.431 ms`，capture→feedback
+  P50/P95 从 `82.549/121.248` 变为 `86.798/122.050 ms`。候选 P99/max 较好，但
+  同时 camera capture P99/max 从 `108.413/144.687` 降至 `72.736/108.748 ms`，
+  RSSI P50 也为 `-32/-35 dBm`，不能归因于 affinity。终态
+  `STREAM_CORE0_AFFINITY_NOT_PROMOTED / NETWORK_START_AND_WRITE_MEDIAN_REGRESSED`，
+  正式恢复 no-affinity（当前实际 core 1），priority 不扫描。no-affinity summary
+  SHA-256 `667b90f98136b91d5022ce51c4b222bc139945b80d2e6ba87ca8d6f210f349b1`，
+  core-0 summary SHA-256 `e5daa4f707d282aa5df4a01b920a40a5c7dc675fefec4e40e5604457aaa5deec`。
+  本结果仅为 Development 调度证据，不授权画质、准确率、人体、产品或安全结论。
+  正式 no-affinity 固件 program/RAM `1,078,375 B (32%) / 62,608 B (19%)`，app bin
+  SHA-256 `928af057147198a233cb10db1c5e464307321e705f4c2b6647b1f056ea847bc8`；刷入
+  COM5 后 20 帧验收实际 handler core 全为 1，0 reconnect/error/overwrite/gap，
+  TCP_NODELAY=true、preamble split、自动曝光、ToF sampling/valid，退出后
+  stream_clients=0。12 项测试、Ruff、py_compile、固件编译与 scoped diff check 通过。
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
   ToF4M stream preamble coalescing 单变量 R7。冻结 XGA/quality 10/自动曝光/
   DMA-off/ToF-on/TCP_NODELAY-on/host 4 threads，只比较 boundary + metadata header
   分两次或合为一次 HTTP chunk。split/coalesced 五分钟分别为 `7,223/7,358 frames`、

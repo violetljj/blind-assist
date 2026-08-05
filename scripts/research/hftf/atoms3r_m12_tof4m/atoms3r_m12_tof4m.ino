@@ -24,10 +24,12 @@ constexpr bool kEnableTofSampling = true;
 constexpr bool kEnableCameraPsramDma = false;
 constexpr bool kEnableStreamTcpNoDelay = true;
 constexpr bool kCoalesceStreamPreamble = false;
+constexpr BaseType_t kStreamServerCoreId = tskNO_AFFINITY;
+constexpr unsigned kStreamServerTaskPriority = tskIDLE_PRIORITY + 5;
 constexpr const char* kFirmwareVersion =
     kEnableCameraPsramDma ? "atoms3r_m12_tof4m_slow_frame_r6_psram_dma"
-    : kCoalesceStreamPreamble ? "atoms3r_m12_tof4m_stream_r8_preamble_coalesced"
-                              : "atoms3r_m12_tof4m_stream_r8_preamble_split";
+    : kStreamServerCoreId == 0 ? "atoms3r_m12_tof4m_stream_r9_core0"
+                               : "atoms3r_m12_tof4m_stream_r9_no_affinity";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -770,6 +772,8 @@ esp_err_t statusHandler(httpd_req_t* request) {
       "\"psram_dma_enabled\":%s,\"frame_buffer_count\":2,"
       "\"grab_mode\":\"LATEST\",\"stream_tcp_nodelay_configured\":%s,"
       "\"stream_preamble_coalesced_configured\":%s,"
+      "\"stream_server_core_configured\":%d,"
+      "\"stream_server_task_priority\":%u,"
       "\"recent_fps\":%.2f,\"total_frames\":%" PRIu64 ","
       "\"stream_clients\":%u},"
       "\"tof\":{\"ready\":%s,\"sampling_enabled\":%s,\"valid\":%s,"
@@ -788,6 +792,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       camera_psram_dma_enabled ? "true" : "false",
       kEnableStreamTcpNoDelay ? "true" : "false",
       kCoalesceStreamPreamble ? "true" : "false",
+      static_cast<int>(kStreamServerCoreId), kStreamServerTaskPriority,
       static_cast<double>(frames.recent_fps), frames.total_frames,
       frames.stream_clients, sensor_ready ? "true" : "false",
       kEnableTofSampling ? "true" : "false",
@@ -1064,6 +1069,7 @@ esp_err_t streamHandler(httpd_req_t* request) {
         "X-Camera-Psram-Dma-Enabled: %s\r\n"
         "X-Stream-Tcp-Nodelay: %s\r\n"
         "X-Stream-Preamble-Coalesced: %s\r\n"
+        "X-Stream-Handler-Core: %d\r\n"
         "X-Exposure-Value: %d\r\nX-Wifi-Rssi-Dbm: %d\r\n"
         "X-Free-Heap-Bytes: %u\r\n\r\n",
         kCoalesceStreamPreamble ? kStreamBoundary : "",
@@ -1084,7 +1090,8 @@ esp_err_t streamHandler(httpd_req_t* request) {
         camera_settings.auto_exposure ? "true" : "false",
         camera_psram_dma_enabled ? "true" : "false",
         stream_tcp_nodelay_enabled ? "true" : "false",
-        kCoalesceStreamPreamble ? "true" : "false", exposure_value,
+        kCoalesceStreamPreamble ? "true" : "false",
+        static_cast<int>(xPortGetCoreID()), exposure_value,
         wifi_rssi_dbm, free_heap_bytes);
     if (header_length <= 0 ||
         static_cast<size_t>(header_length) >= sizeof(header)) {
@@ -1167,6 +1174,8 @@ bool startStreamServer() {
   config.ctrl_port = 32769;
   config.max_open_sockets = 3;
   config.stack_size = 8192;
+  config.core_id = kStreamServerCoreId;
+  config.task_priority = kStreamServerTaskPriority;
   if (httpd_start(&stream_httpd, &config) != ESP_OK) {
     emitEvent("http_stream", "START_FAILED");
     return false;
