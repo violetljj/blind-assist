@@ -7,6 +7,7 @@ import androidx.camera.view.PreviewView
 import com.linnan.blindassist.util.FatalThrowables
 import com.linnan.blindassist.vision.FrameClockDomain
 import com.linnan.blindassist.vision.ExternalFrameTiming
+import com.linnan.blindassist.vision.ExternalFrameTransportDiagnostics
 import com.linnan.blindassist.vision.FrameStamp
 import com.linnan.blindassist.vision.RangingSample
 import com.linnan.blindassist.vision.VisionFrame
@@ -208,31 +209,24 @@ class AtomS3rMjpegFrameSource(
                     "Unable to decode AtomS3R JPEG"
                 }
                 val decodeCompleteNs = SystemClock.elapsedRealtimeNanos()
+                val metadata = packet.metadata(decodeStartNs, decodeCompleteNs)
+                val frame = OwnedBitmapVisionFrame(
+                    bitmap = bitmap,
+                    frameStamp = metadata.frameStamp,
+                    rangingSample = metadata.rangingSample,
+                    externalTiming = metadata.externalTimingSeed.withRgbaComplete(decodeCompleteNs),
+                    externalTransportDiagnostics = metadata.transportDiagnostics
+                )
                 try {
-                    val metadata = packet.metadata(decodeStartNs, decodeCompleteNs)
-                    val frame = BitmapRgbaVisionFrame.from(
-                        bitmap = bitmap,
-                        frameStamp = metadata.frameStamp,
-                        rangingSample = metadata.rangingSample,
-                        externalTimingFactory = {
-                            metadata.externalTimingSeed.withRgbaComplete(
-                                SystemClock.elapsedRealtimeNanos()
-                            )
-                        }
-                    )
                     if (!started) {
                         started = true
                         onStarted()
                     }
                     onPreviewBitmap?.invoke(bitmap)
-                    try {
-                        onFrame(frame)
-                    } catch (error: Throwable) {
-                        frame.close()
-                        throw error
-                    }
-                } finally {
-                    bitmap.recycle()
+                    onFrame(frame)
+                } catch (error: Throwable) {
+                    frame.close()
+                    throw error
                 }
             } catch (error: Throwable) {
                 FatalThrowables.rethrowIfFatal(error)
@@ -252,7 +246,8 @@ class AtomS3rMjpegFrameSource(
     internal data class PacketMetadata(
         val frameStamp: FrameStamp,
         val rangingSample: RangingSample?,
-        val externalTimingSeed: ExternalTimingSeed
+        val externalTimingSeed: ExternalTimingSeed,
+        val transportDiagnostics: ExternalFrameTransportDiagnostics
     )
 
     internal data class ExternalTimingSeed(
@@ -288,6 +283,8 @@ class AtomS3rMjpegFrameSource(
         val readStartNs: Long,
         val firstByteNs: Long,
         val jpegCompleteNs: Long,
+        val bodyReadCalls: Int,
+        val maxBodyReadGapNs: Long,
         val clockMapping: AtomS3rClockMapping?
     ) {
         fun metadata(
@@ -337,6 +334,19 @@ class AtomS3rMjpegFrameSource(
                     androidDecodeStartNs = decodeStartNs,
                     androidDecodeCompleteNs = decodeCompleteNs,
                     clockMapping = clockMapping
+                ),
+                ExternalFrameTransportDiagnostics(
+                    jpegSizeBytes = jpeg.size,
+                    wifiRssiDbm = headers["x-wifi-rssi-dbm"]?.toIntOrNull(),
+                    previousFrameSequence = if (
+                        headers["x-previous-response-write-valid"]?.toBooleanStrictOrNull() == true
+                    ) headers["x-previous-frame-sequence"]?.toLongOrNull() else null,
+                    previousResponseWriteDurationNs = if (
+                        headers["x-previous-response-write-valid"]?.toBooleanStrictOrNull() == true
+                    ) headers["x-previous-response-write-duration-us"]
+                        ?.toLongOrNull()?.times(NANOS_PER_MICROSECOND) else null,
+                    androidBodyReadCalls = bodyReadCalls,
+                    androidMaxBodyReadGapNs = maxBodyReadGapNs
                 )
             )
         }
@@ -371,9 +381,16 @@ class AtomS3rMjpegFrameSource(
             jpeg[0] = first.toByte()
             val firstByteNs = receivedAtNs ?: SystemClock.elapsedRealtimeNanos()
             var offset = 1
+            var bodyReadCalls = 1
+            var previousReadCompleteNs = firstByteNs
+            var maxBodyReadGapNs = 0L
             while (offset < length) {
                 val read = input.read(jpeg, offset, length - offset)
                 if (read < 0) throw EOFException("MJPEG ended inside JPEG")
+                val readCompleteNs = receivedAtNs ?: SystemClock.elapsedRealtimeNanos()
+                maxBodyReadGapNs = maxOf(maxBodyReadGapNs, readCompleteNs - previousReadCompleteNs)
+                previousReadCompleteNs = readCompleteNs
+                bodyReadCalls += 1
                 offset += read
             }
             val jpegCompleteNs = receivedAtNs ?: SystemClock.elapsedRealtimeNanos()
@@ -383,6 +400,8 @@ class AtomS3rMjpegFrameSource(
                 readStartNs,
                 firstByteNs,
                 jpegCompleteNs,
+                bodyReadCalls,
+                maxBodyReadGapNs,
                 clockMapping
             )
         }

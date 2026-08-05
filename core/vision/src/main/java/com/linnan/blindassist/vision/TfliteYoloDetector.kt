@@ -111,10 +111,15 @@ class TfliteYoloDetector(
             frameSize = frameSize,
             sourceFrame = frame.frameStamp,
             prepareInput = {
-                require(frame is RgbaVisionFrame) {
-                    "Only RGBA camera frames are supported by the realtime detector"
+                when (frame) {
+                    is NativeImageVisionFrame -> {
+                        val bitmap = frame.nativeImage as? Bitmap
+                            ?: error("Unsupported native image: ${frame.nativeImage.javaClass.name}")
+                        preprocessor.prepare(bitmap)
+                    }
+                    is RgbaVisionFrame -> preprocessor.prepare(frame)
+                    else -> error("Only bitmap or RGBA camera frames are supported by the realtime detector")
                 }
-                preprocessor.prepare(frame)
             }
         )
     }

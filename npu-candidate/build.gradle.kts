@@ -34,6 +34,9 @@ android {
             res.srcDir(rootProject.file("app/src/main/res"))
             assets.srcDir(rootProject.file("app/src/main/assets"))
         }
+        getByName("androidTest") {
+            java.srcDir(rootProject.file("app/src/androidTest/java/com/linnan/blindassist/timing"))
+        }
     }
 
     compileOptions {
@@ -85,4 +88,10 @@ dependencies {
     implementation(libs.tflite)
     implementation(libs.qnn.runtime)
     implementation(libs.qnn.litert.delegate)
+
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(project(":core:assist"))
+    androidTestImplementation(project(":core:device"))
+    androidTestImplementation(project(":core:vision"))
 }

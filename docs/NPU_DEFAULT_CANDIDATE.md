@@ -18,6 +18,11 @@
 - 独立 `:npu-candidate` App 继续保留为 fail-closed 复现实验包；正式 App 通过
   manifest provider 接入 `ProductionQnnRoutingObjectDetectorProvider`，不会把
   CPU fallback 记成 NPU 成功。
+- 正式 App 保持 `useLegacyPackaging=false`。QNN 2.47 的 V75 HTP skeleton 由
+  `QnnHtpSkelInstaller` 从 APK 做大小/CRC 校验后物化到 app-private `code_cache`，
+  再交给 FastRPC；不通过整体 legacy native-library 解压换取 NPU 可用性。AtomS3R
+  实时正式链路的根因、修复和一分钟证据见
+  [Android 正式 QNN HTP R1](research/hftf/ATOMS3R_ANDROID_PRODUCTION_QNN_HTP_R1_RESULT_2026-08-06.md)。
 - 候选使用 Qualcomm QNN runtime/LiteRT delegate `2.47.0`、arm64-only；
   不允许初始化失败后回落 CPU。
 

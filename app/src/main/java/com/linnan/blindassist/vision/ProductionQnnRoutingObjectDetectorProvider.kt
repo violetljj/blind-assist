@@ -40,9 +40,10 @@ class ProductionQnnRoutingObjectDetectorProvider : ObjectDetectorProvider {
                 context = context,
                 executionBackend = DetectorExecutionBackend.QUALCOMM_QNN_HTP,
                 externalInterpreterOptionsFactory = {
+                    val skelLibraryDir = QnnHtpSkelInstaller.install(context)
                     val options = QnnDelegate.Options().apply {
                         setBackendType(QnnDelegate.Options.BackendType.HTP_BACKEND)
-                        setSkelLibraryDir(context.applicationInfo.nativeLibraryDir)
+                        setSkelLibraryDir(skelLibraryDir.absolutePath)
                         setHtpPrecision(QnnDelegate.Options.HtpPrecision.HTP_PRECISION_FP16)
                         setHtpPerformanceMode(
                             QnnDelegate.Options.HtpPerformanceMode

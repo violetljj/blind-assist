@@ -58,6 +58,23 @@ data class ExternalFrameTiming(
     }
 }
 
+data class ExternalFrameTransportDiagnostics(
+    val jpegSizeBytes: Int,
+    val wifiRssiDbm: Int?,
+    val previousFrameSequence: Long?,
+    val previousResponseWriteDurationNs: Long?,
+    val androidBodyReadCalls: Int,
+    val androidMaxBodyReadGapNs: Long
+) {
+    init {
+        require(jpegSizeBytes > 0)
+        require(previousFrameSequence == null || previousFrameSequence >= 0L)
+        require(previousResponseWriteDurationNs == null || previousResponseWriteDurationNs >= 0L)
+        require(androidBodyReadCalls > 0)
+        require(androidMaxBodyReadGapNs >= 0L)
+    }
+}
+
 /** Immutable capture identity. Decision/effect time is deliberately carried separately. */
 data class FrameStamp(
     val frameId: Long,
@@ -91,6 +108,8 @@ interface VisionFrame : AutoCloseable {
     val rangingSample: RangingSample? get() = null
     /** Optional external acquisition/decode timing carried with the exact frame. */
     val externalTiming: ExternalFrameTiming? get() = null
+    /** Optional transport diagnostics carried with the exact external frame. */
+    val externalTransportDiagnostics: ExternalFrameTransportDiagnostics? get() = null
 
     override fun close()
 }
@@ -99,4 +118,9 @@ interface RgbaVisionFrame : VisionFrame {
     val buffer: ByteBuffer
     val rowStride: Int
     val pixelStride: Int
+}
+
+/** A frame whose decoded bitmap remains owned by the frame until [close]. */
+interface NativeImageVisionFrame : VisionFrame {
+    val nativeImage: Any
 }

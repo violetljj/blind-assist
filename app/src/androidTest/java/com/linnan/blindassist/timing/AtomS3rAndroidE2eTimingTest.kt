@@ -72,6 +72,9 @@ class AtomS3rAndroidE2eTimingTest {
                             val timing = requireNotNull(frame.externalTiming) {
                                 "AtomS3R frame missing external timing"
                             }
+                            val transport = requireNotNull(frame.externalTransportDiagnostics) {
+                                "AtomS3R frame missing transport diagnostics"
+                            }
                             val stamp = requireNotNull(frame.frameStamp)
                             require(stamp.clockDomain ==
                                 FrameClockDomain.EXTERNAL_DEVICE_MONOTONIC_MAPPED_TO_ANDROID) {
@@ -127,6 +130,19 @@ class AtomS3rAndroidE2eTimingTest {
                                 put("capture_to_decode_complete_ms", ms(timing.androidDecodeCompleteNs - captureAndroidNs))
                                 put("decode_duration_ms", ms(timing.androidDecodeCompleteNs - timing.androidDecodeStartNs))
                                 put("rgba_duration_ms", ms(timing.androidRgbaCompleteNs - timing.androidDecodeCompleteNs))
+                                put("jpeg_size_bytes", transport.jpegSizeBytes)
+                                putNullable("wifi_rssi_dbm", transport.wifiRssiDbm)
+                                putNullable("previous_frame_sequence", transport.previousFrameSequence)
+                                putNullable(
+                                    "previous_response_write_duration_ms",
+                                    transport.previousResponseWriteDurationNs?.let(::ms)
+                                )
+                                put("android_body_read_calls", transport.androidBodyReadCalls)
+                                put("android_max_body_read_gap_ms", ms(transport.androidMaxBodyReadGapNs))
+                                put(
+                                    "android_first_byte_to_jpeg_complete_ms",
+                                    ms(timing.androidJpegCompleteNs - timing.androidFirstByteNs)
+                                )
                                 put("inference_stage_ms", ms(inferenceCompleteNs - inferenceStartNs))
                                 put("capture_to_risk_complete_ms", ms(riskCompleteNs - captureAndroidNs))
                                 putNullable("tof_timestamp_ns", tof?.sampledAtNs)
