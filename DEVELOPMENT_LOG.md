@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：violjjet。建立 Android 手机与
+  AtomS3R-M12 + ToF4M 的首条真实外设链路。无线 ADB 发现并连接 Samsung SM-S9280
+  (`192.168.5.4:43505`, Android 16)，手机到设备 `192.168.5.11` 三次 ping 0 丢包、
+  RTT `9.79/17.41/25.91 ms`。将原“眼镜设备模拟中心”的产品入口升级为统一的
+  “眼镜外界硬件连接”，新增 `GlassesConnectionRepository`：在 IO dispatcher 中
+  fail-closed 校验 `/api/status` 的 AtomS3R 固件身份、读取 `/api/range`，并打开
+  `:81/stream` 验证 multipart MJPEG。App 新增 INTERNET 权限，仅对白名单
+  `192.168.5.11` 与 `atoms3r-tof.local` 允许 cleartext；连接状态、固件、RSSI、ToF
+  距离、视频端点与错误进入 ViewModel/Compose 状态，默认相机/检测/提醒不变。
+  JDK 17 下 `:core:device:testDebugUnitTest :feature:assist:testDebugUnitTest
+  :app:assembleDebug` 通过；debug APK 经无线 ADB 覆盖安装。首次独立 test APK 因缺
+  INTERNET 权限得到 `EPERM`，补测试 Manifest 后 SM-S9280 上
+  `GlassesConnectionRepositoryDeviceTest` 通过，实证手机进程可读取设备状态、有效
+  ToF 距离并打开 MJPEG 端点。当前仅建立控制/距离/流可达链路；MJPEG 解码、时间戳
+  账本、latest-only 帧源和风险链路输入仍是下一里程碑，不授权产品或安全结论。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 + ToF4M
   stream PSRAM JPEG copy-buffer reuse 单变量 R10。先从 R9 账本确认 JPEG P50/P95 约
   `34.5/35.4 KB`、copy/metadata prepare 约 `0.98/1.31 ms`，因此不采用会延长

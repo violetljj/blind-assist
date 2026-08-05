@@ -1,0 +1,180 @@
+package com.linnan.blindassist.ui.compose
+
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Link
+import androidx.compose.material.icons.rounded.LinkOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.model.ReplayScenario
+
+@Composable
+fun GlassesHardwareScreen(
+    state: GlassesSimulatorUiState,
+    language: AppLanguage,
+    onBack: () -> Unit,
+    onConnect: () -> Unit,
+    onDisconnect: () -> Unit,
+    @Suppress("UNUSED_PARAMETER") onReplayScenarioSelected: (ReplayScenario) -> Unit,
+    @Suppress("UNUSED_PARAMETER") onStartReplay: (ReplayScenario) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val english = language == AppLanguage.EN
+    BackHandler(onBack = onBack)
+    ScreenColumn(modifier = modifier.testTag("glasses_device_screen")) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(
+                onClick = onBack,
+                modifier = Modifier.semantics {
+                    contentDescription = if (english) "Back from glasses device center" else "返回功能页，离开眼镜设备中心"
+                }
+            ) {
+                Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null, tint = BaText)
+            }
+            Text(
+                text = if (english) "Glasses device center" else "眼镜外设连接中心",
+                style = MaterialTheme.typography.headlineSmall,
+                color = BaText,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.semantics { heading() }
+            )
+        }
+        Spacer(Modifier.height(10.dp))
+        Text(
+            text = if (english) {
+                "Real external-hardware connection. Current adapter: AtomS3R-M12 + ToF4M over local Wi-Fi."
+            } else {
+                "真实外界硬件连接入口。当前适配器：AtomS3R-M12 + ToF4M 局域网连接。"
+            },
+            color = BaAmber,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.testTag("glasses_hardware_boundary")
+        )
+        Spacer(Modifier.height(16.dp))
+        HardwareStatusCard(state = state, language = language)
+        Spacer(Modifier.height(16.dp))
+        when (state.connectionState) {
+            GlassesConnectionState.DISCONNECTED,
+            GlassesConnectionState.CONNECTION_LOST -> Button(
+                onClick = onConnect,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 52.dp)
+                    .testTag("connect_glasses_device")
+                    .semantics { contentDescription = if (english) "Connect external glasses hardware" else "连接眼镜外界硬件" },
+                colors = ButtonDefaults.buttonColors(containerColor = BaMint, contentColor = BaInk)
+            ) {
+                Icon(Icons.Rounded.Link, contentDescription = null)
+                Text(if (english) " Connect device" else " 连接设备")
+            }
+            GlassesConnectionState.CONNECTING -> Button(
+                onClick = {},
+                enabled = false,
+                modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("connecting_glasses_device")
+            ) {
+                Text(if (english) "Connecting to AtomS3R…" else "正在连接 AtomS3R…")
+            }
+            GlassesConnectionState.CONNECTED -> OutlinedButton(
+                onClick = onDisconnect,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 52.dp)
+                    .testTag("disconnect_glasses_device")
+            ) {
+                Icon(Icons.Rounded.LinkOff, contentDescription = null)
+                Text(if (english) " Disconnect" else " 断开连接")
+            }
+        }
+        state.errorMessage?.let { error ->
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = if (english) "Connection failed: $error" else "连接失败：$error",
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.testTag("glasses_connection_error")
+            )
+        }
+        Spacer(Modifier.height(18.dp))
+        InfoStrip(
+            icon = Icons.Rounded.Link,
+            title = if (english) "Current integration boundary" else "当前接入边界",
+            body = if (english) {
+                "Status, ToF distance, and MJPEG endpoint reachability are verified. Live frame decoding and risk-pipeline input are next."
+            } else {
+                "已验证设备状态、ToF 距离和 MJPEG 端点可达；实时画面解码并送入风险链路是下一步。"
+            }
+        )
+    }
+}
+
+@Composable
+private fun HardwareStatusCard(state: GlassesSimulatorUiState, language: AppLanguage) {
+    val english = language == AppLanguage.EN
+    val connection = state.connectionState.hardwareLabel(language)
+    val distance = state.tofRangeMm?.let { "$it mm" } ?: if (english) "Unavailable" else "不可用"
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("glasses_device_status")
+            .semantics(mergeDescendants = true) {
+                contentDescription = "$connection, ${state.endpoint}, $distance"
+                stateDescription = connection
+            },
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
+    ) {
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(if (english) "External device status" else "外界硬件状态", color = BaText, fontWeight = FontWeight.Bold)
+            Text(connection, color = if (state.connectionState == GlassesConnectionState.CONNECTED) BaMint else BaTextMuted)
+            Text(if (english) "Endpoint: ${state.endpoint}" else "设备地址：${state.endpoint}", color = BaTextMuted)
+            state.firmwareVersion?.let { Text(if (english) "Firmware: $it" else "固件：$it", color = BaTextMuted) }
+            state.wifiRssiDbm?.let { Text(if (english) "Wi-Fi RSSI: $it dBm" else "Wi-Fi 信号：$it dBm", color = BaTextMuted) }
+            Text(if (english) "ToF: $distance" else "ToF 距离：$distance", color = BaTextMuted)
+            Text(
+                if (state.streamReachable) {
+                    if (english) "MJPEG endpoint reachable" else "MJPEG 视频端点可达"
+                } else {
+                    if (english) "MJPEG endpoint not verified" else "MJPEG 视频端点未验证"
+                },
+                color = BaTextMuted
+            )
+        }
+    }
+}
+
+private fun GlassesConnectionState.hardwareLabel(language: AppLanguage): String {
+    val english = language == AppLanguage.EN
+    return when (this) {
+        GlassesConnectionState.DISCONNECTED -> if (english) "Disconnected" else "未连接"
+        GlassesConnectionState.CONNECTING -> if (english) "Connecting" else "连接中"
+        GlassesConnectionState.CONNECTED -> if (english) "Connected" else "已连接"
+        GlassesConnectionState.CONNECTION_LOST -> if (english) "Connection failed or lost" else "连接失败或已断开"
+    }
+}

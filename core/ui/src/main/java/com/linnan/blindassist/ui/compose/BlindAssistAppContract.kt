@@ -61,10 +61,7 @@ data class AssistNavigationActions(
 )
 
 data class GlassesSimulatorActions(
-    val onSimulateConnection: () -> Unit,
-    val onConnectionCompleted: () -> Unit,
-    val onSimulateLowBattery: () -> Unit,
-    val onSimulateDisconnect: () -> Unit,
-    val onReset: () -> Unit,
+    val onConnect: () -> Unit,
+    val onDisconnect: () -> Unit,
     val onReplayScenarioSelected: (ReplayScenario) -> Unit
 )

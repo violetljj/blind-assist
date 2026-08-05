@@ -33,7 +33,8 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - 可并存安装的 `ustrfExperiment` 实验版已接入 USTRF 二维路线代理，并直接替代旧风险分析入口；它只使用画面中心假设路线与检测框生成保守代理风险，不具备米制深度、稳定姿态或真实路线，因此不可用于独立行走，也不改变正式 App。
 - SANPO 分割路线采用双通道：论文 `THESIS_DEVELOPMENT` 不要求先通过 INT8、blind 或
   设备事件门；显式 `PRODUCTION_PROMOTION` 才使用完整晋级链。当前未替换 App 默认模型。
-- 正式 App 保持本地推理；眼镜设备中心仍是模拟功能，不扫描蓝牙、不连接真实眼镜。
+- 正式 App 保持本地推理；眼镜外界硬件入口已能通过局域网连接 AtomS3R-M12 +
+  ToF4M，读取设备/距离状态并验证 MJPEG 端点。视频帧尚未送入识别与提醒链路。
 
 发布变化见 [CHANGELOG.md](CHANGELOG.md)，近期工程过程见
 [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。当前论文系统研究入口见

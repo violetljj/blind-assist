@@ -1,6 +1,8 @@
 package com.linnan.blindassist.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.linnan.blindassist.device.glasses.GlassesConnectionRepository
 import com.linnan.blindassist.runtime.AssistRuntimeConfig
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
@@ -21,6 +23,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 data class BlindAssistAppUiState(
@@ -40,7 +45,8 @@ data class BlindAssistAppUiState(
 
 @HiltViewModel
 class BlindAssistViewModel @Inject constructor(
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val glassesConnectionRepository: GlassesConnectionRepository = GlassesConnectionRepository()
 ) : ViewModel() {
     private val initialPreferences = userPreferences.load()
 
@@ -281,23 +287,91 @@ class BlindAssistViewModel @Inject constructor(
         }
     }
 
-    fun onSimulateGlassesConnection() {
+    fun onConnectGlassesDevice() {
         _uiState.update { state ->
             state.copy(
                 glassesSimulator = state.glassesSimulator.copy(
                     connectionState = GlassesConnectionState.CONNECTING,
-                    batteryPercent = null,
+                    errorMessage = null,
+                    selectedInput = AssistInputSource.PHONE_CAMERA
+                )
+            )
+        }
+        val endpoint = uiState.value.glassesSimulator.endpoint
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                glassesConnectionRepository.connect(endpoint)
+            }
+            _uiState.update { state ->
+                if (state.glassesSimulator.connectionState != GlassesConnectionState.CONNECTING) {
+                    state
+                } else {
+                    result.fold(
+                        onSuccess = { status ->
+                            state.copy(
+                                glassesSimulator = state.glassesSimulator.copy(
+                                    connectionState = GlassesConnectionState.CONNECTED,
+                                    firmwareVersion = status.firmwareVersion,
+                                    wifiRssiDbm = status.wifiRssiDbm,
+                                    tofValid = status.tofValid,
+                                    tofRangeMm = status.tofRangeMm,
+                                    streamReachable = status.streamReachable,
+                                    errorMessage = null
+                                )
+                            )
+                        },
+                        onFailure = { error ->
+                            state.copy(
+                                glassesSimulator = state.glassesSimulator.copy(
+                                    connectionState = GlassesConnectionState.CONNECTION_LOST,
+                                    firmwareVersion = null,
+                                    wifiRssiDbm = null,
+                                    tofValid = false,
+                                    tofRangeMm = null,
+                                    streamReachable = false,
+                                    errorMessage = error.message ?: error.javaClass.simpleName
+                                )
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    fun onDisconnectGlassesDevice() {
+        _uiState.update { state ->
+            state.copy(
+                glassesSimulator = state.glassesSimulator.copy(
+                    connectionState = GlassesConnectionState.DISCONNECTED,
+                    firmwareVersion = null,
+                    wifiRssiDbm = null,
+                    tofValid = false,
+                    tofRangeMm = null,
+                    streamReachable = false,
+                    errorMessage = null,
                     selectedInput = AssistInputSource.PHONE_CAMERA
                 )
             )
         }
     }
 
+    @Deprecated("Use onConnectGlassesDevice for real hardware")
+    fun onSimulateGlassesConnection() {
+        _uiState.update { state ->
+            state.copy(
+                glassesSimulator = state.glassesSimulator.copy(
+                    connectionState = GlassesConnectionState.CONNECTING,
+                    batteryPercent = null
+                )
+            )
+        }
+    }
+
+    @Deprecated("Compatibility helper for legacy tests")
     fun onSimulatedGlassesConnectionCompleted() {
         _uiState.update { state ->
-            if (state.glassesSimulator.connectionState != GlassesConnectionState.CONNECTING) {
-                state
-            } else {
+            if (state.glassesSimulator.connectionState != GlassesConnectionState.CONNECTING) state else {
                 state.copy(
                     glassesSimulator = state.glassesSimulator.copy(
                         connectionState = GlassesConnectionState.CONNECTED,
@@ -308,16 +382,16 @@ class BlindAssistViewModel @Inject constructor(
         }
     }
 
+    @Deprecated("Compatibility helper for legacy tests")
     fun onSimulateGlassesLowBattery() {
         _uiState.update { state ->
-            if (state.glassesSimulator.connectionState != GlassesConnectionState.CONNECTED) {
-                state
-            } else {
+            if (state.glassesSimulator.connectionState != GlassesConnectionState.CONNECTED) state else {
                 state.copy(glassesSimulator = state.glassesSimulator.copy(batteryPercent = 15))
             }
         }
     }
 
+    @Deprecated("Use onDisconnectGlassesDevice")
     fun onSimulateGlassesDisconnect() {
         _uiState.update { state ->
             state.copy(
@@ -330,17 +404,8 @@ class BlindAssistViewModel @Inject constructor(
         }
     }
 
-    fun onResetGlassesSimulation() {
-        _uiState.update { state ->
-            state.copy(
-                glassesSimulator = state.glassesSimulator.copy(
-                    connectionState = GlassesConnectionState.DISCONNECTED,
-                    batteryPercent = null,
-                    selectedInput = AssistInputSource.PHONE_CAMERA
-                )
-            )
-        }
-    }
+    @Deprecated("Use onDisconnectGlassesDevice")
+    fun onResetGlassesSimulation() = onDisconnectGlassesDevice()
 
     fun onReplayScenarioSelected(scenario: ReplayScenario) {
         _uiState.update { state ->

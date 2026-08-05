@@ -121,11 +121,8 @@ class MainActivity : ComponentActivity() {
                             onDismissGlassesCenter = appViewModel::onDismissGlassesCenter
                         ),
                         glasses = GlassesSimulatorActions(
-                            onSimulateConnection = appViewModel::onSimulateGlassesConnection,
-                            onConnectionCompleted = appViewModel::onSimulatedGlassesConnectionCompleted,
-                            onSimulateLowBattery = appViewModel::onSimulateGlassesLowBattery,
-                            onSimulateDisconnect = appViewModel::onSimulateGlassesDisconnect,
-                            onReset = appViewModel::onResetGlassesSimulation,
+                            onConnect = appViewModel::onConnectGlassesDevice,
+                            onDisconnect = appViewModel::onDisconnectGlassesDevice,
                             onReplayScenarioSelected = appViewModel::onReplayScenarioSelected
                         )
                     )

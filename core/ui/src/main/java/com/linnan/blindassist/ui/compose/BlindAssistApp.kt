@@ -155,15 +155,12 @@ fun BlindAssistApp(
                     )
                     splashVisible -> BrandSplashScreen(onFinished = { splashVisible = false })
                     state.showOnboarding -> OnboardingScreen(onFinished = actions.navigation.onCompleteOnboarding)
-                    state.showGlassesCenter -> GlassesSimulatorScreen(
+                    state.showGlassesCenter -> GlassesHardwareScreen(
                         state = state.glassesSimulator,
                         language = state.controls.appLanguage,
                         onBack = actions.navigation.onDismissGlassesCenter,
-                        onConnect = actions.glasses.onSimulateConnection,
-                        onConnectionCompleted = actions.glasses.onConnectionCompleted,
-                        onLowBattery = actions.glasses.onSimulateLowBattery,
-                        onDisconnect = actions.glasses.onSimulateDisconnect,
-                        onReset = actions.glasses.onReset,
+                        onConnect = actions.glasses.onConnect,
+                        onDisconnect = actions.glasses.onDisconnect,
                         onReplayScenarioSelected = actions.glasses.onReplayScenarioSelected,
                         onStartReplay = actions.runtime.onStartOfflineReplay
                     )

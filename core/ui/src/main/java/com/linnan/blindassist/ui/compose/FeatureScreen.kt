@@ -175,20 +175,20 @@ fun FeatureScreen(
         )
         Spacer(Modifier.height(12.dp))
         ActionFeatureCard(
-            title = if (language == AppLanguage.EN) "Simulated glasses center" else "眼镜设备模拟中心",
+            title = if (language == AppLanguage.EN) "External glasses hardware" else "眼镜外界硬件连接",
             subtitle = if (language == AppLanguage.EN) {
-                "Explore simulated connection, battery, input, and feedback states"
+                "Connect AtomS3R-M12 + ToF4M over local Wi-Fi"
             } else {
-                "体验模拟连接、电量、视频来源与反馈链路状态"
+                "通过局域网连接 AtomS3R-M12 + ToF4M"
             },
-            badge = if (language == AppLanguage.EN) "Simulation" else "模拟",
+            badge = if (language == AppLanguage.EN) "Hardware" else "硬件",
             icon = Icons.Rounded.Bluetooth,
             accent = BaSky,
             onClick = onShowGlassesCenter,
             accessibilityText = if (language == AppLanguage.EN) {
-                "Open simulated glasses center; simulation only, no real glasses connection"
+                "Open the external glasses hardware connection center"
             } else {
-                "打开眼镜设备模拟中心，仅为模拟，不连接真实眼镜"
+                "打开眼镜外界硬件连接中心"
             }
         )
         Spacer(Modifier.height(18.dp))

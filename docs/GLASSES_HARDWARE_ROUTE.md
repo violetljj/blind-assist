@@ -2,7 +2,10 @@
 
 ## 当前边界
 
-Android App 中的“连接眼镜设备”仍是占位入口：不会扫描蓝牙、不会联网、不会申请额外权限，也不代表已接入真实 ESP32 或眼镜硬件。任何产品说明都必须维持这一边界。
+Android App 中的“眼镜外界硬件连接”是统一外设入口。首个真实适配器为
+AtomS3R-M12 + Unit ToF4M：手机与设备加入同一局域网后，App 读取设备状态与单区
+ToF 距离，并验证 MJPEG 流端点可达。该入口不是蓝牙扫描器，也不表示其他眼镜硬件
+已经接入。
 
 扫描/配对设备、网络发现、发送真实控制命令、采集外设数据或刷写固件都属于外部状态变更，必须先取得用户明确授权。
 
@@ -16,10 +19,12 @@ Android App 中的“连接眼镜设备”仍是占位入口：不会扫描蓝�
 
 ## 迁移前的设计门槛
 
-在 Android 侧接入前，先设计并评审以下边界及无外设降级行为：
+Android 侧按以下边界继续扩展，并保持无外设降级行为：
 
-- `GlassesConnectionRepository`：连接状态、重连、权限和错误边界。
+- `GlassesConnectionRepository`：已实现 AtomS3R HTTP 状态、ToF 与 MJPEG 端点探测；
+  后续补设备发现、持续心跳与重连。
 - `GlassesControlChannel`：控制命令的协议抽象、超时和幂等性。
-- `GlassesFrameSource`：帧输入、时间戳、背压和失效帧处理。
+- `GlassesFrameSource`：尚未实现；下一里程碑是 MJPEG 解码、设备时间戳、latest-only
+  背压和失效帧处理。
 
 旧工程中的 TCP PCM / MJPEG 协议仅作实验参考，不能直接视为 Android 产品接入方案或可靠性结论。先完成威胁建模、权限设计、离线降级和可测试接口，再决定是否复用协议。

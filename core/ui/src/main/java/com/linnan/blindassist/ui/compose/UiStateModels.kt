@@ -18,6 +18,13 @@ enum class GlassesConnectionState {
 
 data class GlassesSimulatorUiState(
     val connectionState: GlassesConnectionState = GlassesConnectionState.DISCONNECTED,
+    val endpoint: String = "http://192.168.5.11",
+    val firmwareVersion: String? = null,
+    val wifiRssiDbm: Int? = null,
+    val tofValid: Boolean = false,
+    val tofRangeMm: Int? = null,
+    val streamReachable: Boolean = false,
+    val errorMessage: String? = null,
     val batteryPercent: Int? = null,
     val selectedInput: AssistInputSource = AssistInputSource.PHONE_CAMERA,
     val selectedReplayScenario: ReplayScenario = ReplayScenario.HIGH_CENTER,
