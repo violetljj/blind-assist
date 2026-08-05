@@ -1,5 +1,27 @@
 # Development Log
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
+  ToF4M stream HTTPD task priority 单变量 R9。冻结 XGA/quality 10/自动曝光/
+  DMA-off/ToF-on/TCP_NODELAY-on/preamble split/no-affinity/host 4 threads，只比较默认
+  priority 5 与 6。新增状态 configured priority 和逐帧实际 handler priority；正式
+  五分钟两臂实际 core 均为 1、priority 分别全为 5/6。两臂 `7,195/7,202 frames`、
+  `23.940/23.957 fps`，均 0 reconnect/error/overwrite/gap。priority 6 将 response
+  write P50/P95/P99 `27.930/35.089/38.916→28.627/35.835/40.147 ms`，
+  JPEG-ready→host read start `3.445/6.883→3.737/7.274 ms`，capture→feedback
+  P50/P95/P99 `83.717/121.438/129.448→84.800/122.407/132.683 ms`；ToF age/skew
+  基本相同。两臂 camera capture P50/P95 均约 `36.6/72.6 ms`，RSSI P50
+  `-35/-36 dBm`，没有支持候选的混杂优势。终态
+  `STREAM_PRIORITY6_NOT_PROMOTED / NO_THROUGHPUT_GAIN / SMALL_LATENCY_REGRESSION`，
+  正式恢复 priority 5，并停止更高 priority 扫描。priority-5 summary SHA-256
+  `bac05123dc7e5fcba5da5bf55293f1f4e112eba70e71ce76cc0fa770ab521203`，
+  priority-6 summary SHA-256 `ab4a1dcfd0fc739ac7d2d6ba384688ba4af7921fa480acf0ad76f1766febf3a2`。
+  最终恢复并烧录 `atoms3r_m12_tof4m_stream_r10_priority5`；program/RAM
+  `1,078,467/62,608 bytes`（`32%/19%`），固件 SHA-256
+  `9230ba67004c793fe1711cfd52582856e1092b0b9ca82ddf0990dbd4bf8b3c54`。
+  20 帧 release smoke 为 0 reconnect/error/overwrite/gap，实际 handler core/priority
+  为 `[1]/[5]`；退出后状态 API 确认 `stream_clients=0`、自动曝光开启、ToF
+  sampling/valid、Wi-Fi reconnect attempts 为 0。
+  本结果仅为 Development 调度证据，不授权画质、准确率、人体、产品或安全结论。
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
   ToF4M stream server core affinity 单变量 R8。本地 sdkconfig/HTTPD contract 确认
   Wi-Fi/lwIP 固定 core 0、Arduino loop 和 timing UDP 固定 core 1、HTTPD 默认
   no-affinity/priority 5。新增 configured core/priority 状态与逐帧实际 handler core；

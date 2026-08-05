@@ -220,12 +220,23 @@ JPEG-ready→host read start P50/P95 增加 `3.21/2.84 ms`，capture→feedback 
 增加 `4.25 ms`。吞吐虽提高约 `1.18 fps`，但相机双周期和 RSSI 两臂不同，不能作为
 干净 affinity 收益。正式恢复 no-affinity，保留实际 handler core 逐帧账本。
 
+R9 只将 stream HTTPD priority 从默认 5 提高到 6。正式五分钟两臂实际 handler
+core 均为 1、priority 分别全为 5/6。吞吐 `23.940/23.957 fps` 等价，但 priority 6
+使 response write P50/P95 增加 `0.70/0.75 ms`，JPEG-ready→host read start
+增加 `0.29/0.39 ms`，capture→feedback P50/P95 增加 `1.08/0.97 ms`；ToF age/skew
+无改善。正式保留默认 priority 5，停止扫描更高优先级；实际 priority 已纳入逐帧账本。
+最终发布固件为 `atoms3r_m12_tof4m_stream_r10_priority5`，program/RAM
+`1,078,467/62,608 bytes`，SHA-256
+`9230ba67004c793fe1711cfd52582856e1092b0b9ca82ddf0990dbd4bf8b3c54`；20 帧 smoke
+为 0 reconnect/error/overwrite/gap，实际 core/priority `[1]/[5]`，退出后
+`stream_clients=0`。
+
 ## 停止条件与下一步
 
 首轮只要求：I2C `0x29` 可见、连续 JSONL 可解析、时间戳/序号单调、有效/无效状态
 可复现。任一项失败时停止在对应电气、驱动或协议层，不修改多区 adapter 来迁就数据。
 当前时间账本、latest-frame 接收策略、ToF 单变量排除、主机 4 线程和 stream
 `TCP_NODELAY` 尾延迟路线已建立；preamble coalescing 已测试但不晋升。下一性能工作
-不再优先尝试 core affinity；可单独评价 stream task priority 或真实手机输出。固定曝光
-暂缓，相机与 ToF 的空间标定仍按用户要求暂缓。
+core affinity 与 task priority 优化均已关闭，不再继续调度参数扫描。下一步优先真实
+手机输出或新的传输协议架构；固定曝光暂缓，相机与 ToF 的空间标定仍按用户要求暂缓。
 单区数据不得填充成三个或更多伪 zone。

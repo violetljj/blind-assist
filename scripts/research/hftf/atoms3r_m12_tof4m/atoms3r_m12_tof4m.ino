@@ -28,8 +28,9 @@ constexpr BaseType_t kStreamServerCoreId = tskNO_AFFINITY;
 constexpr unsigned kStreamServerTaskPriority = tskIDLE_PRIORITY + 5;
 constexpr const char* kFirmwareVersion =
     kEnableCameraPsramDma ? "atoms3r_m12_tof4m_slow_frame_r6_psram_dma"
-    : kStreamServerCoreId == 0 ? "atoms3r_m12_tof4m_stream_r9_core0"
-                               : "atoms3r_m12_tof4m_stream_r9_no_affinity";
+    : kStreamServerTaskPriority == tskIDLE_PRIORITY + 6
+        ? "atoms3r_m12_tof4m_stream_r10_priority6"
+        : "atoms3r_m12_tof4m_stream_r10_priority5";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -1070,6 +1071,7 @@ esp_err_t streamHandler(httpd_req_t* request) {
         "X-Stream-Tcp-Nodelay: %s\r\n"
         "X-Stream-Preamble-Coalesced: %s\r\n"
         "X-Stream-Handler-Core: %d\r\n"
+        "X-Stream-Handler-Priority: %u\r\n"
         "X-Exposure-Value: %d\r\nX-Wifi-Rssi-Dbm: %d\r\n"
         "X-Free-Heap-Bytes: %u\r\n\r\n",
         kCoalesceStreamPreamble ? kStreamBoundary : "",
@@ -1091,7 +1093,8 @@ esp_err_t streamHandler(httpd_req_t* request) {
         camera_psram_dma_enabled ? "true" : "false",
         stream_tcp_nodelay_enabled ? "true" : "false",
         kCoalesceStreamPreamble ? "true" : "false",
-        static_cast<int>(xPortGetCoreID()), exposure_value,
+        static_cast<int>(xPortGetCoreID()),
+        static_cast<unsigned>(uxTaskPriorityGet(nullptr)), exposure_value,
         wifi_rssi_dbm, free_heap_bytes);
     if (header_length <= 0 ||
         static_cast<size_t>(header_length) >= sizeof(header)) {

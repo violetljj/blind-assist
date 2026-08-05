@@ -63,6 +63,7 @@ REQUIRED_FRAME_HEADERS = {
     "x-stream-tcp-nodelay",
     "x-stream-preamble-coalesced",
     "x-stream-handler-core",
+    "x-stream-handler-priority",
     "x-exposure-value",
     "x-wifi-rssi-dbm",
     "x-free-heap-bytes",
@@ -539,6 +540,7 @@ def frame_row(
             headers["x-stream-preamble-coalesced"]
         ),
         "stream_handler_core": int(headers["x-stream-handler-core"]),
+        "stream_handler_priority": int(headers["x-stream-handler-priority"]),
         "exposure_value": int(headers["x-exposure-value"]),
         "device_wifi_rssi_dbm": int(headers["x-wifi-rssi-dbm"]),
         "device_free_heap_bytes": int(headers["x-free-heap-bytes"]),
@@ -902,6 +904,13 @@ def summarize(
                 row["stream_handler_core"]
                 for row in rows
                 if row.get("stream_handler_core") is not None
+            }
+        ),
+        "stream_handler_priority_values": sorted(
+            {
+                row["stream_handler_priority"]
+                for row in rows
+                if row.get("stream_handler_priority") is not None
             }
         ),
         "sequence_gap_event_count": len(sequence_gaps),
