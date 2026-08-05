@@ -29,6 +29,8 @@
 - [Machine-readable public RGB-D admission result](P3_PUBLIC_RGBD_SOURCE_ADMISSION_R0_RESULT_2026-08-05.json)
 - [P3 R0.2 data-role and sealing protocol](DAV2_TEMPORAL_392_STUDENT_P3_R0_2_DATA_ROLE_AND_SEALING_PROTOCOL_2026-08-05.md)
 - [Machine-readable P3 R0.2 data-role and sealing protocol](DAV2_TEMPORAL_392_STUDENT_P3_R0_2_DATA_ROLE_AND_SEALING_PROTOCOL_2026-08-05.json)
+- [P3 R0.2 role-freeze Attempt 01 invalid result](DAV2_TEMPORAL_392_STUDENT_P3_R0_2_ROLE_FREEZE_ATTEMPT_01_INVALID_2026-08-05.md)
+- [Machine-readable P3 R0.2 Attempt 01 invalid result](DAV2_TEMPORAL_392_STUDENT_P3_R0_2_ROLE_FREEZE_ATTEMPT_01_INVALID_2026-08-05.json)
 - [DA V2 模型变体准确率与 false-clear 门 R0](DAV2_MODEL_VARIANT_VALIDATION_R0_PROTOCOL_2026-08-05.md)
 - [Machine-readable model-variant gate protocol](DAV2_MODEL_VARIANT_VALIDATION_R0_PROTOCOL_2026-08-05.json)
 - [DA V2 模型变体真值参照门 R1](DAV2_MODEL_VARIANT_VALIDATION_R1_PROTOCOL_2026-08-05.md)

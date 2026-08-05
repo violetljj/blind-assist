@@ -57,6 +57,16 @@ class FreezeRolesUnitTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "output directory already exists"):
                 MODULE.require(not output.exists(), f"output directory already exists: {output}")
 
+    def test_missing_frozen_parent_fails_closed(self) -> None:
+        manifests = {
+            "train": {"clips": [{"parent_id": "train-a"}]},
+            "validation": {"clips": []},
+            "public_holdout": {"clips": [{"parent_id": "holdout-a"}]},
+        }
+        roles = {"train": ["train-a"], "validation": ["validation-a"], "public_holdout": ["holdout-a"]}
+        with self.assertRaisesRegex(ValueError, "validation clip parent coverage mismatch"):
+            MODULE.require_parent_coverage(manifests, roles)
+
 
 if __name__ == "__main__":
     unittest.main()

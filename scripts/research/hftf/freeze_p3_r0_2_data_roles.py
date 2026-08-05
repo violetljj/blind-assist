@@ -145,6 +145,13 @@ def make_manifest(role: str, clips: list[dict[str, Any]], protocol_sha: str) -> 
     return value
 
 
+def require_parent_coverage(manifests: dict[str, dict[str, Any]], roles: dict[str, list[str]]) -> None:
+    for role in ("train", "validation", "public_holdout"):
+        actual = {str(clip["parent_id"]) for clip in manifests[role]["clips"]}
+        expected = set(roles[role])
+        require(actual == expected, f"{role} clip parent coverage mismatch: missing={sorted(expected - actual)} extra={sorted(actual - expected)}")
+
+
 def freeze(repo_root: Path, protocol_path: Path, output_dir: Path, source_path: Path) -> dict[str, Any]:
     repo_root = repo_root.resolve()
     protocol = load_json(protocol_path)
@@ -198,6 +205,7 @@ def freeze(repo_root: Path, protocol_path: Path, output_dir: Path, source_path: 
                 public_frames.append(frame | {"sealed_target_id": f"P3R02:{frame['frame_id']}"})
             holdout_clips.append({"clip_id": clip_id, "video_id": parent, "parent_id": parent, "frames": public_frames})
     manifests["public_holdout"] = make_manifest("public_holdout", holdout_clips, protocol_sha)
+    require_parent_coverage(manifests, roles)
 
     for manifest in manifests.values():
         for clip in manifest["clips"]:
