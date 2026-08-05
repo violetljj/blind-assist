@@ -1,0 +1,38 @@
+{
+  "schema": "blindassist_p3_public_bonn_ancestry_exclusions_r0",
+  "basis": [
+    {
+      "path": "docs/research/rcle/RCLE_PHASE_B_BONN_HISTORICAL_EXCLUSION_MANIFEST_2026-07-26.json",
+      "sha256": "F02BD9F1313DEF45CC107D72ACE5F7C7803F4AB816BF6E98C5F9173FA3BB1CC6"
+    },
+    {
+      "path": "docs/research/rcle/RCLE_PHASE_B_REAL_POSITIVE_APPROACH_ROLE_ADMISSION_R1_BURNED_AND_EXCLUSION_MANIFEST_2026-07-27.json",
+      "sha256": "0B54CECC1F3908264F3D4BD06A37B7C27B6F149C05E92E5B3949C0A6EF201593"
+    }
+  ],
+  "excluded_parent_ids": [
+    "rgbd_bonn_balloon",
+    "rgbd_bonn_balloon2",
+    "rgbd_bonn_balloon_tracking",
+    "rgbd_bonn_balloon_tracking2",
+    "rgbd_bonn_crowd",
+    "rgbd_bonn_crowd2",
+    "rgbd_bonn_crowd3",
+    "rgbd_bonn_moving_nonobstructing_box",
+    "rgbd_bonn_moving_nonobstructing_box2",
+    "rgbd_bonn_moving_obstructing_box",
+    "rgbd_bonn_moving_obstructing_box2",
+    "rgbd_bonn_person_tracking",
+    "rgbd_bonn_person_tracking2",
+    "rgbd_bonn_placing_nonobstructing_box3",
+    "rgbd_bonn_removing_nonobstructing_box2"
+  ],
+  "selection_rule": "Exclude every exact Bonn sequence previously inspected, selected, or consumed by repository-recorded development programs; do not infer exclusion or admission from task labels or outcomes.",
+  "forbidden_reads": [
+    "clearance",
+    "geometry state",
+    "transition label or count",
+    "model output",
+    "candidate performance"
+  ]
+}
