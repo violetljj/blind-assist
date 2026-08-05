@@ -1,0 +1,166 @@
+{
+  "schema": "blindassist_p3_r0_2_data_role_and_sealing_protocol",
+  "protocol_id": "DAV2_TEMPORAL_392_STUDENT_P3_R0_2_DATA_ROLE_AND_SEALING_2026-08-05",
+  "purpose": "Freeze parent roles and label-blind clip identities after public RGB-D capacity admission, without opening holdout targets or authorizing model activation.",
+  "relationship_to_prior_routes": {
+    "p3_r0_1_remains_closed": true,
+    "local_universe_p3_r0_2_data_not_ready_result_remains_valid_for_its_closed_universe": true,
+    "public_source_admission_is_a_new_predeclared_universe": true,
+    "modifies_prior_result": false
+  },
+  "unchanged_research_contract": {
+    "backbone": "A2-392",
+    "clip_length": 4,
+    "maximum_adjacent_gap_ns": 500000000,
+    "supervision_families": [
+      "single-frame depth distillation",
+      "clearance delta",
+      "nine-class geometry transition",
+      "external abstention and disagreement"
+    ],
+    "seed": 20260805,
+    "epochs": 3,
+    "training_only_checkpoint_selection": true,
+    "clip_p1_evaluator_and_seventeen_numeric_gates_unchanged": true,
+    "promotion_order": "P3 then A5S then QNN/HTP then fixed-cadence device canary"
+  },
+  "evidence_semantics": {
+    "public_dataset_field": "independent_metric_sensor_valid",
+    "valid_sensor_families": [
+      "registered RGB-D",
+      "structured light",
+      "Kinect or Azure Kinect",
+      "LiDAR",
+      "ToF"
+    ],
+    "missing_or_unsynchronized_metric_sample_value": false,
+    "legacy_tof_valid_alias_permitted": false,
+    "r0_1_historical_tof_valid_contract_modified": false
+  },
+  "sources": {
+    "arkitscenes_manifest": {
+      "path": "artifacts.local/datasets/spatial-calibration-head-r1-arkitscenes-20260804/manifest.json",
+      "sha256": "ECA55FB32E2A296FFE23182F48EDBFCFC9B13C42A2BD7215E4FF159A282C85F2"
+    },
+    "bonn_identity_receipt": {
+      "path": "artifacts.local/evidence/hftf/p3-public-rgbd-source-admission-r0/bonn-valid-pairs-identity-receipt-attempt-03.json",
+      "sha256": "6E4089B3C2E5535D51104914EDE1DD783475EFB237FEBD517F80F1A7A20F6D56"
+    },
+    "public_source_admission_result": {
+      "path": "docs/research/hftf/P3_PUBLIC_RGBD_SOURCE_ADMISSION_R0_RESULT_2026-08-05.json",
+      "sha256": "6C6669D686F4B24F3AAFD208E245B1FE003C107413B11AA353F35E3F60AF45A5"
+    },
+    "legacy_p1_exclusion_ledger": {
+      "path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-1/legacy-p1-ancestry-exclusion-ledger.json",
+      "sha256": "ADB4BC12CB4CA0123412FEF077B52964EBF6C982C2C12D1C240CA75EBA86228D"
+    },
+    "r0_1_closure": {
+      "path": "docs/research/hftf/DAV2_TEMPORAL_392_STUDENT_P3_R0_1_CLOSURE_2026-08-05.json",
+      "sha256": "FB01BA8C1FD11B54D9B1EBCD5E9AF25C8B0FF1E79700253E26FF1BC58ED74B62"
+    },
+    "bonn_ancestry_exclusions": {
+      "path": "docs/research/hftf/P3_PUBLIC_RGBD_SOURCE_ADMISSION_R0_BONN_ANCESTRY_EXCLUSIONS_2026-08-05.json",
+      "sha256": "31B4E80696271166C34E3022BC532946AFA76FBB6FA13D28C98852C99279B33D"
+    },
+    "bonn_full_archive": {
+      "path": "artifacts.local/downloads/bonn-rgbd-dynamic/rgbd_bonn_dataset.zip",
+      "sha256": "D2AFDC286ECDB02A3E57CB98E3908185B1133A3F79F181970064EB177221A84B"
+    },
+    "bonn_dataset_root": "artifacts.local/datasets/bonn-rgbd-dynamic-full-r0/rgbd_bonn_dataset"
+  },
+  "parent_roles": {
+    "train": [
+      "381449", "437220", "469556", "471411", "422841", "434891", "467135", "467334",
+      "434897", "469455", "471032", "472310", "382112", "472626", "482849", "484248"
+    ],
+    "validation": [
+      "382124", "423296", "437528", "483071"
+    ],
+    "public_holdout": [
+      "rgbd_bonn_kidnapping_box",
+      "rgbd_bonn_kidnapping_box2",
+      "rgbd_bonn_placing_nonobstructing_box",
+      "rgbd_bonn_placing_nonobstructing_box2",
+      "rgbd_bonn_placing_obstructing_box",
+      "rgbd_bonn_removing_nonobstructing_box",
+      "rgbd_bonn_removing_obstructing_box",
+      "rgbd_bonn_static",
+      "rgbd_bonn_static_close_far",
+      "rgbd_bonn_synchronous",
+      "rgbd_bonn_synchronous2"
+    ]
+  },
+  "permanent_exclusions": {
+    "legacy_p1_parent_ids": [
+      "tum-fr3-walking-static-pose-000-track-001",
+      "tum-fr3-walking-static-pose-016-track-001",
+      "tum-fr3-walking-static-pose-020-track-001",
+      "tum-fr3-walking-xyz-pose-024-track-001"
+    ],
+    "r0_1_attempted_holdout_parent_ids": [
+      "42446093", "47333440", "48018382", "48018566"
+    ],
+    "bonn_parent_ids": [
+      "rgbd_bonn_balloon", "rgbd_bonn_balloon2", "rgbd_bonn_balloon_tracking",
+      "rgbd_bonn_balloon_tracking2", "rgbd_bonn_crowd", "rgbd_bonn_crowd2",
+      "rgbd_bonn_crowd3", "rgbd_bonn_moving_nonobstructing_box",
+      "rgbd_bonn_moving_nonobstructing_box2", "rgbd_bonn_moving_obstructing_box",
+      "rgbd_bonn_moving_obstructing_box2", "rgbd_bonn_person_tracking",
+      "rgbd_bonn_person_tracking2", "rgbd_bonn_placing_nonobstructing_box3",
+      "rgbd_bonn_removing_nonobstructing_box2"
+    ]
+  },
+  "clip_selection": {
+    "method": "source-order deterministic greedy non-overlap",
+    "train_and_validation": "all complete non-overlapping four-frame windows in each frozen parent",
+    "public_holdout": "first twelve complete non-overlapping valid RGB-depth windows in every frozen parent",
+    "holdout_clips_per_parent": 12,
+    "expected_public_holdout_clip_count": 132,
+    "rgb_depth_maximum_delta_ns": 50000000,
+    "frame_reuse": false,
+    "label_or_transition_conditioning": false
+  },
+  "sealing_contract": {
+    "public_manifest_exact_frame_allowlist": [
+      "frame_id", "video_id", "parent_id", "timestamp_ns", "sealed_target_id", "rgb_identity", "rgb_sha256"
+    ],
+    "identity_manifest_is_immutable_before_private_target_read": true,
+    "private_sealing_producer_must_be_committed_and_sha_bound_before_run": true,
+    "private_target_source": "registered Bonn depth, source-native timestamps and predeclared geometry/clearance derivation only for locked frames",
+    "ordinary_trainer_activation_and_manifest_tools_may_hash_but_not_parse_sealed_bundle": true,
+    "coverage_receipt_may_disclose_only_aggregate_counts": true,
+    "coverage_requirements": {
+      "minimum_evaluable_clips": 32,
+      "minimum_video_parents": 8,
+      "minimum_each_key_transition_count": 8,
+      "key_transitions": [
+        "CLEAR_TO_OCCUPIED", "OCCUPIED_TO_CLEAR", "KNOWN_TO_UNKNOWN", "UNKNOWN_TO_KNOWN"
+      ],
+      "all_nine_geometry_transition_counts_disclosed": true,
+      "label_rows_disclosed": false
+    },
+    "insufficient_coverage_terminal": "P3_R0_2_SEALED_HOLDOUT_NOT_EVALUABLE_NO_COHORT_SUBSTITUTION",
+    "cohort_replacement_after_coverage_read": false
+  },
+  "producer": {
+    "path": "scripts/research/hftf/freeze_p3_r0_2_data_roles.py",
+    "sha256": "43E7ACEE89F565FEC7B6D605ACCA0DADAC8697D1C1D8E0B061C685C4EAC9F40C"
+  },
+  "tests": {
+    "path": "scripts/research/hftf/test_freeze_p3_r0_2_data_roles.py",
+    "sha256": "27FB890E0390911CB6A4845DC734A7DF1207E06005CE59315BD17016242B5D6A"
+  },
+  "runtime_state": {
+    "role_identity_lock_created": false,
+    "private_holdout_targets_read": false,
+    "sealed_bundle_created": false,
+    "holdout_outcomes_opened": false,
+    "a2_checkpoint_loaded": false,
+    "p3_model_constructed": false,
+    "optimizer_constructed": false,
+    "training_started": false
+  },
+  "on_role_freeze_success": "P3_R0_2_DATA_ROLES_FROZEN_HOLDOUT_IDENTITIES_LOCKED_TARGETS_UNOPENED",
+  "activation_authorized_by_this_protocol": false,
+  "terminal": "P3_R0_2_DATA_ROLE_AND_SEALING_PROTOCOL_FROZEN_IDENTITIES_NOT_YET_MATERIALIZED"
+}
