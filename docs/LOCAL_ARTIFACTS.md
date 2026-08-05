@@ -18,6 +18,8 @@ F:\ba-data\blindassist-artifacts-20260805\
 
 仓库中的 `artifacts.local` 是指向该位置的 Windows junction。因此，新的大下载、数据集、模型、解压缓存、训练/benchmark 输出和临时物化必须继续写入 `artifacts.local/<category>/`，不要新建 E: 下的旁路数据目录；这些写入会自动落到 F:。需要直接指定绝对下载根目录的工具，使用上述 F: 路径，并仍须在 `artifacts.local/` 下保留可发现的 manifest、receipt、hash 与任务记录。
 
+下载、迁移或容量报告必须同时说明逻辑路径和物理目标盘：当目标是 `artifacts.local/...` 时，报告 F: 的可用空间，不能把工作目录位于 E: 或 E: 的剩余空间误报为实际落盘位置。
+
 ## Canonical 结构
 
 ```text
