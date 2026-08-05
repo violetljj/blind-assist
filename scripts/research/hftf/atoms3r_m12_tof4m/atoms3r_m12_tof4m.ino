@@ -18,7 +18,7 @@
 
 namespace {
 
-constexpr char kFirmwareVersion[] = "atoms3r_m12_tof4m_timing_r3";
+constexpr char kFirmwareVersion[] = "atoms3r_m12_tof4m_slow_frame_r4";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -146,6 +146,7 @@ constexpr size_t kRangeHistoryCapacity = 32;
 SharedRange range_history[kRangeHistoryCapacity] = {};
 size_t range_history_count = 0;
 size_t range_history_next = 0;
+uint64_t range_update_count = 0;
 portMUX_TYPE range_mux = portMUX_INITIALIZER_UNLOCKED;
 uint64_t next_frame_sequence = 0;
 portMUX_TYPE frame_sequence_mux = portMUX_INITIALIZER_UNLOCKED;
@@ -237,6 +238,13 @@ SharedRange snapshotRange() {
   SharedRange snapshot;
   portENTER_CRITICAL(&range_mux);
   snapshot = shared_range;
+  portEXIT_CRITICAL(&range_mux);
+  return snapshot;
+}
+
+uint64_t snapshotRangeUpdateCount() {
+  portENTER_CRITICAL(&range_mux);
+  const uint64_t snapshot = range_update_count;
   portEXIT_CRITICAL(&range_mux);
   return snapshot;
 }
@@ -381,6 +389,7 @@ void updateSharedRange(bool valid, uint16_t range_mm, uint8_t range_status_code,
   if (range_history_count < kRangeHistoryCapacity) {
     ++range_history_count;
   }
+  ++range_update_count;
   portEXIT_CRITICAL(&range_mux);
 }
 
@@ -902,7 +911,14 @@ esp_err_t streamHandler(httpd_req_t* request) {
   httpd_resp_set_hdr(request, "Cache-Control", "no-store");
   updateFrameStats(true, true, false);
   esp_err_t stream_result = ESP_OK;
+  uint64_t previous_jpeg_ready_us = 0;
+  uint64_t previous_frame_sequence = 0;
+  uint64_t previous_response_write_duration_us = 0;
+  bool previous_response_write_valid = false;
+  uint64_t previous_range_update_count = snapshotRangeUpdateCount();
   while (true) {
+    const uint64_t range_updates_at_acquire_start = snapshotRangeUpdateCount();
+    const uint64_t frame_acquire_started_us = monotonicUs();
     if (camera_mutex == nullptr ||
         xSemaphoreTake(camera_mutex, portMAX_DELAY) != pdTRUE) {
       stream_result = ESP_FAIL;
@@ -918,6 +934,17 @@ esp_err_t streamHandler(httpd_req_t* request) {
     const uint64_t frame_sequence = claimFrameSequence();
     const uint64_t capture_timestamp_us = cameraTimestampUs(frame);
     const uint64_t jpeg_ready_timestamp_us = monotonicUs();
+    const uint64_t range_updates_at_jpeg_ready = snapshotRangeUpdateCount();
+    const uint64_t tof_updates_during_acquire =
+        range_updates_at_jpeg_ready - range_updates_at_acquire_start;
+    const uint64_t tof_updates_since_previous_frame =
+        range_updates_at_jpeg_ready - previous_range_update_count;
+    const uint64_t frame_acquire_duration_us =
+        jpeg_ready_timestamp_us - frame_acquire_started_us;
+    const uint64_t frame_ready_interval_us =
+        previous_jpeg_ready_us == 0
+            ? 0
+            : jpeg_ready_timestamp_us - previous_jpeg_ready_us;
     const SharedRange range = snapshotNearestRange(capture_timestamp_us);
     const uint64_t tof_timestamp_us = range.timestamp_ns / 1000ULL;
     const int64_t tof_minus_capture_us =
@@ -938,8 +965,22 @@ esp_err_t streamHandler(httpd_req_t* request) {
     memcpy(frame_copy, frame->buf, frame_length);
     esp_camera_fb_return(frame);
     xSemaphoreGive(camera_mutex);
-    const uint64_t send_start_timestamp_us = monotonicUs();
-    char header[1024];
+    sensor_t* camera_sensor = esp_camera_sensor_get();
+    const int exposure_value =
+        camera_sensor == nullptr ? -1 : camera_sensor->status.aec_value;
+    const int wifi_rssi_dbm = WiFi.status() == WL_CONNECTED ? WiFi.RSSI() : 0;
+    const uint32_t free_heap_bytes = ESP.getFreeHeap();
+    const uint64_t tof_age_at_jpeg_ready_us =
+        tof_timestamp_us == 0 || tof_timestamp_us > jpeg_ready_timestamp_us
+            ? 0
+            : jpeg_ready_timestamp_us - tof_timestamp_us;
+    const bool tof_during_acquire =
+        tof_timestamp_us >= frame_acquire_started_us &&
+        tof_timestamp_us <= jpeg_ready_timestamp_us;
+    const uint64_t response_write_started_us = monotonicUs();
+    const uint64_t jpeg_metadata_prepare_duration_us =
+        response_write_started_us - jpeg_ready_timestamp_us;
+    char header[1536];
     const int header_length = snprintf(
         header, sizeof(header),
         "Content-Type: image/jpeg\r\nContent-Length: %u\r\n"
@@ -951,18 +992,40 @@ esp_err_t streamHandler(httpd_req_t* request) {
         "X-Jpeg-Ready-Timestamp-Us: %" PRIu64 "\r\n"
         "X-Jpeg-Ready-Timestamp-Semantics: esp_camera_fb_get_return\r\n"
         "X-Device-Send-Start-Timestamp-Us: %" PRIu64 "\r\n"
+        "X-Frame-Ready-Interval-Us: %" PRIu64 "\r\n"
+        "X-Frame-Acquire-Duration-Us: %" PRIu64 "\r\n"
+        "X-Jpeg-Metadata-Prepare-Duration-Us: %" PRIu64 "\r\n"
+        "X-Previous-Response-Write-Valid: %s\r\n"
+        "X-Previous-Frame-Sequence: %" PRIu64 "\r\n"
+        "X-Previous-Response-Write-Duration-Us: %" PRIu64 "\r\n"
         "X-ToF-Timestamp-Us: %" PRIu64 "\r\n"
         "X-ToF-Timestamp-Semantics: sensor_read_complete\r\n"
         "X-ToF-Minus-Capture-Us: %" PRId64 "\r\n"
+        "X-ToF-Age-At-Jpeg-Ready-Us: %" PRIu64 "\r\n"
+        "X-ToF-During-Acquire: %s\r\n"
+        "X-ToF-Updates-During-Acquire: %" PRIu64 "\r\n"
+        "X-ToF-Updates-Since-Previous-Frame: %" PRIu64 "\r\n"
         "X-ToF-Valid: %s\r\nX-ToF-Range-Mm: %u\r\n"
         "X-ToF-Status: %s\r\nX-ToF-Range-Status-Code: %u\r\n"
-        "X-Width: %u\r\nX-Height: %u\r\nX-Jpeg-Quality: %u\r\n\r\n",
+        "X-Jpeg-Size-Bytes: %u\r\nX-Width: %u\r\nX-Height: %u\r\n"
+        "X-Jpeg-Quality: %u\r\nX-Auto-Exposure: %s\r\n"
+        "X-Exposure-Value: %d\r\nX-Wifi-Rssi-Dbm: %d\r\n"
+        "X-Free-Heap-Bytes: %u\r\n\r\n",
         static_cast<unsigned>(frame_length), sequence_id, clock_domain,
         frame_sequence, capture_timestamp_us, jpeg_ready_timestamp_us,
-        send_start_timestamp_us, tof_timestamp_us, tof_minus_capture_us,
+        response_write_started_us, frame_ready_interval_us,
+        frame_acquire_duration_us, jpeg_metadata_prepare_duration_us,
+        previous_response_write_valid ? "true" : "false",
+        previous_frame_sequence, previous_response_write_duration_us,
+        tof_timestamp_us, tof_minus_capture_us, tof_age_at_jpeg_ready_us,
+        tof_during_acquire ? "true" : "false",
+        tof_updates_during_acquire, tof_updates_since_previous_frame,
         range.valid ? "true" : "false", range.range_mm, range.status,
-        range.range_status_code, static_cast<unsigned>(frame_width),
-        static_cast<unsigned>(frame_height), camera_settings.jpeg_quality);
+        range.range_status_code, static_cast<unsigned>(frame_length),
+        static_cast<unsigned>(frame_width), static_cast<unsigned>(frame_height),
+        camera_settings.jpeg_quality,
+        camera_settings.auto_exposure ? "true" : "false", exposure_value,
+        wifi_rssi_dbm, free_heap_bytes);
     if (header_length <= 0 ||
         static_cast<size_t>(header_length) >= sizeof(header)) {
       heap_caps_free(frame_copy);
@@ -980,11 +1043,18 @@ esp_err_t streamHandler(httpd_req_t* request) {
       result = httpd_resp_send_chunk(
           request, reinterpret_cast<const char*>(frame_copy), frame_length);
     }
+    const uint64_t response_write_completed_us = monotonicUs();
     heap_caps_free(frame_copy);
     if (result != ESP_OK) {
       stream_result = result;
       break;
     }
+    previous_jpeg_ready_us = jpeg_ready_timestamp_us;
+    previous_range_update_count = range_updates_at_jpeg_ready;
+    previous_frame_sequence = frame_sequence;
+    previous_response_write_duration_us =
+        response_write_completed_us - response_write_started_us;
+    previous_response_write_valid = true;
     updateFrameStats(false, false, true);
   }
   updateFrameStats(true, false, false);
@@ -1033,6 +1103,7 @@ bool startStreamServer() {
   config.server_port = 81;
   config.ctrl_port = 32769;
   config.max_open_sockets = 3;
+  config.stack_size = 8192;
   if (httpd_start(&stream_httpd, &config) != ESP_OK) {
     emitEvent("http_stream", "START_FAILED");
     return false;

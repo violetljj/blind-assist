@@ -35,16 +35,31 @@ REQUIRED_FRAME_HEADERS = {
     "x-jpeg-ready-timestamp-us",
     "x-jpeg-ready-timestamp-semantics",
     "x-device-send-start-timestamp-us",
+    "x-frame-ready-interval-us",
+    "x-frame-acquire-duration-us",
+    "x-jpeg-metadata-prepare-duration-us",
+    "x-previous-response-write-valid",
+    "x-previous-frame-sequence",
+    "x-previous-response-write-duration-us",
     "x-tof-timestamp-us",
     "x-tof-timestamp-semantics",
     "x-tof-minus-capture-us",
+    "x-tof-age-at-jpeg-ready-us",
+    "x-tof-during-acquire",
+    "x-tof-updates-during-acquire",
+    "x-tof-updates-since-previous-frame",
     "x-tof-valid",
     "x-tof-range-mm",
     "x-tof-status",
     "x-tof-range-status-code",
+    "x-jpeg-size-bytes",
     "x-width",
     "x-height",
     "x-jpeg-quality",
+    "x-auto-exposure",
+    "x-exposure-value",
+    "x-wifi-rssi-dbm",
+    "x-free-heap-bytes",
 }
 
 
@@ -256,7 +271,7 @@ def load_pipeline(
 
 def read_mjpeg_frames(
     stream_url: str,
-) -> Iterator[tuple[dict[str, str], bytes, int, int]]:
+) -> Iterator[tuple[dict[str, str], bytes, int, int, int]]:
     with urllib.request.urlopen(stream_url, timeout=10) as response:
         while True:
             boundary = response.readline()
@@ -280,11 +295,21 @@ def read_mjpeg_frames(
                 raise ValueError(f"MJPEG frame headers missing: {missing}")
             content_length = int(headers["content-length"])
             host_read_start_ns = time.perf_counter_ns()
-            jpeg = response.read(content_length)
+            first_byte = response.read(1)
+            host_first_byte_received_ns = time.perf_counter_ns()
+            if not first_byte:
+                raise EOFError("Missing first JPEG byte")
+            jpeg = first_byte + response.read(content_length - 1)
             host_jpeg_complete_ns = time.perf_counter_ns()
             if len(jpeg) != content_length:
                 raise EOFError(f"Short JPEG body: {len(jpeg)} != {content_length}")
-            yield headers, jpeg, host_read_start_ns, host_jpeg_complete_ns
+            yield (
+                headers,
+                jpeg,
+                host_read_start_ns,
+                host_first_byte_received_ns,
+                host_jpeg_complete_ns,
+            )
 
 
 @dataclass(frozen=True)
@@ -292,6 +317,7 @@ class FramePacket:
     headers: dict[str, str]
     jpeg: bytes
     host_read_start_ns: int
+    host_first_byte_received_ns: int
     host_jpeg_complete_ns: int
     connection_index: int
 
@@ -305,6 +331,7 @@ class LatestFrameReader:
             target=self._run, name="atoms3r-mjpeg-reader", daemon=True
         )
         self.latest_queue_overwrite_count = 0
+        self.overwritten_frames: list[dict[str, Any]] = []
         self.reconnect_count = 0
         self.errors: list[str] = []
 
@@ -327,8 +354,30 @@ class LatestFrameReader:
                 return
             except Full:
                 try:
-                    self.queue.get_nowait()
+                    stale = self.queue.get_nowait()
                     self.latest_queue_overwrite_count += 1
+                    overwritten_ns = time.perf_counter_ns()
+                    self.overwritten_frames.append(
+                        {
+                            "schema": "blindassist_atoms3r_overwritten_frame_r0",
+                            "sequence_id": stale.headers.get("x-sequence-id"),
+                            "frame_sequence": int(
+                                stale.headers.get("x-frame-sequence", "-1")
+                            ),
+                            "host_first_byte_received_monotonic_ns": (
+                                stale.host_first_byte_received_ns
+                            ),
+                            "host_full_frame_received_monotonic_ns": (
+                                stale.host_jpeg_complete_ns
+                            ),
+                            "host_queue_overwritten_monotonic_ns": overwritten_ns,
+                            "queue_wait_before_overwrite_ms": (
+                                overwritten_ns - stale.host_jpeg_complete_ns
+                            )
+                            / 1_000_000.0,
+                            "frame_overwritten": True,
+                        }
+                    )
                 except Empty:
                     continue
 
@@ -337,9 +386,13 @@ class LatestFrameReader:
         while not self.stop_event.is_set():
             connection_index += 1
             try:
-                for headers, jpeg, read_start_ns, jpeg_complete_ns in read_mjpeg_frames(
-                    self.stream_url
-                ):
+                for (
+                    headers,
+                    jpeg,
+                    read_start_ns,
+                    first_byte_received_ns,
+                    jpeg_complete_ns,
+                ) in read_mjpeg_frames(self.stream_url):
                     if self.stop_event.is_set():
                         return
                     self.offer(
@@ -347,6 +400,7 @@ class LatestFrameReader:
                             headers=headers,
                             jpeg=jpeg,
                             host_read_start_ns=read_start_ns,
+                            host_first_byte_received_ns=first_byte_received_ns,
                             host_jpeg_complete_ns=jpeg_complete_ns,
                             connection_index=connection_index,
                         )
@@ -387,6 +441,7 @@ def frame_row(
     headers: dict[str, str],
     jpeg: bytes,
     host_read_start_ns: int,
+    host_first_byte_received_ns: int,
     host_jpeg_complete_ns: int,
     sync: ClockSync,
     pipeline: Any,
@@ -411,14 +466,39 @@ def frame_row(
         "clock_sync_rtt_us": sync.round_trip_us,
         "clock_sync_error_bound_us": sync.error_bound_us,
         "frame_sequence": int(headers["x-frame-sequence"]),
+        "frame_overwritten": False,
         "capture_timestamp_us": capture_us,
         "capture_timestamp_semantics": headers["x-capture-timestamp-semantics"],
         "jpeg_ready_timestamp_us": jpeg_ready_us,
         "jpeg_ready_timestamp_semantics": headers["x-jpeg-ready-timestamp-semantics"],
         "device_send_start_timestamp_us": device_send_start_us,
+        "device_frame_ready_interval_us": int(headers["x-frame-ready-interval-us"]),
+        "device_frame_acquire_duration_us": int(headers["x-frame-acquire-duration-us"]),
+        "device_jpeg_metadata_prepare_duration_us": int(
+            headers["x-jpeg-metadata-prepare-duration-us"]
+        ),
+        "reported_previous_response_write_valid": parse_bool(
+            headers["x-previous-response-write-valid"]
+        ),
+        "reported_previous_frame_sequence": int(headers["x-previous-frame-sequence"]),
+        "reported_previous_response_write_duration_us": int(
+            headers["x-previous-response-write-duration-us"]
+        ),
+        "preceding_response_write_duration_us": (
+            int(headers["x-previous-response-write-duration-us"])
+            if parse_bool(headers["x-previous-response-write-valid"])
+            else None
+        ),
+        "device_response_write_duration_us": None,
         "tof_timestamp_us": int(headers["x-tof-timestamp-us"]),
         "tof_timestamp_semantics": headers["x-tof-timestamp-semantics"],
         "tof_minus_capture_us": int(headers["x-tof-minus-capture-us"]),
+        "tof_age_at_jpeg_ready_us": int(headers["x-tof-age-at-jpeg-ready-us"]),
+        "tof_during_acquire": parse_bool(headers["x-tof-during-acquire"]),
+        "tof_updates_during_acquire": int(headers["x-tof-updates-during-acquire"]),
+        "tof_updates_since_previous_frame": int(
+            headers["x-tof-updates-since-previous-frame"]
+        ),
         "tof_valid": parse_bool(headers["x-tof-valid"]),
         "tof_range_mm": int(headers["x-tof-range-mm"]),
         "tof_status": headers["x-tof-status"],
@@ -427,7 +507,13 @@ def frame_row(
         "height": int(headers["x-height"]),
         "jpeg_quality": int(headers["x-jpeg-quality"]),
         "jpeg_bytes": len(jpeg),
+        "device_jpeg_size_bytes": int(headers["x-jpeg-size-bytes"]),
+        "auto_exposure": parse_bool(headers["x-auto-exposure"]),
+        "exposure_value": int(headers["x-exposure-value"]),
+        "device_wifi_rssi_dbm": int(headers["x-wifi-rssi-dbm"]),
+        "device_free_heap_bytes": int(headers["x-free-heap-bytes"]),
         "host_jpeg_read_start_monotonic_ns": host_read_start_ns,
+        "host_first_byte_received_monotonic_ns": host_first_byte_received_ns,
         "host_jpeg_complete_monotonic_ns": host_jpeg_complete_ns,
         "decode_start_monotonic_ns": decode_start_ns,
         "decode_complete_monotonic_ns": decode_complete_ns,
@@ -451,6 +537,12 @@ def frame_row(
         )
         / 1000.0,
         "host_jpeg_read_ms": (host_jpeg_complete_ns - host_read_start_ns) / 1_000_000.0,
+        "host_first_byte_wait_ms": (host_first_byte_received_ns - host_read_start_ns)
+        / 1_000_000.0,
+        "host_first_byte_to_full_frame_ms": (
+            host_jpeg_complete_ns - host_first_byte_received_ns
+        )
+        / 1_000_000.0,
         "host_latest_queue_wait_ms": (decode_start_ns - host_jpeg_complete_ns)
         / 1_000_000.0,
         "host_jpeg_decode_ms": (decode_complete_ns - decode_start_ns) / 1_000_000.0,
@@ -470,6 +562,7 @@ def frame_row(
         "capture_to_feedback_complete_ms": None,
         "risk_result": None,
         "feedback_result": None,
+        "slow_frame": None,
     }
     if pipeline.identity != "NOT_CONFIGURED":
         inference_start_ns = time.perf_counter_ns()
@@ -509,12 +602,108 @@ def frame_row(
     return row
 
 
+def finalize_device_attribution(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    by_sequence = {(row["sequence_id"], row["frame_sequence"]): row for row in rows}
+    for reporter in rows:
+        if not reporter["reported_previous_response_write_valid"]:
+            continue
+        target = by_sequence.get(
+            (
+                reporter["sequence_id"],
+                reporter["reported_previous_frame_sequence"],
+            )
+        )
+        if target is not None:
+            target["device_response_write_duration_us"] = reporter[
+                "reported_previous_response_write_duration_us"
+            ]
+
+    intervals = [
+        float(row["device_frame_ready_interval_us"])
+        for row in rows
+        if row["device_frame_ready_interval_us"] > 0
+    ]
+    if not intervals:
+        for row in rows:
+            row["slow_frame_evaluable"] = False
+            row["slow_frame"] = False
+        return {
+            "definition": "interval_gt_median_plus_3_mad_or_gt_2_median",
+            "median_interval_us": None,
+            "mad_interval_us": None,
+            "median_plus_3_mad_us": None,
+            "twice_median_us": None,
+        }
+    median_interval_us = statistics.median(intervals)
+    mad_interval_us = statistics.median(
+        [abs(value - median_interval_us) for value in intervals]
+    )
+    median_mad_threshold_us = median_interval_us + 3.0 * mad_interval_us
+    twice_median_us = 2.0 * median_interval_us
+    for row in rows:
+        interval_us = float(row["device_frame_ready_interval_us"])
+        row["slow_frame_evaluable"] = interval_us > 0
+        row["slow_frame"] = bool(
+            interval_us > 0
+            and (interval_us > median_mad_threshold_us or interval_us > twice_median_us)
+        )
+    return {
+        "definition": "interval_gt_median_plus_3_mad_or_gt_2_median",
+        "median_interval_us": median_interval_us,
+        "mad_interval_us": mad_interval_us,
+        "median_plus_3_mad_us": median_mad_threshold_us,
+        "twice_median_us": twice_median_us,
+    }
+
+
+def attribution_profile(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    keys = (
+        "device_frame_ready_interval_us",
+        "device_frame_acquire_duration_us",
+        "device_jpeg_metadata_prepare_duration_us",
+        "device_response_write_duration_us",
+        "preceding_response_write_duration_us",
+        "device_jpeg_size_bytes",
+        "exposure_value",
+        "device_wifi_rssi_dbm",
+        "device_free_heap_bytes",
+        "tof_age_at_jpeg_ready_us",
+        "tof_updates_during_acquire",
+        "tof_updates_since_previous_frame",
+        "host_first_byte_wait_ms",
+        "host_first_byte_to_full_frame_ms",
+        "host_latest_queue_wait_ms",
+        "host_jpeg_decode_ms",
+    )
+
+    def finite_values(key: str) -> list[float]:
+        return [
+            float(row[key])
+            for row in rows
+            if row.get(key) is not None and math.isfinite(float(row[key]))
+        ]
+
+    return {
+        "count": len(rows),
+        "metrics": {key: metric_summary(finite_values(key)) for key in keys},
+        "auto_exposure_fraction": (
+            sum(1 for row in rows if row["auto_exposure"]) / len(rows) if rows else None
+        ),
+        "tof_during_acquire_fraction": (
+            sum(1 for row in rows if row["tof_during_acquire"]) / len(rows)
+            if rows
+            else None
+        ),
+    }
+
+
 def summarize(
     rows: list[dict[str, Any]],
     status_rows: list[dict[str, Any]],
     reconnects: int,
     latest_queue_overwrites: int,
     errors: list[str],
+    slow_frame_contract: dict[str, Any],
 ) -> dict[str, Any]:
     def values(key: str) -> list[float]:
         return [
@@ -560,6 +749,12 @@ def summarize(
         for row in status_rows
         if row.get("wifi", {}).get("connected")
     ]
+    slow_rows = [row for row in rows if row.get("slow_frame")]
+    normal_rows = [
+        row
+        for row in rows
+        if row.get("slow_frame_evaluable") and not row.get("slow_frame")
+    ]
     return {
         "schema": SUMMARY_SCHEMA,
         "frame_count": len(rows),
@@ -567,6 +762,15 @@ def summarize(
         "host_latest_queue_overwrite_count": latest_queue_overwrites,
         "errors": errors,
         "pipeline_identity": rows[0]["pipeline_identity"] if rows else "UNKNOWN",
+        "slow_frame_contract": slow_frame_contract,
+        "slow_frame_count": len(slow_rows),
+        "slow_frame_fraction": (
+            len(slow_rows) / (len(slow_rows) + len(normal_rows))
+            if slow_rows or normal_rows
+            else None
+        ),
+        "slow_frame_profile": attribution_profile(slow_rows),
+        "normal_frame_profile": attribution_profile(normal_rows),
         "capture_to_host_jpeg_complete_ms": metric_summary(
             values("capture_to_host_jpeg_complete_ms")
         ),
@@ -715,6 +919,7 @@ def main() -> int:
                     packet.headers,
                     packet.jpeg,
                     packet.host_read_start_ns,
+                    packet.host_first_byte_received_ns,
                     packet.host_jpeg_complete_ns,
                     sync,
                     pipeline,
@@ -727,6 +932,7 @@ def main() -> int:
         reader.stop()
         monitor.stop()
 
+    slow_frame_contract = finalize_device_attribution(rows)
     with (output_dir / "frames.jsonl").open("x", encoding="utf-8") as handle:
         for row in rows:
             handle.write(
@@ -736,6 +942,13 @@ def main() -> int:
         status_rows = list(monitor.status_rows)
         sync_rows = list(monitor.sync_rows)
         monitor_errors = list(monitor.errors)
+    with (output_dir / "overwritten_frames.jsonl").open(
+        "x", encoding="utf-8"
+    ) as handle:
+        for row in reader.overwritten_frames:
+            handle.write(
+                json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
+            )
     with (output_dir / "status.jsonl").open("x", encoding="utf-8") as handle:
         for row in status_rows:
             handle.write(
@@ -752,6 +965,7 @@ def main() -> int:
         reader.reconnect_count,
         reader.latest_queue_overwrite_count,
         reader.errors + monitor_errors,
+        slow_frame_contract,
     )
     summary["started_at_utc"] = output_dir.name
     summary["requested_duration_seconds"] = args.duration_seconds

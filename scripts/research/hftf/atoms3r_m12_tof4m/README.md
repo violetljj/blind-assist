@@ -152,6 +152,25 @@ latest-frame 优化后的 2026-08-05 五分钟回归共 7,158 个处理帧：0 �
 30 分钟基线的 `179.4 ms` 显著降低。不同持续时间不能替代压力测试的同长度比较，
 但阶段账本确认旧尾延迟的主要机制是串行接收造成的 host backlog。
 
+### 设备慢帧归因
+
+R4 在冻结的 XGA/quality 10/自动曝光配置下，逐帧增加 frame-ready interval、
+`esp_camera_fb_get`/mutex acquire、JPEG/metadata prepare、前一帧 HTTP write、JPEG
+大小、实际曝光值、RSSI、heap 和 ToF update 计数。由于当前帧的 interval 会受到
+前一帧 write 影响，write duration 由下一帧 header 回报并按 frame sequence 回填。
+主机另记 first byte、full frame、decode、latest queue wait；被覆盖帧写入独立
+`overwritten_frames.jsonl`。
+
+慢帧定义固定为：`frame_ready_interval > median + 3×MAD` 或
+`frame_ready_interval > 2×median`。2026-08-05 五分钟 R1 的 median/MAD 为
+`36.047/0.091 ms`，1,252/7,070 个可评 interval 为慢帧。慢/普通 acquire P50
+为 `48.4/13.7 ms`，前一帧 write P50 为 `22.8/21.4 ms`；慢/普通 JPEG 中位数
+`31,360/31,371 B`，实际曝光值始终 `490`。诊断分层中 981/1,252 个慢帧属于
+`acquire≥30 ms 且 preceding write<40 ms`，130/1,252 属于
+`preceding write≥40 ms`。因此主机制是相机 framebuffer/帧节拍等待，少数由 Wi-Fi
+写阻塞直接传导；本轮不支持把 JPEG 大小或曝光变化当作主因。ToF 相关性尚不能排除
+等待窗口长度混杂，下一合法对照是仅关闭 ToF 读取，其余配置不变。
+
 ## 停止条件与下一步
 
 首轮只要求：I2C `0x29` 可见、连续 JSONL 可解析、时间戳/序号单调、有效/无效状态

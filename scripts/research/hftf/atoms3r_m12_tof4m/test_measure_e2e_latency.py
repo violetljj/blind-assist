@@ -7,6 +7,7 @@ from measure_e2e_latency import (
     FramePacket,
     LatestFrameReader,
     NoPipeline,
+    finalize_device_attribution,
     frame_row,
     summarize,
 )
@@ -29,24 +30,39 @@ def frame_headers(sequence: int = 7) -> dict[str, str]:
         "x-jpeg-ready-timestamp-us": "140000",
         "x-jpeg-ready-timestamp-semantics": "camera_frame_buffer_available",
         "x-device-send-start-timestamp-us": "145000",
+        "x-frame-ready-interval-us": "50000",
+        "x-frame-acquire-duration-us": "40000",
+        "x-jpeg-metadata-prepare-duration-us": "5000",
+        "x-previous-response-write-valid": "true",
+        "x-previous-frame-sequence": "6",
+        "x-previous-response-write-duration-us": "12000",
         "x-tof-timestamp-us": "110000",
         "x-tof-timestamp-semantics": "sensor_read_complete",
         "x-tof-minus-capture-us": "10000",
+        "x-tof-age-at-jpeg-ready-us": "30000",
+        "x-tof-during-acquire": "true",
+        "x-tof-updates-during-acquire": "1",
+        "x-tof-updates-since-previous-frame": "2",
         "x-tof-valid": "true",
         "x-tof-range-mm": "750",
         "x-tof-status": "VALID",
         "x-tof-range-status-code": "0",
+        "x-jpeg-size-bytes": str(len(jpeg_bytes())),
         "x-width": "8",
         "x-height": "8",
         "x-jpeg-quality": "10",
+        "x-auto-exposure": "true",
+        "x-exposure-value": "321",
+        "x-wifi-rssi-dbm": "-37",
+        "x-free-heap-bytes": "150000",
     }
 
 
 class MeasureE2eLatencyTest(unittest.TestCase):
     def test_latest_frame_reader_overwrites_stale_packet(self):
         reader = LatestFrameReader("http://unused")
-        first = FramePacket({}, b"first", 1, 2, 1)
-        latest = FramePacket({}, b"latest", 3, 4, 1)
+        first = FramePacket({}, b"first", 1, 2, 3, 1)
+        latest = FramePacket({}, b"latest", 4, 5, 6, 1)
 
         reader.offer(first)
         reader.offer(latest)
@@ -70,6 +86,7 @@ class MeasureE2eLatencyTest(unittest.TestCase):
             frame_headers(),
             jpeg_bytes(),
             host_read_start_ns=1_020_000_000,
+            host_first_byte_received_ns=1_022_000_000,
             host_jpeg_complete_ns=1_030_000_000,
             sync=sync,
             pipeline=NoPipeline(),
@@ -102,7 +119,12 @@ class MeasureE2eLatencyTest(unittest.TestCase):
             )
 
         summary = summarize(
-            rows, [], reconnects=0, latest_queue_overwrites=0, errors=[]
+            rows,
+            [],
+            reconnects=0,
+            latest_queue_overwrites=0,
+            errors=[],
+            slow_frame_contract={},
         )
 
         self.assertEqual(summary["host_interarrival_ms"]["p50"], 40.0)
@@ -111,6 +133,27 @@ class MeasureE2eLatencyTest(unittest.TestCase):
         self.assertEqual(summary["sequence_gap_total_frames"], 1)
         self.assertEqual(summary["host_latest_queue_overwrite_count"], 0)
         self.assertEqual(summary["clock_sync_error_bound_ms"]["p50"], 1.0)
+
+    def test_slow_frame_contract_uses_frozen_median_mad_or_ratio_rule(self):
+        rows = [
+            {
+                "sequence_id": "boot",
+                "frame_sequence": index,
+                "device_frame_ready_interval_us": interval,
+                "reported_previous_response_write_valid": index > 0,
+                "reported_previous_frame_sequence": index - 1,
+                "reported_previous_response_write_duration_us": 10_000 + index,
+                "device_response_write_duration_us": None,
+            }
+            for index, interval in enumerate((0, 40_000, 41_000, 42_000, 100_000))
+        ]
+
+        contract = finalize_device_attribution(rows)
+
+        self.assertEqual(contract["median_interval_us"], 41_500.0)
+        self.assertFalse(rows[3]["slow_frame"])
+        self.assertTrue(rows[4]["slow_frame"])
+        self.assertEqual(rows[3]["device_response_write_duration_us"], 10_004)
 
 
 if __name__ == "__main__":

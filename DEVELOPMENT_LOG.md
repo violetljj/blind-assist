@@ -1,4 +1,25 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。正式关闭 host 串行接收
+  backlog，完成 AtomS3R-M12 + ToF4M 设备慢帧归因 R1。冻结 XGA/quality 10/
+  自动曝光/ToF，不扫参数；R4 固件逐帧加入 frame-ready interval、camera mutex +
+  `esp_camera_fb_get` acquire、JPEG/metadata prepare、按下一帧 sequence 回填的前帧
+  HTTP write、JPEG bytes、实际 exposure、RSSI、heap 与 ToF update count。主机补齐
+  first-byte/full-frame/decode/queue 及独立 overwrite JSONL；慢帧规则预先固定为
+  `interval > median+3×MAD OR >2×median`。五分钟 `300.578 s / 7,071 processed /
+  23.52 fps`，0 reconnect、0 error；7,070 个 interval median/MAD
+  `36.047/0.091 ms`，slow `1,252=17.71%`。slow/normal acquire P50
+  `48.42/13.74 ms`，preceding write P50 `22.78/21.44 ms`，JPEG 中位数
+  `31,360/31,371 B`，实际 exposure 全部 `490`。诊断分层：981/1,252 slow 为
+  `acquire>=30 ms && preceding write<40 ms`，130/1,252 为 preceding write
+  `>=40 ms`；最大 `1,280.338 ms` interval 由 `1,278.869 ms` write 尖峰形成。
+  结论为 camera framebuffer/cadence 等待主导、Wi-Fi write 次要；JPEG 大小和曝光
+  变化不是本轮主因。ToF 相关性仍受等待窗口长度混杂，下一合法单变量仅为关闭 ToF。
+  测试结束 `stream_clients=0`；summary SHA-256
+  `e2d542665bbea7b7c808c321295675c5f72611141978475c9569e3b813782b11`。结果不授权
+  图像质量、ToF 精度、风险、物理反馈、人体、产品或安全结论。最终固件
+  program/RAM `1,077,639 B (32%) / 62,608 B (19%)`，app bin SHA-256
+  `713973e77c79f4f4c50508da6e07bc37490121c8fc2eb32711c206e4f0d2642a`；9 项测试、
+  Ruff/format/py_compile 与 diff check 通过。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
   ToF4M host backlog 定位与 latest-frame R1：对 43,230 帧 R0 长测逐阶段复算，确认
   tail 主因是原脚本将 MJPEG 读取与 decode/inference 串行化，P95

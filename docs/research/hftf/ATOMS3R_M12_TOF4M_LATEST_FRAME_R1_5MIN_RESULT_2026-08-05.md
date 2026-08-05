@@ -2,7 +2,7 @@
 
 ## 结论
 
-`DEVELOPMENT_5MIN_LATENCY_REGRESSION_PASS / LONG_STRESS_NOT_RERUN`
+`DEVELOPMENT_5MIN_LATENCY_REGRESSION_PASS / HOST_BACKLOG_CLOSED / LONG_STRESS_NOT_RERUN`
 
 旧 30 分钟账本显示，端到端 P95 `265.8 ms` 中的主导异常不是 YOLO 推理，而是
 `jpeg_ready → host_read_start` P95 `179.4 ms`。原主机脚本串行执行“读下一帧→解码
@@ -51,3 +51,6 @@ Python 子进程，占用设备唯一 stream handler。紧接的一次五分钟�
 
 本结果仍只覆盖 host reference 的 feedback record，不覆盖真实语音/震动执行、风险
 准确率、手机端性能、RGB-ToF 空间标定、人体使用、产品或安全结论。
+
+本阶段由后继 slow-frame R1 账本确认后正式关闭；后续不再以主机串行接收 backlog
+作为开放问题。
