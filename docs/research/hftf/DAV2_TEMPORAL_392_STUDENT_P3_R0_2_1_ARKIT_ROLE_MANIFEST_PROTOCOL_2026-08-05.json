@@ -1,0 +1,48 @@
+{
+  "schema": "blindassist_p3_r0_2_1_arkit_role_manifest_protocol",
+  "protocol_id": "DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_ARKIT_ROLE_MANIFEST_2026-08-05",
+  "purpose": "Merge two already frozen, label-blind ARKitScenes identity manifests and assign only the predeclared P3 R0.2.1 train and validation roles.",
+  "sources": {
+    "primary_manifest": {
+      "path": "artifacts.local/datasets/spatial-calibration-head-r1-arkitscenes-20260804/manifest.json",
+      "sha256": "ECA55FB32E2A296FFE23182F48EDBFCFC9B13C42A2BD7215E4FF159A282C85F2"
+    },
+    "validation_extension_manifest": {
+      "path": "artifacts.local/datasets/p3-r0-2-1-arkit-validation-extension-20260805/manifest.json",
+      "sha256": "3548E211A987D2F265984574212648EF4EFCD9964FDE2717380649BDDBB41A29"
+    }
+  },
+  "parent_roles": {
+    "train": [
+      "381449", "437220", "469556", "471411", "434891", "467135", "467334",
+      "434897", "469455", "471032", "472310", "482849", "484248"
+    ],
+    "validation": [
+      "423296", "437528", "483071", "422381", "460420", "469782", "470821",
+      "483314", "466628", "469013", "421380"
+    ]
+  },
+  "removed_non_clip_capable_parents": {
+    "train": ["422841", "382112", "472626"],
+    "validation": ["382124"]
+  },
+  "selection_conditioning": {
+    "labels_read": false,
+    "transition_counts_read": false,
+    "model_outputs_read": false,
+    "reason": "Attempt 01 four-frame continuity result plus the precommitted R0.2.1 validation extension roster"
+  },
+  "producer": {
+    "path": "scripts/research/hftf/build_p3_r0_2_1_arkit_role_manifest.py",
+    "sha256": "D1CAC24A60D2B37111D4DB2820220F0EFDD87D9C272864F6C58275903AACE7DE"
+  },
+  "tests": {
+    "path": "scripts/research/hftf/test_build_p3_r0_2_1_arkit_role_manifest.py",
+    "sha256": "C0A4C51762F3523661C35651BAC101C9B8F56DF85A225912E8FAD250BF36CF01"
+  },
+  "output": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1/arkit-role-manifest-attempt-01.json",
+  "overwrite": false,
+  "model_loaded": false,
+  "training_started": false,
+  "terminal": "P3_R0_2_1_ARKIT_ROLE_MANIFEST_PROTOCOL_FROZEN_NOT_MATERIALIZED"
+}
