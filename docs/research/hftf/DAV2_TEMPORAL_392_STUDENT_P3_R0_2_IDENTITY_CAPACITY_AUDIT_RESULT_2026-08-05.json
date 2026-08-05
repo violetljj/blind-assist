@@ -1,0 +1,46 @@
+{
+  "schema": "blindassist_p3_r0_2_identity_capacity_audit_terminal_result",
+  "protocol_sha256": "ABBAD332E5670683771010A601442FAA333108FD5B412F3D15F57A5A69A41270",
+  "protocol_git_commit": "8cb402b",
+  "source_universe_closed_before_audit": true,
+  "label_blind": true,
+  "forbidden_fields_read": false,
+  "model_outputs_read": false,
+  "candidate_performance_read": false,
+  "identity_capacity": {
+    "existing_arkitscenes_train_parent_count": 16,
+    "existing_arkitscenes_validation_parent_count": 4,
+    "r0_1_attempted_holdout_parents_permanently_excluded": 4,
+    "new_holdout_candidate_parent_upper_bound": 2,
+    "minimum_new_holdout_parent_count": 8,
+    "new_holdout_parent_deficit_at_best_case": 6,
+    "preferred_new_holdout_parent_count": 12,
+    "simultaneous_train_validation_new_holdout_capacity_sufficient": false
+  },
+  "auditor_execution": {
+    "result_written": false,
+    "validation_written": false,
+    "fail_closed": true,
+    "failure_stage": "raw truth asset existence verification for the first bound Bonn parent",
+    "failure": "listed source asset missing: artifacts.local/datasets/bonn-rgbd-dynamic/clean-extracted/rgbd_bonn_person_tracking/depth/1548265888.07778.png",
+    "scientific_conclusion_affected": false,
+    "reason_conclusion_cannot_flip": "The closed source universe contains only two parents eligible in principle for a new holdout. Two is below eight even if every raw asset were complete."
+  },
+  "route_decision": {
+    "freeze_full_p3_r0_2_training_protocol": false,
+    "continue_protocol_scaffolding": false,
+    "load_a2_checkpoint": false,
+    "materialize_disagreement": false,
+    "modify_r0_1": false,
+    "next_data_work": "controlled collection of new short-video parents with independent ToF or metric-depth truth",
+    "parallel_non_temporal_work_permitted": "hardware scale binding, glasses-phone link, and canonical demonstrations without a temporal-student validation claim"
+  },
+  "runtime_state": {
+    "holdout_labels_opened": false,
+    "a2_checkpoint_loaded": false,
+    "p3_model_constructed": false,
+    "optimizer_constructed": false,
+    "training_started": false
+  },
+  "terminal": "P3_TEMPORAL_ROUTE_DATA_NOT_READY"
+}
