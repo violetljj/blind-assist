@@ -97,7 +97,7 @@ def _majority_transition_baseline(truth: list[str]) -> float | None:
 def _state_from_field(field: dict[str, Any], band: int) -> str:
     if field.get("status") != "VALID":
         return "UNKNOWN_GROUND"
-    value = field["bands"][band]["clearance_m"]
+    value = field["bands"][("left", "center", "right")[band]]["clearance_m"]
     if value is None:
         return "UNKNOWN_GROUND"
     return "OCCUPIED" if float(value) <= 1.5 else "CLEAR"
@@ -106,7 +106,7 @@ def _state_from_field(field: dict[str, Any], band: int) -> str:
 def _field_clearances(field: dict[str, Any]) -> list[float | None]:
     if field.get("status") != "VALID":
         return [None, None, None]
-    return [field["bands"][band]["clearance_m"] for band in range(3)]
+    return [field["bands"][band]["clearance_m"] for band in ("left", "center", "right")]
 
 
 def _summary(rows: list[dict[str, Any]], arm: str) -> dict[str, Any]:
