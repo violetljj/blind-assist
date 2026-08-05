@@ -1,0 +1,33 @@
+{
+  "schema": "blindassist_quality_gated_clearance_fusion_r0_1_authorization_amendment",
+  "parent_protocol": {
+    "path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_1_SOURCE_ADMISSION_PROTOCOL_2026-08-06.json",
+    "sha256": "7F9EA17DD399A99CDB80BF364CD24033BB20665FA8FC2E4FD7E83BEFBC0E3D53"
+  },
+  "authorization": {
+    "confirmed_by": "user",
+    "confirmed_at": "2026-08-06",
+    "scope": "ARKitScenes Validation visit 381644, videos 41069048, 41069050, 41069051; RGB, depth, confidence, intrinsics and trajectory assets only",
+    "media_download_authorized": true,
+    "model_or_training_authorized": false,
+    "holdout_use_authorized": false,
+    "redistribution_authorized": false
+  },
+  "license_scope_receipt": {
+    "path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_1_ARKIT_LICENSE_SCOPE_RECEIPT_2026-08-06.json",
+    "sha256": "DC3D917E2D63BCAC2CB8299DC76908FA1CADB2F7A0EDB4E55363B3A0E92B66B7"
+  },
+  "roster": {
+    "path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/arkit-381644-roster.json",
+    "sha256": "1D4944458125C70997FCE1C1BA32BB624DBB906C51814172B24E11DA3DD8CA75"
+  },
+  "media_manifest": {
+    "path": "artifacts.local/datasets/quality-gated-clearance-fusion-r0-1-arkit-381644-20260806/manifest.json",
+    "sha256": "95DFA4B6B5C51E5B4B50326E3CFE94E9EB963D36BA5D6C02E74560DDFDCDAB88"
+  },
+  "terminal": "QUALITY_GATED_CLEARANCE_FUSION_R0_1_AUTHORIZATION_AMENDED_MEDIA_INTEGRITY_BOUND",
+  "labels_opened": false,
+  "model_loaded": false,
+  "optimizer_constructed": false,
+  "training_started": false
+}
