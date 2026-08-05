@@ -1,0 +1,80 @@
+{
+  "schema": "blindassist_p3_r0_2_data_role_and_sealing_protocol",
+  "protocol_id": "DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_DATA_ROLE_2026-08-05",
+  "purpose": "Freeze corrected clip-capable ARKit train/validation roles and the unchanged eleven-parent Bonn public holdout after the label-blind R0.2.1 validation extension.",
+  "unchanged_research_contract": {
+    "backbone": "A2-392",
+    "clip_length": 4,
+    "maximum_adjacent_gap_ns": 500000000,
+    "seed": 20260805,
+    "epochs": 3,
+    "losses_evaluator_and_seventeen_gates_unchanged": true
+  },
+  "sources": {
+    "arkitscenes_manifest": {
+      "path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1/arkit-role-manifest-attempt-01.json",
+      "sha256": "D5CE009B8CC03A9F23C189B4CDB00E9A979BD60BD08C2C5FD5316841E80FBF87"
+    },
+    "bonn_identity_receipt": {
+      "path": "artifacts.local/evidence/hftf/p3-public-rgbd-source-admission-r0/bonn-valid-pairs-identity-receipt-attempt-03.json",
+      "sha256": "6E4089B3C2E5535D51104914EDE1DD783475EFB237FEBD517F80F1A7A20F6D56"
+    },
+    "public_source_admission_result": {
+      "path": "docs/research/hftf/P3_PUBLIC_RGBD_SOURCE_ADMISSION_R0_RESULT_2026-08-05.json",
+      "sha256": "6C6669D686F4B24F3AAFD208E245B1FE003C107413B11AA353F35E3F60AF45A5"
+    },
+    "legacy_p1_exclusion_ledger": {
+      "path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-1/legacy-p1-ancestry-exclusion-ledger.json",
+      "sha256": "ADB4BC12CB4CA0123412FEF077B52964EBF6C982C2C12D1C240CA75EBA86228D"
+    },
+    "r0_1_closure": {
+      "path": "docs/research/hftf/DAV2_TEMPORAL_392_STUDENT_P3_R0_1_CLOSURE_2026-08-05.json",
+      "sha256": "FB01BA8C1FD11B54D9B1EBCD5E9AF25C8B0FF1E79700253E26FF1BC58ED74B62"
+    },
+    "bonn_ancestry_exclusions": {
+      "path": "docs/research/hftf/P3_PUBLIC_RGBD_SOURCE_ADMISSION_R0_BONN_ANCESTRY_EXCLUSIONS_2026-08-05.json",
+      "sha256": "31B4E80696271166C34E3022BC532946AFA76FBB6FA13D28C98852C99279B33D"
+    },
+    "bonn_full_archive": {
+      "path": "artifacts.local/downloads/bonn-rgbd-dynamic/rgbd_bonn_dataset.zip",
+      "sha256": "D2AFDC286ECDB02A3E57CB98E3908185B1133A3F79F181970064EB177221A84B"
+    },
+    "bonn_dataset_root": "artifacts.local/datasets/bonn-rgbd-dynamic-full-r0/rgbd_bonn_dataset"
+  },
+  "parent_roles": {
+    "train": ["381449", "437220", "469556", "471411", "434891", "467135", "467334", "434897", "469455", "471032", "472310", "482849", "484248"],
+    "validation": ["423296", "437528", "483071", "422381", "460420", "469782", "470821", "483314", "466628", "469013", "421380"],
+    "public_holdout": ["rgbd_bonn_kidnapping_box", "rgbd_bonn_kidnapping_box2", "rgbd_bonn_placing_nonobstructing_box", "rgbd_bonn_placing_nonobstructing_box2", "rgbd_bonn_placing_obstructing_box", "rgbd_bonn_removing_nonobstructing_box", "rgbd_bonn_removing_obstructing_box", "rgbd_bonn_static", "rgbd_bonn_static_close_far", "rgbd_bonn_synchronous", "rgbd_bonn_synchronous2"]
+  },
+  "permanent_exclusions": {
+    "legacy_p1_parent_ids": ["tum-fr3-walking-static-pose-000-track-001", "tum-fr3-walking-static-pose-016-track-001", "tum-fr3-walking-static-pose-020-track-001", "tum-fr3-walking-xyz-pose-024-track-001"],
+    "r0_1_attempted_holdout_parent_ids": ["42446093", "47333440", "48018382", "48018566"],
+    "bonn_parent_ids": ["rgbd_bonn_balloon", "rgbd_bonn_balloon2", "rgbd_bonn_balloon_tracking", "rgbd_bonn_balloon_tracking2", "rgbd_bonn_crowd", "rgbd_bonn_crowd2", "rgbd_bonn_crowd3", "rgbd_bonn_moving_nonobstructing_box", "rgbd_bonn_moving_nonobstructing_box2", "rgbd_bonn_moving_obstructing_box", "rgbd_bonn_moving_obstructing_box2", "rgbd_bonn_person_tracking", "rgbd_bonn_person_tracking2", "rgbd_bonn_placing_nonobstructing_box3", "rgbd_bonn_removing_nonobstructing_box2"]
+  },
+  "clip_selection": {
+    "method": "source-order deterministic greedy non-overlap",
+    "train_and_validation": "all complete non-overlapping four-frame windows in each frozen parent",
+    "public_holdout": "first twelve complete non-overlapping valid RGB-depth windows in every frozen parent",
+    "holdout_clips_per_parent": 12,
+    "expected_public_holdout_clip_count": 132,
+    "rgb_depth_maximum_delta_ns": 50000000,
+    "frame_reuse": false,
+    "label_or_transition_conditioning": false
+  },
+  "producer": {
+    "path": "scripts/research/hftf/freeze_p3_r0_2_data_roles.py",
+    "sha256": "839727304FF2A638DCE46044DC784E54C86589013C4F29126A0CC0EA9079E97B"
+  },
+  "tests": {
+    "path": "scripts/research/hftf/test_freeze_p3_r0_2_data_roles.py",
+    "sha256": "E9DAF5D9AE3CBA49FE9CB04B44B42825ED3BB41D190B3D8C0EEE559013AD0D60"
+  },
+  "runtime_state": {
+    "holdout_outcomes_opened": false,
+    "sealed_targets_created": false,
+    "model_loaded": false,
+    "optimizer_constructed": false,
+    "training_started": false
+  },
+  "terminal": "P3_R0_2_1_DATA_ROLE_PROTOCOL_FROZEN_ATTEMPT_02_NOT_RUN"
+}
