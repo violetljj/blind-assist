@@ -1,0 +1,36 @@
+{
+  "schema": "blindassist_quality_gated_clearance_fusion_r0_1_source_admission_result",
+  "attempt": 2,
+  "terminal": "QUALITY_GATED_CLEARANCE_FUSION_R0_1_SOURCE_IDENTITIES_READY_MEDIA_INTEGRITY_BOUND",
+  "protocol_path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_1_SOURCE_ADMISSION_PROTOCOL_2026-08-06.json",
+  "arkit_license_scope_receipt": {
+    "path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_1_ARKIT_LICENSE_SCOPE_RECEIPT_2026-08-06.json",
+    "sha256": "DC3D917E2D63BCAC2CB8299DC76908FA1CADB2F7A0EDB4E55363B3A0E92B66B7"
+  },
+  "arkit_roster": {
+    "path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/arkit-381644-roster.json",
+    "sha256": "1D4944458125C70997FCE1C1BA32BB624DBB906C51814172B24E11DA3DD8CA75"
+  },
+  "arkit_media_preflight": {
+    "path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/arkit-media-head-preflight-381644-attempt-02.json",
+    "sha256": "CFB50F0A9589ADA771EBD7B30C446B422F2CCB335F2A2740F0E9023A41B3F180",
+    "asset_count": 15,
+    "available_asset_count": 15,
+    "media_body_bytes_read": false
+  },
+  "arkit_media_manifest": {
+    "path": "artifacts.local/datasets/quality-gated-clearance-fusion-r0-1-arkit-381644-20260806/manifest.json",
+    "sha256": "95DFA4B6B5C51E5B4B50326E3CFE94E9EB963D36BA5D6C02E74560DDFDCDAB88",
+    "file_count": 15,
+    "labels_opened": false
+  },
+  "tum_available_new_parents": 2,
+  "arkit_available_new_parents": 1,
+  "new_parent_count": 3,
+  "minimum_new_parents": 3,
+  "model_loaded": false,
+  "optimizer_constructed": false,
+  "training_started": false,
+  "replacement_allowed": false,
+  "holdout_outcomes_opened": false
+}
