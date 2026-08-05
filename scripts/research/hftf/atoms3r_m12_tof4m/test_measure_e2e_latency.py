@@ -43,6 +43,7 @@ def frame_headers(sequence: int = 7) -> dict[str, str]:
         "x-tof-during-acquire": "true",
         "x-tof-updates-during-acquire": "1",
         "x-tof-updates-since-previous-frame": "2",
+        "x-tof-sampling-enabled": "true",
         "x-tof-valid": "true",
         "x-tof-range-mm": "750",
         "x-tof-status": "VALID",
@@ -97,6 +98,37 @@ class MeasureE2eLatencyTest(unittest.TestCase):
         self.assertAlmostEqual(row["capture_to_host_jpeg_complete_ms"], 30.0)
         self.assertAlmostEqual(row["device_capture_to_jpeg_ready_ms"], 40.0)
         self.assertAlmostEqual(row["tof_minus_capture_us"], 10_000)
+        self.assertTrue(row["tof_sampling_enabled"])
+
+    def test_absent_tof_timestamp_makes_skew_not_evaluable(self):
+        headers = frame_headers()
+        headers["x-tof-timestamp-us"] = "0"
+        headers["x-tof-minus-capture-us"] = "-100000"
+        headers["x-tof-sampling-enabled"] = "false"
+        headers["x-tof-valid"] = "false"
+        row = frame_row(
+            headers,
+            jpeg_bytes(),
+            host_read_start_ns=1_020_000_000,
+            host_first_byte_received_ns=1_022_000_000,
+            host_jpeg_complete_ns=1_030_000_000,
+            sync=ClockSync(
+                sample_id=1,
+                host_midpoint_us=1_000_000.0,
+                device_midpoint_us=100_000.0,
+                device_minus_host_us=-900_000.0,
+                round_trip_us=2_000.0,
+                error_bound_us=1_000.0,
+                sequence_id="device-boot",
+                clock_domain="esp32_boot_monotonic:device-boot",
+                method="udp_midpoint_port_3333",
+            ),
+            pipeline=NoPipeline(),
+            connection_index=1,
+        )
+
+        self.assertIsNone(row["tof_minus_capture_us"])
+        self.assertFalse(row["tof_sampling_enabled"])
 
     def test_summary_reports_jitter_skew_gaps_and_clock_uncertainty(self):
         rows = []

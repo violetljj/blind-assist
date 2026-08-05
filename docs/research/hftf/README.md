@@ -1,5 +1,6 @@
 # HFTF 候选未来可通行场支线
 
+- [AtomS3R-M12 + ToF4M ToF contention single-variable R2](ATOMS3R_M12_TOF4M_TOF_CONTENTION_R2_RESULT_2026-08-05.md)
 - [AtomS3R-M12 + ToF4M device slow-frame attribution R1](ATOMS3R_M12_TOF4M_DEVICE_SLOW_FRAME_ATTRIBUTION_R1_RESULT_2026-08-05.md)
 - [AtomS3R-M12 + ToF4M latest-frame R1 five-minute result](ATOMS3R_M12_TOF4M_LATEST_FRAME_R1_5MIN_RESULT_2026-08-05.md)
 - [AtomS3R-M12 + ToF4M end-to-end timing baseline R0](ATOMS3R_M12_TOF4M_E2E_TIMING_BASELINE_R0_RESULT_2026-08-05.md)

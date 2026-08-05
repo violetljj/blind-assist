@@ -48,6 +48,7 @@ REQUIRED_FRAME_HEADERS = {
     "x-tof-during-acquire",
     "x-tof-updates-during-acquire",
     "x-tof-updates-since-previous-frame",
+    "x-tof-sampling-enabled",
     "x-tof-valid",
     "x-tof-range-mm",
     "x-tof-status",
@@ -492,13 +493,18 @@ def frame_row(
         "device_response_write_duration_us": None,
         "tof_timestamp_us": int(headers["x-tof-timestamp-us"]),
         "tof_timestamp_semantics": headers["x-tof-timestamp-semantics"],
-        "tof_minus_capture_us": int(headers["x-tof-minus-capture-us"]),
+        "tof_minus_capture_us": (
+            int(headers["x-tof-minus-capture-us"])
+            if int(headers["x-tof-timestamp-us"]) > 0
+            else None
+        ),
         "tof_age_at_jpeg_ready_us": int(headers["x-tof-age-at-jpeg-ready-us"]),
         "tof_during_acquire": parse_bool(headers["x-tof-during-acquire"]),
         "tof_updates_during_acquire": int(headers["x-tof-updates-during-acquire"]),
         "tof_updates_since_previous_frame": int(
             headers["x-tof-updates-since-previous-frame"]
         ),
+        "tof_sampling_enabled": parse_bool(headers["x-tof-sampling-enabled"]),
         "tof_valid": parse_bool(headers["x-tof-valid"]),
         "tof_range_mm": int(headers["x-tof-range-mm"]),
         "tof_status": headers["x-tof-status"],
@@ -824,6 +830,13 @@ def summarize(
         ),
         "tof_valid_fraction": (
             sum(1 for row in rows if row["tof_valid"]) / len(rows) if rows else None
+        ),
+        "tof_sampling_enabled_values": sorted(
+            {
+                row["tof_sampling_enabled"]
+                for row in rows
+                if row.get("tof_sampling_enabled") is not None
+            }
         ),
         "sequence_gap_event_count": len(sequence_gaps),
         "sequence_gap_total_frames": sum(sequence_gaps),

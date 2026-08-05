@@ -1,4 +1,21 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
+  ToF4M 单变量争用对照 R2。仅关闭 ToF 连续读取，冻结 XGA/quality 10/自动曝光/
+  MJPEG latest-frame/host reference pipeline；R5 将 `sampling_enabled` 写入状态 API
+  和每帧 header。ToF-off 五分钟为 `300.468 s / 7,125 frames / 23.71 fps`，0
+  reconnect、0 error，全部帧 sampling=false 且 update count=0。冻结规则 slow
+  `15.31%`，R1 ToF-on 为 `17.71%`；但 camera wait 桶从 `981/7,070=13.88%`
+  变为 `1,022/7,124=14.35%`，capture→JPEG ready P50/P95 仍为
+  `36.56/72.59 ms` 对 `36.58/72.60 ms`。净下降主要来自 network write 桶
+  `1.84%→0.28%`，单次顺序 A/B 不授权将网络变化归因于 ToF。结论：ToF 不是
+  camera wait 主因，正式固件保持开启。off summary SHA-256
+  `96c1cdd50cca088dc2489938c5ad2b76cab0a49aee7c0c9e8c5ffaa6c3078dc5`。
+  修正缺失 ToF timestamp 的 skew 为不可评估。最终已恢复并刷入
+  `atoms3r_m12_tof4m_slow_frame_r5`，状态 sampling=true、ToF ready/valid；最终
+  3 帧协议验收 0 reconnect/error，退出后 stream_clients=0。最终 program/RAM
+  `1,077,703 B (32%) / 62,608 B (19%)`，app bin SHA-256
+  `1114cab4d6f4352484c8a32d91d6826eb4b3f7ccab79f8c5e0d1c920b5b3c5c5`。
+  本结果仅为 Development 机制证据，不授权精度、风险、人体、产品或安全结论。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。正式关闭 host 串行接收
   backlog，完成 AtomS3R-M12 + ToF4M 设备慢帧归因 R1。冻结 XGA/quality 10/
   自动曝光/ToF，不扫参数；R4 固件逐帧加入 frame-ready interval、camera mutex +

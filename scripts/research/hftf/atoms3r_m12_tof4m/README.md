@@ -96,7 +96,8 @@ OV3660 的最高静态分辨率。页面绿色框只标示 ToF4M 的中央单区
 
 MJPEG 每个 part 额外携带 `X-Frame-Sequence`、`X-Capture-Timestamp-Us`、
 `X-Jpeg-Ready-Timestamp-Us`、`X-Device-Send-Start-Timestamp-Us`、
-`X-Tof-Timestamp-Us` 和 `X-Tof-Minus-Capture-Us`。相机 capture 时间的精确定义是
+`X-Tof-Timestamp-Us`、`X-Tof-Minus-Capture-Us` 和
+`X-ToF-Sampling-Enabled`。相机 capture 时间的精确定义是
 `esp32-camera` 的“首个 DMA buffer 自开机时间”，不是曝光起始。固件在 3333/UDP
 提供独立高优先级二进制对时服务；主机端以最小 RTT midpoint 映射两个 monotonic
 时钟，并逐帧保留 RTT 与误差上界。
@@ -169,12 +170,18 @@ R4 在冻结的 XGA/quality 10/自动曝光配置下，逐帧增加 frame-ready 
 `acquire≥30 ms 且 preceding write<40 ms`，130/1,252 属于
 `preceding write≥40 ms`。因此主机制是相机 framebuffer/帧节拍等待，少数由 Wi-Fi
 写阻塞直接传导；本轮不支持把 JPEG 大小或曝光变化当作主因。ToF 相关性尚不能排除
-等待窗口长度混杂，下一合法对照是仅关闭 ToF 读取，其余配置不变。
+等待窗口长度混杂。
+
+五分钟单变量 R2 仅关闭 ToF 连续读取后，slow fraction 为 15.31%，但 camera wait
+诊断桶从 981 增至 1,022，capture→JPEG ready P50/P95 基本不变；下降主要出现在
+本轮较轻的 network write 桶。单次顺序 A/B 不足以把网络变化归因于 ToF，但已经不
+支持 ToF 是 camera framebuffer 等待的主因。正式 R5 保持 ToF 开启，并在状态 API
+和每帧 header 中明确记录 sampling 状态；缺失 ToF timestamp 的 skew 不再参与统计。
 
 ## 停止条件与下一步
 
 首轮只要求：I2C `0x29` 可见、连续 JSONL 可解析、时间戳/序号单调、有效/无效状态
 可复现。任一项失败时停止在对应电气、驱动或协议层，不修改多区 adapter 来迁就数据。
-当前时间账本和 latest-frame 接收策略已建立。下一性能工作可继续分析设备端 JPEG
-慢帧及真实手机输出；相机与 ToF 的空间标定仍按用户要求暂缓。单区数据不得填充成
-三个或更多伪 zone。
+当前时间账本、latest-frame 接收策略和 ToF 单变量排除已建立。下一性能工作可针对
+camera framebuffer/帧节拍机制或真实手机输出；相机与 ToF 的空间标定仍按用户要求
+暂缓。单区数据不得填充成三个或更多伪 zone。

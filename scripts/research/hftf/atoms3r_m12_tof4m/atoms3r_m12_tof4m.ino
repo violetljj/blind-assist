@@ -18,7 +18,10 @@
 
 namespace {
 
-constexpr char kFirmwareVersion[] = "atoms3r_m12_tof4m_slow_frame_r4";
+constexpr bool kEnableTofSampling = true;
+constexpr const char* kFirmwareVersion =
+    kEnableTofSampling ? "atoms3r_m12_tof4m_slow_frame_r5"
+                       : "atoms3r_m12_tof4m_slow_frame_r5_tof_off";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -746,7 +749,8 @@ esp_err_t statusHandler(httpd_req_t* request) {
       "\"exposure_compensation\":%d,\"manual_exposure\":%u,"
       "\"recent_fps\":%.2f,\"total_frames\":%" PRIu64 ","
       "\"stream_clients\":%u},"
-      "\"tof\":{\"ready\":%s,\"valid\":%s,\"status\":\"%s\","
+      "\"tof\":{\"ready\":%s,\"sampling_enabled\":%s,\"valid\":%s,"
+      "\"status\":\"%s\","
       "\"range_mm\":%u,\"range_status_code\":%u,\"age_ms\":%" PRIu64
       "}}",
       kFirmwareVersion, sequence_id, now_ns / 1000000ULL, ESP.getFreeHeap(),
@@ -760,6 +764,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       camera_settings.exposure_compensation, camera_settings.manual_exposure,
       static_cast<double>(frames.recent_fps), frames.total_frames,
       frames.stream_clients, sensor_ready ? "true" : "false",
+      kEnableTofSampling ? "true" : "false",
       range.valid ? "true" : "false", range.status, range.range_mm,
       range.range_status_code, range_age_ms);
   return sendJson(request, body);
@@ -948,8 +953,10 @@ esp_err_t streamHandler(httpd_req_t* request) {
     const SharedRange range = snapshotNearestRange(capture_timestamp_us);
     const uint64_t tof_timestamp_us = range.timestamp_ns / 1000ULL;
     const int64_t tof_minus_capture_us =
-        static_cast<int64_t>(tof_timestamp_us) -
-        static_cast<int64_t>(capture_timestamp_us);
+        tof_timestamp_us == 0
+            ? 0
+            : static_cast<int64_t>(tof_timestamp_us) -
+                  static_cast<int64_t>(capture_timestamp_us);
     const size_t frame_length = frame->len;
     const size_t frame_width = frame->width;
     const size_t frame_height = frame->height;
@@ -1005,6 +1012,7 @@ esp_err_t streamHandler(httpd_req_t* request) {
         "X-ToF-During-Acquire: %s\r\n"
         "X-ToF-Updates-During-Acquire: %" PRIu64 "\r\n"
         "X-ToF-Updates-Since-Previous-Frame: %" PRIu64 "\r\n"
+        "X-ToF-Sampling-Enabled: %s\r\n"
         "X-ToF-Valid: %s\r\nX-ToF-Range-Mm: %u\r\n"
         "X-ToF-Status: %s\r\nX-ToF-Range-Status-Code: %u\r\n"
         "X-Jpeg-Size-Bytes: %u\r\nX-Width: %u\r\nX-Height: %u\r\n"
@@ -1020,6 +1028,7 @@ esp_err_t streamHandler(httpd_req_t* request) {
         tof_timestamp_us, tof_minus_capture_us, tof_age_at_jpeg_ready_us,
         tof_during_acquire ? "true" : "false",
         tof_updates_during_acquire, tof_updates_since_previous_frame,
+        kEnableTofSampling ? "true" : "false",
         range.valid ? "true" : "false", range.range_mm, range.status,
         range.range_status_code, static_cast<unsigned>(frame_length),
         static_cast<unsigned>(frame_width), static_cast<unsigned>(frame_height),
@@ -1273,7 +1282,11 @@ void loop() {
     next_health_event_us = now_us + 5000000ULL;
   }
   if (sensor_ready) {
-    emitSample();
+    if (kEnableTofSampling) {
+      emitSample();
+    } else {
+      delay(10);
+    }
     return;
   }
 
