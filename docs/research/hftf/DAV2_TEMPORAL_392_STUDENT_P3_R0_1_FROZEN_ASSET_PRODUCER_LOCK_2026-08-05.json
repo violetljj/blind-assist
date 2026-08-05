@@ -1,0 +1,98 @@
+{
+  "schema": "blindassist_p3_r0_1_frozen_asset_producer_lock",
+  "protocol_sha256": "E14676C80AECFB473A21CCC4ACBB4EC51121B242BC7CC89C42C03AE4F2DC0237",
+  "execution_order": [
+    "build_p3_r0_1_legacy_p1_exclusion_ledger",
+    "build_p3_r0_1_role_manifests:freeze_identity",
+    "materialize_p3_r0_1_frozen_a2_disagreement",
+    "build_p3_r0_1_role_manifests:finalize_training",
+    "produce_p3_r0_1_sealed_target_bundle",
+    "produce_p3_r0_1_sealed_coverage_receipt"
+  ],
+  "shared_runtime": {
+    "path": "scripts/research/hftf/p3_r0_1_asset_common.py",
+    "sha256": "28DB47FCCD663DB17DFDECA84A661C369084AB1A85D52C706B7DD892437E59AF"
+  },
+  "producers": {
+    "frozen_a2_disagreement": {
+      "path": "scripts/research/hftf/materialize_p3_r0_1_frozen_a2_disagreement.py",
+      "sha256": "5BDB8F3F57E1A00A3CEE9F8BBE1C2869547A4E5395B9E44ECFD64CF8C1FEA8B3",
+      "input_schema": "blindassist_p3_r0_1_frozen_a2_disagreement_request",
+      "output_schemas": [
+        "blindassist_p3_r0_1_frozen_a2_disagreement_cache_jsonl",
+        "blindassist_p3_r0_1_frozen_a2_disagreement_manifest",
+        "blindassist_p3_r0_1_frozen_a2_disagreement_materialization_receipt"
+      ],
+      "only_permitted_model": "hash-bound parent A2 checkpoint",
+      "holdout_access": false
+    },
+    "legacy_p1_exclusion": {
+      "path": "scripts/research/hftf/build_p3_r0_1_legacy_p1_exclusion_ledger.py",
+      "sha256": "7E7ADCDAE7C2D0E6C71177EBC35DF0F4B1547762B768FB54FF6324C3A36FCC9A",
+      "input_schema": "blindassist_p3_r0_1_legacy_p1_exclusion_request",
+      "output_schemas": [
+        "blindassist_p3_r0_1_legacy_p1_ancestry_exclusion_ledger",
+        "blindassist_p3_r0_1_legacy_p1_exclusion_materialization_receipt"
+      ],
+      "legacy_outcomes_read": false
+    },
+    "role_manifests": {
+      "path": "scripts/research/hftf/build_p3_r0_1_role_manifests.py",
+      "sha256": "00FF2F59730B93F1DA8518896880F7801F15518DDF374F9E178A45E19F560973",
+      "input_schema": "blindassist_p3_r0_1_role_manifest_materialization_request",
+      "output_schemas": [
+        "blindassist_p3_r0_1_role_identity_lock",
+        "blindassist_dav2_temporal_392_student_p3_r0_1_role_manifest",
+        "blindassist_p3_r0_1_transition_class_weight_derivation_receipt",
+        "blindassist_p3_r0_1_role_manifest_materialization_receipt"
+      ],
+      "operations": [
+        "freeze_identity",
+        "finalize_training"
+      ]
+    },
+    "sealed_target_bundle": {
+      "path": "scripts/research/hftf/produce_p3_r0_1_sealed_target_bundle.py",
+      "sha256": "FB51E30A6BD1C41865740BE5AEB16C431F1885E542FECD92A56BC5647540B8E7",
+      "input_schema": "blindassist_p3_r0_1_sealed_target_bundle_request",
+      "output_schemas": [
+        "P3R01HMACS1 binary envelope",
+        "blindassist_p3_r0_1_sealed_target_bundle_materialization_receipt"
+      ],
+      "public_manifest_label_fields": false
+    },
+    "sealed_coverage": {
+      "path": "scripts/research/hftf/produce_p3_r0_1_sealed_coverage_receipt.py",
+      "sha256": "A50876194A3314F0562203AFB87E609AFC7E5E4E15170B47101DE00140F5B5FE",
+      "input_schema": "blindassist_p3_r0_1_sealed_coverage_request",
+      "output_schemas": [
+        "blindassist_dav2_temporal_392_student_p3_r0_1_sealed_coverage_receipt",
+        "blindassist_p3_r0_1_sealed_coverage_materialization_receipt"
+      ],
+      "sealed_bundle_parsed": false
+    }
+  },
+  "tests": {
+    "path": "scripts/research/hftf/test_p3_r0_1_frozen_asset_producers.py",
+    "sha256": "A726AB5698A0AD09684828A13B544130A05553E2F45CC462C8B9D9D5AF6E624D",
+    "producer_count_covered": 5,
+    "fail_closed_cases": [
+      "input SHA mismatch",
+      "output overwrite",
+      "legacy P1 outcome field",
+      "parent overlap",
+      "missing frozen disagreement",
+      "insufficient holdout coverage",
+      "P3 model or optimizer construction"
+    ]
+  },
+  "global_invariants": {
+    "overwrite_permitted": false,
+    "p3_model_constructed": false,
+    "optimizer_constructed": false,
+    "training_started": false,
+    "legacy_p1_outcomes_read": false,
+    "producer_execution_permitted_before_this_lock_is_committed": false
+  },
+  "current_terminal": "P3_R0_1_FROZEN_ASSET_PRODUCERS_LOCKED_ASSET_EXECUTION_NOT_STARTED"
+}
