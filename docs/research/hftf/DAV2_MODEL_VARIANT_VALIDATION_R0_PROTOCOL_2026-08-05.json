@@ -1,0 +1,97 @@
+{
+  "schema": "blindassist_dav2_model_variant_validation_r0_protocol",
+  "frozen_at": "2026-08-05",
+  "data_role": "CONSUMED_DEVELOPMENT_ENGINEERING_REGRESSION_ONLY",
+  "claim_ceiling": "MODEL_VARIANT_PARETO_AND_REGRESSION_EVIDENCE_ONLY_NOT_PRODUCT_OR_SAFETY_AUTHORITY",
+  "question": "Does a changed DA V2 resolution, precision, student, token layout, or attention implementation preserve the canonical FP16 depth and geometry envelope strongly enough to justify a measured device-speed gain?",
+  "cohort": {
+    "frames": 120,
+    "aligned_depth_shape": [
+      120,
+      480,
+      640
+    ],
+    "windows": 4,
+    "frames_per_window": 30,
+    "selection": "the exact four already-consumed TUM windows 000, 016, 020, and 024; no candidate-dependent frame selection",
+    "source_archives": {
+      "rgbd_dataset_freiburg3_walking_static.tgz": "8ACA832BF01746AA95FCC0B15BF42D78AD3BB8EDEF672BA4CC94A404B194F6C1",
+      "rgbd_dataset_freiburg3_walking_xyz.tgz": "1459E9488AC0E61A2EC80DFBC35CFB77942F6D8EABDED1C8D26A70BE650D0E1D"
+    }
+  },
+  "roster_sha256": "62D41DBFCA64BBD7964B146427911A384A8E0CE57FF606F9BA74682E380D43F2",
+  "baseline": {
+    "model_id": "depth-anything-v2-metric-hypersim-vits-fp16-518",
+    "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+    "aligned_depth_sha256": "9A7FC55DB6B3E7C467B5BAFE68D3603F4B463C498558B7236D603569595D3A34",
+    "semantics": "480x640 optical-z metres after the frozen align-corners resize; no per-frame truth fit"
+  },
+  "depth_metrics": {
+    "metric_abs_rel": "per-frame median abs(candidate-sensor)/sensor over registered sensor pixels in [0.25m,6m]",
+    "scale_aligned_abs_rel": "same metric after one per-frame median multiplicative scale; diagnostic of relative structure only and forbidden as deployed scale authority",
+    "aggregation": "median and P95 across the 120 fixed frames"
+  },
+  "geometry_metrics": {
+    "ground_recovery_success": "candidate VALID among sensor-VALID frames",
+    "clearance_error": "mean absolute error over known left/center/right clearance pairs",
+    "valid_unknown_consistency": "exact candidate-vs-canonical geometry status agreement",
+    "false_clear": "truth occupied and candidate clear, divided by all known band-by-horizon decisions; conditional rate given truth occupied is also reported",
+    "geometry_state_change": "exact status plus 3 bands by 3 horizons occupancy signature, and whether consecutive-frame change/no-change matches canonical",
+    "temporal_clearance": "MAE of candidate-vs-truth clearance deltas within each sequence and band"
+  },
+  "engineering_noninferiority_tolerances": {
+    "minimum_pixel_coverage_drop": 0.01,
+    "metric_abs_rel_absolute_increase": 0.02,
+    "scale_aligned_abs_rel_absolute_increase": 0.01,
+    "ground_recovery_rate_drop": 0.01,
+    "clearance_mae_increase_m": 0.025,
+    "collision_agreement_drop": 0.02,
+    "false_clear_rate_increase": 0.01,
+    "temporal_clearance_delta_mae_increase_m": 0.015,
+    "minimum_status_exact_agreement": 0.98,
+    "minimum_geometry_state_exact_agreement": 0.95,
+    "minimum_transition_change_agreement": 0.95
+  },
+  "absolute_consumed_task_gates": {
+    "minimum_paired_valid_fraction": 0.9,
+    "maximum_clearance_mae_m": 0.25,
+    "minimum_collision_agreement": 0.9,
+    "maximum_false_clear_rate": 0.05,
+    "maximum_temporal_clearance_delta_mae_m": 0.15
+  },
+  "performance_gate": {
+    "metric": "same-device fixed-APK end-to-end P95 after candidate quality materialization",
+    "minimum_p95_speedup": 1.15,
+    "rule": "a quality-passing candidate with less than 15 percent P95 speedup is not worth model-complexity and maintenance cost"
+  },
+  "typical_failure_cases": {
+    "frame_indices": [
+      13,
+      30,
+      68,
+      70,
+      76,
+      85,
+      89,
+      93,
+      100,
+      107,
+      116,
+      119
+    ],
+    "selection_frozen_before_model_variants": true,
+    "coverage": "canonical false-clear clusters, largest clearance errors, largest metric-depth errors, the sensor UNKNOWN/canonical VALID mismatch, and the walking_xyz tail"
+  },
+  "decision_rules": {
+    "engineering_gate": "all noninferiority gates must pass; no weighted score or compensating failure",
+    "standalone_metric_clearance": "all absolute consumed task gates must also pass, but this consumed cohort still cannot establish product or safety authority",
+    "p2_entry": "only quality-materialized candidates that pass engineering noninferiority may consume device profiling budget",
+    "final_camera_gate": "requires a new session-and-parent-disjoint final-camera cohort with independent RGB-D or ranging truth"
+  },
+  "forbidden": [
+    "change roster, frame order, thresholds, bands, horizons, RANSAC, seed, or status semantics after candidate output is opened",
+    "fit affine offsets or per-band/per-frame scales using sensor truth",
+    "select precision, resolution, student checkpoint, seed, or cadence on this consumed cohort and report the winner as Confirmation",
+    "treat canonical parity, teacher agreement, latency, or this consumed result as product or safety authority"
+  ]
+}

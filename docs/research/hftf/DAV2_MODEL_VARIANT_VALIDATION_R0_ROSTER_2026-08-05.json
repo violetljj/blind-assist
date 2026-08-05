@@ -1,0 +1,2053 @@
+{
+  "data_role": "consumed_development_engineering_regression_only",
+  "rows": [
+    {
+      "depth_path": "depth/1341846226.817948.png",
+      "depth_sha256": "7F9D99031AD207D27664ED9A85EF7F989969532AA6891EB3A291B96E0AB258EA",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846226.817920",
+      "index": 0,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846226.817920.png",
+      "rgb_sha256": "8AF39AC13CCC64B3B1DCB0583A78635FF8CFB726B94DC95DA8E8329B6227FC79",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846226.81792
+    },
+    {
+      "depth_path": "depth/1341846226.918015.png",
+      "depth_sha256": "74E945519BB6B06EDEC0BD5E08B7A4BA376A9597E77614BC3CA61D3331E9AD42",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846226.917980",
+      "index": 1,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846226.917980.png",
+      "rgb_sha256": "91EF0D4F7094DF1CE5556B72D77E32481C4A1F528C22AC4EC9CA0957FD6195DE",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846226.91798
+    },
+    {
+      "depth_path": "depth/1341846227.050076.png",
+      "depth_sha256": "3386A42C17CB888C79B6B28CD8177F4389CEA4F7149BA288EE7762C034A95B69",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.050040",
+      "index": 2,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.050040.png",
+      "rgb_sha256": "C0C27E1511823950F48DA5EBCF740716F5314A8571B9ECAC80F86ACA5433EB0C",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.05004
+    },
+    {
+      "depth_path": "depth/1341846227.118071.png",
+      "depth_sha256": "FA559D4DFFBFCD854376393ED2601D89F035D4D289A0B080B46BDB33150BB9E9",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.118052",
+      "index": 3,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.118052.png",
+      "rgb_sha256": "72949D7B01B073C4BFDCA98E17EB8D19056B9763155F0BA37607D4C80E93263E",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.118052
+    },
+    {
+      "depth_path": "depth/1341846227.219317.png",
+      "depth_sha256": "FAEE3CE5F3620261FB7F4E6ACF84FA8E20FFED763165C5C8600FE89C61CE9B36",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.218443",
+      "index": 4,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.218443.png",
+      "rgb_sha256": "708570F21ED3CBE77F54DB6ACEC35795F09207F1D1F868E2470BE6B14D8B1780",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.218443
+    },
+    {
+      "depth_path": "depth/1341846227.320103.png",
+      "depth_sha256": "F81974054293E6CD4A14B1ECE3DB2EF0E673D8F3D1DA9737C2CD9E37295EFE67",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.320064",
+      "index": 5,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.320064.png",
+      "rgb_sha256": "C3D46D04903F34299D0B1059F993CA65FDC05C78415913ADB267A514799FE36F",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.320064
+    },
+    {
+      "depth_path": "depth/1341846227.418031.png",
+      "depth_sha256": "1529168C6B7E993DCE38F96FD8793DA486B3D1BC81CDE4C88A33FC92B91B8833",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.418015",
+      "index": 6,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.418015.png",
+      "rgb_sha256": "0DA292F015F18A866FC4449FFF91F37A2C61215BB8C9510C728771BDC6BB2030",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.418015
+    },
+    {
+      "depth_path": "depth/1341846227.521990.png",
+      "depth_sha256": "B2B7362C16F5E343D324E979EA88BEA1FF67A2229DA92A6D12D67E81DEB40ED2",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.521976",
+      "index": 7,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.521976.png",
+      "rgb_sha256": "7AADD78046B0A1DD72E5DF4CB172A26342458D013E6395D925A118ACD86613FB",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.521976
+    },
+    {
+      "depth_path": "depth/1341846227.622097.png",
+      "depth_sha256": "C9F50AA2BD5FE0BF04E73E43F5428C2DD35A673AB09D70D5DAB9A37E65BAFBF1",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.622081",
+      "index": 8,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.622081.png",
+      "rgb_sha256": "0E4A1F548B40684A376563316A954130EA6826D80ACFE3F16D6267077B1060F1",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.622081
+    },
+    {
+      "depth_path": "depth/1341846227.721981.png",
+      "depth_sha256": "70FDF9BB404E9B060863D538A2E1A7449300DB02925C67B81E537A393621FF4B",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.721966",
+      "index": 9,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.721966.png",
+      "rgb_sha256": "4671A5E608F6CBF60848E0721DE2E34D3FDF81CDF5CF56BB1687FF4038F1CD53",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.721966
+    },
+    {
+      "depth_path": "depth/1341846227.821934.png",
+      "depth_sha256": "AE7B0B9EC9CA8B45BB6A3C503C43E0DF9748921559A3FFEB53D11058E26D767C",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.821920",
+      "index": 10,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.821920.png",
+      "rgb_sha256": "F426D4985F6FB4232715DBC9D8127F36D04538D5E3EF265B50EC827B49B92326",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.82192
+    },
+    {
+      "depth_path": "depth/1341846227.921988.png",
+      "depth_sha256": "836AA41B3F21FB37DB3C76055D4280F54D00B735B62F8EDD0F52533752E96DBF",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846227.921967",
+      "index": 11,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846227.921967.png",
+      "rgb_sha256": "FC48D76AA162C25B9701F9ACF6F7F0A5D70BB050AB32C82C0EBA373A510F3185",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.921967
+    },
+    {
+      "depth_path": "depth/1341846228.021950.png",
+      "depth_sha256": "A4AD850ED074661CA5181580651650CEFE3967502063509AACE8EFC7C7E5121A",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.021937",
+      "index": 12,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.021937.png",
+      "rgb_sha256": "7D0ED75859F195A3C0495CFFF265913B3B0CA6165D679DFA128149A878C309A8",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.021937
+    },
+    {
+      "depth_path": "depth/1341846228.121864.png",
+      "depth_sha256": "FF0641055C16A38681106660C75C49A6EBF5B54F7AFC4ABB6F07E56A84E99E95",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.121845",
+      "index": 13,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.121845.png",
+      "rgb_sha256": "39BE29794C72AB37A71FD482D65EEB00E21F4FBF730A3B32234D47062EFF4CCE",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.121845
+    },
+    {
+      "depth_path": "depth/1341846228.226004.png",
+      "depth_sha256": "D94541E7732EB87C03D7785E8DD5B08C68BF6569D7D362EBC45364181783FE05",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.225994",
+      "index": 14,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.225994.png",
+      "rgb_sha256": "5079396C7D9FCED1D7218A2E1BEBE95ED88CB0B61A311FE4728FDAAC4EF9D6AA",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.225994
+    },
+    {
+      "depth_path": "depth/1341846228.326034.png",
+      "depth_sha256": "6493A0C38161306781F4D7440759E94657F7ECCF8D58C8F5C5971C11F96BD1FA",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.326018",
+      "index": 15,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.326018.png",
+      "rgb_sha256": "6D9CC2336EFF9E42EC69A20461CDC01BFF927C570B525BEAC88C3F6AD74A04EC",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.326018
+    },
+    {
+      "depth_path": "depth/1341846228.426109.png",
+      "depth_sha256": "62D862A7B5FCD934F24B42FE32C5B04B1C3AADB38CA7177CE8548D5400AF0F16",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.426073",
+      "index": 16,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.426073.png",
+      "rgb_sha256": "639AEF19D739DF9BD3A9F54CBBBDEF16349A5A9F884C1E0467BD40A129083D8A",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.426073
+    },
+    {
+      "depth_path": "depth/1341846228.525971.png",
+      "depth_sha256": "EA7521F8A0B1B2CAFCBB1EDB9B34D640DD2E2EC5A360CB6672EDA30405C1A272",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.525907",
+      "index": 17,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.525907.png",
+      "rgb_sha256": "BFA88E12EEAB28A6A17CB063CEE1C7F255C85FA781BF78AADA1A16DC02316ED1",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.525907
+    },
+    {
+      "depth_path": "depth/1341846228.626047.png",
+      "depth_sha256": "61B3C4B49F0E4E7EAE952B68745ACD77AF7ABF69B303C8EE8F1C40128FF5D01D",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.626021",
+      "index": 18,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.626021.png",
+      "rgb_sha256": "F596E591047A2E20F1231AC7C19A57EE5F7F4295424FBA60A2A03F70A355F9AC",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.626021
+    },
+    {
+      "depth_path": "depth/1341846228.726782.png",
+      "depth_sha256": "C9B3B5D87F587625B2D91F61332CE3EADF946B4EE24FC19E7350646EF4A14F4E",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.726069",
+      "index": 19,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.726069.png",
+      "rgb_sha256": "6AA55434C3188E624DF0634E6C18C203EE9EDA5CCA5D20BB552CE09F14C245F2",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.726069
+    },
+    {
+      "depth_path": "depth/1341846228.825943.png",
+      "depth_sha256": "7784F601B6DD0A424F60977B7821F23265E8D53DDCE4708F752901EAE3912A6E",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.825934",
+      "index": 20,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.825934.png",
+      "rgb_sha256": "9DED2824A76114C559E9F23716CAF240833D754CB8ECAD38BBF4DE4F921375E2",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.825934
+    },
+    {
+      "depth_path": "depth/1341846228.927109.png",
+      "depth_sha256": "FF31E1BDC00F062E8A3B96E7E0AAD54C3C1D65FBFA096DD99DB9A8AE4795EE46",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.926548",
+      "index": 21,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846228.926548.png",
+      "rgb_sha256": "DAEAC73959F26141F7F7DD0206A9E3FFFFEAAD71697A97FEE91AE679F68AD3AC",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846228.926548
+    },
+    {
+      "depth_path": "depth/1341846229.029909.png",
+      "depth_sha256": "BA1F96E9B973D9C937B67E537C87B982EC0A311651A5F4734CB7A8FF844DC613",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846229.029897",
+      "index": 22,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846229.029897.png",
+      "rgb_sha256": "24646D336B0A419B7D3195A4C0A661FA2D3B0715C444EC7F856381AC7DD05188",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846229.029897
+    },
+    {
+      "depth_path": "depth/1341846229.129949.png",
+      "depth_sha256": "07A062F32A24751091C83D10BFDE1ACC3AE324DCB0366FD3A6C2D9123DEC4E10",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846229.129930",
+      "index": 23,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846229.129930.png",
+      "rgb_sha256": "D7282E792B5BA6296B6939D56EB59E2718C4F02DCEF886A5A01721B793917A37",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846229.12993
+    },
+    {
+      "depth_path": "depth/1341846229.229825.png",
+      "depth_sha256": "21323AE724D2CA04CCACC16F471B329CBCE65F431D595ED9DEFBE07F47BA2242",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846229.229812",
+      "index": 24,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846229.229812.png",
+      "rgb_sha256": "0AF325AEDFD626A003C28342B937C8D7BEDC1D491EC892AB0FA845A8FB47853F",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846229.229812
+    },
+    {
+      "depth_path": "depth/1341846229.330152.png",
+      "depth_sha256": "8606C661C33062F42169D9EE063931B9BE5166E50F0500B800A1F7A244EABDEC",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846229.329933",
+      "index": 25,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846229.329933.png",
+      "rgb_sha256": "9E630B4A6DDD4224017B86852786A02F3C10DBC0E9E2FCA76CB39D1C9278BEEE",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846229.329933
+    },
+    {
+      "depth_path": "depth/1341846229.430194.png",
+      "depth_sha256": "0F376173DE188CEA03350470341FB4B7630DD75E211062ED93F45E0C9C1ECE41",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846229.430182",
+      "index": 26,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846229.430182.png",
+      "rgb_sha256": "4B391AC2BA6962EFCE642E42F8EE0E9CA902FC0348B7A89100122638459B5855",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846229.430182
+    },
+    {
+      "depth_path": "depth/1341846229.530169.png",
+      "depth_sha256": "4B17458A366D416C9E3AF474CC60DD4B7EC401979BDC9A02B5C077C4E135AB6A",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846229.530149",
+      "index": 27,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846229.530149.png",
+      "rgb_sha256": "61E63D88989F2EDE00EC9A6D768DBA8DE4798F3CBBF59587D79659057D726A7B",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846229.530149
+    },
+    {
+      "depth_path": "depth/1341846229.630079.png",
+      "depth_sha256": "8BF1F0F1128496F6F91049948341338F3334D857626C2C16E72A2C39A2AA7C7C",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846229.630063",
+      "index": 28,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846229.630063.png",
+      "rgb_sha256": "7669ADD5F7E46E43172519704EFBD76E3588C42C09D447AEE9071CFC194B2052",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846229.630063
+    },
+    {
+      "depth_path": "depth/1341846229.734376.png",
+      "depth_sha256": "8AB7ED203E7739AE118751016E7B69050895B633441EFCD578DA7064A3BA546C",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846229.733828",
+      "index": 29,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846229.733828.png",
+      "rgb_sha256": "56537417E705BCF99294889321858DD16A8BA02129019915FD9D6928CF2F1A8E",
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846229.733828
+    },
+    {
+      "depth_path": "depth/1341846242.869954.png",
+      "depth_sha256": "DFFB347838B5CC381998ECD341873BD67D10D6CDACC4CA35CFE8F7ACBC073F4D",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846242.869936",
+      "index": 30,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846242.869936.png",
+      "rgb_sha256": "0AC4F3074C87F57FA9845ADFCDB1FE10602F81A8DF79B315BA3BBA0F676D8FF0",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846242.869936
+    },
+    {
+      "depth_path": "depth/1341846242.938117.png",
+      "depth_sha256": "7ED58B18EA2E9F03ADA44B2CFD978A5148CEC6EE3CEEAB75AEDCE7CF2729516C",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846242.938061",
+      "index": 31,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846242.938061.png",
+      "rgb_sha256": "DFA0746358EE64C281C3F316D5429A92886D074A7B859B9EFC17436E36767A71",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846242.938061
+    },
+    {
+      "depth_path": "depth/1341846243.038169.png",
+      "depth_sha256": "4ACBD323F51F31C218E3F91B51EFD272E3BE7DC62E09A0FEE446B32050014003",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.038095",
+      "index": 32,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.038095.png",
+      "rgb_sha256": "CBCCC1EA6947110008E3478B4F231F1B845FB4F18281A2FAED45E6B54AE0CD1D",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.038095
+    },
+    {
+      "depth_path": "depth/1341846243.137911.png",
+      "depth_sha256": "979D10D80E2BBC52129E41E0DD4D7A68D720F40706F36ADD243A31868AF866B9",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.137899",
+      "index": 33,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.137899.png",
+      "rgb_sha256": "EAC0AE58A5FCA048B811CD3D421532FC7D505BEF0A795B991DD953B96F61BA01",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.137899
+    },
+    {
+      "depth_path": "depth/1341846243.238021.png",
+      "depth_sha256": "851AC2809559F3559278E20A93CDC2F6A064A1F3C50DAC265CF049E2EBF3C393",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.237999",
+      "index": 34,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.237999.png",
+      "rgb_sha256": "668C1C579525CC00932A8BB19325F2148B588E66B8609325DD5FC1FECC91CDE6",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.237999
+    },
+    {
+      "depth_path": "depth/1341846243.338039.png",
+      "depth_sha256": "208934090903AE96757165C7CAB272685DBB144F180490A1764B81A9320A7BC7",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.338022",
+      "index": 35,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.338022.png",
+      "rgb_sha256": "D024DCBB99E26F4D15920C122758F0B2408BA2536F2468301AC56F88D2E4BFD3",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.338022
+    },
+    {
+      "depth_path": "depth/1341846243.442204.png",
+      "depth_sha256": "9253EE1D33D11FDEF00AF52A9CF3BEB54F824DD4D4AC88C6EA658E2FABB2AB96",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.442193",
+      "index": 36,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.442193.png",
+      "rgb_sha256": "37EB595AC62629BB51EF6EABD0AA704770E9EBAAA0EBF9A8E0F7520CC9D48D42",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.442193
+    },
+    {
+      "depth_path": "depth/1341846243.542012.png",
+      "depth_sha256": "193FB8FCD98B2A975F3B91CF66A126BDAAFA62A477B03ECBB58A6C3E6B384E33",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.542001",
+      "index": 37,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.542001.png",
+      "rgb_sha256": "1DA69E4896B163B200F732FBC47CA40FFA7D04DD7A0C60E29CBA8F0CB62CCB7D",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.542001
+    },
+    {
+      "depth_path": "depth/1341846243.642030.png",
+      "depth_sha256": "B5BBE678BE83BCB5B46BDB800994827AB54A946721FF9168A3D32C13F7596297",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.642015",
+      "index": 38,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.642015.png",
+      "rgb_sha256": "5E39A0171D091BC0CD86665EA173559E7C306B6AAF71C440C5D3A89DE110FEAD",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.642015
+    },
+    {
+      "depth_path": "depth/1341846243.742512.png",
+      "depth_sha256": "ADDD0C5A328B8BF27C38041A1B823DCF14219695E2F398FA6049E872728AF059",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.741951",
+      "index": 39,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.741951.png",
+      "rgb_sha256": "BF71002EA19A1A90F61C10457577E09F3C930DFAD6326471A8D31F5D9AEF65E3",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.741951
+    },
+    {
+      "depth_path": "depth/1341846243.842007.png",
+      "depth_sha256": "91AFBF485D48A20A97CFED2E5928D8A8B90FC1BAF0AA4F703E5FD8772F9643D2",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.841971",
+      "index": 40,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.841971.png",
+      "rgb_sha256": "22F8209D9E66A30433F8E4C91CC703768357B6A69427718301D772A71EF1C942",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.841971
+    },
+    {
+      "depth_path": "depth/1341846243.978237.png",
+      "depth_sha256": "903CBEA7B525BC73D089BA78DD5D5113E21F7389BB7896713065A9325D0584EA",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846243.978045",
+      "index": 41,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846243.978045.png",
+      "rgb_sha256": "FFCB0F3C7B136752326C9870FD13896977504725145A41B67FD503E27666602C",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.978045
+    },
+    {
+      "depth_path": "depth/1341846244.042157.png",
+      "depth_sha256": "A8B0ED00A2C6736B57DD4C5A333708A667421AB7DA6FE3A95CFE93028E89A36B",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.042105",
+      "index": 42,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.042105.png",
+      "rgb_sha256": "41B47438CBC1EBD0E8E95E6236CB1C06DF5E7BF7BD1EF4D4FACC8C1C2DD9D2A1",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.042105
+    },
+    {
+      "depth_path": "depth/1341846244.151860.png",
+      "depth_sha256": "69EBD106AD77A5F1379C988357C6EAEBCF4ABC185A89768FDFED50E131D55A35",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.151850",
+      "index": 43,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.151850.png",
+      "rgb_sha256": "48DDE653595D8938A5F2E17EEEF294D77DAF6EF101647BF3B508B8E10F941323",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.15185
+    },
+    {
+      "depth_path": "depth/1341846244.251892.png",
+      "depth_sha256": "004C9D5B590644E7EA1E8349B1CE7FBDA8400F15A0293B23E92CD9A77FD483CA",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.251877",
+      "index": 44,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.251877.png",
+      "rgb_sha256": "63B026ED74FC78EE12C54882575E9798EAE41C6B72830BF882542651F8732A34",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.251877
+    },
+    {
+      "depth_path": "depth/1341846244.352036.png",
+      "depth_sha256": "28F7AB5A31E20D1F876D5F14F162FB60E7275061BBC8DE4C7B0E9FE729A57BAD",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.351999",
+      "index": 45,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.351999.png",
+      "rgb_sha256": "B6664220E928618EE544A1D84558FDC3F4C35F859F4D09FDCCE83D41410EA414",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.351999
+    },
+    {
+      "depth_path": "depth/1341846244.419884.png",
+      "depth_sha256": "C3E52BA1BC02A0D2AB9F9DC9396BF6B0599DBF1B34697D4B2582E49FF5EE8425",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.419869",
+      "index": 46,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.419869.png",
+      "rgb_sha256": "E743F856EBB52D187F0E41A2340C25052CA0A1C192165AC9B1ACE600492B55C6",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.419869
+    },
+    {
+      "depth_path": "depth/1341846244.520410.png",
+      "depth_sha256": "4A6DE61BCF4D0CDF9A8FA69915C7E8F060DDA110B111B33EF5D30E842B0CC96D",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.519923",
+      "index": 47,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.519923.png",
+      "rgb_sha256": "C72D41DAEE5ED4BB67FA3C7747D5923EED0302FAB9456540ACFF7ED5D4F4EA7A",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.519923
+    },
+    {
+      "depth_path": "depth/1341846244.619887.png",
+      "depth_sha256": "26B046E471CB2402A3725E6D30F163D124D490E3219087B4F2468A64D0C74228",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.619870",
+      "index": 48,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.619870.png",
+      "rgb_sha256": "33D1FEE0BF5B2C9251E074E8425EB567901EF9F334374FED39F7164543CF680F",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.61987
+    },
+    {
+      "depth_path": "depth/1341846244.719897.png",
+      "depth_sha256": "BC61A0DCD974E6C5E9EC7438CACADC372DA0A8B2B73FB2D978738881FCB73E0B",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.719873",
+      "index": 49,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.719873.png",
+      "rgb_sha256": "EC9D39F3DA2DC363A584CC443A75673AEE021F3025006C3A1251D5387C241B55",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.719873
+    },
+    {
+      "depth_path": "depth/1341846244.821024.png",
+      "depth_sha256": "8FB71894F94E962023D58EBA36D19113704D3C99AFB945DAC35AE0BFEF72293C",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.820099",
+      "index": 50,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.820099.png",
+      "rgb_sha256": "3CD9A28AC87626830B4694500A3E2E583F67A4396BDAB28D364D5136EEDB8E4B",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.820099
+    },
+    {
+      "depth_path": "depth/1341846244.920105.png",
+      "depth_sha256": "85A52B0B74EB872AB33E0350433CC2867977277F921F895C9C549293219BA238",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846244.920072",
+      "index": 51,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846244.920072.png",
+      "rgb_sha256": "C3304B90ECE529DA895E11F5CDF1575B5C50BDE09122B1AE9A68A6001A703E1B",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846244.920072
+    },
+    {
+      "depth_path": "depth/1341846245.020085.png",
+      "depth_sha256": "737006D9A70FF78827834292D98E618C0D62DD4D4017F9E4DC734F440EE45A85",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846245.020060",
+      "index": 52,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846245.020060.png",
+      "rgb_sha256": "FA3DE6B4E9EED7653A77DF78DE1A5F1AC463F0938A35DA22029AA75166600F3F",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846245.02006
+    },
+    {
+      "depth_path": "depth/1341846245.119950.png",
+      "depth_sha256": "580C6FE0D9AD3761D67EAE3B3417F69596D2DEF6C8F66017B2A7E6BF7D7DE77D",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846245.119935",
+      "index": 53,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846245.119935.png",
+      "rgb_sha256": "E387CB3D0C060A98FA453A4CA1364D5CE829C4142056773F159860E7D26E27A5",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846245.119935
+    },
+    {
+      "depth_path": "depth/1341846245.219872.png",
+      "depth_sha256": "9E0EC1D4EF7191140A73747CF5DA0222DE32C423012909601DEBD1C38899A740",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846245.219842",
+      "index": 54,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846245.219842.png",
+      "rgb_sha256": "8A3789BA615B22347F07FC425C68B414E86C3A613D74F7C6D754F9ED1EABF1AE",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846245.219842
+    },
+    {
+      "depth_path": "depth/1341846245.320455.png",
+      "depth_sha256": "00D5BA357064E8D8ECC56E58016094CDA717FD6B41107CD78096F4A7417B95C6",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846245.319885",
+      "index": 55,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846245.319885.png",
+      "rgb_sha256": "682EB7A627B3BEC8829FB555A825B837FFE9F80283E2F2E57D4BCCAE9DD04F92",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846245.319885
+    },
+    {
+      "depth_path": "depth/1341846245.424002.png",
+      "depth_sha256": "86338ED498050F310602442F60AC8691123D4E7F16C1438EFC8D8448ABF5A5A8",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846245.423977",
+      "index": 56,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846245.423977.png",
+      "rgb_sha256": "85DAA6A0637DB5BB42AE370906573DFFB2D98F07B11812EEC5CFEB21B7AA5479",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846245.423977
+    },
+    {
+      "depth_path": "depth/1341846245.523941.png",
+      "depth_sha256": "EAE0036F0ED82610CFD4B2FC9A1802E7D185BA74F7592C235F20118F88513654",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846245.523916",
+      "index": 57,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846245.523916.png",
+      "rgb_sha256": "FD3A2038C5B685575337D2D396F04B8E316F5D576B238CC3889C4220077135E8",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846245.523916
+    },
+    {
+      "depth_path": "depth/1341846245.623866.png",
+      "depth_sha256": "BFACAAA182CB055C174F07DED286ED991D48FEB00A0AF4AA6280AF663A8051FB",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846245.623837",
+      "index": 58,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846245.623837.png",
+      "rgb_sha256": "94800ACD71EF08B0444DBDF6712697423B0627105EAE8DB741C9A0904060CB44",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846245.623837
+    },
+    {
+      "depth_path": "depth/1341846245.724542.png",
+      "depth_sha256": "28A12D33D4880DDE6EBE2E23F66B35B43C213F41427A627B8977D47AEB0F1C2A",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846245.724517",
+      "index": 59,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846245.724517.png",
+      "rgb_sha256": "ECA5232F055C6470C16A65F77954C2554C8B52B6B1A80287C23549C6C23B2E45",
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846245.724517
+    },
+    {
+      "depth_path": "depth/1341846246.826076.png",
+      "depth_sha256": "A58EA50EB8DB97276F65E670B9308A5D07F9A50970B45B3654200A33279A4637",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846246.826059",
+      "index": 60,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846246.826059.png",
+      "rgb_sha256": "B7DAE00ACD2059EF6C8B0F1C5412D32034B90B054877EF4AF6D8D49E92260359",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846246.826059
+    },
+    {
+      "depth_path": "depth/1341846246.925906.png",
+      "depth_sha256": "C348807EBD8AEC8545A2918029B3ED4CF91621D0D71731D598F40DBB87FE48CB",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846246.925896",
+      "index": 61,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846246.925896.png",
+      "rgb_sha256": "FC0CD6EB3F6AC112407D52E3DAB6D1076258EB8AE49AF48DF56848BC7DE9EA5B",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846246.925896
+    },
+    {
+      "depth_path": "depth/1341846247.026254.png",
+      "depth_sha256": "E803237D08ABF9A11C7BF6AE26EAC2009EC5067BB56989F71FC0C152FF249867",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.026204",
+      "index": 62,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.026204.png",
+      "rgb_sha256": "7FD5660614D19F17EF1730E753657057BE8BC1BF37835781C552E1B726FD5D0C",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.026204
+    },
+    {
+      "depth_path": "depth/1341846247.126055.png",
+      "depth_sha256": "74ABB0C858610CA97B27B58265A9F8C90BCA4948A20B7BC6A46DA1B970762F36",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.126028",
+      "index": 63,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.126028.png",
+      "rgb_sha256": "91E161982A3BDA42F52DC48B8CE2356AC3F1A12E983E94E99C91CEDE98E5A5AA",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.126028
+    },
+    {
+      "depth_path": "depth/1341846247.226075.png",
+      "depth_sha256": "2BCA92E919B69B22C58BD8CC1713910743FFF81043513E87A064ABFF570EA5F2",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.225977",
+      "index": 64,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.225977.png",
+      "rgb_sha256": "D42BF27CD719CB3FDD16AACD7135E78E6BBE3B796AC58E8A4CDFD4BFB6D75606",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.225977
+    },
+    {
+      "depth_path": "depth/1341846247.326013.png",
+      "depth_sha256": "CECCF1C8FD859C4C4D66B2F1751D4AA82C4B8488980615F7C8F56B9C8B6BC1A1",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.325987",
+      "index": 65,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.325987.png",
+      "rgb_sha256": "0386C19F571A93D8B0DC238CC3DC30AA6084C6BE23A9ED893BFA1926BFF5EBE9",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.325987
+    },
+    {
+      "depth_path": "depth/1341846247.430202.png",
+      "depth_sha256": "0FED991D100D891C8B8673AC1974659E7230C122E26E2B7FCDE353903FE54678",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.430187",
+      "index": 66,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.430187.png",
+      "rgb_sha256": "9DC1962BB36740D5E41E68CA4C09861525E4C43EE231B6247865C856DE636E28",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.430187
+    },
+    {
+      "depth_path": "depth/1341846247.530050.png",
+      "depth_sha256": "28794327C6D6081CD11D3FEEB5284CB6995D2B2AECECF0028ED2F790215C7193",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.530027",
+      "index": 67,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.530027.png",
+      "rgb_sha256": "7FB7852E1B98EDCABD7A1C2C5E732118E1C8C7912BAB52F3E35D95CE461DDFBA",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.530027
+    },
+    {
+      "depth_path": "depth/1341846247.630512.png",
+      "depth_sha256": "54306D9AEC805D085DAE18C5DF71F8FDCB0EB6126E08708DA579D51082288989",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.630035",
+      "index": 68,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.630035.png",
+      "rgb_sha256": "1B32BF9FDF303704CFC4A66358F8AE726CD220A6CCF685DF7C2B14F09A416D60",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.630035
+    },
+    {
+      "depth_path": "depth/1341846247.730088.png",
+      "depth_sha256": "6C7B4A4B6C3384ACFB65F33C29941A7C2880F0C203EC4B9608F4D1D6AC5AE98C",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.730051",
+      "index": 69,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.730051.png",
+      "rgb_sha256": "D8DF3FEBC332ABDA21828367E7EF59F4793C378ED2CF2ABBA79BEBDA7D17063A",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.730051
+    },
+    {
+      "depth_path": "depth/1341846247.830273.png",
+      "depth_sha256": "D9390604386D2B72F554EEE58A538324842C8D98B3149852A1BE23B74E274F14",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.830259",
+      "index": 70,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.830259.png",
+      "rgb_sha256": "48E37ED894EDA35EA19955E08A967F8D89C8358539123BE00D0988DCAD300B16",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.830259
+    },
+    {
+      "depth_path": "depth/1341846247.930017.png",
+      "depth_sha256": "A16CA1A8E51E92D16DA0270A7A2449AEA6CE383DE1AF896FFBBE457DD8CA8E03",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.930002",
+      "index": 71,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846247.930002.png",
+      "rgb_sha256": "ADC4B0516FEDEFD1300DF4591EFED5B25DE85C8CA091C01BA3AF9074766B3AB2",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846247.930002
+    },
+    {
+      "depth_path": "depth/1341846248.030628.png",
+      "depth_sha256": "381635723F1F5EAB5ABD8B13D5363241714C6B22F9D4A64A7B0380ACC1D3F17C",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.030615",
+      "index": 72,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.030615.png",
+      "rgb_sha256": "3AC5A83160DD81C025C592012133797747E2EA91DB4624108B3C03E942CC8678",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.030615
+    },
+    {
+      "depth_path": "depth/1341846248.133946.png",
+      "depth_sha256": "930BC3B288CB85C72CB482ABF682F9391DEA2230C156625A57D084ADCA35AD24",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.133929",
+      "index": 73,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.133929.png",
+      "rgb_sha256": "E1FFBFDA872E5BFAF57A53A98F545A5390F0A86D02C3D1D8D09E68853DD8EE82",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.133929
+    },
+    {
+      "depth_path": "depth/1341846248.233984.png",
+      "depth_sha256": "55DB8F9AEF055B89D61505D9B3516C57EE2B056F81D3534951B1590C851DD712",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.233930",
+      "index": 74,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.233930.png",
+      "rgb_sha256": "F83D7F5998CDBAFFC70A0043D696DF330C20F11C1CE020E38B6585F021A1C99A",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.23393
+    },
+    {
+      "depth_path": "depth/1341846248.333968.png",
+      "depth_sha256": "2E97F05B28E001ED2E2AB929D5D1AA0C856E6C97358942F5541E915221594D91",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.333956",
+      "index": 75,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.333956.png",
+      "rgb_sha256": "F5BA9333123EB46047DD51DBC0A9E2E4069F642D8FE6D1D51C66DC00BC77C4C7",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.333956
+    },
+    {
+      "depth_path": "depth/1341846248.433879.png",
+      "depth_sha256": "6EE3B4AC1E05ACCA499463554045FC7865EB9833FE602F1B33B0F913CD341FA3",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.433862",
+      "index": 76,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.433862.png",
+      "rgb_sha256": "36C56A3AC21FA10FE969D62F26C6012B3BC490C8C1DBD95CF43C6D5D2C05E02B",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.433862
+    },
+    {
+      "depth_path": "depth/1341846248.534665.png",
+      "depth_sha256": "061D22C91D62ACBBCAC8ACCFF70FB1EEF41712FF206294CF72DF9090364D77DE",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.534215",
+      "index": 77,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.534215.png",
+      "rgb_sha256": "C1525C5E0A70BBA66F39F2E8DD3D929661D1C9C90A3012E93277A0CBCCA8A0DB",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.534215
+    },
+    {
+      "depth_path": "depth/1341846248.640314.png",
+      "depth_sha256": "2BC9E0F108397054EDACA89AE3F2FFDC44073104F3F8C93A37688518D5CDD0AA",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.640295",
+      "index": 78,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.640295.png",
+      "rgb_sha256": "0068B56D58D804AAEDFE3874B7A2476F9B0D97AC35DAFCC2986B8B3D46D64F85",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.640295
+    },
+    {
+      "depth_path": "depth/1341846248.740099.png",
+      "depth_sha256": "F026A8B0267031ABEE4F09A31239E993BA01293E8C8DFFFF485EEDC6652A3D53",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.740085",
+      "index": 79,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.740085.png",
+      "rgb_sha256": "70B2AE68FB1049B69D6F3C359B92B257DE4B7CECE6E249FDF2A0F645B2D32948",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.740085
+    },
+    {
+      "depth_path": "depth/1341846248.834429.png",
+      "depth_sha256": "BEAA223D9664C36D6481912E7EFE80C4B79CC3FCC8194BFFB94DCBC038E2D9A7",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.833950",
+      "index": 80,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.833950.png",
+      "rgb_sha256": "9BFCFAEDF4FB549FF9F31E1337477C5725E9ADA7F959DB090401B8155ED53F64",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.83395
+    },
+    {
+      "depth_path": "depth/1341846248.938051.png",
+      "depth_sha256": "5C3167DAFA85EC267958F4575C9F9D3682C92E7BA74AA3E3FECDC7687A00D45D",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.938035",
+      "index": 81,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846248.938035.png",
+      "rgb_sha256": "FF6DDE4FCFD5A41173DA413838DF0024313CF8541EA0BBE6DF01C0BE157B015B",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846248.938035
+    },
+    {
+      "depth_path": "depth/1341846249.038010.png",
+      "depth_sha256": "87542608F24F06D3B1B14599E0E2E7BAC10CCA0D382115B13CD57D5EDF133E46",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.037998",
+      "index": 82,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846249.037998.png",
+      "rgb_sha256": "68B53867CCE711CC7AD120DF64350D3644B201127D251C7E01D45678557AEAD4",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846249.037998
+    },
+    {
+      "depth_path": "depth/1341846249.138166.png",
+      "depth_sha256": "F9EF22C848AFB244BA1A5B40ADE3EA8233F90959D65B4F71D6683B54E6CC857D",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.138041",
+      "index": 83,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846249.138041.png",
+      "rgb_sha256": "6B529300125EBEC933EBA8B3CEA30D57C413EA1B6DDD854EC7E4501FB3E5CBA7",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846249.138041
+    },
+    {
+      "depth_path": "depth/1341846249.237984.png",
+      "depth_sha256": "B6F827F824786B27BDA2732A94ABA8546B4A3B8FA15B8E471AC2959D7E89374F",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.237872",
+      "index": 84,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846249.237872.png",
+      "rgb_sha256": "DE1D9C9C43E1043B04C869B81C5D0B0E071A845DEE4F9DB9AD2A80AC16A570EB",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846249.237872
+    },
+    {
+      "depth_path": "depth/1341846249.337878.png",
+      "depth_sha256": "7094FA255A8949D421D7FB3F348B1F31019F8F0A85116296612F678CADE848B9",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.337853",
+      "index": 85,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846249.337853.png",
+      "rgb_sha256": "C49330230917E7C207CD94709F47EF2941FA6108E5489AB1F23EFE463580D1B6",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846249.337853
+    },
+    {
+      "depth_path": "depth/1341846249.437964.png",
+      "depth_sha256": "A4B61257642BF78CDB465EAB0D985FE63B076DE3CD0074460311F2A639FA4FAF",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.437945",
+      "index": 86,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846249.437945.png",
+      "rgb_sha256": "BE9458009FA779EBFC3E33F67AA36C02472953D25104E518CEFBDCBED3C77F30",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846249.437945
+    },
+    {
+      "depth_path": "depth/1341846249.540051.png",
+      "depth_sha256": "253FCD15DFDD1AAF501599B0AC4624FA4098839BCF6DF6A7299E8BCBE39554CC",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.538288",
+      "index": 87,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846249.538288.png",
+      "rgb_sha256": "428C080154D3191BA7011223BEB0522C537FDD4983812069FCB92837D4AE718D",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846249.538288
+    },
+    {
+      "depth_path": "depth/1341846249.642004.png",
+      "depth_sha256": "4F598EB8F3EF5E8CFCA81FE32B67437F6F8FCA2C4E2AF686DEE35418F242C11F",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.641995",
+      "index": 88,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846249.641995.png",
+      "rgb_sha256": "7E9F05F6458862DEC6CC6CB00A268710DBEE5EB76B471B7EC97F5F5CC54EF29F",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846249.641995
+    },
+    {
+      "depth_path": "depth/1341846249.742047.png",
+      "depth_sha256": "319F1E961D35137C4D55B4ACCAF41117DAE06ABF8B3E1FCBDC5F6A6B643809C9",
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.742012",
+      "index": 89,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846249.742012.png",
+      "rgb_sha256": "328C3B5410445E853545E3BE709F5CB944D11826C57A26F28E28AE43EEA91378",
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846249.742012
+    },
+    {
+      "depth_path": "depth/1341846337.617917.png",
+      "depth_sha256": "032EB27E00C420AB193D8B3280A10D383BB843F4F9FE2572BE75C2DB1365F40B",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846337.617903",
+      "index": 90,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846337.617903.png",
+      "rgb_sha256": "0E791694D3A9C82C82C7D2D270DA8D5F0A29D47E4958CF0FDA7906C7BFDFFAA8",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846337.617903
+    },
+    {
+      "depth_path": "depth/1341846337.718530.png",
+      "depth_sha256": "682EF39524EDB7B7C94ABCAD759B2920F60DD648E0C302A53B7FC928FFEF26B5",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846337.718002",
+      "index": 91,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846337.718002.png",
+      "rgb_sha256": "E5B7A1D926C91BDE3BCF9D75D921DFD454050341E49EF56EF1307C110027DC93",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846337.718002
+    },
+    {
+      "depth_path": "depth/1341846337.817966.png",
+      "depth_sha256": "5C82E0914ECE830C79917DA346D8B757F3C87B1DFA8B1A8C531926595194C5C2",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846337.817945",
+      "index": 92,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846337.817945.png",
+      "rgb_sha256": "6D5CF5FDFA66166FC7EEABCE79D7821CB3A030BBC38A4D9CC935CD676F6D846F",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846337.817945
+    },
+    {
+      "depth_path": "depth/1341846337.918236.png",
+      "depth_sha256": "CE388A32980D3479A86D825A4FB6ECD5B7F9675AA41ABA0862AB40C3307CA7AF",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846337.918223",
+      "index": 93,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846337.918223.png",
+      "rgb_sha256": "B040A8EADD28B364AB437EB6D174177471FD638833A29249C126AC1F98C04D03",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846337.918223
+    },
+    {
+      "depth_path": "depth/1341846338.018124.png",
+      "depth_sha256": "A6BD8B9E5518A8E2BF7E2CFA23628C0A3C6A4D6FD6DD6F85BBB4A29E8DCD2198",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.018107",
+      "index": 94,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.018107.png",
+      "rgb_sha256": "0E8BDA9C756EA8365CE9185DF0EE058A915EDB2EB7513EE92FF45E588B95271F",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.018107
+    },
+    {
+      "depth_path": "depth/1341846338.121933.png",
+      "depth_sha256": "CBEA75C224E2B83E5F47C4573F3C9B2A813796BCCB8B7B158F9EE19DA52370EE",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.121875",
+      "index": 95,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.121875.png",
+      "rgb_sha256": "9EA18F553DD970AF552D3CF3F1B9F83BE2A8C4FC186E639D611C173598D682E2",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.121875
+    },
+    {
+      "depth_path": "depth/1341846338.222083.png",
+      "depth_sha256": "707D0048338DBF9167D5AC76E0B1F82A35095E15034BB0CBD4A82EC97E753760",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.222071",
+      "index": 96,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.222071.png",
+      "rgb_sha256": "E73D56BE2A047A6BD56C69C2DE5977623C32208E16AC11878FFBA6B7E5C6C3E9",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.222071
+    },
+    {
+      "depth_path": "depth/1341846338.322007.png",
+      "depth_sha256": "6CBCFFF3163B64741E2B89CF6E1C6D77825F865D5F7786875EA6D328AC499C80",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.321952",
+      "index": 97,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.321952.png",
+      "rgb_sha256": "DB0E3572F11C3CC4E415F54F5AE1498A6BDB114F515DF8705B68210653F42817",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.321952
+    },
+    {
+      "depth_path": "depth/1341846338.422453.png",
+      "depth_sha256": "D0C305FE1D2AC5021ED1CFD5F5E197BF603864EBE121CF65F000B823FF94973E",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.422377",
+      "index": 98,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.422377.png",
+      "rgb_sha256": "413E5DAEA5838ED400821E9FD6E4AEF3F9DE3CFAC72804E8577CC39F569006CF",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.422377
+    },
+    {
+      "depth_path": "depth/1341846338.522141.png",
+      "depth_sha256": "8F2DE8E6B397BA6AF4B7FDD8BC74948C2F15290F35A45959D119B42949F715DA",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.522066",
+      "index": 99,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.522066.png",
+      "rgb_sha256": "A925987BAB06CB04C566533EB91478FBD57FA385321B2EEB2BA49A03DAA02A6E",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.522066
+    },
+    {
+      "depth_path": "depth/1341846338.622033.png",
+      "depth_sha256": "3D76A7A21FE72FD42AA2BC927CC6B635DB751776F7063A9B5C05F8B0D66F8DBB",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.622019",
+      "index": 100,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.622019.png",
+      "rgb_sha256": "3097C5A2F224B2F941CEE7286BC51DD3A2B457529C07E4BE25003B6334AD0F7C",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.622019
+    },
+    {
+      "depth_path": "depth/1341846338.722487.png",
+      "depth_sha256": "BA3BE1B3FBF280404744D67330624E78E361030BC78166E64D20EEF590380378",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.722454",
+      "index": 101,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.722454.png",
+      "rgb_sha256": "23BA263FF3F07550D822CE414011168137F901408F031B4DB0ED3E8438136959",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.722454
+    },
+    {
+      "depth_path": "depth/1341846338.826077.png",
+      "depth_sha256": "852B3EB426DF19522B512FDED7674C87DED357ABFED2D5BA54E659B95EA1D95B",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.826048",
+      "index": 102,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.826048.png",
+      "rgb_sha256": "874D204E0ED1EEB321C8AB05BA4647CEE78DD8C83858325B6286454726C05F4E",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.826048
+    },
+    {
+      "depth_path": "depth/1341846338.925970.png",
+      "depth_sha256": "13A8D227B6C77AFA2CA54EDE4C98F13E3E7EDD1D6C8AAAC9B10CD24F00365D65",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.925948",
+      "index": 103,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846338.925948.png",
+      "rgb_sha256": "1234FE4EE416738C3F250E2FC6E498538ABA1D81D725567E4CEA61218F5FC53D",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846338.925948
+    },
+    {
+      "depth_path": "depth/1341846339.025959.png",
+      "depth_sha256": "C7E99FB0FBD858F4D05FDF42AC23A1ED8739E4DE2F3FB161DC1A917C9B320615",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.025928",
+      "index": 104,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.025928.png",
+      "rgb_sha256": "3F7793D65CF5F2A7480A1143D5E189DFF662D9BD8986FFF1F6EEF649A5C387CC",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.025928
+    },
+    {
+      "depth_path": "depth/1341846339.093951.png",
+      "depth_sha256": "24463367B17EB230F081F95E952C4C24E076A042CE47D9B2562CE6946317B29E",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.093927",
+      "index": 105,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.093927.png",
+      "rgb_sha256": "5D80F3E7458BCD305D445BAB85023090D993B091F8979ECECE16CBB28C84B3F2",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.093927
+    },
+    {
+      "depth_path": "depth/1341846339.194135.png",
+      "depth_sha256": "D8E426DE1A5B3959BFE5BF02C6F6D08DB6695F4BA8D931EA2B682372FA966DBD",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.194113",
+      "index": 106,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.194113.png",
+      "rgb_sha256": "0F7ED2B670D6DC3C37B8EF2DCDDFE0356119B27A56D49F74971E13E3CAD64B8D",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.194113
+    },
+    {
+      "depth_path": "depth/1341846339.294143.png",
+      "depth_sha256": "062FF84A7D487725B96664EAB99BE6105E7A4501ECB5282E56817B74D822704D",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.294132",
+      "index": 107,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.294132.png",
+      "rgb_sha256": "39C076951F8D87D869DAF3EFB4F206C66609D0EEC3195B1812E0571F8E4DD386",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.294132
+    },
+    {
+      "depth_path": "depth/1341846339.395598.png",
+      "depth_sha256": "A0BF9D4C152AADA6210A6EF81FA23DF8C2BE5BB499870D5147C91F831617DA25",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.394725",
+      "index": 108,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.394725.png",
+      "rgb_sha256": "B28C0CF0978AB682B5A76C3D94ECE9A95CC4D543AEF89409849076CB60CE5718",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.394725
+    },
+    {
+      "depth_path": "depth/1341846339.498916.png",
+      "depth_sha256": "BBA2C6A2F7430546702F2261EA8A5AB9D84311A645ABDCA07B4F409D16A2A3D4",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.496743",
+      "index": 109,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.496743.png",
+      "rgb_sha256": "BE47A13D9DB837B23D06749EFEC1886C77FA1DEBD4330DBE4F8AFF67E3F41BE8",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.496743
+    },
+    {
+      "depth_path": "depth/1341846339.595813.png",
+      "depth_sha256": "C229B6A7C448574C3A63573A61691640D5620C987209F171408728395F5763B2",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.595122",
+      "index": 110,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.595122.png",
+      "rgb_sha256": "6740527971217B95441CD83B0620FC391FDFCDF7E1A45CB47ECF66F4BA66AB9B",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.595122
+    },
+    {
+      "depth_path": "depth/1341846339.699516.png",
+      "depth_sha256": "5C8A90000709FCC945E110A0F92EB5D9AC90EC624C6472EA1BBB46A9DE163197",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.698896",
+      "index": 111,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.698896.png",
+      "rgb_sha256": "0090430DC03AC24B397D3C71913905BFAA803EC19B3DA8D0BA123326A8B0A329",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.698896
+    },
+    {
+      "depth_path": "depth/1341846339.797902.png",
+      "depth_sha256": "53309E87B1CE68E4C6D24B45897FEACCB743ACD47C1020721196BB27BE8974B6",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.797873",
+      "index": 112,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.797873.png",
+      "rgb_sha256": "4651B33A04ADA89177C2DD2DA12C9CECBAA7A9FCEBD2EF1224DBCC479A3A59FE",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.797873
+    },
+    {
+      "depth_path": "depth/1341846339.897917.png",
+      "depth_sha256": "66B67CD7D155461C4E0209AF4F277486602E39D1517DA0425C1CE6CC2F8D020A",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.897797",
+      "index": 113,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.897797.png",
+      "rgb_sha256": "55D2618376799FCFBEB7DFC99FA75A6132C028E0F6D227D8C2C064A7FAB18D21",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.897797
+    },
+    {
+      "depth_path": "depth/1341846339.997907.png",
+      "depth_sha256": "F2DDFEAE1965DA6D5A1D5BD19BB61F1009521FA51ADB330FFC51AAB89A342F7E",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.997845",
+      "index": 114,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846339.997845.png",
+      "rgb_sha256": "AC4876836902C0D02CC30E4E74D8F97C25B29D99FF4806FC78C7A8AA6B8009BB",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846339.997845
+    },
+    {
+      "depth_path": "depth/1341846340.098499.png",
+      "depth_sha256": "9101307F5A15E61DA11639CE83625759B0F2AEEFFCAA4B4ACBA43C662B960CDA",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846340.098009",
+      "index": 115,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846340.098009.png",
+      "rgb_sha256": "06FFB827AF290582971DA6BCE11DCF27A203C9E182010428723693C1815A1F30",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846340.098009
+    },
+    {
+      "depth_path": "depth/1341846340.197919.png",
+      "depth_sha256": "781D0386DED6C2ADCFDEB69382B5FA728C870227A1BBAB40F5A67747A05AE621",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846340.197867",
+      "index": 116,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846340.197867.png",
+      "rgb_sha256": "7F77128DA1C9A1E0DF0978D2BB38419C889BC365167E077967721E541EBF1072",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846340.197867
+    },
+    {
+      "depth_path": "depth/1341846340.298074.png",
+      "depth_sha256": "5211D884464A4DC03F824514CC3AD4172CCE3B18A8CA16C2FA723239AC113A2C",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846340.298061",
+      "index": 117,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846340.298061.png",
+      "rgb_sha256": "4A29DDB7C43A9A199CCB6B4ABE7F2990289AAED0E7C5714AD0E7721EEF17AFD9",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846340.298061
+    },
+    {
+      "depth_path": "depth/1341846340.398017.png",
+      "depth_sha256": "5E245BCC3A342D50F8FCEAC6E5E776782B8FE832CCED50B2A39A9D1F6E042C06",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846340.397995",
+      "index": 118,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846340.397995.png",
+      "rgb_sha256": "CCFC1860C0FB6870264C71842C5AD8028BDE34B5E20C70AF7D5BDB8F6D90EFDB",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846340.397995
+    },
+    {
+      "depth_path": "depth/1341846340.501915.png",
+      "depth_sha256": "B8E18C6AC3D5CD2729CCD402D6721CBAF58476DA4162A2DB1156A344063CA27C",
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846340.501858",
+      "index": 119,
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "rgb_path": "rgb/1341846340.501858.png",
+      "rgb_sha256": "1184DAD252390768A5FE05024217B2101146A48D40A45A831FA202E2FA69F1A4",
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846340.501858
+    }
+  ],
+  "schema": "blindassist_dav2_model_variant_gate_r0_roster",
+  "sequence_counts": {
+    "tum-fr3-walking-static-pose-000-track-001": 30,
+    "tum-fr3-walking-static-pose-016-track-001": 30,
+    "tum-fr3-walking-static-pose-020-track-001": 30,
+    "tum-fr3-walking-xyz-pose-024-track-001": 30
+  },
+  "source_manifest_sha256": "49C3F9426D0D658B61741569BB5AD1DB6839DBECF76227531E628FE662D9D8B4"
+}

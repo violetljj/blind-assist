@@ -1,0 +1,79 @@
+{
+  "schema": "blindassist_dav2_392_distillation_a2_r0_protocol",
+  "frozen_at": "2026-08-05",
+  "status": "FROZEN_BEFORE_TEACHER_CACHE_OR_STUDENT_TRAINING",
+  "parent_p2_protocol": "DAV2_MODEL_OPTIMIZATION_P2_R0_PROTOCOL_2026-08-05.json",
+  "parent_p1_protocol_sha256": "7AD758A829DB3AA07EC295F31090DDF8A8B1E7E6D6943B86C2A25FE063EBC664",
+  "question": "Can fixed teacher-only distillation recover the metric scale and geometry lost by the 392 resolution-only control without using P1 sensor truth?",
+  "teacher": {
+    "model": "Depth Anything V2 Metric Hypersim ViT-S",
+    "input_size": 518,
+    "precision": "fp16",
+    "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+    "source_dpt_sha256": "120698FD0AD9A4D169B4B9EF26035AD0CB11EED4089AF53E07E38F5717024B1D",
+    "role": "offline immutable depth target only"
+  },
+  "student": {
+    "architecture": "same DA V2 Metric ViT-S initialized from teacher checkpoint",
+    "input_size": 392,
+    "precision": "fp16 autocast with FP32 optimizer state",
+    "trainable": "all parameters",
+    "deployment_hypothesis": "same parameter count, fewer image tokens; this arm tests resolution plus distillation before a lightweight backbone"
+  },
+  "data": {
+    "source": "ARKitScenes Training RGB identities already materialized for Spatial Calibration Head R1",
+    "source_manifest_sha256": "CD746831820F4DDE3C6B72B580A8BAAC6D7C8BEE2AE5FBC9BFE9710EB151B807",
+    "source_roster_lock_sha256": "8B1A800FED7B4CB683000266883863400B2115AF11DD3B00D29EE530B7D00137",
+    "train_frames": 2400,
+    "validation_frames": 600,
+    "video_parent_disjoint_roles": true,
+    "teacher_or_student_truth_inputs": false,
+    "forbidden_inputs": [
+      "ARKitScenes sensor depth",
+      "confidence",
+      "affine targets",
+      "TUM P1 RGB-D truth",
+      "P1 candidate outcomes during checkpoint selection"
+    ]
+  },
+  "training": {
+    "seed": 20260805,
+    "epochs": 3,
+    "batch_size": 2,
+    "gradient_accumulation_steps": 4,
+    "optimizer": "AdamW",
+    "learning_rate": 0.00002,
+    "weight_decay": 0.01,
+    "gradient_clip_norm": 1.0,
+    "augmentation": "none",
+    "loss": {
+      "log_depth_smooth_l1_weight": 1.0,
+      "log_depth_smooth_l1_beta": 0.05,
+      "log_depth_gradient_l1_weight": 0.5,
+      "median_log_scale_weight": 0.25,
+      "depth_clamp_m": [
+        0.1,
+        20.0
+      ]
+    },
+    "checkpoint_selection": "lowest teacher-only validation total loss across the fixed three epochs; ties choose earliest epoch"
+  },
+  "evaluation": {
+    "single_p1_opening": true,
+    "required_output": "hash-locked 120x480x640 float16 aligned-depth cache",
+    "pass_rule": "all P1 engineering noninferiority gates",
+    "android_profile_rule": "only after P1 engineering pass",
+    "absolute_task_rule": "reported separately and never rescued by teacher agreement"
+  },
+  "terminals": {
+    "training_failure": "A2_DISTILLATION_TRAINING_INVALID",
+    "p1_failure": "A2_392_DISTILLED_ENGINEERING_NONINFERIORITY_NOT_SUPPORTED",
+    "p1_pass": "A2_392_DISTILLED_ENGINEERING_NONINFERIORITY_SUPPORTED_ANDROID_PROFILE_ELIGIBLE"
+  },
+  "forbidden": [
+    "change epochs, loss weights, learning rate, trainability, seed, batch, or checkpoint selection after P1 outcome",
+    "train on or tune against the 120-frame P1 cohort",
+    "run multiple seeds or checkpoints and select by P1",
+    "call teacher agreement independent depth or safety truth"
+  ]
+}

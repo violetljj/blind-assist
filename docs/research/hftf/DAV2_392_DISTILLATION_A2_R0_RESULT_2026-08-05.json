@@ -1,0 +1,1650 @@
+{
+  "absolute_consumed_task_gates": {
+    "clearance_mae": false,
+    "collision_agreement": false,
+    "false_clear": true,
+    "paired_valid_fraction": true,
+    "temporal_clearance_delta": false
+  },
+  "absolute_consumed_task_passed": false,
+  "baseline": {
+    "depth": {
+      "frame_median_metric_abs_rel_median": 0.2942958911065549,
+      "frame_median_metric_abs_rel_p95": 0.42653705721678115,
+      "frame_median_scale_aligned_abs_rel_median": 0.08327349258649777,
+      "frame_median_scale_aligned_abs_rel_p95": 0.13098874126098786,
+      "frames": 120,
+      "minimum_paired_pixel_coverage": 1.0
+    },
+    "task": {
+      "camera_height_mae_m": 0.18429872707943531,
+      "clearance_mae_m": 0.38041771602852525,
+      "collision_agreement": 0.7526881720430108,
+      "false_clear_count": 203,
+      "false_clear_rate_all_known_decisions": 0.24253285543608125,
+      "false_clear_rate_given_truth_occupied": 0.6246153846153846,
+      "ground_recovery_success_rate": 1.0,
+      "known_collision_decisions": 837,
+      "paired_valid_fraction": 0.9916666666666667,
+      "paired_valid_frames": 119,
+      "temporal_clearance_delta_mae_m": 0.11312789353956818,
+      "truth_occupied_decisions": 325,
+      "truth_status_exact_agreement": 0.9916666666666667
+    }
+  },
+  "baseline_aligned_depth_sha256": "9A7FC55DB6B3E7C467B5BAFE68D3603F4B463C498558B7236D603569595D3A34",
+  "candidate": {
+    "depth": {
+      "frame_median_metric_abs_rel_median": 0.10528790407528277,
+      "frame_median_metric_abs_rel_p95": 0.20014998174628076,
+      "frame_median_scale_aligned_abs_rel_median": 0.07726052120172067,
+      "frame_median_scale_aligned_abs_rel_p95": 0.15027883747922596,
+      "frames": 120,
+      "minimum_paired_pixel_coverage": 1.0
+    },
+    "task": {
+      "camera_height_mae_m": 0.2816333769797801,
+      "clearance_mae_m": 0.3433829853181934,
+      "collision_agreement": 0.839047619047619,
+      "false_clear_count": 30,
+      "false_clear_rate_all_known_decisions": 0.02857142857142857,
+      "false_clear_rate_given_truth_occupied": 0.08241758241758242,
+      "ground_recovery_success_rate": 0.9915966386554622,
+      "known_collision_decisions": 1050,
+      "paired_valid_fraction": 0.9833333333333333,
+      "paired_valid_frames": 118,
+      "temporal_clearance_delta_mae_m": 0.22087239130615963,
+      "truth_occupied_decisions": 364,
+      "truth_status_exact_agreement": 0.9833333333333333
+    }
+  },
+  "candidate_aligned_depth_sha256": "EC81D68B5352D29388B3F2621FBED6BDC872C31A761E0B311E9A946FAD18975E",
+  "candidate_id": "A2_392_DISTILLED_STUDENT",
+  "candidate_vs_baseline_geometry": {
+    "clearance_difference_median_m": 0.5751357187717447,
+    "clearance_difference_p95_m": 1.324455587935655,
+    "geometry_state_change_frames": 119,
+    "geometry_state_exact_agreement": 0.008333333333333333,
+    "status_confusion": {
+      "VALID->UNKNOWN_GROUND": 1,
+      "VALID->VALID": 119
+    },
+    "status_exact_agreement": 0.9916666666666667,
+    "transition_change_agreement": 0.5,
+    "transition_pairs": 116
+  },
+  "claim_ceiling": "MODEL_VARIANT_PARETO_AND_REGRESSION_EVIDENCE_ONLY_NOT_PRODUCT_OR_SAFETY_AUTHORITY",
+  "data_role": "CONSUMED_DEVELOPMENT_ENGINEERING_REGRESSION_ONLY",
+  "engineering_noninferiority_gates": {
+    "clearance_mae": true,
+    "collision_agreement": true,
+    "false_clear": true,
+    "geometry_state_consistency": false,
+    "geometry_transition_consistency": false,
+    "ground_recovery": true,
+    "metric_abs_rel": true,
+    "minimum_pixel_coverage": true,
+    "scale_aligned_abs_rel": true,
+    "temporal_clearance_delta": false,
+    "valid_unknown_consistency": true
+  },
+  "engineering_noninferiority_passed": false,
+  "performance_gate": null,
+  "protocol_sha256": "7AD758A829DB3AA07EC295F31090DDF8A8B1E7E6D6943B86C2A25FE063EBC664",
+  "roster_sha256": "62D41DBFCA64BBD7964B146427911A384A8E0CE57FF606F9BA74682E380D43F2",
+  "schema": "blindassist_dav2_model_variant_gate_r0_result",
+  "terminal": "MODEL_VARIANT_ENGINEERING_NONINFERIORITY_FAIL",
+  "typical_failure_cases": [
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.367821552328692,
+            "obstacle_points": 1007,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.2894295074270365,
+            "obstacle_points": 2359,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.0732505852145477,
+            "obstacle_points": 2126,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          }
+        },
+        "camera_height_m": 1.4526689902922434,
+        "ground_plane_median_residual_m": 0.015461308632577442,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.8026344417908031,
+        "metric_abs_rel_median": 0.24590859472173401,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 191857,
+        "scale_aligned_abs_rel_median": 0.08081315629090585,
+        "truth_valid_pixels": 191857
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.247207755506591,
+            "obstacle_points": 1969,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 0.9850482432539248,
+            "obstacle_points": 3097,
+            "occupied_by_horizon": {
+              "1.0": true,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.0355768141634836,
+            "obstacle_points": 3264,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.8119445301842843,
+        "ground_plane_median_residual_m": 0.02153733649291545,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 1.0413627744849172,
+        "metric_abs_rel_median": 0.06620326112547334,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 191857,
+        "scale_aligned_abs_rel_median": 0.0733340315518344,
+        "truth_valid_pixels": 191857
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846228.121845",
+      "index": 13,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.9187002120873895,
+            "obstacle_points": 2446,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.8083578305636583,
+            "obstacle_points": 2931,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.6310760474565262,
+            "obstacle_points": 3480,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.385508188184866,
+        "ground_plane_median_residual_m": 0.009063830821826269,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-static-pose-000-track-001",
+      "timestamp": 1341846228.121845
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.254092981769634,
+            "obstacle_points": 1609,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.414601946561208,
+            "obstacle_points": 1249,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.1615849237637166,
+            "obstacle_points": 1680,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          }
+        },
+        "camera_height_m": 1.6017178159754941,
+        "ground_plane_median_residual_m": 0.016957878857870035,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.7805643842264187,
+        "metric_abs_rel_median": 0.28112429955544765,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 145127,
+        "scale_aligned_abs_rel_median": 0.07073416460254196,
+        "truth_valid_pixels": 145127
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.8336286541238531,
+            "obstacle_points": 3102,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.411657603975054,
+            "obstacle_points": 2264,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.5102547446751011,
+            "obstacle_points": 3450,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.9038012266531278,
+        "ground_plane_median_residual_m": 0.01704092466981355,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 1.0796883322975852,
+        "metric_abs_rel_median": 0.0927674779642148,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 145127,
+        "scale_aligned_abs_rel_median": 0.0659772568429819,
+        "truth_valid_pixels": 145127
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846242.869936",
+      "index": 30,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.9428274158257137,
+            "obstacle_points": 2805,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.920926440708636,
+            "obstacle_points": 1608,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.6581476702355784,
+            "obstacle_points": 2701,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.414835263879153,
+        "ground_plane_median_residual_m": 0.007318472724630265,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-static-pose-016-track-001",
+      "timestamp": 1341846242.869936
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_m": null,
+            "obstacle_points": 0,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "left": {
+            "clearance_m": null,
+            "obstacle_points": 12,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.9744583267305795,
+            "obstacle_points": 891,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.7417770410722874,
+        "ground_plane_median_residual_m": 0.022608395883068733,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.7116695912851219,
+        "metric_abs_rel_median": 0.4052325955574328,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 145317,
+        "scale_aligned_abs_rel_median": 0.13098442511790764,
+        "truth_valid_pixels": 145317
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.204728115069362,
+            "obstacle_points": 2345,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.7532698562845785,
+            "obstacle_points": 2497,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.721607480291839,
+            "obstacle_points": 3775,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.658701967351785,
+        "ground_plane_median_residual_m": 0.018474252013104986,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 0.9244819580722295,
+        "metric_abs_rel_median": 0.12945084303191212,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 145317,
+        "scale_aligned_abs_rel_median": 0.09474692142572119,
+        "truth_valid_pixels": 145317
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.630035",
+      "index": 68,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_m": null,
+            "obstacle_points": 0,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.0611597008604403,
+            "obstacle_points": 541,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 0.4715299187195053,
+            "obstacle_points": 99,
+            "occupied_by_horizon": {
+              "1.0": true,
+              "1.5": true,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.7625189934824348,
+        "ground_plane_median_residual_m": 0.019767765634283174,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "timestamp": 1341846247.630035
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_m": null,
+            "obstacle_points": 0,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "left": {
+            "clearance_m": null,
+            "obstacle_points": 0,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.325289181755282,
+            "obstacle_points": 882,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          }
+        },
+        "camera_height_m": 0.6516795718429842,
+        "ground_plane_median_residual_m": 0.01862136104759543,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.6817486676726773,
+        "metric_abs_rel_median": 0.46681621456445926,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 145481,
+        "scale_aligned_abs_rel_median": 0.13416669186051305,
+        "truth_valid_pixels": 145481
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.120912735359765,
+            "obstacle_points": 2727,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.5865723888023187,
+            "obstacle_points": 2979,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.748171452817213,
+            "obstacle_points": 3787,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.7518129055488888,
+        "ground_plane_median_residual_m": 0.02027513240416834,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 0.9137032469679903,
+        "metric_abs_rel_median": 0.12242091456758969,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 145481,
+        "scale_aligned_abs_rel_median": 0.08854611043495693,
+        "truth_valid_pixels": 145481
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846247.830259",
+      "index": 70,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.926620507536977,
+            "obstacle_points": 1150,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.8388593049860409,
+            "obstacle_points": 2044,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.452078194577516,
+            "obstacle_points": 1555,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.9324096088806728,
+        "ground_plane_median_residual_m": 0.020105740009098427,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "timestamp": 1341846247.830259
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_m": null,
+            "obstacle_points": 2,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "left": {
+            "clearance_m": null,
+            "obstacle_points": 0,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.0141270899451102,
+            "obstacle_points": 910,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          }
+        },
+        "camera_height_m": 0.8908099675604844,
+        "ground_plane_median_residual_m": 0.017370673226989264,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.7113142986686862,
+        "metric_abs_rel_median": 0.4058483034456431,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 144975,
+        "scale_aligned_abs_rel_median": 0.09854606830701945,
+        "truth_valid_pixels": 144975
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.953766356935716,
+            "obstacle_points": 1883,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.5425860941155463,
+            "obstacle_points": 3005,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.3390690778738268,
+            "obstacle_points": 3506,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.5119035514705197,
+        "ground_plane_median_residual_m": 0.020724598790434312,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 0.8620525678237697,
+        "metric_abs_rel_median": 0.16937762078873783,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 144975,
+        "scale_aligned_abs_rel_median": 0.0949581903863078,
+        "truth_valid_pixels": 144975
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846248.433862",
+      "index": 76,
+      "sensor": {
+        "status": "UNKNOWN_GROUND"
+      },
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "timestamp": 1341846248.433862
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_m": null,
+            "obstacle_points": 14,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "left": {
+            "clearance_m": null,
+            "obstacle_points": 0,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.0056988380934984,
+            "obstacle_points": 841,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          }
+        },
+        "camera_height_m": 0.7108184596359729,
+        "ground_plane_median_residual_m": 0.0177858464504298,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.683234597204529,
+        "metric_abs_rel_median": 0.4636261162586387,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 141974,
+        "scale_aligned_abs_rel_median": 0.0920621004155758,
+        "truth_valid_pixels": 141974
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.8806462560981962,
+            "obstacle_points": 2137,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.529464487944343,
+            "obstacle_points": 1870,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.6641234289968396,
+            "obstacle_points": 3655,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.7407826087357262,
+        "ground_plane_median_residual_m": 0.017702022701944486,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 0.8133696653217722,
+        "metric_abs_rel_median": 0.23166207703461983,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 141974,
+        "scale_aligned_abs_rel_median": 0.06895274118559584,
+        "truth_valid_pixels": 141974
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.337853",
+      "index": 85,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.9176861808063157,
+            "obstacle_points": 1183,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.8583042465099144,
+            "obstacle_points": 1805,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.6945047555591883,
+            "obstacle_points": 1843,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.8563861212002917,
+        "ground_plane_median_residual_m": 0.017168435883436528,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "timestamp": 1341846249.337853
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 3.010564122213295,
+            "obstacle_points": 27,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "left": {
+            "clearance_m": null,
+            "obstacle_points": 0,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.128301225766447,
+            "obstacle_points": 914,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          }
+        },
+        "camera_height_m": 0.7344049203038776,
+        "ground_plane_median_residual_m": 0.01768648158751407,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.6733913006989852,
+        "metric_abs_rel_median": 0.48502066920376385,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 148569,
+        "scale_aligned_abs_rel_median": 0.1414001183262376,
+        "truth_valid_pixels": 148569
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.0493175964409396,
+            "obstacle_points": 2051,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.73620614592901,
+            "obstacle_points": 2163,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.5880769067851208,
+            "obstacle_points": 3016,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.7805943706488846,
+        "ground_plane_median_residual_m": 0.0198420903909165,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 0.8667524916515501,
+        "metric_abs_rel_median": 0.1635001965219001,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 148569,
+        "scale_aligned_abs_rel_median": 0.06536569366794526,
+        "truth_valid_pixels": 148569
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_static:1341846249.742012",
+      "index": 89,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.9377116124938882,
+            "obstacle_points": 1159,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.9079449049342685,
+            "obstacle_points": 1813,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.852545088189885,
+            "obstacle_points": 1387,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.6401228124144663,
+        "ground_plane_median_residual_m": 0.019730280371747067,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-static-pose-020-track-001",
+      "timestamp": 1341846249.742012
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.2053644959594765,
+            "obstacle_points": 3265,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.2533650775698293,
+            "obstacle_points": 780,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.0906158932092374,
+            "obstacle_points": 2570,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          }
+        },
+        "camera_height_m": 1.5191388316863341,
+        "ground_plane_median_residual_m": 0.011145453049268284,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.8016842289974815,
+        "metric_abs_rel_median": 0.24833690352570448,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 153054,
+        "scale_aligned_abs_rel_median": 0.08137621704574828,
+        "truth_valid_pixels": 153054
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.713563906129273,
+            "obstacle_points": 4338,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.91129784178943,
+            "obstacle_points": 1430,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.5325421939917678,
+            "obstacle_points": 5682,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.3557277726192538,
+        "ground_plane_median_residual_m": 0.017280178944198088,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 1.0004597514068487,
+        "metric_abs_rel_median": 0.09919506274129496,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 153054,
+        "scale_aligned_abs_rel_median": 0.0991974909862742,
+        "truth_valid_pixels": 153054
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846337.918223",
+      "index": 93,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.732999319234789,
+            "obstacle_points": 3616,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.8655769226604193,
+            "obstacle_points": 498,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.8451205735702327,
+            "obstacle_points": 3247,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.35183880679779,
+        "ground_plane_median_residual_m": 0.006842272897829904,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "timestamp": 1341846337.918223
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.9451420119394542,
+            "obstacle_points": 2241,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.0030906775278488,
+            "obstacle_points": 1541,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.056334829521509,
+            "obstacle_points": 2555,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          }
+        },
+        "camera_height_m": 1.5392678318281865,
+        "ground_plane_median_residual_m": 0.011079584525039765,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.7556128826619903,
+        "metric_abs_rel_median": 0.3234289977654229,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 180426,
+        "scale_aligned_abs_rel_median": 0.09047840537747082,
+        "truth_valid_pixels": 180426
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.363270863688831,
+            "obstacle_points": 4542,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.6649883126104117,
+            "obstacle_points": 1692,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.377679855676069,
+            "obstacle_points": 5534,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.5897952496768726,
+        "ground_plane_median_residual_m": 0.018672590644670972,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 1.0250666300455729,
+        "metric_abs_rel_median": 0.16456391019902375,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 180426,
+        "scale_aligned_abs_rel_median": 0.15706242434176926,
+        "truth_valid_pixels": 180426
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846338.622019",
+      "index": 100,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.4595312715028097,
+            "obstacle_points": 4138,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.5625020295274805,
+            "obstacle_points": 744,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.6959628789334844,
+            "obstacle_points": 3569,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.3488568631212356,
+        "ground_plane_median_residual_m": 0.008284536070987447,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "timestamp": 1341846338.622019
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.6793652741836502,
+            "obstacle_points": 2515,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.724540562650495,
+            "obstacle_points": 1801,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.005017469353665,
+            "obstacle_points": 3266,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          }
+        },
+        "camera_height_m": 1.5735057612586338,
+        "ground_plane_median_residual_m": 0.012195114661269102,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.7480000257492065,
+        "metric_abs_rel_median": 0.33689834970043886,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 202822,
+        "scale_aligned_abs_rel_median": 0.08737095554802171,
+        "truth_valid_pixels": 202822
+      },
+      "candidate": {
+        "status": "UNKNOWN_GROUND"
+      },
+      "candidate_depth": {
+        "median_scale": 1.0194489052854938,
+        "metric_abs_rel_median": 0.11158654611579955,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 202822,
+        "scale_aligned_abs_rel_median": 0.10865077222842093,
+        "truth_valid_pixels": 202822
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846339.294132",
+      "index": 107,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.3040111907531384,
+            "obstacle_points": 5002,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.4223852333322973,
+            "obstacle_points": 1140,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.5145792735942212,
+            "obstacle_points": 3854,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.2987206155183006,
+        "ground_plane_median_residual_m": 0.007708404743953401,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "timestamp": 1341846339.294132
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.0635623163629844,
+            "obstacle_points": 2274,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.7119102567199276,
+            "obstacle_points": 4160,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.6023861773368382,
+            "obstacle_points": 3898,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 1.5725589340820472,
+        "ground_plane_median_residual_m": 0.01779255808215896,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.7328721813689497,
+        "metric_abs_rel_median": 0.36449441720120385,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 217506,
+        "scale_aligned_abs_rel_median": 0.08865023994720898,
+        "truth_valid_pixels": 217506
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_m": null,
+            "obstacle_points": 4,
+            "occupied_by_horizon": {
+              "1.0": null,
+              "1.5": null,
+              "2.0": null
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.4315309288868947,
+            "obstacle_points": 31,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.6582975896294319,
+            "obstacle_points": 104,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.8289319946026892,
+        "ground_plane_median_residual_m": 0.019958336706871416,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 0.8536099310761075,
+        "metric_abs_rel_median": 0.1737848228771376,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 217506,
+        "scale_aligned_abs_rel_median": 0.057400657537277196,
+        "truth_valid_pixels": 217506
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846340.197867",
+      "index": 116,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.3829175880536717,
+            "obstacle_points": 320,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.2892373732900244,
+            "obstacle_points": 328,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.3814449508628635,
+            "obstacle_points": 584,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.8229363145536022,
+        "ground_plane_median_residual_m": 0.021086154342628116,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "timestamp": 1341846340.197867
+    },
+    {
+      "baseline": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 0.6255085395668203,
+            "obstacle_points": 709,
+            "occupied_by_horizon": {
+              "1.0": true,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.216851404895883,
+            "obstacle_points": 3083,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 0.663840733519397,
+            "obstacle_points": 960,
+            "occupied_by_horizon": {
+              "1.0": true,
+              "1.5": true,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 2.0341702801307604,
+        "ground_plane_median_residual_m": 0.016982814153122083,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "baseline_depth": {
+        "median_scale": 0.7014212535975929,
+        "metric_abs_rel_median": 0.4256767881939638,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 220512,
+        "scale_aligned_abs_rel_median": 0.0728164432869818,
+        "truth_valid_pixels": 220512
+      },
+      "candidate": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 2.105299813665153,
+            "obstacle_points": 2271,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": false
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.7803081282582534,
+            "obstacle_points": 2451,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": false,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.3500821713587763,
+            "obstacle_points": 3610,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.9030694926628897,
+        "ground_plane_median_residual_m": 0.017151914172260807,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "candidate_depth": {
+        "median_scale": 0.8334883883149917,
+        "metric_abs_rel_median": 0.20009894718528654,
+        "paired_coverage": 1.0,
+        "paired_valid_pixels": 220512,
+        "scale_aligned_abs_rel_median": 0.09336026462905084,
+        "truth_valid_pixels": 220512
+      },
+      "frame_id": "rgbd_dataset_freiburg3_walking_xyz:1341846340.501858",
+      "index": 119,
+      "sensor": {
+        "bands": {
+          "center": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.4860015725924074,
+            "obstacle_points": 56,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "left": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.3593231259896443,
+            "obstacle_points": 298,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          },
+          "right": {
+            "clearance_log1p_confidence": null,
+            "clearance_m": 1.4173590534237699,
+            "obstacle_points": 383,
+            "occupied_by_horizon": {
+              "1.0": false,
+              "1.5": true,
+              "2.0": true
+            }
+          }
+        },
+        "camera_height_m": 0.6254383390428977,
+        "ground_plane_median_residual_m": 0.0210708089012146,
+        "ground_source": "depth_ransac",
+        "status": "VALID"
+      },
+      "sequence_id": "tum-fr3-walking-xyz-pose-024-track-001",
+      "timestamp": 1341846340.501858
+    }
+  ]
+}

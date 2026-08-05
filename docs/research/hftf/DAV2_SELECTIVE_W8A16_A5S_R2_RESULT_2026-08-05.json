@@ -1,0 +1,41 @@
+{
+  "schema": "blindassist_dav2_selective_w8a16_a5s_r2_result",
+  "date": "2026-08-05",
+  "terminal": "MODEL_VARIANT_R1_ENGINEERING_NONINFERIORITY_FAIL",
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_ENGINEERING_REGRESSION_ONLY_NOT_PRODUCT_OR_SAFETY_AUTHORITY",
+  "bindings": {
+    "p1_r1_result_sha256": "6927A969713AF03DBA85DA5C30C1F9C1F08A3D704EE1981F8A177748ACA3506E",
+    "candidate_depth_sha256": "6DEF8338D8D79B6E3E20A1FF90166BDB8B49CDBA34945F5B991D74AED621EF67",
+    "qdq_onnx_sha256": "93E6A390CEBB8D4D9BE3674DD30BBE5A7E5D48903AD842FFF1534F8E7994CCDA",
+    "execution_protocol_sha256": "3E26D0EFCB42F43D4A801EBE875002A99C99578C524DAA9010CA2C05CFA90D2F",
+    "p1_r1_protocol_sha256": "911ED6625B88FD110E35CEA29ACCAAD180ABC22E2CEC6C90A0517EAB43C23411"
+  },
+  "candidate_metrics": {
+    "frame_median_metric_abs_rel_median": 0.2903493859578568,
+    "frame_median_scale_aligned_abs_rel_median": 0.08375576250740743,
+    "ground_recovery_success_rate": 1.0,
+    "clearance_mae_m": 0.38336591619497745,
+    "collision_agreement": 0.7546948356807511,
+    "false_clear_rate_all_known": 0.24061032863849766,
+    "false_block_rate_all_known": 0.004694835680751174,
+    "truth_status_exact_agreement": 0.9916666666666667,
+    "truth_geometry_state_exact_agreement": 0.025210084033613446,
+    "truth_transition_change_agreement": 0.5826086956521739,
+    "temporal_clearance_delta_mae_m": 0.1351108981533135,
+    "harmful_change_rate": 0.0024509803921568627,
+    "net_beneficial_changes": 3
+  },
+  "gate_count": {
+    "passed": 13,
+    "total": 14,
+    "failed": [
+      "temporal_clearance_delta"
+    ]
+  },
+  "host_ort_latency_ms_diagnostic_only": {
+    "mean": 491.8284491677089,
+    "median": 459.97900000656955,
+    "p95": 654.5067000261042
+  },
+  "decision": "STOP_A5S_NO_ANDROID_CONVERSION_OR_PROFILE"
+}

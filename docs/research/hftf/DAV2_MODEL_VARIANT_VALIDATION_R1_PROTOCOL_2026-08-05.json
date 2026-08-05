@@ -1,0 +1,49 @@
+{
+  "schema": "blindassist_dav2_model_variant_gate_r1_protocol",
+  "frozen_at": "2026-08-05",
+  "data_role": "CONSUMED_DEVELOPMENT_ENGINEERING_REGRESSION_ONLY",
+  "claim_ceiling": "MODEL_VARIANT_PARETO_AND_REGRESSION_EVIDENCE_ONLY_NOT_PRODUCT_OR_SAFETY_AUTHORITY",
+  "question": "Does a future DA V2 model variant preserve depth and truth-referenced geometry while avoiding both false-clear and conservative false-block collapse?",
+  "parent_r0_protocol_sha256": "7AD758A829DB3AA07EC295F31090DDF8A8B1E7E6D6943B86C2A25FE063EBC664",
+  "roster_sha256": "62D41DBFCA64BBD7964B146427911A384A8E0CE57FF606F9BA74682E380D43F2",
+  "baseline_depth_sha256": "9A7FC55DB6B3E7C467B5BAFE68D3603F4B463C498558B7236D603569595D3A34",
+  "evaluator_sha256": "BACA2514F557CE8104994C50353881B359BEF62880BAFFF4FC223875AFFE20E2",
+  "r0_gates_replaced": [
+    "valid_unknown_consistency",
+    "geometry_state_consistency",
+    "geometry_transition_consistency"
+  ],
+  "replacement_reason": "The R0 canonical-relative state gates can penalize a candidate for correcting a canonical error because the canonical baseline itself has a 24.25 percent false-clear rate on this consumed cohort. R1 makes status, state, transition, and decision changes truth-referenced while retaining canonical differences as diagnostics.",
+  "inherited_r0_gates": [
+    "depth_pixel_coverage",
+    "metric_abs_rel_median",
+    "scale_aligned_abs_rel_median",
+    "ground_recovery_success",
+    "clearance_mae",
+    "collision_agreement",
+    "false_clear",
+    "temporal_clearance_delta"
+  ],
+  "truth_referenced_tolerances": {
+    "truth_status_exact_agreement_drop": 0.01,
+    "truth_geometry_state_exact_agreement_drop": 0.02,
+    "truth_transition_change_agreement_drop": 0.05,
+    "false_block_rate_all_known_increase": 0.02,
+    "maximum_harmful_change_rate": 0.02
+  },
+  "decision_rules": {
+    "engineering_gate": "all inherited R0 and truth-referenced R1 gates must pass; no weighted score or compensating failure",
+    "truth_change": "beneficial changes must be at least as numerous as harmful changes, and harmful changes may cover at most 2 percent of known decisions",
+    "performance_entry": "only a prospectively frozen future candidate that passes R1 may consume device profiling budget",
+    "historical_r0_relabel_forbidden": true,
+    "historical_candidates": "A1, A2, and A3 keep their exact R0 terminal; they must not be re-evaluated or relabeled under R1",
+    "final_camera_gate": "requires a new session-and-parent-disjoint final-camera cohort with independent RGB-D or ranging truth"
+  },
+  "forbidden": [
+    "use R1 to rescue or relabel any already-opened A1, A2, or A3 result",
+    "change roster, truth construction, bands, horizons, RANSAC, thresholds, or tolerances after a future candidate output is opened",
+    "select a candidate, seed, checkpoint, precision partition, cadence, or threshold on this consumed cohort and report the winner as Confirmation",
+    "treat low false-clear without the false-block and truth-state gates as a quality pass",
+    "treat this consumed result, canonical parity, latency, or teacher agreement as product or safety authority"
+  ]
+}

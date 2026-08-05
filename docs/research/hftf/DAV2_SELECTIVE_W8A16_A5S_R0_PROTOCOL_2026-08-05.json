@@ -1,0 +1,77 @@
+{
+  "schema": "blindassist_dav2_selective_w8a16_a5s_r0_protocol",
+  "frozen_at": "2026-08-05",
+  "status": "FROZEN_BEFORE_A5_DLC_CONVERSION",
+  "data_role": "CONSUMED_DEVELOPMENT_ENGINEERING_REGRESSION_ONLY",
+  "question": "Can weight-only INT8 for the 48 static Transformer linear matrices preserve P1 R1 quality and produce enough same-device full-chain speedup without quantizing activations, Softmax, normalization, residuals, or the depth head?",
+  "arm_id": "A5S_SELECTIVE_TRANSFORMER_LINEAR_W8_FLOAT16_ACTIVATION_R0",
+  "numbering_note": "A5_FULL_IMAGE_INT8 remains forbidden in the parent protocol; A5S is a distinct selective sub-arm and does not authorize full-image INT8",
+  "parent_p1_r1_protocol_sha256": "911ED6625B88FD110E35CEA29ACCAAD180ABC22E2CEC6C90A0517EAB43C23411",
+  "profile_basis": {
+    "transformer_encoder_cycle_share_detailed": 0.8824,
+    "transformer_encoder_cycle_share_htp_linting": 0.8776,
+    "dynamic_attention_and_softmax_remain_fp16": true,
+    "expected_risk": "quality risk is lower than activation quantization, but attainable latency gain may be below the frozen 1.15x full-chain gate"
+  },
+  "bindings": {
+    "onnx_sha256": "870339770E21675830F7E2020983DDA058752D237C8B86951ED1E6F9A6243D01",
+    "canonical_fp16_cached_dlc_sha256": "2BB02F37FEF177FF4B02B8EE0C416EE9FF998BCEEF9786B92959E1F682EBAA24",
+    "generator_source_sha256": "8ADF86BF3B0A3E099CA84C448E88E42EE5D30317F5C7B960F56F4BF9229CF182",
+    "override_sha256": "6C7EFACE81A10EA31B2188722489D2E94D6D287E48728BA425594A96C1EE8397",
+    "override_receipt_sha256": "C5D0C840D347DA9847AC6FAE27F2106567A22A2B819B647BF0E42492C2035536",
+    "converter_source_sha256": "933C42D0B0D4B6249D17E6E5AD8A0880168D5B85732CA14E470A5F5C76FDDA52",
+    "qairt_version": "2.47.0.260601",
+    "target_backend": "HTP",
+    "target_soc_model": "SM8650"
+  },
+  "precision_contract": {
+    "quantized_tensors": "exactly the 48 second-input static weights of qkv, projection, fc1, and fc2 MatMul nodes across Transformer blocks 0 through 11",
+    "weight_encoding": "symmetric signed INT8, zero point 0, per-output-channel scale on ONNX axis 1",
+    "activations": "float16",
+    "forced_float16": [
+      "graph input and output",
+      "patch embedding",
+      "LayerNorm",
+      "dynamic QK and attention-value MatMul",
+      "Softmax",
+      "residual Add",
+      "all depth-head operators"
+    ],
+    "calibration_inputs": 0,
+    "reason_no_calibration": "only immutable static weights are encoded; no activation encoding is generated",
+    "conversion_adaptation_gate": "converted DLC must retain exactly the intended 48 INT8 weight encodings and FP16 graph IO; silent promotion to FP16 or propagation into activations is a conversion failure"
+  },
+  "execution_order": [
+    "convert and inspect DLC precision before any P1 candidate cache",
+    "if and only if the precision contract passes, materialize all 120 P1 outputs without opening sensor truth",
+    "lock candidate cache SHA-256 and run P1 R1 once",
+    "stop on any quality failure",
+    "only after quality pass, generate an SM8650 cached context and run fixed-APK same-device output parity, P95, full-chain, and sustained checks"
+  ],
+  "quality_gate": {
+    "protocol": "P1 R1",
+    "pass_rule": "all 14 engineering noninferiority gates",
+    "absolute_task_metrics": "reported separately and not rescued by precision parity"
+  },
+  "performance_gate": {
+    "baseline_qnn_p95_ms": 94.82,
+    "baseline_full_chain_p95_ms": 120.16,
+    "minimum_full_chain_speedup": 1.15,
+    "minimum_model_rate_hz_for_student_role": 8.0,
+    "rule": "a quality-passing arm below either 1.15x full-chain speedup or 8 Hz cannot fill the high-frequency student role"
+  },
+  "terminals": {
+    "conversion_fail": "A5S_SELECTIVE_W8A16_PRECISION_CONTRACT_NOT_SUPPORTED",
+    "p1_fail": "A5S_SELECTIVE_W8A16_ENGINEERING_NONINFERIORITY_NOT_SUPPORTED",
+    "performance_fail": "A5S_SELECTIVE_W8A16_DEVICE_SPEEDUP_NOT_SUPPORTED",
+    "pass": "A5S_SELECTIVE_W8A16_QUALITY_AND_DEVICE_SPEEDUP_SUPPORTED_DEVELOPMENT_ONLY"
+  },
+  "forbidden": [
+    "quantize activations, Softmax, LayerNorm, residuals, graph IO, patch embedding, or depth head in this arm",
+    "add calibration data or switch per-channel axis after conversion or P1 output",
+    "try multiple layer subsets, axes, bitwidths, schemes, or converter flags and select by P1",
+    "fall back to full-image INT8",
+    "profile a quality-failed candidate and use speed to rescue it",
+    "treat weight parity, DLC creation, HTP execution, or consumed P1 evidence as product or safety authority"
+  ]
+}

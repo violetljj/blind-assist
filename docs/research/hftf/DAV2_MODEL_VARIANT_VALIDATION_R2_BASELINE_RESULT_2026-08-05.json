@@ -1,0 +1,15 @@
+{
+  "schema": "blindassist_dav2_model_variant_gate_r2_baseline_self_check_receipt",
+  "date": "2026-08-05",
+  "candidate_id": "canonical-identity-r2-self-check",
+  "protocol_sha256": "0957B23A9EDE7B29F1985162CE42E4623F5E243C2D550ADA95D98F024C33E42D",
+  "evaluator_sha256": "C0F1C9D19F147FC9D94229BBF26F05458DEFCF0C7DC419887E9781A0B443C92C",
+  "baseline_and_candidate_depth_sha256": "9A7FC55DB6B3E7C467B5BAFE68D3603F4B463C498558B7236D603569595D3A34",
+  "full_result_sha256": "AC84FE984D7556698A8F5044F6D3915CE556E3B5DECE02F38B0D0C0BEF43E0AE",
+  "full_result_path": "artifacts.local/evidence/hftf/dav2-model-optimization-p2-r0/p1-r2-canonical-self-check.json",
+  "engineering_noninferiority_gate_count": 14,
+  "engineering_noninferiority_gates_passed": 14,
+  "undefined_candidate_metrics": [],
+  "engineering_noninferiority_passed": true,
+  "terminal": "MODEL_VARIANT_R2_ENGINEERING_NONINFERIORITY_PASS"
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "blindassist_dav2_block_skip_a4_bs25_r0_result",
+  "date": "2026-08-05",
+  "terminal": "MODEL_VARIANT_R2_ENGINEERING_NONINFERIORITY_FAIL",
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_ENGINEERING_REGRESSION_ONLY_NOT_PRODUCT_OR_SAFETY_AUTHORITY",
+  "bindings": {
+    "candidate_depth_sha256": "6854CDA893C11D938C5167D3160494732415D9E0D354B50AB5AD4E138515FD81",
+    "cache_manifest_sha256": "F6F9B8B23DC6D30CD0C7A5FAA1B05F3288C1F15836815CE0A32393474171A27F",
+    "p1_r2_result_sha256": "9622E2CA887A4B694752AA1DAEC11056461605587D877FC328CE3423E515B9E2",
+    "p1_r2_protocol_sha256": "0957B23A9EDE7B29F1985162CE42E4623F5E243C2D550ADA95D98F024C33E42D"
+  },
+  "candidate_metrics": {
+    "frame_median_metric_abs_rel_median": 1.66218704249932,
+    "frame_median_scale_aligned_abs_rel_median": 0.143589136742595,
+    "ground_recovery_success_rate": 0.722689075630252,
+    "paired_valid_fraction": 0.716666666666667,
+    "truth_geometry_state_pairs": 86,
+    "known_collision_decisions": 0,
+    "clearance_mae_m": null,
+    "collision_agreement": null,
+    "false_clear_rate_all_known": null,
+    "false_block_rate_all_known": null,
+    "temporal_clearance_delta_mae_m": null
+  },
+  "gate_count": {
+    "passed": 3,
+    "total": 14,
+    "failed": [
+      "clearance_mae",
+      "collision_agreement",
+      "false_block_rate",
+      "false_clear",
+      "ground_recovery",
+      "harmful_change_rate",
+      "metric_abs_rel",
+      "scale_aligned_abs_rel",
+      "temporal_clearance_delta",
+      "truth_geometry_state_exact_agreement",
+      "truth_status_exact_agreement"
+    ]
+  },
+  "undefined_candidate_metrics": [
+    "clearance_mae_m",
+    "collision_agreement",
+    "false_block_rate_all_known",
+    "false_clear_rate_all_known_decisions",
+    "harmful_change_rate",
+    "temporal_clearance_delta_mae_m"
+  ],
+  "host_cuda_latency_p95_ms_diagnostic_only": 48.42219999409281,
+  "decision": "STOP_A4_BS25_NO_ANDROID_CONVERSION_OR_PROFILE"
+}

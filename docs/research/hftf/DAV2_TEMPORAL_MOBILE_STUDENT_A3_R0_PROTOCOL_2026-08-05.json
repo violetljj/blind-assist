@@ -1,0 +1,114 @@
+{
+  "schema": "blindassist_dav2_temporal_mobile_student_a3_r0_protocol",
+  "frozen_at": "2026-08-05",
+  "status": "FROZEN_BEFORE_A3_MODEL_INITIALIZATION_OR_TRAINING",
+  "preflight_repairs": [
+    {
+      "invalid_protocol_sha256": "3F30497BFEC462FCB42F66A0A7D7A946E28AB39C470D82BD14F2D3C5D5FDB0AF",
+      "error": "KeyError: timestamp",
+      "model_initialized": false,
+      "training_output_created": false,
+      "repair": "parse timestamp from the already hash-bound frame_id suffix; pair rule, counts, architecture, losses, seed, and all gates unchanged"
+    }
+  ],
+  "parent_p1_protocol_sha256": "7AD758A829DB3AA07EC295F31090DDF8A8B1E7E6D6943B86C2A25FE063EBC664",
+  "parent_a2_result_sha256": "3ADA97149130317BE20598E521268952D3BAFEDF33E966B71FCC9B18B2A8416B",
+  "question": "Can a genuinely lightweight convolutional student preserve teacher depth dynamics and pass the frozen P1 gate at an architecture suitable for 8-12 Hz device use?",
+  "model": {
+    "id": "A3_MOBILENETV3_SMALL_TEMPORAL_DEPTH_R0",
+    "input_height": 294,
+    "input_width": 392,
+    "encoder": "torchvision MobileNetV3-Small features only",
+    "encoder_weights": "IMAGENET1K_V1",
+    "encoder_weights_sha256": "047DCFF4ADDEF86EA5BC2EFF13C9614DC11F47AB1160D0A71A25E7DB994F4E1F",
+    "feature_taps": [
+      {
+        "index": 2,
+        "channels": 24
+      },
+      {
+        "index": 7,
+        "channels": 48
+      },
+      {
+        "index": 12,
+        "channels": 576
+      }
+    ],
+    "decoder": "fixed 96-channel three-level additive FPN, 32/16-channel full-resolution refinement, softplus metric-depth output plus 0.1m",
+    "maximum_parameters": 1600000,
+    "forbidden_architecture_search": true
+  },
+  "teacher_cache": {
+    "manifest_sha256": "9C0D58D6FC8342E21EABB2BA1EAADE340A483601C3E7888B8FB6C5B637D24CA9",
+    "depth_sha256": "C349EE2F734D16794DCC0F778493E8DEC18D5723BE8E34B13582C6DF33A61B06",
+    "truth_inputs_opened": false
+  },
+  "temporal_pairs": {
+    "rule": "adjacent teacher-cache records with identical video_id and role, strictly increasing timestamp, and delta_t at most 0.5 seconds",
+    "train_pairs": 1937,
+    "validation_pairs": 417,
+    "role_and_parent_split_inherited": true,
+    "augmentation": "none"
+  },
+  "training": {
+    "seed": 20260805,
+    "epochs": 5,
+    "pair_batch_size": 2,
+    "gradient_accumulation_steps": 4,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0002,
+    "weight_decay": 0.01,
+    "gradient_clip_norm": 1.0,
+    "precision": "fp16 autocast with FP32 optimizer state",
+    "per_frame_loss": {
+      "log_depth_smooth_l1_weight": 1.0,
+      "log_depth_smooth_l1_beta": 0.05,
+      "log_depth_gradient_l1_weight": 0.5,
+      "median_log_scale_weight": 0.25,
+      "depth_clamp_m": [
+        0.1,
+        20.0
+      ]
+    },
+    "temporal_loss": {
+      "log_depth_delta_smooth_l1_weight": 0.75,
+      "log_depth_delta_smooth_l1_beta": 0.03
+    },
+    "checkpoint_selection": "lowest teacher-only validation total loss over the fixed five epochs; ties choose earliest epoch"
+  },
+  "truth_firewall": {
+    "training_inputs": "RGB identities and immutable teacher cache only",
+    "forbidden_before_checkpoint_and_p1_cache_hash_lock": [
+      "ARKitScenes sensor depth or confidence",
+      "A2 or P1 frame metrics",
+      "TUM registered depth",
+      "clearance, false-clear, state, or temporal outcomes"
+    ]
+  },
+  "implementation": {
+    "model_source": "scripts/research/hftf/dav2_temporal_mobile_student_r0.py",
+    "model_source_sha256": "97546318071F7AC539A016F884D590F1BA6278A98A5F518BABE691968822E1D6",
+    "trainer_source": "scripts/research/hftf/train_dav2_temporal_mobile_student_a3_r0.py",
+    "trainer_source_sha256": "5A7EA9859C41A715106F382C46B6C8750ED938F795B4873ECD086384F078BC4B",
+    "materializer_source": "scripts/research/hftf/materialize_dav2_temporal_mobile_student_a3_p1_cache.py",
+    "materializer_source_sha256": "C1134FFCDF60087C47F04E134E9E4B717BC5F1869F9DA303E6D535A5A17DCF41"
+  },
+  "p1_execution": {
+    "candidate_runs": 1,
+    "required_cache": "120x480x640 float16 aligned optical-z depth",
+    "pass_rule": "all frozen P1 engineering noninferiority gates",
+    "android_profile": "authorized only after P1 engineering pass"
+  },
+  "terminals": {
+    "training_invalid": "A3_TEMPORAL_MOBILE_STUDENT_TRAINING_INVALID",
+    "p1_fail": "A3_TEMPORAL_MOBILE_STUDENT_ENGINEERING_NONINFERIORITY_NOT_SUPPORTED",
+    "p1_pass": "A3_TEMPORAL_MOBILE_STUDENT_ENGINEERING_NONINFERIORITY_SUPPORTED_DEVICE_PROFILE_ELIGIBLE"
+  },
+  "forbidden": [
+    "change architecture, pretrained weights, pair rule, temporal weight, epochs, seed, or checkpoint selection after A3 P1 outcome",
+    "train or select on P1 RGB-D truth",
+    "run multiple A3 seeds or heads and select by P1",
+    "profile a P1-failed A3 and use speed to rescue quality"
+  ]
+}

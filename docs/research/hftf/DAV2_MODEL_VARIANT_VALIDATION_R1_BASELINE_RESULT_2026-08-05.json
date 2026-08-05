@@ -1,0 +1,30 @@
+{
+  "schema": "blindassist_dav2_model_variant_gate_r1_baseline_self_check_receipt",
+  "date": "2026-08-05",
+  "candidate_id": "canonical-dav2-vits-fp16-518-r1-self-check",
+  "protocol_sha256": "911ED6625B88FD110E35CEA29ACCAAD180ABC22E2CEC6C90A0517EAB43C23411",
+  "evaluator_sha256": "BACA2514F557CE8104994C50353881B359BEF62880BAFFF4FC223875AFFE20E2",
+  "baseline_and_candidate_depth_sha256": "9A7FC55DB6B3E7C467B5BAFE68D3603F4B463C498558B7236D603569595D3A34",
+  "full_result_sha256": "BFA6CE06D37ED41D020326F5FEA89938C6FCC91101096853247912FA318E9309",
+  "full_result_path": "artifacts.local/evidence/hftf/dav2-model-variant-gate-r1/canonical-self-check.json",
+  "baseline_truth_geometry": {
+    "truth_status_exact_agreement": 0.9916666666666667,
+    "truth_geometry_state_exact_agreement": 0.025210084033613446,
+    "truth_transition_change_agreement": 0.5565217391304348,
+    "false_clear_count": 203,
+    "false_clear_rate_all_known": 0.24253285543608125,
+    "false_block_count": 4,
+    "false_block_rate_all_known": 0.0047789725209080045,
+    "known_decisions": 837
+  },
+  "candidate_truth_changes_vs_baseline": {
+    "harmful_changes": 0,
+    "beneficial_changes": 0,
+    "known_decisions": 837
+  },
+  "engineering_noninferiority_gate_count": 14,
+  "engineering_noninferiority_gates_passed": 14,
+  "engineering_noninferiority_passed": true,
+  "historical_r0_terminal_relabel_authorized": false,
+  "terminal": "MODEL_VARIANT_R1_ENGINEERING_NONINFERIORITY_PASS"
+}

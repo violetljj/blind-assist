@@ -1,0 +1,85 @@
+{
+  "schema": "blindassist_dav2_rgbd_mobile_student_a4_r0_protocol",
+  "frozen_at": "2026-08-05",
+  "status": "FROZEN_BEFORE_A4_MODEL_INITIALIZATION_OR_TRAINING",
+  "data_role": "CONSUMED_DEVELOPMENT_TRAINING_AND_ENGINEERING_REGRESSION_ONLY",
+  "question": "Can a single fixed lightweight student trained with confidence-2 ARKitScenes metric depth avoid A3's conservative collapse and pass the prospective truth-referenced P1 R1 gate?",
+  "parent_p1_r1": {
+    "protocol_sha256": "911ED6625B88FD110E35CEA29ACCAAD180ABC22E2CEC6C90A0517EAB43C23411",
+    "parent_r0_protocol_sha256": "7AD758A829DB3AA07EC295F31090DDF8A8B1E7E6D6943B86C2A25FE063EBC664",
+    "historical_a1_a2_a3_relabel_forbidden": true
+  },
+  "new_information_source": "ARKitScenes sensor metric depth restricted to confidence value 2; P1 TUM RGB-D remains unopened until checkpoint and cache hashes are locked",
+  "model": {
+    "id": "A4_MOBILENETV3_SMALL_RGBD_DEPTH_R0",
+    "input_height": 294,
+    "input_width": 392,
+    "encoder": "torchvision MobileNetV3-Small features only",
+    "encoder_weights": "IMAGENET1K_V1",
+    "encoder_weights_sha256": "047DCFF4ADDEF86EA5BC2EFF13C9614DC11F47AB1160D0A71A25E7DB994F4E1F",
+    "decoder": "fixed 96-channel three-level additive FPN, 32/16-channel full-resolution refinement, softplus metric-depth output plus 0.1m",
+    "maximum_parameters": 1600000,
+    "architecture_identical_to_a3": true,
+    "forbidden_architecture_search": true
+  },
+  "data": {
+    "source_manifest_sha256": "ECA55FB32E2A296FFE23182F48EDBFCFC9B13C42A2BD7215E4FF159A282C85F2",
+    "source_roster_lock_sha256": "8B1A800FED7B4CB683000266883863400B2115AF11DD3B00D29EE530B7D00137",
+    "role_counts": [2400, 600],
+    "role_order": ["train", "validation"],
+    "video_parent_disjoint_roles": true,
+    "truth_rule": "lowres_depth millimetres divided by 1000, confidence equals 2, finite, and depth in [0.25m,6m]",
+    "augmentation": "none"
+  },
+  "teacher_cache": {
+    "manifest_sha256": "9C0D58D6FC8342E21EABB2BA1EAADE340A483601C3E7888B8FB6C5B637D24CA9",
+    "depth_sha256": "C349EE2F734D16794DCC0F778493E8DEC18D5723BE8E34B13582C6DF33A61B06",
+    "role": "low-weight centered-log relative-structure regularizer only; forbidden as metric truth"
+  },
+  "training": {
+    "seed": 20260805,
+    "epochs": 5,
+    "batch_size": 8,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0002,
+    "weight_decay": 0.01,
+    "gradient_clip_norm": 1.0,
+    "precision": "fp16 autocast with FP32 optimizer state",
+    "loss": {
+      "depth_clamp_m": [0.1, 20.0],
+      "sensor_log_depth_smooth_l1_beta": 0.05,
+      "sensor_log_gradient_l1_weight": 0.5,
+      "teacher_centered_log_weight": 0.1,
+      "teacher_centered_log_smooth_l1_beta": 0.05
+    },
+    "checkpoint_selection": "lowest parent-disjoint validation total loss across the fixed five epochs; ties choose earliest epoch"
+  },
+  "implementation": {
+    "model_source": "scripts/research/hftf/dav2_temporal_mobile_student_r0.py",
+    "model_source_sha256": "97546318071F7AC539A016F884D590F1BA6278A98A5F518BABE691968822E1D6",
+    "trainer_source": "scripts/research/hftf/train_dav2_rgbd_mobile_student_a4_r0.py",
+    "trainer_source_sha256": "5E734A33DFAC6092B34D6E7057EAA69CED5F643F9063593BB3A924CD558880A1",
+    "materializer_source": "scripts/research/hftf/materialize_dav2_rgbd_mobile_student_a4_p1_cache.py",
+    "materializer_source_sha256": "8B6DED6343575A5A9DC0DECFF4BA10963AE7C2A07E6DCCF6BA98E122AA5F3E4B"
+  },
+  "p1_execution": {
+    "candidate_runs": 1,
+    "required_cache": "120x480x640 float16 aligned optical-z depth",
+    "evaluation_protocol": "prospective P1 R1, with inherited R0 depth and task gates plus truth status/state/transition, false-block, and harmful-change gates",
+    "pass_rule": "all P1 R1 engineering noninferiority gates",
+    "android_profile": "authorized only after P1 R1 engineering pass"
+  },
+  "terminals": {
+    "training_invalid": "A4_RGBD_MOBILE_STUDENT_TRAINING_INVALID",
+    "p1_fail": "A4_RGBD_MOBILE_STUDENT_ENGINEERING_NONINFERIORITY_NOT_SUPPORTED",
+    "p1_pass": "A4_RGBD_MOBILE_STUDENT_ENGINEERING_NONINFERIORITY_SUPPORTED_DEVICE_PROFILE_ELIGIBLE"
+  },
+  "forbidden": [
+    "change architecture, loss weights, epochs, seed, training roles, truth confidence rule, or checkpoint selection after training or P1 output",
+    "train or select on TUM P1 RGB-D truth",
+    "run multiple A4 seeds or checkpoints and select by P1",
+    "re-evaluate or relabel A1, A2, or A3 under R1",
+    "profile a P1-failed A4 and use speed to rescue quality",
+    "claim cross-device, product, or safety validity from ARKitScenes-to-TUM Development evidence"
+  ]
+}
