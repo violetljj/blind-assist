@@ -1,5 +1,18 @@
 # Development Log
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
+  ToF4M 固定曝光 490 单变量 R4。通过 session-only API 关闭自动曝光，冻结
+  XGA/quality 10/brightness 1/double-buffer/LATEST/PSRAM DMA-off/ToF-on。五分钟
+  `300.719 s / 7,557 processed / 25.13 fps`，0 reconnect/error，run accepted；全部
+  帧 auto=false、exposure=490。与自动曝光 R1 相比，用同一 `36.320 ms` 阈值复算
+  slow fraction `17.71%→8.84%`，capture→framebuffer return >54 ms 双周期帧
+  `15.08%→7.58%`，>90 ms `0.86%→0.25%`；capture→完整 JPEG P95/P99
+  `111.19/140.05→97.81/111.68 ms`。但 capture→return P95 仍约 72.44 ms，双峰未
+  消失，故自动曝光是重要影响因素而非唯一机制。summary SHA-256
+  `3e93f038163cf6ad38e0523d342e9264fdb76ba1a709bae23e5265098acf6a66`。
+  因未验证照度阶跃和画质，禁止仅凭性能晋升固定曝光；已恢复正式自动曝光配置，3 帧
+  验收 auto=true/exposure=490、ToF valid、0 reconnect/error、stream_clients=0。
+  本结果仅为单场景 Development 性能机制证据，不授权画质、模型、人体或安全结论。
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
   ToF4M camera PSRAM DMA 单变量 R3。先用 R1 账本后验确认：所有 slow frame 的
   capture timestamp 早于 `fb_get` 调用，正常/slow capture→framebuffer return
   P50/P95 为 `36.55/36.75 ms` 与 `72.50/83.32 ms`，主现象是单帧交付偶发跨越
