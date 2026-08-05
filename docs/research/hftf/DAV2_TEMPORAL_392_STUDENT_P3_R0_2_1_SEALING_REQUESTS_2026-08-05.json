@@ -1,0 +1,12 @@
+{
+  "schema": "blindassist_p3_r0_2_1_sealing_execution_requests",
+  "protocol": {"path": "docs/research/hftf/DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_SEALING_PRODUCER_PROTOCOL_2026-08-05.json", "sha256": "D8DC7FB7BE95E9F091A410779180F6CAC1AC64579D47C875129DF6B41CF026CA"},
+  "public_holdout_manifest": {"path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1/role-freeze-attempt-02/public-holdout-identity-manifest.json", "sha256": "379BC5A0673EA748BDF083BA09EB9F3111D9720C8A8A6EECF052580FD783CAEA"},
+  "output_root": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1/sealing-attempt-01",
+  "requests_are_materialized_sequentially_with_downstream_sha_bindings": true,
+  "overwrite": false,
+  "holdout_outcomes_opened": false,
+  "model_loaded": false,
+  "training_started": false,
+  "terminal": "P3_R0_2_1_SEALING_REQUEST_ROOT_FROZEN_DOWNSTREAM_SHA_PENDING"
+}
