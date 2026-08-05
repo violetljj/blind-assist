@@ -53,6 +53,7 @@ def frame_headers(sequence: int = 7) -> dict[str, str]:
         "x-height": "8",
         "x-jpeg-quality": "10",
         "x-auto-exposure": "true",
+        "x-camera-psram-dma-enabled": "false",
         "x-exposure-value": "321",
         "x-wifi-rssi-dbm": "-37",
         "x-free-heap-bytes": "150000",
@@ -99,6 +100,9 @@ class MeasureE2eLatencyTest(unittest.TestCase):
         self.assertAlmostEqual(row["device_capture_to_jpeg_ready_ms"], 40.0)
         self.assertAlmostEqual(row["tof_minus_capture_us"], 10_000)
         self.assertTrue(row["tof_sampling_enabled"])
+        self.assertFalse(row["camera_psram_dma_enabled"])
+        self.assertEqual(row["device_capture_to_fb_return_us"], 40_000)
+        self.assertEqual(row["device_capture_minus_acquire_start_us"], 0)
 
     def test_absent_tof_timestamp_makes_skew_not_evaluable(self):
         headers = frame_headers()
@@ -165,6 +169,22 @@ class MeasureE2eLatencyTest(unittest.TestCase):
         self.assertEqual(summary["sequence_gap_total_frames"], 1)
         self.assertEqual(summary["host_latest_queue_overwrite_count"], 0)
         self.assertEqual(summary["clock_sync_error_bound_ms"]["p50"], 1.0)
+        self.assertTrue(summary["run_accepted"])
+        self.assertEqual(summary["run_acceptance_failures"], [])
+
+        rejected = summarize(
+            rows,
+            [],
+            reconnects=1,
+            latest_queue_overwrites=0,
+            errors=["stream:EOFError"],
+            slow_frame_contract={},
+        )
+        self.assertFalse(rejected["run_accepted"])
+        self.assertEqual(
+            rejected["run_acceptance_failures"],
+            ["STREAM_RECONNECTS_PRESENT", "ERRORS_PRESENT"],
+        )
 
     def test_slow_frame_contract_uses_frozen_median_mad_or_ratio_rule(self):
         rows = [

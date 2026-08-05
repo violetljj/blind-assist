@@ -1,5 +1,21 @@
 # Development Log
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
+  ToF4M camera PSRAM DMA 单变量 R3。先用 R1 账本后验确认：所有 slow frame 的
+  capture timestamp 早于 `fb_get` 调用，正常/slow capture→framebuffer return
+  P50/P95 为 `36.55/36.75 ms` 与 `72.50/83.32 ms`，主现象是单帧交付偶发跨越
+  两个约 36 ms 周期。R6 加入 PSRAM DMA、framebuffer count/grab mode 身份及上述
+  两个派生阶段。唯一开启 PSRAM DMA 的五分钟实验仅交付 1 帧，产生 59 reconnect/
+  59 error；与此同时 60 个状态样本持续显示 Wi-Fi connected、camera ready、ToF
+  valid，camera total_frames 只增至 1。路线判为
+  `PSRAM_DMA_REJECTED_INCOMPATIBLE_STREAM_ROUTE`，summary SHA-256
+  `3b8aa6ca9d57523bf95c60173ac89043b1eab052910d403d2a239af74edfe081`。
+  修正 host fail-open：以后必须有帧且 0 reconnect/0 error 才 run accepted/成功退出。
+  最终恢复并刷入 DMA-off `slow_frame_r6`；20 帧带模型验收 0 reconnect/error，ToF
+  sampling/valid，stream_clients=0。最终 program/RAM
+  `1,077,911 B (32%) / 62,608 B (19%)`，app bin SHA-256
+  `027f2142df98706e9cdf8d63464ba3abe16f7b2af75eaf207c2d9499cfd215b6`。
+  该失败只约束当前硬件/固件路线，不外推到其他设备，也不授权精度、人体或安全结论。
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
   ToF4M 单变量争用对照 R2。仅关闭 ToF 连续读取，冻结 XGA/quality 10/自动曝光/
   MJPEG latest-frame/host reference pipeline；R5 将 `sampling_enabled` 写入状态 API
   和每帧 header。ToF-off 五分钟为 `300.468 s / 7,125 frames / 23.71 fps`，0

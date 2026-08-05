@@ -97,7 +97,8 @@ OV3660 的最高静态分辨率。页面绿色框只标示 ToF4M 的中央单区
 MJPEG 每个 part 额外携带 `X-Frame-Sequence`、`X-Capture-Timestamp-Us`、
 `X-Jpeg-Ready-Timestamp-Us`、`X-Device-Send-Start-Timestamp-Us`、
 `X-Tof-Timestamp-Us`、`X-Tof-Minus-Capture-Us` 和
-`X-ToF-Sampling-Enabled`。相机 capture 时间的精确定义是
+`X-ToF-Sampling-Enabled`，以及 `X-Camera-Psram-Dma-Enabled`。相机 capture
+时间的精确定义是
 `esp32-camera` 的“首个 DMA buffer 自开机时间”，不是曝光起始。固件在 3333/UDP
 提供独立高优先级二进制对时服务；主机端以最小 RTT midpoint 映射两个 monotonic
 时钟，并逐帧保留 RTT 与误差上界。
@@ -178,10 +179,16 @@ R4 在冻结的 XGA/quality 10/自动曝光配置下，逐帧增加 frame-ready 
 支持 ToF 是 camera framebuffer 等待的主因。正式 R5 保持 ToF 开启，并在状态 API
 和每帧 header 中明确记录 sampling 状态；缺失 ToF timestamp 的 skew 不再参与统计。
 
+R1 账本进一步显示，正常/slow frame 的 capture→framebuffer return P50/P95 分别为
+`36.55/36.75 ms` 和 `72.50/83.32 ms`，且所有 slow capture timestamp 都早于
+`fb_get` 调用；主现象是驱动交付偶发跨越两个相机周期。R3 唯一开启 PSRAM DMA 后
+五分钟只交付 1 帧并产生 59 reconnect/59 error，因此该路线 fail-closed 拒绝，正式
+R6 保持 DMA 关闭。主机验收也已收紧为有帧、0 reconnect、0 error 才成功退出。
+
 ## 停止条件与下一步
 
 首轮只要求：I2C `0x29` 可见、连续 JSONL 可解析、时间戳/序号单调、有效/无效状态
 可复现。任一项失败时停止在对应电气、驱动或协议层，不修改多区 adapter 来迁就数据。
 当前时间账本、latest-frame 接收策略和 ToF 单变量排除已建立。下一性能工作可针对
-camera framebuffer/帧节拍机制或真实手机输出；相机与 ToF 的空间标定仍按用户要求
-暂缓。单区数据不得填充成三个或更多伪 zone。
+自动曝光控制是否造成 36/72 ms 交付双峰，或真实手机输出；相机与 ToF 的空间标定仍
+按用户要求暂缓。单区数据不得填充成三个或更多伪 zone。

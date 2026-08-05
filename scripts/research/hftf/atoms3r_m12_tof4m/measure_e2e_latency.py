@@ -58,6 +58,7 @@ REQUIRED_FRAME_HEADERS = {
     "x-height",
     "x-jpeg-quality",
     "x-auto-exposure",
+    "x-camera-psram-dma-enabled",
     "x-exposure-value",
     "x-wifi-rssi-dbm",
     "x-free-heap-bytes",
@@ -454,6 +455,8 @@ def frame_row(
     capture_us = int(headers["x-capture-timestamp-us"])
     jpeg_ready_us = int(headers["x-jpeg-ready-timestamp-us"])
     device_send_start_us = int(headers["x-device-send-start-timestamp-us"])
+    frame_acquire_duration_us = int(headers["x-frame-acquire-duration-us"])
+    frame_acquire_started_us = jpeg_ready_us - frame_acquire_duration_us
     mapped_capture_host_us = capture_us - sync.device_minus_host_us
     mapped_jpeg_ready_host_us = jpeg_ready_us - sync.device_minus_host_us
     mapped_send_start_host_us = device_send_start_us - sync.device_minus_host_us
@@ -474,7 +477,11 @@ def frame_row(
         "jpeg_ready_timestamp_semantics": headers["x-jpeg-ready-timestamp-semantics"],
         "device_send_start_timestamp_us": device_send_start_us,
         "device_frame_ready_interval_us": int(headers["x-frame-ready-interval-us"]),
-        "device_frame_acquire_duration_us": int(headers["x-frame-acquire-duration-us"]),
+        "device_frame_acquire_duration_us": frame_acquire_duration_us,
+        "device_capture_to_fb_return_us": jpeg_ready_us - capture_us,
+        "device_capture_minus_acquire_start_us": (
+            capture_us - frame_acquire_started_us
+        ),
         "device_jpeg_metadata_prepare_duration_us": int(
             headers["x-jpeg-metadata-prepare-duration-us"]
         ),
@@ -515,6 +522,7 @@ def frame_row(
         "jpeg_bytes": len(jpeg),
         "device_jpeg_size_bytes": int(headers["x-jpeg-size-bytes"]),
         "auto_exposure": parse_bool(headers["x-auto-exposure"]),
+        "camera_psram_dma_enabled": parse_bool(headers["x-camera-psram-dma-enabled"]),
         "exposure_value": int(headers["x-exposure-value"]),
         "device_wifi_rssi_dbm": int(headers["x-wifi-rssi-dbm"]),
         "device_free_heap_bytes": int(headers["x-free-heap-bytes"]),
@@ -666,6 +674,8 @@ def attribution_profile(rows: list[dict[str, Any]]) -> dict[str, Any]:
     keys = (
         "device_frame_ready_interval_us",
         "device_frame_acquire_duration_us",
+        "device_capture_to_fb_return_us",
+        "device_capture_minus_acquire_start_us",
         "device_jpeg_metadata_prepare_duration_us",
         "device_response_write_duration_us",
         "preceding_response_write_duration_us",
@@ -786,6 +796,15 @@ def summarize(
         "device_capture_to_jpeg_ready_ms": metric_summary(
             values("device_capture_to_jpeg_ready_ms")
         ),
+        "device_capture_to_fb_return_ms": metric_summary(
+            [value / 1000.0 for value in values("device_capture_to_fb_return_us")]
+        ),
+        "device_capture_minus_acquire_start_ms": metric_summary(
+            [
+                value / 1000.0
+                for value in values("device_capture_minus_acquire_start_us")
+            ]
+        ),
         "jpeg_ready_to_host_read_start_ms": metric_summary(
             values("jpeg_ready_to_host_read_start_ms")
         ),
@@ -838,6 +857,13 @@ def summarize(
                 if row.get("tof_sampling_enabled") is not None
             }
         ),
+        "camera_psram_dma_enabled_values": sorted(
+            {
+                row["camera_psram_dma_enabled"]
+                for row in rows
+                if row.get("camera_psram_dma_enabled") is not None
+            }
+        ),
         "sequence_gap_event_count": len(sequence_gaps),
         "sequence_gap_total_frames": sum(sequence_gaps),
         "free_heap_bytes": metric_summary(heaps),
@@ -848,6 +874,12 @@ def summarize(
         ),
         "wifi_rssi_dbm": metric_summary(rssis),
         "status_sample_count": len(status_rows),
+        "run_accepted": bool(rows) and reconnects == 0 and not errors,
+        "run_acceptance_failures": (
+            (["NO_FRAMES"] if not rows else [])
+            + (["STREAM_RECONNECTS_PRESENT"] if reconnects else [])
+            + (["ERRORS_PRESENT"] if errors else [])
+        ),
         "limitations": [
             "capture_timestamp_us is first DMA buffer since boot, not exposure start",
             "clock mapping uses minimum-RTT UDP midpoint and retains its error bound",
@@ -991,7 +1023,7 @@ def main() -> int:
     summary["output_dir"] = str(output_dir.resolve())
     write_json(output_dir / "summary.json", summary)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
-    return 0 if rows else 2
+    return 0 if summary["run_accepted"] else 2
 
 
 if __name__ == "__main__":

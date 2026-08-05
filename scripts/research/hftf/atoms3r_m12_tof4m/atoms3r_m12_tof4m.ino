@@ -19,9 +19,11 @@
 namespace {
 
 constexpr bool kEnableTofSampling = true;
+constexpr bool kEnableCameraPsramDma = false;
 constexpr const char* kFirmwareVersion =
-    kEnableTofSampling ? "atoms3r_m12_tof4m_slow_frame_r5"
-                       : "atoms3r_m12_tof4m_slow_frame_r5_tof_off";
+    kEnableCameraPsramDma ? "atoms3r_m12_tof4m_slow_frame_r6_psram_dma"
+    : kEnableTofSampling ? "atoms3r_m12_tof4m_slow_frame_r6"
+                         : "atoms3r_m12_tof4m_slow_frame_r6_tof_off";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -72,6 +74,7 @@ httpd_handle_t control_httpd = nullptr;
 httpd_handle_t stream_httpd = nullptr;
 bool setup_mode = false;
 bool camera_ready = false;
+bool camera_psram_dma_enabled = false;
 char camera_failure_status[48] = "NOT_ATTEMPTED";
 SemaphoreHandle_t camera_mutex = nullptr;
 uint64_t next_wifi_reconnect_us = 0;
@@ -520,6 +523,19 @@ bool initializeCamera() {
     return false;
   }
 
+  if (kEnableCameraPsramDma) {
+    const esp_err_t psram_dma_error = esp_camera_set_psram_mode(true);
+    if (psram_dma_error != ESP_OK) {
+      snprintf(camera_failure_status, sizeof(camera_failure_status),
+               "PSRAM_DMA_FAILED_0X%X",
+               static_cast<unsigned>(psram_dma_error));
+      emitEvent("camera_init", camera_failure_status);
+      esp_camera_deinit();
+      return false;
+    }
+  }
+  camera_psram_dma_enabled = esp_camera_get_psram_mode();
+
   sensor_t* camera_sensor = esp_camera_sensor_get();
   if (camera_sensor != nullptr && camera_sensor->id.PID == OV3660_PID) {
     camera_sensor->set_vflip(camera_sensor, 1);
@@ -747,6 +763,8 @@ esp_err_t statusHandler(httpd_req_t* request) {
       "\"width\":%u,\"height\":%u,\"jpeg_quality\":%u,"
       "\"brightness\":%d,\"auto_exposure\":%s,"
       "\"exposure_compensation\":%d,\"manual_exposure\":%u,"
+      "\"psram_dma_enabled\":%s,\"frame_buffer_count\":2,"
+      "\"grab_mode\":\"LATEST\","
       "\"recent_fps\":%.2f,\"total_frames\":%" PRIu64 ","
       "\"stream_clients\":%u},"
       "\"tof\":{\"ready\":%s,\"sampling_enabled\":%s,\"valid\":%s,"
@@ -762,6 +780,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       camera_settings.jpeg_quality, camera_settings.brightness,
       camera_settings.auto_exposure ? "true" : "false",
       camera_settings.exposure_compensation, camera_settings.manual_exposure,
+      camera_psram_dma_enabled ? "true" : "false",
       static_cast<double>(frames.recent_fps), frames.total_frames,
       frames.stream_clients, sensor_ready ? "true" : "false",
       kEnableTofSampling ? "true" : "false",
@@ -1017,6 +1036,7 @@ esp_err_t streamHandler(httpd_req_t* request) {
         "X-ToF-Status: %s\r\nX-ToF-Range-Status-Code: %u\r\n"
         "X-Jpeg-Size-Bytes: %u\r\nX-Width: %u\r\nX-Height: %u\r\n"
         "X-Jpeg-Quality: %u\r\nX-Auto-Exposure: %s\r\n"
+        "X-Camera-Psram-Dma-Enabled: %s\r\n"
         "X-Exposure-Value: %d\r\nX-Wifi-Rssi-Dbm: %d\r\n"
         "X-Free-Heap-Bytes: %u\r\n\r\n",
         static_cast<unsigned>(frame_length), sequence_id, clock_domain,
@@ -1033,7 +1053,8 @@ esp_err_t streamHandler(httpd_req_t* request) {
         range.range_status_code, static_cast<unsigned>(frame_length),
         static_cast<unsigned>(frame_width), static_cast<unsigned>(frame_height),
         camera_settings.jpeg_quality,
-        camera_settings.auto_exposure ? "true" : "false", exposure_value,
+        camera_settings.auto_exposure ? "true" : "false",
+        camera_psram_dma_enabled ? "true" : "false", exposure_value,
         wifi_rssi_dbm, free_heap_bytes);
     if (header_length <= 0 ||
         static_cast<size_t>(header_length) >= sizeof(header)) {
