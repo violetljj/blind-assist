@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -78,5 +79,12 @@ class DevelopmentAssetsTest(unittest.TestCase):
         req=self._request(); subject.build(self.root,req,Path(subject.__file__),infer_factory=lambda *_:lambda _:.1)
         with self.assertRaisesRegex(ValueError,'overwrite'):
             subject.build(self.root,req,Path(subject.__file__),infer_factory=lambda *_:lambda _:.1)
+
+    def test_lexical_repo_boundary_accepts_artifacts_junction_path(self):
+        root = Path(r"E:\repo")
+        expected = Path(os.path.abspath(root / "artifacts.local/evidence/value.json"))
+        self.assertEqual(expected, subject._inside(root, "artifacts.local/evidence/value.json"))
+        with self.assertRaisesRegex(ValueError, "path leaves repository"):
+            subject._inside(root, "../escape.json")
 
 if __name__ == '__main__': unittest.main()

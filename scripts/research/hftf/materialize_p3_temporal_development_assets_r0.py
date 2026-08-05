@@ -49,11 +49,9 @@ def _require(value: bool, message: str) -> None:
 
 
 def _inside(root: Path, relative: str) -> Path:
-    target = (root / relative).resolve()
-    try:
-        target.relative_to(root.resolve())
-    except ValueError as exc:
-        raise ValueError(f"path leaves repository: {relative}") from exc
+    lexical_root = Path(os.path.abspath(root))
+    target = Path(os.path.abspath(lexical_root / relative))
+    _require(target.is_relative_to(lexical_root), f"path leaves repository: {relative}")
     return target
 
 
