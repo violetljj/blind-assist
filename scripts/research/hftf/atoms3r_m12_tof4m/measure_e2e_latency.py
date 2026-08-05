@@ -60,6 +60,7 @@ REQUIRED_FRAME_HEADERS = {
     "x-jpeg-quality",
     "x-auto-exposure",
     "x-camera-psram-dma-enabled",
+    "x-stream-tcp-nodelay",
     "x-exposure-value",
     "x-wifi-rssi-dbm",
     "x-free-heap-bytes",
@@ -531,6 +532,7 @@ def frame_row(
         "device_jpeg_size_bytes": int(headers["x-jpeg-size-bytes"]),
         "auto_exposure": parse_bool(headers["x-auto-exposure"]),
         "camera_psram_dma_enabled": parse_bool(headers["x-camera-psram-dma-enabled"]),
+        "stream_tcp_nodelay": parse_bool(headers["x-stream-tcp-nodelay"]),
         "exposure_value": int(headers["x-exposure-value"]),
         "device_wifi_rssi_dbm": int(headers["x-wifi-rssi-dbm"]),
         "device_free_heap_bytes": int(headers["x-free-heap-bytes"]),
@@ -873,6 +875,13 @@ def summarize(
                 row["camera_psram_dma_enabled"]
                 for row in rows
                 if row.get("camera_psram_dma_enabled") is not None
+            }
+        ),
+        "stream_tcp_nodelay_values": sorted(
+            {
+                row["stream_tcp_nodelay"]
+                for row in rows
+                if row.get("stream_tcp_nodelay") is not None
             }
         ),
         "sequence_gap_event_count": len(sequence_gaps),

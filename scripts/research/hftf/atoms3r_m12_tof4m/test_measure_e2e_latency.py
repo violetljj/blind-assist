@@ -54,6 +54,7 @@ def frame_headers(sequence: int = 7) -> dict[str, str]:
         "x-jpeg-quality": "10",
         "x-auto-exposure": "true",
         "x-camera-psram-dma-enabled": "false",
+        "x-stream-tcp-nodelay": "false",
         "x-exposure-value": "321",
         "x-wifi-rssi-dbm": "-37",
         "x-free-heap-bytes": "150000",
@@ -104,6 +105,7 @@ class MeasureE2eLatencyTest(unittest.TestCase):
         self.assertEqual(row["device_capture_to_fb_return_us"], 40_000)
         self.assertEqual(row["device_capture_minus_acquire_start_us"], 0)
         self.assertIsNone(row["pipeline_num_threads"])
+        self.assertFalse(row["stream_tcp_nodelay"])
 
     def test_absent_tof_timestamp_makes_skew_not_evaluable(self):
         headers = frame_headers()

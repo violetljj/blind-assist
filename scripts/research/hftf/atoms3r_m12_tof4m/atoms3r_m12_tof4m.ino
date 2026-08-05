@@ -13,6 +13,8 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
 #include <inttypes.h>
+#include <lwip/sockets.h>
+#include <lwip/tcp.h>
 
 #include "web_ui.h"
 
@@ -20,10 +22,12 @@ namespace {
 
 constexpr bool kEnableTofSampling = true;
 constexpr bool kEnableCameraPsramDma = false;
+constexpr bool kEnableStreamTcpNoDelay = true;
 constexpr const char* kFirmwareVersion =
     kEnableCameraPsramDma ? "atoms3r_m12_tof4m_slow_frame_r6_psram_dma"
-    : kEnableTofSampling ? "atoms3r_m12_tof4m_slow_frame_r6"
-                         : "atoms3r_m12_tof4m_slow_frame_r6_tof_off";
+    : kEnableStreamTcpNoDelay ? "atoms3r_m12_tof4m_stream_r7_tcp_nodelay"
+    : kEnableTofSampling      ? "atoms3r_m12_tof4m_stream_r7"
+                              : "atoms3r_m12_tof4m_stream_r7_tof_off";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -764,7 +768,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       "\"brightness\":%d,\"auto_exposure\":%s,"
       "\"exposure_compensation\":%d,\"manual_exposure\":%u,"
       "\"psram_dma_enabled\":%s,\"frame_buffer_count\":2,"
-      "\"grab_mode\":\"LATEST\","
+      "\"grab_mode\":\"LATEST\",\"stream_tcp_nodelay_configured\":%s,"
       "\"recent_fps\":%.2f,\"total_frames\":%" PRIu64 ","
       "\"stream_clients\":%u},"
       "\"tof\":{\"ready\":%s,\"sampling_enabled\":%s,\"valid\":%s,"
@@ -781,6 +785,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       camera_settings.auto_exposure ? "true" : "false",
       camera_settings.exposure_compensation, camera_settings.manual_exposure,
       camera_psram_dma_enabled ? "true" : "false",
+      kEnableStreamTcpNoDelay ? "true" : "false",
       static_cast<double>(frames.recent_fps), frames.total_frames,
       frames.stream_clients, sensor_ready ? "true" : "false",
       kEnableTofSampling ? "true" : "false",
@@ -934,6 +939,24 @@ esp_err_t streamHandler(httpd_req_t* request) {
   httpd_resp_set_hdr(request, "Access-Control-Allow-Origin", "*");
   httpd_resp_set_hdr(request, "Cache-Control", "no-store");
   updateFrameStats(true, true, false);
+  const int socket_fd = httpd_req_to_sockfd(request);
+  const int requested_tcp_nodelay = kEnableStreamTcpNoDelay ? 1 : 0;
+  if (socket_fd < 0 ||
+      setsockopt(socket_fd, IPPROTO_TCP, TCP_NODELAY, &requested_tcp_nodelay,
+                 sizeof(requested_tcp_nodelay)) != 0) {
+    emitEvent("camera_stream", "TCP_NODELAY_APPLY_FAILED");
+    updateFrameStats(true, false, false);
+    return ESP_FAIL;
+  }
+  int observed_tcp_nodelay = 0;
+  socklen_t observed_tcp_nodelay_length = sizeof(observed_tcp_nodelay);
+  if (getsockopt(socket_fd, IPPROTO_TCP, TCP_NODELAY, &observed_tcp_nodelay,
+                 &observed_tcp_nodelay_length) != 0) {
+    emitEvent("camera_stream", "TCP_NODELAY_READBACK_FAILED");
+    updateFrameStats(true, false, false);
+    return ESP_FAIL;
+  }
+  const bool stream_tcp_nodelay_enabled = observed_tcp_nodelay != 0;
   esp_err_t stream_result = ESP_OK;
   uint64_t previous_jpeg_ready_us = 0;
   uint64_t previous_frame_sequence = 0;
@@ -1037,6 +1060,7 @@ esp_err_t streamHandler(httpd_req_t* request) {
         "X-Jpeg-Size-Bytes: %u\r\nX-Width: %u\r\nX-Height: %u\r\n"
         "X-Jpeg-Quality: %u\r\nX-Auto-Exposure: %s\r\n"
         "X-Camera-Psram-Dma-Enabled: %s\r\n"
+        "X-Stream-Tcp-Nodelay: %s\r\n"
         "X-Exposure-Value: %d\r\nX-Wifi-Rssi-Dbm: %d\r\n"
         "X-Free-Heap-Bytes: %u\r\n\r\n",
         static_cast<unsigned>(frame_length), sequence_id, clock_domain,
@@ -1054,7 +1078,8 @@ esp_err_t streamHandler(httpd_req_t* request) {
         static_cast<unsigned>(frame_width), static_cast<unsigned>(frame_height),
         camera_settings.jpeg_quality,
         camera_settings.auto_exposure ? "true" : "false",
-        camera_psram_dma_enabled ? "true" : "false", exposure_value,
+        camera_psram_dma_enabled ? "true" : "false",
+        stream_tcp_nodelay_enabled ? "true" : "false", exposure_value,
         wifi_rssi_dbm, free_heap_bytes);
     if (header_length <= 0 ||
         static_cast<size_t>(header_length) >= sizeof(header)) {

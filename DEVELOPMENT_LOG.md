@@ -1,4 +1,26 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
+  ToF4M MJPEG stream `TCP_NODELAY` 单变量 R6。设备保持 XGA/quality 10/自动曝光/
+  DMA-off/ToF-on，主机保持 4-thread latest-frame pipeline。相邻五分钟 off/on 为
+  `6,927/6,938 frames`、`23.043/23.085 fps`，均 0 reconnect/error/overwrite/gap。
+  开启后 device response write P50/P95/P99 从 `22.13/30.83/35.80 ms` 变为
+  `26.46/34.63/38.82 ms`，接受约 4 ms 常态成本；host JPEG read P95/P99 从
+  `62.48/72.02 ms` 降至 `32.86/37.23 ms`，capture→feedback P95/P99 从
+  `128.94/164.42 ms` 降至 `121.37/151.24 ms`，off 基线的约 1.1 秒 write/read
+  尖峰在 on 运行中未复现，on 最大 capture→feedback 为 `197.79 ms`。因此终态为
+  `TCP_NODELAY_PROMOTED_FOR_TAIL_LATENCY / MEDIAN_WRITE_COST_ACCEPTED /
+  EXTREME_STALL_NOT_PROVEN_ELIMINATED`。固件对具体 stream socket 执行 set/readback，
+  API、逐帧 header 和 host summary 绑定实际配置，失败时 fail closed。on summary
+  SHA-256 `ada9f563f5a45136f48e0c4782c6d7f0bc2ded358bfd81f7cca9270779d4f540`。
+  slow fraction `19.72%→22.50%`，故不声称相机变快；一次相邻 A/B 也不证明永久消除
+  极端网络尖峰。本结果仅授权当前设备/网络的 Development 尾延迟配置选择，不授权
+  准确率、人体、产品或安全结论。正式固件 program/RAM 为
+  `1,078,167 B (32%) / 62,608 B (19%)`，app bin SHA-256
+  `84f059606efa0cb0560a8f7fe7110c38d8df30b22ae7a66a188ee3a608cd1d3f`；刷入 COM5
+  后 20 帧带模型回归 0 reconnect/error/overwrite/gap，全部帧 TCP_NODELAY=true、
+  ToF sampling/valid、pipeline threads=4，退出后 stream_clients=0。12 项测试、
+  Ruff、py_compile、固件编译及 diff check 通过；一次从仓库根目录直接加载测试文件
+  因模块导入路径错误未运行，随后在模块目录用 discovery 正确执行并通过。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成主机 TFLite 4 线程
   优化 R5。当前 18 logical CPU 主机同帧微基准显示 1/2/4/8 threads P50
   `29.84/16.95/11.89/17.73 ms`，预先选择 4，不继续线程扫描。设备保持自动曝光、
