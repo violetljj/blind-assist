@@ -6,9 +6,10 @@
     "payload_root": "artifacts.local",
     "payloads_git_ignored": true,
     "formal_protocols_and_summaries_tracked": true,
-    "global_dataset_master_ledger_last_generated": "2026-08-02T02:19:16+08:00",
-    "global_dataset_master_ledger_current_for_this_scope": false,
-    "global_rebuild_rule": "Rebuild after the locked ARKit validation body download finishes so the multi-hundred-megabyte generated ledger is not regenerated twice."
+    "global_dataset_master_ledger_last_generated": "2026-08-05T22:25:16+08:00",
+    "global_dataset_master_ledger_current_for_this_scope": true,
+    "global_dataset_master_ledger_sha256": "5A0BBFEA3467F2D160D70C6E838D28147BEF7B8190948ECD63DACAE8227BBE42",
+    "global_refresh_method": "full hash and decode of the new ARKit prefix, followed by global duplicate, role-conflict, summary and report recomputation"
   },
   "assets": [
     {
@@ -72,19 +73,22 @@
       "bytes": 19805,
       "sha256": "59821BEF17FA3046AF8CF2D306BBE03770C2F71AC3C744B7A7C6605A2B81560B",
       "status": "40_OF_40_AVAILABLE_BODY_UNREAD"
-    }
-  ],
-  "planned_not_yet_downloaded": [
+    },
     {
       "asset_id": "arkit-validation-extension-eight-video-rgbd",
-      "asset_count": 40,
-      "expected_bytes": 5391819729,
-      "license_scope_confirmed": true,
-      "body_bytes_downloaded": 0
+      "kind": "extracted_dataset",
+      "path": "artifacts.local/datasets/p3-r0-2-1-arkit-validation-extension-20260805",
+      "bytes": 267157183,
+      "file_count": 9609,
+      "manifest_sha256": "3548E211A987D2F265984574212648EF4EFCD9964FDE2717380649BDDBB41A29",
+      "source_transfer_content_length_bytes": 5391819729,
+      "temporary_archives_retained": false,
+      "status": "ACTIVE_VALIDATION_IDENTITY_SOURCE_CONTINUITY_VALID"
     }
   ],
-  "approximate_current_payload_bytes": 33836117834,
+  "planned_not_yet_downloaded": [],
+  "approximate_current_payload_bytes": 34103275017,
   "model_loaded": false,
   "training_started": false,
-  "terminal": "P3_R0_2_LOCAL_ASSET_INVENTORY_UPDATED_ARKIT_BODY_PENDING"
+  "terminal": "P3_R0_2_LOCAL_ASSET_INVENTORY_CURRENT_ARKIT_BODY_BOUND"
 }

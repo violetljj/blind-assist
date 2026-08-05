@@ -65,6 +65,8 @@ STRUCTURED_EXTS = {
     ".db3",
     ".pcd",
     ".lzf",
+    ".pincam",
+    ".traj",
 }
 ARCHIVE_EXTS = {".zip", ".7z", ".tar", ".tgz", ".gz", ".bz2", ".xz"}
 ASSET_EXTS = IMAGE_EXTS | VIDEO_EXTS | NUMERIC_EXTS | STRUCTURED_EXTS | ARCHIVE_EXTS
@@ -150,6 +152,10 @@ MODALITY_WORDS = {
     "image_stitched",
     "labels_2d_stitched",
     "labels_3d",
+    "confidence",
+    "lowres_depth",
+    "lowres_wide",
+    "lowres_wide_intrinsics",
 }
 
 GENERIC_MODALITY_WORDS = {
@@ -189,6 +195,10 @@ GENERIC_MODALITY_WORDS = {
     "poses",
     "video",
     "videos",
+    "confidence",
+    "lowres_depth",
+    "lowres_wide",
+    "lowres_wide_intrinsics",
     "train",
     "test",
     "val",
@@ -213,6 +223,7 @@ MASK_WORDS = {
     "semantic_masks",
 }
 DEPTH_WORDS = {"depth", "disparity", "source_depth", "depth_frames"}
+CONFIDENCE_WORDS = {"confidence", "confidences", "depth_confidence"}
 POSE_WORDS = {
     "pose",
     "poses",
@@ -250,6 +261,7 @@ ROLE_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 ]
 
 DATASET_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    ("ARKitScenes", re.compile(r"arkit(?:[-_ ]?scenes?)?", re.I)),
     ("SANPO", re.compile(r"sanpo", re.I)),
     ("EgoWalk", re.compile(r"egowalk|ego[-_ ]?walk", re.I)),
     ("Bonn", re.compile(r"(?:^|[-_])bonn(?:$|[-_])|rgbd[-_]?bonn", re.I)),
@@ -489,6 +501,8 @@ def classify_file(path: Path) -> dict[str, str]:
             modality = "mask"
         elif contains_word(parts, DEPTH_WORDS):
             modality = "depth"
+        elif contains_word(parts, CONFIDENCE_WORDS):
+            modality = "confidence"
         elif contains_word(parts, POSE_WORDS):
             modality = "pose"
         else:
@@ -511,7 +525,7 @@ def classify_file(path: Path) -> dict[str, str]:
             modality = "depth"
         elif contains_word(parts, MASK_WORDS):
             modality = "mask"
-        elif contains_word(parts, POSE_WORDS) or ext in {".bag", ".db3"}:
+        elif contains_word(parts, POSE_WORDS) or ext in {".bag", ".db3", ".traj"}:
             modality = "pose"
         elif contains_word(parts, {"rgb", "image", "images", "video", "frames"}):
             modality = "rgb"
