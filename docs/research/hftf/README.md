@@ -1,5 +1,8 @@
 # HFTF 候选未来可通行场支线
 
+- [DA V2 端侧流水化与等价 Native 优化 R0-R4 实现结果](DAV2_EDGE_PIPELINE_R0_R3_IMPLEMENTATION_RESULT_2026-08-05.md)
+- [DA V2 全链路 copy / materialization 审计 R1](DAV2_FULL_CHAIN_COPY_AUDIT_R1_2026-08-05.md)
+- [DA V2 QNN 逐算子与 HTP linting profile R0 结果](DAV2_QNN_OPERATOR_PROFILE_R0_RESULT_2026-08-05.md)
 - [FRESH-TF and opened successors pause record](HFTF_FRESH_TF_AND_SUCCESSORS_PAUSE_RECORD_2026-08-05.md)
 - [Machine-readable pause record](HFTF_FRESH_TF_AND_SUCCESSORS_PAUSE_RECORD_2026-08-05.json)
 - [Dense/fixed-cell depth propagation family stop](HFTF_DENSE_FIXED_CELL_DEPTH_PROPAGATION_FAMILY_STOP_2026-08-05.md)

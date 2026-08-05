@@ -5705,3 +5705,38 @@
   CameraX/QNN/NPU 工程结果、depth demo、默认 App 和无关路线保持不变。fresh-snapshot
   protocol 在正式采集和 QNN outcome 前暂停，仍为 unconsumed design。只有用户以后明确
   指定 route/scope 并完成 repository/source/hardware/authority 复核后才可恢复。
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。继续执行 DA V2 端侧完整链路
+  R0-R3 工程优化，冻结 `518x686 FP16` cached DLC、前处理、5000 candidates、240 次
+  RANSAC、seed 1729、阈值和几何语义。两级 latest-only pipeline 在 45 秒饱和 A/B 中
+  从 5.700 提高到 9.175 Hz（+61.0%）；phase-locked 2/3/4/5 Hz 矩阵通过，首轮 5 Hz
+  cadence drift 失败被原样保留。Native FP16 decode 对全部 65,536 half patterns raw-bit
+  parity mismatch 0；Native C++ geometry 在真实深度及缩放、缺失、微扰共 8 cases 中状态
+  一致，最大字段误差 `2.22e-16`。固定 APK 的 10 分钟 R3c 达到 5.00 Hz、3024/3024
+  `VALID`，QNN/geometry/full P95 分别为 `96.01/17.80/123.18 ms`，thermal 0/2/2，
+  两类 pool 全归还、runtime failure 0。一次 R3b 因运行中本地 APK 被重建而产生收据哈希
+  漂移，已写 `INVALID_RECEIPT.md` 并禁止作为正式证据；runner 已改为安装前锁定 APK
+  哈希。R3c result/gate SHA-256 为
+  `3F9FFCE6B424E44356F0A16D312DE37715CAA3161D346D26373A12C4D0E87311` /
+  `33225988C60C0F45CE90A3F384FD9473EE7A3A0A036C90D448289516B9535DBF`。
+  当前只支持单设备部署与性能诊断；accuracy、false-clear、产品和 safety authority 不变。
+- 同日对同一 cached DLC 完成冷态 QNN `detailed` 与 HTP `linting` profiling。detailed 24 次
+  execution、每次 470 ops，算子/root cycle closure error `5.8e-14%`；Transformer encoder
+  占 88.24%，其中 Softmax-attributed attention composite 56.15%、MatMul 16.17%、
+  LayerNorm 6.58%，reshape+transpose 仅 3.68%。linting 11 次 execution 的关键路径
+  mean/P95 `117.14M/117.35M cycles`，Transformer 87.76%、MatMul 70.81%；73.57% 的
+  summed-op cycles 同时标记 HVX+HMX+DMA，DMA inclusive 96.24%。日志无 DramToTcm、
+  TcmToDram、SystemService 或 BlockZapOp，故只确认广泛 DMA 参与，不声称已证明 VTCM
+  spill 或 DDR bytes 瓶颈。两种 profile attribution 层级不同，但共同否定 JNI/layout 为
+  图内首要瓶颈。独立 accuracy/false-clear 门仍缺失，混合精度、小尺寸和 student 保持 HOLD。
+- 同日完成 R4 direct-depth bridge：QNN FP16 direct output 在 Native thread-local workspace
+  bit-exact decode，并按冻结 align-corners 映射写入 owned direct 640x480 depth slot；独立 Native
+  geometry executor 直接消费该 slot。真实 QNN output 加全 65,536 half-pattern tiled fixture 共
+  检查 614,400 aligned outputs，finite raw-bit/non-finite class mismatch 均为 0、最大误差 0，
+  geometry 字段与拒绝 reason 严格一致。固定 APK 10 分钟 R4 达到 5.00 Hz、3026/3026
+  `VALID`，QNN/direct-bridge/geometry/full P95 为 `94.82/12.83/17.88/120.16 ms`，fresh age
+  P95 `132.67 ms`，thermal 0/2/2、pool 3/3、runtime failure 0；device-installed app/test
+  APK 哈希与安装前收据一致。result/gate SHA-256 为
+  `F04760F3F3F7970DEA729D88B714D357FFDC21102C79D7FBB33A8C2198EB37FD` /
+  `D0E8C3CB330C1F4F5F5F85AB841B430822BBFC4BD22E651CD2DF44847FA601A4`。
+  该路径只消除 Java raw/aligned 两份深度数组；Native decoded workspace、owned direct buffer
+  及 backend 内部未知搬运仍保留，不称 zero-copy，不新增 accuracy、false-clear、产品或 safety authority。

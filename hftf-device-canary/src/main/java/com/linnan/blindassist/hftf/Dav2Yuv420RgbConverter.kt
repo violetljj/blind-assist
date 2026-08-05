@@ -1,7 +1,12 @@
 package com.linnan.blindassist.hftf
 
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+
 internal class Dav2Yuv420RgbConverter : AutoCloseable {
     val output = ByteArray(Dav2PreprocessContract.INPUT_BYTES)
+    val directOutput: ByteBuffer = ByteBuffer.allocateDirect(Dav2PreprocessContract.INPUT_BYTES)
+        .order(ByteOrder.nativeOrder())
     private var handle = nativeCreate()
 
     init { check(handle != 0L) { "unable to create native YUV converter" } }
@@ -13,6 +18,18 @@ internal class Dav2Yuv420RgbConverter : AutoCloseable {
         return output
     }
 
+    fun convertDirect(frame: OwnedYuv420Frame): ByteBuffer {
+        check(handle != 0L)
+        directOutput.clear()
+        nativeConvertDirect(
+            handle, frame.y, frame.u, frame.v, frame.width, frame.height,
+            frame.rotationDegrees, directOutput,
+        )
+        directOutput.position(0)
+        directOutput.limit(Dav2PreprocessContract.INPUT_BYTES)
+        return directOutput
+    }
+
     override fun close() {
         if (handle != 0L) nativeDestroy(handle)
         handle = 0L
@@ -21,6 +38,8 @@ internal class Dav2Yuv420RgbConverter : AutoCloseable {
     private external fun nativeCreate(): Long
     private external fun nativeConvert(handle: Long, y: ByteArray, u: ByteArray, v: ByteArray,
         width: Int, height: Int, rotationDegrees: Int, output: ByteArray)
+    private external fun nativeConvertDirect(handle: Long, y: ByteArray, u: ByteArray, v: ByteArray,
+        width: Int, height: Int, rotationDegrees: Int, output: ByteBuffer)
     private external fun nativeDestroy(handle: Long)
 
     companion object { init { System.loadLibrary("dav2_preprocess_native") } }

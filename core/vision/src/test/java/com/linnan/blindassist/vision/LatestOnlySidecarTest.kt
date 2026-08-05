@@ -53,18 +53,21 @@ class LatestOnlySidecarTest {
     @Test
     fun dropsResultThatExceedsAgeLimit() {
         val delivered = AtomicInteger(0)
+        val discarded = AtomicInteger(0)
         var now = 100L
         val sidecar = LatestOnlySidecar<TrackedInput, Int>(
             executor = DirectExecutor,
             maxResultAgeNanos = 5L,
             process = { input -> now = 106L; input.id },
             onFreshResult = { delivered.incrementAndGet() },
+            onDiscardedResult = { discarded.incrementAndGet() },
             nowNanos = { now }
         )
         val input = TrackedInput(7)
         try {
             assertTrue(sidecar.submit(input, capturedAtNanos = 100L))
             assertEquals(0, delivered.get())
+            assertEquals(1, discarded.get())
             assertEquals(1, input.closeCount.get())
         } finally {
             sidecar.close()
@@ -91,6 +94,7 @@ class LatestOnlySidecarTest {
         val started = CountDownLatch(1)
         val allowFinish = CountDownLatch(1)
         val delivered = AtomicInteger(0)
+        val discarded = AtomicInteger(0)
         val sidecar = LatestOnlySidecar<TrackedInput, Int>(
             executor = executor,
             maxResultAgeNanos = Long.MAX_VALUE,
@@ -99,7 +103,8 @@ class LatestOnlySidecarTest {
                 check(allowFinish.await(2, TimeUnit.SECONDS))
                 input.id
             },
-            onFreshResult = { delivered.incrementAndGet() }
+            onFreshResult = { delivered.incrementAndGet() },
+            onDiscardedResult = { discarded.incrementAndGet() }
         )
         try {
             assertTrue(sidecar.submit(TrackedInput(11), capturedAtNanos = 0L))
@@ -109,6 +114,7 @@ class LatestOnlySidecarTest {
             executor.shutdown()
             assertTrue(executor.awaitTermination(2, TimeUnit.SECONDS))
             assertEquals(0, delivered.get())
+            assertEquals(1, discarded.get())
         } finally {
             sidecar.close()
             executor.shutdownNow()

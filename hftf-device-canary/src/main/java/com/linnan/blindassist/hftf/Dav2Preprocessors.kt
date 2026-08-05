@@ -228,6 +228,20 @@ internal class Dav2NativePreprocessor : AutoCloseable {
         return fp16Output
     }
 
+    fun preprocessFp16CanonicalStrictDirect(rgb: ByteBuffer): ByteBuffer {
+        check(handle != 0L)
+        require(rgb.isDirect && rgb.limit() >= Dav2PreprocessContract.INPUT_BYTES)
+        fp32Output.clear()
+        nativeRunOfficialDirect(handle, rgb, fp32Output)
+        fp32Output.position(0)
+        fp32Output.limit(Dav2PreprocessContract.OUTPUT_ELEMENTS * 4)
+        fp16Output.clear()
+        nativeConvertFp32ToFp16(fp32Output, fp16Output, Dav2PreprocessContract.OUTPUT_ELEMENTS)
+        fp16Output.position(0)
+        fp16Output.limit(Dav2PreprocessContract.OUTPUT_ELEMENTS * 2)
+        return fp16Output
+    }
+
     /**
      * Runs the admitted FP32 OpenCV/NEON path first, then performs an integer,
      * bit-exact IEEE-754 round-to-nearest-ties-to-even binary32 -> binary16
@@ -278,6 +292,25 @@ internal class Dav2NativePreprocessor : AutoCloseable {
         return fp16Output
     }
 
+    fun decodeFp16ToFloatStrict(input: ByteBuffer, output: FloatArray, elements: Int = output.size) {
+        check(handle != 0L)
+        require(input.isDirect) { "FP16 input must be a direct buffer" }
+        require(elements in 0..output.size && input.limit() >= elements * 2)
+        nativeDecodeFp16ToFp32(input, output, elements)
+    }
+
+    fun decodeResizeFp16AlignCornersStrict(input: ByteBuffer, output: ByteBuffer) {
+        check(handle != 0L)
+        require(input.isDirect) { "FP16 input must be a direct buffer" }
+        require(output.isDirect) { "aligned depth output must be a direct buffer" }
+        require(input.limit() >= Dav2PreprocessContract.PLANE * 2)
+        require(output.capacity() >= ALIGNED_DEPTH_ELEMENTS * 4)
+        output.clear()
+        nativeDecodeResizeFp16AlignCorners(input, output)
+        output.position(0)
+        output.limit(ALIGNED_DEPTH_ELEMENTS * 4)
+    }
+
     override fun close() {
         if (handle != 0L) nativeDestroy(handle)
         handle = 0L
@@ -286,11 +319,18 @@ internal class Dav2NativePreprocessor : AutoCloseable {
     private external fun nativeCreate(): Long
     private external fun nativeRun(handle: Long, input: ByteArray, output: ByteBuffer, fp16: Boolean)
     private external fun nativeRunOfficial(handle: Long, input: ByteArray, output: ByteBuffer)
+    private external fun nativeRunOfficialDirect(handle: Long, input: ByteBuffer, output: ByteBuffer)
     private external fun nativeConvertFp32ToFp16(input: ByteBuffer, output: ByteBuffer, elements: Int)
+    private external fun nativeDecodeFp16ToFp32(input: ByteBuffer, output: FloatArray, elements: Int)
+    private external fun nativeDecodeResizeFp16AlignCorners(input: ByteBuffer, output: ByteBuffer)
     private external fun nativeCopyLastResizedHwcFp32(handle: Long, output: ByteBuffer)
     private external fun nativeDestroy(handle: Long)
 
     companion object {
+        const val ALIGNED_DEPTH_WIDTH = 640
+        const val ALIGNED_DEPTH_HEIGHT = 480
+        const val ALIGNED_DEPTH_ELEMENTS = ALIGNED_DEPTH_WIDTH * ALIGNED_DEPTH_HEIGHT
+
         init {
             System.loadLibrary("dav2_preprocess_native")
         }

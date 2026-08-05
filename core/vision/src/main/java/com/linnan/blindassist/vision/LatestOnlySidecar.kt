@@ -17,6 +17,7 @@ class LatestOnlySidecar<I : AutoCloseable, O>(
     private val maxResultAgeNanos: Long,
     private val process: (I) -> O,
     private val onFreshResult: (Result<O>) -> Unit,
+    private val onDiscardedResult: (O) -> Unit = {},
     private val onFailure: (Throwable) -> Unit = {},
     private val nowNanos: () -> Long = System::nanoTime
 ) : AutoCloseable {
@@ -91,7 +92,14 @@ class LatestOnlySidecar<I : AutoCloseable, O>(
         val shouldDeliver = synchronized(lock) {
             !closed && result.ageNanos <= maxResultAgeNanos
         }
-        if (!shouldDeliver) return
+        if (!shouldDeliver) {
+            try {
+                onDiscardedResult(result.value)
+            } catch (failure: Throwable) {
+                onFailure(failure)
+            }
+            return
+        }
         try {
             onFreshResult(result)
         } catch (failure: Throwable) {

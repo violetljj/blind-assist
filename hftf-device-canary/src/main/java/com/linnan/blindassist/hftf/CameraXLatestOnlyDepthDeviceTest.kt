@@ -21,6 +21,7 @@ import androidx.test.rule.GrantPermissionRule
 import com.linnan.blindassist.hftf.metricdepth.KnownHeightGroundPipeline
 import com.linnan.blindassist.vision.ExpiringLatestResult
 import com.linnan.blindassist.vision.LatestOnlySidecar
+import com.linnan.blindassist.vision.PhaseLockedCadenceGate
 import java.io.File
 import java.nio.ByteBuffer
 import java.util.ArrayDeque
@@ -52,14 +53,26 @@ class CameraXLatestOnlyDepthDeviceTest {
         val depthPeriodMs = arguments.getString("depthPeriodMs")?.toLong() ?: 500L
         val ttlMs = arguments.getString("ttlMs")?.toLong() ?: 750L
         val includeGeometry = arguments.getString("includeGeometry")?.toBooleanStrictOrNull() ?: false
+        val pipelineGeometry = arguments.getString("pipelineGeometry")?.toBooleanStrictOrNull() ?: false
+        val phaseLockedCadence = arguments.getString("phaseLockedCadence")?.toBooleanStrictOrNull() ?: false
+        val nativeFp16Decode = arguments.getString("nativeFp16Decode")?.toBooleanStrictOrNull() ?: false
+        val nativeGeometry = arguments.getString("nativeGeometry")?.toBooleanStrictOrNull() ?: false
+        val nativeDirectDepthBridge = arguments.getString("nativeDirectDepthBridge")?.toBooleanStrictOrNull() ?: false
+        val directRgbBridge = arguments.getString("directRgbBridge")?.toBooleanStrictOrNull() ?: false
+        require(!pipelineGeometry || includeGeometry) { "pipelineGeometry requires includeGeometry" }
+        require(!nativeGeometry || includeGeometry) { "nativeGeometry requires includeGeometry" }
+        require(!nativeDirectDepthBridge || pipelineGeometry && nativeFp16Decode && nativeGeometry) {
+            "nativeDirectDepthBridge requires pipelineGeometry, nativeFp16Decode, and nativeGeometry"
+        }
         require(durationSeconds >= 12 && stressSeconds in 3 until durationSeconds)
-        require(depthPeriodMs in 250L..2_000L && ttlMs >= depthPeriodMs)
+        require(depthPeriodMs in 200L..2_000L && ttlMs >= depthPeriodMs)
         assertTrue(cachedDlc.isFile)
 
         val provider = ProcessCameraProvider.getInstance(context).get(10, TimeUnit.SECONDS)
         val owner = TestLifecycleOwner()
         val analyzerExecutor = Executors.newSingleThreadExecutor()
         val depthExecutor = Executors.newSingleThreadExecutor()
+        val geometryExecutor = Executors.newSingleThreadExecutor()
         val power = context.getSystemService(PowerManager::class.java)
         val pool = YuvFramePool(3, WIDTH, HEIGHT)
         val framesSeen = AtomicInteger()
@@ -78,11 +91,24 @@ class CameraXLatestOnlyDepthDeviceTest {
         val maximumThermalStatus = AtomicInteger(power.currentThermalStatus)
         val geometryValid = AtomicInteger()
         val geometryUnknown = AtomicInteger()
+        val inferenceProcessed = AtomicInteger()
+        val stressInferenceProcessed = AtomicInteger()
+        val pacedInferenceProcessed = AtomicInteger()
+        val stressProcessed = AtomicInteger()
+        val pacedProcessed = AtomicInteger()
         val running = AtomicInteger()
         val maxRunning = AtomicInteger()
+        val geometryRunning = AtomicInteger()
+        val maxGeometryRunning = AtomicInteger()
+        val combinedRunning = AtomicInteger()
+        val maxCombinedRunning = AtomicInteger()
         val failures = Collections.synchronizedList(mutableListOf<String>())
         val copyLatencies = Collections.synchronizedList(mutableListOf<Double>())
         val executeLatencies = Collections.synchronizedList(mutableListOf<Double>())
+        val decodeAlignLatencies = Collections.synchronizedList(mutableListOf<Double>())
+        val fp16DecodeLatencies = Collections.synchronizedList(mutableListOf<Double>())
+        val alignResizeLatencies = Collections.synchronizedList(mutableListOf<Double>())
+        val directDepthBridgeLatencies = Collections.synchronizedList(mutableListOf<Double>())
         val geometryLatencies = Collections.synchronizedList(mutableListOf<Double>())
         val fullPipelineLatencies = Collections.synchronizedList(mutableListOf<Double>())
         val freshAges = Collections.synchronizedList(mutableListOf<Double>())
@@ -93,6 +119,19 @@ class CameraXLatestOnlyDepthDeviceTest {
         val stressNanos = TimeUnit.SECONDS.toNanos(stressSeconds.toLong())
         val durationNanos = TimeUnit.SECONDS.toNanos(durationSeconds.toLong())
         val periodNanos = TimeUnit.MILLISECONDS.toNanos(depthPeriodMs)
+        val phaseLockedGate = PhaseLockedCadenceGate(periodNanos)
+
+        fun markInferenceProcessed(stage: String) {
+            inferenceProcessed.incrementAndGet()
+            if (stage == "stress") stressInferenceProcessed.incrementAndGet()
+            else pacedInferenceProcessed.incrementAndGet()
+        }
+
+        fun markProcessed(stage: String) {
+            processed.incrementAndGet()
+            if (stage == "stress") stressProcessed.incrementAndGet()
+            else pacedProcessed.incrementAndGet()
+        }
 
         val nativeLibraryDir = arguments.getString("qnnRuntimeDir")
             ?: instrumentation.context.applicationInfo.nativeLibraryDir
@@ -102,15 +141,82 @@ class CameraXLatestOnlyDepthDeviceTest {
         val resultStore = ExpiringLatestResult<DepthReceipt>(TimeUnit.MILLISECONDS.toNanos(ttlMs))
         val runtimeStatsBefore = RuntimeStats.capture()
         val memoryBefore = memoryJson()
-        val rawDepth = FloatArray(Dav2PreprocessContract.PLANE)
-        val alignedDepth = FloatArray(WIDTH * HEIGHT)
-        val sidecar = LatestOnlySidecar<OwnedYuv420Frame, DepthReceipt>(
+        val rawDepth = if (nativeDirectDepthBridge) FloatArray(0) else FloatArray(Dav2PreprocessContract.PLANE)
+        val alignedDepth = if (nativeDirectDepthBridge) FloatArray(0) else FloatArray(WIDTH * HEIGHT)
+        val geometryPool = AlignedDepthPool(3, WIDTH * HEIGHT, nativeDirectDepthBridge)
+
+        fun evaluateGeometry(depth: FloatArray): Any = if (nativeGeometry) {
+            Dav2NativeGeometry.evaluate(
+                depth, WIDTH, HEIGHT, 320.0, 320.0, 320.0, 240.0, 1.0341161949454936,
+            )
+        } else {
+            KnownHeightGroundPipeline.evaluateGeometry(
+                depth, WIDTH, HEIGHT, 320.0, 320.0, 320.0, 240.0, 1.0341161949454936,
+            )
+        }
+
+        fun evaluateGeometry(work: OwnedAlignedDepth): Any = if (nativeDirectDepthBridge) {
+            Dav2NativeGeometry.evaluateDirect(
+                checkNotNull(work.directDepth), WIDTH, HEIGHT,
+                320.0, 320.0, 320.0, 240.0, 1.0341161949454936,
+            )
+        } else {
+            evaluateGeometry(checkNotNull(work.arrayDepth))
+        }
+
+        fun deliverFinal(result: LatestOnlySidecar.Result<DepthReceipt>) {
+            fresh.incrementAndGet()
+            freshAges += result.ageNanos / 1_000_000.0
+            resultStore.update(result.value, result.capturedAtNanos, result.completedAtNanos)
+        }
+
+        val geometrySidecar = LatestOnlySidecar<OwnedAlignedDepth, DepthReceipt>(
+            executor = geometryExecutor,
+            maxResultAgeNanos = TimeUnit.MILLISECONDS.toNanos(ttlMs),
+            process = { work ->
+                work.started = true
+                val activeGeometry = geometryRunning.incrementAndGet()
+                maxGeometryRunning.accumulateAndGet(activeGeometry, ::maxOf)
+                val activeCombined = combinedRunning.incrementAndGet()
+                maxCombinedRunning.accumulateAndGet(activeCombined, ::maxOf)
+                try {
+                    val geometryStart = SystemClock.elapsedRealtimeNanos()
+                    val geometry = evaluateGeometry(work)
+                    val geometryStatus = if (geometry is KnownHeightGroundPipeline.Geometry) {
+                        geometryValid.incrementAndGet(); "VALID"
+                    } else {
+                        geometryUnknown.incrementAndGet(); "UNKNOWN"
+                    }
+                    geometryLatencies += elapsedMs(geometryStart)
+                    val fullElapsed = elapsedMs(work.fullStartedAtNanos)
+                    fullPipelineLatencies += fullElapsed
+                    markProcessed(work.stage)
+                    DepthReceipt(
+                        work.stage,
+                        work.sensorTimestampNanos,
+                        fullElapsed,
+                        geometryStatus,
+                        work.checksum,
+                    )
+                } finally {
+                    geometryRunning.decrementAndGet()
+                    combinedRunning.decrementAndGet()
+                }
+            },
+            onFreshResult = ::deliverFinal,
+            onFailure = { failure -> failures += "geometry ${failure.javaClass.simpleName}: ${failure.message}" },
+            nowNanos = SystemClock::elapsedRealtimeNanos,
+        )
+
+        val sidecar = LatestOnlySidecar<OwnedYuv420Frame, InferenceResult>(
             executor = depthExecutor,
             maxResultAgeNanos = TimeUnit.MILLISECONDS.toNanos(ttlMs),
             process = { frame ->
                 frame.started = true
                 val active = running.incrementAndGet()
                 maxRunning.accumulateAndGet(active, ::maxOf)
+                val activeCombined = combinedRunning.incrementAndGet()
+                maxCombinedRunning.accumulateAndGet(activeCombined, ::maxOf)
                 try {
                     val thermalStatus = power.currentThermalStatus
                     maximumThermalStatus.accumulateAndGet(thermalStatus, ::maxOf)
@@ -119,40 +225,103 @@ class CameraXLatestOnlyDepthDeviceTest {
                         throw IllegalStateException("thermal fail-closed status=$thermalStatus")
                     }
                     val fullStart = SystemClock.elapsedRealtimeNanos()
-                    val rgb = converter.convert(frame)
-                    val output = runtime.execute(preprocessor.preprocessFp16CanonicalStrict(rgb))
+                    val inputTensor = if (directRgbBridge) {
+                        preprocessor.preprocessFp16CanonicalStrictDirect(converter.convertDirect(frame))
+                    } else {
+                        preprocessor.preprocessFp16CanonicalStrict(converter.convert(frame))
+                    }
+                    val output = runtime.execute(inputTensor)
                     val qnnElapsed = elapsedMs(fullStart)
                     executeLatencies += qnnElapsed
+                    markInferenceProcessed(frame.stage)
                     var geometryStatus = "NOT_REQUESTED"
-                    if (includeGeometry) {
-                        val geometryStart = SystemClock.elapsedRealtimeNanos()
-                        val shorts = output.asShortBuffer()
-                        for (index in rawDepth.indices) rawDepth[index] = halfBitsToFloat(shorts.get(index))
+                    if (pipelineGeometry) {
+                        val work = checkNotNull(geometryPool.acquire()) {
+                            "aligned-depth pool exhausted"
+                        }
+                        try {
+                            val decodeStart = SystemClock.elapsedRealtimeNanos()
+                            if (nativeDirectDepthBridge) {
+                                preprocessor.decodeResizeFp16AlignCornersStrict(output, checkNotNull(work.directDepth))
+                                directDepthBridgeLatencies += elapsedMs(decodeStart)
+                            } else {
+                                if (nativeFp16Decode) {
+                                    preprocessor.decodeFp16ToFloatStrict(output, rawDepth)
+                                } else {
+                                    val shorts = output.asShortBuffer()
+                                    for (index in rawDepth.indices) rawDepth[index] = halfBitsToFloat(shorts.get(index))
+                                }
+                                fp16DecodeLatencies += elapsedMs(decodeStart)
+                                val resizeStart = SystemClock.elapsedRealtimeNanos()
+                                resizeDepthAlignCorners(rawDepth, checkNotNull(work.arrayDepth))
+                                alignResizeLatencies += elapsedMs(resizeStart)
+                            }
+                            decodeAlignLatencies += elapsedMs(decodeStart)
+                            work.stage = frame.stage
+                            work.sensorTimestampNanos = frame.sensorTimestampNanos
+                            work.fullStartedAtNanos = fullStart
+                            work.checksum = output.asShortBuffer().get(0).toInt() and 0xffff
+                            InferenceResult.Geometry(work)
+                        } catch (failure: Throwable) {
+                            work.close()
+                            throw failure
+                        }
+                    } else if (includeGeometry) {
+                        val decodeStart = SystemClock.elapsedRealtimeNanos()
+                        if (nativeFp16Decode) {
+                            preprocessor.decodeFp16ToFloatStrict(output, rawDepth)
+                        } else {
+                            val shorts = output.asShortBuffer()
+                            for (index in rawDepth.indices) rawDepth[index] = halfBitsToFloat(shorts.get(index))
+                        }
+                        fp16DecodeLatencies += elapsedMs(decodeStart)
+                        val resizeStart = SystemClock.elapsedRealtimeNanos()
                         resizeDepthAlignCorners(rawDepth, alignedDepth)
-                        val geometry = KnownHeightGroundPipeline.evaluateGeometry(
-                            alignedDepth, WIDTH, HEIGHT, 320.0, 320.0, 320.0, 240.0, 1.0341161949454936,
-                        )
+                        alignResizeLatencies += elapsedMs(resizeStart)
+                        decodeAlignLatencies += elapsedMs(decodeStart)
+                        val geometryStart = SystemClock.elapsedRealtimeNanos()
+                        val geometry = evaluateGeometry(alignedDepth)
                         geometryStatus = if (geometry is KnownHeightGroundPipeline.Geometry) {
                             geometryValid.incrementAndGet(); "VALID"
                         } else {
                             geometryUnknown.incrementAndGet(); "UNKNOWN"
                         }
                         geometryLatencies += elapsedMs(geometryStart)
+                        val fullElapsed = elapsedMs(fullStart)
+                        fullPipelineLatencies += fullElapsed
+                        markProcessed(frame.stage)
+                        InferenceResult.Completed(DepthReceipt(
+                            frame.stage, frame.sensorTimestampNanos, fullElapsed,
+                            geometryStatus, output.asShortBuffer().get(0).toInt() and 0xffff,
+                        ))
+                    } else {
+                        val fullElapsed = elapsedMs(fullStart)
+                        fullPipelineLatencies += fullElapsed
+                        markProcessed(frame.stage)
+                        InferenceResult.Completed(DepthReceipt(
+                            frame.stage, frame.sensorTimestampNanos, fullElapsed,
+                            geometryStatus, output.asShortBuffer().get(0).toInt() and 0xffff,
+                        ))
                     }
-                    val fullElapsed = elapsedMs(fullStart)
-                    fullPipelineLatencies += fullElapsed
-                    processed.incrementAndGet()
-                    DepthReceipt(frame.stage, frame.sensorTimestampNanos, fullElapsed,
-                        geometryStatus,
-                        output.asShortBuffer().get(0).toInt() and 0xffff)
                 } finally {
                     running.decrementAndGet()
+                    combinedRunning.decrementAndGet()
                 }
             },
             onFreshResult = { result ->
-                fresh.incrementAndGet()
-                freshAges += result.ageNanos / 1_000_000.0
-                resultStore.update(result.value, result.capturedAtNanos, result.completedAtNanos)
+                when (val value = result.value) {
+                    is InferenceResult.Completed -> deliverFinal(
+                        LatestOnlySidecar.Result(value.receipt, result.capturedAtNanos, result.completedAtNanos),
+                    )
+                    is InferenceResult.Geometry -> {
+                        if (!geometrySidecar.submit(value.work, result.capturedAtNanos)) {
+                            failures += "geometry sidecar closed before inference handoff"
+                        }
+                    }
+                }
+            },
+            onDiscardedResult = { result ->
+                if (result is InferenceResult.Geometry) result.work.close()
             },
             onFailure = { failure -> failures += "${failure.javaClass.simpleName}: ${failure.message}" },
             nowNanos = SystemClock::elapsedRealtimeNanos,
@@ -178,9 +347,16 @@ class CameraXLatestOnlyDepthDeviceTest {
                     return@setAnalyzer
                 }
                 val stage = if (receivedAt - startedAt < stressNanos) "stress" else "paced"
-                if (stage == "paced" && !claimPacedSlot(lastPacedAt, receivedAt, periodNanos)) {
-                    throttled.incrementAndGet()
-                    return@setAnalyzer
+                if (stage == "paced") {
+                    val pacedClaimed = if (phaseLockedCadence) {
+                        phaseLockedGate.claim(receivedAt)
+                    } else {
+                        claimPacedSlot(lastPacedAt, receivedAt, periodNanos)
+                    }
+                    if (!pacedClaimed) {
+                        throttled.incrementAndGet()
+                        return@setAnalyzer
+                    }
                 }
                 val slot = pool.acquire()
                 if (slot == null) {
@@ -232,6 +408,9 @@ class CameraXLatestOnlyDepthDeviceTest {
             sidecar.close()
             depthExecutor.shutdown()
             depthExecutor.awaitTermination(15, TimeUnit.SECONDS)
+            geometrySidecar.close()
+            geometryExecutor.shutdown()
+            geometryExecutor.awaitTermination(15, TimeUnit.SECONDS)
             converter.close()
             preprocessor.close()
             runtime.close()
@@ -253,14 +432,30 @@ class CameraXLatestOnlyDepthDeviceTest {
                 .put("crop", "center 4:3 after rotation")
                 .put("camera_resize", "OpenCV INTER_LINEAR to 640x480 RGB")
                 .put("tensor", "frozen OpenCV cubic normalize NCHW FP16 1x3x518x686")
+                .put("geometry", "frozen known-height ground pipeline: 5000 candidates, 240 RANSAC iterations")
+                .put("geometry_implementation", if (nativeGeometry) "native_cpp_parity_gated" else "canonical_kotlin")
+                .put("geometry_ransac_seed", 1729)
+                .put("fp16_decode", if (nativeFp16Decode) "native_bit_exact_all_patterns" else "android_half_kotlin")
+                .put("depth_bridge", if (nativeDirectDepthBridge) "native_direct_decode_resize_owned_aligned" else "java_float_arrays")
+                .put("rgb_bridge", if (directRgbBridge) "native_direct_bit_exact" else "kotlin_byte_array")
                 .put(
                     "preprocess_route",
                     "canonical_native_official_fp32_then_integer_rnte_fp16_v1",
                 )
                 .put("backpressure", "CameraX KEEP_ONLY_LATEST + one running/one replaceable pending")
+                .put(
+                    "paced_cadence",
+                    if (phaseLockedCadence) "phase_locked_deadline_skip_missed" else "last_accepted_frame_relative",
+                )
                 .put("depth_period_ms", depthPeriodMs)
                 .put("result_ttl_ms", ttlMs))
             .put("include_geometry", includeGeometry)
+            .put("pipeline_geometry", pipelineGeometry)
+            .put("phase_locked_cadence", phaseLockedCadence)
+            .put("native_fp16_decode", nativeFp16Decode)
+            .put("native_geometry", nativeGeometry)
+            .put("native_direct_depth_bridge", nativeDirectDepthBridge)
+            .put("direct_rgb_bridge", directRgbBridge)
             .put("duration_seconds", durationSeconds)
             .put("stress_seconds", stressSeconds)
             .put("frames_seen", framesSeen.get())
@@ -274,12 +469,27 @@ class CameraXLatestOnlyDepthDeviceTest {
             .put("stress_submitted", stressSubmitted.get())
             .put("paced_submitted", pacedSubmitted.get())
             .put("processed", processed.get())
+            .put("inference_processed", inferenceProcessed.get())
+            .put("stress_inference_processed", stressInferenceProcessed.get())
+            .put("paced_inference_processed", pacedInferenceProcessed.get())
+            .put("stress_processed", stressProcessed.get())
+            .put("paced_processed", pacedProcessed.get())
+            .put("stress_processed_per_second", stressProcessed.get().toDouble() / stressSeconds)
+            .put(
+                "paced_processed_per_second",
+                pacedProcessed.get().toDouble() / (durationSeconds - stressSeconds),
+            )
+            .put("processed_per_second", processed.get().toDouble() / durationSeconds)
             .put("pending_replaced", replaced.get())
+            .put("geometry_pending_replaced", geometryPool.replacedCount.get())
             .put("fresh_results", fresh.get())
             .put("stale_results", stale)
             .put("ttl_expires_to_unknown", ttlExpiresToUnknown)
             .put("max_concurrent_depth_tasks", maxRunning.get())
+            .put("max_concurrent_geometry_tasks", maxGeometryRunning.get())
+            .put("max_concurrent_pipeline_stages", maxCombinedRunning.get())
             .put("pool_available_after_close", pool.available())
+            .put("geometry_pool_available_after_close", geometryPool.available())
             .put("thermal_status_before", thermalBefore)
             .put("thermal_status_after", power.currentThermalStatus)
             .put("thermal_fail_closed", thermalFailClosed.get())
@@ -289,7 +499,11 @@ class CameraXLatestOnlyDepthDeviceTest {
             .put("geometry_unknown", geometryUnknown.get())
             .put("yuv_copy_ms", latencyJson(copyLatencies))
             .put("yuv_to_fp16_plus_qnn_ms", latencyJson(executeLatencies))
-            .put("fp16_decode_align_plus_geometry_ms", latencyJson(geometryLatencies))
+            .put("fp16_decode_align_ms", latencyJson(decodeAlignLatencies))
+            .put("fp16_decode_ms", latencyJson(fp16DecodeLatencies))
+            .put("align_corners_resize_ms", latencyJson(alignResizeLatencies))
+            .put("native_direct_depth_bridge_ms", latencyJson(directDepthBridgeLatencies))
+            .put("ground_geometry_ms", latencyJson(geometryLatencies))
             .put("full_depth_geometry_ms", latencyJson(fullPipelineLatencies))
             .put("fresh_result_age_ms", latencyJson(freshAges))
             .put("failures", JSONArray(failures.toList()))
@@ -307,8 +521,21 @@ class CameraXLatestOnlyDepthDeviceTest {
         if (dimensions != setOf("640x480")) gateFailures += "unexpected camera dimensions: $dimensions"
         if (stressSubmitted.get() < 10) gateFailures += "stress arm did not submit enough frames"
         if (pacedSubmitted.get() < (durationSeconds - stressSeconds)) gateFailures += "paced arm below 1 Hz"
+        if (stressInferenceProcessed.get() + pacedInferenceProcessed.get() != inferenceProcessed.get()) {
+            gateFailures += "inference stage accounting mismatch"
+        }
+        if (stressProcessed.get() + pacedProcessed.get() != processed.get()) {
+            gateFailures += "final stage accounting mismatch"
+        }
         if (maxRunning.get() != 1) gateFailures += "depth concurrency was ${maxRunning.get()}"
+        if (pipelineGeometry && maxGeometryRunning.get() != 1) {
+            gateFailures += "geometry concurrency was ${maxGeometryRunning.get()}"
+        }
+        if (pipelineGeometry && maxCombinedRunning.get() != 2) {
+            gateFailures += "QNN/geometry overlap was not observed: max stages ${maxCombinedRunning.get()}"
+        }
         if (pool.available() != 3) gateFailures += "owned YUV slot leak"
+        if (geometryPool.available() != 3) gateFailures += "owned aligned-depth slot leak"
         if (fresh.get() == 0 || freshAges.any { it > ttlMs }) gateFailures += "TTL freshness contract failed"
         if (!ttlExpiresToUnknown) gateFailures += "expired depth did not become UNKNOWN"
         if (thermalFailClosed.get() != 0) gateFailures += "device reached severe thermal status"
@@ -393,6 +620,11 @@ class CameraXLatestOnlyDepthDeviceTest {
         }
     }
 
+    private sealed interface InferenceResult {
+        data class Completed(val receipt: DepthReceipt) : InferenceResult
+        data class Geometry(val work: OwnedAlignedDepth) : InferenceResult
+    }
+
     private data class DepthReceipt(val stage: String, val sensorTimestampNanos: Long,
         val executeMs: Double, val geometryStatus: String, val checksum: Int)
 
@@ -414,6 +646,50 @@ class CameraXLatestOnlyDepthDeviceTest {
             available.addLast(frame)
         }
         @Synchronized fun available(): Int = available.size
+    }
+
+    private class AlignedDepthPool(capacity: Int, elements: Int, direct: Boolean) {
+        private val available = ArrayDeque<OwnedAlignedDepth>()
+        val replacedCount = AtomicInteger()
+        init { repeat(capacity) { available.add(OwnedAlignedDepth(elements, direct, ::release)) } }
+        @Synchronized fun acquire(): OwnedAlignedDepth? =
+            if (available.isEmpty()) null else available.removeFirst().lease()
+        @Synchronized private fun release(work: OwnedAlignedDepth) {
+            if (!work.started) replacedCount.incrementAndGet()
+            available.addLast(work)
+        }
+        @Synchronized fun available(): Int = available.size
+    }
+
+    private class OwnedAlignedDepth(
+        elements: Int,
+        direct: Boolean,
+        private val onRelease: (OwnedAlignedDepth) -> Unit,
+    ) : AutoCloseable {
+        val arrayDepth = if (direct) null else FloatArray(elements)
+        val directDepth = if (direct) {
+            ByteBuffer.allocateDirect(elements * 4).order(java.nio.ByteOrder.nativeOrder())
+        } else null
+        var stage = ""
+        var sensorTimestampNanos = 0L
+        var fullStartedAtNanos = 0L
+        var checksum = 0
+        var started = false
+        private var leased = false
+
+        fun lease(): OwnedAlignedDepth {
+            check(!leased)
+            leased = true
+            started = false
+            stage = ""
+            return this
+        }
+
+        override fun close() {
+            if (!leased) return
+            leased = false
+            onRelease(this)
+        }
     }
 
     private class TestLifecycleOwner : LifecycleOwner {

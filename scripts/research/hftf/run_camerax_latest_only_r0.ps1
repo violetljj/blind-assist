@@ -8,6 +8,12 @@ param(
     [int]$DepthPeriodMs = 500,
     [int]$TtlMs = 750,
     [switch]$IncludeGeometry,
+    [switch]$PipelineGeometry,
+    [switch]$PhaseLockedCadence,
+    [switch]$NativeFp16Decode,
+    [switch]$NativeGeometry,
+    [switch]$NativeDirectDepthBridge,
+    [switch]$DirectRgbBridge,
     [string]$OutputRoot,
     [switch]$SkipBuild
 )
@@ -41,6 +47,8 @@ if (Test-Path -LiteralPath $artifactRoot) { throw "output already exists: $artif
 New-Item -ItemType Directory -Path $artifactRoot | Out-Null
 $appApk = Join-Path $repoRoot "app\build\outputs\apk\debug\app-debug.apk"
 $testApk = Join-Path $repoRoot "hftf-device-canary\build\outputs\apk\debug\hftf-device-canary-debug.apk"
+$appApkSha256AtInstall = $null
+$testApkSha256AtInstall = $null
 Push-Location $repoRoot
 try {
     if (-not $SkipBuild) {
@@ -53,6 +61,8 @@ try {
             "--no-daemon", "--console=plain", "--max-workers=2"
         ) (Join-Path $artifactRoot "gradle-build.txt")).Lines | Out-Null
     }
+    $appApkSha256AtInstall = (Get-FileHash -LiteralPath $appApk -Algorithm SHA256).Hash
+    $testApkSha256AtInstall = (Get-FileHash -LiteralPath $testApk -Algorithm SHA256).Hash
     (Invoke-Native $AdbPath @("-s", $DeviceSerial, "shell", "input", "keyevent", "KEYCODE_WAKEUP") $null).Lines | Out-Null
     (Invoke-Native $AdbPath @("-s", $DeviceSerial, "shell", "wm", "dismiss-keyguard") $null -AllowFailure).Lines | Out-Null
     (Invoke-Native $AdbPath @("-s", $DeviceSerial, "install", "-r", $appApk) (Join-Path $artifactRoot "install-app.txt")).Lines | Out-Null
@@ -65,6 +75,12 @@ try {
         "-e", "stressSeconds", "$StressSeconds", "-e", "depthPeriodMs", "$DepthPeriodMs",
         "-e", "ttlMs", "$TtlMs",
         "-e", "includeGeometry", "$($IncludeGeometry.IsPresent.ToString().ToLowerInvariant())",
+        "-e", "pipelineGeometry", "$($PipelineGeometry.IsPresent.ToString().ToLowerInvariant())",
+        "-e", "phaseLockedCadence", "$($PhaseLockedCadence.IsPresent.ToString().ToLowerInvariant())",
+        "-e", "nativeFp16Decode", "$($NativeFp16Decode.IsPresent.ToString().ToLowerInvariant())",
+        "-e", "nativeGeometry", "$($NativeGeometry.IsPresent.ToString().ToLowerInvariant())",
+        "-e", "nativeDirectDepthBridge", "$($NativeDirectDepthBridge.IsPresent.ToString().ToLowerInvariant())",
+        "-e", "directRgbBridge", "$($DirectRgbBridge.IsPresent.ToString().ToLowerInvariant())",
         "com.linnan.blindassist.hftf.devicecanary/androidx.test.runner.AndroidJUnitRunner"
     ) (Join-Path $artifactRoot "instrument.txt") -AllowFailure
     $report = Parse-Report $instrument.Lines
@@ -82,8 +98,8 @@ try {
         device_android_release = ((Invoke-Native $AdbPath @("-s", $DeviceSerial, "shell", "getprop", "ro.build.version.release") $null).Lines -join "").Trim()
         cached_dlc_sha256 = $cachedDlcSha256
         git_head = $gitHead
-        app_apk_sha256 = (Get-FileHash -LiteralPath $appApk -Algorithm SHA256).Hash
-        test_apk_sha256 = (Get-FileHash -LiteralPath $testApk -Algorithm SHA256).Hash
+        app_apk_sha256 = $appApkSha256AtInstall
+        test_apk_sha256 = $testApkSha256AtInstall
         instrumentation_exit_code = $instrument.ExitCode; report = $report
     } | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $artifactRoot "result.json") -Encoding utf8
     "artifact_root=$artifactRoot"; "gate_pass=$($report.gate_pass)"

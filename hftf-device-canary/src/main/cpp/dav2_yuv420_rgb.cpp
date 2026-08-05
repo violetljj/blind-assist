@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
+#include <cstdint>
 #include <cstring>
 #include <stdexcept>
 
@@ -11,7 +12,7 @@ constexpr int kOutputHeight = 480;
 class Converter {
 public:
     void convert(JNIEnv* env, jbyteArray y_array, jbyteArray u_array, jbyteArray v_array,
-                 int width, int height, int rotation_degrees, jbyteArray output_array) {
+                 int width, int height, int rotation_degrees, uint8_t* output) {
         if (width <= 0 || height <= 0 || (width & 1) || (height & 1))
             throw std::runtime_error("YUV dimensions must be positive and even");
         if (rotation_degrees != 0 && rotation_degrees != 90 &&
@@ -20,20 +21,17 @@ public:
         const int y_bytes = width * height;
         const int chroma_bytes = y_bytes / 4;
         if (env->GetArrayLength(y_array) < y_bytes || env->GetArrayLength(u_array) < chroma_bytes ||
-            env->GetArrayLength(v_array) < chroma_bytes ||
-            env->GetArrayLength(output_array) < kOutputWidth * kOutputHeight * 3)
+            env->GetArrayLength(v_array) < chroma_bytes || output == nullptr)
             throw std::runtime_error("YUV or RGB array is smaller than the frozen contract");
 
         ensureSize(width, height);
         jbyte* y = env->GetByteArrayElements(y_array, nullptr);
         jbyte* u = env->GetByteArrayElements(u_array, nullptr);
         jbyte* v = env->GetByteArrayElements(v_array, nullptr);
-        jbyte* output = env->GetByteArrayElements(output_array, nullptr);
-        if (!y || !u || !v || !output) {
+        if (!y || !u || !v) {
             if (y) env->ReleaseByteArrayElements(y_array, y, JNI_ABORT);
             if (u) env->ReleaseByteArrayElements(u_array, u, JNI_ABORT);
             if (v) env->ReleaseByteArrayElements(v_array, v, JNI_ABORT);
-            if (output) env->ReleaseByteArrayElements(output_array, output, 0);
             throw std::runtime_error("unable to pin YUV/RGB arrays");
         }
         std::memcpy(i420_.ptr(0), y, static_cast<size_t>(y_bytes));
@@ -67,7 +65,6 @@ public:
         cv::resize(oriented(cv::Rect(left, top, crop_width, crop_height)), output_rgb_,
                    cv::Size(kOutputWidth, kOutputHeight), 0.0, 0.0, cv::INTER_LINEAR);
         std::memcpy(output, output_rgb_.ptr(0), kOutputWidth * kOutputHeight * 3);
-        env->ReleaseByteArrayElements(output_array, output, 0);
     }
 
 private:
@@ -102,8 +99,34 @@ Java_com_linnan_blindassist_hftf_Dav2Yuv420RgbConverter_nativeConvert(
     jint width, jint height, jint rotation_degrees, jbyteArray output) {
     try {
         if (!handle) throw std::runtime_error("YUV converter is closed");
+        if (env->GetArrayLength(output) < kOutputWidth * kOutputHeight * 3)
+            throw std::runtime_error("RGB array is smaller than the frozen contract");
+        jbyte* output_address = env->GetByteArrayElements(output, nullptr);
+        if (!output_address) throw std::runtime_error("unable to pin RGB output array");
+        try {
+            reinterpret_cast<Converter*>(handle)->convert(
+                env, y, u, v, width, height, rotation_degrees,
+                reinterpret_cast<uint8_t*>(output_address));
+        } catch (...) {
+            env->ReleaseByteArrayElements(output, output_address, JNI_ABORT);
+            throw;
+        }
+        env->ReleaseByteArrayElements(output, output_address, 0);
+    } catch (const std::exception& error) { throwJava(env, error.what()); }
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_linnan_blindassist_hftf_Dav2Yuv420RgbConverter_nativeConvertDirect(
+    JNIEnv* env, jobject, jlong handle, jbyteArray y, jbyteArray u, jbyteArray v,
+    jint width, jint height, jint rotation_degrees, jobject output) {
+    try {
+        if (!handle) throw std::runtime_error("YUV converter is closed");
+        auto* output_address = static_cast<uint8_t*>(env->GetDirectBufferAddress(output));
+        if (!output_address || env->GetDirectBufferCapacity(output) <
+            kOutputWidth * kOutputHeight * 3)
+            throw std::runtime_error("invalid direct RGB output buffer");
         reinterpret_cast<Converter*>(handle)->convert(
-            env, y, u, v, width, height, rotation_degrees, output);
+            env, y, u, v, width, height, rotation_degrees, output_address);
     } catch (const std::exception& error) { throwJava(env, error.what()); }
 }
 

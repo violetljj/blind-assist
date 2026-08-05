@@ -18,6 +18,38 @@ constexpr int kOutputWidth = 686;
 constexpr int kOutputHeight = 518;
 constexpr int kInputBytes = kInputWidth * kInputHeight * 3;
 constexpr int kOutputElements = kOutputWidth * kOutputHeight * 3;
+constexpr int kAlignedDepthWidth = 640;
+constexpr int kAlignedDepthHeight = 480;
+thread_local std::vector<float> decoded_depth_workspace(
+    static_cast<size_t>(kOutputWidth) * kOutputHeight);
+
+struct DepthAlignMap {
+    std::vector<int> x0 = std::vector<int>(kAlignedDepthWidth);
+    std::vector<int> x1 = std::vector<int>(kAlignedDepthWidth);
+    std::vector<double> fx = std::vector<double>(kAlignedDepthWidth);
+    std::vector<int> y0 = std::vector<int>(kAlignedDepthHeight);
+    std::vector<int> y1 = std::vector<int>(kAlignedDepthHeight);
+    std::vector<double> fy = std::vector<double>(kAlignedDepthHeight);
+
+    DepthAlignMap() {
+        for (int column = 0; column < kAlignedDepthWidth; ++column) {
+            const double source = static_cast<double>(column) * (kOutputWidth - 1) /
+                                  (kAlignedDepthWidth - 1);
+            x0[column] = static_cast<int>(source);
+            x1[column] = std::min(x0[column] + 1, kOutputWidth - 1);
+            fx[column] = source - x0[column];
+        }
+        for (int row = 0; row < kAlignedDepthHeight; ++row) {
+            const double source = static_cast<double>(row) * (kOutputHeight - 1) /
+                                  (kAlignedDepthHeight - 1);
+            y0[row] = static_cast<int>(source);
+            y1[row] = std::min(y0[row] + 1, kOutputHeight - 1);
+            fy[row] = source - y0[row];
+        }
+    }
+};
+
+const DepthAlignMap depth_align_map;
 
 void interpolate_cubic(float x, float* coefficients) {
     constexpr float a = -0.75f;
@@ -222,6 +254,36 @@ uint16_t float_to_half_rte(float value) {
     if (half_exponent >= 31u) return static_cast<uint16_t>(sign | 0x7c00u);
     return static_cast<uint16_t>(sign | (half_exponent << 10) | half_mantissa);
 }
+
+float half_to_float_exact(uint16_t value) {
+    const uint32_t sign = static_cast<uint32_t>(value & 0x8000u) << 16;
+    uint32_t exponent = (value >> 10) & 0x1fu;
+    uint32_t mantissa = value & 0x03ffu;
+    uint32_t bits;
+    if (exponent == 0u) {
+        if (mantissa == 0u) {
+            bits = sign;
+        } else {
+            int unbiased_exponent = -14;
+            while ((mantissa & 0x0400u) == 0u) {
+                mantissa <<= 1;
+                --unbiased_exponent;
+            }
+            mantissa &= 0x03ffu;
+            bits = sign |
+                (static_cast<uint32_t>(unbiased_exponent + 127) << 23) |
+                (mantissa << 13);
+        }
+    } else if (exponent == 0x1fu) {
+        bits = sign | 0x7f800000u | (mantissa << 13);
+        if (mantissa != 0u) bits |= 0x00400000u;
+    } else {
+        bits = sign | ((exponent + 112u) << 23) | (mantissa << 13);
+    }
+    float output;
+    std::memcpy(&output, &bits, sizeof(output));
+    return output;
+}
 }  // namespace
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -285,6 +347,25 @@ Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeRunOfficial(
 }
 
 extern "C" JNIEXPORT void JNICALL
+Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeRunOfficialDirect(
+        JNIEnv* env, jobject, jlong handle, jobject input, jobject output) {
+    auto* preprocessor = reinterpret_cast<Preprocessor*>(handle);
+    const auto* input_address = static_cast<const uint8_t*>(env->GetDirectBufferAddress(input));
+    void* output_address = env->GetDirectBufferAddress(output);
+    const jlong input_capacity = env->GetDirectBufferCapacity(input);
+    const jlong output_capacity = env->GetDirectBufferCapacity(output);
+    const jlong required_output = static_cast<jlong>(kOutputElements) * 4;
+    if (preprocessor == nullptr || input_address == nullptr || output_address == nullptr ||
+        input_capacity < kInputBytes || output_capacity < required_output) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"),
+                      "invalid direct official-compatible buffers");
+        return;
+    }
+    canonical_official_f32(input_address, *preprocessor,
+                           reinterpret_cast<float*>(output_address));
+}
+
+extern "C" JNIEXPORT void JNICALL
 Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeConvertFp32ToFp16(
         JNIEnv* env, jobject, jobject input, jobject output, jint elements) {
     const auto* input_address = static_cast<const float*>(env->GetDirectBufferAddress(input));
@@ -300,6 +381,66 @@ Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeConvertFp32ToFp16(
     }
     for (jint index = 0; index < elements; ++index) {
         output_address[index] = float_to_half_rte(input_address[index]);
+    }
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeDecodeFp16ToFp32(
+        JNIEnv* env, jobject, jobject input, jfloatArray output, jint elements) {
+    const auto* input_address = static_cast<const uint16_t*>(env->GetDirectBufferAddress(input));
+    const jlong input_capacity = env->GetDirectBufferCapacity(input);
+    if (elements < 0 || input_address == nullptr ||
+        input_capacity < static_cast<jlong>(elements) * 2 ||
+        env->GetArrayLength(output) < elements) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"),
+                      "invalid strict FP16-to-FP32 buffers");
+        return;
+    }
+    auto* output_address = static_cast<jfloat*>(env->GetPrimitiveArrayCritical(output, nullptr));
+    if (output_address == nullptr) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalStateException"),
+                      "unable to pin FP32 output array");
+        return;
+    }
+    for (jint index = 0; index < elements; ++index) {
+        output_address[index] = half_to_float_exact(input_address[index]);
+    }
+    env->ReleasePrimitiveArrayCritical(output, output_address, 0);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeDecodeResizeFp16AlignCorners(
+        JNIEnv* env, jobject, jobject input, jobject output) {
+    const auto* input_address = static_cast<const uint16_t*>(env->GetDirectBufferAddress(input));
+    auto* output_address = static_cast<float*>(env->GetDirectBufferAddress(output));
+    const jlong input_capacity = env->GetDirectBufferCapacity(input);
+    const jlong output_capacity = env->GetDirectBufferCapacity(output);
+    if (input_address == nullptr || output_address == nullptr ||
+        input_capacity < static_cast<jlong>(kOutputWidth) * kOutputHeight * 2 ||
+        output_capacity < static_cast<jlong>(kAlignedDepthWidth) * kAlignedDepthHeight * 4) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"),
+                      "invalid direct FP16 depth or aligned-depth buffer");
+        return;
+    }
+    for (int index = 0; index < kOutputWidth * kOutputHeight; ++index) {
+        decoded_depth_workspace[index] = half_to_float_exact(input_address[index]);
+    }
+    const float* decoded = decoded_depth_workspace.data();
+    for (int row = 0; row < kAlignedDepthHeight; ++row) {
+        const int y0 = depth_align_map.y0[row];
+        const int y1 = depth_align_map.y1[row];
+        const double fy = depth_align_map.fy[row];
+        for (int column = 0; column < kAlignedDepthWidth; ++column) {
+            const int x0 = depth_align_map.x0[column];
+            const int x1 = depth_align_map.x1[column];
+            const double fx = depth_align_map.fx[column];
+            const double top = decoded[y0 * kOutputWidth + x0] * (1.0 - fx) +
+                               decoded[y0 * kOutputWidth + x1] * fx;
+            const double bottom = decoded[y1 * kOutputWidth + x0] * (1.0 - fx) +
+                                  decoded[y1 * kOutputWidth + x1] * fx;
+            output_address[row * kAlignedDepthWidth + column] =
+                static_cast<float>(top * (1.0 - fy) + bottom * fy);
+        }
     }
 }
 
