@@ -1,4 +1,19 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：violjjet。新增
+  AtomS3R-M12 + Unit ToF4M (`VL53L1X`) 的最小设备联调工程：按官方 HY2.0-4P
+  映射固定 `GPIO2/SDA`、`GPIO1/SCL` 与 7 位 `0x29`，固件输出 boot-unique
+  monotonic clock domain、严格递增 sample index、read-complete 时间戳、range status、
+  timeout、signal/ambient rate 和 fail-closed `range_m` JSONL；无效测量不伪造米制值，
+  驱动未提供 per-sample sigma 时不填充 `sigma_m`。补充只写
+  `artifacts.local/evidence/tof4m/` 且拒绝覆盖的串口采集/哈希 receipt，以及合成
+  validator 回归。该入口明确属于单区 Development capture，不填充伪 zone，不覆盖
+  现有 VL53L8CX 多区合同，也不授权 RGB 同步、标定、Android、提醒或安全结论。
+  Arduino CLI 1.5.1 与 Pololu VL53L1X 1.3.1 已安装；M5Stack 3.3.8 板包的
+  394.69 MiB GitHub toolchain 下载在 0.15% 因连接超时，故本轮记录实际板级编译仍待
+  网络/本机 Arduino toolchain 可用后补跑。Pololu 1.3.1 真实头文件下的 C++17
+  syntax-only 检查、5 项 Python 单测、Ruff、PowerShell 解析、`git diff --check` 与
+  文档索引通过；全仓卫生门仍被既有 root allowlist、历史 Module README/内部引用等
+  结构债务阻断，本任务未改动或吸收这些并发范围。
 - 时间：2026-08-04（Asia/Hong_Kong）；执行者：violjjet。补齐 DA V2 canonical
   CameraX 十分钟持续部署门的实现与证据绑定：持续测试显式调用
   `preprocessFp16CanonicalStrict()`，报告固定
