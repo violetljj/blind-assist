@@ -51,8 +51,8 @@ def valid_sha(value: Any) -> bool:
 
 
 def resolve_inside(repo_root: Path, relative: str) -> Path:
-    root = repo_root.resolve()
-    path = (root / relative).resolve()
+    root = Path(os.path.abspath(repo_root))
+    path = Path(os.path.abspath(root / relative))
     require(path.is_relative_to(root), f"path leaves repository: {relative}")
     return path
 

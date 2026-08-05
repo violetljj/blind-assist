@@ -35,13 +35,19 @@
     "insufficient_terminal": "P3_R0_2_SEALED_HOLDOUT_NOT_EVALUABLE_NO_COHORT_SUBSTITUTION"
   },
   "producers": {
-    "common": {"path": "scripts/research/hftf/p3_r0_2_1_sealing_common.py", "sha256": "21204A7F62A614FE852E494DF7EDF4E50A2E74D0EF6D389A6DE71501F78B20A0"},
+    "common": {"path": "scripts/research/hftf/p3_r0_2_1_sealing_common.py", "sha256": "0D453D041510FAE525383A6E8A3F9161159E75E690C1C82B1B5313C3D1A6FF48"},
     "private_targets": {"path": "scripts/research/hftf/derive_p3_r0_2_1_bonn_private_targets.py", "sha256": "DFE88DBB4FA5746C70A493B66AD3D240C31CD9A8178795CDEE9D432E883BFD83"},
     "sealing_key": {"path": "scripts/research/hftf/generate_p3_r0_2_1_sealing_key.py", "sha256": "B22E21AFD81FA22C002D65E150AC0C928C85F6113DBBECD122704D7A507296EA"},
     "sealed_bundle": {"path": "scripts/research/hftf/seal_p3_r0_2_1_target_bundle.py", "sha256": "16C88B56F9278BACC1DAD55A252B4D9F28BB241AF7BB0986BC39345B19AB5510"},
     "aggregate_coverage": {"path": "scripts/research/hftf/produce_p3_r0_2_1_aggregate_coverage_receipt.py", "sha256": "D3FA6420A3BA350ED6D6D03D21CBE54AA2FB4356B2A2A02642BF38E5A2F5D12E"}
   },
-  "tests": {"path": "scripts/research/hftf/test_p3_r0_2_1_sealing_producers.py", "sha256": "302A6BB1F7409CF80AA03C78C7C0D14265263492FB0B1C07AEA9DE41FC564A01"},
+  "tests": {"path": "scripts/research/hftf/test_p3_r0_2_1_sealing_producers.py", "sha256": "CE5FE7C6A0A728ABB88D961F9EC6D14C4332442B1B9FC746A9C830798FF6A3B9"},
+  "attempt_01_pre_target_stop": {
+    "reason": "canonical artifacts.local junction resolved to its F-drive backend and was incorrectly rejected as outside the repository",
+    "private_targets_created": false,
+    "depth_frames_read": false,
+    "request_retained_without_overwrite": true
+  },
   "execution_order": ["derive private targets", "generate sealing key", "seal bundle", "produce aggregate coverage receipt"],
   "overwrite": false,
   "model_loaded": false,

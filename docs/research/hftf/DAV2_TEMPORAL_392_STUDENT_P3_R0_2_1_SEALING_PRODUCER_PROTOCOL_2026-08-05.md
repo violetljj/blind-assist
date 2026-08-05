@@ -8,6 +8,8 @@ The sealed bundle is an accurately named deterministic encrypt-then-HMAC local e
 
 No target has yet been read under this protocol. No model, optimizer or training runtime is involved.
 
+The first execution request stopped before any depth read because the canonical `artifacts.local` junction resolved to its F-drive storage backend and the path guard treated that as leaving the checkout. The guard now validates the canonical E-drive path lexically before filesystem junction resolution. Attempt 01 remains retained and produced no private output.
+
 ```text
 P3_R0_2_1_SEALING_PRODUCERS_FROZEN_TARGETS_UNREAD
 ```

@@ -22,6 +22,7 @@ derive = load("derive_p3_r0_2_1_bonn_private_targets.py")
 seal = load("seal_p3_r0_2_1_target_bundle.py")
 coverage = load("produce_p3_r0_2_1_aggregate_coverage_receipt.py")
 keygen = load("generate_p3_r0_2_1_sealing_key.py")
+common = load("p3_r0_2_1_sealing_common.py")
 
 
 class SealingProducerTest(unittest.TestCase):
@@ -62,6 +63,14 @@ class SealingProducerTest(unittest.TestCase):
             path.write_bytes(b"x")
             with self.assertRaisesRegex(ValueError, "overwrite forbidden"):
                 coverage.exclusive_write(path, b"y")
+
+    def test_lexical_repo_boundary_accepts_artifacts_junction_path(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            resolved = common.resolve_inside(root, "artifacts.local/evidence/value.json")
+            self.assertTrue(resolved.is_relative_to(root))
+            with self.assertRaisesRegex(ValueError, "path leaves repository"):
+                common.resolve_inside(root, "../escape.json")
 
     def test_key_generator_writes_exactly_32_private_bytes(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
