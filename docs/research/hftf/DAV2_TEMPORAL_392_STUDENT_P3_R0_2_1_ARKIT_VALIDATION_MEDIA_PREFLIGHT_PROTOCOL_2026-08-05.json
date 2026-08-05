@@ -1,0 +1,36 @@
+{
+  "schema": "blindassist_p3_r0_2_1_arkit_validation_media_preflight_protocol",
+  "protocol_id": "DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_ARKIT_VALIDATION_MEDIA_PREFLIGHT_2026-08-05",
+  "parent_protocol": {
+    "path": "docs/research/hftf/DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_ARKIT_VALIDATION_EXTENSION_PROTOCOL_2026-08-05.json",
+    "sha256": "A5126B83A8A00B930035F8042A92E51E5A8CF45C4BC1381D12077A4214807531"
+  },
+  "roster": {
+    "path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1-validation-extension/roster-attempt-01.json",
+    "sha256": "2CD2425A7243D58D230FA414C8C8478E252605F547F18F32C07891CDF761B024"
+  },
+  "base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw",
+  "official_partition": "Validation",
+  "assets_per_video": [
+    "lowres_wide.zip",
+    "lowres_depth.zip",
+    "confidence.zip",
+    "lowres_wide_intrinsics.zip",
+    "lowres_wide.traj"
+  ],
+  "request_method": "HEAD",
+  "expected_request_count": 40,
+  "timeout_seconds": 20,
+  "retries": 3,
+  "media_body_bytes_read": false,
+  "replacement_allowed": false,
+  "producer": {
+    "path": "scripts/research/hftf/preflight_p3_r0_2_1_arkit_validation_assets.py",
+    "sha256": "7E2B18A76741E282B3BEE327304F8F5F0EFD9A6966CF98F2BCD4BE990BD453F4"
+  },
+  "tests": {
+    "path": "scripts/research/hftf/test_preflight_p3_r0_2_1_arkit_validation_assets.py",
+    "sha256": "3DCCB1C926C712DB4E7B3CE25CDF25A880C0D3F5EC25B518AB860266375A199F"
+  },
+  "terminal": "P3_R0_2_1_ARKIT_VALIDATION_MEDIA_PREFLIGHT_FROZEN_NOT_RUN"
+}

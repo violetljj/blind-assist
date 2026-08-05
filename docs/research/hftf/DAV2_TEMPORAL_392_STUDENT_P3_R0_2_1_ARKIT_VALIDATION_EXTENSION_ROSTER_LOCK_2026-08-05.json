@@ -1,0 +1,24 @@
+{
+  "schema": "blindassist_p3_r0_2_1_arkit_validation_extension_roster_lock_result",
+  "protocol_sha256": "A5126B83A8A00B930035F8042A92E51E5A8CF45C4BC1381D12077A4214807531",
+  "roster_path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1-validation-extension/roster-attempt-01.json",
+  "roster_sha256": "2CD2425A7243D58D230FA414C8C8478E252605F547F18F32C07891CDF761B024",
+  "exact_replay": true,
+  "excluded_visit_count": 28,
+  "eligible_validation_visit_count": 174,
+  "selected": [
+    {"visit_id": "422381", "video_id": "42446540"},
+    {"visit_id": "460420", "video_id": "44358435"},
+    {"visit_id": "469782", "video_id": "47334107"},
+    {"visit_id": "470821", "video_id": "47331971"},
+    {"visit_id": "483314", "video_id": "48018345"},
+    {"visit_id": "466628", "video_id": "45261121"},
+    {"visit_id": "469013", "video_id": "45663113"},
+    {"visit_id": "421380", "video_id": "42445021"}
+  ],
+  "media_body_bytes_read": false,
+  "labels_opened": false,
+  "model_outputs_read": false,
+  "replacement_allowed": false,
+  "terminal": "P3_R0_2_1_ARKIT_VALIDATION_EXTENSION_ROSTER_LOCKED_MEDIA_UNOPENED"
+}
