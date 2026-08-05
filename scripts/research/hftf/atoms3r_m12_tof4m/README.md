@@ -1,4 +1,4 @@
-# AtomS3R-M12 + Unit ToF4M bring-up
+# AtomS3R-M12 + Unit ToF4M 实时画面与测距
 
 状态：development
 
@@ -38,6 +38,24 @@ arduino-cli upload --fqbn m5stack:esp32:m5stack_atoms3r -p COMx scripts/research
 
 进入下载模式：长按侧面复位键约两秒，看到内部绿色 LED 后松开，再选择新出现的
 COM 端口。烧录后串口为 `115200 baud`。
+
+## Wi-Fi 与实时网页
+
+固件会优先连接已保存的 2.4 GHz Wi-Fi。首次使用或连接失败时，它会启动临时热点：
+
+- SSID：`AtomS3R-ToF-Setup`
+- 密码：`blindassist`
+- 配置页：`http://192.168.4.1/`
+
+保存后设备重启并加入用户网络；凭据只存入设备 NVS，不写入串口或仓库。电脑或手机
+切回同一个局域网后，访问 `http://atoms3r-tof.local/`。若当前系统的 mDNS 不可用，
+请从路由器设备列表或串口 `wifi_station` 事件取得 DHCP 地址后直接访问，例如
+`http://192.168.x.x/`。DHCP 地址可能随重连变化。
+
+控制页在端口 80，MJPEG 流在端口 81。默认相机档为 XGA `1024×768`、JPEG quality
+`10`、双 PSRAM framebuffer 和 latest-frame grab；这是清晰度与延迟的平衡档，并非
+OV3660 的最高静态分辨率。页面绿色框只标示 ToF4M 的中央单区窄视场，画面其余区域
+没有对应距离，网页也不构成避障或安全系统。
 
 ## 输出合同
 

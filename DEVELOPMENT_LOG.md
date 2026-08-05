@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：violjjet。在真实
+  AtomS3R-M12 上补齐 OV3660 + Unit ToF4M 局域网实时页：设备可保存 2.4 GHz
+  Wi-Fi 到本地 NVS，连接失败时回退到受密码保护的配置 AP；控制/API 使用端口 80，
+  MJPEG 使用端口 81，网页每 200 ms 更新中央单区距离并显式警示其不代表整幅深度或
+  安全判断。相机电源 GPIO18 在初始化前拉低并稳定 1500 ms，解决过短上电稳定时间
+  导致的 OV3660 init 失败；最终档位为 XGA `1024x768`、JPEG quality 10、双 PSRAM
+  framebuffer 和 latest-frame grab。真实 `m5stack:esp32:m5stack_atoms3r` 编译为
+  program/RAM `1044155 B (31%) / 60016 B (18%)`，刷入 COM5 的各 flash 区段均通过
+  esptool 写入哈希校验，app bin SHA-256 为
+  `4b0f962450be150de994038cb3b8e8357c4fbebcba4a7c05edd94469ec39b3b6`。设备重启后在
+  station 模式返回 dashboard HTTP 200；实测首帧 JPEG SOF 为 `1024x768`，3.00 秒
+  观察 74 帧（约 24.66 fps），5 次距离 API 均为 `VALID`、`73–75 mm`、age
+  `21–71 ms`。这些结果只证明当前设备与局域网下的 Development 实时显示和单点测距，
+  不授权相机标定、RGB-ToF 时空注册、多区深度、精度、持续可靠性、提醒或安全结论。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：violjjet。新增
   AtomS3R-M12 + Unit ToF4M (`VL53L1X`) 的最小设备联调工程：按官方 HY2.0-4P
   映射固定 `GPIO2/SDA`、`GPIO1/SCL` 与 7 位 `0x29`，固件输出 boot-unique
