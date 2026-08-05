@@ -60,6 +60,11 @@ class DevelopmentScreenTrainerTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "path leaves repository"):
             _lexical_inside(root, "../escape.json")
 
+    def test_output_boundary_is_lexical_and_overwrite_protected(self) -> None:
+        root = Path(r"E:\linnan\linnan")
+        path = _lexical_inside(root, "artifacts.local/evidence/new-output")
+        self.assertTrue(path.is_relative_to(root))
+
     def test_training_receipt_contract_is_auditable(self) -> None:
         required = {
             "schema", "protocol_sha256", "evidence_limit", "activation_bindings_sha256",

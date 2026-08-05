@@ -390,12 +390,8 @@ def main() -> None:
     activation_path = _lexical_inside(root, str(args.activation_bindings))
     require(activation_path.is_file(), "activation bindings missing")
     source_root = _lexical_inside(root, str(args.source_root))
-    output_root = args.output_root.resolve()
-    try:
-        output_root.relative_to(root)
-    except ValueError as error:
-        raise ValueError("output root leaves repository") from error
-    assert_outputs_absent(root, [str(output_root.relative_to(root))])
+    output_root = _lexical_inside(root, str(args.output_root))
+    require(not output_root.exists(), f"overwrite forbidden: {output_root}")
     protocol, activation, train, validation, teacher_depth_path, checkpoint_path = preflight(root, protocol_path, activation_path, source_root)
 
     # Delayed imports: every binding, identity and holdout check above has passed.
