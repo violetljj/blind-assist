@@ -41,6 +41,8 @@
 - [Machine-readable P3 R0.2.1 media preflight result](DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_ARKIT_VALIDATION_MEDIA_PREFLIGHT_RESULT_2026-08-05.json)
 - [P3 R0.2 local asset inventory](P3_R0_2_LOCAL_ASSET_INVENTORY_2026-08-05.md)
 - [Machine-readable P3 R0.2 local asset inventory](P3_R0_2_LOCAL_ASSET_INVENTORY_2026-08-05.json)
+- [P3 R0.2.1 ARKit validation download protocol](DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_ARKIT_VALIDATION_DOWNLOAD_PROTOCOL_2026-08-05.md)
+- [Machine-readable P3 R0.2.1 validation download protocol](DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_ARKIT_VALIDATION_DOWNLOAD_PROTOCOL_2026-08-05.json)
 - [DA V2 模型变体准确率与 false-clear 门 R0](DAV2_MODEL_VARIANT_VALIDATION_R0_PROTOCOL_2026-08-05.md)
 - [Machine-readable model-variant gate protocol](DAV2_MODEL_VARIANT_VALIDATION_R0_PROTOCOL_2026-08-05.json)
 - [DA V2 模型变体真值参照门 R1](DAV2_MODEL_VARIANT_VALIDATION_R1_PROTOCOL_2026-08-05.md)
