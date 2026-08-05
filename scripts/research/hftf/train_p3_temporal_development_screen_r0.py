@@ -43,7 +43,6 @@ from p3_r0_1_asset_common import (
     resolve_inside,
     sha256_file,
     valid_sha,
-    verify_bound_file,
 )
 
 
@@ -88,6 +87,22 @@ def _sha(value: Any, label: str) -> str:
     return value
 
 
+def _lexical_inside(repo_root: Path, value: str) -> Path:
+    root = Path(os.path.abspath(repo_root))
+    candidate = Path(os.path.abspath(value if os.path.isabs(value) else root / value))
+    require(candidate.is_relative_to(root), f"path leaves repository: {value}")
+    return candidate
+
+
+def _verify_input_binding(repo_root: Path, binding: dict[str, Any], label: str) -> Path:
+    exact_fields(binding, {"path", "sha256"}, label)
+    expected = _sha(binding["sha256"], label)
+    path = _lexical_inside(repo_root, str(binding["path"]))
+    require(path.is_file(), f"{label} file missing")
+    require(sha256_file(path) == expected, f"{label} SHA mismatch")
+    return path
+
+
 def _binding_equal(left: dict[str, Any], right: dict[str, Any], label: str) -> None:
     exact_fields(left, {"path", "sha256"}, label)
     exact_fields(right, {"path", "sha256"}, label)
@@ -109,12 +124,9 @@ def _resolve_source_rgb_for_video(repo_root: Path, source_root: Path, video_id: 
     require(value and not Path(value).is_absolute(), "RGB identity must be a non-empty relative path")
     video = str(video_id)
     require(video and not Path(video).is_absolute() and "/" not in video and "\\" not in video, "video identity invalid")
-    path = (source_root / video / value).resolve()
-    try:
-        path.relative_to(source_root)
-        path.relative_to(repo_root)
-    except ValueError as error:
-        raise ValueError("RGB identity leaves source root or repository") from error
+    path = Path(os.path.abspath(source_root / video / value))
+    require(path.is_relative_to(Path(os.path.abspath(source_root))), "RGB identity leaves source root")
+    require(path.is_relative_to(Path(os.path.abspath(repo_root))), "RGB identity leaves repository")
     return path
 
 
@@ -158,7 +170,7 @@ def _load_activation_bindings(repo_root: Path, path: Path, protocol: dict[str, A
     require(activation["claim_ceiling"] == "DEVELOPMENT_SIGNAL_ONLY", "activation claim ceiling drift")
     require(_sha(activation["protocol_sha256"], "activation protocol") == sha256_file(protocol["_path"]), "activation protocol SHA mismatch")
     for key in ("train_manifest", "validation_manifest", "class_weights", "disagreement_cache"):
-        verify_bound_file(repo_root, activation[key], key.replace("_", " "))
+        _verify_input_binding(repo_root, activation[key], key.replace("_", " "))
     require(activation["terminal"] == "P3_TEMPORAL_DEVELOPMENT_ASSETS_MATERIALIZED_DEVELOPMENT_SIGNAL_ONLY", "activation terminal drift")
     exact_fields(activation["runtime_state"], {
         "bonn_sealed_bundle_read", "holdout_outcomes_opened", "p3_model_constructed",
@@ -181,7 +193,7 @@ def _validate_manifest(
     source_root: Path,
     expected_teacher_depth_sha256: str,
 ) -> list[dict[str, Any]]:
-    verify_bound_file(repo_root, binding, f"{role} manifest")
+    _verify_input_binding(repo_root, binding, f"{role} manifest")
     manifest = load_json(path)
     exact_fields(manifest, {"schema", "protocol_sha256", "evidence_limit", "role", "clips"}, f"{role} manifest")
     require(manifest["schema"] == MANIFEST_SCHEMA and manifest["role"] == role, f"{role} manifest schema/role drift")
@@ -256,23 +268,23 @@ def preflight(
     activation = _load_activation_bindings(repo_root, activation_path, protocol)
     train_binding = activation["train_manifest"]
     validation_binding = activation["validation_manifest"]
-    checkpoint_path = verify_bound_file(repo_root, protocol["a2"]["checkpoint"], "A2 checkpoint")
-    receipt_path = verify_bound_file(repo_root, protocol["a2"]["training_receipt"], "A2 training receipt")
+    checkpoint_path = _verify_input_binding(repo_root, protocol["a2"]["checkpoint"], "A2 checkpoint")
+    receipt_path = _verify_input_binding(repo_root, protocol["a2"]["training_receipt"], "A2 training receipt")
     receipt = load_json(receipt_path)
     require(receipt.get("schema") == "blindassist_dav2_392_distillation_a2_r0_training_result", "A2 receipt schema drift")
     require(receipt.get("terminal") == "A2_DISTILLATION_TRAINING_COMPLETE_P1_UNOPENED" and receipt.get("truth_inputs_opened") is False, "A2 receipt boundary drift")
     require(receipt.get("checkpoint", {}).get("sha256") == protocol["a2"]["checkpoint"]["sha256"].upper(), "A2 selected checkpoint mismatch")
-    teacher_manifest_path = verify_bound_file(repo_root, protocol["teacher_cache"]["manifest"], "teacher cache manifest")
-    teacher_depth_path = verify_bound_file(repo_root, protocol["teacher_cache"]["depth"], "teacher cache depth")
-    verify_bound_file(repo_root, protocol["a2"]["dav2_dpt_source"], "DA V2 DPT source")
+    teacher_manifest_path = _verify_input_binding(repo_root, protocol["teacher_cache"]["manifest"], "teacher cache manifest")
+    teacher_depth_path = _verify_input_binding(repo_root, protocol["teacher_cache"]["depth"], "teacher cache depth")
+    _verify_input_binding(repo_root, protocol["a2"]["dav2_dpt_source"], "DA V2 DPT source")
     exact_fields(protocol["a2"]["dav2_repo"], {"path"}, "DA V2 repository")
     require(resolve_inside(repo_root, str(protocol["a2"]["dav2_repo"]["path"])).is_dir(), "DA V2 repository missing")
     teacher_manifest = load_json(teacher_manifest_path)
     require(teacher_manifest.get("truth_inputs_opened") is False and isinstance(teacher_manifest.get("records"), list), "teacher cache boundary drift")
     records = {int(row["index"]): row for row in teacher_manifest["records"]}
     require(len(records) == len(teacher_manifest["records"]), "duplicate teacher indices")
-    train_path = verify_bound_file(repo_root, train_binding, "train manifest")
-    validation_path = verify_bound_file(repo_root, validation_binding, "validation manifest")
+    train_path = _verify_input_binding(repo_root, train_binding, "train manifest")
+    validation_path = _verify_input_binding(repo_root, validation_binding, "validation manifest")
     train = _validate_manifest(repo_root, train_path, train_binding, "train", records, protocol["permanent_exclusions"], source_root, _sha(protocol["teacher_cache"]["depth"]["sha256"], "teacher cache depth"))
     validation = _validate_manifest(repo_root, validation_path, validation_binding, "validation", records, protocol["permanent_exclusions"], source_root, _sha(protocol["teacher_cache"]["depth"]["sha256"], "teacher cache depth"))
     train_parents = {str(clip["parent_id"]) for clip in train}
@@ -375,13 +387,9 @@ def main() -> None:
     root = args.repo_root.resolve()
     protocol_path = args.protocol.resolve()
     require(protocol_path.is_file(), "protocol missing")
-    activation_path = args.activation_bindings.resolve()
+    activation_path = _lexical_inside(root, str(args.activation_bindings))
     require(activation_path.is_file(), "activation bindings missing")
-    try:
-        activation_path.relative_to(root)
-    except ValueError as error:
-        raise ValueError("activation bindings leave repository") from error
-    source_root = args.source_root.resolve()
+    source_root = _lexical_inside(root, str(args.source_root))
     output_root = args.output_root.resolve()
     try:
         output_root.relative_to(root)
@@ -391,7 +399,7 @@ def main() -> None:
     protocol, activation, train, validation, teacher_depth_path, checkpoint_path = preflight(root, protocol_path, activation_path, source_root)
 
     # Delayed imports: every binding, identity and holdout check above has passed.
-    dav2_root = resolve_inside(root, str(protocol["a2"]["dav2_repo"]["path"]))
+    dav2_root = _lexical_inside(root, str(protocol["a2"]["dav2_repo"]["path"]))
     require(dav2_root.is_dir(), "DA V2 repository missing")
     sys.path.insert(0, str(dav2_root / "metric_depth"))
     from depth_anything_v2.dpt import DepthAnythingV2  # type: ignore[import-not-found]

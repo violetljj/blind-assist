@@ -16,6 +16,7 @@ from train_p3_temporal_development_screen_r0 import (
     TRAINING_RESULT_FIELDS,
     _class_weights,
     _teacher_index,
+    _lexical_inside,
 )
 
 
@@ -51,6 +52,13 @@ class DevelopmentScreenTrainerTest(unittest.TestCase):
             _teacher_index("7")
         with self.assertRaisesRegex(ValueError, "teacher depth index"):
             _teacher_index("npy-index:-1")
+
+    def test_lexical_input_boundary_accepts_artifacts_junction_path(self) -> None:
+        root = Path(r"E:\linnan\linnan")
+        path = _lexical_inside(root, "artifacts.local/evidence/value.json")
+        self.assertTrue(path.is_relative_to(root))
+        with self.assertRaisesRegex(ValueError, "path leaves repository"):
+            _lexical_inside(root, "../escape.json")
 
     def test_training_receipt_contract_is_auditable(self) -> None:
         required = {
