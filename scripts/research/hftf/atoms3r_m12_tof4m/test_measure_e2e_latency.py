@@ -2,6 +2,7 @@ import unittest
 
 import cv2
 import numpy as np
+
 from measure_e2e_latency import (
     ClockSync,
     FramePacket,
@@ -55,6 +56,7 @@ def frame_headers(sequence: int = 7) -> dict[str, str]:
         "x-auto-exposure": "true",
         "x-camera-psram-dma-enabled": "false",
         "x-stream-tcp-nodelay": "false",
+        "x-stream-preamble-coalesced": "false",
         "x-exposure-value": "321",
         "x-wifi-rssi-dbm": "-37",
         "x-free-heap-bytes": "150000",
@@ -106,6 +108,7 @@ class MeasureE2eLatencyTest(unittest.TestCase):
         self.assertEqual(row["device_capture_minus_acquire_start_us"], 0)
         self.assertIsNone(row["pipeline_num_threads"])
         self.assertFalse(row["stream_tcp_nodelay"])
+        self.assertFalse(row["stream_preamble_coalesced"])
 
     def test_absent_tof_timestamp_makes_skew_not_evaluable(self):
         headers = frame_headers()

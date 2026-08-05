@@ -1,5 +1,28 @@
 # Development Log
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
+  ToF4M stream preamble coalescing 单变量 R7。冻结 XGA/quality 10/自动曝光/
+  DMA-off/ToF-on/TCP_NODELAY-on/host 4 threads，只比较 boundary + metadata header
+  分两次或合为一次 HTTP chunk。split/coalesced 五分钟分别为 `7,223/7,358 frames`、
+  `24.025/24.481 fps`，均 0 reconnect/error/overwrite/gap。合并后 response write
+  P50/P95/P99 `25.531/35.616/39.244→24.193/33.504/38.988 ms`，正常收益仅约
+  `0.3–2.1 ms`；但候选 frame 3879 发生 `1563.568 ms` device write、
+  `1565.344 ms` host read 和 `1620.721 ms` capture→feedback，split 对应最大仅
+  `96.897/95.620/187.649 ms`。异常帧相机采集 `36.604 ms`、JPEG `31,938 B`、
+  RSSI `-32 dBm`、heap `149,048 B`，定位为设备写出/网络接收冻结，不是相机或主机
+  queue。终态 `STREAM_PREAMBLE_COALESCE_NOT_PROMOTED / TYPICAL_GAIN_TOO_SMALL /
+  EXTREME_WRITE_STALL_OBSERVED`；不声称 coalescing 必然导致尖峰，但不以小幅 P95
+  收益掩盖 1.6 秒冻结，正式恢复 split。split/coalesced summary SHA-256 分别为
+  `a4dd9d2fde42e3a568ecc57bfb60279571a871d8ddac36e31ff8b84b72bb289a` /
+  `782e9e74c8a78e93a99db9bebd510f990eae391a997b944f8d4a834b597304b4`。
+  本结果仅为当前 Development 传输配置证据，不授权准确率、人体、产品或安全结论。
+  正式 split 固件 program/RAM 为 `1,078,267 B (32%) / 62,608 B (19%)`，app bin
+  SHA-256 `a9f265e6db715b106438b6dfffb1e05d8680f7514cd3a5bcf4195de1d1a68a73`；刷入
+  COM5 后 20 帧带模型验收 0 reconnect/error/overwrite/gap，全部帧
+  TCP_NODELAY=true、preamble_coalesced=false、ToF sampling/valid、pipeline
+  threads=4，退出后 stream_clients=0。12 项测试、Ruff、py_compile、固件编译和
+  本任务 scoped diff check 通过；全仓 diff check 中另有并发 dataset ledger CSV
+  尾空格，未修改且未纳入本提交。
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
   ToF4M MJPEG stream `TCP_NODELAY` 单变量 R6。设备保持 XGA/quality 10/自动曝光/
   DMA-off/ToF-on，主机保持 4-thread latest-frame pipeline。相邻五分钟 off/on 为
   `6,927/6,938 frames`、`23.043/23.085 fps`，均 0 reconnect/error/overwrite/gap。

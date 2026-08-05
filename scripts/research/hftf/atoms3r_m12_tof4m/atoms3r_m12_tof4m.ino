@@ -23,11 +23,11 @@ namespace {
 constexpr bool kEnableTofSampling = true;
 constexpr bool kEnableCameraPsramDma = false;
 constexpr bool kEnableStreamTcpNoDelay = true;
+constexpr bool kCoalesceStreamPreamble = false;
 constexpr const char* kFirmwareVersion =
     kEnableCameraPsramDma ? "atoms3r_m12_tof4m_slow_frame_r6_psram_dma"
-    : kEnableStreamTcpNoDelay ? "atoms3r_m12_tof4m_stream_r7_tcp_nodelay"
-    : kEnableTofSampling      ? "atoms3r_m12_tof4m_stream_r7"
-                              : "atoms3r_m12_tof4m_stream_r7_tof_off";
+    : kCoalesceStreamPreamble ? "atoms3r_m12_tof4m_stream_r8_preamble_coalesced"
+                              : "atoms3r_m12_tof4m_stream_r8_preamble_split";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -769,6 +769,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       "\"exposure_compensation\":%d,\"manual_exposure\":%u,"
       "\"psram_dma_enabled\":%s,\"frame_buffer_count\":2,"
       "\"grab_mode\":\"LATEST\",\"stream_tcp_nodelay_configured\":%s,"
+      "\"stream_preamble_coalesced_configured\":%s,"
       "\"recent_fps\":%.2f,\"total_frames\":%" PRIu64 ","
       "\"stream_clients\":%u},"
       "\"tof\":{\"ready\":%s,\"sampling_enabled\":%s,\"valid\":%s,"
@@ -786,6 +787,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       camera_settings.exposure_compensation, camera_settings.manual_exposure,
       camera_psram_dma_enabled ? "true" : "false",
       kEnableStreamTcpNoDelay ? "true" : "false",
+      kCoalesceStreamPreamble ? "true" : "false",
       static_cast<double>(frames.recent_fps), frames.total_frames,
       frames.stream_clients, sensor_ready ? "true" : "false",
       kEnableTofSampling ? "true" : "false",
@@ -1029,10 +1031,10 @@ esp_err_t streamHandler(httpd_req_t* request) {
     const uint64_t response_write_started_us = monotonicUs();
     const uint64_t jpeg_metadata_prepare_duration_us =
         response_write_started_us - jpeg_ready_timestamp_us;
-    char header[1536];
+    char header[1600];
     const int header_length = snprintf(
         header, sizeof(header),
-        "Content-Type: image/jpeg\r\nContent-Length: %u\r\n"
+        "%sContent-Type: image/jpeg\r\nContent-Length: %u\r\n"
         "X-Sequence-Id: %s\r\nX-Clock-Domain: %s\r\n"
         "X-Frame-Sequence: %" PRIu64 "\r\n"
         "X-Capture-Timestamp-Us: %" PRIu64 "\r\n"
@@ -1061,8 +1063,10 @@ esp_err_t streamHandler(httpd_req_t* request) {
         "X-Jpeg-Quality: %u\r\nX-Auto-Exposure: %s\r\n"
         "X-Camera-Psram-Dma-Enabled: %s\r\n"
         "X-Stream-Tcp-Nodelay: %s\r\n"
+        "X-Stream-Preamble-Coalesced: %s\r\n"
         "X-Exposure-Value: %d\r\nX-Wifi-Rssi-Dbm: %d\r\n"
         "X-Free-Heap-Bytes: %u\r\n\r\n",
+        kCoalesceStreamPreamble ? kStreamBoundary : "",
         static_cast<unsigned>(frame_length), sequence_id, clock_domain,
         frame_sequence, capture_timestamp_us, jpeg_ready_timestamp_us,
         response_write_started_us, frame_ready_interval_us,
@@ -1079,7 +1083,8 @@ esp_err_t streamHandler(httpd_req_t* request) {
         camera_settings.jpeg_quality,
         camera_settings.auto_exposure ? "true" : "false",
         camera_psram_dma_enabled ? "true" : "false",
-        stream_tcp_nodelay_enabled ? "true" : "false", exposure_value,
+        stream_tcp_nodelay_enabled ? "true" : "false",
+        kCoalesceStreamPreamble ? "true" : "false", exposure_value,
         wifi_rssi_dbm, free_heap_bytes);
     if (header_length <= 0 ||
         static_cast<size_t>(header_length) >= sizeof(header)) {
@@ -1088,8 +1093,11 @@ esp_err_t streamHandler(httpd_req_t* request) {
       stream_result = ESP_ERR_INVALID_SIZE;
       break;
     }
-    esp_err_t result =
-        httpd_resp_send_chunk(request, kStreamBoundary, strlen(kStreamBoundary));
+    esp_err_t result = ESP_OK;
+    if (!kCoalesceStreamPreamble) {
+      result = httpd_resp_send_chunk(request, kStreamBoundary,
+                                     strlen(kStreamBoundary));
+    }
     if (result == ESP_OK) {
       result = httpd_resp_send_chunk(
           request, header, static_cast<size_t>(header_length));
