@@ -103,6 +103,7 @@ class MeasureE2eLatencyTest(unittest.TestCase):
         self.assertFalse(row["camera_psram_dma_enabled"])
         self.assertEqual(row["device_capture_to_fb_return_us"], 40_000)
         self.assertEqual(row["device_capture_minus_acquire_start_us"], 0)
+        self.assertIsNone(row["pipeline_num_threads"])
 
     def test_absent_tof_timestamp_makes_skew_not_evaluable(self):
         headers = frame_headers()

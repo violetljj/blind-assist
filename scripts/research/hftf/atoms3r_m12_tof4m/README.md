@@ -129,7 +129,8 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/atoms3r_m12_tof4
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/atoms3r_m12_tof4m/measure_e2e_latency.py `
   --duration-seconds 300 `
   --pipeline-module scripts/research/hftf/atoms3r_m12_tof4m/host_reference_pipeline.py `
-  --pipeline-model app/src/main/assets/yolo11n_fp16_320.tflite
+  --pipeline-model app/src/main/assets/yolo11n_fp16_320.tflite `
+  --pipeline-num-threads 4
 ```
 
 每次运行在 `artifacts.local/evidence/atoms3r-e2e/<UTC>/` 生成逐帧、状态、对时
@@ -190,6 +191,13 @@ R4 通过 session-only API 仅关闭自动曝光并固定到实际值 490。用 
 return >54 ms 的双周期帧从 15.08% 降至 7.58%，有效吞吐从 23.52 增至
 25.13 fps；但 capture→return P95 仍约 72.44 ms。自动曝光控制是重要影响因素但不是
 唯一机制。因为尚未验证明暗变化下的画质，正式配置仍保留自动曝光，固定 490 不晋升。
+
+主机 R5 将 LiteRT/XNNPACK 并行度显式绑定到 pipeline identity 和逐帧/summary 账本。
+在当前 18 logical CPU 主机上，4 线程五分钟把 inference P50/P95 从
+`32.47/42.52 ms` 降至 `12.92/15.00 ms`，latest queue wait P95 从 28.67 ms
+降至 0.18 ms，覆盖/sequence gap 从 105 降为 0；capture→feedback P50/P95/P99
+降至 `82.98/128.94/164.42 ms`。4 线程晋升为当前主机默认，较小主机可用
+`--pipeline-num-threads` 显式下调；这不外推为手机端最优线程数。
 
 ## 停止条件与下一步
 

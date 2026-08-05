@@ -4,6 +4,7 @@ import argparse
 import importlib.util
 import json
 import math
+import os
 import socket
 import statistics
 import struct
@@ -252,7 +253,10 @@ class NoPipeline:
 
 
 def load_pipeline(
-    module_path: Path | None, model_path: Path | None, feedback_mode: str
+    module_path: Path | None,
+    model_path: Path | None,
+    feedback_mode: str,
+    num_threads: int,
 ) -> Any:
     if module_path is None:
         return NoPipeline()
@@ -264,7 +268,11 @@ def load_pipeline(
     module = importlib.util.module_from_spec(spec)
     assert isinstance(module, ModuleType)
     spec.loader.exec_module(module)
-    pipeline = module.build_pipeline(model_path=model_path, feedback_mode=feedback_mode)
+    pipeline = module.build_pipeline(
+        model_path=model_path,
+        feedback_mode=feedback_mode,
+        num_threads=num_threads,
+    )
     for method in ("infer", "calculate_risk", "emit_feedback"):
         if not callable(getattr(pipeline, method, None)):
             raise TypeError(f"Pipeline is missing callable {method}()")
@@ -565,6 +573,7 @@ def frame_row(
         )
         / 1000.0,
         "pipeline_identity": pipeline.identity,
+        "pipeline_num_threads": getattr(pipeline, "num_threads", None),
         "inference_complete_monotonic_ns": None,
         "risk_complete_monotonic_ns": None,
         "feedback_complete_monotonic_ns": None,
@@ -778,6 +787,8 @@ def summarize(
         "host_latest_queue_overwrite_count": latest_queue_overwrites,
         "errors": errors,
         "pipeline_identity": rows[0]["pipeline_identity"] if rows else "UNKNOWN",
+        "pipeline_num_threads": (rows[0].get("pipeline_num_threads") if rows else None),
+        "host_logical_cpu_count": os.cpu_count(),
         "slow_frame_contract": slow_frame_contract,
         "slow_frame_count": len(slow_rows),
         "slow_frame_fraction": (
@@ -916,13 +927,19 @@ def main() -> int:
     parser.add_argument("--resync-interval-seconds", type=float, default=60.0)
     parser.add_argument("--pipeline-module", type=Path)
     parser.add_argument("--pipeline-model", type=Path)
+    parser.add_argument("--pipeline-num-threads", type=int, default=4)
     parser.add_argument(
         "--feedback-mode", choices=("record_only", "console"), default="record_only"
     )
     args = parser.parse_args()
-    if args.duration_seconds <= 0 or args.clock_sync_attempts < 3:
+    if (
+        args.duration_seconds <= 0
+        or args.clock_sync_attempts < 3
+        or not 1 <= args.pipeline_num_threads <= 64
+    ):
         parser.error(
-            "duration must be positive and clock sync attempts must be at least 3"
+            "duration must be positive, clock sync attempts must be at least 3, "
+            "and pipeline threads must be in 1..64"
         )
 
     output_dir = create_output_dir(args.output_root)
@@ -936,7 +953,10 @@ def main() -> int:
         base_url, args.clock_sync_attempts, 0, args.timing_udp_port
     )
     pipeline = load_pipeline(
-        args.pipeline_module, args.pipeline_model, args.feedback_mode
+        args.pipeline_module,
+        args.pipeline_model,
+        args.feedback_mode,
+        args.pipeline_num_threads,
     )
     monitor = SharedMonitor(
         base_url,

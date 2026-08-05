@@ -8,16 +8,21 @@ import numpy as np
 
 
 class HostReferenceYoloPipeline:
-    identity = "HOST_REFERENCE_YOLO11N_RAW_SCORE_RISK_R0_NOT_PRODUCTION"
-
-    def __init__(self, model_path: Path, feedback_mode: str) -> None:
+    def __init__(self, model_path: Path, feedback_mode: str, num_threads: int) -> None:
         try:
             from ai_edge_litert.interpreter import Interpreter
         except Exception as error:
             raise RuntimeError(
                 "ai-edge-litert is required for the host reference pipeline"
             ) from error
-        self.interpreter = Interpreter(model_path=str(model_path))
+        self.num_threads = num_threads
+        self.identity = (
+            "HOST_REFERENCE_YOLO11N_RAW_SCORE_RISK_R0_"
+            f"TFLITE_THREADS_{num_threads}_NOT_PRODUCTION"
+        )
+        self.interpreter = Interpreter(
+            model_path=str(model_path), num_threads=num_threads
+        )
         self.interpreter.allocate_tensors()
         self.input_detail = self.interpreter.get_input_details()[0]
         self.output_detail = self.interpreter.get_output_details()[0]
@@ -90,8 +95,10 @@ class HostReferenceYoloPipeline:
 
 
 def build_pipeline(
-    model_path: Path | None, feedback_mode: str
+    model_path: Path | None, feedback_mode: str, num_threads: int
 ) -> HostReferenceYoloPipeline:
     if model_path is None or not model_path.is_file():
         raise FileNotFoundError(f"Host reference model is missing: {model_path}")
-    return HostReferenceYoloPipeline(model_path, feedback_mode)
+    if num_threads < 1:
+        raise ValueError("num_threads must be positive")
+    return HostReferenceYoloPipeline(model_path, feedback_mode, num_threads)

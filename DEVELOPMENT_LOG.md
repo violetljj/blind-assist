@@ -1,4 +1,18 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成主机 TFLite 4 线程
+  优化 R5。当前 18 logical CPU 主机同帧微基准显示 1/2/4/8 threads P50
+  `29.84/16.95/11.89/17.73 ms`，预先选择 4，不继续线程扫描。设备保持自动曝光、
+  XGA/quality 10、DMA-off、ToF-on，五分钟 `300.609 s / 6,927 frames /
+  23.04 fps`，run accepted，0 reconnect/error/overwrite/sequence gap。相对自动曝光
+  legacy 单线程 R1，inference P50/P95/P99 `32.47/42.52/48.13→
+  12.92/15.00/16.43 ms`，latest queue wait `7.90/28.67/35.39→
+  0.07/0.18/0.27 ms`，capture→feedback `114.48/149.38/178.37→
+  82.98/128.94/164.42 ms`。R5 设备侧 slow fraction 更高且含一次 1.095 s write
+  尖峰，故主机收益不是设备本轮变快造成，也不授权设备优化结论。新增显式
+  `--pipeline-num-threads`、identity/逐帧/summary 线程绑定和 host CPU count；4 线程
+  晋升为当前主机参考默认，保留 CLI 覆盖。summary SHA-256
+  `066fcea70270657db40a227603477bcd65407144498a96ed8d6c4917ac23f6a2`。
+  本结果仅为 Development host 性能证据，不授权手机、准确率、人体或安全结论。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
   ToF4M 固定曝光 490 单变量 R4。通过 session-only API 关闭自动曝光，冻结
   XGA/quality 10/brightness 1/double-buffer/LATEST/PSRAM DMA-off/ToF-on。五分钟
