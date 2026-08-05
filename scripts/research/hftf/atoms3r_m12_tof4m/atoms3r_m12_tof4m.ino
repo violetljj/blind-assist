@@ -3,6 +3,7 @@
 #include <Preferences.h>
 #include <VL53L1X.h>
 #include <WiFi.h>
+#include <WiFiUdp.h>
 #include <Wire.h>
 #include <esp_camera.h>
 #include <esp_heap_caps.h>
@@ -17,7 +18,7 @@
 
 namespace {
 
-constexpr char kFirmwareVersion[] = "atoms3r_m12_tof4m_web_r2";
+constexpr char kFirmwareVersion[] = "atoms3r_m12_tof4m_timing_r3";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -38,6 +39,7 @@ constexpr char kMdnsHostname[] = "atoms3r-tof";
 constexpr uint32_t kWifiConnectTimeoutMs = 20000;
 constexpr uint32_t kWifiReconnectIntervalMs = 5000;
 constexpr uint32_t kCameraLockTimeoutMs = 2000;
+constexpr uint16_t kTimingUdpPort = 3333;
 
 constexpr int kCameraPowerPin = 18;
 constexpr int kCameraXclkPin = 21;
@@ -72,6 +74,25 @@ SemaphoreHandle_t camera_mutex = nullptr;
 uint64_t next_wifi_reconnect_us = 0;
 uint32_t wifi_reconnect_attempts = 0;
 bool wifi_was_connected = false;
+WiFiUDP timing_udp;
+bool timing_udp_ready = false;
+TaskHandle_t timing_udp_task_handle = nullptr;
+
+struct TimingRequest {
+  char magic[4];
+  uint32_t request_id;
+  uint64_t host_send_monotonic_ns;
+};
+
+struct TimingResponse {
+  char magic[4];
+  uint32_t request_id;
+  uint64_t device_receive_us;
+  uint64_t device_send_us;
+};
+
+static_assert(sizeof(TimingRequest) == 16);
+static_assert(sizeof(TimingResponse) == 24);
 
 struct FrameSizeOption {
   const char* name;
@@ -121,17 +142,95 @@ struct SharedRange {
 };
 
 SharedRange shared_range = {false, 0, 0, 0, "NOT_READY"};
+constexpr size_t kRangeHistoryCapacity = 32;
+SharedRange range_history[kRangeHistoryCapacity] = {};
+size_t range_history_count = 0;
+size_t range_history_next = 0;
 portMUX_TYPE range_mux = portMUX_INITIALIZER_UNLOCKED;
+uint64_t next_frame_sequence = 0;
+portMUX_TYPE frame_sequence_mux = portMUX_INITIALIZER_UNLOCKED;
+
+void emitEvent(const char* event, const char* status);
+void timingUdpTask(void* context);
 
 constexpr char kStreamContentType[] =
     "multipart/x-mixed-replace;boundary=123456789000000000000987654321";
 constexpr char kStreamBoundary[] =
     "\r\n--123456789000000000000987654321\r\n";
-constexpr char kStreamPart[] =
-    "Content-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n";
 
 uint64_t monotonicNs() {
   return static_cast<uint64_t>(esp_timer_get_time()) * 1000ULL;
+}
+
+uint64_t monotonicUs() {
+  return static_cast<uint64_t>(esp_timer_get_time());
+}
+
+uint64_t cameraTimestampUs(const camera_fb_t* frame) {
+  return static_cast<uint64_t>(frame->timestamp.tv_sec) * 1000000ULL +
+         static_cast<uint64_t>(frame->timestamp.tv_usec);
+}
+
+uint64_t claimFrameSequence() {
+  portENTER_CRITICAL(&frame_sequence_mux);
+  const uint64_t sequence = next_frame_sequence++;
+  portEXIT_CRITICAL(&frame_sequence_mux);
+  return sequence;
+}
+
+void startTimingUdp() {
+  if (!timing_udp_ready) {
+    timing_udp_ready = timing_udp.begin(kTimingUdpPort) == 1;
+    if (timing_udp_ready && timing_udp_task_handle == nullptr) {
+      const BaseType_t created = xTaskCreatePinnedToCore(
+          timingUdpTask, "timing_udp", 4096, nullptr, 2,
+          &timing_udp_task_handle, 1);
+      if (created != pdPASS) {
+        timing_udp_ready = false;
+        timing_udp_task_handle = nullptr;
+      }
+    }
+    emitEvent("timing_udp", timing_udp_ready ? "READY_PORT_3333"
+                                              : "START_FAILED");
+  }
+}
+
+void processTimingUdp() {
+  if (!timing_udp_ready) {
+    return;
+  }
+  const int packet_size = timing_udp.parsePacket();
+  if (packet_size <= 0) {
+    return;
+  }
+  const uint64_t received_us = monotonicUs();
+  TimingRequest request = {};
+  const int bytes_read = timing_udp.read(
+      reinterpret_cast<uint8_t*>(&request), sizeof(request));
+  while (timing_udp.available() > 0) {
+    timing_udp.read();
+  }
+  if (packet_size != sizeof(request) || bytes_read != sizeof(request) ||
+      memcmp(request.magic, "BAT0", 4) != 0) {
+    return;
+  }
+  TimingResponse response = {};
+  memcpy(response.magic, "BAT1", 4);
+  response.request_id = request.request_id;
+  response.device_receive_us = received_us;
+  timing_udp.beginPacket(timing_udp.remoteIP(), timing_udp.remotePort());
+  response.device_send_us = monotonicUs();
+  timing_udp.write(reinterpret_cast<const uint8_t*>(&response),
+                   sizeof(response));
+  timing_udp.endPacket();
+}
+
+void timingUdpTask(void* context) {
+  (void)context;
+  for (;;) {
+    processTimingUdp();
+    vTaskDelay(pdMS_TO_TICKS(1));
+  }
 }
 
 SharedRange snapshotRange() {
@@ -140,6 +239,25 @@ SharedRange snapshotRange() {
   snapshot = shared_range;
   portEXIT_CRITICAL(&range_mux);
   return snapshot;
+}
+
+SharedRange snapshotNearestRange(uint64_t frame_timestamp_us) {
+  SharedRange nearest = snapshotRange();
+  uint64_t best_delta_us = UINT64_MAX;
+  portENTER_CRITICAL(&range_mux);
+  for (size_t index = 0; index < range_history_count; ++index) {
+    const SharedRange candidate = range_history[index];
+    const uint64_t candidate_us = candidate.timestamp_ns / 1000ULL;
+    const uint64_t delta_us = candidate_us >= frame_timestamp_us
+                                  ? candidate_us - frame_timestamp_us
+                                  : frame_timestamp_us - candidate_us;
+    if (delta_us < best_delta_us) {
+      nearest = candidate;
+      best_delta_us = delta_us;
+    }
+  }
+  portEXIT_CRITICAL(&range_mux);
+  return nearest;
 }
 
 void updateFrameStats(bool client_delta, bool client_connected,
@@ -258,6 +376,11 @@ void updateSharedRange(bool valid, uint16_t range_mm, uint8_t range_status_code,
   shared_range.range_status_code = range_status_code;
   shared_range.timestamp_ns = timestamp_ns;
   shared_range.status = status;
+  range_history[range_history_next] = shared_range;
+  range_history_next = (range_history_next + 1) % kRangeHistoryCapacity;
+  if (range_history_count < kRangeHistoryCapacity) {
+    ++range_history_count;
+  }
   portEXIT_CRITICAL(&range_mux);
 }
 
@@ -604,6 +727,8 @@ esp_err_t statusHandler(httpd_req_t* request) {
       body, sizeof(body),
       "{\"firmware_version\":\"%s\",\"sequence_id\":\"%s\","
       "\"uptime_ms\":%" PRIu64 ",\"free_heap_bytes\":%u,"
+      "\"chip_temperature_c\":%.2f,"
+      "\"chip_temperature_semantics\":\"esp32_internal_sensor_not_ambient\","
       "\"wifi\":{\"connected\":%s,\"status_code\":%d,"
       "\"ip\":\"%s\",\"rssi_dbm\":%d,\"reconnect_attempts\":%u},"
       "\"camera\":{\"ready\":%s,\"resolution\":\"%s\","
@@ -616,6 +741,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       "\"range_mm\":%u,\"range_status_code\":%u,\"age_ms\":%" PRIu64
       "}}",
       kFirmwareVersion, sequence_id, now_ns / 1000000ULL, ESP.getFreeHeap(),
+      static_cast<double>(temperatureRead()),
       wifi_connected ? "true" : "false", static_cast<int>(WiFi.status()),
       ip.c_str(), wifi_connected ? WiFi.RSSI() : 0, wifi_reconnect_attempts,
       camera_ready ? "true" : "false", camera_settings.frame_size->name,
@@ -627,6 +753,19 @@ esp_err_t statusHandler(httpd_req_t* request) {
       frames.stream_clients, sensor_ready ? "true" : "false",
       range.valid ? "true" : "false", range.status, range.range_mm,
       range.range_status_code, range_age_ms);
+  return sendJson(request, body);
+}
+
+esp_err_t timeSyncHandler(httpd_req_t* request) {
+  const uint64_t request_received_us = monotonicUs();
+  char body[320];
+  const uint64_t response_ready_us = monotonicUs();
+  snprintf(body, sizeof(body),
+           "{\"schema\":\"blindassist_atoms3r_time_sync_r0\","
+           "\"sequence_id\":\"%s\",\"clock_domain\":\"%s\","
+           "\"device_request_received_us\":%" PRIu64 ","
+           "\"device_response_ready_us\":%" PRIu64 "}",
+           sequence_id, clock_domain, request_received_us, response_ready_us);
   return sendJson(request, body);
 }
 
@@ -644,24 +783,45 @@ esp_err_t snapshotHandler(httpd_req_t* request) {
     return httpd_resp_send_err(request, HTTPD_500_INTERNAL_SERVER_ERROR,
                                "snapshot failed");
   }
-  const uint64_t capture_timestamp_ns = monotonicNs();
-  const SharedRange range = snapshotRange();
+  const uint64_t frame_sequence = claimFrameSequence();
+  const uint64_t capture_timestamp_us = cameraTimestampUs(frame);
+  const uint64_t jpeg_ready_timestamp_us = monotonicUs();
+  const SharedRange range = snapshotNearestRange(capture_timestamp_us);
+  const uint64_t tof_timestamp_us = range.timestamp_ns / 1000ULL;
+  const int64_t tof_minus_capture_us =
+      static_cast<int64_t>(tof_timestamp_us) -
+      static_cast<int64_t>(capture_timestamp_us);
   const FrameSizeOption* actual_frame_size =
       findFrameSize(frame->width, frame->height);
-  const uint64_t range_age_ms = range.timestamp_ns == 0
-                                    ? 0
-                                    : (capture_timestamp_ns -
-                                       range.timestamp_ns) /
-                                          1000000ULL;
-  char metadata[512];
+  const uint64_t tof_age_at_jpeg_ready_us =
+      tof_timestamp_us == 0 || tof_timestamp_us > jpeg_ready_timestamp_us
+          ? 0
+          : jpeg_ready_timestamp_us - tof_timestamp_us;
+  const uint64_t capture_to_jpeg_ready_us =
+      jpeg_ready_timestamp_us >= capture_timestamp_us
+          ? jpeg_ready_timestamp_us - capture_timestamp_us
+          : 0;
+  char metadata[1024];
   snprintf(metadata, sizeof(metadata),
-           "{\"schema\":\"blindassist_atoms3r_capture_browser_r0\","
-           "\"sequence_id\":\"%s\",\"capture_timestamp_ns\":%" PRIu64
-           ",\"range_timestamp_ns\":%" PRIu64 ",\"range_age_ms\":%" PRIu64
-           ",\"range_valid\":%s,\"range_mm\":%u,\"range_status\":\"%s\","
-           "\"range_status_code\":%u,\"resolution\":\"%s\","
+           "{\"schema\":\"blindassist_atoms3r_capture_browser_r1\","
+           "\"sequence_id\":\"%s\",\"clock_domain\":\"%s\","
+           "\"frame_sequence\":%" PRIu64 ","
+           "\"capture_timestamp_us\":%" PRIu64 ","
+           "\"capture_timestamp_semantics\":"
+           "\"esp32_camera_first_dma_buffer_since_boot\","
+           "\"jpeg_ready_timestamp_us\":%" PRIu64 ","
+           "\"jpeg_ready_timestamp_semantics\":\"esp_camera_fb_get_return\","
+           "\"capture_to_jpeg_ready_us\":%" PRIu64 ","
+           "\"tof_timestamp_us\":%" PRIu64 ","
+           "\"tof_timestamp_semantics\":\"sensor_read_complete\","
+           "\"tof_minus_capture_us\":%" PRId64 ","
+           "\"tof_age_at_jpeg_ready_us\":%" PRIu64 ","
+           "\"tof_valid\":%s,\"tof_range_mm\":%u,\"tof_status\":\"%s\","
+           "\"tof_range_status_code\":%u,\"resolution\":\"%s\","
            "\"width\":%u,\"height\":%u,\"jpeg_quality\":%u}",
-           sequence_id, capture_timestamp_ns, range.timestamp_ns, range_age_ms,
+           sequence_id, clock_domain, frame_sequence, capture_timestamp_us,
+           jpeg_ready_timestamp_us, capture_to_jpeg_ready_us, tof_timestamp_us,
+           tof_minus_capture_us, tof_age_at_jpeg_ready_us,
            range.valid ? "true" : "false", range.range_mm, range.status,
            range.range_status_code,
            actual_frame_size == nullptr ? "UNKNOWN" : actual_frame_size->name,
@@ -755,7 +915,17 @@ esp_err_t streamHandler(httpd_req_t* request) {
       stream_result = ESP_FAIL;
       break;
     }
+    const uint64_t frame_sequence = claimFrameSequence();
+    const uint64_t capture_timestamp_us = cameraTimestampUs(frame);
+    const uint64_t jpeg_ready_timestamp_us = monotonicUs();
+    const SharedRange range = snapshotNearestRange(capture_timestamp_us);
+    const uint64_t tof_timestamp_us = range.timestamp_ns / 1000ULL;
+    const int64_t tof_minus_capture_us =
+        static_cast<int64_t>(tof_timestamp_us) -
+        static_cast<int64_t>(capture_timestamp_us);
     const size_t frame_length = frame->len;
+    const size_t frame_width = frame->width;
+    const size_t frame_height = frame->height;
     uint8_t* frame_copy = static_cast<uint8_t*>(
         heap_caps_malloc(frame_length, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
     if (frame_copy == nullptr) {
@@ -768,14 +938,43 @@ esp_err_t streamHandler(httpd_req_t* request) {
     memcpy(frame_copy, frame->buf, frame_length);
     esp_camera_fb_return(frame);
     xSemaphoreGive(camera_mutex);
-    char header[96];
-    const size_t header_length =
-        snprintf(header, sizeof(header), kStreamPart,
-                 static_cast<unsigned>(frame_length));
+    const uint64_t send_start_timestamp_us = monotonicUs();
+    char header[1024];
+    const int header_length = snprintf(
+        header, sizeof(header),
+        "Content-Type: image/jpeg\r\nContent-Length: %u\r\n"
+        "X-Sequence-Id: %s\r\nX-Clock-Domain: %s\r\n"
+        "X-Frame-Sequence: %" PRIu64 "\r\n"
+        "X-Capture-Timestamp-Us: %" PRIu64 "\r\n"
+        "X-Capture-Timestamp-Semantics: "
+        "esp32_camera_first_dma_buffer_since_boot\r\n"
+        "X-Jpeg-Ready-Timestamp-Us: %" PRIu64 "\r\n"
+        "X-Jpeg-Ready-Timestamp-Semantics: esp_camera_fb_get_return\r\n"
+        "X-Device-Send-Start-Timestamp-Us: %" PRIu64 "\r\n"
+        "X-ToF-Timestamp-Us: %" PRIu64 "\r\n"
+        "X-ToF-Timestamp-Semantics: sensor_read_complete\r\n"
+        "X-ToF-Minus-Capture-Us: %" PRId64 "\r\n"
+        "X-ToF-Valid: %s\r\nX-ToF-Range-Mm: %u\r\n"
+        "X-ToF-Status: %s\r\nX-ToF-Range-Status-Code: %u\r\n"
+        "X-Width: %u\r\nX-Height: %u\r\nX-Jpeg-Quality: %u\r\n\r\n",
+        static_cast<unsigned>(frame_length), sequence_id, clock_domain,
+        frame_sequence, capture_timestamp_us, jpeg_ready_timestamp_us,
+        send_start_timestamp_us, tof_timestamp_us, tof_minus_capture_us,
+        range.valid ? "true" : "false", range.range_mm, range.status,
+        range.range_status_code, static_cast<unsigned>(frame_width),
+        static_cast<unsigned>(frame_height), camera_settings.jpeg_quality);
+    if (header_length <= 0 ||
+        static_cast<size_t>(header_length) >= sizeof(header)) {
+      heap_caps_free(frame_copy);
+      emitEvent("camera_stream", "FRAME_HEADER_OVERFLOW");
+      stream_result = ESP_ERR_INVALID_SIZE;
+      break;
+    }
     esp_err_t result =
         httpd_resp_send_chunk(request, kStreamBoundary, strlen(kStreamBoundary));
     if (result == ESP_OK) {
-      result = httpd_resp_send_chunk(request, header, header_length);
+      result = httpd_resp_send_chunk(
+          request, header, static_cast<size_t>(header_length));
     }
     if (result == ESP_OK) {
       result = httpd_resp_send_chunk(
@@ -813,6 +1012,7 @@ bool startControlServer() {
   registerUri(control_httpd, "/status", HTTP_GET, statusPageHandler);
   registerUri(control_httpd, "/api/range", HTTP_GET, rangeHandler);
   registerUri(control_httpd, "/api/status", HTTP_GET, statusHandler);
+  registerUri(control_httpd, "/api/time", HTTP_GET, timeSyncHandler);
   registerUri(control_httpd, "/api/camera", HTTP_GET,
               cameraSettingsGetHandler);
   registerUri(control_httpd, "/api/camera", HTTP_POST,
@@ -889,6 +1089,7 @@ void startSetupAccessPoint() {
   } else {
     emitEvent("wifi_setup_ap", "START_FAILED");
   }
+  startTimingUdp();
   startControlServer();
 }
 
@@ -906,6 +1107,7 @@ void startNetworkServices() {
   }
   startControlServer();
   startStreamServer();
+  startTimingUdp();
   emitEvent("dashboard", WiFi.localIP().toString().c_str());
   next_wifi_reconnect_us =
       static_cast<uint64_t>(esp_timer_get_time()) +

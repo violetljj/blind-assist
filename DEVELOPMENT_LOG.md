@@ -1,4 +1,24 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成真实 AtomS3R-M12 +
+  Unit ToF4M 端到端时间基线 R0：固件升级为
+  `atoms3r_m12_tof4m_timing_r3`，为抓拍和 MJPEG 逐帧加入 boot/clock domain、严格
+  frame sequence、相机首 DMA、JPEG ready/send start、最近时刻 ToF 及有符号 skew；
+  新增独立高优先级 3333/UDP 对时 task，将最小 RTT midpoint 对时误差界从 HTTP
+  canary 的约 23.5 ms 降至正式运行 P50/P95 `1.45/2.20 ms`。新增可重连主机账本、
+  OpenCV 解码和 `HOST_REFERENCE_YOLO11N_RAW_SCORE_RISK_R0_NOT_PRODUCTION` 测时
+  pipeline；物理语音/震动明确未发出、未评估。XGA/quality 10 完整 30 分钟运行
+  `1802.422 s / 43,230 frames`，0 stream reconnect、0 error、0 frame-sequence gap、
+  单一 boot；capture→JPEG complete P50/P95/P99 `99.1/225.5/259.2 ms`，
+  capture→反馈记录 `137.2/265.8/300.7 ms`，绝对 ToF—capture skew P50/P95/max
+  `23.3/51.5/59.7 ms`。355 次状态采样中 free heap 首尾同为 `153,288 B`、最低
+  `146,364 B`；ESP32 内部温度 `67.1→71.1 °C`、最高 `72.1 °C`，RSSI P50
+  `-37 dBm`。结果揭示长时 Wi-Fi/接收排队尾延迟，但不授权风险准确率、空间标定、
+  手机/物理反馈、人体、产品或安全结论。逐帧证据保存在 ignored
+  `artifacts.local/evidence/atoms3r-e2e/20260805T090231.009682Z/`，summary SHA-256
+  `c91218b37d22d82e3e6d707677d902f61e7f16e6d16fc9d824d6d83283fac1e5`。
+  最终固件编译 program/RAM 为 `1,076,407 B (32%) / 62,600 B (19%)`，app bin
+  SHA-256 `fef05a3ab307f498bc14ab9c60dc8833dbdde7cd9c0b59bda5e8976aff1ceade`；
+  Python Ruff/format/py_compile、7 项专属测试和 diff check 均通过。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：violjjet。将真实
   AtomS3R-M12 网页固件升级到 `atoms3r_m12_tof4m_web_r2`：新增
   `VGA/SVGA/XGA/SXGA/UXGA`、JPEG quality `6..30`、亮度 `-2..2`、自动曝光补偿

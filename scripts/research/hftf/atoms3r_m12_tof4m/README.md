@@ -65,8 +65,9 @@ OV3660 的最高静态分辨率。页面绿色框只标示 ToF4M 的中央单区
 - 参数经过设备端白名单与范围校验，应用后丢弃三帧过渡缓冲；设置只在当前开机
   session 生效，重启恢复稳定的 XGA/quality 10 默认值；
 - `下载截图＋JSON` 会下载一张实际 JPEG 和浏览器生成的配套 JSON。JSON 记录
-  boot sequence、抓拍时间、最近 ToF 样本时间/年龄/状态、实际 JPEG 宽高和 quality；
-  这是 nearest-sample binding，不代表完成了 RGB-ToF 硬件同步或外参标定；
+  boot sequence、frame sequence、相机首 DMA、JPEG ready、最近时刻 ToF 样本、
+  有符号 ToF—frame 差、实际 JPEG 宽高和 quality；这是同一设备时钟中的
+  nearest-sample binding，不代表完成了 RGB-ToF 硬件触发同步或外参标定；
 - `/status` 每秒显示运行时间、空闲内存、Wi-Fi/IP/RSSI/重连次数、相机配置、近期
   帧率、累计帧、流客户端和 ToF 状态；
 - 设备启用 ESP32 自动重连并在断线时每 5 秒主动调用 reconnect；网页对距离 API
@@ -79,6 +80,7 @@ OV3660 的最高静态分辨率。页面绿色框只标示 ToF4M 的中央单区
 | --- | --- | --- |
 | GET | `/api/range` | 最近一次 fail-closed 单区距离 |
 | GET | `/api/status` | 系统、Wi-Fi、相机、帧率与 ToF 状态 |
+| GET | `/api/time` | HTTP 对时/身份诊断；正式基线使用 3333/UDP |
 | GET/POST | `/api/camera` | 读取或应用当前 session 相机参数 |
 | GET | `/api/snapshot` | JPEG；`X-Capture-Metadata` 响应头携带配套 JSON |
 | GET | `/status` | 人可读设备状态页 |
@@ -91,6 +93,13 @@ OV3660 的最高静态分辨率。页面绿色框只标示 ToF4M 的中央单区
 串口只输出 JSONL。事件行使用 `blindassist_atoms3r_tof4m_event_r0`；测量行使用
 `blindassist_atoms3r_tof4m_sample_r0`。测量时间是当前 ESP32 boot monotonic
 时钟中的 `sensor_read_complete`，不能直接与手机或 PC monotonic 时间比较。
+
+MJPEG 每个 part 额外携带 `X-Frame-Sequence`、`X-Capture-Timestamp-Us`、
+`X-Jpeg-Ready-Timestamp-Us`、`X-Device-Send-Start-Timestamp-Us`、
+`X-Tof-Timestamp-Us` 和 `X-Tof-Minus-Capture-Us`。相机 capture 时间的精确定义是
+`esp32-camera` 的“首个 DMA buffer 自开机时间”，不是曝光起始。固件在 3333/UDP
+提供独立高优先级二进制对时服务；主机端以最小 RTT midpoint 映射两个 monotonic
+时钟，并逐帧保留 RTT 与误差上界。
 
 有效测量同时要求：无超时、VL53L1X `RangeValid`、距离在 `40..4000 mm`。
 无效测量保留原始 `range_mm`、状态码、signal/ambient rate，但 `range_m=null`，
@@ -110,9 +119,33 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/atoms3r_m12_tof4
 `DEVELOPMENT_DEVICE_CAPTURE_UNVALIDATED`。validator 通过只表示 JSON、序号、时钟、
 状态和单位合同一致，不证明传感器精度、同步、标定或安全效用。
 
+## 端到端时间基线
+
+完整主机链路从仓库根目录运行：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/atoms3r_m12_tof4m/measure_e2e_latency.py `
+  --duration-seconds 1800 `
+  --pipeline-module scripts/research/hftf/atoms3r_m12_tof4m/host_reference_pipeline.py `
+  --pipeline-model app/src/main/assets/yolo11n_fp16_320.tflite
+```
+
+每次运行在 `artifacts.local/evidence/atoms3r-e2e/<UTC>/` 生成逐帧、状态、对时
+JSONL 和 summary。参考 pipeline 只用于测量 JPEG 解码、YOLO11n host CPU 推理、
+简单 ToF 风险计算及反馈记录调度；它不发出物理语音/震动，也不是产品风险算法。
+
+2026-08-05 的 XGA/quality 10、同一局域网 30 分钟实测共 43,230 帧：0 次流重连、
+0 个错误、0 个 frame-sequence 缺口；capture→完整 JPEG P50/P95/P99 为
+`99.1/225.5/259.2 ms`，capture→decode 为 `101.9/228.4/262.2 ms`，
+capture→反馈记录完成为 `137.2/265.8/300.7 ms`。绝对 ToF—frame skew
+P50/P95/max 为 `23.3/51.5/59.7 ms`。空闲堆首尾同为 `153,288 B`；ESP32 内部
+温度首尾 `67.1→71.1 °C`、最高 `72.1 °C`；RSSI P50 `-37 dBm`。UDP 对时误差
+上界 P50/P95 为 `1.45/2.20 ms`。这些数字是当前主机/网络/配置的 Development
+基线，不代表手机端、物理输出、人体使用或安全性能。
+
 ## 停止条件与下一步
 
 首轮只要求：I2C `0x29` 可见、连续 JSONL 可解析、时间戳/序号单调、有效/无效状态
 可复现。任一项失败时停止在对应电气、驱动或协议层，不修改多区 adapter 来迁就数据。
-通过后再新增同板 OV3660 帧时间账本，测量 RGB-ToF skew，并为单区中心射线建立独立
-注册合同；单区数据不得填充成三个或更多伪 zone。
+当前时间账本已建立。下一性能工作应先定位长测中 Wi-Fi/接收排队造成的尾延迟；相机
+与 ToF 的空间标定仍按用户要求暂缓。单区数据不得填充成三个或更多伪 zone。

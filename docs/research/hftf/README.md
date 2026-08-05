@@ -1,5 +1,6 @@
 # HFTF 候选未来可通行场支线
 
+- [AtomS3R-M12 + ToF4M end-to-end timing baseline R0](ATOMS3R_M12_TOF4M_E2E_TIMING_BASELINE_R0_RESULT_2026-08-05.md)
 - [DA V2 P1/P2 execution closure](DAV2_P1_P2_EXECUTION_CLOSURE_2026-08-05.md)
 - [Machine-readable P1/P2 closure](DAV2_P1_P2_EXECUTION_CLOSURE_2026-08-05.json)
 - [A2-392 temporal student P3 R0 frozen protocol](DAV2_TEMPORAL_392_STUDENT_P3_R0_PROTOCOL_2026-08-05.md)
