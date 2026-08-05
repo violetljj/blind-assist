@@ -14,6 +14,7 @@ from collections.abc import Iterator
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from queue import Empty, Full, Queue
 from types import ModuleType
 from typing import Any
 from urllib.parse import urlsplit
@@ -21,8 +22,8 @@ from urllib.parse import urlsplit
 import cv2
 import numpy as np
 
-FRAME_SCHEMA = "blindassist_atoms3r_e2e_frame_r0"
-SUMMARY_SCHEMA = "blindassist_atoms3r_e2e_summary_r0"
+FRAME_SCHEMA = "blindassist_atoms3r_e2e_frame_r1"
+SUMMARY_SCHEMA = "blindassist_atoms3r_e2e_summary_r1"
 SYNC_SCHEMA = "blindassist_atoms3r_host_clock_sync_r1"
 REQUIRED_FRAME_HEADERS = {
     "content-length",
@@ -286,6 +287,80 @@ def read_mjpeg_frames(
             yield headers, jpeg, host_read_start_ns, host_jpeg_complete_ns
 
 
+@dataclass(frozen=True)
+class FramePacket:
+    headers: dict[str, str]
+    jpeg: bytes
+    host_read_start_ns: int
+    host_jpeg_complete_ns: int
+    connection_index: int
+
+
+class LatestFrameReader:
+    def __init__(self, stream_url: str) -> None:
+        self.stream_url = stream_url
+        self.queue: Queue[FramePacket] = Queue(maxsize=1)
+        self.stop_event = threading.Event()
+        self.thread = threading.Thread(
+            target=self._run, name="atoms3r-mjpeg-reader", daemon=True
+        )
+        self.latest_queue_overwrite_count = 0
+        self.reconnect_count = 0
+        self.errors: list[str] = []
+
+    def start(self) -> None:
+        self.thread.start()
+
+    def stop(self) -> None:
+        self.stop_event.set()
+        self.thread.join(timeout=12.0)
+        if self.thread.is_alive():
+            self.errors.append("reader_stop:thread_did_not_stop_within_12s")
+
+    def get(self, timeout_s: float) -> FramePacket:
+        return self.queue.get(timeout=timeout_s)
+
+    def offer(self, packet: FramePacket) -> None:
+        while not self.stop_event.is_set():
+            try:
+                self.queue.put_nowait(packet)
+                return
+            except Full:
+                try:
+                    self.queue.get_nowait()
+                    self.latest_queue_overwrite_count += 1
+                except Empty:
+                    continue
+
+    def _run(self) -> None:
+        connection_index = 0
+        while not self.stop_event.is_set():
+            connection_index += 1
+            try:
+                for headers, jpeg, read_start_ns, jpeg_complete_ns in read_mjpeg_frames(
+                    self.stream_url
+                ):
+                    if self.stop_event.is_set():
+                        return
+                    self.offer(
+                        FramePacket(
+                            headers=headers,
+                            jpeg=jpeg,
+                            host_read_start_ns=read_start_ns,
+                            host_jpeg_complete_ns=jpeg_complete_ns,
+                            connection_index=connection_index,
+                        )
+                    )
+                if not self.stop_event.is_set():
+                    raise EOFError("MJPEG stream ended")
+            except Exception as error:  # noqa: BLE001 - retain and recover stream failures
+                if self.stop_event.is_set():
+                    return
+                self.reconnect_count += 1
+                self.errors.append(f"stream:{type(error).__name__}:{error}")
+                self.stop_event.wait(1.0)
+
+
 def decode_jpeg(jpeg: bytes) -> np.ndarray:
     encoded = np.frombuffer(jpeg, dtype=np.uint8)
     image = cv2.imdecode(encoded, cv2.IMREAD_COLOR)
@@ -376,6 +451,8 @@ def frame_row(
         )
         / 1000.0,
         "host_jpeg_read_ms": (host_jpeg_complete_ns - host_read_start_ns) / 1_000_000.0,
+        "host_latest_queue_wait_ms": (decode_start_ns - host_jpeg_complete_ns)
+        / 1_000_000.0,
         "host_jpeg_decode_ms": (decode_complete_ns - decode_start_ns) / 1_000_000.0,
         "capture_to_decode_complete_ms": (
             decode_complete_ns / 1000.0 - mapped_capture_host_us
@@ -436,6 +513,7 @@ def summarize(
     rows: list[dict[str, Any]],
     status_rows: list[dict[str, Any]],
     reconnects: int,
+    latest_queue_overwrites: int,
     errors: list[str],
 ) -> dict[str, Any]:
     def values(key: str) -> list[float]:
@@ -486,6 +564,7 @@ def summarize(
         "schema": SUMMARY_SCHEMA,
         "frame_count": len(rows),
         "stream_reconnect_count": reconnects,
+        "host_latest_queue_overwrite_count": latest_queue_overwrites,
         "errors": errors,
         "pipeline_identity": rows[0]["pipeline_identity"] if rows else "UNKNOWN",
         "capture_to_host_jpeg_complete_ms": metric_summary(
@@ -504,6 +583,9 @@ def summarize(
             values("send_start_to_host_jpeg_complete_ms")
         ),
         "host_jpeg_read_ms": metric_summary(values("host_jpeg_read_ms")),
+        "host_latest_queue_wait_ms": metric_summary(
+            values("host_latest_queue_wait_ms")
+        ),
         "host_jpeg_decode_ms": metric_summary(values("host_jpeg_decode_ms")),
         "capture_to_decode_complete_ms": metric_summary(
             values("capture_to_decode_complete_ms")
@@ -554,6 +636,7 @@ def summarize(
             "clock mapping uses minimum-RTT UDP midpoint and retains its error bound",
             "host receive timestamps are parser read boundaries, not NIC hardware timestamps",
             "sequence gaps are delivery observations and cannot prove sensor-internal frame drops",
+            "latest-queue overwrites intentionally discard stale host frames and contribute sequence gaps",
             "chip temperature is the ESP32 internal sensor, not enclosure or camera temperature",
             "voice or vibration latency is absent unless a real pipeline module emits that output",
         ],
@@ -571,7 +654,7 @@ def main() -> int:
         description="Measure AtomS3R MJPEG/ToF end-to-end timing."
     )
     parser.add_argument("--base-url", default="http://192.168.5.11")
-    parser.add_argument("--duration-seconds", type=float, default=60.0)
+    parser.add_argument("--duration-seconds", type=float, default=300.0)
     parser.add_argument("--max-frames", type=int, default=0)
     parser.add_argument(
         "--output-root",
@@ -617,40 +700,31 @@ def main() -> int:
     monitor.start()
 
     rows: list[dict[str, Any]] = []
-    errors: list[str] = []
-    reconnects = 0
+    reader = LatestFrameReader(stream_url)
     started = time.monotonic()
-    connection_index = 0
+    reader.start()
     try:
         while time.monotonic() - started < args.duration_seconds:
-            connection_index += 1
             try:
-                for headers, jpeg, read_start_ns, jpeg_complete_ns in read_mjpeg_frames(
-                    stream_url
-                ):
-                    sync = monitor.sync_snapshot()
-                    rows.append(
-                        frame_row(
-                            headers,
-                            jpeg,
-                            read_start_ns,
-                            jpeg_complete_ns,
-                            sync,
-                            pipeline,
-                            connection_index,
-                        )
-                    )
-                    if args.max_frames > 0 and len(rows) >= args.max_frames:
-                        break
-                    if time.monotonic() - started >= args.duration_seconds:
-                        break
-                if args.max_frames > 0 and len(rows) >= args.max_frames:
-                    break
-            except Exception as error:  # noqa: BLE001 - reconnect and retain the exact stream failure
-                reconnects += 1
-                errors.append(f"stream:{type(error).__name__}:{error}")
-                time.sleep(1.0)
+                packet = reader.get(timeout_s=1.0)
+            except Empty:
+                continue
+            sync = monitor.sync_snapshot()
+            rows.append(
+                frame_row(
+                    packet.headers,
+                    packet.jpeg,
+                    packet.host_read_start_ns,
+                    packet.host_jpeg_complete_ns,
+                    sync,
+                    pipeline,
+                    packet.connection_index,
+                )
+            )
+            if args.max_frames > 0 and len(rows) >= args.max_frames:
+                break
     finally:
+        reader.stop()
         monitor.stop()
 
     with (output_dir / "frames.jsonl").open("x", encoding="utf-8") as handle:
@@ -672,7 +746,13 @@ def main() -> int:
             handle.write(
                 json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n"
             )
-    summary = summarize(rows, status_rows, reconnects, errors + monitor_errors)
+    summary = summarize(
+        rows,
+        status_rows,
+        reader.reconnect_count,
+        reader.latest_queue_overwrite_count,
+        reader.errors + monitor_errors,
+    )
     summary["started_at_utc"] = output_dir.name
     summary["requested_duration_seconds"] = args.duration_seconds
     summary["actual_duration_seconds"] = time.monotonic() - started

@@ -125,7 +125,7 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/atoms3r_m12_tof4
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/atoms3r_m12_tof4m/measure_e2e_latency.py `
-  --duration-seconds 1800 `
+  --duration-seconds 300 `
   --pipeline-module scripts/research/hftf/atoms3r_m12_tof4m/host_reference_pipeline.py `
   --pipeline-model app/src/main/assets/yolo11n_fp16_320.tflite
 ```
@@ -133,6 +133,9 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/research/hftf/atoms3r_m12_tof4
 每次运行在 `artifacts.local/evidence/atoms3r-e2e/<UTC>/` 生成逐帧、状态、对时
 JSONL 和 summary。参考 pipeline 只用于测量 JPEG 解码、YOLO11n host CPU 推理、
 简单 ToF 风险计算及反馈记录调度；它不发出物理语音/震动，也不是产品风险算法。
+日常性能回归默认 300 秒；30–60 分钟仅在明确要求时作为压力测试。主机使用独立
+MJPEG reader 和容量 1 的 latest-frame 队列，推理短时落后时显式覆盖旧帧并计数，
+避免把过时画面堆在 TCP 缓冲中。
 
 2026-08-05 的 XGA/quality 10、同一局域网 30 分钟实测共 43,230 帧：0 次流重连、
 0 个错误、0 个 frame-sequence 缺口；capture→完整 JPEG P50/P95/P99 为
@@ -143,9 +146,16 @@ P50/P95/max 为 `23.3/51.5/59.7 ms`。空闲堆首尾同为 `153,288 B`；ESP32 
 上界 P50/P95 为 `1.45/2.20 ms`。这些数字是当前主机/网络/配置的 Development
 基线，不代表手机端、物理输出、人体使用或安全性能。
 
+latest-frame 优化后的 2026-08-05 五分钟回归共 7,158 个处理帧：0 重连、0 错误，
+容量 1 队列覆盖 2 个旧帧（约 `0.028%`）。capture→反馈记录完成 P50/P95/P99
+为 `109.3/146.8/180.3 ms`；JPEG ready→host read start P95 为 `7.2 ms`，较旧
+30 分钟基线的 `179.4 ms` 显著降低。不同持续时间不能替代压力测试的同长度比较，
+但阶段账本确认旧尾延迟的主要机制是串行接收造成的 host backlog。
+
 ## 停止条件与下一步
 
 首轮只要求：I2C `0x29` 可见、连续 JSONL 可解析、时间戳/序号单调、有效/无效状态
 可复现。任一项失败时停止在对应电气、驱动或协议层，不修改多区 adapter 来迁就数据。
-当前时间账本已建立。下一性能工作应先定位长测中 Wi-Fi/接收排队造成的尾延迟；相机
-与 ToF 的空间标定仍按用户要求暂缓。单区数据不得填充成三个或更多伪 zone。
+当前时间账本和 latest-frame 接收策略已建立。下一性能工作可继续分析设备端 JPEG
+慢帧及真实手机输出；相机与 ToF 的空间标定仍按用户要求暂缓。单区数据不得填充成
+三个或更多伪 zone。

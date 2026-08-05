@@ -2,7 +2,14 @@ import unittest
 
 import cv2
 import numpy as np
-from measure_e2e_latency import ClockSync, NoPipeline, frame_row, summarize
+from measure_e2e_latency import (
+    ClockSync,
+    FramePacket,
+    LatestFrameReader,
+    NoPipeline,
+    frame_row,
+    summarize,
+)
 
 
 def jpeg_bytes() -> bytes:
@@ -36,6 +43,17 @@ def frame_headers(sequence: int = 7) -> dict[str, str]:
 
 
 class MeasureE2eLatencyTest(unittest.TestCase):
+    def test_latest_frame_reader_overwrites_stale_packet(self):
+        reader = LatestFrameReader("http://unused")
+        first = FramePacket({}, b"first", 1, 2, 1)
+        latest = FramePacket({}, b"latest", 3, 4, 1)
+
+        reader.offer(first)
+        reader.offer(latest)
+
+        self.assertEqual(reader.latest_queue_overwrite_count, 1)
+        self.assertEqual(reader.get(timeout_s=0.01), latest)
+
     def test_cross_clock_values_are_converted_from_microseconds_to_milliseconds(self):
         sync = ClockSync(
             sample_id=2,
@@ -83,12 +101,15 @@ class MeasureE2eLatencyTest(unittest.TestCase):
                 }
             )
 
-        summary = summarize(rows, [], reconnects=0, errors=[])
+        summary = summarize(
+            rows, [], reconnects=0, latest_queue_overwrites=0, errors=[]
+        )
 
         self.assertEqual(summary["host_interarrival_ms"]["p50"], 40.0)
         self.assertEqual(summary["absolute_tof_capture_skew_ms"]["max"], 30.0)
         self.assertEqual(summary["sequence_gap_event_count"], 1)
         self.assertEqual(summary["sequence_gap_total_frames"], 1)
+        self.assertEqual(summary["host_latest_queue_overwrite_count"], 0)
         self.assertEqual(summary["clock_sync_error_bound_ms"]["p50"], 1.0)
 
 

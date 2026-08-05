@@ -1,4 +1,20 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
+  ToF4M host backlog 定位与 latest-frame R1：对 43,230 帧 R0 长测逐阶段复算，确认
+  tail 主因是原脚本将 MJPEG 读取与 decode/inference 串行化，P95
+  `jpeg_ready→host_read_start=179.4 ms`，而设备 JPEG/inference P95 仅
+  `72.6/46.1 ms`。新增独立 reader thread、容量 1 latest 队列、queue wait 与显式
+  overwrite 账本；8 项专属测试通过。按用户要求，日常回归默认改为 300 秒，30–60
+  分钟仅在明确要求时做压力测试。正式五分钟 XGA/quality 10 回归为
+  `300.297 s / 7,158 frames / 23.84 fps`，0 reconnect、0 error；容量 1 队列覆盖
+  2 个旧帧（约 0.028%，对应 2 个 sequence gap）。capture→feedback record
+  P50/P95/P99 为 `109.3/146.8/180.3 ms`，旧长测 P95 为 `265.8 ms`；接收排队
+  P95 降至 `7.2 ms`。不同持续时间不冒充同长度压力比较，但阶段账本支持 backlog
+  机制已被移除。一次 0-frame 五分钟片段源自外层命令终止后遗留的旧 Python 子进程，
+  已明确结束该进程树并从正式结果排除；随后测试结束 `stream_clients=0` 且无遗留进程。
+  正式 summary SHA-256 为
+  `ac6bd0ddf72f85d7bb282cc79000036d6c16cd99da89cc1853a1be4b215ac854`。
+  仍不授权真实语音/震动、风险准确率、手机、空间标定、人体、产品或安全结论。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成真实 AtomS3R-M12 +
   Unit ToF4M 端到端时间基线 R0：固件升级为
   `atoms3r_m12_tof4m_timing_r3`，为抓拍和 MJPEG 逐帧加入 boot/clock domain、严格
