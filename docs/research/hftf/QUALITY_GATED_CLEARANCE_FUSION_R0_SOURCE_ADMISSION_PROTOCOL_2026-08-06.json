@@ -1,0 +1,34 @@
+{
+  "schema": "blindassist_quality_gated_clearance_fusion_r0_source_admission_protocol",
+  "status": "FROZEN_BEFORE_SOURCE_ACQUISITION_OR_LABEL_READ",
+  "route_terminal_before_admission": "QUALITY_GATED_CLEARANCE_FUSION_R0_DATA_NOT_READY_SOURCE_ADMISSION_REQUIRED",
+  "claim_ceiling": "DEVELOPMENT_SIGNAL_ONLY",
+  "objective": "Determine whether a deterministic quality-gated clearance filter and fail-closed hysteresis state machine is worth a fresh development replay.",
+  "candidate_source_universe": {
+    "datasets": ["TUM_RGBD", "ARKitScenes"],
+    "tum_sequences": [
+      "rgbd_dataset_freiburg3_sitting_static",
+      "rgbd_dataset_freiburg3_sitting_halfsphere",
+      "rgbd_dataset_freiburg3_sitting_rpy"
+    ],
+    "arkitscenes_scope": "official full source; only previously unconsumed visit/scene parents after ancestry audit",
+    "selection_rule": "identity, integrity, timestamp continuity and metric-depth capability only; no label or model-output selection"
+  },
+  "permanent_exclusions": {
+    "p3_consumed_parents": ["381449", "434891", "434897", "437220", "467135", "467334", "469455", "469556", "471032", "471411", "472310", "482849", "484248", "423296", "437528", "483071"],
+    "p3_r0_2_1_validation_parents": ["422381", "460420", "469782", "470821", "483314", "466628", "469013", "421380"],
+    "p3_r0_1_attempted_holdout_visits": ["422008", "467176", "483311", "483620"],
+    "legacy_p1_parent_ledger_sha256": "ADB4BC12CB4CA0123412FEF077B52964EBF6C982C2C12D1C240CA75EBA86228D",
+    "bonn_ancestry_exclusion_sha256": "31B4E80696271166C34E3022BC532946AFA76FBB6FA13D28C98852C99279B33D",
+    "bonn_sealed_bundle_sha256": "B2812DB88B5CF86C5D70E3F270B15C7C4DDC7592D4A1ADF95EDA86D323C05927"
+  },
+  "identity_only_fields": ["dataset", "sequence_id", "visit_id", "video_id", "parent_id", "frame_id", "timestamp_ns", "rgb_sha256", "metric_depth_sha256", "intrinsics_sha256", "trajectory_sha256", "source_license_sha256"],
+  "forbidden_before_identity_lock": ["clearance", "geometry_state", "transition", "truth", "label", "teacher_output", "student_output", "model_prediction", "metric", "score"],
+  "capacity_gate": {"minimum_new_parents": 3, "preferred_new_parents": 4, "minimum_clips_per_parent": 8, "minimum_frames_per_clip": 4, "maximum_adjacent_gap_ns": 500000000},
+  "admission_terminal_if_insufficient": "QUALITY_GATED_CLEARANCE_FUSION_R0_DATA_NOT_READY",
+  "next_protocol_only_after_pass": "QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_PROTOCOL",
+  "model_loaded": false,
+  "optimizer_constructed": false,
+  "training_started": false,
+  "holdout_outcomes_opened": false
+}
