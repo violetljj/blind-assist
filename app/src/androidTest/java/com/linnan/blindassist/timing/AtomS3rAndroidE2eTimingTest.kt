@@ -3,6 +3,7 @@ package com.linnan.blindassist.timing
 import android.os.Build
 import android.os.Debug
 import android.os.SystemClock
+import android.os.Trace
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.linnan.blindassist.alert.AlertProfile
@@ -86,27 +87,35 @@ class AtomS3rAndroidE2eTimingTest {
                                 }
                             }
                             previousSequence = stamp.frameId
-                            val inferenceStartNs = SystemClock.elapsedRealtimeNanos()
+                            val detectorCallStartNs = SystemClock.elapsedRealtimeNanos()
                             var detected = detector.detect(frame)
-                            val inferenceCompleteNs = SystemClock.elapsedRealtimeNanos()
+                            val detectorCallCompleteNs = SystemClock.elapsedRealtimeNanos()
+                            val detectorTiming = requireNotNull(detected.stageTiming) {
+                                "Detector stage timing is required for R2 latency decomposition"
+                            }
                             if (detected.sourceRanging == null && frame.rangingSample != null) {
                                 detected = detected.copy(sourceRanging = frame.rangingSample)
                             }
                             val decisionAtNs = SystemClock.elapsedRealtimeNanos()
-                            val result = coordinator.processFrame(
-                                detectorFrame = detected,
-                                profile = AlertProfile.STANDARD,
-                                scenario = AssistScenario.GENERAL,
-                                nowMs = stamp.capturedAtNs / NANOS_PER_MILLISECOND,
-                                decisionAtNs = decisionAtNs,
-                                dualLoopDecisionClockDomain =
-                                    FrameClockDomain.ANDROID_ELAPSED_REALTIME
-                            )
+                            Trace.beginSection(TRACE_RISK_DECISION)
+                            val result = try {
+                                coordinator.processFrame(
+                                    detectorFrame = detected,
+                                    profile = AlertProfile.STANDARD,
+                                    scenario = AssistScenario.GENERAL,
+                                    nowMs = stamp.capturedAtNs / NANOS_PER_MILLISECOND,
+                                    decisionAtNs = decisionAtNs,
+                                    dualLoopDecisionClockDomain =
+                                        FrameClockDomain.ANDROID_ELAPSED_REALTIME
+                                )
+                            } finally {
+                                Trace.endSection()
+                            }
                             val riskCompleteNs = SystemClock.elapsedRealtimeNanos()
                             val captureAndroidNs = stamp.capturedAtNs
                             val tof = frame.rangingSample
                             writer.appendLine(JSONObject().apply {
-                                put("schema", "blindassist_atoms3r_android_e2e_frame_r0")
+                                put("schema", "blindassist_atoms3r_android_latency_decomposition_r2_frame_v1")
                                 put("frame_sequence", stamp.frameId)
                                 put("device_capture_ns", timing.deviceCaptureNs)
                                 put("device_jpeg_ready_ns", timing.deviceJpegReadyNs)
@@ -117,8 +126,15 @@ class AtomS3rAndroidE2eTimingTest {
                                 put("android_decode_start_ns", timing.androidDecodeStartNs)
                                 put("android_decode_complete_ns", timing.androidDecodeCompleteNs)
                                 put("android_rgba_complete_ns", timing.androidRgbaCompleteNs)
-                                put("inference_start_ns", inferenceStartNs)
-                                put("inference_complete_ns", inferenceCompleteNs)
+                                put("detector_call_start_ns", detectorCallStartNs)
+                                put("preprocess_start_ns", detectorTiming.preprocessStartNs)
+                                put("preprocess_complete_ns", detectorTiming.preprocessCompleteNs)
+                                put("qnn_enqueue_ns", detectorTiming.qnnEnqueueNs)
+                                put("qnn_enqueue_semantics", "host_interpreter_run_entry")
+                                put("qnn_complete_ns", detectorTiming.qnnCompleteNs)
+                                put("output_read_complete_ns", detectorTiming.outputReadCompleteNs)
+                                put("postprocess_complete_ns", detectorTiming.postprocessCompleteNs)
+                                put("detector_call_complete_ns", detectorCallCompleteNs)
                                 put("risk_decision_at_ns", decisionAtNs)
                                 put("risk_complete_ns", riskCompleteNs)
                                 putNullable("speech_request_ns", result.feedbackDecision.speechRequestAtNs)
@@ -143,7 +159,23 @@ class AtomS3rAndroidE2eTimingTest {
                                     "android_first_byte_to_jpeg_complete_ms",
                                     ms(timing.androidJpegCompleteNs - timing.androidFirstByteNs)
                                 )
-                                put("inference_stage_ms", ms(inferenceCompleteNs - inferenceStartNs))
+                                put("jpeg_complete_to_decode_start_ms", ms(timing.androidDecodeStartNs - timing.androidJpegCompleteNs))
+                                put("decode_complete_to_detector_call_ms", ms(detectorCallStartNs - timing.androidDecodeCompleteNs))
+                                put("detector_entry_to_preprocess_ms", ms(detectorTiming.preprocessStartNs - detectorCallStartNs))
+                                put("preprocess_ms", ms(detectorTiming.preprocessCompleteNs - detectorTiming.preprocessStartNs))
+                                put("preprocess_to_qnn_enqueue_ms", ms(detectorTiming.qnnEnqueueNs - detectorTiming.preprocessCompleteNs))
+                                put("qnn_execute_ms", ms(detectorTiming.qnnCompleteNs - detectorTiming.qnnEnqueueNs))
+                                put("output_read_ms", ms(detectorTiming.outputReadCompleteNs - detectorTiming.qnnCompleteNs))
+                                put("postprocess_ms", ms(detectorTiming.postprocessCompleteNs - detectorTiming.outputReadCompleteNs))
+                                put("postprocess_to_risk_start_ms", ms(decisionAtNs - detectorTiming.postprocessCompleteNs))
+                                put("risk_ms", ms(riskCompleteNs - decisionAtNs))
+                                put("detector_total_ms", ms(detectorCallCompleteNs - detectorCallStartNs))
+                                put("frame_age_at_first_byte_ms", ms(timing.androidFirstByteNs - captureAndroidNs))
+                                put("frame_age_at_decode_start_ms", ms(timing.androidDecodeStartNs - captureAndroidNs))
+                                put("frame_age_at_preprocess_start_ms", ms(detectorTiming.preprocessStartNs - captureAndroidNs))
+                                put("frame_age_at_qnn_enqueue_ms", ms(detectorTiming.qnnEnqueueNs - captureAndroidNs))
+                                put("frame_age_at_postprocess_complete_ms", ms(detectorTiming.postprocessCompleteNs - captureAndroidNs))
+                                put("frame_age_at_risk_ready_ms", ms(riskCompleteNs - captureAndroidNs))
                                 put("capture_to_risk_complete_ms", ms(riskCompleteNs - captureAndroidNs))
                                 putNullable("tof_timestamp_ns", tof?.sampledAtNs)
                                 putNullable("tof_age_at_jpeg_ready_ns", tof?.ageAtFrameReadyNs)
@@ -186,7 +218,7 @@ class AtomS3rAndroidE2eTimingTest {
         val endedNs = SystemClock.elapsedRealtimeNanos()
         val sourceDiagnostics = source.diagnostics()
         summaryFile.writeText(JSONObject().apply {
-            put("schema", "blindassist_atoms3r_android_e2e_summary_r0")
+            put("schema", "blindassist_atoms3r_android_latency_decomposition_r2_summary_v1")
             put("development_only", true)
             put("physical_speech_onset", "NOT_EVALUABLE")
             put("physical_vibration_onset", "NOT_EVALUABLE")
@@ -227,5 +259,6 @@ class AtomS3rAndroidE2eTimingTest {
         const val DEFAULT_ENDPOINT = "http://192.168.5.11"
         const val STARTUP_GRACE_SECONDS = 30L
         const val NANOS_PER_MILLISECOND = 1_000_000L
+        const val TRACE_RISK_DECISION = "BlindAssist.RiskDecision"
     }
 }

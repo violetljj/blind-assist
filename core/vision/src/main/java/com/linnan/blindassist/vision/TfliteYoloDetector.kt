@@ -3,6 +3,8 @@ package com.linnan.blindassist.vision
 import android.content.Context
 import android.content.res.AssetFileDescriptor
 import android.graphics.Bitmap
+import android.os.SystemClock
+import android.os.Trace
 import android.util.Log
 import com.linnan.blindassist.model.BoundingBox
 import com.linnan.blindassist.model.Detection
@@ -136,36 +138,54 @@ class TfliteYoloDetector(
                 metrics = currentMetrics(),
                 sourceFrame = sourceFrame
             )
-            val totalStart = System.nanoTime()
+            val totalStart = SystemClock.elapsedRealtimeNanos()
             val preprocessStart = totalStart
-            val input = prepareInput()
-            lastPreprocessMs = elapsedMs(preprocessStart)
+            val input = traced(TRACE_PREPROCESS) { prepareInput() }
+            val preprocessComplete = SystemClock.elapsedRealtimeNanos()
+            lastPreprocessMs = elapsedMs(preprocessStart, preprocessComplete)
 
             val outputTensor = localInterpreter.getOutputTensor(0)
             val localOutputBuffer = reusableOutputBuffer(outputTensor.numBytes())
 
-            val start = System.nanoTime()
-            localInterpreter.run(input.buffer, localOutputBuffer)
-            lastInferenceMs = elapsedMs(start)
-            localOutputBuffer.rewind()
+            val qnnEnqueue = SystemClock.elapsedRealtimeNanos()
+            traced(TRACE_QNN_EXECUTE) {
+                localInterpreter.run(input.buffer, localOutputBuffer)
+            }
+            val qnnComplete = SystemClock.elapsedRealtimeNanos()
+            lastInferenceMs = elapsedMs(qnnEnqueue, qnnComplete)
 
-            val floats = reusableOutputFloats(outputTensor.numElements())
-            localOutputBuffer.asFloatBuffer().get(floats)
+            val floats = traced(TRACE_OUTPUT_READ) {
+                localOutputBuffer.rewind()
+                reusableOutputFloats(outputTensor.numElements()).also {
+                    localOutputBuffer.asFloatBuffer().get(it)
+                }
+            }
+            val outputReadComplete = SystemClock.elapsedRealtimeNanos()
 
-            val postprocessStart = System.nanoTime()
-            val detections = parseOutput(
-                raw = floats,
-                shape = outputTensor.shape(),
-                dataType = outputTensor.dataType(),
-                letterbox = input.letterbox
-            )
-            lastPostprocessMs = elapsedMs(postprocessStart)
-            lastTotalDetectMs = elapsedMs(totalStart)
+            val detections = traced(TRACE_POSTPROCESS) {
+                parseOutput(
+                    raw = floats,
+                    shape = outputTensor.shape(),
+                    dataType = outputTensor.dataType(),
+                    letterbox = input.letterbox
+                )
+            }
+            val postprocessComplete = SystemClock.elapsedRealtimeNanos()
+            lastPostprocessMs = elapsedMs(outputReadComplete, postprocessComplete)
+            lastTotalDetectMs = elapsedMs(totalStart, postprocessComplete)
             return DetectorFrameResult(
                 detections = detections,
                 frameSize = frameSize,
                 metrics = currentMetrics(),
-                sourceFrame = sourceFrame
+                sourceFrame = sourceFrame,
+                stageTiming = DetectorStageTiming(
+                    preprocessStartNs = preprocessStart,
+                    preprocessCompleteNs = preprocessComplete,
+                    qnnEnqueueNs = qnnEnqueue,
+                    qnnCompleteNs = qnnComplete,
+                    outputReadCompleteNs = outputReadComplete,
+                    postprocessCompleteNs = postprocessComplete
+                )
             )
         }
     }
@@ -246,8 +266,28 @@ class TfliteYoloDetector(
         return outputFloats
     }
 
-    private fun elapsedMs(startNanos: Long): Long {
-        return (System.nanoTime() - startNanos) / 1_000_000L
+    private fun elapsedMs(startNanos: Long, endNanos: Long): Long {
+        return (endNanos - startNanos) / 1_000_000L
+    }
+
+    private inline fun <T> traced(name: String, block: () -> T): T {
+        val tracing = try {
+            Trace.beginSection(name)
+            true
+        } catch (_: RuntimeException) {
+            false
+        }
+        return try {
+            block()
+        } finally {
+            if (tracing) {
+                try {
+                    Trace.endSection()
+                } catch (_: RuntimeException) {
+                    // Android Trace is unavailable in local JVM tests.
+                }
+            }
+        }
     }
 
     private fun VisionFrame.displayWidth(): Int {
@@ -371,6 +411,10 @@ class TfliteYoloDetector(
         private const val MIN_YOLO_CHANNELS = 5
         private const val BOX_CHANNELS = 4
         private const val TAG = "TfliteYoloDetector"
+        private const val TRACE_PREPROCESS = "BlindAssist.YoloPreprocess"
+        private const val TRACE_QNN_EXECUTE = "BlindAssist.QnnExecute"
+        private const val TRACE_OUTPUT_READ = "BlindAssist.YoloOutputRead"
+        private const val TRACE_POSTPROCESS = "BlindAssist.YoloPostprocess"
     }
 
     private fun closeExternalBackend() {

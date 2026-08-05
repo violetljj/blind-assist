@@ -3,6 +3,7 @@ package com.linnan.blindassist.camera
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.SystemClock
+import android.os.Trace
 import androidx.camera.view.PreviewView
 import com.linnan.blindassist.util.FatalThrowables
 import com.linnan.blindassist.vision.FrameClockDomain
@@ -205,8 +206,10 @@ class AtomS3rMjpegFrameSource(
             } ?: continue
             try {
                 val decodeStartNs = SystemClock.elapsedRealtimeNanos()
-                val bitmap = requireNotNull(BitmapFactory.decodeByteArray(packet.jpeg, 0, packet.jpeg.size)) {
-                    "Unable to decode AtomS3R JPEG"
+                val bitmap = traced(TRACE_JPEG_DECODE) {
+                    requireNotNull(BitmapFactory.decodeByteArray(packet.jpeg, 0, packet.jpeg.size)) {
+                        "Unable to decode AtomS3R JPEG"
+                    }
                 }
                 val decodeCompleteNs = SystemClock.elapsedRealtimeNanos()
                 val metadata = packet.metadata(decodeStartNs, decodeCompleteNs)
@@ -420,6 +423,7 @@ class AtomS3rMjpegFrameSource(
     }
 
     companion object {
+        private const val TRACE_JPEG_DECODE = "BlindAssist.AtomS3rJpegDecode"
         private const val BUFFER_SIZE = 64 * 1024
         private const val MAX_JPEG_BYTES = 2 * 1024 * 1024
         private const val MAX_HEADER_LINE_BYTES = 2048
@@ -437,5 +441,25 @@ class AtomS3rMjpegFrameSource(
 
         private fun Map<String, String>.requiredLong(name: String): Long =
             get(name)?.toLongOrNull() ?: error("Missing or invalid $name")
+    }
+
+    private inline fun <T> traced(name: String, block: () -> T): T {
+        val tracing = try {
+            Trace.beginSection(name)
+            true
+        } catch (_: RuntimeException) {
+            false
+        }
+        return try {
+            block()
+        } finally {
+            if (tracing) {
+                try {
+                    Trace.endSection()
+                } catch (_: RuntimeException) {
+                    // Android Trace is unavailable in local JVM tests.
+                }
+            }
+        }
     }
 }
