@@ -1,4 +1,24 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：violjjet。将真实
+  AtomS3R-M12 网页固件升级到 `atoms3r_m12_tof4m_web_r2`：新增
+  `VGA/SVGA/XGA/SXGA/UXGA`、JPEG quality `6..30`、亮度 `-2..2`、自动曝光补偿
+  与手动曝光的设备端白名单控制；参数切换在相机 mutex 内完成并丢弃三帧过渡缓冲，
+  MJPEG 帧先复制到 PSRAM 后释放相机，从而允许实时流期间并发调参和抓拍。新增
+  `/api/status` 与 `/status`，报告 uptime、heap、Wi-Fi/IP/RSSI/重连计数、相机配置、
+  recent FPS、流客户端和 fail-closed ToF 状态；浏览器抓拍下载 JPEG 与
+  `blindassist_atoms3r_capture_browser_r0` JSON，绑定 boot sequence、frame timestamp
+  及最近 ToF 样本/age，但不宣称硬件同步或标定。设备启用自动重连及 5 秒主动 retry，
+  网页为距离/状态/MJPEG 增加超时、退避、停帧检测和错误提示。真实板五档逐一应用后，
+  API 声明、JPEG SOF 和抓拍 metadata 宽高均精确匹配 `640x480`、`800x600`、
+  `1024x768`、`1280x1024`、`1600x1200`，非法档返回 HTTP 400，最终恢复 XGA。
+  并发测试在 1 个流客户端下仍可切换手动曝光/分辨率及抓拍；最终 XGA 4 秒观察
+  103 帧（25.74 fps，状态 API 25.62 fps），Wi-Fi/camera/ToF 均 ready、距离
+  `78 mm`，抓拍 30,451 B 且 nearest ToF age `83 ms`。最终编译 program/RAM 为
+  `1062159 B (31%) / 60088 B (18%)`，app bin SHA-256 为
+  `ca0c48a253d938c53b897acc562683ae30936a1961f2fdf68c0113cc30f88e14`，COM5
+  各 flash 区段写入哈希均通过。两段页面 JavaScript `node --check` 通过；应用内
+  浏览器环境未能完成局域网地址导航，因此不把视觉自动化计为通过。所有结论仍限于
+  Development 单区显示/采集，不授权 RGB-ToF 标定、多区深度、精度或安全结论。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：violjjet。在真实
   AtomS3R-M12 上补齐 OV3660 + Unit ToF4M 局域网实时页：设备可保存 2.4 GHz
   Wi-Fi 到本地 NVS，连接失败时回退到受密码保护的配置 AP；控制/API 使用端口 80，

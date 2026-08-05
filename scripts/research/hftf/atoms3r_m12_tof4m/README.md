@@ -57,6 +57,35 @@ COM 端口。烧录后串口为 `115200 baud`。
 OV3660 的最高静态分辨率。页面绿色框只标示 ToF4M 的中央单区窄视场，画面其余区域
 没有对应距离，网页也不构成避障或安全系统。
 
+### 网页功能
+
+- 相机分辨率可在 `VGA/SVGA/XGA/SXGA/UXGA` 间切换，JPEG quality 限制为
+  `6..30`，亮度限制为 `-2..2`；
+- 曝光支持自动模式下 `-2..2` 补偿，或关闭自动曝光后使用 `0..1200` 手动值；
+- 参数经过设备端白名单与范围校验，应用后丢弃三帧过渡缓冲；设置只在当前开机
+  session 生效，重启恢复稳定的 XGA/quality 10 默认值；
+- `下载截图＋JSON` 会下载一张实际 JPEG 和浏览器生成的配套 JSON。JSON 记录
+  boot sequence、抓拍时间、最近 ToF 样本时间/年龄/状态、实际 JPEG 宽高和 quality；
+  这是 nearest-sample binding，不代表完成了 RGB-ToF 硬件同步或外参标定；
+- `/status` 每秒显示运行时间、空闲内存、Wi-Fi/IP/RSSI/重连次数、相机配置、近期
+  帧率、累计帧、流客户端和 ToF 状态；
+- 设备启用 ESP32 自动重连并在断线时每 5 秒主动调用 reconnect；网页对距离 API
+  使用超时和退避重试，对 MJPEG 使用指数退避并在状态 API 报告停帧时重新连接；
+- `/?static=1` 使用一次有限抓拍代替无限 MJPEG，仅用于局域网页面诊断。
+
+主要 HTTP 接口：
+
+| 方法 | 路径 | 用途 |
+| --- | --- | --- |
+| GET | `/api/range` | 最近一次 fail-closed 单区距离 |
+| GET | `/api/status` | 系统、Wi-Fi、相机、帧率与 ToF 状态 |
+| GET/POST | `/api/camera` | 读取或应用当前 session 相机参数 |
+| GET | `/api/snapshot` | JPEG；`X-Capture-Metadata` 响应头携带配套 JSON |
+| GET | `/status` | 人可读设备状态页 |
+
+浏览器可能要求用户允许同一站点连续下载两个文件；若只出现一个文件，请在浏览器
+下载提示中允许多个下载后重试。
+
 ## 输出合同
 
 串口只输出 JSONL。事件行使用 `blindassist_atoms3r_tof4m_event_r0`；测量行使用

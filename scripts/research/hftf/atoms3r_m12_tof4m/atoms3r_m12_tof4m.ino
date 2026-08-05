@@ -5,16 +5,19 @@
 #include <WiFi.h>
 #include <Wire.h>
 #include <esp_camera.h>
+#include <esp_heap_caps.h>
 #include <esp_http_server.h>
 #include <esp_system.h>
 #include <esp_timer.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
 #include <inttypes.h>
 
 #include "web_ui.h"
 
 namespace {
 
-constexpr char kFirmwareVersion[] = "atoms3r_m12_tof4m_web_r1";
+constexpr char kFirmwareVersion[] = "atoms3r_m12_tof4m_web_r2";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -33,6 +36,8 @@ constexpr char kSetupSsid[] = "AtomS3R-ToF-Setup";
 constexpr char kSetupPassword[] = "blindassist";
 constexpr char kMdnsHostname[] = "atoms3r-tof";
 constexpr uint32_t kWifiConnectTimeoutMs = 20000;
+constexpr uint32_t kWifiReconnectIntervalMs = 5000;
+constexpr uint32_t kCameraLockTimeoutMs = 2000;
 
 constexpr int kCameraPowerPin = 18;
 constexpr int kCameraXclkPin = 21;
@@ -63,6 +68,49 @@ httpd_handle_t stream_httpd = nullptr;
 bool setup_mode = false;
 bool camera_ready = false;
 char camera_failure_status[48] = "NOT_ATTEMPTED";
+SemaphoreHandle_t camera_mutex = nullptr;
+uint64_t next_wifi_reconnect_us = 0;
+uint32_t wifi_reconnect_attempts = 0;
+bool wifi_was_connected = false;
+
+struct FrameSizeOption {
+  const char* name;
+  framesize_t value;
+  uint16_t width;
+  uint16_t height;
+};
+
+constexpr FrameSizeOption kFrameSizeOptions[] = {
+    {"VGA", FRAMESIZE_VGA, 640, 480},
+    {"SVGA", FRAMESIZE_SVGA, 800, 600},
+    {"XGA", FRAMESIZE_XGA, 1024, 768},
+    {"SXGA", FRAMESIZE_SXGA, 1280, 1024},
+    {"UXGA", FRAMESIZE_UXGA, 1600, 1200},
+};
+
+struct CameraRuntimeSettings {
+  const FrameSizeOption* frame_size;
+  uint8_t jpeg_quality;
+  int8_t brightness;
+  bool auto_exposure;
+  int8_t exposure_compensation;
+  uint16_t manual_exposure;
+};
+
+CameraRuntimeSettings camera_settings = {&kFrameSizeOptions[2], 10, 1, true,
+                                         0, 300};
+
+struct FrameStats {
+  uint64_t total_frames;
+  uint64_t window_started_us;
+  uint64_t last_frame_us;
+  uint32_t window_frames;
+  float recent_fps;
+  uint16_t stream_clients;
+};
+
+FrameStats frame_stats = {0, 0, 0, 0, 0.0F, 0};
+portMUX_TYPE frame_stats_mux = portMUX_INITIALIZER_UNLOCKED;
 
 struct SharedRange {
   bool valid;
@@ -84,6 +132,107 @@ constexpr char kStreamPart[] =
 
 uint64_t monotonicNs() {
   return static_cast<uint64_t>(esp_timer_get_time()) * 1000ULL;
+}
+
+SharedRange snapshotRange() {
+  SharedRange snapshot;
+  portENTER_CRITICAL(&range_mux);
+  snapshot = shared_range;
+  portEXIT_CRITICAL(&range_mux);
+  return snapshot;
+}
+
+void updateFrameStats(bool client_delta, bool client_connected,
+                      bool frame_sent) {
+  const uint64_t now_us = static_cast<uint64_t>(esp_timer_get_time());
+  portENTER_CRITICAL(&frame_stats_mux);
+  if (client_delta) {
+    if (client_connected) {
+      ++frame_stats.stream_clients;
+    } else if (frame_stats.stream_clients > 0) {
+      --frame_stats.stream_clients;
+    }
+  }
+  if (frame_sent) {
+    if (frame_stats.window_started_us == 0) {
+      frame_stats.window_started_us = now_us;
+    }
+    ++frame_stats.total_frames;
+    ++frame_stats.window_frames;
+    frame_stats.last_frame_us = now_us;
+    const uint64_t elapsed_us = now_us - frame_stats.window_started_us;
+    if (elapsed_us >= 1000000ULL) {
+      frame_stats.recent_fps =
+          static_cast<float>(frame_stats.window_frames) * 1000000.0F /
+          static_cast<float>(elapsed_us);
+      frame_stats.window_frames = 0;
+      frame_stats.window_started_us = now_us;
+    }
+  }
+  portEXIT_CRITICAL(&frame_stats_mux);
+}
+
+FrameStats snapshotFrameStats() {
+  FrameStats snapshot;
+  portENTER_CRITICAL(&frame_stats_mux);
+  snapshot = frame_stats;
+  portEXIT_CRITICAL(&frame_stats_mux);
+  const uint64_t now_us = static_cast<uint64_t>(esp_timer_get_time());
+  if (snapshot.last_frame_us == 0 || now_us - snapshot.last_frame_us > 2000000ULL) {
+    snapshot.recent_fps = 0.0F;
+  }
+  return snapshot;
+}
+
+const FrameSizeOption* findFrameSize(const char* name) {
+  for (const FrameSizeOption& option : kFrameSizeOptions) {
+    if (strcmp(option.name, name) == 0) {
+      return &option;
+    }
+  }
+  return nullptr;
+}
+
+const FrameSizeOption* findFrameSize(uint16_t width, uint16_t height) {
+  for (const FrameSizeOption& option : kFrameSizeOptions) {
+    if (option.width == width && option.height == height) {
+      return &option;
+    }
+  }
+  return nullptr;
+}
+
+bool parseInteger(const char* value, long minimum, long maximum,
+                  long* parsed) {
+  if (value == nullptr || value[0] == '\0') {
+    return false;
+  }
+  char* end = nullptr;
+  const long candidate = strtol(value, &end, 10);
+  if (end == value || *end != '\0' || candidate < minimum ||
+      candidate > maximum) {
+    return false;
+  }
+  *parsed = candidate;
+  return true;
+}
+
+bool readRequestBody(httpd_req_t* request, char* body, size_t body_size) {
+  if (request->content_len <= 0 ||
+      static_cast<size_t>(request->content_len) >= body_size) {
+    return false;
+  }
+  int received = 0;
+  while (received < request->content_len) {
+    const int result = httpd_req_recv(request, body + received,
+                                      request->content_len - received);
+    if (result <= 0) {
+      return false;
+    }
+    received += result;
+  }
+  body[received] = '\0';
+  return true;
 }
 
 bool probeTofAddress() {
@@ -217,11 +366,11 @@ bool initializeCamera() {
   config.pin_pwdn = -1;
   config.pin_reset = -1;
   config.xclk_freq_hz = 20000000;
-  config.frame_size = FRAMESIZE_XGA;
+  config.frame_size = camera_settings.frame_size->value;
   config.pixel_format = PIXFORMAT_JPEG;
   config.grab_mode = CAMERA_GRAB_LATEST;
   config.fb_location = CAMERA_FB_IN_PSRAM;
-  config.jpeg_quality = 10;
+  config.jpeg_quality = camera_settings.jpeg_quality;
   config.fb_count = psramFound() ? 2 : 1;
   if (!psramFound()) {
     config.frame_size = FRAMESIZE_QVGA;
@@ -239,10 +388,13 @@ bool initializeCamera() {
   sensor_t* camera_sensor = esp_camera_sensor_get();
   if (camera_sensor != nullptr && camera_sensor->id.PID == OV3660_PID) {
     camera_sensor->set_vflip(camera_sensor, 1);
-    camera_sensor->set_brightness(camera_sensor, 1);
+    camera_sensor->set_brightness(camera_sensor, camera_settings.brightness);
     camera_sensor->set_saturation(camera_sensor, -2);
+    camera_sensor->set_exposure_ctrl(camera_sensor, 1);
+    camera_sensor->set_ae_level(
+        camera_sensor, camera_settings.exposure_compensation);
   }
-  emitEvent("camera_init", "READY_XGA_JPEG_Q10");
+  emitEvent("camera_init", "READY_XGA_JPEG_Q10_CONTROLS_R2");
   return true;
 }
 
@@ -278,11 +430,142 @@ esp_err_t rootHandler(httpd_req_t* request) {
   return sendHtml(request, setup_mode ? kSetupHtml : kDashboardHtml);
 }
 
+esp_err_t statusPageHandler(httpd_req_t* request) {
+  return sendHtml(request, kStatusHtml);
+}
+
+esp_err_t sendJson(httpd_req_t* request, const char* json) {
+  httpd_resp_set_type(request, "application/json");
+  httpd_resp_set_hdr(request, "Cache-Control", "no-store");
+  return httpd_resp_send(request, json, HTTPD_RESP_USE_STRLEN);
+}
+
+esp_err_t sendServiceUnavailable(httpd_req_t* request, const char* message) {
+  httpd_resp_set_status(request, "503 Service Unavailable");
+  httpd_resp_set_type(request, "text/plain; charset=utf-8");
+  return httpd_resp_send(request, message, HTTPD_RESP_USE_STRLEN);
+}
+
+void formatCameraSettingsJson(char* body, size_t body_size) {
+  snprintf(body, body_size,
+           "{\"resolution\":\"%s\",\"width\":%u,\"height\":%u,"
+           "\"jpeg_quality\":%u,\"brightness\":%d,"
+           "\"auto_exposure\":%s,\"exposure_compensation\":%d,"
+           "\"manual_exposure\":%u}",
+           camera_settings.frame_size->name, camera_settings.frame_size->width,
+           camera_settings.frame_size->height, camera_settings.jpeg_quality,
+           camera_settings.brightness,
+           camera_settings.auto_exposure ? "true" : "false",
+           camera_settings.exposure_compensation,
+           camera_settings.manual_exposure);
+}
+
+esp_err_t cameraSettingsGetHandler(httpd_req_t* request) {
+  char body[320];
+  formatCameraSettingsJson(body, sizeof(body));
+  return sendJson(request, body);
+}
+
+esp_err_t cameraSettingsPostHandler(httpd_req_t* request) {
+  if (!camera_ready || camera_mutex == nullptr) {
+    return sendServiceUnavailable(request, "camera not ready");
+  }
+  char body[321] = {};
+  if (!readRequestBody(request, body, sizeof(body))) {
+    return httpd_resp_send_err(request, HTTPD_400_BAD_REQUEST,
+                               "invalid camera settings body");
+  }
+
+  char resolution[12] = {};
+  char quality_text[8] = {};
+  char brightness_text[8] = {};
+  char auto_exposure_text[8] = {};
+  char compensation_text[8] = {};
+  char manual_exposure_text[8] = {};
+  if (httpd_query_key_value(body, "resolution", resolution,
+                            sizeof(resolution)) != ESP_OK ||
+      httpd_query_key_value(body, "quality", quality_text,
+                            sizeof(quality_text)) != ESP_OK ||
+      httpd_query_key_value(body, "brightness", brightness_text,
+                            sizeof(brightness_text)) != ESP_OK ||
+      httpd_query_key_value(body, "auto_exposure", auto_exposure_text,
+                            sizeof(auto_exposure_text)) != ESP_OK ||
+      httpd_query_key_value(body, "exposure_compensation", compensation_text,
+                            sizeof(compensation_text)) != ESP_OK ||
+      httpd_query_key_value(body, "manual_exposure", manual_exposure_text,
+                            sizeof(manual_exposure_text)) != ESP_OK) {
+    return httpd_resp_send_err(request, HTTPD_400_BAD_REQUEST,
+                               "missing camera setting");
+  }
+
+  const FrameSizeOption* frame_size = findFrameSize(resolution);
+  long quality = 0;
+  long brightness = 0;
+  long auto_exposure = 0;
+  long compensation = 0;
+  long manual_exposure = 0;
+  if (frame_size == nullptr ||
+      !parseInteger(quality_text, 6, 30, &quality) ||
+      !parseInteger(brightness_text, -2, 2, &brightness) ||
+      !parseInteger(auto_exposure_text, 0, 1, &auto_exposure) ||
+      !parseInteger(compensation_text, -2, 2, &compensation) ||
+      !parseInteger(manual_exposure_text, 0, 1200, &manual_exposure)) {
+    return httpd_resp_send_err(request, HTTPD_400_BAD_REQUEST,
+                               "camera setting out of range");
+  }
+
+  if (xSemaphoreTake(camera_mutex, pdMS_TO_TICKS(kCameraLockTimeoutMs)) !=
+      pdTRUE) {
+    return sendServiceUnavailable(request, "camera busy; retry");
+  }
+  sensor_t* camera_sensor = esp_camera_sensor_get();
+  int result = camera_sensor == nullptr ? -1 : 0;
+  if (camera_sensor != nullptr) {
+    result |= camera_sensor->set_framesize(camera_sensor, frame_size->value);
+    result |= camera_sensor->set_quality(camera_sensor, quality);
+    result |= camera_sensor->set_brightness(camera_sensor, brightness);
+    result |= camera_sensor->set_exposure_ctrl(camera_sensor, auto_exposure);
+    if (auto_exposure != 0) {
+      result |= camera_sensor->set_ae_level(camera_sensor, compensation);
+    } else {
+      result |= camera_sensor->set_aec_value(camera_sensor, manual_exposure);
+    }
+    if (result == 0) {
+      for (uint8_t index = 0; index < 3; ++index) {
+        camera_fb_t* transition_frame = esp_camera_fb_get();
+        if (transition_frame == nullptr) {
+          result = -1;
+          break;
+        }
+        esp_camera_fb_return(transition_frame);
+        delay(20);
+      }
+    }
+  }
+  if (result == 0) {
+    camera_settings.frame_size = frame_size;
+    camera_settings.jpeg_quality = static_cast<uint8_t>(quality);
+    camera_settings.brightness = static_cast<int8_t>(brightness);
+    camera_settings.auto_exposure = auto_exposure != 0;
+    camera_settings.exposure_compensation =
+        static_cast<int8_t>(compensation);
+    camera_settings.manual_exposure =
+        static_cast<uint16_t>(manual_exposure);
+  }
+  xSemaphoreGive(camera_mutex);
+  if (result != 0) {
+    emitEvent("camera_settings", "APPLY_FAILED");
+    return httpd_resp_send_err(request, HTTPD_500_INTERNAL_SERVER_ERROR,
+                               "camera rejected setting");
+  }
+  emitEvent("camera_settings", "APPLIED_SESSION_ONLY");
+  char response[320];
+  formatCameraSettingsJson(response, sizeof(response));
+  return sendJson(request, response);
+}
+
 esp_err_t rangeHandler(httpd_req_t* request) {
-  SharedRange snapshot;
-  portENTER_CRITICAL(&range_mux);
-  snapshot = shared_range;
-  portEXIT_CRITICAL(&range_mux);
+  const SharedRange snapshot = snapshotRange();
 
   const uint64_t now_ns = monotonicNs();
   const uint64_t age_ms = snapshot.timestamp_ns == 0
@@ -304,26 +587,100 @@ esp_err_t rangeHandler(httpd_req_t* request) {
              snapshot.range_mm, snapshot.status, snapshot.range_status_code,
              age_ms);
   }
-  httpd_resp_set_type(request, "application/json");
-  httpd_resp_set_hdr(request, "Cache-Control", "no-store");
   httpd_resp_set_hdr(request, "Access-Control-Allow-Origin", "*");
-  return httpd_resp_send(request, body, HTTPD_RESP_USE_STRLEN);
+  return sendJson(request, body);
+}
+
+esp_err_t statusHandler(httpd_req_t* request) {
+  const SharedRange range = snapshotRange();
+  const FrameStats frames = snapshotFrameStats();
+  const uint64_t now_ns = monotonicNs();
+  const uint64_t range_age_ms =
+      range.timestamp_ns == 0 ? 0 : (now_ns - range.timestamp_ns) / 1000000ULL;
+  const bool wifi_connected = WiFi.status() == WL_CONNECTED;
+  const String ip = wifi_connected ? WiFi.localIP().toString() : String("");
+  char body[1024];
+  snprintf(
+      body, sizeof(body),
+      "{\"firmware_version\":\"%s\",\"sequence_id\":\"%s\","
+      "\"uptime_ms\":%" PRIu64 ",\"free_heap_bytes\":%u,"
+      "\"wifi\":{\"connected\":%s,\"status_code\":%d,"
+      "\"ip\":\"%s\",\"rssi_dbm\":%d,\"reconnect_attempts\":%u},"
+      "\"camera\":{\"ready\":%s,\"resolution\":\"%s\","
+      "\"width\":%u,\"height\":%u,\"jpeg_quality\":%u,"
+      "\"brightness\":%d,\"auto_exposure\":%s,"
+      "\"exposure_compensation\":%d,\"manual_exposure\":%u,"
+      "\"recent_fps\":%.2f,\"total_frames\":%" PRIu64 ","
+      "\"stream_clients\":%u},"
+      "\"tof\":{\"ready\":%s,\"valid\":%s,\"status\":\"%s\","
+      "\"range_mm\":%u,\"range_status_code\":%u,\"age_ms\":%" PRIu64
+      "}}",
+      kFirmwareVersion, sequence_id, now_ns / 1000000ULL, ESP.getFreeHeap(),
+      wifi_connected ? "true" : "false", static_cast<int>(WiFi.status()),
+      ip.c_str(), wifi_connected ? WiFi.RSSI() : 0, wifi_reconnect_attempts,
+      camera_ready ? "true" : "false", camera_settings.frame_size->name,
+      camera_settings.frame_size->width, camera_settings.frame_size->height,
+      camera_settings.jpeg_quality, camera_settings.brightness,
+      camera_settings.auto_exposure ? "true" : "false",
+      camera_settings.exposure_compensation, camera_settings.manual_exposure,
+      static_cast<double>(frames.recent_fps), frames.total_frames,
+      frames.stream_clients, sensor_ready ? "true" : "false",
+      range.valid ? "true" : "false", range.status, range.range_mm,
+      range.range_status_code, range_age_ms);
+  return sendJson(request, body);
+}
+
+esp_err_t snapshotHandler(httpd_req_t* request) {
+  if (!camera_ready || camera_mutex == nullptr) {
+    return sendServiceUnavailable(request, "camera not ready");
+  }
+  if (xSemaphoreTake(camera_mutex, pdMS_TO_TICKS(kCameraLockTimeoutMs)) !=
+      pdTRUE) {
+    return sendServiceUnavailable(request, "camera busy; retry");
+  }
+  camera_fb_t* frame = esp_camera_fb_get();
+  if (frame == nullptr) {
+    xSemaphoreGive(camera_mutex);
+    return httpd_resp_send_err(request, HTTPD_500_INTERNAL_SERVER_ERROR,
+                               "snapshot failed");
+  }
+  const uint64_t capture_timestamp_ns = monotonicNs();
+  const SharedRange range = snapshotRange();
+  const FrameSizeOption* actual_frame_size =
+      findFrameSize(frame->width, frame->height);
+  const uint64_t range_age_ms = range.timestamp_ns == 0
+                                    ? 0
+                                    : (capture_timestamp_ns -
+                                       range.timestamp_ns) /
+                                          1000000ULL;
+  char metadata[512];
+  snprintf(metadata, sizeof(metadata),
+           "{\"schema\":\"blindassist_atoms3r_capture_browser_r0\","
+           "\"sequence_id\":\"%s\",\"capture_timestamp_ns\":%" PRIu64
+           ",\"range_timestamp_ns\":%" PRIu64 ",\"range_age_ms\":%" PRIu64
+           ",\"range_valid\":%s,\"range_mm\":%u,\"range_status\":\"%s\","
+           "\"range_status_code\":%u,\"resolution\":\"%s\","
+           "\"width\":%u,\"height\":%u,\"jpeg_quality\":%u}",
+           sequence_id, capture_timestamp_ns, range.timestamp_ns, range_age_ms,
+           range.valid ? "true" : "false", range.range_mm, range.status,
+           range.range_status_code,
+           actual_frame_size == nullptr ? "UNKNOWN" : actual_frame_size->name,
+           frame->width, frame->height, camera_settings.jpeg_quality);
+  httpd_resp_set_type(request, "image/jpeg");
+  httpd_resp_set_hdr(request, "Cache-Control", "no-store");
+  httpd_resp_set_hdr(request, "X-Capture-Metadata", metadata);
+  const esp_err_t result = httpd_resp_send(
+      request, reinterpret_cast<const char*>(frame->buf), frame->len);
+  esp_camera_fb_return(frame);
+  xSemaphoreGive(camera_mutex);
+  return result;
 }
 
 esp_err_t saveWifiHandler(httpd_req_t* request) {
-  if (request->content_len <= 0 || request->content_len > 256) {
+  char body[257] = {};
+  if (!readRequestBody(request, body, sizeof(body))) {
     return httpd_resp_send_err(request, HTTPD_400_BAD_REQUEST,
                                "invalid form length");
-  }
-  char body[257] = {};
-  int received = 0;
-  while (received < request->content_len) {
-    const int result = httpd_req_recv(request, body + received,
-                                      request->content_len - received);
-    if (result <= 0) {
-      return ESP_FAIL;
-    }
-    received += result;
   }
 
   char encoded_ssid[97] = {};
@@ -383,16 +740,38 @@ esp_err_t streamHandler(httpd_req_t* request) {
   httpd_resp_set_type(request, kStreamContentType);
   httpd_resp_set_hdr(request, "Access-Control-Allow-Origin", "*");
   httpd_resp_set_hdr(request, "Cache-Control", "no-store");
+  updateFrameStats(true, true, false);
+  esp_err_t stream_result = ESP_OK;
   while (true) {
+    if (camera_mutex == nullptr ||
+        xSemaphoreTake(camera_mutex, portMAX_DELAY) != pdTRUE) {
+      stream_result = ESP_FAIL;
+      break;
+    }
     camera_fb_t* frame = esp_camera_fb_get();
     if (frame == nullptr) {
+      xSemaphoreGive(camera_mutex);
       emitEvent("camera_capture", "FRAME_FAILED");
-      return ESP_FAIL;
+      stream_result = ESP_FAIL;
+      break;
     }
+    const size_t frame_length = frame->len;
+    uint8_t* frame_copy = static_cast<uint8_t*>(
+        heap_caps_malloc(frame_length, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+    if (frame_copy == nullptr) {
+      esp_camera_fb_return(frame);
+      xSemaphoreGive(camera_mutex);
+      emitEvent("camera_stream", "PSRAM_FRAME_COPY_FAILED");
+      stream_result = ESP_ERR_NO_MEM;
+      break;
+    }
+    memcpy(frame_copy, frame->buf, frame_length);
+    esp_camera_fb_return(frame);
+    xSemaphoreGive(camera_mutex);
     char header[96];
     const size_t header_length =
         snprintf(header, sizeof(header), kStreamPart,
-                 static_cast<unsigned>(frame->len));
+                 static_cast<unsigned>(frame_length));
     esp_err_t result =
         httpd_resp_send_chunk(request, kStreamBoundary, strlen(kStreamBoundary));
     if (result == ESP_OK) {
@@ -400,13 +779,17 @@ esp_err_t streamHandler(httpd_req_t* request) {
     }
     if (result == ESP_OK) {
       result = httpd_resp_send_chunk(
-          request, reinterpret_cast<const char*>(frame->buf), frame->len);
+          request, reinterpret_cast<const char*>(frame_copy), frame_length);
     }
-    esp_camera_fb_return(frame);
+    heap_caps_free(frame_copy);
     if (result != ESP_OK) {
-      return result;
+      stream_result = result;
+      break;
     }
+    updateFrameStats(false, false, true);
   }
+  updateFrameStats(true, false, false);
+  return stream_result;
 }
 
 void registerUri(httpd_handle_t server, const char* uri,
@@ -421,13 +804,20 @@ void registerUri(httpd_handle_t server, const char* uri,
 bool startControlServer() {
   httpd_config_t config = HTTPD_DEFAULT_CONFIG();
   config.server_port = 80;
-  config.max_uri_handlers = 8;
+  config.max_uri_handlers = 12;
   if (httpd_start(&control_httpd, &config) != ESP_OK) {
     emitEvent("http_control", "START_FAILED");
     return false;
   }
   registerUri(control_httpd, "/", HTTP_GET, rootHandler);
+  registerUri(control_httpd, "/status", HTTP_GET, statusPageHandler);
   registerUri(control_httpd, "/api/range", HTTP_GET, rangeHandler);
+  registerUri(control_httpd, "/api/status", HTTP_GET, statusHandler);
+  registerUri(control_httpd, "/api/camera", HTTP_GET,
+              cameraSettingsGetHandler);
+  registerUri(control_httpd, "/api/camera", HTTP_POST,
+              cameraSettingsPostHandler);
+  registerUri(control_httpd, "/api/snapshot", HTTP_GET, snapshotHandler);
   registerUri(control_httpd, "/save", HTTP_POST, saveWifiHandler);
   registerUri(control_httpd, "/forget", HTTP_POST, forgetWifiHandler);
   emitEvent("http_control", "READY_PORT_80");
@@ -471,6 +861,8 @@ bool connectStoredWifi() {
     return false;
   }
   WiFi.mode(WIFI_STA);
+  WiFi.persistent(false);
+  WiFi.setAutoReconnect(true);
   WiFi.setSleep(false);
   WiFi.setHostname(kMdnsHostname);
   WiFi.begin(ssid.c_str(), password.c_str());
@@ -485,6 +877,7 @@ bool connectStoredWifi() {
     return false;
   }
   emitEvent("wifi_station", "CONNECTED");
+  wifi_was_connected = true;
   return true;
 }
 
@@ -514,6 +907,35 @@ void startNetworkServices() {
   startControlServer();
   startStreamServer();
   emitEvent("dashboard", WiFi.localIP().toString().c_str());
+  next_wifi_reconnect_us =
+      static_cast<uint64_t>(esp_timer_get_time()) +
+      static_cast<uint64_t>(kWifiReconnectIntervalMs) * 1000ULL;
+}
+
+void maintainWifi() {
+  if (setup_mode) {
+    return;
+  }
+  const bool connected = WiFi.status() == WL_CONNECTED;
+  if (connected) {
+    if (!wifi_was_connected) {
+      wifi_was_connected = true;
+      emitEvent("wifi_station", "RECONNECTED");
+    }
+    return;
+  }
+  if (wifi_was_connected) {
+    wifi_was_connected = false;
+    emitEvent("wifi_station", "DISCONNECTED_AUTO_RETRY");
+  }
+  const uint64_t now_us = static_cast<uint64_t>(esp_timer_get_time());
+  if (now_us < next_wifi_reconnect_us) {
+    return;
+  }
+  ++wifi_reconnect_attempts;
+  WiFi.reconnect();
+  next_wifi_reconnect_us =
+      now_us + static_cast<uint64_t>(kWifiReconnectIntervalMs) * 1000ULL;
 }
 
 void emitRuntimeHealth() {
@@ -557,7 +979,14 @@ void setup() {
   emitEvent("boot", "READY_FOR_TOF_INIT");
   sensor_ready = initializeSensor();
   next_retry_us = static_cast<uint64_t>(esp_timer_get_time()) + 1000000ULL;
-  camera_ready = initializeCamera();
+  camera_mutex = xSemaphoreCreateMutex();
+  if (camera_mutex == nullptr) {
+    snprintf(camera_failure_status, sizeof(camera_failure_status),
+             "CAMERA_MUTEX_ALLOCATION_FAILED");
+    emitEvent("camera_init", camera_failure_status);
+  } else {
+    camera_ready = initializeCamera();
+  }
   startNetworkServices();
   next_health_event_us =
       static_cast<uint64_t>(esp_timer_get_time()) + 5000000ULL;
@@ -565,6 +994,7 @@ void setup() {
 
 void loop() {
   const uint64_t now_us = static_cast<uint64_t>(esp_timer_get_time());
+  maintainWifi();
   if (now_us >= next_health_event_us) {
     emitRuntimeHealth();
     next_health_event_us = now_us + 5000000ULL;
