@@ -50,7 +50,7 @@ PROTOCOL_SCHEMA = "blindassist_p3_temporal_development_screen_r0_protocol"
 MANIFEST_SCHEMA = "blindassist_p3_temporal_development_complete_manifest_r0"
 TRAINING_RESULT_SCHEMA = "blindassist_p3_temporal_development_screen_r0_training_result"
 TRAINING_RESULT_FIELDS = {
-    "schema", "protocol_sha256", "evidence_limit", "activation_bindings_sha256",
+    "schema", "data_role", "claim_ceiling", "protocol_sha256", "activation_bindings_sha256",
     "train_manifest_sha256", "validation_manifest_sha256", "a2_checkpoint_sha256",
     "teacher_depth_sha256", "seed", "epochs_completed", "best_epoch",
     "best_validation_composite_total", "history", "checkpoint", "training_duration_s",
@@ -444,7 +444,8 @@ def main() -> None:
     result = {
         "schema": TRAINING_RESULT_SCHEMA,
         "protocol_sha256": sha256_file(protocol_path),
-        "evidence_limit": "DEVELOPMENT_SIGNAL_ONLY",
+        "data_role": "DEVELOPMENT_SIGNAL_ONLY",
+        "claim_ceiling": "DEVELOPMENT_SIGNAL_ONLY",
         "activation_bindings_sha256": sha256_file(activation_path),
         "train_manifest_sha256": activation["train_manifest"]["sha256"],
         "validation_manifest_sha256": activation["validation_manifest"]["sha256"],

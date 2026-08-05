@@ -67,7 +67,7 @@ class DevelopmentScreenTrainerTest(unittest.TestCase):
 
     def test_training_receipt_contract_is_auditable(self) -> None:
         required = {
-            "schema", "protocol_sha256", "evidence_limit", "activation_bindings_sha256",
+            "schema", "data_role", "claim_ceiling", "protocol_sha256", "activation_bindings_sha256",
             "train_manifest_sha256", "validation_manifest_sha256", "a2_checkpoint_sha256",
             "teacher_depth_sha256", "seed", "epochs_completed", "best_epoch",
             "best_validation_composite_total", "history", "checkpoint",
