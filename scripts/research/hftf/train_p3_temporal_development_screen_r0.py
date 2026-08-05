@@ -261,10 +261,7 @@ def preflight(
     module_path = SCRIPT_DIR / "dav2_temporal_392_student_p3_r0_1.py"
     require(sha256_file(module_path) == _sha(protocol["implementation"]["temporal_module_sha256"], "temporal module"), "temporal module hash mismatch")
     require(source_root.is_dir(), "source root missing")
-    try:
-        source_root.relative_to(repo_root)
-    except ValueError as error:
-        raise ValueError("source root leaves repository") from error
+    require(source_root.is_relative_to(Path(os.path.abspath(repo_root))), "source root leaves repository")
     activation = _load_activation_bindings(repo_root, activation_path, protocol)
     train_binding = activation["train_manifest"]
     validation_binding = activation["validation_manifest"]
@@ -278,7 +275,7 @@ def preflight(
     teacher_depth_path = _verify_input_binding(repo_root, protocol["teacher_cache"]["depth"], "teacher cache depth")
     _verify_input_binding(repo_root, protocol["a2"]["dav2_dpt_source"], "DA V2 DPT source")
     exact_fields(protocol["a2"]["dav2_repo"], {"path"}, "DA V2 repository")
-    require(resolve_inside(repo_root, str(protocol["a2"]["dav2_repo"]["path"])).is_dir(), "DA V2 repository missing")
+    require(_lexical_inside(repo_root, str(protocol["a2"]["dav2_repo"]["path"])).is_dir(), "DA V2 repository missing")
     teacher_manifest = load_json(teacher_manifest_path)
     require(teacher_manifest.get("truth_inputs_opened") is False and isinstance(teacher_manifest.get("records"), list), "teacher cache boundary drift")
     records = {int(row["index"]): row for row in teacher_manifest["records"]}
