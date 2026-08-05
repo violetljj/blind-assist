@@ -1,0 +1,82 @@
+{
+  "schema": "blindassist_quality_gated_clearance_fusion_r0_development_protocol",
+  "protocol_id": "QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_2026-08-06",
+  "parent_source_admission": {
+    "path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_1_AUTHORIZATION_AMENDMENT_2026-08-06.json",
+    "sha256": "972580CF4B20573F5C936810F5D2C310E630BB7EC228C0B1477EE6F6F748BDE3"
+  },
+  "clip_capacity_audit": {
+    "path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/clip-capacity-attempt-01.json",
+    "sha256": "644644E937D359313DB456C96B550A3FEA664B85AB15E2AAAE6F894EE421BB75",
+    "terminal_required": "QUALITY_GATED_CLEARANCE_FUSION_R0_1_CLIP_CAPACITY_READY"
+  },
+  "claim_ceiling": "DEVELOPMENT_SIGNAL_ONLY",
+  "research_question": "Whether deterministic quality-gated clearance fusion improves temporal clearance stability and fail-closed state behavior over the same raw per-frame geometry stream.",
+  "source_roles": {
+    "parents": [
+      {"dataset": "TUM_RGBD", "parent_id": "rgbd_dataset_freiburg3_sitting_halfsphere"},
+      {"dataset": "TUM_RGBD", "parent_id": "rgbd_dataset_freiburg3_sitting_rpy"},
+      {"dataset": "ARKitScenes", "parent_id": "381644", "video_ids": ["41069048", "41069050", "41069051"]}
+    ],
+    "statistical_unit": "video-parent",
+    "frame_reuse_across_clips": false,
+    "minimum_clips_per_parent": 8,
+    "clip_length": 4,
+    "maximum_adjacent_gap_ns": 500000000
+  },
+  "input_contract": {
+    "required_per_frame": [
+      "frame_id", "parent_id", "video_id", "timestamp_ns",
+      "raw_clearance_m", "raw_geometry_valid", "raw_geometry_state",
+      "tof_valid", "teacher_age_s", "frozen_a2_disagreement"
+    ],
+    "identity_fields_sha_bound": true,
+    "raw_geometry_stream_is_precomputed": true,
+    "no_reinference_during_filter_replay": true,
+    "truth_labels_not_used_for_filter_state": true
+  },
+  "filter_binding": {
+    "path": "scripts/research/hftf/quality_gated_clearance_fusion_r0.py",
+    "sha256": "94FF4EEA5ECE865ACC7CF470CE29724F34015432DB9AF3C0F6B753CBFB6D6FE7",
+    "max_gap_ns": 500000000,
+    "stale_teacher_s": 0.5,
+    "high_disagreement": 0.2,
+    "clear_confirmations": 2,
+    "clearance_threshold_m": 1.5,
+    "tof_high_quality_alpha": 0.6,
+    "fallback_alpha": 0.3,
+    "occupied_immediate": true,
+    "unknown_fail_closed": true
+  },
+  "comparison": {
+    "arms": ["raw_per_frame_geometry", "quality_gated_fusion"],
+    "same_input_stream": true,
+    "no_threshold_search": true,
+    "no_window_search": true,
+    "no_alpha_search": true,
+    "no_parent_selection_after_replay": true
+  },
+  "metrics": {
+    "primary": ["clearance_delta_mae_m", "transition_agreement", "false_clear_rate"],
+    "secondary": ["clearance_mae_m", "false_block_rate", "valid_to_unknown_rate", "unknown_to_known_rate", "first_response_latency_ms", "parentwise_direction"],
+    "aggregation": "parentwise descriptive; no frame-independent confidence interval",
+    "unknown_denominator_rule": "report numerator and denominator; undefined remains undefined",
+    "claim_boundary": "no formal P1, no generalization, no safety, no deployment"
+  },
+  "execution": {
+    "replay_count": 1,
+    "seed": null,
+    "model_loading": "forbidden for filter replay; only precomputed raw stream may be consumed",
+    "optimizer_constructed": false,
+    "training_started": false,
+    "holdout_outcomes_opened": false,
+    "candidate_output_overwrite": false
+  },
+  "terminals": {
+    "supported": "QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_SIGNAL_SUPPORTED",
+    "mixed": "QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_SIGNAL_MIXED",
+    "not_supported": "QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_SIGNAL_NOT_SUPPORTED",
+    "not_ready": "QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_INPUT_NOT_READY"
+  },
+  "status": "FROZEN_BEFORE_REPLAY_INPUT_MATERIALIZATION"
+}
