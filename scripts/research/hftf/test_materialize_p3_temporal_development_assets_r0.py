@@ -87,4 +87,9 @@ class DevelopmentAssetsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "path leaves repository"):
             subject._inside(root, "../escape.json")
 
+    def test_frozen_input_schema_names_match_materialized_assets(self):
+        self.assertEqual("blindassist_dav2_distillation_teacher_r0", subject.TEACHER_SCHEMA)
+        self.assertEqual("blindassist_spatial_calibration_head_r1_cache", subject.SPATIAL_SCHEMA)
+        self.assertEqual("blindassist_p3_r0_2_identity_manifest", subject.IDENTITY_SCHEMA)
+
 if __name__ == '__main__': unittest.main()

@@ -18,9 +18,9 @@ from typing import Any, Callable
 
 REQUEST_SCHEMA = "blindassist_p3_temporal_development_assets_r0_request"
 PROTOCOL_SCHEMA = "blindassist_p3_temporal_development_screen_r0_protocol"
-IDENTITY_SCHEMA = "blindassist_p3_r0_2_role_manifest"
+IDENTITY_SCHEMA = "blindassist_p3_r0_2_identity_manifest"
 TEACHER_SCHEMA = "blindassist_dav2_distillation_teacher_r0"
-SPATIAL_SCHEMA = "blindassist_spatial_calibration_head_r1_development_cache"
+SPATIAL_SCHEMA = "blindassist_spatial_calibration_head_r1_cache"
 MANIFEST_SCHEMA = "blindassist_p3_temporal_development_complete_manifest_r0"
 CACHE_SCHEMA = "blindassist_p3_temporal_development_frozen_a2_disagreement_r0"
 WEIGHTS_SCHEMA = "blindassist_p3_temporal_development_class_weights_r0"
