@@ -8,12 +8,16 @@
   `artifacts.local/evidence/tof4m/` 且拒绝覆盖的串口采集/哈希 receipt，以及合成
   validator 回归。该入口明确属于单区 Development capture，不填充伪 zone，不覆盖
   现有 VL53L8CX 多区合同，也不授权 RGB 同步、标定、Android、提醒或安全结论。
-  Arduino CLI 1.5.1 与 Pololu VL53L1X 1.3.1 已安装；M5Stack 3.3.8 板包的
-  394.69 MiB GitHub toolchain 下载在 0.15% 因连接超时，故本轮记录实际板级编译仍待
-  网络/本机 Arduino toolchain 可用后补跑。Pololu 1.3.1 真实头文件下的 C++17
-  syntax-only 检查、5 项 Python 单测、Ruff、PowerShell 解析、`git diff --check` 与
-  文档索引通过；全仓卫生门仍被既有 root allowlist、历史 Module README/内部引用等
-  结构债务阻断，本任务未改动或吸收这些并发范围。
+  Arduino CLI 1.5.1、M5Stack core 3.3.8、ESP32-S3 toolchain/SDK 与 Pololu
+  VL53L1X 1.3.1 已按官方 package-index SHA-256 安装到 `E:\codex-tools`；真实
+  `m5stack:esp32:m5stack_atoms3r` 编译通过，program/RAM 为
+  `343966 B (10%) / 24148 B (7%)`，app bin SHA-256 为
+  `aa36c53c709a26e86a144deb1f69ef870e4c101ea936828823eb0b796b7954d5`。
+  Pololu 1.3.1 真实头文件下的 C++17 syntax-only 检查、5 项 Python 单测、Ruff、
+  PowerShell 解析、`git diff --check` 与文档索引也通过；全仓卫生门仍被既有 root
+  allowlist、历史 Module README/内部引用等结构债务阻断，本任务未改动或吸收这些
+  并发范围。设备枚举为 `VID_303A/PID_8000` UVC，实际烧录与串口采集仍需物理进入
+  下载模式后执行。
 - 时间：2026-08-04（Asia/Hong_Kong）；执行者：violjjet。补齐 DA V2 canonical
   CameraX 十分钟持续部署门的实现与证据绑定：持续测试显式调用
   `preprocessFp16CanonicalStrict()`，报告固定
