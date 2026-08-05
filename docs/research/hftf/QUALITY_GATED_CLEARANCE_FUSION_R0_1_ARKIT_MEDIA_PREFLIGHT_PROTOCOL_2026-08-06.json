@@ -1,0 +1,26 @@
+{
+  "schema": "blindassist_quality_gated_clearance_fusion_r0_1_arkit_media_preflight_protocol",
+  "protocol_id": "QUALITY_GATED_CLEARANCE_FUSION_R0_1_ARKIT_MEDIA_PREFLIGHT_2026-08-06",
+  "roster": {
+    "path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/arkit-381644-roster.json",
+    "sha256": "1D4944458125C70997FCE1C1BA32BB624DBB906C51814172B24E11DA3DD8CA75"
+  },
+  "license_receipt": {
+    "path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_1_ARKIT_LICENSE_SCOPE_RECEIPT_2026-08-06.json",
+    "sha256": "DC3D917E2D63BCAC2CB8299DC76908FA1CADB2F7A0EDB4E55363B3A0E92B66B7"
+  },
+  "base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw",
+  "official_partition": "Validation",
+  "assets_per_video": ["lowres_wide.zip", "lowres_depth.zip", "confidence.zip", "lowres_wide_intrinsics.zip", "lowres_wide.traj"],
+  "request_method": "HEAD",
+  "timeout_seconds": 20,
+  "retries": 3,
+  "media_body_bytes_read": false,
+  "producer": {
+    "path": "scripts/research/hftf/preflight_quality_gated_clearance_fusion_r0_1_arkit_assets.py",
+    "sha256": "AADBCCFA235C3C51002D078F4A6683B23C861B20FA6ABE8443977504FB2680BA"
+  },
+  "forbidden_reads": ["rgb_image_body", "depth_image_body", "clearance", "geometry_state", "transition_label", "model_output", "metric", "score"],
+  "replacement_allowed": false,
+  "terminal": "FROZEN_NOT_RUN"
+}

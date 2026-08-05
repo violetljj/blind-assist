@@ -1,0 +1,30 @@
+{
+  "schema": "blindassist_quality_gated_clearance_fusion_r0_1_arkit_license_scope_receipt",
+  "confirmed_by": "user",
+  "confirmed_at": "2026-08-06",
+  "confirmation": "授权将已审阅的 ARKitScenes license 下载授权扩展到 Validation visit 381644 的视频 41069048、41069050、41069051 及其 RGB、depth、confidence、intrinsics、trajectory 资产。",
+  "license": {
+    "path": "artifacts.local/downloads/ARKitScenes-7283761/LICENSE",
+    "sha256": "D8D156565F81B4B56B37A6D5A68A223A0874ED1131BAC6A404B0D5E765189071"
+  },
+  "roster": {
+    "path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/arkit-381644-roster.json",
+    "sha256": "1D4944458125C70997FCE1C1BA32BB624DBB906C51814172B24E11DA3DD8CA75",
+    "video_count": 3,
+    "visit_id": "381644"
+  },
+  "authorized_assets": [
+    "lowres_wide.zip",
+    "lowres_depth.zip",
+    "confidence.zip",
+    "lowres_wide_intrinsics.zip",
+    "lowres_wide.traj"
+  ],
+  "authorized_use": "quality-gated clearance fusion R0.1 source identity and integrity admission only",
+  "redistribution_authorized": false,
+  "holdout_use_authorized": false,
+  "replacement_video_authorized": false,
+  "model_or_training_authorized": false,
+  "media_download_authorized": true,
+  "terminal": "QUALITY_GATED_CLEARANCE_FUSION_R0_1_ARKIT_LICENSE_SCOPE_CONFIRMED"
+}
