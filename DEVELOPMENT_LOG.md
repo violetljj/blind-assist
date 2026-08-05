@@ -1,4 +1,24 @@
 # Development Log
+- 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 + ToF4M
+  stream PSRAM JPEG copy-buffer reuse 单变量 R10。先从 R9 账本确认 JPEG P50/P95 约
+  `34.5/35.4 KB`、copy/metadata prepare 约 `0.98/1.31 ms`，因此不采用会延长
+  framebuffer 占用的零拷贝。工具链确认 `SO_SNDBUF` unimplemented、默认 TCP send
+  buffer 5744 B，关闭无效扫描。正式相邻五分钟 per-frame/reuse 为
+  `7,016/7,487 frames`、`23.341/24.903 fps`，均 0 reconnect/error/overwrite/gap；
+  但直接 prepare P50/P95 `802/970→823/996 us` 未改善，write P50/P95/P99
+  `24.849/33.244/38.786→24.807/33.651/38.515 ms` 等价。baseline actual core
+  `[0,1]`、candidate `[1]`，故更高吞吐、较低 slow fraction 和较低端到端 P99 受
+  调度/场景混杂，不授权晋升。终态 `STREAM_COPY_BUFFER_REUSE_NOT_PROMOTED /
+  DIRECT_COST_NOT_IMPROVED / CORE_MIGRATION_CONFOUNDED`，恢复 per-frame 分配。
+  baseline/candidate summary SHA-256 分别为
+  `accd812aff6342dd7a105062582824d0651d70a15106e91db4be3e6e97ed70b0` 与
+  `ccecd78191c19955822c24e0e9c9885005e007868a25f1e945d12202877a7913`。最终烧录
+  `atoms3r_m12_tof4m_stream_r11_per_frame_copy_buffer`，program/RAM
+  `1,078,575/62,608 bytes`，application binary SHA-256
+  `5dd4afc81d880674a2e6dd0fe560f42644a85992766b1ed4088335220eb0c732`；20 帧 smoke
+  0 reconnect/error/overwrite/gap，actual core/priority `[1]/[5]`，退出后
+  `stream_clients=0`、自动曝光开启、ToF sampling/valid、Wi-Fi 0 重连。本结果仅为
+  Development 传输实现证据，不授权画质、准确率、人体、产品或安全结论。
 - 时间：2026-08-05（Asia/Hong_Kong）；执行者：Codex。完成 AtomS3R-M12 +
   ToF4M stream HTTPD task priority 单变量 R9。冻结 XGA/quality 10/自动曝光/
   DMA-off/ToF-on/TCP_NODELAY-on/preamble split/no-affinity/host 4 threads，只比较默认

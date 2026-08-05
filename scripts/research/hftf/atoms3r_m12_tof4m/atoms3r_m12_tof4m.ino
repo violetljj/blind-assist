@@ -24,13 +24,14 @@ constexpr bool kEnableTofSampling = true;
 constexpr bool kEnableCameraPsramDma = false;
 constexpr bool kEnableStreamTcpNoDelay = true;
 constexpr bool kCoalesceStreamPreamble = false;
+constexpr bool kReuseStreamFrameCopyBuffer = false;
 constexpr BaseType_t kStreamServerCoreId = tskNO_AFFINITY;
 constexpr unsigned kStreamServerTaskPriority = tskIDLE_PRIORITY + 5;
 constexpr const char* kFirmwareVersion =
     kEnableCameraPsramDma ? "atoms3r_m12_tof4m_slow_frame_r6_psram_dma"
-    : kStreamServerTaskPriority == tskIDLE_PRIORITY + 6
-        ? "atoms3r_m12_tof4m_stream_r10_priority6"
-        : "atoms3r_m12_tof4m_stream_r10_priority5";
+    : kReuseStreamFrameCopyBuffer
+        ? "atoms3r_m12_tof4m_stream_r11_reuse_copy_buffer"
+        : "atoms3r_m12_tof4m_stream_r11_per_frame_copy_buffer";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -773,6 +774,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       "\"psram_dma_enabled\":%s,\"frame_buffer_count\":2,"
       "\"grab_mode\":\"LATEST\",\"stream_tcp_nodelay_configured\":%s,"
       "\"stream_preamble_coalesced_configured\":%s,"
+      "\"stream_frame_copy_buffer_reused_configured\":%s,"
       "\"stream_server_core_configured\":%d,"
       "\"stream_server_task_priority\":%u,"
       "\"recent_fps\":%.2f,\"total_frames\":%" PRIu64 ","
@@ -793,6 +795,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       camera_psram_dma_enabled ? "true" : "false",
       kEnableStreamTcpNoDelay ? "true" : "false",
       kCoalesceStreamPreamble ? "true" : "false",
+      kReuseStreamFrameCopyBuffer ? "true" : "false",
       static_cast<int>(kStreamServerCoreId), kStreamServerTaskPriority,
       static_cast<double>(frames.recent_fps), frames.total_frames,
       frames.stream_clients, sensor_ready ? "true" : "false",
@@ -971,6 +974,8 @@ esp_err_t streamHandler(httpd_req_t* request) {
   uint64_t previous_response_write_duration_us = 0;
   bool previous_response_write_valid = false;
   uint64_t previous_range_update_count = snapshotRangeUpdateCount();
+  uint8_t* reusable_frame_copy = nullptr;
+  size_t reusable_frame_copy_capacity = 0;
   while (true) {
     const uint64_t range_updates_at_acquire_start = snapshotRangeUpdateCount();
     const uint64_t frame_acquire_started_us = monotonicUs();
@@ -1010,8 +1015,24 @@ esp_err_t streamHandler(httpd_req_t* request) {
     const size_t frame_length = frame->len;
     const size_t frame_width = frame->width;
     const size_t frame_height = frame->height;
-    uint8_t* frame_copy = static_cast<uint8_t*>(
-        heap_caps_malloc(frame_length, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+    uint8_t* frame_copy = nullptr;
+    if (kReuseStreamFrameCopyBuffer) {
+      if (frame_length > reusable_frame_copy_capacity) {
+        uint8_t* larger_copy = static_cast<uint8_t*>(heap_caps_realloc(
+            reusable_frame_copy, frame_length,
+            MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+        if (larger_copy != nullptr) {
+          reusable_frame_copy = larger_copy;
+          reusable_frame_copy_capacity = frame_length;
+        }
+      }
+      if (frame_length <= reusable_frame_copy_capacity) {
+        frame_copy = reusable_frame_copy;
+      }
+    } else {
+      frame_copy = static_cast<uint8_t*>(
+          heap_caps_malloc(frame_length, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+    }
     if (frame_copy == nullptr) {
       esp_camera_fb_return(frame);
       xSemaphoreGive(camera_mutex);
@@ -1070,6 +1091,7 @@ esp_err_t streamHandler(httpd_req_t* request) {
         "X-Camera-Psram-Dma-Enabled: %s\r\n"
         "X-Stream-Tcp-Nodelay: %s\r\n"
         "X-Stream-Preamble-Coalesced: %s\r\n"
+        "X-Stream-Frame-Copy-Buffer-Reused: %s\r\n"
         "X-Stream-Handler-Core: %d\r\n"
         "X-Stream-Handler-Priority: %u\r\n"
         "X-Exposure-Value: %d\r\nX-Wifi-Rssi-Dbm: %d\r\n"
@@ -1093,12 +1115,15 @@ esp_err_t streamHandler(httpd_req_t* request) {
         camera_psram_dma_enabled ? "true" : "false",
         stream_tcp_nodelay_enabled ? "true" : "false",
         kCoalesceStreamPreamble ? "true" : "false",
+        kReuseStreamFrameCopyBuffer ? "true" : "false",
         static_cast<int>(xPortGetCoreID()),
         static_cast<unsigned>(uxTaskPriorityGet(nullptr)), exposure_value,
         wifi_rssi_dbm, free_heap_bytes);
     if (header_length <= 0 ||
         static_cast<size_t>(header_length) >= sizeof(header)) {
-      heap_caps_free(frame_copy);
+      if (!kReuseStreamFrameCopyBuffer) {
+        heap_caps_free(frame_copy);
+      }
       emitEvent("camera_stream", "FRAME_HEADER_OVERFLOW");
       stream_result = ESP_ERR_INVALID_SIZE;
       break;
@@ -1117,7 +1142,9 @@ esp_err_t streamHandler(httpd_req_t* request) {
           request, reinterpret_cast<const char*>(frame_copy), frame_length);
     }
     const uint64_t response_write_completed_us = monotonicUs();
-    heap_caps_free(frame_copy);
+    if (!kReuseStreamFrameCopyBuffer) {
+      heap_caps_free(frame_copy);
+    }
     if (result != ESP_OK) {
       stream_result = result;
       break;
@@ -1130,6 +1157,7 @@ esp_err_t streamHandler(httpd_req_t* request) {
     previous_response_write_valid = true;
     updateFrameStats(false, false, true);
   }
+  heap_caps_free(reusable_frame_copy);
   updateFrameStats(true, false, false);
   return stream_result;
 }

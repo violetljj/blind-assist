@@ -231,6 +231,17 @@ core 均为 1、priority 分别全为 5/6。吞吐 `23.940/23.957 fps` 等价，
 为 0 reconnect/error/overwrite/gap，实际 core/priority `[1]/[5]`，退出后
 `stream_clients=0`。
 
+R10 审计发现当前 JPEG 约 34--35 KB，而 copy/metadata prepare 仅约 1 ms；零拷贝会
+延长相机 framebuffer 占用，因此未采用。工具链的 `SO_SNDBUF` 明确未实现，默认 TCP
+send buffer 为 5744 B，也不进行无效扫描。随后比较每帧 PSRAM 暂存区分配与每连接
+复用：复用候选的 prepare P50/P95 `823/996 us`，未优于 baseline `802/970 us`；
+write P95 也为 `33.651` 对 `33.244 ms`。候选吞吐较高但 baseline handler 在 core
+0/1 迁移、候选全在 core 1，存在调度混杂，故不晋升并恢复 per-frame 分配。
+发布固件为 `atoms3r_m12_tof4m_stream_r11_per_frame_copy_buffer`，program/RAM
+`1,078,575/62,608 bytes`，application binary SHA-256
+`5dd4afc81d880674a2e6dd0fe560f42644a85992766b1ed4088335220eb0c732`；20 帧 smoke
+为 0 reconnect/error/overwrite/gap，退出后 `stream_clients=0`。
+
 ## 停止条件与下一步
 
 首轮只要求：I2C `0x29` 可见、连续 JSONL 可解析、时间戳/序号单调、有效/无效状态

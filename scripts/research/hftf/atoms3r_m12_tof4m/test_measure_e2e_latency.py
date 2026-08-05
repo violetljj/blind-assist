@@ -57,6 +57,7 @@ def frame_headers(sequence: int = 7) -> dict[str, str]:
         "x-camera-psram-dma-enabled": "false",
         "x-stream-tcp-nodelay": "false",
         "x-stream-preamble-coalesced": "false",
+        "x-stream-frame-copy-buffer-reused": "true",
         "x-stream-handler-core": "1",
         "x-stream-handler-priority": "5",
         "x-exposure-value": "321",
@@ -111,6 +112,7 @@ class MeasureE2eLatencyTest(unittest.TestCase):
         self.assertIsNone(row["pipeline_num_threads"])
         self.assertFalse(row["stream_tcp_nodelay"])
         self.assertFalse(row["stream_preamble_coalesced"])
+        self.assertTrue(row["stream_frame_copy_buffer_reused"])
         self.assertEqual(row["stream_handler_core"], 1)
         self.assertEqual(row["stream_handler_priority"], 5)
 

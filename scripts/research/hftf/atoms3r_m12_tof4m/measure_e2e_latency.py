@@ -62,6 +62,7 @@ REQUIRED_FRAME_HEADERS = {
     "x-camera-psram-dma-enabled",
     "x-stream-tcp-nodelay",
     "x-stream-preamble-coalesced",
+    "x-stream-frame-copy-buffer-reused",
     "x-stream-handler-core",
     "x-stream-handler-priority",
     "x-exposure-value",
@@ -539,6 +540,9 @@ def frame_row(
         "stream_preamble_coalesced": parse_bool(
             headers["x-stream-preamble-coalesced"]
         ),
+        "stream_frame_copy_buffer_reused": parse_bool(
+            headers["x-stream-frame-copy-buffer-reused"]
+        ),
         "stream_handler_core": int(headers["x-stream-handler-core"]),
         "stream_handler_priority": int(headers["x-stream-handler-priority"]),
         "exposure_value": int(headers["x-exposure-value"]),
@@ -897,6 +901,13 @@ def summarize(
                 row["stream_preamble_coalesced"]
                 for row in rows
                 if row.get("stream_preamble_coalesced") is not None
+            }
+        ),
+        "stream_frame_copy_buffer_reused_values": sorted(
+            {
+                row["stream_frame_copy_buffer_reused"]
+                for row in rows
+                if row.get("stream_frame_copy_buffer_reused") is not None
             }
         ),
         "stream_handler_core_values": sorted(
