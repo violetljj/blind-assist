@@ -6,6 +6,8 @@
 - [Machine-readable P3 temporal contract](DAV2_TEMPORAL_392_STUDENT_P3_R0_PROTOCOL_2026-08-05.json)
 - [A2-392 temporal student P3 R0.1 pre-activation correction](DAV2_TEMPORAL_392_STUDENT_P3_R0_1_PROTOCOL_2026-08-05.md)
 - [Machine-readable P3 R0.1 corrected contract](DAV2_TEMPORAL_392_STUDENT_P3_R0_1_PROTOCOL_2026-08-05.json)
+- [P3 R0.1 static activation binding protocol](DAV2_TEMPORAL_392_STUDENT_P3_R0_1_ACTIVATION_PROTOCOL_2026-08-05.md)
+- [Machine-readable P3 R0.1 activation contract](DAV2_TEMPORAL_392_STUDENT_P3_R0_1_ACTIVATION_PROTOCOL_2026-08-05.json)
 - [DA V2 模型变体准确率与 false-clear 门 R0](DAV2_MODEL_VARIANT_VALIDATION_R0_PROTOCOL_2026-08-05.md)
 - [Machine-readable model-variant gate protocol](DAV2_MODEL_VARIANT_VALIDATION_R0_PROTOCOL_2026-08-05.json)
 - [DA V2 模型变体真值参照门 R1](DAV2_MODEL_VARIANT_VALIDATION_R1_PROTOCOL_2026-08-05.md)
