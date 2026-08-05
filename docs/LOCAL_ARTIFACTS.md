@@ -8,6 +8,16 @@ artifacts.local/
 
 该目录被 `.gitignore` 忽略，默认不提交 Git。
 
+## 物理存储位置（2026-08-05 起）
+
+`artifacts.local/` 是项目内的稳定逻辑路径，但其物理存储位于：
+
+```text
+F:\ba-data\blindassist-artifacts-20260805\
+```
+
+仓库中的 `artifacts.local` 是指向该位置的 Windows junction。因此，新的大下载、数据集、模型、解压缓存、训练/benchmark 输出和临时物化必须继续写入 `artifacts.local/<category>/`，不要新建 E: 下的旁路数据目录；这些写入会自动落到 F:。需要直接指定绝对下载根目录的工具，使用上述 F: 路径，并仍须在 `artifacts.local/` 下保留可发现的 manifest、receipt、hash 与任务记录。
+
 ## Canonical 结构
 
 ```text
