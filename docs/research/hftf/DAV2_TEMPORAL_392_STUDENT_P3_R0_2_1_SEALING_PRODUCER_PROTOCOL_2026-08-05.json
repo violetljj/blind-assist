@@ -1,0 +1,50 @@
+{
+  "schema": "blindassist_p3_r0_2_1_sealing_producer_protocol",
+  "protocol_id": "DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_SEALING_PRODUCERS_2026-08-05",
+  "inputs": {
+    "data_role_protocol": {"path": "docs/research/hftf/DAV2_TEMPORAL_392_STUDENT_P3_R0_2_1_DATA_ROLE_PROTOCOL_2026-08-05.json", "sha256": "2AEAAEEE689DFDF0CFB45D04EE264C687D006956864314CEDA9F8C89F00836F6"},
+    "public_holdout_manifest": {"path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1/role-freeze-attempt-02/public-holdout-identity-manifest.json", "sha256": "379BC5A0673EA748BDF083BA09EB9F3111D9720C8A8A6EECF052580FD783CAEA"},
+    "role_identity_lock": {"path": "artifacts.local/evidence/hftf/dav2-temporal-392-p3-r0-2-1/role-freeze-attempt-02/role-identity-lock.json", "sha256": "63E5FC70D3D1F247519EB67357AC1AFE3C2C814A44F09D4DA31EC079CE7A54B4"}
+  },
+  "truth_derivation": {
+    "source": "registered Bonn depth associated to already locked RGB identities within 50 ms",
+    "intrinsics_fx_fy_cx_cy": [542.822841, 542.57687, 315.59352, 237.756098],
+    "depth_scale_divisor": 5000.0,
+    "geometry_operator": "existing evaluate_metric3d_clearance_field_a0.clearance_field",
+    "bands_m": {"left": [-1.2, -0.4], "center": [-0.4, 0.4], "right": [0.4, 1.2]},
+    "clearance_statistic": "2nd percentile forward obstacle distance",
+    "occupied_threshold_m": 1.5,
+    "unknown_rule": "ground plane or per-band clearance unavailable",
+    "sensor_valid_field": "independent_metric_sensor_valid",
+    "legacy_tof_valid_forbidden": true,
+    "clip_or_parent_reselection_after_derivation": false
+  },
+  "sealing": {
+    "algorithm": "deterministic HMAC-SHA256-derived XOR stream followed by HMAC-SHA256 authentication",
+    "key_bytes": 32,
+    "security_claim": "authenticated local sealing envelope only; not claimed as AES-GCM",
+    "ordinary_tools_may_hash_but_not_parse_bundle": true
+  },
+  "coverage_gates": {
+    "minimum_evaluable_clips": 32,
+    "minimum_video_parents": 8,
+    "minimum_each_key_transition_count": 8,
+    "key_transitions": ["CLEAR_TO_OCCUPIED", "OCCUPIED_TO_CLEAR", "KNOWN_TO_UNKNOWN", "UNKNOWN_TO_KNOWN"],
+    "all_nine_transition_counts_disclosed": true,
+    "label_rows_disclosed": false,
+    "insufficient_terminal": "P3_R0_2_SEALED_HOLDOUT_NOT_EVALUABLE_NO_COHORT_SUBSTITUTION"
+  },
+  "producers": {
+    "common": {"path": "scripts/research/hftf/p3_r0_2_1_sealing_common.py", "sha256": "21204A7F62A614FE852E494DF7EDF4E50A2E74D0EF6D389A6DE71501F78B20A0"},
+    "private_targets": {"path": "scripts/research/hftf/derive_p3_r0_2_1_bonn_private_targets.py", "sha256": "DFE88DBB4FA5746C70A493B66AD3D240C31CD9A8178795CDEE9D432E883BFD83"},
+    "sealing_key": {"path": "scripts/research/hftf/generate_p3_r0_2_1_sealing_key.py", "sha256": "B22E21AFD81FA22C002D65E150AC0C928C85F6113DBBECD122704D7A507296EA"},
+    "sealed_bundle": {"path": "scripts/research/hftf/seal_p3_r0_2_1_target_bundle.py", "sha256": "16C88B56F9278BACC1DAD55A252B4D9F28BB241AF7BB0986BC39345B19AB5510"},
+    "aggregate_coverage": {"path": "scripts/research/hftf/produce_p3_r0_2_1_aggregate_coverage_receipt.py", "sha256": "D3FA6420A3BA350ED6D6D03D21CBE54AA2FB4356B2A2A02642BF38E5A2F5D12E"}
+  },
+  "tests": {"path": "scripts/research/hftf/test_p3_r0_2_1_sealing_producers.py", "sha256": "302A6BB1F7409CF80AA03C78C7C0D14265263492FB0B1C07AEA9DE41FC564A01"},
+  "execution_order": ["derive private targets", "generate sealing key", "seal bundle", "produce aggregate coverage receipt"],
+  "overwrite": false,
+  "model_loaded": false,
+  "training_started": false,
+  "terminal": "P3_R0_2_1_SEALING_PRODUCERS_FROZEN_TARGETS_UNREAD"
+}
