@@ -55,6 +55,23 @@ QNN/HTP conversion, Android/device testing, cadence search, or canonical
 replacement. No threshold, loss, clip length, seed, class weight, validation
 parent, or checkpoint may be retuned using this consumed result.
 
+## Execution qualification
+
+This run does not constitute a clean realization of the originally intended
+single-training activation. Attempts `05`, `06`, `07`, and `08` each completed
+three epochs while producer/trainer/evaluator interface defects were repaired.
+The repairs did not intentionally change the frozen loss, thresholds, clip
+length, class weights, data roles, or checkpoint-selection rule, but the
+trainer constructs the temporal head before applying the frozen random seed.
+Consequently the repeated candidates were not guaranteed to share the same
+head initialization.
+
+The `MIXED` terminal is retained as the deterministic evaluator output for
+attempt `08`, but its authority is limited further to implementation-diagnostic
+development evidence. It must not be represented as a contract-compliant
+unique-run development screen, and no additional rerun may be used to rescue
+or select among these consumed attempts.
+
 ## Evidence bindings
 
 - Protocol SHA256: `0B8BA45DBB2848FE71F207E6BA64BB1382B3CC34F05DD504994BB77FFAEA11C9`
