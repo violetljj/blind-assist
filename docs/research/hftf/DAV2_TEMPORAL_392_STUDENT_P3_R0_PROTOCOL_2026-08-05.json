@@ -1,0 +1,158 @@
+{
+  "schema": "blindassist_dav2_temporal_392_student_p3_r0_protocol",
+  "frozen_at": "2026-08-05",
+  "status": "FROZEN_TRAINING_ONLY_CLIP_HOLDOUT_NOT_OPENED",
+  "question": "Can temporal task supervision repair A2-392 clearance dynamics, state transitions, and abstention without changing resolution, backbone, quantization partition, or runtime cadence?",
+  "parent_bindings": {
+    "a2_protocol_sha256": "A21EFF4F9A7C609B056D7AD9E9BD4F3AA84DD533445E5D0FFD7236F6ED809B7B",
+    "a2_result_sha256": "3ADA97149130317BE20598E521268952D3BAFEDF33E966B71FCC9B18B2A8416B",
+    "a2_checkpoint_binding": "REQUIRED_IN_SEPARATE_ACTIVATION_RECEIPT_BEFORE_ANY_MODEL_LOAD",
+    "legacy_p1_role": "CONSUMED_EXCLUSION_ONLY_NEVER_CHECKPOINT_OR_LOSS_SELECTION"
+  },
+  "model": {
+    "id": "P3_A2_392_TEMPORAL_SUPERVISION_R0",
+    "backbone": "unchanged A2 DA V2 Metric ViT-S",
+    "input_size": 392,
+    "initialization": "exact hash-bound A2 selected checkpoint",
+    "per_frame_forward": true,
+    "temporal_head": "non-recurrent 4x4 pooled log-depth pair MLP; three clearance deltas, per-band 9-way state transitions, and per-band UNKNOWN logits",
+    "temporal_head_evidence_input_order": [
+      "teacher_age_s",
+      "tof_valid",
+      "teacher_valid",
+      "teacher_student_mean_abs_log_depth_disagreement"
+    ],
+    "forbidden_architectures": [
+      "ConvLSTM",
+      "video Transformer",
+      "recurrent depth head",
+      "alternate backbone",
+      "alternate input size"
+    ]
+  },
+  "clip_contract": {
+    "length": 4,
+    "allowed_length_search": false,
+    "timestamp": "source-native integer nanoseconds; never frame index or inferred FPS",
+    "strictly_increasing": true,
+    "maximum_adjacent_gap_s": 0.5,
+    "frame_reuse_across_clips": false,
+    "roles": [
+      "train",
+      "validation",
+      "sealed_holdout"
+    ],
+    "video_parent_disjoint_across_roles": true,
+    "legacy_p1_parent_overlap": 0,
+    "training_manifest_schema": "blindassist_dav2_temporal_392_student_p3_r0_clip_manifest"
+  },
+  "supervision": {
+    "single_frame_depth": {
+      "log_depth_smooth_l1_weight": 1.0,
+      "log_depth_smooth_l1_beta": 0.05,
+      "log_depth_gradient_l1_weight": 0.5,
+      "median_log_scale_weight": 0.25,
+      "depth_clamp_m": [
+        0.1,
+        20.0
+      ],
+      "identity": "unchanged from A2"
+    },
+    "clearance_delta": {
+      "definition": "C_t - C_t-1 for left, center, and right bands",
+      "loss": "SmoothL1",
+      "beta_m": 0.05,
+      "weight": 1.0,
+      "invalid_or_unknown_pairs_masked": true
+    },
+    "state_transition": {
+      "states": [
+        "CLEAR",
+        "OCCUPIED",
+        "UNKNOWN_GROUND"
+      ],
+      "classes_per_band": 9,
+      "loss": "cross_entropy",
+      "weight": 0.5
+    },
+    "confidence_and_disagreement": {
+      "loss": "binary_cross_entropy_with_logits",
+      "weight": 0.5,
+      "unknown_if_teacher_age_gt_s": 0.5,
+      "unknown_if_tof_invalid": true,
+      "unknown_if_teacher_invalid": true,
+      "unknown_if_mean_abs_log_depth_disagreement_gt": 0.2,
+      "disagreement_target_uses_stop_gradient": true
+    },
+    "additional_loss_families_allowed": false
+  },
+  "training": {
+    "seed": 20260805,
+    "epochs": 3,
+    "clip_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "optimizer": "AdamW",
+    "learning_rate": 0.00002,
+    "weight_decay": 0.01,
+    "gradient_clip_norm": 1.0,
+    "augmentation": "none",
+    "checkpoint_selection": "lowest fixed composite loss on training-only video-parent-disjoint validation clips; ties choose earliest epoch",
+    "holdout_access_during_training_or_selection": false,
+    "multiple_seed_or_checkpoint_search": false
+  },
+  "new_clip_p1": {
+    "public_identity_manifest": "hash-locked before training activation",
+    "target_bundle": "separate sealed bundle unavailable to trainer",
+    "status": "NOT_OPENED",
+    "minimum_evaluable_clips": 32,
+    "minimum_video_parents": 8,
+    "minimum_transitions_each_for": [
+      "CLEAR_TO_OCCUPIED",
+      "OCCUPIED_TO_CLEAR",
+      "KNOWN_TO_UNKNOWN_GROUND",
+      "UNKNOWN_GROUND_TO_KNOWN"
+    ],
+    "minimum_each_transition_count": 8,
+    "statistical_units": "clip metrics and transition rows with video-parent cluster bootstrap",
+    "confidence_interval": "one-sided 95 percent, 10000 deterministic parent-cluster bootstrap draws",
+    "opening_count": 1,
+    "insufficient_coverage_terminal": "P3_CLIP_P1_NOT_EVALUABLE_NO_SUBSTITUTION",
+    "pass_rule": "all static-depth, clearance-delta, transition, abstention, false-clear, and validity gates; no weighted compensation",
+    "on_pass": "P3_A2_392_TEMPORAL_STUDENT_QUALITY_NONINFERIORITY_SUPPORTED_A5S_STACK_ELIGIBLE",
+    "on_fail": "P3_A2_392_TEMPORAL_STUDENT_QUALITY_NONINFERIORITY_NOT_SUPPORTED"
+  },
+  "promotion_sequence": [
+    "train P3 A2-392 temporal student",
+    "single opening of new clip-based P1",
+    "stack already frozen A5S selective W8A16 only after pass",
+    "reconfirm quality noninferiority on a separately prebound gate",
+    "convert QNN/HTP",
+    "device chain canary at one fixed cadence",
+    "cadence search only after chain canary closure and new authorization"
+  ],
+  "first_device_chain_cadence_hz": {
+    "yolo_or_seg": 15,
+    "student": 10,
+    "teacher": 2,
+    "tof": "hardware stable frequency",
+    "purpose": "link executability only; not cadence optimization"
+  },
+  "forbidden": [
+    "search additional quantization partitions",
+    "search block skip or layer removal locations",
+    "search input sizes",
+    "search clip lengths",
+    "open or reuse legacy P1 for loss, checkpoint, threshold, or model selection",
+    "open new clip P1 before checkpoint and candidate cache hashes are locked",
+    "train temporal student while tuning W8A16, teacher cadence, QNN conversion, or Android runtime",
+    "lower clip, parent, transition, false-clear, or abstention gates after opening",
+    "substitute frames for missing clips or count correlated frames as independent evidence"
+  ],
+  "implementation": {
+    "module": "scripts/research/hftf/dav2_temporal_392_student_p3_r0.py",
+    "module_sha256": "34CC9757C568AB62AC17DA6BD6829F237358A6D69CD62C4BCC5D658985DCDD4F",
+    "tests": "scripts/research/hftf/test_dav2_temporal_392_student_p3_r0.py",
+    "tests_sha256": "19FB8536B652B387157C9FBF1ADB3B90E3A84329A948C4A3DDA401018F4694AD"
+  },
+  "current_terminal": "P3_PROTOCOL_FROZEN_DATA_AND_A2_CHECKPOINT_ACTIVATION_PENDING_HOLDOUT_UNOPENED"
+}
