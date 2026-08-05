@@ -6055,3 +6055,4 @@
   `D0E8C3CB330C1F4F5F5F85AB841B430822BBFC4BD22E651CD2DF44847FA601A4`。
   该路径只消除 Java raw/aligned 两份深度数组；Native decoded workspace、owned direct buffer
   及 backend 内部未知搬运仍保留，不称 zero-copy，不新增 accuracy、false-clear、产品或 safety authority。
+- 时间：2026-08-06（Asia/Hong_Kong）；执行者：violjjet。将硬件、Android、延迟、视频流和稳定性迭代的默认测试节奏写入 `AGENTS.md`：先运行 10 秒 smoke，日常有指标回归优先运行 1 分钟短测；5 分钟仅用于阶段性正式基线、重大架构或固件变更、候选交付或用户明确要求。30–60 分钟压力测试不再作为默认步骤，仅在候选发布、重大稳定性变更或用户明确授权时执行。该规则只调整测试成本与默认时长，不降低结果身份、设备绑定、异常记录或证据边界要求。验证：人工核对规则位置和 Git diff；无代码或构建变更，未运行 Gradle。

@@ -79,6 +79,7 @@ Every implementation task that changes files MUST end with a git commit before t
 ## Verification and release discipline
 
 - Match verification to risk: documentation-only changes normally need no Gradle run; a module change needs relevant tests or lint; changes to runtime, vision, risk, feedback, permissions, or assets need focused tests plus an Android build; a delivery candidate needs the release checklist and final-APK verification.
+- For hardware, Android, latency, streaming, and stability iteration, use a 10-second smoke first and prefer a 1-minute short run as the default measured regression. Run 5 minutes only for a stage-level formal baseline, material architecture/firmware change, candidate delivery, or an explicitly requested longer check. Do not default to 30-60 minute stress tests; reserve them for release candidates, major stability changes, or explicit user direction.
 - If required verification cannot run, record the reason and impact in the final report and, when the work changed the project, in `DEVELOPMENT_LOG.md`.
 - Release procedure, command matrix, version decision, and final APK verification live in [docs/RELEASE_AND_VERIFICATION.md](docs/RELEASE_AND_VERIFICATION.md). APK retention rules live in [docs/APK_ARCHIVE.md](docs/APK_ARCHIVE.md).
 - Do not change a version merely because a task happened. Change it for a planned delivery or a user-visible, compatibility, safety, model, permission, or substantial architecture change, and record the rationale.
