@@ -241,7 +241,7 @@ private class DepthExperienceEngine(
     private var converter: Dav2Yuv420RgbConverter? = null
     private var preprocessor: Dav2NativePreprocessor? = null
     private var runtime: Dav2QnnCachedContext? = null
-    private val visualWorkspace = DepthVisual.Workspace()
+    private val visualWorkspace = DepthVisual.Companion.Workspace()
     private var lastCompletedAt = 0L
 
     fun startCamera() {
