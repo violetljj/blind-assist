@@ -5,6 +5,8 @@
   "clip_capacity_terminal": "QUALITY_GATED_CLEARANCE_FUSION_R0_1_CLIP_CAPACITY_READY",
   "required_fields": ["raw_clearance_m", "raw_geometry_valid", "raw_geometry_state", "tof_valid", "teacher_age_s", "frozen_a2_disagreement"],
   "available_uniform_stream": false,
+  "label_blind_source_catalog_materialized": true,
+  "source_catalog_sha256": "7C7057932B21B6B6DB65857DBF76160C33373E74DEB6EEFB6FD5CE1E5061318B",
   "existing_tum_metric3d_reports_reused": false,
   "arkitscenes_raw_geometry_stream_materialized": false,
   "labels_opened": false,
