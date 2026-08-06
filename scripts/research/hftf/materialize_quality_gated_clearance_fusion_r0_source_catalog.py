@@ -56,8 +56,13 @@ def tum_frames(archive_path: Path, parent_id: str) -> list[dict[str, Any]]:
         require("rgb.txt" in members and "depth.txt" in members, f"TUM metadata missing: {parent_id}")
         rgb = parse_tum_index(archive.extractfile(members["rgb.txt"]).read().decode("utf-8"), "rgb")
         depth = parse_tum_index(archive.extractfile(members["depth.txt"]).read().decode("utf-8"), "depth")
-    common = sorted(set(rgb) & set(depth))
-    require(common, f"no RGB-depth timestamp intersection: {parent_id}")
+    depth_times = sorted(depth)
+    pairs: list[tuple[float, float]] = []
+    for timestamp in sorted(rgb):
+        nearest = min(depth_times, key=lambda value: abs(value - timestamp))
+        require(abs(nearest - timestamp) <= 0.02, f"RGB-depth association gap exceeds 20 ms: {parent_id}")
+        pairs.append((timestamp, nearest))
+    require(pairs, f"no RGB-depth timestamp association: {parent_id}")
     return [
         {
             "frame_id": f"TUM_RGBD:{parent_id}:{timestamp:.9f}",
@@ -67,10 +72,10 @@ def tum_frames(archive_path: Path, parent_id: str) -> list[dict[str, Any]]:
             "timestamp_ns": int(round(timestamp * 1_000_000_000)),
             "source_timestamp_s": timestamp,
             "rgb_member": rgb[timestamp],
-            "depth_member": depth[timestamp],
+            "depth_member": depth[depth_timestamp],
             "confidence_member": None,
         }
-        for timestamp in common
+        for timestamp, depth_timestamp in pairs
     ]
 
 
