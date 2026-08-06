@@ -357,7 +357,8 @@ private class DepthExperienceEngine(
             // tests, but would add a per-frame Java/native bridge copy here.
             val rgb = requireNotNull(converter).convertDirect(owned)
             val input = requireNotNull(preprocessor).preprocessFp16CanonicalStrictDirect(rgb)
-            val output = requireNotNull(runtime).execute(input)
+            // Input hashing is a parity diagnostic, not part of the live route.
+            val output = requireNotNull(runtime).execute(input, computeInputHash = false)
             val visual = DepthVisual.from(
                 output,
                 elapsedMs(startedAt),
