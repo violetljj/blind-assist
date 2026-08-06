@@ -37,6 +37,13 @@
     "checkpoint_path": "artifacts.local/evidence/hftf/dav2-model-optimization-p2-r0/a2-student-392/dav2_392_distilled_best.pth",
     "checkpoint_sha256": "8464C67D33010EF0F3225B0CDF9ACFFB2C6581150C3B2F42F45C73522A6CC0E9"
   },
+  "raw_stream_input_audit": {
+    "producer_path": "scripts/research/hftf/audit_quality_gated_clearance_fusion_r0_raw_stream_inputs.py",
+    "producer_sha256": "7977DA006CE3E65B4DF95B0FDC41ED3DC7C65F81A13DB815D2755D916F90D059",
+    "receipt_path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/raw-stream-input-audit-attempt-01.json",
+    "receipt_sha256": "29DAC37BC9826DBA876FFCCC13D711666715D7618ACAF57EA8D3FFE1B52F0772",
+    "terminal": "QUALITY_GATED_CLEARANCE_FUSION_R0_RAW_STREAM_INPUTS_NOT_READY"
+  },
   "claim_ceiling": "DEVELOPMENT_SIGNAL_ONLY",
   "research_question": "Whether deterministic quality-gated clearance fusion improves temporal clearance stability and fail-closed state behavior over the same raw per-frame geometry stream.",
   "source_roles": {
