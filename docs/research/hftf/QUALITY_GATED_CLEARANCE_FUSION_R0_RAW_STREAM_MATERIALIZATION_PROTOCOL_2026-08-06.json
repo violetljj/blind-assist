@@ -1,0 +1,46 @@
+{
+  "schema": "blindassist_quality_gated_clearance_fusion_r0_raw_stream_materialization_protocol",
+  "protocol_id": "QUALITY_GATED_CLEARANCE_FUSION_R0_RAW_STREAM_MATERIALIZATION_2026-08-06",
+  "parent_development_protocol": {
+    "path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_PROTOCOL_2026-08-06.json",
+    "sha256": "E3DB15D76E6A68952B4ACDA001720DF756FDFBCDCBB88007927EC0CE422B4B65"
+  },
+  "source_catalog": {
+    "path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/source-catalog-attempt-01.json",
+    "sha256": "7C7057932B21B6B6DB65857DBF76160C33373E74DEB6EEFB6FD5CE1E5061318B"
+  },
+  "a2_binding": {
+    "checkpoint_path": "artifacts.local/evidence/hftf/dav2-model-optimization-p2-r0/a2-student-392/dav2_392_distilled_best.pth",
+    "checkpoint_sha256": "8464C67D33010EF0F3225B0CDF9ACFFB2C6581150C3B2F42F45C73522A6CC0E9",
+    "training_receipt_path": "artifacts.local/evidence/hftf/dav2-model-optimization-p2-r0/a2-student-392/training_result.json",
+    "training_receipt_sha256": "3C962F9174F596CEE4B74CEA34CD0C98BD50CBB47D5D892ACFC9BB1432ED0E89",
+    "input_size": 392,
+    "model_family": "DepthAnythingV2-vits-metric-depth"
+  },
+  "evidence_semantics": {
+    "raw_geometry_source": "A2-392 prediction converted by the frozen clearance_field geometry function",
+    "independent_metric_sensor_source": "registered TUM RGB-D depth or ARKit lowres_depth",
+    "tof_valid_field_semantics": "independent_metric_sensor_valid",
+    "teacher_age_s": "0.0 when RGB and metric depth are source-associated within fixed tolerance; no cadence inference",
+    "frozen_a2_disagreement": "mean absolute log-depth difference between A2 prediction and independent metric depth on valid paired pixels",
+    "unknown_rule": "invalid metric depth or invalid A2 geometry is represented as fail-closed validity=false/UNKNOWN",
+    "no_label_fields_read": true
+  },
+  "runtime": {
+    "device": "cuda",
+    "p3_model_constructed": false,
+    "optimizer_constructed": false,
+    "training_started": false,
+    "holdout_outcomes_opened": false
+  },
+  "output": {
+    "schema": "blindassist_quality_gated_clearance_fusion_r0_raw_geometry_stream",
+    "required_frame_fields": ["frame_id", "parent_id", "video_id", "timestamp_ns", "raw_clearance_m", "raw_geometry_valid", "raw_geometry_state", "tof_valid", "teacher_age_s", "frozen_a2_disagreement", "rgb_sha256", "metric_depth_sha256"],
+    "overwrite_forbidden": true
+  },
+  "producer": {
+    "path": "scripts/research/hftf/materialize_quality_gated_clearance_fusion_r0_raw_stream.py",
+    "sha256": "09AB850AD862FD8F5F76EA12C49D343403FF6BFA9578C00B0F5F524A4FC04F4A"
+  },
+  "status": "FROZEN_BEFORE_MODEL_LOAD"
+}
