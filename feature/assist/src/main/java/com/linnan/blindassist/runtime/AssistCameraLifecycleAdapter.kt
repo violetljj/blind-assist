@@ -23,6 +23,7 @@ internal class AssistCameraLifecycleAdapter(
 ) {
     private var frameSource: FrameSource = initialFrameSource
     private var previewView: PreviewView? = null
+    @Volatile
     private var externalPreview: ImageView? = null
     private val latestPreviewBitmap = AtomicReference<Bitmap?>(null)
     private val previewDispatchScheduled = AtomicBoolean(false)
@@ -95,6 +96,10 @@ internal class AssistCameraLifecycleAdapter(
     }
 
     private fun renderExternalPreview(bitmap: Bitmap) {
+        // This callback runs on the source/decoder thread, before the frame enters
+        // the detector.  Do not pay for a full-frame copy when there is no active
+        // preview target; the detector owns the source bitmap until frame.close().
+        if (externalPreview == null || !isCameraActive()) return
         val ownedCopy = bitmap.copy(Bitmap.Config.ARGB_8888, false)
         latestPreviewBitmap.getAndSet(ownedCopy)?.let { stale ->
             if (!stale.isRecycled) stale.recycle()
