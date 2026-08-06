@@ -352,8 +352,11 @@ private class DepthExperienceEngine(
                 }
                 return
             }
-            val rgb = requireNotNull(converter).convert(owned)
-            val input = requireNotNull(preprocessor).preprocessFp16(rgb)
+            // Keep the YUV->RGB and canonical preprocessing buffers native/direct
+            // all the way into QNN.  The ByteArray route is retained for parity
+            // tests, but would add a per-frame Java/native bridge copy here.
+            val rgb = requireNotNull(converter).convertDirect(owned)
+            val input = requireNotNull(preprocessor).preprocessFp16CanonicalStrictDirect(rgb)
             val output = requireNotNull(runtime).execute(input)
             val visual = DepthVisual.from(
                 output,
