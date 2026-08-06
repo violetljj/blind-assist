@@ -58,6 +58,8 @@ internal class OwnedYuv420Frame(
     var rotationDegrees = 0
     var sensorTimestampNanos = 0L
     var receivedAtNanos = 0L
+    var copyCompletedAtNanos = 0L
+    var sequence = 0L
     var stage = ""
     var started = false
     private var leased = false

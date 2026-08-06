@@ -15,6 +15,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.os.PowerManager
 import android.os.SystemClock
+import android.util.Log
 import android.util.Size
 import android.view.Gravity
 import android.view.View
@@ -234,6 +235,7 @@ private class DepthExperienceEngine(
     private val processing = AtomicBoolean(false)
     private val initializationStarted = AtomicBoolean(false)
     private val lastSubmittedAt = AtomicLong(Long.MIN_VALUE)
+    private val frameSequence = AtomicLong(0L)
     private val frame = OwnedYuv420Frame(WIDTH, HEIGHT) {}
     private val power = activity.getSystemService(PowerManager::class.java)
     private var provider: ProcessCameraProvider? = null
@@ -327,6 +329,8 @@ private class DepthExperienceEngine(
                 owned.rotationDegrees = image.imageInfo.rotationDegrees
                 owned.sensorTimestampNanos = image.imageInfo.timestamp
                 owned.receivedAtNanos = now
+                owned.copyCompletedAtNanos = SystemClock.elapsedRealtimeNanos()
+                owned.sequence = frameSequence.incrementAndGet()
                 depthExecutor.execute { process(owned) }
             } catch (error: Throwable) {
                 owned.close()
@@ -356,17 +360,39 @@ private class DepthExperienceEngine(
             // all the way into QNN.  The ByteArray route is retained for parity
             // tests, but would add a per-frame Java/native bridge copy here.
             val rgb = requireNotNull(converter).convertDirect(owned)
+            val rgbReadyAt = SystemClock.elapsedRealtimeNanos()
             val input = requireNotNull(preprocessor).preprocessFp16CanonicalStrictDirect(rgb)
+            val inputReadyAt = SystemClock.elapsedRealtimeNanos()
             // Input hashing is a parity diagnostic, not part of the live route.
             val output = requireNotNull(runtime).execute(input, computeInputHash = false)
-            val visual = DepthVisual.from(
+            val qnnReadyAt = SystemClock.elapsedRealtimeNanos()
+            val visualWithoutAge = DepthVisual.from(
                 output,
-                elapsedMs(startedAt),
+                0.0,
                 thermal,
                 lastCompletedAt,
                 visualWorkspace,
             )
-            lastCompletedAt = SystemClock.elapsedRealtimeNanos()
+            val completedAt = SystemClock.elapsedRealtimeNanos()
+            val visual = visualWithoutAge.copy(
+                pipelineMs = nanosToMs(completedAt - owned.receivedAtNanos),
+            )
+            lastCompletedAt = completedAt
+            Log.i(
+                TIMING_TAG,
+                "{\"frame_sequence\":${owned.sequence}," +
+                    "\"sensor_timestamp_ns\":${owned.sensorTimestampNanos}," +
+                    "\"received_at_ns\":${owned.receivedAtNanos}," +
+                    "\"yuv_copy_ms\":${formatMetric(owned.copyCompletedAtNanos - owned.receivedAtNanos)}," +
+                    "\"executor_wait_ms\":${formatMetric(startedAt - owned.copyCompletedAtNanos)}," +
+                    "\"yuv_to_rgb_ms\":${formatMetric(rgbReadyAt - startedAt)}," +
+                    "\"canonical_preprocess_ms\":${formatMetric(inputReadyAt - rgbReadyAt)}," +
+                    "\"qnn_execute_ms\":${formatMetric(qnnReadyAt - inputReadyAt)}," +
+                    "\"depth_visual_ms\":${formatMetric(completedAt - qnnReadyAt)}," +
+                    "\"received_to_result_ms\":${formatMetric(completedAt - owned.receivedAtNanos)}," +
+                    "\"sensor_to_result_ms\":${formatMetric(completedAt - owned.sensorTimestampNanos)}," +
+                    "\"thermal_status\":$thermal}",
+            )
             activity.runOnUiThread {
                 onDepth(visual)
                 onStatus(
@@ -416,6 +442,9 @@ private class DepthExperienceEngine(
     private fun elapsedMs(startedAt: Long) =
         (SystemClock.elapsedRealtimeNanos() - startedAt) / 1_000_000.0
 
+    private fun nanosToMs(value: Long) = value / 1_000_000.0
+    private fun formatMetric(valueNanos: Long) = String.format(Locale.US, "%.3f", nanosToMs(valueNanos))
+
     private fun formatMeters(value: Float): String =
         if (value.isFinite()) String.format(Locale.US, "%.2f m", value) else "未知"
 
@@ -425,6 +454,7 @@ private class DepthExperienceEngine(
     private companion object {
         const val WIDTH = 640
         const val HEIGHT = 480
+        const val TIMING_TAG = "Dav2FrameTiming"
         val DEPTH_PERIOD_NANOS = TimeUnit.MILLISECONDS.toNanos(500)
     }
 }
@@ -456,6 +486,7 @@ internal data class DepthVisual(
             val sampled = FloatArray(MAP_PIXELS)
             val center = FloatArray(CENTER_CAPACITY)
             val pixels = IntArray(MAP_PIXELS)
+            val hsv = FloatArray(3)
         }
 
         fun from(
@@ -470,6 +501,7 @@ internal data class DepthVisual(
             val sampled = workspace.sampled
             val depths = workspace.depths
             val pixels = workspace.pixels
+            val hsv = workspace.hsv
             var centerSize = 0
             var sampledSize = 0
             for (row in 0 until MAP_HEIGHT) {
@@ -488,8 +520,19 @@ internal data class DepthVisual(
             }
             val colorNear = percentile(sampled, sampledSize, 0.05)
             val colorFar = percentile(sampled, sampledSize, 0.95)
+            val logNear = if (colorNear.isFinite() && colorNear > 0f) ln(colorNear.toDouble()) else Double.NaN
+            val logRange = if (colorFar.isFinite() && colorFar > colorNear) {
+                ln(colorFar.toDouble()) - logNear
+            } else Double.NaN
             for (index in depths.indices) {
-                pixels[index] = depthColor(depths[index], colorNear, colorFar)
+                pixels[index] = depthColor(
+                    depths[index],
+                    colorNear,
+                    colorFar,
+                    logNear,
+                    logRange,
+                    hsv,
+                )
             }
             val centerMeters = percentile(center, centerSize, 0.5)
             val nearMeters = percentile(sampled, sampledSize, 0.1)
@@ -541,14 +584,24 @@ internal data class DepthVisual(
             return values[left]
         }
 
-        private fun depthColor(depth: Float, colorNear: Float, colorFar: Float): Int {
+        private fun depthColor(
+            depth: Float,
+            colorNear: Float,
+            colorFar: Float,
+            logNear: Double,
+            logRange: Double,
+            hsv: FloatArray,
+        ): Int {
             if (!depth.isFinite() || depth <= 0f || !colorNear.isFinite() ||
-                !colorFar.isFinite() || colorFar <= colorNear
+                !colorFar.isFinite() || colorFar <= colorNear || !logRange.isFinite()
             ) return Color.TRANSPARENT
-            val normalized = ((ln(depth.coerceIn(colorNear, colorFar).toDouble()) - ln(colorNear.toDouble())) /
-                (ln(colorFar.toDouble()) - ln(colorNear.toDouble()))).toFloat().coerceIn(0f, 1f)
+            val normalized = ((ln(depth.coerceIn(colorNear, colorFar).toDouble()) - logNear) /
+                logRange).toFloat().coerceIn(0f, 1f)
             val brightness = 1f - normalized * 0.48f
-            return Color.HSVToColor(floatArrayOf(normalized * 240f, 0.98f, brightness))
+            hsv[0] = normalized * 240f
+            hsv[1] = 0.98f
+            hsv[2] = brightness
+            return Color.HSVToColor(hsv)
         }
     }
 }
