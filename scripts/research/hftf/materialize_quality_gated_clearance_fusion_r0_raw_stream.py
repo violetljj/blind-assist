@@ -48,6 +48,14 @@ def state(value: float | None, valid: bool) -> str:
     return "OCCUPIED" if float(value) <= 1.5 else "CLEAR"
 
 
+def parse_pincam(payload: bytes) -> list[float]:
+    values = [float(value) for value in payload.decode("utf-8").split()]
+    require(len(values) == 6, "ARKit pincam schema drift")
+    width, height, fx, fy, cx, cy = values
+    require(width > 0 and height > 0 and fx > 0 and fy > 0, "invalid ARKit intrinsics")
+    return [fx, fy, cx, cy]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", type=Path, required=True)
@@ -95,16 +103,19 @@ def main() -> None:
             videos = sorted({str(row["video_id"]) for row in frames})
             for video in videos:
                 base = arkit_root / "raw" / "Validation" / video
-                zips[video] = tuple(zipfile.ZipFile(base / name) for name in ("lowres_wide.zip", "lowres_depth.zip", "confidence.zip"))
+                zips[video] = tuple(zipfile.ZipFile(base / name) for name in ("lowres_wide.zip", "lowres_depth.zip", "confidence.zip", "lowres_wide_intrinsics.zip"))
         try:
             for index, frame in enumerate(sorted(frames, key=lambda row: row["timestamp_ns"])):
                 if parent_id == "381644":
-                    rgb_zip, depth_zip, conf_zip = zips[str(frame["video_id"])]
+                    rgb_zip, depth_zip, conf_zip, intrinsics_zip = zips[str(frame["video_id"])]
                     rgb_bytes = rgb_zip.read(frame["rgb_member"])
                     depth_bytes = depth_zip.read(frame["depth_member"])
                     depth_scale = 0.001
-                    intrinsics = tum_intrinsics
-                    confidence = None
+                    confidence_bytes = conf_zip.read(frame["confidence_member"])
+                    confidence_image = cv2.imdecode(np.frombuffer(confidence_bytes, np.uint8), cv2.IMREAD_UNCHANGED)
+                    intrinsics_member = f"lowres_wide_intrinsics/{str(frame['video_id'])}_{float(frame['source_timestamp_s']):.3f}.pincam"
+                    intrinsics = parse_pincam(intrinsics_zip.read(intrinsics_member))
+                    confidence = confidence_image
                 else:
                     prefix = parent_id + "/"
                     rgb_bytes = tar.extractfile(prefix + frame["rgb_member"]).read()
@@ -122,10 +133,14 @@ def main() -> None:
                 pred = torch.nn.functional.interpolate(pred[:, None], size=metric.shape, mode="bilinear", align_corners=True)[0, 0].float().cpu().numpy()
                 valid = np.isfinite(metric) & (metric > 0.1) & (metric <= 20.0) & np.isfinite(pred) & (pred > 0.1)
                 disagreement = float(np.mean(np.abs(np.log(np.clip(pred[valid], .1, 20)) - np.log(np.clip(metric[valid], .1, 20))))) if bool(valid.any()) else None
-                field = clearance_field(pred, np.asarray([[intrinsics[0], 0, intrinsics[2]], [0, intrinsics[1], intrinsics[3]], [0, 0, 1]], dtype=np.float32), confidence_map=confidence)
+                intrinsics_matrix = np.asarray([[intrinsics[0], 0, intrinsics[2]], [0, intrinsics[1], intrinsics[3]], [0, 0, 1]], dtype=np.float32)
+                field = clearance_field(pred, intrinsics_matrix, confidence_map=confidence)
+                truth_field = clearance_field(metric, intrinsics_matrix, confidence_map=confidence)
                 clearances = [field.get("bands", {}).get(name, {}).get("clearance_m") for name in ("left", "center", "right")] if field.get("status") == "VALID" else [None, None, None]
+                truth_clearances = [truth_field.get("bands", {}).get(name, {}).get("clearance_m") for name in ("left", "center", "right")] if truth_field.get("status") == "VALID" else [None, None, None]
                 valids = [value is not None and math.isfinite(float(value)) for value in clearances]
-                rows.append({"schema": SCHEMA, "frame_id": frame["frame_id"], "parent_id": frame["parent_id"], "video_id": frame["video_id"], "timestamp_ns": frame["timestamp_ns"], "raw_clearance_m": clearances, "raw_geometry_valid": valids, "raw_geometry_state": [state(value, ok) for value, ok in zip(clearances, valids)], "tof_valid": bool(valid.any()), "teacher_age_s": 0.0, "frozen_a2_disagreement": disagreement, "rgb_sha256": sha256_bytes(rgb_bytes), "metric_depth_sha256": sha256_bytes(depth_bytes), "geometry_status": field.get("status")})
+                truth_valids = [value is not None and math.isfinite(float(value)) for value in truth_clearances]
+                rows.append({"schema": SCHEMA, "frame_id": frame["frame_id"], "parent_id": frame["parent_id"], "video_id": frame["video_id"], "timestamp_ns": frame["timestamp_ns"], "raw_clearance_m": clearances, "raw_geometry_valid": valids, "raw_geometry_state": [state(value, ok) for value, ok in zip(clearances, valids)], "truth_clearance_m": truth_clearances, "truth_geometry_valid": truth_valids, "truth_geometry_state": [state(value, ok) for value, ok in zip(truth_clearances, truth_valids)], "tof_valid": bool(valid.any()), "teacher_age_s": 0.0, "frozen_a2_disagreement": disagreement, "rgb_sha256": sha256_bytes(rgb_bytes), "metric_depth_sha256": sha256_bytes(depth_bytes), "geometry_status": field.get("status"), "truth_geometry_status": truth_field.get("status")})
         finally:
             if tar is not None:
                 tar.close()

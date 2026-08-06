@@ -40,7 +40,7 @@
   },
   "producer": {
     "path": "scripts/research/hftf/materialize_quality_gated_clearance_fusion_r0_raw_stream.py",
-    "sha256": "09AB850AD862FD8F5F76EA12C49D343403FF6BFA9578C00B0F5F524A4FC04F4A"
+    "sha256": "B3A0F92A4B34A26050A6F67D56CA50ADC13FE86586A4E54142A84E4DC27B9083"
   },
   "status": "FROZEN_BEFORE_MODEL_LOAD"
 }
