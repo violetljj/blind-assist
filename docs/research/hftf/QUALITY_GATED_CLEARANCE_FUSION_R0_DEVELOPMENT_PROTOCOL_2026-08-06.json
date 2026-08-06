@@ -10,6 +10,13 @@
     "sha256": "644644E937D359313DB456C96B550A3FEA664B85AB15E2AAAE6F894EE421BB75",
     "terminal_required": "QUALITY_GATED_CLEARANCE_FUSION_R0_1_CLIP_CAPACITY_READY"
   },
+  "source_catalog_producer": {
+    "path": "scripts/research/hftf/materialize_quality_gated_clearance_fusion_r0_source_catalog.py",
+    "sha256": "EF16BCB5610270BD3CA4AA2D605506624AD54A37E6CA96E158A81A0EF32E0353",
+    "output_schema": "blindassist_quality_gated_clearance_fusion_r0_source_catalog",
+    "image_or_depth_bytes_decoded": false,
+    "labels_opened": false
+  },
   "claim_ceiling": "DEVELOPMENT_SIGNAL_ONLY",
   "research_question": "Whether deterministic quality-gated clearance fusion improves temporal clearance stability and fail-closed state behavior over the same raw per-frame geometry stream.",
   "source_roles": {
