@@ -148,7 +148,7 @@ def main() -> None:
     archive_bindings = []
     for parent_id, archive in tum_specs:
         require(archive.is_file(), f"missing TUM archive: {archive}")
-        archive_bindings.append({"parent_id": parent_id, "path": str(archive.relative_to(root)), "sha256": sha256_file(archive), "bytes": archive.stat().st_size})
+        archive_bindings.append({"parent_id": parent_id, "path": str(archive), "sha256": sha256_file(archive), "bytes": archive.stat().st_size})
         frames.extend(tum_frames(archive, parent_id))
     frames.extend(arkit_frames(root, arkit_manifest))
     by_parent: dict[str, list[dict[str, Any]]] = {}
@@ -163,7 +163,7 @@ def main() -> None:
         "schema": RESULT_SCHEMA,
         "source_contract": "label-blind identities and source-native timestamps only",
         "archive_bindings": archive_bindings,
-        "arkit_manifest_path": str(arkit_manifest.relative_to(root)),
+        "arkit_manifest_path": str(arkit_manifest),
         "arkit_manifest_sha256": sha256_file(arkit_manifest),
         "parents": sorted({row["parent_id"] for row in frames}),
         "frame_count": len(frames),
