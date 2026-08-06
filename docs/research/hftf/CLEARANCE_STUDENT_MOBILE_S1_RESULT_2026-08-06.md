@@ -1,6 +1,6 @@
 # Clearance-Student Mobile S1 development result
 
-Terminal: `S1_A_NOT_SUPPORTED_UNDEFINED_GEOMETRY`.
+Terminal: `CURRENT_FROM_SCRATCH_S1_A_IMPLEMENTATION_NOT_SUPPORTED`.
 
 S1 deliberately differed from S0: MobileNetV3-Large, 5,375,482 parameters,
 four decoder scales, fixed pooled four-layer Canonical feature distillation,
@@ -30,6 +30,13 @@ screen and the S0 relative-structure result (`0.1190`).  S1-B is therefore not
 authorized.  No clearance/occupancy/confidence curriculum, QNN profile, QAT,
 Android integration, holdout access, production replacement, or safety claim
 may follow from this run.
+
+This terminal is deliberately implementation-scoped.  It rejects the concrete
+combination of a randomly initialized MobileNetV3-Large encoder, five epochs,
+the current depth-validity mask, incomplete direct geometry supervision, and
+raw L1 distillation against four uniformly pooled 8x8 teacher features.  It
+does not reject pretrained MobileNetV3-Large, the 5--10M mobile-student capacity
+band, or mobile geometry students as a family.
 
 The experiment remains `DEVELOPMENT_ONLY`.  Canonical DA V2 518 remains the
 teacher and quality upper bound.  The consumed 120 frames must not be used to

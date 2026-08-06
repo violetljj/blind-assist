@@ -1402,10 +1402,14 @@ unseen Confirmation。
 
 ## Clearance-Student Mobile S1
 
-状态：`S1_A_NOT_SUPPORTED_UNDEFINED_GEOMETRY`。
+状态：`CURRENT_FROM_SCRATCH_S1_A_IMPLEMENTATION_NOT_SUPPORTED`；该终态不拒绝
+5--10M mobile student 家族或预训练 MobileNetV3-Large。
 
 - 协议：`docs/research/hftf/CLEARANCE_STUDENT_MOBILE_S1_PROTOCOL_2026-08-06.*`
 - 模型/训练：`clearance_student_mobile_s1.py`、`train_clearance_student_mobile_s1.py`
 - teacher feature/cache：`materialize_clearance_student_mobile_s1_teacher_features.py`、`materialize_clearance_student_mobile_s1_gate_cache.py`
 - 开发屏：`screen_clearance_student_mobile_s1_depth.py`；undefined 指标 fail closed。
 - S1-B、QNN、QAT、Android、holdout 和生产替换均未授权。
+- 唯一 successor 是 S1.1 机制纠正实验；先完成 ImageNet encoder binding、逐像素
+  confidence mask、训练侧几何 target coverage 和新 E0 cohort preflight，禁止直接训练或
+  使用已消费 120 帧调参。

@@ -1,0 +1,62 @@
+{
+  "protocol_id": "clearance-student-mobile-s1-1",
+  "version": "S1.1",
+  "status": [
+    "ONE_MECHANISM_CORRECTION_EXPERIMENT_AUTHORIZED",
+    "E0_ONLY_UNTIL_PREFLIGHT_PASS",
+    "S1_B_NOT_AUTHORIZED",
+    "NO_QNN_QAT_ANDROID_OR_SAFETY_AUTHORITY"
+  ],
+  "parent_terminal": "CURRENT_FROM_SCRATCH_S1_A_IMPLEMENTATION_NOT_SUPPORTED",
+  "encoder": {
+    "id": "torchvision_mobilenet_v3_large_imagenet1k_v1",
+    "pretrained_required": true,
+    "encoder_reset_forbidden": true,
+    "weight_sha256_required": true
+  },
+  "truth_mask": {
+    "confidence_equals": 2,
+    "depth_range_m": [0.25, 6.0],
+    "gradient_requires_both_pixels_valid": true,
+    "scale_uses_valid_pixels_only": true
+  },
+  "geometry_target_preflight": [
+    "ground_plane_normal",
+    "camera_height",
+    "left_center_right_clearance",
+    "occupancy",
+    "per_target_coverage"
+  ],
+  "architecture": {
+    "context_channels_max": 512,
+    "prefer_high_resolution_decoder_capacity": true
+  },
+  "feature_distillation": {
+    "preferred_source": "teacher_decoder_or_dpt_refinement",
+    "fallback": "per_channel_normalized_encoder_features",
+    "loss": ["cosine", "normalized_l1"],
+    "uniform_8x8_resize_to_all_scales_forbidden": true
+  },
+  "e0": {
+    "consumed_120_frame_cohort_forbidden": true,
+    "requires_new_training_only_validation": true,
+    "fail_closed_metrics": [
+      "scale_aligned_absrel",
+      "ground_recovery",
+      "depth_distribution",
+      "finite_geometry_coverage",
+      "encoder_weight_binding"
+    ]
+  },
+  "e1": {
+    "requires_new_versioned_development_cohort": true,
+    "comparison": ["Canonical", "S0", "S1.1"],
+    "known_collision_decisions_must_be_positive": true,
+    "scale_aligned_absrel_must_be_below": 0.119,
+    "all_occupied_or_unknown_shortcut_forbidden": true
+  },
+  "execution_limit": "ONE_S1_1_EXPERIMENT_ONLY",
+  "qnn_profile_authorized": false,
+  "production_model_replacement_authorized": false,
+  "safety_authority": false
+}
