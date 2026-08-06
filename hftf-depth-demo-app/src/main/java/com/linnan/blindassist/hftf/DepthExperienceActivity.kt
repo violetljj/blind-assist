@@ -90,7 +90,7 @@ class DepthExperienceActivity : Activity(), LifecycleOwner {
     }
 
     override fun onStop() {
-        engine?.stopCamera()
+        engine?.stopAlgorithm()
         lifecycleRegistry.currentState = Lifecycle.State.CREATED
         super.onStop()
     }
@@ -261,9 +261,24 @@ private class DepthExperienceEngine(
                 converter = Dav2Yuv420RgbConverter()
                 preprocessor = Dav2NativePreprocessor()
                 runtime = Dav2QnnCachedContext(model.absolutePath, nativeDir)
+                if (!active.get()) {
+                    val staleRuntime = runtime
+                    val stalePreprocessor = preprocessor
+                    val staleConverter = converter
+                    runtime = null
+                    preprocessor = null
+                    converter = null
+                    staleRuntime?.close()
+                    stalePreprocessor?.close()
+                    staleConverter?.close()
+                    initializationStarted.set(false)
+                    return@execute
+                }
                 activity.runOnUiThread {
-                    onStatus("模型就绪，正在打开后置相机…", "canonical FP32 → strict FP16 → QNN cached context")
-                    if (active.get()) bindCamera()
+                    if (active.get()) {
+                        onStatus("模型就绪，正在打开后置相机…", "canonical FP32 → strict FP16 → QNN cached context")
+                        bindCamera()
+                    }
                 }
             } catch (error: Throwable) {
                 activity.runOnUiThread { onFailure(error.message ?: error.javaClass.simpleName) }
@@ -276,6 +291,24 @@ private class DepthExperienceEngine(
         analysis?.clearAnalyzer()
         analysis = null
         provider?.unbindAll()
+    }
+
+    /** Fully releases QNN/HTP and native preprocessing resources when the page leaves foreground. */
+    fun stopAlgorithm() {
+        stopCamera()
+        val oldRuntime = runtime
+        val oldPreprocessor = preprocessor
+        val oldConverter = converter
+        runtime = null
+        preprocessor = null
+        converter = null
+        initializationStarted.set(false)
+        depthExecutor.execute {
+            oldRuntime?.close()
+            oldPreprocessor?.close()
+            oldConverter?.close()
+            Log.i(RESOURCE_TAG, "DA V2 algorithm stopped; QNN/HTP resources released")
+        }
     }
 
     private fun bindCamera() {
@@ -423,7 +456,7 @@ private class DepthExperienceEngine(
     }
 
     override fun close() {
-        stopCamera()
+        stopAlgorithm()
         analyzerExecutor.shutdownNow()
         depthExecutor.execute {
             runtime?.close()
@@ -469,6 +502,7 @@ private class DepthExperienceEngine(
         const val WIDTH = 640
         const val HEIGHT = 480
         const val TIMING_TAG = "Dav2FrameTiming"
+        const val RESOURCE_TAG = "Dav2Resources"
         val DEPTH_PERIOD_NANOS = TimeUnit.MILLISECONDS.toNanos(500)
     }
 }
@@ -485,6 +519,9 @@ internal data class DepthVisual(
         private const val MAP_WIDTH = 343
         private const val MAP_HEIGHT = 259
         private const val MAP_PIXELS = MAP_WIDTH * MAP_HEIGHT
+        private val HALF_TO_FLOAT = FloatArray(1 shl 16) { bits ->
+            android.util.Half.toFloat(bits.toShort())
+        }
         private const val CENTER_CAPACITY =
             (MAP_WIDTH * 3 / 5 - MAP_WIDTH * 2 / 5) *
                 (MAP_HEIGHT * 3 / 5 - MAP_HEIGHT * 2 / 5)
@@ -493,6 +530,17 @@ internal data class DepthVisual(
         }
         private val SOURCE_COLUMNS = IntArray(MAP_WIDTH) { column ->
             column * Dav2PreprocessContract.OUTPUT_WIDTH / MAP_WIDTH
+        }
+        private val SOURCE_OFFSETS = IntArray(MAP_PIXELS) { index ->
+            val row = index / MAP_WIDTH
+            val column = index - row * MAP_WIDTH
+            SOURCE_ROWS[row] * Dav2PreprocessContract.OUTPUT_WIDTH + SOURCE_COLUMNS[column]
+        }
+        private val CENTER_FLAGS = BooleanArray(MAP_PIXELS) { index ->
+            val row = index / MAP_WIDTH
+            val column = index - row * MAP_WIDTH
+            column in MAP_WIDTH * 2 / 5 until MAP_WIDTH * 3 / 5 &&
+                row in MAP_HEIGHT * 2 / 5 until MAP_HEIGHT * 3 / 5
         }
 
         internal class Workspace {
@@ -519,18 +567,12 @@ internal data class DepthVisual(
             val hsv = workspace.hsv
             var centerSize = 0
             var sampledSize = 0
-            for (row in 0 until MAP_HEIGHT) {
-                val sourceRow = SOURCE_ROWS[row]
-                for (column in 0 until MAP_WIDTH) {
-                    val sourceColumn = SOURCE_COLUMNS[column]
-                    val depth = halfBitsToFloat(source.get(sourceRow * Dav2PreprocessContract.OUTPUT_WIDTH + sourceColumn))
-                    depths[row * MAP_WIDTH + column] = depth
-                    if (depth.isFinite() && depth in 0.1f..50f) {
-                        sampled[sampledSize++] = depth
-                        if (column in MAP_WIDTH * 2 / 5 until MAP_WIDTH * 3 / 5 &&
-                            row in MAP_HEIGHT * 2 / 5 until MAP_HEIGHT * 3 / 5
-                        ) center[centerSize++] = depth
-                    }
+            for (index in 0 until MAP_PIXELS) {
+                val depth = HALF_TO_FLOAT[source.get(SOURCE_OFFSETS[index]).toInt() and 0xffff]
+                depths[index] = depth
+                if (depth.isFinite() && depth >= 0.1f && depth <= 50f) {
+                    sampled[sampledSize++] = depth
+                    if (CENTER_FLAGS[index]) center[centerSize++] = depth
                 }
             }
             val centerMeters = percentile(center, centerSize, 0.5)
