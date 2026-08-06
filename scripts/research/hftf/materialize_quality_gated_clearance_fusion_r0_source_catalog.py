@@ -103,7 +103,7 @@ def arkit_frames(repo_root: Path, manifest_path: Path) -> list[dict[str, Any]]:
                     timestamp = float(match.group(1))
                     require(timestamp not in values, f"duplicate ARKit timestamp: {video_id}/{asset}")
                     values[timestamp] = name
-                maps[asset] = values
+                maps[asset.removesuffix(".zip")] = values
         common = sorted(set(maps["lowres_wide"]) & set(maps["lowres_depth"]) & set(maps["confidence"]))
         require(common, f"no ARKit RGB-depth-confidence intersection: {video_id}")
         result.extend({
