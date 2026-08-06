@@ -1413,3 +1413,5 @@ unseen Confirmation。
 - 唯一 successor 是 S1.1 机制纠正实验；先完成 ImageNet encoder binding、逐像素
   confidence mask、训练侧几何 target coverage 和新 E0 cohort preflight，禁止直接训练或
   使用已消费 120 帧调参。
+- 当前 E0 已完成优化/binding sanity，但缺少 depth quantiles、saturation 和 finite geometry
+  coverage receipt，因此仍不得进入 E1。

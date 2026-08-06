@@ -43,6 +43,14 @@ def main():
   tr=run_epoch(m,records,[train[j] for j in np.random.default_rng(seed+e).permutation(len(train))],targets,None,features,device,a.batch_size,opt,scaler)
   with torch.inference_mode(): va=run_epoch(m,records,val,targets,None,features,device,a.batch_size)
   row={'epoch':e+1,'train_total':tr,'validation_total':va};history.append(row);print(json.dumps(row),flush=True)
- result={'schema':'blindassist_clearance_student_mobile_s1_1_e0_result','terminal':'S1_1_E0_TRAINING_COMPLETE_DEVELOPMENT_ONLY','parameter_count':parameter_count(m),'encoder_binding':m.encoder_binding,'preflight_sha256':str(a.preflight.resolve()),'history':history,'training_seconds':time.perf_counter()-started,'e1_authorized':False,'qnn_profile_authorized':False}
+ with torch.inference_mode():
+  sample=[]; finite_geometry=0
+  for i in val[:min(64,len(val))]:
+   r=records[i]; rgb=cv2.imread(str(r['rgb_path']),cv2.IMREAD_COLOR); x=normalize_bgr_batch([torch.from_numpy(rgb.transpose(2,0,1).copy())]).to(device); pred=m(x,(192,256)); sample.append(pred['metric_depth'].float().detach().cpu().numpy()); finite_geometry += int(all(torch.isfinite(pred[k]).all().item() for k in ('metric_depth','ground_plane','camera_height','clearance')))
+  depths=np.concatenate([v.reshape(-1) for v in sample]) if sample else np.asarray([],dtype=np.float32)
+  quantiles={str(q):float(np.quantile(depths,q)) for q in (0.01,0.5,0.99)} if depths.size else {}
+  saturation_fraction=float(np.mean((depths<=0.251)|(depths>=5.99))) if depths.size else None
+  geometry_coverage=float(finite_geometry/len(sample)) if sample else None
+ result={'schema':'blindassist_clearance_student_mobile_s1_1_e0_result','terminal':'S1_1_E0_TRAINING_COMPLETE_DEVELOPMENT_ONLY','parameter_count':parameter_count(m),'encoder_binding':m.encoder_binding,'preflight_sha256':str(a.preflight.resolve()),'history':history,'training_seconds':time.perf_counter()-started,'e0_diagnostics':{'depth_quantiles_m':quantiles,'depth_saturation_fraction':saturation_fraction,'finite_geometry_output_coverage':geometry_coverage,'diagnostic_sample_frames':len(sample)},'e1_authorized':False,'qnn_profile_authorized':False}
  (a.output_root/'e0_result.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n');print(json.dumps(result,indent=2))
 if __name__=='__main__':main()

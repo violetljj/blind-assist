@@ -89,6 +89,7 @@
 - [Clearance-Student Mobile S1 开发结果](CLEARANCE_STUDENT_MOBILE_S1_RESULT_2026-08-06.md)
 - [Clearance-Student Mobile S1.1 机制纠正协议](CLEARANCE_STUDENT_MOBILE_S1_1_PROTOCOL_2026-08-06.md)
 - [Clearance-Student Mobile S1.1 机器合同](CLEARANCE_STUDENT_MOBILE_S1_1_PROTOCOL_2026-08-06.json)
+- [Clearance-Student Mobile S1.1 E0 结果](CLEARANCE_STUDENT_MOBILE_S1_1_E0_RESULT_2026-08-06.md)
 - [Machine-readable A4 R1 protocol](DAV2_RGBD_MOBILE_STUDENT_A4_R1_PROTOCOL_2026-08-05.json)
 - [A4 R1 RGB-D mobile student result](DAV2_RGBD_MOBILE_STUDENT_A4_R1_RESULT_2026-08-05.md)
 - [Machine-readable A4 R1 result receipt](DAV2_RGBD_MOBILE_STUDENT_A4_R1_RESULT_2026-08-05.json)
