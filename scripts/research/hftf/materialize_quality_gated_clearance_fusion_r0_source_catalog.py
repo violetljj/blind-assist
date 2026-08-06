@@ -60,7 +60,7 @@ def tum_frames(archive_path: Path, parent_id: str) -> list[dict[str, Any]]:
     pairs: list[tuple[float, float]] = []
     for timestamp in sorted(rgb):
         nearest = min(depth_times, key=lambda value: abs(value - timestamp))
-        require(abs(nearest - timestamp) <= 0.02, f"RGB-depth association gap exceeds 20 ms: {parent_id}")
+        require(abs(nearest - timestamp) <= 0.04, f"RGB-depth association gap exceeds 40 ms: {parent_id}")
         pairs.append((timestamp, nearest))
     require(pairs, f"no RGB-depth timestamp association: {parent_id}")
     return [

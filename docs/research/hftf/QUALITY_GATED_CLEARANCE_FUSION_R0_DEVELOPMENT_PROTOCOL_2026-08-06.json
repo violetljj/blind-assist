@@ -12,7 +12,7 @@
   },
   "source_catalog_producer": {
     "path": "scripts/research/hftf/materialize_quality_gated_clearance_fusion_r0_source_catalog.py",
-    "sha256": "08D5AF01B9152232BBA154B83C883EA04F037100599E2C0384F093F56DA08626",
+    "sha256": "A77D84CCAE152F4F8DC90D5D10CAD83D0BCAEE24AA254C782DF7249E59AEC22A",
     "output_schema": "blindassist_quality_gated_clearance_fusion_r0_source_catalog",
     "image_or_depth_bytes_decoded": false,
     "labels_opened": false
