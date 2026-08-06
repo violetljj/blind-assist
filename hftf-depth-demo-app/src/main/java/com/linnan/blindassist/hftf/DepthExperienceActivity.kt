@@ -366,12 +366,23 @@ private class DepthExperienceEngine(
             // Input hashing is a parity diagnostic, not part of the live route.
             val output = requireNotNull(runtime).execute(input, computeInputHash = false)
             val qnnReadyAt = SystemClock.elapsedRealtimeNanos()
+            var riskReadyAt = 0L
             val visualWithoutAge = DepthVisual.from(
                 output,
                 0.0,
                 thermal,
                 lastCompletedAt,
                 visualWorkspace,
+                onMetricsReady = { centerMeters, nearMeters ->
+                riskReadyAt = SystemClock.elapsedRealtimeNanos()
+                val riskAgeMs = nanosToMs(riskReadyAt - owned.receivedAtNanos)
+                activity.runOnUiThread {
+                    onStatus(
+                        "中心约 ${formatMeters(centerMeters)} · 近处约 ${formatMeters(nearMeters)}",
+                        "风险结果 ${formatMs(riskAgeMs)} ms · HTP · thermal $thermal",
+                    )
+                }
+                },
             )
             val completedAt = SystemClock.elapsedRealtimeNanos()
             val visual = visualWithoutAge.copy(
@@ -388,7 +399,10 @@ private class DepthExperienceEngine(
                     "\"yuv_to_rgb_ms\":${formatMetric(rgbReadyAt - startedAt)}," +
                     "\"canonical_preprocess_ms\":${formatMetric(inputReadyAt - rgbReadyAt)}," +
                     "\"qnn_execute_ms\":${formatMetric(qnnReadyAt - inputReadyAt)}," +
+                    "\"depth_result_ms\":${formatMetric(riskReadyAt - qnnReadyAt)}," +
                     "\"depth_visual_ms\":${formatMetric(completedAt - qnnReadyAt)}," +
+                    "\"received_to_risk_result_ms\":${formatMetric(riskReadyAt - owned.receivedAtNanos)}," +
+                    "\"sensor_to_risk_result_ms\":${formatMetric(riskReadyAt - owned.sensorTimestampNanos)}," +
                     "\"received_to_result_ms\":${formatMetric(completedAt - owned.receivedAtNanos)}," +
                     "\"sensor_to_result_ms\":${formatMetric(completedAt - owned.sensorTimestampNanos)}," +
                     "\"thermal_status\":$thermal}",
@@ -495,6 +509,7 @@ internal data class DepthVisual(
             thermalStatus: Int,
             lastCompletedAt: Long,
             workspace: Workspace = Workspace(),
+            onMetricsReady: (centerMeters: Float, nearMeters: Float) -> Unit = { _, _ -> },
         ): DepthVisual {
             val source = output.duplicate().order(java.nio.ByteOrder.nativeOrder()).apply { position(0) }.asShortBuffer()
             val center = workspace.center
@@ -518,6 +533,9 @@ internal data class DepthVisual(
                     }
                 }
             }
+            val centerMeters = percentile(center, centerSize, 0.5)
+            val nearMeters = percentile(sampled, sampledSize, 0.1)
+            onMetricsReady(centerMeters, nearMeters)
             val colorNear = percentile(sampled, sampledSize, 0.05)
             val colorFar = percentile(sampled, sampledSize, 0.95)
             val logNear = if (colorNear.isFinite() && colorNear > 0f) ln(colorNear.toDouble()) else Double.NaN
@@ -534,8 +552,6 @@ internal data class DepthVisual(
                     hsv,
                 )
             }
-            val centerMeters = percentile(center, centerSize, 0.5)
-            val nearMeters = percentile(sampled, sampledSize, 0.1)
             val now = SystemClock.elapsedRealtimeNanos()
             val updateHz = if (lastCompletedAt > 0L && now > lastCompletedAt) {
                 1_000_000_000.0 / (now - lastCompletedAt)
