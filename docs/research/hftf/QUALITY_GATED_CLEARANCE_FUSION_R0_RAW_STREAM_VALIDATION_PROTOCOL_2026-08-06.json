@@ -1,0 +1,51 @@
+{
+  "schema": "blindassist_quality_gated_clearance_fusion_r0_raw_stream_validation_protocol",
+  "protocol_id": "QUALITY_GATED_CLEARANCE_FUSION_R0_RAW_STREAM_VALIDATION_2026-08-06",
+  "parent_development_protocol": {
+    "path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_DEVELOPMENT_PROTOCOL_2026-08-06.json",
+    "sha256": "E3DB15D76E6A68952B4ACDA001720DF756FDFBCDCBB88007927EC0CE422B4B65"
+  },
+  "materialization_protocol": {
+    "path": "docs/research/hftf/QUALITY_GATED_CLEARANCE_FUSION_R0_RAW_STREAM_MATERIALIZATION_PROTOCOL_2026-08-06.json",
+    "sha256": "78204B193FC80CFF4B63B2FD4E6335117BA36E3714D3A34CF76BF81EFE5BBC7B"
+  },
+  "materializer_producer": {
+    "path": "scripts/research/hftf/materialize_quality_gated_clearance_fusion_r0_raw_stream.py",
+    "sha256": "09AB850AD862FD8F5F76EA12C49D343403FF6BFA9578C00B0F5F524A4FC04F4A"
+  },
+  "source_catalog": {
+    "path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/source-catalog-attempt-01.json",
+    "sha256": "7C7057932B21B6B6DB65857DBF76160C33373E74DEB6EEFB6FD5CE1E5061318B"
+  },
+  "a2_training_receipt": {
+    "path": "artifacts.local/evidence/hftf/dav2-model-optimization-p2-r0/a2-student-392/training_result.json",
+    "sha256": "3C962F9174F596CEE4B74CEA34CD0C98BD50CBB47D5D892ACFC9BB1432ED0E89"
+  },
+  "a2_checkpoint": {
+    "path": "artifacts.local/evidence/hftf/dav2-model-optimization-p2-r0/a2-student-392/dav2_392_distilled_best.pth",
+    "sha256": "8464C67D33010EF0F3225B0CDF9ACFFB2C6581150C3B2F42F45C73522A6CC0E9"
+  },
+  "raw_stream": {
+    "path": "artifacts.local/evidence/hftf/quality-gated-clearance-fusion-r0-1/raw-geometry-stream.jsonl",
+    "sha256": "3066B563E17EA214E72CCB225357AC900B848A67956AFE957EAB2A892EAB89F4"
+  },
+  "expected_frame_count": 9841,
+  "expected_parent_frame_counts": {
+    "381644": 7911,
+    "rgbd_dataset_freiburg3_sitting_halfsphere": 1110,
+    "rgbd_dataset_freiburg3_sitting_rpy": 820
+  },
+  "required_frame_fields": [
+    "frame_id", "parent_id", "video_id", "timestamp_ns",
+    "raw_clearance_m", "raw_geometry_valid", "raw_geometry_state",
+    "tof_valid", "teacher_age_s", "frozen_a2_disagreement",
+    "rgb_sha256", "metric_depth_sha256", "geometry_status"
+  ],
+  "clearance_threshold_m": 1.5,
+  "no_model_load": true,
+  "no_optimizer": true,
+  "no_training": true,
+  "labels_opened": false,
+  "holdout_outcomes_opened": false,
+  "status": "FROZEN_BEFORE_FILTER_REPLAY"
+}
