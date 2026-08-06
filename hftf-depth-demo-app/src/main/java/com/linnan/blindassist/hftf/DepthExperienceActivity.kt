@@ -476,8 +476,6 @@ internal data class DepthVisual(
                     }
                 }
             }
-            java.util.Arrays.sort(sampled, 0, sampledSize)
-            java.util.Arrays.sort(center, 0, centerSize)
             val colorNear = percentile(sampled, sampledSize, 0.05)
             val colorFar = percentile(sampled, sampledSize, 0.95)
             for (index in depths.indices) {
@@ -501,7 +499,36 @@ internal data class DepthVisual(
 
         private fun percentile(sorted: FloatArray, size: Int, quantile: Double): Float {
             if (size == 0) return Float.NaN
-            return sorted[(quantile * (size - 1)).toInt().coerceIn(0, size - 1)]
+            val index = (quantile * (size - 1)).toInt().coerceIn(0, size - 1)
+            return selectKth(sorted, size, index)
+        }
+
+        /** Returns the same order statistic as a full ascending sort, in-place. */
+        private fun selectKth(values: FloatArray, size: Int, target: Int): Float {
+            var left = 0
+            var right = size - 1
+            while (left < right) {
+                val pivot = values[(left + right) ushr 1]
+                var i = left
+                var j = right
+                while (i <= j) {
+                    while (values[i] < pivot) i++
+                    while (values[j] > pivot) j--
+                    if (i <= j) {
+                        val swap = values[i]
+                        values[i] = values[j]
+                        values[j] = swap
+                        i++
+                        j--
+                    }
+                }
+                when {
+                    target <= j -> right = j
+                    target >= i -> left = i
+                    else -> return values[target]
+                }
+            }
+            return values[left]
         }
 
         private fun depthColor(depth: Float, colorNear: Float, colorFar: Float): Int {
