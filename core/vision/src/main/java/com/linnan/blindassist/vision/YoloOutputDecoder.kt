@@ -98,6 +98,11 @@ internal object YoloOutputDecoder {
                 )
             }
         }
+        // The realtime AtomS3R scene is commonly empty. Avoid allocating a
+        // mutable list/result wrapper per frame when no candidate survived
+        // the confidence and geometry gates; detection/NMS semantics remain
+        // unchanged for non-empty outputs.
+        if (detections.isEmpty()) return EMPTY_RESULT
         return YoloDecodeResult(nms(detections, iouThreshold))
     }
 
@@ -183,4 +188,6 @@ internal object YoloOutputDecoder {
     }
 
     private const val BOX_CHANNELS = 4
+
+    private val EMPTY_RESULT = YoloDecodeResult(emptyList())
 }
