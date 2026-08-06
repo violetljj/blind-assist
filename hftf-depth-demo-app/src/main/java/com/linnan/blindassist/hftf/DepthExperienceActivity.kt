@@ -443,6 +443,12 @@ internal data class DepthVisual(
         private const val CENTER_CAPACITY =
             (MAP_WIDTH * 3 / 5 - MAP_WIDTH * 2 / 5) *
                 (MAP_HEIGHT * 3 / 5 - MAP_HEIGHT * 2 / 5)
+        private val SOURCE_ROWS = IntArray(MAP_HEIGHT) { row ->
+            row * Dav2PreprocessContract.OUTPUT_HEIGHT / MAP_HEIGHT
+        }
+        private val SOURCE_COLUMNS = IntArray(MAP_WIDTH) { column ->
+            column * Dav2PreprocessContract.OUTPUT_WIDTH / MAP_WIDTH
+        }
 
         internal class Workspace {
             val depths = FloatArray(MAP_PIXELS)
@@ -466,9 +472,9 @@ internal data class DepthVisual(
             var centerSize = 0
             var sampledSize = 0
             for (row in 0 until MAP_HEIGHT) {
-                val sourceRow = row * Dav2PreprocessContract.OUTPUT_HEIGHT / MAP_HEIGHT
+                val sourceRow = SOURCE_ROWS[row]
                 for (column in 0 until MAP_WIDTH) {
-                    val sourceColumn = column * Dav2PreprocessContract.OUTPUT_WIDTH / MAP_WIDTH
+                    val sourceColumn = SOURCE_COLUMNS[column]
                     val depth = halfBitsToFloat(source.get(sourceRow * Dav2PreprocessContract.OUTPUT_WIDTH + sourceColumn))
                     depths[row * MAP_WIDTH + column] = depth
                     if (depth.isFinite() && depth in 0.1f..50f) {
