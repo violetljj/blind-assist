@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 /** Owns a decoded bitmap directly, avoiding an XGA-sized Bitmap-to-RGBA copy. */
 class OwnedBitmapVisionFrame(
     private val bitmap: Bitmap,
+    private val releaseBitmap: (Bitmap) -> Unit = Bitmap::recycle,
     override val rotationDegrees: Int = 0,
     override val frameStamp: FrameStamp? = null,
     override val rangingSample: RangingSample? = null,
@@ -28,6 +29,6 @@ class OwnedBitmapVisionFrame(
     override val nativeImage: Any get() = bitmap
 
     override fun close() {
-        if (closed.compareAndSet(false, true)) bitmap.recycle()
+        if (closed.compareAndSet(false, true)) releaseBitmap(bitmap)
     }
 }

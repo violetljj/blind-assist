@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(blindassist_vision)
+
+add_library(blindassist_vision SHARED bitmap_preprocess.cpp)
+find_library(log-lib log)
+find_library(android-lib android)
+find_library(jnigraphics-lib jnigraphics)
+target_link_libraries(blindassist_vision ${android-lib} ${jnigraphics-lib} ${log-lib})
+target_compile_features(blindassist_vision PRIVATE cxx_std_17)
+target_compile_options(blindassist_vision PRIVATE -O3 -ffast-math)

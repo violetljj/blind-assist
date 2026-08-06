@@ -17,6 +17,7 @@ import org.tensorflow.lite.gpu.GpuDelegate
 import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.nio.FloatBuffer
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import kotlin.math.max
@@ -51,7 +52,12 @@ class TfliteYoloDetector(
     private var interpreter: Interpreter? = null
     private val preprocessor = ImagePreprocessor(inputSize)
     private var outputBuffer: ByteBuffer? = null
+    private var outputFloatBuffer: FloatBuffer? = null
     private var outputFloats: FloatArray = FloatArray(0)
+    private var outputBytes: Int = 0
+    private var outputElements: Int = 0
+    private var outputShape: IntArray = intArrayOf()
+    private var outputDataType: DataType = DataType.FLOAT32
     private var loadError: Throwable? = null
     @Volatile
     private var runtimeWarning: String? = null
@@ -66,6 +72,11 @@ class TfliteYoloDetector(
             loadedInterpreter = candidateInterpreter
             validateInputTensor(candidateInterpreter)
             validateOutputTensor(candidateInterpreter)
+            val outputTensor = candidateInterpreter.getOutputTensor(0)
+            outputBytes = outputTensor.numBytes()
+            outputElements = outputTensor.numElements()
+            outputShape = outputTensor.shape()
+            outputDataType = outputTensor.dataType()
             interpreter = candidateInterpreter
             loadedInterpreter = null
             Log.i(TAG, "Detector ready backend=${executionBackend.wireName}")
@@ -144,8 +155,7 @@ class TfliteYoloDetector(
             val preprocessComplete = SystemClock.elapsedRealtimeNanos()
             lastPreprocessMs = elapsedMs(preprocessStart, preprocessComplete)
 
-            val outputTensor = localInterpreter.getOutputTensor(0)
-            val localOutputBuffer = reusableOutputBuffer(outputTensor.numBytes())
+            val localOutputBuffer = reusableOutputBuffer(outputBytes)
 
             val qnnEnqueue = SystemClock.elapsedRealtimeNanos()
             traced(TRACE_QNN_EXECUTE) {
@@ -156,8 +166,8 @@ class TfliteYoloDetector(
 
             val floats = traced(TRACE_OUTPUT_READ) {
                 localOutputBuffer.rewind()
-                reusableOutputFloats(outputTensor.numElements()).also {
-                    localOutputBuffer.asFloatBuffer().get(it)
+                reusableOutputFloats(outputElements).also {
+                    reusableOutputFloatBuffer(localOutputBuffer).get(it)
                 }
             }
             val outputReadComplete = SystemClock.elapsedRealtimeNanos()
@@ -165,8 +175,8 @@ class TfliteYoloDetector(
             val detections = traced(TRACE_POSTPROCESS) {
                 parseOutput(
                     raw = floats,
-                    shape = outputTensor.shape(),
-                    dataType = outputTensor.dataType(),
+                    shape = outputShape,
+                    dataType = outputDataType,
                     letterbox = input.letterbox
                 )
             }
@@ -181,6 +191,10 @@ class TfliteYoloDetector(
                 stageTiming = DetectorStageTiming(
                     preprocessStartNs = preprocessStart,
                     preprocessCompleteNs = preprocessComplete,
+                    preprocessLetterboxDrawStartNs = input.timing?.letterboxDrawStartNs,
+                    preprocessLetterboxDrawCompleteNs = input.timing?.letterboxDrawCompleteNs,
+                    preprocessBitmapPixelsCompleteNs = input.timing?.pixelsReadCompleteNs,
+                    preprocessInputWriteCompleteNs = input.timing?.inputWriteCompleteNs,
                     qnnEnqueueNs = qnnEnqueue,
                     qnnCompleteNs = qnnComplete,
                     outputReadCompleteNs = outputReadComplete,
@@ -255,8 +269,17 @@ class TfliteYoloDetector(
             outputBuffer = ByteBuffer
                 .allocateDirect(numBytes)
                 .order(ByteOrder.nativeOrder())
+            outputFloatBuffer = outputBuffer!!.asFloatBuffer()
         }
         return outputBuffer!!.also { it.rewind() }
+    }
+
+    private fun reusableOutputFloatBuffer(buffer: ByteBuffer): FloatBuffer {
+        val current = outputFloatBuffer
+        if (current == null || current.capacity() * Float.SIZE_BYTES != buffer.capacity()) {
+            outputFloatBuffer = buffer.asFloatBuffer()
+        }
+        return outputFloatBuffer!!.also { it.rewind() }
     }
 
     private fun reusableOutputFloats(numElements: Int): FloatArray {

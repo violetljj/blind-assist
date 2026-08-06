@@ -35,12 +35,20 @@ class AtomS3rAndroidE2eTimingTest {
             .getString(ARG_DURATION_SECONDS)?.toLongOrNull() ?: 0L
         assumeTrue("Pass -e $ARG_DURATION_SECONDS to run the hardware benchmark", durationSeconds > 0L)
         val endpoint = arguments.getString(ARG_ENDPOINT) ?: DEFAULT_ENDPOINT
+        val decodeSampleSize = arguments.getString(ARG_DECODE_SAMPLE_SIZE)
+            ?.toIntOrNull() ?: 1
+        val maxFrameAgeMs = arguments.getString(ARG_MAX_FRAME_AGE_MS)
+            ?.toLongOrNull() ?: 0L
         val context = instrumentation.targetContext
         val detector = RuntimeObjectDetectorFactory.create(context)
         assertTrue("Production detector must be ready: ${detector.statusMessage}", detector.isReady)
         val feedback = FeedbackController(context)
         val coordinator = AssistSessionCoordinator(feedbackGateway = feedback)
-        val source = AtomS3rMjpegFrameSource(endpoint)
+        val source = AtomS3rMjpegFrameSource(
+            endpoint = endpoint,
+            decodeSampleSize = decodeSampleSize,
+            maxFrameAgeMs = maxFrameAgeMs
+        )
         val outputDir = requireNotNull(context.getExternalFilesDir("atoms3r-android-e2e"))
         val rowsFile = File(outputDir, "frames-${System.currentTimeMillis()}.jsonl")
         val summaryFile = File(outputDir, rowsFile.nameWithoutExtension + "-summary.json")
@@ -163,6 +171,17 @@ class AtomS3rAndroidE2eTimingTest {
                                 put("decode_complete_to_detector_call_ms", ms(detectorCallStartNs - timing.androidDecodeCompleteNs))
                                 put("detector_entry_to_preprocess_ms", ms(detectorTiming.preprocessStartNs - detectorCallStartNs))
                                 put("preprocess_ms", ms(detectorTiming.preprocessCompleteNs - detectorTiming.preprocessStartNs))
+                                val drawStartNs = detectorTiming.preprocessLetterboxDrawStartNs
+                                val drawCompleteNs = detectorTiming.preprocessLetterboxDrawCompleteNs
+                                val pixelsCompleteNs = detectorTiming.preprocessBitmapPixelsCompleteNs
+                                val inputWriteCompleteNs = detectorTiming.preprocessInputWriteCompleteNs
+                                if (drawStartNs != null && drawCompleteNs != null &&
+                                    pixelsCompleteNs != null && inputWriteCompleteNs != null
+                                ) {
+                                    put("preprocess_letterbox_draw_ms", ms(drawCompleteNs - drawStartNs))
+                                    put("preprocess_bitmap_get_pixels_ms", ms(pixelsCompleteNs - drawCompleteNs))
+                                    put("preprocess_input_write_ms", ms(inputWriteCompleteNs - pixelsCompleteNs))
+                                }
                                 put("preprocess_to_qnn_enqueue_ms", ms(detectorTiming.qnnEnqueueNs - detectorTiming.preprocessCompleteNs))
                                 put("qnn_execute_ms", ms(detectorTiming.qnnCompleteNs - detectorTiming.qnnEnqueueNs))
                                 put("output_read_ms", ms(detectorTiming.outputReadCompleteNs - detectorTiming.qnnCompleteNs))
@@ -226,6 +245,8 @@ class AtomS3rAndroidE2eTimingTest {
             put("device_product", Build.PRODUCT)
             put("android_sdk", Build.VERSION.SDK_INT)
             put("endpoint", endpoint)
+            put("decode_sample_size", decodeSampleSize)
+            put("max_frame_age_ms", maxFrameAgeMs)
             put("requested_duration_seconds", durationSeconds)
             put("actual_duration_ms", ms(endedNs - startedNs))
             put("frames", frames.get())
@@ -235,6 +256,7 @@ class AtomS3rAndroidE2eTimingTest {
             put("source_latest_packet_overwrites", sourceDiagnostics.latestPacketOverwrites)
             put("source_reconnects", sourceDiagnostics.reconnects)
             put("source_stream_errors", sourceDiagnostics.streamErrors)
+            put("source_stale_packets_dropped", sourceDiagnostics.stalePacketsDropped)
             put("clock_sync_successes", sourceDiagnostics.clockSyncSuccesses)
             put("clock_sync_failures", sourceDiagnostics.clockSyncFailures)
             put("initial_pss_kb", initialPssKb)
@@ -256,6 +278,8 @@ class AtomS3rAndroidE2eTimingTest {
     private companion object {
         const val ARG_DURATION_SECONDS = "atoms3rE2eDurationSeconds"
         const val ARG_ENDPOINT = "atoms3rEndpoint"
+        const val ARG_DECODE_SAMPLE_SIZE = "atoms3rDecodeSampleSize"
+        const val ARG_MAX_FRAME_AGE_MS = "atoms3rMaxFrameAgeMs"
         const val DEFAULT_ENDPOINT = "http://192.168.5.11"
         const val STARTUP_GRACE_SECONDS = 30L
         const val NANOS_PER_MILLISECOND = 1_000_000L

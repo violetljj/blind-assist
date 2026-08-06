@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
+import android.os.SystemClock
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.Arrays
@@ -20,7 +21,15 @@ data class LetterboxInfo(
 
 data class ModelInput(
     val buffer: ByteBuffer,
-    val letterbox: LetterboxInfo
+    val letterbox: LetterboxInfo,
+    val timing: PreprocessSubstageTiming? = null
+)
+
+data class PreprocessSubstageTiming(
+    val letterboxDrawStartNs: Long,
+    val letterboxDrawCompleteNs: Long,
+    val pixelsReadCompleteNs: Long,
+    val inputWriteCompleteNs: Long
 )
 
 class ImagePreprocessor(private val inputSize: Int) {
@@ -41,20 +50,59 @@ class ImagePreprocessor(private val inputSize: Int) {
         val resizedWidth = (bitmap.width * letterbox.scale).toInt().coerceAtLeast(1)
         val resizedHeight = (bitmap.height * letterbox.scale).toInt().coerceAtLeast(1)
 
+        if (letterbox.scale == 1f && resizedWidth == inputSize && resizedHeight < inputSize) {
+            val nativeStartNs = SystemClock.elapsedRealtimeNanos()
+            if (NativeBitmapPreprocessor.writePaddedArgbToFloat(
+                    bitmap = bitmap,
+                    output = inputBuffer,
+                    inputSize = inputSize,
+                    top = letterbox.dy.toInt()
+                )) {
+                val nativeCompleteNs = SystemClock.elapsedRealtimeNanos()
+                return ModelInput(
+                    buffer = inputBuffer,
+                    letterbox = letterbox,
+                    timing = PreprocessSubstageTiming(
+                        letterboxDrawStartNs = nativeStartNs,
+                        letterboxDrawCompleteNs = nativeStartNs,
+                        pixelsReadCompleteNs = nativeStartNs,
+                        inputWriteCompleteNs = nativeCompleteNs
+                    )
+                )
+            }
+        }
+
         targetRect.set(
             letterbox.dx,
             letterbox.dy,
             letterbox.dx + resizedWidth,
             letterbox.dy + resizedHeight
         )
+        val drawStartNs = SystemClock.elapsedRealtimeNanos()
         canvas.drawColor(BLACK_ARGB)
         canvas.drawBitmap(bitmap, null, targetRect, paint)
-        letterboxed.getPixels(pixels, 0, inputSize, 0, 0, inputSize, inputSize)
-        writePixelsToBuffer(pixels, inputBuffer)
+        val drawCompleteNs = SystemClock.elapsedRealtimeNanos()
+        val nativeWriteSucceeded = NativeBitmapPreprocessor.writeArgbToFloat(letterboxed, inputBuffer)
+        val pixelsReadCompleteNs = if (nativeWriteSucceeded) {
+            drawCompleteNs
+        } else {
+            letterboxed.getPixels(pixels, 0, inputSize, 0, 0, inputSize, inputSize)
+            SystemClock.elapsedRealtimeNanos()
+        }
+        if (!nativeWriteSucceeded) {
+            writePixelsToBuffer(pixels, inputBuffer)
+        }
+        val inputWriteCompleteNs = SystemClock.elapsedRealtimeNanos()
 
         return ModelInput(
             buffer = inputBuffer,
-            letterbox = letterbox
+            letterbox = letterbox,
+            timing = PreprocessSubstageTiming(
+                letterboxDrawStartNs = drawStartNs,
+                letterboxDrawCompleteNs = drawCompleteNs,
+                pixelsReadCompleteNs = pixelsReadCompleteNs,
+                inputWriteCompleteNs = inputWriteCompleteNs
+            )
         )
     }
 

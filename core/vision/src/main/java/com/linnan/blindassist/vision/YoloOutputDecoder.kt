@@ -39,52 +39,101 @@ internal object YoloOutputDecoder {
             return YoloDecodeResult(emptyList(), "模型输出类别数异常：${shape.contentToString()}")
         }
 
-        fun value(prediction: Int, channel: Int): Float {
-            return if (channelsFirst) {
-                raw[channel * predictions + prediction]
-            } else {
-                raw[prediction * channels + channel]
-            }
-        }
-
         val frameSize = FrameSize(letterbox.sourceWidth, letterbox.sourceHeight)
         val detections = mutableListOf<Detection>()
-        for (prediction in 0 until predictions) {
-            var bestClass = -1
-            var bestScore = 0f
-            for (classId in 0 until classCount) {
-                val score = value(prediction, BOX_CHANNELS + classId)
-                if (score > bestScore) {
-                    bestScore = score
-                    bestClass = classId
+        if (channelsFirst) {
+            for (prediction in 0 until predictions) {
+                var bestClass = -1
+                var bestScore = 0f
+                var classOffset = BOX_CHANNELS * predictions + prediction
+                for (classId in 0 until classCount) {
+                    val score = raw[classOffset]
+                    if (score > bestScore) {
+                        bestScore = score
+                        bestClass = classId
+                    }
+                    classOffset += predictions
                 }
+                if (bestClass < 0 || bestScore < confidenceThreshold) continue
+                addDetection(
+                    detections,
+                    bestClass,
+                    bestScore,
+                    raw[prediction],
+                    raw[predictions + prediction],
+                    raw[2 * predictions + prediction],
+                    raw[3 * predictions + prediction],
+                    letterbox,
+                    frameSize,
+                    labels
+                )
             }
-            if (bestClass < 0 || bestScore < confidenceThreshold) continue
+        } else {
+            for (prediction in 0 until predictions) {
+                val predictionOffset = prediction * channels
+                var bestClass = -1
+                var bestScore = 0f
+                val classEnd = predictionOffset + BOX_CHANNELS + classCount
+                var classOffset = predictionOffset + BOX_CHANNELS
+                while (classOffset < classEnd) {
+                    val score = raw[classOffset]
+                    if (score > bestScore) {
+                        bestScore = score
+                        bestClass = classOffset - predictionOffset - BOX_CHANNELS
+                    }
+                    classOffset += 1
+                }
+                if (bestClass < 0 || bestScore < confidenceThreshold) continue
+                addDetection(
+                    detections,
+                    bestClass,
+                    bestScore,
+                    raw[predictionOffset],
+                    raw[predictionOffset + 1],
+                    raw[predictionOffset + 2],
+                    raw[predictionOffset + 3],
+                    letterbox,
+                    frameSize,
+                    labels
+                )
+            }
+        }
+        return YoloDecodeResult(nms(detections, iouThreshold))
+    }
 
-            val cx = normalizeCoordinate(value(prediction, 0), letterbox.inputSize)
-            val cy = normalizeCoordinate(value(prediction, 1), letterbox.inputSize)
-            val width = normalizeCoordinate(value(prediction, 2), letterbox.inputSize)
-            val height = normalizeCoordinate(value(prediction, 3), letterbox.inputSize)
-
-            val modelBox = BoundingBox(
+    private fun addDetection(
+        detections: MutableList<Detection>,
+        bestClass: Int,
+        bestScore: Float,
+        rawCx: Float,
+        rawCy: Float,
+        rawWidth: Float,
+        rawHeight: Float,
+        letterbox: LetterboxInfo,
+        frameSize: FrameSize,
+        labels: List<String>
+    ) {
+        val cx = normalizeCoordinate(rawCx, letterbox.inputSize)
+        val cy = normalizeCoordinate(rawCy, letterbox.inputSize)
+        val width = normalizeCoordinate(rawWidth, letterbox.inputSize)
+        val height = normalizeCoordinate(rawHeight, letterbox.inputSize)
+        val sourceBox = mapToSource(
+            BoundingBox(
                 left = cx - width / 2f,
                 top = cy - height / 2f,
                 right = cx + width / 2f,
                 bottom = cy + height / 2f
-            )
-
-            val sourceBox = mapToSource(modelBox, letterbox).clamped(frameSize)
-            if (sourceBox.width <= 1f || sourceBox.height <= 1f) continue
-
-            detections += Detection(
-                classId = bestClass,
-                label = labels.getOrElse(bestClass) { "class_$bestClass" },
-                confidence = bestScore,
-                boundingBox = sourceBox,
-                frameSize = frameSize
-            )
-        }
-        return YoloDecodeResult(nms(detections, iouThreshold))
+            ),
+            letterbox
+        ).clamped(frameSize)
+        if (sourceBox.width <= 1f || sourceBox.height <= 1f) return
+        detections += Detection(
+            classId = bestClass,
+            label = labels.getOrElse(bestClass) { "class_$bestClass" },
+            confidence = bestScore,
+            boundingBox = sourceBox,
+            frameSize = frameSize
+        )
     }
 
     private fun normalizeCoordinate(value: Float, inputSize: Int): Float {
@@ -101,17 +150,22 @@ internal object YoloOutputDecoder {
     }
 
     private fun nms(detections: List<Detection>, iouThreshold: Float): List<Detection> {
-        val result = mutableListOf<Detection>()
-        val remaining = detections.sortedByDescending { it.confidence }.toMutableList()
-
-        while (remaining.isNotEmpty()) {
-            val current = remaining.removeAt(0)
+        if (detections.size <= 1) return detections
+        val ordered = detections.sortedByDescending { it.confidence }
+        val suppressed = BooleanArray(ordered.size)
+        val result = ArrayList<Detection>(ordered.size)
+        for (currentIndex in ordered.indices) {
+            if (suppressed[currentIndex]) continue
+            val current = ordered[currentIndex]
             result += current
-            val iterator = remaining.iterator()
-            while (iterator.hasNext()) {
-                val next = iterator.next()
-                if (current.classId == next.classId && iou(current.boundingBox, next.boundingBox) > iouThreshold) {
-                    iterator.remove()
+            for (nextIndex in currentIndex + 1 until ordered.size) {
+                if (!suppressed[nextIndex]) {
+                    val next = ordered[nextIndex]
+                    if (current.classId == next.classId &&
+                        iou(current.boundingBox, next.boundingBox) > iouThreshold
+                    ) {
+                        suppressed[nextIndex] = true
+                    }
                 }
             }
         }

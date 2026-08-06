@@ -17,6 +17,10 @@ data class DetectorFrameResult(
 data class DetectorStageTiming(
     val preprocessStartNs: Long,
     val preprocessCompleteNs: Long,
+    val preprocessLetterboxDrawStartNs: Long? = null,
+    val preprocessLetterboxDrawCompleteNs: Long? = null,
+    val preprocessBitmapPixelsCompleteNs: Long? = null,
+    val preprocessInputWriteCompleteNs: Long? = null,
     /** Host entry into Interpreter.run; delegate-internal enqueue is not exposed. */
     val qnnEnqueueNs: Long,
     val qnnCompleteNs: Long,

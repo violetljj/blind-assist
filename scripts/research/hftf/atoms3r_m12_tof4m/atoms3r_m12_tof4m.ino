@@ -21,14 +21,19 @@
 namespace {
 
 constexpr bool kEnableTofSampling = true;
+constexpr uint32_t kCameraXclkFrequencyHz = 20000000;
 constexpr bool kEnableCameraPsramDma = false;
 constexpr bool kEnableStreamTcpNoDelay = true;
 constexpr bool kCoalesceStreamPreamble = false;
 constexpr bool kReuseStreamFrameCopyBuffer = false;
+// Experimental producer/consumer path. Keep disabled until an A/B run passes.
+constexpr bool kEnableAsyncStreamProducer = false;
 constexpr BaseType_t kStreamServerCoreId = tskNO_AFFINITY;
 constexpr unsigned kStreamServerTaskPriority = tskIDLE_PRIORITY + 5;
 constexpr const char* kFirmwareVersion =
     kEnableCameraPsramDma ? "atoms3r_m12_tof4m_slow_frame_r6_psram_dma"
+    : kEnableAsyncStreamProducer
+        ? "atoms3r_m12_tof4m_stream_r16_async_latest_ready"
     : kReuseStreamFrameCopyBuffer
         ? "atoms3r_m12_tof4m_stream_r11_reuse_copy_buffer"
         : "atoms3r_m12_tof4m_stream_r11_per_frame_copy_buffer";
@@ -116,6 +121,7 @@ struct FrameSizeOption {
 };
 
 constexpr FrameSizeOption kFrameSizeOptions[] = {
+    {"QVGA", FRAMESIZE_QVGA, 320, 240},
     {"VGA", FRAMESIZE_VGA, 640, 480},
     {"SVGA", FRAMESIZE_SVGA, 800, 600},
     {"XGA", FRAMESIZE_XGA, 1024, 768},
@@ -154,6 +160,46 @@ struct SharedRange {
   uint64_t timestamp_ns;
   const char* status;
 };
+
+TaskHandle_t stream_producer_task_handle = nullptr;
+SemaphoreHandle_t stream_slot_mutex = nullptr;
+SemaphoreHandle_t stream_ready_signal = nullptr;
+
+struct AsyncStreamSlot {
+  uint8_t* buffer;
+  size_t capacity;
+  size_t length;
+  uint16_t width;
+  uint16_t height;
+  uint64_t frame_sequence;
+  uint64_t capture_timestamp_us;
+  uint64_t jpeg_ready_timestamp_us;
+  uint64_t frame_acquire_duration_us;
+  uint64_t frame_ready_interval_us;
+  uint64_t tof_timestamp_us;
+  int64_t tof_minus_capture_us;
+  uint64_t tof_age_at_jpeg_ready_us;
+  SharedRange range;
+  uint64_t range_updates_during_acquire;
+  uint64_t range_updates_since_previous_frame;
+  int exposure_value;
+  int wifi_rssi_dbm;
+  uint32_t free_heap_bytes;
+  bool ready;
+  bool sending;
+  bool writing;
+};
+
+AsyncStreamSlot async_stream_slots[2] = {};
+uint64_t async_stream_superseded = 0;
+uint64_t async_stream_published = 0;
+uint64_t async_stream_sent = 0;
+portMUX_TYPE async_stream_stats_mux = portMUX_INITIALIZER_UNLOCKED;
+volatile bool async_stream_active = false;
+bool async_stream_client_active = false;
+
+void asyncStreamProducerTask(void* context);
+esp_err_t asyncStreamHandler(httpd_req_t* request);
 
 SharedRange shared_range = {false, 0, 0, 0, "NOT_READY"};
 constexpr size_t kRangeHistoryCapacity = 32;
@@ -511,7 +557,7 @@ bool initializeCamera() {
   config.pin_sccb_scl = kCameraSiocPin;
   config.pin_pwdn = -1;
   config.pin_reset = -1;
-  config.xclk_freq_hz = 20000000;
+  config.xclk_freq_hz = kCameraXclkFrequencyHz;
   config.frame_size = camera_settings.frame_size->value;
   config.pixel_format = PIXFORMAT_JPEG;
   config.grab_mode = CAMERA_GRAB_LATEST;
@@ -771,6 +817,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       "\"width\":%u,\"height\":%u,\"jpeg_quality\":%u,"
       "\"brightness\":%d,\"auto_exposure\":%s,"
       "\"exposure_compensation\":%d,\"manual_exposure\":%u,"
+      "\"xclk_frequency_hz\":%u,"
       "\"psram_dma_enabled\":%s,\"frame_buffer_count\":2,"
       "\"grab_mode\":\"LATEST\",\"stream_tcp_nodelay_configured\":%s,"
       "\"stream_preamble_coalesced_configured\":%s,"
@@ -792,6 +839,7 @@ esp_err_t statusHandler(httpd_req_t* request) {
       camera_settings.jpeg_quality, camera_settings.brightness,
       camera_settings.auto_exposure ? "true" : "false",
       camera_settings.exposure_compensation, camera_settings.manual_exposure,
+      static_cast<unsigned>(kCameraXclkFrequencyHz),
       camera_psram_dma_enabled ? "true" : "false",
       kEnableStreamTcpNoDelay ? "true" : "false",
       kCoalesceStreamPreamble ? "true" : "false",
@@ -1162,6 +1210,225 @@ esp_err_t streamHandler(httpd_req_t* request) {
   return stream_result;
 }
 
+bool initializeAsyncStream() {
+  if (!kEnableAsyncStreamProducer || !camera_ready) return true;
+  stream_slot_mutex = xSemaphoreCreateMutex();
+  stream_ready_signal = xSemaphoreCreateBinary();
+  if (stream_slot_mutex == nullptr || stream_ready_signal == nullptr) {
+    emitEvent("async_stream", "SYNC_PRIMITIVE_ALLOCATION_FAILED");
+    return false;
+  }
+  async_stream_active = true;
+  const BaseType_t created = xTaskCreatePinnedToCore(
+      asyncStreamProducerTask, "stream_producer", 8192, nullptr, 5,
+      &stream_producer_task_handle, tskNO_AFFINITY);
+  if (created != pdPASS) {
+    async_stream_active = false;
+    emitEvent("async_stream", "PRODUCER_START_FAILED");
+    return false;
+  }
+  emitEvent("async_stream", "PRODUCER_READY");
+  return true;
+}
+
+int chooseAsyncWriteSlotLocked() {
+  for (int index = 0; index < 2; ++index) {
+    if (!async_stream_slots[index].ready && !async_stream_slots[index].sending &&
+        !async_stream_slots[index].writing) {
+      return index;
+    }
+  }
+  for (int index = 0; index < 2; ++index) {
+    if (async_stream_slots[index].ready && !async_stream_slots[index].sending &&
+        !async_stream_slots[index].writing) {
+      async_stream_slots[index].ready = false;
+      portENTER_CRITICAL(&async_stream_stats_mux);
+      ++async_stream_superseded;
+      portEXIT_CRITICAL(&async_stream_stats_mux);
+      return index;
+    }
+  }
+  return -1;
+}
+
+void asyncStreamProducerTask(void* context) {
+  (void)context;
+  uint64_t previous_jpeg_ready_us = 0;
+  uint64_t previous_range_update_count = snapshotRangeUpdateCount();
+  while (async_stream_active) {
+    const uint64_t acquire_start_us = monotonicUs();
+    if (camera_mutex == nullptr ||
+        xSemaphoreTake(camera_mutex, portMAX_DELAY) != pdTRUE) {
+      vTaskDelay(pdMS_TO_TICKS(2));
+      continue;
+    }
+    camera_fb_t* frame = esp_camera_fb_get();
+    if (frame == nullptr) {
+      xSemaphoreGive(camera_mutex);
+      vTaskDelay(pdMS_TO_TICKS(2));
+      continue;
+    }
+    const uint64_t frame_sequence = claimFrameSequence();
+    const uint64_t capture_us = cameraTimestampUs(frame);
+    const uint64_t jpeg_ready_us = monotonicUs();
+    const size_t length = frame->len;
+    const uint16_t width = frame->width;
+    const uint16_t height = frame->height;
+    const uint64_t range_updates = snapshotRangeUpdateCount();
+    const SharedRange range = snapshotNearestRange(capture_us);
+    const uint64_t tof_us = range.timestamp_ns / 1000ULL;
+    int64_t tof_minus_capture = tof_us == 0
+        ? 0 : static_cast<int64_t>(tof_us) - static_cast<int64_t>(capture_us);
+    const uint64_t tof_age = tof_us == 0 || tof_us > jpeg_ready_us
+        ? 0 : jpeg_ready_us - tof_us;
+    const int slot_index = [&]() {
+      if (stream_slot_mutex == nullptr ||
+          xSemaphoreTake(stream_slot_mutex, portMAX_DELAY) != pdTRUE) return -1;
+      const int selected = chooseAsyncWriteSlotLocked();
+      if (selected >= 0) async_stream_slots[selected].writing = true;
+      xSemaphoreGive(stream_slot_mutex);
+      return selected;
+    }();
+    if (slot_index < 0) {
+      esp_camera_fb_return(frame);
+      xSemaphoreGive(camera_mutex);
+      vTaskDelay(pdMS_TO_TICKS(1));
+      continue;
+    }
+    AsyncStreamSlot& slot = async_stream_slots[slot_index];
+    if (length > slot.capacity) {
+      uint8_t* larger = static_cast<uint8_t*>(heap_caps_realloc(
+          slot.buffer, length, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+      if (larger == nullptr) {
+        slot.writing = false;
+        xSemaphoreGive(stream_slot_mutex);
+        esp_camera_fb_return(frame);
+        xSemaphoreGive(camera_mutex);
+        vTaskDelay(pdMS_TO_TICKS(2));
+        continue;
+      }
+      slot.buffer = larger;
+      slot.capacity = length;
+    }
+    memcpy(slot.buffer, frame->buf, length);
+    esp_camera_fb_return(frame);
+    xSemaphoreGive(camera_mutex);
+    const sensor_t* camera_sensor = esp_camera_sensor_get();
+    slot.length = length;
+    slot.width = width;
+    slot.height = height;
+    slot.frame_sequence = frame_sequence;
+    slot.capture_timestamp_us = capture_us;
+    slot.jpeg_ready_timestamp_us = jpeg_ready_us;
+    slot.frame_acquire_duration_us = jpeg_ready_us - acquire_start_us;
+    slot.frame_ready_interval_us = previous_jpeg_ready_us == 0
+        ? 0 : jpeg_ready_us - previous_jpeg_ready_us;
+    slot.tof_timestamp_us = tof_us;
+    slot.tof_minus_capture_us = tof_minus_capture;
+    slot.tof_age_at_jpeg_ready_us = tof_age;
+    slot.range = range;
+    slot.range_updates_during_acquire = range_updates - previous_range_update_count;
+    slot.range_updates_since_previous_frame = range_updates - previous_range_update_count;
+    slot.exposure_value = camera_sensor == nullptr ? -1 : camera_sensor->status.aec_value;
+    slot.wifi_rssi_dbm = WiFi.status() == WL_CONNECTED ? WiFi.RSSI() : 0;
+    slot.free_heap_bytes = ESP.getFreeHeap();
+    if (xSemaphoreTake(stream_slot_mutex, portMAX_DELAY) == pdTRUE) {
+      slot.writing = false;
+      slot.ready = true;
+      portENTER_CRITICAL(&async_stream_stats_mux);
+      ++async_stream_published;
+      portEXIT_CRITICAL(&async_stream_stats_mux);
+      xSemaphoreGive(stream_slot_mutex);
+      xSemaphoreGive(stream_ready_signal);
+    }
+    previous_jpeg_ready_us = jpeg_ready_us;
+    previous_range_update_count = range_updates;
+  }
+  vTaskDelete(nullptr);
+}
+
+esp_err_t asyncStreamHandler(httpd_req_t* request) {
+  httpd_resp_set_type(request, kStreamContentType);
+  httpd_resp_set_hdr(request, "Access-Control-Allow-Origin", "*");
+  httpd_resp_set_hdr(request, "Cache-Control", "no-store");
+  updateFrameStats(true, true, false);
+  const int socket_fd = httpd_req_to_sockfd(request);
+  const int nodelay = 1;
+  if (socket_fd < 0 || setsockopt(socket_fd, IPPROTO_TCP, TCP_NODELAY,
+                                   &nodelay, sizeof(nodelay)) != 0) {
+    updateFrameStats(true, false, false);
+    return ESP_FAIL;
+  }
+  while (async_stream_active) {
+    if (xSemaphoreTake(stream_ready_signal, pdMS_TO_TICKS(1000)) != pdTRUE) continue;
+    int selected = -1;
+    if (xSemaphoreTake(stream_slot_mutex, portMAX_DELAY) != pdTRUE) break;
+    for (int index = 0; index < 2; ++index) {
+      if (async_stream_slots[index].ready && !async_stream_slots[index].sending &&
+          (selected < 0 || async_stream_slots[index].frame_sequence >
+              async_stream_slots[selected].frame_sequence)) selected = index;
+    }
+    if (selected >= 0) async_stream_slots[selected].sending = true;
+    xSemaphoreGive(stream_slot_mutex);
+    if (selected < 0) continue;
+    AsyncStreamSlot& slot = async_stream_slots[selected];
+    const uint64_t send_start_us = monotonicUs();
+    char header[1600];
+    const int header_length = snprintf(
+        header, sizeof(header),
+        "%sContent-Type: image/jpeg\r\nContent-Length: %u\r\n"
+        "X-Sequence-Id: %s\r\nX-Clock-Domain: %s\r\n"
+        "X-Frame-Sequence: %" PRIu64 "\r\nX-Capture-Timestamp-Us: %" PRIu64 "\r\n"
+        "X-Capture-Timestamp-Semantics: esp32_camera_first_dma_buffer_since_boot\r\n"
+        "X-Jpeg-Ready-Timestamp-Us: %" PRIu64 "\r\n"
+        "X-Jpeg-Ready-Timestamp-Semantics: esp_camera_fb_get_return\r\n"
+        "X-Device-Send-Start-Timestamp-Us: %" PRIu64 "\r\n"
+        "X-Frame-Ready-Interval-Us: %" PRIu64 "\r\n"
+        "X-Frame-Acquire-Duration-Us: %" PRIu64 "\r\n"
+        "X-Jpeg-Metadata-Prepare-Duration-Us: %" PRIu64 "\r\n"
+        "X-ToF-Timestamp-Us: %" PRIu64 "\r\nX-ToF-Minus-Capture-Us: %" PRId64 "\r\n"
+        "X-ToF-Age-At-Jpeg-Ready-Us: %" PRIu64 "\r\nX-ToF-Valid: %s\r\n"
+        "X-ToF-Range-Mm: %u\r\nX-ToF-Status: %s\r\n"
+        "X-Jpeg-Size-Bytes: %u\r\nX-Width: %u\r\nX-Height: %u\r\n"
+        "X-Jpeg-Quality: %u\r\nX-Auto-Exposure: %s\r\n"
+        "X-Camera-Psram-Dma-Enabled: %s\r\nX-Stream-Tcp-Nodelay: true\r\n"
+        "X-Stream-Preamble-Coalesced: false\r\nX-Stream-Frame-Copy-Buffer-Reused: false\r\n"
+        "X-Stream-Handler-Core: %d\r\nX-Stream-Handler-Priority: %u\r\n"
+        "X-Exposure-Value: %d\r\nX-Wifi-Rssi-Dbm: %d\r\nX-Free-Heap-Bytes: %u\r\n\r\n",
+        kStreamBoundary, static_cast<unsigned>(slot.length), sequence_id, clock_domain,
+        slot.frame_sequence, slot.capture_timestamp_us, slot.jpeg_ready_timestamp_us,
+        send_start_us, slot.frame_ready_interval_us, slot.frame_acquire_duration_us,
+        send_start_us - slot.jpeg_ready_timestamp_us, slot.tof_timestamp_us,
+        slot.tof_minus_capture_us, slot.tof_age_at_jpeg_ready_us,
+        slot.range.valid ? "true" : "false", slot.range.range_mm, slot.range.status,
+        static_cast<unsigned>(slot.length), static_cast<unsigned>(slot.width),
+        static_cast<unsigned>(slot.height), camera_settings.jpeg_quality,
+        camera_settings.auto_exposure ? "true" : "false",
+        camera_psram_dma_enabled ? "true" : "false", static_cast<int>(xPortGetCoreID()),
+        static_cast<unsigned>(uxTaskPriorityGet(nullptr)), slot.exposure_value,
+        slot.wifi_rssi_dbm, slot.free_heap_bytes);
+    esp_err_t result = header_length > 0 && static_cast<size_t>(header_length) < sizeof(header)
+        ? httpd_resp_send_chunk(request, header, static_cast<size_t>(header_length)) : ESP_FAIL;
+    if (result == ESP_OK) result = httpd_resp_send_chunk(
+        request, reinterpret_cast<const char*>(slot.buffer), slot.length);
+    if (xSemaphoreTake(stream_slot_mutex, portMAX_DELAY) == pdTRUE) {
+      slot.sending = false;
+      slot.ready = false;
+      xSemaphoreGive(stream_slot_mutex);
+    }
+    if (result != ESP_OK) {
+      updateFrameStats(true, false, false);
+      return result;
+    }
+    portENTER_CRITICAL(&async_stream_stats_mux);
+    ++async_stream_sent;
+    portEXIT_CRITICAL(&async_stream_stats_mux);
+    updateFrameStats(false, false, true);
+  }
+  updateFrameStats(true, false, false);
+  return ESP_FAIL;
+}
+
 void registerUri(httpd_handle_t server, const char* uri,
                  httpd_method_t method, esp_err_t (*handler)(httpd_req_t*)) {
   httpd_uri_t route = {};
@@ -1211,7 +1478,16 @@ bool startStreamServer() {
     emitEvent("http_stream", "START_FAILED");
     return false;
   }
-  registerUri(stream_httpd, "/stream", HTTP_GET, streamHandler);
+  if (kEnableAsyncStreamProducer) {
+    if (!initializeAsyncStream()) {
+      httpd_stop(stream_httpd);
+      stream_httpd = nullptr;
+      return false;
+    }
+    registerUri(stream_httpd, "/stream", HTTP_GET, asyncStreamHandler);
+  } else {
+    registerUri(stream_httpd, "/stream", HTTP_GET, streamHandler);
+  }
   emitEvent("http_stream", "READY_PORT_81");
   return true;
 }

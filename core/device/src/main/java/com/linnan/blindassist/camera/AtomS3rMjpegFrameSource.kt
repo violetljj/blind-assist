@@ -13,7 +13,6 @@ import com.linnan.blindassist.vision.FrameStamp
 import com.linnan.blindassist.vision.RangingSample
 import com.linnan.blindassist.vision.VisionFrame
 import java.io.BufferedInputStream
-import java.io.ByteArrayOutputStream
 import java.io.EOFException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -29,7 +28,9 @@ class AtomS3rMjpegFrameSource(
     endpoint: String,
     private val connectionFactory: (String) -> HttpURLConnection = ::openConnection,
     private val executor: ExecutorService = Executors.newFixedThreadPool(3),
-    private val clockSynchronizer: AtomS3rClockSynchronizer = AtomS3rClockSynchronizer(endpoint)
+    private val clockSynchronizer: AtomS3rClockSynchronizer = AtomS3rClockSynchronizer(endpoint),
+    decodeSampleSize: Int = 1,
+    private val maxFrameAgeMs: Long = 0L
 ) : FrameSource {
     private val baseEndpoint = endpoint.trim().trimEnd('/')
     private val streamUrl = baseEndpoint.replace(Regex(":\\d+$"), "") + ":81/stream"
@@ -46,9 +47,15 @@ class AtomS3rMjpegFrameSource(
     private val streamErrors = AtomicLong()
     private val clockSyncSuccesses = AtomicLong()
     private val clockSyncFailures = AtomicLong()
+    private val stalePacketsDropped = AtomicLong()
+    private val decodeBitmapPool = DecodeBitmapPool(decodeSampleSize)
 
     init {
         require(baseEndpoint.startsWith("http://") || baseEndpoint.startsWith("https://"))
+        require(decodeSampleSize > 0 && decodeSampleSize and (decodeSampleSize - 1) == 0) {
+            "decodeSampleSize must be a positive power of two"
+        }
+        require(maxFrameAgeMs >= 0L) { "maxFrameAgeMs must be non-negative" }
     }
 
     override fun start(
@@ -91,6 +98,7 @@ class AtomS3rMjpegFrameSource(
         if (shouldShutdown) {
             executor.shutdown()
             if (!executor.awaitTermination(1L, TimeUnit.SECONDS)) executor.shutdownNow()
+            decodeBitmapPool.close()
         }
     }
 
@@ -178,6 +186,8 @@ class AtomS3rMjpegFrameSource(
         streamErrors = streamErrors.get(),
         clockSyncSuccesses = clockSyncSuccesses.get(),
         clockSyncFailures = clockSyncFailures.get(),
+        stalePacketsDropped = stalePacketsDropped.get(),
+        maxFrameAgeMs = maxFrameAgeMs,
         currentClockMapping = clockMapping
     )
 
@@ -188,6 +198,8 @@ class AtomS3rMjpegFrameSource(
         val streamErrors: Long,
         val clockSyncSuccesses: Long,
         val clockSyncFailures: Long,
+        val stalePacketsDropped: Long,
+        val maxFrameAgeMs: Long,
         val currentClockMapping: AtomS3rClockMapping?
     )
 
@@ -205,9 +217,19 @@ class AtomS3rMjpegFrameSource(
                 latestPacket.also { latestPacket = null }
             } ?: continue
             try {
+                if (maxFrameAgeMs > 0L) {
+                    val capturedAtNs = packet.mappedCaptureNs()
+                    val ageMs: Long? = capturedAtNs?.let { capturedNs: Long ->
+                        (SystemClock.elapsedRealtimeNanos() - capturedNs) / NANOS_PER_MILLISECOND
+                    }
+                    if (ageMs != null && ageMs > maxFrameAgeMs) {
+                        stalePacketsDropped.incrementAndGet()
+                        continue
+                    }
+                }
                 val decodeStartNs = SystemClock.elapsedRealtimeNanos()
                 val bitmap = traced(TRACE_JPEG_DECODE) {
-                    requireNotNull(BitmapFactory.decodeByteArray(packet.jpeg, 0, packet.jpeg.size)) {
+                    requireNotNull(decodeBitmapPool.decode(packet.jpeg, packet.jpeg.size)) {
                         "Unable to decode AtomS3R JPEG"
                     }
                 }
@@ -215,6 +237,7 @@ class AtomS3rMjpegFrameSource(
                 val metadata = packet.metadata(decodeStartNs, decodeCompleteNs)
                 val frame = OwnedBitmapVisionFrame(
                     bitmap = bitmap,
+                    releaseBitmap = decodeBitmapPool::release,
                     frameStamp = metadata.frameStamp,
                     rangingSample = metadata.rangingSample,
                     externalTiming = metadata.externalTimingSeed.withRgbaComplete(decodeCompleteNs),
@@ -236,6 +259,57 @@ class AtomS3rMjpegFrameSource(
                 if (isCurrent(session)) onError(error)
                 return
             }
+        }
+    }
+
+    private class DecodeBitmapPool(
+        private val sampleSize: Int
+    ) {
+        private val lock = Any()
+        private var reusable: Bitmap? = null
+        private var closed = false
+
+        fun decode(jpeg: ByteArray, length: Int): Bitmap? {
+            val candidate = synchronized(lock) {
+                reusable.also { reusable = null }
+            }
+            val options = BitmapFactory.Options().apply {
+                inPreferredConfig = Bitmap.Config.ARGB_8888
+                inMutable = true
+                inBitmap = candidate
+                inSampleSize = sampleSize
+            }
+            return try {
+                BitmapFactory.decodeByteArray(jpeg, 0, length, options).also { decoded ->
+                    if (candidate != null && decoded !== candidate && !candidate.isRecycled) {
+                        candidate.recycle()
+                    }
+                }
+            } catch (_: IllegalArgumentException) {
+                candidate?.recycle()
+                options.inBitmap = null
+                BitmapFactory.decodeByteArray(jpeg, 0, length, options)
+            }
+        }
+
+        fun release(bitmap: Bitmap) {
+            if (bitmap.isRecycled || !bitmap.isMutable) {
+                if (!bitmap.isRecycled) bitmap.recycle()
+                return
+            }
+            val previous = synchronized(lock) {
+                if (closed) bitmap else reusable.also { reusable = bitmap }
+            }
+            if (previous !== bitmap && previous?.isRecycled == false) previous.recycle()
+            if (previous === bitmap && !bitmap.isRecycled) bitmap.recycle()
+        }
+
+        fun close() {
+            val bitmap = synchronized(lock) {
+                closed = true
+                reusable.also { reusable = null }
+            }
+            if (bitmap?.isRecycled == false) bitmap.recycle()
         }
     }
 
@@ -290,6 +364,12 @@ class AtomS3rMjpegFrameSource(
         val maxBodyReadGapNs: Long,
         val clockMapping: AtomS3rClockMapping?
     ) {
+        fun mappedCaptureNs(): Long? {
+            val captureNs = headers["x-capture-timestamp-us"]?.toLongOrNull()
+                ?.times(NANOS_PER_MICROSECOND) ?: return null
+            return clockMapping?.deviceToAndroidNs(captureNs)
+        }
+
         fun metadata(
             decodeStartNs: Long = jpegCompleteNs,
             decodeCompleteNs: Long = decodeStartNs
@@ -361,13 +441,14 @@ class AtomS3rMjpegFrameSource(
             receivedAtNs: Long? = null,
             clockMapping: AtomS3rClockMapping? = null
         ): MjpegPacket {
+            val headerScratch = ByteArray(MAX_HEADER_LINE_BYTES)
             var line: String
             do {
-                line = readLine(input)
+                line = readLine(input, headerScratch)
             } while (!line.startsWith("--"))
             val headers = linkedMapOf<String, String>()
             while (true) {
-                line = readLine(input)
+                line = readLine(input, headerScratch)
                 if (line.isEmpty()) break
                 val separator = line.indexOf(':')
                 require(separator > 0) { "Malformed MJPEG header: $line" }
@@ -409,16 +490,22 @@ class AtomS3rMjpegFrameSource(
             )
         }
 
-        private fun readLine(input: BufferedInputStream): String {
-            val bytes = ByteArrayOutputStream(128)
-            while (bytes.size() <= MAX_HEADER_LINE_BYTES) {
+        private fun readLine(input: BufferedInputStream, scratch: ByteArray): String {
+            var size = 0
+            var terminated = false
+            while (size < scratch.size) {
                 val value = input.read()
                 if (value < 0) throw EOFException("MJPEG stream ended")
-                if (value == '\n'.code) break
-                if (value != '\r'.code) bytes.write(value)
+                if (value == '\n'.code) {
+                    terminated = true
+                    break
+                }
+                if (value != '\r'.code) scratch[size++] = value.toByte()
             }
-            require(bytes.size() <= MAX_HEADER_LINE_BYTES) { "MJPEG header line too long" }
-            return bytes.toString(StandardCharsets.US_ASCII.name())
+            require(terminated) {
+                "MJPEG header line too long"
+            }
+            return String(scratch, 0, size, StandardCharsets.US_ASCII)
         }
     }
 
@@ -430,6 +517,7 @@ class AtomS3rMjpegFrameSource(
         private const val RECONNECT_DELAY_MS = 500L
         private const val CLOCK_SYNC_INTERVAL_MS = 30_000L
         private const val NANOS_PER_MICROSECOND = 1_000L
+        private const val NANOS_PER_MILLISECOND = 1_000_000L
 
         private fun openConnection(url: String): HttpURLConnection =
             (URL(url).openConnection() as HttpURLConnection).apply {
