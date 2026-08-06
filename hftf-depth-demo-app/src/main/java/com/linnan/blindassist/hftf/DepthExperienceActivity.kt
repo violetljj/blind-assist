@@ -241,6 +241,7 @@ private class DepthExperienceEngine(
     private var converter: Dav2Yuv420RgbConverter? = null
     private var preprocessor: Dav2NativePreprocessor? = null
     private var runtime: Dav2QnnCachedContext? = null
+    private val visualWorkspace = DepthVisual.Workspace()
     private var lastCompletedAt = 0L
 
     fun startCamera() {
@@ -354,7 +355,13 @@ private class DepthExperienceEngine(
             val rgb = requireNotNull(converter).convert(owned)
             val input = requireNotNull(preprocessor).preprocessFp16(rgb)
             val output = requireNotNull(runtime).execute(input)
-            val visual = DepthVisual.from(output, elapsedMs(startedAt), thermal, lastCompletedAt)
+            val visual = DepthVisual.from(
+                output,
+                elapsedMs(startedAt),
+                thermal,
+                lastCompletedAt,
+                visualWorkspace,
+            )
             lastCompletedAt = SystemClock.elapsedRealtimeNanos()
             activity.runOnUiThread {
                 onDepth(visual)
@@ -429,13 +436,32 @@ internal data class DepthVisual(
     companion object {
         private const val MAP_WIDTH = 343
         private const val MAP_HEIGHT = 259
+        private const val MAP_PIXELS = MAP_WIDTH * MAP_HEIGHT
+        private const val CENTER_CAPACITY =
+            (MAP_WIDTH * 3 / 5 - MAP_WIDTH * 2 / 5) *
+                (MAP_HEIGHT * 3 / 5 - MAP_HEIGHT * 2 / 5)
 
-        fun from(output: java.nio.ByteBuffer, pipelineMs: Double, thermalStatus: Int, lastCompletedAt: Long): DepthVisual {
+        internal class Workspace {
+            val depths = FloatArray(MAP_PIXELS)
+            val sampled = FloatArray(MAP_PIXELS)
+            val center = FloatArray(CENTER_CAPACITY)
+            val pixels = IntArray(MAP_PIXELS)
+        }
+
+        fun from(
+            output: java.nio.ByteBuffer,
+            pipelineMs: Double,
+            thermalStatus: Int,
+            lastCompletedAt: Long,
+            workspace: Workspace = Workspace(),
+        ): DepthVisual {
             val source = output.duplicate().order(java.nio.ByteOrder.nativeOrder()).apply { position(0) }.asShortBuffer()
-            val center = ArrayList<Float>()
-            val sampled = ArrayList<Float>()
-            val depths = FloatArray(MAP_WIDTH * MAP_HEIGHT)
-            val pixels = IntArray(MAP_WIDTH * MAP_HEIGHT)
+            val center = workspace.center
+            val sampled = workspace.sampled
+            val depths = workspace.depths
+            val pixels = workspace.pixels
+            var centerSize = 0
+            var sampledSize = 0
             for (row in 0 until MAP_HEIGHT) {
                 val sourceRow = row * Dav2PreprocessContract.OUTPUT_HEIGHT / MAP_HEIGHT
                 for (column in 0 until MAP_WIDTH) {
@@ -443,22 +469,22 @@ internal data class DepthVisual(
                     val depth = halfBitsToFloat(source.get(sourceRow * Dav2PreprocessContract.OUTPUT_WIDTH + sourceColumn))
                     depths[row * MAP_WIDTH + column] = depth
                     if (depth.isFinite() && depth in 0.1f..50f) {
-                        sampled += depth
+                        sampled[sampledSize++] = depth
                         if (column in MAP_WIDTH * 2 / 5 until MAP_WIDTH * 3 / 5 &&
                             row in MAP_HEIGHT * 2 / 5 until MAP_HEIGHT * 3 / 5
-                        ) center += depth
+                        ) center[centerSize++] = depth
                     }
                 }
             }
-            sampled.sort()
-            center.sort()
-            val colorNear = percentile(sampled, 0.05)
-            val colorFar = percentile(sampled, 0.95)
+            java.util.Arrays.sort(sampled, 0, sampledSize)
+            java.util.Arrays.sort(center, 0, centerSize)
+            val colorNear = percentile(sampled, sampledSize, 0.05)
+            val colorFar = percentile(sampled, sampledSize, 0.95)
             for (index in depths.indices) {
                 pixels[index] = depthColor(depths[index], colorNear, colorFar)
             }
-            val centerMeters = percentile(center, 0.5)
-            val nearMeters = percentile(sampled, 0.1)
+            val centerMeters = percentile(center, centerSize, 0.5)
+            val nearMeters = percentile(sampled, sampledSize, 0.1)
             val now = SystemClock.elapsedRealtimeNanos()
             val updateHz = if (lastCompletedAt > 0L && now > lastCompletedAt) {
                 1_000_000_000.0 / (now - lastCompletedAt)
@@ -473,9 +499,9 @@ internal data class DepthVisual(
             )
         }
 
-        private fun percentile(sorted: List<Float>, quantile: Double): Float {
-            if (sorted.isEmpty()) return Float.NaN
-            return sorted[(quantile * (sorted.size - 1)).toInt().coerceIn(0, sorted.lastIndex)]
+        private fun percentile(sorted: FloatArray, size: Int, quantile: Double): Float {
+            if (size == 0) return Float.NaN
+            return sorted[(quantile * (size - 1)).toInt().coerceIn(0, size - 1)]
         }
 
         private fun depthColor(depth: Float, colorNear: Float, colorFar: Float): Int {
