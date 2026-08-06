@@ -138,9 +138,11 @@ def main() -> None:
     args = parser.parse_args()
     require(not args.output.exists(), "overwrite forbidden")
     root = args.repo_root.resolve()
+    tum_root = args.tum_root.resolve()
+    arkit_manifest = args.arkit_manifest.resolve()
     tum_specs = [
-        ("rgbd_dataset_freiburg3_sitting_halfsphere", args.tum_root / "rgbd_dataset_freiburg3_sitting_halfsphere.tgz"),
-        ("rgbd_dataset_freiburg3_sitting_rpy", args.tum_root / "rgbd_dataset_freiburg3_sitting_rpy.tgz"),
+        ("rgbd_dataset_freiburg3_sitting_halfsphere", tum_root / "rgbd_dataset_freiburg3_sitting_halfsphere.tgz"),
+        ("rgbd_dataset_freiburg3_sitting_rpy", tum_root / "rgbd_dataset_freiburg3_sitting_rpy.tgz"),
     ]
     frames = []
     archive_bindings = []
@@ -148,7 +150,7 @@ def main() -> None:
         require(archive.is_file(), f"missing TUM archive: {archive}")
         archive_bindings.append({"parent_id": parent_id, "path": str(archive.relative_to(root)), "sha256": sha256_file(archive), "bytes": archive.stat().st_size})
         frames.extend(tum_frames(archive, parent_id))
-    frames.extend(arkit_frames(root, args.arkit_manifest))
+    frames.extend(arkit_frames(root, arkit_manifest))
     by_parent: dict[str, list[dict[str, Any]]] = {}
     for frame in frames:
         by_parent.setdefault(str(frame["parent_id"]), []).append(frame)
@@ -161,8 +163,8 @@ def main() -> None:
         "schema": RESULT_SCHEMA,
         "source_contract": "label-blind identities and source-native timestamps only",
         "archive_bindings": archive_bindings,
-        "arkit_manifest_path": str(args.arkit_manifest.relative_to(root)),
-        "arkit_manifest_sha256": sha256_file(args.arkit_manifest),
+        "arkit_manifest_path": str(arkit_manifest.relative_to(root)),
+        "arkit_manifest_sha256": sha256_file(arkit_manifest),
         "parents": sorted({row["parent_id"] for row in frames}),
         "frame_count": len(frames),
         "clip_count": len(clips),
