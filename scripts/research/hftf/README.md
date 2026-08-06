@@ -1390,3 +1390,22 @@ single-height/current-field 没有独立增量，或 student 在相同事件账�
 失败报告可作为数据来源缺口、pose/body-frame 合同、teacher leakage 与 evaluation
 readiness 的 regression fixture；不能重包装为 HFTF 模型负结果、创新性结论或
 unseen Confirmation。
+
+## Clearance-Student Mobile R0
+
+状态：development terminal `NOT_SUPPORTED`。
+
+- 协议：`docs/research/hftf/CLEARANCE_STUDENT_MOBILE_R0_PROTOCOL_2026-08-06.*`
+- 模型/训练：`clearance_student_mobile_r0.py`、`train_clearance_student_mobile_r0.py`
+- cache/评测：`materialize_clearance_student_mobile_r0_cache.py`、`evaluate_clearance_student_mobile_r0.py`
+- 输出仅允许在 `artifacts.local/evidence/hftf/clearance-student-mobile-r0/`；R0 已失败关闭，不进入 QNN、QAT、Android 或生产。
+
+## Clearance-Student Mobile S1
+
+状态：`S1_A_NOT_SUPPORTED_UNDEFINED_GEOMETRY`。
+
+- 协议：`docs/research/hftf/CLEARANCE_STUDENT_MOBILE_S1_PROTOCOL_2026-08-06.*`
+- 模型/训练：`clearance_student_mobile_s1.py`、`train_clearance_student_mobile_s1.py`
+- teacher feature/cache：`materialize_clearance_student_mobile_s1_teacher_features.py`、`materialize_clearance_student_mobile_s1_gate_cache.py`
+- 开发屏：`screen_clearance_student_mobile_s1_depth.py`；undefined 指标 fail closed。
+- S1-B、QNN、QAT、Android、holdout 和生产替换均未授权。

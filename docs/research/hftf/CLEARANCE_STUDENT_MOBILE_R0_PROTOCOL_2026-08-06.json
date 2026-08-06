@@ -1,0 +1,18 @@
+{
+  "protocol_id": "clearance-student-mobile-r0",
+  "version": "R0",
+  "status": ["CLEARANCE_STUDENT_MOBILE_R0_TRAINING_ONLY", "DEVELOPMENT_STANDARD", "NO_DEVICE_PROFILE_UNTIL_QUALITY_PASS", "NO_PRODUCTION_OR_SAFETY_AUTHORITY", "NO_TEMPORAL_HEAD_R0"],
+  "input": {"height": 384, "width": 384, "alternative_requires_version": true},
+  "encoder": {"preferred": ["EfficientViT", "FastViT"], "fallback": ["MobileNetV4", "EdgeNeXt"], "qnn_hpt_friendly_ops_required": true},
+  "decoder": "compact_dpt_lite_sdt_single_path",
+  "outputs": ["metric_depth", "confidence", "ground_plane", "camera_height", "clearance_left_center_right"],
+  "teacher": "canonical_da_v2_518_offline",
+  "temporal_head": false,
+  "loss_terms": ["log_depth", "gradient", "scale", "ground_plane", "camera_height", "clearance", "asymmetric_occupancy_false_clear", "confidence"],
+  "arms": {"C0": "canonical_da_v2_518_fp16", "B0": "midas_small_256_fp16_w8a8", "S0": "mobile_backbone_compact_decoder_384_fp16"},
+  "quality_metrics": ["raw_absrel", "scale_aligned_absrel", "ground_recovery", "camera_height_mae", "clearance_mae", "false_clear", "false_block", "geometry_transition_agreement", "known_coverage"],
+  "quantization_order": ["student_fp16", "qnn_fp16_profile", "w8a8_qat", "re_evaluate_quality"],
+  "artifact_root": "artifacts.local/evidence/hftf/clearance-student-mobile-r0/",
+  "production_model_replacement_authorized": false,
+  "safety_authority": false
+}
