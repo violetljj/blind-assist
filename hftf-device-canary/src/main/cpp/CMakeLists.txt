@@ -30,6 +30,7 @@ target_link_libraries(
     PRIVATE
     OpenCV::opencv_java4
     android
+    jnigraphics
     dl
     log
 )

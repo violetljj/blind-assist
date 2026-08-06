@@ -14,6 +14,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.PowerManager
+import android.os.Process
 import android.os.SystemClock
 import android.util.Log
 import android.util.Size
@@ -37,8 +38,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.linnan.blindassist.camera.AtomS3rMjpegFrameSource
+import com.linnan.blindassist.vision.VisionFrame
 import java.io.File
 import java.io.FileInputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.security.MessageDigest
 import java.util.Locale
 import java.util.concurrent.ExecutorService
@@ -47,6 +52,8 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.math.ln
+
+private const val USE_EXTERNAL_HARDWARE = true
 
 /** Device-only visual demo for the frozen canonical FP16 + QNN cached-context route. */
 class DepthExperienceActivity : Activity(), LifecycleOwner {
@@ -63,7 +70,7 @@ class DepthExperienceActivity : Activity(), LifecycleOwner {
         lifecycleRegistry.currentState = Lifecycle.State.CREATED
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(buildContent())
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if (USE_EXTERNAL_HARDWARE || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startExperience()
         } else {
             status.text = "等待相机权限"
@@ -74,7 +81,7 @@ class DepthExperienceActivity : Activity(), LifecycleOwner {
     override fun onStart() {
         super.onStart()
         lifecycleRegistry.currentState = Lifecycle.State.STARTED
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if (USE_EXTERNAL_HARDWARE || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startExperience()
         }
     }
@@ -230,13 +237,26 @@ private class DepthExperienceEngine(
     private val onFailure: (String) -> Unit,
 ) : AutoCloseable {
     private val analyzerExecutor = Executors.newSingleThreadExecutor()
-    private val depthExecutor = Executors.newSingleThreadExecutor()
+    private val depthExecutor = Executors.newSingleThreadExecutor { runnable ->
+        Thread(runnable, "dav2-depth").apply {
+            Process.setThreadPriority(Process.THREAD_PRIORITY_DISPLAY)
+        }
+    }
+    private val visualExecutor = Executors.newSingleThreadExecutor { runnable ->
+        Thread(runnable, "dav2-heatmap").apply { priority = Thread.MIN_PRIORITY }
+    }
     private val active = AtomicBoolean(false)
     private val processing = AtomicBoolean(false)
     private val initializationStarted = AtomicBoolean(false)
     private val lastSubmittedAt = AtomicLong(Long.MIN_VALUE)
     private val frameSequence = AtomicLong(0L)
     private val frame = OwnedYuv420Frame(WIDTH, HEIGHT) {}
+    private val externalSource = AtomS3rMjpegFrameSource(
+        EXTERNAL_ENDPOINT,
+        decodeSampleSize = 1,
+        shouldDecode = { !processing.get() },
+    )
+    private val externalRgb = Dav2BitmapRgbConverter(WIDTH, HEIGHT)
     private val power = activity.getSystemService(PowerManager::class.java)
     private var provider: ProcessCameraProvider? = null
     private var analysis: ImageAnalysis? = null
@@ -244,10 +264,23 @@ private class DepthExperienceEngine(
     private var preprocessor: Dav2NativePreprocessor? = null
     private var runtime: Dav2QnnCachedContext? = null
     private val visualWorkspace = DepthVisual.Companion.Workspace()
+    // Reused only when no previous heatmap render is pending. This removes a
+    // ~710 KB direct-buffer allocation from the latency-critical frame path.
+    private val externalHeatmapInput = ByteBuffer.allocateDirect(
+        Dav2PreprocessContract.PLANE * 2,
+    ).order(ByteOrder.nativeOrder())
     private var lastCompletedAt = 0L
+    private var lastExternalHeatmapAt = 0L
+    private var lastExternalHeatmap: Bitmap? = null
+    private val heatmapPending = AtomicBoolean(false)
+    private var riskSummaryParityVerified = false
+    private var fusedCanonicalParityVerified = false
+    private var bitmapCanonicalParityVerified = false
+    private var lastExternalStatusAt = 0L
 
     fun startCamera() {
         active.set(true)
+        Log.i(RESOURCE_TAG, "DA V2 start requested; external=$USE_EXTERNAL_HARDWARE endpoint=$EXTERNAL_ENDPOINT")
         if (runtime != null) {
             bindCamera()
             return
@@ -256,11 +289,13 @@ private class DepthExperienceEngine(
         onStatus("正在载入 QNN HTP 模型…", "模型与 FP16 合同会在启动时校验")
         depthExecutor.execute {
             try {
+                Log.i(RESOURCE_TAG, "loading cached QNN context")
                 val model = materializeVerifiedModel(activity)
                 val nativeDir = activity.applicationInfo.nativeLibraryDir
                 converter = Dav2Yuv420RgbConverter()
                 preprocessor = Dav2NativePreprocessor()
                 runtime = Dav2QnnCachedContext(model.absolutePath, nativeDir)
+                Log.i(RESOURCE_TAG, "cached QNN context ready")
                 if (!active.get()) {
                     val staleRuntime = runtime
                     val stalePreprocessor = preprocessor
@@ -281,6 +316,7 @@ private class DepthExperienceEngine(
                     }
                 }
             } catch (error: Throwable) {
+                Log.e(RESOURCE_TAG, "DA V2 initialization failed", error)
                 activity.runOnUiThread { onFailure(error.message ?: error.javaClass.simpleName) }
             }
         }
@@ -288,6 +324,8 @@ private class DepthExperienceEngine(
 
     fun stopCamera() {
         active.set(false)
+        externalSource.stop()
+        Log.i(RESOURCE_TAG, "AtomS3R diagnostics=${externalSource.diagnostics()}")
         analysis?.clearAnalyzer()
         analysis = null
         provider?.unbindAll()
@@ -312,6 +350,10 @@ private class DepthExperienceEngine(
     }
 
     private fun bindCamera() {
+        if (USE_EXTERNAL_HARDWARE) {
+            bindExternalHardware()
+            return
+        }
         if (!active.get() || runtime == null || analysis != null) return
         val future = ProcessCameraProvider.getInstance(activity)
         future.addListener({
@@ -339,6 +381,167 @@ private class DepthExperienceEngine(
                 onFailure("CameraX 启动失败：${error.message ?: error.javaClass.simpleName}")
             }
         }, ContextCompat.getMainExecutor(activity))
+    }
+
+    private fun bindExternalHardware() {
+        if (!active.get() || runtime == null) return
+        Log.i(RESOURCE_TAG, "starting AtomS3R MJPEG source")
+        externalSource.start(
+            previewView = null,
+            onFrame = { externalFrame ->
+                if (!processing.compareAndSet(false, true)) {
+                    externalFrame.close()
+                    return@start
+                }
+                depthExecutor.execute { processExternal(externalFrame) }
+            },
+            onStarted = {
+                Log.i(RESOURCE_TAG, "AtomS3R MJPEG source started")
+                onStatus("AtomS3R 外部链路已连接", "MJPEG + ToF4M · 等待第一帧 DA V2 风险结果")
+            },
+            onError = { error ->
+                Log.e(RESOURCE_TAG, "AtomS3R source failed", error)
+                activity.runOnUiThread { onFailure("AtomS3R 链路失败：${error.message ?: error.javaClass.simpleName}") }
+            },
+        )
+    }
+
+
+    private fun processExternal(frame: VisionFrame) {
+        val startedAt = SystemClock.elapsedRealtimeNanos()
+        var frameClosed = false
+        var processingReleased = false
+        try {
+            if (!active.get()) return
+            val bitmap = (frame as? com.linnan.blindassist.vision.NativeImageVisionFrame)?.nativeImage as? Bitmap
+                ?: error("AtomS3R frame is not a Bitmap")
+            val receivedAt = frame.frameStamp?.receivedAtNs ?: startedAt
+            val capturedAt = frame.frameStamp?.capturedAtNs ?: receivedAt
+            val timing = frame.externalTiming
+            val tofRangeMm = frame.rangingSample?.rangeMm ?: -1
+            val dav2Preprocessor = requireNotNull(preprocessor)
+            val input: java.nio.ByteBuffer
+            val bitmapCanonicalStart = SystemClock.elapsedRealtimeNanos()
+            if (!bitmapCanonicalParityVerified) {
+                val rgb = externalRgb.convert(bitmap)
+                val expected = dav2Preprocessor.preprocessFp16CanonicalStrictDirectFused(rgb)
+                val direct = dav2Preprocessor.preprocessFp16CanonicalStrictBitmap(bitmap)
+                val expectedBytes = ByteArray(expected.remaining()).also { expected.duplicate().get(it) }
+                val directBytes = ByteArray(direct.remaining()).also { direct.duplicate().get(it) }
+                check(expectedBytes.contentEquals(directBytes)) {
+                    "Bitmap canonical FP16 parity failed"
+                }
+                bitmapCanonicalParityVerified = true
+                fusedCanonicalParityVerified = true
+                Log.i(RESOURCE_TAG, "Bitmap canonical FP16 parity passed bit_exact=true")
+                input = direct
+            } else {
+                input = dav2Preprocessor.preprocessFp16CanonicalStrictBitmap(bitmap)
+            }
+            val inputReadyAt = SystemClock.elapsedRealtimeNanos()
+            val rgbReadyAt = inputReadyAt
+            val output = requireNotNull(runtime).execute(input, computeInputHash = false)
+            val qnnReadyAt = SystemClock.elapsedRealtimeNanos()
+            val riskSummary = DepthRiskSummary.Result.from(requireNotNull(preprocessor).riskSummary(output))
+            val riskReadyAt = SystemClock.elapsedRealtimeNanos()
+            val riskAge = nanosToMs(riskReadyAt - receivedAt)
+            // The latency-critical result is complete and no remaining work
+            // needs the source Bitmap. Return it to the decode pool and admit
+            // one newest frame while bookkeeping/heatmap dispatch finishes on
+            // this single-thread executor.
+            frame.close()
+            frameClosed = true
+            processing.set(false)
+            processingReleased = true
+            if (riskReadyAt - lastExternalStatusAt >= EXTERNAL_STATUS_PERIOD_NS) {
+                lastExternalStatusAt = riskReadyAt
+                activity.runOnUiThread {
+                    onStatus(
+                        "外部中心约 ${formatMeters(riskSummary.centerMeters)} · 近处约 ${formatMeters(riskSummary.nearMeters)}",
+                        "设备→风险 ${formatMs(nanosToMs(riskReadyAt - capturedAt))} ms · 手机收帧→风险 ${formatMs(riskAge)} ms · ToF $tofRangeMm mm",
+                    )
+                }
+            }
+            val renderHeatmap = !heatmapPending.get() &&
+                (lastExternalHeatmap == null ||
+                    qnnReadyAt - lastExternalHeatmapAt >= EXTERNAL_HEATMAP_PERIOD_NS)
+            val heatmapInput = if (renderHeatmap) {
+                externalHeatmapInput.clear()
+                externalHeatmapInput.put(output.duplicate())
+                externalHeatmapInput.flip()
+                externalHeatmapInput
+            } else null
+            val riskResultAt = riskReadyAt
+            if (renderHeatmap) {
+                lastExternalHeatmapAt = riskResultAt
+            }
+            lastCompletedAt = riskResultAt
+            val deviceMinusAndroidNs = timing?.deviceMinusAndroidNs
+            val mappedJpegReadyNs = deviceMinusAndroidNs?.let { timing.deviceJpegReadyNs - it }
+            val transport = frame.externalTransportDiagnostics
+            Log.i(
+                TIMING_TAG,
+                    "{\"route\":\"atoms3r_to_dav2\",\"frame_sequence\":${frame.frameStamp?.frameId ?: -1}," +
+                    "\"device_capture_to_risk_ms\":${formatMetric(riskReadyAt - capturedAt)}," +
+                    "\"android_received_to_risk_ms\":${formatMetric(riskReadyAt - receivedAt)}," +
+                    "\"device_capture_to_jpeg_ready_ms\":${formatMetric((timing?.deviceJpegReadyNs ?: 0L) - (timing?.deviceCaptureNs ?: 0L))}," +
+                    "\"jpeg_ready_to_first_byte_ms\":${formatMetric((timing?.androidFirstByteNs ?: receivedAt) - (mappedJpegReadyNs ?: receivedAt))}," +
+                    "\"first_byte_to_jpeg_complete_ms\":${formatMetric((timing?.androidJpegCompleteNs ?: receivedAt) - (timing?.androidFirstByteNs ?: receivedAt))}," +
+                    "\"capture_to_android_jpeg_complete_ms\":${formatMetric((timing?.androidJpegCompleteNs ?: receivedAt) - capturedAt)}," +
+                    "\"jpeg_decode_ms\":${formatMetric((timing?.androidDecodeCompleteNs ?: startedAt) - (timing?.androidDecodeStartNs ?: startedAt))}," +
+                    "\"decode_complete_to_processing_ms\":${formatMetric(startedAt - (timing?.androidDecodeCompleteNs ?: startedAt))}," +
+                    "\"jpeg_size_bytes\":${transport?.jpegSizeBytes ?: -1},\"wifi_rssi_dbm\":${transport?.wifiRssiDbm ?: 0}," +
+                    "\"previous_frame_sequence\":${transport?.previousFrameSequence ?: -1}," +
+                    "\"previous_response_write_ms\":${formatMetric(transport?.previousResponseWriteDurationNs ?: 0L)}," +
+                    "\"android_body_read_calls\":${transport?.androidBodyReadCalls ?: -1}," +
+                    "\"android_max_body_read_gap_ms\":${formatMetric(transport?.androidMaxBodyReadGapNs ?: 0L)}," +
+                    "\"bitmap_to_rgb_ms\":0.000,\"canonical_preprocess_ms\":${formatMetric(inputReadyAt - bitmapCanonicalStart)},\"bitmap_to_canonical_ms\":${formatMetric(inputReadyAt - bitmapCanonicalStart)}," +
+                    "\"qnn_execute_ms\":${formatMetric(qnnReadyAt - inputReadyAt)},\"qnn_to_risk_result_ms\":${formatMetric(riskResultAt - qnnReadyAt)}," +
+                    "\"heatmap_render_ms\":0.000,\"heatmap_rendered\":$renderHeatmap,\"heatmap_render_async\":$renderHeatmap,\"depth_visual_ms\":0.000," +
+                    "\"tof_range_mm\":$tofRangeMm}",
+            )
+            if (heatmapInput != null) {
+                heatmapPending.set(true)
+                visualExecutor.execute {
+                    try {
+                        val visual = DepthVisual.from(
+                            heatmapInput,
+                            0.0,
+                            power.currentThermalStatus,
+                            lastCompletedAt,
+                            visualWorkspace,
+                            renderHeatmap = true,
+                            metricsOverride = riskSummary,
+                        ) { center, near ->
+                            if (!riskSummaryParityVerified) {
+                                check(java.lang.Float.floatToRawIntBits(center) ==
+                                    java.lang.Float.floatToRawIntBits(riskSummary.centerMeters) &&
+                                    java.lang.Float.floatToRawIntBits(near) ==
+                                    java.lang.Float.floatToRawIntBits(riskSummary.nearMeters)) {
+                                    "native risk summary parity failed: native=$riskSummary kotlin=($center,$near)"
+                                }
+                                riskSummaryParityVerified = true
+                                Log.i(RESOURCE_TAG, "native risk summary parity passed bit_exact=true")
+                            }
+                        }
+                        lastExternalHeatmap = visual.heatmap
+                        activity.runOnUiThread {
+                            if (active.get()) onDepth(visual)
+                        }
+                    } catch (error: Throwable) {
+                        Log.e(RESOURCE_TAG, "DA V2 heatmap render failed", error)
+                    } finally {
+                        heatmapPending.set(false)
+                    }
+                }
+            }
+        } catch (error: Throwable) {
+            Log.e(RESOURCE_TAG, "DA V2 external frame failed", error)
+            activity.runOnUiThread { onFailure("DA V2 外部帧失败：${error.message ?: error.javaClass.simpleName}") }
+        } finally {
+            if (!frameClosed) frame.close()
+            if (!processingReleased) processing.set(false)
+        }
     }
 
     private fun analyze(image: ImageProxy) {
@@ -457,7 +660,9 @@ private class DepthExperienceEngine(
 
     override fun close() {
         stopAlgorithm()
+        externalSource.shutdown()
         analyzerExecutor.shutdownNow()
+        visualExecutor.shutdownNow()
         depthExecutor.execute {
             runtime?.close()
             preprocessor?.close()
@@ -503,7 +708,12 @@ private class DepthExperienceEngine(
         const val HEIGHT = 480
         const val TIMING_TAG = "Dav2FrameTiming"
         const val RESOURCE_TAG = "Dav2Resources"
+        const val EXTERNAL_ENDPOINT = "http://192.168.5.11"
+        val EXTERNAL_STATUS_PERIOD_NS = TimeUnit.MILLISECONDS.toNanos(200)
+        // Heatmap rendering is diagnostic/UI work; risk output remains per frame.
+        val EXTERNAL_HEATMAP_PERIOD_NS = TimeUnit.SECONDS.toNanos(1)
         val DEPTH_PERIOD_NANOS = TimeUnit.MILLISECONDS.toNanos(500)
+
     }
 }
 
@@ -557,8 +767,25 @@ internal data class DepthVisual(
             thermalStatus: Int,
             lastCompletedAt: Long,
             workspace: Workspace = Workspace(),
+            renderHeatmap: Boolean = true,
+            previousHeatmap: Bitmap? = null,
+            metricsOverride: DepthRiskSummary.Result? = null,
             onMetricsReady: (centerMeters: Float, nearMeters: Float) -> Unit = { _, _ -> },
         ): DepthVisual {
+            if (!renderHeatmap && metricsOverride != null) {
+                onMetricsReady(metricsOverride.centerMeters, metricsOverride.nearMeters)
+                val now = SystemClock.elapsedRealtimeNanos()
+                return DepthVisual(
+                    heatmap = requireNotNull(previousHeatmap),
+                    centerMeters = metricsOverride.centerMeters,
+                    nearMeters = metricsOverride.nearMeters,
+                    pipelineMs = pipelineMs,
+                    updateHz = if (lastCompletedAt > 0L && now > lastCompletedAt) {
+                        1_000_000_000.0 / (now - lastCompletedAt)
+                    } else 0.0,
+                    thermalStatus = thermalStatus,
+                )
+            }
             val source = output.duplicate().order(java.nio.ByteOrder.nativeOrder()).apply { position(0) }.asShortBuffer()
             val center = workspace.center
             val sampled = workspace.sampled
@@ -575,31 +802,41 @@ internal data class DepthVisual(
                     if (CENTER_FLAGS[index]) center[centerSize++] = depth
                 }
             }
-            val centerMeters = percentile(center, centerSize, 0.5)
-            val nearMeters = percentile(sampled, sampledSize, 0.1)
-            onMetricsReady(centerMeters, nearMeters)
-            val colorNear = percentile(sampled, sampledSize, 0.05)
-            val colorFar = percentile(sampled, sampledSize, 0.95)
-            val logNear = if (colorNear.isFinite() && colorNear > 0f) ln(colorNear.toDouble()) else Double.NaN
-            val logRange = if (colorFar.isFinite() && colorFar > colorNear) {
-                ln(colorFar.toDouble()) - logNear
-            } else Double.NaN
-            for (index in depths.indices) {
-                pixels[index] = depthColor(
-                    depths[index],
-                    colorNear,
-                    colorFar,
-                    logNear,
-                    logRange,
-                    hsv,
-                )
+            val kotlinCenterMeters = percentile(center, centerSize, 0.5)
+            val kotlinNearMeters = percentile(sampled, sampledSize, 0.1)
+            onMetricsReady(kotlinCenterMeters, kotlinNearMeters)
+            val centerMeters = metricsOverride?.centerMeters ?: kotlinCenterMeters
+            val nearMeters = metricsOverride?.nearMeters ?: kotlinNearMeters
+            if (renderHeatmap) {
+                val colorNear = percentile(sampled, sampledSize, 0.05)
+                val colorFar = percentile(sampled, sampledSize, 0.95)
+                val logNear = if (colorNear.isFinite() && colorNear > 0f) {
+                    ln(colorNear.toDouble())
+                } else Double.NaN
+                val logRange = if (colorFar.isFinite() && colorFar > colorNear) {
+                    ln(colorFar.toDouble()) - logNear
+                } else Double.NaN
+                for (index in depths.indices) {
+                    pixels[index] = depthColor(
+                        depths[index],
+                        colorNear,
+                        colorFar,
+                        logNear,
+                        logRange,
+                        hsv,
+                    )
+                }
             }
             val now = SystemClock.elapsedRealtimeNanos()
             val updateHz = if (lastCompletedAt > 0L && now > lastCompletedAt) {
                 1_000_000_000.0 / (now - lastCompletedAt)
             } else 0.0
             return DepthVisual(
-                heatmap = Bitmap.createBitmap(pixels, MAP_WIDTH, MAP_HEIGHT, Bitmap.Config.ARGB_8888),
+                heatmap = if (renderHeatmap) {
+                    Bitmap.createBitmap(pixels, MAP_WIDTH, MAP_HEIGHT, Bitmap.Config.ARGB_8888)
+                } else {
+                    requireNotNull(previousHeatmap) { "previous heatmap required when rendering is skipped" }
+                },
                 centerMeters = centerMeters,
                 nearMeters = nearMeters,
                 pipelineMs = pipelineMs,
@@ -664,7 +901,86 @@ internal data class DepthVisual(
     }
 }
 
+/** Native fixed-sample risk summary; the first rendered frame is parity-checked against Kotlin. */
+internal object DepthRiskSummary {
+    data class Result(val centerMeters: Float, val nearMeters: Float) {
+        companion object {
+            fun from(values: FloatArray): Result {
+                require(values.size == 2) { "invalid native risk summary result" }
+                return Result(values[0], values[1])
+            }
+        }
+    }
+}
+
 private enum class DepthDisplayMode { SPLIT, OVERLAY, RGB }
+
+/** Temporary external-camera bridge; keeps the DA V2 input contract direct and bounded. */
+private class Dav2BitmapRgbConverter(
+    private val width: Int,
+    private val height: Int,
+) : AutoCloseable {
+    private var sourcePixels = IntArray(0)
+    private val output = java.nio.ByteBuffer.allocateDirect(width * height * 3)
+    private val referenceOutput = java.nio.ByteBuffer.allocateDirect(width * height * 3)
+    private var parityVerified = false
+
+    fun convert(bitmap: Bitmap): java.nio.ByteBuffer {
+        output.clear()
+        check(nativeConvertBitmap(bitmap, output, width, height)) {
+            "native Bitmap to RGB conversion failed"
+        }
+        output.position(0)
+        output.limit(width * height * 3)
+        if (!parityVerified) {
+            convertReference(bitmap, referenceOutput)
+            var maxAbsDiff = 0
+            for (index in 0 until output.limit()) {
+                val difference = kotlin.math.abs(
+                    (output.get(index).toInt() and 0xff) -
+                        (referenceOutput.get(index).toInt() and 0xff),
+                )
+                if (difference > maxAbsDiff) maxAbsDiff = difference
+            }
+            check(maxAbsDiff == 0) { "native Bitmap RGB parity failed: max_abs_diff=$maxAbsDiff" }
+            parityVerified = true
+            Log.i("Dav2Resources", "native Bitmap RGB parity passed max_abs_diff=0 bytes=${output.limit()}")
+        }
+        return output
+    }
+
+    private fun convertReference(bitmap: Bitmap, destination: java.nio.ByteBuffer) {
+        val required = bitmap.width * bitmap.height
+        if (sourcePixels.size < required) sourcePixels = IntArray(required)
+        bitmap.getPixels(sourcePixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+        destination.clear()
+        val sourceWidth = bitmap.width
+        val sourceHeight = bitmap.height
+        for (y in 0 until height) {
+            val sourceY = y * sourceHeight / height
+            val sourceRow = sourceY * sourceWidth
+            for (x in 0 until width) {
+                val sourceX = x * sourceWidth / width
+                val pixel = sourcePixels[sourceRow + sourceX]
+                destination.put(((pixel shr 16) and 0xff).toByte())
+                destination.put(((pixel shr 8) and 0xff).toByte())
+                destination.put((pixel and 0xff).toByte())
+            }
+        }
+        destination.flip()
+    }
+
+    override fun close() = Unit
+
+    private external fun nativeConvertBitmap(
+        bitmap: Bitmap,
+        output: java.nio.ByteBuffer,
+        outputWidth: Int,
+        outputHeight: Int,
+    ): Boolean
+
+    companion object { init { System.loadLibrary("dav2_preprocess_native") } }
+}
 
 private class DepthHeatmapView(context: Context) : View(context) {
     private val bitmapPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { isFilterBitmap = true }

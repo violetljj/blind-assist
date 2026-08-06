@@ -1,4 +1,5 @@
 #include <jni.h>
+#include <android/bitmap.h>
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
 #include <cstdint>
@@ -133,3 +134,41 @@ Java_com_linnan_blindassist_hftf_Dav2Yuv420RgbConverter_nativeConvertDirect(
 extern "C" JNIEXPORT void JNICALL
 Java_com_linnan_blindassist_hftf_Dav2Yuv420RgbConverter_nativeDestroy(
     JNIEnv*, jobject, jlong handle) { delete reinterpret_cast<Converter*>(handle); }
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_linnan_blindassist_hftf_Dav2BitmapRgbConverter_nativeConvertBitmap(
+    JNIEnv* env, jobject, jobject bitmap, jobject output, jint output_width, jint output_height) {
+    if (bitmap == nullptr || output == nullptr || output_width <= 0 || output_height <= 0) {
+        return JNI_FALSE;
+    }
+    AndroidBitmapInfo info{};
+    if (AndroidBitmap_getInfo(env, bitmap, &info) != ANDROID_BITMAP_RESULT_SUCCESS ||
+        info.format != ANDROID_BITMAP_FORMAT_RGBA_8888 || info.width == 0 || info.height == 0) {
+        return JNI_FALSE;
+    }
+    auto* destination = static_cast<uint8_t*>(env->GetDirectBufferAddress(output));
+    const jlong required = static_cast<jlong>(output_width) * output_height * 3;
+    if (destination == nullptr || env->GetDirectBufferCapacity(output) < required) return JNI_FALSE;
+    void* pixels = nullptr;
+    if (AndroidBitmap_lockPixels(env, bitmap, &pixels) != ANDROID_BITMAP_RESULT_SUCCESS || pixels == nullptr) {
+        return JNI_FALSE;
+    }
+    const auto* source = static_cast<const uint8_t*>(pixels);
+    for (jint y = 0; y < output_height; ++y) {
+        const uint32_t source_y = static_cast<uint32_t>(
+            static_cast<uint64_t>(y) * info.height / static_cast<uint32_t>(output_height));
+        const auto* source_row = source + static_cast<size_t>(source_y) * info.stride;
+        auto* destination_row = destination + static_cast<size_t>(y) * output_width * 3;
+        for (jint x = 0; x < output_width; ++x) {
+            const uint32_t source_x = static_cast<uint32_t>(
+                static_cast<uint64_t>(x) * info.width / static_cast<uint32_t>(output_width));
+            const auto* pixel = source_row + static_cast<size_t>(source_x) * 4;
+            auto* rgb = destination_row + static_cast<size_t>(x) * 3;
+            rgb[0] = pixel[0];
+            rgb[1] = pixel[1];
+            rgb[2] = pixel[2];
+        }
+    }
+    AndroidBitmap_unlockPixels(env, bitmap);
+    return JNI_TRUE;
+}

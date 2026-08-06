@@ -26,6 +26,10 @@ constexpr bool kEnableCameraPsramDma = false;
 constexpr bool kEnableStreamTcpNoDelay = true;
 constexpr bool kCoalesceStreamPreamble = false;
 constexpr bool kReuseStreamFrameCopyBuffer = false;
+// The synchronous handler cannot acquire the next frame until the current
+// response has been written. Send the camera-owned JPEG directly so streaming
+// does not depend on a fresh PSRAM allocation for every connection/frame.
+constexpr bool kStreamDirectCameraBuffer = true;
 // Experimental producer/consumer path. Keep disabled until an A/B run passes.
 constexpr bool kEnableAsyncStreamProducer = false;
 constexpr BaseType_t kStreamServerCoreId = tskNO_AFFINITY;
@@ -36,7 +40,9 @@ constexpr const char* kFirmwareVersion =
         ? "atoms3r_m12_tof4m_stream_r16_async_latest_ready"
     : kReuseStreamFrameCopyBuffer
         ? "atoms3r_m12_tof4m_stream_r11_reuse_copy_buffer"
-        : "atoms3r_m12_tof4m_stream_r11_per_frame_copy_buffer";
+        : kStreamDirectCameraBuffer
+            ? "atoms3r_m12_tof4m_stream_r18_direct_camera_buffer"
+            : "atoms3r_m12_tof4m_stream_r17_safe_restart";
 constexpr char kSampleSchema[] = "blindassist_atoms3r_tof4m_sample_r0";
 constexpr char kEventSchema[] = "blindassist_atoms3r_tof4m_event_r0";
 constexpr char kSensorId[] = "m5stack_unit_tof4m_vl53l1x";
@@ -96,6 +102,7 @@ bool wifi_was_connected = false;
 WiFiUDP timing_udp;
 bool timing_udp_ready = false;
 TaskHandle_t timing_udp_task_handle = nullptr;
+
 
 struct TimingRequest {
   char magic[4];
@@ -993,6 +1000,24 @@ esp_err_t forgetWifiHandler(httpd_req_t* request) {
   return ESP_OK;
 }
 
+// Explicitly confirmed maintenance action: restart the MCU without touching
+// Wi-Fi, camera, or ToF preferences. The delayed restart lets the HTTP reply
+// leave the socket before the device resets.
+esp_err_t restartHandler(httpd_req_t* request) {
+  char body[64] = {};
+  if (!readRequestBody(request, body, sizeof(body)) ||
+      strcmp(body, "confirm=restart") != 0) {
+    return httpd_resp_send_err(request, HTTPD_400_BAD_REQUEST,
+                               "send confirm=restart");
+  }
+  httpd_resp_set_type(request, "text/plain");
+  httpd_resp_set_hdr(request, "Cache-Control", "no-store");
+  httpd_resp_sendstr(request, "restarting\n");
+  delay(150);
+  ESP.restart();
+  return ESP_OK;
+}
+
 esp_err_t streamHandler(httpd_req_t* request) {
   httpd_resp_set_type(request, kStreamContentType);
   httpd_resp_set_hdr(request, "Access-Control-Allow-Origin", "*");
@@ -1022,8 +1047,6 @@ esp_err_t streamHandler(httpd_req_t* request) {
   uint64_t previous_response_write_duration_us = 0;
   bool previous_response_write_valid = false;
   uint64_t previous_range_update_count = snapshotRangeUpdateCount();
-  uint8_t* reusable_frame_copy = nullptr;
-  size_t reusable_frame_copy_capacity = 0;
   while (true) {
     const uint64_t range_updates_at_acquire_start = snapshotRangeUpdateCount();
     const uint64_t frame_acquire_started_us = monotonicUs();
@@ -1063,8 +1086,12 @@ esp_err_t streamHandler(httpd_req_t* request) {
     const size_t frame_length = frame->len;
     const size_t frame_width = frame->width;
     const size_t frame_height = frame->height;
-    uint8_t* frame_copy = nullptr;
-    if (kReuseStreamFrameCopyBuffer) {
+    uint8_t* frame_copy = frame->buf;
+    bool frame_copy_is_owned = false;
+    if (!kStreamDirectCameraBuffer && kReuseStreamFrameCopyBuffer) {
+      frame_copy = nullptr;
+      static uint8_t* reusable_frame_copy = nullptr;
+      static size_t reusable_frame_copy_capacity = 0;
       if (frame_length > reusable_frame_copy_capacity) {
         uint8_t* larger_copy = static_cast<uint8_t*>(heap_caps_realloc(
             reusable_frame_copy, frame_length,
@@ -1077,9 +1104,11 @@ esp_err_t streamHandler(httpd_req_t* request) {
       if (frame_length <= reusable_frame_copy_capacity) {
         frame_copy = reusable_frame_copy;
       }
-    } else {
+      frame_copy_is_owned = frame_copy != nullptr;
+    } else if (!kStreamDirectCameraBuffer) {
       frame_copy = static_cast<uint8_t*>(
           heap_caps_malloc(frame_length, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
+      frame_copy_is_owned = frame_copy != nullptr;
     }
     if (frame_copy == nullptr) {
       esp_camera_fb_return(frame);
@@ -1088,9 +1117,11 @@ esp_err_t streamHandler(httpd_req_t* request) {
       stream_result = ESP_ERR_NO_MEM;
       break;
     }
-    memcpy(frame_copy, frame->buf, frame_length);
-    esp_camera_fb_return(frame);
-    xSemaphoreGive(camera_mutex);
+    if (!kStreamDirectCameraBuffer) {
+      memcpy(frame_copy, frame->buf, frame_length);
+      esp_camera_fb_return(frame);
+      xSemaphoreGive(camera_mutex);
+    }
     sensor_t* camera_sensor = esp_camera_sensor_get();
     const int exposure_value =
         camera_sensor == nullptr ? -1 : camera_sensor->status.aec_value;
@@ -1169,8 +1200,12 @@ esp_err_t streamHandler(httpd_req_t* request) {
         wifi_rssi_dbm, free_heap_bytes);
     if (header_length <= 0 ||
         static_cast<size_t>(header_length) >= sizeof(header)) {
-      if (!kReuseStreamFrameCopyBuffer) {
+      if (frame_copy_is_owned && !kReuseStreamFrameCopyBuffer) {
         heap_caps_free(frame_copy);
+      }
+      if (kStreamDirectCameraBuffer) {
+        esp_camera_fb_return(frame);
+        xSemaphoreGive(camera_mutex);
       }
       emitEvent("camera_stream", "FRAME_HEADER_OVERFLOW");
       stream_result = ESP_ERR_INVALID_SIZE;
@@ -1190,8 +1225,12 @@ esp_err_t streamHandler(httpd_req_t* request) {
           request, reinterpret_cast<const char*>(frame_copy), frame_length);
     }
     const uint64_t response_write_completed_us = monotonicUs();
-    if (!kReuseStreamFrameCopyBuffer) {
+    if (frame_copy_is_owned && !kReuseStreamFrameCopyBuffer) {
       heap_caps_free(frame_copy);
+    }
+    if (kStreamDirectCameraBuffer) {
+      esp_camera_fb_return(frame);
+      xSemaphoreGive(camera_mutex);
     }
     if (result != ESP_OK) {
       stream_result = result;
@@ -1205,7 +1244,6 @@ esp_err_t streamHandler(httpd_req_t* request) {
     previous_response_write_valid = true;
     updateFrameStats(false, false, true);
   }
-  heap_caps_free(reusable_frame_copy);
   updateFrameStats(true, false, false);
   return stream_result;
 }
@@ -1458,6 +1496,7 @@ bool startControlServer() {
   registerUri(control_httpd, "/api/snapshot", HTTP_GET, snapshotHandler);
   registerUri(control_httpd, "/save", HTTP_POST, saveWifiHandler);
   registerUri(control_httpd, "/forget", HTTP_POST, forgetWifiHandler);
+  registerUri(control_httpd, "/api/restart", HTTP_POST, restartHandler);
   emitEvent("http_control", "READY_PORT_80");
   return true;
 }

@@ -1,11 +1,13 @@
 #include <jni.h>
 #include <android/log.h>
+#include <android/bitmap.h>
 #include <arm_neon.h>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 
 #include <cstdint>
 #include <cstring>
+#include <array>
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -22,6 +24,22 @@ constexpr int kAlignedDepthWidth = 640;
 constexpr int kAlignedDepthHeight = 480;
 thread_local std::vector<float> decoded_depth_workspace(
     static_cast<size_t>(kOutputWidth) * kOutputHeight);
+constexpr int kRiskMapWidth = 343;
+constexpr int kRiskMapHeight = 259;
+constexpr int kRiskMapPixels = kRiskMapWidth * kRiskMapHeight;
+constexpr int kRiskCenterCapacity =
+    (kRiskMapWidth * 3 / 5 - kRiskMapWidth * 2 / 5) *
+    (kRiskMapHeight * 3 / 5 - kRiskMapHeight * 2 / 5);
+thread_local std::array<float, kRiskCenterCapacity> risk_center_workspace{};
+thread_local std::array<float, kRiskMapPixels> risk_sampled_workspace{};
+
+struct BitmapIngressMap {
+    std::array<uint32_t, kOutputWidth * 4> x{};
+    std::array<uint32_t, kInputHeight> y{};
+    uint32_t source_width = 0;
+    uint32_t source_height = 0;
+};
+thread_local BitmapIngressMap bitmap_ingress_map;
 
 struct DepthAlignMap {
     std::vector<int> x0 = std::vector<int>(kAlignedDepthWidth);
@@ -97,6 +115,8 @@ struct Preprocessor {
     }
 };
 
+uint16_t float_to_half_rte(float value);
+
 void pack_f32(const cv::Mat& input, float* output) {
     constexpr float means[] = {0.485f, 0.456f, 0.406f};
     constexpr float inverse_std[] = {1.0f / 0.229f, 1.0f / 0.224f, 1.0f / 0.225f};
@@ -166,8 +186,8 @@ void canonical_official_f32(const uint8_t* input, Preprocessor& preprocessor, fl
     constexpr double stds[] = {0.229, 0.224, 0.225};
     constexpr int plane = kOutputWidth * kOutputHeight;
     cv::parallel_for_(cv::Range(0, kInputHeight), [&](const cv::Range& range) {
-        for (int row = range.start; row < range.end; ++row) {
-            for (int column = 0; column < kOutputWidth; ++column) {
+      for (int row = range.start; row < range.end; ++row) {
+        for (int column = 0; column < kOutputWidth; ++column) {
                 const int table = column * 4;
                 for (int channel = 0; channel < 3; ++channel) {
                     const auto sample = [&](int tap) {
@@ -182,10 +202,10 @@ void canonical_official_f32(const uint8_t* input, Preprocessor& preprocessor, fl
                     preprocessor.horizontal[(row * kOutputWidth + column) * 3 + channel] = value;
                 }
             }
-        }
+      }
     });
     cv::parallel_for_(cv::Range(0, kOutputHeight), [&](const cv::Range& range) {
-        for (int row = range.start; row < range.end; ++row) {
+      for (int row = range.start; row < range.end; ++row) {
             float* red = output + row * kOutputWidth;
             float* green = output + plane + row * kOutputWidth;
             float* blue = output + 2 * plane + row * kOutputWidth;
@@ -203,6 +223,113 @@ void canonical_official_f32(const uint8_t* input, Preprocessor& preprocessor, fl
                     value = value + sample(3) * static_cast<double>(preprocessor.y_coefficients[table + 3]);
                     const float normalized = static_cast<float>((value - means[channel]) / stds[channel]);
                     output[channel * plane + row * kOutputWidth + column] = normalized;
+                }
+            }
+      }
+    });
+}
+
+void canonical_official_f16(const uint8_t* input, Preprocessor& preprocessor, uint16_t* output) {
+    constexpr double means[] = {0.485, 0.456, 0.406};
+    constexpr double stds[] = {0.229, 0.224, 0.225};
+    constexpr int plane = kOutputWidth * kOutputHeight;
+    cv::parallel_for_(cv::Range(0, kInputHeight), [&](const cv::Range& range) {
+        for (int row = range.start; row < range.end; ++row) {
+            for (int column = 0; column < kOutputWidth; ++column) {
+                const int table = column * 4;
+                for (int channel = 0; channel < 3; ++channel) {
+                    auto sample = [&](int tap) {
+                        const int source_column = preprocessor.x_indices[table + tap];
+                        return static_cast<double>(input[(row * kInputWidth + source_column) * 3 + channel]) / 255.0;
+                    };
+                    double value = sample(0) * preprocessor.x_coefficients[table];
+                    value += sample(1) * preprocessor.x_coefficients[table + 1];
+                    value += sample(2) * preprocessor.x_coefficients[table + 2];
+                    value += sample(3) * preprocessor.x_coefficients[table + 3];
+                    preprocessor.horizontal[(row * kOutputWidth + column) * 3 + channel] = value;
+                }
+            }
+        }
+    });
+    cv::parallel_for_(cv::Range(0, kOutputHeight), [&](const cv::Range& range) {
+        for (int row = range.start; row < range.end; ++row) {
+            const int table = row * 4;
+            for (int column = 0; column < kOutputWidth; ++column) {
+                for (int channel = 0; channel < 3; ++channel) {
+                    auto sample = [&](int tap) {
+                        const int source_row = preprocessor.y_indices[table + tap];
+                        return preprocessor.horizontal[(source_row * kOutputWidth + column) * 3 + channel];
+                    };
+                    double value = sample(0) * preprocessor.y_coefficients[table];
+                    value += sample(1) * preprocessor.y_coefficients[table + 1];
+                    value += sample(2) * preprocessor.y_coefficients[table + 2];
+                    value += sample(3) * preprocessor.y_coefficients[table + 3];
+                    const float normalized = static_cast<float>((value - means[channel]) / stds[channel]);
+                    output[channel * plane + row * kOutputWidth + column] = float_to_half_rte(normalized);
+                }
+            }
+        }
+    });
+}
+
+void canonical_official_bitmap_f16(const uint8_t* source, uint32_t source_width,
+                                   uint32_t source_height, uint32_t source_stride,
+                                   Preprocessor& preprocessor, uint16_t* output) {
+    constexpr double means[] = {0.485, 0.456, 0.406};
+    constexpr double stds[] = {0.229, 0.224, 0.225};
+    constexpr int plane = kOutputWidth * kOutputHeight;
+    if (bitmap_ingress_map.source_width != source_width ||
+        bitmap_ingress_map.source_height != source_height) {
+        for (int index = 0; index < kOutputWidth * 4; ++index) {
+            bitmap_ingress_map.x[index] = static_cast<uint32_t>(
+                static_cast<uint64_t>(preprocessor.x_indices[index]) * source_width /
+                static_cast<uint32_t>(kInputWidth)) * 4u;
+        }
+        for (int row = 0; row < kInputHeight; ++row) {
+            bitmap_ingress_map.y[row] = static_cast<uint32_t>(
+            static_cast<uint64_t>(row) * source_height /
+            static_cast<uint32_t>(kInputHeight));
+        }
+        bitmap_ingress_map.source_width = source_width;
+        bitmap_ingress_map.source_height = source_height;
+    }
+    // Match the admitted Bitmap ingress contract: nearest source pixel into
+    // 640x480 RGB, then the exact official bicubic order.
+    cv::parallel_for_(cv::Range(0, kInputHeight), [&](const cv::Range& range) {
+        for (int row = range.start; row < range.end; ++row) {
+            const auto* source_row = source + static_cast<size_t>(bitmap_ingress_map.y[row]) * source_stride;
+            for (int column = 0; column < kOutputWidth; ++column) {
+                const int table = column * 4;
+                for (int channel = 0; channel < 3; ++channel) {
+                    const auto sample = [&](int tap) {
+                        const uint32_t rgba_offset = bitmap_ingress_map.x[table + tap];
+                        return static_cast<double>(source_row[rgba_offset + channel]) / 255.0;
+                    };
+                    double value = sample(0) * preprocessor.x_coefficients[table];
+                    value += sample(1) * preprocessor.x_coefficients[table + 1];
+                    value += sample(2) * preprocessor.x_coefficients[table + 2];
+                    value += sample(3) * preprocessor.x_coefficients[table + 3];
+                    preprocessor.horizontal[(row * kOutputWidth + column) * 3 + channel] = value;
+                }
+            }
+        }
+    });
+    cv::parallel_for_(cv::Range(0, kOutputHeight), [&](const cv::Range& range) {
+        for (int row = range.start; row < range.end; ++row) {
+            const int table = row * 4;
+            for (int column = 0; column < kOutputWidth; ++column) {
+                for (int channel = 0; channel < 3; ++channel) {
+                    const auto sample = [&](int tap) {
+                        const int source_row = preprocessor.y_indices[table + tap];
+                        return preprocessor.horizontal[
+                            (source_row * kOutputWidth + column) * 3 + channel];
+                    };
+                    double value = sample(0) * preprocessor.y_coefficients[table];
+                    value += sample(1) * preprocessor.y_coefficients[table + 1];
+                    value += sample(2) * preprocessor.y_coefficients[table + 2];
+                    value += sample(3) * preprocessor.y_coefficients[table + 3];
+                    output[channel * plane + row * kOutputWidth + column] =
+                        float_to_half_rte(static_cast<float>((value - means[channel]) / stds[channel]));
                 }
             }
         }
@@ -366,6 +493,61 @@ Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeRunOfficialDirect(
 }
 
 extern "C" JNIEXPORT void JNICALL
+Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeRunOfficialDirectFp16(
+        JNIEnv* env, jobject, jlong handle, jobject input, jobject output) {
+    auto* preprocessor = reinterpret_cast<Preprocessor*>(handle);
+    const auto* input_address = static_cast<const uint8_t*>(env->GetDirectBufferAddress(input));
+    auto* output_address = static_cast<uint16_t*>(env->GetDirectBufferAddress(output));
+    const jlong input_capacity = env->GetDirectBufferCapacity(input);
+    const jlong output_capacity = env->GetDirectBufferCapacity(output);
+    const jlong required_output = static_cast<jlong>(kOutputElements) * 2;
+    if (preprocessor == nullptr || input_address == nullptr || output_address == nullptr ||
+        input_capacity < kInputBytes || output_capacity < required_output) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"),
+                      "invalid direct official-compatible FP16 buffers");
+        return;
+    }
+    canonical_official_f16(input_address, *preprocessor, output_address);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeRunOfficialBitmapFp16(
+        JNIEnv* env, jobject, jlong handle, jobject bitmap, jobject output) {
+    auto* preprocessor = reinterpret_cast<Preprocessor*>(handle);
+    if (preprocessor == nullptr || bitmap == nullptr) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"),
+                      "invalid Bitmap canonical preprocessor input");
+        return;
+    }
+    auto* output_address = static_cast<uint16_t*>(env->GetDirectBufferAddress(output));
+    const jlong output_capacity = env->GetDirectBufferCapacity(output);
+    const jlong required_output = static_cast<jlong>(kOutputElements) * 2;
+    if (output_address == nullptr || output_capacity < required_output) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"),
+                      "invalid Bitmap canonical output buffer");
+        return;
+    }
+    AndroidBitmapInfo info{};
+    if (AndroidBitmap_getInfo(env, bitmap, &info) != ANDROID_BITMAP_RESULT_SUCCESS ||
+        info.format != ANDROID_BITMAP_FORMAT_RGBA_8888 || info.width == 0 || info.height == 0) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"),
+                      "Bitmap must be non-empty RGBA_8888");
+        return;
+    }
+    void* pixels = nullptr;
+    if (AndroidBitmap_lockPixels(env, bitmap, &pixels) != ANDROID_BITMAP_RESULT_SUCCESS ||
+        pixels == nullptr) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalStateException"),
+                      "unable to lock Bitmap pixels");
+        return;
+    }
+    const auto* source = static_cast<const uint8_t*>(pixels);
+    canonical_official_bitmap_f16(source, info.width, info.height, info.stride,
+                                   *preprocessor, output_address);
+    AndroidBitmap_unlockPixels(env, bitmap);
+}
+
+extern "C" JNIEXPORT void JNICALL
 Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeConvertFp32ToFp16(
         JNIEnv* env, jobject, jobject input, jobject output, jint elements) {
     const auto* input_address = static_cast<const float*>(env->GetDirectBufferAddress(input));
@@ -406,6 +588,53 @@ Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeDecodeFp16ToFp32(
         output_address[index] = half_to_float_exact(input_address[index]);
     }
     env->ReleasePrimitiveArrayCritical(output, output_address, 0);
+}
+
+extern "C" JNIEXPORT jfloatArray JNICALL
+Java_com_linnan_blindassist_hftf_Dav2NativePreprocessor_nativeRiskSummary(
+    JNIEnv* env, jobject, jobject input) {
+    constexpr int map_width = kRiskMapWidth;
+    constexpr int map_height = kRiskMapHeight;
+    constexpr int map_pixels = kRiskMapPixels;
+    constexpr int source_width = kOutputWidth;
+    constexpr int source_height = kOutputHeight;
+    const auto* source = static_cast<const uint16_t*>(env->GetDirectBufferAddress(input));
+    const jlong capacity = env->GetDirectBufferCapacity(input);
+    if (source == nullptr || capacity < static_cast<jlong>(source_width) * source_height * 2) {
+        env->ThrowNew(env->FindClass("java/lang/IllegalArgumentException"),
+                      "invalid risk summary FP16 buffer");
+        return nullptr;
+    }
+    auto& center = risk_center_workspace;
+    auto& sampled = risk_sampled_workspace;
+    int center_count = 0;
+    int sampled_count = 0;
+    for (int row = 0; row < map_height; ++row) {
+        const int source_row = row * source_height / map_height;
+        for (int column = 0; column < map_width; ++column) {
+            const int source_column = column * source_width / map_width;
+            const float depth = half_to_float_exact(
+                source[source_row * source_width + source_column]);
+            if (!std::isfinite(depth) || depth < 0.1f || depth > 50.0f) continue;
+            sampled[sampled_count++] = depth;
+            if (column >= map_width * 2 / 5 && column < map_width * 3 / 5 &&
+                row >= map_height * 2 / 5 && row < map_height * 3 / 5) {
+                center[center_count++] = depth;
+            }
+        }
+    }
+    auto select = [](float* values, int count, int target) -> float {
+        if (count <= 0) return std::numeric_limits<float>::quiet_NaN();
+        std::nth_element(values, values + target, values + count);
+        return values[target];
+    };
+    const float center_value = select(center.data(), center_count, (center_count - 1) / 2);
+    const float near_value = select(sampled.data(), sampled_count,
+                                    static_cast<int>(0.1 * (sampled_count - 1)));
+    jfloat values[2] = {center_value, near_value};
+    jfloatArray output = env->NewFloatArray(2);
+    if (output != nullptr) env->SetFloatArrayRegion(output, 0, 2, values);
+    return output;
 }
 
 extern "C" JNIEXPORT void JNICALL

@@ -30,7 +30,8 @@ class AtomS3rMjpegFrameSource(
     private val executor: ExecutorService = Executors.newFixedThreadPool(3),
     private val clockSynchronizer: AtomS3rClockSynchronizer = AtomS3rClockSynchronizer(endpoint),
     decodeSampleSize: Int = 1,
-    private val maxFrameAgeMs: Long = 0L
+    private val maxFrameAgeMs: Long = 0L,
+    private val shouldDecode: () -> Boolean = { true },
 ) : FrameSource {
     private val baseEndpoint = endpoint.trim().trimEnd('/')
     private val streamUrl = baseEndpoint.replace(Regex(":\\d+$"), "") + ":81/stream"
@@ -217,6 +218,11 @@ class AtomS3rMjpegFrameSource(
                 latestPacket.also { latestPacket = null }
             } ?: continue
             try {
+                // The downstream latest-only processor may still be running a
+                // model invocation. Drop this packet before JPEG decode so a
+                // frame that cannot be delivered does not consume decoder,
+                // Bitmap, and GC time.
+                if (!shouldDecode()) continue
                 if (maxFrameAgeMs > 0L) {
                     val capturedAtNs = packet.mappedCaptureNs()
                     val ageMs: Long? = capturedAtNs?.let { capturedNs: Long ->
@@ -276,6 +282,9 @@ class AtomS3rMjpegFrameSource(
             val options = BitmapFactory.Options().apply {
                 inPreferredConfig = Bitmap.Config.ARGB_8888
                 inMutable = true
+                // Network JPEGs carry no display-density contract. Avoid any
+                // density scaling path while preserving decoded pixel geometry.
+                inScaled = false
                 inBitmap = candidate
                 inSampleSize = sampleSize
             }
@@ -436,24 +445,34 @@ class AtomS3rMjpegFrameSource(
     }
 
     internal object MjpegPartReader {
+        private val headerScratch = ThreadLocal.withInitial {
+            ByteArray(MAX_HEADER_LINE_BYTES)
+        }
+
         fun readPacket(
             input: BufferedInputStream,
             receivedAtNs: Long? = null,
             clockMapping: AtomS3rClockMapping? = null
         ): MjpegPacket {
-            val headerScratch = ByteArray(MAX_HEADER_LINE_BYTES)
+            val scratch = requireNotNull(headerScratch.get())
             var line: String
             do {
-                line = readLine(input, headerScratch)
+                line = readLine(input, scratch)
             } while (!line.startsWith("--"))
-            val headers = linkedMapOf<String, String>()
+            val headers = HashMap<String, String>(RETAINED_HEADER_NAMES.size)
             while (true) {
-                line = readLine(input, headerScratch)
+                line = readLine(input, scratch)
                 if (line.isEmpty()) break
                 val separator = line.indexOf(':')
                 require(separator > 0) { "Malformed MJPEG header: $line" }
-                headers[line.substring(0, separator).trim().lowercase(Locale.US)] =
-                    line.substring(separator + 1).trim()
+                for (name in RETAINED_HEADER_NAMES) {
+                    if (separator == name.length &&
+                        line.regionMatches(0, name, 0, name.length, ignoreCase = true)
+                    ) {
+                        headers[name] = line.substring(separator + 1).trim()
+                        break
+                    }
+                }
             }
             val length = headers["content-length"]?.toIntOrNull()
                 ?: error("Missing Content-Length")
@@ -514,6 +533,22 @@ class AtomS3rMjpegFrameSource(
         private const val BUFFER_SIZE = 64 * 1024
         private const val MAX_JPEG_BYTES = 2 * 1024 * 1024
         private const val MAX_HEADER_LINE_BYTES = 2048
+        private val RETAINED_HEADER_NAMES = arrayOf(
+            "content-length",
+            "x-sequence-id",
+            "x-frame-sequence",
+            "x-capture-timestamp-us",
+            "x-jpeg-ready-timestamp-us",
+            "x-device-send-start-timestamp-us",
+            "x-tof-timestamp-us",
+            "x-tof-age-at-jpeg-ready-us",
+            "x-tof-valid",
+            "x-tof-range-mm",
+            "x-wifi-rssi-dbm",
+            "x-previous-response-write-valid",
+            "x-previous-frame-sequence",
+            "x-previous-response-write-duration-us",
+        )
         private const val RECONNECT_DELAY_MS = 500L
         private const val CLOCK_SYNC_INTERVAL_MS = 30_000L
         private const val NANOS_PER_MICROSECOND = 1_000L

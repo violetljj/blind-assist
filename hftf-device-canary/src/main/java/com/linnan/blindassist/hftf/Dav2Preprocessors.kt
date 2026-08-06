@@ -1,5 +1,6 @@
 package com.linnan.blindassist.hftf
 
+import android.graphics.Bitmap
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -242,6 +243,37 @@ internal class Dav2NativePreprocessor : AutoCloseable {
         return fp16Output
     }
 
+    fun preprocessFp16CanonicalStrictDirectFused(rgb: ByteBuffer): ByteBuffer {
+        check(handle != 0L)
+        require(rgb.isDirect && rgb.limit() >= Dav2PreprocessContract.INPUT_BYTES)
+        fp16Output.clear()
+        nativeRunOfficialDirectFp16(handle, rgb, fp16Output)
+        fp16Output.position(0)
+        fp16Output.limit(Dav2PreprocessContract.OUTPUT_ELEMENTS * 2)
+        return fp16Output
+    }
+
+    /**
+     * Bitmap ingress variant of the admitted canonical FP16 route. The native
+     * side performs the same nearest-neighbour Bitmap -> 640x480 RGB sampling
+     * as [Dav2BitmapRgbConverter], then runs the exact canonical FP16 path.
+     */
+    fun preprocessFp16CanonicalStrictBitmap(bitmap: Bitmap): ByteBuffer {
+        check(handle != 0L)
+        fp16Output.clear()
+        nativeRunOfficialBitmapFp16(handle, bitmap, fp16Output)
+        fp16Output.position(0)
+        fp16Output.limit(Dav2PreprocessContract.OUTPUT_ELEMENTS * 2)
+        return fp16Output
+    }
+
+    fun riskSummary(input: ByteBuffer): FloatArray {
+        check(handle != 0L)
+        // QNN depth output is one FP16 plane (686x518), not the 3-channel input tensor.
+        require(input.isDirect && input.limit() >= Dav2PreprocessContract.PLANE * 2)
+        return nativeRiskSummary(input)
+    }
+
     /**
      * Runs the admitted FP32 OpenCV/NEON path first, then performs an integer,
      * bit-exact IEEE-754 round-to-nearest-ties-to-even binary32 -> binary16
@@ -320,7 +352,10 @@ internal class Dav2NativePreprocessor : AutoCloseable {
     private external fun nativeRun(handle: Long, input: ByteArray, output: ByteBuffer, fp16: Boolean)
     private external fun nativeRunOfficial(handle: Long, input: ByteArray, output: ByteBuffer)
     private external fun nativeRunOfficialDirect(handle: Long, input: ByteBuffer, output: ByteBuffer)
+    private external fun nativeRunOfficialDirectFp16(handle: Long, input: ByteBuffer, output: ByteBuffer)
+    private external fun nativeRunOfficialBitmapFp16(handle: Long, bitmap: Bitmap, output: ByteBuffer)
     private external fun nativeConvertFp32ToFp16(input: ByteBuffer, output: ByteBuffer, elements: Int)
+    private external fun nativeRiskSummary(input: ByteBuffer): FloatArray
     private external fun nativeDecodeFp16ToFp32(input: ByteBuffer, output: FloatArray, elements: Int)
     private external fun nativeDecodeResizeFp16AlignCorners(input: ByteBuffer, output: ByteBuffer)
     private external fun nativeCopyLastResizedHwcFp32(handle: Long, output: ByteBuffer)
@@ -335,6 +370,7 @@ internal class Dav2NativePreprocessor : AutoCloseable {
             System.loadLibrary("dav2_preprocess_native")
         }
     }
+
 }
 
 internal fun floatToHalfBits(value: Float): Short = android.util.Half.toHalf(value)
