@@ -4,6 +4,8 @@
 
 先读 [`REGISTRY.md`](REGISTRY.md)，再按职责进入一个 Module；HFTF/DepthART 的细分入口是
 [`hftf/INDEX.md`](hftf/INDEX.md)。这些索引只维护路径、职责和权限边界，不复制动态研究结论。
+结构审计使用 [`audit_research_structure.ps1`](audit_research_structure.ps1)，只读输出 Module
+合同和 HFTF support 迁移清单。
 
 新的研究路线必须创建 `scripts/research/<domain>/`，不得把轮次脚本重新平铺到 `scripts/` 根目录。每个 Module 的 `README.md` 至少包含以下合同：
 

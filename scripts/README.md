@@ -52,6 +52,7 @@
 - `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试。
 - `check_project_structure.ps1` / `test_check_project_structure.ps1`：脚本根 allowlist、开发日志预算、研究 Module 合同、内部路径和跨 Module import 门禁；仓库卫生检查会自动调用它。
 - `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档、research domain README/index 与本地链接门禁。
+- `audit_research_structure.ps1`：只读输出研究 Module 合同、HFTF 角色计数和 support 迁移清单。
 - `archive_apk.ps1`、`verify_release_apk.ps1`、`verify_apk_16kb.ps1`：APK 校验与归档。
 - `run_npu_candidate_acceptance.ps1`：SM-S9280/SM8650 上的独立 NPU 候选安装、QNN HTP runtime marker、正式包/数据不变式与候选专属卸载回滚门；不清除正式 App 数据。
 - `generate_qnn_preprocess_candidate.py`：生成并自校验隔离的 QNN 预处理候选；只写入 `artifacts.local/experiments/qnn-preprocess-fusion-v1/`，不修改 App assets，也不构成发布、默认路由或生产授权。
@@ -62,6 +63,7 @@
 
 - [研究职责总表](research/REGISTRY.md)：当前入口、部署、诊断、archive 与 support 分区。
 - [HFTF / DepthART 角色索引](research/hftf/INDEX.md)：`roles.json` 机器匹配规则和迁移合同。
+- [HFTF support 迁移队列](research/hftf/SUPPORT_MIGRATION_QUEUE.md)：按主题簇安全下沉历史文件。
 - [候选事件挖掘](research/candidate_event_mining/README.md)：discovery-only 候选池。
 - [公共实现](research/common/README.md)：跨域复用的共享 implementation。
 - [双环与其他历史模块](research/README.md)：只提供模块合同，不复制动态研究结论。
