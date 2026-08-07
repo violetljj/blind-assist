@@ -1,6 +1,6 @@
 # BlindAssist 项目冷启动状态
 
-状态：`current / NAVIGATION_ONLY`  
+状态：`current / NAVIGATION_ONLY`
 最后核验：2026-08-08
 
 > 新窗口首先读本页。目标是 30 秒内确定项目是什么、这次任务该读哪三个文件。
