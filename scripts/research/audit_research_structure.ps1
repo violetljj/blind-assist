@@ -1,7 +1,10 @@
 [CmdletBinding()]
 param(
     [string]$RepoRoot = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)),
-    [switch]$Json
+    [switch]$Json,
+    [ValidateSet('all','deployment','diagnostics','current','archive','support')]
+    [string]$Role = 'all',
+    [int]$MaxFiles = 20
 )
 
 $ErrorActionPreference = 'Stop'
@@ -23,10 +26,40 @@ $roleCounts = [ordered]@{}; $supportFiles = @()
 foreach ($role in @($roles.role_order)) { $roleCounts[$role] = 0 }
 foreach ($file in Get-ChildItem -LiteralPath $hftfRoot -Recurse -File) {
     $relative = [IO.Path]::GetRelativePath($hftfRoot, $file.FullName).Replace('\', '/'); $matched = $null
+    if ($relative -match '(^|/)(__pycache__|\.pytest_cache)/' -or $relative -match '\.pyc$') { continue }
     foreach ($role in @($roles.role_order)) { foreach ($pattern in @($roles.roles.$role.patterns)) { if ($relative -match $pattern) { $matched=$role; break } }; if ($matched) { break } }
     if (-not $matched) { $matched='unmatched' }; if (-not $roleCounts.Contains($matched)) { $roleCounts[$matched]=0 }; $roleCounts[$matched]++
     if ($matched -eq 'support') { $supportFiles += $relative }
 }
-$report = [pscustomobject]@{ repo_root=$root; research_module_count=@($moduleRows).Count; modules=@($moduleRows); hftf_role_counts=$roleCounts; hftf_support_file_count=$supportFiles.Count; hftf_support_files=@($supportFiles); next_action=if($supportFiles.Count){'Classify support files in bounded batches.'}else{'No support files remain.'} }
+$selectedFiles = if ($Role -eq 'all') { @() } else {
+    Get-ChildItem -LiteralPath $hftfRoot -Recurse -File | ForEach-Object {
+        $relative = [IO.Path]::GetRelativePath($hftfRoot, $_.FullName).Replace('\', '/')
+        if ($relative -match '(^|/)(__pycache__|\.pytest_cache)/' -or $relative -match '\.pyc$') { return }
+        $matched = $null
+        foreach ($candidate in @($roles.role_order)) {
+            foreach ($pattern in @($roles.roles.$candidate.patterns)) {
+                if ($relative -match $pattern) { $matched=$candidate; break }
+            }
+            if ($matched) { break }
+        }
+        if ($matched -eq $Role) { $relative }
+    } | Sort-Object | Select-Object -First ([Math]::Max(0, $MaxFiles))
+}
+$report = [pscustomobject]@{
+    repo_root=$root
+    research_module_count=@($moduleRows).Count
+    modules=@($moduleRows)
+    hftf_role_counts=$roleCounts
+    selected_role=$Role
+    selected_files=@($selectedFiles)
+    hftf_support_file_count=$supportFiles.Count
+    hftf_support_files=if ($Role -eq 'all') { @($supportFiles | Select-Object -First ([Math]::Max(0, $MaxFiles))) } else { @() }
+    next_action=if($supportFiles.Count){'Classify support files in bounded batches.'}else{'No support files remain.'}
+}
 if ($Json) { $report | ConvertTo-Json -Depth 8; exit 0 }
-Write-Host "Research structure audit: $($report.research_module_count) module(s)"; $report.modules | Format-Table module,readme,file_count,missing_contract_markers -AutoSize; $roleCounts.GetEnumerator() | Format-Table Name,Value -AutoSize; Write-Host "HFTF support files: $($supportFiles.Count)"; $supportFiles | Select-Object -First 20 | ForEach-Object { Write-Host " - $_" }; Write-Host "Next action: $($report.next_action)"
+Write-Host "Research structure audit: $($report.research_module_count) module(s)"
+$roleCounts.GetEnumerator() | Format-Table Name,Value -AutoSize
+if ($Role -eq 'all') { Write-Host "HFTF support files: $($supportFiles.Count)" } else { Write-Host "Selected role: $Role" }
+@($selectedFiles) | ForEach-Object { Write-Host " - $_" }
+if ($Role -eq 'all') { @($supportFiles | Select-Object -First ([Math]::Max(0, $MaxFiles))) | ForEach-Object { Write-Host " - $_" } }
+Write-Host "Next action: $($report.next_action)"
