@@ -2,6 +2,7 @@
 
 ## Project boundaries
 
+- 新窗口冷启动：先读 [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)，按其任务矩阵最多继续读一个分类 current 和一个明确的路线/合同/测试入口。除非用户要求历史追溯、复现或审计，不扫描 archive、snapshot、全量日志、`artifacts.local/` 或无关研究域。
 - BlindAssist is a native Android Kotlin multi-module assistive prototype: CameraX captures frames, local TFLite YOLO detects objects, and a rule layer drives speech, vibration, and Compose feedback.
 - Keep module responsibilities stable: `:app` is the shell and assets; `:feature:assist` coordinates runtime; `:core:assist` owns pure risk logic; `:core:vision` owns detection; `:core:device` owns Android device adapters; `:core:ui` owns UI state and rendering.
 - Do not casually add large frameworks, replace/remove model assets, or change CameraX, TFLite, coordinate mapping, risk rules, or feedback behavior without focused tests and documented evidence.

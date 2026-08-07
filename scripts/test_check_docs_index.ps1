@@ -16,7 +16,9 @@ function Write-Utf8File([string]$Path, [string]$Content) {
 function Assert-IndexResult([string]$Name, [string]$IndexText, [string[]]$OtherFiles, [bool]$ShouldPass) {
     $docsRoot = Join-Path $script:testRoot $Name
     New-Item -ItemType Directory -Force -Path $docsRoot | Out-Null
+    $IndexText = $IndexText + "`n[project state](PROJECT_STATE.md)"
     Write-Utf8File (Join-Path $docsRoot 'README.md') $IndexText
+    Write-Utf8File (Join-Path $docsRoot 'PROJECT_STATE.md') '# fixture'
     foreach ($file in $OtherFiles) {
         Write-Utf8File (Join-Path $docsRoot $file) '# fixture'
     }
@@ -62,6 +64,7 @@ try {
     $missingCategoryRoot = Join-Path $testRoot 'research-missing-category'
     New-Item -ItemType Directory -Force -Path (Join-Path $missingCategoryRoot 'research') | Out-Null
     Write-Utf8File (Join-Path $missingCategoryRoot 'README.md') '# docs'
+    Write-Utf8File (Join-Path $missingCategoryRoot 'PROJECT_STATE.md') '# fixture'
     Write-Utf8File (Join-Path $missingCategoryRoot 'research/README.md') '[algorithm](ALGORITHM_RESEARCH_CURRENT.md)'
     Write-Utf8File (Join-Path $missingCategoryRoot 'research/ALGORITHM_RESEARCH_CURRENT.md') '# algorithm'
     & $script:IndexScript -DocsRoot $missingCategoryRoot

@@ -12,6 +12,7 @@
 
 | 需求 | 唯一入口 | 不应承担该职责的文件 |
 | --- | --- | --- |
+| 新窗口项目状态、任务分类和最小读取路径 | `docs/PROJECT_STATE.md` | 全量 `README.md`、`DEVELOPMENT_LOG.md`、archive/snapshot |
 | 当前产品能力、版本、最短构建入口 | `README.md` | `idea.md`、日期化实验报告 |
 | 已发布或用户可见变化 | `CHANGELOG.md` | 研究实验日志 |
 | 当前 SANPO 状态、硬门、禁止事项、下一步 | `docs/SANPO_CURRENT_STATUS.md` | `idea.md`、`CHANGELOG.md` |
@@ -37,6 +38,7 @@
 - `DEVELOPMENT_LOG.md` 只追加有实际项目变化的简洁条目；保留历史原文，不为美化时间线改写旧结论。
 - `idea.md` 只保留待决方向。实验结束后写一条简短决策并链接证据，而不是复制实验流水。
 - 新的顶层 `docs/*.md` 必须在 `docs/README.md` 中列为 `current`、`snapshot` 或 `archive`；运行 `scripts/check_docs_index.ps1`。
+- `docs/PROJECT_STATE.md` 是冷启动导航，不复制研究结论；任务开始时先读它，再按任务类型只读一个分类 current 和一个明确的路线/合同/测试入口。
 
 ## 历史与归档
 

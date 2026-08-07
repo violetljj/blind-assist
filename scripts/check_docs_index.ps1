@@ -13,6 +13,13 @@ if (-not (Test-Path -LiteralPath $indexPath)) {
 $indexText = Get-Content -LiteralPath $indexPath -Raw -Encoding utf8
 $failures = New-Object System.Collections.Generic.List[string]
 
+if (-not (Test-Path -LiteralPath (Join-Path $docsRootPath 'PROJECT_STATE.md') -PathType Leaf)) {
+    $failures.Add('Cold-start navigation file is missing: PROJECT_STATE.md')
+}
+elseif ($indexText -notmatch [regex]::Escape('PROJECT_STATE.md')) {
+    $failures.Add('Documentation index does not link cold-start navigation: PROJECT_STATE.md')
+}
+
 Get-ChildItem -LiteralPath $docsRootPath -File -Filter *.md |
     Where-Object { $_.Name -ne 'README.md' } |
     Sort-Object Name |
