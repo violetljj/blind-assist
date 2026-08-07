@@ -58,6 +58,11 @@
 
 同一结论不得同时新增多份职责重叠的 snapshot、amendment、receipt 总结和 handoff。
 算法路线总表只保留短摘要和唯一 successor；详细研究史进入领域 archive，不在 current README 重复维护。
+启动新算法路线时，必须先建立短 current 入口并登记到
+`docs/research/ALGORITHM_ROUTE_REGISTRY.md`，写明主张、状态、唯一真源、唯一 successor、
+禁止动作和默认 App 权限。原路线若不再承担当前执行职责，立即降级为 `closed`、`paused`
+或 `diagnostic`，其详细 README、协议和结果移入同域 `archive/`；不得让旧路线继续以“下一步”
+形式悬挂在 current 页面。
 优先更新一个 current 入口，并让详细机器证据留在 artifact。非阻断文案、命名和未来
 审计便利不单独立项，不得成为算法研究 blocker。
 

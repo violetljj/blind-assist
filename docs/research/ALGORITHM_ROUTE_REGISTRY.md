@@ -15,5 +15,6 @@
 ## 状态与权限规则
 
 - `current` 入口只维护摘要、权限和唯一 successor；日期化结果属于 `snapshot`，完整流水属于 `archive`。
+- 新路线先登记短 current 入口，再开始实验；旧路线退出当前执行职责后必须转为 `closed`、`paused` 或 `diagnostic`，详细材料归档到同域 `archive/`。
 - `closed`、`paused`、`diagnostic` 路线没有隐含的下一步；后继必须在当前真源中显式命名并绑定新的问题、数据或实现差异。
 - 任何研究结果都不自动修改正式 App、默认模型、生产权限或安全结论。
