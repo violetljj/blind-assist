@@ -49,8 +49,8 @@
       "scope": "qnn_htp_operator_diagnostics",
       "destination": "diagnostics",
       "files": [
-        "run_qnn_detailed_operator_profile_r0.ps1",
-        "run_qnn_htp_linting_profile_r0.ps1",
+        "diagnostics/depthart/run_qnn_detailed_operator_profile_r0.ps1",
+        "diagnostics/depthart/run_qnn_htp_linting_profile_r0.ps1",
         "diagnostics/depthart/analyze_qnn_detailed_operator_profile.py",
         "diagnostics/depthart/analyze_qnn_htp_linting_profile.py",
         "diagnostics/depthart/qnn_htp_linting_config_r0.json",

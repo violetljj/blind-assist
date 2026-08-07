@@ -5,8 +5,8 @@
 ## 稳定 Interface
 
 本目录是 QNN/HTP operator profile、linting 和资源重叠诊断的规范入口。
-Python 分析器和 linting 配置已物理迁入本目录；旧路径保留兼容 shim。
-设备运行脚本仍暂留在 `scripts/research/hftf/`，待设备命令路径回归后再迁移。
+Python 分析器、linting 配置和设备运行脚本已物理迁入本目录；旧路径保留兼容 shim。
+设备脚本只产生部署诊断证据，不改变默认 App。
 
 ## 输出
 
