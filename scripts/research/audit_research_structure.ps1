@@ -26,7 +26,7 @@ $roleCounts = [ordered]@{}; $supportFiles = @()
 foreach ($candidateRole in @($roles.role_order)) { $roleCounts[$candidateRole] = 0 }
 foreach ($file in Get-ChildItem -LiteralPath $hftfRoot -Recurse -File) {
     $relative = [IO.Path]::GetRelativePath($hftfRoot, $file.FullName).Replace('\', '/'); $matched = $null
-    if ($relative -match '(^|/)(__pycache__|\.pytest_cache)/' -or $relative -match '\.pyc$') { continue }
+    if ($relative -match '(^|/)(__pycache__|\.pytest_cache|\.ruff_cache|\.mypy_cache)/' -or $relative -match '\.pyc$') { continue }
     foreach ($candidateRole in @($roles.role_order)) { foreach ($pattern in @($roles.roles.$candidateRole.patterns)) { if ($relative -match $pattern) { $matched=$candidateRole; break } }; if ($matched) { break } }
     if (-not $matched) { $matched='unmatched' }; if (-not $roleCounts.Contains($matched)) { $roleCounts[$matched]=0 }; $roleCounts[$matched]++
     if ($matched -eq 'support') { $supportFiles += $relative }
@@ -34,7 +34,7 @@ foreach ($file in Get-ChildItem -LiteralPath $hftfRoot -Recurse -File) {
 $selectedFiles = if ($Role -eq 'all') { @() } else {
     Get-ChildItem -LiteralPath $hftfRoot -Recurse -File | ForEach-Object {
         $relative = [IO.Path]::GetRelativePath($hftfRoot, $_.FullName).Replace('\', '/')
-        if ($relative -match '(^|/)(__pycache__|\.pytest_cache)/' -or $relative -match '\.pyc$') { return }
+        if ($relative -match '(^|/)(__pycache__|\.pytest_cache|\.ruff_cache|\.mypy_cache)/' -or $relative -match '\.pyc$') { return }
         $matched = $null
         foreach ($candidateRole in @($roles.role_order)) {
             foreach ($pattern in @($roles.roles.$candidateRole.patterns)) {
