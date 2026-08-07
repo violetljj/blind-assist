@@ -1,0 +1,13 @@
+{
+  "schema": "blindassist_depthart_admission_r1_result",
+  "protocol_id": "DEPTHART_ADMISSION_R1",
+  "terminal": "DIAGNOSTIC_COMPLETE_DEPLOYMENT_NOT_EVALUABLE",
+  "r0_terminal_immutable": "DEPTHART_S_METRIC_INDOOR_R0_QUALITY_NOT_ADMITTED",
+  "research_mainline": "DEPTHART_PREFERRED_EXPERIMENTAL_BACKBONE",
+  "formal_admission": "NOT_EVALUATED_NO_NEW_HOLDOUT_AND_NO_DEPLOYMENT_EVIDENCE",
+  "a0": {"status": "PASS", "intrinsics_transform_consistent": true, "crop_or_padding": false},
+  "a1_metric": {"false_block_rate": 0.030985915492957747, "false_block_decisions": 33, "false_block_frames": 31, "dominant_band": "right", "dominant_horizon_m": 1.5, "interpretation": "clustered_boundary_behavior_not_uniform_noise"},
+  "a2_relative_truth_aligned": {"scale_authority": "NONE_TRUTH_ALIGNED_DIAGNOSTIC_ONLY", "clearance_mae_m": 0.16384093365553398, "false_clear_rate": 0.08333333333333333, "false_block_rate": 0.020599250936329586, "temporal_clearance_delta_mae_m": 0.12185385791519279, "interpretation": "metric_camera_adapter_contributes_part_of_false_block_gap_but_backbone_geometry_boundary_residual_remains"},
+  "a3": {"status": "NOT_EVALUABLE", "onnx_graph_generated": false, "qnn_converter_available": false, "htp_evaluated": false},
+  "authority": {"android_default": false, "production": false, "safety": false, "new_thresholds_applied_to_r0": false}
+}

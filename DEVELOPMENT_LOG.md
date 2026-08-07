@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-07（Asia/Hong_Kong）；执行者：Codex。完成 `DEPTHART_ADMISSION_R1` A3 deployment preflight：PyTorch 2.11 新 exporter 在 `depthart.selective_scan` custom op translate 阶段停止，legacy exporter 又因缺少 `depthart_selective_scan_cuda` 停止；本机亦未找到 QAIRT/QNN converter/runtime 工具。没有生成 ONNX graph，故 A3 严格记为 `NOT_EVALUABLE / DEPLOYMENT_PREFLIGHT_BLOCKED`，不产生 ONNX parity、QNN、HTP、Android 或生产 authority。R0 `FAIL` 与 DepthART 研发主线边界不变。receipt 见 `artifacts.local/evidence/hftf/depthart-admission-r1/a3-onnx-qnn-preflight.json`。
+- 时间：2026-08-07（Asia/Hong_Kong）；执行者：violjjet。根据 R0 终态启动
+  `DEPTHART_ADMISSION_R1`，明确 R0 `FAIL` 永久不改写，但将 DepthART 设为研发主力候选。
+  冻结 A0 内参/预处理审计、A1 false-block 分解与 contact sheet、A2 relative truth-aligned
+  diagnostic control、A3 ONNX/QNN graph preflight；relative 的 truth scale 不具部署权威，
+  R1 新 holdout 的非对称 false-clear/false-block 规则只能预注册后使用。
 - 时间：2026-08-07（Asia/Hong_Kong）；执行者：violjjet。冻结
   `DEPTHART_ADMISSION_R0`：保留 DA2 metric 518 canonical 为 baseline/teacher，唯一
   首轮候选绑定官方 DepthART 提交 `0384521` 与 indoor S checkpoint
