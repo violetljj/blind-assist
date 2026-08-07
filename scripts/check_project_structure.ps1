@@ -253,7 +253,9 @@ foreach ($path in $repoFiles) {
     if (
         $path.StartsWith($researchPrefix, [StringComparison]::OrdinalIgnoreCase) -or
         $referenceSourceAllowlist -contains $path -or
-        $immutableReferenceExceptionPaths.Contains($path)
+        $immutableReferenceExceptionPaths.Contains($path) -or
+        @($policy.historical_reference_skip_prefixes | ForEach-Object { Normalize-RepoPath ([string]$_) } |
+            Where-Object { $path.StartsWith($_, [StringComparison]::OrdinalIgnoreCase) }).Count -gt 0
     ) {
         continue
     }

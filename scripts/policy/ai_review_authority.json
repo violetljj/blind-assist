@@ -10,7 +10,8 @@
     "scripts/test_check_project_structure.ps1",
     "docs/AI_REVIEW_GOVERNANCE.md",
     "docs/CODEX_TASK_HANDOFF_TEMPLATE.md",
-    "docs/CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md"
+    "docs/CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md",
+    "docs/research/hftf/HFTF_STAGE_C_D6_SANPO_PUBLIC_REAL_VETO_REVIEW_EXPORT_2026-08-02.md"
   ],
   "scan_paths": [
     "scripts/finalize_sanpo_sequence_evalset.py",

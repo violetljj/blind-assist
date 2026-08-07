@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts import refresh_dataset_master_ledger_prefix as refresh
+from scripts.research.data_contamination_audit_r0 import refresh_dataset_master_ledger_prefix as refresh
 
 
 class PrefixDiscoveryTest(unittest.TestCase):

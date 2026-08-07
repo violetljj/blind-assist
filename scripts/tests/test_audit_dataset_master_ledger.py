@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts import audit_dataset_master_ledger as ledger
+from scripts.research.data_contamination_audit_r0 import audit_dataset_master_ledger as ledger
 
 
 class ArkitScenesDiscoveryTest(unittest.TestCase):

@@ -22,6 +22,8 @@
     "artifacts.local/"
   ],
   "internal_reference_source_allowlist": [
+    "configs/dav2_temporal_392_student_p3_r0_1_activation_bindings.json",
+    "scripts/run_research_contract_tests.py",
     "configs/ustrf_route_target_r2_l1x_l2p_prereg_r1.json",
     "configs/ustrf_route_target_r2_l1x_l2p_transport_amendment_a1.json",
     "configs/ustrf_route_target_l1e_materialization_recovery_r3_canary.json",
@@ -36,6 +38,9 @@
     "scripts/run_dual_loop_target_local_background_warp_residual_r0.py",
     "scripts/run_public_video_edge_inference.ps1",
     "scripts/test_check_project_structure.ps1"
+  ],
+  "historical_reference_skip_prefixes": [
+    "docs/"
   ],
   "immutable_internal_reference_exceptions": [
     {

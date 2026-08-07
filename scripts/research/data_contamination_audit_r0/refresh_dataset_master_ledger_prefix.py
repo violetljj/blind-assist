@@ -15,9 +15,9 @@ import time
 from pathlib import Path
 
 try:
-    import audit_dataset_master_ledger as ledger
+    from . import audit_dataset_master_ledger as ledger
 except ModuleNotFoundError:  # Imported as scripts.refresh_dataset_master_ledger_prefix.
-    from scripts import audit_dataset_master_ledger as ledger
+    from scripts.research.data_contamination_audit_r0 import audit_dataset_master_ledger as ledger
 
 
 def discover_prefix(root_id: str, root: Path, prefix: Path) -> list[ledger.FileCandidate]:
