@@ -14,6 +14,7 @@
 | [LOCAL_ARTIFACTS.md](LOCAL_ARTIFACTS.md) | current | `artifacts.local/` 本地产物契约 |
 | [CODEX_TASK_HANDOFF_TEMPLATE.md](CODEX_TASK_HANDOFF_TEMPLATE.md) | current | 多任务长任务的断点、边界与换窗口续作模板 |
 | [CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md](CODEX_TASK_HANDOFF_INDEX_TEMPLATE.md) | current | 多任务交接索引模板 |
+| [CODEX_WORKFLOW.md](CODEX_WORKFLOW.md) | current | 六项执行合同、最小读取、工具输出预算、任务切换与共享工作树交付 |
 | [DOCUMENT_GOVERNANCE.md](DOCUMENT_GOVERNANCE.md) | current | 文档职责、真源、历史保留与维护规则 |
 | [RESEARCH_GOVERNANCE.md](RESEARCH_GOVERNANCE.md) | current | 分阶段最小证据包、科学/协议/权限三轴报告、薄修订、失败学习和反官僚约束 |
 | [ENGINEERING_LEARNING_LOOP.md](ENGINEERING_LEARNING_LOOP.md) | current | 项目级异常识别、自我迭代、防复发与黑盒长任务规则 |

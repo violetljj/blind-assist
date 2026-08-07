@@ -1,103 +1,194 @@
 # BlindAssist agent rules
 
-## Project boundaries
+## 1. Scope and hard boundaries
 
-- 新窗口冷启动：先读 [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)，按其任务矩阵最多继续读一个分类 current 和一个明确的路线/合同/测试入口。除非用户要求历史追溯、复现或审计，不扫描 archive、snapshot、全量日志、`artifacts.local/` 或无关研究域。`PROJECT_STATE.md` 是稳定导航，不得复制动态研究状态。
-- BlindAssist is a native Android Kotlin multi-module assistive prototype: CameraX captures frames, local TFLite YOLO detects objects, and a rule layer drives speech, vibration, and Compose feedback.
-- Keep module responsibilities stable: `:app` is the shell and assets; `:feature:assist` coordinates runtime; `:core:assist` owns pure risk logic; `:core:vision` owns detection; `:core:device` owns Android device adapters; `:core:ui` owns UI state and rendering.
-- Do not casually add large frameworks, replace/remove model assets, or change CameraX, TFLite, coordinate mapping, risk rules, or feedback behavior without focused tests and documented evidence.
-- Describe the product cautiously: it is an assistive prototype and must not be represented as a substitute for human safety judgment.
+- The only BlindAssist repository root is `E:\linnan\linnan`; `E:\linnan` is only
+  the workspace container, and `app/` is only the Android application module.
+  Run Git, Gradle, tests, and project edits from the repository root.
+- BlindAssist is an Android/Kotlin assistive prototype. Keep the module
+  boundaries stable: `:app` owns the shell/assets, `:feature:assist` runtime
+  coordination, `:core:assist` pure risk logic, `:core:vision` detection,
+  `:core:device` Android adapters, and `:core:ui` UI state/rendering.
+- Do not represent the prototype as a substitute for human safety judgment.
+  Do not fabricate device measurements, consent, licenses, credentials, user
+  decisions, external authorization, or objective ground truth.
+- Do not casually add large frameworks, replace/remove model assets, or change
+  CameraX, TFLite, coordinate mapping, risk rules, permissions, or feedback
+  behavior without focused verification and documented evidence.
+- Do not commit SDKs, caches, virtual environments, downloads, datasets, model
+  payloads, device logs, screenshots, raw benchmark output, credentials, or
+  other machine-local artifacts. Project-local payloads belong under ignored
+  `artifacts.local/`; shared tools belong under `E:\codex-tools`.
+- Treat pre-existing and concurrent working-tree changes as user-owned. Do not
+  edit, revert, stage, commit, move, or delete them unless they are explicitly
+  included in the task.
 
-## Research priority and evidence
+## 2. Git and change ownership
 
-- Before research or a materially risky execution, classify the work into one of three modes. The mode sets the minimum process; it never upgrades evidence or authorizes protected outcomes:
-  - `ROUTINE_ENGINEERING`: ordinary code, documentation, tests, builds, or low-risk diagnostics with no research claim or protected outcome. Use focused verification; do not require stage selection, research receipts/hashes, multi-Agent review, one-shot execution, or guarded host preflight by default.
-  - `REVERSIBLE_EXPLORATION`: Discovery/Canary/Development or a repeatable diagnostic that can stop and rerun. Record the question or hypothesis, source/data access, implementation and command, scoped output, timeout/progress, result, limitations, and next action. Use discovery/development data only; do not access protected confirmation outcomes or present the result as confirmation. Deterministic checks are normally sufficient; full hash-bound receipts, dual-Agent review, third-party adjudication, and guarded host preflight are not default requirements.
-  - `FORMAL_CONFIRMATION`: Confirmation/Deployment, protected outcome access, claim-critical or terminal-changing evaluation, one-shot/irreversible execution, or high-risk external action. Freeze the protocol, data, implementation, statistics, and missing-data handling; use the required validator, receipts/hashes, risk-tier review, and host preflight only where the relevant policy triggers them.
-- Follow [progressive research governance](docs/RESEARCH_GOVERNANCE.md) for the full stage/profile mapping: `DISCOVERY/CANARY -> CANARY_LITE`, `DEVELOPMENT -> DEVELOPMENT_STANDARD`, and `CONFIRMATION/DEPLOYMENT -> CONFIRMATION_STRICT`. Do not impose confirmation-grade controls on reversible exploration merely because the templates or validators exist.
-- Thesis, graduation-project, demo, and competition work defaults to reversible `DEVELOPMENT_STANDARD` unless the user explicitly activates final Confirmation. Development may reuse declared development/consumed data, repair operational faults in a new evidence version, rerun bounded candidates, and benchmark host/device runtime before final model selection. It does not require one-shot execution, per-file SHA freezing, a full hash chain, or bottom-up independent recomputation by default.
-- Consumed data is explicitly reusable for Development when its prior access is disclosed. Label the strongest honest role, such as `PROJECT_CONSUMED_DEVELOPMENT`, `OPERATOR_UNSEEN_EXTERNAL_REPLICATION`, or `REGRESSION_ONLY`; do not block a useful experiment merely because the payload was consumed. “Independent” on consumed data may describe a frozen evaluator, independent implementation check, disjoint parent/session, or a candidate that was not designed on that cohort, but never silently means globally fresh Confirmation. Results may guide Development and thesis mechanism claims at that disclosed level; they cannot restore fresh, pristine, or Confirmation authority.
-- A failed formal gate or `NOT_EVALUABLE` terminal does not make the underlying data, supported rows, diagnostics, counterexamples, or implementation unusable. Reuse them pragmatically for Development, debugging, regression, threshold-free source characterization, and the next candidate whenever they provide information gain; preserve the formal terminal and state the narrower practical-use decision instead of discarding useful work or pretending the gate passed.
-- Discovery does not consume a fresh holdout by default. Before candidate utility work, fully cover small label mappings, mask decoders, tensor layouts, and schema adapters with synthetic canaries. Separate device work into `ALGORITHM_SELECTION_BENCHMARK`, which may rank candidates in Development, and `PLATFORM_ENGINEERING_BENCHMARK`, which checks backend/build/operator/memory/thermal feasibility without ranking the algorithm; neither creates Confirmation or product-safety authority.
-- A pre-metric schema, decoder, dependency, runner, or device-control failure closes only the affected evidence version and may be repaired and rerun on the same Development data with a lightweight incident record. If observed claim metrics influence an algorithm or threshold change, that data becomes Development-only for the changed candidate; a later final Confirmation requires explicitly activated confirmation authority and appropriately independent data.
-- The [dual-loop current entry](docs/research/dual-loop/README.md) and [RCLE current entry](docs/research/rcle/README.md) own changing stages, terminals, authority, and next actions. Formal work, or exploration that touches an existing claim, protocol, burned data, or protected authority, must read the relevant entry. Standalone low-risk exploration need not wait on an unrelated governance reconciliation. If a relevant current entry is contradictory or lacks tracked authority, fail closed only for formal execution, claim creation/consumption, protected outcome access, and successor-authority inference; record the issue before continuing any isolated diagnostic.
-- Historical USTRF, RCLE, and other closed programs retain their roles and terminals in their current entries. Precursor code, documents, and receipts do not prove that a later phase or gate completed.
-- Treat SANPO and other candidate-model work as research by default unless a task explicitly targets a release or runtime integration. Prioritize theoretical progress, larger valid datasets, controlled ablations, and reproducible quantitative evidence over immediate engineering delivery.
-- Use the project research-style split: default new thesis/discovery work is `WILD_LAB`, where breakthrough
-  hypotheses may use pseudo-labels, synthetic/cross-dataset data, large offline teachers, and exceed current
-  Android/model-size/default-YOLO constraints; `EVIDENCE_TRACK` is activated only for confirmation, deployment,
-  or claim-critical questions. Wild Lab still requires a hypothesis, minimal discriminating experiment, budget,
-  stop condition, provenance, and claim ceiling. Lack of safety authority must not block ordinary training,
-  algorithm comparison, mechanism research, thesis results, or demos.
-- Do not reject or delay a research hypothesis solely because it exceeds the current Android latency, model-size, default-model, release, or deployment constraints. Keep such experiments isolated from production assets and report deployment metrics separately when they are measured.
-- For research claims, match rigor to mode and stage. Exploration may adapt diagnostics and debug on explicitly burned development data; formal confirmation must freeze the hypothesis, independent split, protocol, thresholds, statistics, and missing-data handling before outcome access. Prefer worst-seed, worst-session, worst-scene, event-level recall and false-alert rate, boundary/unknown behavior, calibration or abstention, and repeatability over a single best aggregate score.
-- Scientific FAIL/NOT_EVALUABLE, repeated material incidents, and failures that change the mainline must produce the full learning record: observation, supported inference, alternative explanations, challenged constraints, next falsifiable hypotheses, reuse roles and information gained. A one-off path, JSON, dependency, runner, network, or device-control INVALID may use a lightweight operational incident receipt when no scientific outcome was accessed; it closes only the affected evidence version. Preserve failed data/code as negative evidence, diagnostics, regression fixtures, canaries, counterexamples or stress cases when lawful; role changes never upgrade them to unseen confirmation evidence.
-- Agents may challenge user-proposed rules, `AGENTS.md`, current protocols, thresholds and governance—including progressive governance itself—when evidence shows proxy mismatch, excessive terminal scope, missing rationale or repeated low-information blocking. No project rule is permanently constitutional. Do not silently bypass a current rule: record the challenge, identify what protection is actually needed, and adopt a replacement through a reviewed current document or contract.
-- Optimize research rigor for thesis, graduation-project, demo and competition sufficiency before optional product certification. A rule that cannot justify itself through information gain, reproducibility, claim integrity, or an external safety/legal requirement should be downgraded to a guardrail/diagnostic or removed. Do not let deployment-grade human/safety/device requirements block an otherwise honest mechanism-level thesis result.
-- Do not spend the active research budget on real-user efficacy, independent-walking certification, full device safety closure, or production reliability unless the user explicitly activates `DEPLOYMENT`. Until then, the sufficient boundary is an honest, reproducible thesis mechanism result plus a clearly labeled research demo; retain the low-cost disclaimer that the prototype is not validated for independent assistive use.
-- Treat efficiency as a research objective. Use the minimum sufficient rigor and verification for the actual impact: prose-only edits normally need focused document/link review, protocol or validator changes need focused contract tests, and broad regressions are reserved for shared interfaces, core algorithms, builds, releases, or uncertain blast radius. Reversible shortcuts, reuse, automation, and independent parallel work are encouraged when disclosed; never trade away evidence honesty, confirmation isolation, prior-result immutability, or irreversible risk control.
-- Follow [the engineering learning loop](docs/ENGINEERING_LEARNING_LOOP.md) across research, code, tooling, devices, and long tasks. Establish expected time, progress cadence, outputs, and resource shape before expensive or irreversible work. Treat unexplained runtime overruns, missing progress, unexpected single-core/GPU-idle behavior, I/O amplification, repeated failure, and implausible artifacts as anomalies requiring active diagnosis. A live PID or absence of an exception is not sufficient evidence of healthy execution. Every material incident must leave a durable prevention mechanism or a written reason why the existing mechanism is sufficient.
-- For `提交推送`, first isolate the exact staged scope and exclude concurrent work. Reuse still-current relevant verification receipts; run only the smallest additional gates needed for changes made after those receipts, and do not rerun unrelated full suites merely because a commit is being created. Then commit, push the current branch, and prove local HEAD, upstream, and remote ref parity. Do not create a PR unless explicitly requested.
-- Prefer hypothesis-driven sequential experiments. Rank candidates by causal difference, expected information gain, falsifier and cost. Do not use large blind Cartesian sweeps merely because agents can automate them; justify bounded grid search when it is genuinely the best calibration or response-surface method.
-- Use [AI review governance](docs/AI_REVIEW_GOVERNANCE.md) and the selected workflow profile by risk: routine engineering and low-risk exploration use programmatic checks, with optional single-Agent or sampled audit; claim-critical, ambiguous, terminal-changing, or release-gate observations use two isolated fresh contexts, and only material disagreement starts a fresh third-Agent adjudication. Hash-bound AI receipts and `scripts/validate_ai_review_receipt.py` apply only when the selected workflow grants that authority, never by default to every item.
-- Default to an end-to-end autonomous workflow for routine engineering and reversible exploration. Do not create, preserve, or wait on a human-required queue or gate for low-risk review. Automate routine discovery, collection, annotation, and review when permitted, but do not fabricate consent, rights, credentials, external authorization, user decisions, or device measurements. Unresolved permission or authority blocks only the affected action; it is not a reason to add a multi-Agent gate to unrelated work.
-- A positive research result is not a production claim or a default-model replacement. Production promotion requires the separate GPT/Codex release-review receipt after the research, INT8, device, worst-case, and regression evidence is complete.
-- Model-generated, synthetic, or model-reviewed evidence must be named as such and must not be presented as an objective sensor measurement or real-user outcome. Participant consent, license/rights grants, credentials, destructive external actions, and measurements actually produced by a device remain source facts or permissions and must never be fabricated. For data already downloadable through an ordinary public channel, however, a separate consent, license, or privacy receipt is not a prerequisite for isolated internal research use; missing or ambiguous metadata is recorded as a limitation instead of becoming a blocking human task.
-- Publicly downloadable data may be fetched immediately, cached under `artifacts.local/`, and used at the scale needed for isolated internal research. Prefer the official URL or API, but mirrors, resumable downloaders, archive services, and other automated retrieval methods are allowed when they do not evade authentication, payment, access controls, or technical restrictions. Record the source URL, retrieval time, file hash, and any stated terms when available. Public downloadability does not by itself authorize redistribution, commercial release, production promotion, or claims of participant consent; assess those separately only when the work reaches such a boundary.
+- Before editing, run `git status --short`. Keep the task to explicit paths or
+  hunks and recheck ownership before staging.
+- Every task that changes tracked project files ends with a commit before the
+  final response. Read-only or no-change work creates no empty commit.
+- Review the task diff and run proportionate verification. Stage only
+  task-owned paths/hunks; in a dirty worktree prefer explicit-path staging and
+  `git commit --only`.
+- The default branch is `master`. Use a concise commit message, then push the
+  task commit to `origin/master`. A normal non-force push to
+  `git@github.com:violetljj/blind-assist.git` is pre-authorized.
+- Never amend/rewrite history, force-push, change another remote, delete a
+  branch, create a PR, or include ignored/local payloads unless the user
+  explicitly requests it.
+- Before reporting push completion, verify current branch, upstream, exact
+  remote, and local `HEAD`/upstream/remote-ref parity. Preserve unrelated staged
+  and unstaged changes.
+- Update `DEVELOPMENT_LOG.md` for code, configuration, model, test, or adopted
+  technical/governance decisions; use `violjjet` as executor. Update
+  `README.md` or `CHANGELOG.md` only for their roles defined in
+  [document governance](docs/DOCUMENT_GOVERNANCE.md).
 
-## Change hygiene and documentation
+## 3. Research authority boundary
 
-Every implementation task that changes files MUST end with a git commit before the final response.
+Research work must be assigned one mode before claim-bearing or materially
+risky execution. The mode controls process; it never upgrades evidence.
 
-- Inspect `git status` before editing and treat pre-existing or concurrent changes as user-owned.
-- Review the final diff and run proportionate verification before committing.
-- Stage only files or hunks that belong to the current task. Never bundle unrelated changes unless the user explicitly asks.
-- Use a concise descriptive commit message on `master`, report the commit hash, and automatically push the commit to `origin/master` after committing. Do not amend or rewrite history unless asked.
-- Read-only tasks and tasks with no file changes do not create empty commits.
+- `ROUTINE_ENGINEERING`: ordinary code, docs, tests, builds, and low-risk
+  diagnostics. Use focused verification; research receipts, frozen protocols,
+  multi-Agent review, and guarded host preflight are not required by default.
+- `REVERSIBLE_EXPLORATION`: Discovery, Canary, Development, training,
+  benchmarking, or repeatable diagnostics. Record the question, inputs,
+  command/implementation, scoped outputs, timeout/progress, result,
+  limitations, and next action. Development may reuse disclosed consumed data
+  but cannot relabel it as fresh, pristine, or Confirmation evidence.
+- `FORMAL_CONFIRMATION`: Confirmation/Deployment, protected-outcome access,
+  claim-critical or terminal-changing evaluation, one-shot/irreversible work,
+  production promotion, or a high-risk external action. Freeze the applicable
+  protocol, data roles, implementation, statistics, thresholds, and
+  missing-data handling before outcome access; then follow the owning current
+  contract and its validators/receipts.
 
-- Before editing, run `git status --short`; preserve unrelated changes and do not revert code you do not understand.
-- Update `DEVELOPMENT_LOG.md` for code, configuration, model, test, or adopted technical-decision changes. Record a concise scope, rationale, verification, and remaining risk; link detailed evidence or dated snapshots instead of duplicating them. Pure read-only investigation, review, or conversation does not require a log entry.
-- Use `violjjet` as the executor name in new development-log entries.
-- Update `README.md` only when user-visible capabilities, usage, prerequisites, current project status, or important public decisions change. Put release history in `CHANGELOG.md` and detailed evidence in the relevant `docs/` page.
-- Add an item to `idea.md` only when the user asks to retain it or the team explicitly defers a non-trivial proposal. Once adopted, rejected, or completed, record the durable decision/evidence in the owning current, decision, or snapshot document and remove it from the root idea pool; preserve old idea history under `docs/history/idea/` instead of accumulating completed experiment logs.
-- Follow [docs/DOCUMENT_GOVERNANCE.md](docs/DOCUMENT_GOVERNANCE.md) for document roles, current-truth ownership, archival, and index maintenance. Do not duplicate a changing conclusion across `README.md`, `CHANGELOG.md`, `DEVELOPMENT_LOG.md`, and `idea.md`.
+These boundaries always apply:
 
-## Long-task continuity and handoff
+- Thesis, graduation-project, demo, and competition research defaults to
+  reversible Development unless the user explicitly activates Confirmation or
+  Deployment. Deployment-grade product certification must not silently become
+  a prerequisite for an honestly scoped thesis/mechanism result.
+- `REJECTED`, `NOT_SUPPORTED`, `NOT_EVALUABLE`, `HOLD`,
+  `DEVELOPMENT_ONLY`, and `PAUSED_NO_ACTIVE_EXECUTION` are hard claim and
+  execution boundaries in the scope where the owning current document declares
+  them. A later diagnostic, repair, or Development reuse must not rewrite the
+  original terminal.
+- Failed or consumed evidence may be reused for diagnostics, regression,
+  counterexamples, or Development when its role is disclosed. Reuse never
+  restores unseen/independent Confirmation authority.
+- A pre-metric operational failure may close only that evidence version and be
+  repaired on Development data. Once observed claim outcomes influence the
+  candidate, threshold, protocol, or selection, that data cannot confirm the
+  changed candidate.
+- Synthetic, pseudo-labeled, model-generated, or model-reviewed evidence must
+  be named as such. It is not a device measurement, human outcome, consent
+  record, or objective sensor truth.
+- Default to an end-to-end autonomous workflow for routine engineering and
+  reversible exploration. Do not create, preserve, or wait on a human-required queue or gate
+  for low-risk work; missing permission blocks only the affected external or
+  protected action.
+- Data downloadable through an ordinary public channel may enter isolated
+  internal research with recorded source/provenance. Public availability does
+  not authorize access-control bypass, redistribution, commercial use,
+  production promotion, or claims of consent.
+- A positive research result does not authorize production, safety claims,
+  Android default replacement, model promotion, or release. Those require the
+  separately declared promotion and release gates.
+- Changing stage, route status, successor, terminal, data role, or protected
+  authority is owned by the applicable current research document—not by chat
+  history, old snapshots, handoffs, precursor code, or stale receipts. If the
+  current authority is contradictory or missing, fail closed for formal
+  execution and protected-outcome access while allowing isolated low-risk
+  diagnostics.
+- Full stage mapping, data reuse semantics, failure scope, rule challenges,
+  Wild Lab/Evidence Track, AI review, and host-compute requirements live in the
+  routed research documents below. Do not duplicate or reinterpret them here.
 
-- Handoff is a continuity aid, not a research gate. Create `artifacts.local/work/codex-handoffs/<TASK-ID>.md` only when a task will cross a window, precedes an irreversible external action, or has material device/external, expensive-verification, or shared-worktree risk. Do not create one for a small single-scope change, routine engineering, or read-only/reversible exploration unless the user asks. Register it in `artifacts.local/work/codex-handoffs/INDEX.md` and start from [the handoff templates](docs/CODEX_TASK_HANDOFF_TEMPLATE.md).
-- `TASK-ID` is stable, uppercase, and descriptive (`DOMAIN-OUTCOME-ROUND`, for example `SANPO-PUBLIC-SILVER-R7`). Do not use generic names such as `TEST` or `IDEA`, and do not reuse one handoff file for separate workstreams.
-- Update the handoff when creating, handing off, changing status, becoming blocked, completing, or approaching an irreversible external action; do not create milestone paperwork for work that does not need a handoff.
-- Before resuming a task in a new window or after a context reset, read that task's handoff first; then verify its declared worktree or branch, working-tree claims with `git status --short`, and stated focused checks. Never treat an old handoff as current fact without verification.
-- Each handoff must state the objective and non-goals, allowed paths, worktree or branch, task versus unrelated working-tree changes, completed work, exact verification commands and results, decisions or blockers, and the single recommended next action. Keep normal checkpoints under 20 non-blank lines; link detailed evidence instead of duplicating it.
-- A task may modify only its declared allowed paths; everything else is implicitly out of scope. Unlisted working-tree changes belong to another task until proven otherwise: do not edit, revert, stage, commit, or absorb them into the current task. Two independently owned tasks that need the same file must be combined or use separate Git worktrees/branches. Subagents inside one primary-owned task may edit disjoint, predeclared path sets in the shared worktree when parallel work is materially useful; the primary agent owns integration, rechecks `git status`/diff ownership, and runs the final combined verification.
-- Keep credentials, tokens, personal data, and large raw logs out of handoffs. Keep durable implemented decisions in `DEVELOPMENT_LOG.md`; store detailed evidence under `artifacts.local/evidence/`.
+## 4. Task routing: read only when applicable
 
-## Workspace layout and knowledge navigation
+Start a new window with [project state](docs/PROJECT_STATE.md). Follow its task
+matrix and normally read at most one classification current plus one explicit
+route/contract/test entry. Do not scan archives, snapshots, full logs,
+`artifacts.local/`, or unrelated research domains unless the task requires
+history, reproduction, or audit.
 
-- The only BlindAssist repository root is `E:\linnan\linnan` (this is distinct from the Android application module `app/`). `E:\linnan` is a workspace container; do not run Git, Gradle, project tests, or source edits from same-named outer directories.
-- Canonical local tools live in `E:\codex-tools\projects\blindassist\toolchain` and `E:\codex-tools\projects\blindassist\state`. Repository `.jdk`, `.android-sdk`, `.android-home`, and `.kotlin-home` may be compatibility junctions; `.gradle-local` is a non-canonical legacy cache with no remaining tracked script caller. Do not replace junctions with copied toolchains or commit any of these contents; new commands must use `E:\codex-tools\projects\blindassist\state\gradle`.
-- Canonical local outputs live in ignored `artifacts.local/`: `downloads/` for fetched inputs, `evidence/` for datasets and benchmark/real-device evidence, `models/` for local model sources/exports, `presentations/` for local presentation backups, `work/` for reproducible work, and `tmp/` for task-scoped short-lived files. New scripts and documents must use these canonical paths; never assume all of `tmp/` is disposable without checking ownership and authority.
-- `test-artifacts.local`、`.downloads`、`work` and `tmp` are transition junctions only. Preserve them while older callers remain, but migrate callers to `artifacts.local/` in focused, verified batches; never create a second output root.
-- Keep `README.md` to product positioning, current status, build entry points, and navigation. Add/maintain the documentation registry in `docs/README.md`, scripts in `scripts/README.md`, release facts in `CHANGELOG.md`, recent engineering history in `DEVELOPMENT_LOG.md`, and dated research/audit conclusions as snapshots rather than current truth.
-- Keep the `scripts/` root limited to stable Interfaces, shared Implementations, and explicitly allowed Adapters. New research rounds must live in a dedicated `scripts/research/<domain>/` Module; do not add experiment-round files directly under `scripts/`. The exact root inventory and structural budgets are owned by `scripts/policy/` and must not be duplicated here.
-- Every new research Module must follow `scripts/research/README.md` and declare its status, stable Interface, `artifacts.local/` output, safety boundary, and stop conditions. Cross-domain callers must use a stable root Adapter or `research.common`; do not import another domain's private Implementation.
-- When adding a top-level `docs/` file or a runnable `scripts/` entry, update its corresponding index in the same change. Before considering a scripts/layout/document-governance change complete, run `pwsh -NoProfile -File scripts/check_repo_hygiene.ps1`; it invokes the project-structure gate. Also run `pwsh -NoProfile -File scripts/check_docs_index.ps1`, `git diff --check`, the model static check when toolchain paths changed, and verify that top-level docs are indexed.
+| Task type | Required route |
+| --- | --- |
+| Ordinary Kotlin/code/docs change | This file plus the directly affected code/test/current doc; no research, device, release, or handoff documents by default |
+| Research, training, dataset, benchmark, claim, or protocol work | [RESEARCH_GOVERNANCE.md](docs/RESEARCH_GOVERNANCE.md), then the single owning entry under [research/README.md](docs/research/README.md); read [AI_REVIEW_GOVERNANCE.md](docs/AI_REVIEW_GOVERNANCE.md) only when AI evidence/review authority is involved |
+| Android device, ADB, streaming, latency, or stability validation | [DEVICE_REGRESSION.md](docs/DEVICE_REGRESSION.md) and the affected device/benchmark contract |
+| Release, APK delivery, versioning, or archive | [RELEASE_AND_VERIFICATION.md](docs/RELEASE_AND_VERIFICATION.md); read [APK_ARCHIVE.md](docs/APK_ARCHIVE.md) only for archival |
+| Long host training/materialization or resource-risky research | [HOST_RESEARCH_COMPUTE.md](docs/HOST_RESEARCH_COMPUTE.md) and [ENGINEERING_LEARNING_LOOP.md](docs/ENGINEERING_LEARNING_LOOP.md) |
+| Hardware/glasses/ESP32/Bluetooth/network integration | [GLASSES_HARDWARE_ROUTE.md](docs/GLASSES_HARDWARE_ROUTE.md) |
+| New top-level docs, script entry, project layout, or artifact path | [DOCUMENT_GOVERNANCE.md](docs/DOCUMENT_GOVERNANCE.md), [scripts/README.md](scripts/README.md), or [LOCAL_ARTIFACTS.md](docs/LOCAL_ARTIFACTS.md), as applicable |
+| Cross-window, irreversible, expensive-verification, or shared-worktree handoff | [CODEX_WORKFLOW.md](docs/CODEX_WORKFLOW.md) and [CODEX_TASK_HANDOFF_TEMPLATE.md](docs/CODEX_TASK_HANDOFF_TEMPLATE.md) |
 
-## Verification and release discipline
+Current route documents own changing status. For SANPO, DepthART/HFTF,
+dual-loop, RCLE, USTRF, or another named research line, select only that line's
+current entry from the research index. Do not infer its current authority from
+this file.
 
-- Match verification to risk: documentation-only changes normally need no Gradle run; a module change needs relevant tests or lint; changes to runtime, vision, risk, feedback, permissions, or assets need focused tests plus an Android build; a delivery candidate needs the release checklist and final-APK verification.
-- For hardware, Android, latency, streaming, and stability iteration, use a 10-second smoke first and prefer a 1-minute short run as the default measured regression. Run 5 minutes only for a stage-level formal baseline, material architecture/firmware change, candidate delivery, or an explicitly requested longer check. Do not default to 30-60 minute stress tests; reserve them for release candidates, major stability changes, or explicit user direction.
-- If required verification cannot run, record the reason and impact in the final report and, when the work changed the project, in `DEVELOPMENT_LOG.md`.
-- Release procedure, command matrix, version decision, and final APK verification live in [docs/RELEASE_AND_VERIFICATION.md](docs/RELEASE_AND_VERIFICATION.md). APK retention rules live in [docs/APK_ARCHIVE.md](docs/APK_ARCHIVE.md).
-- Do not change a version merely because a task happened. Change it for a planned delivery or a user-visible, compatibility, safety, model, permission, or substantial architecture change, and record the rationale.
-- Archive an APK only for a delivery candidate, demonstration, teacher review, milestone, or user request; an ordinary debug build is not an archive event. Raw APKs stay in the verified external archive; `releases/apk/` stores only small text receipts or manifests.
+## 5. Execution contract and output budget
 
-## Local artifacts, hardware, and external operations
+For a non-trivial task, normalize the request into this compact contract in the
+working plan or handoff; infer safe fields from context instead of repeatedly
+asking the user:
 
-- Do not commit SDKs, Gradle caches, virtual environments, downloads, local datasets, device logs, screenshots, or other machine-generated artifacts. Follow [docs/LOCAL_ARTIFACTS.md](docs/LOCAL_ARTIFACTS.md).
-- Apply [the host research compute policy](docs/HOST_RESEARCH_COMPUTE.md) by the same three modes: routine engineering needs no research preflight; reversible exploration needs only bounded timeout/progress and scoped outputs; formal confirmation or irreversible/high-risk work needs a representative pilot and the guarded launcher when it is long, resource-risky, or not otherwise bounded. Use the regular launcher for reversible work and do not invoke a frozen runner directly after the guarded boundary.
-- Keep machine-readable progress for host work that is long enough to need monitoring, never expose prohibited outcomes in progress files, and monitor an already claimed frozen runner without restarting it. If a representative pilot cannot bound a risk-triggered formal run, fail closed as `PERFORMANCE_NOT_QUALIFIED`. Do not use compressed-tar random access as the repeated sample path.
-- The in-app glasses connection is currently a placeholder: it does not imply Bluetooth, network, ESP32, or real-device integration. For legacy-source paths, migration boundaries, and safe fallback requirements, read [docs/GLASSES_HARDWARE_ROUTE.md](docs/GLASSES_HARDWARE_ROUTE.md) before hardware work.
-- For known sandbox restrictions, use the workspace-level elevation policy. Keep the command narrow and state why elevation is needed.
-- Before any push, inspect the working tree, current branch, upstream, and exact remote. A regular non-force push to `git@github.com:violetljj/blind-assist.git` is pre-authorized, but never assume `master` or change another remote, rewrite history, delete a branch, or push local data/ignored artifacts without explicit approval.
-- GitHub CLI login and PATH state are runtime facts: verify them with `E:\linnan\tools\gh\bin\gh.exe auth status` when needed rather than assuming a stored login remains valid.
+```text
+目标：
+范围：
+已知入口：
+禁止事项：
+完成标准：
+验证命令：
+```
+
+Follow [CODEX_WORKFLOW.md](docs/CODEX_WORKFLOW.md) for task switching,
+handoffs, and tool-output control. In particular:
+
+- Prefer `rg`/`rg --files`, list candidates before reading content, and read
+  only relevant sections.
+- Store large command output under `artifacts.local/work/` or
+  `artifacts.local/evidence/`. In chat return the conclusion, status, key
+  metrics, evidence path, and at most 100 lines around a failure unless more is
+  requested.
+- Keep one implementation chain in one task. When the objective materially
+  changes, start a new task or create a compact handoff instead of carrying
+  unrelated history forward.
+
+## 6. Mechanical verification
+
+Use the smallest gates that cover the actual change. Do not replace necessary
+verification with prose, and do not run unrelated full suites solely because a
+commit is required.
+
+- Every change: `git diff --check` plus focused tests or content/link review.
+- Structure, root files, script layout, artifact paths, or governance:
+
+  ```powershell
+  pwsh -NoProfile -File scripts/check_project_structure.ps1
+  pwsh -NoProfile -File scripts/check_repo_hygiene.ps1
+  ```
+
+- Top-level `docs/*.md` or documentation-index changes:
+
+  ```powershell
+  pwsh -NoProfile -File scripts/check_docs_index.ps1
+  ```
+
+- Android/module changes: run the affected module tests or lint. Runtime,
+  vision, risk, feedback, permissions, assets, or shared-interface changes also
+  require the applicable Android build.
+- Device work: use the smoke/short/formal durations and evidence capture defined
+  by `docs/DEVICE_REGRESSION.md`; do not default to long stress runs.
+- Research protocol/validator changes: run the owning contract tests and
+  validators from the routed current document.
+- Release/delivery: run the complete command matrix and final-APK verification
+  from `docs/RELEASE_AND_VERIFICATION.md`.
+- If a required gate cannot run, record the exact reason, affected claim, and
+  remaining risk in the final report and, for project changes, in
+  `DEVELOPMENT_LOG.md`.

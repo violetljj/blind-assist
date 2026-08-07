@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-08（Asia/Hong_Kong）；执行者：violjjet。精简根 `AGENTS.md`
+  的启动上下文：保留权限/Git/研究 authority 硬边界、八类按需文档路由、六项执行
+  合同入口和机械验证命令；将最小读取、日志输出预算、任务切换、handoff 与共享工作树
+  细则迁入 current `docs/CODEX_WORKFLOW.md` 并登记文档索引。目标是让普通 Kotlin
+  修改不再默认加载完整研究、设备、发布和长任务协议，同时不删除或降级对应 current
+  文档的 authority。
 - 时间：2026-08-08（Asia/Hong_Kong）；执行者：violjjet。采纳 `WILD_LAB + EVIDENCE_TRACK`
   双轨研究风格：新论文/算法工作默认允许大胆的跨数据集、Teacher/pseudo-label、合成、
   自监督和超出当前 Android/模型大小/默认 YOLO 约束的探索；只有 Confirmation、Deployment
