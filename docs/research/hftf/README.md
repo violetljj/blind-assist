@@ -1,4 +1,4 @@
-# DepthART-centered 项目研究计划
+# DepthART 算法路线与并行项目研究 workstreams
 
 状态：`current / DEVELOPMENT_STANDARD / INNOVATION_NOT_EVALUABLE / DEFAULT_APP_UNCHANGED`
 
@@ -6,13 +6,13 @@
 
 ## 当前主张
 
-当前项目研究中心已转为 DepthART-centered program：以项目自有的 DepthART-S 为算法候选，
-同时推进数据集/数据治理、通信链路与端到端延迟、CPU/GPU/HTP 性能、内存/热/稳定性和部署可行性。
-这些 workstream 共同服务于研究判断，但各自只能声明对应范围的证据；不等于正式 App 能力。
+当前算法研究主要围绕项目自有的 DepthART-S。项目整体还包含数据集/数据治理、通信链路与
+端到端延迟、CPU/GPU/HTP 性能、内存/热/稳定性和部署可行性等并行 workstream；它们可以独立
+研究，也可以在接口和证据边界明确后与 DepthART 或其他路线耦合。不等于正式 App 能力。
 
 ## 当前状态
 
-- DepthART program 与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
+- DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
 - DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；A3 ONNX/QNN 部署预检为 `BLOCKED_SELECTIVESCAN`，HTP/Android/生产 authority 关闭。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。

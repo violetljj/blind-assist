@@ -8,10 +8,10 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 
 - 当前版本：`v10.9.0`，`versionCode=37`。
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
-- 当前项目研究中心为
-  [DepthART-centered 项目研究计划](docs/research/hftf/README.md)：算法方面以 DepthART-S
-  为当前候选，同时推进数据集/数据治理、通信链路与端到端延迟、性能优化和部署可行性。
-  这些 workstream 不自动改变正式 App 或默认模型。YOLO + 语义分割双环保留为论文次线，当前为
+- 当前算法研究主要围绕 DepthART-S；项目整体还并行研究数据集/数据治理、通信链路与端到端延迟、
+  性能优化和部署可行性。这些 workstream 可以独立推进，也可以在接口和证据边界明确后与 DepthART
+  或其他路线耦合；不自动改变正式 App 或默认模型。项目研究入口见
+  [算法路线与并行 workstreams](docs/research/hftf/README.md)。YOLO + 语义分割双环保留为论文次线，当前为
   `THESIS_DEVELOPMENT_DEFAULT / DEVELOPMENT_REPAIR_AND_RERUN_ALLOWED /
   DEVELOPMENT_DEVICE_BENCHMARK_ALLOWED /
   BOUNDED_HANDCRAFTED_GATING_FAMILY_STOP /
@@ -21,9 +21,9 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
   model-selection R1 仍为 `BLOCKED / NOT_EVALUABLE`，R2-P0 终态和 consumed 数据角色
   不变；它们不再把新的论文 Development 锁成 one-shot formal。RCLE 已暂停，USTRF 已
   收口，历史状态分别由各 current/index 入口保留。
-- DepthART-centered 计划中的数据、链路和平台 workstream 均保持
-  `DEVELOPMENT_STANDARD`；DepthART 的科学 admission、部署预检和设备性能结论彼此分开，
-  不改变正式 YOLO 默认模型或 App 行为。研究晋级不自动等于生产替换。
+- DepthART 算法、数据、链路、性能和部署 workstream 均保持
+  `DEVELOPMENT_STANDARD`；各自结论彼此分开，不改变正式 YOLO 默认模型或 App 行为。
+  研究晋级不自动等于生产替换。
 - 全项目前向采用 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`：Discovery 默认不消费 fresh
   holdout，mapping/decoder 先过 synthetic canary，普通论文 Development 可版本化修复
   重跑，并可在正式选模前分别做算法选模 benchmark 与平台工程 benchmark。只有显式启动
