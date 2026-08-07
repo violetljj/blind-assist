@@ -2,7 +2,7 @@
   "schema": "blindassist_research_migration_manifest",
   "schema_version": 1,
   "topic": "depthart_p0_deployment",
-  "status": "inventory_frozen_no_physical_move",
+  "status": "adapter_ready_no_physical_move",
   "owner_index": "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
   "target_layout": {
     "deployment": "scripts/research/hftf/deployment/depthart/",
@@ -42,7 +42,7 @@
         "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
         "docs/research/hftf/README.md"
       ],
-      "move_status": "pending_adapter_and_regression"
+      "move_status": "adapter_ready_pending_regression"
     },
     {
       "id": "P0-B",
