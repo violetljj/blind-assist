@@ -22,6 +22,32 @@ R4 适用日期：2026-08-01 起的新建或实质修订研究协议
 
 > 证据不可追溯改写，研究问题允许通过新版本继续学习。
 
+## 研究风格：Wild Lab 与 Evidence Track
+
+BlindAssist 当前首先是论文、毕业设计和算法原型项目。研究的首要目标是发现
+有突破性的表示、机制和算法，不是提前把每个探索分支包装成可部署的助盲产品。
+因此，项目采用两个并行但不混淆的研究风格：
+
+| 风格 | 默认用途 | 允许做什么 | 不能声称什么 |
+| --- | --- | --- | --- |
+| `WILD_LAB` | Discovery、Canary、普通 Thesis Development | 大胆替换抽象、跨数据集合并、Teacher/pseudo-label、合成数据、自监督、未成熟几何和高成本离线模型；可以超过当前 Android、模型大小和默认 YOLO 约束 | 不能把探索结果写成 Confirmation、真实用户安全、生产能力或默认模型授权 |
+| `EVIDENCE_TRACK` | 明确启动的 Confirmation、Deployment、claim-critical 评测 | 冻结问题、实现、session split、统计和缺失数据规则；使用独立 anchor/blind、可复核 receipt 和与 claim 匹配的验证 | 不得以较弱的代理证据替代对应的独立事实 |
+
+`WILD_LAB` 不是降低科学要求，而是把科学要求放在正确位置：每个分支仍须有
+假设、因果差异、最小判别实验、预算、停止条件和限制说明；但不因缺少最终
+安全、设备或用户证据而阻止普通机制研究。`EVIDENCE_TRACK` 也不是所有新工作的
+默认入口，只有当用户或协议明确要回答更高等级 claim 时才激活。
+
+两种风格都必须保留以下四条硬线：
+
+1. 不能偷看或泄漏受保护的 confirmation/blind outcome；
+2. `UNKNOWN`、缺失标签和冲突证据不得静默当作 negative；
+3. source GT、sensor-derived、synthetic、teacher pseudo 和 model consensus 必须分开命名并保留 provenance；
+4. 结论的 claim ceiling 必须与实际证据一致。
+
+缺少 safety authority 只关闭安全类 claim，不自动关闭训练、算法比较、机制研究、
+论文级结果或研究 demo。
+
 历史 receipt、失败、INVALID 和用过的数据必须保留；但一个 item、sequence、
 implementation 或 evidence version 的失败，默认只关闭它实际影响的最小范围，
 不得自动扩大成整个算法方向或科学问题永久关闭。

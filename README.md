@@ -29,6 +29,10 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
   重跑，并可在正式选模前分别做算法选模 benchmark 与平台工程 benchmark。只有显式启动
   最终 Confirmation、默认模型替换或生产晋级时，才启用对应 blind、INT8、设备事件、
   one-shot、完整 validator 和发布门；任何研究证据都不自动改变正式 App 或安全权限。
+- 研究风格采用 `WILD_LAB + EVIDENCE_TRACK` 双轨：论文和算法探索优先追求突破，
+  允许跨数据集、Teacher/pseudo-label、合成数据和超出现有部署约束；只有明确启动
+  Confirmation、生产或高等级 claim 时，才切换到 Evidence Track 的独立验证与完整门禁。
+  四条底线不变：不泄漏 blind、UNKNOWN 不等于 negative、保留 provenance、claim 不越过证据。
 - 可并存安装的 `ustrfExperiment` 实验版已接入 USTRF 二维路线代理，并直接替代旧风险分析入口；它只使用画面中心假设路线与检测框生成保守代理风险，不具备米制深度、稳定姿态或真实路线，因此不可用于独立行走，也不改变正式 App。
 - SANPO 分割路线采用双通道：论文 `THESIS_DEVELOPMENT` 不要求先通过 INT8、blind 或
   设备事件门；显式 `PRODUCTION_PROMOTION` 才使用完整晋级链。当前未替换 App 默认模型。

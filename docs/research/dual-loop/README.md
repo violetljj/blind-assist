@@ -1,5 +1,10 @@
 # BlindAssist YOLO + 语义分割双环研究主线
 
+FORWARD_GOVERNANCE: THESIS_FIRST_RESEARCH_GOVERNANCE_R4
+DEFAULT_NEW_WORK_LANE: THESIS_DEVELOPMENT
+DEVELOPMENT_REQUIRES_LEGACY_FORMAL_GATES: false
+HISTORICAL_TERMINALS_IMMUTABLE: true
+
 状态：`current / THESIS_DEVELOPMENT / RISKSEG_R0_NEGATIVE_NOT_PROMOTABLE / DEFAULT_APP_UNCHANGED`
 
 本页只维护当前摘要、权限和唯一 successor。完整历史已保留在 [archive/README_FULL_HISTORY_2026-08-07.md](archive/README_FULL_HISTORY_2026-08-07.md)，日期化协议与结果继续作为 snapshot。
@@ -7,6 +12,10 @@
 ## 当前主张
 
 验证论文级的 YOLO + 语义分割双环是否能在事件级风险/可通行性问题上提供可复现增量；不主张产品安全、独立行走有效性或默认模型替换。
+
+本线默认采用 `WILD_LAB`：允许提出超出现有 YOLO、Android 延迟和部署约束的算法假设，
+并使用 Development、consumed、synthetic 或 Teacher/pseudo 数据快速验证机制；只有明确
+进入 Confirmation、Deployment 或 claim-critical 评测时，才切换到 `EVIDENCE_TRACK`。
 
 ## 当前状态
 
@@ -19,7 +28,7 @@
 - [RISKSEG R0 task/data contract](RISKSEG_R0_TASK_DATA_AND_EXECUTION_CONTRACT_2026-08-01.md)
 - [RISKSEG data role ledger](RISKSEG_R0_DATA_ROLE_LEDGER_2026-08-01.json)
 - [RISKSEG event-eval gate result](RISKSEG_R0_EVENT_EVAL_DATA_GATE_RESULT_2026-08-01.md)
-- [项目算法路线总表](../ALGORITHM_ROUTE_REGISTRY.md)
+- [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 
 ## 唯一 successor
 

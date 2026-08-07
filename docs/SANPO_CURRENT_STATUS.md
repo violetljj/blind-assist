@@ -14,6 +14,9 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 
 ## 结论先行
 
+- SANPO 新研究默认采用 `WILD_LAB / THESIS_DEVELOPMENT` 风格：优先追求新的表征、
+  Teacher 数据升级、跨数据集训练、合成/伪标签和可证伪算法突破；缺少产品安全、
+  真实用户或设备晋级证据，只限制相应高等级 claim，不阻止论文级机制研究。
 - 正式 BlindAssist App 保持 `yolo11n_fp16_320.tflite` 默认检测路径；SANPO 候选不替换默认模型。
 - SANPO 新工作默认进入论文 `THESIS_DEVELOPMENT`：可使用声明的 Development、
   consumed 或 synthetic 数据做训练、候选 utility、映射/decoder canary，以及算法选模
@@ -46,6 +49,9 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 ## 硬边界
 
 - 不以 benchmark-only、oracle、未绑定的单次模型标签、单一来源或事后压力样本冒充可部署结论；只有满足独立多模型 receipt 的 workflow 才获得其明确 authority。
+- `WILD_LAB` 允许候选超出现有 Android 延迟、模型大小和 YOLO 抽象；这些约束在探索阶段
+  作为记录的工程属性，不是算法假设的前置禁令。若进入模型替换或产品路径，再切换到
+  `EVIDENCE_TRACK / PRODUCTION_PROMOTION`。
 - `THESIS_DEVELOPMENT` 不得声称默认模型替换、真实用户安全或生产能力，但也不得因缺少
   INT8、blind、设备事件或发布 receipt 被判为实验不可运行。
 - `PRODUCTION_PROMOTION` 不绕过数据集根门、blind 隔离、哈希/许可/隐私证据或既定

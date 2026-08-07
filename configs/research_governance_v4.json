@@ -7,6 +7,7 @@
   "project_objective_priority": [
     "THESIS_AND_GRADUATION_SUFFICIENCY",
     "FALSIFIABLE_RESEARCH_LEARNING",
+    "BREAKTHROUGH_ALGORITHM_DISCOVERY",
     "INFORMATION_GAIN_PER_UNIT_COST",
     "DEMONSTRABLE_PROTOTYPE_VALUE",
     "OPTIONAL_DEPLOYMENT_EVIDENCE"
@@ -18,6 +19,29 @@
     "EXTERNAL_SAFETY_OR_LEGAL_REQUIREMENT"
   ],
   "unjustified_rule_default": "DOWNGRADE_TO_GUARDRAIL_OR_REMOVE",
+  "research_style": {
+    "default_style_for_new_thesis_work": "WILD_LAB",
+    "styles": {
+      "WILD_LAB": {
+        "purpose": "High-freedom mechanism and breakthrough algorithm discovery.",
+        "allowed_for": ["DISCOVERY", "CANARY", "DEVELOPMENT"],
+        "allow_pseudo_labels": true,
+        "allow_synthetic_data": true,
+        "allow_cross_dataset_training": true,
+        "allow_exceeding_deployment_constraints": true,
+        "requires": ["HYPOTHESIS", "MINIMAL_DISCRIMINATING_EXPERIMENT", "RESOURCE_BUDGET", "STOP_CONDITION", "CLAIM_CEILING"],
+        "does_not_authorize": ["CONFIRMATION", "DEPLOYMENT", "PRODUCT_SAFETY", "DEFAULT_MODEL_REPLACEMENT"]
+      },
+      "EVIDENCE_TRACK": {
+        "purpose": "Claim-critical confirmation and deployment evidence.",
+        "allowed_for": ["CONFIRMATION", "DEPLOYMENT"],
+        "requires": ["FROZEN_PROTOCOL", "SESSION_LEVEL_ISOLATION", "INDEPENDENT_VALIDATION", "CLAIM_MATCHED_RECEIPTS"],
+        "activation": "EXPLICIT_USER_OR_PROTOCOL_SCOPE"
+      }
+    },
+    "minimum_hard_lines": ["NO_CONFIRMATION_OR_BLIND_OUTCOME_LEAKAGE", "UNKNOWN_IS_NOT_NEGATIVE", "PRESERVE_SOURCE_AND_DERIVED_PROVENANCE", "CLAIM_CEILING_MATCHES_EVIDENCE"],
+    "safety_authority_does_not_block": ["TRAINING", "ALGORITHM_COMPARISON", "MECHANISM_RESEARCH", "THESIS_LEVEL_RESULT", "RESEARCH_DEMO"]
+  },
   "efficiency_policy": {
     "default": "MINIMUM_SUFFICIENT_RIGOR",
     "default_research_mode": "REVERSIBLE_DEVELOPMENT_UNLESS_FINAL_CONFIRMATION_IS_EXPLICITLY_ACTIVATED",

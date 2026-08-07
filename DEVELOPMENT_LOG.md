@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-08（Asia/Hong_Kong）；执行者：violjjet。采纳 `WILD_LAB + EVIDENCE_TRACK`
+  双轨研究风格：新论文/算法工作默认允许大胆的跨数据集、Teacher/pseudo-label、合成、
+  自监督和超出当前 Android/模型大小/默认 YOLO 约束的探索；只有 Confirmation、Deployment
+  或 claim-critical 问题才激活 Evidence Track 的独立验证与完整门禁。保留四条硬线：
+  不泄漏 blind、UNKNOWN 不当 negative、source/derived provenance 分离、claim ceiling
+  与证据匹配。更新 `docs/RESEARCH_GOVERNANCE.md`、`configs/research_governance_v4.json`、
+  `docs/SANPO_CURRENT_STATUS.md` 和 `AGENTS.md`；不改默认 App、不改历史 receipt。
 - 时间：2026-08-08（Asia/Hong_Kong）；执行者：Codex。完成 DepthART fixed-S448 static-shape R0：静态求值证明 6 个 Expand 的 target 均为全 1 shape，对各自 `[1,C,H,W]`/`[1,8,128]` 输入为严格 no-op；4 个 Mod 均为常量 `2 mod 3 = 2`。旁路/折叠并反向 DCE 后节点数 `2823 -> 2723`，输出 SHA-256 `9C98479915FF2A34303DCD1E3C39638AE1B39023058CF36365A9C698E0BE07D5`，专属+hygiene+Einsum tests `7/7`。QAIRT normal frontier 仍首先停于 5 个 SelectiveScan；dry-run 候选收敛为 `Erf 27 / LayerNormalization 23 / Resize 13 / SelectiveScan 5`。未改写 LayerNorm、Resize 或 Erf，HTP 仍未评价。
 - 时间：2026-08-08（Asia/Hong_Kong）；执行者：Codex。完成 hygiene 后的 shape-only 只读归因：6 组 `ConstantOfShape/Where/Expand` 都由 `Shape`/`Equal`/`Reshape` 生成 broadcast 形状并下游进入 Conv/Concat/Add，4 个 `Mod` 输入均来自 Constant。它们进入下一轮 fixed-S448 constant-fold 候选，但本节点不改写，也不触碰 LayerNorm/Resize/Erf；normal frontier 仍以 SelectiveScan 为唯一 confirmed blocker。
 - 时间：2026-08-08（Asia/Hong_Kong）；执行者：Codex。按 `normal-conversion frontier + parity-preserving minimal rewrite` 完成 DepthART Graph Hygiene R0。审计确认 123 个 BN 全为 `training_mode=0`、108 个 Reshape 全为 `allowzero=0`；4 个 AveragePool 均 `ceil_mode=0`、pads 全零，故移除这些显式默认/零 padding 等价属性，共 239 项，图仍为 2823 nodes。专属 hygiene + Einsum tests `4/4` 通过，输出 SHA-256 `94D12AC706DC4A6F4DAC7B643839B60199F50234BE69FF60725351E6359F39A2`。QAIRT 2.47 HTP normal conversion frontier 未漂移，仍首先停止于 5 个 `onnx_selectivescan`；未主动改写 LayerNorm、Resize、Erf 或 shape path，HTP 仍 `NOT_EVALUATED`。
