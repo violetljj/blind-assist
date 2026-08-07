@@ -23,11 +23,11 @@ $moduleRows = foreach ($dir in Get-ChildItem -LiteralPath $researchRoot -Directo
     [pscustomobject]@{ module=$dir.Name; readme=(Test-Path $readme -PathType Leaf); file_count=@(Get-ChildItem $dir.FullName -Recurse -File).Count; missing_contract_markers=@($missing) }
 }
 $roleCounts = [ordered]@{}; $supportFiles = @()
-foreach ($role in @($roles.role_order)) { $roleCounts[$role] = 0 }
+foreach ($candidateRole in @($roles.role_order)) { $roleCounts[$candidateRole] = 0 }
 foreach ($file in Get-ChildItem -LiteralPath $hftfRoot -Recurse -File) {
     $relative = [IO.Path]::GetRelativePath($hftfRoot, $file.FullName).Replace('\', '/'); $matched = $null
     if ($relative -match '(^|/)(__pycache__|\.pytest_cache)/' -or $relative -match '\.pyc$') { continue }
-    foreach ($role in @($roles.role_order)) { foreach ($pattern in @($roles.roles.$role.patterns)) { if ($relative -match $pattern) { $matched=$role; break } }; if ($matched) { break } }
+    foreach ($candidateRole in @($roles.role_order)) { foreach ($pattern in @($roles.roles.$candidateRole.patterns)) { if ($relative -match $pattern) { $matched=$candidateRole; break } }; if ($matched) { break } }
     if (-not $matched) { $matched='unmatched' }; if (-not $roleCounts.Contains($matched)) { $roleCounts[$matched]=0 }; $roleCounts[$matched]++
     if ($matched -eq 'support') { $supportFiles += $relative }
 }
@@ -36,9 +36,9 @@ $selectedFiles = if ($Role -eq 'all') { @() } else {
         $relative = [IO.Path]::GetRelativePath($hftfRoot, $_.FullName).Replace('\', '/')
         if ($relative -match '(^|/)(__pycache__|\.pytest_cache)/' -or $relative -match '\.pyc$') { return }
         $matched = $null
-        foreach ($candidate in @($roles.role_order)) {
-            foreach ($pattern in @($roles.roles.$candidate.patterns)) {
-                if ($relative -match $pattern) { $matched=$candidate; break }
+        foreach ($candidateRole in @($roles.role_order)) {
+            foreach ($pattern in @($roles.roles.$candidateRole.patterns)) {
+                if ($relative -match $pattern) { $matched=$candidateRole; break }
             }
             if ($matched) { break }
         }
