@@ -59,7 +59,7 @@
       "known_callers": [
         "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md"
       ],
-      "move_status": "pending_bounded_diagnostic_move"
+      "move_status": "diagnostic_adapter_ready_pending_regression"
     },
     {
       "id": "P0-C",
