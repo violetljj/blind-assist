@@ -47,6 +47,7 @@ function New-TestRepository([string]$Name) {
     Write-TestFile $repository 'scripts/research/REGISTRY.md' '# registry'
     Write-TestFile $repository 'scripts/research/hftf/README.md' (Research-Readme 'hftf')
     Write-TestFile $repository 'scripts/research/hftf/INDEX.md' '# hftf'
+    Write-TestFile $repository 'scripts/research/hftf/roles.json' '{"schema_version":1,"module":"hftf","role_order":["support"],"roles":{"support":{"description":"fixture","patterns":[".*"]}}}'
     Write-TestFile $repository 'scripts/research/demo/README.md' (Research-Readme 'demo')
     Write-TestFile $repository 'scripts/research/demo/tool.py' 'from research.common.util import value'
     Write-TestFile $repository 'scripts/research/common/README.md' (Research-Readme 'common')

@@ -186,6 +186,41 @@ $hftfRegistry = Resolve-FromRepo "$researchRoot/hftf/INDEX.md"
 if (-not (Test-Path -LiteralPath $hftfRegistry -PathType Leaf)) {
     $failures.Add("HFTF role index is missing: $researchRoot/hftf/INDEX.md")
 }
+$hftfRolesPath = Resolve-FromRepo "$researchRoot/hftf/roles.json"
+if (-not (Test-Path -LiteralPath $hftfRolesPath -PathType Leaf)) {
+    $failures.Add("HFTF role manifest is missing: $researchRoot/hftf/roles.json")
+}
+else {
+    try {
+        $hftfRoles = Get-Content -LiteralPath $hftfRolesPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        foreach ($role in @($hftfRoles.role_order)) {
+            if (-not ($hftfRoles.roles.PSObject.Properties.Name -contains [string]$role)) {
+                $failures.Add("HFTF role manifest lists an undefined role: $role")
+            }
+        }
+        $hftfRoot = Resolve-FromRepo "$researchRoot/hftf"
+        foreach ($file in @(Get-ChildItem -LiteralPath $hftfRoot -Recurse -File)) {
+            $relative = [IO.Path]::GetRelativePath($hftfRoot, $file.FullName).Replace('\', '/')
+            $matched = $false
+            foreach ($role in @($hftfRoles.role_order)) {
+                $patterns = @($hftfRoles.roles.$role.patterns)
+                foreach ($pattern in $patterns) {
+                    if ($relative -match [string]$pattern) {
+                        $matched = $true
+                        break
+                    }
+                }
+                if ($matched) { break }
+            }
+            if (-not $matched) {
+                $failures.Add("HFTF file has no role manifest match: $relative")
+            }
+        }
+    }
+    catch {
+        $failures.Add("HFTF role manifest is invalid: $($_.Exception.Message)")
+    }
+}
 $moduleNames = @(
     $repoFiles |
         Where-Object { $_.StartsWith($researchPrefix, [StringComparison]::OrdinalIgnoreCase) } |

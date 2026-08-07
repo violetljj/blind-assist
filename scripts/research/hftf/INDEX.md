@@ -4,6 +4,7 @@
 
 这是 HFTF 目录的短职责入口；详细状态以
 [`docs/research/hftf/README.md`](../../../docs/research/hftf/README.md) 为准。
+机器匹配规则见 [`roles.json`](roles.json)；`support` 是迁移缓冲区，不代表当前执行权限。
 
 | 分区 | 识别规则 | 典型文件/目录 | 权限 |
 |---|---|---|---|
@@ -17,3 +18,4 @@
 - 新文件先按职责命名，再登记到本页；不要把部署 converter 放在算法脚本旁而不标记。
 - 不为美化目录重命名已被 protocol、receipt 或外部命令引用的历史文件。
 - 需要真实迁移时，先建立 manifest、兼容 Adapter 和回归测试，再分批移动。
+- 新文件若命中 `support`，必须在下一次结构治理中补充更具体的角色或标记为 archive。

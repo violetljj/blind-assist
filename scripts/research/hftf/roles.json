@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "module": "hftf",
+  "role_order": [
+    "deployment",
+    "diagnostics",
+    "current",
+    "archive",
+    "support"
+  ],
+  "roles": {
+    "deployment": {
+      "description": "导出、QAIRT/QNN/HTP、SelectiveScan、converter 和 parity bridge",
+      "patterns": [
+        "(?i)(qnn|qairt|onnx|htp|selective.?scan|converter|op_package|parity|native_decode|depth_bridge)"
+      ]
+    },
+    "diagnostics": {
+      "description": "测试、审计、探针、可视化、质量屏和失败分析",
+      "patterns": [
+        "(?i)^(test_|inspect_|audit_|probe_|render_|diagnose_|analyze_)",
+        "(?i)(failure|atlas|diagnostic|visual|smoke|profile)"
+      ]
+    },
+    "current": {
+      "description": "DepthART、metric-depth、clearance、student/teacher 和当前 successor 实现",
+      "patterns": [
+        "(?i)(depthart|clearance|metric.?depth|metric3d|student|teacher|depth_observer)"
+      ]
+    },
+    "archive": {
+      "description": "明确标记为历史、关闭或不再执行的材料",
+      "patterns": [
+        "(?i)(archive|historical|closed|deprecated|superseded)"
+      ]
+    },
+    "support": {
+      "description": "无法仅凭文件名判断职责的旧实现；必须由 README 或后续迁移 manifest 继续收敛",
+      "patterns": [
+        ".*"
+      ]
+    }
+  }
+}
