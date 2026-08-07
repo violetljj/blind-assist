@@ -13,7 +13,7 @@
 - 将 Camera Embedder 外提为 host 计算的四级 `camera_prompt_*` 输入；PyTorch prompt parity `max_abs=0.0`，外提图 2823 nodes、`Acos=0`、`SelectiveScan=5`。再应用 Einsum→MatMul 后，QAIRT 已真正触达 5 个 SelectiveScan。
 - 正常转换的首个明确停止点仍是 `onnx_selectivescan`：`No translation registered for op type onnx_selectivescan`。随后 dry-run 还枚举出 `Erf`、`LayerNormalization`、`Resize`、`ConstantOfShape`、`Expand`、`Where`、`Mod` 及若干 unsupported attributes；这些是待清理/复核候选，不等同于已经证明的转换停止点。
 - 第一档 Graph Hygiene Pass 已完成：移除 123 个 `BatchNormalization.training_mode=0`、108 个 `Reshape.allowzero=0`，以及零 padding AveragePool 的 4+4 个默认属性；节点数保持 2823。重跑 normal conversion 后 frontier 未漂移，仍首先停在 5 个 `onnx_selectivescan`。
-- Shape-only 只读归因显示 6 组 `Shape→ConstantOfShape/Equal/Where→Expand` 均用于静态 broadcast helper，4 个 `Mod` 的输入均来自 Constant；它们是下一轮 constant-fold 候选，但本轮未改写。LayerNorm、Resize、Erf 继续保持原图。
+- Fixed-S448 static-shape pass 已将 6 个目标全为 `[1,…]` 的 no-op Expand 旁路，并把 4 个常量 `2 mod 3` 折叠为 Constant；死代码清理后节点数从 2823 降至 2723。normal frontier 仍为 SelectiveScan；新 dry-run 候选收敛为 `Erf×27 / LayerNorm×23 / Resize×13 / SelectiveScan×5`。LayerNorm、Resize、Erf 继续保持原图。
 
 机器可读 receipt：[`a3-onnx-qnn-preflight.json`](../../../artifacts.local/evidence/hftf/depthart-admission-r1/a3-onnx-qnn-preflight.json)
 
