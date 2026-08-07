@@ -433,7 +433,7 @@ threads、无观测到的 CPU fallback，相对同形状 ORT 平均差 `0.0145 m
 第一段一次性尺度转移到其余 110 帧时 false-clear 为 `6.99%`，仍失败。因此保留的是
 “`392x518` DA Metric HTP + 周期性多区 ToF/稀疏米制锚点 + 过期 UNKNOWN”的条件
 候选；纯 RGB、一次标定、alert、主线与 default App 均未获准入。详见
-[DA V2 Metric QAIRT + sparse scale R0](../../../scripts/research/hftf/DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.md)。
+[DA V2 Metric QAIRT + sparse scale R0](DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.md)。
 
 ## 2026-08-04 DA V2 Metric Android QNN：真实 HTP 可用，但当前全链路仍非实时
 
@@ -573,7 +573,7 @@ compatible `HTP_V75_SM8650_4MB` record 与 VTCM/DSP mismatch warning，警告保
 当前只保留 ViT-S RAFT-2 作为连续性候选；其约 `2.34 fps`，仍不满足 live source
 门槛，不接 alert、研究主线或 default App。单个 Bonn 已消费序列也不提供最终外接
 相机的跨域推广权。详见
-[QAIRT real-time optimization R0](../../../scripts/research/hftf/METRIC_DEPTH_QAIRT_REALTIME_OPT_R0_RESULT.md)。
+[QAIRT real-time optimization R0](METRIC_DEPTH_QAIRT_REALTIME_OPT_R0_RESULT.md)。
 
 ## 2026-08-03 Metric3D QAIRT：GPU 停止，SM8650 HTP 成为低频部署候选
 
@@ -594,7 +594,7 @@ source，整图 depth relative MAE 为 `0.950%–1.033%`，人物躯干深度差
 这建立的是 D44 source 的部署等价 canary，不是真实 metric accuracy。完整
 `616x1064` 模型仍只有约 `0.67 fps`，因此只保留为低频 shadow/offline candidate
 和后续缩分辨率/蒸馏的 deployment teacher；不接 alert、主线或 default App。详见
-[QAIRT GPU/HTP result](../../../scripts/research/hftf/METRIC_DEPTH_QAIRT_GPU_HTP_R0_RESULT.md)。
+[QAIRT GPU/HTP result](METRIC_DEPTH_QAIRT_GPU_HTP_R0_RESULT.md)。
 
 ## 2026-08-03 D45：只验证手机端 metric-depth source，不接 alert
 

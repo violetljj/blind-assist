@@ -22,8 +22,8 @@
 | 图改写与静态形状 | [deployment/depthart/rewrite_depthart_qairt_onnx.py](deployment/depthart/rewrite_depthart_qairt_onnx.py)、[deployment/depthart/rewrite_depthart_qairt_static_shape.py](deployment/depthart/rewrite_depthart_qairt_static_shape.py)；测试同目录 | 生成 QAIRT 可消费的候选图 | 不证明数值 parity |
 | hygiene / admission | [deployment/depthart/rewrite_depthart_qairt_hygiene.py](deployment/depthart/rewrite_depthart_qairt_hygiene.py)、[deployment/depthart/depthart_admission_r1.py](deployment/depthart/depthart_admission_r1.py)；测试同目录 | 检查输入合同、准入前置条件 | 不改变默认 App |
 | SelectiveScan 自定义算子 | [depthart_selective_scan_converter_op.cpp](depthart_selective_scan_converter_op.cpp)、[depthart_selective_scan_op_package.xml](depthart_selective_scan_op_package.xml) | 当前 A3 的 lowering / converter 入口 | 不代表 HTP 已可运行 |
-| QNN/HTP 诊断 | [diagnostics/depthart/](diagnostics/depthart/)；旧入口 [run_qnn_detailed_operator_profile_r0.ps1](run_qnn_detailed_operator_profile_r0.ps1)、[run_qnn_htp_linting_profile_r0.ps1](run_qnn_htp_linting_profile_r0.ps1) | operator/profile/lint 诊断 | 诊断结果不是性能或安全授权 |
-| 已有结果 | [DEPTHART_ADMISSION_R1_A3_RESULT_2026-08-07.md](DEPTHART_ADMISSION_R1_A3_RESULT_2026-08-07.md)、[DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md](DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md) | 当前证据与阻塞点 | 旧结果不能自动生成 successor |
+| QNN/HTP 诊断 | [diagnostics/depthart/](diagnostics/depthart/) | operator/profile/lint 诊断 | 诊断结果不是性能或安全授权 |
+| 已有结果 | [DepthART A3 result](../../../docs/research/hftf/DEPTHART_ADMISSION_R1_A3_RESULT_2026-08-07.md)、[旧 QAIRT/HTP result](../../../docs/research/hftf/archive/DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md) | 当前证据与历史阻塞点 | 旧结果不能自动生成 successor |
 
 ## 唯一 successor
 

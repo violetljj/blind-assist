@@ -2,7 +2,7 @@
   "schema": "blindassist_research_migration_manifest",
   "schema_version": 1,
   "topic": "depthart_p0_deployment",
-  "status": "p0a_physically_migrated_compatibility_shims",
+  "status": "p0a_p0b_physically_migrated_internal_shims_retired",
   "owner_index": "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
   "target_layout": {
     "deployment": "scripts/research/hftf/deployment/depthart/",
@@ -53,7 +53,7 @@
         "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
         "docs/research/hftf/README.md"
       ],
-      "move_status": "deployment_cluster_physically_migrated_shims_preserved"
+      "move_status": "deployment_cluster_physically_migrated_internal_shims_retired"
     },
     {
       "id": "P0-B",
@@ -71,7 +71,7 @@
         "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
         "docs/research/hftf/DAV2_QNN_NATIVE_CACHED_CONTEXT_R0_RESULT_2026-08-04.md"
       ],
-      "move_status": "diagnostic_physically_migrated_compatibility_shim"
+      "move_status": "diagnostic_physically_migrated_internal_shims_retired"
     },
     {
       "id": "P0-C",

@@ -126,7 +126,7 @@
     "terminal": "REJECT_EXACT_CPU_FULL_PIPELINE_FOR_REAL_TIME_CAMERA_RUNTIME"
   },
   "separate_existing_accelerator_evidence": {
-    "source": "scripts/research/hftf/DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.json",
+    "source": "docs/research/hftf/archive/DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.json",
     "backend": "QAIRT 2.47.0 HTP V75",
     "exact_518x686_da_only_cached_burst_mean_ms": 277.917,
     "exact_518x686_da_only_accelerator_mean_ms": 274.562,

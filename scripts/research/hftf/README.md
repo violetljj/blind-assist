@@ -106,7 +106,7 @@ DA V2 Small 的现成相对深度 DLC 已在 SM8650 / HTP V75 上确认无 CPU f
 把相对深度提升为米制 clearance，也不证明真实图像质量、功耗或持续热性能。当前端侧
 性能问题仍未解决；后继必须是 metric checkpoint 的独立转换、输入/decoder 降本或更小
 的专用 metric observer，而不是在本次已消费 timing 上挑性能档。完整记录见
-`DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md`。
+`../../../docs/research/hftf/archive/DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md`。
 
 最新米制 NPU/稀疏锚点终态：
 `DAV2_METRIC_392X518_HTP_DEPLOYMENT_PARITY_SUPPORTED /`
@@ -118,7 +118,7 @@ ORT 的平均米制差 `0.0145 m`；但未标定 clearance 只过 2/5 门。每�
 `0.0981 m / 93.77% / 4.95%`，5/5 门通过；只用第一段一次性全局尺度时 false-clear
 回升至 `6.99%`，4/5 门。因此当前唯一保留的端侧架构是“低分辨率 DA Metric HTP +
 周期性多区 ToF/稀疏米制尺度锚点 + 过期 UNKNOWN”，不是纯 RGB 或一次标定方案。详见
-`DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.md`。
+`../../../docs/research/hftf/archive/DAV2_METRIC_QAIRT_SPARSE_SCALE_R0_RESULT.md`。
 
 最新稀疏尺度侧车回放终态：
 `SPARSE_SCALE_CLEARANCE_SIDECAR_REPLAY_SUPPORTED_CONSUMED_PROXY /`
