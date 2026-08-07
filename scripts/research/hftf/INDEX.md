@@ -5,6 +5,8 @@
 这是 HFTF 目录的短职责入口；详细状态以
 [`docs/research/hftf/README.md`](../../../docs/research/hftf/README.md) 为准。
 机器匹配规则见 [`roles.json`](roles.json)；`support` 是迁移缓冲区，不代表当前执行权限。
+DepthART P0 部署簇的最短读取路径见
+[`DEPTHART_P0_DEPLOYMENT_INDEX.md`](DEPTHART_P0_DEPLOYMENT_INDEX.md)。
 
 | 分区 | 识别规则 | 典型文件/目录 | 权限 |
 |---|---|---|---|
