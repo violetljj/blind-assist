@@ -44,6 +44,9 @@ function New-TestRepository([string]$Name) {
 
     Write-TestFile $repository 'scripts/README.md' '# scripts'
     Write-TestFile $repository 'scripts/check.ps1' 'Write-Host ok'
+    Write-TestFile $repository 'scripts/research/REGISTRY.md' '# registry'
+    Write-TestFile $repository 'scripts/research/hftf/README.md' (Research-Readme 'hftf')
+    Write-TestFile $repository 'scripts/research/hftf/INDEX.md' '# hftf'
     Write-TestFile $repository 'scripts/research/demo/README.md' (Research-Readme 'demo')
     Write-TestFile $repository 'scripts/research/demo/tool.py' 'from research.common.util import value'
     Write-TestFile $repository 'scripts/research/common/README.md' (Research-Readme 'common')
@@ -150,7 +153,7 @@ try {
     }
     Assert-Scenario 'private-path-reference' $false {
         param($repo)
-        Write-TestFile $repo 'docs/caller.md' 'python scripts/research/demo/tool.py'
+        Write-TestFile $repo 'scripts/caller.md' 'python scripts/research/demo/tool.py'
     }
     Assert-Scenario 'immutable-private-reference' $true {
         param($repo)

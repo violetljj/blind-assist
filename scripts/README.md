@@ -2,6 +2,9 @@
 
 `scripts/` 根目录只保留跨领域稳定 Interface、当前共享 Implementation 和兼容入口；完成或冻结的研究 campaign 下沉到 `scripts/research/<domain>/`。调用方不应依赖研究子目录的内部布局。
 
+研究脚本冷启动先读 [`research/REGISTRY.md`](research/REGISTRY.md)；HFTF/DepthART 再读
+[`research/hftf/INDEX.md`](research/hftf/INDEX.md)。这些索引只描述职责和路径，不复制动态状态。
+
 ## 稳定入口
 
 - `run_host_research.ps1`：电脑端 CPU 进程池研究启动器；按本机实测解析 interactive/balanced/throughput 的 8/12/16 worker，当前 16 GiB 主机默认保留 4 GiB 系统内存并限制嵌套数值线程。只调度 host research，不改变科学参数，也不适用于 Android/边缘端。

@@ -178,6 +178,14 @@ else {
 # Every research Module owns a small, testable contract at its directory Interface.
 $researchRoot = (Normalize-RepoPath ([string]$policy.research_root)).TrimEnd('/')
 $researchPrefix = "$researchRoot/"
+$researchRegistry = Resolve-FromRepo "$researchRoot/REGISTRY.md"
+if (-not (Test-Path -LiteralPath $researchRegistry -PathType Leaf)) {
+    $failures.Add("Research registry is missing: $researchRoot/REGISTRY.md")
+}
+$hftfRegistry = Resolve-FromRepo "$researchRoot/hftf/INDEX.md"
+if (-not (Test-Path -LiteralPath $hftfRegistry -PathType Leaf)) {
+    $failures.Add("HFTF role index is missing: $researchRoot/hftf/INDEX.md")
+}
 $moduleNames = @(
     $repoFiles |
         Where-Object { $_.StartsWith($researchPrefix, [StringComparison]::OrdinalIgnoreCase) } |
