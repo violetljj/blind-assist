@@ -10,6 +10,10 @@
 2. [部署当前入口](../../../docs/research/SYSTEM_RESEARCH_CURRENT.md)：系统/部署总状态。
 3. 下表中与本次任务直接相关的一个脚本或结果；不要扫描整个 `hftf/`。
 
+迁移前的机器清单见
+[DEPTHART_P0_MIGRATION_MANIFEST.json](DEPTHART_P0_MIGRATION_MANIFEST.json)。当前状态是
+`inventory_frozen_no_physical_move`，它不是移动授权。
+
 ## 当前分层
 
 | 层 | 唯一入口 | 当前含义 | 禁止推断 |
@@ -35,4 +39,3 @@
 - 不修改已 consumed 数据、旧 protocol、receipt 或历史路径来“修”结果。
 - 不把本页的部署 successor 复制到算法或数据 current 页面。
 - 不把未登记的新 converter、`.exp/.lib` 或设备产物移动到其他目录；先登记 manifest 和调用方。
-

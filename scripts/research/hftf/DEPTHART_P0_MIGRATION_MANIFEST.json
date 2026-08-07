@@ -1,0 +1,80 @@
+{
+  "schema": "blindassist_research_migration_manifest",
+  "schema_version": 1,
+  "topic": "depthart_p0_deployment",
+  "status": "inventory_frozen_no_physical_move",
+  "owner_index": "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
+  "target_layout": {
+    "deployment": "scripts/research/hftf/deployment/depthart/",
+    "diagnostics": "scripts/research/hftf/diagnostics/depthart/",
+    "current_algorithm": "scripts/research/hftf/current/depthart/"
+  },
+  "compatibility_policy": {
+    "move_requires": [
+      "caller_search",
+      "protocol_receipt_search",
+      "migration_adapter_or_import_shim",
+      "targeted_regression",
+      "manifest_update"
+    ],
+    "do_not_move": [
+      "files referenced by external commands until adapter exists",
+      "parallel-task generated SelectiveScan .cpp/.xml/.exp/.lib artifacts",
+      "historical protocol or receipt paths"
+    ]
+  },
+  "batches": [
+    {
+      "id": "P0-A",
+      "scope": "graph_rewrite_and_admission",
+      "destination": "deployment",
+      "files": [
+        "rewrite_depthart_qairt_onnx.py",
+        "rewrite_depthart_qairt_static_shape.py",
+        "rewrite_depthart_qairt_hygiene.py",
+        "depthart_admission_r1.py",
+        "test_rewrite_depthart_qairt_onnx.py",
+        "test_rewrite_depthart_qairt_static_shape.py",
+        "test_rewrite_depthart_qairt_hygiene.py",
+        "test_depthart_admission_r1.py"
+      ],
+      "known_callers": [
+        "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
+        "docs/research/hftf/README.md"
+      ],
+      "move_status": "pending_adapter_and_regression"
+    },
+    {
+      "id": "P0-B",
+      "scope": "qnn_htp_operator_diagnostics",
+      "destination": "diagnostics",
+      "files": [
+        "run_qnn_detailed_operator_profile_r0.ps1",
+        "run_qnn_htp_linting_profile_r0.ps1",
+        "analyze_qnn_detailed_operator_profile.py",
+        "analyze_qnn_htp_linting_profile.py",
+        "qnn_htp_linting_config_r0.json",
+        "qnn_htp_linting_backend_extensions_r0.json"
+      ],
+      "known_callers": [
+        "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md"
+      ],
+      "move_status": "pending_bounded_diagnostic_move"
+    },
+    {
+      "id": "P0-C",
+      "scope": "selectivescan_custom_operator",
+      "destination": "deployment",
+      "files": [
+        "depthart_selective_scan_converter_op.cpp",
+        "depthart_selective_scan_op_package.xml"
+      ],
+      "known_callers": [
+        "parallel DepthART deployment task",
+        "external QAIRT/QNN package invocation"
+      ],
+      "move_status": "blocked_preserve_parallel_task_paths",
+      "notes": "Do not move until the parallel task confirms its package/import contract."
+    }
+  ]
+}
