@@ -39,6 +39,7 @@
 - `idea.md` 只保留待决方向。实验结束后写一条简短决策并链接证据，而不是复制实验流水。
 - 新的顶层 `docs/*.md` 必须在 `docs/README.md` 中列为 `current`、`snapshot` 或 `archive`；运行 `scripts/check_docs_index.ps1`。
 - `docs/PROJECT_STATE.md` 是冷启动导航，不复制研究结论；任务开始时先读它，再按任务类型只读一个分类 current 和一个明确的路线/合同/测试入口。
+- 冷启动导航只允许稳定身份、路径和读取规则；状态、主张、指标、successor、禁止动作和默认 App 权限必须只在对应 current 真源维护。
 
 ## 历史与归档
 

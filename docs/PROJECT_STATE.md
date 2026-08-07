@@ -11,16 +11,20 @@
 BlindAssist 是一个本地 Android 助盲避障原型：手机 CameraX 采集，视觉模型推理，
 规则层生成语音、震动和 Compose 反馈。它不是安全认证设备，不能替代盲杖、导盲犬或人工判断。
 
-## 现在研究什么
+## 动态真源
 
-| 范围 | 当前定位 | 唯一入口 |
-|---|---|---|
-| 算法 | DepthART-S 为主要算法研究；双环为论文次线；DA2 是冻结 reference/fallback | [算法 current](research/ALGORITHM_RESEARCH_CURRENT.md) |
-| 数据 | 数据集、truth、coverage、质量、parent/session 独立性和数据角色 | [数据 current](research/DATA_RESEARCH_CURRENT.md) |
-| 系统与平台 | 通信链路、端到端延迟、性能优化、导出、设备部署和稳定性 | [系统 current](research/SYSTEM_RESEARCH_CURRENT.md) |
-| 未决想法 | 暂不承诺推进的新方向 | [idea.md](../idea.md) |
+本页不复制会变化的路线、状态、指标、下一步或权限。只按任务类型打开一个 current
+入口；该入口再链接唯一路线真源。
 
-默认 App 和正式 YOLO 资产不因研究结果自动改变；当前算法、数据、平台结论彼此不自动升级权限。
+| 范围 | 动态真源 |
+|---|---|
+| 算法 | [算法 current](research/ALGORITHM_RESEARCH_CURRENT.md) |
+| 数据 | [数据 current](research/DATA_RESEARCH_CURRENT.md) |
+| 系统与平台 | [系统 current](research/SYSTEM_RESEARCH_CURRENT.md) |
+| 产品、默认 App、构建 | [根 README](../README.md) |
+| 未决想法 | [idea.md](../idea.md) |
+
+如果本页与上述入口不一致，以对应 current 真源和可复现门禁为准；不要在本页修补动态结论。
 
 ## 这次任务只读哪三个文件
 
@@ -53,3 +57,10 @@ BlindAssist 是一个本地 Android 助盲避障原型：手机 CameraX 采集�
 3. 先检查 `git status --short`，把已有改动视为用户所有。
 4. 只有遇到链接缺失、状态冲突或用户要求历史时，才扩大读取范围。
 5. 完成后把新结论写回唯一 current；未决定的想法留在 `idea.md`，不要创建伪 current。
+
+## 同步契约
+
+- 研究状态、主张、successor、禁止动作或默认 App 权限变化：同一提交更新对应 current 真源。
+- 分类入口只维护本分类摘要；路线 README 只维护本路线摘要；本页不重复这些内容。
+- 新增或移动 current 文档：同一提交更新本页（仅入口）和 `docs/README.md`，再运行索引检查。
+- snapshot、archive、日志和外部方案不会自动改变 current；采用前必须显式登记并写明 successor。
