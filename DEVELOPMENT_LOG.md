@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-08（Asia/Hong_Kong）；执行者：violjjet。优化提交/推送门禁耗时：
+  `scripts/check_repo_hygiene.ps1` 默认只执行仓库卫生检查，不再隐式重复结构扫描；
+  仅 `-IncludeStructure` 时串联 `check_project_structure.ps1`，并保留
+  `-SkipStructure` 兼容参数。普通提交使用 staged/task-owned `git diff --check`
+  和相关测试；结构/政策变更单跑 structure；push/交付单跑 hygiene；确需两者时
+  只调用一次 `check_repo_hygiene.ps1 -IncludeStructure`。
 - 时间：2026-08-08（Asia/Hong_Kong）；执行者：violjjet。按效率审计收窄 Codex 工作约束：
   `DEVELOPMENT_LOG.md` 仅记录 durable decision/架构与 interface 变化/研究结论/重要验证/
   材料失败；冷启动读取改为“默认两个入口、直接依赖或冲突时可扩展”；Android build 仅由

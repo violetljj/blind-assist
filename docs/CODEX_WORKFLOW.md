@@ -82,8 +82,9 @@ authority 摘要和机械验证入口仍以根 `AGENTS.md` 为准。
 - 公共接口、CameraX、vision、risk、feedback、权限、resources/assets、构建配置，或
   跨模块影响范围不确定：相关测试加 Android build。纯文档、纯单测和非 Android
   脚本不要求 Android build。
-- 项目结构、脚本入口和文档治理：运行根 `AGENTS.md` 中列出的结构、hygiene 和
-  docs-index 机械门。
+- 项目结构、脚本入口和文档治理：运行 `scripts/check_project_structure.ps1`；
+  push/交付再运行 `scripts/check_repo_hygiene.ps1`。只有明确要求两者联跑时才使用
+  `scripts/check_repo_hygiene.ps1 -IncludeStructure`，避免重复结构扫描。
 - 设备、研究、host compute 和 release 不在本页复制命令；按根 `AGENTS.md` 路由到
   owning current 文档。
 

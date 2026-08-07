@@ -1,6 +1,7 @@
 param(
     [string]$BaseRef = $env:BASE_REF,
     [switch]$AllTracked,
+    [switch]$IncludeStructure,
     [switch]$SkipStructure
 )
 
@@ -201,7 +202,7 @@ if ($failures.Count -gt 0) {
     exit 1
 }
 
-if (-not $SkipStructure) {
+if ($IncludeStructure -and -not $SkipStructure) {
     $structureScript = Join-Path $PSScriptRoot 'check_project_structure.ps1'
     if (-not (Test-Path -LiteralPath $structureScript -PathType Leaf)) {
         Write-Host "Repository hygiene check failed:`n - Project structure gate is missing: $structureScript"

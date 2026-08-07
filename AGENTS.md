@@ -172,8 +172,17 @@ commit is required.
 
   ```powershell
   pwsh -NoProfile -File scripts/check_project_structure.ps1
+  ```
+
+- Push, delivery candidate, or explicit release:
+
+  ```powershell
   pwsh -NoProfile -File scripts/check_repo_hygiene.ps1
   ```
+
+- When both structure and hygiene are explicitly required, run
+  `pwsh -NoProfile -File scripts/check_repo_hygiene.ps1 -IncludeStructure` once
+  instead of running the two gates separately.
 
 - Top-level `docs/*.md` or documentation-index changes:
 

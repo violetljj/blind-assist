@@ -49,8 +49,8 @@
 - `run_research_tool.py candidate-event-mining register_run_index.py`：把 adapter、全量候选报告、review queue、bundle、Luna receipts 和 candidate pool 的路径/hash 追加到 `F:\ba-data\blindassist-candidate-event-mining\run_index.json`。
 - `run_public_video_campaign_tests.py`：发现并运行 `scripts/research/public_video/` 的完整测试集。
 - `run_public_video_edge_inference.ps1`：已冻结 campaign 真机闭环的稳定 Adapter；调用方不依赖研究目录内部路径。
-- `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试。
-- `check_project_structure.ps1` / `test_check_project_structure.ps1`：脚本根 allowlist、开发日志预算、研究 Module 合同、内部路径和跨 Module import 门禁；仓库卫生检查会自动调用它。
+- `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试；默认只检查卫生，使用 `-IncludeStructure` 才串联项目结构门。
+- `check_project_structure.ps1` / `test_check_project_structure.ps1`：脚本根 allowlist、开发日志预算、研究 Module 合同、内部路径和跨 Module import 门禁；需要结构/政策验证时单独运行，避免与卫生门重复执行。
 - `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档、research domain README/index 与本地链接门禁。
 - `audit_research_structure.ps1`：只读输出研究 Module 合同、HFTF 角色计数和 support 迁移清单。
 - `archive_apk.ps1`、`verify_release_apk.ps1`、`verify_apk_16kb.ps1`：APK 校验与归档。
