@@ -34,6 +34,6 @@ The promoted native canonical path explicitly reproduces the official OpenCV cub
 
 - Closure bundle: `artifacts.local/evidence/hftf/qnn-native-cached-context-r0-20260804-205756/result.json`
 - Cached DLC SHA-256: `2BB02F37FEF177FF4B02B8EE0C416EE9FF998BCEEF9786B92959E1F682EBAA24`
-- Host runner: `scripts/research/hftf/run_qnn_native_cached_context_r0.ps1`
+- Host runner: `scripts/research/hftf/diagnostics/depthart/run_qnn_native_cached_context_r0.ps1`
 
 Next gate: bind this persistent runtime to a `STRATEGY_KEEP_ONLY_LATEST` CameraX pipeline with at most one in-flight depth job, prompt `ImageProxy.close()`, timestamp/TTL, and thermal/background fail-closed behavior.

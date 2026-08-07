@@ -57,9 +57,10 @@
         "diagnostics/depthart/qnn_htp_linting_backend_extensions_r0.json"
       ],
       "known_callers": [
-        "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md"
+        "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
+        "docs/research/hftf/DAV2_QNN_NATIVE_CACHED_CONTEXT_R0_RESULT_2026-08-04.md"
       ],
-      "move_status": "diagnostic_adapter_ready_pending_regression"
+      "move_status": "diagnostic_physically_migrated_compatibility_shim"
     },
     {
       "id": "P0-C",

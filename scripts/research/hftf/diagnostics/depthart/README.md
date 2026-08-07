@@ -6,6 +6,7 @@
 
 本目录是 QNN/HTP operator profile、linting 和资源重叠诊断的规范入口。
 Python 分析器、linting 配置和设备运行脚本已物理迁入本目录；旧路径保留兼容 shim。
+`run_qnn_native_cached_context_r0.ps1` 也属于本目录的设备边界诊断。
 设备脚本只产生部署诊断证据，不改变默认 App。
 
 ## 输出
