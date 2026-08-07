@@ -51,10 +51,10 @@
       "files": [
         "run_qnn_detailed_operator_profile_r0.ps1",
         "run_qnn_htp_linting_profile_r0.ps1",
-        "analyze_qnn_detailed_operator_profile.py",
-        "analyze_qnn_htp_linting_profile.py",
-        "qnn_htp_linting_config_r0.json",
-        "qnn_htp_linting_backend_extensions_r0.json"
+        "diagnostics/depthart/analyze_qnn_detailed_operator_profile.py",
+        "diagnostics/depthart/analyze_qnn_htp_linting_profile.py",
+        "diagnostics/depthart/qnn_htp_linting_config_r0.json",
+        "diagnostics/depthart/qnn_htp_linting_backend_extensions_r0.json"
       ],
       "known_callers": [
         "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md"

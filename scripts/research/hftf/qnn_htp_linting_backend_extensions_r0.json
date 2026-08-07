@@ -1,6 +1,4 @@
 {
-  "backend_extensions": {
-    "shared_library_path": "/data/local/tmp/ba_qairt_htp_r0/libQnnHtpNetRunExtensions.so",
-    "config_file_path": "/data/local/tmp/ba_qairt_htp_r0/dav2-metric/518x686/qnn-htp-linting-r0.json"
-  }
+  "schema": "blindassist_qnn_htp_linting_backend_extensions_compatibility_shim",
+  "target": "scripts/research/hftf/diagnostics/depthart/qnn_htp_linting_backend_extensions_r0.json"
 }

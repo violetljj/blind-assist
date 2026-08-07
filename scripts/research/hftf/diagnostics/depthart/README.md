@@ -5,8 +5,8 @@
 ## 稳定 Interface
 
 本目录是 QNN/HTP operator profile、linting 和资源重叠诊断的规范入口。
-当前实现暂保留在 `scripts/research/hftf/`，通过 `legacy_adapter.py` 兼容调用；
-物理迁移前必须完成设备前置条件和定向回归。
+Python 分析器和 linting 配置已物理迁入本目录；旧路径保留兼容 shim。
+设备运行脚本仍暂留在 `scripts/research/hftf/`，待设备命令路径回归后再迁移。
 
 ## 输出
 

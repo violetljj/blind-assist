@@ -25,8 +25,8 @@ $deviceRoot = "/data/local/tmp/ba_qairt_htp_r0"
 $deviceModelRoot = "$deviceRoot/dav2-metric/518x686"
 $deviceHtpConfig = "$deviceModelRoot/qnn-htp-linting-r0.json"
 $deviceBackendConfig = "$deviceModelRoot/qnn-htp-linting-backend-r0.json"
-$htpConfig = Join-Path $PSScriptRoot "qnn_htp_linting_config_r0.json"
-$backendConfig = Join-Path $PSScriptRoot "qnn_htp_linting_backend_extensions_r0.json"
+$htpConfig = Join-Path $PSScriptRoot "diagnostics\depthart\qnn_htp_linting_config_r0.json"
+$backendConfig = Join-Path $PSScriptRoot "diagnostics\depthart\qnn_htp_linting_backend_extensions_r0.json"
 (Invoke-Native $AdbPath @("-s", $DeviceSerial, "push", $htpConfig, $deviceHtpConfig) (Join-Path $artifactRoot "push-htp-config.txt")).Lines | Out-Null
 (Invoke-Native $AdbPath @("-s", $DeviceSerial, "push", $backendConfig, $deviceBackendConfig) (Join-Path $artifactRoot "push-backend-config.txt")).Lines | Out-Null
 
