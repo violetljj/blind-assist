@@ -30,3 +30,30 @@
 - 问题：临场演示需要稳定材料，但不应重新污染日常主流程或把历史验证当成当前事实。
 - 假设：文档、外部 APK 归档、debug-only 回放和少量授权截图已足以构成轻量展示包。
 - 实施门槛：只有在明确的提交或答辩需求出现时，按 [演示指南](docs/DEMO_GUIDE.md) 生成一次性材料并重新验证版本、构建和设备状态。
+
+### DA3 × Metric3D GeoMetric-Lite 双教师轻量几何
+
+- 状态：`待评估 / 候选算法支线`
+- 主张：DA3 的空间结构/跨帧几何与 Metric3D 的米制尺度可能互补，可蒸馏为移动端稠密几何学生。
+- 保留理由：若教师互补性成立，可能改善 clearance、地面/障碍几何和时序稳定性；但必须先证明互补性，再购买双教师训练复杂度。
+- 进入门槛：先做固定数据上的教师互补性、单帧/时序对照、disagreement 与 error 关系及 kill gate；通过后才能建立新版本研究路线。
+- 禁止动作：未通过 R0 证据门前不得直接开始完整双教师训练、替代 DepthART/DA2、接入 Android 或改变默认 App。
+- 原始方案：[BlindAssist_DA3_Metric3D_GeoMetric-Lite_R0.1.md](D:/edge/BlindAssist_DA3_Metric3D_GeoMetric-Lite_R0.1.md)
+
+### DepthART R1 QAIRT/QNN/HTP 部署准入
+
+- 状态：`待推进 / 已存在主线候选的部署工作包`
+- 主张：DepthART-S 可沿 numerical parity、QAIRT graph compatibility、SelectiveScan lowering、HTP graph/runtime/performance 分层验证，争取成为可部署候选；R0 FAIL 必须保持不变。
+- 保留理由：这是当前 DepthART 主线的部署与准入执行思路，能够把“算法收益”和“部署可行性”分开管理。
+- 进入门槛：按 R1 顺序完成原始 ONNX parity、等价图改写 parity、Camera Embedder 处理、QAIRT 转换、SelectiveScan 实际判定、HTP smoke 和性能；任何阶段未闭合都不能写成 HTP PASS/FAIL 或生产替换。
+- 禁止动作：不得修改 R0 FAIL、把转换阻塞提前写成 HTP FAIL、把单机性能当作准确率/安全证据、或直接接入默认 App。
+- 原始纲领：[BlindAssist_DepthART_R1_QAIRT_QNN_HTP_部署与准入执行纲领_2026-08-07.md](D:/edge/BlindAssist_DepthART_R1_QAIRT_QNN_HTP_部署与准入执行纲领_2026-08-07.md)
+
+### 异步慢快感知、流式记忆与潜在未来风险
+
+- 状态：`待评估 / 系统与算法交叉想法`
+- 主张：通过 slow/fast 异步感知、跨帧 streaming memory、轻量 latent future predictor、uncertainty gate 和 dynamic compute，可能在移动端降低平均计算成本并提升动态风险感知时效性。
+- 保留理由：它不是单一模型替换，而是可拆成独立的时序、数据、延迟和性能研究，适合在 DepthART 周边并行验证。
+- 进入门槛：先做单变量、可停止的最小实验：异步刷新收益、记忆/时序模型收益、未来风险预测收益、动态计算节省与最坏延迟；每个方向通过判别实验后再登记为独立路线。
+- 禁止动作：不得一次性同时引入十二类技术、把概念综述当作结果、未测量就宣称降低端到端延迟，或绕过 current 入口直接接入默认 App。
+- 原始调研：[2024–2026 新型轻量智能学习与实时视觉感知技术路线整理.md](D:/edge/2024–2026%20新型轻量智能学习与实时视觉感知技术路线整理.md)
