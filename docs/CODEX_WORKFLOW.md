@@ -9,8 +9,9 @@ authority 摘要和机械验证入口仍以根 `AGENTS.md` 为准。
 
 ## 六项执行合同
 
-非平凡任务在开始执行前，将请求归一化为下列六项。能从用户请求、当前代码和
-current 文档安全推断的字段直接填写，不为形式完整反复询问。
+跨文件、目标含糊、长时间运行、外部有副作用或共享工作树任务，在开始执行前将请求
+归一化为下列六项。小型、明确任务在内部隐式维护，不必把模板完整展示给用户。
+能从用户请求、当前代码和 current 文档安全推断的字段直接填写，不为形式完整反复询问。
 
 ```text
 目标：
@@ -58,8 +59,9 @@ current 文档安全推断的字段直接填写，不为形式完整反复询问
   blocker/authority boundary、下一条命令。
 - 恢复 handoff 时先验证 `git status --short`、分支、允许路径和已声明的验证事实；
   旧 handoff 不能替代当前检查。
-- 持久技术决定进入 owning current 文档或 `DEVELOPMENT_LOG.md`；聊天历史与 handoff
-  都不是长期真源。
+- 持久技术决定、架构/interface 变化、研究结论、重要验证和材料失败进入 owning
+  current 文档或 `DEVELOPMENT_LOG.md`；普通小修复和一次性测试不写日志。聊天历史与
+  handoff 都不是长期真源。
 
 ## 共享工作树与提交
 
@@ -70,15 +72,16 @@ current 文档安全推断的字段直接填写，不为形式完整反复询问
   `git commit --only -m "<message>" -- <task-owned-paths>`。
 - 复用仍与当前文件一致的验证 receipt，只补跑 receipt 之后实际改变所需要的最小
   gate。
-- 推送后分别核对本地 `HEAD`、upstream 和远端目标 ref；不要只把 `git push`
-  返回成功当作完整交付证明。
+- 只有 push、交付候选或用户明确要求发布时，才分别核对本地 `HEAD`、upstream
+  和远端目标 ref；本地 commit 不需要远端 parity。
 
 ## 验证选择
 
 - 文案/链接：内容审阅、链接/index 检查、`git diff --check`。
 - 单模块实现：相关单测或 lint。
-- 公共接口、CameraX、vision、risk、feedback、权限或 assets：相关测试加 Android
-  build。
+- 公共接口、CameraX、vision、risk、feedback、权限、resources/assets、构建配置，或
+  跨模块影响范围不确定：相关测试加 Android build。纯文档、纯单测和非 Android
+  脚本不要求 Android build。
 - 项目结构、脚本入口和文档治理：运行根 `AGENTS.md` 中列出的结构、hygiene 和
   docs-index 机械门。
 - 设备、研究、host compute 和 release 不在本页复制命令；按根 `AGENTS.md` 路由到

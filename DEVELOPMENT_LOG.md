@@ -1,4 +1,10 @@
 # Development Log
+- 时间：2026-08-08（Asia/Hong_Kong）；执行者：violjjet。按效率审计收窄 Codex 工作约束：
+  `DEVELOPMENT_LOG.md` 仅记录 durable decision/架构与 interface 变化/研究结论/重要验证/
+  材料失败；冷启动读取改为“默认两个入口、直接依赖或冲突时可扩展”；Android build 仅由
+  runtime、共享接口、resources/assets、权限、构建配置或不确定跨模块影响触发；远端 parity
+  仅用于 push、交付候选或明确发布；六项合同对小任务隐式维护。同步将 AI-review 与研究
+  authority 的详细语义路由回对应 current 文档，并压缩全局子代理固定模板。
 - 时间：2026-08-08（Asia/Hong_Kong）；执行者：violjjet。精简根 `AGENTS.md`
   的启动上下文：保留权限/Git/研究 authority 硬边界、八类按需文档路由、六项执行
   合同入口和机械验证命令；将最小读取、日志输出预算、任务切换、handoff 与共享工作树

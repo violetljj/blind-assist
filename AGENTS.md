@@ -38,12 +38,14 @@
 - Never amend/rewrite history, force-push, change another remote, delete a
   branch, create a PR, or include ignored/local payloads unless the user
   explicitly requests it.
-- Before reporting push completion, verify current branch, upstream, exact
-  remote, and local `HEAD`/upstream/remote-ref parity. Preserve unrelated staged
-  and unstaged changes.
-- Update `DEVELOPMENT_LOG.md` for code, configuration, model, test, or adopted
-  technical/governance decisions; use `violjjet` as executor. Update
-  `README.md` or `CHANGELOG.md` only for their roles defined in
+- Before reporting push or delivery completion, verify current branch, upstream,
+  exact remote, and local `HEAD`/upstream/remote-ref parity. A local commit
+  needs no remote parity check. Preserve unrelated staged and unstaged changes.
+- Update `DEVELOPMENT_LOG.md` only for durable decisions, architecture or
+  interface changes, research conclusions, important verification, material
+  failures, or reusable operational lessons. Ordinary small fixes, one-off
+  tests, and routine refactors need no log entry. Use `violjjet` as executor.
+  Update `README.md` or `CHANGELOG.md` only for their roles defined in
   [document governance](docs/DOCUMENT_GOVERNANCE.md).
 
 ## 3. Research authority boundary
@@ -85,16 +87,15 @@ These boundaries always apply:
   candidate, threshold, protocol, or selection, that data cannot confirm the
   changed candidate.
 - Synthetic, pseudo-labeled, model-generated, or model-reviewed evidence must
-  be named as such. It is not a device measurement, human outcome, consent
-  record, or objective sensor truth.
-- Default to an end-to-end autonomous workflow for routine engineering and
-  reversible exploration. Do not create, preserve, or wait on a human-required queue or gate
-  for low-risk work; missing permission blocks only the affected external or
-  protected action.
-- Data downloadable through an ordinary public channel may enter isolated
-  internal research with recorded source/provenance. Public availability does
-  not authorize access-control bypass, redistribution, commercial use,
-  production promotion, or claims of consent.
+  be named as such; it is not a device measurement, human outcome, consent
+  record, or objective sensor truth. Default to an end-to-end autonomous workflow.
+  Use it for routine engineering and reversible exploration. Do not create, preserve, or wait on a human-required queue or gate for low-risk work.
+  Data downloadable through an ordinary public channel may enter isolated
+  internal research with recorded source/provenance, but public availability
+  does not authorize bypass, redistribution, commercial use, promotion, or
+  claims of consent. Detailed AI-review and research semantics live in
+  [AI_REVIEW_GOVERNANCE.md](docs/AI_REVIEW_GOVERNANCE.md) and
+  [RESEARCH_GOVERNANCE.md](docs/RESEARCH_GOVERNANCE.md).
 - A positive research result does not authorize production, safety claims,
   Android default replacement, model promotion, or release. Those require the
   separately declared promotion and release gates.
@@ -134,9 +135,9 @@ this file.
 
 ## 5. Execution contract and output budget
 
-For a non-trivial task, normalize the request into this compact contract in the
-working plan or handoff; infer safe fields from context instead of repeatedly
-asking the user:
+For a cross-file, ambiguous, long-running, externally consequential, or
+shared-worktree task, normalize the request into this compact contract in the
+working plan or handoff. For a small, explicit task, maintain it implicitly:
 
 ```text
 目标：
@@ -180,9 +181,11 @@ commit is required.
   pwsh -NoProfile -File scripts/check_docs_index.ps1
   ```
 
-- Android/module changes: run the affected module tests or lint. Runtime,
-  vision, risk, feedback, permissions, assets, or shared-interface changes also
-  require the applicable Android build.
+- Android/module changes: run the affected module tests or lint. An Android
+  build is required only when runtime behavior, a shared interface, resources
+  or model assets, permissions, build configuration, or an uncertain
+  cross-module blast radius changes. Pure docs, pure unit tests, and non-Android
+  scripts do not require an Android build.
 - Device work: use the smoke/short/formal durations and evidence capture defined
   by `docs/DEVICE_REGRESSION.md`; do not default to long stress runs.
 - Research protocol/validator changes: run the owning contract tests and

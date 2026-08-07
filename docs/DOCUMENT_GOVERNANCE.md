@@ -35,10 +35,12 @@
 - 只改一个当前真源，再从其他入口链接它；不要复制会变化的数字、门禁结论或下一步。
 - `README.md` 仅在产品、版本、构建入口或用户可见状态变化时更新。
 - `CHANGELOG.md` 仅加入已发布或用户可见变化。候选模型、数据收集和失败实验写入研究记录，不伪装成 release note。
-- `DEVELOPMENT_LOG.md` 只追加有实际项目变化的简洁条目；保留历史原文，不为美化时间线改写旧结论。
+- `DEVELOPMENT_LOG.md` 只追加 durable decision、架构或 interface 变化、研究结论、
+  重要验证、材料失败和可复用操作教训；普通小修复、一次性测试和常规重构不写条目。
+  保留历史原文，不为美化时间线改写旧结论。
 - `idea.md` 只保留待决方向。实验结束后写一条简短决策并链接证据，而不是复制实验流水。
 - 新的顶层 `docs/*.md` 必须在 `docs/README.md` 中列为 `current`、`snapshot` 或 `archive`；运行 `scripts/check_docs_index.ps1`。
-- `docs/PROJECT_STATE.md` 是冷启动导航，不复制研究结论；任务开始时先读它，再按任务类型只读一个分类 current 和一个明确的路线/合同/测试入口。
+- `docs/PROJECT_STATE.md` 是冷启动导航，不复制研究结论；任务开始时先读它，默认读取一个分类 current/根入口和一个明确的路线/合同/测试入口，直接依赖、验证或冲突需要时可扩展。
 - 冷启动导航只允许稳定身份、路径和读取规则；状态、主张、指标、successor、禁止动作和默认 App 权限必须只在对应 current 真源维护。
 
 ## 历史与归档
@@ -52,7 +54,7 @@
 
 | 任务类型 | 必需动作 |
 | --- | --- |
-| 小范围代码/文档修改 | 相关 current 文档或 `DEVELOPMENT_LOG.md` 二选一，按职责更新 |
+| 小范围代码/文档修改 | 只在形成 durable decision 或重要验证时更新相关 current 文档或 `DEVELOPMENT_LOG.md` |
 | 发布、演示或用户可见变化 | README + CHANGELOG + 发布验证文档 |
 | Discovery/Canary 研究 | 优先在现有 current 或单个 LITE round 记录中写问题、来源、最小实验、结果和下一步；不默认新增 contract/lock/receipt |
 | Development 研究 | 一个结果 snapshot + 简短开发日志；仅在身份、冻结或重放风险需要时增加机器 contract |
