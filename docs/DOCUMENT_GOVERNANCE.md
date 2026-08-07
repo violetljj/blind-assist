@@ -23,7 +23,8 @@
 | 近期工程改动与验证 | `DEVELOPMENT_LOG.md` | README、CHANGELOG |
 | 尚未决定的方向 | `idea.md` | 当前状态文档、开发日志 |
 | 日期化实验、审计与研究结论 | `docs/*_YYYY-MM-DD.*` 或 `docs/research/` | current 协议 |
-| 跨研究域算法路线摘要、唯一 successor 与默认 App 权限 | `docs/research/ALGORITHM_ROUTE_REGISTRY.md` | 各领域详细 README、日期化结果 |
+| 项目研究分类和阅读入口 | `docs/research/README.md` | 具体路线 README、日期化结果 |
+| 算法路线摘要、唯一 successor 与默认 App 权限 | `docs/research/ALGORITHM_RESEARCH_CURRENT.md` | 数据/平台入口、日期化结果 |
 | 任务断点与工作区现场 | `artifacts.local/work/codex-handoffs/` | Git 提交文档 |
 
 发生冲突时，以可复现的代码/门禁报告为事实基础；再以对应 `current` 协议为规则，以当前状态文档为操作摘要。研究阶段和证据传播以 `RESEARCH_GOVERNANCE.md` 为上位规则；领域协议可以更严格，但必须说明阶段、依据和最小 failure scope。`AI_REVIEW_GOVERNANCE.md` 覆盖旧 current/snapshot/handoff 中任何人工采集、标注、复核、仲裁或验收步骤；日期化快照只说明当时结论，不具有当前执行 authority。
@@ -57,9 +58,9 @@
 | 新协议、门禁或不可逆决定 | current 协议；必要时新增 `docs/decisions/ADR-XXXX-*.md` 并链接到 `docs/README.md` |
 
 同一结论不得同时新增多份职责重叠的 snapshot、amendment、receipt 总结和 handoff。
-算法路线总表只保留短摘要和唯一 successor；详细研究史进入领域 archive，不在 current README 重复维护。
-启动新算法路线时，必须先建立短 current 入口并登记到
-`docs/research/ALGORITHM_ROUTE_REGISTRY.md`，写明主张、状态、唯一真源、唯一 successor、
+研究总入口只保留分类导航；分类入口只保留当前问题、状态、唯一真源和 successor；详细研究史进入领域 archive，不在 current README 重复维护。
+启动新研究路线时，必须先登记到 `docs/research/README.md` 对应分类入口；算法路线登记到
+`docs/research/ALGORITHM_RESEARCH_CURRENT.md`，写明主张、状态、唯一真源、唯一 successor、
 禁止动作和默认 App 权限。原路线若不再承担当前执行职责，立即降级为 `closed`、`paused`
 或 `diagnostic`，其详细 README、协议和结果移入同域 `archive/`；不得让旧路线继续以“下一步”
 形式悬挂在 current 页面。

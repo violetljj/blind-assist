@@ -82,53 +82,17 @@ workflow 后才生效的实施合同、回归基线或日期化证据，不得�
 
 ## 研究档案
 
-- [候选事件自动挖掘](research/candidate-event-mining/README.md)：当前 `THESIS_DEVELOPMENT / discovery-only` 的长视频与公开数据候选事件流水线；只输出 candidate-blind review bundle、Luna 复核收据和候选池，不授予事件真值、训练、Android、默认 App 或生产权限。
+先从 [研究总入口](research/README.md) 按算法、数据、系统与平台分类阅读。下列链接只用于
+直接定位领域，不在本页重复维护状态：
 
-- [Frontier Upgrade 2026-07 研究档案](research/frontier-upgrade-2026-07/README.md)：按主报告、来源证据、专题笔记、计划、任务包和审稿记录分层，只用于研究追溯。
-- [研究文档媒体资产](research/assets/README.md)：研究文档引用的小型图表与图片；不存放数据集、模型输入或原始证据。
+| 分类 | 入口 |
+|---|---|
+| 当前分类 | [算法](research/ALGORITHM_RESEARCH_CURRENT.md) · [数据](research/DATA_RESEARCH_CURRENT.md) · [系统与平台](research/SYSTEM_RESEARCH_CURRENT.md) |
+| 当前路线 | [DepthART](research/hftf/README.md) · [双环](research/dual-loop/README.md) · [RCLE](research/rcle/README.md) |
+| 数据工具 | [候选事件挖掘](research/candidate-event-mining/README.md) |
+| 历史路线与资料 | [USTRF-SC](research/ustrf-sc/README.md) · [Frontier Upgrade](research/frontier-upgrade-2026-07/README.md) · [组会总账](research/GROUP_MEETING_PROGRESS.md) |
+| 媒体资产 | [研究文档资产](research/assets/README.md) |
 
-- [HFTF 候选未来可通行场支线](research/hftf/README.md)：独立于双环主线的
-    `DEVELOPMENT_STANDARD` 候选；source-specific H0.1/H0.2 已在一个 discovery 与三个
-    独立 SANPO-Synthetic sessions 上复现 pose/depth/local-ground proxy，终态
-    `H0_2_INDEPENDENT_SESSION_REPLICATION_ADMITTED / INNOVATION_NOT_EVALUABLE`，
-    只授权 H1 geometry teacher canary，不授权 student 效果、Android 或默认 App。未来
-    只有在同 ledger、canonical decision
-  kernel 与设备预算下通过 source-held-out parent-event challenger gate，才可晋级研究
-  主线。
-- [YOLO + 语义分割双环研究主线](research/dual-loop/README.md)：当前为
-  `RISKSEG_R0_TASK_AND_DATA_CONTRACT_FROZEN /
-  FULL_SEQUENTIAL_EXECUTION_AUTHORIZED / HOLD_EVENT_EVAL_DATA /
-  EVENT_TRUTH_NOT_FROZEN /
-  DEFAULT_APP_UNCHANGED`。历史 R1/R2-P0、segmentation gating、FP-aware DDRNet 与
-  DG-SRF F0 负终态保持不可变。当前唯一候选是四类 PIDNet-S 风险/可通行性分割：
-  event-eval 数据门只得到 14 个两路 RGB 盲审同桶一致事件，
-  `blocking/boundary/parallel/normal=7/2/1/4`，未达到 `8/8/7/7`，故没有冻结 truth，
-  也没有启动 `512x288 / W8A8` TFLite+QNN/SM-S9280 预检或训练。见
-  [RISKSEG-R0 task/data/execution contract](research/dual-loop/RISKSEG_R0_TASK_DATA_AND_EXECUTION_CONTRACT_2026-08-01.md)
-  、[data role ledger](research/dual-loop/RISKSEG_R0_DATA_ROLE_LEDGER_2026-08-01.json)
-  与 [event-eval data gate result](research/dual-loop/RISKSEG_R0_EVENT_EVAL_DATA_GATE_RESULT_2026-08-01.md)。
-  R2-P0 readiness 终态见
-  [R2-P0 result](research/dual-loop/DUAL_LOOP_SEGMENTATION_R2_P0_RESULT_2026-08-01.md)，
-  R1 consumed fresh 的永久角色修订见
-  [consumed-role amendment](research/dual-loop/DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_CONSUMED_ROLE_AMENDMENT_2026-08-01.json)。
-  中央图像阻塞前序结论保留为
-  [D0-A successor R0 result](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_RESULT_2026-07-31.md)，
-  [D0-A1 result](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_RESULT_2026-07-31.md)，
-  进入快照为
-  [D0-A1 entry](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_ENTRY_2026-07-31.md)，
-  协议为
-  [D0-A Agent 标签可用性协议](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)和
-  [successor fixed-clip protocol](research/dual-loop/CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_PROTOCOL_2026-07-31.json)。
-  旧 active R1 只保留 Development mechanism、row-density diagnostic 与
-  [事件失败分解](research/dual-loop/DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)，
-  不授权默认生产、产品、安全或自动 R2。
-- [RCLE 研究状态](research/rcle/README.md)：`paused / current truth`；保留 RCLE 的
-  历史科学终态、协议终态、权限与禁止事项，不再是默认执行主线；未来新
-  Development 默认采用 R4，不继承旧 one-shot 门。
-- [研究生组会进展总账](research/GROUP_MEETING_PROGRESS.md)：从项目建立至今的阶段工作、图文证据、统一研究问题、固定消融、统计计划与后续组会追加模板；不替代 SANPO/USTRF 当前状态真源。
-- [USTRF-SC 研究记录与窗口交接](research/ustrf-sc/README.md)：历史 route-conditioned
-  研究和 RCLE 前序 Looming 证据；不再是研究主线，不代表生产授权；未来实质不同的新
-  Development 默认采用 R4，历史 formal 门不自动继承。
 - 开发日志月度历史：[2026-05](history/development-log/2026-05.md) · [2026-06](history/development-log/2026-06.md) · [2026-07](history/development-log/2026-07.md)。近期记录继续以根 `DEVELOPMENT_LOG.md` 为准。
 - [早期项目计划、阶段与真机材料](history/project-materials/README.md)：archive；保留旧版本叙事，不证明当前状态。
 - [想法池历史](history/idea/README.md)：archive；当前待决方向只在根 `idea.md` 维护。

@@ -11,7 +11,7 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - 当前算法研究主要围绕 DepthART-S；项目整体还并行研究数据集/数据治理、通信链路与端到端延迟、
   性能优化和部署可行性。这些 workstream 可以独立推进，也可以在接口和证据边界明确后与 DepthART
   或其他路线耦合；不自动改变正式 App 或默认模型。项目研究入口见
-  [算法路线与并行 workstreams](docs/research/hftf/README.md)。YOLO + 语义分割双环保留为论文次线，当前为
+  [项目研究总入口](docs/research/README.md)。YOLO + 语义分割双环保留为论文次线，当前为
   `THESIS_DEVELOPMENT_DEFAULT / DEVELOPMENT_REPAIR_AND_RERUN_ALLOWED /
   DEVELOPMENT_DEVICE_BENCHMARK_ALLOWED /
   BOUNDED_HANDCRAFTED_GATING_FAMILY_STOP /
