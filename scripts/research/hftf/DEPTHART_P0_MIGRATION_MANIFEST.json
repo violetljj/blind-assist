@@ -29,10 +29,21 @@
       "scope": "graph_rewrite_and_admission",
       "destination": "deployment",
       "files": [
-        "rewrite_depthart_qairt_onnx.py",
-        "rewrite_depthart_qairt_static_shape.py",
-        "rewrite_depthart_qairt_hygiene.py",
-        "depthart_admission_r1.py",
+        "deployment/depthart/rewrite_depthart_qairt_onnx.py",
+        "deployment/depthart/rewrite_depthart_qairt_static_shape.py",
+        "deployment/depthart/rewrite_depthart_qairt_hygiene.py",
+        "deployment/depthart/depthart_admission_r1.py",
+        "deployment/depthart/depthart_admission_r0.py",
+        "deployment/depthart/build_dav2_selective_w8a16_qdq_a5s_r2.py",
+        "deployment/depthart/compare_depth_anything_v2_metric_qairt_output.py",
+        "deployment/depthart/convert_dav2_selective_w8a16_a5_r0.py",
+        "deployment/depthart/convert_dav2_selective_w8a16_a5_r1.py",
+        "deployment/depthart/export_depth_anything_v2_metric_onnx.py",
+        "deployment/depthart/export_depthart_camera_external.py",
+        "deployment/depthart/generate_dav2_selective_w8a16_overrides_a5_r0.py",
+        "deployment/depthart/materialize_dav2_selective_w8a16_qdq_a5s_r2_p1_cache.py",
+        "deployment/depthart/prepare_depth_anything_v2_metric_qairt_input.py",
+        "deployment/depthart/prepare_depth_anything_v2_qairt_canary.py",
         "deployment/depthart/test_rewrite_depthart_qairt_onnx.py",
         "deployment/depthart/test_rewrite_depthart_qairt_static_shape.py",
         "deployment/depthart/test_rewrite_depthart_qairt_hygiene.py",
@@ -42,7 +53,7 @@
         "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
         "docs/research/hftf/README.md"
       ],
-      "move_status": "physically_migrated_shims_preserved"
+      "move_status": "deployment_cluster_physically_migrated_shims_preserved"
     },
     {
       "id": "P0-B",

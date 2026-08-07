@@ -3,7 +3,7 @@
 import unittest
 
 import numpy as np
-from compare_depth_anything_v2_metric_qairt_output import compare
+from scripts.research.hftf.deployment.depthart.compare_depth_anything_v2_metric_qairt_output import compare
 
 
 class CompareDepthAnythingV2MetricQairtOutputTest(unittest.TestCase):
@@ -23,3 +23,4 @@ class CompareDepthAnythingV2MetricQairtOutputTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

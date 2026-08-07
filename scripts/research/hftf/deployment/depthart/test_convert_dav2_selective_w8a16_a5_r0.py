@@ -8,7 +8,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from convert_dav2_selective_w8a16_a5_r0 import converter_command
+from scripts.research.hftf.deployment.depthart.convert_dav2_selective_w8a16_a5_r0 import converter_command
 
 
 class SelectiveW8A16ConversionTest(unittest.TestCase):
@@ -28,3 +28,4 @@ class SelectiveW8A16ConversionTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

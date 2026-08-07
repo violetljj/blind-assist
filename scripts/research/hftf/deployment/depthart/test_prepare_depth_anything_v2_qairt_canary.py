@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from prepare_depth_anything_v2_qairt_canary import (
+from scripts.research.hftf.deployment.depthart.prepare_depth_anything_v2_qairt_canary import (
     INPUT_SHAPE,
     INPUT_ZERO_POINT,
     quantize_input,
@@ -25,3 +25,4 @@ class PrepareDepthAnythingV2QairtCanaryTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

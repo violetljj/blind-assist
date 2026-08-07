@@ -10,7 +10,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from build_dav2_selective_w8a16_qdq_a5s_r2 import quantize_weight
+from scripts.research.hftf.deployment.depthart.build_dav2_selective_w8a16_qdq_a5s_r2 import quantize_weight
 
 
 class SelectiveW8A16QdqTest(unittest.TestCase):
@@ -25,3 +25,4 @@ class SelectiveW8A16QdqTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

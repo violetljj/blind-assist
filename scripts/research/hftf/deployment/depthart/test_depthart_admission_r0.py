@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
 import math
-import sys
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import depthart_admission_r0 as admission
+from scripts.research.hftf.deployment.depthart import depthart_admission_r0 as admission
 
 
 class DepthArtAdmissionR0Test(unittest.TestCase):

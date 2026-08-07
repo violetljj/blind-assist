@@ -3,7 +3,7 @@
 import unittest
 
 import numpy as np
-from export_depth_anything_v2_metric_onnx import (
+from scripts.research.hftf.deployment.depthart.export_depth_anything_v2_metric_onnx import (
     make_validation_input,
     validate_input_shape,
 )
@@ -29,3 +29,4 @@ class ExportDepthAnythingV2MetricOnnxTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

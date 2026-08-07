@@ -5,8 +5,8 @@
 ## 稳定 Interface
 
 本目录是 DepthART QAIRT/QNN/HTP/ONNX 与 SelectiveScan 部署工作的规范入口。
-P0-A 实现已物理迁入本目录；旧路径由 shim 和 `legacy_adapter.py` 提供兼容导入。
-本目录同时保存 P0-A 的定向回归测试；旧测试路径保留兼容 shim。
+DepthART/DA2 QAIRT 部署实现和定向回归测试已物理迁入本目录；旧路径由 shim 和
+`legacy_adapter.py` 提供兼容导入。
 
 ## 输出
 

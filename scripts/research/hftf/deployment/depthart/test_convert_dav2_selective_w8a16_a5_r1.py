@@ -8,7 +8,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from convert_dav2_selective_w8a16_a5_r1 import generic_htp_command
+from scripts.research.hftf.deployment.depthart.convert_dav2_selective_w8a16_a5_r1 import generic_htp_command
 
 
 class SelectiveW8A16GenericHtpTest(unittest.TestCase):
@@ -27,3 +27,4 @@ class SelectiveW8A16GenericHtpTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

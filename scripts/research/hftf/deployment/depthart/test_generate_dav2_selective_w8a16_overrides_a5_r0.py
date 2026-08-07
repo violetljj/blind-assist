@@ -11,7 +11,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from generate_dav2_selective_w8a16_overrides_a5_r0 import (
+from scripts.research.hftf.deployment.depthart.generate_dav2_selective_w8a16_overrides_a5_r0 import (
     select_static_linear_weights,
     symmetric_int8_encoding,
 )
@@ -48,3 +48,4 @@ class SelectiveW8A16OverrideTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
