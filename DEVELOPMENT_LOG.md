@@ -1,4 +1,5 @@
 # Development Log
+- 时间：2026-08-08（Asia/Hong_Kong）；执行者：Codex。按 `normal-conversion frontier + parity-preserving minimal rewrite` 完成 DepthART Graph Hygiene R0。审计确认 123 个 BN 全为 `training_mode=0`、108 个 Reshape 全为 `allowzero=0`；4 个 AveragePool 均 `ceil_mode=0`、pads 全零，故移除这些显式默认/零 padding 等价属性，共 239 项，图仍为 2823 nodes。专属 hygiene + Einsum tests `4/4` 通过，输出 SHA-256 `94D12AC706DC4A6F4DAC7B643839B60199F50234BE69FF60725351E6359F39A2`。QAIRT 2.47 HTP normal conversion frontier 未漂移，仍首先停止于 5 个 `onnx_selectivescan`；未主动改写 LayerNorm、Resize、Erf 或 shape path，HTP 仍 `NOT_EVALUATED`。
 
 Active window: 2026-07-20 onward. Older July entries are archived in [2026-07](docs/history/development-log/2026-07.md).
 

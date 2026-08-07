@@ -9,7 +9,7 @@
 | A0 内参/预处理 | PASS | 官方 lower-bound resize 对 `K` 的缩放一致，无 crop/padding 平移项 |
 | A1 metric false-block | 3.10%，33 decisions / 31 frames | 集中在 center/right、1.5–2.0 m horizon、1.5–3 m truth clearance，不像均匀噪声 |
 | A2 relative truth-aligned | false-block 2.06%，false-clear 8.33%，MAE 0.1638 m，temporal 0.1219 m | 比 metric 的 false-block 好，但仍有边界残差；支持 Camera Adapter/metric 分支贡献部分问题，不支持“问题全在 adapter” |
-| A3 ONNX/QNN | G3-A PASS；G3-B PARTIAL PASS；G3-C BLOCKED_SELECTIVESCAN | 外提 camera prompt 后 PyTorch parity max_abs=0；QAIRT 已越过 Acos 并触达 5 个 `onnx_selectivescan`，当前无 translation；HTP 未评估 |
+| A3 ONNX/QNN | G3-A PASS；G3-B PARTIAL PASS；G3-C BLOCKED_SELECTIVESCAN | 外提 camera prompt 后 PyTorch parity max_abs=0；零语义风险 hygiene 移除 239 个显式默认属性后 normal-conversion frontier 仍为 5 个 `onnx_selectivescan`；HTP 未评估 |
 
 ## 决策
 
