@@ -1,4 +1,11 @@
 # Development Log
+- 时间：2026-08-07（Asia/Hong_Kong）；执行者：violjjet。冻结
+  `DEPTHART_ADMISSION_R0`：保留 DA2 metric 518 canonical 为 baseline/teacher，唯一
+  首轮候选绑定官方 DepthART 提交 `0384521` 与 indoor S checkpoint
+  `597631AC...667E65`。新增 hash-bound materializer、距离分段和时序诊断、任务/时序
+  fail-closed AND gate 及单测；AbsRel 仅作诊断，不得抵消 clearance/false-clear/时序
+  失败。120 帧 TUM 仅为 consumed Development regression；ONNX、Snapdragon、Android
+  default、产品和安全 authority 均保持关闭，FRESH-TF pause 不变。
 - 时间：2026-08-06（Asia/Hong_Kong）；执行者：violjjet。将 AtomS3R-M12 外设视频接入
   Android 现有感知链。新增 `GLASSES_HARDWARE` 与 `AtomS3rMjpegFrameSource`，按固件
   multipart `Content-Length` 读取 JPEG，读线程容量 1 覆盖旧完整帧，解码后同时更新

@@ -1,5 +1,9 @@
 # HFTF 候选未来可通行场支线
 
+- [DepthART-S candidate-core admission R0 protocol](DEPTHART_ADMISSION_R0_PROTOCOL_2026-08-07.md)
+- [Machine-readable DepthART admission R0 contract](DEPTHART_ADMISSION_R0_PROTOCOL_2026-08-07.json)
+- [DepthART-S candidate-core admission R0 result](DEPTHART_ADMISSION_R0_RESULT_2026-08-07.md)
+- [Machine-readable DepthART admission R0 result](DEPTHART_ADMISSION_R0_RESULT_2026-08-07.json)
 - [AtomS3R-M12 + ToF4M Android 正式 QNN HTP R1](ATOMS3R_ANDROID_PRODUCTION_QNN_HTP_R1_RESULT_2026-08-06.md)
 - [AtomS3R-M12 + ToF4M Android 延迟分解 R2](ATOMS3R_ANDROID_LATENCY_DECOMPOSITION_R2_RESULT_2026-08-06.md)
 - [AtomS3R-M12 + ToF4M Android 端到端计时 R0](ATOMS3R_ANDROID_E2E_TIMING_R0_RESULT_2026-08-06.md)
