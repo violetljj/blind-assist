@@ -11,8 +11,8 @@ DepthART P0 部署簇的最短读取路径见
 | 分区 | 识别规则 | 典型文件/目录 | 权限 |
 |---|---|---|---|
 | `current` | DepthART、metric-depth、clearance、student、teacher | `train_*student*`, `evaluate_*clearance*` | 仅按 current successor 执行 |
-| `deployment` | `qnn`、`qairt`、`onnx`、`htp`、`selective_scan`、`converter`、`package` | `rewrite_depthart_qairt_*`, `depthart_selective_scan_*` | 只证明导出/部署可行性，不证明算法或安全 |
-| `diagnostics` | `test_*`、`inspect_*`、`render_*`、`*_audit*`、`*_parity*`、`*_probe*` | 质量屏、parity、可视化和 failure atlas | diagnostic-only，不能自动产生 successor |
+| `deployment` | `deployment/` 或 `qnn`、`qairt`、`onnx`、`htp`、`selective_scan`、`converter`、`package` | `deployment/depthart/*`, `rewrite_depthart_qairt_*` | 只证明导出/部署可行性，不证明算法或安全 |
+| `diagnostics` | `diagnostics/` 或 `test_*`、`inspect_*`、`render_*`、`*_audit*`、`*_parity*`、`*_probe*` | `diagnostics/depthart/*`, `analyze_*` | diagnostic-only，不能自动产生 successor |
 | `archive` | 已关闭 round、旧 teacher/student、历史 replay | 由对应 README 标明 `closed/paused/archive` | 不得作为当前下一步 |
 
 ## 维护合同

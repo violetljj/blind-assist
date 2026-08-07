@@ -12,12 +12,14 @@
     "deployment": {
       "description": "导出、QAIRT/QNN/HTP、SelectiveScan、converter 和 parity bridge",
       "patterns": [
+        "(?i)^deployment/",
         "(?i)(qnn|qairt|onnx|htp|selective.?scan|converter|op_package|parity|native_decode|depth_bridge)"
       ]
     },
     "diagnostics": {
       "description": "测试、审计、探针、可视化、质量屏和失败分析",
       "patterns": [
+        "(?i)^diagnostics/",
         "(?i)^(test_|inspect_|audit_|probe_|render_|diagnose_|analyze_)",
         "(?i)(failure|atlas|diagnostic|visual|smoke|profile)"
       ]
