@@ -5,8 +5,8 @@
 ## 稳定 Interface
 
 本目录是 DepthART QAIRT/QNN/HTP/ONNX 与 SelectiveScan 部署工作的规范入口。
-当前实现仍保留在 `scripts/research/hftf/`，由 `legacy_adapter.py` 提供兼容导入；
-完成定向回归前不得删除旧路径。
+P0-A 实现已物理迁入本目录；旧路径由 shim 和 `legacy_adapter.py` 提供兼容导入。
+本目录同时保存 P0-A 的定向回归测试；旧测试路径保留兼容 shim。
 
 ## 输出
 

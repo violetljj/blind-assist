@@ -33,10 +33,10 @@
         "rewrite_depthart_qairt_static_shape.py",
         "rewrite_depthart_qairt_hygiene.py",
         "depthart_admission_r1.py",
-        "test_rewrite_depthart_qairt_onnx.py",
-        "test_rewrite_depthart_qairt_static_shape.py",
-        "test_rewrite_depthart_qairt_hygiene.py",
-        "test_depthart_admission_r1.py"
+        "deployment/depthart/test_rewrite_depthart_qairt_onnx.py",
+        "deployment/depthart/test_rewrite_depthart_qairt_static_shape.py",
+        "deployment/depthart/test_rewrite_depthart_qairt_hygiene.py",
+        "deployment/depthart/test_depthart_admission_r1.py"
       ],
       "known_callers": [
         "scripts/research/hftf/DEPTHART_P0_DEPLOYMENT_INDEX.md",
