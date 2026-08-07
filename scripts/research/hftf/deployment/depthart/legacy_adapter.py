@@ -1,9 +1,4 @@
-"""Compatibility adapter for the staged DepthART deployment migration.
-
-The implementation remains at the historical HFTF paths until P0-A regression
-is complete. New callers may import through this module without changing the
-old protocol and receipt paths.
-"""
+"""Compatibility adapter for the staged DepthART deployment migration."""
 
 from importlib import import_module
 
@@ -15,5 +10,4 @@ _MODULES = (
 )
 
 for _name in _MODULES:
-    globals()[_name] = import_module(f"scripts.research.hftf.{_name}")
-
+    globals()[_name] = import_module(f"{__package__}.{_name}")
