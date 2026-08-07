@@ -1,4 +1,4 @@
-# HFTF 候选未来可通行场支线
+# DepthART-centered 项目研究计划
 
 状态：`current / DEVELOPMENT_STANDARD / INNOVATION_NOT_EVALUABLE / DEFAULT_APP_UNCHANGED`
 
@@ -6,14 +6,23 @@
 
 ## 当前主张
 
-研究 HFTF 连续 clearance/traversability field，以及深度、时序和几何候选能否在统一事件账本下形成可学习、可复现的论文机制增量。HFTF 是项目自有原创支线，不等于正式 App 能力。
+当前项目研究中心已转为 DepthART-centered program：以项目自有的 DepthART-S 为算法候选，
+同时推进数据集/数据治理、通信链路与端到端延迟、CPU/GPU/HTP 性能、内存/热/稳定性和部署可行性。
+这些 workstream 共同服务于研究判断，但各自只能声明对应范围的证据；不等于正式 App 能力。
 
 ## 当前状态
 
-- HFTF 与双环主线隔离，默认 App 和正式 YOLO 模型不变。
+- DepthART program 与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
 - DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；A3 ONNX/QNN 部署预检为 `BLOCKED_SELECTIVESCAN`，HTP/Android/生产 authority 关闭。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
+
+## Workstreams
+
+- 算法：DepthART-S admission、clearance/false-clear、时序与几何候选。
+- 数据：parent/session 隔离、truth、coverage、质量和数据角色合同。
+- 链路：外设、网络、拷贝、排队、推理、反馈的端到端延迟分解。
+- 平台：模型导出、operator/lowering、CPU/GPU/HTP、内存、热、稳定性和部署可行性。
 
 ## 稳定入口
 
