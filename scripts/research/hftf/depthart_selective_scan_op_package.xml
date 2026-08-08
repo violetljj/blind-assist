@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpDefCollection PackageName="DepthArtSelectiveScanPackage" Domain="com.depthart" Version="1.0">
+  <OpDefList>
+    <OpDef>
+      <Name>SelectiveScan</Name>
+      <Description><Content>DepthART forward-only selective state-space scan mapping shell.</Content></Description>
+      <Input><Name>u</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank></Shape></Input>
+      <Input><Name>delta</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank></Shape></Input>
+      <Input><Name>A</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank></Shape></Input>
+      <Input><Name>B</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank></Shape></Input>
+      <Input><Name>C</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank></Shape></Input>
+      <Input><Name>D</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank></Shape></Input>
+      <Input><Name>delta_bias</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank></Shape></Input>
+      <Output><Name>y</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank></Shape></Output>
+      <Parameter><Name>delta_softplus</Name><Mandatory>false</Mandatory><Datatype>QNN_DATATYPE_BOOL_8</Datatype><Shape><Rank>SCALAR</Rank></Shape><Default>1</Default></Parameter>
+      <Parameter><Name>out_float</Name><Mandatory>false</Mandatory><Datatype>QNN_DATATYPE_BOOL_8</Datatype><Shape><Rank>SCALAR</Rank></Shape><Default>0</Default></Parameter>
+      <SupportedBackend>HTP</SupportedBackend>
+    </OpDef>
+  </OpDefList>
+  <SupplementalOpDefList Backend="HTP">
+    <SupportedOps><OpName>SelectiveScan</OpName></SupportedOps>
+    <SupplementalOpDef>
+      <Name>SelectiveScan</Name>
+      <Input><Name>u</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>delta</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>A</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>B</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>C</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>D</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>delta_bias</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Output><Name>y</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Output>
+      <Parameter><Name>delta_softplus</Name><Datatype>QNN_DATATYPE_BOOL_8</Datatype></Parameter>
+      <Parameter><Name>out_float</Name><Datatype>QNN_DATATYPE_BOOL_8</Datatype></Parameter>
+    </SupplementalOpDef>
+  </SupplementalOpDefList>
+</OpDefCollection>

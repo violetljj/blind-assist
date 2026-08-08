@@ -14,7 +14,7 @@
 
 - DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
-- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；A3 ONNX/QNN 部署预检为 `BLOCKED_SELECTIVESCAN`，HTP/Android/生产 authority 关闭。
+- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；A3 的 converter mapping 与 exact primitive reference 均可完成 QAIRT conversion，但 primitive 图膨胀到 21,440 QNN IR ops，未选为移动实现。无堆 float32 HTP scalar reference kernel 源码已落盘，编译被需 Qualcomm 登录下载的 v73 Hexagon SDK 5.5.5 + Tools 8.7.06 阻塞；HTP/Android/生产 authority 关闭。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
@@ -31,7 +31,7 @@
 parent/session 数据和最小判别实验被冻结后，才能开启新的 scientific admission；
 部署预检修复本身不产生科学晋级。
 
-当前两条明确的路线 successor：DA2 只作为冻结 reference 使用；DepthART-S 先完成 numerical parity/SelectiveScan 可行性，再另行激活 parent-disjoint admission。两者都不能自动产生默认 App 权限。
+当前两条明确的路线 successor：DA2 只作为冻结 reference 使用；DepthART-S 先完成 canonical numerical parity，并在 QPM3 工具链补齐后以 exact primitive 图作 oracle 编译/验证最小 HTP runtime kernel，之后才另行激活 parent-disjoint admission。两者都不能自动产生默认 App 权限。
 
 ## 禁止与权限边界
 

@@ -9,7 +9,7 @@
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| DepthART-S | 当前主要算法候选 | `R1_RESEARCH_MAINLINE / A3_BLOCKED_SELECTIVESCAN` | [DepthART current](hftf/README.md) | `DEPTHART_PARENT_DISJOINT_ADMISSION_SUCCESSOR`；先完成 numerical parity 与 SelectiveScan lowering 可行性 | consumed 数据回救；用部署结果替代算法 admission | 否 |
+| DepthART-S | 当前主要算法候选 | `R1_RESEARCH_MAINLINE / HTP_REFERENCE_SOURCE_READY / HEXAGON_SDK_AUTH_BLOCKED` | [DepthART current](hftf/README.md) | `DEPTHART_PARENT_DISJOINT_ADMISSION_SUCCESSOR`；完成 numerical parity，并在 QPM3 工具链补齐后以 exact primitive oracle 验证最小 HTP runtime kernel | consumed 数据回救；用部署结果替代算法 admission | 否 |
 | DA2 | teacher、baseline、reference、fallback | `CLOSED / FROZEN_DEVELOPMENT_REFERENCE` | [DA2 closure](hftf/DAV2_P1_P2_EXECUTION_CLOSURE_2026-08-05.md) | 无；新问题必须建立新版本和独立数据路线 | 把 reference 写成 active candidate 或沿用旧“下一步” | 否 |
 | YOLO + 语义分割双环 | 论文次线 | `THESIS_DEVELOPMENT_SECONDARY / RISKSEG_R0_NEGATIVE_NOT_PROMOTABLE` | [dual-loop current](dual-loop/README.md) | `RISKSEG_EVENT_EVAL_DATA_REPAIR_SUCCESSOR` | truth 未冻结时训练、选模或晋级 | 否 |
 | RCLE-RF | 历史风险场研究 | `PAUSED / NO_ACTIVE_EXECUTION` | [RCLE current](rcle/README.md) | 无；只有用户明确重开后才能建立新 scoped successor | 消费暂停前授权或把旧 README 的“下一步”视为当前权限 | 否 |
