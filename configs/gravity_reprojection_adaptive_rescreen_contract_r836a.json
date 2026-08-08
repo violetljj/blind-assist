@@ -10,7 +10,7 @@
     "frame_sha256": "28e5794c8dd1ab2155d28b0ce987af10c7bd0516ff7f01a6cc513ed49afbe44c",
     "metadata_path": "artifacts.local/evidence/public-video-r836-gravity-reprojection-20260720/r836_gravity_reprojection_raw.json",
     "metadata_sha256": "55f223add60dca906e8b7acd808d701a655c7dd3c97467c9f174004b994e8322",
-    "rescreen_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/GravityReprojectionAdaptiveRescreenTest.kt",
+    "rescreen_test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/GravityReprojectionAdaptiveRescreenTest.kt",
     "rescreen_test_sha256": "744a00d93f79688a2f3d6b2c6a65a2cffaa63d78dad061fecde6aaefc78b217a"
   },
   "adaptive_pipeline": {

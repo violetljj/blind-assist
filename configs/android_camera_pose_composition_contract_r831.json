@@ -6,9 +6,9 @@
   "bound_inputs": {
     "r830_receipt_path": "artifacts.local/evidence/public-video-r830-permissioned-camera-calibration-20260720/device_camera_permissioned_calibration_r830.json",
     "r830_receipt_sha256": "c407bbfd13d3588fa11790739ac62306a8d0dc4ac29c38c875bedb1e4cdb4377",
-    "composer_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidCameraPoseComposer.kt",
+    "composer_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidCameraPoseComposer.kt",
     "composer_sha256": "2303125a58731728f2873028bc07ba182f67af803446eaacc18814ece190c236",
-    "test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidCameraPoseComposerTest.kt",
+    "test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidCameraPoseComposerTest.kt",
     "test_sha256": "d06bc8b42470e80e386f79efe3c0601091c938c8d792b232cbd5f2bfa836c533"
   },
   "composition": {

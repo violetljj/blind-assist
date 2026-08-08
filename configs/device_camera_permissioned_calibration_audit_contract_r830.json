@@ -6,7 +6,7 @@
   "bound_sources": {
     "r829d_contract_path": "configs/device_route_projection_capability_audit_contract_r829d.json",
     "r829d_contract_sha256": "a51ec3382404eb3ba0b87235f5b5d755abe59921c4504c63c2a5269f9909e37d",
-    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/DeviceCameraPermissionedCalibrationAuditTest.kt",
+    "audit_test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/DeviceCameraPermissionedCalibrationAuditTest.kt",
     "audit_test_sha256": "05769fd92db25c3d53e6c9944b9655bdcf2d675e76db28a351ed6de311fb7a91"
   },
   "audit": {

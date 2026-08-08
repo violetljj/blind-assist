@@ -205,19 +205,19 @@ default debug App merged manifests 中也没有 `com.google.ar.core` 或
     `afa7a774b9f47074b2bf2e59755e712e92421484140789513578b32b68f0f149`
 - D45-capable test APK：
   - path：
-    `hftf-device-canary/build/outputs/apk/debug/hftf-device-canary-debug.apk`
+    `apps/canaries/hftf-device-canary/build/outputs/apk/debug/hftf-device-canary-debug.apk`
   - bytes：`1385159`
   - SHA-256：
     `1b0142c94abd19a5b0702f67c3c7a38115251f51bd04a25411d6867a570a64ca`
 - source/registration/person benchmark APK：
   - path：
-    `ustrf-shadow-benchmark/build/outputs/apk/debug/ustrf-shadow-benchmark-debug.apk`
+    `apps/benchmarks/ustrf-shadow-benchmark/build/outputs/apk/debug/ustrf-shadow-benchmark-debug.apk`
   - bytes：`38966599`
   - SHA-256：
     `e9129cd71704f93ff9f8834821f8126b916a286a94db3ed999e4bb369753e195`
 - source-decoder instrumentation APK：
   - path：
-    `ustrf-shadow-benchmark/build/outputs/apk/androidTest/debug/ustrf-shadow-benchmark-debug-androidTest.apk`
+    `apps/benchmarks/ustrf-shadow-benchmark/build/outputs/apk/androidTest/debug/ustrf-shadow-benchmark-debug-androidTest.apk`
   - bytes：`440221`
   - SHA-256：
     `27a33b1097cb46f09e14692bc7a24957dac9b86837dd784f5f606936c87c7a66`

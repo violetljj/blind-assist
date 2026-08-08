@@ -54,7 +54,7 @@ r7.97a 保持相同 16 个 actionability 事件和 11 个完整来源，不训�
 
 确定性生命周期原型位于 `scripts/explicit_route_intent_fusion.py`。unknown route 不会开事件，也不会伪造 clear：已经打开的事件在 route 丢失时保持未确认状态，等待有效路线或其他安全清除证据。
 
-端侧等价原型位于 `device-benchmark/.../ExplicitRouteIntentFusion.kt`，仅参与 benchmark instrumentation；没有被 `app`、`core:assist` 或默认风险状态机引用。
+端侧等价原型位于 `apps/benchmarks/device-benchmark/.../ExplicitRouteIntentFusion.kt`，仅参与 benchmark instrumentation；没有被 `app`、`core:assist` 或默认风险状态机引用。
 
 r7.98 使用 repo-local JDK 17 完成 `:device-benchmark:assembleDebug`，APK SHA256 `5c44bcab...284c`；随后在 SM-S9280/API 36 上直接运行目标 instrumentation，`OK (3 tests)`。设备回执位于 `artifacts.local/evidence/public-video-r798-explicit-route-intent-device-20260719/device_benchmark_receipt_r798.json`。这只证明确定性状态机可在端侧等价执行，不代表真实 route provider 或生产门已经闭合。
 

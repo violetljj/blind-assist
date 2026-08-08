@@ -130,14 +130,14 @@ try {
     $boundSources = @(
         "core/vision/src/main/java/com/linnan/blindassist/vision/LatestOnlySidecar.kt",
         "core/vision/src/main/java/com/linnan/blindassist/vision/PhaseLockedCadenceGate.kt",
-        "hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/CameraXLatestOnlyDepthDeviceTest.kt",
-        "hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/Dav2QnnCachedContext.kt",
-        "hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/Dav2Preprocessors.kt",
-        "hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/Dav2NativeGeometry.kt",
-        "hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/Dav2Yuv420RgbConverter.kt",
-        "hftf-device-canary/src/main/cpp/dav2_preprocess_native.cpp",
-        "hftf-device-canary/src/main/cpp/dav2_native_geometry.cpp",
-        "hftf-metric-depth-canary-core/src/main/kotlin/com/linnan/blindassist/hftf/metricdepth/KnownHeightGroundPipeline.kt",
+        "apps/canaries/hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/CameraXLatestOnlyDepthDeviceTest.kt",
+        "apps/canaries/hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/Dav2QnnCachedContext.kt",
+        "apps/canaries/hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/Dav2Preprocessors.kt",
+        "apps/canaries/hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/Dav2NativeGeometry.kt",
+        "apps/canaries/hftf-device-canary/src/main/java/com/linnan/blindassist/hftf/Dav2Yuv420RgbConverter.kt",
+        "apps/canaries/hftf-device-canary/src/main/cpp/dav2_preprocess_native.cpp",
+        "apps/canaries/hftf-device-canary/src/main/cpp/dav2_native_geometry.cpp",
+        "apps/canaries/hftf-metric-depth-canary-core/src/main/kotlin/com/linnan/blindassist/hftf/metricdepth/KnownHeightGroundPipeline.kt",
         "scripts/research/hftf/run_camerax_latest_only_r0.ps1",
         "scripts/research/hftf/run_camerax_pipeline_sustained_10min_r1.ps1"
     )

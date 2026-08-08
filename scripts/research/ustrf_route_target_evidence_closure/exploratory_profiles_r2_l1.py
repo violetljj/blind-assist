@@ -183,7 +183,7 @@ def implementation_bindings(repo: Path) -> dict[str, str]:
         "runner_implementation_sha256": "scripts/research/ustrf_route_target_evidence_closure/run_metric_eligibility_exploratory_profiles_r2_l1.py",
         "validator_implementation_sha256": "scripts/research/ustrf_route_target_evidence_closure/validate_exploratory_profiles_r2_l1.py",
         "mutation_test_implementation_sha256": "scripts/research/ustrf_route_target_evidence_closure/test_exploratory_profiles_r2_l1.py",
-        "device_exporter_implementation_sha256": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1ExploratoryProfileDeviceTest.kt",
+        "device_exporter_implementation_sha256": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1ExploratoryProfileDeviceTest.kt",
         "association_implementation_sha256": "scripts/research/ustrf_tracker_ttc_ablation/run_ablation.py",
         "terminal_schema_sha256": "schemas/ustrf_route_target_l1_exploratory_profile_r1.schema.json",
     }

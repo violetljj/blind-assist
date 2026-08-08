@@ -76,7 +76,7 @@ android {
     buildFeatures { prefab = true }
     externalNativeBuild {
         cmake {
-            path = rootProject.file("hftf-device-canary/src/main/cpp/CMakeLists.txt")
+            path = rootProject.file("apps/canaries/hftf-device-canary/src/main/cpp/CMakeLists.txt")
             version = "3.22.1"
         }
     }
@@ -94,7 +94,7 @@ tasks.named("preBuild").configure {
 kotlin {
     compilerOptions { jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get())) }
     sourceSets.getByName("main").kotlin.srcDir(
-        rootProject.file("hftf-device-canary/src/main/java"),
+        rootProject.file("apps/canaries/hftf-device-canary/src/main/java"),
     )
     sourceSets.getByName("main").kotlin.include(
         "com/linnan/blindassist/hftf/Dav2Preprocessors.kt",

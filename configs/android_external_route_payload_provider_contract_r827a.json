@@ -13,9 +13,9 @@
   "bound_sources": {
     "geometry_contract_path": "configs/explicit_route_geometry_device_contract_r826a.json",
     "geometry_contract_sha256": "e2b3fd9cdb8e3052cf46823aefc1071fbcda766a64f171ac5d80979b53ece0c2",
-    "provider_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidExplicitRoutePayloadProvider.kt",
+    "provider_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidExplicitRoutePayloadProvider.kt",
     "provider_sha256": "ab35ea73e71ca62699a3266720cdab95b770101ecdc1be5ff4eb2882a5478b91",
-    "test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidExplicitRoutePayloadProviderTest.kt",
+    "test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/AndroidExplicitRoutePayloadProviderTest.kt",
     "test_sha256": "d6714a3d4d5a62082adfe1e4e0d9b890a30a370a84845b28f4d027338b50ef48"
   },
   "payload": {

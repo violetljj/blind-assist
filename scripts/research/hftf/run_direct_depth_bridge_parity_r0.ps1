@@ -30,7 +30,7 @@ $artifactRoot = if ($OutputRoot) { [IO.Path]::GetFullPath($OutputRoot) } else { 
 if (Test-Path -LiteralPath $artifactRoot) { throw "output already exists" }
 New-Item -ItemType Directory -Path $artifactRoot | Out-Null
 $deviceInput = "/data/local/tmp/ba-direct-depth-bridge-r0-$timestamp.raw"
-$testApk = Join-Path $repoRoot "hftf-device-canary\build\outputs\apk\debug\hftf-device-canary-debug.apk"
+$testApk = Join-Path $repoRoot "apps\canaries\hftf-device-canary\build\outputs\apk\debug\hftf-device-canary-debug.apk"
 Push-Location $repoRoot
 try {
     if (-not $SkipBuild) {

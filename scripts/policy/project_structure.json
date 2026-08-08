@@ -1,5 +1,19 @@
 {
   "schema_version": 1,
+  "root_directory_allowlist": [
+    ".github",
+    "app",
+    "apps",
+    "codex",
+    "configs",
+    "core",
+    "docs",
+    "feature",
+    "gradle",
+    "releases",
+    "schemas",
+    "scripts"
+  ],
   "scripts_root": "scripts",
   "root_allowlist_path": "scripts/policy/root-files.txt",
   "root_index_exempt_patterns": [

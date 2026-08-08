@@ -22,7 +22,7 @@ $artifactRoot = if ($OutputRoot) { [IO.Path]::GetFullPath($OutputRoot) } else {
 }
 if (Test-Path -LiteralPath $artifactRoot) { throw "output already exists: $artifactRoot" }
 New-Item -ItemType Directory -Path $artifactRoot | Out-Null
-$testApk = Join-Path $repoRoot "hftf-device-canary\build\outputs\apk\debug\hftf-device-canary-debug.apk"
+$testApk = Join-Path $repoRoot "apps\canaries\hftf-device-canary\build\outputs\apk\debug\hftf-device-canary-debug.apk"
 $testClass = if ($ParityKind -eq "direct_rgb_bridge") {
     "com.linnan.blindassist.hftf.Dav2DirectRgbBridgeParityDeviceTest#directRgbAndCanonicalTensorAreBitExactForEveryRotation"
 } else {
@@ -60,10 +60,10 @@ try {
         instrumentation_exit_code = $instrument.ExitCode
         test_apk_sha256 = (Get-FileHash -LiteralPath $testApk -Algorithm SHA256).Hash
         native_source_sha256 = (Get-FileHash -LiteralPath (
-            Join-Path $repoRoot "hftf-device-canary/src/main/cpp/dav2_preprocess_native.cpp"
+            Join-Path $repoRoot "apps/canaries/hftf-device-canary/src/main/cpp/dav2_preprocess_native.cpp"
         ) -Algorithm SHA256).Hash
         yuv_source_sha256 = (Get-FileHash -LiteralPath (
-            Join-Path $repoRoot "hftf-device-canary/src/main/cpp/dav2_yuv420_rgb.cpp"
+            Join-Path $repoRoot "apps/canaries/hftf-device-canary/src/main/cpp/dav2_yuv420_rgb.cpp"
         ) -Algorithm SHA256).Hash
         report = $report
     } | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $resultPath -Encoding utf8

@@ -6,7 +6,7 @@
   "bound_sources": {
     "r831_contract_path": "configs/android_camera_pose_composition_contract_r831.json",
     "r831_contract_sha256": "5efeb7b840df655f396bb27334d26583b4aa71546b55c0cbc68fdf9965c40a18",
-    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraXAnalysisStreamGeometryAuditTest.kt",
+    "audit_test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraXAnalysisStreamGeometryAuditTest.kt",
     "audit_test_sha256": "980ff918ddcca48577ccfd65a59620d5e63fb1f29e7444982d07151b51fad414"
   },
   "matched_production_configuration": {

@@ -13,9 +13,9 @@
   "bound_sources": {
     "provider_contract_path": "configs/android_external_route_payload_provider_contract_r827a.json",
     "provider_contract_sha256": "fd6751ef33afe9b27df2f4e219f625dc4283cb57e0d5e5339b14b6949dbd8a4e",
-    "projector_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/WorldRouteCameraProjector.kt",
+    "projector_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/WorldRouteCameraProjector.kt",
     "projector_sha256": "1b984dcccfdb84b4b29c5fe44fc7e60aa0b5a080dcf9fb4119f4679bd0854c7a",
-    "test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/WorldRouteCameraProjectorTest.kt",
+    "test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/WorldRouteCameraProjectorTest.kt",
     "test_sha256": "c72545007b2ce7dff1c394a13d16953e9fc856d681fc5ddd0e6b977804320037"
   },
   "projection": {

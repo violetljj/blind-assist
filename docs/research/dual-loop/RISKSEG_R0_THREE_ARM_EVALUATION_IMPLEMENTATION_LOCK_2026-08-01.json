@@ -19,7 +19,7 @@
       "sha256": "8c3dab11159e6ce8a2e2964cfed9fab96f3c946c4e798b9cea22f85bb4c0dd2e"
     },
     "three_arm_device_runner": {
-      "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/RisksegR0ThreeArmEventDeviceTest.kt",
+      "path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/RisksegR0ThreeArmEventDeviceTest.kt",
       "sha256": "6340899a5b688ce57025ef59b0e4d01ea88db883a60e931ba200cd8ef6129c46"
     },
     "host_validator": {
@@ -27,7 +27,7 @@
       "sha256": "12174701d684219ea529339b6f4acb2e60a8c45e5324ac532f95544d62d2e10c"
     },
     "trained_device_runner": {
-      "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/RisksegPidnetQnnPreflightDeviceTest.kt",
+      "path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/RisksegPidnetQnnPreflightDeviceTest.kt",
       "sha256": "61360add0748d8bb582efcf2e8b2a82a6adb62469efd90223688ec09300c13e7"
     },
     "trained_device_validator": {

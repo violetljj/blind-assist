@@ -17,7 +17,7 @@ REQUIRED_ENDPOINTS = {
     "MULTIPLE_INCREMENT",
 }
 EXPECTED_IMPLEMENTATION_PATHS = {
-    "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/SparseLkGeometryProbe.kt",
+    "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/SparseLkGeometryProbe.kt",
     "core/assist/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt",
     "core/assist/src/main/java/com/linnan/blindassist/risk/ConservativeRiskFusionPolicy.kt",
     "core/assist/src/main/java/com/linnan/blindassist/risk/TemporalRiskTracker.kt",

@@ -509,7 +509,7 @@
     "detector_input_authority": "exact_android_canvas_canonical_raw_export_not_host_pil_reconstruction",
     "planned_device_bundle_path": "artifacts.local/evidence/ustrf-route-target-evidence-closure-r1/holdout-app-detector-device-bundle-r1",
     "device_exporter": {
-      "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfDetectorTaxonomyCoverageDeviceTest.kt",
+      "path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfDetectorTaxonomyCoverageDeviceTest.kt",
       "sha256": "3f06e8671faac86cd252d58539ed557c7d6a539bcf6fdb7a6f78089830cdb73f",
       "runtime": "android_imagepreprocessor_canvas_tflite_cpu_4_threads",
       "expected_frame_count_argument": "ustrfDetectorTaxonomyExpectedFrameCount"

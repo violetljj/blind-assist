@@ -6,9 +6,9 @@
   "bound_sources": {
     "r833_contract_path": "configs/camerax_sensor_transform_intrinsic_audit_contract_r833.json",
     "r833_contract_sha256": "15caeeb128744cf13aa23102fcfa51a76507be4b1939c2869a90531a83c74b56",
-    "mapper_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraAnalysisGeometryMapper.kt",
+    "mapper_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraAnalysisGeometryMapper.kt",
     "mapper_sha256": "ffc05db07ed786e6dee713676b30ed794cbe0889f0d6f958adc2a1f7e0ae383a",
-    "test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraAnalysisGeometryMapperTest.kt",
+    "test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraAnalysisGeometryMapperTest.kt",
     "test_sha256": "9553fdce568fd95f70a411b287121ae66a54b09955f730c76ad3606a2d261a27"
   },
   "mapping": {

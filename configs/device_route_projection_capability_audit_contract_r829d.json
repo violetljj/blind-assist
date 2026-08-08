@@ -13,7 +13,7 @@
   "bound_sources": {
     "projection_contract_path": "configs/world_route_camera_projection_contract_r828a.json",
     "projection_contract_sha256": "72bb9c6b4bc2a034723729c328ec3b5fde32e72ab5adeaacde7eca1f34250957",
-    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/DeviceRouteProjectionCapabilityAuditTest.kt",
+    "audit_test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/DeviceRouteProjectionCapabilityAuditTest.kt",
     "audit_test_sha256": "e72eacacbc3c1ba186958be2384880a889b525244b7cd0974cdbfa6d13dbdd86"
   },
   "sampling": {

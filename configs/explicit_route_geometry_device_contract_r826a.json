@@ -12,11 +12,11 @@
     "failed_score_mismatches": 30
   },
   "bound_sources": {
-    "lifecycle_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/ExplicitRouteIntentFusion.kt",
+    "lifecycle_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/ExplicitRouteIntentFusion.kt",
     "lifecycle_sha256": "28dd5d03b16f0dd82dbd226d8aeda3a02e46405be11ee1c669c032157c1bdb54",
-    "geometry_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/ExplicitRouteGeometryFusion.kt",
+    "geometry_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/ExplicitRouteGeometryFusion.kt",
     "geometry_sha256": "d8c34d95b4804ae257c76a3d4ae5340d9bd8b83aa4ebb3c343404216d90fba51",
-    "geometry_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/ExplicitRouteGeometryFusionTest.kt",
+    "geometry_test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/ExplicitRouteGeometryFusionTest.kt",
     "geometry_test_sha256": "d0260123368794f4996f8283281e5399702bc8e417bc569502a41cd79189b73e",
     "conformance_script_path": "scripts/audit_explicit_route_geometry_conformance.py",
     "conformance_script_sha256": "2b8b05112601e7aae5b7eb085c8ad379922445981a60c002ced3ca3b568ede67",

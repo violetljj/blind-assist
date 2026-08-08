@@ -41,7 +41,7 @@
   - SHA-256：
     `e28e5c996174adef706f43ad6267a44e1c2ab017261ad99643b4efd4016a9557`
 - test APK：
-  `hftf-device-canary/build/outputs/apk/dualLoopShadow/`
+  `apps/canaries/hftf-device-canary/build/outputs/apk/dualLoopShadow/`
   `hftf-device-canary-dualLoopShadow.apk`
   - bytes：`622321`
   - SHA-256：

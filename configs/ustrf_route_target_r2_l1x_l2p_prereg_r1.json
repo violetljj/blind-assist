@@ -218,7 +218,7 @@
       "sha256": "fe9cbf5119b13f8f96f16f1fb813a8e3cf2020ac1f29f7d15e6b0e80c7b96dc7"
     },
     "device_exporter": {
-      "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1ExploratoryProfileR2DeviceTest.kt",
+      "path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1ExploratoryProfileR2DeviceTest.kt",
       "sha256": "8a5f6b80944b553f3eeb0db56dff041b26b4612a3c0f9d87201c94a0262e678e"
     }
   }

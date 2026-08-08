@@ -41,7 +41,7 @@ INSTRUMENTATION_COMPONENT = (
 TEST_CLASS = "com.linnan.blindassist.benchmark.UstrfU0BaselineAdapterDeviceTest"
 TEST_METHOD = f"{TEST_CLASS}#runBaselineYoloGeometryAdapter"
 DEVICE_SOURCE_RELATIVE = Path(
-    "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfU0BaselineAdapterDeviceTest.kt"
+    "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfU0BaselineAdapterDeviceTest.kt"
 )
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
 

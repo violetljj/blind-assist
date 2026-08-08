@@ -23,7 +23,7 @@
   },
   "implementation_bindings": {
     "device_exporter": {
-      "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1MaterializationRecoveryR3ExporterDeviceTest.kt",
+      "path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1MaterializationRecoveryR3ExporterDeviceTest.kt",
       "sha256": "f0a707be92e830475acae0510c551d9f9bc30bdc32e4684b46a25ffeba15ae1f"
     },
     "one_shard_runner": {

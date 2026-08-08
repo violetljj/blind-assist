@@ -6,7 +6,7 @@
   "bound_sources": {
     "r835_contract_path": "configs/camera_rotation_timestamp_pairing_audit_contract_r835.json",
     "r835_contract_sha256": "4cfe41f807e7390c41880b70ad6a5c7c3ac81c64579ab7ffad3945209ae3c086",
-    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/GravityReprojectionAuditTest.kt",
+    "audit_test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/GravityReprojectionAuditTest.kt",
     "audit_test_sha256": "654cff34f5ad08570afb5a070e4976a746e29810bbbae8ab867d51c4bf09f11e"
   },
   "capture": {

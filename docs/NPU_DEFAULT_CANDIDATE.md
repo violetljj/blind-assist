@@ -33,7 +33,7 @@
 - `core/vision/src/main/java/com/linnan/blindassist/vision/RuntimeObjectDetectorFactory.kt`
 - `core/vision/src/main/java/com/linnan/blindassist/vision/ProductionDetectorRoutePolicy.kt`
 - `app/src/main/java/com/linnan/blindassist/vision/ProductionQnnRoutingObjectDetectorProvider.kt`
-- `npu-candidate/`
+- `apps/candidates/npu-candidate/`
 
 ## 为什么选择 NPU
 

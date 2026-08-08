@@ -6,7 +6,7 @@
   "bound_sources": {
     "r832_contract_path": "configs/camerax_analysis_stream_geometry_audit_contract_r832.json",
     "r832_contract_sha256": "b5217bd8dfe92c7a44b416979629ba2c7f5f22e1264ffe3b1175f59a759a4ab4",
-    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraXSensorTransformAuditTest.kt",
+    "audit_test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraXSensorTransformAuditTest.kt",
     "audit_test_sha256": "1f00149a8681b53dbabeb86b677722d7a99129624034c20dcd912eb83659bd01"
   },
   "audit": {

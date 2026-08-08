@@ -25,7 +25,7 @@
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
-  .\known-height-capture-app\quick-measure-import.ps1 `
+  .\apps\demos\known-height-capture-app\quick-measure-import.ps1 `
   -LaunchQuickMeasure -Slot Near
 ```
 

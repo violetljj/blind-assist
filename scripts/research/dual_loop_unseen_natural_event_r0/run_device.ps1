@@ -48,7 +48,7 @@ $rank2ProtocolPath = Join-Path $repoRoot `
     "docs/research/dual-loop/DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_PROTOCOL_2026-07-31.json"
 $appApk = Join-Path $repoRoot "app/build/outputs/apk/debug/app-debug.apk"
 $testApk = Join-Path $repoRoot `
-    "device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk"
+    "apps/benchmarks/device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk"
 
 function Invoke-Adb {
     param([Parameter(Mandatory = $true)][string[]]$Arguments)

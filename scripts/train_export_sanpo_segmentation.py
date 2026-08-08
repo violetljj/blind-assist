@@ -32,7 +32,7 @@ import sanpo_segmentation_model
 CLASS_NAMES = ("walkable", "boundary_step_curb", "obstacle", "unknown_nonwalkable")
 CLASS_IDS = {name: index for index, name in enumerate(CLASS_NAMES)}
 INPUT_SIZE = 256
-DEFAULT_OUTPUT = "device-benchmark/benchmark-assets.local/segmentation/mobilenetv3_lraspp_int8_256.tflite"
+DEFAULT_OUTPUT = "apps/benchmarks/device-benchmark/benchmark-assets.local/segmentation/mobilenetv3_lraspp_int8_256.tflite"
 DEFAULT_REPORT = "test-artifacts.local/segmentation-candidate/latest"
 ALLOWED_SPLITS = {"train", "dev"}
 FORBIDDEN_SPLITS = {"blind", "blind_holdout", "holdout", "test"}

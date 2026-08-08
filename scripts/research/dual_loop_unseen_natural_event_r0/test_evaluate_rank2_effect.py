@@ -73,7 +73,7 @@ class Rank2EffectEvaluatorTest(unittest.TestCase):
             "evaluate_rank2_effect.py"
         )
         kotlin = REPO_ROOT / (
-            "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/"
+            "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/"
             "ProductionTemporalGeometryFactorialAbDeviceTest.kt"
         )
         self.assertIn(

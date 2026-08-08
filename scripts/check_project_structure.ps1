@@ -9,7 +9,11 @@ param(
 $ErrorActionPreference = 'Stop'
 
 function Normalize-RepoPath([string]$Path) {
-    return $Path.Replace('\', '/').TrimStart('./')
+    $normalized = $Path.Replace('\', '/')
+    while ($normalized.StartsWith('./', [StringComparison]::Ordinal)) {
+        $normalized = $normalized.Substring(2)
+    }
+    return $normalized
 }
 
 function Resolve-FromRepo([string]$Path) {
@@ -49,6 +53,30 @@ $repoFiles = @(
         Where-Object { $_ -and (Test-Path -LiteralPath (Resolve-FromRepo $_) -PathType Leaf) } |
         Sort-Object -Unique
 )
+
+# Top-level tracked directories are a reviewed architecture boundary. Local ignored
+# toolchains, caches and artifact junctions are intentionally outside this check.
+$rootDirectories = @(
+    $repoFiles |
+        Where-Object { $_ -match '/' } |
+        ForEach-Object { $_.Split('/', 2)[0] } |
+        Sort-Object -Unique
+)
+$allowedRootDirectories = @(
+    $policy.root_directory_allowlist |
+        ForEach-Object { ([string]$_).Replace('\', '/').TrimEnd('/') } |
+        Where-Object { $_ } |
+        Sort-Object -Unique
+)
+if ($allowedRootDirectories.Count -eq 0) {
+    $failures.Add('Project structure policy must declare root_directory_allowlist.')
+}
+foreach ($extra in @($rootDirectories | Where-Object { $allowedRootDirectories -notcontains $_ })) {
+    $failures.Add("Unreviewed repository root directory: $extra/. Use an existing responsibility layer or update the reviewed root directory allowlist.")
+}
+foreach ($missing in @($allowedRootDirectories | Where-Object { $rootDirectories -notcontains $_ })) {
+    $failures.Add("Root directory allowlist is stale; missing tracked directory: $missing/")
+}
 
 # Root scripts are an explicit Interface. Any addition or removal requires a reviewed policy change.
 $scriptsRoot = (Normalize-RepoPath ([string]$policy.scripts_root)).TrimEnd('/')
@@ -424,5 +452,5 @@ if ($failures.Count -gt 0) {
     exit 1
 }
 
-Write-Host "Project structure check passed: $($rootFiles.Count) root files, $($moduleNames.Count) research Module(s), log within budget."
+Write-Host "Project structure check passed: $($rootDirectories.Count) root directories, $($rootFiles.Count) root scripts, $($moduleNames.Count) research Module(s), log within budget."
 exit 0

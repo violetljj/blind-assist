@@ -6,7 +6,7 @@
   "bound_sources": {
     "r834_contract_path": "configs/camera_analysis_geometry_mapper_contract_r834.json",
     "r834_contract_sha256": "c2c73a941a23f11a1cbcb3c33fc82313a099d591002662b6e95ae30d70675fa0",
-    "audit_test_path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraRotationTimestampPairingAuditTest.kt",
+    "audit_test_path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/CameraRotationTimestampPairingAuditTest.kt",
     "audit_test_sha256": "5084359cbf746708484315e9eb7c64a9d5457f96e2c40eb187bbf870fda76400"
   },
   "audit": {

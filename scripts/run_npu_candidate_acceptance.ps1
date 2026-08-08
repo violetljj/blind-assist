@@ -1,5 +1,5 @@
 param(
-    [string]$CandidateApk = "npu-candidate\build\outputs\apk\debug\npu-candidate-debug.apk",
+    [string]$CandidateApk = "apps\candidates\npu-candidate\build\outputs\apk\debug\npu-candidate-debug.apk",
     [string]$BaselinePackage = "com.linnan.blindassist",
     [string]$CandidatePackage = "com.linnan.blindassist.npu.candidate",
     [string]$Device,

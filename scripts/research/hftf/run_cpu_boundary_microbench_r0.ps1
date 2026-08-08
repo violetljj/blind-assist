@@ -55,7 +55,7 @@ if (Test-Path -LiteralPath $artifactRoot) { throw "output already exists: $artif
 New-Item -ItemType Directory -Path $artifactRoot | Out-Null
 
 $appApk = Join-Path $repoRoot "app\build\outputs\apk\dualLoopShadow\app-dualLoopShadow.apk"
-$testApk = Join-Path $repoRoot "hftf-device-canary\build\outputs\apk\dualLoopShadow\hftf-device-canary-dualLoopShadow.apk"
+$testApk = Join-Path $repoRoot "apps\canaries\hftf-device-canary\build\outputs\apk\dualLoopShadow\hftf-device-canary-dualLoopShadow.apk"
 Push-Location $repoRoot
 try {
     if (-not $SkipBuild) {

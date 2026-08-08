@@ -79,7 +79,7 @@ USTRF-SC 表示 *Uncertainty-aware Spatio-Temporal Risk Field and Safe Corridor*
 - synthetic geometry / dynamic TTC / corridor replay；
 - controlled fault replay 和 offline safety simulation。
 
-Android 隔离观察位于 `ustrf-shadow-benchmark/`，不接入默认 App，包括 CameraX timestamp、ARCore raw pose/depth/intrinsics 和 reference-free event gate。
+Android 隔离观察位于 `apps/benchmarks/ustrf-shadow-benchmark/`，不接入默认 App，包括 CameraX timestamp、ARCore raw pose/depth/intrinsics 和 reference-free event gate。
 
 ### 4.2 离线与公开数据脚本
 

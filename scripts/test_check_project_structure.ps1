@@ -60,6 +60,7 @@ function New-TestRepository([string]$Name) {
 
     $policy = [ordered]@{
         schema_version = 1
+        root_directory_allowlist = @('configs', 'docs', 'policy', 'scripts')
         scripts_root = 'scripts'
         root_allowlist_path = 'policy/root-files.txt'
         root_index_exempt_patterns = @('^test_', '^README\.md$')
@@ -120,6 +121,10 @@ try {
     New-Item -ItemType Directory -Path $script:TestRoot | Out-Null
 
     Assert-Scenario 'valid' $true
+    Assert-Scenario 'root-directory-rejected' $false {
+        param($repo)
+        Write-TestFile $repo 'experimental-module/build.gradle.kts' 'plugins {}'
+    }
     Assert-Scenario 'root-file-rejected' $false {
         param($repo)
         Write-TestFile $repo 'scripts/experiment_r99.py' 'print("no")'
@@ -275,6 +280,7 @@ try {
     $bootstrapBase = (& git -C $bootstrapRepository rev-parse HEAD).Trim()
     $bootstrapPolicy = [ordered]@{
         schema_version = 1
+        root_directory_allowlist = @('configs', 'docs', 'policy', 'scripts')
         scripts_root = 'scripts'
         root_allowlist_path = 'policy/root-files.txt'
         root_index_exempt_patterns = @('^test_', '^README\.md$')

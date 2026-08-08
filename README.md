@@ -59,7 +59,7 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 | `core/vision/` | TFLite 检测、图像处理与视觉候选能力 |
 | `core/device/` | 语音、震动和设备 adapter |
 | `core/ui/` | Compose UI 模型与可视化 |
-| `device-benchmark/` | 与正式 App 隔离的设备 benchmark module |
+| `apps/` | 所有非默认 Android benchmark、canary、demo 和候选 App；见 [Apps 索引](apps/README.md) |
 | `scripts/` | 构建、验证、数据集和研究脚本；见 [脚本索引](scripts/README.md) |
 | `docs/` | 当前协议、操作指南和历史快照；见 [文档索引](docs/README.md) |
 | `artifacts.local/` | 本机下载、数据集、benchmark、训练和临时产物；不提交 Git |
@@ -119,7 +119,7 @@ Android 端消费 raw YOLO 输出并自行执行 NMS。重新导出和静态检�
 app/build/outputs/apk/debug/app-debug.apk
 app/build/outputs/apk/ustrfExperiment/app-ustrfExperiment.apk
 app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk
+apps/benchmarks/device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk
 ```
 
 连接已开启 USB 调试的 Android 手机后：

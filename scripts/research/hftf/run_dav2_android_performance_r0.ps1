@@ -92,7 +92,7 @@ $onnx = Join-Path $repoRoot "artifacts.local\models\dav2-metric-hypersim-vits-an
 $tflite = Join-Path $repoRoot "artifacts.local\models\dav2-metric-hypersim-vits-android-r0\model_518x686_fp32.tflite"
 $corpus = Join-Path $repoRoot "artifacts.local\evidence\hftf\dav2-android-parity-r0"
 $appApk = Join-Path $repoRoot "app\build\outputs\apk\dualLoopShadow\app-dualLoopShadow.apk"
-$testApk = Join-Path $repoRoot "hftf-device-canary\build\outputs\apk\dualLoopShadow\hftf-device-canary-dualLoopShadow.apk"
+$testApk = Join-Path $repoRoot "apps\canaries\hftf-device-canary\build\outputs\apk\dualLoopShadow\hftf-device-canary-dualLoopShadow.apk"
 Assert-Hash $onnx "870339770E21675830F7E2020983DDA058752D237C8B86951ED1E6F9A6243D01"
 Assert-Hash $tflite "0277FBC74C73D95433B43BEE9D61DD08F1E79B67A2F64A6DA871F3A23FBED8E3"
 if (-not (Test-Path -LiteralPath (Join-Path $corpus "manifest.json"))) { throw "parity corpus is missing" }

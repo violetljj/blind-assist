@@ -16,7 +16,7 @@ windows. It contains no outcome label.
 - source report and RAFT identities match the frozen protocol.
 
 The tracked asset is
-`hftf-device-canary/src/main/assets/motion_occupancy_a0_1_android_head.tsv.gzbin`.
+`apps/canaries/hftf-device-canary/src/main/assets/motion_occupancy_a0_1_android_head.tsv.gzbin`.
 The instrumentation class is
 `com.linnan.blindassist.hftf.MotionOccupancyA01DeviceHeadCanaryTest`.
 

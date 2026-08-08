@@ -45,7 +45,7 @@ if (-not ((Invoke-Native $AdbPath @("devices") $null).Lines -match "^$([regex]::
 }
 
 $appApk = Join-Path $repoRoot "app\build\outputs\apk\debug\app-debug.apk"
-$testApk = Join-Path $repoRoot "hftf-device-canary\build\outputs\apk\debug\hftf-device-canary-debug.apk"
+$testApk = Join-Path $repoRoot "apps\canaries\hftf-device-canary\build\outputs\apk\debug\hftf-device-canary-debug.apk"
 $outputName = "camerax-depth-parity-r0-$timestamp"
 Push-Location $repoRoot
 try {

@@ -37,5 +37,5 @@ app/src/main/assets/*.tflite
 !app/src/main/assets/README.md
 !app/src/main/assets/yolo11n_fp16_320.tflite
 # Benchmark-only segmentation exports are generated locally and must never be packaged by :app.
-device-benchmark/benchmark-assets.local/
+apps/benchmarks/device-benchmark/benchmark-assets.local/
 trace_processor

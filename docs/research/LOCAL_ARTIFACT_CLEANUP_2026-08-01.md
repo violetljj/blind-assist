@@ -34,7 +34,7 @@ The priority batch covered:
 - `E:/codex-tools/downloads/pytorch-cu128`
 - obsolete `E:/codex-tools/projects/blindassist/toolchain/venv-export`
 - legacy `.gradle-local`
-- rebuildable `app/build` and `device-benchmark/build`
+- rebuildable `app/build` and `apps/benchmarks/device-benchmark/build`
 
 ## Second batch
 

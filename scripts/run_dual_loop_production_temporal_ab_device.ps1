@@ -19,7 +19,7 @@ $implementationId = "PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_IMPL_R0"
 $remoteBase = "/sdcard/Android/data/$package/files/dual_loop_production_temporal_ab_r0"
 $hostEvidence = Join-Path $repoRoot "artifacts.local/evidence/dual-loop/production-temporal-geometry-factorial-ab-r0"
 $appApk = Join-Path $repoRoot "app/build/outputs/apk/debug/app-debug.apk"
-$testApk = Join-Path $repoRoot "device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk"
+$testApk = Join-Path $repoRoot "apps/benchmarks/device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk"
 
 function Invoke-Adb {
     param([Parameter(Mandatory = $true)][string[]]$Arguments)

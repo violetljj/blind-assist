@@ -83,7 +83,7 @@
   },
   "implementation_bindings": {
     "device_canary": {
-      "path": "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1MaterializationRecoveryR3DeviceTest.kt",
+      "path": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfR2L1MaterializationRecoveryR3DeviceTest.kt",
       "sha256": "b719368c9f929dfb16c4fc9a73a0582ac6211e05b2baad0f93c0c30588d81170"
     },
     "canary_runner": {

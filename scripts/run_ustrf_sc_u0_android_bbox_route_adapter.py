@@ -43,10 +43,10 @@ INSTRUMENTATION_COMPONENT = "com.linnan.blindassist.benchmark/androidx.test.runn
 TEST_CLASS = "com.linnan.blindassist.benchmark.UstrfU0BaselineAdapterDeviceTest"
 TEST_METHOD = f"{TEST_CLASS}#runDetectorBBoxExplicitRouteAdapter"
 DEVICE_SOURCE = Path(
-    "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfU0BaselineAdapterDeviceTest.kt"
+    "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfU0BaselineAdapterDeviceTest.kt"
 )
 GATE_SOURCE = Path(
-    "device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfU0ExplicitRouteDetectionGate.kt"
+    "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/UstrfU0ExplicitRouteDetectionGate.kt"
 )
 REQUIRED_HORIZONS = [1_000, 2_000, 3_000]
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")

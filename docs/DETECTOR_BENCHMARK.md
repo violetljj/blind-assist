@@ -23,7 +23,7 @@ powershell -ExecutionPolicy Bypass -File scripts\run_detector_ab_device_benchmar
   -DatasetKind BlindAssistEvalSet `
   -DatasetRoot test-artifacts.local\datasets\sanpo-v3-regression-90f `
   -ComparisonMode SegmentationCandidate `
-  -SegmentationModelPath device-benchmark\benchmark-assets.local\segmentation\mobilenetv3_lraspp_int8_256.tflite `
+  -SegmentationModelPath apps\benchmarks\device-benchmark\benchmark-assets.local\segmentation\mobilenetv3_lraspp_int8_256.tflite `
   -ImageLimit 90
 ```
 

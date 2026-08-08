@@ -4,7 +4,7 @@
 唯一候选或强制晋级链。默认 R4 Development 可先用其他模型、host 输出或 synthetic
 decoder canary 比较 utility；只有默认模型替换/生产晋级才必须进入完整 INT8 与同机事件门。
 
-`scripts/train_export_sanpo_segmentation.py` 是 MobileNetV3Small + Lite R-ASPP 的训练与全 INT8 TFLite 导出工具。它是 benchmark-only 工具：默认模型只写入 Git 忽略的 `device-benchmark/benchmark-assets.local/segmentation/`，并且脚本明确拒绝 `app/src/main/assets/` 下的任何输出路径。生产 APK 继续只使用 `yolo11n_fp16_320.tflite`。
+`scripts/train_export_sanpo_segmentation.py` 是 MobileNetV3Small + Lite R-ASPP 的训练与全 INT8 TFLite 导出工具。它是 benchmark-only 工具：默认模型只写入 Git 忽略的 `apps/benchmarks/device-benchmark/benchmark-assets.local/segmentation/`，并且脚本明确拒绝 `app/src/main/assets/` 下的任何输出路径。生产 APK 继续只使用 `yolo11n_fp16_320.tflite`。
 
 ## 固定模型契约
 
@@ -67,7 +67,7 @@ App 的前提下先报告 utility 和 runtime。
 
 会生成：
 
-- `device-benchmark/benchmark-assets.local/segmentation/mobilenetv3_lraspp_int8_256.tflite`
+- `apps/benchmarks/device-benchmark/benchmark-assets.local/segmentation/mobilenetv3_lraspp_int8_256.tflite`
 - `test-artifacts.local/segmentation-candidate/latest/segmentation_candidate_report.json`（逐类 IoU、混淆矩阵、TFLite 合同、量化和训练元数据）
 
 基础 Python 合同测试不要求 TensorFlow：
