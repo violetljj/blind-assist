@@ -89,7 +89,8 @@ class DepthArtSelectiveScanOpPackageTest(unittest.TestCase):
         for required in (
             "OutputRoot must be under",
             "qnn-op-package-generator",
-            "hexagon-v73-manual",
+            "ValidateSet('v73', 'v75')",
+            '"build\\hexagon-$TargetArch-manual"',
             "aarch64-android-manual",
             "DepthArtSelectiveScanPackageInterfaceProvider",
             "COMPILED_NOT_RUNTIME_EVALUATED",

@@ -5,7 +5,9 @@ param(
     [string]$QairtRoot = $env:QAIRT_SDK_ROOT,
     [string]$HexagonSdkRoot = $env:HEXAGON_SDK_ROOT,
     [string]$AndroidNdkRoot = $env:ANDROID_NDK_ROOT,
-    [string]$Python310 = 'E:\codex-tools\tools\venvs\qairt310\Scripts\python.exe'
+    [string]$Python310 = 'E:\codex-tools\tools\venvs\qairt310\Scripts\python.exe',
+    [ValidateSet('v73', 'v75')]
+    [string]$TargetArch = 'v73'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -49,16 +51,17 @@ Copy-Item -LiteralPath $kernel -Destination (Join-Path $packageRoot 'src\ops\Sel
 $hexagonCxx = Join-Path $HexagonSdkRoot 'tools\HEXAGON_Tools\8.7.06\Tools\bin\hexagon-clang++.exe'
 $qnnInclude = ($QairtRoot -replace '\\', '/') + '/include/QNN'
 $hexagonUnix = $HexagonSdkRoot -replace '\\', '/'
-$hexBuild = Join-Path $packageRoot 'build\hexagon-v73-manual'
+$computeTarget = "compute$TargetArch"
+$hexBuild = Join-Path $packageRoot "build\hexagon-$TargetArch-manual"
 New-Item -ItemType Directory -Path $hexBuild -Force | Out-Null
 $hexCommon = @(
     '-std=c++17', "-I$qnnInclude", '-fPIC', '-Wall', '-Wreorder',
     '-Wno-missing-braces', '-Wno-unused-function', '-Werror', '-Wno-format',
     '-Wno-unused-command-line-argument', '-fvisibility=default', '-stdlib=libc++',
     '-mhvx', '-mhvx-length=128B', '-mhmx', '-DUSE_OS_QURT', '-O2',
-    '-Wno-reorder', '-DPREPARE_DISABLED', '-mv73',
-    "-I$hexagonUnix/rtos/qurt/computev73/include/qurt",
-    "-I$hexagonUnix/rtos/qurt/computev73/include/posix",
+    '-Wno-reorder', '-DPREPARE_DISABLED', "-m$TargetArch",
+    "-I$hexagonUnix/rtos/qurt/$computeTarget/include/qurt",
+    "-I$hexagonUnix/rtos/qurt/$computeTarget/include/posix",
     "-I$hexagonUnix/incs", "-I$hexagonUnix/incs/stddef",
     '-DTHIS_PKG_NAME=DepthArtSelectiveScanPackage', '-MMD', '-c'
 )
@@ -112,7 +115,7 @@ $receipt = [ordered]@{
     android_ndk_root = $AndroidNdkRoot
     package_interface = 'DepthArtSelectiveScanPackageInterfaceProvider'
     binaries = @(
-        [ordered]@{ target = 'hexagon-v73'; path = $hexLibrary; bytes = (Get-Item $hexLibrary).Length; sha256 = (Get-FileHash $hexLibrary -Algorithm SHA256).Hash },
+    [ordered]@{ target = "hexagon-$TargetArch"; path = $hexLibrary; bytes = (Get-Item $hexLibrary).Length; sha256 = (Get-FileHash $hexLibrary -Algorithm SHA256).Hash },
         [ordered]@{ target = 'aarch64-android'; path = $androidLibrary; bytes = (Get-Item $androidLibrary).Length; sha256 = (Get-FileHash $androidLibrary -Algorithm SHA256).Hash }
     )
     authority = 'Compilation only; no QNN context, HTP execution, parity, latency, thermal, Android, safety, or production claim.'
