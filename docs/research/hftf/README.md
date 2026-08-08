@@ -14,7 +14,7 @@
 
 - DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
-- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；A3 的 converter mapping 与 exact primitive reference 均可完成 QAIRT conversion，但 primitive 图膨胀到 21,440 QNN IR ops，未选为移动实现。correctness-first float32 kernel 已同时保留 v73 编译工件，并为当前 `SM-S9280 / SM8650 / HTP v75` 真机编译 v75 DSP 与 aarch64 prepare package。单算子图已完成 package registration、context compose/finalize、真实 HTP execute 与 3/3 primitive-oracle parity；完整 DepthART graph、5/5 partition、性能、Android/生产 authority 仍未评价。
+- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；A3 的 converter mapping 与 exact primitive reference 均可完成 QAIRT conversion，但 primitive 图膨胀到 21,440 QNN IR ops，未选为移动实现。correctness-first float32 kernel 已同时保留 v73 编译工件，并为当前 `SM-S9280 / SM8650 / HTP v75` 真机编译 v75 DSP 与 aarch64 prepare package。单算子图已完成 package registration、context compose/finalize、真实 HTP execute 与 3/3 primitive-oracle parity。G4-C 完整图已进入真实 HTP prepare，但在 decoder LayerNorm/ReduceMean FP16 disabled op 处无法 finalize，签署 `CONTEXT_HOLD_LAYERNORM_REDUCE_FP16`；5/5 partition、full-model parity、性能、Android/生产 authority 仍未评价。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
@@ -31,7 +31,7 @@
 parent/session 数据和最小判别实验被冻结后，才能开启新的 scientific admission；
 部署预检修复本身不产生科学晋级。
 
-当前两条明确的路线 successor：DA2 只作为冻结 reference 使用；DepthART-S 将已通过单算子 parity 的 kernel 放回 canonical graph，先完成完整 QNN context 与 5/5 SelectiveScan HTP partition receipt，再讨论性能；之后才另行激活 parent-disjoint admission。两者都不能自动产生默认 App 权限。
+当前两条明确的路线 successor：DA2 只作为冻结 reference 使用；DepthART-S 先关闭 SM8650/v75 的 LayerNorm/ReduceMean FP16 prepare frontier并重新生成完整 QNN context，再进入 5/5 SelectiveScan partition receipt 与 full-model parity，最后才讨论性能；之后才另行激活 parent-disjoint admission。两者都不能自动产生默认 App 权限。
 
 ## 禁止与权限边界
 

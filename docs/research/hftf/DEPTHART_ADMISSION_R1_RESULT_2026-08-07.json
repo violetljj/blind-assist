@@ -1,7 +1,7 @@
 {
   "schema": "blindassist_depthart_admission_r1_result",
   "protocol_id": "DEPTHART_ADMISSION_R1",
-  "terminal": "DIAGNOSTIC_COMPLETE_G4_A_PACKAGE_REGISTRATION_PASS_G4_B_OPERATOR_PARITY_PASS_SM8650_V75_G4_C_FULL_GRAPH_NOT_EVALUATED",
+  "terminal": "DIAGNOSTIC_COMPLETE_G4_A_PACKAGE_REGISTRATION_PASS_G4_B_OPERATOR_PARITY_PASS_SM8650_V75_G4_C_CONTEXT_HOLD_LAYERNORM_REDUCE_FP16",
   "r0_terminal_immutable": "DEPTHART_S_METRIC_INDOOR_R0_QUALITY_NOT_ADMITTED",
   "research_mainline": "DEPTHART_PREFERRED_EXPERIMENTAL_BACKBONE",
   "formal_admission": "NOT_EVALUATED_NO_NEW_HOLDOUT_AND_NO_DEPLOYMENT_EVIDENCE",
@@ -30,8 +30,24 @@
     "tolerance": {"rtol": 0.00003, "atol": 0.000003},
     "max_abs": {"nominal": 7.450580596923828e-09, "accumulation": 5.736947059631348e-07, "softplus_extremes": 2.9802322387695312e-08},
     "all_finite": true,
-    "full_graph_context": "NOT_EVALUATED",
+    "full_graph_context": "CONTEXT_HOLD_LAYERNORM_REDUCE_FP16",
     "partition_fallback": "NOT_EVALUATED",
+    "performance": "NOT_EVALUATED"
+  },
+  "g4_c_full_context": {
+    "status": "CONTEXT_HOLD_LAYERNORM_REDUCE_FP16",
+    "device": "SM-S9280_SM8650_HTP_V75",
+    "canonical_dlc_sha256": "6ACD65D82FF3C0ABC7E1BC4787FCBA881D7E5CC4F5D48722F00F814D897DC680",
+    "selective_scan_nodes": 5,
+    "dlc_load": "PASS",
+    "op_package_registration": "PASS",
+    "graph_compose": "PASS_TO_FINALIZE",
+    "graph_finalize": "FAIL_1002",
+    "first_frontier": "/sfh/decoder/layers.0/norm1/LayerNormalization -> q::layernorm_2d_fp16_oneshot_moments_sf disabled",
+    "equivalent_rewrite_frontier": "q::reduce_mean.fp16 disabled",
+    "context_binary_generated": false,
+    "full_model_parity": "NOT_EVALUATED",
+    "partition_purity": "NOT_EVALUATED",
     "performance": "NOT_EVALUATED"
   },
   "authority": {"android_default": false, "production": false, "safety": false, "new_thresholds_applied_to_r0": false}

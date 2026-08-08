@@ -1,6 +1,6 @@
 # DepthART P0 部署主题索引
 
-状态：`current / deployment-only / G4-A_PACKAGE_REGISTRATION_PASS / G4-B_OPERATOR_PARITY_PASS_SM8650_V75 / G4-C_FULL_GRAPH_NOT_EVALUATED`
+状态：`current / deployment-only / G4-A_PACKAGE_REGISTRATION_PASS / G4-B_OPERATOR_PARITY_PASS_SM8650_V75 / G4-C_CONTEXT_HOLD_LAYERNORM_REDUCE_FP16`
 
 本页是 DepthART 部署可行性主题簇的短入口。它只回答“先看什么、当前证明到哪、下一步是什么”；完整实验过程、原始日志和生成物留在本目录或 `artifacts.local/`，不在这里展开。
 

@@ -15,6 +15,7 @@ shim 已退役，统一从本目录导入。
 - `build_depthart_selective_scan_htp_op_package.ps1` 生成的 v73/aarch64 本机 package 与 build receipt
 - `prepare_depthart_selective_scan_canary.py` 生成冻结单算子图、三组输入与 float32 oracle
 - `evaluate_depthart_selective_scan_canary.py` 计算设备输出的绝对、相对、分位与逐 step 误差
+- `rewrite_depthart_layernorm_rank4_onnx.py` 与 `lower_depthart_layernorm_onnx.py` 提供 G4-C 的等价 LayerNorm rank/formula 诊断路径；它们不自带 runtime 或 parity authority
 - 只写入 `artifacts.local/` 的 receipt 与日志
 
 ## 安全边界
