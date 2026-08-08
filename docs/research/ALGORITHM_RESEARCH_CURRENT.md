@@ -9,7 +9,7 @@
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| DepthART-S | 当前主要算法候选 | `R0_QUALITY_NOT_ADMITTED / R1_RESEARCH_MAINLINE / G4-C_FULL_CONTEXT_PASS_SM8650_V75 / G4-D_FULL_GRAPH_NUMERICAL_PARITY_FAIL_SM8650_V75` | [DepthART current](hftf/README.md) | `TWO_STAGE_NUMERICAL_REPAIR_SUCCESSOR`：先关闭 PyTorch→canonical ONNX 漂移；再只围绕首个 patch-embed Conv 的 HTP layout/precision lowering 边界做单节点族修复并重跑 G4-D；通过后才评价 G4-E/F，并另行激活 `DEPTHART_PARENT_DISJOINT_ADMISSION_SUCCESSOR` | consumed 数据回救；用部署结果替代算法 admission；在 G4-D 通过前进入 partition/performance gate | 否 |
+| DepthART-S | 当前主要算法候选 | `R0_QUALITY_NOT_ADMITTED / R1_RESEARCH_MAINLINE / STRICT_G4D_NEGATIVE_TERMINAL / TASK_PRESERVING_R2_PROTOCOL_FROZEN_NOT_ACTIVATED` | [DepthART current](hftf/README.md) | `DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2`：保持 strict G4-D 终态不变；先建立新独立 parent/session-disjoint cohort 与冻结候选，再按任务质量合同比较 canonical FP32 reference 和 HTP-friendly candidate。质量通过后才可评价该候选自己的 partition/performance | 继续 custom 化标准 Conv/Norm/activation 来回救 strict G4-D；复用 consumed R0 做授权；用部署结果替代算法 admission；未过任务质量即测性能 | 否 |
 | DA2 | teacher、baseline、reference、fallback | `CLOSED / FROZEN_DEVELOPMENT_REFERENCE` | [DA2 closure](hftf/DAV2_P1_P2_EXECUTION_CLOSURE_2026-08-05.md) | 无；新问题必须建立新版本和独立数据路线 | 把 reference 写成 active candidate 或沿用旧“下一步” | 否 |
 | YOLO + 语义分割双环 | 论文次线 | `THESIS_DEVELOPMENT_SECONDARY / RISKSEG_R0_NEGATIVE_NOT_PROMOTABLE` | [dual-loop current](dual-loop/README.md) | `RISKSEG_EVENT_EVAL_DATA_REPAIR_SUCCESSOR` | truth 未冻结时训练、选模或晋级 | 否 |
 | RCLE-RF | 历史风险场研究 | `PAUSED / NO_ACTIVE_EXECUTION` | [RCLE current](rcle/README.md) | 无；只有用户明确重开后才能建立新 scoped successor | 消费暂停前授权或把旧 README 的“下一步”视为当前权限 | 否 |

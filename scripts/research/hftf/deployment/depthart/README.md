@@ -23,6 +23,7 @@ shim 已退役，统一从本目录导入。
 - `localize_depthart_pytorch_onnx_parity.py` 在同一冻结 canary 上采集 patch embed、四级 DAA/backbone、depth head、scale head 和最终 depth，分别比较原生 PyTorch、导出语义 replay 与 exact-primitive ONNX；用于定位导出侧首个漂移段，不改变样本或容差
 - `rewrite_depthart_first_patch_conv_custom_onnx.py`、`rewrite_depthart_batchnorm_custom_onnx.py` 与 `rewrite_depthart_gelu_custom_onnx.py` 只改写已定位的节点族；对应 float32 HTP reference kernels 用于 correctness-first 诊断，不是性能实现
 - `evaluate_depthart_g4d_repair.py` 固定 `rtol=3e-5 / atol=3e-6`，同时签署 PyTorch↔canonical ONNX、canonical ONNX↔SM8650 HTP、DLC direct↔saved context 三项门；任一失败即保持 G4-D FAIL
+- `validate_depthart_task_preserving_r2_activation.py` 只检查 R2 pre-outcome activation manifest 的 cohort 角色、候选/reference 身份、固定任务门与旧 G4-D 排除项；它不读取模型输出，不激活执行，也不签署质量或部署结论
 - 只写入 `artifacts.local/` 的 receipt 与日志
 
 ## 安全边界
@@ -32,7 +33,7 @@ shim 已退役，统一从本目录导入。
 
 ## 停止条件
 
-- G4-D parity 不通过时停止进入 G4-E partition purity 与 G4-F performance
+- strict G4-D 保持负终态，不继续 custom 化标准算子；task-preserving R2 只有任务质量 PASS 后才进入该候选自己的 partition/performance
 - 缺少冻结输入、receipt 或调用方清单时停止物理迁移
 - 不移动并行任务产生的 SelectiveScan `.cpp/.xml/.exp/.lib`
 

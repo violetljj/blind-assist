@@ -1,0 +1,66 @@
+{
+  "schema": "blindassist_depthart_task_preserving_deployment_r2_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2",
+  "frozen_at": "2026-08-09",
+  "status": "PROTOCOL_FROZEN_EXECUTION_NOT_ACTIVATED_NO_OUTCOME_ACCESSED",
+  "research_style": "EVIDENCE_TRACK",
+  "execution_profile": "CONFIRMATION_STRICT",
+  "immutable_prior_terminal": "CURRENT_QAIRT_2_47_SM8650_HTP_STANDARD_FLOAT_PATH_STRICT_G4D_NOT_SUPPORTED",
+  "question": "Can one frozen HTP-friendly DepthART candidate preserve clearance and risk decisions on a new independent cohort without requiring raw-depth strict FP32 parity?",
+  "reference": {
+    "model": "DEPTHART_S_CANONICAL_PYTORCH_FP32_TF32_OFF",
+    "interface": "image,K->depth",
+    "task_postprocess": "IDENTICAL_FROZEN_FOR_REFERENCE_AND_CANDIDATE"
+  },
+  "candidate": {
+    "count_before_outcome_access": 1,
+    "allowed_representation_families": ["FP16", "W8A16", "FIXED_MIXED_PRECISION", "FIXED_QDQ"],
+    "selection_data_role": "DEVELOPMENT_ONLY_NOT_R2_COHORT",
+    "custom_float32_engine": "OUT_OF_SCOPE"
+  },
+  "cohort": {
+    "required_role": "SEALED_UNSEEN",
+    "required_disjointness": ["PARENT", "SESSION"],
+    "required_excluded_cohort_ids": [
+      "DEPTHART_R0_CONSUMED_120_FRAME_TUM",
+      "DEPTHART_G4D_SYNTHETIC_CANARY"
+    ],
+    "required_truth": ["CLEARANCE_M", "GROUND_VALIDITY", "OCCUPANCY_STATE", "INTRINSICS", "TIMESTAMP"],
+    "unknown_state": "UNKNOWN_GROUND",
+    "unknown_is_negative": false
+  },
+  "gates": {
+    "known_coverage_min": 0.9,
+    "known_coverage_decrease_max": 0.02,
+    "clearance_mae_m_max": 0.2,
+    "clearance_mae_m_increase_max": 0.025,
+    "false_clear_all_known_max": 0.08,
+    "false_clear_all_known_increase_max": 0.01,
+    "false_clear_given_occupied_increase_max": 0.02,
+    "false_block_given_clear_max": 0.02,
+    "false_block_given_clear_increase_max": 0.01,
+    "temporal_clearance_delta_mae_m_max": 0.15,
+    "temporal_clearance_delta_mae_m_increase_max": 0.025,
+    "geometry_transition_agreement_min": 0.9,
+    "geometry_transition_agreement_decrease_max": 0.02,
+    "valid_to_unknown_rate_max": 0.1,
+    "valid_to_unknown_rate_increase_max": 0.02,
+    "worst_parent_false_clear_all_known_max": 0.12
+  },
+  "aggregation": ["POOLED", "PARENT_MACRO", "SESSION_MACRO", "WORST_PARENT"],
+  "missing_rule": "UNDEFINED_NONFINITE_ZERO_DENOMINATOR_OR_MISSING_REQUIRED_AGGREGATE_FAILS",
+  "sequence": {
+    "quality_first": true,
+    "performance_only_after_quality_pass": true,
+    "quality_fail_terminal": "TASK_PRESERVING_R2_QUALITY_FAIL_STOP",
+    "quality_pass_terminal": "TASK_PRESERVING_R2_QUALITY_PASS_PERFORMANCE_ELIGIBLE"
+  },
+  "authority_ceiling": {
+    "strict_g4d_reopened": false,
+    "g4e_g4f_prior_route": "NOT_EVALUATED_IMMUTABLE",
+    "da2_replacement": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  }
+}

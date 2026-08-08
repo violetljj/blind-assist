@@ -26,17 +26,16 @@
 | 首个 SelectiveScan 前数值二分 | [纯标准 prefix probe 与 evaluator](deployment/depthart/bisect_depthart_pre_scan_parity.py) | 固定 canonical ONNX、程序化 RGB canary 与 G4-D 容差，按单输出子图定位 ORT/HTP 首个漂移点 | 只具 synthetic numerical diagnostic authority；不得启动 G4-E/F 或替换 DA2 |
 | PyTorch→ONNX 分段定位 | [stage anchor localizer](deployment/depthart/localize_depthart_pytorch_onnx_parity.py) | 同时保留原生 PyTorch、导出语义 replay 与 exact-primitive ONNX，覆盖 backbone/DAA/depth head/scale head | 只允许修复首个已证明的漂移段；不得换 canary 或放宽容差 |
 | G4-D 节点族修复与总门 | [PatchConv rewrite](deployment/depthart/rewrite_depthart_first_patch_conv_custom_onnx.py)、[BatchNorm rewrite](deployment/depthart/rewrite_depthart_batchnorm_custom_onnx.py)、[GELU rewrite](deployment/depthart/rewrite_depthart_gelu_custom_onnx.py)、[三项 evaluator](deployment/depthart/evaluate_depthart_g4d_repair.py) | TF32-off 后 PyTorch↔ONNX PASS；局部 custom PatchConv/BN/GELU 前缀 PASS，但下一标准 Conv 与整图 HTP 仍 FAIL；direct↔context bit-exact | 当前 QAIRT 2.47/SM8650 HTP 标准 float 路径的 strict G4-D 为负终态；不扩写为全部 HTP 或全部 custom-op 不可行 |
+| Task-preserving R2 | [冻结协议](../../../docs/research/hftf/DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.md)、[机器合同](../../../docs/research/hftf/DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.json)、[pre-outcome validator](deployment/depthart/validate_depthart_task_preserving_r2_activation.py) | 用新独立 cohort 比较 canonical FP32 reference 与单一 HTP-friendly candidate 的 clearance、false-clear、false-block、temporal 与 UNKNOWN coverage | `PROTOCOL_FROZEN / EXECUTION_NOT_ACTIVATED`；不回写 strict G4-D，未过任务质量不得测该候选性能 |
 | QNN/HTP 诊断 | [diagnostics/depthart/](diagnostics/depthart/) | operator/profile/lint 诊断 | 诊断结果不是性能或安全授权 |
 | 已有结果 | [DepthART A3 result](../../../docs/research/hftf/DEPTHART_ADMISSION_R1_A3_RESULT_2026-08-07.md)、[旧 QAIRT/HTP result](../../../docs/research/hftf/archive/DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md) | 当前证据与历史阻塞点 | 旧结果不能自动生成 successor |
 
 ## 唯一 successor
 
-`DEPTHART_PARENT_DISJOINT_ADMISSION_SUCCESSOR`：
-
-1. 冻结 parent-disjoint 输入和数值比较口径。
-2. 保留 exact unrolled primitive 图作为算子 parity oracle，不将其作为移动端实现候选。
-3. 保留 v73 compile-only 工件与 SM8650/v75 runtime receipt，不跨架构转移 authority。
-4. 已将通过的 kernel 放回完整 canonical graph并完成 context build；冻结 full-model G4-D 已得负终态。除非另立协议评估近完整 custom-float32 engine 或改变硬件/runtime 路线，否则不得进入 graph-partition/performance。
+`DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2`：准备并校验 pre-outcome activation manifest。
+它必须绑定新独立 parent/session-disjoint cohort、canonical FP32 reference、一个冻结的
+HTP-friendly candidate 和协议中的固定任务门。当前只允许准备，不允许访问 outcome；
+strict G4-D、G4-E/F 与 DA2 replacement 状态均不变。
 
 ## 禁止动作
 
