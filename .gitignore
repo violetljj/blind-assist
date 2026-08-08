@@ -11,11 +11,14 @@
 .kotlin/
 .kotlin-home/
 **/__pycache__/
+.pytest_cache/
+.ruff_cache/
 work/
 python311-local/
 .idea/
 *.iml
 build/
+output/
 local.properties
 keystore.properties
 *.jks
