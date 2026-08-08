@@ -16,9 +16,19 @@
       <Parameter><Name>out_float</Name><Mandatory>false</Mandatory><Datatype>QNN_DATATYPE_BOOL_8</Datatype><Shape><Rank>SCALAR</Rank></Shape><Default>0</Default></Parameter>
       <SupportedBackend>HTP</SupportedBackend>
     </OpDef>
+    <OpDef>
+      <Name>DepthArtLayerNorm</Name>
+      <Description><Content>DepthART float32 last-axis LayerNormalization reference operator.</Content></Description>
+      <Input><Name>x</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>3D</Rank><Layout>NONTRIVIAL</Layout></Shape></Input>
+      <Input><Name>weight</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>1D</Rank></Shape></Input>
+      <Input><Name>bias</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>1D</Rank></Shape></Input>
+      <Output><Name>y</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>3D</Rank><Layout>NONTRIVIAL</Layout></Shape></Output>
+      <Parameter><Name>epsilon</Name><Mandatory>false</Mandatory><Datatype>QNN_DATATYPE_FLOAT_32</Datatype><Shape><Rank>SCALAR</Rank></Shape><Default>0.00001</Default></Parameter>
+      <SupportedBackend>HTP</SupportedBackend>
+    </OpDef>
   </OpDefList>
   <SupplementalOpDefList Backend="HTP">
-    <SupportedOps><OpName>SelectiveScan</OpName></SupportedOps>
+    <SupportedOps><OpName>SelectiveScan</OpName><OpName>DepthArtLayerNorm</OpName></SupportedOps>
     <SupplementalOpDef>
       <Name>SelectiveScan</Name>
       <Input><Name>u</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
@@ -31,6 +41,14 @@
       <Output><Name>y</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Output>
       <Parameter><Name>delta_softplus</Name><Datatype>QNN_DATATYPE_BOOL_8</Datatype></Parameter>
       <Parameter><Name>out_float</Name><Datatype>QNN_DATATYPE_BOOL_8</Datatype></Parameter>
+    </SupplementalOpDef>
+    <SupplementalOpDef>
+      <Name>DepthArtLayerNorm</Name>
+      <Input><Name>x</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>weight</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>bias</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Output><Name>y</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Output>
+      <Parameter><Name>epsilon</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Parameter>
     </SupplementalOpDef>
   </SupplementalOpDefList>
 </OpDefCollection>

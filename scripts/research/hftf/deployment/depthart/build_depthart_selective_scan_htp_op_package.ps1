@@ -39,6 +39,7 @@ foreach ($path in $required) {
 
 $xml = Join-Path $hftfRoot 'depthart_selective_scan_op_package.xml'
 $kernel = Join-Path $scriptRoot 'depthart_selective_scan_htp_reference.cpp'
+$layerNormKernel = Join-Path $scriptRoot 'depthart_layernorm_htp_reference.cpp'
 $generator = Join-Path $QairtRoot 'bin\x86_64-windows-msvc\qnn-op-package-generator'
 $env:HEXAGON_SDK_ROOT = $HexagonSdkRoot
 $env:PYTHONPATH = "$QairtRoot\lib\python;$QairtRoot\lib\python\qti\aisw\converters\common\windows-x86_64"
@@ -48,6 +49,7 @@ if ($LASTEXITCODE -ne 0) { throw "qnn-op-package-generator failed: $LASTEXITCODE
 
 $packageRoot = Join-Path $OutputRoot 'DepthArtSelectiveScanPackage'
 Copy-Item -LiteralPath $kernel -Destination (Join-Path $packageRoot 'src\ops\SelectiveScan.cpp') -Force
+Copy-Item -LiteralPath $layerNormKernel -Destination (Join-Path $packageRoot 'src\ops\DepthArtLayerNorm.cpp') -Force
 $hexagonCxx = Join-Path $HexagonSdkRoot 'tools\HEXAGON_Tools\8.7.06\Tools\bin\hexagon-clang++.exe'
 $qnnInclude = ($QairtRoot -replace '\\', '/') + '/include/QNN'
 $hexagonUnix = $HexagonSdkRoot -replace '\\', '/'
@@ -67,15 +69,19 @@ $hexCommon = @(
 )
 $interface = Join-Path $packageRoot 'src\DepthArtSelectiveScanPackageInterface.cpp'
 $op = Join-Path $packageRoot 'src\ops\SelectiveScan.cpp'
+$layerNormOp = Join-Path $packageRoot 'src\ops\DepthArtLayerNorm.cpp'
 $hexInterfaceObj = Join-Path $hexBuild 'DepthArtSelectiveScanPackageInterface.o'
 $hexOpObj = Join-Path $hexBuild 'SelectiveScan.o'
+$hexLayerNormObj = Join-Path $hexBuild 'DepthArtLayerNorm.o'
 & $hexagonCxx @hexCommon $interface -o $hexInterfaceObj
 if ($LASTEXITCODE -ne 0) { throw "v73 interface compile failed: $LASTEXITCODE" }
 & $hexagonCxx @hexCommon $op -o $hexOpObj
-if ($LASTEXITCODE -ne 0) { throw "v73 kernel compile failed: $LASTEXITCODE" }
+if ($LASTEXITCODE -ne 0) { throw "$TargetArch SelectiveScan kernel compile failed: $LASTEXITCODE" }
+& $hexagonCxx @hexCommon $layerNormOp -o $hexLayerNormObj
+if ($LASTEXITCODE -ne 0) { throw "$TargetArch LayerNorm kernel compile failed: $LASTEXITCODE" }
 $hexLibrary = Join-Path $hexBuild 'libQnnDepthArtSelectiveScanPackage.so'
-& $hexagonCxx -fPIC -std=c++17 -g -shared -o $hexLibrary $hexInterfaceObj $hexOpObj
-if ($LASTEXITCODE -ne 0) { throw "v73 package link failed: $LASTEXITCODE" }
+& $hexagonCxx -fPIC -std=c++17 -g -shared -o $hexLibrary $hexInterfaceObj $hexOpObj $hexLayerNormObj
+if ($LASTEXITCODE -ne 0) { throw "$TargetArch package link failed: $LASTEXITCODE" }
 
 $ndkPrebuilt = Join-Path $AndroidNdkRoot 'toolchains\llvm\prebuilt\windows-x86_64'
 $androidCxx = Join-Path $ndkPrebuilt 'bin\clang++.exe'
@@ -96,15 +102,18 @@ $androidCommon = @(
 )
 $androidInterfaceObj = Join-Path $androidBuild 'DepthArtSelectiveScanPackageInterface.o'
 $androidOpObj = Join-Path $androidBuild 'SelectiveScan.o'
+$androidLayerNormObj = Join-Path $androidBuild 'DepthArtLayerNorm.o'
 & $androidCxx @androidCommon $interface -o $androidInterfaceObj
 if ($LASTEXITCODE -ne 0) { throw "aarch64 interface compile failed: $LASTEXITCODE" }
 & $androidCxx @androidCommon $op -o $androidOpObj
 if ($LASTEXITCODE -ne 0) { throw "aarch64 kernel compile failed: $LASTEXITCODE" }
+& $androidCxx @androidCommon $layerNormOp -o $androidLayerNormObj
+if ($LASTEXITCODE -ne 0) { throw "aarch64 LayerNorm kernel compile failed: $LASTEXITCODE" }
 $androidLibrary = Join-Path $androidBuild 'libQnnDepthArtSelectiveScanPackage.so'
 $qnnAndroidLib = ($QairtRoot -replace '\\', '/') + '/lib/aarch64-android'
 & $androidCxx '--target=aarch64-none-linux-android21' "--sysroot=$sysroot" `
     -stdlib=libc++ -static-libstdc++ -fPIC -std=c++17 -g -shared -o $androidLibrary `
-    $androidInterfaceObj $androidOpObj "-L$qnnAndroidLib" -lQnnHtp -lQnnHtpPrepare
+    $androidInterfaceObj $androidOpObj $androidLayerNormObj "-L$qnnAndroidLib" -lQnnHtp -lQnnHtpPrepare
 if ($LASTEXITCODE -ne 0) { throw "aarch64 package link failed: $LASTEXITCODE" }
 
 $receipt = [ordered]@{

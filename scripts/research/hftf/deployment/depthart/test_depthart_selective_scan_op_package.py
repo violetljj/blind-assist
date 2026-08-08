@@ -8,7 +8,9 @@ HFTF_ROOT = Path(__file__).resolve().parents[2]
 OP_PACKAGE = HFTF_ROOT / "depthart_selective_scan_op_package.xml"
 CONVERTER_SOURCE = HFTF_ROOT / "depthart_selective_scan_converter_op.cpp"
 HTP_REFERENCE_SOURCE = Path(__file__).with_name("depthart_selective_scan_htp_reference.cpp")
+LAYERNORM_REFERENCE_SOURCE = Path(__file__).with_name("depthart_layernorm_htp_reference.cpp")
 HTP_BUILD_SCRIPT = Path(__file__).with_name("build_depthart_selective_scan_htp_op_package.ps1")
+CONVERTER_BUILD_SCRIPT = Path(__file__).with_name("build_depthart_converter_op_package.ps1")
 MIGRATION_MANIFEST = HFTF_ROOT / "DEPTHART_P0_MIGRATION_MANIFEST.json"
 
 
@@ -37,10 +39,20 @@ class DepthArtSelectiveScanOpPackageTest(unittest.TestCase):
         self.assertEqual(op.findtext("SupportedBackend"), "HTP")
 
     def test_htp_supplemental_contract_is_float32(self) -> None:
-        supplemental = self.root.find("./SupplementalOpDefList[@Backend='HTP']/SupplementalOpDef")
-        self.assertIsNotNone(supplemental)
+        supplemental = next(item for item in self.root.findall("./SupplementalOpDefList[@Backend='HTP']/SupplementalOpDef") if item.findtext("Name") == "SelectiveScan")
         tensors = supplemental.findall("Input") + supplemental.findall("Output")
         self.assertEqual(len(tensors), 8)
+        self.assertTrue(all(item.findtext("Datatype") == "QNN_DATATYPE_FLOAT_32" for item in tensors))
+
+    def test_layernorm_mapping_contract(self) -> None:
+        op = next(item for item in self.root.findall("./OpDefList/OpDef") if item.findtext("Name") == "DepthArtLayerNorm")
+        self.assertEqual([item.findtext("Name") for item in op.findall("Input")], ["x", "weight", "bias"])
+        self.assertEqual([item.findtext("Name") for item in op.findall("Output")], ["y"])
+        parameter = op.find("Parameter")
+        self.assertEqual(parameter.findtext("Name"), "epsilon")
+        self.assertEqual(parameter.findtext("Default"), "0.00001")
+        supplemental = next(item for item in self.root.findall("./SupplementalOpDefList[@Backend='HTP']/SupplementalOpDef") if item.findtext("Name") == "DepthArtLayerNorm")
+        tensors = supplemental.findall("Input") + supplemental.findall("Output")
         self.assertTrue(all(item.findtext("Datatype") == "QNN_DATATYPE_FLOAT_32" for item in tensors))
 
     def test_converter_library_contract_is_shape_and_dtype_only(self) -> None:
@@ -57,6 +69,11 @@ class DepthArtSelectiveScanOpPackageTest(unittest.TestCase):
         ):
             self.assertIn(required, source)
         self.assertNotIn("QnnHtp", source)
+        for required in (
+            "DepthArtLayerNormShapeInference", "DepthArtLayerNormDataTypeInference",
+            "numOfInputs != 3", "numOfParams != 1",
+        ):
+            self.assertIn(required, source)
 
     def test_p0c_paths_remain_frozen(self) -> None:
         manifest = json.loads(MIGRATION_MANIFEST.read_text(encoding="utf-8"))
@@ -97,6 +114,29 @@ class DepthArtSelectiveScanOpPackageTest(unittest.TestCase):
             "DepthArtSelectiveScanPackageInterfaceProvider",
             "COMPILED_NOT_RUNTIME_EVALUATED",
             "build-receipt.json",
+        ):
+            self.assertIn(required, source)
+
+    def test_layernorm_reference_kernel_is_last_axis_float32_reference(self) -> None:
+        source = LAYERNORM_REFERENCE_SOURCE.read_text(encoding="utf-8")
+        for required in (
+            "depthArtLayerNormReferenceImpl<Tensor>", '"DepthArtLayerNorm"',
+            "x.rank() == 3", "x.rank() == 4", "squared_sum", "std::sqrt",
+            "sum_compensation", "squared_sum_compensation",
+            "weight(0, 0, 0, channel)", "bias(0, 0, 0, channel)", "y.set_dims(x)",
+        ):
+            self.assertIn(required, source)
+        for forbidden in ("malloc(", "calloc(", "operator new", "std::vector", "push_back("):
+            self.assertNotIn(forbidden, source)
+        build_source = HTP_BUILD_SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("depthart_layernorm_htp_reference.cpp", build_source)
+        self.assertIn("DepthArtLayerNorm.o", build_source)
+
+    def test_converter_build_keeps_outputs_in_local_evidence(self) -> None:
+        source = CONVERTER_BUILD_SCRIPT.read_text(encoding="utf-8")
+        for required in (
+            "OutputRoot must be under", "vcvars64.bat", "depthart_selective_scan_converter_op.cpp",
+            "COMPILED_CONVERTER_INFERENCE_ONLY", "build-receipt.json", "/Fo:",
         ):
             self.assertIn(required, source)
 
