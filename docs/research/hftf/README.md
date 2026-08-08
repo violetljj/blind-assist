@@ -14,7 +14,7 @@
 
 - DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
-- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；SelectiveScan 与 LayerNorm correctness-first float32 kernels 已在 `SM-S9280 / SM8650 / Snapdragon 8 Gen 3 / HTP v75` 完成单算子真实 HTP parity，包含 5 个 SelectiveScan 与 23 个自定义 LayerNorm 的完整图也已保存 context，故 G4-A/B/C PASS。随后冻结的 synthetic full-graph numerical canary 在真实 v75 context 上相对 PyTorch 为 `max_abs=1.435607 / mean_abs=1.070408`，G4-D 明确 FAIL。纯标准算子 prefix 二分把首个可见 ORT/HTP 漂移定位到 node 1 `/patch_embed/patch_embed.0/c/Conv` 输出（HTP `max_abs=9.01e-4`；同 DLC QNN CPU 对照 `3.58e-7` 且 PASS）；这只把 frontier 收敛到 HTP 特有的 layout/precision lowering 边界，尚未证明内部具体 primitive。真实场景任务质量、partition purity、性能、Android/生产 authority 仍未评价，DA2 保持冻结 baseline/fallback。
+- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；G4-A/B/C PASS。两段式定位已完成：关闭 CUDA TF32 后，PyTorch↔canonical ONNX 最终 depth 在冻结容差下 PASS（`max_abs=1.40667e-5`）；SM8650/v75 侧以 custom float32 PatchConv、123×BatchNorm 与 27×GELU 逐族修复后，整图误差从约 `1.45` 降至 `0.0272727`，但仍 FAIL。修复前缀的下一首因是第二个标准 Conv（`max_abs=0.00568485`），而 direct DLC↔saved context bit-exact。结合 QAIRT 对 HTP FP32 模型底层 16-bit math 的明确边界，当前 QAIRT 2.47/SM8650 HTP 标准 float 路径的 strict G4-D 记为负终态；不推断全部 HTP 或近完整 custom-float32 engine 不可行。真实场景任务质量、G4-E partition purity、G4-F 性能、Android/生产 authority 仍未评价，DA2 保持冻结 baseline/fallback。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
@@ -31,7 +31,7 @@
 parent/session 数据和最小判别实验被冻结后，才能开启新的 scientific admission；
 部署预检修复本身不产生科学晋级。
 
-当前两条明确的路线 successor：DA2 只作为冻结 reference 使用；DepthART-S 保持同一 frozen full-model canary，先关闭 PyTorch→canonical ONNX 漂移，再只围绕首个 patch-embed Conv 的 HTP layout/precision lowering 边界做单节点族修复并重跑 G4-D。只有 G4-D 通过后才评价 5/5 SelectiveScan partition receipt，最后才讨论性能；之后才另行激活 parent-disjoint admission。两者都不能自动产生默认 App 权限。
+当前两条明确的路线 successor：DA2 只作为冻结 reference 使用；DepthART-S 的现有 QAIRT 2.47/SM8650 HTP 标准 float 路线停在 strict G4-D 负终态。只有另立协议、明确授权并冻结“近完整 custom-float32 engine”或新 runtime/hardware 路线，才可重开部署 G4-D；当前不得评价 G4-E/F，也不得激活 parent-disjoint admission。两者都不能自动产生默认 App 权限。
 
 ## 禁止与权限边界
 

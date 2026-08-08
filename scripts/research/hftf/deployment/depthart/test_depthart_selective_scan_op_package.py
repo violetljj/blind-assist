@@ -9,6 +9,9 @@ OP_PACKAGE = HFTF_ROOT / "depthart_selective_scan_op_package.xml"
 CONVERTER_SOURCE = HFTF_ROOT / "depthart_selective_scan_converter_op.cpp"
 HTP_REFERENCE_SOURCE = Path(__file__).with_name("depthart_selective_scan_htp_reference.cpp")
 LAYERNORM_REFERENCE_SOURCE = Path(__file__).with_name("depthart_layernorm_htp_reference.cpp")
+PATCH_CONV_REFERENCE_SOURCE = Path(__file__).with_name("depthart_patch_conv2d_htp_reference.cpp")
+BATCHNORM_REFERENCE_SOURCE = Path(__file__).with_name("depthart_batchnorm2d_htp_reference.cpp")
+GELU_REFERENCE_SOURCE = Path(__file__).with_name("depthart_gelu_htp_reference.cpp")
 HTP_BUILD_SCRIPT = Path(__file__).with_name("build_depthart_selective_scan_htp_op_package.ps1")
 CONVERTER_BUILD_SCRIPT = Path(__file__).with_name("build_depthart_converter_op_package.ps1")
 MIGRATION_MANIFEST = HFTF_ROOT / "DEPTHART_P0_MIGRATION_MANIFEST.json"
@@ -74,6 +77,21 @@ class DepthArtSelectiveScanOpPackageTest(unittest.TestCase):
             "numOfInputs != 3", "numOfParams != 1",
         ):
             self.assertIn(required, source)
+        for required in (
+            "DepthArtPatchConv2dShapeInference", "DepthArtPatchConv2dDataTypeInference",
+            "input->v1.dimensions[1] != 3", "weight->v1.dimensions[0] != 24",
+        ):
+            self.assertIn(required, source)
+        for required in (
+            "DepthArtBatchNorm2dShapeInference", "DepthArtBatchNorm2dDataTypeInference",
+            "op->v1.numOfInputs != 5",
+        ):
+            self.assertIn(required, source)
+        for required in (
+            "DepthArtGeluShapeInference", "DepthArtGeluDataTypeInference",
+            "op->v1.numOfInputs != 1",
+        ):
+            self.assertIn(required, source)
 
     def test_p0c_paths_remain_frozen(self) -> None:
         manifest = json.loads(MIGRATION_MANIFEST.read_text(encoding="utf-8"))
@@ -131,6 +149,64 @@ class DepthArtSelectiveScanOpPackageTest(unittest.TestCase):
         build_source = HTP_BUILD_SCRIPT.read_text(encoding="utf-8")
         self.assertIn("depthart_layernorm_htp_reference.cpp", build_source)
         self.assertIn("DepthArtLayerNorm.o", build_source)
+
+    def test_patch_conv_mapping_and_reference_are_frozen_float32(self) -> None:
+        op = next(item for item in self.root.findall("./OpDefList/OpDef") if item.findtext("Name") == "DepthArtPatchConv2d")
+        self.assertEqual([item.findtext("Name") for item in op.findall("Input")], ["x", "weight"])
+        self.assertEqual([item.findtext("Name") for item in op.findall("Output")], ["y"])
+        supplemental = next(item for item in self.root.findall("./SupplementalOpDefList[@Backend='HTP']/SupplementalOpDef") if item.findtext("Name") == "DepthArtPatchConv2d")
+        tensors = supplemental.findall("Input") + supplemental.findall("Output")
+        self.assertTrue(all(item.findtext("Datatype") == "QNN_DATATYPE_FLOAT_32" for item in tensors))
+        source = PATCH_CONV_REFERENCE_SOURCE.read_text(encoding="utf-8")
+        for required in (
+            "depthArtPatchConv2dReferenceImpl<Tensor>", '"DepthArtPatchConv2d"',
+            "x.dim(1) == 3", "weight.dim(0) == 24", "output_y * 2 + kernel_y",
+            "accumulator += input_value * weight_value",
+        ):
+            self.assertIn(required, source)
+        for forbidden in ("malloc(", "calloc(", "operator new", "std::vector", "push_back("):
+            self.assertNotIn(forbidden, source)
+        build_source = HTP_BUILD_SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("depthart_patch_conv2d_htp_reference.cpp", build_source)
+        self.assertIn("DepthArtPatchConv2d.o", build_source)
+
+    def test_batchnorm_mapping_and_reference_are_float32(self) -> None:
+        op = next(item for item in self.root.findall("./OpDefList/OpDef") if item.findtext("Name") == "DepthArtBatchNorm2d")
+        self.assertEqual([item.findtext("Name") for item in op.findall("Input")], ["x", "scale", "bias", "mean", "variance"])
+        self.assertEqual([item.findtext("Name") for item in op.findall("Output")], ["y"])
+        supplemental = next(item for item in self.root.findall("./SupplementalOpDefList[@Backend='HTP']/SupplementalOpDef") if item.findtext("Name") == "DepthArtBatchNorm2d")
+        tensors = supplemental.findall("Input") + supplemental.findall("Output")
+        self.assertTrue(all(item.findtext("Datatype") == "QNN_DATATYPE_FLOAT_32" for item in tensors))
+        source = BATCHNORM_REFERENCE_SOURCE.read_text(encoding="utf-8")
+        for required in (
+            "depthArtBatchNorm2dReferenceImpl<Tensor>", '"DepthArtBatchNorm2d"',
+            "std::sqrt(variance_value + epsilon_value)", "y.set_dims(x)",
+        ):
+            self.assertIn(required, source)
+        for forbidden in ("malloc(", "calloc(", "operator new", "std::vector", "push_back("):
+            self.assertNotIn(forbidden, source)
+        build_source = HTP_BUILD_SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("depthart_batchnorm2d_htp_reference.cpp", build_source)
+        self.assertIn("DepthArtBatchNorm2d.o", build_source)
+
+    def test_gelu_mapping_and_reference_are_float32(self) -> None:
+        op = next(item for item in self.root.findall("./OpDefList/OpDef") if item.findtext("Name") == "DepthArtGelu")
+        self.assertEqual([item.findtext("Name") for item in op.findall("Input")], ["x"])
+        self.assertEqual([item.findtext("Name") for item in op.findall("Output")], ["y"])
+        supplemental = next(item for item in self.root.findall("./SupplementalOpDefList[@Backend='HTP']/SupplementalOpDef") if item.findtext("Name") == "DepthArtGelu")
+        tensors = supplemental.findall("Input") + supplemental.findall("Output")
+        self.assertTrue(all(item.findtext("Datatype") == "QNN_DATATYPE_FLOAT_32" for item in tensors))
+        source = GELU_REFERENCE_SOURCE.read_text(encoding="utf-8")
+        for required in (
+            "depthArtGeluReferenceImpl<Tensor>", '"DepthArtGelu"',
+            "std::erf(value * kInverseSqrtTwo)", "y.set_dims(x)",
+        ):
+            self.assertIn(required, source)
+        for forbidden in ("malloc(", "calloc(", "operator new", "std::vector", "push_back("):
+            self.assertNotIn(forbidden, source)
+        build_source = HTP_BUILD_SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("depthart_gelu_htp_reference.cpp", build_source)
+        self.assertIn("DepthArtGelu.o", build_source)
 
     def test_converter_build_keeps_outputs_in_local_evidence(self) -> None:
         source = CONVERTER_BUILD_SCRIPT.read_text(encoding="utf-8")

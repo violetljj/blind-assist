@@ -1,6 +1,6 @@
 # DepthART P0 部署主题索引
 
-状态：`current / deployment-only / G4-A_PACKAGE_REGISTRATION_PASS / G4-B_OPERATOR_PARITY_PASS_SM8650_V75 / G4-C_FULL_CONTEXT_PASS_SM8650_V75`
+状态：`current / deployment-only / G4-A_PACKAGE_REGISTRATION_PASS / G4-B_OPERATOR_PARITY_PASS_SM8650_V75 / G4-C_FULL_CONTEXT_PASS_SM8650_V75 / G4-D_FAIL_CURRENT_QAIRT_HTP_STANDARD_FLOAT_PATH_NOT_SUPPORTED`
 
 本页是 DepthART 部署可行性主题簇的短入口。它只回答“先看什么、当前证明到哪、下一步是什么”；完整实验过程、原始日志和生成物留在本目录或 `artifacts.local/`，不在这里展开。
 
@@ -24,6 +24,8 @@
 | SelectiveScan 自定义算子 | [depthart_selective_scan_converter_op.cpp](depthart_selective_scan_converter_op.cpp)、[depthart_selective_scan_op_package.xml](depthart_selective_scan_op_package.xml)、[HTP scalar reference kernel](deployment/depthart/depthart_selective_scan_htp_reference.cpp)、[可复现构建脚本](deployment/depthart/build_depthart_selective_scan_htp_op_package.ps1)、[canary/oracle](deployment/depthart/prepare_depthart_selective_scan_canary.py)、[parity evaluator](deployment/depthart/evaluate_depthart_selective_scan_canary.py)；[合同测试](deployment/depthart/test_depthart_selective_scan_op_package.py) | v73 保留为 compile-only 工件；当前 SM8650/v75 已完成 package load、compose/finalize、HTP execute 与 3/3 oracle parity | 单算子 PASS 不代表完整图、partition purity 或性能 |
 | LayerNorm 自定义算子 | [HTP scalar reference kernel](deployment/depthart/depthart_layernorm_htp_reference.cpp)、[全图映射](deployment/depthart/rewrite_depthart_layernorm_custom_onnx.py)、[canary/oracle](deployment/depthart/prepare_depthart_layernorm_canary.py)、[parity evaluator](deployment/depthart/evaluate_depthart_layernorm_canary.py) | SM8650/v75 单算子 3/3 PASS；23 个 LayerNorm 与 5 个 SelectiveScan 的完整图 context finalize/save PASS | context PASS 不代表 full-model parity、partition purity 或性能 |
 | 首个 SelectiveScan 前数值二分 | [纯标准 prefix probe 与 evaluator](deployment/depthart/bisect_depthart_pre_scan_parity.py) | 固定 canonical ONNX、程序化 RGB canary 与 G4-D 容差，按单输出子图定位 ORT/HTP 首个漂移点 | 只具 synthetic numerical diagnostic authority；不得启动 G4-E/F 或替换 DA2 |
+| PyTorch→ONNX 分段定位 | [stage anchor localizer](deployment/depthart/localize_depthart_pytorch_onnx_parity.py) | 同时保留原生 PyTorch、导出语义 replay 与 exact-primitive ONNX，覆盖 backbone/DAA/depth head/scale head | 只允许修复首个已证明的漂移段；不得换 canary 或放宽容差 |
+| G4-D 节点族修复与总门 | [PatchConv rewrite](deployment/depthart/rewrite_depthart_first_patch_conv_custom_onnx.py)、[BatchNorm rewrite](deployment/depthart/rewrite_depthart_batchnorm_custom_onnx.py)、[GELU rewrite](deployment/depthart/rewrite_depthart_gelu_custom_onnx.py)、[三项 evaluator](deployment/depthart/evaluate_depthart_g4d_repair.py) | TF32-off 后 PyTorch↔ONNX PASS；局部 custom PatchConv/BN/GELU 前缀 PASS，但下一标准 Conv 与整图 HTP 仍 FAIL；direct↔context bit-exact | 当前 QAIRT 2.47/SM8650 HTP 标准 float 路径的 strict G4-D 为负终态；不扩写为全部 HTP 或全部 custom-op 不可行 |
 | QNN/HTP 诊断 | [diagnostics/depthart/](diagnostics/depthart/) | operator/profile/lint 诊断 | 诊断结果不是性能或安全授权 |
 | 已有结果 | [DepthART A3 result](../../../docs/research/hftf/DEPTHART_ADMISSION_R1_A3_RESULT_2026-08-07.md)、[旧 QAIRT/HTP result](../../../docs/research/hftf/archive/DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md) | 当前证据与历史阻塞点 | 旧结果不能自动生成 successor |
 
@@ -34,7 +36,7 @@
 1. 冻结 parent-disjoint 输入和数值比较口径。
 2. 保留 exact unrolled primitive 图作为算子 parity oracle，不将其作为移动端实现候选。
 3. 保留 v73 compile-only 工件与 SM8650/v75 runtime receipt，不跨架构转移 authority。
-4. 已将通过的 kernel 放回完整 canonical graph并完成 context build；下一步冻结 full-model 输入/oracle，完成数值 parity 与 graph-partition receipt，之后才进入性能结论。
+4. 已将通过的 kernel 放回完整 canonical graph并完成 context build；冻结 full-model G4-D 已得负终态。除非另立协议评估近完整 custom-float32 engine 或改变硬件/runtime 路线，否则不得进入 graph-partition/performance。
 
 ## 禁止动作
 

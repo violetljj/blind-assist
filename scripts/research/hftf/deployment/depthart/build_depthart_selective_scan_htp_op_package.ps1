@@ -40,6 +40,9 @@ foreach ($path in $required) {
 $xml = Join-Path $hftfRoot 'depthart_selective_scan_op_package.xml'
 $kernel = Join-Path $scriptRoot 'depthart_selective_scan_htp_reference.cpp'
 $layerNormKernel = Join-Path $scriptRoot 'depthart_layernorm_htp_reference.cpp'
+$patchConvKernel = Join-Path $scriptRoot 'depthart_patch_conv2d_htp_reference.cpp'
+$batchNormKernel = Join-Path $scriptRoot 'depthart_batchnorm2d_htp_reference.cpp'
+$geluKernel = Join-Path $scriptRoot 'depthart_gelu_htp_reference.cpp'
 $generator = Join-Path $QairtRoot 'bin\x86_64-windows-msvc\qnn-op-package-generator'
 $env:HEXAGON_SDK_ROOT = $HexagonSdkRoot
 $env:PYTHONPATH = "$QairtRoot\lib\python;$QairtRoot\lib\python\qti\aisw\converters\common\windows-x86_64"
@@ -50,6 +53,9 @@ if ($LASTEXITCODE -ne 0) { throw "qnn-op-package-generator failed: $LASTEXITCODE
 $packageRoot = Join-Path $OutputRoot 'DepthArtSelectiveScanPackage'
 Copy-Item -LiteralPath $kernel -Destination (Join-Path $packageRoot 'src\ops\SelectiveScan.cpp') -Force
 Copy-Item -LiteralPath $layerNormKernel -Destination (Join-Path $packageRoot 'src\ops\DepthArtLayerNorm.cpp') -Force
+Copy-Item -LiteralPath $patchConvKernel -Destination (Join-Path $packageRoot 'src\ops\DepthArtPatchConv2d.cpp') -Force
+Copy-Item -LiteralPath $batchNormKernel -Destination (Join-Path $packageRoot 'src\ops\DepthArtBatchNorm2d.cpp') -Force
+Copy-Item -LiteralPath $geluKernel -Destination (Join-Path $packageRoot 'src\ops\DepthArtGelu.cpp') -Force
 $hexagonCxx = Join-Path $HexagonSdkRoot 'tools\HEXAGON_Tools\8.7.06\Tools\bin\hexagon-clang++.exe'
 $qnnInclude = ($QairtRoot -replace '\\', '/') + '/include/QNN'
 $hexagonUnix = $HexagonSdkRoot -replace '\\', '/'
@@ -70,17 +76,29 @@ $hexCommon = @(
 $interface = Join-Path $packageRoot 'src\DepthArtSelectiveScanPackageInterface.cpp'
 $op = Join-Path $packageRoot 'src\ops\SelectiveScan.cpp'
 $layerNormOp = Join-Path $packageRoot 'src\ops\DepthArtLayerNorm.cpp'
+$patchConvOp = Join-Path $packageRoot 'src\ops\DepthArtPatchConv2d.cpp'
+$batchNormOp = Join-Path $packageRoot 'src\ops\DepthArtBatchNorm2d.cpp'
+$geluOp = Join-Path $packageRoot 'src\ops\DepthArtGelu.cpp'
 $hexInterfaceObj = Join-Path $hexBuild 'DepthArtSelectiveScanPackageInterface.o'
 $hexOpObj = Join-Path $hexBuild 'SelectiveScan.o'
 $hexLayerNormObj = Join-Path $hexBuild 'DepthArtLayerNorm.o'
+$hexPatchConvObj = Join-Path $hexBuild 'DepthArtPatchConv2d.o'
+$hexBatchNormObj = Join-Path $hexBuild 'DepthArtBatchNorm2d.o'
+$hexGeluObj = Join-Path $hexBuild 'DepthArtGelu.o'
 & $hexagonCxx @hexCommon $interface -o $hexInterfaceObj
 if ($LASTEXITCODE -ne 0) { throw "v73 interface compile failed: $LASTEXITCODE" }
 & $hexagonCxx @hexCommon $op -o $hexOpObj
 if ($LASTEXITCODE -ne 0) { throw "$TargetArch SelectiveScan kernel compile failed: $LASTEXITCODE" }
 & $hexagonCxx @hexCommon $layerNormOp -o $hexLayerNormObj
 if ($LASTEXITCODE -ne 0) { throw "$TargetArch LayerNorm kernel compile failed: $LASTEXITCODE" }
+& $hexagonCxx @hexCommon $patchConvOp -o $hexPatchConvObj
+if ($LASTEXITCODE -ne 0) { throw "$TargetArch PatchConv2d kernel compile failed: $LASTEXITCODE" }
+& $hexagonCxx @hexCommon $batchNormOp -o $hexBatchNormObj
+if ($LASTEXITCODE -ne 0) { throw "$TargetArch BatchNorm2d kernel compile failed: $LASTEXITCODE" }
+& $hexagonCxx @hexCommon $geluOp -o $hexGeluObj
+if ($LASTEXITCODE -ne 0) { throw "$TargetArch Gelu kernel compile failed: $LASTEXITCODE" }
 $hexLibrary = Join-Path $hexBuild 'libQnnDepthArtSelectiveScanPackage.so'
-& $hexagonCxx -fPIC -std=c++17 -g -shared -o $hexLibrary $hexInterfaceObj $hexOpObj $hexLayerNormObj
+& $hexagonCxx -fPIC -std=c++17 -g -shared -o $hexLibrary $hexInterfaceObj $hexOpObj $hexLayerNormObj $hexPatchConvObj $hexBatchNormObj $hexGeluObj
 if ($LASTEXITCODE -ne 0) { throw "$TargetArch package link failed: $LASTEXITCODE" }
 
 $ndkPrebuilt = Join-Path $AndroidNdkRoot 'toolchains\llvm\prebuilt\windows-x86_64'
@@ -103,17 +121,26 @@ $androidCommon = @(
 $androidInterfaceObj = Join-Path $androidBuild 'DepthArtSelectiveScanPackageInterface.o'
 $androidOpObj = Join-Path $androidBuild 'SelectiveScan.o'
 $androidLayerNormObj = Join-Path $androidBuild 'DepthArtLayerNorm.o'
+$androidPatchConvObj = Join-Path $androidBuild 'DepthArtPatchConv2d.o'
+$androidBatchNormObj = Join-Path $androidBuild 'DepthArtBatchNorm2d.o'
+$androidGeluObj = Join-Path $androidBuild 'DepthArtGelu.o'
 & $androidCxx @androidCommon $interface -o $androidInterfaceObj
 if ($LASTEXITCODE -ne 0) { throw "aarch64 interface compile failed: $LASTEXITCODE" }
 & $androidCxx @androidCommon $op -o $androidOpObj
 if ($LASTEXITCODE -ne 0) { throw "aarch64 kernel compile failed: $LASTEXITCODE" }
 & $androidCxx @androidCommon $layerNormOp -o $androidLayerNormObj
 if ($LASTEXITCODE -ne 0) { throw "aarch64 LayerNorm kernel compile failed: $LASTEXITCODE" }
+& $androidCxx @androidCommon $patchConvOp -o $androidPatchConvObj
+if ($LASTEXITCODE -ne 0) { throw "aarch64 PatchConv2d kernel compile failed: $LASTEXITCODE" }
+& $androidCxx @androidCommon $batchNormOp -o $androidBatchNormObj
+if ($LASTEXITCODE -ne 0) { throw "aarch64 BatchNorm2d kernel compile failed: $LASTEXITCODE" }
+& $androidCxx @androidCommon $geluOp -o $androidGeluObj
+if ($LASTEXITCODE -ne 0) { throw "aarch64 Gelu kernel compile failed: $LASTEXITCODE" }
 $androidLibrary = Join-Path $androidBuild 'libQnnDepthArtSelectiveScanPackage.so'
 $qnnAndroidLib = ($QairtRoot -replace '\\', '/') + '/lib/aarch64-android'
 & $androidCxx '--target=aarch64-none-linux-android21' "--sysroot=$sysroot" `
     -stdlib=libc++ -static-libstdc++ -fPIC -std=c++17 -g -shared -o $androidLibrary `
-    $androidInterfaceObj $androidOpObj $androidLayerNormObj "-L$qnnAndroidLib" -lQnnHtp -lQnnHtpPrepare
+    $androidInterfaceObj $androidOpObj $androidLayerNormObj $androidPatchConvObj $androidBatchNormObj $androidGeluObj "-L$qnnAndroidLib" -lQnnHtp -lQnnHtpPrepare
 if ($LASTEXITCODE -ne 0) { throw "aarch64 package link failed: $LASTEXITCODE" }
 
 $receipt = [ordered]@{

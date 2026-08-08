@@ -26,9 +26,36 @@
       <Parameter><Name>epsilon</Name><Mandatory>false</Mandatory><Datatype>QNN_DATATYPE_FLOAT_32</Datatype><Shape><Rank>SCALAR</Rank></Shape><Default>0.00001</Default></Parameter>
       <SupportedBackend>HTP</SupportedBackend>
     </OpDef>
+    <OpDef>
+      <Name>DepthArtPatchConv2d</Name>
+      <Description><Content>DepthART correctness-first float32 first patch convolution.</Content></Description>
+      <Input><Name>x</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>4D</Rank><Layout>NONTRIVIAL</Layout></Shape></Input>
+      <Input><Name>weight</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>4D</Rank><Layout>NONTRIVIAL</Layout></Shape></Input>
+      <Output><Name>y</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>4D</Rank><Layout>NONTRIVIAL</Layout></Shape></Output>
+      <SupportedBackend>HTP</SupportedBackend>
+    </OpDef>
+    <OpDef>
+      <Name>DepthArtBatchNorm2d</Name>
+      <Description><Content>DepthART correctness-first float32 inference BatchNormalization.</Content></Description>
+      <Input><Name>x</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>4D</Rank><Layout>NONTRIVIAL</Layout></Shape></Input>
+      <Input><Name>scale</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>1D</Rank></Shape></Input>
+      <Input><Name>bias</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>1D</Rank></Shape></Input>
+      <Input><Name>mean</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>1D</Rank></Shape></Input>
+      <Input><Name>variance</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>1D</Rank></Shape></Input>
+      <Output><Name>y</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>4D</Rank><Layout>NONTRIVIAL</Layout></Shape></Output>
+      <Parameter><Name>epsilon</Name><Mandatory>false</Mandatory><Datatype>QNN_DATATYPE_FLOAT_32</Datatype><Shape><Rank>SCALAR</Rank></Shape><Default>0.00001</Default></Parameter>
+      <SupportedBackend>HTP</SupportedBackend>
+    </OpDef>
+    <OpDef>
+      <Name>DepthArtGelu</Name>
+      <Description><Content>DepthART correctness-first float32 exact GELU.</Content></Description>
+      <Input><Name>x</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank><Layout>NONTRIVIAL</Layout></Shape></Input>
+      <Output><Name>y</Name><Mandatory>true</Mandatory><Datatype>BACKEND_SPECIFIC</Datatype><Shape><Rank>ND</Rank><Layout>NONTRIVIAL</Layout></Shape></Output>
+      <SupportedBackend>HTP</SupportedBackend>
+    </OpDef>
   </OpDefList>
   <SupplementalOpDefList Backend="HTP">
-    <SupportedOps><OpName>SelectiveScan</OpName><OpName>DepthArtLayerNorm</OpName></SupportedOps>
+    <SupportedOps><OpName>SelectiveScan</OpName><OpName>DepthArtLayerNorm</OpName><OpName>DepthArtPatchConv2d</OpName><OpName>DepthArtBatchNorm2d</OpName><OpName>DepthArtGelu</OpName></SupportedOps>
     <SupplementalOpDef>
       <Name>SelectiveScan</Name>
       <Input><Name>u</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
@@ -49,6 +76,27 @@
       <Input><Name>bias</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
       <Output><Name>y</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Output>
       <Parameter><Name>epsilon</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Parameter>
+    </SupplementalOpDef>
+    <SupplementalOpDef>
+      <Name>DepthArtPatchConv2d</Name>
+      <Input><Name>x</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>weight</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Output><Name>y</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Output>
+    </SupplementalOpDef>
+    <SupplementalOpDef>
+      <Name>DepthArtBatchNorm2d</Name>
+      <Input><Name>x</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>scale</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>bias</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>mean</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Input><Name>variance</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Output><Name>y</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Output>
+      <Parameter><Name>epsilon</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Parameter>
+    </SupplementalOpDef>
+    <SupplementalOpDef>
+      <Name>DepthArtGelu</Name>
+      <Input><Name>x</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Input>
+      <Output><Name>y</Name><Datatype>QNN_DATATYPE_FLOAT_32</Datatype></Output>
     </SupplementalOpDef>
   </SupplementalOpDefList>
 </OpDefCollection>
