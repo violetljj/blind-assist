@@ -1,24 +1,38 @@
 {
   "schema": "blindassist_depthart_admission_r1_result",
   "protocol_id": "DEPTHART_ADMISSION_R1",
-  "terminal": "DIAGNOSTIC_COMPLETE_G3_C_PRIMITIVE_REFERENCE_CONVERTIBLE_HTP_V73_AND_AARCH64_PACKAGE_COMPILED_RUNTIME_NOT_EVALUATED",
+  "terminal": "DIAGNOSTIC_COMPLETE_G4_A_PACKAGE_REGISTRATION_PASS_G4_B_OPERATOR_PARITY_PASS_SM8650_V75_G4_C_FULL_GRAPH_NOT_EVALUATED",
   "r0_terminal_immutable": "DEPTHART_S_METRIC_INDOOR_R0_QUALITY_NOT_ADMITTED",
   "research_mainline": "DEPTHART_PREFERRED_EXPERIMENTAL_BACKBONE",
   "formal_admission": "NOT_EVALUATED_NO_NEW_HOLDOUT_AND_NO_DEPLOYMENT_EVIDENCE",
   "a0": {"status": "PASS", "intrinsics_transform_consistent": true, "crop_or_padding": false},
   "a1_metric": {"false_block_rate": 0.030985915492957747, "false_block_decisions": 33, "false_block_frames": 31, "dominant_band": "right", "dominant_horizon_m": 1.5, "interpretation": "clustered_boundary_behavior_not_uniform_noise"},
   "a2_relative_truth_aligned": {"scale_authority": "NONE_TRUTH_ALIGNED_DIAGNOSTIC_ONLY", "clearance_mae_m": 0.16384093365553398, "false_clear_rate": 0.08333333333333333, "false_block_rate": 0.020599250936329586, "temporal_clearance_delta_mae_m": 0.12185385791519279, "interpretation": "metric_camera_adapter_contributes_part_of_false_block_gap_but_backbone_geometry_boundary_residual_remains"},
-  "a3": {"status": "G3_A_EXPORT_PASS_G3_B_PARTIAL_PASS_G3_C_PRIMITIVE_REFERENCE_CONVERTIBLE_HTP_REFERENCE_SOURCE_READY_HEXAGON_SDK_AUTH_BLOCKED_G4_NOT_EVALUATED", "onnx_graph_generated": true, "original_onnx_sha256": "06A0C059C62FD254FF1DE9FC804D8D33B80141EA6FFC3CC964D82352D77DA78C", "external_camera_onnx_sha256": "6E84970E0C79D5397F9813000C29CBDEBA24E1C1A262F0AF51D38AEAC70B7AB0", "external_camera_nodes": 2823, "selective_scan_nodes": 5, "camera_prompt_torch_max_abs": 0.0, "einsum_matmul_unit_parity": "PASS", "onnx_runtime_parity": "PENDING_CUSTOM_OP_RUNTIME", "qnn_converter_available": true, "qnn_original_frontier": "onnx_selectivescan_NO_TRANSLATION_REGISTERED", "dry_run_unsupported_candidates_before_custom_mapping": ["Erf", "LayerNormalization", "Resize", "SelectiveScan"], "graph_hygiene": {"status": "PASS_FRONTIER_UNCHANGED", "output_sha256": "94D12AC706DC4A6F4DAC7B643839B60199F50234BE69FF60725351E6359F39A2", "removed_default_attributes": 239, "normal_conversion_frontier": "onnx_selectivescan"}, "static_shape": {"status": "PASS_FRONTIER_UNCHANGED", "output_sha256": "9C98479915FF2A34303DCD1E3C39638AE1B39023058CF36365A9C698E0BE07D5", "node_count": 2723, "noop_expands_removed": 6, "constant_mods_folded": 4}, "custom_mapping": {"status": "PASS_CONVERTER_MAPPING_ONLY", "converter_inference_only": true, "qairt_conversion_success": true, "qairt_write_success": true, "optimized_qnn_ir_ops": 850, "mapped_selective_scan_nodes": 5, "mapped_op_ids": [66, 194, 340, 435, 587], "dlc_sha256": "6ACD65D82FF3C0ABC7E1BC4787FCBA881D7E5CC4F5D48722F00F814D897DC680", "normal_converter_hard_blockers_after_mapping": []}, "primitive_lowering": {"status": "TECHNICALLY_CONVERTIBLE_NOT_SELECTED_AS_CURRENT_MOBILE_IMPLEMENTATION", "operator_parity_canary": "PASS", "operator_parity_shapes": [[1, 48, 196], [1, 128, 196], [1, 336, 196], [1, 672, 196]], "operator_parity_rtol": 0.00003, "operator_parity_atol": 0.000003, "onnx_nodes_before": 2723, "onnx_nodes_after": 21368, "optimized_qnn_ir_ops": 21440, "qnn_ir_ops_vs_custom_mapping_multiplier": 25.223529411764705, "dlc_bytes": 47687076, "dlc_sha256": "B0368BB6FC19114A80855B494C2ECCD7DEBCD4DEB351F3E1BB4125897185EC2F", "conversion_wall_time_seconds_approx": 789, "serial_recurrence_depth_per_scan": 196, "role": "PARITY_ORACLE_AND_UPPER_BOUND_ONLY"}, "htp_kernel": {"status": "REFERENCE_SOURCE_READY_NOT_COMPILED", "source_sha256": "29D09A34572A8944A04E33B4C39874AC1F3D89A8F940CCEDB6369FC2F991AA3A", "implementation": "FLOAT32_SCALAR_NO_HEAP", "formula_contract_test": "PASS", "android_ndk_r26c_installed": true, "target_hexagon_architecture": "v73", "required_hexagon_sdk": "5.5.5", "required_hexagon_tools": "8.7.06", "toolchain_status": "MISSING_QPM3_EXTERNAL_AUTH_REQUIRED", "htp_library_compiled": false}, "qnn_context_generated": false, "camera_acos_nodes_after_externalization": 0, "htp_evaluated": false},
+  "a3": {"status": "G3_A_EXPORT_PASS_G3_B_PARTIAL_PASS_G3_C_PRIMITIVE_REFERENCE_CONVERTIBLE_G4_A_PASS_G4_B_PASS_SM8650_V75_G4_C_NOT_EVALUATED", "onnx_graph_generated": true, "original_onnx_sha256": "06A0C059C62FD254FF1DE9FC804D8D33B80141EA6FFC3CC964D82352D77DA78C", "external_camera_onnx_sha256": "6E84970E0C79D5397F9813000C29CBDEBA24E1C1A262F0AF51D38AEAC70B7AB0", "external_camera_nodes": 2823, "selective_scan_nodes": 5, "camera_prompt_torch_max_abs": 0.0, "einsum_matmul_unit_parity": "PASS", "onnx_runtime_parity": "PENDING_FULL_GRAPH_RUNTIME", "qnn_converter_available": true, "qnn_original_frontier": "onnx_selectivescan_NO_TRANSLATION_REGISTERED", "dry_run_unsupported_candidates_before_custom_mapping": ["Erf", "LayerNormalization", "Resize", "SelectiveScan"], "graph_hygiene": {"status": "PASS_FRONTIER_UNCHANGED", "output_sha256": "94D12AC706DC4A6F4DAC7B643839B60199F50234BE69FF60725351E6359F39A2", "removed_default_attributes": 239, "normal_conversion_frontier": "onnx_selectivescan"}, "static_shape": {"status": "PASS_FRONTIER_UNCHANGED", "output_sha256": "9C98479915FF2A34303DCD1E3C39638AE1B39023058CF36365A9C698E0BE07D5", "node_count": 2723, "noop_expands_removed": 6, "constant_mods_folded": 4}, "custom_mapping": {"status": "PASS_CONVERTER_MAPPING_ONLY", "converter_inference_only": true, "qairt_conversion_success": true, "qairt_write_success": true, "optimized_qnn_ir_ops": 850, "mapped_selective_scan_nodes": 5, "mapped_op_ids": [66, 194, 340, 435, 587], "dlc_sha256": "6ACD65D82FF3C0ABC7E1BC4787FCBA881D7E5CC4F5D48722F00F814D897DC680", "normal_converter_hard_blockers_after_mapping": []}, "primitive_lowering": {"status": "TECHNICALLY_CONVERTIBLE_NOT_SELECTED_AS_CURRENT_MOBILE_IMPLEMENTATION", "operator_parity_canary": "PASS", "operator_parity_shapes": [[1, 48, 196], [1, 128, 196], [1, 336, 196], [1, 672, 196]], "operator_parity_rtol": 0.00003, "operator_parity_atol": 0.000003, "onnx_nodes_before": 2723, "onnx_nodes_after": 21368, "optimized_qnn_ir_ops": 21440, "qnn_ir_ops_vs_custom_mapping_multiplier": 25.223529411764705, "dlc_bytes": 47687076, "dlc_sha256": "B0368BB6FC19114A80855B494C2ECCD7DEBCD4DEB351F3E1BB4125897185EC2F", "conversion_wall_time_seconds_approx": 789, "serial_recurrence_depth_per_scan": 196, "role": "PARITY_ORACLE_AND_UPPER_BOUND_ONLY"}, "htp_kernel": {"status": "V73_COMPILED_V75_DEVICE_EXECUTED", "source_sha256": "B366A63E16FAD4E992E5D6458CC2954CDCABFFBDC24C4D8393A552F4E693935B", "implementation": "FLOAT32_SCALAR_NO_HEAP", "formula_contract_test": "PASS", "android_ndk_r26c_installed": true, "target_hexagon_architectures": ["v73", "v75"], "required_hexagon_sdk": "5.5.5", "required_hexagon_tools": "8.7.06", "toolchain_status": "ACTIVE", "htp_library_compiled": true}, "qnn_context_generated": false, "camera_acos_nodes_after_externalization": 0, "htp_evaluated": false},
   "a3_htp_package_followup": {
-    "status": "V73_AND_AARCH64_PACKAGE_COMPILED_RUNTIME_NOT_EVALUATED",
+    "status": "V73_COMPILE_ONLY_G4_A_G4_B_PASS_SM8650_V75",
     "installed_hexagon_sdk": "5.5.5.0",
     "hexagon_tools": "8.7.06",
     "package_interface": "DepthArtSelectiveScanPackageInterfaceProvider",
     "v73_library": {"bytes": 65616, "sha256": "8A8E7B07C54276511212CE46E47B6081286AD8369EAF62A937D4C3B4391AE662"},
     "aarch64_library": {"bytes": 892448, "sha256": "289D7001419775D31DEB84DC0B8C7072295E9F184A04B446AFD60B06ADBF1103"},
-    "runtime_parity": "PENDING",
-    "package_load_execute": "PENDING",
-    "htp_evaluated": false
+    "v75_library": {"bytes": 68944, "sha256": "93759C84A7A05EB4BE06B39EAF67626ABEA15FDF5797D8B6EE67F6A04E7EB005"},
+    "v75_aarch64_library": {"bytes": 813776, "sha256": "4EB78856CCF23C9CA841DD7689AC5B001209F3BFC403408BDE32D6FEF76624E2"},
+    "runtime_parity": "PASS_3_OF_3_SM8650_V75",
+    "package_load_execute": "PASS_SM8650_V75",
+    "htp_evaluated": true
+  },
+  "g4_operator": {
+    "device": {"model": "SM-S9280", "soc": "SM8650", "abi": "arm64-v8a", "htp_arch": "v75"},
+    "g4_a_package_registration": "PASS",
+    "g4_b_operator_parity": "PASS",
+    "contract": {"batch": 1, "channels": 48, "groups": 4, "state_dim": 8, "length": 196, "dtype": "float32"},
+    "tolerance": {"rtol": 0.00003, "atol": 0.000003},
+    "max_abs": {"nominal": 7.450580596923828e-09, "accumulation": 5.736947059631348e-07, "softplus_extremes": 2.9802322387695312e-08},
+    "all_finite": true,
+    "full_graph_context": "NOT_EVALUATED",
+    "partition_fallback": "NOT_EVALUATED",
+    "performance": "NOT_EVALUATED"
   },
   "authority": {"android_default": false, "production": false, "safety": false, "new_thresholds_applied_to_r0": false}
 }

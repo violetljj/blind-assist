@@ -74,11 +74,13 @@ class DepthArtSelectiveScanOpPackageTest(unittest.TestCase):
             "kFrozenGroups = 4",
             "kFrozenStateDim = 8",
             "stableSoftplus",
-            "std::exp(dt * float(A(channel, state_index)))",
+            "std::exp(dt * a_value)",
             "transition * state[state_index]",
             "float(B(batch_index, group, state_index, step)) * input",
             "state[state_index] * float(C(batch_index, group, state_index, step))",
-            "value + float(D(channel)) * input",
+            "value + d_value * input",
+            "delta_softplus.rank() == 1",
+            "u_is_backfilled",
         ):
             self.assertIn(required, source)
         for forbidden in ("malloc(", "calloc(", "operator new", "std::vector", "push_back("):

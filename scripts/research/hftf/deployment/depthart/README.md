@@ -13,6 +13,8 @@ shim 已退役，统一从本目录导入。
 - 候选 ONNX/QAIRT 图
 - lowering、operator、parity 和 backend 诊断记录
 - `build_depthart_selective_scan_htp_op_package.ps1` 生成的 v73/aarch64 本机 package 与 build receipt
+- `prepare_depthart_selective_scan_canary.py` 生成冻结单算子图、三组输入与 float32 oracle
+- `evaluate_depthart_selective_scan_canary.py` 计算设备输出的绝对、相对、分位与逐 step 误差
 - 只写入 `artifacts.local/` 的 receipt 与日志
 
 ## 安全边界
