@@ -6,7 +6,8 @@
 
 ## 当前主张
 
-当前算法研究主要围绕项目自有的 DepthART-S。本页只维护 DepthART 算法路线；项目级数据、
+DepthART-S 当前是 [BlindAssist Assistive Geometry](../assistive-geometry/README.md) 的优先
+encoder/initialization、depth baseline 与部署研究载体，不是算法终点。本页只维护 DepthART 路线；项目级数据、
 通信链路、端到端延迟、性能和部署研究分别从 [研究总入口](../README.md) 进入，只有显式绑定时
 才成为本路线的输入或证据。不等于正式 App 能力。
 

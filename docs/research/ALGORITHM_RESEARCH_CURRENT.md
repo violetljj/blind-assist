@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / ALGORITHM_FOCUS=DEPTHART-S`
+状态：`current / ALGORITHM_FOCUS=BLINDASSIST_ASSISTIVE_GEOMETRY`
 
 ## 路线总表
 
@@ -9,7 +9,8 @@
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| DepthART-S | 当前主要算法候选 | `R1_RESEARCH_MAINLINE / STRICT_G4D_NEGATIVE_TERMINAL / D0_NO_ELIGIBLE_PRECISION_ARM / R2_CANDIDATE_NOT_SELECTED / ARKIT_ROSTER_8_LOCKED_UNOPENED` | [DepthART current](hftf/README.md) | `DEPTHART_TASK_PRESERVING_D1_FIXED_MIXED_DEVELOPMENT_SCREEN`：不救 D0；先冻结产品纵横比输入、FOV/resize、intrinsics/truth 对齐与 task postprocess，再重建 fixed-mixed 图并在新 Development roster 评价 clearance/risk | 用 `448×448` canary 替代产品视场；用独立 R2 cohort 选模；事后把 G4-C 塞回 D0；为量化补写 host/custom execution engine | 否 |
+| BlindAssist Assistive Geometry | 当前算法主线：学习 Ground / Clearance / Confidence / UNKNOWN / Body-swept Occupancy | `ROUTE_SELECTED / B0_CONTRACT_NOT_FROZEN / NO_TRAINING_AUTHORITY` | [Assistive Geometry current](assistive-geometry/README.md) | `BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TASK_CONTRACT`：先冻结产品成像与 K、身体包络、GeometryState、truth/pseudo-label 角色、数据分割、基线/消融和评价门 | B0 前训练 student；直接全开 DA3 + Metric3D；把 pseudo-label 当安全 truth；用已消费 cohort 选模 | 否 |
+| DepthART-S | Assistive Geometry 的优先 encoder/initialization、depth baseline 与部署使能线，不是算法终点 | `R1_RESEARCH_MAINLINE / STRICT_G4D_NEGATIVE_TERMINAL / D0_NO_ELIGIBLE_PRECISION_ARM / R2_CANDIDATE_NOT_SELECTED / ARKIT_ROSTER_8_LOCKED_UNOPENED` | [DepthART current](hftf/README.md) | `DEPTHART_TASK_PRESERVING_D1_FIXED_MIXED_DEVELOPMENT_SCREEN`：消费 B0 冻结的产品纵横比、FOV/resize、intrinsics/truth 对齐与 task postprocess；再重建 fixed-mixed 图并在新 Development roster 评价 clearance/risk | 用 `448×448` canary 替代产品视场；用独立 R2 cohort 选模；事后把 G4-C 塞回 D0；为量化补写 host/custom execution engine | 否 |
 | DA2 | teacher、baseline、reference、fallback | `CLOSED / FROZEN_DEVELOPMENT_REFERENCE` | [DA2 closure](hftf/DAV2_P1_P2_EXECUTION_CLOSURE_2026-08-05.md) | 无；新问题必须建立新版本和独立数据路线 | 把 reference 写成 active candidate 或沿用旧“下一步” | 否 |
 | YOLO + 语义分割双环 | 论文次线 | `THESIS_DEVELOPMENT_SECONDARY / RISKSEG_R0_NEGATIVE_NOT_PROMOTABLE` | [dual-loop current](dual-loop/README.md) | `RISKSEG_EVENT_EVAL_DATA_REPAIR_SUCCESSOR` | truth 未冻结时训练、选模或晋级 | 否 |
 | RCLE-RF | 历史风险场研究 | `PAUSED / NO_ACTIVE_EXECUTION` | [RCLE current](rcle/README.md) | 无；只有用户明确重开后才能建立新 scoped successor | 消费暂停前授权或把旧 README 的“下一步”视为当前权限 | 否 |
