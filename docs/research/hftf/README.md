@@ -14,7 +14,7 @@
 
 - DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
-- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；SelectiveScan 与 LayerNorm correctness-first float32 kernels 已在 `SM-S9280 / SM8650 / Snapdragon 8 Gen 3 / HTP v75` 完成单算子真实 HTP parity，包含 5 个 SelectiveScan 与 23 个自定义 LayerNorm 的完整图也已保存 context，故 G4-A/B/C PASS。随后冻结的 synthetic full-graph numerical canary 在真实 v75 context 上相对 PyTorch 为 `max_abs=1.435607 / mean_abs=1.070408`，G4-D 明确 FAIL；差异在首个 custom op 前已经出现，当前 frontier 是完整 HTP float/标准算子路径。真实场景任务质量、partition purity、性能、Android/生产 authority 仍未评价，DA2 保持冻结 baseline/fallback。
+- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；SelectiveScan 与 LayerNorm correctness-first float32 kernels 已在 `SM-S9280 / SM8650 / Snapdragon 8 Gen 3 / HTP v75` 完成单算子真实 HTP parity，包含 5 个 SelectiveScan 与 23 个自定义 LayerNorm 的完整图也已保存 context，故 G4-A/B/C PASS。随后冻结的 synthetic full-graph numerical canary 在真实 v75 context 上相对 PyTorch 为 `max_abs=1.435607 / mean_abs=1.070408`，G4-D 明确 FAIL。纯标准算子 prefix 二分把首个可见 ORT/HTP 漂移定位到 node 1 `/patch_embed/patch_embed.0/c/Conv` 输出（HTP `max_abs=9.01e-4`；同 DLC QNN CPU 对照 `3.58e-7` 且 PASS）；这只把 frontier 收敛到 HTP 特有的 layout/precision lowering 边界，尚未证明内部具体 primitive。真实场景任务质量、partition purity、性能、Android/生产 authority 仍未评价，DA2 保持冻结 baseline/fallback。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
@@ -31,7 +31,7 @@
 parent/session 数据和最小判别实验被冻结后，才能开启新的 scientific admission；
 部署预检修复本身不产生科学晋级。
 
-当前两条明确的路线 successor：DA2 只作为冻结 reference 使用；DepthART-S 已关闭 SM8650/v75 的 LayerNorm/ReduceMean FP16 prepare frontier并生成完整 QNN context，下一步冻结 full-model 输入/oracle，完成数值 parity 与 5/5 SelectiveScan partition receipt，最后才讨论性能；之后才另行激活 parent-disjoint admission。两者都不能自动产生默认 App 权限。
+当前两条明确的路线 successor：DA2 只作为冻结 reference 使用；DepthART-S 保持同一 frozen full-model canary，先关闭 PyTorch→canonical ONNX 漂移，再只围绕首个 patch-embed Conv 的 HTP layout/precision lowering 边界做单节点族修复并重跑 G4-D。只有 G4-D 通过后才评价 5/5 SelectiveScan partition receipt，最后才讨论性能；之后才另行激活 parent-disjoint admission。两者都不能自动产生默认 App 权限。
 
 ## 禁止与权限边界
 

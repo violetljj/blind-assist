@@ -62,7 +62,8 @@
     "qnn_htp_direct_vs_context": {"bit_exact": true, "max_abs": 0.0},
     "pre_first_custom_op_vs_ort": {"max_abs": 0.008583426475524902, "mean_abs": 0.0009873193921521306, "allclose": false},
     "primitive_htp_reference": "FAIL_GRAPH_FINALIZE_1002",
-    "next_frontier": "FULL_GRAPH_HTP_FLOAT_PRECISION_AND_STANDARD_OP_PATH",
+    "pre_first_selective_scan_bisect": {"status": "FIRST_DIVERGENCE_LOCALIZED", "canonical_onnx_sha256": "A4ECE939C1E3ACCB5FF36F8AA718DE3A2AE965D620B3399CD28FEA3E3B531DA8", "input_sha256": "4500A7090B5ED3BCA2B3229EDB7ACD3DD9A46A9303FDC7C5A107563018C163ED", "onnxruntime": "1.27.0", "prefix_unique_dependency_nodes": 120, "float_checkpoints": 80, "first_observable_node_index": 1, "first_observable_node": "/patch_embed/patch_embed.0/c/Conv", "ort_vs_htp": {"max_abs": 0.0009006261825561523, "mean_abs": 0.00007865158841013908, "allclose": false}, "ort_vs_same_dlc_qnn_cpu": {"max_abs": 3.5762786865234375e-07, "allclose": true}, "prefix_endpoint_vs_ort": {"max_abs": 0.008583426475524902, "mean_abs": 0.0009873193921521306, "allclose": false}, "cause_boundary": "HTP_SPECIFIC_LAYOUT_OR_PRECISION_LOWERING_AT_OR_BEFORE_FIRST_CONV_OUTPUT_INTERNAL_PRIMITIVE_NOT_YET_PROVEN"},
+    "next_frontier": "CLOSE_PYTORCH_ONNX_THEN_FIRST_PATCH_EMBED_CONV_HTP_LOWERING_SINGLE_NODE_FAMILY",
     "real_scene_task_quality": "NOT_EVALUATED",
     "temporal_quality": "NOT_EVALUATED"
   },
