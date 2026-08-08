@@ -1,8 +1,9 @@
 # HFTF support migration queue
 
-状态：`current / bounded-maintenance-queue`
+状态：`current / bounded-fallback`
 
-`support` 是历史文件的迁移缓冲区，不是执行权限。每次只处理一个可验证的主题簇，
+`support` 只表示文件名仍不足以判断职责，不是执行权限。角色统计只计算 Git 可见文件，
+忽略 build/cache 产物。每次只处理一个可验证的主题簇，
 保留兼容 Adapter、manifest 和回归结果。
 
 ## 队列
@@ -17,10 +18,11 @@
 
 ## 每批合同
 
-1. `scripts/audit_research_structure.ps1 -Json` 生成迁移前报告。
+1. `scripts/research/audit_research_structure.ps1 -Json` 生成迁移前报告。
 2. 用 `rg` 查找调用方、protocol、receipt 和旧路径引用。
 3. 建立新路径、兼容 Adapter 和最小回归测试。
 4. 迁移后确认 support 数量下降且无调用方断裂。
 5. 只提交该主题簇；并行工作树文件不得混入。
 
-当前推荐下一批：P0 DepthART SelectiveScan/QNN 部署文件。
+当前 Git 可见 `support = 0`，没有主动迁移批次。新增文件若只能落入 `support`，结构门禁会
+直接失败；先明确职责并更新 `roles.json`，不能把含混分类留给下一窗口。

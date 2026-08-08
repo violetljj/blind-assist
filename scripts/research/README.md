@@ -2,7 +2,9 @@
 
 ## 30 秒定位
 
-先读 [`REGISTRY.md`](REGISTRY.md)，再按职责进入一个 Module；HFTF/DepthART 的细分入口是
+先读 [`REGISTRY.md`](REGISTRY.md)，全部 Module 的短索引见
+[`MODULE_INDEX.md`](MODULE_INDEX.md)，机器分类合同见
+[`module_families.json`](module_families.json)。HFTF/DepthART 的细分入口是
 [`hftf/INDEX.md`](hftf/INDEX.md)。这些索引只维护路径、职责和权限边界，不复制动态研究结论。
 结构审计使用 [`audit_research_structure.ps1`](audit_research_structure.ps1)，只读输出 Module
 合同和 HFTF support 迁移清单。

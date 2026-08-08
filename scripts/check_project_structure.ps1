@@ -210,6 +210,33 @@ $researchRegistry = Resolve-FromRepo "$researchRoot/REGISTRY.md"
 if (-not (Test-Path -LiteralPath $researchRegistry -PathType Leaf)) {
     $failures.Add("Research registry is missing: $researchRoot/REGISTRY.md")
 }
+$moduleIndexPath = Resolve-FromRepo "$researchRoot/MODULE_INDEX.md"
+$moduleIndexText = ''
+if (-not (Test-Path -LiteralPath $moduleIndexPath -PathType Leaf)) {
+    $failures.Add("Research Module index is missing: $researchRoot/MODULE_INDEX.md")
+}
+else {
+    $moduleIndexText = Read-Utf8Text $moduleIndexPath
+}
+$moduleFamiliesPath = Resolve-FromRepo "$researchRoot/module_families.json"
+$moduleFamilies = $null
+if (-not (Test-Path -LiteralPath $moduleFamiliesPath -PathType Leaf)) {
+    $failures.Add("Research Module family manifest is missing: $researchRoot/module_families.json")
+}
+else {
+    try {
+        $moduleFamilies = Get-Content -LiteralPath $moduleFamiliesPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        foreach ($family in @($moduleFamilies.family_order)) {
+            if (-not ($moduleFamilies.families.PSObject.Properties.Name -contains [string]$family)) {
+                $failures.Add("Research Module family manifest lists an undefined family: $family")
+            }
+        }
+    }
+    catch {
+        $failures.Add("Research Module family manifest is invalid: $($_.Exception.Message)")
+        $moduleFamilies = $null
+    }
+}
 $hftfRegistry = Resolve-FromRepo "$researchRoot/hftf/INDEX.md"
 if (-not (Test-Path -LiteralPath $hftfRegistry -PathType Leaf)) {
     $failures.Add("HFTF role index is missing: $researchRoot/hftf/INDEX.md")
@@ -226,23 +253,31 @@ else {
                 $failures.Add("HFTF role manifest lists an undefined role: $role")
             }
         }
-        $hftfRoot = Resolve-FromRepo "$researchRoot/hftf"
-        foreach ($file in @(Get-ChildItem -LiteralPath $hftfRoot -Recurse -File)) {
-            $relative = [IO.Path]::GetRelativePath($hftfRoot, $file.FullName).Replace('\', '/')
-            $matched = $false
+        $hftfPrefix = "$researchRoot/hftf/"
+        $hftfSupportCount = 0
+        foreach ($file in @($repoFiles | Where-Object { $_.StartsWith($hftfPrefix, [StringComparison]::OrdinalIgnoreCase) })) {
+            $relative = $file.Substring($hftfPrefix.Length)
+            $matchedRole = $null
             foreach ($role in @($hftfRoles.role_order)) {
                 $patterns = @($hftfRoles.roles.$role.patterns)
                 foreach ($pattern in $patterns) {
                     if ($relative -match [string]$pattern) {
-                        $matched = $true
+                        $matchedRole = [string]$role
                         break
                     }
                 }
-                if ($matched) { break }
+                if ($null -ne $matchedRole) { break }
             }
-            if (-not $matched) {
+            if ($null -eq $matchedRole) {
                 $failures.Add("HFTF file has no role manifest match: $relative")
             }
+            elseif ($matchedRole -eq 'support') {
+                $hftfSupportCount++
+            }
+        }
+        $hftfSupportMaxFiles = [int]$policy.hftf_support_max_files
+        if ($hftfSupportCount -gt $hftfSupportMaxFiles) {
+            $failures.Add("HFTF support role has $hftfSupportCount Git-visible file(s); policy maximum is $hftfSupportMaxFiles. Classify them before merging.")
         }
     }
     catch {
@@ -270,6 +305,29 @@ foreach ($moduleName in $moduleNames) {
     foreach ($marker in @($policy.research_readme_required_markers)) {
         if (-not $readmeText.Contains([string]$marker)) {
             $failures.Add("Research Module $moduleName README lacks required marker: $marker")
+        }
+    }
+    if (-not [string]::IsNullOrWhiteSpace($moduleIndexText) -and -not $moduleIndexText.Contains("($moduleName/README.md)")) {
+        $failures.Add("Research Module is missing from MODULE_INDEX.md: $moduleName")
+    }
+    if ($null -ne $moduleFamilies) {
+        $matchedFamilies = @()
+        foreach ($family in @($moduleFamilies.family_order)) {
+            foreach ($pattern in @($moduleFamilies.families.$family.patterns)) {
+                if ($moduleName -match [string]$pattern) {
+                    $matchedFamilies += [string]$family
+                    break
+                }
+            }
+        }
+        if ($matchedFamilies.Count -ne 1) {
+            $failures.Add("Research Module must match exactly one family: $moduleName matched $($matchedFamilies.Count) [$($matchedFamilies -join ', ')]")
+        }
+        else {
+            $dynamicTruth = Normalize-RepoPath ([string]$moduleFamilies.families.($matchedFamilies[0]).dynamic_truth)
+            if ([string]::IsNullOrWhiteSpace($dynamicTruth) -or $repoFiles -notcontains $dynamicTruth) {
+                $failures.Add("Research Module family dynamic truth is missing for ${moduleName}: $dynamicTruth")
+            }
         }
     }
 }

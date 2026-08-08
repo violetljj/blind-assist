@@ -62,6 +62,7 @@
 研究模块不在本页重复列出实验轮次、动态终态或指标。按以下入口定位：
 
 - [研究职责总表](research/REGISTRY.md)：当前入口、部署、诊断、archive 与 support 分区。
+- [全部 Module 索引](research/MODULE_INDEX.md)：62 个研究 Module 的逐项链接和稳定研究族分类。
 - [HFTF / DepthART 角色索引](research/hftf/INDEX.md)：`roles.json` 机器匹配规则和迁移合同。
 - [HFTF support 迁移队列](research/hftf/SUPPORT_MIGRATION_QUEUE.md)：按主题簇安全下沉历史文件。
 - [候选事件挖掘](research/candidate_event_mining/README.md)：discovery-only 候选池。

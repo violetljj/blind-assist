@@ -2,13 +2,21 @@
   "schema_version": 1,
   "module": "hftf",
   "role_order": [
+    "governance",
     "deployment",
     "diagnostics",
     "current",
+    "platform",
     "archive",
     "support"
   ],
   "roles": {
+    "governance": {
+      "description": "README、索引、角色规则和迁移合同",
+      "patterns": [
+        "(?i)^(README\\.md|INDEX\\.md|roles\\.json|SUPPORT_MIGRATION_QUEUE\\.md)$"
+      ]
+    },
     "deployment": {
       "description": "导出、QAIRT/QNN/HTP、SelectiveScan、converter 和 parity bridge",
       "patterns": [
@@ -21,19 +29,28 @@
       "patterns": [
         "(?i)^diagnostics/",
         "(?i)^(test_|inspect_|audit_|probe_|render_|diagnose_|analyze_)",
-        "(?i)(failure|atlas|diagnostic|visual|smoke|profile)"
+        "(?i)(failure|atlas|diagnostic|visual|smoke|profile|demo|benchmark|pilot)"
       ]
     },
     "current": {
       "description": "DepthART、metric-depth、clearance、student/teacher 和当前 successor 实现",
       "patterns": [
-        "(?i)(depthart|clearance|metric.?depth|metric3d|student|teacher|depth_observer)"
+        "(?i)(depthart|clearance|metric.?depth|metric3d|m3d|student|teacher|depth_observer|metric_(scale|traversability)|sparse_scale|scale_free|unidepth)"
+      ]
+    },
+    "platform": {
+      "description": "外设、CameraX、ToF、端到端延迟、持续性能和平台适配",
+      "patterns": [
+        "(?i)^atoms3r_m12_tof4m/",
+        "(?i)(tof|camera|camerax|external_rgb|latency|e2e|sustained|frequency_matrix|cpu_boundary|android_performance|runtime)"
       ]
     },
     "archive": {
       "description": "明确标记为历史、关闭或不再执行的材料",
       "patterns": [
-        "(?i)(archive|historical|closed|deprecated|superseded)"
+        "(?i)(archive|historical|closed|deprecated|superseded)",
+        "(?i)(stage_[abc]|p3_r0|r3_1|r4_|dav2|fresh_tf|collision_risk|corridor_conditioned|future_occupancy|motion_conditioned|motion_occupancy|probabilistic_occupancy|sanpo_proxy)",
+        "(?i)^(acquire_|aggregate_|build_|cache_|derive_|download_|evaluate_|extract_|freeze_|lock_|materialize_|plan_|predict_|preflight_|prepare_|preprocess_|produce_|qualify_|resolve_|run_|seal_|summarize_|train_|validate_|verify_)"
       ]
     },
     "support": {

@@ -34,7 +34,7 @@ BlindAssist 是一个本地 Android 助盲避障原型：手机 CameraX 采集�
 | 算法、模型、DepthART、DA2、双环 | 本页 → [算法 current](research/ALGORITHM_RESEARCH_CURRENT.md)；按直接依赖再读路线 README |
 | 数据集、truth、标注、split、coverage | 本页 → [数据 current](research/DATA_RESEARCH_CURRENT.md)；按直接依赖再读 data ledger/contract |
 | 延迟、链路、性能、QNN、HTP、部署 | 本页 → [系统 current](research/SYSTEM_RESEARCH_CURRENT.md)；按直接依赖再读 benchmark/preflight |
-| Android、App、CameraX、UI、构建 | 本页 → [根 README](../README.md)；按直接依赖再读模块 README 或测试 |
+| Android、App、CameraX、UI、构建 | 本页 → [代码地图](CODE_MAP.md)；按直接依赖再读根 README、模块实现或测试 |
 | 文档、索引、归档、冷启动 | 本页 → [文档治理](DOCUMENT_GOVERNANCE.md)；按直接依赖再读 [docs 索引](README.md) |
 | 新想法、暂不推进 | 本页 → [idea.md](../idea.md)；仅在需要时读原始方案/调研文件 |
 

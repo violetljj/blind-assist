@@ -27,6 +27,7 @@
     "max_age_days": 28
   },
   "research_root": "scripts/research",
+  "hftf_support_max_files": 0,
   "research_readme_required_markers": [
     "状态：",
     "## 稳定 Interface",

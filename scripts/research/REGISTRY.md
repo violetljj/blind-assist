@@ -6,6 +6,9 @@
 历史”定位，再打开对应 Module README。轮次名（`r0/r1/r2/p0/d0`）只表示 evidence
 identity，不代表当前 authority。
 
+全部 62 个 Module 的逐项入口见 [`MODULE_INDEX.md`](MODULE_INDEX.md)，机器分类规则见
+[`module_families.json`](module_families.json)。新增 Module 若未被唯一分类，结构门禁失败。
+
 ## 当前入口
 
 | 工作域 | 稳定入口 | 当前职责 |
@@ -22,10 +25,12 @@ identity，不代表当前 authority。
 - `current`：DepthART、当前 metric-depth 候选和仍有明确 successor 的实现。
 - `deployment`：ONNX、QAIRT、QNN、HTP、SelectiveScan、converter 和 device preflight。
 - `diagnostics`：parity、质量屏、可视化、failure atlas 和不产生 promotion authority 的探针。
+- `platform`：ToF、CameraX、端到端延迟、持续性能和设备适配。
 - `archive`：已关闭的 HFTF campaign、旧学生、旧 teacher 和历史 replay。
+- `governance`：README、索引、角色合同和迁移规则。
 
-如果一个文件同时命中多个分区，优先按 `deployment`，再按 `diagnostics`；不要从文件名
-推导当前权限，必须回到对应 current README。
+如果一个文件同时命中多个分区，以 `roles.json` 的 `role_order` 为唯一优先级；不要从
+文件名推导当前权限，必须回到对应 current README。`support` 配额为 0，不能留待以后分类。
 
 ## 统一定位规则
 

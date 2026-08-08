@@ -64,6 +64,8 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 | `docs/` | 当前协议、操作指南和历史快照；见 [文档索引](docs/README.md) |
 | `artifacts.local/` | 本机下载、数据集、benchmark、训练和临时产物；不提交 Git |
 
+编码任务的最短职责入口见 [代码地图](docs/CODE_MAP.md)。
+
 ## 环境要求
 
 - JDK 17

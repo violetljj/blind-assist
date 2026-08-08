@@ -45,9 +45,11 @@ function New-TestRepository([string]$Name) {
     Write-TestFile $repository 'scripts/README.md' '# scripts'
     Write-TestFile $repository 'scripts/check.ps1' 'Write-Host ok'
     Write-TestFile $repository 'scripts/research/REGISTRY.md' '# registry'
+    Write-TestFile $repository 'scripts/research/MODULE_INDEX.md' "# modules`n- [hftf](hftf/README.md)`n- [demo](demo/README.md)`n- [common](common/README.md)`n"
+    Write-TestFile $repository 'scripts/research/module_families.json' '{"schema_version":1,"family_order":["fixture"],"families":{"fixture":{"description":"fixture","patterns":["^(common|demo|hftf)$"],"dynamic_truth":"docs/AI_REVIEW_GOVERNANCE.md"}}}'
     Write-TestFile $repository 'scripts/research/hftf/README.md' (Research-Readme 'hftf')
     Write-TestFile $repository 'scripts/research/hftf/INDEX.md' '# hftf'
-    Write-TestFile $repository 'scripts/research/hftf/roles.json' '{"schema_version":1,"module":"hftf","role_order":["support"],"roles":{"support":{"description":"fixture","patterns":[".*"]}}}'
+    Write-TestFile $repository 'scripts/research/hftf/roles.json' '{"schema_version":1,"module":"hftf","role_order":["governance","support"],"roles":{"governance":{"description":"fixture","patterns":[".*"]},"support":{"description":"fallback","patterns":["(?!)"]}}}'
     Write-TestFile $repository 'scripts/research/demo/README.md' (Research-Readme 'demo')
     Write-TestFile $repository 'scripts/research/demo/tool.py' 'from research.common.util import value'
     Write-TestFile $repository 'scripts/research/common/README.md' (Research-Readme 'common')
@@ -71,6 +73,7 @@ function New-TestRepository([string]$Name) {
             max_age_days = 28
         }
         research_root = 'scripts/research'
+        hftf_support_max_files = 0
         research_readme_required_markers = @('状态：', '## 稳定 Interface', '## 输出', '## 安全边界', '## 停止条件', 'artifacts.local/')
         internal_reference_source_allowlist = @()
         immutable_internal_reference_exceptions = @()
@@ -152,6 +155,18 @@ try {
     Assert-Scenario 'missing-module-readme' $false {
         param($repo)
         Remove-Item -LiteralPath (Join-Path $repo 'scripts/research/demo/README.md') -Force
+    }
+    Assert-Scenario 'missing-module-index' $false {
+        param($repo)
+        Remove-Item -LiteralPath (Join-Path $repo 'scripts/research/MODULE_INDEX.md') -Force
+    }
+    Assert-Scenario 'unclassified-module' $false {
+        param($repo)
+        Write-TestFile $repo 'scripts/research/new_module/README.md' (Research-Readme 'new_module')
+    }
+    Assert-Scenario 'hftf-support-budget' $false {
+        param($repo)
+        Write-TestFile $repo 'scripts/research/hftf/roles.json' '{"schema_version":1,"module":"hftf","role_order":["support"],"roles":{"support":{"description":"fixture","patterns":[".*"]}}}'
     }
     Assert-Scenario 'incomplete-module-contract' $false {
         param($repo)
@@ -286,6 +301,7 @@ try {
         root_index_exempt_patterns = @('^test_', '^README\.md$')
         development_log = [ordered]@{ path = 'DEVELOPMENT_LOG.md'; max_lines = 20; max_bytes = 4096; max_age_days = 28 }
         research_root = 'scripts/research'
+        hftf_support_max_files = 0
         research_readme_required_markers = @('状态：', '## 稳定 Interface', '## 输出', '## 安全边界', '## 停止条件', 'artifacts.local/')
         internal_reference_source_allowlist = @()
         immutable_internal_reference_exceptions = @()
