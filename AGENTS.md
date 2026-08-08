@@ -133,6 +133,28 @@ dual-loop, RCLE, USTRF, or another named research line, select only that line's
 current entry from the research index. Do not infer its current authority from
 this file.
 
+### Forward-maintenance contract
+
+A change is not complete when it creates a new stable responsibility but leaves
+the next window to discover it by broad search. In the same task and commit:
+
+- New research routes must update the owning `docs/research/*_CURRENT.md` or
+  route README with claim, status, one truth source, one successor, forbidden
+  actions, and default-App impact. An idea that is not activated stays only in
+  `idea.md`.
+- New `scripts/research/<module>/` directories must include the README contract,
+  appear in `scripts/research/MODULE_INDEX.md`, and match exactly one family in
+  `scripts/research/module_families.json`.
+- New HFTF files must have a specific role in `scripts/research/hftf/roles.json`.
+  The `support` role has a zero-file budget and is never a deferred backlog.
+- New stable code responsibilities must update `docs/CODE_MAP.md`; new top-level
+  documents and stable script Interfaces must update their owning index.
+- Route closure, pause, diagnostic-only results, successor changes, and
+  default-App impact changes must update their current truth in the same commit.
+  Historical detail moves to archive/snapshot and is not copied into navigation.
+- Run the structure and documentation gates for every change covered above.
+  Do not postpone index repair to a later cleanup task.
+
 ## 5. Execution contract and output budget
 
 For a cross-file, ambiguous, long-running, externally consequential, or

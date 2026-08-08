@@ -1,7 +1,7 @@
 # BlindAssist 文档治理
 
 状态：current
-最后核验：2026-07-30
+最后核验：2026-08-08
 适用范围：仓库内所有协作者、自动化代理与长期任务。
 
 ## 目标
@@ -71,6 +71,25 @@
 形式悬挂在 current 页面。
 优先更新一个 current 入口，并让详细机器证据留在 artifact。非阻断文案、命名和未来
 审计便利不单独立项，不得成为算法研究 blocker。
+
+## 前向维护完成标准
+
+以后采用“新增即治理”：形成新职责的任务，必须在同一任务、同一提交内完成对应索引，
+不能先制造孤儿文件，再把整理留给下一窗口。
+
+| 变化 | 同步动作 |
+| --- | --- |
+| 新想法但尚未启动 | 只写 `idea.md`；不创建 active route 或虚构 successor |
+| 新研究路线 | 更新研究分类 current；写明主张、状态、唯一真源、唯一 successor、禁止动作、默认 App 影响 |
+| 新研究 Module | 创建最小 README；登记 `scripts/research/MODULE_INDEX.md`；在 `module_families.json` 中唯一分类 |
+| 新 HFTF 文件 | 在 `roles.json` 中落入具体职责；`support` 必须保持 0 |
+| 新稳定代码职责 | 更新 `docs/CODE_MAP.md`；只写稳定入口，不复制运行状态 |
+| 新顶层文档或稳定脚本 Interface | 更新 `docs/README.md` 或 `scripts/README.md` 对应索引 |
+| 路线关闭、暂停、诊断化或 successor 改变 | 同提交更新 current 真源；详细过程归档，旧结果不得继续挂在“下一步” |
+| 默认 App 影响改变 | 同提交更新产品 current 与路线 current；研究结果不得自行获得产品权限 |
+
+任何需要依靠全仓搜索才能发现的新稳定职责，都视为治理未完成。动态信息只修改拥有它的
+current 真源；导航页只增加或调整链接，不复制状态和指标。
 
 ## 验证
 
