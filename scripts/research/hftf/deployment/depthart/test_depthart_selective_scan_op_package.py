@@ -8,6 +8,7 @@ HFTF_ROOT = Path(__file__).resolve().parents[2]
 OP_PACKAGE = HFTF_ROOT / "depthart_selective_scan_op_package.xml"
 CONVERTER_SOURCE = HFTF_ROOT / "depthart_selective_scan_converter_op.cpp"
 HTP_REFERENCE_SOURCE = Path(__file__).with_name("depthart_selective_scan_htp_reference.cpp")
+HTP_BUILD_SCRIPT = Path(__file__).with_name("build_depthart_selective_scan_htp_op_package.ps1")
 MIGRATION_MANIFEST = HFTF_ROOT / "DEPTHART_P0_MIGRATION_MANIFEST.json"
 
 
@@ -82,6 +83,19 @@ class DepthArtSelectiveScanOpPackageTest(unittest.TestCase):
             self.assertIn(required, source)
         for forbidden in ("malloc(", "calloc(", "operator new", "std::vector", "push_back("):
             self.assertNotIn(forbidden, source)
+
+    def test_htp_build_script_keeps_binaries_in_local_evidence(self) -> None:
+        source = HTP_BUILD_SCRIPT.read_text(encoding="utf-8")
+        for required in (
+            "OutputRoot must be under",
+            "qnn-op-package-generator",
+            "hexagon-v73-manual",
+            "aarch64-android-manual",
+            "DepthArtSelectiveScanPackageInterfaceProvider",
+            "COMPILED_NOT_RUNTIME_EVALUATED",
+            "build-receipt.json",
+        ):
+            self.assertIn(required, source)
 
 
 if __name__ == "__main__":

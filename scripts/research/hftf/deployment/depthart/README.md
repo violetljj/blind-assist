@@ -12,6 +12,7 @@ shim 已退役，统一从本目录导入。
 
 - 候选 ONNX/QAIRT 图
 - lowering、operator、parity 和 backend 诊断记录
+- `build_depthart_selective_scan_htp_op_package.ps1` 生成的 v73/aarch64 本机 package 与 build receipt
 - 只写入 `artifacts.local/` 的 receipt 与日志
 
 ## 安全边界

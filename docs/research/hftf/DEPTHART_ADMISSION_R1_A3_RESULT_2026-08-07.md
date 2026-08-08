@@ -1,6 +1,6 @@
 # DEPTHART_ADMISSION_R1 A3：ONNX/QNN deployment preflight
 
-状态：`G3-A_EXPORT_PASS / G3-B_PARTIAL_PASS / G3-C_PRIMITIVE_REFERENCE_CONVERTIBLE / HTP_REFERENCE_SOURCE_READY / HEXAGON_SDK_AUTH_BLOCKED / G4_NOT_EVALUATED`
+状态：`G3-A_EXPORT_PASS / G3-B_PARTIAL_PASS / G3-C_PRIMITIVE_REFERENCE_CONVERTIBLE / HTP_V73_AND_AARCH64_PACKAGE_COMPILED / RUNTIME_NOT_EVALUATED / G4_NOT_EVALUATED`
 
 本轮检查导出链路、图改写与 QAIRT converter reachability；不产生完整 ONNX runtime parity、HTP 执行、Android 或生产证据。R0 结论与数据角色不变。
 
@@ -22,9 +22,12 @@
 - QAIRT 仍成功转换该 primitive 图并写出 DLC，证明它 technically convertible；但优化后 QNN IR 为 21,440 ops，而 custom-mapping 图只有 850 ops（25.2×）。DLC 为 47,687,076 bytes（custom mapping 的 1.49×），转换约 789 秒，且每个 scan 保留 196 级串行 recurrence。故它被保留为 parity oracle/upper bound，不选为当前移动端实现。
 - 已按冻结 `G=4/N=8/L=196` 合同落盘 float32 HTP scalar reference kernel：逐 channel 保持 8-float stack state、无 heap、实现 stable softplus/transition/input/B/C/D 完整 recurrence；源码合同测试通过。它是 correctness-first spike，不是 HVX 性能 kernel，也尚未编译。
 - QAIRT 2.47 的本地官方文档与 makefile 确认 SM8550/v73 需要 Hexagon SDK 5.5.5 + Tools 8.7.06；本机缺少 QPM3 与该 SDK。普通 clang probe 因官方 HTP headers 缺 `HVX_Vector`/intrinsics 停止，说明必须先从需 Qualcomm 登录的 QPM3 补工具链。公开依赖 Android NDK r26c（26.1.10909125）已安装并写入 `depthart-deploy-env.ps1`。
+- 后续已通过 Qualcomm QPM3 安装并登记 Hexagon SDK `5.5.5.0`（约 5.20 GiB），Tools `8.7.06` 的 `hexagon-clang++` 与 v73 runtime libraries 验证可用；QPM license 保持 `ACTIVE`。该事实关闭旧的 `HEXAGON_SDK_AUTH_BLOCKED`，不产生 runtime authority。
+- QAIRT 官方 generator 从冻结 XML 生成 `DepthArtSelectiveScanPackageInterfaceProvider`，并由仓库构建脚本将 correctness-first kernel 编译链接为 v73 `elf32-hexagon` package（65,616 bytes，SHA-256 `8A8E7B07C54276511212CE46E47B6081286AD8369EAF62A937D4C3B4391AE662`）与 Android prepare-side `ELF64 AArch64` package（892,448 bytes，SHA-256 `289D7001419775D31DEB84DC0B8C7072295E9F184A04B446AFD60B06ADBF1103`）。aarch64 binary 明确依赖 `libQnnHtp.so` 与 `libQnnHtpPrepare.so`；两端均导出同一 interface provider。
+- 本轮只完成 compile/link/ELF/symbol 验证；未执行 package load、QNN context、算子输入输出 parity、HTP graph、Snapdragon 实机、partition、CPU fallback、latency 或 thermal。官方 Windows/Gow Makefile还存在无关 v85 preflight 与 source wildcard 问题，构建脚本因此复用 generator source，并以相同 flags 显式编译 v73/aarch64。
 
 机器可读 receipt：[`a3-onnx-qnn-preflight.json`](../../../artifacts.local/evidence/hftf/depthart-admission-r1/a3-onnx-qnn-preflight.json)、[`selective-scan-converter-mapping-receipt.json`](../../../artifacts.local/evidence/hftf/depthart-admission-r1/qairt/selective-scan-converter-mapping-receipt.json)、[`selective-scan-primitive-lowering-receipt.json`](../../../artifacts.local/evidence/hftf/depthart-admission-r1/qairt/selective-scan-primitive-lowering-receipt.json)、[`selective-scan-htp-kernel-preflight-receipt.json`](../../../artifacts.local/evidence/hftf/depthart-admission-r1/qairt/selective-scan-htp-kernel-preflight-receipt.json)
 
 ## 结论与边界
 
-A3 已证明 ONNX static graph 可以生成，并通过 converter-only custom mapping 完成整图 QAIRT conversion；外围 normal-converter blocker 空间已收敛。exact primitive lowering technically feasible，但 25.2× QNN IR op 膨胀与 196 级串行链使它只保留为 parity oracle。当前唯一核心 runtime 缺口已收敛为 HTP Op Package kernel，correctness-first 源码已就绪；实际编译被 Qualcomm/QPM3 登录分发的 Hexagon v73 工具链阻塞。canonical end-to-end parity、kernel binary/parity、QNN graph/context、partition、Snapdragon 实机与 latency/thermal 均未完成。因此 G4 仍为 `NOT_EVALUATED`，不是 HTP PASS 或 FAIL。reference 合同继续保持 `image,K→depth`；mobile graph 的 prompt 输入只代表硬件感知分区，不是固定 K 冒充动态 metric conditioning。
+A3 已证明 ONNX static graph 可以生成，并通过 converter-only custom mapping 完成整图 QAIRT conversion；外围 normal-converter blocker 空间已收敛。exact primitive lowering technically feasible，但 25.2× QNN IR op 膨胀与 196 级串行链使它只保留为 parity oracle。correctness-first kernel 的 v73 与 aarch64 package 已实际编译链接，旧工具链阻塞关闭；当前核心缺口转为 package load/execute 与 primitive-oracle parity。canonical end-to-end parity、kernel runtime parity、QNN graph/context、partition、Snapdragon 实机与 latency/thermal 均未完成。因此 G4 仍为 `NOT_EVALUATED`，不是 HTP PASS 或 FAIL。reference 合同继续保持 `image,K→depth`；mobile graph 的 prompt 输入只代表硬件感知分区，不是固定 K 冒充动态 metric conditioning。
