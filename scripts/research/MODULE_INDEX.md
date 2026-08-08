@@ -1,6 +1,6 @@
 # Research Module Index
 
-状态：`current / navigation-only / 62-of-62`
+状态：`current / navigation-only / 63-of-63`
 
 本页只回答“Module 在哪里、属于哪个研究族”。动态状态、successor 和权限必须回到每个
 Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导。
@@ -13,8 +13,9 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 - [`dual_loop`](dual_loop/README.md)
 - [`hftf`](hftf/README.md)
 
-## DepthART、metric-depth 与几何（9）
+## Assistive Geometry、DepthART、metric-depth 与几何（10）
 
+- [`assistive_geometry`](assistive_geometry/README.md)
 - [`central_obstruction_agent_label_readiness_d0a`](central_obstruction_agent_label_readiness_d0a/README.md)
 - [`dual_rate_metric_depth_observer_r1`](dual_rate_metric_depth_observer_r1/README.md)
 - [`egomotion_compensated_looming`](egomotion_compensated_looming/README.md)

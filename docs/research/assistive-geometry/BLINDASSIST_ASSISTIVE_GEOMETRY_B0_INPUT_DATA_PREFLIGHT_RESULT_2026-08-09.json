@@ -1,0 +1,90 @@
+{
+  "schema_version": "blindassist.assistive_geometry.b0_input_data_preflight_result.v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B0_INPUT_DATA_PREFLIGHT_RESULT_2026-08-09",
+  "status": [
+    "PARTIAL_PASS",
+    "SHAPE_SUPPORTED",
+    "SM_S9280_RUNTIME_GEOMETRY_OBSERVED",
+    "DATA_ROSTERS_UNRESOLVED",
+    "NO_TRAINING_AUTHORITY"
+  ],
+  "contract": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TASK_CONTRACT_2026-08-09.json",
+  "shape_preflight": {
+    "receipt": {
+      "path": "artifacts.local/evidence/hftf/assistive-geometry-b0-rectangular-shape-preflight-20260809-attempt-02/receipt.json",
+      "sha256": "62339D94EF437384239E30C4F59E88D79368D25ABFC16FD58A19C524850E09C6"
+    },
+    "status": "PYTORCH_SHAPE_PASS_ONNX_GRAPH_PASS_SYMBOLIC_OUTPUT_METADATA",
+    "input_nchw": [1, 3, 608, 448],
+    "pytorch_depth_shape": [1, 608, 448],
+    "pytorch_depth_finite": true,
+    "camera_prompt_shapes": [
+      [1, 256, 152, 112],
+      [1, 256, 76, 56],
+      [1, 256, 38, 28],
+      [1, 256, 19, 14]
+    ],
+    "camera_externalization_max_abs": 0.0,
+    "camera_externalization_mean_abs": 0.0,
+    "onnx": {
+      "bytes": 31830940,
+      "sha256": "D6704E1871E969E5519849D1AAE7A953A7F954C457A5F8B90D635087D50FE1EB",
+      "nodes": 2823,
+      "selective_scan_nodes": 5,
+      "acos_nodes": 0,
+      "einsum_nodes": 10,
+      "image_input_shape_static": true,
+      "depth_output_rank": 3,
+      "depth_output_dimensions_symbolic": true,
+      "checker_pass": true
+    },
+    "qairt_qnn_rectangular": "NOT_EVALUATED",
+    "authority": "SYNTHETIC_SHAPE_AND_CAMERA_EXTERNALIZATION_ONLY"
+  },
+  "camera_static_binding": {
+    "production_source": {
+      "path": "core/device/src/main/java/com/linnan/blindassist/camera/CameraXFrameSource.kt",
+      "sha256": "B6E247BF456C44ED37ACED394A385B904820D436DA2CA73CFF6AFCAD4A999195"
+    },
+    "r832_sha256": "8063935E5CA3C2567AAF67944DE3345B088629B9176E4556EC1A35EF573D73A9",
+    "r834_sha256": "DD38852E78DAE070F4956787D28C2CBB2B099E7BE80DEA6CED0F7BC0DFC0A898",
+    "static_request_match": true,
+    "runtime_intrinsics_transform_receipt": {
+      "status": "DEVICE_BENCHMARK_PASS_BENCHMARK_ONLY",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_RUNTIME_GEOMETRY_RECEIPT_2026-08-09.json"
+    }
+  },
+  "data_metadata_preflight": {
+    "new_payload_or_outcome_opened": false,
+    "master_ledger": {
+      "path": "DATASET_MASTER_LEDGER.json",
+      "bytes": 569224796,
+      "sha256": "2227A6ADB23AEBDA5DC4222BBECCDB60FEC8E9ED1FBEB29C048219C1F70EBE7F"
+    },
+    "dataset_gaps_sha256": "F81741BB033570D4343534F6D6B5C6F44AD5FB24142ABE76F0990EE2A51B836E",
+    "source_role_conflicts_sha256": "5E83840B237A969F33AAAF0A4A8DD14C326E2C800517A0CD0D98648C879D355D",
+    "asset_presence": "FOUND",
+    "route_specific_label_capability": "NOT_AUDITED",
+    "train_roster": "NOT_SELECTED",
+    "development_roster": "NOT_SELECTED",
+    "confirmation_roster": "NOT_SELECTED",
+    "consumed_120_frame_reused": false,
+    "deployment_r2_roster_reused": false
+  },
+  "remaining_blockers": [
+    "FORMAL_APP_RUNTIME_AND_REAL_REPROJECTION_RECEIPT",
+    "NEW_ROLE_DISJOINT_ROSTER_LOCKS",
+    "GROUND_CLEARANCE_TRUTH_READER_IMPLEMENTATION_LOCK",
+    "B1_CONFIDENCE_AND_TRAINING_PROTOCOL",
+    "ONNX_SYMBOLIC_OUTPUT_METADATA_HANDLING",
+    "RECTANGULAR_QAIRT_QNN_SHAPE_PREFLIGHT"
+  ],
+  "next_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_CAPABILITY_AND_ROSTER_LOCK",
+  "authority": {
+    "student_training": false,
+    "teacher_matrix": false,
+    "rectangular_qnn_conversion": false,
+    "independent_task_outcome_access": false,
+    "default_app_change": false
+  }
+}
