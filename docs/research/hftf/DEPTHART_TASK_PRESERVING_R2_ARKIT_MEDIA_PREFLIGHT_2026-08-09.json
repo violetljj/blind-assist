@@ -1,0 +1,31 @@
+{
+  "schema": "blindassist_depthart_task_preserving_r2_arkit_media_preflight_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2",
+  "created_at": "2026-08-09",
+  "status": "ALL_32_ASSET_HEADERS_AVAILABLE_PAYLOAD_UNOPENED",
+  "roster_lock": "docs/research/hftf/DEPTHART_TASK_PRESERVING_R2_ARKIT_ROSTER_LOCK_2026-08-09.json",
+  "assets": ["lowres_wide.zip", "lowres_depth.zip", "lowres_wide_intrinsics.zip", "confidence.zip"],
+  "videos": [
+    {"video_id": "41254269", "asset_count": 4, "all_http_status": 200, "total_content_length_bytes": 489181830},
+    {"video_id": "47895740", "asset_count": 4, "all_http_status": 200, "total_content_length_bytes": 145267045},
+    {"video_id": "42445991", "asset_count": 4, "all_http_status": 200, "total_content_length_bytes": 640630902},
+    {"video_id": "47895771", "asset_count": 4, "all_http_status": 200, "total_content_length_bytes": 318663383},
+    {"video_id": "41125760", "asset_count": 4, "all_http_status": 200, "total_content_length_bytes": 479424235},
+    {"video_id": "48018960", "asset_count": 4, "all_http_status": 200, "total_content_length_bytes": 229088111},
+    {"video_id": "45261150", "asset_count": 4, "all_http_status": 200, "total_content_length_bytes": 258813693},
+    {"video_id": "48458481", "asset_count": 4, "all_http_status": 200, "total_content_length_bytes": 164702691}
+  ],
+  "summary": {
+    "video_count": 8,
+    "asset_count": 32,
+    "http_200_count": 32,
+    "failure_count": 0,
+    "total_content_length_bytes": 2725771890,
+    "payload_bytes_read": 0
+  },
+  "first_attempt_incident": "PowerShell multi-value Content-Length cast failed before any payload access; corrected by selecting the first header value and reran the same HEAD-only scope.",
+  "license_scope": "NOT_YET_EXTENDED_TO_THIS_ROSTER",
+  "media_download_authorized": false,
+  "outcome_access": "NONE",
+  "authority": "Header availability and bounded size only; no media integrity, task truth, model output, quality or deployment authority."
+}

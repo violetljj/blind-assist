@@ -14,7 +14,7 @@
   },
   "candidate": {
     "count_before_outcome_access": 1,
-    "allowed_representation_families": ["FP16", "W8A16", "FIXED_MIXED_PRECISION", "FIXED_QDQ"],
+    "allowed_representation_families": ["FP16", "W8A16", "INT8", "FIXED_MIXED_PRECISION", "FIXED_QDQ"],
     "selection_data_role": "DEVELOPMENT_ONLY_NOT_R2_COHORT",
     "custom_float32_engine": "OUT_OF_SCOPE"
   },

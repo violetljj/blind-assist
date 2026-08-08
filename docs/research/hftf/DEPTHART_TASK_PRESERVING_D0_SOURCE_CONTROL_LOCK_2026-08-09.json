@@ -1,0 +1,79 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d0_source_control_lock_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D0_PRECISION_SCREEN",
+  "frozen_at": "2026-08-09",
+  "status": "COMMON_SOURCE_AND_DIAGNOSTIC_CONTROL_FROZEN_NO_D0_OUTCOME_ACCESSED",
+  "reference": {
+    "checkpoint": {
+      "path": "artifacts.local/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+      "bytes": 32871942,
+      "sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65"
+    },
+    "canonical_onnx": {
+      "path": "artifacts.local/evidence/hftf/depthart-admission-r1/depthart_metric_indoor_s_448.onnx",
+      "bytes": 31985722,
+      "sha256": "06A0C059C62FD254FF1DE9FC804D8D33B80141EA6FFC3CC964D82352D77DA78C"
+    },
+    "camera_prompt_transform": {
+      "path": "scripts/research/hftf/deployment/depthart/export_depthart_camera_external.py",
+      "bytes": 4706,
+      "sha256": "FCB76F3F1B26A8FDCEB69E73D61A590C7B8519548AB5B1F27C1721C240ED0F7F"
+    }
+  },
+  "common_candidate_source": {
+    "role": "CONVERTER_SOURCE_AND_FIXED_MIXED_PRECISION_DIAGNOSTIC_CONTROL_NOT_SELECTED_R2_CANDIDATE",
+    "onnx": {
+      "path": "artifacts.local/evidence/hftf/depthart-g4c-custom-layernorm-sm8650-v75-20260808-r2/depthart-g4c-custom-layernorm.onnx",
+      "bytes": 31815195,
+      "sha256": "A4ECE939C1E3ACCB5FF36F8AA718DE3A2AE965D620B3399CD28FEA3E3B531DA8"
+    },
+    "diagnostic_control_dlc": {
+      "path": "artifacts.local/evidence/hftf/depthart-g4c-custom-layernorm-sm8650-v75-20260808-r2/depthart-g4c-custom-layernorm-no-preserve.dlc",
+      "bytes": 31998428,
+      "sha256": "1EB9CF186529551D9B654F357A9ADF5045B2AA1EA4B41CCEECF65A73FC2C7B7D"
+    },
+    "diagnostic_control_context": {
+      "path": "artifacts.local/evidence/hftf/depthart-g4c-custom-layernorm-sm8650-v75-20260808-r2/depthart-g4c-ln-sm8650-v75.bin.bin",
+      "bytes": 20590592,
+      "sha256": "7A3B0EAA044289D2D7C88E28078F2EA8E783EA8F980E9059A6934DAE7E286E56"
+    },
+    "source_receipt": {
+      "path": "artifacts.local/evidence/hftf/depthart-g4c-custom-layernorm-sm8650-v75-20260808-r2/g4c-custom-layernorm-context-receipt.json",
+      "bytes": 1661,
+      "sha256": "F01D513AE353C91B7BC1C81F5C7D74BB9AA71B78298A02B9D3FDDB188D3829B0"
+    }
+  },
+  "op_package": {
+    "converter_extension": {
+      "path": "artifacts.local/evidence/hftf/depthart-layernorm-converter-op-20260808-r1/depthart_selective_scan_converter_op.dll",
+      "bytes": 103936,
+      "sha256": "7634D4C53A8F4C798BCA3ED62718D82A2CDAD456D39B9032C2C354E30FF66BEC"
+    },
+    "definition": {
+      "path": "scripts/research/hftf/depthart_selective_scan_op_package.xml",
+      "bytes": 8196,
+      "sha256": "17BF09270EDF05D20426BB38924192354B34521BB053C98C4264CE9E65DB4B97"
+    },
+    "supported_custom_families": ["SelectiveScan", "DepthArtLayerNorm"],
+    "custom_family_counts": {"SelectiveScan": 5, "DepthArtLayerNorm": 23},
+    "declared_tensor_dtype": "QNN_DATATYPE_FLOAT_32",
+    "aarch64": {
+      "path": "artifacts.local/evidence/hftf/depthart-layernorm-op-package-v75-20260808-r4/DepthArtSelectiveScanPackage/build/aarch64-android-manual/libQnnDepthArtSelectiveScanPackage.so",
+      "bytes": 837856,
+      "sha256": "FDF13797794DF976BA1FE5450E6AA5A09E5D6D6AA7E328EE8A07256737A2F0A9"
+    },
+    "v75": {
+      "path": "artifacts.local/evidence/hftf/depthart-layernorm-op-package-v75-20260808-r4/DepthArtSelectiveScanPackage/build/hexagon-v75-manual/libQnnDepthArtSelectiveScanPackage.so",
+      "bytes": 79088,
+      "sha256": "A5392F2FA54A0449BF81F164D88C52352038AED1BD2A504B6DDB7275BAB4AFDE"
+    }
+  },
+  "excluded_from_all_arms": [
+    "DepthArtPatchConv2d strict-repair graph",
+    "DepthArtBatchNorm2d strict-repair graph",
+    "DepthArtGelu strict-repair graph",
+    "near-complete custom-float32 engine"
+  ],
+  "prior_terminal_immutable": "CURRENT_QAIRT_2_47_SM8650_HTP_STANDARD_FLOAT_PATH_STRICT_G4D_NOT_SUPPORTED",
+  "authority": "Common source and diagnostic control identity only. It is not the selected R2 candidate and grants no D0 or R2 quality, performance, DA2 replacement, Android default, production or safety authority."
+}

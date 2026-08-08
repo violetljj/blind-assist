@@ -4,6 +4,11 @@
 
 机器合同：[`DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.json`](DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.json)
 
+前置筛选：[D0 precision screen](DEPTHART_TASK_PRESERVING_D0_PRECISION_SCREEN_PROTOCOL_2026-08-09.md) ·
+[common source/control lock](DEPTHART_TASK_PRESERVING_D0_SOURCE_CONTROL_LOCK_2026-08-09.json) ·
+[ARKit roster lock](DEPTHART_TASK_PRESERVING_R2_ARKIT_ROSTER_LOCK_2026-08-09.json) ·
+[media HEAD preflight](DEPTHART_TASK_PRESERVING_R2_ARKIT_MEDIA_PREFLIGHT_2026-08-09.json)
+
 ## 决策与不可变前提
 
 当前 QAIRT 2.47、SM8650/v75 标准 HTP float primitive 路径已经得到
@@ -20,8 +25,8 @@ FP32 parity 时，一个冻结的 HTP-friendly DepthART 图能否保持 BlindAss
 
 - Reference：关闭 CUDA/CuDNN TF32 的 canonical PyTorch DepthART-S，保持
   `image,K -> depth` 和冻结任务后处理。
-- Candidate：在 outcome access 前只允许冻结一个 HTP-friendly 图，可来自 FP16、W8A16、
-  fixed mixed precision 或固定 Q/DQ 图；不得在新独立 cohort 上比较多个候选或调阈值。
+- Candidate：必须先在独立 R2 cohort 之外完成一个预冻结的 Development screen；screen receipt
+  之后只允许冻结一个 HTP-friendly 图进入 R2。不得在新独立 cohort 上比较多个候选或调阈值。
 - Truth：独立 RGB-D/几何事实只用于计算任务指标；reference 与 candidate 同帧、同 intrinsics、
   同任务后处理。`UNKNOWN_GROUND` 永远不是 negative，也不得从分母中静默删除。
 
@@ -42,6 +47,13 @@ R2 必须同时回答：candidate 相对 reference 是否任务非劣，以及 c
 
 用户需要在有效 manifest 之后显式激活 outcome access。当前状态不允许运行 reference 或
 candidate 生成该 cohort 的 claim-bearing 输出。
+
+截至 2026-08-09，公共 source/control 已锁定；D0 FP16/W8A16/INT8 三臂均在 outcome 前技术
+前门淘汰，未产生 selection receipt，因此 R2 单一 candidate 尚未选定。既有 G4-C
+fixed-mixed 图只是诊断 control，若继续必须另立 D1，不能事后塞回 D0。ARKitScenes 元数据
+已锁定 8 个与既有 HFTF 身份零重叠的 Validation visit/session，
+32 个官方资产 HEAD 全部可用，总计 `2,725,771,890` bytes，但本 roster 尚未取得显式 license
+scope extension，媒体 payload 仍为零读取。它不得参与 D0 calibration 或候选选择。
 
 ## 冻结任务门
 

@@ -1,0 +1,276 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d0_tum_calibration_roster_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D0_PRECISION_SCREEN",
+  "frozen_at": "2026-08-09",
+  "status": "FROZEN_BEFORE_CALIBRATION_MATERIALIZATION",
+  "data_role": "DEVELOPMENT_QUANTIZATION_CALIBRATION_ONLY_NO_TASK_OUTCOMES",
+  "selection": {
+    "algorithm": "SHA256_ASCENDING_PER_SEQUENCE",
+    "per_sequence": 8,
+    "sequence_count": 2,
+    "frame_count": 16,
+    "image_bytes_read_only_after_identity_selection": true
+  },
+  "source": {
+    "dataset": "TUM_RGBD_LOCAL_DEVELOPMENT_COPY",
+    "source_root": "artifacts.local/datasets/model-variant-gate-r0",
+    "rgb_index_sha256": {
+      "rgbd_dataset_freiburg3_walking_static": "41F60454E501F4F89D05F4FB6BB0C81A1F5FBD17163F8AF3DE4DB9BCEF53A7FF",
+      "rgbd_dataset_freiburg3_walking_xyz": "5866AB98D620D1163C8C8F01D90BC0A0B3BC7DCD223BCA8BC5F238F1734C35C0"
+    },
+    "exclusion_roster": "docs/research/hftf/DAV2_MODEL_VARIANT_VALIDATION_R0_ROSTER_2026-08-05.json",
+    "exclusion_roster_sha256": "62D41DBFCA64BBD7964B146427911A384A8E0CE57FF606F9BA74682E380D43F2",
+    "excluded_rows": 120,
+    "overlap_with_exclusion_roster": 0
+  },
+  "arms": [
+    "D0_W8A16_R0",
+    "D0_INT8_R0"
+  ],
+  "r2_arkit_roster_accessed": false,
+  "task_truth_accessed": false,
+  "model_outcomes_accessed": false,
+  "rows": [
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_static:1341846226.985981",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846226.985981,
+      "rgb_path": "rgb/1341846226.985981.png",
+      "rgb_bytes": 554848,
+      "rgb_sha256": "CE20FDAD9C128B0A26A0701FA23FC9EF0CB88A25D3313FA7EF2B6BF410049A08",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "001D23F3D11716D9BE3C32CDB7F5C6A490FFC0977E296D14FAE4918679713BA7"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_static:1341846236.469948",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846236.469948,
+      "rgb_path": "rgb/1341846236.469948.png",
+      "rgb_bytes": 556227,
+      "rgb_sha256": "CC63231649BDBDDDACEE9AC3E7DC9C887651EB5A2378C1803BCC5F8FEE5DC0A9",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "0034C5045CD616F7646CB2203E70BC5AE66E30D091BE6C13315A8492E1B2D212"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_static:1341846238.045995",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846238.045995,
+      "rgb_path": "rgb/1341846238.045995.png",
+      "rgb_bytes": 556106,
+      "rgb_sha256": "60C968248D958027CC1EAE10FBDF982146A5E8A2B07540814233E77D66822C72",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "00402ADDB533CB6BAAFA1DAB566BD6EC3648C320E8364B050392834D58FE992B"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_static:1341846249.942024",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846249.942024,
+      "rgb_path": "rgb/1341846249.942024.png",
+      "rgb_bytes": 572485,
+      "rgb_sha256": "C2A1B0136610661671C507C90FF01F43CD9872C62910CAD36C969AE2E808F2BA",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "00A2082447ED0FE082AAA354CD17C9EC471FA5B2B15B3DA369810C42F3C47FB2"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_static:1341846236.333756",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846236.333756,
+      "rgb_path": "rgb/1341846236.333756.png",
+      "rgb_bytes": 557512,
+      "rgb_sha256": "7D7C13001D4ED7F688808DC8A111F86E7417149F552DB8F9E87358B32E9AA6E2",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "0132777BD03E94F9882D42193F094BE9DD566AD1E730F86B96751DDC4D7D1DA6"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_static:1341846243.274026",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846243.274026,
+      "rgb_path": "rgb/1341846243.274026.png",
+      "rgb_bytes": 567386,
+      "rgb_sha256": "99F0F1B83F75180513652FCB5E642F32099D6550271506505221E7907CD13106",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "014D99A370153A835F2E7C5DA85900D76A5160678B57BB9C6645DF5EE00AD664"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_static:1341846227.989985",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846227.989985,
+      "rgb_path": "rgb/1341846227.989985.png",
+      "rgb_bytes": 552380,
+      "rgb_sha256": "ED93C8F3190E0247A371487E97389377CFE3D23E50464CC7898B24DA21D31BBE",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "0164075B45A96E43A1934E1B2DEBFC8DC5100B56DDA9E2FE37ABA9A552BB256C"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_static:1341846246.757894",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_static",
+      "timestamp": 1341846246.757894,
+      "rgb_path": "rgb/1341846246.757894.png",
+      "rgb_bytes": 583742,
+      "rgb_sha256": "972381DCADE42492FEA80E484C0B46959B35B4C0C57F4687073595EC78F85EC6",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "01A330CB759DCD96EBD3213A6E9E66A20E46AAB1DE59311F54258EAB398DDF07"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_xyz:1341846325.685819",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846325.685819,
+      "rgb_path": "rgb/1341846325.685819.png",
+      "rgb_bytes": 548213,
+      "rgb_sha256": "3DD4A44BE9ABB22E764CD8A969D5172BA5D1101794F2FC04DE12DC51B6D294E1",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "0055DC9248E61B6FCFF88524500EFCCD919A35EDB5C9E263F339453A5D079D33"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_xyz:1341846314.594085",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846314.594085,
+      "rgb_path": "rgb/1341846314.594085.png",
+      "rgb_bytes": 510597,
+      "rgb_sha256": "0547BCAF10DC999FB54FBEADF5EB35AAC30036E593209EB2568BA3B5C772396E",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "008C54BE5457C7DA14B9D6F66AB8E39C5611089BC338917E44B21680376EC7DA"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_xyz:1341846340.770081",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846340.770081,
+      "rgb_path": "rgb/1341846340.770081.png",
+      "rgb_bytes": 564003,
+      "rgb_sha256": "A60A8C2051618AB7D3EAD4C9EE620F7058E7E68FE8E77A4676924FF7A5FFF07A",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "010235960D2576C87654B57D7F3BA6C752F46ED9A7839A63921646673864E6FC"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_xyz:1341846341.780061",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846341.780061,
+      "rgb_path": "rgb/1341846341.780061.png",
+      "rgb_bytes": 576783,
+      "rgb_sha256": "F7DBEAC3D3EACA2BEBDDCECC59A18F18AAA392EE22DA66C534F79AE65FAB2D23",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "0104560C7BF52871FC4258F499473A721FA36A86F77AE4F70FA0AAB5BFBF4C66"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_xyz:1341846340.733954",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846340.733954,
+      "rgb_path": "rgb/1341846340.733954.png",
+      "rgb_bytes": 563711,
+      "rgb_sha256": "9FC3E70A33D4D39A46FC6DFA9926D30B05A16068CC9C66B2C5EAB2ABF623F600",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "024CCC8362F3726D312E99ABDAD883B42B1123A881350ADB2FC035FDBC1477CD"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_xyz:1341846318.245970",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846318.24597,
+      "rgb_path": "rgb/1341846318.245970.png",
+      "rgb_bytes": 541434,
+      "rgb_sha256": "7B698D78C1996ECD3F138BD6428796851C4350EFF6CA413E9451C0E1D04B0457",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "02AADF42EB7561F6759A3E62D8FE8366AD9D57E79BD79DE33FC950F113FA87C8"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_xyz:1341846323.238053",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846323.238053,
+      "rgb_path": "rgb/1341846323.238053.png",
+      "rgb_bytes": 540353,
+      "rgb_sha256": "9D5251CB16B5FDA808368FC93FFCBAFB03EF33B743AC1D3F4089BFC0C94464D7",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "03E8354C05582A76BC64E193171800FD40990B5502B87204FCCEC1CE8C62661C"
+    },
+    {
+      "calibration_id": "rgbd_dataset_freiburg3_walking_xyz:1341846331.986135",
+      "sequence_root": "rgbd_dataset_freiburg3_walking_xyz",
+      "timestamp": 1341846331.986135,
+      "rgb_path": "rgb/1341846331.986135.png",
+      "rgb_bytes": 519629,
+      "rgb_sha256": "A7B926E424617539F027A21AED07A7AD914287831BC1207327369016CA65D36A",
+      "intrinsics_fx_fy_cx_cy": [
+        535.4,
+        539.2,
+        320.1,
+        247.6
+      ],
+      "selection_rank_sha256": "045AE1050EDCE162803D640512C310DB924F204BF1C52BEB472EB34990F56711"
+    }
+  ],
+  "authority": "Quantizer calibration inputs only. No D0 task-quality, R2, model-selection, production or safety authority."
+}

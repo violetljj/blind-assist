@@ -26,16 +26,18 @@
 | 首个 SelectiveScan 前数值二分 | [纯标准 prefix probe 与 evaluator](deployment/depthart/bisect_depthart_pre_scan_parity.py) | 固定 canonical ONNX、程序化 RGB canary 与 G4-D 容差，按单输出子图定位 ORT/HTP 首个漂移点 | 只具 synthetic numerical diagnostic authority；不得启动 G4-E/F 或替换 DA2 |
 | PyTorch→ONNX 分段定位 | [stage anchor localizer](deployment/depthart/localize_depthart_pytorch_onnx_parity.py) | 同时保留原生 PyTorch、导出语义 replay 与 exact-primitive ONNX，覆盖 backbone/DAA/depth head/scale head | 只允许修复首个已证明的漂移段；不得换 canary 或放宽容差 |
 | G4-D 节点族修复与总门 | [PatchConv rewrite](deployment/depthart/rewrite_depthart_first_patch_conv_custom_onnx.py)、[BatchNorm rewrite](deployment/depthart/rewrite_depthart_batchnorm_custom_onnx.py)、[GELU rewrite](deployment/depthart/rewrite_depthart_gelu_custom_onnx.py)、[三项 evaluator](deployment/depthart/evaluate_depthart_g4d_repair.py) | TF32-off 后 PyTorch↔ONNX PASS；局部 custom PatchConv/BN/GELU 前缀 PASS，但下一标准 Conv 与整图 HTP 仍 FAIL；direct↔context bit-exact | 当前 QAIRT 2.47/SM8650 HTP 标准 float 路径的 strict G4-D 为负终态；不扩写为全部 HTP 或全部 custom-op 不可行 |
-| Task-preserving R2 | [冻结协议](../../../docs/research/hftf/DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.md)、[机器合同](../../../docs/research/hftf/DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.json)、[pre-outcome validator](deployment/depthart/validate_depthart_task_preserving_r2_activation.py) | 用新独立 cohort 比较 canonical FP32 reference 与单一 HTP-friendly candidate 的 clearance、false-clear、false-block、temporal 与 UNKNOWN coverage | `PROTOCOL_FROZEN / EXECUTION_NOT_ACTIVATED`；不回写 strict G4-D，未过任务质量不得测该候选性能 |
+| Task-preserving D0 | [三臂冻结协议](../../../docs/research/hftf/DEPTHART_TASK_PRESERVING_D0_PRECISION_SCREEN_PROTOCOL_2026-08-09.md)、[source/control lock](../../../docs/research/hftf/DEPTHART_TASK_PRESERVING_D0_SOURCE_CONTROL_LOCK_2026-08-09.json)、[terminal result](../../../docs/research/hftf/DEPTHART_TASK_PRESERVING_D0_PRECISION_SCREEN_RESULT_2026-08-09.md) | FP16/W8A16/INT8 使用同一 source；量化臂共享 16-frame calibration；只执行 outcome 前技术前门 | 三臂均技术淘汰，未访问任务质量/性能；`D0_NO_TASK_PRESERVING_CANDIDATE_R2_NOT_ACTIVATED` |
+| Task-preserving R2 | [冻结协议](../../../docs/research/hftf/DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.md)、[ARKit roster lock](../../../docs/research/hftf/DEPTHART_TASK_PRESERVING_R2_ARKIT_ROSTER_LOCK_2026-08-09.json)、[pre-outcome validator](deployment/depthart/validate_depthart_task_preserving_r2_activation.py)、[quality evaluator](deployment/depthart/evaluate_depthart_task_preserving_r2_quality.py) | 新 Development screen receipt 后只允许一个冻结候选；8 个新 Validation visit/session 与旧 HFTF identity 零重叠，payload 零读取 | `CANDIDATE_NOT_SELECTED / MEDIA_DOWNLOAD_AUTHORIZATION_REQUIRED / EXECUTION_NOT_ACTIVATED`；R2 只做独立确认，不选模 |
 | QNN/HTP 诊断 | [diagnostics/depthart/](diagnostics/depthart/) | operator/profile/lint 诊断 | 诊断结果不是性能或安全授权 |
 | 已有结果 | [DepthART A3 result](../../../docs/research/hftf/DEPTHART_ADMISSION_R1_A3_RESULT_2026-08-07.md)、[旧 QAIRT/HTP result](../../../docs/research/hftf/archive/DEPTH_ANYTHING_V2_QAIRT_HTP_R0_RESULT.md) | 当前证据与历史阻塞点 | 旧结果不能自动生成 successor |
 
 ## 唯一 successor
 
-`DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2`：准备并校验 pre-outcome activation manifest。
-它必须绑定新独立 parent/session-disjoint cohort、canonical FP32 reference、一个冻结的
-HTP-friendly candidate 和协议中的固定任务门。当前只允许准备，不允许访问 outcome；
-strict G4-D、G4-E/F 与 DA2 replacement 状态均不变。
+`DEPTHART_TASK_PRESERVING_D1_FIXED_MIXED_DEVELOPMENT_SCREEN`：D0 已关闭且无合格 arm。
+下一步先冻结产品纵横比/FOV/resize、intrinsics/truth 对齐与 task postprocess，重建对应的
+fixed-mixed 图，并建立一份不复用 R0/calibration/R2 rows 的 Development roster，再做单候选
+task screen。它是新 successor，不得回写 D0；
+strict G4-D、旧 G4-E/F 与 DA2 replacement 状态均不变。
 
 ## 禁止动作
 

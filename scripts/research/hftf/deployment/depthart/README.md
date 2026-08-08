@@ -23,7 +23,14 @@ shim 已退役，统一从本目录导入。
 - `localize_depthart_pytorch_onnx_parity.py` 在同一冻结 canary 上采集 patch embed、四级 DAA/backbone、depth head、scale head 和最终 depth，分别比较原生 PyTorch、导出语义 replay 与 exact-primitive ONNX；用于定位导出侧首个漂移段，不改变样本或容差
 - `rewrite_depthart_first_patch_conv_custom_onnx.py`、`rewrite_depthart_batchnorm_custom_onnx.py` 与 `rewrite_depthart_gelu_custom_onnx.py` 只改写已定位的节点族；对应 float32 HTP reference kernels 用于 correctness-first 诊断，不是性能实现
 - `evaluate_depthart_g4d_repair.py` 固定 `rtol=3e-5 / atol=3e-6`，同时签署 PyTorch↔canonical ONNX、canonical ONNX↔SM8650 HTP、DLC direct↔saved context 三项门；任一失败即保持 G4-D FAIL
+- `DEPTHART_TASK_PRESERVING_D0_PRECISION_SCREEN_PROTOCOL_2026-08-09` 先在 Development 数据比较 FP16/W8A16/INT8；独立 R2 cohort 禁止参与 calibration、调参和选模
+- `validate_depthart_task_preserving_d0_preflight.py` 静态核验三臂 recipe、QAIRT 工具、公共 source/control、FP32 custom-island package 与 strict G4-D/R2 数据边界；它不转换模型、不读取 outcome
+- `prepare_depthart_task_preserving_d0_arm.py` 在 fresh `artifacts.local/` evidence root 中按冻结 recipe 物化单个 FP16/W8A16/INT8 DLC；量化臂没有冻结 calibration list 会 fail closed
+- `plan_depthart_task_preserving_d0_tum_calibration_roster.py` 从本地 TUM RGB index 先排除既有 consumed R0 rows，再按每 sequence 固定 SHA-256 顺序冻结 W8A16/INT8 共用的 outcome-free calibration roster
+- `materialize_depthart_task_preserving_d0_calibration_inputs.py` 只读取锁定 RGB/intrinsics，生成 image 与四级 camera prompt float32 raws 和单一绝对路径 calibration list；不运行 depth model outcome
 - `validate_depthart_task_preserving_r2_activation.py` 只检查 R2 pre-outcome activation manifest 的 cohort 角色、候选/reference 身份、固定任务门与旧 G4-D 排除项；它不读取模型输出，不激活执行，也不签署质量或部署结论
+- `plan_depthart_task_preserving_r2_arkit_roster.py` 在 Apple 官方 split CSV 上，以冻结 Git snapshot 排除全部既有 HFTF ARKit identity，再按固定哈希顺序锁定唯一 visit/session；只读元数据
+- `evaluate_depthart_task_preserving_r2_quality.py` 计算 reference/candidate 对独立 truth 的 pooled、parent-macro、session-macro 与 worst-parent 任务门；CLI 没有显式 activation receipt 会拒绝读取 outcome
 - 只写入 `artifacts.local/` 的 receipt 与日志
 
 ## 安全边界
