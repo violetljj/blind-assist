@@ -18,6 +18,7 @@ shim 已退役，统一从本目录导入。
 - `build_depthart_converter_op_package.ps1` 将 SelectiveScan/LayerNorm shape/type inference DLL 可复现地构建到 `artifacts.local/`
 - `rewrite_depthart_layernorm_rank4_onnx.py` 与 `lower_depthart_layernorm_onnx.py` 提供 G4-C 的等价 LayerNorm rank/formula 诊断路径；它们不自带 runtime 或 parity authority
 - `rewrite_depthart_layernorm_custom_onnx.py`、`depthart_layernorm_htp_reference.cpp`、`prepare/evaluate_depthart_layernorm_canary.py` 提供最后一轴 float32 LayerNorm 的映射、HTP reference 与单算子 parity；当前已用于 `SM8650 / Snapdragon 8 Gen 3 / HTP v75` 完整 context 闭合
+- `prepare/evaluate_depthart_full_graph_canary.py` 冻结程序化 RGB、camera prompts 与 PyTorch oracle，并计算 PyTorch、exact-primitive ONNX、QNN HTP direct/context 及首个 custom-op frontier 的完整图差异；只具 synthetic numerical authority
 - 只写入 `artifacts.local/` 的 receipt 与日志
 
 ## 安全边界

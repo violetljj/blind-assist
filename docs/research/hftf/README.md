@@ -14,7 +14,7 @@
 
 - DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
-- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；A3 的 converter mapping 与 exact primitive reference 均可完成 QAIRT conversion，但 primitive 图膨胀到 21,440 QNN IR ops，未选为移动实现。SelectiveScan 与 LayerNorm correctness-first float32 kernels 已在 `SM-S9280 / SM8650 / Snapdragon 8 Gen 3 / HTP v75` 完成单算子真实 HTP parity；包含 5 个 SelectiveScan 与 23 个自定义 LayerNorm 的完整图已 `QnnGraph_finalize status 0x0` 并保存 context，签署 `G4-C_FULL_CONTEXT_PASS_SM8650_V75`。full-model parity、partition purity、性能、Android/生产 authority 仍未评价。
+- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；SelectiveScan 与 LayerNorm correctness-first float32 kernels 已在 `SM-S9280 / SM8650 / Snapdragon 8 Gen 3 / HTP v75` 完成单算子真实 HTP parity，包含 5 个 SelectiveScan 与 23 个自定义 LayerNorm 的完整图也已保存 context，故 G4-A/B/C PASS。随后冻结的 synthetic full-graph numerical canary 在真实 v75 context 上相对 PyTorch 为 `max_abs=1.435607 / mean_abs=1.070408`，G4-D 明确 FAIL；差异在首个 custom op 前已经出现，当前 frontier 是完整 HTP float/标准算子路径。真实场景任务质量、partition purity、性能、Android/生产 authority 仍未评价，DA2 保持冻结 baseline/fallback。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
