@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / SUPERVISION_FRONTDOOR_UNSATISFIED / F1_EXECUTION_NOT_AUTHORIZED / CALIBRATION_AND_CONFIRMATION_SEALED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_IMPLEMENTATION_FROZEN / SYNTHETIC_CANARY_AUTHORIZED_NOT_RUN / SUPERVISION_FRONTDOOR_UNSATISFIED / F1_EXECUTION_NOT_AUTHORIZED / CALIBRATION_AND_CONFIRMATION_SEALED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -85,6 +85,12 @@
   不实现或执行 adapter。
 - `test_validate_geometry_r2_f1_adapter_protocol.py`：13 个 mutation tests，拒绝字段/operation 缺失、
   task shortcut、receipt/support/missing-depth fail-open、uncertainty strengthening、扩权与 binding drift。
+- `factor_tensor_adapter.py`：按冻结 17-operation 合同将完整 F1 factor tensors 确定性转换为 F0 frame；
+  零参数、learned-graph 外、无 task outcome，receipt 或局部证据无效时 fail closed。
+- `test_factor_tensor_adapter.py`：10 个 focused tests，覆盖 8-case fixture、独立 UNKNOWN 语义、
+  orientation parity、component split/merge、uncertainty monotonicity 与 final-task shortcut 拒绝。
+- `run_factor_tensor_adapter_canary.py`：只接受 SHA-bound implementation lock，用两个独立进程重放
+  每个 frozen case，并只写未存在的版本化 synthetic evidence root。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
@@ -110,8 +116,8 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 移动导出受历史 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry
 选模证据。新 R2 已完成 F0 reducer mechanics，并冻结 F1-P schema/loss/selection/Kill Gate；当前
 continuous boundary 与 complete factor-schema truth 均为 0，F1 supervision frontdoor 不满足；此外
-F1 tensors 与 F0 reducer 之间的 deterministic `FactorTensorAdapter` protocol 已冻结，但实现与 synthetic
-canary 尚未运行。没有 factor model、label materializer、trainer、optimizer、checkpoint、真实任务收益
+F1 tensors 与 F0 reducer 之间的 deterministic `FactorTensorAdapter` protocol、零参数实现、runner 与
+focused tests 已按 SHA 冻结；synthetic canary 尚未运行。没有 factor model、label materializer、trainer、optimizer、checkpoint、真实任务收益
 或 F1 execution authority。
 `UNKNOWN` 不得当作负例；synthetic shape 与 benchmark geometry 不得冒充任务质量。
 
@@ -129,8 +135,8 @@ Calibration 与 Confirmation 保持封存。R2 F0 已签署
 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS`；F1-P 又签署
 `R2_F1_PROTOCOL_FROZEN_EXECUTION_NOT_AUTHORIZED_SUPERVISION_FRONTDOOR_UNSATISFIED`。后续接口审计签署
 `R2_F1_EXECUTION_BLOCKED_FACTORTENSOR_ADAPTER_ABSENT`；其后 protocol lock 已将缺口收缩为
-`R2_F1_ADAPTER_STATIC_CONTRACT_COMPLETE_CANARY_NOT_RUN`。当前唯一 successor 只允许实现冻结的
-outside-graph adapter 并运行 8-case/A01–A10 synthetic canary；标签物化、模型定义、训练、real outcome
+`R2_F1_ADAPTER_IMPLEMENTATION_FROZEN_CANARY_NOT_RUN`。当前唯一 successor 只允许按 implementation lock
+运行 8-case/A01–A10 synthetic canary；标签物化、模型定义、训练、real outcome
 与 F1 authority 仍为 false，监督源/label contract 仍是后续独立必要门。
 
 验证：
