@@ -1,6 +1,6 @@
 # Assistive Geometry Data Upgrade Engine
 
-状态：`current / AG-DUE_R0_SANPO_INITIAL_SOURCE_MANIFESTS_LOCKED / NOT_PRESCREENED / NO_PAYLOAD_OR_TEACHER_AUTHORITY`
+状态：`current / AG-DUE_R0_SANPO_INITIAL_STATIC_PRESCREEN_COMPLETE_BOTH_PARTIAL / SOURCE_SUPPORT_FALSE / PAYLOAD_NOT_AUTHORIZED`
 
 AG-DUE 是 Assistive Geometry 的数据研究并行线，不是新算法路线。它把 AG-DCA 已观测到的
 right-censor、corridor、R2 factor 与 temporal 缺口变成可重放的 source-admission 合同，目标是在
@@ -9,11 +9,11 @@ right-censor、corridor、R2 factor 与 temporal 缺口变成可重放的 source
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_INITIAL_MANIFEST_STATIC_PRESCREEN_EXECUTION`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_SOURCE_SPECIFIC_INTEGRITY_AND_CAPABILITY_AUDIT_PROTOCOL_LOCK`
 
-下一步只允许对已锁定的 SANPO Real/Synthetic 两份 manifest 运行 R0 static prescreen；不得联网刷新
-source metadata、下载或打开 payload，也不得把预期的 `PARTIAL` 当成 source data support。任何
-source-specific integrity/capability-count audit 仍需 prescreen 结果另行授权。
+下一步只允许冻结 SANPO Synthetic 的 source-specific integrity/capability audit 协议；不得执行该审计、
+联网刷新 metadata、下载或打开 payload，也不得把 `PARTIAL` 当成 source data support。Real 保留为
+并列 `PARTIAL` 候选，不因本轮优先审计 Synthetic 而被判负或获得更低永久权限。
 
 ## R0 合同
 
@@ -43,6 +43,21 @@ source-specific integrity/capability-count audit 仍需 prescreen 结果另行�
 `CHARACTERIZED_NOT_VALIDATED`，camera/upright basis 为 `UNKNOWN`。官方发布的 video/depth/pose/
 panoptic 字段只是候选 signal inventory，不是已验证 truth。
 
+## R0 static prescreen 结果
+
+- [governed result](BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_INITIAL_STATIC_PRESCREEN_RESULT_2026-08-10.json)
+  由专用 exact-path validator 从冻结 manifest 重新计算；
+- SANPO Real：`PARTIAL`，hard rejection 为空，完整 screening match 为 0；
+- SANPO Synthetic：`PARTIAL`，hard rejection 为空，完整 screening match 为 0；
+- 两者只有 R2 F1 supervision 与 temporal presence 形成 relevant partial，只有 R2 F1 标为
+  upgradeable；QSF right-censor、corridor 与 FCI truth bundle 均未出现；
+- `source_data_support_established=false`、`supported_for_protocol_lock=false`、
+  `execution_authorized=false` 对两者均保持不变。
+
+Synthetic 被选作下一份窄审计协议对象，只因为其锁定 inventory 已把 metric depth 与 panoptic
+列为 source-native candidate，而 Real 的 depth 尚不能表述为 oracle source-native truth。这是
+Discovery 审计顺序，不是 source admission、模型选择或数据质量排名。
+
 ## 证据分层
 
 `source-native` 只说明来源，不自动等于 GT。直接满足 capability gate 需要同时满足：
@@ -61,6 +76,7 @@ R2 F1 当前还存在与来源无关的 `FactorTensorAdapter` ABI blocker；因�
 
 ## Claim ceiling
 
-当前建立 gap contract、source manifest schema、静态 checker mechanics，并 byte/hash 锁定两份 SANPO
-metadata-only manifest；尚未执行正式 prescreen，未读取 payload/RGB/geometry/model outcome，未调用 Teacher，未生成 pseudo-label，
+当前建立 gap contract、source manifest schema、静态 checker mechanics，byte/hash 锁定两份 SANPO
+metadata-only manifest，并完成一次无 metadata refresh、无 payload 的确定性 static prescreen；结果仅为
+`PARTIAL/PARTIAL`。未读取 payload/RGB/geometry/model outcome，未调用 Teacher，未生成 pseudo-label，
 未物化数据或训练模型，也不改变 R2、SANPO、QSF、CBF、FCI、默认 App、产品或 safety authority。

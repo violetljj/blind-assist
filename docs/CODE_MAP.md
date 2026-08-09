@@ -20,7 +20,7 @@
 | AG-QSF 并行路线、H1 survival mechanics/TRAIN canary、共享资源 manifest 与输出隔离门 | [`assistive_geometry_qsf/README.md`](../scripts/research/assistive_geometry_qsf/README.md) | `h1_survival.py`、`run_h1_train_canary.py`、`validate_h1_train_canary.py`、`validate_qsf_preparation.py`；未来 H2 profile-query 只进入该 Module |
 | AG-CBF 并行路线、TRAIN-only ground-grid 数据支撑审计与后续 corridor bottleneck oracle | [`assistive_geometry_cbf/README.md`](../scripts/research/assistive_geometry_cbf/README.md) | `audit_grid_support.py`；oracle、representation-value 与模型/训练当前未授权 |
 | AG-DCA 数据能力 atlas 与 hypothesis admission checker | [`assistive_geometry_data_capability/README.md`](../scripts/research/assistive_geometry_data_capability/README.md) | `build_capability_atlas.py`、`check_hypothesis_requirements.py`；只读 TRAIN truth/source，不授予算法执行权限 |
-| AG-DUE gap-driven source prescreen、claim-bound evidence、SANPO manifest lock 与数据角色防火墙 | [`assistive_geometry_data_upgrade/README.md`](../scripts/research/assistive_geometry_data_upgrade/README.md) | `validate_due_r0.py`、`validate_due_sanpo_manifest_lock.py` 及 tests；metadata-only `PRESCREEN_ADMIT` 不建立 source data support、DCA PASS 或执行权限 |
+| AG-DUE gap-driven source prescreen、claim-bound evidence、SANPO manifest/result lock 与数据角色防火墙 | [`assistive_geometry_data_upgrade/README.md`](../scripts/research/assistive_geometry_data_upgrade/README.md) | `validate_due_r0.py`、`validate_due_sanpo_manifest_lock.py`、`validate_due_sanpo_prescreen_result.py` 及 tests；metadata-only `PRESCREEN_ADMIT/PARTIAL` 不建立 source data support、DCA PASS 或执行权限 |
 | 配置与冻结合同 | `configs/` | JSON/YAML；先看调用方和协议 |
 | 机器 schema | `schemas/` | JSON Schema 与 validator |
 | 当前文档与研究真源 | [`docs/PROJECT_STATE.md`](PROJECT_STATE.md) | `docs/`、`docs/research/` |

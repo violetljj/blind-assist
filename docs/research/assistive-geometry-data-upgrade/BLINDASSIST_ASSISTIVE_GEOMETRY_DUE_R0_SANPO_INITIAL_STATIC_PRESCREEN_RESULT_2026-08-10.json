@@ -1,0 +1,100 @@
+{
+  "schema": "blindassist.assistive_geometry_due.sanpo_static_prescreen_result.v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_INITIAL_STATIC_PRESCREEN_RESULT_2026-08-10",
+  "route_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0",
+  "status": "SANPO_INITIAL_STATIC_PRESCREEN_EXECUTED",
+  "terminal": "AG_DUE_R0_SANPO_INITIAL_STATIC_PRESCREEN_COMPLETE_BOTH_PARTIAL",
+  "research_mode": "REVERSIBLE_EXPLORATION",
+  "execution_profile": "CANARY_LITE",
+  "scientific_question": "Do the two byte/hash-locked metadata-only SANPO manifests satisfy any frozen DCA-derived capability screen without opening source payloads?",
+  "bindings": {
+    "manifest_lock": {
+      "path": "docs/research/assistive-geometry-data-upgrade/BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_INITIAL_SOURCE_MANIFEST_LOCK_2026-08-10.json",
+      "sha256": "1C4F8577C88BEFB7298E8961CA173ED55289B48E4EFF67376FA0ADD6C2EE7ECA"
+    },
+    "sanpo_real_manifest": {
+      "path": "docs/research/assistive-geometry-data-upgrade/BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_REAL_INITIAL_SOURCE_MANIFEST_2026-08-10.json",
+      "sha256": "63BE371E3907C6C9F3DF03AAA98619C851AA264D6AFF64BA8A42AFADA3BB282B"
+    },
+    "sanpo_synthetic_manifest": {
+      "path": "docs/research/assistive-geometry-data-upgrade/BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_SYNTHETIC_INITIAL_SOURCE_MANIFEST_2026-08-10.json",
+      "sha256": "28D7BE79DC769E3AF1FE3119411C38A8DFF294A09B5F57563A05C6F3F50CB8AF"
+    },
+    "r0_validator": {
+      "path": "scripts/research/assistive_geometry_data_upgrade/validate_due_r0.py",
+      "sha256": "CE3DA5A0F6337A5C074085BBE9F8AA5FD66AE9A381F39573BE9DAA5D38F80B77"
+    }
+  },
+  "source_results": {
+    "SANPO_REAL": {
+      "manifest_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_REAL_INITIAL_SOURCE_MANIFEST_2026-08-10",
+      "source_id": "sanpo_real_v0_train_discovery",
+      "decision": "PARTIAL",
+      "hard_rejection_reasons": [],
+      "partial_gaps": [
+        "CAPABILITY_GAP_R2_F1_SUPERVISION",
+        "CAPABILITY_GAP_TEMPORAL_SIGNAL_PRESENCE"
+      ],
+      "screening_match_gaps": [],
+      "upgradeable_gaps": [
+        "CAPABILITY_GAP_R2_F1_SUPERVISION"
+      ],
+      "source_data_support_established": false,
+      "supported_for_protocol_lock": false,
+      "next_action": "RESOLVE_GOVERNANCE_OR_CAPABILITY_GAPS_BEFORE_PAYLOAD_WORK",
+      "execution_authorized": false,
+      "canonical_full_result_bytes": 6818,
+      "canonical_full_result_sha256": "E270B15410575C80F0775F47A40B1D40E638F5F1B5626FAAF19DD49D6F3571A0"
+    },
+    "SANPO_SYNTHETIC": {
+      "manifest_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_SYNTHETIC_INITIAL_SOURCE_MANIFEST_2026-08-10",
+      "source_id": "sanpo_synthetic_v0_train_discovery",
+      "decision": "PARTIAL",
+      "hard_rejection_reasons": [],
+      "partial_gaps": [
+        "CAPABILITY_GAP_R2_F1_SUPERVISION",
+        "CAPABILITY_GAP_TEMPORAL_SIGNAL_PRESENCE"
+      ],
+      "screening_match_gaps": [],
+      "upgradeable_gaps": [
+        "CAPABILITY_GAP_R2_F1_SUPERVISION"
+      ],
+      "source_data_support_established": false,
+      "supported_for_protocol_lock": false,
+      "next_action": "RESOLVE_GOVERNANCE_OR_CAPABILITY_GAPS_BEFORE_PAYLOAD_WORK",
+      "execution_authorized": false,
+      "canonical_full_result_bytes": 6845,
+      "canonical_full_result_sha256": "DF6025E8289A8027851F2A27D1D9E97AD1ED2E983B4EF3347D172AD7111DEC6D"
+    }
+  },
+  "observations": [
+    "Both locked manifests pass the static governance and protected-identity checks and therefore have no hard rejection reason.",
+    "Both are PARTIAL because relevant R2 F1 and temporal candidates exist only as published source inventory with zero observed frames, CHARACTERIZED_NOT_VALIDATED quality and UNKNOWN camera/upright basis.",
+    "Neither source matches any complete gap screen; QSF right-censor, corridor and FCI truth bundles remain absent from both manifests.",
+    "SANPO Synthetic is the narrower next audit candidate because its locked manifest names source-native metric-depth and panoptic candidates, whereas SANPO Real does not yet characterize oracle depth as source-native truth. This is only a source-audit priority, not source support or model selection.",
+    "SANPO Real privacy verification covers source-level terms and policy only; residual payload PII has not been audited or cleared."
+  ],
+  "execution_disclosure": {
+    "formal_source_prescreen_executed": true,
+    "manifest_count": 2,
+    "metadata_or_network_refresh": false,
+    "payload_download_or_open": false,
+    "source_specific_integrity_or_count_audit": false,
+    "teacher_or_pseudo_label_generation": false,
+    "data_materialization": false,
+    "model_or_training": false,
+    "development_or_confirmation": false,
+    "android_or_default_app": false
+  },
+  "authority": {
+    "source_data_support_established": false,
+    "dca_pass_established": false,
+    "payload_or_source_specific_audit_authorized": false,
+    "derivation_or_teacher_authorized": false,
+    "materialization_or_training_authorized": false,
+    "development_or_confirmation_authorized": false,
+    "default_app_product_or_safety_authorized": false
+  },
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_SOURCE_SPECIFIC_INTEGRITY_AND_CAPABILITY_AUDIT_PROTOCOL_LOCK",
+  "claim_ceiling": "A deterministic metadata-only prescreen classifies the two locked SANPO manifests as PARTIAL with no hard rejection. No source data support, DCA pass, payload audit, derivation, Teacher, materialization, training, Development, Confirmation, default-App, product or safety authority is established."
+}
