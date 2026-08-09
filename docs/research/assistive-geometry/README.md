@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / RESEARCH_MAINLINE / B1_DUAL_ORIENTATION_IMPLEMENTATION_LOCK_PASS / A0_EXECUTION_PROTOCOL_NOT_FROZEN / FORMAL_TRAINING_NOT_AUTHORIZED`
+状态：`current / RESEARCH_MAINLINE / A0_TRAIN_EXECUTION_LOCK_PASS / FORMAL_A0_THREE_SEED_TRAINING_AUTHORIZED_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -37,12 +37,16 @@
 - [B1 implementation execution protocol Attempt 02](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_DUAL_ORIENTATION_EXECUTION_LOCK_PROTOCOL_2026-08-09_ATTEMPT_02.json)
 - [B1 dual-orientation implementation lock result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_DUAL_ORIENTATION_IMPLEMENTATION_LOCK_RESULT_2026-08-09.md)
 - [B1 dual-orientation implementation machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_DUAL_ORIENTATION_IMPLEMENTATION_LOCK_RESULT_2026-08-09.json)
+- [B1 A0 TRAIN execution lock protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEPTH_ONLY_TRAIN_EXECUTION_LOCK_PROTOCOL_2026-08-09.json)
+- [B1 A0 current execution protocol Attempt 02](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEPTH_ONLY_TRAIN_EXECUTION_LOCK_PROTOCOL_2026-08-09_ATTEMPT_02.json)
+- [B1 A0 TRAIN execution lock result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEPTH_ONLY_TRAIN_EXECUTION_LOCK_RESULT_2026-08-09.md)
+- [B1 A0 TRAIN execution machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEPTH_ONLY_TRAIN_EXECUTION_LOCK_RESULT_2026-08-09.json)
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 - [DepthART 部署支线](../hftf/README.md)
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEPTH_ONLY_THREE_SEED_TRAIN_EXECUTION_LOCK`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEPTH_ONLY_THREE_SEED_FORMAL_TRAIN_EXECUTION`
 
 ARKitScenes `16/8/8` visit/video-disjoint roster 与 9,600-frame integrity 已冻结；B0 reader 又以
 6 个 TRAIN 视频、157 个 AppleDepth/FARO exact-timestamp 对照和主 TRAIN 的 480 个固定 stride
@@ -53,5 +57,7 @@ TRAIN 有 `2,724` portrait 与 `2,076` landscape 帧，Attempt 1 单一 portrait
 Attempt 2 冻结 dual-shape full-FOV、orientation bucket 和重新平衡的 Development split。当前已
 逐 SHA/语义验证 4,800 个 TRAIN target，并关闭 dual-shape shared decoder/head/loss 与真实
 checkpoint 的训练 Autograd smoke；带缺失 Autograd-key 警告的部署 operator smoke 保留为 HOLD，
-训练改走包内显式 custom Function。下一步只冻结 A0 depth-only 三 seed 的执行合同与 runner；
-在该锁关闭前不正式训练，不读取 DEVELOPMENT/CONFIRMATION outcome，不运行双教师，也不改默认 App。
+训练改走包内显式 custom Function。A0 TRAIN loader、orientation carry、BF16 optimizer step 与
+全状态 checkpoint roundtrip 现已关闭，正式 seed `17/29/43` 的 A0 depth-only TRAIN execution
+得到授权但尚未启动；执行期间仍不读取 DEVELOPMENT/CONFIRMATION outcome，不运行 A1–A4 或
+双教师，也不改默认 App。

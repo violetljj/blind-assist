@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_DUAL_ORIENTATION_IMPLEMENTATION_LOCK_PASS / A0_EXECUTION_PROTOCOL_NOT_FROZEN / NO_FORMAL_TRAINING_AUTHORITY`
+状态：`A0_TRAIN_EXECUTION_LOCK_PASS / FORMAL_A0_THREE_SEED_TRAINING_AUTHORIZED_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -40,6 +40,13 @@
   Autograd-key registration 的外层 inference/export dispatcher；
 - `smoke_b1_dual_orientation_training_model.py`：用冻结 checkpoint 在 portrait/landscape 全尺寸上
   验证 forward、loss、encoder/head backward 与 SelectiveScan dispatch boundary。
+- `assistive_geometry_training.py`：提供 deterministic parent-balanced/orientation-bucket loader、
+  same-orientation carry、augmentation、A0 cosine scheduler 与 collate 合同；
+- `smoke_b1_a0_train_execution.py`：以真实 TRAIN 数据执行受限 optimizer step，写出并精确恢复
+  model/optimizer/scheduler/scaler/sampler/RNG checkpoint；
+- `smoke_b1_a0_train_execution_attempt_02.py`：保留 Attempt 1 RNG-device negative 后，将 checkpoint
+  首次加载固定在 CPU；必须以 `-m scripts.research.assistive_geometry.smoke_b1_a0_train_execution_attempt_02`
+  运行。
 
 ## 输出
 
@@ -57,8 +64,9 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 合同违规、checkpoint/shape 不匹配、非 finite 输出、camera prompt drift 或 ONNX checker
 失败均立即 fail closed。当前 roster、source integrity、truth reader 与 registration 已关闭，
 且 B1 target/loss/confidence、dual-orientation overlay、4,800-frame target cache 与模型/loss
-implementation lock 已关闭；A0 三 seed 的 execution protocol/runner 尚未冻结，因此仍不得从
-本目录启动正式训练或打开独立 outcome。
+implementation lock 与 A0 execution lock 已关闭；当前只授权按冻结合同执行 A0 三 seed 的
+TRAIN-only 正式训练。训练中仍不得打开 Development/Confirmation outcome，不得运行 A1–A4、
+teacher、部署或默认 App 路径。
 
 验证：
 
