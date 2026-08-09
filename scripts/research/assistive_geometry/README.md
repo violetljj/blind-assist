@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_PROTOCOL_LOCK_PASS / IMPLEMENTATION_NOT_AUTHORIZED / NO_FORMAL_TRAINING_AUTHORITY`
+状态：`B1_DUAL_ORIENTATION_PROTOCOL_LOCK_PASS / IMPLEMENTATION_NOT_AUTHORIZED / NO_FORMAL_TRAINING_AUTHORITY`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -26,6 +26,10 @@
   双层门，并写入逐帧 evidence receipt。
 - `validate_b1_training_protocol.py`：冻结并校验 B1 target/loss/confidence、A0–A4 additive arms、
   optimizer、数据角色和 implementation-before-training 防火墙。
+- `audit_b1_orientation_geometry.py`：只读 pose/identity，审计 full-FOV portrait/landscape
+  frame capacity，不打开 image/depth/task outcome；
+- `validate_b1_training_protocol_attempt_02.py`：校验当前 dual-orientation overlay、orientation
+  buckets、full-FOV K 传播、Development split 与 portrait claim ceiling。
 
 ## 输出
 
@@ -42,8 +46,8 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 
 合同违规、checkpoint/shape 不匹配、非 finite 输出、camera prompt drift 或 ONNX checker
 失败均立即 fail closed。当前 roster、source integrity、truth reader 与 registration 已关闭，
-且 B1 target/loss/confidence threshold 和 training protocol 已冻结；但 target cache、模型和 loss
-implementation lock 尚未关闭，不得从本目录启动正式训练或打开独立 outcome。
+且 B1 target/loss/confidence 与当前 dual-orientation overlay 已冻结；但 target cache、模型和
+loss implementation lock 尚未关闭，不得从本目录启动正式训练或打开独立 outcome。
 
 验证：
 

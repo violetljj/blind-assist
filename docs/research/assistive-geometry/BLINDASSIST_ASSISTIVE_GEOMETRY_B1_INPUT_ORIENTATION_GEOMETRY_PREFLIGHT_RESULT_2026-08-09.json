@@ -1,0 +1,64 @@
+{
+  "schema": "blindassist_assistive_geometry_b1_input_orientation_geometry_preflight_result_v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_INPUT_ORIENTATION_GEOMETRY_PREFLIGHT_RESULT_2026-08-09",
+  "terminal": "B1_PROTOCOL_ATTEMPT_01_SUPERSEDED_PRE_OUTCOME_ORIENTATION_GEOMETRY_CONFLICT",
+  "attempt_01_protocol": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_TRAINING_PROTOCOL_2026-08-09.json",
+    "sha256": "BDD3B9E45FAB1D9100086B97DAA1C0D9A0F1039FD4D330EF0E3820E414A6FC71"
+  },
+  "attempt_01_result": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_CONFIDENCE_THRESHOLD_AND_TRAINING_PROTOCOL_LOCK_RESULT_2026-08-09.json",
+    "sha256": "193841379D4474489A8DEB4147784ECDE47C4D1F836161A4CF1BB09DB42E5B46"
+  },
+  "audit": {
+    "script": {
+      "path": "scripts/research/assistive_geometry/audit_b1_orientation_geometry.py",
+      "sha256": "8B99290ECD75D050CD2730EB26C4E8A4A0689B64824724B0F4CBC8E982CA8A63"
+    },
+    "test": {
+      "path": "scripts/research/assistive_geometry/test_audit_b1_orientation_geometry.py",
+      "sha256": "CC75056286AB87FF8D32100B464CD9DB99B6CEFAFC8C667637586F5E536351FE"
+    },
+    "receipt": {
+      "path": "artifacts.local/evidence/hftf/assistive-geometry-b1-orientation-geometry-audit-20260809/receipt.json",
+      "sha256": "DC3F9A68393934AFF4A549869E5D9C99A936DD3BE06ED50B43AC2CCD4D59B0A8"
+    }
+  },
+  "train": {
+    "total_frames": 4800,
+    "portrait_frames": 2724,
+    "portrait_fraction": 0.5675,
+    "landscape_frames": 2076,
+    "landscape_fraction": 0.4325,
+    "single_portrait_shape_excluded_fraction": 0.4325
+  },
+  "development": {
+    "total_frames": 2400,
+    "portrait_frames": 565,
+    "landscape_frames": 1835,
+    "attempt_01_calibration_portrait_frames": 30,
+    "attempt_01_calibration_portrait_dominant_parents": 0,
+    "attempt_01_portrait_confidence_calibration_capable": false
+  },
+  "rejected_repairs": [
+    "exclude 43.25 percent of TRAIN frames",
+    "center-crop landscape full FOV into portrait after roster lock",
+    "rotate landscape upright frames sideways into portrait",
+    "non-uniformly stretch landscape frames into portrait"
+  ],
+  "required_successor_properties": [
+    "portrait 1x3x608x448 and landscape 1x3x448x608 full-FOV tensor families",
+    "orientation-bucketed batches",
+    "upright rotation followed by independent sx/sy K update",
+    "orientation-stratified metrics",
+    "pre-outcome Development split with one portrait-dominant parent in calibration and selection",
+    "portrait confidence claim ceiling retained"
+  ],
+  "firewalls": {
+    "image_or_depth_pixels_opened": false,
+    "task_outcome_opened": false,
+    "model_outputs_read": false,
+    "threshold_or_model_selected": false
+  },
+  "authority": "Pre-outcome geometry correction only. Attempt 1 remains historical and cannot authorize implementation or training."
+}
