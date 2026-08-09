@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / FAILURE_ANATOMY_DIAGNOSTIC_COMPLETE / R2_HYPOTHESIS_ONLY / F0_NOT_AUTHORIZED / CALIBRATION_AND_CONFIRMATION_SEALED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / FAILURE_ANATOMY_DIAGNOSTIC_COMPLETE / R2_F0_SYNTHETIC_REDUCER_PASS / F1_EXECUTION_NOT_AUTHORIZED / CALIBRATION_AND_CONFIRMATION_SEALED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -65,6 +65,12 @@
 - `analyze_b1_a0_failure_anatomy.py`：只读已消费、SHA-bound 的 A0 Development observations，分解
   tri-state 分布、clearance residual、false-block 阈值一致性、transition failure 和跨 seed
   failure-mask similarity；结果永久 `NOT_ELIGIBLE_FOR_PROMOTION`。
+- `geometry_r2_reducer.py`：F0 冻结的零参数 interval reducer；只有 positive lower-bound evidence、
+  guaranteed lateral overlap 与 horizon 内 upper-bound distance 同时成立才输出 occupied，歧义或缺失为 UNKNOWN。
+- `fixtures/geometry_r2_f0_cases.json`：23 个 SHA-bound analytic factor case，覆盖 depth/scale、support、
+  boundary、orientation、uncertainty monotonicity、反 A0 场景和 final-task shortcut 负控。
+- `run_geometry_r2_f0_canary.py`：校验协议/实现/fixture SHA 后执行 10 项 conjunctive F0 kill gate，
+  只写新 evidence root；不训练、不读真实数据、不自动授予 F1。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
@@ -88,8 +94,8 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 当前不读取 teacher output，也不授权 C1、QNN/HTP、默认 App、产品或 safety。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。
 移动导出受历史 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry
-选模证据。新 R2 当前只有 factorized hypothesis 文档；没有 reducer implementation、fixture、训练或
-真实数据 authority。
+选模证据。新 R2 已完成且仅完成 synthetic reducer F0：10/10 gate、22/22 normal analytic case、
+1/1 shortcut rejection PASS；没有 factor model、训练、真实数据、真实任务收益或 F1 execution authority。
 `UNKNOWN` 不得当作负例；synthetic shape 与 benchmark geometry 不得冒充任务质量。
 
 ## 停止条件
@@ -102,8 +108,9 @@ implementation lock 与 A0 execution lock 已关闭，三个正式 seed 均完�
 geometry transition agreement 均为 `0/3` seed 通过，终态为
 `B1_A0_DEVELOPMENT_EVALUATION_FAIL_TASK_GATES`。旧 A1 条件 successor 未激活，A1–A4、teacher、
 移动和时序执行继续禁止。只读 failure anatomy 已完成且不可晋级；Selection 已消费且不得复用，
-Calibration 与 Confirmation 保持封存。当前唯一 successor 是另行冻结 R2 F0 synthetic factor/reducer
-协议与 fixtures，本目录尚未获得 F0 execution authority。
+Calibration 与 Confirmation 保持封存。R2 F0 已签署
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS`；当前唯一 successor
+是另行冻结 F1 TRAIN-only factor learnability 协议，本目录没有 F1 数据物化、初始化、训练或 outcome authority。
 
 验证：
 

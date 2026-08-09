@@ -1,0 +1,89 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f0_governed_result_v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_RESULT_2026-08-10",
+  "completed_at": "2026-08-10",
+  "status": "F0_COMPLETE",
+  "terminal": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS",
+  "passed": true,
+  "research_mode": "WILD_LAB_CANARY_LITE",
+  "protocol": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PROTOCOL_2026-08-09.json",
+    "sha256": "C4212B618BA2D5C9FF3A2B86556E701D78C9854408C28DE3FDC5B8409BCF4287",
+    "validator_status": "VALID_ZERO_ERRORS_ZERO_WARNINGS"
+  },
+  "evidence_receipts": {
+    "governed_result": {
+      "path": "artifacts.local/evidence/hftf/assistive-geometry-r2-f0-synthetic-factor-canary-20260810-r0/geometry_r2_f0_canary_result.json",
+      "sha256": "7BCE609E9C09274EAC4FEBC2A3CFCBA92EBFAA0041960FA4522A0EAE95286ECE"
+    },
+    "report": {
+      "path": "artifacts.local/evidence/hftf/assistive-geometry-r2-f0-synthetic-factor-canary-20260810-r0/geometry_r2_f0_canary_report.md",
+      "sha256": "199027B5770D456B9A40977EC1FCBA3C51F387182A9034D19E8CC2B549BDAAFB"
+    }
+  },
+  "frozen_implementation": {
+    "reducer_version": "geometry_r2_interval_reducer_f0_v1",
+    "reducer_sha256": "2D6C26AD75B98911FD610FE0428D47584C877BA9AC7F091F768D98C035932092",
+    "runner_sha256": "BA628A17D930AD066DBF3FCA267D0E1F7BBB539D21001CAA7E13BE70C6516232",
+    "unit_tests_sha256": "EFCCD5F63DBE5A58822AF7B597199FCEE432495072C5F229027FCAA36293B6C9",
+    "fixtures_sha256": "CA8582907791706BE43C2FEEBCD79BE1D730197E486FD0BC0B85B154360B0E25",
+    "trainable_parameter_count": 0,
+    "learned_model_count": 0,
+    "real_dataset_sample_count": 0,
+    "training_step_count": 0
+  },
+  "summary": {
+    "frozen_case_count": 23,
+    "exact_expected_positive_case_count": 22,
+    "expected_shortcut_rejection_case_count": 1,
+    "deterministic_replay_count": 22,
+    "gate_pass_count": 10,
+    "gate_count": 10,
+    "uncertainty_monotonic_group_count": 4,
+    "a0_collapse_counterexample_count": 12,
+    "unsupported_occupancy_count": 0,
+    "orientation_parity_violation_count": 0,
+    "horizon_monotonicity_violation_count": 0,
+    "output_contract_violation_count": 0
+  },
+  "gate_results": [
+    {"id": "F0_G01_PROTOCOL_AND_SHA_BINDINGS", "passed": true},
+    {"id": "F0_G02_REQUIRED_SYNTHETIC_SUITE_COVERAGE", "passed": true},
+    {"id": "F0_G03_EXACT_ORACLE_EXPECTATIONS", "passed": true},
+    {"id": "F0_G04_DETERMINISTIC_REPLAY", "passed": true},
+    {"id": "F0_G05_INTERVAL_OUTPUT_CONTRACT", "passed": true},
+    {"id": "F0_G06_HORIZON_MONOTONICITY", "passed": true},
+    {"id": "F0_G07_UNCERTAINTY_TO_UNKNOWN_MONOTONICITY", "passed": true},
+    {"id": "F0_G08_A0_COLLAPSE_COUNTEREXAMPLES", "passed": true},
+    {"id": "F0_G09_ORIENTATION_AND_BAND_OWNERSHIP", "passed": true},
+    {"id": "F0_G10_FINAL_TASK_SHORTCUT_REJECTED", "passed": true}
+  ],
+  "mechanism_findings": {
+    "factor_truth_to_geometry_closure": "SUPPORTED_ON_FROZEN_SYNTHETIC_FIXTURES",
+    "positive_occupancy_rule": "OCCUPIED_OBSERVED appeared only with lower-bounded evidence, guaranteed lateral overlap and an upper-bounded obstacle distance inside the horizon.",
+    "unknown_rule": "Missing, invalid, incomplete or threshold-straddling evidence emitted UNKNOWN rather than invented OCCUPIED_OBSERVED.",
+    "uncertainty_monotonicity": "Depth noise, scale uncertainty, support uncertainty and boundary blur ladders produced only unchanged states or degradation to UNKNOWN; no uncertainty-only CLEAR-to-OCCUPIED transition occurred.",
+    "anti_a0_result": "Twelve open, far, missing, weak, partial, blurred or scale-biased counterexamples produced zero unsupported occupied bands.",
+    "shortcut_result": "A factor frame containing learned final_state was rejected with FORBIDDEN_FACTOR_FIELD."
+  },
+  "authority": {
+    "claim": "F0_SYNTHETIC_REDUCER_MECHANICS_ONLY",
+    "f1_protocol_writing_may_be_proposed": true,
+    "f1_execution_authority": false,
+    "real_data_authority": false,
+    "development_authority": false,
+    "teacher_or_distillation_authority": false,
+    "temporal_authority": false,
+    "mobile_or_device_authority": false,
+    "calibration_authority": false,
+    "confirmation_authority": false,
+    "default_app_or_product_authority": false,
+    "safety_authority": false
+  },
+  "unique_successor": {
+    "id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK",
+    "execution_authority": false,
+    "allowed_scope": "Write and freeze a separate pre-outcome F1 TRAIN-only protocol; do not materialize real data, initialize a model, train, tune on task outcomes or activate F2."
+  },
+  "claim_ceiling": "The SHA-bound deterministic interval reducer closes correctly on 23 frozen synthetic factor cases and rejects A0-like unsupported occupancy under those cases. This is no evidence that RGB factors are learnable, that real assistive geometry improves, or that teacher, temporal, mobile, Calibration, Confirmation, deployment, product or safety gates pass."
+}

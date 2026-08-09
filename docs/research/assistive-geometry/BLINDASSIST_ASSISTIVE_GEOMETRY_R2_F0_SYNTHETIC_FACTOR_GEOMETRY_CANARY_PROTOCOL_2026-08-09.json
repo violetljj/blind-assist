@@ -1,0 +1,305 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "profile": "CANARY_LITE",
+  "governance_policy_id": "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+  "governance_policy_sha256": "c088093d765ce3900848a80f8a45585bc217409c344c6e7212d87e6bda6d624e",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PROTOCOL",
+  "version": "R2_F0_V1",
+  "stage": "DISCOVERY",
+  "frozen_at": "2026-08-09",
+  "status": [
+    "PRE_OUTCOME_PROTOCOL_FROZEN",
+    "F0_SYNTHETIC_REDUCER_EXECUTION_AUTHORIZED",
+    "F1_AND_ALL_LATER_EXECUTION_NOT_AUTHORIZED"
+  ],
+  "question": "Given correct or explicitly corrupted synthetic depth/scale, support-surface and boundary evidence, does GeometryR2Reducer deterministically close to correct clearance intervals and tri-state assistive geometry while degrading ambiguity to UNKNOWN rather than inventing OCCUPIED?",
+  "parent_protocol": {
+    "id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09",
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.json",
+    "sha256": "B1E72EE192B5776FF99F2476E6C0826863432508ED282905E07134D0B4D3AF1C"
+  },
+  "claims_allowed": [
+    "CANDIDATE_FOUND",
+    "CANDIDATE_NOT_FOUND"
+  ],
+  "claims_forbidden": [
+    "FACTOR_LEARNABILITY",
+    "MODEL_ACCURACY",
+    "TASK_BENEFIT",
+    "DEVELOPMENT_PERFORMANCE",
+    "TEACHER_COMPLEMENTARITY",
+    "TEMPORAL_BENEFIT",
+    "MOBILE_TASK_PRESERVATION",
+    "CALIBRATION",
+    "CONFIRMATION",
+    "DEPLOYMENT",
+    "PRODUCT_OR_SAFETY_CLAIM"
+  ],
+  "bindings": [
+    {
+      "role": "PARENT_R2_HYPOTHESIS",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.json",
+      "sha256": "B1E72EE192B5776FF99F2476E6C0826863432508ED282905E07134D0B4D3AF1C"
+    },
+    {
+      "role": "FROZEN_DETERMINISTIC_REDUCER",
+      "path": "scripts/research/assistive_geometry/geometry_r2_reducer.py",
+      "sha256": "2D6C26AD75B98911FD610FE0428D47584C877BA9AC7F091F768D98C035932092"
+    },
+    {
+      "role": "FROZEN_FORMAL_RUNNER",
+      "path": "scripts/research/assistive_geometry/run_geometry_r2_f0_canary.py",
+      "sha256": "BA628A17D930AD066DBF3FCA267D0E1F7BBB539D21001CAA7E13BE70C6516232"
+    },
+    {
+      "role": "FROZEN_UNIT_TESTS",
+      "path": "scripts/research/assistive_geometry/test_geometry_r2_f0.py",
+      "sha256": "EFCCD5F63DBE5A58822AF7B597199FCEE432495072C5F229027FCAA36293B6C9"
+    },
+    {
+      "role": "FROZEN_SYNTHETIC_FIXTURES",
+      "path": "scripts/research/assistive_geometry/fixtures/geometry_r2_f0_cases.json",
+      "sha256": "CA8582907791706BE43C2FEEBCD79BE1D730197E486FD0BC0B85B154360B0E25"
+    }
+  ],
+  "data_partitions": [
+    {
+      "id": "R2_F0_SYNTHETIC_FACTOR_FIXTURES_V1",
+      "source_identity": "DETERMINISTIC_HAND_AUTHORED_ANALYTIC_FACTOR_FIXTURES",
+      "content_identity": "SHA256_CA8582907791706BE43C2FEEBCD79BE1D730197E486FD0BC0B85B154360B0E25",
+      "identity_basis": "Exact fixture bytes and expected state maps frozen before the formal canary outcome.",
+      "independence_group": "R2_F0_SYNTHETIC_ONLY",
+      "ancestry": [],
+      "role": "CANARY",
+      "outcome_access": "NONE",
+      "result_access_state": "CONTENT_INSPECTED",
+      "observation_unit": "SEQUENCE",
+      "split_basis": "NOT_APPLICABLE_NO_LEARNING_OR_SELECTION",
+      "research_track": "CAPABILITY_DISCOVERY",
+      "reuse_policy": "UNIT_AND_REGRESSION_ONLY_NOT_MODEL_OR_TASK_UTILITY_EVIDENCE"
+    }
+  ],
+  "fixture_contract": {
+    "schema": "blindassist_assistive_geometry_r2_f0_fixture_suite_v1",
+    "case_count": 23,
+    "real_dataset_sample_count": 0,
+    "learned_model_count": 0,
+    "training_step_count": 0,
+    "required_suites": [
+      "depth_scale",
+      "support_surface",
+      "boundary_evidence",
+      "reducer_closure",
+      "unknown_monotonicity",
+      "a0_collapse_counterexample",
+      "orientation_parity",
+      "negative_control"
+    ],
+    "depth_scale_cases": [
+      "perfect metric depth",
+      "global scale uncertainty",
+      "global scale bias",
+      "local depth noise",
+      "local depth missing",
+      "global scale missing"
+    ],
+    "support_cases": [
+      "flat support",
+      "mild slope",
+      "non-ground obstacle",
+      "support missing",
+      "wrong support plane",
+      "support uncertainty beyond contract"
+    ],
+    "boundary_cases": [
+      "sharp boundary",
+      "weak boundary evidence",
+      "depth discontinuity",
+      "false texture evidence",
+      "partial boundary coverage",
+      "blurred boundary localization"
+    ],
+    "a0_collapse_counterexamples": [
+      "wide flat empty space",
+      "side obstacles with open center corridor",
+      "far obstacle outside task horizon",
+      "local center depth missing",
+      "support confidence degradation",
+      "weak boundary",
+      "partial boundary coverage",
+      "boundary blur",
+      "scale bias insufficient to prove blocked"
+    ]
+  },
+  "reducer_contract": {
+    "name": "GeometryR2Reducer",
+    "version": "geometry_r2_interval_reducer_f0_v1",
+    "trainable_parameters": 0,
+    "learned_inputs": 0,
+    "only_final_state_producer": true,
+    "final_states": ["CLEAR_OBSERVED", "OCCUPIED_OBSERVED", "UNKNOWN"],
+    "clear_rule": "Emit CLEAR_OBSERVED only when no admissible obstacle interval can occupy the band within the horizon.",
+    "occupied_rule": "Emit OCCUPIED_OBSERVED only when the lower evidence bound passes threshold, lateral overlap is guaranteed and the upper forward-distance bound lies within the horizon.",
+    "unknown_rule": "Emit UNKNOWN for missing or invalid global geometry, missing local factors, incomplete boundary coverage, or any possible-but-not-guaranteed occupancy interval.",
+    "anti_a0_invariant": "Without sufficient positive occupancy evidence, uncertainty may not produce OCCUPIED_OBSERVED.",
+    "unknown_monotonicity": "As any frozen uncertainty factor is worsened, each definite state may remain equal or degrade to UNKNOWN; CLEAR_OBSERVED may never become OCCUPIED_OBSERVED due only to uncertainty.",
+    "task_shortcuts_forbidden": [
+      "direct clearance",
+      "direct occupancy or logit",
+      "direct free or blocked",
+      "learned final state",
+      "learned UNKNOWN logit"
+    ]
+  },
+  "reducer_profile": {
+    "left_band_m": [-0.75, -0.25],
+    "center_band_m": [-0.25, 0.25],
+    "right_band_m": [0.25, 0.75],
+    "boundary_ownership": "LEFT_CLOSED_RIGHT_OPEN_EXCEPT_FINAL_RIGHT_MAX_INCLUDED",
+    "horizons_m": [1.0, 1.5, 2.0],
+    "obstacle_evidence_threshold": 0.7,
+    "min_boundary_coverage": 0.99,
+    "max_support_slope_deg": 20.0,
+    "support_unknown_sigma_m": 0.3,
+    "provenance": "Synthetic reducer mechanics constants only; these are not F1 or F2 task-performance gates and may not be copied as such."
+  },
+  "gates": [
+    {"id": "F0_G01_PROTOCOL_AND_SHA_BINDINGS", "operator": "EQ", "threshold": 1, "unit": "boolean", "failure_scope": "EVIDENCE_VERSION"},
+    {"id": "F0_G02_REQUIRED_SYNTHETIC_SUITE_COVERAGE", "operator": "EQ", "threshold": 1.0, "unit": "fraction", "failure_scope": "IMPLEMENTATION_VERSION"},
+    {"id": "F0_G03_EXACT_ORACLE_EXPECTATIONS", "operator": "EQ", "threshold": 1.0, "unit": "fraction", "failure_scope": "IMPLEMENTATION_VERSION"},
+    {"id": "F0_G04_DETERMINISTIC_REPLAY", "operator": "EQ", "threshold": 1.0, "unit": "fraction", "failure_scope": "IMPLEMENTATION_VERSION"},
+    {"id": "F0_G05_INTERVAL_OUTPUT_CONTRACT", "operator": "EQ", "threshold": 1.0, "unit": "fraction", "failure_scope": "IMPLEMENTATION_VERSION"},
+    {"id": "F0_G06_HORIZON_MONOTONICITY", "operator": "EQ", "threshold": 1.0, "unit": "fraction", "failure_scope": "IMPLEMENTATION_VERSION"},
+    {"id": "F0_G07_UNCERTAINTY_TO_UNKNOWN_MONOTONICITY", "operator": "EQ", "threshold": 1.0, "unit": "fraction", "failure_scope": "IMPLEMENTATION_VERSION"},
+    {"id": "F0_G08_A0_COLLAPSE_COUNTEREXAMPLES", "operator": "EQ", "threshold": 1.0, "unit": "fraction", "failure_scope": "IMPLEMENTATION_VERSION"},
+    {"id": "F0_G09_ORIENTATION_AND_BAND_OWNERSHIP", "operator": "EQ", "threshold": 1.0, "unit": "fraction", "failure_scope": "IMPLEMENTATION_VERSION"},
+    {"id": "F0_G10_FINAL_TASK_SHORTCUT_REJECTED", "operator": "EQ", "threshold": 1.0, "unit": "fraction", "failure_scope": "IMPLEMENTATION_VERSION"}
+  ],
+  "pass_rule": "All ten gates pass conjunctively. Undefined, absent or mismatched evidence fails; no scalar score, threshold relaxation or partial pass exists.",
+  "terminals": {
+    "pass": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS",
+    "kill": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_KILL",
+    "kill_effect": "Close geometry_r2_interval_reducer_f0_v1 only; do not train, tune task gates or reinterpret B1-A0."
+  },
+  "execution_authority": {
+    "f0_synthetic_reducer_canary": true,
+    "f1_train_only_factor_learnability": false,
+    "f2_new_development_evaluation": false,
+    "teacher_distillation": false,
+    "temporal_modeling": false,
+    "mobile_deployment": false,
+    "calibration": false,
+    "confirmation": false
+  },
+  "freeze": {
+    "level": "F0",
+    "outcome_access_started": false,
+    "amendment_mode": "IN_PLACE_BEFORE_OUTCOME",
+    "frozen_now": [
+      "reducer implementation and version",
+      "fixture bytes and analytic expected states",
+      "runner and unit-test bytes",
+      "body bands and task horizons",
+      "ten conjunctive F0 gates",
+      "uncertainty-to-UNKNOWN monotonicity",
+      "anti-A0 positive-evidence invariant",
+      "F0-only authority ceiling"
+    ],
+    "unresolved_before_execution": []
+  },
+  "unique_successor": {
+    "id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK",
+    "condition": "F0_PASS_ONLY",
+    "execution_authority": false,
+    "scope": "A PASS may authorize writing and freezing a separate F1 TRAIN-only protocol. It does not authorize data materialization, model initialization, training or outcome access."
+  },
+  "constraints": [
+    {
+      "id": "R2-F0-C01-synthetic-only",
+      "class": "INVARIANT",
+      "description": "F0 consumes only frozen synthetic factor fixtures; no RGB model, real dataset, B1 artifact outcome or learned parameter enters the canary.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "R2-F0-C02-unknown-not-blocked",
+      "class": "GATE",
+      "description": "Missing or ambiguous evidence becomes UNKNOWN and is never counted or serialized as occupied.",
+      "metric": "uncertainty_to_unknown_monotonicity_pass",
+      "operator": "EQ",
+      "threshold": 1.0,
+      "unit": "fraction",
+      "rationale": "Directly falsifies the A0-like mechanism in which conservatism collapses to universal blocking.",
+      "calibration_source": "Pre-outcome tri-state semantics and analytic interval inclusion.",
+      "sensitivity_plan": "Frozen low, medium and high uncertainty ladders for depth, scale, support and boundary factors.",
+      "revision_policy": "Any failure kills this reducer version; the outcome may not be rescued in place.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "R2-F0-C03-positive-evidence-required",
+      "class": "GATE",
+      "description": "OCCUPIED_OBSERVED requires guaranteed spatial overlap and a positive lower evidence bound; uncertainty alone cannot create occupancy.",
+      "metric": "a0_counterexample_unsupported_occupancy_absent",
+      "operator": "EQ",
+      "threshold": 1.0,
+      "unit": "fraction",
+      "rationale": "Prevents an all-blocked operating point from masquerading as safety conservatism.",
+      "calibration_source": "Analytic factor truth fixed before execution.",
+      "sensitivity_plan": "Nine frozen anti-collapse counterexamples span missing, weak, blurred, biased and far evidence.",
+      "revision_policy": "No threshold adjustment after execution; a new reducer version requires a new frozen fixture protocol.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "R2-F0-C04-no-f1-authority",
+      "class": "INVARIANT",
+      "description": "F0 PASS grants only protocol-writing authority for F1 and never grants F1 execution authority.",
+      "failure_scope": "BRANCH"
+    }
+  ],
+  "experiment_design": {
+    "search_strategy": "SINGLE_FROZEN_DETERMINISTIC_CONSTRUCTION_NO_SEARCH",
+    "minimal_discriminating_experiment": "Replay 23 analytic factor frames through the SHA-bound reducer and require exact oracle states, deterministic replay, uncertainty monotonicity and absence of unsupported occupancy.",
+    "resource_budget": "CPU-only execution of 23 synthetic frames and focused unit tests; zero training, model, real-data, teacher, temporal, mobile or device budget.",
+    "stop_conditions": "Stop and kill this reducer implementation version on the first conjunctive gate failure; do not tune in place after outcome access."
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "R2-F0-H1-INTERVAL_REDUCER_CLOSES_WITHOUT_OVERBLOCKING",
+      "theoretical_or_empirical_basis": "Analytic interval propagation can separate proved obstacle occupancy from missing or threshold-straddling evidence, allowing ambiguity to remain UNKNOWN.",
+      "causal_difference": "The learned graph is absent; final geometry is produced exclusively by a deterministic interval reducer from oracle or explicitly corrupted continuous factors.",
+      "expected_information_gain": "Determines whether the R2 geometry definition itself is coherent before any factor model or real dataset is introduced.",
+      "minimal_test": "Exact replay of frozen depth, scale, support, boundary, orientation and anti-A0 counterexamples.",
+      "evaluation_metric": "Ten conjunctive Boolean gates over exact state maps, output coverage, deterministic replay, horizon nesting, uncertainty monotonicity and unsupported occupancy absence.",
+      "falsifier": "Any exact mismatch, learned-task shortcut acceptance, nondeterminism, CLEAR-to-OCCUPIED uncertainty transition, or OCCUPIED without sufficient positive evidence.",
+      "cost": "LOW_CPU_ONLY",
+      "resource_budget": "One reducer version, one fixture suite, 23 frames, no search.",
+      "stop_condition": "Kill geometry_r2_interval_reducer_f0_v1 without training or real-data consumption if any gate fails.",
+      "selection_reason": "It directly tests the mathematical front door that must hold before factor learnability can be scientifically meaningful."
+    }
+  ],
+  "successor_policy": {
+    "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK",
+    "successor_currently_authorized": false,
+    "successor_scope": "F0 PASS may authorize protocol writing only; F1 execution remains unauthorized.",
+    "new_version_allowed": true,
+    "preserve_previous_evidence": true,
+    "permissions_never_automatic": [
+      "training",
+      "real-data access",
+      "teacher execution",
+      "temporal execution",
+      "mobile or device execution",
+      "Calibration",
+      "Confirmation"
+    ]
+  },
+  "result_model": {
+    "scientific_status": "NOT_RUN_AT_FREEZE",
+    "claim_eligibility": "F0_SYNTHETIC_MECHANICS_ONLY",
+    "protocol_status": "FROZEN",
+    "execution_validity": "NOT_RUN",
+    "scientific_outcome": "NOT_RUN",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "terminal_scope": "IMPLEMENTATION_VERSION"
+  },
+  "claim_ceiling": "Synthetic, deterministic factor-to-geometry reducer mechanics under 23 frozen analytic cases only. No visual factor learnability, real-scene task utility, teacher, temporal, mobile, Calibration, Confirmation, deployment, product or safety authority."
+}

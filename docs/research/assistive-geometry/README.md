@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / FAILURE_ANATOMY_DIAGNOSTIC_COMPLETE / R2_PRE_OUTCOME_HYPOTHESIS_FROZEN / F0_NOT_AUTHORIZED / ALL_CALIBRATION_AND_CONFIRMATION_SEALED`
+状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / FAILURE_ANATOMY_DIAGNOSTIC_COMPLETE / R2_F0_SYNTHETIC_REDUCER_PASS / F1_EXECUTION_NOT_AUTHORIZED / ALL_CALIBRATION_AND_CONFIRMATION_SEALED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -62,6 +62,10 @@
 - [B1 A0 failure-anatomy machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FAILURE_ANATOMY_RESULT_2026-08-09.json)
 - [Geometry R2 factorized hypothesis protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)
 - [Geometry R2 factorized hypothesis machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.json)
+- [Geometry R2 F0 synthetic reducer protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PROTOCOL_2026-08-09.md)
+- [Geometry R2 F0 synthetic reducer machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PROTOCOL_2026-08-09.json)
+- [Geometry R2 F0 synthetic reducer result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_RESULT_2026-08-10.md)
+- [Geometry R2 F0 synthetic reducer machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_RESULT_2026-08-10.json)
 - [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
@@ -76,11 +80,11 @@
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PROTOCOL_AND_FIXTURES`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK`
 
-该 successor 当前没有 execution authority。只允许另行冻结 F0 synthetic factor schema、
-deterministic reducer protocol 与 analytic fixtures；不得训练、读取真实 outcome、分配 R2 Development
-或启动 teacher / temporal / mobile。
+该 successor 只允许另行起草并冻结 F1 TRAIN-only factor learnability 协议；其 execution authority
+仍为 `false`。不得物化真实数据、初始化或训练模型、读取 task outcome、分配 R2 Development，
+也不得启动 teacher / temporal / mobile。
 
 ARKitScenes `16/8/8` visit/video-disjoint roster 与 9,600-frame integrity 已冻结；B0 reader 又以
 6 个 TRAIN 视频、157 个 AppleDepth/FARO exact-timestamp 对照和主 TRAIN 的 480 个固定 stride
@@ -110,10 +114,14 @@ false-block mask Jaccard 为 `0.924–0.936`；transition failure 的 81.9%–82
 predicted-occupied，而非 flip。全部 truth-clear 支持集中于 parent `464241`，故不能外推全场景，也
 不能因果指定 depth scale 或 ground/support 为单一罪因。该诊断不具有晋级资格。
 
-新 R2 只冻结到 outcome-blind factorized hypothesis：学习图禁止输出 final clearance/occupancy，
-只提供 metric-ish depth、support 和 boundary/evidence 连续因子及 uncertainty；版本化 deterministic
-reducer 是最终三态唯一 producer。最小顺序固定为 F0 synthetic mechanics → F1 TRAIN-only factor
-learnability → F2 全新至少 8-parent Development，数字 task 门不得继承 B1 或使用 anatomy 选取。
+新 R2 的 F0 已以零模型、零真实数据、零训练完成 synthetic mechanics kill gate：23 个冻结 case 中
+22 个解析真值逐项精确匹配，1 个 learned final-state shortcut 负控被拒绝；10/10 gate PASS，
+4 条 uncertainty degradation ladder 无 `CLEAR→OCCUPIED`，12 个反 A0 counterexample 的 unsupported
+occupancy 为 0。学习图仍禁止输出 final clearance/occupancy，只能在未来提供 metric-ish depth、support
+和 boundary/evidence 连续因子及 uncertainty；版本化 deterministic reducer 是最终三态唯一 producer。
+最小顺序仍为 F0 synthetic mechanics → F1 TRAIN-only factor learnability → F2 全新至少 8-parent
+Development，数字 task 门不得继承 B1 或使用 anatomy/F0 outcome 事后选取。F0 PASS 只允许冻结下一份
+F1 协议，不构成 factor learnability 或真实任务收益证据。
 异质教师只冻结到 C0 complementarity kill gate mechanics：教师 identity、评估 cohort 和输出仍未
 授权，未通过 oracle 增益、独占正确 parent、分歧错误浓度和时序优势四类门前不得启动 C1 蒸馏。
 时序 D0 也只冻结因果 GRU/TCN/diagonal-SSM 的统一 GeometryState 接口、参数/设备预算和未来

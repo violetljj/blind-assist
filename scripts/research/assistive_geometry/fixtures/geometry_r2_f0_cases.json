@@ -1,0 +1,244 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f0_fixture_suite_v1",
+  "suite_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY",
+  "reducer_profile": {
+    "bands": [
+      {"name": "left", "x_min_m": -0.75, "x_max_m": -0.25, "include_max": false},
+      {"name": "center", "x_min_m": -0.25, "x_max_m": 0.25, "include_max": false},
+      {"name": "right", "x_min_m": 0.25, "x_max_m": 0.75, "include_max": true}
+    ],
+    "horizons_m": [1.0, 1.5, 2.0],
+    "obstacle_evidence_threshold": 0.7,
+    "min_boundary_coverage": 0.99,
+    "max_support_slope_deg": 20.0,
+    "support_unknown_sigma_m": 0.3
+  },
+  "base_factor_frame": {
+    "schema": "blindassist_assistive_geometry_r2_factor_frame_v1",
+    "frame_id": "BASE_NOT_EXECUTED",
+    "factor_identity": {
+      "source": "SYNTHETIC_ORACLE",
+      "model": null,
+      "dataset_parent": null,
+      "learned_final_task_head": false
+    },
+    "input_geometry": {
+      "k_valid": true,
+      "transform_valid": true,
+      "gravity_valid": true,
+      "gravity_up_camera": [0.0, 1.0, 0.0],
+      "orientation": "landscape"
+    },
+    "depth_scale": {
+      "valid": true,
+      "scale_m": 1.0,
+      "scale_sigma_m": 0.01
+    },
+    "support": {
+      "valid": true,
+      "normal_camera": [0.0, 1.0, 0.0],
+      "normal_sigma_rad": 0.005,
+      "camera_height_m": 1.2,
+      "height_sigma_m": 0.01,
+      "residual_sigma_m": 0.01
+    },
+    "boundary": {
+      "valid": true,
+      "coverage": 1.0,
+      "obstacles": []
+    }
+  },
+  "required_suites": [
+    "depth_scale",
+    "support_surface",
+    "boundary_evidence",
+    "reducer_closure",
+    "unknown_monotonicity",
+    "a0_collapse_counterexample",
+    "orientation_parity",
+    "negative_control"
+  ],
+  "cases": [
+    {
+      "id": "perfect_metric_depth_flat_empty",
+      "suites": ["depth_scale", "support_surface", "reducer_closure", "a0_collapse_counterexample"],
+      "patch": {},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "mild_support_slope_empty",
+      "suites": ["support_surface", "reducer_closure"],
+      "patch": {"support": {"normal_camera": [0.0, 0.9902680687415704, 0.13917310096006544]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]}
+    },
+    {
+      "id": "non_ground_center_obstacle_depth_discontinuity_landscape",
+      "suites": ["depth_scale", "support_surface", "boundary_evidence", "reducer_closure", "orientation_parity", "unknown_monotonicity"],
+      "parity_group": "center_obstacle_orientation",
+      "monotonic_group": "depth_noise_center_obstacle",
+      "monotonic_order": 0,
+      "patch": {"boundary": {"obstacles": [{"kind": "depth_discontinuity", "depth_valid": true, "depth_shape_forward": 1.2, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "OCCUPIED_OBSERVED", "OCCUPIED_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": ["center"]
+    },
+    {
+      "id": "non_ground_center_obstacle_depth_discontinuity_portrait",
+      "suites": ["orientation_parity"],
+      "parity_group": "center_obstacle_orientation",
+      "patch": {"input_geometry": {"orientation": "portrait"}, "boundary": {"obstacles": [{"kind": "depth_discontinuity", "depth_valid": true, "depth_shape_forward": 1.2, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "OCCUPIED_OBSERVED", "OCCUPIED_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": ["center"]
+    },
+    {
+      "id": "depth_noise_center_obstacle_medium",
+      "suites": ["depth_scale", "unknown_monotonicity"],
+      "monotonic_group": "depth_noise_center_obstacle",
+      "monotonic_order": 1,
+      "patch": {"boundary": {"obstacles": [{"kind": "noisy_depth", "depth_valid": true, "depth_shape_forward": 1.2, "depth_shape_sigma": 0.2, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["UNKNOWN", "OCCUPIED_OBSERVED", "OCCUPIED_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": ["center"]
+    },
+    {
+      "id": "depth_noise_center_obstacle_high",
+      "suites": ["depth_scale", "unknown_monotonicity"],
+      "monotonic_group": "depth_noise_center_obstacle",
+      "monotonic_order": 2,
+      "patch": {"boundary": {"obstacles": [{"kind": "noisy_depth", "depth_valid": true, "depth_shape_forward": 1.2, "depth_shape_sigma": 0.5, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["UNKNOWN", "UNKNOWN", "OCCUPIED_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": ["center"]
+    },
+    {
+      "id": "side_obstacles_center_corridor_open",
+      "suites": ["boundary_evidence", "reducer_closure", "a0_collapse_counterexample"],
+      "patch": {"boundary": {"obstacles": [{"kind": "solid", "depth_valid": true, "depth_shape_forward": 0.7, "depth_shape_sigma": 0.01, "lateral_center_m": -0.5, "lateral_half_width_m": 0.1, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}, {"kind": "solid", "depth_valid": true, "depth_shape_forward": 0.7, "depth_shape_sigma": 0.01, "lateral_center_m": 0.5, "lateral_half_width_m": 0.1, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["OCCUPIED_OBSERVED", "OCCUPIED_OBSERVED", "OCCUPIED_OBSERVED"], "center": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "right": ["OCCUPIED_OBSERVED", "OCCUPIED_OBSERVED", "OCCUPIED_OBSERVED"]},
+      "positive_occupancy_bands": ["left", "right"]
+    },
+    {
+      "id": "far_center_obstacle_outside_horizon_low_scale_uncertainty",
+      "suites": ["depth_scale", "a0_collapse_counterexample", "unknown_monotonicity"],
+      "monotonic_group": "scale_uncertainty_far_obstacle",
+      "monotonic_order": 0,
+      "patch": {"boundary": {"obstacles": [{"kind": "far_solid", "depth_valid": true, "depth_shape_forward": 2.4, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "far_center_obstacle_medium_scale_uncertainty",
+      "suites": ["depth_scale", "unknown_monotonicity"],
+      "monotonic_group": "scale_uncertainty_far_obstacle",
+      "monotonic_order": 1,
+      "patch": {"depth_scale": {"scale_sigma_m": 0.1}, "boundary": {"obstacles": [{"kind": "far_solid", "depth_valid": true, "depth_shape_forward": 2.4, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "far_center_obstacle_high_scale_uncertainty",
+      "suites": ["depth_scale", "unknown_monotonicity", "a0_collapse_counterexample"],
+      "monotonic_group": "scale_uncertainty_far_obstacle",
+      "monotonic_order": 2,
+      "patch": {"depth_scale": {"scale_m": 1.0, "scale_sigma_m": 0.2}, "boundary": {"obstacles": [{"kind": "far_solid", "depth_valid": true, "depth_shape_forward": 2.4, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "UNKNOWN"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "global_depth_scale_missing",
+      "suites": ["depth_scale", "negative_control"],
+      "patch": {"depth_scale": {"valid": false}},
+      "expected_states": {"left": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "center": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "right": ["UNKNOWN", "UNKNOWN", "UNKNOWN"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "local_center_depth_missing",
+      "suites": ["depth_scale", "a0_collapse_counterexample"],
+      "patch": {"boundary": {"obstacles": [{"kind": "missing_depth_region", "depth_valid": false, "depth_shape_forward": 1.2, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.1, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "support_surface_missing",
+      "suites": ["support_surface", "negative_control", "a0_collapse_counterexample"],
+      "patch": {"support": {"valid": false}},
+      "expected_states": {"left": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "center": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "right": ["UNKNOWN", "UNKNOWN", "UNKNOWN"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "support_plane_wrong_orientation",
+      "suites": ["support_surface", "negative_control"],
+      "patch": {"support": {"normal_camera": [1.0, 0.0, 0.0]}},
+      "expected_states": {"left": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "center": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "right": ["UNKNOWN", "UNKNOWN", "UNKNOWN"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "support_confidence_degraded_beyond_contract",
+      "suites": ["support_surface", "unknown_monotonicity", "a0_collapse_counterexample"],
+      "monotonic_group": "support_uncertainty_empty",
+      "monotonic_order": 1,
+      "patch": {"support": {"normal_sigma_rad": 0.14}},
+      "expected_states": {"left": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "center": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "right": ["UNKNOWN", "UNKNOWN", "UNKNOWN"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "support_confidence_nominal_empty",
+      "suites": ["support_surface", "unknown_monotonicity"],
+      "monotonic_group": "support_uncertainty_empty",
+      "monotonic_order": 0,
+      "patch": {},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "weak_boundary_evidence_near_center",
+      "suites": ["boundary_evidence", "a0_collapse_counterexample"],
+      "patch": {"boundary": {"obstacles": [{"kind": "weak_boundary", "depth_valid": true, "depth_shape_forward": 1.2, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.7, "evidence_sigma": 0.2}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "UNKNOWN", "UNKNOWN"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "false_texture_boundary_ignored",
+      "suites": ["boundary_evidence", "a0_collapse_counterexample"],
+      "patch": {"boundary": {"obstacles": [{"kind": "texture_only", "depth_valid": true, "depth_shape_forward": 1.2, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.2, "evidence_sigma": 0.1}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "partial_boundary_coverage",
+      "suites": ["boundary_evidence", "negative_control", "a0_collapse_counterexample"],
+      "patch": {"boundary": {"coverage": 0.5}},
+      "expected_states": {"left": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "center": ["UNKNOWN", "UNKNOWN", "UNKNOWN"], "right": ["UNKNOWN", "UNKNOWN", "UNKNOWN"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "blurred_boundary_center_obstacle",
+      "suites": ["boundary_evidence", "unknown_monotonicity", "a0_collapse_counterexample"],
+      "monotonic_group": "boundary_blur_center_obstacle",
+      "monotonic_order": 1,
+      "patch": {"boundary": {"obstacles": [{"kind": "blurred", "depth_valid": true, "depth_shape_forward": 1.2, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.15, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "UNKNOWN", "UNKNOWN"], "center": ["CLEAR_OBSERVED", "UNKNOWN", "UNKNOWN"], "right": ["CLEAR_OBSERVED", "UNKNOWN", "UNKNOWN"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "sharp_boundary_center_obstacle",
+      "suites": ["boundary_evidence", "unknown_monotonicity"],
+      "monotonic_group": "boundary_blur_center_obstacle",
+      "monotonic_order": 0,
+      "patch": {"boundary": {"obstacles": [{"kind": "sharp", "depth_valid": true, "depth_shape_forward": 1.2, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "OCCUPIED_OBSERVED", "OCCUPIED_OBSERVED"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": ["center"]
+    },
+    {
+      "id": "scale_bias_insufficient_to_prove_blocked",
+      "suites": ["depth_scale", "a0_collapse_counterexample"],
+      "patch": {"depth_scale": {"scale_m": 0.8, "scale_sigma_m": 0.2}, "boundary": {"obstacles": [{"kind": "far_under_scale_bias", "depth_valid": true, "depth_shape_forward": 2.4, "depth_shape_sigma": 0.01, "lateral_center_m": 0.0, "lateral_half_width_m": 0.12, "boundary_sigma_m": 0.01, "evidence_probability": 0.98, "evidence_sigma": 0.01}]}},
+      "expected_states": {"left": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"], "center": ["CLEAR_OBSERVED", "UNKNOWN", "UNKNOWN"], "right": ["CLEAR_OBSERVED", "CLEAR_OBSERVED", "CLEAR_OBSERVED"]},
+      "positive_occupancy_bands": []
+    },
+    {
+      "id": "forbidden_learned_final_task_shortcut",
+      "suites": ["negative_control"],
+      "patch": {"final_state": "OCCUPIED_OBSERVED"},
+      "expected_error_code": "FORBIDDEN_FACTOR_FIELD"
+    }
+  ]
+}
