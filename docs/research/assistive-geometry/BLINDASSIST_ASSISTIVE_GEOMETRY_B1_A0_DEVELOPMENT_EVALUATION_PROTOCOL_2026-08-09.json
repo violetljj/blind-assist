@@ -10,6 +10,10 @@
       "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL_2026-08-09.json",
       "sha256": "2B21941CE004B1144487C25155F2E74793B477D4CFC4DBD6AE50FCC76AE03752"
     },
+    "seed_29_retry_protocol": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL_2026-08-09_ATTEMPT_02.json",
+      "sha256": "AF42E3CD97C1B647AF9020E92C34DEC542618596D907D9464BDF3F51B9C3A857"
+    },
     "source_manifest": {
       "path": "artifacts.local/datasets/assistive-geometry-b0-arkitscenes-20260809-r2/manifest.json",
       "sha256": "F51041594FF34EE922F92A7A49AAD7CA44551B5C0A8D77A81693ECFFDD226D87"
@@ -65,7 +69,7 @@
       "result_path": "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-formal-train-20260809-r1/seed-17/result.json"
     },
     "29": {
-      "result_path": "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-formal-train-20260809-r1/seed-29/result.json"
+      "result_path": "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-formal-train-20260809-r2/seed-29/result.json"
     },
     "43": {
       "result_path": "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-formal-train-20260809-r1/seed-43/result.json"

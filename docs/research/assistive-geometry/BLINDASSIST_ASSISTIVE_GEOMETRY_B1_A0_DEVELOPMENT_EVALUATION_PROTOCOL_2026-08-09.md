@@ -5,6 +5,8 @@
 本协议把 A0 的真实 Development 评估实现在打开任何 Development frame 前冻结。激活门是
 seed `17 / 29 / 43` 均完成 20 epochs、6000 optimizer steps 和四个留存检查点；物化器会在
 读取首帧前再次验证该门。
+seed 29 的 Attempt 01 OOM 失败收据永久保留；只有从共同 DepthART 初始化完整重跑的 Attempt 02
+r2 result 可满足 seed 29 激活门，未落盘的 297 steps 不拼接、不计入 6000 steps。
 
 评估只打开冻结的 `DEVELOPMENT_SELECTION` 四个 parent，共 1200 帧。Calibration 与
 Confirmation 保持封存。A0 使用 `预测 dense depth → 冻结 gravity/geometry reader`，不会读取

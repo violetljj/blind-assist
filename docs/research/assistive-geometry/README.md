@@ -42,6 +42,8 @@
 - [B1 A0 TRAIN execution lock result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEPTH_ONLY_TRAIN_EXECUTION_LOCK_RESULT_2026-08-09.md)
 - [B1 A0 TRAIN execution machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEPTH_ONLY_TRAIN_EXECUTION_LOCK_RESULT_2026-08-09.json)
 - [B1 A0 formal TRAIN execution protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL_2026-08-09.json)
+- [B1 A0 seed 29 formal TRAIN retry Attempt 02](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL_2026-08-09_ATTEMPT_02.md)
+- [B1 A0 seed 29 formal TRAIN retry machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL_2026-08-09_ATTEMPT_02.json)
 - [B1 A0 host performance preflight result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_TRAIN_PERFORMANCE_PREFLIGHT_RESULT_2026-08-09.md)
 - [B1 A0 host performance machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_TRAIN_PERFORMANCE_PREFLIGHT_RESULT_2026-08-09.json)
 - [B1 A0 evaluation synthetic dry-run protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_PROTOCOL_2026-08-09.md)
@@ -75,8 +77,8 @@ checkpoint 的训练 Autograd smoke；带缺失 Autograd-key 警告的部署 ope
 全状态 checkpoint roundtrip 现已关闭。正式 runner 又以同一真实路径比较 `workers=0/1/4`，
 选出 `workers=1` 的 `0.5453 step/s`，外推每 seed `3.06h`、诊断上界 `4h`；三档 CPU 输入
 摘要一致，但 CUDA 权重不签署 bit-exact。seed 17 已完成 20 epochs / 6000 steps，四个留存点、
-最终 carry、模型状态和 TRAIN-only 防火墙均闭合；seed 29 正在 guarded TRAIN-only 执行，43 尚未
-启动。与此同时，纯合成 evaluator dry-run 已覆盖 12 个 tiny
+最终 carry、模型状态和 TRAIN-only 防火墙均闭合；seed 29 Attempt 01 在 2097 steps 收到 CUDA
+OOM 并保留失败收据，Attempt 02 已冻结为从共同初始化完整重跑，43 尚未启动。与此同时，纯合成 evaluator dry-run 已覆盖 12 个 tiny
 checkpoint、三 seed 无选择聚合、九格指标、UNKNOWN、全局零分母、缺 horizon、coverage 塌缩、
 协议漂移和失败相邻日志并通过。它不读取 Development/Confirmation outcome，也不授权真实评价；
 正式 Development evaluator v2 现已在 outcome 前冻结：补齐 ground recovery、clearance coverage、
