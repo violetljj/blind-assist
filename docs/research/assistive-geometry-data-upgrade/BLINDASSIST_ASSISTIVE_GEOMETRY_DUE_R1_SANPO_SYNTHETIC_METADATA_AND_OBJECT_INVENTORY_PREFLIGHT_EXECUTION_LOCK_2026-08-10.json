@@ -1,0 +1,197 @@
+{
+  "schema": "blindassist.assistive_geometry_due.sanpo_synthetic_r1_metadata_preflight_execution.v1",
+  "execution_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_METADATA_AND_OBJECT_INVENTORY_PREFLIGHT_EXECUTION_2026-08-10",
+  "status": "METADATA_PREFLIGHT_EXECUTION_AUTHORIZED_FRAME_BODY_FORBIDDEN",
+  "predecessor_protocol": {
+    "path": "docs/research/assistive-geometry-data-upgrade/BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_SOURCE_SPECIFIC_INTEGRITY_AND_CAPABILITY_AUDIT_PROTOCOL_LOCK_2026-08-10.json",
+    "sha256": "C3F0365E5C3AE0BF49D594E5CFA452A1F0E5A07C3A160CDCD1B1A617F60FA52D",
+    "required_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_METADATA_AND_OBJECT_INVENTORY_PREFLIGHT_EXECUTION"
+  },
+  "locked_source": {
+    "source_id": "sanpo_synthetic_v0_train_discovery",
+    "source_family": "SANPO_SYNTHETIC",
+    "official_split": "train",
+    "official_split_sha256": "F9C5DC4C289FA87342ABC0D2CC49F112FCC78C7E02E0B6B081E296A99344173C",
+    "split_network_refresh": false,
+    "session_id": "17c7d6bc6d4d4573afecc730cabf4db65f66b04ced504396a71d1185920179cb",
+    "camera": "camera_chest",
+    "lens": "left",
+    "parent_count": 1,
+    "fallback_authorized": false
+  },
+  "provider_contract": {
+    "provider": "GOOGLE_CLOUD_STORAGE_JSON_API",
+    "bucket": "gresearch",
+    "api_scheme": "https",
+    "api_host": "storage.googleapis.com",
+    "redirect_to_other_host_authorized": false,
+    "anonymous_read_only": true,
+    "split_object_network_access": false
+  },
+  "object_contract": {
+    "metadata_objects": [
+      {
+        "role": "session_description",
+        "path": "sanpo_dataset/v0/sanpo-synthetic/17c7d6bc6d4d4573afecc730cabf4db65f66b04ced504396a71d1185920179cb/description.json"
+      },
+      {
+        "role": "global_labelmap",
+        "path": "sanpo_dataset/v0/labelmap.json"
+      },
+      {
+        "role": "frame_annotation_type",
+        "path": "sanpo_dataset/v0/sanpo-synthetic/17c7d6bc6d4d4573afecc730cabf4db65f66b04ced504396a71d1185920179cb/camera_chest/left/frame_segmentation_annotation_type.json"
+      },
+      {
+        "role": "camera_pose_table",
+        "path": "sanpo_dataset/v0/sanpo-synthetic/17c7d6bc6d4d4573afecc730cabf4db65f66b04ced504396a71d1185920179cb/camera_chest/camera_poses.csv"
+      }
+    ],
+    "frame_prefixes": [
+      {
+        "role": "rgb",
+        "prefix": "sanpo_dataset/v0/sanpo-synthetic/17c7d6bc6d4d4573afecc730cabf4db65f66b04ced504396a71d1185920179cb/camera_chest/left/video_frames/",
+        "suffix": ".png"
+      },
+      {
+        "role": "panoptic_mask",
+        "prefix": "sanpo_dataset/v0/sanpo-synthetic/17c7d6bc6d4d4573afecc730cabf4db65f66b04ced504396a71d1185920179cb/camera_chest/left/segmentation_masks/",
+        "suffix": ".png"
+      },
+      {
+        "role": "metric_depth",
+        "prefix": "sanpo_dataset/v0/sanpo-synthetic/17c7d6bc6d4d4573afecc730cabf4db65f66b04ced504396a71d1185920179cb/camera_chest/left/depth_maps/",
+        "suffix": ".float16.gz"
+      }
+    ],
+    "allowed_operations": {
+      "metadata_objects": [
+        "GET_OBJECT_METADATA",
+        "GET_OBJECT_BODY_GENERATION_PINNED"
+      ],
+      "frame_prefixes": [
+        "LIST_OBJECT_METADATA"
+      ]
+    },
+    "forbidden_operations": [
+      "GET_RGB_BODY",
+      "GET_PANOPTIC_MASK_BODY",
+      "GET_METRIC_DEPTH_BODY",
+      "OPEN_LOCAL_EXISTING_PAYLOAD",
+      "DECODE_FRAME_BODY"
+    ]
+  },
+  "parsing_contract": {
+    "numeric_filename_regex": "^[0-9]{6}$",
+    "suffix_removed_as_a_whole": true,
+    "numeric_aliases_or_duplicates_rejected": true,
+    "eligible_receipt_fields": [
+      "name",
+      "generation",
+      "metageneration",
+      "size",
+      "md5Hash",
+      "crc32c"
+    ],
+    "numeric_index_intersection": [
+      "rgb",
+      "panoptic_mask",
+      "metric_depth"
+    ],
+    "selection": "sorted(numeric_index_intersection)[:25]",
+    "selection_before_any_frame_body_request": true,
+    "minimum_intersection_count": 25,
+    "pose_numeric_values_parsed": false,
+    "index_divided_by_fps_is_explicit_timestamp": false
+  },
+  "resource_budget": {
+    "max_network_requests": 80,
+    "max_retries_per_request": 2,
+    "connect_read_timeout_seconds": 30,
+    "max_wall_time_seconds": 180,
+    "max_list_pages_per_prefix": 20,
+    "max_objects_per_prefix": 10000,
+    "max_total_listed_objects": 30000,
+    "max_metadata_object_bytes_each": 8388608,
+    "max_metadata_object_bytes_total": 16777216,
+    "max_network_response_bytes_total": 67108864,
+    "max_receipt_output_bytes": 33554432,
+    "max_local_disk_bytes": 33554432,
+    "max_frame_body_bytes": 0,
+    "max_local_existing_payload_bytes_read": 0
+  },
+  "recovery_contract": {
+    "required": true,
+    "prior_attempt_lock_sha256": "CC5846BE38A1EC8B9A2A6B0B95F685531F0819400F8A8DF3F8FAE55AE1B7FBD4",
+    "prior_attempt_request_count": 2,
+    "prior_attempt_failure": "FIRST_METADATA_OBJECT_HEAD_HTTP_ERROR_AFTER_TWO_RETRIES",
+    "prior_attempt_frame_body_request_count": 0,
+    "prior_attempt_preserved": true,
+    "allowed_existing_files_before_retry": [
+      "attempt_receipt.json"
+    ],
+    "retry_receipt_written_before_network": true
+  },
+  "failure_finalization_contract": {
+    "required": true,
+    "network_authorized": false,
+    "allowed_existing_files_before_finalization": [
+      "attempt_receipt.json",
+      "retry_attempt_receipt.json"
+    ],
+    "first_attempt_lock_sha256": "CC5846BE38A1EC8B9A2A6B0B95F685531F0819400F8A8DF3F8FAE55AE1B7FBD4",
+    "retry_attempt_lock_sha256": "8084A20252125CE25EA87499ACE77B4B231DA5B30C370B29C6AE4800AD62574C",
+    "observed_missing_metadata_object": "sanpo_dataset/v0/sanpo-synthetic/17c7d6bc6d4d4573afecc730cabf4db65f66b04ced504396a71d1185920179cb/camera_chest/left/frame_segmentation_annotation_type.json",
+    "observed_http_status": 404,
+    "requests_per_failed_attempt_derived_from_frozen_control_flow": 6,
+    "total_actual_requests_across_two_attempts": 12,
+    "retry_receipt_prior_request_count_field_correct": false,
+    "frame_prefix_listing_started": false,
+    "frame_body_request_count": 0,
+    "terminal": "NOT_EVALUABLE",
+    "unique_successor": "NONE_STOP_AT_PREFLIGHT_TERMINAL"
+  },
+  "output_contract": {
+    "owned_root": "artifacts.local/evidence/assistive-geometry-data-upgrade/sanpo-synthetic-r1-metadata-preflight",
+    "overwrite": false,
+    "attempt_receipt_written_before_network": true,
+    "required_receipts": [
+      "attempt_receipt.json",
+      "retry_attempt_receipt.json",
+      "source_object_inventory.json",
+      "metadata_schema_receipt.json",
+      "preflight_result.json"
+    ],
+    "raw_metadata_bytes_persisted": false,
+    "frame_body_bytes_persisted": false
+  },
+  "decision_contract": {
+    "PASS": "METADATA_INVENTORY_VALID_BODY_CANARY_PROTOCOL_LOCK_ELIGIBLE",
+    "PARTIAL_POSE_UNBOUND": "DEPTH_AND_PANOPTIC_BODY_CANARY_PROTOCOL_LOCK_ELIGIBLE_POSE_TEMPORAL_HELD",
+    "NOT_EVALUABLE": "STOP_SOURCE_OBJECT_INVENTORY_OR_SCHEMA_INCOMPLETE",
+    "REJECT": "STOP_IDENTITY_SPLIT_LICENSE_ANCESTRY_OR_INTEGRITY_CONFLICT",
+    "eligible_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_25_FRAME_DEPTH_PANOPTIC_BODY_CANARY_PROTOCOL_LOCK",
+    "stop_successor": "NONE_STOP_AT_PREFLIGHT_TERMINAL"
+  },
+  "execution_authority": {
+    "metadata_preflight": true,
+    "network_exact_gcs_objects": true,
+    "metadata_object_body_read": true,
+    "frame_object_listing": true,
+    "frame_body_request_or_read": false,
+    "rgb_visual_access": false,
+    "mask_or_depth_decode": false,
+    "local_existing_payload_open": false,
+    "capability_truth_audit": false,
+    "body_canary_execution": false,
+    "derivation_teacher_or_training": false,
+    "source_data_support": false,
+    "dca_or_f1_pass": false,
+    "development_confirmation_android_product_safety": false
+  },
+  "implementation": {
+    "scripts/research/assistive_geometry_data_upgrade/run_due_sanpo_synthetic_r1_metadata_preflight.py": "697A06119A13B4348230BEE577DC39C7D2F0A6D3AEB6517CAE2D8B51A9EF5793",
+    "scripts/research/assistive_geometry_data_upgrade/test_run_due_sanpo_synthetic_r1_metadata_preflight.py": "3F8BA76F34650E5FF6FA7E554B97780F7A5D4D178D0437E647C00652BCA4CEF4"
+  },
+  "claim_ceiling": "One exact SANPO-Synthetic TRAIN-session metadata/object inventory preflight only. Inventory is not capability truth; frame bodies, pose/timestamp admission, source support, DCA/F1 pass, derivation, Teacher, training, Development, Confirmation, Android, product and safety authority remain false."
+}

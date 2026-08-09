@@ -1,6 +1,6 @@
 # Assistive Geometry Data Upgrade Engine Module
 
-状态：`current / AG-DUE_R1_SANPO_SYNTHETIC_AUDIT_PROTOCOL_LOCKED / EXECUTION_NOT_AUTHORIZED / FRAME_BODY_FORBIDDEN`
+状态：`current / AG-DUE_R1_SANPO_SYNTHETIC_PREFLIGHT_NOT_EVALUABLE / EXACT_METADATA_OBJECT_MISSING / ROUTE_CLOSED`
 
 本 Module 提供 AG-DUE 的 metadata-only source admission 合同。它不下载或打开 payload，不运行
 Teacher，不生成 pseudo-label，不物化训练集，也不训练模型。
@@ -24,6 +24,14 @@ Teacher，不生成 pseudo-label，不物化训练集，也不训练模型。
   Synthetic session/object paths、三阶段读取权限、factor claim ceiling、单-parent F1 门与 successor；
 - [`test_validate_due_sanpo_synthetic_r1_protocol.py`](test_validate_due_sanpo_synthetic_r1_protocol.py)：13 项
   mutation 覆盖 session/body、pose/timestamp、depth/support、panoptic/boundary、parent、输出与训练扩权；
+- [`run_due_sanpo_synthetic_r1_metadata_preflight.py`](run_due_sanpo_synthetic_r1_metadata_preflight.py)：
+  只允许四个 exact metadata object HEAD/body 和三个 exact frame-prefix LIST；分离 metadata-local-SHA
+  与 frame-provider-only receipt，锁定预算、六位 numeric index、lowest-25 和 frame-body byte=0；
+- [`test_run_due_sanpo_synthetic_r1_metadata_preflight.py`](test_run_due_sanpo_synthetic_r1_metadata_preflight.py)：
+  20 项离线 canary 覆盖 path/body escape、receipt、suffix、alias/duplicate、camera/K/fps、pose/timestamp、
+  count-to-capability 污染、output 与 observed-404 fail-close；
+- [`validate_due_sanpo_synthetic_r1_preflight_result.py`](validate_due_sanpo_synthetic_r1_preflight_result.py)
+  与对应 tests：绑定 exact 404、attempt/artifact SHA、零 inventory/capability count、权限与无 successor 终态；
 - 机器 protocol、gap contract 与 source schema 位于
   `docs/research/assistive-geometry-data-upgrade/`。
 
@@ -33,6 +41,7 @@ Teacher，不生成 pseudo-label，不物化训练集，也不训练模型。
 E:\codex-tools\bin\blindassist-python.cmd -m scripts.research.assistive_geometry_data_upgrade.validate_due_r0
 E:\codex-tools\bin\blindassist-python.cmd -m scripts.research.assistive_geometry_data_upgrade.validate_due_sanpo_prescreen_result
 E:\codex-tools\bin\blindassist-python.cmd -m scripts.research.assistive_geometry_data_upgrade.validate_due_sanpo_synthetic_r1_protocol
+E:\codex-tools\bin\blindassist-python.cmd -m scripts.research.assistive_geometry_data_upgrade.validate_due_sanpo_synthetic_r1_preflight_result
 ```
 
 两份 SANPO source manifest 已按冻结 successor 完成一次 static prescreen，均为 `PARTIAL` 且 hard
@@ -46,17 +55,17 @@ result validator 对 exact locked path/hash 重放，不能由任意 `--source-m
   `artifacts.local/evidence/assistive-geometry-data-upgrade/sanpo-initial-static-prescreen-r0/`；
 - tracked governed result 保存确定性摘要与 canonical replay SHA；validator 从锁定 manifest 重算，
   不要求本机 artifact 存在，也不把 artifact 当 source truth；
-- R1 protocol 固定下一 preflight 的输出根为
-  `artifacts.local/evidence/assistive-geometry-data-upgrade/sanpo-synthetic-r1-metadata-preflight/`，
-  但本轮未创建该目录或任何 source-object receipt；
+- R1 preflight 输出位于
+  `artifacts.local/evidence/assistive-geometry-data-upgrade/sanpo-synthetic-r1-metadata-preflight/`；
+  保存 attempt/retry、fail-closed inventory/schema 与 result receipt，不保存 raw metadata 或 frame body；
 - governed protocol、gap contract、source schema 与 result 保持在
   `docs/research/assistive-geometry-data-upgrade/`。
 
 ## 安全边界
 
-当前只允许 R1 protocol lock。下一 successor 也只允许 official object metadata/四个 metadata object；
-frame body、Teacher、pseudo-label、物化、训练与 protected outcome 继续禁止。任何 inventory PASS 都
-不能建立 source truth、DCA PASS、F1 execution、默认 App、产品或 safety authority。
+R1 preflight 已 `NOT_EVALUABLE` 关闭。frame body、Teacher、pseudo-label、物化、训练与 protected outcome
+继续禁止；404 不得通过替代路径、fallback session 或扩大 LIST 救援。任何 inventory 或 metadata access
+都不能建立 source truth、DCA PASS、F1 execution、默认 App、产品或 safety authority。
 
 ## 停止条件
 
@@ -68,9 +77,9 @@ frame body、Teacher、pseudo-label、物化、训练与 protected outcome 继�
 - R1 发现 session/split/camera/lens 漂移、metadata schema 不完整、pose/timestamp 推断、factor truth
   升格、单 parent 冒充 12-parent 门或输出越界时立即停止。
 
-## 唯一 successor
+## 当前终态
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_METADATA_AND_OBJECT_INVENTORY_PREFLIGHT_EXECUTION`
+`NONE_STOP_AT_PREFLIGHT_TERMINAL`
 
-只允许 exact session 的 object HEAD/LIST 与 description、labelmap、annotation-type、pose-table metadata
-preflight；禁止 RGB/mask/depth frame body、fallback roster、Teacher、模型、训练、Development/Confirmation。
+本 exact source/session/path 无继续执行 authority。未来若提出新 source/session/path，必须另行版本化
+R0 source manifest 与 source-specific protocol；禁止从本 result 直接进入 body canary。
