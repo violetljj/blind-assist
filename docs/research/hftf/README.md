@@ -15,7 +15,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 - DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
-- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；strict G4-D 为不可变负终态。Task-preserving D0 三臂已在 outcome 前技术前门关闭，没有 arm 进入任务质量或性能。D1 的 16 个 Training identity 已完成冻结的 label-blind body preflight：4 primary + 4 frozen-order reserve replacement 构成最终 8-session Development roster，每 session 锁 300 个连续 portrait/pose/RGB-D/K 帧。产品比例 `1×3×608×448` fixed-mixed 单候选已完成 host conversion，并在 fresh `SM-S9280 / SM8650 / HTP v75 / DZG1` 上生成 22,552,576-byte context；direct 与 saved-context 输出均 finite、shape exact 且 bit-exact。PyTorch↔HTP raw-depth diagnostic 仍以 `max_abs=1.42328m` 明确 FAIL，只保留为 strict G4-D 负证据，不代替 task-preserving D1 quality。当前 Development task outcome 仍未读取，R2 candidate 仍未选定；8 个 R2 session 继续 sealed。DA2 保持冻结 baseline/fallback。
+- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；strict G4-D 为不可变负终态。Task-preserving D0 三臂已在 outcome 前技术前门关闭，没有 arm 进入任务质量或性能。D1 的最终 8-session × 300-frame Development roster、产品比例 `1×3×608×448` fixed-mixed 单候选与 fresh `SM-S9280 / SM8650 / HTP v75 / DZG1` 22,552,576-byte saved context 已冻结。用户已显式激活 D1 task-quality screen：2400 帧按 48 个 session 内固定 50-frame chunk 可恢复执行，首块 reference 与 50 个 HTP candidate 输出已通过 identity/hash/shape/finite 映射前门；全集 quality 聚合尚未完成，不能提前判 PASS/FAIL。首个 device attempt 因 `ADSP_LIBRARY_PATH` 分隔符错误在产生 candidate 输出前失败，受限 repair 只恢复已验证的 FastRPC 分号语义。PyTorch↔HTP raw-depth diagnostic 仍以 `max_abs=1.42328m` 明确 FAIL，只保留为 strict G4-D 负证据。R2 candidate 仍未选定；8 个 R2 session 继续 sealed。DA2 保持冻结 baseline/fallback。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
@@ -31,6 +31,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 - [D1 label-blind body preflight result](DEPTHART_TASK_PRESERVING_D1_ARKIT_BODY_PREFLIGHT_RESULT_2026-08-10.md) · [machine result](DEPTHART_TASK_PRESERVING_D1_ARKIT_BODY_PREFLIGHT_RESULT_2026-08-10.json)
 - [D1 product-aspect technical preflight](DEPTHART_TASK_PRESERVING_D1_PRODUCT_ASPECT_TECHNICAL_PREFLIGHT_RESULT_2026-08-10.md) · [candidate/reference/postprocess machine lock](DEPTHART_TASK_PRESERVING_D1_PRODUCT_ASPECT_TECHNICAL_PREFLIGHT_RESULT_2026-08-10.json)
 - [D1 SM8650/v75 device protocol](DEPTHART_TASK_PRESERVING_D1_SM8650_HTP_CONTEXT_AND_OUTCOME_ACTIVATION_PREFLIGHT_PROTOCOL_2026-08-10.json) · [device preflight result](DEPTHART_TASK_PRESERVING_D1_SM8650_HTP_CONTEXT_AND_OUTCOME_ACTIVATION_PREFLIGHT_RESULT_2026-08-10.md) · [machine result](DEPTHART_TASK_PRESERVING_D1_SM8650_HTP_CONTEXT_AND_OUTCOME_ACTIVATION_PREFLIGHT_RESULT_2026-08-10.json)
+- [D1 quality-screen protocol](DEPTHART_TASK_PRESERVING_D1_QUALITY_SCREEN_PROTOCOL_2026-08-10.json) · [activation receipt](DEPTHART_TASK_PRESERVING_D1_QUALITY_SCREEN_ACTIVATION_2026-08-10.json) · [bounded runner repair](DEPTHART_TASK_PRESERVING_D1_QUALITY_SCREEN_RUNNER_REPAIR_2026-08-10.json)
 - [DepthART task-preserving deployment R2 protocol](DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.md) · [machine contract](DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.json)
 - [R2 ARKit roster lock](DEPTHART_TASK_PRESERVING_R2_ARKIT_ROSTER_LOCK_2026-08-09.json) · [media HEAD preflight](DEPTHART_TASK_PRESERVING_R2_ARKIT_MEDIA_PREFLIGHT_2026-08-09.json)
 - [DA2 P1/P2 closure](DAV2_P1_P2_EXECUTION_CLOSURE_2026-08-05.md)
@@ -39,12 +40,11 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 ## 唯一 successor
 
-`EXPLICIT_D1_DEVELOPMENT_TASK_QUALITY_SCREEN_ACTIVATION`：device/context/execute 前门已经关闭。
-下一步只允许先冻结 activation receipt、runner/checkpoint-resume schema 与 exact 8-session × 300-frame
-输入/输出清单，再首次运行 reference 与 single candidate 的 clearance、false-clear、false-block、temporal、
-geometry task-quality screen。raw-depth PyTorch↔HTP delta 继续 diagnostic-only；不得修改 candidate、数据、
-后处理或门限。任一 required aggregate/denominator/coverage 缺失即 fail，quality PASS 之前不得测性能；
-R2 cohort 继续禁止访问。
+`COMPLETE_FROZEN_D1_DEVELOPMENT_TASK_QUALITY_SCREEN`：activation receipt 已生效，唯一下一步是按冻结
+48-chunk 顺序完成余下 Development reference/candidate outputs，再一次性计算 clearance、false-clear、
+false-block、temporal 与 geometry gates。不得用部分块作选择或结论，不得修改 candidate、数据、后处理、
+known-coverage 分母或门限。任一 required aggregate/denominator/stratum 缺失即 fail；quality PASS 之前不得
+测性能，R2 cohort 继续禁止访问。
 
 R2 是下游 sealed 路线，不是并列 successor：metadata roster 已冻结但 candidate 尚未选定；
 D1 即使 PASS 也只建立一个 R2 candidate lock，不能直接访问独立 outcome，也不产生 scientific
