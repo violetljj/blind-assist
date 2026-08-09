@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry Corridor Bottleneck Field
 
-状态：`current / WILD_LAB / R0_DATA_SUPPORT_AUDIT_LOCKED_NOT_RUN / ORACLE_NOT_AUTHORIZED / MODEL_AND_TRAINING_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / WILD_LAB / R0_CLOSED_DATA_SUPPORT_NOT_EVALUABLE / ORACLE_NEVER_AUTHORIZED / MODEL_AND_TRAINING_NEVER_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 AG-CBF 的科学问题是：ground-aligned、body-profile inflated、拓扑连通的 2.5D corridor
 bottleneck 表示，是否比固定 left/center/right 三带摘要保留更多与身体通行空间有关的信息？
@@ -8,14 +8,17 @@ bottleneck 表示，是否比固定 left/center/right 三带摘要保留更多�
 本路线严格按 `DATA SUPPORT → ORACLE CEILING → REPRESENTATION VALUE → TRAIN` 推进。当前只允许
 第一步；不先造模型，也不从现有 H3 合成 widest-path mechanics 继承真实数据有效性。
 
-## 唯一 successor
+## 终态
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_CBF_R0_TRAIN_GRID_DATA_SUPPORT_AUDIT_EXECUTION`
+无 successor。R0 已在第一道门关闭：
 
-执行唯一冻结的 [machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_CBF_R0_DATA_SUPPORT_AUDIT_PROTOCOL_2026-08-09.json)，
-仅检查固定 16-parent TRAIN target 中 source geometry 对 `32×31`、forward `0.2–5.0 m`、
-lateral `-2.0–2.0 m` 网格的观测与 ground 支撑。若未过 gate，R0 直接关闭；若通过，才可另立
-oracle/representation-value lock，且仍不授权模型或训练。
+> `AG_CBF_R0_DATA_SUPPORT_NOT_EVALUABLE_ROUTE_CLOSE`
+
+[冻结协议](BLINDASSIST_ASSISTIVE_GEOMETRY_CBF_R0_DATA_SUPPORT_AUDIT_PROTOCOL_2026-08-09.json)
+下的 1,024 帧审计只有 44 帧 evaluable，portrait/landscape 为 `36/8`，0/16 parent 达到
+`32/64`。详见 [governed result](BLINDASSIST_ASSISTIVE_GEOMETRY_CBF_R0_DATA_SUPPORT_AUDIT_RESULT_2026-08-09.md)
+与 [machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_CBF_R0_DATA_SUPPORT_AUDIT_RESULT_2026-08-09.json)。
+因此 oracle、三带对照、模型和训练从未获得授权。
 
 ## 冻结边界
 
@@ -30,8 +33,8 @@ oracle/representation-value lock，且仍不授权模型或训练。
 
 ## Claim ceiling
 
-当前最多证明协议、抽样、source geometry 完整性和网格支撑审计 mechanics 被锁定。尚未证明真实
-oracle 可评价、CBF 表示优于三带、模型可学、论文 novelty、跨数据泛化、设备可运行、产品可用或助盲安全。
+当前只证明协议/抽样/完整性 mechanics 与数据支撑负终态。没有证明或反证真实 oracle/CBF 数学，
+也未证明 CBF 表示优于三带、模型可学、论文 novelty、跨数据泛化、设备可运行、产品可用或助盲安全。
 
 ## 输出所有权
 

@@ -1,0 +1,99 @@
+{
+  "schema": "blindassist.assistive_geometry_cbf.r0_data_support_audit_governed_result.v1",
+  "route_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_CBF_R0",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_CBF_R0_DATA_SUPPORT_AUDIT_PROTOCOL_2026-08-09",
+  "protocol_sha256": "55DBFE6D3E3B6A242C7F122BC64F532E9C896D91E73EB23D60EEB982B130FBB5",
+  "input_manifest_sha256": "A6F809C7EE59C6539FEA37C92973E350ECCF5260353BA5F15A9A9BBB9888A7C2",
+  "execution": {
+    "selected_frame_count": 1024,
+    "frames_per_parent": 64,
+    "parent_count": 16,
+    "elapsed_seconds": 4.878014299996721,
+    "full_result": {
+      "path": "artifacts.local/evidence/assistive-geometry-cbf/r0-data-support-audit/result.json",
+      "bytes": 943465,
+      "sha256": "C6D151BC26BC03355E11348AC08289454B7BE77A0CBFF861CE02A4198F79DA34"
+    }
+  },
+  "route_gate": {
+    "minimum_total_evaluable_frames": 640,
+    "observed_total_evaluable_frames": 44,
+    "minimum_passing_parents": 12,
+    "minimum_evaluable_frames_per_passing_parent": 32,
+    "observed_passing_parent_count": 0,
+    "minimum_evaluable_frames_per_orientation": 128,
+    "observed_orientation_evaluable_frames": {
+      "portrait": 36,
+      "landscape": 8
+    }
+  },
+  "per_parent_evaluable_frames": {
+    "41159448": 14,
+    "42445086": 12,
+    "42445790": 0,
+    "42897547": 0,
+    "42898024": 8,
+    "42898242": 0,
+    "44358617": 0,
+    "47333249": 0,
+    "47334163": 0,
+    "47430327": 0,
+    "47204445": 10,
+    "47331226": 0,
+    "47430531": 0,
+    "47431114": 0,
+    "47895508": 0,
+    "47334948": 0
+  },
+  "overlapping_failure_reason_frame_counts": {
+    "UNKNOWN_GEOMETRY_CONTRACT": 288,
+    "UNKNOWN_GROUND_PLANE": 288,
+    "UNKNOWN_IN_GRID_POINTS": 289,
+    "UNKNOWN_OBSERVED_GRID_CELLS": 690,
+    "UNKNOWN_GROUND_GRID_CELLS": 694,
+    "UNKNOWN_LONGITUDINAL_GROUND_SUPPORT": 974,
+    "UNKNOWN_LATERAL_OBSERVATION_SUPPORT": 816
+  },
+  "diagnostic_quantiles": {
+    "observed_cell_count": {
+      "p25": 0.0,
+      "p50": 16.0,
+      "p75": 109.0,
+      "p90": 216.7,
+      "maximum": 354.0
+    },
+    "ground_cell_count": {
+      "p25": 0.0,
+      "p50": 14.0,
+      "p75": 48.0,
+      "p90": 142.0,
+      "maximum": 279.0
+    },
+    "minimum_forward_quartile_ground_cells": {
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "maximum": 50.0
+    },
+    "minimum_lateral_third_observed_cells": {
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 2.0,
+      "p90": 16.0,
+      "maximum": 57.0
+    }
+  },
+  "authority_receipt": {
+    "rgb_opened": false,
+    "model_or_feature_opened": false,
+    "development_or_confirmation_opened": false,
+    "oracle_outcome_computed": false,
+    "model_or_training_authorized": false,
+    "unknown_treated_as_negative": false
+  },
+  "terminal": "AG_CBF_R0_DATA_SUPPORT_NOT_EVALUABLE_ROUTE_CLOSE",
+  "successor": null,
+  "interpretation": "The frozen current TRAIN source-geometry target contract does not support the preregistered 32x31, 0.2-5.0 m by -2.0-2.0 m grid audit broadly enough across parents and orientations. This closes AG-CBF R0 before an oracle is built; it does not falsify corridor bottleneck mathematics or representation value.",
+  "claim_ceiling": "TRAIN-only source-geometry integrity and grid-support negative terminal. No corridor-oracle validity or value, learnability, superiority, Development, Confirmation, novelty, device, product, production, or assistive-safety authority."
+}
