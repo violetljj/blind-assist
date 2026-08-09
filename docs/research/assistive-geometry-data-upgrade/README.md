@@ -1,6 +1,6 @@
 # Assistive Geometry Data Upgrade Engine
 
-状态：`current / AG-DUE_R0_SANPO_INITIAL_STATIC_PRESCREEN_COMPLETE_BOTH_PARTIAL / SOURCE_SUPPORT_FALSE / PAYLOAD_NOT_AUTHORIZED`
+状态：`current / AG-DUE_R1_SANPO_SYNTHETIC_AUDIT_PROTOCOL_LOCKED / EXECUTION_NOT_AUTHORIZED / FRAME_BODY_FORBIDDEN`
 
 AG-DUE 是 Assistive Geometry 的数据研究并行线，不是新算法路线。它把 AG-DCA 已观测到的
 right-censor、corridor、R2 factor 与 temporal 缺口变成可重放的 source-admission 合同，目标是在
@@ -9,11 +9,11 @@ right-censor、corridor、R2 factor 与 temporal 缺口变成可重放的 source
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_SOURCE_SPECIFIC_INTEGRITY_AND_CAPABILITY_AUDIT_PROTOCOL_LOCK`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_METADATA_AND_OBJECT_INVENTORY_PREFLIGHT_EXECUTION`
 
-下一步只允许冻结 SANPO Synthetic 的 source-specific integrity/capability audit 协议；不得执行该审计、
-联网刷新 metadata、下载或打开 payload，也不得把 `PARTIAL` 当成 source data support。Real 保留为
-并列 `PARTIAL` 候选，不因本轮优先审计 Synthetic 而被判负或获得更低永久权限。
+下一步只允许按冻结协议对 exact Synthetic session 执行 metadata/object-inventory preflight：读取
+官方 object HEAD/LIST 和四个 metadata object（description、labelmap、annotation-type、pose table），
+不得读取 RGB、panoptic-mask 或 metric-depth frame body。Real 保留为并列 `PARTIAL` 候选。
 
 ## R0 合同
 
@@ -58,6 +58,26 @@ Synthetic 被选作下一份窄审计协议对象，只因为其锁定 inventory
 列为 source-native candidate，而 Real 的 depth 尚不能表述为 oracle source-native truth。这是
 Discovery 审计顺序，不是 source admission、模型选择或数据质量排名。
 
+## R1 Synthetic source-specific audit lock
+
+- [R1 machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_SOURCE_SPECIFIC_INTEGRITY_AND_CAPABILITY_AUDIT_PROTOCOL_LOCK_2026-08-10.json)
+  只绑定 official TRAIN session `17c7d6bc...179cb`、`camera_chest/left` 与 exact GCS object paths；
+- 当前只完成 protocol/static validation，network、remote object access 与 frame body 均为 false；
+- 下一 preflight 只能记录 object name/generation/size/hash、metadata schema、相机参数和 RGB/mask/depth
+  numeric index inventory，并在读取 frame body 前冻结最低 25 个完整 aligned index；不足 25 个即
+  `NOT_EVALUABLE`，不得换 session 或按内容挑帧。inventory count 不是 capability truth count；
+- pose table 只允许审计 header 和 row count。row order/coverage 不等于 frame binding，quaternion order、
+  handedness、transform direction 与 coordinate receipt 均保持 unresolved；
+- metric-depth inventory 最多成为 `SOURCE_OBJECTS_PRESENT_NOT_VALIDATED_FOR_CLAIM`；还需 body canary
+  验证单位、invalid/finite policy、分辨率和 RGB registration；
+- panoptic inventory 最多成为 `PANOPTIC_OBJECTS_PRESENT_DERIVATION_NOT_RUN`；未冻结 label taxonomy、
+  void/UNKNOWN、connectivity 与 boundary derivation 前，不是连续 obstacle-boundary truth；
+- support factor 明确 `ABSENT`。depth、pose 或 semantic ground 都不能自动升级为 support truth；
+- 未来 frame-body canary 仍需独立 protocol lock，最多且必须读取上述 25 个 depth + mask object；
+  RGB 只允许 object metadata，不允许 body/visual access；
+- roster 只有 1 parent，而 R2 F1 要求 12 joint parents，因此即使本 session 审计全过，仍不能建立
+  F1 source support 或执行权限。
+
 ## 证据分层
 
 `source-native` 只说明来源，不自动等于 GT。直接满足 capability gate 需要同时满足：
@@ -76,7 +96,7 @@ R2 F1 当前还存在与来源无关的 `FactorTensorAdapter` ABI blocker；因�
 
 ## Claim ceiling
 
-当前建立 gap contract、source manifest schema、静态 checker mechanics，byte/hash 锁定两份 SANPO
-metadata-only manifest，并完成一次无 metadata refresh、无 payload 的确定性 static prescreen；结果仅为
-`PARTIAL/PARTIAL`。未读取 payload/RGB/geometry/model outcome，未调用 Teacher，未生成 pseudo-label，
-未物化数据或训练模型，也不改变 R2、SANPO、QSF、CBF、FCI、默认 App、产品或 safety authority。
+当前建立 gap contract、source manifest schema、静态 checker mechanics，完成 `PARTIAL/PARTIAL`
+prescreen，并锁定一个 Synthetic source-specific audit protocol。尚未执行该审计，未联网访问 source
+object，未读取 payload/RGB/geometry/model outcome，未调用 Teacher，未生成 pseudo-label，未物化
+数据或训练模型，也不改变 R2、SANPO、QSF、CBF、FCI、默认 App、产品或 safety authority。
