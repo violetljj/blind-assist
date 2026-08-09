@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist.taro.o0m.protocol_lock_result.v1",
+  "result_id": "TARO_O0M_PROTOCOL_LOCK_RESULT_2026-08-10",
+  "terminal": "TARO_O0M_PROTOCOL_LOCK_PASS",
+  "passed": true,
+  "date": "2026-08-10",
+  "scientific_status": "NOT_RUN",
+  "execution_validity": "NOT_RUN",
+  "claim_eligibility": "PROTOCOL_ONLY",
+  "bindings": [
+    {
+      "path": "docs/research/taro/TARO_O0M_SYNTHETIC_IDENTIFIABILITY_AND_FACTORIAL_MECHANICS_PROTOCOL_LOCK_2026-08-10.json",
+      "sha256": "B44292AF22A11A6575558674ADB7861A4BC2B67F85D9AF02E48F57B17CF4B0F1",
+      "bytes": 27606
+    },
+    {
+      "path": "docs/research/taro/TARO_O0M_EXECUTION_FIXTURE_SPEC_2026-08-10.json",
+      "sha256": "6462D6569F7836E1C6BDABA48AA28736AF9A62B93FB90B125F67D270A385E58A",
+      "bytes": 81323
+    },
+    {
+      "path": "scripts/research/taro_o0m/validate_taro_o0m_protocol.py",
+      "sha256": "4E3A14DF5986240E35030AE12CC1D1230C48375A421401D39C0F29D39C12EA8D",
+      "bytes": 27615
+    },
+    {
+      "path": "scripts/research/taro_o0m/test_validate_taro_o0m_protocol.py",
+      "sha256": "409A3F4FDFBF228021FE428AFF5F171AF8F2B286742D509087A322DDE75EC9CC",
+      "bytes": 16606
+    }
+  ],
+  "static_validation": {
+    "status": "VALID",
+    "errors": [],
+    "mutation_tests_run": 33,
+    "mutation_tests_passed": 33,
+    "identifiability_case_count": 10,
+    "factorial_scene_count": 5,
+    "factorial_record_count": 80,
+    "action_filter_case_count": 2
+  },
+  "generic_governance_validation": {
+    "status": "VALID_ZERO_ERRORS_TWO_WARNINGS",
+    "errors": [],
+    "warnings": [
+      "SEALED_DATA_ASSIGNED_NONCONFIRMATION:1",
+      "SEALED_DATA_ASSIGNED_NONCONFIRMATION:2"
+    ],
+    "warning_disposition": "DISCLOSED_FUTURE_IMPLEMENTATION_AND_EXECUTION_PARTITIONS_NO_AUTHORITY"
+  },
+  "authority": {
+    "protocol_lock": true,
+    "static_validation": true,
+    "o0m_implementation": false,
+    "o0m_execution": false,
+    "real_data": false,
+    "training": false,
+    "active_prompt": false,
+    "device": false,
+    "confirmation": false,
+    "deployment": false,
+    "default_app": false
+  },
+  "o0r_current_terminal": "TARO_O0R_NOT_EVALUABLE_DATA_AND_INTERFACE",
+  "unique_successor": "TARO_O0M_IMPLEMENTATION_LOCK",
+  "successor_execution_authority": false,
+  "claim_ceiling": "The O0M execution-family and protocol are statically self-consistent. No mechanics implementation or scientific canary has run."
+}

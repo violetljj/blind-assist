@@ -30,7 +30,7 @@
     "taro": {
       "description": "TARO task-directed active risk observability 独立并行 WILD_LAB 路线",
       "patterns": [
-        "^taro$"
+        "^taro(?:_o0m)?$"
       ],
       "dynamic_truth": "docs/research/taro/README.md"
     },

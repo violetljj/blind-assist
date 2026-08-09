@@ -8,7 +8,7 @@
 
 | 分类 | 当前重点 | 入口 |
 |---|---|---|
-| 算法 | 当前主线是 BlindAssist Assistive Geometry R2 因子化几何；F0 reducer 已 PASS，F1-P schema/loss/Kill Gate 已冻结，但 hash-bound FactorTensorAdapter 缺失且 continuous-boundary/complete-factor supervision 前门不满足，F1 execution 仍未授权；TARO 独立并行 WILD_LAB 已完成 P0 protocol/schema 静态锁，科学状态仍为 NOT_RUN，当前唯一 successor 只允许冻结 non-execution synthetic O0M，真实 O0R 因数据与 adapter 前门为 NOT_EVALUABLE；B1-A0、AG-QSF 与 AG-CBF R0 保持各自负终态；DepthART-S 是可替换 encoder/initialization、depth baseline 与部署使能线 | [算法研究入口](ALGORITHM_RESEARCH_CURRENT.md) |
+| 算法 | 当前主线是 BlindAssist Assistive Geometry R2 因子化几何；F0 reducer 已 PASS，F1-P schema/loss/Kill Gate 已冻结，但 hash-bound FactorTensorAdapter 缺失且 continuous-boundary/complete-factor supervision 前门不满足，F1 execution 仍未授权；TARO 独立并行 WILD_LAB 已完成 P0 与 O0M non-execution protocol lock，科学状态仍为 NOT_RUN，当前唯一 successor 只允许创建并静态锁定 pure analytic O0M implementation，真实 O0R 因数据与 adapter 前门为 NOT_EVALUABLE；B1-A0、AG-QSF 与 AG-CBF R0 保持各自负终态；DepthART-S 是可替换 encoder/initialization、depth baseline 与部署使能线 | [算法研究入口](ALGORITHM_RESEARCH_CURRENT.md) |
 | 数据 | 数据集、truth、parent/session 独立性、coverage、质量和数据角色治理；AG-DCA R0 已完成 4,800-frame atlas，QSF/CBF 为 `NOT_SUPPORTED_DATA`、FCI 为 `NOT_SUPPORTED_DATA_AND_AUTHORITY`；AG-DUE 的 SANPO Real/Synthetic R0 prescreen 均为 `PARTIAL`，Synthetic exact R1 metadata preflight 因 annotation-type object 404 而 `NOT_EVALUABLE` 并关闭，frame body/Teacher/source support 均未授权 | [数据研究入口](DATA_RESEARCH_CURRENT.md) |
 | 系统与平台 | 通信链路、端到端延迟、性能优化、模型导出、设备部署和稳定性 | [系统与平台研究入口](SYSTEM_RESEARCH_CURRENT.md) |
 

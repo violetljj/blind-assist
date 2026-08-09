@@ -1,6 +1,6 @@
 # Research Module Index
 
-状态：`current / navigation-only / 68-of-68`
+状态：`current / navigation-only / 69-of-69`
 
 本页只回答“Module 在哪里、属于哪个研究族”。动态状态、successor 和权限必须回到每个
 Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导。
@@ -13,7 +13,7 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 - [`dual_loop`](dual_loop/README.md)
 - [`hftf`](hftf/README.md)
 
-## Assistive Geometry、DepthART、metric-depth 与几何（13）
+## Assistive Geometry、DepthART、metric-depth 与几何（14）
 
 - [`assistive_geometry`](assistive_geometry/README.md)
 - [`assistive_geometry_cbf`](assistive_geometry_cbf/README.md)
@@ -28,6 +28,7 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 - [`scale_free_traversability_r0`](scale_free_traversability_r0/README.md)
 - [`spatial_calibration_head_r1`](spatial_calibration_head_r1/README.md)
 - [`taro`](taro/README.md)
+- [`taro_o0m`](taro_o0m/README.md)
 
 ## 双环研究族（30）
 

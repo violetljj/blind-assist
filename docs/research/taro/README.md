@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PROTOCOL_AND_SCHEMA_FROZEN / P0_STATIC_VALIDATION_PASS / SCIENTIFIC_STATUS_NOT_RUN / O0M_EXECUTION_NOT_AUTHORIZED / O0R_NOT_EVALUABLE_DATA_AND_INTERFACE / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_PROTOCOL_FROZEN / SCIENTIFIC_STATUS_NOT_RUN / O0M_IMPLEMENTATION_NOT_AUTHORIZED / O0M_EXECUTION_NOT_AUTHORIZED / O0R_NOT_EVALUABLE_DATA_AND_INTERFACE / DEFAULT_APP_UNCHANGED`
 
 ## 当前主张
 
@@ -30,6 +30,10 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   数据角色、gate 与权限；
 - [TARO P0 lock result](TARO_P0_PROTOCOL_LOCK_RESULT_2026-08-10.md)：33 个静态/mutation tests
   通过；科学状态仍为 `NOT_RUN`；
+- [TARO O0M protocol lock](TARO_O0M_SYNTHETIC_IDENTIFIABILITY_AND_FACTORIAL_MECHANICS_PROTOCOL_LOCK_2026-08-10.md)：
+  冻结 10 个 identifiability cases、5 scenes × 8 arms × 2 modes、十门与 one-shot 预算；
+- [TARO O0M protocol result](TARO_O0M_PROTOCOL_LOCK_RESULT_2026-08-10.md)：33/33 mutation tests；
+  implementation、runner 与 scientific artifact 仍不存在；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -40,20 +44,12 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0M_SYNTHETIC_IDENTIFIABILITY_AND_FACTORIAL_MECHANICS_PROTOCOL_LOCK`
+`TARO_O0M_IMPLEMENTATION_LOCK`
 
-该 successor 只允许另行冻结一个 `CANARY_LITE`、outcome-blind、非执行协议，内容限于：
-
-1. 与 P0 design fixture family/seed 隔离的 O0M synthetic payload；
-2. measurement-only finite task-ambiguity、query reducer 与 factorial evaluator 的实现身份和 SHA；
-3. `VALUE_ONLY_COMMON_SUPPORT` 与 `FULL_BLOCK` 八臂执行、K/time/anchor 独立负控；
-4. 十项 conjunctive gate、numeric tolerance、timeout、exclusive artifact root 与失败终态；
-5. 明确把 PASS 限制为 analytic mechanics，不建立真实 factor causal-headroom claim。
-
-P0 已完成但没有运行任何科学 canary。当前 successor 仍不授权 O0M 实现/执行、真实数据读取、
-factor 注入、训练、模型、checkpoint、Development outcome、主动用户提示、设备测量或 Android
-集成。只有 O0M protocol/implementation identity 另行冻结并把 execution authority 显式改为 true，
-才可能产生一次 synthetic mechanics canary；本页不预授权 real O0R 或任何后续阶段。
+O0M non-execution protocol 已冻结。该 successor 只允许在独立 `taro_o0m_runtime` Module 创建纯
+解析 mechanics 与 focused tests，并冻结 exact code/test SHA；不得创建 scientific artifact 或运行
+canary。实现静态通过后仍须再提交 one-shot execution lock，把 fixture/code/tests/command/timeout/
+exclusive absent root 全部绑定并显式开启一次 execution authority。
 
 真实 O0R 当前硬终态为 `TARO_O0R_NOT_EVALUABLE_DATA_AND_INTERFACE`：complete factor truth、
 truth-clear factor bundle、连续 boundary/uncertainty truth、target timestamp/pose、deterministic

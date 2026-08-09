@@ -1,0 +1,518 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "profile": "CANARY_LITE",
+  "governance_policy_id": "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+  "governance_policy_sha256": "c088093d765ce3900848a80f8a45585bc217409c344c6e7212d87e6bda6d624e",
+  "protocol_id": "TARO_O0M_SYNTHETIC_IDENTIFIABILITY_AND_FACTORIAL_MECHANICS_PROTOCOL_LOCK",
+  "version": "TARO_O0M_PROTOCOL_LOCK_V1",
+  "stage": "DISCOVERY",
+  "frozen_at": "2026-08-10",
+  "scientific_status": "NOT_RUN",
+  "outcome_access_started": false,
+  "status": [
+    "O0M_EXECUTION_FAMILY_AND_NUMERIC_CONTRACT_FROZEN",
+    "O0M_STATIC_VALIDATION_ONLY",
+    "SCIENTIFIC_STATUS_NOT_RUN",
+    "O0M_IMPLEMENTATION_NOT_AUTHORIZED",
+    "O0M_EXECUTION_NOT_AUTHORIZED",
+    "O0R_NOT_EVALUABLE_DATA_AND_INTERFACE"
+  ],
+  "question": "Can a separately frozen analytic execution family distinguish task-identifiable from weak/nonsmooth/invalid cases and isolate scale/support/boundary value, validity and uncertainty interventions before any O0M implementation or execution exists?",
+  "principle": "This lock freezes execution-family inputs, exact expected records, numeric tolerances, gate semantics and resource ceilings. It creates no mechanics implementation or scientific outcome.",
+  "claims_allowed": [
+    "DATA_CHARACTERIZED"
+  ],
+  "claims_forbidden": [
+    "TASK_QUERY_IDENTIFIABILITY_VALIDATED",
+    "FACTOR_CAUSAL_HEADROOM",
+    "GAUGEFIX_EFFECTIVE",
+    "PARA_ACTIVE_VIEW_EFFECTIVE",
+    "REAL_DATA_CALIBRATION",
+    "MODEL_OR_SOLVER_PERFORMANCE",
+    "MOBILE_OR_DEVICE",
+    "CALIBRATION",
+    "CONFIRMATION",
+    "DEPLOYMENT",
+    "DEFAULT_APP_CHANGE",
+    "PRODUCT_OR_SAFETY"
+  ],
+  "bindings": [
+    {
+      "role": "GOVERNANCE_POLICY",
+      "path": "configs/research_governance_v4.json",
+      "sha256": "274017E2D053EE29F4D553DE7976E4731E9DDF3BEBCF5259D1F9C772DEAF621F"
+    },
+    {
+      "role": "P0_PROTOCOL",
+      "path": "docs/research/taro/TARO_P0_TASK_QUERY_IDENTIFIABILITY_AND_FACTOR_ORACLE_CANARY_PROTOCOL_LOCK_2026-08-10.json",
+      "sha256": "E0CB39FBC7B391140C8CBCE7D6FBB119D7BE21032169A9C9838D543D5FDDFC03"
+    },
+    {
+      "role": "P0_RESULT",
+      "path": "docs/research/taro/TARO_P0_PROTOCOL_LOCK_RESULT_2026-08-10.json",
+      "sha256": "B842E016835E3A6D6B3FD79C347C439E7B0C391CB63FAF6A06EC199AF40959E7"
+    },
+    {
+      "role": "P0_NUMERIC_EVALUATOR",
+      "path": "scripts/research/taro/validate_taro_p0_protocol.py",
+      "sha256": "9E9FC85ABB59D8E19F1E6DB28668DAD94AE56430B0A184E12AB3D90A610B6A88"
+    },
+    {
+      "role": "O0M_EXECUTION_FIXTURE",
+      "path": "docs/research/taro/TARO_O0M_EXECUTION_FIXTURE_SPEC_2026-08-10.json",
+      "sha256": "6462D6569F7836E1C6BDABA48AA28736AF9A62B93FB90B125F67D270A385E58A"
+    },
+    {
+      "role": "O0M_STATIC_VALIDATOR",
+      "path": "scripts/research/taro_o0m/validate_taro_o0m_protocol.py",
+      "sha256": "4E3A14DF5986240E35030AE12CC1D1230C48375A421401D39C0F29D39C12EA8D"
+    },
+    {
+      "role": "O0M_STATIC_TESTS",
+      "path": "scripts/research/taro_o0m/test_validate_taro_o0m_protocol.py",
+      "sha256": "409A3F4FDFBF228021FE428AFF5F171AF8F2B286742D509087A322DDE75EC9CC"
+    }
+  ],
+  "fixture_suite_id": "TARO_O0M_EXECUTION_FAMILY_R0",
+  "schema_contract": {
+    "bundle_schema": "blindassist.taro.p0.schema_bundle.v1",
+    "required_definitions": [
+      "TaroFrameReceipt",
+      "TaroFactorPosterior",
+      "TaroTaskQuery",
+      "TaroObservationCandidate"
+    ],
+    "additional_properties_fail_closed": true,
+    "nonfinite_numeric_values_rejected": true,
+    "unknown_is_negative": false,
+    "planned_action_is_realized_observation": false,
+    "max_source_timestamp_required": true,
+    "provenance_and_data_role_required": true
+  },
+  "state_contract": {
+    "open_state_order": [
+      "log_scale",
+      "support_tangent_x",
+      "support_tangent_y",
+      "support_offset_m"
+    ],
+    "normalization_one_unit": [
+      0.1,
+      0.05,
+      0.05,
+      0.1
+    ],
+    "normalization_units": [
+      "log-ratio",
+      "radian",
+      "radian",
+      "metre"
+    ],
+    "weak_subspace_trust_radius_normalized_l2": 1.0,
+    "fixed_controls": [
+      "delta_k",
+      "delta_pose",
+      "delta_time"
+    ],
+    "fixed_control_policy": "K, pose and time are valid receipt inputs or explicit corruption controls in P0/O0M; they are not jointly optimized state blocks.",
+    "boundary_role": "O0_FACTORIAL_TREATMENT_NOT_GAUGEFIX_STATE",
+    "state_expansion_policy": "A new pre-outcome protocol version and discriminating fixture are required before opening another state block."
+  },
+  "identifiability_contract": {
+    "information_source": "MEASUREMENT_ONLY_WHITENED_RESIDUAL_JACOBIAN",
+    "residual_definition": "A = Sigma_r^(-1/2) d r / d g over unique evidence_id and source_group_id records.",
+    "prior_damping_regularizer_may_add_rank": false,
+    "duplicate_evidence_may_add_information": false,
+    "strong_singular_value_rule": "sigma_i >= max(1.0, 0.001 * sigma_max) in the frozen normalized state.",
+    "update_rule": "Update only the strong right-singular subspace; freeze weak components.",
+    "finite_task_ambiguity_primary": true,
+    "task_ambiguity_definition": "Supremum absolute change of the full body/path clearance functional inside the frozen weak-subspace trust region; this structural/weak-mode gate excludes strong-subspace measurement noise.",
+    "task_ambiguity_radius_max_m": 0.02,
+    "measurement_interval_definition": "Project the separately frozen 95% whitened residual-noise budget through only the strong-subspace pseudoinverse and full query Jacobian; add that half-width to the clearance interval without changing rank or the 0.02 metre weak-ambiguity gate.",
+    "structural_null_diagnostic": "Null(A) subset Null(J_C) is recorded only as the zero-noise limiting diagnostic.",
+    "non_smooth_rule": "Enumerate competing active-contact branches. If contacts are within 0.01 m and branch clearance spread exceeds 0.02 m, return UNKNOWN with NONSMOOTH_CONTACT_SWITCH.",
+    "decision_identifiability": "Structural/finite identifiability is necessary but not sufficient; the complete 95% query interval must also lie above +0.05 m for clear or at/below 0 m for occupied.",
+    "invalid_receipt_effect": "ABSTAIN_AND_UNKNOWN"
+  },
+  "factorial_contract": {
+    "factors": [
+      "SCALE",
+      "SUPPORT",
+      "BOUNDARY"
+    ],
+    "arms": [
+      "NONE",
+      "SCALE",
+      "SUPPORT",
+      "BOUNDARY",
+      "SCALE_SUPPORT",
+      "SCALE_BOUNDARY",
+      "SUPPORT_BOUNDARY",
+      "SCALE_SUPPORT_BOUNDARY"
+    ],
+    "oracle_modes": [
+      "VALUE_ONLY_COMMON_SUPPORT",
+      "FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY"
+    ],
+    "primary_mode": "VALUE_ONLY_COMMON_SUPPORT",
+    "primary_real_comparison": "SCALE_SUPPORT_BOUNDARY_VERSUS_NONE",
+    "factor_specific_arms_are_diagnostic": true,
+    "receipt_k_corruption_is_separate_control": true,
+    "single_block_diff_required": true,
+    "common_support_identity_required": true,
+    "full_block_reports_value_validity_uncertainty_separately": true,
+    "solver_input_firewall": "The solver consumes observed_base_mean_m plus declared patch deltas; truth_clearance_m is verifier-only and cannot enter current input, base posterior or arm choice.",
+    "factorial_halfwidth_formula": "interval_multiplier * sqrt(sigma_measurement_m^2 + sum(sigma_factor_m^2))",
+    "factorial_interval_multiplier": 1.0,
+    "factorial_interval_semantics": "DETERMINISTIC_BUDGET_HALFWIDTH_NOT_GAUSSIAN_1SIGMA_OR_95_PERCENT_COVERAGE",
+    "post_outcome_supported_combination_selection_forbidden": true
+  },
+  "data_partitions": [
+    {
+      "id": "TARO_O0M_PROTOCOL_FIXTURE",
+      "source_identity": "HAND_AUTHORED_O0M_EXECUTION_FAMILY_R0",
+      "content_identity": "SHA256_9D72EF7FA1C36B3147A482683CE376850E2173D2833BC1D93BE5E86BAD3A8AB7",
+      "identity_basis": "Frozen new-family analytic inputs and exact expected records; no implementation or result exists.",
+      "independence_group": "TARO_O0M_EXECUTION_FAMILY_R0",
+      "ancestry": [],
+      "role": "DISCOVERY",
+      "outcome_access": "NONE",
+      "result_access_state": "CONTENT_INSPECTED",
+      "observation_unit": "SEQUENCE",
+      "split_basis": "FAMILY_IDS_DISTINCT_FROM_P0_DESIGN_IDS",
+      "research_track": "CAPABILITY_DISCOVERY",
+      "reuse_policy": "PROTOCOL_VALIDATION_ONLY_UNTIL_SEPARATE_IMPLEMENTATION_AND_EXECUTION_LOCKS"
+    },
+    {
+      "id": "TARO_O0M_FUTURE_IMPLEMENTATION",
+      "source_identity": "UNALLOCATED_IMPLEMENTATION_BYTES",
+      "content_identity": "UNALLOCATED",
+      "identity_basis": "Future pure analytic implementation and tests must be created under a separate implementation lock.",
+      "independence_group": "TARO_O0M_IMPLEMENTATION_NOT_PRESENT",
+      "ancestry": [
+        "TARO_P0_DESIGN_FIXTURE_EXPECTATION_CLASSES_ONLY"
+      ],
+      "role": "DISCOVERY",
+      "outcome_access": "NONE",
+      "result_access_state": "SEALED_UNSEEN",
+      "observation_unit": "SEQUENCE",
+      "split_basis": "SEPARATE_RUNTIME_MODULE",
+      "research_track": "CAPABILITY_DISCOVERY",
+      "reuse_policy": "NO_EXECUTION_UNTIL_HASH_BOUND_ONE_SHOT_LOCK"
+    },
+    {
+      "id": "TARO_O0M_FUTURE_EXECUTION",
+      "source_identity": "UNALLOCATED_ONE_SHOT_SYNTHETIC_EVIDENCE",
+      "content_identity": "UNALLOCATED",
+      "identity_basis": "Future exact code/test/fixture-bound one-shot output under an absent exclusive root.",
+      "independence_group": "TARO_O0M_EVIDENCE_NOT_PRESENT",
+      "ancestry": [],
+      "role": "CANARY",
+      "outcome_access": "NONE",
+      "result_access_state": "SEALED_UNSEEN",
+      "observation_unit": "SEQUENCE",
+      "split_basis": "EXCLUSIVE_NEW_ARTIFACT_ROOT",
+      "research_track": "CAPABILITY_DISCOVERY",
+      "reuse_policy": "SYNTHETIC_MECHANICS_ONLY_NOT_REAL_HEADROOM"
+    }
+  ],
+  "o0m_gates": [
+    {
+      "id": "O0M_G01_BINDING_AND_INTEGRITY",
+      "condition": "Every protocol, fixture, solver, evaluator and deterministic reducer hash matches the future O0M execution lock; output root is new and exclusive.",
+      "pass": "ALL_BINDINGS_MATCH",
+      "failure_terminal": "TARO_O0M_INVALID_EXECUTION"
+    },
+    {
+      "id": "O0M_G02_ORACLE_POSITIVE_CONTROL",
+      "condition": "Exact receipt plus all-oracle closes every supported analytic case to its frozen truth interval/state within the numeric tolerance.",
+      "pass": "ALL_SUPPORTED_CASES_CLOSE",
+      "failure_terminal": "TARO_O0M_NOT_EVALUABLE_ORACLE_CONTRACT"
+    },
+    {
+      "id": "O0M_G03_DISCRIMINATING_OPPORTUNITY",
+      "condition": "Every factor-sensitive stratum contains a frozen baseline corruption with a nonzero query effect and an attainable oracle ceiling.",
+      "pass": "ALL_FACTOR_STRATA_HAVE_OPPORTUNITY",
+      "failure_terminal": "TARO_O0M_NOT_EVALUABLE_NO_DISCRIMINATING_OPPORTUNITY"
+    },
+    {
+      "id": "O0M_G04_IDENTIFIABILITY_TRUTH",
+      "condition": "Full-rank, rank-deficient/query-invariant, rank-deficient/query-sensitive, weak-mode and nonsmooth cases all match frozen expectations.",
+      "pass": "ALL_IDENTIFIABILITY_EXPECTATIONS_MATCH",
+      "failure_terminal": "TARO_O0M_KILL_CURRENT_IDENTIFIABILITY_CRITERION"
+    },
+    {
+      "id": "O0M_G05_DEGENERATE_FAIL_CLOSED",
+      "condition": "Missing/shuffled anchor, pure-rotation scale ambiguity, tiny baseline, wrong K/time and nonsmooth conflict produce zero high-confidence query updates and remain freeze/UNKNOWN.",
+      "pass": "ZERO_HIGH_CONFIDENCE_DEGENERATE_UPDATES",
+      "failure_terminal": "TARO_O0M_KILL_CURRENT_IDENTIFIABILITY_CRITERION"
+    },
+    {
+      "id": "O0M_G06_INTERVENTION_PURITY",
+      "condition": "All eight arms change only declared blocks; VALUE_ONLY preserves masks, validity, uncertainty and common-support identity exactly.",
+      "pass": "ALL_ARM_DIFFS_PURE",
+      "failure_terminal": "TARO_O0M_INVALID_FACTORIAL_EXECUTION"
+    },
+    {
+      "id": "O0M_G07_FACTOR_SPECIFICITY",
+      "condition": "Each isolated corruption is repaired only by its causal oracle block; noncausal blocks change query error by at most the frozen numeric tolerance.",
+      "pass": "ALL_ISOLATED_EFFECTS_SPECIFIC",
+      "failure_terminal": "TARO_O0M_KILL_CURRENT_FACTOR_TREATMENT_MODEL"
+    },
+    {
+      "id": "O0M_G08_COMPOUND_CLOSURE",
+      "condition": "All-factor oracle reaches frozen compound expectations without all-clear, all-occupied or all-UNKNOWN collapse.",
+      "pass": "COMPOUND_CASES_CLOSE_WITH_NONDEGENERATE_STATES",
+      "failure_terminal": "TARO_O0M_KILL_CURRENT_FACTOR_TREATMENT_MODEL"
+    },
+    {
+      "id": "O0M_G09_MONOTONICITY_AND_DETERMINISM",
+      "condition": "Increasing uncertainty never increases confidence, repeated execution is byte-identical and equivalent state reparameterization preserves verdicts.",
+      "pass": "MONOTONE_DETERMINISTIC_PARAMETERIZATION_INVARIANT",
+      "failure_terminal": "TARO_O0M_KILL_IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "O0M_G10_LEAKAGE_FIREWALL",
+      "condition": "Future frame, truth and oracle-outcome mutations cannot change current input, base posterior or arm choice; no B1 consumed identity appears.",
+      "pass": "NO_FUTURE_OR_CONSUMED_OUTCOME_INFLUENCE",
+      "failure_terminal": "TARO_O0M_INVALID_EXECUTION_OR_LEAKAGE"
+    }
+  ],
+  "o0r_admission": {
+    "current_terminal": "TARO_O0R_NOT_EVALUABLE_DATA_AND_INTERFACE",
+    "execution_authority": false,
+    "complete_factor_truth_required": true,
+    "fresh_paired_outcome_required": true,
+    "deterministic_injection_interface_required": true,
+    "explicit_timestamp_pose_receipt_required": true,
+    "minimum_independent_parents_starting_point": 12,
+    "minimum_truth_clear_parents_starting_point": 6,
+    "minimum_truth_occupied_parents_starting_point": 6,
+    "sample_size_policy": "Final parent counts and minimum detectable effect must be frozen prospectively from power/sensitivity before outcome access.",
+    "primary_estimand": "Parent-macro proper interval-score improvement of all-oracle versus baseline under VALUE_ONLY_COMMON_SUPPORT.",
+    "primary_gate": "Parent-cluster bootstrap 95% lower confidence bound exceeds a pre-outcome minimum meaningful effect delta_min.",
+    "guardrails": [
+      "false-clear upper confidence bound passes pre-frozen non-inferiority",
+      "known-coverage lower confidence bound passes pre-frozen non-inferiority",
+      "at least 75 percent of eligible parents have favorable sign",
+      "no all-UNKNOWN, single-parent driver or critical-stratum reversal",
+      "all eight factorial arms reported with predeclared multiplicity handling"
+    ],
+    "current_blockers": [
+      "complete factor-schema truth equals zero",
+      "truth-clear factor bundle equals zero",
+      "continuous boundary truth and uncertainty truth are absent",
+      "FactorTensorAdapter and oracle injection interface are absent",
+      "fresh paired outcome is unallocated",
+      "target atlas explicit timestamp and pose are absent"
+    ],
+    "not_evaluable_effect": "No real factor-headroom claim, no state-block selection, no G1/A0/A1/J0 admission."
+  },
+  "routing_contract": {
+    "p0_pass": "May freeze one separate O0M synthetic protocol/implementation lock; does not authorize implementation or execution.",
+    "o0m_pass": "Proves analytic mechanics only. It may open an O0R source-readiness protocol or a separate synthetic G0 diagnostic protocol, never real headroom automatically.",
+    "o0r_not_evaluable": "Retain P0/O0M assets and data-gap evidence; do not relabel synthetic mechanics as real causal evidence.",
+    "o0r_no_headroom": "Close the GaugeFix causal mechanism for the frozen population/reducer after positive controls and opportunity pass.",
+    "a0_active_oracle_fail": "Close PARA active branch. Any passive-only continuation requires a new TARO_PASSIVE hypothesis/current and cannot enter the original joint J0.",
+    "a1_scorer_fail": "Close learned scorer; any analytic/passive continuation requires a new separately frozen successor and cannot enter the original joint J0.",
+    "j0_admission": "Requires explicit PASS terminals for real O0R, G0/G1 and A0/A1 under their own fresh data roles; no implicit branch is allowed."
+  },
+  "resource_budget": {
+    "future_o0m_timeout_s": 30,
+    "future_o0m_cpu_only": true,
+    "future_o0m_peak_rss_bytes": 268435456,
+    "future_o0m_max_output_bytes": 1048576,
+    "network": false,
+    "gpu": false,
+    "device": false,
+    "real_data": false,
+    "seed": 1729,
+    "rng_used": false,
+    "exclusive_artifact_root": "artifacts.local/evidence/taro/o0m-analytic-mechanics-r0",
+    "failure_scope": "IMPLEMENTATION_OR_EVIDENCE_VERSION"
+  },
+  "constraints": [
+    {
+      "id": "TARO-O0M-C01-no-implementation-or-execution",
+      "class": "INVARIANT",
+      "description": "This lock contains no O0M implementation, runner or artifact and grants neither implementation nor execution authority.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "TARO-O0M-C02-measurement-only-information",
+      "class": "INVARIANT",
+      "description": "Only the whitened measurement-residual Jacobian may establish observable rank; prior, damping, regularization, duplicate evidence and learned covariance cannot manufacture information.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "TARO-O0M-C03-finite-task-ambiguity",
+      "class": "GATE",
+      "description": "A query is locally identifiable only when the finite weak-subspace clearance ambiguity radius is at most 0.02 metre and every receipt/frontdoor is valid.",
+      "metric": "weak_subspace_task_ambiguity_radius_m",
+      "operator": "LTE",
+      "threshold": 0.02,
+      "unit": "metre",
+      "rationale": "A finite physical tolerance prevents exact-rank arithmetic from calling numerically weak, task-sensitive directions observable.",
+      "calibration_source": "Pre-outcome 2 cm analytic task-resolution budget; not B1 or O0 outcome.",
+      "sensitivity_plan": "Future O0M must report frozen neighboring 1 cm and 3 cm diagnostic verdicts without selecting among them.",
+      "revision_policy": "Any change after O0M outcome requires a new protocol and evidence version.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "TARO-O0M-C04-invalid-evidence-is-unknown",
+      "class": "INVARIANT",
+      "description": "Missing or shuffled anchor, wrong K/time/transform, weak task direction, dynamic contamination and unresolved contact switch must freeze or abstain as UNKNOWN and are never negative or clear.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "TARO-O0M-C05-factorial-purity",
+      "class": "GATE",
+      "description": "Every value-only factorial arm changes exactly its declared scale/support/boundary blocks while mask, validity, uncertainty and common-support identity remain identical.",
+      "metric": "value_only_arm_common_support_and_single_block_diff_coverage",
+      "operator": "EQ",
+      "threshold": 1.0,
+      "unit": "fraction",
+      "rationale": "Separates value correction from coverage expansion and uncertainty shrinkage.",
+      "calibration_source": "Exact intervention identity invariant fixed before any O0M or O0R outcome.",
+      "sensitivity_plan": "No lower coverage is admissible; full-block effects are reported in a separate diagnostic mode.",
+      "revision_policy": "A violation invalidates the factorial execution; it cannot be repaired in place after outcome.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "TARO-O0M-C06-real-o0-frontdoor",
+      "class": "INVARIANT",
+      "description": "Real O0R remains NOT_EVALUABLE until fresh paired complete factor/query truth, both truth classes, timestamp/pose/camera/anchor receipts and a deterministic injection interface are frozen.",
+      "failure_scope": "BRANCH"
+    }
+  ],
+  "experiment_design": {
+    "search_strategy": "NO_SEARCH_FIXED_ANALYTIC_EXECUTION_FAMILY",
+    "minimal_discriminating_experiment": "After separate implementation and execution locks, run 10 identifiability cases, 5 new factorial scenes x 8 arms x 2 modes, 2 action-filter cases and two byte-identical replays.",
+    "implementation_lock_required_tests": [
+      "non-axis-aligned orthogonal state reparameterization preserves the measurement-only weak projector, task ambiguity and verdict",
+      "future-frame, verifier-only truth, oracle-outcome and B1-consumed-identity mutations cannot influence current inputs, base posterior or arm choice; truth mutation may only change the verifier comparison",
+      "increasing uncertainty cannot increase confidence",
+      "two independent replays are byte-identical"
+    ],
+    "resource_budget": "Future O0M one-shot ceiling: CPU-only, 30 seconds, 256 MB peak RSS, 1 MB evidence, no network/GPU/device/real data.",
+    "stop_conditions": "Stop before implementation until its own lock; stop before execution until exact code/test hashes and an absent exclusive artifact root are committed; first conjunctive gate failure closes the implementation/evidence version."
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "TARO-O0M-H1-SYNTHETIC-IDENTIFIABILITY-AND-FACTORIAL-MECHANICS",
+      "theoretical_or_empirical_basis": "A task functional can be insensitive to measurement-null state directions even when full gauge is underdetermined, while factor-level interventions can isolate where analytic query error enters.",
+      "causal_difference": "Uses measurement-only finite weak-subspace query ambiguity and a value-only common-support S/P/B factorial instead of raw Hessian rank, posterior confidence or final-state oracle replacement.",
+      "expected_information_gain": "Separates structural observability, finite estimability, decision identifiability, factor value correction, coverage expansion and uncertainty shrinkage before any real-data claim.",
+      "minimal_test": "After separate implementation and execution locks, run 10 identifiability cases, 5 new factorial scenes x 8 arms x 2 modes, 2 action-filter cases and two byte-identical replays.",
+      "evaluation_metric": "Exact analytic identifiability verdicts, zero high-confidence degenerate updates, pure single-block intervention coverage, factor specificity, compound closure and byte determinism.",
+      "falsifier": "Any prior-manufactured rank, query-sensitive weak direction marked known, invalid receipt marked clear, mixed factorial arm, noncausal repair, all-UNKNOWN collapse or future-outcome influence.",
+      "cost": "O0M_PROTOCOL_STATIC_ONLY_IMPLEMENTATION_AND_EXECUTION_UNAUTHORIZED",
+      "resource_budget": "Future O0M one-shot ceiling: CPU-only, 30 seconds, 256 MB peak RSS, 1 MB evidence, no network/GPU/device/real data.",
+      "stop_condition": "Stop before implementation until its own lock; stop before execution until exact code/test hashes and an absent exclusive artifact root are committed; first conjunctive gate failure closes the implementation/evidence version.",
+      "selection_reason": "It is the minimum experiment that tests TARO's distinctive full-state-underdetermined/task-query-identifiable claim without conflating it with model training or unavailable real factor truth."
+    }
+  ],
+  "execution_authority": {
+    "protocol_lock": true,
+    "static_validation": true,
+    "o0m_implementation": false,
+    "o0m_execution": false,
+    "real_data_read": false,
+    "factor_injection": false,
+    "gauge_solver": false,
+    "training": false,
+    "checkpoint": false,
+    "active_prompt": false,
+    "android_device": false,
+    "calibration": false,
+    "confirmation": false,
+    "deployment": false,
+    "default_app": false
+  },
+  "prohibited_artifacts_in_this_lock": [
+    "scripts/research/taro_o0m_runtime/o0m_mechanics.py",
+    "scripts/research/taro_o0m_runtime/run_o0m_canary.py",
+    "scripts/research/taro_o0m_runtime/test_o0m_mechanics.py",
+    "artifacts.local/evidence/taro/o0m-analytic-mechanics-r0"
+  ],
+  "unique_successor": {
+    "id": "TARO_O0M_IMPLEMENTATION_LOCK",
+    "kind": "IMPLEMENTATION_LOCK",
+    "execution_authority": false,
+    "scope": "Create and test a pure analytic mechanics implementation in a separate module, bind exact code/test hashes and keep scientific execution false."
+  },
+  "successor_policy": {
+    "unique_successor": "TARO_O0M_IMPLEMENTATION_LOCK",
+    "successor_currently_authorized": false,
+    "successor_scope": "Create and statically test pure analytic mechanics in a separate runtime module; do not run the scientific canary.",
+    "new_version_allowed": true,
+    "preserve_previous_evidence": true,
+    "permissions_never_automatic": [
+      "O0M execution",
+      "real O0R data or factor injection",
+      "GaugeFix or PARA training",
+      "active user prompt",
+      "Android/device",
+      "Calibration",
+      "Confirmation",
+      "Deployment",
+      "default App",
+      "product or safety"
+    ]
+  },
+  "freeze": {
+    "level": "F1",
+    "outcome_access_started": false,
+    "amendment_mode": "IN_PLACE_BEFORE_OUTCOME",
+    "frozen_now": [
+      "O0M execution-family R0 identity, seed 1729 and rng_used false",
+      "ten identifiability payloads and exact analytic truth",
+      "five new factorial scenes, eight arms, two oracle modes and eighty record hashes",
+      "measurement-only R_weak gate separated from H_meas decision interval",
+      "value-only common-support primary and full-block validity/uncertainty diagnostic",
+      "two action-filter expectations and body-motion rejection",
+      "numeric tolerance, hash quantization and clearance margins",
+      "ten O0M gate identities, failure scopes and claim ceiling",
+      "CPU/time/RSS/output/network/GPU/device/real-data budget",
+      "real O0R current NOT_EVALUABLE frontdoor",
+      "passive/active failure routing without implicit J0 admission"
+    ],
+    "unresolved_before_o0m_execution": [
+      "O0M runtime implementation and focused test bytes",
+      "exact implementation, runner and test hashes",
+      "non-axis-aligned projector reparameterization and future/outcome leakage mutation tests",
+      "one-shot command and absent exclusive-root preflight receipt",
+      "execution authority true in a separately committed lock"
+    ],
+    "unresolved_before_real_o0r": [
+      "fresh paired source identities and use authority",
+      "complete factor/query truth and truth-clear support",
+      "timestamp pose camera and metric-anchor receipts",
+      "deterministic factor injection adapter",
+      "prospective power, delta_min, multiplicity and non-inferiority values"
+    ]
+  },
+  "result_model": {
+    "scientific_status": "NOT_RUN_PROTOCOL_LOCK_ONLY",
+    "claim_eligibility": "DATA_CHARACTERIZED",
+    "protocol_status": "FROZEN",
+    "execution_validity": "NOT_RUN",
+    "scientific_outcome": "NOT_RUN",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "terminal_scope": "EVIDENCE_VERSION"
+  },
+  "claim_ceiling": "O0M freezes a disjoint analytic execution family, exact identifiability/factorial expectations, record hashes, gates and one-shot resource ceilings. No mechanics implementation, runner, scientific canary, real data outcome, factor headroom, active observation value, model, device, product or safety claim has been executed or established.",
+  "o0m_protocol_scope": {
+    "identifiability_case_count": 10,
+    "factorial_scene_count": 5,
+    "factorial_arm_count": 8,
+    "oracle_mode_count": 2,
+    "factorial_record_count": 80,
+    "action_filter_case_count": 2,
+    "replay_count": 2,
+    "execution_family_disjoint_from_p0_ids": true,
+    "implementation_present": false,
+    "runner_present": false,
+    "artifact_present": false
+  }
+}
