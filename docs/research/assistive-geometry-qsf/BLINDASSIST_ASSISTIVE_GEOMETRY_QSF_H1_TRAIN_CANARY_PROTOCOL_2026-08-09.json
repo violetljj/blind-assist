@@ -1,0 +1,170 @@
+{
+  "schema": "blindassist.assistive_geometry_qsf.h1_train_canary_protocol.v1",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09",
+  "route_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0",
+  "research_mode": "REVERSIBLE_EXPLORATION",
+  "research_style": "WILD_LAB",
+  "stage": "CANARY",
+  "profile": "CANARY_LITE",
+  "candidate": "H1_ONLY",
+  "status": "H1_IMPLEMENTED_TRAIN_CANARY_LOCKED_NOT_RUN",
+  "scientific_question": "Can a parameter-matched four-bin body-swept robust q-contact survival head learn from frozen DepthART band features without turning UNKNOWN or partial support into clear right-censor observations?",
+  "causal_difference": "Replace direct point clearance plus three independent occupancy logits with four discrete hazards whose CDF structurally supplies occupancy at 1.0, 1.5 and 2.0 metres.",
+  "falsifier": "Reject this H1 implementation version if fit or held-out-parent right-censored NLL does not improve by the frozen minimum, if held-out false-clear or capped-clearance regresses beyond tolerance, if coverage changes, or if any horizon monotonicity violation occurs.",
+  "minimal_discriminating_experiment": "Freeze the encoder; extract only pooled three-band features from 64 source-order-even frames per TRAIN parent; fit H1 on 12 parents and evaluate on four parent-disjoint TRAIN-canary parents.",
+  "execution_authority": {
+    "h1_only_implementation": true,
+    "synthetic_mechanics": true,
+    "performance_pilot": true,
+    "real_train_canary": true,
+    "h2_implementation_or_materialization": false,
+    "h1_plus_h2_training": false,
+    "development_outcome_access": false,
+    "confirmation_outcome_access": false,
+    "android_or_device": false,
+    "default_app_change": false
+  },
+  "representation": {
+    "target": "body_swept_robust_q_contact_Tq",
+    "robust_contact_quantile": 0.02,
+    "hazard_bin_edges_m": [0.5, 1.0, 1.5, 2.0],
+    "occupancy_horizons_m": [1.0, 1.5, 2.0],
+    "right_censor_rule": "known q-contact beyond 2.0 m OR all three occupancy horizons known clear",
+    "unknown_is_negative": false,
+    "partial_support_is_right_censor": false,
+    "clearance_decoder": "event-bin midpoint expectation plus tail mass at 2.0 m; diagnostic horizon-capped value only"
+  },
+  "parameter_budget": {
+    "direct_task_head_parameters": 8678,
+    "h1_task_head_parameters": 8678,
+    "exact_match": true,
+    "hazard_bins": [0.5, 1.0, 1.5, 2.0]
+  },
+  "roster": {
+    "data_role": "TRAIN_CANARY_PARENT_DISJOINT",
+    "fit_parent_video_ids": [
+      "41159448",
+      "42445086",
+      "42445790",
+      "42897547",
+      "42898024",
+      "42898242",
+      "44358617",
+      "47333249",
+      "47334163",
+      "47430327",
+      "47204445",
+      "47331226"
+    ],
+    "eval_parent_video_ids": ["47430531", "47431114", "47895508", "47334948"],
+    "frames_per_parent": 64,
+    "selection": "SOURCE_ORDER_EVENLY_SPACED",
+    "development_or_confirmation_content_opened": false,
+    "other_route_model_outputs_read": false
+  },
+  "training": {
+    "encoder": "FROZEN_DEPTHART_S_INDOOR",
+    "trainable_modules": ["band_mlp", "hazard_out", "confidence_out"],
+    "seed": 1702943,
+    "epochs": 50,
+    "batch_size": 64,
+    "optimizer": "ADAMW",
+    "learning_rate": 0.001,
+    "weight_decay": 0.01,
+    "active_losses": ["survival_nll", "false_clear_extra", "confidence_bce"]
+  },
+  "gates": {
+    "fit_survival_nll_relative_improvement_min": 0.1,
+    "eval_survival_nll_relative_improvement_min": 0.02,
+    "eval_false_clear_rate_increase_max": 0.01,
+    "eval_clearance_mae_increase_max_m": 0.02,
+    "horizon_monotonicity_violations_max": 0,
+    "known_coverage_delta_max": 0.0
+  },
+  "resource_budget": {
+    "pilot_frames": 16,
+    "full_frames": 1024,
+    "gpu_use": "frozen feature extraction only",
+    "cpu_use": "50-epoch pooled-head optimization",
+    "maximum_wall_seconds": 900,
+    "stop_scope_on_budget_excess": "THIS_CANARY_EVIDENCE_VERSION_ONLY"
+  },
+  "resource_scheduling": {
+    "foreign_formal_train_priority": true,
+    "requires_foreign_gpu_idle": true,
+    "minimum_free_vram_mib": 5000,
+    "maximum_projected_wall_seconds": 900,
+    "no_foreign_checkpoint_or_progress_read": true,
+    "no_gpu_or_heavy_io_overlap": true
+  },
+  "implementation": {
+    "scripts/research/assistive_geometry_qsf/h1_survival.py": "0DF2A25272A3AD32C6EFF6182D02E03366F1F04F53C02C77F50A7458937F8F97",
+    "scripts/research/assistive_geometry_qsf/run_h1_train_canary.py": "92C3E34FAA4F029F29FB11244F39E05EA0761F0A4065222284293BBE08FA1B1D",
+    "scripts/research/assistive_geometry_qsf/validate_h1_train_canary.py": "D5037BD13D6BB66F3EB39638D8E27CA13DB5D3A05C03806A6981393DDA36C944"
+  },
+  "inputs": {
+    "target_manifest": {
+      "kind": "DERIVED_TRAIN_CACHE",
+      "producer_route": "BLINDASSIST_ASSISTIVE_GEOMETRY",
+      "path": "artifacts.local/datasets/assistive-geometry-b1-train-targets-20260809-r0/manifest.json",
+      "sha256": "A6F809C7EE59C6539FEA37C92973E350ECCF5260353BA5F15A9A9BBB9888A7C2",
+      "access": "READ_ONLY",
+      "immutable": true,
+      "provenance": "B1 TRAIN-only sensor-derived target manifest; every referenced target is hash-bound by the producer manifest",
+      "license_scope": "INHERITED_FROM_BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_USE_AUTHORIZATION",
+      "data_role": "TRAIN",
+      "outcome_access": "METADATA_ONLY",
+      "selection_influence": "NONE",
+      "claim_use": "H1_TRAIN_CANARY_ONLY"
+    },
+    "depthart_source": {
+      "kind": "CODE_CONTRACT",
+      "producer_route": "DEPTHART_R1",
+      "path": "F:/ba-data/blindassist-artifacts-20260805/models/depthart/source",
+      "git_commit": "0384521b3bcb4c64adf03eeb5d55ebdb1cbdd84c",
+      "release_manifest": "RELEASE_MANIFEST.sha256",
+      "release_manifest_sha256": "C0D94C9F083A71EF244E2B9FBC260AB03278789C6A35AA25ACDB39B90FE8E507",
+      "access": "READ_ONLY",
+      "immutable": true,
+      "provenance": "Pinned local DepthART source snapshot already used by B1",
+      "license_scope": "PINNED_LOCAL_RELEASE_SCOPE_INHERITED_NOT_REINTERPRETED",
+      "data_role": "NOT_APPLICABLE",
+      "outcome_access": "NONE",
+      "selection_influence": "NONE",
+      "claim_use": "FROZEN_ENCODER_ONLY"
+    },
+    "initialization_checkpoint": {
+      "kind": "INITIALIZATION",
+      "producer_route": "DEPTHART_R1",
+      "path": "F:/ba-data/blindassist-artifacts-20260805/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+      "sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65",
+      "access": "READ_ONLY",
+      "immutable": true,
+      "provenance": "Pinned official metric indoor small initialization; not an active B1 checkpoint",
+      "license_scope": "PINNED_LOCAL_RELEASE_SCOPE_INHERITED_NOT_REINTERPRETED",
+      "data_role": "NOT_APPLICABLE",
+      "outcome_access": "NONE",
+      "selection_influence": "NONE",
+      "claim_use": "COMMON_INITIALIZATION_ONLY"
+    }
+  },
+  "outputs": {
+    "pilot_parent": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-r0",
+    "run_parent": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-r0",
+    "model_parent": "artifacts.local/models/assistive-geometry-qsf/h1-train-canary-r0",
+    "work_parent": "artifacts.local/work/assistive-geometry-qsf/h1-train-canary-r0"
+  },
+  "terminal_policy": {
+    "pass": "H1_TRAIN_CANARY_PASS_LEARNABILITY_SUPPORTED",
+    "scientific_fail": "H1_TRAIN_CANARY_FAIL_IMPLEMENTATION_VERSION_NOT_SUPPORTED",
+    "execution_invalid": "H1_TRAIN_CANARY_EXECUTION_INVALID",
+    "resource_deferred": "H1_CANARY_DEFERRED_RESOURCE_ISOLATION",
+    "failure_scope": "IMPLEMENTATION_VERSION",
+    "next_successor_after_any_valid_scientific_terminal": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H2_ONLY_IMPLEMENTATION_AND_TRAIN_CANARY_LOCK",
+    "combination_requires": [
+      "H1_TRAIN_CANARY_PASS_LEARNABILITY_SUPPORTED",
+      "H2_TRAIN_CANARY_PASS_UNSEEN_PROFILE_SUPPORTED"
+    ]
+  },
+  "claim_ceiling": "This lock can establish only parent-disjoint TRAIN-only frozen-encoder H1 learnability mechanics. It cannot compare against B1, access Development or Confirmation, authorize H2 or H1+H2, change the default App, or claim device, product, production, or assistive safety validity."
+}

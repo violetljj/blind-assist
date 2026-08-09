@@ -1,0 +1,94 @@
+from __future__ import annotations
+
+import copy
+import json
+import unittest
+
+from scripts.research.assistive_geometry_qsf.run_h1_train_canary import (
+    apply_gates,
+    select_parent_frames,
+)
+from scripts.research.assistive_geometry_qsf.validate_h1_train_canary import (
+    PROTOCOL_RELATIVE,
+    REPO_ROOT,
+    ValidationError,
+    find_foreign_gpu_processes,
+    validate_protocol,
+)
+
+
+def _protocol() -> dict:
+    return json.loads((REPO_ROOT / PROTOCOL_RELATIVE).read_text(encoding="utf-8"))
+
+
+class H1TrainCanaryValidationTest(unittest.TestCase):
+    def test_tracked_lock_validates_without_runtime_input_probe(self) -> None:
+        report = validate_protocol(_protocol(), verify_inputs=False)
+        self.assertEqual("H1_TRAIN_CANARY_PROTOCOL_VALID", report["terminal"])
+        self.assertTrue(report["parameter_budget"]["exact_match"])
+
+    def test_development_or_extra_input_cannot_be_smuggled_into_lock(self) -> None:
+        protocol = copy.deepcopy(_protocol())
+        protocol["inputs"]["b1_development_outcome"] = {
+            "kind": "PROTECTED_OUTCOME",
+            "data_role": "PROJECT_CONSUMED_DEVELOPMENT",
+        }
+        with self.assertRaisesRegex(ValidationError, "protected input leak"):
+            validate_protocol(protocol, verify_inputs=False)
+        protocol = copy.deepcopy(_protocol())
+        protocol["inputs"]["target_manifest"]["data_role"] = "PROJECT_CONSUMED_DEVELOPMENT"
+        with self.assertRaisesRegex(ValidationError, "target data role"):
+            validate_protocol(protocol, verify_inputs=False)
+
+    def test_h2_and_combination_authority_fail_closed(self) -> None:
+        for key in ("h2_implementation_or_materialization", "h1_plus_h2_training"):
+            protocol = copy.deepcopy(_protocol())
+            protocol["execution_authority"][key] = True
+            with self.subTest(key=key), self.assertRaises(ValidationError):
+                validate_protocol(protocol, verify_inputs=False)
+
+    def test_foreign_gpu_process_detection_is_role_specific(self) -> None:
+        report = find_foreign_gpu_processes(
+            [
+                (10, "python train_b1_a0_formal.py --mode formal"),
+                (11, "python run_h1_train_canary.py --mode pilot"),
+                (12, "pwsh unrelated.ps1"),
+            ]
+        )
+        self.assertEqual([{"pid": 10, "role": "FOREIGN_FORMAL_TRAIN"}], report)
+
+    def test_evenly_spaced_parent_selection_is_exact(self) -> None:
+        frames = [
+            {"video_id": parent, "frame_stem": f"{index:03d}"}
+            for parent in ("a", "b")
+            for index in range(10)
+        ]
+        selected = select_parent_frames(frames, ("a", "b"), 4)
+        self.assertEqual(
+            [("a", "000"), ("a", "003"), ("a", "006"), ("a", "009"),
+             ("b", "000"), ("b", "003"), ("b", "006"), ("b", "009")],
+            [(row["video_id"], row["frame_stem"]) for row in selected],
+        )
+
+    def test_gate_application_preserves_coverage_and_monotonicity(self) -> None:
+        before_fit = {"survival_nll": 1.0}
+        after_fit = {"survival_nll": 0.85}
+        before_eval = {
+            "survival_nll": 1.0,
+            "false_clear_rate": 0.2,
+            "clearance_mae_m": 0.4,
+            "known_coverage": 0.75,
+        }
+        after_eval = {
+            "survival_nll": 0.95,
+            "false_clear_rate": 0.2,
+            "clearance_mae_m": 0.4,
+            "known_coverage": 0.75,
+            "horizon_monotonicity_violations": 0,
+        }
+        gates = apply_gates(before_fit, after_fit, before_eval, after_eval, _protocol()["gates"])
+        self.assertTrue(all(gates.values()))
+
+
+if __name__ == "__main__":
+    unittest.main()

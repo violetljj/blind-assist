@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry QSF
 
-状态：`current / WILD_LAB / PARALLEL_ROUTE_PREPARED / H1_IMPLEMENTATION_NOT_STARTED / TRAIN_CANARY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / WILD_LAB / H1_IMPLEMENTED / TRAIN_CANARY_LOCKED_NOT_RUN / RUNTIME_DEFERRED_WHILE_FOREIGN_FORMAL_TRAIN_ACTIVE / DEFAULT_APP_UNCHANGED`
 
 ## 主张与边界
 
@@ -12,18 +12,22 @@ AG-QSF（Assistive Geometry Queryable Survival Field）研究：
 它是现行 Assistive Geometry 单帧 direct-head 主线的并行 `WILD_LAB` 路线，不是 B1 的
 下一阶段，也不改变 B1、C0、D0、M0 或 DepthART 的 successor、训练进程和终态。
 
-当前唯一真源是本页；机器边界见
-[`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0_PREPARATION_PROTOCOL_2026-08-09.json`](BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0_PREPARATION_PROTOCOL_2026-08-09.json)。
+当前唯一真源是本页。准备阶段边界保留在
+[`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0_PREPARATION_PROTOCOL_2026-08-09.json`](BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0_PREPARATION_PROTOCOL_2026-08-09.json)；
+当前 H1 实现、输入、parent roster、资源门和 TRAIN-only canary gate 由
+[`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09.json`](BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09.json)
+冻结。
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_ONLY_IMPLEMENTATION_AND_TRAIN_CANARY_LOCK`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PERFORMANCE_PILOT_THEN_RUN_WHEN_FOREIGN_GPU_IDLE`
 
-只允许先实现并冻结 H1-only 的 target compiler、censor/UNKNOWN mask、hazard decoder、
-right-censored likelihood、参数预算匹配 head、checkpoint/flip/zero-support/gradient 测试与
-TRAIN-only canary 协议。H2-only 当前只保留 schema/接口占位，不实现、不物化、不训练；
-H1 canary 形成终态后，H2 才能成为新的唯一 successor。只有 H1、H2 各自 canary 通过后
-才能另立组合协议。
+H1-only 的 target compiler、censor/UNKNOWN mask、四桶 hazard decoder、right-censored
+likelihood、参数精确匹配 head、checkpoint/flip/zero-support/gradient 测试和 parent-disjoint
+TRAIN-only canary 已冻结。当前先等待其他路线正式 GPU 训练空闲，再运行 16-frame
+performance-only pilot；pilot 在 `900 s` 上界内合格后，才运行 `12 fit parent / 4 eval parent ×
+64 frame` 的 frozen-encoder H1 canary。H1 形成有效科学终态后，H2 才能成为新的唯一
+successor；只有 H1、H2 各自通过后才能另立组合协议。
 
 ## 与其他路线并行
 
@@ -45,25 +49,30 @@ H1 canary 形成终态后，H2 才能成为新的唯一 successor。只有 H1、
 
 禁止向其他路线的 artifact root 写入任何文件；禁止把别的路线 active run 目录登记成共享输入。
 当 B1 正式 seed 正在运行时，QSF 只做 CPU/synthetic/文档与轻 I/O 工作，不启动竞争 GPU、
-显存或重 I/O 的任务；未来 GPU canary 必须在独立协议中重新做资源预检和排期。
+显存或重 I/O 的任务。H1 validator 会把 B1 formal runner 进程或 `<5000 MiB` 空闲显存返回为
+`H1_CANARY_DEFERRED_RESOURCE_ISOLATION`，这只是调度延后，不是 H1 科学失败。
 
 ## 当前允许
 
-- QSF 协议、schema、validator、synthetic mechanics、测试和 H1-only 实现；
+- QSF 协议、schema、validator、synthetic mechanics、测试和冻结的 H1-only 实现；
+- 在 foreign formal GPU 完全空闲、runtime preflight 通过后运行 H1 performance pilot 与
+  TRAIN-only canary；
 - H2-only 的非可执行 schema/接口占位；
 - 通过逐项 manifest 只读复用冻结资源；
 - 不访问受保护 outcome 的 TRAIN-only 数据审计和 canary 设计。
 
 ## 当前禁止
 
-- 运行真实 TRAIN canary、读取 B1 Development/Confirmation outcome 或抢跑 candidate comparison；
+- 与 B1 formal GPU/重 I/O 重叠运行 H1 pilot/canary，读取 B1 Development/Confirmation outcome
+  或抢跑 candidate comparison；
 - 读取或复用其他路线 active checkpoint、progress、optimizer/scheduler/RNG state；
 - 把 invalid/support 缺失当 right-censored clear，或把 `UNKNOWN` 当 negative；
 - 训练 `H1+H2`、启动 C0/D0/M0、接 Android/HTP、替换 DA2 或修改默认 App；
-- H1 canary 形成终态前实现、物化或训练 H2；
+- H1 canary 形成有效科学终态前实现、物化或训练 H2；
 - 声称 learnability、优于 B1、论文 novelty、Confirmation、部署、产品或助盲安全。
 
 ## Claim ceiling
 
-当前只证明并行路线的代码、状态和资源隔离合同已准备完成。尚未证明 H1/H2 可学、真实数据有效、
-优于 direct head、可部署或安全。
+当前只证明 H1 target/mask/decoder/loss/head mechanics、精确参数匹配、parent-disjoint canary
+合同与资源隔离门已实现并通过专项测试。真实 TRAIN canary 尚未运行，因此尚未证明 H1/H2
+可学、真实数据有效、优于 direct head、可部署或安全。

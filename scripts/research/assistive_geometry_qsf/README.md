@@ -1,19 +1,29 @@
 # Assistive Geometry QSF research Module
 
-状态：`preparation / WILD_LAB / PARALLEL_ROUTE_PREPARED / TRAIN_CANARY_NOT_AUTHORIZED`
+状态：`current / WILD_LAB / H1_IMPLEMENTED / TRAIN_CANARY_LOCKED_NOT_RUN / RESOURCE_DEFERRED_WHILE_FOREIGN_FORMAL_TRAIN_ACTIVE`
 
 ## 研究问题与版本
 
 - route：`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0`
-- protocol：`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0_PREPARATION_PROTOCOL_2026-08-09`
-- stage/profile：`PREPARATION / CANARY_LITE`
+- protocol：`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09`
+- stage/profile：`CANARY / CANARY_LITE`
 - current：[Assistive Geometry QSF](../../../docs/research/assistive-geometry-qsf/README.md)
 
-本 Module 当前只为 H1 censored robust-contact survival 提供独立并行实现面；H2
-profile-conditioned swept configuration clearance 仅保留非可执行 schema/接口占位。
-H1 canary 形成终态前不得实现、物化或训练 H2；当前也不授权真实 TRAIN canary。
+本 Module 当前实现 H1 censored robust-contact survival：四个 hazard bins 结构化派生
+`1.0/1.5/2.0 m` occupancy，并保留独立 confidence；H2 profile-conditioned swept
+configuration clearance 仍只保留非可执行 schema/接口占位。H1 canary 形成有效科学终态前
+不得实现、物化或训练 H2。
 
 ## 稳定 Interface
+
+H1 mechanics 与参数匹配实现：
+
+- [`h1_survival.py`](h1_survival.py)：target compiler、event/censor/UNKNOWN 分离、hazard
+  distribution/decoder、loss、parameter-matched head；
+- [`run_h1_train_canary.py`](run_h1_train_canary.py)：只读复用 TRAIN targets 与官方
+  DepthART 初始化，冻结 encoder 后提取 pooled band feature，再执行 parent-disjoint head canary；
+- [`validate_h1_train_canary.py`](validate_h1_train_canary.py)：实现/input/roster/gate/resource
+  lock 与 foreign GPU 隔离预检。
 
 验证 tracked preparation protocol：
 
@@ -40,6 +50,24 @@ size 与 SHA-256；validator 会复算全部成员并拒绝遗漏、额外文件
 [`fixtures/directory_identity/directory.manifest.json`](fixtures/directory_identity/directory.manifest.json)。
 路径不存在、hash/blob 不匹配或自定义协议扩权都会拒绝。
 
+验证当前 H1 lock：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.assistive_geometry_qsf.validate_h1_train_canary
+```
+
+资源预检：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.assistive_geometry_qsf.validate_h1_train_canary `
+  --runtime-preflight
+```
+
+返回 `H1_CANARY_DEFERRED_RESOURCE_ISOLATION` 时不得运行 pilot；它不表示科学失败。资源
+READY 后唯一执行顺序是 `pilot-r0`，再由同一 protocol/hash 运行 `run-r0`。
+
 ## 输出
 
 - `artifacts.local/evidence/assistive-geometry-qsf/`
@@ -47,7 +75,8 @@ size 与 SHA-256；validator 会复算全部成员并拒绝遗漏、额外文件
 - `artifacts.local/work/assistive-geometry-qsf/`（含可重建 derived targets/cache）
 
 所有其他路线目录均为 foreign-owned；本 Module 不得写入。
-当 B1 正式 seed 运行时只允许 CPU/synthetic/light-I/O 工作；未来 GPU canary 必须另做预检。
+当 B1 正式 seed 运行时只允许 CPU/synthetic/light-I/O 工作；H1 GPU feature extraction
+必须通过当前 runtime preflight，不能与 foreign formal runner 重叠。
 
 ## 安全边界
 
