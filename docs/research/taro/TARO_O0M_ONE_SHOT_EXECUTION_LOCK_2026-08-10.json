@@ -1,0 +1,117 @@
+{
+  "schema": "blindassist.taro.o0m.one_shot_execution_lock.v1",
+  "lock_id": "TARO_O0M_ONE_SHOT_EXECUTION_LOCK",
+  "date": "2026-08-10",
+  "status": "AUTHORIZED_UNCONSUMED",
+  "implementation_commit": "0ad87538",
+  "bindings": [
+    {
+      "role": "O0M_PROTOCOL",
+      "path": "docs/research/taro/TARO_O0M_SYNTHETIC_IDENTIFIABILITY_AND_FACTORIAL_MECHANICS_PROTOCOL_LOCK_2026-08-10.json",
+      "sha256": "B44292AF22A11A6575558674ADB7861A4BC2B67F85D9AF02E48F57B17CF4B0F1",
+      "bytes": 27606
+    },
+    {
+      "role": "O0M_FIXTURE",
+      "path": "docs/research/taro/TARO_O0M_EXECUTION_FIXTURE_SPEC_2026-08-10.json",
+      "sha256": "6462D6569F7836E1C6BDABA48AA28736AF9A62B93FB90B125F67D270A385E58A",
+      "bytes": 81323
+    },
+    {
+      "role": "O0M_IMPLEMENTATION_LOCK",
+      "path": "docs/research/taro/TARO_O0M_IMPLEMENTATION_LOCK_2026-08-10.json",
+      "sha256": "EAF936DDBC34DA83BA2C119D2051D2EA31A0CA71FB9922BD9A2C2DA7AB26EC64",
+      "bytes": 3061
+    },
+    {
+      "role": "O0M_STATIC_VALIDATOR",
+      "path": "scripts/research/taro_o0m/validate_taro_o0m_protocol.py",
+      "sha256": "4E3A14DF5986240E35030AE12CC1D1230C48375A421401D39C0F29D39C12EA8D",
+      "bytes": 27615
+    },
+    {
+      "role": "P0_NUMERIC_EVALUATOR",
+      "path": "scripts/research/taro/validate_taro_p0_protocol.py",
+      "sha256": "9E9FC85ABB59D8E19F1E6DB28668DAD94AE56430B0A184E12AB3D90A610B6A88",
+      "bytes": 46734
+    },
+    {
+      "role": "O0M_MECHANICS",
+      "path": "scripts/research/taro_o0m_runtime/o0m_mechanics.py",
+      "sha256": "528757B4488516FAD732CBBA50A7ECD6B2E647709D70DCC8241E97694C1AA2D9",
+      "bytes": 15951
+    },
+    {
+      "role": "O0M_RUNNER",
+      "path": "scripts/research/taro_o0m_runtime/run_o0m_canary.py",
+      "sha256": "96A3F921D721BBEA482C67E84A7A40077748CC0784ECE0D6316993326D6E8E83",
+      "bytes": 23500
+    },
+    {
+      "role": "O0M_TESTS",
+      "path": "scripts/research/taro_o0m_runtime/test_o0m_mechanics.py",
+      "sha256": "69933ACD9F1ACD44EAA01A7AAD9435B75FB911979FA230A0A608C9B84B41C27D",
+      "bytes": 9167
+    }
+  ],
+  "argv": [
+    "scripts/research/taro_o0m_runtime/run_o0m_canary.py",
+    "--execution-lock",
+    "docs/research/taro/TARO_O0M_ONE_SHOT_EXECUTION_LOCK_2026-08-10.json"
+  ],
+  "required_environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "PYTHONHASHSEED": "0",
+    "PYTHONUTF8": "1"
+  },
+  "one_shot": {
+    "exclusive_artifact_root": "artifacts.local/evidence/taro/o0m-analytic-mechanics-r0",
+    "consumed_at_lock": false,
+    "overwrite": false,
+    "rerun": false,
+    "consumption_rule": "The one-shot is consumed when the exclusive root is atomically created, regardless of later PASS, FAIL or timeout."
+  },
+  "resource_budget": {
+    "timeout_s": 30,
+    "peak_rss_bytes": 268435456,
+    "max_output_bytes": 1048576,
+    "network": false,
+    "gpu": false,
+    "device": false,
+    "real_data": false,
+    "workers_sequential": true
+  },
+  "expected_artifacts": [
+    "result.json",
+    "records.jsonl",
+    "execution-receipt.json",
+    "manifest.json"
+  ],
+  "gates": [
+    "O0M_G01_BINDING_AND_INTEGRITY",
+    "O0M_G02_ORACLE_POSITIVE_CONTROL",
+    "O0M_G03_DISCRIMINATING_OPPORTUNITY",
+    "O0M_G04_IDENTIFIABILITY_TRUTH",
+    "O0M_G05_DEGENERATE_FAIL_CLOSED",
+    "O0M_G06_INTERVENTION_PURITY",
+    "O0M_G07_FACTOR_SPECIFICITY",
+    "O0M_G08_COMPOUND_CLOSURE",
+    "O0M_G09_MONOTONICITY_AND_DETERMINISM",
+    "O0M_G10_LEAKAGE_FIREWALL"
+  ],
+  "execution_authority": {
+    "o0m_execution": true,
+    "real_data": false,
+    "training": false,
+    "active_prompt": false,
+    "network": false,
+    "gpu": false,
+    "device": false,
+    "confirmation": false,
+    "deployment": false,
+    "default_app": false
+  },
+  "o0r_terminal": "TARO_O0R_NOT_EVALUABLE_DATA_AND_INTERFACE",
+  "claim_ceiling": "This lock authorizes exactly one frozen synthetic analytic execution. PASS cannot establish real factor headroom, evidence dedup/whitening, model quality, active-view utility, device, product or safety authority."
+}

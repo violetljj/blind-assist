@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_PROTOCOL_FROZEN / O0M_IMPLEMENTATION_LOCK_PASS / SCIENTIFIC_STATUS_NOT_RUN / O0M_EXECUTION_NOT_AUTHORIZED / O0R_NOT_EVALUABLE_DATA_AND_INTERFACE / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_PROTOCOL_FROZEN / O0M_IMPLEMENTATION_LOCK_PASS / O0M_ONE_SHOT_LOCKED_UNCONSUMED / SCIENTIFIC_STATUS_NOT_RUN / O0R_NOT_EVALUABLE_DATA_AND_INTERFACE / DEFAULT_APP_UNCHANGED`
 
 ## 当前主张
 
@@ -36,6 +36,8 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   protocol lock 时 implementation、runner 与 scientific artifact 尚不存在；
 - [TARO O0M implementation lock](TARO_O0M_IMPLEMENTATION_LOCK_2026-08-10.md)：独立 NumPy runtime
   与 13/13 disjoint unit tests 已 hash-bound；正式 execution family 仍未运行；
+- [TARO O0M one-shot execution lock](TARO_O0M_ONE_SHOT_EXECUTION_LOCK_2026-08-10.md)：exact
+  code/fixture/argv/environment/resource/root 已绑定，当前尚未消费；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -46,11 +48,10 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0M_ONE_SHOT_EXECUTION_LOCK`
+`TARO_O0M_ONE_SHOT_EXECUTION`
 
-O0M implementation 已锁定且 13/13 disjoint tests 通过。该 successor 只允许另提交 one-shot
-execution lock，把 fixture/code/tests/command/environment/timeout/exclusive absent root 全部绑定；锁提交
-前不得创建 scientific artifact 或运行正式 10+80+2 canary。
+O0M implementation 与 one-shot lock 已分别提交。该 successor 只允许按锁内 exact argv 运行一次
+正式 10+80+2 synthetic canary；exclusive root 创建即消费，无论结果为何均不得覆盖、删除或重跑。
 
 真实 O0R 当前硬终态为 `TARO_O0R_NOT_EVALUABLE_DATA_AND_INTERFACE`：complete factor truth、
 truth-clear factor bundle、连续 boundary/uncertainty truth、target timestamp/pose、deterministic
