@@ -51,8 +51,9 @@ TARO 全称：
 > **Task-directed Active Risk Observability**
 > （任务定向主动风险可观测性）
 
-它不是 GaugeFix 与 PARA 的松散模块拼装，而是以 task-query identifiability 为主贡献，检验一个
-统一命题：
+TARO 有意把可替换的 factor encoder、残余 gauge posterior、observable-subspace update、
+选择性不确定性与任务定向取证组合成一条受共同 clearance contract 约束的算法。它不要求每个
+部件从零发明，而以 task-query identifiability 为主贡献，检验一个统一命题：
 
 > 在声明的独立米制锚、有效 frame receipt、冻结的连续几何 factor 与 deterministic reducer
 > 下，能否通过只更新局部可观测的残余 gauge，并在必要时选择一个受限的额外观测，使
@@ -67,6 +68,22 @@ TARO 全称：
 PARA 是条件扩展而不是预设成功项：只有 passive posterior 和 action oracle 依次提供增量时才进入
 学习。当前版本若 active branch 失败，passive-only 延续必须另立版本，不能在 outcome 后拆分联合
 命题来回救结果。
+
+### 1.3 组合式创新的成立条件
+
+复用优秀模块不是 TARO 的弱点；不披露来源、没有共同问题定义、只靠堆叠提高 aggregate score 才是。
+本路线把“缝得好”定义为：接口、调用顺序、停止条件、`UNKNOWN` 和证据合同共同产生单个模块或
+朴素 cascade 不能提供、且可重复测量的任务行为。未来若要把组合本身写成论文贡献，必须同时满足：
+
+1. 所有继承模块、权重、数据、接口改造和 provenance 显式登记；
+2. 各模块共享非平凡的 body/path-specific clearance functional，而不是各自优化无关 proxy；
+3. 调用存在条件依赖：只有当前 query 仍不可识别时才允许 PARA 消费额外证据；
+4. 统一优化预冻结的非对称 query decision risk，并显式扣除时间、相机位移、提示和注意力成本；
+5. 最终 authority 仍由固定 deterministic reducer 独占，组合不能把 learned confidence 伪装成三态；
+6. 与 plug-compatible、同输入、同帧数、同延迟、同动作预算的强替代模块和朴素串联公平比较；
+7. 用单组件、替换组件、联合组件和 factorial interaction 分离增益，联合收益不能由各模块单独结果推断。
+
+这些条件是未来真实实验要证伪的 scientific contract，不是当前 synthetic O0M 已经证明的创新效果。
 
 ## 2. 明确的非命题
 
@@ -130,12 +147,31 @@ TARO schema 已物化或可执行。
   UAV 的已观测自由空间认证与执行规划，TARO 必须证明其不同对象：穿戴式部分米制 factor
   posterior、局部 task-functional identifiability、人类受限 camera-only 观察、校准 `UNKNOWN`
   及交互成本；TARO 不主张 certified path execution。
+- [Fundamental limits for sensor-based robot control](https://journals.sagepub.com/doi/full/10.1177/02783649231190947)
+  已用 task-relevant information potential 研究给定任务下传感器施加的性能上界；因此“信息与任务
+  相关”本身不是新意，TARO 必须把对象收窄到 clearance functional 的局部可识别性与有限证据动作。
+- [The Value of Sensory Information to a Robot](https://proceedings.iclr.cc/paper_files/paper/2025/hash/e1126028d9f1f69c13571ec462084d31-Abstract-Conference.html)
+  通过在不同任务状态暂时 withholding observation 测量性能 regret；TARO 应继承这种反事实思想，
+  报告去掉合法观测后的 query-risk 上升与所选动作相对同预算 oracle 的 sensing regret。
+- [Perceive With Confidence](https://proceedings.mlr.press/v270/dixit25a.html) 已把 conformal
+  calibration 与学习感知/规划联结；[Explore until Confident](https://explore-eqa.github.io/) 已用
+  multi-step conformal prediction 校准 EQA 停止。故“conformal + confidence stopping”本身不是
+  TARO novelty；TARO 的候选差异是 partial-metric factor posterior、body/path clearance、非对称
+  false-clear risk、人类取证成本和 deterministic reducer，但仍须实验证明。
+- [MapAnything](https://map-anything.github.io/)、
+  [VGGT](https://openaccess.thecvf.com/content/CVPR2025/html/Wang_VGGT_Visual_Geometry_Grounded_Transformer_CVPR_2025_paper.html)
+  与 [MASt3R-SLAM](https://openaccess.thecvf.com/content/CVPR2025/papers/Murai_MASt3R-SLAM_Real-Time_Dense_SLAM_with_3D_Reconstruction_Priors_CVPR_2025_paper.pdf)
+  表明 feed-forward metric geometry 与 reconstruction prior 已很强；它们适合作为 proposal、teacher、
+  initializer 或 upper bound，而不是 TARO 的独立 metric anchor、O0R truth 或三态裁判。
 
 因此，可检验的论文空位不是“校准 + NBV”“人体条件化”或“扫掠体积认证”，而是：
 
 > **under partial metric evidence and human-constrained sensing, full state can remain underdetermined
 > while a body/path-specific task functional becomes locally identifiable; when it does not, bounded
 > evidence selection must reduce query risk without hiding false-clear, coverage or interaction cost.**
+
+高质量组合可以成为贡献，但论文必须证明共同 contract、条件调用与 interaction gain；仅把若干强模块
+接成 pipeline，或分别引用它们的单项成绩，都不能建立 TARO 的联合主张。
 
 ## 4. 数学对象与可证伪条件
 
@@ -216,6 +252,19 @@ Fv=0 \Rightarrow J_Cv=0.
 unscented transform 或 interval propagation。最终 clear/occupied/UNKNOWN 继续由冻结的
 deterministic reducer 根据完整 interval 产生；TARO 不能把均值越阈值当成最终结论。
 
+### 4.5 选择性风险校准候选——未来且非授权
+
+只有未来获得独立、parent-disjoint 的 calibration split 后，才可在 protocol 中比较 split conformal、
+conformal risk control（CRC）或其他预冻结 selective-risk calibration。候选 wrapper 位于 factor/query
+posterior 与冻结 reducer 之间，只能校准 clearance residual、interval 或 selective decision risk；它不是
+learned safety classifier，不能输出最终三态。
+
+该 wrapper 不得修复无效 receipt、缺失 metric anchor、unsupported factor、错误时间绑定或数据角色
+冲突，也不得通过缩小 `UNKNOWN` 率来宣称成功。任何 coverage/risk 保证只在明确写出的 calibration/
+test 可交换性、loss、alpha、finite-sample correction 与数据分布假设下成立；设备、场景、body profile、
+动作政策或人机交互分布发生 shift 时，不得外推为真实助行安全保证。当前没有合格 calibration source，
+本候选未采用、未实现、未执行。
+
 ## 5. 计划架构
 
 ```text
@@ -225,7 +274,8 @@ RGB + valid K/crop/rotation/resize receipt + IMU/VIO + sparse tracks
     -> residual gauge factor graph / posterior
     -> TSVD observable-subspace update
     -> body/path-specific clearance posterior + query identifiability
-        -> identifiable: frozen deterministic reducer
+        -> identifiable: optional pre-frozen calibration wrapper (future only)
+            -> frozen deterministic reducer
         -> not identifiable: passive ring-buffer evidence selection
         -> still not identifiable and stationary: bounded camera micro-baseline
         -> no admissible evidence: UNKNOWN with reason
@@ -282,8 +332,20 @@ u^*=\arg\max_u
 -\lambda E(u)-\mu T(u),
 \]
 
-其中 \(\rho\) 是 query interval width 或预冻结 Bayes decision risk，(E/T) 是人机动作成本与
-延迟。先过滤不允许/不可执行动作，再比较信息价值；不能通过调一个任意加权和绕过动作边界。
+其中 \(\rho\) 的 primary 应是预冻结的非对称 query decision risk，false-clear 权重与 loss matrix 必须
+在 outcome 前冻结；interval width 只能作为并列诊断，不能替代决策正确性。(E/T) 是人机动作成本与
+延迟，还应显式记录相机位移、提示次数和注意力负担。先过滤不允许/不可执行动作，再比较信息价值；
+不能通过调一个任意加权和绕过动作边界。action scorer 只预测证据价值，最终三态仍由 reducer 产生。
+
+动作价值至少用两个可证伪 regret 检查：
+
+- **observation-withholding regret**：从同一合法 receipt 中去掉某项已允许观测，测量真实 query risk
+  上升，避免把冗余传感信息误写成关键证据；
+- **sensing regret**：所选动作相对同预算 one-step oracle 可实现 risk reduction 的损失，同时报告单位
+  时间、单位相机位移、每次提示和注意力成本的 risk reduction。
+
+当前 query 已可识别时仍触发动作的比例、证据不足后正确保留 `UNKNOWN` 的比例，以及动作执行失败/
+拒绝，都是 primary guardrail；不能只报成功动作上的平均 interval 收窄。
 
 ## 6. 最小数据与接口合同
 
@@ -487,6 +549,23 @@ real baseline -> rendered baseline -> single-variable rendered intervention
 外 treatment probe、cross-renderer 和少量真实物理 pair 必须单独过门。TwinScene 不证明 TARO
 query-identifiability，也不获得 TARO freshness/Confirmation 身份。
 
+### 8.4 Geometry-anchored minimal-pair 合同
+
+未来 O0R/J0 若使用 counterfactual pairs，每一对只能改变一个 claim-relevant factor，并由 source-native
+或独立 reference geometry 重新计算 query truth，而不是继承模型输出。优先 pair family 包括：
+
+- 障碍边界刚好跨过/退出同一 body envelope；
+- scene/path 不变，只改变预声明 body profile；
+- 同一 frame 使用 valid K receipt 与冻结的错误 K mutation；
+- 有实际平移的微基线与相同视角变化的 pure rotation；
+- 同一 clearance boundary 的可见与受控遮挡状态。
+
+另建 nuisance-invariance pairs：保持 geometry/query truth 不变，只改变光照、纹理、曝光或允许的成像
+扰动。每个 family 报告 pair flip accuracy、truth-invariant consistency、pair-level `UNKNOWN`、高置信
+false-clear 和 parent/site 分层。生成器、renderer 或 world model 可以提议 stress pair，但不能生成 truth；
+同一 twin/asset/path 的两臂不得跨 split。O0M factorial mechanics 只证明 synthetic mutation 代码行为，
+不证明未来真实 pair 的物理有效性或因果性。
+
 ## 9. Primary metrics 与统计
 
 每个阶段只选择与科学问题匹配的 primary；不得用 aggregate score 掩盖 factor/query failure。
@@ -509,10 +588,12 @@ query-identifiability，也不获得 TARO freshness/Confirmation 身份。
 
 ### 9.3 Active observation
 
-- realized query-risk/interval reduction；
-- regret versus one-step oracle；
+- realized asymmetric query-risk reduction；interval reduction 单独诊断；
+- observation-withholding regret 与 sensing regret versus equal-budget one-step oracle；
 - UNKNOWN→known 且 truth-consistent 的转化率；
+- risk reduction per time、actual camera displacement、prompt 与 attention cost；
 - actual baseline、track survival、prompt count、time-to-evidence；
+- already-identifiable false-trigger rate、insufficient-evidence `UNKNOWN` retention；
 - action refusal、执行失败和净效用（扣除时间/交互成本）。
 
 ### 9.4 统计规则
@@ -571,6 +652,18 @@ all-clear、all-occupied、all-UNKNOWN、coverage collapse、通过更敢报 cle
 - 同一 track/session/scene/twin family 不跨 split；
 - UNKNOWN/invalid mutation 必须 fail closed。
 
+### 11.4 组合归因与替换消融
+
+- 固定 factor/reducer，只比较 `no GaugeFix`、GaugeFix、替代 posterior solver 与 oracle posterior；
+- 在同一 posterior 上比较 `no PARA`、random/fixed/generic NBV、PARA 与 one-step oracle；
+- 比较 GaugeFix-only、PARA-on-uncalibrated proxy、朴素 always-active cascade 与条件式 GaugeFix→PARA；
+- 每一臂固定相同输入 receipt、frame/action/time budget、body/query roster 与 reducer；
+- 报告主效应、interaction effect、worst-parent 与 coverage，不以 joint aggregate 掩盖任一组件 failure；
+- teacher/foundation backbone 只能作为可替换 arm，不得同时改变 truth、receipt、预算或 reducer。
+
+若联合臂不优于最佳同预算可插拔替代或朴素 cascade，组合创新 claim 失败；允许保留单组件负结果，
+但不得在 outcome 后重命名为原联合路线成功。
+
 ## 12. 模型选择和 reducer 边界
 
 - R2 factor backbone checkpoint 只能由各 factor 的 proper loss/error/calibration 与冻结 Pareto 规则
@@ -594,9 +687,11 @@ all-clear、all-occupied、all-UNKNOWN、coverage collapse、通过更敢报 cle
 - 解析 Fisher/TSVD + 小 MLP/TCN；
 - 重用现有 feature，不新增第二次 dense encoder。
 
-AnyCam、CalibAnyView、VGGT/CUT3R、DROIDCalib、3DGS 和生成式模型可作为离线 teacher、
-initialization 或 upper bound，但在同一 Snapdragon/HTP 真机通过 raw/task parity 与完整链路测量前，
-不得写成端侧可用。
+AnyCam、CalibAnyView、VGGT/CUT3R、MapAnything、MASt3R-SLAM、DROIDCalib、3DGS 和生成式模型
+可作为显式 provenance 的 factor/feature proposal、离线 teacher、initialization 或 upper bound。
+比较时必须固定 source receipt、metric anchor、数据 split、frame/action budget 与 deterministic reducer；
+它们不得改变 anchor validity、替 TARO/R2 选择 checkpoint、代替 O0R truth/injection adapter，或直接
+输出最终三态。在同一 Snapdragon/HTP 真机通过 raw/task parity 与完整链路测量前，也不得写成端侧可用。
 
 ## 14. TwinScene 与 AC4D 的关系边界
 
@@ -631,8 +726,9 @@ branching、1.5–3 s 多模态 strata 上超过 D44 + CV/CA Kalman + IMM；普�
 3. metadata-first residual posterior 与 observable-subspace update；
 4. 通过 oracle 后才开放的人类受限、camera-only、passive-first 观测策略；
 5. 对 max-parallax、generic/task NBV、PTC-like scale 和 simple VIO/affine 的强比较；
-6. query calibration、false-clear/false-block/coverage 与 interaction cost 的 Pareto；
-7. UNKNOWN、timestamp、anchor、split 与未来泄漏机器审计。
+6. 同预算 plug-compatible replacements、单组件/联合 factorial ablation 与 interaction attribution；
+7. query calibration、false-clear/false-block/coverage、sensing regret 与 interaction cost 的 Pareto；
+8. UNKNOWN、timestamp、anchor、split 与未来泄漏机器审计。
 
 ### 效果层级与 claim 边界
 
@@ -652,7 +748,7 @@ branching、1.5–3 s 多模态 strata 上超过 D44 + CV/CA Kalman + IMM；普�
 | “A0 病因被事后猜中” | 用 consumed anatomy 调状态/门 | A0 只作诊断；新数据与 factorial oracle outcome 前冻结 |
 | “通过保守 UNKNOWN 掩盖错误” | 只降 false-clear/false-block | 同时报 known coverage、interval calibration、all-UNKNOWN kill |
 | “主动动作不现实” | 用计划基线或身体移动 | 使用实测 VIO baseline、track survival、prompt/time cost，拒绝 body motion |
-| “组合系统不可归因” | 同时加入 TwinScene/AC4D/大 teacher | 首篇只保留 GaugeFix+PARA，阶段 oracle 分开通过 |
+| “组合系统不可归因” | 只展示联合臂或同时改 backbone/truth/预算 | 保留最小完整组合：冻结 factor/reducer + GaugeFix + conditional PARA；比较单模块、替换模块、朴素 cascade、联合臂与 oracle，报告 interaction gain |
 
 ## 16. 粗略预算与停止策略
 
@@ -688,3 +784,19 @@ diagnostic 或 future baseline，不用换 seed、降门或扩大组合进行 af
 
 在此之前，只允许 current 明列的只读审计、文献去重、接口设计和数据字段映射；不得创建新的 TARO
 runner、模型、checkpoint、数据 materializer、主动提示或 Android 代码。
+
+### 17.1 O0R 候选源只读能力映射（NON_AUTHORIZING）
+
+下表只依据公开数据格式/项目文档做 metadata-level 映射；本次没有申请、下载、打开或统计任何
+payload，也没有赋予数据角色。状态词只允许 `CANDIDATE_METADATA_MAPPED / GAP_OPEN / NOT_ADMITTED`：
+
+| 候选源 | 文档显示的可映射能力 | 仍未关闭的 TARO 前门 | 当前状态 |
+|---|---|---|---|
+| [Aria Digital Twin](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_digital_twin_dataset/data_format) | 穿戴式 raw/synthetic streams、timestamp、online calibration、6DoF trajectory、depth/segmentation、部分 skeleton/object GT | body-swept query truth、continuous boundary/uncertainty、自然 paired micro-action、parent/site 独立性、许可/角色、deterministic injection | `CANDIDATE_METADATA_MAPPED / GAP_OPEN / NOT_ADMITTED` |
+| [ScanNet++](https://scannetpp.mlsg.cit.tum.de/scannetpp/documentation) | 高精度 laser/mesh、注册 DSLR、iPhone RGB-D、ARKit pose/intrinsics/IMU metadata | 穿戴式 mount/timing、动作交互与真实相机微基线 pair、body/query truth、boundary uncertainty、角色/adapter | `CANDIDATE_METADATA_MAPPED / GAP_OPEN / NOT_ADMITTED` |
+| TwinScene future candidate | 可设计 exact factor/query interventions 与 matched nuisance pairs | renderer/cross-renderer/physical-pair validity、real anchor、independent truth、split family、许可与全部 O0R adapter | `GAP_OPEN / NOT_ADMITTED` |
+
+任何后续 source audit 至少逐项记录：K/pose/IMU/timestamp、mesh/depth、boundary/uncertainty、factor/query
+truth、paired observations、parent/session/site identity、license/use scope 与 deterministic adapter feasibility。
+单个字段存在不等于 source 可用；缺失项保持 `UNKNOWN/GAP_OPEN`，不得当 negative，也不得由 teacher
+或生成器填成 truth。只有 current 另立 outcome 前冻结的 source-specific contract，才可能改变状态。

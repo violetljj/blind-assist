@@ -33,6 +33,12 @@ TARO（Task-directed Active Risk Observability，任务定向主动风险可观�
 - `PARA`：只有被动 query 仍不可识别且 action oracle 先通过时，才研究以
   body/path-specific clearance query 为目标的受限观察与证据选择。
 
+TARO 明确接受**组合式创新**：factor encoder、残余 gauge posterior、可观测子空间求解、
+选择性校准和 action scorer 都可以继承或替换优秀前作。原创性不要求每个零件从零发明，而要求
+它们服从同一条可证伪合同：`clearance functional → identifiability → calibrated uncertainty →
+evidence value → deterministic reducer`。组合是否成立，必须用同预算强基线、可插拔替换、单组件/
+联合 factorial ablation 和联合增益归因来证明，不能把各模块单独有效直接写成系统有效。
+
 两个组件不得在 outcome 后任意拆分或互相背书；active branch 若失败，任何 passive-only 延续都必须
 另立版本。这样可保持贡献主次清楚，同时不把主动提示预设为 TARO 必须成立的用户行为。
 
@@ -116,6 +122,8 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 
 - 维护本路线 current 与详细路线指南；
 - outcome-blind 的文献去重、接口设计、数据字段映射和解析公式检查；
+- 只读审计候选公开数据源的文档、许可、字段与能力，并记录 `CANDIDATE_METADATA_MAPPED` /
+  `GAP_OPEN` / `NOT_ADMITTED`；该映射不等于下载、source admission 或 O0R successor；
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
@@ -127,6 +135,10 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 把不可观测方向、缺字段、track 丢失、动态污染或 unsupported factor 当作 clear/negative；
 - 让 learned graph、gauge solver 或 action scorer直接输出最终
   `CLEAR/OCCUPIED/UNKNOWN`，或绕过 deterministic body-swept reducer；
+- 把 conformal/CRC 的分布内统计保证写成真实助行安全保证，或用它修复无效 receipt、缺失 metric
+  anchor、数据漂移和不满足 exchangeability 的输入；
+- 把 VGGT、MapAnything、MASt3R-SLAM 等几何基础模型当作独立米制锚、O0R truth、因果裁判或最终
+  三态输出；它们最多是显式 provenance 的 teacher/proposal/initializer/upper bound；
 - 用 task metric 选择/拯救 R2 factor backbone checkpoint；
 - 要求用户向前或侧向迈步来获取证据，或把计划动作当作已执行基线；
 - 读取受保护 outcome、重标 consumed cohort、启动训练/Teacher/TwinScene/AC4D、接
@@ -139,7 +151,8 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 
 当前只证明冻结的、预去重与预白化 synthetic analytic family 上，独立 NumPy 实现可复现
 task-query identifiability 与 factorial intervention mechanics。它不证明真实 factor causal headroom、
-真实 evidence dedup/whitening、模型质量、被动/主动视角收益、跨设备泛化、移动端可行、产品有效性
+真实 evidence dedup/whitening、模型质量、选择性风险校准、observation-withholding/sensing regret、
+真实 geometry-anchored counterfactual pair、被动/主动视角收益、跨设备泛化、移动端可行、产品有效性
 或真实用户安全。
 
 默认 App、正式 YOLO、Assistive Geometry 主线、DepthART 路线以及所有产品/安全权限均不变。
