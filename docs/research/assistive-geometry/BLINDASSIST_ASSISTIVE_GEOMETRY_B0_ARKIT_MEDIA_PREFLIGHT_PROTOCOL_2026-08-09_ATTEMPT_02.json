@@ -1,0 +1,51 @@
+{
+  "schema": "blindassist_assistive_geometry_b0_arkitscenes_media_preflight_protocol_v1",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B0_ARKIT_MEDIA_PREFLIGHT_2026-08-09_ATTEMPT_02",
+  "supersedes_failed_attempt": {
+    "protocol": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_ARKIT_MEDIA_PREFLIGHT_PROTOCOL_2026-08-09.json",
+    "result": "artifacts.local/evidence/hftf/assistive-geometry-b0-arkitscenes-rosters-20260809/media-head-preflight.json",
+    "result_sha256": "2F8BF162354A5D005DE2EF801D2F121DB248E65D18450DEA0A6E97DF4FE74276",
+    "terminal": "B0_ARKIT_ASSET_HEADER_PREFLIGHT_INCOMPLETE_NO_REPLACEMENT",
+    "repair_rule": "new roster version; carry forward deterministic selection with failed visit/video explicitly excluded; no task outcome was opened"
+  },
+  "roster": {
+    "path": "artifacts.local/evidence/hftf/assistive-geometry-b0-arkitscenes-rosters-20260809-attempt-02/rosters.json",
+    "sha256": "3EF4F0300D61F1D09A4D0C35520CDA7CDF37CFF8089721EC51C3A331BB4CA58C"
+  },
+  "authorization_receipt": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-09_ATTEMPT_02.json",
+    "sha256": "95D3C7DE6632BF4A6E2CBA8F64D239B62CC7D339E1014365C3693674BB7371BB"
+  },
+  "base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw",
+  "assets_per_video": [
+    "lowres_wide.zip",
+    "lowres_depth.zip",
+    "confidence.zip",
+    "lowres_wide_intrinsics.zip",
+    "lowres_wide.traj"
+  ],
+  "request_method": "HEAD",
+  "expected_parent_count": 32,
+  "expected_request_count": 160,
+  "timeout_seconds": 20,
+  "retries": 3,
+  "workers": 8,
+  "media_body_bytes_read": false,
+  "replacement_allowed_within_attempt": false,
+  "producer": {
+    "path": "scripts/research/assistive_geometry/preflight_b0_arkitscenes_assets.py",
+    "sha256": "F4C09AD39E12AB490738B2DE00C24E6EE5B6EF9104C1D1CFACE933B0CBF22C2F"
+  },
+  "tests": {
+    "path": "scripts/research/assistive_geometry/test_preflight_b0_arkitscenes_assets.py",
+    "sha256": "F9F0A854B7A1F1BFADBF70F190E575B4FBBED64B693853A64F98EC3787D22414"
+  },
+  "forbidden": [
+    "GET or media body read during HEAD preflight",
+    "role replacement or reassignment within attempt-02",
+    "open task outcome",
+    "construct or select model candidate",
+    "start training"
+  ],
+  "terminal": "B0_ARKIT_MEDIA_PREFLIGHT_ATTEMPT_02_FROZEN_NOT_RUN"
+}

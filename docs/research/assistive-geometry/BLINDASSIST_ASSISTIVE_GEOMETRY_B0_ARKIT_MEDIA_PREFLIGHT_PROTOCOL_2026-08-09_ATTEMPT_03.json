@@ -1,0 +1,41 @@
+{
+  "schema": "blindassist_assistive_geometry_b0_arkitscenes_media_preflight_protocol_v1",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B0_ARKIT_MEDIA_PREFLIGHT_2026-08-09_ATTEMPT_03",
+  "supersedes_body_integrity_failed_roster": {
+    "roster_sha256": "3EF4F0300D61F1D09A4D0C35520CDA7CDF37CFF8089721EC51C3A331BB4CA58C",
+    "failed_visit_id": "467354",
+    "failed_video_id": "47333684",
+    "observed_common_rgb_depth_confidence_frames": 219,
+    "required_common_frames": 300,
+    "task_outcome_opened": false,
+    "repair_rule": "new roster version with failed source identity excluded; same deterministic role/count rules"
+  },
+  "roster": {
+    "path": "artifacts.local/evidence/hftf/assistive-geometry-b0-arkitscenes-rosters-20260809-attempt-03/rosters.json",
+    "sha256": "096FF33440991BEB910B8563C9405E2A1CC50A986F331DD3E1B055EEA1C76B76"
+  },
+  "authorization_receipt": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-09_ATTEMPT_03.json",
+    "sha256": "E1759CA08BF4354663FC5FE388706CBB117631293EBBF3E4EB1967BBCCFE3B36"
+  },
+  "base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw",
+  "assets_per_video": ["lowres_wide.zip", "lowres_depth.zip", "confidence.zip", "lowres_wide_intrinsics.zip", "lowres_wide.traj"],
+  "request_method": "HEAD",
+  "expected_parent_count": 32,
+  "expected_request_count": 160,
+  "timeout_seconds": 20,
+  "retries": 3,
+  "workers": 8,
+  "media_body_bytes_read": false,
+  "replacement_allowed_within_attempt": false,
+  "producer": {
+    "path": "scripts/research/assistive_geometry/preflight_b0_arkitscenes_assets.py",
+    "sha256": "F4C09AD39E12AB490738B2DE00C24E6EE5B6EF9104C1D1CFACE933B0CBF22C2F"
+  },
+  "tests": {
+    "path": "scripts/research/assistive_geometry/test_preflight_b0_arkitscenes_assets.py",
+    "sha256": "F9F0A854B7A1F1BFADBF70F190E575B4FBBED64B693853A64F98EC3787D22414"
+  },
+  "forbidden": ["GET during HEAD preflight", "role replacement within attempt-03", "open task outcome", "start training"],
+  "terminal": "B0_ARKIT_MEDIA_PREFLIGHT_ATTEMPT_03_FROZEN_NOT_RUN"
+}

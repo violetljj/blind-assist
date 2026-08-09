@@ -1,0 +1,49 @@
+{
+  "schema": "blindassist_assistive_geometry_b0_data_use_authorization_receipt_v1",
+  "receipt_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-09",
+  "confirmed_by": "user",
+  "confirmed_at": "2026-08-09",
+  "confirmation_verbatim": "我授权所有数据都能使用",
+  "interpreted_scope": {
+    "research_route": "BLINDASSIST_ASSISTIVE_GEOMETRY_B0",
+    "all_locally_available_data": true,
+    "new_source_media_download": true,
+    "arkitscenes_roster": {
+      "path": "artifacts.local/evidence/hftf/assistive-geometry-b0-arkitscenes-rosters-20260809/rosters.json",
+      "sha256": "407D90343C4F2B3616532D99DEF8503B8E6C55E21D00502B6324B48D01B798FD",
+      "train_sessions": 16,
+      "development_sessions": 8,
+      "confirmation_sessions": 8
+    },
+    "authorized_assets": [
+      "lowres_wide.zip",
+      "lowres_depth.zip",
+      "confidence.zip",
+      "lowres_wide_intrinsics.zip",
+      "lowres_wide.traj"
+    ],
+    "authorized_operations": [
+      "metadata and identity audit",
+      "HEAD and integrity preflight",
+      "bounded media download",
+      "truth-reader materialization",
+      "TRAIN fitting and teacher materialization",
+      "DEVELOPMENT selection and confidence calibration",
+      "one-time CONFIRMATION opening after candidate freeze"
+    ]
+  },
+  "source_license": {
+    "path": "artifacts.local/downloads/ARKitScenes-7283761/LICENSE",
+    "sha256": "D8D156565F81B4B56B37A6D5A68A223A0874ED1131BAC6A404B0D5E765189071",
+    "use_must_remain_within_source_terms": true,
+    "redistribution_authorized": false
+  },
+  "scientific_firewalls_preserved": {
+    "consumed_120_frame_cohort_forbidden": true,
+    "depthart_r2_eight_session_roster_forbidden": true,
+    "role_reassignment_after_outcome": false,
+    "confirmation_selection_or_calibration": false,
+    "unknown_is_negative": false
+  },
+  "authority": "Data use and bounded media access for Assistive Geometry B0 research only. It does not itself prove data integrity, task truth, model quality, deployment, product, production, safety, or redistribution rights."
+}
