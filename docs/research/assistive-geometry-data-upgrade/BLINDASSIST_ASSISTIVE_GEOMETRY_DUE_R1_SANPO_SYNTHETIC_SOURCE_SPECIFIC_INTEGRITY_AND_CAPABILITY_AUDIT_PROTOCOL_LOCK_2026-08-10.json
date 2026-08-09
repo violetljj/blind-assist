@@ -32,22 +32,22 @@
     },
     "reference_acquirer": {
       "path": "scripts/acquire_sanpo_synthetic_replay.py",
-      "sha256": "7016A7106B76565F0B41733D002BBABD15CAFD77D75E4355657E891E388BC3C6",
+      "git_blob_sha256": "263912EE4FAC5BFB95E03499DE2FFFBEDDF031B1B4C1D68E1CB00EFFCB26CDFE",
       "role": "non-authoritative format reference only; network and payload execution remain forbidden"
     },
     "reference_replay_auditor": {
       "path": "scripts/audit_sanpo_synthetic_replay.py",
-      "sha256": "DB85E6992C3EB67BA6EF406F51D8A4CBB84D89F3B0129914B983FDAAFEFA5E5C",
+      "git_blob_sha256": "DB85E6992C3EB67BA6EF406F51D8A4CBB84D89F3B0129914B983FDAAFEFA5E5C",
       "role": "non-authoritative GCS receipt, hash and numeric-index mechanics reference only"
     },
     "reference_metric_depth_auditor": {
       "path": "scripts/audit_sanpo_synthetic_metric_replay.py",
-      "sha256": "F2392226FF067EA8AD89CBAD565173FAFEE57FF7D4129DD2472413CDE1AABA88",
+      "git_blob_sha256": "F2392226FF067EA8AD89CBAD565173FAFEE57FF7D4129DD2472413CDE1AABA88",
       "role": "non-authoritative depth-structure and pose-binding limitation reference only"
     },
     "reference_pose_limitation": {
       "path": "docs/research/ustrf-sc/USTRF_SC_SANPO_REPLAY_INTEGRATION.md",
-      "sha256": "1F1FA3075A5762368B569E0B6D730853471DFC111E13089B29A20D8AD3E6F62E",
+      "git_blob_sha256": "1F1FA3075A5762368B569E0B6D730853471DFC111E13089B29A20D8AD3E6F62E",
       "role": "tracked prior evidence that pose rows lack explicit frame/timestamp binding; not current payload evidence"
     },
     "r2_f1_protocol": {
@@ -284,7 +284,7 @@
     "Real-source, test-split, Development, Confirmation, Android, product or safety claims enter the result."
   ],
   "implementation": {
-    "scripts/research/assistive_geometry_data_upgrade/validate_due_sanpo_synthetic_r1_protocol.py": "E14C80116F5286991C00639BAE06E8F314FCC3B1C2DE6AFC3F653587B876BBB0",
+    "scripts/research/assistive_geometry_data_upgrade/validate_due_sanpo_synthetic_r1_protocol.py": "11F105A0C7E84DB774486270D62E6ECB22D1CD58457FA7A9D5607365CC98B1B2",
     "scripts/research/assistive_geometry_data_upgrade/test_validate_due_sanpo_synthetic_r1_protocol.py": "DEF7CEE91AE52A6FAEBB878546AEAD2C331B1191E330E80712EE6A49F89324BA"
   },
   "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R1_SANPO_SYNTHETIC_METADATA_AND_OBJECT_INVENTORY_PREFLIGHT_EXECUTION",

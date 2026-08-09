@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -40,6 +41,18 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest().upper()
+
+
+def git_blob_sha256(repo_root: Path, logical_path: str) -> str:
+    process = subprocess.run(
+        ["git", "-C", str(repo_root), "cat-file", "blob", f"HEAD:{logical_path}"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if process.returncode != 0:
+        raise ProtocolError(f"predecessor Git blob missing: {logical_path}")
+    return hashlib.sha256(process.stdout).hexdigest().upper()
 
 
 def validate_protocol(protocol: dict[str, Any], repo_root: Path = REPO_ROOT) -> dict[str, Any]:
@@ -102,10 +115,15 @@ def validate_protocol(protocol: dict[str, Any], repo_root: Path = REPO_ROOT) -> 
         "r2_f1_result": "current F1 execution blocker and claim ceiling",
     }
     for name, binding in protocol["predecessors"].items():
-        require(set(binding) == {"path", "sha256", "role"}, f"predecessor binding drift: {name}")
+        is_reference = name.startswith("reference_")
+        expected_fields = {"path", "git_blob_sha256", "role"} if is_reference else {"path", "sha256", "role"}
+        require(set(binding) == expected_fields, f"predecessor binding drift: {name}")
         path = repo_root / binding["path"]
         require(path.is_file(), f"predecessor missing: {name}")
-        require(binding["sha256"] == sha256_file(path), f"predecessor SHA drift: {name}")
+        if is_reference:
+            require(binding["git_blob_sha256"] == git_blob_sha256(repo_root, binding["path"]), f"predecessor Git blob SHA drift: {name}")
+        else:
+            require(binding["sha256"] == sha256_file(path), f"predecessor SHA drift: {name}")
         require(binding["role"] == expected_roles[name], f"predecessor role drift: {name}")
 
     source = protocol["locked_source"]
