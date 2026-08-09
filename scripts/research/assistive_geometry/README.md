@@ -49,6 +49,8 @@
   运行。
 - `train_b1_a0_formal.py`：运行冻结的 A0 TRAIN-only 性能 pilot 与三 seed 正式训练；发布
   guarded progress，按 epoch 原子保存可恢复状态，并保留 `5/10/15/20` checkpoint。
+- `train_b1_additive_arm.py`：A1–A4 共用的 outcome-blind 训练 mechanics；所有 arm 从同一
+  DepthART 初始化独立训练，只逐项开放冻结 head/loss，等待 A0 Development 结果后另立协议激活。
 - `evaluate_b1_a0_synthetic.py`：验证三 seed × 四 retained checkpoint 的 bytes/SHA、内部状态、
   协议与步数完整性，并计算 pooled、九格、parent 与 orientation task metrics；不选择 seed。
 - `run_b1_a0_evaluation_dry_run.py`：只用合成 fixture 演练通过路径与 checkpoint 缺失、协议漂移、
