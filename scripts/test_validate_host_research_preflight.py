@@ -162,6 +162,24 @@ class HostResearchPreflightTest(unittest.TestCase):
             any("minimum_free_vram_gib" in error for error in result["errors"])
         )
 
+    def test_rejects_lexical_escape_from_artifacts_root(self) -> None:
+        payload = _valid_payload(VALIDATOR)
+        payload["progress"]["path"] = "artifacts.local/../docs/progress.json"
+        code, result = self._run(payload)
+        self.assertEqual(code, 2)
+        self.assertTrue(
+            any("repository-relative" in error for error in result["errors"])
+        )
+
+    def test_rejects_non_artifact_terminal_path(self) -> None:
+        payload = _valid_payload(VALIDATOR)
+        payload["terminal"]["success_path"] = "docs/result.json"
+        code, result = self._run(payload)
+        self.assertEqual(code, 2)
+        self.assertTrue(
+            any("under artifacts.local" in error for error in result["errors"])
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -118,20 +118,26 @@ def _artifact_path(
     label: str,
     errors: list[str],
 ) -> Path | None:
-    resolved = _repo_path(
-        repo_root,
-        value,
-        label,
-        errors,
-        must_exist=False,
-    )
-    if resolved is None:
+    text = _required_text(value, label, errors)
+    if not text:
         return None
+    relative = Path(text)
+    if relative.is_absolute() or ".." in relative.parts:
+        errors.append(f"{label} must be a repository-relative path")
+        return None
+    if not relative.parts or relative.parts[0].lower() != "artifacts.local":
+        errors.append(f"{label} must be under artifacts.local/")
+        return None
+
+    # artifacts.local is intentionally allowed to be a governed junction.  The
+    # logical path must enter through that repository-owned root, while its
+    # physical resolution must stay inside the junction target.
     artifacts_root = (repo_root / "artifacts.local").resolve()
+    resolved = (repo_root / relative).resolve()
     try:
         resolved.relative_to(artifacts_root)
     except ValueError:
-        errors.append(f"{label} must be under artifacts.local/")
+        errors.append(f"{label} escapes the artifacts.local root")
     return resolved
 
 

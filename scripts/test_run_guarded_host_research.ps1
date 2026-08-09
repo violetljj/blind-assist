@@ -17,67 +17,12 @@ New-Item -ItemType Directory -Path $caseDirectory -Force |
 $monitorDirectories = [System.Collections.Generic.List[string]]::new()
 
 try {
-    $runner = Join-Path $caseDirectory "runner.py"
-    $runnerSource = @'
-import argparse
-import json
-from pathlib import Path
-
-parser = argparse.ArgumentParser()
-parser.add_argument("--progress", type=Path, required=True)
-parser.add_argument("--success", type=Path, required=True)
-parser.add_argument("--failure", type=Path)
-parser.add_argument("--workers", type=int, required=True)
-parser.add_argument("--progress-status", default="complete")
-parser.add_argument("--fail", action="store_true")
-parser.add_argument("--require-isolated", action="store_true")
-args = parser.parse_args()
-if args.require_isolated and (
-    __import__("sys").flags.isolated != 1
-    or __import__("sys").flags.dont_write_bytecode != 1
-):
-    raise SystemExit("isolated no-bytecode interpreter required")
-args.progress.parent.mkdir(parents=True, exist_ok=True)
-completed_units = 1 if args.fail else 2
-progress_status = "failed" if args.fail else args.progress_status
-args.progress.write_text(
-    json.dumps(
-        {
-            "phase": "producer",
-            "completed_units": completed_units,
-            "total_units": 2,
-            "throughput": 10.0,
-            "eta_seconds": 0,
-            "last_progress_at": (
-                __import__("datetime").datetime.now(
-                    __import__("datetime").timezone.utc
-                ).isoformat().replace("+00:00", "Z")
-            ),
-            "status": progress_status,
-        }
-    ),
-    encoding="utf-8",
-)
-if args.fail:
-    if args.failure is None:
-        raise SystemExit("failure path required")
-    args.failure.write_text(
-        json.dumps({"status": "failed", "workers": args.workers}),
-        encoding="utf-8",
-    )
-    raise SystemExit(1)
-args.success.write_text(
-    json.dumps({"status": "complete", "workers": args.workers}),
-    encoding="utf-8",
-)
-'@
-    Set-Content `
-        -LiteralPath $runner `
-        -Value $runnerSource `
-        -Encoding UTF8
+    $runner = Join-Path `
+        $repoRoot `
+        "scripts\fixtures\guarded_host_research_runner.py"
     $runnerHash = (Get-FileHash -LiteralPath $runner -Algorithm SHA256).
         Hash.ToLowerInvariant()
-    $runnerRelative = "$caseRelative/runner.py"
+    $runnerRelative = "scripts/fixtures/guarded_host_research_runner.py"
     $progressRelative = "$caseRelative/progress.json"
     $successRelative = "$caseRelative/success.json"
     $failureRelative = "$caseRelative/failure.json"
