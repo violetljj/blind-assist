@@ -9,7 +9,8 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 - 当前版本：`v10.9.0`，`versionCode=37`。
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
 - 当前算法研究主线是 Assistive Geometry R2 因子化几何；F0 deterministic reducer 已 PASS，F1-P
-  factor schema/loss/Kill Gate 已冻结，但现有监督前门不满足，F1 factor learnability 仍未获得执行权限。DepthART-S 只保留为可替换的
+  factor schema/loss/Kill Gate 已冻结，但 deterministic FactorTensorAdapter 缺失且现有监督前门不满足，
+  F1 factor learnability 仍未获得执行权限。DepthART-S 只保留为可替换的
   encoder/initialization、depth baseline 与部署使能线。项目整体还并行研究数据集/数据治理、通信链路与
   端到端延迟、性能优化和部署可行性；各 workstream 在接口和证据边界明确后才能耦合，不自动改变
   正式 App 或默认模型。项目研究入口见
