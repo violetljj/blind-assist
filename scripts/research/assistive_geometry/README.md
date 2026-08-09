@@ -54,10 +54,14 @@
 - `run_b1_a0_evaluation_dry_run.py`：只用合成 fixture 演练通过路径与 checkpoint 缺失、协议漂移、
   缺 horizon、全局零分母、coverage 塌缩、best-seed 企图等失败终态，并生成 JSON、短报告和
   failure-adjacent log。
+- `run_hypothesis_canary_lite.py`：只用 deterministic synthetic CPU geometry 审查 censored
+  survival、profile-conditioned clearance、widest-path bottleneck 与 one-sided conformal
+  uncertainty 的数学不变量和反例；不读取任何数据 role outcome、模型或 checkpoint。
 
 ## 输出
 
-大体积输出只允许写入 `artifacts.local/datasets/` 或 `artifacts.local/evidence/hftf/`。
+大体积输出只允许写入 `artifacts.local/datasets/`、`artifacts.local/evidence/hftf/` 或
+`artifacts.local/evidence/assistive-geometry/`。
 roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outcome。当前合同和结果真源位于
 `docs/research/assistive-geometry/`。
 

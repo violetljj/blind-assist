@@ -48,6 +48,7 @@
 - [B1 A0 evaluation synthetic dry-run machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_PROTOCOL_2026-08-09.json)
 - [B1 A0 evaluation synthetic dry-run result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_RESULT_2026-08-09.md)
 - [B1 A0 evaluation synthetic dry-run machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_RESULT_2026-08-09.json)
+- [并行 WILD_LAB 数学假设 canary](BLINDASSIST_ASSISTIVE_GEOMETRY_HYPOTHESIS_CANARY_LITE_R0_2026-08-09.md)
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 - [DepthART 部署支线](../hftf/README.md)
 
@@ -72,3 +73,15 @@ checkpoint 的训练 Autograd smoke；带缺失 Autograd-key 警告的部署 ope
 checkpoint、三 seed 无选择聚合、九格指标、UNKNOWN、全局零分母、缺 horizon、coverage 塌缩、
 协议漂移和失败相邻日志并通过。它不读取 Development/Confirmation outcome，也不授权真实评价；
 执行期间仍不得运行 A1–A4、双教师或改默认 App。
+
+## 并行 WILD_LAB 数学 canary（不改变 successor）
+
+纯合成 CPU canary 已审查四个 forward hypothesis：censored robust-contact survival、
+profile-conditioned swept configuration clearance、maximum-bottleneck corridor loss 和
+cluster-level one-sided conformal/CRC uncertainty。数学不变量与反例均通过，终态为
+`MATH_MECHANICS_SUPPORTED_PAPER_NOVELTY_AND_LEARNABILITY_NOT_ESTABLISHED`。其中 H1/H2
+优先，H3 只能作为已有 max-min/topology 文献下的 task-specific loss，H4 受 calibration
+parent 数量阻塞：8% finite-sample risk 至少需 12 个独立 parents，当前 4 个不可能。
+
+该 canary 不读取模型、checkpoint 或任何数据 role outcome，不修改冻结 A0–A4，不授权 B2、
+真实 Development、部署、默认 App 或 safety；唯一 successor 保持 seed 17 guarded A0 execution。
