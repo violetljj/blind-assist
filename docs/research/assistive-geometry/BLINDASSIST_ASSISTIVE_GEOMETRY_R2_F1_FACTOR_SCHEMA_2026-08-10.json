@@ -1,0 +1,89 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f1_factor_schema_v1",
+  "schema_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTOR_SCHEMA_2026-08-10",
+  "status": "FROZEN_INTERFACE_ONLY_NO_MODEL_OR_EXECUTION",
+  "coordinate_space": "DISPLAY_UPRIGHT_TENSOR_WITH_BOUND_K",
+  "prediction_container": {
+    "required_identity_fields": [
+      "schema",
+      "sample_id",
+      "factor_identity",
+      "camera_geometry_receipt_sha256"
+    ],
+    "required_factor_groups": [
+      "depth_scale",
+      "support_surface",
+      "obstacle_boundary_evidence"
+    ],
+    "additional_factor_groups_allowed": false
+  },
+  "prediction_fields": [
+    {"group": "depth_scale", "name": "depth_shape_positive_hw", "dtype": "float32", "shape": ["H", "W"], "units": "dimensionless", "range": "GT_0", "validity": "depth_valid_probability_hw"},
+    {"group": "depth_scale", "name": "log_metric_scale_m_scalar", "dtype": "float32", "shape": [], "units": "natural_log_m", "range": "FINITE", "validity": "metric_scale_valid"},
+    {"group": "depth_scale", "name": "depth_log_sigma_hw", "dtype": "float32", "shape": ["H", "W"], "units": "natural_log_m", "range": "FINITE", "validity": "depth_valid_probability_hw"},
+    {"group": "depth_scale", "name": "depth_valid_probability_hw", "dtype": "float32", "shape": ["H", "W"], "units": "probability", "range": "CLOSED_0_1", "validity": "always_serialized"},
+    {"group": "depth_scale", "name": "metric_scale_valid", "dtype": "bool", "shape": [], "units": "boolean", "range": "BOOLEAN", "validity": "always_serialized"},
+    {"group": "support_surface", "name": "support_probability_hw", "dtype": "float32", "shape": ["H", "W"], "units": "probability", "range": "CLOSED_0_1", "validity": "support_valid"},
+    {"group": "support_surface", "name": "support_plane_normal_camera_xyz", "dtype": "float32", "shape": [3], "units": "unit_vector", "range": "FINITE_UNIT_NORM_WHEN_VALID", "validity": "support_valid"},
+    {"group": "support_surface", "name": "camera_height_m", "dtype": "float32", "shape": [], "units": "m", "range": "GT_0_WHEN_VALID", "validity": "support_valid"},
+    {"group": "support_surface", "name": "support_residual_sigma_m", "dtype": "float32", "shape": [], "units": "m", "range": "GT_0_WHEN_VALID", "validity": "support_valid"},
+    {"group": "support_surface", "name": "support_valid", "dtype": "bool", "shape": [], "units": "boolean", "range": "BOOLEAN", "validity": "always_serialized"},
+    {"group": "obstacle_boundary_evidence", "name": "obstacle_evidence_probability_hw", "dtype": "float32", "shape": ["H", "W"], "units": "probability", "range": "CLOSED_0_1", "validity": "evidence_valid_hw"},
+    {"group": "obstacle_boundary_evidence", "name": "boundary_probability_hw", "dtype": "float32", "shape": ["H", "W"], "units": "probability", "range": "CLOSED_0_1", "validity": "evidence_valid_hw"},
+    {"group": "obstacle_boundary_evidence", "name": "boundary_localization_sigma_px_hw", "dtype": "float32", "shape": ["H", "W"], "units": "px", "range": "GT_0_WHEN_VALID", "validity": "evidence_valid_hw"},
+    {"group": "obstacle_boundary_evidence", "name": "evidence_valid_hw", "dtype": "bool", "shape": ["H", "W"], "units": "boolean", "range": "BOOLEAN", "validity": "always_serialized"}
+  ],
+  "supervision_fields": [
+    {"group": "depth_scale", "name": "metric_depth_m_hw", "dtype": "float32", "shape": ["H", "W"], "units": "m", "validity_mask": "metric_depth_valid_hw", "allowed_provenance": ["SENSOR_DERIVED_METRIC", "REGISTERED_METRIC_GEOMETRY"]},
+    {"group": "depth_scale", "name": "metric_depth_valid_hw", "dtype": "bool", "shape": ["H", "W"], "units": "boolean", "validity_mask": "self", "allowed_provenance": ["SENSOR_DERIVED_METRIC", "REGISTERED_METRIC_GEOMETRY"]},
+    {"group": "support_surface", "name": "support_truth_hw", "dtype": "float32", "shape": ["H", "W"], "units": "probability_or_explicit_binary", "validity_mask": "support_truth_valid_hw", "allowed_provenance": ["REGISTERED_METRIC_GEOMETRY", "SENSOR_DERIVED_SUPPORT"]},
+    {"group": "support_surface", "name": "support_truth_valid_hw", "dtype": "bool", "shape": ["H", "W"], "units": "boolean", "validity_mask": "self", "allowed_provenance": ["REGISTERED_METRIC_GEOMETRY", "SENSOR_DERIVED_SUPPORT"]},
+    {"group": "support_surface", "name": "support_plane_normal_camera_xyz", "dtype": "float32", "shape": [3], "units": "unit_vector", "validity_mask": "support_plane_valid", "allowed_provenance": ["REGISTERED_METRIC_GEOMETRY", "SENSOR_DERIVED_SUPPORT"]},
+    {"group": "support_surface", "name": "camera_height_m", "dtype": "float32", "shape": [], "units": "m", "validity_mask": "support_plane_valid", "allowed_provenance": ["REGISTERED_METRIC_GEOMETRY", "SENSOR_DERIVED_SUPPORT"]},
+    {"group": "support_surface", "name": "support_plane_valid", "dtype": "bool", "shape": [], "units": "boolean", "validity_mask": "self", "allowed_provenance": ["REGISTERED_METRIC_GEOMETRY", "SENSOR_DERIVED_SUPPORT"]},
+    {"group": "obstacle_boundary_evidence", "name": "obstacle_evidence_truth_hw", "dtype": "float32", "shape": ["H", "W"], "units": "probability_or_explicit_binary", "validity_mask": "evidence_truth_valid_hw", "allowed_provenance": ["REGISTERED_METRIC_GEOMETRY", "SENSOR_DERIVED_BOUNDARY"]},
+    {"group": "obstacle_boundary_evidence", "name": "boundary_distance_px_hw", "dtype": "float32", "shape": ["H", "W"], "units": "px", "validity_mask": "evidence_truth_valid_hw", "allowed_provenance": ["REGISTERED_METRIC_GEOMETRY", "SENSOR_DERIVED_BOUNDARY"]},
+    {"group": "obstacle_boundary_evidence", "name": "evidence_truth_valid_hw", "dtype": "bool", "shape": ["H", "W"], "units": "boolean", "validity_mask": "self", "allowed_provenance": ["REGISTERED_METRIC_GEOMETRY", "SENSOR_DERIVED_BOUNDARY"]}
+  ],
+  "uncertainty_supervision": {
+    "direct_sigma_truth_required": false,
+    "allowed_mechanism": "HETEROSCEDASTIC_PROPER_SCORE_AGAINST_VALID_FACTOR_RESIDUALS",
+    "fit_and_evaluation_parents_must_be_disjoint": true,
+    "homoscedastic_baseline_required": true,
+    "zero_or_constant_sigma_pseudo_truth_forbidden": true,
+    "task_state_as_uncertainty_truth_forbidden": true
+  },
+  "unknown_and_mask_contract": {
+    "every_supervision_value_has_explicit_validity": true,
+    "unsupported_factor_value": "MASKED_UNKNOWN",
+    "unknown_is_negative": false,
+    "invalid_value_may_supervise_only_its_validity_head": true,
+    "invalid_value_may_not_supervise_factor_value_or_uncertainty": true,
+    "zero_fill_before_forward": "ALLOWED_ONLY_WITH_MASK_RETAINED_AND_ZERO_FACTOR_LOSS",
+    "entire_factor_family_without_valid_support": "F1_KILL_NOT_SILENT_SKIP"
+  },
+  "forbidden_prediction_or_supervision_fields": [
+    "clearance",
+    "clearance_m",
+    "direct_clearance",
+    "occupancy",
+    "occupancy_logit",
+    "free",
+    "blocked",
+    "risk",
+    "risk_score",
+    "task_confidence",
+    "final_state",
+    "unknown_logit",
+    "ttc",
+    "future_clearance"
+  ],
+  "graph_boundary": {
+    "internal_logits_for_declared_probability_fields_allowed": true,
+    "serialized_adapter_must_emit_only_declared_factor_fields": true,
+    "geometry_r2_reducer_outside_learned_graph": true,
+    "gradient_through_final_task_state_forbidden": true,
+    "reducer_output_as_training_target_forbidden": true
+  },
+  "claim_ceiling": "Static F1 factor prediction and supervision interface only. No model, data roster, materializer, trainer, checkpoint, learnability, task utility or execution authority."
+}

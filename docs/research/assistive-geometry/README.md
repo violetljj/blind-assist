@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / FAILURE_ANATOMY_DIAGNOSTIC_COMPLETE / R2_F0_SYNTHETIC_REDUCER_PASS / F1_EXECUTION_NOT_AUTHORIZED / ALL_CALIBRATION_AND_CONFIRMATION_SEALED`
+状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / SUPERVISION_FRONTDOOR_UNSATISFIED / F1_EXECUTION_NOT_AUTHORIZED / ALL_CALIBRATION_AND_CONFIRMATION_SEALED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -66,6 +66,11 @@
 - [Geometry R2 F0 synthetic reducer machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PROTOCOL_2026-08-09.json)
 - [Geometry R2 F0 synthetic reducer result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_RESULT_2026-08-10.md)
 - [Geometry R2 F0 synthetic reducer machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_RESULT_2026-08-10.json)
+- [Geometry R2 F1 factor schema](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTOR_SCHEMA_2026-08-10.json)
+- [Geometry R2 F1-P protocol lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK_2026-08-10.md)
+- [Geometry R2 F1-P machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK_2026-08-10.json)
+- [Geometry R2 F1-P lock result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_PROTOCOL_LOCK_RESULT_2026-08-10.md)
+- [Geometry R2 F1-P machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_PROTOCOL_LOCK_RESULT_2026-08-10.json)
 - [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
@@ -80,11 +85,12 @@
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SUPERVISION_SOURCE_AND_LABEL_CONTRACT_LOCK`
 
-该 successor 只允许另行起草并冻结 F1 TRAIN-only factor learnability 协议；其 execution authority
-仍为 `false`。不得物化真实数据、初始化或训练模型、读取 task outcome、分配 R2 Development，
-也不得启动 teacher / temporal / mobile。
+该 successor 当前 execution authority 为 `false`，只允许另行冻结 parent-complete TRAIN 监督源、
+continuous-boundary label transform、residual uncertainty proper-score 合同、provenance receipts 与
+FIT/CHECKPOINT_SELECTION/TRAIN_CANARY roster。不得物化标签、定义或训练模型、创建 checkpoint、
+读取 task outcome、分配 R2 Development，也不得启动 teacher / temporal / mobile。
 
 ARKitScenes `16/8/8` visit/video-disjoint roster 与 9,600-frame integrity 已冻结；B0 reader 又以
 6 个 TRAIN 视频、157 个 AppleDepth/FARO exact-timestamp 对照和主 TRAIN 的 480 个固定 stride
@@ -122,6 +128,13 @@ occupancy 为 0。学习图仍禁止输出 final clearance/occupancy，只能在
 最小顺序仍为 F0 synthetic mechanics → F1 TRAIN-only factor learnability → F2 全新至少 8-parent
 Development，数字 task 门不得继承 B1 或使用 anatomy/F0 outcome 事后选取。F0 PASS 只允许冻结下一份
 F1 协议，不构成 factor learnability 或真实任务收益证据。
+
+F1-P 现已冻结 14 个 factor prediction 字段、13 个独立 loss、`8/2/2` parent-disjoint
+FIT/CHECKPOINT_SELECTION/TRAIN_CANARY 最低角色、factor-only checkpoint Pareto 规则与 8 项 Kill Gate；
+aggregate loss 和 reducer/task metric 均不能选 checkpoint 或拯救 factor failure。AG-DCA 只读能力矩阵
+同时证明当前监督前门未闭合：metric-depth 有 `4,767/16` 支持，但 support 仅 `320/11`，continuous
+boundary truth 与 complete R2 factor schema truth 均为 `0/0`。因此 F1-P 终态是协议已冻结、执行未授权；
+本轮没有 label materializer、factor model、trainer、optimizer step 或 checkpoint。
 异质教师只冻结到 C0 complementarity kill gate mechanics：教师 identity、评估 cohort 和输出仍未
 授权，未通过 oracle 增益、独占正确 parent、分歧错误浓度和时序优势四类门前不得启动 C1 蒸馏。
 时序 D0 也只冻结因果 GRU/TCN/diagonal-SSM 的统一 GeometryState 接口、参数/设备预算和未来

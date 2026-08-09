@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f1_protocol_lock_result_v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_PROTOCOL_LOCK_RESULT_2026-08-10",
+  "completed_at": "2026-08-10",
+  "status": "F1_P_PROTOCOL_LOCK_COMPLETE",
+  "terminal": "R2_F1_PROTOCOL_FROZEN_EXECUTION_NOT_AUTHORIZED_SUPERVISION_FRONTDOOR_UNSATISFIED",
+  "protocol": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK_2026-08-10.json",
+    "sha256": "B4ECE0C3B36ABE15BF6FB8980E772C20F1887236461FC18659DA7CE20A9947D7",
+    "governance_validation": "VALID_ZERO_ERRORS_ZERO_WARNINGS",
+    "static_validation": "VALID_ZERO_ERRORS"
+  },
+  "factor_schema": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTOR_SCHEMA_2026-08-10.json",
+    "sha256": "8016430D639EC78199432F55ABB8EBDC847A4073C24F84A17E429A07D1BB5F7E",
+    "prediction_field_count": 14,
+    "prediction_factor_families": 3,
+    "final_task_shortcuts_allowed": false
+  },
+  "validation": {
+    "focused_mutation_tests": 9,
+    "focused_mutation_tests_passed": 9,
+    "authority_drift_rejected": true,
+    "final_task_shortcut_rejected": true,
+    "unknown_as_negative_rejected": true,
+    "capability_count_drift_rejected": true,
+    "aggregate_checkpoint_loss_rejected": true,
+    "downstream_reducer_rescue_rejected": true,
+    "parent_role_overlap_rejected": true,
+    "f0_predecessor_drift_rejected": true
+  },
+  "frozen_contract": {
+    "loss_component_count": 13,
+    "loss_components_reported_independently": true,
+    "aggregate_loss_is_checkpoint_metric": false,
+    "downstream_reducer_loss_allowed": false,
+    "train_internal_parent_minimums": {"FIT": 8, "CHECKPOINT_SELECTION": 2, "TRAIN_CANARY": 2},
+    "minimum_joint_factor_parents": 12,
+    "checkpoint_selection_uses_final_task_metric": false,
+    "factor_families_conjunctive": true,
+    "f1_kill_gate_count": 8,
+    "f2_execution_authority": false
+  },
+  "current_supervision_findings": {
+    "metric_depth": {"frames": 4767, "parents": 16, "status": "SOURCE_PRESENT_CONTRACT_NOT_FROZEN"},
+    "support": {"frames": 320, "parents": 11, "status": "BELOW_12_PARENT_MINIMUM"},
+    "crisp_obstacle": {"frames": 1557, "parents": 11, "status": "NOT_CONTINUOUS_BOUNDARY_TRUTH"},
+    "continuous_boundary_truth": {"frames": 0, "parents": 0, "status": "BLOCKING"},
+    "complete_factor_schema_truth": {"frames": 0, "parents": 0, "status": "BLOCKING"},
+    "direct_uncertainty_truth": "ABSENT_ALLOWED_ONLY_VIA_FUTURE_FROZEN_RESIDUAL_PROPER_SCORE_CONTRACT"
+  },
+  "created_runtime_artifacts": {
+    "model": false,
+    "label_materializer": false,
+    "trainer": false,
+    "optimizer_step": false,
+    "checkpoint": false,
+    "training_artifact_root": false
+  },
+  "authority": {
+    "f1_protocol_locked": true,
+    "f1_execution_authority": false,
+    "label_materialization_authority": false,
+    "model_definition_authority": false,
+    "training_authority": false,
+    "f2_authority": false,
+    "teacher_temporal_mobile_authority": false,
+    "calibration_confirmation_authority": false
+  },
+  "unique_successor": {
+    "id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SUPERVISION_SOURCE_AND_LABEL_CONTRACT_LOCK",
+    "execution_authority": false,
+    "scope": "Freeze a parent-complete TRAIN supervision source, continuous-boundary label transform, residual uncertainty scoring contract, provenance receipts and role roster; no model or optimizer."
+  },
+  "claim_ceiling": "Static F1-P protocol/schema/validator and current supervision-gap decision only. No labels were materialized, no model or trainer was created, no optimizer or checkpoint ran, and no factor learnability, reducer task utility, F2, Development, device, product or safety claim is authorized."
+}
