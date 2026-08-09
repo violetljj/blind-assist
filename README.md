@@ -6,49 +6,21 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 
 ## 当前状态
 
+<!-- research-status-owner: docs/research/README.md -->
+
 - 当前版本：`v10.9.0`，`versionCode=37`。
 - 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
-- 当前算法研究主线是 Assistive Geometry R2 因子化几何；F0 deterministic reducer 已 PASS，F1-P
-  factor schema/loss/Kill Gate 已冻结，但 deterministic FactorTensorAdapter 缺失且现有监督前门不满足，
-  F1 factor learnability 仍未获得执行权限。DepthART-S 只保留为可替换的
-  encoder/initialization、depth baseline 与部署使能线。项目整体还并行研究数据集/数据治理、通信链路与
-  端到端延迟、性能优化和部署可行性；各 workstream 在接口和证据边界明确后才能耦合，不自动改变
-  正式 App 或默认模型。项目研究入口见
-  [项目研究总入口](docs/research/README.md)。YOLO + 语义分割双环保留为论文次线，当前为
-  `THESIS_DEVELOPMENT_DEFAULT / DEVELOPMENT_REPAIR_AND_RERUN_ALLOWED /
-  DEVELOPMENT_DEVICE_BENCHMARK_ALLOWED /
-  BOUNDED_HANDCRAFTED_GATING_FAMILY_STOP /
-  FP_WEIGHTED_SAMPLING_NOT_SUPPORTED /
-  SINGLE_FP_AWARE_SUCCESSOR_STOP /
-  FINAL_CONFIRMATION_NOT_ACTIVATED / DEFAULT_APP_UNCHANGED`。历史 segmentation
-  model-selection R1 仍为 `BLOCKED / NOT_EVALUABLE`，R2-P0 终态和 consumed 数据角色
-  不变；它们不再把新的论文 Development 锁成 one-shot formal。RCLE 已暂停，USTRF 已
-  收口，历史状态分别由各 current/index 入口保留。
-- DepthART 算法、数据、链路、性能和部署 workstream 均保持
-  `DEVELOPMENT_STANDARD`；各自结论彼此分开，不改变正式 YOLO 默认模型或 App 行为。
-  研究晋级不自动等于生产替换。
-- 全项目前向采用 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`：Discovery 默认不消费 fresh
-  holdout，mapping/decoder 先过 synthetic canary，普通论文 Development 可版本化修复
-  重跑，并可在正式选模前分别做算法选模 benchmark 与平台工程 benchmark。只有显式启动
-  最终 Confirmation、默认模型替换或生产晋级时，才启用对应 blind、INT8、设备事件、
-  one-shot、完整 validator 和发布门；任何研究证据都不自动改变正式 App 或安全权限。
-- 研究风格采用 `WILD_LAB + EVIDENCE_TRACK` 双轨：论文和算法探索优先追求突破，
-  允许跨数据集、Teacher/pseudo-label、合成数据和超出现有部署约束；只有明确启动
-  Confirmation、生产或高等级 claim 时，才切换到 Evidence Track 的独立验证与完整门禁。
-  四条底线不变：不泄漏 blind、UNKNOWN 不等于 negative、保留 provenance、claim 不越过证据。
-- 可并存安装的 `ustrfExperiment` 实验版已接入 USTRF 二维路线代理，并直接替代旧风险分析入口；它只使用画面中心假设路线与检测框生成保守代理风险，不具备米制深度、稳定姿态或真实路线，因此不可用于独立行走，也不改变正式 App。
-- SANPO 分割路线采用双通道：论文 `THESIS_DEVELOPMENT` 不要求先通过 INT8、blind 或
-  设备事件门；显式 `PRODUCTION_PROMOTION` 才使用完整晋级链。当前未替换 App 默认模型。
+- 算法、数据、系统与平台研究的动态状态、唯一 successor、禁止动作和证据权限只由
+  [项目研究总入口](docs/research/README.md) 及其分类/路线 current 真源维护；本页不复制研究终态。
+- 任何研究、benchmark、导出或设备结果都不自动改变正式 App、默认模型、产品权限或安全结论。
+- 可并存安装的实验构建与正式 App 隔离；它们只用于研究或诊断，不获得默认产品权限。
 - 正式 App 保持本地推理；眼镜外界硬件入口已能通过局域网连接 AtomS3R-M12 +
   ToF4M，读取设备/距离状态；实时 MJPEG 采用 latest-only 语义进入现有识别与提醒链路。
   ToF 仅作逐帧绑定元数据，标定融合仍暂缓。
 
 发布变化见 [CHANGELOG.md](CHANGELOG.md)，近期工程过程见
-[DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。当前论文系统研究入口见
-[双环研究主线](docs/research/dual-loop/README.md)，暂停的 RCLE 状态见
-[RCLE current 入口](docs/research/rcle/README.md)，SANPO 的当前研究状态见
-[SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md)；日期化审计和实验报告只代表
-当时快照，不作为当前状态真源。
+[DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。研究状态从[项目研究总入口](docs/research/README.md)
+进入；日期化审计和实验报告只代表当时快照，不作为当前状态真源。
 
 研发默认端到端无人化：来源发现/获取、采集编排、标注、复核、裁决、隐私与质量检查、数据准入、实验验收和发布证据复核均由 GPT/Codex、多模态模型或自动 Agent 完成，不建立人工待办；统一 receipt、仲裁和失败关闭规则见 [GPT / Codex 端到端自主工作流治理](docs/AI_REVIEW_GOVERNANCE.md)。
 

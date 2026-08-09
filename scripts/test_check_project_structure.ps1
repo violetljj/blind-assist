@@ -96,6 +96,75 @@ function New-TestRepository([string]$Name) {
     return $repository
 }
 
+function Enable-CurrentTruthFixture([string]$Repository) {
+    Write-TestFile $Repository 'README.md' @'
+# Fixture
+
+## 当前状态
+
+<!-- research-status-owner: docs/research/README.md -->
+
+- Product state only; research status is delegated to [research](docs/research/README.md).
+
+## Build
+
+fixture
+'@
+    Write-TestFile $Repository 'scripts/README.md' "# scripts`n[modules](research/MODULE_INDEX.md)"
+    Write-TestFile $Repository 'scripts/research/REGISTRY.md' "# registry`n[modules](MODULE_INDEX.md)"
+    Write-TestFile $Repository 'scripts/research/MODULE_INDEX.md' @'
+# modules
+
+状态：`current / navigation-only / 3-of-3`
+
+- [hftf](hftf/README.md)
+- [demo](demo/README.md)
+- [common](common/README.md)
+'@
+    Write-TestFile $Repository 'docs/research/README.md' '# research'
+    Write-TestFile $Repository 'docs/research/hftf/README.md' @'
+# Fixture route
+
+状态：`current / ACTIVE / DEFAULT_APP_UNCHANGED`
+
+## 唯一 successor
+
+`FIXTURE_NEXT`
+'@
+    Write-TestFile $Repository 'docs/research/ALGORITHM_RESEARCH_CURRENT.md' @'
+# algorithm
+
+| 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
+|---|---|---|---|---|---|---|
+| Fixture | claim | `ACTIVE` | [Fixture current](hftf/README.md) | `FIXTURE_NEXT` | none | 否 |
+'@
+    Write-TestFile $Repository 'docs/research/SYSTEM_RESEARCH_CURRENT.md' @'
+# system
+
+| 研究面 | 当前问题 | 状态 | 唯一真源 | 唯一 successor |
+|---|---|---|---|---|
+| 部署可行性 | fixture | `DEPTHART_STATE_DELEGATED_TO_ROUTE_CURRENT` | [DepthART current](hftf/README.md) | `DEPTHART_SUCCESSOR_DELEGATED_TO_ROUTE_CURRENT` |
+'@
+
+    $policyPath = Join-Path $Repository 'policy/project_structure.json'
+    $policy = Get-Content -LiteralPath $policyPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $policy | Add-Member -Force -NotePropertyName current_truth -NotePropertyValue ([ordered]@{
+        root_readme_path = 'README.md'
+        root_research_owner_marker = '<!-- research-status-owner: docs/research/README.md -->'
+        root_status_forbidden_patterns = @('DepthART')
+        algorithm_current_path = 'docs/research/ALGORITHM_RESEARCH_CURRENT.md'
+        system_current_path = 'docs/research/SYSTEM_RESEARCH_CURRENT.md'
+        system_route_state_marker = 'DEPTHART_STATE_DELEGATED_TO_ROUTE_CURRENT'
+        system_route_successor_marker = 'DEPTHART_SUCCESSOR_DELEGATED_TO_ROUTE_CURRENT'
+        default_app_unchanged_marker = 'DEFAULT_APP_UNCHANGED'
+        default_app_changed_marker = 'DEFAULT_APP_CHANGED'
+        scripts_index_path = 'scripts/README.md'
+        research_registry_path = 'scripts/research/REGISTRY.md'
+        module_count_owner_path = 'scripts/research/MODULE_INDEX.md'
+    })
+    Write-TestFile $Repository 'policy/project_structure.json' ($policy | ConvertTo-Json -Depth 8)
+}
+
 function Invoke-StructureCheck([string]$Repository, [string]$BaseRef = '') {
     & $script:StructureScript `
         -RepoRoot $Repository `
@@ -257,6 +326,77 @@ try {
     Assert-Scenario 'human-truth-disclaimer-is-not-a-gate' $true {
         param($repo)
         Write-TestFile $repo 'docs/current.md' 'Model evidence is not human truth or objective sensor measurement.'
+    }
+    Assert-Scenario 'current-truth-valid' $true {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+    }
+    Assert-Scenario 'current-truth-root-duplication' $false {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+        $readmePath = Join-Path $repo 'README.md'
+        $readme = Get-Content -LiteralPath $readmePath -Raw -Encoding UTF8
+        Write-TestFile $repo 'README.md' ($readme.Replace('Product state only', 'DepthART dynamic state'))
+    }
+    Assert-Scenario 'current-truth-system-not-delegated' $false {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+        $systemPath = Join-Path $repo 'docs/research/SYSTEM_RESEARCH_CURRENT.md'
+        $system = Get-Content -LiteralPath $systemPath -Raw -Encoding UTF8
+        Write-TestFile $repo 'docs/research/SYSTEM_RESEARCH_CURRENT.md' ($system.Replace('DEPTHART_STATE_DELEGATED_TO_ROUTE_CURRENT', 'DEVELOPMENT_OUTCOME_NOT_STARTED'))
+    }
+    Assert-Scenario 'current-truth-module-count-drift' $false {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+        $indexPath = Join-Path $repo 'scripts/research/MODULE_INDEX.md'
+        $index = Get-Content -LiteralPath $indexPath -Raw -Encoding UTF8
+        Write-TestFile $repo 'scripts/research/MODULE_INDEX.md' ($index.Replace('3-of-3', '2-of-3'))
+    }
+    Assert-Scenario 'current-truth-route-status-drift' $false {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+        $algorithmPath = Join-Path $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md'
+        $algorithm = Get-Content -LiteralPath $algorithmPath -Raw -Encoding UTF8
+        Write-TestFile $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md' ($algorithm.Replace('`ACTIVE`', '`STALE`'))
+    }
+    Assert-Scenario 'current-truth-route-status-only-in-history' $false {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+        $routePath = Join-Path $repo 'docs/research/hftf/README.md'
+        $route = Get-Content -LiteralPath $routePath -Raw -Encoding UTF8
+        Write-TestFile $repo 'docs/research/hftf/README.md' "$route`nHistorical status: STALE"
+        $algorithmPath = Join-Path $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md'
+        $algorithm = Get-Content -LiteralPath $algorithmPath -Raw -Encoding UTF8
+        Write-TestFile $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md' ($algorithm.Replace('`ACTIVE`', '`STALE`'))
+    }
+    Assert-Scenario 'current-truth-route-successor-drift' $false {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+        $algorithmPath = Join-Path $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md'
+        $algorithm = Get-Content -LiteralPath $algorithmPath -Raw -Encoding UTF8
+        Write-TestFile $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md' ($algorithm.Replace('`FIXTURE_NEXT`', '`STALE_NEXT`'))
+    }
+    Assert-Scenario 'current-truth-route-successor-only-in-history' $false {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+        $routePath = Join-Path $repo 'docs/research/hftf/README.md'
+        $route = Get-Content -LiteralPath $routePath -Raw -Encoding UTF8
+        Write-TestFile $repo 'docs/research/hftf/README.md' "$route`n## History`n`nHistorical successor: STALE_NEXT"
+        $algorithmPath = Join-Path $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md'
+        $algorithm = Get-Content -LiteralPath $algorithmPath -Raw -Encoding UTF8
+        Write-TestFile $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md' ($algorithm.Replace('`FIXTURE_NEXT`', '`STALE_NEXT`'))
+    }
+    Assert-Scenario 'current-truth-default-app-marker-drift' $false {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+        $routePath = Join-Path $repo 'docs/research/hftf/README.md'
+        $route = Get-Content -LiteralPath $routePath -Raw -Encoding UTF8
+        Write-TestFile $repo 'docs/research/hftf/README.md' ($route.Replace(' / DEFAULT_APP_UNCHANGED', ''))
+    }
+    Assert-Scenario 'current-truth-duplicate-module-count' $false {
+        param($repo)
+        Enable-CurrentTruthFixture $repo
+        Write-TestFile $repo 'scripts/research/REGISTRY.md' "# registry`n全部 3 个研究 Module"
     }
 
     $indexedRepository = New-TestRepository 'new-root-interface-index'

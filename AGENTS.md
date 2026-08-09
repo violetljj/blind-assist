@@ -206,7 +206,8 @@ commit is required.
   `pwsh -NoProfile -File scripts/check_repo_hygiene.ps1 -IncludeStructure` once
   instead of running the two gates separately.
 
-- Top-level `docs/*.md` or documentation-index changes:
+- Top-level `docs/*.md`, current/route README/protocol, or documentation-index
+  changes:
 
   ```powershell
   pwsh -NoProfile -File scripts/check_docs_index.ps1

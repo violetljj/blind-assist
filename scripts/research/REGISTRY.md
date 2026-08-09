@@ -6,7 +6,7 @@
 历史”定位，再打开对应 Module README。轮次名（`r0/r1/r2/p0/d0`）只表示 evidence
 identity，不代表当前 authority。
 
-全部 62 个 Module 的逐项入口见 [`MODULE_INDEX.md`](MODULE_INDEX.md)，机器分类规则见
+全部 Module 的逐项入口和机器校验数量见 [`MODULE_INDEX.md`](MODULE_INDEX.md)，机器分类规则见
 [`module_families.json`](module_families.json)。新增 Module 若未被唯一分类，结构门禁失败。
 
 ## 当前入口

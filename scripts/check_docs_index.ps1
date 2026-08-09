@@ -73,6 +73,7 @@ if (Test-Path -LiteralPath $researchRoot -PathType Container) {
 }
 
 $linkPattern = '\[[^\]]+\]\(([^)#]+)(?:#[^)]*)?\)'
+$linkSourcePaths = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
 foreach ($sourcePath in @(
     $indexPath,
     (Join-Path $researchRoot 'README.md'),
@@ -80,16 +81,42 @@ foreach ($sourcePath in @(
     (Join-Path $researchRoot 'DATA_RESEARCH_CURRENT.md'),
     (Join-Path $researchRoot 'SYSTEM_RESEARCH_CURRENT.md')
 )) {
+    if (Test-Path -LiteralPath $sourcePath -PathType Leaf) {
+        [void]$linkSourcePaths.Add([IO.Path]::GetFullPath($sourcePath))
+    }
+}
+
+# Validate the complete operating surface, not just the top-level indexes.
+# Historical archive and monthly history preserve old paths verbatim; current
+# docs, every route README, and non-archive protocols must remain navigable.
+foreach ($candidate in Get-ChildItem -LiteralPath $docsRootPath -Recurse -File -Filter *.md) {
+    $relativeCandidate = [IO.Path]::GetRelativePath($docsRootPath, $candidate.FullName).Replace('\', '/')
+    if ($relativeCandidate.StartsWith('history/', [StringComparison]::OrdinalIgnoreCase) -or
+        $relativeCandidate -match '(^|/)archive/') {
+        continue
+    }
+    $head = (Get-Content -LiteralPath $candidate.FullName -TotalCount 16 -Encoding utf8) -join "`n"
+    $isCurrent = $head -match '(?im)^状态：\s*`?current'
+    $isRouteIndex = $candidate.Name -eq 'README.md'
+    $isProtocol = $candidate.Name -match 'PROTOCOL'
+    if ($isCurrent -or $isRouteIndex -or $isProtocol) {
+        [void]$linkSourcePaths.Add($candidate.FullName)
+    }
+}
+
+$validatedLocalLinkCount = 0
+foreach ($sourcePath in @($linkSourcePaths | Sort-Object)) {
     if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) {
         continue
     }
     $sourceText = Get-Content -LiteralPath $sourcePath -Raw -Encoding utf8
     foreach ($match in [regex]::Matches($sourceText, $linkPattern)) {
-        $target = $match.Groups[1].Value
+        $target = $match.Groups[1].Value.Trim().Trim('<', '>')
         if ($target -match '^[a-zA-Z][a-zA-Z0-9+.-]*:' -or $target.StartsWith('/')) {
             continue
         }
 
+        $validatedLocalLinkCount++
         $targetPath = Join-Path (Split-Path -Parent $sourcePath) $target
         if (-not (Test-Path -LiteralPath $targetPath)) {
             $relativeSource = [IO.Path]::GetRelativePath($docsRootPath, $sourcePath).Replace('\', '/')
@@ -112,4 +139,4 @@ $researchDomainCount = if (Test-Path -LiteralPath $researchRoot -PathType Contai
 else {
     0
 }
-Write-Host "Documentation index check passed for $((Get-ChildItem -LiteralPath $docsRootPath -File -Filter *.md).Count - 1) top-level Markdown file(s) and $researchDomainCount research domain(s)."
+Write-Host "Documentation index check passed for $((Get-ChildItem -LiteralPath $docsRootPath -File -Filter *.md).Count - 1) top-level Markdown file(s), $researchDomainCount research domain(s), and $validatedLocalLinkCount authority-surface local link(s)."

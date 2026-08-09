@@ -8,6 +8,10 @@ bottleneck 表示，是否比固定 left/center/right 三带摘要保留更多�
 本路线严格按 `DATA SUPPORT → ORACLE CEILING → REPRESENTATION VALUE → TRAIN` 推进。当前只允许
 第一步；不先造模型，也不从现有 H3 合成 widest-path mechanics 继承真实数据有效性。
 
+## 唯一 successor
+
+无。重开必须另立 pre-outcome source-geometry/target contract 与路线版本，从 DATA SUPPORT 重新开始。
+
 ## 终态
 
 无 successor。R0 已在第一道门关闭：

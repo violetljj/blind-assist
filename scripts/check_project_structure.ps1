@@ -332,6 +332,232 @@ foreach ($moduleName in $moduleNames) {
     }
 }
 
+# Current navigation may summarize a route, but it must not silently become a
+# second, divergent execution authority. The policy keeps machine-checkable
+# ownership markers and validates category summaries against current route
+# READMEs while leaving dated closure documents immutable.
+$currentTruthPolicy = $policy.current_truth
+if ($null -ne $currentTruthPolicy) {
+    $currentTruthPaths = @(
+        [string]$currentTruthPolicy.root_readme_path,
+        [string]$currentTruthPolicy.algorithm_current_path,
+        [string]$currentTruthPolicy.system_current_path,
+        [string]$currentTruthPolicy.scripts_index_path,
+        [string]$currentTruthPolicy.research_registry_path,
+        [string]$currentTruthPolicy.module_count_owner_path
+    ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+    foreach ($path in $currentTruthPaths) {
+        if (-not (Test-Path -LiteralPath (Resolve-FromRepo $path) -PathType Leaf)) {
+            $failures.Add("Current-truth governance path is missing: $path")
+        }
+    }
+
+    $rootReadmePath = Resolve-FromRepo ([string]$currentTruthPolicy.root_readme_path)
+    if (Test-Path -LiteralPath $rootReadmePath -PathType Leaf) {
+        $rootReadmeText = Read-Utf8Text $rootReadmePath
+        $ownerMarker = [string]$currentTruthPolicy.root_research_owner_marker
+        if ([string]::IsNullOrWhiteSpace($ownerMarker) -or -not $rootReadmeText.Contains($ownerMarker)) {
+            $failures.Add("Root README must delegate dynamic research status with marker: $ownerMarker")
+        }
+        $rootStatusMatch = [regex]::Match(
+            $rootReadmeText,
+            '(?ms)^##\s+当前状态\s*\r?\n(?<body>.*?)(?=^##\s+|\z)'
+        )
+        if (-not $rootStatusMatch.Success) {
+            $failures.Add('Root README is missing the product-owned 当前状态 section.')
+        }
+        else {
+            $rootStatusBody = $rootStatusMatch.Groups['body'].Value
+            if ($rootStatusBody -notmatch '\]\(docs/research/README\.md\)') {
+                $failures.Add('Root README 当前状态 must link the delegated project research entry: docs/research/README.md')
+            }
+            foreach ($pattern in @($currentTruthPolicy.root_status_forbidden_patterns | ForEach-Object { [string]$_ })) {
+                if ($pattern -and [regex]::IsMatch($rootStatusBody, $pattern, [Text.RegularExpressions.RegexOptions]::IgnoreCase)) {
+                    $failures.Add("Root README 当前状态 duplicates route-owned dynamic research text: $pattern")
+                }
+            }
+        }
+    }
+
+    foreach ($navigationPath in @(
+        [string]$currentTruthPolicy.scripts_index_path,
+        [string]$currentTruthPolicy.research_registry_path
+    )) {
+        $absoluteNavigationPath = Resolve-FromRepo $navigationPath
+        if (-not (Test-Path -LiteralPath $absoluteNavigationPath -PathType Leaf)) {
+            continue
+        }
+        $navigationText = Read-Utf8Text $absoluteNavigationPath
+        if ([regex]::IsMatch($navigationText, '\d+\s*个研究\s*Module', [Text.RegularExpressions.RegexOptions]::IgnoreCase)) {
+            $failures.Add("Navigation duplicates the machine-owned research Module count: $navigationPath")
+        }
+        if ($navigationPath -eq [string]$currentTruthPolicy.scripts_index_path -and $navigationText.Contains('当前论文研究主线')) {
+            $failures.Add("Script navigation duplicates route-owned research mainline status: $navigationPath")
+        }
+    }
+
+    $moduleCountOwnerPath = Resolve-FromRepo ([string]$currentTruthPolicy.module_count_owner_path)
+    if (Test-Path -LiteralPath $moduleCountOwnerPath -PathType Leaf) {
+        $moduleCountText = Read-Utf8Text $moduleCountOwnerPath
+        $moduleCountMatch = [regex]::Match($moduleCountText, '(?im)^状态：.*?(?<listed>\d+)-of-(?<total>\d+)')
+        if (-not $moduleCountMatch.Success) {
+            $failures.Add("Module count owner lacks an N-of-N status marker: $($currentTruthPolicy.module_count_owner_path)")
+        }
+        else {
+            $listedCount = [int]$moduleCountMatch.Groups['listed'].Value
+            $totalCount = [int]$moduleCountMatch.Groups['total'].Value
+            if ($listedCount -ne $moduleNames.Count -or $totalCount -ne $moduleNames.Count) {
+                $failures.Add("Research Module count drift: index says $listedCount-of-$totalCount, Git-visible structure has $($moduleNames.Count).")
+            }
+        }
+    }
+
+    $systemCurrentPath = Resolve-FromRepo ([string]$currentTruthPolicy.system_current_path)
+    if (Test-Path -LiteralPath $systemCurrentPath -PathType Leaf) {
+        $systemCurrentLines = [IO.File]::ReadAllLines($systemCurrentPath, [Text.Encoding]::UTF8)
+        $deploymentRow = $systemCurrentLines | Where-Object { $_ -match '^\|\s*部署可行性\s*\|' } | Select-Object -First 1
+        if ([string]::IsNullOrWhiteSpace($deploymentRow)) {
+            $failures.Add('System current is missing the deployment-feasibility row.')
+        }
+        else {
+            $deploymentCells = @($deploymentRow.Trim().Trim('|').Split('|') | ForEach-Object { $_.Trim() })
+            if ($deploymentCells.Count -ne 5) {
+                $failures.Add("System current deployment row must have 5 columns; found $($deploymentCells.Count).")
+            }
+            else {
+                $stateMarker = [string]$currentTruthPolicy.system_route_state_marker
+                $successorMarker = [string]$currentTruthPolicy.system_route_successor_marker
+                if ($deploymentCells[2].Trim([char]0x60) -ne $stateMarker) {
+                    $failures.Add("System current must delegate DepthART state with marker: $stateMarker")
+                }
+                if (-not $deploymentCells[4].Contains($successorMarker)) {
+                    $failures.Add("System current must delegate DepthART successor with marker: $successorMarker")
+                }
+                if ($deploymentCells[3] -notmatch '\]\(hftf/README\.md\)') {
+                    $failures.Add('System current deployment row must point to the DepthART route current: hftf/README.md')
+                }
+            }
+        }
+    }
+
+    $algorithmCurrentPath = Resolve-FromRepo ([string]$currentTruthPolicy.algorithm_current_path)
+    if (Test-Path -LiteralPath $algorithmCurrentPath -PathType Leaf) {
+        $algorithmCurrentDirectory = Split-Path -Parent $algorithmCurrentPath
+        $algorithmCurrentLines = [IO.File]::ReadAllLines($algorithmCurrentPath, [Text.Encoding]::UTF8)
+        $routeNames = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+        $routeCount = 0
+        foreach ($line in $algorithmCurrentLines) {
+            if ($line -notmatch '^\|' -or $line -match '^\|\s*---' -or $line -match '^\|\s*路线\s*\|') {
+                continue
+            }
+            $cells = @($line.Trim().Trim('|').Split('|') | ForEach-Object { $_.Trim() })
+            if ($cells.Count -ne 7) {
+                $failures.Add("Algorithm current route row must have 7 columns; found $($cells.Count): $line")
+                continue
+            }
+            $routeCount++
+            $routeName = $cells[0]
+            if ([string]::IsNullOrWhiteSpace($routeName) -or -not $routeNames.Add($routeName)) {
+                $failures.Add("Algorithm current route name is empty or duplicated: $routeName")
+            }
+            foreach ($cellIndex in @(1, 2, 3, 4, 5, 6)) {
+                if ([string]::IsNullOrWhiteSpace($cells[$cellIndex])) {
+                    $failures.Add("Algorithm current route '$routeName' has an empty required column: $cellIndex")
+                }
+            }
+            if ($cells[6] -notin @('是', '否')) {
+                $failures.Add("Algorithm current route '$routeName' has invalid default-App impact: $($cells[6])")
+            }
+
+            $truthLink = [regex]::Match($cells[3], '\]\((?<target>[^)#]+)(?:#[^)]*)?\)')
+            if (-not $truthLink.Success) {
+                $failures.Add("Algorithm current route '$routeName' lacks a local unique-truth link.")
+                continue
+            }
+            $truthTarget = $truthLink.Groups['target'].Value.Trim('<', '>')
+            if ($truthTarget -match '^[a-zA-Z][a-zA-Z0-9+.-]*:' -or [IO.Path]::IsPathRooted($truthTarget)) {
+                $failures.Add("Algorithm current route '$routeName' unique truth must be repository-local: $truthTarget")
+                continue
+            }
+            $truthPath = [IO.Path]::GetFullPath((Join-Path $algorithmCurrentDirectory $truthTarget))
+            $truthRelative = Normalize-RepoPath ([IO.Path]::GetRelativePath($script:ResolvedRepoRoot, $truthPath))
+            if ($truthRelative.StartsWith('../', [StringComparison]::Ordinal) -or -not (Test-Path -LiteralPath $truthPath -PathType Leaf)) {
+                $failures.Add("Algorithm current route '$routeName' unique truth is missing or outside the repository: $truthTarget")
+                continue
+            }
+
+            # Only a current route README is expected to repeat its category summary.
+            # Dated closure documents remain immutable and are intentionally skipped.
+            if ([IO.Path]::GetFileName($truthPath) -eq 'README.md') {
+                $truthText = Read-Utf8Text $truthPath
+                $routeStatusMatch = [regex]::Match(
+                    $truthText,
+                    '(?im)^状态：\s*`(?<status>[^`\r\n]+)`\s*$'
+                )
+                if (-not $routeStatusMatch.Success) {
+                    $failures.Add("Algorithm current route '$routeName' truth lacks one machine-readable current status line.")
+                    continue
+                }
+                $routeStatusTokens = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+                foreach ($routeStatusToken in @(
+                    $routeStatusMatch.Groups['status'].Value -split '\s*/\s*' |
+                        ForEach-Object { $_.Trim() } |
+                        Where-Object { $_ }
+                )) {
+                    [void]$routeStatusTokens.Add($routeStatusToken)
+                }
+                if (-not $routeStatusTokens.Contains('current')) {
+                    $failures.Add("Algorithm current route '$routeName' truth status line is not marked current.")
+                }
+
+                $statusText = $cells[2].Trim().Trim([char]0x60)
+                foreach ($statusToken in @($statusText -split '\s*/\s*' | ForEach-Object { $_.Trim().Trim([char]0x60) } | Where-Object { $_ })) {
+                    if (-not $routeStatusTokens.Contains($statusToken)) {
+                        $failures.Add("Algorithm current route '$routeName' status token is absent from its route current-status line: $statusToken")
+                    }
+                }
+
+                $defaultAppMarker = if ($cells[6] -eq '否') {
+                    [string]$currentTruthPolicy.default_app_unchanged_marker
+                }
+                else {
+                    [string]$currentTruthPolicy.default_app_changed_marker
+                }
+                if ([string]::IsNullOrWhiteSpace($defaultAppMarker) -or -not $routeStatusTokens.Contains($defaultAppMarker)) {
+                    $failures.Add("Algorithm current route '$routeName' default-App impact '$($cells[6])' is not synchronized by route marker: $defaultAppMarker")
+                }
+
+                $routeSuccessorMatch = [regex]::Match(
+                    $truthText,
+                    '(?ms)^##\s+唯一 successor\s*\r?\n(?<body>.*?)(?=^##\s+|\z)'
+                )
+                if (-not $routeSuccessorMatch.Success) {
+                    $failures.Add("Algorithm current route '$routeName' truth lacks a unique-successor section.")
+                    continue
+                }
+                $routeSuccessorBody = $routeSuccessorMatch.Groups['body'].Value
+                $successorMatch = [regex]::Match($cells[4], '`(?<successor>[^`]+)`')
+                if ($successorMatch.Success) {
+                    if (-not $routeSuccessorBody.Contains($successorMatch.Groups['successor'].Value)) {
+                        $failures.Add("Algorithm current route '$routeName' successor is absent from its route unique-successor section: $($successorMatch.Groups['successor'].Value)")
+                    }
+                }
+                elseif ($cells[4] -match '^无(?:\s|[;；,，。]|$)') {
+                    if ($routeSuccessorBody -notmatch '(?m)^\s*无(?:\s|[;:；：,，。]|$)') {
+                        $failures.Add("Algorithm current route '$routeName' declares no successor, but its route unique-successor section does not.")
+                    }
+                }
+                else {
+                    $failures.Add("Algorithm current route '$routeName' successor cell must contain one backticked identity or begin with 无.")
+                }
+            }
+        }
+        if ($routeCount -eq 0) {
+            $failures.Add('Algorithm current contains no governed route rows.')
+        }
+    }
+}
+
 # Callers may use stable Adapters, but must not learn a campaign's internal file layout.
 $referenceSourceAllowlist = @($policy.internal_reference_source_allowlist | ForEach-Object { Normalize-RepoPath ([string]$_) })
 $immutableReferenceExceptionPaths = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)

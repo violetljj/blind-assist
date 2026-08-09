@@ -1,7 +1,7 @@
 # BlindAssist 文档治理
 
 状态：current
-最后核验：2026-08-08
+最后核验：2026-08-10
 适用范围：仓库内所有协作者、自动化代理与长期任务。
 
 ## 目标
@@ -13,7 +13,7 @@
 | 需求 | 唯一入口 | 不应承担该职责的文件 |
 | --- | --- | --- |
 | 新窗口项目状态、任务分类和最小读取路径 | `docs/PROJECT_STATE.md` | 全量 `README.md`、`DEVELOPMENT_LOG.md`、archive/snapshot |
-| 当前产品能力、版本、最短构建入口 | `README.md` | `idea.md`、日期化实验报告 |
+| 当前产品能力、版本、最短构建入口 | `README.md` | 研究路线动态状态、`idea.md`、日期化实验报告 |
 | 已发布或用户可见变化 | `CHANGELOG.md` | 研究实验日志 |
 | 当前 SANPO 状态、硬门、禁止事项、下一步 | `docs/SANPO_CURRENT_STATUS.md` | `idea.md`、`CHANGELOG.md` |
 | 当前双环论文系统路线、阶段−1门、权限与下一步 | `docs/research/dual-loop/README.md` | `idea.md`、日期化讨论或实验报告 |
@@ -26,6 +26,8 @@
 | 日期化实验、审计与研究结论 | `docs/*_YYYY-MM-DD.*` 或 `docs/research/` | current 协议 |
 | 项目研究分类和阅读入口 | `docs/research/README.md` | 具体路线 README、日期化结果 |
 | 算法路线摘要、唯一 successor 与默认 App 权限 | `docs/research/ALGORITHM_RESEARCH_CURRENT.md` | 数据/平台入口、日期化结果 |
+| 跨路线系统研究分类 | `docs/research/SYSTEM_RESEARCH_CURRENT.md` | 与算法路线重叠的动态状态和 successor |
+| 研究 Module 实时数量 | `scripts/research/MODULE_INDEX.md` 的机器校验 `N-of-N` 标记 | `scripts/README.md`、`REGISTRY.md` |
 | 任务断点与工作区现场 | `artifacts.local/work/codex-handoffs/` | Git 提交文档 |
 
 发生冲突时，以可复现的代码/门禁报告为事实基础；再以对应 `current` 协议为规则，以当前状态文档为操作摘要。研究阶段和证据传播以 `RESEARCH_GOVERNANCE.md` 为上位规则；领域协议可以更严格，但必须说明阶段、依据和最小 failure scope。`AI_REVIEW_GOVERNANCE.md` 覆盖旧 current/snapshot/handoff 中任何人工采集、标注、复核、仲裁或验收步骤；日期化快照只说明当时结论，不具有当前执行 authority。
@@ -33,15 +35,17 @@
 ## 更新规则
 
 - 只改一个当前真源，再从其他入口链接它；不要复制会变化的数字、门禁结论或下一步。
-- `README.md` 仅在产品、版本、构建入口或用户可见状态变化时更新。
+- `README.md` 仅在产品、版本、构建入口或用户可见状态变化时更新；其“当前状态”只链接研究总入口，不复制路线名、阶段、指标或 successor。
 - `CHANGELOG.md` 仅加入已发布或用户可见变化。候选模型、数据收集和失败实验写入研究记录，不伪装成 release note。
 - `DEVELOPMENT_LOG.md` 只追加 durable decision、架构或 interface 变化、研究结论、
   重要验证、材料失败和可复用操作教训；普通小修复、一次性测试和常规重构不写条目。
   保留历史原文，不为美化时间线改写旧结论。
 - `idea.md` 只保留待决方向。实验结束后写一条简短决策并链接证据，而不是复制实验流水。
-- 新的顶层 `docs/*.md` 必须在 `docs/README.md` 中列为 `current`、`snapshot` 或 `archive`；运行 `scripts/check_docs_index.ps1`。
+- 新的顶层 `docs/*.md` 必须在 `docs/README.md` 中列为 `current`、`snapshot` 或 `archive`。`scripts/check_docs_index.ps1` 还会校验所有非归档 current 文档、路线 README 和 protocol 的本地链接；`history/` 与 `archive/` 保留历史路径原文，不强制追随当前树。
 - `docs/PROJECT_STATE.md` 是冷启动导航，不复制研究结论；任务开始时先读它，默认读取一个分类 current/根入口和一个明确的路线/合同/测试入口，直接依赖、验证或冲突需要时可扩展。
 - 冷启动导航只允许稳定身份、路径和读取规则；状态、主张、指标、successor、禁止动作和默认 App 权限必须只在对应 current 真源维护。
+- `ALGORITHM_RESEARCH_CURRENT.md` 的 current 路线摘要必须与其唯一真源 README 的顶部 current 状态行、“唯一 successor”段和默认 App 标记同步；历史段落中偶然出现同名 token 不算同步。`SYSTEM_RESEARCH_CURRENT.md` 遇到同一 DepthART/HFTF 执行面时只分类并显式委托，不建立第二份动态真源。
+- 研究 Module 数量只在 `scripts/research/MODULE_INDEX.md` 维护，结构门会将其 `N-of-N` 与 Git 可见 Module 目录实时对比；其他导航页不写数字副本。
 
 ## 历史与归档
 
@@ -101,4 +105,7 @@ pwsh -File scripts/check_docs_index.ps1
 pwsh -File scripts/check_project_structure.ps1
 ```
 
+修改上述门禁本身时，同时运行对应的 `test_check_docs_index.ps1`、
+`test_check_project_structure.ps1` 或 `test_repo_hygiene.ps1`。CI 必须对 live tree 运行
+`check_repo_hygiene.ps1 -IncludeStructure` 和 `check_docs_index.ps1`，不能只测临时 fixture。
 涉及脚本入口、发布或工具链时，按对应专项文档补充验证。

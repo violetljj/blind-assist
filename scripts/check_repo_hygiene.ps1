@@ -76,7 +76,10 @@ if ([string]::IsNullOrWhiteSpace($repoRoot)) {
     throw 'Repository hygiene check must run inside a Git repository.'
 }
 $repoRoot = (Resolve-Path -LiteralPath $repoRoot.Trim()).Path
-$forbiddenRootExtensions = @('.pt', '.onnx', '.npy', '.tflite', '.apk', '.aab', '.zip', '.pptx')
+$forbiddenRootExtensions = @(
+    '.pt', '.onnx', '.npy', '.tflite', '.apk', '.aab', '.zip', '.pptx',
+    '.obj', '.o', '.lib', '.a', '.exp', '.dll', '.so', '.pdb', '.ilk'
+)
 foreach ($rootItem in Get-ChildItem -LiteralPath $repoRoot -Force) {
     if (
         (-not $rootItem.PSIsContainer -and $forbiddenRootExtensions -contains $rootItem.Extension.ToLowerInvariant()) -or
@@ -161,6 +164,7 @@ foreach ($path in $paths) {
     }
 
     if ($path -match '^(\.gradle/|\.gradle-local/|\.android-sdk/|\.android-home/|\.jdk/|\.python311/|\.venv-|\.cache/|\.kotlin/|\.kotlin-home/|work/|app/build/|.*/build/)' -or
+        $path -match '(^|/)\.cxx/' -or
         $path -match '(^|/)__pycache__/') {
         $failures.Add("Local build/cache path must not be committed: $path")
         continue

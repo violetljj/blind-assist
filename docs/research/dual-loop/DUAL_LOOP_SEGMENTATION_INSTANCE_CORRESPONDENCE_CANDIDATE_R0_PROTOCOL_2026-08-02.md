@@ -73,6 +73,6 @@ pixel-level residual truth，不能驱动 risk、feedback、TTS、振动或默�
 
 ## 可复现命令
 
-见 [instance correspondence package README](../../scripts/research/dual_loop_segmentation_instance_correspondence/README.md)。
+见 [instance correspondence package README](../../../scripts/research/dual_loop_segmentation_instance_correspondence/README.md)。
 输出目录只允许位于 `artifacts.local/`，已有目录不覆盖；输出内固定保留输入/配置/实现
 SHA256 与 `claim_ceiling`。

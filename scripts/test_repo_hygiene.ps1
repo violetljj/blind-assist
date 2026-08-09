@@ -99,6 +99,23 @@ function Assert-IgnoredRootModelFails {
     Write-Host 'PASS: ignored-root-model'
 }
 
+function Assert-IgnoredRootNativeArtifactFails {
+    $repository = New-TestRepository 'ignored-root-native-artifact'
+    [System.IO.File]::WriteAllText(
+        (Join-Path $repository '.gitignore'),
+        "/*.obj`n",
+        [System.Text.UTF8Encoding]::new($false)
+    )
+    Commit-TestRepository $repository 'add ignored native artifact rule' | Out-Null
+    Add-TestFile $repository 'converter.obj'
+
+    $exitCode = Invoke-HygieneCheck $repository
+    if ($exitCode -eq 0) {
+        throw 'Ignored native compiler artifact at the repository root was expected to fail.'
+    }
+    Write-Host 'PASS: ignored-root-native-artifact'
+}
+
 function Assert-UnpinnedGitHubActionFails {
     $repository = New-TestRepository 'unpinned-github-action'
     Add-TestFile `
@@ -194,9 +211,13 @@ try {
         '.android-home/cache.bin',
         '.kotlin-home/cache.bin',
         'scripts/__pycache__/cache.pyc',
+        'core/vision/.cxx/Debug/CMakeCache.txt',
         'work/output.txt',
         'app-debug.apk',
         'snapshot.zip',
+        'converter.obj',
+        'converter.lib',
+        'converter.exp',
         'signing/release.jks',
         'signing/release.keystore',
         'config/keystore.properties',
@@ -219,6 +240,7 @@ try {
     Assert-DeletedBinaryCleanupPasses
     Assert-AddedBinaryFromBaseFails
     Assert-IgnoredRootModelFails
+    Assert-IgnoredRootNativeArtifactFails
     Assert-UnpinnedGitHubActionFails
     Assert-PinnedGitHubActionPasses
     Assert-NonReproducibleDependencyFails `

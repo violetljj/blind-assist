@@ -36,6 +36,31 @@
     "## 停止条件",
     "artifacts.local/"
   ],
+  "current_truth": {
+    "root_readme_path": "README.md",
+    "root_research_owner_marker": "<!-- research-status-owner: docs/research/README.md -->",
+    "root_status_forbidden_patterns": [
+      "Assistive Geometry",
+      "FactorTensorAdapter",
+      "DepthART",
+      "YOLO\\s*\\+\\s*语义分割双环",
+      "RCLE",
+      "USTRF",
+      "RISKSEG",
+      "THESIS_DEVELOPMENT",
+      "WILD_LAB",
+      "EVIDENCE_TRACK"
+    ],
+    "algorithm_current_path": "docs/research/ALGORITHM_RESEARCH_CURRENT.md",
+    "system_current_path": "docs/research/SYSTEM_RESEARCH_CURRENT.md",
+    "system_route_state_marker": "DEPTHART_STATE_DELEGATED_TO_ROUTE_CURRENT",
+    "system_route_successor_marker": "DEPTHART_SUCCESSOR_DELEGATED_TO_ROUTE_CURRENT",
+    "default_app_unchanged_marker": "DEFAULT_APP_UNCHANGED",
+    "default_app_changed_marker": "DEFAULT_APP_CHANGED",
+    "scripts_index_path": "scripts/README.md",
+    "research_registry_path": "scripts/research/REGISTRY.md",
+    "module_count_owner_path": "scripts/research/MODULE_INDEX.md"
+  },
   "internal_reference_source_allowlist": [
     "configs/dav2_temporal_392_student_p3_r0_1_activation_bindings.json",
     "scripts/run_research_contract_tests.py",

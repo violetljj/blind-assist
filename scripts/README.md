@@ -49,9 +49,9 @@
 - `run_research_tool.py candidate-event-mining register_run_index.py`：把 adapter、全量候选报告、review queue、bundle、Luna receipts 和 candidate pool 的路径/hash 追加到 `F:\ba-data\blindassist-candidate-event-mining\run_index.json`。
 - `run_public_video_campaign_tests.py`：发现并运行 `scripts/research/public_video/` 的完整测试集。
 - `run_public_video_edge_inference.ps1`：已冻结 campaign 真机闭环的稳定 Adapter；调用方不依赖研究目录内部路径。
-- `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试；默认只检查卫生，使用 `-IncludeStructure` 才串联项目结构门。
-- `check_project_structure.ps1` / `test_check_project_structure.ps1`：脚本根 allowlist、开发日志预算、研究 Module 合同、内部路径和跨 Module import 门禁；需要结构/政策验证时单独运行，避免与卫生门重复执行。
-- `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档、research domain README/index 与本地链接门禁。
+- `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试；拒绝变更面中的构建缓存，并扫描根目录中即使已被忽略的 native 编译产物。默认只检查卫生，使用 `-IncludeStructure` 串联项目结构门。
+- `check_project_structure.ps1` / `test_check_project_structure.ps1`：脚本根 allowlist、开发日志预算、研究 Module 合同/实时数量、current 真源委托/状态/successor 同步、内部路径和跨 Module import 门禁；需要结构/政策验证时单独运行，避免与卫生门重复执行。
+- `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档、research domain README/index，以及所有非归档 current、路线 README 和 protocol 本地链接门禁。
 - `audit_research_structure.ps1`：只读输出研究 Module 合同、HFTF 角色计数和 support 迁移清单。
 - `archive_apk.ps1`、`verify_release_apk.ps1`、`verify_apk_16kb.ps1`：APK 校验与归档。
 - `run_npu_candidate_acceptance.ps1`：SM-S9280/SM8650 上的独立 NPU 候选安装、QNN HTP runtime marker、正式包/数据不变式与候选专属卸载回滚门；不清除正式 App 数据。
@@ -62,7 +62,7 @@
 研究模块不在本页重复列出实验轮次、动态终态或指标。按以下入口定位：
 
 - [研究职责总表](research/REGISTRY.md)：当前入口、部署、诊断、archive 与 support 分区。
-- [全部 Module 索引](research/MODULE_INDEX.md)：67 个研究 Module 的逐项链接和稳定研究族分类。
+- [全部 Module 索引](research/MODULE_INDEX.md)：逐项链接和稳定研究族分类；数量只由该机器校验入口维护。
 - [HFTF / DepthART 角色索引](research/hftf/INDEX.md)：`roles.json` 机器匹配规则和迁移合同。
 - [HFTF support 迁移队列](research/hftf/SUPPORT_MIGRATION_QUEUE.md)：按主题簇安全下沉历史文件。
 - [候选事件挖掘](research/candidate_event_mining/README.md)：discovery-only 候选池。
@@ -74,9 +74,8 @@
 - 模型导出/检查：`export_yolo11n_tflite.py`、`inspect_tflite.py`、`export_depth_anything_v2_tflite.py`、`inspect_depth_model.py`。
 - detector/device benchmark：`detector_lab.py`、`benchmark_tflite_detectors.py`、`run_yolo26n_device_benchmark.ps1`、`run_detector_ab_device_benchmark.ps1`、`run_device_regression.ps1`。
 - SANPO 训练与门禁：`train_sanpo_segmentation_keras_torch.py`、`train_export_sanpo_segmentation.py`、`sanpo_training_gate.py`、`sanpo_candidate_quality_gate.py`。
-- 当前论文研究主线以 [双环 current 入口](../docs/research/dual-loop/README.md) 为准，并
-  前向服从 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`；暂停的 RCLE 与已关闭 USTRF 保留
-  历史终态，但未来新 Development 不自动继承旧 one-shot/formal 门。
+- 研究主线、终态、successor 和执行权限只从[项目研究总入口](../docs/research/README.md)
+  进入；本脚本索引只维护稳定调用职责，不复制动态研究状态。
 
 ## 运行约定
 

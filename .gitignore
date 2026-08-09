@@ -18,6 +18,7 @@ python311-local/
 .idea/
 *.iml
 build/
+**/.cxx/
 output/
 local.properties
 keystore.properties
@@ -36,6 +37,18 @@ tmp/
 *.zip
 *.pptx
 *.npy
+# Root-native compiler/linker outputs are local build artifacts. Repository
+# hygiene still reports them if physically present so they can be moved under
+# artifacts.local/ instead of silently accumulating at the root.
+/*.obj
+/*.o
+/*.lib
+/*.a
+/*.exp
+/*.dll
+/*.so
+/*.pdb
+/*.ilk
 app/src/main/assets/*.tflite
 !app/src/main/assets/README.md
 !app/src/main/assets/yolo11n_fp16_320.tflite

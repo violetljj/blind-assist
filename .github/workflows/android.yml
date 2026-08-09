@@ -19,16 +19,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check repository hygiene
+      - name: Check live repository hygiene and structure
         env:
           BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
-        run: pwsh -ExecutionPolicy Bypass -File ./scripts/check_repo_hygiene.ps1
+        run: pwsh -ExecutionPolicy Bypass -File ./scripts/check_repo_hygiene.ps1 -IncludeStructure
+
+      - name: Check live documentation index and authority links
+        run: pwsh -ExecutionPolicy Bypass -File ./scripts/check_docs_index.ps1
 
       - name: Smoke-test repository hygiene rules
         run: pwsh -ExecutionPolicy Bypass -File ./scripts/test_repo_hygiene.ps1
 
       - name: Smoke-test project structure rules
         run: pwsh -ExecutionPolicy Bypass -File ./scripts/test_check_project_structure.ps1
+
+      - name: Smoke-test documentation index rules
+        run: pwsh -ExecutionPolicy Bypass -File ./scripts/test_check_docs_index.ps1
 
   unit-tests-and-lint:
     runs-on: ubuntu-latest
