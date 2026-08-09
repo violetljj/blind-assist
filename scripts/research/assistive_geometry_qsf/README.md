@@ -1,6 +1,6 @@
 # Assistive Geometry QSF research Module
 
-状态：`current / WILD_LAB / H1_IMPLEMENTED / ATTEMPT_01_AND_02_PERFORMANCE_NOT_QUALIFIED / ATTEMPT_03_ESTIMATOR_RELOCKED_NOT_RUN`
+状态：`current / WILD_LAB / H1_IMPLEMENTED / ATTEMPT_03_PERFORMANCE_QUALIFIED / H1_NOT_EVALUABLE_EVAL_RIGHT_CENSOR_ZERO / H2_NOT_AUTHORIZED`
 
 ## 研究问题与版本
 
@@ -76,6 +76,11 @@ batch 16 combined timing 没有改善，并暴露 estimator 将一次性 model l
 Attempt 03 恢复 batch 4，分离 fixed setup 与 scaled extraction，使用
 `h1-train-canary-attempt-03-r0` namespace。资源 READY 后唯一执行顺序仍是 `pilot-r0`，再由同一
 Attempt-03 protocol/hash 运行 `run-r0`。
+
+Attempt 03 pilot 已合格；full run 在训练 head 前由 nonzero-denominator frontdoor 停止：fit
+`event/censor/occupied=1213/18/3162`，eval `262/0/784`。它是 data-support `NOT_EVALUABLE`，
+不是 H1 科学 PASS/FAIL。没有模型 checkpoint 被物化。当前唯一 successor 是无模型、TRAIN-only
+parent-level support audit 与新 split relock；H2 继续不可实现、不可物化、不可训练。
 
 ## 输出
 
