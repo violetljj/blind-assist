@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry QSF
 
-状态：`current / WILD_LAB / H1_IMPLEMENTED / ATTEMPT_03_PERFORMANCE_QUALIFIED / H1_NOT_EVALUABLE_EVAL_RIGHT_CENSOR_ZERO / H2_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / CLOSED_DATA_SUPPORT_INSUFFICIENT / H1_NOT_EVALUABLE / H2_NOT_AUTHORIZED / COMBINATION_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 ## 主张与边界
 
@@ -20,7 +20,7 @@ AG-QSF（Assistive Geometry Queryable Survival Field）研究：
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_PARENT_LEVEL_TRAIN_SUPPORT_AUDIT_AND_RELOCK`
+无。`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0` 已关闭。
 
 H1-only 的 target compiler、censor/UNKNOWN mask、四桶 hazard decoder、right-censored
 likelihood、参数精确匹配 head、checkpoint/flip/zero-support/gradient 测试和 parent-disjoint
@@ -47,6 +47,12 @@ successor；只有 H1、H2 各自通过后才能另立组合协议。
 [`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_PARENT_SUPPORT_AUDIT_PROTOCOL_2026-08-09.json`](BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_PARENT_SUPPORT_AUDIT_PROTOCOL_2026-08-09.json)
 冻结：扫描同一 16-parent TRAIN target roster 的 parent-level support，只读取 target NPZ；eval
 固定取 manifest 顺序中前 4 个 selected-64 四类支持均非零的 parent，不加载模型或 feature。
+
+audit 已完成：只有 parent `41159448` 存在 right-censor（selected-64 为 18，全 300 帧为
+83），其他 15 个 parent 在 selected-64 与全 300 帧上均为 0。因此不可能建立 fit/eval 两侧
+right-censor 都非零的 parent-disjoint split，terminal 为
+`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0_CLOSED_DATA_SUPPORT_INSUFFICIENT`。H1 的数学假设没有被
+反证，但在当前 TRAIN target contract 下不可评价；H2 和组合版从未获得执行权限。
 
 ## 与其他路线并行
 
@@ -83,6 +89,8 @@ successor；只有 H1、H2 各自通过后才能另立组合协议。
 - 通过逐项 manifest 只读复用冻结资源；
 - 不访问受保护 outcome 的 TRAIN-only 数据审计和 canary 设计。
 
+路线关闭后，上述条目只描述历史已授权范围，不构成新的执行权限。
+
 ## 当前禁止
 
 - 与 B1 formal GPU/重 I/O 重叠运行 H1 pilot/canary，读取 B1 Development/Confirmation outcome
@@ -97,5 +105,7 @@ successor；只有 H1、H2 各自通过后才能另立组合协议。
 
 当前只证明 H1 target/mask/decoder/loss/head mechanics、精确参数匹配、parent-disjoint canary
 合同与资源隔离门已实现并通过专项测试；Attempt 01/02 是性能负终态，Attempt 03 性能合格但
-held-out right-censor 支持为零，故科学结果为 `NOT_EVALUABLE`。尚未证明 H1/H2
-可学、真实数据有效、优于 direct head、可部署或安全。
+held-out right-censor 支持为零；全 roster audit 又证明仅一个 parent 有任何 censor，无法形成
+parent-disjoint 双侧支持。因此路线以 data-support `NOT_EVALUABLE` 关闭。没有证明或反证 H1
+数学假设，也没有证明 H1/H2 可学、优于 direct head、可部署或安全。重开必须先有 pre-outcome
+新数据/target contract，使至少两个 parent identity 具有 right-censor，再建立独立新路线版本。

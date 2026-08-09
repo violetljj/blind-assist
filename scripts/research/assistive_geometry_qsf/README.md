@@ -1,6 +1,6 @@
 # Assistive Geometry QSF research Module
 
-状态：`current / WILD_LAB / H1_IMPLEMENTED / ATTEMPT_03_PERFORMANCE_QUALIFIED / H1_NOT_EVALUABLE_EVAL_RIGHT_CENSOR_ZERO / H2_NOT_AUTHORIZED`
+状态：`current / CLOSED_DATA_SUPPORT_INSUFFICIENT / H1_NOT_EVALUABLE / H2_AND_COMBINATION_NOT_AUTHORIZED`
 
 ## 研究问题与版本
 
@@ -85,6 +85,12 @@ parent-level support audit 与新 split relock；H2 继续不可实现、不可�
 support audit 实现为 [`audit_h1_parent_support.py`](audit_h1_parent_support.py)，由独立 machine
 protocol 冻结 target manifest、parent order、selected-64 规则、非零分母和输出路径。它逐 target
 复核 bytes/SHA，只产生 support roster receipt，不加载 RGB、encoder、feature 或任何模型 outcome。
+
+audit 终态为 `H1_PARENT_SUPPORT_AUDIT_NOT_EVALUABLE`：只有 `41159448` 一个 parent 有任何
+right-censor，其他 15 个 parent 全 300 帧亦为 0，故无法让 parent-disjoint fit/eval 两侧同时
+非零。本 Module 当前无 successor；H2 与 H1+H2 从未被授权。只有新 pre-outcome 数据/target
+contract 在至少两个 parent identity 上提供 censor support，才能另立新版本，不得复用本路线
+的旧执行权限。
 
 ## 输出
 
