@@ -1,0 +1,230 @@
+{
+  "schema": "blindassist.assistive_geometry_dca.r0_protocol.v1",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_DCA_R0_PROTOCOL_2026-08-10",
+  "stage": "DATA_CAPABILITY_ATLAS",
+  "status": "TRAIN_CAPABILITY_ATLAS_LOCKED_NOT_RUN",
+  "purpose": "Build a reusable TRAIN-only data capability atlas before admitting future Assistive Geometry hypotheses.",
+  "not_an_algorithm_route": true,
+  "authority": {
+    "rgb_access": false,
+    "model_access": false,
+    "feature_access": false,
+    "checkpoint_access": false,
+    "development_access": false,
+    "confirmation_access": false,
+    "threshold_selection_authorized": false,
+    "training_authorized": false,
+    "r2_promotion_authorized": false,
+    "default_app_change_authorized": false
+  },
+  "input": {
+    "kind": "DERIVED_TRAIN_CACHE",
+    "producer_route": "BLINDASSIST_ASSISTIVE_GEOMETRY",
+    "path": "artifacts.local/datasets/assistive-geometry-b1-train-targets-20260809-r0/manifest.json",
+    "sha256": "A6F809C7EE59C6539FEA37C92973E350ECCF5260353BA5F15A9A9BBB9888A7C2",
+    "access": "READ_ONLY",
+    "data_role": "TRAIN",
+    "outcome_access": "TRUTH_AND_SOURCE_CAPABILITY_ONLY",
+    "selection_influence": "HYPOTHESIS_ADMISSION_SUPPORT_ONLY",
+    "claim_use": "DATA_CAPABILITY_ATLAS_ONLY"
+  },
+  "role_protocol": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_TRAINING_PROTOCOL_2026-08-09.json",
+    "sha256": "BDD3B9E45FAB1D9100086B97DAA1C0D9A0F1039FD4D330EF0E3820E414A6FC71"
+  },
+  "manifest_contract": {
+    "schema": "blindassist_assistive_geometry_b1_train_target_manifest_v1",
+    "video_count": 16,
+    "frame_count": 4800,
+    "frames_per_parent": 300,
+    "portrait_frame_count": 2724,
+    "landscape_frame_count": 2076,
+    "source_manifest_sha256": "F51041594FF34EE922F92A7A49AAD7CA44551B5C0A8D77A81693ECFFDD226D87",
+    "producer_sha256": "014895C739975BF09843CF1A39EC70C0776BAB04FF429EC9D8C00547859F9B15",
+    "development_or_confirmation_content_opened": false,
+    "model_outputs_read": false
+  },
+  "parent_order": [
+    "41159448",
+    "42445086",
+    "42445790",
+    "42897547",
+    "42898024",
+    "42898242",
+    "44358617",
+    "47333249",
+    "47334163",
+    "47430327",
+    "47204445",
+    "47331226",
+    "47430531",
+    "47431114",
+    "47895508",
+    "47334948"
+  ],
+  "protected_parent_ids": [
+    "41127065",
+    "42444793",
+    "42444891",
+    "42898438",
+    "42899869",
+    "44358604",
+    "47430934",
+    "47332413",
+    "41142280",
+    "42446038",
+    "42897545",
+    "42897688",
+    "42898581",
+    "44358448",
+    "47332893",
+    "47429975"
+  ],
+  "protected_visit_ids": [
+    "383240",
+    "421012",
+    "421260",
+    "426274",
+    "435658",
+    "464241",
+    "469828",
+    "472034",
+    "384651",
+    "422015",
+    "422813",
+    "423441",
+    "426147",
+    "460419",
+    "469266",
+    "470550"
+  ],
+  "expected_frame_count": 4800,
+  "target_field_access": [
+    "depth_m_source",
+    "depth_valid_source",
+    "ground_probability_source",
+    "ground_label_valid_source",
+    "intrinsics_source",
+    "up_camera",
+    "camera_height_m",
+    "ground_plane_valid",
+    "clearance_m",
+    "clearance_valid",
+    "occupancy",
+    "occupancy_valid"
+  ],
+  "target_keyset": [
+    "band_confidence_valid",
+    "camera_height_m",
+    "clearance_m",
+    "clearance_valid",
+    "depth_m_source",
+    "depth_valid_source",
+    "ground_label_valid_source",
+    "ground_plane_valid",
+    "ground_probability_source",
+    "intrinsics_source",
+    "intrinsics_tensor",
+    "occupancy",
+    "occupancy_valid",
+    "orientation_index",
+    "target_hw",
+    "up_camera"
+  ],
+  "capability_policy": {
+    "depth_min_m": 0.25,
+    "depth_max_m": 6.0,
+    "point_stride": 2,
+    "minimum_valid_depth_points": 80,
+    "ground_probability_threshold": 0.5,
+    "minimum_ground_cells": 32,
+    "minimum_ground_cells_per_forward_quartile": 4,
+    "minimum_observed_cells": 64,
+    "minimum_observed_cells_per_lateral_third": 8,
+    "maximum_temporal_gap_seconds": 0.1,
+    "temporal_claim_ceiling": "SOURCE_ORDER_PAIR_ONLY_EXPLICIT_TIMESTAMP_AND_POSE_NOT_MATERIALIZED",
+    "cbf_grid_policy": {
+      "grid_shape": [
+        32,
+        31
+      ],
+      "forward_range_m": [
+        0.2,
+        5.0
+      ],
+      "lateral_range_m": [
+        -2.0,
+        2.0
+      ],
+      "depth_min_m": 0.25,
+      "depth_max_m": 6.0,
+      "point_stride": 2,
+      "ground_probability_threshold": 0.5,
+      "obstacle_height_range_m": [
+        0.08,
+        2.0
+      ],
+      "frame_gate": {
+        "minimum_in_grid_point_count": 80,
+        "minimum_observed_cell_count": 64,
+        "minimum_ground_cell_count": 32,
+        "minimum_ground_cells_per_forward_quartile": 4,
+        "minimum_observed_cells_per_lateral_third": 8
+      }
+    }
+  },
+  "r2_factor_truth_policy": {
+    "crisp_depth_ground_and_obstacle_mechanics_derivable": true,
+    "depth_uncertainty_truth_materialized": false,
+    "support_uncertainty_truth_materialized": false,
+    "continuous_obstacle_boundary_truth_materialized": false,
+    "complete_r2_factor_schema_truth_materialized": false,
+    "same_source_derivation_is_independent_causal_evidence": false
+  },
+  "authority_snapshot_git_commit": "EE3C9D8DDD6ED06C3E1F7523B00E516A4CC7930F",
+  "authority_facts": {
+    "r2_f0_reducer_tracked_and_frozen": true,
+    "oracle_factor_injection_interface_tracked_and_frozen": false,
+    "fresh_selection_eligible_paired_outcome_available": false,
+    "b1_consumed_development_allowed_for_r2_selection": false
+  },
+  "authority_evidence": {
+    "r2_f0": {
+      "result": {
+        "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_RESULT_2026-08-10.json",
+        "sha256": "0F0EB8F14CB48830AF2D569EFF6679C18DD2A9FB5CF19AD25CA45957197BEA00"
+      },
+      "reducer": {
+        "path": "scripts/research/assistive_geometry/geometry_r2_reducer.py",
+        "sha256": "2D6C26AD75B98911FD610FE0428D47584C877BA9AC7F091F768D98C035932092"
+      },
+      "scope": "F0_SYNTHETIC_REDUCER_MECHANICS_ONLY_NO_REAL_FACTOR_PRODUCER_OR_FCI_INTERVENTION_AUTHORITY"
+    }
+  },
+  "requirements": {
+    "path": "docs/research/assistive-geometry-data-capability/BLINDASSIST_ASSISTIVE_GEOMETRY_DCA_R0_HYPOTHESIS_REQUIREMENTS_2026-08-10.json",
+    "sha256": "4628C73AB235AE5E085B1CC73C848E6B54EA20ED2AC10D8CFB4AE940820BCA3C"
+  },
+  "implementation": {
+    "scripts/research/assistive_geometry_data_capability/build_capability_atlas.py": "4292910458122E933EFAE884DEB21F15BC9CEB2AB7D89FFC5272AB6772E3A111",
+    "scripts/research/assistive_geometry_data_capability/check_hypothesis_requirements.py": "8ECB59BEBF817CC2BC23E2A0301630B795FEF4650E62B8187C493D5619F99AFD",
+    "scripts/research/assistive_geometry_data_capability/test_build_capability_atlas.py": "99AD6A38B83C217633A520A8DB5735DCBEF84320DE7EE0D7B8B245FC827F8384",
+    "scripts/research/assistive_geometry/arkitscenes_truth_reader.py": "F50187661E59C438FAC4CAEB4E0BDFA4D638C64A87094C49C369FBEC3B3218C1",
+    "scripts/research/assistive_geometry_cbf/audit_grid_support.py": "D9F1D5100B512C012795DC3ADD6CAB9F5B4656C2C1B216BE1AEC2D71BE82E4B2"
+  },
+  "outputs": {
+    "atlas": "artifacts.local/evidence/assistive-geometry-data-capability/r0/atlas.json",
+    "decisions": "artifacts.local/evidence/assistive-geometry-data-capability/r0/hypothesis-decisions.json"
+  },
+  "terminal_policy": {
+    "source_supported": "AG_DCA_R0_SOURCE_CONTRACT_SUPPORTED_FOR_ROUTE_SPECIFIC_AUDIT_ONLY",
+    "missing_fields": "AG_DCA_R0_NOT_SUPPORTED_MISSING_ROUTE_REQUIRED_FIELDS",
+    "invalid_firewall": "AG_DCA_R0_INVALID_IDENTITY_OR_ROLE_FIREWALL",
+    "hypothesis_supported": "SUPPORTED_FOR_PROTOCOL_LOCK",
+    "hypothesis_not_supported_data": "NOT_SUPPORTED_DATA",
+    "hypothesis_not_supported_authority": "NOT_SUPPORTED_AUTHORITY",
+    "hypothesis_not_supported_both": "NOT_SUPPORTED_DATA_AND_AUTHORITY"
+  },
+  "resource_policy": "CPU_ONLY_LIGHT_IO_NO_GPU_NO_MODEL",
+  "claim_ceiling": "AG-DCA R0 may establish only immutable TRAIN truth/source capability counts and hypothesis admission decisions. It cannot establish causal factor attribution, learnability, algorithm superiority, Development or Confirmation evidence, R2 selection or promotion, device execution, product readiness, production authority, or assistive safety."
+}

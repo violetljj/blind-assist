@@ -71,7 +71,7 @@
     "evidence_data_support": {
       "description": "数据污染、评估有效性、failure atlas、模型矩阵和公共视频支持",
       "patterns": [
-        "^(data_contamination_audit_r0|eval_validity_r0|failure_case_atlas|information_ceiling_three_arm_d0|model_matrix|public_video|synthetic_stress)$"
+        "^(assistive_geometry_data_capability|data_contamination_audit_r0|eval_validity_r0|failure_case_atlas|information_ceiling_three_arm_d0|model_matrix|public_video|synthetic_stress)$"
       ],
       "dynamic_truth": "docs/research/DATA_RESEARCH_CURRENT.md"
     }

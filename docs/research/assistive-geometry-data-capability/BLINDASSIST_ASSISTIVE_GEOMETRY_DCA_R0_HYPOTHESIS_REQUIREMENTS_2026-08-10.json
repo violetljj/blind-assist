@@ -1,0 +1,96 @@
+{
+  "schema": "blindassist.assistive_geometry_dca.hypothesis_requirements.v1",
+  "requirements_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_DCA_R0_HYPOTHESIS_REQUIREMENTS_2026-08-10",
+  "semantics": {
+    "minimum_frames_per_parent": "A parent is eligible for a capability only at or above this count.",
+    "minimum_parents": "Capability-specific eligible-parent minimum.",
+    "joint_parent_gate": "The same parent identities must be eligible for every listed capability; fit/eval counts are parent-disjoint partition feasibility, not an authorized split.",
+    "authority_requirements": "Exact equality against protocol-frozen authority facts. Data support never overrides authority failure.",
+    "pass_meaning": "SUPPORTED_FOR_PROTOCOL_LOCK permits only writing a new versioned protocol; it never authorizes execution."
+  },
+  "hypotheses": {
+    "AG_QSF_H1_REOPEN": {
+      "question": "Can a parent-disjoint H1 mechanics protocol be formed with both finite clearance events and right-censor support?",
+      "capabilities": {
+        "finite_clearance_event": {
+          "minimum_total_frames": 4,
+          "minimum_frames_per_parent": 1,
+          "minimum_parents": 4,
+          "minimum_frames_per_orientation": 1
+        },
+        "right_censor": {
+          "minimum_total_frames": 4,
+          "minimum_frames_per_parent": 1,
+          "minimum_parents": 4,
+          "minimum_frames_per_orientation": 1
+        }
+      },
+      "joint_parent_gate": {
+        "minimum_joint_parents": 4,
+        "minimum_fit_parents": 2,
+        "minimum_eval_parents": 2
+      },
+      "authority_requirements": {},
+      "claim_ceiling": "Data support for a possible new QSF protocol only; the closed R0 authority is never revived."
+    },
+    "AG_CBF_R0_STYLE_GRID": {
+      "question": "Does the full TRAIN roster support the preregistered CBF 32x31 grid gate broadly enough across parents and orientations?",
+      "capabilities": {
+        "full_2_5d_grid": {
+          "minimum_total_frames": 640,
+          "minimum_frames_per_parent": 32,
+          "minimum_parents": 12,
+          "minimum_frames_per_orientation": 128
+        }
+      },
+      "joint_parent_gate": {
+        "minimum_joint_parents": 12,
+        "minimum_fit_parents": 8,
+        "minimum_eval_parents": 4
+      },
+      "authority_requirements": {},
+      "claim_ceiling": "Data support diagnostic for the closed CBF grid definition; no R0 reopening or oracle authority."
+    },
+    "AG_FCI_R0_FOR_R2_DECISION": {
+      "question": "Can factor-counterfactual interventions be evaluated on jointly supported clear and occupied frames across at least eight parent identities with fresh selection-eligible paired outcomes and frozen reducer/injection mechanics?",
+      "capabilities": {
+        "r2_complete_factor_schema_truth": {
+          "minimum_total_frames": 256,
+          "minimum_frames_per_parent": 32,
+          "minimum_parents": 8,
+          "minimum_frames_per_orientation": 64
+        },
+        "fci_factor_truth_bundle": {
+          "minimum_total_frames": 256,
+          "minimum_frames_per_parent": 32,
+          "minimum_parents": 8,
+          "minimum_frames_per_orientation": 64
+        },
+        "fci_truth_clear_bundle": {
+          "minimum_total_frames": 64,
+          "minimum_frames_per_parent": 8,
+          "minimum_parents": 8,
+          "minimum_frames_per_orientation": 16
+        },
+        "fci_truth_occupied_bundle": {
+          "minimum_total_frames": 64,
+          "minimum_frames_per_parent": 8,
+          "minimum_parents": 8,
+          "minimum_frames_per_orientation": 16
+        }
+      },
+      "joint_parent_gate": {
+        "minimum_joint_parents": 8,
+        "minimum_fit_parents": 4,
+        "minimum_eval_parents": 4
+      },
+      "authority_requirements": {
+        "r2_f0_reducer_tracked_and_frozen": true,
+        "oracle_factor_injection_interface_tracked_and_frozen": true,
+        "fresh_selection_eligible_paired_outcome_available": true,
+        "b1_consumed_development_allowed_for_r2_selection": false
+      },
+      "claim_ceiling": "Only a future FCI protocol lock for R2 factor attribution; consumed B1 Development may remain diagnostic-only and cannot satisfy fresh paired-outcome authority."
+    }
+  }
+}

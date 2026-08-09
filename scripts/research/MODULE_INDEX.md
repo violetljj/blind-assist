@@ -1,6 +1,6 @@
 # Research Module Index
 
-状态：`current / navigation-only / 65-of-65`
+状态：`current / navigation-only / 66-of-66`
 
 本页只回答“Module 在哪里、属于哪个研究族”。动态状态、successor 和权限必须回到每个
 Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导。
@@ -79,8 +79,9 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 - [`ustrf_sensor_replay`](ustrf_sensor_replay/README.md)
 - [`ustrf_tracker_ttc_ablation`](ustrf_tracker_ttc_ablation/README.md)
 
-## 数据、评估与公共支持（7）
+## 数据、评估与公共支持（8）
 
+- [`assistive_geometry_data_capability`](assistive_geometry_data_capability/README.md)
 - [`data_contamination_audit_r0`](data_contamination_audit_r0/README.md)
 - [`eval_validity_r0`](eval_validity_r0/README.md)
 - [`failure_case_atlas`](failure_case_atlas/README.md)
