@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / RESEARCH_MAINLINE / A0_SEED_17_COMPLETE / SEED_29_GUARDED_EXECUTION_RUNNING / SEED_43_NOT_STARTED / DEVELOPMENT_EVALUATION_IMPLEMENTED_NOT_ACTIVATED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
+状态：`current / RESEARCH_MAINLINE_NEGATIVE_TERMINAL / A0_THREE_SEED_COMPLETE / DEVELOPMENT_SELECTION_CONSUMED / A0_FAIL_TASK_GATES / A1_A4_NOT_AUTHORIZED / CALIBRATION_AND_CONFIRMATION_SEALED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -52,6 +52,8 @@
 - [B1 A0 evaluation synthetic dry-run machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_RESULT_2026-08-09.json)
 - [B1 A0 Development evaluation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09.md)
 - [B1 A0 Development evaluation machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09.json)
+- [B1 A0 Development evaluation result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_RESULT_2026-08-09.md)
+- [B1 A0 Development evaluation machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_RESULT_2026-08-09.json)
 - [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
@@ -65,7 +67,8 @@
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_SEED_29_GUARDED_FORMAL_TRAIN_EXECUTION`
+无。A0 已到冻结负终态；若重开，必须先建立实质不同的 pre-outcome 假设与独立选择证据，不能激活
+旧 A1 条件 successor，也不能复用已消费的 Development Selection。
 
 ARKitScenes `16/8/8` visit/video-disjoint roster 与 9,600-frame integrity 已冻结；B0 reader 又以
 6 个 TRAIN 视频、157 个 AppleDepth/FARO exact-timestamp 对照和主 TRAIN 的 480 个固定 stride
@@ -79,14 +82,16 @@ checkpoint 的训练 Autograd smoke；带缺失 Autograd-key 警告的部署 ope
 训练改走包内显式 custom Function。A0 TRAIN loader、orientation carry、BF16 optimizer step 与
 全状态 checkpoint roundtrip 现已关闭。正式 runner 又以同一真实路径比较 `workers=0/1/4`，
 选出 `workers=1` 的 `0.5453 step/s`，外推每 seed `3.06h`、诊断上界 `4h`；三档 CPU 输入
-摘要一致，但 CUDA 权重不签署 bit-exact。seed 17 已完成 20 epochs / 6000 steps，四个留存点、
-最终 carry、模型状态和 TRAIN-only 防火墙均闭合；seed 29 Attempt 01 在 2097 steps 收到 CUDA
-OOM 并保留失败收据，Attempt 02 已冻结为从共同初始化完整重跑，43 尚未启动。与此同时，纯合成 evaluator dry-run 已覆盖 12 个 tiny
+摘要一致，但 CUDA 权重不签署 bit-exact。seed 17/29/43 均已完成 20 epochs / 6000 steps，四个
+留存点、最终 carry、模型状态和 TRAIN-only 防火墙均闭合；seed 29 Attempt 01 在 2097 steps 收到 CUDA
+OOM 并保留失败收据，Attempt 02 从共同初始化完整重跑，没有恢复或挑选中间状态。与此同时，纯合成 evaluator dry-run 已覆盖 12 个 tiny
 checkpoint、三 seed 无选择聚合、九格指标、UNKNOWN、全局零分母、缺 horizon、coverage 塌缩、
 协议漂移和失败相邻日志并通过。它不读取 Development/Confirmation outcome，也不授权真实评价；
-正式 Development evaluator v2 现已在 outcome 前冻结：补齐 ground recovery、clearance coverage、
-valid→UNKNOWN 和 geometry transition，并将 truth/pred clearance validity 分离。物化器会在读取首个
-Development frame 前强制验证三 seed 全部完成；执行期间仍不得运行 A1–A4、双教师或改默认 App。
+正式 Development evaluator v2 在 outcome 前冻结了 ground recovery、clearance coverage、
+valid→UNKNOWN 和 geometry transition，并将 truth/pred clearance validity 分离。三 seed 完整后只物化
+四个固定 Selection parent / 1,200 帧并完成 3,600 个 seed-frame 观察。A0 前门通过，但 clearance
+MAE `0.3152 m`、false-block `0.7501`、geometry transition agreement `0.7728` 均为 `0/3` seed
+通过，终态为 `B1_A0_DEVELOPMENT_EVALUATION_FAIL_TASK_GATES`。因此冻结的 A1 条件 successor 未激活。
 异质教师只冻结到 C0 complementarity kill gate mechanics：教师 identity、评估 cohort 和输出仍未
 授权，未通过 oracle 增益、独占正确 parent、分歧错误浓度和时序优势四类门前不得启动 C1 蒸馏。
 时序 D0 也只冻结因果 GRU/TCN/diagonal-SSM 的统一 GeometryState 接口、参数/设备预算和未来
@@ -104,7 +109,7 @@ cluster-level one-sided conformal/CRC uncertainty。数学不变量与反例均�
 parent 数量阻塞：8% finite-sample risk 至少需 12 个独立 parents，当前 4 个不可能。
 
 该 canary 不读取模型、checkpoint 或任何数据 role outcome，不修改冻结 A0–A4，不授权 B2、
-真实 Development、部署、默认 App 或 safety；唯一 successor 保持 seed 29 guarded A0 execution。
+部署、默认 App 或 safety；B1 A0 的负终态不向该并行路线转移 Selection outcome 或晋级权限。
 H1/H2 的后续实现与 TRAIN-only canary authority 已移交独立
 [AG-QSF current](../assistive-geometry-qsf/README.md)；两条路线只读共享冻结资源，run state、
 checkpoint、target cache、outcome、scheduler 与 artifact root 保持隔离。

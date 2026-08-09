@@ -12,15 +12,17 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from scripts.research.assistive_geometry.evaluate_b1_a0_synthetic import (
+    EXPECTED_CHECKPOINT_STEPS,
     EXPECTED_SEEDS,
     EvaluationError,
+    _resolve_reference,
+    _validate_checkpoint,
     _contains_forbidden_seed_selection,
     atomic_write_json,
     atomic_write_text,
     load_json,
     sha256_file,
     utc_now,
-    validate_training_runs,
 )
 
 
@@ -36,6 +38,7 @@ TERMINALS = {
     "DENOMINATOR": "B1_A0_DEVELOPMENT_NOT_EVALUABLE_UNDEFINED_DENOMINATOR",
     "DATA_ROLE": "B1_A0_DEVELOPMENT_NOT_EVALUABLE_DATA_ROLE_INVALID",
     "BEST_SEED": "B1_A0_DEVELOPMENT_NOT_EVALUABLE_BEST_SEED_SELECTION_FORBIDDEN",
+    "CHECKPOINT": "B1_A0_DEVELOPMENT_NOT_EVALUABLE_CHECKPOINT_INVALID",
     "INTERNAL": "B1_A0_DEVELOPMENT_EVALUATION_INTERNAL_FAILURE",
 }
 
@@ -89,6 +92,84 @@ def validate_protocol(path: Path) -> tuple[dict[str, Any], str]:
             path=binding["path"],
         )
     return protocol, sha256_file(path)
+
+
+def training_protocol_binding_for_seed(protocol: dict[str, Any], seed: int) -> dict[str, Any]:
+    key = "seed_29_retry_protocol" if seed == 29 else "formal_train_protocol"
+    binding = protocol.get("bindings", {}).get(key)
+    require(isinstance(binding, dict), "PROTOCOL", "TRAINING_PROTOCOL_BINDING_MISSING", "per-seed training protocol binding is missing", seed=seed, binding=key)
+    return binding
+
+
+def _load_bound_training_protocol(binding: dict[str, Any], expected_seeds: tuple[int, ...]) -> tuple[Path, dict[str, Any], str]:
+    path = Path(binding.get("path", ""))
+    if not path.is_absolute():
+        path = Path(__file__).resolve().parents[3] / path
+    require(path.is_file(), "PROTOCOL", "TRAINING_PROTOCOL_MISSING", "bound training protocol is missing", path=str(path))
+    digest = sha256_file(path)
+    require(digest == binding.get("sha256"), "PROTOCOL", "TRAINING_PROTOCOL_BINDING_SHA_MISMATCH", "bound training protocol SHA mismatch", path=str(path))
+    bound = load_json(path)
+    require(bound.get("schema") == "blindassist_assistive_geometry_b1_a0_formal_train_execution_protocol_v1", "PROTOCOL", "TRAINING_PROTOCOL_SCHEMA_DRIFT", "training protocol schema drift", path=str(path))
+    execution = bound.get("execution", {})
+    require(tuple(int(item) for item in execution.get("seeds", [])) == expected_seeds, "PROTOCOL", "TRAINING_PROTOCOL_SEED_DRIFT", "per-seed training protocol seed set drift", path=str(path))
+    require(int(execution.get("epochs_per_seed", -1)) == 20 and int(execution.get("optimizer_steps_per_seed", -1)) == 6000, "PROTOCOL", "TRAINING_PROTOCOL_DURATION_DRIFT", "training protocol duration drift", path=str(path))
+    require(tuple(int(item) for item in execution.get("retained_checkpoint_epochs", [])) == tuple(EXPECTED_CHECKPOINT_STEPS), "PROTOCOL", "TRAINING_PROTOCOL_CHECKPOINT_CADENCE_DRIFT", "training protocol checkpoint cadence drift", path=str(path))
+    return path.resolve(), bound, digest
+
+
+def validate_development_training_runs(
+    package: dict[str, Any],
+    base: Path,
+    protocol: dict[str, Any],
+) -> tuple[str, dict[str, str], list[dict[str, Any]]]:
+    formal_path, formal_protocol, formal_sha = _load_bound_training_protocol(
+        training_protocol_binding_for_seed(protocol, 17), EXPECTED_SEEDS
+    )
+    retry_path, retry_protocol, retry_sha = _load_bound_training_protocol(
+        training_protocol_binding_for_seed(protocol, 29), (29,)
+    )
+    package_protocol_path = _resolve_reference(base, package.get("training_protocol_path"), code="TRAINING_PROTOCOL_PATH_INVALID")
+    require(package_protocol_path == formal_path, "PROTOCOL", "PACKAGE_TRAINING_PROTOCOL_PATH_DRIFT", "package base training protocol path drift")
+    require(package.get("training_protocol_sha256") == formal_sha, "PROTOCOL", "PACKAGE_TRAINING_PROTOCOL_SHA_DRIFT", "package base training protocol SHA drift")
+
+    seed_runs = package.get("seed_runs")
+    require(isinstance(seed_runs, list), "SCHEMA", "SEED_RUNS_NOT_LIST", "seed_runs must be a list")
+    seeds = [int(run.get("seed", -1)) for run in seed_runs]
+    require(tuple(seeds) == EXPECTED_SEEDS and len(set(seeds)) == len(EXPECTED_SEEDS), "SCHEMA", "SEED_SET_OR_ORDER_INVALID", "seed runs must be exactly 17,29,43 in frozen order", seeds=seeds)
+
+    protocol_by_seed = {17: (formal_protocol, formal_sha), 29: (retry_protocol, retry_sha), 43: (formal_protocol, formal_sha)}
+    sha_by_seed: dict[str, str] = {}
+    validated: list[dict[str, Any]] = []
+    for run in seed_runs:
+        seed = int(run["seed"])
+        train_protocol, train_sha = protocol_by_seed[seed]
+        sha_by_seed[str(seed)] = train_sha
+        initialization_sha256 = train_protocol["inputs"]["initialization_checkpoint"]["sha256"]
+        result_path = _resolve_reference(base, run.get("train_result_path"), code="TRAIN_RESULT_PATH_INVALID")
+        result = load_json(result_path)
+        require(result.get("schema") == "blindassist_assistive_geometry_b1_a0_formal_train_result_v1", "CHECKPOINT", "TRAIN_RESULT_SCHEMA_DRIFT", "formal train result schema drift", seed=seed)
+        require(result.get("mode") == "formal" and int(result.get("seed", -1)) == seed, "CHECKPOINT", "TRAIN_RESULT_SEED_OR_MODE_INVALID", "formal train result seed or mode is invalid", seed=seed)
+        require(result.get("protocol_sha256") == train_sha, "PROTOCOL", "TRAIN_RESULT_PROTOCOL_SHA_MISMATCH", "formal train result protocol SHA mismatch", seed=seed)
+        require(result.get("terminal") == "B1_A0_DEPTH_ONLY_FORMAL_TRAIN_SEED_COMPLETE", "CHECKPOINT", "TRAIN_RESULT_TERMINAL_INVALID", "formal train result is not complete", seed=seed)
+        require(int(result.get("completed_optimizer_steps", -1)) == 6000, "CHECKPOINT", "TRAIN_RESULT_STEP_COUNT_INVALID", "formal train result step count is incomplete", seed=seed)
+        require(result.get("development_or_confirmation_content_opened") is False and result.get("teacher_import_or_execution") is False, "DATA_ROLE", "TRAIN_RESULT_FIREWALL_VIOLATION", "formal train result reports forbidden content or teacher access", seed=seed)
+        receipts = result.get("checkpoints")
+        require(isinstance(receipts, list) and [int(item.get("epoch", -1)) for item in receipts] == list(EXPECTED_CHECKPOINT_STEPS), "CHECKPOINT", "CHECKPOINT_RECEIPT_SET_INVALID", "retained checkpoint receipt set is incomplete", seed=seed)
+        checked: list[dict[str, Any]] = []
+        for receipt in receipts:
+            epoch = int(receipt["epoch"])
+            expected_steps = EXPECTED_CHECKPOINT_STEPS[epoch]
+            require(int(receipt.get("optimizer_steps_completed", -1)) == expected_steps, "CHECKPOINT", "CHECKPOINT_RECEIPT_STEP_MISMATCH", "checkpoint receipt step mismatch", seed=seed, epoch=epoch)
+            checkpoint_path = _resolve_reference(result_path.parent, receipt.get("path"), code="CHECKPOINT_PATH_INVALID")
+            checked.append(_validate_checkpoint(checkpoint_path, receipt, seed=seed, epoch=epoch, steps=expected_steps, protocol_sha256=train_sha, initialization_sha256=initialization_sha256, final_epoch=20))
+        require(result.get("final_model_state_sha256") == checked[-1]["model_state_sha256"], "CHECKPOINT", "FINAL_MODEL_STATE_SHA_MISMATCH", "final model-state SHA does not match epoch-20 checkpoint", seed=seed)
+        require(run.get("final_checkpoint_sha256") == checked[-1]["sha256"], "CHECKPOINT", "PACKAGE_FINAL_CHECKPOINT_SHA_MISMATCH", "package final checkpoint SHA mismatch", seed=seed)
+        require(run.get("final_model_state_sha256") == checked[-1]["model_state_sha256"], "CHECKPOINT", "PACKAGE_FINAL_MODEL_STATE_SHA_MISMATCH", "package final model-state SHA mismatch", seed=seed)
+        observations_path = _resolve_reference(base, run.get("observations_path"), code="OBSERVATIONS_PATH_INVALID")
+        require(observations_path.is_file(), "SCHEMA", "OBSERVATIONS_MISSING", "Development observations are missing", seed=seed)
+        require(sha256_file(observations_path) == run.get("observations_sha256"), "SCHEMA", "OBSERVATIONS_SHA_MISMATCH", "Development observations SHA mismatch", seed=seed)
+        validated.append({"seed": seed, "train_result_path": str(result_path), "observations_path": observations_path, "checkpoints": checked, "training_protocol_sha256": train_sha})
+    return formal_sha, sha_by_seed, validated
 
 
 def load_observations(path: Path, seed: int) -> list[dict[str, Any]]:
@@ -337,8 +418,12 @@ def evaluate(package_path: Path, protocol_path: Path) -> dict[str, Any]:
     require(package.get("data_role") == ROLE, "DATA_ROLE", "PACKAGE_ROLE_DRIFT", "package role drift")
     require(package.get("development_content_opened") is True and package.get("development_calibration_content_opened") is False and package.get("confirmation_content_opened") is False, "DATA_ROLE", "PACKAGE_FIREWALL_DRIFT", "package data firewall drift")
     protocol, protocol_sha = validate_protocol(protocol_path)
-    require(package.get("evaluation_protocol_sha256") == protocol_sha, "PROTOCOL", "PACKAGE_PROTOCOL_SHA_DRIFT", "package protocol SHA drift")
-    training_protocol_sha, checked = validate_training_runs(package, package_path.parent)
+    accepted_package_protocol_shas = {protocol_sha}
+    correction = protocol.get("integrity_correction", {})
+    if correction.get("pre_metric_observation_package_reuse") is True:
+        accepted_package_protocol_shas.add(correction.get("accepted_observation_package_protocol_sha256"))
+    require(package.get("evaluation_protocol_sha256") in accepted_package_protocol_shas, "PROTOCOL", "PACKAGE_PROTOCOL_SHA_DRIFT", "package protocol SHA drift")
+    training_protocol_sha, training_protocol_sha_by_seed, checked = validate_development_training_runs(package, package_path.parent, protocol)
     seed_metrics = [compute_seed_metrics(load_observations(run["observations_path"], run["seed"]), run["seed"], protocol["metric_gates"]) for run in checked]
     summary = aggregate(seed_metrics)
     passed = summary["overall_pass"]
@@ -347,11 +432,13 @@ def evaluate(package_path: Path, protocol_path: Path) -> dict[str, Any]:
         "status": "PASS" if passed else "FAIL",
         "terminal": TERMINALS["PASS"] if passed else TERMINALS["TASK"],
         "training_protocol_sha256": training_protocol_sha,
+        "training_protocol_sha256_by_seed": training_protocol_sha_by_seed,
         "evaluation_protocol_sha256": protocol_sha,
+        "observation_package_protocol_sha256": package.get("evaluation_protocol_sha256"),
         "data_role": ROLE,
         "seed_metrics": seed_metrics,
         "aggregate": summary,
-        "checkpoint_integrity": {"seeds": list(EXPECTED_SEEDS), "checkpoint_count": 12, "runs": [{"seed": row["seed"], "train_result_path": row["train_result_path"], "observations_path": str(row["observations_path"]), "checkpoints": row["checkpoints"]} for row in checked]},
+        "checkpoint_integrity": {"seeds": list(EXPECTED_SEEDS), "checkpoint_count": 12, "runs": [{"seed": row["seed"], "training_protocol_sha256": row["training_protocol_sha256"], "train_result_path": row["train_result_path"], "observations_path": str(row["observations_path"]), "checkpoints": row["checkpoints"]} for row in checked]},
         "development_content_opened": True,
         "development_calibration_content_opened": False,
         "confirmation_content_opened": False,

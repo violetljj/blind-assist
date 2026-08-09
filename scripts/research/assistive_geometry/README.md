@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`A0_SEED_17_COMPLETE / SEED_29_ATTEMPT_01_OOM_RECEIPTED_ATTEMPT_02_FROZEN / SEED_43_NOT_STARTED / DEVELOPMENT_EVALUATION_IMPLEMENTED_NOT_ACTIVATED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
+状态：`A0_THREE_SEED_COMPLETE / DEVELOPMENT_SELECTION_CONSUMED / A0_FAIL_TASK_GATES / A1_A4_NOT_AUTHORIZED / CALIBRATION_AND_CONFIRMATION_SEALED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -92,9 +92,11 @@ mechanics，当前不读取 teacher output，也不授权 C1、QNN/HTP、默认 
 合同违规、checkpoint/shape 不匹配、非 finite 输出、camera prompt drift 或 ONNX checker
 失败均立即 fail closed。当前 roster、source integrity、truth reader 与 registration 已关闭，
 且 B1 target/loss/confidence、dual-orientation overlay、4,800-frame target cache 与模型/loss
-implementation lock 与 A0 execution lock 已关闭；当前只授权按冻结合同执行 A0 三 seed 的
-TRAIN-only 正式训练。合成 evaluator dry-run 已通过，但真实评价仍须等三 seed 完整并单独激活。
-训练中仍不得打开 Development/Confirmation outcome，不得运行 A1–A4、teacher、部署或默认 App 路径。
+implementation lock 与 A0 execution lock 已关闭，三个正式 seed 均完成。合成 evaluator dry-run
+与真实 Development Selection 评价均已执行；A0 虽通过前门，但 clearance MAE、false-block 和
+geometry transition agreement 均为 `0/3` seed 通过，终态为
+`B1_A0_DEVELOPMENT_EVALUATION_FAIL_TASK_GATES`。旧 A1 条件 successor 未激活，A1–A4、teacher、
+移动和时序执行继续禁止。Selection 已消费且不得复用；Calibration 与 Confirmation 保持封存。
 
 验证：
 

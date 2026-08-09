@@ -2,9 +2,16 @@
   "schema": "blindassist_assistive_geometry_b1_a0_development_evaluation_protocol_v1",
   "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09",
   "frozen_at": "2026-08-09",
-  "status": "FROZEN_IMPLEMENTED_PENDING_ALL_THREE_A0_TRAIN_SEEDS",
+  "status": "FROZEN_ACTIVE_POST_PRE_METRIC_INTEGRITY_CORRECTION",
   "research_mode": "WILD_LAB",
   "question": "Does the three-seed DepthART-initialized A0 depth baseline preserve enough observed task geometry to justify the additive A1 ground arm without opening Calibration or Confirmation?",
+  "integrity_correction": {
+    "accepted_observation_package_protocol_sha256": "B1FCF37155377F7E5FEEFF227271406FE0D34C571E0557EA2F05C9683BF3BC95",
+    "pre_metric_observation_package_reuse": true,
+    "reason": "The first evaluator invocation stopped before reading observations because it forced the seed-29 Attempt-02 result to match the original three-seed protocol SHA. Reuse is limited to the immutable SHA-bound observation package; thresholds, identities, observations and aggregation are unchanged.",
+    "failed_evaluation_output": "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-development-evaluation-20260809-r0",
+    "corrected_evaluation_output": "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-development-evaluation-20260809-r1"
+  },
   "bindings": {
     "formal_train_protocol": {
       "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL_2026-08-09.json",
@@ -38,11 +45,15 @@
     },
     "evaluator": {
       "path": "scripts/research/assistive_geometry/evaluate_b1_a0_development.py",
-      "sha256": "164965F7329FD8BA6F5A0395D6760BE728D7A452AE7D1A617B7DB0B212F88D6D"
+      "sha256": "1A0A931AF0791D2C0BA14437693A2A83BB3856FF24EE2773BBE9DD5AE8F4E7F3"
     },
     "evaluator_test": {
       "path": "scripts/research/assistive_geometry/test_evaluate_b1_a0_development.py",
-      "sha256": "E4F1D9C0D30295D2C11997247C560765C857862FA8D1685B96CF3B26FB7167A3"
+      "sha256": "EAE29695911977603352799814ED045D3CEB10EFC0E0E9D89B884044D5E87CE5"
+    },
+    "shared_checkpoint_integrity": {
+      "path": "scripts/research/assistive_geometry/evaluate_b1_a0_synthetic.py",
+      "sha256": "3C52F0275146EE406435CB42BA7935AE2F71A630CBB100897D499D6641EF2E77"
     },
     "truth_reader": {
       "path": "scripts/research/assistive_geometry/arkitscenes_truth_reader.py",

@@ -9,6 +9,7 @@ from scripts.research.assistive_geometry.evaluate_b1_a0_development import (
     ROLE,
     aggregate,
     compute_seed_metrics,
+    training_protocol_binding_for_seed,
     validate_observations,
 )
 
@@ -69,6 +70,17 @@ def observations(seed: int = 17) -> list[dict]:
 
 
 class DevelopmentEvaluatorTests(unittest.TestCase):
+    def test_seed_29_uses_frozen_retry_protocol_without_changing_other_seeds(self) -> None:
+        protocol = {
+            "bindings": {
+                "formal_train_protocol": {"path": "formal.json", "sha256": "FORMAL"},
+                "seed_29_retry_protocol": {"path": "retry.json", "sha256": "RETRY"},
+            }
+        }
+        self.assertEqual(training_protocol_binding_for_seed(protocol, 17)["sha256"], "FORMAL")
+        self.assertEqual(training_protocol_binding_for_seed(protocol, 29)["sha256"], "RETRY")
+        self.assertEqual(training_protocol_binding_for_seed(protocol, 43)["sha256"], "FORMAL")
+
     def test_perfect_fixture_passes_all_task_gates(self) -> None:
         result = compute_seed_metrics(observations(), 17, GATES)
         self.assertTrue(all(result["gates"].values()))
