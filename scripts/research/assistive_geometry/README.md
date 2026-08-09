@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B0_DATA_CAPABILITY_AND_ROSTER_LOCK_PASS / NO_TRAINING_AUTHORITY`
+状态：`B0_TRUTH_READER_AND_REGISTRATION_LOCK_PASS / NO_TRAINING_AUTHORITY`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -18,6 +18,12 @@
 - `audit_b0_arkitscenes_pose_coverage.py`：重算冻结窗口与 trajectory 时间域关系；
 - `download_b0_arkitscenes_pose_covered_assets.py`：可恢复地物化 trajectory 域内连续 300 帧；
 - `audit_b0_arkitscenes_integrity.py`：逐文件 SHA、实际图像解码、内参和 pose 包络审计。
+- `arkitscenes_truth_reader.py`：按官方 inverse trajectory convention 将注册模态旋转到逐帧
+  upright metric frame，并派生 gravity ground、三通道 body-swept clearance 与 UNKNOWN；
+- `materialize_b0_arkitscenes_upsampling_train.py`：仅物化冻结 TRAIN role 的 exact-timestamp
+  AppleDepth/FARO/RGB/confidence/intrinsics 对照；
+- `validate_b0_arkitscenes_truth_reader.py`：运行 TRAIN-only scale/registration/ground/clearance
+  双层门，并写入逐帧 evidence receipt。
 
 ## 输出
 
@@ -33,8 +39,9 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 ## 停止条件
 
 合同违规、checkpoint/shape 不匹配、非 finite 输出、camera prompt drift 或 ONNX checker
-失败均立即 fail closed。当前 roster 与 source integrity 已关闭，但 truth reader、registration
-和 B1 hyperparameters 尚未冻结；不得从本目录启动训练或打开独立 outcome。
+失败均立即 fail closed。当前 roster、source integrity、truth reader 与 registration 已关闭，
+但 B1 target/loss/confidence threshold 和 training protocol 尚未冻结；不得从本目录启动训练
+或打开独立 outcome。
 
 验证：
 

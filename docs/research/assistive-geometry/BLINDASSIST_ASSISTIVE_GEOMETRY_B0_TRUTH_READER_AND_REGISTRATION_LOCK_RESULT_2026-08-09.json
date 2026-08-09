@@ -1,0 +1,118 @@
+{
+  "schema": "blindassist_assistive_geometry_b0_truth_reader_and_registration_lock_result_v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TRUTH_READER_AND_REGISTRATION_LOCK_RESULT_2026-08-09",
+  "evaluated_at": "2026-08-09",
+  "research_mode": "WILD_LAB",
+  "terminal": "B0_TRUTH_READER_AND_REGISTRATION_LOCK_PASS",
+  "bindings": {
+    "validation_protocol": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TRUTH_READER_VALIDATION_PROTOCOL_2026-08-09.json",
+      "sha256": "905A92AC4CF6031E41C1071DCD38C008B531CE20001AD7E1EAB5D5FD3693D28D"
+    },
+    "truth_reader": {
+      "path": "scripts/research/assistive_geometry/arkitscenes_truth_reader.py",
+      "sha256": "F50187661E59C438FAC4CAEB4E0BDFA4D638C64A87094C49C369FBEC3B3218C1"
+    },
+    "validator": {
+      "path": "scripts/research/assistive_geometry/validate_b0_arkitscenes_truth_reader.py",
+      "sha256": "2CD1EF0FEAC3A34725A52BB32CC554BCD7FB44A27FF6C1FEFB4E46072B47F079"
+    },
+    "main_manifest": {
+      "path": "artifacts.local/datasets/assistive-geometry-b0-arkitscenes-20260809-r2/manifest.json",
+      "sha256": "F51041594FF34EE922F92A7A49AAD7CA44551B5C0A8D77A81693ECFFDD226D87"
+    },
+    "upsampling_manifest": {
+      "path": "artifacts.local/datasets/assistive-geometry-b0-arkitscenes-upsampling-train-20260809-r0/manifest.json",
+      "sha256": "32109656F37E59285FDC1953968C5475131528464AA33E513B0FC44FB58CBA80"
+    },
+    "validation_receipt": {
+      "path": "artifacts.local/evidence/hftf/assistive-geometry-b0-truth-reader-validation-20260809/receipt.json",
+      "sha256": "32F680B4C4E9CF3D61A8E6C9F01C48353344B4429322739061E24BA706ED04EA"
+    }
+  },
+  "data_firewall": {
+    "upsampling_train_videos": 6,
+    "upsampling_train_frames": 157,
+    "main_train_videos": 16,
+    "main_train_sampled_frames": 480,
+    "development_content_or_outcome_opened": false,
+    "confirmation_content_or_outcome_opened": false,
+    "model_outputs_read": false,
+    "unknown_is_negative": false
+  },
+  "metrics": {
+    "source_scale_and_registration": {
+      "orientation_agreement_fraction": 0.942675159235669,
+      "per_frame_gate_pass_fraction": 0.942675159235669,
+      "maximum_intrinsics_timestamp_gap_seconds": 0.0,
+      "apple_to_faro_frame_median_absolute_error_m": {
+        "median": 0.01900005340576172,
+        "p90": 0.029000043869018555,
+        "maximum": 0.03799998760223389
+      },
+      "apple_to_faro_frame_p90_absolute_error_m": {
+        "median": 0.03699994087219238,
+        "p90": 0.05780010223388673,
+        "maximum": 0.08600002527236938
+      },
+      "apple_to_faro_frame_median_depth_ratio": {
+        "median": 0.9842105507850647,
+        "p90": 0.9893984317779541,
+        "maximum": 1.0191847085952759
+      }
+    },
+    "derived_geometry_cross_source": {
+      "dual_ground_frame_count": 136,
+      "ground_height_absolute_difference_m": {
+        "median": 0.0164291641357599,
+        "p90": 0.197771979642207,
+        "maximum": 0.75365246445845
+      },
+      "clearance_pair_count": 382,
+      "clearance_absolute_difference_m": {
+        "median": 0.0126859797325187,
+        "p90": 0.0646691065117227,
+        "maximum": 2.20545812306834
+      },
+      "occupied_decision_pair_count": 1151,
+      "occupied_decision_agreement_fraction": 0.954821894005213
+    },
+    "main_train_capability": {
+      "ground_available_fraction": 0.710416666666667,
+      "all_bands_known_fraction": 0.708333333333333,
+      "videos_with_ground": "16/16",
+      "maximum_pose_bracketing_gap_seconds": 0.0999624599935487,
+      "status_counts": {
+        "VALID": 340,
+        "PARTIAL_UNKNOWN": 1,
+        "UNKNOWN": 139
+      },
+      "unknown_clearance_leak_count": 0
+    }
+  },
+  "gate_summary": {
+    "passed": 16,
+    "failed": 0,
+    "all_passed": true
+  },
+  "interpretation": {
+    "admitted": [
+      "ARKitScenes uint16 millimetre depth conversion",
+      "official inverse trajectory convention and bounded pose interpolation",
+      "per-frame upright RGB/depth/confidence/intrinsics canonicalization",
+      "gravity-bound sensor-derived ground plane",
+      "left/center/right body-swept clearance with UNKNOWN fail-closed",
+      "TRAIN-only source-scale and registration capability"
+    ],
+    "not_admitted": [
+      "human safety truth",
+      "tail-error acceptability for a deployed product",
+      "B1 training or model selection",
+      "Development or Confirmation claims",
+      "HTP deployment or default App replacement",
+      "production or safety authority"
+    ]
+  },
+  "current_state": "B0_TRUTH_READER_AND_REGISTRATION_LOCK_PASS / B1_TRAINING_NOT_AUTHORIZED",
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_CONFIDENCE_THRESHOLD_AND_TRAINING_PROTOCOL_LOCK"
+}

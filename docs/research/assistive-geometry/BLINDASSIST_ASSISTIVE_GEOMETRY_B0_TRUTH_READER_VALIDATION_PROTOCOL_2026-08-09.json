@@ -1,0 +1,118 @@
+{
+  "schema": "blindassist_assistive_geometry_b0_truth_reader_validation_protocol_v1",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TRUTH_READER_VALIDATION_PROTOCOL_2026-08-09",
+  "frozen_at": "2026-08-09",
+  "research_mode": "WILD_LAB",
+  "question": "Does the frozen ARKitScenes truth reader preserve source metric scale and registration against TRAIN-only FARO depth while producing fail-closed ground and three-band clearance opportunities on the frozen main TRAIN roster?",
+  "threshold_provenance": {
+    "calibration_role": "TRAIN",
+    "calibrated_after_train_only_exploration": true,
+    "development_content_or_outcome_opened": false,
+    "confirmation_content_or_outcome_opened": false,
+    "future_development_and_confirmation_threshold_retuning_forbidden": true
+  },
+  "validator": {
+    "path": "scripts/research/assistive_geometry/validate_b0_arkitscenes_truth_reader.py",
+    "sha256": "2CD1EF0FEAC3A34725A52BB32CC554BCD7FB44A27FF6C1FEFB4E46072B47F079"
+  },
+  "validator_test": {
+    "path": "scripts/research/assistive_geometry/test_validate_b0_arkitscenes_truth_reader.py",
+    "sha256": "74325661D2C719CD0E9CD5629687378EF8F4340743E078CC021CAECD8EAD9A93"
+  },
+  "truth_reader": {
+    "path": "scripts/research/assistive_geometry/arkitscenes_truth_reader.py",
+    "sha256": "F50187661E59C438FAC4CAEB4E0BDFA4D638C64A87094C49C369FBEC3B3218C1"
+  },
+  "truth_reader_test": {
+    "path": "scripts/research/assistive_geometry/test_arkitscenes_truth_reader.py",
+    "sha256": "0475442B8AE14245E6497B96556973C6AD3E39DCC42684D1F3DF8C7BA5311F00"
+  },
+  "main_manifest": {
+    "path": "artifacts.local/datasets/assistive-geometry-b0-arkitscenes-20260809-r2/manifest.json",
+    "sha256": "F51041594FF34EE922F92A7A49AAD7CA44551B5C0A8D77A81693ECFFDD226D87"
+  },
+  "upsampling_manifest": {
+    "path": "artifacts.local/datasets/assistive-geometry-b0-arkitscenes-upsampling-train-20260809-r0/manifest.json",
+    "sha256": "32109656F37E59285FDC1953968C5475131528464AA33E513B0FC44FB58CBA80"
+  },
+  "source_bindings": [
+    {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_CAPABILITY_AND_ROSTER_LOCK_RESULT_2026-08-09.json",
+      "sha256": "C515C7CBCAA86C4DB91E983DF5538D8FD558364A621E8DC28AB8C80497A328F8"
+    },
+    {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-09_ATTEMPT_04.json",
+      "sha256": "8346C205154C4352C3419A02522F287AA06FF3F7C02259C0922F0A7B435213E8"
+    },
+    {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_ARKIT_UPSAMPLING_TRAIN_MATERIALIZATION_PROTOCOL_2026-08-09.json",
+      "sha256": "9AAF96C07366B84BAFAD9BB22D665E326BA5A27D0D80535E34CABFFE9354B2CE"
+    },
+    {
+      "path": "artifacts.local/evidence/hftf/assistive-geometry-b0-arkitscenes-label-blind-integrity-20260809/receipt.json",
+      "sha256": "E487946F885ABAF1652A9D27BB231CAF143C510BF6EF1A442201276CCD09DE66"
+    },
+    {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/DATA.md",
+      "sha256": "DCCA2ACEFD5F3B0905D97BA75486491A736007D953CAB845ACA79E9ED4B8B709"
+    },
+    {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/raw/README.md",
+      "sha256": "D11D16925C7A88946E5FD66FF103A3814FE7C27BD168D0667FFF1D7E2E5A77BA"
+    },
+    {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/depth_upsampling/README.md",
+      "sha256": "1124AD54E7B54B11D903AA4E26B3407DB00E5DA471DB7E2D44CB23E0BFBFCDA0"
+    },
+    {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/depth_upsampling/dataset.py",
+      "sha256": "C60EEE828BDBBB783272430BE8CE9559E6B01F4FBB25A0D0DFDC24432602C4E3"
+    },
+    {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/threedod/benchmark_scripts/utils/tenFpsDataLoader.py",
+      "sha256": "D271D9FE002ED9894C1BD1729CFDDF803838DAA2AE6118F64A7EBFB092F7EC75"
+    },
+    {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/threedod/benchmark_scripts/rectify_im.py",
+      "sha256": "77C7D3BD4B66E20DC0A9F140ED6A96B93167B8D051153F51565E4824E19AA082"
+    }
+  ],
+  "main_train_sample_stride": 10,
+  "gates": {
+    "upsampling": {
+      "expected_video_count": 6,
+      "minimum_frame_count": 150,
+      "minimum_orientation_agreement_fraction": 0.90,
+      "minimum_frame_gate_pass_fraction": 0.90,
+      "maximum_intrinsics_timestamp_gap_seconds": 0.05,
+      "minimum_dual_ground_frame_count": 120,
+      "maximum_ground_height_median_absolute_difference_m": 0.05,
+      "minimum_clearance_pair_count": 300,
+      "maximum_clearance_median_absolute_difference_m": 0.05,
+      "minimum_occupied_decision_agreement_fraction": 0.90,
+      "per_frame": {
+        "minimum_overlap_fraction": 0.20,
+        "maximum_median_absolute_error_m": 0.06,
+        "maximum_p90_absolute_error_m": 0.12,
+        "minimum_median_depth_ratio": 0.90,
+        "maximum_median_depth_ratio": 1.10
+      }
+    },
+    "main_train_capability": {
+      "expected_frame_count": 480,
+      "minimum_ground_available_fraction": 0.65,
+      "minimum_all_bands_known_fraction": 0.65,
+      "expected_videos_with_ground_count": 16,
+      "maximum_pose_bracketing_gap_seconds": 0.25
+    }
+  },
+  "firewalls": {
+    "train_only": true,
+    "unknown_must_remain_unknown": true,
+    "development_content_or_outcome_forbidden": true,
+    "confirmation_content_or_outcome_forbidden": true,
+    "model_outputs_forbidden": true,
+    "training_forbidden": true
+  },
+  "authority": "B0 TRAIN-only source truth-reader and registration lock. Passing does not authorize B1 training, Development/Confirmation consumption, model quality, deployment, product, production or safety claims."
+}
