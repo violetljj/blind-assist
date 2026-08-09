@@ -1,12 +1,20 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
+import tempfile
 import unittest
+from pathlib import Path
+
+import torch
 
 from scripts.research.assistive_geometry_qsf.run_h1_train_canary import (
     apply_gates,
+    missing_scientific_support,
+    scientific_support_counts,
     select_parent_frames,
+    validate_selected_input_files,
 )
 from scripts.research.assistive_geometry_qsf.validate_h1_train_canary import (
     PROTOCOL_RELATIVE,
@@ -68,6 +76,54 @@ class H1TrainCanaryValidationTest(unittest.TestCase):
             [("a", "000"), ("a", "003"), ("a", "006"), ("a", "009"),
              ("b", "000"), ("b", "003"), ("b", "006"), ("b", "009")],
             [(row["video_id"], row["frame_stem"]) for row in selected],
+        )
+
+    def test_selected_input_receipts_are_rechecked_before_use(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            rgb = root / "frame.png"
+            target = root / "frame.npz"
+            rgb.write_bytes(b"rgb")
+            target.write_bytes(b"target")
+
+            def receipt(path: Path) -> dict:
+                return {
+                    "path": str(path),
+                    "bytes": path.stat().st_size,
+                    "sha256": hashlib.sha256(path.read_bytes()).hexdigest().upper(),
+                }
+
+            frame = {
+                "video_id": "p0",
+                "frame_stem": "f0",
+                "rgb_source": receipt(rgb),
+                "target": receipt(target),
+            }
+            report = validate_selected_input_files([frame])
+            self.assertEqual({"rgb_source": 1, "target": 1}, report["verified_file_counts"])
+            target.write_bytes(b"tampered")
+            with self.assertRaisesRegex(ValueError, "byte-size drift"):
+                validate_selected_input_files([frame])
+
+    def test_zero_denominators_route_to_not_evaluable_support(self) -> None:
+        counts = scientific_support_counts(
+            {
+                "targets": {
+                    "clearance_m": torch.zeros(1, 3),
+                    "clearance_valid": torch.zeros(1, 3, dtype=torch.bool),
+                    "occupancy": torch.zeros(1, 3, 3),
+                    "occupancy_valid": torch.zeros(1, 3, 3, dtype=torch.bool),
+                }
+            }
+        )
+        self.assertEqual(
+            [
+                "clearance_event_count",
+                "event_count",
+                "occupied_known_count",
+                "right_censor_count",
+            ],
+            missing_scientific_support(counts),
         )
 
     def test_gate_application_preserves_coverage_and_monotonicity(self) -> None:

@@ -59,8 +59,23 @@ FORBIDDEN_DATA_ROLES = {
     "DEPLOYMENT",
 }
 FORBIDDEN_PATH_PREFIXES = {
-    "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-formal-train-"
+    "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-formal-train-",
+    "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-development",
+    "artifacts.local/evidence/hftf/assistive-geometry-b1-confirmation",
+    "artifacts.local/datasets/assistive-geometry-b1-development",
+    "artifacts.local/datasets/assistive-geometry-b1-confirmation",
 }
+PROTECTED_PRODUCER_ROUTE = "BLINDASSIST_ASSISTIVE_GEOMETRY"
+PROTECTED_B1_DATA_ROLES = {
+    "PROJECT_CONSUMED_DEVELOPMENT",
+    "DEVELOPMENT_SELECTION",
+    "DEVELOPMENT_CALIBRATION",
+    "CONFIRMATION",
+    "SEALED_UNSEEN",
+}
+MIXED_B0_SOURCE_PREFIX = (
+    "artifacts.local/datasets/assistive-geometry-b0-arkitscenes-20260809-r2"
+)
 OUTCOME_ACCESS_LEVELS = {
     "NONE",
     "METADATA_ONLY",
@@ -256,6 +271,39 @@ def _is_same_or_child(path: PurePosixPath, root: PurePosixPath) -> bool:
     path_parts = tuple(part.casefold() for part in path.parts)
     root_parts = tuple(part.casefold() for part in root.parts)
     return len(path_parts) >= len(root_parts) and path_parts[: len(root_parts)] == root_parts
+
+
+def _is_b1_namespace(logical: PurePosixPath) -> bool:
+    value = str(logical).casefold()
+    return (
+        value.startswith("docs/research/assistive-geometry/")
+        or value.startswith("artifacts.local/datasets/assistive-geometry-b1-")
+        or (
+            value.startswith("artifacts.local/evidence/")
+            and "assistive-geometry-b1-" in value
+        )
+    )
+
+
+def _is_b1_protected_artifact_path(logical: PurePosixPath) -> bool:
+    value = str(logical).casefold()
+    return value.startswith("artifacts.local/") and (
+        "assistive-geometry-b1-development" in value
+        or "assistive-geometry-b1-confirmation" in value
+        or (
+            "assistive-geometry-b1-" in value
+            and ("development" in value or "confirmation" in value)
+        )
+    )
+
+
+def _is_b1_development_or_confirmation_doc(logical: PurePosixPath) -> bool:
+    value = str(logical).casefold()
+    return (
+        value.startswith("docs/research/assistive-geometry/")
+        and "_b1_" in value
+        and ("_development_" in value or "_confirmation_" in value)
+    )
 
 
 def _validate_owned_roots(protocol: dict[str, Any]) -> tuple[PurePosixPath, ...]:
@@ -532,6 +580,35 @@ def validate_resource_manifest(
         outcome = resource.get("outcome_access")
         if outcome not in allowed_outcomes:
             raise ValidationError(f"{resource_id}: outcome access is not allowed: {outcome}")
+        producer = resource.get("producer_route")
+        if (
+            producer == PROTECTED_PRODUCER_ROUTE or _is_b1_namespace(logical)
+        ) and role in PROTECTED_B1_DATA_ROLES:
+            raise ValidationError(
+                f"{resource_id}: B1 Development/Confirmation resource is not shareable"
+            )
+        if _is_b1_protected_artifact_path(logical):
+            raise ValidationError(
+                f"{resource_id}: B1 Development/Confirmation artifact path is protected"
+            )
+        if _is_b1_development_or_confirmation_doc(logical):
+            schema_only = (
+                kind == "PROTOCOL"
+                and role == "NOT_APPLICABLE"
+                and outcome == "NONE"
+                and resource.get("selection_influence") == "NONE"
+                and resource.get("claim_use") == "SCHEMA_ONLY"
+            )
+            if not schema_only:
+                raise ValidationError(
+                    f"{resource_id}: B1 Development/Confirmation document is schema-only"
+                )
+        if str(logical).casefold().startswith(MIXED_B0_SOURCE_PREFIX) and (
+            resource.get("claim_use") != "SCHEMA_ONLY"
+        ):
+            raise ValidationError(
+                f"{resource_id}: mixed-role B0 source requires a role-filtered TRAIN-only manifest"
+            )
         if outcome == "OUTPUT_INSPECTED_DIAGNOSTIC_ONLY":
             if kind not in {"OPERATIONAL_LESSON", "TRAIN_DIAGNOSTIC"}:
                 raise ValidationError(f"{resource_id}: inspected output is limited to diagnostics")

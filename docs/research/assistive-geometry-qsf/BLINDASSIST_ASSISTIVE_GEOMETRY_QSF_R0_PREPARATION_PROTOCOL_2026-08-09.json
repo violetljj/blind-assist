@@ -93,7 +93,11 @@
       "DEPLOYMENT"
     ],
     "forbidden_logical_path_prefixes": [
-      "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-formal-train-"
+      "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-formal-train-",
+      "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-development",
+      "artifacts.local/evidence/hftf/assistive-geometry-b1-confirmation",
+      "artifacts.local/datasets/assistive-geometry-b1-development",
+      "artifacts.local/datasets/assistive-geometry-b1-confirmation"
     ],
     "allowed_outcome_access": [
       "NONE",

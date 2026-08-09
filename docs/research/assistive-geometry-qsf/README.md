@@ -24,7 +24,11 @@ AG-QSF（Assistive Geometry Queryable Survival Field）研究：
 
 H1-only 的 target compiler、censor/UNKNOWN mask、四桶 hazard decoder、right-censored
 likelihood、参数精确匹配 head、checkpoint/flip/zero-support/gradient 测试和 parent-disjoint
-TRAIN-only canary 已冻结。当前先等待其他路线正式 GPU 训练空闲，再运行 16-frame
+TRAIN-only canary 已冻结。H1 protocol 同时作为 exact-three-input 的 embedded shared-resource
+manifest：TRAIN target 明确登记为 `CONTENT_INSPECTED / TRAIN_TARGET_INPUT_ONLY`，runner 在使用前
+逐个复算所选 RGB/NPZ 的 size 与 SHA-256；fit/eval 的 event、right-censor、known-occupied 或
+clearance-event 任一支持为零即形成 `H1_TRAIN_CANARY_NOT_EVALUABLE_DATA_SUPPORT`，不得用伪分母
+产生科学结论。当前先等待其他路线正式 GPU 训练空闲，再运行 16-frame
 performance-only pilot；pilot 在 `900 s` 上界内合格后，才运行 `12 fit parent / 4 eval parent ×
 64 frame` 的 frozen-encoder H1 canary。H1 形成有效科学终态后，H2 才能成为新的唯一
 successor；只有 H1、H2 各自通过后才能另立组合协议。
@@ -40,6 +44,9 @@ successor；只有 H1、H2 各自通过后才能另立组合协议。
   license scope、数据角色、outcome access 和 selection influence；共享访问一律只读。
 - 共享 TRAIN 或已消费 Development 信息不会获得 fresh/Confirmation 身份。跨路线 outcome 若仅作
   诊断，必须标为 `DIAGNOSTIC_ONLY`；若影响算法或门，则该证据只保留 Development 权限。
+- B1 Development/Confirmation artifact 与 consumed role 由 producer、role 和 path 共同硬拒绝；
+  tracked Development/Confirmation protocol 仅可作为 `SCHEMA_ONLY` 阅读。混合角色 B0 source root
+  不得作为内容输入，必须先由逐文件 hash 的 TRAIN-only role-filtered manifest 收窄。
 
 ## 独立输出
 

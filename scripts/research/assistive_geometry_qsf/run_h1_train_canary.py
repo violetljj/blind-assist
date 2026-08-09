@@ -74,6 +74,62 @@ def select_parent_frames(
     return selected
 
 
+def validate_selected_input_files(frames: list[dict[str, Any]]) -> dict[str, Any]:
+    """Recheck every selected producer-bound RGB and target receipt before use."""
+
+    counts = {"rgb_source": 0, "target": 0}
+    byte_totals = {"rgb_source": 0, "target": 0}
+    for frame in frames:
+        frame_id = f"{frame.get('video_id', 'UNKNOWN')}/{frame.get('frame_stem', 'UNKNOWN')}"
+        for field in ("rgb_source", "target"):
+            receipt = frame.get(field)
+            require(isinstance(receipt, dict), f"{frame_id}: missing {field} receipt")
+            require(
+                {"path", "bytes", "sha256"}.issubset(receipt),
+                f"{frame_id}: incomplete {field} receipt",
+            )
+            path = Path(str(receipt["path"]))
+            require(path.is_file(), f"{frame_id}: missing selected {field}: {path}")
+            actual_bytes = path.stat().st_size
+            require(
+                actual_bytes == int(receipt["bytes"]),
+                f"{frame_id}: selected {field} byte-size drift",
+            )
+            require(
+                sha256_file(path) == str(receipt["sha256"]).upper(),
+                f"{frame_id}: selected {field} SHA256 drift",
+            )
+            counts[field] += 1
+            byte_totals[field] += actual_bytes
+    return {
+        "schema": "blindassist.assistive_geometry_qsf.selected_input_receipt.v1",
+        "frame_count": len(frames),
+        "verified_file_counts": counts,
+        "verified_byte_totals": byte_totals,
+        "identity_basis": "PRODUCER_MANIFEST_BYTES_AND_SHA256",
+    }
+
+
+def scientific_support_counts(payload: dict[str, Any]) -> dict[str, int]:
+    compiled = compile_h1_targets(payload["targets"])
+    event = compiled["event_observed"].bool()
+    right_censor = compiled["right_censored"].bool()
+    occupied_known = compiled["occupancy_valid"].bool() & (compiled["occupancy"] >= 0.5)
+    clearance_event = compiled["clearance_valid"].bool() & (
+        compiled["clearance_m"] <= 2.0
+    )
+    return {
+        "event_count": int(event.sum().item()),
+        "right_censor_count": int(right_censor.sum().item()),
+        "occupied_known_count": int(occupied_known.sum().item()),
+        "clearance_event_count": int(clearance_event.sum().item()),
+    }
+
+
+def missing_scientific_support(counts: dict[str, int]) -> list[str]:
+    return sorted(key for key, value in counts.items() if value <= 0)
+
+
 def load_h1_model(
     source: Path,
     checkpoint: Path,
@@ -165,12 +221,13 @@ def evaluate_head(head: QsfH1TaskHeads, payload: dict[str, Any]) -> dict[str, An
     return {
         "survival_nll": float(per_band[valid].mean().item()),
         "distribution_valid_count": int(valid.sum().item()),
+        "right_censor_count": int(compiled["right_censored"].sum().item()),
         "total_band_count": int(valid.numel()),
         "known_coverage": float(valid.float().mean().item()),
         "false_clear_count": int((predicted_clear & occupied).sum().item()),
         "occupied_known_count": int(occupied.sum().item()),
         "false_clear_rate": float(
-            (predicted_clear & occupied).sum().item() / max(int(occupied.sum().item()), 1)
+            (predicted_clear & occupied).sum().item() / int(occupied.sum().item())
         ),
         "event_count": int(event.sum().item()),
         "clearance_mae_m": float(clearance_error[event].mean().item()),
@@ -300,6 +357,7 @@ def execute(args: argparse.Namespace) -> int:
     pilot_mode = args.mode == "pilot"
     frames_per_parent = 1 if pilot_mode else int(protocol["roster"]["frames_per_parent"])
     selected = select_parent_frames(frames, fit_parents + eval_parents, frames_per_parent)
+    selected_input_receipt = validate_selected_input_files(selected)
 
     expected_parent = (REPO_ROOT / protocol["outputs"]["pilot_parent"]).resolve()
     expected_name = "pilot-r0" if pilot_mode else "run-r0"
@@ -385,6 +443,7 @@ def execute(args: argparse.Namespace) -> int:
                 "mode": "PERFORMANCE_PILOT",
                 "scientific_outcome_access": False,
                 "frame_count": total,
+                "selected_inputs": selected_input_receipt,
                 "feature_shape": list(payload["features"].shape),
                 "feature_finite": bool(torch.isfinite(payload["features"]).all().item()),
                 "precision": precision,
@@ -431,6 +490,41 @@ def execute(args: argparse.Namespace) -> int:
 
         fit_payload = subset(fit_indices)
         eval_payload = subset(eval_indices)
+        support = {
+            "fit": scientific_support_counts(fit_payload),
+            "eval": scientific_support_counts(eval_payload),
+        }
+        missing_support = {
+            split: missing_scientific_support(counts)
+            for split, counts in support.items()
+            if missing_scientific_support(counts)
+        }
+        if missing_support:
+            result = {
+                "schema": "blindassist.assistive_geometry_qsf.h1_train_canary_result.v1",
+                "protocol_sha256": protocol_sha,
+                "mode": "TRAIN_ONLY_CANARY",
+                "terminal": "H1_TRAIN_CANARY_NOT_EVALUABLE_DATA_SUPPORT",
+                "scientific_support": support,
+                "missing_required_support": missing_support,
+                "selected_inputs": selected_input_receipt,
+                "model_materialized": False,
+                "h2_executed": False,
+                "claim_ceiling": (
+                    "Data-support terminal only; no H1 learnability, B1 comparison, "
+                    "Development, Confirmation, device, product, or safety authority."
+                ),
+            }
+            atomic_write_json(result_path, result, exclusive=True)
+            write_progress(
+                progress_path,
+                phase="not_evaluable_data_support",
+                completed=total,
+                total=total,
+                started_at=started,
+                status="complete",
+            )
+            return 0
         torch.manual_seed(int(protocol["training"]["seed"]))
         head = QsfH1TaskHeads()
         before_fit = evaluate_head(head, fit_payload)
@@ -472,6 +566,8 @@ def execute(args: argparse.Namespace) -> int:
             "frames_per_parent": frames_per_parent,
             "fit_frame_count": len(fit_indices),
             "eval_frame_count": len(eval_indices),
+            "scientific_support": support,
+            "selected_inputs": selected_input_receipt,
             "initial": {"fit": before_fit, "eval": before_eval},
             "trained": {"fit": after_fit, "eval": after_eval},
             "relative_improvement": {

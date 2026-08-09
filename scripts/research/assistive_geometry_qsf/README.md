@@ -21,7 +21,8 @@ H1 mechanics 与参数匹配实现：
 - [`h1_survival.py`](h1_survival.py)：target compiler、event/censor/UNKNOWN 分离、hazard
   distribution/decoder、loss、parameter-matched head；
 - [`run_h1_train_canary.py`](run_h1_train_canary.py)：只读复用 TRAIN targets 与官方
-  DepthART 初始化，冻结 encoder 后提取 pooled band feature，再执行 parent-disjoint head canary；
+  DepthART 初始化，逐文件复核所选 RGB/target 的 producer size/SHA，冻结 encoder 后提取 pooled
+  band feature，再执行有非零科学分母前门的 parent-disjoint head canary；
 - [`validate_h1_train_canary.py`](validate_h1_train_canary.py)：实现/input/roster/gate/resource
   lock 与 foreign GPU 隔离预检。
 
@@ -49,6 +50,10 @@ outcome access、selection influence 或 owned output root 任一不合格即拒
 size 与 SHA-256；validator 会复算全部成员并拒绝遗漏、额外文件、symlink 或 Windows junction。最小格式见
 [`fixtures/directory_identity/directory.manifest.json`](fixtures/directory_identity/directory.manifest.json)。
 路径不存在、hash/blob 不匹配或自定义协议扩权都会拒绝。
+producer/path-specific 门另行拒绝 B1 consumed Development/Confirmation 与对应 artifact；相关
+tracked protocol 仅允许 schema-only，混合角色 B0 source 只有收窄成逐文件 hash 的 TRAIN-only
+manifest 后才可作为内容输入。当前 H1 protocol 自身就是 exact-three-input embedded manifest，
+并把实际读取的 target 诚实登记为 `CONTENT_INSPECTED / TRAIN_TARGET_INPUT_ONLY`。
 
 验证当前 H1 lock：
 

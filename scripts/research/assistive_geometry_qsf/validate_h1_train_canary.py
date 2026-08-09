@@ -186,10 +186,36 @@ def validate_protocol(
     _require(scheduling.get("minimum_free_vram_mib") == 5000, "free VRAM gate drift")
     _require(scheduling.get("maximum_projected_wall_seconds") == 900, "wall-time gate drift")
 
+    embedded_manifest = protocol.get("shared_resource_manifest", {})
+    _require(
+        embedded_manifest
+        == {
+            "schema": "blindassist.assistive_geometry_qsf.embedded_shared_resource_manifest.v1",
+            "embedded_in_protocol": True,
+            "resource_keys": [
+                "target_manifest",
+                "depthart_source",
+                "initialization_checkpoint",
+            ],
+            "exact_input_keyset_required": True,
+            "development_or_confirmation_resources_present": False,
+        },
+        "embedded shared-resource manifest drift",
+    )
+
     implementation = protocol.get("implementation", {})
     required_paths = {
+        "scripts/research/assistive_geometry/assistive_geometry_model.py",
+        "scripts/research/assistive_geometry/assistive_geometry_training.py",
+        "scripts/research/assistive_geometry/depthart_training_scan.py",
+        "scripts/research/assistive_geometry/download_b0_arkitscenes_assets.py",
+        "scripts/research/assistive_geometry/smoke_b1_a0_train_execution.py",
+        "scripts/research/assistive_geometry/train_b1_a0_formal.py",
+        "scripts/research/hftf/deployment/depthart/export_depthart_camera_external.py",
         "scripts/research/assistive_geometry_qsf/h1_survival.py",
         "scripts/research/assistive_geometry_qsf/run_h1_train_canary.py",
+        "scripts/research/assistive_geometry_qsf/test_h1_survival.py",
+        "scripts/research/assistive_geometry_qsf/test_validate_h1_train_canary.py",
         "scripts/research/assistive_geometry_qsf/validate_h1_train_canary.py",
     }
     _require(set(implementation) == required_paths, "implementation path set drift")
@@ -221,11 +247,14 @@ def validate_protocol(
             _require(key in resource, f"shared input disclosure missing: {key}")
         _require(resource["access"] == "READ_ONLY", "shared input must be READ_ONLY")
         _require(resource["immutable"] is True, "shared input must be immutable")
-        _require(resource["outcome_access"] in ("NONE", "METADATA_ONLY"), "outcome access drift")
         _require(resource["selection_influence"] == "NONE", "selection influence drift")
     _require(target.get("data_role") == "TRAIN", "target data role drift")
+    _require(target.get("outcome_access") == "CONTENT_INSPECTED", "target content access drift")
+    _require(target.get("claim_use") == "TRAIN_TARGET_INPUT_ONLY", "target claim-use drift")
     _require(source.get("data_role") == "NOT_APPLICABLE", "source data role drift")
+    _require(source.get("outcome_access") == "NONE", "source outcome access drift")
     _require(checkpoint.get("data_role") == "NOT_APPLICABLE", "checkpoint data role drift")
+    _require(checkpoint.get("outcome_access") == "NONE", "checkpoint outcome access drift")
     _require(
         target.get("kind") == "DERIVED_TRAIN_CACHE"
         and target.get("producer_route") == "BLINDASSIST_ASSISTIVE_GEOMETRY",

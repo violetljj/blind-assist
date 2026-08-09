@@ -4,13 +4,14 @@ import copy
 import hashlib
 import json
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from unittest.mock import Mock
 
 from scripts.research.assistive_geometry_qsf.validate_qsf_preparation import (
     PROTOCOL_RELATIVE,
     ROUTE_ID,
     ValidationError,
+    _is_b1_protected_artifact_path,
     _is_linklike,
     validate_planned_outputs,
     validate_protocol,
@@ -159,6 +160,85 @@ class QsfPreparationValidationTest(unittest.TestCase):
                 _protocol(),
                 REPO_ROOT,
             )
+
+    def test_b1_consumed_development_protocol_cannot_use_generic_allowed_fields(self) -> None:
+        logical = (
+            "docs/research/assistive-geometry/"
+            "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09.json"
+        )
+        disguised = _resource(
+            resource_id="B1_DEVELOPMENT_DISGUISED",
+            kind="TRAIN_DIAGNOSTIC",
+            logical_path=logical,
+            identity={"basis": "SHA256", "value": _file_sha(logical)},
+            data_role="PROJECT_CONSUMED_DEVELOPMENT",
+            outcome_access="OUTPUT_INSPECTED_DIAGNOSTIC_ONLY",
+            claim_use="DIAGNOSTIC_ONLY",
+        )
+        with self.assertRaisesRegex(ValidationError, "Development/Confirmation"):
+            validate_resource_manifest(_manifest(disguised), _protocol(), REPO_ROOT)
+
+    def test_b1_development_protocol_is_schema_only(self) -> None:
+        logical = (
+            "docs/research/assistive-geometry/"
+            "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09.json"
+        )
+        schema = _resource(
+            resource_id="B1_DEVELOPMENT_SCHEMA",
+            kind="PROTOCOL",
+            logical_path=logical,
+            identity={"basis": "SHA256", "value": _file_sha(logical)},
+            data_role="NOT_APPLICABLE",
+        )
+        report = validate_resource_manifest(_manifest(schema), _protocol(), REPO_ROOT)
+        self.assertEqual(1, report["resource_count"])
+
+        disguised = copy.deepcopy(schema)
+        disguised["resource_id"] = "B1_DEVELOPMENT_PRODUCER_SPOOF"
+        disguised["producer_route"] = "OTHER_ROUTE"
+        disguised["kind"] = "TRAIN_DIAGNOSTIC"
+        disguised["outcome_access"] = "OUTPUT_INSPECTED_DIAGNOSTIC_ONLY"
+        disguised["claim_use"] = "DIAGNOSTIC_ONLY"
+        with self.assertRaisesRegex(ValidationError, "schema-only"):
+            validate_resource_manifest(_manifest(disguised), _protocol(), REPO_ROOT)
+
+    def test_non_b1_consumed_development_diagnostic_keeps_generic_policy(self) -> None:
+        logical = "scripts/research/assistive_geometry_qsf/fixtures/directory_identity/payload.txt"
+        resource = _resource(
+            resource_id="OTHER_ROUTE_DEVELOPMENT_DIAGNOSTIC",
+            kind="TRAIN_DIAGNOSTIC",
+            logical_path=logical,
+            producer_route="OTHER_ROUTE",
+            identity={"basis": "SHA256", "value": _file_sha(logical)},
+            data_role="PROJECT_CONSUMED_DEVELOPMENT",
+            outcome_access="OUTPUT_INSPECTED_DIAGNOSTIC_ONLY",
+            claim_use="DIAGNOSTIC_ONLY",
+        )
+        report = validate_resource_manifest(_manifest(resource), _protocol(), REPO_ROOT)
+        self.assertEqual(1, report["diagnostic_only_count"])
+
+    def test_b1_protected_artifact_path_mutations(self) -> None:
+        protected = (
+            "artifacts.local/datasets/assistive-geometry-b1-development-selection-targets-r0",
+            "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-development-r0",
+            "artifacts.local/models/assistive-geometry-b1-confirmation-r0",
+        )
+        for value in protected:
+            with self.subTest(value=value):
+                self.assertTrue(_is_b1_protected_artifact_path(PurePosixPath(value)))
+        self.assertFalse(
+            _is_b1_protected_artifact_path(
+                PurePosixPath("artifacts.local/models/assistive-geometry-qsf/h1-r0")
+            )
+        )
+        self.assertFalse(
+            _is_b1_protected_artifact_path(
+                PurePosixPath(
+                    "docs/research/assistive-geometry/"
+                    "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL.md"
+                )
+            )
+        )
 
     def test_foreign_active_run_cannot_be_disguised_as_a_protocol(self) -> None:
         with self.assertRaisesRegex(ValidationError, "active-run path"):
