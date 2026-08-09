@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_DUAL_ORIENTATION_PROTOCOL_LOCK_PASS / IMPLEMENTATION_NOT_AUTHORIZED / NO_FORMAL_TRAINING_AUTHORITY`
+状态：`B1_DUAL_ORIENTATION_IMPLEMENTATION_LOCK_PASS / A0_EXECUTION_PROTOCOL_NOT_FROZEN / NO_FORMAL_TRAINING_AUTHORITY`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -30,6 +30,16 @@
   frame capacity，不打开 image/depth/task outcome；
 - `validate_b1_training_protocol_attempt_02.py`：校验当前 dual-orientation overlay、orientation
   buckets、full-FOV K 传播、Development split 与 portrait claim ceiling。
+- `materialize_b1_train_targets.py`：只为冻结 TRAIN identity 写入 compact source-upright target，
+  不物化 prediction-dependent confidence truth；
+- `validate_b1_train_targets.py`：逐 SHA 和 NPZ 语义验证 4,800 个 TRAIN target，并 fail-closed
+  检查 UNKNOWN、方向、K、ground、clearance 与 occupancy；
+- `assistive_geometry_model.py`：复用 DepthART-S shared decoder feature，提供 Ground、Clearance、
+  Occupancy、Confidence heads 与 A0–A4 frozen losses；
+- `depthart_training_scan.py`：训练时直接进入部署包内显式 custom Autograd Function，绕过没有
+  Autograd-key registration 的外层 inference/export dispatcher；
+- `smoke_b1_dual_orientation_training_model.py`：用冻结 checkpoint 在 portrait/landscape 全尺寸上
+  验证 forward、loss、encoder/head backward 与 SelectiveScan dispatch boundary。
 
 ## 输出
 
@@ -46,8 +56,9 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 
 合同违规、checkpoint/shape 不匹配、非 finite 输出、camera prompt drift 或 ONNX checker
 失败均立即 fail closed。当前 roster、source integrity、truth reader 与 registration 已关闭，
-且 B1 target/loss/confidence 与当前 dual-orientation overlay 已冻结；但 target cache、模型和
-loss implementation lock 尚未关闭，不得从本目录启动正式训练或打开独立 outcome。
+且 B1 target/loss/confidence、dual-orientation overlay、4,800-frame target cache 与模型/loss
+implementation lock 已关闭；A0 三 seed 的 execution protocol/runner 尚未冻结，因此仍不得从
+本目录启动正式训练或打开独立 outcome。
 
 验证：
 
