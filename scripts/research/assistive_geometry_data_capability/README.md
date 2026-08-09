@@ -1,6 +1,6 @@
 # Assistive Geometry Data Capability Atlas Module
 
-状态：`current / AG-DCA_R0_PROTOCOL_LOCKED_NOT_RUN / TRAIN_CAPABILITY_ATLAS_NOT_RUN / NO_ALGORITHM_AUTHORITY`
+状态：`current / AG-DCA_R0_COMPLETE / REUSABLE_CHECKER / NO_ALGORITHM_AUTHORITY`
 
 本 Module 是数据能力基础设施，不是算法路线。它逐 bytes/SHA 扫描冻结的 16-parent / 4,800-frame
 TRAIN target，只统计 truth/source capability；随后把版本化 hypothesis requirements 映射为
@@ -17,13 +17,16 @@ TRAIN target，只统计 truth/source capability；随后把版本化 hypothesis
 - 机器 protocol 与 hypothesis requirements 位于
   `docs/research/assistive-geometry-data-capability/`。
 
-当前唯一 successor 是按 `BLINDASSIST_ASSISTIVE_GEOMETRY_DCA_R0_PROTOCOL_2026-08-10` 执行一次
-full-TRAIN atlas；不得在结果后修改同一 requirements/gate。
+R0 full-TRAIN atlas 已执行完成，三条冻结 hypothesis 均为 `NOT_SUPPORTED_*`。当前无活动 DCA
+execution successor；新 hypothesis 只能提供新的版本化 requirements 并重放不可变 atlas，不得修改
+R0 requirements/gate。
 
 ## 输出
 
 - `artifacts.local/evidence/assistive-geometry-data-capability/r0/atlas.json`
 - `artifacts.local/evidence/assistive-geometry-data-capability/r0/hypothesis-decisions.json`
+- governed summary：
+  `docs/research/assistive-geometry-data-capability/BLINDASSIST_ASSISTIVE_GEOMETRY_DCA_R0_RESULT_2026-08-10.{json,md}`
 
 ## 安全边界
 

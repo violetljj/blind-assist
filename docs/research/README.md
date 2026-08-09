@@ -9,7 +9,7 @@
 | 分类 | 当前重点 | 入口 |
 |---|---|---|
 | 算法 | 当前主线是 BlindAssist Assistive Geometry R2 因子化几何；F0 synthetic deterministic reducer 已 PASS，但 F1 factor learnability 尚未授权执行；B1-A0、AG-QSF 与并行 AG-CBF R0 均已到各自负终态；DepthART-S 是可替换 encoder/initialization、depth baseline 与部署使能线；YOLO + 语义分割双环是论文次线 | [算法研究入口](ALGORITHM_RESEARCH_CURRENT.md) |
-| 数据 | 数据集、truth、parent/session 独立性、coverage、质量和数据角色治理；AG-DCA R0 已锁定 full-TRAIN capability atlas，尚未运行或授予算法 authority | [数据研究入口](DATA_RESEARCH_CURRENT.md) |
+| 数据 | 数据集、truth、parent/session 独立性、coverage、质量和数据角色治理；AG-DCA R0 已完成 4,800-frame atlas，QSF/CBF 为 `NOT_SUPPORTED_DATA`、FCI 为 `NOT_SUPPORTED_DATA_AND_AUTHORITY`，未授予算法 authority | [数据研究入口](DATA_RESEARCH_CURRENT.md) |
 | 系统与平台 | 通信链路、端到端延迟、性能优化、模型导出、设备部署和稳定性 | [系统与平台研究入口](SYSTEM_RESEARCH_CURRENT.md) |
 
 ## 阅读规则

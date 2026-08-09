@@ -7,7 +7,7 @@
 | 当前问题 | 状态 | 唯一真源 | 唯一 successor |
 |---|---|---|---|
 | source identity、truth、coverage、quality、parent/session 独立性与 ancestry | `DEVELOPMENT_DATA_WORKSTREAM` | 本页；机器总账见 [JSON ledger](../../DATASET_MASTER_LEDGER.json)，缺口见 [DATASET_GAPS](../../DATASET_GAPS.md)，角色冲突见 [SOURCE_ROLE_CONFLICTS](../../SOURCE_ROLE_CONFLICTS.md) | `DATA_ROLE_AND_PARENT_DISJOINT_ADMISSION_SUCCESSOR`：先冻结数据合同、独立性和缺失策略，再为具体路线激活 admission 数据 |
-| Assistive Geometry truth/source capability 与 hypothesis admission | `AG_DCA_R0_PROTOCOL_LOCKED_NOT_RUN / TRAIN_ONLY / NO_ALGORITHM_AUTHORITY` | [AG-DCA current](assistive-geometry-data-capability/README.md) | `BLINDASSIST_ASSISTIVE_GEOMETRY_DCA_R0_FULL_TRAIN_ATLAS_EXECUTION`：全量扫描 16 parent / 4,800 TRAIN target，再按机器 requirements 判定 QSF、CBF、FCI 支撑；PASS 也只允许另锁协议 |
+| Assistive Geometry truth/source capability 与 hypothesis admission | `AG_DCA_R0_COMPLETE / QSF_CBF_NOT_SUPPORTED_DATA / FCI_NOT_SUPPORTED_DATA_AND_AUTHORITY` | [AG-DCA current](assistive-geometry-data-capability/README.md) | R0 无活动 successor；checker 与不可变 atlas 保留，新 hypothesis 必须提交版本化 requirements 后重放；AG-FCI 未启动 |
 | 公开长视频候选事件发现 | `DISCOVERY_ONLY` | [候选事件挖掘](candidate-event-mining/README.md) | 只能产出 candidate pool；进入路线前另做 truth 与数据角色准入 |
 | SANPO 数据与分割基线 | `INDEPENDENT_OR_COUPLED` | [SANPO current](../SANPO_CURRENT_STATUS.md) | 由 SANPO current 声明，不从本页推导算法晋级 |
 
