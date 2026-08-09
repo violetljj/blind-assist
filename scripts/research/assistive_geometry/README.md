@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`A0_FORMAL_RUNNER_AND_HOST_PERFORMANCE_PILOT_PASS / WORKERS_1_SELECTED / SEED_17_GUARDED_EXECUTION_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
+状态：`A0_EVALUATION_SYNTHETIC_DRY_RUN_PASS / SEED_17_GUARDED_EXECUTION_RUNNING / SEEDS_29_43_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -49,6 +49,11 @@
   运行。
 - `train_b1_a0_formal.py`：运行冻结的 A0 TRAIN-only 性能 pilot 与三 seed 正式训练；发布
   guarded progress，按 epoch 原子保存可恢复状态，并保留 `5/10/15/20` checkpoint。
+- `evaluate_b1_a0_synthetic.py`：验证三 seed × 四 retained checkpoint 的 bytes/SHA、内部状态、
+  协议与步数完整性，并计算 pooled、九格、parent 与 orientation task metrics；不选择 seed。
+- `run_b1_a0_evaluation_dry_run.py`：只用合成 fixture 演练通过路径与 checkpoint 缺失、协议漂移、
+  缺 horizon、全局零分母、coverage 塌缩、best-seed 企图等失败终态，并生成 JSON、短报告和
+  failure-adjacent log。
 
 ## 输出
 
@@ -67,8 +72,8 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 失败均立即 fail closed。当前 roster、source integrity、truth reader 与 registration 已关闭，
 且 B1 target/loss/confidence、dual-orientation overlay、4,800-frame target cache 与模型/loss
 implementation lock 与 A0 execution lock 已关闭；当前只授权按冻结合同执行 A0 三 seed 的
-TRAIN-only 正式训练。训练中仍不得打开 Development/Confirmation outcome，不得运行 A1–A4、
-teacher、部署或默认 App 路径。
+TRAIN-only 正式训练。合成 evaluator dry-run 已通过，但真实评价仍须等三 seed 完整并单独激活。
+训练中仍不得打开 Development/Confirmation outcome，不得运行 A1–A4、teacher、部署或默认 App 路径。
 
 验证：
 

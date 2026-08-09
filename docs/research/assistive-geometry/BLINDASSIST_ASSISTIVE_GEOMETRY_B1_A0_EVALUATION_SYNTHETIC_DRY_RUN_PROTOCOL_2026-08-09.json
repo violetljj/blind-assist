@@ -1,0 +1,159 @@
+{
+  "schema": "blindassist_assistive_geometry_b1_a0_evaluation_dry_run_protocol_v1",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_PROTOCOL_2026-08-09",
+  "frozen_at": "2026-08-09",
+  "status": "A0_EVALUATION_SYNTHETIC_DRY_RUN_FROZEN_PENDING",
+  "research_mode": "WILD_LAB",
+  "question": "Can the post-train A0 evaluator validate all three seed checkpoint packages and compute task metrics deterministically before any Development or Confirmation outcome is opened?",
+  "bindings": [
+    {
+      "path": "scripts/research/assistive_geometry/evaluate_b1_a0_synthetic.py",
+      "sha256": "3C52F0275146EE406435CB42BA7935AE2F71A630CBB100897D499D6641EF2E77"
+    },
+    {
+      "path": "scripts/research/assistive_geometry/run_b1_a0_evaluation_dry_run.py",
+      "sha256": "DB1A1155EE1AE1747775CAAAEBD30458374D56EAB6AF459AF22EA21D2F744C17"
+    },
+    {
+      "path": "scripts/research/assistive_geometry/test_evaluate_b1_a0_synthetic.py",
+      "sha256": "D94910A5C08CB29F7C812C0D1765C17C6A6BC204D4ACD8F06F248C17BCAC200C"
+    }
+  ],
+  "governance_bindings": {
+    "b0_task_contract": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TASK_CONTRACT_2026-08-09.json",
+      "sha256": "9C66CA7F8A780ABAB6062543C8B1DDACE17A159C0D54C635536DA5C7BFAC3C84"
+    },
+    "b1_training_protocol": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_TRAINING_PROTOCOL_2026-08-09.json",
+      "sha256": "BDD3B9E45FAB1D9100086B97DAA1C0D9A0F1039FD4D330EF0E3820E414A6FC71"
+    },
+    "b1_dual_orientation_overlay": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_TRAINING_PROTOCOL_2026-08-09_ATTEMPT_02.json",
+      "sha256": "7591D4268E48C02EE9B82617BD0786D5B8ACB9470574959411E366EA557C2BC3"
+    },
+    "formal_train_protocol": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL_2026-08-09.json",
+      "sha256": "2B21941CE004B1144487C25155F2E74793B477D4CFC4DBD6AE50FCC76AE03752"
+    }
+  },
+  "checkpoint_integrity": {
+    "required_seeds_in_order": [17, 29, 43],
+    "required_retained_epochs": [5, 10, 15, 20],
+    "expected_optimizer_steps_by_epoch": {
+      "5": 1499,
+      "10": 2999,
+      "15": 4499,
+      "20": 6000
+    },
+    "required_checkpoint_count": 12,
+    "required_internal_fields": [
+      "protocol_sha256",
+      "initialization_checkpoint_sha256",
+      "seed",
+      "next_epoch",
+      "next_optimizer_step",
+      "sampler",
+      "model",
+      "optimizer",
+      "scheduler",
+      "scaler",
+      "rng",
+      "epoch_history",
+      "model_state_sha256"
+    ],
+    "required_checks": [
+      "external_bytes_and_sha256",
+      "internal_protocol_and_initialization_sha256",
+      "seed_epoch_and_step_identity",
+      "model_state_sha256_recompute",
+      "optimizer_scheduler_scaler_sampler_and_rng_presence",
+      "epoch_history_complete_and_monotonic",
+      "epoch_20_final_carry_empty",
+      "epoch_20_model_state_matches_train_result"
+    ]
+  },
+  "observation_contract": {
+    "schema": "blindassist_assistive_geometry_b1_a0_evaluation_frame_v1",
+    "bands_in_order": ["left", "center", "right"],
+    "horizons_m_in_order": [1.0, 1.5, 2.0],
+    "states": ["CLEAR_OBSERVED", "OCCUPIED_OBSERVED", "UNKNOWN"],
+    "clearance_is_band_level_not_repeated_nine_grid_weight": true,
+    "occupancy_is_three_band_by_three_horizon": true,
+    "unknown_truth_is_negative": false,
+    "temporal_pairing": "same parent, same session, same band, consecutive integer sequence_index, and both clearance values valid",
+    "cross_session_temporal_pairing": false
+  },
+  "metric_definitions": {
+    "known_coverage": "paired truth-known and prediction-known cells divided by truth-known cells",
+    "false_clear_all_known": "truth OCCUPIED and prediction CLEAR divided by paired-known cells",
+    "false_clear_given_occupied": "truth OCCUPIED and prediction CLEAR divided by paired-known truth-OCCUPIED cells",
+    "false_block_given_clear": "truth CLEAR and prediction OCCUPIED divided by paired-known truth-CLEAR cells",
+    "clearance_mae_m": "mean absolute error over valid band-level clearance pairs",
+    "temporal_clearance_delta_mae_m": "mean absolute error between predicted and truth consecutive clearance deltas",
+    "zero_denominator": "undefined with explicit support and never replaced by zero"
+  },
+  "required_reporting": {
+    "blocking_primary": ["pooled", "three_seed"],
+    "diagnostic_only": ["nine_grid", "unweighted_parent_macro", "worst_parent", "orientation", "near_field", "indoor_outdoor", "low_light_blur"],
+    "stratum_undefined_does_not_invalidate_defined_pooled_metrics": true,
+    "pooled_zero_truth_known_or_clear_or_occupied_denominator_fails_closed": true
+  },
+  "metric_gates": {
+    "known_coverage_min": 0.9,
+    "clearance_mae_m_max": 0.2,
+    "false_clear_all_known_max": 0.08,
+    "false_block_given_clear_max": 0.02,
+    "temporal_clearance_delta_mae_m_max": 0.15,
+    "worst_parent_false_clear_all_known_max": 0.12
+  },
+  "aggregation": {
+    "required_seeds": [17, 29, 43],
+    "seed_order": [17, 29, 43],
+    "selected_seed": null,
+    "best_seed_selection_forbidden": true,
+    "statistics": ["mean", "sample_std", "median", "min", "max", "values_by_seed"],
+    "coverage_frontdoor": "every seed must pass pooled known coverage",
+    "task_gate": "for each task metric, at least two of three seeds must pass; no seed is selected",
+    "checkpoint_epoch_evaluated": 20
+  },
+  "failure_terminals": {
+    "checkpoint_incomplete": "B1_A0_EVAL_NOT_EVALUABLE_CHECKPOINT_INCOMPLETE",
+    "protocol_drift": "B1_A0_EVAL_NOT_EVALUABLE_PROTOCOL_DRIFT",
+    "seed_set_invalid": "B1_A0_EVAL_NOT_EVALUABLE_SEED_SET_INVALID",
+    "schema_invalid": "B1_A0_EVAL_NOT_EVALUABLE_SCHEMA_INVALID",
+    "undefined_global_denominator": "B1_A0_EVAL_NOT_EVALUABLE_UNDEFINED_DENOMINATOR",
+    "coverage_collapse": "B1_A0_EVAL_FAIL_COVERAGE",
+    "task_gates_failed": "B1_A0_EVAL_FAIL_TASK_GATES",
+    "best_seed_selection": "B1_A0_EVAL_NOT_EVALUABLE_BEST_SEED_SELECTION_FORBIDDEN",
+    "development_not_activated": "B1_A0_EVAL_NOT_EVALUABLE_DATA_ROLE_INVALID"
+  },
+  "dry_run_scenarios": [
+    "pass",
+    "checkpoint_incomplete",
+    "protocol_drift",
+    "missing_horizon",
+    "zero_denominator",
+    "coverage_collapse",
+    "best_seed_forbidden"
+  ],
+  "outputs": [
+    "dry_run_result.json",
+    "report.md",
+    "scenario/evaluation_result.json",
+    "failure-scenario/failure.json",
+    "failure-scenario/failure.log"
+  ],
+  "firewalls": {
+    "dry_run_data_role": "SYNTHETIC_EVALUATOR_FIXTURE",
+    "development_outcome_access": false,
+    "confirmation_outcome_access": false,
+    "teacher_import_or_execution": false,
+    "model_inference": false,
+    "best_seed_selection": false,
+    "default_app_change": false
+  },
+  "success_terminal": "B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_PASS",
+  "next_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_EXECUTION_ACTIVATION_AFTER_ALL_THREE_TRAIN_SEEDS_COMPLETE",
+  "claim_ceiling": "Synthetic evaluator mechanics and checkpoint-package integrity only. No model quality, Development, Confirmation, deployment, product or safety authority."
+}

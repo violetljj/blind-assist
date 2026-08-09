@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / RESEARCH_MAINLINE / A0_FORMAL_RUNNER_AND_HOST_PERFORMANCE_PILOT_PASS / WORKERS_1_SELECTED / SEED_17_GUARDED_EXECUTION_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
+状态：`current / RESEARCH_MAINLINE / A0_EVALUATION_SYNTHETIC_DRY_RUN_PASS / SEED_17_GUARDED_EXECUTION_RUNNING / SEEDS_29_43_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -44,6 +44,10 @@
 - [B1 A0 formal TRAIN execution protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL_2026-08-09.json)
 - [B1 A0 host performance preflight result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_TRAIN_PERFORMANCE_PREFLIGHT_RESULT_2026-08-09.md)
 - [B1 A0 host performance machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_TRAIN_PERFORMANCE_PREFLIGHT_RESULT_2026-08-09.json)
+- [B1 A0 evaluation synthetic dry-run protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_PROTOCOL_2026-08-09.md)
+- [B1 A0 evaluation synthetic dry-run machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_PROTOCOL_2026-08-09.json)
+- [B1 A0 evaluation synthetic dry-run result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_RESULT_2026-08-09.md)
+- [B1 A0 evaluation synthetic dry-run machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_RESULT_2026-08-09.json)
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 - [DepthART 部署支线](../hftf/README.md)
 
@@ -63,6 +67,8 @@ checkpoint 的训练 Autograd smoke；带缺失 Autograd-key 警告的部署 ope
 训练改走包内显式 custom Function。A0 TRAIN loader、orientation carry、BF16 optimizer step 与
 全状态 checkpoint roundtrip 现已关闭。正式 runner 又以同一真实路径比较 `workers=0/1/4`，
 选出 `workers=1` 的 `0.5453 step/s`，外推每 seed `3.06h`、诊断上界 `4h`；三档 CPU 输入
-摘要一致，但 CUDA 权重不签署 bit-exact。seed `17/29/43` 训练仍按顺序执行且尚未启动；当前
-只允许为 seed 17 建立 guarded preflight 并启动 TRAIN-only 正式训练。执行期间仍不读取
-DEVELOPMENT/CONFIRMATION outcome，不运行 A1–A4 或双教师，也不改默认 App。
+摘要一致，但 CUDA 权重不签署 bit-exact。seed 17 的 guarded TRAIN-only 正式训练已启动且尚未
+形成完成/失败终态；29/43 尚未启动。与此同时，纯合成 evaluator dry-run 已覆盖 12 个 tiny
+checkpoint、三 seed 无选择聚合、九格指标、UNKNOWN、全局零分母、缺 horizon、coverage 塌缩、
+协议漂移和失败相邻日志并通过。它不读取 Development/Confirmation outcome，也不授权真实评价；
+执行期间仍不得运行 A1–A4、双教师或改默认 App。
