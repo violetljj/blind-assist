@@ -8,7 +8,7 @@
 
 | 分类 | 当前重点 | 入口 |
 |---|---|---|
-| 算法 | 当前主线是 BlindAssist Assistive Geometry；AG-QSF 是资源隔离、可审计共享的并行 WILD_LAB 同题不同解；DepthART-S 是 encoder/initialization、depth baseline 与部署使能线；YOLO + 语义分割双环是论文次线 | [算法研究入口](ALGORITHM_RESEARCH_CURRENT.md) |
+| 算法 | 当前主线是 BlindAssist Assistive Geometry R2 因子化几何假设；B1-A0 与 AG-QSF 均已到各自负终态；DepthART-S 是可替换 encoder/initialization、depth baseline 与部署使能线；YOLO + 语义分割双环是论文次线 | [算法研究入口](ALGORITHM_RESEARCH_CURRENT.md) |
 | 数据 | 数据集、truth、parent/session 独立性、coverage、质量和数据角色治理 | [数据研究入口](DATA_RESEARCH_CURRENT.md) |
 | 系统与平台 | 通信链路、端到端延迟、性能优化、模型导出、设备部署和稳定性 | [系统与平台研究入口](SYSTEM_RESEARCH_CURRENT.md) |
 

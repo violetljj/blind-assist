@@ -16,7 +16,7 @@
 | benchmark、canary、demo、候选 App | [`apps/README.md`](../apps/README.md) | `apps/<role>/<module>/` |
 | 稳定脚本 Interface | [`scripts/README.md`](../scripts/README.md) | `scripts/` 根 allowlist |
 | 研究实现 | [`MODULE_INDEX.md`](../scripts/research/MODULE_INDEX.md) | `scripts/research/<module>/` |
-| Assistive Geometry 训练、Development/teacher 评估、移动/时序 mechanics 与数学 canary | [`assistive_geometry/README.md`](../scripts/research/assistive_geometry/README.md) | `train_b1_a0_formal.py`、`train_b1_additive_arm.py`、`materialize_b1_development_targets.py`、`observe_b1_a0_development.py`、`evaluate_b1_a0_development.py`、`evaluate_teacher_complementarity.py`、`export_assistive_geometry_onnx.py`、`temporal_geometry_ablation.py`、`run_hypothesis_canary_lite.py` |
+| Assistive Geometry 训练、Development/failure-anatomy/teacher 评估、移动/时序 mechanics 与数学 canary | [`assistive_geometry/README.md`](../scripts/research/assistive_geometry/README.md) | `train_b1_a0_formal.py`、`train_b1_additive_arm.py`、`materialize_b1_development_targets.py`、`observe_b1_a0_development.py`、`evaluate_b1_a0_development.py`、`analyze_b1_a0_failure_anatomy.py`、`evaluate_teacher_complementarity.py`、`export_assistive_geometry_onnx.py`、`temporal_geometry_ablation.py`、`run_hypothesis_canary_lite.py` |
 | AG-QSF 并行路线、H1 survival mechanics/TRAIN canary、共享资源 manifest 与输出隔离门 | [`assistive_geometry_qsf/README.md`](../scripts/research/assistive_geometry_qsf/README.md) | `h1_survival.py`、`run_h1_train_canary.py`、`validate_h1_train_canary.py`、`validate_qsf_preparation.py`；未来 H2 profile-query 只进入该 Module |
 | 配置与冻结合同 | `configs/` | JSON/YAML；先看调用方和协议 |
 | 机器 schema | `schemas/` | JSON Schema 与 validator |
