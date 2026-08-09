@@ -84,6 +84,7 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 本模块只按冻结阶段训练 Assistive Geometry student；teacher 仅有未激活的 C0 complementarity
 mechanics，当前不读取 teacher output，也不授权 C1、QNN/HTP、默认 App、产品或 safety。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。
+移动导出受 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry 选模证据。
 `UNKNOWN` 不得当作负例；synthetic shape 与 benchmark geometry 不得冒充任务质量。
 
 ## 停止条件

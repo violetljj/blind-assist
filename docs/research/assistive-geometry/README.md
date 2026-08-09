@@ -56,6 +56,8 @@
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
 - [D0 temporal ablation machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.json)
+- [M0 task-preserving mobile deployment protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_M0_TASK_PRESERVING_MOBILE_DEPLOYMENT_PROTOCOL_2026-08-09.md)
+- [M0 task-preserving mobile deployment machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_M0_TASK_PRESERVING_MOBILE_DEPLOYMENT_PROTOCOL_2026-08-09.json)
 - [并行 WILD_LAB 数学假设 canary](BLINDASSIST_ASSISTIVE_GEOMETRY_HYPOTHESIS_CANARY_LITE_R0_2026-08-09.md)
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 - [DepthART 部署支线](../hftf/README.md)
@@ -88,6 +90,8 @@ Development frame 前强制验证三 seed 全部完成；执行期间仍不得�
 授权，未通过 oracle 增益、独占正确 parent、分歧错误浓度和时序优势四类门前不得启动 C1 蒸馏。
 时序 D0 也只冻结因果 GRU/TCN/diagonal-SSM 的统一 GeometryState 接口、参数/设备预算和未来
 clearance/TTC/compute-gate 输出；单帧候选与新时序 cohort 未就绪，不授权训练或读取 outcome。
+移动 M0 只冻结选模后的双 shape ONNX、单 fixed-mixed HTP 候选、新 MOBILE_DEVELOPMENT roster 与
+“质量先于性能”门；当前无选定模型、转换、HTP partition 或任务保持证据。
 
 ## 并行 WILD_LAB 数学 canary（不改变 successor）
 

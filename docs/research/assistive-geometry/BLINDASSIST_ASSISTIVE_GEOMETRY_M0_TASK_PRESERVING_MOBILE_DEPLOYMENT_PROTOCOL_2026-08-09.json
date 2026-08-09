@@ -1,0 +1,129 @@
+{
+  "schema": "blindassist_assistive_geometry_m0_task_preserving_mobile_deployment_protocol_v1",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_M0_TASK_PRESERVING_MOBILE_DEPLOYMENT_PROTOCOL_2026-08-09",
+  "frozen_at": "2026-08-09",
+  "status": "MECHANICS_FROZEN_SELECTED_MODEL_AND_MOBILE_COHORT_NOT_AVAILABLE",
+  "research_mode": "WILD_LAB",
+  "question": "Can the selected Assistive Geometry model retain its raw and final GeometryState task behavior on Snapdragon HTP within the fixed mobile budget?",
+  "immutable_prior_terminal": "CURRENT_QAIRT_2_47_SM8650_HTP_STANDARD_FLOAT_PATH_STRICT_G4D_NOT_SUPPORTED",
+  "bindings": {
+    "b0_task_contract": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TASK_CONTRACT_2026-08-09.json",
+      "sha256": "9C66CA7F8A780ABAB6062543C8B1DDACE17A159C0D54C635536DA5C7BFAC3C84"
+    },
+    "onnx_exporter": {
+      "path": "scripts/research/assistive_geometry/export_assistive_geometry_onnx.py",
+      "sha256": "37B1CC0A5A56F3C93210FFA73204829D41364D083D13D62F0D07B71DDF498FB0"
+    },
+    "onnx_exporter_test": {
+      "path": "scripts/research/assistive_geometry/test_export_assistive_geometry_onnx.py",
+      "sha256": "CB09344D3FEF9F0D3A7D21434AF8C81FAECB25776F9297B87C45DE6B3E10D0B6"
+    },
+    "depthart_d1_boundary_reference": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D1_FIXED_MIXED_DEVELOPMENT_PROTOCOL_2026-08-09.json",
+      "sha256": "110591740F1C429DF6C9AC3D03C1BE7830D042FAD22CE8ED28CE7590D529C354"
+    }
+  },
+  "activation_requirements": [
+    "one single-frame Assistive Geometry checkpoint is selected by frozen Development rules without opening Confirmation",
+    "checkpoint path, bytes, SHA, arm, seed, model-state SHA and selection result are bound",
+    "portrait and landscape ONNX exports pass PyTorch external-camera parity and ONNX checker with five SelectiveScan nodes",
+    "one fixed-mixed QAIRT recipe is frozen after label-blind technical preflight and before task outcome",
+    "a new MOBILE_DEVELOPMENT 8-primary plus 8-reserve parent/session/capture-disjoint roster is metadata-locked",
+    "license scope and label-blind media integrity pass before download or truth/model outcome access"
+  ],
+  "selected_model": {
+    "checkpoint": "UNRESOLVED_UNTIL_B2_OR_C1_SELECTION",
+    "reference_runtime": "PYTORCH_FP32_TF32_OFF",
+    "best_seed_selection": false,
+    "confirmation_used_for_selection": false
+  },
+  "graph_contract": {
+    "primary_input_nchw": [1, 3, 608, 448],
+    "secondary_engineering_input_nchw": [1, 3, 448, 608],
+    "dynamic_camera_prompts": ["camera_prompt_4", "camera_prompt_8", "camera_prompt_16", "camera_prompt_32"],
+    "raw_outputs": ["dense_depth_m", "ground_logits", "clearance_m", "occupancy_logits", "confidence_logits"],
+    "selective_scan_node_count": 5,
+    "task_postprocess_inside_graph": false,
+    "gravity_unknown_transform_and_final_tristate_on_host": true,
+    "unknown_is_negative": false
+  },
+  "candidate": {
+    "count": 1,
+    "representation_family": "QAIRT_FIXED_MIXED_PRECISION",
+    "target_soc": "SM8650",
+    "target_backend": "HTP_V75",
+    "qairt_version": "2.47",
+    "custom_selective_scan_required": true,
+    "full_partition_without_cpu_fallback_required": true,
+    "recipe_change_after_mobile_outcome": false
+  },
+  "mobile_development": {
+    "cohort_identity": "UNRESOLVED",
+    "primary_parent_session_count": 8,
+    "reserve_parent_session_count": 8,
+    "disjoint_from": ["B1_TRAIN", "B1_DEVELOPMENT", "B1_CONFIRMATION", "C0_TEACHER_EVALUATION", "D_TEMPORAL"],
+    "replacement_basis": "LABEL_BLIND_INTEGRITY_AND_PRODUCT_GEOMETRY_ONLY",
+    "media_opened": false,
+    "truth_or_model_outcome_access": "NONE"
+  },
+  "technical_gates": {
+    "pytorch_external_camera_max_abs": 1e-5,
+    "dense_depth_task_postprocess_parity_required": true,
+    "ground_logit_max_abs": 0.05,
+    "clearance_max_abs_m": 0.025,
+    "occupancy_probability_max_abs": 0.02,
+    "confidence_probability_max_abs": 0.02,
+    "nan_inf_class_mismatch": 0,
+    "full_partition": true,
+    "cpu_fallback_nodes": 0
+  },
+  "task_quality_gates": {
+    "known_coverage_min": 0.90,
+    "known_coverage_decrease_max": 0.02,
+    "clearance_mae_m_max": 0.20,
+    "clearance_mae_m_increase_max": 0.025,
+    "false_clear_all_known_max": 0.08,
+    "false_clear_all_known_increase_max": 0.01,
+    "false_block_given_clear_max": 0.02,
+    "false_block_given_clear_increase_max": 0.01,
+    "temporal_clearance_delta_mae_m_max": 0.15,
+    "temporal_clearance_delta_mae_m_increase_max": 0.025,
+    "geometry_transition_agreement_min": 0.90,
+    "valid_to_unknown_rate_max": 0.10,
+    "worst_parent_false_clear_all_known_max": 0.12,
+    "all_gates_conjunctive": true,
+    "undefined_or_zero_denominator": "FAIL"
+  },
+  "device_performance_after_quality_pass": {
+    "performance_before_quality_pass": false,
+    "qnn_execute_p95_ms_max": 150.0,
+    "full_geometry_state_p95_ms_max": 180.0,
+    "minimum_sustained_hz": 5.0,
+    "default_smoke_seconds": 10,
+    "default_regression_seconds": 60,
+    "thermal_runtime_pool_and_fallback_receipts_required": true
+  },
+  "sequence": [
+    "SINGLE_FRAME_MODEL_SELECTION_LOCK",
+    "DUAL_SHAPE_ONNX_EXPORT_AND_PARITY",
+    "FIXED_MIXED_RECIPE_AND_FULL_PARTITION_TECHNICAL_LOCK",
+    "NEW_MOBILE_DEVELOPMENT_ROSTER_AND_LICENSE_PREFLIGHT",
+    "TASK_QUALITY_SCREEN",
+    "QUALITY_PASS_ONLY_DEVICE_PERFORMANCE",
+    "MOBILE_CANDIDATE_LOCK_OR_FAIL_STOP"
+  ],
+  "authority": {
+    "selected_model_available": false,
+    "onnx_export": false,
+    "qairt_conversion": false,
+    "mobile_development_access": false,
+    "device_execution": false,
+    "strict_g4d_reopened": false,
+    "da2_replacement": false,
+    "default_app": false,
+    "product": false,
+    "safety": false
+  },
+  "claim_ceiling": "Outcome-blind mobile mechanics only. No selected model, conversion, HTP partition, task preservation, performance, default-app, product or safety authority."
+}
