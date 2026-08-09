@@ -62,6 +62,8 @@
   后处理生成独立 truth/pred validity 和三态 observation；不读取未训练 task heads。
 - `evaluate_b1_a0_development.py`：执行三 seed 无选择聚合，并同时检查 coverage、ground、clearance、
   false-clear/false-block、temporal delta 与 geometry transition 门。
+- `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
+  保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `run_hypothesis_canary_lite.py`：只用 deterministic synthetic CPU geometry 审查 censored
   survival、profile-conditioned clearance、widest-path bottleneck 与 one-sided conformal
   uncertainty 的数学不变量和反例；不读取任何数据 role outcome、模型或 checkpoint。

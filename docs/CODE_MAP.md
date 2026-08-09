@@ -16,7 +16,7 @@
 | benchmark、canary、demo、候选 App | [`apps/README.md`](../apps/README.md) | `apps/<role>/<module>/` |
 | 稳定脚本 Interface | [`scripts/README.md`](../scripts/README.md) | `scripts/` 根 allowlist |
 | 研究实现 | [`MODULE_INDEX.md`](../scripts/research/MODULE_INDEX.md) | `scripts/research/<module>/` |
-| Assistive Geometry 训练、Development 评估与数学 canary | [`assistive_geometry/README.md`](../scripts/research/assistive_geometry/README.md) | `train_b1_a0_formal.py`、`train_b1_additive_arm.py`、`materialize_b1_development_targets.py`、`observe_b1_a0_development.py`、`evaluate_b1_a0_development.py`、`run_hypothesis_canary_lite.py` |
+| Assistive Geometry 训练、Development 评估、导出与数学 canary | [`assistive_geometry/README.md`](../scripts/research/assistive_geometry/README.md) | `train_b1_a0_formal.py`、`train_b1_additive_arm.py`、`materialize_b1_development_targets.py`、`observe_b1_a0_development.py`、`evaluate_b1_a0_development.py`、`export_assistive_geometry_onnx.py`、`run_hypothesis_canary_lite.py` |
 | 配置与冻结合同 | `configs/` | JSON/YAML；先看调用方和协议 |
 | 机器 schema | `schemas/` | JSON Schema 与 validator |
 | 当前文档与研究真源 | [`docs/PROJECT_STATE.md`](PROJECT_STATE.md) | `docs/`、`docs/research/` |
