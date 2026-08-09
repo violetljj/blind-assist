@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_IMPLEMENTATION_FROZEN / SYNTHETIC_CANARY_AUTHORIZED_NOT_RUN / SUPERVISION_FRONTDOOR_UNSATISFIED / F1_EXECUTION_NOT_AUTHORIZED / CALIBRATION_AND_CONFIRMATION_SEALED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / SUPERVISION_FRONTDOOR_UNSATISFIED / F1_EXECUTION_NOT_AUTHORIZED / CALIBRATION_AND_CONFIRMATION_SEALED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -116,8 +116,8 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 移动导出受历史 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry
 选模证据。新 R2 已完成 F0 reducer mechanics，并冻结 F1-P schema/loss/selection/Kill Gate；当前
 continuous boundary 与 complete factor-schema truth 均为 0，F1 supervision frontdoor 不满足；此外
-F1 tensors 与 F0 reducer 之间的 deterministic `FactorTensorAdapter` protocol、零参数实现、runner 与
-focused tests 已按 SHA 冻结；synthetic canary 尚未运行。没有 factor model、label materializer、trainer、optimizer、checkpoint、真实任务收益
+F1 tensors 与 F0 reducer 之间的 deterministic `FactorTensorAdapter` 已完成 8-case/A01–A10 synthetic
+canary：8/8 cases、10/10 gates、8/8 双进程 replay 与 7/7 sigma mutation PASS。没有 factor model、label materializer、trainer、optimizer、checkpoint、真实任务收益
 或 F1 execution authority。
 `UNKNOWN` 不得当作负例；synthetic shape 与 benchmark geometry 不得冒充任务质量。
 
@@ -135,8 +135,8 @@ Calibration 与 Confirmation 保持封存。R2 F0 已签署
 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS`；F1-P 又签署
 `R2_F1_PROTOCOL_FROZEN_EXECUTION_NOT_AUTHORIZED_SUPERVISION_FRONTDOOR_UNSATISFIED`。后续接口审计签署
 `R2_F1_EXECUTION_BLOCKED_FACTORTENSOR_ADAPTER_ABSENT`；其后 protocol lock 已将缺口收缩为
-`R2_F1_ADAPTER_IMPLEMENTATION_FROZEN_CANARY_NOT_RUN`。当前唯一 successor 只允许按 implementation lock
-运行 8-case/A01–A10 synthetic canary；标签物化、模型定义、训练、real outcome
+`R2_F1_FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS`。当前唯一 successor 是 execution=false 的
+supervision source/label contract lock；标签物化、模型定义、训练、real outcome
 与 F1 authority 仍为 false，监督源/label contract 仍是后续独立必要门。
 
 验证：
