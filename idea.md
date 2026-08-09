@@ -19,6 +19,32 @@
 - 假设：具备来源隔离、matched negative、完整生命周期标注的事件级数据，可能比继续调单帧 head 更能改善误提醒与重复提醒。
 - 实施门槛：先按 [SANPO 当前状态](docs/SANPO_CURRENT_STATUS.md) 和 [反事实采集协议](docs/SANPO_COUNTERFACTUAL_EPISODE_COLLECTION.md) 关闭许可、来源隔离、复核与数据覆盖门；未闭合前只允许协议/接口工作。
 
+### TwinScene 与 AC4D 后续方向（含 TARO 迁移指针）
+
+- 状态：`TwinScene 与 AC4D 待决 / GaugeFix+PARA 已迁出为 TARO 独立并行支线`。
+- 共同问题：继续换 depth backbone 或直接学习 final clearance，无法区分尺度、support、boundary、
+  可观测性和动态预测究竟哪一层提供信息增益；新方向必须先用 oracle/反事实把机制拆开。
+- `GaugeFix` 想法：在有效 K/crop/rotation/resize receipt 和独立米制锚之后，只估计会改变
+  body-swept clearance 的低维残余 gauge posterior，并以 TSVD/observable mask 保留不可观测方向；
+  RGB-only、纯旋转或无 metric anchor 时必须保持 UNKNOWN。
+- `PARA` 想法：先复用合法 ring-buffer 历史，再在身体保持静止时选择 yaw/pitch 或手机左右微基线，
+  直接优化 task-query uncertainty/risk reduction；不得退化成通用 NBV、时序平滑或要求用户迈步。
+- 采用决定：GaugeFix 与 PARA 已合并为 **TARO — Task-directed Active Risk Observability**，
+  不再作为两个待决子路线；当前入口为 [TARO current](docs/research/taro/README.md)，详细命题、
+  数学定义、数据合同、实验阶梯、强基线与 kill gates 见
+  [TARO R0 路线指南](docs/research/taro/TARO_R0_RESEARCH_ROUTE_GUIDE_2026-08-10.md)。
+- `TwinScene` 待决想法：构造 `真实基线 → 同 pose 数字基线 → 单变量 3D 干预` 三元组，
+  以 exact depth/support/boundary treatment effect 做 factor finite-difference supervision；只有通过
+  collider/render parity、effect-mask 外 artifact probe、跨 renderer/asset/site 和少量真实物理 pair
+  审计后，才可另立离线数据/蒸馏路线。它不能把 synthetic effect 写成真实因果。
+- `AC4D` 待决想法：先预测与候选 wearer path 无关的 stochastic future metric world belief，再由
+  deterministic 4D body tube 查询任意 path/profile 的 first-contact survival；必须先在加速/转向、
+  遮挡重现、多目标和 1.5–3 秒困难分层上以 oracle 超过 D44 + Kalman/IMM，普通 1 秒 ADE 改善不足以立项。
+- 依赖关系：TwinScene 未来只能作为 TARO 的可选离线监督；TARO 未来只能在独立 oracle 通过后向
+  AC4D 提供 current metric posterior；三者不得互相背书或一次性组成无法归因的大系统。
+- 当前权限：TARO 只获得路线设计与唯一 P0 protocol-lock successor，execution=false；TwinScene、
+  AC4D 没有 active route、数据、实现、训练或 outcome 权限；默认 App、产品与 safety 均不变。
+
 ### 真实眼镜终端
 
 - 问题：当前正式能力仍以手机摄像头为主，模拟中心不等于真实硬件连接。
@@ -54,6 +80,8 @@
 - 状态：`待评估 / 系统与算法交叉想法`
 - 主张：通过 slow/fast 异步感知、跨帧 streaming memory、轻量 latent future predictor、uncertainty gate 和 dynamic compute，可能在移动端降低平均计算成本并提升动态风险感知时效性。
 - 保留理由：它不是单一模型替换，而是可拆成独立的时序、数据、延迟和性能研究，适合在 DepthART 周边并行验证。
+- 去重边界：本条只保留 slow/fast scheduling、streaming memory 与 dynamic-compute 系统想法；
+  task-query active observation 已迁入 TARO，4D first-contact/world-belief 算法已由上面的 AC4D 待决项承载。
 - 进入门槛：先做单变量、可停止的最小实验：异步刷新收益、记忆/时序模型收益、未来风险预测收益、动态计算节省与最坏延迟；每个方向通过判别实验后再登记为独立路线。
 - 禁止动作：不得一次性同时引入十二类技术、把概念综述当作结果、未测量就宣称降低端到端延迟，或绕过 current 入口直接接入默认 App。
 - 原始调研：[2024–2026 新型轻量智能学习与实时视觉感知技术路线整理.md](D:/edge/2024–2026%20新型轻量智能学习与实时视觉感知技术路线整理.md)
