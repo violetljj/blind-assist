@@ -50,6 +50,8 @@
 - [B1 A0 evaluation synthetic dry-run machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_RESULT_2026-08-09.json)
 - [B1 A0 Development evaluation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09.md)
 - [B1 A0 Development evaluation machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09.json)
+- [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
+- [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [并行 WILD_LAB 数学假设 canary](BLINDASSIST_ASSISTIVE_GEOMETRY_HYPOTHESIS_CANARY_LITE_R0_2026-08-09.md)
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 - [DepthART 部署支线](../hftf/README.md)
@@ -78,6 +80,8 @@ checkpoint、三 seed 无选择聚合、九格指标、UNKNOWN、全局零分母
 正式 Development evaluator v2 现已在 outcome 前冻结：补齐 ground recovery、clearance coverage、
 valid→UNKNOWN 和 geometry transition，并将 truth/pred clearance validity 分离。物化器会在读取首个
 Development frame 前强制验证三 seed 全部完成；执行期间仍不得运行 A1–A4、双教师或改默认 App。
+异质教师只冻结到 C0 complementarity kill gate mechanics：教师 identity、评估 cohort 和输出仍未
+授权，未通过 oracle 增益、独占正确 parent、分歧错误浓度和时序优势四类门前不得启动 C1 蒸馏。
 
 ## 并行 WILD_LAB 数学 canary（不改变 successor）
 

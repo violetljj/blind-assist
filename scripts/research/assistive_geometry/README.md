@@ -64,6 +64,8 @@
   false-clear/false-block、temporal delta 与 geometry transition 门。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
+- `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
+  geometry 教师的单体、oracle、独占正确 parent、分歧错误浓度和时序优势；任一 kill gate 失败即停止 C1。
 - `run_hypothesis_canary_lite.py`：只用 deterministic synthetic CPU geometry 审查 censored
   survival、profile-conditioned clearance、widest-path bottleneck 与 one-sided conformal
   uncertainty 的数学不变量和反例；不读取任何数据 role outcome、模型或 checkpoint。
@@ -77,7 +79,8 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 
 ## 安全边界
 
-本模块只按冻结阶段训练 Assistive Geometry student；当前不运行 teacher matrix，也不授权 QNN/HTP、默认 App、产品或 safety。
+本模块只按冻结阶段训练 Assistive Geometry student；teacher 仅有未激活的 C0 complementarity
+mechanics，当前不读取 teacher output，也不授权 C1、QNN/HTP、默认 App、产品或 safety。
 `UNKNOWN` 不得当作负例；synthetic shape 与 benchmark geometry 不得冒充任务质量。
 
 ## 停止条件
