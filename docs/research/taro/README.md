@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R0_ROUTE_GUIDE_FROZEN / DESIGN_AUTHORIZED / EXECUTION_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PROTOCOL_AND_SCHEMA_FROZEN / P0_STATIC_VALIDATION_PASS / SCIENTIFIC_STATUS_NOT_RUN / O0M_EXECUTION_NOT_AUTHORIZED / O0R_NOT_EVALUABLE_DATA_AND_INTERFACE / DEFAULT_APP_UNCHANGED`
 
 ## 当前主张
 
@@ -25,6 +25,11 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - 本页：路线状态、权限、唯一 successor、禁止动作与 claim ceiling；
 - [TARO R0 详细路线指南](TARO_R0_RESEARCH_ROUTE_GUIDE_2026-08-10.md)：研究命题、
   数学定义、接口、阶段、数据、基线、指标、拟议 kill gates 与停止条件；
+- [TARO P0 协议锁](TARO_P0_TASK_QUERY_IDENTIFIABILITY_AND_FACTOR_ORACLE_CANARY_PROTOCOL_LOCK_2026-08-10.md)：
+  四个 schema、measurement-only identifiability、有限 task ambiguity、八臂 factorial、负控、
+  数据角色、gate 与权限；
+- [TARO P0 lock result](TARO_P0_PROTOCOL_LOCK_RESULT_2026-08-10.md)：33 个静态/mutation tests
+  通过；科学状态仍为 `NOT_RUN`；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -35,20 +40,29 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_P0_TASK_QUERY_IDENTIFIABILITY_AND_FACTOR_ORACLE_CANARY_PROTOCOL_LOCK`
+`TARO_O0M_SYNTHETIC_IDENTIFIABILITY_AND_FACTORIAL_MECHANICS_PROTOCOL_LOCK`
 
 该 successor 只允许另行冻结一个 `CANARY_LITE`、outcome-blind、非执行协议，内容限于：
 
-1. `TaroFrameReceipt`、`TaroFactorPosterior`、`TaroTaskQuery` 和候选观测动作 schema；
-2. task-query local identifiability、Fisher/Hessian null-space 与 TSVD 更新规则；
-3. 解析 synthetic fixture、退化运动负控与 factor-oracle factorial arms；
-4. 数据角色、输入 provenance、`max_source_timestamp`、UNKNOWN reason 与 artifact namespace；
-5. primary metric、拟议 gate 的依据、failure scope、资源预算与停止条件。
+1. 与 P0 design fixture family/seed 隔离的 O0M synthetic payload；
+2. measurement-only finite task-ambiguity、query reducer 与 factorial evaluator 的实现身份和 SHA；
+3. `VALUE_ONLY_COMMON_SUPPORT` 与 `FULL_BLOCK` 八臂执行、K/time/anchor 独立负控；
+4. 十项 conjunctive gate、numeric tolerance、timeout、exclusive artifact root 与失败终态；
+5. 明确把 PASS 限制为 analytic mechanics，不建立真实 factor causal-headroom claim。
 
-P0 本身不授权实现、canary 执行、真实数据读取、factor 注入、训练、模型、checkpoint、
-Development outcome、主动用户提示、设备测量或 Android 集成。P0 protocol 只有在单独完成并
-把 execution authority 显式改为 true 后，才可能产生一次 O0 mechanics/oracle canary；
-本页不预授权 O0 或任何后续阶段。
+P0 已完成但没有运行任何科学 canary。当前 successor 仍不授权 O0M 实现/执行、真实数据读取、
+factor 注入、训练、模型、checkpoint、Development outcome、主动用户提示、设备测量或 Android
+集成。只有 O0M protocol/implementation identity 另行冻结并把 execution authority 显式改为 true，
+才可能产生一次 synthetic mechanics canary；本页不预授权 real O0R 或任何后续阶段。
+
+真实 O0R 当前硬终态为 `TARO_O0R_NOT_EVALUABLE_DATA_AND_INTERFACE`：complete factor truth、
+truth-clear factor bundle、连续 boundary/uncertainty truth、target timestamp/pose、deterministic
+injection adapter 和 fresh paired outcome 均未满足。Synthetic O0M PASS 也不能改写该终态。
+
+P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
+finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份
+payload/output/common-support hash。通用治理验证的两条 sealed-future-partition warning 已在 result
+披露，不构成 O0M/O0R 执行权限。
 
 ## 路线隔离与共享边界
 
@@ -56,8 +70,9 @@ Development outcome、主动用户提示、设备测量或 Android 集成。P0 p
   truth-reader 约定、analytic fixture、公开文献和明确标注的数据能力结论。
 - 不得写入 Assistive Geometry、AG-QSF、AG-CBF、DepthART/HFTF、RCLE 或 USTRF 的 active
   artifact、checkpoint、progress、optimizer、scheduler、target cache 或 outcome 目录。
-- 若未来产生实现，计划独占 `scripts/research/taro/` 与
-  `artifacts.local/{work,models,evidence}/taro/`；当前尚未创建代码 Module 或 artifact。
+- P0 已创建只做静态合同检查的 `scripts/research/taro/` Module；其中没有 solver、runner、
+  materializer、模型或 trainer。未来执行仍须独占
+  `artifacts.local/{work,models,evidence}/taro/`，当前没有 TARO scientific artifact。
 - B1 Selection 已消费，Calibration/Confirmation 继续 sealed；A0 anatomy 只能
   `DIAGNOSTIC_ONLY`。TARO 不继承 B1 threshold、seed outcome、best checkpoint 或晋级权限。
 - 当前 ARKitScenes TRAIN 原始 K/pose/depth 能力不等于 TARO target 已物化，也不自动获得
@@ -78,7 +93,8 @@ Development outcome、主动用户提示、设备测量或 Android 集成。P0 p
 
 - 维护本路线 current 与详细路线指南；
 - outcome-blind 的文献去重、接口设计、数据字段映射和解析公式检查；
-- 起草唯一 P0 successor 的非执行协议；
+- 重放 P0 静态 validator 与 mutation tests；
+- 起草唯一 O0M successor 的非执行 protocol/implementation lock；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止
@@ -92,11 +108,14 @@ Development outcome、主动用户提示、设备测量或 Android 集成。P0 p
 - 要求用户向前或侧向迈步来获取证据，或把计划动作当作已执行基线；
 - 读取受保护 outcome、重标 consumed cohort、启动训练/Teacher/TwinScene/AC4D、接
   Android/QNN/HTP、修改默认 App 或宣称助盲安全、独立行走、产品有效性。
+- 在 O0M execution lock 前创建/运行 solver、factorial oracle runner 或 scientific artifact；
+- 把 synthetic mechanics 写成真实 factor causal headroom，或跳过 real O0R 数据/adapter 前门进入
+  G1、A0/A1、J0。
 
 ## Claim ceiling
 
-当前只证明用户已选择 TARO 作为独立并行研究支线，并冻结了可证伪路线、依赖顺序、
-权限和停止边界。没有证明 task-query identifiability、factor causal headroom、residual gauge
-可估计、主动微基线有价值、学生可学、跨设备泛化、移动端可行或真实用户安全。
+当前证明 P0 machine contracts、解析期望、权限和 route failure boundary 静态自洽；没有执行
+task-query identifiability、factor causal headroom、residual gauge、主动微基线或真实数据实验，
+也没有证明学生可学、跨设备泛化、移动端可行或真实用户安全。
 
 默认 App、正式 YOLO、Assistive Geometry 主线、DepthART 路线以及所有产品/安全权限均不变。

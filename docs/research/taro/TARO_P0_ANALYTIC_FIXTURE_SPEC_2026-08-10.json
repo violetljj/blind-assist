@@ -1,0 +1,703 @@
+{
+  "schema": "blindassist.taro.p0.analytic_fixture_spec.v1",
+  "suite_id": "TARO_P0_TASK_QUERY_IDENTIFIABILITY_AND_FACTOR_ORACLE_ANALYTIC_FIXTURES",
+  "data_role": "ANALYTIC_SYNTHETIC_CANARY",
+  "outcome_access": "NONE_PRE_EXECUTION_EXPECTATIONS_ONLY",
+  "claim_ceiling": "Schema and analytic mechanics expectations only; not real factor causal headroom, learned performance, active-view utility, or product evidence.",
+  "normalized_state": {
+    "order": ["log_scale", "support_tangent_x", "support_tangent_y", "support_offset_m"],
+    "one_unit": [0.1, 0.05, 0.05, 0.1],
+    "physical_units": ["log-ratio", "radian", "radian", "metre"]
+  },
+  "identifiability_rule": {
+    "measurement_matrix": "Whitened measurement-residual Jacobian only; exclude priors, damping, LM terms and regularizers.",
+    "strong_singular_value_min": 1.0,
+    "relative_singular_value_min": 0.001,
+    "strong_rule": "sigma_i >= max(strong_singular_value_min, relative_singular_value_min * sigma_max)",
+    "weak_trust_region_l2": 1.0,
+    "task_ambiguity_radius_max_m": 0.02,
+    "measurement_noise_budget_l2_95": 1.0,
+    "measurement_interval_rule": "Project the frozen 95% whitened residual-noise ball through the strong-subspace pseudoinverse and query Jacobian. Report this half-width separately; it may widen the decision interval but may never add or remove measurement rank.",
+    "contact_competition_margin_m": 0.01,
+    "contact_branch_spread_max_m": 0.02,
+    "required_receipts": [
+      "metric_anchor_valid_and_parent_bound",
+      "k_eff_valid",
+      "transform_chain_valid",
+      "clock_and_sync_valid",
+      "factor_identity_valid"
+    ],
+    "update_rule": "Update only the strong right-singular subspace. Freeze every weak component; never turn a weak component into strong using a prior or regularizer.",
+    "limiting_null_rule": "Null(F) subset Null(J_C) is reported as the zero-noise limiting diagnostic, not used alone as the finite gate."
+  },
+  "query_reducer": {
+    "signed_clearance_zero": "contact",
+    "clear_margin_m": 0.05,
+    "occupied_margin_m": 0.0,
+    "clear_rule": "query_identifiable and interval_lower_m > clear_margin_m",
+    "occupied_rule": "query_identifiable and interval_upper_m <= occupied_margin_m",
+    "unknown_rule": "all other cases, including invalid receipts, weak query direction and nonsmooth branch conflict",
+    "final_state_owner": "deterministic TARO query reducer outside any learned graph, solver or action scorer"
+  },
+  "factorial_contract": {
+    "factors": ["SCALE", "SUPPORT", "BOUNDARY"],
+    "arms": [
+      "NONE",
+      "SCALE",
+      "SUPPORT",
+      "BOUNDARY",
+      "SCALE_SUPPORT",
+      "SCALE_BOUNDARY",
+      "SUPPORT_BOUNDARY",
+      "SCALE_SUPPORT_BOUNDARY"
+    ],
+    "oracle_modes": [
+      "VALUE_ONLY_COMMON_SUPPORT",
+      "FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY"
+    ],
+    "primary_real_comparison": "SCALE_SUPPORT_BOUNDARY versus NONE under VALUE_ONLY_COMMON_SUPPORT",
+    "factor_specific_arms_role": "diagnostic_only_no_post_outcome_selection",
+    "receipt_k_corruption": "separate negative control, never a factorial arm",
+    "full_block_role": "reports coverage and uncertainty effects separately from value correction"
+  },
+  "schema_examples": {
+    "TaroFrameReceipt": {
+      "schema": "blindassist.taro.frame_receipt.v1",
+      "source_id": "analytic-source",
+      "session_id": "analytic-session",
+      "parent_id": "analytic-parent",
+      "frame_id": "analytic-frame-0001",
+      "capture_id": "analytic-capture",
+      "site_id": "analytic-site",
+      "device_id": "analytic-device",
+      "mount_id": "analytic-mount",
+      "sensor_timestamp_ns": 1000000000,
+      "max_source_timestamp_ns": 1000000000,
+      "clock": {
+        "domain": "analytic-monotonic",
+        "monotonic_valid": true,
+        "cross_clock_valid": true,
+        "sync_sigma_ms": 0.0
+      },
+      "image_geometry": {
+        "buffer_shape_hw": [448, 608],
+        "display_shape_hw": [448, 608],
+        "model_shape_hw": [448, 608],
+        "orientation": "landscape",
+        "crop_xywh": [0, 0, 608, 448],
+        "resize_mode": "stretch",
+        "transform_chain_valid": true
+      },
+      "camera": {
+        "physical_camera_id": "analytic-camera-0",
+        "k_eff": [500.0, 0.0, 304.0, 0.0, 500.0, 224.0, 0.0, 0.0, 1.0],
+        "distortion": [],
+        "source": "analytic-truth",
+        "valid": true
+      },
+      "pose": {
+        "t_world_camera": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        "covariance_6x6": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "source": "analytic-truth",
+        "quality": 1.0,
+        "valid": true
+      },
+      "imu": {
+        "gravity_camera": [0.0, 1.0, 0.0],
+        "covariance_3x3": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "sync_valid": true,
+        "valid": true
+      },
+      "sparse_tracks": [
+        {
+          "track_id": "track-1",
+          "evidence_id": "analytic-evidence-1",
+          "source_group_id": "analytic-source-group-1",
+          "pixels_xy": [[300.0, 220.0], [302.0, 220.0]],
+          "quality": 1.0,
+          "age_frames": 2,
+          "visible": true,
+          "rejection_reason": null
+        }
+      ],
+      "metric_anchor": {
+        "type": "VIO_TRANSLATION",
+        "value_m": 0.1,
+        "sigma_m": 0.001,
+        "valid": true,
+        "validity_reason": "NONE",
+        "provenance": "analytic-truth",
+        "identity": "analytic-parent-anchor",
+        "source_independence_group": "analytic-anchor-independent",
+        "source_timestamp_range_ns": [1000000000, 1000000000],
+        "camera_body_transform_id": "analytic-camera-body-transform",
+        "shared_with_factor_predictor": false,
+        "shared_with_oracle_truth": false,
+        "shared_with_outcome": false
+      },
+      "factor_identity": {
+        "schema_id": "blindassist_assistive_geometry_r2_factor_frame_v1",
+        "producer_version": "analytic-factor-v1",
+        "content_sha256": "A0B31A58D8AF02D27DB17E297A2C11E5EC20AABFBEAB96AEA595E29213BC4656",
+        "valid": true
+      },
+      "body_profile_id": "analytic-body-profile",
+      "path_id": "analytic-path",
+      "query_id": "analytic-query",
+      "action_budget": {
+        "max_candidates": 9,
+        "max_extra_frames": 2,
+        "max_duration_ms": 1000,
+        "body_motion_allowed": false
+      },
+      "governance": {
+        "data_role": "ANALYTIC_SYNTHETIC_CANARY",
+        "outcome_access": "NONE",
+        "selection_influence": false,
+        "provenance": "hand-authored analytic fixture",
+        "license_use_scope": "project-local synthetic fixture"
+      }
+    },
+    "TaroTaskQuery": {
+      "schema": "blindassist.taro.task_query.v1",
+      "query_id": "analytic-query",
+      "frame_id": "analytic-frame-0001",
+      "body_profile_id": "analytic-body-profile",
+      "path_id": "analytic-path",
+      "horizon_m": 2.0,
+      "swept_volume": {
+        "kind": "CAPSULE_CHAIN",
+        "half_width_m": 0.25,
+        "height_m": 1.8,
+        "inflation_m": 0.05
+      },
+      "linearization_state": [0.0, 0.0, 0.0, 0.0],
+      "query_jacobian_branches_m": [[0.1, 0.0, 0.0, 0.02]],
+      "clear_margin_m": 0.05,
+      "occupied_margin_m": 0.0,
+      "deterministic_reducer_version": "taro_query_reducer_p0_contract_v1"
+    },
+    "TaroFactorPosterior": {
+      "schema": "blindassist.taro.factor_posterior.v1",
+      "frame_id": "analytic-frame-0001",
+      "query_id": "analytic-query",
+      "factor_reference": {
+        "schema_id": "blindassist_assistive_geometry_r2_factor_frame_v1",
+        "content_sha256": "A0B31A58D8AF02D27DB17E297A2C11E5EC20AABFBEAB96AEA595E29213BC4656",
+        "uncertainty_present": true
+      },
+      "state_order": ["log_scale", "support_tangent_x", "support_tangent_y", "support_offset_m"],
+      "state_mean": [0.0, 0.0, 0.0, 0.0],
+      "state_covariance": [0.01, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.01],
+      "measurement_singular_values": [4.0, 4.0, 4.0, 4.0],
+      "observable_state_mask": {
+        "log_scale": true,
+        "support_tangent_x": true,
+        "support_tangent_y": true,
+        "support_offset_m": true
+      },
+      "anchor_valid": true,
+      "update_decision": "UPDATE_STRONG_SUBSPACE",
+      "reason_codes": ["NONE"],
+      "query_interval_m": {"lower": 0.09, "upper": 0.11, "coverage_level": 0.95},
+      "query_identifiable": true,
+      "query_state": "CLEAR_OBSERVED",
+      "max_source_timestamp_ns": 1000000000,
+      "input_provenance": ["analytic-frame-0001", "analytic-parent-anchor"]
+    },
+    "TaroObservationCandidate": {
+      "schema": "blindassist.taro.observation_candidate.v1",
+      "action_id": "lateral-3cm",
+      "frame_id": "analytic-frame-0001",
+      "query_id": "analytic-query",
+      "max_source_timestamp_ns": 1000000000,
+      "input_provenance": ["analytic-frame-0001", "analytic-parent-anchor"],
+      "action_type": "STATIONARY_CAMERA_MICRO_BASELINE",
+      "requires_body_motion": false,
+      "intended_camera_delta": {
+        "translation_m": [0.03, 0.0, 0.0],
+        "rotation_axis_angle_rad": [0.0, 0.0, 0.0]
+      },
+      "max_duration_ms": 500,
+      "predicted_visibility": 0.9,
+      "predicted_track_survival": 0.9,
+      "predicted_gauge_information": 2.0,
+      "predicted_query_risk_reduction": 0.03,
+      "predicted_baseline_m": 0.03,
+      "allowed": true,
+      "filter_reason": "NONE",
+      "realized": false,
+      "actual_receipt_frame_id": null,
+      "realized_baseline_m": null,
+      "failure_reason": null,
+      "stop_after_action": false,
+      "prompt_count": 0
+    }
+  },
+  "identifiability_cases": [
+    {
+      "id": "full_state_underdetermined_query_identifiable_clear",
+      "motion": "lateral",
+      "measurement_jacobian_whitened": [[4.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 4.0]],
+      "query_jacobian_branches_m": [[0.1, 0.0, 0.0, 0.02]],
+      "nominal_clearance_m": 0.12,
+      "receipt": {"anchor_valid": true, "anchor_identity_matches_parent": true, "k_valid": true, "transform_valid": true, "clock_valid": true, "factor_valid": true},
+      "active_contact_clearances_m": [0.12],
+      "expected": {"query_identifiable": true, "query_state": "CLEAR_OBSERVED", "update_decision": "UPDATE_STRONG_SUBSPACE", "reason_code": "NONE", "strong_rank": 2, "task_ambiguity_radius_m": 0.0, "measurement_halfwidth_m_95": 0.025495098, "limiting_null_invariant": true, "interval_lower_m": 0.094504902, "interval_upper_m": 0.145495098}
+    },
+    {
+      "id": "fully_observable_occupied",
+      "motion": "mixed_6dof",
+      "measurement_jacobian_whitened": [[4.0, 0.0, 0.0, 0.0], [0.0, 4.0, 0.0, 0.0], [0.0, 0.0, 4.0, 0.0], [0.0, 0.0, 0.0, 4.0]],
+      "query_jacobian_branches_m": [[0.1, 0.02, 0.0, 0.02]],
+      "nominal_clearance_m": -0.04,
+      "receipt": {"anchor_valid": true, "anchor_identity_matches_parent": true, "k_valid": true, "transform_valid": true, "clock_valid": true, "factor_valid": true},
+      "active_contact_clearances_m": [-0.04],
+      "expected": {"query_identifiable": true, "query_state": "OCCUPIED_OBSERVED", "update_decision": "UPDATE_STRONG_SUBSPACE", "reason_code": "NONE", "strong_rank": 4, "task_ambiguity_radius_m": 0.0, "measurement_halfwidth_m_95": 0.025980762, "limiting_null_invariant": true, "interval_lower_m": -0.065980762, "interval_upper_m": -0.014019238}
+    },
+    {
+      "id": "static_scale_sensitive_unknown",
+      "motion": "static",
+      "measurement_jacobian_whitened": [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]],
+      "query_jacobian_branches_m": [[0.3, 0.0, 0.0, 0.0]],
+      "nominal_clearance_m": 0.12,
+      "receipt": {"anchor_valid": true, "anchor_identity_matches_parent": true, "k_valid": true, "transform_valid": true, "clock_valid": true, "factor_valid": true},
+      "active_contact_clearances_m": [0.12],
+      "expected": {"query_identifiable": false, "query_state": "UNKNOWN", "update_decision": "FREEZE", "reason_code": "WEAK_QUERY_DIRECTION", "strong_rank": 0, "task_ambiguity_radius_m": 0.3, "measurement_halfwidth_m_95": 0.0, "limiting_null_invariant": false, "interval_lower_m": -0.18, "interval_upper_m": 0.42}
+    },
+    {
+      "id": "pure_rotation_scale_sensitive_unknown",
+      "motion": "pure_rotation",
+      "measurement_jacobian_whitened": [[0.0, 0.0, 0.0, 0.0], [0.0, 4.0, 0.0, 0.0], [0.0, 0.0, 4.0, 0.0], [0.0, 0.0, 0.0, 4.0]],
+      "query_jacobian_branches_m": [[0.3, 0.0, 0.0, 0.0]],
+      "nominal_clearance_m": 0.12,
+      "receipt": {"anchor_valid": true, "anchor_identity_matches_parent": true, "k_valid": true, "transform_valid": true, "clock_valid": true, "factor_valid": true},
+      "active_contact_clearances_m": [0.12],
+      "expected": {"query_identifiable": false, "query_state": "UNKNOWN", "update_decision": "UPDATE_STRONG_SUBSPACE", "reason_code": "PURE_ROTATION_SCALE_WEAK", "strong_rank": 3, "task_ambiguity_radius_m": 0.3, "measurement_halfwidth_m_95": 0.0, "limiting_null_invariant": false, "interval_lower_m": -0.18, "interval_upper_m": 0.42}
+    },
+    {
+      "id": "small_baseline_scale_sensitive_unknown",
+      "motion": "small_baseline",
+      "measurement_jacobian_whitened": [[0.5, 0.0, 0.0, 0.0], [0.0, 4.0, 0.0, 0.0], [0.0, 0.0, 4.0, 0.0], [0.0, 0.0, 0.0, 4.0]],
+      "query_jacobian_branches_m": [[0.3, 0.0, 0.0, 0.0]],
+      "nominal_clearance_m": 0.12,
+      "receipt": {"anchor_valid": true, "anchor_identity_matches_parent": true, "k_valid": true, "transform_valid": true, "clock_valid": true, "factor_valid": true},
+      "active_contact_clearances_m": [0.12],
+      "expected": {"query_identifiable": false, "query_state": "UNKNOWN", "update_decision": "UPDATE_STRONG_SUBSPACE", "reason_code": "BASELINE_TOO_SMALL", "strong_rank": 3, "task_ambiguity_radius_m": 0.3, "measurement_halfwidth_m_95": 0.0, "limiting_null_invariant": true, "interval_lower_m": -0.18, "interval_upper_m": 0.42}
+    },
+    {
+      "id": "missing_anchor_unknown",
+      "motion": "lateral",
+      "measurement_jacobian_whitened": [[4.0, 0.0, 0.0, 0.0], [0.0, 4.0, 0.0, 0.0], [0.0, 0.0, 4.0, 0.0], [0.0, 0.0, 0.0, 4.0]],
+      "query_jacobian_branches_m": [[0.1, 0.0, 0.0, 0.02]],
+      "nominal_clearance_m": 0.12,
+      "receipt": {"anchor_valid": false, "anchor_identity_matches_parent": false, "k_valid": true, "transform_valid": true, "clock_valid": true, "factor_valid": true},
+      "active_contact_clearances_m": [0.12],
+      "expected": {"query_identifiable": false, "query_state": "UNKNOWN", "update_decision": "ABSTAIN", "reason_code": "MISSING_METRIC_ANCHOR", "strong_rank": 4, "task_ambiguity_radius_m": 0.0, "measurement_halfwidth_m_95": 0.025495098, "limiting_null_invariant": true, "interval_lower_m": null, "interval_upper_m": null}
+    },
+    {
+      "id": "anchor_shuffle_unknown",
+      "motion": "lateral",
+      "measurement_jacobian_whitened": [[4.0, 0.0, 0.0, 0.0], [0.0, 4.0, 0.0, 0.0], [0.0, 0.0, 4.0, 0.0], [0.0, 0.0, 0.0, 4.0]],
+      "query_jacobian_branches_m": [[0.1, 0.0, 0.0, 0.02]],
+      "nominal_clearance_m": 0.12,
+      "receipt": {"anchor_valid": true, "anchor_identity_matches_parent": false, "k_valid": true, "transform_valid": true, "clock_valid": true, "factor_valid": true},
+      "active_contact_clearances_m": [0.12],
+      "expected": {"query_identifiable": false, "query_state": "UNKNOWN", "update_decision": "ABSTAIN", "reason_code": "ANCHOR_SHUFFLED", "strong_rank": 4, "task_ambiguity_radius_m": 0.0, "measurement_halfwidth_m_95": 0.025495098, "limiting_null_invariant": true, "interval_lower_m": null, "interval_upper_m": null}
+    },
+    {
+      "id": "wrong_k_unknown",
+      "motion": "mixed_6dof",
+      "measurement_jacobian_whitened": [[4.0, 0.0, 0.0, 0.0], [0.0, 4.0, 0.0, 0.0], [0.0, 0.0, 4.0, 0.0], [0.0, 0.0, 0.0, 4.0]],
+      "query_jacobian_branches_m": [[0.1, 0.0, 0.0, 0.02]],
+      "nominal_clearance_m": 0.12,
+      "receipt": {"anchor_valid": true, "anchor_identity_matches_parent": true, "k_valid": false, "transform_valid": true, "clock_valid": true, "factor_valid": true},
+      "active_contact_clearances_m": [0.12],
+      "expected": {"query_identifiable": false, "query_state": "UNKNOWN", "update_decision": "ABSTAIN", "reason_code": "K_INVALID", "strong_rank": 4, "task_ambiguity_radius_m": 0.0, "measurement_halfwidth_m_95": 0.025495098, "limiting_null_invariant": true, "interval_lower_m": null, "interval_upper_m": null}
+    },
+    {
+      "id": "clock_offset_unknown",
+      "motion": "mixed_6dof",
+      "measurement_jacobian_whitened": [[4.0, 0.0, 0.0, 0.0], [0.0, 4.0, 0.0, 0.0], [0.0, 0.0, 4.0, 0.0], [0.0, 0.0, 0.0, 4.0]],
+      "query_jacobian_branches_m": [[0.1, 0.0, 0.0, 0.02]],
+      "nominal_clearance_m": 0.12,
+      "receipt": {"anchor_valid": true, "anchor_identity_matches_parent": true, "k_valid": true, "transform_valid": true, "clock_valid": false, "factor_valid": true},
+      "active_contact_clearances_m": [0.12],
+      "expected": {"query_identifiable": false, "query_state": "UNKNOWN", "update_decision": "ABSTAIN", "reason_code": "CLOCK_INVALID", "strong_rank": 4, "task_ambiguity_radius_m": 0.0, "measurement_halfwidth_m_95": 0.025495098, "limiting_null_invariant": true, "interval_lower_m": null, "interval_upper_m": null}
+    },
+    {
+      "id": "nonsmooth_contact_switch_unknown",
+      "motion": "mixed_6dof",
+      "measurement_jacobian_whitened": [[4.0, 0.0, 0.0, 0.0], [0.0, 4.0, 0.0, 0.0], [0.0, 0.0, 4.0, 0.0], [0.0, 0.0, 0.0, 4.0]],
+      "query_jacobian_branches_m": [[0.1, 0.02, 0.0, 0.02], [-0.1, -0.02, 0.0, -0.02]],
+      "nominal_clearance_m": 0.004,
+      "receipt": {"anchor_valid": true, "anchor_identity_matches_parent": true, "k_valid": true, "transform_valid": true, "clock_valid": true, "factor_valid": true},
+      "active_contact_clearances_m": [0.004, 0.009],
+      "branch_nominal_clearances_m": [0.004, -0.025],
+      "expected": {"query_identifiable": false, "query_state": "UNKNOWN", "update_decision": "UPDATE_STRONG_SUBSPACE", "reason_code": "NONSMOOTH_CONTACT_SWITCH", "strong_rank": 4, "task_ambiguity_radius_m": 0.0, "measurement_halfwidth_m_95": 0.025980762, "limiting_null_invariant": true, "interval_lower_m": null, "interval_upper_m": null}
+    }
+  ],
+  "action_filter_cases": [
+    {
+      "id": "stationary_camera_micro_baseline_allowed",
+      "action_type": "STATIONARY_CAMERA_MICRO_BASELINE",
+      "requires_body_motion": false,
+      "expected_allowed": true,
+      "expected_reason": "NONE"
+    },
+    {
+      "id": "step_sideways_forbidden",
+      "action_type": "STATIONARY_CAMERA_MICRO_BASELINE",
+      "requires_body_motion": true,
+      "expected_allowed": false,
+      "expected_reason": "BODY_MOTION_FORBIDDEN"
+    }
+  ],
+  "oracle_numeric_contract": {
+  "factor_order": [
+    "SCALE",
+    "SUPPORT",
+    "BOUNDARY"
+  ],
+  "base_query_sigma_m": 0.005,
+  "coverage_z": 1.96,
+  "numeric_tolerance_m": 1e-09,
+  "value_only_rule": "Replace declared factor values only; preserve current validity, uncertainty and a byte-identical common-support identity.",
+  "full_block_rule": "Replace declared factor value, validity and uncertainty; report separately from the primary common-support estimand."
+},
+  "factor_oracle_mechanics_cases": [
+  {
+    "id": "scale_only_causal_patch",
+    "truth_clearance_m": 0.12,
+    "current_factor_error_m": {
+      "SCALE": -0.08,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.0
+    },
+    "current_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "oracle_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "current_factor_sigma_m": {
+      "SCALE": 0.02,
+      "SUPPORT": 0.01,
+      "BOUNDARY": 0.015
+    },
+    "oracle_factor_sigma_m": {
+      "SCALE": 0.0,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.0
+    },
+    "receipt_k_valid": true,
+    "metric_anchor_valid": true,
+    "causal_factors": [
+      "SCALE"
+    ],
+    "expected_primary_minimizing_arms": [
+      "SCALE",
+      "SCALE_SUPPORT",
+      "SCALE_BOUNDARY",
+      "SCALE_SUPPORT_BOUNDARY"
+    ],
+    "arm_receipts": {
+      "NONE|VALUE_ONLY_COMMON_SUPPORT": "BBC3F8AC1706A9130935C87F9EF9C7D08363205F544054924A69AF3762BFD1F4.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.EAEAE0E119D4AE2BD8907624EB55484FF83438A014F9660F154FC5B94604688A",
+      "SCALE|VALUE_ONLY_COMMON_SUPPORT": "CF11EC63C234B7485D53A12D89EE4091928B816EB1990B99CC183F2449ECCA27.DA5CF55326209008AFDFBBB5BE1073FBA7079B56F685FA0C67A76A8E03E49714.EAEAE0E119D4AE2BD8907624EB55484FF83438A014F9660F154FC5B94604688A",
+      "SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "ED6DA07EFE184303A078B42290280BAAC54F36EA38FFE2EB0B4A4D1DD9878D44.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.EAEAE0E119D4AE2BD8907624EB55484FF83438A014F9660F154FC5B94604688A",
+      "BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "D29C8A3B807062850D81515D816EFA53E4069183E72A360F8369FBC6698C2A0A.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.EAEAE0E119D4AE2BD8907624EB55484FF83438A014F9660F154FC5B94604688A",
+      "SCALE_SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "6005E0FA24CE7ED690552F3A40BAF5B68173258A44094BA9D5494A83A3E771A7.DA5CF55326209008AFDFBBB5BE1073FBA7079B56F685FA0C67A76A8E03E49714.EAEAE0E119D4AE2BD8907624EB55484FF83438A014F9660F154FC5B94604688A",
+      "SCALE_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "643E59D41D6A2B7EF61EC1AC165042549D1C934BCBC5FD20CFD10D969B5C7FF5.DA5CF55326209008AFDFBBB5BE1073FBA7079B56F685FA0C67A76A8E03E49714.EAEAE0E119D4AE2BD8907624EB55484FF83438A014F9660F154FC5B94604688A",
+      "SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "B766ED0E762238ED3A48F48A37444D96064F7DC782A00963A5CA09F8E2A2157B.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.EAEAE0E119D4AE2BD8907624EB55484FF83438A014F9660F154FC5B94604688A",
+      "SCALE_SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "A8117493A41009DFA0DEF44693B9E676F56468CC21D0D545F35093A3C9643B5D.DA5CF55326209008AFDFBBB5BE1073FBA7079B56F685FA0C67A76A8E03E49714.EAEAE0E119D4AE2BD8907624EB55484FF83438A014F9660F154FC5B94604688A",
+      "NONE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "836BED192A72ADA68F2C251530E5E0577B82F48F205D590FD610CA85A9F93B85.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.DBC06C2F3181494289910085CF7A203065F43EC251323654D1EA28AB9268C728",
+      "SCALE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "7C4C8C259BB1504B68962C8DE4881BF3275760025A94008843D6B062E9F93CA9.4F9E21AD28BEF5E9719D195213968BC416A913FF512B907A6E6F50D827E3C4BE.DBC06C2F3181494289910085CF7A203065F43EC251323654D1EA28AB9268C728",
+      "SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "C2EF4C6427EC359542E067F094041E47FB0801519600C478024BEFD0210B25B0.53C6D74EAD6A0B5CF0B1774018E8B7C41E1911D838D9534959BEFEACE5547863.DBC06C2F3181494289910085CF7A203065F43EC251323654D1EA28AB9268C728",
+      "BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "6EEE7FD18B2002542C72D491EAEE07B06A8FF34EC9D96218EB1E0B16B454C275.F2520B3B51A9F95741E1CEA92A17D945427CC69C2EFFCA420E61E9861AF7A304.DBC06C2F3181494289910085CF7A203065F43EC251323654D1EA28AB9268C728",
+      "SCALE_SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "E379C6419982BAAE96307E76368B15E0A934A4C69D49A6337869F77E401CDDAA.75A91CECB1D122E8FDE1AD4BA64BBCA56C7C37A308421FE5E17DDA6C8330609D.DBC06C2F3181494289910085CF7A203065F43EC251323654D1EA28AB9268C728",
+      "SCALE_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "9CDA1206DF2BFF6455F81522D2197776C0D761E1B9EEBD40861707C050790EC2.1919A8ABAAF2B9D19C95357A63F5B633E26192C228C203BD397B8F1DA7DC0F8D.DBC06C2F3181494289910085CF7A203065F43EC251323654D1EA28AB9268C728",
+      "SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "065192E9B3D7F39A8FF8043C0357224D74432A3C1786DDDA9A60DF8482F9EFFB.31978AE3D9EE56292A04F66F1444AF858A9FE2E7B5C0875C7D8389E50FFE48A3.DBC06C2F3181494289910085CF7A203065F43EC251323654D1EA28AB9268C728",
+      "SCALE_SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "0F4A95D9EF0B13FA76FDAB3E422412BFC7F0DE9B35D39195E40EDD34D40489F6.C84DD52BC91071BFCDFAA8D322750CC4BC3662FCD0CCDC54E7699DD7A28AD13C.DBC06C2F3181494289910085CF7A203065F43EC251323654D1EA28AB9268C728"
+    }
+  },
+  {
+    "id": "support_only_causal_patch",
+    "truth_clearance_m": 0.08,
+    "current_factor_error_m": {
+      "SCALE": 0.0,
+      "SUPPORT": -0.07,
+      "BOUNDARY": 0.0
+    },
+    "current_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "oracle_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "current_factor_sigma_m": {
+      "SCALE": 0.02,
+      "SUPPORT": 0.01,
+      "BOUNDARY": 0.015
+    },
+    "oracle_factor_sigma_m": {
+      "SCALE": 0.0,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.0
+    },
+    "receipt_k_valid": true,
+    "metric_anchor_valid": true,
+    "causal_factors": [
+      "SUPPORT"
+    ],
+    "expected_primary_minimizing_arms": [
+      "SUPPORT",
+      "SCALE_SUPPORT",
+      "SUPPORT_BOUNDARY",
+      "SCALE_SUPPORT_BOUNDARY"
+    ],
+    "arm_receipts": {
+      "NONE|VALUE_ONLY_COMMON_SUPPORT": "17A03CA1BBC0ED385758B4AF6530CB1B911B6F7764048710B4FBDFCADA17C77C.2E2A20FD46351C0738D81E9445A105B0492865E9BDBA2F5CCA15FB7E24362B05.B68E81B8C263E7B53F92C991965D4D34147DD4988937C0F3790222396222B52E",
+      "SCALE|VALUE_ONLY_COMMON_SUPPORT": "35F934E6B115DE999FC26C8A8758DB6F78A446668FE4B5F3920A3E713F1F5BF2.2E2A20FD46351C0738D81E9445A105B0492865E9BDBA2F5CCA15FB7E24362B05.B68E81B8C263E7B53F92C991965D4D34147DD4988937C0F3790222396222B52E",
+      "SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "284B19902207013345E016FDABF114E2AB02F07D7FEC89AFA0886A9C1F551ABA.B593992E60CD84891208E424E2776EA06BA6DB0D9169D4163F393F7D87E081D1.B68E81B8C263E7B53F92C991965D4D34147DD4988937C0F3790222396222B52E",
+      "BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "89D5740B4E075B51712F2EED51B08A15D05024667AD0DC102F5204F60FF5B923.2E2A20FD46351C0738D81E9445A105B0492865E9BDBA2F5CCA15FB7E24362B05.B68E81B8C263E7B53F92C991965D4D34147DD4988937C0F3790222396222B52E",
+      "SCALE_SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "5FC94CBE5524EF6C924F3C8F442A6E92BD6B2923DFA86262D89B479B38CFF64A.B593992E60CD84891208E424E2776EA06BA6DB0D9169D4163F393F7D87E081D1.B68E81B8C263E7B53F92C991965D4D34147DD4988937C0F3790222396222B52E",
+      "SCALE_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "A29CEE9F1DB570759960B11E4A260CD04EB0F611E935DB7F58CEA8BD02CF0F3F.2E2A20FD46351C0738D81E9445A105B0492865E9BDBA2F5CCA15FB7E24362B05.B68E81B8C263E7B53F92C991965D4D34147DD4988937C0F3790222396222B52E",
+      "SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "9C5F40B5FF3D23CD20BAD8453DB13B468B43F103F315AEE6EF6BC34EB40AB1AD.B593992E60CD84891208E424E2776EA06BA6DB0D9169D4163F393F7D87E081D1.B68E81B8C263E7B53F92C991965D4D34147DD4988937C0F3790222396222B52E",
+      "SCALE_SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "DCC458E8CD3A5F750CB338E8EB5B1DD8B298C3C39790DA2DE5C5B888CA3733AE.B593992E60CD84891208E424E2776EA06BA6DB0D9169D4163F393F7D87E081D1.B68E81B8C263E7B53F92C991965D4D34147DD4988937C0F3790222396222B52E",
+      "NONE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "6F17577C8CA85FC43E75EF45818CCB52AEECD5398C6EE31122F0D88B5C464296.2E2A20FD46351C0738D81E9445A105B0492865E9BDBA2F5CCA15FB7E24362B05.92CD7D77490DD53A9D0233CB0710A48F7572AEC83BDC3CF0CB82F392C0795A84",
+      "SCALE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "B38B3AFC05E9DEB0244EE764438DDFDB876918C35DF78EEC7880363682815161.EBA209420F48EF19E13E96FBCF989934D521F9489CE4E3D3D0CE2EF985EFF259.92CD7D77490DD53A9D0233CB0710A48F7572AEC83BDC3CF0CB82F392C0795A84",
+      "SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "1D326D434374493B97F9013A46C8190C6BC930B6C09FB994D45E0CD5F7D6F2A7.6BC69E1146CB40ECD8045FBF28BC576333F0B1DBD474904E40769A6FC2B53EBB.92CD7D77490DD53A9D0233CB0710A48F7572AEC83BDC3CF0CB82F392C0795A84",
+      "BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "AA65E954F741F8308E5E67AC720DFF396D3C7E6C324F9732023824F827B20FD0.CD6E74728BB3FB70255E9C0D99EA1EBC45B60920F94ECF61ADE78D4236DE4CC9.92CD7D77490DD53A9D0233CB0710A48F7572AEC83BDC3CF0CB82F392C0795A84",
+      "SCALE_SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "EB91AC28281708DEA89DE4174ECBD5D2C489E0D083881E275F4FA7A7C91417B5.9B68595E58A0AC0A286133DDAD1BC0A64160885AEE28AB6F0F86A6E18F3FBBC5.92CD7D77490DD53A9D0233CB0710A48F7572AEC83BDC3CF0CB82F392C0795A84",
+      "SCALE_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "93EEE25E7E9E26886707C833FF3DA604EBFB89907AC3F015CCAA8E2A323A4C25.A06EB9091DF7C93641BA1B9665118D8B3A46A3D20FB76D32EC25BCBF3A6BDDDC.92CD7D77490DD53A9D0233CB0710A48F7572AEC83BDC3CF0CB82F392C0795A84",
+      "SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "B923A16234547DD8089CAC3DD5FC8CFF097EA9432062BF3C819109EBBF7DA32D.A14AAD81BC83B25C04A6B1189EFD9235DF92C8222545BACDD32C2F96685607EC.92CD7D77490DD53A9D0233CB0710A48F7572AEC83BDC3CF0CB82F392C0795A84",
+      "SCALE_SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "C0430783DBDECF8750C02D93B70AEDA54D7F13273984079CE4A38B15965DDAC9.D162578435236277B6D4968FE2B575089D5DE0837AA36904B4D866A22C191A70.92CD7D77490DD53A9D0233CB0710A48F7572AEC83BDC3CF0CB82F392C0795A84"
+    }
+  },
+  {
+    "id": "boundary_only_causal_patch",
+    "truth_clearance_m": -0.04,
+    "current_factor_error_m": {
+      "SCALE": 0.0,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.08
+    },
+    "current_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "oracle_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "current_factor_sigma_m": {
+      "SCALE": 0.02,
+      "SUPPORT": 0.01,
+      "BOUNDARY": 0.015
+    },
+    "oracle_factor_sigma_m": {
+      "SCALE": 0.0,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.0
+    },
+    "receipt_k_valid": true,
+    "metric_anchor_valid": true,
+    "causal_factors": [
+      "BOUNDARY"
+    ],
+    "expected_primary_minimizing_arms": [
+      "BOUNDARY",
+      "SCALE_BOUNDARY",
+      "SUPPORT_BOUNDARY",
+      "SCALE_SUPPORT_BOUNDARY"
+    ],
+    "arm_receipts": {
+      "NONE|VALUE_ONLY_COMMON_SUPPORT": "5932A12A403334A31E1CBC922FA7287031A229296FA3F31A4E40DF11672CB22C.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.50FB6D80413A4895381E3D70E85E046A8BD565FF78B0B6F2D22A9DC85833FF0E",
+      "SCALE|VALUE_ONLY_COMMON_SUPPORT": "086174EFD134BAC0F6EB43D51CC399CBCA0767C9093376173DDAC3EDEB185C65.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.50FB6D80413A4895381E3D70E85E046A8BD565FF78B0B6F2D22A9DC85833FF0E",
+      "SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "C50F503CDFCA2A5F27DA8555E394582BF1DC0A7BB35BEBDAD590DAAC714174A2.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.50FB6D80413A4895381E3D70E85E046A8BD565FF78B0B6F2D22A9DC85833FF0E",
+      "BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "FAAAFBAA48A6BC4C14C6D628199222D018021865983FD00AA664459BED828483.08ADFB4C3016A43A3792F45E934F3C8CD638A6C6716367E82D9B44B2A1788DEF.50FB6D80413A4895381E3D70E85E046A8BD565FF78B0B6F2D22A9DC85833FF0E",
+      "SCALE_SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "2C756E9BDC14816B6FDB1B8B082168F80770F8454BF3512A5A7B58BE7B2B5601.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.50FB6D80413A4895381E3D70E85E046A8BD565FF78B0B6F2D22A9DC85833FF0E",
+      "SCALE_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "17F88CA05E8030E018D6B8D61A3854F68BC2C9DD9CB5F464ACADB25E46960C6E.08ADFB4C3016A43A3792F45E934F3C8CD638A6C6716367E82D9B44B2A1788DEF.50FB6D80413A4895381E3D70E85E046A8BD565FF78B0B6F2D22A9DC85833FF0E",
+      "SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "D6BFD9285316E4F9B4EDB2079E971CC8F62E5699299F793E0DB72363F2F915FC.08ADFB4C3016A43A3792F45E934F3C8CD638A6C6716367E82D9B44B2A1788DEF.50FB6D80413A4895381E3D70E85E046A8BD565FF78B0B6F2D22A9DC85833FF0E",
+      "SCALE_SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "471097CA0E88D2544788E288CF92BE322E1B242CAB64E5C37C572EB6B8699E43.08ADFB4C3016A43A3792F45E934F3C8CD638A6C6716367E82D9B44B2A1788DEF.50FB6D80413A4895381E3D70E85E046A8BD565FF78B0B6F2D22A9DC85833FF0E",
+      "NONE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "1E0B86D3E274DDF5DC20FA067F9EF6F4186F05029E291E6DAEACA79527F5A058.09DD031FB7FA66C6C028A49CC224CCA588D6D3987EF2AA3B6A1CB5C25A6B3EB7.BF9E1C53AAAA4E1E1655E7A08B14F7F177E88C13F873EBE5CB35547C59EB96FD",
+      "SCALE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "4C196FDF0232DA9ECEFFD7CDD471A53484ACA08ADFA62C161F19ED0A6A2EA4C2.65468031A41D1CC00AB0CF264F02733EAC93C0F93184BAFAFA904F8053A12B15.BF9E1C53AAAA4E1E1655E7A08B14F7F177E88C13F873EBE5CB35547C59EB96FD",
+      "SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "D8B1813E153B7D4D8A5CDC9117964F1582142C2DE87929EDB329887E01B78ED1.53C6D74EAD6A0B5CF0B1774018E8B7C41E1911D838D9534959BEFEACE5547863.BF9E1C53AAAA4E1E1655E7A08B14F7F177E88C13F873EBE5CB35547C59EB96FD",
+      "BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "EDFE497D865DCB60AF72BA8870A4A3749A08C63B22D24062733497700EF9BBAE.B99C9DF1019E7DB9BD6F46B828AF7BB39805E9F7470C5A1E0F8F619CD4642EF8.BF9E1C53AAAA4E1E1655E7A08B14F7F177E88C13F873EBE5CB35547C59EB96FD",
+      "SCALE_SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "6A5DC313D873E14C1E6E236BB8D95809C140D5975151DAC86DA860CF93E897D1.5A48CA71880DCDD842713D99DE5BD1D84B713BE66F74242A952BB4F5BB311B24.BF9E1C53AAAA4E1E1655E7A08B14F7F177E88C13F873EBE5CB35547C59EB96FD",
+      "SCALE_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "72B3B27B45F03FF0CB839934889470720572600583369E2E8749CFCE708FE178.8850B621F94BC483808F1B54C370F428112EE87A34AFC912F1A1F9B2B5D00A65.BF9E1C53AAAA4E1E1655E7A08B14F7F177E88C13F873EBE5CB35547C59EB96FD",
+      "SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "D5D86BC48D1E95DDF335B8AA85F78205228EF07D7BC183E0073BA475B0F8018F.399C0BA8C5F794AF42475146C0248FB753107D2F3E861920FB97C1D60C1E8236.BF9E1C53AAAA4E1E1655E7A08B14F7F177E88C13F873EBE5CB35547C59EB96FD",
+      "SCALE_SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "401A8A6CE06CE27C48A32781494875430A9BB20CAF2A8E84F9471CBA9DEC1737.B236AA51D1AEA6326E1390B560E242F49064D0FBCAEEDE00593E17E3160D52B8.BF9E1C53AAAA4E1E1655E7A08B14F7F177E88C13F873EBE5CB35547C59EB96FD"
+    }
+  },
+  {
+    "id": "three_factor_interaction_patch",
+    "truth_clearance_m": 0.1,
+    "current_factor_error_m": {
+      "SCALE": -0.03,
+      "SUPPORT": -0.03,
+      "BOUNDARY": -0.03
+    },
+    "current_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "oracle_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "current_factor_sigma_m": {
+      "SCALE": 0.02,
+      "SUPPORT": 0.01,
+      "BOUNDARY": 0.015
+    },
+    "oracle_factor_sigma_m": {
+      "SCALE": 0.0,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.0
+    },
+    "receipt_k_valid": true,
+    "metric_anchor_valid": true,
+    "causal_factors": [
+      "SCALE",
+      "SUPPORT",
+      "BOUNDARY"
+    ],
+    "expected_primary_minimizing_arms": [
+      "SCALE_SUPPORT_BOUNDARY"
+    ],
+    "arm_receipts": {
+      "NONE|VALUE_ONLY_COMMON_SUPPORT": "96A4D90DCF0A1B2C3C8CFCFA2D47A56DE43ABDD474428201ADA6AF10C47EE2B2.9B6DB2DA0D9084FD42D56CBBF9C76CE585ABEDD0A6DD5F4A80BE6ABCDA43F292.AB42B254BB0D4A2F81107F52E62C019101BD0BF1310B8A1E24D9F4C930F6FDB3",
+      "SCALE|VALUE_ONLY_COMMON_SUPPORT": "95E8701DA17F4F594EDF0EF5B86870C947EE6B5184E3836BB696A86BE011679C.E0903AD40B873E96297ED2D15F40D88551652550D8335DD0C4FEB40D8A0D3D84.AB42B254BB0D4A2F81107F52E62C019101BD0BF1310B8A1E24D9F4C930F6FDB3",
+      "SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "8C10F4390CC8E71AA7CC7796B084FC1CD6D834828E49D1912075667F63370C4C.E0903AD40B873E96297ED2D15F40D88551652550D8335DD0C4FEB40D8A0D3D84.AB42B254BB0D4A2F81107F52E62C019101BD0BF1310B8A1E24D9F4C930F6FDB3",
+      "BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "1189E2078F7FD0024DEBDB1F2FF97590AEE9186A7110B9C55E6D0F9697149771.E0903AD40B873E96297ED2D15F40D88551652550D8335DD0C4FEB40D8A0D3D84.AB42B254BB0D4A2F81107F52E62C019101BD0BF1310B8A1E24D9F4C930F6FDB3",
+      "SCALE_SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "EBCA234CFB3454F554206BB5E638D0F2117BAECD74A86C84C99402FB459F012E.63DA744F809C08865399D1A6AAF6A33F5ABA72881DE0456AC41192D9EC6A20D8.AB42B254BB0D4A2F81107F52E62C019101BD0BF1310B8A1E24D9F4C930F6FDB3",
+      "SCALE_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "14A120D18816DFA25C945E40D692A0784662471EAF103D0569B77BE2CC58CE52.63DA744F809C08865399D1A6AAF6A33F5ABA72881DE0456AC41192D9EC6A20D8.AB42B254BB0D4A2F81107F52E62C019101BD0BF1310B8A1E24D9F4C930F6FDB3",
+      "SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "49CAF70B4327DBA4760F79FE8B18AE1E990C0F588009EBB8F0B465400C07DC0E.63DA744F809C08865399D1A6AAF6A33F5ABA72881DE0456AC41192D9EC6A20D8.AB42B254BB0D4A2F81107F52E62C019101BD0BF1310B8A1E24D9F4C930F6FDB3",
+      "SCALE_SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "4DC97CF9676F8CE264B6C76D51B9E200465DED5B6F0F99094BB98DA963F3E6C4.7ADD4E4D43ABC81E4B8F5BECB333327ACA1C7E672B1ABF5A761041325C06F876.AB42B254BB0D4A2F81107F52E62C019101BD0BF1310B8A1E24D9F4C930F6FDB3",
+      "NONE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "E7889BFB0FB17959F051033735AA8EE65F133DDE3309014C58EC328A9B407D6E.9B6DB2DA0D9084FD42D56CBBF9C76CE585ABEDD0A6DD5F4A80BE6ABCDA43F292.9FF22AF2A6A499E8F43243F840825D73C8B754BD232AE110BF6EBEBEAEC68B39",
+      "SCALE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "433D282C1B6E8DC3485AB48722B7049653780F85CD82E679145923D30FA280D4.6D822A556CB445D263A17340B8DF6187868028425298A081C06307B19CB9FBDC.9FF22AF2A6A499E8F43243F840825D73C8B754BD232AE110BF6EBEBEAEC68B39",
+      "SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "A1B9060B1DC67AE724A785733D15A9CE4E40E635CE79849C40924DF00044F39F.280A8EC5FA3D42394A767FC329659E01E976F663BBF333591B4C24468019240D.9FF22AF2A6A499E8F43243F840825D73C8B754BD232AE110BF6EBEBEAEC68B39",
+      "BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "9A189C7449944936B4259212CF35E40EFAE6FD7E99E926CA8C4D2E1ED7276828.DF4DE0EC621D62D7A9BA4A3A2DA5A0B2174420D21CDFCD8141840861A93B5E87.9FF22AF2A6A499E8F43243F840825D73C8B754BD232AE110BF6EBEBEAEC68B39",
+      "SCALE_SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "C6C330A8F9508E0A62FBCA073A5E4E130F92FECD90ACC9BDCE7A9D72841544F0.7BDB6F6A9E8033FE78816B3965E3CABD039009929F246B49789E26EBEC34260D.9FF22AF2A6A499E8F43243F840825D73C8B754BD232AE110BF6EBEBEAEC68B39",
+      "SCALE_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "AD26D503829521AF11A840A3FE82E8B78701C50C3F840C3E6663DF041BD882E6.217ED66C76781A7A4072267A9670F728EEEA3C493F5F7D9BD97660E6F58D38C9.9FF22AF2A6A499E8F43243F840825D73C8B754BD232AE110BF6EBEBEAEC68B39",
+      "SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "13720106BE6AD067741F3EE3A42BFC602E9D38B83CFEA32DB1A5A3DA3B05C138.0D73DB69CE16092D09445AC4072C4B502BBA6923214F6FCE778F32F1639BE1BF.9FF22AF2A6A499E8F43243F840825D73C8B754BD232AE110BF6EBEBEAEC68B39",
+      "SCALE_SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "F745F00B1D2BD4F02AD70B0701157541C66106B3DC3214C6FFFEAA7B60E2FC1E.F1CE314802697D5D5F35B42E24CDCE700548B3C68EE4C3AB313AB528117FD8F3.9FF22AF2A6A499E8F43243F840825D73C8B754BD232AE110BF6EBEBEAEC68B39"
+    }
+  },
+  {
+    "id": "k_corruption_separate_negative_control",
+    "truth_clearance_m": 0.1,
+    "current_factor_error_m": {
+      "SCALE": 0.0,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.0
+    },
+    "current_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "oracle_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "current_factor_sigma_m": {
+      "SCALE": 0.02,
+      "SUPPORT": 0.01,
+      "BOUNDARY": 0.015
+    },
+    "oracle_factor_sigma_m": {
+      "SCALE": 0.0,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.0
+    },
+    "receipt_k_valid": false,
+    "metric_anchor_valid": true,
+    "causal_factors": [],
+    "expected_primary_minimizing_arms": [],
+    "arm_receipts": {
+      "NONE|VALUE_ONLY_COMMON_SUPPORT": "50169563AE38505928369B26E2E8CEF127BEB471AA0506579208ACE61F2FB6EC.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.635E6CA642FC51F16ED97E14D89D9591FC16A3C461A7F50D7CCAC3EF801C7A4E",
+      "SCALE|VALUE_ONLY_COMMON_SUPPORT": "C33784D71657643E0A30616FE0CEDEB4CB4C6BD230532357DC4A64DD676CC0EC.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.635E6CA642FC51F16ED97E14D89D9591FC16A3C461A7F50D7CCAC3EF801C7A4E",
+      "SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "79279B11EF0289B717093457F1FAC04792DDC15C01E6AC92E7F13F52544DBD97.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.635E6CA642FC51F16ED97E14D89D9591FC16A3C461A7F50D7CCAC3EF801C7A4E",
+      "BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "D52807F5D48B0887B36C48CD7D1D41119A8DB7FFEE3ED8935D776AB89CD2CD33.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.635E6CA642FC51F16ED97E14D89D9591FC16A3C461A7F50D7CCAC3EF801C7A4E",
+      "SCALE_SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "A10D5C7535BF0E7229C1E6FB332212CDF56916824043E962ED7C347B3339131C.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.635E6CA642FC51F16ED97E14D89D9591FC16A3C461A7F50D7CCAC3EF801C7A4E",
+      "SCALE_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "0D47E7C011C8763397D71F15702CD1BA9F71CD9DAC794004D09726C4D41761E6.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.635E6CA642FC51F16ED97E14D89D9591FC16A3C461A7F50D7CCAC3EF801C7A4E",
+      "SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "111D5F1AB0FDC34BDFC67BA474454EA48B890465F6A2C5EB379EDF7713AB3D9E.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.635E6CA642FC51F16ED97E14D89D9591FC16A3C461A7F50D7CCAC3EF801C7A4E",
+      "SCALE_SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "605D6133F9121F028E187FB4DF58DD2E8AFE24F87AA32F1672F11C378FF1BF10.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.635E6CA642FC51F16ED97E14D89D9591FC16A3C461A7F50D7CCAC3EF801C7A4E",
+      "NONE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "9E67165FDEBB56C3E9F4106F29B7E049FC05FAAD09BE56A6BCADBA1ED256951E.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.2695A4635261F7E42ECE32880827779877D56EF2D7E31FC12CBF716166940D12",
+      "SCALE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "F9B928A430886D292B3FB684618B75CEBD6DBE7CC58B75D2E777B4AC5F8A9506.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.2695A4635261F7E42ECE32880827779877D56EF2D7E31FC12CBF716166940D12",
+      "SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "B150A39757773A4C0543FBB0A1A527A15B6407C2172B7486B8CF99CD84A4F3A1.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.2695A4635261F7E42ECE32880827779877D56EF2D7E31FC12CBF716166940D12",
+      "BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "A0859A261AAF271ABFA38DEFD4EAECC3A5BD1053E392A32D35ACAE1554DDC39E.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.2695A4635261F7E42ECE32880827779877D56EF2D7E31FC12CBF716166940D12",
+      "SCALE_SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "797B33240297F55E9E04914823142405A1C5F0EAD0B3758DDB5E9DCA7EB6DACD.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.2695A4635261F7E42ECE32880827779877D56EF2D7E31FC12CBF716166940D12",
+      "SCALE_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "28607AA44F30550E3CD3698B6AD6518922782B24AE522BE5FDA4DEB6EF68A115.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.2695A4635261F7E42ECE32880827779877D56EF2D7E31FC12CBF716166940D12",
+      "SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "6A60491E2B51BF215AD5B82C52D984A0CE8BA7AB59D4C2EADFC9D27D046B021D.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.2695A4635261F7E42ECE32880827779877D56EF2D7E31FC12CBF716166940D12",
+      "SCALE_SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "C4BCC328D09E6890DA879BAFBCC41FBFC1B54976D07F0CDE697C9BD47EDFE31F.DD159FC5F2CDD3B808E1972A69F1A786B535FA4456CEBB896220C22A6803EC08.2695A4635261F7E42ECE32880827779877D56EF2D7E31FC12CBF716166940D12"
+    }
+  },
+  {
+    "id": "missing_anchor_separate_negative_control",
+    "truth_clearance_m": 0.1,
+    "current_factor_error_m": {
+      "SCALE": 0.0,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.0
+    },
+    "current_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "oracle_factor_valid": {
+      "SCALE": true,
+      "SUPPORT": true,
+      "BOUNDARY": true
+    },
+    "current_factor_sigma_m": {
+      "SCALE": 0.02,
+      "SUPPORT": 0.01,
+      "BOUNDARY": 0.015
+    },
+    "oracle_factor_sigma_m": {
+      "SCALE": 0.0,
+      "SUPPORT": 0.0,
+      "BOUNDARY": 0.0
+    },
+    "receipt_k_valid": true,
+    "metric_anchor_valid": false,
+    "causal_factors": [],
+    "expected_primary_minimizing_arms": [],
+    "arm_receipts": {
+      "NONE|VALUE_ONLY_COMMON_SUPPORT": "7413962718521E8E76CE7680B29EC19B63E3B2638199AA132E261593886CD013.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.73157DD24DA0E2969D8FB9F21747DEA6508D884FB8160A7F55DE7141D1757E95",
+      "SCALE|VALUE_ONLY_COMMON_SUPPORT": "8EC9D2ABCBAED84C515022B487ED37A41F72DEB434FE504443BFFAFCACF83446.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.73157DD24DA0E2969D8FB9F21747DEA6508D884FB8160A7F55DE7141D1757E95",
+      "SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "EA772FA6E3E306CF445AB4AF4FA2D0B5F601818EC9675D887C13C31ECF2700C8.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.73157DD24DA0E2969D8FB9F21747DEA6508D884FB8160A7F55DE7141D1757E95",
+      "BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "2A1ECD681CC354A01E26BF82BA9DA7E23E6D0DE6E5F6DD757D38027B08D2FF41.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.73157DD24DA0E2969D8FB9F21747DEA6508D884FB8160A7F55DE7141D1757E95",
+      "SCALE_SUPPORT|VALUE_ONLY_COMMON_SUPPORT": "6431299B97237FE62C8D3D5AE442C5BEB0CDB7C1B9F78BD133C0173BBAD45970.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.73157DD24DA0E2969D8FB9F21747DEA6508D884FB8160A7F55DE7141D1757E95",
+      "SCALE_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "2B8C7C525A7C5C3829A8D6F907E79D4C896288296E07F366B33875C5D497177F.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.73157DD24DA0E2969D8FB9F21747DEA6508D884FB8160A7F55DE7141D1757E95",
+      "SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "8C401C1AC473687BBB5CB1402989C8B99C8517C4B07B4C83CD589E2629E40BEF.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.73157DD24DA0E2969D8FB9F21747DEA6508D884FB8160A7F55DE7141D1757E95",
+      "SCALE_SUPPORT_BOUNDARY|VALUE_ONLY_COMMON_SUPPORT": "E617F2F1954DB823DB0EA696839F9D114D5592DD01D25777DC48CFEEBE9E9366.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.73157DD24DA0E2969D8FB9F21747DEA6508D884FB8160A7F55DE7141D1757E95",
+      "NONE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "078C6325D7995869D4131A14011DD7C5FDDDC09D364097A9AB0D4B9B828A1428.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.13D328344767A74885EBBF861E27A603A01CFB46B435A99D895E75B188F1F6B8",
+      "SCALE|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "E02D3515CB9F3FF0AE6BAD56EBD86BE09D533CFA5CA1C0172DF6DB28ECC6A427.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.13D328344767A74885EBBF861E27A603A01CFB46B435A99D895E75B188F1F6B8",
+      "SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "5C7DC914B761B28E996944E0D6C7B3951BDE427470A209DD68626C8A40E74E15.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.13D328344767A74885EBBF861E27A603A01CFB46B435A99D895E75B188F1F6B8",
+      "BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "128817C7B92119801532D175CBBF5DD5F03BAE4BB7E49EFF1768193EC2907766.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.13D328344767A74885EBBF861E27A603A01CFB46B435A99D895E75B188F1F6B8",
+      "SCALE_SUPPORT|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "6B2EE2CE34FDCD6BBE0A1B98EBA6C9C0F4CC4DE27EAF419FC723E66596071188.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.13D328344767A74885EBBF861E27A603A01CFB46B435A99D895E75B188F1F6B8",
+      "SCALE_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "E25F3B4FB4C8F0482C818EEB19AD3D3C3251AD26F920995AC03FF84654733894.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.13D328344767A74885EBBF861E27A603A01CFB46B435A99D895E75B188F1F6B8",
+      "SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "71FDFF9EE9D8406A6EB9A7874BF53CAC0FBBDEADDF6ECE17F6A2AA1D55777335.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.13D328344767A74885EBBF861E27A603A01CFB46B435A99D895E75B188F1F6B8",
+      "SCALE_SUPPORT_BOUNDARY|FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY": "C47052A872F27A68FDF91CFABAFD90C70D0D5E2DE83F15AC2794E6C4645FB867.2B0929986C5DD3952B13156F83C849B399E1F764E756B7847E93F9F0BAD0D5C6.13D328344767A74885EBBF861E27A603A01CFB46B435A99D895E75B188F1F6B8"
+    }
+  }
+]
+}

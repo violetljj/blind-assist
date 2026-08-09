@@ -3,6 +3,7 @@
   "family_order": [
     "current_entry",
     "assistive_geometry",
+    "taro",
     "assistive_geometry_cbf",
     "assistive_geometry_qsf",
     "depth_geometry",
@@ -25,6 +26,13 @@
         "^assistive_geometry$"
       ],
       "dynamic_truth": "docs/research/assistive-geometry/README.md"
+    },
+    "taro": {
+      "description": "TARO task-directed active risk observability 独立并行 WILD_LAB 路线",
+      "patterns": [
+        "^taro$"
+      ],
+      "dynamic_truth": "docs/research/taro/README.md"
     },
     "assistive_geometry_cbf": {
       "description": "与主线资源隔离的 AG-CBF TRAIN-only corridor bottleneck WILD_LAB 路线",
