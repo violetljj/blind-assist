@@ -15,7 +15,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 - DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
-- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；strict G4-D 为不可变负终态。Task-preserving D0 三臂已在 outcome 前技术前门关闭：FP16 的 custom islands 漂移为不兼容 Float16；W8A16/INT8 的 QAIRT Windows host quantizer 缺少 SelectiveScan CPU package，无法构图。没有 arm 进入任务质量或性能，R2 candidate 仍未选定。既有 G4-C fixed-mixed 图仍只是 `448×448` 数值 canary source/control；若继续，必须另立 D1 并先冻结产品纵横比输入、FOV/resize、intrinsics/truth 对齐、task postprocess 与新 Development roster，不能事后塞回 D0。8 个 ARKitScenes R2 session 仍 metadata-only 且禁止参与选模。DA2 保持冻结 baseline/fallback。
+- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；strict G4-D 为不可变负终态。Task-preserving D0 三臂已在 outcome 前技术前门关闭，没有 arm 进入任务质量或性能。D1 现已冻结 CameraX `4:3` display-upright portrait、`1×3×608×448` full-FOV/K、三 band × 三 horizon 同后处理和 8 primary + 8 reserve 的独立 ARKitScenes Training metadata roster；605 份 HFTF/Assistive Geometry 冻结文档中的 163 个官方身份与新 roster 零重叠。媒体、truth/model outcome 与 fixed-mixed 产品图均未打开或建立，R2 candidate 仍未选定。既有 G4-C `448×448` 图继续只作 source/control；8 个 R2 session 仍 metadata-only 且禁止参与选模。DA2 保持冻结 baseline/fallback。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
@@ -26,6 +26,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 - [D0 FP16 technical preflight result](DEPTHART_TASK_PRESERVING_D0_FP16_TECHNICAL_PREFLIGHT_RESULT_2026-08-09.md)
 - [D0 W8A16/INT8 shared calibration roster](DEPTHART_TASK_PRESERVING_D0_TUM_CALIBRATION_ROSTER_2026-08-09.json)
 - [D0 precision screen terminal result](DEPTHART_TASK_PRESERVING_D0_PRECISION_SCREEN_RESULT_2026-08-09.md)
+- [D1 fixed-mixed Development protocol](DEPTHART_TASK_PRESERVING_D1_FIXED_MIXED_DEVELOPMENT_PROTOCOL_2026-08-09.md) · [machine contract](DEPTHART_TASK_PRESERVING_D1_FIXED_MIXED_DEVELOPMENT_PROTOCOL_2026-08-09.json) · [metadata roster lock](DEPTHART_TASK_PRESERVING_D1_ARKIT_DEVELOPMENT_ROSTER_LOCK_2026-08-09.json)
 - [DepthART task-preserving deployment R2 protocol](DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.md) · [machine contract](DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.json)
 - [R2 ARKit roster lock](DEPTHART_TASK_PRESERVING_R2_ARKIT_ROSTER_LOCK_2026-08-09.json) · [media HEAD preflight](DEPTHART_TASK_PRESERVING_R2_ARKIT_MEDIA_PREFLIGHT_2026-08-09.json)
 - [DA2 P1/P2 closure](DAV2_P1_P2_EXECUTION_CLOSURE_2026-08-05.md)
@@ -34,16 +35,16 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 ## 唯一 successor
 
-`DEPTHART_TASK_PRESERVING_D1_FIXED_MIXED_DEVELOPMENT_SCREEN`：D0 三条 recipe 已无合格 arm，
-不得修改后重跑。下一步只允许把 fixed-mixed 路线作为新问题处理：先冻结产品纵横比输入、
-FOV/resize、intrinsics 与 truth 对齐、depth→ground→clearance→risk 后处理及新 Development
-roster，再重建对应图并做单候选任务 screen。
-它通过也只能建立一个 R2 candidate lock，不能直接访问独立 outcome。
+`DEPTHART_TASK_PRESERVING_D1_LICENSE_SCOPE_AND_LABEL_BLIND_MEDIA_PREFLIGHT`：D1 产品输入、
+task postprocess、质量门和 Development metadata roster 已在 outcome 前冻结。下一步只允许先把
+reviewed ARKitScenes use scope 扩展到锁定的 8 primary + 8 reserve，然后按预冻结顺序检查
+portrait/pose/RGB-D 连续性；不合格 primary 只能由首个 label-blind eligible reserve 替换。
+该门通过后才可重建 `608×448` fixed-mixed 图并冻结单一候选。当前不得读取 task outcome、测
+性能或访问 R2 cohort。
 
-`DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2`：strict G4-D 保持不可变负终态。R2 metadata roster
-已冻结但 candidate 尚未选定；R2 cohort 不得用于 calibration 或三臂选择。只有 D0 选出并锁定
-单一候选、license scope 明确扩展、cohort integrity preflight 和显式 activation 完成后，才可
-访问 R2 task outcome。部署结果仍不产生 scientific admission、DA2 替换或默认 App 权限。
+R2 是下游 sealed 路线，不是并列 successor：metadata roster 已冻结但 candidate 尚未选定；
+D1 即使 PASS 也只建立一个 R2 candidate lock，不能直接访问独立 outcome，也不产生 scientific
+admission、DA2 替换或默认 App 权限。
 
 近完整 custom-float32 engine 与新 runtime/hardware 保留为未激活的新立项候选，不能从
 R2 或旧 G4-D 自动获得执行权限。

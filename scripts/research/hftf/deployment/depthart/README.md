@@ -28,6 +28,8 @@ shim 已退役，统一从本目录导入。
 - `prepare_depthart_task_preserving_d0_arm.py` 在 fresh `artifacts.local/` evidence root 中按冻结 recipe 物化单个 FP16/W8A16/INT8 DLC；量化臂没有冻结 calibration list 会 fail closed
 - `plan_depthart_task_preserving_d0_tum_calibration_roster.py` 从本地 TUM RGB index 先排除既有 consumed R0 rows，再按每 sequence 固定 SHA-256 顺序冻结 W8A16/INT8 共用的 outcome-free calibration roster
 - `materialize_depthart_task_preserving_d0_calibration_inputs.py` 只读取锁定 RGB/intrinsics，生成 image 与四级 camera prompt float32 raws 和单一绝对路径 calibration list；不运行 depth model outcome
+- `plan_depthart_task_preserving_d1_arkit_roster.py` 读取 Apple split CSV 的冻结 Git blob，同时排除 HFTF 与 Assistive Geometry 冻结快照中的全部官方 identity，再按固定哈希锁定 8 primary + 8 reserve Training visit/session；不读取媒体或 outcome
+- `validate_depthart_task_preserving_d1_contract.py` 核验 D1 产品 portrait/K、三 band × 三 horizon task postprocess、R2 等值质量门、metadata roster 独立性与未激活状态；它不下载媒体、不重建图、不授权 outcome access
 - `validate_depthart_task_preserving_r2_activation.py` 只检查 R2 pre-outcome activation manifest 的 cohort 角色、候选/reference 身份、固定任务门与旧 G4-D 排除项；它不读取模型输出，不激活执行，也不签署质量或部署结论
 - `plan_depthart_task_preserving_r2_arkit_roster.py` 在 Apple 官方 split CSV 上，以冻结 Git snapshot 排除全部既有 HFTF ARKit identity，再按固定哈希顺序锁定唯一 visit/session；只读元数据
 - `evaluate_depthart_task_preserving_r2_quality.py` 计算 reference/candidate 对独立 truth 的 pooled、parent-macro、session-macro 与 worst-parent 任务门；CLI 没有显式 activation receipt 会拒绝读取 outcome
