@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_PROTOCOL_FROZEN / SCIENTIFIC_STATUS_NOT_RUN / O0M_IMPLEMENTATION_NOT_AUTHORIZED / O0M_EXECUTION_NOT_AUTHORIZED / O0R_NOT_EVALUABLE_DATA_AND_INTERFACE / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_PROTOCOL_FROZEN / O0M_IMPLEMENTATION_LOCK_PASS / SCIENTIFIC_STATUS_NOT_RUN / O0M_EXECUTION_NOT_AUTHORIZED / O0R_NOT_EVALUABLE_DATA_AND_INTERFACE / DEFAULT_APP_UNCHANGED`
 
 ## 当前主张
 
@@ -33,7 +33,9 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [TARO O0M protocol lock](TARO_O0M_SYNTHETIC_IDENTIFIABILITY_AND_FACTORIAL_MECHANICS_PROTOCOL_LOCK_2026-08-10.md)：
   冻结 10 个 identifiability cases、5 scenes × 8 arms × 2 modes、十门与 one-shot 预算；
 - [TARO O0M protocol result](TARO_O0M_PROTOCOL_LOCK_RESULT_2026-08-10.md)：33/33 mutation tests；
-  implementation、runner 与 scientific artifact 仍不存在；
+  protocol lock 时 implementation、runner 与 scientific artifact 尚不存在；
+- [TARO O0M implementation lock](TARO_O0M_IMPLEMENTATION_LOCK_2026-08-10.md)：独立 NumPy runtime
+  与 13/13 disjoint unit tests 已 hash-bound；正式 execution family 仍未运行；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -44,12 +46,11 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0M_IMPLEMENTATION_LOCK`
+`TARO_O0M_ONE_SHOT_EXECUTION_LOCK`
 
-O0M non-execution protocol 已冻结。该 successor 只允许在独立 `taro_o0m_runtime` Module 创建纯
-解析 mechanics 与 focused tests，并冻结 exact code/test SHA；不得创建 scientific artifact 或运行
-canary。实现静态通过后仍须再提交 one-shot execution lock，把 fixture/code/tests/command/timeout/
-exclusive absent root 全部绑定并显式开启一次 execution authority。
+O0M implementation 已锁定且 13/13 disjoint tests 通过。该 successor 只允许另提交 one-shot
+execution lock，把 fixture/code/tests/command/environment/timeout/exclusive absent root 全部绑定；锁提交
+前不得创建 scientific artifact 或运行正式 10+80+2 canary。
 
 真实 O0R 当前硬终态为 `TARO_O0R_NOT_EVALUABLE_DATA_AND_INTERFACE`：complete factor truth、
 truth-clear factor bundle、连续 boundary/uncertainty truth、target timestamp/pose、deterministic
