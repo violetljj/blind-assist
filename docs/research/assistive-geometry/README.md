@@ -52,6 +52,8 @@
 - [B1 A0 Development evaluation machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09.json)
 - [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
+- [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
+- [D0 temporal ablation machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.json)
 - [并行 WILD_LAB 数学假设 canary](BLINDASSIST_ASSISTIVE_GEOMETRY_HYPOTHESIS_CANARY_LITE_R0_2026-08-09.md)
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 - [DepthART 部署支线](../hftf/README.md)
@@ -82,6 +84,8 @@ valid→UNKNOWN 和 geometry transition，并将 truth/pred clearance validity �
 Development frame 前强制验证三 seed 全部完成；执行期间仍不得运行 A1–A4、双教师或改默认 App。
 异质教师只冻结到 C0 complementarity kill gate mechanics：教师 identity、评估 cohort 和输出仍未
 授权，未通过 oracle 增益、独占正确 parent、分歧错误浓度和时序优势四类门前不得启动 C1 蒸馏。
+时序 D0 也只冻结因果 GRU/TCN/diagonal-SSM 的统一 GeometryState 接口、参数/设备预算和未来
+clearance/TTC/compute-gate 输出；单帧候选与新时序 cohort 未就绪，不授权训练或读取 outcome。
 
 ## 并行 WILD_LAB 数学 canary（不改变 successor）
 

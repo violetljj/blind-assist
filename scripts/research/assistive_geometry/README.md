@@ -66,6 +66,8 @@
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
   geometry 教师的单体、oracle、独占正确 parent、分歧错误浓度和时序优势；任一 kill gate 失败即停止 C1。
+- `temporal_geometry_ablation.py`：为未来 phase D 提供同一 8-frame GeometryState 下的因果
+  GRU/TCN/diagonal-SSM 候选，统一 future-clearance/TTC/compute-gate 输出和 50k 参数上限；不决定最终三态。
 - `run_hypothesis_canary_lite.py`：只用 deterministic synthetic CPU geometry 审查 censored
   survival、profile-conditioned clearance、widest-path bottleneck 与 one-sided conformal
   uncertainty 的数学不变量和反例；不读取任何数据 role outcome、模型或 checkpoint。
@@ -81,6 +83,7 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 
 本模块只按冻结阶段训练 Assistive Geometry student；teacher 仅有未激活的 C0 complementarity
 mechanics，当前不读取 teacher output，也不授权 C1、QNN/HTP、默认 App、产品或 safety。
+时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。
 `UNKNOWN` 不得当作负例；synthetic shape 与 benchmark geometry 不得冒充任务质量。
 
 ## 停止条件
