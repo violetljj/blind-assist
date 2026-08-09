@@ -82,6 +82,10 @@ Attempt 03 pilot 已合格；full run 在训练 head 前由 nonzero-denominator 
 不是 H1 科学 PASS/FAIL。没有模型 checkpoint 被物化。当前唯一 successor 是无模型、TRAIN-only
 parent-level support audit 与新 split relock；H2 继续不可实现、不可物化、不可训练。
 
+support audit 实现为 [`audit_h1_parent_support.py`](audit_h1_parent_support.py)，由独立 machine
+protocol 冻结 target manifest、parent order、selected-64 规则、非零分母和输出路径。它逐 target
+复核 bytes/SHA，只产生 support roster receipt，不加载 RGB、encoder、feature 或任何模型 outcome。
+
 ## 输出
 
 - `artifacts.local/evidence/assistive-geometry-qsf/`

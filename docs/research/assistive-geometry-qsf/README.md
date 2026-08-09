@@ -43,6 +43,11 @@ full run 随后逐 SHA 复核 1024 个 RGB/target 并完成 frozen feature，但
 披露 support-based roster selection。H1 形成有效科学终态后，H2 才能成为新的唯一
 successor；只有 H1、H2 各自通过后才能另立组合协议。
 
+该 audit 已由
+[`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_PARENT_SUPPORT_AUDIT_PROTOCOL_2026-08-09.json`](BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_PARENT_SUPPORT_AUDIT_PROTOCOL_2026-08-09.json)
+冻结：扫描同一 16-parent TRAIN target roster 的 parent-level support，只读取 target NPZ；eval
+固定取 manifest 顺序中前 4 个 selected-64 四类支持均非零的 parent，不加载模型或 feature。
+
 ## 与其他路线并行
 
 - AG-QSF 使用独立代码 Module、协议、run identity、checkpoint、target cache、进度和 artifact root。

@@ -1,0 +1,66 @@
+{
+  "schema": "blindassist.assistive_geometry_qsf.h1_parent_support_audit_protocol.v1",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_PARENT_SUPPORT_AUDIT_PROTOCOL_2026-08-09",
+  "route_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0",
+  "stage": "CANARY_SUPPORT_AUDIT",
+  "research_style": "WILD_LAB",
+  "status": "TRAIN_SUPPORT_AUDIT_LOCKED_NOT_RUN",
+  "predecessor": "H1_TRAIN_CANARY_NOT_EVALUABLE_DATA_SUPPORT",
+  "scientific_question": "Can the frozen 16-parent TRAIN target roster provide a parent-disjoint 64-frame split with nonzero event, right-censor, known-occupied and clearance-event support on both sides before any H1 model outcome is opened?",
+  "model_or_feature_access": false,
+  "development_or_confirmation_access": false,
+  "rgb_access": false,
+  "parent_order": [
+    "41159448",
+    "42445086",
+    "42445790",
+    "42897547",
+    "42898024",
+    "42898242",
+    "44358617",
+    "47333249",
+    "47334163",
+    "47430327",
+    "47204445",
+    "47331226",
+    "47430531",
+    "47431114",
+    "47895508",
+    "47334948"
+  ],
+  "frames_per_parent": 64,
+  "frame_selection": "SOURCE_ORDER_EVENLY_SPACED",
+  "required_nonzero_support": [
+    "event_count",
+    "right_censor_count",
+    "occupied_known_count",
+    "clearance_event_count"
+  ],
+  "eval_parent_count": 4,
+  "eval_selection_rule": "FIRST_FOUR_MANIFEST_ORDER_PARENTS_WITH_NONZERO_SELECTED64_EVENT_CENSOR_OCCUPIED_CLEARANCE_EVENT",
+  "support_based_roster_selection_disclosed": true,
+  "input": {
+    "kind": "DERIVED_TRAIN_CACHE",
+    "producer_route": "BLINDASSIST_ASSISTIVE_GEOMETRY",
+    "path": "artifacts.local/datasets/assistive-geometry-b1-train-targets-20260809-r0/manifest.json",
+    "sha256": "A6F809C7EE59C6539FEA37C92973E350ECCF5260353BA5F15A9A9BBB9888A7C2",
+    "access": "READ_ONLY",
+    "immutable": true,
+    "data_role": "TRAIN",
+    "outcome_access": "CONTENT_INSPECTED",
+    "selection_influence": "TRAIN_SUPPORT_ROSTER_ONLY",
+    "claim_use": "TRAIN_SUPPORT_AUDIT_ONLY"
+  },
+  "implementation": {
+    "scripts/research/assistive_geometry_qsf/audit_h1_parent_support.py": "06B23613F725A070B88495F1FA58AE6A42B42B0A4DBD825FAA19AC2ECBE67D6A",
+    "scripts/research/assistive_geometry_qsf/test_audit_h1_parent_support.py": "71C6AB14B5ED57FBD07ACD6FF516D661C595CBFE4E98E1B8596F5BBBBE2CD678"
+  },
+  "output": "artifacts.local/evidence/assistive-geometry-qsf/h1-parent-support-audit-r0/result.json",
+  "terminal_policy": {
+    "pass": "H1_PARENT_SUPPORT_AUDIT_PASS_RELOCK_ALLOWED",
+    "not_evaluable": "H1_PARENT_SUPPORT_AUDIT_NOT_EVALUABLE",
+    "pass_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_ATTEMPT_04_SUPPORT_ROSTER_RELOCK",
+    "not_evaluable_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_ROUTE_CLOSE_DATA_SUPPORT_INSUFFICIENT"
+  },
+  "claim_ceiling": "This audit can establish only TRAIN target-support and deterministic roster mechanics. It cannot establish H1 learnability, compare B1, authorize H2, access Development or Confirmation, or support device, product, production, or assistive-safety claims."
+}
