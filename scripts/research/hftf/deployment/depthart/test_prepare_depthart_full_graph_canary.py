@@ -18,6 +18,12 @@ class PrepareDepthArtFullGraphCanaryTest(unittest.TestCase):
         np.testing.assert_array_equal(first, second)
         self.assertGreater(len(np.unique(first.reshape(-1, 3), axis=0)), 100)
 
+    def test_procedural_image_supports_product_portrait_shape(self) -> None:
+        value = procedural_bgr(608, 448)
+        self.assertEqual(value.shape, (608, 448, 3))
+        self.assertEqual(value.dtype, np.uint8)
+        self.assertGreater(len(np.unique(value.reshape(-1, 3), axis=0)), 100)
+
 
 if __name__ == "__main__":
     unittest.main()

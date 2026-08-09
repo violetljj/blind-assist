@@ -30,9 +30,10 @@ def sha256(path: Path) -> str:
     return digest.hexdigest().upper()
 
 
-def procedural_bgr(resolution: int) -> np.ndarray:
+def procedural_bgr(height: int, width: int | None = None) -> np.ndarray:
     """Return a fixed, spatially varied uint8 image without an external asset."""
-    y, x = np.indices((resolution, resolution), dtype=np.uint32)
+    width = height if width is None else width
+    y, x = np.indices((height, width), dtype=np.uint32)
     blue = (3 * x + 5 * y + ((x // 17) ^ (y // 13)) * 11) % 256
     green = (7 * x + 2 * y + ((x * y) % 97)) % 256
     red = (x + 9 * y + (((x // 29) + (y // 31)) % 2) * 73) % 256
@@ -58,7 +59,9 @@ def main() -> None:
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--resolution", type=int, default=448)
+    parser.add_argument("--resolution", type=int)
+    parser.add_argument("--height", type=int)
+    parser.add_argument("--width", type=int)
     args = parser.parse_args()
 
     source = args.source.resolve()
@@ -75,16 +78,27 @@ def main() -> None:
     from model import load_model  # type: ignore
     from network import tvimblock  # type: ignore
 
-    resolution = args.resolution
-    bgr = procedural_bgr(resolution)
-    K = make_K(500.0, 500.0, resolution / 2.0, resolution / 2.0)
-    image, intrinsics = preprocess(bgr, K, resolution, resolution)
+    if args.resolution is not None and (args.height is not None or args.width is not None):
+        raise ValueError("--resolution cannot be combined with --height/--width")
+    if (args.height is None) != (args.width is None):
+        raise ValueError("--height and --width must be provided together")
+    if args.resolution is not None:
+        height = width = args.resolution
+    elif args.height is not None and args.width is not None:
+        height, width = args.height, args.width
+    else:
+        height = width = 448
+    if height <= 0 or width <= 0 or height % 32 or width % 32:
+        raise ValueError("height and width must be positive multiples of 32")
+    bgr = procedural_bgr(height, width)
+    K = make_K(500.0, 500.0, width / 2.0, height / 2.0)
+    image, intrinsics = preprocess(bgr, K, width, height)
     model = load_model(checkpoint, "S", "indoor", "cuda").eval()
     install_depthart(tvimblock)
     wrapper = ExternalCameraMetric(model).cuda().eval()
     image = image.cuda()
     intrinsics = intrinsics.cuda()
-    cameras = model.cam_embedder(intrinsics, resolution, resolution, "cuda")
+    cameras = model.cam_embedder(intrinsics, height, width, "cuda")
     with torch.inference_mode():
         reference = model(image, intrinsics)
         external = wrapper(image, *cameras)
@@ -130,8 +144,10 @@ def main() -> None:
             "PRODUCTIZATION",
         ],
         "generator": "fixed_integer_formula_v1",
-        "resolution": resolution,
-        "intrinsics_fx_fy_cx_cy": [500.0, 500.0, resolution / 2.0, resolution / 2.0],
+        "resolution": height if height == width else None,
+        "height": height,
+        "width": width,
+        "intrinsics_fx_fy_cx_cy": [500.0, 500.0, width / 2.0, height / 2.0],
         "checkpoint": {
             "path": str(checkpoint),
             "bytes": checkpoint.stat().st_size,

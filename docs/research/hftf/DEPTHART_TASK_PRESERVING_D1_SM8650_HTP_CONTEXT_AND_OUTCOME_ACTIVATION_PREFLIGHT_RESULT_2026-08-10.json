@@ -1,0 +1,86 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d1_device_activation_preflight_governed_result_v1",
+  "executed_at": "2026-08-10",
+  "status": "D1_SM8650_V75_CONTEXT_AND_EXECUTION_PREFLIGHT_PASS_DEVELOPMENT_OUTCOME_ACTIVATION_AUTHORIZED_NOT_STARTED",
+  "protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D1_SM8650_HTP_CONTEXT_AND_OUTCOME_ACTIVATION_PREFLIGHT_PROTOCOL_2026-08-10.json",
+    "bytes": 7260,
+    "sha256": "1E4165ABEE3C38021ADB84B3E6CDEC3E7F5FD79503083DAEB270F78C9C168874"
+  },
+  "artifact_result": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d1-device-preflight-20260810-r1/device-preflight-result.json",
+    "bytes": 5665,
+    "sha256": "EAD627C1D7513E94D5CE63D3ECFB16204A51034D174B9531FA075DB3A1A9E51C"
+  },
+  "device": {
+    "serial": "R5CX10M8Y8X",
+    "model": "SM-S9280",
+    "device": "e3q",
+    "soc": "SM8650",
+    "htp": "v75",
+    "abi": "arm64-v8a",
+    "android": "16",
+    "sdk": 36,
+    "security_patch": "2026-07-05",
+    "build_fingerprint": "samsung/e3qzcx/e3q:16/BP4A.251205.006/S9280ZCS6DZG1:user/release-keys",
+    "fresh_identity_reverified_before_and_after": true
+  },
+  "candidate": {
+    "dlc_sha256": "755138FA28FCB937E3D62D45FEC292880DFC690851BF2CB00E2704CC67FA5D42",
+    "image_nchw": [1, 3, 608, 448],
+    "depth_shape": [1, 608, 448],
+    "qairt": "2.47.0.260601114230"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "exit_code": 13,
+      "terminal": "RETAINED_NON_CANDIDATE_FAILURE_OP_PACKAGE_HTP_REGISTRATION_PATH_USED_ARM64_RELATIVE_PATH",
+      "candidate_runtime_input_or_tolerance_changed": false
+    },
+    {
+      "attempt": 2,
+      "exit_code": 0,
+      "op_package_registration": "PASS_CPU_AND_HTP",
+      "graph_finalize": "PASS_STATUS_0X0",
+      "context_saved": true
+    }
+  ],
+  "context": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d1-device-preflight-20260810-r1/depthart-d1-608x448-sm8650-v75.bin",
+    "bytes": 22552576,
+    "sha256": "FA5DC9DC4BFA4684BA60EDC84B17F9278C07CCCB4FB359E94C9EFA99841DFC3D"
+  },
+  "execution": {
+    "direct_exit_code": 0,
+    "saved_context_exit_code": 0,
+    "output_elements": 272384,
+    "output_bytes": 1089536,
+    "dtype": "float32",
+    "finite": true,
+    "direct_sha256": "0A4647463CAA3C2160A1A63EABC5C6F45C2E67585DFFCB255B145A7498D38EF9",
+    "saved_context_sha256": "0A4647463CAA3C2160A1A63EABC5C6F45C2E67585DFFCB255B145A7498D38EF9",
+    "direct_vs_saved_context": "BIT_EXACT"
+  },
+  "reference_diagnostic_only": {
+    "pytorch_vs_htp_allclose_rtol_3e_5_atol_3e_6": false,
+    "max_abs_m": 1.4232800006866455,
+    "mean_abs_m": 1.069825291633606,
+    "rmse_m": 1.0872571468353271,
+    "gate": false,
+    "interpretation": "Consistent with the immutable strict G4-D negative terminal. It neither fails nor passes the task-preserving D1 quality question."
+  },
+  "authority": {
+    "context_and_execution_preflight": true,
+    "development_outcome_activation": "AUTHORIZED_NOT_STARTED",
+    "task_outcome_access": "NONE",
+    "r2_cohort_access": "NONE",
+    "performance": false,
+    "da2_replacement": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "strict_g4d_terminal_immutable": "CURRENT_QAIRT_2_47_SM8650_HTP_STANDARD_FLOAT_PATH_STRICT_G4D_NOT_SUPPORTED",
+  "next_gate": "EXPLICIT_D1_DEVELOPMENT_TASK_QUALITY_SCREEN_ACTIVATION"
+}
