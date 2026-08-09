@@ -2,6 +2,22 @@
 
 状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0M_ONE_SHOT_CONSUMED / O0R_NOT_EVALUABLE_DATA_AND_INTERFACE / PAUSED_NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
+## 需求、使用场景与效果合同
+
+TARO 不试图定义全部视障出行需求。它只选择一个与当前算法对象直接对应的窄场景：用户已经通过
+白杖、定向行走技能或外部导航掌握宏观方向，需要判断前方几步内，自己的身体沿声明路径是否具有
+足够净空。它不承担全局导航、道路穿越、自动接管行走或“安全路线”认证。
+
+| 需求 | 系统应形成的效果 | 研究主指标 | 对算法的直接约束 |
+|---|---|---|---|
+| 不把走不通说成能走 | 路径/身体特定的完整净空区间 | `false-clear`、query error | 不能只用均值越阈值 |
+| 不把能走的地方普遍阻断 | 在不增加错误放行时减少保守阻断 | `false-block`、known coverage | 不能靠 all-`UNKNOWN` 通过 |
+| 证据不足时不装作知道 | 校准的 `UNKNOWN` 与 reason code | interval calibration、错误高置信率 | 只更新可观测状态方向 |
+| 不要求用户冒险迈步取证 | 先复用被动历史，必要时才考虑站定相机微基线 | query-risk reduction、prompt/time cost | 禁止 body motion 取证 |
+
+这张表是需求到研究效果的追踪合同，不是已经验证的用户效果。当前 O0M 只证明冻结 synthetic
+analytic family 上的 mechanics；真实 query Pareto、交互收益和用户结果仍未建立。
+
 ## 当前主张
 
 TARO（Task-directed Active Risk Observability，任务定向主动风险可观测性）研究：
@@ -11,10 +27,14 @@ TARO（Task-directed Active Risk Observability，任务定向主动风险可观�
 > 当查询仍不可识别时，受限的被动帧复用或站定相机微基线，能否比通用熵、最大视差
 > 或普通 next-best-view 更有效地降低任务决策风险，并在证据不足时保持 `UNKNOWN`？
 
-本路线把两个已讨论组件合并为一个不可拆分的论文命题：
+本版本以 `task-query identifiability` 为主科学命题，并用两个受共同协议约束的组件检验它：
 
 - `GaugeFix`：metadata-first 的低维残余 gauge posterior、协方差与可观测子空间更新；
-- `PARA`：以 body/path-specific clearance query 为目标的受限主动视差与证据选择。
+- `PARA`：只有被动 query 仍不可识别且 action oracle 先通过时，才研究以
+  body/path-specific clearance query 为目标的受限观察与证据选择。
+
+两个组件不得在 outcome 后任意拆分或互相背书；active branch 若失败，任何 passive-only 延续都必须
+另立版本。这样可保持贡献主次清楚，同时不把主动提示预设为 TARO 必须成立的用户行为。
 
 TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独立
 `WILD_LAB` 算法路线，不是其 F1/F2 successor，也不修改其 frozen factor schema、

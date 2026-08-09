@@ -1,6 +1,6 @@
 # TARO R0 独立并行研究路线指南
 
-状态：`current design guide / WILD_LAB / CHARTER_ONLY / EXECUTION_NOT_AUTHORIZED`
+状态：`current design guide / WILD_LAB / NON_AUTHORIZING_REFERENCE / DYNAMIC_STATUS_OWNED_BY_TARO_CURRENT`
 
 日期：2026-08-10
 
@@ -10,6 +10,9 @@
 停止”。它不是执行协议、数据授权、模型配置、训练计划或安全验证。
 
 动态状态、唯一 successor、禁止动作与默认 App 影响只以 [TARO current](README.md) 为准。
+本页的 `NON_AUTHORIZING_REFERENCE` 只表示“本指南不能启动执行”，不表示 TARO 从未运行；
+P0/O0M 是否完成、O0R 是否可评估及当前是否暂停，必须读取 current 与对应签署结果，不能从本页
+的设计阶段文字反推。
 任何阶段只有在上一个阶段形成有效结果、下一个协议在 outcome 前单独冻结且 execution
 authority 显式为 true 后才能运行；本指南列出的后续阶段不是预授权队列。
 
@@ -18,12 +21,38 @@ Deployment 时才切换到 `EVIDENCE_TRACK`，且必须使用新的 parent/sessi
 
 ## 1. 路线定义
 
+### 1.1 需求场景与任务边界
+
+TARO 面向一个窄而可计算的局部出行问题：用户已经借助白杖、定向行走技能或外部导航掌握宏观
+方向，但仍需判断前方几步内，声明的 wearer path 与 body profile 是否具有足够净空。真实行人
+环境中的临时占道、突出/悬空障碍与净空不足支持研究这一信息缺口；辅助技术通常与白杖等多种
+工具共同使用，而不是替代既有技能。需求背景参考
+[RNIB In My Way 2025](https://media.rnib.org.uk/documents/In_My_Way_-_Navigating_pedestrian_journeys_with_sight_loss_2025_PDF.pdf)
+与 [WHO Assistive technology](https://www.who.int/news-room/fact-sheets/detail/assistive-technology)。
+
+TARO 第一篇路线不回答全局导航、道路穿越、物体百科描述、自动控制用户身体、真实用户独立行走
+或产品安全。需求只通过下列效果合同进入算法：
+
+| 需求 | 计算对象与系统效果 | 主指标 | 算法约束 |
+|---|---|---|---|
+| 避免错误放行 | body/path-specific clearance interval | `false-clear`、query error | 完整区间进入 reducer，不能只看均值 |
+| 减少无效阻断 | 在 false-clear 非劣下减少保守判断 | `false-block`、known coverage | all-`UNKNOWN`、coverage collapse 失败 |
+| 暴露不确定性 | `UNKNOWN`、identifiability 与 reason code | interval calibration、错误高置信率 | 只更新可观测子空间 |
+| 降低取证负担 | passive-first，必要时才考虑站定相机微基线 | risk reduction、prompt/time cost | 禁止要求身体迈步取证 |
+| 保持任务及时性 | 在冻结时间/动作预算内形成 query 结论 | time-to-evidence、P95（后续阶段） | 同预算比较，不以无限观察换正确率 |
+
+这些是目标效果和评价合同，不是 O0M 已经证明的用户效果。算法层、事件系统层和真实用户层必须
+分开验证。
+
+### 1.2 科学命题与组件
+
 TARO 全称：
 
 > **Task-directed Active Risk Observability**
 > （任务定向主动风险可观测性）
 
-它不是 GaugeFix 与 PARA 的松散模块拼装，而是检验一个统一命题：
+它不是 GaugeFix 与 PARA 的松散模块拼装，而是以 task-query identifiability 为主贡献，检验一个
+统一命题：
 
 > 在声明的独立米制锚、有效 frame receipt、冻结的连续几何 factor 与 deterministic reducer
 > 下，能否通过只更新局部可观测的残余 gauge，并在必要时选择一个受限的额外观测，使
@@ -34,6 +63,10 @@ TARO 全称：
 - **GaugeFix**：对低维残余 gauge 建立 posterior，只更新可观测子空间；
 - **PARA**：当 task query 仍受不可观测方向影响时，在相同帧数、延迟和动作预算下选择
   最有价值的被动历史帧或站定相机微基线。
+
+PARA 是条件扩展而不是预设成功项：只有 passive posterior 和 action oracle 依次提供增量时才进入
+学习。当前版本若 active branch 失败，passive-only 延续必须另立版本，不能在 outcome 后拆分联合
+命题来回救结果。
 
 ## 2. 明确的非命题
 
@@ -88,10 +121,21 @@ TARO schema 已物化或可执行。
   [GraspView](https://arxiv.org/abs/2511.04199) 已把 RGB-only active view 与在线米制对齐
   用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、
   人类受限相机动作和 UNKNOWN 的联合差异。
+- [SPARTA](https://proceedings.mlr.press/v305/dong25a.html) 已学习 approach-angle/state-conditioned
+  traversability；“按方向或 profile 条件化可通行性”本身不是 TARO novelty。
+- [CapNav](https://openaccess.thecvf.com/content/CVPR2026/papers/Su_CapNav_Benchmarking_Vision_Language_Models_on_Capability-conditioned_Indoor_Navigation_CVPR_2026_paper.pdf)
+  已建立 capability-conditioned navigation benchmark；“按人体能力判断路径”不能单独作为贡献。
+- [SCOPE](https://arxiv.org/abs/2608.04420) 已把 robot-inflated safety volume、未知 voxel 与主动
+  viewpoint search 联结；“swept volume + active observation”也不是 TARO novelty。SCOPE 面向可控
+  UAV 的已观测自由空间认证与执行规划，TARO 必须证明其不同对象：穿戴式部分米制 factor
+  posterior、局部 task-functional identifiability、人类受限 camera-only 观察、校准 `UNKNOWN`
+  及交互成本；TARO 不主张 certified path execution。
 
-可发表的核心不是“校准 + NBV”，而是：
+因此，可检验的论文空位不是“校准 + NBV”“人体条件化”或“扫掠体积认证”，而是：
 
-> **full-state underdetermined, task functional identifiable**。
+> **under partial metric evidence and human-constrained sensing, full state can remain underdetermined
+> while a body/path-specific task functional becomes locally identifiable; when it does not, bounded
+> evidence selection must reduce query risk without hiding false-clear, coverage or interaction cost.**
 
 ## 4. 数学对象与可证伪条件
 
@@ -149,7 +193,7 @@ query identifiability 和 reason code，而不是 learned final state。
 Fv=0 \Rightarrow J_Cv=0.
 \]
 
-这只是待检验的局部判据，不预先写成全局定理。P0 必须冻结：
+这只是待检验的局部判据，不预先写成全局定理。P0 已在签署协议中冻结：
 
 - 线性化点与状态参数化；
 - eigen/singular-value 截断规则；
@@ -245,7 +289,7 @@ u^*=\arg\max_u
 
 ### 6.1 `TaroFrameReceipt`
 
-后续 P0 至少冻结：
+P0 已冻结以下最小字段；机器 schema 与实际状态以签署的 P0 协议和结果为准：
 
 - `source/session/parent/frame_id`、capture/site/device/mount identity；
 - sensor timestamp、monotonic/cross-clock validity、`max_source_timestamp`；
@@ -284,7 +328,7 @@ u^*=\arg\max_u
 
 ## 7. 阶段路线与 successor 条件
 
-### P0：query/schema/protocol lock——当前唯一 successor
+### P0：query/schema/protocol lock——已完成的非执行阶段
 
 目的：冻结对象、数据角色、解析 fixture、负控、指标、预算和停止条件；不执行。
 
@@ -296,7 +340,17 @@ u^*=\arg\max_u
 - factor-oracle factorial arms、primary metric 与 failure scope 在 outcome 前冻结；
 - execution authority 仍为 false，直到另行显式开放。
 
-### O0：factor causal-headroom oracle
+P0 的完成事实只由 [P0 lock result](TARO_P0_PROTOCOL_LOCK_RESULT_2026-08-10.md) 建立；本节保留其
+设计职责，不提供新的执行权限。
+
+### O0M：synthetic identifiability 与 factorial mechanics——已完成的机制 canary
+
+O0M 只检验 measurement-only weak-subspace identifiability、fail-closed degeneracy、factorial
+intervention purity、重参数化与确定性等解析 mechanics。其唯一正式 one-shot 已消费，签署结果为
+[TARO O0M Synthetic Analytic Mechanics Result](TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_RESULT_2026-08-10.md)。
+它不能建立真实 factor causal headroom，也不能授权 O0R、G0/G1 或 A0/A1。
+
+### O0R：真实 factor causal-headroom oracle
 
 科学问题：如果 K/scale/support/boundary 某一层被换成准确 oracle，task-query bias 是否实质改善？
 
@@ -312,7 +366,7 @@ u^*=\arg\max_u
 - support+boundary；
 - all-factor oracle。
 
-O0 只回答 causal headroom，不训练 GaugeFix。若 all-factor oracle 仍不能改善 query calibration、
+O0R 只回答 causal headroom，不训练 GaugeFix。若 all-factor oracle 仍不能改善 query calibration、
 clearance/false-block Pareto，则 gauge 路线停止；若只有某个 factor 有 headroom，后续状态空间必须
 收缩到该 factor，不能继续训练 full GaugeFix。
 
@@ -365,7 +419,8 @@ learned/solver expansion，保留 receipt/diagnostic 工具。
 - ground-truth one-step oracle。
 
 必须在相同帧数、wall-time、动作类型与动作成本预算下比较。若 active oracle 本身不优于
-passive/max-parallax，PARA 终止，TARO 可降级为 passive query-identifiability 路线。
+passive/max-parallax，PARA 终止；当前联合版本不得在 outcome 后直接降级，任何 passive-only
+query-identifiability 延续必须另立路线版本。
 
 ### A1：compact observation-value scorer
 
@@ -377,7 +432,7 @@ visibility/track survival 与 uncertainty，不输出最终三态。
 
 ### J0：联合 fresh Development
 
-只有 O0、G0/G1、A0/A1 分别通过后才可建立新的 `TARO_DEVELOPMENT`。目的：验证 joint route
+只有 O0R、G0/G1、A0/A1 分别通过后才可建立新的 `TARO_DEVELOPMENT`。目的：验证 joint route
 是否在新 device/mount/site/session parents 上形成 query-calibration 与交互成本 Pareto，而不是把
 两个单独模块的正结果相加。
 
@@ -471,14 +526,16 @@ query-identifiability，也不获得 TARO freshness/Confirmation 身份。
 
 ## 10. 拟议 kill gates
 
-以下数字仅为 P0 需要审查、论证和预冻结的起点，不是当前正式门，也不授予执行权限。
+以下数字是原始路线指南为后续真实 O0R/G0/A0/J0 提出的审查起点，不是当前正式门，也不授予
+执行权限。P0/O0M 已完成不等于这些 future gates 已获采用；任何重开版本必须在 outcome 前重新
+论证并冻结。
 
 | 阶段 | 拟议门 | 失败后关闭范围 |
 |---|---|---|
-| O0 factor headroom | all-factor 或受支持组合相对 anchor 的 query error/false-block parent-bootstrap 95% LCB `>0`，false-clear/known coverage 在预冻结 non-inferiority 内 | 无 headroom 则关闭 GaugeFix 科学机制；单 factor 有效则收缩状态空间 |
+| O0R factor headroom | all-factor 或受支持组合相对 anchor 的 query error/false-block parent-bootstrap 95% LCB `>0`，false-clear/known coverage 在预冻结 non-inferiority 内 | 无 headroom 则关闭 GaugeFix 科学机制；单 factor 有效则收缩状态空间 |
 | G0 observability | missing-anchor、pure rotation、极小基线等退化集错误高置信更新率 `<=5%`，其余 freeze/UNKNOWN；anchor shuffle 必须显著破坏 metric 结果 | 关闭当前 observability rule/parameterization；若判据与 query error 无关，关闭 TARO 核心假设 |
 | G1 mechanism | 可观测受控集拟议 scale `<=5%`、support normal `<=3°`、offset `<=5 cm`；仅在独立开放 `delta K` ablation 时要求 focal residual `<=3%`，且对应状态块须胜过 global affine/VIO baseline | 关闭对应状态块或 solver version，不自动关闭完整路线 |
-| A0 action oracle | 相对 stay 的 unresolved query-risk median 降幅拟议 `>=20%`，LCB `>0`；scale/depth ambiguity 中 lateral 必须优于 rotation-only | oracle 不过则关闭 active PARA，保留 passive TARO |
+| A0 action oracle | 相对 stay 的 unresolved query-risk median 降幅拟议 `>=20%`，LCB `>0`；scale/depth ambiguity 中 lateral 必须优于 rotation-only | oracle 不过则关闭 active PARA；passive-only 延续须另立版本 |
 | A1 scorer | 拟议保留 oracle improvement `>=70%`，并胜过 max-parallax、generic Fisher 与 gauge-agnostic task scorer | 关闭 learned scorer，保留 analytic/passive route |
 | J0 task Pareto | 拟议 interval width `-20%`、query error `-15%`、false-block relative `-20%`；false-clear不超过 `+1 pp`、known coverage下降不超过 `5 pp`，至少 `75%` parents 同方向 | 关闭 joint evidence version；按 factor/action诊断收缩，不事后降门 |
 | M0 engineering | 拟议增量 P95 `<=10 ms/frame`、内存 `<=32 MB`、无新增 dense NPU invocation；功耗另测 | 只关闭 mobile claim，不否定离线算法 |
@@ -563,17 +620,28 @@ branching、1.5–3 s 多模态 strata 上超过 D44 + CV/CA Kalman + IMM；普�
 ### 可写的核心 claim
 
 > Under declared metric anchors and a frozen factor/reducer interface, TARO tests whether
-> observation selection can make a body/path-specific clearance functional locally identifiable
-> even when the full camera-scene state remains underdetermined.
+> a body/path-specific clearance functional can become locally identifiable before the full
+> camera-scene state; only when it remains unresolved does TARO test whether passive-first,
+> human-constrained evidence selection reduces query risk at bounded interaction cost.
 
 ### 必须提供的贡献证据
 
-1. task-query identifiability 判据及退化运动 falsification；
-2. metadata-first residual posterior 与 observable-subspace update；
-3. 人类受限、camera-only 的被动/主动观测策略；
-4. 对 max-parallax、generic/task NBV、PTC-like scale 和 simple VIO/affine 的强比较；
-5. query calibration、false-clear/false-block/coverage 与 interaction cost 的 Pareto；
-6. UNKNOWN、timestamp、anchor、split 与未来泄漏机器审计。
+1. 从局部通行需求到 clearance/false-clear/false-block/coverage 的 task contract；
+2. task-query identifiability 判据及退化运动 falsification；
+3. metadata-first residual posterior 与 observable-subspace update；
+4. 通过 oracle 后才开放的人类受限、camera-only、passive-first 观测策略；
+5. 对 max-parallax、generic/task NBV、PTC-like scale 和 simple VIO/affine 的强比较；
+6. query calibration、false-clear/false-block/coverage 与 interaction cost 的 Pareto；
+7. UNKNOWN、timestamp、anchor、split 与未来泄漏机器审计。
+
+### 效果层级与 claim 边界
+
+- **算法主证据**：query error、interval score/coverage、false-clear、false-block、known coverage、
+  identifiability calibration 与 interaction cost；这是 TARO 首篇可直接回答的层级。
+- **系统相关性**：提醒提前量、误提醒、重复和事件清除只能在独立事件系统评测中回答；query
+  改善不能自动传播成这些结果。
+- **真实用户效果**：碰撞/接触、停步、工作负荷、信任校准与独立出行需要单独的真实用户和场景
+  证据；当前 synthetic O0M、未来 O0R 或设备性能均不能替代。
 
 ### 审稿人可能的否定与防守条件
 
@@ -590,8 +658,9 @@ branching、1.5–3 s 多模态 strata 上超过 D44 + CV/CA Kalman + IMM；普�
 
 以下只用于规划，不是承诺工期：
 
-- P0 schema/protocol/analytic fixture：约 1–2 周；
-- O0 factor oracle + G0 observability mechanics：约 1–2 周；
+- P0 schema/protocol/analytic fixture：历史阶段，已完成；
+- O0M synthetic mechanics：历史阶段，已完成并消费 one-shot；
+- O0R factor oracle + G0 observability mechanics：若重开，约 1–2 周；
 - G1 passive posterior prototype：约 2–4 周；
 - A0 offline active-view oracle：约 1–3 周；
 - A1 compact scorer：约 2–4 周；
@@ -601,19 +670,21 @@ branching、1.5–3 s 多模态 strata 上超过 D44 + CV/CA Kalman + IMM；普�
 依赖 UNKNOWN/coverage collapse，即停止该分支。停止结果应保留为 negative evidence、fixture、
 diagnostic 或 future baseline，不用换 seed、降门或扩大组合进行 after-outcome rescue。
 
-## 17. 当前下一步清单
+## 17. 动态状态读取与 O0R 重开前置
 
-当前只允许完成 `TARO_P0_TASK_QUERY_IDENTIFIABILITY_AND_FACTOR_ORACLE_CANARY_PROTOCOL_LOCK`。
-该协议至少要回答：
+动态状态、唯一 successor 和允许/禁止动作只读取 [TARO current](README.md)。P0 与 O0M 的签署
+结果是不可回写的历史事实；已消费的 O0M one-shot 不得覆盖、删除或重跑。本指南没有隐含下一步，
+也不能把后续阶段列表解释为执行队列。
 
-- 哪些 state block 在 P0/O0 开放，哪些保持固定；
-- 独立 metric anchor 的合法类型、单位与 validity；
-- task functional、body/path query 和 identifiability 数值定义；
-- factor-oracle arms 与 analytic truth；
-- static/pure-rotation/lateral/missing-anchor/wrong-anchor 负控；
-- input timestamp/provenance、UNKNOWN、split 和 output namespace；
-- primary metric、拟议 gate 依据、预算、timeout 与 failure scope；
-- 为什么该 protocol 仍不授权 implementation/execution。
+只有 current 将来基于新的、outcome 前冻结的 source-and-adapter contract 显式建立 O0R successor，
+才可讨论真实执行。该合同至少必须同时关闭：
 
-未完成并显式采用该 P0 lock 前，不得创建 TARO runner、模型、checkpoint、数据 materializer、
-主动提示或 Android 代码。
+- complete factor/query truth 与 truth-clear factor bundle；
+- continuous boundary/uncertainty truth、target timestamp/pose；
+- deterministic factor injection adapter；
+- fresh paired outcome、parent/session/site 身份与数据角色；
+- O0R arms、primary metrics、non-inferiority、预算、timeout 和 failure scope；
+- 为什么该版本与已完成 synthetic O0M 的 claim 和 artifact root 完全隔离。
+
+在此之前，只允许 current 明列的只读审计、文献去重、接口设计和数据字段映射；不得创建新的 TARO
+runner、模型、checkpoint、数据 materializer、主动提示或 Android 代码。
