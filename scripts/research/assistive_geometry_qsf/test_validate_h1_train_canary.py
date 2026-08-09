@@ -55,14 +55,18 @@ class H1TrainCanaryValidationTest(unittest.TestCase):
             with self.subTest(key=key), self.assertRaises(ValidationError):
                 validate_protocol(protocol, verify_inputs=False)
 
-    def test_attempt_02_performance_relock_is_exact(self) -> None:
+    def test_attempt_03_performance_relock_is_exact(self) -> None:
         protocol = copy.deepcopy(_protocol())
         protocol["resource_budget"]["feature_extraction_batch_size"] = 8
         with self.assertRaisesRegex(ValidationError, "batch relock"):
             validate_protocol(protocol, verify_inputs=False)
         protocol = copy.deepcopy(_protocol())
-        protocol["previous_attempt"]["terminal"] = "H1_TRAIN_CANARY_PERFORMANCE_QUALIFIED"
-        with self.assertRaisesRegex(ValidationError, "Attempt-01"):
+        protocol["previous_attempts"][1]["terminal"] = "H1_TRAIN_CANARY_PERFORMANCE_QUALIFIED"
+        with self.assertRaisesRegex(ValidationError, "prior performance"):
+            validate_protocol(protocol, verify_inputs=False)
+        protocol = copy.deepcopy(_protocol())
+        protocol["performance_estimator"]["fixed_setup_scaled_by_frame_ratio"] = True
+        with self.assertRaisesRegex(ValidationError, "estimator"):
             validate_protocol(protocol, verify_inputs=False)
 
     def test_foreign_gpu_process_detection_is_role_specific(self) -> None:

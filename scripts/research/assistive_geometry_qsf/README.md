@@ -1,6 +1,6 @@
 # Assistive Geometry QSF research Module
 
-状态：`current / WILD_LAB / H1_IMPLEMENTED / ATTEMPT_01_PERFORMANCE_NOT_QUALIFIED / ATTEMPT_02_BATCH16_RELOCKED_NOT_RUN`
+状态：`current / WILD_LAB / H1_IMPLEMENTED / ATTEMPT_01_AND_02_PERFORMANCE_NOT_QUALIFIED / ATTEMPT_03_ESTIMATOR_RELOCKED_NOT_RUN`
 
 ## 研究问题与版本
 
@@ -71,9 +71,11 @@ E:\codex-tools\bin\blindassist-python.cmd -m `
 ```
 
 返回 `H1_CANARY_DEFERRED_RESOURCE_ISOLATION` 时不得运行 pilot；它不表示科学失败。Attempt 01
-因 conservative maximum `1214.252 s > 900 s` 形成 performance-only 负终态；Attempt 02 只把
-feature batch 从 4 重锁为 16，并使用 `h1-train-canary-attempt-02-r0` namespace。资源 READY 后
-唯一执行顺序仍是 `pilot-r0`，再由同一 Attempt-02 protocol/hash 运行 `run-r0`。
+因 conservative maximum `1214.252 s > 900 s` 形成 performance-only 负终态；Attempt 02 的
+batch 16 combined timing 没有改善，并暴露 estimator 将一次性 model load 随帧数放大的缺陷。
+Attempt 03 恢复 batch 4，分离 fixed setup 与 scaled extraction，使用
+`h1-train-canary-attempt-03-r0` namespace。资源 READY 后唯一执行顺序仍是 `pilot-r0`，再由同一
+Attempt-03 protocol/hash 运行 `run-r0`。
 
 ## 输出
 

@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry QSF
 
-状态：`current / WILD_LAB / H1_IMPLEMENTED / ATTEMPT_01_PERFORMANCE_NOT_QUALIFIED / ATTEMPT_02_BATCH16_RELOCKED_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / WILD_LAB / H1_IMPLEMENTED / ATTEMPT_01_AND_02_PERFORMANCE_NOT_QUALIFIED / ATTEMPT_03_FIXED_SETUP_ESTIMATOR_RELOCKED_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 ## 主张与边界
 
@@ -20,7 +20,7 @@ AG-QSF（Assistive Geometry Queryable Survival Field）研究：
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_ATTEMPT_02_BATCH16_PERFORMANCE_PILOT`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_ATTEMPT_03_FIXED_SETUP_ESTIMATOR_PILOT`
 
 H1-only 的 target compiler、censor/UNKNOWN mask、四桶 hazard decoder、right-censored
 likelihood、参数精确匹配 head、checkpoint/flip/zero-support/gradient 测试和 parent-disjoint
@@ -30,9 +30,12 @@ manifest：TRAIN target 明确登记为 `CONTENT_INSPECTED / TRAIN_TARGET_INPUT_
 clearance-event 任一支持为零即形成 `H1_TRAIN_CANARY_NOT_EVALUABLE_DATA_SUPPORT`，不得用伪分母
 产生科学结论。Attempt 01 的 16-frame performance-only pilot 得到 finite feature、`388 MiB`
 峰值和 `577.126 s` 全量投影，但冻结 conservative maximum 为 `1214.252 s > 900 s`，因此形成
-`H1_TRAIN_CANARY_PERFORMANCE_NOT_QUALIFIED`，未训练 head、未生成 checkpoint。Attempt 02 只把
-feature-extraction batch 从 4 重锁为 16；模型、loss、roster、frame selection 和科学 gate 均不变，
-使用全新输出 namespace。Attempt 02 pilot 在 `900 s` 上界内合格后，才运行 `12 fit parent / 4 eval parent ×
+`H1_TRAIN_CANARY_PERFORMANCE_NOT_QUALIFIED`，未训练 head、未生成 checkpoint。Attempt 02 把
+feature-extraction batch 从 4 重锁为 16，但 combined timing 反而为 `9.995 s`，同样不合格。
+两次 pilot 随后定位到 estimator 把一次性 model load 乘了 `full/pilot=64` 的缺陷。Attempt 03
+恢复 batch 4，只将估算器改为“fixed model load + scaled variable extraction + 30 s”，conservative
+maximum 为该投影的 2 倍；模型、loss、roster、frame selection 和科学 gate 均不变，并使用全新
+输出 namespace。Attempt 03 pilot 在 `900 s` 上界内合格后，才运行 `12 fit parent / 4 eval parent ×
 64 frame` 的 frozen-encoder H1 canary。H1 形成有效科学终态后，H2 才能成为新的唯一
 successor；只有 H1、H2 各自通过后才能另立组合协议。
 
@@ -84,6 +87,6 @@ successor；只有 H1、H2 各自通过后才能另立组合协议。
 ## Claim ceiling
 
 当前只证明 H1 target/mask/decoder/loss/head mechanics、精确参数匹配、parent-disjoint canary
-合同与资源隔离门已实现并通过专项测试；Attempt 01 仅形成性能负终态，Attempt 02 尚未运行。
+合同与资源隔离门已实现并通过专项测试；Attempt 01/02 仅形成性能负终态，Attempt 03 尚未运行。
 真实 TRAIN canary 尚未运行，因此尚未证明 H1/H2
 可学、真实数据有效、优于 direct head、可部署或安全。

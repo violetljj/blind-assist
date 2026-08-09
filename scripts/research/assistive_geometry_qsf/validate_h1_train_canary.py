@@ -26,9 +26,9 @@ PROTOCOL_RELATIVE = PurePosixPath(
     "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09.json"
 )
 ROUTE_ID = "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0"
-PROTOCOL_SCHEMA = "blindassist.assistive_geometry_qsf.h1_train_canary_protocol.v2"
+PROTOCOL_SCHEMA = "blindassist.assistive_geometry_qsf.h1_train_canary_protocol.v3"
 PROTOCOL_ID = (
-    "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09_ATTEMPT_02"
+    "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09_ATTEMPT_03"
 )
 EXPECTED_FIT_PARENTS = (
     "41159448",
@@ -106,7 +106,7 @@ def validate_protocol(
     _require(protocol.get("profile") == "CANARY_LITE", "H1 canary profile drift")
     _require(protocol.get("candidate") == "H1_ONLY", "H1-only candidate drift")
     _require(
-        protocol.get("status") == "H1_IMPLEMENTED_TRAIN_CANARY_RELOCKED_ATTEMPT_02_NOT_RUN",
+        protocol.get("status") == "H1_IMPLEMENTED_TRAIN_CANARY_RELOCKED_ATTEMPT_03_NOT_RUN",
         "H1 canary status drift",
     )
     authority = protocol.get("execution_authority", {})
@@ -195,30 +195,62 @@ def validate_protocol(
         == {
             "pilot_frames": 16,
             "full_frames": 1024,
-            "feature_extraction_batch_size": 16,
+            "feature_extraction_batch_size": 4,
             "gpu_use": "frozen feature extraction only",
             "cpu_use": "50-epoch pooled-head optimization",
             "maximum_wall_seconds": 900,
             "stop_scope_on_budget_excess": "THIS_CANARY_EVIDENCE_VERSION_ONLY",
         },
-        "resource budget or Attempt-02 batch relock drift",
+        "resource budget or Attempt-03 batch relock drift",
     )
     _require(
-        protocol.get("previous_attempt")
+        protocol.get("previous_attempts")
+        == [
+            {
+                "attempt_id": "H1_TRAIN_CANARY_PERFORMANCE_PILOT_ATTEMPT_01",
+                "protocol_sha256": (
+                    "63D8E8293C0EEE0C65654964B48D02E95AE9C676BF1E1EAABF54D05F926F7CA2"
+                ),
+                "pilot_result_path": (
+                    "artifacts.local/evidence/assistive-geometry-qsf/"
+                    "h1-train-canary-r0/pilot-r0/pilot-result.json"
+                ),
+                "pilot_result_sha256": (
+                    "0FEF16FAA5F91C7638D78DEB7289E0DF73670FE6C73960D8F81843F941794129"
+                ),
+                "terminal": "H1_TRAIN_CANARY_PERFORMANCE_NOT_QUALIFIED",
+                "scientific_outcome_access": False,
+            },
+            {
+                "attempt_id": "H1_TRAIN_CANARY_PERFORMANCE_PILOT_ATTEMPT_02",
+                "protocol_sha256": (
+                    "563F5693F28D78BE57295FE7392A52B08D54E4BA5471EBCF8077C64A6C531950"
+                ),
+                "pilot_result_path": (
+                    "artifacts.local/evidence/assistive-geometry-qsf/"
+                    "h1-train-canary-attempt-02-r0/pilot-r0/pilot-result.json"
+                ),
+                "pilot_result_sha256": (
+                    "CF5CC26EA15402D3EF16B69A674CCFF8259DEA6F3AF2D5FDCB17F804BA212D42"
+                ),
+                "terminal": "H1_TRAIN_CANARY_PERFORMANCE_NOT_QUALIFIED",
+                "scientific_outcome_access": False,
+            },
+        ],
+        "prior performance-attempt receipts drift",
+    )
+    _require(
+        protocol.get("performance_estimator")
         == {
-            "attempt_id": "H1_TRAIN_CANARY_PERFORMANCE_PILOT_ATTEMPT_01",
-            "protocol_sha256": "63D8E8293C0EEE0C65654964B48D02E95AE9C676BF1E1EAABF54D05F926F7CA2",
-            "pilot_result_path": (
-                "artifacts.local/evidence/assistive-geometry-qsf/"
-                "h1-train-canary-r0/pilot-r0/pilot-result.json"
+            "version": "FIXED_SETUP_PLUS_SCALED_VARIABLE_V2",
+            "projected_formula": (
+                "model_load_seconds + feature_extraction_seconds * "
+                "(full_frames / pilot_frames) + 30"
             ),
-            "pilot_result_sha256": (
-                "0FEF16FAA5F91C7638D78DEB7289E0DF73670FE6C73960D8F81843F941794129"
-            ),
-            "terminal": "H1_TRAIN_CANARY_PERFORMANCE_NOT_QUALIFIED",
-            "scientific_outcome_access": False,
+            "maximum_formula": "2 * projected_full_wall_seconds",
+            "fixed_setup_scaled_by_frame_ratio": False,
         },
-        "Attempt-01 performance receipt drift",
+        "Attempt-03 performance estimator drift",
     )
 
     embedded_manifest = protocol.get("shared_resource_manifest", {})
@@ -309,16 +341,16 @@ def validate_protocol(
     outputs = protocol.get("outputs", {})
     expected_outputs = {
         "pilot_parent": (
-            "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-02-r0"
+            "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-03-r0"
         ),
         "run_parent": (
-            "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-02-r0"
+            "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-03-r0"
         ),
         "model_parent": (
-            "artifacts.local/models/assistive-geometry-qsf/h1-train-canary-attempt-02-r0"
+            "artifacts.local/models/assistive-geometry-qsf/h1-train-canary-attempt-03-r0"
         ),
         "work_parent": (
-            "artifacts.local/work/assistive-geometry-qsf/h1-train-canary-attempt-02-r0"
+            "artifacts.local/work/assistive-geometry-qsf/h1-train-canary-attempt-03-r0"
         ),
     }
     _require(outputs == expected_outputs, "H1 output namespace drift")

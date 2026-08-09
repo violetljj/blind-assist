@@ -1,0 +1,50 @@
+{
+  "schema": "blindassist.assistive_geometry_qsf.h1_train_canary_performance_pilot_result.v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PERFORMANCE_PILOT_RESULT_2026-08-09_ATTEMPT_02",
+  "route_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0",
+  "candidate": "H1_ONLY",
+  "mode": "PERFORMANCE_PILOT",
+  "protocol_sha256": "563F5693F28D78BE57295FE7392A52B08D54E4BA5471EBCF8077C64A6C531950",
+  "implementation_commit": "1a0928d03e7ce8c63dea63861d9f5daa13ae4b18",
+  "artifact": {
+    "logical_path": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-02-r0/pilot-r0/pilot-result.json",
+    "bytes": 1834,
+    "sha256": "CF5CC26EA15402D3EF16B69A674CCFF8259DEA6F3AF2D5FDCB17F804BA212D42"
+  },
+  "progress_receipt": {
+    "logical_path": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-02-r0/pilot-r0/progress.json",
+    "bytes": 214,
+    "sha256": "AE14CF08AB1D667F6E0DECD1B5220A511A0DF2925AF5BBFE9EC56F8FA33568C0"
+  },
+  "observations": {
+    "frame_count": 16,
+    "feature_shape": [16, 3, 48],
+    "feature_finite": true,
+    "feature_extraction_batch_size": 16,
+    "precision": "BF16",
+    "peak_vram_mib": 733,
+    "setup_and_feature_extraction_wall_seconds": 9.994745799998782,
+    "projected_full_wall_seconds": 669.663731199922,
+    "maximum_expected_wall_seconds": 1399.327462399844,
+    "maximum_allowed_wall_seconds": 900
+  },
+  "input_receipt": {
+    "rgb_file_count": 16,
+    "target_file_count": 16,
+    "rgb_bytes": 1340982,
+    "target_bytes": 567997,
+    "identity_basis": "PRODUCER_MANIFEST_BYTES_AND_SHA256"
+  },
+  "diagnosis": {
+    "batch16_improved_combined_timing": false,
+    "estimator_scaled_one_time_model_setup_by_full_to_pilot_frame_ratio": true,
+    "next_change_scope": "PERFORMANCE_ESTIMATOR_ONLY"
+  },
+  "scientific_outcome_access": false,
+  "head_training_executed": false,
+  "model_checkpoint_materialized": false,
+  "terminal": "H1_TRAIN_CANARY_PERFORMANCE_NOT_QUALIFIED",
+  "failure_scope": "THIS_CANARY_EVIDENCE_VERSION_ONLY",
+  "successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_ATTEMPT_03_FIXED_SETUP_ESTIMATOR_PILOT",
+  "claim_ceiling": "Performance-only negative terminal and estimator diagnostic. It provides no H1 learnability, B1 comparison, Development, Confirmation, device, product, production, or assistive-safety authority."
+}

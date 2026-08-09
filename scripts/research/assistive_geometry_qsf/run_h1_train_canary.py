@@ -395,12 +395,14 @@ def execute(args: argparse.Namespace) -> int:
         precision, amp_dtype, _ = choose_precision()
         with warnings.catch_warnings(record=True) as captured:
             warnings.simplefilter("always")
+            model_load_started = time.perf_counter()
             model, scan = load_h1_model(
                 source,
                 checkpoint,
                 int(protocol["training"]["seed"]),
                 device,
             )
+            model_load_seconds = time.perf_counter() - model_load_started
             torch.cuda.reset_peak_memory_stats()
 
             def progress(value: int, maximum: int) -> None:
@@ -415,6 +417,7 @@ def execute(args: argparse.Namespace) -> int:
                     status="running",
                 )
 
+            feature_extraction_started = time.perf_counter()
             payload = extract_features(
                 model,
                 selected,
@@ -424,18 +427,24 @@ def execute(args: argparse.Namespace) -> int:
                 batch_size=int(protocol["resource_budget"]["feature_extraction_batch_size"]),
                 progress_callback=progress,
             )
-            extraction_seconds = time.perf_counter() - started
+            feature_extraction_seconds = time.perf_counter() - feature_extraction_started
+            setup_and_extraction_seconds = time.perf_counter() - started
             peak_vram_mib = int(torch.cuda.max_memory_allocated() / (1024 * 1024))
             del model
             torch.cuda.empty_cache()
 
         if pilot_mode:
-            projected = extraction_seconds * (
+            full_to_pilot_ratio = (
                 (len(fit_parents) + len(eval_parents))
                 * int(protocol["roster"]["frames_per_parent"])
                 / max(total, 1)
-            ) + 30.0
-            maximum = projected * 2.0 + 60.0
+            )
+            projected = (
+                model_load_seconds
+                + feature_extraction_seconds * full_to_pilot_ratio
+                + 30.0
+            )
+            maximum = projected * 2.0
             qualified = (
                 projected <= protocol["resource_scheduling"]["maximum_projected_wall_seconds"]
                 and maximum <= protocol["resource_scheduling"]["maximum_projected_wall_seconds"]
@@ -454,7 +463,10 @@ def execute(args: argparse.Namespace) -> int:
                 "feature_finite": bool(torch.isfinite(payload["features"]).all().item()),
                 "precision": precision,
                 "training_scan": scan,
-                "extraction_wall_seconds": extraction_seconds,
+                "model_load_wall_seconds": model_load_seconds,
+                "feature_extraction_wall_seconds": feature_extraction_seconds,
+                "setup_and_feature_extraction_wall_seconds": setup_and_extraction_seconds,
+                "full_to_pilot_variable_work_ratio": full_to_pilot_ratio,
                 "projected_full_wall_seconds": projected,
                 "maximum_expected_wall_seconds": maximum,
                 "peak_vram_mib": peak_vram_mib,
@@ -589,7 +601,9 @@ def execute(args: argparse.Namespace) -> int:
             "checkpoint": checkpoint_receipt,
             "precision": precision,
             "training_scan": scan,
-            "feature_extraction_wall_seconds": extraction_seconds,
+            "model_load_wall_seconds": model_load_seconds,
+            "feature_extraction_wall_seconds": feature_extraction_seconds,
+            "setup_and_feature_extraction_wall_seconds": setup_and_extraction_seconds,
             "total_wall_seconds": time.perf_counter() - started,
             "peak_vram_mib": peak_vram_mib,
             "warnings": [str(item.message) for item in captured],
