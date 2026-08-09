@@ -20,6 +20,10 @@ CBF R0-style grid 均为 `NOT_SUPPORTED_DATA`；FCI-for-R2-decision 为
 `NOT_SUPPORTED_DATA_AND_AUTHORITY`，所以 AG-FCI 未创建、未启动。R0 无活动 successor；未来新
 hypothesis 必须提交新的版本化 requirements 后重放不可变 atlas。
 
+R0 关闭后，数据侧的当前并行工程由 [AG-DUE](../assistive-geometry-data-upgrade/README.md) 承接：
+它把本 atlas 的缺口转成 metadata-only source prescreen，但不会改写本页的负终态，也不能仅凭
+metadata 建立 data support、DCA PASS、Teacher truth 或算法执行权限。
+
 ## Capability 口径
 
 R0 包含 clearance event/right-censor、ground plane、forward ground `0–2/0–5 m`、lateral
