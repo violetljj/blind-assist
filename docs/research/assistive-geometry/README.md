@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_ABSENT / SUPERVISION_FRONTDOOR_UNSATISFIED / F1_EXECUTION_NOT_AUTHORIZED / ALL_CALIBRATION_AND_CONFIRMATION_SEALED`
+状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_PROTOCOL_FROZEN / ADAPTER_IMPLEMENTATION_AUTHORIZED_NOT_STARTED / SUPERVISION_FRONTDOOR_UNSATISFIED / F1_EXECUTION_NOT_AUTHORIZED / ALL_CALIBRATION_AND_CONFIRMATION_SEALED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -73,6 +73,10 @@
 - [Geometry R2 F1-P machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_PROTOCOL_LOCK_RESULT_2026-08-10.json)
 - [Geometry R2 F1 FactorTensorAdapter gap audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.md)
 - [Geometry R2 F1 FactorTensorAdapter machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.json)
+- [Geometry R2 F1 FactorTensorAdapter protocol lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_LOCK_2026-08-10.md)
+- [Geometry R2 F1 FactorTensorAdapter protocol machine contract](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_LOCK_2026-08-10.json)
+- [Geometry R2 F1 FactorTensorAdapter protocol result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_LOCK_RESULT_2026-08-10.md)
+- [Geometry R2 F1 FactorTensorAdapter protocol machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_LOCK_RESULT_2026-08-10.json)
 - [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
@@ -87,14 +91,12 @@
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_SCHEMA_AND_MUTATION_CANARY_LOCK`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_IMPLEMENTATION_AND_SYNTHETIC_CANARY`
 
-该 successor 当前 execution authority 为 `false`，只允许另行冻结 learned graph 外、零参数、
-deterministic `FactorTensorAdapter` 的 schema、17 个 tensor→reducer 操作、frame contract、synthetic
-fixture 与 mutation canary gates，并绑定 F1 schema 和 byte-frozen F0 reducer SHA。不得实现或执行
-adapter，不得物化标签、定义或训练模型、创建 checkpoint、读取 task outcome、分配 R2 Development，
-也不得启动 teacher / temporal / mobile。F1-P 原 supervision successor routing 被本次更晚审计取代，
-但监督源/label contract 仍是 adapter 前门之后的独立必要 blocker。
+该 successor 只授权实现已冻结的 learned-graph 外、零参数 deterministic `FactorTensorAdapter`，并在
+8 个 tiny synthetic cases 上运行 `A01..A10`。不得读取真实数据、标签、模型输出或 task outcome，
+不得创建 trainer、optimizer、checkpoint 或分配 R2 Development，也不得启动 teacher / temporal /
+mobile。即使 synthetic canary PASS，监督源/label contract 仍是 F1 的独立必要 blocker。
 
 ARKitScenes `16/8/8` visit/video-disjoint roster 与 9,600-frame integrity 已冻结；B0 reader 又以
 6 个 TRAIN 视频、157 个 AppleDepth/FARO exact-timestamp 对照和主 TRAIN 的 480 个固定 stride
@@ -139,10 +141,13 @@ aggregate loss 和 reducer/task metric 均不能选 checkpoint 或拯救 factor 
 同时证明当前监督前门未闭合：metric-depth 有 `4,767/16` 支持，但 support 仅 `320/11`，continuous
 boundary truth 与 complete R2 factor schema truth 均为 `0/0`。因此 F1-P 终态是协议已冻结、执行未授权；
 本轮没有 label materializer、factor model、trainer、optimizer step 或 checkpoint。
-其后静态接口审计又确认 F1 tensor 不能直接喂给 F0 reducer：dense `depth_log_sigma_hw` 没有变成
+其后静态接口审计确认 F1 tensor 不能直接喂给 F0 reducer：dense `depth_log_sigma_hw` 没有变成
 scalar `scale_sigma_m` 的冻结规则，support 缺 `normal_sigma_rad/height_sigma_m`，dense boundary/evidence
 没有变成 ordered metric obstacle list 的规则，camera receipt 也没有逐字段 frame binding。当前没有
-hash-bound `FactorTensorAdapter`，故即使未来监督前门闭合也不得直接启动 F1。
+hash-bound `FactorTensorAdapter` 实现，故即使未来监督前门闭合也不得直接启动 F1。当前已完成其
+CANARY_LITE protocol lock：`14/14` prediction-field coverage、17 个 operation、8 个 synthetic cases 与
+10 个 future canary gate 均冻结，通用/专项 validator VALID，13/13 mutation tests PASS；实现与 canary
+尚未运行。
 异质教师只冻结到 C0 complementarity kill gate mechanics：教师 identity、评估 cohort 和输出仍未
 授权，未通过 oracle 增益、独占正确 parent、分歧错误浓度和时序优势四类门前不得启动 C1 蒸馏。
 时序 D0 也只冻结因果 GRU/TCN/diagonal-SSM 的统一 GeometryState 接口、参数/设备预算和未来

@@ -80,6 +80,11 @@
   不实现 adapter、不运行 reducer/canary、不授予执行权限。
 - `test_audit_geometry_r2_f1_adapter_gap.py`：7 个静态/mutation tests，验证缺 adapter 必须 fail closed，
   完整静态合同也最多到 `CANARY_NOT_RUN`，并拒绝 learned-graph、可训练参数或 execution 扩权。
+- `validate_geometry_r2_f1_adapter_protocol.py`：验证 `14/14` F1 field consumers、全部 F0 field
+  producers、17 个 operation、8-case fixture、A01–A10、authority/successor 与 exact SHA bindings；
+  不实现或执行 adapter。
+- `test_validate_geometry_r2_f1_adapter_protocol.py`：13 个 mutation tests，拒绝字段/operation 缺失、
+  task shortcut、receipt/support/missing-depth fail-open、uncertainty strengthening、扩权与 binding drift。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
@@ -105,8 +110,9 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 移动导出受历史 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry
 选模证据。新 R2 已完成 F0 reducer mechanics，并冻结 F1-P schema/loss/selection/Kill Gate；当前
 continuous boundary 与 complete factor-schema truth 均为 0，F1 supervision frontdoor 不满足；此外
-F1 tensors 与 F0 reducer 之间没有 hash-bound deterministic `FactorTensorAdapter`。没有 adapter、factor
-model、label materializer、trainer、optimizer、checkpoint、真实任务收益或 F1 execution authority。
+F1 tensors 与 F0 reducer 之间的 deterministic `FactorTensorAdapter` protocol 已冻结，但实现与 synthetic
+canary 尚未运行。没有 factor model、label materializer、trainer、optimizer、checkpoint、真实任务收益
+或 F1 execution authority。
 `UNKNOWN` 不得当作负例；synthetic shape 与 benchmark geometry 不得冒充任务质量。
 
 ## 停止条件
@@ -122,9 +128,10 @@ geometry transition agreement 均为 `0/3` seed 通过，终态为
 Calibration 与 Confirmation 保持封存。R2 F0 已签署
 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS`；F1-P 又签署
 `R2_F1_PROTOCOL_FROZEN_EXECUTION_NOT_AUTHORIZED_SUPERVISION_FRONTDOOR_UNSATISFIED`。后续接口审计签署
-`R2_F1_EXECUTION_BLOCKED_FACTORTENSOR_ADAPTER_ABSENT`。当前唯一 successor 只冻结 outside-graph adapter
-schema、frame contract、synthetic fixtures 与 mutation canary gates，本目录没有 adapter 实现/执行、
-标签物化、模型定义、训练或 outcome authority；监督源/label contract 仍是后续独立必要门。
+`R2_F1_EXECUTION_BLOCKED_FACTORTENSOR_ADAPTER_ABSENT`；其后 protocol lock 已将缺口收缩为
+`R2_F1_ADAPTER_STATIC_CONTRACT_COMPLETE_CANARY_NOT_RUN`。当前唯一 successor 只允许实现冻结的
+outside-graph adapter 并运行 8-case/A01–A10 synthetic canary；标签物化、模型定义、训练、real outcome
+与 F1 authority 仍为 false，监督源/label contract 仍是后续独立必要门。
 
 验证：
 
