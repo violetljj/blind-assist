@@ -1,6 +1,6 @@
 # Assistive Geometry Data Upgrade Engine
 
-状态：`current / AG-DUE_R0_GAP_PROTOCOL_LOCKED / NO_SOURCE_MANIFEST_LOCKED / NO_PAYLOAD_OR_TEACHER_AUTHORITY`
+状态：`current / AG-DUE_R0_SANPO_INITIAL_SOURCE_MANIFESTS_LOCKED / NOT_PRESCREENED / NO_PAYLOAD_OR_TEACHER_AUTHORITY`
 
 AG-DUE 是 Assistive Geometry 的数据研究并行线，不是新算法路线。它把 AG-DCA 已观测到的
 right-censor、corridor、R2 factor 与 temporal 缺口变成可重放的 source-admission 合同，目标是在
@@ -9,11 +9,11 @@ right-censor、corridor、R2 factor 与 temporal 缺口变成可重放的 source
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_INITIAL_SOURCE_MANIFEST_LOCK`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_INITIAL_MANIFEST_STATIC_PRESCREEN_EXECUTION`
 
-下一步只允许为 SANPO Real、SANPO Synthetic 和随后明确选定的公开候选源冻结 metadata-only
-source manifest。不得在 source identity、license、ancestry、independence、native signal 与 access
-receipt 被机器锁定前下载或打开 payload；更不得生成 pseudo-label 或训练模型。
+下一步只允许对已锁定的 SANPO Real/Synthetic 两份 manifest 运行 R0 static prescreen；不得联网刷新
+source metadata、下载或打开 payload，也不得把预期的 `PARTIAL` 当成 source data support。任何
+source-specific integrity/capability-count audit 仍需 prescreen 结果另行授权。
 
 ## R0 合同
 
@@ -27,6 +27,21 @@ receipt 被机器锁定前下载或打开 payload；更不得生成 pseudo-label
 - [validator module](../../../scripts/research/assistive_geometry_data_upgrade/README.md)
   计算 joint-parent 与 orientation gate，输出 `PRESCREEN_ADMIT / PARTIAL / REJECT`；即使
   `PRESCREEN_ADMIT`，`source_data_support_established` 仍固定为 false。
+
+## 已锁定 SANPO manifests
+
+- [manifest lock](BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_INITIAL_SOURCE_MANIFEST_LOCK_2026-08-10.json)
+  绑定 metadata bootstrap receipt、两份 manifest、validator 与 7 项 mutation test；
+- [SANPO Real manifest](BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_REAL_INITIAL_SOURCE_MANIFEST_2026-08-10.json)
+  只锁一个 discovery-fresh official-train session；
+- [SANPO Synthetic manifest](BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_SYNTHETIC_INITIAL_SOURCE_MANIFEST_2026-08-10.json)
+  同样只锁一个 discovery-fresh official-train session；
+- [bootstrap receipt](BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_METADATA_BOOTSTRAP_RECEIPT_2026-08-10.json)
+  披露官方 repo/README/split metadata 访问与 deterministic last-ID selection；正式 prescreen=false。
+
+两份 manifest 的 capability frame、orientation 与 parent count 全部为 0，quality 统一为
+`CHARACTERIZED_NOT_VALIDATED`，camera/upright basis 为 `UNKNOWN`。官方发布的 video/depth/pose/
+panoptic 字段只是候选 signal inventory，不是已验证 truth。
 
 ## 证据分层
 
@@ -46,6 +61,6 @@ R2 F1 当前还存在与来源无关的 `FactorTensorAdapter` ABI blocker；因�
 
 ## Claim ceiling
 
-当前只建立 gap contract、source manifest schema 与静态 checker mechanics。尚无真实 source manifest
-被锁定或执行，未读取 payload/RGB/geometry/model outcome，未调用 Teacher，未生成 pseudo-label，
+当前建立 gap contract、source manifest schema、静态 checker mechanics，并 byte/hash 锁定两份 SANPO
+metadata-only manifest；尚未执行正式 prescreen，未读取 payload/RGB/geometry/model outcome，未调用 Teacher，未生成 pseudo-label，
 未物化数据或训练模型，也不改变 R2、SANPO、QSF、CBF、FCI、默认 App、产品或 safety authority。

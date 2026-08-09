@@ -1,0 +1,82 @@
+{
+  "schema": "blindassist.assistive_geometry_due.sanpo_metadata_bootstrap_receipt.v1",
+  "receipt_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_DUE_R0_SANPO_METADATA_BOOTSTRAP_RECEIPT_2026-08-10",
+  "status": "DIAGNOSTIC_METADATA_RECONNAISSANCE_ONLY",
+  "observed_at": "2026-08-10",
+  "official_repository": "https://github.com/google-research-datasets/sanpo_dataset",
+  "official_repository_head": "11FACA999B5C223B804CD3196541A1427834918B",
+  "official_readme": {
+    "url": "https://raw.githubusercontent.com/google-research-datasets/sanpo_dataset/11faca999b5c223b804cd3196541a1427834918b/README.md",
+    "bytes": 6755,
+    "sha256": "25308388C98B559FD8AD57D29FEB016B3A744F5EAB74A3DEE296A4F79D9F7587"
+  },
+  "published_metadata_claims": {
+    "license": "Creative Commons Attribution 4.0",
+    "split_semantics": "mutually exclusive train/test native session IDs for SANPO-Real and SANPO-Synthetic",
+    "session_identity": "each session is a separate recording",
+    "sanpo_real": [
+      "video-first real human-egocentric sessions",
+      "stereo video",
+      "camera hardware metadata",
+      "IMU data",
+      "sparse ZED depth and dense CREStereo depth in meters",
+      "camera poses including the published fixed_camera_poses correction",
+      "optional temporally consistent left-view panoptic segmentation",
+      "PII such as faces and license plates is reported blurred; residual review remains required"
+    ],
+    "sanpo_synthetic": [
+      "synthetic video sessions curated with Parallel Domain",
+      "camera hardware metadata",
+      "IMU data",
+      "metric depth maps",
+      "camera poses",
+      "temporally consistent panoptic segmentation"
+    ]
+  },
+  "sources": {
+    "SANPO_REAL": {
+      "official_train_split_url": "https://storage.googleapis.com/gresearch/sanpo_dataset/v0/sanpo-real/splits/train_session_ids.txt",
+      "official_train_split_bytes": 18480,
+      "official_train_split_sha256": "1BAD2EFA02690F455D5F27B59319EB9EF31C0EFB6E1A314B056B63D836FB3CEC",
+      "official_train_session_count": 560,
+      "selected_session_id": "HfUrNcBq2jQ_Q5m5cp373cUtJPtFactP",
+      "selection_basis": "last identity in the observed official-train metadata object; deterministic bootstrap selection, not capability or outcome selection",
+      "tracked_reference_search_scope": "tracked workspace text plus DATASET_MASTER_LEDGER.json/csv; artifacts.local and test-artifacts.local payloads not opened",
+      "tracked_reference_hits": 0,
+      "source_frame_count_observed": 0
+    },
+    "SANPO_SYNTHETIC": {
+      "official_train_split_url": "https://storage.googleapis.com/gresearch/sanpo_dataset/v0/sanpo-synthetic/splits/train_session_ids.txt",
+      "official_train_split_bytes": 101399,
+      "official_train_split_sha256": "F9C5DC4C289FA87342ABC0D2CC49F112FCC78C7E02E0B6B081E296A99344173C",
+      "official_train_session_count": 1560,
+      "selected_session_id": "17c7d6bc6d4d4573afecc730cabf4db65f66b04ced504396a71d1185920179cb",
+      "selection_basis": "last identity in the observed official-train metadata object; deterministic bootstrap selection, not capability or outcome selection",
+      "tracked_reference_search_scope": "tracked workspace text plus DATASET_MASTER_LEDGER.json/csv; artifacts.local and test-artifacts.local payloads not opened",
+      "tracked_reference_hits": 0,
+      "source_frame_count_observed": 0
+    }
+  },
+  "alignment_registration_units_coordinate_receipt": {
+    "status": "NOT_PAYLOAD_AUDITED",
+    "known_only": [
+      "official metadata describes metric depth and camera poses",
+      "SANPO-Real pose orientation correction is published",
+      "existing BlindAssist diagnostics warn that a pose CSV must not be assumed frame/timestamp bound"
+    ],
+    "unresolved": [
+      "selected-session object inventory",
+      "per-frame timestamps and pose binding",
+      "camera intrinsics and upright mapping",
+      "depth registration, invalid values and metric-unit verification",
+      "panoptic-to-obstacle boundary semantics",
+      "support surface and body-swept derivations",
+      "orientation and per-parent capability counts"
+    ]
+  },
+  "payload_opened": false,
+  "payload_downloaded": false,
+  "formal_prescreen_executed": false,
+  "selection_or_tuning_influence": false,
+  "claim_ceiling": "Official-source metadata reconnaissance and deterministic initial identity selection only. No payload integrity, capability count, source truth, DCA pass, prescreen decision, materialization, training, product, or safety authority."
+}
