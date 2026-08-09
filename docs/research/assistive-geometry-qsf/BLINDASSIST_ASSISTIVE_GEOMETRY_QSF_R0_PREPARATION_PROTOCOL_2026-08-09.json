@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0_PREPARATION_PROTOCOL_2026-08-09",
+  "route_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0",
+  "research_mode": "REVERSIBLE_EXPLORATION",
+  "research_style": "WILD_LAB",
+  "stage": "PREPARATION",
+  "execution_profile": "CANARY_LITE",
+  "status": "PARALLEL_ROUTE_PREPARED_H1_IMPLEMENTATION_NOT_STARTED",
+  "scientific_question": "Can RGB plus an explicit body and safety profile predict a censored body-swept robust q-contact distribution whose derived occupancy is horizon-consistent and whose clearance queries generalize to held-out profiles?",
+  "local_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_ONLY_IMPLEMENTATION_AND_TRAIN_CANARY_LOCK",
+  "candidate_order": [
+    "H1_ONLY",
+    "H2_ONLY",
+    "H1_PLUS_H2_CONDITIONAL_NOT_TRAINABLE"
+  ],
+  "parallel_policy": {
+    "parallel_execution_authorized": true,
+    "independent_scheduler_required": true,
+    "no_wait_on_foreign_route": true,
+    "no_mutation_of_foreign_route_state": true,
+    "foreign_route_status_or_successor_unchanged": true
+  },
+  "execution_authority": {
+    "protocol_and_implementation": true,
+    "synthetic_mechanics": true,
+    "h1_only_implementation": true,
+    "h2_schema_placeholder_only": true,
+    "h2_implementation_or_materialization": false,
+    "real_train_canary": false,
+    "development_outcome_access": false,
+    "confirmation_outcome_access": false,
+    "h1_plus_h2_training": false,
+    "android_or_device": false,
+    "default_app_change": false
+  },
+  "owned_output_roots": [
+    "artifacts.local/evidence/assistive-geometry-qsf",
+    "artifacts.local/models/assistive-geometry-qsf",
+    "artifacts.local/work/assistive-geometry-qsf"
+  ],
+  "resource_scheduling": {
+    "foreign_formal_train_priority": true,
+    "while_foreign_formal_train_running": [
+      "CPU_ONLY",
+      "SYNTHETIC_ONLY",
+      "LIGHT_IO_ONLY",
+      "NO_GPU_OR_VRAM_COMPETITION",
+      "NO_LONG_MATERIALIZATION"
+    ],
+    "future_gpu_canary_requires_separate_preflight": true
+  },
+  "shared_resource_policy": {
+    "manifest_required": true,
+    "access_mode": "READ_ONLY",
+    "immutable_identity_required": true,
+    "provenance_required": true,
+    "license_scope_required": true,
+    "outcome_access_disclosure_required": true,
+    "selection_influence_disclosure_required": true,
+    "allowed_kinds": [
+      "SOURCE_DATA",
+      "DERIVED_TRAIN_CACHE",
+      "INITIALIZATION",
+      "CODE_CONTRACT",
+      "PROTOCOL",
+      "SYNTHETIC_FIXTURE",
+      "TEST_TOOL",
+      "LITERATURE",
+      "OPERATIONAL_LESSON",
+      "TRAIN_DIAGNOSTIC"
+    ],
+    "forbidden_kinds": [
+      "ACTIVE_CHECKPOINT",
+      "ACTIVE_RUN_STATE",
+      "PROTECTED_OUTCOME",
+      "SELECTION_RESULT",
+      "CONFIRMATION_IDENTITY"
+    ],
+    "allowed_data_roles": [
+      "TRAIN",
+      "CANARY",
+      "PROJECT_CONSUMED_DEVELOPMENT",
+      "DISCLOSED_CROSS_PROGRAM_CANARY",
+      "REGRESSION_ONLY",
+      "NOT_APPLICABLE"
+    ],
+    "forbidden_data_roles": [
+      "DEVELOPMENT_SELECTION",
+      "DEVELOPMENT_CALIBRATION",
+      "CONFIRMATION",
+      "SEALED_UNSEEN",
+      "DEPLOYMENT"
+    ],
+    "forbidden_logical_path_prefixes": [
+      "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-formal-train-"
+    ],
+    "allowed_outcome_access": [
+      "NONE",
+      "METADATA_ONLY",
+      "CONTENT_INSPECTED",
+      "OUTPUT_INSPECTED_DIAGNOSTIC_ONLY"
+    ],
+    "allowed_selection_influence": [
+      "NONE",
+      "DISCLOSED_DEVELOPMENT_ONLY"
+    ],
+    "allowed_claim_uses": [
+      "SCHEMA_ONLY",
+      "TRAIN_INPUT_ONLY",
+      "TRAIN_TARGET_INPUT_ONLY",
+      "INITIALIZATION_ONLY",
+      "SYNTHETIC_MECHANICS_ONLY",
+      "TEST_ONLY",
+      "LITERATURE_CONTEXT_ONLY",
+      "DIAGNOSTIC_ONLY",
+      "CANARY_INPUT_ONLY",
+      "REGRESSION_ONLY"
+    ]
+  },
+  "starter_shared_interfaces": [
+    {
+      "resource_id": "ASSISTIVE_GEOMETRY_B0_TASK_CONTRACT",
+      "kind": "PROTOCOL",
+      "logical_path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TASK_CONTRACT_2026-08-09.json",
+      "producer_route": "BLINDASSIST_ASSISTIVE_GEOMETRY",
+      "identity_basis": "GIT_COMMIT",
+      "identity_value": "f3b6261177c4ecb9e1b2122db7a19c9a62a2a0ce",
+      "access": "READ_ONLY",
+      "authority": "GEOMETRY_SCHEMA_ONLY"
+    },
+    {
+      "resource_id": "ASSISTIVE_GEOMETRY_TRUTH_READER_CONVENTIONS",
+      "kind": "CODE_CONTRACT",
+      "logical_path": "scripts/research/assistive_geometry/arkitscenes_truth_reader.py",
+      "producer_route": "BLINDASSIST_ASSISTIVE_GEOMETRY",
+      "identity_basis": "GIT_COMMIT",
+      "identity_value": "f3b6261177c4ecb9e1b2122db7a19c9a62a2a0ce",
+      "access": "READ_ONLY",
+      "authority": "SOURCE_UPRIGHT_GEOMETRY_CONVENTIONS_ONLY"
+    },
+    {
+      "resource_id": "ASSISTIVE_GEOMETRY_HYPOTHESIS_CANARY_LITE_R0",
+      "kind": "SYNTHETIC_FIXTURE",
+      "logical_path": "scripts/research/assistive_geometry/run_hypothesis_canary_lite.py",
+      "producer_route": "BLINDASSIST_ASSISTIVE_GEOMETRY",
+      "identity_basis": "GIT_COMMIT",
+      "identity_value": "f3b6261177c4ecb9e1b2122db7a19c9a62a2a0ce",
+      "access": "READ_ONLY",
+      "authority": "MATH_MECHANICS_AND_COUNTEREXAMPLES_ONLY"
+    }
+  ],
+  "information_sharing": {
+    "allowed": [
+      "TRACKED_CONTRACTS",
+      "NON_PROTECTED_GEOMETRY_CONVENTIONS",
+      "TRAIN_ONLY_OPERATIONAL_LESSONS",
+      "FAILURE_MODES_WITHOUT_PROTECTED_OUTCOME",
+      "LITERATURE_AND_PUBLIC_METHODS"
+    ],
+    "forbidden": [
+      "B1_DEVELOPMENT_OR_CONFIRMATION_OUTCOME",
+      "FOREIGN_ACTIVE_CHECKPOINT_OR_PROGRESS",
+      "FOREIGN_SELECTION_OR_THRESHOLD_DECISION",
+      "UNDISCLOSED_CLAIM_RELEVANT_OUTCOME"
+    ]
+  },
+  "hard_isolation": {
+    "run_identity_separate": true,
+    "checkpoint_separate": true,
+    "optimizer_scheduler_rng_separate": true,
+    "target_cache_separate": true,
+    "progress_receipt_separate": true,
+    "artifact_root_separate": true,
+    "foreign_process_control_forbidden": true
+  },
+  "kill_gates": {
+    "h1": [
+      "HORIZON_MONOTONICITY_VIOLATION_STRUCTURALLY_ZERO",
+      "CENSOR_INVALID_UNKNOWN_SEMANTICS_CLEAN",
+      "NO_KNOWN_COVERAGE_COLLAPSE",
+      "RIGHT_CENSORED_LOG_LIKELIHOOD_PRIMARY"
+    ],
+    "h2": [
+      "PROFILE_NESTING_VIOLATION_STRUCTURALLY_ZERO",
+      "HELD_OUT_PROFILE_QUERY_TEST_REQUIRED",
+      "FIXED_PROFILE_NON_REGRESSION_REQUIRED"
+    ],
+    "combination": [
+      "H1_AND_H2_INDIVIDUAL_CANARY_PASS_REQUIRED",
+      "SEPARATE_COMBINATION_PROTOCOL_REQUIRED"
+    ]
+  },
+  "claim_ceiling": [
+    "PREPARATION_AND_ISOLATION_CONTRACT_ONLY",
+    "NO_LEARNABILITY_CLAIM",
+    "NO_COMPARATIVE_QUALITY_CLAIM",
+    "NO_PAPER_NOVELTY_CLAIM",
+    "NO_CONFIRMATION_OR_DEPLOYMENT_CLAIM",
+    "NO_PRODUCT_OR_SAFETY_CLAIM"
+  ]
+}

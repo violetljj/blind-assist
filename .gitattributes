@@ -69,6 +69,10 @@
 /docs/research/hftf/** text eol=lf
 /scripts/research/hftf/** text eol=lf
 
+# AG-QSF shared-resource identities bind protocol, validator and complete directory-manifest bytes.
+/docs/research/assistive-geometry-qsf/** text eol=lf
+/scripts/research/assistive_geometry_qsf/** text eol=lf
+
 # Immutable historical-reference exceptions are SHA256-bound and must survive clean checkout byte-for-byte.
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_0327.json text eol=lf
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_transport_safety_amendment.json text eol=lf

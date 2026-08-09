@@ -59,6 +59,7 @@
 - [M0 task-preserving mobile deployment protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_M0_TASK_PRESERVING_MOBILE_DEPLOYMENT_PROTOCOL_2026-08-09.md)
 - [M0 task-preserving mobile deployment machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_M0_TASK_PRESERVING_MOBILE_DEPLOYMENT_PROTOCOL_2026-08-09.json)
 - [并行 WILD_LAB 数学假设 canary](BLINDASSIST_ASSISTIVE_GEOMETRY_HYPOTHESIS_CANARY_LITE_R0_2026-08-09.md)
+- [AG-QSF 并行路线 current](../assistive-geometry-qsf/README.md)
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 - [DepthART 部署支线](../hftf/README.md)
 
@@ -93,7 +94,7 @@ clearance/TTC/compute-gate 输出；单帧候选与新时序 cohort 未就绪，
 移动 M0 只冻结选模后的双 shape ONNX、单 fixed-mixed HTP 候选、新 MOBILE_DEVELOPMENT roster 与
 “质量先于性能”门；当前无选定模型、转换、HTP partition 或任务保持证据。
 
-## 并行 WILD_LAB 数学 canary（不改变 successor）
+## 并行 WILD_LAB 数学 canary handoff（不改变 successor）
 
 纯合成 CPU canary 已审查四个 forward hypothesis：censored robust-contact survival、
 profile-conditioned swept configuration clearance、maximum-bottleneck corridor loss 和
@@ -104,3 +105,6 @@ parent 数量阻塞：8% finite-sample risk 至少需 12 个独立 parents，当
 
 该 canary 不读取模型、checkpoint 或任何数据 role outcome，不修改冻结 A0–A4，不授权 B2、
 真实 Development、部署、默认 App 或 safety；唯一 successor 保持 seed 29 guarded A0 execution。
+H1/H2 的后续实现与 TRAIN-only canary authority 已移交独立
+[AG-QSF current](../assistive-geometry-qsf/README.md)；两条路线只读共享冻结资源，run state、
+checkpoint、target cache、outcome、scheduler 与 artifact root 保持隔离。
