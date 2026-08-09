@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`A0_TRAIN_EXECUTION_LOCK_PASS / FORMAL_A0_THREE_SEED_TRAINING_AUTHORIZED_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
+状态：`A0_FORMAL_RUNNER_AND_HOST_PERFORMANCE_PILOT_PASS / WORKERS_1_SELECTED / SEED_17_GUARDED_EXECUTION_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -47,6 +47,8 @@
 - `smoke_b1_a0_train_execution_attempt_02.py`：保留 Attempt 1 RNG-device negative 后，将 checkpoint
   首次加载固定在 CPU；必须以 `-m scripts.research.assistive_geometry.smoke_b1_a0_train_execution_attempt_02`
   运行。
+- `train_b1_a0_formal.py`：运行冻结的 A0 TRAIN-only 性能 pilot 与三 seed 正式训练；发布
+  guarded progress，按 epoch 原子保存可恢复状态，并保留 `5/10/15/20` checkpoint。
 
 ## 输出
 

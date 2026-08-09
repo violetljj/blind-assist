@@ -1,0 +1,82 @@
+{
+  "schema": "blindassist_assistive_geometry_b1_a0_train_performance_preflight_result_v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_TRAIN_PERFORMANCE_PREFLIGHT_RESULT_2026-08-09",
+  "terminal": "B1_A0_TRAIN_HOST_PERFORMANCE_PILOT_PASS_WORKERS_1_SELECTED",
+  "protocol": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_FORMAL_TRAIN_EXECUTION_PROTOCOL_2026-08-09.json",
+    "sha256": "2B21941CE004B1144487C25155F2E74793B477D4CFC4DBD6AE50FCC76AE03752"
+  },
+  "runner": {
+    "path": "scripts/research/assistive_geometry/train_b1_a0_formal.py",
+    "sha256": "BE5D06382FF15465FE4A85FE33B1FDD8C6017C527CCE0FEFEA9ADBCE49B07A81"
+  },
+  "pilot": {
+    "seed": 17,
+    "optimizer_steps_per_arm": 20,
+    "same_real_train_access_mechanics": true,
+    "same_scientific_parameters": true,
+    "precision": "BF16",
+    "tf32_disabled": true,
+    "arms": [
+      {
+        "workers": 0,
+        "result_path": "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-train-performance-pilot-20260809-r2/workers-0-seed-17/pilot-result.json",
+        "result_bytes": 4850,
+        "result_sha256": "55E7F56321CC8948AD54767EB5DAD752F5AE0A25B861D3A81DB2ADC4B0F28DE3",
+        "optimization_wall_seconds": 41.205916900000375,
+        "optimization_steps_per_second": 0.48536718410916946,
+        "mean_microbatch_loss": 1.2558722019195556,
+        "mean_gradient_norm_before_clip": 7.864636254310608
+      },
+      {
+        "workers": 1,
+        "result_path": "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-train-performance-pilot-20260809-r2/workers-1-seed-17/pilot-result.json",
+        "result_bytes": 4850,
+        "result_sha256": "A3248CAAA4CE9CA380B6CB36AAD769D55D7B7578D20AB80B82016FBC1F9B2037",
+        "optimization_wall_seconds": 36.676118499999575,
+        "optimization_steps_per_second": 0.5453139714445461,
+        "mean_microbatch_loss": 1.2557725384831429,
+        "mean_gradient_norm_before_clip": 7.969119572639466
+      },
+      {
+        "workers": 4,
+        "result_path": "artifacts.local/evidence/hftf/assistive-geometry-b1-a0-train-performance-pilot-20260809-r2/workers-4-seed-17/pilot-result.json",
+        "result_bytes": 4856,
+        "result_sha256": "5DA9CAC4EE8C57621D1E0D21E24C3BB7E57B6484A486E51AD0E58B3A56791192",
+        "optimization_wall_seconds": 41.77456159999929,
+        "optimization_steps_per_second": 0.4787602583541758,
+        "mean_microbatch_loss": 1.2554798692464828,
+        "mean_gradient_norm_before_clip": 8.079571795463561
+      }
+    ],
+    "first_eight_input_batch_digests_equal": true,
+    "mean_microbatch_loss_span": 0.000392332673072815,
+    "final_model_state_bit_exact_across_arms": false,
+    "interpretation": "CPU loader output is bit-exact across arms. CUDA training is not claimed bitwise deterministic; the small TRAIN loss variation is recorded and seed-level scientific decisions still require all frozen seeds."
+  },
+  "selection": {
+    "workers": 1,
+    "speedup_over_workers_0_fraction": 0.123508117767379,
+    "speedup_over_workers_4_fraction": 0.139012610025654,
+    "projected_optimizer_steps_per_seed": 6000,
+    "projected_wall_seconds_per_seed": 11002.83564,
+    "projected_wall_hours_per_seed": 3.05634323333334,
+    "maximum_expected_wall_seconds_per_seed": 14400,
+    "diagnose_after": "throughput below 0.4635 optimizer steps/s for two progress windows, no progress for two expected intervals, or wall time beyond 4 hours",
+    "peak_cuda_memory_bytes": 2054216704,
+    "minimum_free_vram_gib_for_launch": 4.0,
+    "reserve_system_memory_gib": 4.0
+  },
+  "authority": {
+    "create_seed_specific_guarded_preflight": true,
+    "formal_a0_three_seed_train_execution": true,
+    "development_or_confirmation_content_access": false,
+    "a1_to_a4_training": false,
+    "teacher_execution": false,
+    "deployment_or_default_app": false,
+    "product_or_safety": false
+  },
+  "current_state": "A0_FORMAL_RUNNER_AND_HOST_PERFORMANCE_PILOT_PASS / WORKERS_1_SELECTED / SEED_17_GUARDED_EXECUTION_NOT_STARTED",
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_SEED_17_GUARDED_FORMAL_TRAIN_EXECUTION",
+  "claim_ceiling": "Host execution readiness only. No model quality, Development, Confirmation, deployment, product or safety authority."
+}
