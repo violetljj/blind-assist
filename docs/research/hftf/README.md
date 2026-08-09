@@ -15,7 +15,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 - DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
-- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；strict G4-D 为不可变负终态。Task-preserving D0 三臂已在 outcome 前技术前门关闭，没有 arm 进入任务质量或性能。D1 的 CameraX `4:3` display-upright portrait、`1×3×608×448` full-FOV/K、同任务后处理和 8 primary + 8 reserve Training roster 保持冻结；用户已把 reviewed ARKitScenes scope 精确扩展到这 16 个身份和五类资产。HEAD `80/80` PASS，总 body `8,946,922,057` bytes，仍未读取媒体 body 或 truth/model outcome。下一阶段的 300-frame portrait/pose/RGB-D/K label-blind body preflight 已在 GET 前冻结；fixed-mixed 产品图尚未建立，R2 candidate 仍未选定。既有 G4-C `448×448` 图继续只作 source/control；8 个 R2 session 仍 metadata-only 且禁止参与选模。DA2 保持冻结 baseline/fallback。
+- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；strict G4-D 为不可变负终态。Task-preserving D0 三臂已在 outcome 前技术前门关闭，没有 arm 进入任务质量或性能。D1 的 16 个 Training identity 已完成冻结的 label-blind body preflight：4 primary + 4 frozen-order reserve replacement 构成最终 8-session Development roster，每 session 锁 300 个连续 portrait/pose/RGB-D/K 帧，未读取 task/model outcome。产品比例 `1×3×608×448` fixed-mixed 单候选已完成 PyTorch shape/camera externalization、ONNX structure 与 QAIRT 2.47 host conversion，candidate ONNX/DLC、reference checkpoint、postprocess 与 roster SHA 已锁；但本次无 ADB 设备，SM8650/v75 context、HTP full-graph parity 和 Development outcome 均未运行，R2 candidate 仍未选定。既有 G4-C `448×448` 图继续只作 source/control；8 个 R2 session 仍 sealed 且禁止参与选模。DA2 保持冻结 baseline/fallback。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
@@ -28,6 +28,8 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 - [D0 precision screen terminal result](DEPTHART_TASK_PRESERVING_D0_PRECISION_SCREEN_RESULT_2026-08-09.md)
 - [D1 fixed-mixed Development protocol](DEPTHART_TASK_PRESERVING_D1_FIXED_MIXED_DEVELOPMENT_PROTOCOL_2026-08-09.md) · [machine contract](DEPTHART_TASK_PRESERVING_D1_FIXED_MIXED_DEVELOPMENT_PROTOCOL_2026-08-09.json) · [metadata roster lock](DEPTHART_TASK_PRESERVING_D1_ARKIT_DEVELOPMENT_ROSTER_LOCK_2026-08-09.json)
 - [D1 ARKitScenes scope receipt](DEPTHART_TASK_PRESERVING_D1_ARKIT_LICENSE_SCOPE_RECEIPT_2026-08-10.json) · [HEAD preflight protocol](DEPTHART_TASK_PRESERVING_D1_ARKIT_MEDIA_PREFLIGHT_PROTOCOL_2026-08-10.json) · [body preflight protocol](DEPTHART_TASK_PRESERVING_D1_ARKIT_BODY_PREFLIGHT_PROTOCOL_2026-08-10.json)
+- [D1 label-blind body preflight result](DEPTHART_TASK_PRESERVING_D1_ARKIT_BODY_PREFLIGHT_RESULT_2026-08-10.md) · [machine result](DEPTHART_TASK_PRESERVING_D1_ARKIT_BODY_PREFLIGHT_RESULT_2026-08-10.json)
+- [D1 product-aspect technical preflight](DEPTHART_TASK_PRESERVING_D1_PRODUCT_ASPECT_TECHNICAL_PREFLIGHT_RESULT_2026-08-10.md) · [candidate/reference/postprocess machine lock](DEPTHART_TASK_PRESERVING_D1_PRODUCT_ASPECT_TECHNICAL_PREFLIGHT_RESULT_2026-08-10.json)
 - [DepthART task-preserving deployment R2 protocol](DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.md) · [machine contract](DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.json)
 - [R2 ARKit roster lock](DEPTHART_TASK_PRESERVING_R2_ARKIT_ROSTER_LOCK_2026-08-09.json) · [media HEAD preflight](DEPTHART_TASK_PRESERVING_R2_ARKIT_MEDIA_PREFLIGHT_2026-08-09.json)
 - [DA2 P1/P2 closure](DAV2_P1_P2_EXECUTION_CLOSURE_2026-08-05.md)
@@ -36,12 +38,12 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 ## 唯一 successor
 
-`DEPTHART_TASK_PRESERVING_D1_LABEL_BLIND_BODY_PREFLIGHT_EXECUTION`：许可 scope 与 HEAD
-前门已经关闭。下一步只执行冻结的 body preflight：按主备顺序检查每个身份是否具有 300 个
-连续、pose bracket `<=0.25s`、pose-derived portrait 的 RGB/depth/confidence/K 帧；相邻帧 gap
-必须 `<=0.5s`。不合格 primary 只能由首个 label-blind eligible reserve 替换。该门通过后才可
-重建 `608×448` fixed-mixed 图并冻结单一候选。当前不得计算 task truth、读取模型 outcome、
-测性能或访问 R2 cohort。
+`DEPTHART_TASK_PRESERVING_D1_SM8650_HTP_CONTEXT_AND_OUTCOME_ACTIVATION_PREFLIGHT`：只在
+冻结的 `SM-S9280 / SM8650 / HTP v75` 重新可用后，为 exact SHA 的 `608×448` DLC 生成
+context，并在冻结 synthetic input 上关闭 direct/context 与 reference numerical parity；随后只做
+不读取 task output 的 activation-manifest 验证。任一设备 identity、context、partition 或 parity 门失败
+即停止，不能进入 Development quality screen；全部通过后才允许另行激活 D1 outcome。当前不得
+测质量/性能、修改 candidate recipe 或访问 R2 cohort。
 
 R2 是下游 sealed 路线，不是并列 successor：metadata roster 已冻结但 candidate 尚未选定；
 D1 即使 PASS 也只建立一个 R2 candidate lock，不能直接访问独立 outcome，也不产生 scientific

@@ -1,0 +1,50 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d1_arkit_body_preflight_result_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D1_ARKIT_BODY_PREFLIGHT_2026-08-10",
+  "executed_at": "2026-08-10",
+  "terminal": "D1_ARKIT_LABEL_BLIND_MEDIA_PREFLIGHT_PASS_FINAL_DEVELOPMENT_ROSTER_LOCKED",
+  "authority_profile": "DEVELOPMENT_SOURCE_INTEGRITY_AND_COHORT_LOCK_ONLY",
+  "bindings": {
+    "protocol": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D1_ARKIT_BODY_PREFLIGHT_PROTOCOL_2026-08-10.json",
+      "sha256": "A40D006EB8A4CDE10FD00A208ADF7308C4783318257977E1B8E4945449AFA341"
+    },
+    "manifest": {
+      "path": "artifacts.local/datasets/depthart-task-preserving-d1-arkitscenes-preflight-20260810-r1/manifest.json",
+      "bytes": 4131813,
+      "sha256": "06EBAFD42D38A607AC6A3F952DC77CDEA942E2ABECAC2613442D4C339C5C3CE5"
+    }
+  },
+  "execution": {
+    "identity_count": 16,
+    "eligible_primary_count": 4,
+    "eligible_reserve_count": 4,
+    "selected_identity_count": 8,
+    "selected_frame_count_per_identity": 300,
+    "rgb_visual_review_performed": false,
+    "truth_model_or_task_outcome_read": false,
+    "candidate_selection_performed": false,
+    "r2_cohort_accessed": false
+  },
+  "final_development_roster": [
+    {"order": 1, "role": "RESERVE_REPLACEMENT", "visit_id": "426245", "video_id": "42898254", "replaces": "438803/44358207"},
+    {"order": 2, "role": "RESERVE_REPLACEMENT", "visit_id": "471146", "video_id": "47204473", "replaces": "421251/42444834"},
+    {"order": 3, "role": "PRIMARY", "visit_id": "382841", "video_id": "41126916"},
+    {"order": 4, "role": "RESERVE_REPLACEMENT", "visit_id": "470341", "video_id": "47331003", "replaces": "483306/48018537"},
+    {"order": 5, "role": "RESERVE_REPLACEMENT", "visit_id": "470297", "video_id": "47331084", "replaces": "382145/41098158"},
+    {"order": 6, "role": "PRIMARY", "visit_id": "466159", "video_id": "44796594"},
+    {"order": 7, "role": "PRIMARY", "visit_id": "382312", "video_id": "41159702"},
+    {"order": 8, "role": "PRIMARY", "visit_id": "484724", "video_id": "48458772"}
+  ],
+  "replacement_basis": "LABEL_BLIND_MEDIA_INTEGRITY_AND_PRODUCT_PORTRAIT_POSE_RGBD_CONTINUITY_ONLY",
+  "failed_identity_reason": "Fewer than 300 continuous eligible frames under the frozen pose-derived portrait contract",
+  "authority_ceiling": {
+    "task_outcome_access": false,
+    "r2_outcome_access": false,
+    "performance": false,
+    "da2_replacement": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  }
+}

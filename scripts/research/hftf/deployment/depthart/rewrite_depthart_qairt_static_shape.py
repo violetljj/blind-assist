@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fold fixed-S448 no-op broadcasts and constant Mod nodes in DepthART ONNX."""
+"""Fold fixed-shape no-op broadcasts and constant Mod nodes in DepthART ONNX."""
 
 from __future__ import annotations
 
@@ -159,7 +159,7 @@ def rewrite(input_path: Path, output_path: Path, receipt_path: Path) -> dict[str
         "constant_mods_folded": len(folded_mods),
         "dead_nodes_removed": dict(removed_dead),
         "node_count": len(model.graph.node),
-        "equivalence": "EXACT_FIXED_S448_BROADCAST_AND_INTEGER_CONSTANT_FOLD_FULL_RUNTIME_PARITY_PENDING",
+        "equivalence": "EXACT_FIXED_SHAPE_BROADCAST_AND_INTEGER_CONSTANT_FOLD_FULL_RUNTIME_PARITY_PENDING",
     }
     receipt_path.parent.mkdir(parents=True, exist_ok=True)
     receipt_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
