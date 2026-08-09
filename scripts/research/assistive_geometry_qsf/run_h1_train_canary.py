@@ -165,8 +165,10 @@ def extract_features(
     seed: int,
     device: torch.device,
     amp_dtype: torch.dtype,
+    batch_size: int,
     progress_callback: Any | None = None,
 ) -> dict[str, Any]:
+    require(1 <= batch_size <= 16, "feature extraction batch size escaped frozen bound")
     dataset = AssistiveGeometryTrainDataset(frames, seed, augment=False)
     by_orientation: dict[str, list[int]] = defaultdict(list)
     for index, frame in enumerate(frames):
@@ -177,8 +179,8 @@ def extract_features(
     completed = 0
     for orientation in ("portrait", "landscape"):
         indices = by_orientation[orientation]
-        for start in range(0, len(indices), 4):
-            batch_indices = indices[start : start + 4]
+        for start in range(0, len(indices), batch_size):
+            batch_indices = indices[start : start + batch_size]
             batch = collate_train_samples([dataset[index] for index in batch_indices])
             image = batch["image"].to(device)
             intrinsics = batch["targets"]["intrinsics_tensor"].to(device)
@@ -419,6 +421,7 @@ def execute(args: argparse.Namespace) -> int:
                 seed=int(protocol["training"]["seed"]),
                 device=device,
                 amp_dtype=amp_dtype,
+                batch_size=int(protocol["resource_budget"]["feature_extraction_batch_size"]),
                 progress_callback=progress,
             )
             extraction_seconds = time.perf_counter() - started
@@ -443,6 +446,9 @@ def execute(args: argparse.Namespace) -> int:
                 "mode": "PERFORMANCE_PILOT",
                 "scientific_outcome_access": False,
                 "frame_count": total,
+                "feature_extraction_batch_size": int(
+                    protocol["resource_budget"]["feature_extraction_batch_size"]
+                ),
                 "selected_inputs": selected_input_receipt,
                 "feature_shape": list(payload["features"].shape),
                 "feature_finite": bool(torch.isfinite(payload["features"]).all().item()),

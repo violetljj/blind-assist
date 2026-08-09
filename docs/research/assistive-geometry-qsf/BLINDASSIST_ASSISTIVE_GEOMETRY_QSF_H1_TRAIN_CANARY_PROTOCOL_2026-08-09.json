@@ -1,13 +1,28 @@
 {
-  "schema": "blindassist.assistive_geometry_qsf.h1_train_canary_protocol.v1",
-  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09",
+  "schema": "blindassist.assistive_geometry_qsf.h1_train_canary_protocol.v2",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09_ATTEMPT_02",
   "route_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0",
   "research_mode": "REVERSIBLE_EXPLORATION",
   "research_style": "WILD_LAB",
   "stage": "CANARY",
   "profile": "CANARY_LITE",
   "candidate": "H1_ONLY",
-  "status": "H1_IMPLEMENTED_TRAIN_CANARY_LOCKED_NOT_RUN",
+  "status": "H1_IMPLEMENTED_TRAIN_CANARY_RELOCKED_ATTEMPT_02_NOT_RUN",
+  "previous_attempt": {
+    "attempt_id": "H1_TRAIN_CANARY_PERFORMANCE_PILOT_ATTEMPT_01",
+    "protocol_sha256": "63D8E8293C0EEE0C65654964B48D02E95AE9C676BF1E1EAABF54D05F926F7CA2",
+    "pilot_result_path": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-r0/pilot-r0/pilot-result.json",
+    "pilot_result_sha256": "0FEF16FAA5F91C7638D78DEB7289E0DF73670FE6C73960D8F81843F941794129",
+    "terminal": "H1_TRAIN_CANARY_PERFORMANCE_NOT_QUALIFIED",
+    "scientific_outcome_access": false
+  },
+  "performance_relock": {
+    "causal_change": "Increase only frozen encoder feature-extraction batch size from 4 to 16.",
+    "evidence": "Attempt 01 used 388 MiB peak VRAM and projected 577.126 s but its conservative maximum was 1214.252 s, above the 900 s CANARY_LITE bound.",
+    "scientific_model_or_gate_changed": false,
+    "roster_or_frame_selection_changed": false,
+    "attempt_01_output_reused_for_scientific_selection": false
+  },
   "scientific_question": "Can a parameter-matched four-bin body-swept robust q-contact survival head learn from frozen DepthART band features without turning UNKNOWN or partial support into clear right-censor observations?",
   "causal_difference": "Replace direct point clearance plus three independent occupancy logits with four discrete hazards whose CDF structurally supplies occupancy at 1.0, 1.5 and 2.0 metres.",
   "falsifier": "Reject this H1 implementation version if fit or held-out-parent right-censored NLL does not improve by the frozen minimum, if held-out false-clear or capped-clearance regresses beyond tolerance, if coverage changes, or if any horizon monotonicity violation occurs.",
@@ -84,6 +99,7 @@
   "resource_budget": {
     "pilot_frames": 16,
     "full_frames": 1024,
+    "feature_extraction_batch_size": 16,
     "gpu_use": "frozen feature extraction only",
     "cpu_use": "50-epoch pooled-head optimization",
     "maximum_wall_seconds": 900,
@@ -117,10 +133,10 @@
     "scripts/research/assistive_geometry/train_b1_a0_formal.py": "BE5D06382FF15465FE4A85FE33B1FDD8C6017C527CCE0FEFEA9ADBCE49B07A81",
     "scripts/research/hftf/deployment/depthart/export_depthart_camera_external.py": "FCB76F3F1B26A8FDCEB69E73D61A590C7B8519548AB5B1F27C1721C240ED0F7F",
     "scripts/research/assistive_geometry_qsf/h1_survival.py": "0DF2A25272A3AD32C6EFF6182D02E03366F1F04F53C02C77F50A7458937F8F97",
-    "scripts/research/assistive_geometry_qsf/run_h1_train_canary.py": "3A90B8EFF326E4140459EA0DFC74C6F54BE3EF55094B0FADD5133CC164E7FB1E",
+    "scripts/research/assistive_geometry_qsf/run_h1_train_canary.py": "42E50F4A6B9412164CE7654B3A7F934DD0A793A3B41498FF210B1FB6CC8FDB90",
     "scripts/research/assistive_geometry_qsf/test_h1_survival.py": "C513A226BC2530D51374C9666571B0E08951AEE78B1C17FD49A3E02DDB782DE2",
-    "scripts/research/assistive_geometry_qsf/test_validate_h1_train_canary.py": "A1B26B3FE1C529393C36DFABFB8156E894C006A4A6B2FB6E81F0D52F1134BFDF",
-    "scripts/research/assistive_geometry_qsf/validate_h1_train_canary.py": "42C316AF756756B33279FFDD2A1B2D46E72EF82581BD816D605B29593BC037DE"
+    "scripts/research/assistive_geometry_qsf/test_validate_h1_train_canary.py": "DC98B2218F6D7D2D7DCD32CF2EEF46505CE8ED6C544040ED6B6CF09797D41D3E",
+    "scripts/research/assistive_geometry_qsf/validate_h1_train_canary.py": "F609EDA296D4BF22B144F1348807C639ACC8CB673DB5D79D4004F3904DCAB233"
   },
   "inputs": {
     "target_manifest": {
@@ -169,10 +185,10 @@
     }
   },
   "outputs": {
-    "pilot_parent": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-r0",
-    "run_parent": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-r0",
-    "model_parent": "artifacts.local/models/assistive-geometry-qsf/h1-train-canary-r0",
-    "work_parent": "artifacts.local/work/assistive-geometry-qsf/h1-train-canary-r0"
+    "pilot_parent": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-02-r0",
+    "run_parent": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-02-r0",
+    "model_parent": "artifacts.local/models/assistive-geometry-qsf/h1-train-canary-attempt-02-r0",
+    "work_parent": "artifacts.local/work/assistive-geometry-qsf/h1-train-canary-attempt-02-r0"
   },
   "terminal_policy": {
     "pass": "H1_TRAIN_CANARY_PASS_LEARNABILITY_SUPPORTED",

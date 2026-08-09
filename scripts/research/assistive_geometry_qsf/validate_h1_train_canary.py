@@ -26,7 +26,10 @@ PROTOCOL_RELATIVE = PurePosixPath(
     "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09.json"
 )
 ROUTE_ID = "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_R0"
-PROTOCOL_SCHEMA = "blindassist.assistive_geometry_qsf.h1_train_canary_protocol.v1"
+PROTOCOL_SCHEMA = "blindassist.assistive_geometry_qsf.h1_train_canary_protocol.v2"
+PROTOCOL_ID = (
+    "BLINDASSIST_ASSISTIVE_GEOMETRY_QSF_H1_TRAIN_CANARY_PROTOCOL_2026-08-09_ATTEMPT_02"
+)
 EXPECTED_FIT_PARENTS = (
     "41159448",
     "42445086",
@@ -97,12 +100,13 @@ def validate_protocol(
     verify_inputs: bool = True,
 ) -> dict[str, Any]:
     _require(protocol.get("schema") == PROTOCOL_SCHEMA, "H1 canary schema drift")
+    _require(protocol.get("protocol_id") == PROTOCOL_ID, "H1 canary protocol identity drift")
     _require(protocol.get("route_id") == ROUTE_ID, "H1 canary route drift")
     _require(protocol.get("stage") == "CANARY", "H1 canary stage drift")
     _require(protocol.get("profile") == "CANARY_LITE", "H1 canary profile drift")
     _require(protocol.get("candidate") == "H1_ONLY", "H1-only candidate drift")
     _require(
-        protocol.get("status") == "H1_IMPLEMENTED_TRAIN_CANARY_LOCKED_NOT_RUN",
+        protocol.get("status") == "H1_IMPLEMENTED_TRAIN_CANARY_RELOCKED_ATTEMPT_02_NOT_RUN",
         "H1 canary status drift",
     )
     authority = protocol.get("execution_authority", {})
@@ -185,6 +189,37 @@ def validate_protocol(
     _require(scheduling.get("requires_foreign_gpu_idle") is True, "GPU isolation drift")
     _require(scheduling.get("minimum_free_vram_mib") == 5000, "free VRAM gate drift")
     _require(scheduling.get("maximum_projected_wall_seconds") == 900, "wall-time gate drift")
+
+    _require(
+        protocol.get("resource_budget")
+        == {
+            "pilot_frames": 16,
+            "full_frames": 1024,
+            "feature_extraction_batch_size": 16,
+            "gpu_use": "frozen feature extraction only",
+            "cpu_use": "50-epoch pooled-head optimization",
+            "maximum_wall_seconds": 900,
+            "stop_scope_on_budget_excess": "THIS_CANARY_EVIDENCE_VERSION_ONLY",
+        },
+        "resource budget or Attempt-02 batch relock drift",
+    )
+    _require(
+        protocol.get("previous_attempt")
+        == {
+            "attempt_id": "H1_TRAIN_CANARY_PERFORMANCE_PILOT_ATTEMPT_01",
+            "protocol_sha256": "63D8E8293C0EEE0C65654964B48D02E95AE9C676BF1E1EAABF54D05F926F7CA2",
+            "pilot_result_path": (
+                "artifacts.local/evidence/assistive-geometry-qsf/"
+                "h1-train-canary-r0/pilot-r0/pilot-result.json"
+            ),
+            "pilot_result_sha256": (
+                "0FEF16FAA5F91C7638D78DEB7289E0DF73670FE6C73960D8F81843F941794129"
+            ),
+            "terminal": "H1_TRAIN_CANARY_PERFORMANCE_NOT_QUALIFIED",
+            "scientific_outcome_access": False,
+        },
+        "Attempt-01 performance receipt drift",
+    )
 
     embedded_manifest = protocol.get("shared_resource_manifest", {})
     _require(
@@ -273,10 +308,18 @@ def validate_protocol(
 
     outputs = protocol.get("outputs", {})
     expected_outputs = {
-        "pilot_parent": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-r0",
-        "run_parent": "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-r0",
-        "model_parent": "artifacts.local/models/assistive-geometry-qsf/h1-train-canary-r0",
-        "work_parent": "artifacts.local/work/assistive-geometry-qsf/h1-train-canary-r0",
+        "pilot_parent": (
+            "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-02-r0"
+        ),
+        "run_parent": (
+            "artifacts.local/evidence/assistive-geometry-qsf/h1-train-canary-attempt-02-r0"
+        ),
+        "model_parent": (
+            "artifacts.local/models/assistive-geometry-qsf/h1-train-canary-attempt-02-r0"
+        ),
+        "work_parent": (
+            "artifacts.local/work/assistive-geometry-qsf/h1-train-canary-attempt-02-r0"
+        ),
     }
     _require(outputs == expected_outputs, "H1 output namespace drift")
 

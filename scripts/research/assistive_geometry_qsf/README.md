@@ -1,6 +1,6 @@
 # Assistive Geometry QSF research Module
 
-状态：`current / WILD_LAB / H1_IMPLEMENTED / TRAIN_CANARY_LOCKED_NOT_RUN / RESOURCE_DEFERRED_WHILE_FOREIGN_FORMAL_TRAIN_ACTIVE`
+状态：`current / WILD_LAB / H1_IMPLEMENTED / ATTEMPT_01_PERFORMANCE_NOT_QUALIFIED / ATTEMPT_02_BATCH16_RELOCKED_NOT_RUN`
 
 ## 研究问题与版本
 
@@ -70,8 +70,10 @@ E:\codex-tools\bin\blindassist-python.cmd -m `
   --runtime-preflight
 ```
 
-返回 `H1_CANARY_DEFERRED_RESOURCE_ISOLATION` 时不得运行 pilot；它不表示科学失败。资源
-READY 后唯一执行顺序是 `pilot-r0`，再由同一 protocol/hash 运行 `run-r0`。
+返回 `H1_CANARY_DEFERRED_RESOURCE_ISOLATION` 时不得运行 pilot；它不表示科学失败。Attempt 01
+因 conservative maximum `1214.252 s > 900 s` 形成 performance-only 负终态；Attempt 02 只把
+feature batch 从 4 重锁为 16，并使用 `h1-train-canary-attempt-02-r0` namespace。资源 READY 后
+唯一执行顺序仍是 `pilot-r0`，再由同一 Attempt-02 protocol/hash 运行 `run-r0`。
 
 ## 输出
 
