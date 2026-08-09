@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / RESEARCH_MAINLINE / A0_EVALUATION_SYNTHETIC_DRY_RUN_PASS / SEED_17_GUARDED_EXECUTION_RUNNING / SEEDS_29_43_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
+状态：`current / RESEARCH_MAINLINE / A0_SEED_17_COMPLETE / SEED_29_GUARDED_EXECUTION_RUNNING / SEED_43_NOT_STARTED / DEVELOPMENT_EVALUATION_IMPLEMENTED_NOT_ACTIVATED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -48,13 +48,15 @@
 - [B1 A0 evaluation synthetic dry-run machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_PROTOCOL_2026-08-09.json)
 - [B1 A0 evaluation synthetic dry-run result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_RESULT_2026-08-09.md)
 - [B1 A0 evaluation synthetic dry-run machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_EVALUATION_SYNTHETIC_DRY_RUN_RESULT_2026-08-09.json)
+- [B1 A0 Development evaluation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09.md)
+- [B1 A0 Development evaluation machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_DEVELOPMENT_EVALUATION_PROTOCOL_2026-08-09.json)
 - [并行 WILD_LAB 数学假设 canary](BLINDASSIST_ASSISTIVE_GEOMETRY_HYPOTHESIS_CANARY_LITE_R0_2026-08-09.md)
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 - [DepthART 部署支线](../hftf/README.md)
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_SEED_17_GUARDED_FORMAL_TRAIN_EXECUTION`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_B1_A0_SEED_29_GUARDED_FORMAL_TRAIN_EXECUTION`
 
 ARKitScenes `16/8/8` visit/video-disjoint roster 与 9,600-frame integrity 已冻结；B0 reader 又以
 6 个 TRAIN 视频、157 个 AppleDepth/FARO exact-timestamp 对照和主 TRAIN 的 480 个固定 stride
@@ -68,11 +70,14 @@ checkpoint 的训练 Autograd smoke；带缺失 Autograd-key 警告的部署 ope
 训练改走包内显式 custom Function。A0 TRAIN loader、orientation carry、BF16 optimizer step 与
 全状态 checkpoint roundtrip 现已关闭。正式 runner 又以同一真实路径比较 `workers=0/1/4`，
 选出 `workers=1` 的 `0.5453 step/s`，外推每 seed `3.06h`、诊断上界 `4h`；三档 CPU 输入
-摘要一致，但 CUDA 权重不签署 bit-exact。seed 17 的 guarded TRAIN-only 正式训练已启动且尚未
-形成完成/失败终态；29/43 尚未启动。与此同时，纯合成 evaluator dry-run 已覆盖 12 个 tiny
+摘要一致，但 CUDA 权重不签署 bit-exact。seed 17 已完成 20 epochs / 6000 steps，四个留存点、
+最终 carry、模型状态和 TRAIN-only 防火墙均闭合；seed 29 正在 guarded TRAIN-only 执行，43 尚未
+启动。与此同时，纯合成 evaluator dry-run 已覆盖 12 个 tiny
 checkpoint、三 seed 无选择聚合、九格指标、UNKNOWN、全局零分母、缺 horizon、coverage 塌缩、
 协议漂移和失败相邻日志并通过。它不读取 Development/Confirmation outcome，也不授权真实评价；
-执行期间仍不得运行 A1–A4、双教师或改默认 App。
+正式 Development evaluator v2 现已在 outcome 前冻结：补齐 ground recovery、clearance coverage、
+valid→UNKNOWN 和 geometry transition，并将 truth/pred clearance validity 分离。物化器会在读取首个
+Development frame 前强制验证三 seed 全部完成；执行期间仍不得运行 A1–A4、双教师或改默认 App。
 
 ## 并行 WILD_LAB 数学 canary（不改变 successor）
 
@@ -84,4 +89,4 @@ cluster-level one-sided conformal/CRC uncertainty。数学不变量与反例均�
 parent 数量阻塞：8% finite-sample risk 至少需 12 个独立 parents，当前 4 个不可能。
 
 该 canary 不读取模型、checkpoint 或任何数据 role outcome，不修改冻结 A0–A4，不授权 B2、
-真实 Development、部署、默认 App 或 safety；唯一 successor 保持 seed 17 guarded A0 execution。
+真实 Development、部署、默认 App 或 safety；唯一 successor 保持 seed 29 guarded A0 execution。

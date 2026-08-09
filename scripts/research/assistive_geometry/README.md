@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`A0_EVALUATION_SYNTHETIC_DRY_RUN_PASS / SEED_17_GUARDED_EXECUTION_RUNNING / SEEDS_29_43_NOT_STARTED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
+状态：`A0_SEED_17_COMPLETE / SEED_29_GUARDED_EXECUTION_RUNNING / SEED_43_NOT_STARTED / DEVELOPMENT_EVALUATION_IMPLEMENTED_NOT_ACTIVATED / DEVELOPMENT_AND_CONFIRMATION_SEALED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -54,6 +54,12 @@
 - `run_b1_a0_evaluation_dry_run.py`：只用合成 fixture 演练通过路径与 checkpoint 缺失、协议漂移、
   缺 horizon、全局零分母、coverage 塌缩、best-seed 企图等失败终态，并生成 JSON、短报告和
   failure-adjacent log。
+- `materialize_b1_development_targets.py`：只有三 seed 正式结果完整时才物化冻结的四个
+  `DEVELOPMENT_SELECTION` parent；Calibration 与 Confirmation fail closed。
+- `observe_b1_a0_development.py`：用各 seed epoch-20 dense-depth checkpoint 与冻结 gravity/geometry
+  后处理生成独立 truth/pred validity 和三态 observation；不读取未训练 task heads。
+- `evaluate_b1_a0_development.py`：执行三 seed 无选择聚合，并同时检查 coverage、ground、clearance、
+  false-clear/false-block、temporal delta 与 geometry transition 门。
 - `run_hypothesis_canary_lite.py`：只用 deterministic synthetic CPU geometry 审查 censored
   survival、profile-conditioned clearance、widest-path bottleneck 与 one-sided conformal
   uncertainty 的数学不变量和反例；不读取任何数据 role outcome、模型或 checkpoint。
@@ -67,7 +73,7 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 
 ## 安全边界
 
-本模块不训练 student、不运行 teacher matrix，也不授权 QNN/HTP、默认 App、产品或 safety。
+本模块只按冻结阶段训练 Assistive Geometry student；当前不运行 teacher matrix，也不授权 QNN/HTP、默认 App、产品或 safety。
 `UNKNOWN` 不得当作负例；synthetic shape 与 benchmark geometry 不得冒充任务质量。
 
 ## 停止条件
