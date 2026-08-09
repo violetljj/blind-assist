@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B0_TRUTH_READER_AND_REGISTRATION_LOCK_PASS / NO_TRAINING_AUTHORITY`
+状态：`B1_PROTOCOL_LOCK_PASS / IMPLEMENTATION_NOT_AUTHORIZED / NO_FORMAL_TRAINING_AUTHORITY`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -24,6 +24,8 @@
   AppleDepth/FARO/RGB/confidence/intrinsics 对照；
 - `validate_b0_arkitscenes_truth_reader.py`：运行 TRAIN-only scale/registration/ground/clearance
   双层门，并写入逐帧 evidence receipt。
+- `validate_b1_training_protocol.py`：冻结并校验 B1 target/loss/confidence、A0–A4 additive arms、
+  optimizer、数据角色和 implementation-before-training 防火墙。
 
 ## 输出
 
@@ -40,8 +42,8 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 
 合同违规、checkpoint/shape 不匹配、非 finite 输出、camera prompt drift 或 ONNX checker
 失败均立即 fail closed。当前 roster、source integrity、truth reader 与 registration 已关闭，
-但 B1 target/loss/confidence threshold 和 training protocol 尚未冻结；不得从本目录启动训练
-或打开独立 outcome。
+且 B1 target/loss/confidence threshold 和 training protocol 已冻结；但 target cache、模型和 loss
+implementation lock 尚未关闭，不得从本目录启动正式训练或打开独立 outcome。
 
 验证：
 
