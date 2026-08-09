@@ -91,7 +91,7 @@ workflow 后才生效的实施合同、回归基线或日期化证据，不得�
 | 分类 | 入口 |
 |---|---|
 | 当前分类 | [算法](research/ALGORITHM_RESEARCH_CURRENT.md) · [数据](research/DATA_RESEARCH_CURRENT.md) · [系统与平台](research/SYSTEM_RESEARCH_CURRENT.md) |
-| 当前路线 | [Assistive Geometry](research/assistive-geometry/README.md) · [AG-QSF](research/assistive-geometry-qsf/README.md) · [DepthART](research/hftf/README.md) · [双环](research/dual-loop/README.md) · [RCLE](research/rcle/README.md) |
+| 当前路线 | [Assistive Geometry](research/assistive-geometry/README.md) · [AG-QSF](research/assistive-geometry-qsf/README.md) · [AG-CBF](research/assistive-geometry-cbf/README.md) · [DepthART](research/hftf/README.md) · [双环](research/dual-loop/README.md) · [RCLE](research/rcle/README.md) |
 | 数据工具 | [候选事件挖掘](research/candidate-event-mining/README.md) |
 | 历史路线与资料 | [USTRF-SC](research/ustrf-sc/README.md) · [Frontier Upgrade](research/frontier-upgrade-2026-07/README.md) · [组会总账](research/GROUP_MEETING_PROGRESS.md) |
 | 媒体资产 | [研究文档资产](research/assets/README.md) |

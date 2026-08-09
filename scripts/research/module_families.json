@@ -3,6 +3,7 @@
   "family_order": [
     "current_entry",
     "assistive_geometry",
+    "assistive_geometry_cbf",
     "assistive_geometry_qsf",
     "depth_geometry",
     "dual_loop_family",
@@ -24,6 +25,13 @@
         "^assistive_geometry$"
       ],
       "dynamic_truth": "docs/research/assistive-geometry/README.md"
+    },
+    "assistive_geometry_cbf": {
+      "description": "与主线资源隔离的 AG-CBF TRAIN-only corridor bottleneck WILD_LAB 路线",
+      "patterns": [
+        "^assistive_geometry_cbf$"
+      ],
+      "dynamic_truth": "docs/research/assistive-geometry-cbf/README.md"
     },
     "assistive_geometry_qsf": {
       "description": "与主线资源隔离、可审计共享的 AG-QSF 并行 WILD_LAB 路线",

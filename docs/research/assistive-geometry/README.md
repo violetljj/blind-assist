@@ -70,6 +70,7 @@
 - [M0 task-preserving mobile deployment machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_M0_TASK_PRESERVING_MOBILE_DEPLOYMENT_PROTOCOL_2026-08-09.json)
 - [并行 WILD_LAB 数学假设 canary](BLINDASSIST_ASSISTIVE_GEOMETRY_HYPOTHESIS_CANARY_LITE_R0_2026-08-09.md)
 - [AG-QSF 并行路线 current](../assistive-geometry-qsf/README.md)
+- [AG-CBF 并行路线 current](../assistive-geometry-cbf/README.md)
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)
 - [DepthART 部署支线](../hftf/README.md)
 

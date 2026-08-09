@@ -18,6 +18,7 @@
 | 研究实现 | [`MODULE_INDEX.md`](../scripts/research/MODULE_INDEX.md) | `scripts/research/<module>/` |
 | Assistive Geometry 训练、Development/failure-anatomy/teacher 评估、移动/时序 mechanics 与数学 canary | [`assistive_geometry/README.md`](../scripts/research/assistive_geometry/README.md) | `train_b1_a0_formal.py`、`train_b1_additive_arm.py`、`materialize_b1_development_targets.py`、`observe_b1_a0_development.py`、`evaluate_b1_a0_development.py`、`analyze_b1_a0_failure_anatomy.py`、`evaluate_teacher_complementarity.py`、`export_assistive_geometry_onnx.py`、`temporal_geometry_ablation.py`、`run_hypothesis_canary_lite.py` |
 | AG-QSF 并行路线、H1 survival mechanics/TRAIN canary、共享资源 manifest 与输出隔离门 | [`assistive_geometry_qsf/README.md`](../scripts/research/assistive_geometry_qsf/README.md) | `h1_survival.py`、`run_h1_train_canary.py`、`validate_h1_train_canary.py`、`validate_qsf_preparation.py`；未来 H2 profile-query 只进入该 Module |
+| AG-CBF 并行路线、TRAIN-only ground-grid 数据支撑审计与后续 corridor bottleneck oracle | [`assistive_geometry_cbf/README.md`](../scripts/research/assistive_geometry_cbf/README.md) | `audit_grid_support.py`；oracle、representation-value 与模型/训练当前未授权 |
 | 配置与冻结合同 | `configs/` | JSON/YAML；先看调用方和协议 |
 | 机器 schema | `schemas/` | JSON Schema 与 validator |
 | 当前文档与研究真源 | [`docs/PROJECT_STATE.md`](PROJECT_STATE.md) | `docs/`、`docs/research/` |
