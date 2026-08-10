@@ -12,6 +12,9 @@ from functools import lru_cache
 
 import numpy as np
 
+from scripts.research.taro_o0r_factor_headroom_runtime.factor_headroom import (
+    build_candidate_gauge_oracle_frame,
+)
 from scripts.research.taro_o0r_source_adapter_runtime import source_adapter as runtime_module
 from scripts.research.taro_o0r_source_adapter_runtime.source_adapter import (
     ARMS,
@@ -31,6 +34,7 @@ from scripts.research.taro_o0r_source_adapter_runtime.source_adapter import (
     inject_factor_blocks,
     interpolate_camera_to_world_exact,
     reduce_complete_query_bundle,
+    reduce_factorial_query_grid,
     reduce_query_factor_frame,
     sample_faro_at_apple_centers,
     scale_lowres_intrinsics,
@@ -567,6 +571,7 @@ class GeometryReducerAndInjectionTests(unittest.TestCase):
         cls.model = fitted_model(16)
         cls.truth_frame = build_truth_query_factor_frame(cls.geometry, cls.center_query, cls.model, confidence_value=2, range_m=1.5)
         candidate_depth = synthetic_faro_depth(False).astype(np.float64) / 1000.0
+        cls.candidate_depth = candidate_depth
         cls.candidate_output_receipt = build_candidate_depth_output_receipt(
             candidate_depth,
             cls.base_receipt,
@@ -583,6 +588,12 @@ class GeometryReducerAndInjectionTests(unittest.TestCase):
             cls.candidate_output_receipt,
             confidence_value=2,
             range_m=1.5,
+        )
+        cls.candidate_gauge_frame, cls.candidate_scale_record = build_candidate_gauge_oracle_frame(
+            synthetic_faro_depth(True),
+            cls.candidate_depth,
+            cls.truth_frame,
+            cls.candidate_frame,
         )
 
     def test_faro_geometry_has_metric_support_and_signed_boundary(self) -> None:
@@ -736,6 +747,47 @@ class GeometryReducerAndInjectionTests(unittest.TestCase):
                             self.assertEqual(output["blocks"][name]["uncertainty"], self.candidate_frame["blocks"][name]["uncertainty"])
                         else:
                             self.assertEqual(canonical_sha256(output["blocks"][name]), canonical_sha256(self.truth_frame["blocks"][name]))
+
+    def test_batch_factorial_grid_matches_strict_rowwise_injection_and_reduction(self) -> None:
+        batch = reduce_factorial_query_grid(
+            self.candidate_frame,
+            self.truth_frame,
+            self.candidate_gauge_frame,
+            self.center_query,
+        )
+        self.assertEqual(len(batch), len(ARMS) * len(ORACLE_MODES))
+        self.assertEqual(
+            [(row["mode"], row["arm"]) for row in batch],
+            [(mode, arm) for mode in ORACLE_MODES for arm in ARMS],
+        )
+        for row in batch:
+            arm = row["arm"]
+            mode = row["mode"]
+            uses_candidate_gauge = "SCALE" in (() if arm == "NONE" else arm.split("_"))
+            oracle = self.candidate_gauge_frame if uses_candidate_gauge else self.truth_frame
+            expected_representation = "CANDIDATE_GAUGE" if uses_candidate_gauge else "ABSOLUTE_METRIC"
+            with self.subTest(mode=mode, arm=arm):
+                injected = inject_factor_blocks(self.candidate_frame, oracle, arm=arm, mode=mode)
+                result = reduce_query_factor_frame(
+                    injected,
+                    self.center_query,
+                    factorial_parent_context=(self.candidate_frame, oracle),
+                )
+                self.assertEqual(row["oracle_representation"], expected_representation)
+                self.assertEqual(row["baseline_factor_frame_sha256"], self.candidate_frame["content_sha256"])
+                self.assertEqual(row["oracle_factor_frame_sha256"], oracle["content_sha256"])
+                self.assertEqual(row["injected_factor_frame_sha256"], injected["content_sha256"])
+                self.assertEqual(row["result"], result)
+                self.assertEqual(canonical_sha256(row["result"]), canonical_sha256(result))
+
+    def test_batch_factorial_grid_rejects_tampered_parent_frames(self) -> None:
+        parents = [self.candidate_frame, self.truth_frame, self.candidate_gauge_frame]
+        for parent_index in range(len(parents)):
+            tampered = [copy.deepcopy(parent) for parent in parents]
+            tampered[parent_index]["max_source_timestamp_ns"] += 1
+            with self.subTest(parent_index=parent_index), self.assertRaises(AdapterError) as caught:
+                reduce_factorial_query_grid(*tampered, self.center_query)
+            self.assertEqual(caught.exception.code, "FACTOR_FRAME_HASH_MISMATCH")
 
     def test_injection_rejects_base_geometry_drift_even_when_self_consistent(self) -> None:
         oracle = copy.deepcopy(self.truth_frame)

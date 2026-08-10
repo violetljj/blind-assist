@@ -36,6 +36,11 @@ UNCERTAINTY_MODEL_SCHEMA = "blindassist.taro.o0r.uncertainty_model.v1"
 REDUCER_VERSION = "taro_query_reducer_p0_contract_v1"
 BASELINE_MODEL_ID = "depthart-s-metric-indoor-448-official-fp32"
 BASELINE_CHECKPOINT_SHA256 = "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65"
+CANDIDATE_RELATIVE_SCALE_SCHEMA = "blindassist.taro.o0r.candidate_relative_scale_record.v1"
+CANDIDATE_GAUGE_ORACLE_ID = "CANDIDATE_GAUGE_FARO_ORACLE_FOR_DEPTHART_S_METRIC_INDOOR_448"
+CANDIDATE_GAUGE_ORIGIN = "CANDIDATE_GAUGE_FARO_ORACLE"
+CANDIDATE_SCALE_VALUE_KIND = "MEDIAN_LOG_FARO_Z_OVER_CANDIDATE_Z_ON_FROZEN_COMMON_SUPPORT"
+CANDIDATE_SCALE_ESTIMATOR = "MEDIAN_OF_NATURAL_LOG_FARO_Z_METRES_OVER_CANDIDATE_Z_METRES"
 FLOAT_DECIMALS = 12
 
 HIGHRES_SHAPE_HW = (1440, 1920)
@@ -1966,6 +1971,55 @@ def _validate_candidate_depth_output_receipt_envelope(value: Any) -> dict[str, A
     return receipt
 
 
+def _validate_candidate_relative_scale_record(value: Any, frame: dict[str, Any]) -> dict[str, Any]:
+    """Validate executor-derived FARO/candidate scale evidence and its parents."""
+
+    record = _validate_seal(value, "CANDIDATE_SCALE_RECORD_HASH_MISMATCH")
+    keys = {
+        "schema",
+        "physical_frame_id",
+        "query_id",
+        "faro_factor_frame_sha256",
+        "candidate_factor_frame_sha256",
+        "faro_depth_array_sha256",
+        "candidate_depth_array_sha256",
+        "common_support_point_ids_sha256",
+        "common_support_point_count",
+        "valid_pair_count",
+        "estimator",
+        "value_kind",
+        "log_metric_scale",
+        "metric_scale",
+        "truth_alignment_used_for_candidate_generation",
+        "computed_only_after_candidate_output_sealed",
+        "content_sha256",
+    }
+    require(set(record) == keys and record["schema"] == CANDIDATE_RELATIVE_SCALE_SCHEMA, "CANDIDATE_SCALE_RECORD_INVALID", "candidate-relative scale record key/schema drift")
+    require(record["physical_frame_id"] == frame["physical_frame_id"] and record["query_id"] == frame["query_id"], "CANDIDATE_SCALE_RECORD_INVALID", "candidate-relative scale frame/query identity drift")
+    for key in ("faro_factor_frame_sha256", "candidate_factor_frame_sha256", "faro_depth_array_sha256", "candidate_depth_array_sha256", "common_support_point_ids_sha256"):
+        require(isinstance(record[key], str) and bool(_SHA256.fullmatch(record[key])), "CANDIDATE_SCALE_RECORD_INVALID", "candidate-relative scale hash is malformed", field=key)
+    common_ids = np.asarray(frame["base_geometry"]["common_point_ids_uv"])
+    require(record["common_support_point_ids_sha256"] == canonical_sha256(common_ids), "CANDIDATE_SCALE_RECORD_INVALID", "candidate-relative scale common-support hash drift")
+    require(
+        isinstance(record["common_support_point_count"], int)
+        and not isinstance(record["common_support_point_count"], bool)
+        and record["common_support_point_count"] == len(common_ids)
+        and isinstance(record["valid_pair_count"], int)
+        and not isinstance(record["valid_pair_count"], bool)
+        and MINIMUM_SUPPORT_POINTS <= record["valid_pair_count"] <= record["common_support_point_count"],
+        "CANDIDATE_SCALE_RECORD_INVALID",
+        "candidate-relative scale support counts are invalid",
+    )
+    require(record["faro_depth_array_sha256"] == frame["base_geometry"]["faro_depth_array_sha256"], "CANDIDATE_SCALE_RECORD_INVALID", "candidate-relative scale FARO depth is not bound to base geometry")
+    require(record["estimator"] == CANDIDATE_SCALE_ESTIMATOR and record["value_kind"] == CANDIDATE_SCALE_VALUE_KIND, "CANDIDATE_SCALE_RECORD_INVALID", "candidate-relative scale estimator drift")
+    log_scale = record["log_metric_scale"]
+    metric_scale = record["metric_scale"]
+    require(_finite_number(log_scale) and -50.0 <= float(log_scale) <= 50.0 and _finite_number(metric_scale) and float(metric_scale) > 0.0, "CANDIDATE_SCALE_RECORD_INVALID", "candidate-relative scale value is invalid")
+    require(abs(math.log(float(metric_scale)) - float(log_scale)) <= 2e-12, "CANDIDATE_SCALE_RECORD_INVALID", "candidate-relative metric/log scale mismatch")
+    require(record["truth_alignment_used_for_candidate_generation"] is False and record["computed_only_after_candidate_output_sealed"] is True, "CANDIDATE_SCALE_RECORD_INVALID", "candidate-relative scale stage/firewall drift")
+    return record
+
+
 def build_candidate_query_factor_frame(
     candidate_depth_m: np.ndarray,
     intrinsics_highres_3x3: Any,
@@ -2215,10 +2269,61 @@ def validate_query_factor_frame(frame: Any) -> dict[str, Any]:
         require(output_receipt["source_frame_receipt_sha256"] == value["source_frame_receipt_sha256"] and output_receipt["physical_frame_id"] == value["physical_frame_id"] and output_receipt["max_source_timestamp_ns"] == value["max_source_timestamp_ns"], "FACTOR_IDENTITY_INVALID", "candidate output receipt/frame binding drift")
         require(output_receipt["output_array_sha256"] == identity["input_depth_array_sha256"], "FACTOR_IDENTITY_INVALID", "candidate factor input hash is not the bound model output")
         require(scale_value["value_kind"] == "FIXED_METRIC_BASELINE_SCALE_NO_TRUTH_ALIGNMENT" and float(scale_value["log_metric_scale"]) == 0.0 and scale_validity["model_independent"] is False, "FACTOR_IDENTITY_INVALID", "candidate scale must remain frozen at metric zero without truth alignment")
+    elif identity["origin"] == CANDIDATE_GAUGE_ORIGIN:
+        expected = {
+            "origin",
+            "candidate_id",
+            "truth_only",
+            "oracle_only",
+            "uncertainty_complete",
+            "faro_truth_factor_frame_sha256",
+            "candidate_factor_frame_sha256",
+            "candidate_output_receipt",
+            "candidate_output_receipt_sha256",
+            "candidate_relative_scale_record",
+            "candidate_relative_scale_record_sha256",
+            "faro_depth_array_sha256",
+            "faro_geometry_sha256",
+            "candidate_depth_array_sha256",
+            "representation",
+        }
+        require(set(identity) == expected and identity["candidate_id"] == CANDIDATE_GAUGE_ORACLE_ID and identity["truth_only"] is False and identity["oracle_only"] is True, "FACTOR_IDENTITY_INVALID", "candidate-gauge oracle identity drift")
+        require(identity["representation"] == "FARO_METRIC_GEOMETRY_EXPRESSED_IN_CANDIDATE_SHAPE_GAUGE", "FACTOR_IDENTITY_INVALID", "candidate-gauge representation drift")
+        for key in ("faro_truth_factor_frame_sha256", "candidate_factor_frame_sha256", "candidate_output_receipt_sha256", "candidate_relative_scale_record_sha256", "faro_depth_array_sha256", "faro_geometry_sha256", "candidate_depth_array_sha256"):
+            require(isinstance(identity[key], str) and bool(_SHA256.fullmatch(identity[key])), "FACTOR_IDENTITY_INVALID", "candidate-gauge identity hash is malformed", field=key)
+        output_receipt = _validate_candidate_depth_output_receipt_envelope(identity["candidate_output_receipt"])
+        require(output_receipt["content_sha256"] == identity["candidate_output_receipt_sha256"], "FACTOR_IDENTITY_INVALID", "candidate-gauge output receipt hash drift")
+        require(output_receipt["source_frame_receipt_sha256"] == value["source_frame_receipt_sha256"] and output_receipt["physical_frame_id"] == value["physical_frame_id"] and output_receipt["max_source_timestamp_ns"] == value["max_source_timestamp_ns"], "FACTOR_IDENTITY_INVALID", "candidate-gauge output receipt/frame binding drift")
+        require(output_receipt["output_array_sha256"] == identity["candidate_depth_array_sha256"], "FACTOR_IDENTITY_INVALID", "candidate-gauge depth is not the sealed model output")
+        scale_record = _validate_candidate_relative_scale_record(identity["candidate_relative_scale_record"], value)
+        require(scale_record["content_sha256"] == identity["candidate_relative_scale_record_sha256"], "FACTOR_IDENTITY_INVALID", "candidate-gauge scale-record hash binding drift")
+        require(scale_record["faro_factor_frame_sha256"] == identity["faro_truth_factor_frame_sha256"] and scale_record["candidate_factor_frame_sha256"] == identity["candidate_factor_frame_sha256"], "FACTOR_IDENTITY_INVALID", "candidate-gauge factor parent hash drift")
+        require(scale_record["faro_depth_array_sha256"] == identity["faro_depth_array_sha256"] == value["base_geometry"]["faro_depth_array_sha256"], "FACTOR_IDENTITY_INVALID", "candidate-gauge FARO depth binding drift")
+        require(scale_record["candidate_depth_array_sha256"] == identity["candidate_depth_array_sha256"], "FACTOR_IDENTITY_INVALID", "candidate-gauge candidate depth binding drift")
+        require(identity["faro_geometry_sha256"] == value["base_geometry"]["faro_geometry_sha256"], "FACTOR_IDENTITY_INVALID", "candidate-gauge FARO geometry binding drift")
+        require(scale_value["value_kind"] == CANDIDATE_SCALE_VALUE_KIND and abs(float(scale_value["log_metric_scale"]) - float(scale_record["log_metric_scale"])) <= 1e-12 and scale_validity["model_independent"] is False, "FACTOR_IDENTITY_INVALID", "candidate-gauge scale block drift")
+        metric_scale = float(scale_record["metric_scale"])
+        metric_support = copy.deepcopy(blocks["SUPPORT"]["value"])
+        metric_support["camera_height_shape_m"] = metric_scale * float(metric_support["camera_height_shape_m"])
+        metric_boundary = copy.deepcopy(blocks["BOUNDARY"]["value"])
+        metric_boundary["boundary_points_shape_camera_xyz"] = np.ascontiguousarray(
+            metric_scale * np.asarray(metric_boundary["boundary_points_shape_camera_xyz"], dtype=np.float64),
+            dtype=np.float64,
+        )
+        absolute_scale = {"log_metric_scale": 0.0, "value_kind": "ABSOLUTE_FARO_METRIC_REFERENCE"}
+        require(canonical_sha256(absolute_scale) == value["base_geometry"]["faro_factor_value_sha256s"]["SCALE"], "FACTOR_IDENTITY_INVALID", "candidate-gauge immutable FARO scale hash drift")
+        require(canonical_sha256(metric_support) == value["base_geometry"]["faro_factor_value_sha256s"]["SUPPORT"], "FACTOR_IDENTITY_INVALID", "candidate-gauge support does not reconstruct immutable FARO geometry")
+        require(canonical_sha256(metric_boundary) == value["base_geometry"]["faro_factor_value_sha256s"]["BOUNDARY"], "FACTOR_IDENTITY_INVALID", "candidate-gauge boundary does not reconstruct immutable FARO geometry")
     elif identity["origin"] == "FACTORIAL_INJECTION":
         expected = {"origin", "baseline_candidate_id", "oracle_candidate_id", "baseline_factor_frame_sha256", "oracle_factor_frame_sha256", "arm", "mode", "patched_factors", "block_parent_lineage", "truth_only", "uncertainty_complete"}
         require(set(identity) == expected and identity["truth_only"] is False and identity["arm"] in ARMS and identity["mode"] in ORACLE_MODES and identity["patched_factors"] == list(_arm_factors(identity["arm"])), "FACTOR_IDENTITY_INVALID", "factorial injection identity drift")
-        require(identity["baseline_candidate_id"] == BASELINE_MODEL_ID and identity["oracle_candidate_id"] == "ABSOLUTE_FARO_METRIC_REFERENCE", "FACTOR_IDENTITY_INVALID", "factorial parent candidate identities drift")
+        selected_factors = _arm_factors(identity["arm"])
+        allowed_oracle_ids = (
+            {"ABSOLUTE_FARO_METRIC_REFERENCE", CANDIDATE_GAUGE_ORACLE_ID}
+            if "SCALE" in selected_factors
+            else {"ABSOLUTE_FARO_METRIC_REFERENCE"}
+        )
+        require(identity["baseline_candidate_id"] == BASELINE_MODEL_ID and identity["oracle_candidate_id"] in allowed_oracle_ids, "FACTOR_IDENTITY_INVALID", "factorial parent candidate identities drift")
         for key in ("baseline_factor_frame_sha256", "oracle_factor_frame_sha256"):
             require(isinstance(identity[key], str) and bool(_SHA256.fullmatch(identity[key])), "FACTOR_IDENTITY_INVALID", "factorial parent frame hash is malformed", field=key)
         lineage = identity["block_parent_lineage"]
@@ -2290,6 +2395,15 @@ def reduce_query_factor_frame(
             return _unknown_query(receipt, factor_frame, error.code)
     elif factorial_parent_context is not None:
         return _unknown_query(receipt, factor_frame, "UNEXPECTED_FACTORIAL_PARENT_CONTEXT")
+    return _reduce_validated_query_factor_frame(factor_frame, receipt)
+
+
+def _reduce_validated_query_factor_frame(
+    factor_frame: dict[str, Any],
+    receipt: dict[str, Any],
+) -> dict[str, Any]:
+    """Reducer math for frames/receipts already validated in the same call scope."""
+
     identity_matches = (
         factor_frame["physical_frame_id"] == receipt["physical_frame_id"]
         and factor_frame["query_id"] == receipt["query_id"]
@@ -2482,19 +2596,51 @@ def inject_factor_blocks(
 
     baseline = validate_query_factor_frame(baseline_frame)
     oracle = validate_query_factor_frame(oracle_frame)
+    return _inject_factor_blocks_validated(baseline, oracle, arm=arm, mode=mode, validate_output=True)
+
+
+def _inject_factor_blocks_validated(
+    baseline: dict[str, Any],
+    oracle: dict[str, Any],
+    *,
+    arm: str,
+    mode: str,
+    validate_output: bool,
+) -> dict[str, Any]:
+    """Deterministically inject already validated parents in one call scope."""
+
     require(mode in ORACLE_MODES, "ORACLE_MODE_INVALID", "unknown oracle mode")
+    selected = _arm_factors(arm)
     require(baseline["factor_identity"]["origin"] == "CANDIDATE_DEPTH_EXTRACTOR", "FACTOR_BASELINE_ORIGIN_INVALID", "factorial baseline must come from the candidate depth extractor")
-    require(oracle["factor_identity"]["origin"] == "FARO_TRUTH", "FACTOR_ORACLE_ORIGIN_INVALID", "factorial oracle must come from the FARO truth extractor")
+    allowed_oracle_origins = (
+        {"FARO_TRUTH", CANDIDATE_GAUGE_ORIGIN}
+        if "SCALE" in selected
+        else {"FARO_TRUTH"}
+    )
+    require(oracle["factor_identity"]["origin"] in allowed_oracle_origins, "FACTOR_ORACLE_ORIGIN_INVALID", "factorial oracle origin does not match the selected arm")
     for key in ("physical_frame_id", "query_id", "source_frame_receipt_sha256", "query_receipt_sha256", "max_source_timestamp_ns"):
         require(baseline[key] == oracle[key], "FACTOR_IDENTITY_MISMATCH", "baseline/oracle identities differ", field=key)
     require(baseline["base_geometry"]["content_sha256"] == oracle["base_geometry"]["content_sha256"], "BASE_GEOMETRY_MISMATCH", "baseline/oracle immutable base geometry differs")
-    patched = copy.deepcopy(baseline)
-    selected = _arm_factors(arm)
-    for name in selected:
-        if mode == "VALUE_ONLY_COMMON_SUPPORT":
-            patched["blocks"][name]["value"] = copy.deepcopy(oracle["blocks"][name]["value"])
-        else:
-            patched["blocks"][name] = copy.deepcopy(oracle["blocks"][name])
+    if validate_output:
+        patched = copy.deepcopy(baseline)
+        for name in selected:
+            if mode == "VALUE_ONLY_COMMON_SUPPORT":
+                patched["blocks"][name]["value"] = copy.deepcopy(oracle["blocks"][name]["value"])
+            else:
+                patched["blocks"][name] = copy.deepcopy(oracle["blocks"][name])
+    else:
+        patched = {key: child for key, child in baseline.items() if key != "content_sha256"}
+        patched["blocks"] = {}
+        for name in FACTOR_NAMES:
+            if name not in selected:
+                patched["blocks"][name] = baseline["blocks"][name]
+            elif mode == "FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY":
+                patched["blocks"][name] = oracle["blocks"][name]
+            else:
+                patched["blocks"][name] = {
+                    **baseline["blocks"][name],
+                    "value": oracle["blocks"][name]["value"],
+                }
     block_parent_lineage: dict[str, Any] = {}
     for name in FACTOR_NAMES:
         component_lineage: dict[str, Any] = {}
@@ -2520,14 +2666,55 @@ def inject_factor_blocks(
         "uncertainty_complete": all(patched["blocks"][name]["uncertainty"]["valid"] for name in FACTOR_NAMES),
     }
     patched.pop("content_sha256", None)
-    output = _seal(patched)
-    validate_query_factor_frame(output)
-    for name in FACTOR_NAMES:
-        if name not in selected:
-            require(canonical_sha256(output["blocks"][name]) == canonical_sha256(baseline["blocks"][name]), "UNNAMED_FACTOR_CHANGED", "injection changed an unnamed factor", factor=name)
-        elif mode == "VALUE_ONLY_COMMON_SUPPORT":
-            require(canonical_sha256(output["blocks"][name]["validity"]) == canonical_sha256(baseline["blocks"][name]["validity"]), "VALUE_ONLY_VALIDITY_CHANGED", "VALUE_ONLY changed validity", factor=name)
-            require(canonical_sha256(output["blocks"][name]["uncertainty"]) == canonical_sha256(baseline["blocks"][name]["uncertainty"]), "VALUE_ONLY_UNCERTAINTY_CHANGED", "VALUE_ONLY changed uncertainty", factor=name)
+    if validate_output:
+        output = _seal(patched)
+        validate_query_factor_frame(output)
+        for name in FACTOR_NAMES:
+            if name not in selected:
+                require(canonical_sha256(output["blocks"][name]) == canonical_sha256(baseline["blocks"][name]), "UNNAMED_FACTOR_CHANGED", "injection changed an unnamed factor", factor=name)
+            elif mode == "VALUE_ONLY_COMMON_SUPPORT":
+                require(canonical_sha256(output["blocks"][name]["validity"]) == canonical_sha256(baseline["blocks"][name]["validity"]), "VALUE_ONLY_VALIDITY_CHANGED", "VALUE_ONLY changed validity", factor=name)
+                require(canonical_sha256(output["blocks"][name]["uncertainty"]) == canonical_sha256(baseline["blocks"][name]["uncertainty"]), "VALUE_ONLY_UNCERTAINTY_CHANGED", "VALUE_ONLY changed uncertainty", factor=name)
+    else:
+        output = dict(patched)
+        output["content_sha256"] = canonical_sha256(output)
+    return output
+
+
+def reduce_factorial_query_grid(
+    baseline_frame: dict[str, Any],
+    absolute_oracle_frame: dict[str, Any],
+    candidate_gauge_oracle_frame: dict[str, Any],
+    query_receipt: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Validate three parents once, then reduce the exact 8x2 factorial grid."""
+
+    receipt = _validate_query_receipt(query_receipt)
+    baseline = validate_query_factor_frame(baseline_frame)
+    absolute_oracle = validate_query_factor_frame(absolute_oracle_frame)
+    gauge_oracle = validate_query_factor_frame(candidate_gauge_oracle_frame)
+    require(baseline["factor_identity"]["origin"] == "CANDIDATE_DEPTH_EXTRACTOR", "FACTOR_BASELINE_ORIGIN_INVALID", "batch baseline must come from the candidate extractor")
+    require(absolute_oracle["factor_identity"]["origin"] == "FARO_TRUTH", "FACTOR_ORACLE_ORIGIN_INVALID", "batch absolute oracle must be FARO truth")
+    require(gauge_oracle["factor_identity"]["origin"] == CANDIDATE_GAUGE_ORIGIN, "FACTOR_ORACLE_ORIGIN_INVALID", "batch scale oracle must be candidate-gauge FARO")
+    output: list[dict[str, Any]] = []
+    for mode in ORACLE_MODES:
+        for arm in ARMS:
+            representation = "CANDIDATE_GAUGE" if "SCALE" in _arm_factors(arm) else "ABSOLUTE_METRIC"
+            oracle = gauge_oracle if representation == "CANDIDATE_GAUGE" else absolute_oracle
+            injected = _inject_factor_blocks_validated(baseline, oracle, arm=arm, mode=mode, validate_output=False)
+            result = _reduce_validated_query_factor_frame(injected, receipt)
+            output.append(
+                {
+                    "arm": arm,
+                    "mode": mode,
+                    "oracle_representation": representation,
+                    "baseline_factor_frame_sha256": baseline["content_sha256"],
+                    "oracle_factor_frame_sha256": oracle["content_sha256"],
+                    "injected_factor_frame_sha256": injected["content_sha256"],
+                    "result": result,
+                }
+            )
+    require(len(output) == len(ARMS) * len(ORACLE_MODES), "FACTORIAL_GRID_CARDINALITY", "batch factorial grid cardinality drift")
     return output
 
 
@@ -2537,6 +2724,11 @@ __all__ = [
     "APPLE_SHAPE_HW",
     "BASELINE_CHECKPOINT_SHA256",
     "BASELINE_MODEL_ID",
+    "CANDIDATE_GAUGE_ORACLE_ID",
+    "CANDIDATE_GAUGE_ORIGIN",
+    "CANDIDATE_RELATIVE_SCALE_SCHEMA",
+    "CANDIDATE_SCALE_ESTIMATOR",
+    "CANDIDATE_SCALE_VALUE_KIND",
     "BASE_GEOMETRY_SCHEMA",
     "BASE_RECEIPT_SCHEMA",
     "CANDIDATE_OUTPUT_RECEIPT_SCHEMA",
@@ -2561,6 +2753,7 @@ __all__ = [
     "inject_factor_blocks",
     "interpolate_camera_to_world_exact",
     "reduce_query_factor_frame",
+    "reduce_factorial_query_grid",
     "reduce_complete_query_bundle",
     "reject_truth_shortcuts",
     "sample_faro_at_apple_centers",
