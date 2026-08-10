@@ -81,6 +81,7 @@ CATALOG_SCHEMA = "blindassist_p3_public_rgbd_source_admission_r0_catalog"
 RECEIPT_SCHEMA = "blindassist_p3_public_bonn_identity_inventory_r0_receipt"
 CHECKPOINT_SCHEMA = "blindassist_ag_st_masked_factor_student_checkpoint_v1"
 RESULT_SCHEMA = "blindassist_ag_st_student_bonn_source_native_depth_development_v1"
+COHORT_SCHEMA = "blindassist_ag_st_bonn_mixed_domain_cohort_v1"
 
 BONN_WIDTH = 640
 BONN_HEIGHT = 480
@@ -248,10 +249,35 @@ def pair_rgb_depth_unique(
     return pairs
 
 
-def fixed_frame_pairs(dataset_root: Path) -> dict[str, list[BonnFramePair]]:
+def load_cohort_indices(
+    path: Path,
+    role: str,
+) -> dict[str, tuple[int, int, int]]:
+    payload = load_json(path)
+    require(payload.get("schema") == COHORT_SCHEMA, "Bonn cohort schema drift")
+    require(role in {"fit", "evaluation"}, "unsupported Bonn cohort role")
+    rows = payload.get(f"{role}_parents")
+    require(isinstance(rows, list) and len(rows) >= 4, "Bonn cohort role empty")
+    output: dict[str, tuple[int, int, int]] = {}
+    for row in rows:
+        require(isinstance(row, dict), "Bonn cohort row must be an object")
+        parent_id = str(row["parent_id"])
+        indices = tuple(int(value) for value in row["rgb_row_indices_zero_based"])
+        require(len(indices) == 3 and len(set(indices)) == 3, "Bonn cohort frame drift")
+        require(all(value >= 0 for value in indices), "negative Bonn cohort index")
+        require(parent_id not in output, "duplicate Bonn cohort parent")
+        output[parent_id] = indices
+    return output
+
+
+def fixed_frame_pairs(
+    dataset_root: Path,
+    frame_indices_by_sequence: dict[str, tuple[int, int, int]] | None = None,
+) -> dict[str, list[BonnFramePair]]:
     dataset_root = dataset_root.resolve()
+    frame_indices = frame_indices_by_sequence or FIXED_FRAME_INDICES_BY_SEQUENCE
     output: dict[str, list[BonnFramePair]] = {}
-    for sequence_id, indices in FIXED_FRAME_INDICES_BY_SEQUENCE.items():
+    for sequence_id, indices in frame_indices.items():
         sequence_root = dataset_root / sequence_id
         require(sequence_root.is_dir(), f"missing Bonn sequence: {sequence_root}")
         rgb_rows = read_tum_index(sequence_root, "rgb.txt")
@@ -447,6 +473,9 @@ def checkpoint_architecture(payload: dict[str, Any]) -> dict[str, Any]:
         "use_base_depth_feature": bool(
             architecture.get("use_base_depth_feature", False)
         ),
+        "depth_gate_profile": str(
+            architecture.get("depth_gate_profile", "none")
+        ),
         "depth_mode": str(architecture["depth_mode"]),
         "objective_profile": objective,
     }
@@ -466,6 +495,7 @@ def build_students(
         "depth_mode": architecture["depth_mode"],
         "head_profile": architecture["head_profile"],
         "use_base_depth_feature": architecture["use_base_depth_feature"],
+        "depth_gate_profile": architecture["depth_gate_profile"],
     }
     baseline = MaskedFactorStudent(**kwargs).to(device).eval()
     baseline.initialize_priors(checkpoint["priors"])
@@ -478,16 +508,14 @@ def build_students(
     return baseline, student
 
 
-def infer_rgb_only_depths(
+def extract_rgb_only_feature(
     extractor: DepthArtDenseFeatureExtractor,
-    baseline: MaskedFactorStudent,
-    student: MaskedFactorStudent,
     rgb: np.ndarray,
     feature_profile: str,
     device: torch.device,
     amp_dtype: torch.dtype,
-) -> tuple[np.ndarray, np.ndarray]:
-    """Infer both heads from RGB plus fixed K; source depth is not an argument."""
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Extract a frozen feature/base-depth pair from RGB plus fixed K."""
 
     image = normalize_rgb_native(rgb)[None].to(device)
     intrinsics = torch.from_numpy(BONN_INTRINSICS.copy())[None].to(device)
@@ -517,6 +545,31 @@ def infer_rgb_only_depths(
             * extractor.metric_depthart.max_depth
         ).float().clamp(0.05, 20.0)
         selected_feature = shared if feature_profile == "shared" else pyramid
+    require(bool(torch.isfinite(selected_feature).all()), "non-finite Bonn feature")
+    require(bool(torch.isfinite(base_depth).all()), "non-finite Bonn base depth")
+    return selected_feature, base_depth
+
+
+def infer_rgb_only_depths(
+    extractor: DepthArtDenseFeatureExtractor,
+    baseline: MaskedFactorStudent,
+    student: MaskedFactorStudent,
+    rgb: np.ndarray,
+    feature_profile: str,
+    device: torch.device,
+    amp_dtype: torch.dtype,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Infer both heads from RGB plus fixed K; source depth is not an argument."""
+
+    selected_feature, base_depth = extract_rgb_only_feature(
+        extractor,
+        rgb,
+        feature_profile,
+        device,
+        amp_dtype,
+    )
+    output_hw = (BONN_HEIGHT, BONN_WIDTH)
+    with torch.no_grad(), torch.autocast(device_type="cuda", dtype=amp_dtype):
         initialized_depth = baseline(
             selected_feature,
             base_depth,
@@ -540,6 +593,7 @@ def validate_source_receipts(
     archive_path: Path,
     catalog_path: Path,
     receipt_path: Path,
+    cohort_parents: set[str] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     for path, description in (
         (dataset_root, "Bonn dataset root"),
@@ -575,19 +629,20 @@ def validate_source_receipts(
         str(row["parent_id"])
         for row in catalog_bonn[0].get("identity_inventory", [])
     }
+    required_parents = cohort_parents or set(FIXED_FRAME_INDICES_BY_SEQUENCE)
     require(
-        set(FIXED_FRAME_INDICES_BY_SEQUENCE) <= inventory_ids,
+        required_parents <= inventory_ids,
         "fixed Bonn cohort absent from identity catalog",
     )
     parent_receipts = {
         str(row["parent_id"]): row for row in receipt.get("parents", [])
     }
     require(
-        set(FIXED_FRAME_INDICES_BY_SEQUENCE) <= set(parent_receipts),
+        required_parents <= set(parent_receipts),
         "fixed Bonn cohort absent from integrity receipt",
     )
     index_receipts: dict[str, Any] = {}
-    for sequence_id in FIXED_FRAME_INDICES_BY_SEQUENCE:
+    for sequence_id in sorted(required_parents):
         sequence_root = dataset_root / sequence_id
         source = parent_receipts[sequence_id]
         rgb_sha256 = sha256_file(sequence_root / "rgb.txt")
@@ -643,6 +698,12 @@ def execute(args: argparse.Namespace) -> int:
     depthart_source = args.depthart_source.resolve()
     depthart_checkpoint = args.depthart_checkpoint.resolve()
     output_path = args.output.resolve()
+    cohort_manifest = args.cohort_manifest.resolve() if args.cohort_manifest else None
+    frame_indices = (
+        load_cohort_indices(cohort_manifest, str(args.cohort_role))
+        if cohort_manifest is not None
+        else FIXED_FRAME_INDICES_BY_SEQUENCE
+    )
     require(student_checkpoint_path.is_file(), "student checkpoint missing")
     require(depthart_source.is_dir(), "DepthART source missing")
     require(depthart_checkpoint.is_file(), "DepthART checkpoint missing")
@@ -654,8 +715,9 @@ def execute(args: argparse.Namespace) -> int:
         archive_path,
         catalog_path,
         receipt_path,
+        set(frame_indices),
     )
-    pairs_by_parent = fixed_frame_pairs(dataset_root)
+    pairs_by_parent = fixed_frame_pairs(dataset_root, frame_indices)
     receipt_by_parent = {
         str(row["parent_id"]): row for row in receipt.get("parents", [])
     }
@@ -680,7 +742,7 @@ def execute(args: argparse.Namespace) -> int:
     require(isinstance(checkpoint, dict), "student checkpoint root must be a mapping")
     architecture = checkpoint_architecture(checkpoint)
     checkpoint_parents = checkpoint_parent_ids(checkpoint)
-    evaluation_parents = set(FIXED_FRAME_INDICES_BY_SEQUENCE)
+    evaluation_parents = set(frame_indices)
     overlap = sorted(checkpoint_parents & evaluation_parents)
     require(not overlap, f"checkpoint/Bonn parent overlap: {overlap}")
 
@@ -792,14 +854,23 @@ def execute(args: argparse.Namespace) -> int:
                 "path": str(Path(__file__).resolve()),
                 "sha256": sha256_file(Path(__file__).resolve()),
             },
+            "cohort_manifest": (
+                {
+                    "path": str(cohort_manifest),
+                    "sha256": sha256_file(cohort_manifest),
+                    "role": str(args.cohort_role),
+                }
+                if cohort_manifest is not None
+                else None
+            ),
         },
         "cohort": {
-            "parent_ids": list(FIXED_FRAME_INDICES_BY_SEQUENCE),
-            "parent_count": len(FIXED_FRAME_INDICES_BY_SEQUENCE),
+            "parent_ids": list(frame_indices),
+            "parent_count": len(frame_indices),
             "frames_per_parent": 3,
             "frame_indices_zero_based": {
                 parent: list(indices)
-                for parent, indices in FIXED_FRAME_INDICES_BY_SEQUENCE.items()
+                for parent, indices in frame_indices.items()
             },
             "frame_receipts": frame_receipts,
         },
@@ -883,6 +954,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--archive", type=Path, default=DEFAULT_BONN_ARCHIVE)
     parser.add_argument("--catalog", type=Path, default=DEFAULT_BONN_CATALOG)
     parser.add_argument("--receipt", type=Path, default=DEFAULT_BONN_RECEIPT)
+    parser.add_argument("--cohort-manifest", type=Path)
+    parser.add_argument(
+        "--cohort-role",
+        choices=("fit", "evaluation"),
+        default="evaluation",
+    )
     parser.add_argument("--depthart-source", type=Path, default=DEFAULT_DEPTHART_SOURCE)
     parser.add_argument(
         "--depthart-checkpoint",

@@ -257,6 +257,23 @@ multi-scale 头分别恶化到 `1.0146 / 1.1755 m`，且都是 `0/8` parent 改�
 source-diverse A-tier depth anchor + identity-preserving/OOD-gated residual，或冻结 depth 只学 support；
 Bonn 本轮没有 support label，因此没有 support、task 或 safety claim。
 
+该 mixed-domain 实验现已按
+[冻结 cohort](BLINDASSIST_AG_ST_BONN_MIXED_DOMAIN_COHORT_R0_2026-08-10.json) 与
+[identity-gated result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_BONN_ANCHORED_IDENTITY_GATED_RESULT_2026-08-10.json)
+执行。排除前一轮 Bonn fixed-8 后，以固定 SHA 从其余 sequence 锁定 8 FIT / 8 EVAL / 2 reserve；
+FIT 的 24 帧 registered depth 作为 A-tier depth-only anchor，support/boundary/obstacle 全部 UNKNOWN。
+学生使用 shared DepthART feature、base-depth guidance 和初始仅 5% 开放的 identity gate，并把 Bonn
+frame 重放 5 倍形成 120:120 domain-balanced optimizer visits。10 epochs / 2,400 steps 后，FIT 内 Bonn
+MAE `0.2871 -> 0.1610 m`，ARKit MAE `1.8933 -> 0.3120 m`，两域都通过 FIT 门。
+
+checkpoint 冻结后一次性打开 8 个 disjoint Bonn EVAL parent。灾难性 collapse 确实被消除：相较此前
+ARKit-only head 的 `1.0146/1.1755 m`，新 student 为 `0.2713 m`；但原始 DepthART baseline 是
+`0.2517 m`，student 仍恶化 `7.8%`，`>0.10 m` error 由 `73.10%` 升到 `77.65%`，只有 `1/8`
+parent 改善。因此当前 gate 不晋级，也不在已消费 EVAL 上回调参数。关键算法诊断是：当前 gate 学的是
+“需要多大 correction”，不是“correction 是否比 base 更可靠”。下一轮应拆成两阶段：先冻结 correction
+expert，再训练 no-regret selector 预测 `error(corrected) < error(base)`；没有正改善证据时直接回退 base。
+这需要至少第三个 metric RGB-D sensor domain，而不是继续在 Bonn EVAL 上调 gate。
+
 这些文件是分级 pseudo-label，不是完整 truth；uncertainty 字段仍是 proxy，dense normal 仍是派生诊断。
 它们足以启动 WILD_LAB masked training，但不把当前正式 `SUPERVISION_FRONTDOOR_UNSATISFIED`、F1、
 跨数据源泛化或 safety 改成 PASS。当前 WILD_LAB 角色合计已消费 52 个互异 ARKitScenes parent；它们

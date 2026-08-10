@@ -216,6 +216,7 @@ def execute(args: argparse.Namespace) -> int:
     use_base_depth_feature = bool(
         architecture.get("use_base_depth_feature", False)
     )
+    depth_gate_profile = str(architecture.get("depth_gate_profile", "none"))
     objective_profile = str(
         architecture.get(
             "objective_profile",
@@ -259,6 +260,7 @@ def execute(args: argparse.Namespace) -> int:
         depth_mode=depth_mode,
         head_profile=head_profile,
         use_base_depth_feature=use_base_depth_feature,
+        depth_gate_profile=depth_gate_profile,
     ).to(device)
     baseline.initialize_priors(checkpoint["priors"])
     before_all = evaluate_frames(baseline, cached, device)
@@ -277,6 +279,7 @@ def execute(args: argparse.Namespace) -> int:
         depth_mode=depth_mode,
         head_profile=head_profile,
         use_base_depth_feature=use_base_depth_feature,
+        depth_gate_profile=depth_gate_profile,
     ).to(device)
     incompatible = model.load_state_dict(checkpoint["state_dict"], strict=True)
     require(

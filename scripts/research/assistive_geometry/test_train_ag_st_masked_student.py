@@ -94,6 +94,26 @@ class AgStMaskedStudentTest(unittest.TestCase):
             100_000,
         )
 
+    def test_identity_gate_starts_near_closed_and_preserves_base_depth(self) -> None:
+        model = MaskedFactorStudent(
+            depth_gate_profile="identity_sigmoid",
+            use_base_depth_feature=True,
+        )
+        feature = torch.randn(1, 48, 4, 5)
+        base_depth = torch.full((1, 1, 16, 20), 2.0)
+        outputs = model(feature, base_depth, (16, 20))
+        torch.testing.assert_close(outputs["depth_m"], base_depth)
+        self.assertAlmostEqual(
+            0.05,
+            float(outputs["depth_identity_gate"].mean().detach()),
+            places=6,
+        )
+        with torch.no_grad():
+            model.depth_residual.bias.fill_(1.0)
+        corrected = model(feature, base_depth, (16, 20))["depth_m"]
+        self.assertGreater(float(corrected.mean().detach()), 2.0)
+        self.assertLess(float(corrected.mean().detach()), 2.5)
+
     def test_parent_split_accepts_ten_six_orientation_mix(self) -> None:
         shapes = {
             **{f"p{index}": (336, 252) for index in range(10)},
@@ -191,6 +211,10 @@ class AgStMaskedStudentTest(unittest.TestCase):
     def test_precision_profile_masks_unknown_and_backpropagates_both_factors(self) -> None:
         outputs = {
             "depth_m": torch.full((1, 1, 2, 2), 1.2, requires_grad=True),
+            "base_depth_m": torch.ones((1, 1, 2, 2)),
+            "depth_identity_gate": torch.full(
+                (1, 1, 2, 2), 0.05, requires_grad=True
+            ),
             "support_logits": torch.zeros((1, 1, 2, 2), requires_grad=True),
         }
         targets = {
@@ -215,7 +239,9 @@ class AgStMaskedStudentTest(unittest.TestCase):
         for key in first:
             torch.testing.assert_close(first[key], second[key])
         first["total"].backward()
+        self.assertIn("raw/depth_identity_gate_bce", first)
         self.assertTrue(torch.isfinite(outputs["depth_m"].grad).all())
+        self.assertTrue(torch.isfinite(outputs["depth_identity_gate"].grad).all())
         self.assertTrue(torch.isfinite(outputs["support_logits"].grad).all())
 
     def test_train_only_scalar_support_calibration_reduces_bce(self) -> None:

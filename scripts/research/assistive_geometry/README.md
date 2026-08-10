@@ -108,17 +108,22 @@
   metric-precision + calibrated-support 与 boundary-only 目标；train-only scalar temperature/bias 可折叠回
   support head。也支持 DepthART 四层 decoder pyramid、dilated pyramid head 与显式 base-depth guidance。
   A/B/C tier weights 保留，UNKNOWN 权重恒为零，不调用 reducer 或 task outcome。
-- `test_train_ag_st_masked_student.py`：11 个 focused tests，覆盖 16/32-parent split 重放、非对称
-  orientation roster、零残差初始化、multi-scale/base-depth head、objective UNKNOWN/NaN 隔离、tier 权重和
-  scalar calibration。
+- `test_train_ag_st_masked_student.py`：12 个 focused tests，覆盖 16/32-parent split 重放、非对称
+  orientation roster、零残差与 identity-gate 初始化、multi-scale/base-depth head、objective
+  UNKNOWN/NaN 隔离、tier 权重和 scalar calibration。
+- `train_ag_st_bonn_anchored_student.py`：把三批 40-parent ARKit factor labels 与冻结 Bonn FIT 的
+  registered source depth 合并；Bonn 只提供 A-tier depth，其他 factor 全 UNKNOWN。使用 5x Bonn 重放形成
+  domain-balanced optimizer visits，并训练初始回退 DepthART base 的 `identity_sigmoid` correction gate。
+- `test_train_ag_st_bonn_anchored_student.py`：2 个 focused tests，锁定 8/8 cohort disjointness、排除旧
+  fixed-8，并验证 Bonn adapter 只开放 source depth、其余 factor 分母恒为零。
 - `evaluate_ag_st_student_checkpoint.py`：在 parent-disjoint cohort 上零样本评估冻结 checkpoint；默认
   fresh 模式，也可显式签署 `consumed_development_comparison`，防止把已看过的 cohort 再包装成新证据。
 - `test_evaluate_ag_st_student_checkpoint.py`：6 个 focused tests，覆盖 objective-specific core factors、
   all-consumed fit parent firewall、macro improvement、diagnostic split 与 consumed-mode fresh-claim 禁用。
-- `evaluate_ag_st_student_bonn_depth.py`：固定 Bonn RGB-D Dynamic 8 sequence × 3 帧，以 used-set 形成
-  唯一 RGB-depth 对；模型只读 RGB+K，推理后才打开 registered source depth，比较 initialized DepthART
-  与 frozen student 的 parent-macro MAE/`>0.10 m` error。输出仅为 cross-dataset depth Development，
-  不评价 support/boundary/task，也不作许可结论。
+- `evaluate_ag_st_student_bonn_depth.py`：默认固定 Bonn RGB-D Dynamic 8 sequence × 3 帧，也可读取
+  SHA-frozen cohort manifest；以 used-set 形成唯一 RGB-depth 对。模型只读 RGB+K，推理后才打开
+  registered source depth，比较 initialized DepthART 与 frozen student 的 parent-macro MAE/`>0.10 m`
+  error。输出仅为 cross-dataset depth Development，不评价 support/boundary/task，也不作许可结论。
 - `test_evaluate_ag_st_student_bonn_depth.py`：6 个 focused tests，覆盖固定 cohort、唯一 pairing、缺失
   depth member、uint16 `/5000`、parent-macro 与非单调 index fail-closed。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
@@ -153,6 +158,9 @@ BCE `83.2%` 的相对下降。累计 52 个互异 ARKitScenes parent 已消费�
 在 Bonn registered depth 上又分别把 DepthART MAE `0.2533 m` 恶化到 `1.0146 / 1.1755 m`，均为
 `0/8` parent 改善。因此当前 depth transfer 明确不支持，下一算法必须保留域外 identity fallback 或加入
 source-diverse metric anchors，不能继续用同域 head-capacity scaling 代替跨数据源监督。
+后续 mixed-domain identity-gated student 已把新 Bonn EVAL MAE 收回到 `0.2713 m`，大幅消除上述
+catastrophic collapse；但仍差于冻结 DepthART baseline `0.2517 m`，且只有 `1/8` parent 改善，故不晋级。
+下一算法不是继续调同一 gate，而是冻结 correction expert 后训练 base-vs-correction no-regret selector。
 support/boundary 仍是 conservative pseudo-label、
 sigma 是 proxy，不产生完整 truth、正式 F1、产品或 safety authority。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。

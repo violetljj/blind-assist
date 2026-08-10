@@ -1,0 +1,128 @@
+{
+  "schema": "blindassist_assistive_geometry_ag_st_r0_bonn_anchored_identity_gated_summary_v1",
+  "status": "CROSS_DATASET_COLLAPSE_MITIGATED_TRANSFER_GAIN_NOT_SUPPORTED",
+  "mode": "WILD_LAB_DEVELOPMENT",
+  "date": "2026-08-10",
+  "question": "Can source-native Bonn A-tier depth anchors and an identity-initialized residual gate preserve the DepthART metric prior while retaining the ARKitScenes SuperTeacher correction?",
+  "cohort": {
+    "manifest_path": "docs/research/assistive-geometry/BLINDASSIST_AG_ST_BONN_MIXED_DOMAIN_COHORT_R0_2026-08-10.json",
+    "manifest_sha256": "607242857E69940D45D98C75672A0D1A5E628E34CA2F86B4888BA0179B957F4F",
+    "previously_consumed_bonn_parents_excluded": 8,
+    "bonn_depth_anchor_fit_parents": 8,
+    "bonn_depth_anchor_fit_frames": 24,
+    "bonn_evaluation_parents": 8,
+    "bonn_evaluation_frames": 24,
+    "reserve_parents": 2,
+    "fit_evaluation_parent_overlap": 0,
+    "freshness_scope": "FRESH_RELATIVE_TO_AG_ST_BONN_FIXED8_ONLY"
+  },
+  "algorithm": {
+    "encoder": "FROZEN_DEPTHART_S_METRIC_INDOOR",
+    "feature_profile": "shared",
+    "head_profile": "basic_32ch",
+    "use_base_depth_feature": true,
+    "depth_gate_profile": "identity_sigmoid",
+    "identity_gate_initial_probability": 0.05,
+    "gate_target": "soft required log correction magnitude divided by 0.25",
+    "gate_bce_weight": 0.25,
+    "bonn_factor_contract": {
+      "metric_depth": "A_SOURCE where uint16 depth > 0",
+      "support": "UNKNOWN",
+      "boundary": "UNKNOWN",
+      "obstacle": "UNKNOWN"
+    },
+    "domain_balance": {
+      "unique_arkit_frames": 120,
+      "unique_bonn_frames": 24,
+      "bonn_repeat_factor": 5,
+      "optimizer_frame_visits_per_epoch": 240
+    },
+    "training": {
+      "epochs": 10,
+      "optimizer_steps": 2400,
+      "learning_rate": 0.003,
+      "training_seconds": 28.86369549999654,
+      "total_seconds_including_feature_extraction_and_receipts": 51.07187270000577,
+      "checkpoint_sha256": "5FC96DDF18201F7BB06132969D228DA40D863A7BFCAD7DFAFFE69FB58E149FCE"
+    }
+  },
+  "fit_only_metrics": {
+    "bonn_depth_anchor": {
+      "baseline_depth_mae_m": 0.28706895390109666,
+      "student_depth_mae_m": 0.16096712738060714,
+      "relative_mae_reduction": 0.4392631217703898,
+      "baseline_bad_gt_0_10_m_fraction": 0.7265925898428611,
+      "student_bad_gt_0_10_m_fraction": 0.5668523712856511
+    },
+    "arkit": {
+      "baseline_depth_mae_m": 1.8932581540095295,
+      "student_depth_mae_m": 0.3120227670422252,
+      "relative_mae_reduction": 0.8351927051113817,
+      "baseline_bad_gt_0_10_m_fraction": 0.9973023646697083,
+      "student_bad_gt_0_10_m_fraction": 0.7308264961198342,
+      "student_support_bce": 0.3983511643288228,
+      "student_support_f1": 0.5364100887039597
+    },
+    "fit_gate": "PASSED_BOTH_DOMAINS_IMPROVED"
+  },
+  "disjoint_bonn_evaluation": {
+    "evaluation_read_after_checkpoint_freeze": true,
+    "parent_count": 8,
+    "baseline_depth_mae_m": 0.2517413543897155,
+    "student_depth_mae_m": 0.2713448915821663,
+    "student_relative_mae_change": 0.07787173958754094,
+    "baseline_bad_gt_0_10_m_fraction": 0.7310277932326535,
+    "student_bad_gt_0_10_m_fraction": 0.7764585068106196,
+    "student_relative_bad_rate_change": 0.062146356128360565,
+    "improved_parent_count": 1,
+    "decision": "TRANSFER_GAIN_NOT_SUPPORTED"
+  },
+  "consumed_arkit_confirmation_development": {
+    "role": "CONSUMED_CONFIRMATION_DEVELOPMENT_COMPARISON",
+    "depth_mae_m": 0.36907923829447403,
+    "depth_bad_gt_0_10_m_fraction": 0.7246718305134847,
+    "support_bce": 0.2255170729949151,
+    "support_f1": 0.5426854489693687,
+    "fresh_claim_authorized": false
+  },
+  "comparison_to_previous_arkit_only_students": {
+    "previous_bonn_depth_mae_m": [
+      1.014574370493557,
+      1.1755258512379543
+    ],
+    "current_disjoint_bonn_depth_mae_m": 0.2713448915821663,
+    "interpretation": "Mixed-domain anchors and identity initialization remove most of the catastrophic ARKit-only residual collapse, but the resulting selector still applies harmful corrections on seven of eight evaluation parents."
+  },
+  "artifacts": {
+    "fit_result": {
+      "path": "artifacts.local/experiments/ag-st-bonn-anchored-identity-gated-student-pilot10-r0/result.json",
+      "sha256": "98CCACA334CD037E9C84B4ED943DAF8AB0C436FCAC36D342BB7F54CD1FDC8EE5"
+    },
+    "disjoint_bonn_evaluation": {
+      "path": "artifacts.local/experiments/ag-st-bonn-anchored-identity-gated-evaluation8-r0.json",
+      "sha256": "2D6C3938031FC84713D72D64FE6972E540BC8BE060622531F315E16E284FDF46"
+    },
+    "consumed_arkit_confirmation": {
+      "path": "artifacts.local/experiments/ag-st-bonn-anchored-identity-gated-consumed-confirmation8-r0/result.json",
+      "sha256": "B13943979458C7FDF97D80E4A113B65C708A4B5706BA39FE9DE8E0120037E499"
+    }
+  },
+  "decision": {
+    "promote_current_identity_gate": false,
+    "retune_on_consumed_bonn_evaluation": false,
+    "catastrophic_cross_dataset_collapse_mitigated": true,
+    "cross_dataset_improvement_supported": false,
+    "next_algorithmic_route": "TWO_STAGE_NO_REGRET_BASE_VS_CORRECTION_SELECTOR",
+    "next_algorithm": "First train and freeze a correction expert. Then train a separate selector on source-diverse anchors to predict whether the correction expert has lower absolute error than the frozen DepthART base, rather than predicting only whether a large correction is needed. Abstain to the base whenever expected improvement is unsupported.",
+    "additional_data_requirement": "At least one additional metric RGB-D sensor domain beyond ARKitScenes and Bonn, with parent-disjoint selector calibration and evaluation cohorts."
+  },
+  "claim_boundary": {
+    "complete_truth_required": false,
+    "bonn_depth_is_source_native": true,
+    "bonn_support_boundary_obstacle_claim_authorized": false,
+    "cross_dataset_depth_transfer_gain_claim_authorized": false,
+    "task_utility_claim_authorized": false,
+    "deployment_product_or_safety_claim_authorized": false,
+    "formal_r2_f1_authority_changed": false
+  }
+}

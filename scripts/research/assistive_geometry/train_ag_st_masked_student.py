@@ -89,6 +89,7 @@ BOUNDARY_BAND_PX = 2.0
 MAX_BOUNDARY_DISTANCE_PX = 32.0
 BOUNDARY_HEAT_SIGMA_PX = 3.0
 DEPTH_RESIDUAL_LOG_RANGE = 2.5
+DEPTH_IDENTITY_GATE_PRIOR = 0.05
 DEPTHART_SHARED_CHANNELS = 48
 DEPTHART_PYRAMID_CHANNELS = 4 * DEPTHART_SHARED_CHANNELS
 LOSS_WEIGHTS = {
@@ -108,6 +109,7 @@ DEPTH_SUPPORT_PRECISION_LOSS_WEIGHTS = {
     "depth_bad_0_10_soft_margin": 0.50,
     "support_bce": 0.75,
     "support_soft_dice": 0.25,
+    "depth_identity_gate_bce": 0.25,
 }
 BOUNDARY_ONLY_LOSS_WEIGHTS = {
     "boundary_soft_heat_bce": 1.0,
@@ -798,6 +800,7 @@ class MaskedFactorStudent(nn.Module):
         depth_mode: str = "residual",
         head_profile: str = "basic",
         use_base_depth_feature: bool = False,
+        depth_gate_profile: str = "none",
     ) -> None:
         super().__init__()
         require(depth_mode in {"residual", "absolute_log"}, "invalid depth mode")
@@ -806,9 +809,18 @@ class MaskedFactorStudent(nn.Module):
             "invalid head profile",
         )
         require(hidden % 8 == 0, "head hidden channels must be divisible by 8")
+        require(
+            depth_gate_profile in {"none", "identity_sigmoid"},
+            "invalid depth gate profile",
+        )
+        require(
+            depth_gate_profile == "none" or depth_mode == "residual",
+            "identity depth gate requires residual depth mode",
+        )
         self.depth_mode = depth_mode
         self.head_profile = head_profile
         self.use_base_depth_feature = bool(use_base_depth_feature)
+        self.depth_gate_profile = depth_gate_profile
         trunk_channels = channels + int(self.use_base_depth_feature)
         self.trunk = (
             DilatedPyramidTrunk(trunk_channels, hidden)
@@ -823,6 +835,11 @@ class MaskedFactorStudent(nn.Module):
             )
         )
         self.depth_residual = nn.Conv2d(hidden, 1, 1)
+        self.depth_identity_gate_logits = (
+            nn.Conv2d(hidden, 1, 1)
+            if depth_gate_profile == "identity_sigmoid"
+            else None
+        )
         self.support_logits = nn.Conv2d(hidden, 1, 1)
         self.boundary_logits = nn.Conv2d(hidden, 1, 1)
         self.boundary_distance_logits = nn.Conv2d(hidden, 1, 1)
@@ -836,6 +853,15 @@ class MaskedFactorStudent(nn.Module):
         ):
             nn.init.zeros_(layer.weight)
             nn.init.zeros_(layer.bias)
+        if self.depth_identity_gate_logits is not None:
+            nn.init.zeros_(self.depth_identity_gate_logits.weight)
+            nn.init.constant_(
+                self.depth_identity_gate_logits.bias,
+                math.log(
+                    DEPTH_IDENTITY_GATE_PRIOR
+                    / (1.0 - DEPTH_IDENTITY_GATE_PRIOR)
+                ),
+            )
 
     @staticmethod
     def _upsample(value: torch.Tensor, output_hw: tuple[int, int]) -> torch.Tensor:
@@ -875,16 +901,23 @@ class MaskedFactorStudent(nn.Module):
             trunk_input = torch.cat([feature, base_guidance], dim=1)
         latent = self.trunk(trunk_input)
         depth_value = self._upsample(self.depth_residual(latent), output_hw)
-        if self.depth_mode == "residual":
-            predicted_depth = base_depth_m * torch.exp(
-                DEPTH_RESIDUAL_LOG_RANGE * torch.tanh(depth_value)
+        depth_gate = None
+        if self.depth_identity_gate_logits is not None:
+            depth_gate = torch.sigmoid(
+                self._upsample(self.depth_identity_gate_logits(latent), output_hw)
             )
+        if self.depth_mode == "residual":
+            log_correction = DEPTH_RESIDUAL_LOG_RANGE * torch.tanh(depth_value)
+            if depth_gate is not None:
+                log_correction = depth_gate * log_correction
+            predicted_depth = base_depth_m * torch.exp(log_correction)
         else:
             predicted_depth = torch.exp(
                 depth_value.clamp(math.log(0.05), math.log(20.0))
             )
-        return {
+        outputs = {
             "depth_m": predicted_depth,
+            "base_depth_m": base_depth_m,
             "support_logits": self._upsample(self.support_logits(latent), output_hw),
             "boundary_logits": self._upsample(self.boundary_logits(latent), output_hw),
             "boundary_distance_px": MAX_BOUNDARY_DISTANCE_PX
@@ -893,6 +926,9 @@ class MaskedFactorStudent(nn.Module):
             ),
             "obstacle_logits": self._upsample(self.obstacle_logits(latent), output_hw),
         }
+        if depth_gate is not None:
+            outputs["depth_identity_gate"] = depth_gate
+        return outputs
 
 
 def tier_weights(tiers: torch.Tensor) -> torch.Tensor:
@@ -1126,6 +1162,22 @@ def compute_depth_support_precision_losses(
         ),
         "support_soft_dice": support_dice,
     }
+    if "depth_identity_gate" in outputs:
+        base_depth = outputs["base_depth_m"].clamp(0.05, 20.0)
+        required_log_correction = (
+            target_depth.log() - base_depth.log()
+        ).abs()
+        gate_target = (required_log_correction / 0.25).clamp(0.0, 1.0)
+        gate_raw = F.binary_cross_entropy(
+            outputs["depth_identity_gate"].clamp(1e-5, 1.0 - 1e-5),
+            gate_target,
+            reduction="none",
+        )
+        raw["depth_identity_gate_bce"] = masked_weighted_mean(
+            gate_raw,
+            depth_valid,
+            depth_weights,
+        )
     weighted = {
         name: raw[name] * DEPTH_SUPPORT_PRECISION_LOSS_WEIGHTS[name]
         for name in raw
@@ -1663,6 +1715,7 @@ def execute(args: argparse.Namespace) -> int:
     head_profile = str(args.head_profile)
     head_hidden_channels = int(args.head_hidden_channels)
     use_base_depth_feature = bool(args.use_base_depth_feature)
+    depth_gate_profile = str(args.depth_gate_profile)
     stage0a_results = [args.stage0a_result.resolve()] + [
         value.resolve()
         for value in getattr(args, "additional_stage0a_result", [])
@@ -1775,6 +1828,7 @@ def execute(args: argparse.Namespace) -> int:
         depth_mode=depth_mode,
         head_profile=head_profile,
         use_base_depth_feature=use_base_depth_feature,
+        depth_gate_profile=depth_gate_profile,
     ).to(device)
     model.initialize_priors(priors)
     if objective_profile == "boundary_only":
@@ -1832,10 +1886,16 @@ def execute(args: argparse.Namespace) -> int:
                 "head_hidden_channels": head_hidden_channels,
                 "head_profile": head_profile,
                 "use_base_depth_feature": use_base_depth_feature,
+                "depth_gate_profile": depth_gate_profile,
                 "depth_mode": depth_mode,
                 "objective_profile": objective_profile,
                 "outputs": [
                     "metric_depth_residual",
+                    *(
+                        ["depth_identity_gate"]
+                        if depth_gate_profile == "identity_sigmoid"
+                        else []
+                    ),
                     "support_logit",
                     "boundary_logit",
                     "boundary_distance_px",
@@ -2016,6 +2076,7 @@ def execute(args: argparse.Namespace) -> int:
             "head_profile": head_profile,
             "head_hidden_channels": head_hidden_channels,
             "use_base_depth_feature": use_base_depth_feature,
+            "depth_gate_profile": depth_gate_profile,
             "objective_profile": objective_profile,
             "encoder_trainable_parameters": 0,
             "head_total_parameters": sum(parameter.numel() for parameter in model.parameters()),
@@ -2025,7 +2086,12 @@ def execute(args: argparse.Namespace) -> int:
                 if parameter.requires_grad
             ),
             "depth_output": (
-                f"BASE_DEPTH_TIMES_TANH_LOG_RESIDUAL_RANGE_{DEPTH_RESIDUAL_LOG_RANGE}"
+                (
+                    "BASE_DEPTH_TIMES_IDENTITY_GATE_TIMES_TANH_LOG_RESIDUAL_"
+                    f"RANGE_{DEPTH_RESIDUAL_LOG_RANGE}"
+                    if depth_gate_profile == "identity_sigmoid"
+                    else f"BASE_DEPTH_TIMES_TANH_LOG_RESIDUAL_RANGE_{DEPTH_RESIDUAL_LOG_RANGE}"
+                )
                 if depth_mode == "residual"
                 else "ABSOLUTE_LOG_DEPTH"
             ),
@@ -2174,6 +2240,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--head-hidden-channels", type=int, default=32)
     parser.add_argument("--use-base-depth-feature", action="store_true")
+    parser.add_argument(
+        "--depth-gate-profile",
+        choices=("none", "identity_sigmoid"),
+        default="none",
+    )
     parser.add_argument(
         "--mobilenet-checkpoint",
         type=Path,
