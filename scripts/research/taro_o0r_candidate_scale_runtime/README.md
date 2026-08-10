@@ -30,3 +30,38 @@ One-shot local replay (the evidence root must be absent):
 E:\codex-tools\venvs\riskseg-r0-py311\Scripts\python.exe `
   scripts/research/taro_o0r_candidate_scale_runtime/run_candidate_scale_replay.py
 ```
+
+## R1 source-anchored factor/query canary
+
+`source_factor.py` applies the already sealed R0 Apple scale *before* the
+candidate depth-range gate, support-plane fit, obstacle-boundary extraction and
+query point-clearance calculation. It independently re-derives the scale from
+the bound AppleDepth/confidence arrays and sealed candidate, so a caller cannot
+submit an arbitrary scaled raster. Raw and anchored branches use the same FARO
+query-local comparison surface.
+
+R1 preserves failed extraction and failed knownness as unevaluable/`UNKNOWN`.
+It compares deterministic point-clearance values only; it does not run the
+formal uncertainty reducer, tune an abstention threshold, or authorize a
+PASS/FAIL, deployment, product or safety claim. The reliability fields (MAD,
+q95 absolute deviation and 4x4 tile-median IQR) are post-hoc diagnostics only.
+
+Focused tests:
+
+```powershell
+$env:OPENBLAS_NUM_THREADS = "1"
+$env:OMP_NUM_THREADS = "1"
+E:\codex-tools\venvs\riskseg-r0-py311\Scripts\python.exe `
+  -m unittest `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_apple_scale `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_source_factor -v
+```
+
+Full 171-frame CPU replay (the R1 evidence root must be absent):
+
+```powershell
+$env:OPENBLAS_NUM_THREADS = "1"
+$env:OMP_NUM_THREADS = "1"
+E:\codex-tools\venvs\riskseg-r0-py311\Scripts\python.exe `
+  scripts/research/taro_o0r_candidate_scale_runtime/run_source_factor_canary.py
+```
