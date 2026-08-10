@@ -1,0 +1,192 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st.r0_source_teacher_ancestry_license_audit.v1",
+  "audit_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10",
+  "observed_at": "2026-08-10",
+  "status": "PARTIAL_PASS_FOR_PROTOCOL_LOCK_ONLY_EXECUTION_BLOCKED",
+  "research_mode": "WILD_LAB",
+  "purpose": "Establish what is known and unresolved about the source geometry, candidate teacher capabilities, training ancestry and license scope before any teacher artifact is downloaded or executed.",
+  "source_context": {
+    "source_family": "ARKITSCENES",
+    "candidate_population": "EXISTING_DISCLOSED_B1_TRAIN_16_PARENT_POOL_ONLY",
+    "source_license_receipt": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-09_ATTEMPT_04.json",
+      "sha256": "8346C205154C4352C3419A02522F287AA06FF3F7C02259C0922F0A7B435213E8",
+      "scope": "Project-local TRAIN-only research use within the bound ARKitScenes terms; redistribution is not authorized. Any materially new source operation requires a separately reviewed receipt."
+    },
+    "registered_geometry_receipts": [
+      {
+        "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_CAPABILITY_AND_ROSTER_LOCK_RESULT_2026-08-09.json",
+        "sha256": "C515C7CBCAA86C4DB91E983DF5538D8FD558364A621E8DC28AB8C80497A328F8"
+      },
+      {
+        "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TRUTH_READER_AND_REGISTRATION_LOCK_RESULT_2026-08-09.json",
+        "sha256": "FD09AC3088CC78B3652FB8ACC4C98ED8391AB72FB62A3D04E658A080E6E5EA4A"
+      },
+      {
+        "path": "docs/research/assistive-geometry-data-capability/BLINDASSIST_ASSISTIVE_GEOMETRY_DCA_R0_RESULT_2026-08-10.json",
+        "sha256": "456052A72E796097756C20754B85678C008575B5821E4EBB9DBDD4D7E7FAFF9E"
+      }
+    ],
+    "known_capability": {
+      "metric_depth": {"frames": 4767, "parents": 16},
+      "support": {"frames": 320, "parents": 11},
+      "crisp_obstacle": {"frames": 1557, "parents": 11},
+      "joint_factor_truth_bundle": {"frames": 310, "parents": 10},
+      "continuous_boundary_truth": {"frames": 0, "parents": 0},
+      "complete_r2_factor_schema_truth": {"frames": 0, "parents": 0},
+      "explicit_timestamp_materialized": {"frames": 0, "parents": 0},
+      "pose_transform_materialized": {"frames": 0, "parents": 0}
+    },
+    "audit_disposition": "PARTIAL_SOURCE_ANCHOR_CANDIDATE_NOT_EXECUTION_READY",
+    "blocking_reason": "B0 proves raw trajectory/intrinsics/depth capability, but the current DCA target atlas does not materialize explicit timestamp or pose transforms and no AG-ST anchor-versus-hidden-truth adapter receipt exists. Source-native data is evidence, not automatically valid truth in every pixel."
+  },
+  "candidate_teachers": [
+    {
+      "teacher_id": "MAPANYTHING",
+      "planned_role": "STAGE_0A_PRIMARY_SOURCE_CONDITIONED_GEOMETRY_CANDIDATE",
+      "capability_evidence": {
+        "inputs": ["RGB", "intrinsics_or_rays", "optional_metric_depth", "optional_camera_pose"],
+        "outputs": ["metric_depth", "camera_frame_and_world_frame_points", "camera_parameters", "per_pixel_confidence", "validity_masks"],
+        "official_url": "https://github.com/facebookresearch/map-anything"
+      },
+      "artifacts": [
+        {
+          "model_id": "facebook/map-anything",
+          "model_license_reported_by_official_repo": "CC-BY-NC-4.0",
+          "status": "CANDIDATE_EXACT_REVISION_AND_SHA256_UNRESOLVED"
+        },
+        {
+          "model_id": "facebook/map-anything-apache",
+          "model_license_reported_by_official_repo": "Apache-2.0",
+          "status": "CANDIDATE_EXACT_REVISION_AND_SHA256_UNRESOLVED"
+        }
+      ],
+      "code_license_reported_by_official_repo": "Apache-2.0",
+      "training_ancestry": {
+        "known": [
+          "The released training pipeline lists 13 supported training datasets and includes ScanNet++ v2.",
+          "The official training guide declares DINOv2 initialization."
+        ],
+        "unknown": [
+          "Exact per-example ancestry of each released checkpoint.",
+          "Exact dataset composition of the chosen default versus Apache checkpoint until its pinned model card and revision are archived."
+        ],
+        "official_url": "https://github.com/facebookresearch/map-anything/blob/main/train.md"
+      },
+      "statistical_independence_from_other_teachers": "NOT_ESTABLISHED",
+      "execution_disposition": "ELIGIBLE_FOR_ARTIFACT_LOCK_ONLY"
+    },
+    {
+      "teacher_id": "DEPTH_ANYTHING_3",
+      "planned_role": "STAGE_0B_INCREMENTAL_POSE_CONDITIONED_GEOMETRY_CANDIDATE_ONLY_AFTER_0A_IS_EVALUABLE",
+      "capability_evidence": {
+        "inputs": ["one_or_more_RGB_views", "optional_known_camera_poses"],
+        "outputs": ["spatially_consistent_depth", "ray_map", "model_dependent_pose_and_metric_outputs", "confidence"],
+        "official_url": "https://github.com/ByteDance-Seed/Depth-Anything-3"
+      },
+      "artifacts": [
+        {
+          "model_id": "depth-anything/DA3NESTED-GIANT-LARGE-1.1",
+          "reported_capabilities": ["POSE_CONDITIONED", "METRIC_DEPTH"],
+          "model_license_reported_by_official_repo": "CC-BY-NC-4.0",
+          "status": "PREFERRED_FUNCTIONAL_CANDIDATE_EXACT_REVISION_AND_SHA256_UNRESOLVED"
+        },
+        {
+          "model_id": "depth-anything/DA3-BASE",
+          "reported_capabilities": ["POSE_CONDITIONED", "RELATIVE_DEPTH"],
+          "model_license_reported_by_official_repo": "Apache-2.0",
+          "status": "LICENSE_FALLBACK_REQUIRES_SEPARATE_SOURCE_SCALE_TRANSFORM"
+        }
+      ],
+      "code_license_reported_by_official_repo": "Apache-2.0",
+      "training_ancestry": {
+        "known": [
+          "The DA3 paper explicitly names ARKitScenes among real-world depth-camera training sources.",
+          "The paper describes dense teacher pseudo-depth aligned to original sparse or noisy depth for real-world data.",
+          "The official repository says -1.1 checkpoints repair a training bug and are preferred over deprecated original Large/Giant/Nested checkpoints."
+        ],
+        "source_overlap": "KNOWN_DIRECT_ARKITSCENES_FAMILY_OVERLAP",
+        "official_url": "https://arxiv.org/html/2511.10647"
+      },
+      "statistical_independence_from_arkitscenes_source_truth": "FALSE_AS_AN_UNQUALIFIED_CLAIM",
+      "execution_disposition": "ELIGIBLE_FOR_STAGE_0B_ARTIFACT_LOCK_ONLY"
+    },
+    {
+      "teacher_id": "UNIDEPTH_V2",
+      "planned_role": "DEFERRED_SINGLE_VIEW_DEPTH_DIAGNOSTIC_NOT_INITIAL_R0_TEACHER",
+      "capability_evidence": {
+        "inputs": ["single_RGB", "optional_camera_model_or_K"],
+        "outputs": ["metric_depth", "confidence"],
+        "official_url": "https://github.com/lpiccinelli-eth/UniDepth"
+      },
+      "code_and_model_license_reported_by_official_repo": "CC-BY-NC-4.0",
+      "confidence_semantics": "Estimated scale-invariant log error used as within-input relative ranking; it has no absolute heteroscedastic-probability meaning.",
+      "training_ancestry": {
+        "known": ["ARKitScenes", "ScanNet", "ScanNet++", "20 additional public datasets"],
+        "source_overlap": "KNOWN_DIRECT_ARKITSCENES_FAMILY_OVERLAP",
+        "cross_teacher_overlap": "KNOWN_SCANNET_PLUS_PLUS_OVERLAP_WITH_MAPANYTHING_TRAINING_PIPELINE",
+        "official_url": "https://arxiv.org/html/2502.20110v2"
+      },
+      "statistical_independence": "NOT_ESTABLISHED",
+      "execution_disposition": "DEFERRED_NO_ARTIFACT_LOCK"
+    },
+    {
+      "teacher_id": "METRIC3D_V2",
+      "planned_role": "DEFERRED_SINGLE_VIEW_NORMAL_AND_DEPTH_DIAGNOSTIC_NOT_INITIAL_R0_TEACHER",
+      "capability_evidence": {
+        "inputs": ["single_RGB"],
+        "outputs": ["metric_depth", "surface_normal", "model_confidence_channels"],
+        "official_url": "https://github.com/YvanYin/Metric3D"
+      },
+      "code_license_reported_by_official_repo": "BSD-2-Clause",
+      "weight_license": "UNRESOLVED_OFFICIAL_README_DISTINGUISHES_CODE_LICENSE_AND_INVITES_COMMERCIAL_INQUIRIES",
+      "training_ancestry": "UNRESOLVED_FOR_EXACT_CANDIDATE_CHECKPOINT",
+      "schema_boundary": "Dense surface normal may be used only as a gate or deterministic-derivation diagnostic. The current R2 F1 schema contains support-plane normal, not a dense normal supervision field.",
+      "execution_disposition": "DEFERRED_NO_ARTIFACT_LOCK"
+    }
+  ],
+  "excluded_from_initial_r0": [
+    {
+      "candidate": "SAM_OR_SEMANTIC_SEGMENTATION_MODEL",
+      "reason": "A semantic mask proposal does not establish metric physical discontinuity, support validity or UNKNOWN. No segmentation model is admitted in Stage 0A or 0B."
+    }
+  ],
+  "dependency_and_independence_findings": [
+    "Teacher agreement is correlated evidence, never a vote count or independent truth.",
+    "DA3 and UniDepthV2 have direct ARKitScenes-family training overlap with the candidate source family.",
+    "MapAnything and UniDepthV2 have known ScanNet++ ancestry overlap.",
+    "MapAnything and DA3 both rely on large pretrained visual backbones, so shared prior failure remains plausible even without a named source overlap.",
+    "Teacher confidence, disagreement and reprojection residual are candidate gate features only; none is factor sigma truth."
+  ],
+  "license_policy": {
+    "research_only_noncommercial_candidate_allowed_after_exact_artifact_lock": true,
+    "commercial_or_product_use_authorized": false,
+    "weight_redistribution_authorized": false,
+    "generated_label_redistribution_authorized": false,
+    "required_before_any_download_or_inference": [
+      "exact repository revision",
+      "exact model repository and revision",
+      "checkpoint filename and SHA256",
+      "archived model card and license text SHA256",
+      "dependency and external-wrapper license inventory",
+      "declared source and checkpoint ancestry status"
+    ]
+  },
+  "execution_receipt": {
+    "teacher_code_downloaded": false,
+    "teacher_weights_downloaded": false,
+    "teacher_inference_run": false,
+    "source_payload_newly_opened": false,
+    "pseudo_labels_materialized": false,
+    "student_training_run": false
+  },
+  "blockers": [
+    "No exact teacher revision, checkpoint SHA256, transform or dependency lock exists.",
+    "No AG-ST RGB/K/pose/depth adapter and anchor-versus-hidden-truth receipt exists.",
+    "No exact factor-specific parent role roster or deterministic withholding mask ledger exists; the current joint factor bundle reaches only 10 parents.",
+    "No factor-specific risk ceilings, minimum denominators or minimum useful selective coverage values are frozen.",
+    "Continuous physical-boundary and support transforms for hidden registered geometry are not frozen."
+  ],
+  "terminal": "AG_ST_R0_AUDIT_PARTIAL_PASS_PROTOCOL_DESIGN_SUPPORTED_EXECUTION_NOT_AUTHORIZED",
+  "claim_ceiling": "Official-document and existing-repository audit only. It supports freezing an AG-ST R0 selective-labelability protocol, but establishes no teacher independence, label correctness, calibrated uncertainty, pseudo-label admission, F1 supervision-frontdoor satisfaction, training, deployment, product or safety authority."
+}

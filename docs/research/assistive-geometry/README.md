@@ -80,6 +80,9 @@
 - [Geometry R2 F1 FactorTensorAdapter implementation canary lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_IMPLEMENTATION_CANARY_LOCK_2026-08-10.json)
 - [Geometry R2 F1 FactorTensorAdapter synthetic canary result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_RESULT_2026-08-10.md)
 - [Geometry R2 F1 FactorTensorAdapter synthetic canary machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_RESULT_2026-08-10.json)
+- [AG-ST R0 source-anchored selective labelability protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_ANCHORED_SELECTIVE_LABELABILITY_PROTOCOL_LOCK_2026-08-10.json)
+- [AG-ST R0 source / Teacher / ancestry / license audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.md)
+- [AG-ST R0 machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.json)
 - [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
@@ -158,6 +161,27 @@ real factor learnability、headroom 或 task utility。
 clearance/TTC/compute-gate 输出；单帧候选与新时序 cohort 未就绪，不授权训练或读取 outcome。
 移动 M0 只冻结选模后的双 shape ONNX、单 fixed-mixed HTP 候选、新 MOBILE_DEVELOPMENT roster 与
 “质量先于性能”门；当前无选定模型、转换、HTP partition 或任务保持证据。
+
+## AG-ST R0 selective labelability handoff（不改变 successor）
+
+AG-ST R0 已冻结为独立并行的 `WILD_LAB / DISCOVERY` 诊断问题：不是让超级 Teacher 直接造
+truth，而是用 source anchor 与隐藏的 registered geometry，研究一个跨未见 parent 的
+`ACCEPT / UNKNOWN` 准入函数。Stage 0A 只允许未来比较 MapAnything、source-only baseline、
+confidence-only 与可解释 gate；只有 0A 可评价后，Stage 0B 才能在**新 pre-outcome 协议和未消费
+canary** 下加入 pose-conditioned DA3，测量第二个 Teacher 在同风险下增加多少 coverage。
+UniDepthV2、Metric3Dv2 与 semantic mask 都不进入初始 R0。
+
+当前只完成 [protocol lock](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_ANCHORED_SELECTIVE_LABELABILITY_PROTOCOL_LOCK_2026-08-10.json)
+和 [source/Teacher audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.md)。
+精确 factor-specific parent 角色、RGB/K/pose/depth adapter、withholding mask、factor transforms、checkpoint
+revision/SHA/license、risk ceiling、最小有效 coverage、资源预算和 evaluator implementation 均未锁定；
+因此 teacher download/inference、truth join、pseudo-label materialization、F1 amendment 与 student
+training 全部未授权。
+
+AG-ST 即使未来 PASS，也只允许提出新的 source-label contract；它不能直接把当前
+`SUPERVISION_FRONTDOOR_UNSATISFIED` 改成 PASS。Teacher confidence/disagreement 只可作为 gate feature，
+R2 sigma 仍须对真实 factor residual 使用 proper score。dense normal 也只可作为派生诊断，因为当前
+F1 schema 只定义 support-plane normal。主线唯一 successor 保持不变。
 
 ## 并行 WILD_LAB 数学 canary handoff（不改变 successor）
 

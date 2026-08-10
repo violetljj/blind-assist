@@ -1,0 +1,429 @@
+{
+  "schema_version": "blindassist.research_protocol.v1",
+  "profile": "CANARY_LITE",
+  "governance_policy_id": "THESIS_FIRST_RESEARCH_GOVERNANCE_R4",
+  "governance_policy_sha256": "c088093d765ce3900848a80f8a45585bc217409c344c6e7212d87e6bda6d624e",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_ANCHORED_SELECTIVE_LABELABILITY_PROTOCOL_LOCK_2026-08-10",
+  "version": "AG_ST_R0_V1",
+  "stage": "DISCOVERY",
+  "frozen_at": "2026-08-10",
+  "scientific_status": "NOT_RUN",
+  "outcome_access_started": false,
+  "status": [
+    "PARALLEL_WILD_LAB",
+    "SOURCE_ANCHORED_SELECTIVE_LABELABILITY_PROTOCOL_FROZEN",
+    "SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_PARTIAL",
+    "EXACT_ARTIFACT_AND_ADAPTER_LOCK_MISSING",
+    "LABELABILITY_EXECUTION_NOT_AUTHORIZED",
+    "PSEUDO_LABEL_MATERIALIZATION_NOT_AUTHORIZED",
+    "STUDENT_TRAINING_NOT_AUTHORIZED"
+  ],
+  "question": "Can sparse but registered metric source geometry calibrate an interpretable, factor-specific ACCEPT-or-UNKNOWN gate for foundation-geometry predictions that transfers to unseen parents and expands task-independent depth, support and physical-boundary supervision without treating teacher output as truth?",
+  "principle": "Teacher predictions may extend evidence coverage only after parent-disjoint calibration against hidden source geometry. Agreement and confidence are gate features, not truth or sigma labels; unsupported regions remain UNKNOWN.",
+  "claims_allowed": ["DATA_CHARACTERIZED"],
+  "claims_forbidden": [
+    "TEACHER_OUTPUT_IS_TRUTH",
+    "MODEL_CONSENSUS_IS_INDEPENDENT_TRUTH",
+    "CALIBRATED_FACTOR_UNCERTAINTY",
+    "PSEUDO_LABELS_ADMITTED_TO_F1",
+    "F1_SUPERVISION_FRONTDOOR_SATISFIED",
+    "FACTOR_LEARNABILITY",
+    "TASK_UTILITY",
+    "CALIBRATION",
+    "CONFIRMATION",
+    "DEPLOYMENT",
+    "DEFAULT_APP_CHANGE",
+    "PRODUCT_OR_SAFETY"
+  ],
+  "bindings": [
+    {
+      "role": "GOVERNANCE_POLICY",
+      "path": "configs/research_governance_v4.json",
+      "sha256": "274017E2D053EE29F4D553DE7976E4731E9DDF3BEBCF5259D1F9C772DEAF621F"
+    },
+    {
+      "role": "READ_ONLY_CURRENT_F1_PROTOCOL",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK_2026-08-10.json",
+      "sha256": "B4ECE0C3B36ABE15BF6FB8980E772C20F1887236461FC18659DA7CE20A9947D7"
+    },
+    {
+      "role": "READ_ONLY_CURRENT_F1_FACTOR_SCHEMA",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTOR_SCHEMA_2026-08-10.json",
+      "sha256": "8016430D639EC78199432F55ABB8EBDC847A4073C24F84A17E429A07D1BB5F7E"
+    },
+    {
+      "role": "READ_ONLY_SOURCE_REGISTRATION_RESULT",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TRUTH_READER_AND_REGISTRATION_LOCK_RESULT_2026-08-09.json",
+      "sha256": "FD09AC3088CC78B3652FB8ACC4C98ED8391AB72FB62A3D04E658A080E6E5EA4A"
+    },
+    {
+      "role": "READ_ONLY_SOURCE_CAPABILITY_RESULT",
+      "path": "docs/research/assistive-geometry-data-capability/BLINDASSIST_ASSISTIVE_GEOMETRY_DCA_R0_RESULT_2026-08-10.json",
+      "sha256": "456052A72E796097756C20754B85678C008575B5821E4EBB9DBDD4D7E7FAFF9E"
+    },
+    {
+      "role": "READ_ONLY_C0_OUTPUT_BEFORE_TRUTH_JOIN_INVARIANT",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json",
+      "sha256": "88BEB697A1D387445D70EEF22215CCE8AF72DA412BC1D01282F2A2F399DD993A"
+    },
+    {
+      "role": "SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.json",
+      "sha256": "44ED30D11AF224FF5AE10B82F8762283A571822FA17EAC07E4D4058D2D44EC0C"
+    }
+  ],
+  "route_relation": {
+    "route_role": "PARALLEL_DIAGNOSTIC_HANDOFF_INSIDE_ASSISTIVE_GEOMETRY_WILD_LAB",
+    "changes_mainline_unique_successor": false,
+    "mainline_unique_successor_remains": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SUPERVISION_SOURCE_AND_LABEL_CONTRACT_LOCK",
+    "modifies_current_f1_contract": false,
+    "may_satisfy_current_f1_by_itself": false,
+    "c0_reuse": "Reuse only teacher-output-before-truth-join, independent-truth and UNKNOWN invariants. C0 teacher identities, task metrics and complementarity terminal are not reused."
+  },
+  "data_partitions": [
+    {
+      "id": "AG_ST_R0_EXISTING_TRAIN_SOURCE_CAPABILITY",
+      "source_identity": "ARKITSCENES_EXISTING_DISCLOSED_B1_TRAIN_16_PARENT_POOL",
+      "content_identity": "DCA_RESULT_SHA256_456052A72E796097756C20754B85678C008575B5821E4EBB9DBDD4D7E7FAFF9E",
+      "identity_basis": "Existing TRAIN-only source capability and registration receipts; no Development, Confirmation or task outcome is admitted.",
+      "independence_group": "ARKITSCENES_EXISTING_B1_TRAIN_PARENT_POOL",
+      "ancestry": ["ARKITSCENES_OFFICIAL_TRAIN_SPLIT", "B0_REGISTERED_GEOMETRY_READER"],
+      "role": "DISCOVERY",
+      "outcome_access": "GEOMETRY_ONLY",
+      "result_access_state": "CONTENT_INSPECTED",
+      "observation_unit": "CAPTURE_SESSION",
+      "split_basis": "VISIT_AND_VIDEO_PARENT_IDENTITIES_FROM_FROZEN_B0_TRAIN_ROSTER",
+      "research_track": "CAPABILITY_DISCOVERY",
+      "reuse_policy": "DISCLOSED_EXISTING_TRAIN_FOR_WILD_LAB_LABELABILITY_ONLY_NOT_F1_TRUTH_OR_CONFIRMATION"
+    },
+    {
+      "id": "AG_ST_R0_FUTURE_PARENT_ROLE_AND_WITHHOLDING_EXECUTION",
+      "source_identity": "UNALLOCATED_SUBSETS_OF_DISCLOSED_EXISTING_TRAIN",
+      "content_identity": "UNALLOCATED_BEFORE_EXACT_ROLE_AND_MASK_LOCK",
+      "identity_basis": "A successor must freeze exact GATE_FIT, THRESHOLD_CALIBRATION and HELD_OUT_CANARY parents plus deterministic hidden-truth masks before any teacher output.",
+      "independence_group": "AG_ST_R0_PARENT_DISJOINT_ROLE_PLAN",
+      "ancestry": ["ARKITSCENES_EXISTING_B1_TRAIN_PARENT_POOL"],
+      "role": "CANARY",
+      "outcome_access": "NONE",
+      "result_access_state": "CONTENT_INSPECTED",
+      "observation_unit": "CAPTURE_SESSION",
+      "split_basis": "EXACT_FACTOR_SPECIFIC_PARENT_ROLE_ASSIGNMENT_UNRESOLVED",
+      "research_track": "CAPABILITY_DISCOVERY",
+      "reuse_policy": "NO_TEACHER_OUTPUT_OR_HIDDEN_TRUTH_JOIN_UNTIL_SEPARATE_IMPLEMENTATION_AND_EXECUTION_LOCK"
+    }
+  ],
+  "source_contract": {
+    "candidate_parent_pool": "Existing disclosed ARKitScenes B1 TRAIN 16-parent pool only; no Development or Confirmation identity.",
+    "planned_factor_specific_parent_roles": {
+      "depth": {"GATE_FIT": 8, "THRESHOLD_CALIBRATION": 4, "HELD_OUT_CANARY": 4},
+      "support": {"GATE_FIT_MIN": 4, "THRESHOLD_CALIBRATION_MIN": 3, "HELD_OUT_CANARY_MIN": 3},
+      "boundary": {"GATE_FIT_MIN": 4, "THRESHOLD_CALIBRATION_MIN": 3, "HELD_OUT_CANARY_MIN": 3}
+    },
+    "exact_parent_assignment": "UNRESOLVED_PER_FACTOR_MUST_FREEZE_BEFORE_FIRST_TEACHER_OUTPUT",
+    "parent_disjoint": true,
+    "cross_factor_role_policy": "Factor gates are independent. If an implementation shares learned parameters, thresholds or truth-derived features across factors, the strict joint role assignment must be used and no parent may be FIT for one shared component while CANARY for another.",
+    "assignment_before_teacher_or_hidden_truth_output": true,
+    "orientation_balance_required_in_calibration_and_canary": true,
+    "source_input_and_truth_roles": {
+      "observed_anchor": "Only explicitly declared RGB/K/pose and partial source depth outside the hidden target support may enter the teacher or gate.",
+      "hidden_evaluation_truth": "Registered metric source geometry within pre-frozen withheld pixels or views; inaccessible to teacher, gate fitting and threshold selection for HELD_OUT_CANARY.",
+      "invalid_or_unsupported": "UNKNOWN; never negative, free, non-boundary or support=false."
+    },
+    "current_pose_timestamp_gap": "DCA explicit_timestamp_materialized and pose_transform_materialized are both zero. A source adapter must materialize and bind them before pose-conditioned execution.",
+    "factor_only_reader": {
+      "allowlist_required": true,
+      "hard_reject_fields": ["clearance_m", "occupancy", "final_state", "risk", "task_confidence", "ttc"],
+      "reason": "Existing B1 targets contain task fields that are forbidden inputs and supervision for AG-ST."
+    },
+    "source_native_is_automatic_truth": false,
+    "new_source_download_authorized": false,
+    "new_source_payload_open_authorized": false
+  },
+  "withholding_and_leakage_contract": {
+    "required_modes": [
+      "LEAVE_ONE_VIEW_OUT_WITH_OTHER_VIEW_RGB_K_POSE_AND_DECLARED_PARTIAL_DEPTH_ANCHORS",
+      "STRATIFIED_WITHIN_VIEW_SPATIAL_WITHHOLDING_OF_VALID_SOURCE_GEOMETRY"
+    ],
+    "mask_generation": "Deterministic masks and strata are generated, serialized and hashed before teacher inference.",
+    "target_pixel_overlap_with_anchor_depth": "ZERO",
+    "teacher_outputs_before_truth_join": true,
+    "gate_features_before_truth_join": true,
+    "calibration_may_view_hidden_truth": "Only THRESHOLD_CALIBRATION may use its own hidden residuals to choose one frozen threshold per factor. HELD_OUT_CANARY truth remains unavailable until all thresholds and transforms are signed.",
+    "forbidden_inputs": [
+      "held_out_target_depth_or_derived_factor",
+      "final_clearance",
+      "occupancy_or_final_task_state",
+      "B1_Development_or_Confirmation_outcome",
+      "manual_post_outcome_accept_reject_override"
+    ],
+    "mutation_tests_required_before_execution": [
+      "hidden_truth_mutation_cannot_change_teacher_output",
+      "hidden_truth_mutation_cannot_change_prejoin_gate_score",
+      "parent_role_permutation_is_rejected",
+      "mask_or_receipt_hash_mismatch_is_rejected",
+      "missing_pose_K_or_timestamp_fails_closed",
+      "UNKNOWN_never_becomes_negative"
+    ]
+  },
+  "factor_truth_contract": {
+    "depth": "Metric depth residual against valid hidden registered geometry.",
+    "normal": "Dense surface normal is a derivation and gate diagnostic only; it is not a current F1 supervision field.",
+    "support": "Task-independent gravity-relative surface support derived only from valid hidden registered geometry using a separately frozen deterministic transform.",
+    "boundary": "Task-independent physical surface discontinuity, normal discontinuity, connected-surface termination, support/non-support geometric transition or gravity-relative step derived from hidden registered geometry.",
+    "boundary_forbidden_definition": "Any edge defined by whether the current body profile or reducer changes clearance, occupancy or final state.",
+    "uncertainty": "Teacher confidence, disagreement and geometric residuals supervise only selective admission features. R2 sigma remains learned later from valid factor residuals and a proper score.",
+    "final_task_reducer_used": false
+  },
+  "teacher_stages": [
+    {
+      "stage_id": "STAGE_0A",
+      "question": "Does one source-conditioned geometry model produce a transferable selective risk-coverage curve?",
+      "teacher_family": "MAPANYTHING",
+      "inputs": ["RGB", "K_or_rays", "pose_if_adapter_valid", "declared_partial_metric_depth_anchor"],
+      "comparators": [
+        "FROZEN_SOURCE_ONLY_NONLEARNED_COMPLETION_BASELINE",
+        "UNFILTERED_MAPANYTHING",
+        "MAPANYTHING_INTERNAL_CONFIDENCE_ONLY_THRESHOLD",
+        "FULL_INTERPRETABLE_SELECTIVE_GATE"
+      ],
+      "second_teacher_allowed": false
+    },
+    {
+      "stage_id": "STAGE_0B",
+      "activation": "ONLY_UNDER_A_NEW_PRE_OUTCOME_PROTOCOL_VERSION_WITH_AN_UNCONSUMED_HELDOUT_CANARY_AFTER_STAGE_0A",
+      "question": "At matched per-factor risk, how much additional held-out-parent coverage is gained by adding a pose-conditioned DA3 prediction and disagreement features?",
+      "teacher_family_added": "DEPTH_ANYTHING_3",
+      "primary_comparison": "FULL_STAGE_0B_GATE_VERSUS_FROZEN_STAGE_0A_GATE",
+      "teacher_vote_or_consensus_truth_allowed": false,
+      "stage_0a_threshold_retuning_allowed": false,
+      "reuse_of_stage_0a_truth_opened_canary_for_stage_0b_primary_claim": false
+    }
+  ],
+  "selective_gate_contract": {
+    "output_per_factor": ["ACCEPT", "UNKNOWN"],
+    "allowed_features_stage_0a": [
+      "teacher_internal_confidence_as_relative_feature",
+      "observed_anchor_residual_outside_hidden_support",
+      "multi_view_reprojection_residual",
+      "geometric_fit_and_normal_residual",
+      "source_validity_and_registration_receipt_features"
+    ],
+    "additional_features_stage_0b": [
+      "mapanything_da3_depth_disagreement",
+      "mapanything_da3_boundary_or_normal_disagreement"
+    ],
+    "forbidden_feature_semantics": [
+      "teacher_confidence_as_absolute_probability",
+      "teacher_disagreement_as_sigma_truth",
+      "semantic_object_identity_as_physical_boundary_truth",
+      "final_task_or_reducer_output",
+      "held_out_truth_residual_at_inference"
+    ],
+    "gate_capacity": "INTERPRETABLE_LOW_CAPACITY_MODEL_OR_MONOTONE_SCORE_FROZEN_IN_SUCCESSOR",
+    "one_gate_per_factor_family": true,
+    "aggregate_gate_may_rescue_failed_factor": false
+  },
+  "label_status_contract": {
+    "A_SOURCE_TRUTH": "Valid source-native or registered metric geometry under its own provenance and mask.",
+    "B_R0_GATE_ACCEPTED_PSEUDO_CANDIDATE": "Teacher-derived value accepted by the frozen R0 gate. It remains pseudo and has no F1 supervision authority.",
+    "C_R0_UNACCEPTED_PSEUDO_CANDIDATE": "Teacher output available for diagnostics or mining only.",
+    "D_UNKNOWN": "Unsupported, invalid, low-confidence, conflicting or out-of-contract evidence.",
+    "no_status_promotion_by_name": true,
+    "b_to_f1_requires_new_contract_amendment": true
+  },
+  "evaluation_contract": {
+    "grain": "Compute pixel or region residuals within capture parent first, then parent-macro. Frames and pixels are not independent evidence.",
+    "coverage_denominator": "Valid hidden source truth for the declared factor and stratum. UNKNOWN is not an error-free omission; it lowers selective coverage.",
+    "selective_risk": "Mean declared factor loss among ACCEPT values, computed within parent and then parent-macro.",
+    "primary_outputs": [
+      "factor_specific_parent_macro_risk_coverage_curve",
+      "factor_specific_threshold_selected_on_calibration_parents_only",
+      "held_out_canary_risk_and_coverage_at_the_frozen_threshold",
+      "per_parent_acceptance_and_error_table",
+      "score_error_quantile_monotonicity",
+      "failure_examples_adjacent_to_accept_unknown_boundary"
+    ],
+    "factor_metrics": {
+      "depth": ["absolute_metric_error_m", "absolute_log_depth_error", "accepted_error_exceedance_rate_at_prefrozen_tolerance"],
+      "support": ["support_brier_or_declared_geometric_residual", "support_false_accept_rate", "support_transition_local_error"],
+      "boundary": ["boundary_distance_error_px", "boundary_precision_recall_at_prefrozen_physical_tolerance", "boundary_band_false_accept_rate"],
+      "diagnostic_normal": ["angular_error_rad"]
+    },
+    "required_strata": [
+      "parent",
+      "portrait_landscape",
+      "depth_range",
+      "support_interior",
+      "support_transition",
+      "physical_boundary_band",
+      "thin_structure_when_source_supported",
+      "native_depth_missing_or_low_validity_when_source_supported"
+    ],
+    "undefined_or_zero_required_denominator": "NOT_EVALUABLE_FAIL_NOT_DROP",
+    "global_pixel_consensus_70_to_90_percent_is_success": false,
+    "easy_region_volume_may_rescue_critical_stratum": false,
+    "confidence_interval_unit": "PARENT_CLUSTER",
+    "conformal_or_crc_primary": false,
+    "conformal_or_crc_policy": "May be added only in a new version after the base score shows held-out-parent error ordering and calibration transfer. It cannot rescue an unstable score."
+  },
+  "future_execution_gate_design": {
+    "threshold_freeze_timing": "Every factor-specific error tolerance, risk ceiling, minimum denominator, minimum useful coverage and Stage 0B incremental gain must be frozen in the next implementation/execution lock before first teacher output.",
+    "calibration_rule": "Select at most one threshold per factor using THRESHOLD_CALIBRATION parents to meet the pre-frozen risk ceiling while maximizing coverage; no canary tuning.",
+    "held_out_rule": "The same threshold must meet the pre-frozen parent-macro upper risk bound and minimum useful coverage in every required critical stratum on HELD_OUT_CANARY.",
+    "baseline_rule": "The full gate must improve or dominate declared source-only, unfiltered-teacher and confidence-only baselines without a factor-specific or critical-stratum reversal.",
+    "stage_0b_rule": "Stage 0B is not part of this execution version. A new pre-outcome version must freeze an unconsumed canary and a minimum matched-risk incremental coverage before DA3 output; otherwise the second teacher cannot receive a primary claim.",
+    "all_factor_families_conjunctive": true,
+    "failure_terminal": "AG_ST_R0_SOURCE_ANCHORED_SELECTIVE_LABELABILITY_NOT_SUPPORTED_FOR_FAILED_FACTOR_OR_SCORE",
+    "success_terminal": "AG_ST_R0_SOURCE_ANCHORED_SELECTIVE_LABELABILITY_SUPPORTED_FOR_NEW_SOURCE_LABEL_CONTRACT_PROPOSAL_ONLY",
+    "success_does_not_mean": [
+      "F1_SUPERVISION_FRONTDOOR_SATISFIED",
+      "PSEUDO_LABELS_MATERIALIZED",
+      "STUDENT_TRAINED",
+      "TASK_UTILITY_PROVEN"
+    ]
+  },
+  "constraints": [
+    {
+      "id": "AG-ST-R0-C01-NO-EXECUTION",
+      "class": "INVARIANT",
+      "description": "This lock may create only protocol, official-source audit and current-route facts; it may not download or run teachers, open new source payload, materialize labels or train a student.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "AG-ST-R0-C02-HIDDEN-TRUTH-FIREWALL",
+      "class": "INVARIANT",
+      "description": "Hidden source truth and its deterministic factor derivatives are inaccessible to teacher inference, gate fitting outside declared FIT/calibration roles and pre-join scoring; teacher outputs must precede truth join.",
+      "failure_scope": "EVIDENCE_VERSION"
+    },
+    {
+      "id": "AG-ST-R0-C03-TASK-INDEPENDENT-FACTORS",
+      "class": "INVARIANT",
+      "description": "Support and boundary definitions use only physical geometry, gravity, registration and validity; final clearance, occupancy, body profile and reducer output cannot define or supervise them.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "AG-ST-R0-C04-PSEUDO-IS-NOT-TRUTH",
+      "class": "INVARIANT",
+      "description": "Teacher output, confidence, disagreement and model consensus retain pseudo provenance and cannot be renamed source truth or uncertainty truth; rejection remains UNKNOWN.",
+      "failure_scope": "BRANCH"
+    },
+    {
+      "id": "AG-ST-R0-C05-PARENT-FACTOR-SELECTIVITY",
+      "class": "GUARDRAIL",
+      "description": "Future evaluation is parent-macro and factor-specific with critical-stratum risk-coverage curves; global pixel agreement, aggregate loss or an easy-region majority cannot rescue a failed factor.",
+      "failure_scope": "IMPLEMENTATION_VERSION"
+    },
+    {
+      "id": "AG-ST-R0-C06-F1-AUTHORITY-FIREWALL",
+      "class": "INVARIANT",
+      "description": "AG-ST R0 is a parallel WILD_LAB diagnostic and neither modifies nor satisfies the current F1 supervision contract. Any later use of accepted pseudo-labels requires a new pre-outcome source-label contract version.",
+      "failure_scope": "BRANCH"
+    }
+  ],
+  "experiment_design": {
+    "search_strategy": "TWO_STAGE_MINIMAL_INCREMENT_STAGE_0A_SINGLE_TEACHER_THEN_OPTIONAL_STAGE_0B",
+    "minimal_discriminating_experiment": "Freeze an exact source adapter, factor-specific parent roles, hidden-truth masks, one MapAnything artifact and factor risk ceilings; produce all outputs before truth join, fit an interpretable gate on GATE_FIT, select thresholds only on THRESHOLD_CALIBRATION and evaluate unchanged risk-coverage on HELD_OUT_CANARY. DA3 is deferred to a new pre-outcome version with an unconsumed canary.",
+    "resource_budget": "This lock is static documentation only. The next lock must separately cap downloads, GPU memory/time, number of views, output bytes and retries; absent values mean no execution authority.",
+    "stop_conditions": "Stop before any teacher output until exact source/teacher/checkpoint/license/transform/role/mask/risk identities are frozen. During future execution, stop on leakage, undefined factor denominators, receipt mismatch, failed source validity or the first factor-specific selective-risk gate failure."
+  },
+  "hypotheses": [
+    {
+      "hypothesis_id": "AG-ST-R0-H1-SOURCE-GROUNDED-SELECTIVE-PSEUDO-SUPERVISION",
+      "theoretical_or_empirical_basis": "Registered metric geometry provides sparse local residual evidence, while source-conditioned foundation geometry may densify missing regions. A reject option can be learned from anchor residual, reprojection, geometric consistency and teacher confidence without declaring the teacher globally correct.",
+      "causal_difference": "Evaluates a parent-disjoint ACCEPT-or-UNKNOWN admission function against hidden source geometry instead of treating a single teacher, ensemble mean or confidence map as truth.",
+      "expected_information_gain": "Determines per factor and critical stratum whether pseudo-supervision can expand usable coverage at a bounded held-out-parent error, and whether a second teacher adds meaningful matched-risk coverage.",
+      "minimal_test": "Stage 0A MapAnything single-teacher risk-coverage with factor-specific parent-disjoint roles and leak-proof source withholding. Any Stage 0B DA3 incremental comparison requires a new pre-outcome protocol and unconsumed canary.",
+      "evaluation_metric": "Per-factor parent-macro selective risk-coverage, held-out risk at a calibration-only threshold, minimum useful critical-stratum coverage, error-order transfer and Stage 0B matched-risk coverage gain.",
+      "falsifier": "Hidden-truth leakage, unstable score-error ordering, held-out risk above the pre-frozen ceiling, insufficient or single-parent critical-stratum coverage, factor reversal, or no pre-frozen Stage 0B incremental coverage gain.",
+      "cost": "STATIC_LOCK_ONLY_EXECUTION_COST_UNAUTHORIZED",
+      "resource_budget": "No network, model download, GPU inference, source materialization or training in this lock. A successor must freeze a bounded host-only offline budget.",
+      "stop_condition": "Reject only the failed factor, gate score, teacher increment, implementation or evidence version named by the first failure; never lower the risk ceiling, merge factors or use reducer/task output to rescue it.",
+      "selection_reason": "It directly tests the supervision bottleneck with the smallest single-teacher experiment while preserving source truth, UNKNOWN and the current F1 authority boundary."
+    }
+  ],
+  "execution_authority": {
+    "protocol_lock": true,
+    "official_source_audit": true,
+    "static_validation": true,
+    "source_adapter_implementation": false,
+    "teacher_code_or_weight_download": false,
+    "teacher_inference": false,
+    "hidden_truth_materialization": false,
+    "gate_fitting": false,
+    "pseudo_label_materialization": false,
+    "f1_contract_amendment": false,
+    "student_training": false,
+    "development_or_confirmation": false,
+    "deployment": false,
+    "default_app": false,
+    "product_or_safety": false
+  },
+  "prohibited_artifacts_in_this_lock": [
+    "scripts/research/assistive_geometry/run_ag_st_r0.py",
+    "scripts/research/assistive_geometry/train_ag_st_gate.py",
+    "artifacts.local/models/ag-st-r0",
+    "artifacts.local/datasets/ag-st-r0-pseudo-labels",
+    "artifacts.local/evidence/assistive-geometry-ag-st-r0"
+  ],
+  "unique_successor": {
+    "id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ARTIFACT_AND_EVALUATOR_IMPLEMENTATION_LOCK",
+    "execution_authority": false,
+    "scope": "Freeze exact source parent roles, RGB/K/pose/depth adapter and coordinate receipts, deterministic hidden-truth masks and factor transforms, exact MapAnything revision/checkpoint/license/dependencies, interpretable gate form, factor-specific risk ceilings, minimum denominators, minimum useful coverage, resource budget, evaluator implementation hashes and mutation tests. Do not run teacher inference, join truth, materialize pseudo-labels or train a student."
+  },
+  "successor_policy": {
+    "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ARTIFACT_AND_EVALUATOR_IMPLEMENTATION_LOCK",
+    "successor_currently_authorized": false,
+    "successor_scope": "Static artifact/adapter/evaluator identity lock only; scientific execution remains a later explicit authority decision.",
+    "new_version_allowed": true,
+    "preserve_previous_evidence": true,
+    "permissions_never_automatic": [
+      "teacher inference",
+      "pseudo-label materialization",
+      "F1 supervision admission",
+      "student training",
+      "Development or Confirmation",
+      "deployment",
+      "default App",
+      "product or safety"
+    ]
+  },
+  "freeze": {
+    "level": "F1",
+    "outcome_access_started": false,
+    "amendment_mode": "IN_PLACE_BEFORE_OUTCOME",
+    "frozen_now": [
+      "parallel diagnostic relation to current F1",
+      "source truth versus observed anchor separation",
+      "teacher output before truth join and hidden-truth leakage firewall",
+      "task-independent depth/support/physical-boundary definitions",
+      "A/B/C/D provenance and UNKNOWN semantics",
+      "Stage 0A single-teacher then optional Stage 0B incremental order",
+      "teacher confidence and disagreement as gate features only",
+      "parent-macro factor-specific risk-coverage evaluation",
+      "critical-stratum and zero-denominator failure semantics",
+      "conformal/CRC deferral until base score transfer is shown",
+      "no materialization, F1 amendment or student-training authority"
+    ],
+    "unresolved_before_any_teacher_output": [
+      "exact parent identities and 8/4/4 role assignment",
+      "RGB/K/pose/depth source adapter, transforms and timestamp receipt",
+      "deterministic hidden-truth masks and factor derivation transforms",
+      "exact MapAnything repository, model revision, checkpoint hash and dependency licenses",
+      "source-only baseline and interpretable gate implementation identities",
+      "factor-specific risk ceilings, error tolerances, minimum denominators and minimum useful coverage",
+      "Stage 0B new-version identity, unconsumed canary and incremental-gain threshold",
+      "bounded host resource budget, command, retries and exclusive artifact roots",
+      "separate scientific execution authority"
+    ]
+  },
+  "result_model": {
+    "scientific_status": "NOT_RUN_PROTOCOL_AND_AUDIT_ONLY",
+    "claim_eligibility": "DATA_CHARACTERIZED",
+    "protocol_status": "FROZEN",
+    "execution_validity": "NOT_RUN",
+    "scientific_outcome": "NOT_RUN",
+    "invalid_execution_effect": "CLOSE_EVIDENCE_VERSION_ONLY",
+    "terminal_scope": "EVIDENCE_VERSION"
+  },
+  "claim_ceiling": "AG-ST R0 freezes only a source-grounded selective-labelability question, epistemic classes, two-stage evaluation design, leakage firewall, parent/factor risk-coverage semantics and honest blockers. It does not execute a teacher, prove labelability, create labels, calibrate R2 uncertainty, amend or satisfy F1, train a model, establish task benefit, deploy, change the default App or support product or safety claims."
+}
