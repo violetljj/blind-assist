@@ -1,0 +1,127 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_stage0a_wild_lab_summary.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_STAGE0A_WILD_LAB_RESULT_2026-08-10",
+  "date": "2026-08-10",
+  "mode": "WILD_LAB_REVERSIBLE_EXPLORATION",
+  "status": "DEPTH_LABELABILITY_SIGNAL_SUPPORTED_CONFIDENCE_GATE_NOT_TRANSFER_READY",
+  "question": "Can source-anchored MapAnything produce confidence-ranked metric depth on deterministically hidden ARKitScenes TRAIN regions?",
+  "source": {
+    "manifest_sha256": "F51041594FF34EE922F92A7A49AAD7CA44551B5C0A8D77A81693ECFFDD226D87",
+    "role": "TRAIN_ONLY_CONSUMED_WILD_LAB",
+    "parent_count": 16,
+    "frame_count": 48,
+    "frame_indices_per_parent": [
+      30,
+      60,
+      90
+    ],
+    "adapter_inputs": [
+      "RGB",
+      "intrinsics",
+      "camera_to_world_pose",
+      "partial_source_depth",
+      "source_depth_confidence"
+    ],
+    "task_outcome_fields_read": false,
+    "withholding": {
+      "kind": "VALUE_INDEPENDENT_CONTIGUOUS_BLOCK_GRID",
+      "block_size_source_px": 64,
+      "hidden_pixel_count": 1009190
+    }
+  },
+  "teacher": {
+    "model_id": "facebook/map-anything-apache",
+    "repository_revision": "3d10cf7a3016fc0f9bb13a071ee66c47b10be0d9",
+    "checkpoint_sha256": "FA06C0FDCCEFC5048E072C85935D5789B1E36B307F3859033C17F9DCB9FD5201",
+    "checkpoint_bytes": 4914062480,
+    "weight_license": "Apache-2.0",
+    "role": "SOURCE_ANCHORED_PSEUDO_LABEL_TEACHER_NOT_TRUTH",
+    "observed_anchor_calibration": "PER_VIEW_MEDIAN_OBSERVED_DEPTH_DIVIDED_BY_RAW_TEACHER_DEPTH_BEFORE_HIDDEN_REFERENCE_JOIN"
+  },
+  "primary_execution": {
+    "local_result": "artifacts.local/experiments/ag-st-stage0a-mapanything-apache-train16-block64-r1/result.json",
+    "local_result_sha256": "DBBDB21734D1CC5241974A5B6295702C60C40BF9411C02B9F251EF418E8A74F8",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "torch": "2.11.0+cu130",
+    "amp_dtype": "bf16",
+    "peak_cuda_allocated_bytes": 2793604608,
+    "total_seconds": 34.687000000005355
+  },
+  "metrics": {
+    "source_only_nearest_baseline": {
+      "coverage": 1.0,
+      "mae_m": 0.04933012966073428,
+      "rmse_m": 0.19207868723077534,
+      "bad_0_10m_rate": 0.09412598222336725
+    },
+    "uncalibrated_teacher": {
+      "coverage": 1.0,
+      "mae_m": 0.05699332322809826,
+      "rmse_m": 0.09355187465320539,
+      "bad_0_10m_rate": 0.15933867755328532
+    },
+    "source_anchored_teacher": {
+      "coverage": 1.0,
+      "mae_m": 0.033509583799091226,
+      "rmse_m": 0.07798418405138108,
+      "bad_0_10m_rate": 0.06780388232146572,
+      "parent_macro_mae_m": 0.03488241870380127,
+      "parent_macro_bad_0_10m_rate": 0.0709493978394351
+    },
+    "teacher_confidence_risk_coverage": [
+      {
+        "coverage": 0.7510964238646836,
+        "mae_m": 0.031014526875471734,
+        "bad_0_10m_rate": 0.05441431980780977,
+        "parent_macro_mae_m": 0.028314673154501306
+      },
+      {
+        "coverage": 0.5009155857668031,
+        "mae_m": 0.030205649007704016,
+        "bad_0_10m_rate": 0.051226561217283625,
+        "parent_macro_mae_m": 0.023987414304762766
+      },
+      {
+        "coverage": 0.2503037089150705,
+        "mae_m": 0.03038944681904246,
+        "bad_0_10m_rate": 0.04895409415527862,
+        "parent_macro_mae_m": 0.02004137506485898
+      },
+      {
+        "coverage": 0.10021403303639552,
+        "mae_m": 0.029928746445696323,
+        "bad_0_10m_rate": 0.04186483413259505,
+        "parent_macro_mae_m": 0.01741294020105398
+      }
+    ]
+  },
+  "corroborating_executions": [
+    {
+      "local_result": "artifacts.local/experiments/ag-st-stage0a-mapanything-apache-pilot-r1/result.json",
+      "local_result_sha256": "A0921F109EE8E5708047520555A6B77C6958243640819407C1A1064FD18ECCF4",
+      "parent_count": 4,
+      "block_size_source_px": 16
+    },
+    {
+      "local_result": "artifacts.local/experiments/ag-st-stage0a-mapanything-apache-pilot-block64-r0/result.json",
+      "local_result_sha256": "CDF3D1E98F95D28F576ED23C2858DFD3E6824AF712C11959DE0DF188261BBCE8",
+      "parent_count": 4,
+      "block_size_source_px": 64,
+      "source_only_nearest_mae_m": 0.12641744155572823,
+      "source_anchored_teacher_mae_m": 0.056138593751925335
+    }
+  ],
+  "decision": {
+    "continue_depth_label_factory": true,
+    "materialize_canonical_pseudo_labels": false,
+    "supervision_frontdoor_satisfied": false,
+    "observations": [
+      "Observed source anchors are essential: the uncalibrated Teacher is worse than the source-only baseline on MAE and 0.10 m outliers.",
+      "After source-anchor calibration, the Teacher improves full-coverage MAE by 32.1 percent, RMSE by 59.4 percent, and the 0.10 m outlier rate by 28.0 percent versus source-only nearest completion.",
+      "Teacher confidence provides useful rejection, but global MAE is not strictly monotone and coverage is not parent-balanced; confidence alone is not a transferable ACCEPT/UNKNOWN gate.",
+      "All 16 TRAIN parents are consumed for this WILD_LAB question and cannot serve as an unseen held-out canary for the same decision."
+    ],
+    "next_execution": "Add independent residual signals or a second geometry Teacher and evaluate the frozen gate on fresh source-native parents; in parallel derive support and physical-boundary diagnostics from metric geometry without promoting them to truth."
+  },
+  "claim_boundary": "Depth-factor TRAIN-only sensor-reference diagnostic. No ground-truth, support/boundary/sigma label, factor learnability, F1 authorization, cross-source generalization, deployment, product, or safety claim."
+}

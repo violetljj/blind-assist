@@ -171,14 +171,23 @@ confidence-only 与可解释 gate；只有 0A 可评价后，Stage 0B 才能在*
 canary** 下加入 pose-conditioned DA3，测量第二个 Teacher 在同风险下增加多少 coverage。
 UniDepthV2、Metric3Dv2 与 semantic mask 都不进入初始 R0。
 
-当前只完成 [protocol lock](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_ANCHORED_SELECTIVE_LABELABILITY_PROTOCOL_LOCK_2026-08-10.json)
-和 [source/Teacher audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.md)。
-精确 factor-specific parent 角色、RGB/K/pose/depth adapter、withholding mask、factor transforms、checkpoint
-revision/SHA/license、risk ceiling、最小有效 coverage、资源预算和 evaluator implementation 均未锁定；
-因此 teacher download/inference、truth join、pseudo-label materialization、F1 amendment 与 student
-training 全部未授权。
+协议之外，现已按用户要求直接完成一次可逆的 TRAIN-only Stage 0A 实验，结果见
+[WILD_LAB result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_STAGE0A_WILD_LAB_RESULT_2026-08-10.json)。
+factor-only adapter 从 B0 raw source 恢复 RGB/K/pose/partial depth，不读取 B1 clearance/occupancy；
+MapAnything Apache checkpoint 在 16 个 TRAIN parent × 3 帧、`1,009,190` 个确定性隐藏参考像素上完成推理。
+64 px 大孔洞下，source-only nearest baseline 的 MAE/`>0.10 m` 比例为 `0.04933 m / 9.41%`；
+逐 view source-anchor 校准后的 Teacher 为 `0.03351 m / 6.78%`，完整覆盖下分别改善 `32.1% / 28.0%`。
+保留约 `50.1%` confidence coverage 时为 `0.03021 m / 5.12%`。这支持继续做 depth label factory，
+也证明 metric anchor 不是可选修饰：未校准 Teacher 的 MAE/`>0.10 m` 比例反而是
+`0.05699 m / 15.93%`。
 
-AG-ST 即使未来 PASS，也只允许提出新的 source-label contract；它不能直接把当前
+单模型 confidence 尚不能直接成为跨 parent 的 `ACCEPT / UNKNOWN` gate：全局 MAE 随阈值收紧并非
+严格单调，parent 间 coverage 与 residual 仍明显异质。本轮 16 个 TRAIN parent 已全部为该问题消费，
+不能再冒充未见 canary。下一次有效执行应把独立 residual/第二 Teacher 加入 gate，并在 fresh
+source-native parent 上检验 transfer；support 与 physical boundary 可并行从 metric geometry 派生诊断，
+但不物化为 canonical truth。
+
+本次 depth signal 不能直接把当前
 `SUPERVISION_FRONTDOOR_UNSATISFIED` 改成 PASS。Teacher confidence/disagreement 只可作为 gate feature，
 R2 sigma 仍须对真实 factor residual 使用 proper score。dense normal 也只可作为派生诊断，因为当前
 F1 schema 只定义 support-plane normal。主线唯一 successor 保持不变。
