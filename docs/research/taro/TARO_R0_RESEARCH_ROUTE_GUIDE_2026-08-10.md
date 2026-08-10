@@ -785,9 +785,12 @@ diagnostic 或 future baseline，不用换 seed、降门或扩大组合进行 af
 - O0R arms、primary metrics、non-inferiority、预算、timeout 和 failure scope；
 - 为什么该版本与已完成 synthetic O0M 的 claim 和 artifact root 完全隔离。
 
-这只把路线从“无 successor”推进到 implementation lock。当前仍只允许实现和静态测试冻结的
-receipt/truth/uncertainty/injection adapter；不得下载 24 个 selected source body、物化 truth、运行
-DepthART、创建 scientific runner/checkpoint、主动提示或 Android 代码。
+对应纯内存 mechanics 现由
+[source-adapter implementation lock](TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_2026-08-10.md)
+签署：冻结 roster/asset-bound receipt、内部 residual uncertainty、FARO/candidate 双 extractor、
+immutable common-support base、sparse boundary、TARO reducer 与 8×2 injection。该 PASS 只来自 synthetic
+arrays，不等于 source/truth gate；不得下载 24 个 selected source body、物化 truth、运行 DepthART、
+创建 scientific runner/checkpoint、主动提示或 Android 代码。
 
 ### 17.1 O0R 候选源只读能力映射（NON_AUTHORIZING）
 
@@ -798,7 +801,7 @@ payload，也没有赋予数据角色。状态词只允许 `CANDIDATE_METADATA_M
 |---|---|---|---|
 | [Aria Digital Twin](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_digital_twin_dataset/data_format) | 穿戴式 raw/synthetic streams、timestamp、online calibration、6DoF trajectory、depth/segmentation、部分 skeleton/object GT | body-swept query truth、continuous boundary/uncertainty、自然 paired micro-action、parent/site 独立性、许可/角色、deterministic injection | `CANDIDATE_METADATA_MAPPED / GAP_OPEN / NOT_ADMITTED` |
 | [ScanNet++](https://scannetpp.mlsg.cit.tum.de/scannetpp/documentation) | 高精度 laser/mesh、注册 DSLR、iPhone RGB-D、ARKit pose/intrinsics/IMU metadata | 穿戴式 mount/timing、动作交互与真实相机微基线 pair、body/query truth、boundary uncertainty、角色/adapter | `CANDIDATE_METADATA_MAPPED / GAP_OPEN / NOT_ADMITTED` |
-| [ARKitScenes O0R contract](TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.md) | 8 fit + 16 eval-candidate fresh TRAIN visits；registered FARO/AppleDepth、RGB、confidence、K、pose；truth/query/uncertainty/injection/statistics 已冻结 | source payload、truth-only preflight、adapter implementation、DepthART 与 O0R outcome 均未运行；手持域不能冒充穿戴式/active authority | `SOURCE_CONTRACT_FROZEN / PAYLOAD_UNOPENED / SCIENTIFIC_NOT_RUN` |
+| [ARKitScenes O0R contract](TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.md) | 8 fit + 16 eval-candidate fresh TRAIN visits；registered FARO/AppleDepth、RGB、confidence、K、pose；truth/query/uncertainty/injection/statistics 已冻结；纯内存 implementation 44/44 tests PASS | source payload、truth-only preflight、真实 truth bundle、DepthART 与 O0R outcome 均未运行；手持域不能冒充穿戴式/active authority | `SOURCE_CONTRACT_AND_IMPLEMENTATION_FROZEN / PAYLOAD_UNOPENED / SCIENTIFIC_NOT_RUN` |
 | TwinScene future candidate | 可设计 exact factor/query interventions 与 matched nuisance pairs | renderer/cross-renderer/physical-pair validity、real anchor、independent truth、split family、许可与全部 O0R adapter | `GAP_OPEN / NOT_ADMITTED` |
 
 任何后续 source audit 至少逐项记录：K/pose/IMU/timestamp、mesh/depth、boundary/uncertainty、factor/query
@@ -810,7 +813,8 @@ truth、paired observations、parent/session/site identity、license/use scope �
 
 ARKitScenes R0 contract 的 24 个 identity 只从官方 Training metadata 与 pinned exclusion snapshot
 产生，body/outcome 未打开。当前唯一 successor 是
-`TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK`，只允许实现和静态测试 adapter。
-真实 O0R 仍须依次通过 implementation lock、独立 truth-only one-shot preflight lock 与 source gate；
-任一 gate 失败都终止该 evidence version，不得换 parent、降 denominator、先看 DepthART output 或回写
-本指南中的 gate。
+`TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK`（execution=false），只允许绑定 exact assets、
+argv、environment、budget 与 absent exclusive root；该 lock 本身不得下载或打开 payload。
+真实 O0R 仍须依次通过独立 truth-only execution authorization、source/truth gate，再另行授权 baseline/
+factorial execution；任一 gate 失败都终止该 evidence version，不得换 parent、降 denominator、先看
+DepthART output 或回写本指南中的 gate。

@@ -1,0 +1,144 @@
+{
+  "schema": "blindassist.taro.o0r.source_adapter_implementation_lock.v1",
+  "lock_id": "TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK",
+  "date": "2026-08-10",
+  "research_mode": "WILD_LAB",
+  "terminal": "TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_PASS",
+  "passed": true,
+  "scientific_status": "NOT_RUN",
+  "source_payload_opened": false,
+  "formal_truth_or_factorial_family_touched": false,
+  "future_artifact_roots_absent_at_lock": true,
+  "contract_binding": {
+    "commit": "f7beeae87224f856f9e8c91956987f5cfc6d8798",
+    "path": "docs/research/taro/TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.json",
+    "bytes": 29779,
+    "sha256": "C75D6C3B909C823A6E513A5CA4A9C37DF74AF125B2F3D71C035A652EA0E34806"
+  },
+  "bindings": [
+    {
+      "role": "CONTRACT_LOCK_RESULT",
+      "path": "docs/research/taro/TARO_O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_RESULT_2026-08-10.json",
+      "bytes": 3946,
+      "sha256": "51BD518C12C33467FF1426BC8AF85B41AE95372CBACF7DED7D31696236ECB524"
+    },
+    {
+      "role": "RUNTIME_README",
+      "path": "scripts/research/taro_o0r_source_adapter_runtime/README.md",
+      "bytes": 6235,
+      "sha256": "DFF4C85DC0C24A0F40B3F251C30941B80AB280E5512E7AA3E7B50B4896D7BEF4"
+    },
+    {
+      "role": "SOURCE_ADAPTER_RUNTIME",
+      "path": "scripts/research/taro_o0r_source_adapter_runtime/source_adapter.py",
+      "bytes": 146699,
+      "sha256": "0719E7C169552E295EBAF75658C7DF67EFBA63E4321CBCD7D02D50DF7C293F1D"
+    },
+    {
+      "role": "SYNTHETIC_FOCUSED_TESTS",
+      "path": "scripts/research/taro_o0r_source_adapter_runtime/test_source_adapter.py",
+      "bytes": 39562,
+      "sha256": "CF22AA2D2CD512AAA50056C41D5436C69FAB69FDC99293317F79CFDE3B6D3991"
+    }
+  ],
+  "runtime": {
+    "python": "3.11.9",
+    "numpy": "2.1.3",
+    "scipy": "1.17.1",
+    "source_io": false,
+    "model_runner": false,
+    "artifact_writer": false,
+    "legacy_three_band_reducer_imported": false,
+    "taro_reducer_version": "taro_query_reducer_p0_contract_v1"
+  },
+  "implemented_seams": [
+    "EXACT_DECIMAL_TIMESTAMP_AND_RIGHT_POSE_BRACKET_WATERMARK",
+    "EXACT_8_ADAPTER_FIT_AND_16_O0R_EVAL_CANDIDATE_ROLE_ROSTER",
+    "ASSET_SHA_CRC_AND_DECODED_PAYLOAD_CONTENT_BINDING",
+    "INTERNAL_FARO_APPLEDEPTH_CONFIDENCE_RESIDUAL_DERIVATION_WITH_PRIVATE_FACTORY_BOUND_MODEL",
+    "FARO_EVAL_ROLE_DEEP_READ_ONLY_WHOLE_GEOMETRY_HASH",
+    "NINE_QUERY_RECEIPTS_REDERIVED_FROM_BOUND_FARO_SUPPORT_PLANE",
+    "IMMUTABLE_COMMON_SUPPORT_AND_FARO_SCALE_SUPPORT_BOUNDARY_VALUE_HASHES",
+    "FIXED_DEPTHART_MODEL_CHECKPOINT_OUTPUT_RECEIPT_AND_ZERO_BASELINE_SCALE",
+    "TARO_SPECIFIC_NINE_QUERY_REDUCER_WITH_UNKNOWN_FAIL_CLOSED",
+    "EIGHT_BY_TWO_FACTOR_INJECTION_WITH_COMPONENT_LINEAGE_AND_PARENT_CONTEXT",
+    "GENUINE_FARO_TRUTH_ONLY_NINE_QUERY_BUNDLE_ADMISSION"
+  ],
+  "focused_tests": {
+    "command": [
+      "E:/codex-tools/bin/blindassist-python.cmd",
+      "-m",
+      "unittest",
+      "scripts.research.taro_o0r_source_adapter_runtime.test_source_adapter"
+    ],
+    "tests_run": 44,
+    "tests_passed": 44,
+    "tests_failed": 0,
+    "elapsed_s": 43.061,
+    "synthetic_arrays_only": true,
+    "selected_source_bodies_used": false,
+    "depthart_inference_used": false,
+    "scientific_factorial_execution_used": false
+  },
+  "adversarial_coverage": [
+    "ROLE_MASQUERADE_REJECTED",
+    "DECODED_MEMBER_AND_ACTUAL_ARRAY_MISMATCH_REJECTED",
+    "CALLER_RESIDUAL_INJECTION_API_ABSENT",
+    "CALLER_CONSTRUCTED_OR_DUCK_TYPED_UNCERTAINTY_MODEL_REJECTED",
+    "FACTORY_UNCERTAINTY_INSTANCE_MUTATE_AND_RESIGN_REJECTED",
+    "FORGED_QUERY_PLANE_REJECTED",
+    "MUTABLE_OR_HASH_DRIFTED_FARO_GEOMETRY_REJECTED",
+    "SELF_SIGNED_OR_EXTREME_CANDIDATE_SCALE_REJECTED_OR_UNKNOWN",
+    "BOUNDARY_PATCH_CANNOT_REWRITE_SUPPORT_OR_BASE_GEOMETRY",
+    "FACTORIAL_COMPONENT_LINEAGE_AND_PARENT_CONTEXT_REQUIRED",
+    "CANDIDATE_OR_FACTORIAL_FRAME_CANNOT_MASQUERADE_AS_COMPLETE_TRUTH"
+  ],
+  "future_artifact_roots": [
+    {
+      "path": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r0",
+      "exists": false
+    },
+    {
+      "path": "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r0",
+      "exists": false
+    },
+    {
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r0",
+      "exists": false
+    },
+    {
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r0",
+      "exists": false
+    }
+  ],
+  "deferred_capabilities": {
+    "candidate_relative_scale_correction": "NOT_IMPLEMENTED_REQUIRES_PREEXISTING_SIGNED_TRUTH_ONLY_RESULT_AND_SEPARATE_ONE_SHOT_AUTHORITY",
+    "source_payload_download": false,
+    "truth_materialization": false,
+    "uncertainty_fit_on_selected_sources": false,
+    "depthart_inference": false,
+    "factorial_execution": false,
+    "scientific_evaluation": false
+  },
+  "authority": {
+    "source_adapter_implementation": true,
+    "synthetic_interface_tests": true,
+    "truth_only_preflight_lock": false,
+    "source_payload_download": false,
+    "truth_materialization": false,
+    "depthart_inference": false,
+    "factorial_execution": false,
+    "training": false,
+    "g0_g1_a0_a1_j0": false,
+    "android_qnn_htp": false,
+    "default_app": false,
+    "product": false,
+    "safety": false
+  },
+  "unique_successor": {
+    "id": "TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK",
+    "execution_authority": false,
+    "scope": "Bind exact selected source assets, argv, environment, budgets and absent exclusive roots without downloading or opening payloads, materializing truth, fitting selected-source uncertainty, running DepthART or executing factorial arms."
+  },
+  "claim_ceiling": "A content-addressed pure in-memory implementation of the frozen ARKitScenes source receipt, decoded-payload binding, FARO truth/query, fit-only uncertainty, fixed candidate-output interface, TARO reducer and deterministic factor-injection seams passed synthetic tests. No selected source body was opened, no real truth or uncertainty model was materialized, no DepthART output or O0R arm was produced, and no causal-headroom, wearable, active-observation, device, product or safety claim is established."
+}
