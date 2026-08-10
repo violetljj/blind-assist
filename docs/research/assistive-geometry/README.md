@@ -93,6 +93,7 @@
 - [AG-ST R7 source-boundary learnability result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R7_SOURCE_BOUNDARY_LEARNABILITY_RESULT_2026-08-11.json)
 - [AG-ST R8 soft-boundary Bonn canary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R8_SOFT_BOUNDARY_BONN_CANARY_RESULT_2026-08-11.json)
 - [AG-ST R9 continuous boundary factors result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R9_CONTINUOUS_BOUNDARY_FACTORS_RESULT_2026-08-11.json)
+- [AG-ST R10 unified factor labels result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R10_UNIFIED_FACTOR_LABELS_RESULT_2026-08-11.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -325,6 +326,13 @@ fresh cross-source canary；已消费的 R7 canary 不再用于调门或宣称�
 validity/UNKNOWN、tier/provenance 和逐文件 SHA。ARKit 的 1,838 个 core 扩展为 11,219 个 ≤3 px 连续带像素，
 TUM/ICL 分别为 147,743/55,061；无效像素的 distance 为 NaN 且显式 UNKNOWN，未被改成负例。6/6 物化 gate
 PASS，因此连续 boundary factor 已可与 metric depth/support 一起进入按 factor mask 训练。
+
+[R10 unified factor labels](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R10_UNIFIED_FACTOR_LABELS_RESULT_2026-08-11.json)
+随后完成 48/48 frame identity merge：R5 的全部非边界数组逐元素保留，旧 boundary 三字段由 R9 连续边界替换，
+每帧统一为 50 个字段并显式区分 depth/normal/support/obstacle/boundary 五套 validity mask。16 parent/48 帧、
+104,140,450 bytes，6/6 merge gate PASS；覆盖率分别为 `96.45%/94.66%/63.57%/71.60%/94.03%`。
+因此当前已有可直接进入统一 masked-factor 训练的五因子 SuperTeacher 包，不要求完整真值，最终 task state 仍由
+deterministic reducer 决定。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
