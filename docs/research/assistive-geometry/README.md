@@ -90,6 +90,7 @@
 - [AG-ST R4 ICL pixel-exact boundary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R4_ICL_PIXEL_BOUNDARY_RESULT_2026-08-11.json)
 - [AG-ST R5 fresh exact-depth boundary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R5_FRESH_EXACT_DEPTH_BOUNDARY_RESULT_2026-08-11.json)
 - [AG-ST R6 source-native boundary corpus result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R6_SOURCE_NATIVE_BOUNDARY_CORPUS_RESULT_2026-08-11.json)
+- [AG-ST R7 source-boundary learnability result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R7_SOURCE_BOUNDARY_LEARNABILITY_RESULT_2026-08-11.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -294,6 +295,20 @@ TUM RGB-D 7 parent/21 帧、ICL exact 1 parent/12 帧，共 3 source、24 parent
 有正边界，positive 数分别为 `1,838 / 25,914 / 20,625`。81 个 compact NPZ 全部绑定精确 RGB 文件或
 tar member、预处理方式及 RGB/label SHA，5/5 corpus gate 与 5/5 binding gate PASS。这打开的是
 source-balanced boundary-only masked-student canary，不改变正式 F1 authority，也不把 Teacher 分歧当负例。
+
+该 canary 已由
+[R7 source-boundary learnability](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R7_SOURCE_BOUNDARY_LEARNABILITY_RESULT_2026-08-11.json)
+直接执行。冻结 ImageNet MobileNetV3-Small，只训练 `155,129` 参数多尺度 decoder；固定
+ARKit `12/2/2`、TUM `5/1/1` parent split，单一 ICL exact parent 只进入 FIT。40 epochs、4,320
+source-balanced steps 后才打开 2 个 ARKit + 1 个 TUM canary parent。TUM AP 从常数先验 `0.00718`
+升到 `0.03265`，2 px F1 `0.3715`；ARKit AP 从 `0.000115` 升到 `0.00310`，但绝对 AP 与 F1
+`0.0414` 仍低。macro F1 `0.2065`，5 项 gate 中 4 项通过，唯一失败是两个 source 都须 AP 绝对
+增加至少 `0.02`，故终态仍为 FAIL。
+
+这不是退回 Teacher boundary，也不是降低 gate。结果定位出 representation/denominator 问题：ARKit
+canary 453,519 个 valid 像素仅 52 个 positive，单像素硬边界极度稀疏；TUM 同一 decoder 已形成学习信号。
+下一候选只能在未消费外部 source 上检验 boundary-distance/soft-band supervision，Bonn 8 parent 可作为
+fresh cross-source canary；已消费的 R7 canary 不再用于调门或宣称新候选通过。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。

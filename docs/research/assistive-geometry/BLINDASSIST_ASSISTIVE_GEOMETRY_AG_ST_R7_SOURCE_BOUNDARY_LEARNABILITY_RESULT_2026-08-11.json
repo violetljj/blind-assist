@@ -1,0 +1,94 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r7_source_boundary_learnability_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R7_SOURCE_BOUNDARY_LEARNABILITY_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "WILD_LAB_SOURCE_BALANCED_BOUNDARY_ONLY_MASKED_STUDENT",
+  "status": "SOURCE_BOUNDARY_LEARNABILITY_FAIL_WITH_TUM_SIGNAL",
+  "question": "Can a frozen pretrained encoder and small boundary-only decoder learn the R6 source-native/exact boundary corpus across held-out ARKitScenes and TUM parents?",
+  "complete_truth_required": false,
+  "inputs": {
+    "rgb_binding": "artifacts.local/experiments/ag-st-source-native-boundary-corpus-r0/rgb_binding.json",
+    "rgb_binding_sha256": "E529AD06C1AA93ECB9EB681A79FB2C869ACA2F11F1767231FCA570E71C64FC87",
+    "mobilenet_checkpoint_bytes": 10306551,
+    "mobilenet_checkpoint_sha256": "047DCFF4ADDEF86EA5BC2EFF13C9614DC11F47AB1160D0A71A25E7DB994F4E1F"
+  },
+  "split": {
+    "arkitscenes": "12 FIT / 2 SELECTION / 2 CANARY parents",
+    "tum_rgbd": "5 FIT / 1 SELECTION / 1 CANARY parents",
+    "icl_exact": "1 FIT-only parent",
+    "parent_overlap": 0,
+    "canary_parent_count": 3,
+    "canary_labels_opened_after_checkpoint_and_threshold_selection": true
+  },
+  "model": {
+    "backbone": "ImageNet MobileNetV3-Small frozen",
+    "decoder": "four-scale 1/4, 1/8, 1/16, 1/32 boundary-only decoder",
+    "trainable_parameters": 155129,
+    "input": "RGB",
+    "output": "boundary logits only",
+    "reducer_or_task_fields": false
+  },
+  "training": {
+    "epochs": 40,
+    "steps": 4320,
+    "source_balanced_samples_per_epoch": 108,
+    "selected_epoch": 40,
+    "selected_threshold": 0.1,
+    "elapsed_seconds": 67.32800000000861,
+    "peak_cuda_allocated_bytes": 16704512
+  },
+  "canary": {
+    "arkitscenes": {
+      "valid_pixels": 453519,
+      "positive_pixels": 52,
+      "constant_average_precision": 0.00011465892277942049,
+      "student_average_precision": 0.0031023457706889166,
+      "precision_within_2px": 0.02220324508966695,
+      "recall_within_2px": 0.3076923076923077,
+      "f1_within_2px": 0.04141776184786937
+    },
+    "tum_rgbd": {
+      "valid_pixels": 180746,
+      "positive_pixels": 1298,
+      "constant_average_precision": 0.007181348411583106,
+      "student_average_precision": 0.03265086935790189,
+      "precision_within_2px": 0.3262516914749662,
+      "recall_within_2px": 0.43143297380585516,
+      "f1_within_2px": 0.3715417347401814
+    },
+    "source_macro_average_precision": 0.0178766075642954,
+    "source_macro_f1_within_2px": 0.20647974829402538
+  },
+  "gates": {
+    "canary_source_count_eq_2": true,
+    "canary_parent_count_eq_3": true,
+    "each_source_positive_pixels_ge_20": true,
+    "each_source_ap_gain_ge_0p02": false,
+    "source_macro_f1_within_2px_ge_0p10": true,
+    "summary": "4/5 PASS; overall FAIL"
+  },
+  "artifacts": {
+    "result": "artifacts.local/experiments/ag-st-source-boundary-student-r1/result.json",
+    "result_sha256": "CE79AAEC74BF061C87D58156D9D29EBA4F89E81B952FE7EAAF436EF5BFE35DC7",
+    "checkpoint": "artifacts.local/experiments/ag-st-source-boundary-student-r1/boundary-decoder.pt",
+    "checkpoint_sha256": "80BE6EB670EFFC717D44B1E9D6E3A809E00EBAE0C24A20C985D530A4BF7791EC",
+    "checkpoint_bytes": 628637
+  },
+  "implementation": {
+    "runner": "scripts/research/assistive_geometry/train_ag_st_source_boundary_student.py",
+    "runner_sha256": "46F35516FEB9C4EA9C18F64D76E30CE83E2CE40512B240A096C04E77DC77E79C",
+    "test": "scripts/research/assistive_geometry/test_train_ag_st_source_boundary_student.py",
+    "test_sha256": "55CAF17AC83CBDF57BB82B50C6D2D0897C01C0B11E9305E6B42FE4D55A39EFBA",
+    "focused_tests": "2/2 PASS"
+  },
+  "decision": {
+    "cross_source_boundary_learnability_supported": false,
+    "tum_boundary_learning_signal_present": true,
+    "arkitscenes_absolute_boundary_quality_sufficient": false,
+    "teacher_filled_boundary_training_authorized": false,
+    "same_canary_retuning_authorized": false,
+    "next_execution": "Freeze boundary-distance/soft-band supervision before opening source-native Bonn 8-parent cross-source canary.",
+    "formal_f1_authority_changed": false
+  },
+  "claim_boundary": "Boundary-only WILD_LAB learnability on held-out TRAIN-source parents. This is not complete boundary truth, formal F1 authorization, fresh real-world generalization, reducer/task utility, safety, deployment, or product evidence."
+}
