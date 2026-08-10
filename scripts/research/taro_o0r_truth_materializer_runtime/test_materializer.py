@@ -150,6 +150,14 @@ class AuthorizationAndHeadTests(unittest.TestCase):
         self.assertEqual(receipt["terminal"], "TARO_O0R_ASSET_HEADERS_NOT_AVAILABLE_NO_REPLACEMENT")
         self.assertFalse(receipt["replacement_allowed"])
 
+    def test_safe_join_preserves_trusted_artifacts_local_junction(self) -> None:
+        artifacts = REPO_ROOT / "artifacts.local"
+        self.assertTrue(artifacts.is_dir())
+        relative = "artifacts.local/evidence/taro/synthetic-path-never-created/result.json"
+        output = runtime.safe_join(REPO_ROOT, relative)
+        self.assertEqual(output, REPO_ROOT.absolute() / Path(relative))
+        self.assertTrue(output.parent.resolve(strict=False).is_relative_to(artifacts.resolve()))
+
 
 class DownloadAndArchiveTests(unittest.TestCase):
     def test_download_binds_head_length_validators_hash_crc_and_no_range(self) -> None:

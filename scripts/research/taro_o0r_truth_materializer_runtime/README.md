@@ -62,7 +62,7 @@ parent。undefined denominator 必须 FAIL，不能 drop。
 
 ## 假设与规则质疑
 
-24/24 focused tests 通过只说明 source→receipt→truth mechanics 与 one-shot 消费后故障记账可由合成 archive/array 复验，不说明 72 个远端 asset
+25/25 focused tests 通过只说明 source→receipt→truth mechanics、one-shot 消费后故障记账与受信任 `artifacts.local` junction containment 可复验，不说明 72 个远端 asset
 存在、真实 truth gate 可通过、因果 headroom 成立或手持 source 可代表穿戴式观察。
 
 ## 失败资产复用

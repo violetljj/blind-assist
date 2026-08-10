@@ -57,14 +57,14 @@
     {
       "role": "MODULE_README",
       "path": "scripts/research/taro_o0r_truth_materializer_runtime/README.md",
-      "bytes": 4097,
-      "sha256": "8CC8931A458857D901F39AB23C4D88B4C817EA19FB9C510F7FF42369834E1772"
+      "bytes": 4123,
+      "sha256": "CF3276BC04CA5E839626B464F9B6BFA6B3E54BB4D2BDA9CE0BF0E2E0E229ECB8"
     },
     {
       "role": "MATERIALIZER_RUNTIME",
       "path": "scripts/research/taro_o0r_truth_materializer_runtime/materializer.py",
-      "bytes": 71323,
-      "sha256": "EA64C395E2639C2DD9DDC64C7FBEC5AF3E557D6B12E235A220D4C57505FDFF21"
+      "bytes": 72237,
+      "sha256": "845521CE4D9B0D9CE3E3121CE623253878E8B5B2CBB093A2A09A7CA591ED9206"
     },
     {
       "role": "HEAD_RUNNER",
@@ -81,14 +81,14 @@
     {
       "role": "MATERIALIZER_TESTS",
       "path": "scripts/research/taro_o0r_truth_materializer_runtime/test_materializer.py",
-      "bytes": 37298,
-      "sha256": "D84B0CEF13094A227475BA7C373014729834AF4A38A886A9E9454106301D49AF"
+      "bytes": 37791,
+      "sha256": "D82DEE48267A353BB60CB1E097AC7709609C087A178C39DA26B12FAE59EEFD5D"
     },
     {
       "role": "IMPLEMENTATION_VALIDATOR",
       "path": "scripts/research/taro_o0r_truth_materializer_runtime/validate_implementation_lock.py",
-      "bytes": 9234,
-      "sha256": "360B70D46F65001D68B2AB8816782D02B7AC5AF6F7D38EA180F8504093DD8D4A"
+      "bytes": 9301,
+      "sha256": "FEF87D7F840C44120022B59E0BA5C6BEBB7EF4B92B8DA213A4A0A635530E6954"
     },
     {
       "role": "IMPLEMENTATION_VALIDATOR_TESTS",
@@ -115,7 +115,8 @@
     "original_member_provenance_envelope",
     "content_addressed_ndarray_reload_gate",
     "atomic_truth_one_shot_writer",
-    "complete_future_truth_runner"
+    "complete_future_truth_runner",
+    "trusted_artifacts_local_junction_containment"
   ],
   "phase_order": {
     "one": "validate authorization, execution lock, HEAD receipt, hashes, budgets and absent roots before any source access",
@@ -154,11 +155,11 @@
       "-v"
     ],
     "passed": true,
-    "tests_run": 24,
-    "tests_passed": 24,
+    "tests_run": 25,
+    "tests_passed": 25,
     "failures": 0,
     "errors": 0,
-    "elapsed_seconds": 3.131,
+    "elapsed_seconds": 3.187,
     "network_requests": 0,
     "source_payloads_opened": 0,
     "synthetic_arrays_and_archives_only": true
@@ -225,8 +226,18 @@
     "depthart_or_factorial": false,
     "scientific_headroom": false
   },
+  "prestart_incident": {
+    "attempt": 1,
+    "terminal": "PRESTART_FAILED_UNCONSUMED_SUPERSEDED",
+    "error_code": "PATH_ESCAPE",
+    "stage": "OUTPUT_ROOT_PATH_RESOLUTION_BEFORE_ROOT_CREATION",
+    "head_requests_executed": 0,
+    "exclusive_roots_created": 0,
+    "one_shot_consumed": false,
+    "receipt": "docs/research/taro/TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_ATTEMPT_01_PRESTART_INCIDENT_2026-08-10.json"
+  },
   "unique_successor": {
-    "id": "TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK",
+    "id": "TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK_ATTEMPT_02",
     "execution_authority": false,
     "head_requests_allowed_now": false,
     "scope": "Freeze a separate exact HEAD-only lock binding this implementation, argv, environment, the 72-URL plan, retries, zero response-body bytes, exclusive HEAD receipt root and absent source/work/truth/factor roots. The successor lock itself must still be committed before any HEAD request; it may not authorize GET, source opening or truth materialization."

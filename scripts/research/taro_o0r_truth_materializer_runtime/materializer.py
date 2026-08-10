@@ -136,10 +136,31 @@ def _safe_relative_path(value: str) -> Path:
 
 
 def safe_join(root: Path, relative: str) -> Path:
-    root_resolved = root.resolve()
-    output = root_resolved / _safe_relative_path(relative)
-    parent = output.parent.resolve(strict=False)
-    require(parent == root_resolved or root_resolved in parent.parents, "PATH_ESCAPE", "path escapes bound root", path=relative)
+    root_lexical = root.absolute()
+    relative_path = _safe_relative_path(relative)
+    output = root_lexical / relative_path
+    root_resolved = root_lexical.resolve()
+    parent_resolved = output.parent.resolve(strict=False)
+    if parent_resolved == root_resolved or root_resolved in parent_resolved.parents:
+        return output
+    # The repository deliberately exposes artifacts.local as a trusted, F-backed
+    # junction. Preserve its lexical repository path for receipts while proving
+    # every nested parent still resolves inside that one explicit namespace.
+    require(
+        relative_path.parts and relative_path.parts[0] == "artifacts.local",
+        "PATH_ESCAPE",
+        "path escapes bound root",
+        path=relative,
+    )
+    artifacts_lexical = root_lexical / "artifacts.local"
+    require(artifacts_lexical.is_dir(), "ARTIFACTS_NAMESPACE_MISSING", "artifacts.local namespace is unavailable")
+    artifacts_resolved = artifacts_lexical.resolve()
+    require(
+        parent_resolved == artifacts_resolved or artifacts_resolved in parent_resolved.parents,
+        "PATH_ESCAPE",
+        "path escapes artifacts.local namespace",
+        path=relative,
+    )
     return output
 
 

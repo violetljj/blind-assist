@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0M_ONE_SHOT_CONSUMED / O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_PASS / O0R_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_PASS / O0R_TRUTH_ONLY_PREFLIGHT_LOCK_PASS / O0R_DATA_USE_AUTHORIZED / O0R_TRUTH_MATERIALIZER_IMPLEMENTATION_LOCK_PASS / HEAD_EXECUTION_LOCK_AUTHORIZED_UNCONSUMED / HEAD_NOT_RUN / SOURCE_UNOPENED / TRUTH_ONE_SHOT_UNCONSUMED / O0R_SCIENTIFIC_NOT_RUN / HEAD_ONLY_EXECUTION_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0M_ONE_SHOT_CONSUMED / O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_PASS / O0R_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_PASS / O0R_TRUTH_ONLY_PREFLIGHT_LOCK_PASS / O0R_DATA_USE_AUTHORIZED / O0R_TRUTH_MATERIALIZER_IMPLEMENTATION_LOCK_PASS / HEAD_ATTEMPT_01_PRESTART_FAILED_UNCONSUMED / HEAD_NOT_RUN / SOURCE_UNOPENED / TRUTH_ONE_SHOT_UNCONSUMED / O0R_SCIENTIFIC_NOT_RUN / HEAD_EXECUTION_NOT_AUTHORIZED_PENDING_ATTEMPT_02_LOCK / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -81,9 +81,11 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [TARO O0R materializer amendment](TARO_O0R_ARKITSCENES_MATERIALIZER_INPUT_AND_PERSISTENCE_AMENDMENT_LOCK_2026-08-10.md)：
   冻结 all-exact frame roster、fit-before-eval、per-query lookup、original-member envelope 与 ndarray reload gate；
 - [TARO O0R truth materializer implementation lock](TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_IMPLEMENTATION_LOCK_2026-08-10.md)：
-  HEAD/source/truth runner、atomic writer 与 24/24 synthetic focused tests 已 hash-bound；HEAD/source/truth 仍未运行；
+  HEAD/source/truth runner、atomic writer 与 25/25 synthetic focused tests 已 hash-bound；HEAD/source/truth 仍未运行；
 - [TARO O0R Content-Length HEAD execution lock](TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK_2026-08-10.md)：
-  精确 72 URL、zero-body、argv/environment/budget 与 exclusive root 已绑定；当前 `AUTHORIZED_UNCONSUMED`；
+  Attempt 01 的精确 72 URL、zero-body、argv/environment/budget 与 exclusive root；现已 pre-start superseded；
+- [TARO O0R HEAD Attempt 01 pre-start incident](TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_ATTEMPT_01_PRESTART_INCIDENT_2026-08-10.md)：
+  `artifacts.local` junction 被旧 path guard 误判；发生在 root/HEAD 前，request=0、one-shot 未消费；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -94,7 +96,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION`
+`TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK_ATTEMPT_02`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -125,14 +127,18 @@ Content-Length，也未创建或消费 one-shot root；绑定的旧 Assistive Ge
 用户随后以原文授权该锁定 roster 的 HEAD 与 bounded source/truth-only WILD_LAB 使用；outcome-blind
 amendment 进一步冻结 all-exact denominator、8-parent fit-before-eval、每 query 独立 FARO/confidence lookup、
 official member provenance 与 content-addressed ndarray reload。独立 materializer Module 已实现 HEAD/source/truth
-runner、atomic one-shot writer，并通过 24/24 focused tests（含消费后故障注入）与 6/6 lock-validator mutation tests；未发送 HEAD/GET、
+runner、atomic one-shot writer，并通过 25/25 focused tests（含消费后故障与 junction containment）与 6/6 lock-validator mutation tests；未发送 HEAD/GET、
 未打开 selected source、未创建 root、未拟合真实 uncertainty 或物化 truth。
 
-独立 HEAD execution lock 现已绑定实现提交 `9c525103`、exact 72-URL plan、zero-body、argv/environment/budget、
-exclusive root 与消费后 failure receipt。当前是 `HEAD_EXECUTION_LOCK_AUTHORIZED_UNCONSUMED / HEAD_NOT_RUN /
-SOURCE_UNOPENED / TRUTH_ONE_SHOT_UNCONSUMED / O0R_SCIENTIFIC_NOT_RUN`，而不是真实 availability/admission PASS。
-该锁提交后，唯一 successor 是按冻结 argv 消费一次 HEAD evidence version；仍不得 GET/source/truth、运行
-DepthART/O0R 或进入 `G0/G1/A0/A1/J0`。
+HEAD Attempt 01 已提交，但在任何 HEAD 前由旧 `safe_join` 将仓库授权的 F-backed `artifacts.local`
+junction 误判为 `PATH_ESCAPE`。失败发生在 output root 解析阶段，因此 `HEAD/GET/body/source/truth=0`、
+五个正式 root 仍不存在、one-shot 未消费；Attempt 01 原锁不得原地重跑。实现现已仅对受信任
+`artifacts.local` namespace 做 junction-aware containment，并保留 lexical repository receipt path，25/25 tests PASS。
+
+当前是 `HEAD_ATTEMPT_01_PRESTART_FAILED_UNCONSUMED / HEAD_NOT_RUN / SOURCE_UNOPENED /
+TRUTH_ONE_SHOT_UNCONSUMED / O0R_SCIENTIFIC_NOT_RUN`，而不是真实 availability/admission PASS。唯一 successor
+是另冻并提交 Attempt 02 HEAD-only execution lock；在该锁存在前不得发送 HEAD，更不得 GET/source/truth、
+运行 DepthART/O0R 或进入 `G0/G1/A0/A1/J0`。
 
 P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
 finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份
@@ -174,9 +180,9 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 
 - 维护本路线 current 与详细路线指南；
 - outcome-blind 的文献去重、接口设计、数据字段映射和解析公式检查；
-- 重放 hash-bound O0R adapter 的 44 项、materializer 的 24 项 synthetic tests、6 项 implementation-lock
+- 重放 hash-bound O0R adapter 的 44 项、materializer 的 25 项 synthetic tests、6 项 implementation-lock
   mutation tests，以及 truth-only preflight lock 的 8 项静态/mutation tests；
-- 在 HEAD execution lock 已提交且所有绑定/环境/root absence 复验通过后，执行一次冻结的 exact zero-body HEAD argv；
+- 仅 outcome-blind 地冻结、验证并提交 Attempt 02 exact zero-body HEAD execution lock；提交前不得调用 HEAD runner；
 - 只读审计候选公开数据源的文档、许可、字段与能力，并记录 `CANDIDATE_METADATA_MAPPED` /
   `GAP_OPEN` / `NOT_ADMITTED`；该映射不等于下载、source admission 或 O0R successor；
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；

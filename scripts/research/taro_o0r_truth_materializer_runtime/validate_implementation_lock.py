@@ -111,7 +111,7 @@ def validate_lock(lock: dict[str, Any], repo_root: Path = REPO_ROOT) -> list[str
     tests = lock.get("synthetic_validation")
     check(isinstance(tests, dict) and tests.get("passed") is True, "synthetic validation must pass")
     if isinstance(tests, dict):
-        check(tests.get("tests_run") == 24 and tests.get("tests_passed") == 24 and tests.get("failures") == 0 and tests.get("errors") == 0, "focused test counts drift")
+        check(tests.get("tests_run") == 25 and tests.get("tests_passed") == 25 and tests.get("failures") == 0 and tests.get("errors") == 0, "focused test counts drift")
         check(tests.get("network_requests") == 0 and tests.get("source_payloads_opened") == 0, "synthetic validation overclaims source/network")
 
     interfaces = lock.get("implemented_interfaces")
@@ -125,12 +125,13 @@ def validate_lock(lock: dict[str, Any], repo_root: Path = REPO_ROOT) -> list[str
         "content_addressed_ndarray_reload_gate",
         "atomic_truth_one_shot_writer",
         "complete_future_truth_runner",
+        "trusted_artifacts_local_junction_containment",
     }
     check(isinstance(interfaces, list) and set(interfaces) == required_interfaces, "implemented interface set drift")
     successor = lock.get("unique_successor")
     check(
         isinstance(successor, dict)
-        and successor.get("id") == "TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK"
+        and successor.get("id") == "TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK_ATTEMPT_02"
         and successor.get("execution_authority") is False
         and successor.get("head_requests_allowed_now") is False,
         "unique successor drift",

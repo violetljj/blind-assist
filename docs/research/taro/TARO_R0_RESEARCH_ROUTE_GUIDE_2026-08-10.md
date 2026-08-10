@@ -802,7 +802,7 @@ payload，也没有赋予数据角色。状态词只允许 `CANDIDATE_METADATA_M
 |---|---|---|---|
 | [Aria Digital Twin](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_digital_twin_dataset/data_format) | 穿戴式 raw/synthetic streams、timestamp、online calibration、6DoF trajectory、depth/segmentation、部分 skeleton/object GT | body-swept query truth、continuous boundary/uncertainty、自然 paired micro-action、parent/site 独立性、许可/角色、deterministic injection | `CANDIDATE_METADATA_MAPPED / GAP_OPEN / NOT_ADMITTED` |
 | [ScanNet++](https://scannetpp.mlsg.cit.tum.de/scannetpp/documentation) | 高精度 laser/mesh、注册 DSLR、iPhone RGB-D、ARKit pose/intrinsics/IMU metadata | 穿戴式 mount/timing、动作交互与真实相机微基线 pair、body/query truth、boundary uncertainty、角色/adapter | `CANDIDATE_METADATA_MAPPED / GAP_OPEN / NOT_ADMITTED` |
-| [ARKitScenes O0R contract](TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.md) | 8 fit + 16 eval-candidate fresh TRAIN visits；registered FARO/AppleDepth、RGB、confidence、K、pose；truth/query/uncertainty/injection/statistics 已冻结；纯内存 adapter 44/44 tests PASS；24 × 3 preflight 与 data-use receipt 已绑定；HEAD/source/truth materializer 24/24 tests PASS | HEAD/Content-Length、source payload、真实 truth bundle、DepthART 与 O0R outcome 均未运行；implementation PASS 不等于 execution；手持域不能冒充穿戴式/active authority | `SOURCE_CONTRACT_ADAPTER_PREFLIGHT_AND_MATERIALIZER_IMPLEMENTATION_LOCK_FROZEN / HEAD_NOT_RUN / PAYLOAD_UNOPENED / SCIENTIFIC_NOT_RUN` |
+| [ARKitScenes O0R contract](TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.md) | 8 fit + 16 eval-candidate fresh TRAIN visits；registered FARO/AppleDepth、RGB、confidence、K、pose；truth/query/uncertainty/injection/statistics 已冻结；纯内存 adapter 44/44 tests PASS；24 × 3 preflight 与 data-use receipt 已绑定；HEAD/source/truth materializer 25/25 tests PASS | HEAD/Content-Length、source payload、真实 truth bundle、DepthART 与 O0R outcome 均未运行；Attempt 01 在 root 前因 junction path guard 停止且未消费；手持域不能冒充穿戴式/active authority | `SOURCE_CONTRACT_ADAPTER_PREFLIGHT_AND_MATERIALIZER_IMPLEMENTATION_LOCK_FROZEN / HEAD_NOT_RUN / PAYLOAD_UNOPENED / SCIENTIFIC_NOT_RUN` |
 | TwinScene future candidate | 可设计 exact factor/query interventions 与 matched nuisance pairs | renderer/cross-renderer/physical-pair validity、real anchor、independent truth、split family、许可与全部 O0R adapter | `GAP_OPEN / NOT_ADMITTED` |
 
 任何后续 source audit 至少逐项记录：K/pose/IMU/timestamp、mesh/depth、boundary/uncertainty、factor/query
@@ -816,12 +816,14 @@ ARKitScenes R0 contract 的 24 个 identity 只从官方 Training metadata 与 p
 产生，body/outcome 未打开。preflight 已冻结 72 个 exact HEAD target、environment、budget、
 `47333152` trajectory risk 与 absent roots；用户 data-use receipt 已逐字绑定该 24 × 3 roster。随后
 outcome-blind amendment 与 hash-bound materializer implementation 关闭 all-exact frame、fit-before-eval、
-per-query lookup、original provenance、ndarray reload、atomic writer 与消费后 failure receipt seam，24/24 focused tests 与 6/6
+per-query lookup、original provenance、ndarray reload、atomic writer、消费后 failure receipt 与 junction containment seam，25/25 focused tests 与 6/6
 validator mutation tests PASS；但 HEAD/GET 均没有运行，one-shot 没有消费，Content-Length 与远端可用性仍未知。
 
-exact 72-URL、zero-body、hash-bound HEAD execution lock 现已冻结为 `AUTHORIZED_UNCONSUMED`，绑定
-实现提交 `9c525103`、argv/environment/budget、exclusive root 与消费后 failure receipt。该锁提交后，当前唯一
-successor 是 `TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION`：只执行一次冻结 HEAD argv。
+HEAD Attempt 01 在 root/HEAD 前因旧 path guard 将仓库授权的 `artifacts.local` junction 误判为
+`PATH_ESCAPE` 而停止；request/body/source 均为 0、五个正式 root 不存在、one-shot 未消费，原锁不得重跑。
+junction-aware containment 修正与第 25 项回归测试已进入 implementation lock。当前唯一 successor 是
+`TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK_ATTEMPT_02`（execution=false）：另锁同一 exact
+72-URL、zero-body plan、新实现绑定与 argv；该锁提交前仍不得调用 HEAD runner。
 真实 O0R 仍须依次通过独立 HEAD execution、truth-only execution authorization、source/truth gate，再另行授权 baseline/factorial
 execution；任一 gate 失败都终止该 evidence version，不得换 parent、降 denominator、先看 DepthART output
 或回写本指南中的 gate。
