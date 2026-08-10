@@ -88,6 +88,7 @@
 - [AG-ST R1 TUM cross-source multi-Teacher result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R1_TUM_CROSS_SOURCE_MULTITEACHER_RESULT_2026-08-10.json)
 - [AG-ST R2 fresh-TUM third-Teacher + gravity-factor result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R2_TUM_THIRD_TEACHER_AND_GRAVITY_FACTORS_RESULT_2026-08-10.json)
 - [AG-ST R4 ICL pixel-exact boundary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R4_ICL_PIXEL_BOUNDARY_RESULT_2026-08-11.json)
+- [AG-ST R5 fresh exact-depth boundary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R5_FRESH_EXACT_DEPTH_BOUNDARY_RESULT_2026-08-11.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -266,6 +267,18 @@ NPZ 共保留 `664/725`（`91.59%`）positive，negative 定义为空，其余�
 可审计的 source-exact positive supervision，但还没有完整正负监督；下一步应在新的外部 scene/source 上
 冻结更完整的 exact geometric boundary target，或增加独立几何 Teacher consensus，不能拿这 12 个视角
 继续调参后声称通过。
+
+这个下一步已在未消费的 ICL trajectory 1 上直接完成，结果见
+[R5 fresh exact-depth boundary](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R5_FRESH_EXACT_DEPTH_BOUNDARY_RESULT_2026-08-11.json)。
+在读取任何 trajectory-1 像素结果前，固定从 965 poses 均匀取 12 个视角，并把 local physical boundary
+冻结为：相邻 source-exact depth 反投影点的 3D gap 至少 `0.06 m`；有有效邻域且无 gap 才是 negative，
+无有效邻域保持 UNKNOWN。该定义不再依赖不完整的 OBJ material identity，也没有用 Teacher 输出当 truth。
+
+12/12 帧可评，共 `20,625` 个 exact target 像素；当前 geometric seed 的 2 px macro
+precision/recall 为 `0.8257/0.9455`，4/4 冻结 gate PASS。12 个 dense NPZ 已物化 source-exact
+positive/negative/UNKNOWN、tier 与 provenance。这打开的是外部 synthetic source-exact boundary 监督和
+几何规则证据；ARKit/TUM 中由 Teacher 填充的 boundary 仍需 source/Teacher agreement 与 uncertainty
+gate，不能借此直接变成训练真值。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
