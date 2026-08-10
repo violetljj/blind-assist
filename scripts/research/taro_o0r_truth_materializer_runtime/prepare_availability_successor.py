@@ -113,7 +113,10 @@ RESOURCE_BUDGET = {
 
 
 def _relative(path: Path) -> str:
-    return path.resolve().relative_to(REPO_ROOT.resolve()).as_posix()
+    # artifacts.local is deliberately a repository-local junction backed by F:.
+    # Receipts preserve the lexical repository namespace while hash checks read
+    # the resolved target, matching materializer.safe_join semantics.
+    return path.absolute().relative_to(REPO_ROOT.absolute()).as_posix()
 
 
 def _rank(role: str, visit_id: str, video_id: str) -> str:
