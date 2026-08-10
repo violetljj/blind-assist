@@ -91,6 +91,7 @@
 - [AG-ST R5 fresh exact-depth boundary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R5_FRESH_EXACT_DEPTH_BOUNDARY_RESULT_2026-08-11.json)
 - [AG-ST R6 source-native boundary corpus result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R6_SOURCE_NATIVE_BOUNDARY_CORPUS_RESULT_2026-08-11.json)
 - [AG-ST R7 source-boundary learnability result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R7_SOURCE_BOUNDARY_LEARNABILITY_RESULT_2026-08-11.json)
+- [AG-ST R8 soft-boundary Bonn canary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R8_SOFT_BOUNDARY_BONN_CANARY_RESULT_2026-08-11.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -309,6 +310,13 @@ source-balanced steps 后才打开 2 个 ARKit + 1 个 TUM canary parent。TUM A
 canary 453,519 个 valid 像素仅 52 个 positive，单像素硬边界极度稀疏；TUM 同一 decoder 已形成学习信号。
 下一候选只能在未消费外部 source 上检验 boundary-distance/soft-band supervision，Bonn 8 parent 可作为
 fresh cross-source canary；已消费的 R7 canary 不再用于调门或宣称新候选通过。
+
+[R8 soft-boundary Bonn canary](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R8_SOFT_BOUNDARY_BONN_CANARY_RESULT_2026-08-11.json)
+已把 source boundary core 转为 3 px 连续距离热图，只使用 FIT/SELECTION 训练并保持 R7 canary 标签读取数为 0。
+冻结后才打开 boundary-branch fresh 的 Bonn 8 parent/24 帧 source depth。Bonn AP 从常数先验 `0.04421`
+升到 `0.06409`，4 px precision/recall/F1 为 `0.6450/0.3117/0.4203`；但 AP 绝对增量 `0.019879`
+比预冻结 `0.020000` 门槛少 `0.000121`，因此不事后降门，正式终态仍为 FAIL。该结果保留的是连续软边界
+表示与跨传感器学习信号，下一步直接物化 `boundary_distance + soft probability + validity/provenance`，不在 Bonn 上调参。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
