@@ -1,0 +1,129 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_superteacher_factor_label_factory_wild_lab_summary.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SUPERTEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10",
+  "date": "2026-08-10",
+  "mode": "WILD_LAB_REVERSIBLE_EXPLORATION",
+  "status": "GRADED_PSEUDO_LABEL_FACTORY_MATERIALIZED_MULTIVIEW_GATE_SUPPORTED",
+  "question": "Can source-first fusion plus confidence, anchor residual, and multi-view consistency produce useful graded factor pseudo-labels without complete truth?",
+  "source": {
+    "role": "CONSUMED_TRAIN_WILD_LAB",
+    "manifest_sha256": "F51041594FF34EE922F92A7A49AAD7CA44551B5C0A8D77A81693ECFFDD226D87",
+    "stage0a_result_sha256": "DBBDB21734D1CC5241974A5B6295702C60C40BF9411C02B9F251EF418E8A74F8",
+    "parent_count": 16,
+    "frame_count": 48,
+    "task_outcome_fields_read": false
+  },
+  "teacher": {
+    "model_id": "facebook/map-anything-apache",
+    "checkpoint_sha256": "FA06C0FDCCEFC5048E072C85935D5789B1E36B307F3859033C17F9DCB9FD5201",
+    "role": "SOURCE_ANCHORED_PSEUDO_LABEL_TEACHER_NOT_TRUTH"
+  },
+  "execution": {
+    "local_result": "artifacts.local/experiments/ag-st-superteacher-factor-labels-train16-r3/result.json",
+    "local_result_sha256": "6F14FD4EE246F952BA47F551A9B25B6A2B13C2A1FAA74C65B2D34359DF412F2F",
+    "label_file_count": 48,
+    "label_file_bytes": 105090692,
+    "builder_sha256": "5AA0E26C7BE28611BB4A5C60A390293CD50DB1F8E49F1F846F4A5E6C65BA31B4",
+    "test_sha256": "ABD8EFB09B92FB4B0C1F309C51F1F705713B0044DA0445903D1EC9F7AA63C702",
+    "focused_tests": "8/8 PASS",
+    "npz_invariant_validation": "48/48 PASS"
+  },
+  "label_coverage": {
+    "total_pixels": 4148928,
+    "source_native": 0.957173033612538,
+    "teacher_added": 0.007331532386197109,
+    "metric_depth": 0.9645045659987351,
+    "dense_normal_diagnostic": 0.9466498334027489,
+    "support_binary_valid": 0.25052784719329907,
+    "obstacle_boundary_evidence_valid": 0.7159550611627871,
+    "support_plane_valid_frames": 36,
+    "support_plane_valid_frame_rate": 0.75,
+    "tier_rates": {
+      "A_SOURCE": 0.9152197868943496,
+      "B_ANCHORED": 0.04211569832014438,
+      "C_TEACHER": 0.007169080784241134,
+      "UNKNOWN": 0.035495434001264904
+    }
+  },
+  "quality_signal_ablation_at_half_coverage": {
+    "confidence_only": {
+      "coverage": 0.5009155857668031,
+      "mae_m": 0.030205649007704016,
+      "bad_0_10m_rate": 0.051226561217283625,
+      "parent_macro_mae_m": 0.023987414304762766,
+      "all_parents_evaluable": true
+    },
+    "confidence_plus_anchor": {
+      "coverage": 0.5,
+      "mae_m": 0.0253114395005334,
+      "bad_0_10m_rate": 0.046407514937722334,
+      "parent_macro_mae_m": 0.0275907179903011,
+      "all_parents_evaluable": true
+    },
+    "confidence_plus_anchor_plus_multiview": {
+      "coverage": 0.500001981787374,
+      "mae_m": 0.016069853269281124,
+      "bad_0_10m_rate": 0.008495888798387623,
+      "parent_macro_mae_m": 0.017318765431288054,
+      "all_parents_evaluable": true
+    },
+    "combined_vs_confidence_only_relative_reduction": {
+      "mae": 0.468,
+      "bad_0_10m_rate": 0.8342
+    }
+  },
+  "combined_signal_risk_coverage": [
+    {
+      "coverage": 0.7500004954468436,
+      "mae_m": 0.01988741169324462,
+      "bad_0_10m_rate": 0.016993154910931927,
+      "parent_macro_mae_m": 0.02128528485750828,
+      "all_parents_evaluable": true
+    },
+    {
+      "coverage": 0.500001981787374,
+      "mae_m": 0.016069853269281124,
+      "bad_0_10m_rate": 0.008495888798387623,
+      "parent_macro_mae_m": 0.017318765431288054,
+      "all_parents_evaluable": true
+    },
+    {
+      "coverage": 0.2500004954468435,
+      "mae_m": 0.014785541975083066,
+      "bad_0_10m_rate": 0.006254508557340922,
+      "parent_macro_mae_m": 0.014622968132698387,
+      "all_parents_evaluable": true
+    },
+    {
+      "coverage": 0.1,
+      "mae_m": 0.012897357652487357,
+      "bad_0_10m_rate": 0.0019421516265519872,
+      "parent_macro_mae_m": 0.012853237099093636,
+      "all_parents_evaluable": true
+    }
+  ],
+  "materialized_fields": [
+    "metric depth and validity",
+    "depth uncertainty proxy",
+    "dense normal diagnostic",
+    "support pseudo probability and conservative binary validity",
+    "support plane normal and camera height",
+    "obstacle evidence pseudo label",
+    "physical boundary pseudo probability and boundary distance",
+    "factor-specific tier and provenance"
+  ],
+  "decision": {
+    "complete_truth_required_before_student_training": false,
+    "graded_pseudo_labels_materialized": true,
+    "masked_student_training_is_next": true,
+    "second_teacher_required_before_first_student": false,
+    "observations": [
+      "The independent multi-view residual is the decisive acceptance signal; it sharply improves selective risk while retaining evaluability for all 16 parents.",
+      "Source-native depth already covers 95.72 percent of pixels, so this Teacher adds only 0.73 percentage points of accepted depth; its larger value is selective densification and geometry-factor derivation.",
+      "Support labels are deliberately sparse because ambiguous support probability is UNKNOWN rather than a negative label.",
+      "A continuous 80-degree analytic plane and a true two-depth step are regression-tested so slope is not confused with physical discontinuity."
+    ],
+    "next_execution": "Train a small masked factor student on A/B/C labels with per-factor validity and tier weights, then evaluate factor residual and deterministic reducer utility on a fresh parent split."
+  },
+  "claim_boundary": "TRAIN-only graded pseudo-label materialization and selective-depth diagnostic. Pseudo-labels are not complete truth, uncertainty truth, cross-source generalization, F1 authorization, deployment, product, or safety evidence."
+}

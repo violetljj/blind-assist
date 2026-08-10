@@ -83,6 +83,7 @@
 - [AG-ST R0 source-anchored selective labelability protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_ANCHORED_SELECTIVE_LABELABILITY_PROTOCOL_LOCK_2026-08-10.json)
 - [AG-ST R0 source / Teacher / ancestry / license audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.md)
 - [AG-ST R0 machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.json)
+- [AG-ST R0 SuperTeacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SUPERTEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
 - [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
@@ -181,16 +182,22 @@ MapAnything Apache checkpoint 在 16 个 TRAIN parent × 3 帧、`1,009,190` 个
 也证明 metric anchor 不是可选修饰：未校准 Teacher 的 MAE/`>0.10 m` 比例反而是
 `0.05699 m / 15.93%`。
 
-单模型 confidence 尚不能直接成为跨 parent 的 `ACCEPT / UNKNOWN` gate：全局 MAE 随阈值收紧并非
-严格单调，parent 间 coverage 与 residual 仍明显异质。本轮 16 个 TRAIN parent 已全部为该问题消费，
-不能再冒充未见 canary。下一次有效执行应把独立 residual/第二 Teacher 加入 gate，并在 fresh
-source-native parent 上检验 transfer；support 与 physical boundary 可并行从 metric geometry 派生诊断，
-但不物化为 canonical truth。
+随后不等待完整真值，已直接完成
+[SuperTeacher factor-label factory](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SUPERTEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)：
+把 source-first depth、Teacher confidence、observed-anchor residual 和 multi-view reprojection residual
+合成为 A/B/C/UNKNOWN 分级监督，并为 48 帧物化约 105 MB 可训练 NPZ。metric depth、dense-normal
+diagnostic、conservative support 与 obstacle/boundary evidence 的有效覆盖率分别为 `96.45%`、`94.66%`、
+`25.05%` 与 `71.60%`；support plane 在 `36/48` 帧成立。
 
-本次 depth signal 不能直接把当前
-`SUPERVISION_FRONTDOOR_UNSATISFIED` 改成 PASS。Teacher confidence/disagreement 只可作为 gate feature，
-R2 sigma 仍须对真实 factor residual 使用 proper score。dense normal 也只可作为派生诊断，因为当前
-F1 schema 只定义 support-plane normal。主线唯一 successor 保持不变。
+关键突破是独立 multi-view gate。在约 50% coverage 下，仅 confidence 的 MAE/`>0.10 m` 为
+`0.03021 m / 5.12%`，加入 anchor 与 multi-view 后为 `0.01607 m / 0.85%`，且 16 个 parent 全部仍可评；
+对应相对下降 `46.8% / 83.4%`。anchor-only 收紧到 10% 会饿死部分 parent，而 combined gate 不会。
+因此现在不需要先寻找“完全真值”或等待第二 Teacher：下一步可以直接按 factor validity 与 tier weight
+训练 masked student。第二 Teacher 保留为后续 coverage/独立性增益实验，而不是首轮训练前门。
+
+这些文件是分级 pseudo-label，不是完整 truth；uncertainty 字段仍是 proxy，dense normal 仍是派生诊断。
+它们足以启动 WILD_LAB masked training，但不把当前正式 `SUPERVISION_FRONTDOOR_UNSATISFIED`、F1、
+跨源泛化或 safety 改成 PASS。当前 16 个 TRAIN parent 已消费，正式泛化评价必须使用 fresh parent/source。
 
 ## 并行 WILD_LAB 数学 canary handoff（不改变 successor）
 

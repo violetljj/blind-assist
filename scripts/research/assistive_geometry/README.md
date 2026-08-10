@@ -97,6 +97,11 @@
   不改变 F1 execution authority。
 - `test_run_ag_st_stage0a.py`：覆盖隐藏 reference 不回流 Teacher input、mask 可重放、TRAIN-only source
   选择、observed-anchor scale 与 confidence selective metrics。
+- `build_ag_st_factor_labels.py`：把 Stage 0A source-first metric depth、anchor residual 与 multi-view
+  reprojection residual 变成 A/B/C/UNKNOWN 分级 pseudo-label；输出 per-factor validity/provenance、
+  support-plane、physical-boundary distance 和 uncertainty proxy，可直接供 masked student 读取。
+- `test_build_ag_st_factor_labels.py`：8 个 focused tests，覆盖 hidden-reference 隔离、reprojection、
+  source priority、uncertainty、派生 provenance、连续 80° 斜面负控与真实 depth-step 正控。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
@@ -109,8 +114,8 @@
 
 ## 输出
 
-大体积输出只允许写入 `artifacts.local/datasets/`、`artifacts.local/evidence/hftf/` 或
-`artifacts.local/evidence/assistive-geometry/`。
+大体积输出只允许写入 `artifacts.local/datasets/`、`artifacts.local/experiments/`、
+`artifacts.local/evidence/hftf/` 或 `artifacts.local/evidence/assistive-geometry/`。
 roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outcome。当前合同和结果真源位于
 `docs/research/assistive-geometry/`。
 
@@ -118,8 +123,9 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 
 本模块的 B1-A0 及 A1–A4 已永久关闭；teacher 只有未激活的历史 C0 complementarity mechanics，
 历史 C0 teacher 路线当前不读取 teacher output，也不授权 C1、QNN/HTP、默认 App、产品或 safety。
-独立 AG-ST Stage 0A 已在 TRAIN-only `WILD_LAB` 中运行 MapAnything depth diagnostic；它只支持继续
-研究 source-anchored depth labelability，不产生 support/boundary/sigma truth、F1、产品或 safety authority。
+独立 AG-ST 已在 TRAIN-only `WILD_LAB` 中完成 MapAnything Stage 0A，并把 16 parent × 3 帧物化为
+48 份分级 pseudo-label NPZ。它支持 masked student 训练，但 support/boundary 是 conservative pseudo-label、
+sigma 是 proxy；不产生完整 truth、正式 F1、产品或 safety authority。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。
 移动导出受历史 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry
 选模证据。新 R2 已完成 F0 reducer mechanics，并冻结 F1-P schema/loss/selection/Kill Gate；当前
