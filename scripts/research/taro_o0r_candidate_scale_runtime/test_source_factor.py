@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import unittest
 
 import numpy as np
@@ -187,6 +188,10 @@ class SourceFactorTest(unittest.TestCase):
         self.assertEqual(summary["parent_count"], 1)
         self.assertFalse(summary["threshold_or_pass_fail_decision_applied"])
         self.assertIsNotNone(summary["effects_parent_macro"]["support_height_error_reduction_m"]["median_of_parent_medians"])
+        stored_record = json.loads(adapter.canonical_json_bytes(record).decode("utf-8"))
+        stored_reliability = json.loads(adapter.canonical_json_bytes(self.prepared.reliability).decode("utf-8"))
+        recomputed = source_factor.summarize_source_anchored_canary([stored_record], [stored_reliability])
+        self.assertEqual(recomputed["content_sha256"], summary["content_sha256"])
 
 
 if __name__ == "__main__":

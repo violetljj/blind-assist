@@ -65,3 +65,15 @@ $env:OMP_NUM_THREADS = "1"
 E:\codex-tools\venvs\riskseg-r0-py311\Scripts\python.exe `
   scripts/research/taro_o0r_candidate_scale_runtime/run_source_factor_canary.py
 ```
+
+R1 completed on 171 frames / 1,539 queries. It improved metric support-height
+and boundary errors on paired evaluable queries, but lost extraction on 112
+queries across 14 frames and recovered none, so unconditional pre-scaling is
+not adopted. The authoritative result is
+`docs/research/taro/TARO_O0R_ARKITSCENES_SOURCE_ANCHORED_FACTOR_CANARY_R1_RESULT_2026-08-11.md`.
+
+The first R1 derived summary exposed a 12-decimal JSON round-trip seam (query
+records remained valid). `reconcile_source_factor_evidence.py` validates every
+original manifest/query/frame seal and writes a small R1A reconciliation root;
+it never reopens source arrays or recomputes geometry. `_seal` now canonicalizes
+before returning, and the focused test covers summary round-trip stability.

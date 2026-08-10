@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -93,6 +93,9 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [TARO O0R Apple scale source canary R0 result](TARO_O0R_ARKITSCENES_APPLE_SCALE_SOURCE_CANARY_R0_RESULT_2026-08-11.md)：
   239/239 source-only estimates、166 paired frames、16/16 parents improved；parent-macro absolute log-scale error
   从 `0.30498` 降到 `0.01561`，但仍仅为 retrospective WILD_LAB diagnostic；
+- [TARO O0R source-anchored factor canary R1 result](TARO_O0R_ARKITSCENES_SOURCE_ANCHORED_FACTOR_CANARY_R1_RESULT_2026-08-11.md)：
+  171 frames / 1,539 queries；尺度后 SUPPORT height 与 BOUNDARY error 显著改善，但新增 112 个
+  extractor loss、恢复 0，故不采用 unconditional pre-scale；R1A 仅修正 canonical summary round-trip；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -103,7 +106,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`SOURCE_ANCHORED_FACTOR_INJECTION_CANARY_R1`
+`APPLE_SEEDED_SUPPORT_RECOVERY_CANARY_R2`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -154,6 +157,15 @@ canary 随后完成。新的 Apple scale R0 又在独立两阶段 replay 中先�
 再与 166 帧、1,494 query 的 FARO scale oracle 比较：16/16 parents、163/166 frames 改善，parent-macro
 absolute log error 从 `0.3049765` 降至 `0.0156090`。该结果只授权下一步 source-anchored factor
 injection canary，不改变正式 O0R NOT_EVALUABLE 终态。
+
+source-anchored R1 随后在全部 171 个 compact-truth frames / 1,539 queries 上完成：成功分支的
+SUPPORT height parent-macro error 从 `0.34618 m` 降至 `0.10818 m`，BOUNDARY XYZ error 从
+`0.42575 m` 降至 `0.10959 m`；但 hard support extractor 新失去 112 queries / 14 frames，恢复
+0 个 baseline failures，且 paired support normal 多数变差。因此 Apple scale estimator 保留，
+unconditional pre-extraction injection 不采用。唯一 successor 改为先在这 14 个 lost frames 上做
+source-only Apple support seed recovery；无法恢复或一致性不足必须继续 UNKNOWN，不得从同一 eval
+cohort 事后选部署阈值。原 R1 summary 的 12-decimal round-trip 末位漂移已由不重算几何的 R1A
+reconciliation 封闭；逐帧/query 证据未变。
 
 P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
 finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份

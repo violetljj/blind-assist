@@ -11,6 +11,7 @@ threshold, PASS/FAIL, product or safety claim.
 from __future__ import annotations
 
 import copy
+import json
 import math
 import re
 from collections import defaultdict
@@ -73,7 +74,7 @@ def _hash(value: Any, *, field: str) -> str:
 
 
 def _seal(value: Mapping[str, Any]) -> dict[str, Any]:
-    output = copy.deepcopy(dict(value))
+    output = json.loads(adapter.canonical_json_bytes(dict(value)).decode("utf-8"))
     _require("content_sha256" not in output, "SOURCE_FACTOR_SEAL_COLLISION", "payload already contains a content seal")
     output["content_sha256"] = adapter.canonical_sha256(output)
     return output
