@@ -84,6 +84,7 @@
 - [AG-ST R0 source / Teacher / ancestry / license audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.md)
 - [AG-ST R0 machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.json)
 - [AG-ST R0 SuperTeacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SUPERTEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
+- [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
@@ -185,15 +186,26 @@ MapAnything Apache checkpoint 在 16 个 TRAIN parent × 3 帧、`1,009,190` 个
 随后不等待完整真值，已直接完成
 [SuperTeacher factor-label factory](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SUPERTEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)：
 把 source-first depth、Teacher confidence、observed-anchor residual 和 multi-view reprojection residual
-合成为 A/B/C/UNKNOWN 分级监督，并为 48 帧物化约 105 MB 可训练 NPZ。metric depth、dense-normal
+合成为 A/B/C/UNKNOWN 分级监督，并为 48 帧物化约 103 MB 可训练 NPZ。metric depth、dense-normal
 diagnostic、conservative support 与 obstacle/boundary evidence 的有效覆盖率分别为 `96.45%`、`94.66%`、
-`25.05%` 与 `71.60%`；support plane 在 `36/48` 帧成立。
+`63.57%` 与 `71.60%`；support plane 在 `36/48` 帧成立。physical-boundary seed 只占 evidence-valid
+像素的 `0.12%`，2 px 训练带占 `0.48%`，避免把连续斜面大面积误标成边界。
 
 关键突破是独立 multi-view gate。在约 50% coverage 下，仅 confidence 的 MAE/`>0.10 m` 为
 `0.03021 m / 5.12%`，加入 anchor 与 multi-view 后为 `0.01607 m / 0.85%`，且 16 个 parent 全部仍可评；
 对应相对下降 `46.8% / 83.4%`。anchor-only 收紧到 10% 会饿死部分 parent，而 combined gate 不会。
-因此现在不需要先寻找“完全真值”或等待第二 Teacher：下一步可以直接按 factor validity 与 tier weight
-训练 masked student。第二 Teacher 保留为后续 coverage/独立性增益实验，而不是首轮训练前门。
+因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
+[冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
+模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时
+`33.2 s`。两个 canary parent 的 macro depth MAE 从 `1.988 m` 降到 `0.486 m`，support BCE 从
+`0.718` 降到 `0.260`、F1 从 `0.512` 升到 `0.775`，obstacle-evidence BCE 从 `0.816` 降到 `0.456`。
+但 selection support BCE 由 `0.760` 恶化为 `0.845`，boundary BCE/距离在 canary 也恶化，且最终
+depth `>0.10 m` error rate 仍为 `90.52%`。所以这是 depth 与部分 factor 的跨 parent 学习信号，
+不是可用模型；boundary 必须作为独立稀疏因子问题继续处理。
+
+下一步不再回到“先补齐完整真值”：优先把同一 label factory 扩到 fresh parent/source，继续训练
+depth/support/obstacle evidence，并单独改进 boundary representation/loss。第二 Teacher 保留为后续
+coverage/独立性增益实验，而不是首轮训练前门。
 
 这些文件是分级 pseudo-label，不是完整 truth；uncertainty 字段仍是 proxy，dense normal 仍是派生诊断。
 它们足以启动 WILD_LAB masked training，但不把当前正式 `SUPERVISION_FRONTDOOR_UNSATISFIED`、F1、

@@ -676,8 +676,24 @@ def compute_geometric_factors(
         support_valid,
         np.full_like(depth, 0.20, dtype=np.float32),
     )
-    boundary_probability = np.maximum.reduce(
-        (point_plane_edge, 0.85 * normal_edge, 0.75 * support_edge)
+    # Real RGB-D normal/support estimates are noisy enough that either cue alone
+    # can saturate on a continuous surface.  A metric point-to-plane jump is the
+    # required seed; normal/support transitions may only strengthen that seed.
+    point_plane_strength = np.clip(
+        (point_plane_edge - 0.15) / 0.30,
+        0.0,
+        1.0,
+    ).astype(np.float32)
+    support_transition_strength = np.clip(
+        (support_edge - 0.20) / 0.40,
+        0.0,
+        1.0,
+    ).astype(np.float32)
+    corroboration = np.maximum(normal_edge, support_transition_strength)
+    boundary_probability = np.clip(
+        point_plane_strength * (1.0 + 0.25 * corroboration),
+        0.0,
+        1.0,
     ).astype(np.float32)
     boundary_tiers = minimum_filter(
         tiers,

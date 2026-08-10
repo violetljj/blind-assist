@@ -1,0 +1,123 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_masked_student_depthart_wild_lab_summary.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10",
+  "date": "2026-08-10",
+  "mode": "WILD_LAB_REVERSIBLE_EXPLORATION",
+  "status": "PARENT_DISJOINT_PARTIAL_FACTOR_LEARNABILITY_SIGNAL_SUPPORTED",
+  "question": "Can a small head on frozen DepthART RGB features learn graded AG-ST factor pseudo-labels without complete truth?",
+  "inputs": {
+    "factor_label_result": "artifacts.local/experiments/ag-st-superteacher-factor-labels-train16-r5/result.json",
+    "factor_label_result_sha256": "C5FF5FFEFC1545C68DE3770F0B186B8024A7935DDDBD034D1CB3D00317DE3D66",
+    "factor_label_file_count": 48,
+    "factor_label_bytes": 103206784,
+    "factor_label_aggregate_sha256": "5A35D425A961DAD6F939BF30E4F54CD1E0732B76C6ABC9F626FE0732E7AB4496",
+    "depthart_checkpoint_sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65",
+    "source_manifest_sha256": "F51041594FF34EE922F92A7A49AAD7CA44551B5C0A8D77A81693ECFFDD226D87"
+  },
+  "split": {
+    "method": "ORIENTATION_STRATIFIED_SHA256_12_2_2_WITHOUT_LABEL_CONTENT",
+    "train_parents": [
+      "41159448",
+      "42445086",
+      "42445790",
+      "42897547",
+      "42898024",
+      "42898242",
+      "47204445",
+      "47333249",
+      "47334163",
+      "47430531",
+      "47431114",
+      "47895508"
+    ],
+    "selection_parents": [
+      "47331226",
+      "47430327"
+    ],
+    "canary_parents": [
+      "44358617",
+      "47334948"
+    ],
+    "frame_counts": {
+      "train": 36,
+      "selection": 6,
+      "canary": 6
+    }
+  },
+  "architecture": {
+    "encoder": "FROZEN_DEPTHART_S_METRIC_INDOOR",
+    "encoder_trainable_parameters": 0,
+    "head": "ONE_BY_ONE_THEN_THREE_BY_THREE_32CH_MULTI_FACTOR_DENSE_HEAD",
+    "head_trainable_parameters": 11109,
+    "outputs": [
+      "metric_depth_log_residual",
+      "support_logit",
+      "boundary_logit",
+      "boundary_distance_px",
+      "obstacle_evidence_logit"
+    ],
+    "unknown_weight": 0.0
+  },
+  "execution": {
+    "local_result": "artifacts.local/experiments/ag-st-masked-student-depthart-s-r1/result.json",
+    "local_result_sha256": "369D0580D0CBD971CABBE918477C16B97C085AA1E7C38CE4421D4CB8D3F1D395",
+    "trainer_sha256": "6B534F8AC1F138ACA05A770065BA15EABC08FFF7AA4C0B0C44986F70BC10DEC6",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "torch": "2.11.0+cu128",
+    "seed": 1729,
+    "epochs": 80,
+    "optimizer_steps": 2880,
+    "feature_extraction_seconds": 5.0254286999988835,
+    "training_seconds": 24.978768100001616,
+    "total_seconds": 33.15543230000185,
+    "checkpoint_sha256": "D6CEA1031C4984244C06011A8185A8671702BF7F967A1C470EDE4E56A5718AEB",
+    "checkpoint_bytes": 52589
+  },
+  "parent_macro_metrics": {
+    "selection": {
+      "depth_mae_m_before": 1.2260293785542533,
+      "depth_mae_m_after": 0.33171696414122637,
+      "support_bce_before": 0.7601698837985682,
+      "support_bce_after": 0.8451192232619289,
+      "support_f1_before": 0.25317056877934474,
+      "support_f1_after": 0.30921183481869285,
+      "boundary_bce_before": 0.04092281117151428,
+      "boundary_bce_after": 0.056176514307796105,
+      "boundary_f1_before": 0.0,
+      "boundary_f1_after": 0.031770037129621606,
+      "obstacle_bce_before": 0.7195440503430346,
+      "obstacle_bce_after": 0.695494114447196
+    },
+    "canary": {
+      "depth_mae_m_before": 1.988123375284045,
+      "depth_mae_m_after": 0.48644385006457075,
+      "depth_mae_relative_reduction": 0.7553251190987722,
+      "depth_bad_0_10m_rate_after": 0.9052342439163732,
+      "support_bce_before": 0.7177592548764178,
+      "support_bce_after": 0.2600845036933133,
+      "support_bce_relative_reduction": 0.6376438173018137,
+      "support_f1_before": 0.5118666145026292,
+      "support_f1_after": 0.7754037033040728,
+      "boundary_bce_before": 0.04452248837415261,
+      "boundary_bce_after": 0.15611408511585728,
+      "boundary_f1_before": 0.0,
+      "boundary_f1_after": 0.06826967300727911,
+      "boundary_distance_mae_px_before": 4.333561845168386,
+      "boundary_distance_mae_px_after": 4.4101837650141,
+      "obstacle_bce_before": 0.8159385749816048,
+      "obstacle_bce_after": 0.4558492301031445,
+      "obstacle_bce_relative_reduction": 0.4413191824967688
+    }
+  },
+  "decision": {
+    "complete_truth_required_for_this_run": false,
+    "second_teacher_required_for_this_run": false,
+    "depth_learnability_signal": true,
+    "support_learnability_signal": "CANARY_POSITIVE_SELECTION_UNSTABLE",
+    "obstacle_evidence_learnability_signal": true,
+    "boundary_learnability_signal": false,
+    "interpretation": "The supervision route is sufficient to train a student and obtain parent-disjoint depth and partial factor signal. Boundary remains an unresolved sparse-factor objective, and the high residual depth bad-rate means the student is not task-ready.",
+    "next_execution": "Scale the same source-anchored label factory to fresh parent/source sequences, keep depth/support/obstacle training active, and isolate boundary representation or loss work instead of requiring complete truth or another Teacher first."
+  },
+  "claim_boundary": "Internal parent-disjoint TRAIN-only pseudo-label learnability diagnostic on previously consumed AG-ST parents. It is not objective truth, unseen-source generalization, formal F1 authorization, deterministic-reducer task utility, deployment, product, or safety evidence."
+}

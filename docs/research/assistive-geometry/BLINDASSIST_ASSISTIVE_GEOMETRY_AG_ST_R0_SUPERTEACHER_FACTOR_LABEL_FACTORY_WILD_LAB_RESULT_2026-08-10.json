@@ -19,11 +19,11 @@
     "role": "SOURCE_ANCHORED_PSEUDO_LABEL_TEACHER_NOT_TRUTH"
   },
   "execution": {
-    "local_result": "artifacts.local/experiments/ag-st-superteacher-factor-labels-train16-r3/result.json",
-    "local_result_sha256": "6F14FD4EE246F952BA47F551A9B25B6A2B13C2A1FAA74C65B2D34359DF412F2F",
+    "local_result": "artifacts.local/experiments/ag-st-superteacher-factor-labels-train16-r5/result.json",
+    "local_result_sha256": "C5FF5FFEFC1545C68DE3770F0B186B8024A7935DDDBD034D1CB3D00317DE3D66",
     "label_file_count": 48,
-    "label_file_bytes": 105090692,
-    "builder_sha256": "5AA0E26C7BE28611BB4A5C60A390293CD50DB1F8E49F1F846F4A5E6C65BA31B4",
+    "label_file_bytes": 103206784,
+    "builder_sha256": "4879BD378A00E389EE9555CCEA26535D5A958E5A16FF3F702B2830343318B0E5",
     "test_sha256": "ABD8EFB09B92FB4B0C1F309C51F1F705713B0044DA0445903D1EC9F7AA63C702",
     "focused_tests": "8/8 PASS",
     "npz_invariant_validation": "48/48 PASS"
@@ -34,8 +34,10 @@
     "teacher_added": 0.007331532386197109,
     "metric_depth": 0.9645045659987351,
     "dense_normal_diagnostic": 0.9466498334027489,
-    "support_binary_valid": 0.25052784719329907,
+    "support_binary_valid": 0.63572204675521,
     "obstacle_boundary_evidence_valid": 0.7159550611627871,
+    "boundary_seed_rate_within_evidence": 0.0012442575963340185,
+    "boundary_2px_band_rate_within_evidence": 0.004833617577966407,
     "support_plane_valid_frames": 36,
     "support_plane_valid_frame_rate": 0.75,
     "tier_rates": {
@@ -115,15 +117,17 @@
   "decision": {
     "complete_truth_required_before_student_training": false,
     "graded_pseudo_labels_materialized": true,
-    "masked_student_training_is_next": true,
+    "masked_student_training_is_next": false,
+    "masked_student_training_completed": true,
     "second_teacher_required_before_first_student": false,
     "observations": [
       "The independent multi-view residual is the decisive acceptance signal; it sharply improves selective risk while retaining evaluability for all 16 parents.",
       "Source-native depth already covers 95.72 percent of pixels, so this Teacher adds only 0.73 percentage points of accepted depth; its larger value is selective densification and geometry-factor derivation.",
-      "Support labels are deliberately sparse because ambiguous support probability is UNKNOWN rather than a negative label.",
+      "Support labels retain UNKNOWN for ambiguous geometry; after requiring a metric point-to-plane seed for boundaries, 63.57 percent of pixels have valid support supervision.",
+      "Boundary positives are sparse by construction: 0.12 percent physical seeds and 0.48 percent within the two-pixel training band among evidence-valid pixels.",
       "A continuous 80-degree analytic plane and a true two-depth step are regression-tested so slope is not confused with physical discontinuity."
     ],
-    "next_execution": "Train a small masked factor student on A/B/C labels with per-factor validity and tier weights, then evaluate factor residual and deterministic reducer utility on a fresh parent split."
+    "next_execution": "Use the completed masked-student result to expand to fresh parent/source data; keep boundary learning as an isolated unresolved factor instead of blocking depth/support scaling."
   },
   "claim_boundary": "TRAIN-only graded pseudo-label materialization and selective-depth diagnostic. Pseudo-labels are not complete truth, uncertainty truth, cross-source generalization, F1 authorization, deployment, product, or safety evidence."
 }

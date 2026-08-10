@@ -102,6 +102,10 @@
   support-plane、physical-boundary distance 和 uncertainty proxy，可直接供 masked student 读取。
 - `test_build_ag_st_factor_labels.py`：8 个 focused tests，覆盖 hidden-reference 隔离、reprojection、
   source priority、uncertainty、派生 provenance、连续 80° 斜面负控与真实 depth-step 正控。
+- `train_ag_st_masked_student.py`：冻结 DepthART-S 或 MobileNetV3 encoder，只训练小型 dense factor head；
+  按 parent 的固定 `12/2/2` split 使用 A/B/C tier weights，UNKNOWN 权重恒为零，并报告 depth、support、
+  boundary 与 obstacle evidence 的独立残差，不调用 deterministic reducer 或 task outcome。
+- `test_train_ag_st_masked_student.py`：覆盖 split 重放、零残差初始化、UNKNOWN loss 隔离与 tier 权重顺序。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
@@ -124,8 +128,9 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 本模块的 B1-A0 及 A1–A4 已永久关闭；teacher 只有未激活的历史 C0 complementarity mechanics，
 历史 C0 teacher 路线当前不读取 teacher output，也不授权 C1、QNN/HTP、默认 App、产品或 safety。
 独立 AG-ST 已在 TRAIN-only `WILD_LAB` 中完成 MapAnything Stage 0A，并把 16 parent × 3 帧物化为
-48 份分级 pseudo-label NPZ。它支持 masked student 训练，但 support/boundary 是 conservative pseudo-label、
-sigma 是 proxy；不产生完整 truth、正式 F1、产品或 safety authority。
+48 份分级 pseudo-label NPZ，并已完成一次冻结 DepthART encoder 的 11,109 参数 masked-head 训练。
+内部 parent-disjoint canary 显示 depth/support/obstacle evidence 的部分学习信号，boundary 仍未通过；
+support/boundary 仍是 conservative pseudo-label、sigma 是 proxy，不产生完整 truth、正式 F1、产品或 safety authority。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。
 移动导出受历史 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry
 选模证据。新 R2 已完成 F0 reducer mechanics，并冻结 F1-P schema/loss/selection/Kill Gate；当前
