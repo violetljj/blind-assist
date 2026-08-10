@@ -86,6 +86,7 @@
 - [AG-ST R0 SuperTeacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SUPERTEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 multi-Teacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MULTITEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R1 TUM cross-source multi-Teacher result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R1_TUM_CROSS_SOURCE_MULTITEACHER_RESULT_2026-08-10.json)
+- [AG-ST R2 fresh-TUM third-Teacher + gravity-factor result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R2_TUM_THIRD_TEACHER_AND_GRAVITY_FACTORS_RESULT_2026-08-10.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -218,6 +219,19 @@ primary 的 MAE 从 `0.01607` 降到 `0.01575 m`，`>0.10 m` 从 `0.85%` 降到 
 因此 multi-Teacher disagreement 不再只是 ARKitScenes 内部现象。21 个 source-first depth NPZ 已物化：
 source-native 覆盖 `66.35%`，Teacher 新增 `9.01%`，总 metric-depth 覆盖 `75.36%`，其余 `24.64%`
 明确 UNKNOWN。TUM gravity basis 尚未验证，所以 support/boundary 在这批标签中全部 UNKNOWN。
+
+随后 [fresh-TUM R2](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R2_TUM_THIRD_TEACHER_AND_GRAVITY_FACTORS_RESULT_2026-08-10.json)
+换到另 7 个此前未引用的 TUM parent，并在 FIT 选择后才打开 3 个 held-out parent。冻结两教师配方在
+held-out 上保留 `89.14%` 接受覆盖，接受/拒绝 MAE 为 `0.02934 / 0.28228 m`，3/3 parent 均保持
+接受区低风险。DepthART 单体 MAE `0.09998 m` 优于 DA2 的 `0.13267 m`，但其 union/consensus witness
+都没有在 FIT 中形成 no-regret 增益，因此第三 Teacher 不晋级，也没有为了三教师结论回调阈值。
+
+同批 source accelerometer + mocap 又把 Freiburg1/2 的世界 `+Z` gravity basis 验证出来：15 帧的
+world-specific-force 角误差 median/P95 为 `4.50° / 9.92°`，最优轴映射相对 runner-up 有 `14.03°`
+余量。由此 15/15 帧成功物化 gravity-relative dominant support-plane pseudo-label；eligible 像素上的
+normal/support/evidence 覆盖为 `84.14% / 69.25% / 84.13%`。Freiburg3/Xtion 的 6 帧无 accelerometer，
+继续全 UNKNOWN。这里的 dominant horizontal support 可能是桌面，不是 source-native walkable-ground
+truth；下一步必须在 gravity-native 或 synthetic-exact source 上区分地面与抬高水平面，而不是训练 student。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。

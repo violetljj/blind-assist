@@ -114,6 +114,17 @@
   未验证 gravity 前 support/boundary 恒为 UNKNOWN。
 - `test_ag_st_tum_rgbd.py` 与 `test_run_ag_st_tum_cross_source.py`：6 个 focused tests，覆盖 cohort
   disjointness、RGB-depth pairing、pose interpolation、真实 payload receipts、跨源门与 source-first 标签不变量。
+- `plan_ag_st_tum_third_teacher_cohort.py` 与 `run_ag_st_tum_third_teacher.py`：冻结另 7 个未引用 TUM
+  parent，在 4 FIT 上选择 DepthART union/consensus witness，随后一次性评 3 held-out；若第三 Teacher
+  无 no-regret 增益则保留原两教师配方，不回调阈值。
+- `ag_st_depthart_teacher.py` 与 `test_run_ag_st_tum_third_teacher.py`：只读 RGB+K 的冻结 DepthART-S
+  metric Teacher，以及 4 个 focused gate/role tests；DepthART 只作独立 witness，不要求击败主 Teacher。
+- `diagnose_ag_st_tum_gravity.py`：把 TUM accelerometer 与 mocap pose 联合到 24 个 proper signed-axis
+  candidates，验证 Freiburg1/2 的 IMU→RGB optical 映射与 world `+Z` gravity；无 accelerometer 的
+  Freiburg3/Xtion 不作推断。
+- `materialize_ag_st_tum_gravity_factors.py` 与对应 test：对 gravity-eligible TUM 标签物化 continuous
+  normal/support/boundary/obstacle evidence；不具 gravity 的 parent fail-closed 为 UNKNOWN。dominant
+  gravity-aligned plane 仍可能是桌面，不冒充 walkable-ground truth。
 - `train_ag_st_masked_student.py`：冻结 DepthART-S 或 MobileNetV3 encoder，只训练小型 dense factor head；
   可直接拼接多个互不重叠的 Stage0A/label batch，每个 orientation 留 1 selection + 1 canary parent；
   也可在已有独立 confirmation 时把全部 consumed parents 纳入 fit。支持 multifactor、depth/support-only、
