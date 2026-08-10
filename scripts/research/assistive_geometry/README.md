@@ -104,14 +104,15 @@
   source priority、uncertainty、派生 provenance、连续 80° 斜面负控与真实 depth-step 正控。
 - `train_ag_st_masked_student.py`：冻结 DepthART-S 或 MobileNetV3 encoder，只训练小型 dense factor head；
   可直接拼接多个互不重叠的 Stage0A/label batch，每个 orientation 留 1 selection + 1 canary parent；
-  支持 multifactor、depth/support-only 与 boundary-only 目标。A/B/C tier weights 保留，UNKNOWN 权重恒为零，
-  不调用 deterministic reducer 或 task outcome。
-- `test_train_ag_st_masked_student.py`：8 个 focused tests，覆盖 16/32-parent split 重放、非对称
-  orientation roster、零残差初始化、三种 objective 的 UNKNOWN 隔离与 tier 权重顺序。
+  也可在已有独立 confirmation 时把全部 consumed parents 纳入 fit。支持 multifactor、depth/support-only、
+  metric-precision + calibrated-support 与 boundary-only 目标；train-only scalar temperature/bias 可折叠回
+  support head。A/B/C tier weights 保留，UNKNOWN 权重恒为零，不调用 reducer 或 task outcome。
+- `test_train_ag_st_masked_student.py`：10 个 focused tests，覆盖 16/32-parent split 重放、非对称
+  orientation roster、零残差初始化、objective UNKNOWN/NaN 隔离、tier 权重和 scalar calibration。
 - `evaluate_ag_st_student_checkpoint.py`：在严格 fresh parent 上零样本评估冻结 checkpoint；验证训练、
   selection、canary 与 evaluation parent 零交集，不在 fresh cohort 上拟合、选阈值或继续训练。
-- `test_evaluate_ag_st_student_checkpoint.py`：4 个 focused tests，覆盖 objective-specific core factors、
-  parent firewall、macro improvement 符号与只用于诊断的 hash split 重放。
+- `test_evaluate_ag_st_student_checkpoint.py`：5 个 focused tests，覆盖 objective-specific core factors、
+  all-consumed fit parent firewall、macro improvement 符号与只用于诊断的 hash split 重放。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
@@ -138,7 +139,9 @@ masked-head 训练。两条独立的 train-parent 到 fresh-parent 零样本链�
 obstacle 一条改善、一条退化，只是 diagnostic；boundary 在 multifactor、boundary-only 和两条 fresh
 zero-shot 评价中均未通过。后续 combined-32 depth/support-only checkpoint 又在 8 个全新 parent 上取得
 depth MAE `85.8%` 和 support BCE `47.5%` 的 parent-macro 相对下降；累计 44 个互异 ARKitScenes parent
-已被训练或评估角色消费，这仍不是跨数据源泛化。support/boundary 仍是 conservative pseudo-label、
+被消费后，combined-40 precision checkpoint 在最终 CONFIRMATION 8 上取得 depth MAE `85.4%`、support
+BCE `83.2%` 的相对下降。累计 52 个互异 ARKitScenes parent 已消费，这仍不是跨数据源泛化。
+support/boundary 仍是 conservative pseudo-label、
 sigma 是 proxy，不产生完整 truth、正式 F1、产品或 safety authority。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。
 移动导出受历史 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry

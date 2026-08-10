@@ -100,6 +100,13 @@ DEPTH_SUPPORT_LOSS_WEIGHTS = {
     "depth_log_huber": LOSS_WEIGHTS["depth_log_huber"],
     "support_bce": LOSS_WEIGHTS["support_bce"],
 }
+DEPTH_SUPPORT_PRECISION_LOSS_WEIGHTS = {
+    "depth_log_huber": 0.50,
+    "depth_abs_huber": 1.00,
+    "depth_bad_0_10_soft_margin": 0.50,
+    "support_bce": 0.75,
+    "support_soft_dice": 0.25,
+}
 BOUNDARY_ONLY_LOSS_WEIGHTS = {
     "boundary_soft_heat_bce": 1.0,
     "boundary_near_distance": 0.50,
@@ -944,6 +951,97 @@ def compute_depth_support_losses(
     }
 
 
+def compute_depth_support_precision_losses(
+    outputs: dict[str, torch.Tensor],
+    targets: dict[str, torch.Tensor],
+) -> dict[str, torch.Tensor]:
+    """Favor meter precision and calibrated support without non-core gradients."""
+    predicted_depth = outputs["depth_m"].clamp(0.05, 20.0)
+    depth_weights = tier_weights(targets["metric_tier"])
+    depth_valid = targets["metric_valid"] & torch.isfinite(
+        targets["metric_depth_m"]
+    )
+    target_depth = torch.where(
+        depth_valid,
+        targets["metric_depth_m"].clamp(0.05, 20.0),
+        predicted_depth.detach(),
+    )
+    log_raw = F.smooth_l1_loss(
+        predicted_depth.log(),
+        target_depth.log(),
+        reduction="none",
+        beta=0.05,
+    )
+    abs_raw = F.smooth_l1_loss(
+        predicted_depth,
+        target_depth,
+        reduction="none",
+        beta=0.05,
+    )
+    absolute_error = (predicted_depth - target_depth).abs()
+    margin_raw = 0.02 * F.softplus((absolute_error - 0.10) / 0.02)
+
+    support_probability = torch.sigmoid(outputs["support_logits"])
+    support_weights = tier_weights(targets["support_tier"])
+    support_valid = targets["support_valid"]
+    support_target = torch.where(
+        support_valid,
+        targets["support"],
+        torch.zeros_like(targets["support"]),
+    )
+    support_bce_raw = F.binary_cross_entropy_with_logits(
+        outputs["support_logits"],
+        support_target,
+        reduction="none",
+    )
+    selected_weights = support_weights * support_valid.to(support_weights.dtype)
+    dice_denominator = (
+        selected_weights * (support_probability + support_target)
+    ).sum()
+    if bool((selected_weights > 0).any()):
+        support_dice = 1.0 - (
+            2.0
+            * (selected_weights * support_probability * support_target).sum()
+            + 1e-6
+        ) / (dice_denominator + 1e-6)
+    else:
+        support_dice = outputs["support_logits"].sum() * 0.0
+
+    raw = {
+        "depth_log_huber": masked_weighted_mean(
+            log_raw,
+            depth_valid,
+            depth_weights,
+        ),
+        "depth_abs_huber": masked_weighted_mean(
+            abs_raw,
+            depth_valid,
+            depth_weights,
+        ),
+        "depth_bad_0_10_soft_margin": masked_weighted_mean(
+            margin_raw,
+            depth_valid,
+            depth_weights,
+        ),
+        "support_bce": masked_weighted_mean(
+            support_bce_raw,
+            support_valid,
+            support_weights,
+        ),
+        "support_soft_dice": support_dice,
+    }
+    weighted = {
+        name: raw[name] * DEPTH_SUPPORT_PRECISION_LOSS_WEIGHTS[name]
+        for name in raw
+    }
+    total = sum(weighted.values(), predicted_depth.sum() * 0.0)
+    return {
+        "total": total,
+        **{f"raw/{name}": value for name, value in raw.items()},
+        **{f"weighted/{name}": value for name, value in weighted.items()},
+    }
+
+
 def compute_boundary_only_losses(
     outputs: dict[str, torch.Tensor],
     targets: dict[str, torch.Tensor],
@@ -1084,7 +1182,13 @@ def train_student(
     require(epochs > 0 and learning_rate > 0, "training configuration invalid")
     model.train()
     require(
-        objective_profile in {"multifactor", "depth_support", "boundary_only"},
+        objective_profile
+        in {
+            "multifactor",
+            "depth_support",
+            "depth_support_precision",
+            "boundary_only",
+        },
         "invalid objective profile",
     )
     optimizer = torch.optim.AdamW(
@@ -1118,6 +1222,8 @@ def train_student(
             outputs = model(feature, base_depth, frame.descriptor.output_hw)
             if objective_profile == "boundary_only":
                 losses = compute_boundary_only_losses(outputs, targets)
+            elif objective_profile == "depth_support_precision":
+                losses = compute_depth_support_precision_losses(outputs, targets)
             elif objective_profile == "depth_support":
                 losses = compute_depth_support_losses(
                     outputs,
@@ -1154,6 +1260,135 @@ def train_student(
         "elapsed_seconds": time.perf_counter() - started,
         "optimizer_steps": epochs * len(frames),
         "peak_cuda_allocated_bytes": int(torch.cuda.max_memory_allocated()),
+    }
+
+
+def fit_scalar_support_calibration(
+    logits: torch.Tensor,
+    targets: torch.Tensor,
+    weights: torch.Tensor,
+    *,
+    steps: int,
+    learning_rate: float = 0.05,
+) -> dict[str, float]:
+    """Fit temperature and bias on frozen train-only support logits."""
+    require(steps > 0 and learning_rate > 0.0, "calibration configuration invalid")
+    selected = (
+        torch.isfinite(logits)
+        & torch.isfinite(targets)
+        & torch.isfinite(weights)
+        & (weights > 0)
+    )
+    require(bool(selected.any()), "support calibration denominator empty")
+    logits = logits[selected].detach()
+    targets = targets[selected].detach()
+    weights = weights[selected].detach()
+
+    def loss_for(temperature: torch.Tensor, bias: torch.Tensor) -> torch.Tensor:
+        raw = F.binary_cross_entropy_with_logits(
+            logits / temperature + bias,
+            targets,
+            reduction="none",
+        )
+        return (raw * weights).sum() / weights.sum().clamp_min(1e-12)
+
+    log_temperature = torch.zeros((), device=logits.device, requires_grad=True)
+    bias = torch.zeros((), device=logits.device, requires_grad=True)
+    optimizer = torch.optim.Adam((log_temperature, bias), lr=learning_rate)
+    unit_temperature = torch.ones((), device=logits.device)
+    zero_bias = torch.zeros((), device=logits.device)
+    before = float(loss_for(unit_temperature, zero_bias).detach())
+    best_loss = before
+    best_temperature = 1.0
+    best_bias = 0.0
+    for _ in range(steps):
+        temperature = log_temperature.clamp(
+            math.log(0.25),
+            math.log(4.0),
+        ).exp()
+        bounded_bias = bias.clamp(-4.0, 4.0)
+        loss = loss_for(temperature, bounded_bias)
+        optimizer.zero_grad(set_to_none=True)
+        loss.backward()
+        optimizer.step()
+        value = float(loss.detach())
+        if value < best_loss:
+            best_loss = value
+            best_temperature = float(temperature.detach())
+            best_bias = float(bounded_bias.detach())
+    require(
+        math.isfinite(best_loss)
+        and math.isfinite(best_temperature)
+        and math.isfinite(best_bias),
+        "non-finite support calibration",
+    )
+    return {
+        "temperature": best_temperature,
+        "bias_delta": best_bias,
+        "train_weighted_bce_before": before,
+        "train_weighted_bce_after": best_loss,
+        "train_weighted_bce_relative_reduction": relative_improvement(
+            before,
+            best_loss,
+        )
+        or 0.0,
+    }
+
+
+def calibrate_support_head(
+    model: MaskedFactorStudent,
+    frames: list[CachedFrame],
+    device: torch.device,
+    *,
+    steps: int,
+    maximum_pixels: int = 2_000_000,
+) -> dict[str, Any]:
+    require(frames and maximum_pixels > 0, "support calibration input invalid")
+    model.eval()
+    logits_parts: list[torch.Tensor] = []
+    target_parts: list[torch.Tensor] = []
+    weight_parts: list[torch.Tensor] = []
+    with torch.inference_mode():
+        for frame in frames:
+            targets = move_targets(frame.targets, device)
+            output = model(
+                frame.feature[None].float().to(device),
+                frame.base_depth_m[None].to(device),
+                frame.descriptor.output_hw,
+            )
+            valid = targets["support_valid"] & torch.isfinite(targets["support"])
+            weights = tier_weights(targets["support_tier"])
+            selected = valid & (weights > 0)
+            logits_parts.append(output["support_logits"][selected].detach())
+            target_parts.append(targets["support"][selected].detach())
+            weight_parts.append(weights[selected].detach())
+    logits = torch.cat(logits_parts)
+    targets = torch.cat(target_parts)
+    weights = torch.cat(weight_parts)
+    candidate_pixels = int(logits.numel())
+    require(candidate_pixels > 0, "support calibration pixels empty")
+    stride = max(1, math.ceil(candidate_pixels / maximum_pixels))
+    logits = logits[::stride]
+    targets = targets[::stride]
+    weights = weights[::stride]
+    fitted = fit_scalar_support_calibration(
+        logits,
+        targets,
+        weights,
+        steps=steps,
+    )
+    temperature = float(fitted["temperature"])
+    bias_delta = float(fitted["bias_delta"])
+    with torch.no_grad():
+        model.support_logits.weight.div_(temperature)
+        model.support_logits.bias.div_(temperature).add_(bias_delta)
+    return {
+        "method": "TRAIN_ONLY_SCALAR_TEMPERATURE_AND_BIAS_FOLDED_INTO_SUPPORT_HEAD",
+        "steps": steps,
+        "candidate_pixels": candidate_pixels,
+        "used_pixels": int(logits.numel()),
+        "sampling_stride": stride,
+        **fitted,
     }
 
 
@@ -1372,12 +1607,28 @@ def execute(args: argparse.Namespace) -> int:
         parent_shapes,
         split_token=str(args.split_token),
     )
-    train_descriptors = [row for row in descriptors if row.parent_id in train_parents]
+    fit_all_consumed_parents = bool(args.fit_all_consumed_parents)
+    fit_parents = (
+        tuple(sorted(parent_shapes))
+        if fit_all_consumed_parents
+        else train_parents
+    )
+    split_receipt["fit_parents"] = list(fit_parents)
+    split_receipt["internal_selection_and_canary_included_in_fit"] = (
+        fit_all_consumed_parents
+    )
+    train_descriptors = [row for row in descriptors if row.parent_id in fit_parents]
     selection_descriptors = [
         row for row in descriptors if row.parent_id in selection_parents
     ]
     canary_descriptors = [row for row in descriptors if row.parent_id in canary_parents]
-    expected_frame_split = (3 * (len(parent_shapes) - 4), 6, 6)
+    expected_frame_split = (
+        3 * len(parent_shapes)
+        if fit_all_consumed_parents
+        else 3 * (len(parent_shapes) - 4),
+        6,
+        6,
+    )
     require(
         (len(train_descriptors), len(selection_descriptors), len(canary_descriptors))
         == expected_frame_split,
@@ -1404,7 +1655,7 @@ def execute(args: argparse.Namespace) -> int:
             device,
             args.seed,
         )
-    train_frames = [row for row in cached if row.descriptor.parent_id in train_parents]
+    train_frames = [row for row in cached if row.descriptor.parent_id in fit_parents]
     selection_frames = [
         row for row in cached if row.descriptor.parent_id in selection_parents
     ]
@@ -1424,7 +1675,7 @@ def execute(args: argparse.Namespace) -> int:
             model.obstacle_logits,
         ):
             unused_head.requires_grad_(False)
-    elif objective_profile == "depth_support":
+    elif objective_profile in {"depth_support", "depth_support_precision"}:
         for unused_head in (
             model.boundary_logits,
             model.boundary_distance_logits,
@@ -1444,6 +1695,18 @@ def execute(args: argparse.Namespace) -> int:
         seed=args.seed,
         objective_profile=objective_profile,
     )
+    support_calibration: dict[str, Any] | None = None
+    if int(args.support_calibration_steps) > 0:
+        require(
+            objective_profile == "depth_support_precision",
+            "support calibration is only enabled for depth_support_precision",
+        )
+        support_calibration = calibrate_support_head(
+            model,
+            train_frames,
+            device,
+            steps=int(args.support_calibration_steps),
+        )
     after_train = evaluate_frames(model, train_frames, device)
     after_selection = evaluate_frames(model, selection_frames, device)
     after_canary = evaluate_frames(model, canary_frames, device)
@@ -1474,6 +1737,7 @@ def execute(args: argparse.Namespace) -> int:
             "epochs": args.epochs,
             "learning_rate": args.learning_rate,
             "objective_profile": objective_profile,
+            "support_calibration": support_calibration,
         },
     )
 
@@ -1541,7 +1805,7 @@ def execute(args: argparse.Namespace) -> int:
         )
         core_signals = boundary_signals
         total_core_signals = 4
-    elif objective_profile == "depth_support":
+    elif objective_profile in {"depth_support", "depth_support_precision"}:
         depth_support_signals = {
             "selection_depth_mae_improved": (
                 selection_improvements["depth_mae"] is not None
@@ -1585,6 +1849,11 @@ def execute(args: argparse.Namespace) -> int:
             if supported > 0
             else "PARENT_DISJOINT_FACTOR_LEARNABILITY_SIGNAL_NOT_SUPPORTED"
         )
+    if fit_all_consumed_parents:
+        status = (
+            "ALL_CONSUMED_PARENT_DEPTH_SUPPORT_PRECISION_FIT_COMPLETED_"
+            "AWAITING_FRESH_EVALUATION"
+        )
     label_digest = aggregate_label_digest(row.label_path for row in descriptors)
     encoder_inputs: dict[str, Any] = {
         "encoder": encoder_label,
@@ -1611,6 +1880,8 @@ def execute(args: argparse.Namespace) -> int:
         "question": (
             f"Can {encoder_label} RGB features learn sparse AG-ST physical-boundary distance/heat supervision across internal parent-disjoint roles?"
             if objective_profile == "boundary_only"
+            else f"Can {encoder_label} RGB features reduce metric depth error and calibrate support across {len(parent_shapes)} consumed parents using absolute-meter, 0.10 m soft-margin, BCE, and Dice supervision?"
+            if objective_profile == "depth_support_precision"
             else f"Can {encoder_label} RGB features strengthen replicated AG-ST depth/support factors across {len(parent_shapes)} consumed parents without obstacle or boundary gradients?"
             if objective_profile == "depth_support"
             else f"Can {encoder_label} RGB features learn graded AG-ST depth/support/boundary pseudo-labels across internal parent-disjoint selection and canary roles?"
@@ -1652,11 +1923,14 @@ def execute(args: argparse.Namespace) -> int:
             "loss_weights": (
                 BOUNDARY_ONLY_LOSS_WEIGHTS
                 if objective_profile == "boundary_only"
+                else DEPTH_SUPPORT_PRECISION_LOSS_WEIGHTS
+                if objective_profile == "depth_support_precision"
                 else DEPTH_SUPPORT_LOSS_WEIGHTS
                 if objective_profile == "depth_support"
                 else LOSS_WEIGHTS
             ),
             "boundary_heat_sigma_px": BOUNDARY_HEAT_SIGMA_PX,
+            "support_calibration": support_calibration,
         },
         "execution": {
             "device": torch.cuda.get_device_name(device),
@@ -1664,6 +1938,7 @@ def execute(args: argparse.Namespace) -> int:
             "seed": args.seed,
             "epochs": args.epochs,
             "learning_rate": args.learning_rate,
+            "support_calibration_steps": int(args.support_calibration_steps),
             "feature_extraction": extraction,
             "training": training,
             "total_seconds": time.perf_counter() - started,
@@ -1685,23 +1960,36 @@ def execute(args: argparse.Namespace) -> int:
             "complete_truth_required_for_this_canary": False,
             "second_teacher_required_for_this_canary": False,
             "selection_used_for_model_or_threshold_choice": False,
+            "internal_selection_and_canary_included_in_fit": (
+                fit_all_consumed_parents
+            ),
             "student_signal_supported_factor_count": supported,
             "student_signal_total_core_factor_count": total_core_signals,
             "next_step": (
-                "Scale physical-boundary supervision to fresh parent/source sequences."
+                "Evaluate once on the pre-reserved fresh confirmation cohort without fitting or threshold selection."
+                if fit_all_consumed_parents
+                else "Scale physical-boundary supervision to fresh parent/source sequences."
                 if objective_profile == "boundary_only" and supported == 4
                 else "Keep boundary isolated and revise its representation before scaling."
                 if objective_profile == "boundary_only"
                 else "Evaluate once on the pre-reserved fresh parent cohort without fitting or threshold selection."
-                if objective_profile == "depth_support" and supported == total_core_signals
+                if objective_profile
+                in {"depth_support", "depth_support_precision"}
+                and supported == total_core_signals
                 else "Do not scale the combined depth/support student until the failed internal signal is localized."
-                if objective_profile == "depth_support"
+                if objective_profile
+                in {"depth_support", "depth_support_precision"}
                 else "Scale pseudo-label materialization to more parent-disjoint RGB sequences and repeat the frozen-encoder student test."
                 if supported == total_core_signals
                 else "Inspect unsupported factor residuals before scaling or adding another Teacher."
             ),
         },
-        "claim_boundary": f"Internal parent-disjoint pseudo-label learnability diagnostic over {len(parent_shapes)} previously consumed ARKitScenes parents. No unseen-source generalization, objective truth, formal F1 authorization, deployment, product, or safety claim.",
+        "claim_boundary": (
+            f"All-consumed-parent pseudo-label fit over {len(parent_shapes)} ARKitScenes parents awaiting an independently reserved fresh evaluation."
+            if fit_all_consumed_parents
+            else f"Internal parent-disjoint pseudo-label learnability diagnostic over {len(parent_shapes)} previously consumed ARKitScenes parents."
+        )
+        + " No objective truth, cross-dataset generalization, formal F1 authorization, deployment, product, or safety claim.",
     }
     write_json_exclusive(output_dir / "result.json", result)
     print(
@@ -1745,7 +2033,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--objective-profile",
-        choices=("multifactor", "depth_support", "boundary_only"),
+        choices=(
+            "multifactor",
+            "depth_support",
+            "depth_support_precision",
+            "boundary_only",
+        ),
         default="multifactor",
     )
     parser.add_argument("--split-token", default=SPLIT_TOKEN)
@@ -1759,6 +2052,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--epochs", type=int, default=80)
     parser.add_argument("--learning-rate", type=float, default=3e-3)
+    parser.add_argument("--support-calibration-steps", type=int, default=0)
+    parser.add_argument("--fit-all-consumed-parents", action="store_true")
     parser.add_argument("--seed", type=int, default=1729)
     return parser.parse_args()
 

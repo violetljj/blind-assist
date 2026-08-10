@@ -16,7 +16,9 @@ from train_ag_st_masked_student import (  # noqa: E402
     TIER_UNKNOWN,
     compute_boundary_only_losses,
     compute_depth_support_losses,
+    compute_depth_support_precision_losses,
     compute_student_losses,
+    fit_scalar_support_calibration,
     select_parent_split,
     tier_weights,
 )
@@ -160,6 +162,49 @@ class AgStMaskedStudentTest(unittest.TestCase):
             torch.testing.assert_close(first[key], second[key])
         self.assertNotIn("raw/boundary_bce", first)
         self.assertNotIn("raw/obstacle_bce", first)
+
+    def test_precision_profile_masks_unknown_and_backpropagates_both_factors(self) -> None:
+        outputs = {
+            "depth_m": torch.full((1, 1, 2, 2), 1.2, requires_grad=True),
+            "support_logits": torch.zeros((1, 1, 2, 2), requires_grad=True),
+        }
+        targets = {
+            "metric_depth_m": torch.tensor([[[[1.0, float("nan")], [9.0, 9.0]]]]),
+            "metric_valid": torch.tensor([[[[True, False], [False, False]]]]),
+            "metric_tier": torch.tensor(
+                [[[[TIER_A_SOURCE, TIER_UNKNOWN], [TIER_UNKNOWN, TIER_UNKNOWN]]]]
+            ),
+            "support": torch.tensor([[[[1.0, float("nan")], [0.0, 0.0]]]]),
+            "support_valid": torch.tensor([[[[True, False], [False, False]]]]),
+            "support_tier": torch.tensor(
+                [[[[TIER_A_SOURCE, TIER_UNKNOWN], [TIER_UNKNOWN, TIER_UNKNOWN]]]]
+            ),
+        }
+        changed = copy.deepcopy(targets)
+        changed["metric_depth_m"][..., 0, 1:] = -999.0
+        changed["metric_depth_m"][..., 1, :] = -999.0
+        changed["support"][..., 0, 1:] = 999.0
+        changed["support"][..., 1, :] = 999.0
+        first = compute_depth_support_precision_losses(outputs, targets)
+        second = compute_depth_support_precision_losses(outputs, changed)
+        for key in first:
+            torch.testing.assert_close(first[key], second[key])
+        first["total"].backward()
+        self.assertTrue(torch.isfinite(outputs["depth_m"].grad).all())
+        self.assertTrue(torch.isfinite(outputs["support_logits"].grad).all())
+
+    def test_train_only_scalar_support_calibration_reduces_bce(self) -> None:
+        fitted = fit_scalar_support_calibration(
+            torch.tensor([2.0, 3.0, 5.0, 6.0]),
+            torch.tensor([0.0, 0.0, 1.0, 1.0]),
+            torch.ones(4),
+            steps=120,
+        )
+        self.assertLess(
+            fitted["train_weighted_bce_after"],
+            fitted["train_weighted_bce_before"],
+        )
+        self.assertGreater(fitted["temperature"], 0.0)
 
     def test_boundary_only_loss_ignores_unknown_pixels(self) -> None:
         outputs = {

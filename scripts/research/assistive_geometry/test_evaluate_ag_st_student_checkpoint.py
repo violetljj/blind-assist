@@ -20,6 +20,10 @@ class AgStFreshZeroShotEvaluatorTest(unittest.TestCase):
             ("depth_mae", "support_bce"),
             _core_factor_names("depth_support"),
         )
+        self.assertEqual(
+            ("depth_mae", "support_bce"),
+            _core_factor_names("depth_support_precision"),
+        )
 
     def test_checkpoint_parent_firewall_includes_every_previous_role(self) -> None:
         payload = {
@@ -27,6 +31,17 @@ class AgStFreshZeroShotEvaluatorTest(unittest.TestCase):
                 "train_parents": ["a", "b"],
                 "selection_parents": ["c"],
                 "canary_parents": ["d"],
+            }
+        }
+        self.assertEqual({"a", "b", "c", "d"}, _checkpoint_parent_ids(payload))
+
+    def test_checkpoint_parent_firewall_includes_all_consumed_fit_parents(self) -> None:
+        payload = {
+            "split": {
+                "train_parents": ["a"],
+                "selection_parents": ["b"],
+                "canary_parents": ["c"],
+                "fit_parents": ["a", "b", "c", "d"],
             }
         }
         self.assertEqual({"a", "b", "c", "d"}, _checkpoint_parent_ids(payload))

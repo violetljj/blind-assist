@@ -59,8 +59,13 @@ def _checkpoint_parent_ids(payload: dict[str, Any]) -> set[str]:
     split = payload["split"]
     return {
         str(parent)
-        for role in ("train_parents", "selection_parents", "canary_parents")
-        for parent in split[role]
+        for role in (
+            "train_parents",
+            "selection_parents",
+            "canary_parents",
+            "fit_parents",
+        )
+        for parent in split.get(role, [])
     }
 
 
@@ -103,7 +108,7 @@ def _improvements(before: dict[str, Any], after: dict[str, Any]) -> dict[str, fl
 
 
 def _core_factor_names(objective_profile: str) -> tuple[str, ...]:
-    if objective_profile == "depth_support":
+    if objective_profile in {"depth_support", "depth_support_precision"}:
         return ("depth_mae", "support_bce")
     if objective_profile == "boundary_only":
         return ("boundary_soft_bce", "boundary_distance_mae")
@@ -218,7 +223,7 @@ def execute(args: argparse.Namespace) -> int:
         for name in core_factors
     }
     supported = sum(core_signals.values())
-    if objective_profile == "depth_support":
+    if objective_profile in {"depth_support", "depth_support_precision"}:
         status = (
             "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_SIGNAL_SUPPORTED"
             if supported == len(core_factors)
@@ -291,11 +296,13 @@ def execute(args: argparse.Namespace) -> int:
             "total_core_factor_count": len(core_factors),
             "boundary_is_diagnostic_not_a_rescue_factor": True,
             "obstacle_is_diagnostic_not_a_rescue_factor": (
-                objective_profile == "depth_support"
+                objective_profile
+                in {"depth_support", "depth_support_precision"}
             ),
             "next_step": (
                 "Preserve this fresh cohort as consumed and scale only after the depth/support result is summarized."
-                if objective_profile == "depth_support"
+                if objective_profile
+                in {"depth_support", "depth_support_precision"}
                 and supported == len(core_factors)
                 else "Combine the two disjoint TRAIN-source batches for a larger student fit while reserving a new source for evaluation."
                 if supported == len(core_factors)
