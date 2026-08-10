@@ -384,6 +384,17 @@ unconditional residual 因此继续拒绝。下一步按 factor 分路：boundar
 确认；depth 必须默认保留 prior，只允许独立 no-regret/uncertainty gate 有证据时开放 correction。这个结果说明
 SuperTeacher 数据路线本身已对 boundary 产生实质突破，同时也证明不同 factor 不应被强迫共享同一晋级结论。
 
+R14 boundary candidate 随即接受
+[R15 ICL exact replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R15_ICL_EXACT_BOUNDARY_REPLICATION_RESULT_2026-08-11.json)。
+冻结 checkpoint 在未见的 ICL exact trajectory 1（1 parent/12 帧、120×160）上不拟合、不选阈值，AP 从
+prevalence `0.0921` 升到 `0.1215`，第二个 external source 仍保留 ranking signal；但固定 0.5 阈值的
+2 px precision/recall/F1 只有 `0.189/0.016/0.030`，BCE 也从常数 `0.367` 恶化到 `0.389`。
+
+因此 Bonn 的强定位不能外推成 resolution-robust mask。当前最具体的标签缺陷是 `boundary_distance_px` 与固定
+3 px soft-band 在 120×160、252×336、480×640 上具有不同角度/物理含义。下一步不回退 Teacher-filled
+boundary，也不在 ICL 上调阈值；先给 label factory 增加 scale-normalized 或 camera-angular boundary distance，
+用同一几何场景 resize invariant 做无训练解析 canary，通过后再训练新的 boundary specialist。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时

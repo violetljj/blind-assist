@@ -1,0 +1,73 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r15_icl_exact_boundary_replication_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R15_ICL_EXACT_BOUNDARY_REPLICATION_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "FROZEN_MULTISOURCE_CHECKPOINT_EXTERNAL_SYNTHETIC_EXACT_BOUNDARY_DIAGNOSTIC",
+  "status": "SECOND_EXTERNAL_BOUNDARY_RANKING_SIGNAL_REPLICATED_LOCALIZATION_NOT_SUPPORTED",
+  "question": "Does the frozen R14 multisource boundary representation replicate on checkpoint-unseen ICL exact geometry at a different raster scale?",
+  "protocol": {
+    "source": "ICL-NUIM living room trajectory 1 exact depth",
+    "parent_count": 1,
+    "frame_count": 12,
+    "output_shape_hw": [
+      120,
+      160
+    ],
+    "intrinsics_output": [
+      [120.3, 0.0, 79.375],
+      [0.0, 120.0, 59.375],
+      [0.0, 0.0, 1.0]
+    ],
+    "threshold": 0.5,
+    "tolerance_px": 2,
+    "fitting": false,
+    "threshold_selection": false,
+    "exact_target_opened_after_rgb_k_prediction": true,
+    "checkpoint_parent_overlap": 0,
+    "freshness_scope": "checkpoint-unseen source/parent; not project-global virgin"
+  },
+  "result": {
+    "path": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-multisource-r0/icl-exact-boundary.json",
+    "sha256": "41C467D6CD26A574A52B20A13D71228A30C46DA6E15C113A13B1B00D4B5AFC6A",
+    "valid_pixels": 224039,
+    "positive_pixels": 20625,
+    "prevalence": 0.09205986457714951,
+    "student_probability_average_precision": 0.1214664363258764,
+    "absolute_average_precision_above_prevalence": 0.02940657174872689,
+    "relative_average_precision_above_prevalence": 0.3194287965097224,
+    "student_probability_bce": 0.3891666174201484,
+    "initialized_constant_bce": 0.36739327867637755,
+    "precision_within_2px": 0.18905174992521687,
+    "recall_within_2px": 0.016436363636363638,
+    "f1_within_2px": 0.030243338692488863,
+    "predicted_pixels_at_0p5": 3343
+  },
+  "cross_source_interpretation": {
+    "bonn_r14": "Strong ranking/localization signal: AP 0.0736 versus prevalence 0.0442 and 4 px F1 0.5606, but probability over-wide.",
+    "icl_r15": "Ranking remains above prevalence, but fixed-threshold localization and calibration do not transfer at 120x160.",
+    "combined_decision": "The multisource SuperTeacher boundary labels support a transferable ranking representation across two checkpoint-unseen sources, but not a resolution-robust calibrated boundary mask."
+  },
+  "representation_diagnostic": {
+    "current_contract": "boundary_distance_px and a fixed 3 px soft-band sigma",
+    "failure_mode": "Pixel distance changes its angular and physical meaning when raster resolution and intrinsics change.",
+    "next_candidate": "Materialize a scale-normalized or camera-angular boundary distance alongside the existing pixel distance, train it as a separate factor target, and keep unsupported pixels UNKNOWN.",
+    "existing_pixel_fields_retired": false,
+    "teacher_filled_boundary_reopened": false
+  },
+  "implementation": {
+    "evaluator": "scripts/research/assistive_geometry/evaluate_ag_st_unified_student_icl_boundary.py",
+    "evaluator_sha256": "F9C8E3696563C599E4CE2DF2C7CC9E4885635A7EB5813D6E4070E85660A75A02",
+    "test": "scripts/research/assistive_geometry/test_evaluate_ag_st_unified_student_icl_boundary.py",
+    "test_sha256": "A20299B8F2A0298FDF7063528BD7615991FD9878C875AEC663150009EBA1E705",
+    "focused_tests": "2/2 PASS"
+  },
+  "decision": {
+    "second_external_boundary_ranking_signal": true,
+    "resolution_robust_localization_supported": false,
+    "probability_calibration_supported": false,
+    "multisource_superteacher_label_route_retained": true,
+    "next_execution": "Add scale-normalized/angular boundary distance to the label factory and run a no-training analytic resize invariant before retraining any student.",
+    "formal_f1_authority_changed": false
+  },
+  "claim_boundary": "One checkpoint-unseen synthetic-exact parent with 12 views. This supports a partial boundary ranking replication, not robust localization, calibrated probability, real-world task utility, complete truth, formal F1 authorization, safety, deployment, or product evidence."
+}
