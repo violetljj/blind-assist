@@ -83,6 +83,7 @@ run_dual_loop_production_temporal_ab_input_preflight.ps1
 run_dual_loop_production_temporal_ab.py
 run_dual_loop_production_temporal_ab_device.ps1
 run_host_research.ps1
+run_android_gradle.ps1
 monitor_host_research_process.ps1
 run_model_matrix.py
 run_public_video_campaign_tests.py
@@ -167,6 +168,7 @@ test_train_export_sanpo_segmentation.py
 test_train_sanpo_segmentation_protocol.py
 test_monitor_host_research_process.ps1
 test_run_guarded_host_research.ps1
+test_run_android_gradle.ps1
 test_validate_host_research_preflight.py
 test_validate_explicit_route_intent_episode.py
 test_validate_research_protocol.py

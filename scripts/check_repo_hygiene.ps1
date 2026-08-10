@@ -76,6 +76,38 @@ if ([string]::IsNullOrWhiteSpace($repoRoot)) {
     throw 'Repository hygiene check must run inside a Git repository.'
 }
 $repoRoot = (Resolve-Path -LiteralPath $repoRoot.Trim()).Path
+
+$whitespaceFailures = [System.Collections.Generic.List[string]]::new()
+if ($script:ResolvedBaseRef) {
+    $whitespaceOutput = @(
+        git diff --check "$($script:ResolvedBaseRef)...HEAD"
+    )
+    if ($LASTEXITCODE -ne 0) {
+        foreach ($line in $whitespaceOutput) {
+            if (-not [string]::IsNullOrWhiteSpace($line)) {
+                $whitespaceFailures.Add([string]$line)
+            }
+        }
+    }
+} else {
+    foreach ($arguments in @(
+        @('diff', '--check'),
+        @('diff', '--cached', '--check')
+    )) {
+        $whitespaceOutput = @(& git @arguments)
+        if ($LASTEXITCODE -ne 0) {
+            foreach ($line in $whitespaceOutput) {
+                if (-not [string]::IsNullOrWhiteSpace($line)) {
+                    $whitespaceFailures.Add([string]$line)
+                }
+            }
+        }
+    }
+}
+foreach ($failure in $whitespaceFailures | Sort-Object -Unique) {
+    $failures.Add("Git whitespace error: $failure")
+}
+
 $forbiddenRootExtensions = @(
     '.pt', '.onnx', '.npy', '.tflite', '.apk', '.aab', '.zip', '.pptx',
     '.obj', '.o', '.lib', '.a', '.exp', '.dll', '.so', '.pdb', '.ilk'

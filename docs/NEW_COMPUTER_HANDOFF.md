@@ -58,7 +58,7 @@ sdk.dir=C\:\\Users\\<your-user>\\AppData\\Local\\Android\\Sdk
 ```powershell
 $env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'
 $env:PATH="$env:JAVA_HOME\bin;$env:PATH"
-.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug --no-daemon
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:testDebugUnitTest :app:assembleDebug
 ```
 
 debug APK 应生成在：

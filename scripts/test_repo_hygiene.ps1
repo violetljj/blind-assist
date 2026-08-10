@@ -179,6 +179,26 @@ function Assert-ExactDependencyPasses {
     Write-Host 'PASS: exact-dependency'
 }
 
+function Assert-ExtraBlankLineAtEofFails {
+    $repository = New-TestRepository 'extra-blank-line-at-eof'
+    $fileParameters = @{
+        Repository = $repository
+        RelativePath = 'notes/readme.md'
+        Content = "first line" + [Environment]::NewLine * 2
+    }
+    Add-TestFile @fileParameters
+    & git -C $repository add -- 'notes/readme.md'
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Unable to stage blank-at-EOF fixture.'
+    }
+
+    $exitCode = Invoke-HygieneCheck $repository
+    if ($exitCode -eq 0) {
+        throw 'Extra blank line at EOF was expected to fail.'
+    }
+    Write-Host 'PASS: extra-blank-line-at-eof'
+}
+
 function Assert-HygieneResult(
     [string]$Name,
     [bool]$ShouldPass,
@@ -259,6 +279,7 @@ try {
         -Name 'changing-module-dependency' `
         -BuildScript 'configurations.all { resolutionStrategy.cacheChangingModulesFor(0, "seconds") }; dependencies { implementation("com.example:demo:1.2.3") { isChanging = true } }'
     Assert-ExactDependencyPasses
+    Assert-ExtraBlankLineAtEofFails
 
     Write-Host 'Repository hygiene smoke tests passed.'
 }

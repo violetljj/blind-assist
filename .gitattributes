@@ -1,5 +1,8 @@
 # Route-target research contracts bind raw SHA-256 values and must remain byte-stable.
 /.gitattributes text eol=lf
+/.editorconfig text eol=lf
+/scripts/run_android_gradle.ps1 text eol=lf
+/scripts/test_run_android_gradle.ps1 text eol=lf
 /configs/ustrf_route_target_evidence_closure_r1*.json text eol=lf
 /configs/ustrf_route_target_evidence_maturity_v2.json text eol=lf
 /configs/ustrf_route_target_l2_fresh_selection_prereg_r1.json text eol=lf

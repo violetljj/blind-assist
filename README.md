@@ -51,14 +51,14 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 
 ## 构建与验证
 
+Windows/Codex 本地构建只使用 `scripts/run_android_gradle.ps1`。该入口自行锁定仓库根目录和项目声明的 JDK、SDK、Gradle wrapper/state；不要在调用前手工拼接环境变量，也不要直接运行 `gradlew.bat`。
+
 在 `E:\linnan\linnan` 执行：
 
 ```powershell
-$env:JAVA_HOME='E:\codex-tools\projects\blindassist\toolchain\.jdk\jdk17.0.19_10'
-$env:PATH="$env:JAVA_HOME\bin;E:\codex-tools\tools\android-sdk\platform-tools;$env:PATH"
-$env:GRADLE_USER_HOME='E:\codex-tools\projects\blindassist\state\gradle'
-.\gradlew.bat :app:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon --console=plain
-.\gradlew.bat :app:assembleUstrfExperiment --no-daemon --console=plain
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 -PreflightOnly
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleUstrfExperiment
 ```
 
 完整无设备验证矩阵：
@@ -66,9 +66,9 @@ $env:GRADLE_USER_HOME='E:\codex-tools\projects\blindassist\state\gradle'
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py
 E:\codex-tools\bin\blindassist-python.cmd scripts\run_research_contract_tests.py
-.\gradlew.bat :core:assist:test :core:ustrf:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest --no-daemon --console=plain
-.\gradlew.bat :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug --no-daemon --console=plain
-.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug --no-daemon --console=plain
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :core:assist:test :core:ustrf:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug
 ```
 
 设备测试必须显式指定 module：

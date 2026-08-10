@@ -5,6 +5,20 @@
 - The only BlindAssist repository root is `E:\linnan\linnan`; `E:\linnan` is only
   the workspace container, and `app/` is only the Android application module.
   Run Git, Gradle, tests, and project edits from the repository root.
+- On Windows/Codex, run local Gradle tasks only through
+  `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`; use
+  `-PreflightOnly` for environment diagnosis and `-AndroidSerial` when a
+  connected test needs an explicit device. Do not hand-compose `JAVA_HOME`,
+  Android SDK, Gradle state, or direct `gradlew.bat` commands.
+- Keep PowerShell execution single-layer by default. When the active shell is
+  already `pwsh`, invoke cmdlets and scripts directly; start a nested `pwsh`
+  only when process isolation is the thing being tested. Use named variables
+  or arrays for complex arguments and absolute script paths after changing the
+  working directory.
+- For Windows path-heavy edits and searches, use `-LiteralPath`, `Join-Path`,
+  and `Resolve-Path`. Inspect the exact source line and patch a small structural
+  anchor; do not copy rendered `\\` escaping back into a file that contains `\`,
+  or match a long path-bearing paragraph when a heading or key is available.
 - BlindAssist is an Android/Kotlin assistive prototype. Keep the module
   boundaries stable: `:app` owns the shell/assets, `:feature:assist` runtime
   coordination, `:core:assist` pure risk logic, `:core:vision` detection,

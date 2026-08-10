@@ -5,9 +5,9 @@
 设备 benchmark 已从 `:app` 的功能 AndroidTest 中分离到独立 `:device-benchmark` test-only 模块。功能测试和 benchmark 必须使用不同入口：
 
 ```powershell
-.\gradlew.bat :app:connectedDebugAndroidTest
-.\gradlew.bat :device-benchmark:assembleDebug
-.\gradlew.bat :device-benchmark:connectedDebugAndroidTest
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:connectedDebugAndroidTest
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :device-benchmark:assembleDebug
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :device-benchmark:connectedDebugAndroidTest
 ```
 
 `DetectorAbDeviceBenchmarkTest` 的 FQCN、instrumentation runner 参数、正式 App APK 路径和设备端 `/sdcard/Android/data/com.linnan.blindassist/files/...` 结果路径保持兼容。旧 `run_yolo26n_device_benchmark.ps1` 继续转发到 Detector A/B 流程。构建 benchmark APK 只证明测试代码和现有资产可以打包，不代表真机 benchmark 已通过。

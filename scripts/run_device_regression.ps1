@@ -309,15 +309,17 @@ try {
     Invoke-Adb $adb @("-s", $device, "shell", "getprop") (Join-Path $artifactRoot "device-getprop.txt") | Out-Null
 
     if ($RunConnectedAndroidTest) {
-        Push-Location $repoRoot
-        try {
-            .\gradlew.bat :app:connectedDebugAndroidTest --no-daemon 2>&1 |
-                Tee-Object -FilePath (Join-Path $artifactRoot "connectedDebugAndroidTest.txt")
-            if ($LASTEXITCODE -ne 0) {
-                throw ":app:connectedDebugAndroidTest failed with exit code $LASTEXITCODE"
-            }
-        } finally {
-            Pop-Location
+        $gradleLauncher = Join-Path $PSScriptRoot "run_android_gradle.ps1"
+        $launcherParameters = @{
+            AndroidSerial = $device
+            GradleArguments = @(":app:connectedDebugAndroidTest")
+        }
+        & $gradleLauncher @launcherParameters 2>&1 |
+            Tee-Object -FilePath (
+                Join-Path $artifactRoot "connectedDebugAndroidTest.txt"
+            )
+        if ($LASTEXITCODE -ne 0) {
+            throw ":app:connectedDebugAndroidTest failed with exit code $LASTEXITCODE"
         }
     }
 
