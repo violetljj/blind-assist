@@ -107,6 +107,13 @@
   truth，也不要求第二 Teacher 的全局误差低于主 Teacher。
 - `test_build_ag_st_multiteacher_factor_labels.py`：3 个 CPU focused tests，覆盖 observed-anchor scale、
   pair disagreement 对称性、source tier 保留及强分歧转 UNKNOWN。
+- `ag_st_tum_rgbd.py`：从 7 个 TUM RGB-D sequence 的目录或 TGZ 精确恢复 RGB、registered depth、K，
+  并把官方 groundtruth trajectory 插值为 RGB 时刻的 camera-to-world pose。
+- `run_ag_st_tum_cross_source.py`：在 4 FIT / 3 held-out TUM sequence 上原样复用 R0 multi-Teacher
+  quality threshold；只在推理后打开隐藏 source depth，PASS 后物化 depth/uncertainty/UNKNOWN，
+  未验证 gravity 前 support/boundary 恒为 UNKNOWN。
+- `test_ag_st_tum_rgbd.py` 与 `test_run_ag_st_tum_cross_source.py`：6 个 focused tests，覆盖 cohort
+  disjointness、RGB-depth pairing、pose interpolation、真实 payload receipts、跨源门与 source-first 标签不变量。
 - `train_ag_st_masked_student.py`：冻结 DepthART-S 或 MobileNetV3 encoder，只训练小型 dense factor head；
   可直接拼接多个互不重叠的 Stage0A/label batch，每个 orientation 留 1 selection + 1 canary parent；
   也可在已有独立 confirmation 时把全部 consumed parents 纳入 fit。支持 multifactor、depth/support-only、

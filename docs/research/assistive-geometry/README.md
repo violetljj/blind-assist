@@ -85,6 +85,7 @@
 - [AG-ST R0 machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.json)
 - [AG-ST R0 SuperTeacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SUPERTEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 multi-Teacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MULTITEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
+- [AG-ST R1 TUM cross-source multi-Teacher result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R1_TUM_CROSS_SOURCE_MULTITEACHER_RESULT_2026-08-10.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -208,6 +209,15 @@ primary 的 MAE 从 `0.01607` 降到 `0.01575 m`，`>0.10 m` 从 `0.85%` 降到 
 自身全覆盖 MAE 较差（`0.06710 m`），但这不构成失败：它的角色是补充独立分歧证据，而不是取代主 Teacher。
 新工厂物化 48 个 NPZ，metric/support/boundary-evidence 覆盖为 `97.72% / 64.24% / 72.36%`；无法形成
 足够一致证据的 teacher-only 像素继续为 UNKNOWN。下一步继续扩 source/Teacher 覆盖，不回到 backbone 竞赛。
+
+这一不确定性信号随后在
+[TUM cross-source R1](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R1_TUM_CROSS_SOURCE_MULTITEACHER_RESULT_2026-08-10.json)
+接受了真正的跨数据源检验。4 个 TUM sequence/12 帧只作 FIT 诊断，冻结的 R0 `C=0.30` 阈值不作回调，
+再一次性评到 3 个 parent-disjoint sequence/9 帧。held-out 接受覆盖为 `67.31%`，接受区 MAE
+`0.06776 m`，UNKNOWN/拒绝区 `0.28470 m`，相差 `4.20x`；3/3 parent 都保持接受区低风险。
+因此 multi-Teacher disagreement 不再只是 ARKitScenes 内部现象。21 个 source-first depth NPZ 已物化：
+source-native 覆盖 `66.35%`，Teacher 新增 `9.01%`，总 metric-depth 覆盖 `75.36%`，其余 `24.64%`
+明确 UNKNOWN。TUM gravity basis 尚未验证，所以 support/boundary 在这批标签中全部 UNKNOWN。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
