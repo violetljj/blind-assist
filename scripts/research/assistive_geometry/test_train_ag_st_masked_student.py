@@ -6,10 +6,12 @@ import unittest
 from pathlib import Path
 
 import torch
+import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from train_ag_st_masked_student import (  # noqa: E402
+    FrameDescriptor,
     MaskedFactorStudent,
     TIER_A_SOURCE,
     TIER_C_TEACHER,
@@ -19,13 +21,58 @@ from train_ag_st_masked_student import (  # noqa: E402
     compute_depth_support_precision_losses,
     compute_student_losses,
     compute_unified_continuous_boundary_losses,
+    build_epoch_order,
     fit_scalar_support_calibration,
     select_parent_split,
+    select_multisource_parent_split,
     tier_weights,
 )
 
 
 class AgStMaskedStudentTest(unittest.TestCase):
+    def test_multisource_split_keeps_held_parents_in_both_sources(self) -> None:
+        descriptors = [
+            FrameDescriptor(
+                parent_id=f"arkit_p{index}",
+                frame_index=0,
+                frame_stem=f"arkit_p{index}_0",
+                output_hw=(336, 252) if index < 8 else (252, 336),
+                label_path=Path("unused.npz"),
+                video={},
+            )
+            for index in range(16)
+        ]
+        descriptors.extend(
+            FrameDescriptor(
+                parent_id=f"tum_p{index}",
+                frame_index=0,
+                frame_stem=f"tum_p{index}_0",
+                output_hw=(252, 336),
+                label_path=Path("unused.npz"),
+                video={},
+                source_id="tum_rgbd",
+            )
+            for index in range(7)
+        )
+        train, selection, canary, receipt = select_multisource_parent_split(descriptors)
+        self.assertEqual((17, 3, 3), (len(train), len(selection), len(canary)))
+        self.assertEqual(1, sum(parent.startswith("tum_") for parent in selection))
+        self.assertEqual(1, sum(parent.startswith("tum_") for parent in canary))
+        self.assertIn("SOURCE_STRATIFIED", receipt["method"])
+
+    def test_source_balanced_epoch_order_equalizes_visits(self) -> None:
+        sources = ["arkitscenes"] * 6 + ["tum_rgbd"] * 2
+        order = build_epoch_order(
+            sources,
+            np.random.default_rng(7),
+            source_balanced=True,
+        )
+        visits = {
+            source: sum(sources[index] == source for index in order)
+            for source in set(sources)
+        }
+        self.assertEqual({"arkitscenes": 6, "tum_rgbd": 6}, visits)
+
     def test_parent_split_is_deterministic_shape_stratified_and_disjoint(self) -> None:
         shapes = {
             **{f"p{index}": (336, 252) for index in range(8)},

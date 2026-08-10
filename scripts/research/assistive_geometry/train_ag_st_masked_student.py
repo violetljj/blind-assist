@@ -5,11 +5,13 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import math
 import os
 import random
 import sys
+import tarfile
 import time
 from collections import defaultdict
 from dataclasses import dataclass
@@ -20,6 +22,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 MODULE_DIR = Path(__file__).resolve().parent
@@ -81,8 +84,13 @@ DEFAULT_DEPTHART_CHECKPOINT = (
     / "metric"
     / "depthart_metric_indoor_s_448.pth"
 )
+DEFAULT_SOURCE_RGB_BINDING = (
+    REPO_ROOT
+    / "artifacts.local/experiments/ag-st-source-native-boundary-corpus-r0/rgb_binding.json"
+)
 
 SPLIT_TOKEN = "AG_ST_MASKED_STUDENT_R0"
+SOURCE_BOUNDARY_SPLIT_TOKEN = "AG_ST_SOURCE_BOUNDARY_STUDENT_R0"
 IMAGENET_MEAN = np.asarray((0.485, 0.456, 0.406), dtype=np.float32)
 IMAGENET_STD = np.asarray((0.229, 0.224, 0.225), dtype=np.float32)
 TIER_WEIGHTS = torch.tensor((0.0, 0.25, 0.60, 1.0), dtype=torch.float32)
@@ -133,6 +141,8 @@ class FrameDescriptor:
     output_hw: tuple[int, int]
     label_path: Path
     video: dict[str, Any]
+    source_id: str = "arkitscenes"
+    rgb_binding: dict[str, Any] | None = None
 
 
 @dataclass
@@ -319,6 +329,79 @@ def select_parent_split(
     }
 
 
+def select_multisource_parent_split(
+    descriptors: list[FrameDescriptor],
+    *,
+    split_token: str = SPLIT_TOKEN,
+) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...], dict[str, Any]]:
+    """Keep held parents in both ARKitScenes and TUM without reading labels."""
+    by_source: dict[str, dict[str, tuple[int, int]]] = defaultdict(dict)
+    for row in descriptors:
+        previous = by_source[row.source_id].setdefault(row.parent_id, row.output_hw)
+        require(previous == row.output_hw, "within-source parent shape drift")
+    require(
+        set(by_source) == {"arkitscenes", "tum_rgbd"},
+        "multisource split requires ARKitScenes and TUM RGB-D",
+    )
+    arkit_train, arkit_selection, arkit_canary, arkit_receipt = select_parent_split(
+        by_source["arkitscenes"],
+        split_token=split_token,
+    )
+    tum_ranked = sorted(
+        by_source["tum_rgbd"],
+        key=lambda parent: stable_hash(
+            f"{SOURCE_BOUNDARY_SPLIT_TOKEN}:tum_rgbd:{parent}"
+        ),
+    )
+    require(len(tum_ranked) == 7, "TUM multisource parent count drift")
+    tum_train = tuple(tum_ranked[:5])
+    tum_selection = (tum_ranked[5],)
+    tum_canary = (tum_ranked[6],)
+    train = tuple(sorted((*arkit_train, *tum_train)))
+    selection = tuple(sorted((*arkit_selection, *tum_selection)))
+    canary = tuple(sorted((*arkit_canary, *tum_canary)))
+    require(
+        (len(train), len(selection), len(canary)) == (17, 3, 3),
+        "multisource split cardinality drift",
+    )
+    require(
+        not (set(train) & set(selection))
+        and not (set(train) & set(canary))
+        and not (set(selection) & set(canary)),
+        "multisource split overlap",
+    )
+    return train, selection, canary, {
+        "method": "SOURCE_STRATIFIED_ARKIT_12_2_2_TUM_5_1_1_WITHOUT_LABEL_CONTENT",
+        "split_token": split_token,
+        "source_boundary_split_token": SOURCE_BOUNDARY_SPLIT_TOKEN,
+        "train_parents": list(train),
+        "selection_parents": list(selection),
+        "canary_parents": list(canary),
+        "by_source": {
+            "arkitscenes": {
+                "train_parents": list(arkit_train),
+                "selection_parents": list(arkit_selection),
+                "canary_parents": list(arkit_canary),
+                "receipt": arkit_receipt,
+            },
+            "tum_rgbd": {
+                "train_parents": list(tum_train),
+                "selection_parents": list(tum_selection),
+                "canary_parents": list(tum_canary),
+                "rankings": [
+                    {
+                        "parent_id": parent,
+                        "rank_sha256": stable_hash(
+                            f"{SOURCE_BOUNDARY_SPLIT_TOKEN}:tum_rgbd:{parent}"
+                        ),
+                    }
+                    for parent in tum_ranked
+                ],
+            },
+        },
+    }
+
+
 def build_frame_descriptors(
     stage0a_result_path: Path,
     label_dir: Path,
@@ -423,6 +506,78 @@ def build_frame_descriptor_batches(
     return descriptors, receipts
 
 
+def build_tum_bound_frame_descriptors(
+    label_dir: Path,
+    rgb_binding_path: Path,
+) -> tuple[list[FrameDescriptor], dict[str, Any]]:
+    label_dir = label_dir.resolve()
+    label_result_path = (label_dir / "result.json").resolve()
+    rgb_binding_path = rgb_binding_path.resolve()
+    require(label_result_path.is_file(), "TUM unified label result missing")
+    require(rgb_binding_path.is_file(), "source RGB binding missing")
+    label_result = load_json(label_result_path)
+    binding = load_json(rgb_binding_path)
+    require(
+        label_result.get("status") == "TUM_UNIFIED_FACTOR_LABELS_PASS",
+        "TUM unified labels incomplete",
+    )
+    require(
+        binding.get("status") == "SOURCE_NATIVE_BOUNDARY_RGB_BINDING_PASS",
+        "source RGB binding incomplete",
+    )
+    label_rows = {str(row["frame_id"]): row for row in label_result["frames"]}
+    binding_rows = {
+        str(row["frame_id"]): row
+        for row in binding["frames"]
+        if row["source"] == "tum_rgbd"
+    }
+    require(
+        len(label_rows) == len(binding_rows) == 21 and set(label_rows) == set(binding_rows),
+        "TUM unified label/RGB identity drift",
+    )
+    descriptors: list[FrameDescriptor] = []
+    for frame_id in sorted(label_rows):
+        label_row = label_rows[frame_id]
+        rgb_row = binding_rows[frame_id]
+        label_path = (label_dir / f"{frame_id}.npz").resolve()
+        require(label_path.is_file(), f"TUM unified factor label missing: {label_path}")
+        require(
+            sha256_file(label_path) == label_row["output_sha256"],
+            "TUM unified factor label SHA drift",
+        )
+        output_hw = tuple(int(value) for value in label_row["shape_hw"])
+        require(
+            output_hw == tuple(int(value) for value in rgb_row["label_shape_hw"]),
+            "TUM RGB/label shape binding drift",
+        )
+        require(
+            str(label_row["parent_id"]) == str(rgb_row["parent_id"]),
+            "TUM RGB/label parent binding drift",
+        )
+        descriptors.append(
+            FrameDescriptor(
+                parent_id=str(label_row["parent_id"]),
+                frame_index=len(descriptors),
+                frame_stem=frame_id,
+                output_hw=(output_hw[0], output_hw[1]),
+                label_path=label_path,
+                video={},
+                source_id="tum_rgbd",
+                rgb_binding=rgb_row,
+            )
+        )
+    return descriptors, {
+        "source": "tum_rgbd",
+        "factor_label_result_path": str(label_result_path),
+        "factor_label_result_sha256": sha256_file(label_result_path),
+        "rgb_binding_path": str(rgb_binding_path),
+        "rgb_binding_sha256": sha256_file(rgb_binding_path),
+        "parent_count": len({row.parent_id for row in descriptors}),
+        "frame_count": len(descriptors),
+        "parents": sorted({row.parent_id for row in descriptors}),
+    }
+
+
 def aggregate_label_digest(paths: Iterable[Path]) -> dict[str, Any]:
     digest = hashlib.sha256()
     count = 0
@@ -525,20 +680,60 @@ def load_targets(path: Path, expected_hw: tuple[int, int]) -> tuple[dict[str, to
     return targets, intrinsics
 
 
+def load_bound_rgb(row: dict[str, Any]) -> np.ndarray:
+    storage_kind = str(row["rgb_storage_kind"])
+    if storage_kind == "file":
+        source_path = Path(row["rgb_path"])
+        require(source_path.is_file(), f"bound RGB file missing: {source_path}")
+        payload = source_path.read_bytes()
+    else:
+        require(storage_kind == "tar_member", "unsupported bound RGB storage kind")
+        archive_path = Path(row["rgb_source_archive"])
+        require(archive_path.is_file(), f"bound RGB archive missing: {archive_path}")
+        member_name = str(row["rgb_member"])
+        with tarfile.open(archive_path, mode="r:gz") as archive:
+            members = {item.name: item for item in archive.getmembers() if item.isfile()}
+            selected = members.get(member_name)
+            if selected is None:
+                matches = [
+                    item for name, item in members.items() if name.endswith("/" + member_name)
+                ]
+                require(len(matches) == 1, "bound RGB tar member ambiguous")
+                selected = matches[0]
+            stream = archive.extractfile(selected)
+            require(stream is not None, "bound RGB tar member unreadable")
+            payload = stream.read()
+    require(
+        hashlib.sha256(payload).hexdigest().upper() == str(row["rgb_sha256"]),
+        "bound RGB payload SHA drift",
+    )
+    with Image.open(io.BytesIO(payload)) as image:
+        return np.asarray(image.convert("RGB"), dtype=np.uint8).copy()
+
+
 def preprocess_rgb(
     descriptor: FrameDescriptor,
-    trajectory: np.ndarray,
+    trajectory: np.ndarray | None,
     expected_intrinsics: np.ndarray,
 ) -> tuple[torch.Tensor, torch.Tensor]:
     from mapanything.utils.cropping import crop_resize_if_necessary
 
-    frame = load_factor_source_frame(descriptor.video, descriptor.frame_index, trajectory)
     height, width = descriptor.output_hw
-    processed_image, processed_intrinsics = crop_resize_if_necessary(
-        image=np.asarray(frame["rgb_upright"], dtype=np.uint8),
-        resolution=(width, height),
-        intrinsics=np.asarray(frame["intrinsics_upright"], dtype=np.float64),
-    )
+    if descriptor.source_id == "tum_rgbd":
+        require(descriptor.rgb_binding is not None, "TUM RGB binding missing")
+        processed_image = crop_resize_if_necessary(
+            image=load_bound_rgb(descriptor.rgb_binding),
+            resolution=(width, height),
+        )[0]
+        processed_intrinsics = expected_intrinsics
+    else:
+        require(trajectory is not None, "ARKit trajectory missing")
+        frame = load_factor_source_frame(descriptor.video, descriptor.frame_index, trajectory)
+        processed_image, processed_intrinsics = crop_resize_if_necessary(
+            image=np.asarray(frame["rgb_upright"], dtype=np.uint8),
+            resolution=(width, height),
+            intrinsics=np.asarray(frame["intrinsics_upright"], dtype=np.float64),
+        )
     image = np.asarray(processed_image, dtype=np.uint8)
     intrinsics = np.asarray(processed_intrinsics, dtype=np.float64)
     require(image.shape == (height, width, 3), "student RGB transform shape drift")
@@ -634,13 +829,13 @@ def extract_depthart_features(
     amp_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
     for descriptor in descriptors:
         targets, expected_intrinsics = load_targets(descriptor.label_path, descriptor.output_hw)
-        if descriptor.parent_id not in trajectories:
+        if descriptor.source_id == "arkitscenes" and descriptor.parent_id not in trajectories:
             trajectories[descriptor.parent_id] = parse_trajectory(
                 resolve_trajectory_path(descriptor.video)
             )
         image, intrinsics = preprocess_rgb(
             descriptor,
-            trajectories[descriptor.parent_id],
+            trajectories.get(descriptor.parent_id),
             expected_intrinsics,
         )
         image_batch = image[None].to(device)
@@ -752,13 +947,13 @@ def extract_mobilenet_features(
             descriptor.label_path,
             descriptor.output_hw,
         )
-        if descriptor.parent_id not in trajectories:
+        if descriptor.source_id == "arkitscenes" and descriptor.parent_id not in trajectories:
             trajectories[descriptor.parent_id] = parse_trajectory(
                 resolve_trajectory_path(descriptor.video)
             )
         image, _ = preprocess_rgb(
             descriptor,
-            trajectories[descriptor.parent_id],
+            trajectories.get(descriptor.parent_id),
             expected_intrinsics,
         )
         image_batch = image[None].to(device)
@@ -1408,6 +1603,32 @@ def move_targets(
     return output
 
 
+def build_epoch_order(
+    source_ids: list[str],
+    rng: np.random.Generator,
+    *,
+    source_balanced: bool,
+) -> list[int]:
+    if not source_balanced:
+        return [int(value) for value in rng.permutation(len(source_ids))]
+    by_source: dict[str, list[int]] = defaultdict(list)
+    for index, source_id in enumerate(source_ids):
+        by_source[source_id].append(index)
+    require(len(by_source) >= 2, "source-balanced order requires at least two sources")
+    samples_per_source = max(len(values) for values in by_source.values())
+    schedules: dict[str, list[int]] = {}
+    for source_id, values in sorted(by_source.items()):
+        schedule: list[int] = []
+        while len(schedule) < samples_per_source:
+            schedule.extend(int(value) for value in rng.permutation(values))
+        schedules[source_id] = schedule[:samples_per_source]
+    return [
+        schedules[source_id][position]
+        for position in range(samples_per_source)
+        for source_id in sorted(schedules)
+    ]
+
+
 def train_student(
     model: MaskedFactorStudent,
     frames: list[CachedFrame],
@@ -1418,6 +1639,7 @@ def train_student(
     learning_rate: float,
     seed: int,
     objective_profile: str = "multifactor",
+    source_balanced: bool = False,
 ) -> tuple[list[dict[str, float]], dict[str, Any]]:
     require(epochs > 0 and learning_rate > 0, "training configuration invalid")
     model.train()
@@ -1447,12 +1669,19 @@ def train_student(
     started = time.perf_counter()
     torch.cuda.reset_peak_memory_stats()
     history: list[dict[str, float]] = []
+    source_visits: dict[str, int] = defaultdict(int)
+    optimizer_steps = 0
     for epoch in range(epochs):
-        order = rng.permutation(len(frames))
+        order = build_epoch_order(
+            [row.descriptor.source_id for row in frames],
+            rng,
+            source_balanced=source_balanced,
+        )
         loss_values: dict[str, list[float]] = defaultdict(list)
         gradient_values: list[float] = []
         for index in order:
             frame = frames[int(index)]
+            source_visits[frame.descriptor.source_id] += 1
             flip = bool(rng.random() < 0.5)
             feature = frame.feature[None].float().to(device)
             base_depth = frame.base_depth_m[None].to(device)
@@ -1485,6 +1714,7 @@ def train_student(
             gradient = float(torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0).item())
             require(math.isfinite(gradient), "non-finite student gradient")
             optimizer.step()
+            optimizer_steps += 1
             gradient_values.append(gradient)
             for name, value in losses.items():
                 loss_values[name].append(float(value.detach().item()))
@@ -1505,7 +1735,9 @@ def train_student(
             )
     return history, {
         "elapsed_seconds": time.perf_counter() - started,
-        "optimizer_steps": epochs * len(frames),
+        "optimizer_steps": optimizer_steps,
+        "source_balanced_sampling": source_balanced,
+        "source_optimizer_visits": dict(sorted(source_visits.items())),
         "peak_cuda_allocated_bytes": int(torch.cuda.max_memory_allocated()),
     }
 
@@ -1862,14 +2094,42 @@ def execute(args: argparse.Namespace) -> int:
         stage0a_results,
         label_dirs,
     )
+    tum_label_dir = getattr(args, "tum_label_dir", None)
+    if tum_label_dir is not None:
+        require(
+            bool(getattr(args, "source_stratified_split", False)),
+            "TUM unified factors require source-stratified split",
+        )
+        tum_descriptors, tum_receipt = build_tum_bound_frame_descriptors(
+            Path(tum_label_dir),
+            Path(args.source_rgb_binding),
+        )
+        require(
+            not ({row.parent_id for row in descriptors} & {row.parent_id for row in tum_descriptors}),
+            "ARKit/TUM parent overlap",
+        )
+        require(
+            not ({row.frame_stem for row in descriptors} & {row.frame_stem for row in tum_descriptors}),
+            "ARKit/TUM frame identity overlap",
+        )
+        descriptors.extend(tum_descriptors)
+        source_batches.append(tum_receipt)
     parent_shapes: dict[str, tuple[int, int]] = {}
     for descriptor in descriptors:
         previous = parent_shapes.setdefault(descriptor.parent_id, descriptor.output_hw)
         require(previous == descriptor.output_hw, "within-parent output shape drift")
-    train_parents, selection_parents, canary_parents, split_receipt = select_parent_split(
-        parent_shapes,
-        split_token=str(args.split_token),
-    )
+    if bool(getattr(args, "source_stratified_split", False)):
+        train_parents, selection_parents, canary_parents, split_receipt = (
+            select_multisource_parent_split(
+                descriptors,
+                split_token=str(args.split_token),
+            )
+        )
+    else:
+        train_parents, selection_parents, canary_parents, split_receipt = select_parent_split(
+            parent_shapes,
+            split_token=str(args.split_token),
+        )
     fit_all_consumed_parents = bool(args.fit_all_consumed_parents)
     fit_parents = (
         tuple(sorted(parent_shapes))
@@ -1886,11 +2146,11 @@ def execute(args: argparse.Namespace) -> int:
     ]
     canary_descriptors = [row for row in descriptors if row.parent_id in canary_parents]
     expected_frame_split = (
-        3 * len(parent_shapes)
+        len(descriptors)
         if fit_all_consumed_parents
-        else 3 * (len(parent_shapes) - 4),
-        6,
-        6,
+        else 3 * len(train_parents),
+        3 * len(selection_parents),
+        3 * len(canary_parents),
     )
     require(
         (len(train_descriptors), len(selection_descriptors), len(canary_descriptors))
@@ -1953,6 +2213,22 @@ def execute(args: argparse.Namespace) -> int:
     before_train = evaluate_frames(model, train_frames, device)
     before_selection = evaluate_frames(model, selection_frames, device)
     before_canary = evaluate_frames(model, canary_frames, device)
+    source_ids = sorted({row.descriptor.source_id for row in cached})
+
+    def evaluate_by_source(frames: list[CachedFrame]) -> dict[str, Any]:
+        return {
+            source_id: evaluate_frames(
+                model,
+                [row for row in frames if row.descriptor.source_id == source_id],
+                device,
+            )
+            for source_id in source_ids
+            if any(row.descriptor.source_id == source_id for row in frames)
+        }
+
+    before_train_by_source = evaluate_by_source(train_frames)
+    before_selection_by_source = evaluate_by_source(selection_frames)
+    before_canary_by_source = evaluate_by_source(canary_frames)
     history, training = train_student(
         model,
         train_frames,
@@ -1962,6 +2238,7 @@ def execute(args: argparse.Namespace) -> int:
         learning_rate=args.learning_rate,
         seed=args.seed,
         objective_profile=objective_profile,
+        source_balanced=bool(getattr(args, "source_balanced_sampling", False)),
     )
     support_calibration: dict[str, Any] | None = None
     if int(args.support_calibration_steps) > 0:
@@ -1978,6 +2255,9 @@ def execute(args: argparse.Namespace) -> int:
     after_train = evaluate_frames(model, train_frames, device)
     after_selection = evaluate_frames(model, selection_frames, device)
     after_canary = evaluate_frames(model, canary_frames, device)
+    after_train_by_source = evaluate_by_source(train_frames)
+    after_selection_by_source = evaluate_by_source(selection_frames)
+    after_canary_by_source = evaluate_by_source(canary_frames)
 
     checkpoint_receipt = save_checkpoint_exclusive(
         output_dir / "masked-factor-head.pt",
@@ -2015,6 +2295,9 @@ def execute(args: argparse.Namespace) -> int:
             "learning_rate": args.learning_rate,
             "objective_profile": objective_profile,
             "support_calibration": support_calibration,
+            "source_balanced_sampling": bool(
+                getattr(args, "source_balanced_sampling", False)
+            ),
         },
     )
 
@@ -2161,7 +2444,7 @@ def execute(args: argparse.Namespace) -> int:
             if objective_profile == "depth_support_precision"
             else f"Can {encoder_label} RGB features strengthen replicated AG-ST depth/support factors across {len(parent_shapes)} consumed parents without obstacle or boundary gradients?"
             if objective_profile == "depth_support"
-            else f"Can {encoder_label} RGB features learn graded AG-ST depth/support/boundary pseudo-labels across internal parent-disjoint selection and canary roles?"
+            else f"Can {encoder_label} RGB features learn graded AG-ST depth/support/boundary pseudo-labels across {len(source_ids)} sources and internal parent-disjoint selection/canary roles?"
         ),
         "inputs": {
             "factor_label_payloads": label_digest,
@@ -2226,6 +2509,9 @@ def execute(args: argparse.Namespace) -> int:
             ),
             "boundary_heat_sigma_px": BOUNDARY_HEAT_SIGMA_PX,
             "support_calibration": support_calibration,
+            "source_balanced_sampling": bool(
+                getattr(args, "source_balanced_sampling", False)
+            ),
         },
         "execution": {
             "device": torch.cuda.get_device_name(device),
@@ -2245,6 +2531,12 @@ def execute(args: argparse.Namespace) -> int:
             "after_selection": after_selection,
             "before_canary": before_canary,
             "after_canary": after_canary,
+            "before_train_by_source": before_train_by_source,
+            "after_train_by_source": after_train_by_source,
+            "before_selection_by_source": before_selection_by_source,
+            "after_selection_by_source": after_selection_by_source,
+            "before_canary_by_source": before_canary_by_source,
+            "after_canary_by_source": after_canary_by_source,
             "selection_parent_macro_relative_improvement": selection_improvements,
             "canary_parent_macro_relative_improvement": canary_improvements,
             "canary_core_factor_improvement_signals": core_signals,
@@ -2282,7 +2574,7 @@ def execute(args: argparse.Namespace) -> int:
         "claim_boundary": (
             f"All-consumed-parent pseudo-label fit over {len(parent_shapes)} ARKitScenes parents awaiting an independently reserved fresh evaluation."
             if fit_all_consumed_parents
-            else f"Internal parent-disjoint pseudo-label learnability diagnostic over {len(parent_shapes)} previously consumed ARKitScenes parents."
+            else f"Internal parent-disjoint pseudo-label learnability diagnostic over {len(parent_shapes)} previously consumed parents from {len(source_ids)} source(s)."
         )
         + " No objective truth, cross-dataset generalization, formal F1 authorization, deployment, product, or safety claim.",
     }
@@ -2321,6 +2613,19 @@ def parse_args() -> argparse.Namespace:
         action="append",
         default=[],
     )
+    parser.add_argument(
+        "--tum-label-dir",
+        type=Path,
+        default=None,
+        help="Optional R13 TUM unified factor-label directory.",
+    )
+    parser.add_argument(
+        "--source-rgb-binding",
+        type=Path,
+        default=DEFAULT_SOURCE_RGB_BINDING,
+    )
+    parser.add_argument("--source-stratified-split", action="store_true")
+    parser.add_argument("--source-balanced-sampling", action="store_true")
     parser.add_argument(
         "--encoder",
         choices=("mobilenet_v3_small", "depthart_s"),

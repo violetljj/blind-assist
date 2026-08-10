@@ -365,6 +365,25 @@ soft-band 像素。所有 factor 继续使用各自 validity，boundary 无效�
 数据源多样性是否能消除 R12 的单域 collapse；不是要求 Teacher 变成完整真值，也不是要求学生无条件覆盖
 DepthART prior。
 
+该执行已由
+[R14 multisource unified student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R14_MULTISOURCE_UNIFIED_STUDENT_RESULT_2026-08-11.json)
+完成。冻结 DepthART-S 与同一 factor-split head 不变，23 parent/69 帧按 ARKit `12/2/2`、TUM `5/1/1`
+拆分，两个 source 各贡献 2,880 次 optimizer visit。内部 canary 的 depth MAE `1.498→0.418 m`、support
+BCE `0.649→0.231`；且 depth 在 ARKit/TUM 分别为 `1.988→0.543 m`、`0.518→0.167 m`，不是一个域
+平均掉另一个域。
+
+冻结 checkpoint 在同一 Bonn 8 parent/24 帧诊断上产生了分化裁决。boundary 概率 AP 从常数先验
+`0.0442` 升到 `0.0736`，4 px F1 为 `0.5606`，显著高于 R12 ARKit-only unified head 的约
+`0.000045`，也高于 R8 boundary specialist 的 `0.4203`。这首次直接支持“多源 SuperTeacher 连续
+boundary 标签可形成第三域定位信号”。但 0.5 阈值预测 1,564,894 个像素、truth positive 仅 266,474，
+BCE `0.488` 还差于常数 prior `0.189`，所以晋级的是 ranking/localization representation，不是校准后的
+binary mask。
+
+depth 则只把 R12 的 Bonn MAE `1.411` 缩到 `0.935 m`，仍远差于未修正 DepthART 的 `0.252 m`；
+unconditional residual 因此继续拒绝。下一步按 factor 分路：boundary 保留多源 specialist 并在未消费 source
+确认；depth 必须默认保留 prior，只允许独立 no-regret/uncertainty gate 有证据时开放 correction。这个结果说明
+SuperTeacher 数据路线本身已对 boundary 产生实质突破，同时也证明不同 factor 不应被强迫共享同一晋级结论。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时

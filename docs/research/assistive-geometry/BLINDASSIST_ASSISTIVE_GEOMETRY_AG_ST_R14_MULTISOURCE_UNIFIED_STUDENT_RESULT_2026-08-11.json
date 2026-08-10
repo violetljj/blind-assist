@@ -1,0 +1,140 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r14_multisource_unified_student_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R14_MULTISOURCE_UNIFIED_STUDENT_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "WILD_LAB_SOURCE_BALANCED_MULTISOURCE_FACTOR_LEARNING_AND_FROZEN_BONN_DIAGNOSTIC",
+  "status": "MULTISOURCE_BOUNDARY_LOCALIZATION_TRANSFER_SUPPORTED_DEPTH_TRANSFER_NOT_SUPPORTED",
+  "question": "Does adding a second real RGB-D unified factor source make the SuperTeacher labels more transferable without requiring complete truth?",
+  "inputs": {
+    "arkitscenes_r10": {
+      "result": "artifacts.local/experiments/ag-st-unified-factor-labels-train16-r0/result.json",
+      "result_sha256": "E802E51106FF1A4B0BED253504AE8E36A957A9C26E87B45C08CC4CE7F2B78933",
+      "parent_count": 16,
+      "frame_count": 48
+    },
+    "tum_r13": {
+      "result": "artifacts.local/experiments/ag-st-unified-factor-labels-tum7-r0/result.json",
+      "result_sha256": "B6D6123FE12ED8FD5813D425FC747F882618BE0C7AE56A6CA2CB7697EF3B136B",
+      "rgb_binding": "artifacts.local/experiments/ag-st-source-native-boundary-corpus-r0/rgb_binding.json",
+      "rgb_binding_sha256": "E529AD06C1AA93ECB9EB681A79FB2C869ACA2F11F1767231FCA570E71C64FC87",
+      "parent_count": 7,
+      "frame_count": 21
+    },
+    "complete_truth_required": false,
+    "unknown_policy": "Every factor uses its own validity/tier mask; unsupported pixels have zero loss weight and are never negatives."
+  },
+  "training": {
+    "encoder": "frozen DepthART-S metric indoor",
+    "head": "272,709-parameter factor-split dilated continuous-factor head",
+    "objective": "unified_continuous_boundary",
+    "parent_count": 23,
+    "frame_count": 69,
+    "split": {
+      "fit_parents": 17,
+      "selection_parents": 3,
+      "canary_parents": 3,
+      "arkitscenes": "12/2/2",
+      "tum_rgbd": "5/1/1",
+      "label_content_used_for_split": false,
+      "parent_overlap": 0
+    },
+    "epochs": 80,
+    "optimizer_steps": 5760,
+    "source_optimizer_visits": {
+      "arkitscenes": 2880,
+      "tum_rgbd": 2880
+    },
+    "total_seconds": 519.9578161999962,
+    "result": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-multisource-r0/result.json",
+    "result_sha256": "64824438F963FD00AC6E096C0420CF72C954BB08246B8C5012575827F9C46EF6",
+    "checkpoint": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-multisource-r0/masked-factor-head.pt",
+    "checkpoint_sha256": "E33263998C94431696B2B8772A3EA14D44CE33A5A2B6CBA3923BC2001EBDC23B"
+  },
+  "internal_parent_disjoint_diagnostic": {
+    "combined_canary": {
+      "depth_mae_m": "1.498139 -> 0.417808",
+      "depth_bad_gt_0p10m_fraction": "0.987731 -> 0.725851",
+      "support_bce": "0.649156 -> 0.230606",
+      "support_f1": "0.000000 -> 0.493739",
+      "obstacle_bce": "0.809319 -> 0.253695",
+      "boundary_soft_bce": "0.128229 -> 0.306473",
+      "boundary_distance_mae_px": "5.228276 -> 10.372240"
+    },
+    "canary_by_source": {
+      "arkitscenes": {
+        "depth_mae_m": "1.988123 -> 0.543418",
+        "support_bce": "0.674851 -> 0.318379",
+        "support_f1_after": 0.7406081314672404,
+        "boundary_soft_bce": "0.069006 -> 0.348591",
+        "boundary_f1_after": 0.022202289294800327
+      },
+      "tum_rgbd": {
+        "depth_mae_m": "0.518171 -> 0.166588",
+        "support_bce": "0.597766 -> 0.055060",
+        "support_positive_denominator_note": "The held TUM parent has no positive support F1 denominator; BCE is diagnostic only.",
+        "boundary_soft_bce": "0.246675 -> 0.222239",
+        "boundary_f1_after": 0.17214710369863734
+      }
+    },
+    "interpretation": "Depth/support/obstacle signals exist in both sources, but a single boundary head is not internally calibrated across their very different boundary prevalence."
+  },
+  "frozen_bonn_same_cohort_diagnostic": {
+    "fitting_or_threshold_selection_on_bonn": false,
+    "parent_count": 8,
+    "frame_count": 24,
+    "depth": {
+      "result": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-multisource-r0/bonn-evaluation-depth-mixed-eval.json",
+      "result_sha256": "77AB875D087712F5320818BE83C7E90EE7134828DA24BF3E59178D7B859C536F",
+      "depthart_prior_parent_macro_mae_m": 0.2517413543897155,
+      "multisource_student_parent_macro_mae_m": 0.9353400859991834,
+      "arkit_only_r12_student_parent_macro_mae_m": 1.411058327941151,
+      "multisource_vs_arkit_only_relative_mae_reduction": 0.3371357742780763,
+      "depthart_prior_bad_gt_0p10m_fraction": 0.7310277932326535,
+      "multisource_student_bad_gt_0p10m_fraction": 0.9625958966561163,
+      "decision": "Source diversity reduces the previous collapse but the unconditional metric residual still destroys a substantially better DepthART prior; it is rejected for cross-source use."
+    },
+    "boundary": {
+      "result": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-multisource-r0/bonn-evaluation-boundary-r1.json",
+      "result_sha256": "591F01626FA13E89394C321C738C32D22CCB784F81423884966CE1263DEA2AF6",
+      "valid_pixels": 6027582,
+      "positive_pixels": 266474,
+      "prevalence": 0.04420910408186898,
+      "student_probability_average_precision": 0.0735737993470514,
+      "constant_prior_average_precision": 0.04420910408186898,
+      "precision_within_4px": 0.6645242425365552,
+      "recall_within_4px": 0.48480902452021585,
+      "f1_within_4px": 0.5606160702529622,
+      "parent_macro_f1_within_4px": 0.5508364260888294,
+      "r12_arkit_only_f1_within_4px": 0.000045029621047595375,
+      "r8_source_balanced_boundary_specialist_f1_within_4px": 0.42031702718174024,
+      "student_bce": 0.4884066934874375,
+      "initialized_constant_bce": 0.18870059325836355,
+      "predicted_pixels_at_0p5": 1564894,
+      "decision": "Cross-source boundary ranking/localization is supported, but the 0.5 probability threshold is over-wide and not calibrated; this is not a deployable binary mask."
+    },
+    "freshness_boundary": "Bonn is checkpoint-unseen but already consumed by earlier project diagnostics; comparisons are diagnostic replication, not a new confirmatory gate."
+  },
+  "implementation": {
+    "trainer": "scripts/research/assistive_geometry/train_ag_st_masked_student.py",
+    "trainer_sha256": "C78ED4BA550BE222902733D1D814208F11E5C8E119B03C5F074A065209D6BC11",
+    "trainer_test": "scripts/research/assistive_geometry/test_train_ag_st_masked_student.py",
+    "trainer_test_sha256": "2A6B37D2333933099EFBD19C6DFA661D92A765299F10E4250CA1C2D39F9FF4B6",
+    "boundary_evaluator": "scripts/research/assistive_geometry/evaluate_ag_st_unified_student_bonn_boundary.py",
+    "boundary_evaluator_sha256": "235DCA8259ACFBA746428AB91E6621BB5A8BDDDC4B8121FAD3C31276A5C635EC",
+    "boundary_evaluator_test": "scripts/research/assistive_geometry/test_evaluate_ag_st_unified_student_bonn_boundary.py",
+    "boundary_evaluator_test_sha256": "96FDE870BC2CC5E41F8C4911362F8DA4ABDE12121CE5670433F65E682FD64685",
+    "focused_tests": "18/18 PASS",
+    "real_tum_rgb_intrinsics_smoke": "1/1 PASS"
+  },
+  "decision": {
+    "multisource_superteacher_boundary_signal_supported": true,
+    "boundary_localization_candidate_retained": true,
+    "boundary_probability_calibration_supported": false,
+    "unconditional_depth_residual_promotion": false,
+    "support_cross_source_claim": false,
+    "complete_truth_required": false,
+    "formal_f1_authority_changed": false,
+    "next_execution": "Keep the learned boundary representation as a factor specialist and confirm it on an unused source; for depth, preserve the DepthART prior unless an independently trained no-regret/uncertainty gate predicts that correction is safer. Do not force all factors through one unconditional head."
+  },
+  "claim_boundary": "Source-balanced two-source selective-factor learning plus a frozen diagnostic on previously consumed Bonn. This supports transferable boundary localization evidence, not calibrated probability, complete truth, unconditional depth correction, support transfer, task utility, formal F1 authorization, safety, deployment, product, or license evidence."
+}

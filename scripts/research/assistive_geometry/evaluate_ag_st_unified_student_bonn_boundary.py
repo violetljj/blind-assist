@@ -184,7 +184,7 @@ def execute(args: argparse.Namespace) -> int:
     result = {
         "schema": "blindassist_ag_st_unified_student_bonn_boundary_evaluation_v1",
         "status": "EXTERNAL_BONN_BOUNDARY_DIAGNOSTIC_COMPLETE",
-        "question": "Does the frozen R11 unified checkpoint transfer its boundary factor to source-native Bonn geometry without fitting or threshold selection?",
+        "question": "Does the frozen unified-factor checkpoint transfer its boundary factor to source-native Bonn geometry without fitting or threshold selection?",
         "inputs": {
             "student_checkpoint": str(checkpoint_path),
             "student_checkpoint_sha256": sha256_file(checkpoint_path),
