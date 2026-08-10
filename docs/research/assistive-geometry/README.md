@@ -87,6 +87,7 @@
 - [AG-ST R0 multi-Teacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MULTITEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R1 TUM cross-source multi-Teacher result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R1_TUM_CROSS_SOURCE_MULTITEACHER_RESULT_2026-08-10.json)
 - [AG-ST R2 fresh-TUM third-Teacher + gravity-factor result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R2_TUM_THIRD_TEACHER_AND_GRAVITY_FACTORS_RESULT_2026-08-10.json)
+- [AG-ST R4 ICL pixel-exact boundary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R4_ICL_PIXEL_BOUNDARY_RESULT_2026-08-11.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -252,6 +253,19 @@ truth；下一步必须在 gravity-native 或 synthetic-exact source 上区分�
 PASS。identity-valid 像素上的 support-valid/support-positive 为 `86.46%/29.57%`。这打开的是
 WILD_LAB masked depth/support 学习入口，不是正式 F1 或 safety；boundary 只有解析 exact mechanics，
 外部 pixel-exact validation 未完成，仍不得进入训练主目标。
+
+这项 boundary 缺口随后由
+[R4 ICL pixel-exact boundary](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R4_ICL_PIXEL_BOUNDARY_RESULT_2026-08-11.json)
+直接检验，而不是继续用解析场景自证。固定沿用 support-identity 实验在任何像素输出前选定的 12 个 ICL
+视角，用官方 exact depth、pose 与 OBJ surface identity 构造选择性像素真值。5 个视角满足冻结可评条件，
+共 `725` 个 exact target 像素；当前 geometric seed 的 2 px recall 为 `0.9160`，但 precision 只有
+`0.1805`，且可评视角少于门槛 `6`，所以冻结 canary 明确 FAIL，boundary 仍不得作为 dense 训练目标。
+
+失败分支没有回调阈值，而是只物化 exact-mesh target 与 geometric seed 在 2 px 内一致的正锚点：5 个
+NPZ 共保留 `664/725`（`91.59%`）positive，negative 定义为空，其余像素全部 UNKNOWN。这样边界支线已有
+可审计的 source-exact positive supervision，但还没有完整正负监督；下一步应在新的外部 scene/source 上
+冻结更完整的 exact geometric boundary target，或增加独立几何 Teacher consensus，不能拿这 12 个视角
+继续调参后声称通过。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
