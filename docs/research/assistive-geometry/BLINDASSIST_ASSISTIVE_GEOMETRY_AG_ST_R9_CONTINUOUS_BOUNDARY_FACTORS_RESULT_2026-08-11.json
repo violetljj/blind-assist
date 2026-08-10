@@ -1,0 +1,90 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r9_continuous_boundary_factors_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R9_CONTINUOUS_BOUNDARY_FACTORS_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "WILD_LAB_CONTINUOUS_SOURCE_BOUNDARY_FACTOR_MATERIALIZATION",
+  "status": "CONTINUOUS_BOUNDARY_FACTORS_PASS",
+  "question": "Can source-native/exact boundary evidence be delivered as continuous factor supervision without complete truth or Teacher-filled negatives?",
+  "complete_truth_required": false,
+  "input": {
+    "rgb_binding": "artifacts.local/experiments/ag-st-source-native-boundary-corpus-r0/rgb_binding.json",
+    "rgb_binding_sha256": "E529AD06C1AA93ECB9EB681A79FB2C869ACA2F11F1767231FCA570E71C64FC87"
+  },
+  "output": {
+    "result": "artifacts.local/experiments/ag-st-continuous-boundary-factors-r0/result.json",
+    "result_sha256": "B7FCC09D75448E16706097D1F358316244D3E289E13A8B6B48A7337494CDCB6C",
+    "npz_file_count": 81,
+    "npz_total_bytes": 5915956,
+    "source_count": 3,
+    "parent_count": 24,
+    "frame_count": 81
+  },
+  "factor_fields": [
+    "boundary_core_probability_hw",
+    "boundary_soft_probability_hw",
+    "boundary_distance_px_hw",
+    "boundary_uncertainty_px_hw",
+    "boundary_truth_valid_hw",
+    "evidence_truth_valid_hw",
+    "boundary_unknown_hw",
+    "boundary_quality_tier_hw",
+    "boundary_provenance_hw"
+  ],
+  "contract": {
+    "distance": "Euclidean distance to the nearest valid source boundary core, clipped to 32 px; NaN outside validity",
+    "soft_probability": "max(source probability, exp(-distance^2/(2*3px^2))); zero outside validity",
+    "uncertainty_tier_provenance": "copied without promotion from R6 source labels",
+    "unknown": "invalid pixels remain UNKNOWN and are never negative",
+    "teacher_filled_pixels": "absent"
+  },
+  "coverage": {
+    "arkitscenes": {
+      "parents": 16,
+      "frames": 48,
+      "valid_pixels": 3901170,
+      "core_positive_pixels": 1838,
+      "soft_band_pixels_le_3px": 11219,
+      "soft_probability_mass": 23389.166940675994
+    },
+    "tum_rgbd": {
+      "parents": 7,
+      "frames": 21,
+      "valid_pixels": 1286989,
+      "core_positive_pixels": 25914,
+      "soft_band_pixels_le_3px": 147743,
+      "soft_probability_mass": 171019.87866954872
+    },
+    "icl_exact": {
+      "parents": 1,
+      "frames": 12,
+      "valid_pixels": 224039,
+      "core_positive_pixels": 20625,
+      "soft_band_pixels_le_3px": 55061,
+      "soft_probability_mass": 58415.64657239012
+    }
+  },
+  "gates": {
+    "source_count_eq_3": true,
+    "parent_count_eq_24": true,
+    "frame_count_eq_81": true,
+    "every_frame_has_valid_pixels": true,
+    "every_source_has_core_positive_pixels": true,
+    "every_output_has_sha_receipt": true,
+    "summary": "6/6 PASS"
+  },
+  "implementation": {
+    "materializer": "scripts/research/assistive_geometry/materialize_ag_st_continuous_boundary_factors.py",
+    "materializer_sha256": "E96563816B919908EC770E342CCCFC414FD1841B21BA75BFF58A19079E36C7F0",
+    "test": "scripts/research/assistive_geometry/test_materialize_ag_st_continuous_boundary_factors.py",
+    "test_sha256": "F60C9EACDA43AA40A08EC9F121E0A1C4C43F29E77A334F8B580DB7763A330751",
+    "focused_tests": "2/2 PASS"
+  },
+  "decision": {
+    "continuous_boundary_factor_training_ready": true,
+    "complete_truth_requirement": false,
+    "teacher_filled_boundary_training_authorized": false,
+    "formal_f1_authority_changed": false,
+    "next_execution": "Consume these continuous factors in the factor student alongside metric depth/support, with factor-specific validity masks."
+  },
+  "claim_boundary": "WILD_LAB continuous boundary factor labels derived from source-native/exact geometry. This is not complete truth, task utility, formal F1 authorization, safety, deployment, or product evidence."
+}

@@ -92,6 +92,7 @@
 - [AG-ST R6 source-native boundary corpus result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R6_SOURCE_NATIVE_BOUNDARY_CORPUS_RESULT_2026-08-11.json)
 - [AG-ST R7 source-boundary learnability result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R7_SOURCE_BOUNDARY_LEARNABILITY_RESULT_2026-08-11.json)
 - [AG-ST R8 soft-boundary Bonn canary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R8_SOFT_BOUNDARY_BONN_CANARY_RESULT_2026-08-11.json)
+- [AG-ST R9 continuous boundary factors result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R9_CONTINUOUS_BOUNDARY_FACTORS_RESULT_2026-08-11.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -317,6 +318,13 @@ fresh cross-source canary；已消费的 R7 canary 不再用于调门或宣称�
 升到 `0.06409`，4 px precision/recall/F1 为 `0.6450/0.3117/0.4203`；但 AP 绝对增量 `0.019879`
 比预冻结 `0.020000` 门槛少 `0.000121`，因此不事后降门，正式终态仍为 FAIL。该结果保留的是连续软边界
 表示与跨传感器学习信号，下一步直接物化 `boundary_distance + soft probability + validity/provenance`，不在 Bonn 上调参。
+
+该数据产物已由
+[R9 continuous boundary factors](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R9_CONTINUOUS_BOUNDARY_FACTORS_RESULT_2026-08-11.json)
+完成：3 source、24 parent、81 帧均物化独立 NPZ，直接提供 `boundary_distance_px_hw`、软概率、uncertainty、
+validity/UNKNOWN、tier/provenance 和逐文件 SHA。ARKit 的 1,838 个 core 扩展为 11,219 个 ≤3 px 连续带像素，
+TUM/ICL 分别为 147,743/55,061；无效像素的 distance 为 NaN 且显式 UNKNOWN，未被改成负例。6/6 物化 gate
+PASS，因此连续 boundary factor 已可与 metric depth/support 一起进入按 factor mask 训练。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
