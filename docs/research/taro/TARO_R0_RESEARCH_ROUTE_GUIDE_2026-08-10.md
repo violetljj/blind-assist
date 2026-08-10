@@ -819,8 +819,9 @@ outcome-blind amendment 与 hash-bound materializer implementation 关闭 all-ex
 per-query lookup、original provenance、ndarray reload、atomic writer 与消费后 failure receipt seam，24/24 focused tests 与 6/6
 validator mutation tests PASS；但 HEAD/GET 均没有运行，one-shot 没有消费，Content-Length 与远端可用性仍未知。
 
-当前唯一 successor 是 `TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK`（execution=false）：
-只允许另冻 exact 72-URL、zero-body、hash-bound HEAD execution lock；该锁提交前仍不得调用 HEAD runner。
+exact 72-URL、zero-body、hash-bound HEAD execution lock 现已冻结为 `AUTHORIZED_UNCONSUMED`，绑定
+实现提交 `9c525103`、argv/environment/budget、exclusive root 与消费后 failure receipt。该锁提交后，当前唯一
+successor 是 `TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION`：只执行一次冻结 HEAD argv。
 真实 O0R 仍须依次通过独立 HEAD execution、truth-only execution authorization、source/truth gate，再另行授权 baseline/factorial
 execution；任一 gate 失败都终止该 evidence version，不得换 parent、降 denominator、先看 DepthART output
 或回写本指南中的 gate。
