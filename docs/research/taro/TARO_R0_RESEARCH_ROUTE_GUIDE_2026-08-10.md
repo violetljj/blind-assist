@@ -821,9 +821,11 @@ validator mutation tests PASS；但 HEAD/GET 均没有运行，one-shot 没有�
 
 HEAD Attempt 01 在 root/HEAD 前因旧 path guard 将仓库授权的 `artifacts.local` junction 误判为
 `PATH_ESCAPE` 而停止；request/body/source 均为 0、五个正式 root 不存在、one-shot 未消费，原锁不得重跑。
-junction-aware containment 修正与第 25 项回归测试已进入 implementation lock。Attempt 02 lock 已绑定
-提交 `2c0fdef8`、同一 exact 72-URL/zero-body plan 与新 argv/root receipt；该锁提交后，当前唯一 successor
-是 `TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_ATTEMPT_02`：只执行一次冻结 HEAD argv。
-真实 O0R 仍须依次通过独立 HEAD execution、truth-only execution authorization、source/truth gate，再另行授权 baseline/factorial
-execution；任一 gate 失败都终止该 evidence version，不得换 parent、降 denominator、先看 DepthART output
-或回写本指南中的 gate。
+junction-aware containment 修正与第 25 项回归测试已进入 implementation lock。Attempt 02 随后按提交
+`23f30534` 执行一次：72 target 中 71 个正 Content-Length；冻结 ADAPTER_FIT `47333152` 的
+`lowres_wide.traj` 3/3 HEAD 均为 HTTP 403。zero body 与 manifest 复核通过，HEAD one-shot 已消费；
+source/work/truth/factor root 仍不存在。
+
+终态为 `TARO_O0R_ASSET_HEADERS_NOT_AVAILABLE_NO_REPLACEMENT /
+O0R_NOT_EVALUABLE_SOURCE_ASSET_UNAVAILABLE / NO_ACTIVE_EXECUTION`，当前 successor 为无。不得换 parent、
+重跑 HEAD、降 denominator、执行 GET/source/truth、先看 DepthART output 或回写本指南中的 gate。
