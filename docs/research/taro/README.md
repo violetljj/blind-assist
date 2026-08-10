@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0M_ONE_SHOT_CONSUMED / O0R_NOT_EVALUABLE_DATA_AND_INTERFACE / PAUSED_NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0M_ONE_SHOT_CONSUMED / O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_PASS / O0R_TRUTH_PREFLIGHT_NOT_RUN / O0R_SCIENTIFIC_NOT_RUN / EXECUTION_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -66,6 +66,11 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   code/fixture/argv/environment/resource/root 已绑定；该 one-shot 现已消费；
 - [TARO O0M signed result](TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_RESULT_2026-08-10.md)：
   `92/92` records、`10/10` gates 与两次 byte-identical replay PASS；真实 O0R 仍不可评估；
+- [TARO O0R ARKitScenes source-and-adapter contract](TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.md)：
+  新的 `8 ADAPTER_FIT + 16 O0R_EVAL_CANDIDATE` fresh TRAIN parent、FARO truth、uncertainty、
+  query、factor injection、统计、预算与 failure scope；
+- [TARO O0R source-and-adapter lock result](TARO_O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_RESULT_2026-08-10.md)：
+  pinned exclusion/roster 与关键 implementation seam 可重算，21/21 mutation tests；scientific status 仍为 `NOT_RUN`；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -76,17 +81,24 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-无：`PAUSED_NO_ACTIVE_EXECUTION`
+`TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
 覆盖、删除或重跑。
 
-真实 O0R 当前硬终态为 `TARO_O0R_NOT_EVALUABLE_DATA_AND_INTERFACE`：complete factor truth、
-truth-clear factor bundle、连续 boundary/uncertainty truth、target timestamp/pose、deterministic
-injection adapter 和 fresh paired outcome 均未满足。Synthetic O0M PASS 不能改写该终态，也不授权
-`G0/G1/A0/A1/J0`。只有新的 pre-outcome source-and-adapter contract 同时满足全部 O0R 前门后，
-才可另立冻结路线版本；当前没有隐含 successor。
+前一版本的真实 O0R 硬终态 `TARO_O0R_NOT_EVALUABLE_DATA_AND_INTERFACE` 已由新的、outcome 前
+冻结的 ARKitScenes source-and-adapter contract 在**协议层**关闭：24 个全新且 visit-disjoint 的
+TRAIN parent 已按 pinned exclusion + SHA 排序分配为 `8 ADAPTER_FIT + 16 O0R_EVAL_CANDIDATE`；
+FARO-only factor/query truth、real-residual uncertainty、exact timestamp/K/pose receipt、八臂
+deterministic injection、parent-level statistics、预算和 failure scope 均已冻结并通过静态验证。
+
+这不等于真实数据前门已经执行通过。24 个 selected source body 尚未下载或打开，truth-only
+preflight、adapter implementation、DepthART baseline 和 O0R scientific outcome 都不存在；因此当前为
+`O0R_TRUTH_PREFLIGHT_NOT_RUN / O0R_SCIENTIFIC_NOT_RUN / EXECUTION_NOT_AUTHORIZED`。唯一 successor
+只允许在新 TARO Module 中实现并静态测试冻结的 receipt/truth/uncertainty/injection adapter；在
+implementation hash 与独立 truth-only one-shot lock 提交前，不得下载 source payload、物化 truth、
+运行 DepthART 或执行 O0R，更不授权 `G0/G1/A0/A1/J0`。
 
 P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
 finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份
@@ -122,6 +134,8 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 
 - 维护本路线 current 与详细路线指南；
 - outcome-blind 的文献去重、接口设计、数据字段映射和解析公式检查；
+- 实现并静态测试已冻结的 O0R ARKitScenes receipt、truth、uncertainty 与 factor-injection adapter，
+  但不得读取 source payload 或产生 scientific output；
 - 只读审计候选公开数据源的文档、许可、字段与能力，并记录 `CANDIDATE_METADATA_MAPPED` /
   `GAP_OPEN` / `NOT_ADMITTED`；该映射不等于下载、source admission 或 O0R successor；
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
@@ -146,11 +160,14 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 覆盖、删除或重跑已消费的 O0M one-shot，或把历史 execution lock 解释为剩余权限；
 - 把 synthetic mechanics 写成真实 factor causal headroom，或跳过 real O0R 数据/adapter 前门进入
   G0/G1、A0/A1、J0。
+- 在 implementation lock 和独立 truth-only one-shot preflight lock 前下载本合同 24 个 source body、
+  物化 FARO factor/query truth、拟合 uncertainty、运行 DepthART 或生成任一 O0R arm。
 
 ## Claim ceiling
 
-当前只证明冻结的、预去重与预白化 synthetic analytic family 上，独立 NumPy 实现可复现
-task-query identifiability 与 factorial intervention mechanics。它不证明真实 factor causal headroom、
+当前证明两件彼此隔离的事：冻结的、预去重与预白化 synthetic analytic family 上，独立 NumPy 实现
+可复现 task-query identifiability 与 factorial intervention mechanics；新的 ARKitScenes O0R
+source/role/truth/query/uncertainty/injection 合同可由静态 validator 重算。它不证明真实 factor causal headroom、
 真实 evidence dedup/whitening、模型质量、选择性风险校准、observation-withholding/sensing regret、
 真实 geometry-anchored counterfactual pair、被动/主动视角收益、跨设备泛化、移动端可行、产品有效性
 或真实用户安全。

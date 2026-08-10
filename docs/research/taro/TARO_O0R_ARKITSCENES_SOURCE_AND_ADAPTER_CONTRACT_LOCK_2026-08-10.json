@@ -1,0 +1,518 @@
+{
+  "schema": "blindassist.taro.o0r.source_adapter_contract.v1",
+  "protocol_id": "TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK",
+  "version": "R0",
+  "stage": "O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK",
+  "frozen_at": "2026-08-10",
+  "research_mode": "WILD_LAB",
+  "status": "PROTOCOL_FROZEN_SCIENTIFIC_NOT_RUN",
+  "scientific_status": "NOT_RUN",
+  "outcome_access_started": false,
+  "question": "On fresh visit-disjoint ARKitScenes TRAIN sources with registered FARO depth, can a deterministic source adapter make scale, support, boundary and body/path query truth complete enough to run a real factor-causal-headroom oracle without using model output to select data or labels?",
+  "claims_allowed": [
+    "pre-outcome source identity, role and adapter design",
+    "metadata-only roster freshness and source-field capability",
+    "future source-characterization O0R only after every truth-only admission gate passes"
+  ],
+  "claims_forbidden": [
+    "real factor causal headroom before a separately locked execution",
+    "GaugeFix or PARA quality",
+    "wearable or active-view validity",
+    "model training, checkpoint selection or R2 promotion",
+    "device, product, default-App or safety authority"
+  ],
+  "bindings": {
+    "taro_p0_protocol": {
+      "path": "docs/research/taro/TARO_P0_TASK_QUERY_IDENTIFIABILITY_AND_FACTOR_ORACLE_CANARY_PROTOCOL_LOCK_2026-08-10.json",
+      "bytes": 26727,
+      "sha256": "E0CB39FBC7B391140C8CBCE7D6FBB119D7BE21032169A9C9838D543D5FDDFC03"
+    },
+    "taro_schema_bundle": {
+      "path": "docs/research/taro/TARO_P0_SCHEMA_BUNDLE_2026-08-10.json",
+      "bytes": 19117,
+      "sha256": "C1594D16C35ED78D372BC7983FD0C277464692D6A684D8468577F489A8A8B898"
+    },
+    "arkitscenes_truth_reader": {
+      "path": "scripts/research/assistive_geometry/arkitscenes_truth_reader.py",
+      "bytes": 25728,
+      "sha256": "F50187661E59C438FAC4CAEB4E0BDFA4D638C64A87094C49C369FBEC3B3218C1"
+    },
+    "truth_reader_result": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TRUTH_READER_AND_REGISTRATION_LOCK_RESULT_2026-08-09.json",
+      "bytes": 4737,
+      "sha256": "FD09AC3088CC78B3652FB8ACC4C98ED8391AB72FB62A3D04E658A080E6E5EA4A"
+    },
+    "geometry_r2_reducer": {
+      "path": "scripts/research/assistive_geometry/geometry_r2_reducer.py",
+      "bytes": 17734,
+      "sha256": "2D6C26AD75B98911FD610FE0428D47584C877BA9AC7F091F768D98C035932092"
+    },
+    "geometry_r2_profile": {
+      "path": "scripts/research/assistive_geometry/fixtures/geometry_r2_f0_cases.json",
+      "bytes": 16077,
+      "sha256": "CA8582907791706BE43C2FEEBCD79BE1D730197E486FD0BC0B85B154360B0E25"
+    },
+    "arkitscenes_authorization_receipt": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-09_ATTEMPT_04.json",
+      "bytes": 2221,
+      "sha256": "8346C205154C4352C3419A02522F287AA06FF3F7C02259C0922F0A7B435213E8"
+    },
+    "arkitscenes_license": {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/LICENSE",
+      "bytes": 4816,
+      "sha256": "D8D156565F81B4B56B37A6D5A68A223A0874ED1131BAC6A404B0D5E765189071"
+    },
+    "arkitscenes_data_documentation": {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/DATA.md",
+      "bytes": 4804,
+      "sha256": "DCCA2ACEFD5F3B0905D97BA75486491A736007D953CAB845ACA79E9ED4B8B709"
+    },
+    "arkitscenes_upsampling_documentation": {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/depth_upsampling/README.md",
+      "bytes": 3593,
+      "sha256": "1124AD54E7B54B11D903AA4E26B3407DB00E5DA471DB7E2D44CB23E0BFBFCDA0"
+    },
+    "arkitscenes_upsampling_split": {
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/depth_upsampling/upsampling_train_val_splits.csv",
+      "bytes": 59280,
+      "sha256": "17935C5567F3004EA01BE394D6DC9EEC4ED96F0A7E097884C8B648578CCA2F6B"
+    },
+    "depthart_checkpoint": {
+      "path": "artifacts.local/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+      "bytes": 32871942,
+      "sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65"
+    },
+    "depthart_source_control": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D0_SOURCE_CONTROL_LOCK_2026-08-09.json",
+      "bytes": 4131,
+      "sha256": "0C652934CE1980DB1D807ABDF5CB43B7CC7E6DF9FC79AE1A059B5094D50C8426"
+    },
+    "dataset_master_ledger_snapshot": {
+      "path": "DATASET_MASTER_LEDGER.csv",
+      "bytes": 3814219,
+      "sha256": "0EE0276357237833D9FE836113820B562663C96552E610A814161A8F28B105BD"
+    }
+  },
+  "source_contract": {
+    "source_id": "ARKITSCENES_UPSAMPLING_V1_TRAIN",
+    "repository": "https://github.com/apple/ARKitScenes",
+    "repository_commit": "7283761bf26c27570ec59a5dc0f8686fbff07726",
+    "official_data_documentation": "https://github.com/apple/ARKitScenes/blob/main/DATA.md",
+    "official_fold": "Training",
+    "metadata_rows": 2257,
+    "source_facts": [
+      "upsampling color is 1920x1440 RGB",
+      "highres_depth is registered depth projected from FARO laser-scanner geometry",
+      "lowres_depth and confidence are AppleDepth sensor products",
+      "depth is uint16 millimetres and confidence is uint8 0..2",
+      "raw per-frame pinhole intrinsics and a timestamped camera trajectory are separately available"
+    ],
+    "required_assets_per_video": [
+      "upsampling/Training/{video_id}.zip",
+      "raw/Training/{video_id}/lowres_wide_intrinsics.zip",
+      "raw/Training/{video_id}/lowres_wide.traj"
+    ],
+    "archive_members_required": [
+      "color",
+      "highres_depth",
+      "lowres_depth",
+      "confidence"
+    ],
+    "license_rule": "Project-local research use only under the bound ARKitScenes terms; redistribution is false.",
+    "teacher_or_model_generated_truth_allowed": false
+  },
+  "selection_contract": {
+    "exclusion_snapshot_commit": "1cc126e768c0e89af934835d96763b0ec2fcdd38",
+    "exclusion_scan_scope": [
+      "docs/**/*.md",
+      "docs/**/*.json",
+      "scripts/**/*.md",
+      "scripts/**/*.json",
+      "DATASET_MASTER_LEDGER.csv"
+    ],
+    "matched_official_identity_count": 100,
+    "matched_official_identities_sha256": "E9D948F2F6286DE3D307C6FD379DE0EAE34322693030310EF3DC8770DC3C7A7D",
+    "selection_salt": "TARO_O0R_ARKITSCENES_R0",
+    "role_order": [
+      "ADAPTER_FIT",
+      "O0R_EVAL_CANDIDATE"
+    ],
+    "selection_rule": "Within official Training rows not present in the pinned exclusion snapshot, rank SHA256('{salt}:{role}:{visit_id}:{video_id}'), keep the first row per unused visit, and never replace or reassign after source truth access.",
+    "roles": {
+      "ADAPTER_FIT": [
+        {"visit_id": "470974", "video_id": "47332075", "official_fold": "Training", "selection_rank_sha256": "001B8E118F35F7084220AF163B5A585DC0A8E2FE00531EDF2CF43D8D4A4A91CB"},
+        {"visit_id": "469216", "video_id": "47332946", "official_fold": "Training", "selection_rank_sha256": "0020E274A12B62C7DBEC974D44EE84BA9BC5649FBC18E389221D27AF4679B5C2"},
+        {"visit_id": "469456", "video_id": "47333152", "official_fold": "Training", "selection_rank_sha256": "003AA3C88C7A4A99B644BF5623F3CA60FAB4C227AF16B70F05E2517E653C0D7E"},
+        {"visit_id": "423614", "video_id": "42898071", "official_fold": "Training", "selection_rank_sha256": "00638C13C27A724BE8DB1BC3151B7C4794CD994AF7B4677B3C7BD5C3F0104CD5"},
+        {"visit_id": "467370", "video_id": "47333776", "official_fold": "Training", "selection_rank_sha256": "00679379607D955981D196EBF7B1B3118D327C15DD3527F57C3097AE36D58BD2"},
+        {"visit_id": "469460", "video_id": "47333043", "official_fold": "Training", "selection_rank_sha256": "006DB1A3C4C2D38B5337F542D4E7685A930AE16521D0761A92175D93226F7AC8"},
+        {"visit_id": "438794", "video_id": "44358241", "official_fold": "Training", "selection_rank_sha256": "0085628C4E05E0A6F4D30678FD2094B07C2865C3F6244AE21F573206951BA231"},
+        {"visit_id": "467346", "video_id": "47333876", "official_fold": "Training", "selection_rank_sha256": "008E89B1997DAAE8F16FF77BCDB31B0895C5CAADB57635E4372135CD5319B93D"}
+      ],
+      "O0R_EVAL_CANDIDATE": [
+        {"visit_id": "466965", "video_id": "45261294", "official_fold": "Training", "selection_rank_sha256": "00036A414491C456B6B7F37130DB6F59982A11AF0496FFA806EF675968F98624"},
+        {"visit_id": "470808", "video_id": "47430058", "official_fold": "Training", "selection_rank_sha256": "0003F35698648F8BDE82FA698466802EFC738AE3907C84FEF5CD1D72DC3ED516"},
+        {"visit_id": "482587", "video_id": "47895909", "official_fold": "Training", "selection_rank_sha256": "005A4E1B9C4D61F09DC11BB6CA61B01D2EE9765429A3E3E13835DD9E2CA52227"},
+        {"visit_id": "468410", "video_id": "45261689", "official_fold": "Training", "selection_rank_sha256": "008363EFC01C10DB74BD1DD2BE036B1DE2C0A5593E6DAC4CD85396A607E897AE"},
+        {"visit_id": "482858", "video_id": "47670295", "official_fold": "Training", "selection_rank_sha256": "00C2D0BFC36A197B788626DC078DA557C261F0122C2D34604675733F26F3F3E5"},
+        {"visit_id": "482984", "video_id": "47670346", "official_fold": "Training", "selection_rank_sha256": "010F537977BDAB295461AC0923F37B7527541D0F42FB8AEBC5EA9C4E9CEA0A95"},
+        {"visit_id": "469607", "video_id": "47115143", "official_fold": "Training", "selection_rank_sha256": "0113297E20C3324AB625812733BFCF5FA890D21629F47E45D7F69FA79D68A5DD"},
+        {"visit_id": "421593", "video_id": "42445766", "official_fold": "Training", "selection_rank_sha256": "011A1552850DA188FDD138057E43AF2547739F5F17AD7E366589C24BA46791E4"},
+        {"visit_id": "423474", "video_id": "42897405", "official_fold": "Training", "selection_rank_sha256": "016A7189ED0E77D2518E4849A79898951A64243033A355B6C5D1074AF069839B"},
+        {"visit_id": "470876", "video_id": "47332015", "official_fold": "Training", "selection_rank_sha256": "01930C4DF3D539088369F1B82ADBB7B8D215C64AF1F98C80187B38C8F7E20901"},
+        {"visit_id": "464981", "video_id": "44796438", "official_fold": "Training", "selection_rank_sha256": "01D0DA4F2B4F554D718484CE98A77FD6552B7B33C6F5E346F24718054F48F3A0"},
+        {"visit_id": "478016", "video_id": "47204874", "official_fold": "Training", "selection_rank_sha256": "01F2FF2876E6292FC5E76CE5991B9950467F52D448C3E49009C81559FEE0E0CE"},
+        {"visit_id": "422217", "video_id": "42445723", "official_fold": "Training", "selection_rank_sha256": "022F5A9024A982DE8D562BBA52666C39AFBDA7CC108ACD8D4D0EFAC49C28A93A"},
+        {"visit_id": "466437", "video_id": "45260952", "official_fold": "Training", "selection_rank_sha256": "02456972D83F5D736E4A25459C8DA8CDB5EFEDB9607B65AF4F3065943BAF3452"},
+        {"visit_id": "484003", "video_id": "48018757", "official_fold": "Training", "selection_rank_sha256": "028D1C5AFB1998EE00A50EDE4EAB7EF3FD6F245AAC86C4A37D9CFB7FB7F81E1A"},
+        {"visit_id": "421655", "video_id": "42445698", "official_fold": "Training", "selection_rank_sha256": "029A7228F13E1BF8A8861A74C273CF2EFFF7E55FA404B4452D275B3BE2696A6A"}
+      ]
+    },
+    "invariants": {
+      "adapter_fit_parent_count": 8,
+      "o0r_eval_candidate_parent_count": 16,
+      "selected_parent_count": 24,
+      "selected_video_count": 24,
+      "visit_video_role_overlap": 0,
+      "replacement_allowed": false,
+      "role_reassignment_allowed": false,
+      "model_output_influence": false,
+      "prior_b1_identity_reuse": false,
+      "confirmation_role_allocated": false
+    }
+  },
+  "role_contract": {
+    "ADAPTER_FIT": {
+      "allowed_reads": [
+        "source RGB, AppleDepth, confidence, FARO depth, intrinsics, trajectory and source metadata"
+      ],
+      "allowed_derivations": [
+        "source registration checks",
+        "confidence/range-conditioned cross-source residual calibration",
+        "support and boundary uncertainty calibration"
+      ],
+      "model_outputs_forbidden": true,
+      "task_metric_forbidden": true,
+      "selection_influence": false
+    },
+    "O0R_EVAL_CANDIDATE": {
+      "phase_1": "truth-only integrity, complete-factor/query and class-support admission with every model output absent",
+      "phase_2": "all source-eligible parents retained; DepthART baseline and factorial outputs may be generated only after a separately signed truth-only result and one-shot execution lock",
+      "drop_after_model_output_forbidden": true,
+      "replacement_after_truth_access_forbidden": true,
+      "selection_influence": false
+    }
+  },
+  "frame_receipt_adapter": {
+    "source_id": "ARKITSCENES_UPSAMPLING_V1_TRAIN",
+    "site_id": "visit_id",
+    "parent_id": "visit_id",
+    "session_id": "video_id",
+    "capture_id": "video_id",
+    "frame_id": "video_id + ':' + exact decimal timestamp token",
+    "sensor_timestamp_ns": "parse the filename decimal timestamp with Decimal and convert exactly to integer nanoseconds; binary float parsing is forbidden",
+    "pose_bracket_timestamp_ns": "parse both trajectory bracket timestamp tokens with Decimal and convert exactly to integer nanoseconds before any floating-point pose interpolation",
+    "max_source_timestamp_rule": "MAX_FRAME_AND_RIGHT_POSE_BRACKET",
+    "max_source_timestamp_ns": "maximum of the frame timestamp and the actual right pose-bracket timestamp; every derived receipt, truth block and query inherits this watermark",
+    "intrinsics": "exact-stem lowres_wide pincam scaled algebraically to the registered 1920x1440 color/FARO frame",
+    "pose": "official inverse-trajectory convention with bounded interpolation; maximum bracket gap 0.25 seconds",
+    "gravity": "camera-frame gravity derived only from the bound pose",
+    "camera_body_mount": "ARKITSCENES_IPAD_HANDHELD_SOURCE_CHARACTERIZATION_ONLY",
+    "metric_reference": "registered FARO geometry is the source-truth metric reference; AppleDepth is uncertainty-fit evidence only and neither is represented as an independent P0 metric anchor",
+    "p0_frame_receipt_projection": "NOT_AVAILABLE_IN_O0R_SOURCE_CHARACTERIZATION",
+    "p0_projection_reason": "ARKitScenes does not provide source-native pose/IMU covariance, sparse tracks or a calibrated camera-body transform; zeros or defaults may not be fabricated",
+    "base_receipt_schema": "blindassist.taro.o0r.source_frame_receipt.v1",
+    "query_receipt_schema": "blindassist.taro.o0r.query_receipt.v1",
+    "query_receipts_per_physical_frame": 9,
+    "query_receipt_binding": "one immutable source-frame base receipt plus nine query-bound receipts sharing the same base-receipt hash and physical frame_id",
+    "receipt_failure": "UNKNOWN_NOT_ADMITTED"
+  },
+  "query_contract": {
+    "body_profile_id": "TARO_RESEARCH_CAPSULE_R0",
+    "swept_volume": {
+      "kind": "CAPSULE_CHAIN",
+      "half_width_m": 0.25,
+      "height_m": 1.8,
+      "inflation_m": 0.05
+    },
+    "horizon_m": 2.0,
+    "clear_margin_m": 0.05,
+    "occupied_margin_m": 0.0,
+    "path_lateral_offsets_m": [-0.35, 0.0, 0.35],
+    "path_yaw_degrees": [-10.0, 0.0, 10.0],
+    "queries_per_frame": 9,
+    "query_grid_order": "LATERAL_MAJOR_THEN_YAW_ASCENDING",
+    "path_id_template": "lat_{signed_decimal_token}_yaw_{signed_decimal_token}",
+    "query_id_template": "{frame_id}:{path_id}",
+    "virtual_query_frame": "origin is the camera center projected onto the FARO support plane; forward is the optical axis projected onto that plane; lateral is forward cross gravity; this is a virtual source-characterization corridor, not a wearable camera-body transform",
+    "minimum_forward_m": 0.2,
+    "clearance_cap_m": 2.0,
+    "signed_clearance_rule": "for non-support FARO points 0.08..1.80 m above the support plane and 0.20..2.00 m along the yawed path, take the minimum ground-plane distance to the finite path segment minus 0.30 m; cap positive values at 2.00 m",
+    "query_knownness_rule": "a query is known only when its receipt, FARO coverage, support plane, visibility and local-neighborhood completeness all pass; otherwise its interval and state are UNKNOWN",
+    "reducer_interval_rule": "lower=value_m-uncertainty_m and upper=value_m+uncertainty_m; CLEAR only if lower>0.05 m, OCCUPIED only if upper<=0.0 m, otherwise UNKNOWN",
+    "complete_frame_rule": "all nine query receipts and all nine factor/query truth records must be complete or the physical frame is not admitted",
+    "truth_source": "registered FARO highres_depth plus bound K/pose only",
+    "invalid_or_unobserved": "UNKNOWN",
+    "unknown_is_negative": false,
+    "reducer_version": "taro_query_reducer_p0_contract_v1"
+  },
+  "factor_truth_contract": {
+    "state_blocks": [
+      "SCALE",
+      "SUPPORT",
+      "BOUNDARY"
+    ],
+    "SCALE": {
+      "value_truth": "truth-only materialization stores the model-independent FARO absolute metric reference with log_metric_scale_truth=0.0; only after a signed truth-only result may a candidate-relative correction be computed as the robust median log(FARO_Z/candidate_Z) on the already frozen common support",
+      "truth_only_value_kind": "ABSOLUTE_FARO_METRIC_REFERENCE",
+      "truth_only_log_metric_scale": 0.0,
+      "candidate_relative_correction_kind": "MEDIAN_LOG_FARO_Z_OVER_CANDIDATE_Z_ON_FROZEN_COMMON_SUPPORT",
+      "candidate_relative_correction_after_truth_only_result": true,
+      "candidate_relative_correction_may_change_selection": false,
+      "validity_truth": "finite registered FARO depth, valid K/pose and minimum common support",
+      "uncertainty_truth": "ADAPTER_FIT confidence/range-conditioned empirical log-residual distribution; no constant sigma label"
+    },
+    "SUPPORT": {
+      "value_truth": "gravity-bound support plane normal and camera height derived from FARO depth",
+      "validity_truth": "minimum support count/fraction and finite bounded slope",
+      "uncertainty_truth": "source-point bootstrap plus ADAPTER_FIT cross-source residual envelope"
+    },
+    "BOUNDARY": {
+      "value_truth": "continuous metric obstacle-boundary signed-distance and localization field derived from FARO geometry after support removal",
+      "validity_truth": "FARO coverage, visibility and local neighborhood completeness",
+      "uncertainty_truth": "ADAPTER_FIT confidence/range-conditioned FARO-versus-AppleDepth boundary localization residual quantile"
+    },
+    "uncertainty_fit_cells": {
+      "confidence_values": [0, 1, 2],
+      "range_edges_m": [0.0, 1.0, 2.0, 3.0, 6.0],
+      "range_edge_ownership": "LEFT_CLOSED_RIGHT_OPEN_LAST_BIN_RIGHT_CLOSED",
+      "minimum_independent_parents_per_cell": 4,
+      "minimum_samples_per_cell": 128,
+      "quantile": 0.95,
+      "parent_aggregation": "PARENT_MACRO_Q95_OF_WITHIN_PARENT_Q95",
+      "fallback_order": [
+        "EXACT_CONFIDENCE_EXACT_RANGE",
+        "SAME_CONFIDENCE_SYMMETRIC_CONTIGUOUS_RANGE_EXPANSION",
+        "ALL_CONFIDENCE_EXACT_RANGE",
+        "ALL_CONFIDENCE_SYMMETRIC_CONTIGUOUS_RANGE_EXPANSION",
+        "GLOBAL"
+      ],
+      "fallback_tie_rule": "at each expansion radius pool the complete lower..upper contiguous window; choose the first scope meeting both gates",
+      "unsupported_global_terminal": "UNCERTAINTY_INVALID_QUERY_UNKNOWN"
+    },
+    "support_bootstrap": {
+      "unit": "source point",
+      "replicates": 256,
+      "seed_rule": "first 64 bits of SHA256(frame_id + ':TARO_SUPPORT_BOOTSTRAP_R0')",
+      "quantile": 0.95,
+      "combine_with_cross_source_envelope": "componentwise maximum"
+    },
+    "canonicalization": {
+      "json_sort_keys": true,
+      "float_decimal_places": 12,
+      "negative_zero_to_zero": true,
+      "nan_or_infinity": "REJECT"
+    },
+    "truth_materialization_before_model_output": true,
+    "teacher_or_model_output_as_truth": false,
+    "invented_constant_uncertainty": false
+  },
+  "baseline_contract": {
+    "model_id": "depthart-s-metric-indoor-448-official-fp32",
+    "checkpoint_sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65",
+    "inputs": [
+      "registered source RGB",
+      "bound effective K"
+    ],
+    "output": "metric depth only",
+    "factor_extractor": "the TARO-specific deterministic scale/support/boundary extractor and taro_query_reducer_p0_contract_v1 used by every baseline/oracle arm; the legacy three-band GeometryR2 reducer is not this reducer",
+    "training_steps": 0,
+    "checkpoint_selection_allowed": false,
+    "truth_alignment_or_per_frame_fitting_allowed": false,
+    "generation_order": "only after the truth-only admission result is signed",
+    "truth_only_bundle_immutable_before_baseline": true,
+    "relative_scale_correction_uses_preexisting_truth_only_common_support": true
+  },
+  "factorial_contract": {
+    "arms": [
+      "NONE",
+      "SCALE",
+      "SUPPORT",
+      "BOUNDARY",
+      "SCALE_SUPPORT",
+      "SCALE_BOUNDARY",
+      "SUPPORT_BOUNDARY",
+      "SCALE_SUPPORT_BOUNDARY"
+    ],
+    "oracle_modes": [
+      "VALUE_ONLY_COMMON_SUPPORT",
+      "FULL_BLOCK_VALUE_VALIDITY_UNCERTAINTY"
+    ],
+    "primary_mode": "VALUE_ONLY_COMMON_SUPPORT",
+    "primary_comparison": "SCALE_SUPPORT_BOUNDARY_VERSUS_NONE",
+    "single_block_diff_required": true,
+    "common_support_identity_required": true,
+    "receipt_k_corruption_control": "separate negative control, never counted as a factorial factor",
+    "deterministic_injection_order": [
+      "validate baseline and oracle factor identities",
+      "copy the baseline factor frame",
+      "patch only the named factor block",
+      "recompute content hash",
+      "run the unchanged deterministic reducer"
+    ],
+    "post_outcome_arm_selection_forbidden": true
+  },
+  "registration_and_geometry_contract": {
+    "highres_color_and_faro_shape_hw": [1440, 1920],
+    "apple_depth_and_confidence_shape_hw": [192, 256],
+    "pixel_center_convention": "INTEGER_INDEX_IS_PIXEL_CENTER",
+    "lowres_to_highres_scale_xy": [7.5, 7.5],
+    "scaled_intrinsics_rule": "fx'=sx*fx; fy'=sy*fy; cx'=sx*(cx+0.5)-0.5; cy'=sy*(cy+0.5)-0.5",
+    "faro_to_apple_residual_sampling": "sample registered FARO at each AppleDepth pixel center using nearest highres pixel after the frozen pixel-center transform; never resize FARO truth for query geometry",
+    "depth_valid_range_m": [0.25, 6.0],
+    "faro_truth_resolution": "1920x1440",
+    "support_point_stride": 4,
+    "support_residual_tolerance_m": 0.08,
+    "minimum_support_points": 256,
+    "minimum_support_fraction": 0.02,
+    "maximum_support_slope_degrees": 20.0,
+    "obstacle_height_range_m": [0.08, 1.8],
+    "boundary_sign": "POSITIVE_OUTSIDE_OBSTACLE_NEGATIVE_INSIDE_OBSTACLE_ZERO_AT_BOUNDARY",
+    "boundary_field_resolution": "1920x1440 registered FARO frame",
+    "boundary_neighborhood_hw": [5, 5],
+    "minimum_boundary_local_valid_fraction": 0.8,
+    "minimum_query_support_points": 128,
+    "minimum_query_observed_forward_m": 2.0,
+    "model_teacher_or_task_fields_in_truth_input": "REJECT_RECURSIVELY"
+  },
+  "implementation_interface_contract": {
+    "new_runtime_module": "scripts/research/taro_o0r_source_adapter_runtime",
+    "source_io_in_implementation_lock": false,
+    "static_tests_use_synthetic_arrays_only": true,
+    "legacy_truth_reader_allowed_primitives": [
+      "official inverse-trajectory pose convention",
+      "quaternion interpolation",
+      "intrinsics algebra",
+      "depth millimetres to metres",
+      "unprojection",
+      "gravity-bound support-plane primitive"
+    ],
+    "legacy_truth_reader_forbidden_interfaces": [
+      "load_manifest_frame",
+      "derive_assistive_truth three-band output",
+      "binary-float filename timestamp parsing"
+    ],
+    "legacy_geometry_r2_reducer_runtime_role": "REFERENCE_ONLY_NOT_TARO_QUERY_REDUCER",
+    "taro_specific_query_reducer_required": true,
+    "p0_full_frame_receipt_claim": false,
+    "forbidden_runtime_capabilities": [
+      "downloader",
+      "archive reader",
+      "materializer",
+      "DepthART runner",
+      "scientific evaluator",
+      "artifact writer"
+    ]
+  },
+  "truth_only_admission_gates": {
+    "all_adapter_fit_parents_present": 8,
+    "minimum_evaluable_o0r_parents": 12,
+    "minimum_truth_clear_parents": 6,
+    "minimum_truth_occupied_parents": 6,
+    "minimum_exact_timestamp_frames_per_evaluable_parent": 12,
+    "minimum_complete_factor_query_fraction_within_source_eligible_frames": 1.0,
+    "minimum_source_eligible_fraction_within_exact_timestamp_frames": 0.5,
+    "query_receipts_required_per_source_eligible_frame": 9,
+    "truth_clear_parent_rule": "at least 6 distinct admitted frames each containing at least one CLEAR_OBSERVED query",
+    "truth_occupied_parent_rule": "at least 6 distinct admitted frames each containing at least one OCCUPIED_OBSERVED query",
+    "parent_state_roles_may_overlap": true,
+    "exact_timestamp_frame_denominator": "same-stem color/highres_depth/lowres_depth/confidence/intrinsics with an in-domain bounded pose bracket before any truth/model read",
+    "source_eligible_frame_denominator": "exact-timestamp frames passing immutable receipt, FARO coverage and support prerequisites before query state",
+    "admitted_frame_denominator": "source-eligible frames with 9/9 query receipts and complete factor/query truth plus supported uncertainty",
+    "max_source_timestamp_includes_right_pose_bracket": true,
+    "model_independent_scale_reference_complete": true,
+    "maximum_pose_bracket_gap_seconds": 0.25,
+    "all_required_asset_sha_and_crc_valid": true,
+    "all_frame_receipts_complete": true,
+    "all_uncertainty_targets_fit_without_eval_parent_access": true,
+    "depthart_or_other_model_outputs_absent": true,
+    "undefined_denominator": "FAIL_NOT_DROP",
+    "failure_terminal": "TARO_O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE",
+    "failure_effect": "close this evidence version without replacement, model inference, O0R arm execution or downstream G0/G1/A0/A1/J0"
+  },
+  "o0r_metrics_and_gates": {
+    "primary_estimand": "parent-macro paired proper interval-score improvement of SCALE_SUPPORT_BOUNDARY versus NONE under VALUE_ONLY_COMMON_SUPPORT",
+    "minimum_meaningful_effect_m": 0.02,
+    "primary_gate": "parent-cluster bootstrap 95% lower confidence bound greater than 0.02 m",
+    "bootstrap": {
+      "replicates": 20000,
+      "seed": 271828,
+      "unit": "parent",
+      "two_sided_alpha": 0.05
+    },
+    "guardrails": {
+      "false_clear_difference_upper_confidence_bound_max": 0.01,
+      "known_coverage_difference_lower_confidence_bound_min": -0.02,
+      "minimum_favorable_parent_fraction": 0.75,
+      "all_unknown_forbidden": true,
+      "single_parent_driver_forbidden": true,
+      "critical_stratum_reversal_forbidden": true
+    },
+    "critical_strata": [
+      "portrait versus landscape",
+      "truth clearance within 0.10 m of a decision boundary",
+      "AppleDepth confidence 1 versus 2",
+      "range 0-1 m versus 1-2 m"
+    ],
+    "factor_specific_diagnostics": "all seven non-primary oracle-versus-none contrasts reported with Holm family-wise correction; no diagnostic arm can replace the primary comparison",
+    "failure_routing": {
+      "all_factor_no_headroom": "close the GaugeFix causal-headroom mechanism for this source/version",
+      "supported_subset_only": "shrink any future state to the predeclared supported factor subset; no full-state training",
+      "false_clear_or_coverage_guardrail_fail": "reject the apparent headroom even if interval score improves",
+      "execution_invalid": "close the evidence version without scientific interpretation"
+    }
+  },
+  "resource_budget": {
+    "source_download_content_length_preflight_required": true,
+    "maximum_compressed_source_bytes": 21474836480,
+    "maximum_materialized_source_bytes": 53687091200,
+    "truth_only_materialization_wall_seconds": 43200,
+    "truth_only_peak_rss_bytes": 12884901888,
+    "o0r_execution_wall_seconds": 28800,
+    "o0r_peak_rss_bytes": 17179869184,
+    "o0r_peak_vram_bytes": 12884901888,
+    "maximum_scientific_evidence_bytes": 2147483648,
+    "network_allowed_only_for_bound_source_assets": true,
+    "training_steps": 0,
+    "device_or_android": false
+  },
+  "artifact_isolation": {
+    "historical_o0m_root": "artifacts.local/evidence/taro/o0m-analytic-mechanics-r0",
+    "future_source_root": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r0",
+    "future_work_root": "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r0",
+    "future_truth_evidence_root": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r0",
+    "future_o0r_evidence_root": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r0",
+    "all_future_roots_must_be_absent_at_contract_lock": true,
+    "historical_o0m_read_only": true,
+    "overwrite_or_rerun_historical_o0m": false
+  },
+  "execution_authority": {
+    "contract_design": true,
+    "metadata_and_signed_receipt_read": true,
+    "source_payload_download": false,
+    "source_adapter_implementation": false,
+    "truth_materialization": false,
+    "depthart_inference": false,
+    "factorial_execution": false,
+    "training": false,
+    "development_promotion": false,
+    "g0_g1_a0_a1_j0": false,
+    "android_qnn_htp": false,
+    "default_app": false,
+    "product": false,
+    "safety": false
+  },
+  "unique_successor": "TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK",
+  "successor_scope": "Implement and statically test only the frozen receipt, truth, uncertainty and factor-injection adapter in a new TARO module; no source payload download, truth materialization, DepthART inference or scientific arm execution until implementation hashes and a separate truth-only one-shot preflight lock are committed.",
+  "claim_ceiling": "Outcome-blind ARKitScenes TRAIN source, role, truth derivation, uncertainty calibration, query and deterministic injection contract only. No source payload was opened for these 24 identities, no model output or real O0R outcome exists, and no causal-headroom, wearable, active observation, device, product or safety claim is established."
+}

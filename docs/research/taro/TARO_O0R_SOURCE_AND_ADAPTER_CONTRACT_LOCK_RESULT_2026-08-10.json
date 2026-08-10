@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist.taro.o0r.source_adapter_contract_lock_result.v1",
+  "result_id": "TARO_O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_RESULT_2026-08-10",
+  "evaluated_at": "2026-08-10",
+  "research_mode": "WILD_LAB",
+  "terminal": "TARO_O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_PASS",
+  "scientific_status": "NOT_RUN",
+  "execution_authority": false,
+  "bindings": {
+    "contract": {
+      "path": "docs/research/taro/TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.json",
+      "bytes": 29779,
+      "sha256": "C75D6C3B909C823A6E513A5CA4A9C37DF74AF125B2F3D71C035A652EA0E34806"
+    },
+    "module_readme": {
+      "path": "scripts/research/taro_o0r_source_adapter/README.md",
+      "bytes": 2741,
+      "sha256": "B5DC0F10BC69E28EF5571B045F07FDCA859B9D2F3B92B6BEC2B7A9EC58BB5639"
+    },
+    "validator": {
+      "path": "scripts/research/taro_o0r_source_adapter/validate_taro_o0r_source_adapter_contract.py",
+      "bytes": 22825,
+      "sha256": "4CC62CA0490199D9BC3B790C2CA683B232C5CB93A99B6966A3D7812ED0A39051"
+    },
+    "mutation_tests": {
+      "path": "scripts/research/taro_o0r_source_adapter/test_validate_taro_o0r_source_adapter_contract.py",
+      "bytes": 8487,
+      "sha256": "AC2CC8BA10A8929AABE46F0439D08E4121E0F19580975544E22CA5E6E06E8637"
+    }
+  },
+  "static_validation": {
+    "status": "VALID",
+    "mutation_tests_passed": 21,
+    "mutation_tests_failed": 0,
+    "bound_file_count": 14,
+    "pinned_exclusion_identity_count": 100,
+    "pinned_exclusion_sha256": "E9D948F2F6286DE3D307C6FD379DE0EAE34322693030310EF3DC8770DC3C7A7D",
+    "adapter_fit_parent_count": 8,
+    "o0r_eval_candidate_parent_count": 16,
+    "visit_video_overlap": 0,
+    "future_artifact_roots_absent": true,
+    "historical_o0m_root_read_only": true,
+    "semantic_seams_frozen": [
+      "MODEL_FREE_SCALE_TRUTH_ONLY",
+      "RIGHT_POSE_BRACKET_WATERMARK",
+      "NINE_QUERY_BOUND_RECEIPTS",
+      "SOURCE_SPECIFIC_RECEIPT_NO_P0_OVERCLAIM",
+      "NEW_TARO_QUERY_REDUCER"
+    ]
+  },
+  "frontdoor_contract": {
+    "complete_factor_query_truth": "FROZEN_NOT_MATERIALIZED",
+    "truth_clear_and_truth_occupied_parent_support": "NUMERIC_GATES_FROZEN_NOT_OBSERVED",
+    "continuous_boundary_truth": "FARO_DERIVATION_FROZEN_NOT_MATERIALIZED",
+    "uncertainty_truth": "ADAPTER_FIT_REAL_RESIDUAL_CONTRACT_FROZEN_NOT_FIT",
+    "target_timestamp_pose_receipt": "EXACT_DECIMAL_FRAME_AND_POSE_BRACKET_TIMESTAMPS_WITH_RIGHT_BRACKET_WATERMARK_FROZEN_NOT_MATERIALIZED",
+    "deterministic_factor_injection": "EIGHT_ARM_COPY_PATCH_NEW_TARO_QUERY_REDUCER_CONTRACT_FROZEN_NOT_IMPLEMENTED",
+    "fresh_paired_outcome": "SIXTEEN_VISIT_DISJOINT_CANDIDATE_PARENTS_FROZEN_UNOPENED",
+    "roles_and_statistics": "FROZEN",
+    "o0m_isolation": "PASS"
+  },
+  "not_performed": [
+    "source payload download",
+    "selected source RGB/depth/FARO body access",
+    "truth or uncertainty materialization",
+    "DepthART inference",
+    "factorial arm execution",
+    "model training or checkpoint selection",
+    "G0, G1, A0, A1 or J0",
+    "Android, QNN or HTP execution"
+  ],
+  "current_state": "TARO_O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_PASS / TRUTH_PREFLIGHT_NOT_RUN / O0R_SCIENTIFIC_NOT_RUN / EXECUTION_NOT_AUTHORIZED",
+  "unique_successor": "TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK",
+  "successor_scope": "Implement and statically test only the frozen receipt, truth, uncertainty and factor-injection adapter. No source payload download, truth materialization, DepthART inference or scientific execution.",
+  "claim_ceiling": "A validated pre-outcome ARKitScenes source, role, source-specific receipt, virtual query, truth, uncertainty and deterministic injection contract. It explicitly does not claim a complete P0 FrameReceipt, independent metric anchor or wearable camera-body transform. No real source truth or O0R outcome was produced, and no factor-headroom, GaugeFix, PARA, wearable, device, product or safety claim is established."
+}

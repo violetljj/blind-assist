@@ -513,8 +513,9 @@ raw/task parity、延迟、内存、功耗与设备退化。M0 不改变默认 A
 
 - B1 consumed Selection/anatomy：`DIAGNOSTIC_ONLY`，只能帮助形成问题，不能选 factor、状态、
   threshold、action 或 gate；
-- 当前 ARKitScenes TRAIN：只有后续 source-specific protocol 明确允许后，才能承担
-  mechanics/oracle/source-characterization；不能自动成为 TARO Development；
+- 历史 ARKitScenes B0 TRAIN：只能按既有 receipt 承担 mechanics/source-characterization；新的
+  O0R contract 已另行冻结 24 个未打开、visit-disjoint 的 upsampling TRAIN parent，但在 truth-only
+  preflight 前仍不能成为 TARO scientific outcome 或 Development promotion evidence；
 - analytic synthetic：可验证坐标、interval、observability 与 mutation mechanics，不证明真实效用；
 - Teacher/model-generated：只能作为明确 provenance 的 offline target/upper bound，不能冒充 sensor GT。
 
@@ -772,8 +773,10 @@ diagnostic 或 future baseline，不用换 seed、降门或扩大组合进行 af
 结果是不可回写的历史事实；已消费的 O0M one-shot 不得覆盖、删除或重跑。本指南没有隐含下一步，
 也不能把后续阶段列表解释为执行队列。
 
-只有 current 将来基于新的、outcome 前冻结的 source-and-adapter contract 显式建立 O0R successor，
-才可讨论真实执行。该合同至少必须同时关闭：
+本节原冻结的重开条件现已由 current 指向的
+[ARKitScenes source-and-adapter contract](TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.md)
+在协议层满足，并由
+[lock result](TARO_O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_RESULT_2026-08-10.md) 静态签署。合同同时冻结：
 
 - complete factor/query truth 与 truth-clear factor bundle；
 - continuous boundary/uncertainty truth、target timestamp/pose；
@@ -782,8 +785,9 @@ diagnostic 或 future baseline，不用换 seed、降门或扩大组合进行 af
 - O0R arms、primary metrics、non-inferiority、预算、timeout 和 failure scope；
 - 为什么该版本与已完成 synthetic O0M 的 claim 和 artifact root 完全隔离。
 
-在此之前，只允许 current 明列的只读审计、文献去重、接口设计和数据字段映射；不得创建新的 TARO
-runner、模型、checkpoint、数据 materializer、主动提示或 Android 代码。
+这只把路线从“无 successor”推进到 implementation lock。当前仍只允许实现和静态测试冻结的
+receipt/truth/uncertainty/injection adapter；不得下载 24 个 selected source body、物化 truth、运行
+DepthART、创建 scientific runner/checkpoint、主动提示或 Android 代码。
 
 ### 17.1 O0R 候选源只读能力映射（NON_AUTHORIZING）
 
@@ -794,9 +798,19 @@ payload，也没有赋予数据角色。状态词只允许 `CANDIDATE_METADATA_M
 |---|---|---|---|
 | [Aria Digital Twin](https://facebookresearch.github.io/projectaria_tools/docs/open_datasets/aria_digital_twin_dataset/data_format) | 穿戴式 raw/synthetic streams、timestamp、online calibration、6DoF trajectory、depth/segmentation、部分 skeleton/object GT | body-swept query truth、continuous boundary/uncertainty、自然 paired micro-action、parent/site 独立性、许可/角色、deterministic injection | `CANDIDATE_METADATA_MAPPED / GAP_OPEN / NOT_ADMITTED` |
 | [ScanNet++](https://scannetpp.mlsg.cit.tum.de/scannetpp/documentation) | 高精度 laser/mesh、注册 DSLR、iPhone RGB-D、ARKit pose/intrinsics/IMU metadata | 穿戴式 mount/timing、动作交互与真实相机微基线 pair、body/query truth、boundary uncertainty、角色/adapter | `CANDIDATE_METADATA_MAPPED / GAP_OPEN / NOT_ADMITTED` |
+| [ARKitScenes O0R contract](TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.md) | 8 fit + 16 eval-candidate fresh TRAIN visits；registered FARO/AppleDepth、RGB、confidence、K、pose；truth/query/uncertainty/injection/statistics 已冻结 | source payload、truth-only preflight、adapter implementation、DepthART 与 O0R outcome 均未运行；手持域不能冒充穿戴式/active authority | `SOURCE_CONTRACT_FROZEN / PAYLOAD_UNOPENED / SCIENTIFIC_NOT_RUN` |
 | TwinScene future candidate | 可设计 exact factor/query interventions 与 matched nuisance pairs | renderer/cross-renderer/physical-pair validity、real anchor、independent truth、split family、许可与全部 O0R adapter | `GAP_OPEN / NOT_ADMITTED` |
 
 任何后续 source audit 至少逐项记录：K/pose/IMU/timestamp、mesh/depth、boundary/uncertainty、factor/query
 truth、paired observations、parent/session/site identity、license/use scope 与 deterministic adapter feasibility。
 单个字段存在不等于 source 可用；缺失项保持 `UNKNOWN/GAP_OPEN`，不得当 negative，也不得由 teacher
 或生成器填成 truth。只有 current 另立 outcome 前冻结的 source-specific contract，才可能改变状态。
+
+### 17.2 当前重开状态
+
+ARKitScenes R0 contract 的 24 个 identity 只从官方 Training metadata 与 pinned exclusion snapshot
+产生，body/outcome 未打开。当前唯一 successor 是
+`TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK`，只允许实现和静态测试 adapter。
+真实 O0R 仍须依次通过 implementation lock、独立 truth-only one-shot preflight lock 与 source gate；
+任一 gate 失败都终止该 evidence version，不得换 parent、降 denominator、先看 DepthART output 或回写
+本指南中的 gate。
