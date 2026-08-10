@@ -1,0 +1,104 @@
+{
+  "schema": "blindassist.taro.o0r.materializer_input_persistence_amendment_lock.v1",
+  "lock_id": "TARO_O0R_ARKITSCENES_MATERIALIZER_INPUT_AND_PERSISTENCE_AMENDMENT_LOCK",
+  "date": "2026-08-10",
+  "research_mode": "WILD_LAB",
+  "status": "LOCKED_EXECUTION_NOT_AUTHORIZED",
+  "scientific_status": "NOT_RUN",
+  "bindings": [
+    {
+      "role": "SOURCE_AND_ADAPTER_CONTRACT",
+      "path": "docs/research/taro/TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.json",
+      "bytes": 29779,
+      "sha256": "C75D6C3B909C823A6E513A5CA4A9C37DF74AF125B2F3D71C035A652EA0E34806"
+    },
+    {
+      "role": "SOURCE_ADAPTER_IMPLEMENTATION_LOCK",
+      "path": "docs/research/taro/TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_2026-08-10.json",
+      "bytes": 6177,
+      "sha256": "6A040C040B45F1DE27700CBDE11DEA1B2FED1487BFDD718F8D62435ACBA1397E"
+    },
+    {
+      "role": "TRUTH_ONLY_PREFLIGHT_LOCK",
+      "path": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK_2026-08-10.json",
+      "bytes": 16548,
+      "sha256": "E494F94379BC80F9274CE2FD6D3CB19D3D1B37102380DE9E333EAD32D1DF9CA4"
+    },
+    {
+      "role": "TARO_DATA_USE_AUTHORIZATION",
+      "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-10.json",
+      "bytes": 3348,
+      "sha256": "B8196C557D2F333212632FEEAB38BB1020F32A84CEB0D20EF6CC3EB3ABE5B58D"
+    }
+  ],
+  "frame_roster_rule": {
+    "source_member_stem": "{video_id}_{timestamp_token}",
+    "timestamp_token_rule": "exact suffix after the final underscore, parsed by Decimal to integer nanoseconds; exponent, negative, sub-nanosecond and same-ns alias tokens are rejected",
+    "exact_frame_denominator": "all source stems present in color/highres_depth/lowres_depth/confidence, with exact-stem pincam and an in-domain pose bracket of at most 0.25 seconds",
+    "ordering": "ascending exact timestamp nanoseconds, then original token",
+    "sampling_or_limit": null,
+    "earliest_n_allowed": false,
+    "truth_or_model_dependent_selection": false,
+    "parent_replacement_or_role_reassignment": false
+  },
+  "phase_order": {
+    "step_1": "validate every bound asset and freeze every parent exact-frame denominator",
+    "step_2": "decode every exact ADAPTER_FIT frame from all eight fit parents",
+    "step_3": "fit and seal the factory-bound uncertainty model while eval payload decode count remains zero",
+    "step_4": "decode all exact O0R_EVAL_CANDIDATE frames and derive source eligibility",
+    "step_5": "build exactly nine FARO truth query bundles for every source-eligible frame",
+    "eval_payload_decode_before_uncertainty_seal": 0,
+    "model_outputs_during_all_steps": 0
+  },
+  "query_uncertainty_lookup_rule": {
+    "caller_scalar_allowed": false,
+    "unit": "one frozen query receipt",
+    "depth_source": "registered FARO sampled at frozen AppleDepth pixel centers",
+    "confidence_source": "bound AppleDepth confidence at the same sampled pixels",
+    "common_support": "valid FARO samples whose unprojected points have inclusive along-path coordinate from minimum_forward_m through exactly horizon_m and ground-projected perpendicular distance at most capsule_radius_m",
+    "upper_endpoint_rule": "exactly horizon_m inclusive; GEOMETRY_ENDPOINT_TOLERANCE_M is not added to uncertainty lookup support",
+    "support_plane_height_gate": "none; on-support-plane means ground-projected perpendicular corridor distance, not an additional absolute-height filter",
+    "confidence_value": "highest confidence index among modes over query common support",
+    "range_m": "median FARO z over the same query common support",
+    "empty_or_insufficient_common_support": "QUERY_UNCERTAINTY_SUPPORT_INVALID_FRAME_NOT_ADMITTED",
+    "same_scalar_reused_across_nine_queries": false
+  },
+  "source_member_provenance_envelope": {
+    "schema": "blindassist.taro.o0r.bound_source_frame_envelope.v1",
+    "required_per_role": [
+      "source_container_sha256",
+      "source_member_path",
+      "source_member_bytes",
+      "source_member_sha256",
+      "source_member_crc32",
+      "canonical_member_path",
+      "decoded_content_sha256"
+    ],
+    "canonical_mapping_rule": "official {video_id}_{timestamp_token} members are never presented as original timestamp-only members; the outer envelope binds the original path and an explicit canonical path used by the frozen in-memory adapter",
+    "silent_rename_allowed": false,
+    "envelope_hash_required_in_truth_artifact": true
+  },
+  "persistence_contract": {
+    "artifact_schema": "blindassist.taro.o0r.content_addressed_array_artifact.v1",
+    "array_blob_schema": "blindassist.taro.ndarray_blob_ref.v1",
+    "array_storage": "deterministic little-endian canonical bytes compressed with gzip mtime=0",
+    "json_payload": "canonical JSON with every ndarray replaced by a content-addressed blob reference",
+    "round_trip_gate": "hydrate every blob, verify blob SHA/bytes/shape/dtype, then require the hydrated artifact canonical SHA-256 to equal the in-memory source-adapter artifact SHA-256",
+    "hash_only_without_reload_gate_allowed": false,
+    "overwrite_or_resume": false
+  },
+  "execution_authority": {
+    "amendment_lock": true,
+    "materializer_implementation": false,
+    "head_or_network": false,
+    "source_payload_open": false,
+    "truth_materialization": false,
+    "depthart_inference": false,
+    "factorial_execution": false,
+    "training": false,
+    "device": false,
+    "product": false,
+    "safety": false
+  },
+  "claim_ceiling": "This outcome-blind amendment only closes the exact-frame roster, per-query uncertainty lookup, original-member provenance and array persistence seams required by the frozen materializer successor. No HEAD/source/truth/model execution or scientific claim is established."
+}

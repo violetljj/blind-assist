@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0M_ONE_SHOT_CONSUMED / O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_PASS / O0R_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_PASS / O0R_TRUTH_ONLY_PREFLIGHT_LOCK_PASS / HEAD_NOT_RUN / ONE_SHOT_UNCONSUMED / O0R_SCIENTIFIC_NOT_RUN / EXECUTION_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0M_ONE_SHOT_CONSUMED / O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_PASS / O0R_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_PASS / O0R_TRUTH_ONLY_PREFLIGHT_LOCK_PASS / O0R_DATA_USE_AUTHORIZED / O0R_TRUTH_MATERIALIZER_IMPLEMENTATION_LOCK_PASS / HEAD_NOT_RUN / SOURCE_UNOPENED / ONE_SHOT_UNCONSUMED / O0R_SCIENTIFIC_NOT_RUN / EXECUTION_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -76,6 +76,12 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [TARO O0R truth-only preflight lock](TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK_2026-08-10.md)：
   精确冻结 24-parent × 3-asset 的 72 个 HEAD target、静态 argv、环境、预算、授权缺口和四个 absent roots；
   `HEAD_NOT_RUN / ONE_SHOT_UNCONSUMED / EXECUTION_NOT_AUTHORIZED`；
+- [TARO O0R data-use authorization](TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-10.json)：
+  用户原文授权锁定 24 个 Training video 的 HEAD、bounded source/truth-only WILD_LAB 使用；授权本身不激活 runner；
+- [TARO O0R materializer amendment](TARO_O0R_ARKITSCENES_MATERIALIZER_INPUT_AND_PERSISTENCE_AMENDMENT_LOCK_2026-08-10.md)：
+  冻结 all-exact frame roster、fit-before-eval、per-query lookup、original-member envelope 与 ndarray reload gate；
+- [TARO O0R truth materializer implementation lock](TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_IMPLEMENTATION_LOCK_2026-08-10.md)：
+  HEAD/source/truth runner、atomic writer 与 24/24 synthetic focused tests 已 hash-bound；HEAD/source/truth 仍未运行；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -86,7 +92,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_ARKITSCENES_TRUTH_ONLY_MATERIALIZER_IMPLEMENTATION_LOCK`
+`TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -98,14 +104,14 @@ TRAIN parent 已按 pinned exclusion + SHA 排序分配为 `8 ADAPTER_FIT + 16 O
 FARO-only factor/query truth、real-residual uncertainty、exact timestamp/K/pose receipt、八臂
 deterministic injection、parent-level statistics、预算和 failure scope 均已冻结并通过静态验证。
 
-纯内存 adapter 现已实现并以 44/44 synthetic focused tests 关闭 implementation seam：覆盖 exact
+纯内存 adapter 已以 44/44 synthetic focused tests 关闭其 implementation seam：覆盖 exact
 timestamp/pose watermark、冻结 role/roster/asset/decoded-content binding、由 FARO support geometry 生成的
 source+9-query receipt、由绑定 FARO/AppleDepth/confidence 内推的 fit-only uncertainty、FARO 与
 candidate-depth 双 extractor、deep-read-only whole geometry/immutable base/common support、sparse
 BOUNDARY、固定 model/checkpoint/metric-zero candidate output receipt、独立 TARO query reducer、genuine
 truth-only 9/9 bundle 与带逐组件 lineage/parent context 的 8×2 injection；公开 API 不提供 caller residual、
-factor reseal 或 self-signed truth-only scale correction。该 Module 不包含 downloader、
-archive reader、materializer、DepthART runner、scientific evaluator 或 artifact writer。
+factor reseal 或 self-signed truth-only scale correction。该 Module 本身不包含 downloader、archive reader、
+materializer、DepthART runner、scientific evaluator 或 artifact writer；source I/O 由独立 materializer Module 承担。
 
 truth-only preflight lock 现已静态通过：它从合同重算 24 个 parent，并以 3 个 URL template 展开
 72 个唯一 Training HEAD target；request-plan SHA、离线复验 argv、Python/NumPy/SciPy/Pillow 环境、
@@ -114,11 +120,16 @@ Content-Length，也未创建或消费 one-shot root；绑定的旧 Assistive Ge
 缺 trajectory，不能授权 TARO body access。此外 `47333152` 被官方 downloader 列为缺少 3DOD assets，
 未来 trajectory HEAD 若非 `200 + Content-Length`，R0 必须 `NOT_EVALUABLE`，不得换 parent。
 
-因此当前是 `O0R_TRUTH_ONLY_PREFLIGHT_LOCK_PASS / HEAD_NOT_RUN / ONE_SHOT_UNCONSUMED /
-O0R_SCIENTIFIC_NOT_RUN / EXECUTION_NOT_AUTHORIZED`，而不是真实 preflight/admission PASS。唯一 successor
-只有在新 TARO-specific signed 24-parent × 3-asset receipt 已存在后，才允许实现并静态测试 fail-closed
-HEAD/source/truth materializer 与 atomic writer；仍不得执行网络/source/truth、运行 DepthART/O0R 或进入
-`G0/G1/A0/A1/J0`。
+用户随后以原文授权该锁定 roster 的 HEAD 与 bounded source/truth-only WILD_LAB 使用；outcome-blind
+amendment 进一步冻结 all-exact denominator、8-parent fit-before-eval、每 query 独立 FARO/confidence lookup、
+official member provenance 与 content-addressed ndarray reload。独立 materializer Module 已实现 HEAD/source/truth
+runner、atomic one-shot writer，并通过 24/24 focused tests（含消费后故障注入）与 6/6 lock-validator mutation tests；未发送 HEAD/GET、
+未打开 selected source、未创建 root、未拟合真实 uncertainty 或物化 truth。
+
+因此当前是 `O0R_TRUTH_MATERIALIZER_IMPLEMENTATION_LOCK_PASS / HEAD_NOT_RUN / SOURCE_UNOPENED /
+ONE_SHOT_UNCONSUMED / O0R_SCIENTIFIC_NOT_RUN / EXECUTION_NOT_AUTHORIZED`，而不是真实 availability/admission PASS。
+唯一 successor 只允许冻结另一个 exact、HEAD-only、zero-body execution lock；该 successor 尚未存在，当前
+仍不得发送 HEAD，更不得 GET/source/truth、运行 DepthART/O0R 或进入 `G0/G1/A0/A1/J0`。
 
 P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
 finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份
@@ -138,6 +149,8 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
   `scripts/research/taro_o0r_source_adapter_runtime/`，无 source I/O、model runner 或 artifact writer。
 - O0R truth-only preflight 静态 validator 位于 `scripts/research/taro_o0r_truth_preflight/`；它只重算
   exact roster/URL/request digest/binding/budget/authority/root absence，无网络代码或 artifact writer。
+- O0R HEAD/source/truth implementation 位于 `scripts/research/taro_o0r_truth_materializer_runtime/`；两个
+  production runner 都必须先验证各自未来的 hash-bound execution lock，当前调用只能 fail closed。
 - B1 Selection 已消费，Calibration/Confirmation 继续 sealed；A0 anatomy 只能
   `DIAGNOSTIC_ONLY`。TARO 不继承 B1 threshold、seed outcome、best checkpoint 或晋级权限。
 - 当前 ARKitScenes TRAIN 原始 K/pose/depth 能力不等于 TARO target 已物化，也不自动获得
@@ -158,8 +171,9 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 
 - 维护本路线 current 与详细路线指南；
 - outcome-blind 的文献去重、接口设计、数据字段映射和解析公式检查；
-- 重放 hash-bound O0R adapter 的 44 项 synthetic tests，以及 truth-only preflight lock 的 8 项静态/
-  mutation tests；在新 TARO-specific signed receipt 后实现并静态测试 frozen materializer，但不得执行；
+- 重放 hash-bound O0R adapter 的 44 项、materializer 的 24 项 synthetic tests、6 项 implementation-lock
+  mutation tests，以及 truth-only preflight lock 的 8 项静态/mutation tests；
+- 仅 outcome-blind 地起草、验证并提交下一份 exact HEAD-only execution lock；提交前不得调用 HEAD runner；
 - 只读审计候选公开数据源的文档、许可、字段与能力，并记录 `CANDIDATE_METADATA_MAPPED` /
   `GAP_OPEN` / `NOT_ADMITTED`；该映射不等于下载、source admission 或 O0R successor；
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；

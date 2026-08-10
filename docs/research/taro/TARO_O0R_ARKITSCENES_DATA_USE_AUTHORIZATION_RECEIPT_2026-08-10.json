@@ -1,0 +1,71 @@
+{
+  "schema": "blindassist.taro.o0r.data_use_authorization_receipt.v1",
+  "receipt_id": "TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-10",
+  "confirmed_by": "user",
+  "confirmed_at": "2026-08-10",
+  "confirmation_verbatim": "我授权 TARO O0R 使用锁定的 24 个 ARKitScenes Training 视频及每个视频的 upsampling.zip、lowres_wide_intrinsics.zip、lowres_wide.traj，用于 HEAD 预检和 source/truth-only WILD_LAB 物化与校验",
+  "scope_binding": {
+    "preflight_lock_path": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK_2026-08-10.json",
+    "preflight_lock_bytes": 16548,
+    "preflight_lock_sha256": "E494F94379BC80F9274CE2FD6D3CB19D3D1B37102380DE9E333EAD32D1DF9CA4",
+    "request_plan_sha256": "C0F0D41E381333BEFF4C2C0EC4678BC75A22C86173E11B3150F7F7FFBCB18927"
+  },
+  "interpreted_scope": {
+    "research_route": "TARO_O0R_ARKITSCENES_TRUTH_ONLY",
+    "official_fold": "Training",
+    "selected_parent_count": 24,
+    "selected_video_ids": [
+      "47332075",
+      "47332946",
+      "47333152",
+      "42898071",
+      "47333776",
+      "47333043",
+      "44358241",
+      "47333876",
+      "45261294",
+      "47430058",
+      "47895909",
+      "45261689",
+      "47670295",
+      "47670346",
+      "47115143",
+      "42445766",
+      "42897405",
+      "47332015",
+      "44796438",
+      "47204874",
+      "42445723",
+      "45260952",
+      "48018757",
+      "42445698"
+    ],
+    "authorized_asset_patterns": [
+      "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/upsampling/Training/{video_id}.zip",
+      "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw/Training/{video_id}/lowres_wide_intrinsics.zip",
+      "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw/Training/{video_id}/lowres_wide.traj"
+    ],
+    "authorized_operations": [
+      "HEAD-only availability and Content-Length preflight for the exact 72 bound URLs",
+      "bounded download and integrity validation of the exact authorized source assets",
+      "source/truth-only WILD_LAB materialization and validation"
+    ],
+    "authorization_does_not_itself_activate_execution": true,
+    "separate_implementation_and_execution_locks_required": true
+  },
+  "source_license": {
+    "path": "artifacts.local/downloads/ARKitScenes-7283761/LICENSE",
+    "sha256": "D8D156565F81B4B56B37A6D5A68A223A0874ED1131BAC6A404B0D5E765189071",
+    "use_must_remain_within_source_terms": true,
+    "redistribution_authorized": false
+  },
+  "scientific_firewalls_preserved": {
+    "no_parent_replacement_or_role_reassignment": true,
+    "model_outputs_absent_during_truth_only_stage": true,
+    "depthart_or_factorial_execution_not_granted_by_receipt": true,
+    "training_not_granted_by_receipt": true,
+    "development_or_confirmation_access_not_granted": true,
+    "unknown_is_negative": false
+  },
+  "authority": "Use of the exact locked 24 ARKitScenes Training videos and three asset types for HEAD preflight plus source/truth-only TARO O0R WILD_LAB materialization and validation, subject to separate implementation and execution locks and ARKitScenes terms. This receipt does not itself activate network/source execution, DepthART, factorial arms, training, deployment, product, production, safety or redistribution authority."
+}
