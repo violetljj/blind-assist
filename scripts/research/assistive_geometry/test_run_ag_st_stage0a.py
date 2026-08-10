@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import hashlib
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -12,6 +14,8 @@ from run_ag_st_stage0a import (  # noqa: E402
     compute_selective_metrics,
     estimate_observed_anchor_scale,
     make_withheld_pattern,
+    resolve_trajectory_path,
+    select_source_videos,
     select_train_videos,
     split_observed_and_hidden_depth,
 )
@@ -44,8 +48,46 @@ class AgStStage0ATest(unittest.TestCase):
             ]
         }
         self.assertEqual(["b", "a"], [row["video_id"] for row in select_train_videos(manifest, ["b", "a"])])
-        with self.assertRaisesRegex(ValueError, "not frozen TRAIN"):
+        with self.assertRaisesRegex(ValueError, "manifest role TRAIN"):
             select_train_videos(manifest, ["c"])
+
+    def test_source_role_token_preserves_external_train_role(self) -> None:
+        manifest = {
+            "videos": [
+                {"video_id": "a", "role": "train"},
+                {"video_id": "b", "role": "validation"},
+            ]
+        }
+        selected = select_source_videos(
+            manifest,
+            ["a"],
+            role_token="train",
+        )
+        self.assertEqual(["a"], [row["video_id"] for row in selected])
+        with self.assertRaisesRegex(ValueError, "manifest role train"):
+            select_source_videos(manifest, ["b"], role_token="train")
+
+    def test_trajectory_resolves_from_scoped_media_asset_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            trajectory = root / "lowres_wide.traj"
+            payload = b"0 0 0 0 0 0 0\n"
+            trajectory.write_bytes(payload)
+            video = {
+                "extracted": {
+                    "lowres_wide": [
+                        {"path": str(root / "lowres_wide" / "frame.png")}
+                    ]
+                },
+                "source_assets": [
+                    {
+                        "asset": "lowres_wide.traj",
+                        "content_length_bytes": len(payload),
+                        "archive_sha256": hashlib.sha256(payload).hexdigest().upper(),
+                    }
+                ],
+            }
+            self.assertEqual(trajectory, resolve_trajectory_path(video))
 
     def test_observed_anchor_scale_corrects_metric_bias(self) -> None:
         observed = np.asarray([[1.0, 2.0], [0.0, 4.0]], dtype=np.float32)

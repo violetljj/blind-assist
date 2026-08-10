@@ -91,21 +91,27 @@
   orientation parity、component split/merge、uncertainty monotonicity 与 final-task shortcut 拒绝。
 - `run_factor_tensor_adapter_canary.py`：只接受 SHA-bound implementation lock，用两个独立进程重放
   每个 frozen case，并只写未存在的版本化 synthetic evidence root。
-- `run_ag_st_stage0a.py`：独立 `WILD_LAB` factor-only runner；从 B0 raw source 读取 RGB/K/pose/partial
-  depth，以确定性连续块隐藏 reference，执行 source-anchored MapAnything，并输出 baseline、校准前后
-  depth residual 与 confidence risk-coverage。它不读取 clearance/occupancy，不物化 canonical label，
-  不改变 F1 execution authority。
-- `test_run_ag_st_stage0a.py`：覆盖隐藏 reference 不回流 Teacher input、mask 可重放、TRAIN-only source
-  选择、observed-anchor scale 与 confidence selective metrics。
+- `run_ag_st_stage0a.py`：独立 `WILD_LAB` factor-only runner；source role 参数化，可从 B0 raw manifest
+  或 scoped-media manifest 恢复 RGB/K/pose/partial depth，以确定性连续块隐藏 reference，执行
+  source-anchored MapAnything，并输出 baseline、校准前后 depth residual 与 confidence risk-coverage。
+  它不读取 clearance/occupancy，不物化 canonical label，不改变 F1 execution authority。
+- `test_run_ag_st_stage0a.py`：7 个 focused tests，覆盖隐藏 reference 不回流 Teacher input、mask 可重放、
+  source-role 选择、scoped trajectory receipt、observed-anchor scale 与 confidence selective metrics。
 - `build_ag_st_factor_labels.py`：把 Stage 0A source-first metric depth、anchor residual 与 multi-view
   reprojection residual 变成 A/B/C/UNKNOWN 分级 pseudo-label；输出 per-factor validity/provenance、
   support-plane、physical-boundary distance 和 uncertainty proxy，可直接供 masked student 读取。
 - `test_build_ag_st_factor_labels.py`：8 个 focused tests，覆盖 hidden-reference 隔离、reprojection、
   source priority、uncertainty、派生 provenance、连续 80° 斜面负控与真实 depth-step 正控。
 - `train_ag_st_masked_student.py`：冻结 DepthART-S 或 MobileNetV3 encoder，只训练小型 dense factor head；
-  按 parent 的固定 `12/2/2` split 使用 A/B/C tier weights，UNKNOWN 权重恒为零，并报告 depth、support、
-  boundary 与 obstacle evidence 的独立残差，不调用 deterministic reducer 或 task outcome。
-- `test_train_ag_st_masked_student.py`：覆盖 split 重放、零残差初始化、UNKNOWN loss 隔离与 tier 权重顺序。
+  对 16 parent 使用 orientation-stratified 固定 `12/2/2` split，支持 multifactor 与 boundary-only 负控，
+  使用 A/B/C tier weights，UNKNOWN 权重恒为零，并报告 depth、support、boundary 与 obstacle evidence
+  的独立残差，不调用 deterministic reducer 或 task outcome。
+- `test_train_ag_st_masked_student.py`：6 个 focused tests，覆盖 split 重放、非对称 orientation roster、
+  零残差初始化、multifactor/boundary-only UNKNOWN loss 隔离与 tier 权重顺序。
+- `evaluate_ag_st_student_checkpoint.py`：在严格 fresh parent 上零样本评估冻结 checkpoint；验证训练、
+  selection、canary 与 evaluation parent 零交集，不在 fresh cohort 上拟合、选阈值或继续训练。
+- `test_evaluate_ag_st_student_checkpoint.py`：3 个 focused tests，覆盖 parent firewall、macro improvement
+  符号与只用于诊断的 hash split 重放。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
@@ -127,10 +133,12 @@ roster 选择只依据冻结 metadata/hash，不读取模型输出或 task outco
 
 本模块的 B1-A0 及 A1–A4 已永久关闭；teacher 只有未激活的历史 C0 complementarity mechanics，
 历史 C0 teacher 路线当前不读取 teacher output，也不授权 C1、QNN/HTP、默认 App、产品或 safety。
-独立 AG-ST 已在 TRAIN-only `WILD_LAB` 中完成 MapAnything Stage 0A，并把 16 parent × 3 帧物化为
-48 份分级 pseudo-label NPZ，并已完成一次冻结 DepthART encoder 的 11,109 参数 masked-head 训练。
-内部 parent-disjoint canary 显示 depth/support/obstacle evidence 的部分学习信号，boundary 仍未通过；
-support/boundary 仍是 conservative pseudo-label、sigma 是 proxy，不产生完整 truth、正式 F1、产品或 safety authority。
+独立 AG-ST 已在 `WILD_LAB` 中完成 MapAnything Stage 0A、factor-label 物化和冻结 DepthART encoder
+masked-head 训练。两条独立的 train-parent 到 fresh-parent 零样本链均复现 depth/support 学习信号；
+obstacle 一条改善、一条退化，只是 diagnostic；boundary 在 multifactor、boundary-only 和两条 fresh
+zero-shot 评价中均未通过。累计 36 个互异 ARKitScenes parent 已被训练或评估角色消费；这不是跨数据源
+泛化。support/boundary 仍是 conservative pseudo-label、sigma 是 proxy，不产生完整 truth、正式 F1、
+产品或 safety authority。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。
 移动导出受历史 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry
 选模证据。新 R2 已完成 F0 reducer mechanics，并冻结 F1-P schema/loss/selection/Kill Gate；当前

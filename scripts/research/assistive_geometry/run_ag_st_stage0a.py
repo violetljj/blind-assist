@@ -55,6 +55,10 @@ DEFAULT_FRAME_INDICES_BY_PARENT = {
     "47204445": (205, 232, 260),
     "47334948": (55, 73, 92),
 }
+SUPPORTED_SOURCE_MANIFEST_SCHEMAS = {
+    "blindassist_assistive_geometry_b0_arkitscenes_pose_covered_media_manifest_v1",
+    "blindassist_spatial_calibration_head_r1_scoped_media_manifest",
+}
 RISK_QUANTILES = (0.0, 0.25, 0.50, 0.75, 0.90)
 
 
@@ -127,19 +131,63 @@ def estimate_observed_anchor_scale(
     return scale, support
 
 
-def select_train_videos(
-    manifest: dict[str, Any], parent_ids: Iterable[str]
+def select_source_videos(
+    manifest: dict[str, Any],
+    parent_ids: Iterable[str],
+    *,
+    role_token: str,
 ) -> list[dict[str, Any]]:
     requested = [str(value) for value in parent_ids]
     require(len(requested) == len(set(requested)), "duplicate parent id")
-    train = {
+    eligible = {
         str(video["video_id"]): video
         for video in manifest.get("videos", [])
-        if video.get("role") == "TRAIN"
+        if str(video.get("role")) == role_token
     }
-    missing = sorted(set(requested) - set(train))
-    require(not missing, f"requested parents are not frozen TRAIN parents: {missing}")
-    return [train[parent_id] for parent_id in requested]
+    missing = sorted(set(requested) - set(eligible))
+    require(
+        not missing,
+        f"requested parents do not have manifest role {role_token}: {missing}",
+    )
+    return [eligible[parent_id] for parent_id in requested]
+
+
+def select_train_videos(
+    manifest: dict[str, Any], parent_ids: Iterable[str]
+) -> list[dict[str, Any]]:
+    return select_source_videos(manifest, parent_ids, role_token="TRAIN")
+
+
+def resolve_trajectory_path(video: dict[str, Any]) -> Path:
+    """Resolve either an explicit trajectory receipt or a scoped-media asset."""
+    explicit = video.get("trajectory")
+    if explicit and explicit.get("path"):
+        path = Path(explicit["path"])
+        require(path.is_file(), f"trajectory missing: {path}")
+        return path
+
+    assets = [
+        row
+        for row in video.get("source_assets", [])
+        if row.get("asset") == "lowres_wide.traj"
+    ]
+    require(len(assets) == 1, "trajectory asset receipt missing or ambiguous")
+    rgb_rows = video.get("extracted", {}).get("lowres_wide", [])
+    require(rgb_rows, "cannot resolve trajectory without extracted RGB root")
+    path = Path(rgb_rows[0]["path"]).parent.parent / "lowres_wide.traj"
+    require(path.is_file(), f"trajectory asset missing: {path}")
+    receipt = assets[0]
+    if receipt.get("content_length_bytes") is not None:
+        require(
+            path.stat().st_size == int(receipt["content_length_bytes"]),
+            "trajectory byte receipt drift",
+        )
+    if receipt.get("archive_sha256"):
+        require(
+            sha256_file(path) == str(receipt["archive_sha256"]),
+            "trajectory SHA receipt drift",
+        )
+    return path
 
 
 def load_factor_source_frame(
@@ -460,8 +508,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     args.output_dir.mkdir(parents=True)
 
     manifest = json.loads(args.source_manifest.read_text(encoding="utf-8"))
-    require(manifest.get("schema") == "blindassist_assistive_geometry_b0_arkitscenes_pose_covered_media_manifest_v1", "source manifest schema drift")
-    videos = select_train_videos(manifest, args.parents)
+    require(
+        manifest.get("schema") in SUPPORTED_SOURCE_MANIFEST_SCHEMAS,
+        "source manifest schema unsupported",
+    )
+    videos = select_source_videos(
+        manifest,
+        args.parents,
+        role_token=args.source_role_token,
+    )
     frame_indices_by_parent: dict[str, list[int]] = {}
     for video in videos:
         parent_id = str(video["video_id"])
@@ -472,13 +527,17 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         )
         require(len(indices) >= 2, "each parent needs at least two views")
         for frame_index in indices:
-            require(0 <= frame_index < 300, f"frame index outside frozen window: {frame_index}")
+            require(
+                0 <= frame_index < len(video["selected_frame_stems"]),
+                f"frame index outside selected window: {frame_index}",
+            )
         frame_indices_by_parent[parent_id] = indices
 
     source_identity = {
         "manifest_path": str(args.source_manifest.resolve()),
         "manifest_sha256": sha256_file(args.source_manifest),
-        "role": "TRAIN_ONLY_CONSUMED_WILD_LAB",
+        "role": args.source_role_receipt,
+        "manifest_role_token": args.source_role_token,
         "parents": list(args.parents),
         "frame_indices_by_parent": frame_indices_by_parent,
         "withheld_mask": {
@@ -507,7 +566,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     for parent_index, video in enumerate(videos):
         parent_id = str(video["video_id"])
         parent_frame_indices = frame_indices_by_parent[parent_id]
-        trajectory = parse_trajectory(Path(video["trajectory"]["path"]))
+        trajectory = parse_trajectory(resolve_trajectory_path(video))
         raw_views: list[dict[str, Any]] = []
         frame_input_receipts: list[dict[str, Any]] = []
         for view_index, frame_index in enumerate(parent_frame_indices):
@@ -767,6 +826,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--model-dir", type=Path, default=DEFAULT_MODEL_DIR)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--parents", nargs="+", default=list(DEFAULT_PARENTS))
+    parser.add_argument("--source-role-token", default="TRAIN")
+    parser.add_argument(
+        "--source-role-receipt",
+        default="TRAIN_ONLY_CONSUMED_WILD_LAB",
+    )
     parser.add_argument(
         "--frame-indices",
         nargs="+",

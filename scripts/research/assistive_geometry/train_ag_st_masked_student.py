@@ -43,7 +43,8 @@ from arkitscenes_truth_reader import (  # noqa: E402
 )
 from run_ag_st_stage0a import (  # noqa: E402
     load_factor_source_frame,
-    select_train_videos,
+    resolve_trajectory_path,
+    select_source_videos,
 )
 
 
@@ -86,6 +87,7 @@ IMAGENET_STD = np.asarray((0.229, 0.224, 0.225), dtype=np.float32)
 TIER_WEIGHTS = torch.tensor((0.0, 0.25, 0.60, 1.0), dtype=torch.float32)
 BOUNDARY_BAND_PX = 2.0
 MAX_BOUNDARY_DISTANCE_PX = 32.0
+BOUNDARY_HEAT_SIGMA_PX = 3.0
 DEPTH_RESIDUAL_LOG_RANGE = 2.5
 LOSS_WEIGHTS = {
     "depth_log_huber": 1.0,
@@ -93,6 +95,11 @@ LOSS_WEIGHTS = {
     "boundary_bce": 0.50,
     "boundary_distance": 0.20,
     "obstacle_bce": 0.25,
+}
+BOUNDARY_ONLY_LOSS_WEIGHTS = {
+    "boundary_soft_heat_bce": 1.0,
+    "boundary_near_distance": 0.50,
+    "boundary_heat_distance_consistency": 0.10,
 }
 
 
@@ -221,10 +228,10 @@ def select_parent_split(
     for parent, output_hw in parent_shapes.items():
         family = "portrait" if shape_family(output_hw) == "portrait" else "landscape"
         groups[family].append(str(parent))
+    require(set(groups) == {"portrait", "landscape"}, "missing orientation stratum")
     require(
-        {name: len(values) for name, values in groups.items()}
-        == {"portrait": 8, "landscape": 8},
-        "unexpected AG-ST orientation strata",
+        all(len(values) >= 3 for values in groups.values()),
+        "orientation stratum too small for train/selection/canary",
     )
     train_parents: list[str] = []
     selection_parents: list[str] = []
@@ -242,9 +249,9 @@ def select_parent_split(
             }
             for parent in ranked
         ]
-        train_parents.extend(ranked[:6])
-        selection_parents.append(ranked[6])
-        canary_parents.append(ranked[7])
+        train_parents.extend(ranked[:-2])
+        selection_parents.append(ranked[-2])
+        canary_parents.append(ranked[-1])
     train_tuple = tuple(sorted(train_parents))
     selection_tuple = tuple(sorted(selection_parents))
     canary_tuple = tuple(sorted(canary_parents))
@@ -274,12 +281,22 @@ def build_frame_descriptors(
     require(stage0a.get("status") == "COMPLETED", "Stage 0A result is not complete")
     source = stage0a["source"]
     parent_ids = tuple(str(value) for value in source["parents"])
-    require(len(parent_ids) == 16 and len(set(parent_ids)) == 16, "Stage 0A parent roster drift")
+    require(
+        len(parent_ids) >= 4 and len(parent_ids) == len(set(parent_ids)),
+        "Stage 0A parent roster invalid",
+    )
     manifest_path = Path(source["manifest_path"]).resolve()
     require(manifest_path.is_file(), "source manifest missing")
     require(sha256_file(manifest_path) == source["manifest_sha256"], "source manifest SHA drift")
     manifest = load_json(manifest_path)
-    videos = {str(video["video_id"]): video for video in select_train_videos(manifest, parent_ids)}
+    videos = {
+        str(video["video_id"]): video
+        for video in select_source_videos(
+            manifest,
+            parent_ids,
+            role_token=str(source.get("manifest_role_token", "TRAIN")),
+        )
+    }
     parent_runs = {str(row["parent_id"]): row for row in stage0a["parent_runs"]}
     require(set(parent_runs) == set(parent_ids), "Stage 0A parent-run roster drift")
 
@@ -307,8 +324,12 @@ def build_frame_descriptors(
                     video=video,
                 )
             )
-    require(len(descriptors) == 48, "masked-student frame count drift")
-    require(len({row.frame_stem for row in descriptors}) == 48, "duplicate frame stem")
+    expected_frames = 3 * len(parent_ids)
+    require(len(descriptors) == expected_frames, "masked-student frame count drift")
+    require(
+        len({row.frame_stem for row in descriptors}) == expected_frames,
+        "duplicate frame stem",
+    )
     return descriptors, stage0a, manifest
 
 
@@ -489,7 +510,7 @@ def extract_depthart_features(
         targets, expected_intrinsics = load_targets(descriptor.label_path, descriptor.output_hw)
         if descriptor.parent_id not in trajectories:
             trajectories[descriptor.parent_id] = parse_trajectory(
-                Path(descriptor.video["trajectory"]["path"])
+                resolve_trajectory_path(descriptor.video)
             )
         image, intrinsics = preprocess_rgb(
             descriptor,
@@ -596,7 +617,7 @@ def extract_mobilenet_features(
         )
         if descriptor.parent_id not in trajectories:
             trajectories[descriptor.parent_id] = parse_trajectory(
-                Path(descriptor.video["trajectory"]["path"])
+                resolve_trajectory_path(descriptor.video)
             )
         image, _ = preprocess_rgb(
             descriptor,
@@ -821,6 +842,73 @@ def compute_student_losses(
     }
 
 
+def compute_boundary_only_losses(
+    outputs: dict[str, torch.Tensor],
+    targets: dict[str, torch.Tensor],
+) -> dict[str, torch.Tensor]:
+    """Train sparse physical boundaries as a continuous distance-derived heat field."""
+    target_distance = targets["boundary_distance_px"].clamp(
+        0.0,
+        MAX_BOUNDARY_DISTANCE_PX,
+    )
+    predicted_distance = outputs["boundary_distance_px"].clamp(
+        0.0,
+        MAX_BOUNDARY_DISTANCE_PX,
+    )
+    target_heat = torch.exp(-target_distance / BOUNDARY_HEAT_SIGMA_PX)
+    predicted_heat = torch.sigmoid(outputs["boundary_logits"])
+    evidence_weights = tier_weights(targets["evidence_tier"])
+    valid = targets["evidence_valid"]
+
+    # A small far-field floor still penalizes hallucinated boundaries, while
+    # the continuous near-field term prevents the 0.48% two-pixel band from
+    # disappearing inside millions of easy negatives.
+    heat_weights = evidence_weights * (0.05 + 20.0 * target_heat)
+    heat_raw = F.binary_cross_entropy_with_logits(
+        outputs["boundary_logits"],
+        target_heat,
+        reduction="none",
+    )
+    heat_loss = masked_weighted_mean(heat_raw, valid, heat_weights)
+
+    distance_weights = evidence_weights * (
+        0.05 + 10.0 * torch.exp(-target_distance / 6.0)
+    )
+    distance_raw = F.smooth_l1_loss(
+        torch.log1p(predicted_distance),
+        torch.log1p(target_distance),
+        reduction="none",
+        beta=0.15,
+    )
+    distance_loss = masked_weighted_mean(distance_raw, valid, distance_weights)
+    consistency_raw = F.smooth_l1_loss(
+        predicted_heat,
+        torch.exp(-predicted_distance / BOUNDARY_HEAT_SIGMA_PX),
+        reduction="none",
+        beta=0.05,
+    )
+    consistency_loss = masked_weighted_mean(
+        consistency_raw,
+        valid,
+        evidence_weights,
+    )
+    raw = {
+        "boundary_soft_heat_bce": heat_loss,
+        "boundary_near_distance": distance_loss,
+        "boundary_heat_distance_consistency": consistency_loss,
+    }
+    weighted = {
+        name: raw[name] * BOUNDARY_ONLY_LOSS_WEIGHTS[name]
+        for name in raw
+    }
+    total = sum(weighted.values(), predicted_distance.sum() * 0.0)
+    return {
+        "total": total,
+        **{f"raw/{name}": value for name, value in raw.items()},
+        **{f"weighted/{name}": value for name, value in weighted.items()},
+    }
+
+
 def compute_training_priors(frames: list[CachedFrame]) -> tuple[dict[str, float], dict[str, float]]:
     support_positive = support_count = 0.0
     boundary_positive = boundary_count = 0.0
@@ -889,11 +977,16 @@ def train_student(
     epochs: int,
     learning_rate: float,
     seed: int,
+    objective_profile: str = "multifactor",
 ) -> tuple[list[dict[str, float]], dict[str, Any]]:
     require(epochs > 0 and learning_rate > 0, "training configuration invalid")
     model.train()
+    require(
+        objective_profile in {"multifactor", "boundary_only"},
+        "invalid objective profile",
+    )
     optimizer = torch.optim.AdamW(
-        model.parameters(),
+        (parameter for parameter in model.parameters() if parameter.requires_grad),
         lr=learning_rate,
         betas=(0.9, 0.999),
         weight_decay=1e-4,
@@ -921,7 +1014,11 @@ def train_student(
                 feature = torch.flip(feature, dims=(-1,))
                 base_depth = torch.flip(base_depth, dims=(-1,))
             outputs = model(feature, base_depth, frame.descriptor.output_hw)
-            losses = compute_student_losses(outputs, targets, class_weights)
+            losses = (
+                compute_boundary_only_losses(outputs, targets)
+                if objective_profile == "boundary_only"
+                else compute_student_losses(outputs, targets, class_weights)
+            )
             require(bool(torch.isfinite(losses["total"]).item()), "non-finite student loss")
             optimizer.zero_grad(set_to_none=True)
             losses["total"].backward()
@@ -1016,6 +1113,17 @@ def evaluate_frames(
                     outputs["boundary_logits"], targets["boundary"], reduction="none"
                 )
                 values["boundary_bce_sum"] += float(boundary_bce[evidence_mask].sum())
+                boundary_soft_target = torch.exp(
+                    -targets["boundary_distance_px"] / BOUNDARY_HEAT_SIGMA_PX
+                )
+                boundary_soft_bce = F.binary_cross_entropy_with_logits(
+                    outputs["boundary_logits"],
+                    boundary_soft_target,
+                    reduction="none",
+                )
+                values["boundary_soft_bce_sum"] += float(
+                    boundary_soft_bce[evidence_mask].sum()
+                )
                 boundary_counts = _binary_counts(
                     torch.sigmoid(outputs["boundary_logits"]) >= 0.5,
                     targets["boundary"],
@@ -1025,6 +1133,15 @@ def evaluate_frames(
                 values["boundary_fp"] += boundary_counts[1]
                 values["boundary_fn"] += boundary_counts[2]
                 values["boundary_count"] += boundary_counts[3]
+                distance_boundary_counts = _binary_counts(
+                    outputs["boundary_distance_px"] <= BOUNDARY_BAND_PX,
+                    targets["boundary"],
+                    evidence_mask,
+                )
+                values["distance_boundary_tp"] += distance_boundary_counts[0]
+                values["distance_boundary_fp"] += distance_boundary_counts[1]
+                values["distance_boundary_fn"] += distance_boundary_counts[2]
+                values["distance_boundary_count"] += distance_boundary_counts[3]
                 distance_error = (
                     outputs["boundary_distance_px"]
                     - targets["boundary_distance_px"]
@@ -1058,7 +1175,11 @@ def evaluate_frames(
             "support_f1": f1("support"),
             "support_valid_pixels": int(values["support_count"]),
             "boundary_bce": ratio("boundary_bce_sum", "boundary_count"),
+            "boundary_soft_bce": ratio(
+                "boundary_soft_bce_sum", "boundary_count"
+            ),
             "boundary_f1": f1("boundary"),
+            "boundary_distance_f1": f1("distance_boundary"),
             "boundary_valid_pixels": int(values["boundary_count"]),
             "boundary_distance_mae_px": ratio(
                 "distance_abs_sum", "distance_count"
@@ -1079,7 +1200,9 @@ def evaluate_frames(
         "support_bce",
         "support_f1",
         "boundary_bce",
+        "boundary_soft_bce",
         "boundary_f1",
+        "boundary_distance_f1",
         "boundary_distance_mae_px",
         "obstacle_bce",
     )
@@ -1098,6 +1221,7 @@ def relative_improvement(before: float | None, after: float | None) -> float | N
 
 def execute(args: argparse.Namespace) -> int:
     started = time.perf_counter()
+    objective_profile = str(args.objective_profile)
     stage0a_result = args.stage0a_result.resolve()
     label_dir = args.label_dir.resolve()
     label_result_path = (label_dir / "result.json").resolve()
@@ -1174,6 +1298,13 @@ def execute(args: argparse.Namespace) -> int:
         depth_mode=depth_mode,
     ).to(device)
     model.initialize_priors(priors)
+    if objective_profile == "boundary_only":
+        for unused_head in (
+            model.depth_residual,
+            model.support_logits,
+            model.obstacle_logits,
+        ):
+            unused_head.requires_grad_(False)
     before_train = evaluate_frames(model, train_frames, device)
     before_selection = evaluate_frames(model, selection_frames, device)
     before_canary = evaluate_frames(model, canary_frames, device)
@@ -1185,6 +1316,7 @@ def execute(args: argparse.Namespace) -> int:
         epochs=args.epochs,
         learning_rate=args.learning_rate,
         seed=args.seed,
+        objective_profile=objective_profile,
     )
     after_train = evaluate_frames(model, train_frames, device)
     after_selection = evaluate_frames(model, selection_frames, device)
@@ -1200,6 +1332,7 @@ def execute(args: argparse.Namespace) -> int:
                 "input_feature_channels": feature_channels,
                 "head_hidden_channels": 32,
                 "depth_mode": depth_mode,
+                "objective_profile": objective_profile,
                 "outputs": [
                     "metric_depth_residual",
                     "support_logit",
@@ -1214,6 +1347,7 @@ def execute(args: argparse.Namespace) -> int:
             "seed": args.seed,
             "epochs": args.epochs,
             "learning_rate": args.learning_rate,
+            "objective_profile": objective_profile,
         },
     )
 
@@ -1230,6 +1364,10 @@ def execute(args: argparse.Namespace) -> int:
             "boundary_bce": relative_improvement(
                 before_macro["boundary_bce"], after_macro["boundary_bce"]
             ),
+            "boundary_soft_bce": relative_improvement(
+                before_macro["boundary_soft_bce"],
+                after_macro["boundary_soft_bce"],
+            ),
             "boundary_distance_mae": relative_improvement(
                 before_macro["boundary_distance_mae_px"],
                 after_macro["boundary_distance_mae_px"],
@@ -1241,19 +1379,57 @@ def execute(args: argparse.Namespace) -> int:
 
     selection_improvements = metric_improvements(before_selection, after_selection)
     canary_improvements = metric_improvements(before_canary, after_canary)
-    core_signals = {
-        name: value is not None and value > 0.0
-        for name, value in canary_improvements.items()
-        if name in {"depth_mae", "support_bce", "boundary_bce"}
-    }
-    supported = sum(core_signals.values())
-    status = (
-        "PARENT_DISJOINT_MULTI_FACTOR_LEARNABILITY_SIGNAL_SUPPORTED"
-        if supported == 3
-        else "PARENT_DISJOINT_PARTIAL_FACTOR_LEARNABILITY_SIGNAL_SUPPORTED"
-        if supported > 0
-        else "PARENT_DISJOINT_FACTOR_LEARNABILITY_SIGNAL_NOT_SUPPORTED"
-    )
+    if objective_profile == "boundary_only":
+        boundary_signals = {
+            "selection_soft_bce_improved": (
+                selection_improvements["boundary_soft_bce"] is not None
+                and selection_improvements["boundary_soft_bce"] > 0.0
+            ),
+            "canary_soft_bce_improved": (
+                canary_improvements["boundary_soft_bce"] is not None
+                and canary_improvements["boundary_soft_bce"] > 0.0
+            ),
+            "selection_distance_mae_improved": (
+                selection_improvements["boundary_distance_mae"] is not None
+                and selection_improvements["boundary_distance_mae"] > 0.0
+            ),
+            "canary_distance_mae_improved": (
+                canary_improvements["boundary_distance_mae"] is not None
+                and canary_improvements["boundary_distance_mae"] > 0.0
+            ),
+            "selection_fixed_f1_nonzero": (
+                after_selection["parent_macro"]["boundary_f1"] or 0.0
+            ) > 0.0,
+            "canary_fixed_f1_nonzero": (
+                after_canary["parent_macro"]["boundary_f1"] or 0.0
+            ) > 0.0,
+        }
+        required_boundary_signals = tuple(boundary_signals.values())[:4]
+        supported = sum(required_boundary_signals)
+        status = (
+            "PARENT_DISJOINT_BOUNDARY_LEARNABILITY_SIGNAL_SUPPORTED"
+            if supported == 4
+            else "PARENT_DISJOINT_PARTIAL_BOUNDARY_LEARNABILITY_SIGNAL_SUPPORTED"
+            if supported >= 2
+            else "PARENT_DISJOINT_BOUNDARY_LEARNABILITY_SIGNAL_NOT_SUPPORTED"
+        )
+        core_signals = boundary_signals
+        total_core_signals = 4
+    else:
+        core_signals = {
+            name: value is not None and value > 0.0
+            for name, value in canary_improvements.items()
+            if name in {"depth_mae", "support_bce", "boundary_bce"}
+        }
+        supported = sum(core_signals.values())
+        total_core_signals = 3
+        status = (
+            "PARENT_DISJOINT_MULTI_FACTOR_LEARNABILITY_SIGNAL_SUPPORTED"
+            if supported == 3
+            else "PARENT_DISJOINT_PARTIAL_FACTOR_LEARNABILITY_SIGNAL_SUPPORTED"
+            if supported > 0
+            else "PARENT_DISJOINT_FACTOR_LEARNABILITY_SIGNAL_NOT_SUPPORTED"
+        )
     label_digest = aggregate_label_digest(row.label_path for row in descriptors)
     encoder_inputs: dict[str, Any] = {
         "encoder": encoder_label,
@@ -1266,7 +1442,11 @@ def execute(args: argparse.Namespace) -> int:
         "schema": "blindassist_ag_st_masked_student_wild_lab_result_v1",
         "status": status,
         "mode": "WILD_LAB_REVERSIBLE_EXPLORATION",
-        "question": f"Can {encoder_label} RGB features learn graded AG-ST depth/support/boundary pseudo-labels across internal parent-disjoint selection and canary roles?",
+        "question": (
+            f"Can {encoder_label} RGB features learn sparse AG-ST physical-boundary distance/heat supervision across internal parent-disjoint roles?"
+            if objective_profile == "boundary_only"
+            else f"Can {encoder_label} RGB features learn graded AG-ST depth/support/boundary pseudo-labels across internal parent-disjoint selection and canary roles?"
+        ),
         "inputs": {
             "stage0a_result_path": str(stage0a_result),
             "stage0a_result_sha256": sha256_file(stage0a_result),
@@ -1281,8 +1461,14 @@ def execute(args: argparse.Namespace) -> int:
         "architecture": {
             "encoder": encoder_label,
             "head": "ONE_BY_ONE_THEN_THREE_BY_THREE_32CH_MULTI_FACTOR_DENSE_HEAD",
+            "objective_profile": objective_profile,
             "encoder_trainable_parameters": 0,
-            "head_trainable_parameters": sum(parameter.numel() for parameter in model.parameters()),
+            "head_total_parameters": sum(parameter.numel() for parameter in model.parameters()),
+            "head_trainable_parameters": sum(
+                parameter.numel()
+                for parameter in model.parameters()
+                if parameter.requires_grad
+            ),
             "depth_output": (
                 f"BASE_DEPTH_TIMES_TANH_LOG_RESIDUAL_RANGE_{DEPTH_RESIDUAL_LOG_RANGE}"
                 if depth_mode == "residual"
@@ -1299,7 +1485,12 @@ def execute(args: argparse.Namespace) -> int:
             },
             "priors_from_train_only": priors,
             "class_weights_from_train_only": class_weights,
-            "loss_weights": LOSS_WEIGHTS,
+            "loss_weights": (
+                BOUNDARY_ONLY_LOSS_WEIGHTS
+                if objective_profile == "boundary_only"
+                else LOSS_WEIGHTS
+            ),
+            "boundary_heat_sigma_px": BOUNDARY_HEAT_SIGMA_PX,
         },
         "execution": {
             "device": torch.cuda.get_device_name(device),
@@ -1329,10 +1520,14 @@ def execute(args: argparse.Namespace) -> int:
             "second_teacher_required_for_this_canary": False,
             "selection_used_for_model_or_threshold_choice": False,
             "student_signal_supported_factor_count": supported,
-            "student_signal_total_core_factor_count": 3,
+            "student_signal_total_core_factor_count": total_core_signals,
             "next_step": (
-                "Scale pseudo-label materialization to more parent-disjoint RGB sequences and repeat the frozen-encoder student test."
-                if supported == 3
+                "Scale physical-boundary supervision to fresh parent/source sequences."
+                if objective_profile == "boundary_only" and supported == 4
+                else "Keep boundary isolated and revise its representation before scaling."
+                if objective_profile == "boundary_only"
+                else "Scale pseudo-label materialization to more parent-disjoint RGB sequences and repeat the frozen-encoder student test."
+                if supported == total_core_signals
                 else "Inspect unsupported factor residuals before scaling or adding another Teacher."
             ),
         },
@@ -1365,6 +1560,11 @@ def parse_args() -> argparse.Namespace:
         "--encoder",
         choices=("mobilenet_v3_small", "depthart_s"),
         default="mobilenet_v3_small",
+    )
+    parser.add_argument(
+        "--objective-profile",
+        choices=("multifactor", "boundary_only"),
+        default="multifactor",
     )
     parser.add_argument(
         "--mobilenet-checkpoint",

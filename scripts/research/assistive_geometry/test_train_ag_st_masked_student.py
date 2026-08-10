@@ -14,6 +14,7 @@ from train_ag_st_masked_student import (  # noqa: E402
     TIER_A_SOURCE,
     TIER_C_TEACHER,
     TIER_UNKNOWN,
+    compute_boundary_only_losses,
     compute_student_losses,
     select_parent_split,
     tier_weights,
@@ -65,6 +66,16 @@ class AgStMaskedStudentTest(unittest.TestCase):
             places=5,
         )
 
+    def test_parent_split_accepts_ten_six_orientation_mix(self) -> None:
+        shapes = {
+            **{f"p{index}": (336, 252) for index in range(10)},
+            **{f"l{index}": (252, 336) for index in range(6)},
+        }
+        train, selection, canary, _ = select_parent_split(shapes)
+        self.assertEqual((12, 2, 2), (len(train), len(selection), len(canary)))
+        self.assertEqual(1, sum(parent.startswith("p") for parent in selection))
+        self.assertEqual(1, sum(parent.startswith("p") for parent in canary))
+
     def test_unknown_pixels_cannot_change_masked_losses(self) -> None:
         outputs = {
             "depth_m": torch.full((1, 1, 2, 2), 1.2),
@@ -103,6 +114,35 @@ class AgStMaskedStudentTest(unittest.TestCase):
         self.assertGreater(float(weights[0]), float(weights[1]))
         self.assertGreater(float(weights[1]), float(weights[2]))
         self.assertEqual(0.0, float(weights[2]))
+
+    def test_boundary_only_loss_ignores_unknown_pixels(self) -> None:
+        outputs = {
+            "boundary_logits": torch.zeros((1, 1, 2, 2), requires_grad=True),
+            "boundary_distance_px": torch.full(
+                (1, 1, 2, 2), 8.0, requires_grad=True
+            ),
+        }
+        targets = {
+            "boundary_distance_px": torch.tensor(
+                [[[[0.0, 32.0], [32.0, 32.0]]]]
+            ),
+            "evidence_valid": torch.tensor(
+                [[[[True, False], [False, False]]]]
+            ),
+            "evidence_tier": torch.tensor(
+                [[[[TIER_A_SOURCE, TIER_UNKNOWN], [TIER_UNKNOWN, TIER_UNKNOWN]]]]
+            ),
+        }
+        changed = copy.deepcopy(targets)
+        changed["boundary_distance_px"][..., 0, 1:] = 0.0
+        changed["boundary_distance_px"][..., 1, :] = 0.0
+        first = compute_boundary_only_losses(outputs, targets)
+        second = compute_boundary_only_losses(outputs, changed)
+        for key in first:
+            torch.testing.assert_close(first[key], second[key])
+        first["total"].backward()
+        self.assertTrue(torch.isfinite(outputs["boundary_logits"].grad).all())
+        self.assertTrue(torch.isfinite(outputs["boundary_distance_px"].grad).all())
 
 
 if __name__ == "__main__":

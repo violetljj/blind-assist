@@ -1,0 +1,192 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_fresh_parent_zero_shot_summary.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10",
+  "date": "2026-08-10",
+  "mode": "WILD_LAB_REVERSIBLE_EXPLORATION",
+  "status": "TWO_CHAIN_DEPTH_SUPPORT_REPLICATION_SUPPORTED_OBSTACLE_UNSTABLE_BOUNDARY_NOT_SUPPORTED",
+  "question": "Do depth/support factor signals replicate across two independent train-parent to fresh-parent zero-shot chains without evaluation-time fitting or threshold selection?",
+  "source": {
+    "dataset": "ARKitScenes",
+    "manifest": "artifacts.local/datasets/spatial-calibration-head-r1-arkitscenes-20260804/manifest.json",
+    "manifest_sha256": "ECA55FB32E2A296FFE23182F48EDBFCFC9B13C42A2BD7215E4FF159A282C85F2",
+    "manifest_role_token": "train",
+    "role": "CONSUMED_EXTERNAL_TRAIN_WILD_LAB",
+    "parent_count": 16,
+    "frame_count": 48,
+    "frame_indices_per_parent": [
+      60,
+      62,
+      64
+    ],
+    "parents": [
+      "41048097",
+      "41125199",
+      "42897666",
+      "42899163",
+      "42899300",
+      "43649772",
+      "45261532",
+      "45663404",
+      "47332106",
+      "47332591",
+      "47333053",
+      "47333472",
+      "47429771",
+      "47430690",
+      "48018023",
+      "48458617"
+    ],
+    "previous_student_parent_count": 16,
+    "parent_overlap_with_previous_student": [],
+    "fresh_labels_used_for_fitting_or_threshold_selection": false,
+    "task_outcomes_read": false
+  },
+  "stage0a": {
+    "result": "artifacts.local/experiments/ag-st-stage0a-mapanything-spatial-train16-block64-r1/result.json",
+    "result_sha256": "5491178C3798AC7EA06326C001D1D8279621C43E077CA0825E3F1D1910296C74",
+    "status": "COMPLETED",
+    "source_only_nearest_mae_m": 0.035151606318969485,
+    "teacher_full_coverage_mae_m": 0.07366575065156988,
+    "teacher_half_coverage_mae_m": 0.023318460264960168,
+    "teacher_half_coverage_bad_0_10m_rate": 0.019808944705998057,
+    "total_seconds": 35.953999999997905
+  },
+  "factor_labels": {
+    "result": "artifacts.local/experiments/ag-st-superteacher-factor-labels-spatial-train16-r0/result.json",
+    "result_sha256": "1446395210FD61A4C2D98F900FA00E1F014C909E705DC60EA323E25DACCB26B2",
+    "status": "COMPLETED",
+    "total_pixels": 4064256,
+    "source_native_coverage": 0.9216498665438397,
+    "teacher_added_coverage": 0.016906169296422274,
+    "metric_label_coverage": 0.938556035840262,
+    "normal_diagnostic_coverage": 0.9176296965545477,
+    "support_coverage": 0.727007353867473,
+    "boundary_evidence_coverage": 0.795674042186319,
+    "support_plane_valid_frames": 41,
+    "support_plane_valid_frame_rate": 0.8541666666666666
+  },
+  "student": {
+    "checkpoint": "artifacts.local/experiments/ag-st-masked-student-depthart-s-r1/masked-factor-head.pt",
+    "checkpoint_sha256": "D6CEA1031C4984244C06011A8185A8671702BF7F967A1C470EDE4E56A5718AEB",
+    "encoder": "FROZEN_DEPTHART_S_METRIC_INDOOR",
+    "head_trainable_parameters_at_training": 11109,
+    "fresh_optimizer_constructed": false,
+    "fresh_training_performed": false,
+    "fresh_threshold_selected": false
+  },
+  "zero_shot_evaluation": {
+    "result": "artifacts.local/experiments/ag-st-masked-student-depthart-s-fresh-zero-shot-r0/result.json",
+    "result_sha256": "47C2BC06852C44EDB5D8B7BCC7BC07A32F9954052531A1807AA28AD757310E76",
+    "evaluator_sha256": "DBA6706DF4CEB679E5D5CE241DCA704DD1D3FFBE3C110EBC35DC14EB671F6099",
+    "status": "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_OBSTACLE_SIGNAL_SUPPORTED",
+    "depth": {
+      "evaluable_parents": 16,
+      "mae_m_before": 1.7628450414482582,
+      "mae_m_after": 0.5074053241526222,
+      "mae_relative_reduction": 0.7121668029676815,
+      "bad_0_10m_rate_after": 0.8713954835116532
+    },
+    "support": {
+      "evaluable_parents": 15,
+      "bce_before": 0.7574318983940632,
+      "bce_after": 0.44380734660366683,
+      "bce_relative_reduction": 0.4140630364991961,
+      "f1_before": 0.26747663490915335,
+      "f1_after": 0.43788259057266743
+    },
+    "obstacle_evidence": {
+      "evaluable_parents": 15,
+      "bce_before": 0.9376631925041815,
+      "bce_after": 0.7637375100271071,
+      "bce_relative_reduction": 0.18548843963105524
+    },
+    "boundary": {
+      "evaluable_parents": 15,
+      "bce_before": 0.04769307089999166,
+      "bce_after": 0.10614704686042867,
+      "soft_bce_before": 0.0850311516421031,
+      "soft_bce_after": 0.1290767921652625,
+      "distance_mae_px_before": 4.694261715267885,
+      "distance_mae_px_after": 4.721414323778091,
+      "f1_after": 0.05846813065865156,
+      "supported": false
+    },
+    "total_seconds": 11.161710399988806
+  },
+  "boundary_isolation_negative_control": {
+    "result": "artifacts.local/experiments/ag-st-boundary-student-depthart-s-r0/result.json",
+    "result_sha256": "9085D4C6AA9A165997322F963D0981BA92A106997199B7645B3E3F33B46E4DB0",
+    "status": "PARENT_DISJOINT_BOUNDARY_LEARNABILITY_SIGNAL_NOT_SUPPORTED",
+    "selection_soft_bce_relative_change": -0.15828630728920548,
+    "canary_soft_bce_relative_change": -0.5763356466029045,
+    "canary_distance_mae_relative_change": -0.6891609938316168,
+    "interpretation": "Removing depth/support/obstacle gradients did not repair boundary transfer; the present sparse boundary target or representation is the remaining factor-specific bottleneck."
+  },
+  "second_independent_training_evaluation_chain": {
+    "training_result": "artifacts.local/experiments/ag-st-masked-student-depthart-s-spatial-train16-r0/result.json",
+    "training_result_sha256": "2F14A8ECAFAA32563120FB1E65CCD557AE28E33F042A5634B768E83BF4B1BAAA",
+    "checkpoint_sha256": "897FC18CB4B707181CA53B530B36317D063A07C2C90B9A50D443AC7336354ADF",
+    "training_parent_count": 16,
+    "validation_source": {
+      "stage0a_result_sha256": "364C72F3FB1E0B02CEDB1EC321080CBC8B688D8D3FCE64E7F8A25D406D2175DA",
+      "factor_label_result_sha256": "87B1921B03F49668E73E428FDEB5664B18204E8080C929EC4838741F1065FCC2",
+      "role": "HELDOUT_EXTERNAL_VALIDATION_WILD_LAB",
+      "parents": [
+        "41159579",
+        "42897890",
+        "43828420",
+        "48458221"
+      ],
+      "parent_overlap_with_training": []
+    },
+    "zero_shot_result": "artifacts.local/experiments/ag-st-masked-student-depthart-s-spatial-validation4-zero-shot-r0/result.json",
+    "zero_shot_result_sha256": "AB08E1DAF3651E399F60ED26265806334764E8E443E836D106EE006F126F35E6",
+    "evaluator_sha256": "95F1978C9EA7572511122BCD414E5FE951C0DAAB2704F416891C2FF9189B215F",
+    "status": "FRESH_PARENT_ZERO_SHOT_PARTIAL_FACTOR_SIGNAL_SUPPORTED",
+    "depth": {
+      "evaluable_parents": 4,
+      "mae_m_before": 1.749623217177994,
+      "mae_m_after": 0.40405778336677345,
+      "mae_relative_reduction": 0.7690601156868007,
+      "bad_0_10m_rate_after": 0.7700803272430202
+    },
+    "support": {
+      "evaluable_parents": 3,
+      "bce_before": 0.41379348001495525,
+      "bce_after": 0.27806818139789474,
+      "bce_relative_reduction": 0.328002506497094,
+      "f1_before": 0.0,
+      "f1_after": 0.46215756367622635
+    },
+    "obstacle_evidence": {
+      "evaluable_parents": 3,
+      "bce_before": 0.7131679733236554,
+      "bce_after": 0.7753082590109424,
+      "bce_relative_change": -0.08713274854125555,
+      "supported": false
+    },
+    "boundary": {
+      "evaluable_parents": 3,
+      "bce_before": 0.03981403014811334,
+      "bce_after": 0.10926656680326959,
+      "soft_bce_before": 0.08060400749155143,
+      "soft_bce_after": 0.12672826715521782,
+      "distance_mae_px_before": 5.80536103792879,
+      "distance_mae_px_after": 4.616453667630478,
+      "supported": false
+    }
+  },
+  "decision": {
+    "complete_truth_required_for_current_progress": false,
+    "second_teacher_required_for_current_progress": false,
+    "cross_parent_depth_signal": true,
+    "cross_parent_support_signal": true,
+    "cross_parent_obstacle_evidence_signal": "FIRST_CHAIN_POSITIVE_SECOND_CHAIN_NEGATIVE",
+    "cross_parent_boundary_signal": false,
+    "depth_support_supervision_route_replicated": true,
+    "supervision_route_open_for_larger_student_fit": true,
+    "student_task_ready": false,
+    "next_execution": "Combine the two disjoint TRAIN-source batches for a larger depth/support student fit, keep obstacle evidence diagnostic until it replicates, reserve a new source batch before evaluating that successor, and redesign boundary target or representation outside the core fit."
+  },
+  "claim_boundary": "Parent-disjoint zero-shot pseudo-label transfer within ARKitScenes. This is not objective truth, cross-dataset generalization, formal F1 authorization, deterministic-reducer task utility, deployment, product, or safety evidence."
+}

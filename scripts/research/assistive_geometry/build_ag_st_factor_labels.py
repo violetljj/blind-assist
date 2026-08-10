@@ -39,7 +39,8 @@ from arkitscenes_truth_reader import (  # noqa: E402
 from run_ag_st_stage0a import (  # noqa: E402
     compute_selective_metrics,
     load_factor_source_frame,
-    select_train_videos,
+    resolve_trajectory_path,
+    select_source_videos,
     sha256_file,
 )
 
@@ -878,7 +879,7 @@ def _load_parent_frames(
     video: dict[str, Any],
     stage0a_dir: Path,
 ) -> list[FrameBundle]:
-    trajectory = parse_trajectory(Path(video["trajectory"]["path"]))
+    trajectory = parse_trajectory(resolve_trajectory_path(video))
     frames: list[FrameBundle] = []
     seen: set[tuple[str, int]] = set()
     for summary in parent_run["frame_summaries"]:
@@ -971,7 +972,14 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     )
     source_manifest = json.loads(source_manifest_path.read_text(encoding="utf-8"))
     parent_ids = [str(value) for value in stage0a["source"]["parents"]]
-    videos = {str(row["video_id"]): row for row in select_train_videos(source_manifest, parent_ids)}
+    videos = {
+        str(row["video_id"]): row
+        for row in select_source_videos(
+            source_manifest,
+            parent_ids,
+            role_token=str(stage0a["source"].get("manifest_role_token", "TRAIN")),
+        )
+    }
     parent_runs = {str(row["parent_id"]): row for row in stage0a["parent_runs"]}
     require(set(parent_runs) == set(parent_ids), "Stage 0A parent result roster drift")
     args.output_dir.mkdir(parents=True)
@@ -1138,7 +1146,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "source_manifest_sha256": stage0a["source"]["manifest_sha256"],
             "parent_count": len(parent_ids),
             "frame_count": len(frame_receipts),
-            "role": "CONSUMED_TRAIN_WILD_LAB",
+            "role": stage0a["source"]["role"],
         },
         "factory": {
             "source_priority": "SOURCE_NATIVE_VALID_DEPTH_OVERRIDES_TEACHER",
