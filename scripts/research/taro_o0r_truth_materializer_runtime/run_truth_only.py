@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import gzip
 import json
 import os
 import platform
@@ -54,25 +55,33 @@ from scripts.research.taro_o0r_truth_materializer_runtime.materializer import (
 
 
 EXPECTED_TRUTH_BINDINGS = {
-    "AVAILABILITY_SUCCESSOR_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_AVAILABILITY_SUCCESSOR_R1_LOCK_2026-08-10.json",
+    "TRUTH_RECOVERY_R2_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_RECOVERY_R2_LOCK_2026-08-10.json",
     "TRUTH_ONLY_PREFLIGHT_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_PREFLIGHT_R1_LOCK_2026-08-10.json",
     "DATA_USE_AUTHORIZATION": "docs/research/taro/TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_R1_RECEIPT_2026-08-10.json",
-    "MATERIALIZER_IMPLEMENTATION_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_R1_IMPLEMENTATION_LOCK_2026-08-10.json",
+    "MATERIALIZER_IMPLEMENTATION_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_R2_IMPLEMENTATION_LOCK_2026-08-10.json",
     "SOURCE_ADAPTER": "scripts/research/taro_o0r_source_adapter_runtime/source_adapter.py",
     "MATERIALIZER": "scripts/research/taro_o0r_truth_materializer_runtime/materializer.py",
     "TRUTH_RUNNER": "scripts/research/taro_o0r_truth_materializer_runtime/run_truth_only.py",
     "HEAD_RECEIPT": "artifacts.local/evidence/taro/o0r-arkitscenes-head-r1/head-receipt.json",
+    "SOURCE_CACHE_DOWNLOAD_RECEIPTS": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r1/download-receipts.json.gz",
 }
 EXPECTED_ROOTS = {
-    "SOURCE": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r1",
-    "WORK": "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r1",
-    "TRUTH_EVIDENCE": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r1",
-    "O0R_EVIDENCE_SEALED": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r1",
+    "SOURCE": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r2",
+    "WORK": "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r2",
+    "TRUTH_EVIDENCE": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r2",
+    "O0R_EVIDENCE_SEALED": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r2",
+}
+EXPECTED_SOURCE_CACHE = {
+    "mode": "VERIFIED_HARDLINK_REUSE_NO_NETWORK",
+    "source_root": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r1",
+    "download_receipts_role": "SOURCE_CACHE_DOWNLOAD_RECEIPTS",
+    "network_requests_allowed": 0,
 }
 EXPECTED_AUTHORITY = {
     "truth_only_execution": True,
     "head_or_head_receipt_mutation": False,
-    "source_download": True,
+    "source_download": False,
+    "source_cache_reuse": True,
     "truth_materialization": True,
     "depthart_inference": False,
     "factorial_execution": False,
@@ -101,15 +110,65 @@ def _repo_path(repo_root: Path, relative: str) -> Path:
     return safe_join(repo_root, relative)
 
 
+def _load_cached_download_receipts(path: Path) -> dict[str, dict[str, Any]]:
+    try:
+        with gzip.open(path, "rt", encoding="utf-8") as stream:
+            payload = json.load(stream)
+    except Exception as error:
+        raise MaterializerError("SOURCE_CACHE_RECEIPT_INVALID", "source cache receipt cannot be decoded") from error
+    require(isinstance(payload, list) and len(payload) == 72, "SOURCE_CACHE_RECEIPT_INVALID", "source cache must bind exactly 72 download receipts")
+    lookup: dict[str, dict[str, Any]] = {}
+    for receipt in payload:
+        require(isinstance(receipt, dict) and isinstance(receipt.get("url"), str), "SOURCE_CACHE_RECEIPT_INVALID", "source cache receipt row is invalid")
+        require(receipt["url"] not in lookup, "SOURCE_CACHE_RECEIPT_INVALID", "source cache receipt URL is duplicated", url=receipt["url"])
+        lookup[receipt["url"]] = dict(receipt)
+    return lookup
+
+
+def _reuse_cached_asset(
+    row: Mapping[str, str],
+    head_row: Mapping[str, Any],
+    *,
+    source_root: Path,
+    cache_root: Path,
+    cache_lookup: Mapping[str, Mapping[str, Any]],
+) -> dict[str, Any]:
+    receipt = dict(cache_lookup.get(str(row["url"]), {}))
+    require(
+        receipt.get("asset") == row["asset"]
+        and receipt.get("relative_path") == row["relative_path"]
+        and receipt.get("url") == row["url"]
+        and receipt.get("bytes") == head_row.get("content_length_bytes")
+        and receipt.get("head_content_length_bytes") == head_row.get("content_length_bytes")
+        and receipt.get("head_etag") == head_row.get("etag")
+        and receipt.get("head_last_modified") == head_row.get("last_modified"),
+        "SOURCE_CACHE_IDENTITY_DRIFT",
+        "cached source receipt differs from the bound R1 HEAD identity",
+        url=row["url"],
+    )
+    cached = safe_join(cache_root, row["relative_path"])
+    verify_bound_container(cached, receipt)
+    destination = safe_join(source_root, row["relative_path"])
+    require(not destination.exists(), "SOURCE_CACHE_DESTINATION_COLLISION", "R2 source destination already exists", path=str(destination))
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        os.link(cached, destination)
+    except OSError as error:
+        raise MaterializerError("SOURCE_CACHE_HARDLINK_FAILED", "verified R1 source cache could not be hard-linked into R2", source=str(cached), destination=str(destination)) from error
+    verify_bound_container(destination, receipt)
+    return receipt
+
+
 def validate_execution_lock(path: Path, repo_root: Path | None = None) -> dict[str, Any]:
     root = (repo_root or Path(__file__).resolve().parents[3]).resolve()
     lock_path = path.resolve()
     lock = load_json(lock_path)
     require(lock.get("schema") == EXECUTION_LOCK_SCHEMA, "EXECUTION_LOCK_SCHEMA_DRIFT", "truth-only execution lock schema drift")
-    require(lock.get("lock_id") == "TARO_O0R_ARKITSCENES_TRUTH_ONLY_R1_EXECUTION_LOCK", "EXECUTION_LOCK_IDENTITY_DRIFT", "truth-only execution lock id drift")
+    require(lock.get("lock_id") == "TARO_O0R_ARKITSCENES_TRUTH_ONLY_R2_EXECUTION_LOCK", "EXECUTION_LOCK_IDENTITY_DRIFT", "truth-only execution lock id drift")
     require(lock.get("status") == "AUTHORIZED_UNCONSUMED" and lock.get("consumed") is False, "ONE_SHOT_ALREADY_CONSUMED", "truth-only execution is not authorized and unconsumed")
     require(lock.get("execution_authority") == EXPECTED_AUTHORITY, "EXECUTION_AUTHORITY_OVERCLAIM", "truth-only execution authority drift")
     require(lock.get("roots") == EXPECTED_ROOTS, "EXECUTION_ROOT_DRIFT", "truth-only execution roots drift")
+    require(lock.get("source_cache") == EXPECTED_SOURCE_CACHE, "SOURCE_CACHE_LOCK_DRIFT", "R2 source-cache binding drift")
     require(lock.get("overwrite") is False and lock.get("rerun") is False, "ONE_SHOT_POLICY_DRIFT", "truth-only execution must forbid overwrite/rerun")
     required_environment = lock.get("required_environment")
     require(isinstance(required_environment, dict), "EXECUTION_ENVIRONMENT_MISSING", "required environment missing")
@@ -391,7 +450,7 @@ def materialize_prepared_parents(
 def execute_truth_only(
     lock_path: Path,
     *,
-    download_fn: Callable[..., dict[str, Any]] = download_bound_asset,
+    download_fn: Callable[..., dict[str, Any]] | None = None,
     decode_fn: Callable[..., dict[str, Any]] = decode_source_frame,
     fit_fn: Callable[[Sequence[dict[str, Any]]], Any] = adapter.fit_uncertainty_model,
     eval_fn: Callable[..., dict[str, Any]] = build_eval_truth_record,
@@ -430,10 +489,26 @@ def execute_truth_only(
         writer.activate(start_receipt)
         mkdir_exclusive(roots["SOURCE"])
         mkdir_exclusive(roots["WORK"])
+        if download_fn is None:
+            cache_config = lock["source_cache"]
+            cache_root = _repo_path(repo_root, cache_config["source_root"])
+            cache_receipt_path = _repo_path(repo_root, bindings[cache_config["download_receipts_role"]]["path"])
+            cache_lookup = _load_cached_download_receipts(cache_receipt_path)
+
+            def active_download_fn(row: Mapping[str, str], head_row: Mapping[str, Any], *, source_root: Path) -> dict[str, Any]:
+                return _reuse_cached_asset(
+                    row,
+                    head_row,
+                    source_root=source_root,
+                    cache_root=cache_root,
+                    cache_lookup=cache_lookup,
+                )
+        else:
+            active_download_fn = download_fn
         download_receipts: list[dict[str, Any]] = []
         for row in plan_rows:
             require(time.monotonic() - started <= float(budget["truth_only_materialization_wall_seconds"]), "TRUTH_MATERIALIZATION_TIMEOUT", "truth-only wall-time budget exceeded")
-            download_receipts.append(download_fn(row, head_lookup[row["url"]], source_root=roots["SOURCE"]))
+            download_receipts.append(active_download_fn(row, head_lookup[row["url"]], source_root=roots["SOURCE"]))
         _validate_download_receipts(plan_rows, download_receipts, head_lookup, roots["SOURCE"])
         require(sum(row["bytes"] for row in download_receipts) == head_receipt["total_content_length_bytes"], "DOWNLOAD_TOTAL_BYTES_DRIFT", "download byte total differs from bound HEAD total")
         writer.write_json_gzip("download-receipts.json.gz", download_receipts)

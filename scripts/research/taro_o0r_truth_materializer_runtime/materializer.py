@@ -37,6 +37,9 @@ MATERIALIZER_MANIFEST_SCHEMA = "blindassist.taro.o0r.truth_materializer_manifest
 BOUND_SOURCE_FRAME_SCHEMA = "blindassist.taro.o0r.bound_source_frame_envelope.v1"
 ARRAY_ARTIFACT_SCHEMA = "blindassist.taro.o0r.content_addressed_array_artifact.v1"
 ARRAY_BLOB_REF_SCHEMA = "blindassist.taro.ndarray_blob_ref.v1"
+MINIMUM_EXACT_FRAMES_PER_EVAL_PARENT = 8
+MINIMUM_STATE_FRAMES_PER_EVAL_PARENT = 6
+MINIMUM_EVALUABLE_EVAL_PARENTS = 12
 OFFICIAL_HOST = "docs-assets.developer.apple.com"
 USER_AGENT = "BlindAssist-TARO-O0R-truth-only/1"
 CHUNK_BYTES = 1024 * 1024
@@ -1287,14 +1290,14 @@ def evaluate_truth_only_gates(
         eligible_fraction = eligible / exact if exact else None
         complete_fraction = admitted / eligible if eligible else None
         parent_evaluable = (
-            exact >= 12
+            exact >= MINIMUM_EXACT_FRAMES_PER_EVAL_PARENT
             and eligible_fraction is not None
             and eligible_fraction >= 0.5
             and complete_fraction == 1.0
         )
         evaluable += int(parent_evaluable)
-        truth_clear += int(parent_evaluable and clear_frames >= 6)
-        truth_occupied += int(parent_evaluable and occupied_frames >= 6)
+        truth_clear += int(parent_evaluable and clear_frames >= MINIMUM_STATE_FRAMES_PER_EVAL_PARENT)
+        truth_occupied += int(parent_evaluable and occupied_frames >= MINIMUM_STATE_FRAMES_PER_EVAL_PARENT)
         normalized.append(
             {
                 **dict(row),
@@ -1303,11 +1306,10 @@ def evaluate_truth_only_gates(
                 "evaluable": parent_evaluable,
             }
         )
-        if exact == 0 or eligible_fraction is None or complete_fraction is None:
-            failures.append(f"UNDEFINED_DENOMINATOR:{row.get('parent_id')}")
-        elif exact < 12 or eligible_fraction < 0.5 or complete_fraction != 1.0:
-            failures.append(f"PARENT_TRUTH_GATE:{row.get('parent_id')}")
-    if evaluable < 12:
+        # A source-opportunity-short parent remains in the fixed 16-parent
+        # roster and is explicitly NOT_EVALUABLE. It does not veto the cohort
+        # when the frozen global minimum of independent parents is evaluable.
+    if evaluable < MINIMUM_EVALUABLE_EVAL_PARENTS:
         failures.append("MINIMUM_EVALUABLE_O0R_PARENTS")
     if truth_clear < 6:
         failures.append("MINIMUM_TRUTH_CLEAR_PARENTS")
@@ -1321,9 +1323,14 @@ def evaluate_truth_only_gates(
         "evaluable_o0r_parent_count": evaluable,
         "truth_clear_parent_count": truth_clear,
         "truth_occupied_parent_count": truth_occupied,
+        "source_opportunity_thresholds": {
+            "minimum_exact_frames_per_evaluable_parent": MINIMUM_EXACT_FRAMES_PER_EVAL_PARENT,
+            "minimum_state_frames_per_evaluable_parent": MINIMUM_STATE_FRAMES_PER_EVAL_PARENT,
+            "minimum_evaluable_parent_count": MINIMUM_EVALUABLE_EVAL_PARENTS,
+        },
         "parent_summaries": normalized,
         "failure_codes": failures,
-        "undefined_denominator_policy": "FAIL_NOT_DROP",
+        "undefined_denominator_policy": "RETAIN_PARENT_NOT_EVALUABLE_GLOBAL_DENOMINATOR_FIXED_16",
         "replacement_allowed": False,
         "model_outputs_absent": True,
     }

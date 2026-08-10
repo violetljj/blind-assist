@@ -145,6 +145,44 @@ class AuthorizationAndHeadTests(unittest.TestCase):
 
 
 class DownloadAndArchiveTests(unittest.TestCase):
+    def test_r2_source_cache_reuse_is_hash_verified_hardlink_only(self) -> None:
+        payload = b"verified-r1-source-cache"
+        relative = "raw/Training/12345678/lowres_wide.traj"
+        url = "https://docs-assets.developer.apple.com/example/lowres_wide.traj"
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            cache_root = root / "r1"
+            source_root = root / "r2"
+            cached = cache_root / Path(relative)
+            cached.parent.mkdir(parents=True)
+            cached.write_bytes(payload)
+            receipt = {
+                "asset": "lowres_wide.traj",
+                "attempt_count": 1,
+                "bytes": len(payload),
+                "crc32": runtime.crc32_bytes(payload),
+                "head_content_length_bytes": len(payload),
+                "head_etag": "E",
+                "head_last_modified": "L",
+                "redirect_chain": [],
+                "relative_path": relative,
+                "sha256": runtime.sha256_bytes(payload),
+                "url": url,
+            }
+            row = {"asset": "lowres_wide.traj", "relative_path": relative, "url": url}
+            head = {"content_length_bytes": len(payload), "etag": "E", "last_modified": "L"}
+            observed = truth_runner._reuse_cached_asset(
+                row,
+                head,
+                source_root=source_root,
+                cache_root=cache_root,
+                cache_lookup={url: receipt},
+            )
+            destination = source_root / Path(relative)
+            self.assertEqual(observed, receipt)
+            self.assertTrue(destination.samefile(cached))
+            self.assertEqual(destination.read_bytes(), payload)
+
     def test_download_binds_head_length_validators_hash_crc_and_no_range(self) -> None:
         payload = b"bound-source-payload"
         url = "https://docs-assets.developer.apple.com/example.zip"
@@ -407,10 +445,36 @@ class GateAndPhaseTests(unittest.TestCase):
         passed = runtime.evaluate_truth_only_gates(fit_ids, summaries)
         self.assertTrue(passed["passed"])
         mutated = copy.deepcopy(summaries)
-        mutated[0]["admitted_frames"] = 11
+        for row in mutated[:5]:
+            row["admitted_frames"] = 11
+            row["clear_frames"] = 5
+            row["occupied_frames"] = 5
         failed = runtime.evaluate_truth_only_gates(fit_ids, mutated)
         self.assertFalse(failed["passed"])
-        self.assertTrue(any(code.startswith("PARENT_TRUTH_GATE") for code in failed["failure_codes"]))
+        self.assertIn("MINIMUM_EVALUABLE_O0R_PARENTS", failed["failure_codes"])
+
+    def test_truth_gate_uses_source_opportunity_frozen_eight_frame_floor(self) -> None:
+        fit_ids = [visit for visit, _ in adapter.ADAPTER_FIT_ROSTER]
+        summaries = [
+            {"parent_id": visit, "video_id": video, "exact_timestamp_frames": 8, "source_eligible_frames": 8, "admitted_frames": 8, "clear_frames": 6, "occupied_frames": 6}
+            for visit, video in adapter.O0R_EVAL_CANDIDATE_ROSTER
+        ]
+        gates = runtime.evaluate_truth_only_gates(fit_ids, summaries)
+        self.assertTrue(gates["passed"])
+        self.assertEqual(gates["source_opportunity_thresholds"]["minimum_exact_frames_per_evaluable_parent"], 8)
+
+    def test_source_short_parents_do_not_veto_twelve_evaluable_parents(self) -> None:
+        fit_ids = [visit for visit, _ in adapter.ADAPTER_FIT_ROSTER]
+        summaries = []
+        for index, (visit, video) in enumerate(adapter.O0R_EVAL_CANDIDATE_ROSTER):
+            count = 8 if index < 12 else 6
+            summaries.append(
+                {"parent_id": visit, "video_id": video, "exact_timestamp_frames": count, "source_eligible_frames": count, "admitted_frames": count, "clear_frames": 6, "occupied_frames": 6}
+            )
+        gates = runtime.evaluate_truth_only_gates(fit_ids, summaries)
+        self.assertTrue(gates["passed"])
+        self.assertEqual(gates["evaluable_o0r_parent_count"], 12)
+        self.assertEqual(sum(not row["evaluable"] for row in gates["parent_summaries"]), 4)
 
     def test_materializer_seals_uncertainty_before_any_eval_decode(self) -> None:
         events: list[str] = []

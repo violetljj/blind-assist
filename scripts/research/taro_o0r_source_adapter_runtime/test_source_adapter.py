@@ -204,6 +204,16 @@ def manual_reseal(value: dict[str, object]) -> dict[str, object]:
     return output
 
 
+def with_constant_apple_depth(source: dict[str, object], depth_mm: int = 250) -> dict[str, object]:
+    frame = dict(source)
+    apple = np.full(runtime_module.APPLE_SHAPE_HW, depth_mm, dtype=np.uint16)
+    receipt = copy.deepcopy(frame["source_frame_receipt"])
+    receipt["decoded_payload_bindings"]["lowres_depth"]["decoded_content_sha256"] = canonical_sha256(apple)
+    frame["source_frame_receipt"] = manual_reseal(receipt)
+    frame["apple_depth_mm"] = apple
+    return frame
+
+
 class ExactReceiptTests(unittest.TestCase):
     def test_decimal_timestamp_is_exact_and_rejects_non_plain_tokens(self) -> None:
         self.assertEqual(decimal_timestamp_ns("1.000000001"), 1_000_000_001)
@@ -396,6 +406,54 @@ class UncertaintyProvenanceTests(unittest.TestCase):
         self.assertFalse(support["valid"])
         self.assertEqual(support["samples"], 8)
         self.assertTrue(pixel["valid"])
+
+    def test_support_unobservable_frame_keeps_scale_and_marks_other_targets_missing(self) -> None:
+        sources = list(fit_sources(1))
+        frame = dict(sources[0])
+        faro = np.full(runtime_module.HIGHRES_SHAPE_HW, 250, dtype=np.uint16)
+        apple = sample_faro_at_apple_centers(faro).astype(np.uint16)
+        receipt = copy.deepcopy(frame["source_frame_receipt"])
+        receipt["decoded_payload_bindings"]["highres_depth"]["decoded_content_sha256"] = canonical_sha256(faro)
+        receipt["decoded_payload_bindings"]["lowres_depth"]["decoded_content_sha256"] = canonical_sha256(apple)
+        frame["source_frame_receipt"] = manual_reseal(receipt)
+        frame["highres_faro_depth_mm"] = faro
+        frame["apple_depth_mm"] = apple
+        sources[0] = frame
+
+        model = fit_uncertainty_model(sources)
+        self.assertEqual(len(model.source_receipt_sha256s), 8)
+        self.assertEqual(model.support_frame_observations, 7)
+        self.assertEqual(model.observation_counts["support_height_abs_residual_m"], 7)
+        self.assertEqual(model.observation_counts["support_normal_abs_residual_rad"], 7)
+        self.assertGreater(model.observation_counts["scale_log_abs_residual"], 7)
+        support = model.resolve(2, 1.5, "support_height_abs_residual_m")
+        self.assertEqual(support["independent_parents"], 7)
+        boundary = model.resolve(2, 1.5, "boundary_localization_abs_residual_m")
+        self.assertEqual(boundary["independent_parents"], 7)
+        self.assertEqual(len({cell.parent_id for cell in model.cells if cell.target == "scale_log_abs_residual"}), 8)
+
+    def test_apple_only_support_failure_preserves_faro_boundary(self) -> None:
+        sources = list(fit_sources(1))
+        sources[0] = with_constant_apple_depth(sources[0])
+        model = fit_uncertainty_model(sources)
+        support = model.resolve(2, 1.5, "support_height_abs_residual_m")
+        boundary = model.resolve(2, 1.5, "boundary_localization_abs_residual_m")
+        self.assertEqual(model.support_frame_observations, 7)
+        self.assertEqual(support["independent_parents"], 7)
+        self.assertEqual(boundary["independent_parents"], 8)
+
+    def test_all_apple_support_unobservable_seals_scale_and_boundary_model(self) -> None:
+        sources = [with_constant_apple_depth(frame) for frame in fit_sources(1)]
+        model = fit_uncertainty_model(sources)
+        support = model.resolve(2, 1.5, "support_height_abs_residual_m")
+        boundary = model.resolve(2, 1.5, "boundary_localization_abs_residual_m")
+        scale = model.resolve(2, 1.5, "scale_log_abs_residual")
+        self.assertEqual(model.support_frame_observations, 0)
+        self.assertFalse(support["valid"])
+        self.assertEqual(support["independent_parents"], 0)
+        self.assertEqual(support["samples"], 0)
+        self.assertEqual(boundary["independent_parents"], 8)
+        self.assertEqual(scale["independent_parents"], 8)
 
     def test_eval_receipt_is_rejected_before_it_can_enter_fit(self) -> None:
         leaked = dict(fit_sources(1)[0])

@@ -79,6 +79,17 @@ UNCERTAINTY_TARGETS = (
     "support_normal_abs_residual_rad",
     "boundary_localization_abs_residual_m",
 )
+_SUPPORT_UNOBSERVABLE_CODES = frozenset(
+    {
+        "SUPPORT_POINTS_INSUFFICIENT",
+        "SUPPORT_PLAUSIBLE_INSUFFICIENT",
+        "SUPPORT_HISTOGRAM_EMPTY",
+        "SUPPORT_GATE_FAILED",
+        "SUPPORT_NORMAL_INVALID",
+        "SUPPORT_SLOPE_EXCEEDED",
+        "SUPPORT_REFINED_GATE_FAILED",
+    }
+)
 
 ADAPTER_FIT_ROSTER = (
     ("470974", "47332075"),
@@ -1050,10 +1061,42 @@ def _derive_adapter_fit_residual_batch(source_frame: dict[str, Any]) -> dict[str
     low_k = _lowres_intrinsics_from_base_receipt(receipt)
     gravity = _normalize_vector(receipt["gravity_up_camera_xyz"], "GRAVITY_INVALID")
     support_valid = valid & (confidence >= 1)
+    scale_residual = np.zeros(APPLE_SHAPE_HW, dtype=np.float64)
+    scale_residual[valid] = np.abs(np.log(faro_m[valid] / apple_m[valid]))
+    confidence_counts = np.bincount(confidence[valid].astype(np.int64), minlength=3)
+    representative_confidence = int(np.flatnonzero(confidence_counts == np.max(confidence_counts))[-1])
+    representative_range = float(np.median(faro_m[valid]))
+    batch = {
+        "parent_id": receipt["parent_id"],
+        "source_frame_receipt_sha256": receipt["content_sha256"],
+        "physical_frame_id": receipt["physical_frame_id"],
+        "pixel_confidence": np.ascontiguousarray(confidence[valid], dtype=np.int8),
+        "pixel_range_m": np.ascontiguousarray(faro_m[valid], dtype=np.float64),
+        "scale_log_abs_residual": np.ascontiguousarray(scale_residual[valid], dtype=np.float64),
+        "boundary_available": False,
+        "support_available": False,
+        "support_failure_code": None,
+        "support_failure_stage": None,
+        "raw_input_receipts": {
+            "faro_array_sha256": canonical_sha256(faro_raw),
+            "apple_array_sha256": canonical_sha256(apple_raw),
+            "confidence_array_sha256": canonical_sha256(confidence),
+        },
+    }
     faro_support_points, _ = _unproject(faro_m, support_valid, low_k, 2)
-    apple_support_points, _ = _unproject(apple_m, support_valid, low_k, 2)
-    faro_plane = _fit_support_plane(faro_support_points, gravity)
-    apple_plane = _fit_support_plane(apple_support_points, gravity)
+    try:
+        faro_plane = _fit_support_plane(faro_support_points, gravity)
+    except AdapterError as error:
+        if error.code not in _SUPPORT_UNOBSERVABLE_CODES:
+            raise
+        # A physical frame can contain valid metric depth while showing too
+        # little floor to identify support. Preserve its scale evidence and
+        # record support/boundary as unavailable instead of fabricating a plane
+        # or aborting the entire fit cohort.
+        batch["support_failure_code"] = error.code
+        batch["support_failure_stage"] = "FARO_SUPPORT_PLANE"
+        return batch
+
     faro_points, faro_pixels = _unproject(faro_m, valid, low_k, 1)
     apple_points, apple_pixels = _unproject(apple_m, valid, low_k, 1)
     faro_heights = faro_points @ faro_plane["normal_camera_xyz"] + float(faro_plane["camera_height_m"])
@@ -1068,32 +1111,35 @@ def _derive_adapter_fit_residual_batch(source_frame: dict[str, Any]) -> dict[str
     apple_obstacle[apple_pixels[apple_members, 1], apple_pixels[apple_members, 0]] = True
     metric_per_pixel = faro_m / math.sqrt(float(low_k[0, 0] * low_k[1, 1]))
     boundary_residual = np.abs(_signed_distance_pixels(faro_obstacle) - _signed_distance_pixels(apple_obstacle)) * metric_per_pixel
-    scale_residual = np.zeros(APPLE_SHAPE_HW, dtype=np.float64)
-    scale_residual[valid] = np.abs(np.log(faro_m[valid] / apple_m[valid]))
+    batch.update(
+        {
+            "boundary_available": True,
+            "boundary_localization_abs_residual_m": np.ascontiguousarray(boundary_residual[valid], dtype=np.float64),
+        }
+    )
+    apple_support_points, _ = _unproject(apple_m, support_valid, low_k, 2)
+    try:
+        apple_plane = _fit_support_plane(apple_support_points, gravity)
+    except AdapterError as error:
+        if error.code not in _SUPPORT_UNOBSERVABLE_CODES:
+            raise
+        # FARO support still defines the metric obstacle boundary, so retain
+        # boundary residuals even when AppleDepth cannot identify its own plane.
+        batch["support_failure_code"] = error.code
+        batch["support_failure_stage"] = "APPLE_SUPPORT_PLANE"
+        return batch
     support_height_residual = abs(float(faro_plane["camera_height_m"]) - float(apple_plane["camera_height_m"]))
     dot = max(-1.0, min(1.0, float(np.dot(faro_plane["normal_camera_xyz"], apple_plane["normal_camera_xyz"]))))
-    support_normal_residual = math.acos(dot)
-    confidence_counts = np.bincount(confidence[valid].astype(np.int64), minlength=3)
-    representative_confidence = int(np.flatnonzero(confidence_counts == np.max(confidence_counts))[-1])
-    representative_range = float(np.median(faro_m[valid]))
-    return {
-        "parent_id": receipt["parent_id"],
-        "source_frame_receipt_sha256": receipt["content_sha256"],
-        "physical_frame_id": receipt["physical_frame_id"],
-        "pixel_confidence": np.ascontiguousarray(confidence[valid], dtype=np.int8),
-        "pixel_range_m": np.ascontiguousarray(faro_m[valid], dtype=np.float64),
-        "scale_log_abs_residual": np.ascontiguousarray(scale_residual[valid], dtype=np.float64),
-        "boundary_localization_abs_residual_m": np.ascontiguousarray(boundary_residual[valid], dtype=np.float64),
-        "support_confidence": representative_confidence,
-        "support_range_m": representative_range,
-        "support_height_abs_residual_m": support_height_residual,
-        "support_normal_abs_residual_rad": support_normal_residual,
-        "raw_input_receipts": {
-            "faro_array_sha256": canonical_sha256(faro_raw),
-            "apple_array_sha256": canonical_sha256(apple_raw),
-            "confidence_array_sha256": canonical_sha256(confidence),
-        },
-    }
+    batch.update(
+        {
+            "support_available": True,
+            "support_confidence": representative_confidence,
+            "support_range_m": representative_range,
+            "support_height_abs_residual_m": support_height_residual,
+            "support_normal_abs_residual_rad": math.acos(dot),
+        }
+    )
+    return batch
 
 
 def _quantile_type7(values: Iterable[float], probability: float) -> float:
@@ -1189,12 +1235,13 @@ class _UncertaintyModel:
             "uncertainty model source receipt identities are malformed or duplicated",
         )
         require(isinstance(self.source_evidence_sha256, str) and bool(_SHA256.fullmatch(self.source_evidence_sha256)), "UNCERTAINTY_MODEL_SOURCE_EVIDENCE_INVALID", "uncertainty source evidence hash is malformed")
-        require(isinstance(self.support_frame_observations, int) and not isinstance(self.support_frame_observations, bool) and self.support_frame_observations == len(self.source_receipt_sha256s), "UNCERTAINTY_MODEL_SUPPORT_COUNT_INVALID", "support observations must equal the unique source-frame receipt count")
+        require(isinstance(self.support_frame_observations, int) and not isinstance(self.support_frame_observations, bool) and 0 <= self.support_frame_observations <= len(self.source_receipt_sha256s), "UNCERTAINTY_MODEL_SUPPORT_COUNT_INVALID", "support observations must be a bounded subset of unique source frames")
         observation_counts = self.observation_counts
         require(
             isinstance(self.observation_count_items, tuple)
             and tuple(target for target, _ in self.observation_count_items) == UNCERTAINTY_TARGETS
-            and all(isinstance(observation_counts[target], int) and not isinstance(observation_counts[target], bool) and observation_counts[target] > 0 for target in UNCERTAINTY_TARGETS),
+            and all(isinstance(observation_counts[target], int) and not isinstance(observation_counts[target], bool) and observation_counts[target] >= 0 for target in UNCERTAINTY_TARGETS)
+            and observation_counts["scale_log_abs_residual"] > 0,
             "UNCERTAINTY_MODEL_OBSERVATION_COUNTS_INVALID",
             "uncertainty observation counts are malformed",
         )
@@ -1220,7 +1267,7 @@ class _UncertaintyModel:
             recomputed_counts["support_height_abs_residual_m"] == self.support_frame_observations
             and recomputed_counts["support_normal_abs_residual_rad"] == self.support_frame_observations,
             "UNCERTAINTY_MODEL_SUPPORT_COUNT_INVALID",
-            "support residual targets must contribute exactly once per source frame",
+            "support residual targets must contribute exactly once per support-observable source frame",
         )
         require(isinstance(self.content_sha256, str) and bool(_SHA256.fullmatch(self.content_sha256)), "UNCERTAINTY_MODEL_HASH_MISMATCH", "uncertainty model hash is malformed")
         payload = _uncertainty_model_payload(
@@ -1287,12 +1334,13 @@ class _UncertaintyModel:
         result = evaluate([cell for cell in self.cells if cell.target == target], "GLOBAL")
         if result is not None:
             return result
+        target_cells = [cell for cell in self.cells if cell.target == target]
         return {
             "valid": False,
             "value": None,
             "scope": "UNCERTAINTY_INVALID_QUERY_UNKNOWN",
-            "independent_parents": len(self.fit_parent_ids),
-            "samples": int(self.observation_counts[target]),
+            "independent_parents": len({cell.parent_id for cell in target_cells}),
+            "samples": sum(int(cell.values.size) for cell in target_cells),
             "model_sha256": self.content_sha256,
         }
 
@@ -1335,7 +1383,10 @@ def fit_uncertainty_model(source_frames: Sequence[dict[str, Any]]) -> _Uncertain
         range_bins = np.asarray([_range_bin(float(value)) for value in ranges], dtype=object)
         require(all(value is not None for value in range_bins), "UNCERTAINTY_RANGE_INVALID", "derived pixel range lies outside frozen bins")
         range_bins_i = range_bins.astype(np.int8)
-        for target in ("scale_log_abs_residual", "boundary_localization_abs_residual_m"):
+        pixel_targets = ["scale_log_abs_residual"]
+        if batch["boundary_available"]:
+            pixel_targets.append("boundary_localization_abs_residual_m")
+        for target in pixel_targets:
             values = np.asarray(batch[target], dtype=np.float64)
             require(values.shape == confidence.shape and bool(np.all(np.isfinite(values))) and bool(np.all(values >= 0.0)), "UNCERTAINTY_RESIDUAL_INVALID", "derived pixel residuals must be finite and non-negative", target=target)
             for confidence_value in (0, 1, 2):
@@ -1344,20 +1395,29 @@ def fit_uncertainty_model(source_frames: Sequence[dict[str, Any]]) -> _Uncertain
                     if bool(np.any(mask)):
                         key = (target, parent, confidence_value, range_bin)
                         cell_parts.setdefault(key, []).append(np.ascontiguousarray(values[mask], dtype=np.float64))
-        support_confidence = int(batch["support_confidence"])
-        support_range_bin = _range_bin(float(batch["support_range_m"]))
-        require(support_confidence in (0, 1, 2) and support_range_bin is not None, "UNCERTAINTY_DERIVATION_INVALID", "derived support cell is invalid")
-        for target in ("support_height_abs_residual_m", "support_normal_abs_residual_rad"):
-            residual = float(batch[target])
-            require(math.isfinite(residual) and residual >= 0.0, "UNCERTAINTY_RESIDUAL_INVALID", "derived support residual must be finite and non-negative", target=target)
-            key = (target, parent, support_confidence, int(support_range_bin))
-            cell_parts.setdefault(key, []).append(np.asarray([residual], dtype=np.float64))
+        if batch["support_available"]:
+            support_confidence = int(batch["support_confidence"])
+            support_range_bin = _range_bin(float(batch["support_range_m"]))
+            require(support_confidence in (0, 1, 2) and support_range_bin is not None, "UNCERTAINTY_DERIVATION_INVALID", "derived support cell is invalid")
+            for target in ("support_height_abs_residual_m", "support_normal_abs_residual_rad"):
+                residual = float(batch[target])
+                require(math.isfinite(residual) and residual >= 0.0, "UNCERTAINTY_RESIDUAL_INVALID", "derived support residual must be finite and non-negative", target=target)
+                key = (target, parent, support_confidence, int(support_range_bin))
+                cell_parts.setdefault(key, []).append(np.asarray([residual], dtype=np.float64))
         evidence.append(
             {
                 "parent_id": parent,
                 "physical_frame_id": batch["physical_frame_id"],
                 "source_frame_receipt_sha256": batch["source_frame_receipt_sha256"],
                 "raw_input_receipts": batch["raw_input_receipts"],
+                "target_availability": {
+                    "scale_log_abs_residual": True,
+                    "support_height_abs_residual_m": bool(batch["support_available"]),
+                    "support_normal_abs_residual_rad": bool(batch["support_available"]),
+                    "boundary_localization_abs_residual_m": bool(batch["boundary_available"]),
+                },
+                "support_failure_code": batch["support_failure_code"],
+                "support_failure_stage": batch["support_failure_stage"],
             }
         )
 
@@ -1376,8 +1436,8 @@ def fit_uncertainty_model(source_frames: Sequence[dict[str, Any]]) -> _Uncertain
         target: sum(int(cell.values.size) for cell in cells if cell.target == target)
         for target in UNCERTAINTY_TARGETS
     }
-    support_frame_observations = len(batches)
-    require(observation_counts["support_height_abs_residual_m"] == support_frame_observations and observation_counts["support_normal_abs_residual_rad"] == support_frame_observations, "UNCERTAINTY_SUPPORT_COUNT_DRIFT", "support residuals must contribute exactly once per unique physical frame")
+    support_frame_observations = sum(bool(batch["support_available"]) for batch in batches)
+    require(observation_counts["support_height_abs_residual_m"] == support_frame_observations and observation_counts["support_normal_abs_residual_rad"] == support_frame_observations, "UNCERTAINTY_SUPPORT_COUNT_DRIFT", "support residuals must contribute exactly once per support-observable physical frame")
     source_evidence_sha256 = canonical_sha256(evidence)
     payload = _uncertainty_model_payload(
         cells,
