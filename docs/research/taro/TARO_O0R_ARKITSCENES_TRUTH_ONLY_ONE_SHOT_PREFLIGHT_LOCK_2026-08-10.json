@@ -1,0 +1,419 @@
+{
+  "schema": "blindassist.taro.o0r.truth_only_one_shot_preflight_lock.v1",
+  "lock_id": "TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK",
+  "date": "2026-08-10",
+  "research_mode": "WILD_LAB",
+  "status": "PREFLIGHT_LOCKED_HEAD_NOT_RUN_ONE_SHOT_UNCONSUMED_EXECUTION_NOT_AUTHORIZED",
+  "terminal": "TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK_PASS",
+  "passed": true,
+  "scientific_status": "NOT_RUN",
+  "source_payload_opened": false,
+  "head_requests_executed": false,
+  "truth_materialized": false,
+  "model_outputs_absent": true,
+  "one_shot_consumed": false,
+  "execution_authorized": false,
+  "implementation_commit": "83ac8d9ab9637eef61d6e254822baba52ddd6c12",
+  "bindings": [
+    {
+      "role": "SOURCE_AND_ADAPTER_CONTRACT",
+      "path": "docs/research/taro/TARO_O0R_ARKITSCENES_SOURCE_AND_ADAPTER_CONTRACT_LOCK_2026-08-10.json",
+      "bytes": 29779,
+      "sha256": "C75D6C3B909C823A6E513A5CA4A9C37DF74AF125B2F3D71C035A652EA0E34806"
+    },
+    {
+      "role": "SOURCE_ADAPTER_IMPLEMENTATION_LOCK",
+      "path": "docs/research/taro/TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_2026-08-10.json",
+      "bytes": 6177,
+      "sha256": "6A040C040B45F1DE27700CBDE11DEA1B2FED1487BFDD718F8D62435ACBA1397E"
+    },
+    {
+      "role": "BOUND_AUTHORIZATION_RECEIPT",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_B0_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-09_ATTEMPT_04.json",
+      "bytes": 2221,
+      "sha256": "8346C205154C4352C3419A02522F287AA06FF3F7C02259C0922F0A7B435213E8"
+    },
+    {
+      "role": "ARKITSCENES_OFFICIAL_DOWNLOADER",
+      "path": "artifacts.local/downloads/ARKitScenes-7283761/download_data.py",
+      "bytes": 11552,
+      "sha256": "D50EDC9A5DAF8B8B1AB7E90DBEAAA6FA314F6B51B006BA5919C660134C21CAC6"
+    },
+    {
+      "role": "STATIC_VALIDATOR",
+      "path": "scripts/research/taro_o0r_truth_preflight/validate_taro_o0r_truth_preflight_lock.py",
+      "bytes": 18442,
+      "sha256": "2354797C2CDF2B09524A653119A55BDADE7CEA5EBE1D94F07E6B9A1B653D3175"
+    },
+    {
+      "role": "VALIDATOR_TESTS",
+      "path": "scripts/research/taro_o0r_truth_preflight/test_validate_taro_o0r_truth_preflight_lock.py",
+      "bytes": 4474,
+      "sha256": "D7E3B13D72482DBCE3AB96D4B4F4ED2127C8E325DA3F2DB67509AFF0D4912FDB"
+    }
+  ],
+  "asset_plan": {
+    "selection_source": "hash-bound source-and-adapter contract; no source payload or remote outcome was read",
+    "request_method": "HEAD",
+    "response_body_bytes_allowed": 0,
+    "off_host_redirect_allowed": false,
+    "expected_parent_count": 24,
+    "expected_asset_count_per_parent": 3,
+    "expected_request_count": 72,
+    "future_head_fields_required": [
+      "http_status",
+      "content_length_bytes",
+      "etag",
+      "last_modified",
+      "redirect_chain",
+      "transport_errors"
+    ],
+    "asset_templates": [
+      {
+        "asset": "upsampling.zip",
+        "relative_path_template": "upsampling/{official_fold}/{video_id}.zip",
+        "url_template": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/upsampling/{official_fold}/{video_id}.zip"
+      },
+      {
+        "asset": "lowres_wide_intrinsics.zip",
+        "relative_path_template": "raw/{official_fold}/{video_id}/lowres_wide_intrinsics.zip",
+        "url_template": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw/{official_fold}/{video_id}/lowres_wide_intrinsics.zip"
+      },
+      {
+        "asset": "lowres_wide.traj",
+        "relative_path_template": "raw/{official_fold}/{video_id}/lowres_wide.traj",
+        "url_template": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw/{official_fold}/{video_id}/lowres_wide.traj"
+      }
+    ],
+    "selected_parents": [
+      {
+        "role": "ADAPTER_FIT",
+        "visit_id": "470974",
+        "video_id": "47332075",
+        "official_fold": "Training",
+        "selection_rank_sha256": "001B8E118F35F7084220AF163B5A585DC0A8E2FE00531EDF2CF43D8D4A4A91CB"
+      },
+      {
+        "role": "ADAPTER_FIT",
+        "visit_id": "469216",
+        "video_id": "47332946",
+        "official_fold": "Training",
+        "selection_rank_sha256": "0020E274A12B62C7DBEC974D44EE84BA9BC5649FBC18E389221D27AF4679B5C2"
+      },
+      {
+        "role": "ADAPTER_FIT",
+        "visit_id": "469456",
+        "video_id": "47333152",
+        "official_fold": "Training",
+        "selection_rank_sha256": "003AA3C88C7A4A99B644BF5623F3CA60FAB4C227AF16B70F05E2517E653C0D7E"
+      },
+      {
+        "role": "ADAPTER_FIT",
+        "visit_id": "423614",
+        "video_id": "42898071",
+        "official_fold": "Training",
+        "selection_rank_sha256": "00638C13C27A724BE8DB1BC3151B7C4794CD994AF7B4677B3C7BD5C3F0104CD5"
+      },
+      {
+        "role": "ADAPTER_FIT",
+        "visit_id": "467370",
+        "video_id": "47333776",
+        "official_fold": "Training",
+        "selection_rank_sha256": "00679379607D955981D196EBF7B1B3118D327C15DD3527F57C3097AE36D58BD2"
+      },
+      {
+        "role": "ADAPTER_FIT",
+        "visit_id": "469460",
+        "video_id": "47333043",
+        "official_fold": "Training",
+        "selection_rank_sha256": "006DB1A3C4C2D38B5337F542D4E7685A930AE16521D0761A92175D93226F7AC8"
+      },
+      {
+        "role": "ADAPTER_FIT",
+        "visit_id": "438794",
+        "video_id": "44358241",
+        "official_fold": "Training",
+        "selection_rank_sha256": "0085628C4E05E0A6F4D30678FD2094B07C2865C3F6244AE21F573206951BA231"
+      },
+      {
+        "role": "ADAPTER_FIT",
+        "visit_id": "467346",
+        "video_id": "47333876",
+        "official_fold": "Training",
+        "selection_rank_sha256": "008E89B1997DAAE8F16FF77BCDB31B0895C5CAADB57635E4372135CD5319B93D"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "466965",
+        "video_id": "45261294",
+        "official_fold": "Training",
+        "selection_rank_sha256": "00036A414491C456B6B7F37130DB6F59982A11AF0496FFA806EF675968F98624"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "470808",
+        "video_id": "47430058",
+        "official_fold": "Training",
+        "selection_rank_sha256": "0003F35698648F8BDE82FA698466802EFC738AE3907C84FEF5CD1D72DC3ED516"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "482587",
+        "video_id": "47895909",
+        "official_fold": "Training",
+        "selection_rank_sha256": "005A4E1B9C4D61F09DC11BB6CA61B01D2EE9765429A3E3E13835DD9E2CA52227"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "468410",
+        "video_id": "45261689",
+        "official_fold": "Training",
+        "selection_rank_sha256": "008363EFC01C10DB74BD1DD2BE036B1DE2C0A5593E6DAC4CD85396A607E897AE"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "482858",
+        "video_id": "47670295",
+        "official_fold": "Training",
+        "selection_rank_sha256": "00C2D0BFC36A197B788626DC078DA557C261F0122C2D34604675733F26F3F3E5"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "482984",
+        "video_id": "47670346",
+        "official_fold": "Training",
+        "selection_rank_sha256": "010F537977BDAB295461AC0923F37B7527541D0F42FB8AEBC5EA9C4E9CEA0A95"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "469607",
+        "video_id": "47115143",
+        "official_fold": "Training",
+        "selection_rank_sha256": "0113297E20C3324AB625812733BFCF5FA890D21629F47E45D7F69FA79D68A5DD"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "421593",
+        "video_id": "42445766",
+        "official_fold": "Training",
+        "selection_rank_sha256": "011A1552850DA188FDD138057E43AF2547739F5F17AD7E366589C24BA46791E4"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "423474",
+        "video_id": "42897405",
+        "official_fold": "Training",
+        "selection_rank_sha256": "016A7189ED0E77D2518E4849A79898951A64243033A355B6C5D1074AF069839B"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "470876",
+        "video_id": "47332015",
+        "official_fold": "Training",
+        "selection_rank_sha256": "01930C4DF3D539088369F1B82ADBB7B8D215C64AF1F98C80187B38C8F7E20901"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "464981",
+        "video_id": "44796438",
+        "official_fold": "Training",
+        "selection_rank_sha256": "01D0DA4F2B4F554D718484CE98A77FD6552B7B33C6F5E346F24718054F48F3A0"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "478016",
+        "video_id": "47204874",
+        "official_fold": "Training",
+        "selection_rank_sha256": "01F2FF2876E6292FC5E76CE5991B9950467F52D448C3E49009C81559FEE0E0CE"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "422217",
+        "video_id": "42445723",
+        "official_fold": "Training",
+        "selection_rank_sha256": "022F5A9024A982DE8D562BBA52666C39AFBDA7CC108ACD8D4D0EFAC49C28A93A"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "466437",
+        "video_id": "45260952",
+        "official_fold": "Training",
+        "selection_rank_sha256": "02456972D83F5D736E4A25459C8DA8CDB5EFEDB9607B65AF4F3065943BAF3452"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "484003",
+        "video_id": "48018757",
+        "official_fold": "Training",
+        "selection_rank_sha256": "028D1C5AFB1998EE00A50EDE4EAB7EF3FD6F245AAC86C4A37D9CFB7FB7F81E1A"
+      },
+      {
+        "role": "O0R_EVAL_CANDIDATE",
+        "visit_id": "421655",
+        "video_id": "42445698",
+        "official_fold": "Training",
+        "selection_rank_sha256": "029A7228F13E1BF8A8861A74C273CF2EFFF7E55FA404B4452D275B3BE2696A6A"
+      }
+    ],
+    "expanded_requests_sha256": "C0F0D41E381333BEFF4C2C0EC4678BC75A22C86173E11B3150F7F7FFBCB18927"
+  },
+  "head_receipt": null,
+  "known_availability_risks": [
+    {
+      "video_id": "47333152",
+      "role": "ADAPTER_FIT",
+      "risk": "OFFICIAL_DOWNLOADER_MISSING_3DOD_ASSETS_LIST_SUPPRESSES_LOWRES_WIDE_TRAJECTORY",
+      "required_disposition": "FUTURE_HEAD_MUST_RETURN_200_WITH_CONTENT_LENGTH_ELSE_R0_NOT_EVALUABLE_NO_REPLACEMENT"
+    }
+  ],
+  "authorization_gate": {
+    "bound_receipt_coverage_status": "INSUFFICIENT_FOR_24_PARENT_BODY_ACCESS",
+    "lock_validation_authorized": true,
+    "head_metadata_execution_authorized": false,
+    "source_body_execution_authorized": false,
+    "required_before_any_network_or_body_access": [
+      "NEW_TARO_ROUTE_SPECIFIC_SIGNED_24_PARENT_ASSET_RECEIPT",
+      "SEPARATE_CONTENT_LENGTH_HEAD_EXECUTION_LOCK"
+    ]
+  },
+  "authorization_evidence_gap": {
+    "bound_receipt_route": "BLINDASSIST_ASSISTIVE_GEOMETRY_B0_TRUTH_READER_AND_REGISTRATION_LOCK",
+    "bound_receipt_video_count": 6,
+    "bound_receipt_assets_include_upsampling_zip": true,
+    "bound_receipt_assets_include_intrinsics_zip": true,
+    "bound_receipt_assets_include_trajectory": false,
+    "taro_required_video_count": 24,
+    "taro_required_assets_include_trajectory": true,
+    "resolution": "A new TARO-specific signed receipt must name the exact 24 selected parents and all three asset patterns before HEAD or body access."
+  },
+  "argv": [
+    "E:/codex-tools/bin/blindassist-python.cmd",
+    "scripts/research/taro_o0r_truth_preflight/validate_taro_o0r_truth_preflight_lock.py",
+    "--lock",
+    "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK_2026-08-10.json"
+  ],
+  "argv_purpose": "STATIC_LOCK_VALIDATION_ONLY",
+  "cwd": "E:/linnan/linnan",
+  "required_environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "PYTHONHASHSEED": "0",
+    "PYTHONUTF8": "1"
+  },
+  "runtime_versions": {
+    "python": "3.11.9",
+    "numpy": "2.1.3",
+    "scipy": "1.17.1",
+    "pillow": "12.2.0"
+  },
+  "reserved_truth_execution": {
+    "runner_status": "ABSENT_NOT_IMPLEMENTED",
+    "argv": null,
+    "call_allowed": false
+  },
+  "static_validation": {
+    "validator_command": [
+      "E:/codex-tools/bin/blindassist-python.cmd",
+      "scripts/research/taro_o0r_truth_preflight/validate_taro_o0r_truth_preflight_lock.py",
+      "--lock",
+      "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK_2026-08-10.json"
+    ],
+    "validator_status": "VALID",
+    "validator_error_count": 0,
+    "test_command": [
+      "E:/codex-tools/bin/blindassist-python.cmd",
+      "-m",
+      "unittest",
+      "scripts.research.taro_o0r_truth_preflight.test_validate_taro_o0r_truth_preflight_lock"
+    ],
+    "tests_run": 8,
+    "tests_passed": 8,
+    "tests_failed": 0,
+    "network_used": false,
+    "source_payload_used": false,
+    "artifact_root_created": false
+  },
+  "resource_budget": {
+    "source_download_content_length_preflight_required": true,
+    "maximum_compressed_source_bytes": 21474836480,
+    "maximum_materialized_source_bytes": 53687091200,
+    "truth_only_materialization_wall_seconds": 43200,
+    "truth_only_peak_rss_bytes": 12884901888,
+    "maximum_scientific_evidence_bytes": 2147483648,
+    "head_timeout_seconds": 20,
+    "head_retries": 3,
+    "head_workers": 8,
+    "head_response_body_bytes": 0,
+    "network_allowed_only_for_bound_source_assets": true,
+    "training_steps": 0,
+    "device_or_android": false
+  },
+  "exclusive_roots": [
+    {
+      "role": "SOURCE",
+      "path": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r0",
+      "exists": false
+    },
+    {
+      "role": "WORK",
+      "path": "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r0",
+      "exists": false
+    },
+    {
+      "role": "TRUTH_EVIDENCE",
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r0",
+      "exists": false
+    },
+    {
+      "role": "O0R_EVIDENCE_SEALED",
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r0",
+      "exists": false
+    }
+  ],
+  "one_shot_rule": {
+    "consumption_root": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r0",
+    "consumed_at_lock": false,
+    "root_creation_authorized": false,
+    "overwrite": false,
+    "rerun": false,
+    "consumption_trigger": "A future separately authorized truth-only execution consumes R0 when the truth evidence root is atomically created, regardless of PASS, FAIL or timeout.",
+    "head_only_receipt_does_not_consume_truth_one_shot": true,
+    "o0r_factor_headroom_root_must_remain_absent": true
+  },
+  "failure_scope": [
+    "AUTHORIZATION_SCOPE_MISMATCH",
+    "ASSET_HEAD_UNAVAILABLE",
+    "CONTENT_LENGTH_MISSING_OR_OVER_BUDGET",
+    "BOUND_HASH_DRIFT",
+    "ROOT_COLLISION",
+    "RUNNER_NOT_IMPLEMENTED"
+  ],
+  "failure_policy": {
+    "before_consumption": "TARO_O0R_TRUTH_ONLY_PREFLIGHT_NOT_READY_EXECUTION_NOT_AUTHORIZED",
+    "after_future_consumption": "TARO_O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE_ONE_SHOT_CONSUMED_NO_REPLACEMENT_NO_RERUN",
+    "undefined_denominator": "FAIL_NOT_DROP",
+    "replacement_or_role_reassignment": false,
+    "depthart_or_factorial_after_failure": false
+  },
+  "execution_authority": {
+    "preflight_lock_validation": true,
+    "network_or_head_execution": false,
+    "source_payload_download_or_open": false,
+    "truth_materialization": false,
+    "selected_source_uncertainty_fit": false,
+    "depthart_inference": false,
+    "factorial_execution": false,
+    "training": false,
+    "g0_g1_a0_a1_j0": false,
+    "android_qnn_htp": false,
+    "default_app": false,
+    "product": false,
+    "safety": false
+  },
+  "unique_successor": {
+    "id": "TARO_O0R_ARKITSCENES_TRUTH_ONLY_MATERIALIZER_IMPLEMENTATION_LOCK",
+    "execution_authority": false,
+    "scope": "After a new TARO-specific signed 24-parent asset receipt exists, implement and statically test a fail-closed HEAD/source/truth materializer and atomic evidence writer against this exact asset plan. Do not execute HEAD or source access, create an exclusive root, fit selected-source uncertainty, run DepthART or execute factorial arms."
+  },
+  "claim_ceiling": "The exact 24-parent by three-asset HEAD target plan, offline validation argv, runtime environment, inherited budgets, authorization gap, availability risk and four absent roots are frozen and statically testable. No HEAD was sent, no Content-Length or remote availability was observed, no source payload was downloaded or opened, no truth or uncertainty model was materialized, and no DepthART, causal-headroom, wearable, active-observation, device, product or safety claim is established."
+}
