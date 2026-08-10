@@ -15,7 +15,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 - DepthART 算法路线与双环论文次线隔离，默认 App 和正式 YOLO 模型不变。
 - DA2 保持冻结的 metric teacher、baseline、regression reference 和 fallback，不因新候选结果删除或降级。
-- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；strict G4-D 为不可变负终态。Task-preserving D0 三臂已在 outcome 前技术前门关闭，没有 arm 进入任务质量或性能。D1 的最终 8-session × 300-frame Development roster、产品比例 `1×3×608×448` fixed-mixed 单候选与 fresh `SM-S9280 / SM8650 / HTP v75 / DZG1` 22,552,576-byte saved context 已冻结。用户已显式激活 D1 task-quality screen：2400 帧按 48 个 session 内固定 50-frame chunk 可恢复执行；因用户需要断开手机，执行已在 3 个完整 device chunk（150 帧）后暂停，`chunk-03` 仅保留主机物化并无 device completion receipt，恢复时必须整块重跑。全集 quality 聚合尚未完成，不能提前判 PASS/FAIL。首个 device attempt 因 `ADSP_LIBRARY_PATH` 分隔符错误在产生 candidate 输出前失败，受限 repair 只恢复已验证的 FastRPC 分号语义。PyTorch↔HTP raw-depth diagnostic 仍以 `max_abs=1.42328m` 明确 FAIL，只保留为 strict G4-D 负证据。R2 candidate 仍未选定；8 个 R2 session 继续 sealed。DA2 保持冻结 baseline/fallback。
+- DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；strict G4-D 为不可变负终态。Task-preserving D0 三臂已在 outcome 前技术前门关闭，没有 arm 进入任务质量或性能。D1 的最终 8-session × 300-frame Development roster、产品比例 `1×3×608×448` fixed-mixed 单候选与 fresh `SM-S9280 / SM8650 / HTP v75 / DZG1` 22,552,576-byte saved context 已冻结。用户已显式激活 D1 task-quality screen：2400 帧按 48 个 session 内固定 50-frame chunk 可恢复执行；用户暂停时已有 3 个完整 device chunk（150 帧），重新连接后 fresh device identity 完全匹配，局部 `chunk-03` 日志与远端目录已归档且未复用，当前正从 `chunk-03` 整块重跑。全集 quality 聚合尚未完成，不能提前判 PASS/FAIL。首个 device attempt 因 `ADSP_LIBRARY_PATH` 分隔符错误在产生 candidate 输出前失败，受限 repair 只恢复已验证的 FastRPC 分号语义。PyTorch↔HTP raw-depth diagnostic 仍以 `max_abs=1.42328m` 明确 FAIL，只保留为 strict G4-D 负证据。R2 candidate 仍未选定；8 个 R2 session 继续 sealed。DA2 保持冻结 baseline/fallback。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
@@ -40,7 +40,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 ## 唯一 successor
 
-`RESUME_FROZEN_D1_DEVELOPMENT_TASK_QUALITY_SCREEN_FROM_CHUNK_03`：activation receipt 已生效；待用户重新连接同一设备并显式要求继续后，先 fresh-check serial/fingerprint，再从未完成的 `chunk-03` 整块重跑，并按冻结
+`COMPLETE_FROZEN_D1_DEVELOPMENT_TASK_QUALITY_SCREEN`：activation receipt 与显式恢复权限已生效；同一设备 fresh-check 已通过，当前从未完成的 `chunk-03` 整块重跑，并按冻结
 48-chunk 顺序完成余下 Development reference/candidate outputs，再一次性计算 clearance、false-clear、
 false-block、temporal 与 geometry gates。不得用部分块作选择或结论，不得修改 candidate、数据、后处理、
 known-coverage 分母或门限。任一 required aggregate/denominator/stratum 缺失即 fail；quality PASS 之前不得
