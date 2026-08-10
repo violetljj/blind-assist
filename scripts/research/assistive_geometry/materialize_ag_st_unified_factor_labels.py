@@ -4,14 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
 
 import numpy as np
-
-from download_b0_arkitscenes_assets import require, sha256_file
-
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_BASE_DIR = (
@@ -40,10 +38,27 @@ BOUNDARY_FIELDS = {
 }
 
 
+def require(condition: bool, message: str) -> None:
+    if not condition:
+        raise RuntimeError(message)
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest().upper()
+
+
 def arrays_equal(left: np.ndarray, right: np.ndarray) -> bool:
     a = np.asarray(left)
     b = np.asarray(right)
-    return a.shape == b.shape and a.dtype == b.dtype and bool(np.array_equal(a, b, equal_nan=True))
+    if a.shape != b.shape or a.dtype != b.dtype:
+        return False
+    if a.dtype.kind in {"f", "c"}:
+        return bool(np.array_equal(a, b, equal_nan=True))
+    return bool(np.array_equal(a, b))
 
 
 def merge_payload(

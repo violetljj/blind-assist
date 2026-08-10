@@ -1,0 +1,89 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r13_tum_unified_factor_labels_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R13_TUM_UNIFIED_FACTOR_LABELS_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "WILD_LAB_SECOND_SOURCE_UNIFIED_FACTOR_MATERIALIZATION",
+  "status": "TUM_SECOND_SOURCE_UNIFIED_FACTOR_LABELS_PASS",
+  "question": "Can the SuperTeacher label factory add a second real RGB-D sensor source without requiring complete truth or treating unsupported pixels as negatives?",
+  "source": {
+    "name": "TUM RGB-D",
+    "parent_count": 7,
+    "frame_count": 21,
+    "roles_in_preexisting_wild_lab_cohort": {
+      "fit": 12,
+      "evaluation": 9
+    },
+    "fresh_evaluation_claim": false
+  },
+  "authorization_chain": {
+    "r3_sequence_support_identity": {
+      "result": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R3_SUPPORT_IDENTITY_RESULT_2026-08-10.json",
+      "result_sha256": "BC60525B971BC5044A7DD0464C9847821E23F9D8B4180F1017EA8A3460915CC6",
+      "wild_lab_masked_depth_support_training_authorized": true
+    },
+    "tum_factor_materialization": {
+      "result": "artifacts.local/experiments/ag-st-tum-support-identity-factors-r0/result.json",
+      "result_sha256": "3F43354E35E7FC5F7FBBBEA8F6448FF1EF2A64EAE6107016CA0EDD40FBE6122F",
+      "validation": "artifacts.local/experiments/ag-st-tum-support-identity-factors-r0/validation.json",
+      "validation_sha256": "CAB683334F7E00BB10601D229228FBECB4619B28C915C5A4BD16BA4B44501CC8",
+      "invariant_validation": "21/21 PASS"
+    },
+    "r9_continuous_source_boundary": {
+      "result": "artifacts.local/experiments/ag-st-continuous-boundary-factors-r0/result.json",
+      "result_sha256": "B7FCC09D75448E16706097D1F358316244D3E289E13A8B6B48A7337494CDCB6C",
+      "tum_frame_count": 21,
+      "source_native_not_teacher_filled": true
+    }
+  },
+  "merge_contract": {
+    "frame_identity_match": "21/21",
+    "base_arrays": "Every validated TUM array except the three superseded boundary fields is preserved exactly.",
+    "boundary_arrays": "R9 boundary distance, core/soft probability, uncertainty, validity, UNKNOWN, tier and provenance are copied exactly.",
+    "factor_specific_masks": {
+      "depth": "metric_depth_valid_hw",
+      "normal": "normal_valid_hw",
+      "support": "support_truth_valid_hw",
+      "obstacle_evidence": "evidence_truth_valid_hw",
+      "boundary": "boundary_factor_valid_hw"
+    },
+    "unknown_policy": "Each factor consumes only its own validity mask; unsupported pixels remain UNKNOWN and are never converted to negative labels.",
+    "complete_truth_required": false
+  },
+  "materialized_package": {
+    "result": "artifacts.local/experiments/ag-st-unified-factor-labels-tum7-r0/result.json",
+    "result_sha256": "B6D6123FE12ED8FD5813D425FC747F882618BE0C7AE56A6CA2CB7697EF3B136B",
+    "npz_file_count": 21,
+    "npz_total_bytes": 73358618,
+    "field_count_per_frame": 60,
+    "total_pixels": 1778112,
+    "coverage_fraction_of_all_pixels": {
+      "metric_depth": 0.8866235647698233,
+      "normal": 0.4739375247453479,
+      "support": 0.44404626930137137,
+      "obstacle_evidence": 0.47391559136882266,
+      "continuous_boundary": 0.7237952389950689
+    },
+    "continuous_boundary_core_positive_pixels": 25914,
+    "continuous_boundary_soft_band_pixels_le_3px": 147743,
+    "gates": "10/10 PASS"
+  },
+  "implementation": {
+    "tum_materializer": "scripts/research/assistive_geometry/materialize_ag_st_tum_unified_factor_labels.py",
+    "tum_materializer_sha256": "367CD8E4BD153935CA88BAFE0153C1660219081089074AC6AD8BFD5E4A0DA462",
+    "shared_merge_helper": "scripts/research/assistive_geometry/materialize_ag_st_unified_factor_labels.py",
+    "shared_merge_helper_sha256": "F0C9928296C1BD7ECA285A27B991465F2CBEF52D65F1077D6973FD88F63ADB04",
+    "tum_test": "scripts/research/assistive_geometry/test_materialize_ag_st_tum_unified_factor_labels.py",
+    "tum_test_sha256": "A0FA0102D3EEAA99A20DEDC773960FC096AAAED7B131016A11D4B63BEB26F821",
+    "shared_test": "scripts/research/assistive_geometry/test_materialize_ag_st_unified_factor_labels.py",
+    "shared_test_sha256": "DE4C5E271EFBD7462E9C34CAD015C832DD4528DC938C52349E1D3D1158F17108",
+    "focused_tests": "6/6 PASS"
+  },
+  "decision": {
+    "tum_second_source_unified_training_ready": true,
+    "arkit_r10_plus_tum_r13_multi_source_input_ready": true,
+    "teacher_filled_boundary_training_authorized": false,
+    "formal_f1_authority_changed": false,
+    "next_execution": "Build an explicit RGB-binding multi-source loader and train a source-balanced factor student on ARKit R10 plus TUM R13; evaluate by held parent/source roles without reusing unsupported pixels as negatives."
+  },
+  "claim_boundary": "Second-source selective factor-label materialization and exact merge receipts. This is not complete truth, a fresh-source evaluation, cross-source model generalization, task utility, formal F1 authorization, safety, deployment, product, or license evidence."
+}

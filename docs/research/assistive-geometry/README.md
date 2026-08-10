@@ -352,6 +352,19 @@ boundary probability AP 仅 `0.04624`（prevalence `0.04421`），4 px F1 约 `0
 协议上已有 F1 `0.4203`。因此下一执行转为 depth identity/no-regret gate 与 source-balanced factor specialist，
 不再调 R11 内部 canary，也不允许无条件覆盖 DepthART prior。
 
+SuperTeacher 数据主线随后先完成了
+[R13 TUM second-source unified factor labels](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R13_TUM_UNIFIED_FACTOR_LABELS_RESULT_2026-08-11.json)，
+而不是直接把失败的 ARKit-only checkpoint 推向部署。R3 已授权的 sequence-identity depth/support 与 R9
+source-native continuous boundary 在 TUM 7 parent/21 帧上完成 21/21 精确 identity merge；每帧 60 字段，
+73,358,618 bytes，10/10 gate PASS。按全图计算，depth/support/obstacle evidence/boundary validity 覆盖为
+`88.66%/44.40%/47.39%/72.38%`；25,914 个 boundary core 被连续表示扩展为 147,743 个 ≤3 px
+soft-band 像素。所有 factor 继续使用各自 validity，boundary 无效区仍为 NaN + UNKNOWN，未转成负例。
+
+因此当前已同时具备 ARKit R10（16 parent/48 帧）与 TUM R13（7 parent/21 帧）两个真实 RGB-D source
+的统一因子包。下一执行是显式 RGB-binding 的 source-balanced multi-source student loader/training，目标是检验
+数据源多样性是否能消除 R12 的单域 collapse；不是要求 Teacher 变成完整真值，也不是要求学生无条件覆盖
+DepthART prior。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时

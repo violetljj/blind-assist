@@ -36,6 +36,10 @@ class UnifiedFactorLabelsTest(unittest.TestCase):
         right = left.copy()
         self.assertTrue(arrays_equal(left, right))
 
+    def test_arrays_equal_handles_string_metadata(self) -> None:
+        left = np.asarray("dav2", dtype="<U4")
+        self.assertTrue(arrays_equal(left, left.copy()))
+
 
 if __name__ == "__main__":
     unittest.main()
