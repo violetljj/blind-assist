@@ -1,0 +1,99 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r16_angular_boundary_factor_upgrade_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R16_ANGULAR_BOUNDARY_FACTOR_UPGRADE_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "NO_TRAINING_PINHOLE_INVARIANT_AND_THREE_SOURCE_LABEL_MATERIALIZATION",
+  "status": "ANGULAR_BOUNDARY_MECHANICS_AND_81_FRAME_LABEL_UPGRADE_PASS",
+  "question": "Can the SuperTeacher boundary factor replace resolution-dependent pixel-band supervision with a camera-aware representation without changing source evidence or UNKNOWN masks?",
+  "analytic_resize_canary": {
+    "result": "artifacts.local/experiments/ag-st-angular-boundary-resize-canary-r0/result.json",
+    "result_sha256": "E245896BC0C772300B38C057B6C886DC16A692E9CBC08BA73B3A02F17F0B3403",
+    "training_performed": false,
+    "base_shape_hw": [120, 160],
+    "scaled_shape_hw": [360, 320],
+    "scale_xy": [2, 3],
+    "vertical_raw_pixel_distance_scale": 2.0,
+    "horizontal_raw_pixel_distance_scale": 3.0,
+    "vertical_angular_distance_max_abs_error_rad": 0.0,
+    "horizontal_angular_distance_max_abs_error_rad": 0.0,
+    "vertical_angular_soft_max_abs_error": 0.0,
+    "horizontal_angular_soft_max_abs_error": 0.0,
+    "gates": "8/8 PASS"
+  },
+  "angular_contract": {
+    "distance": "acos of the dot product between normalized camera rays for a pixel and its nearest valid source boundary core",
+    "field": "boundary_angular_distance_rad_hw",
+    "soft_field": "boundary_angular_soft_probability_hw",
+    "soft_sigma_rad": 0.012,
+    "max_distance_rad": 0.25,
+    "invalid_distance": "NaN",
+    "invalid_soft_probability": 0.0,
+    "source_probability_floor": "soft probability is never lower than the source-native/exact core probability",
+    "complete_truth_required": false,
+    "teacher_filled_pixels": false
+  },
+  "materialized_package": {
+    "result": "artifacts.local/experiments/ag-st-continuous-boundary-factors-angular-r0/result.json",
+    "result_sha256": "0D64218B183BF4050DB76F97CB4D214E0E745BA7C2883A6F4211B7E66C0B5AD7",
+    "source_count": 3,
+    "parent_count": 24,
+    "frame_count": 81,
+    "npz_file_count": 81,
+    "npz_total_bytes": 19990670,
+    "r9_base_arrays_exact": true,
+    "factor_validity_unknown_preserved": true,
+    "gates": "8/8 PASS",
+    "by_source": {
+      "arkitscenes": {
+        "parent_count": 16,
+        "frame_count": 48,
+        "valid_pixels": 3901170,
+        "core_positive_pixels": 1838,
+        "old_soft_band_pixels_le_3px": 11219,
+        "angular_soft_band_pixels_le_0p012rad": 14856
+      },
+      "tum_rgbd": {
+        "parent_count": 7,
+        "frame_count": 21,
+        "valid_pixels": 1286989,
+        "core_positive_pixels": 25914,
+        "old_soft_band_pixels_le_3px": 147743,
+        "angular_soft_band_pixels_le_0p012rad": 172082
+      },
+      "icl_exact": {
+        "parent_count": 1,
+        "frame_count": 12,
+        "valid_pixels": 224039,
+        "core_positive_pixels": 20625,
+        "old_soft_band_pixels_le_3px": 55061,
+        "angular_soft_band_pixels_le_0p012rad": 36736
+      }
+    }
+  },
+  "intrinsics_provenance": {
+    "arkitscenes": "R10 per-frame intrinsics_output with NPZ SHA receipt",
+    "tum_rgbd": "R13 per-frame intrinsics_output with NPZ SHA receipt",
+    "icl_exact": "fixed positive-fy vertical-flip plus exact 4x downsample calibration",
+    "intrinsics_guessing": false
+  },
+  "implementation": {
+    "analytic_canary": "scripts/research/assistive_geometry/run_ag_st_angular_boundary_resize_canary.py",
+    "analytic_canary_sha256": "D97697DE0B0E6DF47E4294B846AE69DC14D6A738E10FD980BC0CAFD9DEE89663",
+    "analytic_test": "scripts/research/assistive_geometry/test_run_ag_st_angular_boundary_resize_canary.py",
+    "analytic_test_sha256": "9D3141BB2DB37974F5CBDFFCE07B41FD84BBEA5B3DE0C8990CDA34C9E026054E",
+    "materializer": "scripts/research/assistive_geometry/materialize_ag_st_angular_boundary_factors.py",
+    "materializer_sha256": "9D0E365062B7B02D37D5B9468919BB54FDD180A5915C65C28F40E6AE4150F145",
+    "materializer_test": "scripts/research/assistive_geometry/test_materialize_ag_st_angular_boundary_factors.py",
+    "materializer_test_sha256": "CCFCDF21784FE149ACD450552C9CFBD08CFD9569C258B3B41EA4AE623853A452",
+    "focused_tests": "5/5 PASS"
+  },
+  "decision": {
+    "angular_boundary_factor_training_ready": true,
+    "existing_pixel_boundary_fields_retired": false,
+    "r15_failure_mechanism_addressed_at_label_level": true,
+    "learned_improvement_claimed": false,
+    "next_execution": "Train one source-balanced boundary specialist using angular distance/soft supervision with the previously frozen source/parent split, then evaluate unchanged on Bonn and ICL without threshold selection.",
+    "formal_f1_authority_changed": false
+  },
+  "claim_boundary": "Analytic camera resize mechanics plus selective-label materialization from existing source-native/exact boundary evidence. This is not a learned improvement, cross-source model proof, calibrated mask, task utility, formal F1 authorization, safety, deployment, or product evidence."
+}

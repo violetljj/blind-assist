@@ -395,6 +395,19 @@ prevalence `0.0921` 升到 `0.1215`，第二个 external source 仍保留 rankin
 boundary，也不在 ICL 上调阈值；先给 label factory 增加 scale-normalized 或 camera-angular boundary distance，
 用同一几何场景 resize invariant 做无训练解析 canary，通过后再训练新的 boundary specialist。
 
+该 label-level 修复已经由
+[R16 angular boundary factor upgrade](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R16_ANGULAR_BOUNDARY_FACTOR_UPGRADE_RESULT_2026-08-11.json)
+完成。120×160 栅格按 x/y=`2/3` 非等比放大后，vertical/horizontal raw pixel distance 精确变成
+`2×/3×`，而 camera-ray angular distance 与固定 `0.012 rad` soft probability 的最大误差均为 `0.0`；
+8/8 analytic gate PASS。
+
+随后 ARKit/TUM/ICL 共 3 source、24 parent、81 帧全部新增
+`boundary_angular_distance_rad_hw + boundary_angular_soft_probability_hw`，原 R9 数组逐元素保留、UNKNOWN
+不变，8/8 materialization gate PASS。固定角度带将 ARKit/TUM/ICL 的有效 soft-band 调整为
+`14,856/172,082/36,736` 像素；相较旧 3px 的 `11,219/147,743/55,061`，低分辨率 ICL 不再被
+人为放宽。旧 pixel fields 暂不删除；下一步用冻结 source/parent split 训练一次 angular boundary specialist，
+并在 Bonn/ICL 上原样复核，不在 external truth 上选阈值。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时
