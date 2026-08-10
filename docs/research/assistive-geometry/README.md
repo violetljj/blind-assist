@@ -94,6 +94,7 @@
 - [AG-ST R8 soft-boundary Bonn canary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R8_SOFT_BOUNDARY_BONN_CANARY_RESULT_2026-08-11.json)
 - [AG-ST R9 continuous boundary factors result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R9_CONTINUOUS_BOUNDARY_FACTORS_RESULT_2026-08-11.json)
 - [AG-ST R10 unified factor labels result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R10_UNIFIED_FACTOR_LABELS_RESULT_2026-08-11.json)
+- [AG-ST R11 unified factor student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R11_UNIFIED_FACTOR_STUDENT_RESULT_2026-08-11.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -333,6 +334,14 @@ PASS，因此连续 boundary factor 已可与 metric depth/support 一起进入�
 104,140,450 bytes，6/6 merge gate PASS；覆盖率分别为 `96.45%/94.66%/63.57%/71.60%/94.03%`。
 因此当前已有可直接进入统一 masked-factor 训练的五因子 SuperTeacher 包，不要求完整真值，最终 task state 仍由
 deterministic reducer 决定。
+
+[R11 unified factor student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R11_UNIFIED_FACTOR_STUDENT_RESULT_2026-08-11.json)
+已修正旧 trainer 将 boundary/obstacle 共用 validity 的接口错误，并用冻结 DepthART-S 执行共享 head、boundary-only、
+factor-split 和 factor-split continuous 四个固定开发实验。最终联合候选在 canary 上将 depth MAE
+`1.988→0.610 m`、support BCE `0.718→0.246`、obstacle BCE `0.816→0.527`、boundary soft-BCE
+`0.0829→0.0679`；support F1 达 `0.889`，boundary hard/distance F1 达 `0.146/0.141`。但 depth
+`>0.10 m` error rate 仍为 `91.78%`，全图 boundary distance MAE 也恶化，因此只冻结为 partial candidate，
+停止内部 canary 调参，下一步只做无拟合外部 source evaluation。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。

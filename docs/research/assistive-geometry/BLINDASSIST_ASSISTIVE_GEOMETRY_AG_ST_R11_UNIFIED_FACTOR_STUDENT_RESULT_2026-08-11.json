@@ -1,0 +1,94 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r11_unified_factor_student_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R11_UNIFIED_FACTOR_STUDENT_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "WILD_LAB_UNIFIED_FACTOR_STUDENT_DEVELOPMENT",
+  "status": "UNIFIED_CONTINUOUS_FACTOR_SIGNAL_SUPPORTED_PARTIAL",
+  "question": "Can one frozen DepthART encoder learn metric depth, support, obstacle evidence and continuous source-boundary factors from the R10 package without complete truth?",
+  "complete_truth_required": false,
+  "input": {
+    "unified_labels": "artifacts.local/experiments/ag-st-unified-factor-labels-train16-r0/result.json",
+    "unified_labels_sha256": "E802E51106FF1A4B0BED253504AE8E36A957A9C26E87B45C08CC4CE7F2B78933",
+    "parents": 16,
+    "frames": 48,
+    "split": "12 FIT / 2 SELECTION / 2 CANARY parents; pre-existing consumed TRAIN development roles"
+  },
+  "loader_correction": {
+    "problem": "The previous trainer reused obstacle evidence validity for boundary losses.",
+    "resolution": "Boundary now consumes boundary_factor_valid_hw, boundary_quality_tier_hw and boundary_soft_probability_hw; obstacle keeps evidence_truth_valid_hw/evidence_quality_tier_hw.",
+    "unknown_policy": "Each factor uses its own mask; UNKNOWN never becomes negative.",
+    "focused_tests": "15/15 PASS"
+  },
+  "fixed_model": {
+    "encoder": "frozen DepthART-S metric indoor",
+    "features": "decoder pyramid",
+    "head": "factor-split dilated 1/2/4 trunks",
+    "trainable_parameters": 272709,
+    "objective": "depth/support/obstacle dense losses plus continuous boundary heat, near-distance and heat-distance consistency",
+    "epochs": 80,
+    "seed": 20260811,
+    "checkpoint": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-continuous-r0/masked-factor-head.pt",
+    "checkpoint_sha256": "FCE0635E0FEEB1C9B81581D69C4B7304054C3D0CF601EAEB9C106C2B1E6265CE",
+    "checkpoint_bytes": 1109389
+  },
+  "canary_before_after": {
+    "depth_mae_m": [1.988123375284045, 0.6098707188486383],
+    "depth_relative_improvement": 0.6932430218212663,
+    "depth_bad_0p10m_rate_after": 0.9177652022265689,
+    "support_bce": [0.7177592548764178, 0.24649108059998384],
+    "support_relative_improvement": 0.6565825115798415,
+    "support_f1": [0.5118666145026292, 0.8892803308209399],
+    "obstacle_bce": [0.8159385749816048, 0.5272950225655764],
+    "obstacle_relative_improvement": 0.3537564729336836,
+    "boundary_soft_bce": [0.08292377512911762, 0.06788891992915715],
+    "boundary_soft_bce_relative_improvement": 0.18130934314736935,
+    "boundary_f1": [0.0, 0.1457104176038142],
+    "boundary_distance_f1": [0.0, 0.14118852608470508],
+    "boundary_distance_mae_px": [2.7159164101334436, 3.4023437025622427],
+    "boundary_distance_mae_relative_improvement": -0.2527424223616191
+  },
+  "ablations": {
+    "shared_multifactor": {
+      "result_sha256": "D0CCA3D2F07D9C1D4098EA1B852822060793273A4E9A75C4CD8A9B7316EEE47C",
+      "canary_boundary_soft_bce_relative_improvement": -0.9229083771507598,
+      "canary_boundary_f1": 0.0694700837485786
+    },
+    "boundary_only_continuous": {
+      "result_sha256": "60D2961C7D578BBE4753CFEF59EA5242FF8EB0B825B980663243EBF13C731B00",
+      "canary_boundary_soft_bce_relative_improvement": 0.1734118236018519,
+      "canary_boundary_f1": 0.14135086914794182
+    },
+    "factor_split_old_boundary_loss": {
+      "result_sha256": "CC01ED2D2CA287D975AE689815E7A9CD2CCA64A5F71A1DD537F1E4D2458D7B82",
+      "canary_boundary_soft_bce_relative_improvement": -0.5193004835269733,
+      "canary_boundary_f1": 0.08411453906296147
+    },
+    "factor_split_continuous_boundary": {
+      "result_sha256": "E930FA2FC42DB7163F7340AF81259E59E8F8212857D1D1C2E254AECF3E9BF65D",
+      "canary_boundary_soft_bce_relative_improvement": 0.18130934314736935,
+      "canary_boundary_f1": 0.1457104176038142
+    }
+  },
+  "interpretation": {
+    "supported": "The R10 package supports simultaneous parent-held-out depth, support, obstacle and near-boundary learning signals.",
+    "unsupported": "The full boundary distance field is not calibrated and metric depth remains far from task-ready at the 0.10 m threshold.",
+    "architecture_finding": "Boundary requires both a factor-specific trunk and its continuous near-field objective; a trunk split alone is insufficient.",
+    "freshness": "This is an internal consumed-TRAIN development comparison, not fresh-source proof."
+  },
+  "artifacts": {
+    "selected_result": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-continuous-r0/result.json",
+    "selected_result_sha256": "E930FA2FC42DB7163F7340AF81259E59E8F8212857D1D1C2E254AECF3E9BF65D",
+    "trainer": "scripts/research/assistive_geometry/train_ag_st_masked_student.py",
+    "trainer_sha256": "7C9CD3F442FF2A9CE86C4FB87510622D885141590ECDE5AD1B64C10661F3AF44",
+    "test": "scripts/research/assistive_geometry/test_train_ag_st_masked_student.py",
+    "test_sha256": "496C3F43D5031297DD5D424F7C753B3BBE0F0FC155AD5E454787193C115DBDB5"
+  },
+  "decision": {
+    "freeze_selected_checkpoint_for_external_evaluation": true,
+    "continue_internal_canary_tuning": false,
+    "deterministic_reducer_authority_changed": false,
+    "formal_f1_authority_changed": false,
+    "next_execution": "Evaluate the frozen checkpoint on external source-native depth/boundary evidence without fitting or threshold selection."
+  },
+  "claim_boundary": "Consumed-TRAIN WILD_LAB unified factor learnability and ablation evidence only. This is not complete truth, fresh-source generalization, task utility, formal F1 authorization, safety, deployment, or product evidence."
+}

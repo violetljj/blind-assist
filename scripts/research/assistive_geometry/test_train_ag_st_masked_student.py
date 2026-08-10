@@ -18,6 +18,7 @@ from train_ag_st_masked_student import (  # noqa: E402
     compute_depth_support_losses,
     compute_depth_support_precision_losses,
     compute_student_losses,
+    compute_unified_continuous_boundary_losses,
     fit_scalar_support_calibration,
     select_parent_split,
     tier_weights,
@@ -92,6 +93,25 @@ class AgStMaskedStudentTest(unittest.TestCase):
         self.assertGreater(
             sum(parameter.numel() for parameter in model.parameters()),
             100_000,
+        )
+
+    def test_factor_split_routes_boundary_gradient_away_from_shared_trunk(self) -> None:
+        model = MaskedFactorStudent(
+            channels=192,
+            hidden=64,
+            head_profile="factor_split_dilated",
+            use_base_depth_feature=True,
+        )
+        feature = torch.randn(1, 192, 12, 16)
+        base_depth = torch.full((1, 1, 24, 32), 2.0)
+        outputs = model(feature, base_depth, (24, 32))
+        outputs["boundary_logits"].sum().backward()
+        self.assertIsNotNone(model.boundary_trunk)
+        self.assertTrue(
+            any(parameter.grad is not None for parameter in model.boundary_trunk.parameters())
+        )
+        self.assertTrue(
+            all(parameter.grad is None for parameter in model.trunk.parameters())
         )
 
     def test_identity_gate_starts_near_closed_and_preserves_base_depth(self) -> None:
@@ -175,6 +195,88 @@ class AgStMaskedStudentTest(unittest.TestCase):
         self.assertGreater(float(weights[0]), float(weights[1]))
         self.assertGreater(float(weights[1]), float(weights[2]))
         self.assertEqual(0.0, float(weights[2]))
+
+    def test_multifactor_loss_keeps_boundary_and_obstacle_masks_independent(self) -> None:
+        outputs = {
+            "depth_m": torch.ones((1, 1, 2, 2)),
+            "support_logits": torch.zeros((1, 1, 2, 2)),
+            "boundary_logits": torch.zeros((1, 1, 2, 2)),
+            "boundary_distance_px": torch.full((1, 1, 2, 2), 4.0),
+            "obstacle_logits": torch.zeros((1, 1, 2, 2)),
+        }
+        targets = {
+            "metric_depth_m": torch.ones((1, 1, 2, 2)),
+            "metric_valid": torch.tensor([[[[True, False], [False, False]]]]),
+            "metric_tier": torch.tensor([[[[TIER_A_SOURCE, 0], [0, 0]]]]),
+            "support": torch.zeros((1, 1, 2, 2)),
+            "support_valid": torch.tensor([[[[True, False], [False, False]]]]),
+            "support_tier": torch.tensor([[[[TIER_A_SOURCE, 0], [0, 0]]]]),
+            "boundary": torch.zeros((1, 1, 2, 2)),
+            "boundary_soft": torch.tensor([[[[1.0, 0.0], [0.0, 0.0]]]]),
+            "boundary_distance_px": torch.tensor([[[[0.0, 32.0], [32.0, 32.0]]]]),
+            "boundary_valid": torch.tensor([[[[True, False], [False, False]]]]),
+            "boundary_tier": torch.tensor([[[[TIER_A_SOURCE, 0], [0, 0]]]]),
+            "obstacle": torch.zeros((1, 1, 2, 2)),
+            "evidence_valid": torch.tensor([[[[False, True], [False, False]]]]),
+            "evidence_tier": torch.tensor([[[[0, TIER_A_SOURCE], [0, 0]]]]),
+        }
+        changed = copy.deepcopy(targets)
+        changed["boundary_soft"][..., 0, 1] = 1.0
+        changed["boundary_distance_px"][..., 0, 1] = 0.0
+        changed["obstacle"][..., 0, 0] = 1.0
+        weights = {"support_pos_weight": 1.0, "boundary_pos_weight": 1.0}
+        first = compute_student_losses(outputs, targets, weights)
+        second = compute_student_losses(outputs, changed, weights)
+        for key in first:
+            torch.testing.assert_close(first[key], second[key])
+
+    def test_unified_continuous_profile_uses_boundary_specific_objective(self) -> None:
+        outputs = {
+            "depth_m": torch.ones((1, 1, 2, 2), requires_grad=True),
+            "support_logits": torch.zeros((1, 1, 2, 2), requires_grad=True),
+            "boundary_logits": torch.zeros((1, 1, 2, 2), requires_grad=True),
+            "boundary_distance_px": torch.full(
+                (1, 1, 2, 2), 8.0, requires_grad=True
+            ),
+            "obstacle_logits": torch.zeros((1, 1, 2, 2), requires_grad=True),
+        }
+        valid = torch.tensor([[[[True, True], [False, False]]]])
+        tiers = torch.tensor(
+            [[[[TIER_A_SOURCE, TIER_A_SOURCE], [TIER_UNKNOWN, TIER_UNKNOWN]]]]
+        )
+        targets = {
+            "metric_depth_m": torch.ones((1, 1, 2, 2)),
+            "metric_valid": valid,
+            "metric_tier": tiers,
+            "support": torch.tensor([[[[1.0, 0.0], [0.0, 0.0]]]]),
+            "support_valid": valid,
+            "support_tier": tiers,
+            "boundary": torch.tensor([[[[1.0, 0.0], [0.0, 0.0]]]]),
+            "boundary_soft": torch.tensor([[[[1.0, 0.4], [0.0, 0.0]]]]),
+            "boundary_distance_px": torch.tensor([[[[0.0, 3.0], [32.0, 32.0]]]]),
+            "boundary_valid": valid,
+            "boundary_tier": tiers,
+            "obstacle": torch.zeros((1, 1, 2, 2)),
+            "evidence_valid": valid,
+            "evidence_tier": tiers,
+        }
+        losses = compute_unified_continuous_boundary_losses(
+            outputs,
+            targets,
+            {"support_pos_weight": 1.0, "boundary_pos_weight": 1.0},
+        )
+        self.assertIn("raw/boundary_soft_heat_bce", losses)
+        self.assertIn("raw/boundary_near_distance", losses)
+        self.assertNotIn("raw/boundary_bce", losses)
+        losses["total"].backward()
+        for key in (
+            "depth_m",
+            "support_logits",
+            "boundary_logits",
+            "boundary_distance_px",
+            "obstacle_logits",
+        ):
+            self.assertIsNotNone(outputs[key].grad)
 
     def test_depth_support_profile_ignores_unknown_and_noncore_outputs(self) -> None:
         outputs = {

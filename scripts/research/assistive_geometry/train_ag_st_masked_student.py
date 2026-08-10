@@ -24,6 +24,7 @@ import torch.nn.functional as F
 REPO_ROOT = Path(__file__).resolve().parents[3]
 MODULE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(MODULE_DIR))
+sys.path.insert(0, str(REPO_ROOT / "artifacts.local/tools/map-anything"))
 
 from build_ag_st_factor_labels import (  # noqa: E402
     PROVENANCE_SOURCE_NATIVE,
@@ -115,6 +116,12 @@ BOUNDARY_ONLY_LOSS_WEIGHTS = {
     "boundary_soft_heat_bce": 1.0,
     "boundary_near_distance": 0.50,
     "boundary_heat_distance_consistency": 0.10,
+}
+UNIFIED_CONTINUOUS_BOUNDARY_LOSS_WEIGHTS = {
+    "depth_log_huber": LOSS_WEIGHTS["depth_log_huber"],
+    "support_bce": LOSS_WEIGHTS["support_bce"],
+    "obstacle_bce": LOSS_WEIGHTS["obstacle_bce"],
+    **BOUNDARY_ONLY_LOSS_WEIGHTS,
 }
 
 
@@ -460,9 +467,35 @@ def load_targets(path: Path, expected_hw: tuple[int, int]) -> tuple[dict[str, to
         metric_valid = np.asarray(payload["metric_depth_valid_hw"], dtype=np.bool_)
         support_valid = np.asarray(payload["support_truth_valid_hw"], dtype=np.bool_)
         evidence_valid = np.asarray(payload["evidence_truth_valid_hw"], dtype=np.bool_)
+        boundary_valid = np.asarray(
+            payload[
+                "boundary_factor_valid_hw"
+                if "boundary_factor_valid_hw" in payload.files
+                else "evidence_truth_valid_hw"
+            ],
+            dtype=np.bool_,
+        )
+        boundary_tier = np.asarray(
+            payload[
+                "boundary_quality_tier_hw"
+                if "boundary_quality_tier_hw" in payload.files
+                else "evidence_quality_tier_hw"
+            ],
+            dtype=np.uint8,
+        )
         boundary_distance = np.asarray(payload["boundary_distance_px_hw"], dtype=np.float32)
+        boundary_soft = (
+            np.asarray(payload["boundary_soft_probability_hw"], dtype=np.float32)
+            if "boundary_soft_probability_hw" in payload.files
+            else np.exp(-boundary_distance / BOUNDARY_HEAT_SIGMA_PX).astype(np.float32)
+        )
         require(np.isfinite(metric_depth[metric_valid]).all(), "valid metric label non-finite")
-        require(np.isfinite(boundary_distance[evidence_valid]).all(), "valid boundary distance non-finite")
+        require(np.isfinite(boundary_distance[boundary_valid]).all(), "valid boundary distance non-finite")
+        require(
+            np.isfinite(boundary_soft[boundary_valid]).all()
+            and np.all((boundary_soft[boundary_valid] >= 0.0) & (boundary_soft[boundary_valid] <= 1.0)),
+            "valid boundary soft probability invalid",
+        )
         targets = {
             "metric_depth_m": torch.from_numpy(np.nan_to_num(metric_depth, nan=1.0))[None, None],
             "metric_valid": torch.from_numpy(metric_valid)[None, None],
@@ -475,6 +508,11 @@ def load_targets(path: Path, expected_hw: tuple[int, int]) -> tuple[dict[str, to
             "boundary_distance_px": torch.from_numpy(
                 np.nan_to_num(boundary_distance, nan=MAX_BOUNDARY_DISTANCE_PX)
             )[None, None],
+            "boundary_soft": torch.from_numpy(
+                np.nan_to_num(boundary_soft, nan=0.0)
+            )[None, None],
+            "boundary_valid": torch.from_numpy(boundary_valid)[None, None],
+            "boundary_tier": torch.from_numpy(boundary_tier)[None, None],
             "obstacle": torch.from_numpy(
                 np.asarray(payload["obstacle_evidence_truth_hw"], dtype=np.float32)
             )[None, None],
@@ -805,7 +843,7 @@ class MaskedFactorStudent(nn.Module):
         super().__init__()
         require(depth_mode in {"residual", "absolute_log"}, "invalid depth mode")
         require(
-            head_profile in {"basic", "dilated_pyramid"},
+            head_profile in {"basic", "dilated_pyramid", "factor_split_dilated"},
             "invalid head profile",
         )
         require(hidden % 8 == 0, "head hidden channels must be divisible by 8")
@@ -824,7 +862,7 @@ class MaskedFactorStudent(nn.Module):
         trunk_channels = channels + int(self.use_base_depth_feature)
         self.trunk = (
             DilatedPyramidTrunk(trunk_channels, hidden)
-            if head_profile == "dilated_pyramid"
+            if head_profile in {"dilated_pyramid", "factor_split_dilated"}
             else nn.Sequential(
                 nn.Conv2d(trunk_channels, hidden, 1),
                 nn.GroupNorm(8, hidden),
@@ -833,6 +871,11 @@ class MaskedFactorStudent(nn.Module):
                 nn.GroupNorm(8, hidden),
                 nn.GELU(),
             )
+        )
+        self.boundary_trunk = (
+            DilatedPyramidTrunk(trunk_channels, hidden)
+            if head_profile == "factor_split_dilated"
+            else None
         )
         self.depth_residual = nn.Conv2d(hidden, 1, 1)
         self.depth_identity_gate_logits = (
@@ -900,6 +943,11 @@ class MaskedFactorStudent(nn.Module):
             )
             trunk_input = torch.cat([feature, base_guidance], dim=1)
         latent = self.trunk(trunk_input)
+        boundary_latent = (
+            self.boundary_trunk(trunk_input)
+            if self.boundary_trunk is not None
+            else latent
+        )
         depth_value = self._upsample(self.depth_residual(latent), output_hw)
         depth_gate = None
         if self.depth_identity_gate_logits is not None:
@@ -919,10 +967,14 @@ class MaskedFactorStudent(nn.Module):
             "depth_m": predicted_depth,
             "base_depth_m": base_depth_m,
             "support_logits": self._upsample(self.support_logits(latent), output_hw),
-            "boundary_logits": self._upsample(self.boundary_logits(latent), output_hw),
+            "boundary_logits": self._upsample(
+                self.boundary_logits(boundary_latent), output_hw
+            ),
             "boundary_distance_px": MAX_BOUNDARY_DISTANCE_PX
             * torch.sigmoid(
-                self._upsample(self.boundary_distance_logits(latent), output_hw)
+                self._upsample(
+                    self.boundary_distance_logits(boundary_latent), output_hw
+                )
             ),
             "obstacle_logits": self._upsample(self.obstacle_logits(latent), output_hw),
         }
@@ -984,18 +1036,21 @@ def compute_student_losses(
 
     boundary_raw = F.binary_cross_entropy_with_logits(
         outputs["boundary_logits"],
-        targets["boundary"],
+        targets.get("boundary_soft", targets["boundary"]),
         reduction="none",
         pos_weight=torch.as_tensor(
             class_weights["boundary_pos_weight"],
             device=outputs["boundary_logits"].device,
         ),
     )
-    evidence_weights = tier_weights(targets["evidence_tier"])
+    boundary_weights = tier_weights(
+        targets.get("boundary_tier", targets["evidence_tier"])
+    )
+    boundary_valid = targets.get("boundary_valid", targets["evidence_valid"])
     boundary_loss = masked_weighted_mean(
         boundary_raw,
-        targets["evidence_valid"],
-        evidence_weights,
+        boundary_valid,
+        boundary_weights,
     )
     distance_raw = F.smooth_l1_loss(
         torch.log1p(outputs["boundary_distance_px"]),
@@ -1005,8 +1060,8 @@ def compute_student_losses(
     )
     distance_loss = masked_weighted_mean(
         distance_raw,
-        targets["evidence_valid"],
-        evidence_weights,
+        boundary_valid,
+        boundary_weights,
     )
     obstacle_raw = F.binary_cross_entropy_with_logits(
         outputs["obstacle_logits"],
@@ -1016,7 +1071,7 @@ def compute_student_losses(
     obstacle_loss = masked_weighted_mean(
         obstacle_raw,
         targets["evidence_valid"],
-        evidence_weights,
+        tier_weights(targets["evidence_tier"]),
     )
     raw = {
         "depth_log_huber": depth_loss,
@@ -1203,10 +1258,15 @@ def compute_boundary_only_losses(
         0.0,
         MAX_BOUNDARY_DISTANCE_PX,
     )
-    target_heat = torch.exp(-target_distance / BOUNDARY_HEAT_SIGMA_PX)
+    target_heat = targets.get(
+        "boundary_soft",
+        torch.exp(-target_distance / BOUNDARY_HEAT_SIGMA_PX),
+    )
     predicted_heat = torch.sigmoid(outputs["boundary_logits"])
-    evidence_weights = tier_weights(targets["evidence_tier"])
-    valid = targets["evidence_valid"]
+    evidence_weights = tier_weights(
+        targets.get("boundary_tier", targets["evidence_tier"])
+    )
+    valid = targets.get("boundary_valid", targets["evidence_valid"])
 
     # A small far-field floor still penalizes hallucinated boundaries, while
     # the continuous near-field term prevents the 0.48% two-pixel band from
@@ -1257,6 +1317,37 @@ def compute_boundary_only_losses(
     }
 
 
+def compute_unified_continuous_boundary_losses(
+    outputs: dict[str, torch.Tensor],
+    targets: dict[str, torch.Tensor],
+    class_weights: dict[str, float],
+) -> dict[str, torch.Tensor]:
+    """Keep dense-factor losses while giving boundary its validated continuous objective."""
+
+    multifactor = compute_student_losses(outputs, targets, class_weights)
+    boundary = compute_boundary_only_losses(outputs, targets)
+    selected = {
+        name: multifactor[f"raw/{name}"]
+        for name in ("depth_log_huber", "support_bce", "obstacle_bce")
+    }
+    selected.update(
+        {
+            name: boundary[f"raw/{name}"]
+            for name in BOUNDARY_ONLY_LOSS_WEIGHTS
+        }
+    )
+    weighted = {
+        name: selected[name] * UNIFIED_CONTINUOUS_BOUNDARY_LOSS_WEIGHTS[name]
+        for name in selected
+    }
+    total = sum(weighted.values(), outputs["depth_m"].sum() * 0.0)
+    return {
+        "total": total,
+        **{f"raw/{name}": value for name, value in selected.items()},
+        **{f"weighted/{name}": value for name, value in weighted.items()},
+    }
+
+
 def compute_training_priors(frames: list[CachedFrame]) -> tuple[dict[str, float], dict[str, float]]:
     support_positive = support_count = 0.0
     boundary_positive = boundary_count = 0.0
@@ -1267,18 +1358,19 @@ def compute_training_priors(frames: list[CachedFrame]) -> tuple[dict[str, float]
         targets = frame.targets
         metric_mask = targets["metric_valid"].bool()
         support_mask = targets["support_valid"].bool()
+        boundary_mask = targets.get("boundary_valid", targets["evidence_valid"]).bool()
         evidence_mask = targets["evidence_valid"].bool()
         depth_samples.append(
             targets["metric_depth_m"][metric_mask].numpy().astype(np.float32, copy=False)
         )
         support_positive += float(targets["support"][support_mask].sum())
         support_count += int(support_mask.sum())
-        boundary_positive += float(targets["boundary"][evidence_mask].sum())
-        boundary_count += int(evidence_mask.sum())
+        boundary_positive += float(targets["boundary"][boundary_mask].sum())
+        boundary_count += int(boundary_mask.sum())
         obstacle_sum += float(targets["obstacle"][evidence_mask].sum())
         obstacle_count += int(evidence_mask.sum())
-        distance_sum += float(targets["boundary_distance_px"][evidence_mask].sum())
-        distance_count += int(evidence_mask.sum())
+        distance_sum += float(targets["boundary_distance_px"][boundary_mask].sum())
+        distance_count += int(boundary_mask.sum())
     require(support_count > 0 and boundary_count > 0, "training factor denominator empty")
     require(depth_samples and sum(value.size for value in depth_samples) > 0, "training depth denominator empty")
     metric_depth_m = float(np.median(np.concatenate(depth_samples)))
@@ -1336,6 +1428,7 @@ def train_student(
             "depth_support",
             "depth_support_precision",
             "boundary_only",
+            "unified_continuous_boundary",
         },
         "invalid objective profile",
     )
@@ -1370,6 +1463,12 @@ def train_student(
             outputs = model(feature, base_depth, frame.descriptor.output_hw)
             if objective_profile == "boundary_only":
                 losses = compute_boundary_only_losses(outputs, targets)
+            elif objective_profile == "unified_continuous_boundary":
+                losses = compute_unified_continuous_boundary_losses(
+                    outputs,
+                    targets,
+                    class_weights,
+                )
             elif objective_profile == "depth_support_precision":
                 losses = compute_depth_support_precision_losses(outputs, targets)
             elif objective_profile == "depth_support":
@@ -1598,13 +1697,19 @@ def evaluate_frames(
                 values["support_fn"] += support_counts[2]
                 values["support_count"] += support_counts[3]
 
+                boundary_mask = targets.get(
+                    "boundary_valid", targets["evidence_valid"]
+                ).bool()
                 evidence_mask = targets["evidence_valid"].bool()
                 boundary_bce = F.binary_cross_entropy_with_logits(
                     outputs["boundary_logits"], targets["boundary"], reduction="none"
                 )
-                values["boundary_bce_sum"] += float(boundary_bce[evidence_mask].sum())
-                boundary_soft_target = torch.exp(
-                    -targets["boundary_distance_px"] / BOUNDARY_HEAT_SIGMA_PX
+                values["boundary_bce_sum"] += float(boundary_bce[boundary_mask].sum())
+                boundary_soft_target = targets.get(
+                    "boundary_soft",
+                    torch.exp(
+                        -targets["boundary_distance_px"] / BOUNDARY_HEAT_SIGMA_PX
+                    ),
                 )
                 boundary_soft_bce = F.binary_cross_entropy_with_logits(
                     outputs["boundary_logits"],
@@ -1612,12 +1717,12 @@ def evaluate_frames(
                     reduction="none",
                 )
                 values["boundary_soft_bce_sum"] += float(
-                    boundary_soft_bce[evidence_mask].sum()
+                    boundary_soft_bce[boundary_mask].sum()
                 )
                 boundary_counts = _binary_counts(
                     torch.sigmoid(outputs["boundary_logits"]) >= 0.5,
                     targets["boundary"],
-                    evidence_mask,
+                    boundary_mask,
                 )
                 values["boundary_tp"] += boundary_counts[0]
                 values["boundary_fp"] += boundary_counts[1]
@@ -1626,7 +1731,7 @@ def evaluate_frames(
                 distance_boundary_counts = _binary_counts(
                     outputs["boundary_distance_px"] <= BOUNDARY_BAND_PX,
                     targets["boundary"],
-                    evidence_mask,
+                    boundary_mask,
                 )
                 values["distance_boundary_tp"] += distance_boundary_counts[0]
                 values["distance_boundary_fp"] += distance_boundary_counts[1]
@@ -1636,8 +1741,8 @@ def evaluate_frames(
                     outputs["boundary_distance_px"]
                     - targets["boundary_distance_px"]
                 ).abs()
-                values["distance_abs_sum"] += float(distance_error[evidence_mask].sum())
-                values["distance_count"] += int(evidence_mask.sum())
+                values["distance_abs_sum"] += float(distance_error[boundary_mask].sum())
+                values["distance_count"] += int(boundary_mask.sum())
                 obstacle_bce = F.binary_cross_entropy_with_logits(
                     outputs["obstacle_logits"], targets["obstacle"], reduction="none"
                 )
@@ -2068,7 +2173,9 @@ def execute(args: argparse.Namespace) -> int:
         "architecture": {
             "encoder": encoder_label,
             "head": (
-                "DILATED_1_2_4_PYRAMID_MULTI_FACTOR_DENSE_HEAD"
+                "FACTOR_SPLIT_DILATED_1_2_4_BOUNDARY_AND_MULTI_FACTOR_HEAD"
+                if head_profile == "factor_split_dilated"
+                else "DILATED_1_2_4_PYRAMID_MULTI_FACTOR_DENSE_HEAD"
                 if head_profile == "dilated_pyramid"
                 else "ONE_BY_ONE_THEN_THREE_BY_THREE_MULTI_FACTOR_DENSE_HEAD"
             ),
@@ -2109,6 +2216,8 @@ def execute(args: argparse.Namespace) -> int:
             "loss_weights": (
                 BOUNDARY_ONLY_LOSS_WEIGHTS
                 if objective_profile == "boundary_only"
+                else UNIFIED_CONTINUOUS_BOUNDARY_LOSS_WEIGHTS
+                if objective_profile == "unified_continuous_boundary"
                 else DEPTH_SUPPORT_PRECISION_LOSS_WEIGHTS
                 if objective_profile == "depth_support_precision"
                 else DEPTH_SUPPORT_LOSS_WEIGHTS
@@ -2224,6 +2333,7 @@ def parse_args() -> argparse.Namespace:
             "depth_support",
             "depth_support_precision",
             "boundary_only",
+            "unified_continuous_boundary",
         ),
         default="multifactor",
     )
@@ -2235,7 +2345,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--head-profile",
-        choices=("basic", "dilated_pyramid"),
+        choices=("basic", "dilated_pyramid", "factor_split_dilated"),
         default="basic",
     )
     parser.add_argument("--head-hidden-channels", type=int, default=32)
