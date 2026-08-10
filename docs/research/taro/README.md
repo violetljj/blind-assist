@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0M_ONE_SHOT_CONSUMED / O0R_SOURCE_AND_ADAPTER_CONTRACT_LOCK_PASS / O0R_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_PASS / O0R_TRUTH_ONLY_PREFLIGHT_LOCK_PASS / O0R_DATA_USE_AUTHORIZED / O0R_TRUTH_MATERIALIZER_IMPLEMENTATION_LOCK_PASS / HEAD_ATTEMPT_01_PRESTART_FAILED_UNCONSUMED / HEAD_ATTEMPT_02_ONE_SHOT_CONSUMED / HEAD_NOT_AVAILABLE_NO_REPLACEMENT / SOURCE_UNOPENED / TRUTH_ONE_SHOT_UNCONSUMED / O0R_NOT_EVALUABLE_SOURCE_ASSET_UNAVAILABLE / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -90,6 +90,9 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   绑定 junction-aware implementation commit `2c0fdef8` 与同一 72-URL plan；当前 `AUTHORIZED_UNCONSUMED`；
 - [TARO O0R Content-Length HEAD result Attempt 02](TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_RESULT_ATTEMPT_02_2026-08-10.md)：
   71/72 available；`47333152/lowres_wide.traj` 3/3 HTTP 403；zero body、HEAD one-shot consumed、no replacement；
+- [TARO O0R Apple scale source canary R0 result](TARO_O0R_ARKITSCENES_APPLE_SCALE_SOURCE_CANARY_R0_RESULT_2026-08-11.md)：
+  239/239 source-only estimates、166 paired frames、16/16 parents improved；parent-macro absolute log-scale error
+  从 `0.30498` 降到 `0.01561`，但仍仅为 retrospective WILD_LAB diagnostic；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -100,7 +103,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-无；`NONE_STOP_AT_HEAD_TERMINAL`
+`SOURCE_ANCHORED_FACTOR_INJECTION_CANARY_R1`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -144,9 +147,13 @@ Attempt 02 已消费：72 个冻结 HEAD target 中 71 个返回正 Content-Leng
 `1,105,086,109 bytes`。HEAD evidence manifest 已复核；source/work/truth/factor 四个 root 仍不存在，
 truth one-shot 未消费。
 
-因此当前是 `HEAD_NOT_AVAILABLE_NO_REPLACEMENT / SOURCE_UNOPENED /
-O0R_NOT_EVALUABLE_SOURCE_ASSET_UNAVAILABLE / NO_ACTIVE_EXECUTION`。按冻结规则不得替换 `47333152`、
-不得重跑 HEAD、不得进入 GET/source/truth，也不得运行 DepthART/O0R 或进入 `G0/G1/A0/A1/J0`。
+后续用户授权与 recovery execution 已使锁定 source/truth 路径实际完成；当前 model-free R3 终态为
+`TARO_O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE`，原因是 complete query truth admission 未满足，
+不是 source body 缺失。239 个 DepthART eval candidate 已在 truth join 前封存；描述性 partial-factor
+canary 随后完成。新的 Apple scale R0 又在独立两阶段 replay 中先封存 239/239 source-only estimates，
+再与 166 帧、1,494 query 的 FARO scale oracle 比较：16/16 parents、163/166 frames 改善，parent-macro
+absolute log error 从 `0.3049765` 降至 `0.0156090`。该结果只授权下一步 source-anchored factor
+injection canary，不改变正式 O0R NOT_EVALUABLE 终态。
 
 P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
 finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份
@@ -220,12 +227,10 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 
 ## Claim ceiling
 
-当前证明三件彼此隔离的事：冻结的、预去重与预白化 synthetic analytic family 上，独立 NumPy 实现
-可复现 task-query identifiability 与 factorial intervention mechanics；新的 ARKitScenes O0R
-source/role/truth/query/uncertainty/injection 合同可由静态 validator 重算；对应纯内存 seam 在 synthetic
-arrays 上通过 44 项 focused tests；24 × 3 source asset request plan、预算、权限缺口与 root absence 已由
-另一个静态 validator 冻结。它不证明远端 asset 可用或 Content-Length，也不证明真实 factor causal headroom、
-真实 evidence dedup/whitening、模型质量、选择性风险校准、observation-withholding/sensing regret、
+当前还证明一个受限算法结果：在锁定 ARKitScenes landscape cohort 和已封存 DepthART candidate 上，
+source-visible AppleDepth 零参数尺度锚点能把 parent-macro absolute log-scale error 从 `0.30498` 降到
+`0.01561`，239/239 source frames 可估计。它不证明正式 factor causal headroom、RGB-only operation、
+真实 evidence dedup/whitening、完整 query truth admission、选择性风险校准、observation-withholding/sensing regret、
 真实 geometry-anchored counterfactual pair、被动/主动视角收益、跨设备泛化、移动端可行、产品有效性
 或真实用户安全。
 
