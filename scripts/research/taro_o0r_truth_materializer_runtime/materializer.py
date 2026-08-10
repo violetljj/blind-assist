@@ -37,6 +37,7 @@ MATERIALIZER_MANIFEST_SCHEMA = "blindassist.taro.o0r.truth_materializer_manifest
 BOUND_SOURCE_FRAME_SCHEMA = "blindassist.taro.o0r.bound_source_frame_envelope.v1"
 ARRAY_ARTIFACT_SCHEMA = "blindassist.taro.o0r.content_addressed_array_artifact.v1"
 ARRAY_BLOB_REF_SCHEMA = "blindassist.taro.ndarray_blob_ref.v1"
+EVAL_TRUTH_COMMITMENT_SCHEMA = "blindassist.taro.o0r.eval_truth_commitment_record.v1"
 MINIMUM_EXACT_FRAMES_PER_EVAL_PARENT = 8
 MINIMUM_STATE_FRAMES_PER_EVAL_PARENT = 6
 MINIMUM_EVALUABLE_EVAL_PARENTS = 12
@@ -1069,21 +1070,171 @@ def build_eval_truth_record(
         for query, lookup in zip(query_receipts, uncertainty_lookups, strict=True)
     ]
     bundle = adapter.reduce_complete_query_bundle(factor_frames, query_receipts, receipt)
-    return seal_record(
+    result_by_query = {row["query_id"]: row for row in bundle["results"]}
+    commitments: list[dict[str, Any]] = []
+    for factor_frame in factor_frames:
+        query_id = factor_frame["query_id"]
+        base = factor_frame["base_geometry"]
+        blocks = factor_frame["blocks"]
+        commitments.append(
+            seal_record(
+                {
+                    "schema": "blindassist.taro.o0r.query_factor_frame_commitment.v1",
+                    "physical_frame_id": factor_frame["physical_frame_id"],
+                    "query_id": query_id,
+                    "source_frame_receipt_sha256": factor_frame["source_frame_receipt_sha256"],
+                    "query_receipt_sha256": factor_frame["query_receipt_sha256"],
+                    "max_source_timestamp_ns": factor_frame["max_source_timestamp_ns"],
+                    "factor_frame_sha256": factor_frame["content_sha256"],
+                    "base_geometry_sha256": base["content_sha256"],
+                    "faro_factor_value_sha256s": dict(base["faro_factor_value_sha256s"]),
+                    "factor_identity": dict(factor_frame["factor_identity"]),
+                    "factor_metadata": {
+                        name: {
+                            "validity": copy.deepcopy(blocks[name]["validity"]),
+                            "validity_sha256": canonical_sha256(blocks[name]["validity"]),
+                            "uncertainty": copy.deepcopy(blocks[name]["uncertainty"]),
+                            "uncertainty_sha256": canonical_sha256(blocks[name]["uncertainty"]),
+                        }
+                        for name in adapter.FACTOR_NAMES
+                    },
+                    "query_result_sha256": canonical_sha256(result_by_query[query_id]),
+                    "dense_arrays_persisted": False,
+                }
+            )
+        )
+    compact = seal_record(
         {
-            "schema": "blindassist.taro.o0r.eval_truth_record.v1",
+            "schema": EVAL_TRUTH_COMMITMENT_SCHEMA,
             "source_frame_receipt": receipt,
             "bound_source_frame_envelope": envelope,
             "bound_source_frame_envelope_sha256": envelope["content_sha256"],
             "faro_geometry_sha256": geometry.content_sha256,
             "highres_depth_array_sha256": geometry.highres_depth_array_sha256,
+            "uncertainty_model_sha256": uncertainty_model.content_sha256,
             "uncertainty_lookups": uncertainty_lookups,
             "query_receipts": query_receipts,
-            "factor_frames": factor_frames,
+            "factor_frame_commitments": commitments,
             "query_bundle": bundle,
+            "recomputation_contract": {
+                "candidate_outputs_must_be_sealed_before_truth_recompute": True,
+                "recompute_from_bound_source_and_uncertainty_model": True,
+                "verify_factor_frame_sha256_before_join": True,
+                "dense_factor_arrays_persisted": False,
+            },
             "model_outputs_absent": True,
         }
     )
+    return validate_eval_truth_commitment_record(compact)
+
+
+def validate_eval_truth_commitment_record(value: Any) -> dict[str, Any]:
+    record = validate_sealed_record(value, EVAL_TRUTH_COMMITMENT_SCHEMA, "EVAL_TRUTH_COMMITMENT_INVALID")
+    required = {
+        "schema",
+        "source_frame_receipt",
+        "bound_source_frame_envelope",
+        "bound_source_frame_envelope_sha256",
+        "faro_geometry_sha256",
+        "highres_depth_array_sha256",
+        "uncertainty_model_sha256",
+        "uncertainty_lookups",
+        "query_receipts",
+        "factor_frame_commitments",
+        "query_bundle",
+        "recomputation_contract",
+        "model_outputs_absent",
+        "content_sha256",
+    }
+    require(set(record) == required, "EVAL_TRUTH_COMMITMENT_INVALID", "eval truth commitment field set drift")
+    source = record["source_frame_receipt"]
+    envelope = validate_bound_source_frame_envelope(record["bound_source_frame_envelope"], source)
+    require(record["bound_source_frame_envelope_sha256"] == envelope["content_sha256"], "EVAL_TRUTH_COMMITMENT_INVALID", "bound source envelope hash drift")
+    require(record["model_outputs_absent"] is True, "EVAL_TRUTH_COMMITMENT_INVALID", "truth commitment contains model outputs")
+    require(
+        record["recomputation_contract"]
+        == {
+            "candidate_outputs_must_be_sealed_before_truth_recompute": True,
+            "recompute_from_bound_source_and_uncertainty_model": True,
+            "verify_factor_frame_sha256_before_join": True,
+            "dense_factor_arrays_persisted": False,
+        },
+        "EVAL_TRUTH_COMMITMENT_INVALID",
+        "truth recomputation contract drift",
+    )
+    receipts = record["query_receipts"]
+    lookups = record["uncertainty_lookups"]
+    commitments = record["factor_frame_commitments"]
+    bundle = record["query_bundle"]
+    require(
+        isinstance(receipts, list)
+        and isinstance(lookups, list)
+        and isinstance(commitments, list)
+        and len(receipts) == len(lookups) == len(commitments) == 9,
+        "EVAL_TRUTH_COMMITMENT_INVALID",
+        "truth commitment must contain exactly nine bound queries",
+    )
+    require(isinstance(bundle, dict) and isinstance(bundle.get("results"), list) and len(bundle["results"]) == 9, "EVAL_TRUTH_COMMITMENT_INVALID", "truth commitment query bundle drift")
+    result_by_query = {row.get("query_id"): row for row in bundle["results"] if isinstance(row, dict)}
+    require(len(result_by_query) == 9, "EVAL_TRUTH_COMMITMENT_INVALID", "truth commitment result identities drift")
+    source_sha = source["content_sha256"]
+    physical_frame_id = source["physical_frame_id"]
+    watermark = source["max_source_timestamp_ns"]
+    for index, (query, lookup, commitment) in enumerate(zip(receipts, lookups, commitments, strict=True)):
+        validated_query = adapter._validate_query_receipt(query)
+        require(validated_query["grid_index"] == index, "EVAL_TRUTH_COMMITMENT_INVALID", "truth commitment query order drift")
+        query_id = validated_query["query_id"]
+        validated_commitment = validate_sealed_record(
+            commitment,
+            "blindassist.taro.o0r.query_factor_frame_commitment.v1",
+            "EVAL_TRUTH_COMMITMENT_INVALID",
+        )
+        require(
+            validated_query["physical_frame_id"] == physical_frame_id
+            and validated_query["source_frame_receipt_sha256"] == source_sha
+            and validated_query["max_source_timestamp_ns"] == watermark
+            and lookup["physical_frame_id"] == physical_frame_id
+            and lookup["source_frame_receipt_sha256"] == source_sha
+            and lookup["query_id"] == query_id
+            and lookup["query_receipt_sha256"] == validated_query["content_sha256"]
+            and validated_commitment["physical_frame_id"] == physical_frame_id
+            and validated_commitment["source_frame_receipt_sha256"] == source_sha
+            and validated_commitment["query_id"] == query_id
+            and validated_commitment["query_receipt_sha256"] == validated_query["content_sha256"]
+            and validated_commitment["max_source_timestamp_ns"] == watermark,
+            "EVAL_TRUTH_COMMITMENT_INVALID",
+            "truth commitment query binding drift",
+            query_id=query_id,
+        )
+        require(
+            validated_commitment["dense_arrays_persisted"] is False
+            and set(validated_commitment["faro_factor_value_sha256s"]) == set(adapter.FACTOR_NAMES)
+            and set(validated_commitment["factor_metadata"]) == set(adapter.FACTOR_NAMES),
+            "EVAL_TRUTH_COMMITMENT_INVALID",
+            "truth commitment factor set drift",
+            query_id=query_id,
+        )
+        result = result_by_query.get(query_id)
+        require(
+            isinstance(result, dict)
+            and result.get("factor_frame_sha256") == validated_commitment["factor_frame_sha256"]
+            and canonical_sha256(result) == validated_commitment["query_result_sha256"],
+            "EVAL_TRUTH_COMMITMENT_INVALID",
+            "truth commitment result hash drift",
+            query_id=query_id,
+        )
+
+    def contains_array(child: Any) -> bool:
+        if isinstance(child, np.ndarray):
+            return True
+        if isinstance(child, dict):
+            return any(contains_array(item) for item in child.values())
+        if isinstance(child, (list, tuple)):
+            return any(contains_array(item) for item in child)
+        return False
+
+    require(not contains_array(record), "EVAL_TRUTH_COMMITMENT_DENSE_ARRAY", "compact truth commitment contains an ndarray")
+    return record
 
 
 def _canonical_array_storage(value: np.ndarray) -> tuple[np.ndarray, dict[str, Any]]:

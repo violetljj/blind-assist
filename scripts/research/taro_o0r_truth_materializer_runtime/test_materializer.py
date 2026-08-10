@@ -16,6 +16,7 @@ import numpy as np
 
 from scripts.research.taro_o0r_source_adapter_runtime import source_adapter as adapter
 from scripts.research.taro_o0r_source_adapter_runtime.test_source_adapter import (
+    fitted_model,
     source_receipt,
     synthetic_faro_depth,
 )
@@ -356,6 +357,75 @@ class QueryLookupAndPersistenceTests(unittest.TestCase):
             runtime.derive_query_uncertainty_lookup(faro, confidence, receipt, query)
         self.assertEqual(caught.exception.code, "DECODED_PAYLOAD_CONTENT_MISMATCH")
 
+    def test_eval_truth_persists_commitments_without_dense_arrays(self) -> None:
+        receipt = copy.deepcopy(source_receipt())
+        container_sha = "A" * 64
+        token = receipt["sensor_timestamp"]["decimal_token"]
+        video_id = receipt["session_id"]
+        for role in runtime.DECODED_ROLES:
+            receipt["asset_bindings"][role]["container_id"] = f"sha256:{container_sha}"
+        receipt = reseal(receipt)
+        members: dict[str, dict[str, object]] = {}
+        for role in runtime.DECODED_ROLES:
+            asset = receipt["asset_bindings"][role]
+            decoded = receipt["decoded_payload_bindings"][role]
+            members[role] = {
+                "source_container_sha256": container_sha,
+                "source_member_path": "lowres_wide.traj" if role == "trajectory" else f"official/{role}/{video_id}_{token}.bin",
+                "source_member_bytes": asset["bytes"],
+                "source_member_sha256": asset["sha256"],
+                "source_member_crc32": asset["crc32"],
+                "canonical_member_path": asset["member_path"],
+                "decoded_content_sha256": decoded["decoded_content_sha256"],
+            }
+        envelope = runtime.seal_record(
+            {
+                "schema": runtime.BOUND_SOURCE_FRAME_SCHEMA,
+                "source_role": receipt["source_role"],
+                "visit_id": receipt["site_id"],
+                "video_id": video_id,
+                "timestamp_token": token,
+                "physical_frame_id": receipt["physical_frame_id"],
+                "source_frame_receipt_sha256": receipt["content_sha256"],
+                "members": members,
+                "mapping_rule": "OFFICIAL_VIDEO_ID_TIMESTAMP_TO_EXPLICIT_TIMESTAMP_ONLY_CANONICAL_MEMBER",
+                "silent_rename_allowed": False,
+            }
+        )
+        faro = synthetic_faro_depth(True)
+        confidence = np.full(adapter.APPLE_SHAPE_HW, 2, dtype=np.uint8)
+        matrix = np.asarray(receipt["intrinsics_highres"]["matrix_3x3"], dtype=np.float64)
+        geometry = adapter.derive_faro_geometry(faro, matrix, receipt["gravity_up_camera_xyz"], receipt)
+        record = runtime.build_eval_truth_record(
+            {
+                "source_frame_receipt": receipt,
+                "bound_source_frame_envelope": envelope,
+                "highres_faro_depth_mm": faro,
+                "confidence": confidence,
+            },
+            fitted_model(16),
+            geometry=geometry,
+        )
+        self.assertEqual(record["schema"], runtime.EVAL_TRUTH_COMMITMENT_SCHEMA)
+        self.assertNotIn("factor_frames", record)
+        self.assertEqual(len(record["factor_frame_commitments"]), 9)
+        package, blobs = runtime.package_content_addressed_artifact(record)
+        self.assertEqual(blobs, {})
+        self.assertEqual(package["array_blob_reference_count"], 0)
+        self.assertLess(len(runtime._deterministic_gzip(runtime.canonical_json_bytes(package) + b"\n")), truth_runner.MAXIMUM_COMPACT_TRUTH_FRAME_BYTES)
+        hydrated = runtime.hydrate_content_addressed_artifact(package, lambda path: blobs[path])
+        self.assertEqual(runtime.validate_eval_truth_commitment_record(hydrated), record)
+        mutated = copy.deepcopy(record)
+        commitment = dict(mutated["factor_frame_commitments"][0])
+        commitment.pop("content_sha256")
+        commitment["factor_frame_sha256"] = "0" * 64
+        mutated["factor_frame_commitments"][0] = runtime.seal_record(commitment)
+        mutated.pop("content_sha256")
+        mutated = runtime.seal_record(mutated)
+        with self.assertRaises(runtime.MaterializerError) as caught:
+            runtime.validate_eval_truth_commitment_record(mutated)
+        self.assertEqual(caught.exception.code, "EVAL_TRUTH_COMMITMENT_INVALID")
+
     def test_content_addressed_round_trip_normalizes_every_array_kind(self) -> None:
         value = {
             "float": np.asarray([1.1234567890126, -0.0], dtype=np.float32),
@@ -539,10 +609,14 @@ class GateAndPhaseTests(unittest.TestCase):
                     "complete_factor_query_truth": True,
                     "state_counts": {"CLEAR_OBSERVED": 1, "OCCUPIED_OBSERVED": 1, "UNKNOWN": 7},
                 },
-                "array": np.asarray([1.0, -0.0], dtype=np.float64),
+                "compact": True,
             }
 
-        with tempfile.TemporaryDirectory() as temporary:
+        with tempfile.TemporaryDirectory() as temporary, mock.patch.object(
+            truth_runner,
+            "validate_eval_truth_commitment_record",
+            side_effect=lambda value: value,
+        ):
             writer = runtime.AtomicEvidenceWriter(Path(temporary) / "evidence", 20_000_000)
             writer.activate({"schema": "synthetic.execution.v1"})
             gates, phase = materialize_prepared_parents(

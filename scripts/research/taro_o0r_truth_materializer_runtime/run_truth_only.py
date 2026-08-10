@@ -48,6 +48,7 @@ from scripts.research.taro_o0r_truth_materializer_runtime.materializer import (
     uncertainty_model_receipt,
     uncertainty_model_artifact,
     validate_authorization,
+    validate_eval_truth_commitment_record,
     validate_head_receipt,
     verify_bound_container,
     zip_uncompressed_bytes,
@@ -55,28 +56,29 @@ from scripts.research.taro_o0r_truth_materializer_runtime.materializer import (
 
 
 EXPECTED_TRUTH_BINDINGS = {
-    "TRUTH_RECOVERY_R2_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_RECOVERY_R2_LOCK_2026-08-10.json",
+    "TRUTH_RECOVERY_R3_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_RECOVERY_R3_LOCK_2026-08-10.json",
     "TRUTH_ONLY_PREFLIGHT_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_PREFLIGHT_R1_LOCK_2026-08-10.json",
     "DATA_USE_AUTHORIZATION": "docs/research/taro/TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_R1_RECEIPT_2026-08-10.json",
-    "MATERIALIZER_IMPLEMENTATION_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_R2_IMPLEMENTATION_LOCK_2026-08-10.json",
+    "MATERIALIZER_IMPLEMENTATION_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_R3_IMPLEMENTATION_LOCK_2026-08-10.json",
     "SOURCE_ADAPTER": "scripts/research/taro_o0r_source_adapter_runtime/source_adapter.py",
     "MATERIALIZER": "scripts/research/taro_o0r_truth_materializer_runtime/materializer.py",
     "TRUTH_RUNNER": "scripts/research/taro_o0r_truth_materializer_runtime/run_truth_only.py",
     "HEAD_RECEIPT": "artifacts.local/evidence/taro/o0r-arkitscenes-head-r1/head-receipt.json",
-    "SOURCE_CACHE_DOWNLOAD_RECEIPTS": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r1/download-receipts.json.gz",
+    "SOURCE_CACHE_DOWNLOAD_RECEIPTS": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r2/download-receipts.json.gz",
 }
 EXPECTED_ROOTS = {
-    "SOURCE": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r2",
-    "WORK": "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r2",
-    "TRUTH_EVIDENCE": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r2",
-    "O0R_EVIDENCE_SEALED": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r2",
+    "SOURCE": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r3",
+    "WORK": "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r3",
+    "TRUTH_EVIDENCE": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3",
+    "O0R_EVIDENCE_SEALED": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r3",
 }
 EXPECTED_SOURCE_CACHE = {
     "mode": "VERIFIED_HARDLINK_REUSE_NO_NETWORK",
-    "source_root": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r1",
+    "source_root": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r2",
     "download_receipts_role": "SOURCE_CACHE_DOWNLOAD_RECEIPTS",
     "network_requests_allowed": 0,
 }
+MAXIMUM_COMPACT_TRUTH_FRAME_BYTES = 262_144
 EXPECTED_AUTHORITY = {
     "truth_only_execution": True,
     "head_or_head_receipt_mutation": False,
@@ -149,12 +151,12 @@ def _reuse_cached_asset(
     cached = safe_join(cache_root, row["relative_path"])
     verify_bound_container(cached, receipt)
     destination = safe_join(source_root, row["relative_path"])
-    require(not destination.exists(), "SOURCE_CACHE_DESTINATION_COLLISION", "R2 source destination already exists", path=str(destination))
+    require(not destination.exists(), "SOURCE_CACHE_DESTINATION_COLLISION", "R3 source destination already exists", path=str(destination))
     destination.parent.mkdir(parents=True, exist_ok=True)
     try:
         os.link(cached, destination)
     except OSError as error:
-        raise MaterializerError("SOURCE_CACHE_HARDLINK_FAILED", "verified R1 source cache could not be hard-linked into R2", source=str(cached), destination=str(destination)) from error
+        raise MaterializerError("SOURCE_CACHE_HARDLINK_FAILED", "verified source cache could not be hard-linked into R3", source=str(cached), destination=str(destination)) from error
     verify_bound_container(destination, receipt)
     return receipt
 
@@ -164,11 +166,11 @@ def validate_execution_lock(path: Path, repo_root: Path | None = None) -> dict[s
     lock_path = path.resolve()
     lock = load_json(lock_path)
     require(lock.get("schema") == EXECUTION_LOCK_SCHEMA, "EXECUTION_LOCK_SCHEMA_DRIFT", "truth-only execution lock schema drift")
-    require(lock.get("lock_id") == "TARO_O0R_ARKITSCENES_TRUTH_ONLY_R2_EXECUTION_LOCK", "EXECUTION_LOCK_IDENTITY_DRIFT", "truth-only execution lock id drift")
+    require(lock.get("lock_id") == "TARO_O0R_ARKITSCENES_TRUTH_ONLY_R3_EXECUTION_LOCK", "EXECUTION_LOCK_IDENTITY_DRIFT", "truth-only execution lock id drift")
     require(lock.get("status") == "AUTHORIZED_UNCONSUMED" and lock.get("consumed") is False, "ONE_SHOT_ALREADY_CONSUMED", "truth-only execution is not authorized and unconsumed")
     require(lock.get("execution_authority") == EXPECTED_AUTHORITY, "EXECUTION_AUTHORITY_OVERCLAIM", "truth-only execution authority drift")
     require(lock.get("roots") == EXPECTED_ROOTS, "EXECUTION_ROOT_DRIFT", "truth-only execution roots drift")
-    require(lock.get("source_cache") == EXPECTED_SOURCE_CACHE, "SOURCE_CACHE_LOCK_DRIFT", "R2 source-cache binding drift")
+    require(lock.get("source_cache") == EXPECTED_SOURCE_CACHE, "SOURCE_CACHE_LOCK_DRIFT", "R3 source-cache binding drift")
     require(lock.get("overwrite") is False and lock.get("rerun") is False, "ONE_SHOT_POLICY_DRIFT", "truth-only execution must forbid overwrite/rerun")
     required_environment = lock.get("required_environment")
     require(isinstance(required_environment, dict), "EXECUTION_ENVIRONMENT_MISSING", "required environment missing")
@@ -410,9 +412,17 @@ def materialize_prepared_parents(
             except (MaterializerError, adapter.AdapterError) as error:
                 frame_failures.append({"parent_id": prepared.parent["visit_id"], "video_id": prepared.parent["video_id"], "timestamp_token": token, "phase": "QUERY_TRUTH", "error_code": error.code})
                 continue
+            truth_record = validate_eval_truth_commitment_record(truth_record)
             artifact_receipt = writer.write_content_addressed_artifact(
                 f"truth-frames/{prepared.parent['visit_id']}/{prepared.parent['video_id']}/{token}.json.gz",
                 truth_record,
+            )
+            require(not artifact_receipt["blob_files"], "COMPACT_TRUTH_ARRAY_BLOB_FORBIDDEN", "compact truth record emitted array blobs")
+            require(
+                artifact_receipt["package_file"]["bytes"] <= MAXIMUM_COMPACT_TRUTH_FRAME_BYTES,
+                "COMPACT_TRUTH_FRAME_BUDGET_EXCEEDED",
+                "compact truth frame exceeds its per-frame evidence budget",
+                bytes=artifact_receipt["package_file"]["bytes"],
             )
             bundle = truth_record["query_bundle"]
             if bundle["complete_factor_query_truth"] is True:
