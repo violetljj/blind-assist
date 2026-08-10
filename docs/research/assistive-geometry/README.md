@@ -89,6 +89,7 @@
 - [AG-ST R2 fresh-TUM third-Teacher + gravity-factor result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R2_TUM_THIRD_TEACHER_AND_GRAVITY_FACTORS_RESULT_2026-08-10.json)
 - [AG-ST R4 ICL pixel-exact boundary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R4_ICL_PIXEL_BOUNDARY_RESULT_2026-08-11.json)
 - [AG-ST R5 fresh exact-depth boundary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R5_FRESH_EXACT_DEPTH_BOUNDARY_RESULT_2026-08-11.json)
+- [AG-ST R6 source-native boundary corpus result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R6_SOURCE_NATIVE_BOUNDARY_CORPUS_RESULT_2026-08-11.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -279,6 +280,20 @@ precision/recall 为 `0.8257/0.9455`，4/4 冻结 gate PASS。12 个 dense NPZ �
 positive/negative/UNKNOWN、tier 与 provenance。这打开的是外部 synthetic source-exact boundary 监督和
 几何规则证据；ARKit/TUM 中由 Teacher 填充的 boundary 仍需 source/Teacher agreement 与 uncertainty
 gate，不能借此直接变成训练真值。
+
+这一 Teacher-filled 缺口随后没有靠降低门槛“修过”，而由
+[R6 source-native boundary corpus](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R6_SOURCE_NATIVE_BOUNDARY_CORPUS_RESULT_2026-08-11.json)
+正面裁决。48 帧 ARKit TRAIN hidden-reference 上，source 自身 point-to-plane seed 对冻结 source factor
+boundary 的 overall precision/recall 为 `0.8185/0.5836`；MapAnything、DA2 与 pixelwise-quality 双 Teacher
+共识只有 `0.0341/0.3015`、`0.1048/0.2059` 与 `0.1891/0.1433`，parent-macro 共识仅
+`0.0594/0.0642`。把 RGB Sobel edge 再加入共识也只有 macro `0.0444/0.0339`。因此当前
+Teacher-filled boundary 和 SAM-style refinement 支线均不授权，缺失区继续 UNKNOWN；Teacher 仍只扩 depth。
+
+boundary 主线改为只消费 source-native 或 synthetic-exact depth。现已统一物化 ARKitScenes 16 parent/48 帧、
+TUM RGB-D 7 parent/21 帧、ICL exact 1 parent/12 帧，共 3 source、24 parent、81 帧；22/24 parent
+有正边界，positive 数分别为 `1,838 / 25,914 / 20,625`。81 个 compact NPZ 全部绑定精确 RGB 文件或
+tar member、预处理方式及 RGB/label SHA，5/5 corpus gate 与 5/5 binding gate PASS。这打开的是
+source-balanced boundary-only masked-student canary，不改变正式 F1 authority，也不把 Teacher 分歧当负例。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
