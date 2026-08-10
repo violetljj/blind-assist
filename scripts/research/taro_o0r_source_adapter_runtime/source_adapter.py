@@ -15,6 +15,7 @@ import json
 import math
 import re
 import weakref
+from collections.abc import Sequence as RuntimeSequence
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
 from typing import Any, Iterable, Sequence
@@ -1282,6 +1283,9 @@ class _UncertaintyModel:
 
     def resolve(self, confidence: int, range_m: float, target: str) -> dict[str, Any]:
         self._assert_integrity()
+        return self._resolve_validated(confidence, range_m, target)
+
+    def _resolve_validated(self, confidence: int, range_m: float, target: str) -> dict[str, Any]:
         require(confidence in (0, 1, 2), "UNCERTAINTY_CONFIDENCE_INVALID", "confidence must be 0, 1, or 2")
         require(target in UNCERTAINTY_TARGETS, "UNCERTAINTY_TARGET_INVALID", "unknown uncertainty target")
         index = _range_bin(float(range_m))
@@ -1683,10 +1687,10 @@ def _uncertainty_blocks(
     bootstrap: dict[str, Any],
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], bool]:
     uncertainty_model = _validate_uncertainty_model(uncertainty_model)
-    scale = uncertainty_model.resolve(confidence_value, range_m, "scale_log_abs_residual")
-    support_height = uncertainty_model.resolve(confidence_value, range_m, "support_height_abs_residual_m")
-    support_normal = uncertainty_model.resolve(confidence_value, range_m, "support_normal_abs_residual_rad")
-    boundary = uncertainty_model.resolve(confidence_value, range_m, "boundary_localization_abs_residual_m")
+    scale = uncertainty_model._resolve_validated(confidence_value, range_m, "scale_log_abs_residual")
+    support_height = uncertainty_model._resolve_validated(confidence_value, range_m, "support_height_abs_residual_m")
+    support_normal = uncertainty_model._resolve_validated(confidence_value, range_m, "support_normal_abs_residual_rad")
+    boundary = uncertainty_model._resolve_validated(confidence_value, range_m, "boundary_localization_abs_residual_m")
     scale_uncertainty = {
         "valid": bool(scale["valid"]),
         "q95_log": scale["value"],
@@ -1724,6 +1728,15 @@ def _block_common(name: str, frame_identity: dict[str, Any], base_geometry_sha25
     }
 
 
+def _truth_support_bootstrap(geometry: FaroGeometry) -> dict[str, Any]:
+    return bootstrap_support_uncertainty(
+        geometry.support_points_camera_xyz,
+        geometry.support_normal_camera_xyz,
+        geometry.camera_height_m,
+        geometry.physical_frame_id,
+    )
+
+
 def build_truth_query_factor_frame(
     geometry: FaroGeometry,
     query_receipt: dict[str, Any],
@@ -1736,6 +1749,59 @@ def build_truth_query_factor_frame(
 
     uncertainty_model = _validate_uncertainty_model(uncertainty_model)
     geometry = _validate_faro_geometry(geometry)
+    return _build_truth_query_factor_frame_with_bootstrap(
+        geometry,
+        query_receipt,
+        uncertainty_model,
+        confidence_value=confidence_value,
+        range_m=range_m,
+        bootstrap=_truth_support_bootstrap(geometry),
+    )
+
+
+def build_truth_query_factor_frames(
+    geometry: FaroGeometry,
+    query_receipts: Sequence[dict[str, Any]],
+    uncertainty_model: _UncertaintyModel,
+    *,
+    confidence_values: Sequence[int],
+    ranges_m: Sequence[float],
+) -> list[dict[str, Any]]:
+    """Build one physical frame's exact nine truth queries with one shared bootstrap."""
+
+    uncertainty_model = _validate_uncertainty_model(uncertainty_model)
+    geometry = _validate_faro_geometry(geometry)
+    require(
+        isinstance(query_receipts, RuntimeSequence)
+        and isinstance(confidence_values, RuntimeSequence)
+        and isinstance(ranges_m, RuntimeSequence)
+        and len(query_receipts) == len(confidence_values) == len(ranges_m) == 9,
+        "QUERY_BUNDLE_CARDINALITY",
+        "truth factor batch requires exactly nine query parameter tuples",
+    )
+    bootstrap = _truth_support_bootstrap(geometry)
+    return [
+        _build_truth_query_factor_frame_with_bootstrap(
+            geometry,
+            receipt,
+            uncertainty_model,
+            confidence_value=confidence_value,
+            range_m=range_m,
+            bootstrap=bootstrap,
+        )
+        for receipt, confidence_value, range_m in zip(query_receipts, confidence_values, ranges_m, strict=True)
+    ]
+
+
+def _build_truth_query_factor_frame_with_bootstrap(
+    geometry: FaroGeometry,
+    query_receipt: dict[str, Any],
+    uncertainty_model: _UncertaintyModel,
+    *,
+    confidence_value: int,
+    range_m: float,
+    bootstrap: dict[str, Any],
+) -> dict[str, Any]:
     receipt = _validate_query_receipt(query_receipt)
     require(receipt.get("physical_frame_id") == geometry.physical_frame_id, "QUERY_FRAME_ID_MISMATCH", "query and FARO geometry frame identities differ")
     require(receipt.get("source_frame_receipt_sha256") == geometry.source_frame_receipt_sha256, "QUERY_BASE_RECEIPT_MISMATCH", "query and FARO geometry base receipts differ")
@@ -1749,12 +1815,6 @@ def build_truth_query_factor_frame(
     )[int(receipt["grid_index"])]
     require(receipt["content_sha256"] == expected_receipt["content_sha256"], "QUERY_GEOMETRY_BINDING_INVALID", "query frame is not derived from the bound FARO support plane")
     base_geometry, _, query_geometry = _build_base_geometry(geometry, receipt)
-    bootstrap = bootstrap_support_uncertainty(
-        geometry.support_points_camera_xyz,
-        geometry.support_normal_camera_xyz,
-        geometry.camera_height_m,
-        geometry.physical_frame_id,
-    )
     scale_uncertainty, support_uncertainty, boundary_uncertainty, uncertainties_valid = _uncertainty_blocks(
         uncertainty_model, confidence_value, range_m, bootstrap
     )
@@ -2492,6 +2552,7 @@ __all__ = [
     "build_candidate_query_factor_frame",
     "build_source_frame_receipt",
     "build_truth_query_factor_frame",
+    "build_truth_query_factor_frames",
     "canonical_json_bytes",
     "canonical_sha256",
     "decimal_timestamp_ns",

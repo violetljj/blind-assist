@@ -1059,16 +1059,13 @@ def build_eval_truth_record(
         derive_query_uncertainty_lookup(highres, np.asarray(frame["confidence"]), receipt, query)
         for query in query_receipts
     ]
-    factor_frames = [
-        adapter.build_truth_query_factor_frame(
-            geometry,
-            query,
-            uncertainty_model,
-            confidence_value=lookup["confidence_value"],
-            range_m=lookup["range_m"],
-        )
-        for query, lookup in zip(query_receipts, uncertainty_lookups, strict=True)
-    ]
+    factor_frames = adapter.build_truth_query_factor_frames(
+        geometry,
+        query_receipts,
+        uncertainty_model,
+        confidence_values=[lookup["confidence_value"] for lookup in uncertainty_lookups],
+        ranges_m=[lookup["range_m"] for lookup in uncertainty_lookups],
+    )
     bundle = adapter.reduce_complete_query_bundle(factor_frames, query_receipts, receipt)
     result_by_query = {row["query_id"]: row for row in bundle["results"]}
     commitments: list[dict[str, Any]] = []

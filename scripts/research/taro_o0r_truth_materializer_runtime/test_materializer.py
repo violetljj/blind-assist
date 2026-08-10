@@ -396,16 +396,22 @@ class QueryLookupAndPersistenceTests(unittest.TestCase):
         confidence = np.full(adapter.APPLE_SHAPE_HW, 2, dtype=np.uint8)
         matrix = np.asarray(receipt["intrinsics_highres"]["matrix_3x3"], dtype=np.float64)
         geometry = adapter.derive_faro_geometry(faro, matrix, receipt["gravity_up_camera_xyz"], receipt)
-        record = runtime.build_eval_truth_record(
-            {
-                "source_frame_receipt": receipt,
-                "bound_source_frame_envelope": envelope,
-                "highres_faro_depth_mm": faro,
-                "confidence": confidence,
-            },
-            fitted_model(16),
-            geometry=geometry,
-        )
+        with mock.patch.object(
+            adapter,
+            "bootstrap_support_uncertainty",
+            wraps=adapter.bootstrap_support_uncertainty,
+        ) as bootstrap:
+            record = runtime.build_eval_truth_record(
+                {
+                    "source_frame_receipt": receipt,
+                    "bound_source_frame_envelope": envelope,
+                    "highres_faro_depth_mm": faro,
+                    "confidence": confidence,
+                },
+                fitted_model(16),
+                geometry=geometry,
+            )
+        self.assertEqual(bootstrap.call_count, 1)
         self.assertEqual(record["schema"], runtime.EVAL_TRUTH_COMMITMENT_SCHEMA)
         self.assertNotIn("factor_frames", record)
         self.assertEqual(len(record["factor_frame_commitments"]), 9)
