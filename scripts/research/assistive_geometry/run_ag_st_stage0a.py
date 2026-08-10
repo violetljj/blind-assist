@@ -814,7 +814,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         },
         "parent_runs": parent_runs,
         "metrics": selective,
-        "claim_boundary": "Consumed TRAIN-only sensor-reference diagnostic. No ground-truth, factor-learnability, F1 authorization, generalization, deployment, product, or safety claim.",
+        "claim_boundary": f"Consumed source-role sensor-reference diagnostic ({args.source_role_receipt}). No ground-truth, factor-learnability, F1 authorization, generalization, deployment, product, or safety claim.",
         "next_decision": "Use the observed risk-coverage shape to decide whether to expand depth labelability and derive support/boundary diagnostics; do not materialize canonical pseudo-labels from this pilot.",
     }
     return result

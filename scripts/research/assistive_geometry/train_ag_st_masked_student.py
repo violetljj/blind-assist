@@ -96,6 +96,10 @@ LOSS_WEIGHTS = {
     "boundary_distance": 0.20,
     "obstacle_bce": 0.25,
 }
+DEPTH_SUPPORT_LOSS_WEIGHTS = {
+    "depth_log_huber": LOSS_WEIGHTS["depth_log_huber"],
+    "support_bce": LOSS_WEIGHTS["support_bce"],
+}
 BOUNDARY_ONLY_LOSS_WEIGHTS = {
     "boundary_soft_heat_bce": 1.0,
     "boundary_near_distance": 0.50,
@@ -222,8 +226,8 @@ def select_parent_split(
     *,
     split_token: str = SPLIT_TOKEN,
 ) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...], dict[str, Any]]:
-    """Orientation-stratified 12/2/2 split without factor labels or outcomes."""
-    require(len(parent_shapes) == 16, "masked-student split requires 16 parents")
+    """Keep one selection and one canary parent per orientation stratum."""
+    require(len(parent_shapes) >= 6, "masked-student split requires at least 6 parents")
     groups: dict[str, list[str]] = defaultdict(list)
     for parent, output_hw in parent_shapes.items():
         family = "portrait" if shape_family(output_hw) == "portrait" else "landscape"
@@ -255,16 +259,21 @@ def select_parent_split(
     train_tuple = tuple(sorted(train_parents))
     selection_tuple = tuple(sorted(selection_parents))
     canary_tuple = tuple(sorted(canary_parents))
+    expected = (len(parent_shapes) - 4, 2, 2)
     require(
-        (len(train_tuple), len(selection_tuple), len(canary_tuple)) == (12, 2, 2),
-        "12/2/2 parent split drift",
+        (len(train_tuple), len(selection_tuple), len(canary_tuple)) == expected,
+        "parent split cardinality drift",
     )
     require(
-        len(set(train_tuple) | set(selection_tuple) | set(canary_tuple)) == 16,
+        len(set(train_tuple) | set(selection_tuple) | set(canary_tuple))
+        == len(parent_shapes),
         "parent split overlap or omission",
     )
     return train_tuple, selection_tuple, canary_tuple, {
-        "method": "ORIENTATION_STRATIFIED_SHA256_12_2_2_WITHOUT_LABEL_CONTENT",
+        "method": (
+            f"ORIENTATION_STRATIFIED_SHA256_{len(train_tuple)}_2_2_"
+            "WITHOUT_LABEL_CONTENT"
+        ),
         "split_token": split_token,
         "train_parents": list(train_tuple),
         "selection_parents": list(selection_tuple),
@@ -331,6 +340,50 @@ def build_frame_descriptors(
         "duplicate frame stem",
     )
     return descriptors, stage0a, manifest
+
+
+def build_frame_descriptor_batches(
+    stage0a_results: list[Path],
+    label_dirs: list[Path],
+) -> tuple[list[FrameDescriptor], list[dict[str, Any]]]:
+    """Load multiple disjoint label batches without copying their payloads."""
+    require(stage0a_results, "at least one source batch is required")
+    require(
+        len(stage0a_results) == len(label_dirs),
+        "Stage 0A result and label-dir counts differ",
+    )
+    descriptors: list[FrameDescriptor] = []
+    receipts: list[dict[str, Any]] = []
+    seen_parents: set[str] = set()
+    seen_stems: set[str] = set()
+    for stage0a_result, label_dir in zip(stage0a_results, label_dirs):
+        stage0a_result = stage0a_result.resolve()
+        label_dir = label_dir.resolve()
+        label_result = (label_dir / "result.json").resolve()
+        require(stage0a_result.is_file(), f"Stage 0A result missing: {stage0a_result}")
+        require(label_result.is_file(), f"factor-label result missing: {label_result}")
+        batch, stage0a, _ = build_frame_descriptors(stage0a_result, label_dir)
+        batch_parents = {row.parent_id for row in batch}
+        batch_stems = {row.frame_stem for row in batch}
+        require(not (seen_parents & batch_parents), "source batch parent overlap")
+        require(not (seen_stems & batch_stems), "source batch frame-stem overlap")
+        seen_parents.update(batch_parents)
+        seen_stems.update(batch_stems)
+        descriptors.extend(batch)
+        receipts.append(
+            {
+                "stage0a_result_path": str(stage0a_result),
+                "stage0a_result_sha256": sha256_file(stage0a_result),
+                "factor_label_result_path": str(label_result),
+                "factor_label_result_sha256": sha256_file(label_result),
+                "source_manifest_sha256": stage0a["source"]["manifest_sha256"],
+                "source_role": stage0a["source"]["role"],
+                "parent_count": len(batch_parents),
+                "frame_count": len(batch),
+                "parents": sorted(batch_parents),
+            }
+        )
+    return descriptors, receipts
 
 
 def aggregate_label_digest(paths: Iterable[Path]) -> dict[str, Any]:
@@ -842,6 +895,55 @@ def compute_student_losses(
     }
 
 
+def compute_depth_support_losses(
+    outputs: dict[str, torch.Tensor],
+    targets: dict[str, torch.Tensor],
+    class_weights: dict[str, float],
+) -> dict[str, torch.Tensor]:
+    """Optimize only the two factors that replicated on fresh parents."""
+    predicted_depth = outputs["depth_m"].clamp(0.05, 20.0)
+    target_depth = targets["metric_depth_m"].clamp(0.05, 20.0)
+    depth_raw = F.smooth_l1_loss(
+        predicted_depth.log(),
+        target_depth.log(),
+        reduction="none",
+        beta=0.05,
+    )
+    depth_loss = masked_weighted_mean(
+        depth_raw,
+        targets["metric_valid"],
+        tier_weights(targets["metric_tier"]),
+    )
+    support_raw = F.binary_cross_entropy_with_logits(
+        outputs["support_logits"],
+        targets["support"],
+        reduction="none",
+        pos_weight=torch.as_tensor(
+            class_weights["support_pos_weight"],
+            device=outputs["support_logits"].device,
+        ),
+    )
+    support_loss = masked_weighted_mean(
+        support_raw,
+        targets["support_valid"],
+        tier_weights(targets["support_tier"]),
+    )
+    raw = {
+        "depth_log_huber": depth_loss,
+        "support_bce": support_loss,
+    }
+    weighted = {
+        name: raw[name] * DEPTH_SUPPORT_LOSS_WEIGHTS[name]
+        for name in raw
+    }
+    total = sum(weighted.values(), predicted_depth.sum() * 0.0)
+    return {
+        "total": total,
+        **{f"raw/{name}": value for name, value in raw.items()},
+        **{f"weighted/{name}": value for name, value in weighted.items()},
+    }
+
+
 def compute_boundary_only_losses(
     outputs: dict[str, torch.Tensor],
     targets: dict[str, torch.Tensor],
@@ -982,7 +1084,7 @@ def train_student(
     require(epochs > 0 and learning_rate > 0, "training configuration invalid")
     model.train()
     require(
-        objective_profile in {"multifactor", "boundary_only"},
+        objective_profile in {"multifactor", "depth_support", "boundary_only"},
         "invalid objective profile",
     )
     optimizer = torch.optim.AdamW(
@@ -1014,11 +1116,16 @@ def train_student(
                 feature = torch.flip(feature, dims=(-1,))
                 base_depth = torch.flip(base_depth, dims=(-1,))
             outputs = model(feature, base_depth, frame.descriptor.output_hw)
-            losses = (
-                compute_boundary_only_losses(outputs, targets)
-                if objective_profile == "boundary_only"
-                else compute_student_losses(outputs, targets, class_weights)
-            )
+            if objective_profile == "boundary_only":
+                losses = compute_boundary_only_losses(outputs, targets)
+            elif objective_profile == "depth_support":
+                losses = compute_depth_support_losses(
+                    outputs,
+                    targets,
+                    class_weights,
+                )
+            else:
+                losses = compute_student_losses(outputs, targets, class_weights)
             require(bool(torch.isfinite(losses["total"]).item()), "non-finite student loss")
             optimizer.zero_grad(set_to_none=True)
             losses["total"].backward()
@@ -1222,9 +1329,18 @@ def relative_improvement(before: float | None, after: float | None) -> float | N
 def execute(args: argparse.Namespace) -> int:
     started = time.perf_counter()
     objective_profile = str(args.objective_profile)
-    stage0a_result = args.stage0a_result.resolve()
-    label_dir = args.label_dir.resolve()
-    label_result_path = (label_dir / "result.json").resolve()
+    stage0a_results = [args.stage0a_result.resolve()] + [
+        value.resolve()
+        for value in getattr(args, "additional_stage0a_result", [])
+    ]
+    label_dirs = [args.label_dir.resolve()] + [
+        value.resolve()
+        for value in getattr(args, "additional_label_dir", [])
+    ]
+    require(
+        len(stage0a_results) == len(label_dirs),
+        "additional Stage 0A result and label-dir counts differ",
+    )
     encoder_name = str(args.encoder)
     depthart_source = args.depthart_source.resolve()
     if encoder_name == "mobilenet_v3_small":
@@ -1238,31 +1354,34 @@ def execute(args: argparse.Namespace) -> int:
         depth_mode = "residual"
         encoder_label = "FROZEN_DEPTHART_S_METRIC_INDOOR"
     output_dir = args.output_dir.resolve()
-    require(stage0a_result.is_file(), "Stage 0A result missing")
-    require(label_result_path.is_file(), "factor-label result missing")
     require(checkpoint.is_file(), f"{encoder_name} checkpoint missing")
     if encoder_name == "depthart_s":
         require(depthart_source.is_dir(), "DepthART source missing")
     require(not output_dir.exists(), "masked-student output collision")
     output_dir.mkdir(parents=True, exist_ok=False)
 
-    descriptors, stage0a, _ = build_frame_descriptors(stage0a_result, label_dir)
+    descriptors, source_batches = build_frame_descriptor_batches(
+        stage0a_results,
+        label_dirs,
+    )
     parent_shapes: dict[str, tuple[int, int]] = {}
     for descriptor in descriptors:
         previous = parent_shapes.setdefault(descriptor.parent_id, descriptor.output_hw)
         require(previous == descriptor.output_hw, "within-parent output shape drift")
     train_parents, selection_parents, canary_parents, split_receipt = select_parent_split(
-        parent_shapes
+        parent_shapes,
+        split_token=str(args.split_token),
     )
     train_descriptors = [row for row in descriptors if row.parent_id in train_parents]
     selection_descriptors = [
         row for row in descriptors if row.parent_id in selection_parents
     ]
     canary_descriptors = [row for row in descriptors if row.parent_id in canary_parents]
+    expected_frame_split = (3 * (len(parent_shapes) - 4), 6, 6)
     require(
         (len(train_descriptors), len(selection_descriptors), len(canary_descriptors))
-        == (36, 6, 6),
-        "36/6/6 frame split drift",
+        == expected_frame_split,
+        "frame split drift",
     )
 
     torch.backends.cuda.matmul.allow_tf32 = False
@@ -1302,6 +1421,13 @@ def execute(args: argparse.Namespace) -> int:
         for unused_head in (
             model.depth_residual,
             model.support_logits,
+            model.obstacle_logits,
+        ):
+            unused_head.requires_grad_(False)
+    elif objective_profile == "depth_support":
+        for unused_head in (
+            model.boundary_logits,
+            model.boundary_distance_logits,
             model.obstacle_logits,
         ):
             unused_head.requires_grad_(False)
@@ -1415,6 +1541,35 @@ def execute(args: argparse.Namespace) -> int:
         )
         core_signals = boundary_signals
         total_core_signals = 4
+    elif objective_profile == "depth_support":
+        depth_support_signals = {
+            "selection_depth_mae_improved": (
+                selection_improvements["depth_mae"] is not None
+                and selection_improvements["depth_mae"] > 0.0
+            ),
+            "selection_support_bce_improved": (
+                selection_improvements["support_bce"] is not None
+                and selection_improvements["support_bce"] > 0.0
+            ),
+            "canary_depth_mae_improved": (
+                canary_improvements["depth_mae"] is not None
+                and canary_improvements["depth_mae"] > 0.0
+            ),
+            "canary_support_bce_improved": (
+                canary_improvements["support_bce"] is not None
+                and canary_improvements["support_bce"] > 0.0
+            ),
+        }
+        supported = sum(depth_support_signals.values())
+        total_core_signals = 4
+        status = (
+            "PARENT_DISJOINT_DEPTH_SUPPORT_LEARNABILITY_SIGNAL_SUPPORTED"
+            if supported == total_core_signals
+            else "PARENT_DISJOINT_PARTIAL_DEPTH_SUPPORT_LEARNABILITY_SIGNAL_SUPPORTED"
+            if supported > 0
+            else "PARENT_DISJOINT_DEPTH_SUPPORT_LEARNABILITY_SIGNAL_NOT_SUPPORTED"
+        )
+        core_signals = depth_support_signals
     else:
         core_signals = {
             name: value is not None and value > 0.0
@@ -1438,6 +1593,17 @@ def execute(args: argparse.Namespace) -> int:
     }
     if encoder_name == "depthart_s":
         encoder_inputs["depthart_source"] = str(depthart_source)
+    source_inputs: dict[str, Any] = {"source_batches": source_batches}
+    if len(source_batches) == 1:
+        source_inputs.update(
+            {
+                "stage0a_result_path": source_batches[0]["stage0a_result_path"],
+                "stage0a_result_sha256": source_batches[0]["stage0a_result_sha256"],
+                "factor_label_result_path": source_batches[0]["factor_label_result_path"],
+                "factor_label_result_sha256": source_batches[0]["factor_label_result_sha256"],
+                "source_manifest_sha256": source_batches[0]["source_manifest_sha256"],
+            }
+        )
     result = {
         "schema": "blindassist_ag_st_masked_student_wild_lab_result_v1",
         "status": status,
@@ -1445,15 +1611,13 @@ def execute(args: argparse.Namespace) -> int:
         "question": (
             f"Can {encoder_label} RGB features learn sparse AG-ST physical-boundary distance/heat supervision across internal parent-disjoint roles?"
             if objective_profile == "boundary_only"
+            else f"Can {encoder_label} RGB features strengthen replicated AG-ST depth/support factors across {len(parent_shapes)} consumed parents without obstacle or boundary gradients?"
+            if objective_profile == "depth_support"
             else f"Can {encoder_label} RGB features learn graded AG-ST depth/support/boundary pseudo-labels across internal parent-disjoint selection and canary roles?"
         ),
         "inputs": {
-            "stage0a_result_path": str(stage0a_result),
-            "stage0a_result_sha256": sha256_file(stage0a_result),
-            "factor_label_result_path": str(label_result_path),
-            "factor_label_result_sha256": sha256_file(label_result_path),
             "factor_label_payloads": label_digest,
-            "source_manifest_sha256": stage0a["source"]["manifest_sha256"],
+            **source_inputs,
             **encoder_inputs,
             "trainer_sha256": sha256_file(Path(__file__).resolve()),
         },
@@ -1488,6 +1652,8 @@ def execute(args: argparse.Namespace) -> int:
             "loss_weights": (
                 BOUNDARY_ONLY_LOSS_WEIGHTS
                 if objective_profile == "boundary_only"
+                else DEPTH_SUPPORT_LOSS_WEIGHTS
+                if objective_profile == "depth_support"
                 else LOSS_WEIGHTS
             ),
             "boundary_heat_sigma_px": BOUNDARY_HEAT_SIGMA_PX,
@@ -1526,12 +1692,16 @@ def execute(args: argparse.Namespace) -> int:
                 if objective_profile == "boundary_only" and supported == 4
                 else "Keep boundary isolated and revise its representation before scaling."
                 if objective_profile == "boundary_only"
+                else "Evaluate once on the pre-reserved fresh parent cohort without fitting or threshold selection."
+                if objective_profile == "depth_support" and supported == total_core_signals
+                else "Do not scale the combined depth/support student until the failed internal signal is localized."
+                if objective_profile == "depth_support"
                 else "Scale pseudo-label materialization to more parent-disjoint RGB sequences and repeat the frozen-encoder student test."
                 if supported == total_core_signals
                 else "Inspect unsupported factor residuals before scaling or adding another Teacher."
             ),
         },
-        "claim_boundary": "Internal parent-disjoint TRAIN-only pseudo-label learnability diagnostic. The 16 parents were previously consumed by AG-ST Stage 0A; no unseen-source generalization, objective truth, formal F1 authorization, deployment, product, or safety claim.",
+        "claim_boundary": f"Internal parent-disjoint pseudo-label learnability diagnostic over {len(parent_shapes)} previously consumed ARKitScenes parents. No unseen-source generalization, objective truth, formal F1 authorization, deployment, product, or safety claim.",
     }
     write_json_exclusive(output_dir / "result.json", result)
     print(
@@ -1557,15 +1727,28 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stage0a-result", type=Path, default=DEFAULT_STAGE0A_RESULT)
     parser.add_argument("--label-dir", type=Path, default=DEFAULT_LABEL_DIR)
     parser.add_argument(
+        "--additional-stage0a-result",
+        type=Path,
+        action="append",
+        default=[],
+    )
+    parser.add_argument(
+        "--additional-label-dir",
+        type=Path,
+        action="append",
+        default=[],
+    )
+    parser.add_argument(
         "--encoder",
         choices=("mobilenet_v3_small", "depthart_s"),
         default="mobilenet_v3_small",
     )
     parser.add_argument(
         "--objective-profile",
-        choices=("multifactor", "boundary_only"),
+        choices=("multifactor", "depth_support", "boundary_only"),
         default="multifactor",
     )
+    parser.add_argument("--split-token", default=SPLIT_TOKEN)
     parser.add_argument(
         "--mobilenet-checkpoint",
         type=Path,

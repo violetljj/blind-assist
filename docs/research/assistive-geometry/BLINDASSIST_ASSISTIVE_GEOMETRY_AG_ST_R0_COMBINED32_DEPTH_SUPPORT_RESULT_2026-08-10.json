@@ -1,0 +1,126 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_combined_depth_support_summary.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10",
+  "date": "2026-08-10",
+  "mode": "WILD_LAB_REVERSIBLE_EXPLORATION",
+  "status": "COMBINED32_DEPTH_SUPPORT_FRESH8_ZERO_SHOT_SUPPORTED",
+  "question": "Does a depth/support-only student trained from two disjoint 16-parent pseudo-label batches transfer both replicated factors to a third untouched 8-parent cohort?",
+  "training": {
+    "objective_profile": "depth_support",
+    "source_batch_count": 2,
+    "unique_parent_count": 32,
+    "frame_count": 96,
+    "split": {
+      "method": "ORIENTATION_STRATIFIED_SHA256_28_2_2_WITHOUT_LABEL_CONTENT",
+      "split_token": "AG_ST_COMBINED32_DEPTH_SUPPORT_R0",
+      "train_parent_count": 28,
+      "selection_parent_count": 2,
+      "canary_parent_count": 2
+    },
+    "encoder": "FROZEN_DEPTHART_S_METRIC_INDOOR",
+    "head_total_parameters": 11109,
+    "head_trainable_parameters": 11010,
+    "obstacle_gradient_enabled": false,
+    "boundary_gradient_enabled": false,
+    "epochs": 80,
+    "learning_rate": 0.003,
+    "seed": 1729,
+    "result": "artifacts.local/experiments/ag-st-masked-student-depthart-s-combined32-depth-support-r0/result.json",
+    "result_sha256": "1E89704207D6E01CC87932D2F3505035FAF76EC10871A371D7202D111EC5F3F4",
+    "checkpoint": "artifacts.local/experiments/ag-st-masked-student-depthart-s-combined32-depth-support-r0/masked-factor-head.pt",
+    "checkpoint_sha256": "9D27B32E6D5DB1A032238A71B18580C2BA14E8B95821704ADEEF2A3F3A56711E",
+    "trainer_sha256": "5CB3626F25011CD807B6955E25B1949639386CCE23DAAFC8BFF755BE17159A39",
+    "execution_seconds": 52.58255379999173,
+    "internal_diagnostic": {
+      "status": "PARENT_DISJOINT_PARTIAL_DEPTH_SUPPORT_LEARNABILITY_SIGNAL_SUPPORTED",
+      "selection_depth_mae_relative_reduction": 0.8045072306559838,
+      "selection_support_bce_relative_reduction": 0.012199889030906559,
+      "canary_depth_mae_relative_reduction": 0.9479196900025539,
+      "canary_support_bce_relative_change": -0.22102137191774304,
+      "canary_support_f1_before": 0.0,
+      "canary_support_f1_after": 0.52843152130156,
+      "interpretation": "The internal canary was mixed for support calibration, so no training-time promotion decision was made before fresh evaluation."
+    }
+  },
+  "fresh_source": {
+    "dataset": "ARKitScenes",
+    "manifest": "artifacts.local/datasets/assistive-geometry-b0-arkitscenes-20260809-r2/manifest.json",
+    "manifest_sha256": "F51041594FF34EE922F92A7A49AAD7CA44551B5C0A8D77A81693ECFFDD226D87",
+    "manifest_role_token": "DEVELOPMENT",
+    "consumed_role": "FRESH_DEVELOPMENT_CONSUMED_WILD_LAB",
+    "parent_count": 8,
+    "frame_count": 24,
+    "frame_indices_per_parent": [
+      120,
+      150,
+      180
+    ],
+    "parents": [
+      "41127065",
+      "42444793",
+      "42444891",
+      "42898438",
+      "42899869",
+      "44358604",
+      "47332413",
+      "47430934"
+    ],
+    "overlap_with_checkpoint_roles": [],
+    "rgb_depth_intrinsics_pose_adapter_passed_frames": 24,
+    "fresh_labels_used_for_fitting": false,
+    "fresh_labels_used_for_threshold_selection": false,
+    "confirmation_parent_count_kept_unconsumed": 8
+  },
+  "fresh_label_factory": {
+    "stage0a_result": "artifacts.local/experiments/ag-st-stage0a-mapanything-b0-development8-block64-r1/result.json",
+    "stage0a_result_sha256": "5DDA5F804CCE6C37C2CE7DD4EECDE442A57E9830CB61E7A4B6FFBC188926F35A",
+    "factor_label_result": "artifacts.local/experiments/ag-st-superteacher-factor-labels-b0-development8-r0/result.json",
+    "factor_label_result_sha256": "CC81CDC35786724C6E76C0E7E6E82249F2FC832CCB647FE156F438352D902646",
+    "source_native_coverage": 0.9300482056248426,
+    "teacher_added_coverage": 0.0024781903502141597,
+    "metric_label_coverage": 0.9325263959750567,
+    "support_coverage": 0.701748118228773,
+    "boundary_evidence_coverage": 0.7531307083018393,
+    "support_plane_valid_frames": 20,
+    "support_plane_valid_frame_rate": 0.8333333333333334
+  },
+  "fresh_zero_shot": {
+    "result": "artifacts.local/experiments/ag-st-masked-student-depthart-s-combined32-fresh-development8-zero-shot-r0/result.json",
+    "result_sha256": "7B9521CB3D12664E2BFAD6FF601FC69D598F41BBDA182C3D0A4BFAE3470A5262",
+    "evaluator_sha256": "678980B8B036464428CED6DD5E0256504DE9DF966FDDAA12B38C92A2DE4A3ADA",
+    "status": "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_SIGNAL_SUPPORTED",
+    "optimizer_constructed": false,
+    "training_performed": false,
+    "threshold_selected": false,
+    "depth": {
+      "evaluable_parents": 8,
+      "improved_parents": 8,
+      "mae_m_before": 2.041782045725235,
+      "mae_m_after": 0.2906591748286377,
+      "mae_relative_reduction": 0.8576443673617493,
+      "bad_0_10m_rate_after": 0.6601949153006278
+    },
+    "support": {
+      "evaluable_parents": 7,
+      "improved_parents": 6,
+      "bce_before": 0.7084196255490133,
+      "bce_after": 0.37220959833569084,
+      "bce_relative_reduction": 0.4745916333878601,
+      "f1_before": 0.0,
+      "f1_after": 0.6554271479013997
+    },
+    "obstacle_and_boundary_outputs_unchanged_from_training_priors": true
+  },
+  "decision": {
+    "complete_truth_required_for_this_progress": false,
+    "second_teacher_required_for_this_progress": false,
+    "combined_depth_signal_supported": true,
+    "combined_support_signal_supported": true,
+    "depth_support_route_ready_for_next_architecture_iteration": true,
+    "obstacle_route_supported": false,
+    "boundary_route_supported": false,
+    "student_task_ready": false,
+    "remaining_primary_gap": "Depth bad-at-0.10m remains 66.02%; improve metric precision and support calibration without reopening the consumed fresh cohort."
+  },
+  "claim_boundary": "Parent-disjoint zero-shot pseudo-label transfer within ARKitScenes. This is not complete truth, cross-dataset generalization, formal F1 authorization, deterministic-reducer task utility, deployment, product, or safety evidence."
+}

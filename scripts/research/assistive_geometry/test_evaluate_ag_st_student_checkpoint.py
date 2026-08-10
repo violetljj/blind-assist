@@ -8,12 +8,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from evaluate_ag_st_student_checkpoint import (  # noqa: E402
     _checkpoint_parent_ids,
+    _core_factor_names,
     _diagnostic_parent_split,
     _improvements,
 )
 
 
 class AgStFreshZeroShotEvaluatorTest(unittest.TestCase):
+    def test_depth_support_checkpoint_excludes_obstacle_and_boundary_from_core(self) -> None:
+        self.assertEqual(
+            ("depth_mae", "support_bce"),
+            _core_factor_names("depth_support"),
+        )
+
     def test_checkpoint_parent_firewall_includes_every_previous_role(self) -> None:
         payload = {
             "split": {

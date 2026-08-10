@@ -15,6 +15,7 @@ from train_ag_st_masked_student import (  # noqa: E402
     TIER_C_TEACHER,
     TIER_UNKNOWN,
     compute_boundary_only_losses,
+    compute_depth_support_losses,
     compute_student_losses,
     select_parent_split,
     tier_weights,
@@ -76,6 +77,19 @@ class AgStMaskedStudentTest(unittest.TestCase):
         self.assertEqual(1, sum(parent.startswith("p") for parent in selection))
         self.assertEqual(1, sum(parent.startswith("p") for parent in canary))
 
+    def test_parent_split_scales_to_combined_32_parent_fit(self) -> None:
+        shapes = {
+            **{f"p{index}": (336, 252) for index in range(18)},
+            **{f"l{index}": (252, 336) for index in range(14)},
+        }
+        train, selection, canary, receipt = select_parent_split(
+            shapes,
+            split_token="AG_ST_COMBINED_DEPTH_SUPPORT_R0",
+        )
+        self.assertEqual((28, 2, 2), (len(train), len(selection), len(canary)))
+        self.assertEqual(32, len(set(train) | set(selection) | set(canary)))
+        self.assertIn("28_2_2", receipt["method"])
+
     def test_unknown_pixels_cannot_change_masked_losses(self) -> None:
         outputs = {
             "depth_m": torch.full((1, 1, 2, 2), 1.2),
@@ -114,6 +128,38 @@ class AgStMaskedStudentTest(unittest.TestCase):
         self.assertGreater(float(weights[0]), float(weights[1]))
         self.assertGreater(float(weights[1]), float(weights[2]))
         self.assertEqual(0.0, float(weights[2]))
+
+    def test_depth_support_profile_ignores_unknown_and_noncore_outputs(self) -> None:
+        outputs = {
+            "depth_m": torch.full((1, 1, 2, 2), 1.2, requires_grad=True),
+            "support_logits": torch.zeros((1, 1, 2, 2), requires_grad=True),
+            "boundary_logits": torch.full((1, 1, 2, 2), 999.0),
+            "obstacle_logits": torch.full((1, 1, 2, 2), -999.0),
+        }
+        targets = {
+            "metric_depth_m": torch.tensor([[[[1.0, 9.0], [9.0, 9.0]]]]),
+            "metric_valid": torch.tensor([[[[True, False], [False, False]]]]),
+            "metric_tier": torch.tensor(
+                [[[[TIER_A_SOURCE, TIER_UNKNOWN], [TIER_UNKNOWN, TIER_UNKNOWN]]]]
+            ),
+            "support": torch.tensor([[[[1.0, 0.0], [0.0, 0.0]]]]),
+            "support_valid": torch.tensor([[[[True, False], [False, False]]]]),
+            "support_tier": torch.tensor(
+                [[[[TIER_A_SOURCE, TIER_UNKNOWN], [TIER_UNKNOWN, TIER_UNKNOWN]]]]
+            ),
+        }
+        changed = copy.deepcopy(targets)
+        changed["metric_depth_m"][..., 0, 1:] = -999.0
+        changed["metric_depth_m"][..., 1, :] = -999.0
+        changed["support"][..., 0, 1:] = 999.0
+        changed["support"][..., 1, :] = 999.0
+        class_weights = {"support_pos_weight": 1.0}
+        first = compute_depth_support_losses(outputs, targets, class_weights)
+        second = compute_depth_support_losses(outputs, changed, class_weights)
+        for key in first:
+            torch.testing.assert_close(first[key], second[key])
+        self.assertNotIn("raw/boundary_bce", first)
+        self.assertNotIn("raw/obstacle_bce", first)
 
     def test_boundary_only_loss_ignores_unknown_pixels(self) -> None:
         outputs = {

@@ -1200,7 +1200,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "frame_receipts": frame_receipts,
         "elapsed_seconds": time.monotonic() - started,
         "next_decision": "Use the observed ablation and coverage to decide whether a second independent Teacher is worth its cost; do not require complete truth before training a masked student on A/B/C pseudo-labels.",
-        "claim_boundary": "Consumed TRAIN-only source/Teacher pseudo-label factory diagnostic. Outputs are graded pseudo-labels, not objective truth, uncertainty truth, F1 authorization, cross-source generalization, deployment, product, or safety evidence.",
+        "claim_boundary": f"Consumed source-role source/Teacher pseudo-label factory diagnostic ({stage0a['source']['role']}). Outputs are graded pseudo-labels, not objective truth, uncertainty truth, F1 authorization, cross-source generalization, deployment, product, or safety evidence.",
     }
     return result
 

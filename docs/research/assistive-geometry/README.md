@@ -86,6 +86,7 @@
 - [AG-ST R0 SuperTeacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SUPERTEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
+- [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
 - [C0 heterogeneous-teacher complementarity protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.md)
 - [C0 heterogeneous-teacher complementarity machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_C0_TEACHER_COMPLEMENTARITY_PROTOCOL_2026-08-09.json)
 - [D0 temporal ablation protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_D0_TEMPORAL_ABLATION_PROTOCOL_2026-08-09.md)
@@ -217,14 +218,24 @@ depth `>0.10 m` error rate 仍为 `90.52%`。所以这是 depth 与部分 factor
 负控和两次 fresh zero-shot 中都未通过，当前 target/representation 不支持 transferable claim。
 两次 zero-shot 的 depth `>0.10 m` error rate 仍分别为 `87.14% / 77.01%`，所以结果仍不是任务可用模型。
 
-下一轮不再回到“先补齐完整真值”，也不把 obstacle/boundary 强塞进 core objective：新 fit 以
-depth/support 为 core，obstacle 只作 diagnostic；boundary 先重构 sparse target/representation，
-并在训练前另行冻结未见 parent。第二 Teacher 保留为 coverage/独立性增益实验，而不是训练前门。
+这一步现已按
+[combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
+直接执行：两批 16-parent 标签不复制地合并为 32 parent/96 帧，固定 `28/2/2` split，80 epochs，
+只让 depth/support 进入梯度，obstacle/boundary heads 保持训练先验。随后一次性评到另行预留且与
+checkpoint 全角色零重叠的 8 个 DEVELOPMENT parent/24 帧；没有 fresh fitting 或 threshold selection。
+depth MAE `2.0418 -> 0.2907 m`，相对下降 `85.8%`，8/8 parent 改善；support BCE
+`0.7084 -> 0.3722`，相对下降 `47.5%`，7 个可评 parent 中 6 个改善，F1 `0 -> 0.6554`。
+这把 depth/support 路线从两次小模型复现推进成 combined-data scaling signal。
+
+当前限制仍然直接可见：fresh depth `>0.10 m` error rate 仍为 `66.02%`，并非任务可用精度；
+obstacle/boundary 因未训练而不作 rescue claim。下一轮只应改进 metric precision 和 support calibration，
+不得回看这 8 个已消费 DEVELOPMENT parent 调参；同一 B0 manifest 的 8 个 CONFIRMATION parent 继续未消费。
+第二 Teacher 保留为 coverage/独立性增益实验，而不是训练前门。
 
 这些文件是分级 pseudo-label，不是完整 truth；uncertainty 字段仍是 proxy，dense normal 仍是派生诊断。
 它们足以启动 WILD_LAB masked training，但不把当前正式 `SUPERVISION_FRONTDOOR_UNSATISFIED`、F1、
-跨数据源泛化或 safety 改成 PASS。三轮 WILD_LAB 角色合计已消费 36 个互异 ARKitScenes parent；它们
-不能再次被称为 fresh evaluation，下一轮确认必须另留未消费 parent/source。
+跨数据源泛化或 safety 改成 PASS。当前 WILD_LAB 角色合计已消费 44 个互异 ARKitScenes parent；它们
+不能再次被称为 fresh evaluation，下一轮确认必须使用仍未消费的 parent/source。
 
 ## 并行 WILD_LAB 数学 canary handoff（不改变 successor）
 

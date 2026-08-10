@@ -102,6 +102,14 @@ def _improvements(before: dict[str, Any], after: dict[str, Any]) -> dict[str, fl
     }
 
 
+def _core_factor_names(objective_profile: str) -> tuple[str, ...]:
+    if objective_profile == "depth_support":
+        return ("depth_mae", "support_bce")
+    if objective_profile == "boundary_only":
+        return ("boundary_soft_bce", "boundary_distance_mae")
+    return ("depth_mae", "support_bce", "obstacle_bce")
+
+
 def execute(args: argparse.Namespace) -> int:
     started = time.perf_counter()
     stage0a_result = args.stage0a_result.resolve()
@@ -139,6 +147,12 @@ def execute(args: argparse.Namespace) -> int:
         "checkpoint encoder drift",
     )
     require(int(architecture["input_feature_channels"]) == 48, "feature channel drift")
+    objective_profile = str(
+        architecture.get(
+            "objective_profile",
+            checkpoint.get("objective_profile", "multifactor"),
+        )
+    )
 
     parent_shapes: dict[str, tuple[int, int]] = {}
     for descriptor in descriptors:
@@ -198,18 +212,36 @@ def execute(args: argparse.Namespace) -> int:
     }
 
     all_improvements = _improvements(before_all, after_all)
+    core_factors = _core_factor_names(objective_profile)
     core_signals = {
         name: all_improvements[name] is not None and all_improvements[name] > 0.0
-        for name in ("depth_mae", "support_bce", "obstacle_bce")
+        for name in core_factors
     }
     supported = sum(core_signals.values())
-    status = (
-        "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_OBSTACLE_SIGNAL_SUPPORTED"
-        if supported == 3
-        else "FRESH_PARENT_ZERO_SHOT_PARTIAL_FACTOR_SIGNAL_SUPPORTED"
-        if supported > 0
-        else "FRESH_PARENT_ZERO_SHOT_FACTOR_SIGNAL_NOT_SUPPORTED"
-    )
+    if objective_profile == "depth_support":
+        status = (
+            "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_SIGNAL_SUPPORTED"
+            if supported == len(core_factors)
+            else "FRESH_PARENT_ZERO_SHOT_PARTIAL_DEPTH_SUPPORT_SIGNAL_SUPPORTED"
+            if supported > 0
+            else "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_SIGNAL_NOT_SUPPORTED"
+        )
+    elif objective_profile == "boundary_only":
+        status = (
+            "FRESH_PARENT_ZERO_SHOT_BOUNDARY_SIGNAL_SUPPORTED"
+            if supported == len(core_factors)
+            else "FRESH_PARENT_ZERO_SHOT_PARTIAL_BOUNDARY_SIGNAL_SUPPORTED"
+            if supported > 0
+            else "FRESH_PARENT_ZERO_SHOT_BOUNDARY_SIGNAL_NOT_SUPPORTED"
+        )
+    else:
+        status = (
+            "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_OBSTACLE_SIGNAL_SUPPORTED"
+            if supported == len(core_factors)
+            else "FRESH_PARENT_ZERO_SHOT_PARTIAL_FACTOR_SIGNAL_SUPPORTED"
+            if supported > 0
+            else "FRESH_PARENT_ZERO_SHOT_FACTOR_SIGNAL_NOT_SUPPORTED"
+        )
     label_digest = aggregate_label_digest(row.label_path for row in descriptors)
     result = {
         "schema": "blindassist_ag_st_student_fresh_zero_shot_wild_lab_result_v1",
@@ -235,6 +267,7 @@ def execute(args: argparse.Namespace) -> int:
             "fresh_labels_used_for_fitting_or_threshold_selection": False,
         },
         "diagnostic_split": diagnostic_split,
+        "objective_profile": objective_profile,
         "execution": {
             "device": torch.cuda.get_device_name(device),
             "torch": torch.__version__,
@@ -255,11 +288,17 @@ def execute(args: argparse.Namespace) -> int:
             "optimizer_constructed": False,
             "threshold_selected": False,
             "supported_core_factor_count": supported,
-            "total_core_factor_count": 3,
+            "total_core_factor_count": len(core_factors),
             "boundary_is_diagnostic_not_a_rescue_factor": True,
+            "obstacle_is_diagnostic_not_a_rescue_factor": (
+                objective_profile == "depth_support"
+            ),
             "next_step": (
-                "Combine the two disjoint TRAIN-source batches for a larger student fit while reserving a new source for evaluation."
-                if supported == 3
+                "Preserve this fresh cohort as consumed and scale only after the depth/support result is summarized."
+                if objective_profile == "depth_support"
+                and supported == len(core_factors)
+                else "Combine the two disjoint TRAIN-source batches for a larger student fit while reserving a new source for evaluation."
+                if supported == len(core_factors)
                 else "Do not scale this student architecture until the failed fresh factors are localized."
             ),
         },
