@@ -95,6 +95,7 @@
 - [AG-ST R9 continuous boundary factors result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R9_CONTINUOUS_BOUNDARY_FACTORS_RESULT_2026-08-11.json)
 - [AG-ST R10 unified factor labels result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R10_UNIFIED_FACTOR_LABELS_RESULT_2026-08-11.json)
 - [AG-ST R11 unified factor student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R11_UNIFIED_FACTOR_STUDENT_RESULT_2026-08-11.json)
+- [AG-ST R12 external Bonn unified-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R12_EXTERNAL_BONN_UNIFIED_STUDENT_RESULT_2026-08-11.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -342,6 +343,14 @@ factor-split 和 factor-split continuous 四个固定开发实验。最终联合
 `0.0829→0.0679`；support F1 达 `0.889`，boundary hard/distance F1 达 `0.146/0.141`。但 depth
 `>0.10 m` error rate 仍为 `91.78%`，全图 boundary distance MAE 也恶化，因此只冻结为 partial candidate，
 停止内部 canary 调参，下一步只做无拟合外部 source evaluation。
+
+该冻结 checkpoint 的
+[R12 external Bonn evaluation](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R12_EXTERNAL_BONN_UNIFIED_STUDENT_RESULT_2026-08-11.json)
+已在 8 parent/24 帧上完成。DepthART prior 的 parent-macro MAE `0.252 m` 被学生残差恶化为 `1.411 m`；
+boundary probability AP 仅 `0.04624`（prevalence `0.04421`），4 px F1 约 `0.000045`，均不支持跨源使用。
+这拒绝的是 ARKit-only unified checkpoint，不是 SuperTeacher 标签：R8 source-balanced boundary specialist 在同一 Bonn
+协议上已有 F1 `0.4203`。因此下一执行转为 depth identity/no-regret gate 与 source-balanced factor specialist，
+不再调 R11 内部 canary，也不允许无条件覆盖 DepthART prior。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。

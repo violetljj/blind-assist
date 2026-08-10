@@ -1,0 +1,73 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r12_external_bonn_unified_student_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R12_EXTERNAL_BONN_UNIFIED_STUDENT_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "FROZEN_CHECKPOINT_EXTERNAL_SOURCE_DIAGNOSTIC",
+  "status": "EXTERNAL_UNIFIED_STUDENT_TRANSFER_NOT_SUPPORTED",
+  "question": "Does the frozen R11 unified factor checkpoint transfer metric depth and boundary evidence to Bonn without fitting or threshold selection?",
+  "checkpoint": {
+    "path": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-continuous-r0/masked-factor-head.pt",
+    "sha256": "FCE0635E0FEEB1C9B81581D69C4B7304054C3D0CF601EAEB9C106C2B1E6265CE",
+    "training_source": "ARKitScenes consumed TRAIN only",
+    "external_parent_overlap": 0
+  },
+  "protocol": {
+    "external_source": "Bonn RGB-D Dynamic",
+    "parent_count": 8,
+    "frame_count": 24,
+    "fitting": false,
+    "threshold_selection": false,
+    "boundary_threshold": 0.5,
+    "boundary_tolerance_px": 4,
+    "source_depth_opened_after_rgb_k_prediction": true,
+    "freshness_scope": "checkpoint-unseen source/parents; not project-global virgin"
+  },
+  "depth": {
+    "initialized_depthart_parent_macro_mae_m": 0.2517413543897155,
+    "student_parent_macro_mae_m": 1.411058327941151,
+    "student_relative_reduction": -4.605190817225529,
+    "initialized_depthart_bad_gt_0p10m_fraction": 0.7310277932326535,
+    "student_bad_gt_0p10m_fraction": 0.9995100009947607,
+    "decision": "Unconditional unified student depth residual is rejected for cross-source use."
+  },
+  "boundary": {
+    "valid_pixels": 6027582,
+    "positive_pixels": 266474,
+    "prevalence": 0.04420910408186898,
+    "student_probability_average_precision": 0.04623975897286835,
+    "student_probability_precision_within_4px": 0.34782608695652173,
+    "student_probability_recall_within_4px": 0.000022516268003632625,
+    "student_probability_f1_within_4px": 0.000045029621047595375,
+    "student_distance_average_precision": 0.04386233996323984,
+    "student_distance_precision_within_4px": 0.82,
+    "student_distance_recall_within_4px": 0.000060043381343020334,
+    "student_distance_f1_within_4px": 0.00012007797014048941,
+    "decision": "The unified ARKit-only boundary branch has no useful Bonn transfer at its frozen threshold."
+  },
+  "contrast": {
+    "r8_source_balanced_boundary_specialist_bonn_f1_within_4px": 0.42031702718174024,
+    "interpretation": "The label representation is learnable when the boundary student is source-balanced; the R12 failure is specific to the ARKit-only unified checkpoint, not evidence that continuous source boundary labels are invalid."
+  },
+  "artifacts": {
+    "depth_result": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-continuous-r0/bonn-evaluation-depth.json",
+    "depth_result_sha256": "A6354B92D46670FAFADE1C627BF2D7C19BE0654D7AF3EFCB752925BEE591F3E9",
+    "boundary_result": "artifacts.local/experiments/ag-st-unified-factor-student-depthart-continuous-r0/bonn-evaluation-boundary.json",
+    "boundary_result_sha256": "6A223270B2B901870C6E5EDFE5FECC55408CD5D54C3C8C2E18A6405FF5842684"
+  },
+  "implementation": {
+    "boundary_evaluator": "scripts/research/assistive_geometry/evaluate_ag_st_unified_student_bonn_boundary.py",
+    "boundary_evaluator_sha256": "45F2ACC21C4F7D6AC506A76B751B2AA0C23738F16A0681C9C3978A232372AF49",
+    "test": "scripts/research/assistive_geometry/test_evaluate_ag_st_unified_student_bonn_boundary.py",
+    "test_sha256": "96FDE870BC2CC5E41F8C4911362F8DA4ABDE12121CE5670433F65E682FD64685",
+    "focused_tests": "1/1 PASS"
+  },
+  "decision": {
+    "unconditional_unified_checkpoint_promotion": false,
+    "continuous_label_factory_retained": true,
+    "next_depth_route": "Use an identity/no-regret gate so unsupported domains retain the DepthART prior.",
+    "next_boundary_route": "Retain a source-balanced factor specialist or add genuine multi-source factor training; do not use the R11 unified boundary head cross-source.",
+    "continue_internal_canary_tuning": false,
+    "formal_f1_authority_changed": false
+  },
+  "claim_boundary": "External Bonn depth and boundary diagnostic for one frozen checkpoint. This is not a label-factory failure, support/obstacle evaluation, task utility, formal F1 authorization, safety, deployment, product, or license evidence."
+}
