@@ -242,6 +242,21 @@ obstacle/boundary 因未训练而不作 rescue claim。下一轮应测试更强 
 DepthART adapter；当前 B0 的 DEVELOPMENT/CONFIRMATION 已消费，新的泛化结论必须另留外部数据源。
 第二 Teacher 保留为 coverage/独立性增益实验，而不是训练前门。
 
+该容量假设现已由
+[multi-scale + Bonn cross-dataset development result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MULTISCALE_AND_BONN_CROSS_DATASET_DEVELOPMENT_RESULT_2026-08-10.json)
+直接裁决。`136,517` 参数、DepthART 四层 decoder pyramid、dilation `1/2/4` 且显式读取 base-depth
+guidance 的 head 完成 40-parent/120-frame 全量拟合。在已消费 confirmation8 上，它只把 depth
+`>0.10 m` error 从 `67.68%` 小幅降到 `65.89%`、support BCE 从 `0.0972` 降到 `0.0914`；同时
+depth MAE 从 `0.3321` 恶化到 `0.3868 m`，support F1 从 `0.6436` 降到 `0.6105`，故不晋级。
+
+更关键的是，两个 frozen head 又在 Bonn RGB-D Dynamic 的固定 8 sequence × 3 帧上接受 registered
+source-native depth 检验。原始 DepthART baseline 的 parent-macro MAE 为 `0.2533 m`；11k 小头与
+multi-scale 头分别恶化到 `1.0146 / 1.1755 m`，且都是 `0/8` parent 改善，`>0.10 m` error 均接近
+`99.9%`。这否定了当前 ARKitScenes residual 的跨数据源 depth transfer，也说明继续堆 decoder 不是
+答案：它学到的是域特定 metric correction，覆盖了在 Bonn 上更好的 DepthART prior。下一轮只值得做
+source-diverse A-tier depth anchor + identity-preserving/OOD-gated residual，或冻结 depth 只学 support；
+Bonn 本轮没有 support label，因此没有 support、task 或 safety claim。
+
 这些文件是分级 pseudo-label，不是完整 truth；uncertainty 字段仍是 proxy，dense normal 仍是派生诊断。
 它们足以启动 WILD_LAB masked training，但不把当前正式 `SUPERVISION_FRONTDOOR_UNSATISFIED`、F1、
 跨数据源泛化或 safety 改成 PASS。当前 WILD_LAB 角色合计已消费 52 个互异 ARKitScenes parent；它们

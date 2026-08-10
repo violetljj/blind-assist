@@ -69,6 +69,31 @@ class AgStMaskedStudentTest(unittest.TestCase):
             places=5,
         )
 
+    def test_dilated_pyramid_head_accepts_multiscale_and_base_depth_features(self) -> None:
+        model = MaskedFactorStudent(
+            channels=192,
+            hidden=64,
+            head_profile="dilated_pyramid",
+            use_base_depth_feature=True,
+        )
+        model.initialize_priors(
+            {
+                "support_probability": 0.25,
+                "boundary_probability": 0.10,
+                "obstacle_probability": 0.40,
+                "boundary_distance_px": 8.0,
+            }
+        )
+        feature = torch.randn(1, 192, 12, 16)
+        base_depth = torch.full((1, 1, 24, 32), 2.0)
+        outputs = model(feature, base_depth, (24, 32))
+        self.assertEqual((1, 1, 24, 32), tuple(outputs["depth_m"].shape))
+        torch.testing.assert_close(outputs["depth_m"], base_depth)
+        self.assertGreater(
+            sum(parameter.numel() for parameter in model.parameters()),
+            100_000,
+        )
+
     def test_parent_split_accepts_ten_six_orientation_mix(self) -> None:
         shapes = {
             **{f"p{index}": (336, 252) for index in range(10)},

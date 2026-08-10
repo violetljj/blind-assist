@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evaluate an AG-ST factor head on a strictly parent-disjoint label batch."""
+"""Evaluate an AG-ST factor head on a parent-disjoint label batch."""
 
 from __future__ import annotations
 
@@ -15,6 +15,8 @@ from download_b0_arkitscenes_assets import require, sha256_file
 from train_ag_st_masked_student import (
     DEFAULT_DEPTHART_CHECKPOINT,
     DEFAULT_DEPTHART_SOURCE,
+    DEPTHART_PYRAMID_CHANNELS,
+    DEPTHART_SHARED_CHANNELS,
     MaskedFactorStudent,
     aggregate_label_digest,
     build_frame_descriptors,
@@ -52,6 +54,11 @@ DEFAULT_OUTPUT_DIR = (
     / "artifacts.local"
     / "experiments"
     / "ag-st-masked-student-depthart-s-fresh-zero-shot-r0"
+)
+
+EVALUATION_MODES = (
+    "fresh_zero_shot",
+    "consumed_development_comparison",
 )
 
 
@@ -115,6 +122,47 @@ def _core_factor_names(objective_profile: str) -> tuple[str, ...]:
     return ("depth_mae", "support_bce", "obstacle_bce")
 
 
+def _evaluation_context(mode: str, parent_count: int) -> dict[str, Any]:
+    require(mode in EVALUATION_MODES, f"unsupported evaluation mode: {mode}")
+    if mode == "fresh_zero_shot":
+        return {
+            "schema": "blindassist_ag_st_student_fresh_zero_shot_wild_lab_result_v1",
+            "status_prefix": "FRESH_PARENT_ZERO_SHOT",
+            "question": (
+                "Does the frozen AG-ST factor head transfer without fitting to "
+                f"{parent_count} completely disjoint source parents?"
+            ),
+            "labels_previously_consumed": False,
+            "fresh_claim_authorized": True,
+            "claim_boundary": (
+                f"Zero-shot pseudo-label transfer across {parent_count} "
+                "parent-disjoint ARKitScenes source videos. This is not objective "
+                "truth, cross-dataset generalization, deterministic-reducer task "
+                "utility, deployment, product, or safety evidence."
+            ),
+        }
+    return {
+        "schema": (
+            "blindassist_ag_st_student_consumed_development_comparison_"
+            "wild_lab_result_v1"
+        ),
+        "status_prefix": "CONSUMED_PARENT_ZERO_SHOT_DEVELOPMENT",
+        "question": (
+            "Does the new frozen AG-ST head improve over its initialized baseline "
+            f"on {parent_count} parent-disjoint but previously consumed evaluation "
+            "parents?"
+        ),
+        "labels_previously_consumed": True,
+        "fresh_claim_authorized": False,
+        "claim_boundary": (
+            f"Architecture-development comparison on {parent_count} parent-disjoint "
+            "ARKitScenes videos whose outcomes were consumed by an earlier experiment. "
+            "This is not fresh evidence, a new generalization result, objective truth, "
+            "cross-dataset evidence, task utility, deployment, product, or safety evidence."
+        ),
+    }
+
+
 def execute(args: argparse.Namespace) -> int:
     started = time.perf_counter()
     stage0a_result = args.stage0a_result.resolve()
@@ -132,11 +180,12 @@ def execute(args: argparse.Namespace) -> int:
     ):
         require(path.is_file(), f"{description} missing: {path}")
     require(depthart_source.is_dir(), "DepthART source missing")
-    require(not output_dir.exists(), "fresh zero-shot output collision")
+    require(not output_dir.exists(), "evaluation output collision")
 
     descriptors, stage0a, _ = build_frame_descriptors(stage0a_result, label_dir)
     fresh_parents = {row.parent_id for row in descriptors}
-    require(len(fresh_parents) >= 4, "fresh evaluation requires at least four parents")
+    require(len(fresh_parents) >= 4, "evaluation requires at least four parents")
+    evaluation = _evaluation_context(args.evaluation_mode, len(fresh_parents))
     checkpoint = torch.load(student_checkpoint, map_location="cpu", weights_only=False)
     require(
         checkpoint.get("schema")
@@ -151,7 +200,22 @@ def execute(args: argparse.Namespace) -> int:
         architecture["frozen_encoder"] == "FROZEN_DEPTHART_S_METRIC_INDOOR",
         "checkpoint encoder drift",
     )
-    require(int(architecture["input_feature_channels"]) == 48, "feature channel drift")
+    feature_channels = int(architecture["input_feature_channels"])
+    feature_profile = str(architecture.get("feature_profile", "shared"))
+    expected_feature_channels = (
+        DEPTHART_PYRAMID_CHANNELS
+        if feature_profile == "decoder_pyramid"
+        else DEPTHART_SHARED_CHANNELS
+    )
+    require(
+        feature_channels == expected_feature_channels,
+        "feature channel/profile drift",
+    )
+    head_hidden_channels = int(architecture.get("head_hidden_channels", 32))
+    head_profile = str(architecture.get("head_profile", "basic"))
+    use_base_depth_feature = bool(
+        architecture.get("use_base_depth_feature", False)
+    )
     objective_profile = str(
         architecture.get(
             "objective_profile",
@@ -178,17 +242,24 @@ def execute(args: argparse.Namespace) -> int:
     torch.backends.cuda.matmul.allow_tf32 = False
     torch.backends.cudnn.allow_tf32 = False
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    require(device.type == "cuda", "fresh zero-shot evaluation requires CUDA")
+    require(device.type == "cuda", "AG-ST checkpoint evaluation requires CUDA")
     cached, extraction = extract_depthart_features(
         descriptors,
         depthart_source,
         depthart_checkpoint,
         device,
         int(checkpoint["seed"]),
+        feature_profile=feature_profile,
     )
 
     depth_mode = str(architecture["depth_mode"])
-    baseline = MaskedFactorStudent(channels=48, depth_mode=depth_mode).to(device)
+    baseline = MaskedFactorStudent(
+        channels=feature_channels,
+        hidden=head_hidden_channels,
+        depth_mode=depth_mode,
+        head_profile=head_profile,
+        use_base_depth_feature=use_base_depth_feature,
+    ).to(device)
     baseline.initialize_priors(checkpoint["priors"])
     before_all = evaluate_frames(baseline, cached, device)
     before_diagnostics = {
@@ -200,7 +271,13 @@ def execute(args: argparse.Namespace) -> int:
         for role, parents in diagnostic_roles.items()
     }
 
-    model = MaskedFactorStudent(channels=48, depth_mode=depth_mode).to(device)
+    model = MaskedFactorStudent(
+        channels=feature_channels,
+        hidden=head_hidden_channels,
+        depth_mode=depth_mode,
+        head_profile=head_profile,
+        use_base_depth_feature=use_base_depth_feature,
+    ).to(device)
     incompatible = model.load_state_dict(checkpoint["state_dict"], strict=True)
     require(
         not incompatible.missing_keys and not incompatible.unexpected_keys,
@@ -223,36 +300,54 @@ def execute(args: argparse.Namespace) -> int:
         for name in core_factors
     }
     supported = sum(core_signals.values())
+    status_prefix = evaluation["status_prefix"]
     if objective_profile in {"depth_support", "depth_support_precision"}:
         status = (
-            "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_SIGNAL_SUPPORTED"
+            f"{status_prefix}_DEPTH_SUPPORT_SIGNAL_SUPPORTED"
             if supported == len(core_factors)
-            else "FRESH_PARENT_ZERO_SHOT_PARTIAL_DEPTH_SUPPORT_SIGNAL_SUPPORTED"
+            else f"{status_prefix}_PARTIAL_DEPTH_SUPPORT_SIGNAL_SUPPORTED"
             if supported > 0
-            else "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_SIGNAL_NOT_SUPPORTED"
+            else f"{status_prefix}_DEPTH_SUPPORT_SIGNAL_NOT_SUPPORTED"
         )
     elif objective_profile == "boundary_only":
         status = (
-            "FRESH_PARENT_ZERO_SHOT_BOUNDARY_SIGNAL_SUPPORTED"
+            f"{status_prefix}_BOUNDARY_SIGNAL_SUPPORTED"
             if supported == len(core_factors)
-            else "FRESH_PARENT_ZERO_SHOT_PARTIAL_BOUNDARY_SIGNAL_SUPPORTED"
+            else f"{status_prefix}_PARTIAL_BOUNDARY_SIGNAL_SUPPORTED"
             if supported > 0
-            else "FRESH_PARENT_ZERO_SHOT_BOUNDARY_SIGNAL_NOT_SUPPORTED"
+            else f"{status_prefix}_BOUNDARY_SIGNAL_NOT_SUPPORTED"
         )
     else:
         status = (
-            "FRESH_PARENT_ZERO_SHOT_DEPTH_SUPPORT_OBSTACLE_SIGNAL_SUPPORTED"
+            f"{status_prefix}_DEPTH_SUPPORT_OBSTACLE_SIGNAL_SUPPORTED"
             if supported == len(core_factors)
-            else "FRESH_PARENT_ZERO_SHOT_PARTIAL_FACTOR_SIGNAL_SUPPORTED"
+            else f"{status_prefix}_PARTIAL_FACTOR_SIGNAL_SUPPORTED"
             if supported > 0
-            else "FRESH_PARENT_ZERO_SHOT_FACTOR_SIGNAL_NOT_SUPPORTED"
+            else f"{status_prefix}_FACTOR_SIGNAL_NOT_SUPPORTED"
         )
     label_digest = aggregate_label_digest(row.label_path for row in descriptors)
+    metric_receipt = {
+        "before_all_evaluation": before_all,
+        "after_all_evaluation": after_all,
+        "all_evaluation_parent_macro_relative_improvement": all_improvements,
+        "before_diagnostics": before_diagnostics,
+        "after_diagnostics": after_diagnostics,
+        "core_signals": core_signals,
+    }
+    if args.evaluation_mode == "fresh_zero_shot":
+        metric_receipt.update(
+            {
+                "before_all_fresh": before_all,
+                "after_all_fresh": after_all,
+                "all_fresh_parent_macro_relative_improvement": all_improvements,
+            }
+        )
     result = {
-        "schema": "blindassist_ag_st_student_fresh_zero_shot_wild_lab_result_v1",
+        "schema": evaluation["schema"],
         "status": status,
         "mode": "WILD_LAB_REVERSIBLE_EXPLORATION",
-        "question": f"Does the frozen AG-ST factor head transfer without fitting to {len(fresh_parents)} completely disjoint source parents?",
+        "evaluation_mode": args.evaluation_mode,
+        "question": evaluation["question"],
         "inputs": {
             "stage0a_result_path": str(stage0a_result),
             "stage0a_result_sha256": sha256_file(stage0a_result),
@@ -266,10 +361,14 @@ def execute(args: argparse.Namespace) -> int:
             "evaluator_sha256": sha256_file(Path(__file__).resolve()),
         },
         "parent_firewall": {
-            "trained_or_previous_eval_parents": sorted(trained_parents),
-            "fresh_evaluation_parents": sorted(fresh_parents),
+            "checkpoint_consumed_parents": sorted(trained_parents),
+            "evaluation_parents": sorted(fresh_parents),
             "overlap": overlap,
-            "fresh_labels_used_for_fitting_or_threshold_selection": False,
+            "evaluation_labels_previously_consumed": evaluation[
+                "labels_previously_consumed"
+            ],
+            "labels_used_for_current_checkpoint_fitting_or_threshold_selection": False,
+            "fresh_claim_authorized": evaluation["fresh_claim_authorized"],
         },
         "diagnostic_split": diagnostic_split,
         "objective_profile": objective_profile,
@@ -279,14 +378,7 @@ def execute(args: argparse.Namespace) -> int:
             "feature_extraction": extraction,
             "total_seconds": time.perf_counter() - started,
         },
-        "metrics": {
-            "before_all_fresh": before_all,
-            "after_all_fresh": after_all,
-            "all_fresh_parent_macro_relative_improvement": all_improvements,
-            "before_diagnostics": before_diagnostics,
-            "after_diagnostics": after_diagnostics,
-            "core_signals": core_signals,
-        },
+        "metrics": metric_receipt,
         "decision": {
             "complete_truth_required": False,
             "fresh_student_training_performed": False,
@@ -300,6 +392,10 @@ def execute(args: argparse.Namespace) -> int:
                 in {"depth_support", "depth_support_precision"}
             ),
             "next_step": (
+                "Compare against the frozen prior architecture only; do not promote "
+                "this consumed cohort as fresh generalization evidence."
+                if args.evaluation_mode == "consumed_development_comparison"
+                else
                 "Preserve this fresh cohort as consumed and scale only after the depth/support result is summarized."
                 if objective_profile
                 in {"depth_support", "depth_support_precision"}
@@ -309,7 +405,7 @@ def execute(args: argparse.Namespace) -> int:
                 else "Do not scale this student architecture until the failed fresh factors are localized."
             ),
         },
-        "claim_boundary": f"Zero-shot pseudo-label transfer across {len(fresh_parents)} parent-disjoint ARKitScenes source videos. This is not objective truth, cross-dataset generalization, deterministic-reducer task utility, deployment, product, or safety evidence.",
+        "claim_boundary": evaluation["claim_boundary"],
     }
     output_dir.mkdir(parents=True, exist_ok=False)
     write_json_exclusive(output_dir / "result.json", result)
@@ -318,7 +414,7 @@ def execute(args: argparse.Namespace) -> int:
             {
                 "status": status,
                 "result": str((output_dir / "result.json").resolve()),
-                "all_fresh_parent_macro_relative_improvement": all_improvements,
+                "all_evaluation_parent_macro_relative_improvement": all_improvements,
                 "before": before_all["parent_macro"],
                 "after": after_all["parent_macro"],
                 "total_seconds": result["execution"]["total_seconds"],
@@ -346,6 +442,11 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_DEPTHART_CHECKPOINT,
     )
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument(
+        "--evaluation-mode",
+        choices=EVALUATION_MODES,
+        default="fresh_zero_shot",
+    )
     return parser.parse_args()
 
 

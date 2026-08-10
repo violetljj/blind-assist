@@ -106,13 +106,21 @@
   可直接拼接多个互不重叠的 Stage0A/label batch，每个 orientation 留 1 selection + 1 canary parent；
   也可在已有独立 confirmation 时把全部 consumed parents 纳入 fit。支持 multifactor、depth/support-only、
   metric-precision + calibrated-support 与 boundary-only 目标；train-only scalar temperature/bias 可折叠回
-  support head。A/B/C tier weights 保留，UNKNOWN 权重恒为零，不调用 reducer 或 task outcome。
-- `test_train_ag_st_masked_student.py`：10 个 focused tests，覆盖 16/32-parent split 重放、非对称
-  orientation roster、零残差初始化、objective UNKNOWN/NaN 隔离、tier 权重和 scalar calibration。
-- `evaluate_ag_st_student_checkpoint.py`：在严格 fresh parent 上零样本评估冻结 checkpoint；验证训练、
-  selection、canary 与 evaluation parent 零交集，不在 fresh cohort 上拟合、选阈值或继续训练。
-- `test_evaluate_ag_st_student_checkpoint.py`：5 个 focused tests，覆盖 objective-specific core factors、
-  all-consumed fit parent firewall、macro improvement 符号与只用于诊断的 hash split 重放。
+  support head。也支持 DepthART 四层 decoder pyramid、dilated pyramid head 与显式 base-depth guidance。
+  A/B/C tier weights 保留，UNKNOWN 权重恒为零，不调用 reducer 或 task outcome。
+- `test_train_ag_st_masked_student.py`：11 个 focused tests，覆盖 16/32-parent split 重放、非对称
+  orientation roster、零残差初始化、multi-scale/base-depth head、objective UNKNOWN/NaN 隔离、tier 权重和
+  scalar calibration。
+- `evaluate_ag_st_student_checkpoint.py`：在 parent-disjoint cohort 上零样本评估冻结 checkpoint；默认
+  fresh 模式，也可显式签署 `consumed_development_comparison`，防止把已看过的 cohort 再包装成新证据。
+- `test_evaluate_ag_st_student_checkpoint.py`：6 个 focused tests，覆盖 objective-specific core factors、
+  all-consumed fit parent firewall、macro improvement、diagnostic split 与 consumed-mode fresh-claim 禁用。
+- `evaluate_ag_st_student_bonn_depth.py`：固定 Bonn RGB-D Dynamic 8 sequence × 3 帧，以 used-set 形成
+  唯一 RGB-depth 对；模型只读 RGB+K，推理后才打开 registered source depth，比较 initialized DepthART
+  与 frozen student 的 parent-macro MAE/`>0.10 m` error。输出仅为 cross-dataset depth Development，
+  不评价 support/boundary/task，也不作许可结论。
+- `test_evaluate_ag_st_student_bonn_depth.py`：6 个 focused tests，覆盖固定 cohort、唯一 pairing、缺失
+  depth member、uint16 `/5000`、parent-macro 与非单调 index fail-closed。
 - `export_assistive_geometry_onnx.py`：把未来选定 checkpoint 导出为 portrait/landscape 静态 ONNX，
   保留五个 raw GeometryState tensor 与 host camera prompts；gravity/UNKNOWN 后处理不塞入图内。
 - `evaluate_teacher_complementarity.py`：在未来另行授权的 truth-bound cohort 上比较 metric 与 temporal
@@ -141,6 +149,10 @@ zero-shot 评价中均未通过。后续 combined-32 depth/support-only checkpoi
 depth MAE `85.8%` 和 support BCE `47.5%` 的 parent-macro 相对下降；累计 44 个互异 ARKitScenes parent
 被消费后，combined-40 precision checkpoint 在最终 CONFIRMATION 8 上取得 depth MAE `85.4%`、support
 BCE `83.2%` 的相对下降。累计 52 个互异 ARKitScenes parent 已消费，这仍不是跨数据源泛化。
+后续 multi-scale head 在已消费 confirmation 上结果混合且不晋级；两个 ARKit-trained depth residual head
+在 Bonn registered depth 上又分别把 DepthART MAE `0.2533 m` 恶化到 `1.0146 / 1.1755 m`，均为
+`0/8` parent 改善。因此当前 depth transfer 明确不支持，下一算法必须保留域外 identity fallback 或加入
+source-diverse metric anchors，不能继续用同域 head-capacity scaling 代替跨数据源监督。
 support/boundary 仍是 conservative pseudo-label、
 sigma 是 proxy，不产生完整 truth、正式 F1、产品或 safety authority。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。

@@ -1,0 +1,134 @@
+{
+  "schema": "blindassist_assistive_geometry_ag_st_r0_multiscale_bonn_development_summary_v1",
+  "status": "MULTISCALE_NOT_PROMOTED_BONN_DEPTH_TRANSFER_NOT_SUPPORTED",
+  "mode": "WILD_LAB_DEVELOPMENT",
+  "date": "2026-08-10",
+  "question": "Does a larger multi-scale factor head remove the ARKitScenes precision plateau, and do either frozen AG-ST depth students preserve the DepthART metric prior on a different RGB-D dataset?",
+  "implementation": {
+    "small_head_parameters": 11109,
+    "multiscale_head_parameters": 136517,
+    "multiscale_feature_profile": "decoder_pyramid",
+    "multiscale_head_profile": "dilated_pyramid",
+    "multiscale_hidden_channels": 64,
+    "multiscale_uses_base_depth_feature": true,
+    "multiscale_training_parents": 40,
+    "multiscale_training_frames": 120,
+    "multiscale_epochs": 40,
+    "multiscale_training_seconds": 206.78132080000069,
+    "student_encoder": "FROZEN_DEPTHART_S_METRIC_INDOOR"
+  },
+  "consumed_confirmation_development_comparison": {
+    "role": "CONSUMED_CONFIRMATION_DEVELOPMENT_COMPARISON",
+    "parent_count": 8,
+    "frames": 24,
+    "checkpoint_parent_overlap": 0,
+    "fresh_claim_authorized": false,
+    "small_head": {
+      "depth_mae_m": 0.33213412411848564,
+      "depth_bad_gt_0_10_m_fraction": 0.6768124697995752,
+      "support_bce": 0.0972377801201038,
+      "support_f1": 0.6436281471281774
+    },
+    "multiscale_head": {
+      "depth_mae_m": 0.38677901554519756,
+      "depth_bad_gt_0_10_m_fraction": 0.6589255046756917,
+      "support_bce": 0.09140860123535159,
+      "support_f1": 0.6105229373000721
+    },
+    "multiscale_minus_small": {
+      "depth_mae_m": 0.0546448914267119,
+      "depth_mae_relative_change": 0.164526579651352,
+      "depth_bad_gt_0_10_m_fraction": -0.0178869651238835,
+      "support_bce": -0.00582917888475221,
+      "support_f1": -0.0331052098281053
+    },
+    "decision": "MIXED_RESULT_NO_PROMOTION"
+  },
+  "bonn_source_native_depth_development": {
+    "dataset": "Bonn RGB-D Dynamic",
+    "relation": "CROSS_DATASET_AG_ST_RELATIVE",
+    "parent_count": 8,
+    "frames_per_parent": 3,
+    "frames": 24,
+    "rgb_depth_pairing": "timestamp-nearest greedy one-to-one used-set",
+    "metric_truth": "registered source-native uint16 depth divided by 5000; zero is UNKNOWN",
+    "model_inputs": [
+      "RGB",
+      "fixed Bonn intrinsics"
+    ],
+    "source_depth_is_model_input": false,
+    "support_evaluated": false,
+    "initialized_depthart_baseline": {
+      "parent_macro_depth_mae_m": 0.2533456227231789,
+      "parent_macro_bad_gt_0_10_m_fraction": 0.7347120830756899
+    },
+    "small_head_student": {
+      "parent_macro_depth_mae_m": 1.014574370493557,
+      "parent_macro_bad_gt_0_10_m_fraction": 0.9985475897953913,
+      "mae_relative_change_vs_initialized_depthart": 3.0047045596763424,
+      "improved_parent_count": 0
+    },
+    "multiscale_head_student": {
+      "parent_macro_depth_mae_m": 1.1755258512379543,
+      "parent_macro_bad_gt_0_10_m_fraction": 0.9987843157365146,
+      "mae_relative_change_vs_initialized_depthart": 3.6400085330165997,
+      "improved_parent_count": 0
+    },
+    "decision": "DEPTH_TRANSFER_NOT_SUPPORTED_KEEP_DEPTHART_IDENTITY_BASELINE",
+    "interpretation": "The ARKitScenes-trained residual heads overwrite a substantially better Bonn DepthART metric prior. Increasing decoder capacity does not repair the domain-specific correction."
+  },
+  "source_receipts": {
+    "official_page": "https://www.ipb.uni-bonn.de/data/rgbd-dynamic-dataset/",
+    "archive_bytes": 16395422367,
+    "archive_sha256": "D2AFDC286ECDB02A3E57CB98E3908185B1133A3F79F181970064EB177221A84B",
+    "identity_catalog_sha256": "0F6307FBDB26295B7EB2CE407F3D586A43D2709653443F34CCFBB97DDB14E20E",
+    "integrity_receipt_sha256": "6E4089B3C2E5535D51104914EDE1DD783475EFB237FEBD517F80F1A7A20F6D56",
+    "official_page_research_citation_instruction_present": true,
+    "explicit_dataset_license_text_archived_locally": false,
+    "use_scope_for_this_result": "LOCAL_RESEARCH_DEVELOPMENT_NO_REDISTRIBUTION"
+  },
+  "artifacts": {
+    "multiscale_training_result": {
+      "path": "artifacts.local/experiments/ag-st-masked-student-depthart-s-multiscale40-precision-r0/result.json",
+      "sha256": "77D252DCBA74337CA74BA9CFCD0209621AD95C630CD8A4FECBAD4596AEDAE1EA"
+    },
+    "consumed_confirmation_comparison": {
+      "path": "artifacts.local/experiments/ag-st-multiscale40-consumed-confirmation8-development-r0/result.json",
+      "sha256": "942AA5B144D55E0972F45AC581C926F8ADAABEA5321E19E35BA5AC76FD0339FC"
+    },
+    "small_head_bonn_result": {
+      "path": "artifacts.local/experiments/ag-st-bonn-depth-combined40-small-head-development-r0.json",
+      "sha256": "AF017A728A9B27995C080D7CEF408E813C12BB5BF1C3AFCBD191E19E53C8B9C4"
+    },
+    "multiscale_head_bonn_result": {
+      "path": "artifacts.local/experiments/ag-st-bonn-depth-multiscale40-development-r0.json",
+      "sha256": "8A6418053EE9340B59E378066024C0F9B960B7C26EFA6492C518540335C4C3CF"
+    },
+    "small_head_checkpoint_sha256": "E7D50D7E4ADE31F004F16B03D3E7AF081C3D04A8F561FC835FDD7F90F94AECBD",
+    "multiscale_head_checkpoint_sha256": "298090502D06BC4DB58C763715C503ACF0AC66AAC227EA9F3A9177EA830C5035"
+  },
+  "decision": {
+    "promote_multiscale_head": false,
+    "continue_head_capacity_scaling": false,
+    "cross_dataset_depth_transfer_supported": false,
+    "retain_initialized_depthart_as_external_depth_baseline": true,
+    "next_algorithmic_route": "SOURCE_DIVERSE_DEPTH_ANCHORS_PLUS_IDENTITY_PRESERVING_OR_OOD_GATED_RESIDUAL",
+    "next_experiment": "Use source-native Bonn depth as depth-only A-tier training anchors on one sequence subset, keep a disjoint sequence subset for development evaluation, and require the learned correction to default to the frozen DepthART identity outside supported feature regions. Support remains separately masked and UNKNOWN on Bonn until a gravity/support adapter is established."
+  },
+  "claim_boundary": {
+    "complete_truth_required": false,
+    "bonn_depth_is_source_native_evaluation_evidence": true,
+    "bonn_support_truth_available_in_this_result": false,
+    "fresh_confirmation_claim_authorized": false,
+    "cross_dataset_depth_generalization_claim_authorized": false,
+    "task_utility_claim_authorized": false,
+    "deployment_product_or_safety_claim_authorized": false,
+    "formal_r2_f1_authority_changed": false
+  },
+  "validation": {
+    "trainer_tests": "11/11 PASS",
+    "parent_disjoint_evaluator_tests": "6/6 PASS",
+    "bonn_evaluator_tests": "6/6 PASS",
+    "bonn_live_receipt_and_fixed_pair_smoke": "8/8 parents, 24/24 frames PASS"
+  }
+}

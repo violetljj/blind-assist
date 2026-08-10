@@ -10,6 +10,7 @@ from evaluate_ag_st_student_checkpoint import (  # noqa: E402
     _checkpoint_parent_ids,
     _core_factor_names,
     _diagnostic_parent_split,
+    _evaluation_context,
     _improvements,
 )
 
@@ -82,6 +83,13 @@ class AgStFreshZeroShotEvaluatorTest(unittest.TestCase):
         self.assertEqual((12, 2, 2), (len(fit), len(selection), len(canary)))
         self.assertEqual(16, len(set(fit) | set(selection) | set(canary)))
         self.assertIn("DIAGNOSTIC_ONLY", receipt["method"])
+
+    def test_consumed_mode_explicitly_disables_fresh_claim(self) -> None:
+        receipt = _evaluation_context("consumed_development_comparison", 8)
+        self.assertTrue(receipt["labels_previously_consumed"])
+        self.assertFalse(receipt["fresh_claim_authorized"])
+        self.assertIn("CONSUMED", receipt["status_prefix"])
+        self.assertIn("not fresh evidence", receipt["claim_boundary"])
 
 
 if __name__ == "__main__":

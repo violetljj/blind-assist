@@ -89,6 +89,8 @@ BOUNDARY_BAND_PX = 2.0
 MAX_BOUNDARY_DISTANCE_PX = 32.0
 BOUNDARY_HEAT_SIGMA_PX = 3.0
 DEPTH_RESIDUAL_LOG_RANGE = 2.5
+DEPTHART_SHARED_CHANNELS = 48
+DEPTHART_PYRAMID_CHANNELS = 4 * DEPTHART_SHARED_CHANNELS
 LOSS_WEIGHTS = {
     "depth_log_huber": 1.0,
     "support_bce": 0.50,
@@ -143,7 +145,7 @@ class DepthArtDenseFeatureExtractor(nn.Module):
         self,
         features: list[torch.Tensor],
         output_hw: tuple[int, int],
-    ) -> tuple[torch.Tensor, torch.Tensor]:
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         head = self.metric_depthart.depth_head
         layer_1, layer_2, layer_3, layer_4 = features
         layer_1 = head.scratch.layer1_rn(layer_1)
@@ -157,7 +159,26 @@ class DepthArtDenseFeatureExtractor(nn.Module):
         depth = head.scratch.output_conv1(shared)
         depth = F.interpolate(depth, output_hw, mode="bilinear", align_corners=True)
         depth = head.scratch.output_conv2(depth)
-        return depth, shared
+        pyramid = torch.cat(
+            [
+                shared,
+                *[
+                    F.interpolate(
+                        value,
+                        shared.shape[-2:],
+                        mode="bilinear",
+                        align_corners=False,
+                    )
+                    for value in (path_2, path_3, path_4)
+                ],
+            ],
+            dim=1,
+        )
+        require(
+            pyramid.shape[1] == DEPTHART_PYRAMID_CHANNELS,
+            "DepthART pyramid channel drift",
+        )
+        return depth, shared, pyramid
 
 
 class MobileNetV3DenseFeatureExtractor(nn.Module):
@@ -557,8 +578,13 @@ def extract_depthart_features(
     checkpoint: Path,
     device: torch.device,
     seed: int,
+    feature_profile: str = "shared",
 ) -> tuple[list[CachedFrame], dict[str, Any]]:
     require(device.type == "cuda", "DepthART feature extraction requires CUDA")
+    require(
+        feature_profile in {"shared", "decoder_pyramid"},
+        "DepthART feature profile invalid",
+    )
     started = time.perf_counter()
     torch.cuda.reset_peak_memory_stats()
     model, scan = load_depthart_backbone(source, checkpoint, device, seed)
@@ -606,7 +632,7 @@ def extract_depthart_features(
                 ],
                 cams=list(cameras),
             )
-            relative_depth, shared = model.decode(
+            relative_depth, shared, pyramid = model.decode(
                 list(features),
                 (padded_height, padded_width),
             )
@@ -616,25 +642,35 @@ def extract_depthart_features(
                 * scale.view(-1, 1, 1, 1)
                 * model.metric_depthart.max_depth
             )
+        selected_feature = shared if feature_profile == "shared" else pyramid
         content_feature_height = int(
-            round(shared.shape[-2] * height / padded_height)
+            round(selected_feature.shape[-2] * height / padded_height)
         )
         content_feature_width = int(
-            round(shared.shape[-1] * width / padded_width)
+            round(selected_feature.shape[-1] * width / padded_width)
         )
         require(
-            content_feature_height * padded_height == shared.shape[-2] * height
-            and content_feature_width * padded_width == shared.shape[-1] * width,
+            content_feature_height * padded_height
+            == selected_feature.shape[-2] * height
+            and content_feature_width * padded_width
+            == selected_feature.shape[-1] * width,
             "DepthART padded feature/content ratio is not integral",
         )
-        shared = shared[..., :content_feature_height, :content_feature_width]
+        selected_feature = selected_feature[
+            ...,
+            :content_feature_height,
+            :content_feature_width,
+        ]
         base_depth = base_depth[..., :height, :width]
-        require(bool(torch.isfinite(shared).all().item()), "non-finite frozen dense feature")
+        require(
+            bool(torch.isfinite(selected_feature).all().item()),
+            "non-finite frozen dense feature",
+        )
         require(bool(torch.isfinite(base_depth).all().item()), "non-finite DepthART base depth")
         cached.append(
             CachedFrame(
                 descriptor=descriptor,
-                feature=shared[0].to(dtype=torch.float16, device="cpu"),
+                feature=selected_feature[0].to(dtype=torch.float16, device="cpu"),
                 base_depth_m=base_depth[0].float().clamp(0.05, 20.0).cpu(),
                 targets=targets,
             )
@@ -646,6 +682,7 @@ def extract_depthart_features(
     return cached, {
         "elapsed_seconds": time.perf_counter() - started,
         "frame_count": len(cached),
+        "feature_profile": feature_profile,
         "amp_dtype": str(amp_dtype).replace("torch.", ""),
         "peak_cuda_allocated_bytes": peak,
         "feature_shapes_chw": [list(values) for values in feature_shapes],
@@ -716,6 +753,42 @@ def extract_mobilenet_features(
     }
 
 
+class DilatedPyramidTrunk(nn.Module):
+    def __init__(self, channels: int, hidden: int) -> None:
+        super().__init__()
+        self.input_projection = nn.Sequential(
+            nn.Conv2d(channels, hidden, 1),
+            nn.GroupNorm(8, hidden),
+            nn.GELU(),
+        )
+        self.branches = nn.ModuleList(
+            [
+                nn.Sequential(
+                    nn.Conv2d(
+                        hidden,
+                        hidden,
+                        3,
+                        padding=dilation,
+                        dilation=dilation,
+                    ),
+                    nn.GroupNorm(8, hidden),
+                    nn.GELU(),
+                )
+                for dilation in (1, 2, 4)
+            ]
+        )
+        self.fuse = nn.Sequential(
+            nn.Conv2d(3 * hidden, hidden, 1),
+            nn.GroupNorm(8, hidden),
+            nn.GELU(),
+        )
+
+    def forward(self, value: torch.Tensor) -> torch.Tensor:
+        projected = self.input_projection(value)
+        fused = self.fuse(torch.cat([branch(projected) for branch in self.branches], dim=1))
+        return projected + fused
+
+
 class MaskedFactorStudent(nn.Module):
     def __init__(
         self,
@@ -723,17 +796,31 @@ class MaskedFactorStudent(nn.Module):
         hidden: int = 32,
         *,
         depth_mode: str = "residual",
+        head_profile: str = "basic",
+        use_base_depth_feature: bool = False,
     ) -> None:
         super().__init__()
         require(depth_mode in {"residual", "absolute_log"}, "invalid depth mode")
+        require(
+            head_profile in {"basic", "dilated_pyramid"},
+            "invalid head profile",
+        )
+        require(hidden % 8 == 0, "head hidden channels must be divisible by 8")
         self.depth_mode = depth_mode
-        self.trunk = nn.Sequential(
-            nn.Conv2d(channels, hidden, 1),
-            nn.GroupNorm(8, hidden),
-            nn.GELU(),
-            nn.Conv2d(hidden, hidden, 3, padding=1),
-            nn.GroupNorm(8, hidden),
-            nn.GELU(),
+        self.head_profile = head_profile
+        self.use_base_depth_feature = bool(use_base_depth_feature)
+        trunk_channels = channels + int(self.use_base_depth_feature)
+        self.trunk = (
+            DilatedPyramidTrunk(trunk_channels, hidden)
+            if head_profile == "dilated_pyramid"
+            else nn.Sequential(
+                nn.Conv2d(trunk_channels, hidden, 1),
+                nn.GroupNorm(8, hidden),
+                nn.GELU(),
+                nn.Conv2d(hidden, hidden, 3, padding=1),
+                nn.GroupNorm(8, hidden),
+                nn.GELU(),
+            )
         )
         self.depth_residual = nn.Conv2d(hidden, 1, 1)
         self.support_logits = nn.Conv2d(hidden, 1, 1)
@@ -777,7 +864,16 @@ class MaskedFactorStudent(nn.Module):
         base_depth_m: torch.Tensor,
         output_hw: tuple[int, int],
     ) -> dict[str, torch.Tensor]:
-        latent = self.trunk(feature)
+        trunk_input = feature
+        if self.use_base_depth_feature:
+            base_guidance = F.interpolate(
+                base_depth_m.clamp(0.05, 20.0).log(),
+                feature.shape[-2:],
+                mode="bilinear",
+                align_corners=False,
+            )
+            trunk_input = torch.cat([feature, base_guidance], dim=1)
+        latent = self.trunk(trunk_input)
         depth_value = self._upsample(self.depth_residual(latent), output_hw)
         if self.depth_mode == "residual":
             predicted_depth = base_depth_m * torch.exp(
@@ -1564,6 +1660,9 @@ def relative_improvement(before: float | None, after: float | None) -> float | N
 def execute(args: argparse.Namespace) -> int:
     started = time.perf_counter()
     objective_profile = str(args.objective_profile)
+    head_profile = str(args.head_profile)
+    head_hidden_channels = int(args.head_hidden_channels)
+    use_base_depth_feature = bool(args.use_base_depth_feature)
     stage0a_results = [args.stage0a_result.resolve()] + [
         value.resolve()
         for value in getattr(args, "additional_stage0a_result", [])
@@ -1583,9 +1682,15 @@ def execute(args: argparse.Namespace) -> int:
         feature_channels = MobileNetV3DenseFeatureExtractor.OUTPUT_CHANNELS
         depth_mode = "absolute_log"
         encoder_label = "FROZEN_TORCHVISION_MOBILENET_V3_SMALL_IMAGENET1K"
+        feature_profile = "mobilenet_pyramid"
     else:
         checkpoint = args.depthart_checkpoint.resolve()
-        feature_channels = 48
+        feature_profile = str(args.depthart_feature_profile)
+        feature_channels = (
+            DEPTHART_PYRAMID_CHANNELS
+            if feature_profile == "decoder_pyramid"
+            else DEPTHART_SHARED_CHANNELS
+        )
         depth_mode = "residual"
         encoder_label = "FROZEN_DEPTHART_S_METRIC_INDOOR"
     output_dir = args.output_dir.resolve()
@@ -1654,6 +1759,7 @@ def execute(args: argparse.Namespace) -> int:
             checkpoint,
             device,
             args.seed,
+            feature_profile=feature_profile,
         )
     train_frames = [row for row in cached if row.descriptor.parent_id in fit_parents]
     selection_frames = [
@@ -1665,7 +1771,10 @@ def execute(args: argparse.Namespace) -> int:
     torch.manual_seed(args.seed)
     model = MaskedFactorStudent(
         channels=feature_channels,
+        hidden=head_hidden_channels,
         depth_mode=depth_mode,
+        head_profile=head_profile,
+        use_base_depth_feature=use_base_depth_feature,
     ).to(device)
     model.initialize_priors(priors)
     if objective_profile == "boundary_only":
@@ -1719,7 +1828,10 @@ def execute(args: argparse.Namespace) -> int:
             "architecture": {
                 "frozen_encoder": encoder_label,
                 "input_feature_channels": feature_channels,
-                "head_hidden_channels": 32,
+                "feature_profile": feature_profile,
+                "head_hidden_channels": head_hidden_channels,
+                "head_profile": head_profile,
+                "use_base_depth_feature": use_base_depth_feature,
                 "depth_mode": depth_mode,
                 "objective_profile": objective_profile,
                 "outputs": [
@@ -1895,7 +2007,15 @@ def execute(args: argparse.Namespace) -> int:
         "split": split_receipt,
         "architecture": {
             "encoder": encoder_label,
-            "head": "ONE_BY_ONE_THEN_THREE_BY_THREE_32CH_MULTI_FACTOR_DENSE_HEAD",
+            "head": (
+                "DILATED_1_2_4_PYRAMID_MULTI_FACTOR_DENSE_HEAD"
+                if head_profile == "dilated_pyramid"
+                else "ONE_BY_ONE_THEN_THREE_BY_THREE_MULTI_FACTOR_DENSE_HEAD"
+            ),
+            "feature_profile": feature_profile,
+            "head_profile": head_profile,
+            "head_hidden_channels": head_hidden_channels,
+            "use_base_depth_feature": use_base_depth_feature,
             "objective_profile": objective_profile,
             "encoder_trainable_parameters": 0,
             "head_total_parameters": sum(parameter.numel() for parameter in model.parameters()),
@@ -2042,6 +2162,18 @@ def parse_args() -> argparse.Namespace:
         default="multifactor",
     )
     parser.add_argument("--split-token", default=SPLIT_TOKEN)
+    parser.add_argument(
+        "--depthart-feature-profile",
+        choices=("shared", "decoder_pyramid"),
+        default="shared",
+    )
+    parser.add_argument(
+        "--head-profile",
+        choices=("basic", "dilated_pyramid"),
+        default="basic",
+    )
+    parser.add_argument("--head-hidden-channels", type=int, default=32)
+    parser.add_argument("--use-base-depth-feature", action="store_true")
     parser.add_argument(
         "--mobilenet-checkpoint",
         type=Path,
