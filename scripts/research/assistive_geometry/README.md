@@ -102,6 +102,11 @@
   support-plane、physical-boundary distance 和 uncertainty proxy，可直接供 masked student 读取。
 - `test_build_ag_st_factor_labels.py`：8 个 focused tests，覆盖 hidden-reference 隔离、reprojection、
   source priority、uncertainty、派生 provenance、连续 80° 斜面负控与真实 depth-step 正控。
+- `build_ag_st_multiteacher_factor_labels.py`：保留 source-native depth 与 MapAnything primary geometry，
+  只用独立 Depth Anything V2 的 source-anchored 分歧重标 quality/uncertainty/UNKNOWN；分歧不会被当成
+  truth，也不要求第二 Teacher 的全局误差低于主 Teacher。
+- `test_build_ag_st_multiteacher_factor_labels.py`：3 个 CPU focused tests，覆盖 observed-anchor scale、
+  pair disagreement 对称性、source tier 保留及强分歧转 UNKNOWN。
 - `train_ag_st_masked_student.py`：冻结 DepthART-S 或 MobileNetV3 encoder，只训练小型 dense factor head；
   可直接拼接多个互不重叠的 Stage0A/label batch，每个 orientation 留 1 selection + 1 canary parent；
   也可在已有独立 confirmation 时把全部 consumed parents 纳入 fit。支持 multifactor、depth/support-only、

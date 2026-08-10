@@ -1,0 +1,98 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_multiteacher_factor_label_factory_summary.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MULTITEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10",
+  "date": "2026-08-10",
+  "mode": "WILD_LAB_REVERSIBLE_EXPLORATION",
+  "status": "MULTITEACHER_DISAGREEMENT_SIGNAL_SUPPORTED_LABEL_FACTORY_MATERIALIZED",
+  "question": "Can a second independent geometry Teacher improve confidence and UNKNOWN decisions for continuous factor pseudo-labels without being required to beat the primary Teacher?",
+  "source": {
+    "dataset": "ARKitScenes",
+    "role": "CONSUMED_TRAIN_WILD_LAB",
+    "parent_count": 16,
+    "frame_count": 48,
+    "hidden_reference_pixel_count": 1009190,
+    "task_outcome_fields_read": false
+  },
+  "teachers": {
+    "primary": {
+      "model_id": "facebook/map-anything-apache",
+      "role": "PRIMARY_SOURCE_ANCHORED_MULTIVIEW_GEOMETRY",
+      "checkpoint_sha256": "FA06C0FDCCEFC5048E072C85935D5789B1E36B307F3859033C17F9DCB9FD5201"
+    },
+    "secondary": {
+      "model_id": "depth-anything-v2-metric-hypersim-vits",
+      "role": "INDEPENDENT_SOURCE_ANCHORED_DISAGREEMENT_EVIDENCE_NOT_TRUTH",
+      "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+      "precision": "fp16",
+      "per_frame_anchor_scale_min_median_max": [
+        0.3188405930995941,
+        0.583759605884552,
+        1.0863051414489746
+      ]
+    }
+  },
+  "factory": {
+    "source_priority": "SOURCE_NATIVE_VALID_DEPTH_OVERRIDES_ALL_TEACHERS",
+    "primary_depth_policy": "KEEP_MAPANYTHING_DEPTH_SECOND_TEACHER_ONLY_REGRADES_QUALITY",
+    "pair_signal": "SYMMETRIC_RELATIVE_DEPTH_DISAGREEMENT",
+    "pair_quality": "EXP_NEGATIVE_DISAGREEMENT_OVER_0_20",
+    "quality_combination": "GEOMETRIC_MEAN_OF_EXISTING_GEOMETRY_QUALITY_AND_PAIR_QUALITY",
+    "unknown_policy": "TEACHER_ONLY_PIXEL_WITHOUT_PAIR_VALIDITY_OR_C_THRESHOLD_IS_UNKNOWN",
+    "final_clearance_or_occupancy_written": false
+  },
+  "materialization": {
+    "result": "artifacts.local/experiments/ag-st-superteacher-factor-labels-multiteacher-train16-r2/result.json",
+    "result_sha256": "466BADE4CDDB92DCA8B7C77CE3B6CD15FA3516181B7137DD05C3AC9539848FFC",
+    "npz_file_count": 48,
+    "npz_total_bytes": 167739185,
+    "builder_sha256": "B1335C30188AF2EE1C847C7BDFA584C6820FB720177B5DD13E68F74B8F7F604F",
+    "test_sha256": "F4324264A80689EEB88E035FEA041DF0CDDAB5C8389CC62C6E673F641816A8D1",
+    "focused_unit_tests": "3/3 PASS",
+    "npz_invariant_validation": "48/48 PASS"
+  },
+  "coverage": {
+    "source_native": 0.957173033612538,
+    "old_single_teacher_added": 0.007331532386197109,
+    "new_multiteacher_added": 0.020063254893794253,
+    "metric_depth": 0.9772362885063323,
+    "support": 0.6423922034800315,
+    "boundary_evidence": 0.72362017369306
+  },
+  "selective_risk": {
+    "frozen_c_threshold": 0.3,
+    "accepted_coverage": 0.9039923106649888,
+    "accepted_mae_m": 0.023994033969305828,
+    "accepted_bad_0_10m_rate": 0.031333991011728596,
+    "rejected_mae_m": 0.12310640606881172,
+    "rejected_bad_0_10m_rate": 0.4111982660749303,
+    "rejected_to_accepted_mae_ratio": 5.13070900150823,
+    "primary_at_50_percent_coverage": {
+      "existing_signal_mae_m": 0.016069853269281124,
+      "pair_signal_mae_m": 0.015750705906132846,
+      "existing_signal_bad_0_10m_rate": 0.008495888798387623,
+      "pair_signal_bad_0_10m_rate": 0.006761858520199368
+    },
+    "primary_at_25_percent_coverage": {
+      "existing_signal_mae_m": 0.014785541975083066,
+      "pair_signal_mae_m": 0.01355327159941935,
+      "existing_signal_bad_0_10m_rate": 0.006254508557340922,
+      "pair_signal_bad_0_10m_rate": 0.001288159240263498
+    },
+    "global_teacher_diagnostics": {
+      "primary_mae_m": 0.033509583799091226,
+      "secondary_mae_m": 0.06710473948002706,
+      "geometric_mean_mae_m": 0.046865655532697136
+    }
+  },
+  "decision": {
+    "second_teacher_useful_as_disagreement_evidence": true,
+    "second_teacher_replaces_primary_geometry": false,
+    "second_teacher_must_beat_primary": false,
+    "complete_truth_required": false,
+    "continuous_factor_labels_materialized": true,
+    "uncertainty_separates_accepted_from_rejected_error": true,
+    "student_or_architecture_tuning_is_next": false,
+    "next_execution": "Apply the same multi-Teacher evidence pattern to additional source parents or an external RGB-D source, then extend the factor factory with another locally executable geometry Teacher if available; keep student architecture work paused."
+  },
+  "claim_boundary": "Consumed-source multi-Teacher factor pseudo-label and selective-risk evidence. It is not complete truth, calibrated uncertainty truth, cross-source generalization, formal F1 authorization, deterministic-reducer task utility, deployment, product, or safety evidence."
+}

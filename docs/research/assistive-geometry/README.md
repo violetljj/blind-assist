@@ -84,6 +84,7 @@
 - [AG-ST R0 source / Teacher / ancestry / license audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.md)
 - [AG-ST R0 machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SOURCE_TEACHER_ANCESTRY_LICENSE_AUDIT_2026-08-10.json)
 - [AG-ST R0 SuperTeacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_SUPERTEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
+- [AG-ST R0 multi-Teacher factor-label factory result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MULTITEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 frozen-DepthART masked-student result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)
 - [AG-ST R0 fresh-parent zero-shot replication](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_FRESH_PARENT_ZERO_SHOT_RESULT_2026-08-10.json)
 - [AG-ST R0 combined-32 depth/support result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_COMBINED32_DEPTH_SUPPORT_RESULT_2026-08-10.json)
@@ -197,6 +198,17 @@ diagnostic、conservative support 与 obstacle/boundary evidence 的有效覆盖
 关键突破是独立 multi-view gate。在约 50% coverage 下，仅 confidence 的 MAE/`>0.10 m` 为
 `0.03021 m / 5.12%`，加入 anchor 与 multi-view 后为 `0.01607 m / 0.85%`，且 16 个 parent 全部仍可评；
 对应相对下降 `46.8% / 83.4%`。anchor-only 收紧到 10% 会饿死部分 parent，而 combined gate 不会。
+
+主线随后回到标签工厂，而不是继续要求某个 student 或 correction module 击败 DepthART。
+[multi-Teacher factor-label factory](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MULTITEACHER_FACTOR_LABEL_FACTORY_WILD_LAB_RESULT_2026-08-10.json)
+在同一 16 parent/48 帧上加入独立的 Depth Anything V2；它不替换 MapAnything depth，只把逐帧 source-anchor
+后的跨 Teacher 相对分歧加入 quality/uncertainty/UNKNOWN。冻结 `C=0.30` 阈值保留隐藏参考像素的
+`90.40%`，接受区 MAE `0.02399 m`，拒绝区 `0.12311 m`，相差 `5.13x`；在 50% coverage 下，
+primary 的 MAE 从 `0.01607` 降到 `0.01575 m`，`>0.10 m` 从 `0.85%` 降到 `0.68%`。第二 Teacher
+自身全覆盖 MAE 较差（`0.06710 m`），但这不构成失败：它的角色是补充独立分歧证据，而不是取代主 Teacher。
+新工厂物化 48 个 NPZ，metric/support/boundary-evidence 覆盖为 `97.72% / 64.24% / 72.36%`；无法形成
+足够一致证据的 teacher-only 像素继续为 UNKNOWN。下一步继续扩 source/Teacher 覆盖，不回到 backbone 竞赛。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时
