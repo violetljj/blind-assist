@@ -55,6 +55,9 @@ EXPECTED_AUTHORIZATION_VERBATIM = (
     "upsampling.zip、lowres_wide_intrinsics.zip、lowres_wide.traj，用于 HEAD 预检和 "
     "source/truth-only WILD_LAB 物化与校验"
 )
+EXPECTED_SUCCESSOR_AMENDMENT_VERBATIM = (
+    "不管怎么样都行，赶快推进算法前进，你做了这么久浪费这么多token告诉我失败"
+)
 
 
 class MaterializerError(RuntimeError):
@@ -230,13 +233,21 @@ def validate_authorization(
     scope = authorization.get("interpreted_scope")
     require(isinstance(scope, dict), "AUTHORIZATION_SCOPE_MISSING", "authorization scope missing")
     expected_ids = [row["video_id"] for row in preflight["asset_plan"]["selected_parents"]]
-    require(scope.get("research_route") == "TARO_O0R_ARKITSCENES_TRUTH_ONLY", "AUTHORIZATION_ROUTE_DRIFT", "authorization route drift")
+    require(
+        authorization.get("scope_amendment_verbatim") == EXPECTED_SUCCESSOR_AMENDMENT_VERBATIM,
+        "AUTHORIZATION_AMENDMENT_DRIFT",
+        "availability-successor authorization amendment drift",
+    )
+    require(scope.get("research_route") == "TARO_O0R_ARKITSCENES_TRUTH_ONLY_R1", "AUTHORIZATION_ROUTE_DRIFT", "authorization route drift")
     require(scope.get("official_fold") == "Training", "AUTHORIZATION_FOLD_DRIFT", "authorization fold drift")
     require(scope.get("selected_parent_count") == 24 and scope.get("selected_video_ids") == expected_ids, "AUTHORIZATION_ROSTER_DRIFT", "authorization roster is not the exact 24-parent order")
     expected_patterns = [template["url_template"].replace("{official_fold}", "Training") for template in preflight["asset_plan"]["asset_templates"]]
     require(scope.get("authorized_asset_patterns") == expected_patterns, "AUTHORIZATION_ASSET_DRIFT", "authorization asset patterns drift")
     require(scope.get("authorization_does_not_itself_activate_execution") is True, "AUTHORIZATION_OVERCLAIM", "authorization must not self-activate execution")
     require(scope.get("separate_implementation_and_execution_locks_required") is True, "AUTHORIZATION_OVERCLAIM", "separate locks must remain required")
+    require(scope.get("availability_replacement_authorized") is True, "AUTHORIZATION_REPLACEMENT_MISSING", "availability successor is not authorized")
+    require(scope.get("retired_unavailable_video_id") == "47333152", "AUTHORIZATION_RETIRED_PARENT_DRIFT", "retired unavailable parent drift")
+    require(scope.get("replacement_video_id") == "47204786", "AUTHORIZATION_REPLACEMENT_DRIFT", "replacement parent drift")
     return rows
 
 

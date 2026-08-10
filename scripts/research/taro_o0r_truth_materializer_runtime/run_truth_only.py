@@ -54,21 +54,20 @@ from scripts.research.taro_o0r_truth_materializer_runtime.materializer import (
 
 
 EXPECTED_TRUTH_BINDINGS = {
-    "TRUTH_ONLY_PREFLIGHT_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK_2026-08-10.json",
-    "DATA_USE_AUTHORIZATION": "docs/research/taro/TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-10.json",
-    "MATERIALIZER_AMENDMENT_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_MATERIALIZER_INPUT_AND_PERSISTENCE_AMENDMENT_LOCK_2026-08-10.json",
-    "MATERIALIZER_IMPLEMENTATION_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_IMPLEMENTATION_LOCK_2026-08-10.json",
-    "SOURCE_ADAPTER_IMPLEMENTATION_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_SOURCE_ADAPTER_IMPLEMENTATION_LOCK_2026-08-10.json",
+    "AVAILABILITY_SUCCESSOR_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_AVAILABILITY_SUCCESSOR_R1_LOCK_2026-08-10.json",
+    "TRUTH_ONLY_PREFLIGHT_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_PREFLIGHT_R1_LOCK_2026-08-10.json",
+    "DATA_USE_AUTHORIZATION": "docs/research/taro/TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_R1_RECEIPT_2026-08-10.json",
+    "MATERIALIZER_IMPLEMENTATION_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_R1_IMPLEMENTATION_LOCK_2026-08-10.json",
     "SOURCE_ADAPTER": "scripts/research/taro_o0r_source_adapter_runtime/source_adapter.py",
     "MATERIALIZER": "scripts/research/taro_o0r_truth_materializer_runtime/materializer.py",
     "TRUTH_RUNNER": "scripts/research/taro_o0r_truth_materializer_runtime/run_truth_only.py",
-    "HEAD_RECEIPT": "artifacts.local/evidence/taro/o0r-arkitscenes-head-r0/head-receipt.json",
+    "HEAD_RECEIPT": "artifacts.local/evidence/taro/o0r-arkitscenes-head-r1/head-receipt.json",
 }
 EXPECTED_ROOTS = {
-    "SOURCE": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r0",
-    "WORK": "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r0",
-    "TRUTH_EVIDENCE": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r0",
-    "O0R_EVIDENCE_SEALED": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r0",
+    "SOURCE": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r1",
+    "WORK": "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r1",
+    "TRUTH_EVIDENCE": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r1",
+    "O0R_EVIDENCE_SEALED": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r1",
 }
 EXPECTED_AUTHORITY = {
     "truth_only_execution": True,
@@ -107,7 +106,7 @@ def validate_execution_lock(path: Path, repo_root: Path | None = None) -> dict[s
     lock_path = path.resolve()
     lock = load_json(lock_path)
     require(lock.get("schema") == EXECUTION_LOCK_SCHEMA, "EXECUTION_LOCK_SCHEMA_DRIFT", "truth-only execution lock schema drift")
-    require(lock.get("lock_id") == "TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_EXECUTION_LOCK", "EXECUTION_LOCK_IDENTITY_DRIFT", "truth-only execution lock id drift")
+    require(lock.get("lock_id") == "TARO_O0R_ARKITSCENES_TRUTH_ONLY_R1_EXECUTION_LOCK", "EXECUTION_LOCK_IDENTITY_DRIFT", "truth-only execution lock id drift")
     require(lock.get("status") == "AUTHORIZED_UNCONSUMED" and lock.get("consumed") is False, "ONE_SHOT_ALREADY_CONSUMED", "truth-only execution is not authorized and unconsumed")
     require(lock.get("execution_authority") == EXPECTED_AUTHORITY, "EXECUTION_AUTHORITY_OVERCLAIM", "truth-only execution authority drift")
     require(lock.get("roots") == EXPECTED_ROOTS, "EXECUTION_ROOT_DRIFT", "truth-only execution roots drift")

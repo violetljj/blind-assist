@@ -31,20 +31,21 @@ from scripts.research.taro_o0r_truth_materializer_runtime.materializer import (
 
 
 HEAD_EXECUTION_LOCK_SCHEMA = "blindassist.taro.o0r.content_length_head_execution_lock.v1"
-HEAD_OUTPUT_ROOT = "artifacts.local/evidence/taro/o0r-arkitscenes-head-r0"
+HEAD_OUTPUT_ROOT = "artifacts.local/evidence/taro/o0r-arkitscenes-head-r1"
 HEAD_RECEIPT_PATH = f"{HEAD_OUTPUT_ROOT}/head-receipt.json"
 EXPECTED_HEAD_BINDINGS = {
-    "TRUTH_ONLY_PREFLIGHT_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK_2026-08-10.json",
-    "DATA_USE_AUTHORIZATION": "docs/research/taro/TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-10.json",
-    "MATERIALIZER_IMPLEMENTATION_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_IMPLEMENTATION_LOCK_2026-08-10.json",
+    "AVAILABILITY_SUCCESSOR_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_AVAILABILITY_SUCCESSOR_R1_LOCK_2026-08-10.json",
+    "TRUTH_ONLY_PREFLIGHT_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_PREFLIGHT_R1_LOCK_2026-08-10.json",
+    "DATA_USE_AUTHORIZATION": "docs/research/taro/TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_R1_RECEIPT_2026-08-10.json",
+    "MATERIALIZER_IMPLEMENTATION_LOCK": "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_MATERIALIZER_R1_IMPLEMENTATION_LOCK_2026-08-10.json",
     "MATERIALIZER": "scripts/research/taro_o0r_truth_materializer_runtime/materializer.py",
     "HEAD_RUNNER": "scripts/research/taro_o0r_truth_materializer_runtime/run_head_preflight.py",
 }
 EXPECTED_ABSENT_ROOTS = [
-    "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r0",
-    "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r0",
-    "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r0",
-    "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r0",
+    "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r1",
+    "artifacts.local/work/taro/o0r-arkitscenes-source-adapter-r1",
+    "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r1",
+    "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r1",
 ]
 EXPECTED_AUTHORITY = {
     "head_only": True,
@@ -86,7 +87,7 @@ def validate_head_execution_lock(path: Path) -> dict[str, Any]:
     lock_path = path.resolve()
     lock = load_json(lock_path)
     require(lock.get("schema") == HEAD_EXECUTION_LOCK_SCHEMA, "HEAD_EXECUTION_LOCK_SCHEMA_DRIFT", "HEAD execution lock schema drift")
-    require(lock.get("lock_id") == "TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_EXECUTION_LOCK", "HEAD_EXECUTION_LOCK_IDENTITY_DRIFT", "HEAD execution lock id drift")
+    require(lock.get("lock_id") == "TARO_O0R_ARKITSCENES_CONTENT_LENGTH_HEAD_R1_EXECUTION_LOCK", "HEAD_EXECUTION_LOCK_IDENTITY_DRIFT", "HEAD execution lock id drift")
     require(lock.get("status") == "AUTHORIZED_UNCONSUMED" and lock.get("consumed") is False, "HEAD_EXECUTION_NOT_AUTHORIZED", "HEAD execution lock is not authorized/unconsumed")
     require(lock.get("execution_authority") == EXPECTED_AUTHORITY, "HEAD_EXECUTION_AUTHORITY_DRIFT", "HEAD execution authority drift")
     require(lock.get("output_root") == HEAD_OUTPUT_ROOT and lock.get("output_receipt") == HEAD_RECEIPT_PATH, "HEAD_OUTPUT_PATH_DRIFT", "HEAD output path drift")

@@ -30,8 +30,8 @@ from scripts.research.taro_o0r_truth_materializer_runtime.run_truth_only import 
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-PREFLIGHT_PATH = REPO_ROOT / "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_ONE_SHOT_PREFLIGHT_LOCK_2026-08-10.json"
-AUTHORIZATION_PATH = REPO_ROOT / "docs/research/taro/TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_RECEIPT_2026-08-10.json"
+PREFLIGHT_PATH = REPO_ROOT / "docs/research/taro/TARO_O0R_ARKITSCENES_TRUTH_ONLY_PREFLIGHT_R1_LOCK_2026-08-10.json"
+AUTHORIZATION_PATH = REPO_ROOT / "docs/research/taro/TARO_O0R_ARKITSCENES_DATA_USE_AUTHORIZATION_R1_RECEIPT_2026-08-10.json"
 
 
 def reseal(value: dict[str, object]) -> dict[str, object]:
@@ -128,27 +128,12 @@ class AuthorizationAndHeadTests(unittest.TestCase):
         self.assertTrue(all(row["attempt_count"] == 2 for row in receipt["assets"]))
         runtime.validate_head_receipt(self.preflight, runtime.sha256_file(AUTHORIZATION_PATH), receipt)
 
-    def test_missing_47333152_trajectory_is_not_replaced(self) -> None:
-        def fake_head(row: dict[str, str], timeout: float) -> dict[str, object]:
-            missing = row["video_id"] == "47333152" and row["asset"] == "lowres_wide.traj"
-            return {
-                "http_status": 404 if missing else 200,
-                "content_length_bytes": None if missing else 10,
-                "etag": None,
-                "last_modified": None,
-                "redirect_chain": [],
-                "transport_errors": [],
-            }
-
-        receipt = runtime.build_head_receipt(
-            self.preflight,
-            preflight_sha256=runtime.sha256_file(PREFLIGHT_PATH),
-            authorization_sha256=runtime.sha256_file(AUTHORIZATION_PATH),
-            head_fn=fake_head,
-        )
-        self.assertEqual(receipt["available_asset_count"], 71)
-        self.assertEqual(receipt["terminal"], "TARO_O0R_ASSET_HEADERS_NOT_AVAILABLE_NO_REPLACEMENT")
-        self.assertFalse(receipt["replacement_allowed"])
+    def test_availability_successor_retires_failed_parent_before_source_access(self) -> None:
+        rows = runtime.expanded_asset_plan(self.preflight)
+        self.assertFalse(any(row["video_id"] == "47333152" for row in rows))
+        replacement = [row for row in rows if row["video_id"] == "47204786"]
+        self.assertEqual(len(replacement), 3)
+        self.assertTrue(all(row["role"] == "ADAPTER_FIT" for row in replacement))
 
     def test_safe_join_preserves_trusted_artifacts_local_junction(self) -> None:
         artifacts = REPO_ROOT / "artifacts.local"
