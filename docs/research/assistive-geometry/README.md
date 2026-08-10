@@ -233,6 +233,26 @@ normal/support/evidence 覆盖为 `84.14% / 69.25% / 84.13%`。Freiburg3/Xtion �
 继续全 UNKNOWN。这里的 dominant horizontal support 可能是桌面，不是 source-native walkable-ground
 truth；下一步必须在 gravity-native 或 synthetic-exact source 上区分地面与抬高水平面，而不是训练 student。
 
+这一缺口现已由
+[R3 support identity](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R3_SUPPORT_IDENTITY_RESULT_2026-08-10.json)
+直接定位并修正。TUM 的 5 个 gravity-evaluable parent 中，旧 per-frame dominant-plane 在 3 个 parent、
+9/9 帧稳定选到比最低持续水平面高 `0.56–0.80 m` 的桌面/高架面；只有 1 个 parent 的 3 帧确实贴近
+最低面，另 1 个保持 ambiguous。采用跨帧 world-height persistence 后，9 个错误帧的 support-positive
+像素由 `110,587` 降到 `5,959`，减少 `94.61%`；21/21 NPZ invariant PASS，9 个重力缺失或身份不明帧
+继续全 UNKNOWN。
+
+机制又通过了两层独立检查。解析 floor+table exact canary 中，旧规则 3/3 帧选到 `0.75 m` 桌面，
+新规则 support precision `1.0`、最低 floor recall `0.8623`，table false-positive 从至少 `0.9507`
+降为 `0`，boundary 的 2px precision/recall 为 `1.0/0.9871`。随后只下载 `7.4 MB` 的 ICL-NUIM
+官方 living-room exact OBJ 与 global pose，而非重下整段 RGB-D；算法把 source-native `room_floor`
+高度 `0.1331 m` 恢复为 `0.1199 m`，误差 `1.32 cm`，9/9 可评视角持续命中，并保留 4 个高架模式。
+
+因此相同 sequence identity 已应用到 16-parent/48-frame multi-Teacher TRAIN labels：11 个 parent、31 帧
+通过 parent-level `2/3` camera-height consistency，17 帧 fail-closed 为 UNKNOWN；48/48 NPZ invariant
+PASS。identity-valid 像素上的 support-valid/support-positive 为 `86.46%/29.57%`。这打开的是
+WILD_LAB masked depth/support 学习入口，不是正式 F1 或 safety；boundary 只有解析 exact mechanics，
+外部 pixel-exact validation 未完成，仍不得进入训练主目标。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时

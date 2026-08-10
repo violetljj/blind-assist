@@ -125,6 +125,18 @@
 - `materialize_ag_st_tum_gravity_factors.py` 与对应 test：对 gravity-eligible TUM 标签物化 continuous
   normal/support/boundary/obstacle evidence；不具 gravity 的 parent fail-closed 为 UNKNOWN。dominant
   gravity-aligned plane 仍可能是桌面，不冒充 walkable-ground truth。
+- `diagnose_ag_st_tum_support_identity.py`：把 source-native depth 通过 pose 投到 parent world frame，
+  恢复跨帧持续水平高度模式，并用更低持续面识别 per-frame dominant plane 的桌面/高架误标。
+- `materialize_ag_st_tum_support_identity_factors.py` 与 `validate_ag_st_tum_support_identity_factors.py`：
+  用通过 identity 的 sequence height 重物化 TUM support/boundary pseudo-label，并验证 UNKNOWN、gravity
+  alignment、camera-height binding 与旧/新 support-positive correction。
+- `run_ag_st_analytic_support_boundary_canary.py`：解析 floor+dominant-table exact renderer；同时检验
+  support identity、table false-positive 和 2px level-change boundary，全部为 deterministic CPU mechanics。
+- `run_ag_st_icl_mesh_support_identity.py`：用 ICL-NUIM 官方 living-room OBJ 的 `room_floor` 与 global poses
+  检验最低持续高度；只接受 upward-facing exact mesh surfaces，过低相机或稀疏视角保持 UNKNOWN。
+- `materialize_ag_st_sequence_identity_labels.py` 与 `validate_ag_st_sequence_identity_labels.py`：把
+  sequence identity 推广到 16-parent multi-Teacher TRAIN 标签；parent 至少 2/3 帧 camera-height plausible，
+  每帧仍守 `0.45–2.20 m`，否则 factor denominator 为零。
 - `train_ag_st_masked_student.py`：冻结 DepthART-S 或 MobileNetV3 encoder，只训练小型 dense factor head；
   可直接拼接多个互不重叠的 Stage0A/label batch，每个 orientation 留 1 selection + 1 canary parent；
   也可在已有独立 confirmation 时把全部 consumed parents 纳入 fit。支持 multifactor、depth/support-only、

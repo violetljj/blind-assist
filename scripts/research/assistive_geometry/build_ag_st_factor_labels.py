@@ -545,6 +545,8 @@ def compute_geometric_factors(
     provenance: np.ndarray,
     depth_uncertainty_m: np.ndarray,
     policy: FactorLabelPolicy = FactorLabelPolicy(),
+    support_camera_height_override_m: float | None = None,
+    support_plane_residual_override_m: float | None = None,
 ) -> dict[str, Any]:
     depth = np.asarray(metric_depth_m, dtype=np.float32)
     valid = np.asarray(metric_valid, dtype=np.bool_)
@@ -599,11 +601,37 @@ def compute_geometric_factors(
             plane_fit_mask,
             policy.point_stride,
         )
-    plane = (
-        fit_gravity_support_plane(sampled_points, up_camera, policy)
-        if len(sampled_points) >= policy.minimum_plane_support_points
-        else None
-    )
+    if support_camera_height_override_m is not None:
+        override = float(support_camera_height_override_m)
+        require(
+            math.isfinite(override)
+            and policy.plane_height_min_m <= override <= policy.plane_height_max_m,
+            "support camera-height override invalid",
+        )
+        residual = (
+            float(support_plane_residual_override_m)
+            if support_plane_residual_override_m is not None
+            else policy.plane_histogram_bin_m / 2.0
+        )
+        require(math.isfinite(residual) and residual >= 0.0, "support residual override invalid")
+        offsets = -(sampled_points @ up_camera) if len(sampled_points) else np.empty(0)
+        support_count = int(
+            np.sum(np.abs(offsets - override) <= policy.plane_support_tolerance_m)
+        )
+        plane = {
+            "normal_camera": up_camera,
+            "camera_height_m": override,
+            "median_residual_m": residual,
+            "support_points": support_count,
+            "sampled_valid_points": int(len(sampled_points)),
+            "support_fraction": support_count / len(sampled_points) if len(sampled_points) else 0.0,
+        }
+    else:
+        plane = (
+            fit_gravity_support_plane(sampled_points, up_camera, policy)
+            if len(sampled_points) >= policy.minimum_plane_support_points
+            else None
+        )
     plane_tier = (
         int(np.min(tiers[plane_fit_mask]))
         if plane is not None and np.any(plane_fit_mask)

@@ -193,6 +193,46 @@ class AgStFactorLabelFactoryTest(unittest.TestCase):
         self.assertEqual(TIER_C_TEACHER, int(factors["normal_quality_tier_hw"][16, 16]))
         self.assertEqual(PROVENANCE_TEACHER, int(factors["normal_provenance_code_hw"][16, 16]))
 
+    def test_sequence_height_override_replaces_dominant_plane(self) -> None:
+        depth = np.full((32, 32), 1.50, dtype=np.float32)
+        valid = np.ones_like(depth, dtype=np.bool_)
+        pose = np.eye(4, dtype=np.float64)
+        pose[:3, :3] = np.diag([1.0, -1.0, -1.0])
+        factors = compute_geometric_factors(
+            depth,
+            valid,
+            np.asarray([[120.0, 0.0, 15.5], [0.0, 120.0, 15.5], [0.0, 0.0, 1.0]]),
+            pose,
+            np.full_like(depth, 0.95),
+            np.full_like(depth, TIER_A_SOURCE, dtype=np.uint8),
+            np.full_like(depth, PROVENANCE_SOURCE_NATIVE, dtype=np.uint8),
+            np.full_like(depth, 0.03),
+            support_camera_height_override_m=2.00,
+            support_plane_residual_override_m=0.02,
+        )
+        self.assertTrue(bool(factors["support_plane_valid"]))
+        self.assertAlmostEqual(2.00, float(factors["camera_height_m"]), places=6)
+        self.assertAlmostEqual(0.50, float(np.nanmedian(factors["height_above_support_m_hw"])), places=5)
+        self.assertEqual(0, int(np.sum(factors["support_truth_hw"])))
+
+    def test_sequence_height_override_rejects_implausible_camera_height(self) -> None:
+        depth = np.full((32, 32), 1.50, dtype=np.float32)
+        valid = np.ones_like(depth, dtype=np.bool_)
+        pose = np.eye(4, dtype=np.float64)
+        pose[:3, :3] = np.diag([1.0, -1.0, -1.0])
+        with self.assertRaisesRegex(ValueError, "camera-height override invalid"):
+            compute_geometric_factors(
+                depth,
+                valid,
+                np.asarray([[120.0, 0.0, 15.5], [0.0, 120.0, 15.5], [0.0, 0.0, 1.0]]),
+                pose,
+                np.full_like(depth, 0.95),
+                np.full_like(depth, TIER_A_SOURCE, dtype=np.uint8),
+                np.full_like(depth, PROVENANCE_SOURCE_NATIVE, dtype=np.uint8),
+                np.full_like(depth, 0.03),
+                support_camera_height_override_m=0.20,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
