@@ -129,6 +129,7 @@ _REQUIRED_RUNNER_BINDING_ROLES = {
 _SHA256 = re.compile(r"[0-9A-Fa-f]{64}")
 _GIT_SHA = re.compile(r"[0-9A-Fa-f]{40}")
 _TEST_COUNT = re.compile(r"Ran\s+(\d+)\s+tests?", re.IGNORECASE)
+_TEST_ELAPSED = re.compile(r"(Ran\s+\d+\s+tests?\s+in\s+)[0-9.]+s", re.IGNORECASE)
 
 GitProbe = Callable[[Path], Mapping[str, Any]]
 FocusedTestRunner = Callable[[tuple[str, ...], Path, Mapping[str, str]], Mapping[str, Any]]
@@ -628,6 +629,7 @@ def _default_test_runner(
         observed_runtime = json.loads(runtime_probe.stdout) if runtime_probe.returncode == 0 else None
     except json.JSONDecodeError:
         observed_runtime = None
+    normalized_stderr = _TEST_ELAPSED.sub(r"\1<ELAPSED>s", completed.stderr)
     return {
         "command": list(command),
         "returncode": completed.returncode,
@@ -638,7 +640,7 @@ def _default_test_runner(
         "network_requests": 0,
         "runtime": observed_runtime,
         "stdout_sha256": sha256_bytes(completed.stdout.encode("utf-8")),
-        "stderr_sha256": sha256_bytes(completed.stderr.encode("utf-8")),
+        "stderr_sha256": sha256_bytes(normalized_stderr.encode("utf-8")),
     }
 
 
