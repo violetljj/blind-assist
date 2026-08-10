@@ -29,6 +29,11 @@ import sys
 from typing import Any
 
 
+REPO_ROOT = Path(__file__).resolve().parents[3]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+
 R3_RESULT_SCHEMA = "blindassist.taro.o0r.truth_only_result.v1"
 R3_COMPLETION_SCHEMA = "blindassist.taro.o0r.truth_only_execution_completion_receipt.v1"
 R3_MANIFEST_SCHEMA = "blindassist.taro.o0r.truth_materializer_manifest.v1"
