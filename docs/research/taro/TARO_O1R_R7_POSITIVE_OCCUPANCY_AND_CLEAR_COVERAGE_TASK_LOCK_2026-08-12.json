@@ -1,0 +1,129 @@
+{
+  "schema": "blindassist.taro.o1r.r7_positive_occupancy_and_clear_coverage_task_lock.v1",
+  "lock_id": "TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_TASK_LOCK",
+  "status": "FROZEN",
+  "date": "2026-08-12",
+  "predecessor": {
+    "terminal": "TARO_O1R_R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN",
+    "result_path": "docs/research/taro/TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_RESULT_2026-08-12.json",
+    "observed_failure_morphology": {
+      "source_boundary_local_fraction_unknown_queries": 1298,
+      "query_frame_unavailable_queries": 432,
+      "query_knownness_failed_queries": 390,
+      "valid_numeric_interval_queries": 29,
+      "minimum_valid_uncertainty_m": 0.459513215588,
+      "capsule_radius_m": 0.3
+    }
+  },
+  "falsifiable_task": {
+    "name": "SOURCE_ONLY_POSITIVE_OCCUPANCY_AND_CENSORED_CLEAR_COVERAGE",
+    "objective": "Increase definite query coverage while retaining zero false-clear on parent-held fit folds and preserving UNKNOWN for unsupported evidence.",
+    "hypotheses": {
+      "H_OCCUPIED_POSITIVE": "A connected confidence-2 AppleDepth obstacle component inside the body capsule can provide positive occupied evidence without relying on clearance values saturated at -capsule_radius.",
+      "H_CLEAR_CENSORED_FAR": "Finite candidate depth beyond the 2 m query horizon can certify line-of-sight coverage as FAR_CENSORED without creating support or obstacle points, reducing false UNKNOWN caused by the old 6 m validity ceiling."
+    },
+    "forbidden_shortcuts": [
+      "reduce uncertainty until occupied becomes reachable",
+      "relax UNKNOWN or local-valid thresholds on eval outcomes",
+      "treat missing or nonfinite depth as clear",
+      "fabricate near support or obstacle geometry from far-censored pixels",
+      "reuse the observed 16 eval parents for R7 promotion"
+    ]
+  },
+  "data_roles": {
+    "algorithm_design_and_nested_parent_holdout": {
+      "role": "ADAPTER_FIT",
+      "parent_count": 8,
+      "frame_count": 211,
+      "allowed_source": [
+        "sealed candidate depth",
+        "AppleDepth",
+        "confidence",
+        "intrinsics",
+        "trajectory"
+      ],
+      "label_only_after_source_seal": [
+        "FARO support",
+        "FARO obstacle capsule label",
+        "FARO clear line-of-sight label"
+      ]
+    },
+    "observed_eval_diagnostic_only": {
+      "role": "O0R_EVAL_CANDIDATE",
+      "parent_count": 16,
+      "frame_count": 239,
+      "promotion_allowed": false,
+      "reason": "R7 was formed after inspecting their R6 all-UNKNOWN morphology."
+    },
+    "future_promotion": {
+      "requires_new_parent_disjoint_untouched_cohort": true,
+      "minimum_parent_count": 8,
+      "authorization_not_implied_by_this_lock": true
+    }
+  },
+  "fit_only_canary": {
+    "outer_validation": "LEAVE_ONE_PARENT_OUT_8_FOLDS",
+    "threshold_selection": "TRAIN_SEVEN_PARENTS_ONLY_FIXED_GRID_THEN_APPLY_HELD_PARENT",
+    "occupied_candidate_grid": {
+      "minimum_connected_confidence2_pixels": [
+        2,
+        4,
+        8,
+        16
+      ],
+      "minimum_component_height_m": [
+        0.08,
+        0.15,
+        0.25
+      ],
+      "maximum_forward_m": [
+        1.0,
+        1.5,
+        2.0
+      ]
+    },
+    "clear_candidate_grid": {
+      "minimum_far_censored_fraction": [
+        0.8,
+        0.9,
+        0.95
+      ],
+      "far_depth_floor_m": [
+        2.5,
+        3.0,
+        4.0
+      ],
+      "minimum_observed_support_points": [
+        32,
+        64,
+        128
+      ]
+    },
+    "selection_order": [
+      "zero false-clear on train parents",
+      "occupied precision lower bound",
+      "definite query coverage",
+      "simpler threshold tuple lexicographically"
+    ],
+    "held-parent_gates": {
+      "minimum_evaluable_parents": 6,
+      "false_clear_count": 0,
+      "minimum_occupied_precision": 0.9,
+      "minimum_definite_query_coverage_increase_absolute": 0.05,
+      "unknown_is_negative": false
+    },
+    "no_model_training": true,
+    "cpu_only": true
+  },
+  "runtime_contract": {
+    "source_phase_has_faro_or_label_input": false,
+    "source_phase_outputs_sealed_before_label_join": true,
+    "occupied_requires_positive_evidence": true,
+    "far_censored_evidence_can_only_increase_clear_knownness": true,
+    "missing_nonfinite_or_unbound_inputs_return_unknown": true,
+    "deterministic_reducer_remains_sole_final_state_producer": true,
+    "default_app_unchanged": true
+  },
+  "claim_ceiling": "Fit-only nested-parent CPU hypothesis canary; no promotion, deployment, device, product, or safety claim.",
+  "unique_successor": "TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_CANARY_IMPLEMENTATION_LOCK"
+}
