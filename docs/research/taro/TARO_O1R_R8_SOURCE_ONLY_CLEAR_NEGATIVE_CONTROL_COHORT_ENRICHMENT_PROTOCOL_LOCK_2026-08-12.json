@@ -21,7 +21,9 @@
     {"role":"POOL_PLANNER","path":"scripts/research/taro_o1r_r8_clear_runtime/pool_cohort.py","bytes":6470,"sha256":"F03DC979DFFFA2965AB27484D4711A7F168E88E954834862A92BE12BD213CE21"},
     {"role":"POOL_PLANNER_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_r8_pool_cohort.py","bytes":1053,"sha256":"8D5004778B6609462504C3C0F4B299D5D30AC8A02BE473BC313E15A4933182EA"},
     {"role":"SOURCE_SELECTOR","path":"scripts/research/taro_o1r_r8_clear_runtime/clear_enrichment.py","bytes":4816,"sha256":"59B0F62EB5D089871746428949F9A5455664ED50CA6969054AF45EFF4A4D1370"},
-    {"role":"SOURCE_SELECTOR_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_r8_clear_enrichment.py","bytes":2187,"sha256":"A65A1AED86383CB96AD11CB1A1D0118DB0CA9DDE22FE1CFBADA01C6D42E61693"}
+    {"role":"SOURCE_SELECTOR_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_r8_clear_enrichment.py","bytes":2187,"sha256":"A65A1AED86383CB96AD11CB1A1D0118DB0CA9DDE22FE1CFBADA01C6D42E61693"},
+    {"role":"POOL_HEAD_RUNNER","path":"scripts/research/taro_o1r_r8_clear_runtime/run_pool_head.py","bytes":13851,"sha256":"1A552B69BC545CE3A86939CC7B2D57794283C2864E8BDCF21FA37958B8641837"},
+    {"role":"POOL_HEAD_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_run_pool_head.py","bytes":2267,"sha256":"3AB36C405E7AA2ECFF17F2394CADD75769AC9A1F2B0BEF31FAEEE14714758AA3"}
   ],
   "metadata_pool": {
     "official_fold": "Training",
