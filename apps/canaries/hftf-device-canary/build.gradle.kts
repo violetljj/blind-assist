@@ -1,12 +1,14 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.gradle.api.tasks.Sync
+import java.nio.file.Path
 
 val qairtRoot = providers.gradleProperty("qairtRoot")
     .orElse(providers.environmentVariable("QAIRT_ROOT"))
     .orElse("E:/codex-tools/qairt/2.47.0.260601")
-val localQairtRuntimeAvailable = file(
-    "${qairtRoot.get()}/lib/aarch64-android/libQnnHtp.so",
-).isFile
+val localQairtRuntimeAvailable = Path.of(qairtRoot.get())
+    .resolve("lib/aarch64-android/libQnnHtp.so")
+    .toFile()
+    .isFile
 
 plugins {
     alias(libs.plugins.android.test)
