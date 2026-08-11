@@ -5,6 +5,10 @@
 研究脚本冷启动先读 [`research/REGISTRY.md`](research/REGISTRY.md)；HFTF/DepthART 再读
 [`research/hftf/INDEX.md`](research/hftf/INDEX.md)。这些索引只描述职责和路径，不复制动态状态。
 
+研究治理使用 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`：普通新研究默认进入
+`THESIS_DEVELOPMENT`，只有显式产品晋升才进入 `PRODUCTION_PROMOTION`。双环 current 入口为
+[`docs/research/dual-loop/README.md`](../docs/research/dual-loop/README.md)；脚本索引不复制路线动态状态。
+
 ## 稳定入口
 
 - `run_android_gradle.ps1`：Windows/Codex 本地 Android Gradle 唯一入口；从脚本位置锁定仓库根目录，按 version catalog、wrapper 和 `local.properties` 校验 JDK、Android SDK 与 Gradle，统一 machine-local state，并在 connected test 前执行有超时的 ADB 预检。仅检查环境时使用 `-PreflightOnly`；环境失败固定为 `ENV_BLOCKED`，通过后才启动 `gradlew.bat`。

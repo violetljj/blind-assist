@@ -8,3 +8,7 @@ find_library(jnigraphics-lib jnigraphics)
 target_link_libraries(blindassist_vision ${android-lib} ${jnigraphics-lib} ${log-lib})
 target_compile_features(blindassist_vision PRIVATE cxx_std_17)
 target_compile_options(blindassist_vision PRIVATE -O3 -ffast-math)
+target_link_options(blindassist_vision PRIVATE
+    "-Wl,-z,max-page-size=16384"
+    "-Wl,-z,common-page-size=16384"
+)

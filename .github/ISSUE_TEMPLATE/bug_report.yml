@@ -1,0 +1,73 @@
+name: Bug report
+description: Report a reproducible defect without sharing private data.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve BlindAssist. For vulnerabilities or sensitive privacy issues, use private vulnerability reporting instead of this form.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Default Android app
+        - Accessibility or localization
+        - Build or CI
+        - Documentation
+        - Benchmark or research tooling
+        - Experimental app
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: v10.9.0 or commit SHA
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Android/device version or desktop OS, JDK and relevant tool versions. Redact serial numbers and private paths.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: A minimal numbered sequence using synthetic or redacted inputs.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs or screenshots
+      description: Remove tokens, user data, raw bystander imagery, device identifiers and private paths.
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues and documentation.
+          required: true
+        - label: I removed private data, credentials and restricted payloads.
+          required: true
+        - label: I understand that prototype behavior is not a safety certification.
+          required: true

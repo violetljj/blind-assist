@@ -1,5 +1,25 @@
 # TARO O0R factor-headroom runtime
 
+状态：`current / TARO_RESEARCH_MODULE / PARTIAL_FACTOR_CANARY_COMPLETE / HISTORICAL_EVIDENCE_READ_ONLY / NO_ACTIVE_EXECUTION`
+
+## 稳定 Interface
+
+- `candidate_phase.py` 与 `depthart_runner.py`：truth-blind candidate materialization 和 completion seal。
+- `factor_headroom.py`、`factor_canary.py` 与 `factor_evaluator.py`：固定 factor intervention、描述性 canary 与 evaluator。
+- 本目录的 `test_*.py` 和 execution-preparation validator：验证冻结接口及两阶段证据防火墙。
+
+## 输出
+
+本地 candidate、factor rows、summary 与 receipts 只写入调用方显式绑定的 `artifacts.local/evidence/taro/` 子目录；仓库不接收模型输出、原始数据或 scientific evidence payload。
+
+## 安全边界
+
+该 Module 只保留已消费的 post-hoc WILD_LAB factor diagnostics。它不授权训练、重跑、选择阈值、产品晋升、设备部署或安全结论，缺失和不可评估状态必须保持 `UNKNOWN`。
+
+## 停止条件
+
+候选 seal、truth firewall、frame identity、factor ownership、预算或 receipt 任一不满足即停止。当前没有活动执行；动态权限只由 [`docs/research/taro/README.md`](../../../docs/research/taro/README.md) 维护。
+
 This isolated runtime advances the admitted ARKitScenes R3 source/truth evidence
 into a fixed DepthART-S factor-intervention experiment. It does not train or
 modify DepthART.

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/violetljj/blind-assist/security/advisories/new
+    about: Report vulnerabilities or sensitive privacy issues privately.
+  - name: Documentation and project map
+    url: https://github.com/violetljj/blind-assist/blob/master/docs/README.md
+    about: Check the current documentation and evidence boundaries before filing.
