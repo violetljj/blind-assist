@@ -215,7 +215,7 @@ new parents. The 1,899-query formation replay passed implementation checks but
 does not authorize untouched execution. The only successor is a hash-bound
 untouched cohort and data-use lock.
 
-The exact successor cohort is now frozen at eight new Training visits and 120
+The exact successor cohort was frozen at eight new Training visits and 120
 pose-bounded frames. All 24 source URLs passed zero-body HEAD; 318,241,411
 bytes were downloaded once and verified against HEAD, SHA-256 and CRC. ZIP
 inventory and trajectory planning passed without decoding pixel arrays or
@@ -229,7 +229,26 @@ trajectory, while DepthART receives only RGB/K. The runner seals all 120
 candidates, then all 120 source-only decisions, reloads both completion seals,
 and only then opens one registered FARO member per frame. Support-unobservable
 FARO frames retain nine UNKNOWN slots. The implementation and unique one-shot
-execution lock are frozen; the evidence root is still absent and unconsumed.
+execution lock were frozen before execution.
+
+The consumed confirmation terminated with
+`TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_CONFIRMATION_PASS`. All nine gates passed:
+extraction evaluability changed from 725 to 765, boundary evaluability from 45
+to 50, and query-known coverage remained 6 to 6. Height and normal error
+reductions were jointly positive on 8/8 parents. Thirty-four FARO
+support-unobservable frames retained their nine UNKNOWN slots. The confirmed
+factor ownership is promoted only as the next TARO research baseline.
+
+Independent evidence verification:
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  -m scripts.research.taro_o0r_candidate_scale_runtime.verify_r6_confirmation_evidence
+```
+
+The verifier checks all 725 manifest files and replays all 1,080 query records.
+It reproduces the terminal and gates; the maximum aggregate replay delta after
+12-decimal JSON canonicalization is `5.000444502911705e-13`.
 
 Focused validation:
 

@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_PROTOCOL_FROZEN / R6_FACTOR_COMPOSITOR_IMPLEMENTATION_FROZEN / R6_UNTOUCHED_8_PARENTS_120_FRAMES_SOURCE_PREFLIGHT_PASS / R6_EXECUTOR_IMPLEMENTATION_FROZEN / R6_EXECUTION_LOCK_AUTHORIZED_UNCONSUMED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -137,7 +137,11 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   `UNKNOWN` retention、真实 ZIP I/O 与 one-shot runner 已 hash-bound；8 个 focused tests PASS，execution=false；
 - [R6 untouched confirmation one-shot execution lock](TARO_O0R_R6_UNTOUCHED_CONFIRMATION_ONE_SHOT_EXECUTION_LOCK_2026-08-11.json)：
   精确绑定 8 parents / 120 frames / 1,080 slots、DepthART commit/checkpoint/transform、Phase-A/Phase-B firewall、
-  唯一 argv、资源上限与 absent evidence root；当前 `AUTHORIZED_UNCONSUMED`；
+  唯一 argv、资源上限与 absent evidence root；该 one-shot 已消费且不得重跑；
+- [R6 untouched confirmation result](TARO_O0R_R6_UNTOUCHED_CONFIRMATION_RESULT_2026-08-11.md)：
+  8 parents / 120 frames / 1,080 slots 的九门全部 PASS；extraction evaluability `725 → 765`、boundary
+  evaluability `45 → 50`、query-known `6 → 6`，height/normal 为 8/8 parents 联合正向；725 个 evidence
+  文件已独立验签，R6 factor policy 获得 research-route promotion；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -148,7 +152,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_R6_UNTOUCHED_CONFIRMATION_ONE_SHOT_EXECUTION_LOCK`
+`TARO_O0R_R6_FACTOR_POLICY_ADOPTION_AND_PROSPECTIVE_RUNTIME_PROTOCOL_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -234,12 +238,16 @@ R5 已在 8 个 visit-disjoint former `ADAPTER_FIT` parents / 211 source frames 
 `TARO_O0R_DIRECT_APPLE_HYBRID_R5_TASK_METRIC_CONFIRMATION_FAIL`。R4A frame-level policy 不得晋级。
 
 R6 把 ownership 拆到 factor level：SUPPORT/BOUNDARY 沿用 R5 source-only branch，QUERY_CLEARANCE 固定沿用
-R1 baseline。protocol 与 factor compositor 已冻结并通过 1,899-query formation replay。新的 untouched cohort
-已从 1,757 个 eligible Training rows outcome-blind 选出；8 parents / 120 exact frames 的 HEAD、source download、
-SHA/CRC 与 pose-bounded inventory 均 PASS。roster-independent two-phase executor 现已实现并 hash-bound：
-Phase A 只允许 RGB/AppleDepth/confidence/K/trajectory，模型只接收 RGB/K；全部 candidate 与 source decision
-封存并重载 completion 后，Phase B 才能首次读取 FARO。当前没有运行新 cohort 的模型或 truth scoring；
-唯一后继是消费已授权的 exact one-shot execution lock。
+R1 baseline。protocol 与 factor compositor 先以 1,899-query formation replay 冻结，随后在 outcome-blind
+选出的 8 个 untouched parents / 120 exact frames / 1,080 slots 上完成唯一正式执行。Phase A 只读取
+RGB/AppleDepth/confidence/K/trajectory，模型只接收 RGB/K；全部 candidate 与 source decision 封存并重载
+completion 后，Phase B 才首次读取 FARO。
+
+正式终态为 `TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_CONFIRMATION_PASS`：九门全部通过，extraction evaluability
+`725 → 765`、boundary evaluability `45 → 50`、query-known `6 → 6`，height 与 normal 均为 8/8 parents
+联合正向。34 个 FARO support-unobservable frames 保留为 `UNKNOWN`。725 个 evidence 文件与 1,080 条
+query lineage 已独立复核；one-shot root 已消费，不得覆盖或重跑。唯一后继是冻结 factor policy 如何进入
+prospective TARO research runtime；不得从本 cohort 事后拟合 selector/阈值，也不得外推为部署、产品或安全证明。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定
