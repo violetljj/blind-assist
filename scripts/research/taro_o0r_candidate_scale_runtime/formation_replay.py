@@ -240,7 +240,7 @@ def score_frame(
             )
             replay_blocks = runtime._query_blocks(
                 dict(query), matrix, bundle["selected_support_boundary_owner"], selected_geometry, selected_plane,
-                baseline_geometry, baseline_plane, "SOURCE_SELECTED_SUPPORT_UNAVAILABLE", "SOURCE_BASELINE_SUPPORT_UNAVAILABLE",
+                baseline_geometry, baseline_plane, "SOURCE_SELECTED_SUPPORT_UNAVAILABLE", "SOURCE_BASELINE_SUPPORT_UNAVAILABLE", raw_hash,
             )
             require(adapter.canonical_sha256(replay_blocks) == adapter.canonical_sha256(slot["factor_blocks"]), "FORMATION_PHASE_A_FACTOR_REPLAY_DRIFT", "sealed prospective factor blocks do not replay")
             truth_status = {"evaluable": True, "reason_codes": [], "support_plane_sha256": adapter.canonical_sha256(truth_plane)}

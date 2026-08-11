@@ -136,6 +136,16 @@ class ProspectiveFactorRuntimeTest(unittest.TestCase):
         self.assertFalse(result["evaluable"])
         self.assertEqual(["R6_RUNTIME_BASELINE_HEIGHT_IMPLAUSIBLE"], result["reason_codes"])
 
+    def test_direct_query_frame_with_unavailable_baseline_retains_raw_clearance_lineage(self) -> None:
+        with mock.patch.object(runtime, "_fit_depth_plane", return_value=runtime._failed_plane("SOURCE_BASELINE_UNAVAILABLE")):
+            bundle = runtime.build_prospective_factor_bundle(**self.fixture)
+        self.assertEqual("DIRECT_APPLE_SUPPORT", bundle["query_frame_owner"])
+        raw_hash = bundle["input_bindings"]["candidate_highres_depth_sha256"]
+        for slot in bundle["query_slots"]:
+            clearance = slot["factor_blocks"]["QUERY_CLEARANCE"]
+            self.assertFalse(clearance["evaluable"])
+            self.assertEqual(raw_hash, clearance["depth_array_sha256"])
+
 
 if __name__ == "__main__":
     unittest.main()

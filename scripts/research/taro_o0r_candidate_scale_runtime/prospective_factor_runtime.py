@@ -284,7 +284,7 @@ def _unknown_block(owner: str, depth_sha256: str, code: str) -> dict[str, Any]:
 def _query_blocks(
     query: dict[str, Any], matrix: np.ndarray, selected_owner: str, selected_geometry: _Geometry | None,
     selected_plane: Mapping[str, Any] | None, baseline_geometry: _Geometry | None, baseline_plane: Mapping[str, Any] | None,
-    selected_failure: str, baseline_failure: str,
+    selected_failure: str, baseline_failure: str, baseline_depth_sha256: str,
 ) -> dict[str, Any]:
     if selected_geometry is None or selected_plane is None:
         support = _unknown_block(selected_owner, "0" * 64, selected_failure)
@@ -329,7 +329,7 @@ def _query_blocks(
             },
         }
     if baseline_geometry is None or baseline_plane is None:
-        clearance = _unknown_block("R1_BASELINE", "0" * 64, baseline_failure)
+        clearance = _unknown_block("R1_BASELINE", baseline_depth_sha256, baseline_failure)
     else:
         baseline_points, baseline_pixels = _surface(baseline_geometry, baseline_plane, query)
         baseline_local = _local_valid_fraction(baseline_geometry, matrix, query)
@@ -446,6 +446,7 @@ def build_prospective_factor_bundle(
                 baseline_plane if baseline_available else None,
                 str(selected_plane["reason_codes"][0]) if not selected_plane["evaluable"] else "SOURCE_SUPPORT_UNAVAILABLE",
                 str(baseline_plane["reason_codes"][0]) if not baseline_available else "SOURCE_BASELINE_UNAVAILABLE",
+                raw_depth_sha,
             )
             queries.append(
                 _seal(
