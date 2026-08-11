@@ -1,0 +1,108 @@
+{
+  "schema": "blindassist.taro.o0r.r5_confirmation_implementation_lock.v1",
+  "lock_id": "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_IMPLEMENTATION_LOCK",
+  "date": "2026-08-11",
+  "research_mode": "WILD_LAB",
+  "status": "IMPLEMENTATION_FROZEN_EXECUTION_FALSE",
+  "protocol_bindings": [
+    {"role": "R5_AMENDMENT", "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT_2026-08-11.json", "bytes": 15346, "sha256": "F4029F658C1617044667DCBF137F7AC2DB6FF4528EC4E48EF5DFCCB9F91CE89F"},
+    {"role": "R5_TRANSFORM_REPAIR", "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_PRE_IMPLEMENTATION_TRANSFORM_ID_REPAIR_2026-08-11.json", "bytes": 2866, "sha256": "9BA0EF22CAB5B29757E012E3BAB369FF1AB3B7FF4F42C777E3D3D16018C9C6BE"},
+    {"role": "R3_EXACT_FRAME_PLAN", "path": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/exact-frame-plan.json.gz", "bytes": 11228, "sha256": "BBAC08A9832A6CE465E8A8C6532FFF857AF878E6E821E683B24A83981C3C946C"}
+  ],
+  "implementation_bindings": [
+    {"role": "R5_CORE", "path": "scripts/research/taro_o0r_candidate_scale_runtime/r5_confirmation.py", "bytes": 79293, "sha256": "E792DAF55CFAAC3348FC85261641EF8860A8CAB9F2EE69112BA62FC8367F5F7F"},
+    {"role": "R5_PHASE_IO", "path": "scripts/research/taro_o0r_candidate_scale_runtime/r5_confirmation_io.py", "bytes": 11214, "sha256": "D8C51E6C0857C25B291251C4B91B1CF57DF2AB7727455484565E6AE901DAE003"},
+    {"role": "R5_RUNNER", "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_direct_apple_hybrid_adapter_fit_confirmation.py", "bytes": 17744, "sha256": "7795D020616AC702395D1E25749FA3EACB00DBEC9E20993A1957820676B3D890"},
+    {"role": "R5_CORE_TEST", "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_r5_confirmation.py", "bytes": 14760, "sha256": "E505E50CF1C99903BDE6DAA400195FA4DA47621C5BCA7BD0F36CCC9AA62B56D9"},
+    {"role": "R5_RUNNER_TEST", "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_r5_confirmation_runner.py", "bytes": 2062, "sha256": "B5F87DF36712D46A1924441DEE0269B634E7D458C4C4C5ACD754BE661F908DB4"},
+    {"role": "R5_EXECUTION_LOCK_VALIDATOR", "path": "scripts/research/taro_o0r_candidate_scale_runtime/validate_r5_execution_lock.py", "bytes": 11246, "sha256": "FF12C91807892232F4FFF04A78FCC14B995ECCCB1165F7A006A0CEDA03C48E71"},
+    {"role": "R5_EXECUTION_LOCK_VALIDATOR_TEST", "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_validate_r5_execution_lock.py", "bytes": 5289, "sha256": "1B529E40B498ADF67195A652120DD76B67F297B78D6860B4DAD8B4DC9D8DACB0"},
+    {"role": "R5_AMENDMENT_VALIDATOR", "path": "scripts/research/taro_o0r_candidate_scale_runtime/validate_r5_amendment.py", "bytes": 29855, "sha256": "DD271A797A61DE9ACE1A1BE605E37D666271DCBB3571BCE520FB5C8F43492B91"},
+    {"role": "DEPTHART_RUNTIME", "path": "scripts/research/taro_o0r_factor_headroom_runtime/depthart_runner.py", "bytes": 30462, "sha256": "25E80D496DBEEBCC66CCB9772DD51508453B8EB325CDBF9192F71923E440BD09"},
+    {"role": "SOURCE_ADAPTER", "path": "scripts/research/taro_o0r_source_adapter_runtime/source_adapter.py", "bytes": 164498, "sha256": "EC9E3C2D4D122AFC5939183B9FA4E00411EC1C9BEAD324831406F159DBB7E91F"},
+    {"role": "APPLE_SCALE", "path": "scripts/research/taro_o0r_candidate_scale_runtime/apple_scale.py", "bytes": 31757, "sha256": "3FE701EFB7C0C70B9AC3AF9021AAABFBCBC4C4A1DD4A8F39250A3842B9A17A71"},
+    {"role": "DIRECT_APPLE_SUPPORT", "path": "scripts/research/taro_o0r_candidate_scale_runtime/direct_apple_support.py", "bytes": 38656, "sha256": "0495064DB81970FBEDCAFC3EB760AFC1AE8689C1D23D5FDFA4BA31843E7FAE93"},
+    {"role": "SOURCE_FACTOR", "path": "scripts/research/taro_o0r_candidate_scale_runtime/source_factor.py", "bytes": 43033, "sha256": "20D4DBF3EE414EAE07E39C8AD8FAB9BF6CDBDBCB4BED5A879700DAB48E1101A3"}
+  ],
+  "candidate_identity": {
+    "model_id": "depthart-s-metric-indoor-448-official-fp32",
+    "source_root": "F:/ba-data/blindassist-artifacts-20260805/models/depthart/source",
+    "source_commit": "0384521b3bcb4c64adf03eeb5d55ebdb1cbdd84c",
+    "source_tree_clean_required": true,
+    "checkpoint_path": "F:/ba-data/blindassist-artifacts-20260805/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+    "checkpoint_bytes": 32871942,
+    "checkpoint_sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65",
+    "preprocess_id": "DEPTHART_OFFICIAL_LOWER_BOUND_448_RGB_CUBIC_IMAGENET_V1",
+    "postprocess_id": "TARO_TORCH_CPU_BILINEAR_ALIGN_CORNERS_TRUE_FLOAT32_448X608_TO_1440X1920_V1"
+  },
+  "exact_cohort": {
+    "source_role": "ADAPTER_FIT",
+    "successor_role": "R5_TASK_METRIC_CONFIRMATION",
+    "parent_count": 8,
+    "physical_frame_count": 211,
+    "query_slot_count": 1899,
+    "canonical_frame_identity_sequence_sha256": "52CFCC0CC37ED9DF2B7B3A5C99A617661062E600EB75B5790FC96225D7765B6F",
+    "source_record_root": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/source-frames/adapter-fit",
+    "source_data_root": "artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r3",
+    "prior_eval_parent_or_truth_substitution_allowed": false
+  },
+  "phase_firewall": {
+    "phase_a_order": ["ALL_211_CANDIDATES_SEALED", "ALL_211_SOURCE_DECISIONS_SEALED", "PHASE_A_COMPLETION_RELOADED"],
+    "phase_a_payload_allowlist": ["color", "lowres_depth", "confidence"],
+    "phase_a_required_zero_reads": ["FARO", "QUERY_TRUTH", "COMPACT_TRUTH", "TASK_METRIC", "PRIOR_EVAL_OUTCOME"],
+    "phase_b_first_faro_read_requires_phase_a_completion": true,
+    "phase_b_truth_scope": "SAME_EXACT_211_R5_FRAMES_ONLY",
+    "prior_eval_truth_or_outcome_root_enumeration_allowed": false,
+    "branch_reselection_after_phase_a_allowed": false
+  },
+  "frozen_algorithm": {
+    "policy_id": "DIRECT_WHEN_SOURCE_SUPPORT_AVAILABLE_ELSE_R1_BASELINE_V1",
+    "source_scale": "MEDIAN_LOG_APPLEDEPTH_OVER_CANDIDATE_AT_REGISTERED_APPLE_CENTERS_CONFIDENCE_EQ_2_V1",
+    "direct_support": "CONFIDENCE_EQ_2_APPLE_PLANE_CANDIDATE_INDEPENDENT_MASK",
+    "baseline": "UNSCALED_SEALED_DEPTHART_CANDIDATE",
+    "selection_field_allowlist": ["source_support_available"],
+    "direct_failure_after_selection": "RETAIN_DIRECT_UNKNOWN_NEVER_FALL_BACK",
+    "aggregation_order": "QUERY_TO_FRAME_MEDIAN_TO_PARENT_MEDIAN_TO_MEDIAN_ACROSS_PARENTS",
+    "free_parameter_count": 0,
+    "threshold_count": 0,
+    "training_steps": 0
+  },
+  "evidence_contract": {
+    "exclusive_root": "artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5",
+    "root_absent_at_lock": true,
+    "root_must_be_absent_at_execution": true,
+    "one_shot_consumed_on_root_creation": true,
+    "overwrite": false,
+    "rerun": false,
+    "candidate_native_arrays_only": true,
+    "faro_geometry_persisted": false,
+    "query_records_per_frame_gzip": true,
+    "result_then_manifest_written_last": true
+  },
+  "test_receipt": {
+    "focused_test_count": 22,
+    "focused_test_failures": 0,
+    "commands": [
+      "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe -m unittest scripts.research.taro_o0r_candidate_scale_runtime.test_validate_r5_amendment scripts.research.taro_o0r_candidate_scale_runtime.test_r5_confirmation scripts.research.taro_o0r_candidate_scale_runtime.test_r5_confirmation_runner scripts.research.taro_o0r_candidate_scale_runtime.test_validate_r5_execution_lock -v",
+      "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe -m py_compile scripts/research/taro_o0r_candidate_scale_runtime/r5_confirmation.py scripts/research/taro_o0r_candidate_scale_runtime/r5_confirmation_io.py scripts/research/taro_o0r_candidate_scale_runtime/run_direct_apple_hybrid_adapter_fit_confirmation.py"
+    ],
+    "actual_model_inference_count": 0,
+    "actual_r5_task_metric_count": 0
+  },
+  "execution_authority": {
+    "implementation_complete": true,
+    "implementation_lock": true,
+    "one_shot_execution_lock": false,
+    "user_model_execution_authority": false,
+    "depthart_inference": false,
+    "phase_a_source_decisions": false,
+    "phase_b_truth_scoring": false,
+    "training": false,
+    "network": false,
+    "device": false,
+    "product": false,
+    "safety": false
+  },
+  "claim_ceiling": "This lock freezes executable R5 mechanics and tests but creates no R5 candidate, decision, truth score or result. A future valid one-shot PASS could confirm only the fixed zero-parameter policy on the exact eight former uncertainty-fit ARKitScenes Training parents; it cannot establish untouched external validation, formal O0R, RGB-only operation, deployment, product efficacy or safety.",
+  "unique_successor": "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_ONE_SHOT_EXECUTION_LOCK"
+}

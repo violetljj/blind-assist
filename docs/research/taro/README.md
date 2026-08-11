@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / APPLE_SEEDED_SUPPORT_RECOVERY_R2_COMPLETE / CANDIDATE_REFIT_REJECTED / DIRECT_APPLE_SUPPORT_R3_COMPLETE / DIRECT_APPLE_SUPPORT_R4_COMPLETE / DIRECT_APPLE_HYBRID_R4A_COMPLETE / ZERO_PARAMETER_HYBRID_RETROSPECTIVE_HEADROOM / R5_TASK_METRIC_CONFIRMATION_AMENDMENT_FROZEN / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / APPLE_SEEDED_SUPPORT_RECOVERY_R2_COMPLETE / CANDIDATE_REFIT_REJECTED / DIRECT_APPLE_SUPPORT_R3_COMPLETE / DIRECT_APPLE_SUPPORT_R4_COMPLETE / DIRECT_APPLE_HYBRID_R4A_COMPLETE / ZERO_PARAMETER_HYBRID_RETROSPECTIVE_HEADROOM / R5_TASK_METRIC_CONFIRMATION_AMENDMENT_FROZEN / R5_IMPLEMENTATION_LOCK_FROZEN / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -114,6 +114,9 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [R5 pre-implementation transform-ID repair](TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_PRE_IMPLEMENTATION_TRANSFORM_ID_REPAIR_2026-08-11.json)：
   保留原 amendment 字节不变，只把错误序列化的 candidate transform 标签校正为已封存 runner 的
   `RGB_CUBIC_IMAGENET_V1` 与 bilinear `align_corners=true`；修复时 R5 root 不存在、inference/metric 均为 0；
+- [R5 implementation lock](TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_IMPLEMENTATION_LOCK_2026-08-11.json)：
+  已绑定独立 R5 role API、phase-scoped reader、one-shot runner、future execution-lock validator 与 22 个
+  implementation-surface focused tests；加上 implementation-lock mutation tests 合计 26/26 PASS，仍为 execution=false；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -124,7 +127,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_IMPLEMENTATION_LOCK`
+`TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_ONE_SHOT_EXECUTION_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -208,8 +211,10 @@ R5 amendment 现已 outcome 前冻结：它为 8 个 visit-disjoint former `ADAP
 source frames 建立一次性 `R5_TASK_METRIC_CONFIRMATION` role，独立确认已经冻结的 R4A policy。旧合同
 不被改写；新版本必须先封存 truth-blind DepthART/source Phase A，再打开同一 211 frames 的 FARO
 Phase B，不得读取或枚举现有 16-parent eval truth，也不得训练 selector 或修改 policy。该 amendment
-本身 execution=false；当前唯一 successor 是实现独立 R5 role API/runner/tests，并签 hash-bound
-implementation lock。
+本身 execution=false。独立 R5 role API、phase-scoped reader、runner、聚合器与 validator 已实现并由
+hash-bound implementation lock 冻结；当前唯一 successor 是携带明确用户 model/task execution authority
+的一次性 execution lock。当前没有创建 R5 evidence root，也没有运行 211 次 DepthART inference 或同帧
+Phase-B scoring。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定
@@ -263,9 +268,9 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
 - 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
-- 实现和验证 R5 独立 role API、Phase-A/Phase-B runner、证据 writer 与聚合器，并生成 hash-bound
-  implementation lock；在后续 one-shot execution lock 与用户 model/task execution authority 生效前，
-  不得创建 R5 evidence root；
+- R5 独立 role API、Phase-A/Phase-B runner、证据 writer、聚合器与 implementation lock 已完成；下一步
+  仅允许签一份携带明确 model/task execution authority 的 one-shot execution lock 并执行唯一 argv，
+  在此之前不得创建 R5 evidence root；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止

@@ -188,6 +188,11 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   scripts.research.taro_o0r_candidate_scale_runtime.test_validate_r5_amendment -v
 ```
 
-The amendment is `execution=false`. Its unique successor is the R5
-implementation lock; no R5 evidence root, inference or truth scoring is
-authorized by the amendment alone.
+The hash-bound R5 implementation lock is now frozen and validates the
+independent role API, phase-scoped source reader, one-shot runner, effective
+DepthART transform IDs, exact 211-frame cohort and future execution-lock
+validator. Focused amendment/core/runner/lock tests pass 26/26. The
+implementation lock remains `execution=false`: no R5 evidence root, inference,
+source decision or truth score has been created. Its only successor is the
+one-shot R5 execution lock carrying explicit user model/task execution
+authority.
