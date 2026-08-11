@@ -1,0 +1,201 @@
+{
+  "schema": "blindassist.taro.o0r.r6_prospective_runtime_formation_replay_result.v1",
+  "result_id": "TARO_O0R_R6_PROSPECTIVE_RUNTIME_FORMATION_REPLAY_RESULT",
+  "date": "2026-08-11",
+  "terminal": "TARO_O0R_R6_FORMATION_REPLAY_COMPLETE_NON_PROMOTABLE",
+  "execution_valid": true,
+  "scientific_pass_fail_assigned": false,
+  "promotion_authorized_by_this_result": false,
+  "cohort": {
+    "parent_count": 24,
+    "frame_count": 450,
+    "query_slot_count": 4050,
+    "adapter_fit": {
+      "parent_count": 8,
+      "frame_count": 211,
+      "query_slot_count": 1899
+    },
+    "o0r_eval_candidate": {
+      "parent_count": 16,
+      "frame_count": 239,
+      "query_slot_count": 2151
+    }
+  },
+  "source_only_policy": {
+    "policy_id": "R5_SELECTED_SUPPORT_BOUNDARY_PLUS_ALWAYS_R1_QUERY_CLEARANCE_V1",
+    "direct_apple_support_frame_count": 328,
+    "r1_baseline_fallback_frame_count": 122,
+    "support_and_boundary_owner": "DIRECT_APPLE_SUPPORT_IF_SOURCE_AVAILABLE_ELSE_R1_BASELINE",
+    "query_clearance_owner": "ALWAYS_R1_BASELINE",
+    "owner_reselection_after_faro": false,
+    "training_steps": 0,
+    "network_requests": 0,
+    "candidate_inference_count_in_phase_b": 0
+  },
+  "phase_firewall": {
+    "phase_a_parent_count": 24,
+    "phase_a_frame_count": 450,
+    "phase_a_query_slot_count": 4050,
+    "phase_a_faro_reads": 0,
+    "all_phase_a_bundles_sealed_before_faro": true,
+    "phase_a_completion_content_sha256": "C3351E6745110850E0CA80267A8A0421E9548CFFF14F3EAED45F2B1F11311F77",
+    "phase_b_reused_phase_a_read_only": true,
+    "phase_a_reexecution_in_final_r6": false
+  },
+  "final_parent_first_effects": {
+    "support_height_error_reduction_m": {
+      "parent_macro_median": 0.290600320478,
+      "parent_paired_count": 24,
+      "positive_parent_count": 24,
+      "negative_parent_count": 0,
+      "zero_parent_count": 0,
+      "frame_paired_count": 329,
+      "query_paired_count": 2961
+    },
+    "support_normal_error_reduction_rad": {
+      "parent_macro_median": 0.017840280166,
+      "parent_paired_count": 24,
+      "positive_parent_count": 23,
+      "negative_parent_count": 0,
+      "zero_parent_count": 1,
+      "frame_paired_count": 329,
+      "query_paired_count": 2961
+    },
+    "boundary_xyz_error_reduction_m": {
+      "parent_macro_median": 0.382701707443,
+      "parent_paired_count": 19,
+      "positive_parent_count": 19,
+      "negative_parent_count": 0,
+      "zero_parent_count": 0,
+      "frame_paired_count": 85,
+      "query_paired_count": 246
+    },
+    "boundary_jaccard_increase": {
+      "parent_macro_median": 0.234742488102,
+      "parent_paired_count": 20,
+      "positive_parent_count": 13,
+      "negative_parent_count": 6,
+      "zero_parent_count": 1,
+      "frame_paired_count": 89,
+      "query_paired_count": 265
+    },
+    "query_clearance_error_reduction_m": {
+      "parent_macro_median": 0.0,
+      "parent_paired_count": 4,
+      "positive_parent_count": 0,
+      "negative_parent_count": 0,
+      "zero_parent_count": 4,
+      "frame_paired_count": 8,
+      "query_paired_count": 21,
+      "interpretation": "EXPECTED_IDENTITY_EFFECT_FROM_FROZEN_ALWAYS_R1_OWNER"
+    }
+  },
+  "eval_role_effects": {
+    "parent_count": 16,
+    "frame_count": 239,
+    "direct_apple_support_frame_count": 163,
+    "r1_baseline_fallback_frame_count": 76,
+    "support_height_error_reduction_m": {
+      "parent_macro_median": 0.295976519321,
+      "parent_paired_count": 16,
+      "positive_parent_count": 16,
+      "negative_parent_count": 0,
+      "zero_parent_count": 0
+    },
+    "support_normal_error_reduction_rad": {
+      "parent_macro_median": 0.015946654354250002,
+      "parent_paired_count": 16,
+      "positive_parent_count": 15,
+      "negative_parent_count": 0,
+      "zero_parent_count": 1
+    },
+    "boundary_xyz_error_reduction_m": {
+      "parent_macro_median": 0.32830368440775,
+      "parent_paired_count": 12,
+      "positive_parent_count": 12,
+      "negative_parent_count": 0,
+      "zero_parent_count": 0
+    },
+    "boundary_jaccard_increase": {
+      "parent_macro_median": 0.13681316792075,
+      "parent_paired_count": 13,
+      "positive_parent_count": 7,
+      "negative_parent_count": 5,
+      "zero_parent_count": 1
+    }
+  },
+  "fit_role_effects": {
+    "parent_count": 8,
+    "frame_count": 211,
+    "direct_apple_support_frame_count": 165,
+    "r1_baseline_fallback_frame_count": 46,
+    "support_height_error_reduction_m": {
+      "parent_macro_median": 0.2857292518805,
+      "parent_paired_count": 8,
+      "positive_parent_count": 8
+    },
+    "support_normal_error_reduction_rad": {
+      "parent_macro_median": 0.01976348597275,
+      "parent_paired_count": 8,
+      "positive_parent_count": 8
+    },
+    "boundary_xyz_error_reduction_m": {
+      "parent_macro_median": 0.402948085851,
+      "parent_paired_count": 7,
+      "positive_parent_count": 7
+    },
+    "boundary_jaccard_increase": {
+      "parent_macro_median": 0.25547320524399997,
+      "parent_paired_count": 7,
+      "positive_parent_count": 6,
+      "negative_parent_count": 1
+    }
+  },
+  "coverage": {
+    "faro_support_unobservable_frame_count": 116,
+    "faro_support_observable_frame_count": 334,
+    "unknown_is_negative": false,
+    "unknown_frames_retained_in_fixed_denominator": true
+  },
+  "cross_revision_checks": {
+    "r5_support_and_boundary_summaries_byte_equivalent_to_r6": true,
+    "r5_clearance_attribution_rejected": true,
+    "r6_clearance_effect_zero_or_unknown_only": true,
+    "known_nonzero_r5_clearance_frame_replayed_with_r1_owner": "47333876:77209.946",
+    "known_nonzero_r5_clearance_frame_r6_query_record_count": 9
+  },
+  "evidence": {
+    "root": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r6",
+    "result": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r6/result.json",
+      "bytes": 886,
+      "sha256": "42B92F0E3F06B91905FB29B2415BFCCB505844E6F70E30F64FD25A5E621BA4D9"
+    },
+    "summary": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r6/summary.json",
+      "bytes": 10538,
+      "sha256": "29F62B243CD62835A38AF1F178449D6C304C226860451CB0B0039A3E352F0D61",
+      "content_sha256": "5FACC7FB05396B47D7D74994CD9CA18107BC185720F042F48E8A53E546612CDD"
+    },
+    "manifest": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r6/manifest.json",
+      "bytes": 96065,
+      "sha256": "84033E19D4DA2474B74BFA1758E1FEC8493A7CAF28B0C9D36BAEF0CC3695BF59"
+    },
+    "execution_receipt": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r6/execution-receipt.json",
+      "bytes": 508,
+      "sha256": "69976245E770390ACA3F06A8BBE921EC9168CB73428D1E79343D38759DED329A"
+    }
+  },
+  "decision": {
+    "prospective_factor_runtime_formation_verified": true,
+    "research_factor_extractor_adoption_supported": true,
+    "boundary_jaccard_no_regret_claim_supported": false,
+    "query_clearance_improvement_claim_supported": false,
+    "final_state_or_reducer_claim_supported": false,
+    "deployment_product_or_safety_claim_supported": false,
+    "unique_successor": "TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_PROTOCOL_LOCK"
+  },
+  "claim_ceiling": "Post-hoc non-promotable WILD_LAB formation replay. It supports research adoption of the source-defined R6 factor extractor, not a final TARO state, fresh confirmation, deployment, product, or safety claim."
+}

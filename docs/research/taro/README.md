@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -152,6 +152,10 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [R6 prospective factor-runtime implementation lock](TARO_O0R_R6_PROSPECTIVE_FACTOR_RUNTIME_IMPLEMENTATION_LOCK_2026-08-11.md)：
   source-defined surface、factor-depth/pixel-ID lineage、九 query retention 与 no-result-side public API 已实现；
   8/8 synthetic mechanics/mutation tests PASS，真实 frame/model/truth/reducer execution 均为 0；
+- [R6 prospective runtime formation replay result](TARO_O0R_R6_PROSPECTIVE_RUNTIME_FORMATION_REPLAY_RESULT_2026-08-11.json)：
+  24 parents / 450 frames / 4,050 slots 的 source-first 两阶段 replay 已有效完成；16 个 eval parents 上
+  support height 为 16/16 正向、normal 为 15 正/1 平，boundary XYZ 为 12/12 正向；clearance 严格沿用
+  R1，effect 为 0/UNKNOWN。该结果支持 research factor extractor adoption，但不产生 final state 或产品权限；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -162,7 +166,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_R6_PROSPECTIVE_FACTOR_RUNTIME_FORMATION_REPLAY_LOCK`
+`TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_PROTOCOL_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -260,14 +264,17 @@ query lineage 已独立复核；one-shot root 已消费，不得覆盖或重跑�
 prospective TARO research runtime；不得从本 cohort 事后拟合 selector/阈值，也不得外推为部署、产品或安全证明。
 
 该 prospective protocol 现已冻结。它明确关闭 R5/R6 evaluator 的最后一条 runtime interface seam：旧
-common-support pixels 与 local-valid fraction 由 FARO 定义，只能用于 task-metric 归因；未来 public runtime
-必须从 factor owner 自己的 sealed depth、K、重力和 query receipt 重建 source-defined local surface。当前只授权
-实现与 synthetic mutation tests，不授权 formation replay、新数据、模型、truth、reducer、设备或产品执行。
+common-support pixels 与 local-valid fraction 由 FARO 定义，只能用于 task-metric 归因；public runtime
+必须从 factor owner 自己的 sealed depth、K、重力和 query receipt 重建 source-defined local surface。
 
 source-defined runtime implementation 现已 hash-bound。pre-implementation repair 先关闭 query-frame owner 歧义，
 随后实现以 8/8 synthetic tests 证明 direct/baseline/unavailable 三分支、factor-depth lineage、source pixel-ID
-binding、九 slot retention、candidate mutation rejection 与 deterministic roundtrip。当前仍未执行任何真实 frame；
-唯一后继只能先冻结 existing 24 formation parents 的 non-promotable source-first replay，不能直接打开 FARO 或新 cohort。
+binding、九 slot retention、candidate mutation rejection 与 deterministic roundtrip。24-parent / 450-frame
+formation replay 随后先封存 4,050 个 source-only slots，再打开 FARO 评分；最终 R6 evidence 全量完成且执行有效。
+16 个 eval parents 上 support height 为 16/16 正向、normal 为 15 正/1 平，boundary XYZ 为 12/12 正向；
+boundary Jaccard 为 7 正/5 负/1 平，故不声明 no-regret。clearance 始终沿用 R1，最终 effect 只能为 0/UNKNOWN。
+唯一后继改为冻结 prospective factor 到 uncertainty/deterministic reducer 的 integration protocol；不得从这 24 个
+formation parents 事后拟合阈值或宣称 fresh confirmation。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定
@@ -321,8 +328,8 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
 - 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
-- R5 正式 FAIL 已完成；R6 protocol、factor compositor、8-parent data-use authority、24/24 HEAD/download integrity
-  和 120-frame exact inventory 已锁定。下一步只允许实现 R6 two-phase executor，仍不得提前读新 truth；
+- R5 正式 FAIL 与 R6 untouched PASS 已完成；prospective runtime 的 24-parent / 450-frame source-first formation replay
+  也已有效完成。下一步只允许冻结 factor-to-uncertainty/reducer integration，不得用 formation outcome 调参；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止
@@ -355,8 +362,10 @@ absolute log-scale error 从 `0.30498` 降到 `0.01561`，239/239 source frames 
 R4A direct-when-valid/baseline-fallback policy 在同一已观察的 16-parent cohort 上使
 extraction-evaluable 从 baseline 的 1,494 提高到 1,530，且 height/normal parent-macro 均为
 16/16 parents 改善。独立 R5 又确认 SUPPORT/BOUNDARY 在 8/8 parents 正向，但 frame-level ownership
-因 query knownness `7 → 5` 正式 FAIL。R6 factor split 只建立 post-hoc candidate landscape，不证明 fresh
-confirmation、正式 O0R PASS、RGB-only operation、真实 evidence dedup/whitening、完整 query truth
+因 query knownness `7 → 5` 正式 FAIL。后续 R6 factor split 与 source-defined formation replay 在 16 个 eval
+parents 上得到 support height 16/16 正向、normal 15 正/1 平、boundary XYZ 12/12 正向，但 boundary Jaccard
+仍有 5 个负向 parent，clearance 只证明冻结 R1 owner 的零差异。它仍不证明 fresh confirmation、正式 O0R
+PASS、RGB-only operation、真实 evidence dedup/whitening、完整 query truth
 admission、选择性风险校准、observation-withholding/sensing regret、真实 geometry-anchored
 counterfactual pair、被动/主动视角收益、跨设备泛化、移动端可行、产品有效性或真实用户安全。
 
