@@ -1,0 +1,85 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_train_only_activation_scope_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D2_TRAIN_ONLY_BASE_OUTPUT_AND_HEAD_TRAINING",
+  "frozen_at": "2026-08-11",
+  "status": "PRE_OUTCOME_PROTOCOL_FROZEN_AWAITING_EXPLICIT_TRAINING_SCOPE",
+  "predecessor": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_PHASE_C_SOURCE_RESULT_2026-08-11.json",
+    "terminal": "D2_PHASE_C_GOVERNED_SOURCE_MATERIALIZATION_PASS_EXACT_EIGHT_SEALED"
+  },
+  "owning_head_protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_TASK_EVIDENCE_HEAD_PROTOCOL_2026-08-11.json",
+    "bytes": 9419,
+    "sha256": "1502F57BAFF14056681BDD21FBA6D7899D78AE7CA50D076734AE16863AAC8034"
+  },
+  "source_manifest": {
+    "path": "artifacts.local/datasets/depthart-task-preserving-d2-phase-c-20260811-r1/manifest.json",
+    "bytes": 77873,
+    "sha256": "2EB5E6113012C2490D0962977C3EA5513DB24C4DBD4B5003E0A371E9D8843F58"
+  },
+  "train_scope": [
+    {"role_order": 1, "visit_id": "482610", "video_id": "47895972", "frames": 300},
+    {"role_order": 2, "visit_id": "467109", "video_id": "47333324", "frames": 300},
+    {"role_order": 3, "visit_id": "421013", "video_id": "42444703", "frames": 300},
+    {"role_order": 4, "visit_id": "422855", "video_id": "42897480", "frames": 300}
+  ],
+  "development_scope": {
+    "identity_count": 4,
+    "status": "SEALED",
+    "decode": false,
+    "truth": false,
+    "model_output": false
+  },
+  "base_output": {
+    "input_shape_nchw": [1, 3, 608, 448],
+    "candidate_dlc_sha256": "755138FA28FCB937E3D62D45FEC292880DFC690851BF2CB00E2704CC67FA5D42",
+    "saved_context_sha256": "FA5DC9DCA0EE2B15E495606F1DF60C9FE343E7BB58D5D3CC05C26F846F7AFC3D",
+    "device_required": "fresh SM-S9280 / SM8650 / HTP v75 identity binding before execution",
+    "runtime_reference_output_forbidden": true,
+    "performance_measurement": false
+  },
+  "head_training": {
+    "architecture": "Linear(11,16)-SiLU-Linear(16,5)",
+    "parameter_count": 277,
+    "seed": 17,
+    "feature_standardization": "TRAIN mean/std only, epsilon 1e-6",
+    "optimizer": "AdamW",
+    "learning_rate": 0.01,
+    "weight_decay": 0.0001,
+    "steps": 500,
+    "batching": "full batch",
+    "early_stopping": false,
+    "checkpoint_selection": "step 500 only",
+    "development_access_during_training": false
+  },
+  "required_execution_order": [
+    "fresh device identity and frozen runtime/context binding",
+    "TRAIN-only source decode and truth derivation",
+    "TRAIN-only saved-context base output generation with per-frame receipts",
+    "freeze exact feature/label dataset hash",
+    "run the single step-500 head training recipe",
+    "freeze head checkpoint and training receipt before any Development access"
+  ],
+  "stop_conditions": [
+    "explicit train-only activation receipt is absent",
+    "device/context/runtime/source/head-protocol hash changes",
+    "any Development file is decoded or opened",
+    "D1 consumed outcome or R2 data is accessed",
+    "recipe, seed, features, labels, losses or checkpoint step changes",
+    "latency or performance is measured or claimed"
+  ],
+  "authority": {
+    "protocol_design": true,
+    "train_source_decode": false,
+    "train_truth": false,
+    "train_model_output": false,
+    "head_training": false,
+    "development_access": false,
+    "r2_access": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "current_gate": "EXPLICIT_USER_AUTHORIZATION_FOR_D2_TRAIN_ONLY_BASE_OUTPUT_AND_HEAD_TRAINING"
+}
