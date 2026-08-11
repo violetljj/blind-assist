@@ -423,6 +423,15 @@ no-regret gate 未通过。晋级的是 R16 angular factor contract，不是这�
 angular target 接入更强的冻结 DepthART boundary representation，depth/support 与 external threshold 保持不变，
 不在 Bonn/ICL 上继续调这个 specialist。
 
+R18 的可执行实现已冻结在
+[DepthART angular boundary execution-ready receipt](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R18_DEPTHART_ANGULAR_BOUNDARY_EXECUTION_READY_2026-08-11.json)。
+它从 R14 checkpoint 严格初始化，只开放 `boundary_trunk + boundary_logits` 的 136,257 个参数；DepthART、
+shared trunk、depth/support/obstacle 与旧 pixel-distance head 全部冻结。R16 angular field 作为单一梯度，
+原 unified factor 包继续提供其余 factor，69/69 ARKit/TUM overlay 与 20/20 focused tests PASS；一步 optimizer
+后全部冻结参数逐元素不变。当前 Codex runtime 的 `torch.cuda.device_count()==0`，因此正式 20-epoch 训练尚未
+执行，输出目录也未创建。CUDA 恢复后应原命令续跑，随后仅做一次冻结 ICL/Bonn 复核；当前不能声称 R18
+产生了 learned improvement。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时

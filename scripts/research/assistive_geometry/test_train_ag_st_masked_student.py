@@ -16,11 +16,13 @@ from train_ag_st_masked_student import (  # noqa: E402
     TIER_A_SOURCE,
     TIER_C_TEACHER,
     TIER_UNKNOWN,
+    compute_angular_boundary_only_losses,
     compute_boundary_only_losses,
     compute_depth_support_losses,
     compute_depth_support_precision_losses,
     compute_student_losses,
     compute_unified_continuous_boundary_losses,
+    configure_angular_boundary_trainable,
     build_epoch_order,
     fit_scalar_support_calibration,
     select_parent_split,
@@ -434,6 +436,91 @@ class AgStMaskedStudentTest(unittest.TestCase):
         first["total"].backward()
         self.assertTrue(torch.isfinite(outputs["boundary_logits"].grad).all())
         self.assertTrue(torch.isfinite(outputs["boundary_distance_px"].grad).all())
+
+    def test_angular_boundary_loss_ignores_unknown_pixels(self) -> None:
+        outputs = {
+            "boundary_logits": torch.zeros((1, 1, 2, 2), requires_grad=True),
+        }
+        targets = {
+            "boundary_angular_soft": torch.tensor(
+                [[[[1.0, 0.0], [0.0, 0.0]]]]
+            ),
+            "boundary_valid": torch.tensor(
+                [[[[True, False], [False, False]]]]
+            ),
+            "boundary_tier": torch.tensor(
+                [[[[TIER_A_SOURCE, TIER_UNKNOWN], [TIER_UNKNOWN, TIER_UNKNOWN]]]]
+            ),
+        }
+        changed = copy.deepcopy(targets)
+        changed["boundary_angular_soft"][..., 0, 1:] = 1.0
+        changed["boundary_angular_soft"][..., 1, :] = 1.0
+        first = compute_angular_boundary_only_losses(outputs, targets)
+        second = compute_angular_boundary_only_losses(outputs, changed)
+        for key in first:
+            torch.testing.assert_close(first[key], second[key])
+        first["total"].backward()
+        self.assertTrue(torch.isfinite(outputs["boundary_logits"].grad).all())
+
+    def test_angular_gradient_firewall_only_opens_boundary_probability_branch(self) -> None:
+        model = MaskedFactorStudent(
+            channels=192,
+            hidden=64,
+            head_profile="factor_split_dilated",
+            use_base_depth_feature=True,
+        )
+        receipt = configure_angular_boundary_trainable(model)
+        trainable = {
+            name for name, parameter in model.named_parameters() if parameter.requires_grad
+        }
+        self.assertTrue(trainable)
+        self.assertTrue(
+            all(
+                name.startswith("boundary_trunk.")
+                or name.startswith("boundary_logits.")
+                for name in trainable
+            )
+        )
+        self.assertTrue(receipt["frozen_boundary_distance_head"])
+        self.assertFalse(model.depth_residual.weight.requires_grad)
+        self.assertFalse(model.support_logits.weight.requires_grad)
+        self.assertFalse(model.boundary_distance_logits.weight.requires_grad)
+        self.assertFalse(model.obstacle_logits.weight.requires_grad)
+
+    def test_angular_optimizer_step_preserves_every_frozen_factor_parameter(self) -> None:
+        model = MaskedFactorStudent(
+            channels=192,
+            hidden=64,
+            head_profile="factor_split_dilated",
+            use_base_depth_feature=True,
+        )
+        configure_angular_boundary_trainable(model)
+        frozen_before = {
+            name: parameter.detach().clone()
+            for name, parameter in model.named_parameters()
+            if not parameter.requires_grad
+        }
+        feature = torch.randn(1, 192, 4, 5)
+        base_depth = torch.full((1, 1, 16, 20), 2.0)
+        outputs = model(feature, base_depth, (16, 20))
+        targets = {
+            "boundary_angular_soft": torch.rand(1, 1, 16, 20),
+            "boundary_valid": torch.ones(1, 1, 16, 20, dtype=torch.bool),
+            "boundary_tier": torch.full(
+                (1, 1, 16, 20), TIER_A_SOURCE, dtype=torch.uint8
+            ),
+        }
+        optimizer = torch.optim.AdamW(
+            (parameter for parameter in model.parameters() if parameter.requires_grad),
+            lr=1e-3,
+        )
+        loss = compute_angular_boundary_only_losses(outputs, targets)["total"]
+        optimizer.zero_grad(set_to_none=True)
+        loss.backward()
+        optimizer.step()
+        for name, parameter in model.named_parameters():
+            if name in frozen_before:
+                torch.testing.assert_close(parameter, frozen_before[name])
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ import sys
 import tarfile
 import time
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -88,6 +88,10 @@ DEFAULT_SOURCE_RGB_BINDING = (
     REPO_ROOT
     / "artifacts.local/experiments/ag-st-source-native-boundary-corpus-r0/rgb_binding.json"
 )
+DEFAULT_ANGULAR_BOUNDARY_LABEL_RESULT = (
+    REPO_ROOT
+    / "artifacts.local/experiments/ag-st-continuous-boundary-factors-angular-r0/result.json"
+)
 
 SPLIT_TOKEN = "AG_ST_MASKED_STUDENT_R0"
 SOURCE_BOUNDARY_SPLIT_TOKEN = "AG_ST_SOURCE_BOUNDARY_STUDENT_R0"
@@ -125,6 +129,10 @@ BOUNDARY_ONLY_LOSS_WEIGHTS = {
     "boundary_near_distance": 0.50,
     "boundary_heat_distance_consistency": 0.10,
 }
+ANGULAR_BOUNDARY_ONLY_LOSS_WEIGHTS = {
+    "boundary_angular_soft_bce": 1.0,
+    "boundary_angular_soft_dice": 0.5,
+}
 UNIFIED_CONTINUOUS_BOUNDARY_LOSS_WEIGHTS = {
     "depth_log_huber": LOSS_WEIGHTS["depth_log_huber"],
     "support_bce": LOSS_WEIGHTS["support_bce"],
@@ -143,6 +151,7 @@ class FrameDescriptor:
     video: dict[str, Any]
     source_id: str = "arkitscenes"
     rgb_binding: dict[str, Any] | None = None
+    angular_boundary_path: Path | None = None
 
 
 @dataclass
@@ -600,7 +609,58 @@ def aggregate_label_digest(paths: Iterable[Path]) -> dict[str, Any]:
     }
 
 
-def load_targets(path: Path, expected_hw: tuple[int, int]) -> tuple[dict[str, torch.Tensor], np.ndarray]:
+def bind_angular_boundary_labels(
+    descriptors: list[FrameDescriptor],
+    result_path: Path,
+) -> tuple[list[FrameDescriptor], dict[str, Any]]:
+    """Rebind ARKit/TUM descriptors to the R16 package without consuming ICL."""
+
+    result_path = result_path.resolve()
+    require(result_path.is_file(), "R16 angular boundary result missing")
+    result = load_json(result_path)
+    require(result.get("frame_count") == 81, "R16 angular frame count drift")
+    require(
+        result.get("contract", {}).get("teacher_filled_pixels") == "absent",
+        "R16 angular teacher-fill contract drift",
+    )
+    indexed = {
+        (str(row["source"]), str(row["frame_id"])): row
+        for row in result["frames"]
+    }
+    require(len(indexed) == 81, "R16 angular frame identities are not unique")
+    rebound: list[FrameDescriptor] = []
+    for descriptor in descriptors:
+        identity = (descriptor.source_id, descriptor.frame_stem)
+        require(identity in indexed, f"R16 angular label missing: {identity}")
+        row = indexed[identity]
+        require(str(row["parent_id"]) == descriptor.parent_id, "R16 angular parent drift")
+        require(tuple(int(value) for value in row["shape_hw"]) == descriptor.output_hw, "R16 angular shape drift")
+        label_path = Path(row["output"]).resolve()
+        require(label_path.is_file(), f"R16 angular payload missing: {label_path}")
+        require(sha256_file(label_path) == row["output_sha256"], "R16 angular payload SHA drift")
+        rebound.append(replace(descriptor, angular_boundary_path=label_path))
+    require(
+        {row.source_id for row in rebound} == {"arkitscenes", "tum_rgbd"},
+        "R18 training sources must be exactly ARKit/TUM",
+    )
+    return rebound, {
+        "kind": "R16_CAMERA_ANGULAR_SOFT_BOUNDARY",
+        "result_path": str(result_path),
+        "result_sha256": sha256_file(result_path),
+        "frame_count": len(rebound),
+        "parent_count": len({(row.source_id, row.parent_id) for row in rebound}),
+        "sources": sorted({row.source_id for row in rebound}),
+        "icl_consumed": False,
+        "teacher_filled_pixels": False,
+        "angular_soft_sigma_rad": float(result["angular_soft_sigma_rad"]),
+    }
+
+
+def load_targets(
+    path: Path,
+    expected_hw: tuple[int, int],
+    angular_boundary_path: Path | None = None,
+) -> tuple[dict[str, torch.Tensor], np.ndarray]:
     with np.load(path, allow_pickle=False) as payload:
         required = {
             "metric_depth_m_hw",
@@ -639,10 +699,18 @@ def load_targets(path: Path, expected_hw: tuple[int, int]) -> tuple[dict[str, to
             dtype=np.uint8,
         )
         boundary_distance = np.asarray(payload["boundary_distance_px_hw"], dtype=np.float32)
+        angular_boundary = "boundary_angular_soft_probability_hw" in payload.files
         boundary_soft = (
-            np.asarray(payload["boundary_soft_probability_hw"], dtype=np.float32)
+            np.asarray(payload["boundary_angular_soft_probability_hw"], dtype=np.float32)
+            if angular_boundary
+            else np.asarray(payload["boundary_soft_probability_hw"], dtype=np.float32)
             if "boundary_soft_probability_hw" in payload.files
             else np.exp(-boundary_distance / BOUNDARY_HEAT_SIGMA_PX).astype(np.float32)
+        )
+        boundary_core = (
+            np.asarray(payload["boundary_core_probability_hw"], dtype=np.float32)
+            if angular_boundary
+            else (boundary_distance <= BOUNDARY_BAND_PX).astype(np.float32)
         )
         require(np.isfinite(metric_depth[metric_valid]).all(), "valid metric label non-finite")
         require(np.isfinite(boundary_distance[boundary_valid]).all(), "valid boundary distance non-finite")
@@ -659,7 +727,7 @@ def load_targets(path: Path, expected_hw: tuple[int, int]) -> tuple[dict[str, to
             "support": torch.from_numpy(np.asarray(payload["support_truth_hw"], dtype=np.float32))[None, None],
             "support_valid": torch.from_numpy(support_valid)[None, None],
             "support_tier": torch.from_numpy(np.asarray(payload["support_quality_tier_hw"], dtype=np.uint8))[None, None],
-            "boundary": torch.from_numpy((boundary_distance <= BOUNDARY_BAND_PX).astype(np.float32))[None, None],
+            "boundary": torch.from_numpy(boundary_core)[None, None],
             "boundary_distance_px": torch.from_numpy(
                 np.nan_to_num(boundary_distance, nan=MAX_BOUNDARY_DISTANCE_PX)
             )[None, None],
@@ -676,7 +744,47 @@ def load_targets(path: Path, expected_hw: tuple[int, int]) -> tuple[dict[str, to
                 np.asarray(payload["evidence_quality_tier_hw"], dtype=np.uint8)
             )[None, None],
         }
+        if angular_boundary:
+            targets["boundary_angular_soft"] = torch.from_numpy(
+                np.nan_to_num(boundary_soft, nan=0.0)
+            )[None, None]
         intrinsics = np.asarray(payload["intrinsics_output"], dtype=np.float64)
+    if angular_boundary_path is not None:
+        angular_boundary_path = angular_boundary_path.resolve()
+        require(angular_boundary_path.is_file(), "angular boundary overlay missing")
+        with np.load(angular_boundary_path, allow_pickle=False) as angular:
+            angular_required = {
+                "boundary_core_probability_hw",
+                "boundary_angular_soft_probability_hw",
+                "boundary_truth_valid_hw",
+                "boundary_quality_tier_hw",
+            }
+            require(
+                angular_required <= set(angular.files),
+                "angular boundary overlay schema drift",
+            )
+            core = np.asarray(angular["boundary_core_probability_hw"], dtype=np.float32)
+            soft = np.asarray(
+                angular["boundary_angular_soft_probability_hw"], dtype=np.float32
+            )
+            valid = np.asarray(angular["boundary_truth_valid_hw"], dtype=np.bool_)
+            tier = np.asarray(angular["boundary_quality_tier_hw"], dtype=np.uint8)
+        require(
+            core.shape == soft.shape == valid.shape == tier.shape == expected_hw,
+            "angular boundary overlay shape drift",
+        )
+        require(
+            np.isfinite(soft[valid]).all()
+            and np.all((soft[valid] >= 0.0) & (soft[valid] <= 1.0)),
+            "angular boundary overlay probability invalid",
+        )
+        targets["boundary"] = torch.from_numpy(core)[None, None]
+        targets["boundary_soft"] = torch.from_numpy(
+            np.nan_to_num(soft, nan=0.0)
+        )[None, None]
+        targets["boundary_angular_soft"] = targets["boundary_soft"]
+        targets["boundary_valid"] = torch.from_numpy(valid)[None, None]
+        targets["boundary_tier"] = torch.from_numpy(tier)[None, None]
     return targets, intrinsics
 
 
@@ -828,7 +936,11 @@ def extract_depthart_features(
     padded_shapes: set[tuple[int, int]] = set()
     amp_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
     for descriptor in descriptors:
-        targets, expected_intrinsics = load_targets(descriptor.label_path, descriptor.output_hw)
+        targets, expected_intrinsics = load_targets(
+            descriptor.label_path,
+            descriptor.output_hw,
+            descriptor.angular_boundary_path,
+        )
         if descriptor.source_id == "arkitscenes" and descriptor.parent_id not in trajectories:
             trajectories[descriptor.parent_id] = parse_trajectory(
                 resolve_trajectory_path(descriptor.video)
@@ -946,6 +1058,7 @@ def extract_mobilenet_features(
         targets, expected_intrinsics = load_targets(
             descriptor.label_path,
             descriptor.output_hw,
+            descriptor.angular_boundary_path,
         )
         if descriptor.source_id == "arkitscenes" and descriptor.parent_id not in trajectories:
             trajectories[descriptor.parent_id] = parse_trajectory(
@@ -1512,6 +1625,71 @@ def compute_boundary_only_losses(
     }
 
 
+def compute_angular_boundary_only_losses(
+    outputs: dict[str, torch.Tensor],
+    targets: dict[str, torch.Tensor],
+) -> dict[str, torch.Tensor]:
+    """Optimize only the camera-angular soft boundary field from R16."""
+
+    require("boundary_angular_soft" in targets, "angular boundary target missing")
+    target = targets["boundary_angular_soft"].clamp(0.0, 1.0)
+    logits = outputs["boundary_logits"]
+    probability = torch.sigmoid(logits)
+    valid = targets["boundary_valid"].bool()
+    evidence_weights = tier_weights(targets["boundary_tier"])
+    heat_weights = evidence_weights * (0.05 + 20.0 * target)
+    bce_raw = F.binary_cross_entropy_with_logits(logits, target, reduction="none")
+    bce = masked_weighted_mean(bce_raw, valid, heat_weights)
+
+    selected_weights = evidence_weights * valid
+    numerator = 2.0 * torch.sum(selected_weights * probability * target) + 1.0
+    denominator = (
+        torch.sum(selected_weights * probability)
+        + torch.sum(selected_weights * target)
+        + 1.0
+    )
+    dice = 1.0 - numerator / denominator.clamp_min(1e-12)
+    raw = {
+        "boundary_angular_soft_bce": bce,
+        "boundary_angular_soft_dice": dice,
+    }
+    weighted = {
+        name: raw[name] * ANGULAR_BOUNDARY_ONLY_LOSS_WEIGHTS[name]
+        for name in raw
+    }
+    total = sum(weighted.values(), logits.sum() * 0.0)
+    return {
+        "total": total,
+        **{f"raw/{name}": value for name, value in raw.items()},
+        **{f"weighted/{name}": value for name, value in weighted.items()},
+    }
+
+
+def configure_angular_boundary_trainable(model: MaskedFactorStudent) -> dict[str, Any]:
+    """Freeze every factor except the isolated boundary trunk and probability head."""
+
+    require(model.boundary_trunk is not None, "angular objective requires factor-split boundary trunk")
+    model.requires_grad_(False)
+    model.boundary_trunk.requires_grad_(True)
+    model.boundary_logits.requires_grad_(True)
+    trainable = [name for name, parameter in model.named_parameters() if parameter.requires_grad]
+    require(trainable, "angular boundary trainable set empty")
+    require(
+        all(name.startswith("boundary_trunk.") or name.startswith("boundary_logits.") for name in trainable),
+        "non-boundary parameter escaped angular gradient firewall",
+    )
+    return {
+        "trainable_parameter_names": trainable,
+        "trainable_parameter_count": sum(
+            parameter.numel() for parameter in model.parameters() if parameter.requires_grad
+        ),
+        "frozen_boundary_distance_head": not any(
+            name.startswith("boundary_distance_logits.") for name in trainable
+        ),
+        "frozen_depth_support_obstacle_and_shared_trunk": True,
+    }
+
+
 def compute_unified_continuous_boundary_losses(
     outputs: dict[str, torch.Tensor],
     targets: dict[str, torch.Tensor],
@@ -1650,6 +1828,7 @@ def train_student(
             "depth_support",
             "depth_support_precision",
             "boundary_only",
+            "angular_boundary_only",
             "unified_continuous_boundary",
         },
         "invalid objective profile",
@@ -1692,6 +1871,8 @@ def train_student(
             outputs = model(feature, base_depth, frame.descriptor.output_hw)
             if objective_profile == "boundary_only":
                 losses = compute_boundary_only_losses(outputs, targets)
+            elif objective_profile == "angular_boundary_only":
+                losses = compute_angular_boundary_only_losses(outputs, targets)
             elif objective_profile == "unified_continuous_boundary":
                 losses = compute_unified_continuous_boundary_losses(
                     outputs,
@@ -2053,6 +2234,8 @@ def execute(args: argparse.Namespace) -> int:
     head_hidden_channels = int(args.head_hidden_channels)
     use_base_depth_feature = bool(args.use_base_depth_feature)
     depth_gate_profile = str(args.depth_gate_profile)
+    angular_label_result = getattr(args, "angular_boundary_label_result", None)
+    initial_head_checkpoint = getattr(args, "initial_head_checkpoint", None)
     stage0a_results = [args.stage0a_result.resolve()] + [
         value.resolve()
         for value in getattr(args, "additional_stage0a_result", [])
@@ -2084,11 +2267,17 @@ def execute(args: argparse.Namespace) -> int:
         depth_mode = "residual"
         encoder_label = "FROZEN_DEPTHART_S_METRIC_INDOOR"
     output_dir = args.output_dir.resolve()
+    if objective_profile == "angular_boundary_only":
+        require(encoder_name == "depthart_s", "angular R18 requires frozen DepthART-S")
+        require(feature_profile == "decoder_pyramid", "angular R18 requires DepthART decoder pyramid")
+        require(head_profile == "factor_split_dilated", "angular R18 requires factor-split head")
+        require(use_base_depth_feature, "angular R18 must preserve R14 base-depth feature contract")
+        require(angular_label_result is not None, "angular R18 label result missing")
+        require(initial_head_checkpoint is not None, "angular R18 requires frozen R14 initialization")
     require(checkpoint.is_file(), f"{encoder_name} checkpoint missing")
     if encoder_name == "depthart_s":
         require(depthart_source.is_dir(), "DepthART source missing")
     require(not output_dir.exists(), "masked-student output collision")
-    output_dir.mkdir(parents=True, exist_ok=False)
 
     descriptors, source_batches = build_frame_descriptor_batches(
         stage0a_results,
@@ -2114,6 +2303,16 @@ def execute(args: argparse.Namespace) -> int:
         )
         descriptors.extend(tum_descriptors)
         source_batches.append(tum_receipt)
+    angular_label_receipt: dict[str, Any] | None = None
+    if angular_label_result is not None:
+        require(
+            objective_profile == "angular_boundary_only",
+            "angular label rebinding is only valid for angular boundary objective",
+        )
+        descriptors, angular_label_receipt = bind_angular_boundary_labels(
+            descriptors,
+            Path(angular_label_result),
+        )
     parent_shapes: dict[str, tuple[int, int]] = {}
     for descriptor in descriptors:
         previous = parent_shapes.setdefault(descriptor.parent_id, descriptor.output_hw)
@@ -2163,6 +2362,7 @@ def execute(args: argparse.Namespace) -> int:
     torch.set_float32_matmul_precision("highest")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     require(device.type == "cuda", "masked-student canary requires CUDA")
+    output_dir.mkdir(parents=True, exist_ok=False)
     if encoder_name == "mobilenet_v3_small":
         cached, extraction = extract_mobilenet_features(
             descriptors,
@@ -2196,13 +2396,78 @@ def execute(args: argparse.Namespace) -> int:
         depth_gate_profile=depth_gate_profile,
     ).to(device)
     model.initialize_priors(priors)
-    if objective_profile == "boundary_only":
+    initialization_receipt: dict[str, Any] | None = None
+    if initial_head_checkpoint is not None:
+        initial_path = Path(initial_head_checkpoint).resolve()
+        require(initial_path.is_file(), "initial masked-factor checkpoint missing")
+        initial = torch.load(initial_path, map_location="cpu", weights_only=False)
+        require(
+            initial.get("schema") == "blindassist_ag_st_masked_factor_student_checkpoint_v1",
+            "initial masked-factor checkpoint schema drift",
+        )
+        architecture = initial.get("architecture", {})
+        require(
+            architecture.get("frozen_encoder") == encoder_label
+            and int(architecture.get("input_feature_channels", -1)) == feature_channels
+            and architecture.get("feature_profile") == feature_profile
+            and int(architecture.get("head_hidden_channels", -1)) == head_hidden_channels
+            and architecture.get("head_profile") == head_profile
+            and bool(architecture.get("use_base_depth_feature")) == use_base_depth_feature
+            and architecture.get("depth_mode") == depth_mode,
+            "initial masked-factor architecture drift",
+        )
+        incompatible = model.load_state_dict(initial["state_dict"], strict=True)
+        require(
+            not incompatible.missing_keys and not incompatible.unexpected_keys,
+            "initial masked-factor state drift",
+        )
+        initialization_receipt = {
+            "path": str(initial_path),
+            "sha256": sha256_file(initial_path),
+            "objective_profile": initial.get("objective_profile"),
+            "source_parent_count": len(
+                set(initial.get("split", {}).get("fit_parents", []))
+                | set(initial.get("split", {}).get("selection_parents", []))
+                | set(initial.get("split", {}).get("canary_parents", []))
+            ),
+        }
+    angular_gradient_firewall: dict[str, Any] | None = None
+    if objective_profile == "angular_boundary_only":
+        boundary_signals = {
+            "selection_angular_soft_bce_improved": (
+                selection_improvements["boundary_soft_bce"] is not None
+                and selection_improvements["boundary_soft_bce"] > 0.0
+            ),
+            "canary_angular_soft_bce_improved": (
+                canary_improvements["boundary_soft_bce"] is not None
+                and canary_improvements["boundary_soft_bce"] > 0.0
+            ),
+            "selection_fixed_core_f1_nonzero": (
+                after_selection["parent_macro"]["boundary_f1"] or 0.0
+            ) > 0.0,
+            "canary_fixed_core_f1_nonzero": (
+                after_canary["parent_macro"]["boundary_f1"] or 0.0
+            ) > 0.0,
+        }
+        supported = sum(boundary_signals.values())
+        total_core_signals = 4
+        status = (
+            "PARENT_DISJOINT_ANGULAR_BOUNDARY_SIGNAL_SUPPORTED"
+            if supported == total_core_signals
+            else "PARENT_DISJOINT_PARTIAL_ANGULAR_BOUNDARY_SIGNAL_SUPPORTED"
+            if supported > 0
+            else "PARENT_DISJOINT_ANGULAR_BOUNDARY_SIGNAL_NOT_SUPPORTED"
+        )
+        core_signals = boundary_signals
+    elif objective_profile == "boundary_only":
         for unused_head in (
             model.depth_residual,
             model.support_logits,
             model.obstacle_logits,
         ):
             unused_head.requires_grad_(False)
+    elif objective_profile == "angular_boundary_only":
+        angular_gradient_firewall = configure_angular_boundary_trainable(model)
     elif objective_profile in {"depth_support", "depth_support_precision"}:
         for unused_head in (
             model.boundary_logits,
@@ -2298,6 +2563,9 @@ def execute(args: argparse.Namespace) -> int:
             "source_balanced_sampling": bool(
                 getattr(args, "source_balanced_sampling", False)
             ),
+            "initialization": initialization_receipt,
+            "angular_gradient_firewall": angular_gradient_firewall,
+            "angular_label_contract": angular_label_receipt,
         },
     )
 
@@ -2423,6 +2691,10 @@ def execute(args: argparse.Namespace) -> int:
     if encoder_name == "depthart_s":
         encoder_inputs["depthart_source"] = str(depthart_source)
     source_inputs: dict[str, Any] = {"source_batches": source_batches}
+    if angular_label_receipt is not None:
+        source_inputs["angular_boundary_label_contract"] = angular_label_receipt
+    if initialization_receipt is not None:
+        source_inputs["initial_head_checkpoint"] = initialization_receipt
     if len(source_batches) == 1:
         source_inputs.update(
             {
@@ -2438,7 +2710,9 @@ def execute(args: argparse.Namespace) -> int:
         "status": status,
         "mode": "WILD_LAB_REVERSIBLE_EXPLORATION",
         "question": (
-            f"Can {encoder_label} RGB features learn sparse AG-ST physical-boundary distance/heat supervision across internal parent-disjoint roles?"
+            f"Can the isolated {encoder_label} boundary branch learn R16 camera-angular soft supervision from an R14 initialization without changing depth, support, obstacle, or pixel-distance heads?"
+            if objective_profile == "angular_boundary_only"
+            else f"Can {encoder_label} RGB features learn sparse AG-ST physical-boundary distance/heat supervision across internal parent-disjoint roles?"
             if objective_profile == "boundary_only"
             else f"Can {encoder_label} RGB features reduce metric depth error and calibrate support across {len(parent_shapes)} consumed parents using absolute-meter, 0.10 m soft-margin, BCE, and Dice supervision?"
             if objective_profile == "depth_support_precision"
@@ -2485,7 +2759,11 @@ def execute(args: argparse.Namespace) -> int:
                 if depth_mode == "residual"
                 else "ABSOLUTE_LOG_DEPTH"
             ),
-            "boundary_target": f"BOUNDARY_DISTANCE_LE_{BOUNDARY_BAND_PX:.1f}_PX",
+            "boundary_target": (
+                "R16_CAMERA_ANGULAR_SOFT_PROBABILITY_WITH_SOURCE_NATIVE_EXACT_CORE_EVALUATION"
+                if objective_profile == "angular_boundary_only"
+                else f"BOUNDARY_DISTANCE_LE_{BOUNDARY_BAND_PX:.1f}_PX"
+            ),
         },
         "supervision": {
             "tier_weights": {
@@ -2497,7 +2775,9 @@ def execute(args: argparse.Namespace) -> int:
             "priors_from_train_only": priors,
             "class_weights_from_train_only": class_weights,
             "loss_weights": (
-                BOUNDARY_ONLY_LOSS_WEIGHTS
+                ANGULAR_BOUNDARY_ONLY_LOSS_WEIGHTS
+                if objective_profile == "angular_boundary_only"
+                else BOUNDARY_ONLY_LOSS_WEIGHTS
                 if objective_profile == "boundary_only"
                 else UNIFIED_CONTINUOUS_BOUNDARY_LOSS_WEIGHTS
                 if objective_profile == "unified_continuous_boundary"
@@ -2508,6 +2788,12 @@ def execute(args: argparse.Namespace) -> int:
                 else LOSS_WEIGHTS
             ),
             "boundary_heat_sigma_px": BOUNDARY_HEAT_SIGMA_PX,
+            "angular_boundary_soft_sigma_rad": (
+                angular_label_receipt["angular_soft_sigma_rad"]
+                if angular_label_receipt is not None
+                else None
+            ),
+            "angular_gradient_firewall": angular_gradient_firewall,
             "support_calibration": support_calibration,
             "source_balanced_sampling": bool(
                 getattr(args, "source_balanced_sampling", False)
@@ -2555,6 +2841,11 @@ def execute(args: argparse.Namespace) -> int:
             "next_step": (
                 "Evaluate once on the pre-reserved fresh confirmation cohort without fitting or threshold selection."
                 if fit_all_consumed_parents
+                else "Evaluate the frozen checkpoint once on ICL exact and Bonn without threshold selection; promote only if angular localization improves without losing the existing Bonn signal."
+                if objective_profile == "angular_boundary_only"
+                and supported == total_core_signals
+                else "Retain R16 angular labels but reject this DepthART fine-tune until the failed internal boundary signal is localized."
+                if objective_profile == "angular_boundary_only"
                 else "Scale physical-boundary supervision to fresh parent/source sequences."
                 if objective_profile == "boundary_only" and supported == 4
                 else "Keep boundary isolated and revise its representation before scaling."
@@ -2638,11 +2929,24 @@ def parse_args() -> argparse.Namespace:
             "depth_support",
             "depth_support_precision",
             "boundary_only",
+            "angular_boundary_only",
             "unified_continuous_boundary",
         ),
         default="multifactor",
     )
     parser.add_argument("--split-token", default=SPLIT_TOKEN)
+    parser.add_argument(
+        "--angular-boundary-label-result",
+        type=Path,
+        default=None,
+        help="Optional R16 angular label result; required by angular_boundary_only.",
+    )
+    parser.add_argument(
+        "--initial-head-checkpoint",
+        type=Path,
+        default=None,
+        help="Optional masked-factor checkpoint used to initialize the factor head.",
+    )
     parser.add_argument(
         "--depthart-feature-profile",
         choices=("shared", "decoder_pyramid"),
