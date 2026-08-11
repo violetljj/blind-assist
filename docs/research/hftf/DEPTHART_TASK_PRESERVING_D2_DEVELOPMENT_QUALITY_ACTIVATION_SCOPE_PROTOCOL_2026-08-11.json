@@ -1,0 +1,75 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_development_quality_activation_scope_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D2_DEVELOPMENT_BASELINE_AND_FROZEN_HEAD_QUALITY",
+  "frozen_at": "2026-08-11",
+  "status": "PRE_OUTCOME_SCOPE_FROZEN_AWAITING_EXPLICIT_DEVELOPMENT_ACTIVATION",
+  "predecessor": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_TRAIN_ONLY_RESULT_2026-08-11.json",
+    "terminal": "D2_TRAIN_ONLY_GOVERNED_BASE_OUTPUT_AND_HEAD_TRAINING_PASS_HEAD_LOCKED"
+  },
+  "head_checkpoint": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-train-20260811-r1/task-head-step-500.json",
+    "bytes": 9527,
+    "sha256": "7D8897445A118A633B2DCFCC6790BB8CE481A8505114122EC132838DD1B017C8",
+    "mutable": false
+  },
+  "development_scope": [
+    {"role_order": 1, "visit_id": "469596", "video_id": "47430877", "frame_count": 300},
+    {"role_order": 2, "visit_id": "434691", "video_id": "42898635", "frame_count": 300},
+    {"role_order": 3, "visit_id": "469646", "video_id": "47430802", "frame_count": 300},
+    {"role_order": 4, "visit_id": "468094", "video_id": "47334356", "frame_count": 300}
+  ],
+  "execution_if_authorized": {
+    "frames": 1200,
+    "cells": 10800,
+    "device": "fresh SM-S9280 / SM8650 / HTP v75 identity binding",
+    "base_output": "same frozen saved context only; no direct DLC and no profiling",
+    "baseline": "same frozen base-depth geometry with no D2 head",
+    "candidate": "same frozen base-depth geometry plus exact locked step-500 head",
+    "training_or_tuning": false,
+    "one_shot_quality_aggregation": true
+  },
+  "quality_gates": {
+    "known_coverage_min": 0.9,
+    "clearance_mae_m_max": 0.2,
+    "false_clear_all_known_max": 0.08,
+    "false_block_given_clear_max": 0.02,
+    "temporal_clearance_delta_mae_m_max": 0.15,
+    "geometry_transition_agreement_min": 0.9,
+    "valid_to_unknown_rate_max": 0.1,
+    "worst_parent_false_clear_all_known_max": 0.12,
+    "noninferiority_against_baseline": {
+      "known_coverage_decrease_max": 0.02,
+      "clearance_mae_m_increase_max": 0.025,
+      "false_clear_all_known_increase_max": 0.01,
+      "false_clear_given_occupied_increase_max": 0.02,
+      "false_block_given_clear_increase_max": 0.01,
+      "temporal_clearance_delta_mae_m_increase_max": 0.025,
+      "geometry_transition_agreement_decrease_max": 0.02,
+      "valid_to_unknown_rate_increase_max": 0.02
+    },
+    "aggregate_policy": "pooled, parent macro, session macro and worst parent must all be finite; any missing denominator fails closed",
+    "unknown_is_negative": false
+  },
+  "forbidden": [
+    "change checkpoint, base model, source identities, frame stems, features, labels, thresholds or postprocess",
+    "train, tune, recalibrate, early-stop or select on Development",
+    "reuse D1 consumed outcome or access R2 data",
+    "measure performance or claim Android default, production or safety authority",
+    "describe a D2 PASS as an R2 candidate lock"
+  ],
+  "authority": {
+    "scope_design": true,
+    "development_source_decode": false,
+    "development_truth": false,
+    "development_model_output": false,
+    "development_quality": false,
+    "training": false,
+    "r2_access": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "current_gate": "EXPLICIT_USER_AUTHORIZATION_FOR_D2_DEVELOPMENT_BASELINE_AND_FROZEN_HEAD_QUALITY"
+}
