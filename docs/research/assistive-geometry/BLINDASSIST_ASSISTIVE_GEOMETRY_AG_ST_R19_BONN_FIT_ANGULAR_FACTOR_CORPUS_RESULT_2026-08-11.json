@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r19_bonn_fit_angular_factor_corpus_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R19_BONN_FIT_ANGULAR_FACTOR_CORPUS_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "WILD_LAB_SOURCE_NATIVE_INCOMPLETE_FACTOR_CORPUS_EXPANSION",
+  "status": "BONN_FIT_ANGULAR_FACTOR_CORPUS_PASS",
+  "question": "Can the validated camera-angular boundary factor be expanded to new Bonn FIT parents using source-native RGB-D without requiring complete support or obstacle truth?",
+  "inputs": {
+    "cohort": "docs/research/assistive-geometry/BLINDASSIST_AG_ST_BONN_MIXED_DOMAIN_COHORT_R0_2026-08-10.json",
+    "dataset_role": "eight frozen Bonn FIT parents only",
+    "source_depth": "uint16 depth divided by 5000",
+    "intrinsics": [[542.822841, 0.0, 315.59352], [0.0, 542.57687, 237.756098], [0.0, 0.0, 1.0]]
+  },
+  "output": {
+    "result": "artifacts.local/experiments/ag-st-bonn-fit-angular-factor-labels-r0/result.json",
+    "result_sha256": "4F1E9DCE5E2A20F9E17BFDE6DAB42095A447B4F0A3354CE0692C99FD8B2EA18E",
+    "rgb_binding": "artifacts.local/experiments/ag-st-bonn-fit-angular-factor-labels-r0/rgb_binding.json",
+    "rgb_binding_sha256": "14EDDFEA569DE52354C4B62FE2CB428C63788ACBA13A809DEF97157CFB2BFFC1",
+    "parent_count": 8,
+    "frame_count": 24,
+    "npz_count": 24,
+    "masked_student_loader_frames_passed": 24
+  },
+  "factor_contract": {
+    "metric_depth": "source-native metric depth with A_SOURCE tier on valid pixels",
+    "boundary_core": "conservative point-to-plane discontinuity derived from source depth",
+    "continuous_boundary": "pixel distance/soft probability plus camera-ray angular distance/soft probability at sigma 0.012 rad",
+    "support": "UNKNOWN on every pixel because gravity/support evidence is not locked for this source slice",
+    "obstacle_evidence": "UNKNOWN on every pixel because support-relative evidence is unavailable",
+    "teacher_filled_pixels": false,
+    "complete_truth_required": false
+  },
+  "coverage": {
+    "metric_depth_valid_pixels": 6323102,
+    "boundary_valid_pixels": 6085137,
+    "boundary_core_positive_pixels": 229084,
+    "angular_soft_band_pixels_le_sigma": 2723608,
+    "support_valid_pixels": 0,
+    "obstacle_evidence_valid_pixels": 0
+  },
+  "sealed_roles": {
+    "mixed_domain_evaluation_parents": 8,
+    "reserve_parents": 2,
+    "previous_external_fixed8_parents": 8,
+    "consumed_by_r19": false
+  },
+  "gates": {
+    "fit_parent_count_eq_8": true,
+    "frame_count_eq_24": true,
+    "three_frames_per_parent": true,
+    "fit_disjoint_from_evaluation_reserve_and_previous_fixed8": true,
+    "every_frame_has_source_depth": true,
+    "every_parent_has_boundary_core": true,
+    "support_and_obstacle_remain_unknown": true,
+    "all_outputs_have_sha_receipts": true,
+    "existing_masked_student_loader_24_of_24": true,
+    "focused_tests_3_of_3": true
+  },
+  "implementation": {
+    "materializer": "scripts/research/assistive_geometry/materialize_ag_st_bonn_fit_angular_factor_labels.py",
+    "materializer_sha256": "4EDD9BA6A65E99118CC8288B5C7296829BC126DDC95A49B3733045A92EBAD8C2",
+    "test": "scripts/research/assistive_geometry/test_materialize_ag_st_bonn_fit_angular_factor_labels.py",
+    "test_sha256": "C24E3D1F474A108C1C5EF022EF7C768896BBE723FDCF958520BD11AC4B78D75F"
+  },
+  "decision": {
+    "angular_factor_corpus_expanded": true,
+    "source_count_after_training_corpus_merge_candidate": 3,
+    "parent_count_after_training_corpus_merge_candidate": 31,
+    "frame_count_after_training_corpus_merge_candidate": 93,
+    "complete_truth_required": false,
+    "evaluation_or_reserve_opened": false,
+    "next_execution": "Add this Bonn FIT label directory and RGB binding as a third masked-training source with source-balanced sampling; train one boundary-only angular probe while keeping all sealed Bonn/ICL roles out of optimization and selection.",
+    "formal_f1_authority_changed": false
+  },
+  "claim_boundary": "WILD_LAB corpus expansion using source-native depth and deterministic angular-boundary derivation. It demonstrates usable incomplete factor labels, not complete truth, support/obstacle supervision, dataset-license clearance, task utility, formal F1 authorization, safety, deployment, or product performance."
+}

@@ -439,6 +439,19 @@ angular factor 的跨 source learnability 得到支持，不需要完整真值�
 下一步把已验证 angular factor 扩到更广的 SuperTeacher corpus。若未来确实需要二值 operating mask，只允许在
 ARKit/TUM 内部 selection 上拟合一次标量 calibration，再把 ICL/Bonn 保持为一次性确认。
 
+这一步已由
+[R19 Bonn FIT angular factor corpus](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R19_BONN_FIT_ANGULAR_FACTOR_CORPUS_RESULT_2026-08-11.json)
+完成。它没有打开此前 8 个 Bonn external parent，也没有打开 mixed-domain 的 8 evaluation + 2 reserve；只消费
+已冻结的 8 个 Bonn FIT parent/24 帧。source-native depth 产生 `6,323,102` 个 metric-valid 像素，保守
+point-to-plane boundary 产生 `6,085,137` 个 valid 像素和 `229,084` 个 core positive；固定 `0.012 rad`
+angular soft band 覆盖 `2,723,608` 像素。没有 gravity/support 证据的 support 与 obstacle 字段全部显式
+UNKNOWN，而不是负样本；不需要完整真值。
+
+24/24 NPZ 已被现有 masked-student `load_targets` 实际读取，angular field 全部存在，3/3 focused tests 与
+9/9 materialization/loader gates PASS。候选训练 corpus 因此可从 ARKit/TUM 的 23 parent/69 帧扩为
+ARKit/TUM/Bonn FIT 的 31 parent/93 帧。下一步是把该目录作为第三个 source 接入 source-balanced boundary-only
+训练；ICL、原 Bonn fixed8、mixed evaluation8 和 reserve2 继续不进入 optimization/selection。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时
