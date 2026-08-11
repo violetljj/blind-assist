@@ -219,8 +219,17 @@ The exact successor cohort is now frozen at eight new Training visits and 120
 pose-bounded frames. All 24 source URLs passed zero-body HEAD; 318,241,411
 bytes were downloaded once and verified against HEAD, SHA-256 and CRC. ZIP
 inventory and trajectory planning passed without decoding pixel arrays or
-reading model/truth values. The next implementation surface is the
-roster-independent two-phase R6 confirmation executor.
+reading model/truth values.
+
+`r6_confirmation.py`, `r6_confirmation_io.py`, and
+`run_r6_untouched_confirmation.py` now implement the roster-independent
+two-phase executor. Phase A source receipts intentionally omit FARO: the
+allowed reader roles are RGB, AppleDepth, confidence, intrinsics, and
+trajectory, while DepthART receives only RGB/K. The runner seals all 120
+candidates, then all 120 source-only decisions, reloads both completion seals,
+and only then opens one registered FARO member per frame. Support-unobservable
+FARO frames retain nine UNKNOWN slots. The implementation and unique one-shot
+execution lock are frozen; the evidence root is still absent and unconsumed.
 
 Focused validation:
 
@@ -231,4 +240,15 @@ E:\codex-tools\venvs\riskseg-r0-py311\Scripts\python.exe `
   scripts.research.taro_o0r_candidate_scale_runtime.test_factor_split_canary `
   scripts.research.taro_o0r_candidate_scale_runtime.test_r6_factor_split `
   scripts.research.taro_o0r_candidate_scale_runtime.test_validate_r6_implementation_lock
+```
+
+R6 executor/lock validation:
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  -m unittest `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_r6_confirmation `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_r6_confirmation_runner `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_validate_r6_confirmation_implementation_lock `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_validate_r6_confirmation_execution_lock -v
 ```

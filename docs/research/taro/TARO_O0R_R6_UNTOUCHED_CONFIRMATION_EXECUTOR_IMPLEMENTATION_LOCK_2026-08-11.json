@@ -1,0 +1,91 @@
+{
+  "schema": "blindassist.taro.o0r.r6_untouched_confirmation_executor_implementation_lock.v1",
+  "lock_id": "TARO_O0R_R6_UNTOUCHED_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK",
+  "date": "2026-08-11",
+  "research_mode": "WILD_LAB",
+  "status": "EXECUTOR_IMPLEMENTATION_FROZEN_EXECUTION_FALSE",
+  "predecessor_bindings": [
+    {"role": "R6_FACTOR_COMPOSITOR_IMPLEMENTATION_LOCK", "path": "docs/research/taro/TARO_O0R_R6_FACTOR_SPLIT_IMPLEMENTATION_LOCK_2026-08-11.json", "bytes": 5026, "sha256": "34D1C30193183F8406D5A4CA5EF7598E7EE933B4D62008500A70523A5EE3C90B"},
+    {"role": "R6_UNTOUCHED_DATA_LOCK", "path": "docs/research/taro/TARO_O0R_R6_UNTOUCHED_COHORT_AND_DATA_USE_LOCK_2026-08-11.json", "bytes": 7043, "sha256": "DEC4D54487C8A321017EAC615526242BF1A31D21CE5FE5E4333C1D252AA5FA83"},
+    {"role": "R6_EXACT_FRAME_INVENTORY", "path": "artifacts.local/evidence/taro/o0r-r6-untouched-inventory-r0/exact-frame-plan.json", "bytes": 12340, "sha256": "69352D6A940111E738488AA25CFAB8A924658B8C5720D9CE7A50AC612558D6A8"},
+    {"role": "R6_INVENTORY_RESULT", "path": "artifacts.local/evidence/taro/o0r-r6-untouched-inventory-r0/result.json", "bytes": 454, "sha256": "DB8144DB3114CC379744AE30D26DAB7EC9AC0EA56DE017B539585B16A7ACD341"},
+    {"role": "R6_INVENTORY_MANIFEST", "path": "artifacts.local/evidence/taro/o0r-r6-untouched-inventory-r0/manifest.json", "bytes": 695, "sha256": "7F889A97618653B886525DD70BCA354C0DACE46F1939F6AB7540A8D6E34C9F19"}
+  ],
+  "exact_cohort": {
+    "roster": [
+      {"visit_id": "467175", "video_id": "47333514", "frame_count": 16},
+      {"visit_id": "467312", "video_id": "45261569", "frame_count": 14},
+      {"visit_id": "435329", "video_id": "42899445", "frame_count": 8},
+      {"visit_id": "423306", "video_id": "42897745", "frame_count": 13},
+      {"visit_id": "466652", "video_id": "45261100", "frame_count": 11},
+      {"visit_id": "469650", "video_id": "47333562", "frame_count": 24},
+      {"visit_id": "470439", "video_id": "47115427", "frame_count": 5},
+      {"visit_id": "469830", "video_id": "47334055", "frame_count": 29}
+    ],
+    "parent_count": 8,
+    "physical_frame_count": 120,
+    "query_slot_count": 1080,
+    "formation_parent_overlap_count": 0
+  },
+  "frozen_algorithm": {
+    "analysis_role": "UNTOUCHED_CONFIRMATION",
+    "policy_id": "R5_SELECTED_SUPPORT_BOUNDARY_PLUS_ALWAYS_R1_QUERY_CLEARANCE_V1",
+    "candidate_model_id": "depthart-s-metric-indoor-448-official-fp32",
+    "checkpoint_sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65",
+    "preprocess_id": "DEPTHART_OFFICIAL_LOWER_BOUND_448_RGB_CUBIC_IMAGENET_V1",
+    "postprocess_id": "TARO_TORCH_CPU_BILINEAR_ALIGN_CORNERS_TRUE_FLOAT32_448X608_TO_1440X1920_V1",
+    "support_owner": "PHASE_A_SELECTED_SUPPORT_BOUNDARY_COMPONENT",
+    "boundary_owner": "PHASE_A_SELECTED_SUPPORT_BOUNDARY_COMPONENT",
+    "query_clearance_owner": "ALWAYS_R1_BASELINE",
+    "source_support_membership_uses_candidate_depth": false,
+    "learned_parameters": 0,
+    "training_steps": 0,
+    "threshold_changes": 0
+  },
+  "phase_firewall": {
+    "phase_a_payload_allowlist": ["color", "lowres_depth", "confidence", "intrinsics", "trajectory"],
+    "candidate_model_inputs": ["REGISTERED_RGB", "BOUND_EFFECTIVE_K"],
+    "all_120_candidates_before_source_decisions": true,
+    "all_120_source_decisions_before_faro": true,
+    "phase_a_completion_reload_before_first_faro_read": true,
+    "phase_b_payload_allowlist": ["highres_depth"],
+    "support_unobservable_becomes_nine_unknown_slots": true,
+    "branch_reselection_after_truth": false,
+    "prior_outcome_read": false
+  },
+  "implementation_bindings": [
+    {"role": "R6_CONFIRMATION_CORE", "path": "scripts/research/taro_o0r_candidate_scale_runtime/r6_confirmation.py", "bytes": 60703, "sha256": "19EA4752CE42DCB7FB8384F0965894CD32C5776EE8757801993883DE996205D4"},
+    {"role": "R6_CONFIRMATION_IO", "path": "scripts/research/taro_o0r_candidate_scale_runtime/r6_confirmation_io.py", "bytes": 12915, "sha256": "E924D49A0A11ADAA52B0BD3F529EF70DD43ABFB6879F7DAFA460D63E89437DC3"},
+    {"role": "R6_CONFIRMATION_RUNNER", "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_r6_untouched_confirmation.py", "bytes": 16730, "sha256": "648B17ADCCA0D3E56F070DB5AE5C6D85C6916268E9E330D1738221526E47023C"},
+    {"role": "R6_CONFIRMATION_CORE_TEST", "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_r6_confirmation.py", "bytes": 10084, "sha256": "F17961EB3A3A01765F849D6BE5A398975D348222D135D62F6F36148B4894D8B4"},
+    {"role": "R6_CONFIRMATION_RUNNER_TEST", "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_r6_confirmation_runner.py", "bytes": 2408, "sha256": "3FAC7633CD49729805E03358EB2A308E20C528D078B7D3FF0E02895F3146551B"}
+  ],
+  "test_receipt": {
+    "focused_test_count": 8,
+    "focused_test_failures": 0,
+    "command": "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe -m unittest scripts.research.taro_o0r_candidate_scale_runtime.test_r6_confirmation scripts.research.taro_o0r_candidate_scale_runtime.test_r6_confirmation_runner -v",
+    "covered": [
+      "PHASE_A_FARO_ROLE_REJECTED",
+      "TRUTH_BINDING_CONTAINER_LINEAGE",
+      "NINE_QUERY_EXACT_COPY_COMPOSITOR",
+      "SUPPORT_UNOBSERVABLE_RETAINED_AS_NINE_UNKNOWN",
+      "EXACT_EIGHT_PARENT_120_FRAME_LOCAL_INVENTORY",
+      "PHASE_A_READER_NO_FARO",
+      "PHASE_B_READER_FARO_ONLY"
+    ]
+  },
+  "execution_authority": {
+    "implementation_complete": true,
+    "source_decode": false,
+    "model_execution": false,
+    "truth_scoring": false,
+    "evidence_root_creation": false,
+    "training": false,
+    "network": false,
+    "device": false,
+    "product": false,
+    "safety": false
+  },
+  "unique_successor": "TARO_O0R_R6_UNTOUCHED_CONFIRMATION_ONE_SHOT_EXECUTION_LOCK",
+  "claim_ceiling": "This lock freezes the two-stage R6 executor and its local-source tests only. It is not an execution, scientific result, deployment, product, or safety claim."
+}

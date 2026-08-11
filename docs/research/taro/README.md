@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_PROTOCOL_FROZEN / R6_FACTOR_COMPOSITOR_IMPLEMENTATION_FROZEN / R6_UNTOUCHED_8_PARENTS_120_FRAMES_SOURCE_PREFLIGHT_PASS / R6_EXECUTOR_IMPLEMENTATION_REQUIRED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_PROTOCOL_FROZEN / R6_FACTOR_COMPOSITOR_IMPLEMENTATION_FROZEN / R6_UNTOUCHED_8_PARENTS_120_FRAMES_SOURCE_PREFLIGHT_PASS / R6_EXECUTOR_IMPLEMENTATION_FROZEN / R6_EXECUTION_LOCK_AUTHORIZED_UNCONSUMED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -132,6 +132,12 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   用户授权已约束到 exact 8 个新 Training parents 与 24 个 source assets；授权不自动激活执行；
 - [R6 untouched source preflight result](TARO_O0R_R6_UNTOUCHED_SOURCE_PREFLIGHT_RESULT_2026-08-11.md)：
   HEAD 24/24、下载完整性 24/24、container CRC 与 exact pose plan 均 PASS；冻结 120 frames，模型与 truth 未运行；
+- [R6 untouched confirmation executor implementation lock](TARO_O0R_R6_UNTOUCHED_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_2026-08-11.json)：
+  独立 R6 source receipt、DepthART candidate、source-only decision、FARO truth binding、9-query factor compositor、
+  `UNKNOWN` retention、真实 ZIP I/O 与 one-shot runner 已 hash-bound；8 个 focused tests PASS，execution=false；
+- [R6 untouched confirmation one-shot execution lock](TARO_O0R_R6_UNTOUCHED_CONFIRMATION_ONE_SHOT_EXECUTION_LOCK_2026-08-11.json)：
+  精确绑定 8 parents / 120 frames / 1,080 slots、DepthART commit/checkpoint/transform、Phase-A/Phase-B firewall、
+  唯一 argv、资源上限与 absent evidence root；当前 `AUTHORIZED_UNCONSUMED`；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -142,7 +148,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_R6_UNTOUCHED_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK`
+`TARO_O0R_R6_UNTOUCHED_CONFIRMATION_ONE_SHOT_EXECUTION_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -230,8 +236,10 @@ R5 已在 8 个 visit-disjoint former `ADAPTER_FIT` parents / 211 source frames 
 R6 把 ownership 拆到 factor level：SUPPORT/BOUNDARY 沿用 R5 source-only branch，QUERY_CLEARANCE 固定沿用
 R1 baseline。protocol 与 factor compositor 已冻结并通过 1,899-query formation replay。新的 untouched cohort
 已从 1,757 个 eligible Training rows outcome-blind 选出；8 parents / 120 exact frames 的 HEAD、source download、
-SHA/CRC 与 pose-bounded inventory 均 PASS。当前没有运行新 cohort 的模型或 truth scoring；唯一后继是实现并
-hash-bind roster-independent R6 two-phase executor。
+SHA/CRC 与 pose-bounded inventory 均 PASS。roster-independent two-phase executor 现已实现并 hash-bound：
+Phase A 只允许 RGB/AppleDepth/confidence/K/trajectory，模型只接收 RGB/K；全部 candidate 与 source decision
+封存并重载 completion 后，Phase B 才能首次读取 FARO。当前没有运行新 cohort 的模型或 truth scoring；
+唯一后继是消费已授权的 exact one-shot execution lock。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定

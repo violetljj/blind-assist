@@ -1,0 +1,91 @@
+{
+  "schema": "blindassist.taro.o0r.r6_untouched_confirmation_one_shot_execution_lock.v1",
+  "lock_id": "TARO_O0R_R6_UNTOUCHED_CONFIRMATION_ONE_SHOT_EXECUTION_LOCK",
+  "date": "2026-08-11",
+  "research_mode": "WILD_LAB",
+  "status": "ONE_SHOT_EXECUTION_AUTHORIZED_NOT_YET_CONSUMED",
+  "implementation_lock_binding": {
+    "path": "docs/research/taro/TARO_O0R_R6_UNTOUCHED_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_2026-08-11.json",
+    "bytes": 5959,
+    "sha256": "651769E9D360CA84C81704D35BC57C78B948BC5ADC45500222457ED801B1A0BF"
+  },
+  "inventory_binding": {
+    "path": "artifacts.local/evidence/taro/o0r-r6-untouched-inventory-r0/exact-frame-plan.json",
+    "bytes": 12340,
+    "sha256": "69352D6A940111E738488AA25CFAB8A924658B8C5720D9CE7A50AC612558D6A8"
+  },
+  "execution_validator_binding": {
+    "path": "scripts/research/taro_o0r_candidate_scale_runtime/validate_r6_confirmation_execution_lock.py",
+    "bytes": 9279,
+    "sha256": "C923AFBAC9F543919DCDFCE87055A1AF9AFE302AFB72F1934D266613B6FE9B4C"
+  },
+  "roots": {
+    "repo_root": "E:/linnan/linnan",
+    "inventory_path": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-untouched-inventory-r0/exact-frame-plan.json",
+    "evidence_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-untouched-confirmation-r0"
+  },
+  "candidate_identity": {
+    "model_id": "depthart-s-metric-indoor-448-official-fp32",
+    "source_root": "F:/ba-data/blindassist-artifacts-20260805/models/depthart/source",
+    "source_commit": "0384521b3bcb4c64adf03eeb5d55ebdb1cbdd84c",
+    "checkpoint_path": "F:/ba-data/blindassist-artifacts-20260805/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+    "checkpoint_bytes": 32871942,
+    "checkpoint_sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65",
+    "preprocess_id": "DEPTHART_OFFICIAL_LOWER_BOUND_448_RGB_CUBIC_IMAGENET_V1",
+    "postprocess_id": "TARO_TORCH_CPU_BILINEAR_ALIGN_CORNERS_TRUE_FLOAT32_448X608_TO_1440X1920_V1"
+  },
+  "exact_cohort": {
+    "parent_count": 8,
+    "physical_frame_count": 120,
+    "query_slot_count": 1080,
+    "parent_frame_counts": {"467175": 16, "467312": 14, "435329": 8, "423306": 13, "466652": 11, "469650": 24, "470439": 5, "469830": 29},
+    "formation_parent_overlap_count": 0
+  },
+  "phase_firewall": {
+    "all_candidates_before_decisions": true,
+    "all_decisions_before_faro": true,
+    "phase_a_completion_reload_before_faro": true,
+    "phase_a_payload_allowlist": ["color", "lowres_depth", "confidence", "intrinsics", "trajectory"],
+    "phase_b_payload_allowlist": ["highres_depth"],
+    "prior_outcome_roots_allowed": false,
+    "branch_reselection_after_truth_allowed": false
+  },
+  "unique_argv": [
+    "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe",
+    "-m",
+    "scripts.research.taro_o0r_candidate_scale_runtime.run_r6_untouched_confirmation",
+    "--execution-lock",
+    "docs/research/taro/TARO_O0R_R6_UNTOUCHED_CONFIRMATION_ONE_SHOT_EXECUTION_LOCK_2026-08-11.json"
+  ],
+  "argv_alternatives": [],
+  "resource_budget": {
+    "maximum_wall_seconds": 28800,
+    "maximum_peak_rss_bytes": 17179869184,
+    "maximum_cuda_allocated_bytes": 8500000000,
+    "maximum_evidence_bytes": 2147483648
+  },
+  "activation": {
+    "root_must_be_absent": true,
+    "one_shot_consumed_on_root_creation": true,
+    "overwrite": false,
+    "rerun": false
+  },
+  "user_authority": {
+    "explicit_model_and_truth_execution_authority": true,
+    "scope": "EXACT_R6_UNTOUCHED_8_PARENTS_120_DEPTHART_INFERENCES_PHASE_A_SOURCE_DECISIONS_AND_SAME_FRAME_PHASE_B_FARO_SCORING",
+    "authorization_sha256": "6CF2531AB1119B67AD2010040AE1AC73F817785684FCCC26111B3B70EF5FCBE5",
+    "recorded_at_utc": "2026-08-11T11:08:53.5327727+00:00"
+  },
+  "execution_authority": {
+    "one_shot_execution_lock": true,
+    "depthart_inference": true,
+    "phase_a_source_decisions": true,
+    "phase_b_truth_scoring": true,
+    "training": false,
+    "network": false,
+    "device": false,
+    "product": false,
+    "safety": false
+  },
+  "claim_ceiling": "This one-shot authority covers exactly 120 untouched-parent DepthART inferences, source-only Phase-A decisions, and same-frame Phase-B FARO factor scoring. Any PASS remains WILD_LAB evidence, not deployment, product efficacy, or safety proof."
+}
