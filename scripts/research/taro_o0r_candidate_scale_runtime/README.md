@@ -250,6 +250,21 @@ The verifier checks all 725 manifest files and replays all 1,080 query records.
 It reproduces the terminal and gates; the maximum aggregate replay delta after
 12-decimal JSON canonicalization is `5.000444502911705e-13`.
 
+## Prospective source-defined factor runtime
+
+R6 confirmed factor ownership on a FARO-defined common-support comparison
+surface. That surface is valid for attribution but cannot be a runtime input.
+The successor protocol therefore freezes
+`FACTOR_OWNER_DEPTH_SOURCE_DEFINED_LOCAL_SURFACE_V1`: point IDs, local surface,
+coverage and validity must be recomputed from the factor owner's sealed depth,
+K, gravity and query receipt. The public runtime API cannot accept FARO, truth,
+task metrics or prior outcomes.
+
+The eight R6 untouched parents are forbidden for implementation, formation or
+tuning. The next authorized action is only the source-defined runtime module
+and synthetic mutation tests; uncertainty, the final reducer and all real-data
+execution remain disabled.
+
 Focused validation:
 
 ```powershell

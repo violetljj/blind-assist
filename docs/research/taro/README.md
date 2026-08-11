@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -142,6 +142,10 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   8 parents / 120 frames / 1,080 slots 的九门全部 PASS；extraction evaluability `725 → 765`、boundary
   evaluability `45 → 50`、query-known `6 → 6`，height/normal 为 8/8 parents 联合正向；725 个 evidence
   文件已独立验签，R6 factor policy 获得 research-route promotion；
+- [R6 factor-policy adoption and prospective-runtime protocol](TARO_O0R_R6_FACTOR_POLICY_ADOPTION_AND_PROSPECTIVE_RUNTIME_PROTOCOL_LOCK_2026-08-11.md)：
+  明确 R6 的 FARO common-support 仅是归因 surface，不是 runtime input；下一实现必须从 factor owner depth、
+  K、重力与 query 重算 source-defined surface，public API 禁止 FARO/truth/outcome，且禁用 8 个 R6 untouched
+  parents 做 implementation/formation/调参；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -152,7 +156,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_R6_FACTOR_POLICY_ADOPTION_AND_PROSPECTIVE_RUNTIME_PROTOCOL_LOCK`
+`TARO_O0R_R6_PROSPECTIVE_FACTOR_RUNTIME_IMPLEMENTATION_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -248,6 +252,11 @@ completion 后，Phase B 才首次读取 FARO。
 联合正向。34 个 FARO support-unobservable frames 保留为 `UNKNOWN`。725 个 evidence 文件与 1,080 条
 query lineage 已独立复核；one-shot root 已消费，不得覆盖或重跑。唯一后继是冻结 factor policy 如何进入
 prospective TARO research runtime；不得从本 cohort 事后拟合 selector/阈值，也不得外推为部署、产品或安全证明。
+
+该 prospective protocol 现已冻结。它明确关闭 R5/R6 evaluator 的最后一条 runtime interface seam：旧
+common-support pixels 与 local-valid fraction 由 FARO 定义，只能用于 task-metric 归因；未来 public runtime
+必须从 factor owner 自己的 sealed depth、K、重力和 query receipt 重建 source-defined local surface。当前只授权
+实现与 synthetic mutation tests，不授权 formation replay、新数据、模型、truth、reducer、设备或产品执行。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定
