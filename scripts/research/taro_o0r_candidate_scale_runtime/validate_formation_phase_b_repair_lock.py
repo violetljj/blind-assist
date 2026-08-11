@@ -13,7 +13,7 @@ from typing import Any, Sequence
 
 
 SCHEMA = "blindassist.taro.o0r.r6_formation_phase_b_repair_execution_lock.v1"
-LOCK_ID = "TARO_O0R_R6_FORMATION_PHASE_B_REPAIR_R3_ONE_SHOT_EXECUTION_LOCK"
+LOCK_ID = "TARO_O0R_R6_FORMATION_PHASE_B_REPAIR_R5_ONE_SHOT_EXECUTION_LOCK"
 EXPECTED_ROOTS = {
     "repo_root": "E:/linnan/linnan",
     "frame_plan_path": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/exact-frame-plan.json.gz",
@@ -21,8 +21,8 @@ EXPECTED_ROOTS = {
     "source_evidence_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-formation-source-r0",
     "fit_candidate_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5",
     "eval_candidate_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r3",
-    "phase_a_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r2",
-    "output_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r3",
+    "phase_a_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r4",
+    "output_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r5",
 }
 EXPECTED_COHORT = {
     "frame_key_sequence_sha256": "CFAEA2236C5E1EA9A2DC811ECE432F955B680658E8D5D7B94468FEAEECE77653",
@@ -62,7 +62,7 @@ def validate_execution_lock(path: Path, *, enforce_argv: bool = True) -> dict[st
     require(lock.get("schema") == SCHEMA and lock.get("lock_id") == LOCK_ID, "PHASE_B_REPAIR_LOCK_IDENTITY_DRIFT", "Phase-B repair lock identity drift")
     require(lock.get("status") == "AUTHORIZED_UNCONSUMED" and lock.get("consumed") is False, "PHASE_B_REPAIR_ALREADY_CONSUMED", "Phase-B repair lock is not authorized/unconsumed")
     require(lock.get("roots") == EXPECTED_ROOTS and lock.get("cohort_bindings") == EXPECTED_COHORT, "PHASE_B_REPAIR_ROOT_OR_COHORT_DRIFT", "Phase-B repair roots/cohort drift")
-    require(lock.get("phase_a_completion_sha256") == "19724F976A7C2DDD1A5414AA14FE1C21CF883D79A8903D5E01F1D53B8910A58D", "PHASE_B_REPAIR_COMPLETION_DRIFT", "Phase-B repair predecessor completion drift")
+    require(lock.get("phase_a_completion_sha256") == "C3351E6745110850E0CA80267A8A0421E9548CFFF14F3EAED45F2B1F11311F77", "PHASE_B_REPAIR_COMPLETION_DRIFT", "Phase-B repair predecessor completion drift")
     require(lock.get("worker_count") == 4 and lock.get("output_root_must_be_absent") is True and lock.get("overwrite") is False and lock.get("rerun") is False, "PHASE_B_REPAIR_ONE_SHOT_DRIFT", "Phase-B repair one-shot policy drift")
     require(not Path(EXPECTED_ROOTS["output_root"]).exists(), "PHASE_B_REPAIR_OUTPUT_COLLISION", "Phase-B repair output root already exists")
     for name, raw in EXPECTED_ROOTS.items():

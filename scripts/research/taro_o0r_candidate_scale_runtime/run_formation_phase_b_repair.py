@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Resume TARO formation scoring from the fully sealed R2 Phase-A completion."""
+"""Resume TARO formation scoring from a fully sealed predecessor Phase-A completion."""
 
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ def _emit(value: Mapping[str, Any]) -> None:
 def _verify_phase_a_files(root: Path, frames: Sequence[replay_io.FormationFrameRef], expected_completion_sha256: str) -> dict[str, Any]:
     completion_path = root / "phase-a-completion.json"
     manifest_path = root / "manifest.json"
-    require(completion_path.is_file() and manifest_path.is_file(), "FORMATION_PHASE_A_PREDECESSOR_MISSING", "R2 Phase-A predecessor completion/manifest is missing")
+    require(completion_path.is_file() and manifest_path.is_file(), "FORMATION_PHASE_A_PREDECESSOR_MISSING", "sealed Phase-A predecessor completion/manifest is missing")
     completion = base_runner._validate_seal(json.loads(completion_path.read_text(encoding="utf-8")), base_runner.PHASE_A_SCHEMA)
     require(
         completion["content_sha256"] == expected_completion_sha256
@@ -54,11 +54,11 @@ def _verify_phase_a_files(root: Path, frames: Sequence[replay_io.FormationFrameR
         and completion["faro_reads"] == 0
         and completion["all_bundles_sealed_before_faro"] is True,
         "FORMATION_PHASE_A_PREDECESSOR_INVALID",
-        "R2 Phase-A completion is not the admitted zero-FARO 450-frame seal",
+        "predecessor Phase-A completion is not the admitted zero-FARO 450-frame seal",
     )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     files = manifest.get("files")
-    require(isinstance(files, dict), "FORMATION_PHASE_A_MANIFEST_INVALID", "R2 manifest file ledger is missing")
+    require(isinstance(files, dict), "FORMATION_PHASE_A_MANIFEST_INVALID", "predecessor manifest file ledger is missing")
     hashes: list[str] = []
     for frame in frames:
         relative = base_runner.bundle_relative(frame)
@@ -70,11 +70,11 @@ def _verify_phase_a_files(root: Path, frames: Sequence[replay_io.FormationFrameR
             and path.stat().st_size == binding.get("bytes")
             and materializer.sha256_file(path) == binding.get("sha256"),
             "FORMATION_PHASE_A_BUNDLE_LEDGER_DRIFT",
-            "R2 sealed Phase-A bundle differs from its manifest",
+            "sealed predecessor Phase-A bundle differs from its manifest",
             path=relative,
         )
         hashes.append(binding["sha256"])
-    require(len(hashes) == 450, "FORMATION_PHASE_A_BUNDLE_COUNT_DRIFT", "R2 Phase-A manifest does not cover 450 bundles")
+    require(len(hashes) == 450, "FORMATION_PHASE_A_BUNDLE_COUNT_DRIFT", "predecessor Phase-A manifest does not cover 450 bundles")
     return completion
 
 

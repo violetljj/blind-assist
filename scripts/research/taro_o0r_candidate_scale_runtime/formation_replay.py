@@ -80,6 +80,23 @@ def _source_record_close(replayed: Mapping[str, Any], committed: Mapping[str, An
     return True
 
 
+def _factor_replay_failure_codes(
+    bundle: Mapping[str, Any], selected_plane: Mapping[str, Any] | None,
+) -> tuple[str, str]:
+    selected_failure = (
+        str(selected_plane["reason_codes"][0])
+        if selected_plane is not None and not selected_plane["evaluable"]
+        else "SOURCE_SUPPORT_UNAVAILABLE"
+    )
+    baseline = bundle["baseline_support"]
+    baseline_failure = (
+        str(baseline["reason_codes"][0])
+        if not baseline["evaluable"]
+        else "SOURCE_BASELINE_UNAVAILABLE"
+    )
+    return selected_failure, baseline_failure
+
+
 def _boundary_metrics(
     truth_ids: np.ndarray,
     truth_points: np.ndarray,
@@ -268,9 +285,10 @@ def score_frame(
     for slot in bundle["query_slots"]:
         query = slot["query_receipt"]
         if query is not None:
+            selected_failure, baseline_failure = _factor_replay_failure_codes(bundle, selected_plane)
             replay_blocks = runtime._query_blocks(
                 dict(query), matrix, bundle["selected_support_boundary_owner"], selected_geometry, selected_plane,
-                baseline_geometry, baseline_plane, "SOURCE_SELECTED_SUPPORT_UNAVAILABLE", "SOURCE_BASELINE_SUPPORT_UNAVAILABLE", raw_hash,
+                baseline_geometry, baseline_plane, selected_failure, baseline_failure, raw_hash,
             )
             require(adapter.canonical_sha256(replay_blocks) == adapter.canonical_sha256(slot["factor_blocks"]), "FORMATION_PHASE_A_FACTOR_REPLAY_DRIFT", "sealed prospective factor blocks do not replay")
         if query is None:

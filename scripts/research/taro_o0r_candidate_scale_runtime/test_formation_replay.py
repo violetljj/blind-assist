@@ -76,6 +76,19 @@ class FormationReplaySummaryTest(unittest.TestCase):
         with self.assertRaisesRegex(formation_replay.FormationReplayError, "4050"):
             formation_replay.summarize(self.rows[:-1])
 
+    def test_factor_replay_retains_sealed_baseline_failure_reason(self) -> None:
+        bundle = {
+            "baseline_support": {
+                "evaluable": False,
+                "reason_codes": ["R6_RUNTIME_BASELINE_HEIGHT_IMPLAUSIBLE"],
+            }
+        }
+        selected_plane = {"evaluable": True, "reason_codes": []}
+        self.assertEqual(
+            ("SOURCE_SUPPORT_UNAVAILABLE", "R6_RUNTIME_BASELINE_HEIGHT_IMPLAUSIBLE"),
+            formation_replay._factor_replay_failure_codes(bundle, selected_plane),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,110 @@
+{
+  "schema": "blindassist.taro.o0r.r6_formation_phase_b_repair_lock.v1",
+  "lock_id": "TARO_O0R_R6_FORMATION_REPLAY_R4_FAILURE_AND_R5_UNKNOWN_REASON_LINEAGE_REPAIR_LOCK",
+  "date": "2026-08-11",
+  "status": "R4_PHASE_A_ADMITTED_R4_SCORER_FAILURE_PRESERVED_R5_PHASE_B_REPAIR_AUTHORIZED",
+  "r4_phase_a_admission": {
+    "root": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r4",
+    "completion": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r4/phase-a-completion.json",
+      "bytes": 816,
+      "sha256": "4B284372EF8631C28F3FAA84D2CEB1988449ED88C62940FFAD2F82FDB1048592",
+      "content_sha256": "C3351E6745110850E0CA80267A8A0421E9548CFFF14F3EAED45F2B1F11311F77"
+    },
+    "parent_count": 24,
+    "frame_count": 450,
+    "query_slot_count": 4050,
+    "sealed_bundle_count": 450,
+    "selected_owner_counts": {
+      "DIRECT_APPLE_SUPPORT": 328,
+      "R1_BASELINE": 122
+    },
+    "faro_reads_before_completion": 0,
+    "all_bundles_sealed_before_faro": true,
+    "phase_a_reexecution_required": false
+  },
+  "r4_failure": {
+    "failure_code": "FORMATION_PHASE_A_FACTOR_REPLAY_DRIFT",
+    "failure_message": "sealed prospective factor blocks do not replay",
+    "persisted_phase_b_score_file_count": 62,
+    "first_failing_queue_index_one_based": 63,
+    "first_failing_physical_frame_id": "47333776:48173.731",
+    "failure_receipt": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r4/failure.json",
+      "bytes": 325,
+      "sha256": "A672EA5A6A5734796CF38AB4721AA763B55638119B6CA274AF4466895AC617BD"
+    },
+    "manifest": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r4/manifest.json",
+      "bytes": 104790,
+      "sha256": "8B1810CA47B903B30CB1E58C5419D8FFCE3B0A562D4198D578D160311E9C410F"
+    },
+    "scientific_interpretation": "NONE_EXECUTION_INVALID"
+  },
+  "root_cause": {
+    "selected_support_boundary_owner": "DIRECT_APPLE_SUPPORT",
+    "direct_support_evaluable": true,
+    "baseline_support_evaluable": false,
+    "sealed_baseline_reason_code": "R6_RUNTIME_BASELINE_HEIGHT_IMPLAUSIBLE",
+    "old_phase_b_replay_reason_code": "SOURCE_BASELINE_SUPPORT_UNAVAILABLE",
+    "bug": "PHASE_B_REPLACED_THE_SEALED_UNKNOWN_REASON_WITH_A_GENERIC_REASON_AND_BROKE_EXACT_FACTOR_BLOCK_HASH",
+    "numeric_factor_value_changed": false,
+    "truth_or_outcome_involved": false
+  },
+  "repair": {
+    "phase_b_unknown_reason_is_derived_from_sealed_baseline_support": true,
+    "phase_b_replays_candidate_apple_depth_and_confidence_from_bound_inputs": true,
+    "source_state_tolerance_unchanged": true,
+    "factor_blocks_must_still_match_exact_hash": true,
+    "hash_tolerance_or_bypass": false,
+    "owner_reselection": false,
+    "numeric_threshold_change": false,
+    "unknown_coerced_to_negative": false,
+    "faro_used_for_source_replay": false
+  },
+  "known_failure_frame_replay": {
+    "physical_frame_id": "47333776:48173.731",
+    "query_records": 9,
+    "source_state_commitments_match": true,
+    "factor_block_hashes_match": true,
+    "faro_score_completed": true
+  },
+  "implementation": {
+    "formation_scorer": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/formation_replay.py",
+      "bytes": 23009,
+      "sha256": "1F6686250A85510959587F92514DC2FC991D341E294BF7C600232B4F3BAFDF8B"
+    },
+    "base_runner": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_formation_replay.py",
+      "bytes": 15053,
+      "sha256": "15FAAE0E341345AE2277B07F15938F3886D34CEB78D34BD732E1FD5C03403E1E"
+    },
+    "phase_b_repair_runner": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_formation_phase_b_repair.py",
+      "bytes": 9948,
+      "sha256": "E1CA36A0A167B3B8591371420BDF46A63E7DD121758FAC6CCF4F9490962B55C0"
+    },
+    "lock_validator": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/validate_formation_phase_b_repair_lock.py",
+      "bytes": 7221,
+      "sha256": "A1B3D851044CB3074AB5E125EBE3D1794DCD826DA01DB19EF78B98532AA13EC7"
+    },
+    "focused_test": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_formation_replay.py",
+      "bytes": 4493,
+      "sha256": "B6A644D618635EE3C6E2ACBF3666964C8C1587319B2B8C901805CB0E1AC7217E"
+    }
+  },
+  "r5_execution": {
+    "phase_a_root_read_only": true,
+    "phase_a_manifest_verification_required_for_all_450_bundles": true,
+    "phase_a_reexecution": false,
+    "new_output_root": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r5",
+    "prior_root_overwrite": false,
+    "same_24_parent_450_frame_4050_slot_cohort": true,
+    "same_statistics_and_claim_ceiling": true,
+    "unique_successor": "TARO_O0R_R6_FORMATION_PHASE_B_REPAIR_R5_ONE_SHOT_EXECUTION_LOCK"
+  },
+  "claim_ceiling": "Phase-B integrity repair only; final replay remains post-hoc non-promotable WILD_LAB formation evidence."
+}
