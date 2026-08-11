@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / APPLE_SEEDED_SUPPORT_RECOVERY_R2_COMPLETE / CANDIDATE_REFIT_REJECTED / DIRECT_APPLE_SUPPORT_R3_COMPLETE / DIRECT_APPLE_SUPPORT_R4_COMPLETE / DIRECT_APPLE_HYBRID_R4A_COMPLETE / ZERO_PARAMETER_HYBRID_RETROSPECTIVE_HEADROOM / R5_TASK_METRIC_CONFIRMATION_AMENDMENT_FROZEN / R5_IMPLEMENTATION_LOCK_FROZEN / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_FACTOR_SPLIT_POST_HOC_CANARY_COMPLETE / R6_UNTOUCHED_CONFIRMATION_REQUIRED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -117,6 +117,10 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [R5 implementation lock](TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_IMPLEMENTATION_LOCK_2026-08-11.json)：
   已绑定独立 R5 role API、phase-scoped reader、one-shot runner、future execution-lock validator 与 22 个
   implementation-surface focused tests；加上 implementation-lock mutation tests 合计 26/26 PASS，仍为 execution=false；
+- [R5 formal result and R6 factor-split canary](TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_R5_RESULT_AND_R6_FACTOR_SPLIT_CANARY_2026-08-11.md)：
+  R5 在 8 parents / 211 frames / 1,899 slots 上有效执行并以 query-knownness `7 → 5` 触发正式 FAIL；
+  SUPPORT/BOUNDARY 的 8/8 parent 正向 headroom 保留。固定 `QUERY_CLEARANCE=R1 baseline` 的 R6
+  factor-split post-hoc landscape 消除该 regret，但 promotion=false，必须在 untouched parents 独立确认；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -127,7 +131,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_ONE_SHOT_EXECUTION_LOCK`
+`TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_PARENT_CONFIRMATION_PROTOCOL_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -207,14 +211,15 @@ extraction-evaluable 达到 1,530/1,539，相对 baseline 恢复 36、丢失 0�
 parent-macro 均为 16/16 parents 改善。仍有 2 个 baseline-known query 的 knownness 损失，且全部结果
 来自已观察的同一 16-parent cohort，所以不能写成 fresh confirmation 或 final clearance 增益。
 
-R5 amendment 现已 outcome 前冻结：它为 8 个 visit-disjoint former `ADAPTER_FIT` parents / 211
-source frames 建立一次性 `R5_TASK_METRIC_CONFIRMATION` role，独立确认已经冻结的 R4A policy。旧合同
-不被改写；新版本必须先封存 truth-blind DepthART/source Phase A，再打开同一 211 frames 的 FARO
-Phase B，不得读取或枚举现有 16-parent eval truth，也不得训练 selector 或修改 policy。该 amendment
-本身 execution=false。独立 R5 role API、phase-scoped reader、runner、聚合器与 validator 已实现并由
-hash-bound implementation lock 冻结；当前唯一 successor 是携带明确用户 model/task execution authority
-的一次性 execution lock。当前没有创建 R5 evidence root，也没有运行 211 次 DepthART inference 或同帧
-Phase-B scoring。
+R5 已在 8 个 visit-disjoint former `ADAPTER_FIT` parents / 211 source frames / 1,899 query slots 上完成
+唯一正式执行。height/normal 为 8/8 parents 正向，extraction 恢复 44、丢失 0，但 query knownness
+恢复 5、丢失 7，冻结门 `QUERY_KNOWN_COVERAGE_NO_REGRET` 失败；正式终态因此是
+`TARO_O0R_DIRECT_APPLE_HYBRID_R5_TASK_METRIC_CONFIRMATION_FAIL`。R4A frame-level policy 不得晋级。
+
+R6 post-hoc canary 把 ownership 拆到 factor level：SUPPORT/BOUNDARY 沿用 R5 source-only branch，
+QUERY_CLEARANCE 固定沿用 R1 baseline。该 landscape 保留 R5 的正向几何 headroom，并把 knownness 保持为
+`7 → 7`；但它是在读取 R5 outcome 后形成，只是 candidate，不是 fresh PASS。当前 24 个已授权 Training
+parents 均已被旧 16-parent route 或 R5 消费，唯一科学后继是先冻结 R6，再取得 untouched parent authority。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定
@@ -268,9 +273,8 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
 - 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
-- R5 独立 role API、Phase-A/Phase-B runner、证据 writer、聚合器与 implementation lock 已完成；下一步
-  仅允许签一份携带明确 model/task execution authority 的 one-shot execution lock 并执行唯一 argv，
-  在此之前不得创建 R5 evidence root；
+- R5 唯一执行、两项忠实实现修复、manifest replay 和正式 FAIL 已完成；R6 factor-split 仅有 post-hoc
+  landscape。下一步只允许 outcome 前冻结 R6 protocol，并在获得 untouched parent/data authority 后执行；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止
@@ -298,11 +302,12 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 
 ## Claim ceiling
 
-当前还证明两个受限算法结果。第一，source-visible AppleDepth 零参数尺度锚点能把 parent-macro
+当前证明两个受限算法结果。第一，source-visible AppleDepth 零参数尺度锚点能把 parent-macro
 absolute log-scale error 从 `0.30498` 降到 `0.01561`，239/239 source frames 可估计。第二，固定
 R4A direct-when-valid/baseline-fallback policy 在同一已观察的 16-parent cohort 上使
 extraction-evaluable 从 baseline 的 1,494 提高到 1,530，且 height/normal parent-macro 均为
-16/16 parents 改善；但 known point-clearance 相对 baseline 仍丢失 2 个、恢复 0。它们不证明 fresh
+16/16 parents 改善。独立 R5 又确认 SUPPORT/BOUNDARY 在 8/8 parents 正向，但 frame-level ownership
+因 query knownness `7 → 5` 正式 FAIL。R6 factor split 只建立 post-hoc candidate landscape，不证明 fresh
 confirmation、正式 O0R PASS、RGB-only operation、真实 evidence dedup/whitening、完整 query truth
 admission、选择性风险校准、observation-withholding/sensing regret、真实 geometry-anchored
 counterfactual pair、被动/主动视角收益、跨设备泛化、移动端可行、产品有效性或真实用户安全。

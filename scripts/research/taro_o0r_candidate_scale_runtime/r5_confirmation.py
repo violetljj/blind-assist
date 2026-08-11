@@ -983,6 +983,26 @@ def _effects(baseline: Mapping[str, Any], selected: Mapping[str, Any]) -> dict[s
     }
 
 
+def _effects_equal_after_canonical_roundtrip(observed: Mapping[str, Any], expected: Mapping[str, Any]) -> bool:
+    if set(observed) != set(expected):
+        return False
+    for key, expected_value in expected.items():
+        observed_value = observed[key]
+        if isinstance(expected_value, bool):
+            if observed_value is not expected_value:
+                return False
+        elif expected_value is None:
+            if observed_value is not None:
+                return False
+        elif not _finite(observed_value) or abs(float(observed_value) - float(expected_value)) > 2.1e-12:
+            # Nested metrics and their derived difference are each rounded to
+            # 12 decimals by canonical JSON.  Reloading and subtracting the
+            # rounded operands can therefore differ from the stored rounded
+            # difference by at most two half-units in the last place.
+            return False
+    return True
+
+
 def evaluate_query(
     source_frame_receipt: Mapping[str, Any],
     candidate_frame_record: Mapping[str, Any],
@@ -1240,7 +1260,7 @@ def validate_query_record(value: Any, *, source_decision: Mapping[str, Any] | No
     selected_mode = _validate_mode_result(record["selected_hybrid"], "selected_hybrid")
     expected_selected = direct if expected_branch == "DIRECT_APPLE_SUPPORT" else baseline
     require(adapter.canonical_sha256(selected_mode) == adapter.canonical_sha256(expected_selected), "R5_QUERY_OUTCOME_RESELECTION", "selected hybrid differs from Phase-A branch")
-    require(record["effects"] == _effects(baseline, selected_mode), "R5_QUERY_EFFECT_DRIFT", "query effects do not rederive")
+    require(_effects_equal_after_canonical_roundtrip(record["effects"], _effects(baseline, selected_mode)), "R5_QUERY_EFFECT_DRIFT", "query effects do not rederive")
     require(record["branch_reselection_after_truth"] is False and record["faro_used_for_scoring_only"] is True, "R5_QUERY_FIREWALL_DRIFT", "query record claims outcome reselection")
     if source_decision is not None:
         decision = validate_source_decision(source_decision)

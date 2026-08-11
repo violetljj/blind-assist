@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import json
 import math
 import unittest
 
@@ -313,6 +314,8 @@ class R5ConfirmationTests(unittest.TestCase):
         self.assertTrue(all(row["phase_a_completion_sha256"] == phase_a["content_sha256"] for row in records))
         self.assertTrue(all(row["phase_a_selected_branch"] == self.decision["selected_branch"] for row in records))
         self.assertGreater(sum(row["direct_apple_support"]["extraction_evaluable"] for row in records), 0)
+        reloaded = json.loads(adapter.canonical_json_bytes(records[0]))
+        r5.validate_query_record(reloaded)
 
     def test_consumed_phase_a_list_hash_bridges_to_normalized_camera_array(self) -> None:
         phase_a = _phase_a_completion()
