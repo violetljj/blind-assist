@@ -42,6 +42,9 @@ shim 已退役，统一从本目录导入。
 - `preflight/materialize_depthart_task_preserving_d2_phase_a_*` 先做 intrinsics/trajectory HEAD，再按冻结顺序机械锁定 16 个具有 300-frame portrait/pose continuity 的 identity；不读取 depth truth、RGB 或模型
 - `preflight/materialize_depthart_task_preserving_d2_phase_b_*` 对 Phase-A 首窗口的 depth/confidence 做 source-truth support 审计；当前终态仅 2/8 support-qualified，少于 8 时生成器强制输出空 role list，不授权训练或 Development outcome
 - `DEPTHART_TASK_PRESERVING_D2R1_TARGET_SUPPORT_WINDOW_RECOVERY_PROTOCOL_2026-08-11` 仅冻结同一 16 个 identity 的 full-run 300-frame support-window recovery；在新 source scope 获得显式授权前不得执行 HEAD、GET 或 scan
+- `preflight_depthart_task_preserving_d2r1_assets.py` 对同一 16 个 identity 的 intrinsics/trajectory/depth/confidence 执行 64 个 HEAD，并强制总 body 不超过授权的 2.90 GB
+- `materialize_depthart_task_preserving_d2r1.py` 逐身份下载并以未序列化 prefix sums 选择第一个全门通过的 300-frame portrait window；每身份有可恢复 checkpoint，不读取 RGB 或模型
+- `reseal/validate_depthart_task_preserving_d2r1_*` 在不改写 receipt、不重算 truth 的前提下修复 v1 Windows CRLF byte seal，并复验 16/16 合格、4 TRAIN + 4 sealed DEVELOPMENT 的唯一角色锁
 - `validate_depthart_task_preserving_r2_activation.py` 只检查 R2 pre-outcome activation manifest 的 cohort 角色、候选/reference 身份、固定任务门与旧 G4-D 排除项；它不读取模型输出，不激活执行，也不签署质量或部署结论
 - `plan_depthart_task_preserving_r2_arkit_roster.py` 在 Apple 官方 split CSV 上，以冻结 Git snapshot 排除全部既有 HFTF ARKit identity，再按固定哈希顺序锁定唯一 visit/session；只读元数据
 - `evaluate_depthart_task_preserving_r2_quality.py` 计算 reference/candidate 对独立 truth 的 pooled、parent-macro、session-macro 与 worst-parent 任务门；CLI 没有显式 activation receipt 会拒绝读取 outcome

@@ -1,0 +1,53 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2r1_source_scope_receipt_v1",
+  "receipt_id": "DEPTHART_TASK_PRESERVING_D2R1_SOURCE_SCOPE_2026-08-11",
+  "created_at": "2026-08-11",
+  "authorization": {
+    "actor": "user",
+    "channel": "current Codex task",
+    "verbatim_text": "授权 D2R1",
+    "interpretation": "Authorize the already frozen D2R1 same-16-identity full-window source-support HEAD, body access and aggregate window scan only."
+  },
+  "owning_protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2R1_TARGET_SUPPORT_WINDOW_RECOVERY_PROTOCOL_2026-08-11.json",
+    "bytes": 3726,
+    "sha256": "41140EA1ED7E0C668651ADCE82C0E64BCE6C92D520C25450B67941B131D9DCEF"
+  },
+  "identity_scope": {
+    "source": "exact selected_phase_b list in the frozen D2 Phase-A manifest",
+    "manifest_path": "artifacts.local/datasets/depthart-task-preserving-d2-phase-a-20260811-r1/manifest.json",
+    "manifest_bytes": 2326798,
+    "manifest_sha256": "65D1E3F98F52AE9D49DF46089DAF6ED5C57098CDAB2133564B47A26415011F48",
+    "identity_count": 16,
+    "identity_extension": false
+  },
+  "source_scope": {
+    "fold": "Training",
+    "assets": [
+      "lowres_wide_intrinsics.zip",
+      "lowres_wide.traj",
+      "lowres_depth.zip",
+      "confidence.zip"
+    ],
+    "maximum_total_body_bytes": 2900000000,
+    "purpose": "D2R1 target-support-only exhaustive 300-frame window recovery",
+    "storage": "artifacts.local only",
+    "redistribution": false
+  },
+  "authority": {
+    "d2r1_head": true,
+    "d2r1_body_download": true,
+    "d2r1_aggregate_window_scan": true,
+    "rgb": false,
+    "model_output": false,
+    "training": false,
+    "development_outcome": false,
+    "r2_access": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "non_inheritance": "This receipt does not amend D1, strict G4-D, R2, DA2, application or production authority.",
+  "status": "AUTHORIZED_D2R1_SOURCE_SUPPORT_ONLY"
+}

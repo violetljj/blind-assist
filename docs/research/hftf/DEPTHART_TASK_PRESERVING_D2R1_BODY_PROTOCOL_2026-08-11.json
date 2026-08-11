@@ -1,0 +1,117 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2r1_body_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D2R1_BODY_AND_WINDOW_SCAN",
+  "frozen_at": "2026-08-11",
+  "status": "FROZEN_EXECUTION_AUTHORIZED",
+  "producer": {
+    "path": "scripts/research/hftf/deployment/depthart/materialize_depthart_task_preserving_d2r1.py",
+    "bytes": 25644,
+    "sha256": "E4DC66817E89BDF9592FF0FC83FFF81499F4B9BA35F286C1D33EE8A729E2D62C"
+  },
+  "dependencies": [
+    {
+      "path": "scripts/research/assistive_geometry/arkitscenes_truth_reader.py",
+      "bytes": 25728,
+      "sha256": "F50187661E59C438FAC4CAEB4E0BDFA4D638C64A87094C49C369FBEC3B3218C1"
+    },
+    {
+      "path": "scripts/research/spatial_calibration_head_r1/download_locked_assets.py",
+      "bytes": 13868,
+      "sha256": "BB9634B0A08A5A99E69B49FBC284715817CD9B26F5A5C23B41D0502F439755AD"
+    },
+    {
+      "path": "scripts/research/spatial_calibration_head_r1/materialize_cache.py",
+      "bytes": 12577,
+      "sha256": "DBD2C18ECBC91ED1902FF8DF0A8CBA60E87F4B4F3CE24901FBC02621264AFC1B"
+    },
+    {
+      "path": "scripts/research/hftf/deployment/depthart/materialize_depthart_task_preserving_d2_phase_b.py",
+      "bytes": 17312,
+      "sha256": "0988E8B8BA00EE8CC37AC5B6BE2B394ED99166E0849162FCE3A4A37329302284"
+    }
+  ],
+  "recovery_protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2R1_TARGET_SUPPORT_WINDOW_RECOVERY_PROTOCOL_2026-08-11.json",
+    "bytes": 3726,
+    "sha256": "41140EA1ED7E0C668651ADCE82C0E64BCE6C92D520C25450B67941B131D9DCEF"
+  },
+  "phase_a_manifest": {
+    "path": "artifacts.local/datasets/depthart-task-preserving-d2-phase-a-20260811-r1/manifest.json",
+    "bytes": 2326798,
+    "sha256": "65D1E3F98F52AE9D49DF46089DAF6ED5C57098CDAB2133564B47A26415011F48"
+  },
+  "head_result": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2r1-preoutcome-20260811-r1/head-result.json",
+    "bytes": 36533,
+    "sha256": "FC2C6C41A51C0C75F2B7260C2B983922FB2519E5A49DC44D0FFBDA724BE55645"
+  },
+  "license_receipt": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2R1_SOURCE_SCOPE_RECEIPT_2026-08-11.json",
+    "bytes": 1988,
+    "sha256": "9512FE14C0EF97C2A2028B5D937F632D3229E78261422F56DF336CA317114186"
+  },
+  "assets": [
+    "lowres_wide_intrinsics.zip",
+    "lowres_wide.traj",
+    "lowres_depth.zip",
+    "confidence.zip"
+  ],
+  "authorized_total_body_bytes": 2847223483,
+  "portrait_orientation_indices": [1, 3],
+  "maximum_pose_bracketing_gap_seconds": 0.25,
+  "maximum_adjacent_frame_gap_seconds": 0.5,
+  "window_frames": 300,
+  "enumeration": "phase-a identity order, then portrait run start timestamp, then exact common frame stem; stop at the earliest passing window per identity",
+  "frame_decode": "each frame used for support counts is decoded at most once; rolling windows use in-memory prefix sums that are not serialized",
+  "truth_reader_policy": {
+    "depth_min_m": 0.25,
+    "depth_max_m": 6.0,
+    "minimum_sensor_confidence": 1,
+    "point_stride": 2,
+    "ground_height_min_m": 0.45,
+    "ground_height_max_m": 2.2,
+    "ground_histogram_bin_m": 0.04,
+    "ground_support_tolerance_m": 0.08,
+    "minimum_ground_support_points": 80,
+    "minimum_ground_support_fraction": 0.02,
+    "obstacle_height_min_m": 0.08,
+    "obstacle_height_max_m": 2.0,
+    "minimum_forward_m": 0.2,
+    "maximum_forward_m": 6.0,
+    "body_half_width_m": 0.32,
+    "lateral_margin_m": 0.1,
+    "clearance_quantile": 0.02,
+    "support_forward_quantile": 0.9,
+    "minimum_band_support_points": 20,
+    "minimum_intrusion_points": 20,
+    "horizons_m": [1.0, 1.5, 2.0],
+    "maximum_pose_bracketing_gap_seconds": 0.25
+  },
+  "truth_support_thresholds": {
+    "minimum_truth_known_cells_per_identity": 1800,
+    "minimum_truth_clear_cells_per_identity": 180,
+    "minimum_truth_occupied_cells_per_identity": 900,
+    "minimum_truth_known_cells_per_band_horizon": 100,
+    "minimum_valid_band_clearances_per_identity": 450
+  },
+  "role_rule": {
+    "minimum_qualified_identities": 8,
+    "train": "first four qualified in Phase-A order",
+    "development": "next four qualified in Phase-A order, sealed",
+    "partial_roles_if_insufficient": false
+  },
+  "checkpoint": {
+    "unit": "one identity",
+    "receipt_and_sha_sidecar": true,
+    "resume_requires_exact_attempt_bindings": true,
+    "overwrite": false
+  },
+  "output_policy": {
+    "aggregate_window_truth_only": true,
+    "per_frame_truth_rows_saved": false,
+    "rgb_read": false,
+    "model_output_read": false,
+    "r2_access": false
+  },
+  "authority": "D2R1_SOURCE_SUPPORT_AND_ROLE_LOCK_ONLY"
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2r1_pre_body_policy_serialization_repair_v1",
+  "created_at": "2026-08-11",
+  "status": "PRE_BODY_MECHANICAL_REPAIR_APPLIED_NEW_ATTEMPT_REQUIRED",
+  "failure": {
+    "classification": "PRE_BODY_VALIDATION_FAILURE",
+    "message": "truth reader policy drift",
+    "cause": "dataclasses.asdict preserved horizons_m as a tuple while the frozen JSON representation used an equivalent list",
+    "body_bytes_read": false,
+    "truth_counts_read": false,
+    "model_output_read": false,
+    "failed_attempt_path": "artifacts.local/datasets/depthart-task-preserving-d2r1-20260811-r1/attempt.json",
+    "failed_attempt_bytes": 3445,
+    "failed_attempt_sha256": "B16826B1B207BF830D0FE75003756009316CDC6FF11294887F6650A2AD5C05D5"
+  },
+  "repair": {
+    "scope": "normalize dataclass policy through JSON before equality comparison",
+    "threshold_change": false,
+    "identity_change": false,
+    "asset_change": false,
+    "window_change": false,
+    "old_producer_sha256": "793405D15A5A87933648E5E7CFC5CF8AF15A38BE0A8065FFD19FDB9BA3811649",
+    "new_producer_sha256": "E4DC66817E89BDF9592FF0FC83FFF81499F4B9BA35F286C1D33EE8A729E2D62C",
+    "new_body_protocol_bytes": 4602,
+    "new_body_protocol_sha256": "D3D0451A7DA4A717AC997FDC3F357199FA07454528E193CD78F12F914B63D96C"
+  },
+  "execution_rule": "Do not resume the failed attempt because its protocol hash is stale; preserve it and start a fresh exclusive output root.",
+  "authority": "PRE_BODY_SERIALIZATION_REPAIR_ONLY"
+}

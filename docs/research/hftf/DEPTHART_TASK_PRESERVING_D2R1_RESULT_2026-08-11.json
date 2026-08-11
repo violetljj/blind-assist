@@ -1,0 +1,60 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2r1_result_v1",
+  "created_at": "2026-08-11",
+  "status": "PASS",
+  "terminal": "D2R1_GOVERNED_SOURCE_SUPPORT_PASS_4_TRAIN_4_DEVELOPMENT_ROLES_LOCKED",
+  "governed_result": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2r1-preoutcome-20260811-r1/governed-result-r2.json",
+    "bytes": 3078,
+    "sha256": "1EFFE7745C87DF63B3D6A97256F1376C4670DD9A8FC62718186D3F264F87F6A4"
+  },
+  "manifest": {
+    "path": "artifacts.local/datasets/depthart-task-preserving-d2r1-20260811-r2/manifest.json",
+    "bytes": 278732,
+    "sha256": "3C50280CA82F604B52E5B9682A20BA7E14ED072F9C4EA5943C54FAFFC88A1EE8"
+  },
+  "checkpoint_reseal": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2r1-preoutcome-20260811-r1/checkpoint-reseal-result.json",
+    "bytes": 8147,
+    "sha256": "9A93D3D9DA3EE6C4351F0306C0397D66B188D7F4C3325FEB9F5484C3838E499E",
+    "reason": "v1 sidecars hashed canonical LF JSON while Windows text-mode write produced byte-equivalent CRLF files",
+    "receipt_content_modified": false,
+    "truth_or_model_reexecution": false
+  },
+  "execution_summary": {
+    "head_assets_available": 64,
+    "head_total_body_bytes": 2847223483,
+    "identities_scanned": 16,
+    "identities_qualified": 16,
+    "windows_tested_until_earliest_pass": 13959,
+    "frames_decoded_for_support": 19341,
+    "threshold_change": false,
+    "per_frame_truth_saved": false,
+    "rgb_read": false,
+    "model_output_read": false
+  },
+  "role_assignments": [
+    {"role": "D2_TRAIN", "role_order": 1, "visit_id": "482610", "video_id": "47895972"},
+    {"role": "D2_TRAIN", "role_order": 2, "visit_id": "467109", "video_id": "47333324"},
+    {"role": "D2_TRAIN", "role_order": 3, "visit_id": "421013", "video_id": "42444703"},
+    {"role": "D2_TRAIN", "role_order": 4, "visit_id": "422855", "video_id": "42897480"},
+    {"role": "D2_DEVELOPMENT_SEALED", "role_order": 1, "visit_id": "469596", "video_id": "47430877"},
+    {"role": "D2_DEVELOPMENT_SEALED", "role_order": 2, "visit_id": "434691", "video_id": "42898635"},
+    {"role": "D2_DEVELOPMENT_SEALED", "role_order": 3, "visit_id": "469646", "video_id": "47430802"},
+    {"role": "D2_DEVELOPMENT_SEALED", "role_order": 4, "visit_id": "468094", "video_id": "47334356"}
+  ],
+  "authority": {
+    "d2_source_support": true,
+    "d2_role_lock": true,
+    "rgb": false,
+    "training": false,
+    "development_outcome": false,
+    "r2_candidate_lock": false,
+    "r2_outcome": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "next_gate": "EXPLICIT_D2_PHASE_C_RGB_HEAD_SCOPE"
+}

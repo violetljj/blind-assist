@@ -1,0 +1,42 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2r1_head_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D2R1_HEAD",
+  "frozen_at": "2026-08-11",
+  "status": "FROZEN_EXECUTION_AUTHORIZED",
+  "producer": {
+    "path": "scripts/research/hftf/deployment/depthart/preflight_depthart_task_preserving_d2r1_assets.py",
+    "bytes": 7667,
+    "sha256": "8FE9E990306E0B93A236BF1D78DAB8D8100D23B4874E10386C6ABCDB963EE4F3"
+  },
+  "recovery_protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2R1_TARGET_SUPPORT_WINDOW_RECOVERY_PROTOCOL_2026-08-11.json",
+    "bytes": 3726,
+    "sha256": "41140EA1ED7E0C668651ADCE82C0E64BCE6C92D520C25450B67941B131D9DCEF"
+  },
+  "phase_a_manifest": {
+    "path": "artifacts.local/datasets/depthart-task-preserving-d2-phase-a-20260811-r1/manifest.json",
+    "bytes": 2326798,
+    "sha256": "65D1E3F98F52AE9D49DF46089DAF6ED5C57098CDAB2133564B47A26415011F48"
+  },
+  "license_receipt": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2R1_SOURCE_SCOPE_RECEIPT_2026-08-11.json",
+    "bytes": 1988,
+    "sha256": "9512FE14C0EF97C2A2028B5D937F632D3229E78261422F56DF336CA317114186"
+  },
+  "base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw",
+  "assets_per_video": [
+    "lowres_wide_intrinsics.zip",
+    "lowres_wide.traj",
+    "lowres_depth.zip",
+    "confidence.zip"
+  ],
+  "request_method": "HEAD",
+  "timeout_seconds": 60,
+  "retries": 3,
+  "maximum_total_body_bytes": 2900000000,
+  "body_read": false,
+  "rgb_read": false,
+  "model_output_read": false,
+  "r2_access": false,
+  "authority": "D2R1_HEAD_ONLY"
+}
