@@ -16,11 +16,34 @@ DEFAULT_LOCK_PATH = REPO_ROOT / (
     "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_"
     "AMENDMENT_2026-08-11.json"
 )
+DEFAULT_REPAIR_PATH = REPO_ROOT / (
+    "docs/research/taro/"
+    "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_"
+    "PRE_IMPLEMENTATION_TRANSFORM_ID_REPAIR_2026-08-11.json"
+)
 SCHEMA = "blindassist.taro.o0r.direct_apple_hybrid_adapter_fit_confirmation_r5_amendment.v1"
 LOCK_ID = "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT"
+REPAIR_SCHEMA = "blindassist.taro.o0r.r5.pre_implementation_transform_identity_repair.v1"
+REPAIR_ID = "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_PRE_IMPLEMENTATION_TRANSFORM_ID_REPAIR"
 SUCCESSOR = "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_IMPLEMENTATION_LOCK"
 POLICY_ID = "DIRECT_WHEN_SOURCE_SUPPORT_AVAILABLE_ELSE_R1_BASELINE_V1"
 R3_ROOT = REPO_ROOT / "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3"
+R5_ROOT = REPO_ROOT / "artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5"
+
+ORIGINAL_AMENDMENT_BINDING = {
+    "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT_2026-08-11.json",
+    "bytes": 15346,
+    "sha256": "F4029F658C1617044667DCBF137F7AC2DB6FF4528EC4E48EF5DFCCB9F91CE89F",
+}
+DEPTHART_RUNNER_BINDING = {
+    "path": "scripts/research/taro_o0r_factor_headroom_runtime/depthart_runner.py",
+    "bytes": 30462,
+    "sha256": "25E80D496DBEEBCC66CCB9772DD51508453B8EB325CDBF9192F71923E440BD09",
+}
+SERIALIZED_PREPROCESS_ID = "DEPTHART_OFFICIAL_BGR_TO_RGB_LOWER_BOUND_448_MULTIPLE_14_IMAGENET_NORMALIZATION_V1"
+SERIALIZED_POSTPROCESS_ID = "DEPTHART_CANDIDATE_BILINEAR_TO_REGISTERED_1440X1920_ALIGN_CORNERS_FALSE_V1"
+EFFECTIVE_PREPROCESS_ID = "DEPTHART_OFFICIAL_LOWER_BOUND_448_RGB_CUBIC_IMAGENET_V1"
+EFFECTIVE_POSTPROCESS_ID = "TARO_TORCH_CPU_BILINEAR_ALIGN_CORNERS_TRUE_FLOAT32_448X608_TO_1440X1920_V1"
 
 EXPECTED_TOP_LEVEL_KEYS = {
     "schema", "lock_id", "date", "research_mode", "status", "scientific_objective",
@@ -213,6 +236,8 @@ def validate_payload(payload: Mapping[str, Any], *, verify_files: bool = True) -
     _require(errors, candidate.get("model_id") == "depthart-s-metric-indoor-448-official-fp32", "R5_MODEL_ID_DRIFT")
     _require(errors, candidate.get("source_commit") == "0384521b3bcb4c64adf03eeb5d55ebdb1cbdd84c", "R5_MODEL_SOURCE_DRIFT")
     _require(errors, candidate.get("checkpoint_sha256") == "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65", "R5_CHECKPOINT_DRIFT")
+    _require(errors, candidate.get("preprocess_id") == SERIALIZED_PREPROCESS_ID, "R5_SERIALIZED_PREPROCESS_ID_DRIFT")
+    _require(errors, candidate.get("postprocess_id") == SERIALIZED_POSTPROCESS_ID, "R5_SERIALIZED_POSTPROCESS_ID_DRIFT")
 
     phases = payload.get("phase_contract", {})
     phase_a = phases.get("phase_a", {})
@@ -295,6 +320,78 @@ def validate_payload(payload: Mapping[str, Any], *, verify_files: bool = True) -
     return errors
 
 
+def validate_repair_payload(payload: Mapping[str, Any], *, verify_files: bool = True) -> list[str]:
+    """Validate the immutable correction that defines the effective transform IDs."""
+
+    errors: list[str] = []
+    expected_keys = {
+        "schema", "repair_id", "date", "status", "scope", "original_amendment_binding",
+        "defect", "effective_candidate_transform", "repair_rule", "execution_authority",
+        "claim_ceiling", "unique_successor",
+    }
+    _require(errors, set(payload) == expected_keys, "R5_REPAIR_TOP_LEVEL_KEY_SET_DRIFT")
+    _require(errors, payload.get("schema") == REPAIR_SCHEMA, "R5_REPAIR_SCHEMA_DRIFT")
+    _require(errors, payload.get("repair_id") == REPAIR_ID, "R5_REPAIR_ID_DRIFT")
+    _require(errors, payload.get("date") == "2026-08-11", "R5_REPAIR_DATE_DRIFT")
+    _require(errors, payload.get("status") == "PRE_IMPLEMENTATION_SERIALIZATION_REPAIR_FROZEN_EXECUTION_FALSE", "R5_REPAIR_STATUS_DRIFT")
+    _require(errors, payload.get("unique_successor") == SUCCESSOR, "R5_REPAIR_SUCCESSOR_DRIFT")
+
+    binding = payload.get("original_amendment_binding", {})
+    _require(errors, binding == {**ORIGINAL_AMENDMENT_BINDING, "immutable": True}, "R5_REPAIR_ORIGINAL_BINDING_DRIFT")
+
+    defect = payload.get("defect", {})
+    _require(errors, defect.get("serialized_preprocess_id") == SERIALIZED_PREPROCESS_ID, "R5_REPAIR_SERIALIZED_PREPROCESS_DRIFT")
+    _require(errors, defect.get("serialized_postprocess_id") == SERIALIZED_POSTPROCESS_ID, "R5_REPAIR_SERIALIZED_POSTPROCESS_DRIFT")
+    _require(errors, defect.get("discovered_before_implementation_lock") is True, "R5_REPAIR_DISCOVERY_PHASE_DRIFT")
+    _require(errors, defect.get("r5_evidence_root_absent_at_repair") is True, "R5_REPAIR_ROOT_EXISTED")
+    _require(errors, defect.get("r5_inference_count_at_repair") == 0, "R5_REPAIR_INFERENCE_ALREADY_EXISTED")
+    _require(errors, defect.get("r5_task_metric_count_at_repair") == 0, "R5_REPAIR_METRICS_ALREADY_EXISTED")
+
+    effective = payload.get("effective_candidate_transform", {})
+    _require(errors, effective.get("preprocess_id") == EFFECTIVE_PREPROCESS_ID, "R5_EFFECTIVE_PREPROCESS_ID_DRIFT")
+    _require(errors, effective.get("postprocess_id") == EFFECTIVE_POSTPROCESS_ID, "R5_EFFECTIVE_POSTPROCESS_ID_DRIFT")
+    _require(errors, effective.get("runtime_binding") == DEPTHART_RUNNER_BINDING, "R5_EFFECTIVE_RUNTIME_BINDING_DRIFT")
+
+    rule = payload.get("repair_rule", {})
+    _require(errors, rule.get("original_amendment_bytes_preserved") is True, "R5_REPAIR_ORIGINAL_MUTATION_ALLOWED")
+    _require(errors, rule.get("only_candidate_transform_ids_superseded") is True, "R5_REPAIR_SCOPE_EXPANDED")
+    _require(errors, rule.get("all_other_amendment_fields_remain_binding") is True, "R5_REPAIR_BASE_FIELDS_RELEASED")
+    _require(errors, rule.get("implementation_must_use_effective_ids") is True, "R5_REPAIR_NOT_EFFECTIVE")
+
+    expected_authority = {
+        "implementation": True, "implementation_lock": False, "depthart_inference": False,
+        "phase_a_source_decisions": False, "phase_b_truth_scoring": False, "training": False,
+        "network": False, "device": False, "product": False, "safety": False,
+    }
+    _require(errors, payload.get("execution_authority") == expected_authority, "R5_REPAIR_AUTHORITY_DRIFT")
+
+    if verify_files:
+        for role_name, expected in (
+            ("ORIGINAL_AMENDMENT", ORIGINAL_AMENDMENT_BINDING),
+            ("DEPTHART_RUNNER", DEPTHART_RUNNER_BINDING),
+        ):
+            path = REPO_ROOT / expected["path"]
+            if not path.is_file():
+                errors.append(f"R5_REPAIR_BOUND_FILE_MISSING:{role_name}")
+                continue
+            content = path.read_bytes()
+            _require(errors, len(content) == expected["bytes"], f"R5_REPAIR_BOUND_FILE_BYTES_DRIFT:{role_name}")
+            _require(errors, _sha256_bytes(content) == expected["sha256"], f"R5_REPAIR_BOUND_FILE_HASH_DRIFT:{role_name}")
+        _require(errors, not R5_ROOT.exists(), "R5_REPAIR_EVIDENCE_ROOT_ALREADY_EXISTS")
+    return errors
+
+
+def validate_effective_lock(
+    amendment_payload: Mapping[str, Any],
+    repair_payload: Mapping[str, Any],
+    *,
+    verify_files: bool = True,
+) -> list[str]:
+    errors = validate_payload(amendment_payload, verify_files=verify_files)
+    errors.extend(validate_repair_payload(repair_payload, verify_files=verify_files))
+    return errors
+
+
 def validate_file(path: Path = DEFAULT_LOCK_PATH, *, verify_files: bool = True) -> list[str]:
     try:
         payload = _load_json(path)
@@ -305,15 +402,29 @@ def validate_file(path: Path = DEFAULT_LOCK_PATH, *, verify_files: bool = True) 
     return validate_payload(payload, verify_files=verify_files)
 
 
+def validate_repair_file(path: Path = DEFAULT_REPAIR_PATH, *, verify_files: bool = True) -> list[str]:
+    try:
+        payload = _load_json(path)
+    except (OSError, json.JSONDecodeError) as error:
+        return [f"R5_REPAIR_READ_FAILED:{error}"]
+    if not isinstance(payload, Mapping):
+        return ["R5_REPAIR_NOT_OBJECT"]
+    return validate_repair_payload(payload, verify_files=verify_files)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lock", type=Path, default=DEFAULT_LOCK_PATH)
+    parser.add_argument("--repair", type=Path, default=DEFAULT_REPAIR_PATH)
     parser.add_argument("--skip-file-verification", action="store_true")
     args = parser.parse_args(argv)
-    errors = validate_file(args.lock, verify_files=not args.skip_file_verification)
+    verify_files = not args.skip_file_verification
+    errors = validate_file(args.lock, verify_files=verify_files)
+    errors.extend(validate_repair_file(args.repair, verify_files=verify_files))
     result = {
         "schema": "blindassist.taro.o0r.r5_amendment_validation_result.v1",
         "lock": str(args.lock),
+        "repair": str(args.repair),
         "passed": not errors,
         "error_count": len(errors),
         "errors": errors,

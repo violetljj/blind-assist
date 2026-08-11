@@ -111,6 +111,9 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [TARO O0R direct Apple hybrid R5 amendment](TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT_2026-08-11.md)：
   outcome 前冻结 8 个 parent-disjoint former ADAPTER_FIT identities / 211 frames / 1,899 slots、
   Phase-A/Phase-B firewall 与确认门；execution=false，唯一后继为 hash-bound implementation lock；
+- [R5 pre-implementation transform-ID repair](TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_PRE_IMPLEMENTATION_TRANSFORM_ID_REPAIR_2026-08-11.json)：
+  保留原 amendment 字节不变，只把错误序列化的 candidate transform 标签校正为已封存 runner 的
+  `RGB_CUBIC_IMAGENET_V1` 与 bilinear `align_corners=true`；修复时 R5 root 不存在、inference/metric 均为 0；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -207,6 +210,10 @@ source frames 建立一次性 `R5_TASK_METRIC_CONFIRMATION` role，独立确认�
 Phase B，不得读取或枚举现有 16-parent eval truth，也不得训练 selector 或修改 policy。该 amendment
 本身 execution=false；当前唯一 successor 是实现独立 R5 role API/runner/tests，并签 hash-bound
 implementation lock。
+
+原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
+pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定
+原 amendment、repair 与实际 runner，不能自行选择另一套 resize 语义。
 
 P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
 finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份

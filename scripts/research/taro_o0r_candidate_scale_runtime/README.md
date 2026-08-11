@@ -173,6 +173,13 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
   -m scripts.research.taro_o0r_candidate_scale_runtime.validate_r5_amendment
 ```
 
+The validator also requires the immutable pre-implementation transform-ID
+repair. The original amendment bytes remain unchanged; only its descriptive
+candidate transform labels are superseded by the already sealed DepthART
+runtime IDs (`RGB_CUBIC_IMAGENET_V1` and torch bilinear
+`align_corners=true`). The repair was frozen while the R5 evidence root was
+absent and both R5 inference and task-metric counts were zero.
+
 Focused mutation tests:
 
 ```powershell

@@ -13,6 +13,7 @@ class R5AmendmentValidatorTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.lock = json.loads(validator.DEFAULT_LOCK_PATH.read_text(encoding="utf-8"))
+        cls.repair = json.loads(validator.DEFAULT_REPAIR_PATH.read_text(encoding="utf-8"))
 
     def errors_for(self, mutation) -> list[str]:
         payload = copy.deepcopy(self.lock)
@@ -23,8 +24,33 @@ class R5AmendmentValidatorTest(unittest.TestCase):
         errors = self.errors_for(mutation)
         self.assertTrue(any(code_fragment in error for error in errors), errors)
 
-    def test_exact_lock_and_bound_files_pass(self) -> None:
+    def test_exact_immutable_lock_and_bound_files_pass(self) -> None:
         self.assertEqual([], validator.validate_payload(self.lock, verify_files=True))
+
+    def test_exact_effective_lock_and_repair_pass(self) -> None:
+        self.assertEqual(
+            [],
+            validator.validate_effective_lock(self.lock, self.repair, verify_files=True),
+        )
+
+    def test_serialized_transform_identity_is_frozen(self) -> None:
+        self.assert_rejected(
+            lambda value: value["frozen_algorithm"]["candidate_identity"].__setitem__(
+                "postprocess_id", validator.EFFECTIVE_POSTPROCESS_ID
+            ),
+            "R5_SERIALIZED_POSTPROCESS_ID_DRIFT",
+        )
+
+    def test_repair_transform_or_authority_mutation_is_rejected(self) -> None:
+        repair = copy.deepcopy(self.repair)
+        repair["effective_candidate_transform"]["postprocess_id"] = "ALIGN_CORNERS_FALSE"
+        errors = validator.validate_repair_payload(repair, verify_files=False)
+        self.assertIn("R5_EFFECTIVE_POSTPROCESS_ID_DRIFT", errors)
+
+        repair = copy.deepcopy(self.repair)
+        repair["execution_authority"]["depthart_inference"] = True
+        errors = validator.validate_repair_payload(repair, verify_files=False)
+        self.assertIn("R5_REPAIR_AUTHORITY_DRIFT", errors)
 
     def test_parent_or_sequence_mutation_is_rejected(self) -> None:
         self.assert_rejected(
