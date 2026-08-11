@@ -48,6 +48,8 @@ SOURCE_DECISION_SCHEMA = "blindassist.taro.o0r.r5_source_decision.v1"
 PHASE_A_COMPLETION_SCHEMA = "blindassist.taro.o0r.r5_phase_a_completion.v1"
 QUERY_RECORD_SCHEMA = "blindassist.taro.o0r.r5_query_record.v1"
 SUMMARY_SCHEMA = "blindassist.taro.o0r.r5_confirmation_summary.v1"
+FARO_UNOBSERVABLE_SCHEMA = "blindassist.taro.o0r.r5_faro_unobservable.v1"
+QUERY_UNOBSERVABLE_SLOT_SCHEMA = "blindassist.taro.o0r.r5_query_unobservable_slot.v1"
 
 CLAIM_CEILING = {
     "scope": "EXACT_EIGHT_FORMER_ADAPTER_FIT_PARENTS_211_FRAMES_ARKITSCENES_TRAIN_LANDSCAPE",
@@ -1077,6 +1079,128 @@ def evaluate_frame(
     ]
 
 
+def evaluate_unobservable_faro_frame(
+    source_frame_receipt: Mapping[str, Any],
+    candidate_frame_record: Mapping[str, Any],
+    native_depth_m: np.ndarray,
+    source_decision: Mapping[str, Any],
+    phase_a_completion: Mapping[str, Any],
+    highres_depth_mm: np.ndarray,
+    failure_code: str,
+) -> list[dict[str, Any]]:
+    """Retain nine UNKNOWN slots when FARO cannot identify a support plane.
+
+    This is deliberately narrower than a generic exception fallback.  The
+    bound FARO payload must reproduce the exact support-unobservable error;
+    integrity, lineage, decode, and all other geometry failures still abort.
+    """
+
+    source = validate_r5_source_receipt(source_frame_receipt)
+    candidate = validate_candidate_frame_record(candidate_frame_record)
+    decision = validate_source_decision(source_decision)
+    phase_a = validate_phase_a_completion(phase_a_completion)
+    require(
+        isinstance(failure_code, str) and failure_code in adapter._SUPPORT_UNOBSERVABLE_CODES,
+        "R5_FARO_UNKNOWN_CODE_INVALID",
+        "only frozen support-unobservable FARO failures can become UNKNOWN query slots",
+        failure_code=failure_code,
+    )
+    try:
+        derive_faro_geometry(highres_depth_mm, source, decision, phase_a)
+    except R5ConfirmationError as error:
+        require(
+            error.code == failure_code,
+            "R5_FARO_UNKNOWN_REPRODUCTION_DRIFT",
+            "bound FARO payload did not reproduce the claimed support-unobservable failure",
+            expected=failure_code,
+            observed=error.code,
+        )
+    else:
+        raise R5ConfirmationError(
+            "R5_FARO_UNKNOWN_REPRODUCTION_DRIFT",
+            "bound FARO payload unexpectedly produced evaluable support geometry",
+            expected=failure_code,
+        )
+    require(
+        source["content_sha256"] == decision["source_frame_receipt_sha256"]
+        and candidate["content_sha256"] == decision["candidate_frame_record_sha256"]
+        and source["physical_frame_id"] == decision["physical_frame_id"],
+        "R5_QUERY_LINEAGE_DRIFT",
+        "unobservable FARO query inputs do not share Phase-A lineage",
+    )
+    raw = np.asarray(highres_depth_mm)
+    faro_observation = _seal(
+        {
+            "schema": FARO_UNOBSERVABLE_SCHEMA,
+            "parent_id": source["parent_id"],
+            "physical_frame_id": source["physical_frame_id"],
+            "source_frame_receipt_sha256": source["content_sha256"],
+            "source_decision_sha256": decision["content_sha256"],
+            "phase_a_completion_sha256": phase_a["content_sha256"],
+            "highres_depth_array_sha256": adapter.canonical_sha256(raw),
+            "geometry_evaluable": False,
+            "reason_codes": [failure_code],
+            "retained_as_unknown": True,
+        }
+    )
+    prepared, _ = _prepared_and_plane(candidate, native_depth_m, decision)
+    empty_ids_sha256 = adapter.canonical_sha256(np.empty((0, 2), dtype=np.int32))
+    records: list[dict[str, Any]] = []
+    for grid_index in range(9):
+        lateral = adapter.PATH_LATERAL_OFFSETS_M[grid_index // 3]
+        yaw = adapter.PATH_YAW_DEGREES[grid_index % 3]
+        path_id = f"lat_{adapter._signed_token(lateral, 2)}_yaw_{adapter._signed_token(yaw, 1)}"
+        query_id = f"{source['physical_frame_id']}:{path_id}"
+        query_slot = _seal(
+            {
+                "schema": QUERY_UNOBSERVABLE_SLOT_SCHEMA,
+                "source_frame_receipt_sha256": source["content_sha256"],
+                "physical_frame_id": source["physical_frame_id"],
+                "query_id": query_id,
+                "path_id": path_id,
+                "grid_index": grid_index,
+                "grid_order": "LATERAL_MAJOR_THEN_YAW_ASCENDING",
+                "faro_unobservable_sha256": faro_observation["content_sha256"],
+                "reason_codes": [failure_code],
+                "query_geometry_instantiation_absent": True,
+            }
+        )
+        baseline = source_factor._failed_mode(prepared.raw_depth_sha256, failure_code)
+        direct = source_factor._failed_mode(prepared.anchored_depth_sha256, failure_code)
+        selected = direct if decision["selected_branch"] == "DIRECT_APPLE_SUPPORT" else baseline
+        record = _seal(
+            {
+                "schema": QUERY_RECORD_SCHEMA,
+                "r5_role": R5_ROLE,
+                "policy_id": POLICY_ID,
+                "parent_id": decision["parent_id"],
+                "physical_frame_id": decision["physical_frame_id"],
+                "query_id": query_id,
+                "grid_index": grid_index,
+                "source_frame_receipt_sha256": source["content_sha256"],
+                "candidate_frame_record_sha256": candidate["content_sha256"],
+                "source_decision_sha256": decision["content_sha256"],
+                "phase_a_completion_sha256": phase_a["content_sha256"],
+                # Legacy field name retained for schema compatibility.  The
+                # hash binds the explicit non-geometry FARO observation above.
+                "faro_geometry_sha256": faro_observation["content_sha256"],
+                "query_receipt_sha256": query_slot["content_sha256"],
+                "common_point_ids_sha256": empty_ids_sha256,
+                "phase_a_selected_branch": decision["selected_branch"],
+                "source_support_available": decision["source_support_available"],
+                "baseline": baseline,
+                "direct_apple_support": direct,
+                "selected_hybrid": selected,
+                "effects": _effects(baseline, selected),
+                "branch_reselection_after_truth": False,
+                "faro_used_for_scoring_only": True,
+            }
+        )
+        records.append(validate_query_record(record, source_decision=decision))
+    require([row["grid_index"] for row in records] == list(range(9)), "R5_QUERY_GRID_DRIFT", "unobservable FARO frame did not retain nine query slots")
+    return records
+
+
 def validate_query_record(value: Any, *, source_decision: Mapping[str, Any] | None = None) -> dict[str, Any]:
     record = _validate_seal(value, QUERY_RECORD_SCHEMA)
     expected = {"schema", "r5_role", "policy_id", "parent_id", "physical_frame_id", "query_id", "grid_index", "source_frame_receipt_sha256", "candidate_frame_record_sha256", "source_decision_sha256", "phase_a_completion_sha256", "faro_geometry_sha256", "query_receipt_sha256", "common_point_ids_sha256", "phase_a_selected_branch", "source_support_available", "baseline", "direct_apple_support", "selected_hybrid", "effects", "branch_reselection_after_truth", "faro_used_for_scoring_only", "content_sha256"}
@@ -1202,12 +1326,12 @@ def summarize(records: Sequence[Mapping[str, Any]], *, expected_parents: int = l
 __all__ = [
     "CANDIDATE_COMPLETION_SCHEMA", "CANDIDATE_FRAME_SCHEMA", "CANDIDATE_INPUT_SCHEMA",
     "CLAIM_CEILING", "EXPECTED_FRAME_COUNT", "EXPECTED_PARENT_FRAME_COUNTS", "EXPECTED_QUERY_COUNT",
-    "INFERENCE_RECEIPT_SCHEMA", "PHASE_A_COMPLETION_SCHEMA",
+    "FARO_UNOBSERVABLE_SCHEMA", "INFERENCE_RECEIPT_SCHEMA", "PHASE_A_COMPLETION_SCHEMA",
     "POLICY_ID", "QUERY_RECORD_SCHEMA", "R5ConfirmationError", "R5FaroGeometry", "R5_ROLE", "R5_ROSTER",
     "SOURCE_DECISION_SCHEMA", "SUMMARY_SCHEMA", "build_candidate_input", "build_candidate_frame_record",
     "build_candidate_phase_completion", "build_inference_receipt", "build_phase_a_completion",
     "build_query_receipts", "build_query_truth_base", "build_source_decision", "derive_faro_geometry",
-    "evaluate_frame", "evaluate_query", "infer_candidate", "summarize", "validate_candidate_frame_record",
+    "evaluate_frame", "evaluate_query", "evaluate_unobservable_faro_frame", "infer_candidate", "summarize", "validate_candidate_frame_record",
     "validate_candidate_input", "validate_candidate_phase_completion", "validate_faro_geometry",
     "validate_inference_receipt", "validate_phase_a_completion", "validate_query_record",
     "validate_r5_source_receipt", "validate_source_decision", "validate_source_scale_record",

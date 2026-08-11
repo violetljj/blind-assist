@@ -313,6 +313,46 @@ class R5ConfirmationTests(unittest.TestCase):
         self.assertTrue(all(row["phase_a_completion_sha256"] == phase_a["content_sha256"] for row in records))
         self.assertTrue(all(row["phase_a_selected_branch"] == self.decision["selected_branch"] for row in records))
 
+    def test_support_unobservable_faro_retains_nine_unknown_slots(self) -> None:
+        phase_a = _phase_a_completion()
+        faro = np.full(adapter.HIGHRES_SHAPE_HW, 250, dtype=np.uint16)
+        source = copy.deepcopy(self.source)
+        source["decoded_payload_bindings"]["highres_depth"]["decoded_content_sha256"] = adapter.canonical_sha256(faro)
+        source.pop("content_sha256")
+        source = adapter._seal(source)
+        candidate, native = _candidate_frame(source, self.color, 2.0)
+        decision = r5.build_source_decision(source, candidate, native, self.apple, self.confidence)
+        with self.assertRaises(r5.R5ConfirmationError) as caught:
+            r5.derive_faro_geometry(faro, source, decision, phase_a)
+        self.assertIn(caught.exception.code, adapter._SUPPORT_UNOBSERVABLE_CODES)
+        records = r5.evaluate_unobservable_faro_frame(
+            source,
+            candidate,
+            native,
+            decision,
+            phase_a,
+            faro,
+            caught.exception.code,
+        )
+        self.assertEqual(list(range(9)), [row["grid_index"] for row in records])
+        self.assertTrue(all(not row["baseline"]["extraction_evaluable"] for row in records))
+        self.assertTrue(all(not row["selected_hybrid"]["extraction_evaluable"] for row in records))
+        self.assertTrue(all(row["baseline"]["reason_codes"] == [caught.exception.code] for row in records))
+        self.assertTrue(all(row["phase_a_completion_sha256"] == phase_a["content_sha256"] for row in records))
+
+    def test_non_support_failure_cannot_be_mapped_to_unknown(self) -> None:
+        with self.assertRaises(r5.R5ConfirmationError) as caught:
+            r5.evaluate_unobservable_faro_frame(
+                self.source,
+                self.candidate,
+                self.native,
+                self.decision,
+                _phase_a_completion(),
+                self.faro,
+                "R5_DECODED_PAYLOAD_HASH_DRIFT",
+            )
+        self.assertEqual("R5_FARO_UNKNOWN_CODE_INVALID", caught.exception.code)
+
     def test_exact_parent_macro_confirmation_gates(self) -> None:
         records = []
         for (parent, video), frame_count in zip(r5.R5_ROSTER, r5.EXPECTED_PARENT_FRAME_COUNTS):
