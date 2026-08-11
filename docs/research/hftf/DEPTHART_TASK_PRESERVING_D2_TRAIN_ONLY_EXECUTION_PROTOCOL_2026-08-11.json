@@ -1,0 +1,188 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_train_only_execution_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D2_TRAIN_ONLY_BASE_OUTPUT_AND_HEAD_TRAINING",
+  "frozen_at": "2026-08-11",
+  "status": "FROZEN_TRAIN_ONLY_EXECUTION",
+  "bindings": {
+    "activation_scope": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_TRAIN_ONLY_ACTIVATION_SCOPE_PROTOCOL_2026-08-11.json",
+      "bytes": 3568,
+      "sha256": "BB55B5E14553A1F1536F44C9E78F1FA8A5F86E26A3829945B7FF457EA9A61604"
+    },
+    "head_protocol": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_TASK_EVIDENCE_HEAD_PROTOCOL_2026-08-11.json",
+      "bytes": 9419,
+      "sha256": "1502F57BAFF14056681BDD21FBA6D7899D78AE7CA50D076734AE16863AAC8034"
+    },
+    "source_manifest": {
+      "path": "artifacts.local/datasets/depthart-task-preserving-d2-phase-c-20260811-r1/manifest.json",
+      "bytes": 77873,
+      "sha256": "2EB5E6113012C2490D0962977C3EA5513DB24C4DBD4B5003E0A371E9D8843F58"
+    },
+    "truth_reader": {
+      "path": "scripts/research/assistive_geometry/arkitscenes_truth_reader.py",
+      "bytes": 25728,
+      "sha256": "F50187661E59C438FAC4CAEB4E0BDFA4D638C64A87094C49C369FBEC3B3218C1"
+    },
+    "runner": {
+      "path": "scripts/research/hftf/deployment/depthart/run_depthart_task_preserving_d2_train_only.py",
+      "bytes": 31796,
+      "sha256": "C201DB4FB062EE08B3CEF2EF6B57F0790DADB53DC341388493EADAF0946A11D5"
+    },
+    "candidate_dlc": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d1-product-aspect-20260810-r1/depthart-608x448-fixed-mixed-fp32.dlc",
+      "bytes": 31998468,
+      "sha256": "755138FA28FCB937E3D62D45FEC292880DFC690851BF2CB00E2704CC67FA5D42"
+    },
+    "saved_context": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d1-device-preflight-20260810-r1/depthart-d1-608x448-sm8650-v75.bin",
+      "bytes": 22552576,
+      "sha256": "FA5DC9DC4BFA4684BA60EDC84B17F9278C07CCCB4FB359E94C9EFA99841DFC3D"
+    }
+  },
+  "train_scope": [
+    {"role_order": 1, "visit_id": "482610", "video_id": "47895972", "frame_count": 300},
+    {"role_order": 2, "visit_id": "467109", "video_id": "47333324", "frame_count": 300},
+    {"role_order": 3, "visit_id": "421013", "video_id": "42444703", "frame_count": 300},
+    {"role_order": 4, "visit_id": "422855", "video_id": "42897480", "frame_count": 300}
+  ],
+  "development_scope": {
+    "identity_count": 4,
+    "status": "SEALED",
+    "checkpoint_open": false,
+    "source_decode": false,
+    "truth": false,
+    "model_output": false
+  },
+  "reference": {
+    "source_root": "artifacts.local/models/depthart/source",
+    "source_git_commit": "0384521b3bcb4c64adf03eeb5d55ebdb1cbdd84c",
+    "checkpoint_sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65",
+    "host_runtime": {
+      "torch": "2.11.0+cu128",
+      "cuda": "12.8",
+      "opencv": "4.10.0",
+      "numpy": "2.1.3",
+      "pillow": "12.2.0"
+    },
+    "allowed_use": "official preprocess and camera prompt generation only",
+    "reference_model_forward": false,
+    "tf32": false,
+    "cudnn_benchmark": false
+  },
+  "device": {
+    "serial": "R5CX10M8Y8X",
+    "model": "SM-S9280",
+    "device": "e3q",
+    "soc": "SM8650",
+    "abi": "arm64-v8a",
+    "android_release": "16",
+    "sdk": 36,
+    "security_patch": "2026-07-05",
+    "build_fingerprint": "samsung/e3qzcx/e3q:16/BP4A.251205.006/S9280ZCS6DZG1:user/release-keys",
+    "validated_preflight_workspace": "/data/local/tmp/depthart_d1_608x448_v75_20260810_r1",
+    "remote_assets": [
+      {"path": "arm64/qnn-net-run", "sha256": "F41DBF1FA9E8FA33642044AFD50FEE89919B1538BC2CE0D3083C4F25A05C25F9"},
+      {"path": "arm64/libQnnHtp.so", "sha256": "C0488F2DF87932A42CA0A563883E6FBA190896BCA439AD0FDAA2428358AB5092"},
+      {"path": "arm64/libQnnHtpPrepare.so", "sha256": "9988CE10FFEE6813FFD218DF308478F44DBC758CC89AED9CB98CFEBB030CA72E"},
+      {"path": "arm64/libQnnHtpV75Stub.so", "sha256": "B126A79EBEABF09949656BE42326546B03F3216AD671C9C0E4AC935CEFA5A631"},
+      {"path": "arm64/libQnnSystem.so", "sha256": "077A8B20A53B216D006B85B58DD754A9E958E02F98E9C79D46619DB6F8EDFEC9"},
+      {"path": "arm64/libQnnDepthArtSelectiveScanPackage.so", "sha256": "FDF13797794DF976BA1FE5450E6AA5A09E5D6D6AA7E328EE8A07256737A2F0A9"},
+      {"path": "dsp/libQnnHtpV75Skel.so", "sha256": "607BE3D7EC64DF053F019438AD6EEA59DD3EEA5D5F985001709D52D5663479BA"},
+      {"path": "dsp/libQnnDepthArtSelectiveScanPackage.so", "sha256": "A5392F2FA54A0449BF81F164D88C52352038AED1BD2A504B6DDB7275BAB4AFDE"},
+      {"path": "context/depthart-d1-608x448-sm8650-v75.bin", "sha256": "FA5DC9DC4BFA4684BA60EDC84B17F9278C07CCCB4FB359E94C9EFA99841DFC3D"}
+    ]
+  },
+  "execution": {
+    "output_root": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-train-20260811-r1",
+    "remote_root": "/data/local/tmp/depthart_d2_train_20260811_r1",
+    "chunk_size_frames": 50,
+    "chunks_per_identity": 6,
+    "total_chunks": 24,
+    "frame_order": "TRAIN_ROLE_ORDER_THEN_SELECTED_FRAME_STEMS_0_TO_299",
+    "candidate_run": "SAVED_CONTEXT_ONLY_NO_DIRECT_DLC_NO_PROFILE",
+    "device_identity_and_remote_hash_reverified_per_chunk": true,
+    "generated_input_cleanup": "ONLY_AFTER_DEVICE_PASS_RECEIPT_AND_OUTPUT_HASHES",
+    "performance_measurement": false
+  },
+  "head_training": {
+    "feature_order": [
+      "candidate_clearance_present",
+      "candidate_clearance_m_or_zero",
+      "valid_depth_fraction",
+      "ground_support_fraction",
+      "ground_residual_m_or_zero",
+      "log1p_band_support_points",
+      "log1p_intrusion_points",
+      "observed_forward_m",
+      "band_left",
+      "band_center",
+      "band_right"
+    ],
+    "candidate_clearance": "cap finite intrusion clearance at 2.0m; use 2.0m surrogate iff all three frozen horizons are observed CLEAR; otherwise missing",
+    "architecture": "Linear(11,16)-SiLU-Linear(16,5)",
+    "parameter_count": 277,
+    "runtime": "host CPU torch float64 deterministic",
+    "seed": 17,
+    "standardization": "(x - TRAIN population mean) / (TRAIN population std + 1e-6)",
+    "optimizer": "AdamW",
+    "learning_rate": 0.01,
+    "weight_decay": 0.0001,
+    "steps": 500,
+    "batching": "full batch over 3600 TRAIN band rows",
+    "early_stopping": false,
+    "checkpoint_selection": "step 500 only",
+    "loss": {
+      "knownness": "unweighted BCEWithLogits over 10800 TRAIN band-horizon cells using the shared per-band knownness logit",
+      "occupancy": "BCEWithLogits over truth-known cells; pooled occupied and clear classes each receive total weight one half",
+      "clearance": "Huber delta 0.2 over paired valid TRAIN bands after bounded residual composition",
+      "weights": {"knownness": 1.0, "occupancy": 1.0, "clearance": 1.0}
+    }
+  },
+  "truth_reader_policy": {
+    "depth_min_m": 0.25,
+    "depth_max_m": 6.0,
+    "minimum_sensor_confidence": 1,
+    "point_stride": 2,
+    "ground_height_min_m": 0.45,
+    "ground_height_max_m": 2.2,
+    "ground_histogram_bin_m": 0.04,
+    "ground_support_tolerance_m": 0.08,
+    "minimum_ground_support_points": 80,
+    "minimum_ground_support_fraction": 0.02,
+    "obstacle_height_min_m": 0.08,
+    "obstacle_height_max_m": 2.0,
+    "minimum_forward_m": 0.2,
+    "maximum_forward_m": 6.0,
+    "body_half_width_m": 0.32,
+    "lateral_margin_m": 0.1,
+    "clearance_quantile": 0.02,
+    "support_forward_quantile": 0.9,
+    "minimum_band_support_points": 20,
+    "minimum_intrusion_points": 20,
+    "horizons_m": [1.0, 1.5, 2.0],
+    "maximum_pose_bracketing_gap_seconds": 0.25
+  },
+  "stop_conditions": [
+    "activation receipt absent or any frozen binding drifts",
+    "device identity or any remote runtime/context hash drifts",
+    "any TRAIN frame/input/output mapping, shape, dtype, finiteness or SHA check fails",
+    "any Development checkpoint or source file is opened",
+    "reference model forward, D1 consumed outcome or R2 source is accessed",
+    "recipe, feature, label, loss, seed or step changes",
+    "performance is measured or claimed"
+  ],
+  "authority": {
+    "train_source_decode": true,
+    "train_truth": true,
+    "train_saved_context_output": true,
+    "single_head_training": true,
+    "development_access": false,
+    "r2_access": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "next_gate_after_pass": "EXPLICIT_D2_DEVELOPMENT_BASELINE_AND_FROZEN_HEAD_QUALITY_ACTIVATION"
+}

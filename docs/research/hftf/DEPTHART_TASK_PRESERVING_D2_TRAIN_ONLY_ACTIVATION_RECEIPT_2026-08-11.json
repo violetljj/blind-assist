@@ -1,0 +1,28 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_train_only_activation_receipt_v1",
+  "created_at": "2026-08-11",
+  "status": "TRAIN_ONLY_EXECUTION_ACTIVATED",
+  "user_verbatim": "授权",
+  "antecedent_scope": "授权 D2 TRAIN-only base output and head training",
+  "interpretation": "Authorize only the frozen four-identity, 1200-frame D2 TRAIN source decode, truth derivation, saved-context base-output generation, and single fixed 277-parameter step-500 head training recipe.",
+  "protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_TRAIN_ONLY_EXECUTION_PROTOCOL_2026-08-11.json",
+    "bytes": 8441,
+    "sha256": "1326556C48D8C75939C08A8BCD9650A1B1DC2DE876DFBA45B395DC24FC49DE24"
+  },
+  "protocol_sha256": "1326556C48D8C75939C08A8BCD9650A1B1DC2DE876DFBA45B395DC24FC49DE24",
+  "execution_authorized": true,
+  "authority": {
+    "train_source_decode": true,
+    "train_truth": true,
+    "train_saved_context_output": true,
+    "single_head_training": true,
+    "development_checkpoint_or_source_access": false,
+    "development_quality": false,
+    "r2_access": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  }
+}
