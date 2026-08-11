@@ -1,0 +1,48 @@
+{
+  "schema": "blindassist.taro.o1r.r7_fail_safe_positive_occupancy_factor_implementation_result.v1",
+  "result_id": "TARO_O1R_R7_FAIL_SAFE_POSITIVE_OCCUPANCY_FACTOR_IMPLEMENTATION_RESULT",
+  "date": "2026-08-12",
+  "status": "IMPLEMENTED_RESEARCH_ONLY_NOT_PROMOTED",
+  "implementation": {
+    "path": "scripts/research/taro_o1r_r7_canary_runtime/positive_occupancy_factor.py",
+    "bytes": 7242,
+    "sha256": "99D90F6F2112AA4194B57B54DBB11AF050B9383A2BDCD90D0F220C8B9E4BE63C",
+    "factor_id": "R7_CONFIDENCE2_CONNECTED_COMPONENT_POSITIVE_OCCUPANCY_V1",
+    "public_builder": "build_positive_occupancy_factor",
+    "truth_side_parameters": 0
+  },
+  "frozen_rule": {
+    "minimum_connected_confidence2_pixels": 2,
+    "minimum_component_max_height_m": 0.08,
+    "maximum_component_min_forward_m": 2.0,
+    "allowed_outputs": ["OCCUPIED_OBSERVED", "UNKNOWN"],
+    "clear_output_allowed": false,
+    "unknown_is_negative": false,
+    "threshold_fit": false
+  },
+  "verification": {
+    "test_path": "scripts/research/taro_o1r_r7_canary_runtime/test_positive_occupancy_factor.py",
+    "test_bytes": 2133,
+    "test_sha256": "AEF92BA1FC7876454597F7787010323B16762718564189A5F91401EE003790A1",
+    "unit_tests_passed": 6,
+    "unit_tests_failed": 0,
+    "fresh_phase_a_replay": {
+      "frame_count": 170,
+      "query_count": 1530,
+      "state_counts": {
+        "CLEAR_OBSERVED": 0,
+        "OCCUPIED_OBSERVED": 1292,
+        "UNKNOWN": 238
+      },
+      "bundle_hash_sequence_sha256": "A97086002DD805557731B67765ADE035888815FCE7FFF2F0B66AF6F5999EAF64"
+    }
+  },
+  "scientific_boundary": {
+    "fresh_confirmation_terminal": "TARO_O1R_R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE",
+    "research_promotion_authorized": false,
+    "deployment_or_product_use_authorized": false,
+    "implementation_retained_for_successor_evaluation": true
+  },
+  "unique_successor": "TARO_O1R_R8_SOURCE_ONLY_CLEAR_NEGATIVE_CONTROL_COHORT_ENRICHMENT_PROTOCOL",
+  "claim_ceiling": "Executable fail-safe research factor with deterministic source-only behavior; no effectiveness promotion, clear, deployment, product, or safety claim."
+}

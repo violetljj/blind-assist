@@ -15,9 +15,10 @@ one-sided Wilson lower bound 0.9976, parent-macro occupancy coverage increase
 The binding blocker is label coverage, not those effectiveness gates. FARO
 produced 1,160 definite occupied labels but only one definite clear label on
 one parent; the protocol requires at least 50 clear labels over four parents.
-All 369 UNKNOWN queries lacked the required 3 m observed-forward proof, showing
-that the existing surface-support clear label is structurally unsuitable for
-this negative control.
+Of 369 UNKNOWN queries, 354 lacked the required complete 2 m observed-forward
+proof; the remaining 15 still failed another frozen clear-knownness condition.
+This shows that the existing surface-support clear label is structurally
+unsuitable for this negative control.
 
 No factor is promoted. The positive factor remains an experimental fail-safe
 `OCCUPIED_OBSERVED/UNKNOWN` implementation, with `CLEAR_OBSERVED` forbidden.

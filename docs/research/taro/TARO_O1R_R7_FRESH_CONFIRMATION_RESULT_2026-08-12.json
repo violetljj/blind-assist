@@ -110,9 +110,10 @@
     "unknown_query_count": 369,
     "unknown_with_zero_faro_obstacle_pixels": 367,
     "unknown_with_support_below_128": 302,
-    "unknown_with_observed_forward_below_3m_or_absent": 369,
+    "unknown_with_observed_forward_below_2m_or_absent": 354,
+    "unknown_with_observed_forward_at_2m": 15,
     "unknown_with_local_valid_fraction_below_0_25": 329,
-    "interpretation": "The existing surface-support clear label is structurally unable to prove forward free space on this cohort; the positive-occupancy hypothesis remains descriptively strong, but the frozen negative-control requirement is not satisfied."
+    "interpretation": "The existing surface-support clear label is structurally unable to prove complete 2 m forward free space on this cohort; the positive-occupancy hypothesis remains descriptively strong, but the frozen negative-control requirement is not satisfied."
   },
   "decision": {
     "positive_occupancy_research_promotion_authorized": false,
