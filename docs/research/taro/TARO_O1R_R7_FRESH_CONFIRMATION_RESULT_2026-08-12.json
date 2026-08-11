@@ -1,0 +1,127 @@
+{
+  "schema": "blindassist.taro.o1r.r7_fresh_confirmation_result_record.v1",
+  "result_id": "TARO_O1R_R7_FRESH_CONFIRMATION_RESULT",
+  "date": "2026-08-12",
+  "status": "TERMINAL_NOT_EVALUABLE_DUAL_CLASS_COVERAGE",
+  "terminal": "TARO_O1R_R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE",
+  "execution_valid": true,
+  "scientifically_evaluable": false,
+  "passed": false,
+  "exact_cohort": {
+    "parent_count": 8,
+    "frame_count": 170,
+    "query_count": 1530,
+    "per_parent_frame_counts": [25, 20, 25, 6, 11, 16, 56, 11]
+  },
+  "execution_evidence": [
+    {
+      "role": "FRESH_INVENTORY_RESULT",
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-inventory-r0/result.json",
+      "bytes": 554,
+      "sha256": "4480803FB1D5333127D6D842465274248C9D7A92F9E0DAE3A4F25A0DFBD2E998",
+      "terminal": "TARO_O1R_R7_FRESH_SOURCE_INVENTORY_AND_FRAME_PLAN_PASS"
+    },
+    {
+      "role": "PHASE_A_R0_FAIL_CLOSED",
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-phase-a-r0/failure.json",
+      "bytes": 253,
+      "sha256": "987A5B9A12E36DF908E764A29A041ADA85E38F7CAE70F7D631FA4584BFC5F495",
+      "failure_code": "ModuleNotFoundError",
+      "candidate_inference_count": 0,
+      "faro_reads": 0
+    },
+    {
+      "role": "PHASE_A_R1_RESULT",
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-phase-a-r1/result.json",
+      "bytes": 879,
+      "sha256": "6E2E9E89FB80107220AFD2F82CC3EE8280310721A651438B4132C699AECA9FAA",
+      "terminal": "TARO_O1R_R7_FRESH_CONFIRMATION_PHASE_A_SEALED_PASS_R1"
+    },
+    {
+      "role": "PHASE_B_RESULT",
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-phase-b-r0/result.json",
+      "bytes": 3908,
+      "sha256": "3494C2F23EB35DD1B806B78672BC96EFC27814ADEB88C552125B29F28C8A395F",
+      "terminal": "TARO_O1R_R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE"
+    },
+    {
+      "role": "PHASE_B_MANIFEST",
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-phase-b-r0/manifest.json",
+      "bytes": 31787,
+      "sha256": "411E2623833EE5E508FEDD66C0E238BD1D8562DD891B9AC192DF120BCF1B1776"
+    }
+  ],
+  "phase_a": {
+    "candidate_inference_count": 170,
+    "source_record_count": 170,
+    "faro_reads": 0,
+    "truth_reads": 0,
+    "prediction_state_counts": {
+      "CLEAR_OBSERVED": 0,
+      "OCCUPIED_OBSERVED": 1292,
+      "UNKNOWN": 238
+    }
+  },
+  "phase_b": {
+    "faro_frame_count": 170,
+    "label_state_counts": {
+      "CLEAR_OBSERVED": 1,
+      "OCCUPIED_OBSERVED": 1160,
+      "UNKNOWN": 369
+    },
+    "occupied_true_positive": 1147,
+    "occupied_false_negative": 13,
+    "occupied_false_positive_against_definite_clear": 0,
+    "occupied_predictions_on_truth_unknown": 145,
+    "unknown_is_negative": false,
+    "source_reselection": false,
+    "threshold_reselection": false
+  },
+  "dual_class_evaluability": {
+    "observed": {
+      "evaluable_parent_count": 8,
+      "parents_with_definite_occupied_label": 8,
+      "parents_with_definite_clear_label": 1,
+      "definite_occupied_query_count": 1160,
+      "definite_clear_query_count": 1
+    },
+    "required": {
+      "minimum_evaluable_parent_count": 8,
+      "minimum_parents_with_definite_occupied_label": 6,
+      "minimum_parents_with_definite_clear_label": 4,
+      "minimum_definite_occupied_query_count": 100,
+      "minimum_definite_clear_query_count": 50
+    },
+    "passed": false,
+    "failed_dimensions": [
+      "parents_with_definite_clear_label",
+      "definite_clear_query_count"
+    ]
+  },
+  "descriptive_frozen_gate_values": {
+    "occupied_precision_on_definite_labels": 1.0,
+    "one_sided_95_wilson_occupied_precision_lower_bound": 0.997646750971,
+    "occupied_recall": 0.988793103448,
+    "parent_macro_definite_occupancy_coverage_increase_absolute": 0.987582080153,
+    "clear_outputs": 0,
+    "all_effectiveness_gates_would_pass_if_dual_class_evaluable": true
+  },
+  "clear_coverage_diagnosis": {
+    "unknown_query_count": 369,
+    "unknown_with_zero_faro_obstacle_pixels": 367,
+    "unknown_with_support_below_128": 302,
+    "unknown_with_observed_forward_below_3m_or_absent": 369,
+    "unknown_with_local_valid_fraction_below_0_25": 329,
+    "interpretation": "The existing surface-support clear label is structurally unable to prove forward free space on this cohort; the positive-occupancy hypothesis remains descriptively strong, but the frozen negative-control requirement is not satisfied."
+  },
+  "decision": {
+    "positive_occupancy_research_promotion_authorized": false,
+    "clear_branch_promotion_authorized": false,
+    "deployment_or_product_promotion_authorized": false,
+    "retain_fail_safe_positive_factor_implementation": true,
+    "retained_outputs": ["OCCUPIED_OBSERVED", "UNKNOWN"],
+    "forbidden_output": "CLEAR_OBSERVED"
+  },
+  "unique_successor": "TARO_O1R_R8_FARO_RAY_SPACE_DEFINITE_CLEAR_OBSERVABILITY_CANARY",
+  "claim_ceiling": "Valid fresh WILD_LAB execution with descriptive positive-occupancy evidence and a binding dual-class NOT_EVALUABLE terminal; no research promotion, clear, deployment, product, or safety claim."
+}

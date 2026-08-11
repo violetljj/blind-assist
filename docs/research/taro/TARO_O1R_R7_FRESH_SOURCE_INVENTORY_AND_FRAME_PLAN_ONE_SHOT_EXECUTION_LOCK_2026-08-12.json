@@ -1,0 +1,80 @@
+{
+  "schema": "blindassist.taro.o1r.r7_fresh_source_inventory_execution_lock.v1",
+  "lock_id": "TARO_O1R_R7_FRESH_SOURCE_INVENTORY_AND_FRAME_PLAN_ONE_SHOT_EXECUTION_LOCK",
+  "status": "AUTHORIZED_UNCONSUMED",
+  "date": "2026-08-12",
+  "consumed": false,
+  "argv": [
+    "scripts/research/taro_o1r_r7_canary_runtime/run_fresh_inventory.py",
+    "--execution-lock",
+    "docs/research/taro/TARO_O1R_R7_FRESH_SOURCE_INVENTORY_AND_FRAME_PLAN_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json"
+  ],
+  "source_root": "artifacts.local/datasets/taro/o1r-r7-fresh-confirmation-source-r0",
+  "output_root": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-inventory-r0",
+  "overwrite": false,
+  "rerun": false,
+  "bindings": [
+    {
+      "role": "R7_DATA_LOCK",
+      "path": "docs/research/taro/TARO_O1R_R7_FRESH_CONFIRMATION_COHORT_AND_DATA_USE_LOCK_2026-08-12.json",
+      "bytes": 7157,
+      "sha256": "4CC1C00ACB049C0622CCB834EF4709DCEE88343E2702EB02187DD2311B2957AB"
+    },
+    {
+      "role": "R7_DOWNLOAD_RECEIPTS",
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-source-r0/download-receipts.json",
+      "bytes": 13165,
+      "sha256": "621643329F267E078DBBABA40C66C4BDC0185C193659199E9459E676445EE34B"
+    },
+    {
+      "role": "R7_DOWNLOAD_RESULT",
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-source-r0/result.json",
+      "bytes": 368,
+      "sha256": "30163771E9D882C09A66F6EC016A91272D77DD8AFC9B94C71FBD89AF7D8054BC"
+    },
+    {
+      "role": "R7_DOWNLOAD_MANIFEST",
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-source-r0/manifest.json",
+      "bytes": 710,
+      "sha256": "3F3B206E876A71EA3267F4C4A5094C85CDAE63F587231D5C1084E9F2142C3934"
+    },
+    {
+      "role": "CONTAINER_RUNTIME",
+      "path": "scripts/research/taro_o0r_truth_materializer_runtime/materializer.py",
+      "bytes": 81498,
+      "sha256": "2D03BAFA691FD8C1919854581C68D0460BC943E54E6BB83486F5E867497139F2"
+    },
+    {
+      "role": "R7_INVENTORY_RUNNER",
+      "path": "scripts/research/taro_o1r_r7_canary_runtime/run_fresh_inventory.py",
+      "bytes": 14438,
+      "sha256": "08E62FBAADA377F802661E8F8C7F20E57D2ED90D5B1C82D9B7D2168C7D097F5B"
+    }
+  ],
+  "execution_authority": {
+    "container_inventory": true,
+    "zip_crc_validation": true,
+    "trajectory_parse": true,
+    "exact_frame_plan": true,
+    "pixel_array_decode": false,
+    "model_execution": false,
+    "truth_scoring": false,
+    "training": false
+  },
+  "resource_budget": {
+    "maximum_materialized_bytes": 599589047,
+    "maximum_evidence_bytes": 10485760
+  },
+  "frozen_expectations": {
+    "parent_count": 8,
+    "per_parent_exact_pose_bounded_frame_counts": [25, 20, 25, 6, 11, 16, 56, 11],
+    "exact_pose_bounded_frame_count": 170,
+    "materialized_bytes": 599589047
+  },
+  "one_shot_policy": {
+    "consumed_on_output_root_creation": true,
+    "failure_does_not_restore_authority": true
+  },
+  "unique_successor_if_pass": "TARO_O1R_R7_FRESH_CONFIRMATION_PHASE_A_SOURCE_AND_MODEL_ONE_SHOT_EXECUTION_LOCK",
+  "claim_ceiling": "Fresh-source ZIP CRC, trajectory parse, intrinsics inventory, and exact pose-bounded frame identities only; no decoded pixel, model, truth, effectiveness, deployment, product, or safety evidence."
+}
