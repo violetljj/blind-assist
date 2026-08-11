@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / APPLE_SEEDED_SUPPORT_RECOVERY_R2_COMPLETE / CANDIDATE_REFIT_REJECTED / DIRECT_APPLE_SUPPORT_R3_COMPLETE / DIRECT_APPLE_SUPPORT_PARTIAL_HEADROOM / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / APPLE_SEEDED_SUPPORT_RECOVERY_R2_COMPLETE / CANDIDATE_REFIT_REJECTED / DIRECT_APPLE_SUPPORT_R3_COMPLETE / DIRECT_APPLE_SUPPORT_R4_COMPLETE / DIRECT_APPLE_HYBRID_R4A_COMPLETE / ZERO_PARAMETER_HYBRID_RETROSPECTIVE_HEADROOM / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -102,6 +102,12 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [TARO O0R direct Apple SUPPORT R3 result](TARO_O0R_ARKITSCENES_DIRECT_APPLE_SUPPORT_R3_RESULT_2026-08-11.md)：
   strict raw-source Phase A 下 8/14 frames 获得物理可信 Apple SUPPORT，58/112 queries 可评估、
   20 queries 同时 height+normal no-regret；normal parent-macro 仍变差，故只建立 partial headroom；
+- [TARO O0R direct Apple SUPPORT R4 full-cohort result](TARO_O0R_ARKITSCENES_DIRECT_APPLE_SUPPORT_R4_RESULT_2026-08-11.md)：
+  固定 R3 方法扩到 171 frames / 1,539 queries；高度和法向 parent-macro 均改善，但 direct-only
+  相对 baseline 恢复 36、丢失 108 个 extraction-evaluable queries，拒绝无条件替换；
+- [TARO O0R direct Apple hybrid R4A result](TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_R4A_RESULT_2026-08-11.md)：
+  source-only plane 有效则 direct、否则回退 R1 baseline；零参数、零阈值、零训练，恢复 36、丢失 0，
+  高度与法向均为 16/16 parents 改善，但仍是同 cohort retrospective headroom；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -112,7 +118,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`DIRECT_APPLE_SUPPORT_FULL_COHORT_R4`
+`DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -182,9 +188,22 @@ source-only。R3 已用 raw AppleDepth/confidence、exact `.pincam` 与 trajecto
 direct Apple SUPPORT R3 在同一 lost cohort 上保留 8/14 物理可信 source planes，使 58/112 queries
 恢复 SUPPORT evaluability，20 queries / 3 frames 同时不劣于 R1 baseline 的 height 与 normal；但 normal
 parent-macro reduction 为 `-0.03906 rad`，6 frames 继续 UNKNOWN，且该 cohort 的 truth query knownness
-本身均不满足，所以不能形成 final clearance claim。当前唯一 successor 是把同一冻结、无阈值的 factor
-ownership 扩到全部 171 frames / 1,539 queries，先量化完整 coverage 与 height-normal tradeoff；不得从
-这 16 个已观察 eval parents 事后选择 selector/threshold。
+本身均不满足，所以不能形成 final clearance claim。
+
+R4 已把相同、冻结且无阈值的 factor ownership 扩到全部 171 frames / 1,539 queries。direct-only
+分支相对 baseline 恢复 36 个 extraction-evaluable queries，却丢失 108 个；因此不作无条件替换。
+R4A 随后冻结 `DIRECT_WHEN_SOURCE_SUPPORT_AVAILABLE_ELSE_R1_BASELINE_V1`：selection 只读取 Phase-A
+的 source plane availability，绝不读取 truth-derived evaluability/error/knownness。该零参数回退使
+extraction-evaluable 达到 1,530/1,539，相对 baseline 恢复 36、丢失 0；height 和 normal
+parent-macro 均为 16/16 parents 改善。仍有 2 个 baseline-known query 的 knownness 损失，且全部结果
+来自已观察的同一 16-parent cohort，所以不能写成 fresh confirmation 或 final clearance 增益。
+
+当前唯一 successor 是先签
+`DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT`，再在 8 个 visit-disjoint
+`ADAPTER_FIT` parents / 211 source frames 上独立确认已经冻结的 R4A policy。旧合同只授权这些 parents
+做 uncertainty fit，明确不授权 model output/task metric，因此不能借旧 role 直接执行。新版本必须先封存
+truth-blind DepthART/source Phase A，再打开同一 211 frames 的 FARO Phase B；不得读取或枚举现有
+16-parent eval truth，也不得训练 selector 或修改 policy。
 
 P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
 finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份
@@ -233,6 +252,9 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
   `GAP_OPEN` / `NOT_ADMITTED`；该映射不等于下载、source admission 或 O0R successor；
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
+- 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
+- outcome 前设计和冻结 `DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT`；在该 amendment
+  与后续 implementation/execution lock 生效前，不得创建 R5 evidence root；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止
@@ -250,19 +272,23 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 要求用户向前或侧向迈步来获取证据，或把计划动作当作已执行基线；
 - 读取受保护 outcome、重标 consumed cohort、启动训练/Teacher/TwinScene/AC4D、接
   Android/QNN/HTP、修改默认 App 或宣称助盲安全、独立行走、产品有效性。
+- 从现有 16 个 eval parents 事后拟合 selector/threshold，或把 R4A retrospective replay 写成 fresh
+  confirmation；
 - 覆盖、删除或重跑已消费的 O0M one-shot，或把历史 execution lock 解释为剩余权限；
 - 把 synthetic mechanics 写成真实 factor causal headroom，或跳过 real O0R 数据/adapter 前门进入
   G0/G1、A0/A1、J0。
-- 在独立、已提交且仍受预算/根隔离约束的 truth-only execution authorization 前下载本合同 24 个
-  source body、物化 FARO factor/query truth、拟合 uncertainty、运行 DepthART 或生成任一 O0R arm。
+- 借旧 `ADAPTER_FIT` role 对 211 fit frames 运行 DepthART、生成 task metric 或读取其 FARO outcome；
+  这些动作只能由新的 R5 role amendment、hash-bound implementation lock 与 one-shot execution lock 授权。
 
 ## Claim ceiling
 
-当前还证明一个受限算法结果：在锁定 ARKitScenes landscape cohort 和已封存 DepthART candidate 上，
-source-visible AppleDepth 零参数尺度锚点能把 parent-macro absolute log-scale error 从 `0.30498` 降到
-`0.01561`，239/239 source frames 可估计。它不证明正式 factor causal headroom、RGB-only operation、
-真实 evidence dedup/whitening、完整 query truth admission、选择性风险校准、observation-withholding/sensing regret、
-真实 geometry-anchored counterfactual pair、被动/主动视角收益、跨设备泛化、移动端可行、产品有效性
-或真实用户安全。
+当前还证明两个受限算法结果。第一，source-visible AppleDepth 零参数尺度锚点能把 parent-macro
+absolute log-scale error 从 `0.30498` 降到 `0.01561`，239/239 source frames 可估计。第二，固定
+R4A direct-when-valid/baseline-fallback policy 在同一已观察的 16-parent cohort 上使
+extraction-evaluable 从 baseline 的 1,494 提高到 1,530，且 height/normal parent-macro 均为
+16/16 parents 改善；但 known point-clearance 相对 baseline 仍丢失 2 个、恢复 0。它们不证明 fresh
+confirmation、正式 O0R PASS、RGB-only operation、真实 evidence dedup/whitening、完整 query truth
+admission、选择性风险校准、observation-withholding/sensing regret、真实 geometry-anchored
+counterfactual pair、被动/主动视角收益、跨设备泛化、移动端可行、产品有效性或真实用户安全。
 
 默认 App、正式 YOLO、Assistive Geometry 主线、DepthART 路线以及所有产品/安全权限均不变。

@@ -111,3 +111,49 @@ eight source SUPPORT frames, made 58 queries support-evaluable and found 20
 height-and-normal no-regret queries. It remains descriptive partial headroom;
 the authoritative result is
 `docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_SUPPORT_R3_RESULT_2026-08-11.md`.
+
+## R4 full-cohort direct Apple SUPPORT
+
+`direct_apple_full_cohort.py` replays the exact R3 method across all 171
+existing eval frames / 1,539 queries. It retains the two-phase source firewall,
+uses no threshold or training, and binds every comparison to the sealed R1
+query row.
+
+Focused validation:
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  -m unittest `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_direct_apple_full_cohort `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_run_direct_apple_full_cohort_canary -v
+```
+
+The consumed replay found positive parent-macro height and normal reductions on
+all 16 parents, but direct-only selection recovered 36 extraction-evaluable
+queries and lost 108. It is therefore not adopted unconditionally. The
+authoritative result is
+`docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_SUPPORT_R4_RESULT_2026-08-11.md`.
+
+## R4A zero-parameter hybrid
+
+`direct_apple_hybrid.py` applies the frozen policy
+`DIRECT_WHEN_SOURCE_SUPPORT_AVAILABLE_ELSE_R1_BASELINE_V1`. Its only selection
+input is the source-only Phase-A plane availability; truth-derived extraction,
+error and knownness fields cannot influence selection. The public validator
+requires the exact external R4 row.
+
+Focused validation:
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  -m unittest `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_direct_apple_hybrid `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_run_direct_apple_hybrid_replay -v
+```
+
+The consumed replay used direct SUPPORT for 1,422 queries and baseline fallback
+for 117. It recovered 36 extraction-evaluable queries versus baseline and lost
+none; both height and normal parent-macro errors improved on 16/16 parents.
+Known point-clearance still lost two baseline-known queries, so this remains
+retrospective factor/extraction headroom. The authoritative result is
+`docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_R4A_RESULT_2026-08-11.md`.
