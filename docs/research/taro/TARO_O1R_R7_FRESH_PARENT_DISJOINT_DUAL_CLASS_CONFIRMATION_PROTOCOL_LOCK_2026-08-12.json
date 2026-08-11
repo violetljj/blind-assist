@@ -1,0 +1,99 @@
+{
+  "schema": "blindassist.taro.o1r.r7_fresh_parent_disjoint_dual_class_confirmation_protocol_lock.v1",
+  "lock_id": "TARO_O1R_R7_FRESH_PARENT_DISJOINT_DUAL_CLASS_CONFIRMATION_PROTOCOL_LOCK",
+  "status": "FROZEN",
+  "date": "2026-08-12",
+  "predecessor": {
+    "result_path": "docs/research/taro/TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_FIT_LOPO_CANARY_RESULT_2026-08-12.json",
+    "bytes": 4679,
+    "sha256": "BC47D7A8E89B0D0517990734304BF047271916ED97EF87FD36530475F1C5A454",
+    "terminal": "TARO_O1R_R7_FIT_LOPO_CANARY_PASS"
+  },
+  "scientific_task": {
+    "name": "FRESH_POSITIVE_OCCUPANCY_CONFIRMATION_WITH_DEFINITE_CLEAR_NEGATIVE_CONTROL",
+    "objective": "Confirm that the frozen confidence-2 AppleDepth positive-evidence rule detects occupied query capsules on new parent-disjoint scenes without converting definite-clear capsules to occupied.",
+    "advanced_hypothesis": "H_OCCUPIED_POSITIVE",
+    "disabled_hypothesis": {
+      "name": "H_CLEAR_CENSORED_FAR",
+      "status": "NOT_EVALUABLE_IN_FIT_CANARY",
+      "runtime_action": "ALWAYS_UNKNOWN_NO_CLEAR_OUTPUT"
+    }
+  },
+  "frozen_candidate": {
+    "source": "CONNECTED_8_NEIGHBOR_CONFIDENCE2_APPLEDEPTH_COMPONENT_INSIDE_QUERY_CAPSULE",
+    "minimum_connected_confidence2_pixels": 2,
+    "minimum_component_max_height_m": 0.08,
+    "maximum_component_min_forward_m": 2.0,
+    "positive_evidence_output": "OCCUPIED_OBSERVED",
+    "absence_of_positive_evidence_output": "UNKNOWN",
+    "clear_output_allowed": false,
+    "threshold_search_or_selector_fit": false
+  },
+  "fresh_cohort": {
+    "official_fold": "Training",
+    "minimum_parent_count": 8,
+    "minimum_frame_count": 120,
+    "parent_and_visit_disjoint_from_all_prior_taro_roles": true,
+    "selection_before_source_or_faro_payload_read": true,
+    "selection_rule": "PINNED_EXCLUSION_THEN_CANONICAL_SHA256_ASCENDING",
+    "no_replacement_after_outcome": true,
+    "exact_roster_requires_separate_cohort_and_data_use_lock": true,
+    "authorization_not_implied_by_this_protocol": true
+  },
+  "phase_firewall": {
+    "phase_a": {
+      "allowed_inputs": [
+        "sealed DepthART candidate",
+        "AppleDepth",
+        "confidence",
+        "intrinsics",
+        "trajectory"
+      ],
+      "faro_or_label_input": false,
+      "output": "sealed nine-query positive-evidence records plus completion receipt"
+    },
+    "phase_b": {
+      "starts_only_after_phase_a_reload": true,
+      "allowed_new_input": "FARO",
+      "source_reselection": false,
+      "threshold_reselection": false
+    },
+    "training_steps": 0,
+    "network_during_scientific_execution": 0
+  },
+  "dual_class_evaluability_gates": {
+    "minimum_evaluable_parent_count": 8,
+    "minimum_parents_with_definite_occupied_label": 6,
+    "minimum_parents_with_definite_clear_label": 4,
+    "minimum_definite_occupied_query_count": 100,
+    "minimum_definite_clear_query_count": 50,
+    "failure_terminal": "TARO_O1R_R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE"
+  },
+  "confirmation_gates": {
+    "minimum_occupied_precision_on_definite_labels": 0.9,
+    "minimum_one_sided_95_wilson_occupied_precision_lower_bound": 0.8,
+    "minimum_occupied_recall": 0.9,
+    "minimum_parent_macro_definite_occupancy_coverage_increase_absolute": 0.05,
+    "maximum_clear_outputs": 0,
+    "unknown_is_negative": false,
+    "all_gates_required": true
+  },
+  "terminal_rules": {
+    "class_coverage_insufficient": "TARO_O1R_R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE",
+    "evaluable_and_all_confirmation_gates_pass": "TARO_O1R_R7_POSITIVE_OCCUPANCY_FRESH_CONFIRMATION_PASS",
+    "evaluable_and_any_confirmation_gate_fails": "TARO_O1R_R7_POSITIVE_OCCUPANCY_FRESH_CONFIRMATION_FAIL",
+    "binding_or_runtime_failure": "TARO_O1R_R7_FRESH_CONFIRMATION_EXECUTION_INVALID",
+    "promotion_scope_on_pass": "RESEARCH_ROUTE_POSITIVE_OCCUPANCY_FACTOR_ONLY",
+    "clear_branch_promotion_on_any_terminal": false
+  },
+  "forbidden_actions": [
+    "reuse any of the 24 formation parents, 8 R6 untouched parents, or other observed TARO parent",
+    "select or replace parents after FARO class counts are known",
+    "count FARO UNKNOWN as a negative label",
+    "enable CLEAR_OBSERVED from the far-censored branch",
+    "refit thresholds or uncertainty on the fresh cohort",
+    "claim deployment, device, product, or safety effectiveness"
+  ],
+  "claim_ceiling": "Fresh ARKitScenes research confirmation of the positive-occupancy factor only; no clear, deployment, device, product, or safety claim.",
+  "unique_successor": "TARO_O1R_R7_FRESH_CONFIRMATION_COHORT_AND_DATA_USE_LOCK"
+}

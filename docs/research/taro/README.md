@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN / R6_REDUCER_EVIDENCE_VERIFIED / R7_TASK_FROZEN / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN / R6_REDUCER_EVIDENCE_VERIFIED / R7_FIT_LOPO_CANARY_PASS / R7_POSITIVE_OCCUPANCY_ADVANCES / R7_CLEAR_NOT_EVALUABLE / R7_EVIDENCE_VERIFIED / FRESH_CONFIRMATION_PROTOCOL_FROZEN / FRESH_8_PARENT_COHORT_FROZEN / DATA_USE_AUTHORIZED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -168,6 +168,18 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [R7 positive occupancy and clear coverage task lock](TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_TASK_LOCK_2026-08-12.md)：
   冻结独立正占用证据与 far-censored clear coverage 两个可证伪假设，只允许在 8 个 ADAPTER_FIT parents
   上做留一父级 CPU canary；已观察的 16 eval parents 不得用于 R7 promotion；
+- [R7 canary implementation lock](TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_CANARY_IMPLEMENTATION_LOCK_2026-08-12.md)：
+  冻结 972 个候选组合、正占用优先与 clear veto、source-first 两阶段防泄漏和 10 个 focused tests；
+- [R7 canary one-shot execution lock](TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_CANARY_ONE_SHOT_EXECUTION_LOCK_2026-08-12.md)：
+  绑定 8 ADAPTER_FIT parents / 211 frames / 1,899 queries、唯一 argv 与 absent root；one-shot 已消费；
+- [R7 fit-only LOPO canary result](TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_FIT_LOPO_CANARY_RESULT_2026-08-12.md)：
+  426 个 evidence 文件全量验签；8 折均选中 2-pixel / 0.08 m / 2.0 m 正占用规则，恢复 1,619 个
+  OCCUPIED 状态并保持 280 UNKNOWN。fit gates PASS，但 FARO clear label=0、clear output=0，故只推进正占用分支；
+- [R7 fresh dual-class confirmation protocol](TARO_O1R_R7_FRESH_PARENT_DISJOINT_DUAL_CLASS_CONFIRMATION_PROTOCOL_LOCK_2026-08-12.md)：
+  冻结全新 parent/visit-disjoint 确认与 definite-clear 负控门；clear 分支禁用，数据不足为 NOT_EVALUABLE；
+- [R7 fresh cohort and data-use lock](TARO_O1R_R7_FRESH_CONFIRMATION_COHORT_AND_DATA_USE_LOCK_2026-08-12.md)：
+  以冻结 exclusion snapshot 与 SHA 排序选出 8 个新 Training parents / 24 assets；用户授权已约束到该
+  exact roster，当前 HEAD/body/model/truth 均未执行且 outcome 后不得替换；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -178,7 +190,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_CANARY_IMPLEMENTATION_LOCK`
+`TARO_O1R_R7_FRESH_CONFIRMATION_CONTENT_LENGTH_HEAD_ONE_SHOT_EXECUTION_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -288,8 +300,16 @@ boundary Jaccard 为 7 正/5 负/1 平，故不声明 no-regret。clearance 始�
 prospective factor 到 uncertainty/deterministic reducer 的 integration protocol、实现与 one-shot replay 均已完成。
 执行有效且 evidence 全量验签，但 2,151/2,151 final states 全为 UNKNOWN；这不是效果 PASS。旧 clearance
 区间的数值下限与真实 uncertainty 使 occupied 结构性不可达，因此不得重跑同一 reducer 或事后缩小 uncertainty。
-唯一后继是 R7：在 8 个 ADAPTER_FIT parents 上以留一父级方式检验 positive occupancy 与 far-censored clear
-coverage；已观察的 16 eval parents 仅作诊断，不能为 R7 promotion 背书。
+R7 fit-only one-shot 也已完成并通过全部冻结门。8 个留一父级折叠均选择同一最弱正占用规则，R7 从
+1,899 个 baseline UNKNOWN 中形成 1,619 个 OCCUPIED、保留 280 个 UNKNOWN；1,438/1,450 definite
+occupied labels 被恢复，source 阶段在 FARO=0 reads 时已封存重载。但 fit FARO 标签中 CLEAR=0，且 R7
+clear output=0，所以 far-censored clear 假设正式为 NOT_EVALUABLE；occupied precision 也缺少 definite-clear
+负类，不能解释为部署精度。唯一后继是 outcome-blind 的全新 parent/visit-disjoint cohort/data-use lock；
+fresh protocol 已冻结 dual-class evaluability guard，且明确禁用 clear 分支。
+
+fresh cohort 也已用 commit `59023049` 的官方身份 exclusion snapshot 在任何新 media/model/truth 读取前冻结：
+8 个 Training visit、24 个 asset URL 与用户数据使用授权均已绑定。数据锁本身没有发送 HEAD、下载 body、
+运行 DepthART 或读取 FARO；唯一后继是 hash-bound、zero-body 的 Content-Length HEAD one-shot lock。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定

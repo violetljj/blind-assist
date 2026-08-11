@@ -1,0 +1,120 @@
+{
+  "schema": "blindassist.taro.o1r.r7_positive_occupancy_and_clear_coverage_fit_lopo_canary_result.v1",
+  "result_id": "TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_FIT_LOPO_CANARY_RESULT",
+  "date": "2026-08-12",
+  "terminal": "TARO_O1R_R7_FIT_LOPO_CANARY_PASS",
+  "execution_valid": true,
+  "evidence_valid": true,
+  "passed": true,
+  "promotion_authorized": false,
+  "cohort": {
+    "role": "ADAPTER_FIT",
+    "parent_count": 8,
+    "frame_count": 211,
+    "query_count": 1899,
+    "outer_validation": "LEAVE_ONE_PARENT_OUT_8_FOLDS"
+  },
+  "selected_config_all_held_parents": {
+    "minimum_connected_confidence2_pixels": 2,
+    "minimum_component_max_height_m": 0.08,
+    "maximum_component_min_forward_m": 2.0,
+    "minimum_far_censored_fraction": 0.8,
+    "far_depth_floor_m": 2.5,
+    "minimum_observed_support_points": 32,
+    "threshold_index_tuple": [0, 0, 2, 0, 0, 0]
+  },
+  "state_counts": {
+    "baseline": {
+      "definite": 0,
+      "UNKNOWN": 1899
+    },
+    "r7": {
+      "CLEAR_OBSERVED": 0,
+      "OCCUPIED_OBSERVED": 1619,
+      "UNKNOWN": 280
+    },
+    "faro_labels": {
+      "CLEAR_OBSERVED": 0,
+      "OCCUPIED_OBSERVED": 1450,
+      "UNKNOWN": 449
+    }
+  },
+  "held_parent_metrics": {
+    "evaluable_parent_count": 8,
+    "definite_query_coverage_increase_absolute": 0.852553975777,
+    "parent_macro_definite_query_coverage_increase_absolute": 0.80787037037,
+    "false_clear_count": 0,
+    "occupied_true_positive_count": 1438,
+    "occupied_false_positive_count_against_definite_clear": 0,
+    "occupied_predictions_on_unknown_truth": 181,
+    "missed_occupied_labels": 12,
+    "occupied_precision_on_definite_labels": 1.0,
+    "occupied_precision_wilson_lower_95": 0.998122070491
+  },
+  "gate_results": {
+    "minimum_evaluable_parents": true,
+    "false_clear_count_zero": true,
+    "minimum_occupied_precision": true,
+    "minimum_definite_query_coverage_increase_absolute": true,
+    "unknown_is_negative": false
+  },
+  "hypothesis_results": {
+    "H_OCCUPIED_POSITIVE": {
+      "status": "FIT_ONLY_NESTED_PARENT_PASS",
+      "evidence": "All eight held parents selected the same weakest positive-evidence tuple; 1438 of 1450 definite occupied labels were recovered."
+    },
+    "H_CLEAR_CENSORED_FAR": {
+      "status": "NOT_EVALUABLE_NO_CLEAR_LABELS_AND_ZERO_CLEAR_PREDICTIONS",
+      "evidence": "The fit cohort contained zero identifiable FARO CLEAR labels and the R7 reducer emitted zero CLEAR states. The clear branch receives no promotion authority."
+    }
+  },
+  "risk_boundary": {
+    "precision_denominator_has_definite_clear_negatives": false,
+    "unknown_predictions_count_as_precision_negatives": false,
+    "interpretation": "The frozen precision gate passes under UNKNOWN-is-not-negative semantics, but this cohort supplies no definite CLEAR negative class. Fresh confirmation must add a dual-class evaluability guard and must not enable the clear branch.",
+    "repeat_same_fit_canary": false
+  },
+  "execution_firewall": {
+    "source_payload_reads": {
+      "confidence": 211,
+      "lowres_depth": 211
+    },
+    "source_phase_faro_reads": 0,
+    "label_payload_reads": {
+      "highres_depth": 211
+    },
+    "source_phase_reloaded_before_label_join": true,
+    "source_phase_reselection_after_labels": false,
+    "training_steps": 0,
+    "network_requests": 0,
+    "elapsed_seconds": 1262.688,
+    "peak_rss_bytes": 135991296
+  },
+  "evidence": {
+    "root": "artifacts.local/evidence/taro/o1r-r7-positive-occupancy-clear-coverage-fit-canary-r0",
+    "file_count": 426,
+    "total_bytes": 791402,
+    "result": {
+      "bytes": 12247,
+      "sha256": "A4D7182241D6A297E7AAED15B60AA61C0662E1CE207BBD2B12286F9FF158B49B",
+      "content_sha256": "FF80488D72334677ABF3D344A7BA2EC927AEAC144F52C0438091790F2122FAA5"
+    },
+    "source_phase_completion": {
+      "bytes": 503,
+      "sha256": "44B4BC15164CD176C3DD3DC1B1439A112EBC045CBE4320AE6E246F105E4DF96E",
+      "content_sha256": "1CB9A3621067B603A470C950F42447D8E3720C50033E6BB8F2E57E0C2F8E7C46"
+    },
+    "execution_receipt": {
+      "bytes": 798,
+      "sha256": "3AAE0AA3C8D84DCB06C72C82D55FBCB6322A99D507A518B3D2D46027332D0432"
+    },
+    "manifest": {
+      "bytes": 84670,
+      "sha256": "D65A7AE374A1AC8241C88C57186BF1DAB9C3C3920034BE1A24FDC3D7F88AFE81"
+    },
+    "replay_validation_terminal": "TARO_O1R_R7_FIT_LOPO_CANARY_EVIDENCE_VALID"
+  },
+  "claim_ceiling": "Fit-only nested-parent CPU hypothesis canary; no promotion, deployment, device, product, or safety claim.",
+  "unique_successor": "TARO_O1R_R7_FRESH_PARENT_DISJOINT_DUAL_CLASS_CONFIRMATION_PROTOCOL_LOCK",
+  "content_sha256": "3C92684695FC94DDA1FB93298DACDA07277EB43E0ECB1F3D7B55A5FBF4294196"
+}

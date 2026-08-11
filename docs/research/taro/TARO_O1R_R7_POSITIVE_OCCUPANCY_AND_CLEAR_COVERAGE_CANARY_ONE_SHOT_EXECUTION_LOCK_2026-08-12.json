@@ -1,0 +1,108 @@
+{
+  "schema": "blindassist.taro.o1r.r7_positive_occupancy_and_clear_coverage_canary_one_shot_execution_lock.v1",
+  "lock_id": "TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_CANARY_ONE_SHOT_EXECUTION_LOCK",
+  "status": "FROZEN",
+  "date": "2026-08-12",
+  "implementation_lock": {
+    "path": "docs/research/taro/TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_CANARY_IMPLEMENTATION_LOCK_2026-08-12.json",
+    "bytes": 4140,
+    "sha256": "C29E4CBF11A6DA9ED8969A9A64EA08D1236E72E935442038C1BDA76E9E25C663"
+  },
+  "runner": {
+    "path": "scripts/research/taro_o1r_r7_canary_runtime/run_locked_fit_canary.py",
+    "bytes": 13008,
+    "sha256": "C610EB89054506E5D08E8BC5929DC5EAA45544D868245241C170F58817335B93",
+    "module": "scripts.research.taro_o1r_r7_canary_runtime.run_locked_fit_canary"
+  },
+  "argv": [
+    "E:/codex-tools/venvs/riskseg-r0-py311/Scripts/python.exe",
+    "-m",
+    "scripts.research.taro_o1r_r7_canary_runtime.run_locked_fit_canary",
+    "--execution-lock",
+    "E:/linnan/linnan/docs/research/taro/TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_CANARY_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json"
+  ],
+  "roots": {
+    "repo_root": "E:/linnan/linnan",
+    "frame_plan_path": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/exact-frame-plan.json.gz",
+    "source_root": "E:/linnan/linnan/artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r3",
+    "source_evidence_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-formation-source-r0",
+    "fit_candidate_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5",
+    "eval_candidate_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r3",
+    "phase_a_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r4",
+    "output_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o1r-r7-positive-occupancy-clear-coverage-fit-canary-r0"
+  },
+  "input_bindings": {
+    "FRAME_PLAN": {
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/exact-frame-plan.json.gz",
+      "bytes": 11228,
+      "sha256": "BBAC08A9832A6CE465E8A8C6532FFF857AF878E6E821E683B24A83981C3C946C"
+    },
+    "SOURCE_MANIFEST": {
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-formation-source-r0/manifest.json",
+      "bytes": 93247,
+      "sha256": "0EE4A3E59DD9A786F37DFAD5FF35A3261A75890D3E0293864B85C034D1519B50"
+    },
+    "FIT_CANDIDATE_MANIFEST": {
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5/manifest.json",
+      "bytes": 126112,
+      "sha256": "0E7D9C906AA41650062236C53D23ADA02156C5A57B87C43E0AAD48E156E04733"
+    },
+    "EVAL_CANDIDATE_MANIFEST": {
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r3/manifest.json",
+      "bytes": 131836,
+      "sha256": "8DF10948E219F734E042EE3A813C4F60AEE4C145C3519C01F0C29A7D613038E7"
+    },
+    "R6_PHASE_A_MANIFEST": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r4/manifest.json",
+      "bytes": 104790,
+      "sha256": "8B1810CA47B903B30CB1E58C5419D8FFCE3B0A562D4198D578D160311E9C410F"
+    },
+    "UNCERTAINTY_ARTIFACT": {
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/uncertainty-model-artifact.json.gz",
+      "bytes": 58084,
+      "sha256": "833CA7074E178D3D2FE6FEB66A386985C0CAEB8AA6878089E7C1B08984FD5E59"
+    },
+    "UNCERTAINTY_RECEIPT": {
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/uncertainty-model-receipt.json",
+      "bytes": 14820,
+      "sha256": "8E1C97C0961DEF6C4E7B3FCF2EADA6ECA022F0DFF2140221D221FB4C8B6A8CAE"
+    }
+  },
+  "authority": {
+    "role": "ADAPTER_FIT",
+    "parent_count": 8,
+    "frame_count": 211,
+    "query_count": 1899,
+    "source_phase_allowed_payload_roles": ["lowres_depth", "confidence"],
+    "source_phase_faro_reads": 0,
+    "label_phase_allowed_payload_roles": ["highres_depth"],
+    "source_phase_must_complete_and_reload_before_label_phase": true,
+    "leave_one_parent_out": true,
+    "observed_eval_parent_use": false,
+    "training_steps": 0,
+    "network_requests": 0,
+    "promotion_authorized": false,
+    "app_or_device_change": false
+  },
+  "resource_budget": {
+    "maximum_elapsed_seconds": 1800,
+    "maximum_evidence_bytes": 268435456,
+    "maximum_rss_bytes": 4294967296
+  },
+  "one_shot": {
+    "consumed_on_output_root_creation": true,
+    "output_root_must_be_absent": true,
+    "overwrite_allowed": false,
+    "rerun_allowed": false
+  },
+  "terminal_rule": {
+    "all_fit_gates_pass": "TARO_O1R_R7_FIT_LOPO_CANARY_PASS",
+    "any_fit_gate_fail": "TARO_O1R_R7_FIT_LOPO_CANARY_FAIL",
+    "binding_or_runtime_failure": "TARO_O1R_R7_FIT_LOPO_CANARY_EXECUTION_INVALID",
+    "unknown_is_negative": false,
+    "promotion_authorized": false
+  },
+  "claim_ceiling": "Fit-only nested-parent CPU hypothesis canary; no promotion, deployment, device, product, or safety claim.",
+  "unique_successor_if_pass": "NEW_PARENT_DISJOINT_UNTOUCHED_R7_CONFIRMATION_LOCK",
+  "unique_successor_if_fail": "R7_FAILURE_ANALYSIS_OR_NEW_TASK_LOCK"
+}
