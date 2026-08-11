@@ -265,6 +265,19 @@ tuning. The next authorized action is only the source-defined runtime module
 and synthetic mutation tests; uncertainty, the final reducer and all real-data
 execution remain disabled.
 
+`prospective_factor_runtime.py` now implements that interface and is hash-bound
+by the implementation lock. A pre-implementation repair fixes the common query
+frame owner to direct support, then baseline support, then an unavailable frame
+with nine retained UNKNOWN slots. The public builder has no FARO, truth, task
+metric or outcome argument.
+
+Eight synthetic tests pass. The analytic 1440x1920 fixture produces nine
+evaluable SUPPORT blocks, nine evaluable BOUNDARY blocks and six mechanically
+evaluable baseline QUERY_CLEARANCE blocks; an all-support-unavailable fixture
+retains all nine UNKNOWN slots. This is interface evidence only. The next step
+is a separately frozen, non-promotable formation replay; no real-frame replay
+is authorized yet.
+
 Focused validation:
 
 ```powershell

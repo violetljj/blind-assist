@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -146,6 +146,12 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   明确 R6 的 FARO common-support 仅是归因 surface，不是 runtime input；下一实现必须从 factor owner depth、
   K、重力与 query 重算 source-defined surface，public API 禁止 FARO/truth/outcome，且禁用 8 个 R6 untouched
   parents 做 implementation/formation/调参；
+- [R6 prospective-runtime query-frame repair](TARO_O0R_R6_PROSPECTIVE_RUNTIME_QUERY_FRAME_PRE_IMPLEMENTATION_REPAIR_2026-08-11.json)：
+  原协议字节不变；在 implementation lock 与真实执行前冻结 query frame 为 direct support → baseline support →
+  unavailable 九个 UNKNOWN，避免实现自行选择；
+- [R6 prospective factor-runtime implementation lock](TARO_O0R_R6_PROSPECTIVE_FACTOR_RUNTIME_IMPLEMENTATION_LOCK_2026-08-11.md)：
+  source-defined surface、factor-depth/pixel-ID lineage、九 query retention 与 no-result-side public API 已实现；
+  8/8 synthetic mechanics/mutation tests PASS，真实 frame/model/truth/reducer execution 均为 0；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -156,7 +162,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_R6_PROSPECTIVE_FACTOR_RUNTIME_IMPLEMENTATION_LOCK`
+`TARO_O0R_R6_PROSPECTIVE_FACTOR_RUNTIME_FORMATION_REPLAY_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -257,6 +263,11 @@ prospective TARO research runtime；不得从本 cohort 事后拟合 selector/�
 common-support pixels 与 local-valid fraction 由 FARO 定义，只能用于 task-metric 归因；未来 public runtime
 必须从 factor owner 自己的 sealed depth、K、重力和 query receipt 重建 source-defined local surface。当前只授权
 实现与 synthetic mutation tests，不授权 formation replay、新数据、模型、truth、reducer、设备或产品执行。
+
+source-defined runtime implementation 现已 hash-bound。pre-implementation repair 先关闭 query-frame owner 歧义，
+随后实现以 8/8 synthetic tests 证明 direct/baseline/unavailable 三分支、factor-depth lineage、source pixel-ID
+binding、九 slot retention、candidate mutation rejection 与 deterministic roundtrip。当前仍未执行任何真实 frame；
+唯一后继只能先冻结 existing 24 formation parents 的 non-promotable source-first replay，不能直接打开 FARO 或新 cohort。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定

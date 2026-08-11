@@ -1,0 +1,41 @@
+{
+  "schema": "blindassist.taro.o0r.r6_prospective_runtime_query_frame_pre_implementation_repair.v1",
+  "repair_id": "TARO_O0R_R6_PROSPECTIVE_RUNTIME_QUERY_FRAME_PRE_IMPLEMENTATION_REPAIR",
+  "date": "2026-08-11",
+  "status": "QUERY_FRAME_SEMANTICS_REPAIRED_BEFORE_IMPLEMENTATION_LOCK_OR_REAL_EXECUTION",
+  "protocol_binding": {
+    "path": "docs/research/taro/TARO_O0R_R6_FACTOR_POLICY_ADOPTION_AND_PROSPECTIVE_RUNTIME_PROTOCOL_LOCK_2026-08-11.json",
+    "bytes": 7452,
+    "sha256": "B0A33DAB1532C3E3737BD213BDBB3933ACCF4D1775E9FCE8AB3F211625400296"
+  },
+  "ambiguity": {
+    "field": "SOURCE_DEFINED_QUERY_FRAME_SUPPORT_OWNER",
+    "protocol_froze_factor_owners_but_not_the_support_plane_used_to_construct_the_common_nine_query_frames": true,
+    "implementation_must_not_choose_implicitly": true
+  },
+  "effective_query_frame_rule": {
+    "when_phase_a_direct_support_available": "DIRECT_APPLE_SUPPORT",
+    "otherwise_when_source_baseline_support_available": "R1_BASELINE",
+    "otherwise": "UNAVAILABLE_RETAIN_NINE_UNKNOWN_SLOTS",
+    "unavailable_reason_code": "SOURCE_QUERY_FRAME_UNAVAILABLE",
+    "query_grid_order": "LATERAL_MAJOR_THEN_YAW_ASCENDING",
+    "query_slot_count": 9,
+    "outcome_dependent_reselection": false
+  },
+  "factor_ownership_unchanged": {
+    "support": "PHASE_A_SELECTED_SUPPORT_BOUNDARY_COMPONENT",
+    "boundary": "PHASE_A_SELECTED_SUPPORT_BOUNDARY_COMPONENT",
+    "query_clearance": "R1_BASELINE"
+  },
+  "repair_timing_receipt": {
+    "protocol_bytes_modified": false,
+    "implementation_lock_exists": false,
+    "real_frame_runtime_execution_count": 0,
+    "model_inference_count": 0,
+    "truth_scoring_count": 0,
+    "network_request_count": 0,
+    "training_step_count": 0
+  },
+  "unique_successor": "TARO_O0R_R6_PROSPECTIVE_FACTOR_RUNTIME_IMPLEMENTATION_LOCK",
+  "claim_ceiling": "This repair only removes pre-implementation query-frame ambiguity. It does not validate the source-defined extractor or authorize real data, model, truth, reducer, device, product, or safety execution."
+}

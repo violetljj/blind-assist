@@ -1,0 +1,94 @@
+{
+  "schema": "blindassist.taro.o0r.r6_prospective_factor_runtime_implementation_lock.v1",
+  "lock_id": "TARO_O0R_R6_PROSPECTIVE_FACTOR_RUNTIME_IMPLEMENTATION_LOCK",
+  "date": "2026-08-11",
+  "research_mode": "WILD_LAB",
+  "status": "PROSPECTIVE_FACTOR_RUNTIME_IMPLEMENTATION_FROZEN_REAL_EXECUTION_FALSE",
+  "protocol_binding": {
+    "path": "docs/research/taro/TARO_O0R_R6_FACTOR_POLICY_ADOPTION_AND_PROSPECTIVE_RUNTIME_PROTOCOL_LOCK_2026-08-11.json",
+    "bytes": 7452,
+    "sha256": "B0A33DAB1532C3E3737BD213BDBB3933ACCF4D1775E9FCE8AB3F211625400296"
+  },
+  "query_frame_repair_binding": {
+    "path": "docs/research/taro/TARO_O0R_R6_PROSPECTIVE_RUNTIME_QUERY_FRAME_PRE_IMPLEMENTATION_REPAIR_2026-08-11.json",
+    "bytes": 2028,
+    "sha256": "08B56A3C7BD673958DCCE9CAB07608C4251A09514B93659790029A0DF48DDAE2"
+  },
+  "implementation_bindings": [
+    {
+      "role": "PROSPECTIVE_FACTOR_RUNTIME",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/prospective_factor_runtime.py",
+      "bytes": 37207,
+      "sha256": "FCDAEE3D5D343E70D1BAE87CFADF6D4B455D269BF280934F24D8A90AD5AA554D"
+    },
+    {
+      "role": "PROSPECTIVE_FACTOR_RUNTIME_TEST",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_prospective_factor_runtime.py",
+      "bytes": 6167,
+      "sha256": "D3FCE7661415AD6C7A0A822D963AB26FD313B85F4B9FE2FC86E804E42E60B99B"
+    }
+  ],
+  "frozen_implementation": {
+    "runtime_id": "FACTOR_OWNER_DEPTH_SOURCE_DEFINED_LOCAL_SURFACE_V1",
+    "policy_id": "R5_SELECTED_SUPPORT_BOUNDARY_PLUS_ALWAYS_R1_QUERY_CLEARANCE_V1",
+    "public_builder": "build_prospective_factor_bundle",
+    "public_validator": "validate_prospective_factor_bundle",
+    "public_builder_has_faro_truth_task_metric_or_outcome_argument": false,
+    "source_surface_owner": "FACTOR_OWNER_DEPTH",
+    "source_surface_pixel_ids_sha256_required": true,
+    "support_boundary_owner": "PHASE_A_SELECTED_SUPPORT_BOUNDARY_COMPONENT",
+    "query_clearance_owner": "R1_BASELINE",
+    "query_frame_owner_rule": "DIRECT_APPLE_SUPPORT_ELSE_R1_BASELINE_ELSE_UNAVAILABLE",
+    "unavailable_query_frame_rule": "RETAIN_NINE_UNKNOWN_SLOTS",
+    "highres_shape_hw": [1440, 1920],
+    "query_slot_count": 9,
+    "uncertainty_attached": false,
+    "deterministic_reducer_executed": false,
+    "final_state_authorized": false,
+    "r6_untouched_parent_ids_rejected": true,
+    "summary_inputs_canonicalized_before_aggregation": true
+  },
+  "synthetic_test_receipt": {
+    "focused_test_count": 8,
+    "focused_test_failures": 0,
+    "synthetic_parent_count": 1,
+    "real_parent_count": 0,
+    "query_slot_count": 9,
+    "direct_support_selected": true,
+    "support_evaluable_query_count": 9,
+    "boundary_evaluable_query_count": 9,
+    "query_clearance_evaluable_query_count": 6,
+    "query_clearance_unknown_query_count": 3,
+    "source_scale_metric": 1.27110935399,
+    "baseline_support_height_m": 0.96000000529,
+    "direct_support_height_m": 1.200056157011,
+    "all_support_unavailable_fixture_retained_unknown_slots": 9,
+    "deterministic_replay_equal": true,
+    "candidate_mutation_rejected": true,
+    "wrong_factor_depth_rejected": true,
+    "forbidden_parent_rejected": true
+  },
+  "known_boundaries": {
+    "upstream_source_receipt_and_candidate_hashes_must_be_verified_by_future_runner": true,
+    "source_surface_accuracy_not_yet_scored": true,
+    "source_surface_specific_uncertainty_not_yet_frozen": true,
+    "final_query_state_not_available": true,
+    "formation_replay_not_run": true
+  },
+  "execution_authority": {
+    "implementation_complete": true,
+    "synthetic_tests_complete": true,
+    "formation_replay": false,
+    "r6_untouched_evidence_read_for_implementation": false,
+    "new_source_download": false,
+    "model_inference": false,
+    "truth_scoring": false,
+    "training": false,
+    "network": false,
+    "device": false,
+    "product": false,
+    "safety": false
+  },
+  "unique_successor": "TARO_O0R_R6_PROSPECTIVE_FACTOR_RUNTIME_FORMATION_REPLAY_LOCK",
+  "claim_ceiling": "A hash-bound source-only factor-runtime implementation with synthetic mechanics and mutation tests. No real frame has been executed or scored; source-surface accuracy, calibrated uncertainty, final clearance, external generalization, deployment, product efficacy, and safety remain unestablished."
+}
