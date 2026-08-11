@@ -37,6 +37,11 @@ shim 已退役，统一从本目录导入。
 - `prepare_depthart_full_graph_canary.py` 同时支持 square `--resolution` 与固定 `--height/--width`，D1 使用 deterministic `608×448` synthetic input 与 PyTorch oracle；它不读取 ARKitScenes task outcome
 - `validate/evaluate_depthart_task_preserving_d1_device_*` 分别在设备输出前验证 exact protocol/runtime/canary SHA，并在设备执行后重算 context、shape/finite、direct/context bit-exact 与 raw-depth diagnostic；后者不是 task-quality 或性能 evaluator
 - `DEPTHART_TASK_PRESERVING_D1_SM8650_HTP_CONTEXT_AND_OUTCOME_ACTIVATION_PREFLIGHT_RESULT_2026-08-10` 已在 fresh `SM-S9280 / SM8650 / HTP v75 / DZG1` 上关闭 context 与 execute 前门；raw-depth parity 仍 FAIL，Development task outcome 仍未启动
+- `depthart_task_preserving_d2_task_head_canary.py` 只验证小型 task-evidence head 的 shape、硬 UNKNOWN、horizon monotonicity 和 bounded residual mechanics；不训练、不读取真实 outcome，也不产生 accuracy 或 candidate authority
+- `plan_depthart_task_preserving_d2_support_pool.py` 从 Apple Training metadata 中排除所有已冻结官方 identity，并以固定哈希锁定 32 个 D2 source-support 候选；不读取媒体或模型结果
+- `preflight/materialize_depthart_task_preserving_d2_phase_a_*` 先做 intrinsics/trajectory HEAD，再按冻结顺序机械锁定 16 个具有 300-frame portrait/pose continuity 的 identity；不读取 depth truth、RGB 或模型
+- `preflight/materialize_depthart_task_preserving_d2_phase_b_*` 对 Phase-A 首窗口的 depth/confidence 做 source-truth support 审计；当前终态仅 2/8 support-qualified，少于 8 时生成器强制输出空 role list，不授权训练或 Development outcome
+- `DEPTHART_TASK_PRESERVING_D2R1_TARGET_SUPPORT_WINDOW_RECOVERY_PROTOCOL_2026-08-11` 仅冻结同一 16 个 identity 的 full-run 300-frame support-window recovery；在新 source scope 获得显式授权前不得执行 HEAD、GET 或 scan
 - `validate_depthart_task_preserving_r2_activation.py` 只检查 R2 pre-outcome activation manifest 的 cohort 角色、候选/reference 身份、固定任务门与旧 G4-D 排除项；它不读取模型输出，不激活执行，也不签署质量或部署结论
 - `plan_depthart_task_preserving_r2_arkit_roster.py` 在 Apple 官方 split CSV 上，以冻结 Git snapshot 排除全部既有 HFTF ARKit identity，再按固定哈希顺序锁定唯一 visit/session；只读元数据
 - `evaluate_depthart_task_preserving_r2_quality.py` 计算 reference/candidate 对独立 truth 的 pooled、parent-macro、session-macro 与 worst-parent 任务门；CLI 没有显式 activation receipt 会拒绝读取 outcome

@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_phase_b_result_v1",
+  "executed_at": "2026-08-11",
+  "status": "FAIL",
+  "terminal": "D2_PHASE_B_FAIL_FEWER_THAN_8_SUPPORT_QUALIFIED_IDENTITIES",
+  "authority": "SOURCE_TRUTH_SUPPORT_ADMISSION_ONLY_NO_MODEL_OUTPUT",
+  "manifest": {
+    "path": "artifacts.local/datasets/depthart-task-preserving-d2-phase-b-20260811-r1/manifest.json",
+    "bytes": 3505009,
+    "sha256": "5811D48DF1EDBB3D1A0E98613E351E39DDB33C878832B7A9D33377FC79A4CB9B"
+  },
+  "counts": {
+    "audited_identities": 16,
+    "frames_per_identity": 300,
+    "qualified_identities": 2,
+    "required_qualified_identities": 8,
+    "exact_stem_mismatch_identities": 2
+  },
+  "qualified_source_support_only": [
+    {"pool_order": 13, "visit_id": "469646", "video_id": "47430802", "known": 2231, "clear": 388, "occupied": 1843, "valid_band_clearances": 689},
+    {"pool_order": 15, "visit_id": "468094", "video_id": "47334356", "known": 2320, "clear": 373, "occupied": 1947, "valid_band_clearances": 773}
+  ],
+  "near_misses_not_promoted": [
+    {"pool_order": 6, "visit_id": "421013", "video_id": "42444703", "reason": "clear=118<180"},
+    {"pool_order": 24, "visit_id": "437299", "video_id": "43649804", "reason": "clear=179<180"},
+    {"pool_order": 29, "visit_id": "466637", "video_id": "45261172", "reason": "known=1734<1800"}
+  ],
+  "role_state": {
+    "role_assignments": [],
+    "artifact_partial_roles_voided_by": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_PHASE_B_PARTIAL_ROLE_REPAIR_2026-08-11.json",
+    "training_authorized": false,
+    "development_role_created": false
+  },
+  "boundaries": {
+    "thresholds_changed": false,
+    "model_output_read": false,
+    "d2_development_outcome_opened": false,
+    "r2_cohort_access": "NONE",
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "active_successor": "NONE_NEW_TARGET_SUPPORT_WINDOW_RECOVERY_VERSION_REQUIRES_EXPLICIT_PROTOCOL_AND_SOURCE_SCOPE"
+}

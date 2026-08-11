@@ -1,0 +1,32 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_phase_b_partial_role_repair_v1",
+  "issued_at": "2026-08-11",
+  "status": "FAIL_MANIFEST_PARTIAL_ROLE_ASSIGNMENTS_VOIDED_GENERATOR_FIXED_NO_RERUN",
+  "manifest": {
+    "path": "artifacts.local/datasets/depthart-task-preserving-d2-phase-b-20260811-r1/manifest.json",
+    "bytes": 3505009,
+    "sha256": "5811D48DF1EDBB3D1A0E98613E351E39DDB33C878832B7A9D33377FC79A4CB9B",
+    "terminal": "D2_PHASE_B_FAIL_FEWER_THAN_8_SUPPORT_QUALIFIED_IDENTITIES"
+  },
+  "defect": "The failed manifest listed the two support-qualified identities as partial D2_TRAIN roles even though the frozen protocol requires eight qualified identities before any role assignment.",
+  "governed_interpretation": {
+    "artifact_role_assignments_valid": false,
+    "valid_role_assignments": [],
+    "qualified_identities": [
+      {"pool_order": 13, "visit_id": "469646", "video_id": "47430802", "role": "D2_SOURCE_SUPPORT_QUALIFIED_ONLY"},
+      {"pool_order": 15, "visit_id": "468094", "video_id": "47334356", "role": "D2_SOURCE_SUPPORT_QUALIFIED_ONLY"}
+    ],
+    "training_authorized": false,
+    "development_role_created": false,
+    "model_output_read": false,
+    "r2_cohort_access": "NONE"
+  },
+  "producer_repair": {
+    "path": "scripts/research/hftf/deployment/depthart/materialize_depthart_task_preserving_d2_phase_b.py",
+    "executed_sha256": "258EC10214C1C863BA9624D67D3C45B0E7E40D912FE2AA1859D49DF19AD52F95",
+    "repaired_sha256": "0988E8B8BA00EE8CC37AC5B6BE2B394ED99166E0849162FCE3A4A37329302284",
+    "repair": "When fewer than eight identities qualify, emit an empty role_assignments array.",
+    "tests_passed": 3
+  },
+  "authority": "Interpretation-only repair. It does not change support counts, thresholds, qualification, data selection or the Phase-B FAIL terminal."
+}

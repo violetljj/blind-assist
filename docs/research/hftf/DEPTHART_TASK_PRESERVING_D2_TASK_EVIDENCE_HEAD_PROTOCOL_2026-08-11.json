@@ -1,0 +1,211 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_task_evidence_head_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D2_TASK_EVIDENCE_HEAD",
+  "owning_route": "DepthART-S",
+  "frozen_at": "2026-08-11",
+  "status": "PRE_OUTCOME_MECHANICS_PASS_METADATA_POOL_LOCKED_SOURCE_USE_NOT_ACTIVATED",
+  "problem": {
+    "d1_terminal": "D1_TASK_QUALITY_FAIL_STOP_R2_CANDIDATE_NOT_AUTHORIZED",
+    "d1_result": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d1-quality-20260810-r1/quality-result.json",
+      "bytes": 38814,
+      "sha256": "A085F2079649A29E0088478C83CB15FB103F16C5F884A00F800B952F228B0ABA"
+    },
+    "consumed_diagnostic": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d1-quality-20260810-r1/d1-failure-diagnostic.json",
+      "bytes": 9890,
+      "sha256": "DA1C163B44C3C5723903A4EF62A57114ECD4FED7A98047AE77DEBF9753856620",
+      "authority": "CONSUMED_D1_DIAGNOSTIC_ONLY_NOT_A_CANDIDATE_OR_GATE",
+      "finding": "D1 candidate corrected 2094 cells that the canonical reference missed but regressed 645 reference-correct cells; a global affine clearance diagnostic reached 0.27231 m pooled MAE and only 2 of 6 leave-one-parent folds were at or below 0.20 m",
+      "rejected_successor": "GLOBAL_OR_PER_PARENT_AFFINE_POSTHOC_RESCUE"
+    }
+  },
+  "hypothesis": "A compact evidence-aware task head over frozen DepthART geometry features can preserve the candidate's false-clear corrections while reducing false-block and clearance bias; the hypothesis is false if the frozen head cannot pass the unchanged D1 absolute gates on identity-disjoint D2 Development data.",
+  "base_depth_lock": {
+    "input_shape_nchw": [1, 3, 608, 448],
+    "candidate_dlc_sha256": "755138FA28FCB937E3D62D45FEC292880DFC690851BF2CB00E2704CC67FA5D42",
+    "saved_context_sha256": "FA5DC9DCA0EE2B15E495606F1DF60C9FE343E7BB58D5D3CC05C26F846F7AFC3D",
+    "source_depth_model_frozen": true,
+    "runtime_reference_output_forbidden": true,
+    "d1_outcome_fit_forbidden": true
+  },
+  "single_head_candidate": {
+    "candidate_count": 1,
+    "feature_order": [
+      "candidate_clearance_present",
+      "candidate_clearance_m_or_zero",
+      "valid_depth_fraction",
+      "ground_support_fraction",
+      "ground_residual_m_or_zero",
+      "log1p_band_support_points",
+      "log1p_intrusion_points",
+      "observed_forward_m",
+      "band_left",
+      "band_center",
+      "band_right"
+    ],
+    "feature_count": 11,
+    "architecture": "Linear(11,16)-SiLU-Linear(16,5)",
+    "parameter_count": 277,
+    "outputs": [
+      "bounded_clearance_residual_logit",
+      "knownness_logit",
+      "occupancy_logit_1.0m",
+      "occupancy_logit_1.5m",
+      "occupancy_logit_2.0m"
+    ],
+    "composition": {
+      "maximum_clearance_residual_m": 0.5,
+      "clearance_formula": "max(0, raw_clearance + 0.5*tanh(residual_logit)); missing raw clearance remains missing",
+      "occupancy_monotonicity": "sigmoid occupancy probabilities are cumulative-max projected in increasing horizon order",
+      "occupancy_threshold": 0.5,
+      "known_probability_threshold": 0.8,
+      "hard_unknown_gate": {
+        "ground_plane_required": true,
+        "minimum_valid_depth_fraction": 0.05,
+        "minimum_ground_support_fraction": 0.02,
+        "minimum_band_support_points": 20
+      },
+      "unknown_is_negative": false
+    },
+    "geometry_reader": {
+      "path": "scripts/research/assistive_geometry/arkitscenes_truth_reader.py",
+      "bytes": 25728,
+      "sha256": "F50187661E59C438FAC4CAEB4E0BDFA4D638C64A87094C49C369FBEC3B3218C1",
+      "candidate_confidence": "synthetic constant 2 only for candidate geometry extraction"
+    }
+  },
+  "mechanics_canary": {
+    "script": {
+      "path": "scripts/research/hftf/deployment/depthart/depthart_task_preserving_d2_task_head_canary.py",
+      "bytes": 7256,
+      "sha256": "D50DE7B5DDF1D33C01BBD10A79451353039C77D7F15B303314B19AD389AA51CA"
+    },
+    "result": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-preoutcome-20260811-r1/task-head-canary.json",
+      "bytes": 3180,
+      "sha256": "0A28EC82585F0EC29710853FE84F5F370ED06773A4D731F9438A1D4EA7F5F39B",
+      "status": "PASS"
+    },
+    "authority": "SYNTHETIC_MECHANICS_ONLY_NO_ACCURACY_OR_CANDIDATE_AUTHORITY"
+  },
+  "data_support": {
+    "metadata_pool": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_SOURCE_SUPPORT_POOL_LOCK_2026-08-11.json",
+      "bytes": 6196,
+      "sha256": "3C2EEC84CC5600C862E0F5139F324308F8D982E533B6D661DC7CB4CAD4C89001",
+      "pool_count": 32,
+      "d1_r2_overlap_count": 0
+    },
+    "phase_a": {
+      "assets": ["lowres_wide_intrinsics.zip", "lowres_wide.traj"],
+      "purpose": "label-blind frame-stem plus pose-derived portrait continuity only",
+      "minimum_continuous_portrait_frames": 300,
+      "maximum_adjacent_frame_gap_seconds": 0.5,
+      "maximum_pose_bracketing_gap_seconds": 0.25,
+      "take": "first 16 eligible identities by frozen pool_order",
+      "rgb_depth_confidence_read": false
+    },
+    "phase_b": {
+      "assets": ["lowres_depth.zip", "confidence.zip"],
+      "purpose": "truth-support-only audit on the exact 300 Phase-A frame stems; model output forbidden",
+      "minimum_truth_known_cells_per_identity": 1800,
+      "minimum_truth_clear_cells_per_identity": 180,
+      "minimum_truth_occupied_cells_per_identity": 900,
+      "minimum_truth_known_cells_per_band_horizon": 100,
+      "minimum_valid_band_clearances_per_identity": 450,
+      "qualification": "all thresholds must pass; no model output or candidate metric may affect qualification"
+    },
+    "phase_c": {
+      "asset": "lowres_wide.zip",
+      "take": "first eight Phase-B-qualified identities by frozen pool_order",
+      "roles": "first four are D2 TRAIN; next four are sealed D2 DEVELOPMENT",
+      "minimum_qualified_identities": 8,
+      "stop_if_insufficient": true
+    },
+    "role_invariants": {
+      "d1_consumed_rows_reused_for_training": false,
+      "d2_train_parent_count": 4,
+      "d2_development_parent_count": 4,
+      "identity_overlap": 0,
+      "development_truth_or_model_output_before_head_lock": false,
+      "r2_cohort_access": "NONE"
+    }
+  },
+  "training": {
+    "activated": false,
+    "device_base_outputs_required": true,
+    "head_runtime": "host CPU float64 feasibility only",
+    "seed": 17,
+    "feature_standardization": "D2 TRAIN mean/std only with epsilon 1e-6",
+    "optimizer": "AdamW",
+    "learning_rate": 0.01,
+    "weight_decay": 0.0001,
+    "steps": 500,
+    "batching": "full batch",
+    "early_stopping": false,
+    "checkpoint_selection": "step 500 only",
+    "loss": {
+      "knownness": "binary cross entropy on all TRAIN cells",
+      "occupancy": "TRAIN-class-balanced binary cross entropy on truth-known cells",
+      "clearance": "Huber delta 0.2 on paired valid TRAIN bands",
+      "weights": {"knownness": 1.0, "occupancy": 1.0, "clearance": 1.0}
+    },
+    "development_access_during_training": false
+  },
+  "development_evaluation": {
+    "activated": false,
+    "frames": 1200,
+    "cells": 10800,
+    "baseline": "same frozen HTP DepthART output with no D2 head",
+    "candidate": "same frozen HTP DepthART output plus the single frozen D2 head",
+    "metric_semantics": "identical to D1; UNKNOWN excluded and never negative",
+    "absolute_gates": {
+      "known_coverage_min": 0.9,
+      "clearance_mae_m_max": 0.2,
+      "false_clear_all_known_max": 0.08,
+      "false_block_given_clear_max": 0.02,
+      "temporal_clearance_delta_mae_m_max": 0.15,
+      "geometry_transition_agreement_min": 0.9,
+      "valid_to_unknown_rate_max": 0.1,
+      "worst_parent_false_clear_all_known_max": 0.12
+    },
+    "noninferiority_gates": {
+      "known_coverage_decrease_max": 0.02,
+      "clearance_mae_m_increase_max": 0.025,
+      "false_clear_all_known_increase_max": 0.01,
+      "false_clear_given_occupied_increase_max": 0.02,
+      "false_block_given_clear_increase_max": 0.01,
+      "temporal_clearance_delta_mae_m_increase_max": 0.025,
+      "geometry_transition_agreement_decrease_max": 0.02,
+      "valid_to_unknown_rate_increase_max": 0.02
+    },
+    "aggregate_policy": "pooled, parent macro, session macro and worst parent must all be finite; any missing denominator fails closed",
+    "pass_authority": "D2_IDENTITY_DISJOINT_FEASIBILITY_ONLY_NOT_R2_CANDIDATE_LOCK"
+  },
+  "stop_conditions": [
+    "mechanics canary or any frozen hash fails",
+    "source-use receipt is absent before HEAD or media request",
+    "fewer than 16 Phase-A identities or fewer than 8 Phase-B-qualified identities",
+    "D1 consumed outcome is used to fit the head or select a D2 identity",
+    "D2 Development is opened before the step-500 head hash is frozen",
+    "candidate/reference/data/features/thresholds/training recipe change after activation",
+    "R2 media, truth or model output is accessed",
+    "a D2 feasibility PASS is described as R2, performance, Android default, production or safety authority"
+  ],
+  "current_gate": "EXPLICIT_D2_SOURCE_SCOPE_RECEIPT_AND_PHASE_A_HEAD_PREFLIGHT",
+  "authority": {
+    "d2_mechanics": true,
+    "metadata_roster": true,
+    "media_head": false,
+    "media_download": false,
+    "training": false,
+    "development_outcome": false,
+    "r2_candidate_lock": false,
+    "r2_outcome": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  }
+}

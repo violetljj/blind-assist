@@ -1,0 +1,78 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_source_support_pool_lock_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D2_TASK_EVIDENCE_HEAD",
+  "frozen_at": "2026-08-11",
+  "status": "METADATA_SUPPORT_POOL_32_LOCKED_MEDIA_UNOPENED_DOWNLOAD_NOT_AUTHORIZED",
+  "source": {
+    "repository": "https://github.com/apple/ARKitScenes.git",
+    "repository_commit": "7283761bf26c27570ec59a5dc0f8686fbff07726",
+    "metadata_path": "threedod/3dod_train_val_splits.csv",
+    "metadata_bytes": 127263,
+    "metadata_sha256": "06A0686866F186764ED0B92DE1A943529CEBD78B4AF5B671907C40BB2DCD13E1",
+    "official_rows": 5047
+  },
+  "planner": {
+    "path": "scripts/research/hftf/deployment/depthart/plan_depthart_task_preserving_d2_support_pool.py",
+    "bytes": 6823,
+    "sha256": "7C0961E48FCA0720A0D3E4765A94257910225F913FA174BCC346AF89FBA4C4B1"
+  },
+  "exclusion_snapshot": {
+    "repository_commit": "c4ad0429",
+    "scope": "all tracked JSON/Markdown under docs/research",
+    "matched_official_identity_count": 247,
+    "selection_overlap_count": 0,
+    "explicit_d1_r2_overlap_count": 0
+  },
+  "selection_rule": "Training rows; exclude every official visit_id/video_id named in the frozen docs/research snapshot; require unique visit; sort by sha256(visit_id:video_id); take the first 32 without replacement",
+  "pool": [
+    {"pool_order": 1, "visit_id": "468107", "video_id": "47334483", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 2, "visit_id": "482610", "video_id": "47895972", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 3, "visit_id": "472346", "video_id": "47430657", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 4, "visit_id": "467109", "video_id": "47333324", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 5, "visit_id": "466884", "video_id": "47331557", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 6, "visit_id": "421013", "video_id": "42444703", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 7, "visit_id": "481543", "video_id": "47334685", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 8, "visit_id": "435653", "video_id": "42899887", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 9, "visit_id": "422855", "video_id": "42897480", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 10, "visit_id": "469596", "video_id": "47430877", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 11, "visit_id": "438361", "video_id": "43896379", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 12, "visit_id": "434691", "video_id": "42898635", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 13, "visit_id": "469646", "video_id": "47430802", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 14, "visit_id": "423613", "video_id": "42898109", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 15, "visit_id": "468094", "video_id": "47334356", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 16, "visit_id": "469601", "video_id": "47115165", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 17, "visit_id": "469644", "video_id": "47333565", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 18, "visit_id": "421628", "video_id": "42445592", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 19, "visit_id": "472621", "video_id": "47332597", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 20, "visit_id": "481524", "video_id": "47431120", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 21, "visit_id": "483066", "video_id": "48018153", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 22, "visit_id": "421005", "video_id": "42444719", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 23, "visit_id": "472309", "video_id": "47332461", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 24, "visit_id": "437299", "video_id": "43649804", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 25, "visit_id": "383219", "video_id": "41126992", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 26, "visit_id": "468781", "video_id": "45663052", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 27, "visit_id": "421261", "video_id": "42444816", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 28, "visit_id": "437167", "video_id": "43649605", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 29, "visit_id": "466637", "video_id": "45261172", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 30, "visit_id": "482104", "video_id": "47670003", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 31, "visit_id": "481480", "video_id": "47431169", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"},
+    {"pool_order": 32, "visit_id": "434629", "video_id": "42899041", "fold": "Training", "role": "D2_SOURCE_SUPPORT_POOL_ONLY"}
+  ],
+  "generation_receipt": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-preoutcome-20260811-r1/metadata-support-pool.json",
+    "bytes": 12417,
+    "sha256": "46DA4EB0D4DAC90C179C73C200F73EBAB597C5A05B87354BD1F787283B818653"
+  },
+  "invariants": {
+    "pool_count": 32,
+    "unique_parent_count": 32,
+    "media_body_bytes_read": false,
+    "truth_read": false,
+    "model_outputs_read": false,
+    "outcome_access": "NONE",
+    "r2_cohort_access": "NONE",
+    "download_authorized": false
+  },
+  "next_gate": "bind an exact D2 source-use receipt before any HEAD or media request",
+  "authority": "Metadata-only D2 source-support pool. No training, task outcome, R2, device, performance, production or safety authority."
+}
