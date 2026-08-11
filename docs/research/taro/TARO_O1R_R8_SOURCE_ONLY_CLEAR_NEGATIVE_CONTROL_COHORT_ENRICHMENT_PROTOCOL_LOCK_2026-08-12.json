@@ -1,7 +1,7 @@
 {
   "schema": "blindassist.taro.o1r.r8_source_only_clear_negative_control_cohort_enrichment_protocol_lock.v1",
   "lock_id": "TARO_O1R_R8_SOURCE_ONLY_CLEAR_NEGATIVE_CONTROL_COHORT_ENRICHMENT_PROTOCOL_LOCK",
-  "status": "FROZEN_METADATA_ONLY_AWAITING_DATA_USE_AUTHORIZATION",
+  "status": "FROZEN_DATA_USE_AUTHORIZED",
   "date": "2026-08-12",
   "predecessor": {
     "path": "docs/research/taro/TARO_O1R_R7_FRESH_CONFIRMATION_RESULT_2026-08-12.json",
@@ -22,10 +22,12 @@
     {"role":"POOL_PLANNER_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_r8_pool_cohort.py","bytes":1053,"sha256":"8D5004778B6609462504C3C0F4B299D5D30AC8A02BE473BC313E15A4933182EA"},
     {"role":"SOURCE_SELECTOR","path":"scripts/research/taro_o1r_r8_clear_runtime/clear_enrichment.py","bytes":4816,"sha256":"59B0F62EB5D089871746428949F9A5455664ED50CA6969054AF45EFF4A4D1370"},
     {"role":"SOURCE_SELECTOR_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_r8_clear_enrichment.py","bytes":2187,"sha256":"A65A1AED86383CB96AD11CB1A1D0118DB0CA9DDE22FE1CFBADA01C6D42E61693"},
-    {"role":"POOL_HEAD_RUNNER","path":"scripts/research/taro_o1r_r8_clear_runtime/run_pool_head.py","bytes":13851,"sha256":"1A552B69BC545CE3A86939CC7B2D57794283C2864E8BDCF21FA37958B8641837"},
-    {"role":"POOL_HEAD_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_run_pool_head.py","bytes":2267,"sha256":"3AB36C405E7AA2ECFF17F2394CADD75769AC9A1F2B0BEF31FAEEE14714758AA3"},
+    {"role":"POOL_HEAD_RUNNER","path":"scripts/research/taro_o1r_r8_clear_runtime/run_pool_head.py","bytes":14422,"sha256":"86A9872FDF565E6F9C0244A7C162BABDA6B4E1D227EFCF929A34147AF57013CF"},
+    {"role":"POOL_HEAD_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_run_pool_head.py","bytes":2623,"sha256":"5033D1496B6CD7124B037EDBD59BAAAC999344D171B099CE3C4A78B23CFD479A"},
     {"role":"POOL_DOWNLOAD_RUNNER","path":"scripts/research/taro_o1r_r8_clear_runtime/run_pool_download.py","bytes":11131,"sha256":"D48F15FC9108537916516FED4214E198D124E84A3D347A37EBE2B7C5A0F70C99"},
-    {"role":"POOL_DOWNLOAD_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_run_pool_download.py","bytes":1189,"sha256":"DB5686D6913C697EAA592C544EF0154B5DD8AAB0214CF49CFEDB2472F6BF400C"}
+    {"role":"POOL_DOWNLOAD_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_run_pool_download.py","bytes":1189,"sha256":"DB5686D6913C697EAA592C544EF0154B5DD8AAB0214CF49CFEDB2472F6BF400C"},
+    {"role":"POOL_INVENTORY_RUNNER","path":"scripts/research/taro_o1r_r8_clear_runtime/run_pool_inventory.py","bytes":13508,"sha256":"DC54A47C73BE4F39F98FD97F9A73B4E8185B42D08A5C6AE96D48BFE72C54A654"},
+    {"role":"POOL_INVENTORY_TEST","path":"scripts/research/taro_o1r_r8_clear_runtime/test_run_pool_inventory.py","bytes":1867,"sha256":"C83F395552279C3FA1CABCB531621B790AF5C98449C46C9E6F754F97BE6A2238"}
   ],
   "metadata_pool": {
     "official_fold": "Training",

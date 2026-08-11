@@ -41,6 +41,12 @@ EXPECTED_AUTHORITY = {
     "truth_scoring": False,
     "training": False,
 }
+EXPECTED_USER_AUTHORITY = {
+    "confirmed_by": "user",
+    "confirmed_at": "2026-08-12",
+    "confirmation_verbatim": "授权",
+    "scope": "Exact frozen R8 24-parent Training pool and its exact 72-asset plan: bounded zero-body HEAD, source download, read-only inventory, and locked source-only Phase A. No FARO read before all 24 parent scores and final top-eight identities are sealed; no training, deployment, product, or safety authority.",
+}
 
 
 class PoolHeadError(RuntimeError):
@@ -164,6 +170,7 @@ def validate_execution_lock(path: Path) -> dict[str, Any]:
     lock_path = path.resolve()
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
     require(lock.get("schema") == LOCK_SCHEMA and lock.get("lock_id") == LOCK_ID and lock.get("status") == "AUTHORIZED_UNCONSUMED" and lock.get("consumed") is False, "R8_HEAD_LOCK_IDENTITY", "HEAD lock identity/authority drift")
+    require(lock.get("user_authority") == EXPECTED_USER_AUTHORITY, "R8_HEAD_USER_AUTHORITY", "HEAD user authority drift")
     actual_argv = [Path(sys.argv[0]).resolve().relative_to(REPO_ROOT).as_posix(), "--execution-lock", lock_path.relative_to(REPO_ROOT).as_posix()]
     require(lock.get("argv") == actual_argv and lock.get("output_root") == OUTPUT_ROOT and lock.get("overwrite") is False and lock.get("rerun") is False, "R8_HEAD_LOCK_POLICY", "HEAD lock argv/root policy drift")
     bindings = lock.get("bindings")

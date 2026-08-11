@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -30,11 +32,16 @@ class PoolHeadTests(unittest.TestCase):
         self.assertEqual(receipt["available_asset_count"], 71)
         self.assertFalse(receipt["replacement_allowed"])
 
-    def test_draft_execution_lock_cannot_run_without_user_authority(self) -> None:
+    def test_execution_lock_cannot_run_without_user_authority(self) -> None:
         lock = Path(__file__).resolve().parents[3] / "docs/research/taro/TARO_O1R_R8_CLEAR_NEGATIVE_CONTROL_POOL_HEAD_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json"
-        with self.assertRaises(runner.PoolHeadError) as caught:
-            runner.validate_execution_lock(lock)
-        self.assertEqual(caught.exception.code, "R8_HEAD_LOCK_IDENTITY")
+        value = json.loads(lock.read_text(encoding="utf-8"))
+        value["user_authority"] = None
+        with tempfile.TemporaryDirectory(dir=Path(__file__).resolve().parents[3]) as directory:
+            candidate = Path(directory) / "lock.json"
+            candidate.write_text(json.dumps(value), encoding="utf-8")
+            with self.assertRaises(runner.PoolHeadError) as caught:
+                runner.validate_execution_lock(candidate)
+        self.assertEqual(caught.exception.code, "R8_HEAD_USER_AUTHORITY")
 
 
 if __name__ == "__main__":
