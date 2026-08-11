@@ -11,6 +11,7 @@ from typing import Any, Mapping, Sequence
 
 import numpy as np
 
+from scripts.research.taro_o0r_candidate_scale_runtime import apple_scale
 from scripts.research.taro_o0r_candidate_scale_runtime import prospective_factor_runtime as runtime
 from scripts.research.taro_o0r_candidate_scale_runtime import source_factor
 from scripts.research.taro_o0r_source_adapter_runtime import source_adapter as adapter
@@ -185,6 +186,8 @@ def score_frame(
     source_role: str,
     source_frame_receipt: Mapping[str, Any],
     candidate_highres_depth_m: np.ndarray,
+    apple_depth_mm: np.ndarray,
+    confidence: np.ndarray,
     prospective_bundle: Mapping[str, Any],
     highres_faro_depth_mm: np.ndarray,
 ) -> list[dict[str, Any]]:
@@ -195,23 +198,56 @@ def score_frame(
     raw = np.ascontiguousarray(candidate_highres_depth_m, dtype=np.float64)
     raw_hash = adapter.canonical_sha256(raw)
     require(raw_hash == bundle["input_bindings"]["candidate_highres_depth_sha256"], "FORMATION_SCORE_CANDIDATE_DRIFT", "formation candidate depth differs from bundle")
-    baseline_plane = bundle["baseline_support"] if bundle["baseline_support"]["evaluable"] else None
+    apple = np.asarray(apple_depth_mm)
+    conf = np.asarray(confidence)
+    require(
+        apple.shape == adapter.APPLE_SHAPE_HW
+        and apple.dtype == np.uint16
+        and conf.shape == adapter.APPLE_SHAPE_HW
+        and conf.dtype == np.uint8
+        and adapter.canonical_sha256(apple) == bundle["input_bindings"]["apple_depth_sha256"]
+        and adapter.canonical_sha256(conf) == bundle["input_bindings"]["confidence_sha256"],
+        "FORMATION_SCORE_SOURCE_INPUT_DRIFT",
+        "formation AppleDepth/confidence differs from Phase-A binding",
+    )
+    low = source["lowres_intrinsics_source"]
+    low_matrix = np.asarray([[low["fx"], 0.0, low["cx"]], [0.0, low["fy"], low["cy"]], [0.0, 0.0, 1.0]], dtype=np.float64)
+    gravity = np.asarray(source["gravity_up_camera_xyz"], dtype=np.float64)
+    replay_scale = apple_scale.estimate_source_metric_scale(apple, conf, apple_scale.sample_candidate_at_apple_centers(raw))
+    replay_baseline = runtime._fit_depth_plane(raw, matrix, gravity)
+    replay_direct = runtime._fit_direct_plane(apple, conf, low_matrix, gravity) if replay_scale["evaluable"] else runtime._failed_plane(str(replay_scale["reason_codes"][0]))
+    require(
+        adapter.canonical_sha256(replay_scale) == adapter.canonical_sha256(bundle["source_scale"])
+        and adapter.canonical_sha256(replay_baseline) == adapter.canonical_sha256(bundle["baseline_support"])
+        and adapter.canonical_sha256(replay_direct) == adapter.canonical_sha256(bundle["direct_support"]),
+        "FORMATION_PHASE_A_SOURCE_STATE_REPLAY_DRIFT",
+        "Phase-A source scale/support commitments do not replay from bound inputs",
+    )
+    baseline_plane = replay_baseline if replay_baseline["evaluable"] else None
     baseline_geometry = runtime._build_geometry(raw, raw_hash, matrix) if baseline_plane is not None else None
     if bundle["selected_support_boundary_owner"] == "DIRECT_APPLE_SUPPORT":
-        selected_depth = np.ascontiguousarray(raw * float(bundle["source_scale"]["metric_scale"]), dtype=np.float64)
-        selected_plane = bundle["direct_support"]
+        require(replay_scale["evaluable"] and replay_direct["evaluable"], "FORMATION_PHASE_A_OWNER_REPLAY_DRIFT", "sealed DIRECT owner is unavailable on source replay")
+        selected_depth = np.ascontiguousarray(raw * float(replay_scale["metric_scale"]), dtype=np.float64)
+        selected_plane = replay_direct
         selected_geometry = runtime._build_geometry(selected_depth, adapter.canonical_sha256(selected_depth), matrix)
     else:
+        require(not (replay_scale["evaluable"] and replay_direct["evaluable"]), "FORMATION_PHASE_A_OWNER_REPLAY_DRIFT", "sealed R1 owner differs from source replay")
         selected_plane = baseline_plane
         selected_geometry = baseline_geometry
     faro = np.asarray(highres_faro_depth_mm)
     require(faro.shape == adapter.HIGHRES_SHAPE_HW and faro.dtype == np.uint16, "FORMATION_SCORE_FARO_INVALID", "formation FARO must be uint16 1440x1920")
     faro_m = np.ascontiguousarray(faro.astype(np.float64) / 1000.0, dtype=np.float64)
-    truth_plane = runtime._fit_depth_plane(faro_m, matrix, np.asarray(source["gravity_up_camera_xyz"], dtype=np.float64))
+    truth_plane = runtime._fit_depth_plane(faro_m, matrix, gravity)
     truth_geometry = runtime._build_geometry(faro_m, adapter.canonical_sha256(faro_m), matrix) if truth_plane["evaluable"] else None
     records: list[dict[str, Any]] = []
     for slot in bundle["query_slots"]:
         query = slot["query_receipt"]
+        if query is not None:
+            replay_blocks = runtime._query_blocks(
+                dict(query), matrix, bundle["selected_support_boundary_owner"], selected_geometry, selected_plane,
+                baseline_geometry, baseline_plane, "SOURCE_SELECTED_SUPPORT_UNAVAILABLE", "SOURCE_BASELINE_SUPPORT_UNAVAILABLE", raw_hash,
+            )
+            require(adapter.canonical_sha256(replay_blocks) == adapter.canonical_sha256(slot["factor_blocks"]), "FORMATION_PHASE_A_FACTOR_REPLAY_DRIFT", "sealed prospective factor blocks do not replay")
         if query is None:
             prospective = baseline = {"support": _unknown("SOURCE_QUERY_FRAME_UNAVAILABLE"), "boundary": _unknown("SOURCE_QUERY_FRAME_UNAVAILABLE"), "query_clearance": _unknown("SOURCE_QUERY_FRAME_UNAVAILABLE")}
             truth_status = _unknown("SOURCE_QUERY_FRAME_UNAVAILABLE")
@@ -238,11 +274,6 @@ def score_frame(
                 truth_plane=truth_plane,
                 failure_code="SOURCE_BASELINE_SUPPORT_UNAVAILABLE",
             )
-            replay_blocks = runtime._query_blocks(
-                dict(query), matrix, bundle["selected_support_boundary_owner"], selected_geometry, selected_plane,
-                baseline_geometry, baseline_plane, "SOURCE_SELECTED_SUPPORT_UNAVAILABLE", "SOURCE_BASELINE_SUPPORT_UNAVAILABLE", raw_hash,
-            )
-            require(adapter.canonical_sha256(replay_blocks) == adapter.canonical_sha256(slot["factor_blocks"]), "FORMATION_PHASE_A_FACTOR_REPLAY_DRIFT", "sealed prospective factor blocks do not replay")
             truth_status = {"evaluable": True, "reason_codes": [], "support_plane_sha256": adapter.canonical_sha256(truth_plane)}
         effects = {
             "support_normal_error_reduction_rad": _effect(baseline, prospective, "support", "normal_angular_error_rad"),

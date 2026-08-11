@@ -126,11 +126,15 @@ def _phase_b_worker(
     highres = depthart_runner.upsample_native_depth(native)
     bundle = _load_bundle(root, frame, highres)
     with zipfile.ZipFile(frame.upsampling_archive) as source_bundle:
+        apple = replay_io.read_bound_payload(frame, source_bundle, "lowres_depth")
+        confidence = replay_io.read_bound_payload(frame, source_bundle, "confidence")
         faro = replay_io.read_bound_payload(frame, source_bundle, "highres_depth")
     records = formation_replay.score_frame(
         source_role=frame.source_role,
         source_frame_receipt=frame.source_frame_receipt,
         candidate_highres_depth_m=highres,
+        apple_depth_mm=apple,
+        confidence=confidence,
         prospective_bundle=bundle,
         highres_faro_depth_mm=faro,
     )
