@@ -1,0 +1,37 @@
+{
+  "schema": "blindassist.taro.o0r.r5_camera_hash_repair_implementation_lock.v1",
+  "lock_id": "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_CAMERA_HASH_REPAIR_IMPLEMENTATION_LOCK",
+  "date": "2026-08-11",
+  "status": "IMPLEMENTATION_FROZEN_READY_FOR_ONE_SHOT_EXECUTION_LOCK",
+  "git_commit": "6803441cc726c5c8e62decddfb8dc6b5a5c42c19",
+  "repair_authority_binding": {
+    "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_CAMERA_HASH_REPAIR_2026-08-11.json",
+    "bytes": 2328,
+    "sha256": "5747492F0A1B18CB70A8ADEA43A47DFC0DE3CFCC2562776B78F6ABD30E4547D6"
+  },
+  "implementation_files": [
+    {"role": "R5_CONFIRMATION", "path": "scripts/research/taro_o0r_candidate_scale_runtime/r5_confirmation.py", "bytes": 86374, "sha256": "31F5D585AA903485767FDD9202FE0F66C7F0297B7BE7607CF5AE5EC2363E5380"},
+    {"role": "R5_SHARED_PHASE_B_RUNNER", "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_direct_apple_hybrid_adapter_fit_confirmation_r2.py", "bytes": 14726, "sha256": "AF6924BB6ACFDD154214E69AE70DDF1880A025C713CE2BAAC94E4DBEE4339723"},
+    {"role": "R5_R3_ENTRYPOINT", "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_direct_apple_hybrid_adapter_fit_confirmation_r3.py", "bytes": 1322, "sha256": "BEA74DB9A03441D3DF1B4656A5ECF871424B694B0CA94578F702CA610CF45443"},
+    {"role": "R5_R3_LOCK_VALIDATOR", "path": "scripts/research/taro_o0r_candidate_scale_runtime/validate_r5_camera_hash_repair_execution_lock.py", "bytes": 7677, "sha256": "69CBCF634D5886B92A1B2105945D3D0576AA9465A0F98D092E150A79C6C0F03B"},
+    {"role": "R5_CONFIRMATION_TEST", "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_r5_confirmation.py", "bytes": 17782, "sha256": "FA3A15A502EA4F2F861FA5761B046A7C46E6D622B4FFFDB729FA9542A8294BF5"}
+  ],
+  "verification": {
+    "tests_run": 10,
+    "tests_passed": 10,
+    "real_frame_canary": "47332075:251475.434",
+    "real_frame_direct_evaluable_queries": 9,
+    "real_frame_camera_binding_drift_queries": 0,
+    "py_compile_passed": true,
+    "git_diff_check_passed": true
+  },
+  "frozen_behavior": {
+    "legacy_list_hash_must_match_consumed_phase_a": true,
+    "normalized_array_hash_used_by_extractor": true,
+    "numeric_k_change": false,
+    "phase_a_branch_change": false,
+    "model_inference_new": 0,
+    "statistics_and_gates_unchanged": true
+  },
+  "claim_ceiling": "WILD_LAB parent-disjoint task-metric confirmation on the exact eight former ADAPTER_FIT ARKitScenes Training parents only."
+}
