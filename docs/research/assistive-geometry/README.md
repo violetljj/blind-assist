@@ -423,14 +423,21 @@ no-regret gate 未通过。晋级的是 R16 angular factor contract，不是这�
 angular target 接入更强的冻结 DepthART boundary representation，depth/support 与 external threshold 保持不变，
 不在 Bonn/ICL 上继续调这个 specialist。
 
-R18 的可执行实现已冻结在
-[DepthART angular boundary execution-ready receipt](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R18_DEPTHART_ANGULAR_BOUNDARY_EXECUTION_READY_2026-08-11.json)。
-它从 R14 checkpoint 严格初始化，只开放 `boundary_trunk + boundary_logits` 的 136,257 个参数；DepthART、
-shared trunk、depth/support/obstacle 与旧 pixel-distance head 全部冻结。R16 angular field 作为单一梯度，
-原 unified factor 包继续提供其余 factor，69/69 ARKit/TUM overlay 与 20/20 focused tests PASS；一步 optimizer
-后全部冻结参数逐元素不变。当前 Codex runtime 的 `torch.cuda.device_count()==0`，因此正式 20-epoch 训练尚未
-执行，输出目录也未创建。CUDA 恢复后应原命令续跑，随后仅做一次冻结 ICL/Bonn 复核；当前不能声称 R18
-产生了 learned improvement。
+R18 的实现与实际执行分别冻结在
+[execution-ready receipt](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R18_DEPTHART_ANGULAR_BOUNDARY_EXECUTION_READY_2026-08-11.json)
+和 [DepthART angular boundary result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R18_DEPTHART_ANGULAR_BOUNDARY_RESULT_2026-08-11.json)。
+RTX 5060 恢复后，匹配的 PyTorch `2.11.0+cu128` 与 selective-scan CUDA 扩展完成 20 epochs/1,440 steps，
+总耗时 `200.35 s`。训练仍只开放 `boundary_trunk + boundary_logits` 的 136,257 个参数；DepthART、shared
+trunk、depth/support/obstacle 与旧 pixel-distance head 保持冻结。内部 canary angular soft BCE 改善
+`10.64%`，但 selection 恶化 `20.13%`，所以内部只支持 3/4 signal。
+
+更关键的未消费外域结果不要求 R18 “全面击败 base”，而是检验 angular pseudo-factor 是否携带可迁移几何信号。
+ICL AP 达到 `0.12338`，高于 R14 `0.12147`、R17 `0.11640` 和 prevalence `0.09206`；Bonn AP
+`0.07426` 也略高于 R14 `0.07357`，且 F1 `0.55183` 仅比 R14 `0.56062` 低约 `1.6%`。因此 R16
+angular factor 的跨 source learnability 得到支持，不需要完整真值；但 ICL 固定 0.5 阈值 F1 只有 `0.03738`，
+没有复制 R17 的 `0.32604` localization，R18 checkpoint 不能称为全局 successor。停止继续做外域模型竞赛；
+下一步把已验证 angular factor 扩到更广的 SuperTeacher corpus。若未来确实需要二值 operating mask，只允许在
+ARKit/TUM 内部 selection 上拟合一次标量 calibration，再把 ICL/Bonn 保持为一次性确认。
 
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。

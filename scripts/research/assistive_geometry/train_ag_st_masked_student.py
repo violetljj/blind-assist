@@ -2432,34 +2432,7 @@ def execute(args: argparse.Namespace) -> int:
             ),
         }
     angular_gradient_firewall: dict[str, Any] | None = None
-    if objective_profile == "angular_boundary_only":
-        boundary_signals = {
-            "selection_angular_soft_bce_improved": (
-                selection_improvements["boundary_soft_bce"] is not None
-                and selection_improvements["boundary_soft_bce"] > 0.0
-            ),
-            "canary_angular_soft_bce_improved": (
-                canary_improvements["boundary_soft_bce"] is not None
-                and canary_improvements["boundary_soft_bce"] > 0.0
-            ),
-            "selection_fixed_core_f1_nonzero": (
-                after_selection["parent_macro"]["boundary_f1"] or 0.0
-            ) > 0.0,
-            "canary_fixed_core_f1_nonzero": (
-                after_canary["parent_macro"]["boundary_f1"] or 0.0
-            ) > 0.0,
-        }
-        supported = sum(boundary_signals.values())
-        total_core_signals = 4
-        status = (
-            "PARENT_DISJOINT_ANGULAR_BOUNDARY_SIGNAL_SUPPORTED"
-            if supported == total_core_signals
-            else "PARENT_DISJOINT_PARTIAL_ANGULAR_BOUNDARY_SIGNAL_SUPPORTED"
-            if supported > 0
-            else "PARENT_DISJOINT_ANGULAR_BOUNDARY_SIGNAL_NOT_SUPPORTED"
-        )
-        core_signals = boundary_signals
-    elif objective_profile == "boundary_only":
+    if objective_profile == "boundary_only":
         for unused_head in (
             model.depth_residual,
             model.support_logits,
@@ -2597,7 +2570,34 @@ def execute(args: argparse.Namespace) -> int:
 
     selection_improvements = metric_improvements(before_selection, after_selection)
     canary_improvements = metric_improvements(before_canary, after_canary)
-    if objective_profile == "boundary_only":
+    if objective_profile == "angular_boundary_only":
+        boundary_signals = {
+            "selection_angular_soft_bce_improved": (
+                selection_improvements["boundary_soft_bce"] is not None
+                and selection_improvements["boundary_soft_bce"] > 0.0
+            ),
+            "canary_angular_soft_bce_improved": (
+                canary_improvements["boundary_soft_bce"] is not None
+                and canary_improvements["boundary_soft_bce"] > 0.0
+            ),
+            "selection_fixed_core_f1_nonzero": (
+                after_selection["parent_macro"]["boundary_f1"] or 0.0
+            ) > 0.0,
+            "canary_fixed_core_f1_nonzero": (
+                after_canary["parent_macro"]["boundary_f1"] or 0.0
+            ) > 0.0,
+        }
+        supported = sum(boundary_signals.values())
+        total_core_signals = 4
+        status = (
+            "PARENT_DISJOINT_ANGULAR_BOUNDARY_SIGNAL_SUPPORTED"
+            if supported == total_core_signals
+            else "PARENT_DISJOINT_PARTIAL_ANGULAR_BOUNDARY_SIGNAL_SUPPORTED"
+            if supported > 0
+            else "PARENT_DISJOINT_ANGULAR_BOUNDARY_SIGNAL_NOT_SUPPORTED"
+        )
+        core_signals = boundary_signals
+    elif objective_profile == "boundary_only":
         boundary_signals = {
             "selection_soft_bce_improved": (
                 selection_improvements["boundary_soft_bce"] is not None
